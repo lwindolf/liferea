@@ -1,7 +1,7 @@
 /**
  * @file itemlist.h  itemlist handling
  *
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,13 +22,44 @@
 #define _ITEMLIST_H
 
 #include <gtk/gtk.h>
+
 #include "item.h"
+#include "item_loader.h"
 #include "itemset.h"
 
+G_BEGIN_DECLS
+
+#define ITEMLIST_TYPE		(itemlist_get_type ())
+#define ITEMLIST(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), ITEMLIST_TYPE, ItemList))
+#define ITEMLIST_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), ITEMLIST_TYPE, ItemListClass))
+#define IS_ITEMLIST(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), ITEMLIST_TYPE))
+#define IS_ITEMLIST_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), ITEMLIST_TYPE))
+
+typedef struct ItemList		ItemList;
+typedef struct ItemListClass	ItemListClass;
+typedef struct ItemListPrivate	ItemListPrivate;
+
+struct ItemList
+{
+	GObject		parent;
+	
+	/*< private >*/
+	ItemListPrivate	*priv;
+};
+
+struct ItemListClass 
+{
+	GObjectClass parent_class;	
+};
+
+GType itemlist_get_type (void);
+
 /**
- * Frees everything used by the item list.
+ * Set up the feed list.
+ *
+ * @returns the feed list instance
  */
-void itemlist_free (void);
+ItemList * itemlist_create (void);
 
 /**
  * Returns the currently displayed node.
@@ -170,5 +201,14 @@ void itemlist_toggle_flag(itemPtr item);
  * @param item		the item
  */
 void itemlist_toggle_read_status(itemPtr item);
+
+/**
+ * Adding a loader for item batch loading (e.g. searches)
+ *
+ * @param loader	the loader to add to default item list view
+ */
+void itemlist_add_loader (ItemLoader *loader); 
+
+G_END_DECLS
 
 #endif

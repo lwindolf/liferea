@@ -1,7 +1,7 @@
 /**
  * @file itemlist.c  itemlist handling
  *
- * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,13 +43,25 @@
 #include "ui/liferea_htmlview.h"
 #include "ui/ui_node.h"
 
-/* This is a simple controller implementation for itemlist handling. 
-   It manages the currently displayed itemset, realizes filtering,
-   duplicate elimination and provides synchronisation for backend 
-   and GUI access to this itemset.  
+/* This is a simple controller implementation for item list handling. 
+   It manages the currently displayed 'item set', realizes filtering
+   by rules and nodes, also duplicate elimination and provides 
+   synchronisation for backend and GUI access to the current itemset.
+
+   The 'item list' provides methods to add/remove items from the 'item
+   view' synchronously and allows registering 'item loaders' for
+   asynchronous adding of item batches.
+
+   The 'item list' does not handle item list rendering variants, which
+   is done by the 'item view'.
  */
- 
-static struct itemlist_priv 
+
+static void itemlist_class_init	(ItemListClass *klass);
+static void itemlist_init	(ItemList *fl);
+
+#define ITEMLIST_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEMLIST_TYPE, ItemListPrivate))
+
+struct ItemListPrivate
 {
 	GHashTable	*guids;			/**< list of GUID to avoid having duplicates in currently loaded list */
 	itemSetPtr	filter;			/**< currently active filter rules */
@@ -65,16 +77,56 @@ static struct itemlist_priv
 	
 	gboolean	isSearchResult;		/**< TRUE if a search result is displayed */
 	gboolean	searchResultComplete;	/**< TRUE if search result merging is complete */
-} itemlist_priv;
+};
+
+static GObjectClass *parent_class = NULL;
+static ItemList *itemlist = NULL;
+
+GType
+itemlist_get_type (void) 
+{
+	static GType type = 0;
+
+	if (G_UNLIKELY (type == 0)) 
+	{
+		static const GTypeInfo our_info = 
+		{
+			sizeof (ItemListClass),
+			NULL, /* base_init */
+			NULL, /* base_finalize */
+			(GClassInitFunc) itemlist_class_init,
+			NULL,
+			NULL, /* class_data */
+			sizeof (ItemList),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) itemlist_init
+		};
+
+		type = g_type_register_static (G_TYPE_OBJECT,
+					       "ItemList",
+					       &our_info, 0);
+	}
+
+	return type;
+}
+
+static void
+itemlist_init (ItemList *il)
+{
+	/* 1. Prepare globally accessible singleton */
+	g_assert (NULL == itemlist);
+	itemlist = il;
+	itemlist->priv = ITEMLIST_GET_PRIVATE (il);
+}
 
 static void
 itemlist_duplicate_list_remove_item (itemPtr item)
 {
 	if (!item->validGuid)
 		return;
-	if (!itemlist_priv.guids)
+	if (!itemlist->priv->guids)
 		return;
-	g_hash_table_remove (itemlist_priv.guids, item->sourceId);
+	g_hash_table_remove (itemlist->priv->guids, item->sourceId);
 }
 
 static void
@@ -82,58 +134,74 @@ itemlist_duplicate_list_add_item (itemPtr item)
 {
 	if (!item->validGuid)
 		return;
-	if (!itemlist_priv.guids)
-		itemlist_priv.guids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-	g_hash_table_insert (itemlist_priv.guids, g_strdup (item->sourceId), GUINT_TO_POINTER (item->id));
+	if (!itemlist->priv->guids)
+		itemlist->priv->guids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+	g_hash_table_insert (itemlist->priv->guids, g_strdup (item->sourceId), GUINT_TO_POINTER (item->id));
 }
 
 static gboolean
 itemlist_duplicate_list_check_item (itemPtr item)
 {
-	if (!itemlist_priv.guids || !item->validGuid)
+	if (!itemlist->priv->guids || !item->validGuid)
 		return TRUE;
 
-	return (NULL == g_hash_table_lookup (itemlist_priv.guids, item->sourceId));
+	return (NULL == g_hash_table_lookup (itemlist->priv->guids, item->sourceId));
 }
 
 static void
 itemlist_duplicate_list_free (void)
 {
-	if (itemlist_priv.guids) {
-		g_hash_table_destroy (itemlist_priv.guids);
-		itemlist_priv.guids = NULL;
+	if (itemlist->priv->guids) {
+		g_hash_table_destroy (itemlist->priv->guids);
+		itemlist->priv->guids = NULL;
 	}
 }
 
-void
-itemlist_free (void)
+static void
+itemlist_finalize (GObject *object)
 {
-	itemset_free (itemlist_priv.filter);
+	itemset_free (itemlist->priv->filter);
 	itemlist_duplicate_list_free ();
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
+
+static void
+itemlist_class_init (ItemListClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
+
+	object_class->finalize = itemlist_finalize;
+
+	g_type_class_add_private (object_class, sizeof(ItemListPrivate));
+}
+
+/* member wrappers */
 
 itemPtr
 itemlist_get_selected (void)
 {
-	return item_load(itemlist_priv.selectedId);
+	return item_load(itemlist->priv->selectedId);
 }
 
 gulong
 itemlist_get_selected_id (void)
 {
-	return itemlist_priv.selectedId;
+	return itemlist->priv->selectedId;
 }
 
 static void
 itemlist_set_selected (itemPtr item)
 {
-	itemlist_priv.selectedId = item?item->id:0;
+	itemlist->priv->selectedId = item?item->id:0;
 }
 
 nodePtr
 itemlist_get_displayed_node (void)
 {
-	return itemlist_priv.currentNode; 
+	return itemlist->priv->currentNode; 
 }
 
 /* called when unselecting the item or unloading the item list */
@@ -142,21 +210,21 @@ itemlist_check_for_deferred_action (void)
 {
 	itemPtr	item;
 	
-	if(itemlist_priv.selectedId) {
-		gulong id = itemlist_priv.selectedId;
+	if(itemlist->priv->selectedId) {
+		gulong id = itemlist->priv->selectedId;
 		itemlist_set_selected(NULL);
 
 		/* check for removals caused by itemlist filter rule */
-		if(itemlist_priv.deferredFilter) {
-			itemlist_priv.deferredFilter = FALSE;
+		if(itemlist->priv->deferredFilter) {
+			itemlist->priv->deferredFilter = FALSE;
 			item = item_load(id);
 			itemview_remove_item(item);
 			ui_node_update(item->nodeId);
 		}
 
 		/* check for removals caused by vfolder rules */
-		if(itemlist_priv.deferredRemove) {
-			itemlist_priv.deferredRemove = FALSE;
+		if(itemlist->priv->deferredRemove) {
+			itemlist->priv->deferredRemove = FALSE;
 			item = item_load(id);
 			itemlist_remove_item(item);
 		}
@@ -168,14 +236,14 @@ static gboolean
 itemlist_filter_check_item (itemPtr item)
 {
 	/* use search folder rule list in case of a search folder */
-	if (itemlist_priv.currentNode && IS_VFOLDER (itemlist_priv.currentNode)) {
-		vfolderPtr vfolder = (vfolderPtr)itemlist_priv.currentNode->data;
+	if (itemlist->priv->currentNode && IS_VFOLDER (itemlist->priv->currentNode)) {
+		vfolderPtr vfolder = (vfolderPtr)itemlist->priv->currentNode->data;
 		return itemset_check_item (vfolder->itemset, item);
 	}
 
 	/* apply the item list filter if available */
-	if (itemlist_priv.filter)
-		return itemset_check_item (itemlist_priv.filter, item);
+	if (itemlist->priv->filter)
+		return itemset_check_item (itemlist->priv->filter, item);
 	
 	/* otherwise keep the item */
 	return TRUE;
@@ -194,6 +262,41 @@ itemlist_merge_item (itemPtr item)
 	itemview_add_item (item);
 }
 
+static gboolean
+itemlist_itemset_is_valid (itemSetPtr itemSet)
+{
+	gint	folder_display_mode;
+
+	/* No node check when loading search results directly */
+	if (!itemlist->priv->isSearchResult) {
+		nodePtr node = node_from_id (itemSet->nodeId);
+
+		if (!itemlist->priv->currentNode)
+			return FALSE; /* Nothing to do if nothing is displayed */
+		
+		if (!IS_VFOLDER (itemlist->priv->currentNode) &&
+		    (itemlist->priv->currentNode != node) && 
+		    !node_is_ancestor (itemlist->priv->currentNode, node))
+			return FALSE; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
+
+		conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
+		if (IS_FOLDER (itemlist->priv->currentNode) && !folder_display_mode)
+			return FALSE; /* Bail out if it is a folder without the recursive display preference set */
+			
+		debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
+	} else {
+		/* If we are loading a search result we must never merge 
+		   anything besides the search items. In fact if we already
+		   have items we just return. */
+		if (itemlist->priv->searchResultComplete)
+			return FALSE;
+			
+		itemlist->priv->searchResultComplete = TRUE;
+	}
+
+	return TRUE;
+}
+
 /**
  * To be called whenever an itemset was updated. If it is the
  * displayed itemset it will be merged against the item list
@@ -202,45 +305,14 @@ itemlist_merge_item (itemPtr item)
 void
 itemlist_merge_itemset (itemSetPtr itemSet) 
 {
-	gint	folder_display_mode;
-
 	debug_enter ("itemlist_merge_itemset");
 	
-	debug_start_measurement (DEBUG_GUI);
-	
-	/* No node check when loading search results directly */
-	if (!itemlist_priv.isSearchResult) {
-		nodePtr node = node_from_id (itemSet->nodeId);
-
-		if (!itemlist_priv.currentNode)
-			return; /* Nothing to do if nothing is displayed */
-		
-		if (!IS_VFOLDER (itemlist_priv.currentNode) &&
-		    (itemlist_priv.currentNode != node) && 
-		    !node_is_ancestor (itemlist_priv.currentNode, node))
-			return; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
-
-		conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
-		if (IS_FOLDER (itemlist_priv.currentNode) && !folder_display_mode)
-			return; /* Bail out if it is a folder without the recursive display preference set */
-			
-		debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
-	} else {
-		/* If we are loading a search result we must never merge 
-		   anything besides the search items. In fact if we already
-		   have items we just return. */
-		if (itemlist_priv.searchResultComplete)
-			return;
-			
-		itemlist_priv.searchResultComplete = TRUE;
+	if (itemlist_itemset_is_valid (itemSet)) {
+		debug_start_measurement (DEBUG_GUI);
+		itemset_foreach (itemSet, itemlist_merge_item);
+		itemview_update ();
+		debug_end_measurement (DEBUG_GUI, "itemlist merge");
 	}
-
-	/* merge items into item view */
-	itemset_foreach (itemSet, itemlist_merge_item);
-	
-	itemview_update ();
-	
-	debug_end_measurement (DEBUG_GUI, "itemlist merge");
 
 	debug_exit ("itemlist_merge_itemset");
 }
@@ -250,8 +322,8 @@ itemlist_add_search_result (itemSetPtr itemSet)
 {
 	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 	
-	itemlist_priv.isSearchResult = TRUE;
-	itemlist_priv.searchResultComplete = FALSE;	/* enable result merging */
+	itemlist->priv->isSearchResult = TRUE;
+	itemlist->priv->searchResultComplete = FALSE;	/* enable result merging */
 	itemlist_merge_itemset (itemSet);	
 }
 
@@ -272,10 +344,10 @@ itemlist_load (nodePtr node)
 	
 	debug1 (DEBUG_GUI, "loading item list with node \"%s\"", node_get_title (node));
 
-	g_assert (!itemlist_priv.guids);
-	g_assert (!itemlist_priv.filter);
-	itemlist_priv.isSearchResult = FALSE;
-	itemlist_priv.searchResultComplete = TRUE;
+	g_assert (!itemlist->priv->guids);
+	g_assert (!itemlist->priv->filter);
+	itemlist->priv->isSearchResult = FALSE;
+	itemlist->priv->searchResultComplete = TRUE;
 
 	/* 1. Filter check. Don't continue if folder is selected and 
 	   no folder viewing is configured. If folder viewing is enabled
@@ -291,33 +363,33 @@ itemlist_load (nodePtr node)
 	
 		conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &folder_display_hide_read);
 		if (folder_display_hide_read) {
-			itemlist_priv.filter = g_new0(struct itemSet, 1);
-			itemlist_priv.filter->anyMatch = TRUE;
-			itemset_add_rule (itemlist_priv.filter, "unread", "", TRUE);
+			itemlist->priv->filter = g_new0(struct itemSet, 1);
+			itemlist->priv->filter->anyMatch = TRUE;
+			itemset_add_rule (itemlist->priv->filter, "unread", "", TRUE);
 		}
 	} else {
 		liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
 	}
 
-	itemlist_priv.loading++;
-	itemlist_priv.viewMode = node_get_view_mode (node);
-	itemview_set_layout (itemlist_priv.viewMode);
+	itemlist->priv->loading++;
+	itemlist->priv->viewMode = node_get_view_mode (node);
+	itemview_set_layout (itemlist->priv->viewMode);
 
 	/* Set the new displayed node... */
-	itemlist_priv.currentNode = node;
-	itemview_set_displayed_node (itemlist_priv.currentNode);
+	itemlist->priv->currentNode = node;
+	itemview_set_displayed_node (itemlist->priv->currentNode);
 
 	if (NODE_VIEW_MODE_COMBINED != node_get_view_mode (node))
 		itemview_set_mode (ITEMVIEW_NODE_INFO);
 	else
 		itemview_set_mode (ITEMVIEW_ALL_ITEMS);
 	
-	itemSet = node_get_itemset (itemlist_priv.currentNode);
+	itemSet = node_get_itemset (itemlist->priv->currentNode);
 	itemlist_merge_itemset (itemSet);
 	if (!IS_VFOLDER (node))			/* FIXME: this is ugly! */
 		itemset_free (itemSet);
 
-	itemlist_priv.loading--;
+	itemlist->priv->loading--;
 
 	debug_exit("itemlist_load");
 }
@@ -328,24 +400,24 @@ itemlist_unload (gboolean markRead)
 	/* Always clear to ensure clearing on search */
 	itemview_clear ();
 
-	if (itemlist_priv.currentNode) {
+	if (itemlist->priv->currentNode) {
 		itemview_set_displayed_node (NULL);
 		
 		/* 1. Postprocessing for previously selected node, this is necessary
 		   to realize reliable read marking when using condensed mode. It's
 		   important to do this only when the selection really changed. */
-		if (markRead && (2 == node_get_view_mode (itemlist_priv.currentNode)))
-			feedlist_mark_all_read (itemlist_priv.currentNode);
+		if (markRead && (2 == node_get_view_mode (itemlist->priv->currentNode)))
+			feedlist_mark_all_read (itemlist->priv->currentNode);
 
 		itemlist_check_for_deferred_action ();
 	}
 
 	itemlist_set_selected (NULL);
 	itemlist_duplicate_list_free ();
-	itemlist_priv.currentNode = NULL;
+	itemlist->priv->currentNode = NULL;
 	
-	itemset_free (itemlist_priv.filter);
-	itemlist_priv.filter = NULL;
+	itemset_free (itemlist->priv->filter);
+	itemlist->priv->filter = NULL;
 }
 
 void
@@ -356,16 +428,16 @@ itemlist_select_next_unread (void)
 	/* If we are in combined mode we have to mark everything
 	   read or else we would never jump to the next feed,
 	   because no item will be selected and marked read... */
-	if (itemlist_priv.currentNode) {
-		if (NODE_VIEW_MODE_COMBINED == node_get_view_mode (itemlist_priv.currentNode))
-			node_mark_all_read (itemlist_priv.currentNode);
+	if (itemlist->priv->currentNode) {
+		if (NODE_VIEW_MODE_COMBINED == node_get_view_mode (itemlist->priv->currentNode))
+			node_mark_all_read (itemlist->priv->currentNode);
 	}
 
-	itemlist_priv.loading++;	/* prevent unwanted selections */
+	itemlist->priv->loading++;	/* prevent unwanted selections */
 
 	/* before scanning the feed list, we test if there is a unread 
 	   item in the currently selected feed! */
-	result = itemview_find_unread_item (itemlist_priv.selectedId);
+	result = itemview_find_unread_item (itemlist->priv->selectedId);
 	
 	/* If none is found we continue searching in the feed list */
 	if (!result) {
@@ -385,7 +457,7 @@ itemlist_select_next_unread (void)
 		}
 	}
 
-	itemlist_priv.loading--;
+	itemlist->priv->loading--;
 	
 	if (result)
 		itemview_select_item (result);
@@ -413,11 +485,11 @@ itemlist_hide_item (itemPtr item)
 {
 	/* if the currently selected item should be removed we
 	   don't do it and set a flag to do it when unselecting */
-	if (itemlist_priv.selectedId != item->id) {
+	if (itemlist->priv->selectedId != item->id) {
 		itemview_remove_item (item);
 		ui_node_update (item->nodeId);
 	} else {
-		itemlist_priv.deferredFilter = TRUE;
+		itemlist->priv->deferredFilter = TRUE;
 		/* update the item to show new state that forces
 		   later removal */
 		itemview_update_item (item);
@@ -428,7 +500,7 @@ itemlist_hide_item (itemPtr item)
 static void
 itemlist_unhide_item (itemPtr item)
 {
-	itemlist_priv.deferredFilter = FALSE;
+	itemlist->priv->deferredFilter = FALSE;
 }
 
 /* functions to remove items on remove requests */
@@ -440,10 +512,10 @@ itemlist_remove_item (itemPtr item)
 	/* update search folder counters */
 	vfolder_foreach_data (vfolder_remove_item, item);
 	
-	if (itemlist_priv.selectedId == item->id) {
+	if (itemlist->priv->selectedId == item->id) {
 		itemlist_set_selected (NULL);
-		itemlist_priv.deferredFilter = FALSE;
-		itemlist_priv.deferredRemove = FALSE;
+		itemlist->priv->deferredFilter = FALSE;
+		itemlist->priv->deferredRemove = FALSE;
 	}
 
 	itemlist_duplicate_list_remove_item (item);
@@ -465,10 +537,10 @@ itemlist_request_remove_item (itemPtr item)
 {	
 	/* if the currently selected item should be removed we
 	   don't do it and set a flag to do it when unselecting */
-	if (itemlist_priv.selectedId != item->id) {
+	if (itemlist->priv->selectedId != item->id) {
 		itemlist_remove_item (item);
 	} else {
-		itemlist_priv.deferredRemove = TRUE;
+		itemlist->priv->deferredRemove = TRUE;
 		/* update the item to show new state that forces
 		   later removal */
 		itemview_update_item (item);
@@ -485,7 +557,7 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 
 		vfolder_foreach_data (vfolder_remove_item, item);
 
-		if (itemlist_priv.selectedId != item->id) {
+		if (itemlist->priv->selectedId != item->id) {
 			/* don't call itemlist_remove_item() here, because it's to slow */
 			itemview_remove_item (item);
 			db_item_remove (item->id);
@@ -507,7 +579,7 @@ itemlist_remove_all_items (nodePtr node)
 	GList		*iter;
 	itemSetPtr	itemset;
 	
-	if (node == itemlist_priv.currentNode)
+	if (node == itemlist->priv->currentNode)
 		itemview_clear ();
 
 	itemset = db_itemset_load (node->id);
@@ -522,7 +594,7 @@ itemlist_remove_all_items (nodePtr node)
 		
 	db_itemset_remove_all (node->id);
 	
-	if (node == itemlist_priv.currentNode) {
+	if (node == itemlist->priv->currentNode) {
 		itemview_update ();
 		itemlist_duplicate_list_free ();
 	}
@@ -558,7 +630,7 @@ itemlist_selection_changed (itemPtr item)
 	debug_enter ("itemlist_selection_changed");
 	debug_start_measurement (DEBUG_GUI);
 
-	if (0 == itemlist_priv.loading)	{
+	if (0 == itemlist->priv->loading)	{
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action ();
@@ -604,7 +676,7 @@ itemlist_selection_changed (itemPtr item)
 guint
 itemlist_get_view_mode (void)
 {
-	return itemlist_priv.viewMode; 
+	return itemlist->priv->viewMode; 
 }
 
 void
@@ -613,7 +685,7 @@ itemlist_set_view_mode (guint newMode)
 	nodePtr		node;
 	itemPtr		item;
 
-	itemlist_priv.viewMode = newMode;
+	itemlist->priv->viewMode = newMode;
 
 	node = itemlist_get_displayed_node ();
 	item = itemlist_get_selected ();
@@ -621,14 +693,14 @@ itemlist_set_view_mode (guint newMode)
 	if (node) {
 		itemlist_unload (FALSE);
 
-		node_set_view_mode (node, itemlist_priv.viewMode);
-		itemview_set_layout (itemlist_priv.viewMode);
+		node_set_view_mode (node, itemlist->priv->viewMode);
+		itemview_set_layout (itemlist->priv->viewMode);
 		itemlist_load (node);
 
 		/* If there was an item selected, select it again since
 		 * itemlist_unload() unselects it.
 		 */
-		if (item && itemlist_priv.viewMode != NODE_VIEW_MODE_COMBINED)
+		if (item && itemlist->priv->viewMode != NODE_VIEW_MODE_COMBINED)
 			itemview_select_item (item);
 	}
 
@@ -641,5 +713,42 @@ on_view_activate (GtkRadioAction *action, GtkRadioAction *current, gpointer user
 {
 	gint val = gtk_radio_action_get_current_value (current);
 	itemlist_set_view_mode (val);
+}
+
+/* item loader methods */
+
+static void
+itemlist_item_batch_fetched_cb (ItemLoader *il, GSList *items, gpointer user_data)
+{
+	GSList		*iter;
+
+// FIXME:	if (!itemlist_itemset_is_valid (
+
+	iter = items;
+	while (iter) {
+		itemPtr item = (itemPtr)iter->data;
+
+		itemlist_merge_item (item);
+		item_unload (item);
+
+		iter= g_slist_next (iter);
+	}
+
+	itemview_update();
+	g_slist_free (items);
+}
+
+void
+itemlist_add_loader (ItemLoader *loader)
+{
+	g_signal_connect (G_OBJECT (loader), "item-batch-fetched", G_CALLBACK (itemlist_item_batch_fetched_cb), NULL);
+
+	item_loader_start (loader);
+}
+
+ItemList *
+itemlist_create (void)
+{
+	return ITEMLIST (g_object_new (ITEMLIST_TYPE, NULL));
 }
 

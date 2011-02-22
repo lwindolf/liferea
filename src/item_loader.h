@@ -1,5 +1,5 @@
 /**
- * @file item_loader.h   Interface for specific item loaders
+ * @file item_loader.h   Interface for asynchronous item loading
  *
  * Copyright (C) 2011 Lars Lindner <lars.lindner@gmail.com>
  *

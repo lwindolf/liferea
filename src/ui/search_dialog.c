@@ -56,7 +56,7 @@ search_load_results (nodePtr searchResult)
 		itemview_set_layout (NODE_VIEW_MODE_NORMAL);
 		
 	/* Setup async loading */
-	itemview_add_loader (vfolder_loader_new (searchResult));
+	itemlist_add_loader (vfolder_loader_new (searchResult));
 }
 
 /* complex search dialog */
@@ -72,7 +72,6 @@ struct SearchDialogPrivate {
 	GtkWidget	*dialog;	/**< the dialog widget */
 	RuleEditor	*re;		/**< search folder rule editor widget set */
 
-	nodePtr		searchResult;	/**< FIXME: evil no nodePtr should be necessary here! */
 	vfolderPtr	vfolder;	/**< temporary search folder representing the search result */
 };
 
@@ -112,8 +111,8 @@ search_dialog_finalize (GObject *object)
 	SearchDialog *sd = SEARCH_DIALOG (object);
 	
 	gtk_widget_destroy (sd->priv->dialog);
-	if (sd->priv->searchResult)
-		node_free (sd->priv->searchResult);
+	if (sd->priv->vfolder)
+		node_free (sd->priv->vfolder->node);
 	search = NULL;
 	
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -135,30 +134,29 @@ static void
 search_dialog_init (SearchDialog *sd)
 {
 	sd->priv = SEARCH_DIALOG_GET_PRIVATE (sd);
-	sd->priv->searchResult = node_new (vfolder_get_node_type ());
-	sd->priv->vfolder = vfolder_new (sd->priv->searchResult);
-	node_set_title (sd->priv->searchResult, "Saved Search");
+	sd->priv->vfolder = vfolder_new (node_new (vfolder_get_node_type ()));
+	node_set_title (sd->priv->vfolder->node, "Saved Search");
 }
 
 static void
 on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_data)
 {
 	SearchDialog	*sd = (SearchDialog *)user_data;
+	vfolderPtr	vfolder = sd->priv->vfolder;
 	
 	if (1 == responseId) { /* Search */
-		rule_editor_save (sd->priv->re, sd->priv->vfolder);
-		sd->priv->vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
+		rule_editor_save (sd->priv->re, vfolder);
+		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
 		
-		vfolder_reset (sd->priv->vfolder);
-		search_load_results (sd->priv->searchResult);
+		vfolder_reset (vfolder);
+		search_load_results (vfolder->node);
 	}
 	
 	if (2 == responseId) { /* + Search Folder */
-		rule_editor_save (sd->priv->re, sd->priv->vfolder);
-		sd->priv->vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
+		rule_editor_save (sd->priv->re, vfolder);
+		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
 		
-		nodePtr node = sd->priv->searchResult;
-		sd->priv->searchResult = NULL;
+		nodePtr node = vfolder->node;
 		sd->priv->vfolder = NULL;
 		feedlist_node_added (node);
 	}
@@ -223,7 +221,6 @@ struct SimpleSearchDialogPrivate {
 	GtkWidget	*dialog;	/**< the dialog widget */
 	GtkWidget	*query;		/**< entry widget for the search query */
 
-	nodePtr		searchResult;	/**< FIXME: evil no nodePtr should be necessary here! */
 	vfolderPtr	vfolder;	/**< temporary search folder representing the search result */
 };
 
@@ -264,8 +261,8 @@ simple_search_dialog_finalize (GObject *object)
 	
 	gtk_widget_destroy (ssd->priv->dialog);
 	
-	if (ssd->priv->searchResult)
-		node_free (ssd->priv->searchResult);
+	if (ssd->priv->vfolder)
+		node_free (ssd->priv->vfolder->node);
 		
 	simpleSearch = NULL;
 	
@@ -295,27 +292,26 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 {
 	SimpleSearchDialog	*ssd = (SimpleSearchDialog *)user_data;
 	const gchar		*searchString;
+	vfolderPtr		vfolder = ssd->priv->vfolder;
 
 	searchString = 	gtk_entry_get_text (GTK_ENTRY (ssd->priv->query));
 	
 	if (1 == responseId) {	/* Search */
 		/* Clean up old search result data and display... */
-		if (ssd->priv->searchResult) {
-			if (ssd->priv->searchResult == itemlist_get_displayed_node ())
+		if (vfolder) {
+			if (vfolder->node == itemlist_get_displayed_node ())
 				itemlist_unload (FALSE);
 			
-			node_free (ssd->priv->searchResult);
+			node_free (vfolder->node);
 		}
 		
 		/* Create new search... */
-		ssd->priv->searchResult = node_new (vfolder_get_node_type ());
-		ssd->priv->vfolder = vfolder_new (ssd->priv->searchResult);
-	
-		node_set_title (ssd->priv->searchResult, searchString);
-		itemset_add_rule (ssd->priv->vfolder->itemset, "exact", searchString, TRUE);
-		vfolder_reset (ssd->priv->vfolder);
+		ssd->priv->vfolder = vfolder = vfolder_new (node_new (vfolder_get_node_type ()));
+		node_set_title (vfolder->node, searchString);
+		itemset_add_rule (vfolder->itemset, "exact", searchString, TRUE);
+		vfolder_reset (vfolder);
 
-		search_load_results (ssd->priv->searchResult);
+		search_load_results (vfolder->node);
 	}
 	
 	if (2 == responseId)	/* Advanced... */			

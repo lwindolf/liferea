@@ -114,6 +114,13 @@ GSList * vfolder_get_all_with_item_id (gulong id);
  */
 void vfolder_reset (vfolderPtr vfolder);
 
+/**
+ * Rebuilds a search folder by scanning all existing items.
+ *
+ * @param vfolder	search folder to rebuild
+ */
+void vfolder_rebuild (nodePtr node);
+
 /* implementation of the node type interface */
 
 #define IS_VFOLDER(node) (node->type == vfolder_get_node_type ())

@@ -1,5 +1,5 @@
 /**
- * @file item_loader.c   Class for loading items
+ * @file item_loader.c   Asynchronously loading items
  *
  * Copyright (C) 2011 Lars Lindner <lars.lindner@gmail.com>
  *

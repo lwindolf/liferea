@@ -217,6 +217,12 @@ ui_popup_add_vfolder (void)
 }
 
 static void
+ui_popup_rebuild_vfolder (gpointer callback_data)
+{
+	vfolder_rebuild ((nodePtr)callback_data);
+}
+
+static void
 ui_popup_add_source (void)
 {
 	node_type_request_interactive_add (node_source_get_node_type ());
@@ -307,6 +313,11 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 			gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
 			ui_popup_add_menuitem (menu, _("Sort Feeds"), ui_popup_sort_feeds, node, GTK_STOCK_SORT_ASCENDING, 0);
 		}
+	}
+
+	if (IS_VFOLDER (node)) {
+		gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+		ui_popup_add_menuitem (menu, _("_Rebuild"), ui_popup_rebuild_vfolder, node, NULL, 0);
 	}
 
 	if (validSelection) {

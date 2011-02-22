@@ -28,6 +28,7 @@
 #include "itemlist.h"
 #include "node.h"
 #include "rule.h"
+#include "vfolder_loader.h"
 #include "ui/icons.h"
 #include "ui/ui_node.h"
 #include "ui/search_folder_dialog.h"
@@ -244,9 +245,20 @@ vfolder_export (nodePtr node,
 void
 vfolder_reset (vfolderPtr vfolder)
 {
-	/*g_list_free (vfolder->itemset->ids);
+	// FIXME: item list propagation?
+
+	g_list_free (vfolder->itemset->ids);
 	vfolder->itemset->ids = NULL;
-	db_search_folder_reset (vfolder->node->id);*/
+	db_search_folder_reset (vfolder->node->id);
+}
+
+void
+vfolder_rebuild (nodePtr node)
+{
+	vfolderPtr	vfolder = (vfolderPtr)node->data;
+
+	vfolder_reset (vfolder);
+	itemlist_add_loader (vfolder_loader_new (node));
 }
 
 static void

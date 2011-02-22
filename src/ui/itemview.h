@@ -26,7 +26,6 @@
 #include <gtk/gtk.h>
 
 #include "item.h"
-#include "item_loader.h"
 #include "itemset.h"
 #include "node.h"
 #include "ui/enclosure_list_view.h"
@@ -223,13 +222,6 @@ void itemview_launch_URL (const gchar *url, gboolean internal);
  * @param in	TRUE if zooming in, FALSE for zooming out
  */
 void itemview_do_zoom (gboolean in);
-
-/**
- * Adding a loader for item batch loading (e.g. searches)
- *
- * @param loader	the loader to add to default item list view
- */
-void itemview_add_loader (ItemLoader *loader); 
 
 G_END_DECLS
 

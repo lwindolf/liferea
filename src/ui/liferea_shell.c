@@ -73,7 +73,8 @@ struct LifereaShellPrivate {
 	GtkActionGroup	*feedActions;		/**< update and mark read */
 	GtkActionGroup	*readWriteActions;	/**< node remove and properties, node itemset items remove */
 	GtkActionGroup	*itemActions;		/**< item state toggline, single item remove */
-	
+
+	ItemList	*itemlist;	
 	FeedList	*feedlist;
 	ItemView	*itemview;
 	BrowserTabs	*tabs;
@@ -1075,6 +1076,8 @@ liferea_shell_create (int initialState)
 	/* 2.) menu creation */
 	
 	debug0 (DEBUG_GUI, "Setting up menues");
+
+	shell->priv->itemlist = itemlist_create ();
 
 	/* Prepare some toggle button states */	
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);

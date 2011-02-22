@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea main program
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *  
  * Some code like the command line handling was inspired by 
@@ -42,7 +42,6 @@
 #include "dbus.h"
 #include "debug.h"
 #include "feedlist.h"
-#include "itemlist.h"
 #include "social.h"
 #include "update.h"
 #include "xml.h"
@@ -97,19 +96,21 @@ message_received_cb (UniqueApp         *app,
 	return res;
 }
 
-static void G_GNUC_NORETURN fatal_signal_handler(int sig) {
+static void G_GNUC_NORETURN
+fatal_signal_handler (int sig)
+{
 	sigset_t sigset;
 
-	sigemptyset(&sigset);
-	sigprocmask(SIG_SETMASK, &sigset, NULL);
+	sigemptyset (&sigset);
+	sigprocmask (SIG_SETMASK, &sigset, NULL);
 
-	g_print("\nLiferea did receive signal %d (%s).\n", sig, g_strsignal(sig));
+	g_print ("\nLiferea did receive signal %d (%s).\n", sig, g_strsignal (sig));
 
-	g_print("You have probably triggered a program bug. I will now try to \n");
-	g_print("create a backtrace which you can attach to any support requests.\n\n");
-	g_on_error_stack_trace(PACKAGE);
+	g_print ("You have probably triggered a program bug. I will now try to \n");
+	g_print ("create a backtrace which you can attach to any support requests.\n\n");
+	g_on_error_stack_trace (PACKAGE);
 
-	_exit(1);
+	_exit (1);
 }
 
 static void
@@ -365,7 +366,6 @@ on_shutdown (gpointer user_data)
 	runState = STATE_SHUTDOWN;
 
 	/* order is important ! */
-	itemlist_free ();
 	update_deinit ();
 	db_deinit ();
 	social_free ();
