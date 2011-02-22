@@ -1266,7 +1266,7 @@ db_search_folder_reset (const gchar *id)
 
 	debug1 (DEBUG_DB, "resetting search folder node \"%s\"", id);
 	
-	sql = sqlite3_mprintf ("DELETE FROM search_folder_items WHERE node_id = %s;", id);
+	sql = sqlite3_mprintf ("DELETE FROM search_folder_items WHERE node_id = '%s';", id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res)
 		g_warning ("resetting search folder failed (%s) SQL: %s", err, sql);
