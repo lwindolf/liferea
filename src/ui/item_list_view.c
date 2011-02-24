@@ -943,22 +943,3 @@ itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_da
 	if (changed)
 		feedlist_schedule_save ();
 }
-
-/* needed because switching does sometimes returns to the tree 
-   view with a very disturbing horizontal scrolling state */
-void
-item_list_view_scroll_left (ItemListView *ilv)
-{
-	GtkTreeViewColumn 	*column;
-	GtkTreePath		*path;
-
-	if (2 != itemlist_get_view_mode ()) {
-		gtk_tree_view_get_cursor (ilv->priv->treeview, &path, &column);
-		if (path) {
-			column = gtk_tree_view_get_column (ilv->priv->treeview, 1);
-			gtk_tree_view_set_cursor (ilv->priv->treeview, path, column, FALSE);
-			gtk_tree_path_free (path);
-		}
-	}
-}
-

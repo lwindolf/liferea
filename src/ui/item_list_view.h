@@ -154,14 +154,6 @@ void item_list_view_clear (ItemListView *ilv);
  */
 void item_list_view_update (ItemListView *ilv, gboolean hasEnclosures);
 
-/**
- * When switching tabs, the horizontal scrolling sometimes gets messed
- * up. This reverses that.
- *
- * @param ilv	the ItemListView
- */
-void item_list_view_scroll_left (ItemListView *ilv);
-
 /* item list callbacks */
 
 /**

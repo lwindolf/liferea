@@ -142,16 +142,6 @@ on_tab_url_entry_activate (GtkWidget *widget, gpointer user_data)
 }
 
 static void
-on_tab_switched (GtkNotebook *notebook, GtkWidget *page, guint page_num, gpointer user_data)
-{
-	/* needed because switching does sometimes returns to the tree 
-	   view with a very disturbing horizontal scrolling state */
-	if (0 == page_num)
-		g_warning ("FIXME: on_tab_switched");
-		//item_list_view_scroll_left (FIXME);
-}
-
-static void
 on_tab_history_back (GtkWidget *widget, gpointer user_data)
 {
 	tabInfo		*tab = (tabInfo *)user_data;
@@ -288,7 +278,6 @@ browser_tabs_create (GtkNotebook *notebook)
 	tabs->priv->notebook = notebook;
 	
 	gtk_notebook_set_show_tabs (tabs->priv->notebook, FALSE);
-	g_signal_connect ((gpointer)tabs->priv->notebook, "switch-page", G_CALLBACK (on_tab_switched), NULL);
 	
 	return tabs;
 }
