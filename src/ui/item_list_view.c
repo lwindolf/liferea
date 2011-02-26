@@ -430,6 +430,59 @@ on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpoint
 	return FALSE;
 }
 
+/* Show tooltip when headline's column text (IS_LABEL) is truncated. */
+
+static gint get_cell_renderer_width (GtkWidget *widget, GtkCellRenderer *cell, const gchar *text, gint weight)
+{
+	PangoLayout *layout = gtk_widget_create_pango_layout (widget, text);
+	PangoAttrList *attrbs = pango_attr_list_new();
+	pango_attr_list_insert (attrbs, pango_attr_weight_new (weight));
+	pango_layout_set_attributes (layout, attrbs);
+	pango_attr_list_unref (attrbs);
+	PangoRectangle rect;
+	pango_layout_get_pixel_extents (layout, NULL, &rect);
+	g_object_unref (G_OBJECT (layout));
+	return (cell->xpad * 2) + rect.x + rect.width;
+}
+
+static gboolean
+on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean keyboard_mode, GtkTooltip *tooltip, GtkTreeViewColumn *headline_column) 
+{
+	GtkTreeView *view = GTK_TREE_VIEW (widget);
+	GtkTreeModel *model; GtkTreePath *path; GtkTreeIter iter;
+	gboolean ret = FALSE;
+
+	if (gtk_tree_view_get_tooltip_context (view, &x, &y, keyboard_mode, &model, &path, &iter)) {
+		GtkTreeViewColumn *column;
+		gint bx, by;
+		gtk_tree_view_convert_widget_to_bin_window_coords (view, x, y, &bx, &by);
+		gtk_tree_view_get_path_at_pos (view, x, y, NULL, &column, NULL, NULL);
+
+		if (column == headline_column) {
+			GtkCellRenderer *cell;
+			GList *renderers = gtk_cell_layout_get_cells (GTK_CELL_LAYOUT (column));
+			cell = GTK_CELL_RENDERER (renderers->data);
+			g_list_free (renderers);
+
+			gchar *text;
+			gint weight;
+			gtk_tree_model_get (model, &iter, IS_LABEL, &text, ITEMSTORE_UNREAD, &weight, -1);
+
+			gint full_width = get_cell_renderer_width (widget, cell, text, weight);
+			gint column_width = gtk_tree_view_column_get_width (column);
+			if (full_width > column_width) {
+				gtk_tooltip_set_text (tooltip, text);
+				ret = TRUE;
+			}
+			g_free (text);
+		}
+
+		gtk_tree_view_set_tooltip_row (view, tooltip, path);
+		gtk_tree_path_free (path);
+	}
+	return ret;
+}
+
 static gboolean
 on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
 {
@@ -504,7 +557,7 @@ item_list_view_create (GtkWidget *window)
 {
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
-	GtkTreeViewColumn 	*column;
+	GtkTreeViewColumn 	*column, *headline_column;
 	GtkTreeSelection	*select;
 	GtkWidget 		*ilscrolledwindow;
 
@@ -549,19 +602,21 @@ item_list_view_create (GtkWidget *window)
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	
 	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
+	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
 	                                                   "text", IS_LABEL,
 							   "weight", ITEMSTORE_UNREAD,
 							   "xalign", ITEMSTORE_ALIGN,
 							   NULL);
-	gtk_tree_view_append_column (ilv->priv->treeview, column);
-	gtk_tree_view_column_set_sort_column_id (column, IS_LABEL);
-	g_object_set (column, "resizable", TRUE, NULL);
+	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
+	gtk_tree_view_column_set_sort_column_id (headline_column, IS_LABEL);
+	g_object_set (headline_column, "resizable", TRUE, NULL);
 	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
 	/* And connect signals */	
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), NULL);
-	
+	gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->priv->treeview), TRUE);
+	g_signal_connect (G_OBJECT (ilv->priv->treeview), "query-tooltip", G_CALLBACK (on_item_list_view_query_tooltip), headline_column);
+
 	/* Setup the selection handler */
 	select = gtk_tree_view_get_selection (ilv->priv->treeview);
 	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);

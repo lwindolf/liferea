@@ -68,6 +68,7 @@ Mathie Leplatre						Option to filter feed list
 Mikel Olasagasti <mikel@olasagasti.info>		GeoRSS support
 Rupert Swarbrick <rswarbrick@users.sf.net>		OPML duplicate id fix
 Yaron Sheffer <yaronf@gmx.com>				Bidi support for LTR and RTL locales
+Ricardo Cruz <rmcruz@users.sf.net>			Many GUI improvements
 
 Maintainer Credits
 ==================

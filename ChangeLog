@@ -88,6 +88,8 @@
           (patch by Fred Morcos)
 	* SF #3177676: Cannot handle gzipped HTTP responses.
 	  (patch by hyperair)
+	* SF #3132354: Show tooltip when column to small to show text
+	  (patch by Ricardo Cruz)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Danish translation. (Joe Hansen)
