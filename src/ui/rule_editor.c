@@ -25,7 +25,7 @@
 #include "rule.h"
 
 /*
-   A 'rule editor' is a dialog allow to edit arbitrary filtering
+   A 'rule editor' is a dialog allowing editing arbitrary filtering
    'rules'. The rules edited are loaded from an 'item set' which
    can belong to a 'search folder' or an 'item list' filter. 
 
