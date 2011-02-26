@@ -84,6 +84,8 @@
 	  (Emilio Pozuelo Monfort)
 	* Removed bookmarking support for the dead Backflip.
 	  (Adrian Bunk, reported by Kenneth Lakin)
+        * SF #3127001: Fix Toolbar Settings label wrong xalign in preferences dialog
+          (patch by Fred Morcos)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Danish translation. (Joe Hansen)
