@@ -229,6 +229,7 @@ network_init (void)
 						       SOUP_SESSION_IDLE_TIMEOUT, 30,
 						       SOUP_SESSION_PROXY_URI, proxy,
 						       SOUP_SESSION_ADD_FEATURE, cookies,
+	                                               SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
 						       NULL);
 	if (proxy)
 		soup_uri_free (proxy);
