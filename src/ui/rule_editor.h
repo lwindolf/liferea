@@ -1,7 +1,7 @@
 /**
  * @file rule_editor.h  rule editing dialog functionality
  *
- * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -27,7 +27,7 @@
 #include <glib.h>
 
 #include "rule.h"
-#include "vfolder.h"
+#include "itemset.h"
 
 G_BEGIN_DECLS
 
@@ -58,13 +58,13 @@ GType rule_editor_get_type	(void);
 
 /**
  * Create a new rule editor widget set. Loads all rules
- * of the given search folder.
+ * of the itemset passed.
  *
- * @param vfolder	search folder which rules to load
+ * @param itemset	the itemset with the rules to load
  *
- * @returns the dialog widget
+ * @returns a new RuleEditor instance
  */
-RuleEditor * rule_editor_new (vfolderPtr);
+RuleEditor * rule_editor_new (itemSetPtr itemset);
 
 /**
  * This method is used to add another rule to a rule editor. 
@@ -81,9 +81,9 @@ void rule_editor_add_rule (RuleEditor *re, rulePtr rule);
  * the given search folder.
  *
  * @param re		the rule editor
- * @param vfolder	the search folder
+ * @param itemset	the item set to set the rules to
  */
-void rule_editor_save (RuleEditor *re, vfolderPtr vfolder);
+void rule_editor_save (RuleEditor *re, itemSetPtr itemset);
 
 /**
  * Get the root widget of the rule editor.

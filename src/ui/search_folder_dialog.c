@@ -107,7 +107,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 	if (response_id == GTK_RESPONSE_OK) {	
 		/* save new search folder settings */
 		node_set_title (sfd->priv->node, gtk_entry_get_text (GTK_ENTRY (sfd->priv->nameEntry)));
-		rule_editor_save (sfd->priv->re, sfd->priv->vfolder);
+		rule_editor_save (sfd->priv->re, sfd->priv->vfolder->itemset);
 		sfd->priv->vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn")));
 
 		/* update search folder */
@@ -145,9 +145,9 @@ search_folder_dialog_new (nodePtr node)
 	SearchFolderDialog	*sfd;
 	
 	sfd = SEARCH_FOLDER_DIALOG (g_object_new (SEARCH_FOLDER_DIALOG_TYPE, NULL));
-	sfd->priv->re = rule_editor_new ((vfolderPtr)node->data);
 	sfd->priv->node = node;
 	sfd->priv->vfolder = (vfolderPtr)node->data;
+	sfd->priv->re = rule_editor_new (sfd->priv->vfolder->itemset);
 	
 	/* Create the dialog */
 	dialog = liferea_dialog_new (NULL, "vfolderdialog");
