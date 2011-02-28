@@ -21,6 +21,7 @@
 #include "vfolder_loader.h"
 
 #include "db.h"
+#include "debug.h"
 #include "itemset.h"
 #include "node.h"
 #include "vfolder.h"
@@ -54,6 +55,7 @@ vfolder_loader_fetch_cb (gpointer user_data, GSList **resultItems)
 			iter = g_list_next (iter);
 		}
 	} else {
+		debug1 (DEBUG_CACHE, "search folder '%s' reload complete", vfolder->node->title);
 		vfolder->reloading = FALSE;
 	}
 
@@ -68,10 +70,14 @@ vfolder_loader_new (nodePtr node)
 {
 	vfolderPtr vfolder = (vfolderPtr)node->data;
 
-	if(vfolder->reloading)
+	if(vfolder->reloading) {
+		debug1 (DEBUG_CACHE, "search folder '%s' still reloading", vfolder->node->title);
 		return NULL;
+	}
 
+	debug1 (DEBUG_CACHE, "search folder '%s' reload started", vfolder->node->title);
 	vfolder->reloading = TRUE;
+	vfolder->maxLoadedId = 0;
 
         return item_loader_new (vfolder_loader_fetch_cb, vfolder);
 }
