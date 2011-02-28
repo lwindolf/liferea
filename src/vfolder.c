@@ -245,7 +245,7 @@ vfolder_export (nodePtr node,
 void
 vfolder_reset (vfolderPtr vfolder)
 {
-	// FIXME: item list propagation?
+	itemlist_unload (FALSE);
 
 	g_list_free (vfolder->itemset->ids);
 	vfolder->itemset->ids = NULL;

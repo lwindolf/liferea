@@ -723,6 +723,7 @@ itemlist_item_batch_fetched_cb (ItemLoader *il, GSList *items, gpointer user_dat
 	GSList		*iter;
 
 // FIXME:	if (!itemlist_itemset_is_valid (
+	debug0 (DEBUG_CACHE, "itemlist_item_batch_fetched_cb()");
 
 	iter = items;
 	while (iter) {
