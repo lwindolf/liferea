@@ -61,8 +61,11 @@ vfolder_loader_fetch_cb (gpointer user_data, GSList **resultItems)
 
 	itemset_free (items);
 
-	/* 3. Return if last fetch */
-	return result;
+	/* 3. Save items to DB (except for search results) */
+	if (vfolder->node)
+		db_search_folder_add_items (vfolder->node->id, *resultItems);
+
+	return result;	/* FALSE on last fetch */
 }
 
 ItemLoader *

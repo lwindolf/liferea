@@ -161,7 +161,15 @@ itemSetPtr      db_search_folder_load (const gchar *id);
  *
  * @param id		the search folder id
  */
-void db_search_folder_reset (const gchar *id);
+void    db_search_folder_reset (const gchar *id);
+
+/**
+ * Add a list of item ids to a search folder.
+ *
+ * @param id            the search folder id
+ * @param items         the list of items
+ */
+void    db_search_folder_add_items (const gchar *id, GSList *items);
 
 /**
  * Load the metadata and update state of the given subscription.

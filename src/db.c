@@ -1277,6 +1277,34 @@ db_search_folder_reset (const gchar *id)
 	debug0 (DEBUG_DB, "removing search folder finished");
 }
 
+void
+db_search_folder_add_items (const gchar *id, GSList *items)
+{
+	sqlite3_stmt	*stmt;
+	GSList		*iter;
+	gint	res;
+
+	debug2 (DEBUG_DB, "add %d items to search folder node \"%s\"", g_slist_length (items), id);
+
+	stmt = db_get_statement ("itemUpdateSearchFoldersStmt");
+	
+	iter = items;
+	while (iter) {
+		itemPtr item = (itemPtr)iter->data;
+
+		sqlite3_reset (stmt);
+		sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int (stmt, 2, item->id);
+		res = sqlite3_step (stmt);
+		if (SQLITE_DONE != res)
+			g_error ("db_search_folder_add_items: sqlite3_step (error code %d)!", res);
+
+		iter = g_slist_next (iter);
+	}
+	
+	debug0 (DEBUG_DB, "adding items to search folder finished");
+}
+
 static GSList *
 db_subscription_metadata_load(const gchar *id) 
 {
