@@ -1268,8 +1268,6 @@ liferea_shell_create (int initialState)
 	
 	g_string_append (buffer,   "<p><b>Things currently broken:</b></p>");
 	g_string_append (buffer,   "<ul>");
-	g_string_append (buffer,   "   <li>Search Folder rebuilding (partially done)</li>");
-	g_string_append (buffer,   "   <li>Searching (almost done)</li>");
 	g_string_append (buffer,   "   <li>Feed list DnD</li>");
 	g_string_append (buffer,   "</ul>");
 	
