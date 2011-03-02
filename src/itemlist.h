@@ -92,14 +92,6 @@ gulong itemlist_get_selected_id (void);
  */
 void itemlist_merge_itemset(itemSetPtr itemSet);
 
-/**
- * Loads a search result into the item list. Can be called
- * multiple times to add more results asynchronously.
- *
- * @param itemset	the search result's itemset
- */
-void itemlist_add_search_result (itemSetPtr itemSet);
-
 /** 
  * Loads the passed nodes items into the item list.
  *
@@ -203,11 +195,18 @@ void itemlist_toggle_flag(itemPtr item);
 void itemlist_toggle_read_status(itemPtr item);
 
 /**
- * Adding a loader for item batch loading (e.g. searches)
+ * Adding a loader for item batch loading (e.g. search folder)
  *
  * @param loader	the loader to add to default item list view
  */
 void itemlist_add_loader (ItemLoader *loader); 
+
+/**
+ * Register a search result item loader.
+ *
+ * @param loader	the search result item loader
+ */
+void itemlist_add_search_result (ItemLoader *loader);
 
 G_END_DECLS
 

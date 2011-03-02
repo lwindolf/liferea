@@ -41,22 +41,11 @@
 /* shared functions */
 
 static void
-search_load_results (nodePtr searchResult)
+search_load_results (vfolderPtr searchResult)
 {
-	nodeViewType viewMode;
-
-	/* Clear feed and item display and load search results */
 	feed_list_view_select (NULL);
-	itemlist_unload (FALSE);
-	
-	/* Ensure that we are in a useful viewing mode (3 paned) */
-	viewMode = itemlist_get_view_mode ();
-	if ((NODE_VIEW_MODE_NORMAL != viewMode) &&
-	    (NODE_VIEW_MODE_WIDE != viewMode))
-		itemview_set_layout (NODE_VIEW_MODE_NORMAL);
 		
-	/* Setup async loading */
-	itemlist_add_loader (vfolder_loader_new (searchResult));
+	itemlist_add_search_result (vfolder_loader_new (searchResult->node));
 }
 
 /* complex search dialog */
@@ -148,8 +137,7 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 		rule_editor_save (sd->priv->re, vfolder->itemset);
 		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
 		
-		vfolder_reset (vfolder);
-		search_load_results (vfolder->node);
+		search_load_results (vfolder);
 	}
 	
 	if (2 == responseId) { /* + Search Folder */
@@ -309,9 +297,8 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 		ssd->priv->vfolder = vfolder = vfolder_new (node_new (vfolder_get_node_type ()));
 		node_set_title (vfolder->node, searchString);
 		itemset_add_rule (vfolder->itemset, "exact", searchString, TRUE);
-		vfolder_reset (vfolder);
 
-		search_load_results (vfolder->node);
+		search_load_results (vfolder);
 	}
 	
 	if (2 == responseId)	/* Advanced... */			

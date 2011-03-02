@@ -29,11 +29,14 @@ struct ItemLoaderPrivate {
 	fetchCallbackPtr	fetchCallback;		/**< the function to call after each item fetch */
 	gpointer		fetchCallbackData;	/**< user data for the fetch callback */
 
+	nodePtr		node;			/**< the node we are loading items for */
+
 	guint		idleId;			/**< fetch callback source id */
 };
 
 enum {
 	ITEM_BATCH_FETCHED,
+	FINISHED,
 	LAST_SIGNAL
 };
 
@@ -90,7 +93,7 @@ item_loader_class_init (ItemLoaderClass *klass)
 	object_class->finalize = item_loader_finalize;
 
 	item_loader_signals[ITEM_BATCH_FETCHED] = 
-		g_signal_new ("item-batch-fetched", 
+		g_signal_new ("item-batch-fetched",
 		G_OBJECT_CLASS_TYPE (object_class),
 		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
 		0, 
@@ -101,6 +104,16 @@ item_loader_class_init (ItemLoaderClass *klass)
 		1,
 		G_TYPE_POINTER);
 
+	item_loader_signals[FINISHED] = 
+		g_signal_new ("finished",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0, 
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE,
+		0);
 
 	g_type_class_add_private (object_class, sizeof(ItemLoaderPrivate));
 }
@@ -109,6 +122,12 @@ static void
 item_loader_init (ItemLoader *il)
 {
 	il->priv = ITEM_LOADER_GET_PRIVATE (il);
+}
+
+nodePtr
+item_loader_get_node (ItemLoader *il)
+{
+	return il->priv->node;
 }
 
 gboolean
@@ -121,6 +140,8 @@ item_loader_fetch (gpointer user_data)
 	result = (*il->priv->fetchCallback)(il->priv->fetchCallbackData, &resultItems);
 	if (result)
 		g_signal_emit_by_name (il, "item-batch-fetched", resultItems);
+	else
+		g_signal_emit_by_name (il, "finished");
 
 	return result;
 }
@@ -132,11 +153,12 @@ item_loader_start (ItemLoader *il)
 }
 
 ItemLoader *
-item_loader_new (fetchCallbackPtr fetchCallback, gpointer fetchCallbackData)
+item_loader_new (fetchCallbackPtr fetchCallback, nodePtr node, gpointer fetchCallbackData)
 {
 	ItemLoader *il;
 
 	il = ITEM_LOADER (g_object_new (ITEM_LOADER_TYPE, NULL));
+	il->priv->node = node;
 	il->priv->fetchCallback = fetchCallback;
 	il->priv->fetchCallbackData = fetchCallbackData;
 

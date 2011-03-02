@@ -23,7 +23,7 @@
 
 #include <glib-object.h>
 
-#include "itemset.h"
+#include "node.h"
 
 /* ItemLoader concept: an ItemLoader instance runs a fetch callback
    repeatedly collecting the items the fetch callback provides. One
@@ -69,11 +69,21 @@ typedef gboolean (*fetchCallbackPtr)(gpointer user_data, GSList **items);
  * Set up a new item loader with a specific fetch function.
  *
  * @param fetchCallback	the item fetching function
+ * @param node		the node we are loading items for
  * @param user_data	ItemLoader type specific data
  *
  * @returns the new ItemLoader instance
  */
-ItemLoader * item_loader_new (fetchCallbackPtr fetchCallback, gpointer user_data);
+ItemLoader * item_loader_new (fetchCallbackPtr fetchCallback, nodePtr node, gpointer user_data);
+
+/**
+ * Returns the node an item loader is loading items for.
+ *
+ * @param il		the item loader
+ *
+ * @returns node
+ */
+nodePtr item_loader_get_node (ItemLoader *il);
 
 /**
  * Starts the item loader to load items with idle priority.

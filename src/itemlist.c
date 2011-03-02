@@ -43,9 +43,9 @@
 #include "ui/liferea_htmlview.h"
 #include "ui/ui_node.h"
 
-/* This is a simple controller implementation for item list handling. 
-   It manages the currently displayed 'item set', realizes filtering
-   by rules and nodes, also duplicate elimination and provides 
+/* The 'item list' is a controller for 'item view' and database backend. 
+   It manages the currently displayed 'node', realizes filtering
+   by node and 'item set' rules, also duplicate elimination and provides 
    synchronisation for backend and GUI access to the current itemset.
 
    The 'item list' provides methods to add/remove items from the 'item
@@ -74,9 +74,6 @@ struct ItemListPrivate
 
 	gboolean 	deferredRemove;		/**< TRUE if selected item needs to be removed from cache on unselecting */
 	gboolean 	deferredFilter;		/**< TRUE if selected item needs to be filtered on unselecting */
-	
-	gboolean	isSearchResult;		/**< TRUE if a search result is displayed */
-	gboolean	searchResultComplete;	/**< TRUE if search result merging is complete */
 };
 
 static GObjectClass *parent_class = NULL;
@@ -262,45 +259,36 @@ itemlist_merge_item (itemPtr item)
 	itemview_add_item (item);
 }
 
+/* Helper method checking if the passed item set is relevant
+   for the currently item list content. */
 static gboolean
 itemlist_itemset_is_valid (itemSetPtr itemSet)
 {
 	gint	folder_display_mode;
+	nodePtr node;
 
-	/* No node check when loading search results directly */
-	if (!itemlist->priv->isSearchResult) {
-		nodePtr node = node_from_id (itemSet->nodeId);
+	node = node_from_id (itemSet->nodeId);
 
-		if (!itemlist->priv->currentNode)
-			return FALSE; /* Nothing to do if nothing is displayed */
+	if (!itemlist->priv->currentNode)
+		return FALSE; /* Nothing to do if nothing is displayed */
 		
-		if (!IS_VFOLDER (itemlist->priv->currentNode) &&
-		    (itemlist->priv->currentNode != node) && 
-		    !node_is_ancestor (itemlist->priv->currentNode, node))
-			return FALSE; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
+	if (!IS_VFOLDER (itemlist->priv->currentNode) &&
+	    (itemlist->priv->currentNode != node) && 
+	    !node_is_ancestor (itemlist->priv->currentNode, node))
+		return FALSE; /* Nothing to do if the item set does not belong to this node, or this is a search folder */
 
-		conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
-		if (IS_FOLDER (itemlist->priv->currentNode) && !folder_display_mode)
-			return FALSE; /* Bail out if it is a folder without the recursive display preference set */
-			
-		debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
-	} else {
-		/* If we are loading a search result we must never merge 
-		   anything besides the search items. In fact if we already
-		   have items we just return. */
-		if (itemlist->priv->searchResultComplete)
-			return FALSE;
-			
-		itemlist->priv->searchResultComplete = TRUE;
-	}
+	conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
+	if (IS_FOLDER (itemlist->priv->currentNode) && !folder_display_mode)
+		return FALSE; /* Bail out if it is a folder without the recursive display preference set */
+		
+	debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
 
 	return TRUE;
 }
 
 /**
  * To be called whenever an itemset was updated. If it is the
- * displayed itemset it will be merged against the item list
- * tree view.
+ * displayed itemset it will be merged against the item view.
  */
 void
 itemlist_merge_itemset (itemSetPtr itemSet) 
@@ -315,16 +303,6 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 	}
 
 	debug_exit ("itemlist_merge_itemset");
-}
-
-void
-itemlist_add_search_result (itemSetPtr itemSet)
-{
-	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
-	
-	itemlist->priv->isSearchResult = TRUE;
-	itemlist->priv->searchResultComplete = FALSE;	/* enable result merging */
-	itemlist_merge_itemset (itemSet);	
 }
 
 /** 
@@ -346,8 +324,6 @@ itemlist_load (nodePtr node)
 
 	g_assert (!itemlist->priv->guids);
 	g_assert (!itemlist->priv->filter);
-	itemlist->priv->isSearchResult = FALSE;
-	itemlist->priv->searchResultComplete = TRUE;
 
 	/* 1. Filter check. Don't continue if folder is selected and 
 	   no folder viewing is configured. If folder viewing is enabled
@@ -722,7 +698,9 @@ itemlist_item_batch_fetched_cb (ItemLoader *il, GSList *items, gpointer user_dat
 {
 	GSList		*iter;
 
-// FIXME:	if (!itemlist_itemset_is_valid (
+	if (item_loader_get_node (il) != itemlist->priv->currentNode)
+		return;	/* Bail on loader not matching selection */
+
 	debug0 (DEBUG_CACHE, "itemlist_item_batch_fetched_cb()");
 
 	iter = items;
@@ -745,6 +723,29 @@ itemlist_add_loader (ItemLoader *loader)
 	g_signal_connect (G_OBJECT (loader), "item-batch-fetched", G_CALLBACK (itemlist_item_batch_fetched_cb), NULL);
 
 	item_loader_start (loader);
+}
+
+void
+itemlist_add_search_result (ItemLoader *loader)
+{
+	nodeViewType viewMode;
+
+	/* Ensure that we are in a useful viewing mode (3 paned) */
+	itemlist_unload (FALSE);
+
+	viewMode = itemlist_get_view_mode ();
+	if ((NODE_VIEW_MODE_NORMAL != viewMode) &&
+	    (NODE_VIEW_MODE_WIDE != viewMode))
+		itemview_set_layout (NODE_VIEW_MODE_NORMAL);
+
+	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
+
+	/* Set current node to search result dummy node so that
+	   we except only items from the respective loader for
+	   the item view. */
+	itemlist->priv->currentNode = item_loader_get_node (loader);
+
+	itemlist_add_loader (loader);
 }
 
 ItemList *
