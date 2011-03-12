@@ -77,7 +77,7 @@ dnl libnotify
 dnl *********
 
 if test "x$enable_libnotify" = "xyes"; then
-   PKG_CHECK_MODULES([LIBNOTIFY], libnotify >= 0.3.2,enable_libnotify=yes,enable_libnotify=no)
+   PKG_CHECK_MODULES([LIBNOTIFY], [libnotify >= 0.3.2, libnotify << 0.5],enable_libnotify=yes,enable_libnotify=no)
    AC_SUBST(LIBNOTIFY_CFLAGS)
    AC_SUBST(LIBNOTIFY_LIBS)
 else
