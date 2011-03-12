@@ -69,7 +69,7 @@ dnl # Check for X session management libs
 dnl #######################################################################
 
 if test "x$enable_sm" = "xyes"; then
-  PKG_CHECK_MODULES([SM], [sm], [AC_DEFINE(USE_SM, 1, [Define if we're using X Session Management.])],[enable_sm=no])
+  PKG_CHECK_MODULES([SM], [sm ice], [AC_DEFINE(USE_SM, 1, [Define if we're using X Session Management.])],[enable_sm=no])
 fi
 
 dnl *********
