@@ -99,6 +99,16 @@ network_monitor_class_init (NetworkMonitorClass *klass)
 	g_type_class_add_private (object_class, sizeof (NetworkMonitorPrivate));
 }
 
+static gboolean is_nm_connected (guint state)
+{
+	if (state == 3 ||  /* NM_STATE_CONNECTED */
+	    state == 50 || /* NM_STATE_CONNECTED_LOCAL */
+	    state == 60 || /* NM_STATE_CONNECTED_SITE */
+	    state == 70)   /* NM_STATE_CONNECTED_GLOBAL */
+		return TRUE;
+	return FALSE;
+}
+
 static void
 on_network_state_changed_cb (GDBusConnection *connection,
 			     const gchar *sender_name,
@@ -113,10 +123,10 @@ on_network_state_changed_cb (GDBusConnection *connection,
 
 	g_variant_get (parameters, "(u)", &state);
 
-	if (online && state != 3 /* NM_STATE_CONNECTED */) {
+	if (online && !is_nm_connected (state)) {
 		debug0 (DEBUG_NET, "network manager: no network connection -> going offline");
 		network_monitor_set_online (FALSE);
-	} else if (!online && state == 3 /* NM_STATE_CONNECTED */) {
+	} else if (!online && is_nm_connected (state)) {
 		debug0 (DEBUG_NET, "network manager: active connection -> going online");
 		network_monitor_set_online (TRUE);
 	}
