@@ -75,34 +75,7 @@ static GObjectClass *parent_class = NULL;
 /* Liferea HTML rendering object					*/
 /* -------------------------------------------------------------------- */
 
-GType
-liferea_htmlview_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (LifereaHtmlViewClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) liferea_htmlview_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (LifereaHtmlView),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) liferea_htmlview_init,
-			NULL /* value_table */
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "LifereaHtmlView",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (LifereaHtmlView, liferea_htmlview, G_TYPE_OBJECT);
 
 static void
 liferea_htmlview_finalize (GObject *object)
