@@ -91,6 +91,8 @@
 	* SF #3132354: Show tooltip when column to small to show text
 	  (patch by Ricardo Cruz)
 	* SF #3203121: Add support for NM 0.9 (patch by Dan Williams)
+	* SF #3019505: Fixed drag and drop in the feed list.
+	  (Emilio Pozuelo Monfort)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Danish translation. (Joe Hansen)
