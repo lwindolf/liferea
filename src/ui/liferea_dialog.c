@@ -1,7 +1,7 @@
 /**
  * @file ui_dialog.c UI dialog handling
  *
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,9 +28,6 @@
 
 #include "ui/liferea_shell.h"
 
-static void liferea_dialog_class_init	(LifereaDialogClass *klass);
-static void liferea_dialog_init		(LifereaDialog *ld);
-
 #define LIFEREA_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_DIALOG_TYPE, LifereaDialogPrivate))
 
 struct LifereaDialogPrivate {
@@ -41,34 +38,7 @@ struct LifereaDialogPrivate {
 
 static GObjectClass *parent_class = NULL;
 
-GType
-liferea_dialog_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (LifereaDialogClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) liferea_dialog_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (LifereaDialog),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) liferea_dialog_init,
-			NULL /* value_table */
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "LifereaDialog",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (LifereaDialog, liferea_dialog, G_TYPE_OBJECT);
 
 static void
 liferea_dialog_finalize (GObject *object)

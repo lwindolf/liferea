@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.c enclosures/podcast handling GUI
  *
- * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,9 +44,6 @@ enum {
 	ES_LEN
 };
 
-static void enclosure_list_view_class_init	(EnclosureListViewClass *klass);
-static void enclosure_list_view_init		(EnclosureListView *ld);
-
 #define ENCLOSURE_LIST_VIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ENCLOSURE_LIST_VIEW_TYPE, EnclosureListViewPrivate))
 
 struct EnclosureListViewPrivate {
@@ -59,34 +56,7 @@ struct EnclosureListViewPrivate {
 
 static GObjectClass *parent_class = NULL;
 
-GType
-enclosure_list_view_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (EnclosureListViewClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) enclosure_list_view_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (EnclosureListView),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) enclosure_list_view_init,
-			NULL /* value_table */
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "EnclosureListView",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (EnclosureListView, enclosure_list_view, G_TYPE_OBJECT);
 
 static void
 enclosure_list_view_finalize (GObject *object)

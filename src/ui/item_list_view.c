@@ -72,9 +72,6 @@ enum is_columns {
 	ITEMSTORE_LEN		/**< Number of columns in the itemstore */
 };
 
-static void item_list_view_class_init	(ItemListViewClass *klass);
-static void item_list_view_init		(ItemListView *ilv);
-
 #define ITEM_LIST_VIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEM_LIST_VIEW_TYPE, ItemListViewPrivate))
 
 struct ItemListViewPrivate {
@@ -88,34 +85,7 @@ struct ItemListViewPrivate {
 
 static GObjectClass *parent_class = NULL;
 
-GType
-item_list_view_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (ItemListViewClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) item_list_view_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (ItemListView),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) item_list_view_init,
-			NULL /* value_table */
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "ItemListView",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (ItemListView, item_list_view, G_TYPE_OBJECT);
 
 static void
 item_list_view_finalize (GObject *object)

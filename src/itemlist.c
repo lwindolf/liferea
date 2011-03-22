@@ -56,9 +56,6 @@
    is done by the 'item view'.
  */
 
-static void itemlist_class_init	(ItemListClass *klass);
-static void itemlist_init	(ItemList *fl);
-
 #define ITEMLIST_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEMLIST_TYPE, ItemListPrivate))
 
 struct ItemListPrivate
@@ -79,33 +76,7 @@ struct ItemListPrivate
 static GObjectClass *parent_class = NULL;
 static ItemList *itemlist = NULL;
 
-GType
-itemlist_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (ItemListClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) itemlist_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (ItemList),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) itemlist_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "ItemList",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (ItemList, itemlist, G_TYPE_OBJECT);
 
 static void
 itemlist_init (ItemList *il)

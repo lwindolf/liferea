@@ -41,8 +41,6 @@
 #include "ui/ui_tray.h"
 #include "fl_sources/node_source.h"
 
-static void feedlist_class_init	(FeedListClass *klass);
-static void feedlist_init	(FeedList *fl);
 static void feedlist_save	(void);
 
 #define FEEDLIST_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), FEEDLIST_TYPE, FeedListPrivate))
@@ -67,33 +65,7 @@ struct FeedListPrivate {
 static GObjectClass *parent_class = NULL;
 static FeedList *feedlist = NULL;
 
-GType
-feedlist_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (FeedListClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) feedlist_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (FeedList),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) feedlist_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "FeedList",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (FeedList, feedlist, G_TYPE_OBJECT);
 
 static void
 feedlist_free_node (nodePtr node)

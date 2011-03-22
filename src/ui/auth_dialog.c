@@ -1,7 +1,7 @@
 /**
  * @file auth_dialog.c  authentication dialog
  *
- * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,9 +27,6 @@
 #include "debug.h"
 #include "ui/liferea_dialog.h"
 
-static void auth_dialog_class_init	(AuthDialogClass *klass);
-static void auth_dialog_init		(AuthDialog *ad);
-
 #define AUTH_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), AUTH_DIALOG_TYPE, AuthDialogPrivate))
 
 struct AuthDialogPrivate {
@@ -45,34 +42,7 @@ struct AuthDialogPrivate {
 
 static GObjectClass *parent_class = NULL;
 
-GType
-auth_dialog_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (AuthDialogClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) auth_dialog_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (AuthDialog),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) auth_dialog_init,
-			NULL /* value_table */
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "AuthDialog",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (AuthDialog, auth_dialog, G_TYPE_OBJECT);
 
 static void
 auth_dialog_finalize (GObject *object)

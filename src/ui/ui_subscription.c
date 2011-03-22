@@ -1,7 +1,7 @@
 /**
  * @file ui_subscription.c  default subscription dialogs for feed subscriptions
  *
- * Copyright (C) 2004-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -72,40 +72,11 @@ struct SubscriptionDialogPrivate {
 
 /* properties dialog */
 
-static void subscription_prop_dialog_class_init	(SubscriptionPropDialogClass *klass);
-static void subscription_prop_dialog_init	(SubscriptionPropDialog *spd);
-
 #define SUBSCRIPTION_PROP_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), SUBSCRIPTION_PROP_DIALOG_TYPE, SubscriptionDialogPrivate))
 
 static GObjectClass *parent_class = NULL;
 
-GType
-subscription_prop_dialog_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (SubscriptionPropDialogClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) subscription_prop_dialog_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (SubscriptionPropDialog),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) subscription_prop_dialog_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "SubscriptionPropDialog",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (SubscriptionPropDialog, subscription_prop_dialog, G_TYPE_OBJECT);
 
 static void
 subscription_prop_dialog_finalize (GObject *object)
@@ -591,38 +562,9 @@ ui_subscription_prop_dialog_new (subscriptionPtr subscription)
 
 /* complex "New" dialog */
  
-static void new_subscription_dialog_class_init	(NewSubscriptionDialogClass *klass);
-static void new_subscription_dialog_init	(NewSubscriptionDialog *ns);
-
 #define NEW_SUBSCRIPTION_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), NEW_SUBSCRIPTION_DIALOG_TYPE, SubscriptionDialogPrivate))
 
-GType
-new_subscription_dialog_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (NewSubscriptionDialogClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) new_subscription_dialog_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (NewSubscriptionDialog),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) new_subscription_dialog_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "NewSubscriptionDialog",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (NewSubscriptionDialog, new_subscription_dialog, G_TYPE_OBJECT);
 
 static void
 new_subscription_dialog_finalize (GObject *object)
@@ -725,38 +667,9 @@ ui_complex_subscription_dialog_new (void)
 
 /* simple "New" dialog */
 
-static void simple_subscription_dialog_class_init	(SimpleSubscriptionDialogClass *klass);
-static void simple_subscription_dialog_init		(SimpleSubscriptionDialog *ssd);
-
 #define SIMPLE_SUBSCRIPTION_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), SIMPLE_SUBSCRIPTION_DIALOG_TYPE, SubscriptionDialogPrivate))
 
-GType
-simple_subscription_dialog_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (SimpleSubscriptionDialogClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) simple_subscription_dialog_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (SimpleSubscriptionDialog),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) simple_subscription_dialog_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "SimpleSubscriptionDialog",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (SimpleSubscriptionDialog, simple_subscription_dialog, G_TYPE_OBJECT);
 
 static void
 simple_subscription_dialog_finalize (GObject *object)

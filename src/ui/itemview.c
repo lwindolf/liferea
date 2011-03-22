@@ -42,9 +42,6 @@
    the item list implementation.
  */
 
-static void itemview_class_init	(ItemViewClass *klass);
-static void itemview_init	(ItemView *fl);
-
 #define ITEMVIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEMVIEW_TYPE, ItemViewPrivate))
 
 struct ItemViewPrivate {
@@ -70,34 +67,7 @@ struct ItemViewPrivate {
 static GObjectClass *parent_class = NULL;
 static ItemView *itemview = NULL;
 
-GType
-itemview_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (ItemViewClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) itemview_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (ItemView),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) itemview_init,
-			NULL /* value_table */
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "ItemView",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (ItemView, itemview, G_TYPE_OBJECT);
 
 static void
 itemview_finalize (GObject *object)

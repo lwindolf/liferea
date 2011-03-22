@@ -1,7 +1,7 @@
 /**
  * @file search-folder-dialog.c  Search folder properties dialog
  *
- * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,9 +29,6 @@
 #include "ui/rule_editor.h"
 #include "ui/ui_node.h"
 
-static void search_folder_dialog_class_init	(SearchFolderDialogClass *klass);
-static void search_folder_dialog_init		(SearchFolderDialog *ld);
-
 #define SEARCH_FOLDER_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), SEARCH_FOLDER_DIALOG_TYPE, SearchFolderDialogPrivate))
 
 struct SearchFolderDialogPrivate {
@@ -43,33 +40,7 @@ struct SearchFolderDialogPrivate {
 
 static GObjectClass *parent_class = NULL;
 
-GType
-search_folder_dialog_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (SearchFolderDialogClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) search_folder_dialog_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (SearchFolderDialog),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) search_folder_dialog_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "SearchFolderDialog",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (SearchFolderDialog, search_folder_dialog, G_TYPE_OBJECT);
 
 static void
 search_folder_dialog_finalize (GObject *object)

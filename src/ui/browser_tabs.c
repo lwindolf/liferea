@@ -1,7 +1,7 @@
 /**
  * @file browser_tabs.c  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -181,9 +181,6 @@ on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 /* browser tabs object */
 
-static void browser_tabs_class_init	(BrowserTabsClass *klass);
-static void browser_tabs_init		(BrowserTabs *ls);
-
 #define BROWSER_TABS_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), BROWSER_TABS_TYPE, BrowserTabsPrivate))
 
 struct BrowserTabsPrivate {
@@ -195,34 +192,7 @@ struct BrowserTabsPrivate {
 static GObjectClass *parent_class = NULL;
 static BrowserTabs *tabs = NULL;
 
-GType
-browser_tabs_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (BrowserTabsClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) browser_tabs_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (BrowserTabs),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) browser_tabs_init,
-			NULL /* value_table */
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "BrowserTabs",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (BrowserTabs, browser_tabs, G_TYPE_OBJECT);
 
 /** Removes tab info structure */
 static void

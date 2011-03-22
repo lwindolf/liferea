@@ -52,9 +52,6 @@ search_load_results (vfolderPtr searchResult)
 
 static SearchDialog *search = NULL;
 
-static void search_dialog_class_init	(SearchDialogClass *klass);
-static void search_dialog_init		(SearchDialog *sd);
-
 #define SEARCH_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), SEARCH_DIALOG_TYPE, SearchDialogPrivate))
 
 struct SearchDialogPrivate {
@@ -66,33 +63,7 @@ struct SearchDialogPrivate {
 
 static GObjectClass *parent_class = NULL;
 
-GType
-search_dialog_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (SearchDialogClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) search_dialog_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (SearchDialog),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) search_dialog_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "SearchDialog",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (SearchDialog, search_dialog, G_TYPE_OBJECT);
 
 static void
 search_dialog_finalize (GObject *object)
@@ -200,9 +171,6 @@ search_dialog_open (const gchar *query)
 
 static SimpleSearchDialog *simpleSearch = NULL;
 
-static void simple_search_dialog_class_init	(SimpleSearchDialogClass *klass);
-static void simple_search_dialog_init		(SimpleSearchDialog *ssd);
-
 #define SIMPLE_SEARCH_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), SIMPLE_SEARCH_DIALOG_TYPE, SimpleSearchDialogPrivate))
 
 struct SimpleSearchDialogPrivate {
@@ -214,33 +182,7 @@ struct SimpleSearchDialogPrivate {
 
 static GObjectClass *parent_class_simple = NULL;
 
-GType
-simple_search_dialog_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (SimpleSearchDialogClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) simple_search_dialog_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (SimpleSearchDialog),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) simple_search_dialog_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "SimpleSearchDialog",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (SimpleSearchDialog, simple_search_dialog, G_TYPE_OBJECT);
 
 static void
 simple_search_dialog_finalize (GObject *object)

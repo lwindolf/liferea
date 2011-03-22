@@ -32,9 +32,6 @@
    The rule editing is independant of any search folder handling.
 */
 
-static void rule_editor_class_init	(RuleEditorClass *klass);
-static void rule_editor_init		(RuleEditor *ld);
-
 #define RULE_EDITOR_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), RULE_EDITOR_TYPE, RuleEditorPrivate))
 
 struct RuleEditorPrivate {
@@ -51,33 +48,7 @@ struct changeRequest {
 
 static GObjectClass *parent_class = NULL;
 
-GType
-rule_editor_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (RuleEditorClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) rule_editor_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (RuleEditor),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) rule_editor_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "RuleEditor",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (RuleEditor, rule_editor, G_TYPE_OBJECT);
 
 static void
 rule_editor_finalize (GObject *object)

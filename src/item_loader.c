@@ -20,9 +20,6 @@
 
 #include "item_loader.h"
 
-static void item_loader_class_init	(ItemLoaderClass *klass);
-static void item_loader_init		(ItemLoader *il);
-
 #define ITEM_LOADER_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEM_LOADER_TYPE, ItemLoaderPrivate))
 
 struct ItemLoaderPrivate {
@@ -44,33 +41,7 @@ static guint item_loader_signals[LAST_SIGNAL] = { 0 };
 
 static GObjectClass *parent_class = NULL;
 
-GType
-item_loader_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (ItemLoaderClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) item_loader_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (ItemLoader),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) item_loader_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "ItemLoader",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (ItemLoader, item_loader, G_TYPE_OBJECT);
 
 static void
 item_loader_finalize (GObject *object)

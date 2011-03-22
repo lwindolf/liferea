@@ -2,7 +2,7 @@
  * @file ui_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,9 +50,6 @@
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"
 
-static void liferea_shell_class_init	(LifereaShellClass *klass);
-static void liferea_shell_init		(LifereaShell *ls);
-
 #define LIFEREA_SHELL_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_SHELL_TYPE, LifereaShellPrivate))
 
 struct LifereaShellPrivate {
@@ -83,33 +80,7 @@ struct LifereaShellPrivate {
 static GObjectClass *parent_class = NULL;
 static LifereaShell *shell = NULL;
 
-GType
-liferea_shell_get_type (void) 
-{
-	static GType type = 0;
-
-	if (G_UNLIKELY (type == 0)) 
-	{
-		static const GTypeInfo our_info = 
-		{
-			sizeof (LifereaShellClass),
-			NULL, /* base_init */
-			NULL, /* base_finalize */
-			(GClassInitFunc) liferea_shell_class_init,
-			NULL,
-			NULL, /* class_data */
-			sizeof (LifereaShell),
-			0, /* n_preallocs */
-			(GInstanceInitFunc) liferea_shell_init
-		};
-
-		type = g_type_register_static (G_TYPE_OBJECT,
-					       "LifereaShell",
-					       &our_info, 0);
-	}
-
-	return type;
-}
+G_DEFINE_TYPE (LifereaShell, liferea_shell, G_TYPE_OBJECT);
 
 static void
 liferea_shell_finalize (GObject *object)
