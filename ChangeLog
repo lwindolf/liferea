@@ -14,6 +14,7 @@
 	  over tray icon with zh_TW locale. (Adrian Bunk)
 	* Removed bookmarking support for the dead Backflip.
 	  (Adrian Bunk, reported by Kenneth Lakin)
+	* Fix build with stricter linkers. (Emilio Pozuelo Monfort)
 
 	* Added Asturian translation. (Marquinos)
 	* Added Hebrew translation. (Yaron Sheffer)
