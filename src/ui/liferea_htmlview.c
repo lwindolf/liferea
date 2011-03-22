@@ -47,9 +47,6 @@
 
 #define RENDERER(htmlview)	(htmlview->priv->impl)
 
-static void liferea_htmlview_class_init	(LifereaHtmlViewClass *klass);
-static void liferea_htmlview_init	(LifereaHtmlView *htmlview);
-
 #define LIFEREA_HTMLVIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_HTMLVIEW_TYPE, LifereaHtmlViewPrivate))
 
 struct LifereaHtmlViewPrivate {
