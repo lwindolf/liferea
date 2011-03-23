@@ -41,6 +41,8 @@ src/htmlview.c
 src/htmlview.h
 src/item.c
 src/item.h
+src/item_loader.c
+src/item_loader.h
 src/itemlist.c
 src/itemlist.h
 src/itemset.c
@@ -68,6 +70,8 @@ src/update.c
 src/update.h
 src/vfolder.c
 src/vfolder.h
+src/vfolder_loader.c
+src/vfolder_loader.h
 src/xml.c
 src/xml.h
 src/ui/enclosure_list_view.c
@@ -82,8 +86,6 @@ src/ui/rule_editor.c
 src/ui/rule_editor.h
 src/ui/search_dialog.c
 src/ui/search_dialog.h
-src/ui/search_engine_dialog.c
-src/ui/search_engine_dialog.h
 src/ui/search_folder_dialog.h
 src/ui/search_folder_dialog.c
 src/ui/auth_dialog.c
