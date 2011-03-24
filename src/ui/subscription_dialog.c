@@ -184,50 +184,52 @@ on_propdialog_response (GtkDialog *dialog,
 		nodePtr		node = spd->priv->subscription->node;
 		feedPtr		feed = (feedPtr)node->data;
 		
-		/* "General" */
-		node_set_title(node, gtk_entry_get_text(GTK_ENTRY(spd->priv->feedNameEntry)));
+		if (SUBSCRIPTION_TYPE(subscription) == feed_get_subscription_type ()) {
+			/* "General" */
+			node_set_title(node, gtk_entry_get_text(GTK_ENTRY(spd->priv->feedNameEntry)));
 		
-		/* Source */
-		newSource = ui_subscription_dialog_decode_source(spd->priv);
-		
-		/* Filter handling */
-		newFilter = gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(spd->priv->dialog, "filterEntry")));
-		if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "filterCheckbox"))) &&
-		   strcmp(newFilter,"")) { /* Maybe this should be a test to see if the file exists? */
-			if(subscription_get_filter(subscription) == NULL ||
-			   strcmp(newFilter, subscription_get_filter(subscription))) {
-				subscription_set_filter(subscription, newFilter);
-				needsUpdate = TRUE;
-			}
-		} else {
-			if(subscription_get_filter(subscription)) {
-				subscription_set_filter(subscription, NULL);
-				needsUpdate = TRUE;
-			}
-		}
-		
-		/* if URL has changed... */
-		if(strcmp(newSource, subscription_get_source(subscription))) {
-			subscription_set_source(subscription, newSource);
-			needsUpdate = TRUE;
-		}
-		g_free(newSource);
+			/* Source */
+			newSource = ui_subscription_dialog_decode_source(spd->priv);
 
-		/* Update interval handling */
-		if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalNever"))))
-			subscription_set_update_interval (subscription, -2);
-		else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalDefault"))))
-			subscription_set_update_interval (subscription, -1);
-		else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalSpecific")))) {
-			gint intervalUnit = gtk_combo_box_get_active (GTK_COMBO_BOX (spd->priv->refreshIntervalUnit));
-			gint updateInterval = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spd->priv->refreshInterval));
-			if (intervalUnit == 1)
-				updateInterval *= 60;	/* hours */
-			if (intervalUnit == 2)
-				updateInterval *= 1440;	/* days */
+			/* Filter handling */
+			newFilter = gtk_entry_get_text(GTK_ENTRY(liferea_dialog_lookup(spd->priv->dialog, "filterEntry")));
+			if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "filterCheckbox"))) &&
+			   strcmp(newFilter,"")) { /* Maybe this should be a test to see if the file exists? */
+				if(subscription_get_filter(subscription) == NULL ||
+				   strcmp(newFilter, subscription_get_filter(subscription))) {
+					subscription_set_filter(subscription, newFilter);
+					needsUpdate = TRUE;
+				}
+			} else {
+				if(subscription_get_filter(subscription)) {
+					subscription_set_filter(subscription, NULL);
+					needsUpdate = TRUE;
+				}
+			}
+		
+			/* if URL has changed... */
+			if(strcmp(newSource, subscription_get_source(subscription))) {
+				subscription_set_source(subscription, newSource);
+				needsUpdate = TRUE;
+			}
+			g_free(newSource);
+
+			/* Update interval handling */
+			if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalNever"))))
+				subscription_set_update_interval (subscription, -2);
+			else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalDefault"))))
+				subscription_set_update_interval (subscription, -1);
+			else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "updateIntervalSpecific")))) {
+				gint intervalUnit = gtk_combo_box_get_active (GTK_COMBO_BOX (spd->priv->refreshIntervalUnit));
+				gint updateInterval = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON (spd->priv->refreshInterval));
+				if (intervalUnit == 1)
+					updateInterval *= 60;	/* hours */
+				if (intervalUnit == 2)
+					updateInterval *= 1440;	/* days */
 			
-			subscription_set_update_interval (subscription, updateInterval);
-			db_subscription_update (subscription);
+				subscription_set_update_interval (subscription, updateInterval);
+				db_subscription_update (subscription);
+			}
 		}
 			
 		/* "Archive" handling */
@@ -240,8 +242,10 @@ on_propdialog_response (GtkDialog *dialog,
 		else if(gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "feedCacheLimited"))))
 			feed->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "cacheItemLimit")));
 
-		/* "Download" Options */
-		subscription->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "dontUseProxyCheck")));
+		if (SUBSCRIPTION_TYPE(subscription) == feed_get_subscription_type ()) {
+			/* "Download" Options */
+			subscription->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(GTK_WIDGET(dialog), "dontUseProxyCheck")));
+		}
 
 		/* "Advanced" options */
 		feed->encAutoDownload = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enclosureDownloadCheck")));
@@ -375,8 +379,8 @@ on_feed_prop_update_radio (GtkToggleButton *button,
 }
 
 static void
-ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd, 
-                                  subscriptionPtr subscription) 
+subscription_prop_dialog_load (SubscriptionPropDialog *spd, 
+                               subscriptionPtr subscription) 
 {
 	gint 		interval;
 	gint		default_update_interval;
@@ -432,49 +436,51 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gtk_label_set_text(GTK_LABEL(liferea_dialog_lookup(spd->priv->dialog, "feedUpdateInfo")), defaultIntervalStr);
 	g_free(defaultIntervalStr);
 
-	/* Source */
-	if(subscription_get_source(subscription)[0] == '|') {
-		gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), &(subscription_get_source(subscription)[1]));
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->cmdRadio), TRUE);
-		ui_subscription_prop_enable_httpauth(spd->priv, FALSE);
-		gtk_widget_set_sensitive(spd->priv->selectFile, TRUE);
-	} else if(strstr(subscription_get_source(subscription), "://") != NULL) {
-		xmlURIPtr uri = xmlParseURI(BAD_CAST subscription_get_source(subscription));
-		xmlChar *parsedUrl;
-		if(uri) {
-			if(uri->user) {
-				gchar *user = uri->user;
-				gchar *pass = strstr(user, ":");
-				if(pass) {
-					pass[0] = '\0';
-					pass++;
-					gtk_entry_set_text(GTK_ENTRY(spd->priv->password), pass);
+	/* Source (only for feeds) */
+	if (SUBSCRIPTION_TYPE(subscription) == feed_get_subscription_type ()) {
+		if(subscription_get_source(subscription)[0] == '|') {
+			gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), &(subscription_get_source(subscription)[1]));
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->cmdRadio), TRUE);
+			ui_subscription_prop_enable_httpauth(spd->priv, FALSE);
+			gtk_widget_set_sensitive(spd->priv->selectFile, TRUE);
+		} else if(strstr(subscription_get_source(subscription), "://") != NULL) {
+			xmlURIPtr uri = xmlParseURI(BAD_CAST subscription_get_source(subscription));
+			xmlChar *parsedUrl;
+			if(uri) {
+				if(uri->user) {
+					gchar *user = uri->user;
+					gchar *pass = strstr(user, ":");
+					if(pass) {
+						pass[0] = '\0';
+						pass++;
+						gtk_entry_set_text(GTK_ENTRY(spd->priv->password), pass);
+					}
+					gtk_entry_set_text(GTK_ENTRY(spd->priv->username), user);
+					xmlFree(uri->user);
+					uri->user = NULL;
+					gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->authcheckbox), TRUE);
 				}
-				gtk_entry_set_text(GTK_ENTRY(spd->priv->username), user);
-				xmlFree(uri->user);
-				uri->user = NULL;
-				gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->authcheckbox), TRUE);
+				parsedUrl = xmlSaveUri(uri);
+				gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), parsedUrl);
+				xmlFree(parsedUrl);
+				xmlFreeURI(uri);
+			} else {
+				gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), subscription_get_source(subscription));
 			}
-			parsedUrl = xmlSaveUri(uri);
-			gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), parsedUrl);
-			xmlFree(parsedUrl);
-			xmlFreeURI(uri);
+			ui_subscription_prop_enable_httpauth(spd->priv, TRUE);
+			gtk_widget_set_sensitive(spd->priv->selectFile, FALSE);
 		} else {
+			/* File */
 			gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), subscription_get_source(subscription));
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->fileRadio), TRUE);
+			ui_subscription_prop_enable_httpauth(spd->priv, FALSE);
+			gtk_widget_set_sensitive(spd->priv->selectFile, TRUE);
 		}
-		ui_subscription_prop_enable_httpauth(spd->priv, TRUE);
-		gtk_widget_set_sensitive(spd->priv->selectFile, FALSE);
-	} else {
-		/* File */
-		gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), subscription_get_source(subscription));
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->fileRadio), TRUE);
-		ui_subscription_prop_enable_httpauth(spd->priv, FALSE);
-		gtk_widget_set_sensitive(spd->priv->selectFile, TRUE);
-	}
 
-	if(subscription_get_filter(subscription)) {
-		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "filterCheckbox")), TRUE);
-		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(spd->priv->dialog, "filterEntry")), subscription_get_filter(subscription));
+		if(subscription_get_filter(subscription)) {
+			gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(spd->priv->dialog, "filterCheckbox")), TRUE);
+			gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(spd->priv->dialog, "filterEntry")), subscription_get_filter(subscription));
+		}
 	}
 
 	/* Archive */
@@ -504,6 +510,13 @@ ui_subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "preventPopupCheck")), feed->preventPopup);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "markAsReadCheck")), feed->markAsRead);
 
+	/* Remove tabs we do not need... */
+	if (SUBSCRIPTION_TYPE(subscription) != feed_get_subscription_type ()) {
+		/* Remove "Allgemein", "Source" and "Download" tab */
+		gtk_notebook_remove_page (GTK_NOTEBOOK (liferea_dialog_lookup (spd->priv->dialog, "subscriptionPropNotebook")), 0);
+		gtk_notebook_remove_page (GTK_NOTEBOOK (liferea_dialog_lookup (spd->priv->dialog, "subscriptionPropNotebook")), 0);
+		gtk_notebook_remove_page (GTK_NOTEBOOK (liferea_dialog_lookup (spd->priv->dialog, "subscriptionPropNotebook")), 1);
+	}
 }
 
 static void
@@ -556,7 +569,7 @@ subscription_prop_dialog_new (subscriptionPtr subscription)
 	SubscriptionPropDialog *spd;
 	
 	spd = SUBSCRIPTION_PROP_DIALOG (g_object_new (SUBSCRIPTION_PROP_DIALOG_TYPE, NULL));
-	ui_subscription_prop_dialog_load(spd, subscription);
+	subscription_prop_dialog_load(spd, subscription);
 	return spd;
 }
 
