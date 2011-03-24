@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.5.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-04-29 21:52+0300\n"
-"PO-Revision-Date: 2010-06-29 00:18+0100\n"
+"PO-Revision-Date: 2011-03-24 21:47+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmail.com>\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
@@ -1836,7 +1836,7 @@ msgstr "Aufmerksamkeits-Übersicht"
 
 #: ../glade/liferea.glade.h:38
 msgid "Auto-_load item link in configured browser when selecting articles."
-msgstr "_Link beim Auswählen der Schlazeile automatisch öffnen."
+msgstr "_Link beim Auswählen der Schlagzeile automatisch öffnen."
 
 #: ../glade/liferea.glade.h:39
 msgid "Browser"
