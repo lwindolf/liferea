@@ -113,8 +113,8 @@ src/ui/ui_prefs.c
 src/ui/ui_prefs.h
 src/ui/ui_session.c
 src/ui/ui_session.h
-src/ui/ui_subscription.c
-src/ui/ui_subscription.h
+src/ui/subscription_dialog.c
+src/ui/subscription_dialog.h
 src/ui/browser_tabs.c
 src/ui/browser_tabs.h
 src/ui/ui_tray.c

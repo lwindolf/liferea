@@ -1,7 +1,7 @@
 /**
  * @file feedlist.c  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -37,7 +37,6 @@
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_node.h"
-#include "ui/ui_subscription.h"
 #include "ui/ui_tray.h"
 #include "fl_sources/node_source.h"
 

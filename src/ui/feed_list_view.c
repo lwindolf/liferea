@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.c  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  * 
@@ -36,10 +36,10 @@
 #include "vfolder.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_shell.h"
+#include "ui/subscription_dialog.h"
 #include "ui/ui_common.h"
 #include "ui/ui_dnd.h"
 #include "ui/ui_node.h"
-#include "ui/ui_subscription.h"
 #include "fl_sources/node_source.h"
 
 GtkTreeModel		*filter = NULL;

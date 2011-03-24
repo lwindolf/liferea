@@ -1,7 +1,7 @@
 /**
- * @file ui_subscription.h  default subscription dialogs for feed subscriptions
+ * @file subscription_dialog.h  property dialog for feed subscriptions
  *
- * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _UI_SUBSCRIPTION_H
-#define _UI_SUBSCRIPTION_H
+#ifndef _SUBSCRIPTION_DIALOG_H
+#define _SUBSCRIPTION_DIALOG_H
 
 #include <gtk/gtk.h>
 
@@ -61,7 +61,7 @@ GType subscription_prop_dialog_get_type	(void);
  *
  * @returns a properties dialog
  */
-SubscriptionPropDialog *ui_subscription_prop_dialog_new	(subscriptionPtr subscription);
+SubscriptionPropDialog *subscription_prop_dialog_new	(subscriptionPtr subscription);
 
 
 #define NEW_SUBSCRIPTION_DIALOG_TYPE		(new_subscription_dialog_get_type ())
@@ -118,7 +118,7 @@ GType simple_subscription_dialog_get_type (void);
  *
  * @returns dialog instance
  */
-SimpleSubscriptionDialog *ui_subscription_dialog_new (void);
+SimpleSubscriptionDialog *subscription_dialog_new (void);
 
 
 G_END_DECLS

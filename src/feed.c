@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  * 
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -38,7 +38,7 @@
 #include "ui/auth_dialog.h"
 #include "ui/icons.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_subscription.h"
+#include "ui/subscription_dialog.h"
 #include "ui/ui_node.h"
 #include "notification/notification.h"
 
@@ -367,14 +367,14 @@ feed_render (nodePtr node)
 static gboolean
 feed_add (void)
 {
-	ui_subscription_dialog_new ();
+	subscription_dialog_new ();
 	return TRUE;
 }
 
 static void
 feed_properties (nodePtr node)
 {
-	ui_subscription_prop_dialog_new (node->subscription);
+	subscription_prop_dialog_new (node->subscription);
 }
 
 static void

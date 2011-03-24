@@ -1,5 +1,5 @@
 /**
- * @file ui_subscription.c  default subscription dialogs for feed subscriptions
+ * @file subscription_dialog.c  property dialog for feed subscriptions
  *
  * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ui/ui_subscription.h"
+#include "ui/subscription_dialog.h"
 
 #include <libxml/uri.h>
 #include <string.h> 
@@ -551,7 +551,7 @@ subscription_prop_dialog_init (SubscriptionPropDialog *spd)
 }
 
 SubscriptionPropDialog *
-ui_subscription_prop_dialog_new (subscriptionPtr subscription) 
+subscription_prop_dialog_new (subscriptionPtr subscription) 
 {
 	SubscriptionPropDialog *spd;
 	
@@ -734,7 +734,7 @@ simple_subscription_dialog_init (SimpleSubscriptionDialog *ssd)
 }
 
 SimpleSubscriptionDialog *
-ui_subscription_dialog_new (void) 
+subscription_dialog_new (void) 
 {
 	SimpleSubscriptionDialog *ssd;
 	

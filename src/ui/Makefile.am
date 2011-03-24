@@ -23,6 +23,7 @@ libliui_a_SOURCES = \
 	rule_editor.c rule_editor.h \
 	search_dialog.c search_dialog.h \
 	search_folder_dialog.c search_folder_dialog.h \
+	subscription_dialog.c subscription_dialog.h \
 	ui_common.c ui_common.h \
 	ui_dnd.c ui_dnd.h \
 	ui_folder.c ui_folder.h \
@@ -30,6 +31,5 @@ libliui_a_SOURCES = \
 	ui_popup.c ui_popup.h \
 	ui_prefs.c ui_prefs.h \
 	ui_session.c ui_session.h \
-	ui_subscription.c ui_subscription.h \
 	ui_tray.c ui_tray.h \
 	ui_update.c ui_update.h 
