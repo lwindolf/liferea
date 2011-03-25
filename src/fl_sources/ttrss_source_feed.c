@@ -33,6 +33,8 @@
 
 #include "fl_sources/ttrss_source.h"
 
+
+
 static void
 ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {

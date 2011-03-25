@@ -18,9 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "google_source.h"
-#include <glib.h>
+#ifndef _GOOGLE_SOURCE_EDIT_H
+#define _GOOGLE_SOURCE_EDIT_H
 
+#include "google_source.h"
+
+#include <glib.h>
 
 /**
  * Process the waiting edits on the edit queue. Call this if the state of
@@ -34,24 +37,24 @@ void google_source_edit_process (GoogleSourcePtr gsource);
 /** Edit wrappers */
 
 /**
- * Mark the given item as read. An item is identified by the guid, and
- * the feed url to which it belongs.
+ * Mark the given item as read. 
  * 
  * @param gsource The GoogleSource structure 
  * @param guid   The guid of the item whose status is to be edited
  * @param feedUrl  The feedUrl of the feed containing the item.
  * @param newStatus The new read status of the item (TRUE for read)
  */
-void google_source_edit_mark_read (
-	GoogleSourcePtr gsource, 
-	const gchar* guid, 
-	const gchar* feedUrl, 
-	gboolean newStatus);
+void google_source_edit_mark_read (GoogleSourcePtr gsource, const gchar* guid, const gchar* feedUrl, gboolean newStatus);
 
-void google_source_edit_mark_starred (GoogleSourcePtr gsource, 
-				      const gchar *guid,
-				      const gchar *feedUrl,
-				      gboolean newStatus);
+/**
+ * Mark the given item as starred.
+ * 
+ * @param gsource The GoogleSource structure 
+ * @param guid   The guid of the item whose status is to be edited
+ * @param feedUrl  The feedUrl of the feed containing the item.
+ * @param newStatus The new read status of the item (TRUE for read)
+ */
+void google_source_edit_mark_starred (GoogleSourcePtr gsource, const gchar *guid, const gchar *feedUrl, gboolean newStatus);
 
 
 /**
@@ -79,3 +82,5 @@ void google_source_edit_remove_subscription (GoogleSourcePtr gsource, const gcha
  * @param guid the guid of the item
  */
 gboolean google_source_edit_is_in_queue (GoogleSourcePtr gsource, const gchar* guid);
+
+#endif

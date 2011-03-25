@@ -86,26 +86,6 @@ google_source_xml_unlink_node (xmlNodePtr node, gpointer data)
 	xmlFreeNode (node);
 }
 
-void 
-google_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
-{
-	const gchar* sourceUrl = metadata_list_get (item->metadata, "GoogleBroadcastOrigFeed");
-	if (!sourceUrl) sourceUrl = node->subscription->source;
-	nodePtr root = node_source_root_from_node (node);
-	google_source_edit_mark_starred ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
-	item_flag_state_changed(item, newStatus);
-}
-void
-google_source_item_mark_read (nodePtr node, itemPtr item, 
-                              gboolean newStatus)
-{
-	const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
-	if (!sourceUrl) sourceUrl = node->subscription->source;
-	nodePtr root = node_source_root_from_node (node);
-	google_source_edit_mark_read ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
-	item_read_state_changed(item, newStatus);
-}
-
 static void
 google_source_set_orig_source(const xmlNodePtr node, gpointer userdata)
 {
@@ -189,6 +169,7 @@ google_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable
 	itemset_free (itemset);
 	return NULL;
 }
+
 static void
 google_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
 {
@@ -322,8 +303,6 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 	
 	debug_end_measurement (DEBUG_UPDATE, "time taken to update statuses");
 }
-
-
 
 static gboolean
 google_feed_subscription_prepare_update_request (subscriptionPtr subscription, 

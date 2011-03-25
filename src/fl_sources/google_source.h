@@ -1,7 +1,7 @@
 /**
  * @file google_source.h Google Reader feed list source support
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,8 +45,7 @@ typedef struct GoogleSource {
 	GTimeVal        lastQuickUpdate;
 } *GoogleSourcePtr;
 
- 
-enum { 
+ enum { 
 	GOOGLE_SOURCE_STATE_NONE = 0,
 	GOOGLE_SOURCE_STATE_IN_PROGRESS,
 	GOOGLE_SOURCE_STATE_ACTIVE
@@ -177,8 +176,6 @@ enum  {
  */
 #define GOOGLE_READER_EDIT_TAG_ADD_TAG_FOR_LINK "i=%s&s=user%2F-%2Fsource%2Fcom.google%2Flink&a=%s&r=%s&ac=edit-tags&T=%s&async=true"
 
-
-
 /** A set of tags (states) defined by Google reader */
 
 #define GOOGLE_READER_TAG_KEPT_UNREAD          "user/-/state/com.google/kept-unread"
@@ -186,14 +183,11 @@ enum  {
 #define GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD "user/-/state/com.google/tracking-kept-unread"
 #define GOOGLE_READER_TAG_STARRED              "user/-/state/com.google/starred"
 
+/** Interval (in seconds) for doing a Quick Update: 10min */
+#define GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL 600
 
 /**
- * Interval (in seconds) for doing a Quick Update. 
- */
-#define GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL 600  /* 10 minutes */
-
-/**
- * Returns Google Reader source type implementation info.
+ * @returns Google Reader source type implementation info.
  */
 nodeSourceTypePtr google_source_get_type (void);
 
@@ -201,33 +195,14 @@ extern struct subscriptionType googleSourceFeedSubscriptionType;
 extern struct subscriptionType googleSourceOpmlSubscriptionType;
 
 /**
- * Set the flagged state on an item.
+ * Find a child node with the given feed source URL.
  *
- * @param node The node which contains the item
- * @param item The item to whose status needs to be changed
- * @param newStatus TRUE to mark the item as read, FALSE to mark as unread
- */
-void 
-google_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus);
-
-/**
- * Mark an item as read.
+ * @param gsource	GoogleSource
+ * @param source	a feed source URL to search
  *
- * @param node The node which contains the item
- * @param item The item to whose status needs to be changed
- * @param newStatus TRUE to mark the item as read, FALSE to mark as unread
+ * @returns a node (or NULL)
  */
-void 
-google_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus);
-
-/**
- * Find a child node with the given source URL.
- *
- * @param gsource pointer to GoogleSource to access.
- * @param source  the source URL to search
- */
-nodePtr
-google_source_get_node_from_source (GoogleSourcePtr gsource, const gchar* source);
+nodePtr google_source_get_node_from_source (GoogleSourcePtr gsource, const gchar* source);
 
 /**
  * Tries to update the entire source quickly, by updating only those feeds
@@ -235,11 +210,11 @@ google_source_get_node_from_source (GoogleSourcePtr gsource, const gchar* source
  * internal function.
  *
  * @param data A pointer to a node id of the source. This pointer will
- *             be g_free'd if the update fails and the function will return
- *             FALSE.  
+ *             be g_free'd if the update fails.
+ *
+ * @returns FALSE on update failure
  */
-gboolean
-google_source_quick_update_timeout (gpointer gsource) ;
+gboolean google_source_quick_update_timeout (gpointer gsource);
 
 /**
  * Migrate a google source child-node from a Liferea 1.4 style read-only
@@ -247,9 +222,14 @@ google_source_quick_update_timeout (gpointer gsource) ;
  *
  * @param node The node to migrate (not the nodeSource!)
  */
-void
-google_source_migrate_node(nodePtr node);
+void google_source_migrate_node (nodePtr node);
 
+/**
+ * Perform login for the given Google source.
+ *
+ * @param gsource	a GoogleSource
+ * @param flags		network request flags
+ */
 void google_source_login (GoogleSourcePtr gsource, guint32 flags);
 
 #endif

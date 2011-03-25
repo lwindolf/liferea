@@ -30,6 +30,7 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "item_state.h"
+#include "metadata.h"
 #include "node.h"
 #include "subscription.h"
 #include "update.h"
@@ -314,6 +315,26 @@ google_source_cleanup (nodePtr node)
 	GoogleSourcePtr reader = (GoogleSourcePtr) node->data;
 	google_source_free(reader);
 	node->data = NULL ;
+}
+
+static void 
+google_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
+{
+	const gchar* sourceUrl = metadata_list_get (item->metadata, "GoogleBroadcastOrigFeed");
+	if (!sourceUrl) sourceUrl = node->subscription->source;
+	nodePtr root = node_source_root_from_node (node);
+	google_source_edit_mark_starred ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
+	item_flag_state_changed(item, newStatus);
+}
+
+static void
+google_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
+{
+	const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
+	if (!sourceUrl) sourceUrl = node->subscription->source;
+	nodePtr root = node_source_root_from_node (node);
+	google_source_edit_mark_read ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
+	item_read_state_changed(item, newStatus);
 }
 
 /* node source type definition */
