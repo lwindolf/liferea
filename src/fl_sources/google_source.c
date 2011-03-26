@@ -176,7 +176,6 @@ google_source_auto_update (nodePtr node)
 
 	g_get_current_time (&now);
 	
-	
 	/* do daily updates for the feed list and feed updates according to the default interval */
 	if (node->subscription->updateState->lastPoll.tv_sec + GOOGLE_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
 		google_source_update (node);

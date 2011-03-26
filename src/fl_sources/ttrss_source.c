@@ -40,6 +40,8 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 
+// FIXME: Avoid doing requests when we are not logged in yet!
+
 /** default tt-rss subscription list update interval = once a day */
 #define TTRSS_SOURCE_UPDATE_INTERVAL 60*60*24
 
@@ -108,8 +110,9 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 		if (!(flags & TTRSS_SOURCE_UPDATE_ONLY_LOGIN))
 			subscription_update (subscription, flags);
 
-		/* process any edits waiting in queue */
-		// FIXME: ttrss_source_edit_process (source);
+		/* FIXME: Check for remote update daemon running and warn
+		   user if it is not as we do not want to run remote update
+		   ourselves! */
 	}
 }
 
@@ -167,7 +170,6 @@ ttrss_source_auto_update (nodePtr node)
 	g_get_current_time (&now);
 
 	ttrss_source_update (node);
-	// FIXME: ttrss_source_edit_process (source);
 }
 
 static void
