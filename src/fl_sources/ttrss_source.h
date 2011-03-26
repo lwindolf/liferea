@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.h tt-rss feed list source support
  * 
- * Copyright (C) 2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,6 @@ typedef struct ttrssSource {
 	GQueue          *actionQueue;
 	int             loginState; /**< The current login state */
 } *ttrssSourcePtr;
-
  
 enum { 
 	TTRSS_SOURCE_STATE_NONE = 0,
@@ -87,6 +86,24 @@ enum  {
  * @returns JSON feed list
  */
 #define TTRSS_HEADLINES_URL "%s/api/?op=getHeadlines&sid=%s&feed_id=%s&limit=%d&show_content=true&view_mode=all_articles"
+
+/**
+ * Toggle item flag state.
+ *
+ * @param sid		session id
+ * @param item_id	tt-rss item id
+ * @param mode		0 = unflagged, 1 = flagged
+ */
+#define TTRSS_UPDATE_ITEM_FLAG "%s/api/?op=updateArticle&sid=%s&article_ids=%s&mode=%d&field=0"
+
+/**
+ * Toggle item read state.
+ *
+ * @param sid		session id
+ * @param item_id	tt-rss item id
+ * @param mode		0 = read, 1 = unread
+ */
+#define TTRSS_UPDATE_ITEM_UNREAD "%s/api/?op=updateArticle&sid=%s&article_ids=%s&mode=%d&field=2"
 
 /**
  * Returns ttss source type implementation info.

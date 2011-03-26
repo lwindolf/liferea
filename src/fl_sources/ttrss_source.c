@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.c  tt-rss feed list source support
  * 
- * Copyright (C) 2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include "common.h"
 #include "debug.h"
@@ -42,7 +43,7 @@
 /** default tt-rss subscription list update interval = once a day */
 #define TTRSS_SOURCE_UPDATE_INTERVAL 60*60*24
 
-/** create a google source with given node as root */ 
+/** create a tt-rss source with given node as root */ 
 static ttrssSourcePtr
 ttrss_source_new (nodePtr node) 
 {
@@ -224,6 +225,7 @@ ttrss_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 	
 	node_set_title (child, _("New Subscription"));
 
+	g_warning("FIXME: ttrss_source_add_subscription(): Implement me!");
 	//ttrss_source_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
 	
 	debug_exit ("ttrss_source_add_subscription");
@@ -291,24 +293,52 @@ ttrss_source_cleanup (nodePtr node)
 	node->data = NULL;
 }
 
+static void
+ttrss_source_remote_update_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+{
+	debug2 (DEBUG_UPDATE, "tt-rss result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+}
+
+/* FIXME: Only simple synchronous item change requests... Get async! */
+
 static void 
 ttrss_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 {
-	/*const gchar* sourceUrl = metadata_list_get (item->metadata, "GoogleBroadcastOrigFeed");
-	if (!sourceUrl) sourceUrl = node->subscription->source;
-	nodePtr root = node_source_root_from_node (node);
-	google_source_edit_mark_starred ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
-	item_flag_state_changed(item, newStatus);*/
+	nodePtr			root = node_source_root_from_node (node);
+	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
+	updateRequestPtr	request;
+
+	request = update_request_new ();
+	request->options = update_options_copy (root->subscription->updateOptions);
+
+	update_request_set_source (request, g_strdup_printf (TTRSS_UPDATE_ITEM_FLAG,
+	                                       metadata_list_get (root->subscription->metadata, "ttrss-url"),
+	                                       source->session_id, 
+	                                       item_get_id (item), newStatus?1:0));
+
+	update_execute_request (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
+
+	item_flag_state_changed (item, newStatus);
 }
 
 static void
 ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 {
-	/*const gchar* sourceUrl = metadata_list_get(item->metadata, "GoogleBroadcastOrigFeed");
-	if (!sourceUrl) sourceUrl = node->subscription->source;
-	nodePtr root = node_source_root_from_node (node);
-	google_source_edit_mark_read ((GoogleSourcePtr)root->data, item->sourceId, sourceUrl, newStatus);
-	item_read_state_changed(item, newStatus);*/
+	nodePtr			root = node_source_root_from_node (node);
+	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
+	updateRequestPtr	request;
+
+	request = update_request_new ();
+	request->options = update_options_copy (root->subscription->updateOptions);
+
+	update_request_set_source (request, g_strdup_printf (TTRSS_UPDATE_ITEM_UNREAD,
+	                                       metadata_list_get (root->subscription->metadata, "ttrss-url"),
+	                                       source->session_id, 
+	                                       item_get_id (item), newStatus?0:1));
+
+	update_execute_request (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
+
+	item_read_state_changed (item, newStatus);
 }
 
 /* node source type definition */
