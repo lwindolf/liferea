@@ -102,6 +102,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 		}
 	} else {
 		g_warning ("tt-rss login failed: HTTP %d\n", result->httpstatus);
+		source->root->available = FALSE;
 	}
 
 	if (source->session_id) {	

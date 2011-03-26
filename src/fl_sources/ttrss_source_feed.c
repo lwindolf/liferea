@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source_feed.c  tt-rss feed subscription routines
  * 
- * Copyright (C) 2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,8 +36,6 @@
 static void
 ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
-	//ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
-	
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
 
@@ -95,9 +93,16 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 
 				feedlist_node_was_updated (subscription->node, newCount);
 			}
+
+			subscription->node->available = TRUE;
+		} else {
+			subscription->node->available = FALSE;
+
+			g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by tt-rss API!"));
 		}
+	} else {
+		subscription->node->available = FALSE;
 	}
-	g_warning ("FIXME: ttrss_feed_subscription_process_update_result(): Implement me!");
 }
 
 static gboolean
