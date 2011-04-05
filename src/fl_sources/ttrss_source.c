@@ -71,6 +71,44 @@ ttrss_source_free (ttrssSourcePtr source)
 }
 
 static void
+ttrss_source_get_config_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+{
+	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
+	subscriptionPtr subscription = source->root->subscription;
+
+	debug1 (DEBUG_UPDATE, "tt-rss getConfig processing... >>>%s<<<", result->data);
+
+	/* We expect something like:
+
+		 {"icons_dir":"icons","icons_url":"icons","daemon_is_running":true,"num_feeds":71}
+
+	   And are only interested in the "daemon_is_running" value... */
+	
+	if (result->data && result->httpstatus == 200) {
+		JsonParser *parser = json_parser_new ();
+
+		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
+			JsonNode *node = json_parser_get_root (parser);
+			const gchar *result = json_get_string (node, "daemon_is_running");
+			if (result && g_str_equal ("true", result)) {
+				source->selfUpdating = TRUE;
+				debug0 (DEBUG_UPDATE, "This tt-rss source is self-updating!");
+			} else {
+				debug0 (DEBUG_UPDATE, "This tt-rss source is not self-updating!");
+			}
+
+			g_object_unref (parser);
+		}
+	}
+
+	/* now that we are authenticated and know the config trigger updating to start data retrieval */
+	source->loginState = TTRSS_SOURCE_STATE_ACTIVE;
+
+	if (!(flags & TTRSS_SOURCE_UPDATE_ONLY_LOGIN) && !source->selfUpdating)
+		subscription_update (subscription, flags);
+}
+
+static void
 ttrss_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
 	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
@@ -105,15 +143,17 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 		source->root->available = FALSE;
 	}
 
-	if (source->session_id) {	
-		/* now that we are authenticated trigger updating to start data retrieval */
-		source->loginState = TTRSS_SOURCE_STATE_ACTIVE;
-		if (!(flags & TTRSS_SOURCE_UPDATE_ONLY_LOGIN))
-			subscription_update (subscription, flags);
+	if (source->session_id) {
+		updateRequestPtr request;
 
-		/* FIXME: Check for remote update daemon running and warn
-		   user if it is not as we do not want to run remote update
-		   ourselves! */
+		/* Check for remote update daemon running. This needs to be known
+		   before we start updating to decide wether to actively update
+		   remote feeds or just fetch them. */
+		request = update_request_new ();
+		request->options = update_options_copy (subscription->updateOptions);
+
+		update_request_set_source (request, g_strdup_printf (TTRSS_GET_CONFIG, metadata_list_get (subscription->metadata, "ttrss-url"), source->session_id));
+		update_execute_request (source, request, ttrss_source_get_config_cb, source, flags);
 	}
 }
 

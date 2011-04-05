@@ -27,10 +27,11 @@
  * A nodeSource specific for tt-rss
  */
 typedef struct ttrssSource {
-	nodePtr	        root;	/**< the root node in the feed list */
-	gchar           *session_id; /**< the tt-rss session id */
-	GQueue          *actionQueue;
-	int             loginState; /**< The current login state */
+	nodePtr		root;		/**< the root node in the feed list */
+	gchar		*session_id;	/**< the tt-rss session id */
+	GQueue		*actionQueue;
+	gint		loginState;	/**< The current login state */
+	gboolean	selfUpdating;	/**< True if remote updating daemon is running */
 } *ttrssSourcePtr;
  
 enum { 
@@ -104,6 +105,13 @@ enum  {
  * @param mode		0 = read, 1 = unread
  */
 #define TTRSS_UPDATE_ITEM_UNREAD "%s/api/?op=updateArticle&sid=%s&article_ids=%s&mode=%d&field=2"
+
+/**
+ * Determine server settings.
+ *
+ * @param sid		session id
+ */
+#define TTRSS_GET_CONFIG "%s/api/?op=getConfig&sid=%s"
 
 /**
  * Returns ttss source type implementation info.

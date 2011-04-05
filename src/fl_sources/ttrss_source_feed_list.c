@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source_feed_list.c  tt-rss feed list handling routines.
  * 
- * Copyright (C) 2010  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2011  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -183,6 +183,9 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct 
 		return FALSE;
 	}
 	debug1 (DEBUG_UPDATE, "updating tt-rss subscription (node id %s)", subscription->node->id);
+
+	// FIXME: if (!source->selfUpdating) trigger remote update first!
+
 	update_request_set_source (request, g_strdup_printf (TTRSS_SUBSCRIPTION_LIST_URL, metadata_list_get (subscription->metadata, "ttrss-url"), source->session_id));
 	
 	return TRUE;
