@@ -2,7 +2,9 @@
 
 	Version 1.7.6 (Unstable)
 
-	*
+	* Fixes SF #3102116: MIME type definitions not saved.
+	  (reported by Alexander Gnodtke)
+
 
 2011-04-14   Lars Lindner <lars.lindner@gmail.com>
 

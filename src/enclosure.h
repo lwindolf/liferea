@@ -1,7 +1,7 @@
 /**
  * @file enclosure.h enclosure/podcast support
  *
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -103,6 +103,11 @@ void enclosure_mime_type_add (encTypePtr type);
  * @param type	the definition to remove
  */
 void enclosure_mime_type_remove (encTypePtr type);
+
+/**
+ * Save all MIME type definitions.
+ */
+void enclosure_mime_types_save (void);
 
 /** 
  * Downloads a given enclosure URL into a file

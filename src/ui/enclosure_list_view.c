@@ -354,6 +354,8 @@ on_adddialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		etp->remote = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enc_remote_open_btn")));
 		if (new)
 			enclosure_mime_type_add (etp);
+		else
+			enclosure_mime_types_save ();
 
 		/* now we have ensured an existing type configuration and
 		   can launch the URL for which we configured the type */

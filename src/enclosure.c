@@ -1,7 +1,7 @@
 /**
  * @file enclosure.c enclosures/podcast support
  *
- * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -184,7 +184,7 @@ enclosure_mime_types_load (void)
 	g_free (filename);
 }
 
-static void
+void
 enclosure_mime_types_save (void)
 {
 	xmlDocPtr	doc;
@@ -210,7 +210,7 @@ enclosure_mime_types_save (void)
 	}
 	
 	xmlDocSetRootElement (doc, root);
-	
+
 	filename = g_build_filename (common_get_cache_path (), "mime.xml", NULL);
 	if (-1 == xmlSaveFormatFileEnc (filename, doc, NULL, 1))
 		g_warning ("Could not save to enclosure type config file!");
