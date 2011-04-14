@@ -182,4 +182,5 @@ src/webkit/webkit.c
 [type: gettext/glade]glade/new_subscription.ui
 [type: gettext/glade]glade/node_source.ui
 [type: gettext/glade]glade/opml_source.ui
+[type: gettext/glade]glade/ttrss_source.ui
 [type: gettext/glade]glade/simple_subscription.ui
