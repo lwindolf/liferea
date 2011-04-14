@@ -17,7 +17,7 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
 			   google_source_opml.c google_source_opml.h \
                            opml_source.c opml_source.h \
 			   ttrss_source.c ttrss_source.h  \
-			   ttrss_source_feed.c ttrss_source_feed.h \
+			   ttrss_source_feed.c \
 			   ttrss_source_feed_list.c ttrss_source_feed_list.h 
 
 libliflsources_a_CFLAGS = $(PACKAGE_FLAGS)
