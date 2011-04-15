@@ -1,7 +1,7 @@
 /**
  * @file social.c  social networking integration
  * 
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,6 +107,7 @@ social_init (void)
 	social_register_bookmark_site ("CiteUlike",	"http://www.citeulike.org/posturl?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("del.icio.us",	"http://del.icio.us/post?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("digg",		"http://digg.com/submit?phase=2&url=%s", FALSE, FALSE);
+	social_register_bookmark_site ("diigo",		"http://www.diigo.com/post?url=%s&title=%s&desc=", TRUE, FALSE);
 	social_register_bookmark_site ("ekstreme",	"http://ekstreme.com/socializer/?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Facebook",	"http://www.facebook.com/share.php?u=%s", FALSE, FALSE);
 	social_register_bookmark_site ("FeedMarker",	"http://www.feedmarker.com/admin.php?do=bookmarklet_mark&url=%s&title=%s", TRUE, FALSE);
