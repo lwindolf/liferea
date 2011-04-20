@@ -1,7 +1,7 @@
 /**
  * @file ui_popup.h popup menus
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -67,5 +67,9 @@ gboolean
 on_mainfeedlist_button_press_event     (GtkWidget       *widget,
                                         GdkEventButton  *event,
                                         gpointer         user_data);
+
+gboolean
+on_mainfeedlist_popup_menu (GtkWidget *widget,
+                            gpointer   user_data);
 
 #endif

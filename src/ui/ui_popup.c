@@ -331,10 +331,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 	ui_popup_menu (menu, button, activate_time);
 }
 
-/*------------------------------------------------------------------------------*/
-/* mouse button handler 							*/
-/*------------------------------------------------------------------------------*/
-
+/* mouse button handler */
 gboolean
 on_mainfeedlist_button_press_event (GtkWidget *widget,
                                     GdkEventButton *event,
@@ -349,7 +346,6 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 	nodePtr		node = NULL;
 
 	treeview = liferea_shell_lookup ("feedlist");
-	g_assert (treeview);
 
 	if (event->type != GDK_BUTTON_PRESS)
 		return FALSE;
@@ -370,7 +366,6 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 	/* apply action */
 	switch (eb->button) {
 		default:
-			/* Shouldn't happen... */
 			return FALSE;
 			break;
 		case 2:
@@ -389,9 +384,35 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 				node = feedlist_get_root ();
 			}
 
+			gtk_widget_grab_focus (widget);
 			ui_popup_node_menu (node, selected, eb->button, eb->time);
 			break;
 	}
 			
+	return TRUE;
+}
+
+/* popup key handler */
+gboolean
+on_mainfeedlist_popup_menu (GtkWidget *widget,
+                            gpointer   user_data)
+{
+	GtkWidget	*treeview;
+	GtkTreeSelection *selection;
+	GtkTreeModel	*model;
+	GtkTreeIter	iter;
+	gboolean	selected = TRUE;
+	nodePtr		node = NULL;
+
+	treeview = liferea_shell_lookup ("feedlist");
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
+	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+		gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
+	} else {
+		selected = FALSE;
+		node = feedlist_get_root ();
+	}
+
+	ui_popup_node_menu (node, selected, 3, gtk_get_current_event_time ());
 	return TRUE;
 }

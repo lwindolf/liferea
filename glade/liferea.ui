@@ -66,6 +66,7 @@
                     <property name="headers_visible">False</property>
                     <property name="reorderable">True</property>
                     <signal name="button_press_event" handler="on_mainfeedlist_button_press_event"/>
+                    <signal name="popup_menu" handler="on_mainfeedlist_popup_menu"/>
                   </object>
                 </child>
               </object>
