@@ -185,6 +185,8 @@ on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 struct BrowserTabsPrivate {
 	GtkNotebook	*notebook;
+
+	GtkWidget	*headlines;	/**< widget of the headlines tab */
 	
 	GSList		*list;		/**< tabInfo structures for all tabs */
 };
@@ -246,7 +248,8 @@ browser_tabs_create (GtkNotebook *notebook)
 	g_object_new (BROWSER_TABS_TYPE, NULL);
 	
 	tabs->priv->notebook = notebook;
-	
+	tabs->priv->headlines = gtk_notebook_get_nth_page (notebook, 0);
+
 	gtk_notebook_set_show_tabs (tabs->priv->notebook, FALSE);
 	
 	return tabs;
@@ -405,7 +408,8 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	g_signal_connect (gtk_notebook_get_nth_page (tabs->priv->notebook, i), 
 	                  "key-press-event", G_CALLBACK (on_tab_key_press), (gpointer)tab);
 	gtk_notebook_set_show_tabs (tabs->priv->notebook, TRUE);
-	
+	gtk_notebook_set_tab_reorderable (tabs->priv->notebook, tab->widget, TRUE);	
+		
 	if (activate && (i != -1))
 		gtk_notebook_set_current_page (tabs->priv->notebook, i);
 	 
@@ -419,7 +423,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 void
 browser_tabs_show_headlines (void)
 {
-	gtk_notebook_set_current_page (tabs->priv->notebook, 0);
+	gtk_notebook_set_current_page (tabs->priv->notebook, gtk_notebook_page_num (tabs->priv->notebook, tabs->priv->headlines));
 }
 
 LifereaHtmlView *
