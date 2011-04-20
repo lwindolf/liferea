@@ -7,6 +7,7 @@
 	* Merges SF #3273050: Added diggio bookmarking option.	
 	  (patch by dannoffs)
 	* Allow reordering browser tabs.
+	* Support popup menu key in feed/item/enclosure tree view.
 
 	* Updated Polish translation (Myrda Wojciech)
 

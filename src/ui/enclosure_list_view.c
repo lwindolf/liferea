@@ -117,6 +117,23 @@ on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpoi
 }
 
 static gboolean
+on_enclosure_list_popup_menu (GtkWidget *widget, gpointer user_data)
+{
+	GtkTreeView		*treeview = GTK_TREE_VIEW (widget);
+	GtkTreeModel		*model;
+	GtkTreeIter		iter;
+
+	if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter)) {
+		enclosurePtr enclosure;	
+		gtk_tree_model_get (model, &iter, ES_PTR, &enclosure, -1);
+		ui_popup_enclosure_menu (enclosure, 3, 0);
+		return TRUE;
+	}
+	
+	return FALSE;
+}
+
+static gboolean
 on_enclosure_list_activate (GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
 	enclosurePtr	enclosure;
@@ -186,11 +203,9 @@ enclosure_list_view_new ()
 	
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (elv->priv->treeview), FALSE);
 
-	g_signal_connect ((gpointer)elv->priv->treeview, "button_press_event",
-	                  G_CALLBACK (on_enclosure_list_button_press), (gpointer)elv);
-			  
-	g_signal_connect ((gpointer)elv->priv->treeview, "row-activated",
-	                  G_CALLBACK (on_enclosure_list_activate), (gpointer)elv);
+	g_signal_connect (G_OBJECT (elv->priv->treeview), "button_press_event", G_CALLBACK (on_enclosure_list_button_press), (gpointer)elv);
+	g_signal_connect (G_OBJECT (elv->priv->treeview), "row-activated", G_CALLBACK (on_enclosure_list_activate), (gpointer)elv);
+	g_signal_connect (G_OBJECT (elv->priv->treeview), "popup_menu", G_CALLBACK (on_enclosure_list_popup_menu), (gpointer)elv);
 
 	g_signal_connect_object (elv->priv->container, "destroy", G_CALLBACK (enclosure_list_view_destroy_cb), elv, 0);
 
