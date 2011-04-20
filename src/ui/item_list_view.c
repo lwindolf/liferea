@@ -582,8 +582,11 @@ item_list_view_create (GtkWidget *window)
 	g_object_set (headline_column, "resizable", TRUE, NULL);
 	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
-	/* And connect signals */	
-	g_signal_connect (G_OBJECT (ilv->priv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), NULL);
+	/* And connect signals */
+	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
+	g_signal_connect (G_OBJECT (ilv->priv->treeview), "row_activated", G_CALLBACK (on_Itemlist_row_activated), ilv);
+	g_signal_connect (G_OBJECT (ilv->priv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), ilv);
+
 	gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->priv->treeview), TRUE);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "query-tooltip", G_CALLBACK (on_item_list_view_query_tooltip), headline_column);
 
@@ -592,10 +595,6 @@ item_list_view_create (GtkWidget *window)
 	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
 	g_signal_connect (G_OBJECT (select), "changed",
 	                  G_CALLBACK (on_itemlist_selection_changed), ilv);
-	g_signal_connect ((gpointer)ilv->priv->treeview, "button_press_event",
-	                  G_CALLBACK (on_item_list_view_button_press_event), ilv);
-	g_signal_connect ((gpointer)ilv->priv->treeview, "row_activated",
-	                  G_CALLBACK (on_Itemlist_row_activated), ilv);
 		  
 	return ilv;
 }
