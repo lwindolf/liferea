@@ -1,7 +1,7 @@
 /**
  * @file ui_popup.c popup menus
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -357,14 +357,14 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 	eb = (GdkEventButton*)event;
 
 	/* determine node */	
-	if (!gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (treeview), event->x, event->y, &path, NULL, NULL, NULL)) {
-		selected = FALSE;
-		node = feedlist_get_root ();
-	} else {
+	if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (treeview), event->x, event->y, &path, NULL, NULL, NULL)) {
 		model = gtk_tree_view_get_model (GTK_TREE_VIEW (treeview));
 		gtk_tree_model_get_iter (model, &iter, path);
 		gtk_tree_path_free (path);
 		gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
+	} else {
+		selected = FALSE;
+		node = feedlist_get_root ();
 	}
 	
 	/* apply action */
