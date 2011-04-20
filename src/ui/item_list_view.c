@@ -509,6 +509,23 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 	return result;
 }
 
+static gboolean
+on_item_list_view_popup_menu (GtkWidget *widget, gpointer user_data)
+{
+	GtkTreeView	*treeview = GTK_TREE_VIEW (widget);
+	GtkTreeModel	*model;
+	GtkTreeIter	iter;
+
+	if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter)) {
+		itemPtr item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
+		ui_popup_item_menu (item, 3, 0);
+		item_unload (item);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
 GtkTreeView *
 item_list_view_get_widget (ItemListView *ilv)
 {
@@ -586,6 +603,7 @@ item_list_view_create (GtkWidget *window)
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "row_activated", G_CALLBACK (on_Itemlist_row_activated), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), ilv);
+	g_signal_connect (G_OBJECT (ilv->priv->treeview), "popup_menu", G_CALLBACK (on_item_list_view_popup_menu), ilv);
 
 	gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->priv->treeview), TRUE);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "query-tooltip", G_CALLBACK (on_item_list_view_query_tooltip), headline_column);
