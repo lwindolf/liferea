@@ -105,10 +105,10 @@ src/ui/item_list_view.c
 src/ui/item_list_view.h
 src/ui/liferea_shell.c
 src/ui/liferea_shell.h
+src/ui/popup_menu.c
+src/ui/popup_menu.h
 src/ui/ui_node.c
 src/ui/ui_node.h
-src/ui/ui_popup.c
-src/ui/ui_popup.h
 src/ui/ui_prefs.c
 src/ui/ui_prefs.h
 src/ui/ui_session.c

@@ -29,7 +29,7 @@
 #include "item.h"
 #include "metadata.h"
 #include "ui/liferea_dialog.h"
-#include "ui/ui_popup.h"
+#include "ui/popup_menu.h"
 #include "ui/ui_prefs.h"
 
 /* enclosure list view implementation */

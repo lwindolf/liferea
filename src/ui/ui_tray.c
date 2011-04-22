@@ -1,7 +1,7 @@
 /**
  * @file ui_tray.c tray icon handling
  * 
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
@@ -31,7 +31,7 @@
 #include "net_monitor.h"
 #include "ui/liferea_shell.h"
 #include "ui/icons.h"
-#include "ui/ui_popup.h"
+#include "ui/popup_menu.h"
 #include "ui/ui_tray.h"
 
 // FIXME: determine this from Pango or Cairo somehow...
