@@ -20,13 +20,30 @@
 
 #include "json.h"
 
+JsonNode *
+json_get_node (JsonNode *node, const gchar *keyName)
+{
+	JsonObject *obj;
+	JsonNode *key;
+	
+	obj = json_node_get_object (node);
+	if (!obj)
+		return NULL;
+		
+	key = json_object_get_member (obj, keyName);
+	if (!key)
+		return NULL;
+	
+	return key;
+}
+
 const gchar *
 json_get_string (JsonNode *node, const gchar *keyName)
 {
 	JsonObject *obj;
 	JsonNode *key;
 	
-	obj = json_node_get_object(node);
+	obj = json_node_get_object (node);
 	if (!obj)
 		return NULL;
 		
@@ -43,7 +60,7 @@ json_get_int (JsonNode *node, const gchar *keyName)
 	JsonObject *obj;
 	JsonNode *key;
 	
-	obj = json_node_get_object(node);
+	obj = json_node_get_object (node);
 	if (!obj)
 		return 0;
 		
@@ -60,7 +77,7 @@ json_get_bool (JsonNode *node, const gchar *keyName)
 	JsonObject *obj;
 	JsonNode *key;
 	
-	obj = json_node_get_object(node);
+	obj = json_node_get_object (node);
 	if (!obj)
 		return FALSE;
 		

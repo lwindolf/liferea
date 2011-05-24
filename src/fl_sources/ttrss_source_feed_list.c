@@ -90,7 +90,7 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 		JsonParser	*parser = json_parser_new ();
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
-			JsonArray	*array = json_node_get_array (json_parser_get_root (parser));
+			JsonArray	*array = json_node_get_array (json_get_node(json_parser_get_root (parser), "content"));
 			GList		*iter = json_array_get_elements (array);
 			GSList		*siter;
 		

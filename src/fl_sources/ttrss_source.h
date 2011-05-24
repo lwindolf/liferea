@@ -75,7 +75,7 @@ enum  {
  *
  * @returns JSON feed list
  */
-#define TTRSS_SUBSCRIPTION_LIST_URL "%s/api/?op=getFeeds&sid=%s"
+#define TTRSS_SUBSCRIPTION_LIST_URL "%s/api/?op=getFeeds&sid=%s&cat_id=-3"
 
 /**
  * Fetch tt-rss headlines for a given feed.

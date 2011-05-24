@@ -8,6 +8,8 @@
 	  (patch by dannoffs)
 	* Allow reordering browser tabs.
 	* Support popup menu key in feed/item/enclosure tree view.
+	* Raise tt-rss dependency to 1.5
+	  (patch by Paulo Schreiner)
 
 	* Updated Polish translation (Myrda Wojciech)
 

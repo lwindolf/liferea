@@ -25,6 +25,16 @@
 #include <json-glib/json-glib.h>
 
 /**
+ * Query a simple json object node for a given subnode.
+ *
+ * @param node   the Json node to check
+ * @param keyName   the name of the subnode
+ *
+ * @returns subnode (or NULL)
+ */
+JsonNode *json_get_node (JsonNode *node, const gchar *keyName);
+
+/**
  * Query a simple json object node for a given string key.
  *
  * @param obj   the Json node to check

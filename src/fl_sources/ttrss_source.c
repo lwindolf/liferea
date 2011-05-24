@@ -127,11 +127,11 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 			if (json_get_string (node, "error"))
 				g_warning ("tt-rss login failed: error '%s'!\n", json_get_string (node, "error"));
 			
-			source->session_id = g_strdup (json_get_string (node, "session_id"));
+			source->session_id = g_strdup (json_get_string (json_get_node (node, "content"), "session_id"));
 			if (source->session_id) {
 				debug1 (DEBUG_UPDATE, "Found session_id: >>>%s<<<!\n", source->session_id);
 			} else {
-				g_warning ("No tt-rss session_id found in response!\n");
+				g_warning ("No tt-rss session_id found in response!\n%s\n", result->data);
 			}
 			
 			g_object_unref (parser);
@@ -361,7 +361,7 @@ ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 static struct nodeSourceType nst = {
 	.id                  = "fl_ttrss",
 	.name                = N_("Tiny Tiny RSS"),
-	.description         = N_("Integrate the feed list of your Tiny Tiny RSS account. Liferea will "
+	.description         = N_("Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 	   "present your tt-rss subscriptions, and will synchronize your feed list and reading lists."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
 	.source_type_init    = ttrss_source_init,
