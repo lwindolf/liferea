@@ -14,6 +14,8 @@
 	  (patch by Paulo Schreiner)
 	* Update tt-rss subscriptions when source node is updated.
 	  (patch by Paulo Schreiner) 
+	* Fixes 2 way item state sync for tt-rss subscriptions.
+	  (patch by Paulo Schreiner)
 
 	* Updated Polish translation (Myrda Wojciech)
 

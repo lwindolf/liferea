@@ -79,7 +79,7 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 	gboolean	found, equal = FALSE;
 
 	/* determine if we should add it... */
-	debug1 (DEBUG_CACHE, "check new item for merging: \"%s\"", item_get_title (newItem));
+	debug2 (DEBUG_CACHE, "check new item for merging: \"%s\", %i", item_get_title (newItem), allowUpdates);
 		
 	/* compare to every existing item in this feed */
 	found = FALSE;
@@ -112,6 +112,12 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 		if (item_get_id (oldItem)) {			
 			if (0 == strcmp (item_get_id (oldItem), item_get_id (newItem))) {
 				found = TRUE;
+
+				/* found corresponding item, check if they are REALLY equal (eg, read status may have changed) */
+				if(oldItem->readStatus != newItem->readStatus) 
+					equal = FALSE;
+				if(oldItem->flagStatus != newItem->flagStatus)
+					equal = FALSE;
 				break;
 			} else {
 				/* different ids, but the content might be still equal (e.g. empty)
@@ -154,6 +160,9 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 				metadata_list_free (oldItem->metadata);
 				oldItem->metadata = newItem->metadata;
 				newItem->metadata = NULL;
+				oldItem->readStatus = newItem->readStatus;
+				oldItem->flagStatus = newItem->flagStatus;
+				
 				db_item_update (oldItem);
 				debug0 (DEBUG_CACHE, "-> item already existing and was updated");
 			} else {

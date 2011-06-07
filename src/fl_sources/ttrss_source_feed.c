@@ -74,8 +74,12 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 				item_set_description (item, json_get_string (node, "content"));
 				item->time = json_get_int (node, "updated");
 				
-				if (json_get_bool (node, "unread"))
+				if (json_get_bool (node, "unread")) {
 					item->readStatus = FALSE;
+				}
+				else {
+					item->readStatus = TRUE;
+				}
 				if (json_get_bool (node, "marked"))
 					item->flagStatus = TRUE;
 					
