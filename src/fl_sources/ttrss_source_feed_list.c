@@ -85,12 +85,14 @@ static void
 ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
+
+	debug1 (DEBUG_UPDATE,"ttrss_subscription_cb(): %s", result->data);
 	
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
-			JsonArray	*array = json_node_get_array (json_get_node(json_parser_get_root (parser), "content"));
+			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "content"));
 			GList		*iter = json_array_get_elements (array);
 			GSList		*siter;
 		
@@ -138,6 +140,7 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 				while (iter) {
 					JsonNode *json_node = (JsonNode *)iter->data;
 					if (g_str_equal (node->subscription->source, json_get_string (json_node, "feed_url"))) {
+						debug1 (DEBUG_UPDATE, "node: %s", node->subscription->source);
 						found = TRUE;
 						break;
 					}
@@ -152,28 +155,31 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 			
 			opml_source_export (subscription->node);	/* save new feeds to feed list */				   
 			subscription->node->available = TRUE;			
-			return;
+			//return;
 		} else {
 			g_warning ("Invalid JSON returned on tt-rss request! >>>%s<<<", result->data);
 		}
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "ttrss_subscription_cb(): ERROR: failed to get subscription list!\n");
+		debug0 (DEBUG_UPDATE, "ttrss_subscription_cb(): ERROR: failed to get subscription list!");
 	}
 
 	if (!(flags & TTRSS_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
+			
 }
 
 static void
 ttrss_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
+	debug0 (DEBUG_UPDATE, "ttrss_subscription_process_update_result");
 	ttrss_subscription_cb (subscription, result, flags);
 }
 
 static gboolean
 ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
+	debug0 (DEBUG_UPDATE, "ttrs_subscription_prepare_update_request");
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
 
 	g_assert (source);

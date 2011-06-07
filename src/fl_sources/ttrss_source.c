@@ -129,9 +129,9 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 			
 			source->session_id = g_strdup (json_get_string (json_get_node (node, "content"), "session_id"));
 			if (source->session_id) {
-				debug1 (DEBUG_UPDATE, "Found session_id: >>>%s<<<!\n", source->session_id);
+				debug1 (DEBUG_UPDATE, "Found session_id: >>>%s<<<!", source->session_id);
 			} else {
-				g_warning ("No tt-rss session_id found in response!\n%s\n", result->data);
+				g_warning ("No tt-rss session_id found in response!\n%s", result->data);
 			}
 			
 			g_object_unref (parser);
@@ -170,7 +170,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 	
 	if (source->loginState != TTRSS_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session doesn't expire. */
-		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", source->loginState);
+		debug1(DEBUG_UPDATE, "Logging in while login state is %d", source->loginState);
 	}
 
 	request = update_request_new ();
@@ -196,6 +196,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 static void
 ttrss_source_update (nodePtr node)
 {
+	debug0(DEBUG_UPDATE, "ttrss_source_update()");
 	subscription_update (node->subscription, 0);
 }
 

@@ -109,11 +109,12 @@ static gboolean
 ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
                                                  struct updateRequest *request)
 {
+	debug0 (DEBUG_UPDATE, "ttrss_feed_subscription_prepare_update_request()");
 	nodePtr root = node_source_root_from_node (subscription->node);
 	ttrssSourcePtr source = (ttrssSourcePtr) root->data;
 	const gchar *feed_id;
 
-	debug0 (DEBUG_UPDATE, "preparing tt-rss feed subscription for update\n");
+	debug0 (DEBUG_UPDATE, "preparing tt-rss feed subscription for update");
 	
 	g_assert(source); 
 	if (source->loginState == TTRSS_SOURCE_STATE_NONE) { 
@@ -126,7 +127,6 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		g_warning ("tt-rss feed without id! (%s)", subscription->node->title);
 		return FALSE;
 	}
-
 	update_request_set_source (request, g_strdup_printf (TTRSS_HEADLINES_URL, 
 		metadata_list_get (root->subscription->metadata, "ttrss-url"), 
 		source->session_id,
