@@ -1239,7 +1239,7 @@ liferea_shell_create (int initialState)
 
 	g_string_append (buffer,   "<p><b>Other things to be done before 1.8:</b></p>");
 	g_string_append (buffer,   "<ul>");
-	g_string_append (buffer,   "   <li>...</li>");
+	g_string_append (buffer,   "   <li>Feed List and URL DnD need to be rewritten</li>");
 	g_string_append (buffer,   "</ul>");
 	
 	g_string_append (buffer,   "</div>");
