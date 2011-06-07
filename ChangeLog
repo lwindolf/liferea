@@ -12,7 +12,7 @@
 	* Support popup menu key in feed/item/enclosure tree view.
 	* Raise tt-rss dependency to 1.5
 	  (patch by Paulo Schreiner)
-	* Update tt-rss subscription when source node is updated.
+	* Update tt-rss subscriptions when source node is updated.
 	  (patch by Paulo Schreiner) 
 
 	* Updated Polish translation (Myrda Wojciech)
