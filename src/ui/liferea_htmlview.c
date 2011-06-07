@@ -480,7 +480,7 @@ static void
 on_popup_social_bm_link_activate (GtkWidget *widget, gpointer user_data)
 {	
 	gchar *url = social_get_bookmark_url ((gchar *)user_data, "");
-	browser_launch_URL_external (url);
+	(void)browser_tabs_add_new (url, url, TRUE);
 	g_free (url);
 }
 

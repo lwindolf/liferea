@@ -5,7 +5,9 @@
 	* Fixes SF #3102116: MIME type definitions not saved.
 	  (reported by Alexander Gnodtke)
 	* Merges SF #3273050: Added diggio bookmarking option.	
-	  (patch by dannoffs)
+	  (patch by Daniel Noffsinger)
+	* Merges SF #3273213: Open Social bookmarking in tab.
+	  (patch by Daniel Noffsinger)
 	* Allow reordering browser tabs.
 	* Support popup menu key in feed/item/enclosure tree view.
 	* Raise tt-rss dependency to 1.5

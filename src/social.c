@@ -20,9 +20,9 @@
 
 #include "social.h"
 
-#include "browser.h"
 #include "conf.h"
 #include "debug.h"
+#include "ui/browser_tabs.h"
 
 /** list of registered bookmarking sites */
 GSList *bookmarkSites = NULL;
@@ -91,7 +91,7 @@ social_add_bookmark (const itemPtr item)
 {
 	gchar *link = item_make_link (item);
 	gchar *url  = social_get_bookmark_url (link, item_get_title (item));
-	(void)browser_launch_URL_external (url);
+	(void)browser_tabs_add_new (url, social_get_bookmark_site(), TRUE);
 	g_free (link);
 	g_free (url);
 }
