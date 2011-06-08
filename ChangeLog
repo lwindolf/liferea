@@ -16,6 +16,8 @@
 	  (patch by Paulo Schreiner) 
 	* Fixes 2 way item state sync for tt-rss subscriptions.
 	  (patch by Paulo Schreiner)
+	* Fixes SF #3162756: HTML view doesn't use configured font.
+	  (reported by nomnex)
 
 	* Updated Polish translation (Myrda Wojciech)
 

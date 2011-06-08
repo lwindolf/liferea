@@ -88,25 +88,63 @@ liferea_webkit_enable_plugins_cb (GConfClient *client,
 	);
 }
 
+static gchar *
+webkit_get_font (guint *size)
+{
+	gchar *font = NULL;
+
+	*size = 11;	/* default fallback */
+
+	/* font configuration support */
+	conf_get_str_value (USER_FONT, &font);
+	if (0 == strlen (font)) {
+		g_free (font);
+		conf_get_str_value (DEFAULT_FONT, &font);
+	}
+
+	if (font) {
+		/* The GTK2/GNOME font name format is "<font name> <size>" */
+		gchar *tmp = strrchr(font, ' ');
+		if (tmp) {
+			*tmp++ = 0;
+			*size = atoi(tmp);
+		}
+	}
+
+	return font;
+}
+
 /**
  * HTML plugin init method
  */
 static void
 liferea_webkit_init (void)
 {
-	gboolean disable_javascript, enable_plugins;
-	GConfClient *client;
+	gboolean	disable_javascript, enable_plugins;
+	GConfClient	*client;
+	gchar		*font;
+	guint		fontSize;
 
 	g_assert (!settings);
 
 	settings = webkit_web_settings_new ();
+	font = webkit_get_font (&fontSize);
 
-	g_object_set (
-		settings,
-		"default-font-size",
-		11,
-		NULL
-	);
+	if (font) {
+		g_object_set (
+			settings,
+			"default-font-family",
+			font,
+			NULL
+		);
+		g_object_set (
+			settings,
+			"default-font-size",
+			fontSize,
+			NULL
+		);
+		g_free (font);
+	}
 	g_object_set (
 		settings,
 		"minimum-font-size",

@@ -32,7 +32,7 @@ typedef struct renderParam {
 /**
  * To be called whenever the rendering parameters have changed.
  */
-void render_update_params(void);
+void render_update_params (void);
 
 /**
  * Applies the stylesheet xslt to the given XML document with the given parameters.
@@ -41,14 +41,14 @@ void render_update_params(void);
  * @param xsltName	name of a stylesheet
  * @param params	parameter/value string array (will be free'd)
  */
-gchar * render_xml(xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet);
+gchar * render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet);
 
 /**
  * Creates a new rendering parameter set.
  *
  * @returns new parameter set
  */
-renderParamPtr render_parameter_new(void);
+renderParamPtr render_parameter_new (void);
 
 /**
  * Helper function to add a rendering parameter to the given parameter set.
@@ -58,18 +58,18 @@ renderParamPtr render_parameter_new(void);
  *
  * @returns a new parameter/value string array
  */
-void render_parameter_add(renderParamPtr paramSet, const gchar *fmt, ...);
+void render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...);
 
 /**
  * Frees a given rendering parameter set.
  */
-void render_parameter_free(renderParamPtr paramSet);
+void render_parameter_free (renderParamPtr paramSet);
 
 /**
  * Returns CSS definitions for inclusion in XHTML output.
  *
  * @param externalCss	TRUE if CSS can be served as file reference
  */
-const gchar * render_get_css(gboolean externalCss);
+const gchar * render_get_css (gboolean externalCss);
 
 #endif

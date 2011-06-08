@@ -1,7 +1,7 @@
 /**
  * @file render.c  generic XSLT rendering handling
  * 
- * Copyright (C) 2006-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -230,46 +230,15 @@ render_get_css (gboolean externalCss)
 
 	if (!css || lastCssModification != newLastModification) {
 		gchar	*defaultStyleSheetFile, *adblockStyleSheetFile;
-		gchar	*font = NULL;
-		gchar	*fontsize = NULL;
 		gchar	*tmp;
 
 		// Update last modification timestamp
 		lastCssModification = newLastModification;
 
-		if (themeColors == NULL) {
+		if (!themeColors)
 			render_get_theme_colors();
-		}
 
 		css = g_string_new(NULL);
-
-		/* font configuration support */
-		conf_get_str_value (USER_FONT, &font);
-		if(0 == strlen(font)) {
-			g_free(font);
-			conf_get_str_value (DEFAULT_FONT, &font);
-		}
-
-		if(font) {
-			fontsize = font;
-			/* the GTK2/GNOME font name format is <font name>,<font size in point>
-			 Or it can also be "Font Name size*/
-			strsep(&fontsize, ",");
-			if(fontsize == NULL) {
-				if(NULL != (fontsize = strrchr(font, ' '))) {
-					*fontsize = '\0';
-					fontsize++;
-				}
-			}
-			g_string_append(css, "body, table, div {");
-			g_string_append_printf(css, "font-family: %s;\n", font);
-
-			if(fontsize)
-				g_string_append_printf(css, "font-size: %spt;\n", fontsize);
-
-			g_free(font);
-			g_string_append(css, "}\n");
-		}
 
 		defaultStyleSheetFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "css", "liferea.css", NULL);
 
