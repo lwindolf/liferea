@@ -39,6 +39,7 @@
 #include "itemlist.h"
 #include "social.h"
 #include "ui/enclosure_list_view.h"
+#include "ui/ui_indicator.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -664,6 +665,27 @@ void on_prefbtn_clicked(void) {
 		conf_get_bool_value (START_IN_TRAY, &start_in_tray);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), start_in_tray);
 		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog, "startintraybtn"), show_tray_icon);
+
+		if (ui_indicator_is_visible ()) {
+			/*
+			   If we use the indicator applet:
+			   - The "show tray icon" and "minimize to tray icon" settings
+			     are interpreted as "show indicator" and "minimize to indicator"
+			   - The "new count in tray icon" setting doesn't make sense and
+			     is ignored by indicator handling code
+			*/
+			
+			gtk_widget_hide (liferea_dialog_lookup (prefdialog, "newcountintraybtn"));
+			
+			gtk_button_set_label (GTK_BUTTON (liferea_dialog_lookup (prefdialog, "trayiconoptionbtn")),
+				_("Integrate with the messaging menu (indicator)"));
+			
+			gtk_button_set_label (GTK_BUTTON (liferea_dialog_lookup (prefdialog, "minimizetotraybtn")),
+				_("Terminate instead of minimizing to the messaging menu"));
+			
+			gtk_button_set_label (GTK_BUTTON (liferea_dialog_lookup (prefdialog, "startintraybtn")),
+				_("Start minimized to the messaging menu"));
+		}
 
 		/* tool bar settings */	
 		widget = liferea_dialog_lookup (prefdialog, "hidetoolbarbtn");

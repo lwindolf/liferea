@@ -32,6 +32,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/icons.h"
 #include "ui/popup_menu.h"
+#include "ui/ui_indicator.h"
 #include "ui/ui_tray.h"
 
 // FIXME: determine this from Pango or Cairo somehow...
@@ -194,9 +195,23 @@ ui_tray_update (void)
 {
 	gint	newItems, unreadItems;
 	gchar	*msg, *tmp;
-	
+
+	ui_indicator_update ();
+
 	if (!trayIcon_priv)
 		return;
+
+	/* The indicator overrides the tray icon. If the indicator applet
+	   is present, we hide the tray icon and use the indicator instead.
+	   Application logic in that case, however, stays as if the tray
+	   icon was shown, so the application can be, e.g., minimized to
+	   the indicator. */
+	if (ui_indicator_is_visible ()) {
+		gtk_status_icon_set_visible (trayIcon_priv->status_icon, FALSE);
+		return;
+	} else {
+		gtk_status_icon_set_visible (trayIcon_priv->status_icon, TRUE);
+	}
 
 	newItems = feedlist_get_new_item_count ();
 	unreadItems = feedlist_get_unread_item_count ();
@@ -274,9 +289,13 @@ void ui_tray_enable(gboolean enabled) {
 	if(enabled) {
 		if(!trayIcon_priv)
 			ui_tray_install();
+		
+		ui_indicator_init ();
 	} else {
 		if(trayIcon_priv)
 			ui_tray_remove();
+		
+		ui_indicator_destroy ();
 	}
 }
 

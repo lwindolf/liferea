@@ -22,6 +22,7 @@ AC_SYS_LARGEFILE
 
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
+AC_ARG_ENABLE(libindicate, AS_HELP_STRING([--disable-libindicate],[compile without libindicate support]),,enable_libindicate=yes)
 dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[compile without AVAHI support]),,enable_avahi=yes)
 
 AC_CHECK_FUNCS([strsep])
@@ -58,6 +59,24 @@ else
 fi
 
 AM_CONDITIONAL(WITH_LIBNOTIFY, test "x$enable_libnotify" = "xyes")
+
+dnl *********
+dnl libindicate
+dnl *********
+
+if test "x$enable_libindicate" = "xyes"; then
+   PKG_CHECK_MODULES([LIBINDICATE], indicate-0.5 indicate-gtk-0.5,enable_libindicate=yes,enable_libindicate=no)
+   AC_SUBST(LIBINDICATE_CFLAGS)
+   AC_SUBST(LIBINDICATE_LIBS)
+else
+   enable_libindicate=no
+fi
+
+if test "x$enable_libindicate" = "xyes"; then
+  AC_DEFINE(HAVE_LIBINDICATE, 1, [Define if libindicate support is enabled])
+fi
+
+AM_CONDITIONAL(WITH_LIBINDICATE, test "x$enable_libindicate" = "xyes")
 
 dnl *****
 dnl AVAHI
@@ -156,6 +175,7 @@ echo "$PACKAGE $VERSION"
 echo
 echo "Use X Session Management........ : $enable_sm"
 echo "Use libnotify................... : $enable_libnotify"
+echo "Use libindicate................. : $enable_libindicate"
 dnl echo "AVAHI Support................... : $enable_avahi"
 echo
 eval eval echo Liferea will be installed in $bindir.

@@ -82,3 +82,9 @@ if WITH_LIBNOTIFY
 liferea_LDADD += notification/libnotify.a $(LIBNOTIFY_LIBS)
 
 endif
+
+if WITH_LIBINDICATE
+
+liferea_LDADD += $(LIBINDICATE_LIBS)
+
+endif

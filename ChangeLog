@@ -20,6 +20,8 @@
 	  (reported by nomnex)
 	* Add X-GNOME-FullName to desktop file.
 	  (Maia Kozheva)
+	* Added optional libindicate support.
+	  (Maia Kozheva)
 
 	* Updated Polish translation (Myrda Wojciech)
 

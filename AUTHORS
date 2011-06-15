@@ -69,6 +69,7 @@ Mikel Olasagasti <mikel@olasagasti.info>		GeoRSS support
 Rupert Swarbrick <rswarbrick@users.sf.net>		OPML duplicate id fix
 Yaron Sheffer <yaronf@gmx.com>				Bidi support for LTR and RTL locales
 Ricardo Cruz <rmcruz@users.sf.net>			Many GUI improvements
+Maia Kozheva <sikon@ubuntu.com>			Optional libindicate support
 
 Maintainer Credits
 ==================
