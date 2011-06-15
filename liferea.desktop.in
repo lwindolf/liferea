@@ -1,6 +1,7 @@
 [Desktop Entry]
 _Name=Liferea
 _GenericName=Feed Reader
+_X-GNOME-FullName=Liferea Feed Reader
 _Comment=Download and view feeds
 Exec=liferea
 Icon=liferea
