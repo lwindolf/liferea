@@ -1,8 +1,10 @@
 /**
  * @file google_source.c  Google reader feed list source support
  * 
- * Copyright (C) 2007-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
+ * Copyright (C) 2011 Peter Oliver
+ * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -193,18 +195,29 @@ static void google_source_init (void) { }
 static void google_source_deinit (void) { }
 
 static void
-google_source_import (nodePtr node)
+google_source_import_node (nodePtr node)
 {
 	GSList *iter; 
+	for (iter = node->children; iter; iter = g_slist_next(iter)) {
+		nodePtr subnode = iter->data;
+		if (subnode->subscription)
+			subnode->subscription->type = &googleSourceFeedSubscriptionType; 
+		if (subnode->type->capabilities
+		    & NODE_CAPABILITY_SUBFOLDERS)
+			google_source_import_node (subnode);
+	}
+}
+
+static void
+google_source_import (nodePtr node)
+{
 	opml_source_import (node);
 	
 	node->subscription->type = &googleSourceOpmlSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) google_source_new (node);
 
-	for (iter = node->children; iter; iter = g_slist_next(iter))
-		((nodePtr) iter->data)->subscription->type = &googleSourceFeedSubscriptionType; 
-		
+	google_source_import_node (node);
 }
 
 static void

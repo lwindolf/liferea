@@ -22,6 +22,9 @@
 	  (Maia Kozheva)
 	* Added optional libindicate support.
 	  (Maia Kozheva)
+	* Added partial Google Reader label support: Labels are
+	  now sync'ed as folders from Google into Liferea.
+	  (patch by Peter Oliver and Sergey Snitsaruk)
 
 	* Updated Polish translation (Myrda Wojciech)
 

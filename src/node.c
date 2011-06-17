@@ -1,7 +1,7 @@
 /**
  * @file node.c  hierarchic feed list node handling
  * 
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -306,6 +306,27 @@ node_set_parent (nodePtr node, nodePtr parent, gint position)
 	   not they are handled by the parents node source */
 	if (!node->source)
 		node->source = parent->source;
+}
+
+void 
+node_reparent (nodePtr node, nodePtr new_parent)
+{
+	nodePtr old_parent;
+	
+	g_assert (NULL != new_parent);
+	g_assert (NULL != node);
+	
+	debug2 (DEBUG_GUI, "Reparenting node '%s' to a parent '%s'", node_get_title(node), node_get_title(new_parent));
+	
+	old_parent = node->parent;
+	if (NULL != old_parent) 
+		old_parent->children = g_slist_remove (old_parent->children, node);
+
+	new_parent->children = g_slist_insert (new_parent->children, node, -1);
+	node->parent = new_parent;
+	
+	ui_node_remove_node (node);
+	ui_node_add (node);
 }
 
 void

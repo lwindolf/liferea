@@ -2,6 +2,8 @@
  * @file google_source_opml.c  Google reader OPML handling routines.
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
+ * Copyright (C) 2011 Peter Oliver
+ * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +30,7 @@
 #include "common.h"
 #include "debug.h"
 #include "feedlist.h"
+#include "folder.h"
 #include "metadata.h"
 #include "node.h"
 #include "subscription.h"
@@ -43,12 +46,29 @@
 nodePtr
 google_source_get_node_by_source (GoogleSourcePtr gsource, const gchar *source) 
 {
-	nodePtr node;
-	GSList  *iter = gsource->root->children;
+	return google_source_get_subnode_by_node(gsource->root, source);
+}
+
+/**
+ * Recursively find a node by the source id.
+ */
+nodePtr
+google_source_get_subnode_by_node (nodePtr node, const gchar *source) 
+{
+	nodePtr subnode;
+	nodePtr subsubnode;
+	GSList  *iter = node->children;
 	for (; iter; iter = g_slist_next (iter)) {
-		node = (nodePtr)iter->data;
-		if (g_str_equal (node->subscription->source, source))
-			return node;
+		subnode = (nodePtr)iter->data;
+		if (subnode->subscription
+		    && g_str_equal (subnode->subscription->source, source))
+			return subnode;
+		else if (subnode->type->capabilities
+			 & NODE_CAPABILITY_SUBFOLDERS) {
+			subsubnode = google_source_get_subnode_by_node(subnode, source);
+			if (subnode != NULL )
+				return subsubnode;
+		}
 	}
 	return NULL;
 }
@@ -63,15 +83,13 @@ google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 	GSList * iter = NULL; 
 	nodePtr node; 
 
-	iter = gsource->root->children; 
-	while (iter) { 
+	for (iter = gsource->root->children; iter; iter = g_slist_next (iter)) {
 		node = (nodePtr) iter->data ; 
 		if (!node->subscription || !node->subscription->source) 
 			continue;
 		if (g_str_equal (node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
 			return;
 		}
-		iter = g_slist_next (iter);
 	}
 
 	/* aha! add it! */
@@ -95,15 +113,18 @@ google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
 static void
 google_source_check_for_removal (nodePtr node, gpointer user_data)
 {
-	gchar		*expr = NULL;
+	gchar	*expr = NULL;
 
-	if (g_str_equal (node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
+	if (node->subscription && g_str_equal (node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
 		return ; 
 
 	if (IS_FEED (node)) {
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
+	} else if (IS_FOLDER (node)) {
+		node_foreach_child_data (node, google_source_check_for_removal, user_data);
+		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/list[@name='categories']/object[string='%s']", node->title);
 	} else {
-		g_warning ("opml_source_check_for_removal(): This should never happen...");
+		g_warning ("google_opml_source_check_for_removal(): This should never happen...");
 		return;
 	}
 	
@@ -116,16 +137,77 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
 	g_free (expr);
 }
 
+/* 
+ * Find a node by the name under root or create it.
+ */
+static nodePtr
+google_source_find_or_create_folder (const gchar *name, nodePtr root)
+{
+	nodePtr		folder = NULL;
+	GSList		*iter_parent;
+
+	/* find a node by the name under root */
+	iter_parent = root->children;
+	while (iter_parent) {
+		if (g_str_equal (name, node_get_title (iter_parent->data))) {
+			folder = (nodePtr)iter_parent->data;
+			break;
+		}
+		iter_parent = g_slist_next (iter_parent);
+	}
+	
+	/* if not found, create new folder */
+	if (!folder) {
+		folder = node_new (folder_get_node_type ());
+		node_set_title (folder, name);
+		node_set_parent (folder, root, -1);
+		feedlist_node_imported (folder);
+		subscription_update (folder->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+	}
+	
+	return folder;
+}
+
+/* 
+ * Check if folder of a node changed in Google Reader and move
+ * node to the folder with the same name.
+ */
+static void
+google_source_update_folder (xmlNodePtr match, GoogleSourcePtr gsource, nodePtr node)
+{
+	xmlNodePtr	xml;
+	xmlChar		*label;
+	const gchar	*ptitle;
+	nodePtr		parent;
+	
+	/* check if label of a feed changed */ 
+	parent = node->parent;
+	ptitle = node_get_title (parent);
+	xml = xpath_find (match, "./list[@name='categories']/object/string[@name='label']");
+	if (xml) {
+		label = xmlNodeListGetString (xml->doc,	xml->xmlChildrenNode, 1);
+		if (parent == gsource->root || ! g_str_equal (label, ptitle)) {
+			debug2 (DEBUG_UPDATE, "GSource feed label changed for %s to '%s'", node->id, label);
+			parent = google_source_find_or_create_folder ((gchar*)label, gsource->root);
+			node_reparent (node, parent);
+		}
+		xmlFree (label);
+	} else {
+		/* if feed has no label and parent is not gsource root, reparent to gsource root */
+		if (parent != gsource->root)
+			node_reparent (node, gsource->root);
+	}
+}
 
 static void
 google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 {
 	GoogleSourcePtr	gsource = (GoogleSourcePtr)user_data;
-	nodePtr		node;
-	GSList		*iter;
+	nodePtr		node, parent = NULL, subnode = NULL;
+	GSList		*iter, *iter_sub;
 	xmlNodePtr	xml;
-	xmlChar		*title = NULL, *id = NULL;
-	gchar           *url = NULL;
+	xmlChar		*title = NULL, *id = NULL, *label = NULL;
+	gchar		*url = NULL;
 
 	xml = xpath_find (match, "./string[@name='title']");
 	if (xml)
@@ -134,23 +216,50 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	xml = xpath_find (match, "./string[@name='id']");
 	if (xml) {
 		id = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
-		url = g_strdup(id + strlen ("feed/"));
+		url = g_strdup (id + strlen ("feed/"));
 	}
 
 	/* Note: ids look like "feed/http://rss.slashdot.org" */
-	if (id && title) {	
+	if (id && title) {
 
 		/* check if node to be merged already exists */
 		iter = gsource->root->children;
 		while (iter) {
 			node = (nodePtr)iter->data;
-			if (g_str_equal (node->subscription->source, url)) {
+			if (node->subscription != NULL
+			    && g_str_equal (node->subscription->source, url)) {
 				node->subscription->type = &googleSourceFeedSubscriptionType;
-				goto cleanup ;
+				google_source_update_folder (match, gsource, node);
+				goto cleanup;
+			} else if (node->type->capabilities
+				 & NODE_CAPABILITY_SUBFOLDERS) {
+				iter_sub = node->children;
+				while (iter_sub) {
+					subnode = (nodePtr)iter_sub->data;
+					if (subnode->subscription != NULL
+					    && g_str_equal (subnode->subscription->source, url)) {
+						subnode->subscription->type = &googleSourceFeedSubscriptionType;
+						google_source_update_folder (match, gsource, subnode);
+						goto cleanup;
+					}
+					iter_sub = g_slist_next (iter_sub);
+				}
 			}
 			iter = g_slist_next (iter);
 		}
-	
+
+		/* if a new feed contains label, put its node under a folder with the same name */
+		xml = xpath_find (match, "./list[@name='categories']/object/string[@name='label']");
+		if (xml) {
+			label = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
+			parent = google_source_find_or_create_folder ((gchar*)label, gsource->root);
+			xmlFree (label);
+		} else {
+			parent = gsource->root;
+		}
+		
+		g_assert (NULL != parent);
+
 		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
@@ -158,7 +267,7 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = &googleSourceFeedSubscriptionType;
-		node_set_parent (node, gsource->root, -1);
+		node_set_parent (node, parent, -1);
 		feedlist_node_imported (node);
 		
 		/**
@@ -168,14 +277,13 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		 */
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 		subscription_update_favicon (node->subscription);
-	} else 
+	} else {
 		g_warning("Unable to parse subscription information from Google");
+	}
 
 cleanup:
-	if (id)
-		xmlFree (id);
-	if (title)
-		xmlFree (title);
+	xmlFree (id);
+	xmlFree (title);
 	g_free (url) ;
 }
 
@@ -261,7 +369,7 @@ google_source_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	if (!oldNewestItemTimestamp ||
 	    (newestItemTimestamp && 
 	     !g_str_equal (newestItemTimestamp, oldNewestItemTimestamp))) { 
-		debug3(DEBUG_UPDATE, "GoogleSource: autoupdating %s "
+		debug3(DEBUG_UPDATE, "GoogleSource: auto-updating %s "
 		       "[oldtimestamp%s, timestamp %s]", 
 		       id, oldNewestItemTimestamp, newestItemTimestamp);
 		g_hash_table_insert (gsource->lastTimestampMap,
@@ -271,12 +379,12 @@ google_source_quick_update_helper (xmlNodePtr match, gpointer userdata)
 		subscription_update (node->subscription, 0);
 	}
 
-	if (newestItemTimestamp) xmlFree (newestItemTimestamp);
+	xmlFree (newestItemTimestamp);
 	xmlFree (id);
 }
 
 static void
-google_source_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flasg) 
+google_source_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
 {
 	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
 	xmlDocPtr       doc;

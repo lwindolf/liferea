@@ -21,5 +21,6 @@
 nodePtr google_source_get_node_by_source(GoogleSourcePtr gsource,
 					 const gchar *source);
 
+nodePtr google_source_get_subnode_by_node(nodePtr node, const gchar *source);
 
 gboolean google_source_quick_update (GoogleSourcePtr gsource);

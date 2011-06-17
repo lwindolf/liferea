@@ -115,6 +115,15 @@ nodePtr node_from_id (const gchar *id);
 void node_set_parent (nodePtr node, nodePtr parent, gint position);
 
 /**
+ * Set a node's new parent and update UI. If a node already has a parent, 
+ * it will be removed from its parent children list. 
+ * 
+ * @param node			the node
+ * @param new_parent	nodes new parent
+ */ 
+void node_reparent (nodePtr node, nodePtr new_parent);
+
+/**
  * Removes all data associated with the given node.
  *
  * @param node		the node
