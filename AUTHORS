@@ -69,8 +69,9 @@ Mikel Olasagasti <mikel@olasagasti.info>		GeoRSS support
 Rupert Swarbrick <rswarbrick@users.sf.net>		OPML duplicate id fix
 Yaron Sheffer <yaronf@gmx.com>				Bidi support for LTR and RTL locales
 Ricardo Cruz <rmcruz@users.sf.net>			Many GUI improvements
-Maia Kozheva <sikon@ubuntu.com>			Optional libindicate support
-
+Maia Kozheva <sikon@ubuntu.com>				Optional libindicate support
+Peter Oliver						Google Reader Label Support
+Sergey Snitsaruk <narren96c@gmail.com>			Google Reader Label Support 
 Maintainer Credits
 ==================
 
