@@ -767,6 +767,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 {
 	gchar		*tmp1, *tmp2, *freeme;
 	GtkWidget	*mainwindow;
+	GtkAllocation	alloc;
 	GtkTreeView	*treeview;
 	GtkTreeModel	*model;
 	GtkTreePath	*path;
@@ -779,6 +780,17 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	mainwindow = GTK_WIDGET (liferea_shell_lookup ("mainwindow"));
 	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 	model = gtk_tree_view_get_model (treeview);
+
+	/* Allow link drops only over feed list widget. This is to avoid
+	   the frequent accidental text drops in the HTML view. */
+
+	gtk_widget_get_allocation(GTK_WIDGET(treeview), &alloc);
+
+	if((x > alloc.x+alloc.width) || (x < alloc.x) ||
+	   (y > alloc.y+alloc.height) || (y < alloc.y)) {
+		gtk_drag_finish (context, FALSE, FALSE, time);
+		return;
+	}		
 
 	/* x and y are relative to the main window, make them relative to the treeview */
 	g_assert (gtk_widget_translate_coordinates (mainwindow, GTK_WIDGET (treeview), x, y, &tx, &ty));
