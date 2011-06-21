@@ -1240,22 +1240,15 @@ liferea_shell_create (int initialState)
 	g_string_append (buffer,   "</h3></td></tr><tr><td colspan=\"2\">");
 	g_string_append (buffer,   _("<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 				   "feeds.</p>"
-				   "<p>The left pane contains the list of your subscriptions. To add a "
-				   "subscription select Subscription -&gt; New Subscription. To browse the headlines "
-				   "of a feed select it in the feed list and the headlines will be loaded "
-				   "into the right pane.</p>"));
+				   "<p>You can add new subscriptions "
+	                           "<ul>"
+	                           "<li>From main menu 'Subscription' -&gt; 'New Subscription'</li>"
+	                           "<li>By dropping feed links into the subscription list</li>"
+	                           "<li>By right clicking links and choosing 'Subscribe' within Liferea</li>"
+	                           "</ul>"
+				   "</p>"));
 	g_string_append (buffer,   "</td></tr></table>");
-
-	g_string_append (buffer,   "<br/><div style='padding:6px;border:solid 1px #aaa;background:#ffa'><p><b>Important:</b> This is an unstable version to be used for testing only!</p>");
-	g_string_append (buffer,   "<p>If you run this version feel free to ask any question at #liferea on freenode.org!</p>");
-
-	g_string_append (buffer,   "<p><b>Other things to be done before 1.8:</b></p>");
-	g_string_append (buffer,   "<ul>");
-	g_string_append (buffer,   "   <li>Feed List and URL DnD need to be rewritten</li>");
-	g_string_append (buffer,   "</ul>");
 	
-	g_string_append (buffer,   "</div>");
-		
 	g_string_append (buffer,   "</div>");
 
 	htmlview_finish_output (buffer);
