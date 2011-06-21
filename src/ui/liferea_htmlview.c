@@ -293,7 +293,7 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 			/* it is a generic item list URI type */		
 			uriType = internalUriTypes;
 			while (uriType->suffix) {
-				if (!strncmp(url + strlen("liferea-"), uriType->suffix, strlen(uriType->suffix))) {
+				if (!strncmp (url + strlen ("liferea-"), uriType->suffix, strlen (uriType->suffix))) {
 					gchar *nodeid, *itemnr;
 					nodeid = strstr (url, "://");
 					if (nodeid) {
@@ -520,7 +520,7 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 	gboolean image = (imageUri != NULL);
 
 	/* first drop all menu items that are provided by the browser widget (necessary for WebKit) */
-	item = items = gtk_container_get_children(GTK_CONTAINER(menu));
+	item = items = gtk_container_get_children (GTK_CONTAINER (menu));
 	while (item) {
 		gtk_widget_destroy (GTK_WIDGET (item->data));
 		item = g_list_next (item);
@@ -528,7 +528,7 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 	g_list_free (items);
 
 	/* do not expose internal links */
-	if (linkUri && liferea_htmlview_is_special_url (linkUri) && !g_str_has_prefix(linkUri, "javascript:") && !g_str_has_prefix(linkUri, "data:"))
+	if (linkUri && liferea_htmlview_is_special_url (linkUri) && !g_str_has_prefix (linkUri, "javascript:") && !g_str_has_prefix (linkUri, "data:"))
 		link = FALSE;
 
 	/* and now add all we want to see */

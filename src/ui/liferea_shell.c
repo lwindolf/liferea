@@ -761,6 +761,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 {
 	gchar		*tmp1, *tmp2, *freeme;
 	GtkWidget	*mainwindow;
+	GtkAllocation	alloc;
 	GtkTreeView	*treeview;
 	GtkTreeModel	*model;
 	GtkTreePath	*path;
@@ -776,6 +777,17 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 
 	/* x and y are relative to the main window, make them relative to the treeview */
 	gtk_widget_translate_coordinates (mainwindow, GTK_WIDGET (treeview), x, y, &tx, &ty);
+
+	/* Allow link drops only over feed list widget. This is to avoid
+	   the frequent accidental text drops in the HTML view. */
+
+	gtk_widget_get_allocation(GTK_WIDGET(treeview), &alloc);
+
+	if((x > alloc.x+alloc.width) || (x < alloc.x) ||
+	   (y > alloc.y+alloc.height) || (y < alloc.y)) {
+		gtk_drag_finish (context, FALSE, FALSE, time_received);
+		return;
+	}		
 
 	if ((gtk_selection_data_get_length (data) >= 0) && (gtk_selection_data_get_format (data) == 8)) {
 		/* extra handling to accept multiple drops */
@@ -808,11 +820,11 @@ liferea_shell_setup_URL_receiver (void)
 {
 	GtkWidget *mainwindow;
 	GtkTargetEntry target_table[] = {
-		{ "STRING",     		0, 0 },
-		{ "text/plain", 		0, 0 },
-		{ "text/uri-list",		0, 1 },
-		{ "_NETSCAPE_URL",		0, 1 },
-		{ "application/x-rootwin-drop", 0, 2 }
+		{ "STRING",     		GTK_TARGET_OTHER_WIDGET, 0 },
+		{ "text/plain", 		GTK_TARGET_OTHER_WIDGET, 0 },
+		{ "text/uri-list",		GTK_TARGET_OTHER_WIDGET, 1 },
+		{ "_NETSCAPE_URL",		GTK_TARGET_OTHER_APP, 1 },
+		{ "application/x-rootwin-drop", GTK_TARGET_OTHER_APP, 2 }
 	};
 
 	mainwindow = GTK_WIDGET (shell->priv->window);
