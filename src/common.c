@@ -115,15 +115,15 @@ common_create_cache_filename (const gchar *folder, const gchar *filename, const 
 xmlChar *
 common_uri_escape (const xmlChar *url)
 {
-	xmlChar	*result;
+	xmlChar	*result, *tmp;
 
 	g_assert (NULL != url);
 		
 	/* xmlURIEscape returns NULL if spaces are in the URL, 
 	   so we need to replace them first (see SF #2965158) */
-	result = common_strreplace (g_strdup (url), " ", "+");
-
-	result = xmlURIEscape (result);
+	tmp = common_strreplace (g_strdup (url), " ", "+");
+	result = xmlURIEscape (tmp);
+	g_free (tmp);
 	
 	/* workaround if escaping somehow fails... */
 	if (!result)

@@ -1,3 +1,11 @@
+2011-07-??   ???
+
+	Version 1.8 RC1
+
+	* Merges SF #3367900: Fixes memory allocation issues.
+	  (patch by doomkopf)
+
+
 2011-06-21   Lars Lindner <lars.lindner@gmail.com>
 
 	Version 1.7.6 (Unstable)

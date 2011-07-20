@@ -55,6 +55,7 @@ ns_itunes_parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	
 	if (!xmlStrcmp(cur->name, BAD_CAST"keywords")) {
 		gchar *keyword = tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+		gchar *allocated = tmp;
 		/* parse comma separated list and strip leading spaces... */
 		while (tmp) {
 			tmp = strchr (tmp, ',');
@@ -68,7 +69,7 @@ ns_itunes_parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "category", keyword);
 			keyword = tmp;
 		}
-		g_free (tmp);
+		g_free (allocated);
 	}
 }
 
