@@ -1,7 +1,7 @@
 /**
  * @file migrate.c migration between different cache versions
  * 
- * Copyright (C) 2007-2009  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@
 #include "xml.h"
 #include "ui/ui_common.h"
 
-#define LIFEREA_CURRENT_DIR ".liferea_1.7"
+#define LIFEREA_CURRENT_DIR ".liferea_1.8"
 
 static void 
 migrate_copy_dir (const gchar *from,
@@ -291,25 +291,7 @@ migrate_from_12 (void)
 }
 
 static void
-migrate_from_14 (const gchar *olddir)
-{
-	g_print("Performing %s -> %s cache migration...\n", olddir, LIFEREA_CURRENT_DIR);	
-	
-	/* close already loaded DB */
-	db_deinit ();
-
-	/* just copying all files */
-	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "");
-	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "favicons");
-	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "scripts");
-	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "plugins");	
-	
-	/* and reopen the copied one */
-	db_init ();
-}
-
-static void
-migrate_from_16 (const gchar *olddir)
+migrate_from_14plus (const gchar *olddir)
 {
 	g_print("Performing %s -> %s cache migration...\n", olddir, LIFEREA_CURRENT_DIR);	
 	
@@ -342,12 +324,16 @@ migration_execute (migrationMode mode)
 			break;
 		case MIGRATION_FROM_14:
 			olddir = ".liferea_1.4";
-			migrate_from_14 (olddir);
+			migrate_from_14plus (olddir);
 			break;
 		case MIGRATION_FROM_16:
 			olddir = ".liferea_1.6";
-			migrate_from_16 (olddir);
-			break;		
+			migrate_from_14plus (olddir);
+			break;
+		case MIGRATION_FROM_17:
+			olddir = ".liferea_1.7";
+			migrate_from_14plus (olddir);
+			break;
 		case MIGRATION_MODE_INVALID:
 		default:
 			g_error ("Invalid migration mode!");

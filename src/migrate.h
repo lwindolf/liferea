@@ -1,7 +1,7 @@
 /**
  * @file migrate.h migration between different cache versions
  * 
- * Copyright (C) 2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@ typedef enum {
 	MIGRATION_MODE_INVALID = 0,
 	MIGRATION_FROM_10,
 	MIGRATION_FROM_12,
-	MIGRATION_FROM_13,
 	MIGRATION_FROM_14,
-	MIGRATION_FROM_16
+	MIGRATION_FROM_16,
+	MIGRATION_FROM_17
 } migrationMode;
 
 /**
