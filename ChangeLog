@@ -2,6 +2,7 @@
 
 	Version 1.8 RC1
 
+	* Migrate cache directory to ~/.liferea_1.8
 	* Merges SF #3367900: Fixes memory allocation issues.
 	  (patch by doomkopf)
 
