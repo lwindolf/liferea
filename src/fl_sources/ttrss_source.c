@@ -364,7 +364,8 @@ static struct nodeSourceType nst = {
 	.name                = N_("Tiny Tiny RSS"),
 	.description         = N_("Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 	   "present your tt-rss subscriptions, and will synchronize your feed list and reading lists."),
-	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
+	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC,
 	.source_type_init    = ttrss_source_init,
 	.source_type_deinit  = ttrss_source_deinit,
 	.source_new          = ui_ttrss_source_get_account_info,

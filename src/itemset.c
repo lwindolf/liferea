@@ -32,6 +32,7 @@
 #include "node.h"
 #include "rule.h"
 #include "vfolder.h"
+#include "fl_sources/node_source.h"
 
 void
 itemset_foreach (itemSetPtr itemSet, itemActionFunc callback)
@@ -68,18 +69,20 @@ itemset_get_max_item_count (itemSetPtr itemSet)
  * @param maxChecks     maximum number of item checks
  * @param allowUpdates	TRUE if item content update is to be
  *      		allowed for existing items
+ * @param allowStateChanges	TRUE if item state shall be
+ *				overwritten by source
  *
  * @returns TRUE if merging instead of updating is necessary) 
  */
 static gboolean
-itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboolean allowUpdates)
+itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboolean allowUpdates, gboolean allowStateChanges)
 {
 	GList		*oldItemIdIter = items;
 	itemPtr		oldItem = NULL;
 	gboolean	found, equal = FALSE;
 
 	/* determine if we should add it... */
-	debug2 (DEBUG_CACHE, "check new item for merging: \"%s\", %i", item_get_title (newItem), allowUpdates);
+	debug3 (DEBUG_CACHE, "check new item for merging: \"%s\", %i, %i", item_get_title (newItem), allowUpdates, allowStateChanges);
 		
 	/* compare to every existing item in this feed */
 	found = FALSE;
@@ -160,8 +163,14 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 				metadata_list_free (oldItem->metadata);
 				oldItem->metadata = newItem->metadata;
 				newItem->metadata = NULL;
-				oldItem->readStatus = newItem->readStatus;
-				oldItem->flagStatus = newItem->flagStatus;
+
+				/* Only update item state for feed sources where it is necessary
+				   which means online accounts we sync against, but not normal
+				   online feeds where items have no read status. */
+				if (allowStateChanges) {
+					oldItem->readStatus = newItem->readStatus;
+					oldItem->flagStatus = newItem->flagStatus;
+				}
 				
 				db_item_update (oldItem);
 				debug0 (DEBUG_CACHE, "-> item already existing and was updated");
@@ -179,17 +188,22 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 static gboolean
 itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChecks, gboolean allowUpdates)
 {
+	gboolean	allowStateChanges = FALSE;
 	gboolean	merge;
 	nodePtr		node;
 
 	debug2 (DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title (item), itemSet->nodeId);
+
+	g_assert (itemSet->nodeId);
+	node = node_from_id (itemSet->nodeId);
+	if (node)
+		allowStateChanges = NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC;
 	
 	/* first try to merge with existing item */
-	merge = itemset_generic_merge_check (items, item, maxChecks, allowUpdates);
+	merge = itemset_generic_merge_check (items, item, maxChecks, allowUpdates, allowStateChanges);
 
 	/* if it is a new item add it to the item set */	
 	if (merge) {
-		g_assert (itemSet->nodeId);
 		g_assert (!item->nodeId);
 		g_assert (!item->id);
 		item->nodeId = g_strdup (itemSet->nodeId);
@@ -223,7 +237,6 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 		}
 
 		/* step 4: Check item for new enclosures to download */
-		node = node_from_id (itemSet->nodeId);
 		if (node && (((feedPtr)node->data)->encAutoDownload)) {
 			GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
 			while (iter) {

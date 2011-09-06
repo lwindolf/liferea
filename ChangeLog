@@ -5,6 +5,8 @@
 	* Migrate cache directory to ~/.liferea_1.8
 	* Merges SF #3367900: Fixes memory allocation issues.
 	  (patch by doomkopf)
+	* Fixes SF #3398789: Keeps marking read items as unread.
+	  (reported by naoliv)
 
 
 2011-06-21   Lars Lindner <lars.lindner@gmail.com>

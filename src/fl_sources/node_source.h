@@ -53,7 +53,8 @@ enum {
 	NODE_SOURCE_CAPABILITY_MULTI_INSTANCES		= (1<<1),	/**< allows multiple source instances */
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION		= (1<<2),	/**< feed list source is user created */
 	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST	= (1<<3),	/**< the feed list tree of the source can be changed */
-	NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST	= (1<<4)	/**< the feed list tree of the source can have hierarchic folders */
+	NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST	= (1<<4),	/**< the feed list tree of the source can have hierarchic folders */
+	NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC		= (1<<5)	/**< the item state can and should be sync'ed with remote */
 };
 
 /** feed list node source type */
