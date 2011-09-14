@@ -1,4 +1,4 @@
-2011-07-??   ???
+2011-09-14   Lars Lindner <lars.lindner@gmail.com>
 
 	Version 1.8 RC1
 
@@ -9,6 +9,7 @@
 	  (provided by Bruno Miguel)
 	* Fixes SF #3398789: Keeps marking read items as unread.
 	  (reported by naoliv)
+	* Updated manual page
 
 
 2011-06-21   Lars Lindner <lars.lindner@gmail.com>

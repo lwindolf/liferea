@@ -1,4 +1,4 @@
-This documentation was last updated for Liferea version 1.6 (19.02.2009).
+This documentation was last updated for Liferea version 1.8 (14.09.2011).
 
 Contents
 ========
@@ -117,7 +117,7 @@ Liferea from a release tarball. Those are supplied at our SourceForge
 project homepage (http://liferea.sf.net). After you downloaded it extract
 it like this:
 
-   tar zxvf liferea-1.6.0.tar.gz 
+   tar zxvf liferea-1.8.0.tar.gz 
 
 After unpacking run the standard autotools commands:
 
