@@ -1,15 +1,17 @@
-.TH LIFEREA "1" "May 12, 2009"
+.TH LIFEREA "1" "Sep 14, 2011"
 .SH NAME
-Liferea \- RSS/RDF and Atom news aggregator
+Liferea \- GTK desktop news aggregator
 
 .SH SYNOPSIS
 .B liferea
 .RI [\fIOPTIONS\fR]
 
 .SH DESCRIPTION
-\fBLiferea\fP (Linux Feed Reader) is an RSS/RDF and Atom news aggregator which also supports CDF channels, OCS, and OPML directories.
-It's intended to be a clone of the Windows-only FeedReader.
-It can be used to maintain a list of subscribed feeds, browse and search through their items and displays their contents.
+\fBLiferea\fP (Linux Feed Reader) is an aggregator for online
+news feeds.  It can be used to maintain a list of subscribed feeds, 
+browse and search through their items and displays their contents.
+Additionally Liferea allows to sync subscriptions and read 
+headlines with online accounts of Google Reader and TinyTinyRSS.
 .SH OPTIONS
 Liferea options:
 .TP
@@ -77,16 +79,16 @@ $http_proxy should be set to a URI specifying the desired proxy, for example
 
 .SH FILES
 .TP
-/usr/lib/liferea/
-Contains Liferea plugins
-.TP
 /usr/share/liferea/css/
 Contains stylesheets for feed display
 .TP
 /usr/share/liferea/opml/
 Contains default feedlists
 .TP
-~/.liferea_1.6/
+~/.liferea_1.8/
 Contains user feedlist and feed cache
+.TP
+~/.liferea_1.8/liferea.db
+Sqlite3 database with all subscriptions and headlines
 .SH AUTHOR
 This manual page was written by Lars Lindner <lars.lindner@gmail.com>.
