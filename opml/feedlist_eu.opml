@@ -10,7 +10,7 @@
                 <outline text="Zabaldu" htmlUrl="http://www.zabaldu.com" xmlUrl="http://www.zabaldu.com/rss2.php" />
       </outline>	
             <outline text="Egunkariak">
-                <outline text="Berria" htmlUrl="http://www.berria.info" xmlUrl="http://www.berria.info/rss/ediziojarraia.php" />
+                <outline text="Berria" htmlUrl="http://www.berria.info" xmlUrl="http://www.berria.info/rss/ediziojarraia.xml" />
                 <outline text="Indymedia Euskal Herria" htmlUrl="http://euskalherria.indymedia.org" xmlUrl="http://euskalherria.indymedia.org/features.1-0.eu.rdf" />
 
                 <outline text="Sustatu" htmlUrl="http://www.sustatu.com" xmlUrl="http://www.sustatu.com/rdf" />
