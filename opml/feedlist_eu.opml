@@ -4,31 +4,40 @@
     <title>Iturri lehenetsiak</title>
   </head>
   <body>
-      <outline text="Iturriak (euskaraz)">
+    <outline text="Euskarazko jarioak">
             <outline text="Software Librea">
                 <outline text="EuskalGNU" htmlUrl="http://www.euskalgnu.org" xmlUrl="http://www.euskalgnu.org/index.php?option=com_rss" />
-                <outline text="Zabaldu" htmlUrl="http://www.zabaldu.com" xmlUrl="http://www.zabaldu.com/rss2.php" />
-      </outline>	
+                <outline text="Librezale" htmlUrl="http://librezale.org" xmlUrl="http://librezale.org/feed/" />
+            </outline>
             <outline text="Egunkariak">
+                <outline text="Argia" htmlUrl="http://www.argia.com" xmlUrl="http://www.argia.com/rss/haria.xml" />
                 <outline text="Berria" htmlUrl="http://www.berria.info" xmlUrl="http://www.berria.info/rss/ediziojarraia.xml" />
-                <outline text="Indymedia Euskal Herria" htmlUrl="http://euskalherria.indymedia.org" xmlUrl="http://euskalherria.indymedia.org/features.1-0.eu.rdf" />
-
+                <outline text="Kazeta.info" htmlUrl="http://www.kazeta.info" xmlUrl="http://www.kazeta.info/rss.php" />
                 <outline text="Sustatu" htmlUrl="http://www.sustatu.com" xmlUrl="http://www.sustatu.com/rdf" />
             </outline>
     </outline>
 
 	<!-- lets keep this default English block in sync over all feed lists! -->
-	<outline text="International">		<!-- translate this for localized feed list -->
-		<outline text="Open Source">		<!-- translate this for localized feed list -->
-			<outline text="Gnomefiles" htmlUrl="http://www.gnomefiles.org/" xmlUrl="http://www.gnomefiles.org/files/gnomefiles.rdf" />
-			<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
-			<outline text="GrokLaw" htmlUrl="http://www.groklaw.net/" xmlUrl="http://www.groklaw.net/backend/GrokLaw.rdf" />
-			<outline text="Liferea Blog" htmlUrl="http://liferea.blogspot.com/" xmlUrl="http://liferea.blogspot.com/feeds/posts/default" />
-			<outline text="mozillaZine" htmlUrl="http://www.mozillazine.org/" xmlUrl="http://www.mozillazine.org/atom.xml" />
-			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
+	<outline text="Nazioarteko jarioak">		<!-- translate this title for localized feed list -->
+		<outline text="Berriak">
+			<outline text="Ars Technica" htmlUrl="http://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
 			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
-			<outline text="TuxMobil" htmlUrl="http://tuxmobil.org" xmlUrl="http://tuxmobil.org/tuxmobil_rss.rdf" />      
-		</outline>	
+			<outline text="BBC" htmlUrl="http://newsrss.bbc.co.uk/" xmlUrl="http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"/>
+			<outline text="Science" htmlUrl="http://www.sciencenews.org" xmlUrl="http://www.sciencenews.org/view/feed/type/news/name/news.rss"/>
+		</outline>
+		<outline text="Software librea">		<!-- translate this title for localized feed list -->
+			<outline text="Liferea Blog" htmlUrl="http://liferea.blogspot.com/" xmlUrl="http://liferea.blogspot.com/feeds/posts/default" />
+			<outline text="GNOME Footnotes" htmlUrl="http://www.gnomedesktop.org/" xmlUrl="http://www.gnomedesktop.org/backend.php" />
+			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
+		</outline>
+		<outline text="Podcast eta musika">		<!-- translate this title for localized feed list -->
+			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/podcast.xml"/>
+			<outline text="Phlow Magazine" htmlUrl="http://phlow-magazine.com/" xmlUrl="http://feed.phlow-magazine.com/phlow-magazine"/>
+			<outline text="music (for robots)" htmlUrl="http://music.for-robots.com/" xmlUrl="http://music.for-robots.com/atom.xml"/>
+		</outline>
+		<outline text="Comics">
+			<outline text="xkcd" htmlUrl="http://xkcd.com/" xmlUrl="http://xkcd.com/atom.xml"/>
+		</outline>
 	</outline>
 	<!-- end of default block -->
 
