@@ -1004,6 +1004,7 @@ db_item_remove (gulong id)
 	
 	stmt = db_get_statement ("itemsetRemoveStmt");
 	sqlite3_bind_int (stmt, 1, id);
+	sqlite3_bind_int (stmt, 2, id);
 	res = sqlite3_step (stmt);
 
 	if (SQLITE_DONE != res)

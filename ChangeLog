@@ -10,6 +10,9 @@
 	* Fixes SF #3349330: Segfault when dropping
 	  folders into Google Reader subscription.
 	  (reported by no|disc)
+	* Fixes SF #3046762: DB contains old comment items
+	  of deleted feed entries.
+	  (reported by FuturePilot)
 
 
 2011-09-14   Lars Lindner <lars.lindner@gmail.com>
