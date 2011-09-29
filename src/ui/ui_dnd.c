@@ -1,7 +1,7 @@
 /**
- * @file ui_dnd.c everything concerning DnD
+ * @file ui_dnd.c everything concerning Drag&Drop
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "common.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "folder.h"
 #include "debug.h"
 #include "ui/item_list_view.h"
 #include "ui/feed_list_view.h"
@@ -79,8 +80,10 @@ ui_dnd_feed_draggable (GtkTreeDragSource *drag_source, GtkTreePath *path)
 static gboolean
 ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, GtkSelectionData *selection_data)
 {
+	GtkTreeModel	*model = NULL;
+	GtkTreePath	*src_path = NULL;
 	GtkTreeIter	iter;
-	nodePtr		node;
+	nodePtr		sourceNode, targetNode;
 	
 	debug1 (DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
 		   	
@@ -95,18 +98,26 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 	   iterator to insert after). In any case we have to check
 	   if it is a writeable node source. */
 
-	gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter, FS_PTR, &node, -1);
-	if (!node)
+	gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter, FS_PTR, &targetNode, -1);
+	if (!targetNode)
 		return FALSE;
 
 	/* never drop into read-only subscription node sources */
-	if (!(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
+	if (!(NODE_SOURCE_TYPE (targetNode)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
 		return FALSE;
 
 	/* never drag folders into non-hierarchic node sources */
-// FIXME: How can we implement this?
-//	if (IS_FOLDER() && !(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST))
-//		return FALSE;
+	if (!gtk_tree_get_row_drag_data (selection_data, &model, &src_path))
+		return TRUE;
+
+	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, src_path)) {
+		gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, FS_PTR, &sourceNode, -1);
+
+		if (IS_FOLDER(sourceNode) && !(NODE_SOURCE_TYPE (targetNode)->capabilities & NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST))
+			return FALSE;
+	}
+
+	gtk_tree_path_free (src_path);
 
 	return TRUE;
 }

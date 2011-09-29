@@ -1,4 +1,4 @@
-2011-10-??   ???
+2011-10-??  ???
 
 	Version 1.8 RC2
 
@@ -7,6 +7,9 @@
 	  changing the CSS definitions and is installed
 	  into the cache directory per default.
 	  (suggested by Jeff Fortin)
+	* Fixes SF #3349330: Segfault when dropping
+	  folders into Google Reader subscription.
+	  (reported by no|disc)
 
 
 2011-09-14   Lars Lindner <lars.lindner@gmail.com>
