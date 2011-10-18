@@ -4,6 +4,14 @@
    definitions including comments describing what they are used for.
   
    Before you start customizing...
+
+   Reloading:
+   ==========
+
+   For performance reasons Liferea will read this CSS file only 
+   on startup. So when you modify it please restart Liferea for
+   changes to take effect.
+
   
    About Font Definitions: 
    =======================
