@@ -393,3 +393,14 @@ common_get_localized_filename (const gchar *str)
 
 	return NULL;
 }
+
+void
+common_copy_file (const gchar *src, const gchar *dest)
+{
+	gchar	*content;
+	gsize	length;
+
+	if (g_file_get_contents (src, &content, &length, NULL))
+		g_file_set_contents (dest, content, length, NULL);
+	g_free (content);
+}

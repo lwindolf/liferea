@@ -1,7 +1,7 @@
 /**
  * @file common.h common routines
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -177,6 +177,7 @@ time_t common_get_mod_time(const gchar *file);
 
 /**
  * Create a localized filename.
+ *
  * This function tries all applicable locale names and replaces
  * the %s in str with the first one that points to an existing file.
  * "en" is always among the searched locale names.
@@ -186,5 +187,13 @@ time_t common_get_mod_time(const gchar *file);
  * @returns		a string with %s replaced (to be freed by the caller), or NULL
  */
 gchar *common_get_localized_filename (const gchar *str);
+
+/**
+ * Copy a source file to a target filename.
+ *
+ * @param src           absolute source file path
+ * @param dest          absolute destination file path
+ */
+void common_copy_file (const gchar *src, const gchar *dest);
 
 #endif

@@ -51,15 +51,11 @@ migrate_copy_dir (const gchar *from,
 	
 	dir = g_dir_open (fromDirname, 0, NULL);
 	while (NULL != (srcfile = (gchar *)g_dir_read_name (dir))) {
-		gchar	*content;
-		gsize	length;
 		destfile = g_build_filename (toDirname, srcfile, NULL);
 		srcfile = g_build_filename (fromDirname, srcfile, NULL);
 		if (g_file_test (srcfile, G_FILE_TEST_IS_REGULAR)) {
 			g_print ("copying %s\n     to %s\n", srcfile, destfile);
-			if (g_file_get_contents (srcfile, &content, &length, NULL))
-				g_file_set_contents (destfile, content, length, NULL);
-			g_free (content);
+			common_copy_file (srcfile, destfile);
 		} else {
 			g_print("skipping %s\n", srcfile);
 		}

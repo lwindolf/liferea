@@ -66,11 +66,18 @@ render_init (void)
 {
 	gchar   	**shortlang = NULL;	/* e.g. "de" */
 	gchar		**lang = NULL;		/* e.g. "de_AT" */
+	gchar		*filename;
 
 	if (langParams)
 		render_parameter_free (langParams);
 
-	/* prepare localization parameters */
+	/* Install default stylesheet if it does not yet exist */
+	filename = common_create_cache_filename ("", "liferea", "css");
+	if (!g_file_test (filename, G_FILE_TEST_EXISTS))
+		common_copy_file (PACKAGE_DATA_DIR "/" PACKAGE "/css/user.css", filename);
+	g_free(filename);
+
+	/* Prepare localization parameters */
 	debug1 (DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
 	lang = g_strsplit (setlocale (LC_MESSAGES, NULL), "@", 0);
 	shortlang = g_strsplit (setlocale (LC_MESSAGES, NULL), "_", 0);
@@ -142,7 +149,6 @@ render_load_stylesheet (const gchar *xsltName)
 
 /** cached CSS definitions */
 static GString	*css = NULL;
-static time_t lastCssModification = 0;
 
 /** widget background theme colors as 8bit HTML RGB code */
 typedef struct themeColor {
@@ -222,18 +228,11 @@ render_set_theme_colors (gchar *css)
 const gchar *
 render_get_css (gboolean externalCss)
 {
-	gchar *styleSheetFile;
-	time_t newLastModification;
-
-	styleSheetFile      = g_build_filename (common_get_cache_path (), "liferea.css", NULL);
-	newLastModification = common_get_mod_time ((char *)styleSheetFile);
-
-	if (!css || lastCssModification != newLastModification) {
-		gchar	*defaultStyleSheetFile, *adblockStyleSheetFile;
+	if (!css) {
+		gchar	*defaultStyleSheetFile;
+		gchar	*userStyleSheetFile;
+		gchar	*adblockStyleSheetFile;
 		gchar	*tmp;
-
-		// Update last modification timestamp
-		lastCssModification = newLastModification;
 
 		if (!themeColors)
 			render_get_theme_colors();
@@ -250,13 +249,17 @@ render_get_css (gboolean externalCss)
 			g_error ("Loading %s failed.", defaultStyleSheetFile);
 		}
 
-		if (g_file_get_contents(styleSheetFile, &tmp, NULL, NULL)) {
+		g_free(defaultStyleSheetFile);
+
+		userStyleSheetFile = g_build_filename (common_get_cache_path (), "liferea.css", NULL);
+
+		if (g_file_get_contents(userStyleSheetFile, &tmp, NULL, NULL)) {
 			tmp = render_set_theme_colors(tmp);
 			g_string_append(css, tmp);
 			g_free(tmp);
 		}
 
-		g_free(defaultStyleSheetFile);
+		g_free(userStyleSheetFile);
 
 		adblockStyleSheetFile = g_build_filename(PACKAGE_DATA_DIR, PACKAGE, "css", "adblock.css", NULL);
 
@@ -286,8 +289,6 @@ render_get_css (gboolean externalCss)
 			g_string_append(css, "\n]]>\n</style>\n");
 		}
 	}
-
-	g_free(styleSheetFile);
 
 	return css->str;
 }
