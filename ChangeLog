@@ -2,8 +2,10 @@
 
 	Version 1.6.7
 
-	* Fixes SF #3046762: DB contains comments of 
+	* Fixes SF #3046762: DB contains comments of
 	  deleted feed entries (reported by FuturePilot)
+
+	* Added Latvian translation. (Rihards Priedītis, Rūdolfs Mazurs)
 
 
 2011-06-22  Lars Lindner <lars.lindner@gmail.com>
