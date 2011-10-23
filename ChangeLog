@@ -3,7 +3,7 @@
 	Version 1.8 RC2
 
 	* Fixes Basque feed list. (Mikel Olasagasti)
-	* Added user template CSS that helps users 
+	* Added user template CSS that helps users
 	  changing the CSS definitions and is installed
 	  into the cache directory per default.
 	  (suggested by Jeff Fortin)
@@ -13,6 +13,8 @@
 	* Fixes SF #3046762: DB contains old comment items
 	  of deleted feed entries.
 	  (reported by FuturePilot)
+
+	* Added Latvian translation. (Rihards Priedītis, Rūdolfs Mazurs)
 
 
 2011-09-14   Lars Lindner <lars.lindner@gmail.com>
