@@ -1,0 +1,2429 @@
+# Lithuanian translation for liferea
+# Copyright (C) 2011 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the liferea package.
+#
+# Mindaugas Baranauskas <embar@users.berlios.de>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: liferea-1.6.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-23 17:45+0300\n"
+"PO-Revision-Date: 2011-08-22 15:08+0300\n"
+"Last-Translator: Mindaugas Baranauskas <embar@users.berlios.de>\n"
+"Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 1.2\n"
+
+#: ../liferea.desktop.in.h:1
+msgid "Download and view feeds"
+msgstr "Parsiųskite ir skaitykite naujienas"
+
+#: ../liferea.desktop.in.h:2
+msgid "Feed Reader"
+msgstr "Naujienų kanalų skaitytuvė"
+
+#. GTK theme support
+#: ../liferea.desktop.in.h:3 ../src/main.c:279 ../glade/liferea.ui.h:43
+msgid "Liferea"
+msgstr "Liferea"
+
+#: ../liferea.desktop.in.h:4
+msgid "Liferea Feed Reader"
+msgstr "Liferea naujienų kanalų skaitytuvė"
+
+#: ../xslt/feed.xml.in.h:1
+msgid "Copyright"
+msgstr "Autorinės teisės"
+
+#: ../xslt/feed.xml.in.h:2
+msgid "Details"
+msgstr "Išsamiau"
+
+#: ../xslt/feed.xml.in.h:3
+msgid "Feed:"
+msgstr "Naujienų kanalas:"
+
+#: ../xslt/feed.xml.in.h:4
+msgid "Filter Error Details"
+msgstr "Filtro klaida išsamiau"
+
+#: ../xslt/feed.xml.in.h:5
+msgid "Parser Error Details"
+msgstr "Analizavimo klaida išsamiau"
+
+#: ../xslt/feed.xml.in.h:6
+msgid "Publisher"
+msgstr "Paskelbė"
+
+#: ../xslt/feed.xml.in.h:7 ../xslt/source.xml.in.h:1
+msgid "Source:"
+msgstr "Šaltinis:"
+
+#: ../xslt/feed.xml.in.h:8
+msgid ""
+"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+msgstr ""
+"Nepavyko atnaujinti atnaujinti naujienų kanalo informacijos!<br/><b>HTTP "
+"klaidos kodas <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
+"\"httpError\"/></b>"
+
+#: ../xslt/feed.xml.in.h:9
+msgid "There were errors while filtering this feed!"
+msgstr "Filtruojant kanalą įvyko klaidų!"
+
+#: ../xslt/feed.xml.in.h:10
+msgid "There were errors while parsing this feed!"
+msgstr "Analizuojant kanalą įvyko klaidų!"
+
+#: ../xslt/feed.xml.in.h:11
+msgid ""
+"This feed is discontinued. It's no longer available. Liferea won't update it "
+"anymore but you can still access the cached headlines."
+msgstr ""
+"Šis naujienų kanalas sustabdė savo veiklą. Jis nebeprieinamas. „Liferea“ "
+"nebegali jo atnaujinti, tačiau tebegalite pasiekti jau įkeltuosius "
+"straipsnius."
+
+#: ../xslt/feed.xml.in.h:12
+msgid "You may want to validate the feed using"
+msgstr "Naujienų kanalą galite patikrinti naudodami"
+
+#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
+msgid "children with"
+msgstr "vaikas su"
+
+#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+msgid "unread headlines"
+msgstr "neskaitytos antraštės"
+
+#: ../xslt/folder.xml.in.h:1
+msgid "Folder:"
+msgstr "Aplankas:"
+
+#: ../xslt/item.xml.in.h:1
+msgid "Also posted in"
+msgstr "Taip pat paskelbė"
+
+#: ../xslt/item.xml.in.h:2
+msgid "Author"
+msgstr "Autorius"
+
+#: ../xslt/item.xml.in.h:3
+msgid "Comments"
+msgstr "Komentarai"
+
+#: ../xslt/item.xml.in.h:4
+msgid "Creator"
+msgstr "Sukūrė"
+
+#: ../xslt/item.xml.in.h:5
+msgid "Department"
+msgstr "Padalinys"
+
+#: ../xslt/item.xml.in.h:6
+msgid "Feed"
+msgstr "Naujienų kanalas"
+
+#: ../xslt/item.xml.in.h:7
+msgid "Filed under"
+msgstr "Etiketės:"
+
+#: ../xslt/item.xml.in.h:8
+msgid "No comments yet."
+msgstr "Dar niekas nekomentavo."
+
+#: ../xslt/item.xml.in.h:9
+msgid "Refresh"
+msgstr "Atnaujinti"
+
+#: ../xslt/item.xml.in.h:10
+msgid "Related"
+msgstr "Susiję"
+
+#: ../xslt/item.xml.in.h:11
+msgid "Section"
+msgstr "Sekcija"
+
+#: ../xslt/item.xml.in.h:12
+msgid "Shared by"
+msgstr "Pasidalino"
+
+#: ../xslt/item.xml.in.h:13 ../glade/liferea.ui.h:72
+msgid "Source"
+msgstr "Šaltinis"
+
+#: ../xslt/item.xml.in.h:14
+msgid "Updating..."
+msgstr "Atnaujinama..."
+
+#: ../xslt/item.xml.in.h:15
+msgid "Via"
+msgstr "per"
+
+#: ../xslt/item.xml.in.h:16
+msgid "bookmark"
+msgstr "įrašyti į adresyną"
+
+#: ../xslt/item.xml.in.h:17
+msgid "comments"
+msgstr "komentarai"
+
+#: ../xslt/item.xml.in.h:18
+msgid "flag"
+msgstr "svarbus"
+
+#: ../xslt/newsbin.xml.in.h:1
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+
+#: ../xslt/newsbin.xml.in.h:2
+msgid "News Bin:"
+msgstr ""
+
+#: ../xslt/vfolder.xml.in.h:1
+msgid "Search Folder:"
+msgstr "Paieškos aplankas:"
+
+#: ../src/browser.c:32
+#, fuzzy
+msgid "Default Browser"
+msgstr "Numatytoji GNOME naršyklė"
+
+#: ../src/browser.c:201 ../src/browser.c:221
+#, c-format
+msgid "Browser command failed: %s"
+msgstr "Nepavyko įvykdyti naršyklės komandos: %s"
+
+#: ../src/browser.c:224
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "Paleidžiama: „%s“"
+
+#. unauthorized
+#: ../src/comments.c:120
+msgid "Authorization Error"
+msgstr "Prieigos teisės klaida"
+
+#: ../src/common.c:63
+#, c-format
+msgid "Cannot create cache directory \"%s\"!"
+msgstr "Nepavyksta sukurti podėlio katalogo „%s“!"
+
+#. translation hint: date format for today, reorder format codes as necessary
+#: ../src/date.c:80
+msgid "Today %l:%M %p"
+msgstr "Šiandien %l:%M %p"
+
+#. translation hint: date format for yesterday, reorder format codes as necessary
+#: ../src/date.c:91
+msgid "Yesterday %l:%M %p"
+msgstr "Vakar %l:%M %p"
+
+#. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
+#: ../src/date.c:104
+msgid "%a %l:%M %p"
+msgstr ""
+
+#. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
+#: ../src/date.c:113
+msgid "%b %d %l:%M %p"
+msgstr ""
+
+#. translation hint: date format for dates from the last years, reorder format codes as necessary
+#: ../src/date.c:116
+msgid "%b %d %Y"
+msgstr "%Y %b %d"
+
+#: ../src/enclosure.c:175
+#, c-format
+msgid "\"%s\" is not a valid enclosure type config file!"
+msgstr "„%s“ nėra tinkama intarpų tipų konfigūracijos rinkmena!"
+
+#: ../src/enclosure.c:274
+#, c-format
+msgid "Enclosure download FAILED: \"%s\""
+msgstr "NEPAVYKO parsiųsti intarpo: „%s“"
+
+#. just saving
+#: ../src/enclosure.c:284
+#, c-format
+msgid "Enclosure download finished: \"%s\""
+msgstr "Baigta parsiųsti intarpą: „%s“"
+
+#: ../src/export.c:174
+#, c-format
+msgid "Error renaming %s to %s\n"
+msgstr "Klaida %s pervadinant į %s\n"
+
+#: ../src/export.c:386 ../src/export.c:388
+#, c-format
+msgid "XML error while reading OPML file! Could not import \"%s\"!"
+msgstr "XML klaida skaitant OPML rinkmeną! Negalima importuoti „%s“!"
+
+#: ../src/export.c:394 ../src/export.c:396
+#, c-format
+msgid ""
+"Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr ""
+"Tuščias dokumentas! Importuotinas OPML dokumentas „%s“ neturėtų būti tuščias."
+
+#: ../src/export.c:417 ../src/export.c:419
+#, c-format
+msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
+msgstr ""
+"„%s“ nėra tinkamas OPML dokumentas! „Liferea“ negali importuoti šios "
+"rinkmenos!"
+
+#: ../src/export.c:438
+msgid "Imported feed list"
+msgstr "Importuotas naujienų kanalų sąrašas"
+
+#: ../src/export.c:450
+msgid "Import Feed List"
+msgstr "Importuoti kanalų sąrašą"
+
+#: ../src/export.c:450
+msgid "Import"
+msgstr "Importuoti"
+
+#: ../src/export.c:450 ../src/export.c:467 ../src/fl_sources/opml_source.c:387
+msgid "OPML Files"
+msgstr ""
+
+#: ../src/export.c:458
+msgid "Error while exporting feed list!"
+msgstr "Klaida eksportuojant naujienų kanalų sąrašą!"
+
+#: ../src/export.c:460
+msgid "Feed List exported!"
+msgstr "Naujienų kanalų sąrašas eksportuotas!"
+
+#: ../src/export.c:467
+msgid "Export Feed List"
+msgstr "Eksportuoti naujienų kanalų sąrašą"
+
+#: ../src/export.c:467
+msgid "Export"
+msgstr "Eksportuoti"
+
+#: ../src/feed.c:255
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+msgstr ""
+
+#: ../src/feed.c:284
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "„%s“ atnaujintas..."
+
+#: ../src/feed.c:294
+#, c-format
+msgid "\"%s\" is not available"
+msgstr "„%s“ neprieinamas"
+
+#: ../src/feed_parser.c:137
+msgid ""
+"The URL you want Liferea to subscribe to points to a webpage and the auto "
+"discovery found no feeds on this page. Maybe this webpage just does not "
+"support feed auto discovery."
+msgstr ""
+
+#: ../src/feed_parser.c:170
+#, c-format
+msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
+msgstr ""
+"Skaitant naujienų kanalą įvyko XML klaida! Naujienų kanalo „%s“ negalima "
+"įkelti!"
+
+#: ../src/feed_parser.c:175
+msgid "Empty document!"
+msgstr "Tuščias dokumentas!"
+
+#: ../src/feed_parser.c:187
+msgid "Invalid XML!"
+msgstr "Netinkamas XML!"
+
+#: ../src/feed_parser.c:227
+msgid "Source points to HTML document."
+msgstr "Šaltinis nurodo HTML dokumentą."
+
+#: ../src/feed_parser.c:230
+msgid "Could not determine the feed type."
+msgstr "Nepavyksta apibrėžti naujienų kanalo tipo."
+
+#. if we don't find a feed with unread items do nothing
+#: ../src/itemlist.c:403
+#, fuzzy
+msgid "There are no unread items"
+msgstr "Nėra nėra neskaitytų straipsnių "
+
+#: ../src/main.c:193
+msgid ""
+"Start Liferea with its main window in STATE. STATE may be `shown', "
+"`iconified', or `hidden'"
+msgstr ""
+
+#: ../src/main.c:193
+msgid "STATE"
+msgstr ""
+
+#: ../src/main.c:197
+msgid "Show version information and exit"
+msgstr "Rodyti informaciją apie versiją ir išeiti"
+
+#: ../src/main.c:198
+#, fuzzy
+msgid "Add a new subscription"
+msgstr "Nauja prenumerata"
+
+#: ../src/main.c:198
+msgid "uri"
+msgstr ""
+
+#: ../src/main.c:203
+msgid "Print debugging messages of all types"
+msgstr "Rodyti visus derinimo pranešimus"
+
+#: ../src/main.c:204
+msgid "Print debugging messages for the cache handling"
+msgstr "Rodyti derinimo pranešimus, susijusius su podėlio apdorojimu"
+
+#: ../src/main.c:205
+#, fuzzy
+msgid "Print debugging messages for the configuration handling"
+msgstr "Rodyti derinimo pranešimus, susijusius su konfigūracijos apdorojimu"
+
+#: ../src/main.c:206
+msgid "Print debugging messages of the database handling"
+msgstr "Rodyti derinimo pranešimus, susijusius su duomenų bazės apdorojimu"
+
+#: ../src/main.c:207
+msgid "Print debugging messages of all GUI functions"
+msgstr "Rodyti derinimo pranešimus, susijusius su grafine sąsaja"
+
+#: ../src/main.c:208
+msgid ""
+"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
+"will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
+msgstr ""
+
+#: ../src/main.c:209
+msgid "Print debugging messages of all network activity"
+msgstr "Rodyti visus derinimo pranešimus, susijusius su tinklo veikla"
+
+#: ../src/main.c:210
+msgid "Print debugging messages of all parsing functions"
+msgstr "Rodyti visus derinimo pranešimus, susijusius su analizavimu"
+
+#: ../src/main.c:211
+msgid "Print debugging messages when a function takes too long to process"
+msgstr "Rodyti derinimo pranešimus, jei funkcija atliekama pernelyg ilgai"
+
+#: ../src/main.c:212
+msgid "Print debugging messages when entering/leaving functions"
+msgstr "Rodyti derinimo pranešimus apie įėjimą/išėjimą iš funkcijų"
+
+#: ../src/main.c:213
+msgid "Print debugging messages of the feed update processing"
+msgstr "Rodyti derinimo pranešimus, susijusius su naujienų kanalo atnaujinimu"
+
+#: ../src/main.c:214
+#, fuzzy
+msgid "Print debugging messages of the search folder matching"
+msgstr "Rodyti derinimo pranešimus, susijusius su podėlio apdorojimu"
+
+#: ../src/main.c:215
+msgid "Print verbose debugging messages"
+msgstr ""
+
+#: ../src/main.c:228 ../src/main.c:229
+msgid "Print debugging messages for the given topic"
+msgstr "Rodyti nurodytos temos derinimo pranešimus"
+
+#: ../src/main.c:236
+msgid "Liferea, the Linux Feed Reader"
+msgstr "Liferea, Linux programa naujienų kanalų skaitymui"
+
+#: ../src/main.c:237
+msgid "For more information, please visit http://liferea.sourceforge.net/"
+msgstr ""
+"Daugiau informacijos rasite apsilankę http://liferea.sourceforge.net/ "
+"svetainėje."
+
+#: ../src/migrate.c:340
+#, c-format
+msgid ""
+"This version of Liferea uses a new cache format and has migrated your feed "
+"cache. The cache content in %s was not deleted automatically. Please remove "
+"this directory manually once you are sure migration was successful!"
+msgstr ""
+"Ši „Liferea“ programos versija naudoja naują podėlio formatą, seni duomenys "
+"jau konvertuoti į naująjį formatą. Podėlio turinys (%s) nebuvo automatiškai "
+"pašalintas. Kai įsitikinsite, kad duomenys sėkmingai perkelti, šį aplanką "
+"pašalinkite savarankiškai!"
+
+#. Some libsoup transport errors
+#: ../src/net.c:320
+msgid "The update request was cancelled"
+msgstr "Atšaukta atnaujinimo užklausa"
+
+#: ../src/net.c:321
+msgid "Unable to resolve destination host name"
+msgstr "Nepavyksta nustatyti paskirties serverio vardo"
+
+#: ../src/net.c:322
+msgid "Unable to resolve proxy host name"
+msgstr "Nepavyksta nustatyti įgaliotojo serverio vardo"
+
+#: ../src/net.c:323
+msgid "Unable to connect to remote host"
+msgstr "Nepavyksta prisijungti prie nuotolinio serverio"
+
+#: ../src/net.c:324
+msgid "Unable to connect to proxy"
+msgstr "Nepavyksta prisijungti prie įgaliotojo serverio"
+
+#: ../src/net.c:325
+msgid ""
+"A network error occurred, or the other end closed the connection unexpectedly"
+msgstr ""
+
+#. http 3xx redirection
+#: ../src/net.c:328
+msgid "The resource moved permanently to a new location"
+msgstr "Išteklius negrįžtamai persikėlė į naują vietą"
+
+#. http 4xx client error
+#: ../src/net.c:331
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box"
+msgstr ""
+"Šio naujienų kanalo parsiuntimui nenustatėte savo tapatybės. Naujienų kanalo "
+"savybių dialoge atnaujinkite savo naudotojo vardą ir slaptažodį."
+
+#: ../src/net.c:333
+msgid "Payment required"
+msgstr "Reikia sumokėti"
+
+#: ../src/net.c:334
+msgid "You're not allowed to access this resource"
+msgstr "Jums neleidžiama prieiti prie šio šaltinio"
+
+#: ../src/net.c:335
+msgid "Resource Not Found"
+msgstr "Išteklius nerastas"
+
+#: ../src/net.c:336
+msgid "Method Not Allowed"
+msgstr "Metodas neleidžiamas"
+
+#: ../src/net.c:337
+msgid "Not Acceptable"
+msgstr "Nepriimtina"
+
+#: ../src/net.c:338
+msgid "Proxy authentication required"
+msgstr "Reikia nurodyti tapatybę jungiantis prie įgaliotojo serverio"
+
+#: ../src/net.c:339
+msgid "Request timed out"
+msgstr "Baigėsi užklausos laikas"
+
+#: ../src/net.c:340
+msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+msgstr "Ištekliaus nebėra. Nutraukite prenumeratą!"
+
+#: ../src/net.c:345
+msgid "There was an internal error in the update process"
+msgstr "Atnaujinimo proceso vidinė klaida"
+
+#: ../src/net.c:347
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr ""
+
+#: ../src/net.c:349
+msgid "Client Error"
+msgstr "Kliento klaida"
+
+#: ../src/net.c:351
+msgid "Server Error"
+msgstr "Serverio klaida"
+
+#: ../src/net.c:353
+msgid "An unknown networking error happened!"
+msgstr "Įvyko nežinoma tinklo klaida!"
+
+#. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
+#. ========================================================================================================================================================================================
+#: ../src/rule.c:152
+msgid "Item"
+msgstr "Straipsnis"
+
+#: ../src/rule.c:152 ../src/rule.c:153 ../src/rule.c:154
+msgid "does contain"
+msgstr "turi"
+
+#: ../src/rule.c:152 ../src/rule.c:153 ../src/rule.c:154
+msgid "does not contain"
+msgstr "neturi"
+
+#: ../src/rule.c:153
+msgid "Item title"
+msgstr "Straipsnio pavadinimas"
+
+#: ../src/rule.c:154
+msgid "Item body"
+msgstr "Straipsnio kūnas"
+
+#: ../src/rule.c:155
+msgid "Read status"
+msgstr "Perskaitymo būsena"
+
+#: ../src/rule.c:155
+msgid "is unread"
+msgstr "neskaitytas"
+
+#: ../src/rule.c:155
+msgid "is read"
+msgstr "skaitytas"
+
+#: ../src/rule.c:156
+msgid "Flag status"
+msgstr "Svarbumas"
+
+#: ../src/rule.c:156
+msgid "is flagged"
+msgstr "svarbus"
+
+#: ../src/rule.c:156
+msgid "is unflagged"
+msgstr "nesvarbus"
+
+#: ../src/rule.c:157
+msgid "Podcast"
+msgstr ""
+
+#: ../src/rule.c:157
+msgid "included"
+msgstr "įtraukta"
+
+#: ../src/rule.c:157
+msgid "not included"
+msgstr "neįtraukta"
+
+#: ../src/rule.c:158
+msgid "Category"
+msgstr "Kategorija"
+
+#: ../src/rule.c:158
+msgid "is set"
+msgstr "nustatyta"
+
+#: ../src/rule.c:158
+msgid "is not set"
+msgstr "nenustatyta"
+
+#: ../src/subscription.c:104
+#, c-format
+msgid "Subscription \"%s\" is already being updated!"
+msgstr "„%s“ prenumerata jau atnaujinta!"
+
+#: ../src/subscription.c:109
+#, c-format
+msgid ""
+"The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
+msgstr "„%s“ prenumerata nebegalima. „Liferea“ jos nebeatnaujins!"
+
+#: ../src/subscription.c:143
+#, c-format
+msgid "Updating favicon for \"%s\""
+msgstr "Atnaujinti „%s“ ženkliuką"
+
+#: ../src/subscription.c:192
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr ""
+"Klaida skaitant prenumeratą. Patikrinkite URL ir žiūrėkite išvestį konsolėje."
+
+#: ../src/subscription.c:210
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "„%s“ URL negrįžtamai pasikeitė ir buvo atnaujintas"
+
+#: ../src/subscription.c:218
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "„%s“ nutraukė veiklą.  „Liferea“ nebegalės atnaujinti!"
+
+#: ../src/subscription.c:221
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "„%s“ pasikeitė po paskutinio atnaujinimo"
+
+#: ../src/subscription.c:267
+#, c-format
+msgid "Updating \"%s\""
+msgstr "Atnaujinama: „%s“"
+
+#: ../src/update.c:255
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr ""
+
+#: ../src/update.c:278
+#, c-format
+msgid "%s exited with status %d"
+msgstr "%s baigimo kodas %d"
+
+#: ../src/update.c:284 ../src/update.c:285 ../src/update.c:397
+#, c-format
+msgid "Error: Could not open pipe \"%s\""
+msgstr "Klaida: nepavyksta atverti kanalo „%s“"
+
+#. FIXME: maybe setting request->returncode would be better
+#: ../src/update.c:423
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "Klaida: nepavyksta atverti rinkmenos „%s“"
+
+#: ../src/update.c:429
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "Klaida: nėra „%s“ rinkmenos"
+
+#: ../src/vfolder.c:55
+msgid "New Search Folder"
+msgstr "Naujas paieškos aplankas"
+
+#: ../src/xml.c:423
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[Buvo ir daugiau klaidų. Išvestis sutrumpinta!]"
+
+#: ../src/xml.c:576
+msgid "XML Parser: Could not parse document:\n"
+msgstr "XML analizavimas: nepavyksta išanalizuoti dokumento:\n"
+
+#: ../src/ui/enclosure_list_view.c:159
+msgid "Attachments"
+msgstr "Priedai"
+
+#. update list title
+#: ../src/ui/enclosure_list_view.c:248
+#, c-format
+msgid "%d attachment"
+msgid_plural "%d attachments"
+msgstr[0] "%d priedas"
+msgstr[1] "%d priedai"
+msgstr[2] "%d priedų"
+
+#. The following literals are the enclosure list size units
+#: ../src/ui/enclosure_list_view.c:263
+msgid " Bytes"
+msgstr " B"
+
+#: ../src/ui/enclosure_list_view.c:266
+msgid "kB"
+msgstr "kB"
+
+#: ../src/ui/enclosure_list_view.c:270
+msgid "MB"
+msgstr "MB"
+
+#: ../src/ui/enclosure_list_view.c:274
+msgid "GB"
+msgstr "GB"
+
+#: ../src/ui/enclosure_list_view.c:279
+#, c-format
+msgid "%d%s"
+msgstr "%d%s"
+
+#. strip GET parameters
+#: ../src/ui/enclosure_list_view.c:338 ../src/ui/enclosure_list_view.c:514
+#: ../src/ui/liferea_htmlview.c:452 ../src/ui/subscription_dialog.c:356
+msgid "Choose File"
+msgstr "Rinkmenos pasirinkimas"
+
+#: ../src/ui/enclosure_list_view.c:401
+#, fuzzy, c-format
+msgid "File Extension .%s"
+msgstr "<b>Rinkmenos prievardis .%s</b>"
+
+#: ../src/ui/icons.c:54
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr ""
+
+#: ../src/ui/liferea_shell.c:308
+#, c-format
+msgid " (%d new)"
+msgid_plural " (%d new)"
+msgstr[0] " (%d naujas)"
+msgstr[1] " (%d nauji)"
+msgstr[2] " (%d naujų)"
+
+#: ../src/ui/liferea_shell.c:313
+#, c-format
+msgid "%d unread%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%d neskaitytas%s"
+msgstr[1] "%d neskaityti%s"
+msgstr[2] "%d neskaitytų%s"
+
+#: ../src/ui/liferea_shell.c:687
+msgid "Help Topics"
+msgstr "Žinyno temos"
+
+#: ../src/ui/liferea_shell.c:693
+msgid "Quick Reference"
+msgstr "Trumpa informacija"
+
+#: ../src/ui/liferea_shell.c:699
+msgid "FAQ"
+msgstr "D. U. K."
+
+#: ../src/ui/liferea_shell.c:740
+msgid "Liferea is now online"
+msgstr "„Liferea“ programai šiuo metu leidžiama prisijungti prie interneto"
+
+#: ../src/ui/liferea_shell.c:742
+msgid "Work Offline"
+msgstr "Atsijungti"
+
+#: ../src/ui/liferea_shell.c:744
+msgid "Liferea is now offline"
+msgstr "„Liferea“ programai šiuo metu draudžiama prisijungti prie interneto"
+
+#: ../src/ui/liferea_shell.c:746
+msgid "Work Online"
+msgstr "Prisijungti"
+
+#: ../src/ui/liferea_shell.c:842
+msgid "_Subscriptions"
+msgstr "_Prenumeratos"
+
+#: ../src/ui/liferea_shell.c:843
+msgid "Update _All"
+msgstr "Viską _atnaujinti"
+
+#: ../src/ui/liferea_shell.c:843
+msgid "Updates all subscriptions."
+msgstr "Atnaujinti visas prenumeratas."
+
+#: ../src/ui/liferea_shell.c:845
+msgid "Mark All As _Read"
+msgstr "Visus žymėti _skaitytais"
+
+#: ../src/ui/liferea_shell.c:845
+msgid "Marks read every item of every subscription."
+msgstr "Pažymėti visų prenumeratų visus straipsnius."
+
+#: ../src/ui/liferea_shell.c:847
+msgid "_Import Feed List..."
+msgstr "_Importuoti kanalų sąrašą..."
+
+#: ../src/ui/liferea_shell.c:847
+msgid "Imports an OPML feed list."
+msgstr "Importuoti OPML naujienų kanalų sąrašą."
+
+#: ../src/ui/liferea_shell.c:848
+msgid "_Export Feed List..."
+msgstr "_Eksportuoti kanalų sąrašą..."
+
+#: ../src/ui/liferea_shell.c:848
+msgid "Exports the feed list as OPML."
+msgstr "Eksportuoti naujienų kanalų sąrašą kaip OPML"
+
+#: ../src/ui/liferea_shell.c:849
+msgid "_Quit"
+msgstr "_Baigti"
+
+#: ../src/ui/liferea_shell.c:851
+msgid "_Feed"
+msgstr "_Kanalas"
+
+#: ../src/ui/liferea_shell.c:852
+msgid "Remove _All Items"
+msgstr "Pašalinti _visus"
+
+#: ../src/ui/liferea_shell.c:852
+msgid "Removes all items of the currently selected feed."
+msgstr "Pašalinti visus pasirinkto naujienų kanalo straipsnius."
+
+#: ../src/ui/liferea_shell.c:855
+msgid "_Item"
+msgstr "_Straipsnis"
+
+#: ../src/ui/liferea_shell.c:856
+msgid "_Next Unread Item"
+msgstr "_Tolesnis neskaitytas"
+
+#: ../src/ui/liferea_shell.c:856
+msgid ""
+"Jumps to the next unread item. If necessary selects the next feed with "
+"unread items."
+msgstr ""
+"Pereiti prie sekančio neskaityto straipsnio. Prireikus gali pereiti prie "
+"kito naujienų kanalo."
+
+#: ../src/ui/liferea_shell.c:859
+msgid "_View"
+msgstr "Ro_dymas"
+
+#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:565
+msgid "_Increase Text Size"
+msgstr "Pa_didinti teksto dydį"
+
+#: ../src/ui/liferea_shell.c:860
+msgid "Increases the text size of the item view."
+msgstr "Padidinti rodinio teksto dydį."
+
+#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:566
+msgid "_Decrease Text Size"
+msgstr "Su_mažinti teksto dydį"
+
+#: ../src/ui/liferea_shell.c:862
+msgid "Decreases the text size of the item view."
+msgstr "Sumažinti rodinio teksto dydį."
+
+#: ../src/ui/liferea_shell.c:865
+msgid "_Tools"
+msgstr "Į_rankiai"
+
+#: ../src/ui/liferea_shell.c:866
+msgid "_Update Monitor"
+msgstr "_Atnaujinimo stebėjimas"
+
+#: ../src/ui/liferea_shell.c:866
+msgid "Show a list of all feeds currently in the update queue"
+msgstr "Rodo visus atnaujinimo eilėje esančius naujienų kanalų sąrašą"
+
+#: ../src/ui/liferea_shell.c:868
+msgid "_Preferences"
+msgstr "_Nuostatos"
+
+#: ../src/ui/liferea_shell.c:868
+msgid "Edit Preferences."
+msgstr "Keisti nuostatas"
+
+#: ../src/ui/liferea_shell.c:871
+msgid "S_earch"
+msgstr "Pa_ieška"
+
+#: ../src/ui/liferea_shell.c:872
+msgid "Search All Feeds..."
+msgstr "Ieškoti visuose naujienų kanaluose..."
+
+#: ../src/ui/liferea_shell.c:872
+msgid "Show the search dialog."
+msgstr "Rodyti paieškos dialogo langą."
+
+#: ../src/ui/liferea_shell.c:874
+msgid "_Help"
+msgstr "_Pagalba"
+
+#: ../src/ui/liferea_shell.c:875
+msgid "_Contents"
+msgstr "_Turinys"
+
+#: ../src/ui/liferea_shell.c:875
+msgid "View help for this application."
+msgstr "Rodyti šios programos žinyną."
+
+#: ../src/ui/liferea_shell.c:876
+msgid "_Quick Reference"
+msgstr "_Trumpa informacija"
+
+#: ../src/ui/liferea_shell.c:876
+msgid "View a list of all Liferea shortcuts."
+msgstr "Rodyti visus „Liferea“ sparčiuosius klavišus."
+
+#: ../src/ui/liferea_shell.c:878
+msgid "_FAQ"
+msgstr "_D. U. K."
+
+#: ../src/ui/liferea_shell.c:878
+msgid "View the FAQ for this application."
+msgstr "Rodyti dažniausiai užduodamus klausimus."
+
+#: ../src/ui/liferea_shell.c:879
+msgid "_About"
+msgstr "_Apie"
+
+#: ../src/ui/liferea_shell.c:879
+msgid "Shows an about dialog."
+msgstr "Rodyti dialogo langą apie programą."
+
+#: ../src/ui/liferea_shell.c:883
+msgid "_Normal View"
+msgstr "_Normalus rodinys"
+
+#: ../src/ui/liferea_shell.c:883
+msgid "Set view mode to mail client mode."
+msgstr ""
+
+#: ../src/ui/liferea_shell.c:885
+msgid "_Wide View"
+msgstr "_Platus rodinys"
+
+#: ../src/ui/liferea_shell.c:885
+msgid "Set view mode to use three vertical panes."
+msgstr "Rodyti trijuose vertikaliuose polangiuose"
+
+#: ../src/ui/liferea_shell.c:887
+msgid "_Combined View"
+msgstr "_Bendras rodinys"
+
+#: ../src/ui/liferea_shell.c:887
+msgid "Set view mode to two pane mode."
+msgstr "Rodyti dviejuose polangiuose"
+
+#: ../src/ui/liferea_shell.c:892
+msgid "_Reduced Feed List"
+msgstr "_Sutrumpintas kanalų sąrašas"
+
+#: ../src/ui/liferea_shell.c:892
+msgid "Hide feeds with no unread items."
+msgstr "Slėpti naujienų kanalus, kuriuose nėra neskaitytų straipsnių."
+
+#: ../src/ui/liferea_shell.c:897
+msgid "_New Subscription..."
+msgstr "Nauja prenumerata..."
+
+#: ../src/ui/liferea_shell.c:897
+msgid "Adds a subscription to the feed list."
+msgstr "Prenumeruoti naują naujienų kanalą"
+
+#: ../src/ui/liferea_shell.c:899 ../src/ui/popup_menu.c:301
+msgid "New _Folder..."
+msgstr "Naujas _aplankas..."
+
+#: ../src/ui/liferea_shell.c:899
+msgid "Adds a folder to the feed list."
+msgstr "Naujienų kanalų sąraše sukurti naują aplanką."
+
+#: ../src/ui/liferea_shell.c:900 ../src/ui/popup_menu.c:304
+msgid "New S_earch Folder..."
+msgstr "Naujas pa_ieškos aplankas..."
+
+#: ../src/ui/liferea_shell.c:900
+msgid "Adds a new search folder to the feed list."
+msgstr "Naujienų kanalų sąraše sukurti naują paieškos aplanką."
+
+#: ../src/ui/liferea_shell.c:901
+msgid "New _Source..."
+msgstr "Naujas _šaltinis..."
+
+#: ../src/ui/liferea_shell.c:901
+msgid "Adds a new feed list source."
+msgstr "Pridėti naują kanalų sąrašo šaltinį."
+
+#: ../src/ui/liferea_shell.c:902 ../src/ui/popup_menu.c:306
+msgid "New _News Bin..."
+msgstr ""
+
+#: ../src/ui/liferea_shell.c:902
+msgid "Adds a new news bin."
+msgstr ""
+
+#: ../src/ui/liferea_shell.c:906
+msgid "_Mark Items Read"
+msgstr "Žymėti _skaitytu"
+
+#: ../src/ui/liferea_shell.c:906
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+
+#: ../src/ui/liferea_shell.c:908 ../src/ui/popup_menu.c:282
+msgid "_Update"
+msgstr "_Atnaujinti"
+
+#: ../src/ui/liferea_shell.c:908
+msgid ""
+"Updates the selected subscription or all subscriptions of the selected "
+"folder."
+msgstr ""
+"Atnaujini pasirinktą prenumeratą arba visas pasirinkto aplanko prenumeratas."
+
+#: ../src/ui/liferea_shell.c:913
+msgid "_Properties"
+msgstr "_Savybės..."
+
+#: ../src/ui/liferea_shell.c:913
+msgid "Opens the property dialog for the selected subscription."
+msgstr "Atverti pasirinktos prenumeratos savybių dialogą."
+
+#: ../src/ui/liferea_shell.c:914
+msgid "_Remove"
+msgstr "Pa_šalinti"
+
+#: ../src/ui/liferea_shell.c:914
+msgid "Removes the selected subscription."
+msgstr "Nutraukti pasirinktą prenumeratą."
+
+#: ../src/ui/liferea_shell.c:918 ../src/ui/popup_menu.c:151
+msgid "Toggle _Read Status"
+msgstr "Keisti _skaitymo būseną"
+
+#: ../src/ui/liferea_shell.c:918
+msgid "Toggles the read status of the selected item."
+msgstr "Pakeisti pasirinkto straipsnio skaitymo būseną."
+
+#: ../src/ui/liferea_shell.c:920 ../src/ui/popup_menu.c:152
+msgid "Toggle Item _Flag"
+msgstr "Keisti straipsnio s_varbumą"
+
+#: ../src/ui/liferea_shell.c:920
+msgid "Toggles the flag status of the selected item."
+msgstr "Pakeisti pasirinkto straipsnio svarbumo būseną."
+
+#: ../src/ui/liferea_shell.c:922
+msgid "R_emove"
+msgstr "Pa_šalinti"
+
+#: ../src/ui/liferea_shell.c:922
+msgid "Removes the selected item."
+msgstr "Pašalinti pasirinktą straipsnį."
+
+#: ../src/ui/liferea_shell.c:924
+msgid "_Launch In Browser"
+msgstr "Atverti _naršyklėje"
+
+#: ../src/ui/liferea_shell.c:924
+msgid "Launches the item's link in the configured browser."
+msgstr "Straipsnio nuorodą atveria sukonfigūruotoje naršyklėje."
+
+#: ../src/ui/liferea_shell.c:929 ../src/ui/popup_menu.c:181
+msgid "_Work Offline"
+msgstr "Dirbti _neprisijungus"
+
+#: ../src/ui/liferea_shell.c:929
+msgid "This option allows you to disable subscription updating."
+msgstr "Ši parinktis leidžia uždrausti prenumeratos atnaujinimą."
+
+#: ../src/ui/liferea_shell.c:1239
+msgid "Liferea - Linux Feed Reader"
+msgstr "Liferea – Linux naujienų kanalų skaitytuvė"
+
+#: ../src/ui/liferea_shell.c:1241
+#, fuzzy
+msgid ""
+"<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
+"feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
+"'Subscription' -&gt; 'New Subscription'</li><li>By dropping feed links into "
+"the subscription list</li><li>By right clicking links and choosing "
+"'Subscribe' within Liferea</li></ul></p>"
+msgstr ""
+"<p>Jus sveikina <b>Liferea</b> programa, skirta internetinių naujienų kanalų "
+"skaitymui.</p> <p>Kairiame polangyje rodomas prenumeratų sąrašas. Norėdami "
+"prenumeruoti naują naujienų kanalą, eikite „Prenumeratos -&gt; Nauja "
+"prenumerata“. Norėdami naršyti naujienų kanalo antraštes, pasirinkite kanalą "
+"naujienų kanalų sąraše; antraštes matysite dešiniame polangyje.</p>"
+
+#: ../src/ui/auth_dialog.c:132 ../glade/auth.ui.h:3
+#, no-c-format
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "Įveskite „%s“ (%s) naudotojo vardą ir slaptažodį:"
+
+#: ../src/ui/auth_dialog.c:133
+msgid "Unknown source"
+msgstr "Nežinomas šaltinis"
+
+#: ../src/ui/ui_common.c:205
+#, fuzzy
+msgid "All Files"
+msgstr "_Vietinė rinkmena"
+
+#: ../src/ui/feed_list_view.c:338
+msgid "Deleting entry"
+msgstr "Įrašo šalinimas"
+
+#: ../src/ui/feed_list_view.c:339
+#, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "Tikrai pašalinti „%s“ ir visą jo turinį?"
+
+#: ../src/ui/feed_list_view.c:339
+#, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
+msgstr "Tikrai pašalinti „%s“?"
+
+#: ../src/ui/feed_list_view.c:351
+msgid "Deletion Confirmation"
+msgstr "Šalinimo patvirtinimas"
+
+#: ../src/ui/feed_list_view.c:382
+msgid "Liferea is in offline mode. No update possible."
+msgstr "„Liferea“ veikia neprisijungusia veiksena. Atnaujinti negalima."
+
+#: ../src/ui/liferea_htmlview.c:428
+#, fuzzy, c-format
+msgid "Download FAILED: \"%s\""
+msgstr "NEPAVYKO parsiųsti intarpo: „%s“"
+
+#: ../src/ui/liferea_htmlview.c:430
+#, fuzzy
+msgid "Download finished."
+msgstr "_Parsiųsti naudojant"
+
+#: ../src/ui/liferea_htmlview.c:537
+msgid "Launch Link In _Tab"
+msgstr "Nuorodą atverti _kortelėje"
+
+#: ../src/ui/liferea_htmlview.c:538
+msgid "_Launch Link In Browser"
+msgstr "Nuorodą atverti _naršyklėje"
+
+#: ../src/ui/liferea_htmlview.c:541 ../src/ui/popup_menu.c:143
+#, c-format
+msgid "_Bookmark Link at %s"
+msgstr "Įtraukti į %s _adresyną"
+
+#: ../src/ui/liferea_htmlview.c:545
+msgid "_Copy Link Location"
+msgstr "_Kopijuoti nuorodą"
+
+#: ../src/ui/liferea_htmlview.c:548
+#, fuzzy
+msgid "_Copy Image Location"
+msgstr "_Kopijuoti nuorodą"
+
+#: ../src/ui/liferea_htmlview.c:550
+#, fuzzy
+msgid "S_ave Link As"
+msgstr "Įrašyti kaip..."
+
+#: ../src/ui/liferea_htmlview.c:552
+msgid "S_ave Image As"
+msgstr ""
+
+#: ../src/ui/liferea_htmlview.c:555
+msgid "_Subscribe..."
+msgstr "_Prenumeruoti..."
+
+#: ../src/ui/item_list_view.c:333
+msgid "*** No title ***"
+msgstr "*** Be pavadinimo ***"
+
+#: ../src/ui/item_list_view.c:578
+msgid "Date"
+msgstr "Data"
+
+#: ../src/ui/item_list_view.c:592
+msgid "Headline"
+msgstr "Antraštė"
+
+#: ../src/ui/item_list_view.c:728 ../src/ui/item_list_view.c:749
+#: ../src/ui/item_list_view.c:823 ../src/ui/item_list_view.c:920
+#: ../src/ui/item_list_view.c:935
+msgid "No item has been selected"
+msgstr "Nepažymėtas nei vienas straipsnis"
+
+#: ../src/ui/item_list_view.c:745
+msgid "This item has no link specified!"
+msgstr "Šis straipsnis be nuorodos!"
+
+#: ../src/ui/item_list_view.c:811
+msgid "You must select a feed to delete its items!"
+msgstr "Nurodykite naujienų kanalą, kurio straipsnius norite pašalinti!"
+
+#: ../src/ui/popup_menu.c:116
+msgid "Launch Item In _Tab"
+msgstr "Straipsnį atverti _kortelėje"
+
+#: ../src/ui/popup_menu.c:117
+msgid "_Launch Item In Browser"
+msgstr "_Straipsnį atverti naršyklėje"
+
+#: ../src/ui/popup_menu.c:129
+msgid "Copy to News Bin"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:147
+msgid "Copy Item _URL to Clipboard"
+msgstr "_URL kopijuoti į iškarpinę"
+
+#: ../src/ui/popup_menu.c:153
+msgid "R_emove Item"
+msgstr "_Pašalinti straipsnį"
+
+#: ../src/ui/popup_menu.c:166
+msgid "Open Enclosure..."
+msgstr "Atverti intarpą..."
+
+#: ../src/ui/popup_menu.c:167
+msgid "Save As..."
+msgstr "Įrašyti kaip..."
+
+#: ../src/ui/popup_menu.c:168
+msgid "Copy Link Location"
+msgstr "Kopijuoti nuorodą"
+
+#: ../src/ui/popup_menu.c:182
+msgid "_Update All"
+msgstr "_Atnaujinti visus"
+
+#: ../src/ui/popup_menu.c:187
+msgid "_Show Liferea"
+msgstr "_Rodyti „Liferea“"
+
+#: ../src/ui/popup_menu.c:284
+msgid "_Update Folder"
+msgstr "_Atnaujinti aplanką"
+
+#: ../src/ui/popup_menu.c:286
+msgid "_Mark All As Read"
+msgstr "_Visus žymėti skaitytais"
+
+#: ../src/ui/popup_menu.c:296
+msgid "_New"
+msgstr "_Naujas"
+
+#: ../src/ui/popup_menu.c:298
+msgid "New _Subscription..."
+msgstr "Nauja p_renumerata..."
+
+#: ../src/ui/popup_menu.c:305
+msgid "New S_ource..."
+msgstr "Naujas _šaltinis"
+
+#: ../src/ui/popup_menu.c:314
+#, fuzzy
+msgid "Sort Feeds"
+msgstr "Importuoti kanalų sąrašą"
+
+#: ../src/ui/popup_menu.c:320
+msgid "_Rebuild"
+msgstr ""
+
+#: ../src/ui/ui_node.c:123
+msgid "(Empty)"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:78
+msgid "GNOME default"
+msgstr "GNOME numatytoji"
+
+#: ../src/ui/ui_prefs.c:79
+msgid "Text below icons"
+msgstr "Tekstas po ženkliukais"
+
+#: ../src/ui/ui_prefs.c:80
+msgid "Text beside icons"
+msgstr "Tekstas šalia ženkliukų"
+
+#: ../src/ui/ui_prefs.c:81
+msgid "Icons only"
+msgstr "Tik ženkliukai"
+
+#: ../src/ui/ui_prefs.c:82
+msgid "Text only"
+msgstr "Tik tekstas"
+
+#: ../src/ui/ui_prefs.c:90 ../src/ui/subscription_dialog.c:43
+msgid "minutes"
+msgstr "min."
+
+#: ../src/ui/ui_prefs.c:91 ../src/ui/subscription_dialog.c:44
+msgid "hours"
+msgstr "val."
+
+#: ../src/ui/ui_prefs.c:92 ../src/ui/subscription_dialog.c:45
+msgid "days"
+msgstr "d."
+
+#: ../src/ui/ui_prefs.c:97
+msgid "Space"
+msgstr "Tarpas"
+
+#: ../src/ui/ui_prefs.c:98
+msgid "<Ctrl> Space"
+msgstr "Vald + tarpas"
+
+#: ../src/ui/ui_prefs.c:99
+msgid "<Alt> Space"
+msgstr "Alt + tarpas"
+
+#: ../src/ui/ui_prefs.c:420
+msgid "Choose download directory"
+msgstr "Pasirinkite parsiuntimo katalogą"
+
+#: ../src/ui/ui_prefs.c:504
+msgid "Manual"
+msgstr "(Kita)"
+
+#: ../src/ui/ui_prefs.c:519
+msgid "Browser default"
+msgstr "numatytojoje naršyklėje"
+
+#: ../src/ui/ui_prefs.c:522
+msgid "Existing window"
+msgstr "esamame lange"
+
+#: ../src/ui/ui_prefs.c:525
+msgid "New window"
+msgstr "naujame lange"
+
+#: ../src/ui/ui_prefs.c:528
+msgid "New tab"
+msgstr "naujoje kortelėje"
+
+#: ../src/ui/ui_prefs.c:681
+msgid "Integrate with the messaging menu (indicator)"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:684
+#, fuzzy
+msgid "Terminate instead of minimizing to the messaging menu"
+msgstr "_Baigti, o ne nuleisti į sistemos dėklą."
+
+#: ../src/ui/ui_prefs.c:687
+msgid "Start minimized to the messaging menu"
+msgstr ""
+
+#: ../src/ui/ui_prefs.c:792
+msgid "Type"
+msgstr "Tipas"
+
+#: ../src/ui/ui_prefs.c:795
+msgid "Program"
+msgstr "Programa"
+
+#: ../src/ui/subscription_dialog.c:430
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minute."
+msgid_plural ""
+"The provider of this feed suggests an update interval of %d minutes."
+msgstr[0] "Prenumeratos teikėjas siūlo %d min atnaujinimo intervalą."
+msgstr[1] "Prenumeratos teikėjas siūlo %d min atnaujinimo intervalą."
+msgstr[2] "Prenumeratos teikėjas siūlo %d min atnaujinimo intervalą."
+
+#: ../src/ui/subscription_dialog.c:434
+msgid "This feed specifies no default update interval."
+msgstr "Šis naujienų kanalas neturi numatytojo atnaujinimo intervalo."
+
+#: ../src/ui/browser_tabs.c:287
+msgid "Untitled"
+msgstr ""
+
+#: ../src/ui/ui_tray.c:221
+#, c-format
+msgid "%d new item"
+msgid_plural "%d new items"
+msgstr[0] "%d naujas straipsnis"
+msgstr[1] "%d nauji straipsniai"
+msgstr[2] "%d naujų straipsnių"
+
+#: ../src/ui/ui_tray.c:224
+msgid "No new items"
+msgstr "Naujų straipsnių nėra"
+
+#: ../src/ui/ui_tray.c:228
+#, c-format
+msgid ""
+"%s\n"
+"%d unread item"
+msgid_plural ""
+"%s\n"
+"%d unread items"
+msgstr[0] ""
+"%s\n"
+"%d neskaitytas straipsnis"
+msgstr[1] ""
+"%s\n"
+"%d neskaityti straipsniai"
+msgstr[2] ""
+"%s\n"
+"%d neskaitytų straipsnių"
+
+#: ../src/ui/ui_tray.c:230
+#, c-format
+msgid ""
+"%s\n"
+"No unread items"
+msgstr ""
+"%s\n"
+"Nėra neskaitytų straipsnių"
+
+#: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
+msgid "Website"
+msgstr ""
+
+#: ../src/parsers/atom10.c:251
+msgid "Invalid Atom feed: unknown author"
+msgstr ""
+
+#: ../src/parsers/ns_ag.c:70
+msgid "%b %d %H:%M"
+msgstr ""
+
+#: ../src/fl_sources/default_source.c:174
+#: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
+#: ../glade/simple_subscription.ui.h:4
+msgid "New Subscription"
+msgstr "Nauja prenumerata"
+
+#: ../src/fl_sources/google_source.c:113
+msgid "Google Reader login failed!"
+msgstr ""
+
+#: ../src/fl_sources/google_source.c:358
+msgid "Google Reader"
+msgstr ""
+
+#: ../src/fl_sources/google_source.c:359
+msgid ""
+"Integrate the feed list of your Google Reader account. Liferea will present "
+"your Google Reader subscriptions, and will synchronize your feed list and "
+"reading lists."
+msgstr ""
+
+#: ../src/fl_sources/opml_source.c:325
+msgid "Planet, BlogRoll, OPML"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.c:326
+msgid ""
+"Integrate blogrolls or Planets in your feed list. Liferea will automatically "
+"add and remove feeds according to the changes of the source OPML document"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.c:387
+msgid "Choose OPML File"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.h:28
+msgid "New OPML Subscription"
+msgstr "Nauja OPML prenumerata"
+
+#: ../src/fl_sources/node_source.c:238
+msgid "No feed list source types found!"
+msgstr ""
+
+#: ../src/fl_sources/node_source.c:269
+msgid "Source Type"
+msgstr "Šaltinio tipas"
+
+#: ../src/fl_sources/ttrss_source.c:364
+msgid "Tiny Tiny RSS"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:365
+msgid ""
+"Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
+"present your tt-rss subscriptions, and will synchronize your feed list and "
+"reading lists."
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source_feed.c:105
+msgid "Could not parse JSON returned by tt-rss API!"
+msgstr ""
+
+#: ../src/notification/libnotify.c:61 ../src/notification/libnotify.c:83
+#: ../src/notification/libnotify.c:152
+msgid "This feed does not exist anymore!"
+msgstr "Tokio naujienų kanalo nebėra!"
+
+#: ../src/notification/libnotify.c:125
+#, c-format
+msgid "This news entry has no headline"
+msgstr "Šis naujienų įrašas neturi antraštės"
+
+#: ../src/notification/libnotify.c:130
+msgid "Visit"
+msgstr "Aplankyti"
+
+#: ../src/notification/libnotify.c:171 ../src/notification/libnotify.c:274
+msgid "Open feed"
+msgstr "Atverti naujienų kanalą"
+
+#: ../src/notification/libnotify.c:174 ../src/notification/libnotify.c:277
+msgid "Mark all as read"
+msgstr "Visus pažymėti skaitytais"
+
+#: ../src/notification/libnotify.c:254
+#, c-format
+msgid "<b>%s</b> has <b>%d</b> update"
+msgid_plural "<b>%s</b> has <b>%d</b> updates"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: ../src/notification/libnotify.c:257 ../src/notification/libnotify.c:259
+msgid "Feed Update"
+msgstr "Naujienų kanalų atnaujinimas"
+
+#: ../src/notification/libnotify.c:271
+msgid "Show details"
+msgstr "Rodyti išsamiau"
+
+#: ../src/sync/avahi_browser.c:297 ../src/sync/avahi_publisher.c:296
+#, c-format
+msgid "Liferea Sync %s@%s"
+msgstr "„Liferea“ sinchronizavimas %s@%s"
+
+#: ../glade/auth.ui.h:1
+msgid "Authentication"
+msgstr "Tapatybės nustatymas"
+
+#: ../glade/auth.ui.h:4
+msgid ""
+"Note: <i>The username and password will be saved to your Liferea feedlist "
+"file without using encryption.</i>"
+msgstr ""
+"Pastaba: <i>naudotojo vardas ir slaptažodis bus laikomi neužšifruoti "
+"„Liferea“ naujienų kanalo sąrašo rinkmenoje.</i>"
+
+#: ../glade/auth.ui.h:5 ../glade/liferea.ui.h:89
+msgid "User_name:"
+msgstr "Naudotojo _vardas:"
+
+#: ../glade/auth.ui.h:6 ../glade/liferea.ui.h:127
+msgid "_Password:"
+msgstr "_Slaptažodis:"
+
+#: ../glade/google_source.ui.h:1
+msgid "Add Google Reader Account"
+msgstr ""
+
+#: ../glade/google_source.ui.h:2
+msgid "Please enter your Google Reader account settings."
+msgstr ""
+
+#: ../glade/google_source.ui.h:3 ../glade/liferea.ui.h:126
+#: ../glade/ttrss_source.ui.h:3
+msgid "_Password"
+msgstr "_Slaptažodis"
+
+#: ../glade/google_source.ui.h:4
+msgid "_Username (Email)"
+msgstr "_Naudotojo vardas (el. p. adresas)"
+
+#: ../glade/liferea.ui.h:1
+msgid " "
+msgstr " "
+
+#: ../glade/liferea.ui.h:2
+msgid "A_ny Rule Matches"
+msgstr "Atitinka _bent vieną taisyklę"
+
+#: ../glade/liferea.ui.h:3
+msgid "About"
+msgstr "Apie"
+
+#: ../glade/liferea.ui.h:4
+msgid "Advanced"
+msgstr "Sudėtingiau"
+
+#: ../glade/liferea.ui.h:5
+msgid "Advanced Search"
+msgstr "Sudėtingesnė paieška"
+
+#: ../glade/liferea.ui.h:6
+msgid "Archive"
+msgstr "Archyvas"
+
+#: ../glade/liferea.ui.h:7
+msgid "Auto-_load item link in configured browser when selecting articles."
+msgstr ""
+
+#: ../glade/liferea.ui.h:8
+msgid "Browser"
+msgstr "Naršyklė"
+
+#: ../glade/liferea.ui.h:9
+msgid "Cancel _All"
+msgstr "_Atšaukti visus"
+
+#: ../glade/liferea.ui.h:10 ../glade/new_subscription.ui.h:1
+msgid "Convert _using:"
+msgstr "Konvertuoti _naudojant:"
+
+#: ../glade/liferea.ui.h:11
+#, fuzzy
+msgid ""
+"Copyright (c) 2003-2010\n"
+"The Liferea Team\n"
+msgstr ""
+"Autorinės teisės (c) 2003-2009\n"
+"Liferea komanda\n"
+
+#: ../glade/liferea.ui.h:14
+msgid "Create News Bin"
+msgstr ""
+
+#: ../glade/liferea.ui.h:15
+msgid "Create Search Engine Feed"
+msgstr "Sukurti paieškos sistemos naujienų kanalą"
+
+#: ../glade/liferea.ui.h:16
+msgid "Default Feed Refresh _Interval:"
+msgstr "Numatytasis kanalo atnaujinimo _intervalas:"
+
+#: ../glade/liferea.ui.h:17
+msgid "Default _number of items per feed to save:"
+msgstr "Numatytasis naujienų kanale saugomų straipsnių _skaičius:"
+
+#: ../glade/liferea.ui.h:18
+msgid "Di_sable cache"
+msgstr "_Uždrausti podėlį"
+
+#: ../glade/liferea.ui.h:19
+msgid "Download"
+msgstr "Parsiuntimas"
+
+#: ../glade/liferea.ui.h:20
+msgid "Downloading Enclosure"
+msgstr "Intarpų parsiuntimas"
+
+#: ../glade/liferea.ui.h:21
+#, fuzzy
+msgid "Downloading Enclosures"
+msgstr "Intarpų parsiuntimas"
+
+#: ../glade/liferea.ui.h:22
+#, fuzzy
+msgid "Downloading Now"
+msgstr "<b>Šiuo metu parsiunčiama</b>"
+
+#: ../glade/liferea.ui.h:23
+msgid "Downloading an enclosure of type:"
+msgstr "Parsiuntimas intarpų, kurių tipas yra:"
+
+#: ../glade/liferea.ui.h:24
+msgid "Enclosures"
+msgstr "Intarpai"
+
+#: ../glade/liferea.ui.h:25
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr ""
+
+#: ../glade/liferea.ui.h:26
+#, fuzzy
+msgid "External Browser Settings"
+msgstr "<span weight=\"bold\">Išorinės naršyklės nuostatos</span>"
+
+#: ../glade/liferea.ui.h:27
+msgid "Feed Cache Handling"
+msgstr ""
+
+#: ../glade/liferea.ui.h:28
+#, fuzzy
+msgid "Feed Icons (Favicons)"
+msgstr "<span weight=\"bold\">Naujienų kanalų ženkliukai</span>"
+
+#: ../glade/liferea.ui.h:29
+#, fuzzy
+msgid "Feed Name"
+msgstr "Naujienų kanalo pa_vadinimas:"
+
+#: ../glade/liferea.ui.h:30 ../glade/new_subscription.ui.h:3
+#: ../glade/simple_subscription.ui.h:3
+#, fuzzy
+msgid "Feed Source"
+msgstr "<b>Naujienų kanalo šaltinis</b>"
+
+#: ../glade/liferea.ui.h:31
+#, fuzzy
+msgid "Feed Update Settings"
+msgstr "Naujienų kanalų atnaujinimas"
+
+#: ../glade/liferea.ui.h:32
+msgid "Feed _Name:"
+msgstr "Naujienų kanalo pa_vadinimas:"
+
+#: ../glade/liferea.ui.h:33
+msgid "Feeds"
+msgstr "Naujienų kanalai"
+
+#: ../glade/liferea.ui.h:34
+#, fuzzy
+msgid "Find Items that meet the following criteria"
+msgstr "<b>Ieškoti straipsnių pagal nurodytus kriterijus</b>"
+
+#: ../glade/liferea.ui.h:35
+#, fuzzy
+msgid "Folder Display Settings"
+msgstr "<span weight=\"bold\">Aplankų rodymo nuostatos</span>"
+
+#: ../glade/liferea.ui.h:36
+msgid "Folders"
+msgstr "Aplankai"
+
+#: ../glade/liferea.ui.h:37
+msgid "GUI"
+msgstr "Grafinė sąsaja"
+
+#: ../glade/liferea.ui.h:38
+msgid "General"
+msgstr "Bendra"
+
+#: ../glade/liferea.ui.h:39
+msgid "HTTP Proxy Server"
+msgstr ""
+
+#: ../glade/liferea.ui.h:40
+msgid "Headlines"
+msgstr "Antraštės"
+
+#: ../glade/liferea.ui.h:41
+msgid "Ignore _comment feeds for this subscription."
+msgstr ""
+
+#: ../glade/liferea.ui.h:42
+#, fuzzy
+msgid "Internal Browser Settings"
+msgstr "<span weight=\"bold\">Vidinės naršyklės nuostatos</span>"
+
+#: ../glade/liferea.ui.h:44
+msgid "Liferea Homepage"
+msgstr "Liferea puslapis"
+
+#: ../glade/liferea.ui.h:45
+msgid "Liferea Preferences"
+msgstr "Liferea nuostatos"
+
+#: ../glade/liferea.ui.h:46 ../glade/new_subscription.ui.h:4
+msgid ""
+"Liferea can use external filter plugins in order to access feeds and "
+"directories in non-supported formats.  See the documentation for more "
+"information."
+msgstr ""
+
+#: ../glade/liferea.ui.h:47
+msgid "Liferea is a news aggregator for GTK+"
+msgstr "„Liferea“ yra sklaidos kanalų skaitytuvė"
+
+#: ../glade/liferea.ui.h:48
+msgid "Maximal _Number Of Result Items:"
+msgstr ""
+
+#: ../glade/liferea.ui.h:49
+msgid "New Folder"
+msgstr "Naujas aplankas"
+
+#. Feed update interval hint in preference dialog.
+#: ../glade/liferea.ui.h:51
+msgid ""
+"Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
+"waste of bandwidth to poll feeds more often than each hour.</i>"
+msgstr ""
+
+#: ../glade/liferea.ui.h:52
+msgid ""
+"Note: Liferea will generate a feed subscription which is used to query the "
+"search engine results for the specified search string. You can keep this "
+"feed permanently and update it like any other subscription."
+msgstr ""
+
+#: ../glade/liferea.ui.h:53
+#, fuzzy
+msgid "Notification Settings"
+msgstr "<span weight=\"bold\">Informavimo nuostatos</span>"
+
+#: ../glade/liferea.ui.h:54
+msgid "Online/Offline Button"
+msgstr "Dardo prisijungus/atsijungus mygtukas"
+
+#: ../glade/liferea.ui.h:55
+msgid "Open links in Liferea's _window."
+msgstr "Nuorodas atverti „Liferea“ lange."
+
+#: ../glade/liferea.ui.h:56
+#, fuzzy
+msgid "Opening Enclosures"
+msgstr "Atverti intarpą..."
+
+#: ../glade/liferea.ui.h:57
+#, fuzzy
+msgid "Pending Requests"
+msgstr "<b>Laukiančios užklausos</b>"
+
+#: ../glade/liferea.ui.h:58
+msgid "Proxy"
+msgstr "Įgaliotasis serveris"
+
+#: ../glade/liferea.ui.h:59
+msgid "Proxy Pass_word:"
+msgstr "_Slaptažodis:"
+
+#: ../glade/liferea.ui.h:60
+msgid "Proxy _Host:"
+msgstr "Įgaliotasis ser_veris:"
+
+#: ../glade/liferea.ui.h:61
+msgid "Proxy _Port:"
+msgstr "Prieva_das:"
+
+#: ../glade/liferea.ui.h:62
+msgid "Proxy _Username:"
+msgstr "_Naudotojo vardas:"
+
+#: ../glade/liferea.ui.h:63
+#, fuzzy
+msgid "Reading Headlines"
+msgstr "neskaitytos antraštės"
+
+#: ../glade/liferea.ui.h:64
+msgid "Rename"
+msgstr "Pervadinti"
+
+#: ../glade/liferea.ui.h:65
+msgid "Search All Feeds"
+msgstr "Paieška visuose naujienų kanaluose"
+
+#: ../glade/liferea.ui.h:66
+msgid "Search Folder Properties"
+msgstr "Paieškos aplanko savybės"
+
+#: ../glade/liferea.ui.h:67
+msgid "Search _Name:"
+msgstr "_Paieškos pavadinimas:"
+
+#: ../glade/liferea.ui.h:68 ../glade/new_subscription.ui.h:6
+msgid "Select File..."
+msgstr "Pasirinkti rinkmeną..."
+
+#: ../glade/liferea.ui.h:69
+msgid "Show _number of new items in the tray icon."
+msgstr ""
+
+#: ../glade/liferea.ui.h:70
+msgid "Show a _popup window with new headlines."
+msgstr ""
+
+#: ../glade/liferea.ui.h:71
+msgid "Show a status _icon in the notification area (system tray)."
+msgstr ""
+
+#: ../glade/liferea.ui.h:73 ../glade/new_subscription.ui.h:7
+msgid "Source Type:"
+msgstr "Šaltinio tipas:"
+
+#: ../glade/liferea.ui.h:74
+msgid ""
+"Starts searching for the specified text in all feeds. The search result will "
+"appear in the item list."
+msgstr ""
+
+#: ../glade/liferea.ui.h:75
+msgid "Subscription Properties"
+msgstr "Prenumeratos savybės"
+
+#: ../glade/liferea.ui.h:76
+msgid "Sync"
+msgstr "Sinchronizavimas"
+
+#: ../glade/liferea.ui.h:77
+msgid "Synchronized with Nearby Hosts"
+msgstr ""
+
+#: ../glade/liferea.ui.h:78
+msgid "T_erminate instead of minimizing to tray icon."
+msgstr "_Baigti, o ne nuleisti į sistemos dėklą."
+
+#: ../glade/liferea.ui.h:79
+msgid ""
+"The cache setting controls if the contents of feeds are saved when Liferea "
+"exits. Marked items are always saved to the cache."
+msgstr ""
+
+#: ../glade/liferea.ui.h:81
+#, no-c-format
+msgid "This feed provider suggests an update interval of %d minutes."
+msgstr "Prenumeratos teikėjas siūlo %d min atnaujinimo intervalą."
+
+#: ../glade/liferea.ui.h:82
+#, fuzzy
+msgid "Toolbar Settings"
+msgstr "_Mygtukų juostos etiketės:"
+
+#: ../glade/liferea.ui.h:83
+msgid "Toolbar _button labels:"
+msgstr "_Mygtukų juostos etiketės:"
+
+#: ../glade/liferea.ui.h:84
+#, fuzzy
+msgid "Update Interval"
+msgstr "Atnaujinimo stebėjimas"
+
+#: ../glade/liferea.ui.h:85
+msgid "Update Monitor"
+msgstr "Atnaujinimo stebėjimas"
+
+#: ../glade/liferea.ui.h:86
+msgid "Use HTTP _authentication"
+msgstr "Nurodyti tapatybę jungiantis prie _HTTP"
+
+#: ../glade/liferea.ui.h:87
+msgid "Use Proxy Au_thentication"
+msgstr "Nurodyti tapatybę jungiantis prie įgaliotojo _serverio"
+
+#: ../glade/liferea.ui.h:88 ../glade/new_subscription.ui.h:8
+msgid "Use conversion _filter"
+msgstr "Naudoti konvertavimo _filtrą"
+
+#: ../glade/liferea.ui.h:90
+msgid "View Headlines"
+msgstr "Antraščių rodymas"
+
+#: ../glade/liferea.ui.h:91
+#, fuzzy
+msgid "Web Integration"
+msgstr "Orientacija"
+
+#: ../glade/liferea.ui.h:92
+msgid ""
+"What should Liferea do with this enclosure? Please enter the command you "
+"want to be executed below. Downloaded enclosures will be supplied as an "
+"argument for this command:"
+msgstr ""
+
+#: ../glade/liferea.ui.h:93
+msgid "_Advanced..."
+msgstr "_Sudėtingiau..."
+
+#: ../glade/liferea.ui.h:94
+msgid "_All Rules Must Match"
+msgstr "Atitinka _visas taisykles"
+
+#: ../glade/liferea.ui.h:95
+msgid "_Auto Detect (GNOME or environment)"
+msgstr "_Aptikti automatiškai (GNOME arba aplinkos)"
+
+#: ../glade/liferea.ui.h:96
+msgid "_Automatically download all enclosures of this feed."
+msgstr "_Automatiškai parsiųsti visus šio naujienų kanalo intarpus."
+
+#: ../glade/liferea.ui.h:97
+msgid "_Browse"
+msgstr "_Naršyti"
+
+#: ../glade/liferea.ui.h:98
+msgid "_Browser:"
+msgstr "_Naršyklė:"
+
+#: ../glade/liferea.ui.h:99 ../glade/new_subscription.ui.h:9
+msgid "_Command"
+msgstr "_Komanda"
+
+#: ../glade/liferea.ui.h:100
+msgid "_Default cache settings"
+msgstr "_Numatytosios podėlio nuostatos"
+
+#: ../glade/liferea.ui.h:101
+msgid "_Disable Javascript."
+msgstr "_Uždrausti „JavaScript“."
+
+#: ../glade/liferea.ui.h:102
+msgid "_Do this automatically for enclosures like this from now on."
+msgstr "Nuo šiol taip _elgtis su visais tokio tipo intarpais."
+
+#: ../glade/liferea.ui.h:103
+msgid "_Don't update this feed automatically."
+msgstr "_Šio kanalo automatiškai neatnaujinti."
+
+#: ../glade/liferea.ui.h:104 ../glade/new_subscription.ui.h:10
+msgid "_Don't use proxy for download"
+msgstr "Parsisiuntimams _nenaudoti įgaliotojo serverio"
+
+#: ../glade/liferea.ui.h:105
+msgid "_Download using"
+msgstr "_Parsiųsti naudojant"
+
+#: ../glade/liferea.ui.h:106
+msgid "_Enable Local LAN Synchronization"
+msgstr ""
+
+#: ../glade/liferea.ui.h:107
+msgid "_Enable browser plugins."
+msgstr "Įgalinti _naršyklių papildinius."
+
+#: ../glade/liferea.ui.h:108
+msgid "_Enforce popup notification for this subscription."
+msgstr ""
+
+#: ../glade/liferea.ui.h:109
+msgid "_Feed specific update interval of"
+msgstr "Šio naujienų kanalo atnaujinimo _intervalas"
+
+#: ../glade/liferea.ui.h:110
+msgid "_Folder name:"
+msgstr "_Aplanko pavadinimas"
+
+#: ../glade/liferea.ui.h:111
+msgid "_Hide read items."
+msgstr "_Slėpti perskaitytus straipsnius."
+
+#: ../glade/liferea.ui.h:112
+msgid "_Hide toolbar."
+msgstr "_Slėpti mygtukų juostą"
+
+#: ../glade/liferea.ui.h:113 ../glade/new_subscription.ui.h:11
+msgid "_Local File"
+msgstr "_Vietinė rinkmena"
+
+#: ../glade/liferea.ui.h:114
+msgid "_Manual Setting:"
+msgstr "_Savita nuostata"
+
+#: ../glade/liferea.ui.h:116
+#, no-c-format
+msgid ""
+"_Manual:\n"
+"(%s for URL)"
+msgstr ""
+"_Kita:\n"
+"(%s žymi URL)"
+
+#: ../glade/liferea.ui.h:118
+msgid "_Mark downloaded items as read."
+msgstr "_Parsiųstus straipsnius žymėti skaitytais."
+
+#: ../glade/liferea.ui.h:119
+msgid "_Never do popup notification for this subscription."
+msgstr ""
+
+#: ../glade/liferea.ui.h:120
+msgid "_New Name:"
+msgstr "_Naujas pavadinimas:"
+
+#: ../glade/liferea.ui.h:121
+msgid "_News Bin Name:"
+msgstr ""
+
+#: ../glade/liferea.ui.h:122
+msgid "_No Proxy"
+msgstr "_Nenaudoti įgaliotojo serverio"
+
+#: ../glade/liferea.ui.h:123
+msgid "_Number of items to save:"
+msgstr "Į_rašytinų straipsnių skaičius:"
+
+#: ../glade/liferea.ui.h:124
+msgid "_Open link in:"
+msgstr "Nuorodą _atverti:"
+
+#: ../glade/liferea.ui.h:125
+msgid "_Pass URL and do not download enclosure."
+msgstr ""
+
+#: ../glade/liferea.ui.h:128
+msgid "_Post Bookmarks to"
+msgstr ""
+
+#: ../glade/liferea.ui.h:129
+msgid "_Save downloads in"
+msgstr "_Siuntinius rašyti į"
+
+#: ../glade/liferea.ui.h:130
+msgid "_Search Folder..."
+msgstr "_Kurti paieškos aplanką..."
+
+#: ../glade/liferea.ui.h:131
+msgid "_Search for:"
+msgstr "_Ko ieškoti:"
+
+#: ../glade/liferea.ui.h:132
+msgid "_Service Name"
+msgstr "_Paslaugos pavadinimas"
+
+#: ../glade/liferea.ui.h:133
+msgid "_Show the items of all child feeds when a folder is selected."
+msgstr ""
+
+#: ../glade/liferea.ui.h:134
+msgid "_Skim through articles with:"
+msgstr ""
+
+#: ../glade/liferea.ui.h:135 ../glade/new_subscription.ui.h:12
+msgid "_Source:"
+msgstr "_Šaltinis:"
+
+#: ../glade/liferea.ui.h:136
+msgid "_Start in tray icon."
+msgstr "Paleisti _sistemos dėkle"
+
+#: ../glade/liferea.ui.h:137 ../glade/new_subscription.ui.h:13
+msgid "_URL"
+msgstr "_URL"
+
+#: ../glade/liferea.ui.h:138
+msgid "_Unlimited cache"
+msgstr "_Podėlio neriboti"
+
+#: ../glade/liferea.ui.h:139
+msgid "_Update all favicons now"
+msgstr "_Atnaujinti visus ženkliukus dabar"
+
+#: ../glade/liferea.ui.h:140
+#, fuzzy
+msgid "_Update all subscriptions at startup."
+msgstr "Atnaujinti visas prenumeratas."
+
+#: ../glade/liferea.ui.h:141
+msgid "_Use global default update interval."
+msgstr "_Naudoti visuotinį atnaujinimo intervalą."
+
+#: ../glade/liferea.ui.h:142
+msgid "combined view"
+msgstr "bendras rodinys"
+
+#: ../glade/liferea.ui.h:143
+msgid "enter any search string you want"
+msgstr "įveskite bet kokį norimą paieškos tekstą"
+
+#: ../glade/liferea.ui.h:144
+msgid "normal view"
+msgstr "normalus rodinys"
+
+#: ../glade/liferea.ui.h:145
+msgid "wide view"
+msgstr "platus rodinys"
+
+#: ../glade/new_subscription.ui.h:2
+#, fuzzy
+msgid "Download / Postprocessing"
+msgstr "<b>Parsiuntimas / galutinis apdorojimas</b>"
+
+#: ../glade/node_source.ui.h:1
+msgid "Select the source type you want to add..."
+msgstr "Norimo pridėti šaltinio tipo pasirinkimas..."
+
+#: ../glade/node_source.ui.h:2
+msgid "Source Selection"
+msgstr "Šaltinio pasirinkimas"
+
+#: ../glade/opml_source.ui.h:1
+msgid "Add OPML/Planet"
+msgstr "Pridėti OPML/Planetą"
+
+#: ../glade/opml_source.ui.h:2
+msgid ""
+"Please specify a local file or an URL pointing to a valid OPML feed list."
+msgstr "Nurodykite OPML naujienų kanalo sąrašo vietinę rinkmeną arba URL"
+
+#: ../glade/opml_source.ui.h:3
+msgid "_Location"
+msgstr "_Vieta"
+
+#: ../glade/opml_source.ui.h:4
+msgid "_Select File"
+msgstr "_Pasirinkti rinkmeną"
+
+#: ../glade/ttrss_source.ui.h:1
+msgid "Add Tiny Tiny RSS Account"
+msgstr ""
+
+#: ../glade/ttrss_source.ui.h:2
+msgid "Please enter your tt-rss account settings."
+msgstr ""
+
+#: ../glade/ttrss_source.ui.h:4
+#, fuzzy
+msgid "_Server URL"
+msgstr "Serverio klaida"
+
+#: ../glade/ttrss_source.ui.h:5
+msgid "_Username"
+msgstr "_Naudotojo vardas"
+
+#: ../glade/simple_subscription.ui.h:1
+msgid "Advanced..."
+msgstr "Sudėtingiau..."
+
+#: ../glade/simple_subscription.ui.h:2
+msgid ""
+"Enter a website location to use feed autodiscovery or in case you know it "
+"the exact feed location."
+msgstr ""
+
+#~ msgid "link cosmos"
+#~ msgstr "ieškoti saityne"
+
+#~ msgid "Print debugging messages for the plugin loading"
+#~ msgstr "Rodyti derinimo pranešimus, susijusius su papildinių įkėlimu"
+
+#~ msgid "Liferea seems to be running already!"
+#~ msgstr "Regis Liferea programa jau paleista!"
+
+#~ msgid "Feed title"
+#~ msgstr "Naujienų kanalo pavadinimas"
+
+#~ msgid "Update status"
+#~ msgstr "Atnaujinimo būsena"
+
+#~ msgid "was updated"
+#~ msgstr "atnaujintas"
+
+#~ msgid "was not updated"
+#~ msgstr "neatnaujintas"
+
+#~ msgid "The orientation of the tray."
+#~ msgstr "Dėklo orientacija."
+
+#~ msgid "_Script Manager"
+#~ msgstr "_Scenarijų tvarkytuvė"
+
+#~ msgid "Search With ..."
+#~ msgstr "Ieškoti naudojant ..."
+
+#~ msgid "%d Search Result for \"%s\""
+#~ msgid_plural "%d Search Results for \"%s\""
+#~ msgstr[0] "%d „%s“ radinys"
+#~ msgstr[1] "%d „%s“ radiniai"
+#~ msgstr[2] "%d „%s“ radinių"
+
+#~ msgid "%d Search Result"
+#~ msgid_plural "%d Search Results"
+#~ msgstr[0] "%d radinys"
+#~ msgstr[1] "%d radiniai"
+#~ msgstr[2] "%d radinių"
+
+#~ msgid "You have to select a feed entry"
+#~ msgstr "Turite pasirinkti naujienų kanalo įrašą"
+
+#~ msgid "<i>(empty)</i>"
+#~ msgstr "<i>(tuščia)</i>"
+
+#~ msgid "_Delete"
+#~ msgstr "_Šalinti"
+
+#~ msgid "_Properties..."
+#~ msgstr "_Savybės..."
+
+#~ msgid "Update out-dated feeds"
+#~ msgstr "Atnaujinti pasenusius naujienų kanalus"
+
+#~ msgid "Force update of all feeds"
+#~ msgstr "Priverstinai atnaujinti visus kanalus"
+
+#~ msgid "No feed update at all"
+#~ msgstr "Neatnaujinti jokių kanalų"
+
+#~ msgid "startup"
+#~ msgstr "paleidimas"
+
+#~ msgid "feed updated"
+#~ msgstr "naujienų kanalas atnaujintas"
+
+#~ msgid "feed added"
+#~ msgstr "naujienų kanalas pridėtas"
+
+#~ msgid "item selected"
+#~ msgstr "straipsnis pasirinktas"
+
+#~ msgid "feed selected"
+#~ msgstr "naujienų kanalas pasirinktas"
+
+#~ msgid "item unselected"
+#~ msgstr "straipsnis nepasirinktas"
+
+#~ msgid "feed unselected"
+#~ msgstr "naujienų kanalas nepasirinktas"
+
+#~ msgid "shutdown"
+#~ msgstr "išjungti"
+
+#~ msgid "Sorry, no scripting support available!"
+#~ msgstr "Atsiprašome, scenarijai nepalaikomi!"
+
+#~ msgid "Script Name"
+#~ msgstr "Scenarijaus pavadinimas"
+
+#~ msgid "No script selected!"
+#~ msgstr "Nepasirinktas joks scenarijus!"
+
+#~ msgid "Create a new search feed."
+#~ msgstr "Sukurti naują paieškos kanalą."
+
+#~ msgid "Liferea is unable to display this item's content."
+#~ msgstr "„Liferea“ programa negali parodyti šio straipsnio turinio."
+
+#~ msgid "<p><a href=\"%s\">View this item's content.</a></p>"
+#~ msgstr "<p><a href=\"%s\">Rodyti šio straipsnio turinį.</a></p>"
+
+#~ msgid "feedlist.opml"
+#~ msgstr "naujienos.opml"
+
+#~ msgid "%s has %d new / updated headline\n"
+#~ msgid_plural "%s has %d new / updated headlines\n"
+#~ msgstr[0] "%s: %d nauja arba atnaujinta antraštė\n"
+#~ msgstr[1] "%s: %d naujos arba atnaujintos antraštės\n"
+#~ msgstr[2] "%s: %d naujų arba atnaujintų antraščių\n"
+
+#~ msgid "    "
+#~ msgstr "    "
+
+#~ msgid "     "
+#~ msgstr "     "
+
+#~ msgid "      "
+#~ msgstr "      "
+
+#~ msgid "<b>Registered Scripts</b>"
+#~ msgstr "<b>Registruoti scenarijai</b>"
+
+#~ msgid "<b>Script Code</b>"
+#~ msgstr "<b>Scenarijaus kodas</b>"
+
+#~ msgid "<span weight=\"bold\">Downloading Enclosures</span>"
+#~ msgstr "<span weight=\"bold\">Intarpų parsiuntimas</span>"
+
+#~ msgid "<span weight=\"bold\">Feed Cache Handling</span>"
+#~ msgstr "<span weight=\"bold\">Kanalo podėlio tvarkymas</span>"
+
+#~ msgid "<span weight=\"bold\">Feed Name</span>"
+#~ msgstr "<span weight=\"bold\">Naujienų kanalo pavadinimas</span>"
+
+#~ msgid "<span weight=\"bold\">Feed Update Settings</span>"
+#~ msgstr "<span weight=\"bold\">Naujienų kanalų atnaujinimo nuostatos</span>"
+
+#~ msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
+#~ msgstr "<span weight=\"bold\">HTTP įgaliotasis serveris</span>"
+
+#~ msgid "<span weight=\"bold\">Opening Enclosures</span>"
+#~ msgstr "<span weight=\"bold\">Intarpų atvėrimas</span>"
+
+#~ msgid "<span weight=\"bold\">Reading Headlines</span>"
+#~ msgstr "<span weight=\"bold\">Antraščių skaitymas</span>"
+
+#~ msgid "<span weight=\"bold\">Toolbar Settings</span>"
+#~ msgstr "<span weight=\"bold\">Mygtukų juostos nuostatos</span>"
+
+#~ msgid "<span weight=\"bold\">Update Interval</span>"
+#~ msgstr "<span weight=\"bold\">Atnaujinimo intervalas</span>"
+
+#~ msgid "<span weight=\"bold\">Web Integration</span>"
+#~ msgstr "<span weight=\"bold\">Saityno integravimas</span>"
+
+#~ msgid "Add Script"
+#~ msgstr "Pridėti scenarijų"
+
+#~ msgid "At _startup:"
+#~ msgstr "_Paleidžiant"
+
+#~ msgid "Create new script"
+#~ msgstr "Sukurti naują scenarijų"
+
+#~ msgid "Reuse existing script"
+#~ msgstr "Vėl naudoti esamą scenarijų"
+
+#~ msgid "Script Manager"
+#~ msgstr "Scenarijų tvarkytuvė"
