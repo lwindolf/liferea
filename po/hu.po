@@ -1,15 +1,14 @@
 # Hungarian translation for liferea
-# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
-# Copyright (c) 2009 Free Software Foundation, Inc.
+# Copyright (c) 2007, 2009 Free Software Foundation, Inc.
 # This file is distributed under the same license as the liferea package.
 #
 # Gabor Kelemen <kelemeng@gnome.hu>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 1.6.0-rc6\n"
+"Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 23:33+0200\n"
-"PO-Revision-Date: 2009-10-06 12:42+0200\n"
+"POT-Creation-Date: 2011-10-23 17:45+0300\n"
+"PO-Revision-Date: 2011-10-04 12:42+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
 "Language: hu\n"
@@ -17,7 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"X-Launchpad-Export-Date: 2008-07-11 17:04+0000\n"
 "X-Generator: KBabel 1.11.4\n"
 
 #: ../liferea.desktop.in.h:1
@@ -95,12 +93,12 @@ msgstr "A hírforrás ellenőrizhető a következővel:"
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
-msgstr "gyermekek"
+msgstr "gyermek"
 
 #: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
 msgid "unread headlines"
-msgstr "olvasatlan hírekkel"
+msgstr "olvasatlan hírrel"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
@@ -471,7 +469,7 @@ msgstr "Liferea – A linuxos hírforrásolvasó"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "További információkért lásd: http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:358
+#: ../src/migrate.c:340
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1480,7 +1478,7 @@ msgstr "Érvénytelen Atom hírforrás: ismeretlen szerző"
 msgid "%b %d %H:%M"
 msgstr "%b. %e. %H:%M"
 
-#: ../src/fl_sources/default_source.c:170
+#: ../src/fl_sources/default_source.c:174
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"
@@ -1911,7 +1909,7 @@ msgstr "Proxy _felhasználónév:"
 #: ../glade/liferea.ui.h:63
 #, fuzzy
 msgid "Reading Headlines"
-msgstr "olvasatlan hírekkel"
+msgstr "olvasatlan hírrel"
 
 #: ../glade/liferea.ui.h:64
 msgid "Rename"
@@ -2366,9 +2364,6 @@ msgstr ""
 #~ "használatával a keresési ablakban, így a Liferea felvesz egy keresési "
 #~ "mappát a hírforráslistára."
 
-#~ msgid "Count"
-#~ msgstr "Mennyiség"
-
 #~ msgid "You have to select a feed entry"
 #~ msgstr "Válasszon ki egy hírforrást"
 
@@ -2515,9 +2510,6 @@ msgstr ""
 #~ msgid "At _startup:"
 #~ msgstr "_Indításkor:"
 
-#~ msgid "Attention Profile"
-#~ msgstr "Figyelemprofil"
-
 #~ msgid "Create new script"
 #~ msgstr "Új parancsfájl készítése"
 
@@ -2532,3 +2524,9 @@ msgstr ""
 
 #~ msgid "Search _Link Cosmos with"
 #~ msgstr "_Hivatkozáskozmosz keresése ezzel:"
+
+#~ msgid "Count"
+#~ msgstr "Mennyiség"
+
+#~ msgid "Attention Profile"
+#~ msgstr "Figyelemprofil"
