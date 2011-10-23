@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 23:33+0200\n"
-"PO-Revision-Date: 2010-10-13 00:50+0800\n"
+"POT-Creation-Date: 2011-10-23 17:45+0300\n"
+"PO-Revision-Date: 2011-07-12 18:15+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -33,7 +33,7 @@ msgstr "Liferea"
 
 #: ../liferea.desktop.in.h:4
 msgid "Liferea Feed Reader"
-msgstr "Lifeera Feed 阅读器"
+msgstr "Lifera Feed 阅读器"
 
 #: ../xslt/feed.xml.in.h:1
 msgid "Copyright"
@@ -85,7 +85,7 @@ msgstr "此 Feed 已失效。Liferea 将不会更新它，但是您可以继续�
 
 #: ../xslt/feed.xml.in.h:12
 msgid "You may want to validate the feed using"
-msgstr ""
+msgstr "您可能希望使用以下方式验证 Feed："
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
@@ -102,7 +102,7 @@ msgstr "目录："
 
 #: ../xslt/item.xml.in.h:1
 msgid "Also posted in"
-msgstr ""
+msgstr "还发表在："
 
 #: ../xslt/item.xml.in.h:2
 msgid "Author"
@@ -118,7 +118,7 @@ msgstr "创作者"
 
 #: ../xslt/item.xml.in.h:5
 msgid "Department"
-msgstr ""
+msgstr "部门"
 
 #: ../xslt/item.xml.in.h:6
 msgid "Feed"
@@ -179,9 +179,8 @@ msgid ""
 msgstr ""
 
 #: ../xslt/newsbin.xml.in.h:2
-#, fuzzy
 msgid "News Bin:"
-msgstr "新窗口"
+msgstr ""
 
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
@@ -245,13 +244,13 @@ msgstr "%s 不是有效的附件类型配置文件！"
 #: ../src/enclosure.c:274
 #, c-format
 msgid "Enclosure download FAILED: \"%s\""
-msgstr ""
+msgstr "下载附件失败：%s"
 
 #. just saving
 #: ../src/enclosure.c:284
 #, c-format
 msgid "Enclosure download finished: \"%s\""
-msgstr ""
+msgstr "下载附件完成：%s"
 
 #: ../src/export.c:174
 #, c-format
@@ -455,13 +454,15 @@ msgstr "Liferea，Linux Feed 阅读器"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "更多信息请访问 http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:358
+#: ../src/migrate.c:340
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
 "cache. The cache content in %s was not deleted automatically. Please remove "
 "this directory manually once you are sure migration was successful!"
 msgstr ""
+"此版本的 Liferea 使用了新的缓存格式，并已将您原有的文件转换为新的格式。%s 中"
+"旧的缓存内容没有自动删除，如果您确信转换无误则请手工删除它！"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320
@@ -1114,6 +1115,7 @@ msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Feed 阅读器"
 
 #: ../src/ui/liferea_shell.c:1241
+#, fuzzy
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
@@ -1121,6 +1123,9 @@ msgid ""
 "the subscription list</li><li>By right clicking links and choosing "
 "'Subscribe' within Liferea</li></ul></p>"
 msgstr ""
+"<p>欢迎使用 <b>Liferea</b>，一个桌面新闻 Feed 聚合器。</p><p>左侧面板是您的订"
+"阅列表。要订阅一个 Feed，选择 Feed -&gt; 新增订阅。要浏览 Feed 标题，则选中那"
+"个 Feed，程序会把标题自动载入到右侧的主窗口内。</p>"
 
 #: ../src/ui/auth_dialog.c:132 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1159,9 +1164,9 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea 处于离线模式，无法更新。"
 
 #: ../src/ui/liferea_htmlview.c:428
-#, c-format
+#, fuzzy, c-format
 msgid "Download FAILED: \"%s\""
-msgstr ""
+msgstr "下载附件失败：%s"
 
 #: ../src/ui/liferea_htmlview.c:430
 #, fuzzy
@@ -1250,9 +1255,8 @@ msgid "R_emove Item"
 msgstr "删除条目(_E)"
 
 #: ../src/ui/popup_menu.c:166
-#, fuzzy
 msgid "Open Enclosure..."
-msgstr "/开启附件..."
+msgstr "开启附件..."
 
 #: ../src/ui/popup_menu.c:167
 msgid "Save As..."
@@ -1506,7 +1510,7 @@ msgstr "无效的 Atom Feed：未知作者"
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#: ../src/fl_sources/default_source.c:170
+#: ../src/fl_sources/default_source.c:174
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"
@@ -1526,6 +1530,8 @@ msgid ""
 "your Google Reader subscriptions, and will synchronize your feed list and "
 "reading lists."
 msgstr ""
+"集成您 Google Reader 帐号中的 Feed 列表。Liferea 将显示您的 Google Reader 订"
+"阅，并与之同步 Feed 列表和阅读列表。"
 
 #: ../src/fl_sources/opml_source.c:325
 msgid "Planet, BlogRoll, OPML"
@@ -1558,11 +1564,14 @@ msgid "Tiny Tiny RSS"
 msgstr ""
 
 #: ../src/fl_sources/ttrss_source.c:365
+#, fuzzy
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 "present your tt-rss subscriptions, and will synchronize your feed list and "
 "reading lists."
 msgstr ""
+"集成您 Google Reader 帐号中的 Feed 列表。Liferea 将显示您的 Google Reader 订"
+"阅，并与之同步 Feed 列表和阅读列表。"
 
 #: ../src/fl_sources/ttrss_source_feed.c:105
 msgid "Could not parse JSON returned by tt-rss API!"
@@ -1576,7 +1585,7 @@ msgstr "此 Feed 已不存在！"
 #: ../src/notification/libnotify.c:125
 #, c-format
 msgid "This news entry has no headline"
-msgstr ""
+msgstr "此新闻条目没有标题"
 
 #: ../src/notification/libnotify.c:130
 msgid "Visit"
@@ -1681,9 +1690,8 @@ msgid "Cancel _All"
 msgstr "取消全部(_A)"
 
 #: ../glade/liferea.ui.h:10 ../glade/new_subscription.ui.h:1
-#, fuzzy
 msgid "Convert _using:"
-msgstr "转换用(U):"
+msgstr "转换工具(_U):"
 
 #: ../glade/liferea.ui.h:11
 #, fuzzy
@@ -1886,7 +1894,7 @@ msgstr "在 Liferea 的窗口开启链接(_W)。"
 #: ../glade/liferea.ui.h:56
 #, fuzzy
 msgid "Opening Enclosures"
-msgstr "/开启附件..."
+msgstr "开启附件..."
 
 #: ../glade/liferea.ui.h:57
 #, fuzzy
@@ -1971,7 +1979,7 @@ msgstr "同步"
 #: ../glade/liferea.ui.h:77
 #, fuzzy
 msgid "Synchronized with Nearby Hosts"
-msgstr "<span weight=\"bold\">Feed名称</span>"
+msgstr "<span weight=\"bold\">已与临近主机同步</span>"
 
 #: ../glade/liferea.ui.h:78
 msgid "T_erminate instead of minimizing to tray icon."
@@ -2030,13 +2038,12 @@ msgid "Web Integration"
 msgstr "方位"
 
 #: ../glade/liferea.ui.h:92
-#, fuzzy
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. Downloaded enclosures will be supplied as an "
 "argument for this command:"
 msgstr ""
-"Liferea 将如何处理附件？ 请在下面键入您要执行的命令，下载的文件将作为该命令的"
+"Liferea 应如何处理附件？ 请在下面键入您要执行的命令，下载的文件将作为该命令的"
 "参数："
 
 #: ../glade/liferea.ui.h:93
@@ -2053,7 +2060,7 @@ msgstr "自动检测(GNOME 或环境)(_A)"
 
 #: ../glade/liferea.ui.h:96
 msgid "_Automatically download all enclosures of this feed."
-msgstr ""
+msgstr "自动下载此 Feed 的所有附件(_A)。"
 
 #: ../glade/liferea.ui.h:97
 msgid "_Browse"
@@ -2076,13 +2083,12 @@ msgid "_Disable Javascript."
 msgstr "禁用 Javascript(_D)。"
 
 #: ../glade/liferea.ui.h:102
-#, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
-msgstr "从现在开始自动替文件作同样的处理(_D)"
+msgstr "从现在开始自动对所有附件执行此次进行的操作(_D)。"
 
 #: ../glade/liferea.ui.h:103
 msgid "_Don't update this feed automatically."
-msgstr "不自动更新本 Feed(_D)。"
+msgstr "不自动更新此 Feed(_D)。"
 
 #: ../glade/liferea.ui.h:104 ../glade/new_subscription.ui.h:10
 msgid "_Don't use proxy for download"
@@ -2101,14 +2107,12 @@ msgid "_Enable browser plugins."
 msgstr "启用浏览器插件(_E)。"
 
 #: ../glade/liferea.ui.h:108
-#, fuzzy
 msgid "_Enforce popup notification for this subscription."
-msgstr "开启选定订阅的属性对话框。"
+msgstr "强制弹出此订阅提示(_E)。"
 
 #: ../glade/liferea.ui.h:109
-#, fuzzy
 msgid "_Feed specific update interval of"
-msgstr "特定feed的更新周期(_F)"
+msgstr "特定 Feed 的更新间隔(_F)"
 
 #: ../glade/liferea.ui.h:110
 msgid "_Folder name:"
@@ -2247,7 +2251,7 @@ msgstr "宽视图"
 #: ../glade/new_subscription.ui.h:2
 #, fuzzy
 msgid "Download / Postprocessing"
-msgstr "下载方式(_D)："
+msgstr "<b>下载/预处理</b>"
 
 #: ../glade/node_source.ui.h:1
 msgid "Select the source type you want to add..."
@@ -2301,6 +2305,8 @@ msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
+"除非您知道确切的 Feed 地址，否则当您输入一个网址时，Liferea 会进行自动 Feed "
+"发现。"
 
 #~ msgid "Print debugging messages for the plugin loading"
 #~ msgstr "输出插件装载的调试信息"
@@ -2452,9 +2458,8 @@ msgstr ""
 #~ "containing many feeds.</i>"
 #~ msgstr "<i>此选项可能会在载入包含大量 Feed 的目录时，导致严重的延迟。</i>"
 
-#, fuzzy
 #~ msgid "<span weight=\"bold\">Downloading Enclosures</span>"
-#~ msgstr "<span weight=\"bold\">下载附件</span>"
+#~ msgstr "<span weight=\"bold\">附件下载</span>"
 
 #~ msgid "<span weight=\"bold\">Feed Cache Handling</span>"
 #~ msgstr "<span weight=\"bold\">Feed 缓存处理</span>"
@@ -2468,7 +2473,6 @@ msgstr ""
 #~ msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
 #~ msgstr "<span weight=\"bold\">HTTP 代理服务器</span>"
 
-#, fuzzy
 #~ msgid "<span weight=\"bold\">Opening Enclosures</span>"
 #~ msgstr "<span weight=\"bold\">开启附件</span>"
 
