@@ -42,7 +42,7 @@
 
 	* Fixes SF #3102116: MIME type definitions not saved.
 	  (reported by Alexander Gnodtke)
-	* Merges SF #3273050: Added diggio bookmarking option.	
+	* Merges SF #3273050: Added diggio bookmarking option.
 	  (patch by Daniel Noffsinger)
 	* Merges SF #3273213: Open Social bookmarking in tab.
 	  (patch by Daniel Noffsinger)
@@ -51,7 +51,7 @@
 	* Raise tt-rss dependency to 1.5
 	  (patch by Paulo Schreiner)
 	* Update tt-rss subscriptions when source node is updated.
-	  (patch by Paulo Schreiner) 
+	  (patch by Paulo Schreiner)
 	* Fixes 2 way item state sync for tt-rss subscriptions.
 	  (patch by Paulo Schreiner)
 	* Fixes SF #3162756: HTML view doesn't use configured font.
