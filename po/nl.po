@@ -1,15 +1,16 @@
 # Dutch translation of Liferea.
-# Copyright (C) 2009
+# Copyright (C) 2009, 2010, 2011
 # This file is distributed under the same license as the liferea package.
 # Patrick Bos <kikkum@hotmail.com>, 2006.
+# Erwin Poeze <erwin.poeze@gmail.com>, 2009, 2010, 2011
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 1.6.0-rc6\n"
+"Project-Id-Version: liferea 1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 23:33+0200\n"
-"PO-Revision-Date: 2009-07-27 20:57+0100\n"
+"POT-Creation-Date: 2011-09-14 22:43+0200\n"
+"PO-Revision-Date: 2011-10-24 11:43+0200\n"
 "Last-Translator: Erwin Poeze <erwin.poeze@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -64,12 +65,8 @@ msgid "Source:"
 msgstr "Bron:"
 
 #: ../xslt/feed.xml.in.h:8
-msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr ""
-"De laatste update van dit abonnement is mislukt!<br/><b>HTTP-foutcode <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+msgid "The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+msgstr "Het laatste bijwerking van dit abonnement is mislukt!<br/><b>HTTP-foutcode <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "There were errors while filtering this feed!"
@@ -80,12 +77,8 @@ msgid "There were errors while parsing this feed!"
 msgstr "Ontleden van deze feed is mislukt!"
 
 #: ../xslt/feed.xml.in.h:11
-msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
-msgstr ""
-"Deze feed is gestopt en niet langer beschikbaar. Liferea zal hem niet meer "
-"bijwerken, maar de opgeslagen koppen zijn nog wel te bekijken."
+msgid "This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."
+msgstr "Deze feed is gestopt en niet langer beschikbaar. Liferea zal hem niet meer bijwerken, maar de opgeslagen koppen zijn nog wel te bekijken."
 
 #: ../xslt/feed.xml.in.h:12
 msgid "You may want to validate the feed using"
@@ -166,7 +159,7 @@ msgstr "Via"
 
 #: ../xslt/item.xml.in.h:16
 msgid "bookmark"
-msgstr "bookmark"
+msgstr "bladwijzer"
 
 #: ../xslt/item.xml.in.h:17
 msgid "comments"
@@ -177,12 +170,8 @@ msgid "flag"
 msgstr "vlag"
 
 #: ../xslt/newsbin.xml.in.h:1
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Voeg items aan de nieuwsbak toe met \"Kopieer naar nieuwsbak\" uit het "
-"snelmenu."
+msgid "Add items to this news bin by selecting \"Copy to News Bin\" from the item list context menu."
+msgstr "Voeg items aan de nieuwsbak toe met \"Kopieer naar nieuwsbak\" uit het snelmenu."
 
 #: ../xslt/newsbin.xml.in.h:2
 msgid "News Bin:"
@@ -193,9 +182,8 @@ msgid "Search Folder:"
 msgstr "Zoeken in map:"
 
 #: ../src/browser.c:32
-#, fuzzy
 msgid "Default Browser"
-msgstr "Standaardbrowser GNOME"
+msgstr "Standaardbrowser"
 
 #: ../src/browser.c:201 ../src/browser.c:221
 #, c-format
@@ -266,22 +254,17 @@ msgstr "Hernoemen van %s naar %s is mislukt\n"
 #: ../src/export.c:386 ../src/export.c:388
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
-msgstr ""
-"XML-fout bij het lezen van OPML-bestand! \"%s\" kon niet worden geïmporteerd!"
+msgstr "XML-fout bij het lezen van OPML-bestand! \"%s\" kon niet worden geïmporteerd!"
 
 #: ../src/export.c:394 ../src/export.c:396
 #, c-format
-msgid ""
-"Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr ""
-"Leeg document! OPML-document \"%s\" zou bij het importeren niet leeg moeten "
-"zijn."
+msgid "Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr "Leeg document! OPML-document \"%s\" zou bij het importeren niet leeg moeten zijn."
 
 #: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr ""
-"\"%s\" is geen geldig OPML-document! Liferea kan dit bestand niet importeren!"
+msgstr "\"%s\" is geen geldig OPML-document! Liferea kan dit bestand niet importeren!"
 
 #: ../src/export.c:438
 msgid "Imported feed list"
@@ -296,9 +279,8 @@ msgid "Import"
 msgstr "Importeren"
 
 #: ../src/export.c:450 ../src/export.c:467 ../src/fl_sources/opml_source.c:387
-#, fuzzy
 msgid "OPML Files"
-msgstr "OPML-bestand selecteren"
+msgstr "OPML-bestanden"
 
 #: ../src/export.c:458
 msgid "Error while exporting feed list!"
@@ -317,14 +299,8 @@ msgid "Export"
 msgstr "Exporteren"
 
 #: ../src/feed.c:255
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr ""
-"<p>Het soort feed kan niet worden vastgesteld! Controleer of er wel naar een "
-"door Liferea ondersteunde feedstructuur wordt verwezen!</p>XML Parser Output:"
-"<br /><div class='xmlparseroutput'>"
+msgid "<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+msgstr "<p>Het soort feed kan niet worden vastgesteld! Controleer of er wel naar een door Liferea ondersteunde feedstructuur wordt verwezen!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 
 #: ../src/feed.c:284
 #, c-format
@@ -337,20 +313,13 @@ msgid "\"%s\" is not available"
 msgstr "\"%s\" is niet beschikbaar"
 
 #: ../src/feed_parser.c:137
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
-"<p>De als abonnement opgegeven URL, wijst naar een webpagina en Liferea "
-"heeft op deze pagina geen feeds gevonden. Misschien ondersteunt de pagina "
-"geen automatische detectie van feeds.</p>"
+msgid "The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."
+msgstr "<p>De als abonnement opgegeven URL, wijst naar een webpagina en Liferea heeft op deze pagina geen feeds gevonden. Misschien ondersteunt de pagina geen automatische detectie van feeds.</p>"
 
 #: ../src/feed_parser.c:170
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr ""
-"XML-fout tijdens het lezen van feed! Feed \"%s\" kan niet worden geladen!"
+msgstr "XML-fout tijdens het lezen van feed! Feed \"%s\" kan niet worden geladen!"
 
 #: ../src/feed_parser.c:175
 msgid "Empty document!"
@@ -370,17 +339,12 @@ msgstr "Kan het soort feed niet bepalen."
 
 #. if we don't find a feed with unread items do nothing
 #: ../src/itemlist.c:403
-#, fuzzy
 msgid "There are no unread items"
 msgstr "Er zijn geen ongelezen items "
 
 #: ../src/main.c:193
-msgid ""
-"Start Liferea with its main window in STATE. STATE may be `shown', "
-"`iconified', or `hidden'"
-msgstr ""
-"Liferea starten met het hoofdvenster in STAAT. STAAT kan `shown', "
-"`iconified' of `hidden' zijn"
+msgid "Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"
+msgstr "Liferea starten met het hoofdvenster in STAAT. STAAT kan `shown', `iconified' of `hidden' zijn"
 
 #: ../src/main.c:193
 msgid "STATE"
@@ -391,13 +355,12 @@ msgid "Show version information and exit"
 msgstr "Versieinformatie tonen en stoppen"
 
 #: ../src/main.c:198
-#, fuzzy
 msgid "Add a new subscription"
-msgstr "Nieuwe feed"
+msgstr "Nieuw abonnement toevoegen"
 
 #: ../src/main.c:198
 msgid "uri"
-msgstr ""
+msgstr "uri"
 
 #: ../src/main.c:203
 msgid "Print debugging messages of all types"
@@ -408,7 +371,6 @@ msgid "Print debugging messages for the cache handling"
 msgstr "Foutmeldingen over het gebruik van buffergeheugen tonen"
 
 #: ../src/main.c:205
-#, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "Foutmeldingen over de configuratieafhandeling tonen"
 
@@ -421,13 +383,8 @@ msgid "Print debugging messages of all GUI functions"
 msgstr "Foutmeldingen over alle GUI-functies tonen"
 
 #: ../src/main.c:208
-msgid ""
-"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
-msgstr ""
-"Foutopsporing HTML-opmaak ingeschakelen. Iedere keer dat Liferea HTML-"
-"uitvoer opmaakt, zal het deze ook wegschrijven naar ~/.liferea_1.6/output."
-"xhtml"
+msgid "Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.liferea_1.6/output.xhtml"
+msgstr "Foutopsporing HTML-opmaak ingeschakelen. Iedere keer dat Liferea HTML-uitvoer opmaakt, zal het deze ook wegschrijven naar ~/.liferea_1.6/output.xhtml"
 
 #: ../src/main.c:209
 msgid "Print debugging messages of all network activity"
@@ -450,9 +407,8 @@ msgid "Print debugging messages of the feed update processing"
 msgstr "Foutmeldingen over het bijwerken van feeds tonen"
 
 #: ../src/main.c:214
-#, fuzzy
 msgid "Print debugging messages of the search folder matching"
-msgstr "Foutmeldingen over het gebruik van buffergeheugen tonen"
+msgstr "Foutmeldingen over overeenkomsten van de zoekmap tonen"
 
 #: ../src/main.c:215
 msgid "Print verbose debugging messages"
@@ -470,17 +426,10 @@ msgstr "Liferea, Linux Feed Reader"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Meer informatie vindt u op http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:358
+#: ../src/migrate.c:344
 #, c-format
-msgid ""
-"This version of Liferea uses a new cache format and has migrated your feed "
-"cache. The cache content in %s was not deleted automatically. Please remove "
-"this directory manually once you are sure migration was successful!"
-msgstr ""
-"Deze versie van Liferea gebruikt een nieuwe soort buffergeheugen en heeft de "
-"oude versie overgezet. De opgeslagen inhoud %s is niet automatisch "
-"verwijderd. Als u er zeker van bent dat de overzetting gelukt is, kunt u "
-"deze map met de hand verwijderen. "
+msgid "This version of Liferea uses a new cache format and has migrated your feed cache. The cache content in %s was not deleted automatically. Please remove this directory manually once you are sure migration was successful!"
+msgstr "Deze versie van Liferea gebruikt een nieuwe soort buffergeheugen en heeft de oude versie overgezet. De opgeslagen inhoud %s is niet automatisch verwijderd. Als u er zeker van bent dat de overzetting gelukt is, kunt u deze map met de hand verwijderen. "
 
 #. Some libsoup transport errors
 #: ../src/net.c:320
@@ -504,11 +453,8 @@ msgid "Unable to connect to proxy"
 msgstr "Kan niet met proxy verbinden"
 
 #: ../src/net.c:325
-msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
-msgstr ""
-"Er is een netwerkfout opgetreden of de andere kant heeft de verbinding "
-"plotseling verbroken"
+msgid "A network error occurred, or the other end closed the connection unexpectedly"
+msgstr "Er is een netwerkfout opgetreden of de andere kant heeft de verbinding plotseling verbroken"
 
 #. http 3xx redirection
 #: ../src/net.c:328
@@ -517,12 +463,8 @@ msgstr "De bron is permanent naar een nieuwe locatie verplaatst"
 
 #. http 4xx client error
 #: ../src/net.c:331
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box"
-msgstr ""
-"U heeft geen toestemming om deze feed te downloaden. Voer de juiste "
-"gebruikersnaam en het wachtwoord in bij het eigenschappenvenster van de feed"
+msgid "You are unauthorized to download this feed. Please update your username and password in the feed properties dialog box"
+msgstr "U heeft geen toestemming om deze feed te downloaden. Voer de juiste gebruikersnaam en het wachtwoord in bij het eigenschappenvenster van de feed"
 
 #: ../src/net.c:333
 msgid "Payment required"
@@ -530,7 +472,7 @@ msgstr "Betaling vereist"
 
 #: ../src/net.c:334
 msgid "You're not allowed to access this resource"
-msgstr "U mag niet bij deze bron komen"
+msgstr "U heeft geen toegang tot deze bron"
 
 #: ../src/net.c:335
 msgid "Resource Not Found"
@@ -554,16 +496,15 @@ msgstr "Wachttijd verzoek overschreden"
 
 #: ../src/net.c:340
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Verdwenen; bron bestaat niet. Meldt u zich af!"
+msgstr "Verdwenen; bron bestaat niet meer. Meld u af!"
 
 #: ../src/net.c:345
 msgid "There was an internal error in the update process"
-msgstr "Er is een interne fout tijdens het bijwerkproces opgetreden"
+msgstr "Er is een interne fout opgetreden tijdens het bijwerken"
 
 #: ../src/net.c:347
 msgid "Feed not available: Server requested unsupported redirection!"
-msgstr ""
-"Feed niet bereikbaar: niet-ondersteunde omleiding aangevraagd door server!"
+msgstr "Feed niet bereikbaar: niet-ondersteunde omleiding aangevraagd door server!"
 
 #: ../src/net.c:349
 msgid "Client Error"
@@ -654,9 +595,8 @@ msgstr "Abonnement \"%s\" wordt al bijgewerkt!"
 
 #: ../src/subscription.c:109
 #, c-format
-msgid ""
-"The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr "Abonnement \"%s\" is gestopt. Liferea zal hem niet meer bijwerken!"
+msgid "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
+msgstr "Abonnement \"%s\" is gestopt. Liferea zal het niet meer bijwerken!"
 
 #: ../src/subscription.c:143
 #, c-format
@@ -664,17 +604,13 @@ msgid "Updating favicon for \"%s\""
 msgstr "Favicon van \"%s\" bijwerken"
 
 #: ../src/subscription.c:192
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Er is een probleem met het lezen van dit abonnement. Controleer de URL en de "
-"console-uitvoer."
+msgid "There was a problem while reading this subscription. Please check the URL and console output."
+msgstr "Er is een probleem met het lezen van dit abonnement. Controleer de URL en de console-uitvoer."
 
 #: ../src/subscription.c:210
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "De URL van \"%s\" is permanent veranderd en is bijgewerkt"
+msgstr "De URL van \"%s\" is permanent veranderd en bijgewerkt"
 
 #: ../src/subscription.c:218
 #, c-format
@@ -694,9 +630,7 @@ msgstr "Bijwerken \"%s\""
 #: ../src/update.c:255
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
-msgstr ""
-"Fout bij het openen van tijdelijk bestand %s dat gebruikt moet worden voor "
-"filteren!"
+msgstr "Fout bij het openen van tijdelijk bestand %s dat gebruikt moet worden voor filteren!"
 
 #: ../src/update.c:278
 #, c-format
@@ -772,9 +706,9 @@ msgid "Choose File"
 msgstr "Bladeren"
 
 #: ../src/ui/enclosure_list_view.c:401
-#, fuzzy, c-format
+#, c-format
 msgid "File Extension .%s"
-msgstr "<b>Bestandsextensie .%s</b>"
+msgstr "Bestandsextensie .%s"
 
 #: ../src/ui/icons.c:54
 #, c-format
@@ -884,12 +818,8 @@ msgid "_Next Unread Item"
 msgstr "_Volgende ongelezen item"
 
 #: ../src/ui/liferea_shell.c:856
-msgid ""
-"Jumps to the next unread item. If necessary selects the next feed with "
-"unread items."
-msgstr ""
-"Naar het volgende ongelezen item verspringen. Indien nodig de volgende feed "
-"met ongelezen items selecteren."
+msgid "Jumps to the next unread item. If necessary selects the next feed with unread items."
+msgstr "Naar het volgende ongelezen item verspringen. Indien nodig de volgende feed met ongelezen items selecteren."
 
 #: ../src/ui/liferea_shell.c:859
 msgid "_View"
@@ -1056,22 +986,16 @@ msgid "_Mark Items Read"
 msgstr "Als gelezen _markeren"
 
 #: ../src/ui/liferea_shell.c:906
-msgid ""
-"Marks all items of the selected feed list node / in the item list as read."
-msgstr ""
-"Alle items van de geselecteerde feedlijst of in de itemlijst als gelezen "
-"markeren."
+msgid "Marks all items of the selected feed list node / in the item list as read."
+msgstr "Alle items van de geselecteerde feedlijst of in de itemlijst als gelezen markeren."
 
 #: ../src/ui/liferea_shell.c:908 ../src/ui/popup_menu.c:282
 msgid "_Update"
 msgstr "_Bijwerken"
 
 #: ../src/ui/liferea_shell.c:908
-msgid ""
-"Updates the selected subscription or all subscriptions of the selected "
-"folder."
-msgstr ""
-"De geselecteerde feeds of alle feeds in de geselecteerde map bijwerken."
+msgid "Updates the selected subscription or all subscriptions of the selected folder."
+msgstr "De geselecteerde feeds of alle feeds in de geselecteerde map bijwerken."
 
 #: ../src/ui/liferea_shell.c:913
 msgid "_Properties"
@@ -1095,9 +1019,7 @@ msgstr "Item _gelezen aan/uit"
 
 #: ../src/ui/liferea_shell.c:918
 msgid "Toggles the read status of the selected item."
-msgstr ""
-"Schakelt de leesstatus van het geselecteerde item tussen gelezen en "
-"ongelezen."
+msgstr "Schakelt de leesstatus van het geselecteerde item tussen gelezen en ongelezen."
 
 #: ../src/ui/liferea_shell.c:920 ../src/ui/popup_menu.c:152
 msgid "Toggle Item _Flag"
@@ -1105,8 +1027,7 @@ msgstr "Item _markering aan/uit"
 
 #: ../src/ui/liferea_shell.c:920
 msgid "Toggles the flag status of the selected item."
-msgstr ""
-"Schakelt de markering van het geselecteerde item om (wel of geen vlaggetje)."
+msgstr "Schakelt de markering van het geselecteerde item om (wel of geen vlaggetje)."
 
 #: ../src/ui/liferea_shell.c:922
 msgid "R_emove"
@@ -1137,19 +1058,8 @@ msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux Feed Reader"
 
 #: ../src/ui/liferea_shell.c:1241
-#, fuzzy
-msgid ""
-"<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
-"feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
-"'Subscription' -&gt; 'New Subscription'</li><li>By dropping feed links into "
-"the subscription list</li><li>By right clicking links and choosing "
-"'Subscribe' within Liferea</li></ul></p>"
-msgstr ""
-"<p>Welkom bij <b>Liferea</b>, een desktop nieuwsverzamelaar voor online-"
-"nieuwsfeeds.</p><p>Het linker paneel bevat een lijst met uw abonnementen. "
-"Voeg een feed toe met Abonnementen -&gt; Nieuw abonnement... Om door de "
-"koppen van een feed te bladeren selecteert u de feed in de lijst. De koppen "
-"worden dan in het rechter paneel geladen.</p>"
+msgid "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news feeds.</p><p>You can add new subscriptions <ul><li>From main menu 'Subscription' -&gt; 'New Subscription'</li><li>By dropping feed links into the subscription list</li><li>By right clicking links and choosing 'Subscribe' within Liferea</li></ul></p>"
+msgstr "<p>Welkom bij <b>Liferea</b>, een desktop nieuwsverzamelaar voor online-nieuwsfeeds.</p><p>U kunt nieuwe abonnementen toevoegen<ul><li>Vanuit hoofdmenu 'Abonnementen' -&gt; 'Nieuwe abonnement'</li><li>Door feed-koppelingen naar de abonnementenlijst te slepen</li><li>Door rechtsklikken op koppelingen en 'Abonneren' binnen Liferea te selecteren</li></ul></p>"
 
 #: ../src/ui/auth_dialog.c:132 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1161,9 +1071,8 @@ msgid "Unknown source"
 msgstr "Onbekende bron"
 
 #: ../src/ui/ui_common.c:205
-#, fuzzy
 msgid "All Files"
-msgstr "_Lokaal bestand"
+msgstr "Alle bestanden"
 
 #: ../src/ui/feed_list_view.c:338
 msgid "Deleting entry"
@@ -1188,14 +1097,13 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea staat in offline-modus. Bijwerken is niet mogelijk."
 
 #: ../src/ui/liferea_htmlview.c:428
-#, fuzzy, c-format
+#, c-format
 msgid "Download FAILED: \"%s\""
-msgstr "Downloaden bijlage is MISLUKT: \"%s\""
+msgstr "Downloaden is MISLUKT: \"%s\""
 
 #: ../src/ui/liferea_htmlview.c:430
-#, fuzzy
 msgid "Download finished."
-msgstr "_Downloaden met"
+msgstr "Downloaden is afgerond."
 
 #: ../src/ui/liferea_htmlview.c:537
 msgid "Launch Link In _Tab"
@@ -1208,25 +1116,23 @@ msgstr "Link in _browser openen"
 #: ../src/ui/liferea_htmlview.c:541 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
-msgstr "Link _bookmarken als %s"
+msgstr "Blad_wijzer koppeling toevoegen als %s"
 
 #: ../src/ui/liferea_htmlview.c:545
 msgid "_Copy Link Location"
-msgstr "Link _kopiëren"
+msgstr "Koppeling _kopiëren"
 
 #: ../src/ui/liferea_htmlview.c:548
-#, fuzzy
 msgid "_Copy Image Location"
-msgstr "Link _kopiëren"
+msgstr "Afbeeldingslocatie _kopiëren"
 
 #: ../src/ui/liferea_htmlview.c:550
-#, fuzzy
 msgid "S_ave Link As"
-msgstr "Opslaan als..."
+msgstr "Koppeling _opslaan als"
 
 #: ../src/ui/liferea_htmlview.c:552
 msgid "S_ave Image As"
-msgstr ""
+msgstr "Afbeelding _opslaan als"
 
 #: ../src/ui/liferea_htmlview.c:555
 msgid "_Subscribe..."
@@ -1252,7 +1158,7 @@ msgstr "Er is geen item geselecteerd"
 
 #: ../src/ui/item_list_view.c:745
 msgid "This item has no link specified!"
-msgstr "Dit item heeft geen link!"
+msgstr "Dit item heeft geen koppeling!"
 
 #: ../src/ui/item_list_view.c:811
 msgid "You must select a feed to delete its items!"
@@ -1272,7 +1178,7 @@ msgstr "Kopieer naar nieuwsbak"
 
 #: ../src/ui/popup_menu.c:147
 msgid "Copy Item _URL to Clipboard"
-msgstr "Item-_URL naar klembord kopiëren"
+msgstr "Item-_url naar klembord kopiëren"
 
 #: ../src/ui/popup_menu.c:153
 msgid "R_emove Item"
@@ -1319,17 +1225,16 @@ msgid "New S_ource..."
 msgstr "Nieuwe _bron..."
 
 #: ../src/ui/popup_menu.c:314
-#, fuzzy
 msgid "Sort Feeds"
-msgstr "Feedlijst importeren"
+msgstr "Feeds sorteren"
 
 #: ../src/ui/popup_menu.c:320
 msgid "_Rebuild"
-msgstr ""
+msgstr "_Herbouwen"
 
 #: ../src/ui/ui_node.c:123
 msgid "(Empty)"
-msgstr ""
+msgstr "(Leeg)"
 
 #: ../src/ui/ui_prefs.c:78
 msgid "GNOME default"
@@ -1401,16 +1306,15 @@ msgstr "Nieuwe tabblad"
 
 #: ../src/ui/ui_prefs.c:681
 msgid "Integrate with the messaging menu (indicator)"
-msgstr ""
+msgstr "In systeemvak opnemen (indicator)"
 
 #: ../src/ui/ui_prefs.c:684
-#, fuzzy
 msgid "Terminate instead of minimizing to the messaging menu"
-msgstr "_Afsluiten in plaats van minimaliseren naar systeemvak."
+msgstr "Afsluiten in plaats van minimaliseren naar systeemvak"
 
 #: ../src/ui/ui_prefs.c:687
 msgid "Start minimized to the messaging menu"
-msgstr ""
+msgstr "Geminimaliseerd in systeemvak starten"
 
 #: ../src/ui/ui_prefs.c:792
 msgid "Type"
@@ -1423,12 +1327,9 @@ msgstr "Programma"
 #: ../src/ui/subscription_dialog.c:430
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
-msgid_plural ""
-"The provider of this feed suggests an update interval of %d minutes."
-msgstr[0] ""
-"De aanbieder van deze feed suggereert een bijwerkinterval van %d minuut."
-msgstr[1] ""
-"De aanbieder van deze feed suggereert een bijwerkinterval van %d minuten."
+msgid_plural "The provider of this feed suggests an update interval of %d minutes."
+msgstr[0] "De aanbieder van deze feed suggereert een bijwerkinterval van %d minuut."
+msgstr[1] "De aanbieder van deze feed suggereert een bijwerkinterval van %d minuten."
 
 #: ../src/ui/subscription_dialog.c:434
 msgid "This feed specifies no default update interval."
@@ -1475,7 +1376,7 @@ msgstr ""
 
 #: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
 msgid "Website"
-msgstr ""
+msgstr "Website"
 
 #: ../src/parsers/atom10.c:251
 msgid "Invalid Atom feed: unknown author"
@@ -1485,7 +1386,7 @@ msgstr "Ongeldige Atom-feed: auteur onbekend"
 msgid "%b %d %H:%M"
 msgstr "%d %b %H:%M"
 
-#: ../src/fl_sources/default_source.c:170
+#: ../src/fl_sources/default_source.c:174
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"
@@ -1500,26 +1401,16 @@ msgid "Google Reader"
 msgstr "Google Reader"
 
 #: ../src/fl_sources/google_source.c:359
-msgid ""
-"Integrate the feed list of your Google Reader account. Liferea will present "
-"your Google Reader subscriptions, and will synchronize your feed list and "
-"reading lists."
-msgstr ""
-"De feedlijst van uw Google Reader-account integreren. Liferea toont uw "
-"Google Reader-abonnementen en zal uw feedlijst en leeslijsten synchroniseren."
+msgid "Integrate the feed list of your Google Reader account. Liferea will present your Google Reader subscriptions, and will synchronize your feed list and reading lists."
+msgstr "De feedlijst van uw Google Reader-account integreren. Liferea toont uw Google Reader-abonnementen en zal uw feedlijst en leeslijsten synchroniseren."
 
 #: ../src/fl_sources/opml_source.c:325
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
 #: ../src/fl_sources/opml_source.c:326
-msgid ""
-"Integrate blogrolls or Planets in your feed list. Liferea will automatically "
-"add and remove feeds according to the changes of the source OPML document"
-msgstr ""
-"Blogrolls of Planes in uw feedlijst integreren. Liferea zal automatisch "
-"feeds toevoegen en verwijderen volgens de veranderingen in het bron-OPML-"
-"document"
+msgid "Integrate blogrolls or Planets in your feed list. Liferea will automatically add and remove feeds according to the changes of the source OPML document"
+msgstr "Blogrolls of Planes in uw feedlijst integreren. Liferea zal automatisch feeds toevoegen en verwijderen volgens de veranderingen in het bron-OPML-document"
 
 #: ../src/fl_sources/opml_source.c:387
 msgid "Choose OPML File"
@@ -1531,29 +1422,23 @@ msgstr "Nieuw OPML-abonnement"
 
 #: ../src/fl_sources/node_source.c:238
 msgid "No feed list source types found!"
-msgstr "Geen feedlijstbrontypen gevonden!"
+msgstr "Geen bronsoorten van feedlijst gevonden!"
 
 #: ../src/fl_sources/node_source.c:269
 msgid "Source Type"
-msgstr "Brontype"
+msgstr "Bronsoort"
 
 #: ../src/fl_sources/ttrss_source.c:364
 msgid "Tiny Tiny RSS"
-msgstr ""
+msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source.c:365
-#, fuzzy
-msgid ""
-"Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
-"present your tt-rss subscriptions, and will synchronize your feed list and "
-"reading lists."
-msgstr ""
-"De feedlijst van uw Google Reader-account integreren. Liferea toont uw "
-"Google Reader-abonnementen en zal uw feedlijst en leeslijsten synchroniseren."
+msgid "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will present your tt-rss subscriptions, and will synchronize your feed list and reading lists."
+msgstr "De feedlijst van uw Tiny Tiny RSS 1.5+-account integreren. Liferea toont uw tt-rss-abonnementen en zal uw feedlijst en leeslijsten synchroniseren."
 
 #: ../src/fl_sources/ttrss_source_feed.c:105
 msgid "Could not parse JSON returned by tt-rss API!"
-msgstr ""
+msgstr "JSON afkomstig van tt-rss API kan niet worden ontleed."
 
 #: ../src/notification/libnotify.c:61 ../src/notification/libnotify.c:83
 #: ../src/notification/libnotify.c:152
@@ -1581,8 +1466,8 @@ msgstr "Alles als gelezen markeren"
 #, c-format
 msgid "<b>%s</b> has <b>%d</b> update"
 msgid_plural "<b>%s</b> has <b>%d</b> updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<b>%s</b> heeft <b>%d</b> nieuw bericht"
+msgstr[1] "<b>%s</b> heeft <b>%d</b> nieuwe berichten"
 
 #: ../src/notification/libnotify.c:257 ../src/notification/libnotify.c:259
 msgid "Feed Update"
@@ -1602,12 +1487,8 @@ msgid "Authentication"
 msgstr "Aanmelding"
 
 #: ../glade/auth.ui.h:4
-msgid ""
-"Note: <i>The username and password will be saved to your Liferea feedlist "
-"file without using encryption.</i>"
-msgstr ""
-"N.B.: <i>De gebruikersnaam en het wachtwoord zullen in uw Liferea "
-"feedlijstbestand worden opgeslagen zonder versleuteling.</i>"
+msgid "Note: <i>The username and password will be saved to your Liferea feedlist file without using encryption.</i>"
+msgstr "N.B.: <i>De gebruikersnaam en het wachtwoord zullen in uw Liferea-feedlijstbestand worden opgeslagen zonder versleuteling.</i>"
 
 #: ../glade/auth.ui.h:5 ../glade/liferea.ui.h:89
 msgid "User_name:"
@@ -1640,7 +1521,7 @@ msgstr " "
 
 #: ../glade/liferea.ui.h:2
 msgid "A_ny Rule Matches"
-msgstr "_Iedere regel voldoet"
+msgstr "_Elke regel voldoet"
 
 #: ../glade/liferea.ui.h:3
 msgid "About"
@@ -1660,9 +1541,7 @@ msgstr "Archief"
 
 #: ../glade/liferea.ui.h:7
 msgid "Auto-_load item link in configured browser when selecting articles."
-msgstr ""
-"Itemlink bij selecteren van artikelen automatische _laden in opgegeven "
-"browser."
+msgstr "Itemlink bij selecteren van artikelen automatische _laden in opgegeven browser."
 
 #: ../glade/liferea.ui.h:8
 msgid "Browser"
@@ -1677,13 +1556,12 @@ msgid "Convert _using:"
 msgstr "Converteren _met:"
 
 #: ../glade/liferea.ui.h:11
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2010\n"
 "The Liferea Team\n"
 msgstr ""
-"Copyright (c) 2003-2009\n"
-"The Liferea Team\n"
+"Copyright (c) 2003-2010\n"
+"Het Liferea team\n"
 
 #: ../glade/liferea.ui.h:14
 msgid "Create News Bin"
@@ -1714,59 +1592,49 @@ msgid "Downloading Enclosure"
 msgstr "Bijlage downloaden"
 
 #: ../glade/liferea.ui.h:21
-#, fuzzy
 msgid "Downloading Enclosures"
-msgstr "Bijlage downloaden"
+msgstr "Bijlagen downloaden"
 
 #: ../glade/liferea.ui.h:22
-#, fuzzy
 msgid "Downloading Now"
-msgstr "<b>Nu downloaden</b>"
+msgstr "Nu downloaden"
 
 #: ../glade/liferea.ui.h:23
 msgid "Downloading an enclosure of type:"
-msgstr "Bijlage downloaden van type:"
+msgstr "Bijlage van type downloaden:"
 
 #: ../glade/liferea.ui.h:24
 msgid "Enclosures"
 msgstr "Bijlagen"
 
 #: ../glade/liferea.ui.h:25
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
-msgstr ""
-"Voer zoektermen in die Liferea zou moeten vinden in de titel of de inhoud "
-"van een item."
+msgid "Enter a search string Liferea should find either in a items title or in its content."
+msgstr "Voer zoektermen in die Liferea zou moeten vinden in de titel of de inhoud van een item."
 
 #: ../glade/liferea.ui.h:26
-#, fuzzy
 msgid "External Browser Settings"
-msgstr "<span weight=\"bold\">Externe browser</span>"
+msgstr "Externe browserinstellingen"
 
 #: ../glade/liferea.ui.h:27
 msgid "Feed Cache Handling"
-msgstr ""
+msgstr "Verwerker feed-buffer"
 
 #: ../glade/liferea.ui.h:28
-#, fuzzy
 msgid "Feed Icons (Favicons)"
-msgstr "<span weight=\"bold\">Feedpictogrammen (Favicons)</span>"
+msgstr "Feedpictogrammen (Favicons)"
 
 #: ../glade/liferea.ui.h:29
-#, fuzzy
 msgid "Feed Name"
-msgstr "Feed_naam:"
+msgstr "Feed-naam"
 
 #: ../glade/liferea.ui.h:30 ../glade/new_subscription.ui.h:3
 #: ../glade/simple_subscription.ui.h:3
 msgid "Feed Source"
-msgstr "Feedbron"
+msgstr "Feed-bron"
 
 #: ../glade/liferea.ui.h:31
-#, fuzzy
 msgid "Feed Update Settings"
-msgstr "Feed bijwerken"
+msgstr "Feed-bijwerkinstellingen"
 
 #: ../glade/liferea.ui.h:32
 msgid "Feed _Name:"
@@ -1777,14 +1645,12 @@ msgid "Feeds"
 msgstr "Feeds"
 
 #: ../glade/liferea.ui.h:34
-#, fuzzy
 msgid "Find Items that meet the following criteria"
-msgstr "<b>Zoek items die aan de volgende voorwaarden voldoen</b>"
+msgstr "Zoek items die aan de volgende voorwaarden voldoen"
 
 #: ../glade/liferea.ui.h:35
-#, fuzzy
 msgid "Folder Display Settings"
-msgstr "<span weight=\"bold\">Mappenweergave</span>"
+msgstr "Mappenweergaveinstellingen"
 
 #: ../glade/liferea.ui.h:36
 msgid "Folders"
@@ -1800,7 +1666,7 @@ msgstr "Algemeen"
 
 #: ../glade/liferea.ui.h:39
 msgid "HTTP Proxy Server"
-msgstr ""
+msgstr "HTTP-prox-server"
 
 #: ../glade/liferea.ui.h:40
 msgid "Headlines"
@@ -1811,9 +1677,8 @@ msgid "Ignore _comment feeds for this subscription."
 msgstr "Commentaarfeeds van dit abonnement negeren."
 
 #: ../glade/liferea.ui.h:42
-#, fuzzy
 msgid "Internal Browser Settings"
-msgstr "<span weight=\"bold\">Interne browser</span>"
+msgstr "Interne browserinstellingen"
 
 #: ../glade/liferea.ui.h:44
 msgid "Liferea Homepage"
@@ -1824,13 +1689,8 @@ msgid "Liferea Preferences"
 msgstr "Liferea-voorkeuren"
 
 #: ../glade/liferea.ui.h:46 ../glade/new_subscription.ui.h:4
-msgid ""
-"Liferea can use external filter plugins in order to access feeds and "
-"directories in non-supported formats.  See the documentation for more "
-"information."
-msgstr ""
-"Liferea kan van externe filterextensies gebruik maken om niet-ondersteunde "
-"feeds en mappen te lezen.  Zie de documentatie voor meer informatie."
+msgid "Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."
+msgstr "Liferea kan van externe filterextensies gebruik maken om niet-ondersteunde feeds en mappen te lezen.  Zie de documentatie voor meer informatie."
 
 #: ../glade/liferea.ui.h:47
 msgid "Liferea is a news aggregator for GTK+"
@@ -1846,28 +1706,16 @@ msgstr "Nieuwe map"
 
 #. Feed update interval hint in preference dialog.
 #: ../glade/liferea.ui.h:51
-msgid ""
-"Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
-"waste of bandwidth to poll feeds more often than each hour.</i>"
-msgstr ""
-"N.B.: <i>stel de ververstijd in op een redelijke waarde. Het is niet nuttig "
-"om feeds vaker dan ieder uur bij te werken.</i>"
+msgid "Note: <i>Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.</i>"
+msgstr "N.B.: <i>stel de ververstijd in op een redelijke waarde. Het is niet nuttig om feeds vaker dan ieder uur bij te werken.</i>"
 
 #: ../glade/liferea.ui.h:52
-#, fuzzy
-msgid ""
-"Note: Liferea will generate a feed subscription which is used to query the "
-"search engine results for the specified search string. You can keep this "
-"feed permanently and update it like any other subscription."
-msgstr ""
-"N.B.: Liferea zal een feed toevoegen die gebruikt wordt om de zoekmachine "
-"naar de ingevoerde zoektermen te laten zoeken. U kunt deze feed behouden en "
-"bijwerken net als ieder ander abonnement."
+msgid "Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription."
+msgstr "N.B.: Liferea zal een feed toevoegen die gebruikt wordt om de zoekmachine naar de ingevoerde zoektermen te laten zoeken. U kunt deze feed behouden en bijwerken net als ieder ander abonnement."
 
 #: ../glade/liferea.ui.h:53
-#, fuzzy
 msgid "Notification Settings"
-msgstr "<span weight=\"bold\">Meldingen</span>"
+msgstr "Meldingeninstellingen"
 
 #: ../glade/liferea.ui.h:54
 msgid "Online/Offline Button"
@@ -1878,14 +1726,12 @@ msgid "Open links in Liferea's _window."
 msgstr "Links in _venster Liferea openen."
 
 #: ../glade/liferea.ui.h:56
-#, fuzzy
 msgid "Opening Enclosures"
-msgstr "Bijlage openen..."
+msgstr "Bijlagen openen"
 
 #: ../glade/liferea.ui.h:57
-#, fuzzy
 msgid "Pending Requests"
-msgstr "Nog bijwerken"
+msgstr "Bij te werken verzoeken"
 
 #: ../glade/liferea.ui.h:58
 msgid "Proxy"
@@ -1908,9 +1754,8 @@ msgid "Proxy _Username:"
 msgstr "Proxy_gebruikersnaam:"
 
 #: ../glade/liferea.ui.h:63
-#, fuzzy
 msgid "Reading Headlines"
-msgstr "koppen als ongelezen markeren"
+msgstr "Koppen lezen"
 
 #: ../glade/liferea.ui.h:64
 msgid "Rename"
@@ -1949,12 +1794,8 @@ msgid "Source Type:"
 msgstr "Brontype:"
 
 #: ../glade/liferea.ui.h:74
-msgid ""
-"Starts searching for the specified text in all feeds. The search result will "
-"appear in the item list."
-msgstr ""
-"De zoekopdracht naar de ingevoerde tekst in alle feeds starten. Het "
-"resultaat verschijnt in de itemlijst."
+msgid "Starts searching for the specified text in all feeds. The search result will appear in the item list."
+msgstr "De zoekopdracht naar de ingevoerde tekst in alle feeds starten. Het resultaat verschijnt in de itemlijst."
 
 #: ../glade/liferea.ui.h:75
 msgid "Subscription Properties"
@@ -1965,42 +1806,33 @@ msgid "Sync"
 msgstr "Sync"
 
 #: ../glade/liferea.ui.h:77
-#, fuzzy
 msgid "Synchronized with Nearby Hosts"
-msgstr "<span weight=\"bold\">Met nabije hosts synchroniseren</span>"
+msgstr "Met nabije hosts synchroniseren"
 
 #: ../glade/liferea.ui.h:78
 msgid "T_erminate instead of minimizing to tray icon."
 msgstr "_Afsluiten in plaats van minimaliseren naar systeemvak."
 
 #: ../glade/liferea.ui.h:79
-msgid ""
-"The cache setting controls if the contents of feeds are saved when Liferea "
-"exits. Marked items are always saved to the cache."
-msgstr ""
-"De buffergeheugeninstelling bepaalt of de inhoud van de feeds bewaard wordt "
-"bij het afsluiten van Liferea. Gemarkeerde items worden altijd in het "
-"buffergeheugen bewaard."
+msgid "The cache setting controls if the contents of feeds are saved when Liferea exits. Marked items are always saved to the cache."
+msgstr "De buffergeheugeninstelling bepaalt of de inhoud van de feeds bewaard wordt bij het afsluiten van Liferea. Gemarkeerde items worden altijd in het buffergeheugen bewaard."
 
 #: ../glade/liferea.ui.h:81
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
-msgstr ""
-"De aanbieder van deze feed suggereert een bijwerkinterval van %d minuten."
+msgstr "De aanbieder van deze feed suggereert een bijwerkinterval van %d minuten."
 
 #: ../glade/liferea.ui.h:82
-#, fuzzy
 msgid "Toolbar Settings"
-msgstr "Labels werkbalkknoppen:"
+msgstr "Werkbalkinstellingen"
 
 #: ../glade/liferea.ui.h:83
 msgid "Toolbar _button labels:"
 msgstr "Labels werkbalkknoppen:"
 
 #: ../glade/liferea.ui.h:84
-#, fuzzy
 msgid "Update Interval"
-msgstr "Bijwerkoverzicht"
+msgstr "Bijwerkinterval"
 
 #: ../glade/liferea.ui.h:85
 msgid "Update Monitor"
@@ -2023,19 +1855,12 @@ msgid "View Headlines"
 msgstr "Koppen _bekijken"
 
 #: ../glade/liferea.ui.h:91
-#, fuzzy
 msgid "Web Integration"
-msgstr "Oriëntatie"
+msgstr "Webintegratie"
 
 #: ../glade/liferea.ui.h:92
-msgid ""
-"What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. Downloaded enclosures will be supplied as an "
-"argument for this command:"
-msgstr ""
-"Wat moet er met deze bijlage gebeuren? Voer hieronder de opdracht in die u "
-"wilt uitvoeren. Het gedownloade bestand zal als argument aan deze opdracht "
-"worden meegegeven:"
+msgid "What should Liferea do with this enclosure? Please enter the command you want to be executed below. Downloaded enclosures will be supplied as an argument for this command:"
+msgstr "Wat moet er met deze bijlage gebeuren? Voer hieronder de opdracht in die u wilt uitvoeren. Het gedownloade bestand zal als argument aan deze opdracht worden meegegeven:"
 
 #: ../glade/liferea.ui.h:93
 msgid "_Advanced..."
@@ -2043,7 +1868,7 @@ msgstr "Uitgebreid..."
 
 #: ../glade/liferea.ui.h:94
 msgid "_All Rules Must Match"
-msgstr "_Alle regels moeten overeenkomen"
+msgstr "_Alle regels moeten voldoen"
 
 #: ../glade/liferea.ui.h:95
 msgid "_Auto Detect (GNOME or environment)"
@@ -2132,7 +1957,7 @@ msgid ""
 "(%s for URL)"
 msgstr ""
 "_Handmatig:\n"
-"(%s = URL)"
+"(%s = url)"
 
 #: ../glade/liferea.ui.h:118
 msgid "_Mark downloaded items as read."
@@ -2164,11 +1989,11 @@ msgstr "_Link openen met:"
 
 #: ../glade/liferea.ui.h:125
 msgid "_Pass URL and do not download enclosure."
-msgstr "URL _doorgeven en geen bijlagen downloaden."
+msgstr "Url _doorgeven en geen bijlagen downloaden."
 
 #: ../glade/liferea.ui.h:128
 msgid "_Post Bookmarks to"
-msgstr "_Bookmarks doorsturen naar"
+msgstr "_Bladwijzers doorsturen naar"
 
 #: ../glade/liferea.ui.h:129
 msgid "_Save downloads in"
@@ -2176,7 +2001,7 @@ msgstr "Downloads op_slaan in"
 
 #: ../glade/liferea.ui.h:130
 msgid "_Search Folder..."
-msgstr "Doorzoeken map..."
+msgstr "Map doorzoeken..."
 
 #: ../glade/liferea.ui.h:131
 msgid "_Search for:"
@@ -2204,7 +2029,7 @@ msgstr "In systeemvak _starten"
 
 #: ../glade/liferea.ui.h:137 ../glade/new_subscription.ui.h:13
 msgid "_URL"
-msgstr "_URL"
+msgstr "_Url"
 
 #: ../glade/liferea.ui.h:138
 msgid "_Unlimited cache"
@@ -2215,9 +2040,8 @@ msgid "_Update all favicons now"
 msgstr "Alle _favicons nu bijwerken"
 
 #: ../glade/liferea.ui.h:140
-#, fuzzy
 msgid "_Update all subscriptions at startup."
-msgstr "Alle abonnementen bijwerken."
+msgstr "Alle abonnementen _bijwerken bij het opstarten."
 
 #: ../glade/liferea.ui.h:141
 msgid "_Use global default update interval."
@@ -2240,9 +2064,8 @@ msgid "wide view"
 msgstr "brede weergave"
 
 #: ../glade/new_subscription.ui.h:2
-#, fuzzy
 msgid "Download / Postprocessing"
-msgstr "<b>Download / Nabewerken</b>"
+msgstr "Download / Nabewerken"
 
 #: ../glade/node_source.ui.h:1
 msgid "Select the source type you want to add..."
@@ -2257,8 +2080,7 @@ msgid "Add OPML/Planet"
 msgstr "OPML/Planet toevoegen"
 
 #: ../glade/opml_source.ui.h:2
-msgid ""
-"Please specify a local file or an URL pointing to a valid OPML feed list."
+msgid "Please specify a local file or an URL pointing to a valid OPML feed list."
 msgstr "Geef een lokaal bestand op of een URL naar een geldige OPML-feedlijst"
 
 #: ../glade/opml_source.ui.h:3
@@ -2267,22 +2089,19 @@ msgstr "Locatie"
 
 #: ../glade/opml_source.ui.h:4
 msgid "_Select File"
-msgstr "Bladeren..."
+msgstr "Bestand _selecteren"
 
 #: ../glade/ttrss_source.ui.h:1
-#, fuzzy
 msgid "Add Tiny Tiny RSS Account"
-msgstr "Bloglines-account toevoegen"
+msgstr "Tiny Tiny RSS-account toevoegen"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your tt-rss account settings."
-msgstr "Voer uw accountinstellingen van Bloglines in."
+msgstr "Voer uw accountinstellingen van tt-rss in."
 
 #: ../glade/ttrss_source.ui.h:4
-#, fuzzy
 msgid "_Server URL"
-msgstr "Serverfout"
+msgstr "_Server-url"
 
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
@@ -2293,12 +2112,8 @@ msgid "Advanced..."
 msgstr "Uitgebreid..."
 
 #: ../glade/simple_subscription.ui.h:2
-msgid ""
-"Enter a website location to use feed autodiscovery or in case you know it "
-"the exact feed location."
-msgstr ""
-"Geef een websiteadres om te zoeken naar feeds of als u het weet, het exacte "
-"adres van de feed."
+msgid "Enter a website location to use feed autodiscovery or in case you know it the exact feed location."
+msgstr "Geef een websiteadres om te zoeken naar feeds of als u het weet, het exacte adres van de feed."
 
 #~ msgid "link cosmos"
 #~ msgstr "link cosmos"
@@ -2323,6 +2138,9 @@ msgstr ""
 
 #~ msgid "The orientation of the tray."
 #~ msgstr "De oriëntatie van de tray"
+
+#~ msgid "<b>%s</b>"
+#~ msgstr "<b>%s</b>"
 
 #~ msgid "topics_en.html"
 #~ msgstr "topics_en.html"
@@ -2352,15 +2170,8 @@ msgstr ""
 #~ msgstr[0] "%d zoekresultaat"
 #~ msgstr[1] "%d zoekresultaten"
 
-#~ msgid ""
-#~ "The item list now contains all items matching the specified search "
-#~ "pattern. If you want to save this search result permanently you can click "
-#~ "the \"Search Folder\" button in the search dialog and Liferea will add a "
-#~ "search folder to your feed list."
-#~ msgstr ""
-#~ "De itemlijst bevat nu alle items die aan de zoekcriteria voldoen. Als u "
-#~ "dit zoekresultaat wilt bewaren, klikt u op de knop \"Zoekmap\" in het "
-#~ "zoekvenster. Liferea voegt dan een zoekmap aan de feedlijst toe."
+#~ msgid "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
+#~ msgstr "De itemlijst bevat nu alle items die aan de zoekcriteria voldoen. Als u dit zoekresultaat wilt bewaren, klikt u op de knop \"Zoekmap\" in het zoekvenster. Liferea voegt dan een zoekmap aan de feedlijst toe."
 
 #~ msgid "Count"
 #~ msgstr "Aantal"
@@ -2431,12 +2242,8 @@ msgstr ""
 #~ msgid "Bloglines"
 #~ msgstr "Bloglines"
 
-#~ msgid ""
-#~ "Integrate the feed list of your Bloglines account. Liferea will present "
-#~ "your Bloglines subscription as a read-only subtree in the feed list."
-#~ msgstr ""
-#~ "De feedlijst van uw Bloglines-account integreren. Liferea toont uw "
-#~ "Bloglines-abonnement als een alleen-lezen vertakking in de feedlijst."
+#~ msgid "Integrate the feed list of your Bloglines account. Liferea will present your Bloglines subscription as a read-only subtree in the feed list."
+#~ msgstr "De feedlijst van uw Bloglines-account integreren. Liferea toont uw Bloglines-abonnement als een alleen-lezen vertakking in de feedlijst."
 
 #~ msgid "feedlist.opml"
 #~ msgstr "feedlist_nl.opml"
@@ -2470,12 +2277,8 @@ msgstr ""
 #~ msgid "<b>text/plain</b>"
 #~ msgstr "<b>text/plain</b>"
 
-#~ msgid ""
-#~ "<i>This option can cause significant delays when loading folders "
-#~ "containing many feeds.</i>"
-#~ msgstr ""
-#~ "<i>Deze optie kan er voor zorgen dat zich flinke vertraging voordoet bij "
-#~ "het laden van mappen met veel feeds.</i>"
+#~ msgid "<i>This option can cause significant delays when loading folders containing many feeds.</i>"
+#~ msgstr "<i>Deze optie kan er voor zorgen dat zich flinke vertraging voordoet bij het laden van mappen met veel feeds.</i>"
 
 #~ msgid "<span weight=\"bold\">Downloading Enclosures</span>"
 #~ msgstr "<span weight=\"bold\">Bijlagen downloaden</span>"
@@ -2531,8 +2334,8 @@ msgstr ""
 #~ msgid "Search _Link Cosmos with"
 #~ msgstr "_Link Cosmos doorzoeken met"
 
-#~ msgid "<b>%s</b>"
-#~ msgstr "<b>%s</b>"
+#~ msgid "_Allow Flash in Feeds."
+#~ msgstr "Flash in feeds toest_aan."
 
 #~ msgid "This item's contents is invalid."
 #~ msgstr "De inhoud van dit item is ongeldig."
@@ -2547,42 +2350,22 @@ msgstr ""
 #~ msgstr "interne fout! fout bij tijdconversie! mktime mislukt!\n"
 
 #~ msgid "Invalid ISO8601 date format! Ignoring <dc:date> information!\n"
-#~ msgstr ""
-#~ "Ongeldig ISO8601 datum formaat! <dc:date> informatie wordt genegeerd!\n"
+#~ msgstr "Ongeldig ISO8601 datum formaat! <dc:date> informatie wordt genegeerd!\n"
 
-#~ msgid ""
-#~ "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
-#~ "characters were dropped!"
-#~ msgstr ""
-#~ "Onverwachte end of character tekenreeks of corrupte UTF-8 codering! Een "
-#~ "aantal tekens zijn weggevallen!"
+#~ msgid "Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"
+#~ msgstr "Onverwachte end of character tekenreeks of corrupte UTF-8 codering! Een aantal tekens zijn weggevallen!"
 
-#~ msgid ""
-#~ "<p>Could not determine the feed type. Please check that it is <a href="
-#~ "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
-#~ "sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
-#~ msgstr ""
-#~ "<p>Het feed type kon niet worden bepaald. Controleer of de feed <ahref="
-#~ "\"http://feedvalidator.org\">geldig</a> is en een <a href=\"http://"
-#~ "liferea.sourceforge.net/supported_formats.htm\">ondersteundformaat</a> "
-#~ "heeft."
+#~ msgid "<p>Could not determine the feed type. Please check that it is <a href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
+#~ msgstr "<p>Het feed type kon niet worden bepaald. Controleer of de feed <ahref=\"http://feedvalidator.org\">geldig</a> is en een <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">ondersteundformaat</a> heeft."
 
-#~ msgid ""
-#~ "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
-#~ msgstr ""
-#~ "Fout bij het lezen van cache bestand \"%s\" ! Cache bestand kon niet "
-#~ "worden geladen!"
+#~ msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
+#~ msgstr "Fout bij het lezen van cache bestand \"%s\" ! Cache bestand kon niet worden geladen!"
 
-#~ msgid ""
-#~ "<p>XML error while parsing cache file! Feed cache file \"%s\" could not "
-#~ "be loaded!</p>"
-#~ msgstr ""
-#~ "<p>XML fout bij het inlezen van cache bestand! Feed cache bestand \"%s"
-#~ "\"kon niet worden geladen!</p>"
+#~ msgid "<p>XML error while parsing cache file! Feed cache file \"%s\" could not be loaded!</p>"
+#~ msgstr "<p>XML fout bij het inlezen van cache bestand! Feed cache bestand \"%s\"kon niet worden geladen!</p>"
 
 #~ msgid "<p>\"%s\" is no valid cache file! Cannot read cache file!</p>"
-#~ msgstr ""
-#~ "<p>\"%s\" is geen geldig cache bestand! Kan cache bestand niet lezen!</p>"
+#~ msgstr "<p>\"%s\" is geen geldig cache bestand! Kan cache bestand niet lezen!</p>"
 
 #~ msgid "There were errors while parsing cache file \"%s\""
 #~ msgstr "Er zijn fouten opgetreden bij het inlezen van cache bestand \"%s\""
@@ -2615,15 +2398,10 @@ msgstr ""
 #~ msgstr "Host heeft een ongeldige reactie gestuurd"
 
 #~ msgid "Webserver's authentication method incompatible with Liferea"
-#~ msgstr ""
-#~ "Aanmeldingsmethode van webserver wordt niet door Liferea ondersteund"
+#~ msgstr "Aanmeldingsmethode van webserver wordt niet door Liferea ondersteund"
 
-#~ msgid ""
-#~ "<br>You may want to validate the feed using <a href=\"http://"
-#~ "feedvalidator.org/check.cgi?url="
-#~ msgstr ""
-#~ "<br>Wellicht is het verstandig de feed te valideren met <a href=\"http://"
-#~ "feedvalidator.org/check.cgi?url="
+#~ msgid "<br>You may want to validate the feed using <a href=\"http://feedvalidator.org/check.cgi?url="
+#~ msgstr "<br>Wellicht is het verstandig de feed te valideren met <a href=\"http://feedvalidator.org/check.cgi?url="
 
 #~ msgid "\">FeedValidator</a>."
 #~ msgstr "\">FeedValidator</a>."
@@ -2682,12 +2460,8 @@ msgstr ""
 #~ msgid "_User defined format:"
 #~ msgstr "_Eigen weergave:"
 
-#~ msgid ""
-#~ "for expert users: specify a time format string, consult the strftime() "
-#~ "manpage for the format codes"
-#~ msgstr ""
-#~ "voor gevorderde gebruikers: specificeer een tekenreeks voor de "
-#~ "tijdweergave; bekijk de strftime() man-pagina voor de te gebruiken codes."
+#~ msgid "for expert users: specify a time format string, consult the strftime() manpage for the format codes"
+#~ msgstr "voor gevorderde gebruikers: specificeer een tekenreeks voor de tijdweergave; bekijk de strftime() man-pagina voor de te gebruiken codes."
 
 #~ msgid "<i>Please restart Liferea for changes to take effect.</i>"
 #~ msgstr "<i>Herstart Liferea om de veranderingen te activeren.</i>"
@@ -2719,12 +2493,8 @@ msgstr ""
 #~ msgid "Show _Toolbar Only"
 #~ msgstr "Alleen _werkbalk tonen"
 
-#~ msgid ""
-#~ "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can "
-#~ "change these settings in the GNOME Control Center.</i>"
-#~ msgstr ""
-#~ "<i>Liferea gebruikt de GNOME-proxyinstellingen. Als je GNOME gebruikt kun "
-#~ "je deze instellingen aanpassen in het GNOME Control Center.</i>"
+#~ msgid "<i>Liferea reuses the GNOME proxy settings. If you use GNOME you can change these settings in the GNOME Control Center.</i>"
+#~ msgstr "<i>Liferea gebruikt de GNOME-proxyinstellingen. Als je GNOME gebruikt kun je deze instellingen aanpassen in het GNOME Control Center.</i>"
 
 #~ msgid "_Enable Proxy"
 #~ msgstr "_Proxy inschakelen"
@@ -2820,9 +2590,7 @@ msgstr ""
 #~ "\"bevat niet\" regel voldoen."
 
 #~ msgid "Saves this search as a VFolder, which will appear in the feed list."
-#~ msgstr ""
-#~ "Deze zoekopdracht als een VFolder bewaren die in de feedlijst zal "
-#~ "verschijnen."
+#~ msgstr "Deze zoekopdracht als een VFolder bewaren die in de feedlijst zal verschijnen."
 
 #~ msgid "Item:"
 #~ msgstr "Item:"
@@ -2848,14 +2616,8 @@ msgstr ""
 #~ msgid "Liferea encountered an unknown argument: %s\n"
 #~ msgstr "Liferea is een onbekend argument tegengekomen: %s\n"
 
-#~ msgid ""
-#~ "Another copy of Liferea was found to be running. Please use it instead. "
-#~ "If there is no other copy of Liferea running, please delete the \"~/."
-#~ "liferea/lock\" lock file."
-#~ msgstr ""
-#~ "Het lijkt erop dat Liferea al gestart is, dus gebruik die andere. Als "
-#~ "Liferea niet al gestart is verwijder dan het \"~/.liferea/lock\" lock-"
-#~ "bestand."
+#~ msgid "Another copy of Liferea was found to be running. Please use it instead. If there is no other copy of Liferea running, please delete the \"~/.liferea/lock\" lock file."
+#~ msgstr "Het lijkt erop dat Liferea al gestart is, dus gebruik die andere. Als Liferea niet al gestart is verwijder dan het \"~/.liferea/lock\" lock-bestand."
 
 #~ msgid "feed generator"
 #~ msgstr "feed gemaakt met"
@@ -2931,8 +2693,7 @@ msgstr ""
 #~ msgstr "bevat niet"
 
 #~ msgid "Note: Using the subscriptions filter disables drag & drop"
-#~ msgstr ""
-#~ "N.B.: Bij gebruik van het feedfilter wordt sleur & pleur uitgeschakeld"
+#~ msgstr "N.B.: Bij gebruik van het feedfilter wordt sleur & pleur uitgeschakeld"
 
 #~ msgid "You must select a feed entry"
 #~ msgstr "Selecteer een feed item"
@@ -2943,10 +2704,8 @@ msgstr ""
 #~ msgid "A folder must be selected."
 #~ msgstr "Selecteer een map."
 
-#~ msgid ""
-#~ "internal error! unknown entry type! cannot display appropriate icon!\n"
-#~ msgstr ""
-#~ "interne fout! onbekend itemtype! kan het juiste icoon niet afbeelden!\n"
+#~ msgid "internal error! unknown entry type! cannot display appropriate icon!\n"
+#~ msgstr "interne fout! onbekend itemtype! kan het juiste icoon niet afbeelden!\n"
 
 #~ msgid ""
 #~ "\n"
@@ -2993,12 +2752,8 @@ msgstr ""
 #~ msgid "trying to load browser module %s (%s)\n"
 #~ msgstr "bezig met laden van browsermodule %s (%s)\n"
 
-#~ msgid ""
-#~ "Sorry, I was not able to load any installed browser modules! Try the --"
-#~ "debug-all option to get debug information!"
-#~ msgstr ""
-#~ "Sorry, het is me niet gelukt een geïnstalleerde browsermodule te laden! "
-#~ "Probeer de --debug-all optie uit om debuginformatie te krijgen!"
+#~ msgid "Sorry, I was not able to load any installed browser modules! Try the --debug-all option to get debug information!"
+#~ msgstr "Sorry, het is me niet gelukt een geïnstalleerde browsermodule te laden! Probeer de --debug-all optie uit om debuginformatie te krijgen!"
 
 #~ msgid "New Feed"
 #~ msgstr "Nieuwe feed"
