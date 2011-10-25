@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: liferea-1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-09-14 22:43+0200\n"
-"PO-Revision-Date: 2011-10-24 12:34+0100\n"
+"PO-Revision-Date: 2011-10-25 00:17+0100\n"
 "Last-Translator: Mikel Olasagasti Uranga <mikel@olasagasti.info>\n"
 "Language-Team: Basque <translation-team-eu@lists.sourceforge.net>\n"
 "Language: eu\n"
@@ -155,7 +155,7 @@ msgstr "Eguneratzen..."
 
 #: ../xslt/item.xml.in.h:15
 msgid "Via"
-msgstr ""
+msgstr "Honen bitartez"
 
 #: ../xslt/item.xml.in.h:16
 msgid "bookmark"
@@ -236,9 +236,9 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" ez da baliozko konfigurazio-fitxategien eranskina"
 
 #: ../src/enclosure.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "Enclosure download FAILED: \"%s\""
-msgstr "Amaitu da eranskina deskargatzea: \"%s\""
+msgstr "Eranskina deskargatzeak huts egin du: \"%s\""
 
 #. just saving
 #: ../src/enclosure.c:284
@@ -313,9 +313,8 @@ msgid "\"%s\" is not available"
 msgstr "\"%s\" ez dago erabilgarri"
 
 #: ../src/feed_parser.c:137
-#, fuzzy
 msgid "The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."
-msgstr "<p>Lifereak ez du aurkitu albisteen iturririk emandako URLan. Agian web gunea honek ez du iturrien aurkikuntza automatikoak onartzen.</p>"
+msgstr "Lifereak ez du aurkitu albisteen iturririk emandako URLan. Agian web gunea honek ez du iturrien aurkikuntza automatikoak onartzen."
 
 #: ../src/feed_parser.c:170
 #, c-format
@@ -344,9 +343,8 @@ msgid "There are no unread items"
 msgstr "Ez dago irakurri gabeko elementurik"
 
 #: ../src/main.c:193
-#, fuzzy
 msgid "Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"
-msgstr "                   EGOERA `shown', `iconified', edo `hidden' izan daiteke"
+msgstr "Abiarazi Liferea bere leiho nagusia EGOERA egoeran dagoela. EGOERA `shown', `iconified', edo `hidden' izan daiteke"
 
 #: ../src/main.c:193
 msgid "STATE"
@@ -386,7 +384,7 @@ msgstr "Bistaratu GUI funtzio guztien arazketa mezuak"
 
 #: ../src/main.c:208
 msgid "Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
-msgstr ""
+msgstr "Gaitu HTML bistaratze arazketa. Lifereak HTML bat prozesatzen duen bakoitzean irteera ~/.liferea_1.8/output.xhtml fitxategian ere idatzi."
 
 #: ../src/main.c:209
 msgid "Print debugging messages of all network activity"
@@ -398,7 +396,7 @@ msgstr "Bistaratu funtzio analizatzaile guztien arazketa mezuak"
 
 #: ../src/main.c:211
 msgid "Print debugging messages when a function takes too long to process"
-msgstr ""
+msgstr "Bistaratu arazketa mezuak funtzio batek denbora gehiegi behar duenean"
 
 #: ../src/main.c:212
 msgid "Print debugging messages when entering/leaving functions"
@@ -409,9 +407,8 @@ msgid "Print debugging messages of the feed update processing"
 msgstr "Bistaratu iturriaren eguneraketa prozesuaren arazketa mezuak"
 
 #: ../src/main.c:214
-#, fuzzy
 msgid "Print debugging messages of the search folder matching"
-msgstr "  --debug-conf     Bistaratu konfigurazio-kudeaketaren arazketa mezuak"
+msgstr "Bistaratu bilaketa direktorioaren bilatze arazketa mezuak"
 
 #: ../src/main.c:215
 msgid "Print verbose debugging messages"
@@ -462,13 +459,12 @@ msgstr "Konexioan errore bat gertatu da edo urruneko konexioa ezustean itxi da"
 #. http 3xx redirection
 #: ../src/net.c:328
 msgid "The resource moved permanently to a new location"
-msgstr ""
+msgstr "Baliabidea beste kokapen berri batera mugitu da betirako"
 
 #. http 4xx client error
 #: ../src/net.c:331
-#, fuzzy
 msgid "You are unauthorized to download this feed. Please update your username and password in the feed properties dialog box"
-msgstr "Ez zaude baimenduta iturri hau deskargatzeko. Eguneratu zure erabiltzaile-izena eta pasahitza iturriaren propietateen elkarrizketa-koadroan."
+msgstr "Ez zaude baimenduta iturri hau deskargatzeko. Eguneratu zure erabiltzaile-izena eta pasahitza iturriaren propietateen elkarrizketa-koadroan"
 
 #: ../src/net.c:333
 msgid "Payment required"
@@ -476,7 +472,7 @@ msgstr "Ordainketa beharrezkoa da"
 
 #: ../src/net.c:334
 msgid "You're not allowed to access this resource"
-msgstr ""
+msgstr "Ez duzu baimenik baliabide hau ikusteko"
 
 #: ../src/net.c:335
 msgid "Resource Not Found"
@@ -504,7 +500,7 @@ msgstr "Joan egin da. Baliabidea ez da existitzen. Kendu harpidetza."
 
 #: ../src/net.c:345
 msgid "There was an internal error in the update process"
-msgstr ""
+msgstr "Barne errore bat egon da eguneratze prozesuan"
 
 #: ../src/net.c:347
 msgid "Feed not available: Server requested unsupported redirection!"
@@ -1189,9 +1185,8 @@ msgid "R_emove Item"
 msgstr "_Kendu elementua"
 
 #: ../src/ui/popup_menu.c:166
-#, fuzzy
 msgid "Open Enclosure..."
-msgstr "/Ireki eranskina..."
+msgstr "Ireki eranskina..."
 
 #: ../src/ui/popup_menu.c:167
 msgid "Save As..."
@@ -1319,7 +1314,7 @@ msgstr "Amaitu erretiluko ikonora minimizatu ordez"
 
 #: ../src/ui/ui_prefs.c:687
 msgid "Start minimized to the messaging menu"
-msgstr ""
+msgstr "Abiarazi erretilu ikono gisa"
 
 #: ../src/ui/ui_prefs.c:792
 msgid "Type"
@@ -1330,10 +1325,10 @@ msgid "Program"
 msgstr "Programa"
 
 #: ../src/ui/subscription_dialog.c:430
-#, fuzzy, c-format
+#, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural "The provider of this feed suggests an update interval of %d minutes."
-msgstr[0] "Iturriaren hornitzaileak %d minututako bitartea gomendatzen du eguneratzeko."
+msgstr[0] "Iturriaren hornitzaileak minutu %d-eko bitartea gomendatzen du eguneratzeko."
 msgstr[1] "Iturriaren hornitzaileak %d minututako bitartea gomendatzen du eguneratzeko."
 
 #: ../src/ui/subscription_dialog.c:434
@@ -1471,8 +1466,8 @@ msgstr "Markatu denak irakurritako gisa"
 #, c-format
 msgid "<b>%s</b> has <b>%d</b> update"
 msgid_plural "<b>%s</b> has <b>%d</b> updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<b>%s</b> jarioak eguneraketa <b>%d</b> du"
+msgstr[1] "<b>%s</b> jarioak <b>%d</b> eguneraketa ditu"
 
 #: ../src/notification/libnotify.c:257 ../src/notification/libnotify.c:259
 msgid "Feed Update"
@@ -1526,7 +1521,7 @@ msgstr " "
 
 #: ../glade/liferea.ui.h:2
 msgid "A_ny Rule Matches"
-msgstr ""
+msgstr "Edozei_n arau betetzean"
 
 #: ../glade/liferea.ui.h:3
 msgid "About"
@@ -1597,9 +1592,8 @@ msgid "Downloading Enclosure"
 msgstr "Eranskina deskargatzen"
 
 #: ../glade/liferea.ui.h:21
-#, fuzzy
 msgid "Downloading Enclosures"
-msgstr "Eranskina deskargatzen"
+msgstr "Eranskina deskargatzeko"
 
 #: ../glade/liferea.ui.h:22
 msgid "Downloading Now"
@@ -1679,9 +1673,8 @@ msgid "Headlines"
 msgstr "Goiburuak"
 
 #: ../glade/liferea.ui.h:41
-#, fuzzy
 msgid "Ignore _comment feeds for this subscription."
-msgstr "Hautatutako harpidetzaren propietateen elkarrizketa-koadroa irekitzen du."
+msgstr "Harpidentza honen _iruzkin jarioak ez jarraitu"
 
 #: ../glade/liferea.ui.h:42
 msgid "Internal Browser Settings"
@@ -1717,9 +1710,8 @@ msgid "Note: <i>Please remember to set a reasonable refresh time. Usually it is 
 msgstr "Oharra: <i>gogoratu zentzuzko bitartea ezartzea freskatzeko. Normalean jarioak orduro baino maizago freskatzea banda-zabalareren alferrikako kontsumoa izaten da.</i>"
 
 #: ../glade/liferea.ui.h:52
-#, fuzzy
 msgid "Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription."
-msgstr "Oharra: Lifereak iturri bat sor dezake, bilaketako emaitzak konstultatzeko erabil daiteke. Iturri hau betirako gorde eta beste edozein iturri bezala egunera dezakezu."
+msgstr "Oharra: Lifereak iturri bat sortuko du, bilaketako emaitzak konstultatzeko erabil daitekeena adierazitako bilaketa mezuarekin kontsultatua. Iturri hau betirako gorde eta beste edozein iturri bezala egunera dezakezu."
 
 #: ../glade/liferea.ui.h:53
 msgid "Notification Settings"
@@ -1734,9 +1726,8 @@ msgid "Open links in Liferea's _window."
 msgstr "Ireki estekak Liferea-ren _leihoan."
 
 #: ../glade/liferea.ui.h:56
-#, fuzzy
 msgid "Opening Enclosures"
-msgstr "/Ireki eranskina..."
+msgstr "Eranskinak irekitzeko"
 
 #: ../glade/liferea.ui.h:57
 msgid "Pending Requests"
@@ -1815,9 +1806,8 @@ msgid "Sync"
 msgstr "Sinkronizatu"
 
 #: ../glade/liferea.ui.h:77
-#, fuzzy
 msgid "Synchronized with Nearby Hosts"
-msgstr "<span weight=\"bold\">Iturriaren izena</span>"
+msgstr "Inguruko makinekin sinkronizatuta"
 
 #: ../glade/liferea.ui.h:78
 msgid "T_erminate instead of minimizing to tray icon."
@@ -1869,7 +1859,6 @@ msgid "Web Integration"
 msgstr "Web integrazioa"
 
 #: ../glade/liferea.ui.h:92
-#, fuzzy
 msgid "What should Liferea do with this enclosure? Please enter the command you want to be executed below. Downloaded enclosures will be supplied as an argument for this command:"
 msgstr "Zer egin beharko luke Lifereak eranskin honekin? Sartu behean exekutatatzea nahi duzun komandoa. Deskargatutako fitxategia argumentu gisa pasatuko zaio komando honi:"
 
@@ -1879,7 +1868,7 @@ msgstr "_Aurreratua..."
 
 #: ../glade/liferea.ui.h:94
 msgid "_All Rules Must Match"
-msgstr ""
+msgstr "_Arau guztiak bete behar dira"
 
 #: ../glade/liferea.ui.h:95
 msgid "_Auto Detect (GNOME or environment)"
@@ -1910,9 +1899,8 @@ msgid "_Disable Javascript."
 msgstr "_Desgaitu Javascript."
 
 #: ../glade/liferea.ui.h:102
-#, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
-msgstr "_Landu hau automatikoki fitxategi honen antzekoentzat."
+msgstr "_Egin hau honelako eranskin guztientzat hemendik aurrera."
 
 #: ../glade/liferea.ui.h:103
 msgid "_Don't update this feed automatically."
@@ -1932,12 +1920,11 @@ msgstr "_Gaitu sare lokaleko sinkronizazioa"
 
 #: ../glade/liferea.ui.h:107
 msgid "_Enable browser plugins."
-msgstr "_Gaitu arakatzailearen plugin-ak"
+msgstr "_Gaitu arakatzailearen plugin-ak."
 
 #: ../glade/liferea.ui.h:108
-#, fuzzy
 msgid "_Enforce popup notification for this subscription."
-msgstr "Hautatutako harpidetzaren propietateen elkarrizketa-koadroa irekitzen du."
+msgstr "_Erakutsi notifikazio elkarrizketa-koadroa harpidetza honentzat."
 
 #: ../glade/liferea.ui.h:109
 msgid "_Feed specific update interval of"
@@ -1978,7 +1965,7 @@ msgstr "_Markatu deskargatutako elementuak irakurritako gisa"
 
 #: ../glade/liferea.ui.h:119
 msgid "_Never do popup notification for this subscription."
-msgstr ""
+msgstr "_Ez erakutsi inoiz notifikazio elkarrizketa-koadrorik harpidetza honentzat."
 
 #: ../glade/liferea.ui.h:120
 msgid "_New Name:"
@@ -2002,7 +1989,7 @@ msgstr "_Ireki esteka:"
 
 #: ../glade/liferea.ui.h:125
 msgid "_Pass URL and do not download enclosure."
-msgstr ""
+msgstr "_Pasa URLa eta ez deskargatu eranskina."
 
 #: ../glade/liferea.ui.h:128
 msgid "_Post Bookmarks to"
