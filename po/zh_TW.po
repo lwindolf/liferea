@@ -1804,7 +1804,7 @@ msgstr "使用以下工具轉換：(_U)"
 
 #: ../glade/liferea.ui.h:11
 msgid ""
-"Copyright (c) 2003-2010\n"
+"Copyright (c) 2003-2011\n"
 "The Liferea Team\n"
 msgstr ""
 
