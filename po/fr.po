@@ -1,26 +1,19 @@
 # Liferea French translation.
 # Copyright (C) 2003 Stéphane Jourdan
 # Copyright (C) 2004 Antoine Reversat
-# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Vincent Lefèvre
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Vincent Lefèvre
 # This file is distributed under the same license as the Liferea package.
 # Stéphane Jourdan <stephane.jourdan@itris.fr>, 2003.
 # Antoine Reversat <areversat@tuxfamily.org>, 2004.
-# Vincent Lefèvre <vincent@vinc17.org>, 2004-2009.
-#
-# Notes [VL]:
-# * Pour la traduction de "Attention Profile", cf
-#     http://fr.wikipedia.org/wiki/APML
-#     http://www.google.fr/search?hl=fr&q=%22profil+d%27attention%22
-# * Je n'ai pas traduit "link cosmos" can il ne semble pas y avoir
-#   de traduction officielle pour le moment.
+# Vincent Lefèvre <vincent@vinc17.net>, 2004-2011.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.7.2\n"
+"Project-Id-Version: Liferea 1.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 23:33+0200\n"
-"PO-Revision-Date: 2009-08-12 15:38+0200\n"
-"Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
+"POT-Creation-Date: 2011-11-22 01:50+0100\n"
+"PO-Revision-Date: 2011-11-22 01:39+0100\n"
+"Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: French\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -42,9 +35,8 @@ msgid "Liferea"
 msgstr "Liferea"
 
 #: ../liferea.desktop.in.h:4
-#, fuzzy
 msgid "Liferea Feed Reader"
-msgstr "Liferea - Lecteur de flux"
+msgstr "Lecteur de flux Liferea"
 
 #: ../xslt/feed.xml.in.h:1
 msgid "Copyright"
@@ -207,9 +199,8 @@ msgid "Search Folder:"
 msgstr "Dossier de recherche :"
 
 #: ../src/browser.c:32
-#, fuzzy
 msgid "Default Browser"
-msgstr "Navigateur par défaut de GNOME"
+msgstr "Navigateur par défaut"
 
 #: ../src/browser.c:201 ../src/browser.c:221
 #, c-format
@@ -386,9 +377,8 @@ msgstr "Impossible de déterminer le type de flux."
 
 #. if we don't find a feed with unread items do nothing
 #: ../src/itemlist.c:403
-#, fuzzy
 msgid "There are no unread items"
-msgstr "Il n'y a aucun élément non lu "
+msgstr "Il n'y a aucun élément non lu"
 
 #: ../src/main.c:193
 msgid ""
@@ -467,9 +457,8 @@ msgstr ""
 "Affiche des messages de débuggage du traitement de la mise à jour des flux"
 
 #: ../src/main.c:214
-#, fuzzy
 msgid "Print debugging messages of the search folder matching"
-msgstr "Affiche des messages de débuggage pour la gestion du cache"
+msgstr "Affiche des messages de débuggage pour le dossier de recherche"
 
 #: ../src/main.c:215
 msgid "Print verbose debugging messages"
@@ -488,7 +477,7 @@ msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 "Pour plus d'information, veuillez visiter http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:358
+#: ../src/migrate.c:340
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -790,9 +779,9 @@ msgid "Choose File"
 msgstr "Choisir un fichier"
 
 #: ../src/ui/enclosure_list_view.c:401
-#, fuzzy, c-format
+#, c-format
 msgid "File Extension .%s"
-msgstr "<b>Extension de fichier .%s</b>"
+msgstr "Extension de fichier .%s"
 
 #: ../src/ui/icons.c:54
 #, c-format
@@ -1154,7 +1143,6 @@ msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Lecteur de flux"
 
 #: ../src/ui/liferea_shell.c:1241
-#, fuzzy
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
@@ -1162,11 +1150,12 @@ msgid ""
 "the subscription list</li><li>By right clicking links and choosing "
 "'Subscribe' within Liferea</li></ul></p>"
 msgstr ""
-"<p>Bienvenue dans <b>Liferea</b>, agrégateur de nouvelles pour des flux en "
-"ligne.</p><p>Le cadre de gauche contient la liste de vos abonnements. Pour "
-"ajouter un abonnement, sélectionnez Flux -&gt; Nouvel abonnement. Pour "
-"parcourir les titres d'un flux, sélectionnez le flux dans la liste, et les "
-"titres seront chargés dans le cadre de droite.</p>"
+"<p>Bienvenue dans <b>Liferea</b>, agrégateur graphique de nouvelles pour des "
+"flux en ligne.</p><p>Vous pouvez ajouter de nouveaux abonnements "
+"<ul><li>depuis le menu principal « Abonnements » -&gt; « Nouvel "
+"abonnement »</li><li>en déposant des liens de flux dans la liste "
+"d'abonnements</li><li>en cliquant sur des liens avec le bouton droit et en "
+"choisissant « S'abonner » dans Liferea</li></ul></p>"
 
 #: ../src/ui/auth_dialog.c:132 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1206,14 +1195,13 @@ msgstr ""
 "jour."
 
 #: ../src/ui/liferea_htmlview.c:428
-#, fuzzy, c-format
+#, c-format
 msgid "Download FAILED: \"%s\""
-msgstr "Le téléchargement de l'annexe a ÉCHOUÉ : \"%s\""
+msgstr "Le téléchargement a ÉCHOUÉ : \"%s\""
 
 #: ../src/ui/liferea_htmlview.c:430
-#, fuzzy
 msgid "Download finished."
-msgstr "_Télécharger en utilisant"
+msgstr "Le téléchargement s'est terminé."
 
 #: ../src/ui/liferea_htmlview.c:537
 msgid "Launch Link In _Tab"
@@ -1233,18 +1221,16 @@ msgid "_Copy Link Location"
 msgstr "_Copier l'adresse du lien"
 
 #: ../src/ui/liferea_htmlview.c:548
-#, fuzzy
 msgid "_Copy Image Location"
-msgstr "_Copier l'adresse du lien"
+msgstr "_Copier l'adresse de l'image"
 
 #: ../src/ui/liferea_htmlview.c:550
-#, fuzzy
 msgid "S_ave Link As"
-msgstr "Sauver sous..."
+msgstr "S_auver le lien sous"
 
 #: ../src/ui/liferea_htmlview.c:552
 msgid "S_ave Image As"
-msgstr ""
+msgstr "S_auver l'image sous"
 
 #: ../src/ui/liferea_htmlview.c:555
 msgid "_Subscribe..."
@@ -1337,17 +1323,16 @@ msgid "New S_ource..."
 msgstr "Nouvelle _source..."
 
 #: ../src/ui/popup_menu.c:314
-#, fuzzy
 msgid "Sort Feeds"
-msgstr "Importer une liste de flux"
+msgstr "Trier les flux"
 
 #: ../src/ui/popup_menu.c:320
 msgid "_Rebuild"
-msgstr ""
+msgstr "_Reconstruire"
 
 #: ../src/ui/ui_node.c:123
 msgid "(Empty)"
-msgstr ""
+msgstr "(Vide)"
 
 #: ../src/ui/ui_prefs.c:78
 msgid "GNOME default"
@@ -1419,16 +1404,15 @@ msgstr "Nouvel onglet"
 
 #: ../src/ui/ui_prefs.c:681
 msgid "Integrate with the messaging menu (indicator)"
-msgstr ""
+msgstr "Intégrer avec le menu de messagerie (indicateur)"
 
 #: ../src/ui/ui_prefs.c:684
-#, fuzzy
 msgid "Terminate instead of minimizing to the messaging menu"
-msgstr "_Terminer au lieu de minimiser dans l'icône."
+msgstr "Terminer au lieu de minimiser dans le menu de messagerie"
 
 #: ../src/ui/ui_prefs.c:687
 msgid "Start minimized to the messaging menu"
-msgstr ""
+msgstr "Commencer minimisé dans le menu de messagerie"
 
 #: ../src/ui/ui_prefs.c:792
 msgid "Type"
@@ -1454,7 +1438,7 @@ msgstr "Ce flux ne spécifie aucun intervalle de mise à jour."
 
 #: ../src/ui/browser_tabs.c:287
 msgid "Untitled"
-msgstr ""
+msgstr "Sans titre"
 
 #: ../src/ui/ui_tray.c:221
 #, c-format
@@ -1493,7 +1477,7 @@ msgstr ""
 
 #: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
 msgid "Website"
-msgstr ""
+msgstr "Site web"
 
 #: ../src/parsers/atom10.c:251
 msgid "Invalid Atom feed: unknown author"
@@ -1503,7 +1487,7 @@ msgstr "Flux Atom invalide : auteur inconnu"
 msgid "%b %d %H:%M"
 msgstr "%d %b %H:%M"
 
-#: ../src/fl_sources/default_source.c:170
+#: ../src/fl_sources/default_source.c:174
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"
@@ -1558,22 +1542,21 @@ msgstr "Type de source"
 
 #: ../src/fl_sources/ttrss_source.c:364
 msgid "Tiny Tiny RSS"
-msgstr ""
+msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source.c:365
-#, fuzzy
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 "present your tt-rss subscriptions, and will synchronize your feed list and "
 "reading lists."
 msgstr ""
-"Intégrer la liste des flux de votre compte Google Reader. Liferea présentera "
-"vos abonnements Google Reader et synchronisera votre liste de flux et listes "
-"de lecture."
+"Intégrer la liste des flux de votre compte Tiny Tiny RSS 1.5+. Liferea "
+"présentera vos abonnements tt-rss et synchronisera votre liste de flux et "
+"listes de lecture."
 
 #: ../src/fl_sources/ttrss_source_feed.c:105
 msgid "Could not parse JSON returned by tt-rss API!"
-msgstr ""
+msgstr "Impossible d'analyser le JSON retourné par l'API tt-rss !"
 
 #: ../src/notification/libnotify.c:61 ../src/notification/libnotify.c:83
 #: ../src/notification/libnotify.c:152
@@ -1601,8 +1584,8 @@ msgstr "Marquer le tout comme lu"
 #, c-format
 msgid "<b>%s</b> has <b>%d</b> update"
 msgid_plural "<b>%s</b> has <b>%d</b> updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<b>%s</b> a <b>%d</b> mise à jour"
+msgstr[1] "<b>%s</b> a <b>%d</b> mises à jour"
 
 #: ../src/notification/libnotify.c:257 ../src/notification/libnotify.c:259
 msgid "Feed Update"
@@ -1697,12 +1680,11 @@ msgid "Convert _using:"
 msgstr "Convertir _en utilisant :"
 
 #: ../glade/liferea.ui.h:11
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2010\n"
 "The Liferea Team\n"
 msgstr ""
-"Copyright (c) 2003-2009\n"
+"Copyright (c) 2003-2010\n"
 "L'équipe Liferea\n"
 
 #: ../glade/liferea.ui.h:14
@@ -1734,14 +1716,12 @@ msgid "Downloading Enclosure"
 msgstr "Téléchargement d'une annexe"
 
 #: ../glade/liferea.ui.h:21
-#, fuzzy
 msgid "Downloading Enclosures"
-msgstr "Téléchargement d'une annexe"
+msgstr "Téléchargement d'annexes"
 
 #: ../glade/liferea.ui.h:22
-#, fuzzy
 msgid "Downloading Now"
-msgstr "<b>En cours de téléchargement</b>"
+msgstr "En cours de téléchargement"
 
 #: ../glade/liferea.ui.h:23
 msgid "Downloading an enclosure of type:"
@@ -1760,34 +1740,29 @@ msgstr ""
 "soit dans le contenu d'un élément."
 
 #: ../glade/liferea.ui.h:26
-#, fuzzy
 msgid "External Browser Settings"
-msgstr "<span weight=\"bold\">Réglages du navigateur externe</span>"
+msgstr "Réglages du navigateur externe"
 
 #: ../glade/liferea.ui.h:27
 msgid "Feed Cache Handling"
-msgstr ""
+msgstr "Gestion du cache des flux"
 
 #: ../glade/liferea.ui.h:28
-#, fuzzy
 msgid "Feed Icons (Favicons)"
-msgstr "<span weight=\"bold\">Icônes des flux (favicons)</span>"
+msgstr "Icônes des flux (favicons)"
 
 #: ../glade/liferea.ui.h:29
-#, fuzzy
 msgid "Feed Name"
-msgstr "Nom du _flux :"
+msgstr "Nom du flux"
 
 #: ../glade/liferea.ui.h:30 ../glade/new_subscription.ui.h:3
 #: ../glade/simple_subscription.ui.h:3
-#, fuzzy
 msgid "Feed Source"
-msgstr "<b>Source du flux</b>"
+msgstr "Source du flux"
 
 #: ../glade/liferea.ui.h:31
-#, fuzzy
 msgid "Feed Update Settings"
-msgstr "Mise à jour du flux"
+msgstr "Réglages de la mise à jour du flux"
 
 #: ../glade/liferea.ui.h:32
 msgid "Feed _Name:"
@@ -1798,14 +1773,12 @@ msgid "Feeds"
 msgstr "Flux"
 
 #: ../glade/liferea.ui.h:34
-#, fuzzy
 msgid "Find Items that meet the following criteria"
-msgstr "<b>Trouver les éléments satisfaisant les critères suivants</b>"
+msgstr "Trouver les éléments satisfaisant les critères suivants"
 
 #: ../glade/liferea.ui.h:35
-#, fuzzy
 msgid "Folder Display Settings"
-msgstr "<span weight=\"bold\">Réglages d'affichage des dossiers</span>"
+msgstr "Réglages d'affichage des dossiers"
 
 #: ../glade/liferea.ui.h:36
 msgid "Folders"
@@ -1821,7 +1794,7 @@ msgstr "Général"
 
 #: ../glade/liferea.ui.h:39
 msgid "HTTP Proxy Server"
-msgstr ""
+msgstr "Serveur proxy HTTP"
 
 #: ../glade/liferea.ui.h:40
 msgid "Headlines"
@@ -1832,9 +1805,8 @@ msgid "Ignore _comment feeds for this subscription."
 msgstr "_Ignorer les flux de commentaires pour cet abonnement."
 
 #: ../glade/liferea.ui.h:42
-#, fuzzy
 msgid "Internal Browser Settings"
-msgstr "<span weight=\"bold\">Réglages du navigateur interne</span>"
+msgstr "Réglages du navigateur interne"
 
 #: ../glade/liferea.ui.h:44
 msgid "Liferea Homepage"
@@ -1878,7 +1850,6 @@ msgstr ""
 "gaspillage de bande passante.</i>"
 
 #: ../glade/liferea.ui.h:52
-#, fuzzy
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "search engine results for the specified search string. You can keep this "
@@ -1887,12 +1858,11 @@ msgstr ""
 "Note : Liferea va générer un abonnement à un flux, utilisé pour récupérer "
 "les résultats du moteur de recherche pour la chaîne de recherche spécifiée. "
 "Vous pouvez garder ce flux définitivement et le mettre à jour comme "
-"n'importe quel autre abonnement.  "
+"n'importe quel autre abonnement."
 
 #: ../glade/liferea.ui.h:53
-#, fuzzy
 msgid "Notification Settings"
-msgstr "<span weight=\"bold\">Réglages de notification</span>"
+msgstr "Réglages de notification"
 
 #: ../glade/liferea.ui.h:54
 msgid "Online/Offline Button"
@@ -1903,14 +1873,12 @@ msgid "Open links in Liferea's _window."
 msgstr "Ouvrir les liens dans la fenêtre de _Liferea."
 
 #: ../glade/liferea.ui.h:56
-#, fuzzy
 msgid "Opening Enclosures"
-msgstr "Ouvrir l'annexe..."
+msgstr "Ouverture des annexes"
 
 #: ../glade/liferea.ui.h:57
-#, fuzzy
 msgid "Pending Requests"
-msgstr "<b>Demandes en attente</b>"
+msgstr "Demandes en attente"
 
 #: ../glade/liferea.ui.h:58
 msgid "Proxy"
@@ -1933,9 +1901,8 @@ msgid "Proxy _Username:"
 msgstr "_Nom d'utilisateur pour le proxy :"
 
 #: ../glade/liferea.ui.h:63
-#, fuzzy
 msgid "Reading Headlines"
-msgstr "titres non lus"
+msgstr "Lecture des titres"
 
 #: ../glade/liferea.ui.h:64
 msgid "Rename"
@@ -1992,9 +1959,8 @@ msgid "Sync"
 msgstr "Synchro"
 
 #: ../glade/liferea.ui.h:77
-#, fuzzy
 msgid "Synchronized with Nearby Hosts"
-msgstr "<span weight=\"bold\">Synchronisé avec les machines voisines</span>"
+msgstr "Synchronisé avec les machines voisines"
 
 #: ../glade/liferea.ui.h:78
 msgid "T_erminate instead of minimizing to tray icon."
@@ -2016,18 +1982,16 @@ msgstr ""
 "Le fournisseur de ce flux suggère un intervalle de mise à jour de %d minutes."
 
 #: ../glade/liferea.ui.h:82
-#, fuzzy
 msgid "Toolbar Settings"
-msgstr "_Boutons de la barre d'outils :"
+msgstr "Réglages de la barre d'outils"
 
 #: ../glade/liferea.ui.h:83
 msgid "Toolbar _button labels:"
 msgstr "_Boutons de la barre d'outils :"
 
 #: ../glade/liferea.ui.h:84
-#, fuzzy
 msgid "Update Interval"
-msgstr "Moniteur de mise à jour"
+msgstr "Intervalle de mise à jour"
 
 #: ../glade/liferea.ui.h:85
 msgid "Update Monitor"
@@ -2051,7 +2015,7 @@ msgstr "Voir les titres"
 
 #: ../glade/liferea.ui.h:91
 msgid "Web Integration"
-msgstr ""
+msgstr "Intégration web"
 
 #: ../glade/liferea.ui.h:92
 msgid ""
@@ -2245,9 +2209,8 @@ msgid "_Update all favicons now"
 msgstr "Mettre à _jour toutes les favicons maintenant"
 
 #: ../glade/liferea.ui.h:140
-#, fuzzy
 msgid "_Update all subscriptions at startup."
-msgstr "Met à jour tous les abonnements."
+msgstr "_Mettre à jour tous les abonnements au démarrage."
 
 #: ../glade/liferea.ui.h:141
 msgid "_Use global default update interval."
@@ -2271,9 +2234,8 @@ msgid "wide view"
 msgstr "vue large"
 
 #: ../glade/new_subscription.ui.h:2
-#, fuzzy
 msgid "Download / Postprocessing"
-msgstr "<b>Téléchargement / post-traitement</b>"
+msgstr "Téléchargement / post-traitement"
 
 #: ../glade/node_source.ui.h:1
 msgid "Select the source type you want to add..."
@@ -2303,19 +2265,16 @@ msgid "_Select File"
 msgstr "Sélectionner un _fichier"
 
 #: ../glade/ttrss_source.ui.h:1
-#, fuzzy
 msgid "Add Tiny Tiny RSS Account"
-msgstr "Ajouter un compte Bloglines"
+msgstr "Ajouter un compte Tiny Tiny RSS"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your tt-rss account settings."
-msgstr "Veuillez entrer les paramètres de votre compte Bloglines."
+msgstr "Veuillez entrer les paramètres de votre compte tt-rss."
 
 #: ../glade/ttrss_source.ui.h:4
-#, fuzzy
 msgid "_Server URL"
-msgstr "Erreur du serveur"
+msgstr "URL du _serveur"
 
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
@@ -2332,229 +2291,3 @@ msgid ""
 msgstr ""
 "Entrez une adresse de site web à utiliser pour la découverte automatique ou, "
 "si vous la connaissez, l'adresse exacte du flux."
-
-#~ msgid "link cosmos"
-#~ msgstr "link cosmos"
-
-#~ msgid "Feed title"
-#~ msgstr "Le titre du flux"
-
-#~ msgid "Update status"
-#~ msgstr "Le statut de mise à jour"
-
-#~ msgid "was updated"
-#~ msgstr "a été mis à jour"
-
-#~ msgid "was not updated"
-#~ msgstr "n'a pas été mis à jour"
-
-#~ msgid "topics_en.html"
-#~ msgstr "topics_en.html"
-
-#~ msgid "reference_en.html"
-#~ msgstr "reference_en.html"
-
-#~ msgid "faq_en.html"
-#~ msgstr "faq_en.html"
-
-#~ msgid "_Script Manager"
-#~ msgstr "_Gestionnaire de scripts"
-
-#~ msgid "Allows to configure and edit LUA hook scripts"
-#~ msgstr "Permet de configurer et éditer des hooks en LUA"
-
-#~ msgid "Attention Profile"
-#~ msgstr "Profil d'attention"
-
-#~ msgid "Presents statistics on your most read categories"
-#~ msgstr "Présente des statistiques sur vos catégories les plus lues"
-
-#~ msgid "Search With ..."
-#~ msgstr "Chercher avec ..."
-
-#~ msgid "%d Search Result for \"%s\""
-#~ msgid_plural "%d Search Results for \"%s\""
-#~ msgstr[0] "%d résultat de recherche de « %s »"
-#~ msgstr[1] "%d résultats de recherche de « %s »"
-
-#~ msgid "%d Search Result"
-#~ msgid_plural "%d Search Results"
-#~ msgstr[0] "%d résultat de recherche"
-#~ msgstr[1] "%d résultats de recherche"
-
-#~ msgid ""
-#~ "The item list now contains all items matching the specified search "
-#~ "pattern. If you want to save this search result permanently you can click "
-#~ "the \"Search Folder\" button in the search dialog and Liferea will add a "
-#~ "search folder to your feed list."
-#~ msgstr ""
-#~ "La liste contient maintenant tous les éléments satisfaisant le motif de "
-#~ "recherche spécifié. Si vous voulez sauver ce résultat de manière "
-#~ "permanente, vous pouvez cliquer sur le bouton « Dossier de recherche » "
-#~ "dans la boîte de dialogue pour la recherche et Liferea ajoutera un "
-#~ "dossier de recherche à votre liste de flux."
-
-#~ msgid "Count"
-#~ msgstr "Nombre"
-
-#~ msgid "<i>(empty)</i>"
-#~ msgstr "<i>(vide)</i>"
-
-#~ msgid "_Delete"
-#~ msgstr "_Supprimer"
-
-#~ msgid "_Properties..."
-#~ msgstr "_Propriétés..."
-
-#~ msgid "Update out-dated feeds"
-#~ msgstr "Mettre à jour les flux qui ne le sont pas"
-
-#~ msgid "Force update of all feeds"
-#~ msgstr "Forcer une mise à jour de tous les flux"
-
-#~ msgid "No feed update at all"
-#~ msgstr "Aucune mise à jour de flux"
-
-#~ msgid "startup"
-#~ msgstr "lancement"
-
-#~ msgid "feed updated"
-#~ msgstr "flux mis à jour"
-
-#~ msgid "feed added"
-#~ msgstr "flux ajouté"
-
-#~ msgid "item selected"
-#~ msgstr "élément sélectionné"
-
-#~ msgid "feed selected"
-#~ msgstr "flux sélectionné"
-
-#~ msgid "item unselected"
-#~ msgstr "élément désélectionné"
-
-#~ msgid "feed unselected"
-#~ msgstr "flux désélectionné"
-
-#~ msgid "shutdown"
-#~ msgstr "fermeture"
-
-#~ msgid ""
-#~ "Sorry, no scripting support available. Please recompile Liferea with LUA "
-#~ "support."
-#~ msgstr ""
-#~ "Désolé, pas de support de script disponible. Veuillez recompiler Liferea "
-#~ "avec le support LUA."
-
-#~ msgid "Script Name"
-#~ msgstr "Nom de script"
-
-#~ msgid "No script selected!"
-#~ msgstr "Pas de script sélectionné !"
-
-#~ msgid "Create a new search feed."
-#~ msgstr "Créer un nouveau flux de recherche."
-
-#~ msgid "Liferea is unable to display this item's content."
-#~ msgstr "Liferea ne peut pas afficher le contenu de cet élément."
-
-#~ msgid "<p><a href=\"%s\">View this item's content.</a></p>"
-#~ msgstr "<p><a href=\"%s\">Voir le contenu de cet élément.</a></p>"
-
-#~ msgid "Bloglines"
-#~ msgstr "Bloglines"
-
-#~ msgid ""
-#~ "Integrate the feed list of your Bloglines account. Liferea will present "
-#~ "your Bloglines subscription as a read-only subtree in the feed list."
-#~ msgstr ""
-#~ "Intégrer la liste des flux de votre compte Bloglines. Liferea présentera "
-#~ "votre abonnement Bloglines comme un sous-arbre en lecture seule dans la "
-#~ "liste des flux."
-
-#~ msgid "feedlist.opml"
-#~ msgstr "feedlist_fr.opml"
-
-#~ msgid "%s has %d new / updated headline\n"
-#~ msgid_plural "%s has %d new / updated headlines\n"
-#~ msgstr[0] "%s a %d titre nouveau / mis à jour\n"
-#~ msgstr[1] "%s a %d titres nouveaux / mis à jour\n"
-
-#~ msgid "    "
-#~ msgstr "    "
-
-#~ msgid "     "
-#~ msgstr "     "
-
-#~ msgid "      "
-#~ msgstr "      "
-
-#~ msgid "<b>Hook</b>"
-#~ msgstr "<b>Hook</b>"
-
-#~ msgid "<b>Registered Scripts</b>"
-#~ msgstr "<b>Scripts enregistrés</b>"
-
-#~ msgid "<b>Script Code</b>"
-#~ msgstr "<b>Code du script</b>"
-
-#~ msgid "<b>text/plain</b>"
-#~ msgstr "<b>text/plain</b>"
-
-#~ msgid ""
-#~ "<i>This option can cause significant delays when loading folders "
-#~ "containing many feeds.</i>"
-#~ msgstr ""
-#~ "<i>Cette option peut causer des délais importants lors du chargement de "
-#~ "dossiers contenant de nombreux flux.</i>"
-
-#~ msgid "<span weight=\"bold\">Downloading Enclosures</span>"
-#~ msgstr "<span weight=\"bold\">Téléchargement des annexes</span>"
-
-#~ msgid "<span weight=\"bold\">Feed Cache Handling</span>"
-#~ msgstr "<span weight=\"bold\">Gestion du cache des flux</span>"
-
-#~ msgid "<span weight=\"bold\">Feed Name</span>"
-#~ msgstr "<span weight=\"bold\">Nom du flux</span>"
-
-#~ msgid "<span weight=\"bold\">Feed Update Settings</span>"
-#~ msgstr "<span weight=\"bold\">Réglages de mise à jour des flux</span>"
-
-#~ msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
-#~ msgstr "<span weight=\"bold\">Serveur proxy HTTP</span>"
-
-#~ msgid "<span weight=\"bold\">Opening Enclosures</span>"
-#~ msgstr "<span weight=\"bold\">Ouverture des annexes</span>"
-
-#~ msgid "<span weight=\"bold\">Reading Headlines</span>"
-#~ msgstr "<span weight=\"bold\">Lecture des titres</span>"
-
-#~ msgid "<span weight=\"bold\">Toolbar Settings</span>"
-#~ msgstr "<span weight=\"bold\">Réglages de la barre d'outils</span>"
-
-#~ msgid "<span weight=\"bold\">Update Interval</span>"
-#~ msgstr "<span weight=\"bold\">Intervalle de mise à jour</span>"
-
-#~ msgid "<span weight=\"bold\">Web Integration</span>"
-#~ msgstr "<span weight=\"bold\">Intégration au web</span>"
-
-#~ msgid "Add Script"
-#~ msgstr "Ajouter un script"
-
-#~ msgid "At _startup:"
-#~ msgstr "Au _lancement :"
-
-#~ msgid "Create new script"
-#~ msgstr "Créer un nouveau script"
-
-#~ msgid "Exec Command"
-#~ msgstr "Commande d'exécution"
-
-#~ msgid "Reuse existing script"
-#~ msgstr "Réutiliser un script existant"
-
-#~ msgid "Script Manager"
-#~ msgstr "Gestionnaire de scripts"
-
-#~ msgid "Search _Link Cosmos with"
-#~ msgstr "_Chercher dans le link cosmos avec"
