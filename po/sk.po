@@ -1679,7 +1679,7 @@ msgstr "Konvertovať po_užitím:"
 #: ../glade/liferea.ui.h:11
 #, fuzzy
 msgid ""
-"Copyright (c) 2003-2010\n"
+"Copyright (c) 2003-2011\n"
 "The Liferea Team\n"
 msgstr ""
 "Autorské právo (c) 2003-2009\n"

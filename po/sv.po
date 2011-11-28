@@ -1556,10 +1556,10 @@ msgstr "_Konvertera med hjälp av:"
 
 #: ../glade/liferea.ui.h:11
 msgid ""
-"Copyright (c) 2003-2010\n"
+"Copyright (c) 2003-2011\n"
 "The Liferea Team\n"
 msgstr ""
-"Copyright © 2003-2010\n"
+"Copyright © 2003-2011\n"
 "Liferea-teamet\n"
 
 #: ../glade/liferea.ui.h:14

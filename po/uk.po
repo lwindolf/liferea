@@ -1574,7 +1574,7 @@ msgstr "Перетворити за _допомогою:"
 
 #: ../glade/liferea.ui.h:11
 msgid ""
-"Copyright (c) 2003-2010\n"
+"Copyright (c) 2003-2011\n"
 "The Liferea Team\n"
 msgstr ""
 "© Команда Liferea\n"

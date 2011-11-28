@@ -5,6 +5,8 @@
 	* Fixes SF #3441643: Deleting a feed also removes items copied to 
 	  news bins (reported by Jan Larres)
 
+	* Updated French translation (Vincent Lefevre)
+
 
 2011-11-16  Lars Lindner <lars.lindner@gmail.com>
 
