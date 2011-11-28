@@ -470,10 +470,10 @@ open:
 		          "WHERE node_id = ?");
 		       
 	db_new_statement ("itemsetRemoveStmt",
-	                  "DELETE FROM items WHERE item_id = ? OR (comment = 1 AND parent_item_id = ?)");
+	                  "DELETE FROM itemsets WHERE item_id = ? OR (comment = 1 AND parent_item_id = ?)");
 			
 	db_new_statement ("itemsetRemoveAllStmt",
-	                  "DELETE FROM items WHERE node_id = ? OR (comment = 1 AND parent_node_id = ?)");
+	                  "DELETE FROM itemsets WHERE node_id = ? OR (comment = 1 AND parent_node_id = ?)");
 
 	db_new_statement ("itemsetMarkAllPopupStmt",
 	                  "UPDATE items SET popup = 0 WHERE ROWID IN "
