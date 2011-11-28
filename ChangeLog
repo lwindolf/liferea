@@ -1,9 +1,11 @@
-2011-10-??  ???
+2011-11-28  Lars Lindner <lars.lindner@gmail.com>
 
 	Version 1.6.7
 
 	* Fixes SF #3046762: DB contains comments of
 	  deleted feed entries (reported by FuturePilot)
+	* Fixes SF #3441643: Deleting a feed also removes items copied 
+	  to news bins (reported by Jan Larres)
 
 	* Added Latvian translation. (Rihards Priedītis, Rūdolfs Mazurs)
 	* Added Lithuanian translation. (Mindaugas Baranauskas)

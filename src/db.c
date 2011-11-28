@@ -470,10 +470,10 @@ open:
 		          "WHERE node_id = ?");
 		       
 	db_new_statement ("itemsetRemoveStmt",
-	                  "DELETE FROM itemsets WHERE item_id = ? OR parent_item_id = ?");
+	                  "DELETE FROM items WHERE item_id = ? OR (comment = 1 AND parent_item_id = ?)");
 			
 	db_new_statement ("itemsetRemoveAllStmt",
-	                  "DELETE FROM itemsets WHERE parent_node_id = ?");
+	                  "DELETE FROM items WHERE node_id = ? OR (comment = 1 AND parent_node_id = ?)");
 
 	db_new_statement ("itemsetMarkAllPopupStmt",
 	                  "UPDATE items SET popup = 0 WHERE ROWID IN "
@@ -970,6 +970,7 @@ db_itemset_remove_all (const gchar *id)
 		
 	stmt = db_get_statement ("itemsetRemoveAllStmt");
 	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 2, id, -1, SQLITE_TRANSIENT);
 	res = sqlite3_step (stmt);
 
 	if (SQLITE_DONE != res)
