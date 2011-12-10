@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 23:33+0200\n"
+"POT-Creation-Date: 2011-12-10 11:32+0100\n"
 "PO-Revision-Date: 2010-03-19 11:14+0100\n"
 "Last-Translator: Gianvito Cavasoli <janvitus@ubuntu-it.org>\n"
 "Language-Team: Italiana <tp@lists.linux.it>\n"
@@ -476,7 +476,7 @@ msgstr "Liferea, il lettore notiziari in Linux"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Per maggiori informazioni, visitare http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:358
+#: ../src/migrate.c:340
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1497,7 +1497,7 @@ msgstr "Notiziario Atom non valido: autore sconosciuto"
 msgid "%b %d %H:%M"
 msgstr "%d %b %H.%M"
 
-#: ../src/fl_sources/default_source.c:170
+#: ../src/fl_sources/default_source.c:174
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"

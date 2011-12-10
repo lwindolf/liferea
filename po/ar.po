@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea_trunk_ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 23:33+0200\n"
+"POT-Creation-Date: 2011-12-10 11:32+0100\n"
 "PO-Revision-Date: 2010-08-12 11:22+0300\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -459,7 +459,7 @@ msgstr "<p dir=\"rtl\">لايفريا، قارئ تلقيمات لينكس</p>"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "للمزيد من المعلومات، طالع http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:358
+#: ../src/migrate.c:340
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1490,7 +1490,7 @@ msgstr "تلقيمة Atom غير صحيحة: مؤلف مجهول"
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#: ../src/fl_sources/default_source.c:170
+#: ../src/fl_sources/default_source.c:174
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 23:33+0200\n"
+"POT-Creation-Date: 2011-12-10 11:32+0100\n"
 "PO-Revision-Date: 2009-07-18 18:05-0300\n"
 "Last-Translator: Leon Nardella <leon.nardela@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
@@ -478,7 +478,7 @@ msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 "Para mais informações, por favor acesse http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:358
+#: ../src/migrate.c:340
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1494,7 +1494,7 @@ msgstr "Fonte de notícias em formato Atom inválido: autor desconhecido"
 msgid "%b %d %H:%M"
 msgstr "%d de %b %H:%M"
 
-#: ../src/fl_sources/default_source.c:170
+#: ../src/fl_sources/default_source.c:174
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"

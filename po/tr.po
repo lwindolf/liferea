@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-21 23:33+0200\n"
+"POT-Creation-Date: 2011-12-10 11:32+0100\n"
 "PO-Revision-Date: 2007-09-01 08:19+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team:  <turkce@pardus.org.tr>\n"
@@ -494,7 +494,7 @@ msgstr "Liferea - Linux Haber Okuyucusu"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
-#: ../src/migrate.c:358
+#: ../src/migrate.c:340
 #, fuzzy, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1537,7 +1537,7 @@ msgstr "Geçersiz Atom haber kaynağı: bilinmeyen yazar"
 msgid "%b %d %H:%M"
 msgstr "%d %b %H:%M"
 
-#: ../src/fl_sources/default_source.c:170
+#: ../src/fl_sources/default_source.c:174
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"
