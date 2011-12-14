@@ -181,6 +181,11 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 	g_signal_connect (network_monitor_get (), "proxy-changed",
 	                  G_CALLBACK (liferea_htmlview_proxy_changed),
 	                  htmlview);
+
+	if (NULL != network_get_proxy_host ()) {
+		debug0 (DEBUG_NET, "Setting initial HTML widget proxy...");
+		liferea_htmlview_proxy_changed (network_monitor_get (), htmlview);
+	}
 	
 	return htmlview;
 }
