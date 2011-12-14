@@ -4,6 +4,8 @@
 
 	* Fixes proxy preference not affecting the HTML widget.
 	  (reported by Chris Siebenmann)
+	* Fixes SF #3363481: Feeds fail to update properly when entries ordered 
+	  "wrong" (patch by Robert Trace)
 
 
 2011-12-10  Lars Lindner <lars.lindner@gmail.com>

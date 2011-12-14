@@ -699,6 +699,28 @@ atom10_parse_feed_title (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Pa
 	}
 }
 
+/* Sort items in descending date order (newer items first). */
+static gint
+atom10_item_sort_by_date (gconstpointer a, gconstpointer b)
+{
+	itemPtr item1 = (itemPtr)a;
+	itemPtr item2 = (itemPtr)b;
+
+	g_assert (item1 && item2);
+
+	if (item1->time == item2->time) {
+		/* Items identical.. can we distinguish further? */
+		return 0;
+	}
+	
+	if (item1->time < item2->time)
+		return 1;
+	if (item1->time > item2->time)
+		return -1;
+
+	return 0;
+}
+
 static void
 atom10_parse_feed_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserState *state)
 {
@@ -793,7 +815,7 @@ atom10_parse_feed (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			} else if (xmlStrEqual (cur->name, BAD_CAST"entry")) {
 				ctxt->item = atom10_parse_entry (ctxt, cur);
 				if (ctxt->item)
-					ctxt->items = g_list_append (ctxt->items, ctxt->item);
+					ctxt->items = g_list_insert_sorted (ctxt->items, ctxt->item, atom10_item_sort_by_date);
 			}
 			cur = cur->next;
 		}
