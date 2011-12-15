@@ -1,6 +1,6 @@
 2011-12-??  ???
 
-	Version 1.8.1
+	Version 1.9.0
 
 	* Fixes proxy preference not affecting the HTML widget.
 	  (reported by Chris Siebenmann)
