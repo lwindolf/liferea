@@ -23,7 +23,6 @@ AC_SYS_LARGEFILE
 AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
 AC_ARG_ENABLE(libindicate, AS_HELP_STRING([--disable-libindicate],[compile without libindicate support]),,enable_libindicate=yes)
-dnl AC_ARG_ENABLE(avahi,     AS_HELP_STRING([--disable-avahi],[compile without AVAHI support]),,enable_avahi=yes)
 
 AC_CHECK_FUNCS([strsep])
 
@@ -77,29 +76,6 @@ if test "x$enable_libindicate" = "xyes"; then
 fi
 
 AM_CONDITIONAL(WITH_LIBINDICATE, test "x$enable_libindicate" = "xyes")
-
-dnl *****
-dnl AVAHI
-dnl *****
-
-dnl if test "x$enable_avahi" = "xyes"; then
-dnl    PKG_CHECK_MODULES(AVAHI,
-dnl       avahi-client >= 0.6
-dnl       avahi-glib >= 0.6,
-dnl       enable_avahi=yes,
-dnl       enable_avahi=no)
-dnl 
-dnl    if test "x$enable_avahi" = "xyes"; then
-dnl       AC_DEFINE(USE_AVAHI, 1, [Define if we're using AVAHI.])
-dnl    fi      
-dnl    
-dnl    AC_SUBST(AVAHI_CFLAGS)
-dnl    AC_SUBST(AVAHI_LIBS)
-dnl else
-dnl    enable_avahi=no
-dnl fi
- 
-AM_CONDITIONAL(WITH_AVAHI, test "x$enable_avahi" = "xyes")
 
 dnl Checking for gconftool-2
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
@@ -176,7 +152,6 @@ echo
 echo "Use X Session Management........ : $enable_sm"
 echo "Use libnotify................... : $enable_libnotify"
 echo "Use libindicate................. : $enable_libindicate"
-dnl echo "AVAHI Support................... : $enable_avahi"
 echo
 eval eval echo Liferea will be installed in $bindir.
 echo
