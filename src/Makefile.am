@@ -1,11 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-if WITH_AVAHI
-SYNC = sync
-SYNC_LIB = sync/liblisync.a
-endif
-
-SUBDIRS = parsers notification ui fl_sources $(SYNC) webkit .
+SUBDIRS = parsers notification ui fl_sources webkit .
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
