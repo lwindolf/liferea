@@ -171,7 +171,8 @@ on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
 	guint modifiers;
 
 	modifiers = gtk_accelerator_get_default_mod_mask ();
-	if ((event->keyval == GDK_w) && ((event->state & modifiers) == GDK_CONTROL_MASK)) {
+	if ((event->keyval == GDK_KEY_w)
+	    && ((event->state & modifiers) == GDK_CONTROL_MASK)) {
 		browser_tabs_close_tab ((tabInfo *)data);
 		return TRUE;
 	}
