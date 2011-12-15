@@ -44,9 +44,9 @@
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/search_dialog.h"
+#include "ui/session.h"
 #include "ui/ui_common.h"
 #include "ui/ui_prefs.h"
-#include "ui/ui_session.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"
 

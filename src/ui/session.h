@@ -1,5 +1,5 @@
 /**
- * @file ui_session.h X Session management code for Liferea
+ * @file session.h X Session management code for Liferea
  *
  * Copyright (c) 2004, Nathan Conrad
  *	      
@@ -19,13 +19,15 @@
  * Boston, MA 02111-1307, USA.
  */
  
-#ifndef _UI_SESSION_H
-#define _UI_SESSION_H
+#ifndef _SESSION_H
+#define _SESSION_H
 
 #include <glib.h>
 
-void session_init(const gchar *argv0, gchar *previous_id);
-void session_set_cmd(gchar *config_dir, gint mainwindowState);
-void session_end(void);
+void session_init (const gchar *argv0, gchar *previous_id);
+
+void session_set_cmd (gchar *config_dir, gint mainwindowState);
+
+void session_end (void);
 
 #endif

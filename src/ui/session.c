@@ -1,5 +1,5 @@
 /** 
- * @file ui_session.c session management
+ * @file session.c session management
  *
  * session management for Gaim (from revision 1.16 of gaim's CVS tree)
  *
@@ -23,7 +23,7 @@
  *
  */
  
-#include "ui/ui_session.h"
+#include "ui/session.h"
 
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
@@ -41,7 +41,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "common.h"
 #include "debug.h"
 #include "ui/liferea_shell.h"
 

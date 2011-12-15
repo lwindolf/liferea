@@ -45,8 +45,8 @@
 #include "social.h"
 #include "update.h"
 #include "xml.h"
-#include "ui/ui_session.h"
 #include "ui/liferea_shell.h"
+#include "ui/session.h"
 #include "notification/notification.h"
 
 static enum {

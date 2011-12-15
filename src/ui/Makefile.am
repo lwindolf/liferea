@@ -24,6 +24,7 @@ libliui_a_SOURCES = \
 	rule_editor.c rule_editor.h \
 	search_dialog.c search_dialog.h \
 	search_folder_dialog.c search_folder_dialog.h \
+	session.c session.h \
 	subscription_dialog.c subscription_dialog.h \
 	ui_common.c ui_common.h \
 	ui_dnd.c ui_dnd.h \
@@ -31,6 +32,5 @@ libliui_a_SOURCES = \
 	ui_indicator.c ui_indicator.h \
 	ui_node.c ui_node.h \
 	ui_prefs.c ui_prefs.h \
-	ui_session.c ui_session.h \
 	ui_tray.c ui_tray.h \
 	ui_update.c ui_update.h 
