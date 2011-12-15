@@ -110,7 +110,7 @@ feed_list_view_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer dat
 {
 	if ((event->type == GDK_KEY_PRESS) &&
 	    (event->state == 0) &&
-	    (event->keyval == GDK_KEY_Delete)) {
+	    (event->keyval == GDK_Delete)) {
 		nodePtr node = feedlist_get_selected ();
 				
 		if(node) {

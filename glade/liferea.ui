@@ -362,6 +362,7 @@
             <child>
               <object class="GtkStatusbar" id="statusbar">
                 <property name="visible">True</property>
+                <property name="has_resize_grip">False</property>
               </object>
               <packing>
                 <property name="position">1</property>

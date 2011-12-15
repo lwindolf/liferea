@@ -563,7 +563,7 @@ void on_prefbtn_clicked(void) {
 
 		/* ================== panel 2 "folders" ==================== */
 
-		g_signal_connect(G_OBJECT(liferea_dialog_lookup(prefdialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), NULL);
+		g_signal_connect(GTK_OBJECT(liferea_dialog_lookup(prefdialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), NULL);
 
 		conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(liferea_dialog_lookup(prefdialog, "folderdisplaybtn")), folder_display_mode?TRUE:FALSE);
