@@ -100,7 +100,7 @@ AC_MSG_RESULT([$with_gtk])
 
 case "$with_gtk" in
   2.0) GTK_API_VERSION=2
-       GTK_REQUIRED=2.18.0
+       GTK_REQUIRED=2.20.0
        WEBKIT_SUFFIX=-1.0
        UNIQUE_VERSION=1.0
        ;;

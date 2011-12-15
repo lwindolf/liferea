@@ -402,7 +402,7 @@ static gboolean
 on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data) 
 {
 	if ((event->type == GDK_KEY_PRESS) && (event->state == 0)
-	    && (event->keyval == GDK_KEY_Delete))
+	    && (event->keyval == GDK_KEY(Delete)))
 		on_remove_item_activate(NULL, NULL);
 
 	return FALSE;
