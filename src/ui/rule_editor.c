@@ -128,9 +128,9 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 
 	/* add popup menu for selection of positive or negative logic */
 
-	widget = gtk_combo_box_text_new ();
-	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (widget), ruleInfo->positive);
-	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (widget), ruleInfo->negative);
+	widget = gtk_combo_box_new_text ();
+	gtk_combo_box_append_text (GTK_COMBO_BOX (widget), ruleInfo->positive);
+	gtk_combo_box_append_text (GTK_COMBO_BOX (widget), ruleInfo->negative);
 	gtk_combo_box_set_active ((GtkComboBox*)widget, (rule->additive)?0:1);
 	g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK (on_rule_changed_additive), rule);
 	gtk_widget_show_all (widget);
