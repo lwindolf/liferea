@@ -47,7 +47,6 @@
 #include "xml.h"
 #include "ui/ui_session.h"
 #include "ui/liferea_shell.h"
-#include "sync/avahi_publisher.h"
 #include "notification/notification.h"
 
 static enum {
@@ -290,20 +289,6 @@ main (int argc, char *argv[])
 	social_init ();			/* initialize social bookmarking */
 
 	dbus = liferea_dbus_new ();
-
-#ifdef USE_AVAHI
-	if (conf_get_bool_value (SYNC_AVAHI_ENABLED)) {
-		LifereaAvahiPublisher	*avahiPublisher = NULL;
-
-		debug0 (DEBUG_CACHE, "Registering with AVAHI");
-		avahiPublisher = liferea_avahi_publisher_new ();
-		liferea_avahi_publisher_publish (avahiPublisher, conf_get_str_value (SYNC_AVAHI_SERVICE_NAME), 23632);
-	} else {
-		debug0 (DEBUG_CACHE, "Avahi support available, but disabled by preferences.");
-	}
-#else
-	debug0 (DEBUG_CACHE, "Compiled without AVAHI support");
-#endif
 
 	/* how to start liferea, command line takes precedence over preferences */
 	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
