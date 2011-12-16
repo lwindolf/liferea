@@ -1386,7 +1386,7 @@ db_subscription_update (subscriptionPtr subscription)
 		
 	db_subscription_metadata_update (subscription);
 		
-	debug_end_measurement (DEBUG_DB, "subscription_update");
+	debug_end_measurement (DEBUG_DB, "subscription update");
 }
 
 void
@@ -1431,5 +1431,5 @@ db_node_update (nodePtr node)
 	if (SQLITE_DONE != res)
 		g_warning ("Could not update subscription info %s in DB (error code %d)!", node->id, res);
 		
-	debug_end_measurement (DEBUG_DB, "subscription_update");
+	debug_end_measurement (DEBUG_DB, "node update");
 }
