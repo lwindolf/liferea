@@ -6,6 +6,8 @@
 	  (reported by Chris Siebenmann)
 	* Fixes SF #3363481: Feeds fail to update properly when entries ordered 
 	  "wrong" (patch by Robert Trace)
+	* Fixes writing subscriptions into DB when importing from OPML
+	  (reported by Dennis Nezic)
 
 
 2011-12-10  Lars Lindner <lars.lindner@gmail.com>

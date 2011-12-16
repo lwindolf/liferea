@@ -356,6 +356,7 @@ void
 feedlist_node_imported (nodePtr node)
 {
 	ui_node_add (node);	
+
 	feedlist_schedule_save ();
 }
 
