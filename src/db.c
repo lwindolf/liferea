@@ -1382,7 +1382,7 @@ db_subscription_update (subscriptionPtr subscription)
 	
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
-		g_warning ("Could not update subscription info %s in DB (error code %d)!", subscription->node->id, res);
+		g_warning ("Could not update subscription info for node id %s in DB (error code %d)!", subscription->node->id, res);
 		
 	db_subscription_metadata_update (subscription);
 		
