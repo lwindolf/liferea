@@ -2,7 +2,7 @@
  * @file export.c  OPML feed list import & export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -336,7 +336,10 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		subscription_update (node->subscription, 0);
 	}
 	
-	/* 8. save node info to DB */
+	/* 8. save node and subscription info to DB */
+	if (node->subscription)
+		db_subscription_update (node->subscription);
+
 	db_node_update (node);
 
 	debug_exit ("import_parse_outline");
