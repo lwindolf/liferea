@@ -1246,7 +1246,7 @@ db_search_folder_load (const gchar *id)
 	stmt = db_get_statement ("searchFolderLoadStmt");
 	res = sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
 	if (SQLITE_OK != res)
-		g_error ("db_load_metadata: sqlite bind failed (error code %d)!", res);
+		g_error ("db_search_folder_load: sqlite bind failed (error code %d)!", res);
 	
 	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
@@ -1317,7 +1317,7 @@ db_subscription_metadata_load(const gchar *id)
 	stmt = db_get_statement ("subscriptionMetadataLoadStmt");
 	res = sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
 	if (SQLITE_OK != res)
-		g_error ("db_load_metadata: sqlite bind failed (error code %d)!", res);
+		g_error ("db_subscription_metadata_load: sqlite bind failed (error code %d)!", res);
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
 		metadata = db_metadata_list_append (metadata, sqlite3_column_text(stmt, 0), 
@@ -1344,7 +1344,7 @@ db_subscription_metadata_update_cb (const gchar *key,
 	sqlite3_bind_text (stmt, 4, value, -1, SQLITE_TRANSIENT);
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res) 
-		g_warning ("Update in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+		g_warning ("Update in \"subscription_metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 }
 
 static void
