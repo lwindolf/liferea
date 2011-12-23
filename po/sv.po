@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-10 11:32+0100\n"
+"POT-Creation-Date: 2011-12-23 21:33+0100\n"
 "PO-Revision-Date: 2011-10-31 09:43+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -27,7 +27,7 @@ msgid "Feed Reader"
 msgstr "Nyhetsläsare"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:3 ../src/main.c:279 ../glade/liferea.ui.h:43
+#: ../liferea.desktop.in.h:3 ../src/main.c:278 ../glade/liferea.ui.h:43
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -264,53 +264,53 @@ msgstr "Hämtning av bilaga är färdig: \"%s\""
 msgid "Error renaming %s to %s\n"
 msgstr "Fel vid namnbyte från %s till %s\n"
 
-#: ../src/export.c:386 ../src/export.c:388
+#: ../src/export.c:389 ../src/export.c:391
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "XML-fel under läsning av OPML-filen! Kunde inte importera \"%s\"!"
 
-#: ../src/export.c:394 ../src/export.c:396
+#: ../src/export.c:397 ../src/export.c:399
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Tomt dokument! OPML-dokumentet \"%s\" får inte vara tomma vid import."
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:420 ../src/export.c:422
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" är inte ett giltigt OPML-dokument! Liferea kan inte importera denna "
 "fil!"
 
-#: ../src/export.c:438
+#: ../src/export.c:441
 msgid "Imported feed list"
 msgstr "Importerad kanallista"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import Feed List"
 msgstr "Importera kanallista"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import"
 msgstr "Importera"
 
-#: ../src/export.c:450 ../src/export.c:467 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:453 ../src/export.c:470 ../src/fl_sources/opml_source.c:387
 msgid "OPML Files"
 msgstr "OPML-filer"
 
-#: ../src/export.c:458
+#: ../src/export.c:461
 msgid "Error while exporting feed list!"
 msgstr "Fel under export av kanallista!"
 
-#: ../src/export.c:460
+#: ../src/export.c:463
 msgid "Feed List exported!"
 msgstr "Kanallistan exporterad!"
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export Feed List"
 msgstr "Exportera kanallista"
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export"
 msgstr "Exportera"
 
@@ -370,7 +370,7 @@ msgstr "Kunde inte fastställa kanaltypen."
 msgid "There are no unread items"
 msgstr "Det finns inga olästa artiklar"
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -378,44 +378,44 @@ msgstr ""
 "Starta Liferea med dess huvudfönster i TILLSTÅND. TILLSTÅND kan vara \"shown"
 "\", \"iconified\" eller \"hidden\""
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid "STATE"
 msgstr "TILLSTÅND"
 
-#: ../src/main.c:197
+#: ../src/main.c:196
 msgid "Show version information and exit"
 msgstr "Visa versionsinformation och avsluta"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 msgid "Add a new subscription"
 msgstr "Lägg till en ny prenumeration"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 msgid "uri"
 msgstr "uri"
 
-#: ../src/main.c:203
+#: ../src/main.c:202
 msgid "Print debugging messages of all types"
 msgstr "Skriv ut felsökningsmeddelanden av alla typer"
 
-#: ../src/main.c:204
+#: ../src/main.c:203
 msgid "Print debugging messages for the cache handling"
 msgstr "Skriv ut felsökningsmeddelanden för mellanlagringshantering"
 
-#: ../src/main.c:205
+#: ../src/main.c:204
 msgid "Print debugging messages for the configuration handling"
 msgstr "Skriv ut felsökningsmeddelanden för konfigurationshanteringen"
 
-#: ../src/main.c:206
+#: ../src/main.c:205
 msgid "Print debugging messages of the database handling"
 msgstr "Skriv ut felsökningsmeddelanden för databashantering"
 
-#: ../src/main.c:207
+#: ../src/main.c:206
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "Skriv ut felsökningsmeddelanden för alla grafiska gränssnittsfunktioner"
 
-#: ../src/main.c:208
+#: ../src/main.c:207
 #, fuzzy
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
@@ -425,45 +425,45 @@ msgstr ""
 "utdata så kommer även den genererade HTML-koden att skrivas i ~/.liferea_1.6/"
 "output.xhtml"
 
-#: ../src/main.c:209
+#: ../src/main.c:208
 msgid "Print debugging messages of all network activity"
 msgstr "Skriv ut felsökningsmeddelanden för all nätverksaktivitet"
 
-#: ../src/main.c:210
+#: ../src/main.c:209
 msgid "Print debugging messages of all parsing functions"
 msgstr "Skriv ut felsökningsmeddelanden för alla tolkningsfunktioner"
 
-#: ../src/main.c:211
+#: ../src/main.c:210
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Skriv ut felsökningsmeddelanden när en funktion tar för lång tid att "
 "behandlas"
 
-#: ../src/main.c:212
+#: ../src/main.c:211
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Skriv ut felsökningsmeddelanden när funktioner används"
 
-#: ../src/main.c:213
+#: ../src/main.c:212
 msgid "Print debugging messages of the feed update processing"
 msgstr "Skriv ut felsökningsmeddelanden för kanaluppdateringsprocessen"
 
-#: ../src/main.c:214
+#: ../src/main.c:213
 msgid "Print debugging messages of the search folder matching"
 msgstr "Skriv ut felsökningsmeddelanden för sökmappsmatchningar"
 
-#: ../src/main.c:215
+#: ../src/main.c:214
 msgid "Print verbose debugging messages"
 msgstr "Skriv ut informativa felsökningsmeddelanden"
 
-#: ../src/main.c:228 ../src/main.c:229
+#: ../src/main.c:227 ../src/main.c:228
 msgid "Print debugging messages for the given topic"
 msgstr "Skriv ut felsökningsmeddelanden för angivet ämne"
 
-#: ../src/main.c:236
+#: ../src/main.c:235
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, nyhetsläsaren för Linux"
 
-#: ../src/main.c:237
+#: ../src/main.c:236
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Besök http://liferea.sourceforge.net/ för mer information"
 
@@ -763,7 +763,7 @@ msgstr "%d%s"
 
 #. strip GET parameters
 #: ../src/ui/enclosure_list_view.c:338 ../src/ui/enclosure_list_view.c:514
-#: ../src/ui/liferea_htmlview.c:452 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "Välj fil"
 
@@ -891,7 +891,7 @@ msgstr ""
 msgid "_View"
 msgstr "_Visa"
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:565
+#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:570
 msgid "_Increase Text Size"
 msgstr "_Större textstorlek"
 
@@ -899,7 +899,7 @@ msgstr "_Större textstorlek"
 msgid "Increases the text size of the item view."
 msgstr "Ökar textstorleken i artikelvyn."
 
-#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:566
+#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:571
 msgid "_Decrease Text Size"
 msgstr "_Mindre textstorlek"
 
@@ -1179,71 +1179,71 @@ msgstr "Bekräftelse för borttagning"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea är i frånkopplat läge. Inga uppdateringar är möjliga."
 
-#: ../src/ui/liferea_htmlview.c:428
+#: ../src/ui/liferea_htmlview.c:433
 #, c-format
 msgid "Download FAILED: \"%s\""
 msgstr "Hämtningen MISSLYCKADES: \"%s\""
 
-#: ../src/ui/liferea_htmlview.c:430
+#: ../src/ui/liferea_htmlview.c:435
 msgid "Download finished."
 msgstr "Hämtningen är färdig."
 
-#: ../src/ui/liferea_htmlview.c:537
+#: ../src/ui/liferea_htmlview.c:542
 msgid "Launch Link In _Tab"
 msgstr "Öppna länk i _flik"
 
-#: ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_htmlview.c:543
 msgid "_Launch Link In Browser"
 msgstr "Öppna länk i _webbläsare"
 
-#: ../src/ui/liferea_htmlview.c:541 ../src/ui/popup_menu.c:143
+#: ../src/ui/liferea_htmlview.c:546 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_Bokmärk länk på %s"
 
-#: ../src/ui/liferea_htmlview.c:545
+#: ../src/ui/liferea_htmlview.c:550
 msgid "_Copy Link Location"
 msgstr "_Kopiera länkadress"
 
-#: ../src/ui/liferea_htmlview.c:548
+#: ../src/ui/liferea_htmlview.c:553
 msgid "_Copy Image Location"
 msgstr "_Kopiera bildadress"
 
-#: ../src/ui/liferea_htmlview.c:550
+#: ../src/ui/liferea_htmlview.c:555
 msgid "S_ave Link As"
 msgstr "Spara länk so_m"
 
-#: ../src/ui/liferea_htmlview.c:552
+#: ../src/ui/liferea_htmlview.c:557
 msgid "S_ave Image As"
 msgstr "Sp_ara bild som"
 
-#: ../src/ui/liferea_htmlview.c:555
+#: ../src/ui/liferea_htmlview.c:560
 msgid "_Subscribe..."
 msgstr "_Prenumerera..."
 
-#: ../src/ui/item_list_view.c:333
+#: ../src/ui/item_list_view.c:340
 msgid "*** No title ***"
 msgstr "*** Ingen titel ***"
 
-#: ../src/ui/item_list_view.c:578
+#: ../src/ui/item_list_view.c:591
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/ui/item_list_view.c:592
+#: ../src/ui/item_list_view.c:605
 msgid "Headline"
 msgstr "Rubrik"
 
-#: ../src/ui/item_list_view.c:728 ../src/ui/item_list_view.c:749
-#: ../src/ui/item_list_view.c:823 ../src/ui/item_list_view.c:920
-#: ../src/ui/item_list_view.c:935
+#: ../src/ui/item_list_view.c:741 ../src/ui/item_list_view.c:762
+#: ../src/ui/item_list_view.c:836 ../src/ui/item_list_view.c:933
+#: ../src/ui/item_list_view.c:948
 msgid "No item has been selected"
 msgstr "Ingen artikel har markerats"
 
-#: ../src/ui/item_list_view.c:745
+#: ../src/ui/item_list_view.c:758
 msgid "This item has no link specified!"
 msgstr "Artikeln har ingen angiven länk!"
 
-#: ../src/ui/item_list_view.c:811
+#: ../src/ui/item_list_view.c:824
 msgid "You must select a feed to delete its items!"
 msgstr "Du måste markera en kanal för att ta bort dess artiklar!"
 
@@ -1420,7 +1420,7 @@ msgstr[1] ""
 msgid "This feed specifies no default update interval."
 msgstr "Denna kanal anger inget standardintervall för uppdatering."
 
-#: ../src/ui/browser_tabs.c:287
+#: ../src/ui/browser_tabs.c:289
 msgid "Untitled"
 msgstr "Namnlös"
 
@@ -1578,11 +1578,6 @@ msgstr "Kanaluppdatering"
 #: ../src/notification/libnotify.c:271
 msgid "Show details"
 msgstr "Visa detaljer"
-
-#: ../src/sync/avahi_browser.c:297 ../src/sync/avahi_publisher.c:296
-#, c-format
-msgid "Liferea Sync %s@%s"
-msgstr "Liferea-synkronisering %s@%s"
 
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
@@ -2263,6 +2258,9 @@ msgid ""
 msgstr ""
 "Ange en webbadress att använda automatisk kanalidentifiering för eller om du "
 "vet den exakta kanaladressen."
+
+#~ msgid "Liferea Sync %s@%s"
+#~ msgstr "Liferea-synkronisering %s@%s"
 
 # Technorati..
 #~ msgid "link cosmos"

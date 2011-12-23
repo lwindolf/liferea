@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-10 11:32+0100\n"
+"POT-Creation-Date: 2011-12-23 21:33+0100\n"
 "PO-Revision-Date: 2005-05-14 19:17+0300\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <lokalisointi-laatu@linux-aktivaattori.org>\n"
@@ -33,7 +33,7 @@ msgid "Feed Reader"
 msgstr "Syötteiden välivarasto"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:3 ../src/main.c:279 ../glade/liferea.ui.h:43
+#: ../liferea.desktop.in.h:3 ../src/main.c:278 ../glade/liferea.ui.h:43
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -283,56 +283,56 @@ msgstr ""
 msgid "Error renaming %s to %s\n"
 msgstr "Tiedoston \"%s\" nimen vaihtaminen tiedostoksi \"%s\" ei onnistunut.\n"
 
-#: ../src/export.c:386 ../src/export.c:388
+#: ../src/export.c:389 ../src/export.c:391
 #, fuzzy, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
 "XML-virhe välivarastotiedoston lukemisessa. \"%s\":n tuonti ei onnistunut."
 
-#: ../src/export.c:394 ../src/export.c:396
+#: ../src/export.c:397 ../src/export.c:399
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Tyhjä asiakirja. OPML-asiakirjan \"%s\" ei tulisi olla tyhjä, kun se tuodaan."
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:420 ../src/export.c:422
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" ei ole kelvollinen OPML-asiakirja. Liferea ei voi käsitellä tätä "
 "tiedostoa."
 
-#: ../src/export.c:438
+#: ../src/export.c:441
 msgid "Imported feed list"
 msgstr "Tuotu syöteluettelo"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import Feed List"
 msgstr "Tuotu syöteluettelo"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import"
 msgstr "Tuo"
 
-#: ../src/export.c:450 ../src/export.c:467 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:453 ../src/export.c:470 ../src/fl_sources/opml_source.c:387
 #, fuzzy
 msgid "OPML Files"
 msgstr "Valitse tiedosto"
 
-#: ../src/export.c:458
+#: ../src/export.c:461
 msgid "Error while exporting feed list!"
 msgstr "Virhe syöteluettelon viemisessä."
 
-#: ../src/export.c:460
+#: ../src/export.c:463
 msgid "Feed List exported!"
 msgstr "Syöteluettelo viety."
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export Feed List"
 msgstr "Vie syöteluettelo"
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export"
 msgstr "Vie"
 
@@ -394,112 +394,112 @@ msgstr ""
 msgid "There are no unread items"
 msgstr "Lukemattomia otsikkoja ei ole"
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
 msgstr ""
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid "STATE"
 msgstr ""
 
-#: ../src/main.c:197
+#: ../src/main.c:196
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version        Näytä Liferean versionumero ja lopeta"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Uusi syöte"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:203
+#: ../src/main.c:202
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr "  --debug-all      Tulosta kaikentyyppisiä vianjäljitysviestejä"
 
-#: ../src/main.c:204
+#: ../src/main.c:203
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr ""
 "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
 
-#: ../src/main.c:205
+#: ../src/main.c:204
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "  --debug-conf     Tulosta vianjäljitysviestejä asetusten käsittelystä"
 
-#: ../src/main.c:206
+#: ../src/main.c:205
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr ""
 "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
 
-#: ../src/main.c:207
+#: ../src/main.c:206
 #, fuzzy
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "  --debug-gui      Tulosta vianjäljitusviestejä käyttöliittymän rutiineista"
 
-#: ../src/main.c:208
+#: ../src/main.c:207
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
 msgstr ""
 
-#: ../src/main.c:209
+#: ../src/main.c:208
 #, fuzzy
 msgid "Print debugging messages of all network activity"
 msgstr "  --debug-all      Tulosta kaikentyyppisiä vianjäljitysviestejä"
 
-#: ../src/main.c:210
+#: ../src/main.c:209
 #, fuzzy
 msgid "Print debugging messages of all parsing functions"
 msgstr "  --debug-parsing  Tulosta vianjäljitysviestejä jäsennysrutiineista"
 
-#: ../src/main.c:211
+#: ../src/main.c:210
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 
-#: ../src/main.c:212
+#: ../src/main.c:211
 #, fuzzy
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    Tulosta vianjäljitysviestejä funktioiden alussa ja lopussa"
 
-#: ../src/main.c:213
+#: ../src/main.c:212
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Tulosta vianjäljitysviestejä päivitysten käsittelystä"
 
-#: ../src/main.c:214
+#: ../src/main.c:213
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
 
-#: ../src/main.c:215
+#: ../src/main.c:214
 #, fuzzy
 msgid "Print verbose debugging messages"
 msgstr "  --debug-verbose  Tulosta laajoja vianjäljitysviestejä"
 
-#: ../src/main.c:228 ../src/main.c:229
+#: ../src/main.c:227 ../src/main.c:228
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr ""
 "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
 
-#: ../src/main.c:236
+#: ../src/main.c:235
 msgid "Liferea, the Linux Feed Reader"
 msgstr ""
 
-#: ../src/main.c:237
+#: ../src/main.c:236
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
@@ -808,7 +808,7 @@ msgstr ""
 
 #. strip GET parameters
 #: ../src/ui/enclosure_list_view.c:338 ../src/ui/enclosure_list_view.c:514
-#: ../src/ui/liferea_htmlview.c:452 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "Valitse tiedosto"
 
@@ -945,7 +945,7 @@ msgstr ""
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:565
+#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:570
 msgid "_Increase Text Size"
 msgstr "_Kasvata tekstin kokoa"
 
@@ -953,7 +953,7 @@ msgstr "_Kasvata tekstin kokoa"
 msgid "Increases the text size of the item view."
 msgstr "Kasvattaa tekstin kokoa näkymässä."
 
-#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:566
+#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:571
 msgid "_Decrease Text Size"
 msgstr "_Pienennä tekstin kokoa"
 
@@ -1253,80 +1253,80 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea ei ole yhteydessä verkkoon, joten päivittäminen ei ole mahdollista."
 
-#: ../src/ui/liferea_htmlview.c:428
+#: ../src/ui/liferea_htmlview.c:433
 #, c-format
 msgid "Download FAILED: \"%s\""
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:430
+#: ../src/ui/liferea_htmlview.c:435
 #, fuzzy
 msgid "Download finished."
 msgstr "Tallenna verkosta ohjelmalla"
 
-#: ../src/ui/liferea_htmlview.c:537
+#: ../src/ui/liferea_htmlview.c:542
 #, fuzzy
 msgid "Launch Link In _Tab"
 msgstr "/Avaa linkki _välilehdessä"
 
-#: ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_htmlview.c:543
 #, fuzzy
 msgid "_Launch Link In Browser"
 msgstr "/_Avaa linkki selaimessa"
 
-#: ../src/ui/liferea_htmlview.c:541 ../src/ui/popup_menu.c:143
+#: ../src/ui/liferea_htmlview.c:546 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:545
+#: ../src/ui/liferea_htmlview.c:550
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Kopioi linkki"
 
-#: ../src/ui/liferea_htmlview.c:548
+#: ../src/ui/liferea_htmlview.c:553
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "/_Kopioi linkki"
 
-#: ../src/ui/liferea_htmlview.c:550
+#: ../src/ui/liferea_htmlview.c:555
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "/Tallenna nimellä..."
 
-#: ../src/ui/liferea_htmlview.c:552
+#: ../src/ui/liferea_htmlview.c:557
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:555
+#: ../src/ui/liferea_htmlview.c:560
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Uusi syöte..."
 
-#: ../src/ui/item_list_view.c:333
+#: ../src/ui/item_list_view.c:340
 #, fuzzy
 msgid "*** No title ***"
 msgstr "[Ei nimeä]"
 
-#: ../src/ui/item_list_view.c:578
+#: ../src/ui/item_list_view.c:591
 msgid "Date"
 msgstr "Aika"
 
-#: ../src/ui/item_list_view.c:592
+#: ../src/ui/item_list_view.c:605
 msgid "Headline"
 msgstr "Otsikko"
 
-#: ../src/ui/item_list_view.c:728 ../src/ui/item_list_view.c:749
-#: ../src/ui/item_list_view.c:823 ../src/ui/item_list_view.c:920
-#: ../src/ui/item_list_view.c:935
+#: ../src/ui/item_list_view.c:741 ../src/ui/item_list_view.c:762
+#: ../src/ui/item_list_view.c:836 ../src/ui/item_list_view.c:933
+#: ../src/ui/item_list_view.c:948
 msgid "No item has been selected"
 msgstr "Otsikkoja ei ole valittu."
 
-#: ../src/ui/item_list_view.c:745
+#: ../src/ui/item_list_view.c:758
 #, fuzzy
 msgid "This item has no link specified!"
 msgstr "Tällä otsikolla ei ole linkkiä."
 
-#: ../src/ui/item_list_view.c:811
+#: ../src/ui/item_list_view.c:824
 msgid "You must select a feed to delete its items!"
 msgstr "Syöte, jonka otsikot poistetaan, täytyy valita."
 
@@ -1519,7 +1519,7 @@ msgstr[1] ""
 msgid "This feed specifies no default update interval."
 msgstr "Tällä syötteellä ei ole suositeltua päivitystaajuutta."
 
-#: ../src/ui/browser_tabs.c:287
+#: ../src/ui/browser_tabs.c:289
 msgid "Untitled"
 msgstr "Nimetön"
 
@@ -1668,11 +1668,6 @@ msgstr "Syötteiden välivarasto"
 
 #: ../src/notification/libnotify.c:271
 msgid "Show details"
-msgstr ""
-
-#: ../src/sync/avahi_browser.c:297 ../src/sync/avahi_publisher.c:296
-#, c-format
-msgid "Liferea Sync %s@%s"
 msgstr ""
 
 #: ../glade/auth.ui.h:1

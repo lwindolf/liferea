@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-10 11:32+0100\n"
+"POT-Creation-Date: 2011-12-23 21:33+0100\n"
 "PO-Revision-Date: 2010-10-12 00:41+0100\n"
 "Last-Translator: Marquinos <maacub@gmail.com>\n"
 "Language-Team: Asturian <ubuntu-l10n-ast@lists.ubuntu.com>\n"
@@ -27,7 +27,7 @@ msgid "Feed Reader"
 msgstr "Llector de noticies"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:3 ../src/main.c:279 ../glade/liferea.ui.h:43
+#: ../liferea.desktop.in.h:3 ../src/main.c:278 ../glade/liferea.ui.h:43
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -263,53 +263,53 @@ msgstr "Completóse la baxada del axuntu: \"%s\""
 msgid "Error renaming %s to %s\n"
 msgstr "Fallu al renomar %s a %s\n"
 
-#: ../src/export.c:386 ../src/export.c:388
+#: ../src/export.c:389 ../src/export.c:391
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "XML erróneu nel documentu OPML «%s». Nun foi dable importalu."
 
-#: ../src/export.c:394 ../src/export.c:396
+#: ../src/export.c:397 ../src/export.c:399
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "El documentu OPML \"%s\", que se quería importar, taba vacíu."
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:420 ../src/export.c:422
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" nun ye un documentu OPML válidu. Liferea nun pudo importar el ficheru."
 
-#: ../src/export.c:438
+#: ../src/export.c:441
 msgid "Imported feed list"
 msgstr "Llista de canales importaos"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import Feed List"
 msgstr "Importar llista de canales"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import"
 msgstr "Importar"
 
-#: ../src/export.c:450 ../src/export.c:467 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:453 ../src/export.c:470 ../src/fl_sources/opml_source.c:387
 #, fuzzy
 msgid "OPML Files"
 msgstr "Escoyer Ficheru OPML"
 
-#: ../src/export.c:458
+#: ../src/export.c:461
 msgid "Error while exporting feed list!"
 msgstr "Ocurrió un fallu mientres s'esportaba la llista de canales."
 
-#: ../src/export.c:460
+#: ../src/export.c:463
 msgid "Feed List exported!"
 msgstr "La llista de canales esportóse con ésitu."
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export Feed List"
 msgstr "Esportar llista de canales"
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export"
 msgstr "Esportar"
 
@@ -370,7 +370,7 @@ msgstr "Nun pudo determinase la triba de la canal."
 msgid "There are no unread items"
 msgstr "Nun hai artículos ensin lleer "
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -379,47 +379,47 @@ msgstr ""
 "p'amosala, «iconified» pa dexala na estaya de notificación, o «hidden» "
 "p'anubrila"
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid "STATE"
 msgstr "ESTÁU"
 
-#: ../src/main.c:197
+#: ../src/main.c:196
 msgid "Show version information and exit"
 msgstr "Amosar información de la versión y colar"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Nueva canal"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:203
+#: ../src/main.c:202
 msgid "Print debugging messages of all types"
 msgstr "Amosar tolos mensaxes de depuración"
 
-#: ../src/main.c:204
+#: ../src/main.c:203
 msgid "Print debugging messages for the cache handling"
 msgstr ""
 "Amosar mensaxes de depuración tocante a remanar l'área d'almacenamientu"
 
-#: ../src/main.c:205
+#: ../src/main.c:204
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "Amosar mensaxes de depuración tocante a la configuración"
 
-#: ../src/main.c:206
+#: ../src/main.c:205
 msgid "Print debugging messages of the database handling"
 msgstr "Amosar mensaxes de depuración tocante a la base de datos"
 
-#: ../src/main.c:207
+#: ../src/main.c:206
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "Amosar mensaxes de depuración tocante toles funciones de la interface gráfica"
 
-#: ../src/main.c:208
+#: ../src/main.c:207
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
@@ -427,48 +427,48 @@ msgstr ""
 "Activa la depuración de la xeneración de HTML. Cada vegada que Liferea "
 "xenere HTML atroxarálo en ~/.liferea_1.8/output.xhtml"
 
-#: ../src/main.c:209
+#: ../src/main.c:208
 msgid "Print debugging messages of all network activity"
 msgstr "Amosar mensaxes de depuración tocante a los accesos a la rede"
 
-#: ../src/main.c:210
+#: ../src/main.c:209
 msgid "Print debugging messages of all parsing functions"
 msgstr ""
 "Amosar mensaxes de depuración tocante a toles funciones de procesamientu"
 
-#: ../src/main.c:211
+#: ../src/main.c:210
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Amosar mensaxes de depuración cuando una función allánciase más de la cuenta"
 
-#: ../src/main.c:212
+#: ../src/main.c:211
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Amosar mensaxes de depuración al entrar y colar de funciones"
 
-#: ../src/main.c:213
+#: ../src/main.c:212
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "Amosar mensaxes de depuración tocante al procesu d'anovamientu de canales"
 
-#: ../src/main.c:214
+#: ../src/main.c:213
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "Amosar mensaxes de depuración tocante a remanar l'área d'almacenamientu"
 
-#: ../src/main.c:215
+#: ../src/main.c:214
 msgid "Print verbose debugging messages"
 msgstr "Amosar información estra nos mensaxes de depuración"
 
-#: ../src/main.c:228 ../src/main.c:229
+#: ../src/main.c:227 ../src/main.c:228
 msgid "Print debugging messages for the given topic"
 msgstr "Amosar mensaxes de depuración tocante al tema especificáu"
 
-#: ../src/main.c:236
+#: ../src/main.c:235
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, llector de noticies pa Linux"
 
-#: ../src/main.c:237
+#: ../src/main.c:236
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Pa más información, visita http://liferea.sourceforge.net/"
 
@@ -765,7 +765,7 @@ msgstr "%d%s"
 
 #. strip GET parameters
 #: ../src/ui/enclosure_list_view.c:338 ../src/ui/enclosure_list_view.c:514
-#: ../src/ui/liferea_htmlview.c:452 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "Escoyer Ficheru"
 
@@ -893,7 +893,7 @@ msgstr ""
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:565
+#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:570
 msgid "_Increase Text Size"
 msgstr "_Aumentar el tamañu del testu"
 
@@ -901,7 +901,7 @@ msgstr "_Aumentar el tamañu del testu"
 msgid "Increases the text size of the item view."
 msgstr "Aumenta'l tamañu del testu na vista del artículu."
 
-#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:566
+#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:571
 msgid "_Decrease Text Size"
 msgstr "_Amenorgar el tamañu del testu"
 
@@ -1183,74 +1183,74 @@ msgstr "Confirmar Desaniciu"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea ta trabayando ensin conexón. Nun pueden anovase les fontes"
 
-#: ../src/ui/liferea_htmlview.c:428
+#: ../src/ui/liferea_htmlview.c:433
 #, fuzzy, c-format
 msgid "Download FAILED: \"%s\""
 msgstr "Falló la descarga del axuntu: «%s»"
 
-#: ../src/ui/liferea_htmlview.c:430
+#: ../src/ui/liferea_htmlview.c:435
 #, fuzzy
 msgid "Download finished."
 msgstr "Baxar usan_do"
 
-#: ../src/ui/liferea_htmlview.c:537
+#: ../src/ui/liferea_htmlview.c:542
 msgid "Launch Link In _Tab"
 msgstr "Abrir l'enllaz nuna lli_ngüeta nueva"
 
-#: ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_htmlview.c:543
 msgid "_Launch Link In Browser"
 msgstr "Abrir l'enllaz n_el restolador"
 
-#: ../src/ui/liferea_htmlview.c:541 ../src/ui/popup_menu.c:143
+#: ../src/ui/liferea_htmlview.c:546 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Crear un marcador del enllaz en %s"
 
-#: ../src/ui/liferea_htmlview.c:545
+#: ../src/ui/liferea_htmlview.c:550
 msgid "_Copy Link Location"
 msgstr "_Copiar direición del enllaz"
 
-#: ../src/ui/liferea_htmlview.c:548
+#: ../src/ui/liferea_htmlview.c:553
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "_Copiar direición del enllaz"
 
-#: ../src/ui/liferea_htmlview.c:550
+#: ../src/ui/liferea_htmlview.c:555
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "Guardar como..."
 
-#: ../src/ui/liferea_htmlview.c:552
+#: ../src/ui/liferea_htmlview.c:557
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:555
+#: ../src/ui/liferea_htmlview.c:560
 msgid "_Subscribe..."
 msgstr "_Soscribise..."
 
-#: ../src/ui/item_list_view.c:333
+#: ../src/ui/item_list_view.c:340
 msgid "*** No title ***"
 msgstr "*** Ensin títulu ***"
 
-#: ../src/ui/item_list_view.c:578
+#: ../src/ui/item_list_view.c:591
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/item_list_view.c:592
+#: ../src/ui/item_list_view.c:605
 msgid "Headline"
 msgstr "Titular"
 
-#: ../src/ui/item_list_view.c:728 ../src/ui/item_list_view.c:749
-#: ../src/ui/item_list_view.c:823 ../src/ui/item_list_view.c:920
-#: ../src/ui/item_list_view.c:935
+#: ../src/ui/item_list_view.c:741 ../src/ui/item_list_view.c:762
+#: ../src/ui/item_list_view.c:836 ../src/ui/item_list_view.c:933
+#: ../src/ui/item_list_view.c:948
 msgid "No item has been selected"
 msgstr "Nun se seleicionó dengún artículu"
 
-#: ../src/ui/item_list_view.c:745
+#: ../src/ui/item_list_view.c:758
 msgid "This item has no link specified!"
 msgstr "¡Esti artículu nun tien un enllaz asignáu!"
 
-#: ../src/ui/item_list_view.c:811
+#: ../src/ui/item_list_view.c:824
 msgid "You must select a feed to delete its items!"
 msgstr "¡Seleiciona una canal pa desaniciar los sos artículos!"
 
@@ -1429,7 +1429,7 @@ msgstr[1] "Esta canal suxer un intervalu d'anovamientu de %d minutos."
 msgid "This feed specifies no default update interval."
 msgstr "Esta canal nun especifica un intervalu d'anovamientos predetermináu."
 
-#: ../src/ui/browser_tabs.c:287
+#: ../src/ui/browser_tabs.c:289
 msgid "Untitled"
 msgstr ""
 
@@ -1587,11 +1587,6 @@ msgstr "Anovar canal"
 #: ../src/notification/libnotify.c:271
 msgid "Show details"
 msgstr "Amosar detalles"
-
-#: ../src/sync/avahi_browser.c:297 ../src/sync/avahi_publisher.c:296
-#, c-format
-msgid "Liferea Sync %s@%s"
-msgstr "Sincronización de Liferea %s@%s"
 
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
@@ -2299,6 +2294,9 @@ msgid ""
 msgstr ""
 "Escribi la direición d'un sitiu web pa usar l'autodescubrimientu o, si la "
 "conoces, la direición esauta de la canal."
+
+#~ msgid "Liferea Sync %s@%s"
+#~ msgstr "Sincronización de Liferea %s@%s"
 
 #~ msgid "link cosmos"
 #~ msgstr "universu d'enllaces"

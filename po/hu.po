@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-10 11:32+0100\n"
+"POT-Creation-Date: 2011-12-23 21:33+0100\n"
 "PO-Revision-Date: 2011-10-04 12:42+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -27,7 +27,7 @@ msgid "Feed Reader"
 msgstr "Hírforrásolvasó"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:3 ../src/main.c:279 ../glade/liferea.ui.h:43
+#: ../liferea.desktop.in.h:3 ../src/main.c:278 ../glade/liferea.ui.h:43
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -263,54 +263,54 @@ msgstr "Csatolmány letöltése befejeződött: „%s”"
 msgid "Error renaming %s to %s\n"
 msgstr "Hiba %s átnevezésében %s névre\n"
 
-#: ../src/export.c:386 ../src/export.c:388
+#: ../src/export.c:389 ../src/export.c:391
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
 "XML hiba az OPML-fájl olvasása közben! Nem lehet importálni a fájlt („%s”)."
 
-#: ../src/export.c:394 ../src/export.c:396
+#: ../src/export.c:397 ../src/export.c:399
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Üres dokumentum! Az OPML-dokumentum („%s”) üres, nem lehet importálni."
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:420 ../src/export.c:422
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "%s érvénytelen OPML dokumentum! A Liferea nem tudja importálni a fájlt!"
 
-#: ../src/export.c:438
+#: ../src/export.c:441
 msgid "Imported feed list"
 msgstr "Importált hírforrások"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import Feed List"
 msgstr "Hírforráslista importálása"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import"
 msgstr "Importálás"
 
-#: ../src/export.c:450 ../src/export.c:467 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:453 ../src/export.c:470 ../src/fl_sources/opml_source.c:387
 #, fuzzy
 msgid "OPML Files"
 msgstr "OPML-fájl választása"
 
-#: ../src/export.c:458
+#: ../src/export.c:461
 msgid "Error while exporting feed list!"
 msgstr "Hiba történt a hírforráslista exportálása közben."
 
-#: ../src/export.c:460
+#: ../src/export.c:463
 msgid "Feed List exported!"
 msgstr "Hírforráslista exportálva!"
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export Feed List"
 msgstr "Hírforráslista exportálása"
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export"
 msgstr "Exportálás"
 
@@ -372,7 +372,7 @@ msgstr "Nem állapítható meg a hírforrás típusa."
 msgid "There are no unread items"
 msgstr "Nincsen olvasatlan elem "
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -380,45 +380,45 @@ msgstr ""
 "A Liferea indítása adott ÁLLAPOTÚ főablakkal. Az ÁLLAPOT lehet "
 "„shown” (látható), „iconified” (ikonméret) vagy „hidden” (rejtett)."
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid "STATE"
 msgstr "ÁLLAPOT"
 
-#: ../src/main.c:197
+#: ../src/main.c:196
 msgid "Show version information and exit"
 msgstr "Verzióinformáció megjelenítése, majd kilépés"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Új feliratkozás"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:203
+#: ../src/main.c:202
 msgid "Print debugging messages of all types"
 msgstr "Minden típusú hibakeresési üzenetek kiírása"
 
-#: ../src/main.c:204
+#: ../src/main.c:203
 msgid "Print debugging messages for the cache handling"
 msgstr "A gyorsítótár-kezelési hibakeresési üzenetek kiírása"
 
-#: ../src/main.c:205
+#: ../src/main.c:204
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "A beállításkezelés hibakeresési üzeneteinek kiírása"
 
-#: ../src/main.c:206
+#: ../src/main.c:205
 msgid "Print debugging messages of the database handling"
 msgstr "Az adatbázis-kezelés hibakeresési üzeneteinek kiírása"
 
-#: ../src/main.c:207
+#: ../src/main.c:206
 msgid "Print debugging messages of all GUI functions"
 msgstr "Minden GUI függvény hibakeresési üzeneteinek kiírása"
 
-#: ../src/main.c:208
+#: ../src/main.c:207
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
@@ -427,45 +427,45 @@ msgstr ""
 "kimenetet jelenít meg, az előállított HTML-t kiírja a ~/.liferea_1.8/output."
 "xhtml fájlba."
 
-#: ../src/main.c:209
+#: ../src/main.c:208
 msgid "Print debugging messages of all network activity"
 msgstr "Minden hálózati tevékenység hibakeresési üzeneteinek kiírása"
 
-#: ../src/main.c:210
+#: ../src/main.c:209
 msgid "Print debugging messages of all parsing functions"
 msgstr "Minden feldolgozási függvény hibakeresési üzeneteinek kiírása"
 
-#: ../src/main.c:211
+#: ../src/main.c:210
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Hibakeresési üzenetek kiírása, ha egy függvény feldolgozása túl sokáig tart"
 
-#: ../src/main.c:212
+#: ../src/main.c:211
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Hibakeresési üzeneteinek kiírása függvényekbe belépéskor/kilépéskor"
 
-#: ../src/main.c:213
+#: ../src/main.c:212
 msgid "Print debugging messages of the feed update processing"
 msgstr "A hírforrásfrissítés-feldolgozás hibakeresési üzeneteinek kiírása"
 
-#: ../src/main.c:214
+#: ../src/main.c:213
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "A gyorsítótár-kezelési hibakeresési üzenetek kiírása"
 
-#: ../src/main.c:215
+#: ../src/main.c:214
 msgid "Print verbose debugging messages"
 msgstr "Részletes hibakeresési üzenetek kiírása"
 
-#: ../src/main.c:228 ../src/main.c:229
+#: ../src/main.c:227 ../src/main.c:228
 msgid "Print debugging messages for the given topic"
 msgstr "A megadott témában a hibakeresési üzenetek kiírása"
 
-#: ../src/main.c:236
+#: ../src/main.c:235
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea – A linuxos hírforrásolvasó"
 
-#: ../src/main.c:237
+#: ../src/main.c:236
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "További információkért lásd: http://liferea.sourceforge.net/"
 
@@ -764,7 +764,7 @@ msgstr "%d%s"
 
 #. strip GET parameters
 #: ../src/ui/enclosure_list_view.c:338 ../src/ui/enclosure_list_view.c:514
-#: ../src/ui/liferea_htmlview.c:452 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "Fájl választása"
 
@@ -892,7 +892,7 @@ msgstr ""
 msgid "_View"
 msgstr "_Nézet"
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:565
+#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:570
 msgid "_Increase Text Size"
 msgstr "Szövegméret _növelése"
 
@@ -900,7 +900,7 @@ msgstr "Szövegméret _növelése"
 msgid "Increases the text size of the item view."
 msgstr "Növeli az elemnézetben használt betűk méretét."
 
-#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:566
+#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:571
 msgid "_Decrease Text Size"
 msgstr "Szövegméret _csökkentése"
 
@@ -1182,74 +1182,74 @@ msgstr "Törlés megerősítés bejegyzést?e"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "A Liferea nem kapcsolódik az internetre, nem lehet frissíteni."
 
-#: ../src/ui/liferea_htmlview.c:428
+#: ../src/ui/liferea_htmlview.c:433
 #, fuzzy, c-format
 msgid "Download FAILED: \"%s\""
 msgstr "Csatolmány letöltése MEGHIÚSULT: „%s”"
 
-#: ../src/ui/liferea_htmlview.c:430
+#: ../src/ui/liferea_htmlview.c:435
 #, fuzzy
 msgid "Download finished."
 msgstr "_Letöltés módja:"
 
-#: ../src/ui/liferea_htmlview.c:537
+#: ../src/ui/liferea_htmlview.c:542
 msgid "Launch Link In _Tab"
 msgstr "Hivatkozás megnyitása új l_apon"
 
-#: ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_htmlview.c:543
 msgid "_Launch Link In Browser"
 msgstr "Hivatkozás megnyitása _böngészőben"
 
-#: ../src/ui/liferea_htmlview.c:541 ../src/ui/popup_menu.c:143
+#: ../src/ui/liferea_htmlview.c:546 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Hivatkozást _könyvjelzőbe: %s"
 
-#: ../src/ui/liferea_htmlview.c:545
+#: ../src/ui/liferea_htmlview.c:550
 msgid "_Copy Link Location"
 msgstr "Hivatkozás _címének másolása"
 
-#: ../src/ui/liferea_htmlview.c:548
+#: ../src/ui/liferea_htmlview.c:553
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "Hivatkozás _címének másolása"
 
-#: ../src/ui/liferea_htmlview.c:550
+#: ../src/ui/liferea_htmlview.c:555
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "Mentés másként…"
 
-#: ../src/ui/liferea_htmlview.c:552
+#: ../src/ui/liferea_htmlview.c:557
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:555
+#: ../src/ui/liferea_htmlview.c:560
 msgid "_Subscribe..."
 msgstr "_Feliratkozás…"
 
-#: ../src/ui/item_list_view.c:333
+#: ../src/ui/item_list_view.c:340
 msgid "*** No title ***"
 msgstr "*** Nincs cím ***"
 
-#: ../src/ui/item_list_view.c:578
+#: ../src/ui/item_list_view.c:591
 msgid "Date"
 msgstr "Dátum"
 
-#: ../src/ui/item_list_view.c:592
+#: ../src/ui/item_list_view.c:605
 msgid "Headline"
 msgstr "Cím"
 
-#: ../src/ui/item_list_view.c:728 ../src/ui/item_list_view.c:749
-#: ../src/ui/item_list_view.c:823 ../src/ui/item_list_view.c:920
-#: ../src/ui/item_list_view.c:935
+#: ../src/ui/item_list_view.c:741 ../src/ui/item_list_view.c:762
+#: ../src/ui/item_list_view.c:836 ../src/ui/item_list_view.c:933
+#: ../src/ui/item_list_view.c:948
 msgid "No item has been selected"
 msgstr "Nincs kiválasztott elem"
 
-#: ../src/ui/item_list_view.c:745
+#: ../src/ui/item_list_view.c:758
 msgid "This item has no link specified!"
 msgstr "Nincs hivatkozás megadva ehhez az elemhez."
 
-#: ../src/ui/item_list_view.c:811
+#: ../src/ui/item_list_view.c:824
 msgid "You must select a feed to delete its items!"
 msgstr "Válasszon ki egy hírforrást az elemeinek törléséhez."
 
@@ -1427,7 +1427,7 @@ msgstr[1] "A hírforrás szolgáltatója %d perces frissítési időközt javaso
 msgid "This feed specifies no default update interval."
 msgstr "Ez a hírforrás nem ad meg javasolt frissítési időközt."
 
-#: ../src/ui/browser_tabs.c:287
+#: ../src/ui/browser_tabs.c:289
 msgid "Untitled"
 msgstr ""
 
@@ -1586,11 +1586,6 @@ msgstr "Hírforrásfrissítés"
 #: ../src/notification/libnotify.c:271
 msgid "Show details"
 msgstr "Részletek"
-
-#: ../src/sync/avahi_browser.c:297 ../src/sync/avahi_publisher.c:296
-#, c-format
-msgid "Liferea Sync %s@%s"
-msgstr "Liferea szinkronizálás %s@%s"
 
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
@@ -2300,6 +2295,9 @@ msgid ""
 msgstr ""
 "Adjon meg egy webcímet, ahol a program automatikusan megkeresi a híreket, "
 "vagy, ha tudja, akkor a hírforrás pontos címét."
+
+#~ msgid "Liferea Sync %s@%s"
+#~ msgstr "Liferea szinkronizálás %s@%s"
 
 #~ msgid "link cosmos"
 #~ msgstr "hivatkozáskozmoz"

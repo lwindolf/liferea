@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-10 11:32+0100\n"
+"POT-Creation-Date: 2011-12-23 21:33+0100\n"
 "PO-Revision-Date: 2011-10-23 19:41+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -28,7 +28,7 @@ msgid "Feed Reader"
 msgstr "Програма для читання подач"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:3 ../src/main.c:279 ../glade/liferea.ui.h:43
+#: ../liferea.desktop.in.h:3 ../src/main.c:278 ../glade/liferea.ui.h:43
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -264,13 +264,13 @@ msgstr "Звантаження вкладення завершено: «%s»"
 msgid "Error renaming %s to %s\n"
 msgstr "Помилка під час спроби перейменування %s на %s\n"
 
-#: ../src/export.c:386 ../src/export.c:388
+#: ../src/export.c:389 ../src/export.c:391
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
 "Помилка у XML під час спроби читання файла OPML. Не вдалося імпортувати «%s»."
 
-#: ../src/export.c:394 ../src/export.c:396
+#: ../src/export.c:397 ../src/export.c:399
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -278,41 +278,41 @@ msgstr ""
 "Порожній документ. Документ OPML «%s» не повинен бути порожнім під час "
 "імпортування."
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:420 ../src/export.c:422
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "«%s» не є коректним документом OPML. Liferea не здатна імпортувати цей файл."
 
-#: ../src/export.c:438
+#: ../src/export.c:441
 msgid "Imported feed list"
 msgstr "Список імпортованих подач"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import Feed List"
 msgstr "Імпортувати список подач"
 
-#: ../src/export.c:450
+#: ../src/export.c:453
 msgid "Import"
 msgstr "Імпортувати"
 
-#: ../src/export.c:450 ../src/export.c:467 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:453 ../src/export.c:470 ../src/fl_sources/opml_source.c:387
 msgid "OPML Files"
 msgstr "Файли OPML"
 
-#: ../src/export.c:458
+#: ../src/export.c:461
 msgid "Error while exporting feed list!"
 msgstr "Помилка під час спроби експортування списку подач."
 
-#: ../src/export.c:460
+#: ../src/export.c:463
 msgid "Feed List exported!"
 msgstr "Список подач експортовано."
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export Feed List"
 msgstr "Експортувати список подач"
 
-#: ../src/export.c:467
+#: ../src/export.c:470
 msgid "Export"
 msgstr "Експортувати"
 
@@ -376,7 +376,7 @@ msgstr "Не вдалося визначити тип подачі."
 msgid "There are no unread items"
 msgstr "Немає непрочитаних пунктів"
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -385,43 +385,43 @@ msgstr ""
 "значення «shown» (показ), «iconified» (згортання) або "
 "«hidden» (приховування)."
 
-#: ../src/main.c:193
+#: ../src/main.c:192
 msgid "STATE"
 msgstr "СТАН"
 
-#: ../src/main.c:197
+#: ../src/main.c:196
 msgid "Show version information and exit"
 msgstr "Показати інформацію про версію і завершити роботу"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 msgid "Add a new subscription"
 msgstr "Додати нову підписку"
 
-#: ../src/main.c:198
+#: ../src/main.c:197
 msgid "uri"
 msgstr "адреса"
 
-#: ../src/main.c:203
+#: ../src/main.c:202
 msgid "Print debugging messages of all types"
 msgstr "Виводити діагностичні повідомлення всіх типів"
 
-#: ../src/main.c:204
+#: ../src/main.c:203
 msgid "Print debugging messages for the cache handling"
 msgstr "Виводити діагностичні повідомлення щодо обробки кешу"
 
-#: ../src/main.c:205
+#: ../src/main.c:204
 msgid "Print debugging messages for the configuration handling"
 msgstr "Виводити діагностичні повідомлення щодо обробки налаштувань"
 
-#: ../src/main.c:206
+#: ../src/main.c:205
 msgid "Print debugging messages of the database handling"
 msgstr "Виводити діагностичні повідомлення щодо обробки бази даних"
 
-#: ../src/main.c:207
+#: ../src/main.c:206
 msgid "Print debugging messages of all GUI functions"
 msgstr "Виводити діагностичні повідомлення щодо функцій інтерфейсу"
 
-#: ../src/main.c:208
+#: ../src/main.c:207
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
@@ -430,45 +430,45 @@ msgstr ""
 "Liferea програма створюватиме дамп HTML за адресою ~/.liferea_1.8/output."
 "xhtml"
 
-#: ../src/main.c:209
+#: ../src/main.c:208
 msgid "Print debugging messages of all network activity"
 msgstr "Виводити діагностичні повідомлення для всіх дій, пов’язаних з мережею"
 
-#: ../src/main.c:210
+#: ../src/main.c:209
 msgid "Print debugging messages of all parsing functions"
 msgstr "Виводити діагностичні повідомлення щодо функцій обробки"
 
-#: ../src/main.c:211
+#: ../src/main.c:210
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Виводити діагностичні повідомлення, якщо обробка у функції триває занадто "
 "довго"
 
-#: ../src/main.c:212
+#: ../src/main.c:211
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Виводити діагностичні повідомлення під час входу-виходу з функцій"
 
-#: ../src/main.c:213
+#: ../src/main.c:212
 msgid "Print debugging messages of the feed update processing"
 msgstr "Виводити діагностичні повідомлення обробки оновлення подач"
 
-#: ../src/main.c:214
+#: ../src/main.c:213
 msgid "Print debugging messages of the search folder matching"
 msgstr "Виводити діагностичні повідомлення щодо пошуку відповідних тек"
 
-#: ../src/main.c:215
+#: ../src/main.c:214
 msgid "Print verbose debugging messages"
 msgstr "Виводити докладні діагностичні повідомлення"
 
-#: ../src/main.c:228 ../src/main.c:229
+#: ../src/main.c:227 ../src/main.c:228
 msgid "Print debugging messages for the given topic"
 msgstr "Виводити діагностичні повідомлення з вказаною темою"
 
-#: ../src/main.c:236
+#: ../src/main.c:235
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, програма для читання подач у Linux"
 
-#: ../src/main.c:237
+#: ../src/main.c:236
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 "Докладніше про програму можна дізнатися за адресою http://liferea."
@@ -778,7 +778,7 @@ msgstr "%d%s"
 
 #. strip GET parameters
 #: ../src/ui/enclosure_list_view.c:338 ../src/ui/enclosure_list_view.c:514
-#: ../src/ui/liferea_htmlview.c:452 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "Виберіть файл"
 
@@ -910,7 +910,7 @@ msgstr ""
 msgid "_View"
 msgstr "П_ерегляд"
 
-#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:565
+#: ../src/ui/liferea_shell.c:860 ../src/ui/liferea_htmlview.c:570
 msgid "_Increase Text Size"
 msgstr "З_більшити розмір символів"
 
@@ -918,7 +918,7 @@ msgstr "З_більшити розмір символів"
 msgid "Increases the text size of the item view."
 msgstr "Збільшити розмір символів на панелі перегляду."
 
-#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:566
+#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:571
 msgid "_Decrease Text Size"
 msgstr "З_меншити розмір символів"
 
@@ -1199,71 +1199,71 @@ msgstr "Підтвердження вилучення"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea працює у автономному режимі. Оновлення даних неможливе."
 
-#: ../src/ui/liferea_htmlview.c:428
+#: ../src/ui/liferea_htmlview.c:433
 #, c-format
 msgid "Download FAILED: \"%s\""
 msgstr "Помилка під час звантаження: «%s»"
 
-#: ../src/ui/liferea_htmlview.c:430
+#: ../src/ui/liferea_htmlview.c:435
 msgid "Download finished."
 msgstr "Звантаження завершено."
 
-#: ../src/ui/liferea_htmlview.c:537
+#: ../src/ui/liferea_htmlview.c:542
 msgid "Launch Link In _Tab"
 msgstr "Відкрити посилання у в_кладці"
 
-#: ../src/ui/liferea_htmlview.c:538
+#: ../src/ui/liferea_htmlview.c:543
 msgid "_Launch Link In Browser"
 msgstr "Ві_дкрити посилання у браузері"
 
-#: ../src/ui/liferea_htmlview.c:541 ../src/ui/popup_menu.c:143
+#: ../src/ui/liferea_htmlview.c:546 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "С_творити закладку для посилання на %s"
 
-#: ../src/ui/liferea_htmlview.c:545
+#: ../src/ui/liferea_htmlview.c:550
 msgid "_Copy Link Location"
 msgstr "_Копіювати посилання"
 
-#: ../src/ui/liferea_htmlview.c:548
+#: ../src/ui/liferea_htmlview.c:553
 msgid "_Copy Image Location"
 msgstr "_Копіювати адресу зображення"
 
-#: ../src/ui/liferea_htmlview.c:550
+#: ../src/ui/liferea_htmlview.c:555
 msgid "S_ave Link As"
 msgstr "З_берегти посилання як"
 
-#: ../src/ui/liferea_htmlview.c:552
+#: ../src/ui/liferea_htmlview.c:557
 msgid "S_ave Image As"
 msgstr "З_берегти зображення як"
 
-#: ../src/ui/liferea_htmlview.c:555
+#: ../src/ui/liferea_htmlview.c:560
 msgid "_Subscribe..."
 msgstr "_Підписатися…"
 
-#: ../src/ui/item_list_view.c:333
+#: ../src/ui/item_list_view.c:340
 msgid "*** No title ***"
 msgstr "*** без заголовка ***"
 
-#: ../src/ui/item_list_view.c:578
+#: ../src/ui/item_list_view.c:591
 msgid "Date"
 msgstr "Дата"
 
-#: ../src/ui/item_list_view.c:592
+#: ../src/ui/item_list_view.c:605
 msgid "Headline"
 msgstr "Заголовок"
 
-#: ../src/ui/item_list_view.c:728 ../src/ui/item_list_view.c:749
-#: ../src/ui/item_list_view.c:823 ../src/ui/item_list_view.c:920
-#: ../src/ui/item_list_view.c:935
+#: ../src/ui/item_list_view.c:741 ../src/ui/item_list_view.c:762
+#: ../src/ui/item_list_view.c:836 ../src/ui/item_list_view.c:933
+#: ../src/ui/item_list_view.c:948
 msgid "No item has been selected"
 msgstr "Не позначено жодного пункту"
 
-#: ../src/ui/item_list_view.c:745
+#: ../src/ui/item_list_view.c:758
 msgid "This item has no link specified!"
 msgstr "У цьому пункті не вказано жодного посилання."
 
-#: ../src/ui/item_list_view.c:811
+#: ../src/ui/item_list_view.c:824
 msgid "You must select a feed to delete its items!"
 msgstr "Для вилучення пунктів подачі слід вказати якусь з подач."
 
@@ -1445,7 +1445,7 @@ msgstr[3] ""
 msgid "This feed specifies no default update interval."
 msgstr "У цій подачі не вказано ніякого типового проміжку між оновленнями."
 
-#: ../src/ui/browser_tabs.c:287
+#: ../src/ui/browser_tabs.c:289
 msgid "Untitled"
 msgstr "Без назви"
 
@@ -1614,11 +1614,6 @@ msgstr "Оновлення подач"
 #: ../src/notification/libnotify.c:271
 msgid "Show details"
 msgstr "Показати подробиці"
-
-#: ../src/sync/avahi_browser.c:297 ../src/sync/avahi_publisher.c:296
-#, c-format
-msgid "Liferea Sync %s@%s"
-msgstr "Синхронізація Liferea %s@%s"
 
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
@@ -2303,6 +2298,9 @@ msgid ""
 msgstr ""
 "Вкажіть адресу веб-сайта для автоматичного пошуку подач або, якщо вона вам "
 "відома, точну адресу подачі."
+
+#~ msgid "Liferea Sync %s@%s"
+#~ msgstr "Синхронізація Liferea %s@%s"
 
 #~ msgid "link cosmos"
 #~ msgstr "посилання cosmos"
