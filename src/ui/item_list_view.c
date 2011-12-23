@@ -410,17 +410,22 @@ on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpoint
 
 /* Show tooltip when headline's column text (IS_LABEL) is truncated. */
 
-static gint get_cell_renderer_width (GtkWidget *widget, GtkCellRenderer *cell, const gchar *text, gint weight)
+static gint
+get_cell_renderer_width (GtkWidget *widget, GtkCellRenderer *cell, const gchar *text, gint weight)
 {
-	PangoLayout *layout = gtk_widget_create_pango_layout (widget, text);
-	PangoAttrList *attrbs = pango_attr_list_new();
+	PangoLayout	*layout = gtk_widget_create_pango_layout (widget, text);
+	PangoAttrList	*attrbs = pango_attr_list_new();
+	PangoRectangle	rect;
+	gint		xpad = 0;
+
 	pango_attr_list_insert (attrbs, pango_attr_weight_new (weight));
 	pango_layout_set_attributes (layout, attrbs);
 	pango_attr_list_unref (attrbs);
-	PangoRectangle rect;
 	pango_layout_get_pixel_extents (layout, NULL, &rect);
 	g_object_unref (G_OBJECT (layout));
-	return (cell->xpad * 2) + rect.x + rect.width;
+
+	gtk_cell_renderer_get_padding (cell, &xpad, NULL);
+	return (xpad * 2) + rect.x + rect.width;
 }
 
 static gboolean
