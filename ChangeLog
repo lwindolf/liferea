@@ -8,6 +8,8 @@
 	  "wrong" (patch by Robert Trace)
 	* Fixes writing subscriptions into DB when importing from OPML
 	  (reported by Dennis Nezic)
+	* Revert ISO 8601 parsing using Glib due to Debian #653196
+	  This fixes SF #3465106 (reported by Vincent Lefevre)
 
 
 2011-12-10  Lars Lindner <lars.lindner@gmail.com>
