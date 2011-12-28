@@ -35,7 +35,7 @@
 #include "fl_sources/node_source.h"
 
 /** lock to prevent feed list saving while loading */
-static gboolean feedlistImport = FALSE;
+static gboolean feedlistImport = TRUE;
 
 static gchar *
 default_source_source_get_feedlist (nodePtr node)
@@ -43,90 +43,48 @@ default_source_source_get_feedlist (nodePtr node)
 	return common_create_cache_filename (NULL, "feedlist", "opml");
 }
 
+static nodePtr *
+default_source_load_subscriptions (void)
+{
+	// FIXME: Implement me!
+	g_warning("default_source_load_subscriptions: Implement me!");
+}
+
 static void
 default_source_import (nodePtr node) 
 {
-	gchar		*filename10;
-	gchar		*filename12;
-	gchar		*filename14;
-	gchar		*filename16;
-	gchar		*filename17;
-	gchar		*filename, *backupFilename;
-	gchar		*content;
-	gssize		length;
-	migrationMode	migration = 0;
-
 	debug_enter ("default_source_source_import");
 
-	/* start the import */
-	feedlistImport = TRUE;
+	g_assert (TRUE == feedlistImport);
 
-	/* build test file names */
-	filename10 = g_strdup_printf ("%s/.liferea/feedlist.opml", g_get_home_dir ());
-	filename12 = g_strdup_printf ("%s/.liferea_1.2/feedlist.opml", g_get_home_dir ());
-	filename14 = g_strdup_printf ("%s/.liferea_1.4/feedlist.opml", g_get_home_dir ());
-	filename16 = g_strdup_printf ("%s/.liferea_1.6/feedlist.opml", g_get_home_dir ());
-	filename17 = g_strdup_printf ("%s/.liferea_1.7/feedlist.opml", g_get_home_dir ());
-	filename = default_source_source_get_feedlist (node);
-	backupFilename = g_strdup_printf("%s.backup", filename);
-	
-	if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
-		/* If feed list is missing, try migration. */
+	if (NULL == default_source_load_subscriptions()) {	
+		/* If subscriptions could not be loaded try cache migration
+		   or provide a default feed list */
 
-		/* Note: Starting with 1.3 migration needs to be done before feed list import... */
-		if (g_file_test (filename17, G_FILE_TEST_EXISTS)) {
-			migration_execute (MIGRATION_FROM_17);
+		gchar *filename14 = g_strdup_printf ("%s/.liferea_1.4/feedlist.opml", g_get_home_dir ());
+		gchar *filename16 = g_strdup_printf ("%s/.liferea_1.6/feedlist.opml", g_get_home_dir ());
+		gchar *filename18 = g_strdup_printf ("%s/.liferea_1.8/feedlist.opml", g_get_home_dir ());
+
+		if (g_file_test (filename18, G_FILE_TEST_EXISTS)) {
+			migration_execute (MIGRATION_FROM_18, node);
 		} else if (g_file_test (filename16, G_FILE_TEST_EXISTS)) {
-			migration_execute (MIGRATION_FROM_16);
+			migration_execute (MIGRATION_FROM_16, node);
 		} else if (g_file_test (filename14, G_FILE_TEST_EXISTS)) {
-			migration_execute (MIGRATION_FROM_14);
-		} else if (g_file_test (filename12, G_FILE_TEST_EXISTS)) {
-			/* migration needs to be done after feed list import
-			   so we redirect the feed list OPML file name and
-			   import later */
-			g_free (filename);
-		     	filename = g_strdup (filename12);
-			migration = MIGRATION_FROM_12;
-		} else if (g_file_test (filename10, G_FILE_TEST_EXISTS)) {
-			/* same as 1.2->1.4: delayed migration... */
-			g_free (filename);
-			filename = g_strdup (filename10);
-			migration = MIGRATION_FROM_10;
-		}
-	}
-
-	g_free (filename17);
-	g_free (filename16);
-	g_free (filename14);
-	g_free (filename12);
-	g_free (filename10);
+			migration_execute (MIGRATION_FROM_14, node);
+		} else {
+			gchar *filename = common_get_localized_filename (PACKAGE_DATA_DIR "/" PACKAGE "/opml/feedlist_%s.opml");
+			if (!filename)
+				g_error ("Fatal: No migration possible and no default feedlist found!");
 	
-	/* check for default feed list import */
-	if (!g_file_test (filename, G_FILE_TEST_EXISTS)) {
-		/* if there is no feedlist.opml we provide a default feed list */
-		g_free (filename);
-		
-		filename = common_get_localized_filename (PACKAGE_DATA_DIR "/" PACKAGE "/opml/feedlist_%s.opml");
+			if (!import_OPML_feedlist (filename, node, FALSE, TRUE))
+				g_error ("Fatal: Feed list import failed!");
+			g_free (filename);
+		}
 
-		if (!filename)
-			g_error ("No default feedlist found.");
+		g_free (filename18);
+		g_free (filename16);
+		g_free (filename14);
 	}
-
-	if (!import_OPML_feedlist (filename, node, FALSE, TRUE))
-		g_error ("Fatal: Feed list import failed! You might want to try to restore\n"
-		         "the feed list file %s from the backup in %s", filename, backupFilename);
-
-	/* upon successful import create a backup copy of the feed list */
-	if (g_file_get_contents (filename, &content, &length, NULL)) {
-		g_file_set_contents (backupFilename, content, length, NULL);
-		g_free (content);
-	}
-
-	g_free (filename);
-	g_free (backupFilename);
-			
-	if (migration)
-		migration_execute (migration);
 	
 	feedlistImport = FALSE;
 

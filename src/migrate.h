@@ -21,20 +21,21 @@
 #ifndef _MIGRATE_H
 #define _MIGRATE_H
 
+#include "node.h"
+
 typedef enum {
 	MIGRATION_MODE_INVALID = 0,
-	MIGRATION_FROM_10,
-	MIGRATION_FROM_12,
 	MIGRATION_FROM_14,
 	MIGRATION_FROM_16,
-	MIGRATION_FROM_17
+	MIGRATION_FROM_18
 } migrationMode;
 
 /**
  * Performs a migration for the given migration mode.
  *
  * @param mode	migration mode
+ * @param node	feed list root node
  */
-void migration_execute (migrationMode mode);
+void migration_execute (migrationMode mode, nodePtr node);
 
 #endif
