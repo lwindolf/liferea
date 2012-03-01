@@ -1,3 +1,11 @@
+2012-03-01  Lars Lindner <lars.lindner@gmail.com>
+
+	Version 1.6.8
+
+	* Fixes SF #3484742: Can't drag and drop feed to empty folder
+	  (reported by peterbuhk)
+
+
 2011-11-28  Lars Lindner <lars.lindner@gmail.com>
 
 	Version 1.6.7
