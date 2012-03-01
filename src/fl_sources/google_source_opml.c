@@ -44,16 +44,16 @@
  * Find a node by the source id.
  */
 nodePtr
-google_source_get_node_by_source (GoogleSourcePtr gsource, const gchar *source) 
+google_source_opml_get_node_by_source (GoogleSourcePtr gsource, const gchar *source) 
 {
-	return google_source_get_subnode_by_node(gsource->root, source);
+	return google_source_opml_get_subnode_by_node (gsource->root, source);
 }
 
 /**
  * Recursively find a node by the source id.
  */
 nodePtr
-google_source_get_subnode_by_node (nodePtr node, const gchar *source) 
+google_source_opml_get_subnode_by_node (nodePtr node, const gchar *source) 
 {
 	nodePtr subnode;
 	nodePtr subsubnode;
@@ -65,8 +65,8 @@ google_source_get_subnode_by_node (nodePtr node, const gchar *source)
 			return subnode;
 		else if (subnode->type->capabilities
 			 & NODE_CAPABILITY_SUBFOLDERS) {
-			subsubnode = google_source_get_subnode_by_node(subnode, source);
-			if (subnode != NULL )
+			subsubnode = google_source_opml_get_subnode_by_node(subnode, source);
+			if (subnode != NULL)
 				return subsubnode;
 		}
 	}
@@ -336,7 +336,7 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 /** functions for an efficient updating mechanism */
 
 static void
-google_source_quick_update_helper (xmlNodePtr match, gpointer userdata) 
+google_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata) 
 {
 	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
 	xmlNodePtr      xmlNode;
@@ -348,9 +348,9 @@ google_source_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	id = xmlNodeGetContent (xmlNode); 
 
 	if (g_str_has_prefix (id, "feed/"))
-		node = google_source_get_node_by_source (gsource, id + strlen ("feed/"));
+		node = google_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
 	else if (g_str_has_suffix (id, "broadcast-friends")) 
-		node = google_source_get_node_by_source (gsource, id);
+		node = google_source_opml_get_node_by_source (gsource, id);
 	else {
 		xmlFree (id);
 		return;
@@ -384,7 +384,7 @@ google_source_quick_update_helper (xmlNodePtr match, gpointer userdata)
 }
 
 static void
-google_source_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
+google_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
 {
 	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
 	xmlDocPtr       doc;
@@ -402,13 +402,13 @@ google_source_quick_update_cb (const struct updateResult* const result, gpointer
 
 	xpath_foreach_match (xmlDocGetRootElement (doc),
 			    "/object/list[@name='unreadcounts']/object", 
-			    google_source_quick_update_helper, gsource);
+			    google_source_opml_quick_update_helper, gsource);
 	
 	xmlFreeDoc (doc);
 }
 
 gboolean
-google_source_quick_update(GoogleSourcePtr gsource) 
+google_source_opml_quick_update(GoogleSourcePtr gsource) 
 {
 	updateRequestPtr request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
@@ -416,7 +416,7 @@ google_source_quick_update(GoogleSourcePtr gsource)
 	update_request_set_source (request, GOOGLE_READER_UNREAD_COUNTS_URL);
 	update_request_set_auth_value(request, gsource->authHeaderValue);
 
-	update_execute_request (gsource, request, google_source_quick_update_cb,
+	update_execute_request (gsource, request, google_source_opml_quick_update_cb,
 				gsource, 0);
 
 	return TRUE;
@@ -424,13 +424,13 @@ google_source_quick_update(GoogleSourcePtr gsource)
 
 
 static void
-google_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+google_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	google_subscription_opml_cb (subscription, result, flags);
 }
 
 static gboolean
-google_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+google_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
 	GoogleSourcePtr	gsource = (GoogleSourcePtr)subscription->node->data;
 	
@@ -452,6 +452,6 @@ google_opml_subscription_prepare_update_request (subscriptionPtr subscription, s
 /* OPML subscription type definition */
 
 struct subscriptionType googleSourceOpmlSubscriptionType = {
-	google_opml_subscription_prepare_update_request,
-	google_opml_subscription_process_update_result
+	google_source_opml_subscription_prepare_update_request,
+	google_source_opml_subscription_process_update_result
 };

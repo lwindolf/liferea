@@ -184,7 +184,7 @@ google_source_auto_update (nodePtr node)
 		g_get_current_time (&gsource->lastQuickUpdate);
 	}
 	else if (gsource->lastQuickUpdate.tv_sec + GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
-		google_source_quick_update (gsource);
+		google_source_opml_quick_update (gsource);
 		google_source_edit_process (gsource);
 		g_get_current_time (&gsource->lastQuickUpdate);
 	}
@@ -275,7 +275,7 @@ google_source_remove_node (nodePtr node, nodePtr child)
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
-	if (!google_source_get_node_by_source (gsource, source)) 
+	if (!google_source_opml_get_node_by_source (gsource, source)) 
 		google_source_edit_remove_subscription (gsource, source);
 	
 	g_free (source);
