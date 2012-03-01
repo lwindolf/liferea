@@ -10,6 +10,8 @@
 	  (reported by Dennis Nezic)
 	* Revert ISO 8601 parsing using Glib due to Debian #653196
 	  This fixes SF #3465106 (reported by Vincent Lefevre)
+	* Fixes #3484742: Can't drag and drop feed to empty folder
+	  (reported by peterbuhk)
 
 
 2011-12-10  Lars Lindner <lars.lindner@gmail.com>

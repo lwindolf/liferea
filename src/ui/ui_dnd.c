@@ -86,6 +86,7 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 	nodePtr		sourceNode, targetNode;
 	
 	debug1 (DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
+
 		   	
 	if (!(old_feed_drop_possible) (drag_dest, dest_path, selection_data))
 		return FALSE;
@@ -93,14 +94,16 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 	if (!gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_dest), &iter, dest_path))
 		return FALSE;
 
-	/* If we get an iterator it's either a possible dropping
+	/* Try to get an iterator, if we get none it means either feed list
+	   root or an "Empty" node. Both cases are fine */
+	gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter, FS_PTR, &targetNode, -1);
+	if (!targetNode)
+		return TRUE;
+
+	/* If we got an iterator it's either a possible dropping
 	   candidate (a folder or source node to drop into, or a
 	   iterator to insert after). In any case we have to check
 	   if it is a writeable node source. */
-
-	gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter, FS_PTR, &targetNode, -1);
-	if (!targetNode)
-		return FALSE;
 
 	/* never drop into read-only subscription node sources */
 	if (!(NODE_SOURCE_TYPE (targetNode)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
@@ -149,6 +152,7 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			if (gtk_tree_model_iter_parent (GTK_TREE_MODEL (drag_dest), &parentIter, &iter)) {
 				gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &parentIter, FS_PTR, &newParent, -1);
 			} else {
+				debug0 (DEBUG_GUI, "Defaulting to feed list root as drop target");
 				gtk_tree_model_get_iter_first (GTK_TREE_MODEL (drag_dest), &parentIter);
 				newParent = feedlist_get_root ();
 			}
