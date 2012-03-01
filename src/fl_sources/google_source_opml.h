@@ -18,9 +18,30 @@
 
 #include "fl_sources/google_source.h"
 
-nodePtr google_source_get_node_by_source(GoogleSourcePtr gsource,
+/**
+ * Find a node by the source id.
+ *
+ * @param gsource	the Google Reader source
+ * @param source	the feed id to find
+ *
+ * @returns a node (or NULL)
+ */
+nodePtr google_source_opml_get_node_by_source(GoogleSourcePtr gsource,
 					 const gchar *source);
 
-nodePtr google_source_get_subnode_by_node(nodePtr node, const gchar *source);
+/**
+ * Recursively find a node by the source id.
+ *
+ * @param gsource	the Google Reader source
+ * @param source	the feed id to find 
+ *
+ * @returns a node (or NULL)
+ */
+nodePtr google_source_opml_get_subnode_by_node(nodePtr node, const gchar *source);
 
-gboolean google_source_quick_update (GoogleSourcePtr gsource);
+/**
+ * Perform a quick update of the Google Reader source.
+ *
+ * @param gsource	the Google Reader source
+ */
+gboolean google_source_opml_quick_update (GoogleSourcePtr gsource);
