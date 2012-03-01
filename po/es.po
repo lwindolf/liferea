@@ -27,7 +27,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-23 21:33+0100\n"
+"POT-Creation-Date: 2012-03-01 19:38+0100\n"
 "PO-Revision-Date: 2010-01-21 14:40-0800\n"
 "Last-Translator: Rodrigo Gallardo <rodrigo@nul-unu.com>\n"
 "Language-Team: Spanish <en@li.org>\n"
@@ -492,7 +492,7 @@ msgstr "Liferea, lector de noticias para Linux"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Para más información, visite http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:340
+#: ../src/migrate.c:92
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1502,7 +1502,7 @@ msgstr "Canal Atom inválido: autor desconocido"
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#: ../src/fl_sources/default_source.c:174
+#: ../src/fl_sources/default_source.c:132
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"

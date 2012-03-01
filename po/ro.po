@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.0-rc6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-23 21:33+0100\n"
+"POT-Creation-Date: 2012-03-01 19:38+0100\n"
 "PO-Revision-Date: 2009-10-06 19:11+0200\n"
 "Last-Translator: Adi Roiban <adi@roiban.ro>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -470,7 +470,7 @@ msgstr "Liferea, cititor de fluxuri"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Pentru mai multe informații vizitați http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:340
+#: ../src/migrate.c:92
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1490,7 +1490,7 @@ msgstr "Flux atom nevalid: autor necunoscut"
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#: ../src/fl_sources/default_source.c:174
+#: ../src/fl_sources/default_source.c:132
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.7.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-23 21:33+0100\n"
+"POT-Creation-Date: 2012-03-01 19:38+0100\n"
 "PO-Revision-Date: 2010-08-19 16:32+0100\n"
 "Last-Translator: Anxo Outeiral <bassball93@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -469,7 +469,7 @@ msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 "Para máis información, por favor visite http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:340
+#: ../src/migrate.c:92
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1477,7 +1477,7 @@ msgstr "Fonte en formato Atom non válido: autor descoñecido"
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#: ../src/fl_sources/default_source.c:174
+#: ../src/fl_sources/default_source.c:132
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"

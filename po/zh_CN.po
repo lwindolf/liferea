@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-23 21:33+0100\n"
+"POT-Creation-Date: 2012-03-01 19:38+0100\n"
 "PO-Revision-Date: 2011-07-12 18:15+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -454,7 +454,7 @@ msgstr "Liferea，Linux Feed 阅读器"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "更多信息请访问 http://liferea.sourceforge.net/"
 
-#: ../src/migrate.c:340
+#: ../src/migrate.c:92
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1510,7 +1510,7 @@ msgstr "无效的 Atom Feed：未知作者"
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#: ../src/fl_sources/default_source.c:174
+#: ../src/fl_sources/default_source.c:132
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"

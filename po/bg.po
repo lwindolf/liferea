@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea Bulgarian translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-23 21:33+0100\n"
+"POT-Creation-Date: 2012-03-01 19:38+0100\n"
 "PO-Revision-Date: 2006-03-17 12:10+0200\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -522,7 +522,7 @@ msgstr "Събирач на RSS емисии (Liferea)"
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
-#: ../src/migrate.c:340
+#: ../src/migrate.c:92
 #, c-format
 msgid ""
 "This version of Liferea uses a new cache format and has migrated your feed "
@@ -1593,7 +1593,7 @@ msgstr "Невалидна Atom емисия: неизвестен автор"
 msgid "%b %d %H:%M"
 msgstr ""
 
-#: ../src/fl_sources/default_source.c:174
+#: ../src/fl_sources/default_source.c:132
 #: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:5
 #: ../glade/simple_subscription.ui.h:4
 msgid "New Subscription"
