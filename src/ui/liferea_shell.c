@@ -1231,7 +1231,7 @@ liferea_shell_create (int initialState)
 	g_string_append (buffer,   "<body><div style=\"padding:8px\">"
 				   "<table class=\"headmeta\" style=\"border:solid 1px #aaa;font-size:120%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5px\"><tr><td>"
 				   // Display application icon
-				   "<img src=\""
+				   "<img src=\"file://"
 				   PACKAGE_DATA_DIR G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S
 				   "hicolor" G_DIR_SEPARATOR_S "48x48" G_DIR_SEPARATOR_S "apps"
 				   G_DIR_SEPARATOR_S "liferea.png\" />"
