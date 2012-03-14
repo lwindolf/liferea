@@ -1228,7 +1228,7 @@ liferea_shell_create (int initialState)
 	
 	buffer = g_string_new (NULL);
 	htmlview_start_output (buffer, NULL, TRUE, FALSE);
-	g_string_append (buffer,   "<div style=\"padding:8px\">"
+	g_string_append (buffer,   "<body><div style=\"padding:8px\">"
 				   "<table class=\"headmeta\" style=\"border:solid 1px #aaa;font-size:120%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5px\"><tr><td>"
 				   // Display application icon
 				   "<img src=\""
@@ -1249,7 +1249,7 @@ liferea_shell_create (int initialState)
 				   "</p>"));
 	g_string_append (buffer,   "</td></tr></table>");
 	
-	g_string_append (buffer,   "</div>");
+	g_string_append (buffer,   "</div></body>");
 
 	htmlview_finish_output (buffer);
 	itemview_display_info (buffer->str);

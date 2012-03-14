@@ -4,6 +4,9 @@
 
 	* Revert ISO 8601 parsing using Glib due to Debian #653196
 	  This fixes SF #3465106 (reported by Vincent Lefevre)
+	* Fixes SF #3477582: welcome screen not using theme colors.
+	  (reported by stqn)
+
 
 2011-12-23  Lars Lindner <lars.lindner@gmail.com>
 

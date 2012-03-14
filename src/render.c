@@ -271,7 +271,7 @@ render_get_css (gboolean externalCss)
 		g_free(adblockStyleSheetFile);
 
 		if (externalCss) {
-			/* dump CSS to cache file and create a <style> tag to use the it */
+			/* dump CSS to cache file and create a <style> tag to use it */
 			gchar *filename = common_create_cache_filename("cache", "style", "css");
 			if (!g_file_set_contents(filename, css->str, -1, NULL))
 				g_warning("Cannot write temporary CSS file \"%s\"!", filename);
