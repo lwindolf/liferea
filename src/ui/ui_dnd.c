@@ -208,6 +208,7 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 				pos++;
 			}
 			
+			db_node_update (node);
 			node_update_counters (newParent);
 			
 			feedlist_schedule_save ();
