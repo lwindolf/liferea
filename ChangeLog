@@ -1,8 +1,7 @@
-2012-03-??  ???
+2012-03-18  Lars Lindner <lars.lindner@gmail.com>
 
 	Version 1.8.2
 
-	* Prevent node info update for anything besides folders.
 	* Do not update DB node and subscription info on startup 
 	  for performance reasons.
 	* Perform VACCUM only when page fragmentation ratio < 10%.
