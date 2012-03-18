@@ -6,6 +6,13 @@
 	  This fixes SF #3465106 (reported by Vincent Lefevre)
 	* Fixes SF #3477582: welcome screen not using theme colors.
 	  (reported by stqn)
+	* Do not update DB node and subscription info on startup 
+	  for performance reasons.
+	* Perform VACCUM only when page fragmentation ratio < 10%.
+	  (suggested by adriatic)
+	* Removed tooltip on the "Next Unread Item" button to avoid
+	  having it flashing each time it is clicked when skimming 
+	  through items.
 
 
 2011-12-23  Lars Lindner <lars.lindner@gmail.com>

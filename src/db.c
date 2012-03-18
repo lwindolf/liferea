@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  * 
- * Copyright (C) 2007-2011  Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012  Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -181,6 +181,53 @@ db_end_transaction (void)
 		g_warning ("Transaction end failed (%s) SQL: %s", err, sql);
 	sqlite3_free (sql);
 	sqlite3_free (err);
+}
+
+#define VACUUM_ON_FRAGMENTATION_RATIO	10
+
+static void
+db_vacuum (void)
+{
+	sqlite3_stmt	*stmt;
+	gint		res, page_count, freelist_count;
+
+	/* Determine fragmentation ratio using 
+
+		PRAGMA page_count
+		PRAGMA freelist_count
+
+	   as suggested by adriatic in this blog post
+	   http://jeff.ecchi.ca/blog/2011/12/24/investigating-lifereas-startup-performance/#comment-19989	
+	   and perform VACUUM only when needed.
+	 */
+
+	db_prepare_stmt (&stmt, "PRAGMA page_count");
+	sqlite3_reset (stmt);
+	res = sqlite3_step (stmt);
+	if (SQLITE_ROW != res) 
+		g_error ("Could not determine page count (error code %d)!", res);
+	page_count = sqlite3_column_int (stmt, 0);
+	sqlite3_finalize (stmt);
+
+	db_prepare_stmt (&stmt, "PRAGMA freelist_count");
+	sqlite3_reset (stmt);
+	res = sqlite3_step (stmt);
+	if (SQLITE_ROW != res) 
+		g_error ("Could not determine free list count (error code %d)!", res);
+	freelist_count = sqlite3_column_int (stmt, 0);
+	sqlite3_finalize (stmt);
+
+	float fragmentation = (100 * (float)freelist_count/page_count);
+	if (fragmentation > VACUUM_ON_FRAGMENTATION_RATIO) {
+		debug2 (DEBUG_DB, "Performing VACUUM as freelist count/page count ratio %2.2f > %d", 
+		                  fragmentation, VACUUM_ON_FRAGMENTATION_RATIO);
+		debug_start_measurement (DEBUG_DB);
+		db_exec ("VACUUM;");
+		debug_end_measurement (DEBUG_DB, "VACUUM");
+	} else {
+		debug2 (DEBUG_DB, "No VACUUM as freelist count/page count ratio %2.2f <= %d", 
+		                  fragmentation, VACUUM_ON_FRAGMENTATION_RATIO);
+	}
 }
 
 static gpointer
@@ -391,10 +438,8 @@ db_init (void)
 		g_error ("Fatal: DB schema version not up-to-date! Running with --debug-db could give some hints about the problem!");
 	
 	/* Vacuuming... */
-	
-	debug_start_measurement (DEBUG_DB);
-	db_exec ("VACUUM;");
-	debug_end_measurement (DEBUG_DB, "VACUUM");
+
+	db_vacuum ();
 	
 	/* Schema creation */
 		
