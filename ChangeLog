@@ -1,8 +1,15 @@
-2012-??-??  ???
+2012-03-??  ???
 
 	Version 1.8.2
 
-	*
+	* Prevent node info update for anything besides folders.
+	* Do not update DB node and subscription info on startup 
+	  for performance reasons.
+	* Perform VACCUM only when page fragmentation ratio < 10%.
+	  (suggested by adriatic)
+	* Removed tooltip on the "Next Unread Item" button to avoid
+	  having it flashing each time it is clicked when skimming 
+	  through items.
 
 
 2012-03-03  Lars Lindner <lars.lindner@gmail.com>
