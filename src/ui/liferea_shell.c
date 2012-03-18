@@ -853,7 +853,9 @@ static const GtkActionEntry liferea_shell_action_entries[] = {
 	 G_CALLBACK(on_remove_items_activate)},
 
 	{"ItemMenu", NULL, N_("_Item")},
-	{"NextUnreadItem", GTK_STOCK_GO_FORWARD, N_("_Next Unread Item"), "<control>N", N_("Jumps to the next unread item. If necessary selects the next feed with unread items."),
+	/* No tooltip here as it really hinders usability to have it flashing
+	   when skimming through items using "Next Unread"! */
+	{"NextUnreadItem", GTK_STOCK_GO_FORWARD, N_("_Next Unread Item"), "<control>N", NULL,	
 	 G_CALLBACK(on_next_unread_item_activate)},
 
 	{"ViewMenu", NULL, N_("_View")},
