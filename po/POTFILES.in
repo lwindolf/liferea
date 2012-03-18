@@ -171,10 +171,6 @@ src/fl_sources/ttrss_source_feed_list.h
 src/notification/libnotify.c
 src/notification/notification.c
 src/notification/notification.h
-src/sync/avahi_browser.c
-src/sync/avahi_browser.h
-src/sync/avahi_publisher.c
-src/sync/avahi_publisher.h
 src/webkit/webkit.c
 [type: gettext/glade]glade/auth.ui
 [type: gettext/glade]glade/google_source.ui
