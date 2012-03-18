@@ -28,7 +28,7 @@
 #include "debug.h"
 #include "ui/ui_common.h"
 
-#define LIFEREA_CURRENT_DIR ".liferea_1.9"
+#define LIFEREA_CURRENT_DIR ".liferea_1.8"
 
 static void 
 migrate_copy_dir (const gchar *from,

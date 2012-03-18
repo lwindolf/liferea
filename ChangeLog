@@ -1,7 +1,8 @@
-201?-??-??  ???
+2012-03-18  Lars Lindner <lars.lindner@gmail.com>
 
 	Version 1.9.1
 
+	* Disabled migration to ~/.liferea_1.9
 	* Revert ISO 8601 parsing using Glib due to Debian #653196
 	  This fixes SF #3465106 (reported by Vincent Lefevre)
 	* Fixes SF #3477582: welcome screen not using theme colors.
