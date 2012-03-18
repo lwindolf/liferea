@@ -245,7 +245,11 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
+
 	ui_node_update (subscription->node->id);
+
+	db_subscription_update (subscription);
+	db_node_update (subscription->node);
 	feedlist_schedule_save ();
 }
 

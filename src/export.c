@@ -335,12 +335,6 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		debug1 (DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
 		subscription_update (node->subscription, 0);
 	}
-	
-	/* 8. save node and subscription info to DB */
-	if (node->subscription)
-		db_subscription_update (node->subscription);
-
-	db_node_update (node);
 
 	debug_exit ("import_parse_outline");
 }
