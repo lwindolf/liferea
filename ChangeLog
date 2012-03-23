@@ -6,6 +6,8 @@
 	* Increasing sqlite3 dependency to 3.7+ for WAL journaling.
 	* Removed sqliteasync code in favour of WAL journaling.
 	  This significantly improves performance for ext4.
+	* Added indices for parent_item_id and parent_node_id
+	  to avoid slow item removal. (suggested by Paulo Anes)
 
 
 2012-03-18  Lars Lindner <lars.lindner@gmail.com>

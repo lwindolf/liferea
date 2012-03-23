@@ -455,6 +455,8 @@ db_init (void)
 	db_exec ("CREATE INDEX items_idx2 ON items (comment_feed_id);");
 	db_exec ("CREATE INDEX items_idx3 ON items (node_id);");
 	db_exec ("CREATE INDEX items_idx4 ON items (item_id);");
+	db_exec ("CREATE INDEX items_idx5 ON items (parent_item_id);");
+	db_exec ("CREATE INDEX items_idx6 ON items (parent_node_id);");
 		
 	db_exec ("CREATE TABLE metadata ("
         	 "   item_id		INTEGER,"
