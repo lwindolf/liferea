@@ -119,7 +119,7 @@ pkg_modules="	gtk+-${GTK_API_VERSION}.0 >= $GTK_REQUIRED
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
-		sqlite3 >= 3.6.10
+		sqlite3 >= 3.7.0
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
 		libsoup-2.4 >= 2.28.2

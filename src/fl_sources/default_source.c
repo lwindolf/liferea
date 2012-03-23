@@ -1,7 +1,7 @@
 /**
  * @file default_source.c  default static feed list source
  * 
- * Copyright (C) 2005-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -43,21 +43,31 @@ default_source_source_get_feedlist (nodePtr node)
 	return common_create_cache_filename (NULL, "feedlist", "opml");
 }
 
-static nodePtr *
-default_source_load_subscriptions (void)
-{
-	// FIXME: Implement me!
-	g_warning("default_source_load_subscriptions: Implement me!");
-}
-
 static void
 default_source_import (nodePtr node) 
 {
+	gchar		*filename, *backupFilename;
+	gchar		*content;
+	gssize		length;
+
 	debug_enter ("default_source_source_import");
 
 	g_assert (TRUE == feedlistImport);
 
-	if (NULL == default_source_load_subscriptions()) {	
+	filename = default_source_source_get_feedlist (node);
+	backupFilename = g_strdup_printf("%s.backup", filename);
+	
+	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
+		if (!import_OPML_feedlist (filename, node, FALSE, TRUE))
+			g_error ("Fatal: Feed list import failed! You might want to try to restore\n"
+			         "the feed list file %s from the backup in %s", filename, backupFilename);
+
+		/* upon successful import create a backup copy of the feed list */
+		if (g_file_get_contents (filename, &content, &length, NULL)) {
+			g_file_set_contents (backupFilename, content, length, NULL);
+			g_free (content);
+		}
+	} else {
 		/* If subscriptions could not be loaded try cache migration
 		   or provide a default feed list */
 
@@ -85,6 +95,9 @@ default_source_import (nodePtr node)
 		g_free (filename16);
 		g_free (filename14);
 	}
+
+	g_free (filename);
+	g_free (backupFilename);
 	
 	feedlistImport = FALSE;
 

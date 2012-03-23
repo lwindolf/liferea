@@ -1,3 +1,13 @@
+2012-03-23  Lars Lindner <lars.lindner@gmail.com>
+
+	Version 1.9.2
+
+	* Fixes another migration issue left from 1.9.1
+	* Increasing sqlite3 dependency to 3.7+ for WAL journaling.
+	* Removed sqliteasync code in favour of WAL journaling.
+	  This significantly improves performance for ext4.
+
+
 2012-03-18  Lars Lindner <lars.lindner@gmail.com>
 
 	Version 1.9.1

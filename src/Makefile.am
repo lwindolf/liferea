@@ -50,7 +50,6 @@ liferea_SOURCES = \
 	render.c render.h \
 	rule.c rule.h \
 	social.c social.h \
-	sqlite3async.c sqlite3async.h \
 	subscription.c subscription.h \
 	subscription_type.h \
 	update.c update.h \
