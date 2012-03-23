@@ -29,7 +29,6 @@
 #include "item.h"
 #include "itemset.h"
 #include "metadata.h"
-#include "sqlite3async.h"
 #include "vfolder.h"
 
 /* You can find a schema description used by this version of Liferea at:
@@ -39,9 +38,6 @@ static sqlite3	*db = NULL;
 
 /** hash of all prepared statements */
 static GHashTable *statements = NULL;
-
-/** the sqlite async thread */
-static GThread *asyncthread = NULL;
 
 static void db_view_remove (const gchar *id);
 
@@ -230,36 +226,24 @@ db_vacuum (void)
 	}
 }
 
-static gpointer
-db_sqlite3async_thread (gpointer data)
-{
-	debug_enter ("db_sqlite3async_thread");
-	
-	sqlite3async_run ();
-
-	debug0 (DEBUG_DB, "Function sqlite3async_run() exited, returning from async thread.");
-
-	debug_exit ("db_sqlite3async_thread");
-
-	return NULL;
-}
-
-/* We are opening the database twice since schema migration doesn't seem
-   to work with sqlite3async. */
 static void
-db_open (const char *zVfs)
+db_open (void)
 {
 	gchar		*filename;
 	gint		res;
 
 	filename = common_create_cache_filename (NULL, "liferea", "db");
 	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
-	res = sqlite3_open_v2 (filename, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, zVfs);
+	res = sqlite3_open_v2 (filename, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
 	if (SQLITE_OK != res)
 		g_error ("Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
 	g_free (filename);
 
 	sqlite3_extended_result_codes (db, TRUE);
+
+	db_exec("PRAGMA journal_mode=WAL");
+	db_exec("PRAGMA page_size=32768");
+	db_exec("PRAGMA synchronous=NORMAL");
 }
 
 #define SCHEMA_TARGET_VERSION 9
@@ -273,7 +257,7 @@ db_init (void)
 		
 	debug_enter ("db_init");
 
-	db_open (NULL);
+	db_open ();
 
 	/* create info table/check versioning info */				   
 	debug1 (DEBUG_DB, "current DB schema version: %d", db_get_schema_version ());
@@ -568,21 +552,6 @@ db_init (void)
 		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
         	 "END;");
 
-	sqlite3_close (db);
-
-	if (sqlite3async_initialize (NULL, 0) == SQLITE_OK) {
-		debug0 (DEBUG_DB, "sqlite3async() == SQLITE_OK, starting async thread");
-		asyncthread = g_thread_create (db_sqlite3async_thread, NULL, TRUE, &error);
-		if (asyncthread == NULL) {
-			sqlite3async_shutdown ();
-			g_error ("Could not start async thread, exiting (%s)\n", error->message);
-		}
-	} else {
-		g_error ("Could not initiate async sqlite, exiting\n");
-	}
-
-	db_open (SQLITEASYNC_VFSNAME);
-
 	/* Note: view counting triggers are set up in the view preparation code (see db_view_create()) */		
 	/* prepare statements */
 	
@@ -725,7 +694,6 @@ db_free_statements (gpointer key, gpointer value, gpointer user_data)
 void
 db_deinit (void) 
 {
-
 	debug_enter ("db_deinit");
 	
 	if (FALSE == sqlite3_get_autocommit (db))
@@ -742,11 +710,6 @@ db_deinit (void)
 	
 	db = NULL;
 	
-	sqlite3async_control (SQLITEASYNC_HALT, SQLITEASYNC_HALT_IDLE);
-	debug0 (DEBUG_DB, "Waiting for async thread to join...");
-	g_thread_join (asyncthread);
-	sqlite3async_shutdown ();
-		
 	debug_exit ("db_deinit");
 }
 

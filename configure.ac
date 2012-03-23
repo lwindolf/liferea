@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.8.2],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.8.3],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -93,7 +93,7 @@ pkg_modules="	gtk+-2.0 >= 2.18.0
 		gconf-2.0 >= 1.1.9 
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
-		sqlite3 >= 3.6.10
+		sqlite3 >= 3.7.0
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
 		libsoup-2.4 >= 2.28.2
