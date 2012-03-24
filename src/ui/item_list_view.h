@@ -1,7 +1,7 @@
 /**
  * @file item_list_view.h  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or
@@ -247,8 +247,6 @@ itemPtr item_list_view_find_unread_item (ItemListView *ilv, gulong startId);
 void on_next_unread_item_activate (GtkMenuItem *menuitem, gpointer user_data);
 
 void on_popup_next_unread_item_selected(gpointer callback_data, guint callback_action, GtkWidget *widget);
-
-void on_nextbtn_clicked(GtkButton *button, gpointer user_data);
 
 /**
  * Update a single item of a ItemListView

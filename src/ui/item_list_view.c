@@ -1,7 +1,7 @@
 /**
  * @file item_list_view.c  presenting items in a GtkTreeView
  *  
- * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -905,12 +905,6 @@ on_next_unread_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 
 void
 on_popup_next_unread_item_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
-{
-	itemlist_select_next_unread ();
-}
-
-void
-on_nextbtn_clicked (GtkButton *button, gpointer user_data)
 {
 	itemlist_select_next_unread ();
 }
