@@ -1,7 +1,7 @@
 /**
  * @file search_dialog.c  Search engine subscription dialog
  *
- * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,23 @@
 /* shared functions */
 
 static void
+search_clean_results (vfolderPtr vfolder)
+{
+	if (!vfolder)
+		return;
+
+	/* Clean up old search result data and display... */
+	if (vfolder->node == itemlist_get_displayed_node ())
+		itemlist_unload (FALSE);
+		
+	/* FIXME: Don't simply free the result search folder
+	   as the search query might still be active. Instead
+	   g_object_unref() a search result object! For now
+	   we leak the node to avoid crashes. */
+	//node_free (vfolder->node);
+}
+
+static void
 search_load_results (vfolderPtr searchResult)
 {
 	feed_list_view_select (NULL);
@@ -71,8 +88,9 @@ search_dialog_finalize (GObject *object)
 	SearchDialog *sd = SEARCH_DIALOG (object);
 	
 	gtk_widget_destroy (sd->priv->dialog);
-	if (sd->priv->vfolder)
-		node_free (sd->priv->vfolder->node);
+
+	search_clean_results (sd->priv->vfolder);
+
 	search = NULL;
 	
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -105,6 +123,9 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 	vfolderPtr	vfolder = sd->priv->vfolder;
 	
 	if (1 == responseId) { /* Search */
+		search_clean_results (sd->priv->vfolder);
+
+		sd->priv->vfolder = vfolder = vfolder_new (node_new (vfolder_get_node_type ()));
 		rule_editor_save (sd->priv->re, vfolder->itemset);
 		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->priv->dialog, "anyRuleRadioBtn2")));
 		
@@ -191,8 +212,7 @@ simple_search_dialog_finalize (GObject *object)
 	
 	gtk_widget_destroy (ssd->priv->dialog);
 	
-	if (ssd->priv->vfolder)
-		node_free (ssd->priv->vfolder->node);
+	search_clean_results (ssd->priv->vfolder);
 		
 	simpleSearch = NULL;
 	
@@ -227,18 +247,8 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 	searchString = 	gtk_entry_get_text (GTK_ENTRY (ssd->priv->query));
 	
 	if (1 == responseId) {	/* Search */
-		/* Clean up old search result data and display... */
-		if (vfolder) {
-			if (vfolder->node == itemlist_get_displayed_node ())
-				itemlist_unload (FALSE);
-			
-			/* FIXME: Don't simply free the result search folder
-			   as the search query might still be active. Instead
-			   g_object_unref() a search result object! For now
-			   we leak the node to avoid crashes. */
-			//node_free (vfolder->node);
-		}
-		
+		search_clean_results (vfolder);
+
 		/* Create new search... */
 		ssd->priv->vfolder = vfolder = vfolder_new (node_new (vfolder_get_node_type ()));
 		node_set_title (vfolder->node, searchString);
