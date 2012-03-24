@@ -232,7 +232,11 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 			if (vfolder->node == itemlist_get_displayed_node ())
 				itemlist_unload (FALSE);
 			
-			node_free (vfolder->node);
+			/* FIXME: Don't simply free the result search folder
+			   as the search query might still be active. Instead
+			   g_object_unref() a search result object! For now
+			   we leak the node to avoid crashes. */
+			//node_free (vfolder->node);
 		}
 		
 		/* Create new search... */

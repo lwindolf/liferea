@@ -2,7 +2,8 @@
 
 	Version 1.8.4
 
-	* ...
+	* Fixes SF #3480238: crashes when double clicking find
+	  (reported by joeserneem)
 
 
 2012-03-24  Lars Lindner <lars.lindner@gmail.com>
