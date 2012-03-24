@@ -1110,6 +1110,10 @@ liferea_shell_create (int initialState)
 	shell->priv->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
 	shell->priv->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
 
+#if (GTK_MAJOR_VERSION >= 3)
+	/* Ensure GTK3 toolbar shadows... */
+	gtk_style_context_add_class (gtk_widget_get_style (shell->priv->toolbar), "primary-toolbar");
+#endif
 	/* what a pain, why is there no markup for this option? */
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/newFeedButton")), "is_important", TRUE, NULL);
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/nextUnreadButton")), "is_important", TRUE, NULL);
