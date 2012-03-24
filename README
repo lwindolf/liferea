@@ -93,13 +93,13 @@ This section describes how to compile Liferea yourself. If you have
 any problems compiling the packages or from GIT don't hesitate to
 contact us in IRC (see Support section) to help you with it!
 
+
 3.1 Dependencies
 ----------------
 
-The library dependencies for Liferea are: 
+Liferea can be build against GTK+ version 2 or 3. The dependencies are:
 
-
-   gtk2, gconf2, libunique, libxml2, libxslt, sqlite3,
+   gtk2/gtk3, gconf2, libunique, libxml2, libxslt, sqlite3,
    libwebkit and libjson-glib
    
    
@@ -149,7 +149,12 @@ Then build it with:
 4. Contributing
 ===============
 
-This section describes how you can contribute to Liferea.
+This section describes how you can contribute to Liferea. We currently
+try to provide additional help on contributing via OpenHatch.org which
+provides help and easy tasks to start contributing.
+
+	http://openhatch.org/+projects/Liferea
+
 
 4.1. No Feature Requests!
 -------------------------
@@ -163,6 +168,7 @@ explanation of the reason why the developers have decided not to implement
 this feature requests and that they already have thought about it. So feature
 requests are a constant justification exercise invented to punish developers.
 Please be kind and do not participate in this.
+
 
 4.2. How to Provide Patches
 ---------------------------
@@ -184,6 +190,7 @@ Here are some rules to supply patches:
 If you are working on some topic feel free to contact us with any question
 on the mailing list on the IRC channel (see Support section).
 
+
 4.3. How to Translate Liferea
 -----------------------------
 
@@ -195,7 +202,9 @@ your work please send us the resulting file.
 Please do not send translation patches. Those are a lot of work to merge
 and the bandwidth saving is not that huge!
 
+
 4.3.1. Create a New Translation
+-------------------------------
 
 To create a new translation you must load the translation template, which you
 can find in the release tarball as "po/liferea.pot", into the translation 
@@ -204,13 +213,16 @@ with the extension ".po").
 
 
 4.3.2. Update an Existing Translation
+--------------------------------------
 
 When updating an existing translation please ensure to respect earlier 
 translators work. If the latest translation is only a few months old please
 contact the latest translator first asking him to review your changes especially
 if you change already translated literals.
 
+
 4.3.3. Providing a Localized Feed List
+--------------------------------------
 
 When Liferea starts for the first time it installs a localized feed list
 if available. If this is not the case for your locale you might want to provide
@@ -230,6 +242,7 @@ If you want to provide/update a localized feed list please follow these rules:
 Once finished post the result OPML file in the mailing list or the SF patch
 tracker.
 
+
 4.4 How to Help With Testing
 ----------------------------
 
@@ -240,6 +253,7 @@ If you want to help with testing grab the latest tarball or follow GIT master
 and write bug reports for any functional problem you experience. If you have
 time help with bug triaging the SF tracker. Check if you see any of the open
 bugs on your setup.
+
 
 4.4.2. Debugging Crashes
 ------------------------
