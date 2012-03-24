@@ -6,6 +6,8 @@
 	* SF Trac #7: Removing icon from "Cancel All" in update dialog
 	  so that .gtkrc "gtk-button-images=0" does have correct effect.
 	  (reported by phixy)
+	* Fixes SF #3480238: crashes when double clicking find
+	  (reported by joeserneem)
 
 	* Updated Catalan translation (Gil Forcada)
 
