@@ -4045,17 +4045,6 @@
                         <property name="visible">True</property>
                         <property name="spacing">2</property>
                         <child>
-                          <object class="GtkImage" id="image2463">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-delete</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
                           <object class="GtkLabel" id="label227">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">Cancel _All</property>
