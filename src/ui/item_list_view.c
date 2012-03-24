@@ -904,12 +904,6 @@ on_next_unread_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 void
-on_popup_next_unread_item_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
-{
-	itemlist_select_next_unread ();
-}
-
-void
 on_popup_copy_URL_clipboard (void)
 {
 	itemPtr         item;
