@@ -373,7 +373,7 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       <applyto>/apps/liferea/folder-display-mode</applyto>
       <owner>liferea</owner>
       <type>int</type>
-      <default>0</default>
+      <default>1</default>
       <locale name="C">
         <short>Determine if folders show all child content.</short>
         <long>
@@ -388,7 +388,7 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       <applyto>/apps/liferea/folder-display-hide-read</applyto>
       <owner>liferea</owner>
       <type>bool</type>
-      <default>false</default>
+      <default>true</default>
       <locale name="C">
         <short>Filter read items when displaying folders.</short>
         <long>

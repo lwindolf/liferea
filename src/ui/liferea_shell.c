@@ -714,6 +714,18 @@ on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 static void
+on_menu_fullscreen_activate (GtkMenuItem *menuitem, gpointer user_data)
+{
+	GdkWindowState state = gdk_window_get_state (GTK_WIDGET (shell->priv->window)->window);
+
+	/* Determine current state and try to set opposite state */
+	if (0 == (state & GDK_WINDOW_STATE_FULLSCREEN))
+		gtk_window_fullscreen (shell->priv->window);
+	else
+		gtk_window_unfullscreen (shell->priv->window);
+}
+
+static void
 on_menu_zoomin_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
 	liferea_shell_do_zoom (TRUE);
@@ -942,7 +954,9 @@ static const GtkActionEntry liferea_shell_item_action_entries[] = {
 
 static const GtkToggleActionEntry liferea_shell_action_toggle_entries[] = {
 	{"ToggleOfflineMode", NULL, N_("_Work Offline"), NULL, N_("This option allows you to disable subscription updating."),
-	 G_CALLBACK(on_work_offline_activate)}
+	 G_CALLBACK(on_work_offline_activate)},
+	{"FullScreen", NULL, N_("_Fullscreen"), "F11", N_("Browse at full screen"),
+	 G_CALLBACK(on_menu_fullscreen_activate)},
 };
 
 static const char *liferea_shell_ui_desc =
@@ -987,6 +1001,8 @@ static const char *liferea_shell_ui_desc =
 "      <menuitem action='LaunchItemInBrowser'/>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
+"      <menuitem action='FullScreen'/>"
+"      <separator/>"
 "      <menuitem action='ZoomIn'/>"
 "      <menuitem action='ZoomOut'/>"
 "      <separator/>"
@@ -1130,7 +1146,7 @@ liferea_shell_create (int initialState)
 
 #if (GTK_MAJOR_VERSION >= 3)
 	/* Ensure GTK3 toolbar shadows... */
-	gtk_style_context_add_class (gtk_widget_get_style (shell->priv->toolbar), "primary-toolbar");
+	gtk_style_context_add_class (gtk_widget_get_style_context (shell->priv->toolbar), "primary-toolbar");
 #endif
 	/* what a pain, why is there no markup for this option? */
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/newFeedButton")), "is_important", TRUE, NULL);

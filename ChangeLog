@@ -4,6 +4,11 @@
 
 	* Added a new item history feature that allows navigating
 	  through recently viewed items.
+	* Added new "Fullscreen" toggle menu option.
+	* For GTK+3: request dark theme variant for better contrast
+	  between GUI and content. (Jeff Fortin)
+	* Change schema defaults for folder display. Now unread
+	  items are loaded per-default when clicking a folder.
 	* Patch SF #3473743: GTK2 dependency has to be 2.24 (bento)
 	* SF Trac #7: Removing icon from "Cancel All" in update dialog
 	  so that .gtkrc "gtk-button-images=0" does have correct effect.
