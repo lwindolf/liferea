@@ -595,6 +595,7 @@ itemlist_selection_changed (itemPtr item)
 				comments_refresh (item);
 
 			item_set_read_state (item, TRUE);
+			itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
 			if (node->loadItemLink) {
 				gchar* link = item_make_link (item);
@@ -602,7 +603,6 @@ itemlist_selection_changed (itemPtr item)
 				itemview_launch_URL (link, TRUE /* force internal */);
 				g_free (link);
 			} else {
-				itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 				itemview_select_item (item);
 				itemview_update ();
 			}

@@ -82,7 +82,6 @@ void itemview_set_displayed_node (nodePtr node);
 /** item view display mode type */
 typedef enum {
 	ITEMVIEW_SINGLE_ITEM,	/**< 3 panes, item view shows the selected item only in HTML view */
-	ITEMVIEW_LOAD_LINK,	/**< 3 panes, item view loads the link of selected item into HTML view */
 	ITEMVIEW_ALL_ITEMS,	/**< 2 panes, item view shows all items combined in HTML view */
 	ITEMVIEW_NODE_INFO	/**< 3 panes, item view shows the selected node description in HTML view*/
 } itemViewMode;

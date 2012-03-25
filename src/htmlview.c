@@ -315,7 +315,7 @@ htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode)
 	itemPtr		item = NULL;
 	gchar		*baseURL = NULL;
 	gboolean	summaryMode;
-		
+
 	/* determine base URL */
 	switch (mode) {
 		case ITEMVIEW_SINGLE_ITEM:

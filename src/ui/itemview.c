@@ -48,7 +48,7 @@
 struct ItemViewPrivate {
 	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
 	guint		mode;			/**< current item view mode */
-	nodePtr		node;			/**< the node whose item are displayed */
+	nodePtr		node;			/**< the node whose items are displayed */
 	gboolean	needsHTMLViewUpdate;	/**< flag to be set when HTML rendering is to be 
 						     updated, used to delay HTML updates */
 	gboolean	hasEnclosures;		/**< TRUE if at least one item of the current itemset has an enclosure */
@@ -171,7 +171,9 @@ void
 itemview_select_item (itemPtr item)
 {
 	ItemViewPrivate *ivp = itemview->priv;
-		
+
+	g_assert (ivp->mode == ITEMVIEW_SINGLE_ITEM);
+
 	ivp->needsHTMLViewUpdate = TRUE;
 	
 	item_list_view_select (ivp->itemListView, item);
@@ -220,7 +222,7 @@ itemview_update_all_items (void)
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
 		item_list_view_update_all_items (itemview->priv->itemListView);
-		
+
 	itemview->priv->needsHTMLViewUpdate = TRUE;
 	htmlview_update_all_items ();
 }
@@ -255,6 +257,7 @@ itemview_update (void)
 		itemview->priv->needsHTMLViewUpdate = FALSE;
 		htmlview_update (itemview->priv->htmlview, itemview->priv->mode);
 	}
+
 	if (itemview->priv->node)
 		liferea_shell_update_allitems_actions (0 != itemview->priv->node->itemCount, 0 != itemview->priv->node->unreadCount);
 }
