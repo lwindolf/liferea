@@ -4,6 +4,8 @@
 
 	* Fixes SF #3480238: crashes when double clicking find
 	  (reported by joeserneem)
+	* Fixes Debian #660602: Item pane may be reset during feed update
+	  (reported by Ben Hutchings)
 
 
 2012-03-24  Lars Lindner <lars.lindner@gmail.com>
