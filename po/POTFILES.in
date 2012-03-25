@@ -41,6 +41,8 @@ src/htmlview.c
 src/htmlview.h
 src/item.c
 src/item.h
+src/item_history.c
+src/item_history.h
 src/item_loader.c
 src/item_loader.h
 src/itemlist.c
