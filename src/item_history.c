@@ -50,7 +50,7 @@ item_history_add (guint id)
 	itemHistory->current = g_list_last (itemHistory->items);
 	itemHistory->lastId = id;
 
-	/* if list has reach max size remove first element */
+	/* if list has reached max size remove first element */
 	if (g_list_length (itemHistory->items) > MAX_HISTORY_SIZE)
 		itemHistory->items = g_list_remove (itemHistory->items, itemHistory->items);
 
