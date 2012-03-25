@@ -2,7 +2,7 @@
  * @file ui_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -117,6 +117,13 @@ void liferea_shell_set_toolbar_style (const gchar *toolbar_style);
  * @todo: use signal instead
  */
 void liferea_shell_update_toolbar (void);
+
+/**
+ * Update item history menu actions and toolbar buttons.
+ *
+ * @todo: use signal instead
+ */
+void liferea_shell_update_history_actions (void);
 
 /** 
  * Update the sensitivity of options affecting single feeds.

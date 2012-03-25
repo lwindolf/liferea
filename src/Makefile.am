@@ -34,6 +34,7 @@ liferea_SOURCES = \
 	html.c html.h \
 	htmlview.c htmlview.h \
 	item.c item.h \
+	item_history.c item_history.h \
 	item_loader.c item_loader.h \
 	item_state.c item_state.h \
 	itemset.c itemset.h \

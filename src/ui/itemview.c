@@ -1,7 +1,7 @@
 /**
  * @file itemview.c  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "debug.h"
 #include "folder.h"
 #include "htmlview.h"
+#include "item_history.h"
 #include "itemlist.h"
 #include "itemview.h"
 #include "node.h"
@@ -180,6 +181,8 @@ itemview_select_item (itemPtr item)
 		enclosure_list_view_load (ivp->enclosureView, item);
 	else
 		enclosure_list_view_hide (ivp->enclosureView);
+
+	item_history_add (item->id);
 }
 
 void
@@ -464,3 +467,4 @@ itemview_do_zoom (gboolean in)
 	g_assert(itemview->priv->htmlview != NULL);
 	liferea_htmlview_do_zoom (itemview->priv->htmlview, in);
 }
+

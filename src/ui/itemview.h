@@ -117,7 +117,7 @@ void itemview_remove_item (itemPtr item);
  * Selects a given item in the view. The item must be
  * added using itemview_add_item before selecting.
  *
- * @param item	the item to select
+ * @param item the item to select
  */
 void itemview_select_item (itemPtr item);
 

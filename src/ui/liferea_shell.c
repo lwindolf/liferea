@@ -2,7 +2,7 @@
  * @file ui_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@
 #include "export.h"
 #include "feedlist.h"
 #include "htmlview.h"
+#include "item_history.h"
 #include "itemlist.h"
 #include "net_monitor.h"
 #include "ui/browser_tabs.h"
@@ -290,6 +291,13 @@ liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead)
 {
 	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->generalActions, "RemoveAllItems"), isNotEmpty);
 	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->feedActions, "MarkFeedAsRead"), isRead);
+}
+
+void
+liferea_shell_update_history_actions (void)
+{
+	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->generalActions, "PrevReadItem"), item_history_has_previous ());
+	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->generalActions, "NextReadItem"), item_history_has_next ());
 }
 
 void
@@ -853,9 +861,14 @@ static const GtkActionEntry liferea_shell_action_entries[] = {
 	 G_CALLBACK(on_remove_items_activate)},
 
 	{"ItemMenu", NULL, N_("_Item")},
+	{"PrevReadItem", GTK_STOCK_GO_BACK, N_("Previous Item"), "<control><shift>N", NULL,	
+	 G_CALLBACK(on_prev_read_item_activate)},
+	{"NextReadItem", GTK_STOCK_GO_FORWARD, N_("Next Item"), NULL, NULL,	
+	 G_CALLBACK(on_next_read_item_activate)},
+
 	/* No tooltip here as it really hinders usability to have it flashing
 	   when skimming through items using "Next Unread"! */
-	{"NextUnreadItem", GTK_STOCK_GO_FORWARD, N_("_Next Unread Item"), "<control>N", NULL,	
+	{"NextUnreadItem", GTK_STOCK_JUMP_TO, N_("_Next Unread Item"), "<control>N", NULL,	
 	 G_CALLBACK(on_next_unread_item_activate)},
 
 	{"ViewMenu", NULL, N_("_View")},
@@ -964,6 +977,9 @@ static const char *liferea_shell_ui_desc =
 "    <menu action='ItemMenu'>"
 "      <menuitem action='NextUnreadItem'/>"
 "      <separator/>"
+"      <menuitem action='PrevReadItem'/>"
+"      <menuitem action='NextReadItem'/>"
+"      <separator/>"
 "      <menuitem action='ToggleItemReadStatus'/>"
 "      <menuitem action='ToggleItemFlag'/>"
 "      <menuitem action='RemoveSelectedItem'/>"
@@ -998,6 +1014,8 @@ static const char *liferea_shell_ui_desc =
 "  <toolbar action='maintoolbar'>"
 "    <separator/>"
 "    <toolitem name='newFeedButton' action='NewSubscription'/>"
+"    <toolitem name='prevReadButton' action='PrevReadItem'/>"
+"    <toolitem name='nextReadButton' action='NextReadItem'/>"
 "    <toolitem name='nextUnreadButton' action='NextUnreadItem'/>"
 "    <toolitem name='MarkAsReadButton' action='MarkFeedAsRead'/>"
 "    <toolitem name='UpdateAllButton' action='UpdateAll'/>"
@@ -1193,6 +1211,7 @@ liferea_shell_create (int initialState)
 	/* 9.) update all menu elements */
 	
 	liferea_shell_update_toolbar ();
+	liferea_shell_update_history_actions ();
 	
 	liferea_shell_setup_URL_receiver ();	/* setup URL dropping support */
 

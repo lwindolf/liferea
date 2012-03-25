@@ -1,7 +1,7 @@
 /**
  * @file itemlist.c  itemlist handling
  *
- * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "item_history.h"
 #include "item_state.h"
 #include "itemlist.h"
 #include "itemset.h"
@@ -660,6 +661,43 @@ on_view_activate (GtkRadioAction *action, GtkRadioAction *current, gpointer user
 {
 	gint val = gtk_radio_action_get_current_value (current);
 	itemlist_set_view_mode (val);
+}
+
+static void
+itemlist_select_from_history (gboolean back)
+{
+	itemPtr item;
+	nodePtr node;
+
+	if (back)
+		item = item_history_get_previous ();
+	else 
+		item = item_history_get_next ();
+
+	if (!item)
+		return;
+
+	node = node_from_id (item->parentNodeId);
+	if (!node)
+		return;
+
+	if (node != feedlist_get_selected ())
+		feed_list_view_select (node);
+
+	itemview_select_item (item);
+	item_unload (item);
+}
+
+void
+on_prev_read_item_activate (GtkMenuItem *menuitem, gpointer user_data)
+{
+	itemlist_select_from_history (TRUE);
+}
+
+void
+on_next_read_item_activate (GtkMenuItem *menuitem, gpointer user_data)
+{
+	itemlist_select_from_history (FALSE);
 }
 
 /* item loader methods */

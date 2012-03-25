@@ -132,6 +132,17 @@ guint itemlist_get_view_mode(void);
  */
 void on_view_activate(GtkRadioAction *action, GtkRadioAction *current, gpointer user_data);
 
+/**
+ * Menu callback to select the previously read item from the item history
+ */
+void on_prev_read_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+
+/**
+ * Menu callback to select the next read item from the item history
+ */
+void on_next_read_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+
+
 /* item handling functions */
 
 void itemlist_update_item(itemPtr item);
