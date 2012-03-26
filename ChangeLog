@@ -4,6 +4,9 @@
 
 	* Improve DB item counting statements.
 	  (patch by Regis Floret)
+	* Change OpenStreetMap rendering from osmarender to mapnik.
+	  (patch by Mikel Olasagasti)
+
 	* Fixes SF #3480238: crashes when double clicking find
 	  (reported by joeserneem)
 	* Fixes Debian #660602: Item pane may be reset during feed update

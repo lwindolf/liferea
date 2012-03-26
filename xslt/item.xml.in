@@ -305,49 +305,31 @@
 <div class='content'>
   <!-- insertion div for GeoRSS coordinates, adding an OpenStreet map -->
   <xsl:if test="attributes/attribute[ @name = 'point' ]">
-  	<p id="map" style="width:400px;height:200px;float:right; border: 1px solid #000;"></p>
+  	<p id="mapdiv" style="width:400px;height:200px;float:right; border: 1px solid #000;"></p>
   </xsl:if>
   
   <!-- extra item content handling for GeoRSS coordinates, adding an OpenStreet map -->
   <xsl:if test="attributes/attribute[ @name = 'point' ]">  
 	  <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-	  <script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 	  <script type="text/javascript">
 		  <![CDATA[var lat=]]><xsl:value-of select="substring-before(attributes/attribute[ @name = 'point' ],' ')"/><![CDATA[
 		  var lon=]]><xsl:value-of select="substring-after(attributes/attribute[ @name = 'point' ],' ')"/>
 		  var zoom=9
 
-
 		  var map;
         	  function load() {
-
-		  map = new OpenLayers.Map ("map", {
-                  controls:[
-			  new OpenLayers.Control.Navigation(),
-			  new OpenLayers.Control.PanZoom(),
-		          new OpenLayers.Control.Attribution()],
-        	  maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-		  maxResolution: 156543.0399,
-		  numZoomLevels: 19,
-		  units: 'm',
-		  projection: new OpenLayers.Projection("EPSG:900913"),
-		  displayProjection: new OpenLayers.Projection("EPSG:4326")
-		  } );
-
-		  layerTilesAtHome = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
-		  map.addLayer(layerTilesAtHome);
-
-		  var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
-		  layerMarkers = new OpenLayers.Layer.Markers("Markers");
-		  map.addLayer(layerMarkers);
-
-		  map.setCenter (lonLat, zoom);
-		  var size = new OpenLayers.Size(21,25);
-		  var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-		  var icon = new OpenLayers.Icon('http://www.openstreetmap.org/openlayers/img/marker.png',size,offset);
-		  layerMarkers.addMarker(new OpenLayers.Marker(lonLat,icon));
+			map = new OpenLayers.Map("mapdiv");
+			map.addLayer(new OpenLayers.Layer.OSM());
+			var lonLat = new OpenLayers.LonLat(lon,lat)
+			.transform(
+				new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+				map.getProjectionObject() // to Spherical Mercator Projection
+			);
+			var markers = new OpenLayers.Layer.Markers("Markers");
+			map.addLayer(markers);
+			markers.addMarker(new OpenLayers.Marker(lonLat));
+			map.setCenter (lonLat, zoom);
         	  }
-
 	  </script>
   </xsl:if>
 
@@ -428,7 +410,6 @@
 <!-- extra item content handling for GeoRSS coordinates, adding an OpenStreet map -->
 <xsl:if test="attributes/attribute[ @name = 'point' ]">  
 	<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-	<script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
 	<script type="text/javascript">
 		  <![CDATA[var lat=]]><xsl:value-of select="substring-before(attributes/attribute[ @name = 'point' ],' ')"/><![CDATA[
 		  var lon=]]><xsl:value-of select="substring-after(attributes/attribute[ @name = 'point' ],' ')"/>
@@ -437,34 +418,18 @@
 
 		  var map;
         	  function load() {
-
-		  map = new OpenLayers.Map ("map", {
-                  controls:[
-			  new OpenLayers.Control.Navigation(),
-			  new OpenLayers.Control.PanZoom(),
-		          new OpenLayers.Control.Attribution()],
-        	  maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
-		  maxResolution: 156543.0399,
-		  numZoomLevels: 19,
-		  units: 'm',
-		  projection: new OpenLayers.Projection("EPSG:900913"),
-		  displayProjection: new OpenLayers.Projection("EPSG:4326")
-		  } );
-
-		  layerTilesAtHome = new OpenLayers.Layer.OSM.Osmarender("Osmarender");
-		  map.addLayer(layerTilesAtHome);
-
-		  var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
-		  layerMarkers = new OpenLayers.Layer.Markers("Markers");
-		  map.addLayer(layerMarkers);
-
-		  map.setCenter (lonLat, zoom);
-		  var size = new OpenLayers.Size(21,25);
-		  var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-		  var icon = new OpenLayers.Icon('http://www.openstreetmap.org/openlayers/img/marker.png',size,offset);
-		  layerMarkers.addMarker(new OpenLayers.Marker(lonLat,icon));
+			map = new OpenLayers.Map("mapdiv");
+			map.addLayer(new OpenLayers.Layer.OSM());
+			var lonLat = new OpenLayers.LonLat(lon,lat)
+			.transform(
+				new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+				map.getProjectionObject() // to Spherical Mercator Projection
+			);
+			var markers = new OpenLayers.Layer.Markers("Markers");
+			map.addLayer(markers);
+			markers.addMarker(new OpenLayers.Marker(lonLat));
+			map.setCenter (lonLat, zoom);
         	  }
-
 	</script>
 </xsl:if>
 
