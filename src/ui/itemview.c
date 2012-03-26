@@ -172,7 +172,9 @@ itemview_select_item (itemPtr item)
 {
 	ItemViewPrivate *ivp = itemview->priv;
 
-	g_assert (ivp->mode == ITEMVIEW_SINGLE_ITEM);
+	/* Enforce single item mode as we currently know no other way
+	   to select a single item... */
+	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
 	ivp->needsHTMLViewUpdate = TRUE;
 	

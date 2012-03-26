@@ -684,6 +684,9 @@ itemlist_select_from_history (gboolean back)
 	if (node != feedlist_get_selected ())
 		feed_list_view_select (node);
 
+	if (NODE_VIEW_MODE_COMBINED == itemlist_get_view_mode ())
+		itemlist_set_view_mode (NODE_VIEW_MODE_NORMAL);
+
 	itemview_select_item (item);
 	item_unload (item);
 }
