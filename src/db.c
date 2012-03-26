@@ -106,7 +106,7 @@ db_table_exists (const gchar *name)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	sql = sqlite3_mprintf ("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = '%s';", name);
+	sql = sqlite3_mprintf ("SELECT COUNT(type) FROM sqlite_master WHERE type = 'table' AND name = '%s';", name);
 	db_prepare_stmt (&stmt, sql);
 	sqlite3_reset (stmt);
 	sqlite3_step (stmt);
@@ -564,11 +564,11 @@ db_init (void)
 			  "SELECT item_id FROM items WHERE item_id >= ? limit ?");
 		       
 	db_new_statement ("itemsetReadCountStmt",
-	                  "SELECT COUNT(*) FROM items "
+	                  "SELECT COUNT(item_id) FROM items "
 		          "WHERE read = 0 AND node_id = ?");
 	       
 	db_new_statement ("itemsetItemCountStmt",
-	                  "SELECT COUNT(*) FROM items "
+	                  "SELECT COUNT(item_id) FROM items "
 		          "WHERE node_id = ?");
 		       
 	db_new_statement ("itemsetRemoveStmt",
