@@ -190,9 +190,6 @@ void liferea_shell_set_important_status_bar (const char *format, ...);
  */
 GtkWidget * liferea_shell_get_window (void);
 
-// FIXME:
-void on_onlinebtn_clicked (GtkButton *button, gpointer user_data);
-
 /**
  * Update the mode selection in the menu
  *

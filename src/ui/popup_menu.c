@@ -57,6 +57,12 @@ on_toggle_visibility (void)
 }
 
 static void
+on_popup_toggle_online (void)
+{
+	network_monitor_set_online (!network_monitor_is_online ());
+}
+
+static void
 ui_popup_menu_at_pos (GtkWidget *menu, GtkMenuPositionFunc func, guint button, guint32 activate_time, gpointer user_data)
 {
 	g_signal_connect_after (G_OBJECT(menu), "unmap-event", G_CALLBACK(gtk_widget_destroy), NULL);
@@ -116,7 +122,7 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 	ui_popup_add_menuitem (menu, _("Launch Item In _Tab"), on_popup_launchitem_in_tab_selected, NULL, NULL, 0);
 	ui_popup_add_menuitem (menu, _("_Launch Item In Browser"), on_popup_launchitem_selected, NULL, NULL, 0);
 
-	gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 
 	iter = newsbin_get_list ();
 	if (iter) {
@@ -135,9 +141,9 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 			i++;
 		}
 
-		gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), submenu);
+		gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
 
-		gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 	}
 
 	text = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
@@ -146,7 +152,7 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 
 	ui_popup_add_menuitem (menu, _("Copy Item _URL to Clipboard"), on_popup_copy_URL_clipboard, NULL, NULL, 0);
 	
-	gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 
 	ui_popup_add_menuitem (menu, _("Toggle _Read Status"), on_popup_toggle_read, NULL, GTK_STOCK_APPLY, 0);
 	ui_popup_add_menuitem (menu, _("Toggle Item _Flag"), on_popup_toggle_flag, NULL, NULL, 0);
@@ -178,11 +184,11 @@ ui_popup_systray_menu (GtkMenuPositionFunc func, guint button, guint32 activate_
 
 	menu = gtk_menu_new ();
 
-	ui_popup_add_menuitem (menu, _("_Work Offline"), on_onlinebtn_clicked, NULL, NULL, (!network_monitor_is_online ()) + UI_POPUP_ITEM_IS_TOGGLE);
+	ui_popup_add_menuitem (menu, _("_Work Offline"), on_popup_toggle_online, NULL, NULL, (!network_monitor_is_online ()) + UI_POPUP_ITEM_IS_TOGGLE);
 	ui_popup_add_menuitem (menu, _("_Update All"), on_menu_update_all, NULL, GTK_STOCK_REFRESH, 0);
 	ui_popup_add_menuitem (menu, NULL, on_prefbtn_clicked, NULL, GTK_STOCK_PREFERENCES, 0);
 
-	gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 
 	ui_popup_add_menuitem (menu, _("_Show Liferea"), on_toggle_visibility, NULL, NULL, (!(gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) && gtk_widget_get_visible (mainwindow)) + UI_POPUP_ITEM_IS_TOGGLE);
 	ui_popup_add_menuitem (menu, NULL, on_popup_quit, NULL, GTK_STOCK_QUIT, 0);
@@ -310,19 +316,19 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 		}
 		
 		if (node->children) {
-			gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 			ui_popup_add_menuitem (menu, _("Sort Feeds"), ui_popup_sort_feeds, node, GTK_STOCK_SORT_ASCENDING, 0);
 		}
 	}
 
 	if (IS_VFOLDER (node)) {
-		gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 		ui_popup_add_menuitem (menu, _("_Rebuild"), ui_popup_rebuild_vfolder, node, NULL, 0);
 	}
 
 	if (validSelection) {
 		if (writeableFeedlist) {
-			gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
+			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 			ui_popup_add_menuitem (menu, NULL, ui_popup_delete, node, GTK_STOCK_DELETE, 0);
 			ui_popup_add_menuitem (menu, NULL, ui_popup_properties, node, GTK_STOCK_PROPERTIES, 0);
 		}

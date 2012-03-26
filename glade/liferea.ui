@@ -340,7 +340,6 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
                 <property name="relief">none</property>
-                <signal name="clicked" handler="on_onlinebtn_clicked"/>
                 <child>
                   <object class="GtkImage" id="onlineimage">
                     <property name="visible">True</property>

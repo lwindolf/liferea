@@ -660,7 +660,7 @@ on_searchbtn_clicked (GtkButton *button, gpointer user_data)
 	simple_search_dialog_open ();
 }
 
-void
+static void
 on_onlinebtn_clicked (GtkButton *button, gpointer user_data)
 {
 	network_monitor_set_online (!network_monitor_is_online ());
@@ -1204,6 +1204,9 @@ liferea_shell_create (int initialState)
 	shell->priv->statusbar_feedsinfo = gtk_label_new("");
 	gtk_widget_show(shell->priv->statusbar_feedsinfo);
 	gtk_box_pack_start (GTK_BOX (shell->priv->statusbar), shell->priv->statusbar_feedsinfo, FALSE, FALSE, 5);
+
+	g_signal_connect ((gpointer) liferea_shell_lookup ("onlinebtn"), "clicked",
+	                  G_CALLBACK (on_onlinebtn_clicked), NULL);
 	
 	/* 4.) setup tabs */
 	
