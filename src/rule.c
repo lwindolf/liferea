@@ -116,7 +116,16 @@ rule_check_item_has_enc (rulePtr rule, itemPtr item)
 static gboolean
 rule_check_item_category (rulePtr rule, itemPtr item)
 {
-	return FALSE; // FIXME
+	GSList	*iter = metadata_list_get_values (item->metadata, "category");
+
+	while (iter) {
+		if (g_str_equal (rule->value, (gchar *)iter->data))
+			return TRUE;
+
+		iter = g_slist_next (iter);
+	}
+
+	return FALSE;
 }
 
 /* rule initialization */
