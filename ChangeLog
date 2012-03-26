@@ -6,6 +6,7 @@
 	  (reported by joeserneem)
 	* Fixes Debian #660602: Item pane may be reset during feed update
 	  (reported by Ben Hutchings)
+	* Fixes broken search folder rule for item with enclosures.
 
 
 2012-03-24  Lars Lindner <lars.lindner@gmail.com>
