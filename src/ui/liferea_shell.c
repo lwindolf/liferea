@@ -76,6 +76,8 @@ struct LifereaShellPrivate {
 	FeedList	*feedlist;
 	ItemView	*itemview;
 	BrowserTabs	*tabs;
+
+	gboolean	fullscreen;		/**< track fullscreen */
 };
 
 static GObjectClass *parent_class = NULL;
@@ -514,6 +516,12 @@ on_window_state_event (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 		else
 			session_set_cmd (NULL, MAINWINDOW_SHOWN);
 	}
+
+	if ((event->window_state.new_window_state & GDK_WINDOW_STATE_FULLSCREEN) == 0)
+		shell->priv->fullscreen = TRUE;
+	else
+		shell->priv->fullscreen = FALSE;
+
 	return FALSE;
 }
 
@@ -713,15 +721,22 @@ on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 	liferea_shutdown ();
 }
 
+static gboolean
+on_window_state_changed (GtkWidget * widget, GdkEvent * event, gpointer user_data)
+{
+	if ((event->window_state.new_window_state & GDK_WINDOW_STATE_FULLSCREEN) == 0)
+		shell->priv->fullscreen = TRUE;
+	else
+		shell->priv->fullscreen = FALSE;
+		
+	return FALSE;
+}
+
 static void
 on_menu_fullscreen_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
-	GdkWindowState state = gdk_window_get_state (GTK_WIDGET (shell->priv->window)->window);
-
-	/* Determine current state and try to set opposite state */
-	if (0 == (state & GDK_WINDOW_STATE_FULLSCREEN))
-		gtk_window_fullscreen (shell->priv->window);
-	else
+	shell->priv->fullscreen == TRUE ?
+		gtk_window_fullscreen(shell->priv->window) :
 		gtk_window_unfullscreen (shell->priv->window);
 }
 
