@@ -431,15 +431,6 @@ on_startintraybtn_clicked (GtkButton *button, gpointer user_data)
 }
 
 void
-on_useAvahiSync_toggled (GtkToggleButton *button, gpointer user_data)
-{
-	gboolean enabled = gtk_toggle_button_get_active (button);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServiceNameEntry")), enabled);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServicePasswordEntry")), enabled);
-	conf_set_bool_value (SYNC_AVAHI_ENABLED, enabled);
-}
-
-void
 on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	conf_set_bool_value (DISABLE_TOOLBAR, gtk_toggle_button_get_active (button));
@@ -763,44 +754,35 @@ void on_prefbtn_clicked(void) {
 
 		/* set enclosure download path entry */
 		conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &enclosure_download_path);
-		gtk_entry_set_text(GTK_ENTRY(liferea_dialog_lookup(prefdialog, "save_download_entry")), enclosure_download_path);
+		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup(prefdialog, "save_download_entry")), enclosure_download_path);
 		g_free (enclosure_download_path);
 
 		/* set up list of configured enclosure types */
-		treestore = gtk_tree_store_new(FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
+		treestore = gtk_tree_store_new (FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
 		list = (GSList *)enclosure_mime_types_get ();
 		while (list) {
-			GtkTreeIter *newIter = g_new0(GtkTreeIter, 1);
-			gtk_tree_store_append(treestore, newIter, NULL);
-			gtk_tree_store_set(treestore, newIter,
-		                	   FTS_TYPE, (NULL != ((encTypePtr)(list->data))->mime)?((encTypePtr)(list->data))->mime:((encTypePtr)(list->data))->extension, 
-		                	   FTS_CMD, ((encTypePtr)(list->data))->cmd,
-		                	   FTS_PTR, list->data, 
-					   -1);
-			list = g_slist_next(list);
+			GtkTreeIter *newIter = g_new0 (GtkTreeIter, 1);
+			gtk_tree_store_append (treestore, newIter, NULL);
+			gtk_tree_store_set (treestore, newIter,
+		                	    FTS_TYPE, (NULL != ((encTypePtr)(list->data))->mime)?((encTypePtr)(list->data))->mime:((encTypePtr)(list->data))->extension, 
+		                	    FTS_CMD, ((encTypePtr)(list->data))->cmd,
+		                	    FTS_PTR, list->data, 
+					    -1);
+			list = g_slist_next (list);
 		}
 
-		widget = liferea_dialog_lookup(prefdialog, "enc_action_view");
-		gtk_tree_view_set_model(GTK_TREE_VIEW(widget), GTK_TREE_MODEL(treestore));
+		widget = liferea_dialog_lookup (prefdialog, "enc_action_view");
+		gtk_tree_view_set_model (GTK_TREE_VIEW (widget), GTK_TREE_MODEL (treestore));
 
-		column = gtk_tree_view_column_new_with_attributes(_("Type"), gtk_cell_renderer_text_new(), "text", FTS_TYPE, NULL);
-		gtk_tree_view_append_column(GTK_TREE_VIEW(widget), column);
-		gtk_tree_view_column_set_sort_column_id(column, FTS_TYPE);
-		column = gtk_tree_view_column_new_with_attributes(_("Program"), gtk_cell_renderer_text_new(), "text", FTS_CMD, NULL);
-		gtk_tree_view_column_set_sort_column_id(column, FTS_CMD);
-		gtk_tree_view_append_column(GTK_TREE_VIEW(widget), column);
+		column = gtk_tree_view_column_new_with_attributes (_("Type"), gtk_cell_renderer_text_new (), "text", FTS_TYPE, NULL);
+		gtk_tree_view_append_column (GTK_TREE_VIEW (widget), column);
+		gtk_tree_view_column_set_sort_column_id (column, FTS_TYPE);
+		column = gtk_tree_view_column_new_with_attributes (_("Program"), gtk_cell_renderer_text_new (), "text", FTS_CMD, NULL);
+		gtk_tree_view_column_set_sort_column_id (column, FTS_CMD);
+		gtk_tree_view_append_column (GTK_TREE_VIEW(widget), column);
 
-		gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
+		gtk_tree_selection_set_mode (gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
+	}
 
-		/* ================= panel 7 "sync" ======================== */
-		/* FIXME: Avahi Sync is not yet imlemented
-
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (prefdialog, "useAvahiSync")), conf_get_bool_value (SYNC_AVAHI_ENABLED));
-		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (prefdialog, "avahiServiceNameEntry")), conf_get_str_value (SYNC_AVAHI_SERVICE_NAME));		
-		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (prefdialog, "avahiServicePasswordEntry")), conf_get_str_value (SYNC_AVAHI_PASSWORD));
-		gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServiceNameEntry")), conf_get_bool_value (SYNC_AVAHI_ENABLED));
-		gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServicePasswordEntry")), conf_get_bool_value (SYNC_AVAHI_ENABLED));
-		*/
-	}	
-	gtk_window_present(GTK_WINDOW(prefdialog));
+	gtk_window_present (GTK_WINDOW (prefdialog));
 }

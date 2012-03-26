@@ -84,11 +84,6 @@
 #define GNOME_PROXY_USER		"/system/http_proxy/authentication_user"
 #define GNOME_PROXY_PASSWD		"/system/http_proxy/authentication_password"
 
-/* other settings */
-#define SYNC_AVAHI_ENABLED		"/apps/liferea/sync/use_avahi"
-#define SYNC_AVAHI_SERVICE_NAME		"/apps/liferea/sync/avahi_service_name"
-#define SYNC_AVAHI_PASSWORD		"/apps/liferea/sync/avahi_password"
-
 /* initializing methods */
 void	conf_init (void);
 void	conf_deinit (void);
