@@ -12,6 +12,9 @@
 	* Patch SF #3473743: GTK2 dependency has to be 2.24 (bento)
 	* Improve DB item counting statements.
 	  (patch by Regis Floret)
+	* Change OpenStreetMap rendering from osmarender to mapnik.
+	  (patch by Mikel Olasagasti)
+
 	* SF Trac #7: Removing icon from "Cancel All" in update dialog
 	  so that .gtkrc "gtk-button-images=0" does have correct effect.
 	  (reported by phixy)
