@@ -2924,6 +2924,8 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="shadow_type">in</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
                                 <child>
                                   <object class="GtkTreeView" id="enc_action_view">
                                     <property name="height_request">100</property>

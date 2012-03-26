@@ -14,6 +14,8 @@
 	  (patch by Regis Floret)
 	* Change OpenStreetMap rendering from osmarender to mapnik.
 	  (patch by Mikel Olasagasti)
+	* Patch SF #3127016: Automatic scrollbars on enclosure actions view
+	  (patch by Fred Morcos)
 
 	* SF Trac #7: Removing icon from "Cancel All" in update dialog
 	  so that .gtkrc "gtk-button-images=0" does have correct effect.
