@@ -50,8 +50,8 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 	xmlNodePtr	childNode;
 	gchar		*tmp;
 
-	// FIXME: use node type capability for this condition
-	if (!internal && (IS_NODE_SOURCE (node) || IS_VFOLDER (node)))
+	/* When exporting external OPML do not export every node type... */
+	if (!(internal || (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_EXPORT)))
 		return;
 	
 	childNode = xmlNewChild (cur, NULL, BAD_CAST"outline", NULL);
