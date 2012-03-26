@@ -1,7 +1,7 @@
 /**
  * @file item.c common item handling
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -65,6 +65,7 @@ item_copy (itemPtr item)
 	copy->flagStatus = item->flagStatus;
 	copy->time = item->time;
 	copy->validGuid = item->validGuid;
+	copy->hasEnclosure = item->hasEnclosure;
 	
 	/* the following line allows state propagation in item.c */
 	copy->nodeId = NULL;

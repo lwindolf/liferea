@@ -1,7 +1,7 @@
 /**
  * @file rule.c  item matching rules used by search folders
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,7 +110,7 @@ rule_check_item_is_flagged (rulePtr rule, itemPtr item)
 static gboolean
 rule_check_item_has_enc (rulePtr rule, itemPtr item)
 {
-	return FALSE; // FIXME
+	return item->hasEnclosure;
 }
 
 static gboolean
