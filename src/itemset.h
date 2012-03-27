@@ -1,7 +1,7 @@
 /**
  * @file itemset.h  interface to handle sets of items
  * 
- * Copyright (C) 2005-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -21,8 +21,6 @@
 
 #ifndef _ITEMSET_H
 #define _ITEMSET_H
-
-#include <libxml/tree.h>
 
 #include "item.h"
 #include "rule.h"
