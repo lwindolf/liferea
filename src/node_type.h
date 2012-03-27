@@ -1,7 +1,7 @@
 /**
  * @file node_type.h  node type interface
  * 
- * Copyright (C) 2007-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 
 #include "node.h"
 
+#include <libxml/xmlmemory.h>
 #include <gtk/gtk.h>
 
 /** node type capabilities */
@@ -85,7 +86,7 @@ typedef struct nodeType {
  *
  * @returns type string (or NULL if unknown)
  */
-const gchar *node_type_to_str(nodePtr node);
+const gchar *node_type_to_str (nodePtr node);
 
 /** 
  * Maps node type string to type constant.
@@ -94,7 +95,7 @@ const gchar *node_type_to_str(nodePtr node);
  *
  * @returns node type
  */
-nodeTypePtr node_str_to_type(const gchar *str);
+nodeTypePtr node_str_to_type (const gchar *str);
 
 /**
  * Interactive node adding (e.g. feed menu->new subscription), 
@@ -105,6 +106,6 @@ nodeTypePtr node_str_to_type(const gchar *str);
  *
  * @returns TRUE on success
  */
-gboolean node_type_request_interactive_add(nodeTypePtr nodeType);
+gboolean node_type_request_interactive_add (nodeTypePtr nodeType);
 
 #endif

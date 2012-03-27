@@ -24,6 +24,7 @@ AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X sessio
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
 AC_ARG_ENABLE(libindicate, AS_HELP_STRING([--disable-libindicate],[compile without libindicate support]),,enable_libindicate=yes)
 
+AC_CHECK_HEADERS([locale.h stdlib.h string.h unistd.h])
 AC_CHECK_FUNCS([strsep])
 
 PKG_PROG_PKG_CONFIG()
@@ -86,7 +87,8 @@ fi
 
 AM_GCONF_SOURCE_2
 
-# GTK+ stuff (taken and adapted from brasero)
+################################################################################
+# GTK+ 2/3 switching (taken and adapted from brasero)
 
 AC_MSG_CHECKING([which gtk+ version to compile against])
 AC_ARG_WITH([gtk],
@@ -112,6 +114,9 @@ case "$with_gtk" in
 esac
 AC_DEFINE_UNQUOTED(GTK_API_VERSION, $GTK_API_VERSION, [Define the GTK+ API version])
 
+################################################################################
+# Mandatory library dependencies
+
 pkg_modules="	gtk+-${GTK_API_VERSION}.0 >= $GTK_REQUIRED
 		glib-2.0 >= 2.24.0
 		gio-2.0 >= 2.26.0
@@ -126,6 +131,27 @@ pkg_modules="	gtk+-${GTK_API_VERSION}.0 >= $GTK_REQUIRED
 		unique-${UNIQUE_VERSION}
 		webkit${WEBKIT_SUFFIX}
 		json-glib-1.0"
+
+################################################################################
+# Plugins via Introspection
+
+GOBJECT_INTROSPECTION_CHECK([0.9.3])
+
+if test "${GTK_API_VERSION}" = 3; then
+
+	if test "$found_introspection" = "yes"; then
+		enable_introspection=yes
+		AC_DEFINE([ENABLE_INTROSPECTION], [1], [Define to enable GObject Introspection])
+	else
+		enable_introspection=no
+	fi
+
+	pkg_modules="${pkg_modules}
+		libpeas-1.0 >= 1.0.0
+		libpeas-gtk-1.0 >= 1.0.0"
+fi
+
+################################################################################
 
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 
@@ -178,6 +204,7 @@ echo "Use GTK+ version................ : $GTK_API_VERSION"
 echo "Use X Session Management........ : $enable_sm"
 echo "Use libnotify................... : $enable_libnotify"
 echo "Use libindicate................. : $enable_libindicate"
+echo "Use plugins..................... : $enable_introspection"
 echo
 eval eval echo Liferea will be installed in $bindir.
 echo

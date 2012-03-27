@@ -1,7 +1,7 @@
 /**
  * @file item.h common item handling
  * 
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,8 +23,6 @@
 #define _ITEM_H
 
 #include <glib.h>
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
 #include <time.h>
 
 /* Currently Liferea knows only a single type of items used
@@ -157,8 +155,8 @@ void		item_set_id(itemPtr item, const gchar * id);
  * Adds an XML node to the given feed item list node. 
  *
  * @param item		the item to save to cache
- * @param parentNode	the XML node to add to
+ * @param parentNode	the xmlNodePtr to add to
  */
-void item_to_xml(itemPtr item, xmlNodePtr parentNode);
+void item_to_xml (itemPtr item, gpointer parentNode);
 
 #endif

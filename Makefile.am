@@ -33,6 +33,9 @@ if GCONF_SCHEMAS_INSTALL
 endif
 	@$(NORMAL_INSTALL)
 
+if HAVE_INTROSPECTION
+	DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
+endif
 
 DISTCLEANFILES = \
 	liferea.desktop \
