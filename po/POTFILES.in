@@ -109,10 +109,10 @@ src/ui/liferea_shell.c
 src/ui/liferea_shell.h
 src/ui/popup_menu.c
 src/ui/popup_menu.h
+src/ui/preferences_dialog.c
+src/ui/preferences_dialog.h
 src/ui/ui_node.c
 src/ui/ui_node.h
-src/ui/ui_prefs.c
-src/ui/ui_prefs.h
 src/ui/session.c
 src/ui/session.h
 src/ui/subscription_dialog.c

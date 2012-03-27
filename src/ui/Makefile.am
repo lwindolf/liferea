@@ -20,7 +20,9 @@ libliui_a_SOURCES = \
 	liferea_dialog.c liferea_dialog.h \
 	liferea_htmlview.c liferea_htmlview.h \
 	liferea_shell.c liferea_shell.h \
+	liferea_shell_activatable.c liferea_shell_activatable.h \
 	popup_menu.c popup_menu.h \
+	preferences_dialog.c preferences_dialog.h \
 	rule_editor.c rule_editor.h \
 	search_dialog.c search_dialog.h \
 	search_folder_dialog.c search_folder_dialog.h \
@@ -31,6 +33,5 @@ libliui_a_SOURCES = \
 	ui_folder.c ui_folder.h \
 	ui_indicator.c ui_indicator.h \
 	ui_node.c ui_node.h \
-	ui_prefs.c ui_prefs.h \
 	ui_tray.c ui_tray.h \
 	ui_update.c ui_update.h 

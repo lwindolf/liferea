@@ -97,7 +97,9 @@ INTROSPECTION_SCANNER_ARGS = -I$(top_srcdir) --warn-all --identifier-prefix=Life
 Liferea_3_0_gir_NAMESPACE = Liferea
 Liferea_3_0_gir_VERSION = 3.0
 Liferea_3_0_gir_PROGRAM = $(builddir)/liferea
-Liferea_3_0_gir_FILES = ui/liferea_shell.c ui/liferea_shell.h
+Liferea_3_0_gir_FILES = \
+	ui/liferea_shell.c ui/liferea_shell.h \
+	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h
 Liferea_3_0_gir_INCLUDES = Gtk-3.0 
 
 girdir = $(datadir)/liferea/gir-1.0

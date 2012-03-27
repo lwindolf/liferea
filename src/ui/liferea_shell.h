@@ -1,5 +1,5 @@
 /**
- * @file ui_shell.h  UI layout handling
+ * @file liferea_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>

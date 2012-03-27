@@ -141,12 +141,14 @@ if test "${GTK_API_VERSION}" = 3; then
 
 	if test "$found_introspection" = "yes"; then
 		enable_introspection=yes
+		GLIB_GSETTINGS
 		AC_DEFINE([ENABLE_INTROSPECTION], [1], [Define to enable GObject Introspection])
 	else
 		enable_introspection=no
 	fi
 
 	pkg_modules="${pkg_modules}
+		gsettings-desktop-schemas
 		libpeas-1.0 >= 1.0.0
 		libpeas-gtk-1.0 >= 1.0.0"
 fi

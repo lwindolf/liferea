@@ -1955,17 +1955,17 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="box1">
+              <object class="GtkBox" id="plugins_box">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
+		<property name="spacing">6</property>
                 <child>
                   <placeholder/>
                 </child>
               </object>
               <packing>
                 <property name="position">7</property>
-                <property name="tab_fill">False</property>
               </packing>
             </child>
             <child type="tab">
@@ -1973,7 +1973,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Plugins</property>
-                <property name="width_chars">5</property>
               </object>
               <packing>
                 <property name="position">7</property>

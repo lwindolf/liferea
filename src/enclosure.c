@@ -1,7 +1,7 @@
 /**
  * @file enclosure.c enclosures/podcast support
  *
- * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 #include "debug.h"
 #include "enclosure.h"
 #include "xml.h"
-#include "ui/ui_prefs.h"	// FIXME: remove this!
+#include "ui/preferences_dialog.h"	// FIXME: remove this!
 #include "ui/liferea_shell.h"
 
 /*

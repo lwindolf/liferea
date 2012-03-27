@@ -27,18 +27,24 @@ EXTRA_DIST = \
 	$(css_DATA) \
 	$(dtd_DATA) 
 
+gsettings_SCHEMAS = org.gnome.liferea.gschema.xml
+@INTLTOOL_XML_NOMERGE_RULE@
+@GSETTINGS_RULES@
+
 install-data-local:
 if GCONF_SCHEMAS_INSTALL
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(top_srcdir)/$(schema_DATA)
 endif
 	@$(NORMAL_INSTALL)
 
-if HAVE_INTROSPECTION
-DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
-endif
-
 DISTCLEANFILES = \
 	liferea.desktop \
 	intltool-extract \
 	intltool-merge \
 	intltool-update
+
+if HAVE_INTROSPECTION
+DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
+endif
+
+

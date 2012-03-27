@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.c enclosures/podcast handling GUI
  *
- * Copyright (C) 2005-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 #include "metadata.h"
 #include "ui/liferea_dialog.h"
 #include "ui/popup_menu.h"
-#include "ui/ui_prefs.h"
+#include "ui/preferences_dialog.h"	// FIXME!
 
 /* enclosure list view implementation */
 
