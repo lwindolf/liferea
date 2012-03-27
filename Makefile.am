@@ -34,7 +34,7 @@ endif
 	@$(NORMAL_INSTALL)
 
 if HAVE_INTROSPECTION
-	DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
+DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
 endif
 
 DISTCLEANFILES = \

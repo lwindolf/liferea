@@ -474,7 +474,7 @@ void on_prefbtn_clicked(void) {
 	gchar			*browser_command, *enclosure_download_path;
 	
 	if (!prefdialog) {
-		prefdialog = liferea_dialog_new (NULL, "prefdialog");
+		prefdialog = liferea_dialog_new ("prefs.ui", "prefdialog");
 		g_signal_connect (G_OBJECT (prefdialog), "destroy", G_CALLBACK (ui_pref_destroyed_cb), NULL);
 
 		/* Set up browser selection popup */
