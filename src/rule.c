@@ -24,6 +24,7 @@
 
 #include "common.h"
 #include "debug.h"
+#include "metadata.h"
 
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
