@@ -24,14 +24,33 @@
 #include <glib.h>
 
 /**
- * liferea_auth_info_add:
+ * liferea_auth_info_from_store:
  *
- * @param id		a node id
+ * @param authId		a node id
  * @param username
  * @param password
  *
  * Allow plugins to provide authentication infos
  */
-void liferea_auth_info_add (const gchar *id, const gchar *username, const gchar *password);
+void liferea_auth_info_from_store (const gchar *authId, const gchar *username, const gchar *password);
+
+/**
+ * liferea_auth_info_store:
+ *
+ * @param subscription		pointer to a subscription
+ *
+ * Save given authentication info of a given subscription into password store (if available).
+ */
+void liferea_auth_info_store (gpointer subscription);
+
+/**
+ * Return auth information for a given node. On success username and password
+ * are set. On failures or if nothing is known yet they'll be set to NULL
+ * 
+ * @param authId		a node id
+ * @param username		reference to return username
+ * @param password		reference to return password
+ */
+void liferea_auth_info_query (const gchar *authId, gchar **username, gchar **password);
 
 #endif

@@ -33,25 +33,7 @@ G_DEFINE_INTERFACE (LifereaAuthActivatable, liferea_auth_activatable, G_TYPE_OBJ
 void
 liferea_auth_activatable_default_init (LifereaAuthActivatableInterface *iface)
 {
-	static gboolean initialized = FALSE;
-
-	if (!initialized) {
-		/**
-		 * LifereaAuthActivatable:window:
-		 *
-		 * The window property contains the gtr window for this
-		 * #LifereaAuthActivatable instance.
-		 */
-		g_object_interface_install_property (iface,
-                           g_param_spec_object ("auth",
-                                                "Auth",
-                                                "Liferea Authentication",
-                                                LIFEREA_AUTH_ACTIVATABLE_TYPE,
-                                                G_PARAM_READWRITE |
-                                                G_PARAM_CONSTRUCT_ONLY |
-                                                G_PARAM_STATIC_STRINGS));
-		initialized = TRUE;
-	}
+	/* No properties yet */
 }
 
 void

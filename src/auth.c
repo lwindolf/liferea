@@ -19,13 +19,96 @@
  */
 
 #include "auth.h"
+#include "auth_activatable.h"
+#include "plugins_engine.h"
+#include "subscription.h"
 
-#include "node.h"
-#include "update.h"
+#include <libpeas/peas-activatable.h>
+#include <libpeas/peas-extension-set.h>
+
+// FIXME: This should be a member of some object!
+static PeasExtensionSet *extensions = NULL;	/**< Plugin management */
+
+static void
+on_extension_added (PeasExtensionSet *extensions,
+                    PeasPluginInfo   *info,
+                    PeasExtension    *exten,
+                    gpointer         user_data)
+{
+	peas_extension_call (exten, "activate");
+}
+
+static void
+on_extension_removed (PeasExtensionSet *extensions,
+                      PeasPluginInfo   *info,
+                      PeasExtension    *exten,
+                      gpointer         user_data)
+{
+	peas_extension_call (exten, "deactivate");
+}
+
+static PeasExtensionSet *
+liferea_auth_get_extension_set (void)
+{
+	if (!extensions) {
+		extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
+		                             LIFEREA_AUTH_ACTIVATABLE_TYPE, NULL);
+
+		g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
+		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_added), NULL);
+
+		peas_extension_set_call (extensions, "activate");
+	}
+
+	return extensions;
+}
+
+static void
+liferea_auth_info_store_foreach (PeasExtensionSet *set,
+                                 PeasPluginInfo *info,
+                                 PeasExtension *exten,
+                                 gpointer user_data)
+{
+	subscriptionPtr subscription = (subscriptionPtr)user_data;
+
+	g_assert (subscription != NULL);
+	//g_assert (subscription->node != NULL);
+	g_assert (subscription->updateOptions != NULL);
+
+	liferea_auth_activatable_store (LIFEREA_AUTH_ACTIVATABLE (exten),
+	                                "abc", // FIXME: subscription->node->id,
+	                                subscription->updateOptions->username,
+	                                subscription->updateOptions->password);
+}
 
 void
-liferea_auth_info_add (const gchar *id, const gchar *username, const gchar *password)
+liferea_auth_info_store (gpointer user_data)
 {
-	// FIXME: Return if auth info already provided
-	g_print ("Got auth info for %s: %s %s\n", id, username, password);
+	peas_extension_set_foreach (liferea_auth_get_extension_set (),
+	                            liferea_auth_info_store_foreach, user_data);
+}
+
+void
+liferea_auth_info_from_store (const gchar *id, const gchar *username, const gchar *password)
+{
+	//g_print ("Got auth info for %s: %s %s\n", id, username, password);
+}
+
+static void
+liferea_auth_info_query_foreach (PeasExtensionSet *set,
+                               PeasPluginInfo *info,
+                               PeasExtension *exten,
+                               gpointer data)
+{
+	liferea_auth_activatable_query (LIFEREA_AUTH_ACTIVATABLE (exten), data);
+}
+
+void
+liferea_auth_info_query (const gchar *authId, gchar **username, gchar **password)
+{
+	peas_extension_set_foreach (liferea_auth_get_extension_set (),
+	                            liferea_auth_info_query_foreach, (gpointer)authId);
+	// FIXME: Implement me!
+	*username = NULL;
+	*password = NULL;
 }

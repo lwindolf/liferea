@@ -326,7 +326,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	
 	/* 6. do node type specific parsing */
 	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
-	
+
 	/* 7. update immediately if necessary */
 	if (needsUpdate && (NODE_TYPE(node))) {
 		debug1 (DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));

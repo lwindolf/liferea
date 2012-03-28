@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  * 
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include "auth.h"
 #include "common.h"
 #include "conf.h"
 #include "db.h"
@@ -437,7 +438,7 @@ subscriptionPtr
 subscription_import (xmlNodePtr xml, gboolean trusted)
 {
 	subscriptionPtr	subscription;
-	xmlChar		*source, *homepage, *filter, *intervalStr, *tmp;
+	xmlChar		*source, *homepage, *filter, *intervalStr, *id, *tmp;
 
 	subscription = subscription_new (NULL, NULL, NULL);
 	
@@ -488,6 +489,21 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		/* authentication options */
 		subscription->updateOptions->username = xmlGetProp (xml, BAD_CAST "username");
 		subscription->updateOptions->password = xmlGetProp (xml, BAD_CAST "password");
+
+		// FIXME: Check for an active keystore plugin instead!
+		/* Handle OPML auth info (imported from subscription_import() */
+		id = xmlGetProp (xml, BAD_CAST "id");
+		if (id) {
+			if(subscription->updateOptions->username) {
+				/* Write to password store (for migration) */
+				liferea_auth_info_store (subscription);
+			} else {
+				/* If no auth options in OPML try to import them from the key store */
+				liferea_auth_info_query (id,
+						         &subscription->updateOptions->username,
+						         &subscription->updateOptions->password);
+			}
+		}
 	}
 	
 	return subscription;
@@ -513,7 +529,8 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 
 		if (subscription->updateOptions->dontUseProxy)
 			xmlNewProp (xml, BAD_CAST"dontUseProxy", BAD_CAST"true");
-			
+		
+		// FIXME: Do not export on active keystore plugin!
 		if (subscription->updateOptions->username)
 			xmlNewProp (xml, BAD_CAST"username", subscription->updateOptions->username);
 		if (subscription->updateOptions->password)

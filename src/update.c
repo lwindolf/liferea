@@ -578,16 +578,6 @@ update_process_finished_job (updateJobPtr job)
 void
 update_init (void)
 {
-	PeasExtensionSet *extensions;	// FIXME: create LifereaSubscriptionUpdater object 
-					// and make this a private property so it can be
-					// deactivated in destructor!
-
-	/* Setup auth extensions */
-	extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
-		                             LIFEREA_AUTH_ACTIVATABLE_TYPE, "auth", NULL, NULL);
-
-	peas_extension_set_call (extensions, "activate");
-
 	pendingJobs = g_async_queue_new ();
 	pendingHighPrioJobs = g_async_queue_new ();
 }
