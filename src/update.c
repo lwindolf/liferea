@@ -1,7 +1,7 @@
 /**
  * @file update.c  generic update request and state processing
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -28,14 +28,18 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 
+#include <libpeas/peas-extension-set.h>
+
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
 #include <string.h>
 
+#include "auth_activatable.h"
 #include "common.h"
 #include "debug.h"
 #include "net.h"
+#include "plugins_engine.h"
 #include "xml.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_tray.h"
@@ -574,6 +578,16 @@ update_process_finished_job (updateJobPtr job)
 void
 update_init (void)
 {
+	PeasExtensionSet *extensions;	// FIXME: create LifereaSubscriptionUpdater object 
+					// and make this a private property so it can be
+					// deactivated in destructor!
+
+	/* Setup auth extensions */
+	extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
+		                             LIFEREA_AUTH_ACTIVATABLE_TYPE, "auth", NULL, NULL);
+
+	peas_extension_set_call (extensions, "activate");
+
 	pendingJobs = g_async_queue_new ();
 	pendingHighPrioJobs = g_async_queue_new ();
 }

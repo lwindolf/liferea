@@ -16,6 +16,8 @@ bin_PROGRAMS = liferea
 bin_SCRIPTS = liferea-add-feed
 
 liferea_SOURCES = \
+	auth.c auth.h \
+	auth_activatable.c auth_activatable.h \
 	browser.c browser.h \
 	comments.c comments.h \
 	common.c common.h \
@@ -98,6 +100,8 @@ Liferea_3_0_gir_NAMESPACE = Liferea
 Liferea_3_0_gir_VERSION = 3.0
 Liferea_3_0_gir_PROGRAM = $(builddir)/liferea
 Liferea_3_0_gir_FILES = \
+	auth.c auth.h \
+	auth_activatable.c auth_activatable.h \
 	ui/liferea_shell.c ui/liferea_shell.h \
 	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h
 Liferea_3_0_gir_INCLUDES = Gtk-3.0 

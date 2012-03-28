@@ -1350,12 +1350,14 @@ liferea_shell_create (int initialState)
 
 	liferea_shell_set_online_icon (network_monitor_is_online ());
 
-	/* 11. Setup plugins */
+	/* 11. Setup shell plugins */
 
 	shell->priv->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
 		                             LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
+
 	g_signal_connect (shell->priv->extensions, "extension-added", G_CALLBACK (on_extension_added), shell);
 	g_signal_connect (shell->priv->extensions, "extension-removed",	G_CALLBACK (on_extension_removed), shell);
+
 	peas_extension_set_call (shell->priv->extensions, "activate");
 
 	debug_exit ("liferea_shell_create");
