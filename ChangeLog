@@ -26,6 +26,8 @@
 	  (reported by Ben Hutchings)
 	* Reimplemented search folder rule for item with enclosures.
 	* Reimplemented search folder rule for item categories.
+	* Reimplemented feed title matching rule for search folders.
+	  (patch by John Levon)
 
 	* Updated Catalan translation (Gil Forcada)
 
