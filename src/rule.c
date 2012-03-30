@@ -29,7 +29,8 @@
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
 #define ITEM_DESC_MATCH_RULE_ID		"exact_desc"
- 
+#define FEED_TITLE_MATCH_RULE_ID	"feed_title"
+
 /** list of available search folder rules */
 static GSList *ruleFunctions = NULL;
 
@@ -129,6 +130,17 @@ rule_check_item_category (rulePtr rule, itemPtr item)
 	return FALSE;
 }
 
+static gboolean
+rule_check_feed_title (rulePtr rule, itemPtr item)
+{
+	nodePtr feedNode = node_from_id (item->parentNodeId);
+
+	if (!feedNode)
+		return FALSE;
+
+	return (NULL != g_strstr_len (feedNode->title, -1, rule->value));
+}
+
 /* rule initialization */
 
 static void
@@ -166,6 +178,7 @@ rule_init (void)
 	rule_info_add (rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
 	rule_info_add (rule_check_item_has_enc,		"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE);
 	rule_info_add (rule_check_item_category,	"category",			_("Category"),		_("is set"),		_("is not set"),	TRUE);
+	rule_info_add (rule_check_feed_title,		FEED_TITLE_MATCH_RULE_ID,	_("Feed title"),	_("does contain"),	_("does not contain"),	TRUE);
 
 	debug_exit ("rule_init");
 }
