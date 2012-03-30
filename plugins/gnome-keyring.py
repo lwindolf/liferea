@@ -11,6 +11,7 @@ class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
     object = GObject.property(type=GObject.Object)
 
     def do_activate(self):
+	print "=== dump list on activate"
 	(result, items) = GnomeKeyring.list_item_ids_sync("liferea")
 	GnomeKeyring.unlock_sync("liferea", None)
         for id in items:	
@@ -23,12 +24,14 @@ class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
                  result = GnomeKeyring.item_get_attributes_sync("liferea", id, self.attrs)
                  for attr in GnomeKeyring.Attribute.list_to_glist(self.attrs):
                     print '    %s => %s ' % (attr.name, attr.get_string())
+	print "=== dump list end"
 
     def do_deactivate(self):
         window = self.object
 
     def do_query(self, id):
 	#item = GnomeKeyring.item_get_info_sync("liferea", id)
+        #print "query id = %s" % id
 	Liferea.auth_info_from_store(id, "test", "pwd")
 
     def do_store(self, id, username, password):

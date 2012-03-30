@@ -72,11 +72,11 @@ liferea_auth_info_store_foreach (PeasExtensionSet *set,
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 
 	g_assert (subscription != NULL);
-	//g_assert (subscription->node != NULL);
+	g_assert (subscription->node != NULL);
 	g_assert (subscription->updateOptions != NULL);
 
 	liferea_auth_activatable_store (LIFEREA_AUTH_ACTIVATABLE (exten),
-	                                "abc", // FIXME: subscription->node->id,
+	                                subscription->node->id,
 	                                subscription->updateOptions->username,
 	                                subscription->updateOptions->password);
 }
@@ -91,7 +91,7 @@ liferea_auth_info_store (gpointer user_data)
 void
 liferea_auth_info_from_store (const gchar *id, const gchar *username, const gchar *password)
 {
-	//g_print ("Got auth info for %s: %s %s\n", id, username, password);
+	g_print ("Got auth info for %s: %s %s\n", id, username, password);
 }
 
 static void
@@ -104,11 +104,30 @@ liferea_auth_info_query_foreach (PeasExtensionSet *set,
 }
 
 void
-liferea_auth_info_query (const gchar *authId, gchar **username, gchar **password)
+liferea_auth_info_query (const gchar *authId)
 {
 	peas_extension_set_foreach (liferea_auth_get_extension_set (),
 	                            liferea_auth_info_query_foreach, (gpointer)authId);
-	// FIXME: Implement me!
-	*username = NULL;
-	*password = NULL;
+}
+
+static void
+liferea_auth_info_count_foreach (PeasExtensionSet *set,
+                                 PeasPluginInfo *info,
+                                 PeasExtension *exten,
+                                 gpointer data)
+{
+	gint *counter = data;
+	*counter++;
+g_print("[%p] count %d\n", g_thread_self(), *counter);
+}
+
+gboolean
+liferea_auth_has_active_store (void)
+{
+	gint counter = 0;
+
+	peas_extension_set_foreach (liferea_auth_get_extension_set (),
+	                            liferea_auth_info_count_foreach, (gpointer)&counter);
+g_print ("[%p] %d active store plugins\n", g_thread_self(), counter);
+	return (counter > 0);
 }

@@ -24,6 +24,13 @@
 #include <glib.h>
 
 /**
+ * Method to query wether there is an active password store.
+ *
+ * @returns TRUE if there is a password store
+ */
+gboolean liferea_auth_has_active_store (void);
+
+/**
  * liferea_auth_info_from_store:
  *
  * @param authId		a node id
@@ -44,13 +51,14 @@ void liferea_auth_info_from_store (const gchar *authId, const gchar *username, c
 void liferea_auth_info_store (gpointer subscription);
 
 /**
- * Return auth information for a given node. On success username and password
- * are set. On failures or if nothing is known yet they'll be set to NULL
+ * Return auth information for a given node. Each extension able to
+ * supply a user name and password for the given id is to synchronously call
+ * liferea_auth_info_from_store() to set them.
  * 
  * @param authId		a node id
  * @param username		reference to return username
  * @param password		reference to return password
  */
-void liferea_auth_info_query (const gchar *authId, gchar **username, gchar **password);
+void liferea_auth_info_query (const gchar *authId);
 
 #endif
