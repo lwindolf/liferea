@@ -1,7 +1,7 @@
 /**
  * @file subscription.h  common subscription handling interface
  * 
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -266,6 +266,15 @@ const gchar * subscription_get_filter(subscriptionPtr subscription);
  * @param filter	the new filter command
  */
 void subscription_set_filter(subscriptionPtr subscription, const gchar * filter);
+
+/**
+ * Set authentication information for a given subscription
+ * 
+ * @param subscription	the subscription
+ * @param username	the user name
+ * @param password	the password
+ */
+void subscription_set_auth_info (subscriptionPtr subscription, const gchar *username, const gchar *password);
 
 /**
  * Frees the given subscription structure.

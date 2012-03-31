@@ -434,6 +434,22 @@ subscription_set_filter (subscriptionPtr subscription, const gchar *filter)
 	feedlist_schedule_save ();
 }
 
+void
+subscription_set_auth_info (subscriptionPtr subscription,
+                            const gchar *username,
+                            const gchar *password)
+{
+	g_assert (NULL != subscription->updateOptions);
+		
+	g_free (subscription->updateOptions->username);
+	g_free (subscription->updateOptions->password);
+
+	subscription->updateOptions->username = g_strdup (username);
+	subscription->updateOptions->password = g_strdup (password);
+
+	liferea_auth_info_store (subscription);
+}
+
 subscriptionPtr
 subscription_import (xmlNodePtr xml, gboolean trusted)
 {

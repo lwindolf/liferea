@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.c  tt-rss feed list source support
  * 
- * Copyright (C) 2010-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -272,8 +272,9 @@ on_ttrss_source_selected (GtkDialog *dialog,
 		   data value... */
 		metadata_list_set (&subscription->metadata, "ttrss-url", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))));
 		
-		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
-		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
+		subscription_set_auth_info (subscription,
+		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
+		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
 		subscription->type = &ttrssSourceSubscriptionType;
 		
 		node = node_new (node_source_get_node_type ());
