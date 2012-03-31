@@ -28,6 +28,7 @@
 
 // FIXME: This should be a member of some object!
 static PeasExtensionSet *extensions = NULL;	/**< Plugin management */
+static gint		count = 0;		/**< Number of active auth plugins */
 
 static void
 on_extension_added (PeasExtensionSet *extensions,
@@ -36,6 +37,7 @@ on_extension_added (PeasExtensionSet *extensions,
                     gpointer         user_data)
 {
 	peas_extension_call (exten, "activate");
+	count++;
 }
 
 static void
@@ -45,6 +47,7 @@ on_extension_removed (PeasExtensionSet *extensions,
                       gpointer         user_data)
 {
 	peas_extension_call (exten, "deactivate");
+	count--;
 }
 
 static PeasExtensionSet *
@@ -57,7 +60,7 @@ liferea_auth_get_extension_set (void)
 		g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
 		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_added), NULL);
 
-		peas_extension_set_call (extensions, "activate");
+		peas_extension_set_foreach (extensions, on_extension_added, NULL);
 	}
 
 	return extensions;
@@ -110,24 +113,8 @@ liferea_auth_info_query (const gchar *authId)
 	                            liferea_auth_info_query_foreach, (gpointer)authId);
 }
 
-static void
-liferea_auth_info_count_foreach (PeasExtensionSet *set,
-                                 PeasPluginInfo *info,
-                                 PeasExtension *exten,
-                                 gpointer data)
-{
-	gint *counter = data;
-	*counter++;
-g_print("[%p] count %d\n", g_thread_self(), *counter);
-}
-
 gboolean
 liferea_auth_has_active_store (void)
 {
-	gint counter = 0;
-
-	peas_extension_set_foreach (liferea_auth_get_extension_set (),
-	                            liferea_auth_info_count_foreach, (gpointer)&counter);
-g_print ("[%p] %d active store plugins\n", g_thread_self(), counter);
-	return (counter > 0);
+	return (count > 0);
 }
