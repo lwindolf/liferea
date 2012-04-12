@@ -1,6 +1,8 @@
 	Version 1.9.4
 
-	* No changes yet.
+	* Fixes SF #3515880: missing include when compiling with libindicate
+	  (patch by Chow Loong Jin)
+
 
 
 2012-03-30  Lars Lindner <lars.lindner@gmail.com>
