@@ -5,6 +5,9 @@
 	* Reimplemented feed title matching rule for search folders.
 	  (patch by John Levon)
 
+	* Fixes SF #3515880: missing include when compiling with libindicate
+	  (patch by Chow Loong Jin)
+
 
 2012-03-28  Lars Lindner <lars.lindner@gmail.com>
 
