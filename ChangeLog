@@ -24,6 +24,7 @@
 	  (reported by Ben Hutchings)
 	* Reimplemented search folder rule for item with enclosures.
 	* Reimplemented search folder rule for item categories.
+	* Fixes search folders being invisible in reduced mode.
 
 
 2012-03-24  Lars Lindner <lars.lindner@gmail.com>
