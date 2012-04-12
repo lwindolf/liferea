@@ -140,6 +140,9 @@ feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, 
 	if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
 		return FALSE;
 
+	if (IS_VFOLDER (node))
+		return TRUE;
+
 	if (count > 0)
 		return TRUE;
 

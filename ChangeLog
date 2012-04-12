@@ -2,6 +2,7 @@
 
 	* Fixes SF #3515880: missing include when compiling with libindicate
 	  (patch by Chow Loong Jin)
+	* Fixes search folders being invisible in reduced mode.
 
 
 
