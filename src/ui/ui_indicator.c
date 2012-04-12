@@ -183,7 +183,7 @@ add_node_indicator (nodePtr node)
 	pixbuf = gdk_pixbuf_new_from_file (node->iconFile, NULL);
 
 	/* display favicon */
-	indicate_indicator_set_property_icon (indicator, "icon", pixbuf);
+	indicate_gtk_indicator_set_property_icon (indicator, "icon", pixbuf);
 	gdk_pixbuf_unref (pixbuf);
 
 	sprintf (count, "%u", node->unreadCount);

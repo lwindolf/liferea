@@ -99,9 +99,20 @@ contact us in IRC (see Support section) to help you with it!
 
 Liferea can be build against GTK+ version 2 or 3. The dependencies are:
 
+Mandatory:
+
    gtk2/gtk3, gconf2, libunique, libxml2, libxslt, sqlite3,
    libwebkit and libjson-glib
-   
+
+Optional:
+
+   -> For normal GTK popup notifications:
+        libnotify >= 0.3.2
+
+   -> For Ubuntu indicator support
+        libnotify >= 0.3.2,
+        libindicate-0.6     or libindicate-0.7,
+        libindicate-gtk-0.6 or libindicate-gtk-0.7
    
 Ensure that you have installed the libraries and there headers.
 If you use distribution packages then you usually need to install

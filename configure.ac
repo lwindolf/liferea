@@ -64,9 +64,17 @@ dnl libindicate
 dnl *********
 
 if test "x$enable_libindicate" = "xyes"; then
-   PKG_CHECK_MODULES([LIBINDICATE], indicate-0.5 indicate-gtk-0.5,enable_libindicate=yes,enable_libindicate=no)
+   dnl Try 0.7 first
+   PKG_CHECK_MODULES([LIBINDICATE], indicate-0.7 indicate-gtk-0.7,enable_libindicate=yes,enable_libindicate=no)
    AC_SUBST(LIBINDICATE_CFLAGS)
    AC_SUBST(LIBINDICATE_LIBS)
+
+   dnl But 0.6 will also do...
+   if test "x$enable_libindicate" = "xno"; then
+      PKG_CHECK_MODULES([LIBINDICATE], indicate-0.6 indicate-gtk-0.6,enable_libindicate=yes,enable_libindicate=no)
+      AC_SUBST(LIBINDICATE_CFLAGS)
+      AC_SUBST(LIBINDICATE_LIBS)
+   fi
 else
    enable_libindicate=no
 fi
