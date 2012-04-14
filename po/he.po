@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-28 11:19+0200\n"
+"POT-Creation-Date: 2012-04-14 16:17+0200\n"
 "PO-Revision-Date: 2010-10-19 08:16+0200\n"
 "Last-Translator: Yaron Sheffer <yaronf@gmx.com>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -566,73 +566,77 @@ msgstr "ארעה שגיאת תקשורת לא מזוהה!"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:161
+#: ../src/rule.c:174
 msgid "Item"
 msgstr "פריט"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does contain"
 msgstr "מכיל"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does not contain"
 msgstr "אינו מכיל"
 
-#: ../src/rule.c:162
+#: ../src/rule.c:175
 msgid "Item title"
 msgstr "כותרת הפריט"
 
-#: ../src/rule.c:163
+#: ../src/rule.c:176
 msgid "Item body"
 msgstr "גוף הפריט"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "Read status"
 msgstr "מצב קריאה"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is unread"
 msgstr "לא נקרא"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is read"
 msgstr "נקרא"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "Flag status"
 msgstr "מצב דגל"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is flagged"
 msgstr "מסומן"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is unflagged"
 msgstr "לא מסומן"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "Podcast"
 msgstr "פודקסט"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "included"
 msgstr "לכלול"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "not included"
 msgstr "לא לכלול"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "Category"
 msgstr "קטגוריה"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is set"
 msgstr "נקבעה"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is not set"
 msgstr "לא נקבעה"
+
+#: ../src/rule.c:181
+msgid "Feed title"
+msgstr "כותרת הערוץ"
 
 #: ../src/subscription.c:104
 #, c-format
@@ -1136,25 +1140,25 @@ msgstr "מקור לא ידוע"
 msgid "All Files"
 msgstr "קובץ _מקומי"
 
-#: ../src/ui/feed_list_view.c:338
+#: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
 msgstr "מוחק מינוי"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "באמת למחוק את \"%s\" וכל תכולתו?"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "באמת למחוק את \"%s\"?"
 
-#: ../src/ui/feed_list_view.c:351
+#: ../src/ui/feed_list_view.c:354
 msgid "Deletion Confirmation"
 msgstr "אישור מחיקה"
 
-#: ../src/ui/feed_list_view.c:382
+#: ../src/ui/feed_list_view.c:385
 msgid "Liferea is in offline mode. No update possible."
 msgstr "‏Liferea במצב לא מקוון. לא ניתן לעדכן."
 
@@ -2274,9 +2278,6 @@ msgstr "מורחב..."
 
 #~ msgid "Liferea seems to be running already!"
 #~ msgstr "נראה ש־Liferea כבר רץ!"
-
-#~ msgid "Feed title"
-#~ msgstr "כותרת הערוץ"
 
 #~ msgid "Update status"
 #~ msgstr "מצב עדכון"

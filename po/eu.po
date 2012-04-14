@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-28 11:19+0200\n"
+"POT-Creation-Date: 2012-04-14 16:17+0200\n"
 "PO-Revision-Date: 2011-10-25 00:17+0100\n"
 "Last-Translator: Mikel Olasagasti Uranga <mikel@olasagasti.info>\n"
 "Language-Team: Basque <translation-team-eu@lists.sourceforge.net>\n"
@@ -572,73 +572,77 @@ msgstr "Sareko errore ezezaguna gertatu da!"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:161
+#: ../src/rule.c:174
 msgid "Item"
 msgstr "Elementua"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does contain"
 msgstr "hau dauka"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does not contain"
 msgstr "hau ez dauka"
 
-#: ../src/rule.c:162
+#: ../src/rule.c:175
 msgid "Item title"
 msgstr "Elementuaren titulua"
 
-#: ../src/rule.c:163
+#: ../src/rule.c:176
 msgid "Item body"
 msgstr "Elementuaren gorputza"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "Read status"
 msgstr "Irakurketaren egoera"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is unread"
 msgstr "irakurri gabea"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is read"
 msgstr "irakurrita"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "Flag status"
 msgstr "Banderaren egoera"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is flagged"
 msgstr "aktibo dago"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is unflagged"
 msgstr "ez dago aktibo"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "Podcast"
 msgstr "Podcast-a"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "included"
 msgstr "barne"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "not included"
 msgstr "ez dago barnean"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "Category"
 msgstr "Kategoria"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is set"
 msgstr "ezarria"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is not set"
 msgstr "ez dago ezarria"
+
+#: ../src/rule.c:181
+msgid "Feed title"
+msgstr "Iturriaren titulua"
 
 #: ../src/subscription.c:104
 #, c-format
@@ -1147,25 +1151,25 @@ msgstr "Iturburu ezeaguna"
 msgid "All Files"
 msgstr "Fitxategi guztiak"
 
-#: ../src/ui/feed_list_view.c:338
+#: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
 msgstr "Sarrera ezabatzen"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Ziur zaude \"%s\" eta bere edukia ezabatzea nahi duzula?"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ziur zaude \"%s\" ezabatzea nahi duzula?"
 
-#: ../src/ui/feed_list_view.c:351
+#: ../src/ui/feed_list_view.c:354
 msgid "Deletion Confirmation"
 msgstr "Berretsi ezabatzea"
 
-#: ../src/ui/feed_list_view.c:382
+#: ../src/ui/feed_list_view.c:385
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea lineaz kanpoko moduan dago. Ezin da eguneraketarik burutua."
 
@@ -2267,9 +2271,6 @@ msgstr "Aurreratua..."
 
 #~ msgid "Liferea seems to be running already!"
 #~ msgstr "Badirudi Liferea jadanik exekutatzen ari dela!"
-
-#~ msgid "Feed title"
-#~ msgstr "Iturriaren titulua"
 
 #~ msgid "Update status"
 #~ msgstr "Eguneraketaren egoera"

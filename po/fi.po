@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-28 11:19+0200\n"
+"POT-Creation-Date: 2012-04-14 16:17+0200\n"
 "PO-Revision-Date: 2005-05-14 19:17+0300\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <lokalisointi-laatu@linux-aktivaattori.org>\n"
@@ -612,77 +612,81 @@ msgstr "(tuntematon verkkovirhe tapahtui)"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:161
+#: ../src/rule.c:174
 msgid "Item"
 msgstr "Otsikko"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does contain"
 msgstr "sisältää"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does not contain"
 msgstr "ei sisällä"
 
-#: ../src/rule.c:162
+#: ../src/rule.c:175
 msgid "Item title"
 msgstr "Otsikon nimi"
 
-#: ../src/rule.c:163
+#: ../src/rule.c:176
 msgid "Item body"
 msgstr "Otsikon sisältö"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "Read status"
 msgstr "Luettu"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is unread"
 msgstr "lukematon"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is read"
 msgstr "luettu"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "Flag status"
 msgstr "Merkintätila"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is flagged"
 msgstr "merkitty"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is unflagged"
 msgstr "merkitsemätön"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "Podcast"
 msgstr ""
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 #, fuzzy
 msgid "included"
 msgstr "liitetty kuva"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 #, fuzzy
 msgid "not included"
 msgstr "liitetty kuva"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 #, fuzzy
 msgid "Category"
 msgstr "luokka"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 #, fuzzy
 msgid "is set"
 msgstr "luettu"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is not set"
 msgstr ""
+
+#: ../src/rule.c:181
+msgid "Feed title"
+msgstr "Syötteen nimi"
 
 #: ../src/subscription.c:104
 #, fuzzy, c-format
@@ -1224,25 +1228,25 @@ msgstr "Tuntematon lähde"
 msgid "All Files"
 msgstr "Paikallinen _tiedosto"
 
-#: ../src/ui/feed_list_view.c:338
+#: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
 msgstr "Otsikko poistetaan"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Haluatko poistaa kansion \"%s\" sisältöineen?"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Haluatko poistaa syötteen \"%s\"?"
 
-#: ../src/ui/feed_list_view.c:351
+#: ../src/ui/feed_list_view.c:354
 msgid "Deletion Confirmation"
 msgstr "Poiston vahvistus"
 
-#: ../src/ui/feed_list_view.c:382
+#: ../src/ui/feed_list_view.c:385
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea ei ole yhteydessä verkkoon, joten päivittäminen ei ole mahdollista."
@@ -2405,9 +2409,6 @@ msgstr ""
 #~ msgid "Print debugging messages for the plugin loading"
 #~ msgstr ""
 #~ "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
-
-#~ msgid "Feed title"
-#~ msgstr "Syötteen nimi"
 
 #, fuzzy
 #~ msgid "Update status"

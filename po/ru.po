@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-28 11:19+0200\n"
+"POT-Creation-Date: 2012-04-14 16:17+0200\n"
 "PO-Revision-Date: 2011-10-31 21:40+0300\n"
 "Last-Translator: Leonid Selivanov <brave.bug@gmail.com>\n"
 "Language-Team: \n"
@@ -577,73 +577,77 @@ msgstr "Произошла неизвестная сетевая ошибка!"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:161
+#: ../src/rule.c:174
 msgid "Item"
 msgstr "Запись"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does contain"
 msgstr "содержит"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does not contain"
 msgstr "не содержит"
 
-#: ../src/rule.c:162
+#: ../src/rule.c:175
 msgid "Item title"
 msgstr "Заголовок записи"
 
-#: ../src/rule.c:163
+#: ../src/rule.c:176
 msgid "Item body"
 msgstr "Текст записи"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "Read status"
 msgstr "Статус прочтения"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is unread"
 msgstr "не прочитано"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is read"
 msgstr "прочитано"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "Flag status"
 msgstr "Отметка о важности"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is flagged"
 msgstr "есть"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is unflagged"
 msgstr "нет"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "Podcast"
 msgstr "Подкаст"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "included"
 msgstr "содержится"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "not included"
 msgstr "не содержится"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "Category"
 msgstr "Категория"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is set"
 msgstr "установлена"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is not set"
 msgstr "не установлена"
+
+#: ../src/rule.c:181
+msgid "Feed title"
+msgstr "Заголовок ленты"
 
 #: ../src/subscription.c:104
 #, c-format
@@ -1153,25 +1157,25 @@ msgstr "Неизвестный источник"
 msgid "All Files"
 msgstr "Все файлы"
 
-#: ../src/ui/feed_list_view.c:338
+#: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
 msgstr "Удаление записи"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Вы уверены, что хотите удалить \"%s\" и её содержимое?"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Вы уверены, что хотите удалить \"%s\"?"
 
-#: ../src/ui/feed_list_view.c:351
+#: ../src/ui/feed_list_view.c:354
 msgid "Deletion Confirmation"
 msgstr "Подтверждение удаления"
 
-#: ../src/ui/feed_list_view.c:382
+#: ../src/ui/feed_list_view.c:385
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в автономном режиме. Обновление невозможно."
 
@@ -2316,9 +2320,6 @@ msgstr "Дополнительно..."
 
 #~ msgid "Liferea seems to be running already!"
 #~ msgstr "Похоже, что Liferea уже запущена!"
-
-#~ msgid "Feed title"
-#~ msgstr "Заголовок ленты"
 
 #~ msgid "Update status"
 #~ msgstr "Статус обновления"

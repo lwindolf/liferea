@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-28 11:19+0200\n"
+"POT-Creation-Date: 2012-04-14 16:17+0200\n"
 "PO-Revision-Date: 2004-10-24 02:34+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -604,77 +604,82 @@ msgstr "(unknown error class)"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:161
+#: ../src/rule.c:174
 msgid "Item"
 msgstr "Предмет"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does contain"
 msgstr "содржи"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does not contain"
 msgstr "не содржи"
 
-#: ../src/rule.c:162
+#: ../src/rule.c:175
 msgid "Item title"
 msgstr "[Наслов на предметот]"
 
-#: ../src/rule.c:163
+#: ../src/rule.c:176
 msgid "Item body"
 msgstr "Содржината на предметот"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "Read status"
 msgstr "Статус (не)прочитано"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is unread"
 msgstr "е непрочитано"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is read"
 msgstr "е прочитано"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "Flag status"
 msgstr "Статус на знаменце"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is flagged"
 msgstr "има знаменце"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is unflagged"
 msgstr "нема знаменце"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "Podcast"
 msgstr ""
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 #, fuzzy
 msgid "included"
 msgstr "вклучена слика"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 #, fuzzy
 msgid "not included"
 msgstr "вклучена слика"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 #, fuzzy
 msgid "Category"
 msgstr "категорија"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 #, fuzzy
 msgid "is set"
 msgstr "е прочитано"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is not set"
 msgstr ""
+
+#: ../src/rule.c:181
+#, fuzzy
+msgid "Feed title"
+msgstr "[Наслов на предметот]"
 
 #: ../src/subscription.c:104
 #, fuzzy, c-format
@@ -1219,25 +1224,25 @@ msgstr "Непознат извор"
 msgid "All Files"
 msgstr "_Датотека"
 
-#: ../src/ui/feed_list_view.c:338
+#: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
 msgstr "Бришење на вестите"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Дали сте сигурни дека сакате да избришете \"%s\" и целата содржина?"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Дали сте сигурни дека саката да избришете \"%s\"?"
 
-#: ../src/ui/feed_list_view.c:351
+#: ../src/ui/feed_list_view.c:354
 msgid "Deletion Confirmation"
 msgstr "Потврда за бришење"
 
-#: ../src/ui/feed_list_view.c:382
+#: ../src/ui/feed_list_view.c:385
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Лајфри е во офлајн режим. Нема можност за ажурирање."
 
@@ -2396,10 +2401,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Print debugging messages for the plugin loading"
 #~ msgstr "  --debug-cache    Print debugging messages for the cache handling"
-
-#, fuzzy
-#~ msgid "Feed title"
-#~ msgstr "[Наслов на предметот]"
 
 #, fuzzy
 #~ msgid "Update status"

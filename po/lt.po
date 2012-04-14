@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-28 11:19+0200\n"
+"POT-Creation-Date: 2012-04-14 16:17+0200\n"
 "PO-Revision-Date: 2011-08-22 15:08+0300\n"
 "Last-Translator: Mindaugas Baranauskas <embar@users.berlios.de>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -567,73 +567,77 @@ msgstr "Įvyko nežinoma tinklo klaida!"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:161
+#: ../src/rule.c:174
 msgid "Item"
 msgstr "Straipsnis"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does contain"
 msgstr "turi"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does not contain"
 msgstr "neturi"
 
-#: ../src/rule.c:162
+#: ../src/rule.c:175
 msgid "Item title"
 msgstr "Straipsnio pavadinimas"
 
-#: ../src/rule.c:163
+#: ../src/rule.c:176
 msgid "Item body"
 msgstr "Straipsnio kūnas"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "Read status"
 msgstr "Perskaitymo būsena"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is unread"
 msgstr "neskaitytas"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is read"
 msgstr "skaitytas"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "Flag status"
 msgstr "Svarbumas"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is flagged"
 msgstr "svarbus"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is unflagged"
 msgstr "nesvarbus"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "Podcast"
 msgstr ""
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "included"
 msgstr "įtraukta"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "not included"
 msgstr "neįtraukta"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "Category"
 msgstr "Kategorija"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is set"
 msgstr "nustatyta"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is not set"
 msgstr "nenustatyta"
+
+#: ../src/rule.c:181
+msgid "Feed title"
+msgstr "Naujienų kanalo pavadinimas"
 
 #: ../src/subscription.c:104
 #, c-format
@@ -1142,25 +1146,25 @@ msgstr "Nežinomas šaltinis"
 msgid "All Files"
 msgstr "_Vietinė rinkmena"
 
-#: ../src/ui/feed_list_view.c:338
+#: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
 msgstr "Įrašo šalinimas"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Tikrai pašalinti „%s“ ir visą jo turinį?"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Tikrai pašalinti „%s“?"
 
-#: ../src/ui/feed_list_view.c:351
+#: ../src/ui/feed_list_view.c:354
 msgid "Deletion Confirmation"
 msgstr "Šalinimo patvirtinimas"
 
-#: ../src/ui/feed_list_view.c:382
+#: ../src/ui/feed_list_view.c:385
 msgid "Liferea is in offline mode. No update possible."
 msgstr "„Liferea“ veikia neprisijungusia veiksena. Atnaujinti negalima."
 
@@ -2261,9 +2265,6 @@ msgstr "Sudėtingiau..."
 
 #~ msgid "Liferea seems to be running already!"
 #~ msgstr "Regis Liferea programa jau paleista!"
-
-#~ msgid "Feed title"
-#~ msgstr "Naujienų kanalo pavadinimas"
 
 #~ msgid "Update status"
 #~ msgstr "Atnaujinimo būsena"

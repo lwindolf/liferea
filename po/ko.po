@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-28 11:19+0200\n"
+"POT-Creation-Date: 2012-04-14 16:17+0200\n"
 "PO-Revision-Date: 2005-12-11 13:52+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at tisphie.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -614,77 +614,81 @@ msgstr "(알 수 없는 네트워크 에러가 일어남)"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:161
+#: ../src/rule.c:174
 msgid "Item"
 msgstr "아이템"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does contain"
 msgstr "포함함"
 
-#: ../src/rule.c:161 ../src/rule.c:162 ../src/rule.c:163
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does not contain"
 msgstr "포함하지 않음"
 
-#: ../src/rule.c:162
+#: ../src/rule.c:175
 msgid "Item title"
 msgstr "아이템 제목"
 
-#: ../src/rule.c:163
+#: ../src/rule.c:176
 msgid "Item body"
 msgstr "아이템 본문"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "Read status"
 msgstr "읽은 상태"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is unread"
 msgstr "안 읽었음"
 
-#: ../src/rule.c:164
+#: ../src/rule.c:177
 msgid "is read"
 msgstr "읽었음"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "Flag status"
 msgstr "플래그 상태"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is flagged"
 msgstr "플래그 되었음"
 
-#: ../src/rule.c:165
+#: ../src/rule.c:178
 msgid "is unflagged"
 msgstr "플래그 되지 않음"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 msgid "Podcast"
 msgstr ""
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 #, fuzzy
 msgid "included"
 msgstr "포함된 사진"
 
-#: ../src/rule.c:166
+#: ../src/rule.c:179
 #, fuzzy
 msgid "not included"
 msgstr "포함된 사진"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 #, fuzzy
 msgid "Category"
 msgstr "분류"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 #, fuzzy
 msgid "is set"
 msgstr "읽었음"
 
-#: ../src/rule.c:167
+#: ../src/rule.c:180
 msgid "is not set"
 msgstr ""
+
+#: ../src/rule.c:181
+msgid "Feed title"
+msgstr "피드 제목"
 
 #: ../src/subscription.c:104
 #, fuzzy, c-format
@@ -1232,25 +1236,25 @@ msgstr "알 수 없는 소스"
 msgid "All Files"
 msgstr "로컬 파일(_L)"
 
-#: ../src/ui/feed_list_view.c:338
+#: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
 msgstr "엔트리 지우기"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "정말 %s을(를) 지우고 내용을 없애시겠습니까?"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "정말 %s을(를) 지우고 싶으세요?"
 
-#: ../src/ui/feed_list_view.c:351
+#: ../src/ui/feed_list_view.c:354
 msgid "Deletion Confirmation"
 msgstr "지우기 확인"
 
-#: ../src/ui/feed_list_view.c:382
+#: ../src/ui/feed_list_view.c:385
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea가 오프라인 상태로 동작중입니다. 새로고침이 불가능합니다."
 
@@ -2401,9 +2405,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Print debugging messages for the plugin loading"
 #~ msgstr "  --debug-cache    캐시 다루기에 대한 디버깅 메시지를 보여줍니다."
-
-#~ msgid "Feed title"
-#~ msgstr "피드 제목"
 
 #, fuzzy
 #~ msgid "Update status"
