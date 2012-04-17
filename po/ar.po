@@ -2187,10 +2187,10 @@ msgstr "عن"
 
 #: ../glade/liferea.ui.h:135
 msgid ""
-"Copyright (c) 2003-2011\n"
+"Copyright (c) 2003-2012\n"
 "The Liferea Team\n"
 msgstr ""
-"حقوق النشر © 2003-2011\n"
+"حقوق النشر © 2003-2012\n"
 "فريق لايفريا\n"
 
 #: ../glade/liferea.ui.h:138

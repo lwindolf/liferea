@@ -2203,7 +2203,7 @@ msgstr "Sobre"
 #: ../glade/liferea.ui.h:135
 #, fuzzy
 msgid ""
-"Copyright (c) 2003-2011\n"
+"Copyright (c) 2003-2012\n"
 "The Liferea Team\n"
 msgstr ""
 "Copyright (c) 2003-2009\n"

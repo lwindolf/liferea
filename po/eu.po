@@ -2152,10 +2152,10 @@ msgstr "Honi buruz"
 
 #: ../glade/liferea.ui.h:135
 msgid ""
-"Copyright (c) 2003-2011\n"
+"Copyright (c) 2003-2012\n"
 "The Liferea Team\n"
 msgstr ""
-"Copyright (c) 2003-2011\n"
+"Copyright (c) 2003-2012\n"
 "The Liferea Team\n"
 
 #: ../glade/liferea.ui.h:138

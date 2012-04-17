@@ -4217,7 +4217,7 @@
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">Liferea</property>
-    <property name="copyright" translatable="yes">Copyright (c) 2003-2011
+    <property name="copyright" translatable="yes">Copyright (c) 2003-2012
 The Liferea Team
 </property>
     <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
