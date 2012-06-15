@@ -2,7 +2,7 @@
 
 	Version 1.8.6
 
-	* Fixes every growing temporary DB files.
+	* Fixes ever growing temporary DB files.
 	  (patch by Sven Hartge)
 	* Fixes visibility of enclosure list view for Ubuntu.
 

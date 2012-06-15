@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-14 16:17+0200\n"
+"POT-Creation-Date: 2012-06-15 18:11+0200\n"
 "PO-Revision-Date: 2005-12-11 13:52+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at tisphie.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -785,41 +785,41 @@ msgid "Attachments"
 msgstr "덧말"
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:248
+#: ../src/ui/enclosure_list_view.c:251
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
 msgstr[0] ""
 
 #. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:263
+#: ../src/ui/enclosure_list_view.c:266
 msgid " Bytes"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:266
+#: ../src/ui/enclosure_list_view.c:269
 msgid "kB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:270
+#: ../src/ui/enclosure_list_view.c:273
 msgid "MB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:274
+#: ../src/ui/enclosure_list_view.c:277
 msgid "GB"
 msgstr ""
 
-#: ../src/ui/enclosure_list_view.c:279
+#: ../src/ui/enclosure_list_view.c:282
 #, c-format
 msgid "%d%s"
 msgstr ""
 
 #. strip GET parameters
-#: ../src/ui/enclosure_list_view.c:338 ../src/ui/enclosure_list_view.c:514
+#: ../src/ui/enclosure_list_view.c:341 ../src/ui/enclosure_list_view.c:517
 #: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "파일 고르기"
 
-#: ../src/ui/enclosure_list_view.c:401
+#: ../src/ui/enclosure_list_view.c:404
 #, fuzzy, c-format
 msgid "File Extension .%s"
 msgstr "<b>파일 확장자 .%s</b>"
