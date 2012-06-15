@@ -1,7 +1,10 @@
+2012-06-15  Lars Lindner <lars.lindner@gmail.com>
+
 	Version 1.8.6
 
 	* Fixes every growing temporary DB files.
 	  (patch by Sven Hartge)
+	* Fixes visibility of enclosure list view for Ubuntu.
 
 
 2012-04-14  Lars Lindner <lars.lindner@gmail.com>
