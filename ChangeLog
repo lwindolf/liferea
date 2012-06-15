@@ -6,7 +6,9 @@
 	* Fixes SF #3515880: missing include when compiling with libindicate
 	  (patch by Chow Loong Jin)
 	* Fixes search folders being invisible in reduced mode.
-
+	* Fixes ever growing temporary DB files.
+	  (patch by Sven Hartge)
+	* Fixes visibility of enclosure list view for Ubuntu.
 
 
 2012-03-30  Lars Lindner <lars.lindner@gmail.com>

@@ -60,22 +60,23 @@ db_prepare_stmt (sqlite3_stmt **stmt, const gchar *sql)
 static void
 db_new_statement (const gchar *name, const gchar *sql)
 {
-	sqlite3_stmt *statement;
-	
-	db_prepare_stmt (&statement, sql);
 	
 	if (!statements)
 		statements = g_hash_table_new (g_str_hash, g_str_equal);
-				
-	g_hash_table_insert (statements, (gpointer)name, (gpointer)statement);
+
+	g_hash_table_insert (statements, (gpointer)name, (gpointer)sql);
 }
 
 static sqlite3_stmt *
 db_get_statement (const gchar *name)
 {
 	sqlite3_stmt *statement;
+	gchar *sql;
 
-	statement = (sqlite3_stmt *) g_hash_table_lookup (statements, name);
+	sql = (gchar *) g_hash_table_lookup (statements, name);
+
+	db_prepare_stmt (&statement, sql);
+
 	if (!statement)
 		g_error ("Fatal: unknown prepared statement \"%s\" requested!", name);	
 
@@ -690,7 +691,7 @@ db_init (void)
 static void
 db_free_statements (gpointer key, gpointer value, gpointer user_data)
 {
-	sqlite3_finalize ((sqlite3_stmt *)value);
+	value = NULL;
 }
 
 void
@@ -748,6 +749,8 @@ db_item_metadata_load(itemPtr item)
 		metadata = db_metadata_list_append (metadata, key, value); 
 	}
 
+	sqlite3_finalize (stmt);
+
 	return metadata;
 }
 
@@ -769,6 +772,9 @@ db_item_metadata_update_cb (const gchar *key,
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res) 
 		g_warning ("Update in \"metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+
+	sqlite3_finalize (stmt);
+
 }
 
 static void
@@ -834,6 +840,8 @@ db_itemset_load (const gchar *id)
 		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (stmt, 0)));
 	}
 
+	sqlite3_finalize (stmt);
+
 	debug0 (DEBUG_DB, "loading of itemset finished");
 	
 	return itemSet;
@@ -857,6 +865,8 @@ db_item_load (gulong id)
 	} else {
 		debug1 (DEBUG_DB, "Could not load item with id %lu!", id);
 	}
+	
+	sqlite3_finalize (stmt);
 
 	debug_end_measurement (DEBUG_DB, "item load");
 
@@ -913,21 +923,25 @@ db_item_search_folders_update (itemPtr item)
 	
 	// FIXME: also remove from search folders
 
+	stmt = db_get_statement ("itemUpdateSearchFoldersStmt");
 	iter = list = vfolder_get_all_with_item_id (item->id);
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
 
-		stmt = db_get_statement ("itemUpdateSearchFoldersStmt");
+		sqlite3_reset (stmt);
 		sqlite3_bind_text (stmt, 1, vfolder->node->id, -1, SQLITE_TRANSIENT);
 		sqlite3_bind_int (stmt, 2, item->id);
 		res = sqlite3_step (stmt);
 
 		if (SQLITE_DONE != res) 
 			g_warning ("item update of search folders failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-		
 		iter = g_slist_next (iter);
+
 	}
 	g_slist_free (iter);
+
+	sqlite3_finalize (stmt);
+
 }
 
 void
@@ -970,10 +984,12 @@ db_item_update (itemPtr item)
 
 	if (SQLITE_DONE != res) 
 		g_warning ("item update failed (error code=%d, %s)", res, sqlite3_errmsg (db));
-	
+
+	sqlite3_finalize (stmt);
+
 	db_item_metadata_update (item);
 	db_item_search_folders_update (item);
-	
+
 	db_end_transaction ();
 
 	debug_end_measurement (DEBUG_DB, "item update");
@@ -1001,8 +1017,11 @@ db_item_state_update (itemPtr item)
 
 	if (sqlite3_step (stmt) != SQLITE_DONE) 
 		g_warning ("item state update failed (%s)", sqlite3_errmsg (db));
-	debug_end_measurement (DEBUG_DB, "item state update");
 	
+	sqlite3_finalize (stmt);
+
+	debug_end_measurement (DEBUG_DB, "item state update");
+
 }
 
 void
@@ -1020,6 +1039,8 @@ db_item_remove (gulong id)
 
 	if (SQLITE_DONE != res)
 		g_warning ("item remove failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+
+	sqlite3_finalize (stmt);
 }
 
 GSList * 
@@ -1042,8 +1063,10 @@ db_item_get_duplicates (const gchar *guid)
 		duplicates = g_slist_append (duplicates, GUINT_TO_POINTER (id));
 	}
 
+	sqlite3_finalize (stmt);
+
 	debug_end_measurement (DEBUG_DB, "searching for duplicates");
-	
+
 	return duplicates;
 }
 
@@ -1067,8 +1090,10 @@ db_item_get_duplicate_nodes (const gchar *guid)
 		duplicates = g_slist_append (duplicates, id);
 	}
 
+	sqlite3_finalize (stmt);
+
 	debug_end_measurement (DEBUG_DB, "searching for duplicates");
-	
+
 	return duplicates;
 }
 
@@ -1087,6 +1112,9 @@ db_itemset_remove_all (const gchar *id)
 
 	if (SQLITE_DONE != res)
 		g_warning ("removing all items failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+
+	sqlite3_finalize (stmt);
+
 }
 
 void 
@@ -1103,6 +1131,9 @@ db_itemset_mark_all_popup (const gchar *id)
 
 	if (SQLITE_DONE != res)
 		g_warning ("marking all items popup failed (error code=%d, %s)", res, sqlite3_errmsg(db));
+
+	sqlite3_finalize (stmt);
+
 }
 
 gboolean
@@ -1121,6 +1152,8 @@ db_itemset_get (itemSetPtr itemSet, gulong id, guint limit)
 		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (stmt, 0)));
 		success = TRUE;
 	}
+
+	sqlite3_finalize (stmt);
 
 	return success;
 }
@@ -1145,6 +1178,8 @@ db_itemset_get_unread_count (const gchar *id)
 	else
 		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 		
+	sqlite3_finalize (stmt);
+
 	debug_end_measurement (DEBUG_DB, "counting unread items");
 
 	return count;
@@ -1168,8 +1203,10 @@ db_itemset_get_item_count (const gchar *id)
 	else
 		g_warning ("item counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 
+	sqlite3_finalize (stmt);
+
 	debug_end_measurement (DEBUG_DB, "counting items");
-		
+
 	return count;
 }
 
@@ -1266,8 +1303,10 @@ db_search_folder_load (const gchar *id)
 		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (stmt, 0)));
 	}
 	
+	sqlite3_finalize (stmt);
+
 	debug1 (DEBUG_DB, "loading search folder finished (%d items)", g_list_length (itemSet->ids));
-	
+
 	return itemSet;
 }
 
@@ -1313,8 +1352,11 @@ db_search_folder_add_items (const gchar *id, GSList *items)
 			g_error ("db_search_folder_add_items: sqlite3_step (error code %d)!", res);
 
 		iter = g_slist_next (iter);
+
 	}
-	
+
+	sqlite3_finalize (stmt);
+
 	debug0 (DEBUG_DB, "adding items to search folder finished");
 }
 
@@ -1334,6 +1376,8 @@ db_subscription_metadata_load(const gchar *id)
 		metadata = db_metadata_list_append (metadata, sqlite3_column_text(stmt, 0), 
 		                                           sqlite3_column_text(stmt, 1));
 	}
+
+	sqlite3_finalize (stmt);
 
 	return metadata;
 }
@@ -1356,6 +1400,8 @@ db_subscription_metadata_update_cb (const gchar *key,
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res) 
 		g_warning ("Update in \"subscription_metadata\" table failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+
+	sqlite3_finalize (stmt);
 }
 
 static void
@@ -1394,7 +1440,9 @@ db_subscription_update (subscriptionPtr subscription)
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
 		g_warning ("Could not update subscription info for node id %s in DB (error code %d)!", subscription->node->id, res);
-		
+	
+	sqlite3_finalize (stmt);
+
 	db_subscription_metadata_update (subscription);
 		
 	debug_end_measurement (DEBUG_DB, "subscription update");
@@ -1415,6 +1463,8 @@ db_subscription_remove (const gchar *id)
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
 		g_warning ("Could not remove subscription %s from DB (error code %d)!", id, res);
+
+	sqlite3_finalize (stmt);
 
 	debug_end_measurement (DEBUG_DB, "subscription remove");
 }
@@ -1440,7 +1490,9 @@ db_node_update (nodePtr node)
 	
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
-		g_warning ("Could not update subscription info %s in DB (error code %d)!", node->id, res);
+		g_warning ("Could not update node info %s in DB (error code %d)!", node->id, res);
+
+	sqlite3_finalize (stmt);
 		
 	debug_end_measurement (DEBUG_DB, "node update");
 }
