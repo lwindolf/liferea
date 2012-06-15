@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.c enclosures/podcast handling GUI
  *
- * Copyright (C) 2005-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -159,6 +159,9 @@ enclosure_list_view_new ()
 	elv->priv->container = gtk_expander_new (_("Attachments"));	
 	
 	widget = gtk_scrolled_window_new (NULL, NULL);
+	/* FIXME: Setting a fixed size is not nice, but a workaround for the
+	   enclosure list view being hidden as 1px size in Ubuntu */
+	gtk_widget_set_size_request (widget, -1, 75);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (widget), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (widget), GTK_SHADOW_IN);
 	gtk_container_add (GTK_CONTAINER (elv->priv->container), widget);
