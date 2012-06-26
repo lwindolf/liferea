@@ -89,14 +89,13 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
       error = NULL;
     }
 
-  g_print ("Adding plugin search path: %s\n", g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL));
   peas_engine_add_search_path (PEAS_ENGINE (engine),
                                g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL),
                                g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL));
 
   peas_engine_add_search_path (PEAS_ENGINE (engine),
-                               g_build_filename (PACKAGE_LIB_DIR,  "liferea", "plugins", NULL),
-                               g_build_filename (PACKAGE_DATA_DIR, "liferea", "plugins", NULL));
+                               g_build_filename (PACKAGE_LIB_DIR,  "plugins", NULL),
+                               g_build_filename (PACKAGE_DATA_DIR, "plugins", NULL));
 
   g_settings_bind (engine->priv->plugin_settings,
                    "active-plugins",

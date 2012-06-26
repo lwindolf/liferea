@@ -19,13 +19,19 @@ css_DATA = \
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
+plugindir = $(pkglibdir)/plugins
+plugin_DATA = \
+	plugins/gnome-keyring.py \
+	plugins/gnome-keyring.plugin
+
 EXTRA_DIST = \
 	po/liferea.pot \
 	$(desktop_in_files) \
 	$(desktop_DATA) \
 	$(schema_DATA) \
 	$(css_DATA) \
-	$(dtd_DATA) 
+	$(dtd_DATA) \
+	$(plugin_DATA)
 
 gsettings_SCHEMAS = org.gnome.liferea.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
