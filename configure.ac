@@ -130,8 +130,7 @@ pkg_modules="	gtk+-${GTK_API_VERSION}.0 >= $GTK_REQUIRED
 		libsoup-2.4 >= 2.28.2
 		unique-${UNIQUE_VERSION}
 		webkit${WEBKIT_SUFFIX}
-		json-glib-1.0
-		libpeas-gtk-1.0"
+		json-glib-1.0"
 
 ################################################################################
 # Plugins via Introspection
