@@ -96,36 +96,9 @@ fi
 AM_GCONF_SOURCE_2
 
 ################################################################################
-# GTK+ 2/3 switching (taken and adapted from brasero)
-
-AC_MSG_CHECKING([which gtk+ version to compile against])
-AC_ARG_WITH([gtk],
-  [AS_HELP_STRING([--with-gtk=2.0|3.0],[which gtk+ version to compile against (default: 2.0)])],
-  [case "$with_gtk" in
-     2.0|3.0) ;;
-     *) AC_MSG_ERROR([invalid gtk version specified]) ;;
-   esac],
-  [with_gtk=2.0])
-AC_MSG_RESULT([$with_gtk])
-
-case "$with_gtk" in
-  2.0) GTK_API_VERSION=2
-       GTK_REQUIRED=2.24.0
-       WEBKIT_SUFFIX=-1.0
-       UNIQUE_VERSION=1.0
-       ;;
-  3.0) GTK_API_VERSION=3
-       GTK_REQUIRED=2.91.4
-       WEBKIT_SUFFIX=gtk-3.0
-       UNIQUE_VERSION=3.0
-       ;;
-esac
-AC_DEFINE_UNQUOTED(GTK_API_VERSION, $GTK_API_VERSION, [Define the GTK+ API version])
-
-################################################################################
 # Mandatory library dependencies
 
-pkg_modules="	gtk+-${GTK_API_VERSION}.0 >= $GTK_REQUIRED
+pkg_modules="	gtk+-3.0 >= 2.91.4
 		glib-2.0 >= 2.24.0
 		gio-2.0 >= 2.26.0
 		pango >= 1.4.0
@@ -136,8 +109,8 @@ pkg_modules="	gtk+-${GTK_API_VERSION}.0 >= $GTK_REQUIRED
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
 		libsoup-2.4 >= 2.28.2
-		unique-${UNIQUE_VERSION}
-		webkit${WEBKIT_SUFFIX}
+		unique-3.0
+		webkitgtk-3.0
 		json-glib-1.0"
 
 ################################################################################
@@ -207,7 +180,6 @@ AC_OUTPUT
 echo
 echo "$PACKAGE $VERSION"
 echo
-echo "Use GTK+ version................ : $GTK_API_VERSION"
 echo "Use X Session Management........ : $enable_sm"
 echo "Use libnotify................... : $enable_libnotify"
 echo "Use libindicate................. : $enable_libindicate"
