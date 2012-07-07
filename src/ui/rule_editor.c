@@ -206,8 +206,8 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 	struct changeRequest	*changeRequest, *selected = NULL;
 	gint			i = 0, active = 0;
 
-	hbox = gtk_hbox_new (FALSE, 2);	/* hbox to contain all rule widgets */
-	hbox2 = gtk_hbox_new (FALSE, 2);	/* another hbox where the rule specific widgets are added */
+	hbox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);	/* hbox to contain all rule widgets */
+	hbox2 = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 2);	/* another hbox where the rule specific widgets are added */
 		
 	/* set up the rule type selection popup */
 	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
@@ -286,7 +286,7 @@ rule_editor_new (itemSetPtr itemset)
 	re = RULE_EDITOR (g_object_new (RULE_EDITOR_TYPE, NULL));
 	
 	/* Set up rule list vbox */
-	re->priv->root = gtk_vbox_new (FALSE, 0);
+	re->priv->root = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 	
 	/* load rules into dialog */	
 	iter = itemset->rules;

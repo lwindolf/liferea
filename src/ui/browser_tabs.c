@@ -1,7 +1,7 @@
 /**
  * @file browser_tabs.c  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -342,7 +342,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	int		i;
 
 	tab = g_new0 (tabInfo, 1);
-	tab->widget = gtk_vbox_new (FALSE, 0);
+	tab->widget = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 	tab->htmlview = liferea_htmlview_new (TRUE);
 	tab->history = browser_tab_history_new ();
 	tabs->priv->list = g_slist_append (tabs->priv->list, tab);
@@ -360,7 +360,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	gtk_label_set_max_width_chars (GTK_LABEL(label), 17);
 	gtk_widget_show (label);
 	
-	toolbar = gtk_hbox_new (FALSE, 6);
+	toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 	
 	widget = gtk_button_new ();	
 	gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);

@@ -184,7 +184,7 @@ add_node_indicator (nodePtr node)
 
 	/* display favicon */
 	indicate_gtk_indicator_set_property_icon (indicator, "icon", pixbuf);
-	gdk_pixbuf_unref (pixbuf);
+	g_object_unref (pixbuf);
 
 	sprintf (count, "%u", node->unreadCount);
 	indicate_indicator_set_property (indicator, "name", node->title);

@@ -286,13 +286,10 @@ item_list_view_clear (ItemListView *ilv)
 	   whose removal is deferred until unselecting */
 	gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (ilv->priv->treeview));
 	
-	adj = gtk_tree_view_get_vadjustment (ilv->priv->treeview);
+	adj = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (ilv->priv->treeview));
 	gtk_adjustment_set_value (adj, 0.0);
-#if GTK_API_VERSION >= 3
 	gtk_scrollable_set_vadjustment (GTK_SCROLLABLE (ilv->priv->treeview), adj);
-#else
-	gtk_tree_view_set_vadjustment (ilv->priv->treeview, adj);
-#endif
+
 	if (itemstore)
 		gtk_tree_store_clear (itemstore);
 	if (ilv->priv->item_id_to_iter)
