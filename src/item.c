@@ -189,8 +189,9 @@ item_get_base_url (itemPtr item)
 }
 
 void
-item_to_xml (itemPtr item, xmlNodePtr parentNode)
+item_to_xml (itemPtr item, gpointer xmlNode)
 {
+	xmlNodePtr	parentNode = (xmlNodePtr)xmlNode;
 	xmlNodePtr	duplicatesNode;		
 	xmlNodePtr	itemNode;
 	gchar		*tmp;

@@ -9,12 +9,15 @@ AM_CPPFLAGS = \
 	-DBIN_DIR=\""$(bindir)"\" \
 	-I$(top_srcdir)/src \
 	$(PACKAGE_CFLAGS) \
-	$(SM_CFLAGS)
+	$(SM_CFLAGS) \
+	$(INTROSPECTION_CFLAGS)
 
 bin_PROGRAMS = liferea
 bin_SCRIPTS = liferea-add-feed
 
 liferea_SOURCES = \
+	auth.c auth.h \
+	auth_activatable.c auth_activatable.h \
 	browser.c browser.h \
 	comments.c comments.h \
 	common.c common.h \
@@ -48,6 +51,7 @@ liferea_SOURCES = \
 	node.c node.h \
 	node_type.c node_type.h \
 	node_view.h \
+	plugins_engine.c plugins_engine.h \
 	render.c render.h \
 	rule.c rule.h \
 	social.c social.h \
@@ -63,10 +67,11 @@ liferea_LDADD =	parsers/libliparsers.a \
 		fl_sources/libliflsources.a \
 		ui/libliui.a \
 		webkit/libwebkit.a \
-		$(SYNC_LIB) \
-		$(PACKAGE_LIBS) $(SM_LIBS) \
-		$(INTLLIBS) $(AVAHI_LIBS) \
-		$(WEBKIT_LIBS) $(LIBNOTIFY_LIBS)
+		$(PACKAGE_LIBS) \
+		$(SM_LIBS) \
+		$(INTLLIBS) \
+		$(WEBKIT_LIBS) \
+		$(INTROSPECTION_LIBS)
 
 EXTRA_DIST = $(srcdir)/liferea-add-feed.in
 DISTCLEANFILES = $(srcdir)/liferea-add-feed
@@ -81,5 +86,34 @@ endif
 if WITH_LIBINDICATE
 
 liferea_LDADD += $(LIBINDICATE_LIBS)
+
+endif
+
+if HAVE_INTROSPECTION
+
+-include $(INTROSPECTION_MAKEFILE)
+INTROSPECTION_GIRS = Liferea-3.0.gir
+
+Liferea-3.0.gir: liferea
+INTROSPECTION_SCANNER_ARGS = -I$(top_srcdir) --warn-all --identifier-prefix=Liferea --verbose
+Liferea_3_0_gir_NAMESPACE = Liferea
+Liferea_3_0_gir_VERSION = 3.0
+Liferea_3_0_gir_PROGRAM = $(builddir)/liferea
+Liferea_3_0_gir_FILES = \
+	auth.c auth.h \
+	auth_activatable.c auth_activatable.h \
+	ui/liferea_shell.c ui/liferea_shell.h \
+	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h
+Liferea_3_0_gir_INCLUDES = Gtk-3.0 
+
+girdir = $(datadir)/liferea/gir-1.0
+gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/liferea/girepository-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES = \
+	$(gir_DATA)	\
+	$(typelib_DATA)
 
 endif

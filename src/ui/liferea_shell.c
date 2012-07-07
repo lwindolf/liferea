@@ -1,5 +1,5 @@
 /**
- * @file ui_shell.c  UI layout handling
+ * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
@@ -27,6 +27,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <libpeas/peas-extension-set.h>
 
 #include "browser.h"
 #include "common.h"
@@ -38,16 +39,18 @@
 #include "item_history.h"
 #include "itemlist.h"
 #include "net_monitor.h"
+#include "plugins_engine.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/itemview.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
+#include "ui/liferea_shell_activatable.h"
+#include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
 #include "ui/session.h"
 #include "ui/ui_common.h"
-#include "ui/ui_prefs.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"
 
@@ -76,6 +79,8 @@ struct LifereaShellPrivate {
 	FeedList	*feedlist;
 	ItemView	*itemview;
 	BrowserTabs	*tabs;
+
+	PeasExtensionSet *extensions;		/**< Plugin management */
 
 	gboolean	fullscreen;		/**< track fullscreen */
 };
@@ -655,6 +660,12 @@ on_accel_change (GtkAccelMap *object, gchar *accel_path,
 }
 
 static void
+on_prefbtn_clicked (GtkButton *button, gpointer user_data)
+{
+	preferences_dialog_open ();
+}
+
+static void
 on_searchbtn_clicked (GtkButton *button, gpointer user_data)
 {
 	simple_search_dialog_open ();
@@ -762,6 +773,24 @@ static void
 on_menu_export (gpointer callback_data, guint callback_action, GtkWidget *widget)
 {
 	export_OPML_file ();
+}
+
+static void
+on_extension_added (PeasExtensionSet *extensions,
+                    PeasPluginInfo   *info,
+                    PeasExtension    *exten,
+                    LifereaShell     *shell)
+{
+	peas_extension_call (exten, "activate");
+}
+
+static void
+on_extension_removed (PeasExtensionSet *extensions,
+                      PeasPluginInfo   *info,
+                      PeasExtension    *exten,
+                      LifereaShell     *shell)
+{
+	peas_extension_call (exten, "deactivate");
 }
 
 static void
@@ -1320,6 +1349,16 @@ liferea_shell_create (int initialState)
 	                  G_CALLBACK (liferea_shell_online_status_changed), shell);
 
 	liferea_shell_set_online_icon (network_monitor_is_online ());
+
+	/* 11. Setup shell plugins */
+
+	shell->priv->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
+		                             LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
+
+	g_signal_connect (shell->priv->extensions, "extension-added", G_CALLBACK (on_extension_added), shell);
+	g_signal_connect (shell->priv->extensions, "extension-removed",	G_CALLBACK (on_extension_removed), shell);
+
+	peas_extension_set_call (shell->priv->extensions, "activate");
 
 	debug_exit ("liferea_shell_create");
 }

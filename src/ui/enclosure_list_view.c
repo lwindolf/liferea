@@ -30,7 +30,7 @@
 #include "metadata.h"
 #include "ui/liferea_dialog.h"
 #include "ui/popup_menu.h"
-#include "ui/ui_prefs.h"
+#include "ui/preferences_dialog.h"	// FIXME!
 
 /* enclosure list view implementation */
 

@@ -1,7 +1,7 @@
 /**
  * @file auth_dialog.c  authentication dialog
  *
- * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #include "ui/auth_dialog.h"
 
 #include <libxml/uri.h>
-#include <string.h> 
 
 #include "common.h"
 #include "debug.h"
@@ -74,16 +73,12 @@ on_authdialog_response (GtkDialog *dialog,
                         gint response_id,
 			gpointer user_data) 
 {
-	AuthDialog *ad = (AuthDialog *)user_data;
+	AuthDialog *ad = AUTH_DIALOG (user_data);
 	
-	if (response_id == GTK_RESPONSE_OK) {
-		g_assert (NULL != ad->priv->subscription->updateOptions);
-		
-		g_free (ad->priv->subscription->updateOptions->username);
-		g_free (ad->priv->subscription->updateOptions->password);
-		
-		ad->priv->subscription->updateOptions->username = g_strdup (BAD_CAST gtk_entry_get_text (GTK_ENTRY (ad->priv->username)));
-		ad->priv->subscription->updateOptions->password = g_strdup (BAD_CAST gtk_entry_get_text (GTK_ENTRY (ad->priv->password)));
+	if (response_id == GTK_RESPONSE_OK) {	
+		subscription_set_auth_info (ad->priv->subscription,
+		                            gtk_entry_get_text (GTK_ENTRY (ad->priv->username)),
+		                            gtk_entry_get_text (GTK_ENTRY (ad->priv->password)));
 		subscription_update (ad->priv->subscription, ad->priv->flags);
 	}
 
@@ -92,23 +87,19 @@ on_authdialog_response (GtkDialog *dialog,
 
 static void
 auth_dialog_load (AuthDialog *ad,
-                     subscriptionPtr subscription,
-                     gint flags)
+                  subscriptionPtr subscription,
+                  gint flags)
 {
-	AuthDialogPrivate	*ui_data = ad->priv;
 	gchar			*promptStr;
 	gchar			*source = NULL;
 	xmlURIPtr		uri;
 	
 	subscription->activeAuth = TRUE;
 	
-	ui_data->subscription = subscription;
-	ui_data->flags = flags;
+	ad->priv->subscription = subscription;
+	ad->priv->flags = flags;
 	
-	ui_data->username = liferea_dialog_lookup (ui_data->dialog, "usernameEntry");
-	ui_data->password = liferea_dialog_lookup (ui_data->dialog, "passwordEntry");
-	
-	uri = xmlParseURI (BAD_CAST subscription_get_source (ui_data->subscription));
+	uri = xmlParseURI (BAD_CAST subscription_get_source (ad->priv->subscription));
 	
 	if (uri) {
 		if (uri->user) {
@@ -117,9 +108,9 @@ auth_dialog_load (AuthDialog *ad,
 			if(pass) {
 				pass[0] = '\0';
 				pass++;
-				gtk_entry_set_text (GTK_ENTRY (ui_data->password), pass);
+				gtk_entry_set_text (GTK_ENTRY (ad->priv->password), pass);
 			}
-			gtk_entry_set_text (GTK_ENTRY (ui_data->username), user);
+			gtk_entry_set_text (GTK_ENTRY (ad->priv->username), user);
 			xmlFree (uri->user);
 			uri->user = NULL;
 		}
@@ -130,8 +121,9 @@ auth_dialog_load (AuthDialog *ad,
 	}
 	
 	promptStr = g_strdup_printf ( _("Enter the username and password for \"%s\" (%s):"),
-	                             node_get_title (ui_data->subscription->node), source?source:_("Unknown source"));
-	gtk_label_set_text (GTK_LABEL (liferea_dialog_lookup (ui_data->dialog, "prompt")), promptStr);
+	                             node_get_title (ad->priv->subscription->node),
+	                             source?source:_("Unknown source"));
+	gtk_label_set_text (GTK_LABEL (liferea_dialog_lookup (ad->priv->dialog, "prompt")), promptStr);
 	g_free (promptStr);
 	if (source)
 		xmlFree (source);
@@ -140,17 +132,15 @@ auth_dialog_load (AuthDialog *ad,
 static void
 auth_dialog_init (AuthDialog *ad)
 {
-	GtkWidget	*authdialog;
-	
 	ad->priv = AUTH_DIALOG_GET_PRIVATE (ad);
 	
-	ad->priv->dialog = authdialog = liferea_dialog_new ("auth.ui", "authdialog");
-	ad->priv->username = liferea_dialog_lookup (authdialog, "usernameEntry");
-	ad->priv->password = liferea_dialog_lookup (authdialog, "passwordEntry");
+	ad->priv->dialog = liferea_dialog_new ("auth.ui", "authdialog");
+	ad->priv->username = liferea_dialog_lookup (ad->priv->dialog, "usernameEntry");
+	ad->priv->password = liferea_dialog_lookup (ad->priv->dialog, "passwordEntry");
 	
-	g_signal_connect (G_OBJECT (authdialog), "response", G_CALLBACK (on_authdialog_response), ad);
+	g_signal_connect (G_OBJECT (ad->priv->dialog), "response", G_CALLBACK (on_authdialog_response), ad);
 
-	gtk_widget_show_all (authdialog);
+	gtk_widget_show_all (ad->priv->dialog);
 }
 
 

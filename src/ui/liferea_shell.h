@@ -1,5 +1,5 @@
 /**
- * @file ui_shell.h  UI layout handling
+ * @file liferea_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
@@ -70,9 +70,9 @@ GType liferea_shell_get_type	(void);
  * Searches the glade XML UI tree for the given widget
  * name and returns the found widget.
  *
- * @param name	the widget name
+ * @name: the widget name
  *
- * @returns the found widget or NULL
+ * Return value: the found widget or NULL
  */
 GtkWidget * liferea_shell_lookup (const gchar *name);
 

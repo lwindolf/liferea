@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  * 
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 #include <string.h>
 
+#include "auth.h"
 #include "common.h"
 #include "conf.h"
 #include "db.h"
@@ -433,11 +434,27 @@ subscription_set_filter (subscriptionPtr subscription, const gchar *filter)
 	feedlist_schedule_save ();
 }
 
+void
+subscription_set_auth_info (subscriptionPtr subscription,
+                            const gchar *username,
+                            const gchar *password)
+{
+	g_assert (NULL != subscription->updateOptions);
+		
+	g_free (subscription->updateOptions->username);
+	g_free (subscription->updateOptions->password);
+
+	subscription->updateOptions->username = g_strdup (username);
+	subscription->updateOptions->password = g_strdup (password);
+
+	liferea_auth_info_store (subscription);
+}
+
 subscriptionPtr
 subscription_import (xmlNodePtr xml, gboolean trusted)
 {
 	subscriptionPtr	subscription;
-	xmlChar		*source, *homepage, *filter, *intervalStr, *tmp;
+	xmlChar		*source, *homepage, *filter, *intervalStr, *id, *tmp;
 
 	subscription = subscription_new (NULL, NULL, NULL);
 	
@@ -513,11 +530,13 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 
 		if (subscription->updateOptions->dontUseProxy)
 			xmlNewProp (xml, BAD_CAST"dontUseProxy", BAD_CAST"true");
-			
-		if (subscription->updateOptions->username)
-			xmlNewProp (xml, BAD_CAST"username", subscription->updateOptions->username);
-		if (subscription->updateOptions->password)
-			xmlNewProp (xml, BAD_CAST"password", subscription->updateOptions->password);
+		
+		if (!liferea_auth_has_active_store ()) {
+			if (subscription->updateOptions->username)
+				xmlNewProp (xml, BAD_CAST"username", subscription->updateOptions->username);
+			if (subscription->updateOptions->password)
+				xmlNewProp (xml, BAD_CAST"password", subscription->updateOptions->password);
+		}
 	}
 	
 	g_free (interval);

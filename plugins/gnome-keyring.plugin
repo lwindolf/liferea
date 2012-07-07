@@ -1,0 +1,11 @@
+[Plugin]
+Module=gnome-keyring
+Loader=python
+IAge=2
+Name=GNOME Keyring Support
+Description=Allow Liferea to use GNOME keyring as password store
+Authors=Lars Lindner <lars.lindner@gmail.com>
+Copyright=Copyright © 2012 Lars Lindner
+Website=http://liferea.sf.net
+Help=http://liferea.sf.net
+

@@ -1,7 +1,7 @@
 /**
  * @file liferea_htmlview.c  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -43,7 +43,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 #include "ui/ui_common.h"
-#include "ui/ui_prefs.h"
+#include "ui/preferences_dialog.h"	// FIXME!
 
 #define RENDERER(htmlview)	(htmlview->priv->impl)
 

@@ -1,7 +1,7 @@
 /**
  * @file google_source.c  Google reader feed list source support
  * 
- * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -293,13 +293,17 @@ on_google_source_selected (GtkDialog *dialog,
 
 	if (response_id == GTK_RESPONSE_OK) {
 		subscription = subscription_new ("http://www.google.com/reader", NULL, NULL);
-		subscription->updateOptions->username = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))));
-		subscription->updateOptions->password = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
-		subscription->type = &googleSourceOpmlSubscriptionType ; 
 		node = node_new (node_source_get_node_type ());
 		node_set_title (node, "Google Reader");
 		node_source_new (node, google_source_get_type ());
 		node_set_subscription (node, subscription);
+
+		subscription_set_auth_info (subscription,
+		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
+		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
+
+		subscription->type = &googleSourceOpmlSubscriptionType ; 
+
 		node->data = google_source_new (node);
 		feedlist_node_added (node);
 		google_source_update (node);

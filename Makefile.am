@@ -19,13 +19,23 @@ css_DATA = \
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
+plugindir = $(pkglibdir)/plugins
+plugin_DATA = \
+	plugins/gnome-keyring.py \
+	plugins/gnome-keyring.plugin
+
 EXTRA_DIST = \
 	po/liferea.pot \
 	$(desktop_in_files) \
 	$(desktop_DATA) \
 	$(schema_DATA) \
 	$(css_DATA) \
-	$(dtd_DATA) 
+	$(dtd_DATA) \
+	$(plugin_DATA)
+
+gsettings_SCHEMAS = org.gnome.liferea.gschema.xml
+@INTLTOOL_XML_NOMERGE_RULE@
+@GSETTINGS_RULES@
 
 install-data-local:
 if GCONF_SCHEMAS_INSTALL
@@ -33,9 +43,14 @@ if GCONF_SCHEMAS_INSTALL
 endif
 	@$(NORMAL_INSTALL)
 
-
 DISTCLEANFILES = \
 	liferea.desktop \
 	intltool-extract \
 	intltool-merge \
 	intltool-update
+
+if HAVE_INTROSPECTION
+DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
+endif
+
+

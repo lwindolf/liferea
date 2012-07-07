@@ -8,6 +8,7 @@ glade_DATA = liferea.ui \
 	google_source.ui \
 	node_source.ui \
 	opml_source.ui \
+	prefs.ui \
 	ttrss_source.ui
 
 EXTRA_DIST = \

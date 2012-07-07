@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.h  property dialog for feed subscriptions
  *
- * Copyright (C) 2007-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,4 +123,4 @@ SimpleSubscriptionDialog *subscription_dialog_new (void);
 
 G_END_DECLS
 
-#endif /* _UI_SUBSCRIPTION_H */
+#endif /* _SUBSCRIPTION_DIALOG_H */

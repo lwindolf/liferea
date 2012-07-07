@@ -1,7 +1,7 @@
 /**
  * @file export.h  OPML feedlist import&export
  * 
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.net>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 
 #ifndef _EXPORT_H
 #define _EXPORT_H
+
+#include <libxml/xmlmemory.h>
 
 #include "node.h"
 

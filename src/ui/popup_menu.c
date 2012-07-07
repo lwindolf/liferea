@@ -1,7 +1,7 @@
 /**
  * @file popup_menu.c popup menus
  *
- * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -35,11 +35,11 @@
 #include "social.h"
 #include "vfolder.h"
 #include "ui/enclosure_list_view.h"
+#include "ui/feed_list_view.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
-#include "ui/feed_list_view.h"
-#include "ui/ui_prefs.h"
+#include "ui/preferences_dialog.h"
 #include "fl_sources/node_source.h"
 
 #define UI_POPUP_ITEM_IS_TOGGLE		1
@@ -60,6 +60,12 @@ static void
 on_popup_toggle_online (void)
 {
 	network_monitor_set_online (!network_monitor_is_online ());
+}
+
+static void
+on_popup_preferences (void)
+{
+	preferences_dialog_open ();
 }
 
 static void
@@ -186,7 +192,7 @@ ui_popup_systray_menu (GtkMenuPositionFunc func, guint button, guint32 activate_
 
 	ui_popup_add_menuitem (menu, _("_Work Offline"), on_popup_toggle_online, NULL, NULL, (!network_monitor_is_online ()) + UI_POPUP_ITEM_IS_TOGGLE);
 	ui_popup_add_menuitem (menu, _("_Update All"), on_menu_update_all, NULL, GTK_STOCK_REFRESH, 0);
-	ui_popup_add_menuitem (menu, NULL, on_prefbtn_clicked, NULL, GTK_STOCK_PREFERENCES, 0);
+	ui_popup_add_menuitem (menu, NULL, on_popup_preferences, NULL, GTK_STOCK_PREFERENCES, 0);
 
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 
