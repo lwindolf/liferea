@@ -94,7 +94,12 @@ liferea_auth_info_store (gpointer user_data)
 void
 liferea_auth_info_from_store (const gchar *id, const gchar *username, const gchar *password)
 {
+	nodePtr	node = node_from_id (id);
+
+	g_assert (NULL != node->subscription);
 	g_print ("Got auth info for %s: %s %s\n", id, username, password);
+	node->subscription->updateOptions->username = g_strdup (username);
+	node->subscription->updateOptions->password = g_strdup (password);
 }
 
 static void
