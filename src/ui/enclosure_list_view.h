@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.h enclosures list view
  *
- * Copyright (C) 2005-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2008 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

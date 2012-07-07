@@ -1,7 +1,7 @@
 /**
  * @file popup_menu.h popup menus
  *
- * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *

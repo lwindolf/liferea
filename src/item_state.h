@@ -1,7 +1,7 @@
 /**
  * @file item_state.c   item state controller interface
  * 
- * Copyright (C) 2007-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2008 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

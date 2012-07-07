@@ -1,7 +1,7 @@
 /**
  * @file ns_syn.h syndication namespace support
  * 
- * Copyright (C) 2003-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2007 Lars Windolf <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

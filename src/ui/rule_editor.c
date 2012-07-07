@@ -1,7 +1,7 @@
 /**
  * @file rule_editor.c  rule editing dialog functionality
  *
- * Copyright (C) 2008-2012 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify

@@ -1,5 +1,6 @@
 	Version 1.9.4
 
+	* Changes (c) name "Lars Lindner" -> "Lars Windolf" due to marriage
 	* Removed compilation support for GTK2
 	* Added GIR plugin system with libpeas
 	* Added GnomeKeyring plugin that stores password in a keyring

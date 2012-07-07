@@ -1,7 +1,7 @@
 /**
  * @file item_list_view.h  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2012 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or

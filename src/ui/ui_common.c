@@ -1,7 +1,7 @@
 /**
  * @file ui_common.c  UI helper functions
  *
- * Copyright (C) 2008-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2010 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify

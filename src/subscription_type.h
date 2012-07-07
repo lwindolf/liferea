@@ -1,7 +1,7 @@
 /**
  * @file subscription_type.h  subscription type interface
  * 
- * Copyright (C) 2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2008 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify

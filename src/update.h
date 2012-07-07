@@ -1,7 +1,7 @@
 /**
  * @file update.h  generic update request and state processing
  *
- * Copyright (C) 2003-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2008 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify

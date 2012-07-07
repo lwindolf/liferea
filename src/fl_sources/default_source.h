@@ -1,7 +1,7 @@
 /**
  * @file default_source.h default static feedlist provider
  * 
- * Copyright (C) 2005 Lars Lindner <lars.lindner@gmx.net>
+ * Copyright (C) 2005 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

@@ -1,7 +1,7 @@
 /**
  * @file browser_tabs.c  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2012 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify

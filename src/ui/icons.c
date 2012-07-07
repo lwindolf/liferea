@@ -1,7 +1,7 @@
 /**
  * @file icons.c  Using icons from theme and package pixmaps
  *
- * Copyright (C) 2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2010 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

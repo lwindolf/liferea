@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.c  property dialog for feed subscriptions
  *
- * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2011 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify

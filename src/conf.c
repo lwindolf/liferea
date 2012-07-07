@@ -1,7 +1,7 @@
 /**
  * @file conf.c Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify

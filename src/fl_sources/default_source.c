@@ -1,7 +1,7 @@
 /**
  * @file default_source.c  default static feed list source
  * 
- * Copyright (C) 2005-2012 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify

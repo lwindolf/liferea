@@ -2,7 +2,7 @@
  * @file notification.h  generic notification interface
  * 
  * Copyright (C) 2006 Norman Jonas <liferea.sf.net@devport.codepilot.net>
- * Copyright (C) 2006-2008 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2008 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

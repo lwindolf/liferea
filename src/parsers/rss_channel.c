@@ -1,7 +1,7 @@
 /**
  * @file rss_channel.c  some tolerant and generic RSS/RDF channel parsing
  *
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify

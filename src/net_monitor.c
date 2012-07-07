@@ -1,7 +1,7 @@
 /**
  * @file network_monitor.c  network status monitor
  *
- * Copyright (C) 2009 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2009 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2010 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify

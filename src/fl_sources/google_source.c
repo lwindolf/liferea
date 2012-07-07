@@ -1,7 +1,7 @@
 /**
  * @file google_source.c  Google reader feed list source support
  * 
- * Copyright (C) 2007-2012 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>

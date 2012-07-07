@@ -1,7 +1,7 @@
 /**
  * @file ui_tray.c tray icon handling
  * 
- * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2011 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004 Christophe Barbe <christophe.barbe@ufies.org>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
