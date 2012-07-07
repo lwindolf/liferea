@@ -40,8 +40,8 @@ class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
         if result != GnomeKeyring.Result.OK:
           return
 
-	print 'password %s = %s' % (id, value[0].secret)
-	print 'password id = %s' % value[0].item_id
+	#print 'password %s = %s' % (id, value[0].secret)
+	#print 'password id = %s' % value[0].item_id
 
 	username, password = value[0].secret.split('@@@')
   	Liferea.auth_info_from_store(id, username, password)
