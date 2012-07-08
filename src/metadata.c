@@ -147,6 +147,15 @@ metadata_get_type (const gchar *name)
 	return type;
 }
 
+gint
+metadata_value_cmp (gconstpointer a, gconstpointer b)
+{
+	if (g_str_equal ((gchar *)a, (gchar *)b))
+		return 0;
+
+	return 1;
+}
+
 GSList *
 metadata_list_append (GSList *metadata, const gchar *strid, const gchar *data)
 {
@@ -194,7 +203,9 @@ metadata_list_append (GSList *metadata, const gchar *strid, const gchar *data)
 	while (iter) {
 		p = (struct pair*)iter->data; 
 		if (g_str_equal (p->strid, strid)) {
-			p->data = g_slist_append (p->data, checked_data);
+			/* Avoid duplicate values */
+			if (NULL == g_slist_find_custom (p->data, checked_data, metadata_value_cmp))
+				p->data = g_slist_append (p->data, checked_data);
 			return metadata;
 		}
 		iter = iter->next;
