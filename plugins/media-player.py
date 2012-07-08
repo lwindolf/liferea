@@ -113,11 +113,11 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
 	# And fill it with the enclosures
 	self.enclosures = enclosures
         for enclosure in self.enclosures:
-           print Liferea.enclosure_get_url(enclosure)
+           print enclosure
 
 	self.pos = 0
 	self.playing = False
-        self.player.set_state(Gst.State.NULL)
+        self.player.set_state(Gst.State.NULL)	# FIXME: Make this configurable?
 	self.updateButtons()
 
     def do_activate(self):
