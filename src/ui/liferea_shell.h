@@ -67,12 +67,13 @@ struct LifereaShellClass
 GType liferea_shell_get_type	(void);
 
 /**
+ * liferea_shell_lookup:
+ * @name: the widget name
+ *
  * Searches the glade XML UI tree for the given widget
  * name and returns the found widget.
  *
- * @name: the widget name
- *
- * Return value: the found widget or NULL
+ * Returns: (transfer none): the widget found or NULL
  */
 GtkWidget * liferea_shell_lookup (const gchar *name);
 
@@ -184,16 +185,20 @@ void liferea_shell_set_status_bar (const char *format, ...);
 void liferea_shell_set_important_status_bar (const char *format, ...);
 
 /**
+ * liferea_shell_get_window:
+ *
  * Returns the Liferea main window.
  *
- * @returns main window widget
+ * Returns: (transfer none): the main window widget found or NULL
  */
 GtkWidget * liferea_shell_get_window (void);
 
 /**
+ * liferea_shell_set_view_mode:
+ *
  * Update the mode selection in the menu
  *
- * @param newMode	the new mode
+ * @newMode:	the new mode
  */
 void liferea_shell_set_view_mode (nodeViewType newMode);
 
