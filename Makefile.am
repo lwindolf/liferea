@@ -22,7 +22,9 @@ dtd_DATA = dtd/html.ent
 plugindir = $(pkglibdir)/plugins
 plugin_DATA = \
 	plugins/gnome-keyring.py \
-	plugins/gnome-keyring.plugin
+	plugins/gnome-keyring.plugin \
+	plugins/media-player.py \
+	plugins/media-player.plugin
 
 EXTRA_DIST = \
 	po/liferea.pot \

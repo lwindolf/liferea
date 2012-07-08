@@ -126,6 +126,34 @@ enclosure_to_string (enclosurePtr enclosure)
 	                                   enclosure->downloaded);
 }
 
+gchar *
+enclosure_get_url (const gchar *str)
+{
+	enclosurePtr enclosure = enclosure_from_string(str);
+	gchar *url = NULL;
+
+	if (enclosure)
+		url = g_strdup (enclosure->url);
+
+	enclosure_free (enclosure);
+
+	return url;
+}
+
+gchar *
+enclosure_get_mime (const gchar *str)
+{
+	enclosurePtr enclosure = enclosure_from_string(str);
+	gchar *mime = NULL;
+
+	if (enclosure)
+		mime = g_strdup (enclosure->url);
+
+	enclosure_free (enclosure);
+
+	return mime;
+}
+
 void
 enclosure_free (enclosurePtr enclosure)
 {

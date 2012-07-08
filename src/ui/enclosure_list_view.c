@@ -29,6 +29,7 @@
 #include "item.h"
 #include "metadata.h"
 #include "ui/liferea_dialog.h"
+#include "ui/media_player.h"
 #include "ui/popup_menu.h"
 #include "ui/preferences_dialog.h"	// FIXME!
 
@@ -50,6 +51,7 @@ struct EnclosureListViewPrivate {
 	GSList		*enclosures;		/**< list of currently presented enclosures */
 
 	GtkWidget	*container;		/**< container the list is embedded in */
+	GtkWidget	*expander;		/**< expander that shows/hides the list */
 	GtkWidget	*treeview;
 	GtkTreeStore	*treestore;
 };
@@ -156,7 +158,13 @@ enclosure_list_view_new ()
 	GtkWidget		*widget;
 		
 	elv = ENCLOSURE_LIST_VIEW (g_object_new (ENCLOSURE_LIST_VIEW_TYPE, NULL));
-	elv->priv->container = gtk_expander_new (_("Attachments"));	
+
+	/* Use a vbox to allow media player insertion */
+	elv->priv->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+	gtk_widget_set_name (GTK_WIDGET (elv->priv->container), "enclosureview");
+
+	elv->priv->expander = gtk_expander_new (_("Attachments"));
+	gtk_box_pack_end (GTK_BOX (elv->priv->container), elv->priv->expander, TRUE, TRUE, 0);
 	
 	widget = gtk_scrolled_window_new (NULL, NULL);
 	/* FIXME: Setting a fixed size is not nice, but a workaround for the
@@ -164,7 +172,7 @@ enclosure_list_view_new ()
 	gtk_widget_set_size_request (widget, -1, 75);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (widget), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (widget), GTK_SHADOW_IN);
-	gtk_container_add (GTK_CONTAINER (elv->priv->container), widget);
+	gtk_container_add (GTK_CONTAINER (elv->priv->expander), widget);
 
 	elv->priv->treeview = gtk_tree_view_new ();
 	gtk_container_add (GTK_CONTAINER (widget), elv->priv->treeview);
@@ -249,7 +257,7 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 
 	/* update list title */
 	gchar *text = g_strdup_printf (ngettext("%d attachment", "%d attachments", len), len);
-	gtk_expander_set_label (GTK_EXPANDER (elv->priv->container), text);
+	gtk_expander_set_label (GTK_EXPANDER (elv->priv->expander), text);
 	g_free (text);
 
 	/* load list into tree view */	
@@ -299,6 +307,9 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 		
 		list = list->next;
 	}
+
+	/* Load the optional media player plugin */
+	liferea_media_player_load (elv->priv->container, metadata_list_get_values (item->metadata, "enclosure"));
 }
 
 void

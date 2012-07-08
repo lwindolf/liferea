@@ -21,6 +21,8 @@ libliui_a_SOURCES = \
 	liferea_htmlview.c liferea_htmlview.h \
 	liferea_shell.c liferea_shell.h \
 	liferea_shell_activatable.c liferea_shell_activatable.h \
+	media_player.c media_player.h \
+	media_player_activatable.c media_player_activatable.h \
 	popup_menu.c popup_menu.h \
 	preferences_dialog.c preferences_dialog.h \
 	rule_editor.c rule_editor.h \

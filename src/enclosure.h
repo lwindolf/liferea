@@ -46,6 +46,8 @@ typedef struct enclosure {
 } *enclosurePtr;
 
 /**
+ * enclosure_from_string: (skip)
+ *
  * Parses enclosure description.
  *
  * @param str		the enclosure description
@@ -69,11 +71,33 @@ gchar * enclosure_values_to_string (const gchar *url, const gchar *mime, gssize 
 /**
  * Serialize enclosure to string.
  *
- * @param encloszre	the enclosure
+ * @param enclosure	the enclosure
  *
  * @returns new string (to be free'd using g_free)
  */
 gchar * enclosure_to_string (const enclosurePtr enclosure);
+
+/**
+ * enclosure_get_url:
+ *
+ * Get URL from enclosure string
+ *
+ * @str: enclosure string to parse
+ * 
+ * Return value: (transfer full): URL string, free after use
+ */
+gchar * enclosure_get_url (const gchar *str);
+
+/**
+ * enclosure_get_mime:
+ *
+ * Get MIME type from enclosure string
+ *
+ * @str: enclosure string to parse
+ * 
+ * Return value: (transfer full): MIME type string, free after use
+ */
+gchar * enclosure_get_mime (const gchar *str);
 
 /**
  * Free all memory associated with the enclosure.
@@ -83,6 +107,8 @@ gchar * enclosure_to_string (const enclosurePtr enclosure);
 void enclosure_free (enclosurePtr enclosure);
 
 /**
+ * enclosure_mime_types_get: (skip)
+ *
  * Returns all configured enclosure types.
  *
  * @returns list of encType structures
