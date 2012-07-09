@@ -232,7 +232,7 @@ enclosure_list_view_get_widget (EnclosureListView *elv)
 void
 enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 {
-	GSList		*list;
+	GSList		*list, *filteredList;
 	guint		len;
 
 	/* cleanup old content */
@@ -245,9 +245,62 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	g_slist_free (elv->priv->enclosures);
 	elv->priv->enclosures = NULL;	
 	
-	/* decide visibility of the list */
+	/* load list into tree view */
+	filteredList = NULL;
 	list = metadata_list_get_values (item->metadata, "enclosure");
-	len = g_slist_length (list);
+	while (list) {
+		enclosurePtr enclosure = enclosure_from_string (list->data);
+		if (enclosure) {
+			/* Filter unwanted MIME types (we only want audio/* and video/*) */
+			if (enclosure->mime &&
+                            (g_str_has_prefix (enclosure->mime, "video/") ||
+			    (g_str_has_prefix (enclosure->mime, "audio/")))) {
+				GtkTreeIter	iter;
+				gchar		*sizeStr;
+				guint		size = enclosure->size;
+
+				/* The following literals are the enclosure list size units */
+				gchar *unit = _(" Bytes");
+				if (size > 1024) {
+					size /= 1024;
+					unit = _("kB");
+				}
+				if (size > 1024) {
+					size /= 1024;
+					unit = _("MB");
+				}
+				if (size > 1024) {
+					size /= 1024;
+					unit = _("GB");
+				}			
+			
+				/* The following literal is the format string for enclosure sizes (number + unit string) */
+				if (size > 0)
+					sizeStr = g_strdup_printf (_("%d%s"), size, unit);
+				else
+					sizeStr = g_strdup ("");
+			
+				gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
+				gtk_tree_store_set (elv->priv->treestore, &iter, 
+					            ES_NAME_STR, enclosure->url,
+						    ES_MIME_STR, enclosure->mime?enclosure->mime:"",
+					            ES_DOWNLOADED, enclosure->downloaded,
+						    ES_SIZE, enclosure->size,
+						    ES_SIZE_STR, sizeStr,
+						    ES_PTR, enclosure,
+						    -1);
+				g_free (sizeStr);
+
+				elv->priv->enclosures = g_slist_append (elv->priv->enclosures, enclosure);
+				filteredList = g_slist_append (filteredList, list->data);
+			}
+		}
+		
+		list = g_slist_next (list);
+	}
+
+	/* decide visibility of the list */
+	len = g_slist_length (elv->priv->enclosures);
 	if (len == 0) {
 		enclosure_list_view_hide (elv);
 		return;
@@ -260,56 +313,8 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	gtk_expander_set_label (GTK_EXPANDER (elv->priv->expander), text);
 	g_free (text);
 
-	/* load list into tree view */	
-	while (list) {
-		gchar *sizeStr;
-		enclosurePtr enclosure;
-		GtkTreeIter iter;
-		
-		enclosure = enclosure_from_string (list->data);
-		if (enclosure) {
-			guint size = enclosure->size;
-			
-			/* The following literals are the enclosure list size units */
-			gchar *unit = _(" Bytes");
-			if (size > 1024) {
-				size /= 1024;
-				unit = _("kB");
-			}
-			if (size > 1024) {
-				size /= 1024;
-				unit = _("MB");
-			}
-			if (size > 1024) {
-				size /= 1024;
-				unit = _("GB");
-			}			
-			
-			/* The following literal is the format string for enclosure sizes (number + unit string) */
-			if (size > 0)
-				sizeStr = g_strdup_printf (_("%d%s"), size, unit);
-			else
-				sizeStr = g_strdup ("");
-			
-			gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
-			gtk_tree_store_set (elv->priv->treestore, &iter, 
-			                    ES_NAME_STR, enclosure->url,
-					    ES_MIME_STR, enclosure->mime?enclosure->mime:"",
-			                    ES_DOWNLOADED, enclosure->downloaded,
-					    ES_SIZE, enclosure->size,
-					    ES_SIZE_STR, sizeStr,
-					    ES_PTR, enclosure,
-					    -1);
-			g_free (sizeStr);
-
-			elv->priv->enclosures = g_slist_append (elv->priv->enclosures, enclosure);
-		}
-		
-		list = list->next;
-	}
-
 	/* Load the optional media player plugin */
-	liferea_media_player_load (elv->priv->container, metadata_list_get_values (item->metadata, "enclosure"));
+	liferea_media_player_load (elv->priv->container, filteredList);
 }
 
 void
