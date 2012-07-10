@@ -41,7 +41,7 @@ enum {
 	ES_DOWNLOADED,
 	ES_SIZE,
 	ES_SIZE_STR,
-	ES_PTR,
+	ES_SERIALIZED,
 	ES_LEN
 };
 
@@ -90,6 +90,19 @@ enclosure_list_view_init (EnclosureListView *elv)
 	elv->priv = ENCLOSURE_LIST_VIEW_GET_PRIVATE (elv);
 }
 
+static enclosurePtr
+enclosure_list_view_get_selected_enclosure (EnclosureListView *elv, GtkTreeIter *iter)
+{
+	gchar		*str;
+	enclosurePtr	enclosure;	
+
+	gtk_tree_model_get (GTK_TREE_MODEL (elv->priv->treestore), iter, ES_SERIALIZED, &str, -1);
+	enclosure = enclosure_from_string (str);
+	g_free (str);
+
+	return enclosure;
+}
+
 static gboolean
 on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
 {
@@ -108,12 +121,8 @@ on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpoi
 	if (!gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (treeview), (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL))
 		return FALSE;
 
-	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (elv->priv->treestore), &iter, path)) {
-		enclosurePtr enclosure;
-		
-		gtk_tree_model_get (GTK_TREE_MODEL (elv->priv->treestore), &iter, ES_PTR, &enclosure, -1);
-		ui_popup_enclosure_menu (enclosure, eb->button, eb->time);
-	}
+	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (elv->priv->treestore), &iter, path))
+		ui_popup_enclosure_menu (enclosure_list_view_get_selected_enclosure (elv, &iter), eb->button, eb->time);
 	
 	return TRUE;
 }
@@ -124,11 +133,10 @@ on_enclosure_list_popup_menu (GtkWidget *widget, gpointer user_data)
 	GtkTreeView		*treeview = GTK_TREE_VIEW (widget);
 	GtkTreeModel		*model;
 	GtkTreeIter		iter;
+	EnclosureListView 	*elv = (EnclosureListView *)user_data;
 
 	if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter)) {
-		enclosurePtr enclosure;	
-		gtk_tree_model_get (model, &iter, ES_PTR, &enclosure, -1);
-		ui_popup_enclosure_menu (enclosure, 3, 0);
+		ui_popup_enclosure_menu (enclosure_list_view_get_selected_enclosure (elv, &iter), 3, 0);
 		return TRUE;
 	}
 	
@@ -138,15 +146,16 @@ on_enclosure_list_popup_menu (GtkWidget *widget, gpointer user_data)
 static gboolean
 on_enclosure_list_activate (GtkTreeView *treeview, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
-	enclosurePtr	enclosure;
-	GtkTreeIter	iter;
-	GtkTreeModel	*model;
+	GtkTreeIter		iter;
+	GtkTreeModel		*model;
+	EnclosureListView 	*elv = (EnclosureListView *)user_data;
 		
-	gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter);
-	gtk_tree_model_get (model, &iter, ES_PTR, &enclosure, -1);
-	on_popup_open_enclosure (enclosure);
+	if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter)) {
+		on_popup_open_enclosure (enclosure_list_view_get_selected_enclosure (elv, &iter));
+		return TRUE;
+	}
 
-	return TRUE;
+	return FALSE;
 }
 
 EnclosureListView *
@@ -185,7 +194,7 @@ enclosure_list_view_new ()
 						   G_TYPE_BOOLEAN,	/* ES_DOWNLOADED */
 						   G_TYPE_ULONG,	/* ES_SIZE */
 						   G_TYPE_STRING,	/* ES_SIZE_STRING */
-						   G_TYPE_POINTER	/* ES_PTR */
+						   G_TYPE_STRING	/* ES_SERIALIZED */
 	                                           );
 	gtk_tree_view_set_model (GTK_TREE_VIEW (elv->priv->treeview), GTK_TREE_MODEL(elv->priv->treestore));
 
@@ -279,7 +288,7 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 					sizeStr = g_strdup_printf (_("%d%s"), size, unit);
 				else
 					sizeStr = g_strdup ("");
-			
+
 				gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
 				gtk_tree_store_set (elv->priv->treestore, &iter, 
 					            ES_NAME_STR, enclosure->url,
@@ -287,7 +296,7 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 					            ES_DOWNLOADED, enclosure->downloaded,
 						    ES_SIZE, enclosure->size,
 						    ES_SIZE_STR, sizeStr,
-						    ES_PTR, enclosure,
+						    ES_SERIALIZED, list->data,
 						    -1);
 				g_free (sizeStr);
 
