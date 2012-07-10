@@ -5,6 +5,8 @@
 	* Added GIR plugin system with libpeas
 	* Added GnomeKeyring plugin that stores password in a keyring
 	  instead of in the exported OPML.
+	* Added simple media player plugin to play audio and video enclosures.
+	* Only present enclosures of audio and video MIME type
 	* Raise libindicate minimum dependency to 0.6
 	* Patch SF #3515882: Also support libindicate 0.7 (Chow Loong Jin)
 
