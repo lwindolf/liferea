@@ -113,8 +113,15 @@ Optional:
         libnotify >= 0.3.2,
         libindicate-0.6     or libindicate-0.7,
         libindicate-gtk-0.6 or libindicate-gtk-0.7
+
+   -> For plugin support
+	Python >= 2
+        all necessary GObject Introspection packages
+
+   -> For the media player plugin
+        GStreamer library and codecs
    
-Ensure that you have installed the libraries and there headers.
+Ensure that you have installed the libraries and their headers.
 If you use distribution packages then you usually need to install
 a package named like the library and one with a suffix "-dev" or
 "-devel". You need both to compile Liferea.
