@@ -80,6 +80,16 @@ GtkWidget * enclosure_list_view_get_widget (EnclosureListView *elv);
 void enclosure_list_view_load (EnclosureListView *elv, itemPtr item);
 
 /**
+ * enclosure_list_view_select:
+ *
+ * Select the nth enclosure in the enclosure list.
+ *
+ * @elv:	the enclosure list view
+ * @position:	the position to select
+ */
+void enclosure_list_view_select (EnclosureListView *elv, guint position);
+
+/**
  * Hides the enclosure list view.
  *
  * @param elv	the enclosure list view

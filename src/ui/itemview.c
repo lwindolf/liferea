@@ -190,6 +190,12 @@ itemview_select_item (itemPtr item)
 }
 
 void
+itemview_select_enclosure (guint position)
+{
+	enclosure_list_view_select (itemview->priv->enclosureView, position);
+}
+
+void
 itemview_update_item (itemPtr item)
 {
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */

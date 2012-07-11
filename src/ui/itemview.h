@@ -1,7 +1,7 @@
 /**
  * @file itemview.h  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2012 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,6 +119,15 @@ void itemview_remove_item (itemPtr item);
  * @param item the item to select
  */
 void itemview_select_item (itemPtr item);
+
+/**
+ * itemview_select_enclosure:
+ *
+ * Selects the nth enclosure in the enclosure list view currently presented.
+ *
+ * @position:	the position to select
+ */
+void itemview_select_enclosure (guint position);
 
 /**
  * Requests updating the rendering of a given item.

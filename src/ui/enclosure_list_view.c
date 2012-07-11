@@ -327,6 +327,17 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 }
 
 void
+enclosure_list_view_select (EnclosureListView *elv, guint position)
+{
+	GtkTreeIter iter;
+
+	if (!gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (elv->priv->treestore), &iter, NULL, position))
+		return;
+
+	gtk_tree_selection_select_iter (gtk_tree_view_get_selection (GTK_TREE_VIEW (elv->priv->treeview)), &iter);
+}
+
+void
 enclosure_list_view_hide (EnclosureListView *elv)
 {
 	if (!elv)

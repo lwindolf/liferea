@@ -37,6 +37,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
 	uri = Liferea.enclosure_get_url(self.enclosures[self.pos])
 	self.player.set_property("uri", uri)
 	self.player.set_state(Gst.State.PLAYING)
+	Liferea.ItemView.select_enclosure(self.pos)
 
     def stop(self):
 	self.player.set_state(Gst.State.NULL)
