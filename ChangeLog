@@ -2,6 +2,8 @@
 
 	* Fixes SF Trac #10: Crash on empty search folders within folders
 	  (reported by phyxi)
+	* Fixes SF Trac #19: Auto-load-link doesn't work with feeds with comments
+	  (reported by wonk0)
 	* Don't ask for Google Reader authentication more than three times
 	  with auto-update to avoid annoying the user.
 
