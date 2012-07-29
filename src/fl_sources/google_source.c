@@ -97,8 +97,11 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 		gsource->authHeaderValue = g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5);
 
 		debug1 (DEBUG_UPDATE, "google reader Auth token found: %s", gsource->authHeaderValue);
-		/* now that we are authenticated trigger updating to start data retrieval */
+
 		gsource->loginState = GOOGLE_SOURCE_STATE_ACTIVE;
+		gsource->authFailures = 0;
+
+		/* now that we are authenticated trigger updating to start data retrieval */
 		if (!(flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN))
 			subscription_update (subscription, flags);
 
@@ -111,7 +114,12 @@ google_source_login_cb (const struct updateResult * const result, gpointer userd
 
 		g_free (subscription->updateError);
 		subscription->updateError = g_strdup (_("Google Reader login failed!"));
-		gsource->loginState = GOOGLE_SOURCE_STATE_NONE;
+		gsource->authFailures++;
+
+		if (gsource->authFailures < GOOGLE_SOURCE_MAX_AUTH_FAILURES)
+			gsource->loginState = GOOGLE_SOURCE_STATE_NONE;
+		else
+			gsource->loginState = GOOGLE_SOURCE_STATE_NO_AUTH;
 		
 		auth_dialog_new (subscription, flags);
 	}
@@ -159,6 +167,14 @@ google_source_login (GoogleSourcePtr gsource, guint32 flags)
 static void
 google_source_update (nodePtr node)
 {
+	GoogleSourcePtr gsource = (GoogleSourcePtr) node->data;
+
+	/* Reset GOOGLE_SOURCE_STATE_NO_AUTH as this is a manual
+	   user interaction and no auto-update so we can query
+	   for credentials again. */
+	if (gsource->loginState == GOOGLE_SOURCE_STATE_NO_AUTH)
+		gsource->loginState = GOOGLE_SOURCE_STATE_NONE;
+
 	subscription_update (node->subscription, 0);  // FIXME: 0 ?
 }
 
@@ -180,7 +196,7 @@ google_source_auto_update (nodePtr node)
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
 	if (node->subscription->updateState->lastPoll.tv_sec + GOOGLE_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
-		google_source_update (node);
+		subscription_update (node->subscription, 0);
 		g_get_current_time (&gsource->lastQuickUpdate);
 	}
 	else if (gsource->lastQuickUpdate.tv_sec + GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {

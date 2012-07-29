@@ -2,6 +2,8 @@
 
 	* Fixes SF Trac #10: Crash on empty search folders within folders
 	  (reported by phyxi)
+	* Don't ask for Google Reader authentication more than three times
+	  with auto-update to avoid annoying the user.
 
 	* Update of Hebrew translation (Ghengis Khan)
 
