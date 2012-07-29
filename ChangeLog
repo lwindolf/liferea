@@ -1,5 +1,8 @@
 	Version 1.8.7
 
+	* Fixes SF Trac #10: Crash on empty search folders within folders
+	  (reported by phyxi)
+
 	* Update of Hebrew translation (Ghengis Khan)
 
 

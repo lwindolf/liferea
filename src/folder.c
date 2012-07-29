@@ -1,7 +1,7 @@
 /**
  * @file folder.c  sub folders for hierarchic node sources
  * 
- * Copyright (C) 2006-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include "feedlist.h"
 #include "itemset.h"
 #include "node.h"
+#include "vfolder.h"
 #include "ui/icons.h"
 #include "ui/ui_folder.h"
 #include "ui/ui_node.h"
@@ -42,6 +43,9 @@ folder_merge_child_items (nodePtr node, gpointer user_data)
 {
 	itemSetPtr	folderItemSet = (itemSetPtr)user_data;
 	itemSetPtr	nodeItemSet;
+
+	if (IS_VFOLDER (node))
+		return;
 
 	nodeItemSet = node_get_itemset (node);
 	folderItemSet->ids = g_list_concat (folderItemSet->ids, nodeItemSet->ids);
