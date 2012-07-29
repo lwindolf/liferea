@@ -33,9 +33,7 @@
 #include "debug.h"
 
 unsigned long debug_level = 0;
-
-static int depth = 0;
-
+static GHashTable * t2d = NULL; /**< per thread call tree depth */
 static GHashTable *startTimes = NULL;
 
 static const char *
@@ -85,6 +83,7 @@ debug_end_measurement_func (const char * function,
 	GTimeVal	*startTime = NULL;
 	GTimeVal	endTime;
 	unsigned long	duration = 0;
+	int		i;
 		
 	if (!function)
 		return;
@@ -104,9 +103,14 @@ debug_end_measurement_func (const char * function,
 	    (0 == endTime.tv_usec/1000))
 		return;
 	
-	g_print ("%s: %s took %01ld,%03lds\n", debug_get_prefix (flags), name, 
-	                                     endTime.tv_sec - startTime->tv_sec, 
-					     endTime.tv_usec/1000);
+	g_print ("%s: ", debug_get_prefix (flags));
+	if (debug_level & DEBUG_TRACE)
+		g_print ("[%p] ", g_thread_self ());
+	for (i = 0; i < debug_get_depth (); i++) 
+		g_print ("   ");
+	g_print ("= %s took %01ld,%03lds\n", name, 
+	                                   endTime.tv_sec - startTime->tv_sec, 
+					   endTime.tv_usec/1000);
 					     
 	duration = (endTime.tv_sec - startTime->tv_sec)*1000 + endTime.tv_usec/1000;
 	if (duration > 250)
@@ -120,27 +124,56 @@ set_debug_level (unsigned long level)
 }
 
 void
+debug_set_depth (gint newDepth)
+{
+	const gpointer self = g_thread_self ();
+
+	/* Track per-thread call tree depth */
+	if (t2d == NULL)
+		t2d = g_hash_table_new (g_direct_hash, g_direct_equal);
+
+	if (newDepth < 0)
+		g_hash_table_insert(t2d, self, GINT_TO_POINTER(0));
+	else
+		g_hash_table_insert(t2d, self, GINT_TO_POINTER(newDepth));
+}
+
+gint
+debug_get_depth (void)
+{
+	const gpointer self = g_thread_self ();
+
+	if (!t2d)
+		return 0;
+
+	return GPOINTER_TO_INT (g_hash_table_lookup (t2d, self));
+}
+
+void
 debug_printf (const char    * strloc,
               const gchar   * function,
               gulong          flag,
               const gchar   * fmt,
               ...)
 {
-	static GHashTable * t2d = NULL;
 	char timebuf[64];
 	gchar * string;
 	const gchar * prefix;
 	time_t now_time_t;
 	va_list args;
 	struct tm now_tm;
-	const gpointer self = g_thread_self ();
-
-	if (t2d == NULL)
-		t2d = g_hash_table_new (g_direct_hash, g_direct_equal);
+	gint depth, i;
 
 	g_return_if_fail (fmt != NULL);
 
-	/* get prefix */
+	depth = debug_get_depth ();
+
+	if (*fmt == '-') {
+		debug_set_depth (depth - 1);
+		depth--;
+	}
+
+	/* Get prefix */
 	prefix = debug_get_prefix(flag);
 
 	va_start (args, fmt);
@@ -151,44 +184,28 @@ debug_printf (const char    * strloc,
 	localtime_r (&now_time_t, &now_tm);
 	strftime (timebuf, sizeof(timebuf), "%H:%M:%S", &now_tm);
 
-	if(flag & DEBUG_TRACE) {
-		const gint old_depth = GPOINTER_TO_INT (g_hash_table_lookup (t2d, self));
-		const gint new_depth = old_depth + (*fmt=='+' ? 1 : -1);
-
-		g_hash_table_insert(t2d, 
-		                    self,
-		                    GINT_TO_POINTER(new_depth));
-
-		if(debug_level & DEBUG_VERBOSE)
-			printf ("(%15s:%20s)(thread %p)(time %s)(depth %3d) %s: %s\n",
-				strloc,
-				function,
-				self,
-				timebuf,				
-				new_depth,
-				prefix,
-				string);
-		else
-			printf ("%s: %s\n", prefix, string);
-
-
-		if(*fmt=='-')
-			--depth;
+	if(debug_level & DEBUG_VERBOSE) {
+		printf ("(%15s:%20s)(thread %p)(time %s) %s: %s\n",
+			strloc,
+			function,
+			g_thread_self (),
+			timebuf,
+			prefix,
+			string);
 	} else {
-		if(debug_level & DEBUG_VERBOSE)
-			printf ("(%15s:%20s)(thread %p)(time %s) %s: %s\n",
-				strloc,
-				function,
-				self,
-				timebuf,
-				prefix,
-				string);
-		else
-			printf ("%s: %s\n", prefix, string);
+		g_print ("%s: ", prefix);
+		if (debug_level & DEBUG_TRACE)
+			g_print ("[%p] ", g_thread_self ());
+		for (i = 0; i < depth; i++) 
+			g_print ("   ");
+		g_print ("%s\n", string);
 	}
 	fflush (NULL);
 
 	g_free (string);
+
+	if (*fmt == '+')
+		debug_set_depth (depth + 1);
 }
 
 void
