@@ -5,7 +5,7 @@
  * Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
  *
  * Liferea specific adaptations
- * Copyright (C) 2004-2007  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,16 +41,16 @@ static GHashTable *startTimes = NULL;
 static const char *
 debug_get_prefix (unsigned long flag) 
 {
-	if (flag & DEBUG_CACHE)		return "CACHE";
-	if (flag & DEBUG_CONF)		return "CONF";
-	if (flag & DEBUG_UPDATE)	return "UPDATE";
+	if (flag & DEBUG_CACHE)		return "CACHE  ";
+	if (flag & DEBUG_CONF)		return "CONF   ";
+	if (flag & DEBUG_UPDATE)	return "UPDATE ";
 	if (flag & DEBUG_PARSING)	return "PARSING";
-	if (flag & DEBUG_GUI)		return "GUI";
-	if (flag & DEBUG_HTML)		return "HTML";
-	if (flag & DEBUG_TRACE)		return "TRACE";
-	if (flag & DEBUG_NET)		return "NET";
-	if (flag & DEBUG_DB)		return "DB";
-	if (flag & DEBUG_PERF)		return "PERF";
+	if (flag & DEBUG_GUI)		return "GUI    ";
+	if (flag & DEBUG_HTML)		return "HTML   ";
+	if (flag & DEBUG_TRACE)		return "TRACE  ";
+	if (flag & DEBUG_NET)		return "NET    ";
+	if (flag & DEBUG_DB)		return "DB     ";
+	if (flag & DEBUG_PERF)		return "PERF   ";
 	if (flag & DEBUG_VFOLDER)	return "VFOLDER";
 	return "";	
 }
@@ -185,7 +185,6 @@ debug_printf (const char    * strloc,
 				string);
 		else
 			printf ("%s: %s\n", prefix, string);
-			
 	}
 	fflush (NULL);
 
