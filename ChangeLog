@@ -10,6 +10,8 @@
 	* Raise libindicate minimum dependency to 0.6
 	* Patch SF #3515882: Also support libindicate 0.7 (Chow Loong Jin)
 
+	* Don't ask for Google Reader authentication more than three times
+	  with auto-update to avoid annoying the user.
 	* Fixes SF Trac #10: Crash on empty search folders within folders
 	  (reported by phyxi)
 	* Fixes SF #3515880: missing include when compiling with libindicate

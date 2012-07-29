@@ -1,7 +1,7 @@
 /**
  * @file google_source.h Google Reader feed list source support
  * 
- * Copyright (C) 2007-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,15 +23,15 @@
 
 #include "fl_sources/node_source.h"
 
-
 /**
  * A nodeSource specific for Google Reader
  */
 typedef struct GoogleSource {
-	nodePtr	        root;	/**< the root node in the feed list */
-	gchar           *authHeaderValue; /**< the Google Authorization token */
-	GQueue          *actionQueue;
-	int             loginState; /**< The current login state */
+	nodePtr		root;		/**< the root node in the feed list */
+	gchar		*authHeaderValue; /**< the Google Authorization token */
+	GQueue		*actionQueue;
+	gint		loginState;	/**< The current login state */
+	gint		authFailures;	/**< Number of authentication failures */
 
 	/**
 	 * A map from a subscription source to a timestamp when it was last 
@@ -45,13 +45,14 @@ typedef struct GoogleSource {
 	GTimeVal        lastQuickUpdate;
 } *GoogleSourcePtr;
 
- enum { 
+enum { 
 	GOOGLE_SOURCE_STATE_NONE = 0,
 	GOOGLE_SOURCE_STATE_IN_PROGRESS,
-	GOOGLE_SOURCE_STATE_ACTIVE
+	GOOGLE_SOURCE_STATE_ACTIVE,
+	GOOGLE_SOURCE_STATE_NO_AUTH
 };
 
-enum  { 
+enum { 
 	/**
 	 * Update only the subscription list, and not each node underneath it.
 	 * Note: Uses higher 16 bits to avoid conflict.
@@ -62,6 +63,12 @@ enum  {
 	 */
 	GOOGLE_SOURCE_UPDATE_ONLY_LOGIN = (1<<17)
 };
+
+/**
+ * Number of auth failures after which we stop bothering the user while
+ * auto-updating until he manually updates again.
+ */
+#define GOOGLE_SOURCE_MAX_AUTH_FAILURES		3
 
 /**
  * Google Source API URL's
