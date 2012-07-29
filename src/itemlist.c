@@ -591,9 +591,6 @@ itemlist_selection_changed (itemPtr item)
 		if (item) {
 			nodePtr node = node_from_id (item->nodeId);
 			
-			if (IS_FEED(node) && !((feedPtr)node->data)->ignoreComments)
-				comments_refresh (item);
-
 			item_set_read_state (item, TRUE);
 			itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
@@ -603,6 +600,9 @@ itemlist_selection_changed (itemPtr item)
 				itemview_launch_URL (link, TRUE /* force internal */);
 				g_free (link);
 			} else {
+				if (IS_FEED(node) && !((feedPtr)node->data)->ignoreComments)
+					comments_refresh (item);
+
 				itemview_select_item (item);
 				itemview_update ();
 			}

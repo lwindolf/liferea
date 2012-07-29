@@ -14,6 +14,8 @@
 	  with auto-update to avoid annoying the user.
 	* Fixes SF Trac #10: Crash on empty search folders within folders
 	  (reported by phyxi)
+	* Fixes SF Trac #19: Auto-load-link doesn't work with feeds with comments
+	  (reported by wonk0)
 	* Fixes SF #3515880: missing include when compiling with libindicate
 	  (patch by Chow Loong Jin)
 	* Fixes search folders being invisible in reduced mode.
