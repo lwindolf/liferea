@@ -10,6 +10,8 @@
 	* Raise libindicate minimum dependency to 0.6
 	* Patch SF #3515882: Also support libindicate 0.7 (Chow Loong Jin)
 
+	* Fixes SF Trac #10: Crash on empty search folders within folders
+	  (reported by phyxi)
 	* Fixes SF #3515880: missing include when compiling with libindicate
 	  (patch by Chow Loong Jin)
 	* Fixes search folders being invisible in reduced mode.
