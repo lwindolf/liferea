@@ -99,23 +99,6 @@ message_received_cb (UniqueApp         *app,
 	return res;
 }
 
-static void G_GNUC_NORETURN
-fatal_signal_handler (int sig)
-{
-	sigset_t sigset;
-
-	sigemptyset (&sigset);
-	sigprocmask (SIG_SETMASK, &sigset, NULL);
-
-	g_print ("\nLiferea did receive signal %d (%s).\n", sig, g_strsignal (sig));
-
-	g_print ("You have probably triggered a program bug. I will now try to \n");
-	g_print ("create a backtrace which you can attach to any support requests.\n\n");
-	g_on_error_stack_trace (PACKAGE);
-
-	_exit (1);
-}
-
 static void
 signal_handler (int sig)
 {
@@ -304,7 +287,7 @@ main (int argc, char *argv[])
 	if (g_str_equal(initial_state, "iconified")) {
 		initialState = MAINWINDOW_ICONIFIED;
 	} else if (g_str_equal(initial_state, "hidden") ||
-	    (show_tray_icon && start_in_tray)) {
+	           (show_tray_icon && start_in_tray)) {
 		initialState = MAINWINDOW_HIDDEN;
 	} else {
 		initialState = MAINWINDOW_SHOWN;
@@ -325,14 +308,9 @@ main (int argc, char *argv[])
 	signal (SIGINT, signal_handler);
 	signal (SIGHUP, signal_handler);
 
-#ifndef G_OS_WIN32
-	signal (SIGBUS, fatal_signal_handler);
-	signal (SIGSEGV, fatal_signal_handler);
-#endif
-
 	/* Note: we explicitely do not use the gdk_thread_*
 	   locking in Liferea because it freezes the program
-	   when running Flash applets in gtkmozembed */
+	   when running Flash applets */
 
 	runState = STATE_STARTING;
 	

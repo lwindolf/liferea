@@ -9,6 +9,8 @@
 	* Only present enclosures of audio and video MIME type
 	* Raise libindicate minimum dependency to 0.6
 	* Patch SF #3515882: Also support libindicate 0.7 (Chow Loong Jin)
+	* Dropping SIGSEGV signal handler to allow distro crash report tools to 
+	  work (as found in Ubuntu)
 
 	* Don't ask for Google Reader authentication more than three times
 	  with auto-update to avoid annoying the user.

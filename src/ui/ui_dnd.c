@@ -34,7 +34,8 @@
     Why does Liferea need such a complex DnD handling (for the feed list)?
 
      -> Because parts of the feed list might be un-draggable.
-     -> Because drag source and target might be different node sources.
+     -> Because drag source and target might be different node sources
+	with even incompatible subscription types.
      -> Because removal at drag source and insertion at drop target
         must be atomic to avoid subscription losses.
 	
