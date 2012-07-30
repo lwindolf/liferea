@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-15 18:11+0200\n"
+"POT-Creation-Date: 2012-07-30 23:47+0200\n"
 "PO-Revision-Date: 2010-09-11 10:59+0200\n"
 "Last-Translator: Pavol Klačanský <pavol@klacansky.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 1 : (n>=2 && n<=4) ? 2 : 0;\n"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:1 ../src/main.c:278 ../glade/liferea.ui.h:1
+#: ../liferea.desktop.in.h:1 ../src/main.c:261 ../glade/liferea.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -368,7 +368,7 @@ msgstr "Nepodarilo sa určiť typ kanálu."
 msgid "There are no unread items"
 msgstr "Nie sú tu žiadne neprečítané články "
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -376,45 +376,45 @@ msgstr ""
 "Spustí program Liferea s hlavným oknom v STAVE. STAV môže byť `shown', "
 "`iconified', alebo `hidden'"
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid "STATE"
 msgstr "STAV"
 
-#: ../src/main.c:196
+#: ../src/main.c:179
 msgid "Show version information and exit"
 msgstr "Vypíše informácie o verzii a skončí"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Nové prihlásenie"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:202
+#: ../src/main.c:185
 msgid "Print debugging messages of all types"
 msgstr "Vypíše správy ladenia všetkých typov"
 
-#: ../src/main.c:203
+#: ../src/main.c:186
 msgid "Print debugging messages for the cache handling"
 msgstr "Vypíše správy ladenia pre ovládanie cache"
 
-#: ../src/main.c:204
+#: ../src/main.c:187
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "Vypíše správy ladenia ovládania konfigurácie"
 
-#: ../src/main.c:205
+#: ../src/main.c:188
 msgid "Print debugging messages of the database handling"
 msgstr "Vypíše správy ladenia ovládania databázy"
 
-#: ../src/main.c:206
+#: ../src/main.c:189
 msgid "Print debugging messages of all GUI functions"
 msgstr "Vypíše správy ladenia všetkých GUI funkcíí"
 
-#: ../src/main.c:207
+#: ../src/main.c:190
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
@@ -422,44 +422,44 @@ msgstr ""
 "Povolí ladenie HTML vykresľovania. Zakaždým ako Liferea vykreslí HTML "
 "výstup, tak bude tiež generovaný HTML výpis do ~/.liferea_1.8/output.xhtml"
 
-#: ../src/main.c:208
+#: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
 msgstr "Vypíše správy ladenia všetkej sieťovej aktivity"
 
-#: ../src/main.c:209
+#: ../src/main.c:192
 msgid "Print debugging messages of all parsing functions"
 msgstr "Vypíše správy ladenia všetkých spracúvajúcich funkcií"
 
-#: ../src/main.c:210
+#: ../src/main.c:193
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "Vypíše správy ladenia keď spracovanie funkcie trvá dlho"
 
-#: ../src/main.c:211
+#: ../src/main.c:194
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Vypíše správy ladenia keď sa vchádza/vychádza z funkcíí"
 
-#: ../src/main.c:212
+#: ../src/main.c:195
 msgid "Print debugging messages of the feed update processing"
 msgstr "Vypíše správy ladenia postupu aktualizácie kanálov"
 
-#: ../src/main.c:213
+#: ../src/main.c:196
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "Vypíše správy ladenia pre ovládanie cache"
 
-#: ../src/main.c:214
+#: ../src/main.c:197
 msgid "Print verbose debugging messages"
 msgstr "Vypíše rozsiahle správy ladenia"
 
-#: ../src/main.c:227 ../src/main.c:228
+#: ../src/main.c:210 ../src/main.c:211
 msgid "Print debugging messages for the given topic"
 msgstr "Vypíše správy ladenia pre zadanú tému"
 
-#: ../src/main.c:235
+#: ../src/main.c:218
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea - čítačka kanálov pre Linux"
 
-#: ../src/main.c:236
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Pre viac informácií navštívte http://liferea.sourceforge.net/"
 
@@ -1482,20 +1482,20 @@ msgid "%b %d %H:%M"
 msgstr "%d. %b. %H:%M"
 
 #: ../src/fl_sources/default_source.c:174
-#: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:1
+#: ../src/fl_sources/google_source.c:269 ../glade/new_subscription.ui.h:1
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Nové prihlásenie"
 
-#: ../src/fl_sources/google_source.c:113
+#: ../src/fl_sources/google_source.c:116
 msgid "Google Reader login failed!"
 msgstr "Prihlásenie k Google Reader zlyhalo!"
 
-#: ../src/fl_sources/google_source.c:358
+#: ../src/fl_sources/google_source.c:374
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:359
+#: ../src/fl_sources/google_source.c:375
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "

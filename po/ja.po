@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea liferea-1_6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-15 18:11+0200\n"
+"POT-Creation-Date: 2012-07-30 23:47+0200\n"
 "PO-Revision-Date: 2009-06-14 21:28+0900\n"
 "Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
 "Language-Team: Japanese <takeshi.aihana@gmail.com>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:1 ../src/main.c:278 ../glade/liferea.ui.h:1
+#: ../liferea.desktop.in.h:1 ../src/main.c:261 ../glade/liferea.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -381,7 +381,7 @@ msgstr "配信元の種類を特定できませんでした。"
 msgid "There are no unread items"
 msgstr "未読のトピックはありません"
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -389,45 +389,45 @@ msgstr ""
 "指定した状態でメイン・ウィンドウを表示する (STATE: 'shown', "
 "'iconified','hidden')"
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid "STATE"
 msgstr "STATE"
 
-#: ../src/main.c:196
+#: ../src/main.c:179
 msgid "Show version information and exit"
 msgstr "バージョン情報を表示して終了する"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "新しい購読"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:202
+#: ../src/main.c:185
 msgid "Print debugging messages of all types"
 msgstr "全ての種類のデバッグ情報を出力する"
 
-#: ../src/main.c:203
+#: ../src/main.c:186
 msgid "Print debugging messages for the cache handling"
 msgstr "キャッシュの操作に関するデバッグ情報を出力する"
 
-#: ../src/main.c:204
+#: ../src/main.c:187
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "設定に関するデバッグ情報を出力する"
 
-#: ../src/main.c:205
+#: ../src/main.c:188
 msgid "Print debugging messages of the database handling"
 msgstr "データベースの操作に関するデバッグ情報を出力する"
 
-#: ../src/main.c:206
+#: ../src/main.c:189
 msgid "Print debugging messages of all GUI functions"
 msgstr "GUI を扱う関数のデバッグ情報を出力する"
 
-#: ../src/main.c:207
+#: ../src/main.c:190
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
@@ -435,44 +435,44 @@ msgstr ""
 "HTML 描画機能のデバッグを有効にする (HTML 出力を行う度にその内容を ~/."
 "liferea_1.8/output.xhtml に書き込む)"
 
-#: ../src/main.c:208
+#: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
 msgstr "ネットワーク機能に関するデバッグ情報を出力する"
 
-#: ../src/main.c:209
+#: ../src/main.c:192
 msgid "Print debugging messages of all parsing functions"
 msgstr "全ての解析機能に関するデバッグ情報を出力する"
 
-#: ../src/main.c:210
+#: ../src/main.c:193
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "任意の機能に時間がかかった時のデバッグ情報を出力する"
 
-#: ../src/main.c:211
+#: ../src/main.c:194
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "関数の出入りに関するデバッグ情報を出力する"
 
-#: ../src/main.c:212
+#: ../src/main.c:195
 msgid "Print debugging messages of the feed update processing"
 msgstr "配信元の更新処理に関するデバッグ情報を出力する"
 
-#: ../src/main.c:213
+#: ../src/main.c:196
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "キャッシュの操作に関するデバッグ情報を出力する"
 
-#: ../src/main.c:214
+#: ../src/main.c:197
 msgid "Print verbose debugging messages"
 msgstr "詳細なデバッグ情報を出力する"
 
-#: ../src/main.c:227 ../src/main.c:228
+#: ../src/main.c:210 ../src/main.c:211
 msgid "Print debugging messages for the given topic"
 msgstr "指定したトピックに関するデバッグ情報を出力する"
 
-#: ../src/main.c:235
+#: ../src/main.c:218
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea - Linux 向けのフィード・リーダです"
 
-#: ../src/main.c:236
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "詳細は http://liferea.sourceforge.net/ を訪問してみて下さい"
 
@@ -1484,20 +1484,20 @@ msgid "%b %d %H:%M"
 msgstr "%B%e日 %H:%M"
 
 #: ../src/fl_sources/default_source.c:174
-#: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:1
+#: ../src/fl_sources/google_source.c:269 ../glade/new_subscription.ui.h:1
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "新しい購読"
 
-#: ../src/fl_sources/google_source.c:113
+#: ../src/fl_sources/google_source.c:116
 msgid "Google Reader login failed!"
 msgstr "Google リーダへのログインに失敗しました！"
 
-#: ../src/fl_sources/google_source.c:358
+#: ../src/fl_sources/google_source.c:374
 msgid "Google Reader"
 msgstr "Google リーダ"
 
-#: ../src/fl_sources/google_source.c:359
+#: ../src/fl_sources/google_source.c:375
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "

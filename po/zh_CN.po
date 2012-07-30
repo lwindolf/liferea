@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-15 18:11+0200\n"
+"POT-Creation-Date: 2012-07-30 23:47+0200\n"
 "PO-Revision-Date: 2011-07-12 18:15+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:1 ../src/main.c:278 ../glade/liferea.ui.h:1
+#: ../liferea.desktop.in.h:1 ../src/main.c:261 ../glade/liferea.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -361,51 +361,51 @@ msgstr "无法确定 Feed 类型。"
 msgid "There are no unread items"
 msgstr "没有未读条目 "
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
 msgstr " 状态 STATE 可以是 shown, iconified 或 hidden"
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid "STATE"
 msgstr "状态"
 
-#: ../src/main.c:196
+#: ../src/main.c:179
 msgid "Show version information and exit"
 msgstr "显示 Liferea 版本信息并退出"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "新增订阅"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:202
+#: ../src/main.c:185
 msgid "Print debugging messages of all types"
 msgstr "输出所有调试信息"
 
-#: ../src/main.c:203
+#: ../src/main.c:186
 msgid "Print debugging messages for the cache handling"
 msgstr "输出缓存处理的调试信息"
 
-#: ../src/main.c:204
+#: ../src/main.c:187
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "输出配置处理的调试信息"
 
-#: ../src/main.c:205
+#: ../src/main.c:188
 msgid "Print debugging messages of the database handling"
 msgstr "输出缓存处理的调试信息"
 
-#: ../src/main.c:206
+#: ../src/main.c:189
 msgid "Print debugging messages of all GUI functions"
 msgstr "输出所有图形界面的调试信息"
 
-#: ../src/main.c:207
+#: ../src/main.c:190
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
@@ -413,44 +413,44 @@ msgstr ""
 "启用 HTML 渲染调试。每当 Liferea 渲染 HTML 都将其转储至 ~/.liferea_1.8/"
 "output.xhtml"
 
-#: ../src/main.c:208
+#: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
 msgstr "输出所有网络活动的调试信息"
 
-#: ../src/main.c:209
+#: ../src/main.c:192
 msgid "Print debugging messages of all parsing functions"
 msgstr "输出所有解析函数的调试信息"
 
-#: ../src/main.c:210
+#: ../src/main.c:193
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "当某函数运行时间过长时输出调试信息"
 
-#: ../src/main.c:211
+#: ../src/main.c:194
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "输出进入或离开函数时的调试信息"
 
-#: ../src/main.c:212
+#: ../src/main.c:195
 msgid "Print debugging messages of the feed update processing"
 msgstr "输出 Feed 更新的调试信息"
 
-#: ../src/main.c:213
+#: ../src/main.c:196
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "输出缓存处理的调试信息"
 
-#: ../src/main.c:214
+#: ../src/main.c:197
 msgid "Print verbose debugging messages"
 msgstr "输出详细调试信息"
 
-#: ../src/main.c:227 ../src/main.c:228
+#: ../src/main.c:210 ../src/main.c:211
 msgid "Print debugging messages for the given topic"
 msgstr "输出给定主题的调试信息"
 
-#: ../src/main.c:235
+#: ../src/main.c:218
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea，Linux Feed 阅读器"
 
-#: ../src/main.c:236
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "更多信息请访问 http://liferea.sourceforge.net/"
 
@@ -1511,20 +1511,20 @@ msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
 #: ../src/fl_sources/default_source.c:174
-#: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:1
+#: ../src/fl_sources/google_source.c:269 ../glade/new_subscription.ui.h:1
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "新增订阅"
 
-#: ../src/fl_sources/google_source.c:113
+#: ../src/fl_sources/google_source.c:116
 msgid "Google Reader login failed!"
 msgstr "Google Reader 登录失败！"
 
-#: ../src/fl_sources/google_source.c:358
+#: ../src/fl_sources/google_source.c:374
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:359
+#: ../src/fl_sources/google_source.c:375
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "

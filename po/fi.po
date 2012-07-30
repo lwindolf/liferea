@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-15 18:11+0200\n"
+"POT-Creation-Date: 2012-07-30 23:47+0200\n"
 "PO-Revision-Date: 2005-05-14 19:17+0300\n"
 "Last-Translator: Pauli Virtanen <pauli.virtanen@hut.fi>\n"
 "Language-Team: Finnish <lokalisointi-laatu@linux-aktivaattori.org>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:1 ../src/main.c:278 ../glade/liferea.ui.h:1
+#: ../liferea.desktop.in.h:1 ../src/main.c:261 ../glade/liferea.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -394,112 +394,112 @@ msgstr ""
 msgid "There are no unread items"
 msgstr "Lukemattomia otsikkoja ei ole"
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
 msgstr ""
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid "STATE"
 msgstr ""
 
-#: ../src/main.c:196
+#: ../src/main.c:179
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version        Näytä Liferean versionumero ja lopeta"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Uusi syöte"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:202
+#: ../src/main.c:185
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr "  --debug-all      Tulosta kaikentyyppisiä vianjäljitysviestejä"
 
-#: ../src/main.c:203
+#: ../src/main.c:186
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr ""
 "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
 
-#: ../src/main.c:204
+#: ../src/main.c:187
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "  --debug-conf     Tulosta vianjäljitysviestejä asetusten käsittelystä"
 
-#: ../src/main.c:205
+#: ../src/main.c:188
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr ""
 "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
 
-#: ../src/main.c:206
+#: ../src/main.c:189
 #, fuzzy
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "  --debug-gui      Tulosta vianjäljitusviestejä käyttöliittymän rutiineista"
 
-#: ../src/main.c:207
+#: ../src/main.c:190
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
 msgstr ""
 
-#: ../src/main.c:208
+#: ../src/main.c:191
 #, fuzzy
 msgid "Print debugging messages of all network activity"
 msgstr "  --debug-all      Tulosta kaikentyyppisiä vianjäljitysviestejä"
 
-#: ../src/main.c:209
+#: ../src/main.c:192
 #, fuzzy
 msgid "Print debugging messages of all parsing functions"
 msgstr "  --debug-parsing  Tulosta vianjäljitysviestejä jäsennysrutiineista"
 
-#: ../src/main.c:210
+#: ../src/main.c:193
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 
-#: ../src/main.c:211
+#: ../src/main.c:194
 #, fuzzy
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    Tulosta vianjäljitysviestejä funktioiden alussa ja lopussa"
 
-#: ../src/main.c:212
+#: ../src/main.c:195
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Tulosta vianjäljitysviestejä päivitysten käsittelystä"
 
-#: ../src/main.c:213
+#: ../src/main.c:196
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
 
-#: ../src/main.c:214
+#: ../src/main.c:197
 #, fuzzy
 msgid "Print verbose debugging messages"
 msgstr "  --debug-verbose  Tulosta laajoja vianjäljitysviestejä"
 
-#: ../src/main.c:227 ../src/main.c:228
+#: ../src/main.c:210 ../src/main.c:211
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr ""
 "  --debug-cache    Tulosta vianjäljitysviestejä välivaraston käsittelystä"
 
-#: ../src/main.c:235
+#: ../src/main.c:218
 msgid "Liferea, the Linux Feed Reader"
 msgstr ""
 
-#: ../src/main.c:236
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 
@@ -1564,20 +1564,20 @@ msgid "%b %d %H:%M"
 msgstr ""
 
 #: ../src/fl_sources/default_source.c:174
-#: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:1
+#: ../src/fl_sources/google_source.c:269 ../glade/new_subscription.ui.h:1
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Uusi syöte"
 
-#: ../src/fl_sources/google_source.c:113
+#: ../src/fl_sources/google_source.c:116
 msgid "Google Reader login failed!"
 msgstr ""
 
-#: ../src/fl_sources/google_source.c:358
+#: ../src/fl_sources/google_source.c:374
 msgid "Google Reader"
 msgstr ""
 
-#: ../src/fl_sources/google_source.c:359
+#: ../src/fl_sources/google_source.c:375
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "

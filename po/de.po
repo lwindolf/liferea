@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-15 18:11+0200\n"
+"POT-Creation-Date: 2012-07-30 23:47+0200\n"
 "PO-Revision-Date: 2011-03-24 21:47+0100\n"
 "Last-Translator: Lars Lindner <lars.lindner@gmail.com>\n"
 "Language-Team: German\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:1 ../src/main.c:278 ../glade/liferea.ui.h:1
+#: ../liferea.desktop.in.h:1 ../src/main.c:261 ../glade/liferea.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -376,7 +376,7 @@ msgstr "Konnte Feed-Typ nicht bestimmen."
 msgid "There are no unread items"
 msgstr "Es gibt keine ungelesenen Schlagzeilen."
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -384,45 +384,45 @@ msgstr ""
 "Starte Liferea mit dem Hauptfensterstatus STATE. STATE kann `shown', "
 "`iconified', oder `hidden' sein"
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid "STATE"
 msgstr "STATE"
 
-#: ../src/main.c:196
+#: ../src/main.c:179
 msgid "Show version information and exit"
 msgstr "Programmversion anzeigen und beenden"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Neues Abonnement"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:202
+#: ../src/main.c:185
 msgid "Print debugging messages of all types"
 msgstr "Gibt alle Debug-Meldungen aus"
 
-#: ../src/main.c:203
+#: ../src/main.c:186
 msgid "Print debugging messages for the cache handling"
 msgstr "Gibt Debug-Meldungen für die Cacheverwaltung aus"
 
-#: ../src/main.c:204
+#: ../src/main.c:187
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "Gibt Debug-Meldungen für die Konfigurationsverwaltung aus"
 
-#: ../src/main.c:205
+#: ../src/main.c:188
 msgid "Print debugging messages of the database handling"
 msgstr "Gibt Debug-Meldungen für die Konfigurationsverwaltung aus"
 
-#: ../src/main.c:206
+#: ../src/main.c:189
 msgid "Print debugging messages of all GUI functions"
 msgstr "Gibt Debug-Meldungen aller GUI-Funktionen aus."
 
-#: ../src/main.c:207
+#: ../src/main.c:190
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
@@ -430,44 +430,44 @@ msgstr ""
 "Aktiviert HTML-Rendering-Debugging. Bei jedem Rendern wird das HTML in ~/."
 "liferea_1.8/output.xhtml gedumpt"
 
-#: ../src/main.c:208
+#: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
 msgstr "Gibt Debug-Meldungen der Netzwerkfunktionen aus"
 
-#: ../src/main.c:209
+#: ../src/main.c:192
 msgid "Print debugging messages of all parsing functions"
 msgstr "Gibt Debug-Meldungen aller Parserfunktionen aus"
 
-#: ../src/main.c:210
+#: ../src/main.c:193
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "Ausgabe von Meldungen über langlaufende Funktionen"
 
-#: ../src/main.c:211
+#: ../src/main.c:194
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Gibt Debug-Meldungen aus, wenn Funktionen gestartet und beendet werden"
 
-#: ../src/main.c:212
+#: ../src/main.c:195
 msgid "Print debugging messages of the feed update processing"
 msgstr "Gibt Debug-Meldungen für die Feedaktualisierung aus"
 
-#: ../src/main.c:213
+#: ../src/main.c:196
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "Gibt Debug-Meldungen für die Cacheverwaltung aus"
 
-#: ../src/main.c:214
+#: ../src/main.c:197
 msgid "Print verbose debugging messages"
 msgstr "Gibt ausführliche Debug-Meldungen aus"
 
-#: ../src/main.c:227 ../src/main.c:228
+#: ../src/main.c:210 ../src/main.c:211
 msgid "Print debugging messages for the given topic"
 msgstr "Gibt Debug-Meldungen für die jeweiligen Topic aus"
 
-#: ../src/main.c:235
+#: ../src/main.c:218
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, der Linux Feed Reader"
 
-#: ../src/main.c:236
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Weitere Informationen auf http://liferea.sourceforge.net/"
 
@@ -1492,20 +1492,20 @@ msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
 #: ../src/fl_sources/default_source.c:174
-#: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:1
+#: ../src/fl_sources/google_source.c:269 ../glade/new_subscription.ui.h:1
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Neues Abonnement"
 
-#: ../src/fl_sources/google_source.c:113
+#: ../src/fl_sources/google_source.c:116
 msgid "Google Reader login failed!"
 msgstr "Google-Reader-Login fehlgeschlagen!"
 
-#: ../src/fl_sources/google_source.c:358
+#: ../src/fl_sources/google_source.c:374
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:359
+#: ../src/fl_sources/google_source.c:375
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "

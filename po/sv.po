@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-15 18:11+0200\n"
+"POT-Creation-Date: 2012-07-30 23:47+0200\n"
 "PO-Revision-Date: 2011-10-31 09:43+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. GTK theme support
-#: ../liferea.desktop.in.h:1 ../src/main.c:278 ../glade/liferea.ui.h:1
+#: ../liferea.desktop.in.h:1 ../src/main.c:261 ../glade/liferea.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -370,7 +370,7 @@ msgstr "Kunde inte fastställa kanaltypen."
 msgid "There are no unread items"
 msgstr "Det finns inga olästa artiklar"
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -378,44 +378,44 @@ msgstr ""
 "Starta Liferea med dess huvudfönster i TILLSTÅND. TILLSTÅND kan vara \"shown"
 "\", \"iconified\" eller \"hidden\""
 
-#: ../src/main.c:192
+#: ../src/main.c:175
 msgid "STATE"
 msgstr "TILLSTÅND"
 
-#: ../src/main.c:196
+#: ../src/main.c:179
 msgid "Show version information and exit"
 msgstr "Visa versionsinformation och avsluta"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 msgid "Add a new subscription"
 msgstr "Lägg till en ny prenumeration"
 
-#: ../src/main.c:197
+#: ../src/main.c:180
 msgid "uri"
 msgstr "uri"
 
-#: ../src/main.c:202
+#: ../src/main.c:185
 msgid "Print debugging messages of all types"
 msgstr "Skriv ut felsökningsmeddelanden av alla typer"
 
-#: ../src/main.c:203
+#: ../src/main.c:186
 msgid "Print debugging messages for the cache handling"
 msgstr "Skriv ut felsökningsmeddelanden för mellanlagringshantering"
 
-#: ../src/main.c:204
+#: ../src/main.c:187
 msgid "Print debugging messages for the configuration handling"
 msgstr "Skriv ut felsökningsmeddelanden för konfigurationshanteringen"
 
-#: ../src/main.c:205
+#: ../src/main.c:188
 msgid "Print debugging messages of the database handling"
 msgstr "Skriv ut felsökningsmeddelanden för databashantering"
 
-#: ../src/main.c:206
+#: ../src/main.c:189
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "Skriv ut felsökningsmeddelanden för alla grafiska gränssnittsfunktioner"
 
-#: ../src/main.c:207
+#: ../src/main.c:190
 #, fuzzy
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
@@ -425,45 +425,45 @@ msgstr ""
 "utdata så kommer även den genererade HTML-koden att skrivas i ~/.liferea_1.6/"
 "output.xhtml"
 
-#: ../src/main.c:208
+#: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
 msgstr "Skriv ut felsökningsmeddelanden för all nätverksaktivitet"
 
-#: ../src/main.c:209
+#: ../src/main.c:192
 msgid "Print debugging messages of all parsing functions"
 msgstr "Skriv ut felsökningsmeddelanden för alla tolkningsfunktioner"
 
-#: ../src/main.c:210
+#: ../src/main.c:193
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Skriv ut felsökningsmeddelanden när en funktion tar för lång tid att "
 "behandlas"
 
-#: ../src/main.c:211
+#: ../src/main.c:194
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Skriv ut felsökningsmeddelanden när funktioner används"
 
-#: ../src/main.c:212
+#: ../src/main.c:195
 msgid "Print debugging messages of the feed update processing"
 msgstr "Skriv ut felsökningsmeddelanden för kanaluppdateringsprocessen"
 
-#: ../src/main.c:213
+#: ../src/main.c:196
 msgid "Print debugging messages of the search folder matching"
 msgstr "Skriv ut felsökningsmeddelanden för sökmappsmatchningar"
 
-#: ../src/main.c:214
+#: ../src/main.c:197
 msgid "Print verbose debugging messages"
 msgstr "Skriv ut informativa felsökningsmeddelanden"
 
-#: ../src/main.c:227 ../src/main.c:228
+#: ../src/main.c:210 ../src/main.c:211
 msgid "Print debugging messages for the given topic"
 msgstr "Skriv ut felsökningsmeddelanden för angivet ämne"
 
-#: ../src/main.c:235
+#: ../src/main.c:218
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, nyhetsläsaren för Linux"
 
-#: ../src/main.c:236
+#: ../src/main.c:219
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr "Besök http://liferea.sourceforge.net/ för mer information"
 
@@ -1470,20 +1470,20 @@ msgid "%b %d %H:%M"
 msgstr "%e %B %H.%M"
 
 #: ../src/fl_sources/default_source.c:174
-#: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:1
+#: ../src/fl_sources/google_source.c:269 ../glade/new_subscription.ui.h:1
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Ny prenumeration"
 
-#: ../src/fl_sources/google_source.c:113
+#: ../src/fl_sources/google_source.c:116
 msgid "Google Reader login failed!"
 msgstr "Inloggning mot Google Reader misslyckades!"
 
-#: ../src/fl_sources/google_source.c:358
+#: ../src/fl_sources/google_source.c:374
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:359
+#: ../src/fl_sources/google_source.c:375
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "
