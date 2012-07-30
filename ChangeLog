@@ -4,6 +4,9 @@
 	  (reported by phyxi)
 	* Fixes SF Trac #19: Auto-load-link doesn't work with feeds with comments
 	  (reported by wonk0)
+	* Fixes SF #2855990: Crash when dragging Google Reader feeds outside
+	  Google Reader. This is now prevented.
+	  (reported by algnod)
 	* Don't ask for Google Reader authentication more than three times
 	  with auto-update to avoid annoying the user.
 
