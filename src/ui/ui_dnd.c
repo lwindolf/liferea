@@ -104,7 +104,7 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 	   iterator to insert after). In any case we have to check
 	   if it is a writeable node source. */
 
-	/* never drop into read-only subscription node sources */
+	/* Never drop into read-only subscription node sources */
 	if (!(NODE_SOURCE_TYPE (targetNode)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
 		return FALSE;
 
@@ -114,6 +114,13 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 
 	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (model), &iter, src_path)) {
 		gtk_tree_model_get (GTK_TREE_MODEL (model), &iter, FS_PTR, &sourceNode, -1);
+
+		g_assert (sourceNode);
+
+		/* Never drop into another node source as this arises to many problems
+		   (e.g. remote sync, different subscription type, e.g. SF #2855990) */
+		if (NODE_SOURCE_TYPE (targetNode) != NODE_SOURCE_TYPE (sourceNode))
+			return FALSE;
 
 		if (IS_FOLDER(sourceNode) && !(NODE_SOURCE_TYPE (targetNode)->capabilities & NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST))
 			return FALSE;
