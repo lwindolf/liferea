@@ -9,6 +9,8 @@
 	  (reported by algnod)
 	* Don't ask for Google Reader authentication more than three times
 	  with auto-update to avoid annoying the user.
+	* Dropping SIGSEGV signal handler to allow distro crash report tools to 
+	  work (as found in Ubuntu)
 
 	* Update of Hebrew translation (Ghengis Khan)
 
