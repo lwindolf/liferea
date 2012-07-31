@@ -1,7 +1,7 @@
 /**
  * @file feedlist.c  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -367,7 +367,7 @@ feedlist_node_added (nodePtr node)
 	
 	g_assert (NULL == node->parent);
 	
-	if (SELECTED && !IS_FOLDER(SELECTED)) {
+	if (SELECTED && !IS_FOLDER (SELECTED)) {
 		position = g_slist_index (SELECTED->parent->children, SELECTED);
 		if (position > -1)
 			position++;	/* insert after selected child index */
@@ -378,7 +378,7 @@ feedlist_node_added (nodePtr node)
 	if (node->subscription)
 		db_subscription_update (node->subscription);
 	
-	db_node_update(node);
+	db_node_update (node);
 
 	feedlist_node_imported (node);
 	
