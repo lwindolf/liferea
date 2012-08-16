@@ -1,7 +1,7 @@
 /**
  * @file itemlist.c  itemlist handling
  *
- * Copyright (C) 2004-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012 Lars Lindner <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -588,14 +588,13 @@ itemlist_selection_changed (itemPtr item)
 	
 		/* set read and unset update status when selecting */
 		if (item) {
-			nodePtr node = node_from_id (item->nodeId);
+			gchar	*link = NULL;
+			nodePtr	node = node_from_id (item->nodeId);
 			
 			item_set_read_state (item, TRUE);
 			itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
-			if (node->loadItemLink) {
-				gchar* link = item_make_link (item);
-
+			if (node->loadItemLink && (link = item_make_link (item))) {
 				itemview_launch_URL (link, TRUE /* force internal */);
 				g_free (link);
 			} else {
