@@ -595,7 +595,7 @@ itemlist_selection_changed (itemPtr item)
 			item_set_read_state (item, TRUE);
 			itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
-			if (node->loadItemLink && (link = item_make_link (item)) {
+			if (node->loadItemLink && (link = item_make_link (item))) {
 				itemview_launch_URL (link, TRUE /* force internal */);
 				g_free (link);
 			} else {
