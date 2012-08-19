@@ -30,6 +30,8 @@
 	  (patch by Sven Hartge)
 	* Fixes visibility of enclosure list view for Ubuntu.
 	* Fixes crashes on enclosure list context menu.
+	* Fixes SF #3557513: Fixes crash on empty links in auto-load-link mode.
+	  (patch by msquared84)
 
 
 2012-03-30  Lars Lindner <lars.lindner@gmail.com>
