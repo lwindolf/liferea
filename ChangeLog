@@ -2,6 +2,8 @@
 
 	* Fixes SF #3557513: Fixes crash on empty links in auto-load-link mode.
 	  (patch by msquared84)
+	* Ensure node ids are in DB node relation on startup.
+	* Include AM_PROG_AR in configure.ac to work with automake 1.12
 
 
 2012-07-30  Lars Windolf <lars.lindner@gmail.com>

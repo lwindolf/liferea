@@ -336,6 +336,11 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		subscription_update (node->subscription, 0);
 	}
 
+	/* 8. Always update the node info in the DB to ensure a proper
+	   node entry and parent node information. Search folders would
+	   silentely fail to work without node entry. */
+	db_node_update (node);
+
 	debug_exit ("import_parse_outline");
 }
 
