@@ -314,12 +314,23 @@ on_htmlview_close_tab (gpointer object, gpointer user_data)
 static void
 browser_tabs_close_tab (tabInfo *tab)
 {	
-	int		n;
+	int	n = 0;
+	GList	*iter, *list;
 
-	n = gtk_notebook_get_current_page (tabs->priv->notebook);
-	gtk_notebook_remove_page (tabs->priv->notebook, n);
+	/* Find the tab index that needs to be closed */
+	iter = list = gtk_container_get_children (GTK_CONTAINER (tabs->priv->notebook));
+	while (iter) {
+		if (tab->widget == GTK_WIDGET (iter->data))
+			break;
+		n++;
+		iter = g_list_next (iter);
+	}
+	g_list_free (list);
 
-	browser_tabs_remove_tab (tab);
+	if (iter) {
+		gtk_notebook_remove_page (tabs->priv->notebook, n);
+		browser_tabs_remove_tab (tab);
+	}
 		
 	/* check if all tabs are closed */
 	if (1 == gtk_notebook_get_n_pages (tabs->priv->notebook))
@@ -357,7 +368,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 
 	tab->label = gtk_label_new (create_label_text (title));
 	gtk_label_set_ellipsize (GTK_LABEL (tab->label), PANGO_ELLIPSIZE_END);
-	gtk_label_set_max_width_chars (GTK_LABEL (tab->label), 17);
+	gtk_label_set_width_chars (GTK_LABEL (tab->label), 17);
 
 	labelBox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 	gtk_box_pack_start (GTK_BOX (labelBox), tab->label, FALSE, FALSE, 0);
