@@ -34,18 +34,19 @@
 
 /** structure holding all URLs visited in a tab */
 typedef struct tabHistory {
-	GList		*locations;	/** list of all visited URLs */
-	GList		*current;	/** pointer into locations */
+	GList		*locations;	/**< list of all visited URLs */
+	GList		*current;	/**< pointer into locations */
 } tabHistory;
 
-/** structure holding all states of a tab */
+/** All widget elements and state of a tab */
 typedef struct tabInfo {
-	GtkWidget	*widget;	/** the tab widget */
-	GtkWidget	*forward;	/** the forward button */
-	GtkWidget	*back;		/** the back button */
-	LifereaHtmlView	*htmlview;	/** the tabs HTML view widget */
-	GtkWidget	*urlentry;	/** the tabs URL entry widget */
-	tabHistory	*history;	/** the tabs history */
+	GtkWidget	*widget;	/**< the tab widget */
+	GtkWidget	*label;		/**< the tab label */
+	GtkWidget	*forward;	/**< the forward button */
+	GtkWidget	*back;		/**< the back button */
+	LifereaHtmlView	*htmlview;	/**< the tabs HTML view widget */
+	GtkWidget	*urlentry;	/**< the tabs URL entry widget */
+	tabHistory	*history;	/**< the tabs history */
 } tabInfo;
 
 static tabHistory *
@@ -300,8 +301,7 @@ on_htmlview_title_changed (gpointer object, gchar *title, gpointer user_data)
 	tabInfo		*tab = (tabInfo *)user_data;
 	GtkWidget	*label;
 
-	label = gtk_notebook_get_tab_label (tabs->priv->notebook, tab->widget);
-	gtk_label_set_text (GTK_LABEL(label), create_label_text (title));
+	gtk_label_set_text (GTK_LABEL(tab->label), create_label_text (title));
 }
 
 static void
@@ -337,7 +337,7 @@ on_htmlview_status_message (gpointer obj, gchar *url)
 LifereaHtmlView *
 browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 {
-	GtkWidget 	*widget, *label, *toolbar, *htmlframe, *image;
+	GtkWidget 	*widget, *labelBox, *toolbar, *htmlframe, *image;
 	tabInfo		*tab;
 	int		i;
 
@@ -355,10 +355,22 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	
 	/* create tab widgets */
 
-	label = gtk_label_new (create_label_text (title));
-	gtk_label_set_ellipsize (GTK_LABEL(label), PANGO_ELLIPSIZE_END);
-	gtk_label_set_max_width_chars (GTK_LABEL(label), 17);
-	gtk_widget_show (label);
+	tab->label = gtk_label_new (create_label_text (title));
+	gtk_label_set_ellipsize (GTK_LABEL (tab->label), PANGO_ELLIPSIZE_END);
+	gtk_label_set_max_width_chars (GTK_LABEL (tab->label), 17);
+
+	labelBox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+	gtk_box_pack_start (GTK_BOX (labelBox), tab->label, FALSE, FALSE, 0);
+
+	widget = gtk_button_new ();
+	gtk_button_set_relief (GTK_BUTTON(widget), GTK_RELIEF_NONE);
+	image = gtk_image_new_from_stock ("gtk-close", GTK_ICON_SIZE_MENU);
+	gtk_widget_show (image);
+	gtk_container_add (GTK_CONTAINER (widget), image);
+	gtk_box_pack_end (GTK_BOX (labelBox), widget, FALSE, FALSE, 0);
+	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_htmlview_close_tab), (gpointer)tab);
+
+	gtk_widget_show_all (labelBox);
 	
 	toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 	
@@ -389,14 +401,6 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	gtk_box_pack_start (GTK_BOX (toolbar), widget, TRUE, TRUE, 0);
 	g_signal_connect ((gpointer)widget, "activate", G_CALLBACK (on_tab_url_entry_activate), (gpointer)tab);
 	tab->urlentry = widget;
-
-	widget = gtk_button_new ();
-	gtk_button_set_relief (GTK_BUTTON(widget), GTK_RELIEF_NONE);
-	image = gtk_image_new_from_stock ("gtk-close", GTK_ICON_SIZE_BUTTON);
-	gtk_widget_show (image);
-	gtk_container_add (GTK_CONTAINER (widget), image);
-	gtk_box_pack_end (GTK_BOX (toolbar), widget, FALSE, FALSE, 0);
-	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_htmlview_close_tab), (gpointer)tab);
 	
 	htmlframe = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type (GTK_FRAME (htmlframe), GTK_SHADOW_IN);
@@ -406,7 +410,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	gtk_box_pack_end (GTK_BOX (tab->widget), htmlframe, TRUE, TRUE, 0);
 	gtk_widget_show_all (tab->widget);
 	
-	i = gtk_notebook_append_page (tabs->priv->notebook, tab->widget, label);
+	i = gtk_notebook_append_page (tabs->priv->notebook, tab->widget, labelBox);
 	g_signal_connect (gtk_notebook_get_nth_page (tabs->priv->notebook, i), 
 	                  "key-press-event", G_CALLBACK (on_tab_key_press), (gpointer)tab);
 	gtk_notebook_set_show_tabs (tabs->priv->notebook, TRUE);
