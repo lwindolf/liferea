@@ -235,7 +235,8 @@ item_list_view_create_tree_store (void)
 static void
 item_list_view_set_tree_store (ItemListView *ilv, GtkTreeStore *itemstore)
 {
-	GtkTreeModel    *model;
+	GtkTreeModel    	*model;
+	GtkTreeSelection	*select;
 
 	/* drop old tree store */
 	model = gtk_tree_view_get_model (ilv->priv->treeview);
@@ -249,7 +250,11 @@ item_list_view_set_tree_store (ItemListView *ilv, GtkTreeStore *itemstore)
 	
 	gtk_tree_view_set_model (ilv->priv->treeview, GTK_TREE_MODEL (itemstore));
 
-	item_list_view_prefocus (ilv);
+	/* Setup the selection handler */
+	select = gtk_tree_view_get_selection (ilv->priv->treeview);
+	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
+	g_signal_connect (G_OBJECT (select), "changed",
+	                  G_CALLBACK (on_itemlist_selection_changed), ilv);
 }
 
 void
@@ -279,16 +284,21 @@ item_list_view_clear (ItemListView *ilv)
 {
 	GtkAdjustment		*adj;
 	GtkTreeStore		*itemstore;
+	GtkTreeSelection	*select;
 
 	itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (ilv->priv->treeview));
-	
+
 	/* unselecting all items is important to remove items
 	   whose removal is deferred until unselecting */
-	gtk_tree_selection_unselect_all (gtk_tree_view_get_selection (ilv->priv->treeview));
+	select = gtk_tree_view_get_selection (ilv->priv->treeview);
+	gtk_tree_selection_unselect_all (select);
 	
 	adj = gtk_scrollable_get_vadjustment (GTK_SCROLLABLE (ilv->priv->treeview));
 	gtk_adjustment_set_value (adj, 0.0);
 	gtk_scrollable_set_vadjustment (GTK_SCROLLABLE (ilv->priv->treeview), adj);
+
+	/* Disconnect signal handler to be safe */
+	g_signal_handlers_disconnect_by_func (G_OBJECT (select), G_CALLBACK (on_itemlist_selection_changed), ilv);
 
 	if (itemstore)
 		gtk_tree_store_clear (itemstore);
@@ -617,42 +627,8 @@ item_list_view_create (GtkWidget *window)
 
 	gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->priv->treeview), TRUE);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "query-tooltip", G_CALLBACK (on_item_list_view_query_tooltip), headline_column);
-
-	/* Setup the selection handler */
-	select = gtk_tree_view_get_selection (ilv->priv->treeview);
-	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
-	g_signal_connect (G_OBJECT (select), "changed",
-	                  G_CALLBACK (on_itemlist_selection_changed), ilv);
 		  
 	return ilv;
-}
-
-/* typically called when filling the item tree view */
-void 
-item_list_view_prefocus (ItemListView *ilv)
-{
-	GtkWidget		*focus_widget;
-	GtkTreeSelection	*itemselection;
-	
-	/* the following is important to prevent setting the unread
-	   flag for the first item in the item list when the user does
-	   the first click into the treeview, if we don't do a focus and
-	   unselect, GTK would always (exception: clicking on first item)
-	   generate two selection-change events (one for the clicked and
-	   one for the selected item)!!! */
-
-	/* we need to restore the focus after we temporarily select the itemlist */
-	focus_widget = gtk_window_get_focus (GTK_WINDOW (liferea_shell_get_window ()));
-
-	/* prevent marking as unread before focussing, which leads to a selection */
-	gtk_widget_grab_focus (GTK_WIDGET (ilv->priv->treeview));
-
-	itemselection = gtk_tree_view_get_selection (ilv->priv->treeview);
-	if (itemselection)
-		gtk_tree_selection_unselect_all (itemselection);
-	
-	if (focus_widget)
-		gtk_widget_grab_focus (focus_widget);
 }
 
 static void

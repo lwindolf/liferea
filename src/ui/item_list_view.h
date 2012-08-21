@@ -95,14 +95,6 @@ gboolean item_list_view_contains_id (ItemListView *ilv, gulong id);
 void item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortType, gboolean sortReversed);
 
 /**
- * Unselect all items in the ItemListView and scroll to top. This 
- * is typically called when changing feed.
- *
- * @param ilv	the ItemListView
- */
-void item_list_view_prefocus (ItemListView *ilv);
-
-/**
  * Selects the given item (if it is in the ItemListView).
  *
  * @param ilv	the ItemListView
