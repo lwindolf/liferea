@@ -26,6 +26,7 @@
 #include <glib.h>
 
 #include "browser.h"
+#include "browser_history.h"
 #include "comments.h"
 #include "common.h"
 #include "conf.h"
@@ -45,16 +46,35 @@
 #include "ui/ui_common.h"
 #include "ui/preferences_dialog.h"	// FIXME!
 
+/* The LifereaHtmlView is a complex widget used to present both internally
+   rendered content as well as serving as a browser widget. It automatically
+   switches on a toolbar for history and URL navigation when browsing 
+   external content.
+
+   When serving internal content it reacts to different internal link schemata
+   to trigger functionality inside Liferea. To avoid websites hijacking this we
+   keep a flag to support the link schema only on liferea_htmlview_write()
+ */
+ 
+
 #define RENDERER(htmlview)	(htmlview->priv->impl)
 
 #define LIFEREA_HTMLVIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_HTMLVIEW_TYPE, LifereaHtmlViewPrivate))
 
 struct LifereaHtmlViewPrivate {
-	GtkWidget	*renderWidget;
+	GtkWidget	*renderWidget;		/**< The HTML widget (e.g. Webkit widget) */
+	GtkWidget	*container;		/**< Outer container including render widget and toolbar */
+	GtkWidget	*toolbar;		/**< The navigation toolbar */
+
+	GtkWidget	*forward;		/**< The forward button */
+	GtkWidget	*back;			/**< The back button */
+	GtkWidget	*urlentry;		/**< The URL entry widget */
+	browserHistory	*history;		/**< The browser history */
+
 	gboolean	internal;		/**< TRUE if internal view presenting generated HTML with special links */
 	gboolean	forceInternalBrowsing;	/**< TRUE if clicked links should be force loaded within this view (regardless of global preference) */
 	
-	htmlviewImplPtr impl;			/**< browser widget support implementation */
+	htmlviewImplPtr impl;			/**< Browser widget support implementation */
 };
 
 enum {
@@ -64,19 +84,66 @@ enum {
 	LAST_SIGNAL
 };
 
+/* LifereaHtmlView toolbar callbacks */
+
+static gboolean
+on_htmlview_url_entry_activate (GtkWidget *widget, gpointer user_data)
+{
+	LifereaHtmlView	*htmlview = LIFEREA_HTMLVIEW (user_data);
+	gchar	*url;
+
+	url = (gchar *)gtk_entry_get_text (GTK_ENTRY (widget));
+	liferea_htmlview_launch_URL_internal (htmlview, url);
+
+	return TRUE;
+}
+
+static void
+on_htmlview_history_back (GtkWidget *widget, gpointer user_data)
+{
+	LifereaHtmlView	*htmlview = LIFEREA_HTMLVIEW (user_data);
+	gchar		*url;
+
+	url = browser_history_back (htmlview->priv->history);
+
+	gtk_widget_set_sensitive (htmlview->priv->forward, browser_history_can_go_forward (htmlview->priv->history));
+	gtk_widget_set_sensitive (htmlview->priv->back,    browser_history_can_go_back (htmlview->priv->history));
+
+	liferea_htmlview_launch_URL_internal (htmlview, url);
+	gtk_entry_set_text (GTK_ENTRY (htmlview->priv->urlentry), url);
+}
+
+static void
+on_htmlview_history_forward (GtkWidget *widget, gpointer user_data)
+{
+	LifereaHtmlView	*htmlview = LIFEREA_HTMLVIEW (user_data);
+	gchar		*url;
+
+	url = browser_history_forward (htmlview->priv->history);
+
+	gtk_widget_set_sensitive (htmlview->priv->forward, browser_history_can_go_forward (htmlview->priv->history));
+	gtk_widget_set_sensitive (htmlview->priv->back,    browser_history_can_go_back (htmlview->priv->history));
+
+	liferea_htmlview_launch_URL_internal (htmlview, url);
+	gtk_entry_set_text (GTK_ENTRY (htmlview->priv->urlentry), url);
+}
+
+
+/* LifereaHtmlView class */
+
 static guint liferea_htmlview_signals[LAST_SIGNAL] = { 0 };
 
 static GObjectClass *parent_class = NULL;
-
-/* -------------------------------------------------------------------- */
-/* Liferea HTML rendering object					*/
-/* -------------------------------------------------------------------- */
 
 G_DEFINE_TYPE (LifereaHtmlView, liferea_htmlview, G_TYPE_OBJECT);
 
 static void
 liferea_htmlview_finalize (GObject *object)
 {
+	LifereaHtmlView *htmlview = LIFEREA_HTMLVIEW (object);
+
+	browser_history_free (htmlview->priv->history);
+
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -133,10 +200,49 @@ liferea_htmlview_class_init (LifereaHtmlViewClass *klass)
 static void
 liferea_htmlview_init (LifereaHtmlView *htmlview)
 {
+	GtkWidget *widget, *htmlframe, *image;
+
 	htmlview->priv = LIFEREA_HTMLVIEW_GET_PRIVATE (htmlview);
 	htmlview->priv->internal = FALSE;
 	htmlview->priv->impl = htmlview_get_impl ();
 	htmlview->priv->renderWidget = RENDERER (htmlview)->create (htmlview);
+	htmlview->priv->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+	htmlview->priv->history = browser_history_new ();
+	htmlview->priv->toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+	
+	widget = gtk_button_new ();	
+	gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
+	image = gtk_image_new_from_stock ("gtk-go-back", GTK_ICON_SIZE_BUTTON);
+	gtk_widget_show (image);
+	gtk_container_add (GTK_CONTAINER (widget), image);
+	gtk_box_pack_start (GTK_BOX (htmlview->priv->toolbar), widget, FALSE, FALSE, 0);
+	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_htmlview_history_back), (gpointer)htmlview);
+	gtk_widget_set_sensitive (widget, FALSE);
+	htmlview->priv->back = widget;
+
+	widget = gtk_button_new ();
+	gtk_button_set_relief (GTK_BUTTON(widget), GTK_RELIEF_NONE);
+	image = gtk_image_new_from_stock ("gtk-go-forward", GTK_ICON_SIZE_BUTTON);
+	gtk_widget_show (image);
+	gtk_container_add (GTK_CONTAINER (widget), image);
+	gtk_box_pack_start (GTK_BOX (htmlview->priv->toolbar), widget, FALSE, FALSE, 0);
+	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_htmlview_history_forward), (gpointer)htmlview);
+	gtk_widget_set_sensitive (widget, FALSE);
+	htmlview->priv->forward = widget;
+
+	widget = gtk_entry_new ();
+	gtk_box_pack_start (GTK_BOX (htmlview->priv->toolbar), widget, TRUE, TRUE, 0);
+	g_signal_connect ((gpointer)widget, "activate", G_CALLBACK (on_htmlview_url_entry_activate), (gpointer)htmlview);
+	htmlview->priv->urlentry = widget;
+
+	htmlframe = gtk_frame_new (NULL);
+	gtk_frame_set_shadow_type (GTK_FRAME (htmlframe), GTK_SHADOW_IN);
+	gtk_container_add (GTK_CONTAINER (htmlframe), htmlview->priv->renderWidget);
+	
+	gtk_box_pack_start (GTK_BOX (htmlview->priv->container), htmlview->priv->toolbar, FALSE, FALSE, 0);
+	gtk_box_pack_end (GTK_BOX (htmlview->priv->container), htmlframe, TRUE, TRUE, 0);
+
+	gtk_widget_show_all (htmlview->priv->container);
 }
 
 static void
@@ -194,7 +300,7 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 GtkWidget *
 liferea_htmlview_get_widget (LifereaHtmlView *htmlview)
 {
-	return htmlview->priv->renderWidget;
+	return htmlview->priv->container;
 }
 
 void
@@ -219,6 +325,9 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 	} else {
 		(RENDERER (htmlview)->write) (htmlview->priv->renderWidget, string, strlen (string), baseURL, "application/xhtml+xml");
 	}
+
+	/* We hide the toolbar as it should only be shown when loading external content */
+	gtk_widget_hide (htmlview->priv->toolbar);
 }
 
 void
@@ -272,6 +381,18 @@ liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *title)
 void
 liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location)
 {
+	if (!htmlview->priv->internal) {
+		browser_history_add_location (htmlview->priv->history, location);
+
+		gtk_widget_set_sensitive (htmlview->priv->forward, browser_history_can_go_forward (htmlview->priv->history));
+		gtk_widget_set_sensitive (htmlview->priv->back,    browser_history_can_go_back (htmlview->priv->history));
+
+		gtk_entry_set_text (GTK_ENTRY (htmlview->priv->urlentry), location);
+
+		/* We show the toolbar as it should be visible when loading external content */
+		gtk_widget_show_all (htmlview->priv->toolbar);
+	}
+
 	g_signal_emit_by_name (htmlview, "location-changed", location);
 }
 
@@ -348,6 +469,13 @@ liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *ur
 {
 	/* before loading untrusted URLs suppress internal link schema */
 	htmlview->priv->internal = FALSE;
+
+	browser_history_add_location (htmlview->priv->history, (gchar *)url);
+
+	gtk_widget_set_sensitive (htmlview->priv->forward, browser_history_can_go_forward (htmlview->priv->history));
+	gtk_widget_set_sensitive (htmlview->priv->back,    browser_history_can_go_back (htmlview->priv->history));
+
+	gtk_entry_set_text (GTK_ENTRY (htmlview->priv->urlentry), url);
 	
 	(RENDERER (htmlview)->launch) (htmlview->priv->renderWidget, url);
 }

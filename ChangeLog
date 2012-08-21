@@ -14,6 +14,8 @@
 	* Ensure node ids are in DB node relation on startup.
 	* Adding AM_PROG_AR to configure.ac to work with automake 1.12
 	* Moved tab close button from the URL bar to the right of the tab label.
+	* Smarter browser toolbar: appears now also in the item view when 
+	  browsing external content.
 
 	* Don't ask for Google Reader authentication more than three times
 	  with auto-update to avoid annoying the user.

@@ -54,6 +54,8 @@ GType liferea_htmlview_get_type	(void);
  * Function to set up the html view widget for the three
  * and two pane view. 
  *
+ * @param forceInternalBrowsing		TRUE to act as fully fledged browser
+ *
  * @returns a new Liferea HTML widget
  */
 LifereaHtmlView * liferea_htmlview_new (gboolean forceInternalBrowsing);
