@@ -19,6 +19,7 @@ liferea_SOURCES = \
 	auth.c auth.h \
 	auth_activatable.c auth_activatable.h \
 	browser.c browser.h \
+	browser_history.c browser_history.h \
 	comments.c comments.h \
 	common.c common.h \
 	conf.c conf.h \

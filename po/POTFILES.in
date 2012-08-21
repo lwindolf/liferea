@@ -10,6 +10,7 @@ xslt/item.xml.in
 xslt/newsbin.xml.in
 xslt/vfolder.xml.in
 src/browser.c
+src/browser_history.c
 src/comments.c
 src/comments.h
 src/common.c

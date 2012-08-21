@@ -24,19 +24,12 @@
 #include <string.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "browser_history.h"
 #include "common.h"
 #include "itemlist.h"
 #include "ui/ui_common.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
-
-/* single tab history handling */
-
-/** structure holding all URLs visited in a tab */
-typedef struct tabHistory {
-	GList		*locations;	/**< list of all visited URLs */
-	GList		*current;	/**< pointer into locations */
-} tabHistory;
 
 /** All widget elements and state of a tab */
 typedef struct tabInfo {
@@ -46,88 +39,8 @@ typedef struct tabInfo {
 	GtkWidget	*back;		/**< the back button */
 	LifereaHtmlView	*htmlview;	/**< the tabs HTML view widget */
 	GtkWidget	*urlentry;	/**< the tabs URL entry widget */
-	tabHistory	*history;	/**< the tabs history */
+	browserHistory	*history;	/**< the tabs browser history */
 } tabInfo;
-
-static tabHistory *
-browser_tab_history_new (void)
-{	
-	return (tabHistory *)g_new0 (tabHistory, 1);
-}
-
-static void
-browser_tab_history_free (tabHistory *history)
-{
-	GList	*iter;
-
-	g_return_if_fail (NULL != history);
-	iter = history->locations;
-	while (iter) {
-		g_free (iter->data);
-		iter = g_list_next (iter);
-	}
-	g_list_free (history->locations);
-	g_free (history);
-}
-
-static gchar *
-browser_tab_history_forward (tabInfo *tab)
-{
-	GList	*url = tab->history->current;
-
-	url = g_list_next (url);
-	tab->history->current = url;
-
-	gtk_widget_set_sensitive (tab->forward, (NULL != g_list_next (url)));
-	gtk_widget_set_sensitive (tab->back, TRUE);
-
-	return url->data;
-}
-
-static gchar *
-browser_tab_history_back (tabInfo *tab)
-{
-	GList	*url = tab->history->current;
-
-	url = g_list_previous (url);
-	tab->history->current = url;
-
-	gtk_widget_set_sensitive (tab->back, (NULL != g_list_previous (url)));
-	gtk_widget_set_sensitive (tab->forward, TRUE);
-
-	return url->data;
-}
-
-static void
-browser_tab_history_add_location (tabInfo *tab, const gchar *url)
-{
-	GList 	*iter;
-
-	/* Do not add the same URL twice... */
-	if (tab->history->current &&
-	   g_str_equal (tab->history->current->data, url))
-		return;
-
-	/* If current URL is not at the end of the list,
-	   truncate the rest of the list */
-	if (tab->history->locations) {
-		while (1) {
-			iter = g_list_last (tab->history->locations);
-			if (!iter)
-				break;
-			if (iter == tab->history->current)
-				break;
-			g_free (iter->data);
-			tab->history->locations = g_list_remove (tab->history->locations, iter->data);
-		}
-	}
-
-	gtk_widget_set_sensitive (tab->back, (NULL != tab->history->locations));
-	gtk_widget_set_sensitive (tab->forward, FALSE);
-
-	tab->history->locations = g_list_append (tab->history->locations, g_strdup (url));
-	tab->history->current = g_list_last (tab->history->locations);
-}
 
 /* single tab callbacks */
 
@@ -149,7 +62,11 @@ on_tab_history_back (GtkWidget *widget, gpointer user_data)
 	tabInfo		*tab = (tabInfo *)user_data;
 	gchar		*url;
 
-	url = browser_tab_history_back (tab),
+	url = browser_history_back (tab->history);
+
+	gtk_widget_set_sensitive (tab->forward, browser_history_can_go_forward (tab->history));
+	gtk_widget_set_sensitive (tab->back,    browser_history_can_go_back (tab->history));
+
 	liferea_htmlview_launch_URL_internal (tab->htmlview, url);
 	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), url);
 }
@@ -160,7 +77,11 @@ on_tab_history_forward (GtkWidget *widget, gpointer user_data)
 	tabInfo		*tab = (tabInfo *)user_data;
 	gchar		*url;
 
-	url = browser_tab_history_forward (tab),
+	url = browser_history_forward (tab->history);
+
+	gtk_widget_set_sensitive (tab->forward, browser_history_can_go_forward (tab->history));
+	gtk_widget_set_sensitive (tab->back,    browser_history_can_go_back (tab->history));
+
 	liferea_htmlview_launch_URL_internal (tab->htmlview, url);
 	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), url);
 }
@@ -204,7 +125,7 @@ static void
 browser_tabs_remove_tab (tabInfo *tab)
 {
 	tabs->priv->list = g_slist_remove (tabs->priv->list, tab);
-	browser_tab_history_free (tab->history);
+	browser_history_free (tab->history);
 	g_object_unref (tab->htmlview);
 	g_free (tab);
 }
@@ -265,7 +186,11 @@ on_htmlview_location_changed (gpointer object, gchar *uri, gpointer user_data)
 {
 	tabInfo	*tab = (tabInfo *)user_data;
 	
-	browser_tab_history_add_location (tab, uri);
+	browser_history_add_location (tab->history, uri);
+
+	gtk_widget_set_sensitive (tab->forward, browser_history_can_go_forward (tab->history));
+	gtk_widget_set_sensitive (tab->back,    browser_history_can_go_back (tab->history));
+
 	gtk_entry_set_text (GTK_ENTRY (tab->urlentry), uri);
 }
 
@@ -355,7 +280,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	tab = g_new0 (tabInfo, 1);
 	tab->widget = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
 	tab->htmlview = liferea_htmlview_new (TRUE);
-	tab->history = browser_tab_history_new ();
+	tab->history = browser_history_new ();
 	tabs->priv->list = g_slist_append (tabs->priv->list, tab);
 
 	g_object_set_data (G_OBJECT (tab->widget), "tabInfo", tab);	
@@ -431,7 +356,11 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 		gtk_notebook_set_current_page (tabs->priv->notebook, i);
 	 
 	if (url) {
-		browser_tab_history_add_location (tab, (gchar *)url);
+		browser_history_add_location (tab->history, (gchar *)url);
+
+		gtk_widget_set_sensitive (tab->forward, browser_history_can_go_forward (tab->history));
+		gtk_widget_set_sensitive (tab->back,    browser_history_can_go_back (tab->history));
+
 		liferea_htmlview_launch_URL_internal (tab->htmlview, (gchar *)url);
 	}
 	return tab->htmlview;
