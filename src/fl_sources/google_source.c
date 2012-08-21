@@ -206,7 +206,12 @@ google_source_auto_update (nodePtr node)
 	}
 }
 
-static void google_source_init (void) { }
+static void
+google_source_init (void)
+{
+	metadata_type_register ("GoogleBroadcastOrigFeed", METADATA_TYPE_URL);
+	metadata_type_register ("sharedby", METADATA_TYPE_TEXT);
+}
 
 static void google_source_deinit (void) { }
 

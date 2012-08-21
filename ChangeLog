@@ -35,6 +35,8 @@
 	* Fixes crashes on enclosure list context menu.
 	* Fixes SF #3557513: Fixes crash on empty links in auto-load-link mode.
 	  (patch by msquared84)
+	* Fixes unknown metadata types reported in trace when loading Google 
+	  Reader subscriptions from DB.
 
 
 2012-03-30  Lars Lindner <lars.lindner@gmail.com>
