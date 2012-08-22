@@ -252,7 +252,7 @@
 
 <!-- construct unique id to allow Javascript showing/hiding of itemmenu -->
 <xsl:variable name="hiddenMenu">
-   <xsl:if test="$single = 0">hidden</xsl:if>
+   <xsl:if test="$single = 1">hidden</xsl:if>
 </xsl:variable>
 
 <table id="{sourceId}-{nr}" class="headmeta {$hiddenMenu}"
