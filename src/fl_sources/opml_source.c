@@ -228,7 +228,7 @@ static void ui_opml_source_get_source_url (void);
 gchar *
 opml_source_get_feedlist (nodePtr node)
 {
-	return common_create_cache_filename ("cache" G_DIR_SEPARATOR_S "plugins", node->id, "opml");
+	return common_create_cache_filename ("plugins", node->id, "opml");
 }
 
 void

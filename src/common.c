@@ -1,7 +1,7 @@
 /**
  * @file common.c common routines for Liferea
  * 
- * Copyright (C) 2003-2010  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012  Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  *
@@ -37,10 +37,9 @@
 #include <ctype.h>
 
 #include "common.h"
-#include "feed.h"
 #include "debug.h"
 
-static gchar *lifereaUserPath = NULL;
+static gboolean pathsChecked = FALSE;
 
 long
 common_parse_long (const gchar *str, long def)
@@ -67,34 +66,42 @@ common_check_dir (gchar *path)
 }
 
 static void
-common_init_cache_path (void)
+common_init_paths (void)
 {
-	gchar *cachePath;
+	gchar *lifereaCachePath  = g_build_filename (g_get_user_cache_dir(), "liferea", NULL);
 
-	lifereaUserPath = g_build_filename (g_get_home_dir(), ".liferea_1.8", NULL);
-	cachePath = g_build_filename (lifereaUserPath, "cache", NULL);
+	common_check_dir (g_strdup (lifereaCachePath));
+	common_check_dir (g_build_filename (lifereaCachePath, "feeds", NULL));
+	common_check_dir (g_build_filename (lifereaCachePath, "favicons", NULL));
+	common_check_dir (g_build_filename (lifereaCachePath, "plugins", NULL));
 
-	common_check_dir (g_strdup (lifereaUserPath));
-	common_check_dir (g_strdup (cachePath));
-	common_check_dir (g_build_filename (cachePath, "feeds", NULL));
-	common_check_dir (g_build_filename (cachePath, "favicons", NULL));
-	common_check_dir (g_build_filename (cachePath, "plugins", NULL));
-	common_check_dir (g_build_filename (cachePath, "scripts", NULL));
+	common_check_dir (g_build_filename (g_get_user_config_dir(), "liferea", NULL));
+	common_check_dir (g_build_filename (g_get_user_data_dir(), "liferea", NULL));
 
-	g_free (cachePath);
-	/* lifereaUserPath is reused globally */
-	
 	/* ensure reasonable default umask */
 	umask (077);
+
+	g_free (lifereaCachePath);
+
+	pathsChecked = TRUE;
 }
 
-const gchar *
-common_get_cache_path (void)
-{	
-	if (!lifereaUserPath)
-		common_init_cache_path ();
-		
-	return lifereaUserPath;
+gchar *
+common_create_data_filename (const gchar *filename) 
+{
+	if (!pathsChecked)
+		common_init_paths ();
+
+	return g_build_filename (g_get_user_data_dir (), "liferea", filename, NULL);
+}
+
+gchar *
+common_create_config_filename (const gchar *filename) 
+{
+	if (!pathsChecked)
+		common_init_paths ();
+
+	return g_build_filename (g_get_user_config_dir (), "liferea", filename, NULL);
 }
 
 gchar *
@@ -102,7 +109,12 @@ common_create_cache_filename (const gchar *folder, const gchar *filename, const 
 {
 	gchar *result;
 
-	result = g_strdup_printf ("%s" G_DIR_SEPARATOR_S "%s%s%s%s%s", common_get_cache_path (),
+	if (!pathsChecked)
+		common_init_paths ();
+
+	result = g_strdup_printf ("%s%s%s%s%s%s%s",
+	                          g_get_user_cache_dir (),
+	                          G_DIR_SEPARATOR_S "liferea" G_DIR_SEPARATOR_S,
 	                          folder ? folder : "",
 	                          folder ? G_DIR_SEPARATOR_S : "",
 	                          filename,

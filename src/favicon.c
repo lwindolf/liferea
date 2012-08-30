@@ -77,7 +77,7 @@ GdkPixbuf * favicon_load_from_cache(const gchar *id) {
 	debug_enter("favicon_load_from_cache");
 	
 	/* try to load a saved favicon */
-	filename = common_create_cache_filename("cache" G_DIR_SEPARATOR_S "favicons", id, "png");
+	filename = common_create_cache_filename ("favicons", id, "png");
 	
 	if(0 == stat((const char*)filename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file(filename, &error);
@@ -115,7 +115,7 @@ void favicon_remove_from_cache(const gchar *id) {
 	debug_enter("favicon_remove");
 	
 	/* try to load a saved favicon */
-	filename = common_create_cache_filename( "cache" G_DIR_SEPARATOR_S "favicons", id, "png");
+	filename = common_create_cache_filename ("favicons", id, "png");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
 		if(0 != unlink(filename))
 			g_warning ("Removal of %s failed", filename);
@@ -146,7 +146,7 @@ favicon_download_icon_cb (const struct updateResult * const result, gpointer use
 			if (gdk_pixbuf_loader_close (loader, &err)) {
 				pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 				if (pixbuf) {
-					tmp = common_create_cache_filename ("cache" G_DIR_SEPARATOR_S "favicons", ctxt->id, "png");
+					tmp = common_create_cache_filename ("favicons", ctxt->id, "png");
 					debug2 (DEBUG_UPDATE, "saving favicon %s to file %s", ctxt->id, tmp);
 					if (!gdk_pixbuf_save (pixbuf, tmp, "png", &err, NULL)) {
 						g_warning ("Could not save favicon (id=%s) to file %s!", ctxt->id, tmp);

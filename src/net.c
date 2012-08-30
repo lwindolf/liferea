@@ -218,7 +218,7 @@ network_init (void)
 	}
 
 	/* Cookies */
-	filename = common_create_cache_filename ("", "cookies", "txt");
+	filename = common_create_config_filename ("cookies.txt");
 	cookies = soup_cookie_jar_text_new (filename, FALSE);
 	g_free (filename);
 

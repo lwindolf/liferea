@@ -645,7 +645,7 @@ liferea_shell_save_accels (gpointer data)
 {
 	gchar *accels_file = NULL;
 
-	accels_file = g_build_filename (common_get_cache_path (), "accels", NULL);
+	accels_file = common_create_config_filename ("accels");
 	gtk_accel_map_save (accels_file);
 	g_free (accels_file);
 	return FALSE;
@@ -1098,7 +1098,7 @@ liferea_shell_restore_state (void)
 
 	debug0 (DEBUG_GUI, "Loading accelerators");
 	
-	accels_file = g_build_filename (common_get_cache_path(), "accels", NULL);
+	accels_file = common_create_config_filename ("accels");
 	gtk_accel_map_load (accels_file);
 	g_free (accels_file);	
 

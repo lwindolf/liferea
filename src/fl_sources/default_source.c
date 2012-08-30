@@ -40,7 +40,7 @@ static gboolean feedlistImport = TRUE;
 static gchar *
 default_source_source_get_feedlist (nodePtr node)
 {
-	return common_create_cache_filename (NULL, "feedlist", "opml");
+	return common_create_config_filename ("feedlist.opml");
 }
 
 static void

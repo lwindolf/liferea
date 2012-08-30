@@ -1,7 +1,7 @@
 /**
  * @file migrate.c migration between different cache versions
  * 
- * Copyright (C) 2007-2011  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,8 +28,13 @@
 #include "debug.h"
 #include "ui/ui_common.h"
 
-#define LIFEREA_CURRENT_DIR ".liferea_1.8"
-
+/**
+ * Copy a from $HOME/<from>/subdir to a target directory <to>/subdir.
+ *
+ * @param from		relative base path in $HOME (e.g. ".liferea_1.4")
+ * @param to		absolute target base path (e.g. "/home/joe/.config")
+ * @param subdir	subdir to copy from source to destination (can be empty string)
+ */
 static void 
 migrate_copy_dir (const gchar *from,
                   const gchar *to,
@@ -38,9 +43,11 @@ migrate_copy_dir (const gchar *from,
 	gchar *fromDirname, *toDirname;
 	gchar *srcfile, *destfile;
    	GDir *dir;
+
+	g_print ("Processing %s%s...\n", from, subdir);
 		
 	fromDirname = g_build_filename (g_get_home_dir (), from, subdir, NULL);
-	toDirname = g_build_filename (g_get_home_dir (), to, subdir, NULL);
+	toDirname = g_build_filename (to, subdir, NULL);
 	
 	dir = g_dir_open (fromDirname, 0, NULL);
 	while (NULL != (srcfile = (gchar *)g_dir_read_name (dir))) {
@@ -62,36 +69,47 @@ migrate_copy_dir (const gchar *from,
 }
 
 static void
-migrate_from_14plus (const gchar *olddir, nodePtr node)
+migrate_from_14plus (const gchar *oldBaseDir, nodePtr node)
 {
-	gchar *filename;
+	GFile *sourceDbFile, *targetDbFile;
+	gchar *newConfigDir, *newCacheDir, *newDataDir, *oldCacheDir, *filename;
 
-	// FIXME: Use XDG dirs for 1.9 cache structure
-	g_print("Performing %s -> %s cache migration...\n", olddir, LIFEREA_CURRENT_DIR);	
+	g_print("Performing %s -> XDG cache migration...\n", oldBaseDir);	
 	
 	/* 1.) Close already loaded DB */
 	db_deinit ();
 
 	/* 2.) Copy all files */
-	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "");
-	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "favicons");
-	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "scripts");
-	migrate_copy_dir (olddir, LIFEREA_CURRENT_DIR, "cache" G_DIR_SEPARATOR_S "plugins");	
+	newCacheDir	= g_build_filename (g_get_user_cache_dir(), "liferea", NULL);
+	newConfigDir	= g_build_filename (g_get_user_config_dir(), "liferea", NULL);
+	newDataDir	= g_build_filename (g_get_user_data_dir(), "liferea", NULL);
+	oldCacheDir	= g_build_filename (oldBaseDir, "cache", NULL);
+
+	migrate_copy_dir (oldBaseDir, newConfigDir, "");
+	migrate_copy_dir (oldCacheDir, newCacheDir, G_DIR_SEPARATOR_S "favicons");
+	migrate_copy_dir (oldCacheDir, newCacheDir, G_DIR_SEPARATOR_S "plugins");	
+
+	/* 3.) Move DB to from new config dir to cache dir instead (this is
+	       caused by the batch copy in step 2.) */
+	sourceDbFile = g_file_new_for_path (g_build_filename (newConfigDir, "liferea.db", NULL));
+	targetDbFile = g_file_new_for_path (g_build_filename (newDataDir, "liferea.db", NULL));
+	g_file_move (sourceDbFile, targetDbFile, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, NULL);
+	g_object_unref (sourceDbFile);
+	g_object_unref (targetDbFile);
 	
 	/* 3.) And reopen the copied DB */
 	db_init ();
 
 	/* 4.) Migrate file feed list into DB */
-	filename = common_create_cache_filename(NULL, "feedlist", "opml");
+	filename = common_create_config_filename ("feedlist.opml");
 
-	if(!import_OPML_feedlist (filename, node, FALSE, TRUE))
+	if (!import_OPML_feedlist (filename, node, FALSE, TRUE))
 		g_error ("Fatal: Feed list migration failed!");
 
-	g_free(filename);
-
-	ui_show_info_box (_("This version of Liferea uses a new cache format and has migrated your "
-	                    "feed cache. The cache content in %s was not deleted automatically. "
-			    "Please remove this directory manually once you are sure migration was successful!"), olddir);
+	g_free (filename);
+	g_free (newConfigDir);
+	g_free (newCacheDir);
+	g_free (oldCacheDir);
 }
 
 void

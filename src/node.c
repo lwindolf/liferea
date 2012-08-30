@@ -1,7 +1,7 @@
 /**
  * @file node.c  hierarchic feed list node handling
  * 
- * Copyright (C) 2003-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -410,7 +410,7 @@ node_set_icon (nodePtr node, gpointer icon)
 	g_free (node->iconFile);
 	
 	if (node->icon)
-		node->iconFile = common_create_cache_filename ("cache" G_DIR_SEPARATOR_S "favicons", node->id, "png");
+		node->iconFile = common_create_cache_filename ("favicons", node->id, "png");
 	else
 		node->iconFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "pixmaps", "default.png", NULL);
 }

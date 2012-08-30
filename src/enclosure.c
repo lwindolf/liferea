@@ -172,7 +172,7 @@ enclosure_mime_types_load (void)
 	
 	typesLoaded = TRUE;
 	
-	filename = g_build_filename (common_get_cache_path (), "mime.xml", NULL);
+	filename = common_create_config_filename ("mime.xml");
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		doc = xmlParseFile (filename);
 		if (!doc) {
@@ -239,7 +239,7 @@ enclosure_mime_types_save (void)
 	
 	xmlDocSetRootElement (doc, root);
 
-	filename = g_build_filename (common_get_cache_path (), "mime.xml", NULL);
+	filename = common_create_config_filename ("mime.xml");
 	if (-1 == xmlSaveFormatFileEnc (filename, doc, NULL, 1))
 		g_warning ("Could not save to enclosure type config file!");
 	g_free (filename);

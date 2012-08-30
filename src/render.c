@@ -72,7 +72,7 @@ render_init (void)
 		render_parameter_free (langParams);
 
 	/* Install default stylesheet if it does not yet exist */
-	filename = common_create_cache_filename ("", "liferea", "css");
+	filename = common_create_config_filename ("liferea.css");
 	if (!g_file_test (filename, G_FILE_TEST_EXISTS))
 		common_copy_file (PACKAGE_DATA_DIR "/" PACKAGE "/css/user.css", filename);
 	g_free(filename);
@@ -251,7 +251,7 @@ render_get_css (gboolean externalCss)
 
 		g_free(defaultStyleSheetFile);
 
-		userStyleSheetFile = g_build_filename (common_get_cache_path (), "liferea.css", NULL);
+		userStyleSheetFile = common_create_config_filename ("liferea.css");
 
 		if (g_file_get_contents(userStyleSheetFile, &tmp, NULL, NULL)) {
 			tmp = render_set_theme_colors(tmp);
@@ -272,7 +272,7 @@ render_get_css (gboolean externalCss)
 
 		if (externalCss) {
 			/* dump CSS to cache file and create a <style> tag to use it */
-			gchar *filename = common_create_cache_filename("cache", "style", "css");
+			gchar *filename = common_create_cache_filename (NULL, "style", "css");
 			if (!g_file_set_contents(filename, css->str, -1, NULL))
 				g_warning("Cannot write temporary CSS file \"%s\"!", filename);
 

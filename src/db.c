@@ -230,10 +230,10 @@ db_vacuum (void)
 static void
 db_open (void)
 {
-	gchar		*filename;
-	gint		res;
+	gchar	*filename;
+	gint	res;
 
-	filename = common_create_cache_filename (NULL, "liferea", "db");
+	filename = common_create_data_filename ("liferea.db");
 	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
 	res = sqlite3_open_v2 (filename, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
 	if (SQLITE_OK != res)

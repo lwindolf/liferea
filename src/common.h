@@ -1,7 +1,7 @@
 /**
  * @file common.h common routines
  *
- * Copyright (C) 2003-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -64,21 +64,31 @@
 long common_parse_long (const gchar *str, long def);
 
 /**
- * Returns the cache file storage path.
- * Usually: ~/.liferea/
+ * Method to build user data file names.
  *
- * @returns the path
+ * @param filename	the user data filename (with extension)
+ *
+ * @returns a newly allocated filename string (to be free'd using g_free)
  */
-const gchar *	common_get_cache_path(void);
+gchar * common_create_data_filename (const gchar *filename);
+
+/**
+ * Method to build config file names.
+ *
+ * @param filename	the cache filename (with extension)
+ *
+ * @returns a newly allocated filename string (to be free'd using g_free)
+ */
+gchar * common_create_config_filename (const gchar *filename);
 
 /**
  * Method to build cache file names.
  *
  * @param folder	a subfolder in the cache dir (optional)
- * @param filename	the cache filename
+ * @param filename	the cache filename (without extension)
  * @param extension	the cache filename extension
  *
- * @returns a newly allocated filename string
+ * @returns a newly allocated filename string (to be free'd using g_free)
  */
 gchar * common_create_cache_filename(const gchar *folder, const gchar *filename, const gchar *extension);
 
