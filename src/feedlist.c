@@ -93,6 +93,9 @@ feedlist_finalize (GObject *object)
 	node_free (ROOTNODE);
 	ROOTNODE = NULL;
 
+	/* This might also be a good place to get for some other cleanup */
+	comments_deinit ();
+
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 

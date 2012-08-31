@@ -1,6 +1,7 @@
 	To be released soon
 
 	* Migration to XDG directory layout in $HOME
+	* Fixes comments_deinit() never being called
 
 
 2012-08-24  Lars Windolf <lars.lindner@gmail.com>
