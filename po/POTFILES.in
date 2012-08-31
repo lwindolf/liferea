@@ -114,8 +114,6 @@ src/ui/preferences_dialog.c
 src/ui/preferences_dialog.h
 src/ui/ui_node.c
 src/ui/ui_node.h
-src/ui/session.c
-src/ui/session.h
 src/ui/subscription_dialog.c
 src/ui/subscription_dialog.h
 src/ui/browser_tabs.c

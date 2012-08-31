@@ -59,6 +59,7 @@
 #define SHOW_POPUP_WINDOWS		"/apps/liferea/show-popup-windows"
 #define DISABLE_TOOLBAR			"/apps/liferea/disable-toolbar"
 #define TOOLBAR_STYLE			"/apps/liferea/toolbar-style"
+#define LAST_WINDOW_STATE		"/apps/liferea/last-window-state"
 #define LAST_WINDOW_X			"/apps/liferea/last-window-x"
 #define LAST_WINDOW_Y			"/apps/liferea/last-window-y"
 #define LAST_WINDOW_WIDTH		"/apps/liferea/last-window-width"

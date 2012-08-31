@@ -50,7 +50,6 @@
 #include "update.h"
 #include "xml.h"
 #include "ui/liferea_shell.h"
-#include "ui/session.h"
 #include "notification/notification.h"
 
 static enum {
@@ -166,20 +165,13 @@ main (int argc, char *argv[])
 	GOptionGroup	*debug;
 	gulong		debug_flags = 0;
 	LifereaDBus	*dbus = NULL;
-	const gchar	*initial_state = "shown";
+	const gchar	*initialStateOption = NULL;
 	gchar		*feed = NULL;
 	int		initialState;
 	gboolean	show_tray_icon, start_in_tray;
 
-#ifdef USE_SM
-	gchar *opt_session_arg = NULL;
-#endif
-
 	GOptionEntry entries[] = {
-		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &initial_state, N_("Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"), N_("STATE") },
-#ifdef USE_SM
-		{ "session", 0, G_OPTION_FLAG_HIDDEN, G_OPTION_ARG_STRING, &opt_session_arg, NULL, NULL },
-#endif
+		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &initialStateOption, N_("Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"), N_("STATE") },
 		{ "version", 'v', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, show_version, N_("Show version information and exit"), NULL },
 		{ "add-feed", 'a', 0, G_OPTION_ARG_STRING, &feed, N_("Add a new subscription"), N_("uri") },
 		{ NULL }
@@ -284,26 +276,23 @@ main (int argc, char *argv[])
 	/* how to start liferea, command line takes precedence over preferences */
 	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
 	conf_get_bool_value (START_IN_TRAY, &start_in_tray);
-	if (g_str_equal(initial_state, "iconified")) {
-		initialState = MAINWINDOW_ICONIFIED;
-	} else if (g_str_equal(initial_state, "hidden") ||
-	           (show_tray_icon && start_in_tray)) {
-		initialState = MAINWINDOW_HIDDEN;
-	} else {
-		initialState = MAINWINDOW_SHOWN;
+	conf_get_int_value (LAST_WINDOW_STATE, &initialState);
+
+	/* Allow overruling last window state from cmdline */
+	if (initialStateOption) {
+		if (g_str_equal (initialStateOption, "iconified")) {
+			initialState = MAINWINDOW_ICONIFIED;
+		} else if (g_str_equal (initialStateOption, "hidden") ||
+			   (show_tray_icon && start_in_tray)) {
+			initialState = MAINWINDOW_HIDDEN;
+		} else if (g_str_equal (initialStateOption, "shown")) {
+			initialState = MAINWINDOW_SHOWN;
+		}
 	}
 
 	liferea_shell_create (initialState);
 	g_set_prgname ("liferea");
 	
-#ifdef USE_SM
-	/* This must be after feedlist reading because some session
-	   managers will tell Liferea to exit if Liferea does not
-	   respond to SM requests within a minute or two. This starts
-	   the main loop soon after opening the SM connection. */
-	session_init (BIN_DIR G_DIR_SEPARATOR_S "liferea", opt_session_arg);
-	session_set_cmd (NULL, initialState);
-#endif
 	signal (SIGTERM, signal_handler);
 	signal (SIGINT, signal_handler);
 	signal (SIGHUP, signal_handler);

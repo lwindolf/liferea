@@ -2,6 +2,8 @@
 
 	* Migration to XDG directory layout in $HOME
 	* Fixes comments_deinit() never being called
+	* Migrate from X session manager to GtkApplication
+	* Storing last window state in GConf now instead in the session command
 
 
 2012-08-24  Lars Windolf <lars.lindner@gmail.com>

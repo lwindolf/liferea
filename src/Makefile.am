@@ -9,7 +9,6 @@ AM_CPPFLAGS = \
 	-DBIN_DIR=\""$(bindir)"\" \
 	-I$(top_srcdir)/src \
 	$(PACKAGE_CFLAGS) \
-	$(SM_CFLAGS) \
 	$(INTROSPECTION_CFLAGS)
 
 bin_PROGRAMS = liferea
@@ -69,7 +68,6 @@ liferea_LDADD =	parsers/libliparsers.a \
 		ui/libliui.a \
 		webkit/libwebkit.a \
 		$(PACKAGE_LIBS) \
-		$(SM_LIBS) \
 		$(INTLLIBS) \
 		$(WEBKIT_LIBS) \
 		$(INTROSPECTION_LIBS)

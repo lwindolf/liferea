@@ -49,7 +49,6 @@
 #include "ui/liferea_shell_activatable.h"
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
-#include "ui/session.h"
 #include "ui/ui_common.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"
@@ -515,11 +514,11 @@ on_window_state_event (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 				conf_set_bool_value (LAST_WINDOW_MAXIMIZED, FALSE);
 		}
 		if (state & GDK_WINDOW_STATE_ICONIFIED)
-			session_set_cmd (NULL, MAINWINDOW_ICONIFIED);
+			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_ICONIFIED);
 		else if(state & GDK_WINDOW_STATE_WITHDRAWN)
-			session_set_cmd (NULL, MAINWINDOW_HIDDEN);
+			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_HIDDEN);
 		else
-			session_set_cmd (NULL, MAINWINDOW_SHOWN);
+			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_SHOWN);
 	}
 
 	if ((event->window_state.new_window_state & GDK_WINDOW_STATE_FULLSCREEN) == 0)

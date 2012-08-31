@@ -23,7 +23,6 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
 
-AC_ARG_ENABLE(sm,        AS_HELP_STRING([--disable-sm],[compile without X session management support]),,enable_sm=yes)
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
 AC_ARG_ENABLE(libindicate, AS_HELP_STRING([--disable-libindicate],[compile without libindicate support]),,enable_libindicate=yes)
 
@@ -31,14 +30,6 @@ AC_CHECK_HEADERS([locale.h stdlib.h string.h unistd.h])
 AC_CHECK_FUNCS([strsep])
 
 PKG_PROG_PKG_CONFIG()
-
-dnl #######################################################################
-dnl # Check for X session management libs
-dnl #######################################################################
-
-if test "x$enable_sm" = "xyes"; then
-  PKG_CHECK_MODULES([SM], [sm ice], [AC_DEFINE(USE_SM, 1, [Define if we're using X Session Management.])],[enable_sm=no])
-fi
 
 dnl *********
 dnl libnotify
@@ -183,7 +174,6 @@ AC_OUTPUT
 echo
 echo "$PACKAGE $VERSION"
 echo
-echo "Use X Session Management........ : $enable_sm"
 echo "Use libnotify................... : $enable_libnotify"
 echo "Use libindicate................. : $enable_libindicate"
 echo "Use plugins..................... : $enable_introspection"
