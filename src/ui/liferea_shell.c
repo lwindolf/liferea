@@ -1119,13 +1119,14 @@ liferea_shell_restore_state (void)
 }
 
 void
-liferea_shell_create (int initialState)
+liferea_shell_create (GtkApplication *app)
 {
 	GtkUIManager	*ui_manager;
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
 	GString		*buffer;
 	gboolean	show_tray_icon, toggle;
+	gint		initialState;
 	
 	debug_enter ("liferea_shell_create");
 
@@ -1134,6 +1135,8 @@ liferea_shell_create (int initialState)
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
 
 	shell->priv->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
+
+	gtk_window_set_application (GTK_WINDOW (shell->priv->window), app);
 	
 	/* 2.) menu creation */
 	
@@ -1187,10 +1190,9 @@ liferea_shell_create (int initialState)
 	shell->priv->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
 	shell->priv->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
 
-#if (GTK_MAJOR_VERSION >= 3)
 	/* Ensure GTK3 toolbar shadows... */
 	gtk_style_context_add_class (gtk_widget_get_style_context (shell->priv->toolbar), "primary-toolbar");
-#endif
+
 	/* what a pain, why is there no markup for this option? */
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/newFeedButton")), "is_important", TRUE, NULL);
 	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/nextUnreadButton")), "is_important", TRUE, NULL);
@@ -1285,6 +1287,8 @@ liferea_shell_create (int initialState)
 
 	liferea_shell_restore_state ();
 	
+	conf_get_int_value (LAST_WINDOW_STATE, &initialState);
+
 	if (initialState == MAINWINDOW_ICONIFIED || 
 	    (initialState == MAINWINDOW_HIDDEN && ui_tray_get_count () == 0)) {
 		gtk_window_iconify (shell->priv->window);
@@ -1371,6 +1375,7 @@ liferea_shell_destroy (void)
 	g_object_unref (shell->priv->tabs);
 	g_object_unref (shell->priv->feedlist);
 	g_object_unref (shell->priv->itemview);
+	g_object_unref (shell->priv->extensions);
 
 	gtk_widget_destroy (GTK_WIDGET (shell->priv->window));
 

@@ -3,6 +3,7 @@
 	* Migration to XDG directory layout in $HOME
 	* Fixes comments_deinit() never being called
 	* Migrate from X session manager to GtkApplication
+	* Raising GTK dependency to 3.4 for GtkApplication
 	* Storing last window state in GConf now instead in the session command
 
 

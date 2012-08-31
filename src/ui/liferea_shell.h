@@ -80,9 +80,9 @@ GtkWidget * liferea_shell_lookup (const gchar *name);
 /**
  * Set up the Liferea main window.
  *
- * @param initialState	state code MAINWINDOW_*
+ * @param app	the GtkApplication to attach the main window to
  */
-void liferea_shell_create (int initialState);
+void liferea_shell_create (GtkApplication *app);
 
 /**
  * Destroys the global liferea_shell object.

@@ -92,7 +92,7 @@ AM_GCONF_SOURCE_2
 ################################################################################
 # Mandatory library dependencies
 
-pkg_modules="	gtk+-3.0 >= 2.91.4
+pkg_modules="	gtk+-3.0 >= 3.4.0
 		glib-2.0 >= 2.24.0
 		gio-2.0 >= 2.26.0
 		pango >= 1.4.0

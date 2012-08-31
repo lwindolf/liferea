@@ -58,44 +58,40 @@ static enum {
 	STATE_SHUTDOWN
 } runState = STATE_STARTING;
 
-enum {
-	COMMAND_0 = 0, /* 0 is not a valid command */
-	COMMAND_ADD_FEED
-};
-
-static UniqueResponse
-message_received_cb (UniqueApp         *app,
-		     UniqueCommand      command,
-		     UniqueMessageData *message,
-		     guint              time_,
-		     gpointer           user_data)
+/* GApplication "open" callback for receiving feed-add requests from remote */
+static void
+on_feed_add (GApplication *application,
+             gpointer      files,
+             gint          n_files,
+             gchar        *hint,
+             gpointer      user_data)
 {
-	UniqueResponse res;
-	gchar *feed;
+	GFile **uris = (GFile **)files;	/* we always expect only one URI */
 
-	debug1(DEBUG_GUI, "libunique command received >>>%d<<<", command);
+	g_assert(uris);
+	g_assert(n_files = 1);
+	feedlist_add_subscription (g_file_get_uri (uris[0]), NULL, NULL, 0);
+}
 
-	switch (command)
-	{
-		case UNIQUE_ACTIVATE:
-			/* Raise the liferea window */
-			debug0 (DEBUG_GUI, "-> raise window requested");
-			liferea_shell_present ();
-			res = UNIQUE_RESPONSE_OK;
-			break;
-		case COMMAND_ADD_FEED:
-			feed = unique_message_data_get_text (message);
-			feedlist_add_subscription (feed, NULL, NULL, 0);
+/* GApplication "activate" callback for normal startup and also processing
+   local feed-add requests (URI passed in user_data). */
+static void
+on_app_activate (GtkApplication *app, gpointer user_data)
+{
+	GList		*list;
+	GtkWidget	*window;
+	gchar		*feedUri = (gchar *)user_data;
 
-			res = UNIQUE_RESPONSE_OK;
-			break;
-		default:
-			g_warning ("Received unknown libunique command: >>>%d<<<", command);
-			res = UNIQUE_RESPONSE_OK;
-			break;
+	list = gtk_application_get_windows (app);
+
+	if (list) {
+		gtk_window_present (GTK_WINDOW (list->data));
+	} else {
+		liferea_shell_create (app);
+
+		if (feedUri)
+			feedlist_add_subscription (feedUri, NULL, NULL, 0);
 	}
-
-	return res;
 }
 
 static void
@@ -158,7 +154,7 @@ show_version (const gchar *option_name,
 int
 main (int argc, char *argv[])
 {
-	UniqueApp	*app;
+	GtkApplication	*app;
 	UniqueMessageData	*msg;
 	GError		*error = NULL;
 	GOptionContext	*context;
@@ -166,14 +162,13 @@ main (int argc, char *argv[])
 	gulong		debug_flags = 0;
 	LifereaDBus	*dbus = NULL;
 	const gchar	*initialStateOption = NULL;
-	gchar		*feed = NULL;
-	int		initialState;
-	gboolean	show_tray_icon, start_in_tray;
+	gchar		*feedUri = NULL;
+	gint 		status;
 
 	GOptionEntry entries[] = {
 		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &initialStateOption, N_("Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"), N_("STATE") },
 		{ "version", 'v', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, show_version, N_("Show version information and exit"), NULL },
-		{ "add-feed", 'a', 0, G_OPTION_ARG_STRING, &feed, N_("Add a new subscription"), N_("uri") },
+		{ "add-feed", 'a', 0, G_OPTION_ARG_STRING, &feedUri, N_("Add a new subscription"), N_("uri") },
 		{ NULL }
 	};
 
@@ -240,26 +235,15 @@ main (int argc, char *argv[])
 
 	gtk_init (&argc, &argv);
 
-	/* Single instance checks */
-	app = unique_app_new_with_commands ("net.sourceforge.liferea", NULL,
-					    "add_feed", COMMAND_ADD_FEED,
-					    NULL);
-	if (unique_app_is_running (app)) {
-		g_print ("Liferea is already running\n");
-		unique_app_send_message (app, UNIQUE_ACTIVATE, NULL);
-		if (feed) {
-			msg = unique_message_data_new ();
-			unique_message_data_set_text (msg, feed, -1);
-			unique_app_send_message (app, COMMAND_ADD_FEED, msg);
-		}
-		return 1;
-	} else {
-		g_signal_connect (app, "message-received", G_CALLBACK (message_received_cb), NULL);
-	}
+	/* Single instance checks, also note that we pass or only RPC (add-feed)
+	   as activate signal payload as it is simply an URI string. */
+	app = gtk_application_new ("net.sourceforge.liferea", G_APPLICATION_HANDLES_OPEN);
+	g_signal_connect (app, "activate", G_CALLBACK (on_app_activate), feedUri);
+	g_signal_connect (app, "open", G_CALLBACK (on_feed_add), NULL);
 
-	/* GTK theme support */
+	g_set_prgname ("liferea");
 	g_set_application_name (_("Liferea"));
-	gtk_window_set_default_icon_name ("liferea");
+	gtk_window_set_default_icon_name ("liferea");	/* GTK theme support */
 
 	debug_start_measurement (DEBUG_DB);
 
@@ -273,26 +257,24 @@ main (int argc, char *argv[])
 
 	dbus = liferea_dbus_new ();
 
-	/* how to start liferea, command line takes precedence over preferences */
-	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
-	conf_get_bool_value (START_IN_TRAY, &start_in_tray);
-	conf_get_int_value (LAST_WINDOW_STATE, &initialState);
-
-	/* Allow overruling last window state from cmdline */
+	/* Allow overruling last window state from cmdline, whic takes 
+	   precedence over saved state and preferences */
 	if (initialStateOption) {
+		gboolean show_tray_icon, start_in_tray;
+
+		conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
+		conf_get_bool_value (START_IN_TRAY, &start_in_tray);
+
 		if (g_str_equal (initialStateOption, "iconified")) {
-			initialState = MAINWINDOW_ICONIFIED;
+			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_ICONIFIED);
 		} else if (g_str_equal (initialStateOption, "hidden") ||
 			   (show_tray_icon && start_in_tray)) {
-			initialState = MAINWINDOW_HIDDEN;
+			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_HIDDEN);
 		} else if (g_str_equal (initialStateOption, "shown")) {
-			initialState = MAINWINDOW_SHOWN;
+			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_SHOWN);
 		}
 	}
 
-	liferea_shell_create (initialState);
-	g_set_prgname ("liferea");
-	
 	signal (SIGTERM, signal_handler);
 	signal (SIGINT, signal_handler);
 	signal (SIGHUP, signal_handler);
@@ -305,13 +287,22 @@ main (int argc, char *argv[])
 	
 	debug_end_measurement (DEBUG_DB, "startup");
 
-	if (feed)
-		feedlist_add_subscription (feed, NULL, NULL, 0);
+	status = g_application_run (G_APPLICATION (app), 0, NULL);
 
-	gtk_main ();
+	/* Trigger RPCs if we are not primary instance (currently only feed-add) */
+	if (feedUri && g_application_get_is_remote (G_APPLICATION (app))) {
+		GFile *uris[2];
+
+		uris[0] = g_file_new_for_uri (feedUri);
+		uris[1] = NULL;
+		g_application_open (G_APPLICATION (app), uris, 1, "feed-add");
+		g_object_unref (uris[0]);
+	}
 	
 	g_object_unref (G_OBJECT (dbus));
-	return 0;
+	g_object_unref (app);
+
+	return status;
 }
 
 static gboolean
@@ -331,13 +322,8 @@ on_shutdown (gpointer user_data)
 	social_free ();
 
 	liferea_shell_destroy ();
-#ifdef USE_SM
-	/* unplug */
-	session_end ();
-#endif
+
 	conf_deinit ();
-	
-	gtk_main_quit ();
 	
 	debug_exit ("liferea_shutdown");
 	return FALSE;
