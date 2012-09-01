@@ -547,6 +547,7 @@ db_init (void)
 	db_exec ("CREATE TRIGGER item_removal DELETE ON items "
         	 "BEGIN "
 		 "   DELETE FROM metadata WHERE item_id = old.item_id; "
+		 "   DELETE FROM search_folder_items WHERE item_id = old.item_id; "
         	 "END;");
 		
 	db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "

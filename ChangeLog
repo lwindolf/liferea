@@ -4,6 +4,7 @@
 	  (patch by msquared84)
 	* Ensure node ids are in DB node relation on startup.
 	* Include AM_PROG_AR in configure.ac to work with automake 1.12
+	* Fixes search folder counter update on feed removal
 
 
 2012-07-30  Lars Windolf <lars.lindner@gmail.com>
