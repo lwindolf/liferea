@@ -1,4 +1,6 @@
-	To be released with 1.8.8
+2012-09-01  Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.8.8
 
 	* Fixes SF #3557513: Fixes crash on empty links in auto-load-link mode.
 	  (patch by msquared84)
