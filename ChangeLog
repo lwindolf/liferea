@@ -1,10 +1,12 @@
 	To be released soon
 
 	* Migration to XDG directory layout in $HOME
-	* Fixes comments_deinit() never being called
 	* Migrate from X session manager to GtkApplication
 	* Raising GTK dependency to 3.4 for GtkApplication
 	* Storing last window state in GConf now instead in the session command
+
+	* Fixes comments_deinit() never being called
+	* Fixes search folder counter update on feed removal
 
 
 2012-08-24  Lars Windolf <lars.lindner@gmail.com>

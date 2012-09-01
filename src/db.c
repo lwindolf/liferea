@@ -547,6 +547,7 @@ db_init (void)
 	db_exec ("CREATE TRIGGER item_removal DELETE ON items "
         	 "BEGIN "
 		 "   DELETE FROM metadata WHERE item_id = old.item_id; "
+		 "   DELETE FROM search_folder_items WHERE item_id = old.item_id; "
         	 "END;");
 		
 	db_exec ("CREATE TRIGGER subscription_removal DELETE ON subscription "
@@ -921,7 +922,8 @@ db_item_search_folders_update (itemPtr item)
 	gint 		res;
 	GSList		*iter, *list;
 	
-	// FIXME: also remove from search folders
+	/* Note: for simplicity we only ever add an item to a search folder
+	   but never remove it from one due to an item update. */
 
 	stmt = db_get_statement ("itemUpdateSearchFoldersStmt");
 	iter = list = vfolder_get_all_with_item_id (item->id);
