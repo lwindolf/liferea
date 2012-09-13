@@ -1,4 +1,4 @@
-This documentation was last updated for Liferea version 1.8 (14.09.2011).
+This documentation was last updated for Liferea version 1.9 (13.09.2012).
 
 Contents
 ========
@@ -44,45 +44,10 @@ easy to install news aggregator for GTK/GNOME.
 2. Installation from Package
 ============================
 
-To install Liferea you can either get a package for your Linux distribution 
-or try to compile and install Liferea from the Source Tarball. The section
-tries to give a list of known packages and short hints on how to install those.
+Detailed instructions on how to install Liferea on the different distributions can 
+be found online on our homepage at
 
-Ubuntu/		There are official packages in both Debian and Ubuntu
-Debian:		
-		To install Liferea run:
-
-		   apt-get install liferea
-
-RedHat/		For FC 3 and 4 you can install Liferea from the 
-Fedora:		Extras repositories. Just run:
-
-		   yum install liferea
-
-		Dag Wieers provides packages for both Fedora which
-		can be found at http://dag.wieers.com/packages/liferea/.
-		
-SuSE:		Since SuSE 10.1 there are official Liferea package.
-		Older packages can be found at:
-		
-		http://ftp.gwdg.de/pub/linux/misc/suser-guru/rpm/packages/Network/liferea/
-
-Gentoo:		The Gentoo portage tree provides ebuilds for Liferea:
-
-		http://sources.gentoo.org/viewcvs.py/gentoo-x86/net-news/liferea/
-
-FreeBSD:	There are Liferea packages (built by Hye-Shik Chang) at
-		
-		http://www.freshports.org/net/liferea/
-
-Fink		The Fink project also supports Liferea:
-
-		http://fink.sourceforge.net/pdb/package.php/liferea
-		
-Solaris		Since 0.9.2 there are Solaris packages built
-                be Jeremy Teo. This package was built to work 
-                with the Solaris gtk2,libxml2,gconf2 and 
-                libgtkhtml packages from blastwave.org.
+	http://liferea.sf.net/install.htm
 
 
 
@@ -97,12 +62,23 @@ contact us in IRC (see Support section) to help you with it!
 3.1 Dependencies
 ----------------
 
-Liferea can be build against GTK+ version 2 or 3. The dependencies are:
+Liferea 1.9+ is to be built against GTK+ 3. If you need to build
+for GTK+ 2 please use the most recent 1.8 release.
+
+The compilation and runtime dependencies are:
 
 Mandatory:
 
-   gtk2/gtk3, gconf2, libunique, libxml2, libxslt, sqlite3,
-   libwebkit and libjson-glib
+   gtk3
+   gconf2
+   libxml2
+   libxslt
+   sqlite3
+   libwebkit
+   libjson-glib
+   libgirepository1.0
+   libpeas
+   gsettings-desktop-schemas
 
 Optional:
 
@@ -114,11 +90,11 @@ Optional:
         libindicate-0.6     or libindicate-0.7,
         libindicate-gtk-0.6 or libindicate-gtk-0.7
 
-   -> For plugin support
-	Python >= 2
-        all necessary GObject Introspection packages
+   -> For the keyring support
+        Python >= 2
 
    -> For the media player plugin
+	Python >= 2
         GStreamer library and codecs
    
 Ensure that you have installed the libraries and their headers.
@@ -135,7 +111,7 @@ Liferea from a release tarball. Those are supplied at our SourceForge
 project homepage (http://liferea.sf.net). After you downloaded it extract
 it like this:
 
-   tar zxvf liferea-1.8.0.tar.gz 
+   tar zxvf liferea-1.9.0.tar.gz 
 
 After unpacking run the standard autotools commands:
 

@@ -29,16 +29,12 @@
 #endif
 
 #include <gtk/gtk.h>
-#include <unique/unique.h>
 
 #include <string.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
-
-#ifdef ENABLE_INTROSPECTION
 #include <girepository.h>
-#endif
 
 #include "conf.h"
 #include "common.h"
@@ -155,7 +151,6 @@ int
 main (int argc, char *argv[])
 {
 	GtkApplication	*app;
-	UniqueMessageData	*msg;
 	GError		*error = NULL;
 	GOptionContext	*context;
 	GOptionGroup	*debug;
@@ -212,10 +207,7 @@ main (int argc, char *argv[])
 	g_option_context_set_translation_domain(context, GETTEXT_PACKAGE);
 	g_option_context_add_group (context, debug);
 	g_option_context_add_group (context, gtk_get_option_group (FALSE));
-
-#ifdef ENABLE_INTROSPECTION
 	g_option_context_add_group (context, g_irepository_get_option_group ());
-#endif
 
 	g_option_context_parse (context, &argc, &argv, &error);
 	g_option_context_free (context);

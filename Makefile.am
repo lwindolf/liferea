@@ -50,9 +50,3 @@ DISTCLEANFILES = \
 	intltool-extract \
 	intltool-merge \
 	intltool-update
-
-if HAVE_INTROSPECTION
-DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
-endif
-
-

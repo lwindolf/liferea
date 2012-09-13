@@ -88,8 +88,6 @@ liferea_LDADD += $(LIBINDICATE_LIBS)
 
 endif
 
-if HAVE_INTROSPECTION
-
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS = Liferea-3.0.gir
 
@@ -118,5 +116,3 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 CLEANFILES = \
 	$(gir_DATA)	\
 	$(typelib_DATA)
-
-endif

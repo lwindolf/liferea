@@ -103,27 +103,17 @@ pkg_modules="	gtk+-3.0 >= 3.4.0
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
 		libsoup-2.4 >= 2.28.2
-		unique-3.0
 		webkitgtk-3.0
-		json-glib-1.0"
+		json-glib-1.0
+		gsettings-desktop-schemas
+		libpeas-1.0 >= 1.0.0
+		libpeas-gtk-1.0 >= 1.0.0"
 
 ################################################################################
 # Plugins via Introspection
 
 GOBJECT_INTROSPECTION_CHECK([0.9.3])
-
-if test "$found_introspection" = "yes"; then
-	enable_introspection=yes
-	GLIB_GSETTINGS
-	AC_DEFINE([ENABLE_INTROSPECTION], [1], [Define to enable GObject Introspection])
-
-	pkg_modules="${pkg_modules}
-	gsettings-desktop-schemas
-	libpeas-1.0 >= 1.0.0
-	libpeas-gtk-1.0 >= 1.0.0"
-else
-	enable_introspection=no
-fi
+GLIB_GSETTINGS
 
 ################################################################################
 
@@ -176,7 +166,6 @@ echo "$PACKAGE $VERSION"
 echo
 echo "Use libnotify................... : $enable_libnotify"
 echo "Use libindicate................. : $enable_libindicate"
-echo "Use plugins..................... : $enable_introspection"
 echo
 eval eval echo Liferea will be installed in $bindir.
 echo
