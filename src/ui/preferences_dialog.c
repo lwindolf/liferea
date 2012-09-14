@@ -229,6 +229,7 @@ on_browser_changed (GtkComboBox *optionmenu, gpointer user_data)
 
 		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "browsercmd"), browsers[num].id == NULL);	
 		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "manuallabel"), browsers[num].id == NULL);	
+		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "urlhintlabel"), browsers[num].id == NULL);	
 
 		if (browsers[num].id == NULL)
 			conf_set_str_value (BROWSER_ID, "manual");
@@ -662,8 +663,9 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gtk_entry_set_text(GTK_ENTRY(entry), browser_command);
 	g_free (browser_command);
 
-	gtk_widget_set_sensitive(GTK_WIDGET(entry), tmp==manual);
-	gtk_widget_set_sensitive(liferea_dialog_lookup(pd->priv->dialog, "manuallabel"), tmp==manual);	
+	gtk_widget_set_sensitive (GTK_WIDGET (entry), tmp==manual);
+	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "manuallabel"), tmp==manual);	
+	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "urlhintlabel"), tmp==manual);
 
 	/* ================== panel 4 "GUI" ================ */
 

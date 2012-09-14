@@ -7,6 +7,8 @@
 	* Storing last window state in GConf now instead in the session command
 	* Added Instapaper.com to social bookmarking sites (SF #3564393)
 	  (patch by prurigro)
+	* Use hint label for manual browser command preference (SF #3129429)
+	  (patch by Fred Morcos)
 
 	* Fixes comments_deinit() never being called
 	* Fixes search folder counter update on feed removal
