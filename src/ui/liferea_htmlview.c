@@ -144,6 +144,8 @@ liferea_htmlview_finalize (GObject *object)
 
 	browser_history_free (htmlview->priv->history);
 
+	g_signal_handlers_disconnect_by_data (network_monitor_get (), object);
+
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 

@@ -7,6 +7,8 @@
 
 	* Fixes comments_deinit() never being called
 	* Fixes search folder counter update on feed removal
+	* Fixes SF #3567715: Crash on network online status changes 
+	  (patch by Yanko Kaneti)
 
 
 2012-08-24  Lars Windolf <lars.lindner@gmail.com>
