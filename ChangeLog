@@ -1,5 +1,7 @@
 	To be released with 1.8.9
 
+	* Added Instapaper.com to social bookmarking sites (SF #3564393)
+	  (patch by prurigro)
 	* Fixes SF #3567715: Crash on network online status changes
           (patch by Fabrice Bellet, Yanko Kaneti)
 
