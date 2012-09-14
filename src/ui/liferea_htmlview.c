@@ -77,6 +77,8 @@ G_DEFINE_TYPE (LifereaHtmlView, liferea_htmlview, G_TYPE_OBJECT);
 static void
 liferea_htmlview_finalize (GObject *object)
 {
+	g_signal_handlers_disconnect_by_data (network_monitor_get (), object);
+
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
