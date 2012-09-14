@@ -26,6 +26,10 @@ plugin_DATA = \
 	plugins/media-player.py \
 	plugins/media-player.plugin
 
+gsettings_SCHEMAS = org.gnome.liferea.gschema.xml
+@INTLTOOL_XML_NOMERGE_RULE@
+@GSETTINGS_RULES@
+
 EXTRA_DIST = \
 	po/liferea.pot \
 	$(desktop_in_files) \
@@ -33,11 +37,8 @@ EXTRA_DIST = \
 	$(schema_DATA) \
 	$(css_DATA) \
 	$(dtd_DATA) \
-	$(plugin_DATA)
-
-gsettings_SCHEMAS = org.gnome.liferea.gschema.xml
-@INTLTOOL_XML_NOMERGE_RULE@
-@GSETTINGS_RULES@
+	$(plugin_DATA) \
+	$(gsettings_SCHEMAS)
 
 install-data-local:
 if GCONF_SCHEMAS_INSTALL

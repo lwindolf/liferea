@@ -1,4 +1,6 @@
-	To be released soon
+2012-09-14  Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.9.5
 
 	* GIR dependencies are now mandatory
 	* Migration to XDG directory layout in $HOME
