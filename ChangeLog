@@ -8,7 +8,7 @@
 	* Include AM_PROG_AR in configure.ac to work with automake 1.12
 	* Fixes search folder counter update on feed removal
 	* Fixes SF #3567715: Crash on network online status changes
-          (patch by Yanko Kaneti)
+          (patch by Fabrice Bellet, Yanko Kaneti)
 
 
 2012-07-30  Lars Windolf <lars.lindner@gmail.com>
