@@ -547,7 +547,7 @@ on_save_url (const gchar *filename, gpointer user_data)
 		return;
 
 	uriQ = g_shell_quote (uri);
-	cmd = g_strdup_printf (prefs_get_download_command (), filename, uriQ);
+	cmd = g_strdup_printf (prefs_get_download_command (), uriQ);
 
 	debug1 (DEBUG_UPDATE, "running download command \"%s\"", cmd);
 	g_spawn_command_line_sync (cmd, &stdout_message, &stderr_message, &status, &error);
@@ -569,16 +569,7 @@ on_save_url (const gchar *filename, gpointer user_data)
 static void
 on_popup_save_url_activate (GtkWidget *widget, gpointer user_data)
 {
-	gchar	*uri = (gpointer)user_data;
-	gchar	*filename;
-	
-	filename = strrchr (uri, '/');
-	if (filename)
-		filename++; /* Skip the slash to find the filename */
-	else
-		filename = uri;
-	
-	ui_choose_file (_("Choose File"), GTK_STOCK_SAVE_AS, TRUE, on_save_url, NULL, filename, NULL, NULL, uri);
+	enclosure_download (NULL, (const gchar *)user_data, TRUE);
 }
 
 static void
