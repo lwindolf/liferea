@@ -1,5 +1,14 @@
 	To be released
 
+	* Removed "pass URL" check box from MIME type dialog.
+	* Removed "Save In" entry from "Download" tab in preferences.
+	* Removed "curl" choice in download tool preferences.
+	* Removed "wget" choice in download tool preferences.
+	* Added "steadyflow" choice in download tool preferences.
+
+	* Fixes padding/alignments in preferences dialog.
+	* Fixes SF #1418701: Remote server pounded into dirt on auto-download 
+	  (reported by anonymous)
 	* Fixes SF #3567827: Double border around webview
 	  (reported by borschty)
 

@@ -71,16 +71,15 @@ extern GSList *bookmarkSites;	/* from social.c */
 
 static PreferencesDialog *prefdialog = NULL;
 
-/** tool commands need to take an absolute file path as first %s and an URL as second %s */
-static struct enclosureDownloadTool enclosure_download_commands[] = {
-	{ "wget -q -O %s %s", TRUE },
-	{ "curl -s -o %s %s", TRUE },
-	{ "dbus-send --session --print-reply --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0", FALSE },
-	{ "kget %s", FALSE },
+/** download tool commands need to take an URI as %s */
+static const gchar * enclosure_download_commands[] = {
+	"dbus-send --session --print-reply --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0",
+	"kget %s",
+        "steadyflow add %s"
 };
 
 /** order must match enclosure_download_commands[] */
-static gchar *enclosure_download_tool_options[] = { "wget", "curl", "gwget", "kget", NULL };
+static gchar *enclosure_download_tool_options[] = { "gwget", "kget", "steadyflow", NULL };
 
 /** GConf representation of toolbar styles */
 static gchar * gui_toolbar_style_values[] = { "", "both", "both-horiz", "icons", "text", NULL };
@@ -111,15 +110,15 @@ static gchar * browser_skim_key_options[] = {
 	NULL
 };
 
-enclosureDownloadToolPtr
-prefs_get_download_tool (void)
+const gchar *
+prefs_get_download_command (void)
 {
 	gint	enclosure_download_tool;
 
-	conf_get_int_value (ENCLOSURE_DOWNLOAD_TOOL, &enclosure_download_tool);
+	conf_get_int_value (DOWNLOAD_TOOL, &enclosure_download_tool);
 
 	/* FIXME: array boundary check */
-	return &(enclosure_download_commands[enclosure_download_tool]);
+	return enclosure_download_commands[enclosure_download_tool];
 }
 
 /* Preference dialog class */
@@ -390,7 +389,7 @@ on_skim_key_changed (gpointer user_data)
 static void
 on_enclosure_download_tool_changed (gpointer user_data)
 {
-	conf_set_int_value (ENCLOSURE_DOWNLOAD_TOOL, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
+	conf_set_int_value (DOWNLOAD_TOOL, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
 }
 
 void
@@ -424,40 +423,6 @@ on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data)
 		gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
 		enclosure_mime_type_remove (type);
 	}
-}
-
-void
-on_save_download_entry_changed (GtkEditable *editable, gpointer user_data)
-{
-	conf_set_str_value (ENCLOSURE_DOWNLOAD_PATH, gtk_editable_get_chars (editable , 0, -1));
-}
-
-static void
-on_save_download_finished (const gchar *filename, gpointer user_data)
-{
-	gchar *utfname;
-	
-	if (!filename)
-		return;
-	
-	utfname = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
-
-	if (utfname) {
-		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (prefdialog->priv->dialog, "save_download_entry")), utfname);
-		conf_set_str_value (ENCLOSURE_DOWNLOAD_PATH, utfname);
-	}
-	
-	g_free(utfname);
-}
-
-void
-on_save_download_select_btn_clicked (GtkButton *button, gpointer user_data)
-{
-	const gchar *path;
-
-	path = gtk_editable_get_chars (GTK_EDITABLE (liferea_dialog_lookup (prefdialog->priv->dialog, "save_download_entry")), 0, -1);
-	
-	ui_choose_directory (_("Choose download directory"), GTK_STOCK_OPEN, on_save_download_finished, path, prefdialog->priv->dialog);
 }
 
 void
@@ -512,7 +477,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gboolean		show_new_count_in_tray, dont_minimize_to_tray;
 	gboolean		start_in_tray, disable_toolbar;
 	gchar			*proxy_host, *proxy_user, *proxy_passwd;
-	gchar			*browser_command, *enclosure_download_path;
+	gchar			*browser_command;
 	
 	prefdialog = pd;
 	pd->priv = PREFERENCES_DIALOG_GET_PRIVATE (pd);
@@ -788,16 +753,11 @@ preferences_dialog_init (PreferencesDialog *pd)
 	/* ================= panel 6 "Enclosures" ======================== */
 
 	/* menu for download tool */
-	conf_get_int_value (ENCLOSURE_DOWNLOAD_TOOL, &enclosure_download_tool);
+	conf_get_int_value (DOWNLOAD_TOOL, &enclosure_download_tool);
 	ui_common_setup_combo_menu (liferea_dialog_lookup (pd->priv->dialog, "downloadToolCombo"),
 	                            enclosure_download_tool_options,
 	                            G_CALLBACK (on_enclosure_download_tool_changed),
 	                            enclosure_download_tool);
-
-	/* set enclosure download path entry */
-	conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &enclosure_download_path);
-	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup(pd->priv->dialog, "save_download_entry")), enclosure_download_path);
-	g_free (enclosure_download_path);
 
 	/* set up list of configured enclosure types */
 	treestore = gtk_tree_store_new (FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);

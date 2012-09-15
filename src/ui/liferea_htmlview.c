@@ -537,7 +537,6 @@ static void
 on_save_url (const gchar *filename, gpointer user_data)
 {
 	/* FIXME: The following partially duplicates download code in enclosure.c! */
-	enclosureDownloadToolPtr tool;
 	gchar	*stdout_message = NULL, *stderr_message = NULL;
 	GError	*error = NULL;
 	gint	status = 0;
@@ -547,9 +546,8 @@ on_save_url (const gchar *filename, gpointer user_data)
 	if (!filename)
 		return;
 
-	tool = prefs_get_download_tool ();
 	uriQ = g_shell_quote (uri);
-	cmd = g_strdup_printf (tool->format, filename, uriQ);
+	cmd = g_strdup_printf (prefs_get_download_command (), filename, uriQ);
 
 	debug1 (DEBUG_UPDATE, "running download command \"%s\"", cmd);
 	g_spawn_command_line_sync (cmd, &stdout_message, &stderr_message, &status, &error);

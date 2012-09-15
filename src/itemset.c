@@ -242,7 +242,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 			while (iter) {
 				enclosurePtr enc = enclosure_from_string (iter->data);
 				debug1 (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-				enclosure_save_as_file (NULL, enc->url, NULL);
+				enclosure_download (NULL, enc->url);
 				iter = g_slist_next (iter);
 				enclosure_free (enc);
 			}

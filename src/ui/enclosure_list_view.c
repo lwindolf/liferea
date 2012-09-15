@@ -405,7 +405,6 @@ on_adddialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		}
 		etp->cmd = g_strdup (gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "enc_cmd_entry"))));
 		etp->permanent = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enc_always_btn")));
-		etp->remote = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enc_remote_open_btn")));
 		if (new)
 			enclosure_mime_type_add (etp);
 		else
@@ -433,7 +432,6 @@ ui_enclosure_type_setup (encTypePtr type, enclosurePtr enclosure, gchar *typestr
 		typestr = type->mime?type->mime:type->extension;
 		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (dialog, "enc_cmd_entry")), type->cmd);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "enc_always_btn")), TRUE);
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "enc_remote_open_btn")), type->remote);
 	}
 
 	if (!strchr(typestr, '/')) 
@@ -510,7 +508,7 @@ on_popup_open_enclosure (gpointer callback_data)
 	}
 	
 	if (found) {
-		enclosure_save_as_file (etp, enclosure->url, NULL);
+		enclosure_download (etp, enclosure->url);
 	} else {
 		if (enclosure->mime)
 			ui_enclosure_type_setup (NULL, enclosure, enclosure->mime);
@@ -521,38 +519,12 @@ on_popup_open_enclosure (gpointer callback_data)
 	g_free (typestr);
 }
 
-static void
-on_encsave_clicked (const gchar *filename, gpointer user_data)
-{
-	gchar		*url = (gchar *)user_data;
-	gchar		*utfname;
-	
-	if (!filename)
-		return;
-
-	utfname = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
-	enclosure_save_as_file (NULL, url, utfname);
-	g_free (utfname);
-}
-
 void
 on_popup_save_enclosure (gpointer callback_data)
 {
 	enclosurePtr	enclosure = (enclosurePtr)callback_data;
-	gchar		*filename;
 
-	filename = strrchr (enclosure->url, '/');
-	if (filename)
-		filename++; /* Skip the slash to find the filename */
-	else
-		filename = enclosure->url;
-		
-	filename = g_strdup (filename);
-	g_strdelimit (filename, "?", 0);	/* strip GET parameters */
-		
-	ui_choose_file (_("Choose File"), GTK_STOCK_SAVE_AS, TRUE, on_encsave_clicked, NULL, filename, NULL, NULL, enclosure->url);
-
-	g_free (filename);
+	enclosure_download (NULL, enclosure->url);
 }
 
 void

@@ -38,8 +38,7 @@
 #define ENABLE_PLUGINS			"/apps/liferea/enable-plugins"
 
 /* enclosure handling */
-#define ENCLOSURE_DOWNLOAD_TOOL		"/apps/liferea/enclosure-download-tool"
-#define ENCLOSURE_DOWNLOAD_PATH		"/apps/liferea/enclosure-download-path"
+#define DOWNLOAD_TOOL			"/apps/liferea/download-tool"
 
 /* feed handling settings */
 #define DEFAULT_MAX_ITEMS		"/apps/liferea/maxitemcount"

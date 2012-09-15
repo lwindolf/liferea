@@ -1757,7 +1757,7 @@
   <object class="GtkDialog" id="enchandlerdialog">
     <property name="visible">True</property>
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Downloading Enclosure</property>
+    <property name="title" translatable="yes">Open Enclosure</property>
     <property name="resizable">False</property>
     <property name="type_hint">dialog</property>
     <signal name="delete_event" handler="gtk_widget_destroy"/>
@@ -1778,7 +1778,7 @@
                   <object class="GtkLabel" id="label204">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">Downloading an enclosure of type:</property>
+                    <property name="label" translatable="yes">Open an enclosure of type:</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -1805,7 +1805,7 @@
                   <object class="GtkLabel" id="label206">
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
-                    <property name="label" translatable="yes">What should Liferea do with this enclosure? Please enter the command you want to be executed below. Downloaded enclosures will be supplied as an argument for this command:</property>
+                    <property name="label" translatable="yes">What should Liferea do with this enclosure? Please enter the command you want to be executed below. The enclosures URL will be supplied as an argument for this command:</property>
                     <property name="wrap">True</property>
                   </object>
                   <packing>
@@ -1847,20 +1847,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkCheckButton" id="enc_remote_open_btn">
-                    <property name="label" translatable="yes">_Pass URL and do not download enclosure.</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
-                    <property name="use_underline">True</property>
-                    <property name="draw_indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="position">4</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkCheckButton" id="enc_always_btn">
                     <property name="label" translatable="yes">_Do this automatically for enclosures like this from now on.</property>
                     <property name="visible">True</property>
@@ -1872,7 +1858,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">False</property>
-                    <property name="position">5</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
               </object>

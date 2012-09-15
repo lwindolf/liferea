@@ -32,21 +32,16 @@
 /*
    Liferea manages a MIME type configuration to allow
    comfortable enclosure/podcast handling that launches
-   external applications to play/display the downloaded
-   content.
+   external applications to play or download content.
    
    The MIME type configuration is saved into a XML file
    in the cache directory.
    
    Enclosure download is currently done using external
-   tools (wget,curl,gwget...) and is performed by a new
-   glib thread that first downloads the file and then 
-   starts the configured launcher command in background
-   and terminates.
-   
-   There is also an automatic enclosure downloading 
-   feature that just downloads enclosures but does not
-   trigger any launcher command.
+   tools (gwget,kget,steadyflow...) and is performed by
+   simply passing the URL. All downloads are asynchronous
+   and download concurrency is considered to be handled
+   by the invoked tools.
  */
 
 static GSList *types = NULL;
@@ -192,7 +187,6 @@ enclosure_mime_types_load (void)
 									etp->mime = xmlGetProp (cur, BAD_CAST"mime");
 									etp->extension = xmlGetProp (cur, BAD_CAST"extension");
 									etp->cmd = xmlGetProp (cur, BAD_CAST"cmd");
-									etp->remote = xmlStrcmp(BAD_CAST"false", xmlGetProp(cur, BAD_CAST"remote"));
 									etp->permanent = TRUE;
 									types = g_slist_append (types, etp);
 								}
@@ -229,7 +223,6 @@ enclosure_mime_types_save (void)
 		etp = (encTypePtr)iter->data;
 		cur = xmlNewChild (root, NULL, BAD_CAST"type", NULL);
 		xmlNewProp (cur, BAD_CAST"cmd", etp->cmd);
-		xmlNewProp (cur, BAD_CAST"remote", etp->remote?"true":"false");
 		if (etp->mime)
 			xmlNewProp (cur, BAD_CAST"mime", etp->mime);
 		if (etp->extension)
@@ -276,136 +269,44 @@ enclosure_mime_type_remove (encTypePtr type)
 	enclosure_mime_types_save ();
 }
 
-/** enclosure downloading/launching job parameters */
-typedef struct encJob {
-	gchar	*download;	/**< (optional) command to download */
-	gchar	*run;		/**< command to run the downloaded file or the URL with */
-	gchar	*filename;	/**< filename the result is saved to */
-} *encJobPtr;
-
 static gpointer
 enclosure_exec (gpointer data)
 {
-	encJobPtr	ejp = (encJobPtr)data;
-	GError		*error = NULL;
-	gint		status = 0;
-	gchar		*stdout_message = NULL, *stderr_message = NULL;
-	
-	/* Download is optional when just passing URLs */
-	if (ejp->download) {
-		debug1 (DEBUG_UPDATE, "running download command \"%s\"", ejp->download);
-		g_spawn_command_line_sync (ejp->download, &stdout_message, &stderr_message, &status, &error);
-	}
-	
-	if ((error && (0 != error->code)) || !WIFEXITED(status) || WEXITSTATUS(status)) {
-		g_warning ("Failed to execute command \"%s\", exited: %i, status: %i, stderr: %s, stdout: %s", ejp->download, WIFEXITED(status), WEXITSTATUS(status), stderr_message?:"", stdout_message?:"");
-		liferea_shell_set_status_bar (_("Enclosure download FAILED: \"%s\""), ejp->filename);
-	} else {
-		if (ejp->run) {
-			/* execute */
-			debug1 (DEBUG_UPDATE, "running launch command \"%s\"", ejp->run);
-			g_spawn_command_line_async (ejp->run, &error);
-			if (error && (0 != error->code))
-				g_warning ("Launch command \"%s\" failed!", ejp->run);
-		} else {
-			/* just saving */
-			liferea_shell_set_status_bar (_("Enclosure download finished: \"%s\""), ejp->filename);
-		}
-	}
+	gchar	*cmd = (gchar *)data;
+	GError	*error = NULL;
+		
+	g_spawn_command_line_async (cmd, &error);
+	if (error && (0 != error->code))
+		g_warning ("Command \"%s\" failed!", cmd);
+
 	if (error)
 		g_error_free (error);
-	g_free (stdout_message);
-	g_free (stderr_message);
-	g_free (ejp->download);
-	g_free (ejp->run);
-	g_free (ejp->filename);
-	g_free (ejp);
+	g_free (cmd);
 
 	return NULL;
 }
 
 /* etp is optional, if it is missing we are in save mode */
-static void
-enclosure_download (encTypePtr type, const gchar *url, gchar *filename)
+void
+enclosure_download (encTypePtr type, const gchar *url)
 {
-	enclosureDownloadToolPtr 	tool;
-	encJobPtr			job;
-	gchar 				*filenameQ, *urlQ;
+	gchar *cmd, *urlQ;
 
-	/* prepare job structure */
-	job = g_new0 (struct encJob, 1);
-	job->filename = filename;
-
-	filenameQ = g_shell_quote (filename);
 	urlQ = g_shell_quote (url);
-	
-	tool = prefs_get_download_tool ();
-	if (tool->niceFilename)
-		job->download = g_strdup_printf (tool->format, filenameQ, urlQ);
-	else
-		job->download = g_strdup_printf (tool->format, urlQ);
 		
 	if (type) {
-	
-		/* Argh... If the remote flag is set we do not want to download
-		   the enclosure ourselves but just want to pass the URL
-		   to the configured command */
-		   	
-		if (type->remote) {
-			g_free (job->download);
-			job->download = NULL;
-		}
-		
-		if (type->remote)
-			job->run = g_strdup_printf ("%s %s", type->cmd, urlQ);
-		else
-			job->run = g_strdup_printf ("%s %s", type->cmd, filenameQ);
+		debug2 (DEBUG_UPDATE, "passing URL %s to command %s...", url, type->cmd);
+		cmd = g_strdup_printf ("%s %s", type->cmd, urlQ);
+	} else {
+		debug2 (DEBUG_UPDATE, "downloading URL %s with %s...", url, prefs_get_download_command ());
+		cmd = g_strdup_printf (prefs_get_download_command (), urlQ);
 	}
 
-	g_free (filenameQ);
 	g_free (urlQ);
-	
-	if (type && type->remote) {
-		debug1 (DEBUG_UPDATE, "passing URL %s to command...", url);
-	} else {
-		debug2 (DEBUG_UPDATE, "downloading %s to %s...", url, filename);
-	}
 
 	/* free now unnecessary stuff */
 	if (type && !type->permanent)
 		enclosure_mime_type_remove (type);
 	
-	g_thread_create (enclosure_exec, job, FALSE, NULL);
-}
-
-/**
- * Download an enclosure at "url" and save it to "filename". If
- * filename is NULL, then a filename will be automatically generated
- * based on the URL.
- */
-void
-enclosure_save_as_file (encTypePtr type, const gchar *url, const gchar *filename)
-{
-	gchar	*enclosure_download_path;
-	gchar	*download_filename;
-
-	g_assert (url != NULL);
-	
-	if (!filename) {
-		/* build filename from last part of URL and make it begin with
-		   the default enclosure save path */
-		filename = strrchr(url, '/');
-		if (!filename)
-			filename = url;
-		else
-			filename++;
-		conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &enclosure_download_path);
-		download_filename = g_build_filename (enclosure_download_path, filename, NULL);
-		g_strdelimit (download_filename, "?", 0);	/* strip GET parameters */
-		g_free (enclosure_download_path);
-	} else {
-		download_filename = g_strdup (filename);
-	}
-	
-	enclosure_download (type, url, download_filename);
+	g_thread_create (enclosure_exec, cmd, FALSE, NULL);
 }

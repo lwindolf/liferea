@@ -56,9 +56,9 @@ GType preferences_dialog_get_type	(void);
 /**
  * Returns a download tool definition.
  *
- * @return the download tool definition
+ * @return the download command definition
  */
-struct enclosureDownloadTool * prefs_get_download_tool (void);
+const gchar * prefs_get_download_command (void);
 
 /**
  * Show the preferences dialog.

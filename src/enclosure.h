@@ -1,7 +1,7 @@
 /**
  * @file enclosure.h enclosure/podcast support
  *
- * Copyright (C) 2007-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,6 @@
 #ifndef _ENCLOSURE_H
 #define _ENCLOSURE_H
 
-/** structure describing a supported download tool */
-typedef struct enclosureDownloadTool {
-	const char	*format;	/**< format string to construct download command */
-	gboolean	niceFilename;	/**< TRUE if format has second %s for output file name */
-} *enclosureDownloadToolPtr; 
-
 /** structure describing the preferences for a MIME type or file extension */
 typedef struct encType {
 	gchar		*mime;		/**< either mime or extension is set */
@@ -34,7 +28,6 @@ typedef struct encType {
 	gchar		*cmd;		/**< the command to launch the enclosure type */
 	gboolean	permanent;	/**< if TRUE definition is deleted after opening and 
 					     not added to the permanent list of type configs */
-	gboolean	remote;		/**< if TRUE enclosure is to be opened without downloading (pass URL only) */
 } *encTypePtr;
 
 /** structure describing an enclosure and its states */
@@ -140,8 +133,7 @@ void enclosure_mime_types_save (void);
  *  
  * @param type		NULL or pointer to type structure
  * @param url		valid HTTP URL
- * @param filename	valid filename
  */
-void enclosure_save_as_file (encTypePtr type, const gchar *url, const gchar *filename);
+void enclosure_download (encTypePtr type, const gchar *url);
 
 #endif

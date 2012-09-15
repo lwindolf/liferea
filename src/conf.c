@@ -1,7 +1,7 @@
 /**
  * @file conf.c Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2009 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -68,8 +68,6 @@ conf_load (void)
 	if (!conf_get_int_value (DEFAULT_MAX_ITEMS, &maxitemcount))
 		conf_set_int_value (DEFAULT_MAX_ITEMS, 100);
 	
-	if (!conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &downloadPath))
-		conf_set_str_value (ENCLOSURE_DOWNLOAD_PATH, g_getenv ("HOME"));
 	g_free (downloadPath);
 }
 

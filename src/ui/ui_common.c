@@ -1,7 +1,7 @@
 /**
  * @file ui_common.c  UI helper functions
  *
- * Copyright (C) 2008-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -158,7 +158,7 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 	g_assert (!(defaultFilename && !saving));
 
 	if (!currentPath)
-		conf_get_str_value (ENCLOSURE_DOWNLOAD_PATH, &path);
+		path = g_strdup (g_get_home_dir ());
 	else
 		path = g_strdup (currentPath);
 
@@ -214,10 +214,4 @@ void
 ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data)
 {
 	ui_choose_file_or_dir (title, buttonName, saving, FALSE, callback, currentPath, defaultFilename, filterstring, filtername, user_data);
-}
-
-void
-ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data)
-{
-	ui_choose_file_or_dir (title, buttonName, FALSE, TRUE, callback, currentPath, NULL, NULL, NULL, user_data);
 }
