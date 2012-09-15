@@ -508,7 +508,7 @@ on_popup_open_enclosure (gpointer callback_data)
 	}
 	
 	if (found) {
-		enclosure_download (etp, enclosure->url);
+		enclosure_download (etp, enclosure->url, TRUE);
 	} else {
 		if (enclosure->mime)
 			ui_enclosure_type_setup (NULL, enclosure, enclosure->mime);
@@ -524,7 +524,7 @@ on_popup_save_enclosure (gpointer callback_data)
 {
 	enclosurePtr	enclosure = (enclosurePtr)callback_data;
 
-	enclosure_download (NULL, enclosure->url);
+	enclosure_download (NULL, enclosure->url, TRUE);
 }
 
 void

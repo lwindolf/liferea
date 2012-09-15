@@ -133,7 +133,8 @@ void enclosure_mime_types_save (void);
  *  
  * @param type		NULL or pointer to type structure
  * @param url		valid HTTP URL
+ * @param interactive	TRUE if triggered by user interaction
  */
-void enclosure_download (encTypePtr type, const gchar *url);
+void enclosure_download (encTypePtr type, const gchar *url, gboolean interactive);
 
 #endif

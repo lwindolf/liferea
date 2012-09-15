@@ -269,37 +269,28 @@ enclosure_mime_type_remove (encTypePtr type)
 	enclosure_mime_types_save ();
 }
 
-static gpointer
-enclosure_exec (gpointer data)
-{
-	gchar	*cmd = (gchar *)data;
-	GError	*error = NULL;
-		
-	g_spawn_command_line_async (cmd, &error);
-	if (error && (0 != error->code))
-		g_warning ("Command \"%s\" failed!", cmd);
-
-	if (error)
-		g_error_free (error);
-	g_free (cmd);
-
-	return NULL;
-}
-
 /* etp is optional, if it is missing we are in save mode */
 void
-enclosure_download (encTypePtr type, const gchar *url)
+enclosure_download (encTypePtr type, const gchar *url, gboolean interactive)
 {
-	gchar *cmd, *urlQ;
+	GError	*error = NULL;
+	gchar	*cmd, *urlQ;
 
 	urlQ = g_shell_quote (url);
 		
 	if (type) {
-		debug2 (DEBUG_UPDATE, "passing URL %s to command %s...", url, type->cmd);
+		debug2 (DEBUG_UPDATE, "passing URL %s to command %s...", urlQ, type->cmd);
 		cmd = g_strdup_printf ("%s %s", type->cmd, urlQ);
 	} else {
-		debug2 (DEBUG_UPDATE, "downloading URL %s with %s...", url, prefs_get_download_command ());
-		cmd = g_strdup_printf (prefs_get_download_command (), urlQ);
+		const gchar *toolCmd = prefs_get_download_command ();
+		if(!toolCmd) {
+			if (interactive)
+				ui_show_error_box (_("You have not configured a download tool yet! Please do so in the 'Download' tab in Tools/Preferences."));
+			return;
+		}
+
+		debug2 (DEBUG_UPDATE, "downloading URL %s with %s...", urlQ, toolCmd);
+		cmd = g_strdup_printf (toolCmd, urlQ);
 	}
 
 	g_free (urlQ);
@@ -307,6 +298,17 @@ enclosure_download (encTypePtr type, const gchar *url)
 	/* free now unnecessary stuff */
 	if (type && !type->permanent)
 		enclosure_mime_type_remove (type);
-	
-	g_thread_create (enclosure_exec, cmd, FALSE, NULL);
+
+	/* execute command */		
+	g_spawn_command_line_async (cmd, &error);
+	if (error && (0 != error->code)) {
+		if (interactive)
+			ui_show_error_box (_("Command failed: \n\n%s\n\n Please check wether the configured download tool is installed and working correctly! You can change it in the 'Download' tab in Tools/Preferences."), cmd);
+		else
+			g_warning ("Command \"%s\" failed!", cmd);
+	}
+
+	if (error)
+		g_error_free (error);
+	g_free (cmd);
 }
