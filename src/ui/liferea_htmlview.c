@@ -534,39 +534,6 @@ on_popup_copy_url_activate (GtkWidget *widget, gpointer user_data)
 }
 
 static void
-on_save_url (const gchar *filename, gpointer user_data)
-{
-	/* FIXME: The following partially duplicates download code in enclosure.c! */
-	gchar	*stdout_message = NULL, *stderr_message = NULL;
-	GError	*error = NULL;
-	gint	status = 0;
-	gchar	*uriQ, *uri = (gpointer)user_data;
-	gchar	*cmd;
-	
-	if (!filename)
-		return;
-
-	uriQ = g_shell_quote (uri);
-	cmd = g_strdup_printf (prefs_get_download_command (), uriQ);
-
-	debug1 (DEBUG_UPDATE, "running download command \"%s\"", cmd);
-	g_spawn_command_line_sync (cmd, &stdout_message, &stderr_message, &status, &error);
-	
-	if ((error && (0 != error->code)) || !WIFEXITED(status) || WEXITSTATUS(status)) {
-		g_warning ("Failed to execute command \"%s\", exited: %i, status: %i, stderr: %s, stdout: %s", cmd, WIFEXITED(status), WEXITSTATUS(status), stderr_message?:"", stdout_message?:"");
-		liferea_shell_set_status_bar (_("Download FAILED: \"%s\""), uri);
-	} else {
-		liferea_shell_set_status_bar (_("Download finished."));
-	}
-	
-	if (error)
-		g_error_free (error);
-	g_free (stdout_message);
-	g_free (stderr_message);
-	g_free (cmd);
-}
-
-static void
 on_popup_save_url_activate (GtkWidget *widget, gpointer user_data)
 {
 	enclosure_download (NULL, (const gchar *)user_data, TRUE);
