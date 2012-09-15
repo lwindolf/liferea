@@ -202,7 +202,7 @@ liferea_htmlview_class_init (LifereaHtmlViewClass *klass)
 static void
 liferea_htmlview_init (LifereaHtmlView *htmlview)
 {
-	GtkWidget *widget, *htmlframe, *image;
+	GtkWidget *widget, *image;
 
 	htmlview->priv = LIFEREA_HTMLVIEW_GET_PRIVATE (htmlview);
 	htmlview->priv->internal = FALSE;
@@ -237,12 +237,8 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 	g_signal_connect ((gpointer)widget, "activate", G_CALLBACK (on_htmlview_url_entry_activate), (gpointer)htmlview);
 	htmlview->priv->urlentry = widget;
 
-	htmlframe = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (htmlframe), GTK_SHADOW_IN);
-	gtk_container_add (GTK_CONTAINER (htmlframe), htmlview->priv->renderWidget);
-	
 	gtk_box_pack_start (GTK_BOX (htmlview->priv->container), htmlview->priv->toolbar, FALSE, FALSE, 0);
-	gtk_box_pack_end (GTK_BOX (htmlview->priv->container), htmlframe, TRUE, TRUE, 0);
+	gtk_box_pack_end (GTK_BOX (htmlview->priv->container), htmlview->priv->renderWidget, TRUE, TRUE, 0);
 
 	gtk_widget_show_all (htmlview->priv->container);
 }
