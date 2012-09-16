@@ -130,7 +130,7 @@ preferences_dialog_finalize (GObject *object)
 
 	gtk_widget_destroy (pd->priv->dialog);
 	prefdialog = NULL;
-	
+
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
@@ -809,8 +809,10 @@ preferences_dialog_init (PreferencesDialog *pd)
 void
 preferences_dialog_open (void)
 {
-	if (prefdialog)
+	if (prefdialog) {
+		gtk_widget_show (prefdialog->priv->dialog);
 		return;
+	}
 
 	g_object_new (PREFERENCES_DIALOG_TYPE, NULL);
 }
