@@ -2,6 +2,8 @@
 
 	* Added Instapaper.com to social bookmarking sites (SF #3564393)
 	  (patch by prurigro)
+	* Updated Finnish translation 
+	  (Jorma Karvonen)
 	* Fixes SF #3567715: Crash on network online status changes
           (patch by Fabrice Bellet, Yanko Kaneti)
 
