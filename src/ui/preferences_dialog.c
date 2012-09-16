@@ -73,13 +73,13 @@ static PreferencesDialog *prefdialog = NULL;
 
 /** download tool commands need to take an URI as %s */
 static const gchar * enclosure_download_commands[] = {
+        "steadyflow add %s",
 	"dbus-send --session --print-reply --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0",
-	"kget %s",
-        "steadyflow add %s"
+	"kget %s"
 };
 
 /** order must match enclosure_download_commands[] */
-static gchar *enclosure_download_tool_options[] = { "gwget", "kget", "steadyflow", NULL };
+static gchar *enclosure_download_tool_options[] = { "steadyflow", "gwget", "kget", NULL };
 
 /** GConf representation of toolbar styles */
 static gchar * gui_toolbar_style_values[] = { "", "both", "both-horiz", "icons", "text", NULL };
