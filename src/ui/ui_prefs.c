@@ -807,6 +807,7 @@ void on_prefbtn_clicked(void) {
 		gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServiceNameEntry")), conf_get_bool_value (SYNC_AVAHI_ENABLED));
 		gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog, "avahiServicePasswordEntry")), conf_get_bool_value (SYNC_AVAHI_ENABLED));
 		*/
-	}	
-	gtk_window_present(GTK_WINDOW(prefdialog));
+	}
+	gtk_widget_show (prefdialog);
+	gtk_window_present (GTK_WINDOW (prefdialog));
 }

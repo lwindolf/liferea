@@ -6,6 +6,7 @@
 	  (Jorma Karvonen)
 	* Fixes SF #3567715: Crash on network online status changes
           (patch by Fabrice Bellet, Yanko Kaneti)
+	* Fixes preferences dialog not showing up a second time.
 
 
 2012-09-01  Lars Windolf <lars.lindner@gmail.com>
