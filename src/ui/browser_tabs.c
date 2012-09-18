@@ -29,6 +29,7 @@
 #include "ui/ui_common.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
+#include "ui/gedit-close-button.h"
 
 /** All widget elements and state of a tab */
 typedef struct tabInfo {
@@ -212,7 +213,7 @@ on_htmlview_status_message (gpointer obj, gchar *url)
 LifereaHtmlView *
 browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 {
-	GtkWidget 	*widget, *labelBox, *htmlframe, *image;
+	GtkWidget 	*close_button, *labelBox, *htmlframe;
 	tabInfo		*tab;
 	int		i;
 
@@ -232,16 +233,12 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	gtk_label_set_ellipsize (GTK_LABEL (tab->label), PANGO_ELLIPSIZE_END);
 	gtk_label_set_width_chars (GTK_LABEL (tab->label), 17);
 
-	labelBox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
+	labelBox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
 	gtk_box_pack_start (GTK_BOX (labelBox), tab->label, FALSE, FALSE, 0);
 
-	widget = gtk_button_new ();
-	gtk_button_set_relief (GTK_BUTTON(widget), GTK_RELIEF_NONE);
-	image = gtk_image_new_from_stock ("gtk-close", GTK_ICON_SIZE_MENU);
-	gtk_widget_show (image);
-	gtk_container_add (GTK_CONTAINER (widget), image);
-	gtk_box_pack_end (GTK_BOX (labelBox), widget, FALSE, FALSE, 0);
-	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_htmlview_close_tab), (gpointer)tab);
+	close_button = gedit_close_button_new ();
+	gtk_box_pack_end (GTK_BOX (labelBox), close_button, FALSE, FALSE, 0);
+	g_signal_connect ((gpointer)close_button, "clicked", G_CALLBACK (on_htmlview_close_tab), (gpointer)tab);
 
 	gtk_widget_show_all (labelBox);
 	

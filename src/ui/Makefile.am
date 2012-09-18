@@ -14,6 +14,7 @@ libliui_a_SOURCES = \
 	browser_tabs.c browser_tabs.h \
 	enclosure_list_view.c enclosure_list_view.h \
 	feed_list_view.c feed_list_view.h \
+	gedit-close-button.c gedit-close-button.h \
 	icons.c icons.h \
 	item_list_view.c item_list_view.h \
 	itemview.c itemview.h \
