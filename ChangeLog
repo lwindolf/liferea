@@ -5,6 +5,8 @@
 	* Removed "curl" choice in download tool preferences.
 	* Removed "wget" choice in download tool preferences.
 	* Added "steadyflow" choice in download tool preferences.
+	* Patch SF #3569056: Use symbolic close buttons and spacing on tabs like gedit
+	  (Sebastian Keller)
 
 	* Fixes reloading item when browsing the web inside the item view.
 	* Fixes preferences dialog not opening up a second time.
