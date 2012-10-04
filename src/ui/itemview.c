@@ -48,6 +48,7 @@ struct ItemViewPrivate {
 	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
 	guint		mode;			/**< current item view mode */
 	nodePtr		node;			/**< the node whose item are displayed */
+	gboolean        browsing;               /**< TRUE if itemview is used as internal browser right now */
 	gboolean	needsHTMLViewUpdate;	/**< flag to be set when HTML rendering is to be 
 						     updated, used to delay HTML updates */
 	gboolean	hasEnclosures;		/**< TRUE if at least one item of the current itemset has an enclosure */
@@ -109,6 +110,7 @@ itemview_clear (void)
 	enclosure_list_view_hide (itemview->priv->enclosureView);
 	itemview->priv->hasEnclosures = FALSE;
 	itemview->priv->needsHTMLViewUpdate = TRUE;
+	itemview->priv->browsing = FALSE;
 }
 
 void
@@ -185,6 +187,10 @@ itemview_select_item (itemPtr item)
 void
 itemview_update_item (itemPtr item)
 {
+	/* Bail if we do internal browsing, and no item is shown */
+	if (itemview->priv->browsing)
+		return;
+
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
 		item_list_view_update_item (itemview->priv->itemListView, item);
@@ -225,6 +231,10 @@ itemview_update_all_items (void)
 void
 itemview_update_node_info (nodePtr node)
 {
+	/* Bail if we do internal browsing, and no item is shown */
+	if (itemview->priv->browsing)
+		return;
+
 	if (!itemview->priv->node)
 		return;
 	
@@ -447,6 +457,7 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 	gboolean internal;
 	
 	if (forceInternal) {
+		itemview->priv->browsing = TRUE;
 		liferea_htmlview_launch_URL_internal (itemview->priv->htmlview, url);
 		return;
 	}

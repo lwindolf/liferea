@@ -1,4 +1,6 @@
-	To be released with 1.8.9
+2012-10-04  Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.8.9
 
 	* Added Instapaper.com to social bookmarking sites (SF #3564393)
 	  (patch by prurigro)
@@ -7,6 +9,7 @@
 	* Fixes SF #3567715: Crash on network online status changes
           (patch by Fabrice Bellet, Yanko Kaneti)
 	* Fixes preferences dialog not showing up a second time.
+	* Fixes reloading item when browsing inside the item view.
 
 
 2012-09-01  Lars Windolf <lars.lindner@gmail.com>
