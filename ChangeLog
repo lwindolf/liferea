@@ -6,6 +6,7 @@
 	* Removed "wget" choice in download tool preferences.
 	* Added "steadyflow" choice in download tool preferences.
 
+	* Fixes reloading item when browsing the web inside the item view.
 	* Fixes preferences dialog not opening up a second time.
 	* Fixes padding/alignments in preferences dialog.
 	* Fixes SF #1418701: Remote server pounded into dirt on auto-download 
