@@ -1,3 +1,11 @@
+	To be released
+
+	* Fixes SF #3572660: crash in google_source_remove_node
+	  (reported by Yanko Kaneti)
+	* Prevents adding folders/search folders/newsbins to Google Reader
+	* Prevents sorting subscriptions in Google Reader
+
+
 2012-10-04  Lars Windolf <lars.lindner@gmail.com>
 
 	Version 1.8.9

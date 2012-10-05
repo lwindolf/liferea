@@ -262,14 +262,15 @@ static void
 ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32 activate_time)
 {
 	GtkWidget	*menu;
-	gboolean	writeableFeedlist, isRoot, isHierarchic;
+	gboolean	writeableFeedlist, isRoot, isHierarchic, addChildren;
 
 	menu = gtk_menu_new ();
 	
 	if (node->parent) {
 		writeableFeedlist = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
-		isRoot = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
+		isRoot = NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
 		isHierarchic = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST;
+		addChildren = NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS;
 	} else {
 		/* if we have no parent then we have the root node... */
 		writeableFeedlist = TRUE;
@@ -287,7 +288,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 	}
 
 	if (writeableFeedlist) {
-		if (NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS) {
+		if (addChildren) {
 			GtkWidget	*item;
 			GtkWidget	*submenu;
 
@@ -295,9 +296,10 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 
 			item = ui_popup_add_menuitem (menu, _("_New"), NULL, NULL, NULL, 0);
 
-			ui_popup_add_menuitem (submenu, _("New _Subscription..."), ui_popup_add_feed, NULL, NULL, 0);
+			if (node_can_add_child_feed (node))
+				ui_popup_add_menuitem (submenu, _("New _Subscription..."), ui_popup_add_feed, NULL, NULL, 0);
 			
-			if (isHierarchic)
+			if (node_can_add_child_folder (node))
 				ui_popup_add_menuitem (submenu, _("New _Folder..."), ui_popup_add_folder, NULL, NULL, 0);
 				
 			if (isRoot) {
@@ -309,7 +311,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 			gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), submenu);
 		}
 		
-		if (node->children) {
+		if (isRoot && node->children) {
 			gtk_menu_shell_append (GTK_MENU_SHELL(menu), gtk_separator_menu_item_new());
 			ui_popup_add_menuitem (menu, _("Sort Feeds"), ui_popup_sort_feeds, node, GTK_STOCK_SORT_ASCENDING, 0);
 		}

@@ -1,7 +1,7 @@
 /**
  * @file node.c  hierarchic feed list node handling
  * 
- * Copyright (C) 2003-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -492,6 +492,28 @@ node_get_base_url(nodePtr node)
 	   	baseUrl = NULL;
 
 	return baseUrl;
+}
+
+gboolean
+node_can_add_child_feed (nodePtr node)
+{
+	g_assert (node->source->root);
+
+	if (!(NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+		return FALSE;
+
+	return (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ADD_FEED);
+}
+
+gboolean
+node_can_add_child_folder (nodePtr node)
+{
+	g_assert (node->source->root);
+
+	if (!(NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+		return FALSE;
+
+	return (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ADD_FOLDER);
 }
 
 /* node children iterating interface */

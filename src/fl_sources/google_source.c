@@ -373,9 +373,10 @@ static struct nodeSourceType nst = {
 	.id                  = "fl_google",
 	.name                = N_("Google Reader"),
 	.description         = N_("Integrate the feed list of your Google Reader account. Liferea will "
-	   "present your Google Reader subscriptions, and will synchronize your feed list and reading lists."),
+	                          "present your Google Reader subscriptions, and will synchronize your feed list and reading lists."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
+	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC,
 	.source_type_init    = google_source_init,
 	.source_type_deinit  = google_source_deinit,

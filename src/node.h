@@ -1,7 +1,7 @@
 /**
  * @file node.h  hierarchic feed list node interface
  * 
- * Copyright (C) 2003-2010 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Lindner <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -354,6 +354,24 @@ nodeViewType node_get_view_mode(nodePtr node);
  * @returns base URL
  */
 const gchar * node_get_base_url(nodePtr node);
+
+/**
+ * Query wether a feed be added to the given node.
+ *
+ * @param node	the node
+ *
+ * @returns TRUE if a feed can be added
+ */
+gboolean node_can_add_child_feed (nodePtr node);
+
+/**
+ * Query wether a folder be added to the given node.
+ *
+ * @param node	the node
+ *
+ * @returns TRUE if a folder can be added
+ */
+gboolean node_can_add_child_folder (nodePtr node);
 
 /* child nodes iterating interface */
 

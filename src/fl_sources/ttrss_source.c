@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.c  tt-rss feed list source support
  * 
- * Copyright (C) 2010-2011 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -364,7 +364,7 @@ static struct nodeSourceType nst = {
 	.name                = N_("Tiny Tiny RSS"),
 	.description         = N_("Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 	   "present your tt-rss subscriptions, and will synchronize your feed list and reading lists."),
-	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
+	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC,
 	.source_type_init    = ttrss_source_init,
 	.source_type_deinit  = ttrss_source_deinit,
