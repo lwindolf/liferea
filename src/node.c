@@ -494,6 +494,28 @@ node_get_base_url(nodePtr node)
 	return baseUrl;
 }
 
+gboolean
+node_can_add_child_feed (nodePtr node)
+{
+	g_assert (node->source->root);
+
+	if (!(NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+		return FALSE;
+
+	return (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ADD_FEED);
+}
+
+gboolean
+node_can_add_child_folder (nodePtr node)
+{
+	g_assert (node->source->root);
+
+	if (!(NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+		return FALSE;
+
+	return (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ADD_FOLDER);
+}
+
 /* node children iterating interface */
 
 void

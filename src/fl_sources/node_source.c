@@ -1,7 +1,7 @@
 /**
  * @file node_source.c  generic node source provider implementation
  * 
- * Copyright (C) 2005-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2012 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

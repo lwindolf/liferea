@@ -355,6 +355,24 @@ nodeViewType node_get_view_mode(nodePtr node);
  */
 const gchar * node_get_base_url(nodePtr node);
 
+/**
+ * Query wether a feed be added to the given node.
+ *
+ * @param node	the node
+ *
+ * @returns TRUE if a feed can be added
+ */
+gboolean node_can_add_child_feed (nodePtr node);
+
+/**
+ * Query wether a folder be added to the given node.
+ *
+ * @param node	the node
+ *
+ * @returns TRUE if a folder can be added
+ */
+gboolean node_can_add_child_folder (nodePtr node);
+
 /* child nodes iterating interface */
 
 typedef void 	(*nodeActionFunc)	(nodePtr node);

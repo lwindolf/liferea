@@ -1,7 +1,7 @@
 /**
  * @file node_source.h  generic node source interface
  * 
- * Copyright (C) 2005-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2012 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,11 +50,12 @@
 
 enum {
 	NODE_SOURCE_CAPABILITY_IS_ROOT			= (1<<0),	/**< flag only for default feed list source */
-	NODE_SOURCE_CAPABILITY_MULTI_INSTANCES		= (1<<1),	/**< allows multiple source instances */
-	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION		= (1<<2),	/**< feed list source is user created */
-	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST	= (1<<3),	/**< the feed list tree of the source can be changed */
-	NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST	= (1<<4),	/**< the feed list tree of the source can have hierarchic folders */
-	NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC		= (1<<5)	/**< the item state can and should be sync'ed with remote */
+	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION		= (1<<1),	/**< feed list source is user created */
+	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST	= (1<<2),	/**< the feed list tree of the source can be changed */
+	NODE_SOURCE_CAPABILITY_ADD_FEED			= (1<<3),	/**< feeds can be added to the source */
+	NODE_SOURCE_CAPABILITY_ADD_FOLDER		= (1<<4),	/**< folders can be added to the source */
+	NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST	= (1<<5),	/**< the feed list tree of the source can have hierarchic folders */
+	NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC		= (1<<6)	/**< the item state can and should be sync'ed with remote */
 };
 
 /** feed list node source type */

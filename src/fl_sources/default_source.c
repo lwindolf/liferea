@@ -181,6 +181,8 @@ static struct nodeSourceType nst = {
 	.description		= "The default feed list source. Should never be added manually. If you see this then something went wrong!",
 	.capabilities		= NODE_SOURCE_CAPABILITY_IS_ROOT |
 				  NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST |
+	                          NODE_SOURCE_CAPABILITY_ADD_FEED |
+	                          NODE_SOURCE_CAPABILITY_ADD_FOLDER |
 				  NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
 	.source_type_init	= default_source_init,
 	.source_type_deinit	= default_source_deinit,

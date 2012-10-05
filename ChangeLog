@@ -15,6 +15,10 @@
 	  (reported by anonymous)
 	* Fixes SF #3567827: Double border around webview
 	  (reported by borschty)
+	* Fixes SF #3572660: crash in google_source_remove_node
+	  (reported by Yanko Kaneti)
+	* Prevents adding folders/search folders/newsbins to Google Reader
+	* Prevents sorting subscriptions in Google Reader
 
 
 2012-09-14  Lars Windolf <lars.lindner@gmail.com>
