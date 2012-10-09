@@ -1,4 +1,6 @@
-	To be released
+2012-10-09  Lars Windolf <lars.lindner@gmail.com>
+	
+	Version 1.9.6
 
 	* Removed "pass URL" check box from MIME type dialog.
 	* Removed "Save In" entry from "Download" tab in preferences.
