@@ -222,6 +222,10 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	}
 	
 	g_assert (NULL != type);
+
+	/* Check if adding this type is allowed */
+	// FIXME: Prevent news bins outside root source
+	// FIXME: Prevent search folders outside root source
 	
 	/* 2. do general node parsing */	
 	node = node_new (type);
