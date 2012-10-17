@@ -35,30 +35,36 @@ static struct browser browsers[] = {
 		NULL, NULL
 	},
 	{
-		/* tested with SeaMonkey 1.0.6 */
-		"mozilla", "Mozilla", "mozilla %s",
-		NULL, "mozilla -remote openURL(%s)",
-		NULL, "mozilla -remote 'openURL(%s,new-window)'",
-		NULL, "mozilla -remote 'openURL(%s,new-tab)'"
-	},
-	{
 		/* tested with Firefox 1.5 and 2.0 */
-		"firefox", "Firefox","firefox \"%s\"",
+		"firefox", "Firefox", "firefox \"%s\"",
 		NULL, "firefox -a firefox -remote \"openURL(%s)\"",
 		NULL, "firefox -a firefox -remote 'openURL(%s,new-window)'",
 		NULL, "firefox -a firefox -remote 'openURL(%s,new-tab)'"
 	},
 	{
-		"opera", "Opera","opera \"%s\"",
+		"google-chrome", "Chrome", "google-chrome \"%s\"",
+		NULL, NULL,
+		NULL, NULL,
+		NULL, NULL
+	},		
+	{
+		"opera", "Opera", "opera \"%s\"",
 		"opera \"%s\"", "opera -remote \"openURL(%s)\"",
 		"opera -newwindow \"%s\"", NULL,
 		"opera -newpage \"%s\"", NULL
 	},
 	{
-		"epiphany", "Epiphany","epiphany \"%s\"",
+		"epiphany", "Epiphany", "epiphany \"%s\"",
 		NULL, NULL,
 		"epiphany \"%s\"", NULL,
 		"epiphany -n \"%s\"", NULL
+	},
+	{
+		/* tested with SeaMonkey 1.0.6 */
+		"mozilla", "Mozilla", "mozilla %s",
+		NULL, "mozilla -remote openURL(%s)",
+		NULL, "mozilla -remote 'openURL(%s,new-window)'",
+		NULL, "mozilla -remote 'openURL(%s,new-tab)'"
 	},
 	{
 		"konqueror", "Konqueror", "kfmclient openURL \"%s\"",
