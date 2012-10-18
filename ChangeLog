@@ -1,5 +1,8 @@
 	To be released
 
+	* Changing toolbar button order to prevent accidental clicks on
+	  "Mark All Read" when clicking on more frequent buttons like
+	  "Next Unread".
 	* Added Google Chrome as a browser choice to preferences.
 	* Roughly reordered browser choices after browser market share.
 
