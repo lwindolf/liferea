@@ -357,8 +357,6 @@ struct internalUriType {
 };
 
 static struct internalUriType internalUriTypes[] = {
-	{ "flag",		itemlist_toggle_flag },
-	{ "bookmark",		social_add_bookmark },
 	{ "refresh-comments",	comments_refresh },
 	{ NULL,			NULL }
 };

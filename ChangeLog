@@ -5,6 +5,10 @@
 	  "Next Unread".
 	* Added Google Chrome as a browser choice to preferences.
 	* Roughly reordered browser choices after browser market share.
+	* Removed shading behaviour for unread items in combined view 
+	  as it doesn't match GTK theming well
+	* Removed auto-hide Javascript menu from combined view to simplify
+	  rendering in 3-pane modes.
 
 2012-10-09  Lars Windolf <lars.lindner@gmail.com>
 	

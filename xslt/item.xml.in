@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
- * Copyright (C) 2006-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2012 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -250,58 +250,6 @@
 
 </table> <!-- end of header metadata -->
 
-<!-- construct unique id to allow Javascript showing/hiding of itemmenu -->
-<xsl:variable name="hiddenMenu">
-   <xsl:if test="$single = 1">hidden</xsl:if>
-</xsl:variable>
-
-<table id="{sourceId}-{nr}" class="headmeta {$hiddenMenu}"
-       cellspacing="0" cellpadding="0" dir="{$appDirection}">
-<tr>
- <td class='itemmenu'> 
-
-  <!-- for comment link and search engine link -->
-
-  <!-- Flagging link -->
-  <a class="flag" href="liferea-flag://{sourceId}-{sourceNr}">
-    <xsl:variable name="png">
-      <xsl:if test="mark = '0'">grayflag.png</xsl:if>
-      <xsl:if test="mark = '1'">flag.png</xsl:if>
-    </xsl:variable>
-    <img border="0" class="flagbtn" src="{$pixmapsDir}{$png}"/>
-    <_span>flag</_span>
-  </a>
-   
-  <!-- Tagging link -->
-  <!--<a class="bookmark" href="liferea-tag://{sourceId}-{nr}">
-    <img border="0" class="tagbtn" src="{$pixmapsDir}tag.png"/>
-    <_span>add tag</_span>
-  </a>-->
-
-  <!-- Bookmarking link -->
-  <a class="bookmark" href="liferea-bookmark://{sourceId}-{nr}">
-    <img border="0" class="bookmarkbtn" src="{$pixmapsDir}bookmark.png"/>
-    <_span>bookmark</_span>
-  </a>
-
-  <!-- Comments link -->
-  <xsl:if test="attributes/attribute[ @name = 'commentsUri' ]">
-    <a class="comments" href="{attributes/attribute[ @name = 'commentsUri' ]}">
-      <img border="0" class="commentsbtn" src="{$pixmapsDir}comments.png"/>
-      <_span>comments</_span>
-    </a>
-  </xsl:if>
-
- </td><!-- end of comment and search engine link -->
-</tr>
-</table> <!-- itemmenutable -->
-
-<xsl:variable name="shading">
-  <xsl:if test="readStatus = '0'">itemshaded</xsl:if>
-  <xsl:if test="readStatus != '0'">itemunshaded</xsl:if>
-</xsl:variable>
-
-<div class="{$shading}">
 <div class='content'>
   <!-- insertion div for GeoRSS coordinates, adding an OpenStreet map -->
   <xsl:if test="attributes/attribute[ @name = 'point' ]">
@@ -402,7 +350,6 @@
      </p>    
   </xsl:if>
 </div>
-</div> <!-- end of shading div -->
 </div> <!-- end of base URL div -->
 
 </div> <!-- item -->
