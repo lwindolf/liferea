@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-18 21:50+0100\n"
+"POT-Creation-Date: 2012-10-26 23:01+0200\n"
 "PO-Revision-Date: 2008-12-30 22:50+0200\n"
 "Last-Translator: Jennie Petoumenou <epetoumenou@gmail.com>\n"
 "Language-Team:  <team@gnome.gr>\n"
@@ -19,8 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#. GTK theme support
-#: ../liferea.desktop.in.h:1 ../src/main.c:278 ../glade/liferea.ui.h:1
+#: ../liferea.desktop.in.h:1 ../src/main.c:237 ../glade/liferea.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -145,38 +144,26 @@ msgid "Creator"
 msgstr "Δημιουργός"
 
 #: ../xslt/item.xml.in.h:10
-msgid "flag"
-msgstr "σημαία"
-
-#: ../xslt/item.xml.in.h:11
-msgid "bookmark"
-msgstr "σελιδοδείκτης"
-
-#: ../xslt/item.xml.in.h:12
-msgid "comments"
-msgstr "σχόλια"
-
-#: ../xslt/item.xml.in.h:13
 msgid "No comments yet."
 msgstr "Δεν υπάρχουν σχόλια."
 
-#: ../xslt/item.xml.in.h:14
+#: ../xslt/item.xml.in.h:11
 msgid "Comments"
 msgstr "Σχόλια"
 
-#: ../xslt/item.xml.in.h:15
+#: ../xslt/item.xml.in.h:12
 msgid "Updating..."
 msgstr "Ενημέρωση..."
 
-#: ../xslt/item.xml.in.h:16
+#: ../xslt/item.xml.in.h:13
 msgid "Refresh"
 msgstr "Ανανέωση"
 
-#: ../xslt/item.xml.in.h:17
+#: ../xslt/item.xml.in.h:14
 msgid "Section"
 msgstr "Τομέας"
 
-#: ../xslt/item.xml.in.h:18
+#: ../xslt/item.xml.in.h:15
 msgid "Department"
 msgstr "Τμήμα"
 
@@ -201,12 +188,12 @@ msgstr "Φάκελος αναζήτησης:"
 msgid "Default Browser"
 msgstr "Προεπιλεγμένος περιηγητής GNOME"
 
-#: ../src/browser.c:201 ../src/browser.c:221
+#: ../src/browser.c:207 ../src/browser.c:227
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Απέτυχε η εντολή περιηγητή: %s"
 
-#: ../src/browser.c:224
+#: ../src/browser.c:230
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Εκκίνηση: \"%s\""
@@ -216,7 +203,7 @@ msgstr "Εκκίνηση: \"%s\""
 msgid "Authorization Error"
 msgstr "Σφάλμα εξουσιοδότησης"
 
-#: ../src/common.c:63
+#: ../src/common.c:62
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Αδύνατη η δημιουργία του καταλόγου μνήμης \"%s\"!"
@@ -246,37 +233,43 @@ msgstr "%d %b %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%d %b %Y"
 
-#: ../src/enclosure.c:175
+#: ../src/enclosure.c:197
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr ""
 "Το \"%s\" δεν είναι έγκυρο αρχείο ρυθμίσεων κάποιου τύπου συνδεδεμένων "
 "πολυμέσων!"
 
-#: ../src/enclosure.c:274
-#, fuzzy, c-format
-msgid "Enclosure download FAILED: \"%s\""
-msgstr "Ολοκληρώθηκε η λήψη του συνδεδεμένου πολυμέσου: \"%s\""
+#: ../src/enclosure.c:288
+msgid ""
+"You have not configured a download tool yet! Please do so in the 'Download' "
+"tab in Tools/Preferences."
+msgstr ""
 
-#. just saving
-#: ../src/enclosure.c:284
+#: ../src/enclosure.c:306
 #, c-format
-msgid "Enclosure download finished: \"%s\""
-msgstr "Ολοκληρώθηκε η λήψη του συνδεδεμένου πολυμέσου: \"%s\""
+msgid ""
+"Command failed: \n"
+"\n"
+"%s\n"
+"\n"
+" Please check wether the configured download tool is installed and working "
+"correctly! You can change it in the 'Download' tab in Tools/Preferences."
+msgstr ""
 
-#: ../src/export.c:174
+#: ../src/export.c:177
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Σφάλμα κατά τη μετονομασία του %s σε %s\n"
 
-#: ../src/export.c:383 ../src/export.c:385
+#: ../src/export.c:406 ../src/export.c:408
 #, fuzzy, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
 "Σφάλμα XML κατά την ανάγνωση του αρχείου της μνήμης! Αδύνατη η εισαγωγή του "
 "\"%s\"!"
 
-#: ../src/export.c:391 ../src/export.c:393
+#: ../src/export.c:414 ../src/export.c:416
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -284,43 +277,43 @@ msgstr ""
 "Κενό έγγραφο! Το αρχείο OPML \"%s\" δεν θα έπρεπε να είναι κενό για να γίνει "
 "η εισαγωγή."
 
-#: ../src/export.c:414 ../src/export.c:416
+#: ../src/export.c:437 ../src/export.c:439
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "Το \"%s\" δεν είναι έγκυρο αρχείο OPML! Το Liferea δεν μπορεί να εισάγει "
 "αυτό το αρχείο!"
 
-#: ../src/export.c:435
+#: ../src/export.c:458
 msgid "Imported feed list"
 msgstr "Λίστα εισαχθέντων ροών"
 
-#: ../src/export.c:447
+#: ../src/export.c:470
 msgid "Import Feed List"
 msgstr "Εισαγωγή λίστας ροών"
 
-#: ../src/export.c:447
+#: ../src/export.c:470
 msgid "Import"
 msgstr "Εισαγωγή"
 
-#: ../src/export.c:447 ../src/export.c:464 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:470 ../src/export.c:487 ../src/fl_sources/opml_source.c:387
 #, fuzzy
 msgid "OPML Files"
 msgstr "Επιλογή αρχείου OPML"
 
-#: ../src/export.c:455
+#: ../src/export.c:478
 msgid "Error while exporting feed list!"
 msgstr "Σφάλμα κατά την εξαγωγή της λίστας ροών!"
 
-#: ../src/export.c:457
+#: ../src/export.c:480
 msgid "Feed List exported!"
 msgstr "Εξήχθη η λίστα ροών!"
 
-#: ../src/export.c:464
+#: ../src/export.c:487
 msgid "Export Feed List"
 msgstr "Εξαγωγή λίστας ροών"
 
-#: ../src/export.c:464
+#: ../src/export.c:487
 msgid "Export"
 msgstr "Εξαγωγή"
 
@@ -377,12 +370,12 @@ msgid "Could not determine the feed type."
 msgstr "Αδύνατος ο καθορισμός του τύπου της ροής."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:403
+#: ../src/itemlist.c:404
 #, fuzzy
 msgid "There are no unread items"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα άρθρα"
 
-#: ../src/main.c:192
+#: ../src/main.c:164
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
@@ -391,123 +384,111 @@ msgstr ""
 "                   Η ΚΑΤΑΣΤΑΣΗ μπορεί να είναι `shown' (εμφάνιση), "
 "`iconified' (εικονίδιο) ή `hidden' (απόκρυψη)"
 
-#: ../src/main.c:192
+#: ../src/main.c:164
 msgid "STATE"
 msgstr ""
 
-#: ../src/main.c:196
+#: ../src/main.c:165
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version        Εμφάνιση πληροφοριών έκδοσης και έξοδος."
 
-#: ../src/main.c:197
+#: ../src/main.c:166
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Νέα συνδρομή"
 
-#: ../src/main.c:197
+#: ../src/main.c:166
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:202
+#: ../src/main.c:171
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/main.c:203
+#: ../src/main.c:172
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/main.c:204
+#: ../src/main.c:173
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/main.c:205
+#: ../src/main.c:174
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/main.c:206
+#: ../src/main.c:175
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 
-#: ../src/main.c:207
+#: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
 msgstr ""
 
-#: ../src/main.c:208
+#: ../src/main.c:177
 msgid "Print debugging messages of all network activity"
 msgstr ""
 
-#: ../src/main.c:209
+#: ../src/main.c:178
 msgid "Print debugging messages of all parsing functions"
 msgstr ""
 
-#: ../src/main.c:210
+#: ../src/main.c:179
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 
-#: ../src/main.c:211
+#: ../src/main.c:180
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 
-#: ../src/main.c:212
+#: ../src/main.c:181
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/main.c:213
+#: ../src/main.c:182
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/main.c:214
+#: ../src/main.c:183
 msgid "Print verbose debugging messages"
 msgstr ""
 
-#: ../src/main.c:227 ../src/main.c:228
+#: ../src/main.c:196 ../src/main.c:197
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/main.c:235
+#: ../src/main.c:204
 #, fuzzy
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea - Ανάγνωση ροών για Linux"
 
-#: ../src/main.c:236
+#: ../src/main.c:205
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
-
-#: ../src/migrate.c:92
-#, fuzzy, c-format
-msgid ""
-"This version of Liferea uses a new cache format and has migrated your feed "
-"cache. The cache content in %s was not deleted automatically. Please remove "
-"this directory manually once you are sure migration was successful!"
-msgstr ""
-"Αυτή η έκδοση του Liferea χρησιμοποιεί μια νέα μορφή μνήμης και μετέφερε τα "
-"δεδομένα της παλαιάς μνήμης ροών. Τα περιεχόμενα της μνήμης της v1.2 στον "
-"κατάλογο ~/.liferea_1.2 δε διαγράφηκαν αυτόματα. Παρακαλώ, διαγράψτε τον "
-"κατάλογο με το χέρι, εφόσον βεβαιωθείτε ότι η μεταφορά ήταν επιτυχής!"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320
@@ -610,94 +591,98 @@ msgstr "(άγνωστο σφάλμα σύνδεσης)"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:152
+#: ../src/rule.c:174
 msgid "Item"
 msgstr "Άρθρο"
 
-#: ../src/rule.c:152 ../src/rule.c:153 ../src/rule.c:154
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does contain"
 msgstr "περιέχει"
 
-#: ../src/rule.c:152 ../src/rule.c:153 ../src/rule.c:154
+#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
 msgid "does not contain"
 msgstr "δεν περιέχει"
 
-#: ../src/rule.c:153
+#: ../src/rule.c:175
 msgid "Item title"
 msgstr "Τίτλος άρθρου"
 
-#: ../src/rule.c:154
+#: ../src/rule.c:176
 msgid "Item body"
 msgstr "Σώμα άρθρου"
 
-#: ../src/rule.c:155
+#: ../src/rule.c:177
 msgid "Read status"
 msgstr "Αναγνωσμένο"
 
-#: ../src/rule.c:155
+#: ../src/rule.c:177
 msgid "is unread"
 msgstr "όχι"
 
-#: ../src/rule.c:155
+#: ../src/rule.c:177
 msgid "is read"
 msgstr "ναι"
 
-#: ../src/rule.c:156
+#: ../src/rule.c:178
 msgid "Flag status"
 msgstr "Σημαία"
 
-#: ../src/rule.c:156
+#: ../src/rule.c:178
 msgid "is flagged"
 msgstr "ναι"
 
-#: ../src/rule.c:156
+#: ../src/rule.c:178
 msgid "is unflagged"
 msgstr "όχι"
 
-#: ../src/rule.c:157
+#: ../src/rule.c:179
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:157
+#: ../src/rule.c:179
 msgid "included"
 msgstr "περιλαμβάνεται"
 
-#: ../src/rule.c:157
+#: ../src/rule.c:179
 msgid "not included"
 msgstr "δεν περιλαμβάνεται"
 
-#: ../src/rule.c:158
+#: ../src/rule.c:180
 #, fuzzy
 msgid "Category"
 msgstr "Δημιουργός"
 
-#: ../src/rule.c:158
+#: ../src/rule.c:180
 #, fuzzy
 msgid "is set"
 msgstr "ναι"
 
-#: ../src/rule.c:158
+#: ../src/rule.c:180
 msgid "is not set"
 msgstr ""
 
-#: ../src/subscription.c:104
+#: ../src/rule.c:181
+msgid "Feed title"
+msgstr "Τίτλος ροής"
+
+#: ../src/subscription.c:105
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "Ήδη ενημερώνεται η συνδρομή \"%s\"!"
 
-#: ../src/subscription.c:109
+#: ../src/subscription.c:110
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr ""
 "Η συνδρομή \"%s\" δε λειτουργεί πλέον. Το Liferea θα πάψει να την ενημερώνει!"
 
-#: ../src/subscription.c:143
+#: ../src/subscription.c:144
 #, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "Ενημέρωση του εικονιδίου της ροής \"%s\""
 
-#: ../src/subscription.c:192
+#: ../src/subscription.c:193
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -705,53 +690,53 @@ msgstr ""
 "Εμφανίστηκε πρόβλημα κατά την ανάγνωση της συνδρομής. Παρακαλώ ελέγξτε την "
 "τοποθεσία και τις λεπτομέρειες στην κονσόλα."
 
-#: ../src/subscription.c:210
+#: ../src/subscription.c:211
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr ""
 "Η τοποθεσία της ροής \"%s\" άλλαξε οριστικά. Η συνδρομή σας ενημερώθηκε "
 "καταλλήλως. "
 
-#: ../src/subscription.c:218
+#: ../src/subscription.c:219
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 "Η συνδρομή \"%s\" δε λειτουργεί πλέον. Το Liferea θα πάψει να την ενημερώνει!"
 
-#: ../src/subscription.c:221
+#: ../src/subscription.c:222
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "Η ροή \"%s\" δεν έχει αλλάξει από την προηγούμενη ενημέρωση"
 
-#: ../src/subscription.c:271
+#: ../src/subscription.c:272
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Ενημέρωση της ροής \"%s\""
 
-#: ../src/update.c:255
+#: ../src/update.c:259
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr ""
 "Σφάλμα κατά το άνοιγμα του προσωρινού αρχείου %s που προοριζόταν για το "
 "φιλτράρισμα!"
 
-#: ../src/update.c:278
+#: ../src/update.c:282
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s: τερματίστηκε με κατάσταση %d"
 
-#: ../src/update.c:284 ../src/update.c:285 ../src/update.c:397
+#: ../src/update.c:288 ../src/update.c:289 ../src/update.c:401
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Σφάλμα: Αδύνατο το άνοιγμα του pipe \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:423
+#: ../src/update.c:427
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Σφάλμα: Αδύνατο το άνοιγμα του αρχείου \"%s\""
 
-#: ../src/update.c:429
+#: ../src/update.c:433
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Σφάλμα: Δεν υπάρχει το αρχείο \"%s\""
@@ -768,48 +753,46 @@ msgstr "[Εμφανίστηκαν και άλλα σφάλματα, τα οπο�
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Ανάλυση XML: Αδύνατη η ανάλυση του αρχείου:\n"
 
-#: ../src/ui/enclosure_list_view.c:159
+#: ../src/ui/enclosure_list_view.c:175
 #, fuzzy
 msgid "Attachments"
 msgstr "σχόλια"
 
+#. The following literals are the enclosure list size units
+#: ../src/ui/enclosure_list_view.c:272
+msgid " Bytes"
+msgstr ""
+
+#: ../src/ui/enclosure_list_view.c:275
+msgid "kB"
+msgstr ""
+
+#: ../src/ui/enclosure_list_view.c:279
+msgid "MB"
+msgstr ""
+
+#: ../src/ui/enclosure_list_view.c:283
+msgid "GB"
+msgstr ""
+
+#: ../src/ui/enclosure_list_view.c:288
+#, c-format
+msgid "%d%s"
+msgstr ""
+
 #. update list title
-#: ../src/ui/enclosure_list_view.c:248
+#: ../src/ui/enclosure_list_view.c:321
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
 msgstr[0] ""
 msgstr[1] ""
 
-#. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:263
-msgid " Bytes"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:266
-msgid "kB"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:270
-msgid "MB"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:274
-msgid "GB"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:279
-#, c-format
-msgid "%d%s"
-msgstr ""
-
-#. strip GET parameters
-#: ../src/ui/enclosure_list_view.c:338 ../src/ui/enclosure_list_view.c:514
-#: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/enclosure_list_view.c:377 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "Επιλογή αρχείου"
 
-#: ../src/ui/enclosure_list_view.c:401
+#: ../src/ui/enclosure_list_view.c:438
 #, fuzzy, c-format
 msgid "File Extension .%s"
 msgstr "<b>Επέκταση αρχείου .%s</b>"
@@ -819,280 +802,289 @@ msgstr "<b>Επέκταση αρχείου .%s</b>"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Δε βρέθηκε το αρχείο pixmap: %s"
 
-#: ../src/ui/liferea_shell.c:308
+#: ../src/ui/liferea_shell.c:322
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d νέο)"
 msgstr[1] " (%d νέα)"
 
-#: ../src/ui/liferea_shell.c:313
+#: ../src/ui/liferea_shell.c:327
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d μη αναγνωσμένο%s"
 msgstr[1] "%d μη αναγνωσμένα%s"
 
-#: ../src/ui/liferea_shell.c:687
+#: ../src/ui/liferea_shell.c:713
 msgid "Help Topics"
 msgstr "Θέματα Βοήθειας"
 
-#: ../src/ui/liferea_shell.c:693
+#: ../src/ui/liferea_shell.c:719
 msgid "Quick Reference"
 msgstr "Σύντομος οδηγός"
 
-#: ../src/ui/liferea_shell.c:699
+#: ../src/ui/liferea_shell.c:725
 msgid "FAQ"
 msgstr "Συχνές ερωτήσεις"
 
-#: ../src/ui/liferea_shell.c:740
+#: ../src/ui/liferea_shell.c:803
 msgid "Liferea is now online"
 msgstr "Το Liferea συνδέθηκε στο δίκτυο"
 
-#: ../src/ui/liferea_shell.c:742
+#: ../src/ui/liferea_shell.c:805
 msgid "Work Offline"
 msgstr "Εργασία χωρίς σύνδεση"
 
-#: ../src/ui/liferea_shell.c:744
+#: ../src/ui/liferea_shell.c:807
 msgid "Liferea is now offline"
 msgstr "Το Liferea αποσυνδέθηκε από το δίκτυο"
 
-#: ../src/ui/liferea_shell.c:746
+#: ../src/ui/liferea_shell.c:809
 msgid "Work Online"
 msgstr "Εργασία με σύνδεση"
 
-#: ../src/ui/liferea_shell.c:842
+#: ../src/ui/liferea_shell.c:905
 msgid "_Subscriptions"
 msgstr "_Συνδρομές"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:906
 msgid "Update _All"
 msgstr "_Ενημέρωση όλων"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:906
 #, fuzzy
 msgid "Updates all subscriptions."
 msgstr "Νέα συνδρομή"
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:908
 msgid "Mark All As _Read"
 msgstr "Ση_μείωση όλων ως αναγνωσμένων"
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:908
 msgid "Marks read every item of every subscription."
 msgstr "Σημείωση ως αναγνωσμένων όλων των άρθρων σε όλες τις συνδρομές."
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:910
 msgid "_Import Feed List..."
 msgstr "Ε_ισαγωγή λίστας ροών..."
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:910
 msgid "Imports an OPML feed list."
 msgstr "Εισαγωγή λίστας ροών σε μορφή OPML."
 
-#: ../src/ui/liferea_shell.c:848
+#: ../src/ui/liferea_shell.c:911
 msgid "_Export Feed List..."
 msgstr "Εξα_γωγή λίστας ροών..."
 
-#: ../src/ui/liferea_shell.c:848
+#: ../src/ui/liferea_shell.c:911
 msgid "Exports the feed list as OPML."
 msgstr "Εξαγωγή της λίστας ροών σε μορφή OPML."
 
-#: ../src/ui/liferea_shell.c:849
+#: ../src/ui/liferea_shell.c:912
 msgid "_Quit"
 msgstr "Έ_ξοδος"
 
-#: ../src/ui/liferea_shell.c:851
+#: ../src/ui/liferea_shell.c:914
 msgid "_Feed"
 msgstr "_Ροή"
 
-#: ../src/ui/liferea_shell.c:852
+#: ../src/ui/liferea_shell.c:915
 msgid "Remove _All Items"
 msgstr "Αφαίρεση ό_λων των άρθρων"
 
-#: ../src/ui/liferea_shell.c:852
+#: ../src/ui/liferea_shell.c:915
 msgid "Removes all items of the currently selected feed."
 msgstr "Αφαίρεση όλων των άρθρων της επιλεγμένης ροής."
 
-#: ../src/ui/liferea_shell.c:855
+#: ../src/ui/liferea_shell.c:918
 msgid "_Item"
 msgstr "Άρ_θρο"
 
+#: ../src/ui/liferea_shell.c:919
+msgid "Previous Item"
+msgstr ""
+
+#: ../src/ui/liferea_shell.c:921
+#, fuzzy
+msgid "Next Item"
+msgstr "_Επόμενο μη αναγνωσμένο"
+
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:858
+#: ../src/ui/liferea_shell.c:926
 msgid "_Next Unread Item"
 msgstr "_Επόμενο μη αναγνωσμένο"
 
-#: ../src/ui/liferea_shell.c:861
+#: ../src/ui/liferea_shell.c:929
 msgid "_View"
 msgstr "_Προβολή"
 
-#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:570
+#: ../src/ui/liferea_shell.c:930 ../src/ui/liferea_htmlview.c:650
 msgid "_Increase Text Size"
 msgstr "_Αύξηση μεγέθους γραμματοσειράς"
 
-#: ../src/ui/liferea_shell.c:862
+#: ../src/ui/liferea_shell.c:930
 msgid "Increases the text size of the item view."
 msgstr "Αυξάνει το μέγεθος της γραμματοσειράς των άρθρων."
 
-#: ../src/ui/liferea_shell.c:864 ../src/ui/liferea_htmlview.c:571
+#: ../src/ui/liferea_shell.c:932 ../src/ui/liferea_htmlview.c:651
 msgid "_Decrease Text Size"
 msgstr "_Μείωση μεγέθους γραμματοσειράς"
 
-#: ../src/ui/liferea_shell.c:864
+#: ../src/ui/liferea_shell.c:932
 msgid "Decreases the text size of the item view."
 msgstr "Μειώνει το μέγεθος της γραμματοσειράς των άρθρων."
 
-#: ../src/ui/liferea_shell.c:867
+#: ../src/ui/liferea_shell.c:935
 msgid "_Tools"
 msgstr "_Εργαλεία"
 
-#: ../src/ui/liferea_shell.c:868
+#: ../src/ui/liferea_shell.c:936
 msgid "_Update Monitor"
 msgstr "Παρακολούθηση _ενημερώσεων"
 
-#: ../src/ui/liferea_shell.c:868
+#: ../src/ui/liferea_shell.c:936
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Εμφανίζει λίστα με τις ροές των οποίων εκκρεμεί η ενημέρωση"
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:938
 msgid "_Preferences"
 msgstr "_Προτιμήσεις"
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:938
 msgid "Edit Preferences."
 msgstr "Επεξεργασία προτιμήσεων."
 
-#: ../src/ui/liferea_shell.c:873
+#: ../src/ui/liferea_shell.c:941
 #, fuzzy
 msgid "S_earch"
 msgstr "_Αναζήτηση"
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:942
 msgid "Search All Feeds..."
 msgstr "Αναζήτηση στις ροές"
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:942
 msgid "Show the search dialog."
 msgstr "Εμφάνιση του διαλόγου αναζήτησης."
 
-#: ../src/ui/liferea_shell.c:876
+#: ../src/ui/liferea_shell.c:944
 msgid "_Help"
 msgstr "_Βοήθεια"
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:945
 msgid "_Contents"
 msgstr "_Περιεχόμενα"
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:945
 msgid "View help for this application."
 msgstr "Προβολή της βοήθειας της εφαρμογής."
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:946
 msgid "_Quick Reference"
 msgstr "_Σύντομος οδηγός"
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:946
 msgid "View a list of all Liferea shortcuts."
 msgstr "Προβολή λίστας με όλες τις συντομεύσεις του Liferea."
 
-#: ../src/ui/liferea_shell.c:880
+#: ../src/ui/liferea_shell.c:948
 msgid "_FAQ"
 msgstr "Συ_χνές ερωτήσεις"
 
-#: ../src/ui/liferea_shell.c:880
+#: ../src/ui/liferea_shell.c:948
 msgid "View the FAQ for this application."
 msgstr "Προβολή των συχνών ερωτήσεων της εφαρμογής."
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:949
 msgid "_About"
 msgstr "Πε_ρί"
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:949
 msgid "Shows an about dialog."
 msgstr "Προβολή του διαλόγου πληροφοριών της εφαρμογής."
 
-#: ../src/ui/liferea_shell.c:885
+#: ../src/ui/liferea_shell.c:953
 msgid "_Normal View"
 msgstr "_Κανονική προβολή"
 
-#: ../src/ui/liferea_shell.c:885
+#: ../src/ui/liferea_shell.c:953
 msgid "Set view mode to mail client mode."
 msgstr ""
 "Προβολή στη μορφή που χρησιμοποιούν συνήθως οι εφαρμογές αλληλογραφίας."
 
-#: ../src/ui/liferea_shell.c:887
+#: ../src/ui/liferea_shell.c:955
 msgid "_Wide View"
 msgstr "_Διευρυμένη προβολή"
 
-#: ../src/ui/liferea_shell.c:887
+#: ../src/ui/liferea_shell.c:955
 msgid "Set view mode to use three vertical panes."
 msgstr "Προβολή σε τρία κάθετα πλαίσια."
 
-#: ../src/ui/liferea_shell.c:889
+#: ../src/ui/liferea_shell.c:957
 msgid "_Combined View"
 msgstr "_Συνδυασμένη προβολή"
 
-#: ../src/ui/liferea_shell.c:889
+#: ../src/ui/liferea_shell.c:957
 msgid "Set view mode to two pane mode."
 msgstr "Προβολή σε δύο πλαίσια."
 
-#: ../src/ui/liferea_shell.c:894
+#: ../src/ui/liferea_shell.c:962
 msgid "_Reduced Feed List"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:894
+#: ../src/ui/liferea_shell.c:962
 #, fuzzy
 msgid "Hide feeds with no unread items."
 msgstr "Δεν υπάρχουν μη αναγνωσμένα άρθρα"
 
-#: ../src/ui/liferea_shell.c:899
+#: ../src/ui/liferea_shell.c:967
 msgid "_New Subscription..."
 msgstr "_Νέα συνδρομή"
 
-#: ../src/ui/liferea_shell.c:899
+#: ../src/ui/liferea_shell.c:967
 msgid "Adds a subscription to the feed list."
 msgstr "Προσθήκη συνδρομής στη λίστα ροών."
 
-#: ../src/ui/liferea_shell.c:901 ../src/ui/popup_menu.c:301
+#: ../src/ui/liferea_shell.c:969 ../src/ui/popup_menu.c:315
 msgid "New _Folder..."
 msgstr "Νέος _φάκελος..."
 
-#: ../src/ui/liferea_shell.c:901
+#: ../src/ui/liferea_shell.c:969
 msgid "Adds a folder to the feed list."
 msgstr "Προσθήκη φακέλου στη λίστα ροών."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/popup_menu.c:304
+#: ../src/ui/liferea_shell.c:970 ../src/ui/popup_menu.c:318
 msgid "New S_earch Folder..."
 msgstr "Νέος φάκελος ανα_ζήτησης..."
 
-#: ../src/ui/liferea_shell.c:902
+#: ../src/ui/liferea_shell.c:970
 msgid "Adds a new search folder to the feed list."
 msgstr "Προσθήκη νέου φακέλου αναζήτησης στη λίστα ροών."
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:971
 msgid "New _Source..."
 msgstr "Νέα _πηγή..."
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:971
 msgid "Adds a new feed list source."
 msgstr "Προσθήκη νέας πηγής λίστας ροής."
 
-#: ../src/ui/liferea_shell.c:904 ../src/ui/popup_menu.c:306
+#: ../src/ui/liferea_shell.c:972 ../src/ui/popup_menu.c:320
 msgid "New _News Bin..."
 msgstr "Νέος φάκελος _αποκομμάτων..."
 
-#: ../src/ui/liferea_shell.c:904
+#: ../src/ui/liferea_shell.c:972
 msgid "Adds a new news bin."
 msgstr "Προσθήκη νέου φακέλου αποκομμάτων."
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:976
 #, fuzzy
 msgid "_Mark Items Read"
 msgstr "_Σημείωση ως αναγνωσμένου"
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:976
 #, fuzzy
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
@@ -1100,11 +1092,11 @@ msgstr ""
 "Σημειώνονται ως αναγνωσμένα όλα τα άρθρα είτε της επιλεγμένης συνδρομής είτε "
 "του συνόλου των συνδρομών στον επιλεγμένο φάκελο."
 
-#: ../src/ui/liferea_shell.c:910 ../src/ui/popup_menu.c:282
+#: ../src/ui/liferea_shell.c:978 ../src/ui/popup_menu.c:295
 msgid "_Update"
 msgstr "_Ενημέρωση"
 
-#: ../src/ui/liferea_shell.c:910
+#: ../src/ui/liferea_shell.c:978
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
@@ -1112,68 +1104,76 @@ msgstr ""
 "Ενημέρωση είτε της επιλεγμένης συνδρομής είτε όλων των συνδρομών στον "
 "επιλεγμένο φάκελο."
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:983
 #, fuzzy
 msgid "_Properties"
 msgstr "_Ιδιότητες..."
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:983
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Εμφάνιση του διαλόγου ιδιοτήτων της επιλεγμένης συνδρομής."
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:984
 msgid "_Remove"
 msgstr "Α_φαίρεση"
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:984
 msgid "Removes the selected subscription."
 msgstr "Αφαίρεση της επιλεγμένης συνδρομής."
 
-#: ../src/ui/liferea_shell.c:920 ../src/ui/popup_menu.c:151
+#: ../src/ui/liferea_shell.c:988 ../src/ui/popup_menu.c:163
 msgid "Toggle _Read Status"
 msgstr "Ε_ναλλαγή μεταξύ αναγνωσμένου και μη"
 
-#: ../src/ui/liferea_shell.c:920
+#: ../src/ui/liferea_shell.c:988
 msgid "Toggles the read status of the selected item."
 msgstr "Αν το επιλεγμένο άρθρο θεωρείται αναγνωσμένο ή όχι."
 
-#: ../src/ui/liferea_shell.c:922 ../src/ui/popup_menu.c:152
+#: ../src/ui/liferea_shell.c:990 ../src/ui/popup_menu.c:164
 msgid "Toggle Item _Flag"
 msgstr "Εναλλαγή _σημαίας άρθρου"
 
-#: ../src/ui/liferea_shell.c:922
+#: ../src/ui/liferea_shell.c:990
 msgid "Toggles the flag status of the selected item."
 msgstr "Αν υπάρχει ή όχι σημαία στο επιλεγμένο άρθρο."
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:992
 msgid "R_emove"
 msgstr "Α_φαίρεση"
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:992
 msgid "Removes the selected item."
 msgstr "Αφαιρεί το επιλεγμένο άρθρο."
 
-#: ../src/ui/liferea_shell.c:926
+#: ../src/ui/liferea_shell.c:994
 msgid "_Launch In Browser"
 msgstr "Άνοιγμα στον _περιηγητή"
 
-#: ../src/ui/liferea_shell.c:926
+#: ../src/ui/liferea_shell.c:994
 msgid "Launches the item's link in the configured browser."
 msgstr "Ανοίγει το σύνδεσμο στον επιλεγμένο περιηγητή."
 
-#: ../src/ui/liferea_shell.c:931 ../src/ui/popup_menu.c:181
+#: ../src/ui/liferea_shell.c:999 ../src/ui/popup_menu.c:193
 msgid "_Work Offline"
 msgstr "Ε_ργασία χωρίς σύνδεση"
 
-#: ../src/ui/liferea_shell.c:931
+#: ../src/ui/liferea_shell.c:999
 msgid "This option allows you to disable subscription updating."
 msgstr "Αυτή η επιλογή απενεργοποιεί την ενημέρωση των συνδρομών."
 
-#: ../src/ui/liferea_shell.c:1241
+#: ../src/ui/liferea_shell.c:1001
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../src/ui/liferea_shell.c:1001
+msgid "Browse at full screen"
+msgstr ""
+
+#: ../src/ui/liferea_shell.c:1330
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Ανάγνωση ροών για Linux"
 
-#: ../src/ui/liferea_shell.c:1243
+#: ../src/ui/liferea_shell.c:1332
 #, fuzzy
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
@@ -1188,12 +1188,12 @@ msgstr ""
 "συνδρομή. Για να περιηγηθείτε στους τίτλους μιας ροής επιλέξτε τη ροή από τη "
 "λίστα. Οι τίτλοι θα εμφανιστούν στο δεξί πλαίσιο.</p>"
 
-#: ../src/ui/auth_dialog.c:132 ../glade/auth.ui.h:3
+#: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Εισάγετε το όνομα χρήστη και το συνθηματικό για τη ροή \"%s\" (%s):"
 
-#: ../src/ui/auth_dialog.c:133
+#: ../src/ui/auth_dialog.c:125
 msgid "Unknown source"
 msgstr "Άγνωστη πηγή"
 
@@ -1202,280 +1202,281 @@ msgstr "Άγνωστη πηγή"
 msgid "All Files"
 msgstr "_Τοπικό αρχείο"
 
-#: ../src/ui/feed_list_view.c:338
+#: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
 msgstr "Διαγραφή..."
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Σίγουρα θέλετε να διαγράψετε το \"%s\" και τα περιεχόμενά του;"
 
-#: ../src/ui/feed_list_view.c:339
+#: ../src/ui/feed_list_view.c:342
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Σίγουρα θέλετε να διαγράψετε το %s?"
 
-#: ../src/ui/feed_list_view.c:351
+#: ../src/ui/feed_list_view.c:354
 msgid "Deletion Confirmation"
 msgstr "Επιβεβαίωση της διαγραφής"
 
-#: ../src/ui/feed_list_view.c:382
+#: ../src/ui/feed_list_view.c:385
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Το Liferea λειτουργεί χωρίς σύνδεση. Δεν είναι δυνατή η ενημέρωση."
 
-#: ../src/ui/liferea_htmlview.c:433
-#, fuzzy, c-format
-msgid "Download FAILED: \"%s\""
-msgstr "Ολοκληρώθηκε η λήψη του συνδεδεμένου πολυμέσου: \"%s\""
-
-#: ../src/ui/liferea_htmlview.c:435
-#, fuzzy
-msgid "Download finished."
-msgstr "_Λήψη μέσω"
-
-#: ../src/ui/liferea_htmlview.c:542
+#: ../src/ui/liferea_htmlview.c:622
 #, fuzzy
 msgid "Launch Link In _Tab"
 msgstr "/Άνοιγμα συνδεσμού σε νέα _καρτέλα"
 
-#: ../src/ui/liferea_htmlview.c:543
+#: ../src/ui/liferea_htmlview.c:623
 #, fuzzy
 msgid "_Launch Link In Browser"
 msgstr "/Ανοιγμα συνδέσμου στον _περιηγητή"
 
-#: ../src/ui/liferea_htmlview.c:546 ../src/ui/popup_menu.c:143
+#: ../src/ui/liferea_htmlview.c:626 ../src/ui/popup_menu.c:155
 #, fuzzy, c-format
 msgid "_Bookmark Link at %s"
 msgstr "/_Δημιουργία σελιδοδείκτη στο %s"
 
-#: ../src/ui/liferea_htmlview.c:550
+#: ../src/ui/liferea_htmlview.c:630
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Αντιγραφή τοποθεσίας συνδέσμου"
 
-#: ../src/ui/liferea_htmlview.c:553
+#: ../src/ui/liferea_htmlview.c:633
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "/_Αντιγραφή τοποθεσίας συνδέσμου"
 
-#: ../src/ui/liferea_htmlview.c:555
+#: ../src/ui/liferea_htmlview.c:635
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "/_Αποθήκευση ως..."
 
-#: ../src/ui/liferea_htmlview.c:557
+#: ../src/ui/liferea_htmlview.c:637
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:560
+#: ../src/ui/liferea_htmlview.c:640
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Συνδρομή..."
 
-#: ../src/ui/item_list_view.c:340
+#: ../src/ui/item_list_view.c:347
 #, fuzzy
 msgid "*** No title ***"
 msgstr "<i>*** Χωρίς τίτλο ***</i>"
 
-#: ../src/ui/item_list_view.c:591
+#: ../src/ui/item_list_view.c:598
 msgid "Date"
 msgstr "Ημερομηνία"
 
-#: ../src/ui/item_list_view.c:605
+#: ../src/ui/item_list_view.c:612
 msgid "Headline"
 msgstr "Τίτλος"
 
-#: ../src/ui/item_list_view.c:741 ../src/ui/item_list_view.c:762
-#: ../src/ui/item_list_view.c:836 ../src/ui/item_list_view.c:933
-#: ../src/ui/item_list_view.c:948
+#: ../src/ui/item_list_view.c:714 ../src/ui/item_list_view.c:735
+#: ../src/ui/item_list_view.c:809 ../src/ui/item_list_view.c:894
+#: ../src/ui/item_list_view.c:909
 msgid "No item has been selected"
 msgstr "Δεν επιλέχθηκε άρθρο"
 
-#: ../src/ui/item_list_view.c:758
+#: ../src/ui/item_list_view.c:731
 msgid "This item has no link specified!"
 msgstr "Αυτό το άρθρο δεν παραπέμπει σε σύνδεσμο!"
 
-#: ../src/ui/item_list_view.c:824
+#: ../src/ui/item_list_view.c:797
 msgid "You must select a feed to delete its items!"
 msgstr "Πρέπει πρώτα να επιλέξετε ροή για να διαγράψετε τα άρθρα της!"
 
-#: ../src/ui/popup_menu.c:116
+#: ../src/ui/popup_menu.c:128
 #, fuzzy
 msgid "Launch Item In _Tab"
 msgstr "/Άνοιγμα συνδεσμού σε νέα _καρτέλα"
 
-#: ../src/ui/popup_menu.c:117
+#: ../src/ui/popup_menu.c:129
 #, fuzzy
 msgid "_Launch Item In Browser"
 msgstr "/Άνοιγμα συνδέσμου στον _περιηγητή"
 
-#: ../src/ui/popup_menu.c:129
+#: ../src/ui/popup_menu.c:141
 #, fuzzy
 msgid "Copy to News Bin"
 msgstr "/Αντιγραφή στο φάκελο αποκομμάτων/%s"
 
-#: ../src/ui/popup_menu.c:147
+#: ../src/ui/popup_menu.c:159
 #, fuzzy
 msgid "Copy Item _URL to Clipboard"
 msgstr "/_Αντιγραφή της τοποθεσίας του άρθρου στο πρόχειρο"
 
-#: ../src/ui/popup_menu.c:153
+#: ../src/ui/popup_menu.c:165
 #, fuzzy
 msgid "R_emove Item"
 msgstr "/Α_φαίρεση άρθρου"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:178
 #, fuzzy
 msgid "Open Enclosure..."
 msgstr "/Άνοιγμα συνδεδεμένου πολυμέσου..."
 
-#: ../src/ui/popup_menu.c:167
+#: ../src/ui/popup_menu.c:179
 #, fuzzy
 msgid "Save As..."
 msgstr "/_Αποθήκευση ως..."
 
-#: ../src/ui/popup_menu.c:168
+#: ../src/ui/popup_menu.c:180
 #, fuzzy
 msgid "Copy Link Location"
 msgstr "/_Αντιγραφή τοποθεσίας συνδέσμου"
 
-#: ../src/ui/popup_menu.c:182
+#: ../src/ui/popup_menu.c:194
 #, fuzzy
 msgid "_Update All"
 msgstr "/_Ενημέρωση όλων"
 
-#: ../src/ui/popup_menu.c:187
+#: ../src/ui/popup_menu.c:199
 #, fuzzy
 msgid "_Show Liferea"
 msgstr "Liferea"
 
-#: ../src/ui/popup_menu.c:284
+#: ../src/ui/popup_menu.c:297
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/_Ενημέρωση φακέλου"
 
-#: ../src/ui/popup_menu.c:286
+#: ../src/ui/popup_menu.c:299
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/Ση_μείωση όλων ως αναγνωσμένων"
 
-#: ../src/ui/popup_menu.c:296
+#: ../src/ui/popup_menu.c:309
 #, fuzzy
 msgid "_New"
 msgstr "/_Νέο"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:312
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "_Νέα συνδρομή"
 
-#: ../src/ui/popup_menu.c:305
+#: ../src/ui/popup_menu.c:319
 #, fuzzy
 msgid "New S_ource..."
 msgstr "Νέα _πηγή..."
 
-#: ../src/ui/popup_menu.c:314
+#: ../src/ui/popup_menu.c:328
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "Εισαγωγή λίστας ροών"
 
-#: ../src/ui/popup_menu.c:320
+#: ../src/ui/popup_menu.c:334
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/ui_node.c:123
-msgid "(Empty)"
-msgstr ""
-
-#: ../src/ui/ui_prefs.c:78
+#: ../src/ui/preferences_dialog.c:88
 msgid "GNOME default"
 msgstr "Προεπιλογή GNOME"
 
-#: ../src/ui/ui_prefs.c:79
+#: ../src/ui/preferences_dialog.c:89
 msgid "Text below icons"
 msgstr "Κείμενο κάτω από τα εικονίδια"
 
-#: ../src/ui/ui_prefs.c:80
+#: ../src/ui/preferences_dialog.c:90
 msgid "Text beside icons"
 msgstr "Κείμενο δίπλα στα εικονίδια"
 
-#: ../src/ui/ui_prefs.c:81
+#: ../src/ui/preferences_dialog.c:91
 msgid "Icons only"
 msgstr "Μόνο εικονίδια"
 
-#: ../src/ui/ui_prefs.c:82
+#: ../src/ui/preferences_dialog.c:92
 msgid "Text only"
 msgstr "Μόνο κείμενο"
 
-#: ../src/ui/ui_prefs.c:90 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:43
 msgid "minutes"
 msgstr "λεπτά"
 
-#: ../src/ui/ui_prefs.c:91 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:101 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr "ώρες"
 
-#: ../src/ui/ui_prefs.c:92 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:102 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr "ημέρες"
 
-#: ../src/ui/ui_prefs.c:97
+#: ../src/ui/preferences_dialog.c:107
 msgid "Space"
 msgstr "Διάστημα"
 
-#: ../src/ui/ui_prefs.c:98
+#: ../src/ui/preferences_dialog.c:108
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> + διάστημα"
 
-#: ../src/ui/ui_prefs.c:99
+#: ../src/ui/preferences_dialog.c:109
 msgid "<Alt> Space"
 msgstr "<Alt> + διάστημα"
 
-#: ../src/ui/ui_prefs.c:420
-msgid "Choose download directory"
-msgstr "Επιλογή καταλόγου λήψης αρχείων"
+#: ../src/ui/preferences_dialog.c:114
+#, fuzzy
+msgid "Normal View"
+msgstr "_Κανονική προβολή"
 
-#: ../src/ui/ui_prefs.c:504
+#: ../src/ui/preferences_dialog.c:115
+#, fuzzy
+msgid "Wide View"
+msgstr "_Διευρυμένη προβολή"
+
+#: ../src/ui/preferences_dialog.c:116
+#, fuzzy
+msgid "Combined View"
+msgstr "_Συνδυασμένη προβολή"
+
+#: ../src/ui/preferences_dialog.c:499
 msgid "Manual"
 msgstr "Προσαρμοσμένος"
 
-#: ../src/ui/ui_prefs.c:519
+#: ../src/ui/preferences_dialog.c:514
 msgid "Browser default"
 msgstr "Προεπιλογή περιηγητή"
 
-#: ../src/ui/ui_prefs.c:522
+#: ../src/ui/preferences_dialog.c:517
 msgid "Existing window"
 msgstr "Υπάρχον παράθυρο"
 
-#: ../src/ui/ui_prefs.c:525
+#: ../src/ui/preferences_dialog.c:520
 msgid "New window"
 msgstr "Νέο παράθυρο"
 
-#: ../src/ui/ui_prefs.c:528
+#: ../src/ui/preferences_dialog.c:523
 msgid "New tab"
 msgstr "Νέα καρτέλα"
 
-#: ../src/ui/ui_prefs.c:681
+#: ../src/ui/preferences_dialog.c:682
 msgid "Integrate with the messaging menu (indicator)"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:684
+#: ../src/ui/preferences_dialog.c:685
 #, fuzzy
 msgid "Terminate instead of minimizing to the messaging menu"
 msgstr "Έ_ξοδος αντί για ελαχιστοποίηση στην περιοχή ειδοποιήσεων."
 
-#: ../src/ui/ui_prefs.c:687
+#: ../src/ui/preferences_dialog.c:688
 msgid "Start minimized to the messaging menu"
 msgstr ""
 
-#: ../src/ui/ui_prefs.c:792
+#: ../src/ui/preferences_dialog.c:788
 msgid "Type"
 msgstr "Τύπος"
 
-#: ../src/ui/ui_prefs.c:795
+#: ../src/ui/preferences_dialog.c:791
 msgid "Program"
 msgstr "Πρόγραμμα"
+
+#: ../src/ui/ui_node.c:123
+msgid "(Empty)"
+msgstr ""
 
 #: ../src/ui/subscription_dialog.c:430
 #, c-format
@@ -1489,7 +1490,7 @@ msgstr[1] "Ο πάροχος αυτής της ροής προτείνει συ�
 msgid "This feed specifies no default update interval."
 msgstr "Αυτή η ροή δεν προτείνει συγκεκριμένη συχνότητα ενημέρωσης."
 
-#: ../src/ui/browser_tabs.c:289
+#: ../src/ui/browser_tabs.c:155
 msgid "Untitled"
 msgstr ""
 
@@ -1540,21 +1541,21 @@ msgstr "Μη έγκυρη ροή Atom: άγνωστος δημιουργός"
 msgid "%b %d %H:%M"
 msgstr "%d %b %H:%M"
 
-#: ../src/fl_sources/default_source.c:132
-#: ../src/fl_sources/google_source.c:253 ../glade/new_subscription.ui.h:1
+#: ../src/fl_sources/default_source.c:145
+#: ../src/fl_sources/google_source.c:274 ../glade/new_subscription.ui.h:1
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Νέα συνδρομή"
 
-#: ../src/fl_sources/google_source.c:113
+#: ../src/fl_sources/google_source.c:116
 msgid "Google Reader login failed!"
 msgstr "Απέτυχε η είσοδος στο Google Reader!"
 
-#: ../src/fl_sources/google_source.c:358
+#: ../src/fl_sources/google_source.c:383
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:359
+#: ../src/fl_sources/google_source.c:384
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
@@ -1594,11 +1595,11 @@ msgstr "Δε βρέθηκαν πηγές με λίστες ροών!"
 msgid "Source Type"
 msgstr "Τύπος πηγής"
 
-#: ../src/fl_sources/ttrss_source.c:364
+#: ../src/fl_sources/ttrss_source.c:365
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:365
+#: ../src/fl_sources/ttrss_source.c:366
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
@@ -1678,8 +1679,7 @@ msgstr "Προσθήκη λογαριασμού Google Reader"
 msgid "Please enter your Google Reader account settings."
 msgstr "Παρακαλώ εισάγετε τις ρυθμίσεις του λογαριασμού σας στο Google Reader."
 
-#: ../glade/google_source.ui.h:3 ../glade/liferea.ui.h:107
-#: ../glade/ttrss_source.ui.h:4
+#: ../glade/google_source.ui.h:3 ../glade/ttrss_source.ui.h:4
 msgid "_Password"
 msgstr "_Συνθηματικό"
 
@@ -1877,336 +1877,82 @@ msgid "Advanced"
 msgstr "Για προχωρημένους"
 
 #: ../glade/liferea.ui.h:48
-msgid "Liferea Preferences"
-msgstr "Προτιμήσεις Liferea"
-
-#: ../glade/liferea.ui.h:49
-msgid "Feed Cache Handling"
-msgstr ""
-
-#: ../glade/liferea.ui.h:50
-msgid "Default _number of items per feed to save:"
-msgstr "Προεπιλεγμένος αρι_θμός άρθρων προς αποθήκευση ανά ροή:"
-
-#: ../glade/liferea.ui.h:51
-#, fuzzy
-msgid "Feed Update Settings"
-msgstr "Ενημέρωση ροής"
-
-#: ../glade/liferea.ui.h:52
-#, fuzzy
-msgid "_Update all subscriptions at startup."
-msgstr "Νέα συνδρομή"
-
-#: ../glade/liferea.ui.h:53
-msgid "Default Feed Refresh _Interval:"
-msgstr "Προεπιλεγμένη _συχνότητα ενημέρωσης ροών"
-
-#. Feed update interval hint in preference dialog.
-#: ../glade/liferea.ui.h:55
-msgid ""
-"Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
-"waste of bandwidth to poll feeds more often than each hour.</i>"
-msgstr ""
-"Σημείωση: <i>Παρακαλώ, ορίστε μια λογική τιμή για τη συχνότητα ενημέρωσης. Η "
-"ενημέρωση των ροών συχνότερα από μια φορά την ώρα είναι μάλλον άσκοπη "
-"σπατάλη των δυνατοτήτων της σύνδεσής σας.</i>"
-
-#: ../glade/liferea.ui.h:56
-msgid "Feeds"
-msgstr "Ροές"
-
-#: ../glade/liferea.ui.h:57
-#, fuzzy
-msgid "Folder Display Settings"
-msgstr "<span weight=\"bold\">Ρυθμίσεις εμφάνισης φακέλων</span>"
-
-#: ../glade/liferea.ui.h:58
-msgid "_Show the items of all child feeds when a folder is selected."
-msgstr ""
-"Εμ_φάνιση των άρθρων όλων των ροών ενός φακέλου, όποτε επιλέγεται ο φάκελος."
-
-#: ../glade/liferea.ui.h:59
-msgid "_Hide read items."
-msgstr "Από_κρυψη αναγνωσμένων."
-
-#: ../glade/liferea.ui.h:60
-#, fuzzy
-msgid "Feed Icons (Favicons)"
-msgstr "<span weight=\"bold\">Εικονίδια ροών (Favicons)</span>"
-
-#: ../glade/liferea.ui.h:61
-msgid "_Update all favicons now"
-msgstr "_Ενημέρωση όλων των εικονιδίων τώρα"
-
-#: ../glade/liferea.ui.h:62
-msgid "Folders"
-msgstr "Φάκελοι"
-
-#: ../glade/liferea.ui.h:63
-#, fuzzy
-msgid "Reading Headlines"
-msgstr "μη αναγνωσμένοι τίτλοι"
-
-#: ../glade/liferea.ui.h:64
-msgid "_Skim through articles with:"
-msgstr "Μετά_βαση από άρθρο σε άρθρο πατώντας:"
-
-#: ../glade/liferea.ui.h:65
-#, fuzzy
-msgid "Web Integration"
-msgstr "Προσανατολισμός"
-
-#: ../glade/liferea.ui.h:66
-msgid "_Post Bookmarks to"
-msgstr "_Δημοσίευση σελιδοδεικτών στο"
-
-#: ../glade/liferea.ui.h:67
-#, fuzzy
-msgid "Internal Browser Settings"
-msgstr "<span weight=\"bold\">Ρυθμίσεις εσωτερικού περιηγητή</span>"
-
-#: ../glade/liferea.ui.h:68
-msgid "Open links in Liferea's _window."
-msgstr "Ά_νοιγμα συνδέσμων στο παράθυρο του Liferea."
-
-#: ../glade/liferea.ui.h:69
-msgid "_Disable Javascript."
-msgstr "_Απενεργοποίηση Javascript."
-
-#: ../glade/liferea.ui.h:70
-msgid "_Enable browser plugins."
-msgstr ""
-
-#: ../glade/liferea.ui.h:71
-#, fuzzy
-msgid "External Browser Settings"
-msgstr "<span weight=\"bold\">Ρυθμίσεις εξωτερικού περιηγητή</span>"
-
-#: ../glade/liferea.ui.h:72
-msgid "_Open link in:"
-msgstr "Άνοι_γμα συνδέσμου στο:"
-
-#: ../glade/liferea.ui.h:74
-#, no-c-format
-msgid ""
-"_Manual:\n"
-"(%s for URL)"
-msgstr ""
-"Π_ροσαρμοσμένος:\n"
-"(%s για την ιστοσελίδα)"
-
-#: ../glade/liferea.ui.h:76
-msgid "_Browser:"
-msgstr "_Περιηγητής:"
-
-#: ../glade/liferea.ui.h:77
-msgid "Browser"
-msgstr "Περιηγητής"
-
-#: ../glade/liferea.ui.h:78
-#, fuzzy
-msgid "Notification Settings"
-msgstr "<span weight=\"bold\">Ρυθμίσεις ειδοποιήσεων</span>"
-
-#: ../glade/liferea.ui.h:79
-msgid "Show a _popup window with new headlines."
-msgstr "Εμφάνιση α_ναδυόμενου παραθύρου με τους νέους τίτλους."
-
-#: ../glade/liferea.ui.h:80
-msgid "Show a status _icon in the notification area (system tray)."
-msgstr "Εμφάνιση ε_ικονιδίου στην περιοχή ειδοποιήσεων."
-
-#: ../glade/liferea.ui.h:81
-msgid "Show _number of new items in the tray icon."
-msgstr ""
-"Εμφάνιση του _αριθμού των νέων άρθρων πάνω στο εικονίδιο της περιοχής "
-"ειδοποιήσεων"
-
-#: ../glade/liferea.ui.h:82
-msgid "T_erminate instead of minimizing to tray icon."
-msgstr "Έ_ξοδος αντί για ελαχιστοποίηση στην περιοχή ειδοποιήσεων."
-
-#: ../glade/liferea.ui.h:83
-msgid "_Start in tray icon."
-msgstr ""
-
-#: ../glade/liferea.ui.h:84
-#, fuzzy
-msgid "Toolbar Settings"
-msgstr "Ε_τικέτες κουμπιών εργαλειοθήκης: "
-
-#: ../glade/liferea.ui.h:85
-msgid "_Hide toolbar."
-msgstr ""
-
-#: ../glade/liferea.ui.h:86
-msgid "Toolbar _button labels:"
-msgstr "Ε_τικέτες κουμπιών εργαλειοθήκης: "
-
-#: ../glade/liferea.ui.h:87
-msgid "GUI"
-msgstr "Γραφικό περιβάλλον"
-
-#: ../glade/liferea.ui.h:88
-msgid "HTTP Proxy Server"
-msgstr ""
-
-#: ../glade/liferea.ui.h:89
-msgid "_Auto Detect (GNOME or environment)"
-msgstr "Αυτόματος _εντοπισμός (GNOME ή περιβάλλον)"
-
-#: ../glade/liferea.ui.h:90
-msgid "_No Proxy"
-msgstr "_Χωρίς διαμεσολαβητή"
-
-#: ../glade/liferea.ui.h:91
-msgid "_Manual Setting:"
-msgstr "_Χειροκίνητη ρύθμιση:"
-
-#: ../glade/liferea.ui.h:92
-msgid "Proxy _Port:"
-msgstr "_Θύρα διαμεσολαβητή:"
-
-#: ../glade/liferea.ui.h:93
-msgid "Proxy _Host:"
-msgstr "_Διεύθυνση διαμεσολαβητή:"
-
-#: ../glade/liferea.ui.h:94
-msgid "Use Proxy Au_thentication"
-msgstr "Χρήση πιστοποίησης _διαμεσολαβητή"
-
-#: ../glade/liferea.ui.h:95
-msgid "Proxy Pass_word:"
-msgstr "_Συνθηματικό διαμεσολαβητή:"
-
-#: ../glade/liferea.ui.h:96
-msgid "Proxy _Username:"
-msgstr "Όνομα _χρήστη:"
-
-#: ../glade/liferea.ui.h:97
-msgid "Proxy"
-msgstr "Διαμεσολαβητής"
-
-#: ../glade/liferea.ui.h:98
-#, fuzzy
-msgid "Downloading Enclosures"
-msgstr "Λήψη συνδεδεμένων πολυμέσων..."
-
-#: ../glade/liferea.ui.h:99
-msgid "_Browse"
-msgstr "_Περιήγηση"
-
-#: ../glade/liferea.ui.h:100
-msgid "_Save downloads in"
-msgstr "Απο_θήκευση ληφθέντων αρχείων στο"
-
-#: ../glade/liferea.ui.h:101
-msgid "_Download using"
-msgstr "_Λήψη μέσω"
-
-#: ../glade/liferea.ui.h:102
-#, fuzzy
-msgid "Opening Enclosures"
-msgstr "/Άνοιγμα συνδεδεμένου πολυμέσου..."
-
-#: ../glade/liferea.ui.h:103
-msgid "Enclosures"
-msgstr "Συνδεδεμένα πολυμέσα"
-
-#: ../glade/liferea.ui.h:104
-#, fuzzy
-msgid "Synchronized with Nearby Hosts"
-msgstr "<span weight=\"bold\">Όνομα ροής</span>"
-
-#: ../glade/liferea.ui.h:105
-msgid "_Enable Local LAN Synchronization"
-msgstr ""
-
-#: ../glade/liferea.ui.h:106
-#, fuzzy
-msgid "_Service Name"
-msgstr "Όνομα σεναρίου"
-
-#: ../glade/liferea.ui.h:108
-msgid "Sync"
-msgstr ""
-
-#: ../glade/liferea.ui.h:109
 msgid "New Folder"
 msgstr "Νέος φάκελος"
 
-#: ../glade/liferea.ui.h:110
+#: ../glade/liferea.ui.h:49
 msgid "_Folder name:"
 msgstr "Όνομα _φακέλου:"
 
-#: ../glade/liferea.ui.h:111
+#: ../glade/liferea.ui.h:50
 msgid "Rename"
 msgstr "Μετονομασία"
 
-#: ../glade/liferea.ui.h:112
+#: ../glade/liferea.ui.h:51
 msgid "_New Name:"
 msgstr "_Νέο όνομα:"
 
-#: ../glade/liferea.ui.h:113
+#: ../glade/liferea.ui.h:52
 msgid "Search Folder Properties"
 msgstr "Αναζήτηση στις ιδιότητες του φακέλου"
 
-#: ../glade/liferea.ui.h:114
+#: ../glade/liferea.ui.h:53
 #, fuzzy
 msgid "Search _Name:"
 msgstr "Όν_ομα ροής:"
 
-#: ../glade/liferea.ui.h:115
+#: ../glade/liferea.ui.h:54
 msgid "Find Items that meet the following criteria"
 msgstr ""
 
-#: ../glade/liferea.ui.h:116
+#: ../glade/liferea.ui.h:55
 msgid "A_ny Rule Matches"
 msgstr ""
 
-#: ../glade/liferea.ui.h:117
+#: ../glade/liferea.ui.h:56
 msgid "_All Rules Must Match"
 msgstr ""
 
-#: ../glade/liferea.ui.h:118
-msgid "Downloading Enclosure"
-msgstr "Λήψη συνδεδεμένων πολυμέσων..."
+#: ../glade/liferea.ui.h:57
+#, fuzzy
+msgid "Open Enclosure"
+msgstr "/Άνοιγμα συνδεδεμένου πολυμέσου..."
 
-#: ../glade/liferea.ui.h:119
-msgid "Downloading an enclosure of type:"
+#: ../glade/liferea.ui.h:58
+#, fuzzy
+msgid "Open an enclosure of type:"
 msgstr "Λήψη συνδεδεμένου πολυμέσου τύπου:"
 
-#: ../glade/liferea.ui.h:120
+#: ../glade/liferea.ui.h:59
 #, fuzzy
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. Downloaded enclosures will be supplied as an "
+"want to be executed below. The enclosures URL will be supplied as an "
 "argument for this command:"
 msgstr ""
 "Πώς θα χειριστεί το Liferea αυτό το συνδεδεμένο πολυμέσο; Παρακαλώ, εισάγετε "
 "την εντολή που επιθυμείτε να εκτελεστεί. Το ληφθέν αρχείο θα προστεθεί ως "
 "παράμετρος στην εντολή:"
 
-#: ../glade/liferea.ui.h:121
-msgid "_Pass URL and do not download enclosure."
-msgstr ""
+#: ../glade/liferea.ui.h:60
+msgid "_Browse"
+msgstr "_Περιήγηση"
 
-#: ../glade/liferea.ui.h:122
+#: ../glade/liferea.ui.h:61
 #, fuzzy
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr ""
 "Από εδώ και στο εξής να εφαρμόζεται αυτομάτως για αρχεία του ίδιου τύπου."
 
-#: ../glade/liferea.ui.h:123
+#: ../glade/liferea.ui.h:62
 msgid "Search All Feeds"
 msgstr "Αναζήτηση στις ροές"
 
-#: ../glade/liferea.ui.h:124
+#: ../glade/liferea.ui.h:63
 msgid "_Search for:"
 msgstr "_Αναζήτηση για:"
 
-#: ../glade/liferea.ui.h:125
+#: ../glade/liferea.ui.h:64
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -2214,12 +1960,12 @@ msgstr ""
 "Εισάγετε φράση προς αναζήτηση. Το Liferea θα την αναζητήσει τόσο στους "
 "τίτλους όσο και στο σώμα των άρθρων."
 
-#: ../glade/liferea.ui.h:126
+#: ../glade/liferea.ui.h:65
 #, fuzzy
 msgid "_Advanced..."
 msgstr "Για προχωρημένους..."
 
-#: ../glade/liferea.ui.h:127
+#: ../glade/liferea.ui.h:66
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -2227,74 +1973,74 @@ msgstr ""
 "Αναζήτηση της ζητούμενης φράσης σε όλες τις ροές. Τα αποτελέσματα της "
 "αναζήτησης εμφανίζονται στο πλαίσιο της λίστας τίτλων."
 
-#: ../glade/liferea.ui.h:128
+#: ../glade/liferea.ui.h:67
 msgid "Update Monitor"
 msgstr "Παρακολούθηση ενημερώσεων"
 
-#: ../glade/liferea.ui.h:129
+#: ../glade/liferea.ui.h:68
 #, fuzzy
 msgid "Pending Requests"
 msgstr "<b>Εκκρεμούν</b>"
 
-#: ../glade/liferea.ui.h:130
+#: ../glade/liferea.ui.h:69
 #, fuzzy
 msgid "Downloading Now"
 msgstr "<b>Λαμβάνονται τώρα</b>"
 
-#: ../glade/liferea.ui.h:131
+#: ../glade/liferea.ui.h:70
 msgid "Cancel _All"
 msgstr "Ακύρωση ό_λων"
 
-#: ../glade/liferea.ui.h:132
+#: ../glade/liferea.ui.h:71
 msgid "Create News Bin"
 msgstr "Δημιουργία φακέλου αποκομμάτων"
 
-#: ../glade/liferea.ui.h:133
+#: ../glade/liferea.ui.h:72
 msgid "_News Bin Name:"
 msgstr "Όνομα _φακέλου αποκομμάτων:"
 
-#: ../glade/liferea.ui.h:134
+#: ../glade/liferea.ui.h:73
 msgid "About"
 msgstr "Περί"
 
-#: ../glade/liferea.ui.h:135
+#: ../glade/liferea.ui.h:74
 msgid ""
-"Copyright (c) 2003-2011\n"
+"Copyright (c) 2003-2012\n"
 "The Liferea Team\n"
 msgstr ""
 
-#: ../glade/liferea.ui.h:138
+#: ../glade/liferea.ui.h:77
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Το Liferea είναι μία εφαρμογή συγκέντρωσης ροών για GTK+"
 
-#: ../glade/liferea.ui.h:139
+#: ../glade/liferea.ui.h:78
 #, fuzzy
 msgid "Liferea Homepage"
 msgstr "Ανάγνωση ροών Liferea"
 
-#: ../glade/liferea.ui.h:140
+#: ../glade/liferea.ui.h:79
 #, fuzzy
 msgid "Advanced Search"
 msgstr "Για προχωρημένους"
 
-#: ../glade/liferea.ui.h:141
+#: ../glade/liferea.ui.h:80
 #, fuzzy
 msgid "_Search Folder..."
 msgstr "Αναζήτηση στο φάκελο"
 
-#: ../glade/liferea.ui.h:142
+#: ../glade/liferea.ui.h:81
 msgid "Create Search Engine Feed"
 msgstr "Δημιουργία ροής από μηχανή αναζήτησης"
 
-#: ../glade/liferea.ui.h:143
+#: ../glade/liferea.ui.h:82
 msgid "enter any search string you want"
 msgstr "εισάγετε μία οποιαδήποτε φράση προς αναζήτηση"
 
-#: ../glade/liferea.ui.h:144
+#: ../glade/liferea.ui.h:83
 msgid "Maximal _Number Of Result Items:"
 msgstr "Μέγιστος αρι_θμός αποτελεσμάτων:"
 
-#: ../glade/liferea.ui.h:145
+#: ../glade/liferea.ui.h:84
 #, fuzzy
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
@@ -2369,6 +2115,221 @@ msgstr ""
 msgid "Advanced..."
 msgstr "Για προχωρημένους..."
 
+#~ msgid "flag"
+#~ msgstr "σημαία"
+
+#~ msgid "bookmark"
+#~ msgstr "σελιδοδείκτης"
+
+#~ msgid "comments"
+#~ msgstr "σχόλια"
+
+#, fuzzy
+#~ msgid "Enclosure download FAILED: \"%s\""
+#~ msgstr "Ολοκληρώθηκε η λήψη του συνδεδεμένου πολυμέσου: \"%s\""
+
+#~ msgid "Enclosure download finished: \"%s\""
+#~ msgstr "Ολοκληρώθηκε η λήψη του συνδεδεμένου πολυμέσου: \"%s\""
+
+#, fuzzy
+#~ msgid ""
+#~ "This version of Liferea uses a new cache format and has migrated your "
+#~ "feed cache. The cache content in %s was not deleted automatically. Please "
+#~ "remove this directory manually once you are sure migration was successful!"
+#~ msgstr ""
+#~ "Αυτή η έκδοση του Liferea χρησιμοποιεί μια νέα μορφή μνήμης και μετέφερε "
+#~ "τα δεδομένα της παλαιάς μνήμης ροών. Τα περιεχόμενα της μνήμης της v1.2 "
+#~ "στον κατάλογο ~/.liferea_1.2 δε διαγράφηκαν αυτόματα. Παρακαλώ, διαγράψτε "
+#~ "τον κατάλογο με το χέρι, εφόσον βεβαιωθείτε ότι η μεταφορά ήταν επιτυχής!"
+
+#, fuzzy
+#~ msgid "Download FAILED: \"%s\""
+#~ msgstr "Ολοκληρώθηκε η λήψη του συνδεδεμένου πολυμέσου: \"%s\""
+
+#, fuzzy
+#~ msgid "Download finished."
+#~ msgstr "_Λήψη μέσω"
+
+#~ msgid "Choose download directory"
+#~ msgstr "Επιλογή καταλόγου λήψης αρχείων"
+
+#~ msgid "Liferea Preferences"
+#~ msgstr "Προτιμήσεις Liferea"
+
+#~ msgid "Default _number of items per feed to save:"
+#~ msgstr "Προεπιλεγμένος αρι_θμός άρθρων προς αποθήκευση ανά ροή:"
+
+#, fuzzy
+#~ msgid "Feed Update Settings"
+#~ msgstr "Ενημέρωση ροής"
+
+#, fuzzy
+#~ msgid "_Update all subscriptions at startup."
+#~ msgstr "Νέα συνδρομή"
+
+#~ msgid "Default Feed Refresh _Interval:"
+#~ msgstr "Προεπιλεγμένη _συχνότητα ενημέρωσης ροών"
+
+#~ msgid ""
+#~ "Note: <i>Please remember to set a reasonable refresh time. Usually it is "
+#~ "a waste of bandwidth to poll feeds more often than each hour.</i>"
+#~ msgstr ""
+#~ "Σημείωση: <i>Παρακαλώ, ορίστε μια λογική τιμή για τη συχνότητα "
+#~ "ενημέρωσης. Η ενημέρωση των ροών συχνότερα από μια φορά την ώρα είναι "
+#~ "μάλλον άσκοπη σπατάλη των δυνατοτήτων της σύνδεσής σας.</i>"
+
+#~ msgid "Feeds"
+#~ msgstr "Ροές"
+
+#, fuzzy
+#~ msgid "Folder Display Settings"
+#~ msgstr "<span weight=\"bold\">Ρυθμίσεις εμφάνισης φακέλων</span>"
+
+#~ msgid "_Show the items of all child feeds when a folder is selected."
+#~ msgstr ""
+#~ "Εμ_φάνιση των άρθρων όλων των ροών ενός φακέλου, όποτε επιλέγεται ο "
+#~ "φάκελος."
+
+#~ msgid "_Hide read items."
+#~ msgstr "Από_κρυψη αναγνωσμένων."
+
+#, fuzzy
+#~ msgid "Feed Icons (Favicons)"
+#~ msgstr "<span weight=\"bold\">Εικονίδια ροών (Favicons)</span>"
+
+#~ msgid "_Update all favicons now"
+#~ msgstr "_Ενημέρωση όλων των εικονιδίων τώρα"
+
+#~ msgid "Folders"
+#~ msgstr "Φάκελοι"
+
+#, fuzzy
+#~ msgid "Reading Headlines"
+#~ msgstr "μη αναγνωσμένοι τίτλοι"
+
+#~ msgid "_Skim through articles with:"
+#~ msgstr "Μετά_βαση από άρθρο σε άρθρο πατώντας:"
+
+#, fuzzy
+#~ msgid "Web Integration"
+#~ msgstr "Προσανατολισμός"
+
+#~ msgid "_Post Bookmarks to"
+#~ msgstr "_Δημοσίευση σελιδοδεικτών στο"
+
+#, fuzzy
+#~ msgid "Internal Browser Settings"
+#~ msgstr "<span weight=\"bold\">Ρυθμίσεις εσωτερικού περιηγητή</span>"
+
+#~ msgid "Open links in Liferea's _window."
+#~ msgstr "Ά_νοιγμα συνδέσμων στο παράθυρο του Liferea."
+
+#~ msgid "_Disable Javascript."
+#~ msgstr "_Απενεργοποίηση Javascript."
+
+#, fuzzy
+#~ msgid "External Browser Settings"
+#~ msgstr "<span weight=\"bold\">Ρυθμίσεις εξωτερικού περιηγητή</span>"
+
+#~ msgid "_Open link in:"
+#~ msgstr "Άνοι_γμα συνδέσμου στο:"
+
+#~ msgid ""
+#~ "_Manual:\n"
+#~ "(%s for URL)"
+#~ msgstr ""
+#~ "Π_ροσαρμοσμένος:\n"
+#~ "(%s για την ιστοσελίδα)"
+
+#~ msgid "_Browser:"
+#~ msgstr "_Περιηγητής:"
+
+#~ msgid "Browser"
+#~ msgstr "Περιηγητής"
+
+#, fuzzy
+#~ msgid "Notification Settings"
+#~ msgstr "<span weight=\"bold\">Ρυθμίσεις ειδοποιήσεων</span>"
+
+#~ msgid "Show a _popup window with new headlines."
+#~ msgstr "Εμφάνιση α_ναδυόμενου παραθύρου με τους νέους τίτλους."
+
+#~ msgid "Show a status _icon in the notification area (system tray)."
+#~ msgstr "Εμφάνιση ε_ικονιδίου στην περιοχή ειδοποιήσεων."
+
+#~ msgid "Show _number of new items in the tray icon."
+#~ msgstr ""
+#~ "Εμφάνιση του _αριθμού των νέων άρθρων πάνω στο εικονίδιο της περιοχής "
+#~ "ειδοποιήσεων"
+
+#~ msgid "T_erminate instead of minimizing to tray icon."
+#~ msgstr "Έ_ξοδος αντί για ελαχιστοποίηση στην περιοχή ειδοποιήσεων."
+
+#, fuzzy
+#~ msgid "Toolbar Settings"
+#~ msgstr "Ε_τικέτες κουμπιών εργαλειοθήκης: "
+
+#~ msgid "Toolbar _button labels:"
+#~ msgstr "Ε_τικέτες κουμπιών εργαλειοθήκης: "
+
+#~ msgid "GUI"
+#~ msgstr "Γραφικό περιβάλλον"
+
+#~ msgid "_Auto Detect (GNOME or environment)"
+#~ msgstr "Αυτόματος _εντοπισμός (GNOME ή περιβάλλον)"
+
+#~ msgid "_No Proxy"
+#~ msgstr "_Χωρίς διαμεσολαβητή"
+
+#~ msgid "_Manual Setting:"
+#~ msgstr "_Χειροκίνητη ρύθμιση:"
+
+#~ msgid "Proxy _Port:"
+#~ msgstr "_Θύρα διαμεσολαβητή:"
+
+#~ msgid "Proxy _Host:"
+#~ msgstr "_Διεύθυνση διαμεσολαβητή:"
+
+#~ msgid "Use Proxy Au_thentication"
+#~ msgstr "Χρήση πιστοποίησης _διαμεσολαβητή"
+
+#~ msgid "Proxy Pass_word:"
+#~ msgstr "_Συνθηματικό διαμεσολαβητή:"
+
+#~ msgid "Proxy _Username:"
+#~ msgstr "Όνομα _χρήστη:"
+
+#~ msgid "Proxy"
+#~ msgstr "Διαμεσολαβητής"
+
+#, fuzzy
+#~ msgid "Downloading Enclosures"
+#~ msgstr "Λήψη συνδεδεμένων πολυμέσων..."
+
+#~ msgid "_Save downloads in"
+#~ msgstr "Απο_θήκευση ληφθέντων αρχείων στο"
+
+#~ msgid "_Download using"
+#~ msgstr "_Λήψη μέσω"
+
+#, fuzzy
+#~ msgid "Opening Enclosures"
+#~ msgstr "/Άνοιγμα συνδεδεμένου πολυμέσου..."
+
+#~ msgid "Enclosures"
+#~ msgstr "Συνδεδεμένα πολυμέσα"
+
+#, fuzzy
+#~ msgid "Synchronized with Nearby Hosts"
+#~ msgstr "<span weight=\"bold\">Όνομα ροής</span>"
+
+#, fuzzy
+#~ msgid "_Service Name"
+#~ msgstr "Όνομα σεναρίου"
+
+#~ msgid "Downloading Enclosure"
+#~ msgstr "Λήψη συνδεδεμένων πολυμέσων..."
+
 #~ msgid ""
 #~ "Jumps to the next unread item. If necessary selects the next feed with "
 #~ "unread items."
@@ -2384,9 +2345,6 @@ msgstr "Για προχωρημένους..."
 
 #~ msgid "Liferea seems to be running already!"
 #~ msgstr "Το Liferea μάλλον εκτελείται ήδη!"
-
-#~ msgid "Feed title"
-#~ msgstr "Τίτλος ροής"
 
 #~ msgid "Update status"
 #~ msgstr "Ενημερωμένο"

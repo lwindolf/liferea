@@ -85,10 +85,16 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 			
 		if (node->loadItemLink)
 			xmlNewProp (childNode, BAD_CAST"loadItemLink", BAD_CAST"true");
-			
-		tmp = g_strdup_printf ("%u", node_get_view_mode(node));
-		xmlNewProp (childNode, BAD_CAST"viewMode", BAD_CAST tmp);
-		g_free (tmp);
+
+		/* Do not export the default view mode setting to avoid making 
+		   it permanent. Do not use node_get_view_mode () here to ensure
+		   that the comparison works as node_get_view_mode () returns
+		   the effective mode! */
+		if (NODE_VIEW_MODE_DEFAULT != node->viewMode) {
+			tmp = g_strdup_printf ("%u", node_get_view_mode(node));
+			xmlNewProp (childNode, BAD_CAST"viewMode", BAD_CAST tmp);
+			g_free (tmp);
+		}
 	}
 	
 	/* 2. add node type specific stuff */

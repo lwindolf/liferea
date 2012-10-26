@@ -337,7 +337,9 @@ gboolean node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboole
 void node_set_view_mode(nodePtr node, nodeViewType newMode);
 
 /**
- * Query the viewing mode setting of a given mode.
+ * Query the effective viewing mode setting of a given mode.
+ * When node viewing mode is set to default it will return the
+ * configured default.
  *
  * @param node 	the node
  *

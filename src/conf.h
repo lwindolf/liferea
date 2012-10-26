@@ -1,7 +1,7 @@
 /**
  * @file conf.h  Liferea configuration (gconf access)
  *
- * Copyright (C) 2003-2009 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,6 +30,8 @@
 #define BROWSER_ID			"/apps/liferea/browser_id"
 #define BROWSER_PLACE			"/apps/liferea/browser_place"
 #define BROWSER_COMMAND			"/apps/liferea/browser"
+
+#define DEFAULT_VIEW_MODE		"/apps/liferea/default-view-mode"
 
 #define DEFAULT_FONT			"/desktop/gnome/interface/document_font_name"
 #define USER_FONT			"/apps/liferea/browser-font"

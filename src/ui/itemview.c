@@ -400,7 +400,6 @@ itemview_set_layout (nodeViewType newMode)
 			ilWidgetName = NULL;
 			encViewVBoxName = NULL;
 			break;
-		case NODE_VIEW_MODE_INVALID:
 		default:
 			g_warning("fatal: illegal viewing mode!");
 			return;
@@ -438,7 +437,7 @@ itemview_create (GtkWidget *window)
 	
 	g_object_new (ITEMVIEW_TYPE, NULL);
 	
-	itemview->priv->currentLayoutMode = NODE_VIEW_MODE_INVALID;
+	itemview->priv->currentLayoutMode = NODE_VIEW_MODE_DEFAULT;
 	itemview->priv->itemListView = item_list_view_create (window);
 	itemview->priv->itemListViewContainer = gtk_widget_get_parent (GTK_WIDGET (item_list_view_get_widget (itemview->priv->itemListView)));
 	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);

@@ -1,5 +1,6 @@
 	To be released
 
+	* Added new preference for default viewing mode.
 	* Changing toolbar button order to prevent accidental clicks on
 	  "Mark All Read" when clicking on more frequent buttons like
 	  "Next Unread".
@@ -9,6 +10,8 @@
 	  as it doesn't match GTK theming well
 	* Removed auto-hide Javascript menu from combined view to simplify
 	  rendering in 3-pane modes.
+
+	* Update of German translation
 
 2012-10-09  Lars Windolf <lars.lindner@gmail.com>
 	

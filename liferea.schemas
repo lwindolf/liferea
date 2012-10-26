@@ -43,6 +43,19 @@ To change the gconftool target use the - -config-source=blah option to gconftool
       </locale>
     </schema>
     <schema>
+      <key>/schemas/apps/liferea/default-view-mode</key>
+      <applyto>/apps/liferea/default-view-mode</applyto>
+      <owner>liferea</owner>
+      <type>int</type>
+      <default>1</default>
+      <locale name="C">
+        <short>Selects which viewing mode is to be used by default.</short>
+        <long>Selects which viewing mode is to be used by default. Can be
+	   overrule in the subscription properties. 0 for three pane mail like,
+           1 for three pane wide view, or 2 for combined view.</long>
+      </locale>
+    </schema>
+    <schema>
       <key>/schemas/apps/liferea/browser</key>
       <applyto>/apps/liferea/browser</applyto>
       <owner>liferea</owner>

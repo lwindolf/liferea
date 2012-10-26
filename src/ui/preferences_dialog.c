@@ -110,6 +110,12 @@ static gchar * browser_skim_key_options[] = {
 	NULL
 };
 
+static gchar * default_view_mode_options[] = {
+	N_("Normal View"),
+	N_("Wide View"),
+	N_("Combined View")
+};
+
 const gchar *
 prefs_get_download_command (void)
 {
@@ -387,6 +393,12 @@ on_skim_key_changed (gpointer user_data)
 }
 
 static void
+on_default_view_mode_changed (gpointer user_data) 
+{
+	conf_set_int_value (DEFAULT_VIEW_MODE, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
+}
+
+static void
 on_enclosure_download_tool_changed (gpointer user_data)
 {
 	conf_set_int_value (DOWNLOAD_TOOL, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
@@ -464,18 +476,10 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gchar			*proxyport;
 	gchar			*configuredBrowser, *name;
 	gboolean		enabled;
-	int			tmp, i;
 	static int		manual;
 	struct browser		*iter;
-	gint			startup_feed_update, default_max_items;
-	gint			folder_display_mode, browse_key_setting;
-	gint			proxy_port, browser_place;
-	gint			enclosure_download_tool;
-	gboolean		folder_display_hide_read, disable_javascript;
-	gboolean		browse_inside_application, enable_plugins;
-	gboolean		show_tray_icon, show_popup_windows;
-	gboolean		show_new_count_in_tray, dont_minimize_to_tray;
-	gboolean		start_in_tray, disable_toolbar;
+	gint			tmp, i, iSetting, proxy_port;
+	gboolean		bSetting, show_tray_icon;
 	gchar			*proxy_host, *proxy_user, *proxy_passwd;
 	gchar			*browser_command;
 	
@@ -485,7 +489,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	/* Set up browser selection popup */
 	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
-	for(i=0, iter = browser_get_all (); iter->id != NULL; iter++, i++) {
+	for(i = 0, iter = browser_get_all (); iter->id != NULL; iter++, i++) {
 		gtk_list_store_append (store, &treeiter);
 		gtk_list_store_set (store, &treeiter, 0, _(iter->display), 1, i, -1);
 	}
@@ -522,14 +526,14 @@ preferences_dialog_init (PreferencesDialog *pd)
 	/* ================== panel 1 "feeds" ==================== */
 
 	/* check box for feed startup update */
-	conf_get_int_value (STARTUP_FEED_ACTION, &startup_feed_update);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "startupactionbtn")), (startup_feed_update == 0)); 
+	conf_get_int_value (STARTUP_FEED_ACTION, &iSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "startupactionbtn")), (iSetting == 0)); 
 
 	/* cache size setting */
 	widget = liferea_dialog_lookup (pd->priv->dialog, "itemCountBtn");
 	itemCount = gtk_spin_button_get_adjustment (GTK_SPIN_BUTTON (widget));
-	conf_get_int_value (DEFAULT_MAX_ITEMS, &default_max_items);
-	gtk_adjustment_set_value (itemCount, default_max_items);
+	conf_get_int_value (DEFAULT_MAX_ITEMS, &iSetting);
+	gtk_adjustment_set_value (itemCount, iSetting);
 
 	/* set default update interval spin button and unit combo box */
 	ui_common_setup_combo_menu (liferea_dialog_lookup (pd->priv->dialog, "globalRefreshIntervalUnitComboBox"),
@@ -556,18 +560,24 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->priv->dialog, "updateAllFavicons")), "clicked", G_CALLBACK(on_updateallfavicons_clicked), pd);
 
-	conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "folderdisplaybtn")), folder_display_mode?TRUE:FALSE);
-	conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &folder_display_hide_read);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "hidereadbtn")), folder_display_hide_read?TRUE:FALSE);
+	conf_get_int_value (FOLDER_DISPLAY_MODE, &iSetting);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "folderdisplaybtn")), iSetting?TRUE:FALSE);
+	conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &bSetting);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "hidereadbtn")), bSetting?TRUE:FALSE);
 
 	/* ================== panel 3 "headlines" ==================== */
 
-	conf_get_int_value (BROWSE_KEY_SETTING, &browse_key_setting);
+	conf_get_int_value (BROWSE_KEY_SETTING, &iSetting);
 	ui_common_setup_combo_menu (liferea_dialog_lookup (pd->priv->dialog, "skimKeyCombo"),
 	                            browser_skim_key_options,
 	                            G_CALLBACK (on_skim_key_changed),
-	                            browse_key_setting);
+	                            iSetting);
+
+	conf_get_int_value (DEFAULT_VIEW_MODE, &iSetting);
+	ui_common_setup_combo_menu (liferea_dialog_lookup (pd->priv->dialog, "defaultViewModeCombo"),
+	                            default_view_mode_options,
+	                            G_CALLBACK (on_default_view_mode_changed),
+	                            iSetting);
 				  
 	/* Setup social bookmarking list */
 	i = 0;
@@ -594,18 +604,18 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	/* set the inside browsing flag */
 	widget = liferea_dialog_lookup(pd->priv->dialog, "browseinwindow");
-	conf_get_bool_value(BROWSE_INSIDE_APPLICATION, &browse_inside_application);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), browse_inside_application);
+	conf_get_bool_value(BROWSE_INSIDE_APPLICATION, &bSetting);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), bSetting);
 
 	/* set the javascript-disabled flag */
 	widget = liferea_dialog_lookup(pd->priv->dialog, "disablejavascript");
-	conf_get_bool_value(DISABLE_JAVASCRIPT, &disable_javascript);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), disable_javascript);
+	conf_get_bool_value(DISABLE_JAVASCRIPT, &bSetting);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), bSetting);
 	
 	/* set the enable Plugins flag */
 	widget = liferea_dialog_lookup(pd->priv->dialog, "enableplugins");
-	conf_get_bool_value(ENABLE_PLUGINS, &enable_plugins);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), enable_plugins);
+	conf_get_bool_value(ENABLE_PLUGINS, &bSetting);
+	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), bSetting);
 
 	tmp = 0;
 	conf_get_str_value(BROWSER_ID, &configuredBrowser);
@@ -620,42 +630,41 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gtk_combo_box_set_active(GTK_COMBO_BOX(liferea_dialog_lookup(pd->priv->dialog, "browserpopup")), tmp);
 	g_free(configuredBrowser);
 
-	conf_get_int_value (BROWSER_PLACE, &browser_place);
-	gtk_combo_box_set_active(GTK_COMBO_BOX(liferea_dialog_lookup(pd->priv->dialog, "browserlocpopup")), browser_place);
+	conf_get_int_value (BROWSER_PLACE, &iSetting);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(liferea_dialog_lookup(pd->priv->dialog, "browserlocpopup")), iSetting);
 
 	conf_get_str_value (BROWSER_COMMAND, &browser_command);
 	entry = liferea_dialog_lookup(pd->priv->dialog, "browsercmd");
 	gtk_entry_set_text(GTK_ENTRY(entry), browser_command);
 	g_free (browser_command);
 
-	gtk_widget_set_sensitive (GTK_WIDGET (entry), tmp==manual);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "manuallabel"), tmp==manual);	
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "urlhintlabel"), tmp==manual);
+	gtk_widget_set_sensitive (GTK_WIDGET (entry), tmp == manual);
+	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "manuallabel"), tmp == manual);	
+	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "urlhintlabel"), tmp == manual);
 
 	/* ================== panel 4 "GUI" ================ */
 
-	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
-
 	widget = liferea_dialog_lookup (pd->priv->dialog, "popupwindowsoptionbtn");
-	conf_get_bool_value (SHOW_POPUP_WINDOWS, &show_popup_windows);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), show_popup_windows);
+	conf_get_bool_value (SHOW_POPUP_WINDOWS, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 	
 	widget = liferea_dialog_lookup (pd->priv->dialog, "trayiconoptionbtn");
+	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), show_tray_icon);
 
 	widget = liferea_dialog_lookup (pd->priv->dialog, "newcountintraybtn");
-	conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY, &show_new_count_in_tray);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), show_new_count_in_tray);
+	conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "newcountintraybtn"), show_tray_icon);
 
 	widget = liferea_dialog_lookup (pd->priv->dialog, "minimizetotraybtn");
-	conf_get_bool_value (DONT_MINIMIZE_TO_TRAY, &dont_minimize_to_tray);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), dont_minimize_to_tray);
+	conf_get_bool_value (DONT_MINIMIZE_TO_TRAY, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "minimizetotraybtn"), show_tray_icon);
 	
 	widget = liferea_dialog_lookup (pd->priv->dialog, "startintraybtn");
-	conf_get_bool_value (START_IN_TRAY, &start_in_tray);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), start_in_tray);
+	conf_get_bool_value (START_IN_TRAY, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "startintraybtn"), show_tray_icon);
 
 	if (ui_indicator_is_visible ()) {
@@ -681,8 +690,8 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	/* tool bar settings */	
 	widget = liferea_dialog_lookup (pd->priv->dialog, "hidetoolbarbtn");
-	conf_get_bool_value(DISABLE_TOOLBAR, &disable_toolbar);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), disable_toolbar);
+	conf_get_bool_value(DISABLE_TOOLBAR, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 
 	/* select currently active toolbar style option */
 	conf_get_str_value (TOOLBAR_STYLE, &name);
@@ -753,11 +762,11 @@ preferences_dialog_init (PreferencesDialog *pd)
 	/* ================= panel 6 "Enclosures" ======================== */
 
 	/* menu for download tool */
-	conf_get_int_value (DOWNLOAD_TOOL, &enclosure_download_tool);
+	conf_get_int_value (DOWNLOAD_TOOL, &iSetting);
 	ui_common_setup_combo_menu (liferea_dialog_lookup (pd->priv->dialog, "downloadToolCombo"),
 	                            enclosure_download_tool_options,
 	                            G_CALLBACK (on_enclosure_download_tool_changed),
-	                            enclosure_download_tool);
+	                            iSetting);
 
 	/* set up list of configured enclosure types */
 	treestore = gtk_tree_store_new (FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
