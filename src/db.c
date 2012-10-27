@@ -247,7 +247,7 @@ db_open (void)
 	db_exec("PRAGMA synchronous=NORMAL");
 }
 
-#define SCHEMA_TARGET_VERSION 9
+#define SCHEMA_TARGET_VERSION 10
 
 /* opening or creation of database */
 void
@@ -417,6 +417,20 @@ db_init (void)
 				sqlite3_finalize (stmt);
 			}
 		}
+
+		if (db_get_schema_version () == 9) {
+			/* A parent node id to search folder relation to allow cleanups */
+			db_exec ("BEGIN; "
+			         "DROP TABLE search_folder_items; "
+				 "CREATE TABLE search_folder_items ("
+				 "   node_id            STRING,"
+				 "   parent_node_id     STRING,"
+	         		 "   item_id		INTEGER,"
+				 "   PRIMARY KEY (node_id, item_id)"
+				 ");"
+			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',10); "
+			         "END;" );
+		}
 	}
 
 	if (SCHEMA_TARGET_VERSION != db_get_schema_version ())
@@ -505,6 +519,7 @@ db_init (void)
 
 	db_exec ("CREATE TABLE search_folder_items ("
 	         "   node_id            STRING,"
+	         "   parent_node_id     STRING,"
 	         "   item_id		INTEGER,"
 		 "   PRIMARY KEY (node_id, item_id)"
 		 ");");
@@ -536,8 +551,15 @@ db_init (void)
 		 "END;");
         
 	debug0 (DEBUG_DB, "Checking for search folder items without a feed list node...\n");
+	db_exec ("DELETE FROM search_folder_items WHERE parent_node_id NOT IN "
+        	 "(SELECT node_id FROM node);");
+
+	debug0 (DEBUG_DB, "Checking for search folder items without a search folder...\n");
 	db_exec ("DELETE FROM search_folder_items WHERE node_id NOT IN "
         	 "(SELECT node_id FROM node);");
+
+	debug0 (DEBUG_DB, "Checking for search folder with comments...\n");
+	db_exec ("DELETE FROM search_folder_items WHERE comment = 1;");
 			  
 	debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 		
@@ -554,6 +576,7 @@ db_init (void)
         	 "BEGIN "
 		 "   DELETE FROM node WHERE node_id = old.node_id; "
 		 "   DELETE FROM subscription_metadata WHERE node_id = old.node_id; "
+		 "   DELETE FROM search_folder_items WHERE parent_node_id = old.node_id; "
         	 "END;");
 
 	/* Note: view counting triggers are set up in the view preparation code (see db_view_create()) */		
@@ -563,7 +586,7 @@ db_init (void)
 	                  "SELECT item_id FROM items WHERE node_id = ?");
 
 	db_new_statement ("itemsetLoadOffsetStmt",
-			  "SELECT item_id FROM items WHERE item_id >= ? limit ?");
+			  "SELECT item_id FROM items WHERE comment = 0 LIMIT ? OFFSET ?");
 		       
 	db_new_statement ("itemsetReadCountStmt",
 	                  "SELECT COUNT(item_id) FROM items "
@@ -679,10 +702,22 @@ db_init (void)
 	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,?,?,?)");
 	                  
 	db_new_statement ("itemUpdateSearchFoldersStmt",
-	                  "REPLACE INTO search_folder_items (node_id, item_id) VALUES (?,?)");
+	                  "REPLACE INTO search_folder_items (node_id, parent_node_id, item_id) VALUES (?,?,?)");
+
+	db_new_statement ("itemRemoveFromSearchFolderStmt",
+	                  "DELETE FROM search_folder_items WHERE node_id =? AND item_id = ?;");
 	                  
 	db_new_statement ("searchFolderLoadStmt",
 	                  "SELECT item_id FROM search_folder_items WHERE node_id = ?;");
+
+	db_new_statement ("searchFolderCountStmt",
+	                  "SELECT count(item_id) FROM search_folder_items WHERE node_id = ?;");
+
+	db_new_statement ("nodeIdListStmt",
+	                  "SELECT node_id FROM node;");
+
+	db_new_statement ("nodeRemoveStmt",
+	                  "DELETE FROM node WHERE node_id = ?;");
 			  
 	g_assert (sqlite3_get_autocommit (db));
 	
@@ -922,28 +957,47 @@ db_item_search_folders_update (itemPtr item)
 	gint 		res;
 	GSList		*iter, *list;
 	
-	/* Note: for simplicity we only ever add an item to a search folder
-	   but never remove it from one due to an item update. */
+	/* Add item to all search folders it now belongs to */
 
 	stmt = db_get_statement ("itemUpdateSearchFoldersStmt");
-	iter = list = vfolder_get_all_with_item_id (item->id);
+	iter = list = vfolder_get_all_with_item_id (item);
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
+		sqlite3_reset (stmt);
+		sqlite3_bind_text (stmt, 1, vfolder->node->id, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text (stmt, 2, item->nodeId, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int (stmt, 3, item->id);
+		res = sqlite3_step (stmt);
 
+		if (SQLITE_DONE != res) 
+			g_warning ("item add to search folder failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+		iter = g_slist_next (iter);
+
+	}
+	g_slist_free (list);
+
+	sqlite3_finalize (stmt);
+
+	/* Remove item from all search folders it does not belong
+	   (we do not check if it is in there, just remove it) */
+
+	stmt = db_get_statement ("itemRemoveFromSearchFolderStmt");
+	iter = list = vfolder_get_all_without_item_id (item);
+	while (iter) {
+		vfolderPtr vfolder = (vfolderPtr)iter->data;
 		sqlite3_reset (stmt);
 		sqlite3_bind_text (stmt, 1, vfolder->node->id, -1, SQLITE_TRANSIENT);
 		sqlite3_bind_int (stmt, 2, item->id);
 		res = sqlite3_step (stmt);
 
 		if (SQLITE_DONE != res) 
-			g_warning ("item update of search folders failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+			g_warning ("item remove from search folder failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 		iter = g_slist_next (iter);
 
 	}
-	g_slist_free (iter);
+	g_slist_free (list);
 
 	sqlite3_finalize (stmt);
-
 }
 
 void
@@ -973,7 +1027,7 @@ db_item_update (itemPtr item)
 	sqlite3_bind_text (stmt, 6,  item->source, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 7,  item->sourceId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 8,  item->validGuid?1:0);
-	sqlite3_bind_text (stmt, 9, item->description, -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 9,  item->description, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 10, item->time);
 	sqlite3_bind_text (stmt, 11, item->commentFeedId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 12, item->isComment?1:0);
@@ -1139,16 +1193,16 @@ db_itemset_mark_all_popup (const gchar *id)
 }
 
 gboolean
-db_itemset_get (itemSetPtr itemSet, gulong id, guint limit)
+db_itemset_get (itemSetPtr itemSet, gulong offset, guint limit)
 {
 	sqlite3_stmt	*stmt;
 	gboolean	success = FALSE;
 
-	debug2 (DEBUG_DB, "loading %d items starting with %lu", limit, id);
+	debug2 (DEBUG_DB, "loading %d items offset %lu", limit, offset);
 
 	stmt = db_get_statement ("itemsetLoadOffsetStmt");
-	sqlite3_bind_int (stmt, 1, id);
-	sqlite3_bind_int (stmt, 2, limit);
+	sqlite3_bind_int (stmt, 1, limit);
+	sqlite3_bind_int (stmt, 2, offset);
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
 		itemSet->ids = g_list_append (itemSet->ids, GUINT_TO_POINTER (sqlite3_column_int (stmt, 0)));
@@ -1348,7 +1402,8 @@ db_search_folder_add_items (const gchar *id, GSList *items)
 
 		sqlite3_reset (stmt);
 		sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int (stmt, 2, item->id);
+		sqlite3_bind_text (stmt, 2, item->nodeId, -1, SQLITE_TRANSIENT);
+		sqlite3_bind_int (stmt, 3, item->id);
 		res = sqlite3_step (stmt);
 		if (SQLITE_DONE != res)
 			g_error ("db_search_folder_add_items: sqlite3_step (error code %d)!", res);
@@ -1360,6 +1415,31 @@ db_search_folder_add_items (const gchar *id, GSList *items)
 	sqlite3_finalize (stmt);
 
 	debug0 (DEBUG_DB, "adding items to search folder finished");
+}
+
+guint 
+db_search_folder_get_item_count (const gchar *id) 
+{
+	sqlite3_stmt	*stmt;
+	gint		res;
+	guint		count = 0;
+	
+	debug_start_measurement (DEBUG_DB);
+	
+	stmt = db_get_statement ("searchFolderCountStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
+	
+	if (SQLITE_ROW == res)
+		count = sqlite3_column_int (stmt, 0);
+	else
+		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+		
+	sqlite3_finalize (stmt);
+
+	debug_end_measurement (DEBUG_DB, "counting unread items");
+
+	return count;
 }
 
 static GSList *
@@ -1497,4 +1577,60 @@ db_node_update (nodePtr node)
 	sqlite3_finalize (stmt);
 		
 	debug_end_measurement (DEBUG_DB, "node update");
+}
+
+static gboolean
+db_node_find (nodePtr node, gpointer id)
+{
+	GSList *iter;
+
+	if (g_str_equal (node->id, (gchar *)id))
+		return TRUE;
+
+	iter = node->children;
+	while (iter) {
+		if (db_node_find ((nodePtr)iter->data, id))
+			return TRUE;
+		iter = g_slist_next (iter);
+	}
+
+	return FALSE;
+}
+
+static void
+db_node_remove (const gchar *id)
+{
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	stmt = db_get_statement ("nodeRemoveStmt");	
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+
+	res = sqlite3_step (stmt);
+	if (SQLITE_DONE != res)
+		g_warning ("Could not remove node %s in DB (error code %d)!", id, res);
+
+	sqlite3_finalize (stmt);
+}
+
+void
+db_node_cleanup (nodePtr root)
+{
+	sqlite3_stmt	*stmt;
+	gint		res;
+
+	debug0 (DEBUG_DB, "Cleaning node ids...");
+
+	/* Fetch all node ids */
+	stmt = db_get_statement ("nodeIdListStmt");
+	while (sqlite3_step (stmt) == SQLITE_ROW) {
+		/* Drop node ids not in feed list anymore */
+		const gchar *id = sqlite3_column_text (stmt, 0);
+		if (!db_node_find (root, (gpointer)id)) {
+			db_subscription_remove (id);	/* in case it is a subscription */
+			db_node_remove (id);		/* in case it is a folder */
+		}
+	}
+
+	sqlite3_finalize (stmt);
 }

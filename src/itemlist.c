@@ -457,9 +457,6 @@ itemlist_unhide_item (itemPtr item)
 void
 itemlist_remove_item (itemPtr item) 
 {
-	/* update search folder counters */
-	vfolder_foreach_data (vfolder_remove_item, item);
-	
 	if (itemlist->priv->selectedId == item->id) {
 		itemlist_set_selected (NULL);
 		itemlist->priv->deferredFilter = FALSE;
@@ -472,8 +469,9 @@ itemlist_remove_item (itemPtr item)
 	itemview_update ();
 
 	db_item_remove (item->id);
-	
-	/* update feed list */
+
+	/* update feed list counters*/
+	vfolder_foreach (node_update_counters);
 	node_update_counters (node_from_id (item->nodeId));
 	
 	item_unload (item);
@@ -503,8 +501,6 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
 
-		vfolder_foreach_data (vfolder_remove_item, item);
-
 		if (itemlist->priv->selectedId != item->id) {
 			/* don't call itemlist_remove_item() here, because it's to slow */
 			itemview_remove_item (item);
@@ -518,6 +514,7 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 	}
 
 	itemview_update ();
+	vfolder_foreach (node_update_counters);
 	node_update_counters (node_from_id (itemSet->nodeId));
 }
 
@@ -529,16 +526,6 @@ itemlist_remove_all_items (nodePtr node)
 	
 	if (node == itemlist->priv->currentNode)
 		itemview_clear ();
-
-	itemset = db_itemset_load (node->id);
-	iter = itemset->ids;
-	while (iter) {
-		itemPtr item = item_load ((gulong)iter->data);
-		vfolder_foreach_data (vfolder_remove_item, item);
-		item_unload (item);
-		iter = g_list_next (iter);
-	}
-	itemset_free (itemset);
 		
 	db_itemset_remove_all (node->id);
 	
@@ -547,6 +534,7 @@ itemlist_remove_all_items (nodePtr node)
 		itemlist_duplicate_list_free ();
 	}
 
+	vfolder_foreach (node_update_counters);
 	node_update_counters (node);
 }
 

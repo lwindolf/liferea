@@ -278,7 +278,7 @@ node_mark_all_read (nodePtr node)
 	if (!node)
 		return;
 
-	if (0 != node->unreadCount) {
+	if ((node->unreadCount > 0) || (IS_VFOLDER (node))) {
 		itemset_mark_read (node);
 		node->unreadCount = 0;
 		node->needsUpdate = TRUE;

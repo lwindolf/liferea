@@ -1,7 +1,7 @@
 /**
  * @file vfolder.h  search folder node type
  *
- * Copyright (C) 2003-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ typedef struct vfolder {
 	itemSetPtr	itemset;	/**< the itemset with the rules and matching items */
 
 	gboolean	reloading;	/**< if the search folder is in async reloading */
-	gulong		maxLoadedId;	/**< when in reloading maximum scanned id so far */
+	gulong		loadOffset;	/**< when in reloading: current offset */
 } *vfolderPtr;
 
 /**
@@ -72,39 +72,22 @@ typedef void 	(*vfolderActionDataFunc)	(vfolderPtr vfolder, itemPtr item);
 void vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item);
 
 /**
- * Method to remove an item from a search folder.
+ * Returns a list of all search folders currently matching the given item.
  *
- * @param vfolder	search folder
  * @param item		the item
- */
-void vfolder_remove_item (vfolderPtr vfolder, itemPtr item);
-
-/**
- * Method to add an item to a search folder.
- *
- * @param vfolder	search folder
- * @param item		the item
- */
-void vfolder_add_item (vfolderPtr vfolder, itemPtr item);
-
-/**
- * Method to merge an item to a search folder if
- * it matches the search folder rules.
- *
- * @param vfolder	search folder
- * @param item		the item
- */
-void vfolder_merge_item (vfolderPtr vfolder, itemPtr item);
-
-/**
- * Returns a list of all search folders currently matching
- * the given item id.
- *
- * @param id		the item id
  *
  * @returns a list of vfolderPtr (to be free'd using g_slist_free())
  */
-GSList * vfolder_get_all_with_item_id (gulong id);
+GSList * vfolder_get_all_with_item_id (itemPtr item);
+
+/**
+ * Returns a list of all search folders currently not matching the given item.
+ *
+ * @param item		the item
+ *
+ * @returns a list of vfolderPtr (to be free'd using g_slist_free())
+ */
+GSList * vfolder_get_all_without_item_id (itemPtr item);
 
 /**
  * Resets vfolder state. Drops all items from it.

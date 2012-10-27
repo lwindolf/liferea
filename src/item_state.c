@@ -51,12 +51,11 @@ item_flag_state_changed (itemPtr item, gboolean newState)
 	/* 1. set value in memory */	
 	item->flagStatus = newState;
 
-	/* 2. propagate to vfolders */
-	vfolder_foreach_data (vfolder_merge_item, item);
-	vfolder_foreach (node_update_counters);
-
-	/* 3. save state to DB */
+	/* 2. save state to DB */
 	db_item_state_update (item);
+
+	/* 3. update vfolder counters */
+	vfolder_foreach (node_update_counters);
 
 	/* 4. update item list GUI state */
 	itemlist_update_item (item);
@@ -93,13 +92,12 @@ item_read_state_changed (itemPtr item, gboolean newState)
 	item->readStatus = newState;
 	item->updateStatus = FALSE;
 
-	/* 2. propagate to vfolders */
-	vfolder_foreach_data (vfolder_merge_item, item);
-	vfolder_foreach (node_update_counters);
-	
-	/* 3. apply to DB */
+	/* 2. apply to DB */
 	db_item_state_update (item);
 
+	/* 3. propagate to vfolders */
+	vfolder_foreach (node_update_counters);
+	
 	/* 4. update item list GUI state */
 	itemlist_update_item (item);
 
@@ -147,10 +145,7 @@ void
 itemset_mark_read (nodePtr node)
 {
 	itemSetPtr	itemSet;
-	
-	if (!node->unreadCount)
-		return;
-	
+
 	itemSet = node_get_itemset (node);
 	GList *iter = itemSet->ids;
 	while (iter) {
@@ -158,14 +153,10 @@ itemset_mark_read (nodePtr node)
 		itemPtr item = item_load (id);
 		if (item) {
 			if (!item->readStatus) {
-				nodePtr node;
-				
-				node = node_from_id (item->nodeId);
+				nodePtr node = node_from_id (item->nodeId);
 				if (node) {
 					item_state_set_recount_flag (node);
 					node_source_item_mark_read (node, item, TRUE);
-				} else {
-					g_warning ("itemset_mark_read() on lost item (id=%lu, node id=%s)!", item->id, item->nodeId);
 				}
 
 				debug_start_measurement (DEBUG_GUI);
@@ -188,6 +179,8 @@ itemset_mark_read (nodePtr node)
 		}
 		iter = g_list_next (iter);
 	}
+
+	// FIXME: why not call itemset_free (itemSet); here? Crashes!
 }
 
 void

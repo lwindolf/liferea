@@ -10,6 +10,10 @@
 	  as it doesn't match GTK theming well
 	* Removed auto-hide Javascript menu from combined view to simplify
 	  rendering in 3-pane modes.
+	* Fixes items not removed from search folder count when feed is removed.
+	* Fixes search folder rebuilding (do not include comment items).
+	* Fixes SELECT offset handling when rebuilding search folders.
+	* Now gives feedback when rebuilding search folders in feed list.
 
 	* Update of German translation
 

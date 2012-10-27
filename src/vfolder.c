@@ -1,7 +1,7 @@
 /**
  * @file vfolder.c  search folder node type
  *
- * Copyright (C) 2003-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,9 +111,7 @@ vfolder_import_rules (xmlNodePtr cur,
 static itemSetPtr
 vfolder_load (nodePtr node) 
 {
-	vfolderPtr vfolder = (vfolderPtr)node->data;
-
-	return vfolder->itemset;
+	return db_search_folder_load (node->id);
 }
 
 void
@@ -142,46 +140,31 @@ vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item)
 	}
 }
 
-void
-vfolder_remove_item (vfolderPtr vfolder, itemPtr item)
-{
-	if (!vfolder->itemset->ids)
-		return;
-		
-	vfolder->itemset->ids = g_list_remove (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
-	vfolder->node->needsUpdate = TRUE;
-}
-
-void
-vfolder_add_item (vfolderPtr vfolder, itemPtr item)
-{
-	vfolder->itemset->ids = g_list_append (vfolder->itemset->ids, GUINT_TO_POINTER (item->id));
-	vfolder->node->needsUpdate = TRUE;
-}
-
-void
-vfolder_merge_item (vfolderPtr vfolder, itemPtr item)
-{
-	gboolean found = itemset_has_item_id (vfolder->itemset, item->id);
-
-	if (itemset_check_item (vfolder->itemset, item)) {
-		if (!found)
-			vfolder_add_item (vfolder, item);
-	} else {
-		if (found)
-			vfolder_remove_item (vfolder, item);
-	}
-}
-
 GSList *
-vfolder_get_all_with_item_id (gulong id)
+vfolder_get_all_with_item_id (itemPtr item)
 {
 	GSList	*result = NULL;
 	GSList	*iter = vfolders;
 	
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
-		if (g_list_find (vfolder->itemset->ids, GUINT_TO_POINTER (id)))
+		if (itemset_check_item (vfolder->itemset, item))
+			result = g_slist_append (result, vfolder);
+		iter = g_slist_next (iter);
+	}
+
+	return result;
+}
+
+GSList *
+vfolder_get_all_without_item_id (itemPtr item)
+{
+	GSList	*result = NULL;
+	GSList	*iter = vfolders;
+	
+	while (iter) {
+		vfolderPtr vfolder = (vfolderPtr)iter->data;
+		if (!itemset_check_item (vfolder->itemset, item))
 			result = g_slist_append (result, vfolder);
 		iter = g_slist_next (iter);
 	}
@@ -200,7 +183,11 @@ vfolder_import (nodePtr node,
 	debug1 (DEBUG_CACHE, "import vfolder: title=%s", node_get_title (node));
 
 	vfolder = vfolder_new (node);
-	vfolder->itemset = db_search_folder_load (node->id);
+
+	/* We use the itemset only to keep itemset rules, not to 
+	   have the items in memory! Maybe the itemset<->filtering
+	   dependency is not a good idea... */
+	vfolder->itemset = g_new0 (struct itemSet, 1);
 	
 	vfolder_import_rules (cur, vfolder);
 }
@@ -258,7 +245,7 @@ vfolder_rebuild (nodePtr node)
 	vfolderPtr	vfolder = (vfolderPtr)node->data;
 
 	vfolder_reset (vfolder);
-	itemlist_add_loader (vfolder_loader_new (node));
+	itemlist_add_search_result (vfolder_loader_new (node));
 }
 
 static void
@@ -281,14 +268,12 @@ static void vfolder_save (nodePtr node) { }
 static void
 vfolder_update_counters (nodePtr node) 
 {
-	vfolderPtr vfolder = (vfolderPtr) node->data;
-	
 	/* There is no unread handling for search folders
 	   for performance reasons. So set everything to 0 
 	   here and don't bother with GUI updates... */
-	vfolder->node->needsUpdate = TRUE;
-	vfolder->node->unreadCount = 0;
-	vfolder->node->itemCount = g_list_length (vfolder->itemset->ids);
+	node->needsUpdate = TRUE;
+	node->unreadCount = 0;
+	node->itemCount = db_search_folder_get_item_count (node->id);
 }
 
 static void
