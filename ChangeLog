@@ -1,4 +1,6 @@
-	To be released
+2012-10-28  Lars Windolf <lars.lindner@gmail.com>
+	
+	Version 1.9.7
 
 	* Added new preference for default viewing mode.
 	* Changing toolbar button order to prevent accidental clicks on
@@ -16,6 +18,7 @@
 	* Now gives feedback when rebuilding search folders in feed list.
 
 	* Update of German translation
+
 
 2012-10-09  Lars Windolf <lars.lindner@gmail.com>
 	
