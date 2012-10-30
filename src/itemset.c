@@ -375,7 +375,6 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 			item->readStatus = TRUE;
 			
 		if (itemset_merge_item (itemSet, items, item, length, allowUpdates)) {
-			vfolder_foreach_data (vfolder_merge_item, item);
 			newCount++;
 			items = g_list_prepend (items, iter->data);
 		}
@@ -396,13 +395,6 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 		toBeDropped = g_list_length (items) - max;
 	else
 		toBeDropped = 0;
-
-	/* Let's never drop more than 50 items at one time to avoid
-	   long duration migrations. It is ok to drop only some of the
-	   items here, because we can drop the rest during future
-	   feed updates. */
-	//if(toBeDropped > 50)
-	//	toBeDropped = 50;
 	
 	debug3 (DEBUG_UPDATE, "%u new items, cache limit is %u -> dropping %u items", newCount, max, toBeDropped);
 	items = g_list_sort (items, itemset_sort_by_date);

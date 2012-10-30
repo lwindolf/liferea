@@ -37,8 +37,8 @@ vfolder_loader_fetch_cb (gpointer user_data, GSList **resultItems)
 	gboolean	result;
 
 	/* 1. Fetch a batch of items */
-	result = db_itemset_get (items, vfolder->maxLoadedId, VFOLDER_LOADER_BATCH_SIZE);
-	vfolder->maxLoadedId += VFOLDER_LOADER_BATCH_SIZE;
+	result = db_itemset_get (items, vfolder->loadOffset, VFOLDER_LOADER_BATCH_SIZE);
+	vfolder->loadOffset += VFOLDER_LOADER_BATCH_SIZE;
 
 	if (result) {
 		/* 2. Match all items against search folder */
@@ -61,9 +61,12 @@ vfolder_loader_fetch_cb (gpointer user_data, GSList **resultItems)
 
 	itemset_free (items);
 
-	/* 3. Save items to DB (except for search results) */
-	if (vfolder->node)
+	/* 3. Save items to DB and update UI (except for search results) */
+	if (vfolder->node) {
 		db_search_folder_add_items (vfolder->node->id, *resultItems);
+		node_update_counters (vfolder->node);
+		ui_node_update (vfolder->node->id);
+	}
 
 	return result;	/* FALSE on last fetch */
 }
@@ -81,7 +84,7 @@ vfolder_loader_new (nodePtr node)
 	debug1 (DEBUG_CACHE, "search folder '%s' reload started", node->title);
 	vfolder_reset (vfolder);
 	vfolder->reloading = TRUE;
-	vfolder->maxLoadedId = 0;
+	vfolder->loadOffset = 0;
 
         return item_loader_new (vfolder_loader_fetch_cb, node, vfolder);
 }

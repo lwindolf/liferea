@@ -84,18 +84,17 @@ guint   db_itemset_get_item_count (const gchar *id);
 
 /**
  * Returns a batch of items starting with the given
- * id and no more than the given limit. If ids are not
- * consecutive less ids than limit might be returned.
+ * offset and no more than the given limit. 
  * 
  * To be used for batched item loading (search folder loaders)
  *
  * @param itemSet       an itemset to add the items to
- * @param id            the first id to fetch
+ * @param offset        the current offset
  * @param limit         maximum number of items to fetch
  * 
  * @returns FALSE if no more items to fetch
  */
-gboolean        db_itemset_get (itemSetPtr itemSet, gulong id, guint limit);
+gboolean        db_itemset_get (itemSetPtr itemSet, gulong offset, guint limit);
 
 /* item access (note: items are identified by the numeric item id) */
 
@@ -172,6 +171,15 @@ void    db_search_folder_reset (const gchar *id);
 void    db_search_folder_add_items (const gchar *id, GSList *items);
 
 /**
+ * Returns the number of items for the given search folder.
+ *
+ * @param id	the node id
+ *
+ * @returns the number of items
+ */
+guint   db_search_folder_get_item_count (const gchar *id);
+
+/**
  * Load the metadata and update state of the given subscription.
  *
  * @param subscription	the subscription whose info to load
@@ -198,5 +206,14 @@ void db_subscription_remove (const gchar *id);
  * @param node		the node
  */
 void db_node_update (nodePtr node);
+
+
+/**
+ * Clean old nodes from the DB by comparing all DB nodes
+ * against the OPML feed list.
+ * 
+ * @param root		the root node
+ */
+void db_node_cleanup (nodePtr root);
 
 #endif

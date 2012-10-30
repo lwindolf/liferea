@@ -37,6 +37,7 @@
 #include "htmlview.h"
 #include "itemlist.h"
 #include "net_monitor.h"
+#include "vfolder.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
@@ -49,6 +50,8 @@
 #include "ui/ui_session.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"
+
+extern gboolean searchFolderRebuild; /* db.c */
 
 #define LIFEREA_SHELL_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_SHELL_TYPE, LifereaShellPrivate))
 
@@ -1263,6 +1266,10 @@ liferea_shell_create (int initialState)
 	                  G_CALLBACK (liferea_shell_online_status_changed), shell);
 
 	liferea_shell_set_online_icon (network_monitor_is_online ());
+
+	/* 11. Rebuild search folders if needed */
+	if (searchFolderRebuild)
+		vfolder_foreach (vfolder_rebuild);
 
 	debug_exit ("liferea_shell_create");
 }

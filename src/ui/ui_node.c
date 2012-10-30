@@ -26,6 +26,7 @@
 #include "feedlist.h"
 #include "fl_sources/node_source.h"
 #include "folder.h"
+#include "vfolder.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -311,6 +312,15 @@ ui_node_update (const gchar *nodeId)
 		default:
 			label = g_markup_printf_escaped ("%s", node_get_title(node));
 			break;
+	}
+
+	/* Extra message for search folder rebuilds */
+	if (IS_VFOLDER (node) && node->data) {
+		if (((vfolderPtr)node->data)->reloading) {
+			gchar *tmp = label;
+			label = g_strdup_printf (_("%s\n<i>Rebuilding</i>"), label);
+			g_free (tmp);
+		}
 	}
 
 	gtk_tree_store_set (feedstore, iter, FS_LABEL, label,

@@ -185,11 +185,14 @@ feedlist_init (FeedList *fl)
 		feedlist_reset_update_counters (NULL);
 	}
 
-	/* 5. Start automatic updating */
+	/* 5. Purge old nodes from the database */
+	db_node_cleanup (feedlist_get_root ());
+
+	/* 6. Start automatic updating */
 	feedlist->priv->autoUpdateTimer = g_timeout_add_seconds (10, feedlist_auto_update, NULL);
 	g_signal_connect (network_monitor_get (), "online-status-changed", G_CALLBACK (on_network_status_changed), NULL);
 
-	/* 6. Finally save the new feed list state */
+	/* 7. Finally save the new feed list state */
 	feedlist->priv->loading = FALSE;
 	feedlist_schedule_save ();
 	
