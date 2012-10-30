@@ -40,6 +40,7 @@
 #include "itemlist.h"
 #include "net_monitor.h"
 #include "plugins_engine.h"
+#include "vfolder.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
@@ -52,6 +53,8 @@
 #include "ui/ui_common.h"
 #include "ui/ui_tray.h"
 #include "ui/ui_update.h"
+
+extern gboolean searchFolderRebuild; /* db.c */
 
 #define LIFEREA_SHELL_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_SHELL_TYPE, LifereaShellPrivate))
 
@@ -1362,6 +1365,10 @@ liferea_shell_create (GtkApplication *app)
 	g_signal_connect (shell->priv->extensions, "extension-removed",	G_CALLBACK (on_extension_removed), shell);
 
 	peas_extension_set_call (shell->priv->extensions, "activate");
+
+	/* 12. Rebuild search folders if needed */
+	if (searchFolderRebuild)
+		vfolder_foreach (vfolder_rebuild);
 
 	debug_exit ("liferea_shell_create");
 }
