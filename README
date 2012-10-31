@@ -1,4 +1,4 @@
-This documentation was last updated for Liferea version 1.9 (13.09.2012).
+This documentation was last updated for Liferea version 1.10 (31.10.2012).
 
 Contents
 ========
@@ -70,7 +70,6 @@ The compilation and runtime dependencies are:
 Mandatory:
 
    gtk3
-   gconf2
    libxml2
    libxslt
    sqlite3

@@ -1,6 +1,7 @@
 /**
- * @file conf.c Liferea configuration (gconf access)
+ * @file conf.c Liferea configuration (GSettings access)
  *
+ * Copyright (C) 2011 Mikel Olasagasti Uranga <mikel@olasagasti.info>
  * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
@@ -19,8 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <gconf/gconf.h>
-#include <gconf/gconf-client.h>
 #include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
@@ -35,17 +34,21 @@
 
 #define MAX_GCONF_PATHLEN	256
 
-#define PATH		"/apps/liferea"
+#define LIFEREA_SCHEMA_NAME		"net.sf.liferea"
+#define PROXY_SCHEMA_NAME		"org.gnome.system.proxy"
+#define DESKTOP_SCHEMA_NAME		"org.gnome.desktop.interface"
 
-static GConfClient	*client;
+static GSettings *settings;
+static GSettings *proxy_settings;
+static GSettings *desktop_settings;
 
 /* Function prototypes */
-static void conf_proxy_reset_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
-static void conf_tray_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
-static void conf_toolbar_style_settings_cb(GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data);
+static void conf_proxy_reset_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
+static void conf_tray_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
+static void conf_toolbar_style_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
 
 static gboolean
-is_gconf_error (GError **err)
+is_gsettings_error (GError **err)
 {
 	if (*err) {
 		g_warning ("%s\n", (*err)->message);
@@ -58,68 +61,165 @@ is_gconf_error (GError **err)
 }
 
 static void
-conf_load (void)
+conf_ensure_migrated (const gchar *name)
 {
-	gint	maxitemcount;
-	gchar *downloadPath;
-	
-	/* check if important preferences exist... */
-	
-	if (!conf_get_int_value (DEFAULT_MAX_ITEMS, &maxitemcount))
-		conf_set_int_value (DEFAULT_MAX_ITEMS, 100);
-	
-	g_free (downloadPath);
+	gboolean needed = TRUE;
+	GKeyFile *kf;
+	gchar **list;
+	gsize i, n;
+
+	kf = g_key_file_new ();
+
+	g_key_file_load_from_data_dirs (kf, "gsettings-data-convert",
+					NULL, G_KEY_FILE_NONE, NULL);
+	list = g_key_file_get_string_list (kf, "State", "converted", &n, NULL);
+
+	if (list) {
+		for (i = 0; i < n; i++) {
+			if (strcmp (list[i], name) == 0) {
+				needed = FALSE;
+				break;
+			}
+		}
+		g_strfreev (list);
+	}
+
+	g_key_file_free (kf);
+
+	if (needed)
+		g_spawn_command_line_sync ("gsettings-data-convert",
+						NULL, NULL, NULL, NULL);
 }
 
 /* called once on startup */
 void
 conf_init (void)
 {	
-	/* call g_type_init(), GConf for some reason refuses to do so itself 
-	   and we use GConf before initializing GTK which would call g_type_init() itself */
-	g_type_init ();
-	
-	/* initialize GConf client */
-	client = gconf_client_get_default ();
-	gconf_client_add_dir (client, PATH, GCONF_CLIENT_PRELOAD_NONE, NULL);
-	gconf_client_add_dir (client, "/apps/liferea/proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
-	gconf_client_add_dir (client, "/system/http_proxy", GCONF_CLIENT_PRELOAD_NONE, NULL);
-	gconf_client_add_dir (client, "/desktop/gnome/interface", GCONF_CLIENT_PRELOAD_NONE, NULL);
-	
-	gconf_client_notify_add (client, "/apps/liferea/proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
-	gconf_client_notify_add (client, "/system/http_proxy", conf_proxy_reset_settings_cb, NULL, NULL, NULL);
-	gconf_client_notify_add (client, "/desktop/gnome/interface/toolbar_style", conf_toolbar_style_settings_cb, NULL, NULL, NULL);
-	gconf_client_notify_add (client, SHOW_TRAY_ICON, conf_tray_settings_cb, NULL, NULL, NULL);
-	
+	/* ensure we migrated from gconf to gsettings */
+	conf_ensure_migrated (LIFEREA_SCHEMA_NAME);
+
+	/* initialize GSettings client */
+	settings = g_settings_new (LIFEREA_SCHEMA_NAME);
+	proxy_settings = g_settings_new(PROXY_SCHEMA_NAME);
+	desktop_settings = g_settings_new(DESKTOP_SCHEMA_NAME);
+
+	g_signal_connect (
+		desktop_settings,
+		"changed::" TOOLBAR_STYLE,
+		G_CALLBACK (conf_toolbar_style_settings_cb),
+		NULL
+	);
+
+	g_signal_connect (
+		settings,
+		"changed::" SHOW_TRAY_ICON,
+		G_CALLBACK (conf_tray_settings_cb),
+		NULL
+	);
+
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_DETECT_MODE,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_HOST,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_PORT,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_USEAUTH,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_USER,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_PASSWD,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		proxy_settings,
+		"changed::" GNOME_PROXY_MODE,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		proxy_settings,
+		"changed::" GNOME_PROXY_HOST,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		proxy_settings,
+		"changed::" GNOME_PROXY_PORT,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		proxy_settings,
+		"changed::" GNOME_PROXY_USEAUTH,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		proxy_settings,
+		"changed::" GNOME_PROXY_USER,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		proxy_settings,
+		"changed::" GNOME_PROXY_PASSWD,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+
+
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb (NULL, 0, NULL, NULL);
-
-	conf_load ();
 }
 
 void
 conf_deinit (void)
 {
-	g_object_unref (client);
+	g_object_unref (settings);
+	g_object_unref (proxy_settings);
+	g_object_unref (desktop_settings);
 }
 
 static void
-conf_tray_settings_cb (GConfClient *client, guint cnxn_id, GConfEntry *entry, gpointer user_data)
+conf_tray_settings_cb (GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data)
 {
-	GConfValue *value;
-	
-	if (entry) {
-		value = gconf_entry_get_value (entry);
-		if (value && value->type == GCONF_VALUE_BOOL)
-			ui_tray_enable (gconf_value_get_bool (value));
+	GVariant *gv;
+
+	if (key) {
+		gv = g_settings_get_value (settings, key);
+		if (gv && g_variant_get_type(gv) == G_VARIANT_TYPE_BOOLEAN)
+			ui_tray_enable (g_settings_get_boolean (settings,key));
 	}
 }
 
 static void
-conf_toolbar_style_settings_cb (GConfClient *client,
+conf_toolbar_style_settings_cb (GSettings *settings,
                                 guint cnxn_id,
-                                GConfEntry *entry,
-                                gpointer user_data) 
+                                gchar *key,
+                                gpointer user_data)
 {
 	gchar *style = conf_get_toolbar_style ();
 
@@ -130,9 +230,9 @@ conf_toolbar_style_settings_cb (GConfClient *client,
 }
 
 static void
-conf_proxy_reset_settings_cb (GConfClient *client,
+conf_proxy_reset_settings_cb (GSettings *settings,
                               guint cnxn_id,
-                              GConfEntry *entry,
+                              gchar *key,
                               gpointer user_data)
 {
 	gchar		*proxyname, *proxyusername, *proxypassword, *tmp;
@@ -141,7 +241,7 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 	gint		proxydetectmode;
 	gboolean	proxyuseauth;
 	xmlURIPtr 	uri;
-	
+
 	proxyname = NULL;
 	proxyport = 0;
 	proxyusername = NULL;
@@ -156,23 +256,22 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 			/* first check for a configured GNOME proxy, note: older
 			   GNOME versions do use the boolean flag GNOME_USE_PROXY
 			   while newer ones use the string key GNOME_PROXY_MODE */
-			conf_get_str_value (GNOME_PROXY_MODE, &tmp);
-			conf_get_bool_value (GNOME_USE_PROXY, &gnomeUseProxy);
-			gnomeUseProxy = gnomeUseProxy || g_str_equal (tmp, "manual");
-			g_free (tmp);				
-			
+			conf_get_str_value_from_schema (proxy_settings, GNOME_PROXY_MODE, &tmp);
+			gnomeUseProxy = g_str_equal (tmp, "manual");
+			g_free (tmp);
+
 			/* first check for a configured GNOME proxy */
 			if (gnomeUseProxy) {
-				conf_get_str_value (GNOME_PROXY_HOST, &proxyname);
-				conf_get_int_value (GNOME_PROXY_PORT, &proxyport);
+				conf_get_str_value_from_schema (proxy_settings, GNOME_PROXY_HOST, &proxyname);
+				conf_get_int_value_from_schema (proxy_settings, GNOME_PROXY_PORT, &proxyport);
 				debug2 (DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
-				conf_get_bool_value (GNOME_PROXY_USEAUTH, &proxyuseauth);
+				conf_get_bool_value_from_schema (proxy_settings, GNOME_PROXY_USEAUTH, &proxyuseauth);
 				if (proxyuseauth) {
-					conf_get_str_value (GNOME_PROXY_USER, &proxyusername);
-					conf_get_str_value (GNOME_PROXY_PASSWD, &proxypassword);
+					conf_get_str_value_from_schema (proxy_settings, GNOME_PROXY_USER, &proxyusername);
+					conf_get_str_value_from_schema (proxy_settings, GNOME_PROXY_PASSWD, &proxypassword);
 				}
 			} else {
-				/* otherwise there could be a proxy specified in the environment 
+				/* otherwise there could be a proxy specified in the environment
 				   the following code was derived from SnowNews' setup.c */
 				if (g_getenv("http_proxy")) {
 					/* The pointer returned by getenv must not be altered.
@@ -222,11 +321,10 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 			}
 			break;
 	}
-	
 	debug4 (DEBUG_CONF, "Proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
 		  proxyusername != NULL ? proxyusername : "NULL",
 		  proxypassword != NULL ? proxypassword : "NULL");
-		  
+
 	network_set_proxy (proxyname, proxyport, proxyusername, proxypassword);
 }
 
@@ -235,106 +333,29 @@ conf_proxy_reset_settings_cb (GConfClient *client,
 /*----------------------------------------------------------------------*/
 
 void
-conf_set_bool_value (const gchar *valuename, gboolean value)
+conf_set_bool_value (const gchar *key, gboolean value)
 {
-	GError		*err = NULL;
-	GConfValue	*gcv;
-	
-	g_assert (valuename != NULL);
-	
-	gcv = gconf_value_new (GCONF_VALUE_BOOL);
-	gconf_value_set_bool (gcv, value);
-	gconf_client_set (client, valuename, gcv, &err);
-	gconf_value_free (gcv);
-	is_gconf_error (&err);
-}
-
-gboolean
-conf_get_bool_value (const gchar *valuename, gboolean *value)
-{
-	GConfValue	*gcv;
-
-	g_assert (valuename != NULL);
-
-	gcv = gconf_client_get (client, valuename, NULL);
-	if (gcv) {
-		*value = gconf_value_get_bool (gcv);
-		gconf_value_free (gcv);
-		return TRUE;
-	} else {
-		*value = FALSE;
-		return FALSE;
-	}
+	g_assert (key != NULL);
+	g_settings_set_boolean (settings, key, value);
 }
 
 void
-conf_set_str_value (const gchar *valuename, const gchar *value)
+conf_set_str_value (const gchar *key, const gchar *value)
 {
-	GError		*err = NULL;
-	GConfValue	*gcv;
-	
-	g_assert (valuename != NULL);
-	
-	gcv = gconf_value_new (GCONF_VALUE_STRING);
-	gconf_value_set_string (gcv, value);
-	gconf_client_set (client, valuename, gcv, &err);
-	gconf_value_free (gcv);
-	is_gconf_error (&err);
-}
-
-gboolean
-conf_get_str_value (const gchar *valuename, gchar **value)
-{
-	GConfValue	*gcv;
-
-	g_assert (valuename != NULL);
-		
-	gcv = gconf_client_get (client, valuename, NULL);
-	if (gcv) {
-		*value = g_strdup (gconf_value_get_string (gcv));
-		gconf_value_free (gcv);
-		return TRUE;
-	} else {
-		*value = g_strdup ("");
-		return FALSE;
-	}
+	g_assert (key != NULL);
+	g_settings_set_string (settings, key, value);
 }
 
 void
-conf_set_int_value (const gchar *valuename, gint value)
+conf_set_int_value (const gchar *key, gint value)
 {
-	GError		*err = NULL;
-	GConfValue	*gcv;
-	
-	g_assert (valuename != NULL);
-	debug2 (DEBUG_CONF, "Setting %s to %d", valuename, value);
-	gcv = gconf_value_new (GCONF_VALUE_INT);
-	gconf_value_set_int (gcv, value);
-	gconf_client_set (client, valuename, gcv, &err);
-	is_gconf_error (&err);
-	gconf_value_free (gcv);
-}
-
-gboolean
-conf_get_int_value (const gchar *valuename, gint *value)
-{
-	GConfValue	*gcv;
-
-	g_assert (valuename != NULL);
-		
-	gcv = gconf_client_get (client, valuename, NULL);
-	if (gcv) {
-		*value = gconf_value_get_int (gcv);
-		gconf_value_free (gcv);
-		return TRUE;
-	} else {
-		*value = 0;
-		return FALSE;	
-	}
+	g_assert (key != NULL);
+	debug2 (DEBUG_CONF, "Setting %s to %d", key, value);
+	g_settings_set_int (settings, key, value);
 }
 
 gchar *
-conf_get_toolbar_style(void) 
+conf_get_toolbar_style(void)
 {
 	gchar *style;
 
@@ -343,7 +364,52 @@ conf_get_toolbar_style(void)
 	/* check if we don't override the toolbar style */
 	if (strcmp(style, "") == 0) {
 		g_free (style);
-		conf_get_str_value ("/desktop/gnome/interface/toolbar_style", &style);
+		conf_get_str_value_from_schema (desktop_settings,"toolbar-style", &style);
 	}
 	return style;
 }
+
+gboolean
+conf_get_bool_value_from_schema (GSettings *gsettings, const gchar *key, gboolean *value)
+{
+	g_assert (key != NULL);
+
+	if (gsettings == NULL)
+		gsettings = settings;
+	*value = g_settings_get_boolean (gsettings,key);
+	return *value;
+}
+
+gboolean
+conf_get_str_value_from_schema (GSettings *gsettings, const gchar *key, gchar **value)
+{
+	g_assert (key != NULL);
+
+	if (gsettings == NULL)
+		gsettings = settings;
+	*value = g_strdup (g_settings_get_string (gsettings,key));
+	return (NULL != value);
+}
+
+gboolean
+conf_get_int_value_from_schema (GSettings *gsettings, const gchar *key, gint *value)
+{
+	g_assert (key != NULL);
+
+	if (gsettings == NULL)
+		gsettings = settings;
+	*value = g_settings_get_int (gsettings,key);
+	return (NULL != value);
+}
+
+gboolean
+conf_get_default_font_from_schema (const gchar *key, gchar **value)
+{
+	g_assert (key != NULL);
+
+	if (desktop_settings)
+		*value = g_strdup (g_settings_get_string (desktop_settings, key));
+	return (NULL != value);
+}
+
+
