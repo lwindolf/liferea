@@ -20,6 +20,8 @@ libtool
 liferea.desktop
 ltmain.sh
 missing
+net.sf.liferea.gschema.valid
+net.sf.liferea.gschema.xml
 po/.intltool-merge-cache
 po/Makefile.in.in
 po/POTFILES

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.9.7],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.10-RC1],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -22,6 +22,7 @@ AC_HEADER_STDC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
+GLIB_GSETTINGS
 
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
 AC_ARG_ENABLE(libindicate, AS_HELP_STRING([--disable-libindicate],[compile without libindicate support]),,enable_libindicate=yes)
@@ -80,23 +81,13 @@ fi
 
 AM_CONDITIONAL(WITH_LIBINDICATE, test "x$enable_libindicate" = "xyes")
 
-dnl Checking for gconftool-2
-AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-
-if test "x$GCONFTOOL" = xno; then
-        AC_MSG_ERROR([gconftool-2 executable not found in your path - should be installed with GConf])
-fi
-
-AM_GCONF_SOURCE_2
-
 ################################################################################
 # Mandatory library dependencies
 
 pkg_modules="	gtk+-3.0 >= 3.4.0
 		glib-2.0 >= 2.24.0
 		gio-2.0 >= 2.26.0
-		pango >= 1.4.0
-		gconf-2.0 >= 1.1.9 
+		pango >= 1.4.0 
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
 		sqlite3 >= 3.7.0

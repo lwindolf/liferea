@@ -1,5 +1,9 @@
 	To be released
 
+	* Patch SF #3407290: Migrate to GSettings
+	  (by Mikel Olasagasti)
+	* Patch SF #3579177: Change .desktop category to News;Feed;
+	  (by Stanislav Brabec)
 	* Added slider and time display to media player plugin.
 
 

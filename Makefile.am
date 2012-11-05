@@ -7,9 +7,6 @@ desktopdir = $(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
-schemadir   = @GCONF_SCHEMA_FILE_DIR@
-schema_DATA = liferea.schemas
-
 cssdir = $(pkgdatadir)/css
 css_DATA = \
 	css/liferea.css \
@@ -26,11 +23,13 @@ plugin_DATA = \
 	plugins/media-player.py \
 	plugins/media-player.plugin
 
-gsettings_SCHEMAS = org.gnome.liferea.gschema.xml
+gsettings_SCHEMAS = net.sf.liferea.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
 EXTRA_DIST = \
+	net.sf.liferea.gschema.xml.in \
+	liferea.convert \
 	po/liferea.pot \
 	$(desktop_in_files) \
 	$(desktop_DATA) \
@@ -40,14 +39,12 @@ EXTRA_DIST = \
 	$(plugin_DATA) \
 	$(gsettings_SCHEMAS)
 
-install-data-local:
-if GCONF_SCHEMAS_INSTALL
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(top_srcdir)/$(schema_DATA)
-endif
-	@$(NORMAL_INSTALL)
-
 DISTCLEANFILES = \
 	liferea.desktop \
 	intltool-extract \
 	intltool-merge \
-	intltool-update
+	intltool-update \
+	$(gsettings_SCHEMAS)
+
+CLEANFILES = \
+	$(gsettings_SCHEMAS)

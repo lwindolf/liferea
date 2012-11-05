@@ -2,11 +2,11 @@
 _Name=Liferea
 _GenericName=Feed Reader
 _X-GNOME-FullName=Liferea Feed Reader
-_Comment=Download and view feeds
+_Comment=Read news feeds and blogs
 Exec=liferea
 Icon=liferea
 StartupNotify=true
 Terminal=false
 Type=Application
-Categories=Network;News;
+Categories=Network;Feed;
 Version=0.9.4

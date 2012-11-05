@@ -21,7 +21,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <gconf/gconf-client.h>
 #include <libsoup/soup.h>
 #include <webkit/webkit.h>
 #include <string.h>
@@ -40,23 +39,23 @@ static WebKitWebSettings *settings = NULL;
  * settings object.
  */
 static void
-liferea_webkit_disable_javascript_cb (GConfClient *client,
+liferea_webkit_disable_javascript_cb (GSettings *gsettings,
 				      guint cnxn_id,
-				      GConfEntry *entry,
+				      gchar *key,
 				      gpointer user_data)
 {
-	GConfValue *disable_javascript;
+	GVariant *disable_javascript;
 
-	g_return_if_fail (entry != NULL);
+	g_return_if_fail (key != NULL);
 
-	disable_javascript = gconf_entry_get_value (entry);
-	if (!disable_javascript || disable_javascript->type != GCONF_VALUE_BOOL)
+	disable_javascript = g_settings_get_value (gsettings,key);
+	if (!disable_javascript || g_variant_get_type(disable_javascript) != G_VARIANT_TYPE_BOOLEAN)
 		return;
 
 	g_object_set (
 		settings,
 		"enable-scripts",
-		!gconf_value_get_bool (disable_javascript),
+		!g_settings_get_boolean (gsettings,key),
 		NULL
 	);
 }
@@ -67,23 +66,23 @@ liferea_webkit_disable_javascript_cb (GConfClient *client,
  * settings object.
  */
 static void
-liferea_webkit_enable_plugins_cb (GConfClient *client,
+liferea_webkit_enable_plugins_cb (GSettings *gsettings,
 				  guint cnxn_id,
-				  GConfEntry *entry,
+				  gchar *key,
 				  gpointer user_data)
 {
-	GConfValue *enable_plugins;
+	GVariant *enable_plugins;
 
-	g_return_if_fail (entry != NULL);
+	g_return_if_fail (key != NULL);
 
-	enable_plugins = gconf_entry_get_value (entry);
-	if (!enable_plugins || enable_plugins->type != GCONF_VALUE_BOOL)
+	enable_plugins = g_settings_get_value (gsettings,key);
+	if (!enable_plugins || g_variant_get_type(enable_plugins) != G_VARIANT_TYPE_BOOLEAN)
 		return;
 
 	g_object_set (
 		settings,
 		"enable-plugins",
-		gconf_value_get_bool (enable_plugins),
+		g_settings_get_boolean (gsettings,key),
 		NULL
 	);
 }
@@ -121,8 +120,8 @@ static void
 liferea_webkit_init (void)
 {
 	gboolean	disable_javascript, enable_plugins;
-	GConfClient	*client;
 	gchar		*font;
+	GSettings	*gsettings;
 	guint		fontSize;
 
 	g_assert (!settings);
@@ -166,23 +165,22 @@ liferea_webkit_init (void)
 		NULL
 	);
 
-
-	client = gconf_client_get_default ();
-
-	gconf_client_notify_add (
-		client,
-		DISABLE_JAVASCRIPT,
-		liferea_webkit_disable_javascript_cb,
-		NULL, NULL, NULL
-	);
-	gconf_client_notify_add (
-		client,
-		ENABLE_PLUGINS,
-		liferea_webkit_enable_plugins_cb,
-		NULL, NULL, NULL
+	g_signal_connect (
+		gsettings,
+		"changed::" DISABLE_JAVASCRIPT,
+		G_CALLBACK (liferea_webkit_disable_javascript_cb),
+		NULL
 	);
 
-	g_object_unref (client);
+	g_signal_connect (
+		gsettings,
+		"changed::" ENABLE_PLUGINS,
+		G_CALLBACK (liferea_webkit_enable_plugins_cb),
+		NULL
+	);
+
+	g_object_unref (gsettings);
+
 }
 
 /**

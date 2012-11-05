@@ -65,7 +65,7 @@ Lars Strojny <lars@strojny.net>				Statusbar improvements
 							WebKit Rendering Support
 Jon Forsberg <zzed2004@users.sf.net>			Enclosure context menu patch
 Mathie Leplatre						Option to filter feed list
-Mikel Olasagasti <mikel@olasagasti.info>		GeoRSS support
+Mikel Olasagasti Uranga <mikel@olasagasti.info>		GeoRSS support, Gsettings port
 Rupert Swarbrick <rswarbrick@users.sf.net>		OPML duplicate id fix
 Yaron Sheffer <yaronf@gmx.com>				Bidi support for LTR and RTL locales
 Ricardo Cruz <rmcruz@users.sf.net>			Many GUI improvements
