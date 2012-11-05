@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<schemalist gettext-domain="liferea">
+  <schema id="net.sf.liferea" path="/apps/liferea/">
+    <key name="browse-inside-application" type="b">
+      <default>false</default>
+      <summary>Open links inside of Liferea?</summary>
+      <description>If set to true, links clicked will be opened inside of Liferea, otherwise they will be opened in the selected external browser.</description>
+    </key>
+    <key name="browse-key-setting" type="i">
+      <default>1</default>
+      <summary>Selects which key to use to pagedown or go to the next unread item</summary>
+      <description>Selects which key to use to pagedown or go to the next unread item. Set to 0 to use space, 1 to use ctrl-space, or 2 to use alt-space.</description>
+    </key>
+    <key name="browser" type="s">
+      <default>'mozilla %s'</default>
+      <summary>Selects the browser command to use when browser_module is set to manual</summary>
+      <description>Selects the browser command to use when browser_module is set to manual.</description>
+    </key>
+    <key name="browser-id" type="s">
+      <default>'gnome'</default>
+      <summary>Selects which browser to use to open external links</summary>
+      <description>Selects which browser to use to open external links. The choices include "gnome", "mozilla", "firefox", "netscape", "opera", "konqueror", and "manual".</description>
+    </key>
+    <key name="browser-place" type="i">
+      <default>0</default>
+      <summary>Location of position to open up the link in the selected browser</summary>
+      <description>Selects the location in the browser to open up the link. Use 0 for the browser's default, 1 for in an existing window, 2 for in a new window, and 3 for in a new tab.</description>
+    </key>
+    <key name="default-view-mode" type="i">
+      <default>0</default>
+      <summary>The default view mode for feed list nodes.</summary>
+      <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane, 2=combined view 2-pane</description>
+    </key>
+    <key name="default-update-interval" type="i">
+      <default>0</default>
+      <summary>Default interval for fetching feeds.</summary>
+      <description>This value specifies how often Liferea tries to update feeds. The value is given in minutes. When setting the interval always consider the traffic it produces. Setting a value less than 15min almost never makes sense.</description>
+    </key>
+    <key name="disable-javascript" type="b">
+      <default>false</default>
+      <summary>Allows to disable Javascript.</summary>
+      <description>Allows to disable Javascript.</description>
+    </key>
+    <key name="disable-toolbar" type="b">
+      <default>false</default>
+      <summary>Disable displaying the toolbar in the Liferea main window</summary>
+      <description>Disable displaying the toolbar in the Liferea main window.</description>
+    </key>
+    <key name="enable-fetch-retries" type="b">
+      <default>true</default>
+      <summary>Try to refetch feeds after network errors?</summary>
+      <description>If set to true, and a network error is encountered while fetching a feed, Liferea will do a few more tries. This is useful in case of temporary loss of network/internet connection.</description>
+    </key>
+    <key name="last-hpane-pos" type="i">
+      <default>0</default>
+      <summary>Height of the itemlist pane in the mainwindow</summary>
+      <description>Height of the itemlist pane in the mainwindow. Use 0 to let GTK+ decide the height.</description>
+    </key>
+    <key name="last-itemlist-mode" type="b">
+      <default>false</default>
+      <summary>Enables condensed mode</summary>
+      <description>Set to true to make Liferea use condensed mode or false to make Liferea use the three pane mode.</description>
+    </key>
+    <key name="last-vpane-pos" type="i">
+      <default>0</default>
+      <summary>Width of the feedlist pane in the mainwindow</summary>
+      <description>Width of the feedlist pane in the mainwindow. Use 0 to let GTK+ decide the width.</description>
+    </key>
+    <key name="last-window-height" type="i">
+      <default>0</default>
+      <summary>Height of the Liferea main window</summary>
+      <description>Height of the Liferea main window. Use 0 to let GTK+ decide on the height.</description>
+    </key>
+    <key name="last-window-maximized" type="b">
+      <default>false</default>
+      <summary>Mainwindow is maximized when Liferea starts up</summary>
+      <description>Determines if the Liferea main window will be maximized at startup.</description>
+    </key>
+    <key name="last-window-width" type="i">
+      <default>0</default>
+      <summary>Width of the Liferea main window</summary>
+      <description>Width of the Liferea main window. Use 0 to let GTK+ decide on the width.</description>
+    </key>
+    <key name="last-window-x" type="i">
+      <default>0</default>
+      <summary>Left position of the Liferea main window</summary>
+      <description>Left position of the Liferea main window.</description>
+    </key>
+    <key name="last-window-y" type="i">
+      <default>0</default>
+      <summary>Top position of the Liferea main window</summary>
+      <description>Top position of the Liferea main window.</description>
+    </key>
+    <key name="last-window-state" type="i">
+      <default>0</default>
+      <summary>Last saved stat of the Liferea main window</summary>
+      <description>Last saved of the Liferea main window. Controls how Liferea shows the window on next startup. Possible values see src/ui/liferea_shell.h</description>
+    </key>
+    <key name="last-zoomlevel" type="i">
+      <default>100</default>
+      <summary>Zoom level of the HTML view</summary>
+      <description>Zoom level of the HTML view. (100 = 1:1)</description>
+    </key>
+    <key name="maxitemcount" type="i">
+      <default>100</default>
+      <summary>Determines the default number of items saved on each feed</summary>
+      <description>This value is used to determine how many items are saved in each feed when Liferea exits. Note that marked items are always saved.</description>
+    </key>
+    <key name="show-popup-windows" type="b">
+      <default>false</default>
+      <summary>Display popup window advertising new items as they are downloaded</summary>
+      <description>Display popup window advertising new items as they are downloaded.</description>
+    </key>
+    <key name="startup-feed-action" type="i">
+      <default>0</default>
+      <summary>Determines if subscriptions are to be updated at startup</summary>
+      <description>Numeric value determines wether Liferea shall updates all subscriptions at startup (0=yes, otherwise=no). Inverse logic for compatibility reasons.</description>
+    </key>
+    <key name="toolbar-style" type="s">
+      <default>''</default>
+      <summary>Determines the style of the toolbar buttons</summary>
+      <description>Determines the style of the toolbar buttons locally, overriding the GNOME settings. Valid values are "both", "both-horiz", "icons", and "text". If empty or not specified, the GNOME settings are used.</description>
+    </key>
+    <key name="trayicon" type="b">
+      <default>true</default>
+      <summary>Determines if the system tray icon is to be shown</summary>
+      <description>Determines if the system tray icon is to be shown</description>
+    </key>
+    <key name="trayicon-new-count" type="b">
+      <default>false</default>
+      <summary>Determines if the number of new items is shown in the system tray icon</summary>
+      <description>Determines if the number of new items is shown in the system tray icon</description>
+    </key>
+    <key name="dont-minimize-to-tray" type="b">
+      <default>false</default>
+      <summary>Determines if minimize to tray is not desired</summary>
+      <description>Determines if minimize to tray is not desired. This is relevant when the user clicks the close button or presses the window close hotkey of the window manager. If this option is disabled Liferea will just hide the window and keep running. If the option is enabled the application will terminate.</description>
+    </key>
+    <key name="update-thread-concurrency" type="i">
+      <default>2</default>
+      <summary>Number of update threads used in downloading</summary>
+      <description>Number of threads used to download feeds and web objects in Liferea. An additional thread is created that only services 'interactive' requests (for example when a user manually selects a feed to update).</description>
+    </key>
+    <key name="popup-placement" type="i">
+      <default>0</default>
+      <summary>Placement of the mini popup window</summary>
+      <description>The placement of the mini popup window that is opened to notify the user of new items. The popup window is positioned at one of the desktop borders (1 = upper left, 2 = upper right, 3 = lower right, 4 = lower left).</description>
+    </key>
+    <key name="folder-display-mode" type="i">
+      <default>1</default>
+      <summary>Determine if folders show all child content.</summary>
+      <description>If set to 0 no items are displayed when selecting a folder. If set to 1 all items of all childs are displayed when  selecting a folder.</description>
+    </key>
+    <key name="folder-display-hide-read" type="b">
+      <default>true</default>
+      <summary>Filter read items when displaying folders.</summary>
+      <description>If this option is enabled and folder-display-mode is  not 0 when clicking a folder only the unread items  of all childs will be displayed.</description>
+    </key>
+    <key name="reduced-feedlist" type="b">
+      <default>false</default>
+      <summary>Filter feeds without unread items from feed list.</summary>
+      <description>If this option is enabled the feed list will contain only feeds that have unread items.</description>
+    </key>
+    <key name="download-tool" type="i">
+      <default>0</default>
+      <summary>Which tool to download enclosures.</summary>
+      <description>This options determines which download tool Liferea uses to download enclosures (0 = wget, 1 = curl).</description>
+    </key>
+    <key name="proxy-detect-mode" type="i">
+      <default>0</default>
+      <summary>Proxy mode.</summary>
+      <description>This options determines what kind of proxy will be used.</description>
+    </key>
+    <key name="proxy-host" type="s">
+      <default>''</default>
+      <summary>Proxy host.</summary>
+      <description>This options determines the proxy host.</description>
+    </key>
+    <key name="proxy-port" type="i">
+      <default>8080</default>
+      <summary>Proxy port.</summary>
+      <description>This options determines the proxy port.</description>
+    </key>
+    <key name="proxy-use-authentication" type="b">
+      <default>false</default>
+      <summary>Proxy auth.</summary>
+      <description>This options determines if auth is requiered.</description>
+    </key>
+    <key name="proxy-authentication-user" type="s">
+      <default>''</default>
+      <summary>Proxy user.</summary>
+      <description>This options determines auth username.</description>
+    </key>
+    <key name="proxy-authentication-password" type="s">
+      <default>''</default>
+      <summary>Proxy password.</summary>
+      <description>This options determines auth password.</description>
+    </key>
+    <key name="social-bm-site" type="s">
+      <default>''</default>
+      <summary>Social bookmark site</summary>
+      <description>This option determines which social bookmark site use to save links.</description>
+    </key>
+    <key name="start-in-tray" type="b">
+      <default>false</default>
+      <summary>Start in tray</summary>
+      <description>This option determines if liferea should start in tray mode.</description>
+    </key>
+    <key name="last-wpane-pos" type="i">
+      <default>0</default>
+      <summary>Width of the itemlist pane in the mainwindow</summary>
+      <description>Width of the itemlist pane in the mainwindow. Use 0 to let GTK+ decide the Width.</description>
+    </key>
+    <key name="enable-plugins" type="b">
+      <default>false</default>
+      <summary>Enable plugins</summary>
+      <description>This options determines if liferea should enable plugins.</description>
+    </key>
+    <key name="browser-font" type="s">
+      <default>''</default>
+      <summary>User defined browser-font</summary>
+      <description>This option defines which font should be used to render in the browser. If not specified system setting will be used.</description>
+    </key>
+    <key name="document-font-name" type="s">
+      <default>''</default>
+      <summary>User defined document-font-name</summary>
+      <description>his option defines which font should be used to render documents in the browser. If not specified system setting will be used.</description>
+    </key>
+  </schema>
+</schemalist>
