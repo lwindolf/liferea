@@ -56,7 +56,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
 
   peas_engine_enable_loader (PEAS_ENGINE (engine), "python");
 
-  engine->priv->plugin_settings = g_settings_new ("org.gnome.liferea.plugins");
+  engine->priv->plugin_settings = g_settings_new ("net.sf.liferea.plugins");
 
   /* Require Lifereas's typelib. */
   typelib_dir = g_build_filename (PACKAGE_LIB_DIR,
