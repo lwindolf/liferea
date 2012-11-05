@@ -4,6 +4,7 @@
 	  (by Mikel Olasagasti)
 	* Patch SF #3579177: Change .desktop category to News;Feed;
 	  (by Stanislav Brabec)
+	* Added slider and time display to media player plugin.
 
 
 2012-10-28  Lars Windolf <lars.lindner@gmail.com>

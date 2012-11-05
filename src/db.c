@@ -35,6 +35,7 @@
    http://lzone.de/wiki/doku.php?id=liferea:v1.8:db_schema */
 
 static sqlite3	*db = NULL;
+gboolean searchFolderRebuild = FALSE;
 
 /** hash of all prepared statements */
 static GHashTable *statements = NULL;
@@ -430,6 +431,8 @@ db_init (void)
 				 ");"
 			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',10); "
 			         "END;" );
+
+			searchFolderRebuild = TRUE;
 		}
 	}
 
