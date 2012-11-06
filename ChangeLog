@@ -6,6 +6,11 @@
 	  (by Stanislav Brabec)
 	* Added slider and time display to media player plugin.
 
+	Also planned for this release
+
+	* Auto-enable plugins on migration
+	* Fix for Debian #668197: x-www-browser preference not working
+
 
 2012-10-28  Lars Windolf <lars.lindner@gmail.com>
 	
