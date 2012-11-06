@@ -5,6 +5,7 @@
 	* Patch SF #3579177: Change .desktop category to News;Feed;
 	  (by Stanislav Brabec)
 	* Added slider and time display to media player plugin.
+	* Added Google Plus to social bookmarking options.
 
 	Also planned for this release
 
