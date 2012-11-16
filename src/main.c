@@ -184,8 +184,6 @@ main (int argc, char *argv[])
 		{ NULL }
 	};
 
-	if (!g_thread_supported ()) g_thread_init (NULL);
-
 #ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");

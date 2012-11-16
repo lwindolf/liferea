@@ -5,6 +5,7 @@
 	* Patch SF #3579177: Change .desktop category to News;Feed;
 	  (by Stanislav Brabec)
 	* Added slider and time display to media player plugin.
+	* Removing deprecated g_thread_init() call
 
 	Also planned for this release
 
