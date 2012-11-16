@@ -16,10 +16,14 @@
 			<outline text="Liferea Blog" htmlUrl="http://liferea.blogspot.com/" xmlUrl="http://liferea.blogspot.com/feeds/posts/default" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 		</outline>
-		<outline text="Podcasts &amp; Music">		<!-- translate this title for localized feed list -->
+		<outline text="Podcasts">		<!-- translate this title for localized feed list -->
 			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/podcast.xml"/>
+		</outline>
+		<outline text="Music Blogs">		<!-- translate this title for localized feed list -->
 			<outline text="Free Music Archive" htmlUrl="http://freemusicarchive.org/" xmlUrl="http://freemusicarchive.org/recent.atom"/>
-			<outline text="Gorilla vs. Bear" htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
+			<outline text="Gorilla vs. Bear"   htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
+			<outline text="KEXP"               htmlUrl="http://kexp.org" xmlUrl="http://feeds.kexp.org/kexp/songoftheday"/>
+			<outline text="Fluxblog"           htmlUrl="http://fluxblog.org" xmlUrl="http://www.fluxblog.org/"/>
 		</outline>
 		<outline text="Comics">
 			<outline text="xkcd" htmlUrl="http://xkcd.com/" xmlUrl="http://xkcd.com/atom.xml"/>
