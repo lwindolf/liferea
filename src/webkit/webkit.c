@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2007-2010 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
- * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
+ * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -40,22 +40,15 @@ static WebKitWebSettings *settings = NULL;
  */
 static void
 liferea_webkit_disable_javascript_cb (GSettings *gsettings,
-				      guint cnxn_id,
 				      gchar *key,
 				      gpointer user_data)
 {
-	GVariant *disable_javascript;
-
 	g_return_if_fail (key != NULL);
-
-	disable_javascript = g_settings_get_value (gsettings,key);
-	if (!disable_javascript || g_variant_get_type(disable_javascript) != G_VARIANT_TYPE_BOOLEAN)
-		return;
 
 	g_object_set (
 		settings,
 		"enable-scripts",
-		!g_settings_get_boolean (gsettings,key),
+		!g_settings_get_boolean (gsettings, key),
 		NULL
 	);
 }
@@ -67,22 +60,15 @@ liferea_webkit_disable_javascript_cb (GSettings *gsettings,
  */
 static void
 liferea_webkit_enable_plugins_cb (GSettings *gsettings,
-				  guint cnxn_id,
 				  gchar *key,
 				  gpointer user_data)
 {
-	GVariant *enable_plugins;
-
 	g_return_if_fail (key != NULL);
-
-	enable_plugins = g_settings_get_value (gsettings,key);
-	if (!enable_plugins || g_variant_get_type(enable_plugins) != G_VARIANT_TYPE_BOOLEAN)
-		return;
 
 	g_object_set (
 		settings,
 		"enable-plugins",
-		g_settings_get_boolean (gsettings,key),
+		g_settings_get_boolean (gsettings, key),
 		NULL
 	);
 }
@@ -121,7 +107,6 @@ liferea_webkit_init (void)
 {
 	gboolean	disable_javascript, enable_plugins;
 	gchar		*font;
-	GSettings	*gsettings;
 	guint		fontSize;
 
 	g_assert (!settings);
@@ -165,22 +150,17 @@ liferea_webkit_init (void)
 		NULL
 	);
 
-	g_signal_connect (
-		gsettings,
+	conf_signal_connect (
 		"changed::" DISABLE_JAVASCRIPT,
 		G_CALLBACK (liferea_webkit_disable_javascript_cb),
 		NULL
 	);
 
-	g_signal_connect (
-		gsettings,
+	conf_signal_connect (
 		"changed::" ENABLE_PLUGINS,
 		G_CALLBACK (liferea_webkit_enable_plugins_cb),
 		NULL
 	);
-
-	g_object_unref (gsettings);
-
 }
 
 /**

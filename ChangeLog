@@ -6,6 +6,7 @@
 	  (by Stanislav Brabec)
 	* Added slider and time display to media player plugin.
 	* Added Google Plus to social bookmarking options.
+	* Removing deprecated g_thread_init() call
 
 	Also planned for this release
 

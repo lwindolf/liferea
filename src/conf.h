@@ -174,4 +174,13 @@ gchar * conf_get_toolbar_style (void);
 */
 gboolean conf_get_default_font_from_schema (const gchar *key, gchar **value);
 
+/**
+ * Connect to a signal in the default GSettings object
+ *
+ * @param signal the signal to connect to
+ * @param cb	 callback to invoke when the signal is emitted
+ * @param data	 user data to pass to the callback
+ */
+void conf_signal_connect (const gchar *signal, GCallback cb, gpointer data);
+
 #endif
