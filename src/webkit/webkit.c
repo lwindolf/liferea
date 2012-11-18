@@ -43,18 +43,12 @@ liferea_webkit_disable_javascript_cb (GSettings *gsettings,
 				      gchar *key,
 				      gpointer user_data)
 {
-	GVariant *disable_javascript;
-
 	g_return_if_fail (key != NULL);
-
-	disable_javascript = g_settings_get_value (gsettings,key);
-	if (!disable_javascript || g_variant_get_type(disable_javascript) != G_VARIANT_TYPE_BOOLEAN)
-		return;
 
 	g_object_set (
 		settings,
 		"enable-scripts",
-		!g_settings_get_boolean (gsettings,key),
+		!g_settings_get_boolean (gsettings, key),
 		NULL
 	);
 }
@@ -69,18 +63,12 @@ liferea_webkit_enable_plugins_cb (GSettings *gsettings,
 				  gchar *key,
 				  gpointer user_data)
 {
-	GVariant *enable_plugins;
-
 	g_return_if_fail (key != NULL);
-
-	enable_plugins = g_settings_get_value (gsettings,key);
-	if (!enable_plugins || g_variant_get_type(enable_plugins) != G_VARIANT_TYPE_BOOLEAN)
-		return;
 
 	g_object_set (
 		settings,
 		"enable-plugins",
-		g_settings_get_boolean (gsettings,key),
+		g_settings_get_boolean (gsettings, key),
 		NULL
 	);
 }
