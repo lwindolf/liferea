@@ -44,7 +44,6 @@
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 #include "ui/ui_common.h"
-#include "ui/preferences_dialog.h"	// FIXME!
 
 /* The LifereaHtmlView is a complex widget used to present both internally
    rendered content as well as serving as a browser widget. It automatically
