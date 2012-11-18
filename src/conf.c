@@ -412,4 +412,8 @@ conf_get_default_font_from_schema (const gchar *key, gchar **value)
 	return (NULL != value);
 }
 
-
+void
+conf_signal_connect (const gchar *signal, GCallback cb, gpointer data)
+{
+	g_signal_connect (settings, signal, cb, data);
+}
