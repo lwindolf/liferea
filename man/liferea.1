@@ -1,4 +1,4 @@
-.TH LIFEREA "1" "Sep 14, 2011"
+.TH LIFEREA "1" "Nov 26, 2012"
 .SH NAME
 Liferea \- GTK desktop news aggregator
 
@@ -82,19 +82,13 @@ $http_proxy should be set to a URI specifying the desired proxy, for example
 
 .SH FILES
 .TP
-/usr/share/liferea/css/
-Contains default stylesheets for feed display
+~/.config/liferea/feedlist.opml
+Contains the current list of subscriptions 
 .TP
-/usr/share/liferea/opml/
-Contains default feedlists
+~/.config/liferea/liferea.css
+Stylesheet that can be used to override default HTML style
 .TP
-~/.liferea_1.8/
-Contains user feedlist and feed cache
-.TP
-~/.liferea_1.8/liferea.db
+~/.local/share/liferea/liferea.db
 Sqlite3 database with all subscriptions and headlines
-.TP
-~/.liferea_1.8/liferea.css
-Stylesheet that can be edited by user
 .SH AUTHOR
 This manual page was written by Lars Windolf <lars.lindner@gmail.com>.
