@@ -7,12 +7,12 @@
 	* Added slider and time display to media player plugin.
 	* Added Google Plus to social bookmarking options.
 	* Removing deprecated g_thread_init() call
+	* Auto-enable plugins on migration
 	* Added missing -a option to manpage
 	* Updated manpage to reflect XDG path migration
 
 	Also planned for this release
 
-	* Auto-enable plugins on migration
 	* Fix for Debian #668197: x-www-browser preference not working
 
 
