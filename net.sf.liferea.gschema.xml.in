@@ -225,7 +225,7 @@
     <key name="document-font-name" type="s">
       <default>''</default>
       <summary>User defined document-font-name</summary>
-      <description>his option defines which font should be used to render documents in the browser. If not specified system setting will be used.</description>
+      <description>This option defines which font should be used to render documents in the browser. If not specified system setting will be used.</description>
     </key>
   </schema>
 
