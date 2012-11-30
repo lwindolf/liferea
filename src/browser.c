@@ -137,7 +137,7 @@ browser_get_command (struct browser *browser, gboolean remote, gboolean fallback
 		}
 
 		if (fallback && !cmd)	/* Last fallback: first browser default */
-			cmd = browsers[0].defaultplace;
+			cmd = browsers[6].defaultplace;
 	}
 	g_free (libname);
 		
@@ -244,6 +244,7 @@ browser_launch_URL_external (const gchar *uri)
 	struct browser	*browser;
 	gchar		*cmd = NULL;
 	gboolean	done = FALSE;	
+	gchar	*libname;
 	
 	g_assert (uri != NULL);
 	
@@ -256,7 +257,9 @@ browser_launch_URL_external (const gchar *uri)
 			g_free (cmd);
 		} else {
 			/* the "default" browser has no command to use the GTK launch mechanism */
-			done = gtk_show_uri (NULL, uri, 0, NULL);
+			conf_get_str_value (BROWSER_ID, &libname);
+			if (g_str_equal (libname, "default"))
+			      done = gtk_show_uri (NULL, uri, 0, NULL);
 		}
 	}
 	

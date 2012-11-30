@@ -10,6 +10,7 @@
 	* Auto-enable plugins on migration
 	* Added missing -a option to manpage
 	* Updated manpage to reflect XDG path migration
+	* Changing GSettings path from /apps/liferea to /org/gnome/liferea
 
 	Also planned for this release
 
