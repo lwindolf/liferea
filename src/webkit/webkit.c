@@ -84,7 +84,8 @@ webkit_get_font (guint *size)
 	conf_get_str_value (USER_FONT, &font);
 	if (0 == strlen (font)) {
 		g_free (font);
-		conf_get_str_value (DEFAULT_FONT, &font);
+		font = NULL;
+		conf_get_default_font_from_schema (DEFAULT_FONT, &font);
 	}
 
 	if (font) {
@@ -100,7 +101,7 @@ webkit_get_font (guint *size)
 }
 
 /**
- * HTML plugin init method
+ * HTML renderer init method
  */
 static void
 liferea_webkit_init (void)
