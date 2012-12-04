@@ -238,6 +238,7 @@ browser_launch_URL_external (const gchar *uri)
 	struct browser	*browser;
 	gchar		*cmd = NULL;
 	gboolean	done = FALSE;	
+	gchar		*libname = NULL;
 	
 	g_assert (uri != NULL);
 	
@@ -249,8 +250,12 @@ browser_launch_URL_external (const gchar *uri)
 			done = browser_execute (cmd, uri, TRUE);
 			g_free (cmd);
 		} else {
-			/* the "default" browser has no command to use the GTK launch mechanism */
-			done = gtk_show_uri (NULL, uri, 0, NULL);
+			/* the "default" browser has no command to use the GTK
+			   launch mechanism, so we use gtk_show_uri() instead */
+			conf_get_str_value (BROWSER_ID, &libname);
+			if (g_str_equal (libname, "default"))
+				done = gtk_show_uri (NULL, uri, 0, NULL);
+			g_free (libname);
 		}
 	}
 	
