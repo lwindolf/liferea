@@ -12,6 +12,8 @@
 	* Auto-enable plugins on migration
 	* Added missing -a option to manpage
 	* Updated manpage to reflect XDG path migration
+	* Changing GSettings path from /apps/liferea to /org/gnome/liferea
+	* Fixes regression about using the GNOME default font
 
 
 2012-10-28  Lars Windolf <lars.lindner@gmail.com>
