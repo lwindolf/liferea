@@ -125,8 +125,9 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 
 	menu = gtk_menu_new ();
 
-	ui_popup_add_menuitem (menu, _("Launch Item In _Tab"), on_popup_launchitem_in_tab_selected, NULL, NULL, 0);
-	ui_popup_add_menuitem (menu, _("_Launch Item In Browser"), on_popup_launchitem_selected, NULL, NULL, 0);
+	ui_popup_add_menuitem (menu, _("Open In _Tab"), on_popup_launch_item_in_tab_selected, NULL, NULL, 0);
+	ui_popup_add_menuitem (menu, _("_Open In Browser"), on_popup_launch_item_selected, NULL, NULL, 0);
+	ui_popup_add_menuitem (menu, _("Open In _External Browser"), on_popup_launch_item_external_selected, NULL, NULL, 0);
 
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 
@@ -152,11 +153,11 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 	}
 
-	text = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
+	text = g_strdup_printf (_("_Bookmark at %s"), social_get_bookmark_site ());
 	ui_popup_add_menuitem (menu, text, on_popup_social_bm_item_selected, NULL, NULL, 0);
 	g_free (text);
 
-	ui_popup_add_menuitem (menu, _("Copy Item _URL to Clipboard"), on_popup_copy_URL_clipboard, NULL, NULL, 0);
+	ui_popup_add_menuitem (menu, _("Copy Item _Location"), on_popup_copy_URL_clipboard, NULL, NULL, 0);
 	
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 

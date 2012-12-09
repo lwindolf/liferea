@@ -698,7 +698,7 @@ item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 }
 
 void
-on_popup_launchitem_selected (void) 
+on_popup_launch_item_selected (void) 
 {
 	itemPtr		item;
 
@@ -706,7 +706,7 @@ on_popup_launchitem_selected (void)
 	if (item) {
 		gchar *link = item_make_link (item);
 
-		itemview_launch_URL (link, FALSE);
+		itemview_launch_URL (link, TRUE /* launch in internal browser */);
 
 		g_free (link);
 		item_unload (item);
@@ -716,7 +716,7 @@ on_popup_launchitem_selected (void)
 }
 
 void
-on_popup_launchitem_in_tab_selected (void) 
+on_popup_launch_item_in_tab_selected (void) 
 {
 	itemPtr		item;
 	gchar           *link;
@@ -736,14 +736,35 @@ on_popup_launchitem_in_tab_selected (void)
 	}
 }
 
+void
+on_popup_launch_item_external_selected (void) 
+{
+	itemPtr		item;
+	gchar           *link;
+
+	item = itemlist_get_selected ();
+	if (item) {
+		link = item_make_link (item);
+		if (link) {
+			browser_launch_URL_external (link);
+			g_free (link);
+		} else
+			ui_show_error_box (_("This item has no link specified!"));
+			
+		item_unload (item);
+	} else {
+		liferea_shell_set_important_status_bar (_("No item has been selected"));
+	}
+}
+
 void 
 on_Itemlist_row_activated (GtkTreeView *treeview,
                            GtkTreePath *path,
 			   GtkTreeViewColumn *column,
 			   gpointer user_data) 
 {
-
-	on_popup_launchitem_selected ();
+	// FIXME: Internal or external should be decided on preferences!
+	on_popup_launch_item_selected ();
 }
 
 /* menu callbacks */

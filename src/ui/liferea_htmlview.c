@@ -506,6 +506,12 @@ liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in)
 static void
 on_popup_launch_link_activate (GtkWidget *widget, gpointer user_data)
 {
+	itemview_launch_URL ((gchar *)user_data, TRUE /* use internal browser */);
+}
+
+static void
+on_popup_launch_link_external_activate (GtkWidget *widget, gpointer user_data)
+{
 	browser_launch_URL_external ((gchar *)user_data);
 }
 
@@ -618,8 +624,9 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 	/* and now add all we want to see */
 	if (link) {
 		gchar *path;
-		menu_add_option (menu, _("Launch Link In _Tab"), NULL, G_CALLBACK (on_popup_open_link_in_tab_activate), (gpointer)linkUri);
-		menu_add_option (menu, _("_Launch Link In Browser"), NULL, G_CALLBACK (on_popup_launch_link_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("Open Link In _Tab"), NULL, G_CALLBACK (on_popup_open_link_in_tab_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("_Open Link In Browser"), NULL, G_CALLBACK (on_popup_launch_link_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("_Open Link In External Browser"), NULL, G_CALLBACK (on_popup_launch_link_external_activate), (gpointer)linkUri);
 		menu_add_separator (menu);
 		
 		path = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());

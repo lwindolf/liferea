@@ -994,8 +994,12 @@ static const GtkActionEntry liferea_shell_item_action_entries[] = {
 	 G_CALLBACK(on_toggle_item_flag)},
 	{"RemoveSelectedItem", "gtk-delete", N_("R_emove"), NULL, N_("Removes the selected item."),
 	 G_CALLBACK(on_remove_item_activate)},
-	{"LaunchItemInBrowser", NULL, N_("_Launch In Browser"), NULL, N_("Launches the item's link in the configured browser."),
-	 G_CALLBACK(on_popup_launchitem_selected)}
+	{"LaunchItemInTab", NULL, N_("Open In _Tab"), NULL, N_("Launches the item's link in a new Liferea browser tab."),
+	 G_CALLBACK(on_popup_launch_item_in_tab_selected)},
+	{"LaunchItemInBrowser", NULL, N_("_Open In Browser"), NULL, N_("Launches the item's link in the Liferea item pane."),
+	 G_CALLBACK(on_popup_launch_item_selected)},
+	{"LaunchItemInExternalBrowser", NULL, N_("Open In _External Browser"), NULL, N_("Launches the item's link in the configured external browser."),
+	 G_CALLBACK(on_popup_launch_item_selected)}
 };
 
 static const GtkToggleActionEntry liferea_shell_action_toggle_entries[] = {
@@ -1044,7 +1048,9 @@ static const char *liferea_shell_ui_desc =
 "      <menuitem action='ToggleItemFlag'/>"
 "      <menuitem action='RemoveSelectedItem'/>"
 "      <separator/>"
+"      <menuitem action='LaunchItemInTab'/>"
 "      <menuitem action='LaunchItemInBrowser'/>"
+"      <menuitem action='LaunchItemInExternalBrowser'/>"
 "    </menu>"
 "    <menu action='ViewMenu'>"
 "      <menuitem action='FullScreen'/>"

@@ -14,6 +14,8 @@
 	* Updated manpage to reflect XDG path migration
 	* Changing GSettings path from /apps/liferea to /org/gnome/liferea
 	* Fixes regression about using the GNOME default font
+	* Improves all item/link launching menus to consistently provide
+	  three options: Tab, Browser and External Browser
 
 
 2012-10-28  Lars Windolf <lars.lindner@gmail.com>
