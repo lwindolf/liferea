@@ -3,6 +3,7 @@
 	* Added Google Plus to social bookmarking options.
 	* Fix for Debian #668197: x-www-browser preference not working
           (David Smith)
+	* Updated Hebrew translation (Genghis Khan, Yaron Sheffer)
 
 
 2012-10-30  Lars Windolf <lars.lindner@gmail.com>
