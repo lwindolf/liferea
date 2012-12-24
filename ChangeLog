@@ -1,9 +1,15 @@
 	To be released
 
+	Please note that due to the SourceForge upgrade bug ticket numbering
+	did change. This might be confusing... Old numbers are 7 figures, 
+	newer ones only 4!
+
 	* Added Google Plus to social bookmarking options.
 	* Fix for Debian #668197: x-www-browser preference not working
           (David Smith)
 	* Updated Hebrew translation (Genghis Khan, Yaron Sheffer)
+	* Fixes SF #1037: Incorrect notifications for Google Reader 
+	  (patch by David Smith)
 
 
 2012-10-30  Lars Windolf <lars.lindner@gmail.com>

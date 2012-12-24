@@ -168,7 +168,11 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 				   which means online accounts we sync against, but not normal
 				   online feeds where items have no read status. */
 				if (allowStateChanges) {
-					oldItem->readStatus = newItem->readStatus;
+					/* To avoid notification spam from external
+					   sources: never set read items to unread again! */
+					if ((!oldItem->readStatus) && (newItem->readStatus))
+						oldItem->readStatus = newItem->readStatus;
+
 					oldItem->flagStatus = newItem->flagStatus;
 				}
 				
