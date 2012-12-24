@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (feed description view)
  *
- * Copyright (C) 2006-2007 Lars Lindner <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2012 Lars Lindner <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,9 +77,7 @@
       <xsl:value-of select="parseError" disable-output-escaping='yes'/>
       <script language="javascript" type="text/javascript">document.getElementById('pdl').style.visibility='visible';document.getElementById('pdl').style.display='inline';</script>
 
-       <br /><_span>You may want to validate the feed using</_span>
-       <xsl:text> </xsl:text>
-       <a href="http://feedvalidator.org/check.cgi?url={feedSource}">FeedValidator</a>
+       <br /><_span>You may want to contact the author/webmaster of the feed about this!</_span>
     </span>
   </div>
 </xsl:if>
