@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-30 23:47+0200\n"
+"POT-Creation-Date: 2012-12-24 13:42+0100\n"
 "PO-Revision-Date: 2011-03-03 00:29+0200\n"
 "Last-Translator: Rihards Priedītis <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
@@ -66,8 +66,8 @@ msgid "Details"
 msgstr "Sīkāka informācija"
 
 #: ../xslt/feed.xml.in.h:6
-msgid "You may want to validate the feed using"
-msgstr "Jūs varētu vēlēties pārbaudīt barotni, izmantojot"
+msgid "You may want to contact the author/webmaster of the feed about this!"
+msgstr ""
 
 #: ../xslt/feed.xml.in.h:7
 msgid "There were errors while filtering this feed!"
@@ -265,52 +265,52 @@ msgstr "Pabeigta ietvara lejupielāde: \"%s\""
 msgid "Error renaming %s to %s\n"
 msgstr "Kļūda pārsaucot %s uz %s\n"
 
-#: ../src/export.c:383 ../src/export.c:385
+#: ../src/export.c:388 ../src/export.c:390
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "XML kļūda, nolasot OPML failu! Nevarēja importēt \"%s\"!"
 
-#: ../src/export.c:391 ../src/export.c:393
+#: ../src/export.c:396 ../src/export.c:398
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Tukšs dokuments! OMPL dokumentam \"%s\" nevajadzētu būt tukšam."
 
-#: ../src/export.c:414 ../src/export.c:416
+#: ../src/export.c:419 ../src/export.c:421
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" nav derīgs OMPL dokuments! Liferea nevar importēt šo failu!"
 
-#: ../src/export.c:435
+#: ../src/export.c:440
 msgid "Imported feed list"
 msgstr "Importēto barotņu saraksts"
 
-#: ../src/export.c:447
+#: ../src/export.c:452
 msgid "Import Feed List"
 msgstr "Importēt barotņu sarakstu"
 
-#: ../src/export.c:447
+#: ../src/export.c:452
 msgid "Import"
 msgstr "Importēt"
 
-#: ../src/export.c:447 ../src/export.c:464 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:452 ../src/export.c:469 ../src/fl_sources/opml_source.c:387
 #, fuzzy
 msgid "OPML Files"
 msgstr "Izvēlieties OPML failu"
 
-#: ../src/export.c:455
+#: ../src/export.c:460
 msgid "Error while exporting feed list!"
 msgstr "Kļūda, eksportējot barotņu sarakstu!"
 
-#: ../src/export.c:457
+#: ../src/export.c:462
 msgid "Feed List exported!"
 msgstr "Barotņu saraksts eksportēts!"
 
-#: ../src/export.c:464
+#: ../src/export.c:469
 msgid "Export Feed List"
 msgstr "Eksportēt barotņu sarakstu"
 
-#: ../src/export.c:464
+#: ../src/export.c:469
 msgid "Export"
 msgstr "Eksportēt"
 
@@ -763,7 +763,7 @@ msgstr "%d%s"
 
 #. strip GET parameters
 #: ../src/ui/enclosure_list_view.c:341 ../src/ui/enclosure_list_view.c:517
-#: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/liferea_htmlview.c:459 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "Izvēlies failu"
 
@@ -777,7 +777,7 @@ msgstr "<b>Faila paplašinājums .%s</b>"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Nevarēja atrast bitkartes failu: %s"
 
-#: ../src/ui/liferea_shell.c:308
+#: ../src/ui/liferea_shell.c:311
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -785,7 +785,7 @@ msgstr[0] " (%d jauns)"
 msgstr[1] " (%d jauni)"
 msgstr[2] " (%d jauni)"
 
-#: ../src/ui/liferea_shell.c:313
+#: ../src/ui/liferea_shell.c:316
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -793,338 +793,338 @@ msgstr[0] "%d nelasīta%s"
 msgstr[1] "%d nelasītu%s"
 msgstr[2] "%d nelasītu%s"
 
-#: ../src/ui/liferea_shell.c:687
+#: ../src/ui/liferea_shell.c:690
 msgid "Help Topics"
 msgstr "Palīdzības tēmas"
 
-#: ../src/ui/liferea_shell.c:693
+#: ../src/ui/liferea_shell.c:696
 msgid "Quick Reference"
 msgstr "Ātrā rokasgrāmata"
 
-#: ../src/ui/liferea_shell.c:699
+#: ../src/ui/liferea_shell.c:702
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/ui/liferea_shell.c:740
+#: ../src/ui/liferea_shell.c:743
 msgid "Liferea is now online"
 msgstr "Liferea ir tiešsaistē"
 
-#: ../src/ui/liferea_shell.c:742
+#: ../src/ui/liferea_shell.c:745
 msgid "Work Offline"
 msgstr "Strādāt nesaistē"
 
-#: ../src/ui/liferea_shell.c:744
+#: ../src/ui/liferea_shell.c:747
 msgid "Liferea is now offline"
 msgstr "Liferea ir nesaistē"
 
-#: ../src/ui/liferea_shell.c:746
+#: ../src/ui/liferea_shell.c:749
 msgid "Work Online"
 msgstr "Strādāt tiešsaistē"
 
-#: ../src/ui/liferea_shell.c:842
+#: ../src/ui/liferea_shell.c:845
 msgid "_Subscriptions"
 msgstr "_Abonementi"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:846
 msgid "Update _All"
 msgstr "_Atjaunināt visus"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:846
 msgid "Updates all subscriptions."
 msgstr "Atjaunina visus abonementus."
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:848
 msgid "Mark All As _Read"
 msgstr "Atzīmēt visus kā _lasītus"
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:848
 msgid "Marks read every item of every subscription."
 msgstr "Atzīmē kā lasītus visus vienumus katrā abonementā."
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:850
 msgid "_Import Feed List..."
 msgstr "_Importēt barotņu sarakstu..."
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:850
 msgid "Imports an OPML feed list."
 msgstr "Importē OPML barotņu sarakstu."
 
-#: ../src/ui/liferea_shell.c:848
+#: ../src/ui/liferea_shell.c:851
 msgid "_Export Feed List..."
 msgstr "_Eksportēt barotņu sarakstu..."
 
-#: ../src/ui/liferea_shell.c:848
+#: ../src/ui/liferea_shell.c:851
 msgid "Exports the feed list as OPML."
 msgstr "Eksportē barotņu sarakstu kā OPML."
 
-#: ../src/ui/liferea_shell.c:849
+#: ../src/ui/liferea_shell.c:852
 msgid "_Quit"
 msgstr "_Iziet"
 
-#: ../src/ui/liferea_shell.c:851
+#: ../src/ui/liferea_shell.c:854
 msgid "_Feed"
 msgstr "_Barotne"
 
-#: ../src/ui/liferea_shell.c:852
+#: ../src/ui/liferea_shell.c:855
 msgid "Remove _All Items"
 msgstr "Izņemt _visus vienumus"
 
-#: ../src/ui/liferea_shell.c:852
+#: ../src/ui/liferea_shell.c:855
 msgid "Removes all items of the currently selected feed."
 msgstr "Izņem visus vienumus no pašlaik izvēlētās barotnes."
 
-#: ../src/ui/liferea_shell.c:855
+#: ../src/ui/liferea_shell.c:858
 msgid "_Item"
 msgstr "V_ienums"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:858
+#: ../src/ui/liferea_shell.c:861
 msgid "_Next Unread Item"
 msgstr "_Nākamais nelasītais"
 
-#: ../src/ui/liferea_shell.c:861
+#: ../src/ui/liferea_shell.c:864
 msgid "_View"
 msgstr "_Skats"
 
-#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:570
+#: ../src/ui/liferea_shell.c:865 ../src/ui/liferea_htmlview.c:572
 msgid "_Increase Text Size"
 msgstr "Pal_ielināt teksta izmēru"
 
-#: ../src/ui/liferea_shell.c:862
+#: ../src/ui/liferea_shell.c:865
 msgid "Increases the text size of the item view."
 msgstr "Palielina teksta izmēru vienuma skatā."
 
-#: ../src/ui/liferea_shell.c:864 ../src/ui/liferea_htmlview.c:571
+#: ../src/ui/liferea_shell.c:867 ../src/ui/liferea_htmlview.c:573
 msgid "_Decrease Text Size"
 msgstr "_Samazināt teksta izmēru"
 
-#: ../src/ui/liferea_shell.c:864
+#: ../src/ui/liferea_shell.c:867
 msgid "Decreases the text size of the item view."
 msgstr "Samazina teksta izmēru vienuma skatā."
 
-#: ../src/ui/liferea_shell.c:867
+#: ../src/ui/liferea_shell.c:870
 msgid "_Tools"
 msgstr "_Rīki"
 
-#: ../src/ui/liferea_shell.c:868
+#: ../src/ui/liferea_shell.c:871
 msgid "_Update Monitor"
 msgstr "Atjaunināšanas _uzraugs"
 
-#: ../src/ui/liferea_shell.c:868
+#: ../src/ui/liferea_shell.c:871
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Rādīt sarakstu ar visām barotnēm, kas atrodas atjaunināšanas rindā"
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:873
 msgid "_Preferences"
 msgstr "_Iestatījumi"
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:873
 msgid "Edit Preferences."
 msgstr "Rediģēt iestatījumus."
 
-#: ../src/ui/liferea_shell.c:873
+#: ../src/ui/liferea_shell.c:876
 msgid "S_earch"
 msgstr "M_eklēt"
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:877
 msgid "Search All Feeds..."
 msgstr "Meklēt visās barotnēs..."
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:877
 msgid "Show the search dialog."
 msgstr "Rādīt meklēšanas dialogu."
 
-#: ../src/ui/liferea_shell.c:876
+#: ../src/ui/liferea_shell.c:879
 msgid "_Help"
 msgstr "_Palīdzība"
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:880
 msgid "_Contents"
 msgstr "_Saturs"
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:880
 msgid "View help for this application."
 msgstr "Skatīt šīs lietotnes palīdzību."
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:881
 msgid "_Quick Reference"
 msgstr "_Ātrā atsauce"
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:881
 msgid "View a list of all Liferea shortcuts."
 msgstr "Skatīt sarakstu ar visiem Liferea īsceļiem."
 
-#: ../src/ui/liferea_shell.c:880
+#: ../src/ui/liferea_shell.c:883
 msgid "_FAQ"
 msgstr "_BUJ"
 
-#: ../src/ui/liferea_shell.c:880
+#: ../src/ui/liferea_shell.c:883
 msgid "View the FAQ for this application."
 msgstr "Skatīt šīs lietotnes BUJ."
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:884
 msgid "_About"
 msgstr "P_ar"
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:884
 msgid "Shows an about dialog."
 msgstr "Parādīt informāciju par programmu."
 
-#: ../src/ui/liferea_shell.c:885
+#: ../src/ui/liferea_shell.c:888
 msgid "_Normal View"
 msgstr "_Normāls skats"
 
-#: ../src/ui/liferea_shell.c:885
+#: ../src/ui/liferea_shell.c:888
 msgid "Set view mode to mail client mode."
 msgstr "Iestata skata režīmu uz pasta klienta režīmu."
 
-#: ../src/ui/liferea_shell.c:887
+#: ../src/ui/liferea_shell.c:890
 msgid "_Wide View"
 msgstr "_Plašs skats"
 
-#: ../src/ui/liferea_shell.c:887
+#: ../src/ui/liferea_shell.c:890
 msgid "Set view mode to use three vertical panes."
 msgstr "Iestatīt skatīšanas režīmu uz trīs vertikālām rūtīm."
 
-#: ../src/ui/liferea_shell.c:889
+#: ../src/ui/liferea_shell.c:892
 msgid "_Combined View"
 msgstr "_Kombinētais skats"
 
-#: ../src/ui/liferea_shell.c:889
+#: ../src/ui/liferea_shell.c:892
 msgid "Set view mode to two pane mode."
 msgstr "Iestata skatīšanas režīmu uz divu rūšu režīmu."
 
-#: ../src/ui/liferea_shell.c:894
+#: ../src/ui/liferea_shell.c:897
 msgid "_Reduced Feed List"
 msgstr "_Reducētais barotņu saraksts"
 
-#: ../src/ui/liferea_shell.c:894
+#: ../src/ui/liferea_shell.c:897
 msgid "Hide feeds with no unread items."
 msgstr "Slēpj barotnes ar nelasītiem vienumiem."
 
-#: ../src/ui/liferea_shell.c:899
+#: ../src/ui/liferea_shell.c:902
 msgid "_New Subscription..."
 msgstr "Jau_ns abonements..."
 
-#: ../src/ui/liferea_shell.c:899
+#: ../src/ui/liferea_shell.c:902
 msgid "Adds a subscription to the feed list."
 msgstr "Pievieno abonementu barotņu sarakstā."
 
-#: ../src/ui/liferea_shell.c:901 ../src/ui/popup_menu.c:301
+#: ../src/ui/liferea_shell.c:904 ../src/ui/popup_menu.c:303
 msgid "New _Folder..."
 msgstr "Jauna _mape..."
 
-#: ../src/ui/liferea_shell.c:901
+#: ../src/ui/liferea_shell.c:904
 msgid "Adds a folder to the feed list."
 msgstr "Pievieno mapi barotņu sarakstam."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/popup_menu.c:304
+#: ../src/ui/liferea_shell.c:905 ../src/ui/popup_menu.c:306
 msgid "New S_earch Folder..."
 msgstr "Jauna m_eklēšanas mape..."
 
-#: ../src/ui/liferea_shell.c:902
+#: ../src/ui/liferea_shell.c:905
 msgid "Adds a new search folder to the feed list."
 msgstr "Pievieno jaunu meklēšanas mapi barotņu sarakstam."
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:906
 msgid "New _Source..."
 msgstr "Jaun_s avots..."
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:906
 msgid "Adds a new feed list source."
 msgstr "Pievieno jaunu barotnes saraksta avotu."
 
-#: ../src/ui/liferea_shell.c:904 ../src/ui/popup_menu.c:306
+#: ../src/ui/liferea_shell.c:907 ../src/ui/popup_menu.c:308
 msgid "New _News Bin..."
 msgstr "Jau_ns ziņu grozs..."
 
-#: ../src/ui/liferea_shell.c:904
+#: ../src/ui/liferea_shell.c:907
 msgid "Adds a new news bin."
 msgstr "Pievieno jaunu ziņu grozu."
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:911
 msgid "_Mark Items Read"
 msgstr "Atzī_mēt kā lasītus"
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:911
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
 msgstr ""
 "Atzīmē visus vienumus izvēlētajā barotnes saraksta mezglā / vienumu sarakstā "
 "kā lasītus."
 
-#: ../src/ui/liferea_shell.c:910 ../src/ui/popup_menu.c:282
+#: ../src/ui/liferea_shell.c:913 ../src/ui/popup_menu.c:283
 msgid "_Update"
 msgstr "Atja_unināt"
 
-#: ../src/ui/liferea_shell.c:910
+#: ../src/ui/liferea_shell.c:913
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "Atjaunina izvēlētos abonementus vai visus abonementus izvēlētajā mapē."
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:918
 msgid "_Properties"
 msgstr "Ī_pašības"
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:918
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Atver īpašību dialogu izvēlētajiem abonementiem."
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:919
 msgid "_Remove"
 msgstr "_Izņemt"
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:919
 msgid "Removes the selected subscription."
 msgstr "Izņem izvēlētos abonementus."
 
-#: ../src/ui/liferea_shell.c:920 ../src/ui/popup_menu.c:151
+#: ../src/ui/liferea_shell.c:923 ../src/ui/popup_menu.c:151
 msgid "Toggle _Read Status"
 msgstr "Pā_rslēgt lasīšanas statusu"
 
-#: ../src/ui/liferea_shell.c:920
+#: ../src/ui/liferea_shell.c:923
 msgid "Toggles the read status of the selected item."
 msgstr "Pārslēdz lasīšanas statusu izvēlētajiem vienumiem."
 
-#: ../src/ui/liferea_shell.c:922 ../src/ui/popup_menu.c:152
+#: ../src/ui/liferea_shell.c:925 ../src/ui/popup_menu.c:152
 msgid "Toggle Item _Flag"
 msgstr "Pārslēgt vienuma _atzīmi"
 
-#: ../src/ui/liferea_shell.c:922
+#: ../src/ui/liferea_shell.c:925
 msgid "Toggles the flag status of the selected item."
 msgstr "Pārslēdz atzīmes statusu izvēlētajam vienumam."
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:927
 msgid "R_emove"
 msgstr "Izņ_emt"
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:927
 msgid "Removes the selected item."
 msgstr "Izņem izvēlēto vienumu."
 
-#: ../src/ui/liferea_shell.c:926
+#: ../src/ui/liferea_shell.c:929
 msgid "_Launch In Browser"
 msgstr "Atvērt pār_lūkā"
 
-#: ../src/ui/liferea_shell.c:926
+#: ../src/ui/liferea_shell.c:929
 msgid "Launches the item's link in the configured browser."
 msgstr "Atver vienuma saiti nokonfigurētajā pārlūkā."
 
-#: ../src/ui/liferea_shell.c:931 ../src/ui/popup_menu.c:181
+#: ../src/ui/liferea_shell.c:934 ../src/ui/popup_menu.c:181
 msgid "_Work Offline"
 msgstr "_Strādāt nesaistē"
 
-#: ../src/ui/liferea_shell.c:931
+#: ../src/ui/liferea_shell.c:934
 msgid "This option allows you to disable subscription updating."
 msgstr "Šī opcija atļauj deaktivēt abonementu atjaunināšanu."
 
-#: ../src/ui/liferea_shell.c:1241
+#: ../src/ui/liferea_shell.c:1244
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea – Linux barotņu lasītājs"
 
-#: ../src/ui/liferea_shell.c:1243
+#: ../src/ui/liferea_shell.c:1246
 #, fuzzy
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
@@ -1175,48 +1175,48 @@ msgstr "Dzēšanas apstiprināšana"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea ir nesaistes režīmā. Nevar veikt atjaunināšanu."
 
-#: ../src/ui/liferea_htmlview.c:433
+#: ../src/ui/liferea_htmlview.c:435
 #, fuzzy, c-format
 msgid "Download FAILED: \"%s\""
 msgstr "Neizdevās lejupielādēt ietvaru: \"%s\""
 
-#: ../src/ui/liferea_htmlview.c:435
+#: ../src/ui/liferea_htmlview.c:437
 #, fuzzy
 msgid "Download finished."
 msgstr "Lejupielā_dēt izmantojot"
 
-#: ../src/ui/liferea_htmlview.c:542
+#: ../src/ui/liferea_htmlview.c:544
 msgid "Launch Link In _Tab"
 msgstr "Atvērt sai_ti cilnē"
 
-#: ../src/ui/liferea_htmlview.c:543
+#: ../src/ui/liferea_htmlview.c:545
 msgid "_Launch Link In Browser"
 msgstr "Atvērt saiti pār_lūkā"
 
-#: ../src/ui/liferea_htmlview.c:546 ../src/ui/popup_menu.c:143
+#: ../src/ui/liferea_htmlview.c:548 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Ie_grāmatot saiti %s"
 
-#: ../src/ui/liferea_htmlview.c:550
+#: ../src/ui/liferea_htmlview.c:552
 msgid "_Copy Link Location"
-msgstr "_Kopēt saites vietu"
-
-#: ../src/ui/liferea_htmlview.c:553
-#, fuzzy
-msgid "_Copy Image Location"
 msgstr "_Kopēt saites vietu"
 
 #: ../src/ui/liferea_htmlview.c:555
 #, fuzzy
+msgid "_Copy Image Location"
+msgstr "_Kopēt saites vietu"
+
+#: ../src/ui/liferea_htmlview.c:557
+#, fuzzy
 msgid "S_ave Link As"
 msgstr "Saglabāt kā..."
 
-#: ../src/ui/liferea_htmlview.c:557
+#: ../src/ui/liferea_htmlview.c:559
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:560
+#: ../src/ui/liferea_htmlview.c:562
 msgid "_Subscribe..."
 msgstr "_Abonēt..."
 
@@ -1286,37 +1286,44 @@ msgstr "_Atjaunināt visus"
 msgid "_Show Liferea"
 msgstr "_Rādīt Liferea"
 
-#: ../src/ui/popup_menu.c:284
+#: ../src/ui/popup_menu.c:285
 msgid "_Update Folder"
 msgstr "Atja_unināt mapi"
 
-#: ../src/ui/popup_menu.c:286
+#: ../src/ui/popup_menu.c:287
 msgid "_Mark All As Read"
 msgstr "Atzī_mēt visas kā lasītas"
 
-#: ../src/ui/popup_menu.c:296
+#: ../src/ui/popup_menu.c:297
 msgid "_New"
 msgstr "Jau_ns"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:300
 msgid "New _Subscription..."
 msgstr "Jaun_s abonements..."
 
-#: ../src/ui/popup_menu.c:305
+#: ../src/ui/popup_menu.c:307
 msgid "New S_ource..."
 msgstr "Jauns av_ots..."
 
-#: ../src/ui/popup_menu.c:314
+#: ../src/ui/popup_menu.c:316
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "Importēt barotņu sarakstu"
 
-#: ../src/ui/popup_menu.c:320
+#: ../src/ui/popup_menu.c:322
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/ui_node.c:123
+#: ../src/ui/ui_node.c:124
 msgid "(Empty)"
+msgstr ""
+
+#: ../src/ui/ui_node.c:321
+#, c-format
+msgid ""
+"%s\n"
+"<i>Rebuilding</i>"
 msgstr ""
 
 #: ../src/ui/ui_prefs.c:78
@@ -2290,6 +2297,9 @@ msgstr ""
 #: ../glade/simple_subscription.ui.h:4
 msgid "Advanced..."
 msgstr "Paplašināti..."
+
+#~ msgid "You may want to validate the feed using"
+#~ msgstr "Jūs varētu vēlēties pārbaudīt barotni, izmantojot"
 
 #~ msgid ""
 #~ "Jumps to the next unread item. If necessary selects the next feed with "

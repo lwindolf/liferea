@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-30 23:47+0200\n"
+"POT-Creation-Date: 2012-12-24 13:42+0100\n"
 "PO-Revision-Date: 2004-10-24 02:34+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -69,7 +69,7 @@ msgid "Details"
 msgstr ""
 
 #: ../xslt/feed.xml.in.h:6
-msgid "You may want to validate the feed using"
+msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 
 #: ../xslt/feed.xml.in.h:7
@@ -281,12 +281,12 @@ msgstr ""
 msgid "Error renaming %s to %s\n"
 msgstr "Не можам да преименувам %s во %s\n"
 
-#: ../src/export.c:383 ../src/export.c:385
+#: ../src/export.c:388 ../src/export.c:390
 #, fuzzy, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "XML грешка при читање на датотеката за кеш! Не можам да увезам \"%s\"!"
 
-#: ../src/export.c:391 ../src/export.c:393
+#: ../src/export.c:396 ../src/export.c:398
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -294,42 +294,42 @@ msgstr ""
 "Празен документ. ОПМЛ документот \"%s\" не смее да биде празен при "
 "увезување..."
 
-#: ../src/export.c:414 ../src/export.c:416
+#: ../src/export.c:419 ../src/export.c:421
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не е правилен ОПМЛ документ. Лајфри не може да ја увези оваа датотека!"
 
-#: ../src/export.c:435
+#: ../src/export.c:440
 msgid "Imported feed list"
 msgstr "Листата на вести е увезена"
 
-#: ../src/export.c:447
+#: ../src/export.c:452
 msgid "Import Feed List"
 msgstr "Увези листа на вести"
 
-#: ../src/export.c:447
+#: ../src/export.c:452
 msgid "Import"
 msgstr "Увези"
 
-#: ../src/export.c:447 ../src/export.c:464 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:452 ../src/export.c:469 ../src/fl_sources/opml_source.c:387
 #, fuzzy
 msgid "OPML Files"
 msgstr "Одберете датотека"
 
-#: ../src/export.c:455
+#: ../src/export.c:460
 msgid "Error while exporting feed list!"
 msgstr "Грешка при извезување на листата со вести!"
 
-#: ../src/export.c:457
+#: ../src/export.c:462
 msgid "Feed List exported!"
 msgstr "Листата со вести е извезена!"
 
-#: ../src/export.c:464
+#: ../src/export.c:469
 msgid "Export Feed List"
 msgstr "Извези листа на вести"
 
-#: ../src/export.c:464
+#: ../src/export.c:469
 msgid "Export"
 msgstr "Извези"
 
@@ -806,7 +806,7 @@ msgstr ""
 
 #. strip GET parameters
 #: ../src/ui/enclosure_list_view.c:341 ../src/ui/enclosure_list_view.c:517
-#: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/liferea_htmlview.c:459 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "Одберете датотека"
 
@@ -820,7 +820,7 @@ msgstr ""
 msgid "Couldn't find pixmap file: %s"
 msgstr "Не можам да ја најдам pixmap датотеката: %s"
 
-#: ../src/ui/liferea_shell.c:308
+#: ../src/ui/liferea_shell.c:311
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -828,7 +828,7 @@ msgstr[0] "%d нов предмет!"
 msgstr[1] "%d нови предмети!"
 msgstr[2] "%d нови предмети!"
 
-#: ../src/ui/liferea_shell.c:313
+#: ../src/ui/liferea_shell.c:316
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -836,288 +836,288 @@ msgstr[0] "е непрочитано"
 msgstr[1] "е непрочитано"
 msgstr[2] "е непрочитано"
 
-#: ../src/ui/liferea_shell.c:687
+#: ../src/ui/liferea_shell.c:690
 msgid "Help Topics"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:693
+#: ../src/ui/liferea_shell.c:696
 #, fuzzy
 msgid "Quick Reference"
 msgstr "Уреди ги параметрите."
 
-#: ../src/ui/liferea_shell.c:699
+#: ../src/ui/liferea_shell.c:702
 msgid "FAQ"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:740
+#: ../src/ui/liferea_shell.c:743
 msgid "Liferea is now online"
 msgstr "Лајфри e поврзана."
 
-#: ../src/ui/liferea_shell.c:742
+#: ../src/ui/liferea_shell.c:745
 #, fuzzy
 msgid "Work Offline"
 msgstr "Работете офлајн"
 
-#: ../src/ui/liferea_shell.c:744
+#: ../src/ui/liferea_shell.c:747
 msgid "Liferea is now offline"
 msgstr "Лајфри е исклучена"
 
-#: ../src/ui/liferea_shell.c:746
+#: ../src/ui/liferea_shell.c:749
 #, fuzzy
 msgid "Work Online"
 msgstr "Работете офлајн"
 
-#: ../src/ui/liferea_shell.c:842
+#: ../src/ui/liferea_shell.c:845
 #, fuzzy
 msgid "_Subscriptions"
 msgstr "Нова претплата"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:846
 msgid "Update _All"
 msgstr "_Ажурирај ги сите"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:846
 #, fuzzy
 msgid "Updates all subscriptions."
 msgstr "Додај нова претплата."
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:848
 #, fuzzy
 msgid "Mark All As _Read"
 msgstr "/_Обележи сè како прочитанo"
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:848
 msgid "Marks read every item of every subscription."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:850
 msgid "_Import Feed List..."
 msgstr "_Увези листа на вести..."
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:850
 msgid "Imports an OPML feed list."
 msgstr "Увезува OPML листа на вести."
 
-#: ../src/ui/liferea_shell.c:848
+#: ../src/ui/liferea_shell.c:851
 msgid "_Export Feed List..."
 msgstr "_Извези листа на вести..."
 
-#: ../src/ui/liferea_shell.c:848
+#: ../src/ui/liferea_shell.c:851
 msgid "Exports the feed list as OPML."
 msgstr "Ја извезува листата на вести како OPML."
 
-#: ../src/ui/liferea_shell.c:849
+#: ../src/ui/liferea_shell.c:852
 #, fuzzy
 msgid "_Quit"
 msgstr "/_Излез"
 
-#: ../src/ui/liferea_shell.c:851
+#: ../src/ui/liferea_shell.c:854
 #, fuzzy
 msgid "_Feed"
 msgstr "_Вести"
 
-#: ../src/ui/liferea_shell.c:852
+#: ../src/ui/liferea_shell.c:855
 #, fuzzy
 msgid "Remove _All Items"
 msgstr "Отстрани ги сите"
 
-#: ../src/ui/liferea_shell.c:852
+#: ../src/ui/liferea_shell.c:855
 msgid "Removes all items of the currently selected feed."
 msgstr "Ги отстранува сите предмети од тековните вести."
 
-#: ../src/ui/liferea_shell.c:855
+#: ../src/ui/liferea_shell.c:858
 #, fuzzy
 msgid "_Item"
 msgstr "_Предмети"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:858
+#: ../src/ui/liferea_shell.c:861
 msgid "_Next Unread Item"
 msgstr "_Следна непрочитана вест"
 
-#: ../src/ui/liferea_shell.c:861
+#: ../src/ui/liferea_shell.c:864
 msgid "_View"
 msgstr "_Поглед"
 
-#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:570
+#: ../src/ui/liferea_shell.c:865 ../src/ui/liferea_htmlview.c:572
 msgid "_Increase Text Size"
 msgstr "_Зголеми го текстот"
 
-#: ../src/ui/liferea_shell.c:862
+#: ../src/ui/liferea_shell.c:865
 msgid "Increases the text size of the item view."
 msgstr "Го зголемуива текстот во делот за читање на вестите."
 
-#: ../src/ui/liferea_shell.c:864 ../src/ui/liferea_htmlview.c:571
+#: ../src/ui/liferea_shell.c:867 ../src/ui/liferea_htmlview.c:573
 msgid "_Decrease Text Size"
 msgstr "_Намали го текстот"
 
-#: ../src/ui/liferea_shell.c:864
+#: ../src/ui/liferea_shell.c:867
 msgid "Decreases the text size of the item view."
 msgstr "Го намалува текстот во делот за читање на вестите."
 
-#: ../src/ui/liferea_shell.c:867
+#: ../src/ui/liferea_shell.c:870
 msgid "_Tools"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:868
+#: ../src/ui/liferea_shell.c:871
 #, fuzzy
 msgid "_Update Monitor"
 msgstr "/_Ажурирај"
 
-#: ../src/ui/liferea_shell.c:868
+#: ../src/ui/liferea_shell.c:871
 msgid "Show a list of all feeds currently in the update queue"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:873
 #, fuzzy
 msgid "_Preferences"
 msgstr "Параметри"
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:873
 #, fuzzy
 msgid "Edit Preferences."
 msgstr "Уреди ги параметрите."
 
-#: ../src/ui/liferea_shell.c:873
+#: ../src/ui/liferea_shell.c:876
 #, fuzzy
 msgid "S_earch"
 msgstr "Пребарувај"
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:877
 #, fuzzy
 msgid "Search All Feeds..."
 msgstr "Барај во сите вести."
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:877
 #, fuzzy
 msgid "Show the search dialog."
 msgstr "Ја покажува или сокрива лентата за барање."
 
-#: ../src/ui/liferea_shell.c:876
+#: ../src/ui/liferea_shell.c:879
 msgid "_Help"
 msgstr "_Помош"
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:880
 msgid "_Contents"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:880
 msgid "View help for this application."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:881
 #, fuzzy
 msgid "_Quick Reference"
 msgstr "Уреди ги параметрите."
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:881
 msgid "View a list of all Liferea shortcuts."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:880
+#: ../src/ui/liferea_shell.c:883
 msgid "_FAQ"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:880
+#: ../src/ui/liferea_shell.c:883
 msgid "View the FAQ for this application."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:884
 #, fuzzy
 msgid "_About"
 msgstr "За"
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:884
 msgid "Shows an about dialog."
 msgstr "Го покажува дијалогот за заслуги."
 
-#: ../src/ui/liferea_shell.c:885
+#: ../src/ui/liferea_shell.c:888
 msgid "_Normal View"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:885
+#: ../src/ui/liferea_shell.c:888
 msgid "Set view mode to mail client mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:887
+#: ../src/ui/liferea_shell.c:890
 #, fuzzy
 msgid "_Wide View"
 msgstr "_Поглед"
 
-#: ../src/ui/liferea_shell.c:887
+#: ../src/ui/liferea_shell.c:890
 msgid "Set view mode to use three vertical panes."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:889
+#: ../src/ui/liferea_shell.c:892
 #, fuzzy
 msgid "_Combined View"
 msgstr "Промени _компактност на преглед"
 
-#: ../src/ui/liferea_shell.c:889
+#: ../src/ui/liferea_shell.c:892
 msgid "Set view mode to two pane mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:894
+#: ../src/ui/liferea_shell.c:897
 msgid "_Reduced Feed List"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:894
+#: ../src/ui/liferea_shell.c:897
 #, fuzzy
 msgid "Hide feeds with no unread items."
 msgstr "Ако е активно, сите вести со прочитани ставки се скриени."
 
-#: ../src/ui/liferea_shell.c:899
+#: ../src/ui/liferea_shell.c:902
 msgid "_New Subscription..."
 msgstr "_Нова претплата..."
 
-#: ../src/ui/liferea_shell.c:899
+#: ../src/ui/liferea_shell.c:902
 #, fuzzy
 msgid "Adds a subscription to the feed list."
 msgstr "Додај нова претплата."
 
-#: ../src/ui/liferea_shell.c:901 ../src/ui/popup_menu.c:301
+#: ../src/ui/liferea_shell.c:904 ../src/ui/popup_menu.c:303
 msgid "New _Folder..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/liferea_shell.c:901
+#: ../src/ui/liferea_shell.c:904
 msgid "Adds a folder to the feed list."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/popup_menu.c:304
+#: ../src/ui/liferea_shell.c:905 ../src/ui/popup_menu.c:306
 #, fuzzy
 msgid "New S_earch Folder..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/liferea_shell.c:902
+#: ../src/ui/liferea_shell.c:905
 msgid "Adds a new search folder to the feed list."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:906
 #, fuzzy
 msgid "New _Source..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:906
 msgid "Adds a new feed list source."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:904 ../src/ui/popup_menu.c:306
+#: ../src/ui/liferea_shell.c:907 ../src/ui/popup_menu.c:308
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/liferea_shell.c:904
+#: ../src/ui/liferea_shell.c:907
 #, fuzzy
 msgid "Adds a new news bin."
 msgstr "Додај нова претплата."
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:911
 #, fuzzy
 msgid "_Mark Items Read"
 msgstr "_Обележи како прочитано"
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:911
 #, fuzzy
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
@@ -1125,83 +1125,83 @@ msgstr ""
 "Означи ги сите вести во означената ставка како прочитани или сите вести во "
 "означената папка."
 
-#: ../src/ui/liferea_shell.c:910 ../src/ui/popup_menu.c:282
+#: ../src/ui/liferea_shell.c:913 ../src/ui/popup_menu.c:283
 #, fuzzy
 msgid "_Update"
 msgstr "/_Ажурирај"
 
-#: ../src/ui/liferea_shell.c:910
+#: ../src/ui/liferea_shell.c:913
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "Ги ажурира означените ставки или сите ставки во означената папка."
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:918
 #, fuzzy
 msgid "_Properties"
 msgstr "_Својства..."
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:918
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Го отвора дијалогот за параметри на означените вести."
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:919
 #, fuzzy
 msgid "_Remove"
 msgstr "Отстрани ги сите"
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:919
 msgid "Removes the selected subscription."
 msgstr "Отстранува вести, односно нивното ажурирање."
 
-#: ../src/ui/liferea_shell.c:920 ../src/ui/popup_menu.c:151
+#: ../src/ui/liferea_shell.c:923 ../src/ui/popup_menu.c:151
 msgid "Toggle _Read Status"
 msgstr "Промени статус во (не)прочитано"
 
-#: ../src/ui/liferea_shell.c:920
+#: ../src/ui/liferea_shell.c:923
 msgid "Toggles the read status of the selected item."
 msgstr "Го менува статусот на прочитано на означениот предмет."
 
-#: ../src/ui/liferea_shell.c:922 ../src/ui/popup_menu.c:152
+#: ../src/ui/liferea_shell.c:925 ../src/ui/popup_menu.c:152
 msgid "Toggle Item _Flag"
 msgstr "Промени го _знаменцето"
 
-#: ../src/ui/liferea_shell.c:922
+#: ../src/ui/liferea_shell.c:925
 #, fuzzy
 msgid "Toggles the flag status of the selected item."
 msgstr "Го менува статусот на прочитано на означениот предмет."
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:927
 #, fuzzy
 msgid "R_emove"
 msgstr "/Отстрани го предметот"
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:927
 msgid "Removes the selected item."
 msgstr "Ја отстранува избраната ставка"
 
-#: ../src/ui/liferea_shell.c:926
+#: ../src/ui/liferea_shell.c:929
 msgid "_Launch In Browser"
 msgstr "_Отвори во прелистувач"
 
-#: ../src/ui/liferea_shell.c:926
+#: ../src/ui/liferea_shell.c:929
 msgid "Launches the item's link in the configured browser."
 msgstr "Ја отвора врската на предметот во наместениот веб прелистувач."
 
-#: ../src/ui/liferea_shell.c:931 ../src/ui/popup_menu.c:181
+#: ../src/ui/liferea_shell.c:934 ../src/ui/popup_menu.c:181
 #, fuzzy
 msgid "_Work Offline"
 msgstr "Работете офлајн"
 
-#: ../src/ui/liferea_shell.c:931
+#: ../src/ui/liferea_shell.c:934
 msgid "This option allows you to disable subscription updating."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:1241
+#: ../src/ui/liferea_shell.c:1244
 msgid "Liferea - Linux Feed Reader"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:1243
+#: ../src/ui/liferea_shell.c:1246
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
@@ -1246,49 +1246,49 @@ msgstr "Потврда за бришење"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Лајфри е во офлајн режим. Нема можност за ажурирање."
 
-#: ../src/ui/liferea_htmlview.c:433
+#: ../src/ui/liferea_htmlview.c:435
 #, c-format
 msgid "Download FAILED: \"%s\""
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:435
+#: ../src/ui/liferea_htmlview.c:437
 msgid "Download finished."
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:542
+#: ../src/ui/liferea_htmlview.c:544
 #, fuzzy
 msgid "Launch Link In _Tab"
 msgstr "/_Отвори во прелистувач"
 
-#: ../src/ui/liferea_htmlview.c:543
+#: ../src/ui/liferea_htmlview.c:545
 #, fuzzy
 msgid "_Launch Link In Browser"
 msgstr "/_Отвори во прелистувач"
 
-#: ../src/ui/liferea_htmlview.c:546 ../src/ui/popup_menu.c:143
+#: ../src/ui/liferea_htmlview.c:548 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:550
+#: ../src/ui/liferea_htmlview.c:552
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Копирај ја локацијата на врската"
 
-#: ../src/ui/liferea_htmlview.c:553
+#: ../src/ui/liferea_htmlview.c:555
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "/_Копирај ја локацијата на врската"
 
-#: ../src/ui/liferea_htmlview.c:555
+#: ../src/ui/liferea_htmlview.c:557
 msgid "S_ave Link As"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:557
+#: ../src/ui/liferea_htmlview.c:559
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:560
+#: ../src/ui/liferea_htmlview.c:562
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Претплати се..."
@@ -1367,42 +1367,49 @@ msgstr "/_Ажурирај ги сите"
 msgid "_Show Liferea"
 msgstr "Помош за Лајфри"
 
-#: ../src/ui/popup_menu.c:284
+#: ../src/ui/popup_menu.c:285
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/_Ажурирај"
 
-#: ../src/ui/popup_menu.c:286
+#: ../src/ui/popup_menu.c:287
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/_Обележи сè како прочитанo"
 
-#: ../src/ui/popup_menu.c:296
+#: ../src/ui/popup_menu.c:297
 #, fuzzy
 msgid "_New"
 msgstr "/_Нова"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:300
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "_Нова претплата..."
 
-#: ../src/ui/popup_menu.c:305
+#: ../src/ui/popup_menu.c:307
 #, fuzzy
 msgid "New S_ource..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/popup_menu.c:314
+#: ../src/ui/popup_menu.c:316
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "Увези листа на вести"
 
-#: ../src/ui/popup_menu.c:320
+#: ../src/ui/popup_menu.c:322
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/ui_node.c:123
+#: ../src/ui/ui_node.c:124
 msgid "(Empty)"
+msgstr ""
+
+#: ../src/ui/ui_node.c:321
+#, c-format
+msgid ""
+"%s\n"
+"<i>Rebuilding</i>"
 msgstr ""
 
 #: ../src/ui/ui_prefs.c:78

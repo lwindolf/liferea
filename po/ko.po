@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-30 23:47+0200\n"
+"POT-Creation-Date: 2012-12-24 13:42+0100\n"
 "PO-Revision-Date: 2005-12-11 13:52+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at tisphie.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -68,7 +68,7 @@ msgid "Details"
 msgstr "자세히 보기"
 
 #: ../xslt/feed.xml.in.h:6
-msgid "You may want to validate the feed using"
+msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 
 #: ../xslt/feed.xml.in.h:7
@@ -280,13 +280,13 @@ msgstr ""
 msgid "Error renaming %s to %s\n"
 msgstr "%s을(를) %s(으)로 변환하는 중 에러발생\n"
 
-#: ../src/export.c:383 ../src/export.c:385
+#: ../src/export.c:388 ../src/export.c:390
 #, fuzzy, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
 "캐시파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 가져올 수 없습니다!"
 
-#: ../src/export.c:391 ../src/export.c:393
+#: ../src/export.c:396 ../src/export.c:398
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -294,43 +294,43 @@ msgstr ""
 "빈 도큐먼트 입니다! OPML 도큐먼트 \"%s\"은(는) 가져오기 할 때 비어있으면 안됩"
 "니다."
 
-#: ../src/export.c:414 ../src/export.c:416
+#: ../src/export.c:419 ../src/export.c:421
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\"은(는) 올바른 OPML 파일이 아닙니다. Liferea는 이 파일을 가져올 수 없습"
 "니다."
 
-#: ../src/export.c:435
+#: ../src/export.c:440
 msgid "Imported feed list"
 msgstr "가져온 피드 리스트"
 
-#: ../src/export.c:447
+#: ../src/export.c:452
 msgid "Import Feed List"
 msgstr "피드 목록 들여오기"
 
-#: ../src/export.c:447
+#: ../src/export.c:452
 msgid "Import"
 msgstr "가져오기"
 
-#: ../src/export.c:447 ../src/export.c:464 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:452 ../src/export.c:469 ../src/fl_sources/opml_source.c:387
 #, fuzzy
 msgid "OPML Files"
 msgstr "파일 고르기"
 
-#: ../src/export.c:455
+#: ../src/export.c:460
 msgid "Error while exporting feed list!"
 msgstr "피드 리스트를 내보내던 중 에러가 발생했습니다."
 
-#: ../src/export.c:457
+#: ../src/export.c:462
 msgid "Feed List exported!"
 msgstr "피드 목록이 내보내졌습니다"
 
-#: ../src/export.c:464
+#: ../src/export.c:469
 msgid "Export Feed List"
 msgstr "피드 목록 내보내기"
 
-#: ../src/export.c:464
+#: ../src/export.c:469
 msgid "Export"
 msgstr "내보내기"
 
@@ -815,7 +815,7 @@ msgstr ""
 
 #. strip GET parameters
 #: ../src/ui/enclosure_list_view.c:341 ../src/ui/enclosure_list_view.c:517
-#: ../src/ui/liferea_htmlview.c:457 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/liferea_htmlview.c:459 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "파일 고르기"
 
@@ -829,302 +829,302 @@ msgstr "<b>파일 확장자 .%s</b>"
 msgid "Couldn't find pixmap file: %s"
 msgstr "pixmap 파일 %s을(를) 찾을 수 없습니다"
 
-#: ../src/ui/liferea_shell.c:308
+#: ../src/ui/liferea_shell.c:311
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d개의 새로운 아이템"
 msgstr[1] "%d개의 새로운 아이템들"
 
-#: ../src/ui/liferea_shell.c:313
+#: ../src/ui/liferea_shell.c:316
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "안 읽었음"
 
-#: ../src/ui/liferea_shell.c:687
+#: ../src/ui/liferea_shell.c:690
 msgid "Help Topics"
 msgstr "도움말 항목"
 
-#: ../src/ui/liferea_shell.c:693
+#: ../src/ui/liferea_shell.c:696
 msgid "Quick Reference"
 msgstr "간단 도움말"
 
-#: ../src/ui/liferea_shell.c:699
+#: ../src/ui/liferea_shell.c:702
 msgid "FAQ"
 msgstr "자주 묻는 질문"
 
-#: ../src/ui/liferea_shell.c:740
+#: ../src/ui/liferea_shell.c:743
 msgid "Liferea is now online"
 msgstr "Liferea가 온라인으로 동작합니다"
 
-#: ../src/ui/liferea_shell.c:742
+#: ../src/ui/liferea_shell.c:745
 #, fuzzy
 msgid "Work Offline"
 msgstr "오프라인 작업"
 
-#: ../src/ui/liferea_shell.c:744
+#: ../src/ui/liferea_shell.c:747
 msgid "Liferea is now offline"
 msgstr "Liferea는 현재 오프라인입니다."
 
-#: ../src/ui/liferea_shell.c:746
+#: ../src/ui/liferea_shell.c:749
 #, fuzzy
 msgid "Work Online"
 msgstr "오프라인 작업"
 
-#: ../src/ui/liferea_shell.c:842
+#: ../src/ui/liferea_shell.c:845
 #, fuzzy
 msgid "_Subscriptions"
 msgstr "새 서명"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:846
 msgid "Update _All"
 msgstr "전부 갱신(_A)"
 
-#: ../src/ui/liferea_shell.c:843
+#: ../src/ui/liferea_shell.c:846
 #, fuzzy
 msgid "Updates all subscriptions."
 msgstr "새 구독 더하기."
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:848
 msgid "Mark All As _Read"
 msgstr "전부 읽은 것으로 표시(_R)"
 
-#: ../src/ui/liferea_shell.c:845
+#: ../src/ui/liferea_shell.c:848
 msgid "Marks read every item of every subscription."
 msgstr "구독하는 모든 아이템을 읽은 것으로 표시합니다."
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:850
 msgid "_Import Feed List..."
 msgstr "피드 목록 들여오기(_I)..."
 
-#: ../src/ui/liferea_shell.c:847
+#: ../src/ui/liferea_shell.c:850
 msgid "Imports an OPML feed list."
 msgstr "OPML피드 리스트 가져오기."
 
-#: ../src/ui/liferea_shell.c:848
+#: ../src/ui/liferea_shell.c:851
 msgid "_Export Feed List..."
 msgstr "피드 리스트 내보내기 (_E)..."
 
-#: ../src/ui/liferea_shell.c:848
+#: ../src/ui/liferea_shell.c:851
 #, fuzzy
 msgid "Exports the feed list as OPML."
 msgstr "OPML형식으로 피드 리스트 내보내기."
 
-#: ../src/ui/liferea_shell.c:849
+#: ../src/ui/liferea_shell.c:852
 #, fuzzy
 msgid "_Quit"
 msgstr "/끝내기(_Q)"
 
-#: ../src/ui/liferea_shell.c:851
+#: ../src/ui/liferea_shell.c:854
 #, fuzzy
 msgid "_Feed"
 msgstr "피드(_F)"
 
-#: ../src/ui/liferea_shell.c:852
+#: ../src/ui/liferea_shell.c:855
 #, fuzzy
 msgid "Remove _All Items"
 msgstr "모두 지우기(_A)"
 
-#: ../src/ui/liferea_shell.c:852
+#: ../src/ui/liferea_shell.c:855
 msgid "Removes all items of the currently selected feed."
 msgstr "현재 선택된 피드의 모든 아이템을 지웁니다."
 
-#: ../src/ui/liferea_shell.c:855
+#: ../src/ui/liferea_shell.c:858
 #, fuzzy
 msgid "_Item"
 msgstr "아이템들(_I)"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:858
+#: ../src/ui/liferea_shell.c:861
 msgid "_Next Unread Item"
 msgstr "다음 안 읽은 아이템(_N)"
 
-#: ../src/ui/liferea_shell.c:861
+#: ../src/ui/liferea_shell.c:864
 msgid "_View"
 msgstr "보기(_V)"
 
-#: ../src/ui/liferea_shell.c:862 ../src/ui/liferea_htmlview.c:570
+#: ../src/ui/liferea_shell.c:865 ../src/ui/liferea_htmlview.c:572
 msgid "_Increase Text Size"
 msgstr "글자 크기 크게하기(_I)"
 
-#: ../src/ui/liferea_shell.c:862
+#: ../src/ui/liferea_shell.c:865
 msgid "Increases the text size of the item view."
 msgstr "아이템 보기의 글자 크기를 늘입니다."
 
-#: ../src/ui/liferea_shell.c:864 ../src/ui/liferea_htmlview.c:571
+#: ../src/ui/liferea_shell.c:867 ../src/ui/liferea_htmlview.c:573
 msgid "_Decrease Text Size"
 msgstr "글자 크기 작게하기(_D)"
 
-#: ../src/ui/liferea_shell.c:864
+#: ../src/ui/liferea_shell.c:867
 msgid "Decreases the text size of the item view."
 msgstr "아이템 보기의 글자 크기를 작게 합니다."
 
-#: ../src/ui/liferea_shell.c:867
+#: ../src/ui/liferea_shell.c:870
 msgid "_Tools"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:868
+#: ../src/ui/liferea_shell.c:871
 #, fuzzy
 msgid "_Update Monitor"
 msgstr "/디렉토리 갱신(_U)"
 
-#: ../src/ui/liferea_shell.c:868
+#: ../src/ui/liferea_shell.c:871
 msgid "Show a list of all feeds currently in the update queue"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:873
 #, fuzzy
 msgid "_Preferences"
 msgstr "기본 설정"
 
-#: ../src/ui/liferea_shell.c:870
+#: ../src/ui/liferea_shell.c:873
 #, fuzzy
 msgid "Edit Preferences."
 msgstr "설정 고치기."
 
-#: ../src/ui/liferea_shell.c:873
+#: ../src/ui/liferea_shell.c:876
 #, fuzzy
 msgid "S_earch"
 msgstr "찾기"
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:877
 #, fuzzy
 msgid "Search All Feeds..."
 msgstr "모든 피드에서 찾기."
 
-#: ../src/ui/liferea_shell.c:874
+#: ../src/ui/liferea_shell.c:877
 #, fuzzy
 msgid "Show the search dialog."
 msgstr "찾기 상자 보이거나 감추기."
 
-#: ../src/ui/liferea_shell.c:876
+#: ../src/ui/liferea_shell.c:879
 msgid "_Help"
 msgstr "도움말(_H)"
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:880
 msgid "_Contents"
 msgstr "차례(_C)"
 
-#: ../src/ui/liferea_shell.c:877
+#: ../src/ui/liferea_shell.c:880
 msgid "View help for this application."
 msgstr "이 프로그램에 대한 도움말을 봅니다."
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:881
 msgid "_Quick Reference"
 msgstr "간단 도움말(_Q)"
 
-#: ../src/ui/liferea_shell.c:878
+#: ../src/ui/liferea_shell.c:881
 msgid "View a list of all Liferea shortcuts."
 msgstr "Liferea의 모든 단축키 목록을 봅니다."
 
-#: ../src/ui/liferea_shell.c:880
+#: ../src/ui/liferea_shell.c:883
 msgid "_FAQ"
 msgstr "자주 묻는 질문들(_F)"
 
-#: ../src/ui/liferea_shell.c:880
+#: ../src/ui/liferea_shell.c:883
 msgid "View the FAQ for this application."
 msgstr "이 프로그램에 대한 자주 묻는 질문을 봅니다."
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:884
 msgid "_About"
 msgstr "정보(_A)"
 
-#: ../src/ui/liferea_shell.c:881
+#: ../src/ui/liferea_shell.c:884
 msgid "Shows an about dialog."
 msgstr "정보 대화창을 보여줍니다."
 
-#: ../src/ui/liferea_shell.c:885
+#: ../src/ui/liferea_shell.c:888
 #, fuzzy
 msgid "_Normal View"
 msgstr "로컬 파일(_L)"
 
-#: ../src/ui/liferea_shell.c:885
+#: ../src/ui/liferea_shell.c:888
 msgid "Set view mode to mail client mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:887
+#: ../src/ui/liferea_shell.c:890
 #, fuzzy
 msgid "_Wide View"
 msgstr "보기(_V)"
 
-#: ../src/ui/liferea_shell.c:887
+#: ../src/ui/liferea_shell.c:890
 msgid "Set view mode to use three vertical panes."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:889
+#: ../src/ui/liferea_shell.c:892
 #, fuzzy
 msgid "_Combined View"
 msgstr "간결하게 보기 토글(_C)"
 
-#: ../src/ui/liferea_shell.c:889
+#: ../src/ui/liferea_shell.c:892
 msgid "Set view mode to two pane mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:894
+#: ../src/ui/liferea_shell.c:897
 msgid "_Reduced Feed List"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:894
+#: ../src/ui/liferea_shell.c:897
 #, fuzzy
 msgid "Hide feeds with no unread items."
 msgstr "이것이 켜져 있다면 읽지 않은 아이템이 없는 피드는 숨깁니다."
 
-#: ../src/ui/liferea_shell.c:899
+#: ../src/ui/liferea_shell.c:902
 msgid "_New Subscription..."
 msgstr "새 구독(_N)..."
 
-#: ../src/ui/liferea_shell.c:899
+#: ../src/ui/liferea_shell.c:902
 #, fuzzy
 msgid "Adds a subscription to the feed list."
 msgstr "피드 목록에 새 구독 더하기."
 
-#: ../src/ui/liferea_shell.c:901 ../src/ui/popup_menu.c:301
+#: ../src/ui/liferea_shell.c:904 ../src/ui/popup_menu.c:303
 msgid "New _Folder..."
 msgstr "새 폴더(_F)..."
 
-#: ../src/ui/liferea_shell.c:901
+#: ../src/ui/liferea_shell.c:904
 #, fuzzy
 msgid "Adds a folder to the feed list."
 msgstr "피드 목록에 폴더를 더합니다."
 
-#: ../src/ui/liferea_shell.c:902 ../src/ui/popup_menu.c:304
+#: ../src/ui/liferea_shell.c:905 ../src/ui/popup_menu.c:306
 #, fuzzy
 msgid "New S_earch Folder..."
 msgstr "새 폴더(_F)..."
 
-#: ../src/ui/liferea_shell.c:902
+#: ../src/ui/liferea_shell.c:905
 #, fuzzy
 msgid "Adds a new search folder to the feed list."
 msgstr "피드 목록에 가상폴더를 더합니다."
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:906
 #, fuzzy
 msgid "New _Source..."
 msgstr "/새로 만들기(_N)/새 폴더(_N)..."
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:906
 #, fuzzy
 msgid "Adds a new feed list source."
 msgstr "피드 목록에 가상폴더를 더합니다."
 
-#: ../src/ui/liferea_shell.c:904 ../src/ui/popup_menu.c:306
+#: ../src/ui/liferea_shell.c:907 ../src/ui/popup_menu.c:308
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "/새로 만들기(_N)/새 폴더(_N)..."
 
-#: ../src/ui/liferea_shell.c:904
+#: ../src/ui/liferea_shell.c:907
 #, fuzzy
 msgid "Adds a new news bin."
 msgstr "새 구독 더하기."
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:911
 #, fuzzy
 msgid "_Mark Items Read"
 msgstr "읽은 것으로 표시(_M)"
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:911
 #, fuzzy
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
@@ -1132,82 +1132,82 @@ msgstr ""
 "모든 선택된 구독 혹은 선택된 폴더의 구독의 아이템들을 모두 읽은 것으로 표시합"
 "니다."
 
-#: ../src/ui/liferea_shell.c:910 ../src/ui/popup_menu.c:282
+#: ../src/ui/liferea_shell.c:913 ../src/ui/popup_menu.c:283
 #, fuzzy
 msgid "_Update"
 msgstr "/갱신(_U)"
 
-#: ../src/ui/liferea_shell.c:910
+#: ../src/ui/liferea_shell.c:913
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "선택된 구독을 혹은 모든 선택된 폴더의 구독을 새로 고칩니다."
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:918
 #, fuzzy
 msgid "_Properties"
 msgstr "등록 정보(_P)..."
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:918
 msgid "Opens the property dialog for the selected subscription."
 msgstr "선택된 구독을 위한 속성 대화창을 엽니다."
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:919
 #, fuzzy
 msgid "_Remove"
 msgstr "모두 지우기(_A)"
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:919
 msgid "Removes the selected subscription."
 msgstr "선택된 구독을 없애버립니다."
 
-#: ../src/ui/liferea_shell.c:920 ../src/ui/popup_menu.c:151
+#: ../src/ui/liferea_shell.c:923 ../src/ui/popup_menu.c:151
 msgid "Toggle _Read Status"
 msgstr "읽은 상태를 토글(_R)"
 
-#: ../src/ui/liferea_shell.c:920
+#: ../src/ui/liferea_shell.c:923
 msgid "Toggles the read status of the selected item."
 msgstr "선택한 아이템의 읽은 상태를 토글합니다."
 
-#: ../src/ui/liferea_shell.c:922 ../src/ui/popup_menu.c:152
+#: ../src/ui/liferea_shell.c:925 ../src/ui/popup_menu.c:152
 msgid "Toggle Item _Flag"
 msgstr "아이템 플래그 토글(_F)"
 
-#: ../src/ui/liferea_shell.c:922
+#: ../src/ui/liferea_shell.c:925
 msgid "Toggles the flag status of the selected item."
 msgstr "선택한 아이템의 읽은 상태를 켜거나 끕니다."
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:927
 #, fuzzy
 msgid "R_emove"
 msgstr "/아이템을 지우기(_E)"
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:927
 msgid "Removes the selected item."
 msgstr "선택된 아이템을 없애버립니다."
 
-#: ../src/ui/liferea_shell.c:926
+#: ../src/ui/liferea_shell.c:929
 msgid "_Launch In Browser"
 msgstr "브라우져로 띄우기(_L)"
 
-#: ../src/ui/liferea_shell.c:926
+#: ../src/ui/liferea_shell.c:929
 msgid "Launches the item's link in the configured browser."
 msgstr "설정된 브라우져로 아이템의 링크를 엽니다."
 
-#: ../src/ui/liferea_shell.c:931 ../src/ui/popup_menu.c:181
+#: ../src/ui/liferea_shell.c:934 ../src/ui/popup_menu.c:181
 msgid "_Work Offline"
 msgstr "오프라인 작업"
 
-#: ../src/ui/liferea_shell.c:931
+#: ../src/ui/liferea_shell.c:934
 msgid "This option allows you to disable subscription updating."
 msgstr "이 옵션을 선택하면 구독 갱신을 비활성화 합니다."
 
-#: ../src/ui/liferea_shell.c:1241
+#: ../src/ui/liferea_shell.c:1244
 #, fuzzy
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - 리눅스 피드 보기"
 
-#: ../src/ui/liferea_shell.c:1243
+#: ../src/ui/liferea_shell.c:1246
 #, fuzzy
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
@@ -1258,51 +1258,51 @@ msgstr "지우기 확인"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea가 오프라인 상태로 동작중입니다. 새로고침이 불가능합니다."
 
-#: ../src/ui/liferea_htmlview.c:433
+#: ../src/ui/liferea_htmlview.c:435
 #, c-format
 msgid "Download FAILED: \"%s\""
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:435
+#: ../src/ui/liferea_htmlview.c:437
 #, fuzzy
 msgid "Download finished."
 msgstr "다운로드 프로그램(_D)"
 
-#: ../src/ui/liferea_htmlview.c:542
+#: ../src/ui/liferea_htmlview.c:544
 #, fuzzy
 msgid "Launch Link In _Tab"
 msgstr "/링크를 탭으로 띄우기(_T)"
 
-#: ../src/ui/liferea_htmlview.c:543
+#: ../src/ui/liferea_htmlview.c:545
 #, fuzzy
 msgid "_Launch Link In Browser"
 msgstr "/링크를 브라우져로 띄우기(_L)"
 
-#: ../src/ui/liferea_htmlview.c:546 ../src/ui/popup_menu.c:143
+#: ../src/ui/liferea_htmlview.c:548 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:550
+#: ../src/ui/liferea_htmlview.c:552
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/링크 위치 복사하기(_C)"
 
-#: ../src/ui/liferea_htmlview.c:553
+#: ../src/ui/liferea_htmlview.c:555
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "/링크 위치 복사하기(_C)"
 
-#: ../src/ui/liferea_htmlview.c:555
+#: ../src/ui/liferea_htmlview.c:557
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "다른 이름으로 저장..."
 
-#: ../src/ui/liferea_htmlview.c:557
+#: ../src/ui/liferea_htmlview.c:559
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:560
+#: ../src/ui/liferea_htmlview.c:562
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/구독(_S)..."
@@ -1382,42 +1382,49 @@ msgstr "/전부 새로 고침(_U)"
 msgid "_Show Liferea"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:284
+#: ../src/ui/popup_menu.c:285
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/폴더 갱신(_U)"
 
-#: ../src/ui/popup_menu.c:286
+#: ../src/ui/popup_menu.c:287
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/전부 읽은 것으로 표시(_M)"
 
-#: ../src/ui/popup_menu.c:296
+#: ../src/ui/popup_menu.c:297
 #, fuzzy
 msgid "_New"
 msgstr "/새로 만들기(_N)"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:300
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "새 구독(_N)..."
 
-#: ../src/ui/popup_menu.c:305
+#: ../src/ui/popup_menu.c:307
 #, fuzzy
 msgid "New S_ource..."
 msgstr "/새로 만들기(_N)/새 폴더(_N)..."
 
-#: ../src/ui/popup_menu.c:314
+#: ../src/ui/popup_menu.c:316
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "피드 목록 들여오기"
 
-#: ../src/ui/popup_menu.c:320
+#: ../src/ui/popup_menu.c:322
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/ui_node.c:123
+#: ../src/ui/ui_node.c:124
 msgid "(Empty)"
+msgstr ""
+
+#: ../src/ui/ui_node.c:321
+#, c-format
+msgid ""
+"%s\n"
+"<i>Rebuilding</i>"
 msgstr ""
 
 #: ../src/ui/ui_prefs.c:78
