@@ -22,6 +22,9 @@
 	  three options: Tab, Browser and External Browser
 	* Fixes SF #1037: Incorrect notifications for Google Reader 
 	  (patch by David Smith)
+	* Fixes SF #1048: Removed all feedvalidator.org references from FAQ 
+	  and XSLT as it was reported to host malware.
+	  (reported by bkat)
 
 
 2012-10-28  Lars Windolf <lars.lindner@gmail.com>
