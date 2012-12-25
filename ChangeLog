@@ -16,6 +16,8 @@
 	* Fixes regression about using the GNOME default font
 	* Improves all item/link launching menus to consistently provide
 	  three options: Tab, Browser and External Browser
+	* Fixes SF #1041: Some GPLv2 license headers were outdated
+	  (reported by Emmanuel Seyman)
 
 
 2012-10-28  Lars Windolf <lars.lindner@gmail.com>
