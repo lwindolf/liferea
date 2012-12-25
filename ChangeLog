@@ -1,4 +1,8 @@
-	To be released
+	Version 1.10-RC1	
+
+	Please note that due to the SourceForge upgrade bug ticket numbering
+	did change. This might be confusing... Old numbers are 7 figures, 
+	newer ones only 4!
 
 	* Patch SF #3407290: Migrate to GSettings
 	  (by Mikel Olasagasti)
@@ -16,6 +20,11 @@
 	* Fixes regression about using the GNOME default font
 	* Improves all item/link launching menus to consistently provide
 	  three options: Tab, Browser and External Browser
+	* Fixes SF #1037: Incorrect notifications for Google Reader 
+	  (patch by David Smith)
+	* Fixes SF #1048: Removed all feedvalidator.org references from FAQ 
+	  and XSLT as it was reported to host malware.
+	  (reported by bkat)
 	* Fixes SF #1041: Some GPLv2 license headers were outdated
 	  (reported by Emmanuel Seyman)
 
