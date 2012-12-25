@@ -1,3 +1,9 @@
+	To be released
+
+	* Fixes SF #1041: Some GPLv2 license headers were outdated
+	  (reported by Emmanuel Seyman)
+
+
 2012-12-24  Lars Windolf <lars.lindner@gmail.com>
 	
 	Version 1.8.11
