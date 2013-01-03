@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-24 13:42+0100\n"
+"POT-Creation-Date: 2013-01-03 16:22+0100\n"
 "PO-Revision-Date: 2010-11-06 20:47+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
@@ -723,11 +723,11 @@ msgstr "Gabim: Nuk ka kartelë \"%s\""
 msgid "New Search Folder"
 msgstr "Dosje e re Kërkimi"
 
-#: ../src/xml.c:423
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Pati edhe gabime të tjera. Përgjigja u cungua!]"
 
-#: ../src/xml.c:576
+#: ../src/xml.c:577
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Përtypësi XML: S'përtypa dot dokumentin:\n"
 
@@ -1538,11 +1538,11 @@ msgstr "Nuk u gjetën lloje burimi listash prurjesh!"
 msgid "Source Type"
 msgstr "Lloj Burimi"
 
-#: ../src/fl_sources/ttrss_source.c:364
+#: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:365
+#: ../src/fl_sources/ttrss_source.c:361
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "

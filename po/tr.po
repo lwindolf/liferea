@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-24 13:42+0100\n"
+"POT-Creation-Date: 2013-01-03 16:22+0100\n"
 "PO-Revision-Date: 2007-09-01 08:19+0300\n"
 "Last-Translator: Eren Türkay <turkay.eren@gmail.com>\n"
 "Language-Team:  <turkce@pardus.org.tr>\n"
@@ -755,11 +755,11 @@ msgstr "Hata: \"%s\" Böyle bir dosya yok"
 msgid "New Search Folder"
 msgstr "Yeni Arama Klasörü"
 
-#: ../src/xml.c:423
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Daha fazla hata vardı. Çıktı kısaltılmıştı!]"
 
-#: ../src/xml.c:576
+#: ../src/xml.c:577
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML Ayrıştırıcısı: Dosya ayrıştırılamadı:\n"
 
@@ -1596,11 +1596,11 @@ msgstr "Hiçbir haber kaynak türü bulunamadı!"
 msgid "Source Type"
 msgstr "Kaynak Türü"
 
-#: ../src/fl_sources/ttrss_source.c:364
+#: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:365
+#: ../src/fl_sources/ttrss_source.c:361
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "

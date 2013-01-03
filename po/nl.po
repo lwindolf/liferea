@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.0-rc6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-24 13:42+0100\n"
+"POT-Creation-Date: 2013-01-03 16:22+0100\n"
 "PO-Revision-Date: 2009-07-27 20:57+0100\n"
 "Last-Translator: Erwin Poeze <erwin.poeze@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -727,11 +727,11 @@ msgstr "Fout: bestand \"%s\" bestaat niet"
 msgid "New Search Folder"
 msgstr "Nieuwe zoekmap"
 
-#: ../src/xml.c:423
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Er zijn meer fouten. Uitvoer is afgekapt!]"
 
-#: ../src/xml.c:576
+#: ../src/xml.c:577
 msgid "XML Parser: Could not parse document:\n"
 msgstr "xml-parser: kan document niet ontleden:\n"
 
@@ -1542,11 +1542,11 @@ msgstr "Geen feedlijstbrontypen gevonden!"
 msgid "Source Type"
 msgstr "Brontype"
 
-#: ../src/fl_sources/ttrss_source.c:364
+#: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:365
+#: ../src/fl_sources/ttrss_source.c:361
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "

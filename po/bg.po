@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea Bulgarian translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-24 13:42+0100\n"
+"POT-Creation-Date: 2013-01-03 16:22+0100\n"
 "PO-Revision-Date: 2006-03-17 12:10+0200\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -783,12 +783,12 @@ msgstr "Грешка: Файлът „%s“ не съществува"
 msgid "New Search Folder"
 msgstr "Нова папка"
 
-#: ../src/xml.c:423
+#: ../src/xml.c:424
 #, fuzzy
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Четенето беше прекъснато!]"
 
-#: ../src/xml.c:576
+#: ../src/xml.c:577
 #, fuzzy
 msgid "XML Parser: Could not parse document:\n"
 msgstr ""
@@ -1649,11 +1649,11 @@ msgstr ""
 msgid "Source Type"
 msgstr "Вид на източника:"
 
-#: ../src/fl_sources/ttrss_source.c:364
+#: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:365
+#: ../src/fl_sources/ttrss_source.c:361
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 "present your tt-rss subscriptions, and will synchronize your feed list and "

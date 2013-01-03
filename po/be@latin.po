@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-24 13:42+0100\n"
+"POT-Creation-Date: 2013-01-03 16:22+0100\n"
 "PO-Revision-Date: 2007-08-19 13:26+0300\n"
 "Last-Translator:  <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin\n"
@@ -755,11 +755,11 @@ msgstr "Pamyłka: Fajł \"%s\" nie isnuje"
 msgid "New Search Folder"
 msgstr "Novy kataloh pošuku"
 
-#: ../src/xml.c:423
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Byli jašče pamyłki. Vyjście abatnutaje!]"
 
-#: ../src/xml.c:576
+#: ../src/xml.c:577
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Raźbiralnik XML: Niemahčyma razabrać dakument:\n"
 
@@ -1601,11 +1601,11 @@ msgstr "Typy krynic dla śpisu kanałaŭ nia znojdzienyja!"
 msgid "Source Type"
 msgstr "Typ krynicy"
 
-#: ../src/fl_sources/ttrss_source.c:364
+#: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:365
+#: ../src/fl_sources/ttrss_source.c:361
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "

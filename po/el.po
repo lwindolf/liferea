@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-24 13:42+0100\n"
+"POT-Creation-Date: 2013-01-03 16:22+0100\n"
 "PO-Revision-Date: 2008-12-30 22:50+0200\n"
 "Last-Translator: Jennie Petoumenou <epetoumenou@gmail.com>\n"
 "Language-Team:  <team@gnome.gr>\n"
@@ -764,11 +764,11 @@ msgstr "Σφάλμα: Δεν υπάρχει το αρχείο \"%s\""
 msgid "New Search Folder"
 msgstr "Νέος φάκελος αναζήτησης"
 
-#: ../src/xml.c:423
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Εμφανίστηκαν και άλλα σφάλματα, τα οποία παραλείπονται!]"
 
-#: ../src/xml.c:576
+#: ../src/xml.c:577
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Ανάλυση XML: Αδύνατη η ανάλυση του αρχείου:\n"
 
@@ -1605,11 +1605,11 @@ msgstr "Δε βρέθηκαν πηγές με λίστες ροών!"
 msgid "Source Type"
 msgstr "Τύπος πηγής"
 
-#: ../src/fl_sources/ttrss_source.c:364
+#: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:365
+#: ../src/fl_sources/ttrss_source.c:361
 #, fuzzy
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "

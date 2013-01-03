@@ -7,6 +7,7 @@
 	* Fixes SF #1044: tt-rss API changed (we now support only 1.6 API)
 	  (patch by Sebastian Noel)
 	* Fixes XHTML errors caused by extra <body> tags from tt-rss
+	* Update of German translation
 
 
 2012-12-24  Lars Windolf <lars.lindner@gmail.com>

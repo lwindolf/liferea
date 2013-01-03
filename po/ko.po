@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-24 13:42+0100\n"
+"POT-Creation-Date: 2013-01-03 16:22+0100\n"
 "PO-Revision-Date: 2005-12-11 13:52+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at tisphie.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -767,12 +767,12 @@ msgstr "에러: \"%s\" 파일이 없습니다!"
 msgid "New Search Folder"
 msgstr "폴더 만들기"
 
-#: ../src/xml.c:423
+#: ../src/xml.c:424
 #, fuzzy
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[해석기 에러 출력이 생략되었습니다!]"
 
-#: ../src/xml.c:576
+#: ../src/xml.c:577
 #, fuzzy
 msgid "XML Parser: Could not parse document:\n"
 msgstr ""
@@ -1630,11 +1630,11 @@ msgstr ""
 msgid "Source Type"
 msgstr "소스 종류:"
 
-#: ../src/fl_sources/ttrss_source.c:364
+#: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:365
+#: ../src/fl_sources/ttrss_source.c:361
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 "present your tt-rss subscriptions, and will synchronize your feed list and "

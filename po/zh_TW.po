@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-24 13:42+0100\n"
+"POT-Creation-Date: 2013-01-03 16:22+0100\n"
 "PO-Revision-Date: 2005-12-11 13:22+0800\n"
 "Last-Translator: Jim Huang <jserv@kaffe.org>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -739,12 +739,12 @@ msgstr "錯誤: 無此檔案 \"%s\"!"
 msgid "New Search Folder"
 msgstr "新目錄"
 
-#: ../src/xml.c:423
+#: ../src/xml.c:424
 #, fuzzy
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[解析器的錯誤訊息已截去！]"
 
-#: ../src/xml.c:576
+#: ../src/xml.c:577
 #, fuzzy
 msgid "XML Parser: Could not parse document:\n"
 msgstr ""
@@ -1670,11 +1670,11 @@ msgstr ""
 msgid "Source Type"
 msgstr "來源類型:"
 
-#: ../src/fl_sources/ttrss_source.c:364
+#: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:365
+#: ../src/fl_sources/ttrss_source.c:361
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 "present your tt-rss subscriptions, and will synchronize your feed list and "
