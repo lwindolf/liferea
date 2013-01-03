@@ -273,16 +273,17 @@ on_ttrss_source_selected (GtkDialog *dialog,
 		   the getFeeds call, so we save it as the homepage meta
 		   data value... */
 		metadata_list_set (&subscription->metadata, "ttrss-url", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))));
-		
-		subscription_set_auth_info (subscription,
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
-		subscription->type = &ttrssSourceSubscriptionType;
-		
+
 		node = node_new (node_source_get_node_type ());
 		node_set_title (node, "Tiny Tiny RSS");
 		node_source_new (node, ttrss_source_get_type ());
 		node_set_subscription (node, subscription);
+		
+		subscription_set_auth_info (subscription,
+		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
+		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
+		subscription->type = &ttrssSourceSubscriptionType;		
+
 		node->data = ttrss_source_new (node);
 		feedlist_node_added (node);
 		ttrss_source_update (node);
