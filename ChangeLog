@@ -2,6 +2,8 @@
 
 	* Fixes SF #1041: Some GPLv2 license headers were outdated
 	  (reported by Emmanuel Seyman)
+	* Fixes SF #1044: tt-rss API changed (we now support only 1.6 API)
+	  (patch by Sebastian Noel)
 
 
 2012-12-24  Lars Windolf <lars.lindner@gmail.com>

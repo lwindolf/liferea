@@ -58,6 +58,8 @@ enum  {
  * http://tt-rss.org/redmine/wiki/tt-rss/JsonApiReference
  */
 
+#define TTRSS_URL "%s/api/"
+
 /**
  * Tiny Tiny RSS Login API
  *
@@ -66,7 +68,7 @@ enum  {
  *
  * @returns {"session_id":"xxx"} or {"error":"xxx"}
  */ 
-#define TTRSS_LOGIN_URL "%s/api/?op=login&user=%s&password=%s" 
+#define TTRSS_JSON_LOGIN "{\"op\":\"login\", \"user\":\"%s\", \"password\":\"%s\"}" 
 
 /**
  * Fetch tt-rss feed list.
@@ -75,7 +77,7 @@ enum  {
  *
  * @returns JSON feed list
  */
-#define TTRSS_SUBSCRIPTION_LIST_URL "%s/api/?op=getFeeds&sid=%s&cat_id=-3"
+#define TTRSS_JSON_SUBSCRIPTION_LIST "{\"op\":\"getFeeds\", \"sid\":\"%s\", \"cat_id\":\"-3\"}"
 
 /**
  * Fetch tt-rss headlines for a given feed.
@@ -86,7 +88,7 @@ enum  {
  *
  * @returns JSON feed list
  */
-#define TTRSS_HEADLINES_URL "%s/api/?op=getHeadlines&sid=%s&feed_id=%s&limit=%d&show_content=true&view_mode=all_articles"
+#define TTRSS_JSON_HEADLINES "{\"op\":\"getHeadlines\", \"sid\":\"%s\", \"feed_id\":\"%s\", \"limit\":\"%d\", \"show_content\":\"true\", \"view_mode\":\"all_articles\"}"
 
 /**
  * Toggle item flag state.
@@ -95,7 +97,7 @@ enum  {
  * @param item_id	tt-rss item id
  * @param mode		0 = unflagged, 1 = flagged
  */
-#define TTRSS_UPDATE_ITEM_FLAG "%s/api/?op=updateArticle&sid=%s&article_ids=%s&mode=%d&field=0"
+#define TTRSS_JSON_UPDATE_ITEM_FLAG "{\"op\":\"updateArticle\", \"sid\":\"%s\", \"article_ids\":\"%s\", \"mode\":\"%d\", \"field\":\"0\"}"
 
 /**
  * Toggle item read state.
@@ -104,14 +106,14 @@ enum  {
  * @param item_id	tt-rss item id
  * @param mode		0 = read, 1 = unread
  */
-#define TTRSS_UPDATE_ITEM_UNREAD "%s/api/?op=updateArticle&sid=%s&article_ids=%s&mode=%d&field=2"
+#define TTRSS_JSON_UPDATE_ITEM_UNREAD "{\"op\":\"updateArticle\", \"sid\":\"%s\", \"article_ids\":\"%s\", \"mode\":\"%d\", \"field\":\"2\"}"
 
 /**
  * Determine server settings.
  *
  * @param sid		session id
  */
-#define TTRSS_GET_CONFIG "%s/api/?op=getConfig&sid=%s"
+#define TTRSS_JSON_GET_CONFIG "{\"op\":\"getConfig\", \"sid\":\"%s\"}"
 
 /**
  * Returns ttss source type implementation info.

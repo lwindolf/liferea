@@ -131,11 +131,8 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		g_warning ("tt-rss feed without id! (%s)", subscription->node->title);
 		return FALSE;
 	}
-	update_request_set_source (request, g_strdup_printf (TTRSS_HEADLINES_URL, 
-		metadata_list_get (root->subscription->metadata, "ttrss-url"), 
-		source->session_id,
-		feed_id,
-		15 /* items to fetch */));
+	request->postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, 15 /* items to fetch */ );
+	update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (root->subscription->metadata, "ttrss-url")));
 
 	return TRUE;
 }
