@@ -296,6 +296,7 @@ xhtml_strip_unsupported_tags (const gchar *html)
 {
 	if (!unsupported_tag_strippers) {
 		xhtml_stripper_add(&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>");
+		xhtml_stripper_add(&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>");
 	}
 	
 	return xhtml_strip(html, unsupported_tag_strippers);
