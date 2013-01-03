@@ -151,8 +151,9 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 		   remote feeds or just fetch them. */
 		request = update_request_new ();
 		request->options = update_options_copy (subscription->updateOptions);
+		request->postdata = g_strdup_printf (TTRSS_JSON_GET_CONFIG, source->session_id);
 
-		update_request_set_source (request, g_strdup_printf (TTRSS_GET_CONFIG, metadata_list_get (subscription->metadata, "ttrss-url"), source->session_id));
+		update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url")));
 		update_execute_request (source, request, ttrss_source_get_config_cb, source, flags);
 	}
 }
@@ -175,14 +176,15 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 
 	request = update_request_new ();
 
-	/* escape user and password as both are passed using an URI */
-	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
-	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
+	/* escape user and password for JSON call */
+	username = g_strescape (subscription->updateOptions->username, NULL);
+	password = g_strescape (subscription->updateOptions->password, NULL);
 	
-	update_request_set_source (request, g_strdup_printf (TTRSS_LOGIN_URL, metadata_list_get (subscription->metadata, "ttrss-url"), username, password));
+	update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url")));
 
 	request->options = update_options_copy (subscription->updateOptions);
-	
+	request->postdata = g_strdup_printf (TTRSS_JSON_LOGIN, username, password);
+
 	g_free (username);
 	g_free (password);
 
@@ -327,12 +329,9 @@ ttrss_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 
 	request = update_request_new ();
 	request->options = update_options_copy (root->subscription->updateOptions);
+	request->postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_FLAG, source->session_id, item_get_id(item), newStatus?1:0 );
 
-	update_request_set_source (request, g_strdup_printf (TTRSS_UPDATE_ITEM_FLAG,
-	                                       metadata_list_get (root->subscription->metadata, "ttrss-url"),
-	                                       source->session_id, 
-	                                       item_get_id (item), newStatus?1:0));
-
+	update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (root->subscription->metadata, "ttrss-url")));
 	update_execute_request (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
 
 	item_flag_state_changed (item, newStatus);
@@ -347,12 +346,9 @@ ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 
 	request = update_request_new ();
 	request->options = update_options_copy (root->subscription->updateOptions);
+	request->postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_UNREAD, source->session_id, item_get_id(item), newStatus?0:1 );
 
-	update_request_set_source (request, g_strdup_printf (TTRSS_UPDATE_ITEM_UNREAD,
-	                                       metadata_list_get (root->subscription->metadata, "ttrss-url"),
-	                                       source->session_id, 
-	                                       item_get_id (item), newStatus?0:1));
-
+	update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (root->subscription->metadata, "ttrss-url")));
 	update_execute_request (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
 
 	item_read_state_changed (item, newStatus);
