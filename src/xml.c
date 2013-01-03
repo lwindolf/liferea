@@ -1,7 +1,7 @@
 /**
  * @file xml.c XML helper methods for Liferea
  * 
- * Copyright (C) 2003-2009  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2013  Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -296,6 +296,7 @@ xhtml_strip_unsupported_tags (const gchar *html)
 {
 	if (!unsupported_tag_strippers) {
 		xhtml_stripper_add(&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>");
+		xhtml_stripper_add(&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>");
 	}
 	
 	return xhtml_strip(html, unsupported_tag_strippers);

@@ -32,6 +32,7 @@
 	* Fixes SF #1044: tt-rss API changed (we now support only 1.6 API)
 	  (patch by Sebastian Noel)
 	* Fixes assertion when creating new tt-rss subscriptions
+	* Fixes XHTML errors caused by extra <body> tags returned by tt-rss
 
 
 2012-10-28  Lars Windolf <lars.lindner@gmail.com>
