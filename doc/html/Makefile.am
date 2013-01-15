@@ -28,6 +28,8 @@ html_doc_de =	about_de.html \
 		greader_de.html \
 		faq_de.html
 
+html_doc_he =   reference_he.html
+
 html_doc_pictures_en =	help_feed_default.png \
 			help_feed_error.png \
 			help_folder.png \
@@ -52,6 +54,7 @@ html_doc_pictures_en =	help_feed_default.png \
 
 EXTRA_DIST =	$(html_doc_en) \
 		$(html_doc_de) \
+		$(html_doc_he) \
 		$(html_doc_pictures_en) \
 		reference.css
 
