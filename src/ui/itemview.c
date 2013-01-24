@@ -118,6 +118,7 @@ void
 itemview_set_mode (itemViewMode mode)
 {
 	if (itemview->priv->mode != mode) {
+		/* FIXME: Not being able to call itemview_clear() here is awful! */
 		itemview->priv->mode = mode;
 		htmlview_clear ();	/* drop HTML rendering cache */
 	}
@@ -179,6 +180,7 @@ itemview_select_item (itemPtr item)
 	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
 	ivp->needsHTMLViewUpdate = TRUE;
+	ivp->browsing = FALSE;
 	
 	item_list_view_select (ivp->itemListView, item);
 	htmlview_select_item (item);
@@ -200,13 +202,13 @@ itemview_select_enclosure (guint position)
 void
 itemview_update_item (itemPtr item)
 {
-	/* Bail if we do internal browsing, and no item is shown */
-	if (itemview->priv->browsing)
-		return;
-
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
 		item_list_view_update_item (itemview->priv->itemListView, item);
+
+	/* Bail if we do internal browsing, and no item is shown */
+	if (itemview->priv->browsing)
+		return;
 
 	/* Bail out if no HTML update necessary */
 	switch (itemview->priv->mode) {

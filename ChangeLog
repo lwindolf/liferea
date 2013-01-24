@@ -33,6 +33,7 @@
 	  (patch by Sebastian Noel)
 	* Fixes assertion when creating new tt-rss subscriptions
 	* Fixes XHTML errors caused by extra <body> tags returned by tt-rss
+	* Fixes missing item list update when browsing item URLs in Liferea
 
 
 2012-10-28  Lars Windolf <lars.lindner@gmail.com>
