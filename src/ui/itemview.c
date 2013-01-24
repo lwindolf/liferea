@@ -187,13 +187,13 @@ itemview_select_item (itemPtr item)
 void
 itemview_update_item (itemPtr item)
 {
-	/* Bail if we do internal browsing, and no item is shown */
-	if (itemview->priv->browsing)
-		return;
-
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
 	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
 		item_list_view_update_item (itemview->priv->itemListView, item);
+
+	/* Bail if we do internal browsing, and no item is shown */
+	if (itemview->priv->browsing)
+		return;
 
 	/* Bail out if no HTML update necessary */
 	switch (itemview->priv->mode) {
