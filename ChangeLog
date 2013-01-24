@@ -1,6 +1,7 @@
 	To be released
 	
 	* Fixes missing item list update when browsing item URLs in Liferea
+	* Fixes format string issues in several translations.
 	* Added Hebrew translation of reference manual page (Genghis Khan)
 	* Update of Hebrew translation (Genghis Khan)
 	* Update of Czech translation (Peter Simacek)

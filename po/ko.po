@@ -833,14 +833,13 @@ msgstr "pixmap 파일 %s을(를) 찾을 수 없습니다"
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
-msgstr[0] "%d개의 새로운 아이템"
-msgstr[1] "%d개의 새로운 아이템들"
+msgstr[0] ""
 
 #: ../src/ui/liferea_shell.c:316
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
-msgstr[0] "안 읽었음"
+msgstr[0] ""
 
 #: ../src/ui/liferea_shell.c:690
 msgid "Help Topics"
@@ -1536,8 +1535,7 @@ msgstr "제목없음"
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
-msgstr[0] "%d개의 새로운 아이템"
-msgstr[1] "%d개의 새로운 아이템들"
+msgstr[0] ""
 
 #: ../src/ui/ui_tray.c:224
 msgid "No new items"
@@ -1552,11 +1550,7 @@ msgid_plural ""
 "%s\n"
 "%d unread items"
 msgstr[0] ""
-"%s\n"
-"%d개의 안 읽은 아이템"
 msgstr[1] ""
-"%s\n"
-"%d개의 안 읽은 아이템들"
 
 #: ../src/ui/ui_tray.c:230
 #, c-format
