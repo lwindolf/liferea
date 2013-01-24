@@ -15,7 +15,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=0;\n"
 
 #: ../liferea.desktop.in.h:1 ../src/main.c:237 ../glade/liferea.ui.h:1
 msgid "Liferea"

@@ -1509,7 +1509,7 @@ msgstr[0] ""
 "%d okunmamış öğe"
 msgstr[1] ""
 "%s\n"
-"Okunmamış madde yok"
+"%d Okunmamış madde yok"
 
 #: ../src/ui/ui_tray.c:230
 #, c-format

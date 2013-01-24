@@ -671,7 +671,7 @@ msgstr "Aktualizuje sa \"%s\""
 #: ../src/update.c:259
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
-msgstr "Chyba pri otváraní dočasného súboru"
+msgstr ""
 
 #: ../src/update.c:282
 #, c-format
