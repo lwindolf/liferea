@@ -181,3 +181,4 @@ src/webkit/webkit.c
 [type: gettext/glade]glade/opml_source.ui
 [type: gettext/glade]glade/ttrss_source.ui
 [type: gettext/glade]glade/simple_subscription.ui
+[type: gettext/glade]glade/prefs.ui
