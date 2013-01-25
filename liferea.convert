@@ -38,14 +38,13 @@ folder-display-mode = /apps/liferea/folder-display-mode
 folder-display-hide-read = /apps/liferea/folder-display-hide-read
 reduced-feedlist = /apps/liferea/reduced-feedlist
 download-tool = /apps/liferea/enclosure-download-tool
-proxy-detect-mode = /apps/liferea/detect-mode
 
-# FIXME
+proxy-detect-mode = /apps/liferea/proxy/detect-mode
 proxy-host = /apps/liferea/proxy/host
 proxy-port = /apps/liferea/proxy/port
-proxy-use-authentication = /apps/liferea/proxy/use-authentication
-proxy-authentication-user = /apps/liferea/authentication-user
-proxy-authentication-password = /apps/liferea/authentication-password
+proxy-use-authentication = /apps/liferea/proxy/use_authentication
+proxy-authentication-user = /apps/liferea/proxy/authentication_user
+proxy-authentication-password = /apps/liferea/proxy/authentication_password
 
 social-bm-site = /apps/liferea/social-bm-site
 start-in-tray = /apps/liferea/start-in-tray
