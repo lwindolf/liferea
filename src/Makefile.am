@@ -92,7 +92,7 @@ endif
 INTROSPECTION_GIRS = Liferea-3.0.gir
 
 Liferea-3.0.gir: liferea
-INTROSPECTION_SCANNER_ARGS = -I$(top_srcdir) --warn-all --accept-unprefixed --identifier-prefix=Liferea --verbose
+INTROSPECTION_SCANNER_ARGS = -I$(top_srcdir)/src --warn-all --accept-unprefixed --identifier-prefix=Liferea --verbose
 Liferea_3_0_gir_NAMESPACE = Liferea
 Liferea_3_0_gir_VERSION = 3.0
 Liferea_3_0_gir_PROGRAM = $(builddir)/liferea
