@@ -417,10 +417,10 @@ msgstr "Виводити діагностичні повідомлення що�
 #: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 "Увімкнути діагностику обробки HTML. Під час кожного сеансу обробки HTML у "
-"Liferea програма створюватиме дамп HTML за адресою ~/.liferea_1.8/output."
+"Liferea програма створюватиме дамп HTML за адресою ~/.cache/liferea/output."
 "xhtml"
 
 #: ../src/main.c:177

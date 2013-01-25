@@ -441,10 +441,10 @@ msgstr "Udskriv fejlsøgningsbeskeder på alle GUI-funktioner"
 #: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 "Aktiverer HTML-optegningsfejlsøgning. Hver gang Liferea optegner HTML-uddata "
-"vil Liferea også smide den oprettede HTML i ~/.liferea_1.8/output.xhtml"
+"vil Liferea også smide den oprettede HTML i ~/.cache/liferea/output.xhtml"
 
 #: ../src/main.c:177
 msgid "Print debugging messages of all network activity"

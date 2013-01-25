@@ -425,10 +425,10 @@ msgstr "Wyświetla informacje debugera o funcjach GUI"
 #: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 "Włącza wyświetlanie debuga HTML. Za każdym razem gdy Liferea wyświetla kod "
-"HTML będzie również zapisywać kod HTML w ~/.liferea_1.8/output.xhtml"
+"HTML będzie również zapisywać kod HTML w ~/.cache/liferea/output.xhtml"
 
 #: ../src/main.c:177
 msgid "Print debugging messages of all network activity"

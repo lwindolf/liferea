@@ -401,9 +401,9 @@ msgstr "输出所有图形界面的调试信息"
 #: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
-"启用 HTML 渲染调试。每当 Liferea 渲染 HTML 都将其转储至 ~/.liferea_1.8/"
+"启用 HTML 渲染调试。每当 Liferea 渲染 HTML 都将其转储至 ~/.cache/liferea/"
 "output.xhtml"
 
 #: ../src/main.c:177

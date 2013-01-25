@@ -412,7 +412,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 "Aktiverar felsökning av HTML-rendering. Varje gång som Liferea renderar HTML-"
 "utdata så kommer även den genererade HTML-koden att skrivas i ~/.liferea_1.6/"

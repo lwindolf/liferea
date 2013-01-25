@@ -423,10 +423,10 @@ msgstr "GUI を扱う関数のデバッグ情報を出力する"
 #: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
-"HTML 描画機能のデバッグを有効にする (HTML 出力を行う度にその内容を ~/."
-"liferea_1.8/output.xhtml に書き込む)"
+"HTML 描画機能のデバッグを有効にする (HTML 出力を行う度にその内容を ~/.cache/"
+"liferea/output.xhtml に書き込む)"
 
 #: ../src/main.c:177
 msgid "Print debugging messages of all network activity"

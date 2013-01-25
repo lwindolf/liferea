@@ -416,10 +416,10 @@ msgstr "Foutmeldingen over alle GUI-functies tonen"
 #: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 "Foutopsporing HTML-opmaak ingeschakelen. Iedere keer dat Liferea HTML-"
-"uitvoer opmaakt, zal het deze ook wegschrijven naar ~/.liferea_1.8/output."
+"uitvoer opmaakt, zal het deze ook wegschrijven naar ~/.cache/liferea/output."
 "xhtml"
 
 #: ../src/main.c:177

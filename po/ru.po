@@ -414,7 +414,7 @@ msgstr "Выводить отладочную информацию о всех �
 #, fuzzy
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 "Включить отладку отрисовки HTML. Каждый раз когда Liferea отрисовывает HTML-"
 "вывод она также будет сохранять генерируемый HTML в ~/.liferea_1.6/output."

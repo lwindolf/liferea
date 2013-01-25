@@ -414,10 +414,10 @@ msgstr ""
 #: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 "Activează depanarea randării HTMLL. De fiecare dată când Liferea randează "
-"HTML va copia HTML-ul generat în ~/.liferea_1.8/output.xhtml"
+"HTML va copia HTML-ul generat în ~/.cache/liferea/output.xhtml"
 
 #: ../src/main.c:177
 msgid "Print debugging messages of all network activity"

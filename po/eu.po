@@ -412,10 +412,10 @@ msgstr "Bistaratu GUI funtzio guztien arazketa mezuak"
 #: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 "Gaitu HTML bistaratze arazketa. Lifereak HTML bat prozesatzen duen "
-"bakoitzean irteera ~/.liferea_1.8/output.xhtml fitxategian ere idatzi."
+"bakoitzean irteera ~/.cache/liferea/output.xhtml fitxategian ere idatzi."
 
 #: ../src/main.c:177
 msgid "Print debugging messages of all network activity"

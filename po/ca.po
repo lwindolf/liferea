@@ -416,10 +416,10 @@ msgstr ""
 #: ../src/main.c:176
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 "Habilita la depuració del renderitzat de l'HTML. Cada vegada que el Liferea "
-"renderitzi HTML també crearà una còpia de l'HTML generat a ~/.liferea_1.8/"
+"renderitzi HTML també crearà una còpia de l'HTML generat a ~/.cache/liferea/"
 "output.xhtml"
 
 #: ../src/main.c:177
