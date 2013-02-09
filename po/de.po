@@ -2105,7 +2105,7 @@ msgstr "Beim _Auswählen Schlagzeilen aller enthaltenen Abonnements zeigen."
 
 #: ../glade/prefs.ui.h:12
 msgid "_Hide read items."
-msgstr "_Ungelesene Schlagzeilen verbergen"
+msgstr "_Gelesene Schlagzeilen verbergen"
 
 #: ../glade/prefs.ui.h:13
 msgid "Feed Icons (Favicons)"
