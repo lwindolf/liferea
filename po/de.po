@@ -1793,7 +1793,7 @@ msgstr "_Die Schlagzeilen aller seiner Abonnements zeigen wenn Ordner ausgewähl
 
 #: ../glade/liferea.ui.h:59
 msgid "_Hide read items."
-msgstr "_Ungelesene Schlagzeilen verbergen"
+msgstr "_Gelesene Schlagzeilen verbergen"
 
 #: ../glade/liferea.ui.h:60
 msgid "Feed Icons (Favicons)"
