@@ -73,7 +73,7 @@ Mandatory:
    libxml2
    libxslt
    sqlite3
-   libwebkit
+   libwebkit3
    libjson-glib
    libgirepository1.0
    libpeas
