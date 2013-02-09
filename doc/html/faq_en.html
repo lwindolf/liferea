@@ -42,23 +42,6 @@ packages is provided in the <a href="http://liferea.sf.net/install.htm">installa
 
 </dd>
 
-<dt>Q: Security and Liferea</dt>
-<dd>A: 
-Liferea might be quite functional but is not the best choice
-when you consider security to be very important. There are
-some points you should know:
-<ul>
-<li>When using feed or proxy authentication usernames and
-passwords are saved plain text in ~/.liferea/feedlist.opml.
-File Permissions: 0600.</li>
-<li>The ~/.liferea directory depending on the users umask
-can be readable for everyone. This is useful to allow other 
-programs access to the new_subscription pipe.</li>
-<li>The feed cache is saved in a binary database file.</li>
-<li>This list may not be complete!</li>
-</ul>
-</dd>
-
 <dt>Q: Enclosures download with Gwget doesn't work</dt>
 <dd>A: Most likely you have Gwget 1.0.0 or 1.0.1 installed, and
 due to a temporary breakage in the dbus API of Gwget these versions
@@ -80,18 +63,18 @@ instead of minimizing to tray icon".
 
 <dt>Q: I want cookies!</dt>
 <dd>A: 
-Liferea supports cookies provided by a text file ~/.liferea_1.6/cookies.txt
+Liferea supports cookies provided by a text file ~/.config/liferea/cookies.txt
 which contains cookies in Netscape format. The easiest way is to copy
 the file from your Mozilla profile after you created the cookies
 with the browser.
 </dd>
 
-<dt>Q: I don't like the HTML styles Liferea uses!
+<dt>Q: I don't like the HTML/CSS styles Liferea uses!
 </dt>
-<dd>A: You can have your own stylesheet. Just place a liferea.css into ~/.liferea_1.6/.
+<dd>A: You can have your own stylesheet. Just edit ~/.config/liferea/liferea.css
 During startup it will be loaded additionally to the default stylesheets so you can
-modify some or all style definitions. To learn about the styles have a 
-look at the default stylesheets in &lt;install root&gt;/share/liferea/css.
+modify some or all style definitions. The file contains comments describing the
+different style so it should be easy to modify them.
 </dd>
 
 <dt>Q: How do I see my LiveJournal friend's friends-only entries?</dt>

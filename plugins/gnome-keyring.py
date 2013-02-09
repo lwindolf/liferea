@@ -57,9 +57,9 @@ class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
         GnomeKeyring.Attribute.list_append_string(attrs, 'user', username)
 	GnomeKeyring.item_create_sync("liferea", GnomeKeyring.ItemType.GENERIC_SECRET, repr(id), attrs, '@@@'.join([username, password]), True)
 
-class GnomeKeyringConfigurable(GObject.Object, PeasGtk.Configurable):
-    __gtype_name__ = 'GnomeKeyringConfigurable'
-
-    def do_create_configure_widget(self):
-        return Gtk.Label.new("GNOME Keyring configure widget")
+#class GnomeKeyringConfigurable(GObject.Object, PeasGtk.Configurable):
+#    __gtype_name__ = 'GnomeKeyringConfigurable'
+#
+#    def do_create_configure_widget(self):
+#        return Gtk.Label.new("GNOME Keyring configure widget")
 
