@@ -210,11 +210,11 @@ network_init (void)
 
 	/* Set an appropriate user agent */
 	if (g_getenv ("LANG")) {
-		/* e.g. "Liferea/1.6.0 (Linux; de_DE; http://liferea.sf.net/)" */
-		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
+		/* e.g. "Liferea/1.10.0 (Linux; de_DE; http://liferea.sf.net/) AppleWebKit (KHTML, like Gecko)" */
+		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
 	} else {
-		/* e.g. "Liferea/1.6.0 (Linux; http://liferea.sf.net/)" */
-		useragent = g_strdup_printf ("Liferea/%s (%s; %s)", VERSION, OSNAME, HOMEPAGE);
+		/* e.g. "Liferea/1.10.0 (Linux; http://liferea.sf.net/) AppleWebKit (KHTML, like Gecko)" */
+		useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
 	}
 
 	/* Cookies */

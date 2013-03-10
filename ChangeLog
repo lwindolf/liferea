@@ -1,5 +1,7 @@
 	to be released
 
+	* Extended user agent by "AppleWebKit (KHTML, like Gecko)"
+	  to solve incorrect mobile redirect with zdf.de
 	* Update of German FAQ
 	* Update of English FAQ
 	* Fixes to German translation (Christian Stadelmann)
