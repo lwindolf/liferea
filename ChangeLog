@@ -2,6 +2,7 @@
 
 	* Extended user agent by "AppleWebKit (KHTML, like Gecko)"
 	  to solve incorrect mobile redirect with zdf.de
+	* Added social bookmarking support for Mister Wong
 	* Update of German FAQ
 	* Update of English FAQ
 	* Fixes to German translation (Christian Stadelmann)

@@ -123,6 +123,7 @@ social_init (void)
 	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title=%s&url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("Linkroll",	"http://www.linkroll.com/index.php?action=insertLink&url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("maple",		"http://www.maple.nu/bookmarks/bookmarklet?bookmark[url]=%s&bookmark[name]=%s", TRUE, FALSE);
+	social_register_bookmark_site ("Mister Wong",	"http://www.mister-wong.de/index.php?action=addurl&bm_url=%s&bm_description=%s", TRUE, FALSE);
 	social_register_bookmark_site ("netvouz",	"http://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Newsvine",	"http://www.newsvine.com/_wine/save?u=%s&h=%s", TRUE, FALSE);
 	social_register_bookmark_site ("reddit",	"http://reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
