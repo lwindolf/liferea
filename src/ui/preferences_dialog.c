@@ -462,6 +462,12 @@ on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
 	liferea_shell_update_toolbar ();
 }
 
+static void
+preferences_dialog_destroy_cb (GtkWidget *widget, PreferencesDialog *pd)
+{
+	g_object_unref (pd);
+}
+
 void
 preferences_dialog_init (PreferencesDialog *pd)
 {
@@ -809,6 +815,8 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	gtk_container_add (GTK_CONTAINER (alignment), widget);
 	gtk_box_pack_start (GTK_BOX (pd->priv->plugins_box), alignment, TRUE, TRUE, 0);
+
+	g_signal_connect_object (pd->priv->dialog, "destroy", G_CALLBACK (preferences_dialog_destroy_cb), pd, 0);
 
 	gtk_widget_show_all (pd->priv->dialog);
 
