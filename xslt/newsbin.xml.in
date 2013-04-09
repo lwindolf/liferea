@@ -27,6 +27,9 @@
 
 <xsl:output method="xml" version="1.0" indent="yes"/>
 
+<xsl:param name="appDirection"/>	<!-- application direction, either "ltr" or "rtl" -->
+<xsl:param name="txtDirection"/>	<!-- text direction, either "ltr" or "rtl" -->
+
 <xsl:preserve-space elements="//*"/>
 
 <xsl:template match="/feed" >
@@ -38,7 +41,7 @@
 <body>
 
 <!-- header table -->
-<table class="feedhead" cellspacing="0">
+<table class="feedhead" cellspacing="0" dir="{$appDirection}">
 <tr>
   <td valign="middle" class="headleft">
     <b><_span>News Bin:</_span></b>
