@@ -7,6 +7,8 @@
 	* Update of Czech translation (Peter Simacek)
 	* Fixes to German translation (Christian Stadelmann)
 	* Added MimeType to .desktop file (Craig Barnes)
+	* Fixes SF #1040: In feed entries, spaces are replaced with "+" 
+          (reported by Emmanuel Seyman)
 
 
 2013-01-03  Lars Windolf <lars.lindner@gmail.com>
