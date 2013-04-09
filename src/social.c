@@ -1,7 +1,7 @@
 /**
  * @file social.c  social networking integration
  * 
- * Copyright (C) 2006-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,6 +113,7 @@ social_init (void)
 	social_register_bookmark_site ("FeedMarker",	"http://www.feedmarker.com/admin.php?do=bookmarklet_mark&url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Feed Me Links!",	"http://feedmelinks.com/categorize?from=toolbar&op=submit&name=%s&url=%s&version=0.7", TRUE, TRUE);
 	social_register_bookmark_site ("Give a Link",	"http://www.givealink.org/cgi-pub/bookmarklet/bookmarkletLogin.cgi?&uri=%s&title=%s", TRUE, FALSE);
+	social_register_bookmark_site ("Google Bookmarks",	"https://www.google.com/bookmarks/mark?op=edit&output=&bkmk=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Google Plus",	"https://plus.google.com/share?url=%s", FALSE, FALSE);
 	social_register_bookmark_site ("Gravee",		"http://www.gravee.com/account/bookmarkpop?u=%s&t=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Hyperlinkomatic","http://www.hyperlinkomatic.com/lm2/add.html?LinkTitle=%s&LinkUrl=%s", TRUE, TRUE);

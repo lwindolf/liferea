@@ -3,6 +3,7 @@
 	* Extended user agent by "AppleWebKit (KHTML, like Gecko)"
 	  to solve incorrect mobile redirect with zdf.de
 	* Added social bookmarking support for Mister Wong
+	* Added social bookmarking support for Google Bookmarks
 	* Update of German FAQ
 	* Update of English FAQ
 	* Added MimeType to .desktop file (Craig Barnes)
