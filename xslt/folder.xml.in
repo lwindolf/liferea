@@ -27,6 +27,9 @@
 
 <xsl:output method="xml" version="1.0" indent="yes"/>
 
+<xsl:param name="appDirection"/>	<!-- application direction, either "ltr" or "rtl" -->
+<xsl:param name="txtDirection"/>	<!-- text direction, either "ltr" or "rtl" -->
+
 <xsl:template match="/node">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -34,7 +37,7 @@
 </head>
 <body>
 
-<table class="feedhead" cellspacing="0">
+<table class="feedhead" cellspacing="0" dir="{$appDirection}">
 <tr>
   <td valign="middle" class="headleft">
     <b><_span>Folder:</_span></b>

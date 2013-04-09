@@ -11,6 +11,8 @@
 	  (Emilio Pozuelo Monfort, reported by David Smith)
 	* Fixes SF #1040: In feed entries, spaces are replaced with "+" 
 	  (reported by Emmanuel Seyman)
+	* Fixes SF #1051: Issues in RTL GUI of Liferea
+	  (reported by phixy)
 
 
 2013-01-30  Lars Windolf <lars.lindner@gmail.com>
