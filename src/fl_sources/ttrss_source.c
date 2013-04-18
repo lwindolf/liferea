@@ -145,6 +145,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 
 	if (source->session_id) {
 		updateRequestPtr request;
+		gchar *source_uri;
 
 		/* Check for remote update daemon running. This needs to be known
 		   before we start updating to decide wether to actively update
@@ -153,7 +154,9 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 		request->options = update_options_copy (subscription->updateOptions);
 		request->postdata = g_strdup_printf (TTRSS_JSON_GET_CONFIG, source->session_id);
 
-		update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url")));
+		source_uri = g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url"));
+		update_request_set_source (request, source_uri);
+		g_free (source_uri);
 		update_execute_request (source, request, ttrss_source_get_config_cb, source, flags);
 	}
 }
@@ -165,7 +168,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 void
 ttrss_source_login (ttrssSourcePtr source, guint32 flags) 
 { 
-	gchar			*username, *password;
+	gchar			*username, *password, *source_uri;
 	updateRequestPtr	request;
 	subscriptionPtr		subscription = source->root->subscription;
 	
@@ -179,8 +182,10 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 	/* escape user and password for JSON call */
 	username = g_strescape (subscription->updateOptions->username, NULL);
 	password = g_strescape (subscription->updateOptions->password, NULL);
-	
-	update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url")));
+
+	source_uri = g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url"));
+	update_request_set_source (request, source_uri);
+	g_free (source_uri);
 
 	request->options = update_options_copy (subscription->updateOptions);
 	request->postdata = g_strdup_printf (TTRSS_JSON_LOGIN, username, password);

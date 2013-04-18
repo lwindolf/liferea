@@ -186,6 +186,7 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct 
 {
 	debug0 (DEBUG_UPDATE, "ttrs_subscription_prepare_update_request");
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
+	gchar *source_uri;
 
 	g_assert (source);
 	if (source->loginState == TTRSS_SOURCE_STATE_NONE) {
@@ -197,7 +198,9 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct 
 
 	// FIXME: if (!source->selfUpdating) trigger remote update first!
 
-	update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url")));
+	source_uri = g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url"));
+	update_request_set_source (request, source_uri);
+	g_free (source_uri);
 	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
 	
 	return TRUE;
