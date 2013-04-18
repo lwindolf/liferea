@@ -93,7 +93,7 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "content"));
-			GList		*iter = json_array_get_elements (array);
+			GList		*iter, *elements;
 			GSList		*siter;
 		
 			/* We expect something like this:
@@ -115,7 +115,8 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 			   [...]
 			   
 			   */
-			
+
+			elements = iter = json_array_get_elements (array);
 			/* Add all new nodes we find */
 			while (iter) {
 				JsonNode *node = (JsonNode *)iter->data;
@@ -129,14 +130,15 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 				}
 				iter = g_list_next (iter);
 			}
-			
+			g_list_free (elements);
+
 			/* Remove old nodes we cannot find anymore */
 			siter = source->root->children;
 			while (siter) {
 				nodePtr node = (nodePtr)siter->data;
 				gboolean found = FALSE;
 				
-				iter = json_array_get_elements (array);
+				elements = iter = json_array_get_elements (array);
 				while (iter) {
 					JsonNode *json_node = (JsonNode *)iter->data;
 					if (g_str_equal (node->subscription->source, json_get_string (json_node, "feed_url"))) {
@@ -146,7 +148,8 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 					}
 					iter = g_list_next (iter);
 				}
-	
+				g_list_free (elements);
+
 				if (!found)			
 					feedlist_node_removed (node);
 				
