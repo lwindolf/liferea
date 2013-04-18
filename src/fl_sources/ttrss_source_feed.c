@@ -67,8 +67,11 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 			while (iter) {
 				JsonNode *node = (JsonNode *)iter->data;
 				itemPtr item = item_new ();
-				
-				item_set_id (item, g_strdup_printf ("%" G_GINT64_FORMAT, json_get_int (node, "id")));
+				gchar *id;
+
+				id = g_strdup_printf ("%" G_GINT64_FORMAT, json_get_int (node, "id"));
+				item_set_id (item, id);
+				g_free (id);
 				item_set_title (item, json_get_string (node, "title"));
 				item_set_source (item, json_get_string (node, "link"));
 				item_set_description (item, json_get_string (node, "content"));
