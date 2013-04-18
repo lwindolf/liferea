@@ -119,6 +119,7 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	nodePtr root = node_source_root_from_node (subscription->node);
 	ttrssSourcePtr source = (ttrssSourcePtr) root->data;
 	const gchar *feed_id;
+	gchar *source_name;
 
 	debug0 (DEBUG_UPDATE, "preparing tt-rss feed subscription for update");
 	
@@ -134,7 +135,9 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		return FALSE;
 	}
 	request->postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, 15 /* items to fetch */ );
-	update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (root->subscription->metadata, "ttrss-url")));
+	source_name = g_strdup_printf (TTRSS_URL, metadata_list_get (root->subscription->metadata, "ttrss-url"));
+	update_request_set_source (request, source_name);
+	g_free (source_name);
 
 	return TRUE;
 }
