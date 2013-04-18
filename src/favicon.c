@@ -169,7 +169,7 @@ favicon_download_icon_cb (const struct updateResult * const result, gpointer use
 		}
 
 		if (err) {
-			g_warning ("%s\n", err->message);
+			debug1 (DEBUG_UPDATE, "%s", err->message);
 			g_error_free (err);
 		}
 
