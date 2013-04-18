@@ -162,6 +162,8 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 		} else {
 			g_warning ("Invalid JSON returned on tt-rss request! >>>%s<<<", result->data);
 		}
+
+		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
 		debug0 (DEBUG_UPDATE, "ttrss_subscription_cb(): ERROR: failed to get subscription list!");
