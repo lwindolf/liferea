@@ -104,6 +104,8 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 
 			g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by tt-rss API!"));
 		}
+
+		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
 	}
