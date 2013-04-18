@@ -41,7 +41,8 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "content"));
-			GList		*iter = json_array_get_elements (array);
+			GList		*elements = json_array_get_elements (array);
+			GList		*iter = elements;
 			GList		*items = NULL;
 
 			/*
@@ -90,7 +91,9 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 				
 				iter = g_list_next (iter);
 			}
-			
+
+			g_list_free (elements);
+
 			/* merge against feed cache */
 			if (items) {
 				itemSetPtr itemSet = node_get_itemset (subscription->node);
