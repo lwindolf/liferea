@@ -387,7 +387,7 @@ conf_get_str_value_from_schema (GSettings *gsettings, const gchar *key, gchar **
 
 	if (gsettings == NULL)
 		gsettings = settings;
-	*value = g_strdup (g_settings_get_string (gsettings,key));
+	*value = g_settings_get_string (gsettings, key);
 	return (NULL != value);
 }
 
