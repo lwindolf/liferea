@@ -14,6 +14,7 @@
 	  (reported by Emmanuel Seyman)
 	* Fixes SF #1051: Issues in RTL GUI of Liferea
 	  (reported by phixy)
+	* Fix several memory leaks (Emilio Pozuelo Monfort)
 
 
 2013-01-30  Lars Windolf <lars.lindner@gmail.com>
