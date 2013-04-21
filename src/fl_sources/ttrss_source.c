@@ -42,9 +42,6 @@
 
 // FIXME: Avoid doing requests when we are not logged in yet!
 
-/** default tt-rss subscription list update interval = once a day */
-#define TTRSS_SOURCE_UPDATE_INTERVAL 60*60*24
-
 /** create a tt-rss source with given node as root */ 
 static ttrssSourcePtr
 ttrss_source_new (nodePtr node) 
