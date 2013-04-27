@@ -21,6 +21,7 @@
 
 #include <libxml/uri.h>
 
+#include "comments.h"
 #include "common.h"
 #include "conf.h"
 #include "db.h"
