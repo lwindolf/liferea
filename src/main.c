@@ -75,7 +75,6 @@ static void
 on_app_activate (GtkApplication *app, gpointer user_data)
 {
 	GList		*list;
-	GtkWidget	*window;
 	gchar		*feedUri = (gchar *)user_data;
 
 	list = gtk_application_get_windows (app);
