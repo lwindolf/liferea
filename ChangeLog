@@ -3,15 +3,15 @@
 	* Fixes missing item list update when browsing item URLs in Liferea
 	* Fixes format string issues in several translations.
 	* Added Hebrew translation of reference manual page (Genghis Khan)
-	* Update of Hebrew translation (Genghis Khan)
-	* Update of Czech translation (Peter Simacek)
-	* Fixes to German translation (Christian Stadelmann)
 	* Added MimeType to .desktop file (Craig Barnes)
 	* Fixes SF #1040: In feed entries, spaces are replaced with "+"
           (reported by Emmanuel Seyman)
 	* Fixes SF #1051: Issues in RTL GUI of Liferea
 	  (reported by phixy)
 
+	* Updated Czech translation (Peter Simacek)
+	* Updated German translation (Christian Stadelmann)
+	* Updated Hebrew translation (Genghis Khan)
 
 2013-01-03  Lars Windolf <lars.lindner@gmail.com>
 
