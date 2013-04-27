@@ -124,7 +124,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
         if parentWidget == None:
            print "ERROR: Could not find media player insertion widget!"
 
-        # Test wether Media Player widget already exists
+        # Test whether Media Player widget already exists
         childList = Gtk.Container.get_children(parentWidget)
 
 	if len(childList) == 1:

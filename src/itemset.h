@@ -75,7 +75,7 @@ guint itemset_merge_items(itemSetPtr itemSet, GList *items, gboolean allowUpdate
 gboolean itemset_check_item (itemSetPtr itemSet, itemPtr item);
 
 /**
- * Checks wether the given item id is in the given item set.
+ * Checks whether the given item id is in the given item set.
  *
  * @param itemSet	the itemSet
  * @param id		the item id

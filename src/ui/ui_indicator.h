@@ -39,7 +39,7 @@ void ui_indicator_destroy (void);
 void ui_indicator_update (void);
 
 /**
- * Query wether indicator widget is active.
+ * Query whether indicator widget is active.
  * 
  * @returns TRUE if indicator widget is active
  */

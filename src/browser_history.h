@@ -62,7 +62,7 @@ gchar * browser_history_forward (browserHistory *history);
 gchar * browser_history_back (browserHistory *history);
 
 /**
- * Check wether the history can go forward.
+ * Check whether the history can go forward.
  *
  * @param history	the browser history
  *
@@ -71,7 +71,7 @@ gchar * browser_history_back (browserHistory *history);
 gboolean browser_history_can_go_forward (browserHistory *history);
 
 /**
- * Check wether the history can go back.
+ * Check whether the history can go back.
  *
  * @param history	the browser history
  *

@@ -56,7 +56,7 @@ static gboolean (*old_feed_drag_data_received)(GtkTreeDragDest *drag_dest,
 
 /* GtkTreeDragSource/GtkTreeDragDest implementation				*/
 
-/** decides wether a feed cannot be dragged or not */
+/** decides whether a feed cannot be dragged or not */
 static gboolean
 ui_dnd_feed_draggable (GtkTreeDragSource *drag_source, GtkTreePath *path)
 {

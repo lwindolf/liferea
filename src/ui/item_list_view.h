@@ -76,7 +76,7 @@ ItemListView * item_list_view_create (GtkWidget *window);
 GtkTreeView * item_list_view_get_widget (ItemListView *ilv);
 
 /**
- * Checks wether the given id is in the ItemListView.
+ * Checks whether the given id is in the ItemListView.
  *
  * @param ilv	the ItemListView
  * @param id	the item id

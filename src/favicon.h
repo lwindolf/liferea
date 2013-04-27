@@ -44,7 +44,7 @@ GdkPixbuf * favicon_load_from_cache(const gchar *id);
 void favicon_remove_from_cache(const gchar *id);
 
 /**
- * Checks wether a given favicon needs to be updated 
+ * Checks whether a given favicon needs to be updated 
  *
  * @param id		the favicon id
  * @param updateState	update state info of the favicon

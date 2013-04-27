@@ -97,7 +97,7 @@ subscription_new (const gchar *source,
 	return subscription;
 }
 
-/* Checks wether updating a feed makes sense. */
+/* Checks whether updating a feed makes sense. */
 gboolean
 subscription_can_be_updated (subscriptionPtr subscription)
 {

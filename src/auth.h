@@ -24,7 +24,7 @@
 #include <glib.h>
 
 /**
- * Method to query wether there is an active password store.
+ * Method to query whether there is an active password store.
  *
  * @returns TRUE if there is a password store
  */

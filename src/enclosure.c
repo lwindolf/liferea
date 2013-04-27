@@ -303,7 +303,7 @@ enclosure_download (encTypePtr type, const gchar *url, gboolean interactive)
 	g_spawn_command_line_async (cmd, &error);
 	if (error && (0 != error->code)) {
 		if (interactive)
-			ui_show_error_box (_("Command failed: \n\n%s\n\n Please check wether the configured download tool is installed and working correctly! You can change it in the 'Download' tab in Tools/Preferences."), cmd);
+			ui_show_error_box (_("Command failed: \n\n%s\n\n Please check whether the configured download tool is installed and working correctly! You can change it in the 'Download' tab in Tools/Preferences."), cmd);
 		else
 			g_warning ("Command \"%s\" failed!", cmd);
 	}
