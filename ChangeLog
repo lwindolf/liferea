@@ -7,7 +7,6 @@
 	* Update of German FAQ
 	* Update of English FAQ
 	* Added MimeType to .desktop file (Craig Barnes)
-	* Fixes to German translation (Christian Stadelmann)
 	* Fixes SF #1063: Can't open preferences twice
 	  (Emilio Pozuelo Monfort, reported by David Smith)
 	* Fixes SF #1040: In feed entries, spaces are replaced with "+"
@@ -22,6 +21,7 @@
 	* Updated Basque translation (Mikel Olasagasti Uranga)
 	* Updated Danish translation (Joe Hansen)
 	* Updated Finnish translation (Jorma Karvonen)
+	* Updated German translation (Christian Stadelmann)
 	* Updated Hungarian translation (Gabor Kelemen)
 	* Updated Japanese translation (Takeshi Hamasaki)
 	* Updated Latvian translation (Rihards Priedītis)
