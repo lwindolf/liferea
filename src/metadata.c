@@ -147,7 +147,7 @@ metadata_get_type (const gchar *name)
 	return type;
 }
 
-gint
+static gint
 metadata_value_cmp (gconstpointer a, gconstpointer b)
 {
 	if (g_str_equal ((gchar *)a, (gchar *)b))
