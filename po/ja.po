@@ -1,7 +1,8 @@
 # liferea ja.po.
-# Copyright (C) 2003-2007,2009 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004, 2005, 2006, 2007, 2009, 2012, 2013 Free Software Foundation, Inc.
 # This file is distributed under the same license as the liferea package.
-# Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2007,2009.
+# Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2007,2009,2012.
+# Takeshi Hamasaki <hmatrjp@users.sourceforge.jp>, 2012.
 #
 # 翻訳の用例 (since 2004-08-16)
 # subscription: 購読
@@ -9,17 +10,17 @@
 # feed: 配信元
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea liferea-1_6\n"
+"Project-Id-Version: liferea-1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-03 16:22+0100\n"
-"PO-Revision-Date: 2009-06-14 21:28+0900\n"
-"Last-Translator: Takeshi AIHANA <takeshi.aihana@gmail.com>\n"
-"Language-Team: Japanese <takeshi.aihana@gmail.com>\n"
+"POT-Creation-Date: 2013-04-27 14:08+0300\n"
+"PO-Revision-Date: 2012-10-26 23:32+0900\n"
+"Last-Translator: Takeshi Hamasaki <hmatrjp@users.sourceforge.jp>\n"
+"Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #. GTK theme support
 #: ../liferea.desktop.in.h:1 ../src/main.c:261 ../glade/liferea.ui.h:1
@@ -196,9 +197,8 @@ msgid "Search Folder:"
 msgstr "検索するフォルダ:"
 
 #: ../src/browser.c:32
-#, fuzzy
 msgid "Default Browser"
-msgstr "GNOME のデフォルト・ブラウザ"
+msgstr "デフォルト・ブラウザ"
 
 #: ../src/browser.c:201 ../src/browser.c:221
 #, c-format
@@ -302,9 +302,8 @@ msgid "Import"
 msgstr "インポート"
 
 #: ../src/export.c:452 ../src/export.c:469 ../src/fl_sources/opml_source.c:387
-#, fuzzy
 msgid "OPML Files"
-msgstr "OPML ファイルの選択"
+msgstr "OPML ファイル"
 
 #: ../src/export.c:460
 msgid "Error while exporting feed list!"
@@ -377,7 +376,6 @@ msgstr "配信元の種類を特定できませんでした。"
 
 #. if we don't find a feed with unread items do nothing
 #: ../src/itemlist.c:403
-#, fuzzy
 msgid "There are no unread items"
 msgstr "未読のトピックはありません"
 
@@ -398,13 +396,12 @@ msgid "Show version information and exit"
 msgstr "バージョン情報を表示して終了する"
 
 #: ../src/main.c:180
-#, fuzzy
 msgid "Add a new subscription"
-msgstr "新しい購読"
+msgstr "新しい配信元を追加する"
 
 #: ../src/main.c:180
 msgid "uri"
-msgstr ""
+msgstr "uri"
 
 #: ../src/main.c:185
 msgid "Print debugging messages of all types"
@@ -415,9 +412,8 @@ msgid "Print debugging messages for the cache handling"
 msgstr "キャッシュの操作に関するデバッグ情報を出力する"
 
 #: ../src/main.c:187
-#, fuzzy
 msgid "Print debugging messages for the configuration handling"
-msgstr "設定に関するデバッグ情報を出力する"
+msgstr "設定の処理に関するデバッグ情報を出力する"
 
 #: ../src/main.c:188
 msgid "Print debugging messages of the database handling"
@@ -433,7 +429,7 @@ msgid ""
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
 msgstr ""
 "HTML 描画機能のデバッグを有効にする (HTML 出力を行う度にその内容を ~/."
-"liferea_1.8/output.xhtml に書き込む)"
+"liferea_1.8/output.xhtml にも書き込む)"
 
 #: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
@@ -456,9 +452,8 @@ msgid "Print debugging messages of the feed update processing"
 msgstr "配信元の更新処理に関するデバッグ情報を出力する"
 
 #: ../src/main.c:196
-#, fuzzy
 msgid "Print debugging messages of the search folder matching"
-msgstr "キャッシュの操作に関するデバッグ情報を出力する"
+msgstr "検索フォルダの処理に関するデバッグ情報を出力する"
 
 #: ../src/main.c:197
 msgid "Print verbose debugging messages"
@@ -752,7 +747,6 @@ msgstr "添付ファイル"
 msgid "%d attachment"
 msgid_plural "%d attachments"
 msgstr[0] "添付ファイル: %d個"
-msgstr[1] "添付ファイル: %d個"
 
 #. The following literals are the enclosure list size units
 #: ../src/ui/enclosure_list_view.c:266
@@ -783,9 +777,9 @@ msgid "Choose File"
 msgstr "ファイルの選択"
 
 #: ../src/ui/enclosure_list_view.c:404
-#, fuzzy, c-format
+#, c-format
 msgid "File Extension .%s"
-msgstr "<b>拡張子 .%s</b>"
+msgstr "拡張子 .%s"
 
 #: ../src/ui/icons.c:54
 #, c-format
@@ -796,15 +790,13 @@ msgstr "Pixmap ファイルが見つかりませんでした: %s"
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
-msgstr[0] "(新着 %d個)"
-msgstr[1] "(新着 %d個)"
+msgstr[0] "(新着%d個)"
 
 #: ../src/ui/liferea_shell.c:316
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
-msgstr[0] "未読 %d個%s"
-msgstr[1] "未読 %d個%s"
+msgstr[0] "未読%d個%s"
 
 #: ../src/ui/liferea_shell.c:690
 msgid "Help Topics"
@@ -978,7 +970,7 @@ msgstr "このアプリケーションの FAQ を表示します"
 
 #: ../src/ui/liferea_shell.c:884
 msgid "_About"
-msgstr "情報(_A)"
+msgstr "このアプリケーションについて(_A)"
 
 #: ../src/ui/liferea_shell.c:884
 msgid "Shows an about dialog."
@@ -1137,7 +1129,6 @@ msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea - Linux ニュース・アグリゲータ"
 
 #: ../src/ui/liferea_shell.c:1246
-#, fuzzy
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
@@ -1146,10 +1137,11 @@ msgid ""
 "'Subscribe' within Liferea</li></ul></p>"
 msgstr ""
 "<p><b>Liferea</b> へようこそ。これはオンラインで配信されているニュースを収集"
-"するデスクトップ・アグリゲータです。</p><p>左側のペインには現在購読している"
-"ニュースの一覧が表示されます。購読を追加する時は [配信元] -&gt; [新しい購読] "
-"を選択して下さい。この一覧からニュースを選択すると、そのヘッドラインが読み込"
-"まれて右側のペインに表示されます。</p>"
+"するデスクトップ向けニュース・アグリゲータです。</p><p>次の方法で新しい購読を"
+"追加することができます<ul><li>メイン・メニューにある [購読]-&gt;[新しい購読] "
+"を開く</li><li>左側のペインに配信元のリンクをドロップする</li><li>左側のペイ"
+"ンで右クリックして表示されるコンテキストメニューの [新規] を開く</li></ul></"
+"p>"
 
 #: ../src/ui/auth_dialog.c:132 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1161,9 +1153,8 @@ msgid "Unknown source"
 msgstr "配信元ソースが不明です"
 
 #: ../src/ui/ui_common.c:205
-#, fuzzy
 msgid "All Files"
-msgstr "ローカルのファイル(_L)"
+msgstr "全てのファイル"
 
 #: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
@@ -1188,14 +1179,13 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (更新はできません)"
 
 #: ../src/ui/liferea_htmlview.c:435
-#, fuzzy, c-format
+#, c-format
 msgid "Download FAILED: \"%s\""
-msgstr "エンクロージャのダウンロードに失敗しました: \"%s\""
+msgstr "ダウンロード失敗: \"%s\""
 
 #: ../src/ui/liferea_htmlview.c:437
-#, fuzzy
 msgid "Download finished."
-msgstr "使用するコマンド(_D):"
+msgstr "ダウンロード完了です"
 
 #: ../src/ui/liferea_htmlview.c:544
 msgid "Launch Link In _Tab"
@@ -1208,29 +1198,27 @@ msgstr "ブラウザで開く(_L)"
 #: ../src/ui/liferea_htmlview.c:548 ../src/ui/popup_menu.c:143
 #, c-format
 msgid "_Bookmark Link at %s"
-msgstr "%s にブックマークとして追加する(_B)"
+msgstr "%s のブックマークに追加(_B)"
 
 #: ../src/ui/liferea_htmlview.c:552
 msgid "_Copy Link Location"
-msgstr "リンク先のアドレスのコピー(_C)"
+msgstr "リンク先のコピー(_C)"
 
 #: ../src/ui/liferea_htmlview.c:555
-#, fuzzy
 msgid "_Copy Image Location"
-msgstr "リンク先のアドレスのコピー(_C)"
+msgstr "画像のリンク先のコピー(_C)"
 
 #: ../src/ui/liferea_htmlview.c:557
-#, fuzzy
 msgid "S_ave Link As"
-msgstr "別名で保存..."
+msgstr "リンクを別名で保存(_A)"
 
 #: ../src/ui/liferea_htmlview.c:559
 msgid "S_ave Image As"
-msgstr ""
+msgstr "画像を別名で保存(_A)"
 
 #: ../src/ui/liferea_htmlview.c:562
 msgid "_Subscribe..."
-msgstr "購読(_S)..."
+msgstr "購読する(_S)..."
 
 #: ../src/ui/item_list_view.c:333
 msgid "*** No title ***"
@@ -1319,17 +1307,16 @@ msgid "New S_ource..."
 msgstr "新しい場所(_O)..."
 
 #: ../src/ui/popup_menu.c:316
-#, fuzzy
 msgid "Sort Feeds"
-msgstr "配信元一覧のインポート"
+msgstr "配信元の並べ替え"
 
 #: ../src/ui/popup_menu.c:322
 msgid "_Rebuild"
-msgstr ""
+msgstr "再構築(_R)"
 
 #: ../src/ui/ui_node.c:124
 msgid "(Empty)"
-msgstr ""
+msgstr "(空)"
 
 #: ../src/ui/ui_node.c:321
 #, c-format
@@ -1408,16 +1395,15 @@ msgstr "新しいタブ"
 
 #: ../src/ui/ui_prefs.c:681
 msgid "Integrate with the messaging menu (indicator)"
-msgstr ""
+msgstr "メッセージ・メニューと統合する (インジケータ)"
 
 #: ../src/ui/ui_prefs.c:684
-#, fuzzy
 msgid "Terminate instead of minimizing to the messaging menu"
-msgstr "トレイ・アイコンをクリックしたら最小化しないで終了する(_E)"
+msgstr "メッセージメニューをクリックしたら最小化しないで終了する"
 
 #: ../src/ui/ui_prefs.c:687
 msgid "Start minimized to the messaging menu"
-msgstr ""
+msgstr "起動時にメッセージ・メニューにアイコン化する"
 
 #: ../src/ui/ui_prefs.c:792
 msgid "Type"
@@ -1432,8 +1418,7 @@ msgstr "プログラム"
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
 "The provider of this feed suggests an update interval of %d minutes."
-msgstr[0] "この配信元では更新間隔を %d分にすることを推奨しています。"
-msgstr[1] "この配信元では更新間隔を %d分にすることを推奨しています。"
+msgstr[0] "この配信元では更新間隔を%d分にすることを推奨しています。"
 
 #: ../src/ui/subscription_dialog.c:434
 msgid "This feed specifies no default update interval."
@@ -1441,14 +1426,13 @@ msgstr "この配信元ではデフォルトの更新間隔を設定してませ
 
 #: ../src/ui/browser_tabs.c:287
 msgid "Untitled"
-msgstr ""
+msgstr "タイトルなし"
 
 #: ../src/ui/ui_tray.c:221
 #, c-format
 msgid "%d new item"
 msgid_plural "%d new items"
-msgstr[0] "新しいトピックが %d個あります"
-msgstr[1] "新しいトピックが %d個あります"
+msgstr[0] "新しいトピックが%d個あります"
 
 #: ../src/ui/ui_tray.c:224
 msgid "No new items"
@@ -1464,10 +1448,7 @@ msgid_plural ""
 "%d unread items"
 msgstr[0] ""
 "%s\n"
-"未読のトピックが %d個あります"
-msgstr[1] ""
-"%s\n"
-"未読のトピックが %d個あります"
+"未読のトピックが%d個あります"
 
 #: ../src/ui/ui_tray.c:230
 #, c-format
@@ -1480,7 +1461,7 @@ msgstr ""
 
 #: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
 msgid "Website"
-msgstr ""
+msgstr "ウェブサイト"
 
 #: ../src/parsers/atom10.c:251
 msgid "Invalid Atom feed: unknown author"
@@ -1544,21 +1525,20 @@ msgstr "ソースの種類"
 
 #: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
-msgstr ""
+msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source.c:361
-#, fuzzy
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 "present your tt-rss subscriptions, and will synchronize your feed list and "
 "reading lists."
 msgstr ""
-"Google リーダで購読している配信元を取り込みます。Google リーダの購読内容を表"
-"示して同期します。"
+"Tiny Tiny RSS 1.5 以上のアカウントで購読している配信元を統合します。Liferea "
+"では tt-rss の購読を提供し配信元の一覧を同期して一覧に表示します。"
 
 #: ../src/fl_sources/ttrss_source_feed.c:105
 msgid "Could not parse JSON returned by tt-rss API!"
-msgstr ""
+msgstr "tt-rss API が返した JSON を解析できませんでした！"
 
 #: ../src/notification/libnotify.c:61 ../src/notification/libnotify.c:83
 #: ../src/notification/libnotify.c:152
@@ -1586,8 +1566,7 @@ msgstr "全て既読にする"
 #, c-format
 msgid "<b>%s</b> has <b>%d</b> update"
 msgid_plural "<b>%s</b> has <b>%d</b> updates"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "<b>%s</b> には<b>%d</b>個の新着トピックスがあります"
 
 #: ../src/notification/libnotify.c:257 ../src/notification/libnotify.c:259
 msgid "Feed Update"
@@ -1663,18 +1642,16 @@ msgid "Subscription Properties"
 msgstr "購読先のプロパティ"
 
 #: ../glade/liferea.ui.h:9
-#, fuzzy
 msgid "Feed Name"
-msgstr "配信元の名前(_N):"
+msgstr "配信元の名前"
 
 #: ../glade/liferea.ui.h:10
 msgid "Feed _Name:"
 msgstr "配信元の名前(_N):"
 
 #: ../glade/liferea.ui.h:11
-#, fuzzy
 msgid "Update Interval"
-msgstr "更新モニタ"
+msgstr "更新間隔"
 
 #: ../glade/liferea.ui.h:12
 msgid "_Use global default update interval."
@@ -1703,9 +1680,8 @@ msgstr "全般"
 
 #: ../glade/liferea.ui.h:19 ../glade/new_subscription.ui.h:2
 #: ../glade/simple_subscription.ui.h:2
-#, fuzzy
 msgid "Feed Source"
-msgstr "<b>配信元の場所</b>"
+msgstr "配信元の場所"
 
 #: ../glade/liferea.ui.h:20 ../glade/new_subscription.ui.h:8
 msgid "Source Type:"
@@ -1825,21 +1801,19 @@ msgstr "Liferea の設定"
 
 #: ../glade/liferea.ui.h:49
 msgid "Feed Cache Handling"
-msgstr ""
+msgstr "キャッシュの扱い"
 
 #: ../glade/liferea.ui.h:50
 msgid "Default _number of items per feed to save:"
 msgstr "配信元毎に保存するトピックの数(_U):"
 
 #: ../glade/liferea.ui.h:51
-#, fuzzy
 msgid "Feed Update Settings"
-msgstr "配信元の更新"
+msgstr "更新の設定"
 
 #: ../glade/liferea.ui.h:52
-#, fuzzy
 msgid "_Update all subscriptions at startup."
-msgstr "全ての購読先を更新します"
+msgstr "起動時に全ての配信先を更新する(_U)"
 
 #: ../glade/liferea.ui.h:53
 msgid "Default Feed Refresh _Interval:"
@@ -1859,9 +1833,8 @@ msgid "Feeds"
 msgstr "配信元"
 
 #: ../glade/liferea.ui.h:57
-#, fuzzy
 msgid "Folder Display Settings"
-msgstr "<span weight=\"bold\">フォルダ表示の設定</span>"
+msgstr "表示の設定"
 
 #: ../glade/liferea.ui.h:58
 msgid "_Show the items of all child feeds when a folder is selected."
@@ -1872,9 +1845,8 @@ msgid "_Hide read items."
 msgstr "既読のトピックを隠す(_H)"
 
 #: ../glade/liferea.ui.h:60
-#, fuzzy
 msgid "Feed Icons (Favicons)"
-msgstr "<span weight=\"bold\">配信元のアイコン (Favicons)</span>"
+msgstr "アイコン (Favicons)"
 
 #: ../glade/liferea.ui.h:61
 msgid "_Update all favicons now"
@@ -1885,27 +1857,24 @@ msgid "Folders"
 msgstr "フォルダ"
 
 #: ../glade/liferea.ui.h:63
-#, fuzzy
 msgid "Reading Headlines"
-msgstr "未読のヘッドライン"
+msgstr "ヘッドラインの読み込み"
 
 #: ../glade/liferea.ui.h:64
 msgid "_Skim through articles with:"
 msgstr "エントリの斜め読みに使用するキー(_S):"
 
 #: ../glade/liferea.ui.h:65
-#, fuzzy
 msgid "Web Integration"
-msgstr "向き"
+msgstr "ウェブ・サービスとの統合"
 
 #: ../glade/liferea.ui.h:66
 msgid "_Post Bookmarks to"
 msgstr "ブックマークの保存先(_P):"
 
 #: ../glade/liferea.ui.h:67
-#, fuzzy
 msgid "Internal Browser Settings"
-msgstr "<span weight=\"bold\">内部ブラウザの設定</span>"
+msgstr "内部ブラウザの設定"
 
 #: ../glade/liferea.ui.h:68
 msgid "Open links in Liferea's _window."
@@ -1920,9 +1889,8 @@ msgid "_Enable browser plugins."
 msgstr "ブラウザのプラグインを使う(_E)"
 
 #: ../glade/liferea.ui.h:71
-#, fuzzy
 msgid "External Browser Settings"
-msgstr "<span weight=\"bold\">外部ブラウザの設定</span>"
+msgstr "外部ブラウザの設定"
 
 #: ../glade/liferea.ui.h:72
 msgid "_Open link in:"
@@ -1946,9 +1914,8 @@ msgid "Browser"
 msgstr "ブラウザ"
 
 #: ../glade/liferea.ui.h:78
-#, fuzzy
 msgid "Notification Settings"
-msgstr "<span weight=\"bold\">通知の設定</span>"
+msgstr "通知の設定"
 
 #: ../glade/liferea.ui.h:79
 msgid "Show a _popup window with new headlines."
@@ -1971,9 +1938,8 @@ msgid "_Start in tray icon."
 msgstr "起動時にアイコン化する(_S)"
 
 #: ../glade/liferea.ui.h:84
-#, fuzzy
 msgid "Toolbar Settings"
-msgstr "ツールバーのスタイル:"
+msgstr "ツールバーの設定"
 
 #: ../glade/liferea.ui.h:85
 msgid "_Hide toolbar."
@@ -1989,7 +1955,7 @@ msgstr "GUI"
 
 #: ../glade/liferea.ui.h:88
 msgid "HTTP Proxy Server"
-msgstr ""
+msgstr "HTTP プロキシのサーバ"
 
 #: ../glade/liferea.ui.h:89
 msgid "_Auto Detect (GNOME or environment)"
@@ -2028,7 +1994,6 @@ msgid "Proxy"
 msgstr "プロキシ"
 
 #: ../glade/liferea.ui.h:98
-#, fuzzy
 msgid "Downloading Enclosures"
 msgstr "エンクロージャのダウンロード"
 
@@ -2045,18 +2010,16 @@ msgid "_Download using"
 msgstr "使用するコマンド(_D):"
 
 #: ../glade/liferea.ui.h:102
-#, fuzzy
 msgid "Opening Enclosures"
-msgstr "エンクロージャを開く..."
+msgstr "エンクロージャの開き方"
 
 #: ../glade/liferea.ui.h:103
 msgid "Enclosures"
 msgstr "エンクロージャ"
 
 #: ../glade/liferea.ui.h:104
-#, fuzzy
 msgid "Synchronized with Nearby Hosts"
-msgstr "<span weight=\"bold\">近くにあるホストとの同期</span>"
+msgstr "近くにあるホストとの同期"
 
 #: ../glade/liferea.ui.h:105
 msgid "_Enable Local LAN Synchronization"
@@ -2095,9 +2058,8 @@ msgid "Search _Name:"
 msgstr "検索する内容(_N):"
 
 #: ../glade/liferea.ui.h:115
-#, fuzzy
 msgid "Find Items that meet the following criteria"
-msgstr "<b>次の条件を満足するトピックを検索します</b>"
+msgstr "次の条件を満足するトピックを検索します:"
 
 #: ../glade/liferea.ui.h:116
 msgid "A_ny Rule Matches"
@@ -2162,14 +2124,12 @@ msgid "Update Monitor"
 msgstr "更新モニタ"
 
 #: ../glade/liferea.ui.h:129
-#, fuzzy
 msgid "Pending Requests"
-msgstr "<b>保留中のリクエスト</b>"
+msgstr "保留中のリクエスト"
 
 #: ../glade/liferea.ui.h:130
-#, fuzzy
 msgid "Downloading Now"
-msgstr "<b>ダウンロード中のリクエスト</b>"
+msgstr "ダウンロード中のリクエスト"
 
 #: ../glade/liferea.ui.h:131
 msgid "Cancel _All"
@@ -2188,12 +2148,11 @@ msgid "About"
 msgstr "情報"
 
 #: ../glade/liferea.ui.h:135
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2012\n"
 "The Liferea Team\n"
 msgstr ""
-"Copyright (c) 2003-2009\n"
+"Copyright (c) 2003-2012\n"
 "Liferea 開発チーム\n"
 
 #: ../glade/liferea.ui.h:138
@@ -2225,7 +2184,6 @@ msgid "Maximal _Number Of Result Items:"
 msgstr "検索結果の最大数(_N):"
 
 #: ../glade/liferea.ui.h:145
-#, fuzzy
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "search engine results for the specified search string. You can keep this "
@@ -2236,9 +2194,8 @@ msgstr ""
 "す。"
 
 #: ../glade/new_subscription.ui.h:9
-#, fuzzy
 msgid "Download / Postprocessing"
-msgstr "<b>ダウンロードと事後処理</b>"
+msgstr "ダウンロードと事後処理"
 
 #: ../glade/node_source.ui.h:1
 msgid "Source Selection"
@@ -2267,19 +2224,16 @@ msgid "_Select File"
 msgstr "選択(_S)..."
 
 #: ../glade/ttrss_source.ui.h:1
-#, fuzzy
 msgid "Add Tiny Tiny RSS Account"
-msgstr "Bloglines アカウントの追加"
+msgstr "Tiny Tiny RSS アカウントの追加"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your tt-rss account settings."
-msgstr "Bloglines のアカウント情報を入力して下さい:"
+msgstr "tt-rss のアカウント情報を入力して下さい:"
 
 #: ../glade/ttrss_source.ui.h:3
-#, fuzzy
 msgid "_Server URL"
-msgstr "サーバのエラー"
+msgstr "サーバの URL(_S)"
 
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
@@ -2304,237 +2258,8 @@ msgstr "拡張..."
 #~ "Jumps to the next unread item. If necessary selects the next feed with "
 #~ "unread items."
 #~ msgstr ""
-#~ "次の未読トピックへジャンプします (必要であれば、未読トピックがある次の配信"
-#~ "元を選択して下さい)"
+#~ "次の未読のトピックにジャンプします。必要であれば、未読のトピックを含む次の"
+#~ "配信元を選択します。"
 
 #~ msgid "Liferea Sync %s@%s"
 #~ msgstr "Liferea 同期 %s@%s"
-
-#~ msgid "link cosmos"
-#~ msgstr "リンク・コスモス"
-
-#~ msgid "Print debugging messages for the plugin loading"
-#~ msgstr "プラグインの読み込みに関するデバッグ情報を出力する"
-
-#~ msgid "Liferea seems to be running already!"
-#~ msgstr "既に Liferea が起動中のようです！"
-
-#~ msgid "Update status"
-#~ msgstr "更新ステータス"
-
-#~ msgid "was updated"
-#~ msgstr "が更新されている"
-
-#~ msgid "was not updated"
-#~ msgstr "が更新されていない"
-
-#~ msgid "The orientation of the tray."
-#~ msgstr "トレイの向きです"
-
-#~ msgid "<b>%s</b>"
-#~ msgstr "<b>%s</b>"
-
-#~ msgid "topics_en.html"
-#~ msgstr "topics_ja.html"
-
-#~ msgid "reference_en.html"
-#~ msgstr "reference_ja.html"
-
-#~ msgid "faq_en.html"
-#~ msgstr "faq_ja.html"
-
-#~ msgid "_Script Manager"
-#~ msgstr "スクリプト・マネージャ(_S)"
-
-#~ msgid "Allows to configure and edit LUA hook scripts"
-#~ msgstr "LUA フック・スクリプトの設定と編集を行います"
-
-#~ msgid "Search With ..."
-#~ msgstr "次で検索..."
-
-#~ msgid "%d Search Result for \"%s\""
-#~ msgid_plural "%d Search Results for \"%s\""
-#~ msgstr[0] "\"%2$s\" を検索した結果 %1$d個"
-#~ msgstr[1] "\"%2$s\" を検索した結果 %1$d個"
-
-#~ msgid "%d Search Result"
-#~ msgid_plural "%d Search Results"
-#~ msgstr[0] "検索した結果 %d個"
-#~ msgstr[1] "検索した結果 %d個"
-
-#~ msgid ""
-#~ "The item list now contains all items matching the specified search "
-#~ "pattern. If you want to save this search result permanently you can click "
-#~ "the \"Search Folder\" button in the search dialog and Liferea will add a "
-#~ "search folder to your feed list."
-#~ msgstr ""
-#~ "トピックの一覧には検索で指定したパターンに一致したエントリが含まれていま"
-#~ "す。この検索結果を保存する場合は、検索ダイアログにある [検索フォルダ] ボタ"
-#~ "ンをクリックして下さい。すると、この結果が検索フォルダとして配信元一覧に追"
-#~ "加されます。"
-
-#~ msgid "Count"
-#~ msgstr "カウント"
-
-#~ msgid "You have to select a feed entry"
-#~ msgstr "配信元エントリを一つ選択して下さい"
-
-#~ msgid "<i>(empty)</i>"
-#~ msgstr "<i>(空)</i>"
-
-#~ msgid "_Delete"
-#~ msgstr "削除(_D)"
-
-#~ msgid "_Properties..."
-#~ msgstr "プロパティ(_P)..."
-
-#~ msgid "Update out-dated feeds"
-#~ msgstr "期限切れの配信元だけ更新する"
-
-#~ msgid "Force update of all feeds"
-#~ msgstr "全ての配信元を強制的に更新する"
-
-#~ msgid "No feed update at all"
-#~ msgstr "配信元を更新しない"
-
-#~ msgid "startup"
-#~ msgstr "起動時"
-
-#~ msgid "feed updated"
-#~ msgstr "配信元の更新"
-
-#~ msgid "feed added"
-#~ msgstr "フィードの追加"
-
-#~ msgid "item selected"
-#~ msgstr "トピックの選択"
-
-#~ msgid "feed selected"
-#~ msgstr "配信元の選択"
-
-#~ msgid "item unselected"
-#~ msgstr "トピックの選択解除"
-
-#~ msgid "feed unselected"
-#~ msgstr "配信元の選択解除"
-
-#~ msgid "shutdown"
-#~ msgstr "強制終了"
-
-#~ msgid "Sorry, no scripting support available!"
-#~ msgstr "スクリプトをサポートしていません！"
-
-#~ msgid "Script Name"
-#~ msgstr "スクリプト名"
-
-#~ msgid "No script selected!"
-#~ msgstr "スクリプトが選択されていません！"
-
-#~ msgid "Create a new search feed."
-#~ msgstr "新しい検索用配信元を生成します"
-
-#~ msgid "Liferea is unable to display this item's content."
-#~ msgstr "Liferea ではこのトピックの内容を表示できません。"
-
-#~ msgid "<p><a href=\"%s\">View this item's content.</a></p>"
-#~ msgstr "<p><a href=\"%s\">このトピックの内容を表示します</a></p>"
-
-#~ msgid "Bloglines"
-#~ msgstr "Bloglines"
-
-#~ msgid ""
-#~ "Integrate the feed list of your Bloglines account. Liferea will present "
-#~ "your Bloglines subscription as a read-only subtree in the feed list."
-#~ msgstr ""
-#~ "Bloglines のアカウント情報の配信元を取り込みます。Liferea では配信元のツ"
-#~ "リーの中に Bloglines の購読内容を読み込み専用で表示します。"
-
-#~ msgid "feedlist.opml"
-#~ msgstr "feedlist.opml"
-
-#~ msgid "%s has %d new / updated headline\n"
-#~ msgid_plural "%s has %d new / updated headlines\n"
-#~ msgstr[0] "%s には %d個の新規/更新されたヘッドラインがあります\n"
-#~ msgstr[1] "%s には %d個の新規/更新されたヘッドラインがあります\n"
-
-#~ msgid "    "
-#~ msgstr "    "
-
-#~ msgid "     "
-#~ msgstr "     "
-
-#~ msgid "      "
-#~ msgstr "      "
-
-#~ msgid "<b>Hook</b>"
-#~ msgstr "<b>フック</b>"
-
-#~ msgid "<b>Registered Scripts</b>"
-#~ msgstr "<b>登録済みのスクリプト</b>"
-
-#~ msgid "<b>Script Code</b>"
-#~ msgstr "<b>スクリプト</b>"
-
-#~ msgid "<b>text/plain</b>"
-#~ msgstr "<b>text/plain</b>"
-
-#~ msgid ""
-#~ "<i>This option can cause significant delays when loading folders "
-#~ "containing many feeds.</i>"
-#~ msgstr ""
-#~ "(<i>配信元がたくさんある場合、読み込む時間が極端に遅くなるおそれがあります"
-#~ "</i>)"
-
-#~ msgid "<span weight=\"bold\">Downloading Enclosures</span>"
-#~ msgstr "<span weight=\"bold\">エンクロージャのダウンロード</span>"
-
-#~ msgid "<span weight=\"bold\">Feed Cache Handling</span>"
-#~ msgstr "<span weight=\"bold\">配信元のキャッシュの取り扱い</span>"
-
-#~ msgid "<span weight=\"bold\">Feed Name</span>"
-#~ msgstr "<span weight=\"bold\">配信元の名前</span>"
-
-#~ msgid "<span weight=\"bold\">Feed Update Settings</span>"
-#~ msgstr "<span weight=\"bold\">配信元の更新設定</span>"
-
-#~ msgid "<span weight=\"bold\">HTTP Proxy Server</span>"
-#~ msgstr "<span weight=\"bold\">HTTP プロキシ・サーバ</span>"
-
-#~ msgid "<span weight=\"bold\">Opening Enclosures</span>"
-#~ msgstr "<span weight=\"bold\">エンクロージャを開くプログラム</span>"
-
-#~ msgid "<span weight=\"bold\">Reading Headlines</span>"
-#~ msgstr "<span weight=\"bold\">ヘッドラインの読み込み</span>"
-
-#~ msgid "<span weight=\"bold\">Toolbar Settings</span>"
-#~ msgstr "<span weight=\"bold\">ツールバーの設定</span>"
-
-#~ msgid "<span weight=\"bold\">Update Interval</span>"
-#~ msgstr "<span weight=\"bold\">更新間隔</span>"
-
-#~ msgid "<span weight=\"bold\">Web Integration</span>"
-#~ msgstr "<span weight=\"bold\">ウェブの統合</span>"
-
-#~ msgid "Add Script"
-#~ msgstr "スクリプトの追加"
-
-#~ msgid "At _startup:"
-#~ msgstr "起動時の動作(_S):"
-
-#~ msgid "Attention Profile"
-#~ msgstr "プロファイルの警告"
-
-#~ msgid "Create new script"
-#~ msgstr "新しいスクリプトの作成"
-
-#~ msgid "Exec Command"
-#~ msgstr "実行コマンド"
-
-#~ msgid "Reuse existing script"
-#~ msgstr "既存のスクリプトを再利用する"
-
-#~ msgid "Script Manager"
-#~ msgstr "スクリプト・マネージャ"
-
-#~ msgid "Search _Link Cosmos with"
-#~ msgstr "リンク・コスモスの検索(_L)"
