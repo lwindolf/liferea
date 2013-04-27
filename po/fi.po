@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-03 16:22+0100\n"
+"POT-Creation-Date: 2013-04-27 14:08+0300\n"
 "PO-Revision-Date: 2012-09-03 01:47+0200\n"
 "Last-Translator: Jorma Karvonen <karvonen.jorma@gmail.com>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -422,14 +422,13 @@ msgid "Print debugging messages of all GUI functions"
 msgstr "Tulosta graafisten käyttöliittymäfunktioiden vianjäljitusviestit"
 
 #: ../src/main.c:190
-#, fuzzy
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.liferea_1.8/output.xhtml"
 msgstr ""
 "Ota käyttöön HTML-renderoinnin vianjäljityksen. Joka kerta kun Liferea "
 "renderoi HTML-tulosteen, se vedostaa myös tuotetun HTML-koodin tiedostoon ~/."
-"liferea_1.6/output.xhtml"
+"liferea_1.8/output.xhtml"
 
 #: ../src/main.c:191
 msgid "Print debugging messages of all network activity"
@@ -2161,12 +2160,11 @@ msgid "About"
 msgstr "Lifereasta"
 
 #: ../glade/liferea.ui.h:135
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2012\n"
 "The Liferea Team\n"
 msgstr ""
-"Copyright © 2003-2010\n"
+"Copyright © 2003-2012\n"
 "Liferea-ryhmä\n"
 
 #: ../glade/liferea.ui.h:138
