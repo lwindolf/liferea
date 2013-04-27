@@ -20,6 +20,7 @@
 
 #include <string.h>		/* For strcmp */
 #include "common.h"
+#include "db.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
