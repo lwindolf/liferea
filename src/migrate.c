@@ -26,6 +26,7 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
+#include "export.h"
 #include "ui/ui_common.h"
 
 /**
