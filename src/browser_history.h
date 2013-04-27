@@ -79,5 +79,13 @@ gboolean browser_history_can_go_forward (browserHistory *history);
  */
 gboolean browser_history_can_go_back (browserHistory *history);
 
+/**
+ * Add a URL to the history.
+ *
+ * @param history	the browser history
+ * @param url		the URL to add
+ */
+void browser_history_add_location (browserHistory *history, const gchar *url);
+
 #endif
 
