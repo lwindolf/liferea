@@ -104,7 +104,6 @@ pkg_modules="	gtk+-3.0 >= 3.4.0
 # Plugins via Introspection
 
 GOBJECT_INTROSPECTION_CHECK([0.9.3])
-GLIB_GSETTINGS
 
 ################################################################################
 
