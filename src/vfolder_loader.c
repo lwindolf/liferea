@@ -25,6 +25,7 @@
 #include "itemset.h"
 #include "node.h"
 #include "vfolder.h"
+#include "ui/ui_node.h"
 
 #define VFOLDER_LOADER_BATCH_SIZE 	100
 
