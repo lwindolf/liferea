@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the Liferea package.
 # Marquinos <maaacub@gmail.com>, 2010.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 1.6.5\n"
+"Project-Id-Version: liferea 1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-03 16:22+0100\n"
-"PO-Revision-Date: 2010-10-12 00:41+0100\n"
-"Last-Translator: Marquinos <maacub@gmail.com>\n"
+"POT-Creation-Date: 2013-04-27 14:08+0300\n"
+"PO-Revision-Date: 2013-03-31 17:15+0100\n"
+"Last-Translator: Iñigo Varela <ivarela@ubuntu.com>\n"
 "Language-Team: Asturian <ubuntu-l10n-ast@lists.ubuntu.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: Asturian\n"
 
 #. GTK theme support
 #: ../liferea.desktop.in.h:1 ../src/main.c:261 ../glade/liferea.ui.h:1
@@ -193,9 +193,8 @@ msgid "Search Folder:"
 msgstr "Carpeta de Gueta:"
 
 #: ../src/browser.c:32
-#, fuzzy
 msgid "Default Browser"
-msgstr "Restolador de GNOME"
+msgstr "Restolador predefiníu"
 
 #: ../src/browser.c:201 ../src/browser.c:221
 #, c-format
@@ -293,9 +292,8 @@ msgid "Import"
 msgstr "Importar"
 
 #: ../src/export.c:452 ../src/export.c:469 ../src/fl_sources/opml_source.c:387
-#, fuzzy
 msgid "OPML Files"
-msgstr "Escoyer Ficheru OPML"
+msgstr "Ficheros OPML"
 
 #: ../src/export.c:460
 msgid "Error while exporting feed list!"
@@ -366,7 +364,6 @@ msgstr "Nun pudo determinase la triba de la canal."
 
 #. if we don't find a feed with unread items do nothing
 #: ../src/itemlist.c:403
-#, fuzzy
 msgid "There are no unread items"
 msgstr "Nun hai artículos ensin lleer "
 
@@ -388,13 +385,12 @@ msgid "Show version information and exit"
 msgstr "Amosar información de la versión y colar"
 
 #: ../src/main.c:180
-#, fuzzy
 msgid "Add a new subscription"
-msgstr "Nueva canal"
+msgstr "Amestar una nueva soscripción"
 
 #: ../src/main.c:180
 msgid "uri"
-msgstr ""
+msgstr "uri"
 
 #: ../src/main.c:185
 msgid "Print debugging messages of all types"
@@ -406,7 +402,6 @@ msgstr ""
 "Amosar mensaxes de depuración tocante a remanar l'área d'almacenamientu"
 
 #: ../src/main.c:187
-#, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "Amosar mensaxes de depuración tocante a la configuración"
 
@@ -774,9 +769,9 @@ msgid "Choose File"
 msgstr "Escoyer Ficheru"
 
 #: ../src/ui/enclosure_list_view.c:404
-#, fuzzy, c-format
+#, c-format
 msgid "File Extension .%s"
-msgstr "<b>Estensión de ficheru .%s</b>"
+msgstr "Estensión de ficheru .%s"
 
 #: ../src/ui/icons.c:54
 #, c-format
@@ -1131,7 +1126,6 @@ msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea, llector de noticies Linux"
 
 #: ../src/ui/liferea_shell.c:1246
-#, fuzzy
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
@@ -1139,11 +1133,11 @@ msgid ""
 "the subscription list</li><li>By right clicking links and choosing "
 "'Subscribe' within Liferea</li></ul></p>"
 msgstr ""
-"<p>Bienveníu a <b>Liferea</b>, un llector de noticies en llinia pal "
-"escritoriu.</p><p>El panel esquierdu contién la llista de canales a los que "
-"tas soscritu. P'amestar una canal seleiciona Soscripciones -&gt; Nueva "
-"soscripción. Pa ver los titulares d'una canal, seleiciónalu de la llista. "
-"Los titulares van cargase nel panel drechu.</p>"
+"<p>Bienllegáu a <b>Liferea</b>, un llector de noticies en llinia pal "
+"escritoriu.</p><p>Pues amestar soscripciones nueves <ul><li>Dende'l menú "
+"'Soscripción' -&gt; 'Nueva soscripción' </li><li>Arrastrando enllaces de "
+"feeds dientro de la llista de soscripciones </li><li>Calcando col botón "
+"derechu y esbillando 'Soscribir' con Liferea</li></ul></p>"
 
 #: ../src/ui/auth_dialog.c:132 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1155,9 +1149,8 @@ msgid "Unknown source"
 msgstr "Fonte desconocida"
 
 #: ../src/ui/ui_common.c:205
-#, fuzzy
 msgid "All Files"
-msgstr "Ficheru _llocal"
+msgstr "Tolos ficheros"
 
 #: ../src/ui/feed_list_view.c:341
 msgid "Deleting entry"
@@ -1182,14 +1175,13 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea ta trabayando ensin conexón. Nun pueden anovase les fontes"
 
 #: ../src/ui/liferea_htmlview.c:435
-#, fuzzy, c-format
+#, c-format
 msgid "Download FAILED: \"%s\""
-msgstr "Falló la descarga del axuntu: «%s»"
+msgstr "Falló la descarga: \"%s\""
 
 #: ../src/ui/liferea_htmlview.c:437
-#, fuzzy
 msgid "Download finished."
-msgstr "Baxar usan_do"
+msgstr "Descarga finada."
 
 #: ../src/ui/liferea_htmlview.c:544
 msgid "Launch Link In _Tab"
@@ -1209,18 +1201,16 @@ msgid "_Copy Link Location"
 msgstr "_Copiar direición del enllaz"
 
 #: ../src/ui/liferea_htmlview.c:555
-#, fuzzy
 msgid "_Copy Image Location"
-msgstr "_Copiar direición del enllaz"
+msgstr "_Copiar direición de la imaxe"
 
 #: ../src/ui/liferea_htmlview.c:557
-#, fuzzy
 msgid "S_ave Link As"
-msgstr "Guardar como..."
+msgstr "Guardar enllaz c_omo"
 
 #: ../src/ui/liferea_htmlview.c:559
 msgid "S_ave Image As"
-msgstr ""
+msgstr "G_uarda imaxe como"
 
 #: ../src/ui/liferea_htmlview.c:562
 msgid "_Subscribe..."
@@ -1313,9 +1303,8 @@ msgid "New S_ource..."
 msgstr "Nueva f_onte..."
 
 #: ../src/ui/popup_menu.c:316
-#, fuzzy
 msgid "Sort Feeds"
-msgstr "Importar llista de canales"
+msgstr "Ordenar canales"
 
 #: ../src/ui/popup_menu.c:322
 msgid "_Rebuild"
@@ -1475,7 +1464,7 @@ msgstr ""
 
 #: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
 msgid "Website"
-msgstr ""
+msgstr "Sitiu web"
 
 #: ../src/parsers/atom10.c:251
 msgid "Invalid Atom feed: unknown author"
@@ -1539,7 +1528,7 @@ msgstr "Triba de fonte"
 
 #: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
-msgstr ""
+msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source.c:361
 #, fuzzy
@@ -1659,18 +1648,16 @@ msgid "Subscription Properties"
 msgstr "Propiedaes de la fonte"
 
 #: ../glade/liferea.ui.h:9
-#, fuzzy
 msgid "Feed Name"
-msgstr "_Nome de la canal:"
+msgstr "Nome de la canal"
 
 #: ../glade/liferea.ui.h:10
 msgid "Feed _Name:"
 msgstr "_Nome de la canal:"
 
 #: ../glade/liferea.ui.h:11
-#, fuzzy
 msgid "Update Interval"
-msgstr "Monitor d'anovamientos"
+msgstr "Intervalu anovamientu"
 
 #: ../glade/liferea.ui.h:12
 msgid "_Use global default update interval."
@@ -1701,9 +1688,8 @@ msgstr "Xeneral"
 
 #: ../glade/liferea.ui.h:19 ../glade/new_subscription.ui.h:2
 #: ../glade/simple_subscription.ui.h:2
-#, fuzzy
 msgid "Feed Source"
-msgstr "<b>Orixe de la canal</b>"
+msgstr "Orixe de la canal"
 
 #: ../glade/liferea.ui.h:20 ../glade/new_subscription.ui.h:8
 msgid "Source Type:"
@@ -1831,9 +1817,8 @@ msgid "Default _number of items per feed to save:"
 msgstr "_Númberu d'artículos de cada canal que van atroxase:"
 
 #: ../glade/liferea.ui.h:51
-#, fuzzy
 msgid "Feed Update Settings"
-msgstr "Anovar canal"
+msgstr "Axustes d'anovamientu de canal"
 
 #: ../glade/liferea.ui.h:52
 #, fuzzy
@@ -1871,9 +1856,8 @@ msgid "_Hide read items."
 msgstr "_Anubrir elementos lleíos."
 
 #: ../glade/liferea.ui.h:60
-#, fuzzy
 msgid "Feed Icons (Favicons)"
-msgstr "<span weight=\"bold\">Iconos de los canales (Favicons)</span>"
+msgstr "Iconos de los canales (Favicons)"
 
 #: ../glade/liferea.ui.h:61
 msgid "_Update all favicons now"
@@ -1884,27 +1868,24 @@ msgid "Folders"
 msgstr "Carpetes"
 
 #: ../glade/liferea.ui.h:63
-#, fuzzy
 msgid "Reading Headlines"
-msgstr "titulares non lleíos"
+msgstr "Leendo titulares"
 
 #: ../glade/liferea.ui.h:64
 msgid "_Skim through articles with:"
 msgstr "_Saltar a artículos con:"
 
 #: ../glade/liferea.ui.h:65
-#, fuzzy
 msgid "Web Integration"
-msgstr "Orientación"
+msgstr "Integración web"
 
 #: ../glade/liferea.ui.h:66
 msgid "_Post Bookmarks to"
 msgstr "_Unviar los marcadores a"
 
 #: ../glade/liferea.ui.h:67
-#, fuzzy
 msgid "Internal Browser Settings"
-msgstr "<span weight=\"bold\">Opciones del restolador internu</span>"
+msgstr "Axustes del restolador internu"
 
 #: ../glade/liferea.ui.h:68
 msgid "Open links in Liferea's _window."
@@ -1945,9 +1926,8 @@ msgid "Browser"
 msgstr "Restolador"
 
 #: ../glade/liferea.ui.h:78
-#, fuzzy
 msgid "Notification Settings"
-msgstr "<span weight=\"bold\">Opciones de notificación</span>"
+msgstr "Axustes de notificación"
 
 #: ../glade/liferea.ui.h:79
 msgid "Show a _popup window with new headlines."
@@ -1970,9 +1950,8 @@ msgid "_Start in tray icon."
 msgstr "_Aniciar na bandexa d'iconos."
 
 #: ../glade/liferea.ui.h:84
-#, fuzzy
 msgid "Toolbar Settings"
-msgstr "Etiquetes de los _botones de la barra de ferramientes:"
+msgstr "Axustes de la barra de ferramientes"
 
 #: ../glade/liferea.ui.h:85
 msgid "_Hide toolbar."
@@ -1988,7 +1967,7 @@ msgstr "Interfaz gráfica"
 
 #: ../glade/liferea.ui.h:88
 msgid "HTTP Proxy Server"
-msgstr ""
+msgstr "HTTP Proxy Server"
 
 #: ../glade/liferea.ui.h:89
 msgid "_Auto Detect (GNOME or environment)"
@@ -2164,14 +2143,12 @@ msgid "Update Monitor"
 msgstr "Monitor d'anovamientos"
 
 #: ../glade/liferea.ui.h:129
-#, fuzzy
 msgid "Pending Requests"
-msgstr "<b>Trensaiciones pendientes</b>"
+msgstr "Solicitúes pendientes"
 
 #: ../glade/liferea.ui.h:130
-#, fuzzy
 msgid "Downloading Now"
-msgstr "<b>Baxando agora</b>"
+msgstr "Baxando agora"
 
 #: ../glade/liferea.ui.h:131
 msgid "Cancel _All"
@@ -2190,13 +2167,12 @@ msgid "About"
 msgstr "Tocante a"
 
 #: ../glade/liferea.ui.h:135
-#, fuzzy
 msgid ""
 "Copyright (c) 2003-2012\n"
 "The Liferea Team\n"
 msgstr ""
-"Copyright (c) 2003-2009\n"
-"L'equipu de Liferea\n"
+"Copyright (c) 2003-2012\n"
+"The Liferea Team\n"
 
 #: ../glade/liferea.ui.h:138
 msgid "Liferea is a news aggregator for GTK+"
@@ -2238,9 +2214,8 @@ msgstr ""
 "permanente y anovala como cualisquier otra.  "
 
 #: ../glade/new_subscription.ui.h:9
-#, fuzzy
 msgid "Download / Postprocessing"
-msgstr "<b>Baxada / Postprocesamientu</b>"
+msgstr "Baxada / Postprocesamientu"
 
 #: ../glade/node_source.ui.h:1
 msgid "Source Selection"
@@ -2270,9 +2245,8 @@ msgid "_Select File"
 msgstr "_Seleicionar Ficheru"
 
 #: ../glade/ttrss_source.ui.h:1
-#, fuzzy
 msgid "Add Tiny Tiny RSS Account"
-msgstr "Amestar cuenta de Bloglines"
+msgstr "Amestar cuenta de Tiny Tiny RSS"
 
 #: ../glade/ttrss_source.ui.h:2
 #, fuzzy
@@ -2280,9 +2254,8 @@ msgid "Please enter your tt-rss account settings."
 msgstr "Escribi los datos de la to cuenta de Bloglines."
 
 #: ../glade/ttrss_source.ui.h:3
-#, fuzzy
 msgid "_Server URL"
-msgstr "Fallu del sirvidor"
+msgstr "_Sirvidor URL"
 
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
