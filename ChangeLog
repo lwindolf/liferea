@@ -1,5 +1,5 @@
 	To be released
-	
+
 	* Fixes missing item list update when browsing item URLs in Liferea
 	* Fixes format string issues in several translations.
 	* Added Hebrew translation of reference manual page (Genghis Khan)
@@ -7,7 +7,7 @@
 	* Update of Czech translation (Peter Simacek)
 	* Fixes to German translation (Christian Stadelmann)
 	* Added MimeType to .desktop file (Craig Barnes)
-	* Fixes SF #1040: In feed entries, spaces are replaced with "+" 
+	* Fixes SF #1040: In feed entries, spaces are replaced with "+"
           (reported by Emmanuel Seyman)
 	* Fixes SF #1051: Issues in RTL GUI of Liferea
 	  (reported by phixy)
@@ -26,20 +26,20 @@
 
 
 2012-12-24  Lars Windolf <lars.lindner@gmail.com>
-	
+
 	Version 1.8.11
 
 	Please note that due to the SourceForge upgrade bug ticket numbering
-	did change. This might be confusing... Old numbers are 7 figures, 
+	did change. This might be confusing... Old numbers are 7 figures,
 	newer ones only 4!
 
 	* Added Google Plus to social bookmarking options.
 	* Fix for Debian #668197: x-www-browser preference not working
           (David Smith)
 	* Updated Hebrew translation (Genghis Khan, Yaron Sheffer)
-	* Fixes SF #1037: Incorrect notifications for Google Reader 
+	* Fixes SF #1037: Incorrect notifications for Google Reader
 	  (patch by David Smith)
-	* Fixes SF #1048: Removed all feedvalidator.org references from FAQ 
+	* Fixes SF #1048: Removed all feedvalidator.org references from FAQ
 	  and XSLT as it was reported to host malware.
 	  (reported by bkat)
 
@@ -63,7 +63,7 @@
 
 	* Added Instapaper.com to social bookmarking sites (SF #3564393)
 	  (patch by prurigro)
-	* Updated Finnish translation 
+	* Updated Finnish translation
 	  (Jorma Karvonen)
 	* Fixes SF #3567715: Crash on network online status changes
           (patch by Fabrice Bellet, Yanko Kaneti)
@@ -95,7 +95,7 @@
 	  (reported by algnod)
 	* Don't ask for Google Reader authentication more than three times
 	  with auto-update to avoid annoying the user.
-	* Dropping SIGSEGV signal handler to allow distro crash report tools to 
+	* Dropping SIGSEGV signal handler to allow distro crash report tools to
 	  work (as found in Ubuntu)
 
 	* Update of Hebrew translation (Ghengis Khan)
@@ -155,12 +155,12 @@
 
 	Version 1.8.2
 
-	* Do not update DB node and subscription info on startup 
+	* Do not update DB node and subscription info on startup
 	  for performance reasons.
 	* Perform VACCUM only when page fragmentation ratio < 10%.
 	  (suggested by adriatic)
 	* Removed tooltip on the "Next Unread Item" button to avoid
-	  having it flashing each time it is clicked when skimming 
+	  having it flashing each time it is clicked when skimming
 	  through items.
 
 
@@ -170,7 +170,7 @@
 
 	* Fixes proxy preference not affecting the HTML widget.
 	  (reported by Chris Siebenmann)
-	* Fixes SF #3363481: Feeds fail to update properly when entries ordered 
+	* Fixes SF #3363481: Feeds fail to update properly when entries ordered
 	  "wrong" (patch by Robert Trace)
 	* Fixes writing subscriptions into DB when importing from OPML
 	  (reported by Dennis Nezic)
@@ -184,7 +184,7 @@
 
 	Version 1.8.0
 
-	* Fixes SF #3441643: Deleting a feed also removes items copied to 
+	* Fixes SF #3441643: Deleting a feed also removes items copied to
 	  news bins (reported by Jan Larres)
 
 	* Updated French translation (Vincent Lefevre)
