@@ -734,17 +734,6 @@ on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
 	liferea_shutdown ();
 }
 
-static gboolean
-on_window_state_changed (GtkWidget * widget, GdkEvent * event, gpointer user_data)
-{
-	if ((event->window_state.new_window_state & GDK_WINDOW_STATE_FULLSCREEN) == 0)
-		shell->priv->fullscreen = TRUE;
-	else
-		shell->priv->fullscreen = FALSE;
-		
-	return FALSE;
-}
-
 static void
 on_menu_fullscreen_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
