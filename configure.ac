@@ -85,7 +85,7 @@ AM_CONDITIONAL(WITH_LIBINDICATE, test "x$enable_libindicate" = "xyes")
 # Mandatory library dependencies
 
 pkg_modules="	gtk+-3.0 >= 3.4.0
-		glib-2.0 >= 2.24.0
+		glib-2.0 >= 2.28.0
 		gio-2.0 >= 2.26.0
 		pango >= 1.4.0 
 		libxml-2.0 >= 2.6.27
