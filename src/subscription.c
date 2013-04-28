@@ -454,7 +454,7 @@ subscriptionPtr
 subscription_import (xmlNodePtr xml, gboolean trusted)
 {
 	subscriptionPtr	subscription;
-	xmlChar		*source, *homepage, *filter, *intervalStr, *id, *tmp;
+	xmlChar		*source, *homepage, *filter, *intervalStr, *tmp;
 
 	subscription = subscription_new (NULL, NULL, NULL);
 	
