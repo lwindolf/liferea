@@ -99,9 +99,4 @@ typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
  */
 void ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data);
 
-/** 
- * Like ui_choose_file but allows to select a directory 
- */
-void ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data);
-
 #endif
