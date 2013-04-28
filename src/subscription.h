@@ -117,7 +117,7 @@ void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean
 void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
 
 /**
- * Checks wether a subscription is ready to be updated
+ * Checks whether a subscription is ready to be updated
  *
  * @param subscription	the subscription to check
  *
@@ -137,7 +137,7 @@ gboolean subscription_can_be_updated(subscriptionPtr subscription);
 void subscription_update (subscriptionPtr subscription, guint flags);
 
 /**
- * Called when auto updating. Checks wether the subscription
+ * Called when auto updating. Checks whether the subscription
  * needs to be updated (according to it's update interval) and
  * if necessary calls subscription_update().
  *

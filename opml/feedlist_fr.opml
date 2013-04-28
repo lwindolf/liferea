@@ -9,15 +9,10 @@
        <outline text="Standblog" htmlUrl="http://standblog.org/blog/" xmlUrl="http://standblog.org/dotclear/rss.php" />
        <outline text="Formats Ouverts" htmlUrl="http://formats-ouverts.org/blog/" xmlUrl="http://formats-ouverts.org/rss.php" />
        <outline text="Liberation.fr" htmlUrl="http://www.liberation.fr/" xmlUrl="http://www.liberation.fr/rss.php" />
-       <outline text="Actualités ZDNet.fr" htmlUrl="http://www.zdnet.fr/actualites/?rss" xmlUrl="http://rss.zdnet.fr/feeds/rss/actualites/" />
-       <outline text="Geckozone - Articles" htmlUrl="http://www.geckozone.org/" xmlUrl="http://www.geckozone.org/articles/xml/" />
        <outline text="MozillaZine-Fr" htmlUrl="http://www.mozillazine-fr.org/" xmlUrl="http://mozillazine-fr.org/contenu.xml" />
-       <outline text="LinuxFR" htmlUrl="http://linuxfr.org/" xmlUrl="http://linuxfr.org/backend/news/rss20.rss" />
+       <outline text="LinuxFR" htmlUrl="http://linuxfr.org/" xmlUrl="http://linuxfr.org/news.atom" />
        <outline text="Le Monde.fr" htmlUrl="http://www.lemonde.fr/" xmlUrl="http://www.lemonde.fr/rss/sequence/0,2-3208,1-0,0.xml" />
        <outline text="Le Nouvel Observateur" htmlUrl="http://permanent.nouvelobs.com/" xmlUrl="http://permanent.nouvelobs.com/rss_permanent.xml" />
-       <outline text="EuroNews" htmlUrl="http://www.euronews.net/create_html.php?page=accueil_info&amp;langue=fr" xmlUrl="http://www.euronews.net/rss/euronews_en.xml" />
-       <outline text="AlloCiné" htmlUrl="http://www.allocine.fr/film/cettesemaine.html" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=56" />
-       <outline text="LaMoooche.com" htmlUrl="http://www.lamoooche.com/" xmlUrl="http://www.lamoooche.com/getRSS.php?idnews=758" />
      </outline>
 
 	<!-- lets keep this default English block in sync over all feed lists! -->

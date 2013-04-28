@@ -83,7 +83,7 @@ typedef struct node {
 nodePtr node_new (struct nodeType *type);
 
 /**
- * Can be used to check wether an id is used or not.
+ * Can be used to check whether an id is used or not.
  *
  * @param id	the node id to check
  *
@@ -173,7 +173,7 @@ void node_auto_update_subscription (nodePtr node);
 void node_reset_update_counter (nodePtr node, GTimeVal *now);
 
 /**
- * Determines wether node1 is an ancestor of node2
+ * Determines whether node1 is an ancestor of node2
  *
  * @param node1		the possible ancestor
  * @param node2		the possible child
@@ -358,7 +358,7 @@ nodeViewType node_get_view_mode(nodePtr node);
 const gchar * node_get_base_url(nodePtr node);
 
 /**
- * Query wether a feed be added to the given node.
+ * Query whether a feed be added to the given node.
  *
  * @param node	the node
  *
@@ -367,7 +367,7 @@ const gchar * node_get_base_url(nodePtr node);
 gboolean node_can_add_child_feed (nodePtr node);
 
 /**
- * Query wether a folder be added to the given node.
+ * Query whether a folder be added to the given node.
  *
  * @param node	the node
  *

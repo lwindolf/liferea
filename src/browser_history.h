@@ -62,7 +62,7 @@ gchar * browser_history_forward (browserHistory *history);
 gchar * browser_history_back (browserHistory *history);
 
 /**
- * Check wether the history can go forward.
+ * Check whether the history can go forward.
  *
  * @param history	the browser history
  *
@@ -71,13 +71,21 @@ gchar * browser_history_back (browserHistory *history);
 gboolean browser_history_can_go_forward (browserHistory *history);
 
 /**
- * Check wether the history can go back.
+ * Check whether the history can go back.
  *
  * @param history	the browser history
  *
  * @returns TRUE if it can go back
  */
 gboolean browser_history_can_go_back (browserHistory *history);
+
+/**
+ * Add a URL to the history.
+ *
+ * @param history	the browser history
+ * @param url		the URL to add
+ */
+void browser_history_add_location (browserHistory *history, const gchar *url);
 
 #endif
 

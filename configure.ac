@@ -18,7 +18,6 @@ IT_PROG_INTLTOOL([0.35.0])
 
 AC_PROG_CC
 AM_PROG_CC_C_O
-AC_HEADER_STDC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_SYS_LARGEFILE
@@ -61,13 +60,13 @@ dnl *********
 
 if test "x$enable_libindicate" = "xyes"; then
    dnl Try 0.7 first
-   PKG_CHECK_MODULES([LIBINDICATE], indicate-0.7 indicate-gtk-0.7,enable_libindicate=yes,enable_libindicate=no)
+   PKG_CHECK_MODULES([LIBINDICATE], indicate-0.7 indicate-gtk3-0.7,enable_libindicate=yes,enable_libindicate=no)
    AC_SUBST(LIBINDICATE_CFLAGS)
    AC_SUBST(LIBINDICATE_LIBS)
 
    dnl But 0.6 will also do...
    if test "x$enable_libindicate" = "xno"; then
-      PKG_CHECK_MODULES([LIBINDICATE], indicate-0.6 indicate-gtk-0.6,enable_libindicate=yes,enable_libindicate=no)
+      PKG_CHECK_MODULES([LIBINDICATE], indicate-0.6 indicate-gtk3-0.6,enable_libindicate=yes,enable_libindicate=no)
       AC_SUBST(LIBINDICATE_CFLAGS)
       AC_SUBST(LIBINDICATE_LIBS)
    fi
@@ -85,7 +84,7 @@ AM_CONDITIONAL(WITH_LIBINDICATE, test "x$enable_libindicate" = "xyes")
 # Mandatory library dependencies
 
 pkg_modules="	gtk+-3.0 >= 3.4.0
-		glib-2.0 >= 2.24.0
+		glib-2.0 >= 2.28.0
 		gio-2.0 >= 2.26.0
 		pango >= 1.4.0 
 		libxml-2.0 >= 2.6.27
@@ -104,7 +103,6 @@ pkg_modules="	gtk+-3.0 >= 3.4.0
 # Plugins via Introspection
 
 GOBJECT_INTROSPECTION_CHECK([0.9.3])
-GLIB_GSETTINGS
 
 ################################################################################
 

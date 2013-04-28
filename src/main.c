@@ -65,7 +65,7 @@ on_feed_add (GApplication *application,
 	GFile **uris = (GFile **)files;	/* we always expect only one URI */
 
 	g_assert(uris);
-	g_assert(n_files = 1);
+	g_assert(n_files == 1);
 	feedlist_add_subscription (g_file_get_uri (uris[0]), NULL, NULL, 0);
 }
 
@@ -75,7 +75,6 @@ static void
 on_app_activate (GtkApplication *app, gpointer user_data)
 {
 	GList		*list;
-	GtkWidget	*window;
 	gchar		*feedUri = (gchar *)user_data;
 
 	list = gtk_application_get_windows (app);

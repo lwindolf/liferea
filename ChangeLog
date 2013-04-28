@@ -7,22 +7,37 @@
 	* Update of German FAQ
 	* Update of English FAQ
 	* Added MimeType to .desktop file (Craig Barnes)
-	* Fixes to German translation (Christian Stadelmann)
 	* Fixes SF #1063: Can't open preferences twice
 	  (Emilio Pozuelo Monfort, reported by David Smith)
-	* Fixes SF #1040: In feed entries, spaces are replaced with "+" 
+	* Fixes SF #1040: In feed entries, spaces are replaced with "+"
 	  (reported by Emmanuel Seyman)
 	* Fixes SF #1051: Issues in RTL GUI of Liferea
 	  (reported by phixy)
 	* Fix several memory leaks (Emilio Pozuelo Monfort)
+	* Require glib >= 2.28 for GApplication (Adrian Bunk)
+	* Use the GTK+ 3 version, not wrongly the GTK+ 2 version,
+	  of the libindicate GTK+ bindings (Adrian Bunk)
+	* Updated the default feedlists (Adrian Bunk)
+
+	* Added Vietnamese translation (Trần Ngọc Quân)
+	* Updated Albanian translation (Besnik Bleta)
+	* Updated Asturian translation (Iñigo Varela)
+	* Updated Basque translation (Mikel Olasagasti Uranga)
+	* Updated Danish translation (Joe Hansen)
+	* Updated Finnish translation (Jorma Karvonen)
+	* Updated German translation (Christian Stadelmann)
+	* Updated Hungarian translation (Gabor Kelemen)
+	* Updated Japanese translation (Takeshi Hamasaki)
+	* Updated Latvian translation (Rihards Priedītis)
+	* Updated Ukrainian translation (Yuri Chornoivan)
 
 
 2013-01-30  Lars Windolf <lars.lindner@gmail.com>
-	
-	Version 1.10-RC1	
+
+	Version 1.10-RC1
 
 	Please note that due to the SourceForge upgrade bug ticket numbering
-	did change. This might be confusing... Old numbers are 7 figures, 
+	did change. This might be confusing... Old numbers are 7 figures,
 	newer ones only 4!
 
 	* Patch SF #3407290: Migrate to GSettings
@@ -42,9 +57,9 @@
 	* Fixes regression about using the GNOME default font
 	* Improves all item/link launching menus to consistently provide
 	  three options: Tab, Browser and External Browser
-	* Fixes SF #1037: Incorrect notifications for Google Reader 
+	* Fixes SF #1037: Incorrect notifications for Google Reader
 	  (patch by David Smith)
-	* Fixes SF #1048: Removed all feedvalidator.org references from FAQ 
+	* Fixes SF #1048: Removed all feedvalidator.org references from FAQ
 	  and XSLT as it was reported to host malware.
 	  (reported by bkat)
 	* Fixes SF #1041: Some GPLv2 license headers were outdated
@@ -57,7 +72,7 @@
 
 
 2012-10-28  Lars Windolf <lars.lindner@gmail.com>
-	
+
 	Version 1.9.7
 
 	* Added new preference for default viewing mode.
@@ -66,7 +81,7 @@
 	  "Next Unread".
 	* Added Google Chrome as a browser choice to preferences.
 	* Roughly reordered browser choices after browser market share.
-	* Removed shading behaviour for unread items in combined view 
+	* Removed shading behaviour for unread items in combined view
 	  as it doesn't match GTK theming well
 	* Removed auto-hide Javascript menu from combined view to simplify
 	  rendering in 3-pane modes.
@@ -79,7 +94,7 @@
 
 
 2012-10-09  Lars Windolf <lars.lindner@gmail.com>
-	
+
 	Version 1.9.6
 
 	* Removed "pass URL" check box from MIME type dialog.
@@ -93,7 +108,7 @@
 	* Fixes reloading item when browsing the web inside the item view.
 	* Fixes preferences dialog not opening up a second time.
 	* Fixes padding/alignments in preferences dialog.
-	* Fixes SF #1418701: Remote server pounded into dirt on auto-download 
+	* Fixes SF #1418701: Remote server pounded into dirt on auto-download
 	  (reported by anonymous)
 	* Fixes SF #3567827: Double border around webview
 	  (reported by borschty)
@@ -121,7 +136,7 @@
 
 	* Fixes comments_deinit() never being called
 	* Fixes search folder counter update on feed removal
-	* Fixes SF #3567715: Crash on network online status changes 
+	* Fixes SF #3567715: Crash on network online status changes
 	  (patch by Yanko Kaneti)
 
 
@@ -138,12 +153,12 @@
 	* Only present enclosures of audio and video MIME type
 	* Raise libindicate minimum dependency to 0.6
 	* Patch SF #3515882: Also support libindicate 0.7 (Chow Loong Jin)
-	* Dropping SIGSEGV signal handler to allow distro crash report tools to 
+	* Dropping SIGSEGV signal handler to allow distro crash report tools to
 	  work (as found in Ubuntu)
 	* Ensure node ids are in DB node relation on startup.
 	* Adding AM_PROG_AR to configure.ac to work with automake 1.12
 	* Moved tab close button from the URL bar to the right of the tab label.
-	* Smarter browser toolbar: appears now also in the item view when 
+	* Smarter browser toolbar: appears now also in the item view when
 	  browsing external content.
 
 	* Don't ask for Google Reader authentication more than three times
@@ -164,7 +179,7 @@
 	* Fixes crashes on enclosure list context menu.
 	* Fixes SF #3557513: Fixes crash on empty links in auto-load-link mode.
 	  (patch by msquared84)
-	* Fixes unknown metadata types reported in trace when loading Google 
+	* Fixes unknown metadata types reported in trace when loading Google
 	  Reader subscriptions from DB.
 
 
@@ -228,7 +243,7 @@
 	* Perform VACCUM only when page fragmentation ratio < 10%.
 	  (suggested by adriatic)
 	* Removed tooltip on the "Next Unread Item" button to avoid
-	  having it flashing each time it is clicked when skimming 
+	  having it flashing each time it is clicked when skimming
 	  through items.
 
 
@@ -242,7 +257,7 @@
 	  (Emilio Pozuelo Monfort, Adrian Bunk)
 	* Fixes proxy preference not affecting the HTML widget.
 	  (reported by Chris Siebenmann)
-	* Fixes SF #3363481: Feeds fail to update properly when entries ordered 
+	* Fixes SF #3363481: Feeds fail to update properly when entries ordered
 	  "wrong" (patch by Robert Trace)
 	* Fixes writing subscriptions into DB when importing from OPML
 	  (reported by Dennis Nezic)
@@ -252,7 +267,7 @@
 
 	Version 1.8.0
 
-	* Fixes SF #3441643: Deleting a feed also removes items copied to 
+	* Fixes SF #3441643: Deleting a feed also removes items copied to
 	  news bins (reported by Jan Larres)
 
 	* Updated French translation (Vincent Lefevre)

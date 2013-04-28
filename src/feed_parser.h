@@ -24,7 +24,6 @@
 #include <libxml/parser.h>
 
 #include "feed.h"
-#include "ui/ui_common.h"	/* for icon constants needed in parser declarations */
 
 /** Holds all information used on feed parsing time */
 typedef struct feedParserCtxt {

@@ -12,7 +12,6 @@
       <outline text="Tecnologia">
         <outline text="Softcatalà" htmlUrl="http://www.softcatala.org" xmlUrl="http://www.softcatala.org/noticies/noticies.rss" />
         <outline text="NacióDigital" htmlUrl="http://www.naciodigital.cat" xmlUrl="http://naciodigital.cat/rss.php" />
-        <outline text="LaFarga" htmlUrl="http://www.lafarga.cat" xmlUrl="http://www.lafarga.cat/noticies/feed" />
       </outline>
     </outline>
 

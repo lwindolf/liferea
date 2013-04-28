@@ -53,6 +53,32 @@ debug_get_prefix (unsigned long flag)
 	return "";	
 }
 
+static void
+debug_set_depth (gint newDepth)
+{
+	const gpointer self = g_thread_self ();
+
+	/* Track per-thread call tree depth */
+	if (t2d == NULL)
+		t2d = g_hash_table_new (g_direct_hash, g_direct_equal);
+
+	if (newDepth < 0)
+		g_hash_table_insert(t2d, self, GINT_TO_POINTER(0));
+	else
+		g_hash_table_insert(t2d, self, GINT_TO_POINTER(newDepth));
+}
+
+static gint
+debug_get_depth (void)
+{
+	const gpointer self = g_thread_self ();
+
+	if (!t2d)
+		return 0;
+
+	return GPOINTER_TO_INT (g_hash_table_lookup (t2d, self));
+}
+
 void
 debug_start_measurement_func (const char * function)
 {
@@ -121,32 +147,6 @@ void
 set_debug_level (unsigned long level)
 {
 	debug_level = level;
-}
-
-void
-debug_set_depth (gint newDepth)
-{
-	const gpointer self = g_thread_self ();
-
-	/* Track per-thread call tree depth */
-	if (t2d == NULL)
-		t2d = g_hash_table_new (g_direct_hash, g_direct_equal);
-
-	if (newDepth < 0)
-		g_hash_table_insert(t2d, self, GINT_TO_POINTER(0));
-	else
-		g_hash_table_insert(t2d, self, GINT_TO_POINTER(newDepth));
-}
-
-gint
-debug_get_depth (void)
-{
-	const gpointer self = g_thread_self ();
-
-	if (!t2d)
-		return 0;
-
-	return GPOINTER_TO_INT (g_hash_table_lookup (t2d, self));
 }
 
 void

@@ -36,7 +36,6 @@
 #include "update.h"
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
-#include "ui/ui_common.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 
@@ -145,7 +144,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 		gchar *source_uri;
 
 		/* Check for remote update daemon running. This needs to be known
-		   before we start updating to decide wether to actively update
+		   before we start updating to decide whether to actively update
 		   remote feeds or just fetch them. */
 		request = update_request_new ();
 		request->options = update_options_copy (subscription->updateOptions);

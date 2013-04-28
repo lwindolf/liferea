@@ -8,11 +8,6 @@
 		<outline text="Novas tecnolóxicas">
 		 	<outline text="Proxecto trasno" htmlUrl="http://trasno.net/" xmlUrl="http://www.trasno.net/feed.php"/>
 			<outline text="Código Cero" htmlUrl="http://codigocero.com/"  xmlUrl="http://codigocero.com/spip.php?page=backend" />
-			<outline text="Blogaliza" htmlUrl="http://blogaliza.org/" xmlUrl="http://blogaliza.org/RSSsoftlibr.xml"/>
-		</outline>
-		<outline text="Xornais dixitais">
-			<outline text="A nosa terra" htmlUrl="http://anosaterra.org/" xmlUrl="http://www.anosaterra.org/rss.php?p=portada"/>
-			<outline text="Galicia hoxe" htmlUrl="http://www.galiciahoxe.com/" xmlUrl="http://www.galiciahoxe.com/rss/"/>
 		</outline>
 	</outline>
 	<!-- lets keep this default English block in sync over all feed lists! -->

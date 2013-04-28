@@ -45,14 +45,14 @@ itemPtr item_history_get_previous (void);
 itemPtr item_history_get_next (void);
 
 /**
- * Check wether a previous item exists in the item history.
+ * Check whether a previous item exists in the item history.
  *
  * @returns TRUE if there is an item
  */
 gboolean item_history_has_previous (void);
 
 /**
- * Check wether a following item exists in the item history.
+ * Check whether a following item exists in the item history.
  *
  * @returns TRUE if there is an item
  */

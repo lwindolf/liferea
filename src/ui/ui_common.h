@@ -23,12 +23,7 @@
 
 #include <gtk/gtk.h>
 
-#if GTK_CHECK_VERSION (2, 90, 7)
 #define GDK_KEY(symbol) GDK_KEY_##symbol
-#else
-#include <gdk/gdkkeysyms.h>
-#define GDK_KEY(symbol) GDK_##symbol
-#endif
 
 /**
  * Helper function to set up a combo box option menu.
@@ -98,10 +93,5 @@ typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
  * @param user_data	user data passed to the callback
  */
 void ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data);
-
-/** 
- * Like ui_choose_file but allows to select a directory 
- */
-void ui_choose_directory (gchar *title, const gchar *buttonName, fileChoosenCallback callback, const gchar *currentPath, gpointer user_data);
 
 #endif

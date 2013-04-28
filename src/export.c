@@ -25,12 +25,15 @@
 
 #include <libxml/tree.h>
 
+#include "auth.h"
 #include "common.h"
+#include "db.h"
 #include "debug.h"
 #include "favicon.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "xml.h"
+#include "ui/ui_common.h"
 #include "ui/ui_node.h"
 
 struct exportData {

@@ -287,9 +287,7 @@ feed_list_view_select (nodePtr node)
 {
 	GtkTreeView		*treeview;
 	GtkTreeModel		*model;
-	GtkWindow		*mainwindow;
 	
-	mainwindow = GTK_WINDOW (liferea_shell_get_window ());
 	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 	model = gtk_tree_view_get_model (treeview);
 	

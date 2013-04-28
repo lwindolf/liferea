@@ -97,7 +97,7 @@ subscription_new (const gchar *source,
 	return subscription;
 }
 
-/* Checks wether updating a feed makes sense. */
+/* Checks whether updating a feed makes sense. */
 gboolean
 subscription_can_be_updated (subscriptionPtr subscription)
 {
@@ -454,7 +454,7 @@ subscriptionPtr
 subscription_import (xmlNodePtr xml, gboolean trusted)
 {
 	subscriptionPtr	subscription;
-	xmlChar		*source, *homepage, *filter, *intervalStr, *id, *tmp;
+	xmlChar		*source, *homepage, *filter, *intervalStr, *tmp;
 
 	subscription = subscription_new (NULL, NULL, NULL);
 	

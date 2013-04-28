@@ -265,7 +265,7 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-" Please check wether the configured download tool is installed and working "
+" Please check whether the configured download tool is installed and working "
 "correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
 

@@ -20,6 +20,7 @@
 
 #include <string.h>		/* For strcmp */
 #include "common.h"
+#include "db.h"
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
@@ -55,7 +56,7 @@ static gboolean (*old_feed_drag_data_received)(GtkTreeDragDest *drag_dest,
 
 /* GtkTreeDragSource/GtkTreeDragDest implementation				*/
 
-/** decides wether a feed cannot be dragged or not */
+/** decides whether a feed cannot be dragged or not */
 static gboolean
 ui_dnd_feed_draggable (GtkTreeDragSource *drag_source, GtkTreePath *path)
 {
