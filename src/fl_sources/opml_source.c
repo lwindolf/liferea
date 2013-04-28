@@ -33,6 +33,7 @@
 #include "xml.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
+#include "ui/ui_common.h"
 
 /** default OPML update interval = once a day */
 #define OPML_SOURCE_UPDATE_INTERVAL 60*60*24

@@ -36,7 +36,6 @@
 #include "update.h"
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
-#include "ui/ui_common.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 

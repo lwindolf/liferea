@@ -30,7 +30,6 @@
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_common.h"
 #include "ui/feed_list_view.h"
 
 static GHashTable	*flIterHash = NULL;	/**< hash table used for fast node id <-> tree iter lookup */

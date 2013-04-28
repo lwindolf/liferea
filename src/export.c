@@ -33,6 +33,7 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "xml.h"
+#include "ui/ui_common.h"
 #include "ui/ui_node.h"
 
 struct exportData {

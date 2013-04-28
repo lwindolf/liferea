@@ -22,12 +22,12 @@
 
 #include <glib.h>
 #include <glib/gstdio.h>
+#include <gio/gio.h>
 
 #include "common.h"
 #include "db.h"
 #include "debug.h"
 #include "export.h"
-#include "ui/ui_common.h"
 
 /**
  * Copy a from $HOME/<from>/subdir to a target directory <to>/subdir.

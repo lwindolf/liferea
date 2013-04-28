@@ -28,6 +28,7 @@
 #include "xml.h"
 #include "ui/preferences_dialog.h"	// FIXME: remove this!
 #include "ui/liferea_shell.h"
+#include "ui/ui_common.h"
 
 /*
    Liferea manages a MIME type configuration to allow
