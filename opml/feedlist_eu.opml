@@ -6,11 +6,9 @@
   <body>
     <outline text="Euskarazko jarioak">
             <outline text="Software Librea">
-                <outline text="EuskalGNU" htmlUrl="http://www.euskalgnu.org" xmlUrl="http://www.euskalgnu.org/index.php?option=com_rss" />
                 <outline text="Librezale" htmlUrl="http://librezale.org" xmlUrl="http://librezale.org/feed/" />
             </outline>
             <outline text="Egunkariak">
-                <outline text="Argia" htmlUrl="http://www.argia.com" xmlUrl="http://www.argia.com/rss/haria.xml" />
                 <outline text="Berria" htmlUrl="http://www.berria.info" xmlUrl="http://www.berria.info/rss/ediziojarraia.xml" />
                 <outline text="Kazeta.info" htmlUrl="http://www.kazeta.info" xmlUrl="http://www.kazeta.info/rss.php" />
                 <outline text="Sustatu" htmlUrl="http://www.sustatu.com" xmlUrl="http://www.sustatu.com/rdf" />

@@ -17,6 +17,7 @@
 	* Require glib >= 2.28 for GApplication (Adrian Bunk)
 	* Use the GTK+ 3 version, not wrongly the GTK+ 2 version,
 	  of the libindicate GTK+ bindings (Adrian Bunk)
+	* Updated the default feedlists (Adrian Bunk)
 
 	* Added Vietnamese translation (Trần Ngọc Quân)
 	* Updated Albanian translation (Besnik Bleta)
