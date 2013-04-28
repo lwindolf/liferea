@@ -521,9 +521,6 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 void
 itemlist_remove_all_items (nodePtr node)
 {	
-	GList		*iter;
-	itemSetPtr	itemset;
-	
 	if (node == itemlist->priv->currentNode)
 		itemview_clear ();
 		
