@@ -29,7 +29,6 @@
 
     <outline text="Nederlandse feeds">
       <outline text="Nieuws">
-        <outline text="NRC Handelsblad | Binnenland" htmlUrl="http://www.nrc.nl/binnenland/" xmlUrl="http://www.nrc.nl/rss/binnenland/" />
         <outline text="nu.nl | Het laatste nieuws lees je het eerst op NU.nl" htmlUrl="http://www.nu.nl/" xmlUrl="http://www.nu.nl/deeplink_rss2/index.jsp?r=Algemeen" />
         <outline text="Tweakers.net" htmlUrl="http://tweakers.net/" xmlUrl="http://tweakers.net/feeds/mixed.xml" />
       </outline>

@@ -7,7 +7,6 @@
 	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="Példa hírforrások">		<!-- translate this for localized feed list -->
 		<outline text="Magyar hírek">
-			<outline text="Híradó online" htmlUrl="http://www.hirado.hu/" xmlUrl="http://www.hirado.hu/Newsreel/rss/LatestNews.aspx" />
 			<outline text="MR1 Kossuth" htmlUrl="http://www.mr1-kossuth.hu/" xmlUrl="http://www.mr1-kossuth.hu/rss/hirek.html" />
 			<outline text="[origo]" htmlUrl="http://www.origo.hu/" xmlUrl="http://www.origo.hu/contentpartner/rss/hircentrum/origo.xml" />
 			<outline text="Index" htmlUrl="http://index.hu/" xmlUrl="http://index.hu/24ora/rss/" />

@@ -9,23 +9,18 @@
 <body>
 <outline text="Exemplos de Fontes">
 	<outline text="Genéricos">
-		<outline text="2.0 Webmania" htmlUrl="http://2.0.bloguite.com/" xmlUrl="http://feeds.feedburner.com/20Webmania" />
 		<outline text="Bitaites" htmlUrl="http://www.bitaites.org" xmlUrl="http://bitaites.org/feed" />
-		<outline text="Egosciente" htmlUrl="http://egosciente.wordpress.com/" xmlUrl="http://egosciente.wordpress.com/feed/" />
 		<outline text="Jonasnuts" htmlUrl="http://jonasnuts.com/" xmlUrl="http://jonasnuts.blogs.sapo.pt/data/rss" />
 		<outline text="Os Velhos dos Marretas" htmlUrl="http://osvelhotesdosmarretas.com/" xmlUrl="http://osvelhotesdosmarretas.com/feeds/posts/default" />
 		<outline text="Que Treta!" htmlUrl="http://ktreta.blogspot.com/" xmlUrl="http://ktreta.blogspot.com/feeds/posts/default" />
 	</outline>
 	<outline text="Planetas">
-		<outline text="Outsi.de.com" htmlUrl="http://outsi.de.com/" xmlUrl="http://www.gestao.de/outside/feed/" />
 		<outline text="Planeta DebianPT" htmlUrl="http://planet.debianpt.org/" xmlUrl="http://planet.debianpt.org/atom.xml" />
 		<outline text="Planeta Geek" htmlUrl="http://planetgeek.org/" xmlUrl="http://www.planetgeek.org/rss20.xml" />
         </outline>
 	<outline text="Tecnologia">
 		<outline text="PCManias" htmlUrl="http://www.pcmanias.com/" xmlUrl="http://www.pcmanias.com/feed/" />
 		<outline text="Gadgets Portugal" htmlUrl="http://gadgets.clix.pt/" xmlUrl="http://feeds.feedburner.com/gadgets-portugal" />
-		<outline text="Software Livre no Sapo" htmlUrl="http://blog.softwarelivre.sapo.pt/" xmlUrl="http://blog.softwarelivre.sapo.pt/feed" />
-		<outline text="WebTuga" htmlUrl="http://www.webtuga.com/" xmlUrl="http://feeds.webtuga.com/webtuga/" />
 	</outline>
         <!-- lets keep this English block in sync over all feed lists! -->
         <outline text="internacional">
