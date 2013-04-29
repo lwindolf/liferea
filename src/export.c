@@ -81,6 +81,9 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 			case NODE_VIEW_SORT_BY_STATE:
 				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"state");
 				break;
+			default:
+				g_assert_not_reached();
+				break;
 		}
 
 		if (FALSE == node->sortReversed)
