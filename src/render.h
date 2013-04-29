@@ -56,11 +56,6 @@ renderParamPtr render_parameter_new (void);
 void render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...);
 
 /**
- * Frees a given rendering parameter set.
- */
-void render_parameter_free (renderParamPtr paramSet);
-
-/**
  * Returns CSS definitions for inclusion in XHTML output.
  *
  * @param externalCss	TRUE if CSS can be served as file reference

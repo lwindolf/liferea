@@ -62,6 +62,13 @@ static renderParamPtr	langParams = NULL;	/* the current locale settings (for loc
 static GHashTable	*stylesheets = NULL;	/* XSLT stylesheet cache */
 
 static void
+render_parameter_free (renderParamPtr paramSet)
+{
+	g_strfreev (paramSet->params);
+	g_free (paramSet);
+}
+
+static void
 render_init (void)
 {
 	gchar   	**shortlang = NULL;	/* e.g. "de" */
@@ -383,11 +390,4 @@ render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...)
 	paramSet->params[paramSet->len-1] = g_strdup (value);
 
 	g_free (new);
-}
-
-void
-render_parameter_free (renderParamPtr paramSet)
-{
-	g_strfreev (paramSet->params);
-	g_free (paramSet);
 }
