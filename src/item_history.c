@@ -35,8 +35,6 @@ static struct itemHistory {
 void
 item_history_add (guint id)
 {
-	itemPtr item;
-
 	if (!itemHistory)
 		itemHistory = g_new0 (struct itemHistory, 1);
 
