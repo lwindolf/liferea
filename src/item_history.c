@@ -22,6 +22,8 @@
 
 #include <glib.h>
 
+#include "ui/liferea_shell.h"
+
 #define MAX_HISTORY_SIZE	250
 
 static struct itemHistory {
