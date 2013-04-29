@@ -101,7 +101,7 @@ item_loader_get_node (ItemLoader *il)
 	return il->priv->node;
 }
 
-gboolean
+static gboolean
 item_loader_fetch (gpointer user_data)
 {
 	ItemLoader	*il = ITEM_LOADER (user_data);
