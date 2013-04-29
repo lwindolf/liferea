@@ -255,7 +255,6 @@ void
 db_init (void)
 {
 	gint		res;
-	GError          *error;
 		
 	debug_enter ("db_init");
 
@@ -1620,7 +1619,6 @@ void
 db_node_cleanup (nodePtr root)
 {
 	sqlite3_stmt	*stmt;
-	gint		res;
 
 	debug0 (DEBUG_DB, "Cleaning node ids...");
 
