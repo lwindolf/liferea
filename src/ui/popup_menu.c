@@ -289,6 +289,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 		writeableFeedlist = TRUE;
 		isRoot = TRUE;
 		isHierarchic = TRUE;
+		addChildren = TRUE;
 	}
 
 	if (validSelection) {
