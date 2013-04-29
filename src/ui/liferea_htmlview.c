@@ -338,7 +338,7 @@ liferea_htmlview_clear (LifereaHtmlView *htmlview)
 	g_string_free (buffer, TRUE);
 }
 
-gboolean
+static gboolean
 liferea_htmlview_is_special_url (const gchar *url)
 {
 	/* match against all special protocols, simple
