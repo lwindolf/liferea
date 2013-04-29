@@ -60,7 +60,7 @@ item_history_add (guint id)
 itemPtr
 item_history_get_next (void)
 {
-	itemPtr item;
+	itemPtr item = NULL;
 
 	if (!itemHistory->current)
 		return NULL;
@@ -78,7 +78,7 @@ item_history_get_next (void)
 itemPtr
 item_history_get_previous (void)
 {
-	itemPtr item;
+	itemPtr item = NULL;
 
 	if (!itemHistory->current)
 		return NULL;
