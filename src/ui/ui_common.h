@@ -34,7 +34,7 @@
  * @param callback	"changed" callback for the widget (or NULL)
  * @param defaultValue	the default menu value
  */
-void ui_common_setup_combo_menu (GtkWidget *widget, gchar **options, GCallback callback, gint defaultValue);
+void ui_common_setup_combo_menu (GtkWidget *widget, const gchar **options, GCallback callback, gint defaultValue);
 
 /**
  * Helper function to set up a combo to display the text from
