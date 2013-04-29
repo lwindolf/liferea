@@ -546,7 +546,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 		/* handle [<modifier>+]<Space> headline skimming hotkey */
 		switch (event->keyval) {
-			case GDK_KEY(space):
+			case GDK_KEY_space:
 				conf_get_int_value (BROWSE_KEY_SETTING, &browse_key_setting);
 				switch (browse_key_setting) {
 					default:
@@ -578,14 +578,14 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 		/* some <Ctrl> hotkeys that overrule the HTML view */
 		if ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK) {
 			switch (event->keyval) {
-				case GDK_KEY(KP_Add):
-				case GDK_KEY(equal):
-				case GDK_KEY(plus):
+				case GDK_KEY_KP_Add:
+				case GDK_KEY_equal:
+				case GDK_KEY_plus:
 					liferea_shell_do_zoom (TRUE);
 					return TRUE;
 					break;
-				case GDK_KEY(KP_Subtract):
-				case GDK_KEY(minus):
+				case GDK_KEY_KP_Subtract:
+				case GDK_KEY_minus:
 					liferea_shell_do_zoom (FALSE);
 					return TRUE;
 					break;
@@ -605,32 +605,32 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 		/* check for treeview navigation */
 		if (0 == (event->state & default_modifiers)) {
 			switch (event->keyval) {
-				case GDK_KEY(KP_Delete):
-				case GDK_KEY(Delete):
+				case GDK_KEY_KP_Delete:
+				case GDK_KEY_Delete:
 					if (focusw == GTK_WIDGET (shell->priv->feedlistView))
 						return FALSE;	/* to be handled in feed_list_view_key_press_cb() */
 						
 					on_remove_item_activate (NULL, NULL);
 					return TRUE;
 					break;
-				case GDK_KEY(n):
+				case GDK_KEY_n:
 					on_next_unread_item_activate (NULL, NULL);
 					return TRUE;
 					break;
-				case GDK_KEY(f):
+				case GDK_KEY_f:
 					itemview_move_cursor (1);
 					return TRUE;
 					break;
-				case GDK_KEY(b):
+				case GDK_KEY_b:
 					itemview_move_cursor (-1);
 					return TRUE;
 					break;
-				case GDK_KEY(u):
+				case GDK_KEY_u:
 					ui_common_treeview_move_cursor (shell->priv->feedlistView, -1);
 					itemview_move_cursor_to_first ();
 					return TRUE;
 					break;
-				case GDK_KEY(d):
+				case GDK_KEY_d:
 					ui_common_treeview_move_cursor (shell->priv->feedlistView, 1);
 					itemview_move_cursor_to_first ();
 					return TRUE;

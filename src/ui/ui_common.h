@@ -23,8 +23,6 @@
 
 #include <gtk/gtk.h>
 
-#define GDK_KEY(symbol) GDK_KEY_##symbol
-
 /**
  * Helper function to set up a combo box option menu.
  * To be used to initialize dialogs.

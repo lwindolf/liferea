@@ -26,7 +26,6 @@
 
 #include "common.h"
 #include "itemlist.h"
-#include "ui/ui_common.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 #include "ui/gedit-close-button.h"
@@ -48,7 +47,7 @@ on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
 	guint modifiers;
 
 	modifiers = gtk_accelerator_get_default_mod_mask ();
-	if ((event->keyval == GDK_KEY(w))
+	if ((event->keyval == GDK_KEY_w)
 	    && ((event->state & modifiers) == GDK_CONTROL_MASK)) {
 		browser_tabs_close_tab ((tabInfo *)data);
 		return TRUE;

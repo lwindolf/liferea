@@ -37,7 +37,6 @@
 #include "ui/browser_tabs.h"
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
-#include "ui/ui_common.h"
 #include "ui/ui_dnd.h"
 #include "ui/ui_node.h"
 #include "fl_sources/node_source.h"
@@ -110,7 +109,7 @@ feed_list_view_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer dat
 {
 	if ((event->type == GDK_KEY_PRESS) &&
 	    (event->state == 0) &&
-	    (event->keyval == GDK_KEY(Delete))) {
+	    (event->keyval == GDK_KEY_Delete)) {
 		nodePtr node = feedlist_get_selected ();
 				
 		if(node) {
