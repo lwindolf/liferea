@@ -522,6 +522,9 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 				ui_popup_item_menu (item, eb->button, eb->time);
 				result = TRUE;
 				break;
+			default:
+				/* Do nothing on buttons >= 4 */
+				break;
 		}
 		item_unload (item);
 	}
