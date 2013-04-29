@@ -164,7 +164,6 @@ static void
 on_htmlview_title_changed (gpointer object, gchar *title, gpointer user_data)
 {
 	tabInfo		*tab = (tabInfo *)user_data;
-	GtkWidget	*label;
 
 	gtk_label_set_text (GTK_LABEL(tab->label), create_label_text (title));
 }
@@ -213,7 +212,7 @@ on_htmlview_status_message (gpointer obj, gchar *url)
 LifereaHtmlView *
 browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 {
-	GtkWidget 	*close_button, *labelBox, *htmlframe;
+	GtkWidget 	*close_button, *labelBox;
 	tabInfo		*tab;
 	int		i;
 
