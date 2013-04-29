@@ -565,7 +565,6 @@ item_list_view_create (GtkWidget *window)
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column, *headline_column;
-	GtkTreeSelection	*select;
 	GtkWidget 		*ilscrolledwindow;
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
