@@ -35,7 +35,6 @@
 #include "render.h"
 #include "update.h"
 #include "xml.h"
-#include "ui/auth_dialog.h"
 #include "ui/icons.h"
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
