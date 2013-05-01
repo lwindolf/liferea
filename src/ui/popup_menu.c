@@ -28,7 +28,6 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
-#include "itemlist.h"
 #include "net_monitor.h"
 #include "newsbin.h"
 #include "node.h"

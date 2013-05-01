@@ -35,7 +35,6 @@
 #include "common.h"
 #include "debug.h"
 #include "item.h"
-#include "itemlist.h"
 #include "itemset.h"
 #include "render.h"
 #include "xml.h"

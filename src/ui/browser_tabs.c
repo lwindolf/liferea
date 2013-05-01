@@ -25,7 +25,6 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "common.h"
-#include "itemlist.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 #include "ui/gedit-close-button.h"

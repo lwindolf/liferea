@@ -34,7 +34,6 @@
 #include "enclosure.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "itemlist.h"
 #include "net.h"
 #include "net_monitor.h"
 #include "social.h"
