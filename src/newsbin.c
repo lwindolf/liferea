@@ -29,7 +29,6 @@
 #include "itemlist.h"
 #include "metadata.h"
 #include "render.h"
-#include "vfolder.h"
 #include "ui/icons.h"
 #include "ui/ui_node.h"
 #include "ui/liferea_dialog.h"
