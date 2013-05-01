@@ -68,17 +68,6 @@ typedef struct subscription {
 } *subscriptionPtr;
 
 /**
- * Generic update result processing callback type.
- * This callback must not free the result structure. It will be
- * free'd by the download system after the callback returns.
- *
- * @param node		the subscriptions node
- * @param result	the update result
- * @param flags		update result processing flags
- */
-typedef void (*subscription_update_cb) (nodePtr node, const struct updateResult * const result, guint32 flags);
-
-/**
  * Create a new subscription structure.
  *
  * @param source	the subscription source URL (or NULL)
