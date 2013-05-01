@@ -68,8 +68,6 @@ void feed_list_view_delete_prompt (nodePtr ptr);
  */
 void feed_list_view_sort_folder (nodePtr folder);
 
-void on_newbtn_clicked (GtkButton *button, gpointer user_data);
-
 void on_menu_delete (GtkWidget *widget, gpointer user_data);
 
 void on_menu_update (void);

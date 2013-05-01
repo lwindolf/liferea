@@ -413,12 +413,6 @@ on_menu_allfeedsread (GtkWidget *widget, gpointer user_data)
 }
 
 void
-on_newbtn_clicked (GtkButton *button, gpointer user_data)
-{	
-	node_type_request_interactive_add (feed_get_node_type ());
-}
-
-void
 on_menu_feed_new (GtkMenuItem *menuitem, gpointer user_data)
 {
 	node_type_request_interactive_add (feed_get_node_type ());
