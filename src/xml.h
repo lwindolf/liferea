@@ -87,17 +87,6 @@ gchar * xhtml_strip_dhtml (const gchar *html);
 gchar * xhtml_strip_unsupported_tags (const gchar *html);
 
 /**
- * Convert the given string to proper XHTML content.
- * Note: this function does not respect relative URLs
- * and is to be used for cache migration 1.0 -> 1.1 only!
- *
- * @param text		usually an entity escaped HTML string
- *
- * @returns a new valid XHTML string
- */
-gchar * xhtml_from_text (const gchar *text);
-
-/**
  * Checks the given string for XHTML well formedness.
  *
  * @returns TRUE if the string is well formed XHTML

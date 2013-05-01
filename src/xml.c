@@ -167,47 +167,6 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 	return result;
 }
 
-/* Convert the given string to proper XHTML content.*/
-gchar *
-xhtml_from_text (const gchar *sourceText)
-{
-	gchar		*text, *result = NULL;
-	xmlDocPtr	doc = NULL;
-	xmlBufferPtr	buf;
-	xmlNodePtr 	body, cur;
-	
-	if (!sourceText)
-		return g_strdup ("");
-	
-	text = g_strstrip (g_strdup (sourceText));	/* stripping whitespaces to make empty string detection easier */
-	if (*text) {	
-		doc = xhtml_parse (text, strlen (text));
-		
-		buf = xmlBufferCreate ();
-		body = xhtml_find_body (doc);
-		if(body) {
-			cur = body->xmlChildrenNode;
-			while(cur) {
-				xmlNodeDump(buf, doc, cur, 0, 0 );
-				cur = cur->next;
-			}
-		}
-
-		if(xmlBufferLength(buf) > 0)
-			result = g_strdup(xmlBufferContent(buf));
-		else
-			result = g_strdup("");
-
-		xmlBufferFree(buf);
-		xmlFreeDoc(doc);
-		g_free(text);
-	} else {
-		result = text;
-	}
-	
-	return result;
-}
-
 gboolean
 xhtml_is_well_formed (const gchar *data)
 {
