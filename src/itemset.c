@@ -454,12 +454,6 @@ itemset_check_item (itemSetPtr itemSet, itemPtr item)
 	return result;
 }
 
-gboolean
-itemset_has_item_id (itemSetPtr itemSet, gulong id)
-{
-	return (NULL != g_list_find (itemSet->ids, GUINT_TO_POINTER (id)));
-}
-
 void
 itemset_add_rule (itemSetPtr itemSet,
                   const gchar *ruleId,
