@@ -106,15 +106,6 @@ void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean
 void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
 
 /**
- * Checks whether a subscription is ready to be updated
- *
- * @param subscription	the subscription to check
- *
- * @returns TRUE if subscription can be updated
- */
-gboolean subscription_can_be_updated(subscriptionPtr subscription);
-
-/**
  * Triggers updating a subscription. Will download the 
  * the document indicated by the source URL of the subscription.
  * Will call the node type specific update callback to process
@@ -202,23 +193,6 @@ const gchar * subscription_get_source(subscriptionPtr subscription);
  * @param source	the new source URL
  */
 void subscription_set_source(subscriptionPtr subscription, const gchar *source);
-
-/**
- * Get the original subscription URL
- *
- * @param subscription	the subscription
- *
- * @returns the original source URL
- */
-const gchar * subscription_get_orig_source(subscriptionPtr subscription);
-
-/**
- * Set the original subscription URL
- *
- * @param subscription	the subscription
- * @param source	the new original source URL
- */ 
-void subscription_set_orig_source(subscriptionPtr subscription, const gchar *source);
 
 /**
  * Returns the homepage URL of the given subscription.
