@@ -127,19 +127,6 @@ vfolder_foreach (nodeActionFunc func)
 	}	
 }
 
-void
-vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item)
-{
-	GSList	*iter = vfolders;
-	
-	g_assert (NULL != func);
-	while (iter) {
-		vfolderPtr vfolder = (vfolderPtr)iter->data;
-		(*func) (vfolder, item);
-		iter = g_slist_next (iter);
-	}
-}
-
 GSList *
 vfolder_get_all_with_item_id (itemPtr item)
 {
