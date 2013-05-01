@@ -114,7 +114,7 @@ gboolean xhtml_is_well_formed (const gchar *text);
  */
 xmlNodePtr xpath_find (xmlNodePtr node, const gchar *expr);
 
-/** Function type used by common_xpath_foreach_match() */
+/** Function type used by xpath_foreach_match() */
 typedef void (*xpathMatchFunc)(xmlNodePtr match, gpointer user_data);
 
 /**
