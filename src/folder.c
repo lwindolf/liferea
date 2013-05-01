@@ -22,7 +22,6 @@
 
 #include "common.h"
 #include "debug.h"
-#include "export.h"
 #include "feedlist.h"
 #include "itemset.h"
 #include "node.h"
