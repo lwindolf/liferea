@@ -28,7 +28,6 @@
 #include "item.h"
 #include "itemset.h"
 #include "node.h"
-#include "ui/enclosure_list_view.h"
 #include "ui/liferea_htmlview.h"
 
 /* Liferea presents items in a dynamic view. The view layout

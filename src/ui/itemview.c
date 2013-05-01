@@ -30,6 +30,7 @@
 #include "itemview.h"
 #include "node.h"
 #include "ui/ui_common.h"
+#include "ui/enclosure_list_view.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_htmlview.h"
