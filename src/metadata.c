@@ -346,26 +346,3 @@ metadata_add_xml_nodes (GSList *metadata, xmlNodePtr parentNode)
 	}
 }
 
-GSList *
-metadata_parse_xml_nodes (xmlNodePtr cur)
-{
-	xmlNodePtr	attribute = cur->xmlChildrenNode;
-	GSList 		*metadata = NULL;
-	
-	while (attribute) {
-		if (attribute->type == XML_ELEMENT_NODE &&
-		    !xmlStrcmp (attribute->name, BAD_CAST"attribute")) {
-			xmlChar *name = xmlGetProp (attribute, BAD_CAST"name");
-			if (name) {
-				gchar *value = xmlNodeListGetString (cur->doc, attribute->xmlChildrenNode, TRUE);
-				if (value) {
-					metadata = metadata_list_append (metadata, name, value);
-					xmlFree (value);
-				}
-				xmlFree (name);
-			}
-		}
-		attribute = attribute->next;
-	}
-	return metadata;
-}
