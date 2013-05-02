@@ -193,7 +193,7 @@ liferea_shell_restore_position (void)
 
 }
 
-void
+static void
 liferea_shell_save_position (void)
 {
 	GtkWidget	*pane;

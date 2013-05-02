@@ -100,12 +100,6 @@ void liferea_shell_present (void);
 void liferea_shell_toggle_visibility (void);
 
 /**
- * Saves the current main window position to be
- * restored later using liferea_shell_present().
- */
-void liferea_shell_save_position (void);
-
-/**
  * Sets the toolbar to a particular style
  *
  * @param toolbar_style text string containing the type of style to use
