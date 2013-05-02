@@ -25,7 +25,6 @@
 #include "vfolder.h"
 #include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
-#include "ui/liferea_shell.h"
 #include "ui/rule_editor.h"
 #include "ui/ui_node.h"
 

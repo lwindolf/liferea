@@ -40,7 +40,6 @@
 #include "render.h"
 #include "htmlview.h"
 #include "ui/browser_tabs.h"
-#include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 
 /* The LifereaHtmlView is a complex widget used to present both internally
