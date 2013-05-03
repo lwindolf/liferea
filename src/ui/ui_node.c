@@ -150,7 +150,7 @@ ui_node_remove_empty_node (GtkTreeIter *parent)
    folders-problem, so we simply pack an "(empty)" entry into each
    empty folder like Nautilus does... */
    
-void
+static void
 ui_node_check_if_folder_is_empty (const gchar *nodeId)
 {
 	GtkTreeIter	*iter;
@@ -238,18 +238,18 @@ ui_node_load_feedlist (nodePtr node)
 	}
 }
 
+static void
+ui_node_clear_feedlist ()
+{
+	gtk_tree_store_clear (feedstore);
+	g_hash_table_remove_all (flIterHash);
+}
+
 void
 ui_node_reload_feedlist ()
 {
 	ui_node_clear_feedlist ();
 	ui_node_load_feedlist (feedlist_get_root ());
-}
-
-void
-ui_node_clear_feedlist ()
-{
-	gtk_tree_store_clear (feedstore);
-	g_hash_table_remove_all (flIterHash);
 }
 
 void

@@ -53,11 +53,6 @@ void ui_node_add (nodePtr node);
 void ui_node_reload_feedlist (void);
 
 /**
- * Remove all nodes from UI
- */
-void ui_node_clear_feedlist (void);
-
-/**
  * Remove a node from the feedlist and free its ui_data.
  *
  * @param node	the node to free
@@ -86,15 +81,6 @@ void ui_node_remove_empty_node(GtkTreeIter *parent);
  * @returns TRUE if the node is expanded
  */
 gboolean ui_node_is_expanded(const gchar *nodeId);
-
-/**
- * Checks if the given folder node has children 
- * or not and applies a tree store workaround
- * if necessary.
- *
- * @param nodeId	the node id of the folder
- */
-void ui_node_check_if_folder_is_empty(const gchar *nodeId);
 
 /**
  * Change the expansion/collapsing of the given folder node.
