@@ -18,7 +18,7 @@
 	* Use the GTK+ 3 version, not wrongly the GTK+ 2 version,
 	  of the libindicate GTK+ bindings (Adrian Bunk)
 	* Updated the default feedlists (Adrian Bunk)
-	* Dropped support for libnotify < 0.7 (Adrian Bunk)
+	* Removed support for libnotify < 0.7 (Adrian Bunk)
 
 	* Added Vietnamese translation (Trần Ngọc Quân)
 	* Updated Albanian translation (Besnik Bleta)
