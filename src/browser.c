@@ -137,7 +137,7 @@ browser_get_command (struct browser *browser, gboolean remote, gboolean fallback
 		}
 
 		if (fallback && !cmd)	/* Last fallback: first browser default */
-			cmd = browsers[6].defaultplace;
+			cmd = browsers[0].defaultplace;
 	}
 	g_free (libname);
 		
