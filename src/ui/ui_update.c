@@ -26,7 +26,6 @@
 #include "subscription.h"
 #include "update.h"
 #include "ui/liferea_dialog.h"
-#include "ui/ui_node.h"
 
 enum {
 	UM_FAVICON,

@@ -30,7 +30,6 @@
 #include "rule.h"
 #include "vfolder_loader.h"
 #include "ui/icons.h"
-#include "ui/ui_node.h"
 #include "ui/search_folder_dialog.h"
 
 /** The list of all existing vfolders. Used for updating vfolder information upon item changes */
