@@ -26,7 +26,6 @@ GLIB_GSETTINGS
 AC_ARG_ENABLE(libnotify, AS_HELP_STRING([--disable-libnotify],[compile without libnotify support]),,enable_libnotify=yes)
 AC_ARG_ENABLE(libindicate, AS_HELP_STRING([--disable-libindicate],[compile without libindicate support]),,enable_libindicate=yes)
 
-AC_CHECK_HEADERS([locale.h stdlib.h string.h unistd.h])
 AC_CHECK_FUNCS([strsep])
 
 PKG_PROG_PKG_CONFIG()
