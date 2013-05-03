@@ -38,13 +38,7 @@ dnl *********
 if test "x$enable_libnotify" = "xyes"; then
   PKG_CHECK_MODULES([LIBNOTIFY], libnotify >= 0.7,enable_libnotify=yes,enable_libnotify=no)
   if test "x$enable_libnotify" = "xyes"; then
-    AC_DEFINE(HAVE_LIBNOTIFY, 4, [Define if libnotify.so.4 support is enabled])
-  fi
-  if test "x$enable_libnotify" = "xno"; then
-    PKG_CHECK_MODULES([LIBNOTIFY], libnotify >= 0.3.2,enable_libnotify=yes,enable_libnotify=no)
-    if test "x$enable_libnotify" = "xyes"; then
-      AC_DEFINE(HAVE_LIBNOTIFY, 1, [Define if libnotify.so.1 support is enabled])
-    fi
+    AC_DEFINE(HAVE_LIBNOTIFY, 1, [Define if libnotify support is enabled])
   fi
   AC_SUBST(LIBNOTIFY_CFLAGS)
   AC_SUBST(LIBNOTIFY_LIBS)
