@@ -141,7 +141,7 @@ browser_get_command (struct browser *browser, gboolean remote, gboolean fallback
 	}
 	g_free (libname);
 		
-	return cmd?g_strdup (cmd):NULL;
+	return g_strdup (cmd);
 }
 
 /** 
