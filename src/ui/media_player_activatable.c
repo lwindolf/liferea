@@ -26,7 +26,7 @@
  * @see_also: #PeasExtensionSet
  *
  * #LifereaMediaPlayerActivatable is an interface which should be implemented by
- * extensions that want to provide a password store
+ * extensions that want to provide a media player
  **/
 G_DEFINE_INTERFACE (LifereaMediaPlayerActivatable, liferea_media_player_activatable, G_TYPE_OBJECT)
 
