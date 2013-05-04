@@ -164,19 +164,15 @@ on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 /**
  * The "Hide read items" button has been clicked. Here we change the
  * preference and, if the selected node is a folder, we reload the
- * itemlist. Also, if there was an item selected, we add it to the
- * itemlist and select it, since when the itemlist is unloaded and loaded,
- * no item will be selected at all.
+ * itemlist. The item selection is lost by this.
  */
 void
 on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 {
 	nodePtr		displayedNode;
-	itemPtr		displayedItem;
 	gboolean	enabled;
 
 	displayedNode = itemlist_get_displayed_node ();
-	displayedItem = itemlist_get_selected ();
 
 	enabled = gtk_toggle_button_get_active (togglebutton);
 	conf_set_bool_value (FOLDER_DISPLAY_HIDE_READ, enabled);
