@@ -726,12 +726,6 @@ db_init (void)
 	debug_exit ("db_init");
 }
 
-static void
-db_free_statements (gpointer key, gpointer value, gpointer user_data)
-{
-	value = NULL;
-}
-
 void
 db_deinit (void) 
 {
@@ -742,7 +736,6 @@ db_deinit (void)
 		g_warning ("Fatal: DB not in auto-commit mode. This is a bug. Data may be lost!");
 	
 	if (statements) {
-		g_hash_table_foreach (statements, db_free_statements, NULL);
 		g_hash_table_destroy (statements);	
 		statements = NULL;
 	}
