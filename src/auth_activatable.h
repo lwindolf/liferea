@@ -1,4 +1,4 @@
-/**
+/*
  * @file liferea_auth_activatable.h  Shell Plugin Type
  *
  * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>

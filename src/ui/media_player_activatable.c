@@ -1,4 +1,4 @@
-/**
+/*
  * @file liferea_media_player_activatable.c  Media Player Plugin
  *
  * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>

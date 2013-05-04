@@ -1,4 +1,4 @@
-/**
+/*
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -144,7 +144,7 @@ liferea_shell_init (LifereaShell *ls)
 	gtk_builder_connect_signals (shell->priv->xml, NULL);
 }
 
-/**
+/*
  * Restore the window position from the values saved into gconf. Note
  * that this does not display/present/show the mainwindow.
  */

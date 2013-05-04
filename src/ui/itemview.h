@@ -1,4 +1,4 @@
-/**
+/*
  * @file itemview.h  viewing feed content in different presentation modes
  * 
  * Copyright (C) 2006-2012 Lars Windolf <lars.lindner@gmail.com>
@@ -67,11 +67,15 @@ struct ItemViewClass
 GType itemview_get_type (void);
 
 /** 
+ * itemview_clear:
+ *
  * Removes all currently loaded items from the item view.
  */
 void itemview_clear (void);
     
 /**
+ * itemview_set_displayed_node:
+ *
  * Prepares the view for displaying items of the given node.
  *
  * @param node	the node whose items are to be presented
@@ -86,6 +90,8 @@ typedef enum {
 } itemViewMode;
 
 /**
+ * itemview_set_mode:
+ *
  * Set/unset the display mode of the item view.
  *
  * @param mode		item view mode constant
@@ -93,25 +99,31 @@ typedef enum {
 void itemview_set_mode (itemViewMode mode);
 
 /**
+ * itemview_add_item:
+ *
  * Adds an item to the view for rendering. The item must belong
  * to the item set that was announced with itemview_set_displayed_node().
  *
  * @param item		the item to add
  *
- * @todo: use item merger signal instead
+ * TODO: use item merger signal instead
  */
 void itemview_add_item (itemPtr item);
 
 /**
+ * itemview_remove_item:
+ *
  * Removes a given item from the view.
  *
  * @param item	the item to remove
  *
- * @todo: use item merger signal instead
+ * TODO: use item merger signal instead
  */
 void itemview_remove_item (itemPtr item);
 
 /**
+ * itemview_select_item:
+ *
  * Selects a given item in the view. The item must be
  * added using itemview_add_item before selecting.
  *
@@ -121,14 +133,15 @@ void itemview_select_item (itemPtr item);
 
 /**
  * itemview_select_enclosure:
+ * @position:	the position to select
  *
  * Selects the nth enclosure in the enclosure list view currently presented.
- *
- * @position:	the position to select
  */
 void itemview_select_enclosure (guint position);
 
 /**
+ * itemview_update_item:
+ *
  * Requests updating the rendering of a given item.
  *
  * @param item	the item to update
@@ -136,28 +149,36 @@ void itemview_select_enclosure (guint position);
 void itemview_update_item (itemPtr item);
 
 /**
+ * itemview_update_all_items:
+ *
  * Requests updating the rendering of a all displayed items.
  */
 void itemview_update_all_items (void);
 
 /**
+ * itemview_update_node_info:
+ *
  * Requests updating the rendering of the node info view.
  *
  * @node node	the node whose info view is to be updated
  *
- * @todo: register for signal at feed merger instead
+ * TODO: register for signal at feed merger instead
  */
 void itemview_update_node_info (struct node *node);
 
 /**
+ * itemview_update:
+ *
  * Refreshes the item view. Needs to be called after each
  * add, remove or update of one or more items.
  *
- * @todo: register for signal at item merger instead
+ * TODO: register for signal at item merger instead
  */
 void itemview_update (void);
 
 /**
+ * itemview_display_info:
+ *
  * Sets an info display in the item view HTML widget.
  * Used for special functionality like search result info.
  *
@@ -166,6 +187,8 @@ void itemview_update (void);
 void itemview_display_info (const gchar *html);
 
 /**
+ * itemview_find_unread_item:
+ *
  * Finds the next unread item.
  *
  * @param startId	the item id to start at (or NULL for starting at the top)
@@ -175,12 +198,16 @@ void itemview_display_info (const gchar *html);
 itemPtr itemview_find_unread_item (gulong startId);
 
 /**
+ * itemview_scroll:
+ *
  * Paging/skimming the item view. If possible scrolls
  * down otherwise it triggers Next-Unread.
  */
 void itemview_scroll (void);
 
 /**
+ * itemview_move_cursor:
+ *
  * Moves the cursor in the item list step times.
  * Negative value means moving backwards.
  * 
@@ -189,11 +216,15 @@ void itemview_scroll (void);
 void itemview_move_cursor (int step);
 
 /**
+ * itemview_move_cursor_to_first:
+ *
  * Moves the cursor in the item list to the first element.
  */
 void itemview_move_cursor_to_first (void);
 
 /**
+ * itemview_set_layout:
+ *
  * Switches the layout for the given viewing mode.
  *
  * @param newMode	new view mode (NODE_VIEW_MODE_*)
@@ -201,21 +232,28 @@ void itemview_move_cursor_to_first (void);
 void itemview_set_layout (nodeViewType newMode);
 
 /**
+ * itemview_create:
+ * @window:		parent window widget
+ *
  * Creates the item view singleton instance.
  *
- * @param window	parent window widget
- *
- * @returns the item view instance
+ * Return value: (transfer none):	the item view instance
  */
 ItemView * itemview_create (GtkWidget *window);
 
 /**
+ * itemview_get_style:
+ *
  * Returns the itemview GtkStyle. To be used by the
  * HTML rendering code to determine theme colors.
+ *
+ * Return value: (transfer none):	the itemview GtkStyle
  */
 GtkStyle * itemview_get_style (void);
 
 /**
+ * itemview_launch_URL:
+ *
  * Launch the given URL in the currently active HTML view.
  *
  * @param url		the link to load
@@ -224,6 +262,8 @@ GtkStyle * itemview_get_style (void);
 void itemview_launch_URL (const gchar *url, gboolean internal);
 
 /**
+ * itemview_do_zoom:
+ *
  * Requests the item view to change zoom level.
  *
  * @param in	TRUE if zooming in, FALSE for zooming out

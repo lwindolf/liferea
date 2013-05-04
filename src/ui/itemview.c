@@ -1,4 +1,4 @@
-/**
+/*
  * @file itemview.c  viewing feed content in different presentation modes
  * 
  * Copyright (C) 2006-2012 Lars Windolf <lars.lindner@gmail.com>

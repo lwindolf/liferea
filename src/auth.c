@@ -1,4 +1,4 @@
-/**
+/*
  * @file auth.c  authentication helpers
  *
  * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>

@@ -1,4 +1,4 @@
-/**
+/*
  * @file liferea_media_player.c  media player helpers
  *
  * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
