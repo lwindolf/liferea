@@ -229,6 +229,57 @@ item_list_view_create_tree_store (void)
 	);
 }
 
+static void
+on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer user_data)
+{
+	GtkTreeIter 	iter;
+	GtkTreeModel	*model;
+	itemPtr		item = NULL;
+
+	if (gtk_tree_selection_get_selected (selection, &model, &iter))
+		item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
+
+	liferea_shell_update_item_menu (NULL != item);
+	if (item)
+		itemlist_selection_changed (item);
+}
+
+static void
+itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_data)
+{
+	gint		sortColumn, nodeSort;
+	GtkSortType	sortType;
+	gboolean	sorted, changed;
+	
+	if (feedlist_get_selected () == NULL)
+		return;
+	
+	sorted = gtk_tree_sortable_get_sort_column_id (treesortable, &sortColumn, &sortType);
+	if (!sorted)
+		return;
+		
+	switch (sortColumn) {
+		case IS_TIME:
+		default:
+			nodeSort = NODE_VIEW_SORT_BY_TIME;
+			break;
+		case IS_LABEL:
+			nodeSort = NODE_VIEW_SORT_BY_TITLE;
+			break;
+		case IS_STATE:
+			nodeSort = NODE_VIEW_SORT_BY_STATE;
+			break;
+		case IS_PARENT:
+		case IS_SOURCE:
+			nodeSort = NODE_VIEW_SORT_BY_PARENT;
+			break;
+	}
+
+	changed = node_set_sort_column (feedlist_get_selected (), nodeSort, sortType == GTK_SORT_DESCENDING);
+	if (changed)
+		feedlist_schedule_save ();
+}
+
 /**
  * Sets a GtkTreeView to the active GtkTreeView.
  */
@@ -409,7 +460,7 @@ static gboolean
 on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data) 
 {
 	if ((event->type == GDK_KEY_PRESS) && (event->state == 0)
-	    && (event->keyval == GDK_KEY(Delete)))
+	    && (event->keyval == GDK_KEY_Delete))
 		on_remove_item_activate(NULL, NULL);
 
 	return FALSE;
@@ -522,6 +573,9 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 				ui_popup_item_menu (item, eb->button, eb->time);
 				result = TRUE;
 				break;
+			default:
+				/* Do nothing on buttons >= 4 */
+				break;
 		}
 		item_unload (item);
 	}
@@ -546,6 +600,16 @@ on_item_list_view_popup_menu (GtkWidget *widget, gpointer user_data)
 	return FALSE;
 }
 
+static void
+on_Itemlist_row_activated (GtkTreeView *treeview,
+                           GtkTreePath *path,
+			   GtkTreeViewColumn *column,
+			   gpointer user_data) 
+{
+	// FIXME: Internal or external should be decided on preferences!
+	on_popup_launch_item_selected ();
+}
+
 GtkTreeView *
 item_list_view_get_widget (ItemListView *ilv)
 {
@@ -565,7 +629,6 @@ item_list_view_create (GtkWidget *window)
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column, *headline_column;
-	GtkTreeSelection	*select;
 	GtkWidget 		*ilscrolledwindow;
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
@@ -757,16 +820,6 @@ on_popup_launch_item_external_selected (void)
 	}
 }
 
-void 
-on_Itemlist_row_activated (GtkTreeView *treeview,
-                           GtkTreePath *path,
-			   GtkTreeViewColumn *column,
-			   gpointer user_data) 
-{
-	// FIXME: Internal or external should be decided on preferences!
-	on_popup_launch_item_selected ();
-}
-
 /* menu callbacks */
 
 void
@@ -928,55 +981,4 @@ on_popup_social_bm_item_selected (void)
 	}
 	else
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
-}
-
-void
-on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer user_data)
-{
-	GtkTreeIter 	iter;
-	GtkTreeModel	*model;
-	itemPtr		item = NULL;
-
-	if (gtk_tree_selection_get_selected (selection, &model, &iter))
-		item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
-
-	liferea_shell_update_item_menu (NULL != item);
-	if (item)
-		itemlist_selection_changed (item);
-}
-
-void
-itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_data)
-{
-	gint		sortColumn, nodeSort;
-	GtkSortType	sortType;
-	gboolean	sorted, changed;
-	
-	if (feedlist_get_selected () == NULL)
-		return;
-	
-	sorted = gtk_tree_sortable_get_sort_column_id (treesortable, &sortColumn, &sortType);
-	if (!sorted)
-		return;
-		
-	switch (sortColumn) {
-		case IS_TIME:
-		default:
-			nodeSort = NODE_VIEW_SORT_BY_TIME;
-			break;
-		case IS_LABEL:
-			nodeSort = NODE_VIEW_SORT_BY_TITLE;
-			break;
-		case IS_STATE:
-			nodeSort = NODE_VIEW_SORT_BY_STATE;
-			break;
-		case IS_PARENT:
-		case IS_SOURCE:
-			nodeSort = NODE_VIEW_SORT_BY_PARENT;
-			break;
-	}
-
-	changed = node_set_sort_column (feedlist_get_selected (), nodeSort, sortType == GTK_SORT_DESCENDING);
-	if (changed)
-		feedlist_schedule_save ();
 }

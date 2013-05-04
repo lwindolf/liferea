@@ -44,7 +44,6 @@
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 #include "ui/itemview.h"
-#include "ui/ui_tray.h"
 
 /** common private structure for all subscription dialogs */
 struct PreferencesDialogPrivate {
@@ -79,12 +78,12 @@ static const gchar * enclosure_download_commands[] = {
 };
 
 /** order must match enclosure_download_commands[] */
-static gchar *enclosure_download_tool_options[] = { "steadyflow", "gwget", "kget", NULL };
+static const gchar *enclosure_download_tool_options[] = { "steadyflow", "gwget", "kget", NULL };
 
 /** GConf representation of toolbar styles */
-static gchar * gui_toolbar_style_values[] = { "", "both", "both-horiz", "icons", "text", NULL };
+static const gchar * gui_toolbar_style_values[] = { "", "both", "both-horiz", "icons", "text", NULL };
 
-static gchar * gui_toolbar_style_options[] = {
+static const gchar * gui_toolbar_style_options[] = {
 	N_("GNOME default"),
 	N_("Text below icons"),
 	N_("Text beside icons"),
@@ -96,21 +95,21 @@ static gchar * gui_toolbar_style_options[] = {
 /* Note: these update interval literal should be kept in sync with the 
    ones in ui_subscription.c! */
     
-static gchar * default_update_interval_unit_options[] = {
+static const gchar * default_update_interval_unit_options[] = {
 	N_("minutes"),
 	N_("hours"),
 	N_("days"),
 	NULL
 };
 
-static gchar * browser_skim_key_options[] = {
+static const gchar * browser_skim_key_options[] = {
 	N_("Space"),
 	N_("<Ctrl> Space"),
 	N_("<Alt> Space"),
 	NULL
 };
 
-static gchar * default_view_mode_options[] = {
+static const gchar * default_view_mode_options[] = {
 	N_("Normal View"),
 	N_("Wide View"),
 	N_("Combined View")

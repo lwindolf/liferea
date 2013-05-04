@@ -230,7 +230,6 @@ ui_node_source_type_dialog (void)
 	GtkWidget 		*dialog, *treeview;
 	GtkTreeStore		*treestore;
 	GtkCellRenderer		*renderer;
-	GtkTreeViewColumn 	*column;
 	GtkTreeIter		treeiter;
 	nodeSourceTypePtr	type;
 
@@ -262,7 +261,6 @@ ui_node_source_type_dialog (void)
 	treeview = liferea_dialog_lookup (dialog, "type_list");
 	g_assert (NULL != treeview);
 
-	column = gtk_tree_view_column_new ();
 	renderer = gtk_cell_renderer_text_new ();
 	g_object_set (renderer, "wrap-width", 400, NULL);
 	g_object_set (renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);

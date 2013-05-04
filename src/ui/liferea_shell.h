@@ -1,4 +1,4 @@
-/**
+/*
  * @file liferea_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -78,6 +78,8 @@ GType liferea_shell_get_type	(void);
 GtkWidget * liferea_shell_lookup (const gchar *name);
 
 /**
+ * liferea_shell_create:
+ *
  * Set up the Liferea main window.
  *
  * @param app	the GtkApplication to attach the main window to
@@ -85,27 +87,29 @@ GtkWidget * liferea_shell_lookup (const gchar *name);
 void liferea_shell_create (GtkApplication *app);
 
 /**
+ * liferea_shell_destroy:
+ *
  * Destroys the global liferea_shell object.
  */
 void liferea_shell_destroy (void);
 
 /**
+ * liferea_shell_present:
+ *
  * Presents the main window if it is hidden.
  */
 void liferea_shell_present (void);
 
 /**
+ * liferea_shell_toggle_visibility:
+ *
  * Toggles main window visibility.
  */ 
 void liferea_shell_toggle_visibility (void);
 
 /**
- * Saves the current main window position to be
- * restored later using liferea_shell_present().
- */
-void liferea_shell_save_position (void);
-
-/**
+ * liferea_shell_set_toolbar_style:
+ *
  * Sets the toolbar to a particular style
  *
  * @param toolbar_style text string containing the type of style to use
@@ -113,71 +117,89 @@ void liferea_shell_save_position (void);
 void liferea_shell_set_toolbar_style (const gchar *toolbar_style);
 
 /**
+ * liferea_shell_update_toolbar:
+ *
  * According to the preferences this function enables/disables the toolbar.
  *
- * @todo: use signal instead
+ * TODO: use signal instead
  */
 void liferea_shell_update_toolbar (void);
 
 /**
+ * liferea_shell_update_history_actions:
+ *
  * Update item history menu actions and toolbar buttons.
  *
- * @todo: use signal instead
+ * TODO: use signal instead
  */
 void liferea_shell_update_history_actions (void);
 
-/** 
+/**
+ * liferea_shell_update_feed_menu:
+ *
  * Update the sensitivity of options affecting single feeds.
  *
  * @param add           TRUE if subscribing is to be enabled
  * @param enabled	TRUE if feed actions are to be enabled
  * @param readWrite	TRUE if feed list modifying actions are enabled
  *
- * @todo: use signal instead
+ * TODO: use signal instead
  */
 void liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean readWrite);
 
-/** 
+/**
+ * liferea_shell_update_item_menu:
+ *
  * Update the sensitivity of options affecting single items.
  *
  * @param enabled	TRUE if item actions are to be enabled
  *
- * @todo: use signal instead
+ * TODO: use signal instead
  */
 void liferea_shell_update_item_menu (gboolean enabled);
 
 /**
+ * liferea_shell_update_allitems_actions:
+ *
  * Update the sensitivity of options affecting item sets.
  *
  * @param isNotEmpty	TRUE if there is a non-empty item set active
  * @param isRead	TRUE if there are no unread items in the item set
  *
- * @todo: use signal instead
+ * TODO: use signal instead
  */
 void liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead);
 
 /**
+ * liferea_shell_update_update_menu:
+ *
  * Set the sensitivity of items in the update menu.
  *
  * @param enabled	TRUE if menu options are to be enabled
  *
- * @todo: use signal instead
+ * TODO: use signal instead
  */
 void liferea_shell_update_update_menu (gboolean enabled);
 
 /**
+ * liferea_shell_update_unread_stats:
+ *
  * Updates the unread/new item count right beneath the status bar.
  *
- * @todo: use signal instead
+ * TODO: use signal instead
  */
 void liferea_shell_update_unread_stats (void);
 
 /**
+ * liferea_shell_set_status_bar:
+ *
  * Sets the status bar text. Takes printf() like parameters.
  */
 void liferea_shell_set_status_bar (const char *format, ...);
 
 /**
+ * liferea_shell_set_important_status_bar:
+ *
  * Similar to liferea_shell_set_status_message(), but ensures
  * that messages stay visible and avoids that those messages
  * are overwritten by unimportant ones.
@@ -195,10 +217,9 @@ GtkWidget * liferea_shell_get_window (void);
 
 /**
  * liferea_shell_set_view_mode:
+ * @newMode:	the new mode
  *
  * Update the mode selection in the menu
- *
- * @newMode:	the new mode
  */
 void liferea_shell_set_view_mode (nodeViewType newMode);
 

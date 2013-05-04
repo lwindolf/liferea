@@ -1,4 +1,4 @@
-/**
+/*
  * @file auth.h  authentication helpers
  *
  * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
@@ -24,6 +24,8 @@
 #include <glib.h>
 
 /**
+ * liferea_auth_has_active_store: 
+ *
  * Method to query whether there is an active password store.
  *
  * @returns TRUE if there is a password store
@@ -51,6 +53,8 @@ void liferea_auth_info_from_store (const gchar *authId, const gchar *username, c
 void liferea_auth_info_store (gpointer subscription);
 
 /**
+ * liferea_auth_info_query:
+ *
  * Return auth information for a given node. Each extension able to
  * supply a user name and password for the given id is to synchronously call
  * liferea_auth_info_from_store() to set them.

@@ -34,7 +34,6 @@
 #include "node.h"
 #include "subscription.h"
 #include "update.h"
-#include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"

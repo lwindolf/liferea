@@ -34,14 +34,12 @@
 #include "enclosure.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "itemlist.h"
 #include "net.h"
 #include "net_monitor.h"
 #include "social.h"
 #include "render.h"
 #include "htmlview.h"
 #include "ui/browser_tabs.h"
-#include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 
 /* The LifereaHtmlView is a complex widget used to present both internally
@@ -338,7 +336,7 @@ liferea_htmlview_clear (LifereaHtmlView *htmlview)
 	g_string_free (buffer, TRUE);
 }
 
-gboolean
+static gboolean
 liferea_htmlview_is_special_url (const gchar *url)
 {
 	/* match against all special protocols, simple

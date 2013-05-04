@@ -32,9 +32,9 @@
 #include <libindicate-gtk/indicator.h>
 #include <libindicate/interests.h>
 #include "feedlist.h"
-#include "feed_list_view.h"
-#include "liferea_shell.h"
-#include "ui_tray.h"
+#include "ui/feed_list_view.h"
+#include "ui/liferea_shell.h"
+#include "ui/ui_tray.h"
 #include "vfolder.h"
 
 /* The maximum number of feeds to display in the indicator menu. */

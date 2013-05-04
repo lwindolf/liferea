@@ -33,8 +33,6 @@ GSList * newsbin_get_list(void);
 
 void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data);
 
-void on_newsbinnamechange_clicked(GtkButton *button, gpointer user_data);
-
 void on_popup_copy_to_newsbin(gpointer data);
 
 /* implementation of the node type interface */

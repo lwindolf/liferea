@@ -68,17 +68,6 @@ typedef struct subscription {
 } *subscriptionPtr;
 
 /**
- * Generic update result processing callback type.
- * This callback must not free the result structure. It will be
- * free'd by the download system after the callback returns.
- *
- * @param node		the subscriptions node
- * @param result	the update result
- * @param flags		update result processing flags
- */
-typedef void (*subscription_update_cb) (nodePtr node, const struct updateResult * const result, guint32 flags);
-
-/**
  * Create a new subscription structure.
  *
  * @param source	the subscription source URL (or NULL)
@@ -115,15 +104,6 @@ void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean
  * @param feedNode	XML node to add subscription attributes to
  */
 void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
-
-/**
- * Checks whether a subscription is ready to be updated
- *
- * @param subscription	the subscription to check
- *
- * @returns TRUE if subscription can be updated
- */
-gboolean subscription_can_be_updated(subscriptionPtr subscription);
 
 /**
  * Triggers updating a subscription. Will download the 
@@ -213,23 +193,6 @@ const gchar * subscription_get_source(subscriptionPtr subscription);
  * @param source	the new source URL
  */
 void subscription_set_source(subscriptionPtr subscription, const gchar *source);
-
-/**
- * Get the original subscription URL
- *
- * @param subscription	the subscription
- *
- * @returns the original source URL
- */
-const gchar * subscription_get_orig_source(subscriptionPtr subscription);
-
-/**
- * Set the original subscription URL
- *
- * @param subscription	the subscription
- * @param source	the new original source URL
- */ 
-void subscription_set_orig_source(subscriptionPtr subscription, const gchar *source);
 
 /**
  * Returns the homepage URL of the given subscription.

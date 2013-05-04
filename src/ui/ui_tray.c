@@ -305,27 +305,3 @@ ui_tray_get_count(void)
 	return trayIcon_priv?trayIcon_priv->trayCount:0;
 }
 
-gboolean ui_tray_get_origin(gint *x, gint *y) {
-
-	GdkRectangle rect;
-	if(!trayIcon_priv)
-		return FALSE;
-
-	gtk_status_icon_get_geometry(trayIcon_priv->status_icon, NULL,
-	                             &rect, NULL);
-	*x = rect.x;
-	*y = rect.y;
-
-	return TRUE;
-}
-
-void ui_tray_size_request(GtkRequisition *requisition) {
-
-	gint size;
-	if(!trayIcon_priv)
-		return;
-
-	size = gtk_status_icon_get_size(trayIcon_priv->status_icon);
-	requisition->width = requisition->height = size;
-}
-

@@ -25,8 +25,6 @@
 #include <gdk/gdkkeysyms.h>
 
 #include "common.h"
-#include "itemlist.h"
-#include "ui/ui_common.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 #include "ui/gedit-close-button.h"
@@ -48,7 +46,7 @@ on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
 	guint modifiers;
 
 	modifiers = gtk_accelerator_get_default_mod_mask ();
-	if ((event->keyval == GDK_KEY(w))
+	if ((event->keyval == GDK_KEY_w)
 	    && ((event->state & modifiers) == GDK_CONTROL_MASK)) {
 		browser_tabs_close_tab ((tabInfo *)data);
 		return TRUE;
@@ -164,7 +162,6 @@ static void
 on_htmlview_title_changed (gpointer object, gchar *title, gpointer user_data)
 {
 	tabInfo		*tab = (tabInfo *)user_data;
-	GtkWidget	*label;
 
 	gtk_label_set_text (GTK_LABEL(tab->label), create_label_text (title));
 }
@@ -213,7 +210,7 @@ on_htmlview_status_message (gpointer obj, gchar *url)
 LifereaHtmlView *
 browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 {
-	GtkWidget 	*close_button, *labelBox, *htmlframe;
+	GtkWidget 	*close_button, *labelBox;
 	tabInfo		*tab;
 	int		i;
 

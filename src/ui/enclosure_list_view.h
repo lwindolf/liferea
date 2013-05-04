@@ -102,9 +102,8 @@ void on_popup_open_enclosure(gpointer callback_data);
 void on_popup_save_enclosure(gpointer callback_data);
 void on_popup_copy_enclosure(gpointer callback_data);
 
-// FIXME: these do not belong here!
+// FIXME: this does not belong here!
 void ui_enclosure_change_type (encTypePtr type);
-void ui_enclosure_remove_type (encTypePtr type);
 
 G_END_DECLS
 

@@ -98,7 +98,7 @@ subscription_new (const gchar *source,
 }
 
 /* Checks whether updating a feed makes sense. */
-gboolean
+static gboolean
 subscription_can_be_updated (subscriptionPtr subscription)
 {
 	if (subscription->updateJob) {
@@ -354,7 +354,7 @@ subscription_set_default_update_interval (subscriptionPtr subscription, guint in
 	subscription->defaultInterval = interval;
 }
 
-const gchar *
+static const gchar *
 subscription_get_orig_source (subscriptionPtr subscription)
 {
 	return subscription->origSource; 
@@ -378,7 +378,7 @@ subscription_get_filter (subscriptionPtr subscription)
 	return subscription->filtercmd;
 }
 
-void
+static void
 subscription_set_orig_source (subscriptionPtr subscription, const gchar *source)
 {
 	g_free (subscription->origSource);

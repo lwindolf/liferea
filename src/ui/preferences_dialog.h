@@ -65,6 +65,26 @@ const gchar * prefs_get_download_command (void);
  */
 void preferences_dialog_open (void);
 
+/* functions used in glade/prefs.ui */
+void on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data);
+void on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data);
+void on_trayiconoptionbtn_clicked (GtkButton *button, gpointer user_data);
+void on_popupwindowsoptionbtn_clicked (GtkButton *button, gpointer user_data);
+void on_startupactionbtn_toggled (GtkButton *button, gpointer user_data);
+void on_browsercmd_changed (GtkEditable *editable, gpointer user_data);
+void on_openlinksinsidebtn_clicked (GtkToggleButton *button, gpointer user_data);
+void on_disablejavascript_toggled (GtkToggleButton *togglebutton, gpointer user_data);
+void on_enableplugins_toggled (GtkToggleButton *togglebutton, gpointer user_data);
+void on_itemCountBtn_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
+void on_default_update_interval_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
+void on_useProxyAuth_toggled (GtkToggleButton *button, gpointer user_data);
+void on_enc_action_change_btn_clicked (GtkButton *button, gpointer user_data);
+void on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data);
+void on_newcountintraybtn_clicked (GtkButton *button, gpointer user_data);
+void on_minimizetotraybtn_clicked (GtkButton *button, gpointer user_data);
+void on_startintraybtn_clicked (GtkButton *button, gpointer user_data);
+void on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data);
+
 G_END_DECLS
 
 #endif

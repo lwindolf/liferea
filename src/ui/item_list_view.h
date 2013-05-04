@@ -146,27 +146,6 @@ void item_list_view_clear (ItemListView *ilv);
  */
 void item_list_view_update (ItemListView *ilv, gboolean hasEnclosures);
 
-/* item list callbacks */
-
-/**
- * Callback activated when an item is double-clicked. It opens the URL
- * of the item in a web browser.
- */
-void on_Itemlist_row_activated (GtkTreeView     *treeview,
-                                GtkTreePath     *path,
-                                GtkTreeViewColumn *column,
-                                gpointer         user_data);
-
-/**
- * Callback for column selection change.
- */
-void itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_data);
-
-/**
- * Callback for item list selection change.
- */
-void on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer data);
-
 /* menu callbacks */
 
 /**

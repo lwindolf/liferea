@@ -81,33 +81,4 @@ void social_add_bookmark (const itemPtr item);
  */
 const gchar * social_get_bookmark_site (void);
 
-/**
- * Add a new site to the link cosmos search engine list.
- *
- * @param name		descriptive name
- * @param url		valid HTTP GET URL with one %s format code
- */
-void social_register_link_search_site (const gchar *name, const gchar *url);
-
-/**
- * Returns a link for the configured link cosmos search engine
- *
- * @param link		the link to encode (mandatory)
- *
- * @returns new URL string
- */
-gchar * social_get_link_search_url (const gchar *link);
-
-/**
- * Changes the current link search engine configuration to the given site.
- *
- * @param name		name (id) of the link search engine
- */
-void social_set_link_search_site (const gchar *name);
-
-/**
- * Returns the name of the currently configured link search engine .
- */
-const gchar * social_get_link_search_site (void);
-
 #endif

@@ -1,4 +1,4 @@
-/**
+/*
  * @file auth_activatable.c  Auth Plugin Type
  *
  * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
@@ -73,17 +73,6 @@ liferea_auth_activatable_query (LifereaAuthActivatable * activatable,
 		iface->query (activatable, authId);
 }
 
-/**
- * liferea_auth_activatable_store:
- * @activatable:	a #LifereaAuthActivatable.
- * @authId:		a unique auth info id 
- * @username:		the username to store
- * @password:		the password to store
- *
- * Triggers a query for authentication infos for a given subscription.
- * Expects triggered plugins to use liferea_auth_info_add() to provide
- * any matches.
- */
 void
 liferea_auth_activatable_store (LifereaAuthActivatable * activatable,
                                 const gchar *authId,

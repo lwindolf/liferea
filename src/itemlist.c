@@ -478,7 +478,7 @@ itemlist_remove_item (itemPtr item)
 }
 
 /* soft possibly delayed item remove */
-void
+static void
 itemlist_request_remove_item (itemPtr item) 
 {	
 	/* if the currently selected item should be removed we
@@ -710,7 +710,7 @@ itemlist_item_batch_fetched_cb (ItemLoader *il, GSList *items, gpointer user_dat
 	g_slist_free (items);
 }
 
-void
+static void
 itemlist_add_loader (ItemLoader *loader)
 {
 	g_signal_connect (G_OBJECT (loader), "item-batch-fetched", G_CALLBACK (itemlist_item_batch_fetched_cb), NULL);

@@ -1,4 +1,4 @@
-/**
+/*
  * @file liferea_media_player_activatable.h  Media Player Plugin Type
  *
  * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
@@ -52,12 +52,11 @@ void liferea_media_player_activatable_deactivate (LifereaMediaPlayerActivatable 
 
 /**
  * liferea_media_player_activatable_load:
+ * @parentWidget:			the parent widget for the media player
+ * @enclosures: (element-type gchar*):	a list of enclosures
  *
  * Triggers the creation of a suitable media player and loads a list of
  * enclosures into it.
- *
- * @parentWidget:        the parent widget for the media player
- * @enclosures: (element-type gchar*): a list of enclosures
  */
 void liferea_media_player_activatable_load (LifereaMediaPlayerActivatable *activatable, GtkWidget *parentWidget, GSList *enclosures);
 

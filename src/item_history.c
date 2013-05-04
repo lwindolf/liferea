@@ -22,6 +22,8 @@
 
 #include <glib.h>
 
+#include "ui/liferea_shell.h"
+
 #define MAX_HISTORY_SIZE	250
 
 static struct itemHistory {
@@ -33,8 +35,6 @@ static struct itemHistory {
 void
 item_history_add (guint id)
 {
-	itemPtr item;
-
 	if (!itemHistory)
 		itemHistory = g_new0 (struct itemHistory, 1);
 
@@ -60,7 +60,7 @@ item_history_add (guint id)
 itemPtr
 item_history_get_next (void)
 {
-	itemPtr item;
+	itemPtr item = NULL;
 
 	if (!itemHistory->current)
 		return NULL;
@@ -78,7 +78,7 @@ item_history_get_next (void)
 itemPtr
 item_history_get_previous (void)
 {
-	itemPtr item;
+	itemPtr item = NULL;
 
 	if (!itemHistory->current)
 		return NULL;

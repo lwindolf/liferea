@@ -1,4 +1,4 @@
-/**
+/*
  * @file media_player.h  media player helpers
  *
  * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
@@ -26,12 +26,11 @@
 
 /**
  * liferea_media_player_load:
+ * @parentWidget:        the parent widget for the media player
+ * @enclosures: (element-type gchar*): a list of enclosure strings
  *
  * Triggers the creation of a suitable media player and loads a list of
  * enclosures into it.
- *
- * @parentWidget:        the parent widget for the media player
- * @enclosures: (element-type gchar*): a list of enclosure strings
  */
 void liferea_media_player_load (GtkWidget *parentWidget, GSList *enclosures);
 

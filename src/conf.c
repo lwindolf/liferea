@@ -47,19 +47,6 @@ static void conf_proxy_reset_settings_cb(GSettings *settings, guint cnxn_id, gch
 static void conf_tray_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
 static void conf_toolbar_style_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
 
-static gboolean
-is_gsettings_error (GError **err)
-{
-	if (*err) {
-		g_warning ("%s\n", (*err)->message);
-		g_error_free (*err);
-		*err = NULL;
-		return TRUE;
-	}
-	
-	return FALSE;
-}
-
 static void
 conf_ensure_migrated (const gchar *name)
 {

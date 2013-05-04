@@ -49,21 +49,4 @@ GtkStatusIcon* ui_tray_get_status_icon (void);
  */
 guint ui_tray_get_count (void);
 
-/**
- * Determine position of tray icon (for libnotify)
- *
- * @param x	horizontal position
- * @param y	vertical position
- *
- * @returns FALSE on error
- */
-gboolean ui_tray_get_origin (gint *x, gint *y);
-
-/**
- * Determine size of tray icon (for libnotify)
- *
- * @param requisition	the requisition
- */
-void ui_tray_size_request (GtkRequisition *requisition);
-
 #endif

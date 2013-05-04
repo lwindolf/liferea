@@ -33,16 +33,7 @@
  */
 gboolean ui_folder_add (void);
 
-/**
- * Start interaction to change the properties of 
- * the given folder node.
- *
- * @param folder	the node
- */
-void ui_folder_properties(nodePtr folder);
-
-/* menu callbacks */
+/* menu callback */
 void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data);
-void on_foldernamechangebtn_clicked(GtkButton *button, gpointer user_data);
 
 #endif

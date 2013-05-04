@@ -25,7 +25,6 @@
 #include "item_state.h"
 #include "itemset.h"
 #include "itemlist.h"
-#include "newsbin.h"
 #include "node.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"

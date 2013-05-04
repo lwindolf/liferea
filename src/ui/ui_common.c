@@ -27,7 +27,7 @@
 
 void
 ui_common_setup_combo_menu (GtkWidget *widget,
-                     gchar **options,
+                     const gchar **options,
                      GCallback callback,
                      gint defaultValue)
 {

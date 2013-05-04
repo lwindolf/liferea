@@ -41,6 +41,8 @@ struct exportData {
 	xmlNodePtr	cur;
 };
 
+static void export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted);
+
 /* Used for exporting, this adds a folder or feed's node to the XML tree */
 static void
 export_append_node_tag (nodePtr node, gpointer userdata)
@@ -81,6 +83,9 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 			case NODE_VIEW_SORT_BY_STATE:
 				xmlNewProp (childNode, BAD_CAST"sortColumn", BAD_CAST"state");
 				break;
+			default:
+				g_assert_not_reached();
+				break;
 		}
 
 		if (FALSE == node->sortReversed)
@@ -115,7 +120,7 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 		export_node_children (node, childNode, internal);
 }
 
-void
+static void
 export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted)
 {
 	struct exportData	params;
@@ -192,7 +197,7 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 	return !error;
 }
 
-void
+static void
 import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 {
 	gchar		*title, *typeStr, *tmp, *sortStr;

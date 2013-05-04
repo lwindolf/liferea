@@ -36,7 +36,7 @@ typedef struct _LifereaDBusClass {
 	GObjectClass parent;
 } LifereaDBusClass;
 
-GType liferea_dbus_get_type();
+GType liferea_dbus_get_type (void);
 
 #define LIFEREA_DBUS_TYPE              (liferea_dbus_get_type ())
 #define LIFEREA_DBUS(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), LIFEREA_DBUS_TYPE, LifereaDBus))
@@ -45,6 +45,6 @@ GType liferea_dbus_get_type();
 #define IS_LIFEREA_DBUS_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_DBUS_TYPE))
 #define LIFEREA_DBUS_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), LIFEREA_DBUS_TYPE, LifereaDBusClass))
 
-LifereaDBus* liferea_dbus_new();
+LifereaDBus* liferea_dbus_new (void);
 
 #endif

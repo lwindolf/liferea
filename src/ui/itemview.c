@@ -1,4 +1,4 @@
-/**
+/*
  * @file itemview.c  viewing feed content in different presentation modes
  * 
  * Copyright (C) 2006-2012 Lars Windolf <lars.lindner@gmail.com>
@@ -29,8 +29,8 @@
 #include "itemlist.h"
 #include "itemview.h"
 #include "node.h"
-#include "vfolder.h"
 #include "ui/ui_common.h"
+#include "ui/enclosure_list_view.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_htmlview.h"

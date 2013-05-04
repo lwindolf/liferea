@@ -30,7 +30,6 @@
 #include "rule.h"
 #include "vfolder_loader.h"
 #include "ui/icons.h"
-#include "ui/ui_node.h"
 #include "ui/search_folder_dialog.h"
 
 /** The list of all existing vfolders. Used for updating vfolder information upon item changes */
@@ -125,19 +124,6 @@ vfolder_foreach (nodeActionFunc func)
 		(*func)(vfolder->node);
 		iter = g_slist_next (iter);		
 	}	
-}
-
-void
-vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item)
-{
-	GSList	*iter = vfolders;
-	
-	g_assert (NULL != func);
-	while (iter) {
-		vfolderPtr vfolder = (vfolderPtr)iter->data;
-		(*func) (vfolder, item);
-		iter = g_slist_next (iter);
-	}
 }
 
 GSList *

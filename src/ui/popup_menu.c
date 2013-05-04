@@ -28,7 +28,6 @@
 #include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
-#include "itemlist.h"
 #include "net_monitor.h"
 #include "newsbin.h"
 #include "node.h"
@@ -275,20 +274,19 @@ static void
 ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32 activate_time)
 {
 	GtkWidget	*menu;
-	gboolean	writeableFeedlist, isRoot, isHierarchic, addChildren;
+	gboolean	writeableFeedlist, isRoot, addChildren;
 
 	menu = gtk_menu_new ();
 	
 	if (node->parent) {
 		writeableFeedlist = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
 		isRoot = NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
-		isHierarchic = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST;
 		addChildren = NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS;
 	} else {
 		/* if we have no parent then we have the root node... */
 		writeableFeedlist = TRUE;
 		isRoot = TRUE;
-		isHierarchic = TRUE;
+		addChildren = TRUE;
 	}
 
 	if (validSelection) {

@@ -39,7 +39,7 @@
 /* Note: these update interval literals should be kept in sync with the 
    ones in ui_prefs.c! */
     
-static gchar * default_update_interval_unit_options[] = {
+static const gchar * default_update_interval_unit_options[] = {
 	N_("minutes"),
 	N_("hours"),
 	N_("days"),

@@ -42,7 +42,6 @@
 #include "plugins_engine.h"
 #include "xml.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_tray.h"
 
 /** global update job list, used for lookups when cancelling */
 static GSList	*jobs = NULL;

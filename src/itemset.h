@@ -75,16 +75,6 @@ guint itemset_merge_items(itemSetPtr itemSet, GList *items, gboolean allowUpdate
 gboolean itemset_check_item (itemSetPtr itemSet, itemPtr item);
 
 /**
- * Checks whether the given item id is in the given item set.
- *
- * @param itemSet	the itemSet
- * @param id		the item id
- *
- * @returns TRUE if item id is in item set
- */
-gboolean itemset_has_item_id (itemSetPtr itemSet, gulong id);
-
-/**
  * Method that creates and adds a rule to an item set. To be used
  * on loading time, when creating searches or when editing
  * search folder properties.

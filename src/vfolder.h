@@ -64,14 +64,6 @@ void vfolder_foreach (nodeActionFunc func);
 typedef void 	(*vfolderActionDataFunc)	(vfolderPtr vfolder, itemPtr item);
 
 /**
- * Method to unconditionally invoke an item callback for all search folders.
- *
- * @param func		callback
- * @param data		the item to process
- */
-void vfolder_foreach_data (vfolderActionDataFunc func, itemPtr item);
-
-/**
  * Returns a list of all search folders currently matching the given item.
  *
  * @param item		the item

@@ -43,7 +43,7 @@ typedef struct ItemLoaderClass {
 	GObjectClass parent;
 } ItemLoaderClass;
 
-GType item_loader_get_type();
+GType item_loader_get_type (void);
 
 #define ITEM_LOADER_TYPE              (item_loader_get_type ())
 #define ITEM_LOADER(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), ITEM_LOADER_TYPE, ItemLoader))

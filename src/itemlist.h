@@ -143,11 +143,10 @@ void on_prev_read_item_activate (GtkMenuItem *menuitem, gpointer user_data);
 void on_next_read_item_activate (GtkMenuItem *menuitem, gpointer user_data);
 
 
-/* item handling functions */
+/* item handling function */
 
 void itemlist_update_item(itemPtr item);
 
-void itemlist_request_remove_item(itemPtr item);
 
 /**
  * To be called whenever the user wants to remove
@@ -204,13 +203,6 @@ void itemlist_toggle_flag(itemPtr item);
  * @param item		the item
  */
 void itemlist_toggle_read_status(itemPtr item);
-
-/**
- * Adding a loader for item batch loading (e.g. search folder)
- *
- * @param loader	the loader to add to default item list view
- */
-void itemlist_add_loader (ItemLoader *loader); 
 
 /**
  * Register a search result item loader.

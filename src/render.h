@@ -30,11 +30,6 @@ typedef struct renderParam {
 } *renderParamPtr;
 
 /**
- * To be called whenever the rendering parameters have changed.
- */
-void render_update_params (void);
-
-/**
  * Applies the stylesheet xslt to the given XML document with the given parameters.
  *
  * @param doc		XML source document
@@ -59,11 +54,6 @@ renderParamPtr render_parameter_new (void);
  * @returns a new parameter/value string array
  */
 void render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...);
-
-/**
- * Frees a given rendering parameter set.
- */
-void render_parameter_free (renderParamPtr paramSet);
 
 /**
  * Returns CSS definitions for inclusion in XHTML output.

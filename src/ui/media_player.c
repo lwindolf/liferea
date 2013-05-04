@@ -1,4 +1,4 @@
-/**
+/*
  * @file liferea_media_player.c  media player helpers
  *
  * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
@@ -57,7 +57,7 @@ liferea_media_player_get_extension_set (void)
 		                             LIFEREA_MEDIA_PLAYER_ACTIVATABLE_TYPE, NULL);
 
 		g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
-		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_added), NULL);
+		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
 
 		peas_extension_set_foreach (extensions, on_extension_added, NULL);
 	}

@@ -87,16 +87,6 @@ void	liferea_htmlview_clear (LifereaHtmlView *htmlview);
 void	liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gchar *base);
 
 /**
- * Checks if the passed URL is a special internal Liferea
- * link that should never be handled by the browser. To be
- * used by HTML rendering plugins.
- *
- * @param url		the URL to check
- * @return		TRUE if it is a special URL
- */
-gboolean liferea_htmlview_is_special_url (const gchar *url);
-
-/**
  * Callback for plugins to process on-url events. Depending on 
  * the link type the link will be copied to the status bar.
  *
