@@ -4635,6 +4635,7 @@ Khaled Hosny
 Sargate Kanogan
 Rodrigo Gallardo
 Takeshi AIHANA
+Takeshi Hamasaki
 Vincent Lef&#xE8;vre
 Daniel Nylander
 Mehmet Atif Ergun
@@ -4663,11 +4664,15 @@ Anxo Outeiral
 Aron Xu
 Joe Hansen
 Marquinos
+Iñigo Varela
 Yaron Sheffer
 Yuri Chornoivan
 Rūdolfs Mazurs
 Rihards Priedītis
 Mindaugas Baranauskas
+Trần Ngọc Quân
+Pauli Virtanen
+Jorma Karvonen
 </property>
     <property name="logo_icon_name">liferea</property>
     <child internal-child="vbox">
