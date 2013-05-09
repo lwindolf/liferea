@@ -220,17 +220,4 @@ ui_indicator_is_visible ()
 	return indicator_priv && indicator_priv->visible;
 }
 
-#else
-
-/*
- If Liferea is compiled without libindicate support, all indicator
- support functions do nothing. The application behaves as if there
- is no indicator applet present.
-*/
-
-void ui_indicator_init () {}
-void ui_indicator_destroy () {}
-void ui_indicator_update () {}
-gboolean ui_indicator_is_visible () { return FALSE; }
-
 #endif  /* HAVE_LIBINDICATE */
