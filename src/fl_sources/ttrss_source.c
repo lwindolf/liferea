@@ -195,25 +195,24 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 
 /* node source type implementation */
 
+
 static void
 ttrss_source_update (nodePtr node)
 {
-	debug0(DEBUG_UPDATE, "ttrss_source_update()");
+	debug0 (DEBUG_UPDATE, "ttrss_source_update()");
 	subscription_update (node->subscription, 0);
 }
 
 static void
 ttrss_source_auto_update (nodePtr node)
 {
-	GTimeVal	now;
 	ttrssSourcePtr	source = (ttrssSourcePtr) node->data;
 
 	if (source->loginState == TTRSS_SOURCE_STATE_IN_PROGRESS) 
 		return; /* the update will start automatically anyway */
 
-	g_get_current_time (&now);
-
-	ttrss_source_update (node);
+	debug0 (DEBUG_UPDATE, "ttrss_source_auto_update()");
+	subscription_auto_update (node->subscription);
 }
 
 static void

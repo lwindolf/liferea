@@ -1,4 +1,6 @@
-	To be released
+2013-05-12   Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.8.13
 
 	* Fixes missing item list update when browsing item URLs in Liferea
 	* Fixes format string issues in several translations.
@@ -8,6 +10,8 @@
           (reported by Emmanuel Seyman)
 	* Fixes SF #1051: Issues in RTL GUI of Liferea
 	  (reported by phixy)
+	* Fixes SF #1038, #1074: Updates ttrss feeds over and over 
+	  (reported by many users)
 	* Updated the default feedlists (Adrian Bunk)
 
 	* Added Vietnamese translation (Trần Ngọc Quân)
