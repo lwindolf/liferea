@@ -31,6 +31,7 @@
 <xsl:param name="pixmapsDir"/>
 <xsl:param name="baseUrl"/>
 <xsl:param name="summary"/>	<!-- 1=summary rendering, 0=normal rendering -->
+<xsl:param name="showFeedName"/>
 <xsl:param name="single"/>	<!-- 1=single item rendering, 0=2 pane mode -->
 <xsl:param name="txtDirection"/>	<!-- text direction, either "ltr" or "rtl" -->
 <xsl:param name="appDirection"/>	<!-- text direction, either "ltr" or "rtl" -->
@@ -150,7 +151,7 @@
 
 <!-- In summary mode we are potential presenting multiple feeds
      and we should display the source feed title for the item. -->
-<xsl:if test="$summary = '1'">
+<xsl:if test="$summary = '1' or $showFeedName = '1'">
 <tr>
  <td valign="top" class='source'> 
      <_span>Feed</_span>

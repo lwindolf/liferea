@@ -191,12 +191,15 @@ htmlview_render_item (itemPtr item,
 	xmlDocPtr 	doc;
 	xmlNodePtr 	xmlNode;
 	const gchar     *text_direction = NULL;
+	gboolean	isMergedItemset;
 
 	debug_enter ("htmlview_render_item");
 
 	/* don't use node from htmlView_priv as this would be
 	   wrong for folders and other merged item sets */
 	node = node_from_id (item->nodeId);
+	
+	isMergedItemset = (node != htmlView_priv.node);
 
 	/* do the XML serialization */
 	doc = xmlNewDoc ("1.0");
@@ -222,6 +225,7 @@ htmlview_render_item (itemPtr item,
 	}
 	
 	render_parameter_add (params, "summary='%d'", summaryMode?1:0);
+	render_parameter_add (params, "showFeedName='%d'", isMergedItemset?1:0);
 	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?1:0);
 	render_parameter_add (params, "txtDirection='%s'", text_direction);
 	render_parameter_add (params, "appDirection='%s'", common_get_app_direction ());
