@@ -475,7 +475,7 @@ on_import_activate_cb (const gchar *filename, gpointer user_data)
 void
 import_OPML_file (void)
 {
-	ui_choose_file(_("Import Feed List"), _("Import"), FALSE, on_import_activate_cb, NULL, NULL, "*.opml", _("OPML Files"), NULL);
+	ui_choose_file(_("Import Feed List"), _("Import"), FALSE, on_import_activate_cb, NULL, NULL, "*.opml|*.xml", _("OPML Files"), NULL);
 }
 
 static void

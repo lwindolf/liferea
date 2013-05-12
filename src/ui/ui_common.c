@@ -194,9 +194,15 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 
 	if (filterstring && filtername) {
 		GtkFileFilter *filter, *allfiles;
+		gchar **filterstrings, **f;
 
 		filter = gtk_file_filter_new ();
-		gtk_file_filter_add_pattern (filter, filterstring);
+
+		filterstrings = g_strsplit (filterstring, "|", 0);
+		for (f = filterstrings; *f != NULL; f++)
+			gtk_file_filter_add_pattern (filter, *f);
+		g_strfreev (filterstrings);
+
 		gtk_file_filter_set_name (filter, filtername);
 		gtk_file_chooser_add_filter (GTK_FILE_CHOOSER (dialog), filter);
 
