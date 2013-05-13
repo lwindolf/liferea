@@ -4,6 +4,7 @@
 	  (patch by Simon Kågedal Reimer)
 	* Merged SF #233: Show feed name in item view when in merged views.
 	  (patch by Simon Kågedal Reimer)
+	* Require intltool >= 0.40.4 (Adrian Bunk)
 
 
 2013-05-12   Lars Windolf <lars.lindner@gmail.com>
