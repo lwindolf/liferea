@@ -205,7 +205,6 @@ ttrss_source_update (nodePtr node)
 static void
 ttrss_source_auto_update (nodePtr node)
 {
-	GTimeVal	now;
 	ttrssSourcePtr	source = (ttrssSourcePtr) node->data;
 
 	if (source->loginState == TTRSS_SOURCE_STATE_IN_PROGRESS) 
