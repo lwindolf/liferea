@@ -177,6 +177,15 @@ gchar *common_strreplace(gchar *string, const gchar *delimiter, const gchar *rep
 char * common_strcasestr(const char *phaystack, const char *pneedle);
 
 /**
+ * Checks if a string is empty, when leading and trailing whitespace is ignored
+ *
+ * @param string	a string to check
+ *
+ * @returns TRUE if string only contains whitespace or is NULL, FALSE otherwise
+ */
+gboolean common_str_is_empty (const gchar *string);
+
+/**
  * Get file modification timestamp
  *
  * @param *file		the file name

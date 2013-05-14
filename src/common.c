@@ -370,6 +370,21 @@ common_strcasestr (const char *phaystack, const char *pneedle)
 	return 0;
 }
 
+gboolean
+common_str_is_empty (const gchar *s)
+{
+	g_return_val_if_fail (s != NULL, TRUE);
+
+	while (*s != '\0') {
+		if (!g_ascii_isspace (*s))
+			return FALSE;
+	}
+
+	return TRUE;
+}
+
+
+
 time_t
 common_get_mod_time (const gchar *file)
 {
