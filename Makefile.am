@@ -48,3 +48,6 @@ DISTCLEANFILES = \
 
 CLEANFILES = \
 	$(gsettings_SCHEMAS)
+
+po/liferea.pot:
+	cd po && $(MAKE) liferea.pot

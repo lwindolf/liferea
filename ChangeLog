@@ -1,9 +1,10 @@
 	To be released
 
-	* Merged SF #219: View *.xml files along with *.opml files in file chooser 
+	* Merged SF #219: View *.xml files along with *.opml files in file chooser
 	  (patch by Simon Kågedal Reimer)
-	* Merged SF #233: Show feed name in item view when in merged views. 
+	* Merged SF #233: Show feed name in item view when in merged views.
 	  (patch by Simon Kågedal Reimer)
+	* Require intltool >= 0.40.4 (Adrian Bunk)
 
 
 2013-05-12   Lars Windolf <lars.lindner@gmail.com>
@@ -23,7 +24,7 @@
 	  (reported by Emmanuel Seyman)
 	* Fixes SF #1051: Issues in RTL GUI of Liferea
 	  (reported by phixy)
-	* Fixes SF #1038, #1074: Updates ttrss feeds over and over 
+	* Fixes SF #1038, #1074: Updates ttrss feeds over and over
 	  (reported by many users)
 	* Fix several memory leaks (Emilio Pozuelo Monfort)
 	* Require glib >= 2.28 for GApplication (Adrian Bunk)
