@@ -10,5 +10,5 @@ Terminal=false
 Type=Application
 Categories=Network;News;
 Version=0.9.4
-MimeType=application/rss+xml;application/atom+xml;
+MimeType=application/rss+xml;application/atom+xml;application/rdf+xml
 
