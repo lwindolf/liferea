@@ -208,6 +208,33 @@ xhtml_from_text (const gchar *sourceText)
 	return result;
 }
 
+/*
+ * Read HTML string and convert to XHTML, placing in a div tag 
+ */
+gchar *
+xhtml_extract_from_string (const gchar *html, const gchar *defaultBase)
+{
+	xmlDocPtr doc = NULL;
+	xmlNodePtr body = NULL;
+	gchar *result;
+	
+	/* never process empty content, xmlDocCopy() doesn't like it... */
+	if (html != NULL && !common_str_is_empty (html)) {
+		doc = xhtml_parse (html, strlen (html));
+		body = xhtml_find_body (doc);
+		if (body == NULL) 
+			body = xmlDocGetRootElement (doc);
+	}
+	
+	if (body != NULL)
+		result = xhtml_extract (body, 1, defaultBase);
+	else
+		result = xmlCharStrdup ("<div></div>");
+
+	xmlFreeDoc (doc);
+	return result;
+}
+
 gboolean
 xhtml_is_well_formed (const gchar *data)
 {

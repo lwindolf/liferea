@@ -55,6 +55,16 @@ gchar * unhtmlize (gchar *string);
  */
 gchar * unxmlize (gchar *string);
 
+/**
+ * Extract XHTML from a string of HTML and place it in a div tag.
+ *
+ * @param html		The HTML
+ * @param nodeBase	An URI to set as xml:base, or #NULL
+ *
+ * @returns XHTML version of the HTML
+ */
+gchar * xhtml_extract_from_string (const gchar *html, const gchar *nodeBase);
+
 /** 
  * Extract XHTML from the children of the passed node.
  *
