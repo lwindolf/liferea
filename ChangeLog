@@ -1,5 +1,7 @@
 	To be released
 
+	* Fixes SF #1069: broken rendering in tt-rss feeds 
+	  (patch by Simon Kågedal Reimer)
 	* Merged SF #219: View *.xml files along with *.opml files in file chooser
 	  (patch by Simon Kågedal Reimer)
 	* Merged SF #233: Show feed name in item view when in merged views.
