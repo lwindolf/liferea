@@ -6,6 +6,8 @@
 	  (patch by Simon Kågedal Reimer)
 	* Merged SF #233: Show feed name in item view when in merged views.
 	  (patch by Simon Kågedal Reimer)
+	* Merged SF #193: Use GtkInfoBar for note in preferences window 
+	  (patch by Fred Morcos)
 	* Require intltool >= 0.40.4 (Adrian Bunk)
 
 	* Updated Polish translation (Piotr Sokół)
