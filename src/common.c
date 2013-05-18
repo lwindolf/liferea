@@ -361,11 +361,13 @@ common_strcasestr (const char *phaystack, const char *pneedle)
 gboolean
 common_str_is_empty (const gchar *s)
 {
-	g_return_val_if_fail (s != NULL, TRUE);
+	if (s == NULL)
+		return TRUE;
 
 	while (*s != '\0') {
 		if (!g_ascii_isspace (*s))
 			return FALSE;
+		s++;
 	}
 
 	return TRUE;
