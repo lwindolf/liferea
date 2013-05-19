@@ -1,15 +1,16 @@
 	To be released
 
-	* Fixes SF #1069: broken rendering in tt-rss feeds 
+	* Fixes SF #1069: broken rendering in tt-rss feeds
 	  (patch by Simon Kågedal Reimer)
 	* Merged SF #219: View *.xml files along with *.opml files in file chooser
 	  (patch by Simon Kågedal Reimer)
 	* Merged SF #233: Show feed name in item view when in merged views.
 	  (patch by Simon Kågedal Reimer)
-	* Merged SF #193: Use GtkInfoBar for note in preferences window 
+	* Merged SF #193: Use GtkInfoBar for note in preferences window
 	  (patch by Fred Morcos)
 	* Require intltool >= 0.40.4 (Adrian Bunk)
 
+	* Updated Danish translation (Joe Hansen)
 	* Updated Polish translation (Piotr Sokół)
 
 

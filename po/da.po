@@ -3,11 +3,14 @@
 # This file is distributed under the same license as the liferea package.
 # Joe Hansen <joedalton2@yahoo.dk>, 2010, 2011, 2012, 2013.
 # korrekturlæst Ask, 2010.
+# korrekturlæst Torben, 2013.
 #
 # konventioner:
 # attachment -> bilag
 # comment -> bemærkning (kommentar)
-# enclosure -> pakke
+# enclosure -> pakke 
+#              "vedhæftning"? Det virker lidt på den måde. "Pakke" kan også
+#              bruges, og brugeren vender sig nok hurtig til terminologien.
 # entry -> post
 # favicon -> http://da.wikipedia.org/wiki/Favicon
 # feed -> nyhedskilde
@@ -16,6 +19,7 @@
 # feed source -> nyhedskilde
 # hook -> tilbagekaldsfunktion
 # item -> punkt
+# link -> adresse (rettet fra henvisning i 2013)
 # Link Cosmos -> Link Cosmos
 # news bin -> nyhedsbakke
 # pipe -> datakanal (pipe)
@@ -26,7 +30,7 @@ msgstr ""
 "Project-Id-Version: liferea 1.10-rc1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-25 23:54+0100\n"
-"PO-Revision-Date: 2013-04-23 20:36+0200\n"
+"PO-Revision-Date: 2013-05-19 20:36+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -49,7 +53,7 @@ msgstr "Liferea - Nyhedslæser"
 
 #: ../liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
-msgstr "Læs nyhedskilder og blogge"
+msgstr "Læs nyheds- og blogkilder"
 
 #: ../xslt/feed.xml.in.h:1
 msgid "This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."
@@ -73,7 +77,7 @@ msgstr "Detaljer"
 
 #: ../xslt/feed.xml.in.h:6
 msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr "Du skal måske kontakte forfatteren/webmasteren for nyhedskilden om dette!"
+msgstr "Du bør måske kontakte forfatteren/webmasteren for nyhedskilden om dette!"
 
 #: ../xslt/feed.xml.in.h:7
 msgid "There were errors while filtering this feed!"
@@ -246,10 +250,12 @@ msgstr "%d. %b %Y"
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "»%s« er ikke en gyldig konfigurationsfil for pakketype!"
 
+# evt. det under fanebladet
 #: ../src/enclosure.c:288
 msgid "You have not configured a download tool yet! Please do so in the 'Download' tab in Tools/Preferences."
-msgstr "Du har ikke konfigureret et overførselsværktøj endnu! Gør det venligst i fanebladet »Hent« i Værktøjer/indstillinger."
+msgstr "Du har ikke konfigureret et overførselsværktøj endnu! Du kan gøre det i fanebladet »Hent« i Værktøjer/indstillinger."
 
+# # evt. det under fanebladet
 #: ../src/enclosure.c:306
 #, c-format
 msgid ""
@@ -404,7 +410,7 @@ msgstr "Udskriv fejlsøgningsbeskeder på alle GUI-funktioner"
 
 #: ../src/main.c:176
 msgid "Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
-msgstr "Aktiverer HTML-optegningsfejlsøgning. Hver gang Liferea optegner HTML-uddata vil Liferea også smide den oprettede HTML i ~/.cache/liferea/output.xhtml"
+msgstr "Aktiverer HTML-optegningsfejlsøgning. Hver gang Liferea optegner HTML-uddata vil Liferea også skrive den oprettede HTML i ~/.cache/liferea/output.xhtml"
 
 #: ../src/main.c:177
 msgid "Print debugging messages of all network activity"
@@ -1071,7 +1077,7 @@ msgstr "Åbn i _faneblad"
 
 #: ../src/ui/liferea_shell.c:997
 msgid "Launches the item's link in a new Liferea browser tab."
-msgstr "Starter punktets henvisning i et nyt browserfaneblad for Liferea."
+msgstr "Åbner punktets adresse i et nyt browserfaneblad for Liferea."
 
 #: ../src/ui/liferea_shell.c:999 ../src/ui/popup_menu.c:129
 msgid "_Open In Browser"
@@ -1079,7 +1085,7 @@ msgstr "_Åbn i browser"
 
 #: ../src/ui/liferea_shell.c:999
 msgid "Launches the item's link in the Liferea item pane."
-msgstr "Starter punktets henvisning i punktets panel for Liferea."
+msgstr "Åbner punktets adresse i punktets panel for Liferea."
 
 #: ../src/ui/liferea_shell.c:1001 ../src/ui/popup_menu.c:130
 msgid "Open In _External Browser"
@@ -1087,7 +1093,7 @@ msgstr "Åbn i _ekstern browser"
 
 #: ../src/ui/liferea_shell.c:1001
 msgid "Launches the item's link in the configured external browser."
-msgstr "Starter punktets henvisning i den konfigurerede eksterne browser."
+msgstr "Åbner punktets adresse i den konfigurerede eksterne browser."
 
 #: ../src/ui/liferea_shell.c:1006 ../src/ui/popup_menu.c:194
 msgid "_Work Offline"
@@ -1101,9 +1107,10 @@ msgstr "Denne indstilling giver dig mulighed for at deaktivere abonnementopdater
 msgid "_Fullscreen"
 msgstr "_Fuldskærm"
 
+# fuldskærmsvisning
 #: ../src/ui/liferea_shell.c:1008
 msgid "Browse at full screen"
-msgstr "Gennemse med fuldskærm"
+msgstr "Gennemse i fuld skærm"
 
 #: ../src/ui/liferea_shell.c:1339
 msgid "Liferea - Linux Feed Reader"
@@ -1111,7 +1118,7 @@ msgstr "Liferea - Nyhedslæser til Linux"
 
 #: ../src/ui/liferea_shell.c:1341
 msgid "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news feeds.</p><p>You can add new subscriptions <ul><li>From main menu 'Subscription' -&gt; 'New Subscription'</li><li>By dropping feed links into the subscription list</li><li>By right clicking links and choosing 'Subscribe' within Liferea</li></ul></p>"
-msgstr "<p>Velkommen til <b>Liferea</b>, en skrivebordsnyhedsindsamler for nyhedskilder på nettet.</p><p>Du kan tilføje nye abonnementer <ul><li>fra hovedmenuen »Abonnement« -&gt; »Nyt abonnement«</li><li>Ved at føre nyhedshenvisninger ind i abonnementslisten</li><li>Ved at højreklikke på henvisninger og vælge »Abonner« i Liferea</li></ul></p>"
+msgstr "<p>Velkommen til <b>Liferea</b>, en skrivebordsnyhedsindsamler for nyhedskilder på nettet.</p><p>Du kan tilføje nye abonnementer <ul><li>fra hovedmenuen »Abonnement« -&gt; »Nyt abonnement«</li><li>Ved at føre nyhedsadresser ind i abonnementslisten</li><li>Ved at højreklikke på adresser og vælge »Abonner« i Liferea</li></ul></p>"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1150,24 +1157,24 @@ msgstr "Liferea er i frakoblet tilstand. Ingen opdatering mulig."
 
 #: ../src/ui/liferea_htmlview.c:627
 msgid "Open Link In _Tab"
-msgstr "Åbn henvisning i _faneblad"
+msgstr "Åbn adresse i _faneblad"
 
 #: ../src/ui/liferea_htmlview.c:628
 msgid "_Open Link In Browser"
-msgstr "_Åbn henvisning i browser"
+msgstr "_Åbn adresse i browser"
 
 #: ../src/ui/liferea_htmlview.c:629
 msgid "_Open Link In External Browser"
-msgstr "_Åbn henvisning i ekstern browser"
+msgstr "_Åbn adresse i ekstern browser"
 
 #: ../src/ui/liferea_htmlview.c:632
 #, c-format
 msgid "_Bookmark Link at %s"
-msgstr "_Bogmærk henvisning på %s"
+msgstr "_Bogmærk adresse på %s"
 
 #: ../src/ui/liferea_htmlview.c:636
 msgid "_Copy Link Location"
-msgstr "_Kopier placering på henvisning"
+msgstr "_Kopier adresseplacering"
 
 #: ../src/ui/liferea_htmlview.c:639
 msgid "_Copy Image Location"
@@ -1175,7 +1182,7 @@ msgstr "_Kopier billedplacering"
 
 #: ../src/ui/liferea_htmlview.c:641
 msgid "S_ave Link As"
-msgstr "_Gem henvisning som"
+msgstr "_Gem adresse som"
 
 #: ../src/ui/liferea_htmlview.c:643
 msgid "S_ave Image As"
@@ -1205,7 +1212,7 @@ msgstr "Intet punkt er blevet valgt"
 
 #: ../src/ui/item_list_view.c:731 ../src/ui/item_list_view.c:752
 msgid "This item has no link specified!"
-msgstr "Dette punkt har ingen henvisning angivet!"
+msgstr "Dette punkt har ingen adresse angivet!"
 
 #: ../src/ui/item_list_view.c:818
 msgid "You must select a feed to delete its items!"
@@ -1222,7 +1229,7 @@ msgstr "_Bogmærk på %s"
 
 #: ../src/ui/popup_menu.c:160
 msgid "Copy Item _Location"
-msgstr "Kopier punkt_placering"
+msgstr "Kopier _punktplacering"
 
 #: ../src/ui/popup_menu.c:166
 msgid "R_emove Item"
@@ -1238,7 +1245,7 @@ msgstr "Gem som ..."
 
 #: ../src/ui/popup_menu.c:181
 msgid "Copy Link Location"
-msgstr "Kopier placering på henvisning"
+msgstr "Kopier adresseplacering"
 
 #: ../src/ui/popup_menu.c:195
 msgid "_Update All"
@@ -1725,7 +1732,7 @@ msgstr "_Hent automatisk alle pakker fra denne nyhedskilde."
 
 #: ../glade/liferea.ui.h:42
 msgid "Auto-_load item link in configured browser when selecting articles."
-msgstr "_Indlæs automatisk punkthenvisning i konfigureret browser når der vælges artikler."
+msgstr "_Indlæs automatisk punktadresse i konfigureret browser når der vælges artikler."
 
 #: ../glade/liferea.ui.h:43
 msgid "Ignore _comment feeds for this subscription."
@@ -2044,7 +2051,7 @@ msgstr "Intern browseropsætning"
 
 #: ../glade/prefs.ui.h:23
 msgid "Open links in Liferea's _window."
-msgstr "Åbn henvisninger i Lifereas _vindue."
+msgstr "Åbn adresser i Lifereas _vindue."
 
 #: ../glade/prefs.ui.h:24
 msgid "_Disable Javascript."
@@ -2060,7 +2067,7 @@ msgstr "Ekstern browseropsætning"
 
 #: ../glade/prefs.ui.h:27
 msgid "_Open link in:"
-msgstr "_Åbn henvisning i:"
+msgstr "_Åbn adresse i:"
 
 # måske 'Manuel' (som i manuel browser) afhænger måske af type
 #: ../glade/prefs.ui.h:28
