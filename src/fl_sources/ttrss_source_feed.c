@@ -30,6 +30,7 @@
 #include "json.h"
 #include "metadata.h"
 #include "subscription.h"
+#include "xml.h"
 
 #include "fl_sources/ttrss_source.h"
 
