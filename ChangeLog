@@ -1,4 +1,6 @@
-	To be released
+2013-05-22   Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.10-RC3
 
 	* Fixes SF #1069: broken rendering in tt-rss feeds
 	  (patch by Simon Kågedal Reimer)
@@ -17,7 +19,7 @@
 
 2013-05-12   Lars Windolf <lars.lindner@gmail.com>
 
-	Version 1.10-RC
+	Version 1.10-RC2
 
 	* Extended user agent by "AppleWebKit (KHTML, like Gecko)"
 	  to solve incorrect mobile redirect with zdf.de
