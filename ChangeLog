@@ -1,4 +1,6 @@
-	To be released
+2013-05-22   Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.8.14
 
 	* Fixes SF #1069: broken rendering in tt-rss feeds 
 	  (patch by Simon Kagedal Reimer)
