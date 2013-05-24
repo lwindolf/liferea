@@ -373,8 +373,13 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	if (-1 == xsltSaveResultTo(buf, resDoc, xslt))
 		g_warning ("fatal: retrieving result of rendering stylesheet failed (%s)!", xsltName);
 		
+#ifdef LIBXML2_NEW_BUFFER
+	if (xmlOutputBufferGetSize (buf) > 0)
+		output = xmlCharStrdup (xmlOutputBufferGetContent (buf));
+#else
 	if (xmlBufferLength (buf->buffer) > 0)
 		output = xmlCharStrdup (xmlBufferContent(buf->buffer));
+#endif
 
 	xmlOutputBufferClose (buf);
 	xmlFreeDoc (resDoc);

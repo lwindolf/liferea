@@ -329,8 +329,13 @@ update_apply_xslt (updateJobPtr job)
 			break;
 		}
 		
+#ifdef LIBXML2_NEW_BUFFER
+		if (xmlOutputBufferGetSize (buf) > 0)
+			output = xmlCharStrdup (xmlOutputBufferGetContent (buf));
+#else
 		if (xmlBufferLength (buf->buffer) > 0)
 			output = xmlCharStrdup (xmlBufferContent (buf->buffer));
+#endif
  
 		xmlOutputBufferClose (buf);
 	} while (FALSE);
