@@ -1,7 +1,7 @@
 /**
  * @file google_source.c  Google reader feed list source support
  * 
- * Copyright (C) 2007-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -385,7 +385,8 @@ static struct nodeSourceType nst = {
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
-	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC,
+	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
+	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
 	.source_type_init    = google_source_init,
 	.source_type_deinit  = google_source_deinit,
 	.source_new          = ui_google_source_get_account_info,

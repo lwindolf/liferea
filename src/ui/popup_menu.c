@@ -1,7 +1,7 @@
 /**
  * @file popup_menu.c popup menus
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -266,6 +266,12 @@ ui_popup_sort_feeds (gpointer callback_data)
 	feed_list_view_sort_folder ((nodePtr)callback_data);
 }
 
+static void
+ui_popup_add_convert_to_local (gpointer callback_data)
+{
+	// FIXME: Do something
+}
+
 /** 
  * Shows popup menus for the feed list depending on the
  * node type.
@@ -338,6 +344,11 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 			ui_popup_add_menuitem (menu, NULL, ui_popup_delete, node, GTK_STOCK_DELETE, 0);
 			ui_popup_add_menuitem (menu, NULL, ui_popup_properties, node, GTK_STOCK_PROPERTIES, 0);
+		}
+
+		if (IS_NODE_SOURCE (node) && NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL) {
+			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
+			ui_popup_add_menuitem (menu, _("Convert To Local Subscriptions..."), ui_popup_add_convert_to_local, NULL, NULL, 0);
 		}
 	}
 
