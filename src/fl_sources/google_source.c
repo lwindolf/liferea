@@ -283,7 +283,7 @@ static void
 google_source_remove_node (nodePtr node, nodePtr child) 
 { 
 	gchar           *source; 
-	GoogleSourcePtr gsource = node->data; 
+	GoogleSourcePtr gsource = node->data;
 	
 	if (child == node) { 
 		feedlist_node_removed (child);
@@ -336,7 +336,6 @@ static void
 ui_google_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
-
 	
 	dialog = liferea_dialog_new ("google_source.ui", "google_source_dialog");
 	
@@ -383,6 +382,9 @@ google_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 static void
 google_source_convert_to_local (nodePtr node)
 {
+	GoogleSourcePtr gsource = node->data; 
+
+	gsource->loginState = GOOGLE_SOURCE_STATE_MIGRATE;	
 }
 
 /* node source type definition */

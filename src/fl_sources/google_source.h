@@ -49,7 +49,8 @@ enum {
 	GOOGLE_SOURCE_STATE_NONE = 0,		/**< no authentication tried so far */
 	GOOGLE_SOURCE_STATE_IN_PROGRESS,	/**< authentication in progress */
 	GOOGLE_SOURCE_STATE_ACTIVE,		/**< authentication succeeded */
-	GOOGLE_SOURCE_STATE_NO_AUTH		/**< authentication has failed */
+	GOOGLE_SOURCE_STATE_NO_AUTH,		/**< authentication has failed */
+	GOOGLE_SOURCE_STATE_MIGRATE,		/**< source will be migrated, do not do anything anymore! */
 };
 
 enum { 

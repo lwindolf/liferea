@@ -27,6 +27,7 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
+#include "feed.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "item_state.h"
@@ -356,13 +357,54 @@ node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState)
 		item_flag_state_changed (item, newState);
 }
 
+static void
+node_source_convert_to_local_child_node (nodePtr node) 
+{
+	/* Ensure to remove special subscription types and cancel updates 
+	   Note: we expect that all feeds already have the subscription URL
+	   set. This might need to be done by the node type specific 
+	   convert_to_local() method! */
+	if (node->subscription) {
+		update_job_cancel_by_owner ((gpointer)node);
+		update_job_cancel_by_owner ((gpointer)node->subscription);
+
+		debug2 (DEBUG_UPDATE "Converting feed: %s = %s\n", node->title, node->subscription->source);
+
+		node->subscription->type = feed_get_subscription_type ();
+	}
+
+	node->source = ((nodePtr)feedlist_get_root ())->source;
+}
+
 void
 node_source_convert_to_local (nodePtr node)
 {
 	g_assert (node == node->source->root);
 
+	/* Preparation */
+
+	update_job_cancel_by_owner ((gpointer)node);
+	update_job_cancel_by_owner ((gpointer)node->subscription);
+	update_job_cancel_by_owner ((gpointer)node->source);
+
+	/* Give the node source type the chance to do things ... */
 	if (NULL != NODE_SOURCE_TYPE (node)->convert_to_local)
 		NODE_SOURCE_TYPE (node)->convert_to_local (node);
+
+	/* Perform conversion */
+	
+	debug0 (DEBUG_UPDATE, "Converting root node to folder...");
+	node->source = ((nodePtr)feedlist_get_root ())->source;
+	node->type = folder_get_node_type ();
+	node->subscription = NULL;	/* leaking subscription is ok */
+	node->data = NULL;		/* leaking data is ok */
+
+	node_foreach_child (node, node_source_convert_to_local_child_node);
+
+	feedlist_schedule_save ();
+
+	/* FIXME: something is not perfect, because if you immediately 
+	   remove the subscription tree afterwards there is a double free */
 }
 
 /* implementation of the node type interface */
