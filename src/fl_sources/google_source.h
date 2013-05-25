@@ -1,7 +1,7 @@
 /**
  * @file google_source.h Google Reader feed list source support
  * 
- * Copyright (C) 2007-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,10 +46,10 @@ typedef struct GoogleSource {
 } *GoogleSourcePtr;
 
 enum { 
-	GOOGLE_SOURCE_STATE_NONE = 0,
-	GOOGLE_SOURCE_STATE_IN_PROGRESS,
-	GOOGLE_SOURCE_STATE_ACTIVE,
-	GOOGLE_SOURCE_STATE_NO_AUTH
+	GOOGLE_SOURCE_STATE_NONE = 0,		/**< no authentication tried so far */
+	GOOGLE_SOURCE_STATE_IN_PROGRESS,	/**< authentication in progress */
+	GOOGLE_SOURCE_STATE_ACTIVE,		/**< authentication succeeded */
+	GOOGLE_SOURCE_STATE_NO_AUTH		/**< authentication has failed */
 };
 
 enum { 
