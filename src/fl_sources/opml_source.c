@@ -1,7 +1,7 @@
 /**
  * @file opml_source.c  OPML Planet/Blogroll feed list source
  * 
- * Copyright (C) 2006-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -337,7 +337,13 @@ static struct nodeSourceType nst = {
 	opml_source_get_feedlist,
 	opml_source_update,
 	opml_source_auto_update,
-	NULL	/* free */
+	NULL,	/* free */
+	NULL,	/* item_set_flag */
+	NULL,	/* item_mark_read */
+	NULL,	/* add_folder */
+	NULL,	/* add_subscription */
+	NULL,	/* remove */
+	NULL	/* convert_to_local */
 };
 
 nodeSourceTypePtr

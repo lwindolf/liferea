@@ -375,6 +375,16 @@ google_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 	item_read_state_changed (item, newStatus);
 }
 
+/**
+ * Convert all subscriptions of a google source to local feeds
+ *
+ * @param node The node to migrate (not the nodeSource!)
+ */
+static void
+google_source_convert_to_local (nodePtr node)
+{
+}
+
 /* node source type definition */
 
 static struct nodeSourceType nst = {
@@ -401,7 +411,8 @@ static struct nodeSourceType nst = {
 	.item_mark_read      = google_source_item_mark_read,
 	.add_folder          = NULL, 
 	.add_subscription    = google_source_add_subscription,
-	.remove_node         = google_source_remove_node
+	.remove_node         = google_source_remove_node,
+	.convert_to_local    = google_source_convert_to_local
 };
 
 nodeSourceTypePtr

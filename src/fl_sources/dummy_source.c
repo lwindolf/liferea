@@ -1,7 +1,7 @@
 /**
  * @file dummy_source.c  dummy feed list source
  * 
- * Copyright (C) 2006-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,16 @@ static struct nodeSourceType nst = {
 	NULL,
 	dummy_source_import,
 	dummy_source_export,
-	dummy_source_get_feedlist
+	dummy_source_get_feedlist,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL
 };
 
 nodeSourceTypePtr dummy_source_get_type(void) { return &nst; }

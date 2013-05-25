@@ -1,7 +1,7 @@
 /**
  * @file default_source.c  default static feed list source
  * 
- * Copyright (C) 2005-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -196,7 +196,8 @@ static struct nodeSourceType nst = {
 	.free 			= NULL,
 	.add_subscription	= default_source_add_subscription,
 	.add_folder		= default_source_add_folder,
-	.remove_node		= default_source_remove_node
+	.remove_node		= default_source_remove_node,
+	.convert_to_local	= NULL
 };
 
 nodeSourceTypePtr default_source_get_type (void) { return &nst; }

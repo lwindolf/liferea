@@ -1,7 +1,7 @@
 /**
  * @file node_source.c  generic node source provider implementation
  * 
- * Copyright (C) 2005-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -354,6 +354,15 @@ node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState)
 		NODE_SOURCE_TYPE (node)->item_set_flag (node, item, newState);
 	else
 		item_flag_state_changed (item, newState);
+}
+
+void
+node_source_convert_to_local (nodePtr node)
+{
+	g_assert (node == node->source->root);
+
+	if (NULL != NODE_SOURCE_TYPE (node)->convert_to_local)
+		NODE_SOURCE_TYPE (node)->convert_to_local (node);
 }
 
 /* implementation of the node type interface */

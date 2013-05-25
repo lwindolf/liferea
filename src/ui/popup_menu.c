@@ -269,7 +269,7 @@ ui_popup_sort_feeds (gpointer callback_data)
 static void
 ui_popup_add_convert_to_local (gpointer callback_data)
 {
-	// FIXME: Do something
+	node_source_convert_to_local ((nodePtr)callback_data);
 }
 
 /** 
@@ -348,7 +348,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 
 		if (IS_NODE_SOURCE (node) && NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL) {
 			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-			ui_popup_add_menuitem (menu, _("Convert To Local Subscriptions..."), ui_popup_add_convert_to_local, NULL, NULL, 0);
+			ui_popup_add_menuitem (menu, _("Convert To Local Subscriptions..."), ui_popup_add_convert_to_local, node, NULL, 0);
 		}
 	}
 

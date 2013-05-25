@@ -174,6 +174,13 @@ typedef struct nodeSourceType {
 	 */
 	void		(*remove_node) (nodePtr node, nodePtr child);
 
+	/**
+	 * Converts all subscriptions to default source subscriptions.
+	 *
+	 * This is an OPTIONAL method.
+	 */
+	void		(*convert_to_local) (nodePtr node);
+
 } *nodeSourceTypePtr;
 
 /** feed list source instance */
@@ -276,6 +283,13 @@ void node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState);
  * @param newState	the new item flag state
  */
 void node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState);
+
+/**
+ * Converts all subscriptions to default source subscriptions.
+ *
+ * @param node		the source node
+ */
+void node_source_convert_to_local (nodePtr node);
 
 /* implementation of the node type interface */
 
