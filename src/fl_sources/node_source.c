@@ -368,7 +368,7 @@ node_source_convert_to_local_child_node (nodePtr node)
 		update_job_cancel_by_owner ((gpointer)node);
 		update_job_cancel_by_owner ((gpointer)node->subscription);
 
-		debug2 (DEBUG_UPDATE "Converting feed: %s = %s\n", node->title, node->subscription->source);
+		debug2 (DEBUG_UPDATE, "Converting feed: %s = %s\n", node->title, node->subscription->source);
 
 		node->subscription->type = feed_get_subscription_type ();
 	}
