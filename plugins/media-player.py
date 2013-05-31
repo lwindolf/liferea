@@ -6,11 +6,6 @@ from gi.repository import Gtk
 from gi.repository import Liferea
 from gi.repository import Gst
 
-# FIXME: Upgrade to 0.11
-#import gi
-#gi.require_version('Gst', '0.11')
-#from gi.repository import Gst
-
 class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
     __gtype_name__ = 'MediaPlayerPlugin'
 
@@ -18,33 +13,34 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
 
     def __init__(self):
         Gst.init_check(None)
-        self.IS_GST010 = Gst.version()[0] == 0
-	self.player = Gst.ElementFactory.make("playbin2", "player")
-	fakesink = Gst.ElementFactory.make("fakesink", "fakesink")
-	self.player.set_property("video-sink", fakesink)
-	bus = self.player.get_bus()
-	bus.add_signal_watch_full()
-	bus.connect("message", self.on_message)
-	self.player.connect("about-to-finish",  self.on_finished)
+        self.IS_GST010 = Gst.version() < (0, 11)
 
-    def on_message(self, bus, message):
-	t = message.type
-	if t == Gst.Message.EOS:
-		self.player.set_state(Gst.State.NULL)
-		self.playing = False
-	elif t == Gst.Message.ERROR:
-		self.player.set_state(Gst.State.NULL)
-		err, debug = message.parse_error()
-		print "Error: %s" % err, debug
-		self.playing = False
+        playbin = "playbin2" if self.IS_GST010 else "playbin"
+	self.player = Gst.ElementFactory.make(playbin, "player")
+        if not self.IS_GST010:
+            fakesink = Gst.ElementFactory.make("fakesink", "fakesink")
+            self.player.set_property("video-sink", fakesink)
+            bus = self.player.get_bus()
+            bus.add_signal_watch()
+            bus.connect("message::eos", self.on_eos)
+            bus.connect('message::error', self.on_error)
 
-	self.updateButtons()
-
-    def on_finished(self, player):
-	self.playing = False
-        self.slider.set_value(0)
-	self.label.set_text("0:00")
+    def on_error(self, bus, message):
+        err, debug = message.parse_error()
+        print("Error: %s" % err, debug)
+        self.player.set_state(Gst.State.NULL)
+        self.playing = False
         self.updateButtons()
+ 
+    def set_stopped(self):
+        self.player.set_state(Gst.State.NULL)
+        self.playing = False
+        self.slider.set_value(0)
+        self.label.set_text("0:00")
+        self.updateButtons()
+
+    def on_eos(self, bus, message):
+        self.set_stopped()
 
     def play(self):
 	uri = Liferea.enclosure_get_url(self.enclosures[self.pos])
@@ -173,8 +169,8 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
 
 	self.enclosures = enclosures
 	self.pos = 0
-        self.player.set_state(Gst.State.NULL)	# FIXME: Make this configurable?
-	self.on_finished(self.player)
+        # FIXME: make start on entry configurable
+        self.set_stopped()        
 
     #def do_activate(self):
 	#print "=== MediaPlayer activate"
