@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.c enclosures/podcast handling GUI
  *
- * Copyright (C) 2005-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -453,7 +453,7 @@ ui_enclosure_type_setup (encTypePtr type, enclosurePtr enclosure, gchar *typestr
 void
 on_popup_open_enclosure (gpointer callback_data)
 {
-	gchar		*typestr;
+	gchar		*typestr, *tmp = NULL;
 	enclosurePtr	enclosure = (enclosurePtr)callback_data;
 	gboolean	found = FALSE;
 	encTypePtr	etp = NULL;
@@ -464,7 +464,7 @@ on_popup_open_enclosure (gpointer callback_data)
 	/* find extension by looking for last '.' */
 	typestr = strrchr (enclosure->url, '.');
 	if (typestr)
-		typestr = g_strdup (typestr + 1);
+		typestr = tmp = g_strdup (typestr + 1);
 
 	/* handle case where there is a slash after the '.' */
 	if (typestr && strrchr (typestr, '/'))
@@ -476,7 +476,7 @@ on_popup_open_enclosure (gpointer callback_data)
 	
 	/* if we found no extension we map to dummy type "data" */
 	if (!typestr)
-		typestr = g_strdup ("data");
+		typestr = tmp = g_strdup ("data");
 		
 	/* strip GET parameters from typestr */	
 	g_strdelimit (typestr, "?", 0);
@@ -516,7 +516,7 @@ on_popup_open_enclosure (gpointer callback_data)
 			ui_enclosure_type_setup (NULL, enclosure, typestr);
 	}
 		
-	g_free (typestr);
+	g_free (tmp);
 }
 
 void
