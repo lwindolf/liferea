@@ -2,6 +2,9 @@ To be released.
 
 	* Fixes SF #1080: segfault opening attachment due to incorrect g_free()
 	  (reported by Adam Nielsen)
+	* Fixes SF #1075: GLib warnings of "string != NULL" assertion failure
+	  (reported by Simon Kågedal Reimer)
+
 
 
 2013-05-22   Lars Windolf <lars.lindner@gmail.com>
@@ -21,7 +24,7 @@ To be released.
 	* Added Hebrew translation of reference manual page (Genghis Khan)
 	* Added MimeType to .desktop file (Craig Barnes)
 	* Fixes SF #1040: In feed entries, spaces are replaced with "+"
-          (reported by Emmanuel Seyman)
+	  (reported by Emmanuel Seyman)
 	* Fixes SF #1051: Issues in RTL GUI of Liferea
 	  (reported by phixy)
 	* Fixes SF #1038, #1074: Updates ttrss feeds over and over 

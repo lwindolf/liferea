@@ -84,7 +84,11 @@ void
 item_set_title (itemPtr item, const gchar * title)
 {
 	g_free (item->title);
-	item->title = g_strstrip (g_strdelimit (g_strdup (title), "\r\n", ' '));
+
+	if (title)
+		item->title = g_strstrip (g_strdelimit (g_strdup (title), "\r\n", ' '));
+	else
+		item->title = g_strdup ("");
 }
 
 void
