@@ -373,6 +373,9 @@ node_source_convert_to_local_child_node (nodePtr node)
 		node->subscription->type = feed_get_subscription_type ();
 	}
 
+	if (IS_FOLDER (node))
+		node_foreach_child (node, node_source_convert_to_local_child_node);
+
 	node->source = ((nodePtr)feedlist_get_root ())->source;
 }
 
@@ -405,6 +408,8 @@ node_source_convert_to_local (nodePtr node)
 
 	/* FIXME: something is not perfect, because if you immediately 
 	   remove the subscription tree afterwards there is a double free */
+
+	ui_show_info_box (_("The '%s' subscription was successfully converted to local feeds!"), node->title);
 }
 
 /* implementation of the node type interface */
