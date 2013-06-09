@@ -419,31 +419,31 @@ ui_enclosure_type_setup (encTypePtr type, enclosurePtr enclosure, gchar *typestr
 void
 on_popup_open_enclosure (gpointer callback_data)
 {
-	gchar		*typestr;
+	gchar		*typestr, *tmp = NULL;
 	enclosurePtr	enclosure = (enclosurePtr)callback_data;
 	gboolean	found = FALSE;
 	encTypePtr	etp = NULL;
 	GSList		*iter;
 
 	/* 1.) Always try to determine the file extension... */
-	
+
 	/* find extension by looking for last '.' */
 	typestr = strrchr (enclosure->url, '.');
 	if (typestr)
-		typestr = g_strdup (typestr + 1);
+		typestr = tmp = g_strdup (typestr + 1);
 
 	/* handle case where there is a slash after the '.' */
 	if (typestr && strrchr (typestr, '/'))
 		typestr = strrchr (typestr, '/');
-		
+	
 	/* handle case where there is no '.' at all */
 	if (!typestr && strrchr (enclosure->url, '/'))
 		typestr = strrchr (enclosure->url, '/');
-	
+
 	/* if we found no extension we map to dummy type "data" */
 	if (!typestr)
-		typestr = g_strdup ("data");
-		
+		typestr = tmp = g_strdup ("data");
+
 	/* strip GET parameters from typestr */	
 	g_strdelimit (typestr, "?", 0);
 
@@ -481,8 +481,8 @@ on_popup_open_enclosure (gpointer callback_data)
 		else
 			ui_enclosure_type_setup (NULL, enclosure, typestr);
 	}
-		
-	g_free (typestr);
+
+	g_free (tmp);
 }
 
 static void

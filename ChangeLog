@@ -1,3 +1,9 @@
+To be released.
+
+	* Fixes SF #1080: segfault opening attachment due to incorrect g_free()
+	  (reported by Adam Nielsen)
+
+
 2013-05-22   Lars Windolf <lars.lindner@gmail.com>
 
 	Version 1.8.14
