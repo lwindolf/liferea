@@ -8,6 +8,8 @@
 	  (reported by Simon Kågedal Reimer)
 	* Fixes missing shading in 2-pane mode rendering
 	  (reported by Zoho Vignochi)
+	* Fixes search folders including comment items
+	  (reported by David Willmore)
 
 
 2013-05-22   Lars Windolf <lars.lindner@gmail.com>
