@@ -1,5 +1,7 @@
 To be released.
 
+	* Added an option to convert Google Reader subscriptions
+	  to local feeds (Lars Windolf)
 	* Fixes SF #1080: segfault opening attachment due to incorrect g_free()
 	  (reported by Adam Nielsen)
 	* Fixes SF #1075: GLib warnings of "string != NULL" assertion failure

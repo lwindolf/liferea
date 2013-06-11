@@ -206,7 +206,12 @@ google_source_auto_update (nodePtr node)
 	}
 }
 
-static void google_source_init (void) { }
+static void
+google_source_init (void)
+{
+	metadata_type_register ("GoogleBroadcastOrigFeed", METADATA_TYPE_URL);
+	metadata_type_register ("sharedby", METADATA_TYPE_TEXT);
+}
 
 static void google_source_deinit (void) { }
 
@@ -279,7 +284,7 @@ static void
 google_source_remove_node (nodePtr node, nodePtr child) 
 { 
 	gchar           *source; 
-	GoogleSourcePtr gsource = node->data; 
+	GoogleSourcePtr gsource = node->data;
 	
 	if (child == node) { 
 		feedlist_node_removed (child);
@@ -328,7 +333,6 @@ static void
 ui_google_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
-
 	
 	dialog = liferea_dialog_new ("google_source.ui", "google_source_dialog");
 	
@@ -367,6 +371,19 @@ google_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 	item_read_state_changed (item, newStatus);
 }
 
+/**
+ * Convert all subscriptions of a google source to local feeds
+ *
+ * @param node The node to migrate (not the nodeSource!)
+ */
+static void
+google_source_convert_to_local (nodePtr node)
+{
+	GoogleSourcePtr gsource = node->data; 
+
+	gsource->loginState = GOOGLE_SOURCE_STATE_MIGRATE;	
+}
+
 /* node source type definition */
 
 static struct nodeSourceType nst = {
@@ -377,7 +394,8 @@ static struct nodeSourceType nst = {
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
-	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC,
+	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
+	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
 	.source_type_init    = google_source_init,
 	.source_type_deinit  = google_source_deinit,
 	.source_new          = ui_google_source_get_account_info,
@@ -392,7 +410,8 @@ static struct nodeSourceType nst = {
 	.item_mark_read      = google_source_item_mark_read,
 	.add_folder          = NULL, 
 	.add_subscription    = google_source_add_subscription,
-	.remove_node         = google_source_remove_node
+	.remove_node         = google_source_remove_node,
+	.convert_to_local    = google_source_convert_to_local
 };
 
 nodeSourceTypePtr

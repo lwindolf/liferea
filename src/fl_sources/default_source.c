@@ -225,7 +225,8 @@ static struct nodeSourceType nst = {
 	.free 			= NULL,
 	.add_subscription	= default_source_add_subscription,
 	.add_folder		= default_source_add_folder,
-	.remove_node		= default_source_remove_node
+	.remove_node		= default_source_remove_node,
+	.convert_to_local	= NULL
 };
 
 nodeSourceTypePtr default_source_get_type (void) { return &nst; }

@@ -55,7 +55,8 @@ enum {
 	NODE_SOURCE_CAPABILITY_ADD_FEED			= (1<<3),	/**< feeds can be added to the source */
 	NODE_SOURCE_CAPABILITY_ADD_FOLDER		= (1<<4),	/**< folders can be added to the source */
 	NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST	= (1<<5),	/**< the feed list tree of the source can have hierarchic folders */
-	NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC		= (1<<6)	/**< the item state can and should be sync'ed with remote */
+	NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC		= (1<<6),	/**< the item state can and should be sync'ed with remote */
+	NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL		= (1<<7)	/**< node sources of this type can be converted to internal subscription lists */
 };
 
 /** feed list node source type */
@@ -173,6 +174,13 @@ typedef struct nodeSourceType {
 	 */
 	void		(*remove_node) (nodePtr node, nodePtr child);
 
+	/**
+	 * Converts all subscriptions to default source subscriptions.
+	 *
+	 * This is an OPTIONAL method.
+	 */
+	void		(*convert_to_local) (nodePtr node);
+
 } *nodeSourceTypePtr;
 
 /** feed list source instance */
@@ -275,6 +283,13 @@ void node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState);
  * @param newState	the new item flag state
  */
 void node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState);
+
+/**
+ * Converts all subscriptions to default source subscriptions.
+ *
+ * @param node		the source node
+ */
+void node_source_convert_to_local (nodePtr node);
 
 /* implementation of the node type interface */
 

@@ -375,7 +375,8 @@ static struct nodeSourceType nst = {
 	.item_mark_read      = ttrss_source_item_mark_read,
 	.add_folder          = NULL,	/* not supported by current tt-rss JSON API (v1.5) */
 	.add_subscription    = NULL,	/* not supported by current tt-rss JSON API (v1.5) */
-	.remove_node         = NULL	/* not supported by current tt-rss JSON API (v1.5) */
+	.remove_node         = NULL,	/* not supported by current tt-rss JSON API (v1.5) */
+	.convert_to_local    = NULL	/* FIXME: implement me to allow data migration from tt-rss! */
 };
 
 nodeSourceTypePtr
