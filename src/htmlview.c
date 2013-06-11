@@ -223,7 +223,7 @@ htmlview_render_item (itemPtr item,
 		baseUrl = common_uri_escape (node_get_base_url (node));
 		render_parameter_add (params, "baseUrl='%s'", baseUrl);
 	}
-	
+
 	render_parameter_add (params, "summary='%d'", summaryMode?1:0);
 	render_parameter_add (params, "showFeedName='%d'", isMergedItemset?1:0);
 	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?1:0);

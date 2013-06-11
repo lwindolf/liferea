@@ -251,6 +251,12 @@
 
 </table> <!-- end of header metadata -->
 
+<xsl:variable name="shading">
+  <xsl:if test="$single = '0' and readStatus = '0'">itemshaded</xsl:if>
+  <xsl:if test="$single = '0' and readStatus != '0'">itemunshaded</xsl:if>
+</xsl:variable>
+
+<div id="shading" class="{$shading}">
 <div class='content'>
   <!-- insertion div for GeoRSS coordinates, adding an OpenStreet map -->
   <xsl:if test="attributes/attribute[ @name = 'point' ]">
@@ -354,6 +360,7 @@
 </div> <!-- end of base URL div -->
 
 </div> <!-- item -->
+</div> <!-- shading -->
 
 <!-- extra item content handling for GeoRSS coordinates, adding an OpenStreet map -->
 <xsl:if test="attributes/attribute[ @name = 'point' ]">  
