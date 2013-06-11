@@ -4,7 +4,8 @@ To be released.
 	  (reported by Adam Nielsen)
 	* Fixes SF #1075: GLib warnings of "string != NULL" assertion failure
 	  (reported by Simon Kågedal Reimer)
-
+	* Fixes search folders including comment items
+	  (reported by David Willmore)
 
 
 2013-05-22   Lars Windolf <lars.lindner@gmail.com>

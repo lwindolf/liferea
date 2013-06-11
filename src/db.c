@@ -958,6 +958,10 @@ db_item_search_folders_update (itemPtr item)
 	sqlite3_stmt	*stmt;
 	gint 		res;
 	GSList		*iter, *list;
+
+	/* Bail on comments which are not covered by search folders */
+	if (item->isComment)
+		return;
 	
 	/* Add item to all search folders it now belongs to */
 
