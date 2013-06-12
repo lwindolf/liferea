@@ -27,7 +27,7 @@
 #include "debug.h"
 #include "ui/item_list_view.h"
 #include "ui/feed_list_view.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 #include "ui/ui_dnd.h"
 #include "fl_sources/node_source.h"
 
@@ -154,7 +154,7 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			node_update_counters (oldParent);
 			
 			if (0 == g_slist_length (oldParent->children))
-				ui_node_add_empty_node (ui_node_to_iter (oldParent->id));
+				feed_list_node_add_empty_node (feed_list_node_to_iter (oldParent->id));
 			
 			/* and rebuild new parents child list */
 			if (gtk_tree_model_iter_parent (GTK_TREE_MODEL (drag_dest), &parentIter, &iter)) {
@@ -211,7 +211,7 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 				} else {
 					debug0 (DEBUG_GUI, "   -> removing empty node");
 					/* remove possible existing "(empty)" node from newParent */
-					ui_node_remove_empty_node (&parentIter);
+					feed_list_node_remove_empty_node (&parentIter);
 				}
 				valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (drag_dest), &iter2);
 				pos++;

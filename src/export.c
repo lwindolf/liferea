@@ -34,7 +34,7 @@
 #include "folder.h"
 #include "xml.h"
 #include "ui/ui_common.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 
 struct exportData {
 	gboolean	trusted; /**< Include all the extra Liferea-specific tags */
@@ -110,7 +110,7 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 	
 	/* 3. add children */
 	if (internal) {
-		if (ui_node_is_expanded (node->id))
+		if (feed_list_node_is_expanded (node->id))
 			xmlNewProp (childNode, BAD_CAST"expanded", BAD_CAST"true");
 		else
 			xmlNewProp (childNode, BAD_CAST"collapsed", BAD_CAST"true");

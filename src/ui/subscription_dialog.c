@@ -34,7 +34,7 @@
 #include "update.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 
 /* Note: these update interval literals should be kept in sync with the 
    ones in ui_prefs.c! */
@@ -258,7 +258,7 @@ on_propdialog_response (GtkDialog *dialog,
 		if (feed->enforcePopup && feed->preventPopup)
 			feed->enforcePopup = FALSE;
 
-		ui_node_update (node->id);
+		feed_list_node_update (node->id);
 		feedlist_schedule_save ();
 		db_subscription_update (subscription);
 		if (needsUpdate)

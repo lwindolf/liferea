@@ -34,7 +34,7 @@
 #include "ui/auth_dialog.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 
 /* The allowed feed protocol prefixes (see http://25hoursaday.com/draft-obasanjo-feed-URI-scheme-02.html) */
 #define FEED_PROTOCOL_PREFIX "feed://"
@@ -134,7 +134,7 @@ subscription_favicon_downloaded (gpointer user_data)
 	nodePtr	node = (nodePtr)user_data;
 
 	node_set_icon (node, favicon_load_from_cache (node->id));
-	ui_node_update (node->id);
+	feed_list_node_update (node->id);
 }
 
 void
@@ -247,7 +247,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
 
-	ui_node_update (subscription->node->id);
+	feed_list_node_update (subscription->node->id);
 
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);

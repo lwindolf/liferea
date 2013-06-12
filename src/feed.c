@@ -38,7 +38,7 @@
 #include "ui/icons.h"
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 #include "notification/notification.h"
 
 feedPtr
@@ -328,7 +328,7 @@ feed_update_counters (nodePtr node)
 static void
 feed_remove (nodePtr node)
 {
-	ui_node_remove_node (node);
+	feed_list_node_remove_node (node);
 	
 	favicon_remove_from_cache (node->id);
 	db_subscription_remove (node->id);

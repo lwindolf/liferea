@@ -30,7 +30,7 @@
 #include "metadata.h"
 #include "render.h"
 #include "ui/icons.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 #include "ui/liferea_dialog.h"
 
 static GtkWidget *newnewsbindialog = NULL;
@@ -158,7 +158,7 @@ newsbin_get_node_type (void)
 		nodeType->remove		= newsbin_remove;
 		nodeType->render		= newsbin_render;
 		nodeType->request_add		= ui_newsbin_add;
-		nodeType->request_properties	= ui_node_rename;
+		nodeType->request_properties	= feed_list_node_rename;
 		nodeType->free			= feed_get_node_type()->free;
 	}
 

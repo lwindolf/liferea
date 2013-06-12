@@ -35,7 +35,7 @@
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 #include "ui/ui_tray.h"
 
 static GHashTable *nodes = NULL;	/**< node id -> node lookup table */
@@ -225,7 +225,7 @@ node_update_parent_counters (nodePtr node)
 	NODE_TYPE (node)->update_counters (node);
 	
 	if (old != node->unreadCount) {
-		ui_node_update (node->id);
+		feed_list_node_update (node->id);
 		ui_tray_update ();
 		liferea_shell_update_unread_stats ();
 	}
@@ -245,7 +245,7 @@ node_update_counters (nodePtr node)
 	
 	if ((oldUnreadCount != node->unreadCount) ||
 	    (oldItemCount != node->itemCount))
-		ui_node_update (node->id);
+		feed_list_node_update (node->id);
 		
 	/* Update the unread count of the parent nodes,
 	   usually they just add all child unread counters */
@@ -327,8 +327,8 @@ node_reparent (nodePtr node, nodePtr new_parent)
 	new_parent->children = g_slist_insert (new_parent->children, node, -1);
 	node->parent = new_parent;
 	
-	ui_node_remove_node (node);
-	ui_node_add (node);
+	feed_list_node_remove_node (node);
+	feed_list_node_add (node);
 }
 
 void

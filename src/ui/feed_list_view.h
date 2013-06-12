@@ -28,10 +28,10 @@
 
 /* constants for attributes in feedstore */
 enum {
-	FS_LABEL, /* Displayed name */
-	FS_ICON,  /* Icon to use */
-	FS_PTR,   /* pointer to the folder or feed */
-	FS_UNREAD, /* Number of unread items */
+	FS_LABEL,	/**< Displayed name */
+	FS_ICON,	/**< Icon to use */
+	FS_PTR,		/**< pointer to the folder or feed */
+	FS_UNREAD,	/**< Number of unread items */
 	FS_LEN
 };
 

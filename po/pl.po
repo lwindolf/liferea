@@ -1364,11 +1364,11 @@ msgstr "Typ"
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/ui_node.c:124
+#: ../src/ui/feed_list_node.c:124
 msgid "(Empty)"
 msgstr "(Pusty)"
 
-#: ../src/ui/ui_node.c:321
+#: ../src/ui/feed_list_node.c:321
 #, c-format
 msgid ""
 "%s\n"

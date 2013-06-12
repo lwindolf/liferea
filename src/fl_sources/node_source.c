@@ -36,7 +36,7 @@
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
 #include "fl_sources/google_source.h"
@@ -225,7 +225,7 @@ on_node_source_type_response (GtkDialog *dialog, gint response_id, gpointer user
 }
 
 static gboolean
-ui_node_source_type_dialog (void)
+feed_list_node_source_type_dialog (void)
 {
 	GSList 			*iter = nodeSourceTypes;
 	GtkWidget 		*dialog, *treeview;
@@ -422,7 +422,7 @@ node_source_remove (nodePtr node)
 	if (NULL != NODE_SOURCE_TYPE (node)->source_delete)
 		NODE_SOURCE_TYPE (node)->source_delete (node);
 		
-	ui_node_remove_node (node);
+	feed_list_node_remove_node (node);
 }
 
 static void
@@ -465,8 +465,8 @@ node_source_get_node_type (void)
 		nodeType->update_counters	= folder_get_node_type()->update_counters;
 		nodeType->remove		= node_source_remove;
 		nodeType->render		= node_default_render;
-		nodeType->request_add		= ui_node_source_type_dialog;
-		nodeType->request_properties	= ui_node_rename;
+		nodeType->request_add		= feed_list_node_source_type_dialog;
+		nodeType->request_properties	= feed_list_node_rename;
 		nodeType->free			= node_source_free;
 	}
 

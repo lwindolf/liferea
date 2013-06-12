@@ -28,7 +28,7 @@
 #include "vfolder.h"
 #include "ui/icons.h"
 #include "ui/ui_folder.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 
 /* Note: The folder node type implements the behaviour of a folder like
    node in the feed list. The two most important features are viewing the
@@ -130,7 +130,7 @@ folder_get_node_type (void)
 		folder_remove,
 		node_default_render,
 		ui_folder_add,
-		ui_node_rename
+		feed_list_node_rename
 	};
 	fnti.icon = icon_get (ICON_FOLDER);
 
@@ -160,7 +160,7 @@ root_get_node_type (void)
 		folder_remove,
 		node_default_render,
 		ui_folder_add,
-		ui_node_rename,
+		feed_list_node_rename,
 		NULL
 	};
 

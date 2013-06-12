@@ -1455,11 +1455,11 @@ msgstr "Tipo"
 msgid "Program"
 msgstr "Programa"
 
-#: ../src/ui/ui_node.c:124
+#: ../src/ui/feed_list_node.c:124
 msgid "(Empty)"
 msgstr ""
 
-#: ../src/ui/ui_node.c:321
+#: ../src/ui/feed_list_node.c:321
 #, c-format
 msgid ""
 "%s\n"

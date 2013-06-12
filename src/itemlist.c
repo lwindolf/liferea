@@ -42,7 +42,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/feed_list_view.h"
 #include "ui/liferea_htmlview.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 
 /* The 'item list' is a controller for 'item view' and database backend. 
    It manages the currently displayed 'node', realizes filtering
@@ -188,7 +188,7 @@ itemlist_check_for_deferred_action (void)
 			itemlist->priv->deferredFilter = FALSE;
 			item = item_load(id);
 			itemview_remove_item(item);
-			ui_node_update(item->nodeId);
+			feed_list_node_update(item->nodeId);
 		}
 
 		/* check for removals caused by vfolder rules */
@@ -435,7 +435,7 @@ itemlist_hide_item (itemPtr item)
 	   don't do it and set a flag to do it when unselecting */
 	if (itemlist->priv->selectedId != item->id) {
 		itemview_remove_item (item);
-		ui_node_update (item->nodeId);
+		feed_list_node_update (item->nodeId);
 	} else {
 		itemlist->priv->deferredFilter = TRUE;
 		/* update the item to show new state that forces
@@ -587,7 +587,7 @@ itemlist_selection_changed (itemPtr item)
 				itemview_select_item (item);
 				itemview_update ();
 			}
-			ui_node_update (item->nodeId);
+			feed_list_node_update (item->nodeId);
 		}
 
 		feedlist_reset_new_item_count ();

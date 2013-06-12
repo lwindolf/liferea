@@ -1,8 +1,8 @@
 /**
- * @file ui_node.c GUI folder handling
+ * @file feed_list_node.c  Handling feed list nodes
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2013 Lars Windolf <lars.lindner@gmail.com>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
  */
 
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 
 #include "common.h"
 #include "debug.h"
@@ -36,7 +36,7 @@ static GHashTable	*flIterHash = NULL;	/**< hash table used for fast node id <-> 
 static GtkWidget	*nodenamedialog = NULL;
 
 GtkTreeIter *
-ui_node_to_iter (const gchar *nodeId)
+feed_list_node_to_iter (const gchar *nodeId)
 {
 	if (!flIterHash)
 		return NULL;
@@ -45,7 +45,7 @@ ui_node_to_iter (const gchar *nodeId)
 }
 
 void
-ui_node_update_iter (const gchar *nodeId, GtkTreeIter *iter)
+feed_list_node_update_iter (const gchar *nodeId, GtkTreeIter *iter)
 {
 	GtkTreeIter *old;
 
@@ -58,7 +58,7 @@ ui_node_update_iter (const gchar *nodeId, GtkTreeIter *iter)
 }
 
 static void
-ui_node_add_iter (const gchar *nodeId, GtkTreeIter *iter)
+feed_list_node_add_iter (const gchar *nodeId, GtkTreeIter *iter)
 {
 	if (!flIterHash)
 		flIterHash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
@@ -69,7 +69,7 @@ ui_node_add_iter (const gchar *nodeId, GtkTreeIter *iter)
 /* Expansion & Collapsing */
 
 gboolean
-ui_node_is_expanded (const gchar *nodeId)
+feed_list_node_is_expanded (const gchar *nodeId)
 {
 	GtkTreeIter	*iter;
 	gboolean 	expanded = FALSE;
@@ -77,7 +77,7 @@ ui_node_is_expanded (const gchar *nodeId)
 	if (feedlist_reduced_unread)
 		return FALSE;
 
-	iter = ui_node_to_iter (nodeId);
+	iter = feed_list_node_to_iter (nodeId);
 	if (iter) {
 		GtkTreeView *treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 		GtkTreePath *path = gtk_tree_model_get_path (gtk_tree_view_get_model (treeview), iter);
@@ -89,7 +89,7 @@ ui_node_is_expanded (const gchar *nodeId)
 }
 
 void
-ui_node_set_expansion (nodePtr folder, gboolean expanded)
+feed_list_node_set_expansion (nodePtr folder, gboolean expanded)
 {
 	GtkTreeIter		*iter;
 	GtkTreePath		*path;
@@ -98,7 +98,7 @@ ui_node_set_expansion (nodePtr folder, gboolean expanded)
 	if (feedlist_reduced_unread)
 		return;
 
-	iter = ui_node_to_iter (folder->id);
+	iter = feed_list_node_to_iter (folder->id);
 	if (!iter)
 		return;
 
@@ -114,7 +114,7 @@ ui_node_set_expansion (nodePtr folder, gboolean expanded)
 /* Folder expansion workaround using "empty" nodes */
 
 void
-ui_node_add_empty_node (GtkTreeIter *parent)
+feed_list_node_add_empty_node (GtkTreeIter *parent)
 {
 	GtkTreeIter	iter;
 
@@ -127,7 +127,7 @@ ui_node_add_empty_node (GtkTreeIter *parent)
 }
 
 void
-ui_node_remove_empty_node (GtkTreeIter *parent)
+feed_list_node_remove_empty_node (GtkTreeIter *parent)
 {
 	GtkTreeIter	iter;
 	nodePtr		node;
@@ -151,7 +151,7 @@ ui_node_remove_empty_node (GtkTreeIter *parent)
    empty folder like Nautilus does... */
    
 static void
-ui_node_check_if_folder_is_empty (const gchar *nodeId)
+feed_list_node_check_if_folder_is_empty (const gchar *nodeId)
 {
 	GtkTreeIter	*iter;
 	int		count;
@@ -164,7 +164,7 @@ ui_node_check_if_folder_is_empty (const gchar *nodeId)
 	2. remove an "(empty)" entry from a non empty folder
 	(this state is possible after a drag&drop action) */
 
-	iter = ui_node_to_iter (nodeId);
+	iter = feed_list_node_to_iter (nodeId);
 	if (!iter)
 		return;
 		
@@ -172,7 +172,7 @@ ui_node_check_if_folder_is_empty (const gchar *nodeId)
 	
 	/* case 1 */
 	if (0 == count) {
-		ui_node_add_empty_node (iter);
+		feed_list_node_add_empty_node (iter);
 		return;
 	}
 	
@@ -180,11 +180,11 @@ ui_node_check_if_folder_is_empty (const gchar *nodeId)
 		return;
 	
 	/* else we could have case 2 */
-	ui_node_remove_empty_node (iter);
+	feed_list_node_remove_empty_node (iter);
 }
 
 void
-ui_node_add (nodePtr node)
+feed_list_node_add (nodePtr node)
 {
 	gint		position;
 	GtkTreeIter	*iter, *parentIter = NULL;
@@ -192,7 +192,7 @@ ui_node_add (nodePtr node)
 	debug2 (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != node->parent)?node_get_title(node->parent):"feed list root");
 
 	g_assert (NULL != node->parent);
-	g_assert (NULL == ui_node_to_iter (node->id));
+	g_assert (NULL == feed_list_node_to_iter (node->id));
 
 	/* if parent is NULL we have the root folder and don't create a new row! */
 	iter = (GtkTreeIter *)g_new0 (GtkTreeIter, 1);
@@ -201,7 +201,7 @@ ui_node_add (nodePtr node)
 	if (feedlist_reduced_unread)
 		parentIter = NULL;
 	else if (node->parent != feedlist_get_root ())
-		parentIter = ui_node_to_iter (node->parent->id);
+		parentIter = feed_list_node_to_iter (node->parent->id);
 
 	position = g_slist_index (node->parent->children, node);
 
@@ -211,74 +211,74 @@ ui_node_add (nodePtr node)
 		gtk_tree_store_insert (feedstore, iter, parentIter, position);
 
 	gtk_tree_store_set (feedstore, iter, FS_PTR, node, -1);
-	ui_node_add_iter (node->id, iter);
-	ui_node_update (node->id);
+	feed_list_node_add_iter (node->id, iter);
+	feed_list_node_update (node->id);
 	
 	if (node->parent != feedlist_get_root ())
-		ui_node_check_if_folder_is_empty (node->parent->id);
+		feed_list_node_check_if_folder_is_empty (node->parent->id);
 
 	if (IS_FOLDER (node))
-		ui_node_check_if_folder_is_empty (node->id);
+		feed_list_node_check_if_folder_is_empty (node->id);
 }
 
 static void
-ui_node_load_feedlist (nodePtr node)
+feed_list_node_load_feedlist (nodePtr node)
 {
 	GSList		*iter;
 	
 	iter = node->children;
 	while (iter) {
 		node = (nodePtr)iter->data;
-		ui_node_add (node);
+		feed_list_node_add (node);
 		
 		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
-			ui_node_load_feedlist (node);
+			feed_list_node_load_feedlist (node);
 
 		iter = g_slist_next(iter);
 	}
 }
 
 static void
-ui_node_clear_feedlist ()
+feed_list_node_clear_feedlist ()
 {
 	gtk_tree_store_clear (feedstore);
 	g_hash_table_remove_all (flIterHash);
 }
 
 void
-ui_node_reload_feedlist ()
+feed_list_node_reload_feedlist ()
 {
-	ui_node_clear_feedlist ();
-	ui_node_load_feedlist (feedlist_get_root ());
+	feed_list_node_clear_feedlist ();
+	feed_list_node_load_feedlist (feedlist_get_root ());
 }
 
 void
-ui_node_remove_node (nodePtr node)
+feed_list_node_remove_node (nodePtr node)
 {
 	GtkTreeIter	*iter;
 	gboolean 	parentExpanded = FALSE;
 	
-	iter = ui_node_to_iter (node->id);
+	iter = feed_list_node_to_iter (node->id);
 	if (!iter)
 		return;	/* must be tolerant because of DnD handling */
 
 	if (node->parent)
-		parentExpanded = ui_node_is_expanded (node->parent->id); /* If the folder becomes empty, the folder would collapse */
+		parentExpanded = feed_list_node_is_expanded (node->parent->id); /* If the folder becomes empty, the folder would collapse */
 	
 	gtk_tree_store_remove (feedstore, iter);
 	g_hash_table_remove (flIterHash, node->id);
 	
 	if (node->parent) {
-		ui_node_check_if_folder_is_empty (node->parent->id);
+		feed_list_node_check_if_folder_is_empty (node->parent->id);
 		if (parentExpanded)
-			ui_node_set_expansion (node->parent, TRUE);
+			feed_list_node_set_expansion (node->parent, TRUE);
 
-		ui_node_update (node->parent->id);
+		feed_list_node_update (node->parent->id);
 	}
 }
 
 void
-ui_node_update (const gchar *nodeId)
+feed_list_node_update (const gchar *nodeId)
 {
 	GtkTreeIter	*iter;
 	gchar		*label;
@@ -286,7 +286,7 @@ ui_node_update (const gchar *nodeId)
 	nodePtr		node;
 
 	node = node_from_id (nodeId);
-	iter = ui_node_to_iter (nodeId);
+	iter = feed_list_node_to_iter (nodeId);
 	if (!iter)
 		return;
 
@@ -329,7 +329,7 @@ ui_node_update (const gchar *nodeId)
 	g_free (label);
 
 	if (node->parent)
-		ui_node_update (node->parent->id);
+		feed_list_node_update (node->parent->id);
 }
 
 /* node renaming dialog */
@@ -342,7 +342,7 @@ on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 	if (response_id == GTK_RESPONSE_OK) {
 		node_set_title (node, (gchar *) gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "nameentry"))));
 
-		ui_node_update (node->id);
+		feed_list_node_update (node->id);
 		feedlist_schedule_save ();
 	}
 	
@@ -351,7 +351,7 @@ on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 }
 
 void
-ui_node_rename (nodePtr node)
+feed_list_node_rename (nodePtr node)
 {
 	GtkWidget	*nameentry;
 	

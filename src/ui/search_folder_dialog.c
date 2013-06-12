@@ -26,7 +26,7 @@
 #include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
 #include "ui/rule_editor.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 
 #define SEARCH_FOLDER_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), SEARCH_FOLDER_DIALOG_TYPE, SearchFolderDialogPrivate))
 
@@ -89,7 +89,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		if (!sfd->priv->node->parent)
 			feedlist_node_added (sfd->priv->node);
 			
-		ui_node_update (sfd->priv->node->id);
+		feed_list_node_update (sfd->priv->node->id);
 	}
 	
 	gtk_widget_destroy (GTK_WIDGET (dialog));

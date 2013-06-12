@@ -38,7 +38,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
 #include "ui/ui_dnd.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 #include "fl_sources/node_source.h"
 
 GtkTreeModel		*filter = NULL;
@@ -53,7 +53,7 @@ feed_list_view_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIt
 	
 	gtk_tree_model_get (model, iter, FS_PTR, &node, -1);
 	if (node)
-		ui_node_update_iter(node->id, iter);
+		feed_list_node_update_iter(node->id, iter);
 }
 
 static void
@@ -154,7 +154,7 @@ feed_list_view_expand (nodePtr node)
 	if (node->parent)
 		feed_list_view_expand (node->parent);
 
-	ui_node_set_expansion (node, TRUE);
+	feed_list_node_set_expansion (node, TRUE);
 }
 
 static void
@@ -192,7 +192,7 @@ feed_list_view_set_reduce_mode (gboolean newReduceMode)
 	feedlist_reduced_unread = newReduceMode;
 	conf_set_bool_value (REDUCED_FEEDLIST, feedlist_reduced_unread);
 	feed_list_view_reduce_mode_changed ();
-	ui_node_reload_feedlist ();
+	feed_list_node_reload_feedlist ();
 }
 
 static gint
@@ -208,7 +208,7 @@ void
 feed_list_view_sort_folder (nodePtr folder)
 {
 	folder->children = g_slist_sort (folder->children, feed_list_view_sort_folder_compare);
-	ui_node_reload_feedlist ();
+	feed_list_node_reload_feedlist ();
 	feedlist_foreach (feed_list_view_restore_folder_expansion);
 	feedlist_schedule_save ();
 }
@@ -296,10 +296,10 @@ feed_list_view_select (nodePtr node)
 		/* in filtered mode we need to convert the iterator */
 		if (feedlist_reduced_unread) {
 			GtkTreeIter iter;
-			gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (filter), &iter, ui_node_to_iter (node->id));
+			gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (filter), &iter, feed_list_node_to_iter (node->id));
 			path = gtk_tree_model_get_path (model, &iter);
 		} else {
-			path = gtk_tree_model_get_path (model, ui_node_to_iter (node->id));
+			path = gtk_tree_model_get_path (model, feed_list_node_to_iter (node->id));
 		}
 		
 		if (node->parent)

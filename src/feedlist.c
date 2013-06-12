@@ -37,7 +37,7 @@
 #include "ui/feed_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 #include "ui/ui_tray.h"
 #include "fl_sources/node_source.h"
 
@@ -138,13 +138,13 @@ static void
 feedlist_init_node (nodePtr node) 
 {
 	if (node->expanded)
-		ui_node_set_expansion (node, TRUE);
+		feed_list_node_set_expansion (node, TRUE);
 	
 	if (node->subscription)
 		db_subscription_load (node->subscription);
 		
 	node_update_counters (node);
-	ui_node_update (node->id);	/* Necessary to initially set folder unread counters */
+	feed_list_node_update (node->id);	/* Necessary to initially set folder unread counters */
 	
 	node_foreach_child (node, feedlist_init_node);
 }
@@ -251,7 +251,7 @@ feedlist_update_node_counters (nodePtr node)
 	node_update_counters (node);	/* update with parent propagation */
 
 	if (node->needsUpdate)
-		ui_node_update (node->id);
+		feed_list_node_update (node->id);
 	if (node->children)
 		node_foreach_child (node, feedlist_update_node_counters);
 }
@@ -362,7 +362,7 @@ feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptio
 void
 feedlist_node_imported (nodePtr node)
 {
-	ui_node_add (node);	
+	feed_list_node_add (node);	
 
 	feedlist_schedule_save ();
 }
@@ -412,7 +412,7 @@ feedlist_node_removed (nodePtr node)
 
 	node_remove (node);
 
-	ui_node_remove_node (node);
+	feed_list_node_remove_node (node);
 
 	node->parent->children = g_slist_remove (node->parent->children, node);
 

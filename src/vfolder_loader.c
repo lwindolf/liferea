@@ -25,7 +25,7 @@
 #include "itemset.h"
 #include "node.h"
 #include "vfolder.h"
-#include "ui/ui_node.h"
+#include "ui/feed_list_node.h"
 
 #define VFOLDER_LOADER_BATCH_SIZE 	100
 
@@ -66,7 +66,7 @@ vfolder_loader_fetch_cb (gpointer user_data, GSList **resultItems)
 	if (vfolder->node) {
 		db_search_folder_add_items (vfolder->node->id, *resultItems);
 		node_update_counters (vfolder->node);
-		ui_node_update (vfolder->node->id);
+		feed_list_node_update (vfolder->node->id);
 	}
 
 	return result;	/* FALSE on last fetch */
