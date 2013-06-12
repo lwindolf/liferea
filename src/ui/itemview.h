@@ -242,16 +242,6 @@ void itemview_set_layout (nodeViewType newMode);
 ItemView * itemview_create (GtkWidget *window);
 
 /**
- * itemview_get_style:
- *
- * Returns the itemview GtkStyle. To be used by the
- * HTML rendering code to determine theme colors.
- *
- * Return value: (transfer none):	the itemview GtkStyle
- */
-GtkStyle * itemview_get_style (void);
-
-/**
  * itemview_launch_URL:
  *
  * Launch the given URL in the currently active HTML view.

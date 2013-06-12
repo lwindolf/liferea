@@ -32,6 +32,7 @@ enum {
 	FS_ICON,	/**< Icon to use */
 	FS_PTR,		/**< pointer to the folder or feed */
 	FS_UNREAD,	/**< Number of unread items */
+	FS_COUNT,	/**< Number of unread items as string */
 	FS_LEN
 };
 

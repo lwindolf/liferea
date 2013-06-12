@@ -2,7 +2,7 @@
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,6 +121,13 @@ liferea_shell_lookup (const gchar *name)
 	g_return_val_if_fail (shell->priv != NULL, NULL);
 
 	return GTK_WIDGET (gtk_builder_get_object (shell->priv->xml, name));
+}
+
+
+GtkStyle *
+liferea_shell_get_style (void)
+{
+	return gtk_widget_get_style (GTK_WIDGET (shell->priv->window));
 }
 
 static void

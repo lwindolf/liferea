@@ -78,6 +78,16 @@ GType liferea_shell_get_type	(void);
 GtkWidget * liferea_shell_lookup (const gchar *name);
 
 /**
+ * liferea_shell_get_style:
+ *
+ * Returns the applications GtkStyle. To be used by the
+ * HTML rendering code to determine theme colors.
+ *
+ * Return value: (transfer none):	the itemview GtkStyle
+ */
+GtkStyle * liferea_shell_get_style (void);
+
+/**
  * liferea_shell_create:
  *
  * Set up the Liferea main window.

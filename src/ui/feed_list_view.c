@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.c  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  * 
@@ -218,9 +218,9 @@ feed_list_view_sort_folder (nodePtr folder)
 void
 feed_list_view_init (GtkTreeView *treeview)
 {
-	GtkCellRenderer		*textRenderer;
+	GtkCellRenderer		*titleRenderer, *countRenderer;
 	GtkCellRenderer		*iconRenderer;	
-	GtkTreeViewColumn 	*column;
+	GtkTreeViewColumn 	*column, *column2;
 	GtkTreeSelection	*select;	
 	
 	debug_enter ("feed_list_view_init");
@@ -230,7 +230,8 @@ feed_list_view_init (GtkTreeView *treeview)
 	                                G_TYPE_STRING,
 	                                GDK_TYPE_PIXBUF,
 	                                G_TYPE_POINTER,
-	                                G_TYPE_UINT);
+	                                G_TYPE_UINT,
+					G_TYPE_STRING);
 
 	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (feedstore));
 
@@ -243,22 +244,31 @@ feed_list_view_init (GtkTreeView *treeview)
 
 	g_signal_connect (G_OBJECT (feedstore), "row-changed", G_CALLBACK (feed_list_view_row_changed_cb), NULL);
 
-	/* we only render the state and title */
+	/* we render the icon/state, the feed title and the unread count */
 	iconRenderer = gtk_cell_renderer_pixbuf_new ();
-	textRenderer = gtk_cell_renderer_text_new ();
+	titleRenderer = gtk_cell_renderer_text_new ();
+	countRenderer =  gtk_cell_renderer_text_new ();
+
+	gtk_cell_renderer_set_alignment (countRenderer, 1.0, 0);
 
 	column = gtk_tree_view_column_new ();
+	column2 = gtk_tree_view_column_new ();
 	
 	gtk_tree_view_column_pack_start (column, iconRenderer, FALSE);
-	gtk_tree_view_column_pack_start (column, textRenderer, TRUE);
+	gtk_tree_view_column_pack_start (column, titleRenderer, TRUE);
+	gtk_tree_view_column_pack_end (column2, countRenderer, FALSE);
 	
 	gtk_tree_view_column_add_attribute (column, iconRenderer, "pixbuf", FS_ICON);
-	gtk_tree_view_column_add_attribute (column, textRenderer, "markup", FS_LABEL);
-	
-	gtk_tree_view_column_set_resizable (column, TRUE);
+	gtk_tree_view_column_add_attribute (column, titleRenderer, "markup", FS_LABEL);
+	gtk_tree_view_column_add_attribute (column2, countRenderer, "markup", FS_COUNT);
+
+	gtk_tree_view_column_set_expand (column, TRUE);	
+	gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_sizing (column2, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
 	gtk_tree_view_append_column (treeview, column);
+	gtk_tree_view_append_column (treeview, column2);
 	
-	g_object_set (textRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+	g_object_set (titleRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
 	g_signal_connect (G_OBJECT (treeview), "row-activated", G_CALLBACK (feed_list_view_row_activated_cb), NULL);
 	g_signal_connect (G_OBJECT (treeview), "key-press-event", G_CALLBACK (feed_list_view_key_press_cb), NULL);
@@ -277,7 +287,7 @@ feed_list_view_init (GtkTreeView *treeview)
 	ui_dnd_setup_feedlist (feedstore);
 	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
 	liferea_shell_update_allitems_actions (FALSE, FALSE);
-	
+
 	debug_exit ("feed_list_view_init");
 }
 

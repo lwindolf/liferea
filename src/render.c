@@ -39,7 +39,6 @@
 #include "render.h"
 #include "xml.h"
 #include "ui/liferea_htmlview.h"
-#include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 
 /* Liferea provides special screens and the item and the feed displays
@@ -166,7 +165,7 @@ static GSList *themeColors = NULL;
 
 /* Determining of theme colors, to be inserted in CSS */
 static themeColorPtr
-render_get_theme_color (const gchar *name, GdkColor themeColor)
+render_calculate_theme_color (const gchar *name, GdkColor themeColor)
 {
 	themeColorPtr	tc;
 	gushort		r, g, b;
@@ -189,21 +188,21 @@ render_get_theme_colors (void)
 	GtkStyle	*style;
 	GdkColor	*color;
 
-	style = itemview_get_style ();
+	style = liferea_shell_get_style ();
 
 	g_assert (NULL == themeColors);
-	themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-BG",    style->bg[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-LIGHT", style->light[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-DARK",  style->dark[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-MID",   style->mid[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-BASE",  style->base[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BG",    style->bg[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-LIGHT", style->light[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-DARK",  style->dark[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-MID",   style->mid[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BASE",  style->base[GTK_STATE_NORMAL]));
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
 
 	color = NULL;
 	gtk_widget_style_get (liferea_shell_get_window (), "link-color", &color, NULL);
 	if (color) {
-		themeColors = g_slist_append (themeColors, render_get_theme_color ("GTK-COLOR-NORMAL-LINK", *color));
+		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-NORMAL-LINK", *color));
 		debug0 (DEBUG_HTML, "successfully set the color for links");
 		gdk_color_free (color);
 	}
@@ -211,7 +210,7 @@ render_get_theme_colors (void)
 	color = NULL;
 	gtk_widget_style_get (liferea_shell_get_window (), "visited-link-color", &color, NULL);
 	if (color) {
-		themeColors = g_slist_append (themeColors, render_get_theme_color("GTK-COLOR-VISITED-LINK", *color));
+		themeColors = g_slist_append (themeColors, render_calculate_theme_color("GTK-COLOR-VISITED-LINK", *color));
 		debug0 (DEBUG_HTML, "successfully set the color for visited links");
 		gdk_color_free (color);
 	}
@@ -229,6 +228,25 @@ render_set_theme_colors (gchar *css)
 	}
 	
 	return css;
+}
+
+const gchar *
+render_get_theme_color (const gchar *name)
+{
+	GSList	*iter;
+	
+	if (!themeColors)
+		render_get_theme_colors();
+
+	iter = themeColors;
+	while (iter) {
+		themeColorPtr tc = (themeColorPtr)iter->data;
+		if (g_str_equal (name, tc->name))
+			return tc->value;
+		iter = g_slist_next (iter);
+	}
+
+	return NULL;
 }
 
 const gchar *

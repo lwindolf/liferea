@@ -460,12 +460,6 @@ itemview_create (GtkWidget *window)
 	return itemview;
 }
 
-GtkStyle *
-itemview_get_style (void)
-{
-	return gtk_widget_get_style (liferea_htmlview_get_widget (itemview->priv->htmlview));
-}
-
 void
 itemview_launch_URL (const gchar *url, gboolean forceInternal)
 {

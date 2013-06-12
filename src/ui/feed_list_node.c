@@ -26,6 +26,7 @@
 #include "feedlist.h"
 #include "fl_sources/node_source.h"
 #include "folder.h"
+#include "render.h"
 #include "vfolder.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
@@ -123,6 +124,7 @@ feed_list_node_add_empty_node (GtkTreeIter *parent)
 	                    FS_LABEL, _("(Empty)"),
 	                    FS_PTR, NULL,
 	                    FS_UNREAD, 0,
+			    FS_COUNT, "",
 	                    -1);
 }
 
@@ -277,11 +279,13 @@ feed_list_node_remove_node (nodePtr node)
 	}
 }
 
+static gchar *countColor = NULL;
+
 void
 feed_list_node_update (const gchar *nodeId)
 {
 	GtkTreeIter	*iter;
-	gchar		*label;
+	gchar		*label, *count = NULL;
 	guint		labeltype;
 	nodePtr		node;
 
@@ -289,6 +293,14 @@ feed_list_node_update (const gchar *nodeId)
 	iter = feed_list_node_to_iter (nodeId);
 	if (!iter)
 		return;
+
+	if (!countColor) {
+		const gchar *dark = render_get_theme_color ("GTK-COLOR-DARK");
+		const gchar *light = render_get_theme_color ("GTK-COLOR-LIGHT");
+
+		if (dark && light)
+			countColor = g_strdup_printf ("foreground='#%s' background='#%s'", light, dark);
+	}
 
 	labeltype = NODE_TYPE (node)->capabilities;
 	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
@@ -302,14 +314,15 @@ feed_list_node_update (const gchar *nodeId)
 		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
 	     		/* treat like show unread count */
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT:
-			label = g_markup_printf_escaped ("<span weight=\"bold\">%s (%u)</span>",
-			                        	 node_get_title(node), node->unreadCount);
+			label = g_markup_printf_escaped ("<span weight='bold'>%s</span>", node_get_title (node));
+			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor?countColor:"", node->unreadCount);
 			break;
 		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
-			label = g_markup_printf_escaped ("%s (%u)", node_get_title(node), node->itemCount);
+			label = g_markup_printf_escaped ("%s", node_get_title (node));
+			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor?countColor:"", node->itemCount);
 		     	break;
 		default:
-			label = g_markup_printf_escaped ("%s", node_get_title(node));
+			label = g_markup_printf_escaped ("%s", node_get_title (node));
 			break;
 	}
 
@@ -322,10 +335,12 @@ feed_list_node_update (const gchar *nodeId)
 		}
 	}
 
-	gtk_tree_store_set (feedstore, iter, FS_LABEL, label,
-	                                     FS_UNREAD, node->unreadCount,
-	                                     FS_ICON, node->available?node_get_icon (node):icon_get (ICON_UNAVAILABLE),
-	                                     -1);
+	gtk_tree_store_set (feedstore, iter,
+	                    FS_LABEL, label,
+	                    FS_UNREAD, node->unreadCount,
+	                    FS_ICON, node->available?node_get_icon (node):icon_get (ICON_UNAVAILABLE),
+	                    FS_COUNT, count,
+	                    -1);
 	g_free (label);
 
 	if (node->parent)

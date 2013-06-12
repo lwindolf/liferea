@@ -62,4 +62,13 @@ void render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...);
  */
 const gchar * render_get_css (gboolean externalCss);
 
+/**
+ * Returns the CSS value of a given GTK theme color name e.g. "GTK-COLOR-MID"
+ *
+ * @param name		the GTK theme color name
+ *
+ * @returns a CSS value (e.g. "#CCC")
+ */
+const gchar * render_get_theme_color (const gchar *name);
+
 #endif
