@@ -1,7 +1,7 @@
 /**
- * @file render.h  generic XSLT rendering handling
+ * @file render.h  generic GTK theme and XSLT rendering handling
  * 
- * Copyright (C) 2006-2008 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,5 +70,12 @@ const gchar * render_get_css (gboolean externalCss);
  * @returns a CSS value (e.g. "#CCC")
  */
 const gchar * render_get_theme_color (const gchar *name);
+
+/**
+ * To be used to query if a dark GTK theme was detected
+ *
+ * @returns TRUE if dark theme detected
+ */
+gboolean render_is_dark_theme (void);
 
 #endif

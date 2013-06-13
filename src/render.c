@@ -1,7 +1,7 @@
 /**
- * @file render.c  generic XSLT rendering handling
+ * @file render.c  generic GTK theme and XSLT rendering handling
  * 
- * Copyright (C) 2006-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -162,6 +162,7 @@ typedef struct themeColor {
 } *themeColorPtr;
 
 static GSList *themeColors = NULL;
+static gboolean darkTheme = FALSE;
 
 /* Determining of theme colors, to be inserted in CSS */
 static themeColorPtr
@@ -187,6 +188,7 @@ render_get_theme_colors (void)
 {
 	GtkStyle	*style;
 	GdkColor	*color;
+	gint		textAvg, bgAvg;
 
 	style = liferea_shell_get_style ();
 
@@ -213,6 +215,23 @@ render_get_theme_colors (void)
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color("GTK-COLOR-VISITED-LINK", *color));
 		debug0 (DEBUG_HTML, "successfully set the color for visited links");
 		gdk_color_free (color);
+	}
+
+	/* As there doesn't seem to be a safe way to determine wether we have a 
+	   dark GTK theme, let's guess it from the foreground vs. background
+	   color average */
+
+	textAvg = style->text[GTK_STATE_NORMAL].red / 256 +
+	        style->text[GTK_STATE_NORMAL].green / 256 +
+	        style->text[GTK_STATE_NORMAL].blue / 256;
+
+	bgAvg = style->bg[GTK_STATE_NORMAL].red / 256 +
+	        style->bg[GTK_STATE_NORMAL].green / 256 +
+	        style->bg[GTK_STATE_NORMAL].blue / 256;
+
+	if (textAvg > bgAvg) {
+		debug0 (DEBUG_HTML, "Dark GTK theme detected.");
+		darkTheme = TRUE;
 	}
 }
 
@@ -247,6 +266,15 @@ render_get_theme_color (const gchar *name)
 	}
 
 	return NULL;
+}
+
+gboolean
+render_is_dark_theme (void)
+{
+	if (!themeColors)
+		render_get_theme_colors();
+
+	return darkTheme;
 }
 
 const gchar *
