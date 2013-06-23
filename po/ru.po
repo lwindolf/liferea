@@ -9,21 +9,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 23:54+0100\n"
-"PO-Revision-Date: 2011-10-31 21:40+0300\n"
-"Last-Translator: Leonid Selivanov <brave.bug@gmail.com>\n"
+"POT-Creation-Date: 2013-05-20 18:33+0300\n"
+"PO-Revision-Date: 2013-05-29 23:44+0400\n"
+"Last-Translator: Leonid Selivanov <bravebug@gmail.com>\n"
 "Language-Team: \n"
-"Language: \n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Poedit-Language: Russian\n"
-"X-Poedit-Country: RUSSIAN FEDERATION\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.5\n"
 
-#: ../liferea.desktop.in.h:1 ../src/main.c:235 ../glade/liferea.ui.h:1
+#: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/liferea.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -37,7 +36,7 @@ msgstr "Приложение для чтения новостей Liferea"
 
 #: ../liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
-msgstr ""
+msgstr "Читайте новостные ленты и блоги"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
@@ -70,7 +69,7 @@ msgstr "Подробности"
 
 #: ../xslt/feed.xml.in.h:6
 msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr ""
+msgstr "Возможно Вы захотите сообщить об этом автору/веб-мастеру ленты!"
 
 #: ../xslt/feed.xml.in.h:7
 msgid "There were errors while filtering this feed!"
@@ -98,7 +97,7 @@ msgstr "Авторские права"
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
-msgstr "дети с"
+msgstr "детей с"
 
 #: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
@@ -244,6 +243,8 @@ msgid ""
 "You have not configured a download tool yet! Please do so in the 'Download' "
 "tab in Tools/Preferences."
 msgstr ""
+"Не задано средство загрузки! Задайте его во вкладке «Вложения» меню "
+"Инструменты/Настройки."
 
 #: ../src/enclosure.c:306
 #, c-format
@@ -255,63 +256,70 @@ msgid ""
 " Please check whether the configured download tool is installed and working "
 "correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
+"Ошибка выполнения команды: \n"
+"\n"
+"%s\n"
+"\n"
+" Убедитесь, что заданное средство загрузки установлено и функционирует "
+"корректно! Его можно изменить во вкладке «Вложения» меню Инструменты/"
+"Настройки."
 
-#: ../src/export.c:177
+#: ../src/export.c:185
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "Ошибка переименования %s в %s\n"
 
-#: ../src/export.c:406 ../src/export.c:408
+#: ../src/export.c:414 ../src/export.c:416
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "Ошибка XML при чтении файла OPML! Невозможно импортировать \"%s\"!"
 
-#: ../src/export.c:414 ../src/export.c:416
+#: ../src/export.c:422 ../src/export.c:424
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Документ пуст! OPML-документ \"%s\" не должен быть пустым при импортировании."
 
-#: ../src/export.c:437 ../src/export.c:439
+#: ../src/export.c:445 ../src/export.c:447
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "OPML-документ \"%s\" не правилен! Liferea не может импортировать этот файл!"
 
-#: ../src/export.c:458
+#: ../src/export.c:466
 msgid "Imported feed list"
 msgstr "Импортированный список лент"
 
-#: ../src/export.c:470
+#: ../src/export.c:478
 msgid "Import Feed List"
 msgstr "Импорт списка лент"
 
-#: ../src/export.c:470
+#: ../src/export.c:478
 msgid "Import"
 msgstr "Импорт"
 
-#: ../src/export.c:470 ../src/export.c:487 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:478 ../src/export.c:495 ../src/fl_sources/opml_source.c:388
 msgid "OPML Files"
 msgstr "Файлы OPML"
 
-#: ../src/export.c:478
+#: ../src/export.c:486
 msgid "Error while exporting feed list!"
 msgstr "Ошибка при экспортировании списка лент!"
 
-#: ../src/export.c:480
+#: ../src/export.c:488
 msgid "Feed List exported!"
 msgstr "Список лент экспортирован!"
 
-#: ../src/export.c:487
+#: ../src/export.c:495
 msgid "Export Feed List"
 msgstr "Экспорт списка лент"
 
-#: ../src/export.c:487
+#: ../src/export.c:495
 msgid "Export"
 msgstr "Экспорт"
 
-#: ../src/feed.c:255
+#: ../src/feed.c:254
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -321,12 +329,12 @@ msgstr ""
 "источник действительно указывает на ресурс в одном из поддерживаемых "
 "форматов!</p>Вывод XML-парсера:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:284
+#: ../src/feed.c:283
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" обновлена..."
 
-#: ../src/feed.c:294
+#: ../src/feed.c:293
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" не доступна"
@@ -366,7 +374,7 @@ msgstr "Невозможно определить тип ленты."
 msgid "There are no unread items"
 msgstr "Нет непрочитанных записей "
 
-#: ../src/main.c:164
+#: ../src/main.c:163
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
@@ -374,91 +382,90 @@ msgstr ""
 "Запустить Liferea с основным окном в РЕЖИМЕ. РЕЖИМ может быть `shown', "
 "`iconified' или `hidden'"
 
-#: ../src/main.c:164
+#: ../src/main.c:163
 msgid "STATE"
 msgstr "РЕЖИМ"
 
-#: ../src/main.c:165
+#: ../src/main.c:164
 msgid "Show version information and exit"
 msgstr "Показать информацию о версии и выйти"
 
-#: ../src/main.c:166
+#: ../src/main.c:165
 msgid "Add a new subscription"
 msgstr "Добавить новую подписку"
 
-#: ../src/main.c:166
+#: ../src/main.c:165
 msgid "uri"
 msgstr "адрес"
 
-#: ../src/main.c:171
+#: ../src/main.c:170
 msgid "Print debugging messages of all types"
 msgstr "Выводить отладочную информацию всех типов"
 
-#: ../src/main.c:172
+#: ../src/main.c:171
 msgid "Print debugging messages for the cache handling"
 msgstr "Выводить отладочную информацию о обработке кэша"
 
-#: ../src/main.c:173
+#: ../src/main.c:172
 msgid "Print debugging messages for the configuration handling"
 msgstr "Выводить отладочную информацию о обработке конфигурации"
 
-#: ../src/main.c:174
+#: ../src/main.c:173
 msgid "Print debugging messages of the database handling"
 msgstr "Выводить отладочную информацию о обработке базы данных"
 
-#: ../src/main.c:175
+#: ../src/main.c:174
 msgid "Print debugging messages of all GUI functions"
 msgstr "Выводить отладочную информацию о всех функциях графического интерфейса"
 
-#: ../src/main.c:176
-#, fuzzy
+#: ../src/main.c:175
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
-"Включить отладку отрисовки HTML. Каждый раз когда Liferea отрисовывает HTML-"
-"вывод она также будет сохранять генерируемый HTML в ~/.liferea_1.6/output."
+"Включает отладку отрисовки HTML. Каждый раз, когда Liferea отрисовывает HTML-"
+"вывод, он также будет сохранять генерируемый HTML в ~/.cache/liferea/output."
 "xhtml"
 
-#: ../src/main.c:177
+#: ../src/main.c:176
 msgid "Print debugging messages of all network activity"
 msgstr "Выводить отладочную информацию о всей сетевой активности"
 
-#: ../src/main.c:178
+#: ../src/main.c:177
 msgid "Print debugging messages of all parsing functions"
 msgstr "Выводить отладочную информацию о всех функциях парсинга"
 
-#: ../src/main.c:179
+#: ../src/main.c:178
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Выводить отладочную информацию когда выполнение функции занимает очень "
 "долгое время"
 
-#: ../src/main.c:180
+#: ../src/main.c:179
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Выводить отладочную информацию о начале/завершении исполнения функций"
 
-#: ../src/main.c:181
+#: ../src/main.c:180
 msgid "Print debugging messages of the feed update processing"
 msgstr "Выводить отладочную информацию о процессе обновления лент"
 
-#: ../src/main.c:182
+#: ../src/main.c:181
 msgid "Print debugging messages of the search folder matching"
 msgstr "Выводить отладочную информацию о формировании поисковой папки"
 
-#: ../src/main.c:183
+#: ../src/main.c:182
 msgid "Print verbose debugging messages"
 msgstr "Выводить подробную отладочную информацию"
 
-#: ../src/main.c:194 ../src/main.c:195
+#: ../src/main.c:193 ../src/main.c:194
 msgid "Print debugging messages for the given topic"
 msgstr "Выводить отладочную информацию для данной темы"
 
-#: ../src/main.c:202
+#: ../src/main.c:201
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea — приложение чтения новостей для Linux"
 
-#: ../src/main.c:203
+#: ../src/main.c:202
 msgid "For more information, please visit http://liferea.sourceforge.net/"
 msgstr ""
 "За дополнительной информацией обратитесь к http://liferea.sourceforge.net/"
@@ -502,8 +509,8 @@ msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
 msgstr ""
-"Вам нужно авторизоваться, чтобы получить доступ к этой ленте. Пожалуйста, "
-"проверьте ваши имя пользователя и пароль в свойствах ленты"
+"Вам нужно авторизоваться, чтобы загрузить эту ленту. Пожалуйста, проверьте "
+"ваше имя пользователя и пароль в свойствах ленты"
 
 #: ../src/net.c:333
 msgid "Payment required"
@@ -676,41 +683,41 @@ msgstr "\"%s\" не изменилась с момента последнего 
 msgid "Updating \"%s\""
 msgstr "Обновление \"%s\""
 
-#: ../src/update.c:259
+#: ../src/update.c:258
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Ошибка при открытии временного файла %s используемого при фильтрации!"
 
-#: ../src/update.c:282
+#: ../src/update.c:281
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s завершено с кодом %d"
 
-#: ../src/update.c:288 ../src/update.c:289 ../src/update.c:401
+#: ../src/update.c:287 ../src/update.c:288 ../src/update.c:400
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Ошибка: Невозможно открыть канал \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:427
+#: ../src/update.c:426
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Ошибка: Невозможно открыть файл \"%s\""
 
-#: ../src/update.c:433
+#: ../src/update.c:432
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Ошибка: Файл \"%s\" не существует"
 
-#: ../src/vfolder.c:55
+#: ../src/vfolder.c:54
 msgid "New Search Folder"
 msgstr "Новая поисковая папка"
 
-#: ../src/xml.c:424
+#: ../src/xml.c:410
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Произошло больше ошибок. Вывод был прерван!]"
 
-#: ../src/xml.c:577
+#: ../src/xml.c:563
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML-парсер: Невозможно обработать документ:\n"
 
@@ -791,364 +798,358 @@ msgstr "Краткое руководство"
 msgid "FAQ"
 msgstr "ЧаВо"
 
-#: ../src/ui/liferea_shell.c:806
+#: ../src/ui/liferea_shell.c:795
 msgid "Liferea is now online"
 msgstr "Liferea сейчас подключена"
 
-#: ../src/ui/liferea_shell.c:808
+#: ../src/ui/liferea_shell.c:797
 msgid "Work Offline"
 msgstr "Работать автономно"
 
-#: ../src/ui/liferea_shell.c:810
+#: ../src/ui/liferea_shell.c:799
 msgid "Liferea is now offline"
 msgstr "Liferea сейчас отключена"
 
-#: ../src/ui/liferea_shell.c:812
+#: ../src/ui/liferea_shell.c:801
 msgid "Work Online"
 msgstr "Подключиться"
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:897
 msgid "_Subscriptions"
 msgstr "_Подписки"
 
-#: ../src/ui/liferea_shell.c:909
+#: ../src/ui/liferea_shell.c:898
 msgid "Update _All"
 msgstr "Обновить в_сё"
 
-#: ../src/ui/liferea_shell.c:909
+#: ../src/ui/liferea_shell.c:898
 msgid "Updates all subscriptions."
 msgstr "Обновляет все подписки."
 
-#: ../src/ui/liferea_shell.c:911
+#: ../src/ui/liferea_shell.c:900
 msgid "Mark All As _Read"
 msgstr "Отметить всё как _прочитанное"
 
-#: ../src/ui/liferea_shell.c:911
+#: ../src/ui/liferea_shell.c:900
 msgid "Marks read every item of every subscription."
 msgstr "Отмечает как прочитанное каждую запись в каждой подписке."
 
-#: ../src/ui/liferea_shell.c:913
+#: ../src/ui/liferea_shell.c:902
 msgid "_Import Feed List..."
 msgstr "_Импортировать список лент..."
 
-#: ../src/ui/liferea_shell.c:913
+#: ../src/ui/liferea_shell.c:902
 msgid "Imports an OPML feed list."
 msgstr "Импортирует какой-либо OPML список лент."
 
-#: ../src/ui/liferea_shell.c:914
+#: ../src/ui/liferea_shell.c:903
 msgid "_Export Feed List..."
 msgstr "_Экспортировать список лент..."
 
-#: ../src/ui/liferea_shell.c:914
+#: ../src/ui/liferea_shell.c:903
 msgid "Exports the feed list as OPML."
 msgstr "Экспортирует список лент в OPML."
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:904
 msgid "_Quit"
 msgstr "_Выход"
 
-#: ../src/ui/liferea_shell.c:917
+#: ../src/ui/liferea_shell.c:906
 msgid "_Feed"
 msgstr "_Лента"
 
-#: ../src/ui/liferea_shell.c:918
+#: ../src/ui/liferea_shell.c:907
 msgid "Remove _All Items"
 msgstr "Удалить все _записи"
 
-#: ../src/ui/liferea_shell.c:918
+#: ../src/ui/liferea_shell.c:907
 msgid "Removes all items of the currently selected feed."
 msgstr "Удаляет все записи выделенной ленты."
 
-#: ../src/ui/liferea_shell.c:921
+#: ../src/ui/liferea_shell.c:910
 msgid "_Item"
 msgstr "_Запись"
 
-#: ../src/ui/liferea_shell.c:922
+#: ../src/ui/liferea_shell.c:911
 msgid "Previous Item"
-msgstr ""
+msgstr "Предыдущая запись"
 
-#: ../src/ui/liferea_shell.c:924
-#, fuzzy
+#: ../src/ui/liferea_shell.c:913
 msgid "Next Item"
-msgstr "_Следующая непрочитанная"
+msgstr "Следующая запись"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:929
+#: ../src/ui/liferea_shell.c:918
 msgid "_Next Unread Item"
 msgstr "_Следующая непрочитанная"
 
-#: ../src/ui/liferea_shell.c:932
+#: ../src/ui/liferea_shell.c:921
 msgid "_View"
 msgstr "_Вид"
 
-#: ../src/ui/liferea_shell.c:933 ../src/ui/liferea_htmlview.c:656
+#: ../src/ui/liferea_shell.c:922 ../src/ui/liferea_htmlview.c:653
 msgid "_Increase Text Size"
 msgstr "У_величить шрифт"
 
-#: ../src/ui/liferea_shell.c:933
+#: ../src/ui/liferea_shell.c:922
 msgid "Increases the text size of the item view."
 msgstr "Увеличивает размер шрифта в тексте записи."
 
-#: ../src/ui/liferea_shell.c:935 ../src/ui/liferea_htmlview.c:657
+#: ../src/ui/liferea_shell.c:924 ../src/ui/liferea_htmlview.c:654
 msgid "_Decrease Text Size"
 msgstr "У_меньшить шрифт"
 
-#: ../src/ui/liferea_shell.c:935
+#: ../src/ui/liferea_shell.c:924
 msgid "Decreases the text size of the item view."
 msgstr "Уменьшает размер шрифта в тексте записи."
 
-#: ../src/ui/liferea_shell.c:938
+#: ../src/ui/liferea_shell.c:927
 msgid "_Tools"
 msgstr "_Инструменты"
 
-#: ../src/ui/liferea_shell.c:939
+#: ../src/ui/liferea_shell.c:928
 msgid "_Update Monitor"
 msgstr "_Монитор обновлений"
 
-#: ../src/ui/liferea_shell.c:939
+#: ../src/ui/liferea_shell.c:928
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Отображает список всех лент, ожидающих обновления"
 
-#: ../src/ui/liferea_shell.c:941
+#: ../src/ui/liferea_shell.c:930
 msgid "_Preferences"
 msgstr "_Настройки"
 
-#: ../src/ui/liferea_shell.c:941
+#: ../src/ui/liferea_shell.c:930
 msgid "Edit Preferences."
 msgstr "Изменить настройки."
 
-#: ../src/ui/liferea_shell.c:944
+#: ../src/ui/liferea_shell.c:933
 msgid "S_earch"
 msgstr "П_оиск"
 
-#: ../src/ui/liferea_shell.c:945
+#: ../src/ui/liferea_shell.c:934
 msgid "Search All Feeds..."
 msgstr "Поиск по всем лентам..."
 
-#: ../src/ui/liferea_shell.c:945
+#: ../src/ui/liferea_shell.c:934
 msgid "Show the search dialog."
 msgstr "Показать диалог поиска."
 
-#: ../src/ui/liferea_shell.c:947
+#: ../src/ui/liferea_shell.c:936
 msgid "_Help"
 msgstr "_Справка"
 
-#: ../src/ui/liferea_shell.c:948
+#: ../src/ui/liferea_shell.c:937
 msgid "_Contents"
 msgstr "_Содержание"
 
-#: ../src/ui/liferea_shell.c:948
+#: ../src/ui/liferea_shell.c:937
 msgid "View help for this application."
 msgstr "Открыть справку для этого приложения."
 
-#: ../src/ui/liferea_shell.c:949
+#: ../src/ui/liferea_shell.c:938
 msgid "_Quick Reference"
 msgstr "_Краткое руководство"
 
-#: ../src/ui/liferea_shell.c:949
+#: ../src/ui/liferea_shell.c:938
 msgid "View a list of all Liferea shortcuts."
 msgstr "Посмотреть список сочетаний клавиш Liferea."
 
-#: ../src/ui/liferea_shell.c:951
+#: ../src/ui/liferea_shell.c:940
 msgid "_FAQ"
 msgstr "_ЧаВо"
 
-#: ../src/ui/liferea_shell.c:951
+#: ../src/ui/liferea_shell.c:940
 msgid "View the FAQ for this application."
 msgstr "Часто задаваемые вопросы."
 
-#: ../src/ui/liferea_shell.c:952
+#: ../src/ui/liferea_shell.c:941
 msgid "_About"
 msgstr "_О программе"
 
-#: ../src/ui/liferea_shell.c:952
+#: ../src/ui/liferea_shell.c:941
 msgid "Shows an about dialog."
 msgstr "Отображает диалог \"О программе\""
 
-#: ../src/ui/liferea_shell.c:956
+#: ../src/ui/liferea_shell.c:945
 msgid "_Normal View"
 msgstr "_Обычный вид"
 
-#: ../src/ui/liferea_shell.c:956
+#: ../src/ui/liferea_shell.c:945
 msgid "Set view mode to mail client mode."
 msgstr "Вид обычного почтового клиента."
 
-#: ../src/ui/liferea_shell.c:958
+#: ../src/ui/liferea_shell.c:947
 msgid "_Wide View"
 msgstr "_Широкий вид"
 
-#: ../src/ui/liferea_shell.c:958
+#: ../src/ui/liferea_shell.c:947
 msgid "Set view mode to use three vertical panes."
 msgstr "Вид с тремя вертикальными панелями."
 
-#: ../src/ui/liferea_shell.c:960
+#: ../src/ui/liferea_shell.c:949
 msgid "_Combined View"
-msgstr "_Смешанный вид"
+msgstr "_Сводный вид"
 
-#: ../src/ui/liferea_shell.c:960
+#: ../src/ui/liferea_shell.c:949
 msgid "Set view mode to two pane mode."
 msgstr "Установить двухпанельный вид."
 
-#: ../src/ui/liferea_shell.c:965
+#: ../src/ui/liferea_shell.c:954
 msgid "_Reduced Feed List"
 msgstr "Со_кращённый список лент"
 
-#: ../src/ui/liferea_shell.c:965
+#: ../src/ui/liferea_shell.c:954
 msgid "Hide feeds with no unread items."
 msgstr "Скрывает ленты, где нет непрочитанных статей."
 
-#: ../src/ui/liferea_shell.c:970
+#: ../src/ui/liferea_shell.c:959
 msgid "_New Subscription..."
 msgstr "Новая по_дписка..."
 
-#: ../src/ui/liferea_shell.c:970
+#: ../src/ui/liferea_shell.c:959
 msgid "Adds a subscription to the feed list."
 msgstr "Добавляет подписку в список лент."
 
-#: ../src/ui/liferea_shell.c:972 ../src/ui/popup_menu.c:316
+#: ../src/ui/liferea_shell.c:961 ../src/ui/popup_menu.c:314
 msgid "New _Folder..."
 msgstr "Новая пап_ка"
 
-#: ../src/ui/liferea_shell.c:972
+#: ../src/ui/liferea_shell.c:961
 msgid "Adds a folder to the feed list."
 msgstr "Добавляет папку в список лент."
 
-#: ../src/ui/liferea_shell.c:973 ../src/ui/popup_menu.c:319
+#: ../src/ui/liferea_shell.c:962 ../src/ui/popup_menu.c:317
 msgid "New S_earch Folder..."
 msgstr "Новая папка п_оиска..."
 
-#: ../src/ui/liferea_shell.c:973
+#: ../src/ui/liferea_shell.c:962
 msgid "Adds a new search folder to the feed list."
 msgstr "Добавляет новую поисковую папку в список лент."
 
-#: ../src/ui/liferea_shell.c:974
+#: ../src/ui/liferea_shell.c:963
 msgid "New _Source..."
 msgstr "Новый ис_точник лент..."
 
-#: ../src/ui/liferea_shell.c:974
+#: ../src/ui/liferea_shell.c:963
 msgid "Adds a new feed list source."
 msgstr "Добавляет новый источник списка лент."
 
-#: ../src/ui/liferea_shell.c:975 ../src/ui/popup_menu.c:321
+#: ../src/ui/liferea_shell.c:964 ../src/ui/popup_menu.c:319
 msgid "New _News Bin..."
 msgstr "Новый _ящик новостей..."
 
-#: ../src/ui/liferea_shell.c:975
+#: ../src/ui/liferea_shell.c:964
 msgid "Adds a new news bin."
 msgstr "Добавляет новый ящик новостей."
 
-#: ../src/ui/liferea_shell.c:979
+#: ../src/ui/liferea_shell.c:968
 msgid "_Mark Items Read"
 msgstr "Отметить как _прочитанные"
 
-#: ../src/ui/liferea_shell.c:979
+#: ../src/ui/liferea_shell.c:968
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
 msgstr ""
 "Отмечает все записи выбранной ленты или всех лент выбранной папки как "
 "прочитанные."
 
-#: ../src/ui/liferea_shell.c:981 ../src/ui/popup_menu.c:296
+#: ../src/ui/liferea_shell.c:970 ../src/ui/popup_menu.c:294
 msgid "_Update"
 msgstr "_Обновить"
 
-#: ../src/ui/liferea_shell.c:981
+#: ../src/ui/liferea_shell.c:970
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "Обновляет выбранные подписки или все подписки в выбранной папке."
 
-#: ../src/ui/liferea_shell.c:986
+#: ../src/ui/liferea_shell.c:975
 msgid "_Properties"
 msgstr "_Свойства"
 
-#: ../src/ui/liferea_shell.c:986
+#: ../src/ui/liferea_shell.c:975
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Открывает диалог свойств выбранной подписки."
 
-#: ../src/ui/liferea_shell.c:987
+#: ../src/ui/liferea_shell.c:976
 msgid "_Remove"
 msgstr "_Удалить"
 
-#: ../src/ui/liferea_shell.c:987
+#: ../src/ui/liferea_shell.c:976
 msgid "Removes the selected subscription."
 msgstr "Удаляет выбранные подписки."
 
-#: ../src/ui/liferea_shell.c:991 ../src/ui/popup_menu.c:164
+#: ../src/ui/liferea_shell.c:980 ../src/ui/popup_menu.c:163
 msgid "Toggle _Read Status"
 msgstr "_Переключить статус прочтения"
 
-#: ../src/ui/liferea_shell.c:991
+#: ../src/ui/liferea_shell.c:980
 msgid "Toggles the read status of the selected item."
 msgstr "Переключает статус прочтения выбранной записи."
 
-#: ../src/ui/liferea_shell.c:993 ../src/ui/popup_menu.c:165
+#: ../src/ui/liferea_shell.c:982 ../src/ui/popup_menu.c:164
 msgid "Toggle Item _Flag"
 msgstr "Переключить _важность"
 
-#: ../src/ui/liferea_shell.c:993
+#: ../src/ui/liferea_shell.c:982
 msgid "Toggles the flag status of the selected item."
 msgstr "Переключает важность выбранной записи."
 
-#: ../src/ui/liferea_shell.c:995
+#: ../src/ui/liferea_shell.c:984
 msgid "R_emove"
 msgstr "_Удалить"
 
-#: ../src/ui/liferea_shell.c:995
+#: ../src/ui/liferea_shell.c:984
 msgid "Removes the selected item."
 msgstr "Удаляет выбранную запись."
 
-#: ../src/ui/liferea_shell.c:997 ../src/ui/popup_menu.c:128
+#: ../src/ui/liferea_shell.c:986 ../src/ui/popup_menu.c:127
 msgid "Open In _Tab"
-msgstr ""
+msgstr "Открыть во _вкладке"
 
-#: ../src/ui/liferea_shell.c:997
-#, fuzzy
+#: ../src/ui/liferea_shell.c:986
 msgid "Launches the item's link in a new Liferea browser tab."
-msgstr "Открывает ссылку на новость в указанном браузере."
+msgstr "Открывает ссылку на запись в новой вкладке браузера Liferea."
 
-#: ../src/ui/liferea_shell.c:999 ../src/ui/popup_menu.c:129
-#, fuzzy
+#: ../src/ui/liferea_shell.c:988 ../src/ui/popup_menu.c:128
 msgid "_Open In Browser"
-msgstr "Открыть в _браузере"
+msgstr "_Открыть в браузере"
 
-#: ../src/ui/liferea_shell.c:999
-#, fuzzy
+#: ../src/ui/liferea_shell.c:988
 msgid "Launches the item's link in the Liferea item pane."
-msgstr "Открывает ссылку на новость в указанном браузере."
+msgstr "Открывает ссылку на запись в панели записей Liferea."
 
-#: ../src/ui/liferea_shell.c:1001 ../src/ui/popup_menu.c:130
-#, fuzzy
+#: ../src/ui/liferea_shell.c:990 ../src/ui/popup_menu.c:129
 msgid "Open In _External Browser"
-msgstr "Настройки внешнего браузера"
+msgstr "Открыть во внешнем _браузере"
 
-#: ../src/ui/liferea_shell.c:1001
-#, fuzzy
+#: ../src/ui/liferea_shell.c:990
 msgid "Launches the item's link in the configured external browser."
-msgstr "Открывает ссылку на новость в указанном браузере."
+msgstr "Открывает ссылку на новость в заданном внешнем браузере."
 
-#: ../src/ui/liferea_shell.c:1006 ../src/ui/popup_menu.c:194
+#: ../src/ui/liferea_shell.c:995 ../src/ui/popup_menu.c:193
 msgid "_Work Offline"
 msgstr "Работать _автономно"
 
-#: ../src/ui/liferea_shell.c:1006
+#: ../src/ui/liferea_shell.c:995
 msgid "This option allows you to disable subscription updating."
 msgstr "Эта опция позволяет отключить обновление подписки."
 
-#: ../src/ui/liferea_shell.c:1008
+#: ../src/ui/liferea_shell.c:997
 msgid "_Fullscreen"
-msgstr ""
+msgstr "_Полноэкранный режим"
 
-#: ../src/ui/liferea_shell.c:1008
+#: ../src/ui/liferea_shell.c:997
 msgid "Browse at full screen"
-msgstr ""
+msgstr "Режим просмотра на весь экран"
 
-#: ../src/ui/liferea_shell.c:1339
+#: ../src/ui/liferea_shell.c:1328
 msgid "Liferea - Linux Feed Reader"
 msgstr "Liferea — читалка новостей для Linux"
 
-#: ../src/ui/liferea_shell.c:1341
+#: ../src/ui/liferea_shell.c:1330
 msgid ""
 "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
 "feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
@@ -1171,273 +1172,268 @@ msgstr "Введите имя пользователя и пароль для \"
 msgid "Unknown source"
 msgstr "Неизвестный источник"
 
-#: ../src/ui/ui_common.c:205
+#: ../src/ui/ui_common.c:211
 msgid "All Files"
 msgstr "Все файлы"
 
-#: ../src/ui/feed_list_view.c:341
+#: ../src/ui/feed_list_view.c:338
 msgid "Deleting entry"
 msgstr "Удаление записи"
 
-#: ../src/ui/feed_list_view.c:342
+#: ../src/ui/feed_list_view.c:339
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Вы уверены, что хотите удалить \"%s\" и её содержимое?"
 
-#: ../src/ui/feed_list_view.c:342
+#: ../src/ui/feed_list_view.c:339
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Вы уверены, что хотите удалить \"%s\"?"
 
-#: ../src/ui/feed_list_view.c:354
+#: ../src/ui/feed_list_view.c:351
 msgid "Deletion Confirmation"
 msgstr "Подтверждение удаления"
 
-#: ../src/ui/feed_list_view.c:385
+#: ../src/ui/feed_list_view.c:382
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в автономном режиме. Обновление невозможно."
 
-#: ../src/ui/liferea_htmlview.c:627
-#, fuzzy
+#: ../src/ui/liferea_htmlview.c:624
 msgid "Open Link In _Tab"
-msgstr "Открыть ссылку во в_кладке"
+msgstr "Открыть ссылку во _вкладке"
 
-#: ../src/ui/liferea_htmlview.c:628
-#, fuzzy
+#: ../src/ui/liferea_htmlview.c:625
 msgid "_Open Link In Browser"
 msgstr "_Открыть ссылку в браузере"
 
-#: ../src/ui/liferea_htmlview.c:629
-#, fuzzy
+#: ../src/ui/liferea_htmlview.c:626
 msgid "_Open Link In External Browser"
-msgstr "_Открыть ссылку в браузере"
+msgstr "Открыть ссылку во внешнем _браузере"
 
-#: ../src/ui/liferea_htmlview.c:632
+#: ../src/ui/liferea_htmlview.c:629
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Создать _закладку на %s"
 
-#: ../src/ui/liferea_htmlview.c:636
+#: ../src/ui/liferea_htmlview.c:633
 msgid "_Copy Link Location"
 msgstr "_Копировать адрес ссылки"
 
-#: ../src/ui/liferea_htmlview.c:639
+#: ../src/ui/liferea_htmlview.c:636
 msgid "_Copy Image Location"
 msgstr "Копировать адрес _изображения"
 
-#: ../src/ui/liferea_htmlview.c:641
+#: ../src/ui/liferea_htmlview.c:638
 msgid "S_ave Link As"
 msgstr "_Сохранить объект как"
 
-#: ../src/ui/liferea_htmlview.c:643
+#: ../src/ui/liferea_htmlview.c:640
 msgid "S_ave Image As"
 msgstr "Сохранить изо_бражение как"
 
-#: ../src/ui/liferea_htmlview.c:646
+#: ../src/ui/liferea_htmlview.c:643
 msgid "_Subscribe..."
 msgstr "_Подписаться..."
 
-#: ../src/ui/item_list_view.c:347
+#: ../src/ui/item_list_view.c:398
 msgid "*** No title ***"
 msgstr "*** Без заголовка ***"
 
-#: ../src/ui/item_list_view.c:598
+#: ../src/ui/item_list_view.c:661
 msgid "Date"
 msgstr "Дата"
 
-#: ../src/ui/item_list_view.c:612
+#: ../src/ui/item_list_view.c:675
 msgid "Headline"
 msgstr "Заголовок"
 
-#: ../src/ui/item_list_view.c:714 ../src/ui/item_list_view.c:735
-#: ../src/ui/item_list_view.c:756 ../src/ui/item_list_view.c:830
-#: ../src/ui/item_list_view.c:915 ../src/ui/item_list_view.c:930
+#: ../src/ui/item_list_view.c:777 ../src/ui/item_list_view.c:798
+#: ../src/ui/item_list_view.c:819 ../src/ui/item_list_view.c:883
+#: ../src/ui/item_list_view.c:968 ../src/ui/item_list_view.c:983
 msgid "No item has been selected"
 msgstr "Не выбрана запись"
 
-#: ../src/ui/item_list_view.c:731 ../src/ui/item_list_view.c:752
+#: ../src/ui/item_list_view.c:794 ../src/ui/item_list_view.c:815
 msgid "This item has no link specified!"
 msgstr "Для этой записи не указана ссылка!"
 
-#: ../src/ui/item_list_view.c:818
+#: ../src/ui/item_list_view.c:871
 msgid "You must select a feed to delete its items!"
 msgstr "Вы должны выбрать ленту для удаления её записей!"
 
-#: ../src/ui/popup_menu.c:142
+#: ../src/ui/popup_menu.c:141
 msgid "Copy to News Bin"
 msgstr "Копировать в ящик новостей"
 
-#: ../src/ui/popup_menu.c:156
-#, fuzzy, c-format
+#: ../src/ui/popup_menu.c:155
+#, c-format
 msgid "_Bookmark at %s"
 msgstr "Создать _закладку на %s"
 
-#: ../src/ui/popup_menu.c:160
-#, fuzzy
+#: ../src/ui/popup_menu.c:159
 msgid "Copy Item _Location"
-msgstr "Копировать адрес _изображения"
+msgstr "Копировать адрес _записи"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:165
 msgid "R_emove Item"
 msgstr "_Удалить запись"
 
-#: ../src/ui/popup_menu.c:179
+#: ../src/ui/popup_menu.c:178
 msgid "Open Enclosure..."
 msgstr "Открыть вложение..."
 
-#: ../src/ui/popup_menu.c:180
+#: ../src/ui/popup_menu.c:179
 msgid "Save As..."
 msgstr "Сохранить как..."
 
-#: ../src/ui/popup_menu.c:181
+#: ../src/ui/popup_menu.c:180
 msgid "Copy Link Location"
 msgstr "Копировать адрес ссылки"
 
-#: ../src/ui/popup_menu.c:195
+#: ../src/ui/popup_menu.c:194
 msgid "_Update All"
 msgstr "_Обновить всё"
 
-#: ../src/ui/popup_menu.c:200
+#: ../src/ui/popup_menu.c:199
 msgid "_Show Liferea"
 msgstr "Показать _Liferea"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:296
 msgid "_Update Folder"
 msgstr "_Обновить папку"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:298
 msgid "_Mark All As Read"
 msgstr "Отметить все как _прочитанные"
 
-#: ../src/ui/popup_menu.c:310
+#: ../src/ui/popup_menu.c:308
 msgid "_New"
 msgstr "_Новая"
 
-#: ../src/ui/popup_menu.c:313
+#: ../src/ui/popup_menu.c:311
 msgid "New _Subscription..."
 msgstr "Новая _подписка..."
 
-#: ../src/ui/popup_menu.c:320
+#: ../src/ui/popup_menu.c:318
 msgid "New S_ource..."
 msgstr "Новый _источник..."
 
-#: ../src/ui/popup_menu.c:329
+#: ../src/ui/popup_menu.c:327
 msgid "Sort Feeds"
 msgstr "Сортировать ленты"
 
-#: ../src/ui/popup_menu.c:335
+#: ../src/ui/popup_menu.c:333
 msgid "_Rebuild"
 msgstr "_Перестроить"
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/preferences_dialog.c:87
 msgid "GNOME default"
 msgstr "По умолчанию в GNOME"
 
-#: ../src/ui/preferences_dialog.c:89
+#: ../src/ui/preferences_dialog.c:88
 msgid "Text below icons"
 msgstr "Текст под значками"
 
-#: ../src/ui/preferences_dialog.c:90
+#: ../src/ui/preferences_dialog.c:89
 msgid "Text beside icons"
 msgstr "Текст рядом со значками"
 
-#: ../src/ui/preferences_dialog.c:91
+#: ../src/ui/preferences_dialog.c:90
 msgid "Icons only"
 msgstr "Только значки"
 
-#: ../src/ui/preferences_dialog.c:92
+#: ../src/ui/preferences_dialog.c:91
 msgid "Text only"
 msgstr "Только текст"
 
-#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:99 ../src/ui/subscription_dialog.c:43
 msgid "minutes"
 msgstr "минут"
 
-#: ../src/ui/preferences_dialog.c:101 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr "часов"
 
-#: ../src/ui/preferences_dialog.c:102 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:101 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr "дней"
 
-#: ../src/ui/preferences_dialog.c:107
+#: ../src/ui/preferences_dialog.c:106
 msgid "Space"
 msgstr "Пробел"
 
-#: ../src/ui/preferences_dialog.c:108
+#: ../src/ui/preferences_dialog.c:107
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Пробел"
 
-#: ../src/ui/preferences_dialog.c:109
+#: ../src/ui/preferences_dialog.c:108
 msgid "<Alt> Space"
 msgstr "<Alt> Пробел"
 
-#: ../src/ui/preferences_dialog.c:114
-#, fuzzy
+#: ../src/ui/preferences_dialog.c:113
 msgid "Normal View"
 msgstr "_Обычный вид"
 
-#: ../src/ui/preferences_dialog.c:115
-#, fuzzy
+#: ../src/ui/preferences_dialog.c:114
 msgid "Wide View"
 msgstr "_Широкий вид"
 
-#: ../src/ui/preferences_dialog.c:116
-#, fuzzy
+#: ../src/ui/preferences_dialog.c:115
 msgid "Combined View"
-msgstr "_Смешанный вид"
+msgstr "_Сводный вид"
 
-#: ../src/ui/preferences_dialog.c:499
+#: ../src/ui/preferences_dialog.c:500
 msgid "Manual"
 msgstr "Задать вручную"
 
-#: ../src/ui/preferences_dialog.c:514
+#: ../src/ui/preferences_dialog.c:515
 msgid "Browser default"
 msgstr "Как указано в браузере"
 
-#: ../src/ui/preferences_dialog.c:517
+#: ../src/ui/preferences_dialog.c:518
 msgid "Existing window"
 msgstr "В существующем окне"
 
-#: ../src/ui/preferences_dialog.c:520
+#: ../src/ui/preferences_dialog.c:521
 msgid "New window"
 msgstr "В новом окне"
 
-#: ../src/ui/preferences_dialog.c:523
+#: ../src/ui/preferences_dialog.c:524
 msgid "New tab"
 msgstr "В новой вкладке"
 
-#: ../src/ui/preferences_dialog.c:682
+#: ../src/ui/preferences_dialog.c:683
 msgid "Integrate with the messaging menu (indicator)"
 msgstr "Интегрировать с меню (индикатором) сообщений"
 
-#: ../src/ui/preferences_dialog.c:685
+#: ../src/ui/preferences_dialog.c:686
 msgid "Terminate instead of minimizing to the messaging menu"
 msgstr "Закрыть вместо сворачивания в меню сообщений"
 
-#: ../src/ui/preferences_dialog.c:688
+#: ../src/ui/preferences_dialog.c:689
 msgid "Start minimized to the messaging menu"
 msgstr "При запуске свернуть в меню сообщений"
 
-#: ../src/ui/preferences_dialog.c:788
+#: ../src/ui/preferences_dialog.c:789
 msgid "Type"
 msgstr "Тип"
 
-#: ../src/ui/preferences_dialog.c:791
+#: ../src/ui/preferences_dialog.c:792
 msgid "Program"
 msgstr "Программа"
 
-#: ../src/ui/feed_list_node.c:124
+#: ../src/ui/ui_node.c:123
 msgid "(Empty)"
 msgstr "(Пусто)"
 
-#: ../src/ui/feed_list_node.c:321
+#: ../src/ui/ui_node.c:320
 #, c-format
 msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
+"%s\n"
+"<i>Перестроение</i>"
 
 #: ../src/ui/subscription_dialog.c:430
 #, c-format
@@ -1452,7 +1448,7 @@ msgstr[2] "Автор этой ленты рекомендует интерва�
 msgid "This feed specifies no default update interval."
 msgstr "Для этой ленты не установлен интервал обновления по умолчанию."
 
-#: ../src/ui/browser_tabs.c:155
+#: ../src/ui/browser_tabs.c:153
 msgid "Untitled"
 msgstr "Без названия"
 
@@ -1508,20 +1504,20 @@ msgid "%b %d %H:%M"
 msgstr "%d %b %H:%M"
 
 #: ../src/fl_sources/default_source.c:145
-#: ../src/fl_sources/google_source.c:274 ../glade/new_subscription.ui.h:1
+#: ../src/fl_sources/google_source.c:273 ../glade/new_subscription.ui.h:1
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Новая подписка"
 
-#: ../src/fl_sources/google_source.c:116
+#: ../src/fl_sources/google_source.c:115
 msgid "Google Reader login failed!"
 msgstr "Авторизация в Google Reader не удалась!"
 
-#: ../src/fl_sources/google_source.c:383
+#: ../src/fl_sources/google_source.c:382
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:384
+#: ../src/fl_sources/google_source.c:383
 msgid ""
 "Integrate the feed list of your Google Reader account. Liferea will present "
 "your Google Reader subscriptions, and will synchronize your feed list and "
@@ -1531,11 +1527,11 @@ msgstr ""
 "предоставит ваши подписки и будет синхронизировать ваши списки лент и списки "
 "чтения."
 
-#: ../src/fl_sources/opml_source.c:325
+#: ../src/fl_sources/opml_source.c:326
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/fl_sources/opml_source.c:326
+#: ../src/fl_sources/opml_source.c:327
 msgid ""
 "Integrate blogrolls or Planets in your feed list. Liferea will automatically "
 "add and remove feeds according to the changes of the source OPML document"
@@ -1544,7 +1540,7 @@ msgstr ""
 "автоматически добавлять и удалять ленты в соответствии с изменениями в "
 "исходном документе OPML"
 
-#: ../src/fl_sources/opml_source.c:387
+#: ../src/fl_sources/opml_source.c:388
 msgid "Choose OPML File"
 msgstr "Выберите OPML-файл"
 
@@ -1552,19 +1548,19 @@ msgstr "Выберите OPML-файл"
 msgid "New OPML Subscription"
 msgstr "Новая OPML-подписка"
 
-#: ../src/fl_sources/node_source.c:238
+#: ../src/fl_sources/node_source.c:237
 msgid "No feed list source types found!"
 msgstr "Типы источников лент не найдены!"
 
-#: ../src/fl_sources/node_source.c:269
+#: ../src/fl_sources/node_source.c:267
 msgid "Source Type"
 msgstr "Тип источника"
 
-#: ../src/fl_sources/ttrss_source.c:362
+#: ../src/fl_sources/ttrss_source.c:360
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
-#: ../src/fl_sources/ttrss_source.c:363
+#: ../src/fl_sources/ttrss_source.c:361
 msgid ""
 "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
 "present your tt-rss subscriptions, and will synchronize your feed list and "
@@ -1574,7 +1570,7 @@ msgstr ""
 "Liferea предоставит ваши подписки tt-rss и будет синхронизировать ваши "
 "списки лент и списки чтения."
 
-#: ../src/fl_sources/ttrss_source_feed.c:105
+#: ../src/fl_sources/ttrss_source_feed.c:119
 msgid "Could not parse JSON returned by tt-rss API!"
 msgstr "Не удалось проанализировать JSON возвращённый tt-rss API!"
 
@@ -1592,15 +1588,15 @@ msgstr "Заголовок новости отсутствует"
 msgid "Visit"
 msgstr "Посетить"
 
-#: ../src/notification/libnotify.c:171 ../src/notification/libnotify.c:274
+#: ../src/notification/libnotify.c:167 ../src/notification/libnotify.c:263
 msgid "Open feed"
 msgstr "Открыть ленту"
 
-#: ../src/notification/libnotify.c:174 ../src/notification/libnotify.c:277
+#: ../src/notification/libnotify.c:170 ../src/notification/libnotify.c:266
 msgid "Mark all as read"
 msgstr "Отметить все прочитанным"
 
-#: ../src/notification/libnotify.c:254
+#: ../src/notification/libnotify.c:247
 #, c-format
 msgid "<b>%s</b> has <b>%d</b> update"
 msgid_plural "<b>%s</b> has <b>%d</b> updates"
@@ -1608,11 +1604,11 @@ msgstr[0] "<b>%s</b> — <b>%d</b> обновление"
 msgstr[1] "<b>%s</b> — <b>%d</b> обновления"
 msgstr[2] "<b>%s</b> — <b>%d</b> обновлений"
 
-#: ../src/notification/libnotify.c:257 ../src/notification/libnotify.c:259
+#: ../src/notification/libnotify.c:249
 msgid "Feed Update"
 msgstr "Обновление ленты"
 
-#: ../src/notification/libnotify.c:271
+#: ../src/notification/libnotify.c:260
 msgid "Show details"
 msgstr "Показать подробности"
 
@@ -1666,7 +1662,7 @@ msgstr "Просмотр заголовков"
 
 #: ../glade/liferea.ui.h:5
 msgid "combined view"
-msgstr "смешанный вид"
+msgstr "сводный вид"
 
 #: ../glade/liferea.ui.h:6 ../glade/prefs.ui.h:21
 msgid "Headlines"
@@ -1798,11 +1794,11 @@ msgstr "Использовать HTTP-_авторизацию"
 
 #: ../glade/liferea.ui.h:39 ../glade/new_subscription.ui.h:10
 msgid "_Don't use proxy for download"
-msgstr "_Не использовать прокси при получении"
+msgstr "_Не использовать прокси для загрузки"
 
 #: ../glade/liferea.ui.h:40
 msgid "Download"
-msgstr "Доступ"
+msgstr "Загрузка"
 
 #: ../glade/liferea.ui.h:41
 msgid "_Automatically download all enclosures of this feed."
@@ -1828,7 +1824,7 @@ msgstr "_Не показывать всплывающих уведомлений
 
 #: ../glade/liferea.ui.h:46
 msgid "_Mark downloaded items as read."
-msgstr "Отметить _полученные записи как прочитанные."
+msgstr "Отметить загруженные записи как прочитанные."
 
 #: ../glade/liferea.ui.h:47
 msgid "Advanced"
@@ -1871,24 +1867,21 @@ msgid "_All Rules Must Match"
 msgstr "_Все условия должны соответствовать"
 
 #: ../glade/liferea.ui.h:57
-#, fuzzy
 msgid "Open Enclosure"
-msgstr "Открыть вложение..."
+msgstr "Открыть вложение"
 
 #: ../glade/liferea.ui.h:58
-#, fuzzy
 msgid "Open an enclosure of type:"
-msgstr "Получение вложения следующего типа:"
+msgstr "Открыть вложение следующего типа:"
 
 #: ../glade/liferea.ui.h:59
-#, fuzzy
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The enclosures URL will be supplied as an "
 "argument for this command:"
 msgstr ""
 "Что Liferea должна сделать с этим вложением? Введите необходимую команду. "
-"Полученный файл будет передан этой команде в качестве аргумента:"
+"Ссылка на вложение будет передана этой команде в качестве аргумента:"
 
 #: ../glade/liferea.ui.h:60
 msgid "_Browse"
@@ -1954,43 +1947,34 @@ msgid "About"
 msgstr "О программе"
 
 #: ../glade/liferea.ui.h:74
-#, fuzzy
-msgid ""
-"Copyright (c) 2003-2012\n"
-"The Liferea Team\n"
-msgstr ""
-"Copyright (c) 2003-2011\n"
-"The Liferea Team\n"
-
-#: ../glade/liferea.ui.h:77
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea — агрегатор новостей для GTK+"
 
-#: ../glade/liferea.ui.h:78
+#: ../glade/liferea.ui.h:75
 msgid "Liferea Homepage"
 msgstr "Домашняя страница Liferea"
 
-#: ../glade/liferea.ui.h:79
+#: ../glade/liferea.ui.h:76
 msgid "Advanced Search"
 msgstr "Расширенный поиск"
 
-#: ../glade/liferea.ui.h:80
+#: ../glade/liferea.ui.h:77
 msgid "_Search Folder..."
 msgstr "_Поисковая папка..."
 
-#: ../glade/liferea.ui.h:81
+#: ../glade/liferea.ui.h:78
 msgid "Create Search Engine Feed"
 msgstr "Создать поисковую ленту"
 
-#: ../glade/liferea.ui.h:82
+#: ../glade/liferea.ui.h:79
 msgid "enter any search string you want"
 msgstr "введите любую строку для поиска"
 
-#: ../glade/liferea.ui.h:83
+#: ../glade/liferea.ui.h:80
 msgid "Maximal _Number Of Result Items:"
 msgstr "Максимальное _количество результатов:"
 
-#: ../glade/liferea.ui.h:84
+#: ../glade/liferea.ui.h:81
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
 "search engine results for the specified search string. You can keep this "
@@ -2131,7 +2115,7 @@ msgstr "Переключение _между статьями по:"
 
 #: ../glade/prefs.ui.h:18
 msgid "_Default View Mode:"
-msgstr ""
+msgstr "Режим отображения по-_умолчанию:"
 
 #: ../glade/prefs.ui.h:19
 msgid "Web Integration"
@@ -2166,14 +2150,13 @@ msgid "_Open link in:"
 msgstr "Открывать _ссылку:"
 
 #: ../glade/prefs.ui.h:28
-#, fuzzy
 msgid "_Manual:"
-msgstr "Задать вручную"
+msgstr "Задать _вручную:"
 
 #: ../glade/prefs.ui.h:30
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
-msgstr ""
+msgstr "<small>(%s для URL)</small>"
 
 #: ../glade/prefs.ui.h:31
 msgid "_Browser:"
@@ -2221,7 +2204,7 @@ msgstr "На кн_опках панели инструментов:"
 
 #: ../glade/prefs.ui.h:42
 msgid "GUI"
-msgstr "Графический интерфейс"
+msgstr "Интерфейс"
 
 #: ../glade/prefs.ui.h:43
 msgid "HTTP Proxy Server"
@@ -2269,7 +2252,7 @@ msgstr "Получение вложений"
 
 #: ../glade/prefs.ui.h:54
 msgid "_Download using"
-msgstr "_Получить с помощью"
+msgstr "_Загрузить с помощью"
 
 #: ../glade/prefs.ui.h:55
 msgid "Opening Enclosures"
@@ -2281,7 +2264,15 @@ msgstr "Вложения"
 
 #: ../glade/prefs.ui.h:57
 msgid "Plugins"
-msgstr ""
+msgstr "Плагины"
+
+#, fuzzy
+#~ msgid ""
+#~ "Copyright (c) 2003-2012\n"
+#~ "The Liferea Team\n"
+#~ msgstr ""
+#~ "Copyright (c) 2003-2011\n"
+#~ "The Liferea Team\n"
 
 #~ msgid "Download and view feeds"
 #~ msgstr "Скачать и просмотреть ленты"
