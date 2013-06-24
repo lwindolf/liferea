@@ -24,7 +24,7 @@
 			<outline text="Science" htmlUrl="http://www.sciencenews.org" xmlUrl="http://www.sciencenews.org/view/feed/type/news/name/news.rss"/>
 		</outline>
 		<outline text="Software librea">		<!-- translate this title for localized feed list -->
-			<outline text="Liferea Blog" htmlUrl="http://liferea.blogspot.com/" xmlUrl="http://liferea.blogspot.com/feeds/posts/default" />
+			<outline text="Liferea Blog" htmlUrl="http://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 		</outline>
 		<outline text="Podcast eta musika">		<!-- translate this title for localized feed list -->
