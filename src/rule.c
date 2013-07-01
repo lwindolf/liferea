@@ -82,13 +82,13 @@ rule_free (rulePtr rule)
 static gboolean
 rule_check_item_title (rulePtr rule, itemPtr item)
 {
-	return (NULL != g_strstr_len (item->title, -1, rule->value));
+	return (NULL != item->title && NULL != g_strstr_len (item->title, -1, rule->value));
 }
 
 static gboolean
 rule_check_item_description (rulePtr rule, itemPtr item)
 {
-	return (NULL != g_strstr_len (item->description, -1, rule->value));
+	return (NULL != item->title && NULL != g_strstr_len (item->description, -1, rule->value));
 }
 
 static gboolean
@@ -138,7 +138,7 @@ rule_check_feed_title (rulePtr rule, itemPtr item)
 	if (!feedNode)
 		return FALSE;
 
-	return (NULL != g_strstr_len (feedNode->title, -1, rule->value));
+	return (NULL != feedNode->title && NULL != g_strstr_len (feedNode->title, -1, rule->value));
 }
 
 /* rule initialization */

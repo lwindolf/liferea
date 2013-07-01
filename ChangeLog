@@ -2,6 +2,8 @@
 
 	* Changed unread number rendering to be right bound and non-ellipsized
 	  (Lars Windolf)
+	* Fixes g_strstr_len assertions caused by search folder item matching
+	  (Rich Coe)
 
 	* Updated Basque translation (Mikel Olasagasti Uranga)
 	* Updated Danish translation (Joe Hansen)
