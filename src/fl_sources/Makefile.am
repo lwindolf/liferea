@@ -9,6 +9,10 @@ AM_CPPFLAGS = \
 	
 noinst_LIBRARIES = libliflsources.a
 libliflsources_a_SOURCES = node_source.c node_source.h \
+                           aol_source.c aol_source.h \
+			   aol_source_edit.c aol_source_edit.h \
+			   aol_source_feed.c \
+			   aol_source_opml.c aol_source_opml.h \
                            default_source.c default_source.h \
                            dummy_source.c dummy_source.h \
                            google_source.c google_source.h \
