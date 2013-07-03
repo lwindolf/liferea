@@ -1,5 +1,5 @@
 /**
- * @file google_source_opml.c  Google reader OPML handling routines.
+ * @file theoldreader_source_opml.c  Google reader OPML handling routines.
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
@@ -21,7 +21,7 @@
  */
 
 
-#include "google_source_opml.h"
+#include "theoldreader_source_opml.h"
 
 #include <glib.h>
 #include <libxml/xpath.h>
@@ -37,23 +37,23 @@
 #include "xml.h"
 
 #include "fl_sources/opml_source.h"
-#include "fl_sources/google_source.h"
-#include "fl_sources/google_source_edit.h"
+#include "fl_sources/theoldreader_source.h"
+#include "fl_sources/theoldreader_source_edit.h"
 
 /**
  * Find a node by the source id.
  */
 nodePtr
-google_source_opml_get_node_by_source (GoogleSourcePtr gsource, const gchar *source) 
+theoldreader_source_opml_get_node_by_source (TheOldReaderSourcePtr gsource, const gchar *source) 
 {
-	return google_source_opml_get_subnode_by_node (gsource->root, source);
+	return theoldreader_source_opml_get_subnode_by_node (gsource->root, source);
 }
 
 /**
  * Recursively find a node by the source id.
  */
 nodePtr
-google_source_opml_get_subnode_by_node (nodePtr node, const gchar *source) 
+theoldreader_source_opml_get_subnode_by_node (nodePtr node, const gchar *source) 
 {
 	nodePtr subnode;
 	nodePtr subsubnode;
@@ -65,7 +65,7 @@ google_source_opml_get_subnode_by_node (nodePtr node, const gchar *source)
 			return subnode;
 		else if (subnode->type->capabilities
 			 & NODE_CAPABILITY_SUBFOLDERS) {
-			subsubnode = google_source_opml_get_subnode_by_node(subnode, source);
+			subsubnode = theoldreader_source_opml_get_subnode_by_node(subnode, source);
 			if (subnode != NULL)
 				return subsubnode;
 		}
@@ -73,55 +73,17 @@ google_source_opml_get_subnode_by_node (nodePtr node, const gchar *source)
 	return NULL;
 }
 
-/**
- * Add "broadcast-friends" to the list of subscriptions if required 
- */
-static void
-google_source_add_broadcast_subscription (GoogleSourcePtr gsource)
-{
-	const gchar* title = "Friend's Shared Items"; 
-	GSList * iter = NULL; 
-	nodePtr node; 
-
-	for (iter = gsource->root->children; iter; iter = g_slist_next (iter)) {
-		node = (nodePtr) iter->data ; 
-		if (!node->subscription || !node->subscription->source) 
-			continue;
-		if (g_str_equal (node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
-			return;
-		}
-	}
-
-	/* aha! add it! */
-
-	node = node_new (feed_get_node_type ());
-	node_set_title (node, title);
-	node_set_data (node, feed_new ());
-
-	node_set_subscription (node, subscription_new (GOOGLE_READER_BROADCAST_FRIENDS_URL, NULL, NULL));
-	node->subscription->type = &googleSourceFeedSubscriptionType;
-	node_set_parent (node, gsource->root, -1);
-	feedlist_node_imported (node);
-	
-	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-	subscription_update_favicon (node->subscription);
-}
-
-
 /* subscription list merging functions */
 
 static void
-google_source_check_for_removal (nodePtr node, gpointer user_data)
+theoldreader_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar	*expr = NULL;
-
-	if (node->subscription && g_str_equal (node->subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
-		return ; 
 
 	if (IS_FEED (node)) {
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
 	} else if (IS_FOLDER (node)) {
-		node_foreach_child_data (node, google_source_check_for_removal, user_data);
+		node_foreach_child_data (node, theoldreader_source_check_for_removal, user_data);
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/list[@name='categories']/object[string='%s']", node->title);
 	} else {
 		g_warning ("google_opml_source_check_for_removal(): This should never happen...");
@@ -141,7 +103,7 @@ google_source_check_for_removal (nodePtr node, gpointer user_data)
  * Find a node by the name under root or create it.
  */
 static nodePtr
-google_source_find_or_create_folder (const gchar *name, nodePtr root)
+theoldreader_source_find_or_create_folder (const gchar *name, nodePtr root)
 {
 	nodePtr		folder = NULL;
 	GSList		*iter_parent;
@@ -169,11 +131,11 @@ google_source_find_or_create_folder (const gchar *name, nodePtr root)
 }
 
 /* 
- * Check if folder of a node changed in Google Reader and move
+ * Check if folder of a node changed in TheOldReader and move
  * node to the folder with the same name.
  */
 static void
-google_source_update_folder (xmlNodePtr match, GoogleSourcePtr gsource, nodePtr node)
+theoldreader_source_update_folder (xmlNodePtr match, TheOldReaderSourcePtr gsource, nodePtr node)
 {
 	xmlNodePtr	xml;
 	xmlChar		*label;
@@ -188,7 +150,7 @@ google_source_update_folder (xmlNodePtr match, GoogleSourcePtr gsource, nodePtr 
 		label = xmlNodeListGetString (xml->doc,	xml->xmlChildrenNode, 1);
 		if (parent == gsource->root || ! g_str_equal (label, ptitle)) {
 			debug2 (DEBUG_UPDATE, "GSource feed label changed for %s to '%s'", node->id, label);
-			parent = google_source_find_or_create_folder ((gchar*)label, gsource->root);
+			parent = theoldreader_source_find_or_create_folder ((gchar*)label, gsource->root);
 			node_reparent (node, parent);
 		}
 		xmlFree (label);
@@ -200,9 +162,9 @@ google_source_update_folder (xmlNodePtr match, GoogleSourcePtr gsource, nodePtr 
 }
 
 static void
-google_source_merge_feed (xmlNodePtr match, gpointer user_data)
+theoldreader_source_merge_feed (xmlNodePtr match, gpointer user_data)
 {
-	GoogleSourcePtr	gsource = (GoogleSourcePtr)user_data;
+	TheOldReaderSourcePtr	gsource = (TheOldReaderSourcePtr)user_data;
 	nodePtr		node, parent = NULL, subnode = NULL;
 	GSList		*iter, *iter_sub;
 	xmlNodePtr	xml;
@@ -228,8 +190,8 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 			node = (nodePtr)iter->data;
 			if (node->subscription != NULL
 			    && g_str_equal (node->subscription->source, url)) {
-				node->subscription->type = &googleSourceFeedSubscriptionType;
-				google_source_update_folder (match, gsource, node);
+				node->subscription->type = &theOldReaderSourceFeedSubscriptionType;
+				theoldreader_source_update_folder (match, gsource, node);
 				goto cleanup;
 			} else if (node->type->capabilities
 				 & NODE_CAPABILITY_SUBFOLDERS) {
@@ -238,8 +200,8 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 					subnode = (nodePtr)iter_sub->data;
 					if (subnode->subscription != NULL
 					    && g_str_equal (subnode->subscription->source, url)) {
-						subnode->subscription->type = &googleSourceFeedSubscriptionType;
-						google_source_update_folder (match, gsource, subnode);
+						subnode->subscription->type = &theOldReaderSourceFeedSubscriptionType;
+						theoldreader_source_update_folder (match, gsource, subnode);
 						goto cleanup;
 					}
 					iter_sub = g_slist_next (iter_sub);
@@ -252,7 +214,7 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		xml = xpath_find (match, "./list[@name='categories']/object/string[@name='label']");
 		if (xml) {
 			label = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
-			parent = google_source_find_or_create_folder ((gchar*)label, gsource->root);
+			parent = theoldreader_source_find_or_create_folder ((gchar*)label, gsource->root);
 			xmlFree (label);
 		} else {
 			parent = gsource->root;
@@ -266,7 +228,7 @@ google_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		node_set_data (node, feed_new ());
 		
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = &googleSourceFeedSubscriptionType;
+		node->subscription->type = &theOldReaderSourceFeedSubscriptionType;
 		node_set_parent (node, parent, -1);
 		feedlist_node_imported (node);
 		
@@ -293,7 +255,7 @@ cleanup:
 static void
 google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	GoogleSourcePtr	gsource = (GoogleSourcePtr) subscription->node->data;
+	TheOldReaderSourcePtr	gsource = (TheOldReaderSourcePtr) subscription->node->data;
 	
 	if (result->data) {
 		xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
@@ -303,17 +265,16 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 			/* Go through all existing nodes and remove those whose
 			   URLs are not in new feed list. Also removes those URLs
 			   from the list that have corresponding existing nodes. */
-			node_foreach_child_data (subscription->node, google_source_check_for_removal, (gpointer)root);
-			node_foreach_child (subscription->node, google_source_migrate_node);
+			node_foreach_child_data (subscription->node, theoldreader_source_check_for_removal, (gpointer)root);
+			node_foreach_child (subscription->node, theoldreader_source_migrate_node);
 						
 			opml_source_export (subscription->node);	/* save new feed list tree to disk 
 									   to ensure correct document in 
 									   next step */
 
 			xpath_foreach_match (root, "/object/list[@name='subscriptions']/object",
-			                     google_source_merge_feed,
+			                     theoldreader_source_merge_feed,
 			                     (gpointer)gsource);
-			google_source_add_broadcast_subscription (gsource) ;
 
 			opml_source_export (subscription->node);	/* save new feeds to feed list */
 						   
@@ -328,7 +289,7 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 		debug0 (DEBUG_UPDATE, "google_subscription_opml_cb(): ERROR: failed to get subscription list!\n");
 	}
 
-	if (!(flags & GOOGLE_SOURCE_UPDATE_ONLY_LIST))
+	if (!(flags & THEOLDREADER_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 
 }
@@ -336,9 +297,9 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 /** functions for an efficient updating mechanism */
 
 static void
-google_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata) 
+theoldreader_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata) 
 {
-	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
+	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) userdata;
 	xmlNodePtr      xmlNode;
 	xmlChar         *id, *newestItemTimestamp;
 	nodePtr         node = NULL; 
@@ -348,9 +309,7 @@ google_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	id = xmlNodeGetContent (xmlNode); 
 
 	if (g_str_has_prefix (id, "feed/"))
-		node = google_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
-	else if (g_str_has_suffix (id, "broadcast-friends")) 
-		node = google_source_opml_get_node_by_source (gsource, id);
+		node = theoldreader_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
 	else {
 		xmlFree (id);
 		return;
@@ -369,7 +328,7 @@ google_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	if (!oldNewestItemTimestamp ||
 	    (newestItemTimestamp && 
 	     !g_str_equal (newestItemTimestamp, oldNewestItemTimestamp))) { 
-		debug3(DEBUG_UPDATE, "GoogleSource: auto-updating %s "
+		debug3(DEBUG_UPDATE, "TheOldReaderSource: auto-updating %s "
 		       "[oldtimestamp%s, timestamp %s]", 
 		       id, oldNewestItemTimestamp, newestItemTimestamp);
 		g_hash_table_insert (gsource->lastTimestampMap,
@@ -384,39 +343,39 @@ google_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 }
 
 static void
-google_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
+theoldreader_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
 {
-	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
+	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) userdata;
 	xmlDocPtr       doc;
 
 	if (!result->data) { 
 		/* what do I do? */
-		debug0 (DEBUG_UPDATE, "GoogleSource: Unable to get unread counts, this update is aborted.");
+		debug0 (DEBUG_UPDATE, "TheOldReaderSource: Unable to get unread counts, this update is aborted.");
 		return;
 	}
 	doc = xml_parse (result->data, result->size, NULL);
 	if (!doc) {
-		debug0 (DEBUG_UPDATE, "GoogleSource: The XML failed to parse, maybe the session has expired. (FIXME)");
+		debug0 (DEBUG_UPDATE, "TheOldReaderSource: The XML failed to parse, maybe the session has expired. (FIXME)");
 		return;
 	}
 
 	xpath_foreach_match (xmlDocGetRootElement (doc),
 			    "/object/list[@name='unreadcounts']/object", 
-			    google_source_opml_quick_update_helper, gsource);
+			    theoldreader_source_opml_quick_update_helper, gsource);
 	
 	xmlFreeDoc (doc);
 }
 
 gboolean
-google_source_opml_quick_update(GoogleSourcePtr gsource) 
+theoldreader_source_opml_quick_update(TheOldReaderSourcePtr gsource) 
 {
 	updateRequestPtr request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
 	request->options = update_options_copy (gsource->root->subscription->updateOptions);
-	update_request_set_source (request, GOOGLE_READER_UNREAD_COUNTS_URL);
+	update_request_set_source (request, THEOLDREADER_READER_UNREAD_COUNTS_URL);
 	update_request_set_auth_value(request, gsource->authHeaderValue);
 
-	update_execute_request (gsource, request, google_source_opml_quick_update_cb,
+	update_execute_request (gsource, request, theoldreader_source_opml_quick_update_cb,
 				gsource, 0);
 
 	return TRUE;
@@ -424,25 +383,25 @@ google_source_opml_quick_update(GoogleSourcePtr gsource)
 
 
 static void
-google_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	google_subscription_opml_cb (subscription, result, flags);
 }
 
 static gboolean
-google_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
-	GoogleSourcePtr	gsource = (GoogleSourcePtr)subscription->node->data;
+	TheOldReaderSourcePtr	gsource = (TheOldReaderSourcePtr)subscription->node->data;
 	
 	g_assert(gsource);
-	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) {
-		debug0(DEBUG_UPDATE, "GoogleSource: login");
-		google_source_login ((GoogleSourcePtr) subscription->node->data, 0) ;
+	if (gsource->loginState == THEOLDREADER_SOURCE_STATE_NONE) {
+		debug0(DEBUG_UPDATE, "TheOldReaderSource: login");
+		theoldreader_source_login ((TheOldReaderSourcePtr) subscription->node->data, 0) ;
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
+	debug1 (DEBUG_UPDATE, "updating TheOldReader subscription (node id %s)", subscription->node->id);
 	
-	update_request_set_source (request, GOOGLE_READER_SUBSCRIPTION_LIST_URL);
+	update_request_set_source (request, THEOLDREADER_READER_SUBSCRIPTION_LIST_URL);
 	
 	update_request_set_auth_value (request, gsource->authHeaderValue);
 	
@@ -451,7 +410,7 @@ google_source_opml_subscription_prepare_update_request (subscriptionPtr subscrip
 
 /* OPML subscription type definition */
 
-struct subscriptionType googleSourceOpmlSubscriptionType = {
-	google_source_opml_subscription_prepare_update_request,
-	google_source_opml_subscription_process_update_result
+struct subscriptionType theOldReaderSourceOpmlSubscriptionType = {
+	theoldreader_source_opml_subscription_prepare_update_request,
+	theoldreader_source_opml_subscription_process_update_result
 };

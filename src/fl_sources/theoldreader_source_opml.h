@@ -16,32 +16,32 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "fl_sources/google_source.h"
+#include "fl_sources/theoldreader_source.h"
 
 /**
  * Find a node by the source id.
  *
- * @param gsource	the Google Reader source
+ * @param gsource	the TheOldReader source
  * @param source	the feed id to find
  *
  * @returns a node (or NULL)
  */
-nodePtr google_source_opml_get_node_by_source(GoogleSourcePtr gsource,
+nodePtr theoldreader_source_opml_get_node_by_source(TheOldReaderSourcePtr gsource,
 					 const gchar *source);
 
 /**
  * Recursively find a node by the source id.
  *
- * @param gsource	the Google Reader source
+ * @param gsource	the TheOldReader source
  * @param source	the feed id to find 
  *
  * @returns a node (or NULL)
  */
-nodePtr google_source_opml_get_subnode_by_node(nodePtr node, const gchar *source);
+nodePtr theoldreader_source_opml_get_subnode_by_node(nodePtr node, const gchar *source);
 
 /**
- * Perform a quick update of the Google Reader source.
+ * Perform a quick update of the TheOldReader source.
  *
- * @param gsource	the Google Reader source
+ * @param gsource	the TheOldReader source
  */
-gboolean google_source_opml_quick_update (GoogleSourcePtr gsource);
+gboolean theoldreader_source_opml_quick_update (TheOldReaderSourcePtr gsource);

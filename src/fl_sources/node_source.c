@@ -41,6 +41,7 @@
 #include "fl_sources/dummy_source.h"
 #include "fl_sources/google_source.h"
 #include "fl_sources/opml_source.h"
+#include "fl_sources/theoldreader_source.h"
 #include "fl_sources/ttrss_source.h"
 
 static GSList	*nodeSourceTypes = NULL;
@@ -96,6 +97,7 @@ node_source_setup_root (void)
 	node_source_type_register (opml_source_get_type ());
 	node_source_type_register (google_source_get_type ());
 	node_source_type_register (ttrss_source_get_type ());
+	node_source_type_register (theoldreader_source_get_type ());
 
 	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
 	if (!type) 

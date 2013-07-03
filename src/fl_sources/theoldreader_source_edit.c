@@ -1,5 +1,5 @@
 /**
- * @file google_source_edit.c  Google reader feed list source syncing support
+ * @file theoldreader_source_edit.c  TheOldReader feed list source syncing support
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
@@ -28,8 +28,8 @@
 #include "feedlist.h"
 
 
-#include "google_source.h"
-#include "google_source_edit.h"
+#include "theoldreader_source.h"
+#include "theoldreader_source_edit.h"
 #include "config.h"
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlreader.h>
@@ -37,12 +37,12 @@
 #include "xml.h"
 
 /**
- * A structure to indicate an edit to the Google Reader "database".
+ * A structure to indicate an edit to the TheOldReader "database".
  * These edits are put in a queue and processed in sequential order
  * so that google does not end up processing the requests in an 
  * unintended order.
  */
-typedef struct GoogleSourceAction {
+typedef struct TheOldReaderSourceAction {
 	/**
 	 * The guid of the item to edit. This will be ignored if the 
 	 * edit is acting on an subscription rather than an item.
@@ -66,13 +66,13 @@ typedef struct GoogleSourceAction {
 	/**
 	 * A callback function on completion of the edit.
 	 */
-	void (*callback) (GoogleSourcePtr gsource, struct GoogleSourceAction* edit, gboolean success);
+	void (*callback) (TheOldReaderSourcePtr gsource, struct TheOldReaderSourceAction* edit, gboolean success);
 
 	/**
-	 * The type of this GoogleSourceAction.
+	 * The type of this TheOldReaderSourceAction.
 	 */
 	int actionType ; 
-} *GoogleSourceActionPtr ; 
+} *TheOldReaderSourceActionPtr ; 
 
 enum { 
 	EDIT_ACTION_MARK_READ,
@@ -85,110 +85,110 @@ enum {
 } ;
 		
 
-typedef struct GoogleSourceAction* editPtr ;
+typedef struct TheOldReaderSourceAction* editPtr ;
 
-typedef struct GoogleSourceActionCtxt { 
+typedef struct TheOldReaderSourceActionCtxt { 
 	gchar   *nodeId ;
-	GoogleSourceActionPtr action; 
-} *GoogleSourceActionCtxtPtr; 
+	TheOldReaderSourceActionPtr action; 
+} *TheOldReaderSourceActionCtxtPtr; 
 
 
-static void google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean head);
+static void theoldreader_source_edit_push (TheOldReaderSourcePtr gsource, TheOldReaderSourceActionPtr action, gboolean head);
 
 
-static GoogleSourceActionPtr 
-google_source_action_new (void)
+static TheOldReaderSourceActionPtr 
+theoldreader_source_action_new (void)
 {
-	GoogleSourceActionPtr action = g_slice_new0 (struct GoogleSourceAction);
+	TheOldReaderSourceActionPtr action = g_slice_new0 (struct TheOldReaderSourceAction);
 	return action;
 }
 
 static void 
-google_source_action_free (GoogleSourceActionPtr action)
+theoldreader_source_action_free (TheOldReaderSourceActionPtr action)
 { 
 	g_free (action->guid);
 	g_free (action->feedUrl);
-	g_slice_free (struct GoogleSourceAction, action);
+	g_slice_free (struct TheOldReaderSourceAction, action);
 }
 
-static GoogleSourceActionCtxtPtr
-google_source_action_context_new(GoogleSourcePtr gsource, GoogleSourceActionPtr action)
+static TheOldReaderSourceActionCtxtPtr
+theoldreader_source_action_context_new(TheOldReaderSourcePtr gsource, TheOldReaderSourceActionPtr action)
 {
-	GoogleSourceActionCtxtPtr ctxt = g_slice_new0(struct GoogleSourceActionCtxt);
+	TheOldReaderSourceActionCtxtPtr ctxt = g_slice_new0(struct TheOldReaderSourceActionCtxt);
 	ctxt->nodeId = g_strdup(gsource->root->id);
 	ctxt->action = action;
 	return ctxt;
 }
 
 static void
-google_source_action_context_free(GoogleSourceActionCtxtPtr ctxt)
+theoldreader_source_action_context_free(TheOldReaderSourceActionCtxtPtr ctxt)
 {
 	g_free(ctxt->nodeId);
-	g_slice_free(struct GoogleSourceActionCtxt, ctxt);
+	g_slice_free(struct TheOldReaderSourceActionCtxt, ctxt);
 }
 
 static void
-google_source_edit_action_complete (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
+theoldreader_source_edit_action_complete (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
 { 
-	GoogleSourceActionCtxtPtr     editCtxt = (GoogleSourceActionCtxtPtr) userdata; 
+	TheOldReaderSourceActionCtxtPtr     editCtxt = (TheOldReaderSourceActionCtxtPtr) userdata; 
 	nodePtr                       node = node_from_id (editCtxt->nodeId);
-	GoogleSourcePtr               gsource; 
-	GoogleSourceActionPtr         action = editCtxt->action ;
+	TheOldReaderSourcePtr               gsource; 
+	TheOldReaderSourceActionPtr         action = editCtxt->action ;
 	
-	google_source_action_context_free (editCtxt);
+	theoldreader_source_action_context_free (editCtxt);
 
 	if (!node) {
-		google_source_action_free (action);
+		theoldreader_source_action_free (action);
 		return; /* probably got deleted before this callback */
 	} 
-	gsource = (GoogleSourcePtr) node->data;
+	gsource = (TheOldReaderSourcePtr) node->data;
 		
 	if (result->data == NULL || !g_str_equal (result->data, "OK")) {
 		if (action->callback) 
 			(*action->callback) (gsource, action, FALSE);
 		debug1 (DEBUG_UPDATE, "The edit action failed with result: %s\n", result->data);
-		google_source_action_free (action);
+		theoldreader_source_action_free (action);
 		return; /** @todo start a timer for next processing */
 	}
 	
 	if (action->callback)
 		action->callback (gsource, action, TRUE);
 
-	google_source_action_free (action);
+	theoldreader_source_action_free (action);
 
 	/* process anything else waiting on the edit queue */
-	google_source_edit_process (gsource);
+	theoldreader_source_edit_process (gsource);
 }
 
-/* the following google_source_api_* functions are simply funtions that 
-   convert a GoogleSourceActionPtr to a updateRequestPtr */
+/* the following theoldreader_source_api_* functions are simply funtions that 
+   convert a TheOldReaderSourceActionPtr to a updateRequestPtr */
  
 static void
-google_source_api_add_subscription (GoogleSourceActionPtr action, updateRequestPtr request, const gchar* token) 
+theoldreader_source_api_add_subscription (TheOldReaderSourceActionPtr action, updateRequestPtr request, const gchar* token) 
 {
-	update_request_set_source (request, GOOGLE_READER_ADD_SUBSCRIPTION_URL);
+	update_request_set_source (request, THEOLDREADER_READER_ADD_SUBSCRIPTION_URL);
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE) ;
-	gchar* postdata = g_strdup_printf (GOOGLE_READER_ADD_SUBSCRIPTION_POST, s_escaped, token);
+	gchar* postdata = g_strdup_printf (THEOLDREADER_READER_ADD_SUBSCRIPTION_POST, s_escaped, token);
 	g_free (s_escaped);
 
-	debug1 (DEBUG_UPDATE, "google_source: postdata [%s]", postdata);
+	debug1 (DEBUG_UPDATE, "theoldreader_source: postdata [%s]", postdata);
 	request->postdata = postdata ;
 }
 
 static void
-google_source_api_remove_subscription (GoogleSourceActionPtr action, updateRequestPtr request, const gchar* token) 
+theoldreader_source_api_remove_subscription (TheOldReaderSourceActionPtr action, updateRequestPtr request, const gchar* token) 
 {
-	update_request_set_source (request, GOOGLE_READER_REMOVE_SUBSCRIPTION_URL);
+	update_request_set_source (request, THEOLDREADER_READER_REMOVE_SUBSCRIPTION_URL);
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	g_assert (!request->postdata);
-	request->postdata = g_strdup_printf (GOOGLE_READER_REMOVE_SUBSCRIPTION_POST, s_escaped, token);
+	request->postdata = g_strdup_printf (THEOLDREADER_READER_REMOVE_SUBSCRIPTION_POST, s_escaped, token);
 	g_free (s_escaped);
 }
 
 static void 
-google_source_api_edit_tag (GoogleSourceActionPtr action, updateRequestPtr request, const gchar*token) 
+theoldreader_source_api_edit_tag (TheOldReaderSourceActionPtr action, updateRequestPtr request, const gchar*token) 
 {
-	update_request_set_source (request, GOOGLE_READER_EDIT_TAG_URL); 
+	update_request_set_source (request, THEOLDREADER_READER_EDIT_TAG_URL); 
 
 	const gchar* prefix = "feed" ; 
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
@@ -203,7 +203,7 @@ google_source_api_edit_tag (GoogleSourceActionPtr action, updateRequestPtr reque
 	 * tag:google.com,2005:reader/user/<sharer's-id>/source/com.google/link
 	 * It is possible that there are items other thank link that has
 	 * the ../user/.. id. The GR API requires the strings after ..:reader/
-	 * while GoogleSourceAction only gives me after :reader/feed/ (or 
+	 * while TheOldReaderSourceAction only gives me after :reader/feed/ (or 
 	 * :reader/user/ as the case might be). I therefore need to guess
 	 * the prefix ('feed/' or 'user/') from just this information. 
 	 */
@@ -212,29 +212,29 @@ google_source_api_edit_tag (GoogleSourceActionPtr action, updateRequestPtr reque
 		prefix = "user" ;
 
 	if (action->actionType == EDIT_ACTION_MARK_UNREAD) {
-		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_KEPT_UNREAD, NULL, TRUE);
-		gchar *r_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_AR_TAG, i_escaped, prefix, s_escaped, a_escaped, r_escaped, token);
+		a_escaped = g_uri_escape_string (THEOLDREADER_READER_TAG_KEPT_UNREAD, NULL, TRUE);
+		gchar *r_escaped = g_uri_escape_string (THEOLDREADER_READER_TAG_READ, NULL, TRUE);
+		postdata = g_strdup_printf (THEOLDREADER_READER_EDIT_TAG_AR_TAG, i_escaped, prefix, s_escaped, a_escaped, r_escaped, token);
 		g_free (r_escaped);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_READ) { 
-		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
+		a_escaped = g_uri_escape_string (THEOLDREADER_READER_TAG_READ, NULL, TRUE);
+		postdata = g_strdup_printf (THEOLDREADER_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD) {
-		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
-		postdata = g_strdup_printf (GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
+		a_escaped = g_uri_escape_string (THEOLDREADER_READER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
+		postdata = g_strdup_printf (THEOLDREADER_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
 	}  
 	else if (action->actionType == EDIT_ACTION_MARK_STARRED) { 
-		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_STARRED, NULL, TRUE) ;
+		a_escaped = g_uri_escape_string (THEOLDREADER_READER_TAG_STARRED, NULL, TRUE) ;
 		postdata = g_strdup_printf (
-			GOOGLE_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix,
+			THEOLDREADER_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix,
 			s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_UNSTARRED) {
-		gchar* r_escaped = g_uri_escape_string(GOOGLE_READER_TAG_STARRED, NULL, TRUE);
+		gchar* r_escaped = g_uri_escape_string(THEOLDREADER_READER_TAG_STARRED, NULL, TRUE);
 		postdata = g_strdup_printf (
-			GOOGLE_READER_EDIT_TAG_REMOVE_TAG, i_escaped, prefix,
+			THEOLDREADER_READER_EDIT_TAG_REMOVE_TAG, i_escaped, prefix,
 			s_escaped, r_escaped, token);
 	}
 	
@@ -244,19 +244,19 @@ google_source_api_edit_tag (GoogleSourceActionPtr action, updateRequestPtr reque
 	g_free (a_escaped); 
 	g_free (i_escaped);
 	
-	debug1 (DEBUG_UPDATE, "google_source: postdata [%s]", postdata);
+	debug1 (DEBUG_UPDATE, "theoldreader_source: postdata [%s]", postdata);
 
 
 	request->postdata = postdata;
 }
 
 static void
-google_source_edit_token_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+theoldreader_source_edit_token_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 { 
 	nodePtr          node;
-	GoogleSourcePtr  gsource;
+	TheOldReaderSourcePtr  gsource;
 	const gchar*     token;
-	GoogleSourceActionPtr          action;
+	TheOldReaderSourceActionPtr          action;
 	updateRequestPtr request; 
 
 	if (result->httpstatus != 200 || result->data == NULL) { 
@@ -270,7 +270,7 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	if (!node) {
 		return;
 	}
-	gsource = (GoogleSourcePtr) node->data;
+	gsource = (TheOldReaderSourcePtr) node->data;
 
 
 	token = result->data; 
@@ -290,19 +290,19 @@ google_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	    action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD ||
 	    action->actionType == EDIT_ACTION_MARK_STARRED || 
 	    action->actionType == EDIT_ACTION_MARK_UNSTARRED) 
-		google_source_api_edit_tag (action, request, token);
+		theoldreader_source_api_edit_tag (action, request, token);
 	else if (action->actionType == EDIT_ACTION_ADD_SUBSCRIPTION ) 
-		google_source_api_add_subscription (action, request, token);
+		theoldreader_source_api_add_subscription (action, request, token);
 	else if (action->actionType == EDIT_ACTION_REMOVE_SUBSCRIPTION )
-		google_source_api_remove_subscription (action, request, token) ;
+		theoldreader_source_api_remove_subscription (action, request, token) ;
 
-	update_execute_request (gsource, request, google_source_edit_action_complete, google_source_action_context_new(gsource, action), 0);
+	update_execute_request (gsource, request, theoldreader_source_edit_action_complete, theoldreader_source_action_context_new(gsource, action), 0);
 
 	action = g_queue_pop_head (gsource->actionQueue);
 }
 
 void
-google_source_edit_process (GoogleSourcePtr gsource)
+theoldreader_source_edit_process (TheOldReaderSourcePtr gsource)
 { 
 	updateRequestPtr request; 
 	
@@ -314,20 +314,20 @@ google_source_edit_process (GoogleSourcePtr gsource)
  	* Google reader has a system of tokens. So first, I need to request a 
  	* token from google, before I can make the actual edit request. The
  	* code here is the token code, the actual edit commands are in 
- 	* google_source_edit_token_cb
+ 	* theoldreader_source_edit_token_cb
 	 */
 	request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
 	request->options = update_options_copy (gsource->root->subscription->updateOptions);
-	request->source = g_strdup (GOOGLE_READER_TOKEN_URL);
+	request->source = g_strdup (THEOLDREADER_READER_TOKEN_URL);
 	update_request_set_auth_value(request, gsource->authHeaderValue);
 
-	update_execute_request (gsource, request, google_source_edit_token_cb, 
+	update_execute_request (gsource, request, theoldreader_source_edit_token_cb, 
 	                        g_strdup(gsource->root->id), 0);
 }
 
 static void
-google_source_edit_push_ (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean head)
+theoldreader_source_edit_push_ (TheOldReaderSourcePtr gsource, TheOldReaderSourceActionPtr action, gboolean head)
 { 
 	g_assert (gsource->actionQueue);
 	if (head) g_queue_push_head (gsource->actionQueue, action);
@@ -335,21 +335,21 @@ google_source_edit_push_ (GoogleSourcePtr gsource, GoogleSourceActionPtr action,
 }
 
 static void 
-google_source_edit_push (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean head)
+theoldreader_source_edit_push (TheOldReaderSourcePtr gsource, TheOldReaderSourceActionPtr action, gboolean head)
 {
 	g_assert (gsource);
 	nodePtr root = gsource->root;
-	google_source_edit_push_ (gsource, action, head);
+	theoldreader_source_edit_push_ (gsource, action, head);
 
 	/** @todo any flags I should specify? */
-	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) 
-		subscription_update(root->subscription, GOOGLE_SOURCE_UPDATE_ONLY_LOGIN);
-	else if ( gsource->loginState == GOOGLE_SOURCE_STATE_ACTIVE) 
-		google_source_edit_process (gsource);
+	if (gsource->loginState == THEOLDREADER_SOURCE_STATE_NONE) 
+		subscription_update(root->subscription, THEOLDREADER_SOURCE_UPDATE_ONLY_LOGIN);
+	else if ( gsource->loginState == THEOLDREADER_SOURCE_STATE_ACTIVE) 
+		theoldreader_source_edit_process (gsource);
 }
 
 static void 
-update_read_state_callback (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
+update_read_state_callback (TheOldReaderSourcePtr gsource, TheOldReaderSourceActionPtr action, gboolean success) 
 {
 	if (success) {
 		// FIXME: call item_read_state_changed (item, newState);
@@ -359,9 +359,9 @@ update_read_state_callback (GoogleSourcePtr gsource, GoogleSourceActionPtr actio
 }
 
 void
-google_source_edit_mark_read (GoogleSourcePtr gsource, const gchar *guid, const gchar *feedUrl,	gboolean newStatus)
+theoldreader_source_edit_mark_read (TheOldReaderSourcePtr gsource, const gchar *guid, const gchar *feedUrl,	gboolean newStatus)
 {
-	GoogleSourceActionPtr action = google_source_action_new ();
+	TheOldReaderSourceActionPtr action = theoldreader_source_action_new ();
 
 	action->guid = g_strdup (guid);
 	action->feedUrl = g_strdup (feedUrl);
@@ -369,24 +369,24 @@ google_source_edit_mark_read (GoogleSourcePtr gsource, const gchar *guid, const 
 	                           EDIT_ACTION_MARK_UNREAD;
 	action->callback = update_read_state_callback;
 	
-	google_source_edit_push (gsource, action, FALSE);
+	theoldreader_source_edit_push (gsource, action, FALSE);
 
 	if (newStatus == FALSE) { 
 		/*
-		 * According to the Google Reader API, to mark an item unread, 
+		 * According to the TheOldReader API, to mark an item unread, 
 		 * I also need to mark it as tracking-kept-unread in a separate
 		 * network call.
 		 */
-		action = google_source_action_new ();
+		action = theoldreader_source_action_new ();
 		action->guid = g_strdup (guid);
 		action->feedUrl = g_strdup (feedUrl);
 		action->actionType = EDIT_ACTION_TRACKING_MARK_UNREAD;
-		google_source_edit_push (gsource, action, FALSE);
+		theoldreader_source_edit_push (gsource, action, FALSE);
 	}
 }
 
 static void
-update_starred_state_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
+update_starred_state_callback(TheOldReaderSourcePtr gsource, TheOldReaderSourceActionPtr action, gboolean success) 
 {
 	if (success) {
 		// FIXME: call item_flag_changed (item, newState);
@@ -396,20 +396,20 @@ update_starred_state_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr act
 }
 
 void
-google_source_edit_mark_starred (GoogleSourcePtr gsource, const gchar *guid, const gchar *feedUrl, gboolean newStatus)
+theoldreader_source_edit_mark_starred (TheOldReaderSourcePtr gsource, const gchar *guid, const gchar *feedUrl, gboolean newStatus)
 {
-	GoogleSourceActionPtr action = google_source_action_new ();
+	TheOldReaderSourceActionPtr action = theoldreader_source_action_new ();
 
 	action->guid = g_strdup (guid);
 	action->feedUrl = g_strdup (feedUrl);
 	action->actionType = newStatus ? EDIT_ACTION_MARK_STARRED : EDIT_ACTION_MARK_UNSTARRED;
 	action->callback = update_starred_state_callback;
 	
-	google_source_edit_push (gsource, action, FALSE);
+	theoldreader_source_edit_push (gsource, action, FALSE);
 }
 
 static void 
-update_subscription_list_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success) 
+update_subscription_list_callback(TheOldReaderSourcePtr gsource, TheOldReaderSourceActionPtr action, gboolean success) 
 {
 	if (success) { 
 		/*
@@ -428,23 +428,23 @@ update_subscription_list_callback(GoogleSourcePtr gsource, GoogleSourceActionPtr
 		}
 		
 		debug0 (DEBUG_UPDATE, "Subscription list was updated successful\n");
-		subscription_update (gsource->root->subscription, GOOGLE_SOURCE_UPDATE_ONLY_LIST);
+		subscription_update (gsource->root->subscription, THEOLDREADER_SOURCE_UPDATE_ONLY_LIST);
 	} else 
 		debug0 (DEBUG_UPDATE, "Failed to update subscriptions\n");
 }
 
 void 
-google_source_edit_add_subscription (GoogleSourcePtr gsource, const gchar* feedUrl)
+theoldreader_source_edit_add_subscription (TheOldReaderSourcePtr gsource, const gchar* feedUrl)
 {
-	GoogleSourceActionPtr action = google_source_action_new () ;
+	TheOldReaderSourceActionPtr action = theoldreader_source_action_new () ;
 	action->actionType = EDIT_ACTION_ADD_SUBSCRIPTION; 
 	action->feedUrl = g_strdup (feedUrl);
 	action->callback = update_subscription_list_callback;
-	google_source_edit_push (gsource, action, TRUE);
+	theoldreader_source_edit_push (gsource, action, TRUE);
 }
 
 static void
-google_source_edit_remove_callback (GoogleSourcePtr gsource, GoogleSourceActionPtr action, gboolean success)
+theoldreader_source_edit_remove_callback (TheOldReaderSourcePtr gsource, TheOldReaderSourceActionPtr action, gboolean success)
 {
 	if (success) {	
 		/* 
@@ -464,21 +464,21 @@ google_source_edit_remove_callback (GoogleSourcePtr gsource, GoogleSourceActionP
 		debug0 (DEBUG_UPDATE, "Failed to remove subscription");
 }
 
-void google_source_edit_remove_subscription (GoogleSourcePtr gsource, const gchar* feedUrl) 
+void theoldreader_source_edit_remove_subscription (TheOldReaderSourcePtr gsource, const gchar* feedUrl) 
 {
-	GoogleSourceActionPtr action = google_source_action_new (); 
+	TheOldReaderSourceActionPtr action = theoldreader_source_action_new (); 
 	action->actionType = EDIT_ACTION_REMOVE_SUBSCRIPTION;
 	action->feedUrl = g_strdup (feedUrl);
-	action->callback = google_source_edit_remove_callback;
-	google_source_edit_push (gsource, action, TRUE);
+	action->callback = theoldreader_source_edit_remove_callback;
+	theoldreader_source_edit_push (gsource, action, TRUE);
 }
 
-gboolean google_source_edit_is_in_queue (GoogleSourcePtr gsource, const gchar* guid) 
+gboolean theoldreader_source_edit_is_in_queue (TheOldReaderSourcePtr gsource, const gchar* guid) 
 {
 	/* this is inefficient, but works for the time being */
 	GList *cur = gsource->actionQueue->head; 
 	for(; cur; cur = g_list_next (cur)) { 
-		GoogleSourceActionPtr action = cur->data; 
+		TheOldReaderSourceActionPtr action = cur->data; 
 		if (action->guid && g_str_equal (action->guid, guid))
 			return TRUE;
 	}
