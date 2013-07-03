@@ -20,6 +20,10 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
 			   google_source_feed.c \
 			   google_source_opml.c google_source_opml.h \
                            opml_source.c opml_source.h \
+                           theoldreader_source.c theoldreader_source.h \
+			   theoldreader_source_edit.c theoldreader_source_edit.h \
+			   theoldreader_source_feed.c \
+			   theoldreader_source_opml.c theoldreader_source_opml.h \
 			   ttrss_source.c ttrss_source.h  \
 			   ttrss_source_feed.c \
 			   ttrss_source_feed_list.c ttrss_source_feed_list.h 
