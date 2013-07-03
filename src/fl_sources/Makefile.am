@@ -23,7 +23,7 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
                            theoldreader_source.c theoldreader_source.h \
 			   theoldreader_source_edit.c theoldreader_source_edit.h \
 			   theoldreader_source_feed.c \
-			   theoldreader_source_opml.c theoldreader_source_opml.h \
+			   theoldreader_source_feed_list.c theoldreader_source_feed_list.h \
 			   ttrss_source.c ttrss_source.h  \
 			   ttrss_source_feed.c \
 			   ttrss_source_feed_list.c ttrss_source_feed_list.h 

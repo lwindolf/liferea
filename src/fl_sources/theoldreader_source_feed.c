@@ -1,7 +1,8 @@
 /**
  * @file theoldreader_source_feed.c  TheOldReader feed subscription routines
  * 
- * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
+ * Copyright (C) 2008  Arnold Noronha <arnstein87@gmail.com>
+ * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,23 +120,6 @@ theoldreader_source_set_shared_by (xmlNodePtr node, gpointer userdata)
 	xmlFree (value);
 }
 
-static void
-theoldreader_source_fix_broadcast_item (xmlNodePtr entry, itemPtr item) 
-{
-	xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (entry->doc) ;
-	xmlXPathRegisterNs (xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
-	xpathCtxt->node = entry;
-	
-	theoldreader_source_xpath_foreach_match ("./atom:source/atom:id", xpathCtxt, theoldreader_source_set_orig_source, item);
-	
-	/* who is sharing this? */
-	theoldreader_source_xpath_foreach_match ("./atom:link[@rel='via']/@title", xpathCtxt, theoldreader_source_set_shared_by, item);
-
-	db_item_update (item);
-	/* free up xpath related data */
-	if (xpathCtxt) xmlXPathFreeContext (xpathCtxt);
-}
-
 static itemPtr
 theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache) 
 {
@@ -209,9 +193,6 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 				item_read_state_changed (item, read);
 			if (item->flagStatus != starred) 
 				item_flag_state_changed (item, starred);
-			
-			if (g_str_equal (subscription->source, THEOLDREADER_READER_BROADCAST_FRIENDS_URL)) 
-				theoldreader_source_fix_broadcast_item (entry, item);
 		}
 	}
 	if (item) item_unload (item) ;
@@ -219,9 +200,8 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 }
 
 static void
-google_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+theoldreader_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
-	
 	debug_start_measurement (DEBUG_UPDATE);
 
 	if (result->data) { 
@@ -240,13 +220,7 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
 		xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
 		xmlXPathRegisterNs (xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
-		theoldreader_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, theoldreader_source_xml_unlink_node, NULL);
-
-
-		/* delete the via link for broadcast subscription */
-		if (g_str_equal (subscription->source, THEOLDREADER_READER_BROADCAST_FRIENDS_URL)) 
-			theoldreader_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:link[@rel='via']/@href", xpathCtxt, theoldreader_source_xml_unlink_node, NULL);
-		
+		theoldreader_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, theoldreader_source_xml_unlink_node, NULL);	
 		xmlXPathFreeContext (xpathCtxt);
 		
 		/* good now we have removed the read and unread labels. */
@@ -301,14 +275,14 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 	// FIXME: part 2 of the newCount workaround
 	feedlist_update_new_item_count (newCount);
 	
-	debug_end_measurement (DEBUG_UPDATE, "time taken to update statuses");
+	debug_end_measurement (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result");
 }
 
 static gboolean
-google_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
-                                                 struct updateRequest *request)
+theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
+                                                       struct updateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update\n");
+	debug0 (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");
 	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data; 
 	
 	g_assert(gsource); 
@@ -317,20 +291,12 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		return FALSE;
 	}
 	debug0 (DEBUG_UPDATE, "Setting cookies for a TheOldReader subscription");
-
-	if (!g_str_equal (request->source, THEOLDREADER_READER_BROADCAST_FRIENDS_URL)) { 
-		gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
-		gchar* newUrl = g_strdup_printf ("http://www.google.com/reader/atom/feed/%s", source_escaped);
-		update_request_set_source (request, newUrl);
-		g_free (newUrl);
-		g_free (source_escaped);
-	}
 	update_request_set_auth_value (request, gsource->authHeaderValue);
 	return TRUE;
 }
 
 struct subscriptionType theOldReaderSourceFeedSubscriptionType = {
-	google_feed_subscription_prepare_update_request,
-	google_feed_subscription_process_update_result
+	theoldreader_feed_subscription_prepare_update_request,
+	theoldreader_feed_subscription_process_update_result
 };
 

@@ -1,9 +1,7 @@
 /**
- * @file theoldreader_source_opml.c  Google reader OPML handling routines.
+ * @file theoldreader_source_feed_list.c  TheOldReader feed list handling
  * 
- * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
- * Copyright (C) 2011 Peter Oliver
- * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
+ * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +19,7 @@
  */
 
 
-#include "theoldreader_source_opml.h"
+#include "theoldreader_source_feed_list.h"
 
 #include <glib.h>
 #include <libxml/xpath.h>
@@ -250,10 +248,10 @@ cleanup:
 }
 
 
-/* OPML subscription type implementation */
+/* JSON subscription list processing implementation */
 
 static void
-google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	TheOldReaderSourcePtr	gsource = (TheOldReaderSourcePtr) subscription->node->data;
 	
@@ -385,7 +383,7 @@ theoldreader_source_opml_quick_update(TheOldReaderSourcePtr gsource)
 static void
 theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	google_subscription_opml_cb (subscription, result, flags);
+	theoldreader_subscription_cb (subscription, result, flags);
 }
 
 static gboolean

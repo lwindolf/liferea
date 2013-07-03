@@ -89,15 +89,9 @@ enum {
 #define THEOLDREADER_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://theoldreader.com"
 
 /**
- * Acts like a feed, indicating all the posts shared by the TheOldReader
- * friends. Does not take any params, but the Authorization header needs to be set.
- */
-#define THEOLDREADER_READER_BROADCAST_FRIENDS_URL "http://theoldreader.com/reader/atom/user/-/state/com.google/broadcast-friends" 
-
-/**
  * Get a list of subscriptions.
  */
-#define THEOLDREADER_READER_SUBSCRIPTION_LIST_URL "http://theoldreader.com/reader/api/0/subscription/list"
+#define THEOLDREADER_READER_SUBSCRIPTION_LIST_URL "http://theoldreader.com/reader/api/0/subscription/list?output=json"
 
 /**
  * Get a token for an edit operation. (@todo A token can actually be used

@@ -42,7 +42,7 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/theoldreader_source_edit.h"
-#include "fl_sources/theoldreader_source_opml.h"
+#include "fl_sources/theoldreader_source_feed_list.h"
 
 /** default TheOldReader subscription list update interval = once a day */
 #define THEOLDREADER_SOURCE_UPDATE_INTERVAL 60*60*24
