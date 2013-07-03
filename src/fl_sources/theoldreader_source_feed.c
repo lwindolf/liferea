@@ -127,17 +127,17 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data ;
 	xmlNodePtr      xml;
 	nodePtr         node = subscription->node;
-	xmlChar         *id;
+	xmlChar         *id = NULL;
 	gboolean        read = FALSE;
 	gboolean        starred = FALSE;
 
 	xml = entry->children;
 	g_assert (xml);
-	g_assert (g_str_equal (xml->name, "id"));
-
-	id = xmlNodeGetContent (xml);
 
 	for (xml = entry->children; xml; xml = xml->next) {
+		if (g_str_equal (xml->name, "id"))
+			id = xmlNodeGetContent (xml);
+
 		if (g_str_equal (xml->name, "category")) {
 			xmlChar* label = xmlGetProp (xml, "label");
 			if (!label)
@@ -150,6 +150,11 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 
 			xmlFree (label);
 		}
+	}
+
+	if (!id) {
+		g_warning ("Skipping item without id in theoldreader_source_item_retrieve_status()!");
+		return;
 	}
 	
 	itemPtr item = theoldreader_source_load_item_from_sourceid (node, id, cache);
