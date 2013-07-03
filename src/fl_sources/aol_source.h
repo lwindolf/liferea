@@ -24,18 +24,18 @@
 #include "fl_sources/node_source.h"
 
 /**
- * A nodeSource specific for Google Reader
+ * A node source for AOL Reader
  */
 typedef struct AolSource {
 	nodePtr		root;		/**< the root node in the feed list */
-	gchar		*authHeaderValue; /**< the Google Authorization token */
+	gchar		*authHeaderValue; /**< the authorization token */
 	GQueue		*actionQueue;
 	gint		loginState;	/**< The current login state */
 	gint		authFailures;	/**< Number of authentication failures */
 
 	/**
 	 * A map from a subscription source to a timestamp when it was last 
-	 * updated (provided by Google).
+	 * updated (provided by remote service).
 	 */
 	GHashTable      *lastTimestampMap; 
 
@@ -72,10 +72,10 @@ enum {
 #define AOL_SOURCE_MAX_AUTH_FAILURES		3
 
 /**
- * Google Source API URL's
+ * AOL API URL's
  * In each of the following, the _URL indicates the URL to use, and _POST
  * indicates the corresponging postdata to send.
- * @see http://code.google.com/p/pyrfeed/wiki/GoogleReaderAPI
+ * @see 
  * However as of now, the GoogleReaderAPI documentation seems outdated, some of
  * mark read/unread API does not work as mentioned in the documentation.
  */
