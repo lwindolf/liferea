@@ -87,39 +87,6 @@ theoldreader_source_xml_unlink_node (xmlNodePtr node, gpointer data)
 	xmlFreeNode (node);
 }
 
-static void
-theoldreader_source_set_orig_source(const xmlNodePtr node, gpointer userdata)
-{
-	itemPtr item = (itemPtr) userdata ;
-	xmlChar*   value = xmlNodeGetContent (node);
-	const gchar*     prefix1 = "tag:google.com,2005:reader/feed/";
-	const gchar*     prefix2 = "tag:google.com,2005:reader/user/";
-
-	debug1(DEBUG_UPDATE, "TheOldReaderSource: Got %s as id while updating", value);
-
-	if (g_str_has_prefix (value, prefix1) || g_str_has_prefix (value, prefix2)) {
-		metadata_list_set (&item->metadata, "GoogleBroadcastOrigFeed", value + strlen (prefix1));
-	}
-	xmlFree (value);
-}
-
-static void
-theoldreader_source_set_shared_by (xmlNodePtr node, gpointer userdata) 
-{
-	itemPtr     item    = (itemPtr) userdata;
-	xmlChar     *value  = xmlNodeGetContent (node);
-	xmlChar     *apos   = strrchr (value, '\'');
-	gchar       *name;
-
-	if (!apos) return;
-	name = g_strndup (value, apos-value);
-
-	metadata_list_set (&item->metadata, "sharedby", name);
-	
-	g_free (name);
-	xmlFree (value);
-}
-
 static itemPtr
 theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache) 
 {
@@ -268,8 +235,8 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 		g_hash_table_unref (cache);
 		xmlFreeDoc (doc);
 	} else { 
-		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
-		g_warning ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
+		debug0 (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
+		g_warning ("theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
 
 	// FIXME: part 2 of the newCount workaround
@@ -283,15 +250,22 @@ theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscript
                                                        struct updateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");
-	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data; 
+	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data; 
 	
-	g_assert(gsource); 
-	if (gsource->loginState == THEOLDREADER_SOURCE_STATE_NONE) { 
+	g_assert (source); 
+	if (source->loginState == THEOLDREADER_SOURCE_STATE_NONE) { 
 		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
-	debug0 (DEBUG_UPDATE, "Setting cookies for a TheOldReader subscription");
-	update_request_set_auth_value (request, gsource->authHeaderValue);
+
+	debug1 (DEBUG_UPDATE, "Setting cookies for a TheOldReader subscription '%s'", subscription->source);
+	gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
+	gchar* newUrl = g_strdup_printf ("http://theoldreader.com/reader/atom/%s", metadata_list_get (subscription->metadata, "theoldreader-feed-id"));
+	update_request_set_source (request, newUrl);
+	g_free (newUrl);
+	g_free (source_escaped);
+
+	update_request_set_auth_value (request, source->authHeaderValue);
 	return TRUE;
 }
 

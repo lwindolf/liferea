@@ -22,21 +22,62 @@
 #include "theoldreader_source_feed_list.h"
 
 #include <glib.h>
-#include <libxml/xpath.h>
 #include <string.h>
 
 #include "common.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "json.h"
 #include "metadata.h"
 #include "node.h"
 #include "subscription.h"
-#include "xml.h"
 
 #include "fl_sources/opml_source.h"
 #include "fl_sources/theoldreader_source.h"
 #include "fl_sources/theoldreader_source_edit.h"
+
+static void
+theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id)
+{
+	nodePtr	node;
+	GSList	*iter;
+	gchar	*tmp;
+
+	/* check if node to be merged already exists */
+	iter = source->root->children;
+	while (iter) {
+		node = (nodePtr)iter->data;
+		if (g_str_equal (node->subscription->source, url))
+			return;
+		iter = g_slist_next (iter);
+	}
+	
+	debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
+	node = node_new (feed_get_node_type ());
+	node_set_title (node, title);
+	node_set_data (node, feed_new ());
+		
+	node_set_subscription (node, subscription_new (url, NULL, NULL));
+	node->subscription->type = &theOldReaderSourceFeedSubscriptionType;
+	
+	/* Save TheOldReader feed id which we need to fetch items... */
+	metadata_list_set (&node->subscription->metadata, "theoldreader-feed-id", id);
+	
+	node_set_parent (node, source->root, -1);
+	feedlist_node_imported (node);
+		
+	/**
+	 * @todo mark the ones as read immediately after this is done
+	 * the feed as retrieved by this has the read and unread
+	 * status inherently.
+	 */
+	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+	subscription_update_favicon (node->subscription);
+	
+	/* Important: we must not loose the feed id! */
+	db_subscription_update (node->subscription);
+}
 
 /**
  * Find a node by the source id.
@@ -84,7 +125,7 @@ theoldreader_source_check_for_removal (nodePtr node, gpointer user_data)
 		node_foreach_child_data (node, theoldreader_source_check_for_removal, user_data);
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/list[@name='categories']/object[string='%s']", node->title);
 	} else {
-		g_warning ("google_opml_source_check_for_removal(): This should never happen...");
+		g_warning ("theoldreader_source_check_for_removal(): This should never happen...");
 		return;
 	}
 	
@@ -128,172 +169,95 @@ theoldreader_source_find_or_create_folder (const gchar *name, nodePtr root)
 	return folder;
 }
 
-/* 
- * Check if folder of a node changed in TheOldReader and move
- * node to the folder with the same name.
- */
-static void
-theoldreader_source_update_folder (xmlNodePtr match, TheOldReaderSourcePtr gsource, nodePtr node)
-{
-	xmlNodePtr	xml;
-	xmlChar		*label;
-	const gchar	*ptitle;
-	nodePtr		parent;
-	
-	/* check if label of a feed changed */ 
-	parent = node->parent;
-	ptitle = node_get_title (parent);
-	xml = xpath_find (match, "./list[@name='categories']/object/string[@name='label']");
-	if (xml) {
-		label = xmlNodeListGetString (xml->doc,	xml->xmlChildrenNode, 1);
-		if (parent == gsource->root || ! g_str_equal (label, ptitle)) {
-			debug2 (DEBUG_UPDATE, "GSource feed label changed for %s to '%s'", node->id, label);
-			parent = theoldreader_source_find_or_create_folder ((gchar*)label, gsource->root);
-			node_reparent (node, parent);
-		}
-		xmlFree (label);
-	} else {
-		/* if feed has no label and parent is not gsource root, reparent to gsource root */
-		if (parent != gsource->root)
-			node_reparent (node, gsource->root);
-	}
-}
-
-static void
-theoldreader_source_merge_feed (xmlNodePtr match, gpointer user_data)
-{
-	TheOldReaderSourcePtr	gsource = (TheOldReaderSourcePtr)user_data;
-	nodePtr		node, parent = NULL, subnode = NULL;
-	GSList		*iter, *iter_sub;
-	xmlNodePtr	xml;
-	xmlChar		*title = NULL, *id = NULL, *label = NULL;
-	gchar		*url = NULL;
-
-	xml = xpath_find (match, "./string[@name='title']");
-	if (xml)
-		title = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
-		
-	xml = xpath_find (match, "./string[@name='id']");
-	if (xml) {
-		id = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
-		url = g_strdup (id + strlen ("feed/"));
-	}
-
-	/* Note: ids look like "feed/http://rss.slashdot.org" */
-	if (id && title) {
-
-		/* check if node to be merged already exists */
-		iter = gsource->root->children;
-		while (iter) {
-			node = (nodePtr)iter->data;
-			if (node->subscription != NULL
-			    && g_str_equal (node->subscription->source, url)) {
-				node->subscription->type = &theOldReaderSourceFeedSubscriptionType;
-				theoldreader_source_update_folder (match, gsource, node);
-				goto cleanup;
-			} else if (node->type->capabilities
-				 & NODE_CAPABILITY_SUBFOLDERS) {
-				iter_sub = node->children;
-				while (iter_sub) {
-					subnode = (nodePtr)iter_sub->data;
-					if (subnode->subscription != NULL
-					    && g_str_equal (subnode->subscription->source, url)) {
-						subnode->subscription->type = &theOldReaderSourceFeedSubscriptionType;
-						theoldreader_source_update_folder (match, gsource, subnode);
-						goto cleanup;
-					}
-					iter_sub = g_slist_next (iter_sub);
-				}
-			}
-			iter = g_slist_next (iter);
-		}
-
-		/* if a new feed contains label, put its node under a folder with the same name */
-		xml = xpath_find (match, "./list[@name='categories']/object/string[@name='label']");
-		if (xml) {
-			label = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
-			parent = theoldreader_source_find_or_create_folder ((gchar*)label, gsource->root);
-			xmlFree (label);
-		} else {
-			parent = gsource->root;
-		}
-		
-		g_assert (NULL != parent);
-
-		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
-		node = node_new (feed_get_node_type ());
-		node_set_title (node, title);
-		node_set_data (node, feed_new ());
-		
-		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = &theOldReaderSourceFeedSubscriptionType;
-		node_set_parent (node, parent, -1);
-		feedlist_node_imported (node);
-		
-		/**
-		 * @todo mark the ones as read immediately after this is done
-		 * the feed as retrieved by this has the read and unread
-		 * status inherently.
-		 */
-		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-		subscription_update_favicon (node->subscription);
-	} else {
-		g_warning("Unable to parse subscription information from Google");
-	}
-
-cleanup:
-	xmlFree (id);
-	xmlFree (title);
-	g_free (url) ;
-}
-
-
 /* JSON subscription list processing implementation */
 
 static void
 theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	TheOldReaderSourcePtr	gsource = (TheOldReaderSourcePtr) subscription->node->data;
+	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) subscription->node->data;
+
+	debug1 (DEBUG_UPDATE,"theoldreader_subscription_cb(): %s", result->data);
 	
-	if (result->data) {
-		xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
-		if(doc) {		
-			xmlNodePtr root = xmlDocGetRootElement (doc);
+	// FIXME: the following code is very similar to ttrss!
+	if (result->data && result->httpstatus == 200) {
+		JsonParser	*parser = json_parser_new ();
+
+		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
+			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
+			GList		*iter, *elements;
+			GSList		*siter;
+		
+			/* We expect something like this:
+
+			   [{"id":"feed/51d49b79d1716c7b18000025",
+                             "title":"LZone",
+                             "categories":[],
+                             "sortid":"51d49b79d1716c7b18000025",
+                             "firstitemmsec":"1371403150181",
+                             "url":"http://lzone.de/rss.xml",
+                             "htmlUrl":"http://lzone.de",
+                             "iconUrl":"http://s.yeoldereader.com/system/uploads/feed/picture/5152/884a/4dce/57aa/7e00/icon_0a6a.ico"},
+                           ... 
+			*/
+			elements = iter = json_array_get_elements (array);
+			/* Add all new nodes we find */
+			while (iter) {
+				JsonNode *node = (JsonNode *)iter->data;
+				
+				/* ignore everything without a feed url */
+				if (json_get_string (node, "url")) {
+					theoldreader_source_merge_feed (source, 
+					                                json_get_string (node, "url"),
+					                                json_get_string (node, "title"),
+					                                json_get_string (node, "id"));
+				}
+				iter = g_list_next (iter);
+			}
+			g_list_free (elements);
+
+			/* Remove old nodes we cannot find anymore */
+			siter = source->root->children;
+			while (siter) {
+				nodePtr node = (nodePtr)siter->data;
+				gboolean found = FALSE;
+				
+				elements = iter = json_array_get_elements (array);
+				while (iter) {
+					JsonNode *json_node = (JsonNode *)iter->data;
+					if (g_str_equal (node->subscription->source, json_get_string (json_node, "url"))) {
+						debug1 (DEBUG_UPDATE, "node: %s", node->subscription->source);
+						found = TRUE;
+						break;
+					}
+					iter = g_list_next (iter);
+				}
+				g_list_free (elements);
+
+				if (!found)			
+					feedlist_node_removed (node);
+				
+				siter = g_slist_next (siter);
+			}
 			
-			/* Go through all existing nodes and remove those whose
-			   URLs are not in new feed list. Also removes those URLs
-			   from the list that have corresponding existing nodes. */
-			node_foreach_child_data (subscription->node, theoldreader_source_check_for_removal, (gpointer)root);
-			node_foreach_child (subscription->node, theoldreader_source_migrate_node);
-						
-			opml_source_export (subscription->node);	/* save new feed list tree to disk 
-									   to ensure correct document in 
-									   next step */
-
-			xpath_foreach_match (root, "/object/list[@name='subscriptions']/object",
-			                     theoldreader_source_merge_feed,
-			                     (gpointer)gsource);
-
-			opml_source_export (subscription->node);	/* save new feeds to feed list */
-						   
-			subscription->node->available = TRUE;
-			xmlFreeDoc (doc);
-		} else { 
-			/** @todo The session seems to have expired */
-			g_warning ("Unable to parse OPML list from google, the session might have expired.\n");
+			opml_source_export (subscription->node);	/* save new feeds to feed list */				   
+			subscription->node->available = TRUE;			
+			//return;
+		} else {
+			g_warning ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
 		}
+
+		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "google_subscription_opml_cb(): ERROR: failed to get subscription list!\n");
+		debug0 (DEBUG_UPDATE, "theoldreader_subscription_cb(): ERROR: failed to get subscription list!");
 	}
 
 	if (!(flags & THEOLDREADER_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
-
 }
 
 /** functions for an efficient updating mechanism */
-
+/*
 static void
 theoldreader_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata) 
 {
@@ -347,7 +311,6 @@ theoldreader_source_opml_quick_update_cb (const struct updateResult* const resul
 	xmlDocPtr       doc;
 
 	if (!result->data) { 
-		/* what do I do? */
 		debug0 (DEBUG_UPDATE, "TheOldReaderSource: Unable to get unread counts, this update is aborted.");
 		return;
 	}
@@ -365,20 +328,20 @@ theoldreader_source_opml_quick_update_cb (const struct updateResult* const resul
 }
 
 gboolean
-theoldreader_source_opml_quick_update(TheOldReaderSourcePtr gsource) 
+theoldreader_source_opml_quick_update (TheOldReaderSourcePtr source) 
 {
 	updateRequestPtr request = update_request_new ();
-	request->updateState = update_state_copy (gsource->root->subscription->updateState);
-	request->options = update_options_copy (gsource->root->subscription->updateOptions);
+	request->updateState = update_state_copy (source->root->subscription->updateState);
+	request->options = update_options_copy (source->root->subscription->updateOptions);
 	update_request_set_source (request, THEOLDREADER_READER_UNREAD_COUNTS_URL);
-	update_request_set_auth_value(request, gsource->authHeaderValue);
+	update_request_set_auth_value (request, source->authHeaderValue);
 
-	update_execute_request (gsource, request, theoldreader_source_opml_quick_update_cb,
-				gsource, 0);
+	update_execute_request (source, request, theoldreader_source_opml_quick_update_cb,
+				source, 0);
 
 	return TRUE;
 }
-
+*/
 
 static void
 theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
