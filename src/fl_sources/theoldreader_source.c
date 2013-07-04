@@ -211,7 +211,12 @@ theoldreader_source_auto_update (nodePtr node)
 	}
 }
 
-static void theoldreader_source_init (void) { }
+static
+void theoldreader_source_init (void)
+{
+	metadata_type_register ("theoldreader-feed-id", METADATA_TYPE_TEXT);
+}
+
 static void theoldreader_source_deinit (void) { }
 
 static void

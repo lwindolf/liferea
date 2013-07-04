@@ -174,46 +174,24 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 static void
 theoldreader_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
+	gchar 	*id;
+
 	debug_start_measurement (DEBUG_UPDATE);
 
-	if (result->data) { 
-		updateResultPtr resultCopy;
+	/* Save old subscription metadata which contains "theoldreader-feed-id"
+	   which is mission critical and the feed parser currently drops all
+	   previous metadata :-( */
+	id = g_strdup (metadata_list_get (subscription->metadata, "theoldreader-feed-id"));
 
-		/* FIXME: The following is a very dirty hack to edit the feed's
-		   XML before processing it */
-		resultCopy = update_result_new () ;
-		resultCopy->source = g_strdup (result->source); 
-		resultCopy->httpstatus = result->httpstatus;
-		resultCopy->contentType = g_strdup (result->contentType);
-		g_free (resultCopy->updateState);
-		resultCopy->updateState = update_state_copy (result->updateState);
-		
-		/* update the XML by removing 'read', 'reading-list' etc. as labels. */
-		xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
-		xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
-		xmlXPathRegisterNs (xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
-		theoldreader_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, theoldreader_source_xml_unlink_node, NULL);	
-		xmlXPathFreeContext (xpathCtxt);
-		
-		/* good now we have removed the read and unread labels. */
-		
-		xmlChar    *newXml; 
-		int        newXmlSize ;
-		
-		xmlDocDumpMemory (doc, &newXml, &newXmlSize);
-		
-		resultCopy->data = g_strndup ((gchar*) newXml, newXmlSize);
-		resultCopy->size = newXmlSize;
-		
-		xmlFree (newXml);
-		xmlFreeDoc (doc);
-		
-		feed_get_subscription_type ()->process_update_result (subscription, resultCopy, flags);
-		update_result_free (resultCopy);
-	} else { 
-		feed_get_subscription_type ()->process_update_result (subscription, result, flags);
-		return ; 
-	}
+	/* Always do standard feed parsing to get the items... */
+	feed_get_subscription_type ()->process_update_result (subscription, result, flags);
+
+	/* Set remote id again */
+	metadata_list_set (&subscription->metadata, "theoldreader-feed-id", id);
+	g_free (id);
+
+	if (!result->data)
+		return;
 	
 	/* FIXME: The following workaround ensure that the code below,
 	   that uses UI callbacks item_*_state_changed(), does not 
@@ -260,6 +238,11 @@ theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscript
 	g_assert (source); 
 	if (source->loginState == THEOLDREADER_SOURCE_STATE_NONE) { 
 		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
+		return FALSE;
+	}
+
+	if (!metadata_list_get (subscription->metadata, "theoldreader-feed-id")) {
+		g_warning ("Skipping TheOldReader feed '%s' (%s) without id!", subscription->source, subscription->node->id);
 		return FALSE;
 	}
 

@@ -562,7 +562,11 @@ db_init (void)
 
 	debug0 (DEBUG_DB, "Checking for search folder with comments...\n");
 	db_exec ("DELETE FROM search_folder_items WHERE comment = 1;");
-			  
+
+	debug0 (DEBUG_DB, "Checking for subscription metadata without node...\n");
+	db_exec ("DELETE FROM subscription_metadata WHERE node_id NOT IN "
+          	 "(SELECT node_id FROM node);");
+
 	debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 		
 	/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
@@ -1442,7 +1446,7 @@ db_search_folder_get_item_count (const gchar *id)
 }
 
 static GSList *
-db_subscription_metadata_load(const gchar *id) 
+db_subscription_metadata_load (const gchar *id) 
 {
 	GSList		*metadata = NULL;
 	sqlite3_stmt	*stmt;

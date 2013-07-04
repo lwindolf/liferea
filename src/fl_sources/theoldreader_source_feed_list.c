@@ -62,7 +62,8 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 	node->subscription->type = &theOldReaderSourceFeedSubscriptionType;
 	
 	/* Save TheOldReader feed id which we need to fetch items... */
-	metadata_list_set (&node->subscription->metadata, "theoldreader-feed-id", id);
+	node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);
+	db_subscription_update (node->subscription);
 	
 	node_set_parent (node, source->root, -1);
 	feedlist_node_imported (node);
@@ -74,9 +75,6 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 	 */
 	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 	subscription_update_favicon (node->subscription);
-	
-	/* Important: we must not loose the feed id! */
-	db_subscription_update (node->subscription);
 }
 
 /**
