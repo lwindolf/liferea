@@ -2,6 +2,8 @@
 
 	* Added experimental sync support for TheOldReader
 	  (Lars Windolf)
+	* Removed 'Update' link in comments display as it is pretty useless
+	  (Lars Windolf)
 	* Changed unread number rendering to be right bound and non-ellipsized
 	  (Lars Windolf)
 	* Fixes g_strstr_len assertions caused by search folder item matching
