@@ -194,7 +194,7 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 
 	if (!result->data)
 		return;
-g_print("%s\n", result->data);	
+
 	/* FIXME: The following workaround ensure that the code below,
 	   that uses UI callbacks item_*_state_changed(), does not 
 	   reset the newCount of the feed list (see SF #2666478)
