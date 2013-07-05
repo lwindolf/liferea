@@ -314,14 +314,9 @@
   <!-- comment handling -->
   <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed) and $single = 1"> 
      <p>     
-     <xsl:choose>
-        <xsl:when test="count(comments/item) = 0">
-           <b><_span>No comments yet.</_span></b>
-        </xsl:when>
-        <xsl:otherwise>
+        <xsl:if test="count(comments/item) != 0">
 	   <b><_span>Comments</_span></b>
-	</xsl:otherwise>
-     </xsl:choose>
+	</xsl:if>
   
      <!-- Display "comment feed updating" hint -->
         <xsl:if test="comments/updateState = 'updating'">
