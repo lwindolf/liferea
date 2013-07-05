@@ -6,6 +6,8 @@
 	  (Lars Windolf)
 	* Removed 'No Comments' display as it is rather useless
 	  (Lars Windolf)
+	* Prevent re-rendering item display on setting item flagged
+	  (Lars Windolf)
 	* Changed unread number rendering to be right bound and non-ellipsized
 	  (Lars Windolf)
 	* Fixes g_strstr_len assertions caused by search folder item matching

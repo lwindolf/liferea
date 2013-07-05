@@ -1,5 +1,5 @@
 /**
- * @file itemlist.c  itemlist handling
+ * @file itemlist.c  item list handling
  *
  * Copyright (C) 2004-2012 Lars Windolf <lars.lindner@gmail.com>
  *	      
@@ -417,14 +417,14 @@ void
 itemlist_toggle_flag (itemPtr item) 
 {
 	item_set_flag_state (item, !(item->flagStatus));
-	itemview_update ();
+	/* No itemview_update() to avoid disturbing HTML scroll state and media content */
 }
 
 void
 itemlist_toggle_read_status (itemPtr item) 
 {
 	item_set_read_state (item, !(item->readStatus));
-	itemview_update ();
+	/* No itemview_update() to avoid disturbing HTML scroll state and media content */
 }
 
 /* function to remove items due to item list filtering */
