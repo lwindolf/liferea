@@ -453,8 +453,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea - čítačka kanálov pre Linux"
 
 #: ../src/main.c:203
-msgid "For more information, please visit http://liferea.sourceforge.net/"
-msgstr "Pre viac informácií navštívte http://liferea.sourceforge.net/"
+msgid "For more information, please visit http://lzone.de/liferea/"
+msgstr "Pre viac informácií navštívte http://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320

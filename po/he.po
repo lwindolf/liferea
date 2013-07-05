@@ -493,9 +493,9 @@ msgstr ""
 msgid "Liferea, the Linux Feed Reader"
 msgstr ""
 
-# למידע נוסף, אנא בקר בכתובת http://liferea.sourceforge.net/‎
+# למידע נוסף, אנא בקר בכתובת http://lzone.de/liferea/‎
 #: ../src/main.c:203
-msgid "For more information, please visit http://liferea.sourceforge.net/"
+msgid "For more information, please visit http://lzone.de/liferea/"
 msgstr ""
 
 #. Some libsoup transport errors

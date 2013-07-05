@@ -512,7 +512,7 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Събирач на RSS емисии (Liferea)"
 
 #: ../src/main.c:203
-msgid "For more information, please visit http://liferea.sourceforge.net/"
+msgid "For more information, please visit http://lzone.de/liferea/"
 msgstr ""
 
 #. Some libsoup transport errors
@@ -3311,7 +3311,7 @@ msgstr "Нова _приставка"
 #~ msgid ""
 #~ "<p>Could not determine the feed type. Please check that it is a <a href="
 #~ "\"http://feedvalidator.org\">valid</a> type and listed in the <a href="
-#~ "\"http://liferea.sourceforge.net/supported_formats.htm\">supported "
+#~ "\"http://lzone.de/liferea/supported_formats.htm\">supported "
 #~ "formats</a>.</p>"
 #~ msgstr ""
 #~ "<p>Типът на емисията не може да бъде определен. Проверете дали той е <a "

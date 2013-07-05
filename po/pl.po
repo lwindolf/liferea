@@ -428,8 +428,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, czytnik wiadomości dla systemu Linux"
 
 #: ../src/main.c:203
-msgid "For more information, please visit http://liferea.sourceforge.net/"
-msgstr "Więcej informacji można znaleźć na stronie http://liferea.sourceforge.net/"
+msgid "For more information, please visit http://lzone.de/liferea/"
+msgstr "Więcej informacji można znaleźć na stronie http://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320

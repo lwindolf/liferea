@@ -460,8 +460,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, cititor de fluxuri"
 
 #: ../src/main.c:203
-msgid "For more information, please visit http://liferea.sourceforge.net/"
-msgstr "Pentru mai multe informații vizitați http://liferea.sourceforge.net/"
+msgid "For more information, please visit http://lzone.de/liferea/"
+msgstr "Pentru mai multe informații vizitați http://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320

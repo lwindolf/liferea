@@ -449,8 +449,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "<p dir=\"rtl\">لايفريا، قارئ تلقيمات لينكس</p>"
 
 #: ../src/main.c:203
-msgid "For more information, please visit http://liferea.sourceforge.net/"
-msgstr "للمزيد من المعلومات، طالع http://liferea.sourceforge.net/"
+msgid "For more information, please visit http://lzone.de/liferea/"
+msgstr "للمزيد من المعلومات، طالع http://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320

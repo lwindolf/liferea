@@ -419,8 +419,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, Linux Feed Reader"
 
 #: ../src/main.c:202
-msgid "For more information, please visit http://liferea.sourceforge.net/"
-msgstr "Meer informatie vindt u op http://liferea.sourceforge.net/"
+msgid "For more information, please visit http://lzone.de/liferea/"
+msgstr "Meer informatie vindt u op http://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320
@@ -2448,8 +2448,8 @@ msgstr "Plugins"
 #~ msgid "Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"
 #~ msgstr "Onverwachte end of character tekenreeks of corrupte UTF-8 codering! Een aantal tekens zijn weggevallen!"
 
-#~ msgid "<p>Could not determine the feed type. Please check that it is <a href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
-#~ msgstr "<p>Het feed type kon niet worden bepaald. Controleer of de feed <ahref=\"http://feedvalidator.org\">geldig</a> is en een <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">ondersteundformaat</a> heeft."
+#~ msgid "<p>Could not determine the feed type. Please check that it is <a href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://lzone.de/liferea/supported_formats.htm\">supported format</a>.</p>"
+#~ msgstr "<p>Het feed type kon niet worden bepaald. Controleer of de feed <ahref=\"http://feedvalidator.org\">geldig</a> is en een <a href=\"http://lzone.de/liferea/supported_formats.htm\">ondersteundformaat</a> heeft."
 
 #~ msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 #~ msgstr "Fout bij het lezen van cache bestand \"%s\" ! Cache bestand kon niet worden geladen!"

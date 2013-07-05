@@ -425,8 +425,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, Linux-syötelukija"
 
 #: ../src/main.c:203
-msgid "For more information, please visit http://liferea.sourceforge.net/"
-msgstr "Vieraile lisätietoja varten osoitteessa http://liferea.sourceforge.net/"
+msgid "For more information, please visit http://lzone.de/liferea/"
+msgstr "Vieraile lisätietoja varten osoitteessa http://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320
@@ -2432,8 +2432,8 @@ msgstr "Lisäosat"
 #~ msgid "Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"
 #~ msgstr "Odottamaton merkkisarjan loppu tai vioittunutta UTF-8 merkkikoodausta. Osa merkeistä jää pois."
 
-#~ msgid "<p>Could not determine the feed type. Please check that it is <a href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
-#~ msgstr "<p>Syötteen tyypin määrittäminen ei onnistunut. Tarkista, että syöte on <a href=\"http://feedvalidator.org\">kelvollinen</a> ja <a href=\"http://liferea.sourceforge.net/supported_formats.htm\">tuettua muotoa</a>.</p>"
+#~ msgid "<p>Could not determine the feed type. Please check that it is <a href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://lzone.de/liferea/supported_formats.htm\">supported format</a>.</p>"
+#~ msgstr "<p>Syötteen tyypin määrittäminen ei onnistunut. Tarkista, että syöte on <a href=\"http://feedvalidator.org\">kelvollinen</a> ja <a href=\"http://lzone.de/liferea/supported_formats.htm\">tuettua muotoa</a>.</p>"
 
 #~ msgid "Error while reading cache file \"%s\" ! Cache file could not be loaded!"
 #~ msgstr "Virhe välivarastotiedoston \"%s\" lukemisessa. Välivarastotiedoston lataaminen ei onnistunut."

@@ -457,8 +457,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, nyhetsläsaren för Linux"
 
 #: ../src/main.c:203
-msgid "For more information, please visit http://liferea.sourceforge.net/"
-msgstr "Besök http://liferea.sourceforge.net/ för mer information"
+msgid "For more information, please visit http://lzone.de/liferea/"
+msgstr "Besök http://lzone.de/liferea/ för mer information"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320
@@ -3087,7 +3087,7 @@ msgstr ""
 #~ msgstr ""
 #~ "<p>Kunde inte avgöra kanalens typ. Vänligen kontrollera att den är <a "
 #~ "href=\"http://feedvalidator.org\">giltig</a> och i ett av <a href="
-#~ "\"http://liferea.sourceforge.net/supported_formats.htm\">de stödda "
+#~ "\"http://lzone.de/liferea/supported_formats.htm\">de stödda "
 #~ "formaten</a>.</p>"
 
 #~ msgid "user defined command"

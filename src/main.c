@@ -199,7 +199,7 @@ main (int argc, char *argv[])
 
 	context = g_option_context_new (NULL);
 	g_option_context_set_summary (context, N_("Liferea, the Linux Feed Reader"));
-	g_option_context_set_description (context, N_("For more information, please visit http://liferea.sourceforge.net/"));
+	g_option_context_set_description (context, N_("For more information, please visit http://lzone.de/liferea/"));
 	g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 	g_option_context_set_translation_domain(context, GETTEXT_PACKAGE);
 	g_option_context_add_group (context, debug);

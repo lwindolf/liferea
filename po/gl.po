@@ -458,9 +458,9 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, lector de fontes para Linux"
 
 #: ../src/main.c:203
-msgid "For more information, please visit http://liferea.sourceforge.net/"
+msgid "For more information, please visit http://lzone.de/liferea/"
 msgstr ""
-"Para máis información, por favor visite http://liferea.sourceforge.net/"
+"Para máis información, por favor visite http://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:320
