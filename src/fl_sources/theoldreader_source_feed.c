@@ -96,7 +96,8 @@ theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHas
 	GList       *iter; 
 	itemPtr     item = NULL;
 
-	if (ret) return item_load (GPOINTER_TO_UINT (ret));
+	if (ret)
+		return item_load (GPOINTER_TO_UINT (ret));
 
 	/* skip the top 'num' entries */
 	itemset = node_get_itemset (node);
@@ -129,10 +130,14 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 	nodePtr         node = subscription->node;
 	xmlChar         *id = NULL;
 	gboolean        read = FALSE;
-	gboolean        starred = FALSE;
 
 	xml = entry->children;
 	g_assert (xml);
+
+	/* Note: at the moment TheOldReader doesn't exposed a "starred" label
+	   like Google Reader did. It also doesn't expose the like feature it
+	   implements. Therefore we cannot sync the flagged state with 
+	   TheOldReader. */
 
 	for (xml = entry->children; xml; xml = xml->next) {
 		if (g_str_equal (xml->name, "id"))
@@ -145,8 +150,6 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 
 			if (g_str_equal (label, "read"))
 				read = TRUE;
-			else if (g_str_equal(label, "starred")) 
-				starred = TRUE;
 
 			xmlFree (label);
 		}
@@ -163,11 +166,10 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 			
 			if (item->readStatus != read)
 				item_read_state_changed (item, read);
-			if (item->flagStatus != starred) 
-				item_flag_state_changed (item, starred);
 		}
 	}
-	if (item) item_unload (item) ;
+	if (item)
+		item_unload (item);
 	xmlFree (id);
 }
 
@@ -192,7 +194,7 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 
 	if (!result->data)
 		return;
-	
+g_print("%s\n", result->data);	
 	/* FIXME: The following workaround ensure that the code below,
 	   that uses UI callbacks item_*_state_changed(), does not 
 	   reset the newCount of the feed list (see SF #2666478)
