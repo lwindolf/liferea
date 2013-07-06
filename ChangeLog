@@ -14,6 +14,8 @@
 	  (Rich Coe)
 	* Updated documentation to reflect Google Reader, TheOldReader changes
 	  (Lars Windolf)
+	* Removed welcome text, restoring last feed/item selection instead
+	  (Lars Windolf)
 
 	* Updated Basque translation (Mikel Olasagasti Uranga)
 	* Updated Danish translation (Joe Hansen)

@@ -102,6 +102,16 @@
       <summary>Zoom level of the HTML view</summary>
       <description>Zoom level of the HTML view. (100 = 1:1)</description>
     </key>
+    <key name="last-node-selected" type="s">
+      <default>''</default>
+      <summary>Node id of the last feed list selection</summary>
+      <description>When shutting down Liferea saves the last selected node id here to be restored on startup.</description>
+    </key>
+    <key name="last-item-selected" type="i">
+      <default>0</default>
+      <summary>Item id of the last item list selection</summary>
+      <description>When shutting down Liferea saves the last selected item id here to be restored on startup.</description>
+    </key>
     <key name="maxitemcount" type="i">
       <default>100</default>
       <summary>Determines the default number of items saved on each feed</summary>

@@ -307,11 +307,11 @@ on_shutdown (gpointer user_data)
 
 	/* order is important ! */
 	update_deinit ();
-	db_deinit ();
-	social_free ();
 
 	liferea_shell_destroy ();
 
+	db_deinit ();
+	social_free ();
 	conf_deinit ();
 	
 	debug_exit ("liferea_shutdown");

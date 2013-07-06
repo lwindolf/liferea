@@ -32,6 +32,7 @@
 #include "browser.h"
 #include "common.h"
 #include "conf.h"
+#include "db.h"
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
@@ -1129,9 +1130,9 @@ liferea_shell_create (GtkApplication *app)
 	GtkUIManager	*ui_manager;
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
-	GString		*buffer;
 	gboolean	show_tray_icon, toggle;
 	gint		initialState;
+	gchar		*id;
 	
 	debug_enter ("liferea_shell_create");
 
@@ -1313,44 +1314,22 @@ liferea_shell_create (GtkApplication *app)
 
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
 	
-	/* 9. Create welcome text */
+	/* 9. Restore latest selection */
 
-	/* force two pane mode */
-	/*   For some reason, this causes the first item to be selected and then
-	     unselected... strange. */
-	feed_list_view_select (NULL);
-	
-	itemview_set_layout (NODE_VIEW_MODE_COMBINED);
-	
-	buffer = g_string_new (NULL);
-	htmlview_start_output (buffer, NULL, TRUE, FALSE);
-	g_string_append (buffer,   "<body><div style=\"padding:8px\">"
-				   "<table class=\"headmeta\" style=\"border:solid 1px #aaa;font-size:120%\" border=\"0\" cellspacing=\"0\" cellpadding=\"5px\"><tr><td>"
-				   // Display application icon
-				   "<img src=\"file://"
-				   PACKAGE_DATA_DIR G_DIR_SEPARATOR_S "icons" G_DIR_SEPARATOR_S
-				   "hicolor" G_DIR_SEPARATOR_S "48x48" G_DIR_SEPARATOR_S "apps"
-				   G_DIR_SEPARATOR_S "liferea.png\" />"
-				   "</td><td><h3>");
-	g_string_append (buffer,   _("Liferea - Linux Feed Reader"));
-	g_string_append (buffer,   "</h3></td></tr><tr><td colspan=\"2\">");
-	g_string_append (buffer,   _("<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
-				   "feeds.</p>"
-				   "<p>You can add new subscriptions "
-	                           "<ul>"
-	                           "<li>From main menu 'Subscription' -&gt; 'New Subscription'</li>"
-	                           "<li>By dropping feed links into the subscription list</li>"
-	                           "<li>By right clicking links and choosing 'Subscribe' within Liferea</li>"
-	                           "</ul>"
-				   "</p>"));
-	g_string_append (buffer,   "</td></tr></table>");
-	
-	g_string_append (buffer,   "</div></body>");
+	// FIXME: Move to feed list code
+	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {
+		feed_list_view_select (node_from_id (id));
+		g_free (id);
 
-	htmlview_finish_output (buffer);
-	itemview_display_info (buffer->str);
-	g_string_free (buffer, TRUE);
-	
+		// FIXME: Move to item list view code
+		gint item_id;
+		if (conf_get_int_value (LAST_ITEM_SELECTED, &item_id)) {
+			itemPtr item = db_item_load ((gulong)item_id);
+			itemview_select_item (item);
+			item_unload (item);
+		}
+	}
+		
 	/* 10. Connect network monitoring and set icon*/
 	
 	g_signal_connect (network_monitor_get (), "online-status-changed",
@@ -1378,7 +1357,22 @@ liferea_shell_create (GtkApplication *app)
 void
 liferea_shell_destroy (void)
 {
-	feed_list_view_select (NULL);
+	nodePtr	node;
+	itemPtr	item;
+
+	/* Save last selection for next start */
+	// FIXME: Move to feed list handling
+	node = feedlist_get_selected ();
+	if (node)
+		conf_set_str_value (LAST_NODE_SELECTED, node->id);
+
+	// FIXME: Move to item list handling
+	item = itemlist_get_selected ();
+	if (item)
+		conf_set_int_value (LAST_ITEM_SELECTED, item->id);
+
+	feed_list_view_select (NULL);	// FIXME: Move to feed list handling
+
 	liferea_shell_save_position ();
 	ui_tray_enable (FALSE);
 	g_object_unref (shell->priv->tabs);
