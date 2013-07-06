@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Subscribing to Google Reader/TinyTinyRSS</title>
+	<title>Subscribing to Online Services</title>
 	
 	<link rel="stylesheet" type="text/css" href="help.css">
 </head>
@@ -10,16 +10,16 @@
 	<table width="100%">
 	   <tr>
 	      <!-- back --><td width="50px"><a href="newsbin_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><b>Google Reader/TinyTinyRSS</b></td>
+	      <!-- home --><td style="text-align:center;"><b>Subscribing to Online Services</b></td>
 	      <!-- next --><td width="50px;" style="text-align:right;">Next</td>
 	   </tr>
 	</table>
 	<hr />
 	<!-- navigation header end -->
 
-	<h3>What is Google Reader and TinyTinyRSS?</h3>
+	<h3>What is TheOldReader and TinyTinyRSS?</h3>
 	<p>
-	Google Reader (<a href="http://google.com/reader">http://google.com/reader</a>) and 
+	TheOldReader (<a href="http://theoldreader.com/">http://theoldreader.com/</a>) and 
 	TinyTinyRSS (<a href="http://tt-rss.org/redmine/">http://tt-rss.org/redmine/</a>) 
 	are <b>online news aggregators</b>. To use these services you need an online user account.
 	With such an account you can read your subscriptions
@@ -51,7 +51,7 @@
 	<p>
 	<ol>
 		<li>Create a online aggregator account if you not already have one.</li>
-		<li>Click "New/New Source" and select "Google Reader" or "TinyTinyRSS" from the dialog.</li>
+		<li>Click "New/New Source" and select "TheOldReader" or "TinyTinyRSS" from the dialog.</li>
 		<li>Enter you account username and password.</li>
 	</ol>
 	</p>
@@ -60,10 +60,50 @@
 	should appear and items should be retrieved.
 	</p>
 
-	<h3>Supported TinyTinyRSS Versions</h3>
+	<h4>Google Reader</h4>
+	<p>
+	Until 01.07.2013 Google did provide the "Google Reader" service which
+	Liferea was able to import into the subscription list.
+	</p>
+	<p>
+	If you still have the "Google Reader" subscriptions in Liferea you can
+	convert them into normal Liferea feeds. To achieve this select the
+	"Convert To Local Subscriptions" option in the subscription context menu.
+	<b>The advantage of converting is that Liferea can keep all downloaded
+	headline for further use and while fetching new headlines.</b>
+	</p>
+	
+	<h4>TheOldReader</h4>
+	<p>
+	Using "TheOldReader" requires an existing user account with this online
+	service. For this user account <b>having a password is mandatory!</b>
+	You can set a password on <a href="http://theoldreader.com/">http://theoldreader.com</a>
+	under "Preferences".
+	<p>
+	If you chose "TheOldReader" as source you need to provide user name and
+	password of your online account. After doing so Liferea will provide
+	you with the subscription list fetched from "TheOldReader".
+	</p>
+	<p>
+	<b>Note:</b> If you delete "TheOldReader" subscriptions or headlines
+	in Liferea then those will <b>also</b> be deleted in the online service
+	"TheOldReader"!
+	</p>
+	<p>
+	<b>Note:</b> "TheOldReader" doesn't support synchronizing the flagging
+	of important headlines. If you flag an item in Liferea, this flag will
+	only be visible in Liferea. The same is true for "TheOldReader" if you
+	"like" an headline this won't be visible in Liferea.
+	</p>
 
-	<p>Liferea 1.8.12 and later supports TinyTinyRSS versions starting with
+	<h3>TinyTinyRSS</h3>
+
+	<p>Liferea 1.10 and later supports TinyTinyRSS versions starting with
 	version 1.5.3.</p>
+
+	<p>TinyTinyRSS muss vom Benutzer selbst auf einem eigenen Server
+	installiert werden. Das erfordert Kenntnisse in Serveradministration!
+	Einmal installiert verhälft sich TinyTinyRSS aber wie andere Online-Dienste.</p>
 		
 	<!-- navigation footer start -->
 	<hr />

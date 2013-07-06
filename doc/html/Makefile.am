@@ -10,7 +10,7 @@ html_doc_en =	about_en.html \
 		updating_en.html \
 		enclosures_en.html \
 		newsbin_en.html \
-		greader_en.html \
+		onlineservices_en.html \
 		faq_en.html
 
 html_doc_de =	about_de.html \
@@ -25,7 +25,7 @@ html_doc_de =	about_de.html \
 		updating_de.html \
 		enclosures_de.html \
 		newsbin_de.html \
-		greader_de.html \
+		onlineservices_de.html \
 		faq_de.html
 
 html_doc_pictures_en =	help_feed_default.png \
