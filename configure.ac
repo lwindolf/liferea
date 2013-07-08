@@ -87,14 +87,10 @@ pkg_modules="	gtk+-3.0 >= 3.4.0
 		libsoup-2.4 >= 2.28.2
 		webkitgtk-3.0
 		json-glib-1.0
+		gobject-introspection-1.0
 		gsettings-desktop-schemas
 		libpeas-1.0 >= 1.0.0
 		libpeas-gtk-1.0 >= 1.0.0"
-
-################################################################################
-# Plugins via Introspection
-
-GOBJECT_INTROSPECTION_CHECK([0.9.3])
 
 ################################################################################
 
@@ -107,6 +103,13 @@ uname=`uname`
 AC_DEFINE_UNQUOTED(OS, $uname, [defines a OS version string, used for OS specific code])
 AC_DEFINE_UNQUOTED(OSNAME, "$uname", [defines a OS version string, used for the user agent string])
 AC_MSG_RESULT(user agent OS = $uname)
+
+################################################################################
+# Plugins via Introspection
+
+GOBJECT_INTROSPECTION_CHECK([0.9.3])]
+
+################################################################################
 
 AM_GLIB_GNU_GETTEXT
 
