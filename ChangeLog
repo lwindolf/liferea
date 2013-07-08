@@ -16,6 +16,8 @@
 	  (Lars Windolf)
 	* Removed welcome text, restoring last feed/item selection instead
 	  (Lars Windolf)
+	* autogen.sh now reports errors on missing autoconf or intltool
+	  (Lars Windolf)
 
 	* Updated Basque translation (Mikel Olasagasti Uranga)
 	* Updated Danish translation (Joe Hansen)
