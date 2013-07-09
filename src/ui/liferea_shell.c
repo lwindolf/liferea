@@ -1325,8 +1325,10 @@ liferea_shell_create (GtkApplication *app)
 		gint item_id;
 		if (conf_get_int_value (LAST_ITEM_SELECTED, &item_id)) {
 			itemPtr item = db_item_load ((gulong)item_id);
-			itemview_select_item (item);
-			item_unload (item);
+			if (item) {
+				itemview_select_item (item);
+				item_unload (item);
+			}
 		}
 	}
 		
