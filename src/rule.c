@@ -88,7 +88,7 @@ rule_check_item_title (rulePtr rule, itemPtr item)
 static gboolean
 rule_check_item_description (rulePtr rule, itemPtr item)
 {
-	return (NULL != item->title && NULL != g_strstr_len (item->description, -1, rule->value));
+	return (NULL != item->description && NULL != g_strstr_len (item->description, -1, rule->value));
 }
 
 static gboolean
