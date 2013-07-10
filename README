@@ -62,7 +62,7 @@ contact us in IRC (see Support section) to help you with it!
 3.1 Dependencies
 ----------------
 
-Liferea 1.9+ is to be built against GTK+ 3. If you need to build
+Liferea 1.10+ is to be built against GTK+ 3. If you need to build
 for GTK+ 2 please use the most recent 1.8 release.
 
 The compilation and runtime dependencies are:
