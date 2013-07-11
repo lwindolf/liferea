@@ -107,7 +107,7 @@ AC_MSG_RESULT(user agent OS = $uname)
 ################################################################################
 # Plugins via Introspection
 
-GOBJECT_INTROSPECTION_CHECK([0.9.3])]
+GOBJECT_INTROSPECTION_CHECK([0.9.3])
 
 ################################################################################
 
