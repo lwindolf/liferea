@@ -1,3 +1,13 @@
+	To be released
+
+	* Patch #226: Add trailing semi-colon to MimeType so that the desktop 
+	  file validates (Yanko Kaneti)
+	* Patch #227: Remove letfover square bracket configure.ac
+	  (Yanko Kaneti)
+	* Patch #228: Add net.sf.liferea.gschema.xml to AC_CONFIG_FILES
+	  (Yanko Kaneti)
+
+
 2013-07-10   Lars Windolf <lars.lindner@gmail.com>
 
 	Version 1.10.0
