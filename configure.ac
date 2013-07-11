@@ -120,6 +120,7 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["${GETTEXT_PACKAGE}"], [gettext domain])
 
 AC_CONFIG_FILES([
 Makefile
+net.sf.liferea.gschema.xml
 src/Makefile
 src/webkit/Makefile
 src/parsers/Makefile
