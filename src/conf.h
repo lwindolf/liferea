@@ -83,13 +83,6 @@
 #define PROXY_USER			"proxy-authentication-user"
 #define PROXY_PASSWD			"proxy-authentication-password"
 
-#define GNOME_PROXY_MODE		"mode"
-#define GNOME_PROXY_HOST		"host"
-#define GNOME_PROXY_PORT		"port"
-#define GNOME_PROXY_USEAUTH		"use-authentication"
-#define GNOME_PROXY_USER		"authentication-user"
-#define GNOME_PROXY_PASSWD		"authentication-password"
-
 /* initializing methods */
 void	conf_init (void);
 void	conf_deinit (void);

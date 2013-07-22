@@ -1,10 +1,12 @@
 	To be released
 
-	* Patch #226: Add trailing semi-colon to MimeType so that the desktop 
+	* Fixes SF #1059: Liferea crashes with system proxy enabled
+	  (reported by genodeftest)
+	* Patch SF #226: Add trailing semi-colon to MimeType so that the desktop 
 	  file validates (Yanko Kaneti)
-	* Patch #227: Remove letfover square bracket configure.ac
+	* Patch SF #227: Remove letfover square bracket configure.ac
 	  (Yanko Kaneti)
-	* Patch #228: Add net.sf.liferea.gschema.xml to AC_CONFIG_FILES
+	* Patch SF #228: Add net.sf.liferea.gschema.xml to AC_CONFIG_FILES
 	  (Yanko Kaneti)
 
 

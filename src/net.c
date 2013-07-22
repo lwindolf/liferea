@@ -177,8 +177,7 @@ network_process_request (const updateJobPtr const job)
 	 * displaying the dialog ourselves, and requeing the msg if we get credentials */
 
 	/* If the feed has "dont use a proxy" selected, disable the proxy for the msg */
-	if ((job->request->options && job->request->options->dontUseProxy) ||
-	    (network_get_proxy_host () == NULL))
+	if (job->request->options && job->request->options->dontUseProxy)
 		soup_message_disable_feature (msg, SOUP_TYPE_PROXY_URI_RESOLVER);
 
 	soup_session_queue_message (session, msg, network_process_callback, job);
@@ -227,12 +226,20 @@ network_init (void)
 	session = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
 						       SOUP_SESSION_TIMEOUT, 120,
 						       SOUP_SESSION_IDLE_TIMEOUT, 30,
-						       SOUP_SESSION_PROXY_URI, proxy,
 						       SOUP_SESSION_ADD_FEATURE, cookies,
 	                                               SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
 						       NULL);
-	if (proxy)
+
+	if (proxy) {
+		debug1 (DEBUG_NET, "Initializing libsoup with proxy '%s'", proxy);
+		g_object_set (G_OBJECT (session),
+			      SOUP_SESSION_PROXY_URI, proxy,
+			      NULL);
 		soup_uri_free (proxy);
+	} else {
+		debug0 (DEBUG_NET, "Initializing libsoup with libproxy defaults");
+		soup_session_add_feature_by_type (session, SOUP_TYPE_PROXY_RESOLVER_DEFAULT);
+	}
 		
 	g_signal_connect (session, "authenticate", G_CALLBACK (network_authenticate), NULL);
 

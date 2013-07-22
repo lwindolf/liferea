@@ -2,7 +2,7 @@
  * @file conf.c Liferea configuration (GSettings access)
  *
  * Copyright (C) 2011 Mikel Olasagasti Uranga <mikel@olasagasti.info>
- * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -35,11 +35,9 @@
 #define MAX_GCONF_PATHLEN	256
 
 #define LIFEREA_SCHEMA_NAME		"net.sf.liferea"
-#define PROXY_SCHEMA_NAME		"org.gnome.system.proxy"
 #define DESKTOP_SCHEMA_NAME		"org.gnome.desktop.interface"
 
 static GSettings *settings;
-static GSettings *proxy_settings;
 static GSettings *desktop_settings;
 
 /* Function prototypes */
@@ -87,7 +85,6 @@ conf_init (void)
 
 	/* initialize GSettings client */
 	settings = g_settings_new (LIFEREA_SCHEMA_NAME);
-	proxy_settings = g_settings_new(PROXY_SCHEMA_NAME);
 	desktop_settings = g_settings_new(DESKTOP_SCHEMA_NAME);
 
 	g_signal_connect (
@@ -140,43 +137,6 @@ conf_init (void)
 		G_CALLBACK (conf_proxy_reset_settings_cb),
 		NULL
 	);
-	g_signal_connect (
-		proxy_settings,
-		"changed::" GNOME_PROXY_MODE,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		proxy_settings,
-		"changed::" GNOME_PROXY_HOST,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		proxy_settings,
-		"changed::" GNOME_PROXY_PORT,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		proxy_settings,
-		"changed::" GNOME_PROXY_USEAUTH,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		proxy_settings,
-		"changed::" GNOME_PROXY_USER,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		proxy_settings,
-		"changed::" GNOME_PROXY_PASSWD,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-
 
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb (NULL, 0, NULL, NULL);
@@ -186,7 +146,6 @@ void
 conf_deinit (void)
 {
 	g_object_unref (settings);
-	g_object_unref (proxy_settings);
 	g_object_unref (desktop_settings);
 }
 
@@ -223,7 +182,6 @@ conf_proxy_reset_settings_cb (GSettings *settings,
                               gpointer user_data)
 {
 	gchar		*proxyname, *proxyusername, *proxypassword, *tmp;
-	gboolean	gnomeUseProxy;
 	guint		proxyport;
 	gint		proxydetectmode;
 	gboolean	proxyuseauth;
@@ -239,58 +197,7 @@ conf_proxy_reset_settings_cb (GSettings *settings,
 		default:
 		case 0:
 			debug0 (DEBUG_CONF, "proxy auto detect is configured");
-
-			/* first check for a configured GNOME proxy, note: older
-			   GNOME versions do use the boolean flag GNOME_USE_PROXY
-			   while newer ones use the string key GNOME_PROXY_MODE */
-			conf_get_str_value_from_schema (proxy_settings, GNOME_PROXY_MODE, &tmp);
-			gnomeUseProxy = g_str_equal (tmp, "manual");
-			g_free (tmp);
-
-			/* first check for a configured GNOME proxy */
-			if (gnomeUseProxy) {
-				conf_get_str_value_from_schema (proxy_settings, GNOME_PROXY_HOST, &proxyname);
-				conf_get_int_value_from_schema (proxy_settings, GNOME_PROXY_PORT, &proxyport);
-				debug2 (DEBUG_CONF, "using GNOME configured proxy: \"%s\" port \"%d\"", proxyname, proxyport);
-				conf_get_bool_value_from_schema (proxy_settings, GNOME_PROXY_USEAUTH, &proxyuseauth);
-				if (proxyuseauth) {
-					conf_get_str_value_from_schema (proxy_settings, GNOME_PROXY_USER, &proxyusername);
-					conf_get_str_value_from_schema (proxy_settings, GNOME_PROXY_PASSWD, &proxypassword);
-				}
-			} else {
-				/* otherwise there could be a proxy specified in the environment
-				   the following code was derived from SnowNews' setup.c */
-				if (g_getenv("http_proxy")) {
-					/* The pointer returned by getenv must not be altered.
-					   What about mentioning this in the manpage of getenv? */
-					debug0 (DEBUG_CONF, "using proxy from environment");
-					do {
-						uri = xmlParseURI (BAD_CAST g_getenv ("http_proxy"));
-						if (uri == NULL) {
-							debug0 (DEBUG_CONF, "parsing URI in $http_proxy failed!");
-							break;
-						}
-						if (uri->server == NULL) {
-							debug0 (DEBUG_CONF, "could not determine proxy name from $http_proxy!");
-							xmlFreeURI (uri);
-							break;
-						}
-						proxyname = g_strdup (uri->server);
-						proxyport = (uri->port == 0) ? 3128 : uri->port;
-						if (uri->user) {
-							tmp = strtok (uri->user, ":");
-							tmp = strtok (NULL, ":");
-							if (tmp) {
-								proxyusername = g_strdup (uri->user);
-								proxypassword = g_strdup (tmp);
-							}
-						}
-						xmlFreeURI (uri);
-					} while (FALSE);
-				}
-			}
-			if (!proxyname)
-				debug0 (DEBUG_CONF, "no proxy GNOME of $http_proxy configuration found...");
+			/* nothing to do, all done by libproxy inside libsoup */
 			break;
 		case 1:
 			debug0 (DEBUG_CONF, "proxy is disabled by user");
@@ -308,7 +215,7 @@ conf_proxy_reset_settings_cb (GSettings *settings,
 			}
 			break;
 	}
-	debug4 (DEBUG_CONF, "Proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
+	debug4 (DEBUG_CONF, "Manual proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
 		  proxyusername != NULL ? proxyusername : "NULL",
 		  proxypassword != NULL ? proxypassword : "NULL");
 
