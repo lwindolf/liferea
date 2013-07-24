@@ -128,6 +128,9 @@ liferea_shell_lookup (const gchar *name)
 GtkStyle *
 liferea_shell_get_style (void)
 {
+	/* Show the window to avoid getting the style before it is initialized */
+	gtk_widget_show (GTK_WIDGET (shell->priv->window));
+
 	return gtk_widget_get_style (GTK_WIDGET (shell->priv->window));
 }
 
