@@ -124,16 +124,6 @@ liferea_shell_lookup (const gchar *name)
 	return GTK_WIDGET (gtk_builder_get_object (shell->priv->xml, name));
 }
 
-
-GtkStyle *
-liferea_shell_get_style (void)
-{
-	/* Show the window to avoid getting the style before it is initialized */
-	gtk_widget_show (GTK_WIDGET (shell->priv->window));
-
-	return gtk_widget_get_style (GTK_WIDGET (shell->priv->window));
-}
-
 static void
 liferea_shell_init (LifereaShell *ls)
 {
@@ -1139,15 +1129,13 @@ liferea_shell_create (GtkApplication *app)
 	
 	debug_enter ("liferea_shell_create");
 
-	/* 1.) object setup */
-
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
 
 	shell->priv->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 
 	gtk_window_set_application (GTK_WINDOW (shell->priv->window), app);
 	
-	/* 2.) menu creation */
+	/* 1.) menu creation */
 	
 	debug0 (DEBUG_GUI, "Setting up menues");
 
@@ -1252,13 +1240,17 @@ liferea_shell_create (GtkApplication *app)
 	debug0 (DEBUG_GUI, "Setting up tabbed browsing");	
 	shell->priv->tabs = browser_tabs_create (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
 	
-	/* 5.) setup feed list */
+	/* 5.) Before feed list is initialized, get theme colors */
+	gtk_widget_realize (GTK_WIDGET (shell->priv->window));
+	render_init_theme_colors (GTK_WIDGET (shell->priv->window));
+
+	/* 6.) setup feed list */
 
 	debug0 (DEBUG_GUI, "Setting up feed list");
 	shell->priv->feedlistView = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 	feed_list_view_init (shell->priv->feedlistView);
 
-	/* 6.) setup menu sensivity */
+	/* 7.) setup menu sensivity */
 	
 	debug0 (DEBUG_GUI, "Initialising menues");
 		
@@ -1269,19 +1261,19 @@ liferea_shell_create (GtkApplication *app)
 	   and setting the 2/3 pane mode view */
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), FALSE);
 	
-	/* 7.) setup item view */
+	/* 8.) setup item view */
 	
 	debug0 (DEBUG_GUI, "Setting up item view");
 
 	shell->priv->itemview = itemview_create (GTK_WIDGET (shell->priv->window));
 	
-	/* 8.) load icons as required */
+	/* 9.) load icons as required */
 	
 	debug0 (DEBUG_GUI, "Loading icons");
 	
 	icons_load ();
 	
-	/* 9.) update all menu elements */
+	/* 10.) update all menu elements */
 	
 	liferea_shell_update_toolbar ();
 	liferea_shell_update_history_actions ();
@@ -1317,7 +1309,7 @@ liferea_shell_create (GtkApplication *app)
 
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
 	
-	/* 9. Restore latest selection */
+	/* 11.) Restore latest selection */
 
 	// FIXME: Move to feed list code
 	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {
@@ -1335,14 +1327,14 @@ liferea_shell_create (GtkApplication *app)
 		}
 	}
 		
-	/* 10. Connect network monitoring and set icon*/
+	/* 12. Connect network monitoring and set icon*/
 	
 	g_signal_connect (network_monitor_get (), "online-status-changed",
 	                  G_CALLBACK (liferea_shell_online_status_changed), shell);
 
 	liferea_shell_set_online_icon (network_monitor_is_online ());
 
-	/* 11. Setup shell plugins */
+	/* 13. Setup shell plugins */
 
 	shell->priv->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
 		                             LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
@@ -1352,7 +1344,7 @@ liferea_shell_create (GtkApplication *app)
 
 	peas_extension_set_call (shell->priv->extensions, "activate");
 
-	/* 12. Rebuild search folders if needed */
+	/* 14. Rebuild search folders if needed */
 	if (searchFolderRebuild)
 		vfolder_foreach (vfolder_rebuild);
 

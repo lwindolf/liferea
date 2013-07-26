@@ -2,7 +2,7 @@
  * @file liferea_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -76,16 +76,6 @@ GType liferea_shell_get_type	(void);
  * Returns: (transfer none): the widget found or NULL
  */
 GtkWidget * liferea_shell_lookup (const gchar *name);
-
-/**
- * liferea_shell_get_style:
- *
- * Returns the applications GtkStyle. To be used by the
- * HTML rendering code to determine theme colors.
- *
- * Return value: (transfer none):	the itemview GtkStyle
- */
-GtkStyle * liferea_shell_get_style (void);
 
 /**
  * liferea_shell_create:

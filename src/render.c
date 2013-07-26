@@ -39,7 +39,6 @@
 #include "render.h"
 #include "xml.h"
 #include "ui/liferea_htmlview.h"
-#include "ui/liferea_shell.h"
 
 /* Liferea provides special screens and the item and the feed displays
    using self-generated HTML. To separate code and layout and to easily
@@ -183,14 +182,14 @@ render_calculate_theme_color (const gchar *name, GdkColor themeColor)
 	return tc;
 }
 
-static void
-render_get_theme_colors (void)
+void
+render_init_theme_colors (GtkWidget *widget)
 {
 	GtkStyle	*style;
 	GdkColor	*color;
 	gint		textAvg, bgAvg;
 
-	style = liferea_shell_get_style ();
+	style = gtk_widget_get_style (widget);
 
 	g_assert (NULL == themeColors);
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
@@ -202,7 +201,7 @@ render_get_theme_colors (void)
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
 
 	color = NULL;
-	gtk_widget_style_get (liferea_shell_get_window (), "link-color", &color, NULL);
+	gtk_widget_style_get (widget, "link-color", &color, NULL);
 	if (color) {
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-NORMAL-LINK", *color));
 		debug0 (DEBUG_HTML, "successfully set the color for links");
@@ -210,7 +209,7 @@ render_get_theme_colors (void)
 	}
 
 	color = NULL;
-	gtk_widget_style_get (liferea_shell_get_window (), "visited-link-color", &color, NULL);
+	gtk_widget_style_get (widget, "visited-link-color", &color, NULL);
 	if (color) {
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color("GTK-COLOR-VISITED-LINK", *color));
 		debug0 (DEBUG_HTML, "successfully set the color for visited links");
@@ -255,7 +254,7 @@ render_get_theme_color (const gchar *name)
 	GSList	*iter;
 	
 	if (!themeColors)
-		render_get_theme_colors();
+		return NULL;
 
 	iter = themeColors;
 	while (iter) {
@@ -272,7 +271,7 @@ gboolean
 render_is_dark_theme (void)
 {
 	if (!themeColors)
-		render_get_theme_colors();
+		FALSE;
 
 	return darkTheme;
 }
@@ -287,7 +286,7 @@ render_get_css (gboolean externalCss)
 		gchar	*tmp;
 
 		if (!themeColors)
-			render_get_theme_colors();
+			return NULL;
 
 		css = g_string_new(NULL);
 

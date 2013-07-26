@@ -63,13 +63,24 @@ void render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...);
 const gchar * render_get_css (gboolean externalCss);
 
 /**
- * Returns the CSS value of a given GTK theme color name e.g. "GTK-COLOR-MID"
+ * Returns the CSS value of a given GTK theme color name e.g. "GTK-COLOR-MID".
+ * Might return NULL as long as the LifereaShell which is used for fetching 
+ * styles is not yet available.
  *
  * @param name		the GTK theme color name
  *
- * @returns a CSS value (e.g. "#CCC")
+ * @returns a CSS value or NULL (e.g. "#CCC")
  */
 const gchar * render_get_theme_color (const gchar *name);
+
+/** 
+ * Needs to be called once before render_get_theme_color () or render_get_css ()
+ * can be used. Must be called only after the LifereaShell is created because
+ * it is used to fetch the GTK theme.
+ *
+ * @param name		a widget from which we can fetch styles
+ */
+void render_init_theme_colors (GtkWidget *widget);
 
 /**
  * To be used to query if a dark GTK theme was detected
