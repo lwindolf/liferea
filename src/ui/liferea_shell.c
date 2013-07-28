@@ -41,6 +41,7 @@
 #include "itemlist.h"
 #include "net_monitor.h"
 #include "plugins_engine.h"
+#include "render.h"
 #include "vfolder.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
