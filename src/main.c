@@ -163,7 +163,7 @@ main (int argc, char *argv[])
 		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &initialStateOption, N_("Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"), N_("STATE") },
 		{ "version", 'v', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, show_version, N_("Show version information and exit"), NULL },
 		{ "add-feed", 'a', 0, G_OPTION_ARG_STRING, &feedUri, N_("Add a new subscription"), N_("uri") },
-		{ NULL }
+		{ NULL, 0, 0, 0, NULL, NULL, NULL }
 	};
 
 	GOptionEntry debug_entries[] = {
@@ -180,7 +180,7 @@ main (int argc, char *argv[])
 		{ "debug-update", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the feed update processing"), NULL },
 		{ "debug-vfolder", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the search folder matching"), NULL },
 		{ "debug-verbose", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print verbose debugging messages"), NULL },
-		{ NULL }
+		{ NULL, 0, 0, 0, NULL, NULL, NULL }
 	};
 
 #ifdef ENABLE_NLS
