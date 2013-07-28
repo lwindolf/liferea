@@ -1,4 +1,4 @@
-.TH LIFEREA "1" "Nov 26, 2012"
+.TH LIFEREA "1" "Jul 26, 2013"
 .SH NAME
 Liferea \- GTK desktop news aggregator
 
@@ -24,7 +24,7 @@ Display a option overview and exit
 .B \-a, \-\-add\-feed=\fIURI\fR
 Add a new subscription URI which can be a feed or website URL
 .TP
-.B \-\-mainwindow\-state=\fISTATE\fR
+.B \-w, \-\-mainwindow\-state=\fISTATE\fR
 Start Liferea with its mainwindow in STATE: shown, iconified, hidden
 .TP
 .B \-\-debug\-all
@@ -42,7 +42,7 @@ Print debugging messages of all GUI functions
 .B \-\-debug\-html
 Enables HTML rendering debugging. Each time Liferea
 renders HTML output it will also dump the generated
-HTML into ~/.liferea_1.6/output.xhtml.
+HTML into $XDG_CACHE_DIR/liferea/output.xhtml.
 .TP
 .B \-\-debug\-parsing
 Print debugging messages of all parsing functions
@@ -76,19 +76,19 @@ to work.
 .TP
 .B http_proxy
 If a proxy is not specified in the Liferea preferences (which uses the proxy
-settings in gconf), then Liferea will use the proxy specified in $http_proxy.
+settings provided by dconf), then Liferea will use the proxy specified in $http_proxy.
 $http_proxy should be set to a URI specifying the desired proxy, for example
 .RB \(oqhttp://proxy.example.com:3128/\(cq.
 
 .SH FILES
 .TP
-~/.config/liferea/feedlist.opml
+$XDG_CONFIG_DIR/liferea/feedlist.opml
 Contains the current list of subscriptions 
 .TP
-~/.config/liferea/liferea.css
+$XDG_CONFIG_DIR/liferea/liferea.css
 Stylesheet that can be used to override default HTML style
 .TP
-~/.local/share/liferea/liferea.db
+$XDG_DATA_DIR/liferea/liferea.db
 Sqlite3 database with all subscriptions and headlines
 .SH AUTHOR
 This manual page was written by Lars Windolf <lars.lindner@gmail.com>.
