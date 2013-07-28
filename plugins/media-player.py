@@ -9,6 +9,11 @@ from gi.repository import Gtk
 from gi.repository import Liferea
 from gi.repository import Gst
 
+# FIXME: Upgrade to 0.11
+#import gi
+#gi.require_version('Gst', '0.11')
+#from gi.repository import Gst
+
 class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
     __gtype_name__ = 'MediaPlayerPlugin'
 
@@ -27,6 +32,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
             bus.add_signal_watch()
             bus.connect("message::eos", self.on_eos)
             bus.connect("message::error", self.on_error)
+        self.player.connect("about-to-finish",  self.on_finished)
 
         self.moving_slider = False
 
@@ -135,17 +141,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
 
     def on_slider_change_value(self, widget, scroll, value):
         self.set_label(value) 
-        if not self.moving_slider:
-            nanosecs = value * Gst.SECOND
-            # Stop when moving slider to very near the end
-            end_cutoff = self.get_player_duration() - Gst.SECOND
-            if nanosecs > end_cutoff and self.playing:
-                self.playToggled(None)
-            else:
-                self.player.seek_simple(Gst.Format.TIME,
-                                        Gst.SeekFlags.FLUSH | 
-                                        Gst.SeekFlags.KEY_UNIT,
-                                        nanosecs)
+        self.move_to_nanosecs = value * Gst.SECOND
 
         return False
 
@@ -154,6 +150,17 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
 
     def on_slider_button_release(self, widget, event):
         self.moving_slider = False
+
+        # Stop when moving slider to very near the end
+        end_cutoff = self.get_player_duration() - Gst.SECOND
+        if self.move_to_nanosecs > end_cutoff and self.playing:
+            self.playToggled(None)
+        else:
+            self.player.seek_simple(Gst.Format.TIME,
+                                    Gst.SeekFlags.FLUSH | 
+                                    Gst.SeekFlags.KEY_UNIT,
+                                    self.move_to_nanosecs)
+
 
     def do_load(self, parentWidget, enclosures):
         if parentWidget == None:
