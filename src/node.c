@@ -487,7 +487,7 @@ node_set_view_mode (nodePtr node, nodeViewType viewMode)
 
 	conf_get_int_value (DEFAULT_VIEW_MODE, &defaultViewMode);
 
-	if (viewMode != defaultViewMode)
+	if (viewMode != (nodeViewType)defaultViewMode)
 		node->viewMode = viewMode;
 	else
 		node->viewMode = NODE_VIEW_MODE_DEFAULT;
