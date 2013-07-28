@@ -250,8 +250,10 @@ atom10_parse_person_construct (xmlNodePtr cur)
 		invalid = TRUE;
 		name = g_strdup (_("Invalid Atom feed: unknown author"));
 	}
-	/* FIXME: so something with "invalid" flag */
-	tmp = g_strdup_printf ("%s%s%s", name, uri?uri:"", email?email:"");
+
+	if (!invalid)
+		tmp = g_strdup_printf ("%s%s%s", name, uri?uri:"", email?email:"");
+
 	g_free (uri);
 	g_free (email);
 	g_free (name);
@@ -555,8 +557,10 @@ atom10_parse_feed_author (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr ip, st
 {
 	/* parse feed author */
 	gchar *author = atom10_parse_person_construct (cur);
-	ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "author", author);
-	g_free (author);
+	if (author) {
+		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "author", author);
+		g_free (author);
+	}
 	/* FIXME: make item parsing use this author if not specified elsewhere */
 }
 
@@ -582,8 +586,10 @@ atom10_parse_feed_contributor (xmlNodePtr cur, feedParserCtxtPtr ctxt, itemPtr i
 {
 	/* parse feed contributors */
 	gchar *contributer = atom10_parse_person_construct (cur);
-	ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "contributor", contributer);
-	g_free (contributer);
+	if (contributer) {
+		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata, "contributor", contributer);
+		g_free (contributer);
+	}
 }
 
 static void
