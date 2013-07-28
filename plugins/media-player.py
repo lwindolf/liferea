@@ -151,7 +151,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
            self.nextButton.connect("clicked", self.next)
 	   Gtk.Box.pack_start(vbox, self.nextButton, False, False, 0)
 
-	   self.slider = Gtk.HScale()
+	   self.slider = Gtk.Scale(orientation = Gtk.Orientation.HORIZONTAL)
 	   self.slider.set_margin_left(6)
 	   self.slider.set_margin_right(6)
            self.slider.set_draw_value(False)
