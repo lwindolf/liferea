@@ -2,6 +2,8 @@
 
 	* Fixes SF #1059: Liferea crashes with system proxy enabled
 	  (reported by genodeftest)
+	* Patch SF #225: Make media player work with GStreamer 1.0
+	  (Simon Kågedal Reimer)
 	* Patch SF #226: Add trailing semi-colon to MimeType so that the desktop 
 	  file validates (Yanko Kaneti)
 	* Patch SF #227: Remove letfover square bracket configure.ac
