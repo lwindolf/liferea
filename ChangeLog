@@ -2,6 +2,8 @@
 
 	* Fixes SF #1059: Liferea crashes with system proxy enabled
 	  (reported by genodeftest)
+	* Fixes SF #1100: --debug-gui crashes with segmentation fault
+	  (reported by genodeftest)
 	* Fixes SF #1101: Outdated manpage
 	  (reported by genodeftest)
 	* Patch SF #225: Make media player work with GStreamer 1.0

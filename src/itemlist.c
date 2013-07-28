@@ -565,7 +565,7 @@ itemlist_selection_changed (itemPtr item)
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action ();
 
-		debug1 (DEBUG_GUI, "item list selection changed to \"%s\"", item_get_title (item));
+		debug1 (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
 		
 		itemlist_set_selected (item);
 	
