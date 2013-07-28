@@ -271,7 +271,7 @@ gboolean
 render_is_dark_theme (void)
 {
 	if (!themeColors)
-		FALSE;
+		return FALSE;
 
 	return darkTheme;
 }
