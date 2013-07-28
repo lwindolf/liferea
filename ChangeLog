@@ -1,5 +1,7 @@
 	To be released
 	
+	* Patch SF #222: Make media player seekable
+	  (Simon Kågedal Reimer)
 	* Improved handling of broken Atom author information.
 	  (Lars Windolf)
 
