@@ -44,6 +44,7 @@
 #include "render.h"
 #include "vfolder.h"
 #include "ui/browser_tabs.h"
+#include "ui/feed_list_node.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/itemview.h"
@@ -1241,17 +1242,13 @@ liferea_shell_create (GtkApplication *app)
 	debug0 (DEBUG_GUI, "Setting up tabbed browsing");	
 	shell->priv->tabs = browser_tabs_create (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
 	
-	/* 5.) Before feed list is initialized, get theme colors */
-	gtk_widget_realize (GTK_WIDGET (shell->priv->window));
-	render_init_theme_colors (GTK_WIDGET (shell->priv->window));
-
-	/* 6.) setup feed list */
+	/* 5.) setup feed list */
 
 	debug0 (DEBUG_GUI, "Setting up feed list");
 	shell->priv->feedlistView = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 	feed_list_view_init (shell->priv->feedlistView);
 
-	/* 7.) setup menu sensivity */
+	/* 6.) setup menu sensivity */
 	
 	debug0 (DEBUG_GUI, "Initialising menues");
 		
@@ -1262,31 +1259,24 @@ liferea_shell_create (GtkApplication *app)
 	   and setting the 2/3 pane mode view */
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), FALSE);
 	
-	/* 8.) setup item view */
+	/* 7.) setup item view */
 	
 	debug0 (DEBUG_GUI, "Setting up item view");
 
 	shell->priv->itemview = itemview_create (GTK_WIDGET (shell->priv->window));
 	
-	/* 9.) load icons as required */
+	/* 8.) load icons as required */
 	
 	debug0 (DEBUG_GUI, "Loading icons");
 	
 	icons_load ();
 	
-	/* 10.) update all menu elements */
-	
+	/* 9.) update all menu elements */
+
 	liferea_shell_update_toolbar ();
 	liferea_shell_update_history_actions ();
 	
 	liferea_shell_setup_URL_receiver ();	/* setup URL dropping support */
-
-	shell->priv->feedlist = feedlist_create ();
-
-	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
-
-	ui_tray_enable (show_tray_icon);		/* init tray icon */
-
 	liferea_shell_restore_state ();
 	
 	conf_get_int_value (LAST_WINDOW_STATE, &initialState);
@@ -1309,7 +1299,16 @@ liferea_shell_create (GtkApplication *app)
 	}
 
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
-	
+
+	/* 10.) After main window is realized get theme colors and set up feed
+ 	        list and tray icon */
+	render_init_theme_colors (GTK_WIDGET (shell->priv->window));
+
+	shell->priv->feedlist = feedlist_create ();
+
+	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
+	ui_tray_enable (show_tray_icon);
+
 	/* 11.) Restore latest selection */
 
 	// FIXME: Move to feed list code

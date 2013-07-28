@@ -5,6 +5,12 @@
 	* Improved handling of broken Atom author information.
 	  (Lars Windolf)
 
+2013-07-28   Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.10.1a
+
+	* Fixes SF #1102: Liferea does not show a window
+	  (reported by genodeftest)
 
 2013-07-28   Lars Windolf <lars.lindner@gmail.com>
 	
