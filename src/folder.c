@@ -130,7 +130,8 @@ folder_get_node_type (void)
 		folder_remove,
 		node_default_render,
 		ui_folder_add,
-		feed_list_node_rename
+		feed_list_node_rename,
+		NULL
 	};
 	fnti.icon = icon_get (ICON_FOLDER);
 
