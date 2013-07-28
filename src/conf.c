@@ -181,11 +181,10 @@ conf_proxy_reset_settings_cb (GSettings *settings,
                               gchar *key,
                               gpointer user_data)
 {
-	gchar		*proxyname, *proxyusername, *proxypassword, *tmp;
-	guint		proxyport;
+	gchar		*proxyname, *proxyusername, *proxypassword;
+	gint		proxyport;
 	gint		proxydetectmode;
 	gboolean	proxyuseauth;
-	xmlURIPtr 	uri;
 
 	proxyname = NULL;
 	proxyport = 0;
