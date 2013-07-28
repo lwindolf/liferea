@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "db.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
@@ -32,6 +33,7 @@
 #include "metadata.h"
 #include "node.h"
 #include "subscription.h"
+#include "xml.h"
 
 #include "fl_sources/opml_source.h"
 #include "fl_sources/theoldreader_source.h"
@@ -42,7 +44,6 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 {
 	nodePtr	node;
 	GSList	*iter;
-	gchar	*tmp;
 
 	/* check if node to be merged already exists */
 	iter = source->root->children;
