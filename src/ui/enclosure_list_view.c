@@ -260,7 +260,7 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	while (list) {
 		enclosurePtr enclosure = enclosure_from_string (list->data);
 		if (enclosure) {
-			/* Filter unwanted MIME types (we only want audio/* and video/*) */
+			// Filter unwanted MIME types (we only want audio/* and video/*)
 			if (enclosure->mime &&
                             (g_str_has_prefix (enclosure->mime, "video/") ||
 			    (g_str_has_prefix (enclosure->mime, "audio/")))) {
