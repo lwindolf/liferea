@@ -2,6 +2,10 @@
 
 	* Fixes SF #1059: Liferea crashes with system proxy enabled
 	  (reported by genodeftest)
+	* Fixes SF #1095: Theme color detection bug / white fonts. 
+	  (reported by David Smith and others)
+	* Fixes SF #1097: Default feed refresh interval cannot be set to 0 
+	  (reported by stqn)
 	* Fixes SF #1100: --debug-gui crashes with segmentation fault
 	  (reported by genodeftest)
 	* Fixes SF #1101: Outdated manpage
