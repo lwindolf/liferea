@@ -16,9 +16,6 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
                            default_source.c default_source.h \
                            dummy_source.c dummy_source.h \
                            google_source.c google_source.h \
-			   google_source_edit.c google_source_edit.h \
-			   google_source_feed.c \
-			   google_source_opml.c google_source_opml.h \
                            opml_source.c opml_source.h \
                            theoldreader_source.c theoldreader_source.h \
 			   theoldreader_source_edit.c theoldreader_source_edit.h \
