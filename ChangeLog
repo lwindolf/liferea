@@ -2,6 +2,8 @@
 	
 	* Patch SF #222: Make media player seekable
 	  (Simon Kågedal Reimer)
+	* Fixes SF #1102: Spelling error in man page
+	  (David Smith)
 	* Improved handling of broken Atom author information.
 	  (Lars Windolf)
 
