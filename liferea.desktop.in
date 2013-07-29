@@ -3,6 +3,7 @@ _Name=Liferea
 _GenericName=Feed Reader
 _X-GNOME-FullName=Liferea Feed Reader
 _Comment=Read news feeds and blogs
+_Keywords=news;feed;aggregator;blog;podcast;
 Exec=liferea
 Icon=liferea
 StartupNotify=true

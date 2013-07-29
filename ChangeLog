@@ -4,6 +4,8 @@
 	  (Simon Kågedal Reimer)
 	* Fixes SF #1102: Spelling error in man page
 	  (David Smith)
+	* Fixes SF #1104: liferea.desktop missing keywords 
+	  (David Smith)
 	* Improved handling of broken Atom author information.
 	  (Lars Windolf)
 
