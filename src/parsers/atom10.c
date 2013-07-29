@@ -253,6 +253,8 @@ atom10_parse_person_construct (xmlNodePtr cur)
 
 	if (!invalid)
 		tmp = g_strdup_printf ("%s%s%s", name, uri?uri:"", email?email:"");
+	else
+		tmp = NULL;
 
 	g_free (uri);
 	g_free (email);
