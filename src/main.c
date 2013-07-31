@@ -246,7 +246,7 @@ main (int argc, char *argv[])
 
 	dbus = liferea_dbus_new ();
 
-	/* Allow overruling last window state from cmdline, whic takes 
+	/* Allow overruling last window state from cmdline, which takes 
 	   precedence over saved state and preferences */
 	if (initialStateOption) {
 		gboolean show_tray_icon, start_in_tray;
