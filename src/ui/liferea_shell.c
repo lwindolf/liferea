@@ -1087,8 +1087,9 @@ static const char *liferea_shell_ui_desc =
 static void
 liferea_shell_restore_state (void)
 {
-	gchar *toolbar_style, *accels_file;
-	gint last_vpane_pos, last_hpane_pos, last_wpane_pos;
+	gchar	*toolbar_style, *accels_file;
+	gint	last_vpane_pos, last_hpane_pos, last_wpane_pos;
+	gint	initialState;
 	
 	debug0 (DEBUG_GUI, "Setting toolbar style");
 	
@@ -1117,6 +1118,28 @@ liferea_shell_restore_state (void)
 	conf_get_int_value (LAST_WPANE_POS, &last_wpane_pos);
 	if (last_wpane_pos)
 		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
+
+	conf_get_int_value (LAST_WINDOW_STATE, &initialState);
+
+	if (initialState == MAINWINDOW_ICONIFIED || 
+	    (initialState == MAINWINDOW_HIDDEN && ui_tray_get_count () == 0)) {
+		debug0 (DEBUG_GUI, "Restoring window state 'hidden' / 'iconified'");
+		gtk_window_iconify (shell->priv->window);
+		gtk_widget_show (GTK_WIDGET (shell->priv->window));
+	} else if (initialState == MAINWINDOW_SHOWN) {
+		debug0 (DEBUG_GUI, "Restoring window state 'shown'");
+		gtk_widget_show (GTK_WIDGET (shell->priv->window));
+	} else {
+		debug0 (DEBUG_GUI, "Restoring window state 'default'");
+		/* Needed so that the window structure can be
+		   accessed... otherwise will GTK warning when window is
+		   shown by clicking on notification icon. */
+		   
+		/* Note: gtk_widget_realize () did not work with GtkMozEmbed
+		   therefore we use show+hide instead. */
+		gtk_widget_show (GTK_WIDGET (shell->priv->window));
+		gtk_widget_hide (GTK_WIDGET (shell->priv->window));
+	}
 }
 
 void
@@ -1126,7 +1149,6 @@ liferea_shell_create (GtkApplication *app)
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
 	gboolean	show_tray_icon, toggle;
-	gint		initialState;
 	gchar		*id;
 	
 	debug_enter ("liferea_shell_create");
@@ -1271,33 +1293,13 @@ liferea_shell_create (GtkApplication *app)
 	
 	icons_load ();
 	
-	/* 9.) update all menu elements */
+	/* 9.) update and restore all menu elements */
 
 	liferea_shell_update_toolbar ();
 	liferea_shell_update_history_actions ();
-	
-	liferea_shell_setup_URL_receiver ();	/* setup URL dropping support */
+	liferea_shell_setup_URL_receiver ();
 	liferea_shell_restore_state ();
 	
-	conf_get_int_value (LAST_WINDOW_STATE, &initialState);
-
-	if (initialState == MAINWINDOW_ICONIFIED || 
-	    (initialState == MAINWINDOW_HIDDEN && ui_tray_get_count () == 0)) {
-		gtk_window_iconify (shell->priv->window);
-		gtk_widget_show (GTK_WIDGET (shell->priv->window));
-	} else if (initialState == MAINWINDOW_SHOWN) {
-		gtk_widget_show (GTK_WIDGET (shell->priv->window));
-	} else {
-		/* Needed so that the window structure can be
-		   accessed... otherwise will GTK warning when window is
-		   shown by clicking on notification icon. */
-		   
-		/* Note: gtk_widget_realize () did not work with GtkMozEmbed
-		   therefore we use show+hide instead. */
-		gtk_widget_show (GTK_WIDGET (shell->priv->window));
-		gtk_widget_hide (GTK_WIDGET (shell->priv->window));
-	}
-
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
 
 	/* 10.) After main window is realized get theme colors and set up feed
