@@ -83,8 +83,9 @@ GtkWidget * liferea_shell_lookup (const gchar *name);
  * Set up the Liferea main window.
  *
  * @param app	the GtkApplication to attach the main window to
+ * @param overrideWindowState	optional parameter for window state (or NULL)
  */
-void liferea_shell_create (GtkApplication *app);
+void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState);
 
 /**
  * liferea_shell_destroy:

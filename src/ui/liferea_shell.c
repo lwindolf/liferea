@@ -1085,11 +1085,13 @@ static const char *liferea_shell_ui_desc =
 "</ui>";
 
 static void
-liferea_shell_restore_state (void)
+liferea_shell_restore_state (const gchar *overrideWindowState)
 {
-	gchar	*toolbar_style, *accels_file;
-	gint	last_vpane_pos, last_hpane_pos, last_wpane_pos;
-	gint	initialState;
+	gchar		*toolbar_style, *accels_file;
+	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
+	gint		resultState;
+	gboolean	show_tray_icon, start_in_tray;
+
 	
 	debug0 (DEBUG_GUI, "Setting toolbar style");
 	
@@ -1119,31 +1121,64 @@ liferea_shell_restore_state (void)
 	if (last_wpane_pos)
 		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
 
-	conf_get_int_value (LAST_WINDOW_STATE, &initialState);
+	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
+	conf_get_bool_value (START_IN_TRAY, &start_in_tray);
 
-	if (initialState == MAINWINDOW_ICONIFIED || 
-	    (initialState == MAINWINDOW_HIDDEN && ui_tray_get_count () == 0)) {
-		debug0 (DEBUG_GUI, "Restoring window state 'hidden' / 'iconified'");
-		gtk_window_iconify (shell->priv->window);
-		gtk_widget_show (GTK_WIDGET (shell->priv->window));
-	} else if (initialState == MAINWINDOW_SHOWN) {
-		debug0 (DEBUG_GUI, "Restoring window state 'shown'");
-		gtk_widget_show (GTK_WIDGET (shell->priv->window));
-	} else {
-		debug0 (DEBUG_GUI, "Restoring window state 'default'");
-		/* Needed so that the window structure can be
-		   accessed... otherwise will GTK warning when window is
-		   shown by clicking on notification icon. */
-		   
-		/* Note: gtk_widget_realize () did not work with GtkMozEmbed
-		   therefore we use show+hide instead. */
-		gtk_widget_show (GTK_WIDGET (shell->priv->window));
-		gtk_widget_hide (GTK_WIDGET (shell->priv->window));
+	/* Apply horrible window state parameter logic:
+	   -> overrideWindowState provides optional command line flags passed by
+	      user or the session manager (prio 1)
+	   -> lastState provides last shutdown preference (prio 2)
+	   -> show_tray_icon and start_in_tray are overriding preferences
+	      (prio 1 only overridden by 'shown' from command line)
+	 */
+
+	/* Initialize with last saved state */
+	conf_get_int_value (LAST_WINDOW_STATE, &resultState);
+
+	/* Override with command line options */
+	if (!g_strcmp0 (overrideWindowState, "iconfied"))
+		resultState = MAINWINDOW_ICONIFIED;
+	if (!g_strcmp0 (overrideWindowState, "hidden"))
+		resultState = MAINWINDOW_HIDDEN;
+	if (!g_strcmp0 (overrideWindowState, "shown"))
+		resultState = MAINWINDOW_SHOWN;
+
+	/* Change hidden to iconify if we have no tray to avoid loosing the window */
+	if (!show_tray_icon && resultState == MAINWINDOW_HIDDEN)
+		resultState = MAINWINDOW_ICONIFIED;
+
+	/* Apply tray hiding preference */
+	if (show_tray_icon && start_in_tray && g_strcmp0 (overrideWindowState, "shown")) {
+		debug0 (DEBUG_GUI, "Ignoring last window state due to hide-in-tray preference");
+		resultState = MAINWINDOW_HIDDEN;
+	}
+
+	/* And set the window to the resulting state */
+	switch (resultState) {
+		case MAINWINDOW_ICONIFIED:
+			debug0 (DEBUG_GUI, "Restoring window state 'hidden (no tray)' / 'iconified'");
+			gtk_window_iconify (shell->priv->window);
+			gtk_widget_show (GTK_WIDGET (shell->priv->window));
+			break;
+		case MAINWINDOW_HIDDEN:
+			debug0 (DEBUG_GUI, "Restoring window state 'hidden (to tray)'");
+			/* Realize needed so that the window structure can be
+			   accessed... otherwise we get a GTK warning when window is
+			   shown by clicking on notification icon or when theme
+			   colors are fetched. */
+			gtk_widget_realize (GTK_WIDGET (shell->priv->window));
+			gtk_widget_hide (GTK_WIDGET (shell->priv->window));
+			break;
+		case MAINWINDOW_SHOWN:
+		default:
+			/* Safe default is always to show window */
+			debug0 (DEBUG_GUI, "Restoring window state 'shown'");
+			gtk_widget_show (GTK_WIDGET (shell->priv->window));
 	}
 }
 
 void
-liferea_shell_create (GtkApplication *app)
+liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 {
 	GtkUIManager	*ui_manager;
 	GtkAccelGroup	*accel_group;
@@ -1298,7 +1333,7 @@ liferea_shell_create (GtkApplication *app)
 	liferea_shell_update_toolbar ();
 	liferea_shell_update_history_actions ();
 	liferea_shell_setup_URL_receiver ();
-	liferea_shell_restore_state ();
+	liferea_shell_restore_state (overrideWindowState);
 	
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
 

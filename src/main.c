@@ -54,6 +54,8 @@ static enum {
 	STATE_SHUTDOWN
 } runState = STATE_STARTING;
 
+static const gchar *initialStateOption = NULL;
+
 /* GApplication "open" callback for receiving feed-add requests from remote */
 static void
 on_feed_add (GApplication *application,
@@ -82,7 +84,7 @@ on_app_activate (GtkApplication *app, gpointer user_data)
 	if (list) {
 		gtk_window_present (GTK_WINDOW (list->data));
 	} else {
-		liferea_shell_create (app);
+		liferea_shell_create (app, initialStateOption);
 
 		if (feedUri)
 			feedlist_add_subscription (feedUri, NULL, NULL, 0);
@@ -155,7 +157,6 @@ main (int argc, char *argv[])
 	GOptionGroup	*debug;
 	gulong		debug_flags = 0;
 	LifereaDBus	*dbus = NULL;
-	const gchar	*initialStateOption = NULL;
 	gchar		*feedUri = NULL;
 	gint 		status;
 
@@ -245,24 +246,6 @@ main (int argc, char *argv[])
 	social_init ();			/* initialize social bookmarking */
 
 	dbus = liferea_dbus_new ();
-
-	/* Allow overruling last window state from cmdline, which takes 
-	   precedence over saved state and preferences */
-	if (initialStateOption) {
-		gboolean show_tray_icon, start_in_tray;
-
-		conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
-		conf_get_bool_value (START_IN_TRAY, &start_in_tray);
-
-		if (g_str_equal (initialStateOption, "iconified")) {
-			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_ICONIFIED);
-		} else if (g_str_equal (initialStateOption, "hidden") ||
-			   (show_tray_icon && start_in_tray)) {
-			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_HIDDEN);
-		} else if (g_str_equal (initialStateOption, "shown")) {
-			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_SHOWN);
-		}
-	}
 
 	signal (SIGTERM, signal_handler);
 	signal (SIGINT, signal_handler);

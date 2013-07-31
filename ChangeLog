@@ -6,6 +6,8 @@
 	  (David Smith)
 	* Fixes SF #1104: liferea.desktop missing keywords 
 	  (David Smith)
+	* Fixes SF #1105: Start Minimized to Tray Does Not Work 
+	  (reported by bitlord)
 	* Improved handling of broken Atom author information.
 	  (Lars Windolf)
 	* Removed dead Google Reader code to avoid doing requests to Google.
