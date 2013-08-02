@@ -13,6 +13,8 @@
 	* Removed dead Google Reader code to avoid doing requests to Google.
 	  Replaced with dummy source that even allows normal feed updates.
 	  (Lars Windolf)
+	* Added hint to FAQ on how to workaround broken Flash support
+	  (Lars Windolf)
 
 
 2013-07-28   Lars Windolf <lars.lindner@gmail.com>
