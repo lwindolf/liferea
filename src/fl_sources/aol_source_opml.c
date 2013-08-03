@@ -441,7 +441,7 @@ aol_source_opml_subscription_prepare_update_request (subscriptionPtr subscriptio
 		aol_source_login ((AolSourcePtr) subscription->node->data, 0) ;
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", subscription->node->id);
+	debug1 (DEBUG_UPDATE, "updating AOL Reader subscription (node id %s)", subscription->node->id);
 	
 	update_request_set_source (request, AOL_READER_SUBSCRIPTION_LIST_URL);
 	

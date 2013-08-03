@@ -39,6 +39,7 @@
 #include "xml.h"
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
+#include "ui/liferea_htmlview.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/aol_source_edit.h"
@@ -74,6 +75,13 @@ aol_source_free (AolSourcePtr source)
 	g_free (source);
 }
 
+void
+aol_source_set_state (AolSourcePtr source, gint state)
+{
+	debug3 (DEBUG_UPDATE, "AOL source '%s' now in state %d (was %d)", source->root->id, state, source->loginState);
+	source->loginState = state;
+}
+
 static void
 aol_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
@@ -95,9 +103,9 @@ aol_source_login_cb (const struct updateResult * const result, gpointer userdata
 			*tmp = '\0';
 		source->authHeaderValue = g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5);
 
-		debug1 (DEBUG_UPDATE, "google reader Auth token found: %s", source->authHeaderValue);
+		debug1 (DEBUG_UPDATE, "AOL reader Auth token found: %s", source->authHeaderValue);
 
-		source->loginState = AOL_SOURCE_STATE_ACTIVE;
+		aol_source_set_state (source, AOL_SOURCE_STATE_ACTIVE);
 		source->authFailures = 0;
 
 		/* now that we are authenticated trigger updating to start data retrieval */
@@ -108,57 +116,48 @@ aol_source_login_cb (const struct updateResult * const result, gpointer userdata
 		aol_source_edit_process (source);
 
 	} else {
-		debug0 (DEBUG_UPDATE, "google reader login failed! no Auth token found in result!");
+		debug0 (DEBUG_UPDATE, "AOL reader login failed! no Auth token found in result!");
 		subscription->node->available = FALSE;
 
 		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("Google Reader login failed!"));
+		subscription->updateError = g_strdup (_("AOL Reader login failed!"));
 		source->authFailures++;
 
 		if (source->authFailures < AOL_SOURCE_MAX_AUTH_FAILURES)
-			source->loginState = AOL_SOURCE_STATE_NONE;
+			aol_source_set_state (source, AOL_SOURCE_STATE_NONE);
 		else
-			source->loginState = AOL_SOURCE_STATE_NO_AUTH;
+			aol_source_set_state (source, AOL_SOURCE_STATE_NO_AUTH);
 		
 		auth_dialog_new (subscription, flags);
 	}
 }
 
 /**
- * Perform a login to Google Reader, if the login completes the 
- * AolSource will have a valid Auth token and will have loginStatus to 
+ * Perform a login to AOL Reader with OAuth2, if the login completes the 
+ * AolSource will have a valid Auth token and will have loginStatus 
  * AOL_SOURCE_LOGIN_ACTIVE.
  */
 void
 aol_source_login (AolSourcePtr source, guint32 flags) 
-{ 
-	gchar			*username, *password;
-	updateRequestPtr	request;
-	subscriptionPtr		subscription = source->root->subscription;
-	
-	if (source->loginState != AOL_SOURCE_STATE_NONE) {
-		/* this should not happen, as of now, we assume the session
-		 * doesn't expire. */
+{
+	GtkWidget	*window;
+	LifereaHtmlView *htmlview;
+
+	/* There will be session expirations due to OAuth2, FIXME: handle them with refresh token! */
+	if (source->loginState != AOL_SOURCE_STATE_NONE)
 		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", source->loginState);
-	}
 
-	request = update_request_new ();
+	aol_source_set_state (source, AOL_SOURCE_STATE_IN_PROGRESS);
 
-	update_request_set_source (request, AOL_READER_LOGIN_URL);
+	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_title (GTK_WINDOW (window), _("AOL Reader Login"));
+	gtk_window_set_default_size (GTK_WINDOW (window), 640, 480);
+	htmlview = liferea_htmlview_new (FALSE);
 
-	/* escape user and password as both are passed using an URI */
-	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
-	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
-
-	request->postdata = g_strdup_printf (AOL_READER_LOGIN_POST, username, password);
-	request->options = update_options_copy (subscription->updateOptions);
-	
-	g_free (username);
-	g_free (password);
-
-	source->loginState = AOL_SOURCE_STATE_IN_PROGRESS ;
-
-	update_execute_request (source, request, aol_source_login_cb, source, flags);
+	// FIXME: Redirect doesn't work yet
+	liferea_htmlview_launch_URL_internal (htmlview, "https://api.screenname.aol.com/auth/authorize?client_id=:li1CKi3GIZzVBPyw&scope=reader&response_type=token&redirect_uri=liferea-aol-oauth2://");
+	gtk_container_add (GTK_CONTAINER (window), liferea_htmlview_get_widget (htmlview));
+	gtk_widget_show_all (window);
 }
 
 /* node source type implementation */
@@ -172,7 +171,7 @@ aol_source_update (nodePtr node)
 	   user interaction and no auto-update so we can query
 	   for credentials again. */
 	if (source->loginState == AOL_SOURCE_STATE_NO_AUTH)
-		source->loginState = AOL_SOURCE_STATE_NONE;
+		aol_source_set_state (source, AOL_SOURCE_STATE_NONE);
 
 	subscription_update (node->subscription, 0);  // FIXME: 0 ?
 }
@@ -300,44 +299,22 @@ aol_source_remove_node (nodePtr node, nodePtr child)
 /* GUI callbacks */
 
 static void
-on_aol_source_selected (GtkDialog *dialog,
-                           gint response_id,
-                           gpointer user_data) 
+aol_source_get_account_info (void)
 {
+	/* We do not need credentials as this will be handled by OAuth2 during login */
 	nodePtr		node;
 	subscriptionPtr	subscription;
 
-	if (response_id == GTK_RESPONSE_OK) {
-		subscription = subscription_new ("http://reader.aol.com/", NULL, NULL);
-		node = node_new (node_source_get_node_type ());
-		node_set_title (node, "AOL Reader");
-		node_source_new (node, aol_source_get_type ());
-		node_set_subscription (node, subscription);
+	subscription = subscription_new ("http://reader.aol.com/", NULL, NULL);
+	node = node_new (node_source_get_node_type ());
+	node_set_title (node, "AOL Reader");
+	node_source_new (node, aol_source_get_type ());
+	node_set_subscription (node, subscription);
+	subscription->type = &aolSourceOpmlSubscriptionType ; 
 
-		subscription_set_auth_info (subscription,
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
-
-		subscription->type = &aolSourceOpmlSubscriptionType ; 
-
-		node->data = aol_source_new (node);
-		feedlist_node_added (node);
-		aol_source_update (node);
-	}
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
-}
-
-static void
-ui_aol_source_get_account_info (void)
-{
-	GtkWidget	*dialog;
-	
-	dialog = liferea_dialog_new ("aol_source.ui", "aol_source_dialog");
-	
-	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_aol_source_selected), 
-			  NULL);
+	node->data = aol_source_new (node);
+	feedlist_node_added (node);
+	aol_source_update (node);
 }
 
 static void
@@ -374,7 +351,7 @@ aol_source_convert_to_local (nodePtr node)
 {
 	AolSourcePtr source = node->data; 
 
-	source->loginState = AOL_SOURCE_STATE_MIGRATE;	
+	aol_source_set_state (source, AOL_SOURCE_STATE_MIGRATE);
 }
 
 /* node source type definition */
@@ -391,7 +368,7 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
 	.source_type_init    = aol_source_init,
 	.source_type_deinit  = aol_source_deinit,
-	.source_new          = ui_aol_source_get_account_info,
+	.source_new          = aol_source_get_account_info,
 	.source_delete       = aol_source_remove,
 	.source_import       = aol_source_import,
 	.source_export       = aol_source_export,

@@ -37,6 +37,7 @@
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
 #include "ui/feed_list_node.h"
+#include "fl_sources/aol_source.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
 #include "fl_sources/google_source.h"
@@ -92,6 +93,7 @@ node_source_setup_root (void)
 	debug_enter ("node_source_setup_root");
 	
 	/* we need to register all source types once before doing anything... */
+	//node_source_type_register (aol_source_get_type ());
 	node_source_type_register (default_source_get_type ());
 	node_source_type_register (dummy_source_get_type ());
 	node_source_type_register (opml_source_get_type ());
