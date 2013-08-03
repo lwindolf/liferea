@@ -51,8 +51,7 @@ struct LifereaHtmlViewClass
 GType liferea_htmlview_get_type	(void);
 
 /** 
- * Function to set up the html view widget for the three
- * and two pane view. 
+ * Function to set up a new html view widget for any purpose. 
  *
  * @param forceInternalBrowsing		TRUE to act as fully fledged browser
  *
