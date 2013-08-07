@@ -81,7 +81,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 	gchar		*tmp = NULL;
 	subscriptionPtr subscription = gsource->root->subscription;
 		
-	debug1 (DEBUG_UPDATE, "google login processing... %s", result->data);
+	debug1 (DEBUG_UPDATE, "Reedah login processing... %s", result->data);
 	
 	g_assert (!gsource->authHeaderValue);
 	
@@ -95,7 +95,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 			*tmp = '\0';
 		gsource->authHeaderValue = g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5);
 
-		debug1 (DEBUG_UPDATE, "google reader Auth token found: %s", gsource->authHeaderValue);
+		debug1 (DEBUG_UPDATE, "Reedah Auth token found: %s", gsource->authHeaderValue);
 
 		gsource->loginState = GOOGLE_SOURCE_STATE_ACTIVE;
 		gsource->authFailures = 0;
@@ -112,7 +112,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 		subscription->node->available = FALSE;
 
 		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("Google Reader login failed!"));
+		subscription->updateError = g_strdup (_("Reedah login failed!"));
 		gsource->authFailures++;
 
 		if (gsource->authFailures < GOOGLE_SOURCE_MAX_AUTH_FAILURES)
@@ -263,7 +263,7 @@ reedah_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 	debug_enter ("reedah_source_add_subscription");
 	nodePtr child = node_new (feed_get_node_type ());
 
-	debug0 (DEBUG_UPDATE, "GoogleSource: Adding a new subscription"); 
+	debug0 (DEBUG_UPDATE, "ReedahSource: Adding a new subscription"); 
 	node_set_data (child, feed_new ());
 
 	node_set_subscription (child, subscription);
@@ -336,7 +336,7 @@ ui_reedah_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 	
-	dialog = liferea_dialog_new ("reedah_source.ui", "google_source_dialog");
+	dialog = liferea_dialog_new ("reedah_source.ui", "reedah_source_dialog");
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_reedah_source_selected), 

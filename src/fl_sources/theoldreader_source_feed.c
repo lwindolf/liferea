@@ -37,30 +37,8 @@
 #include "db.h"
 #include "item_state.h"
 
-/**
- * This is identical to xpath_foreach_match, except that it takes the context
- * as parameter.
- */
-static void
-theoldreader_source_xpath_foreach_match (const gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
-{
-	xmlXPathObjectPtr xpathObj = NULL;
-	xpathObj = xmlXPathEval ((xmlChar*)expr, xpathCtxt);
-	
-	if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
-		int	i;
-		for (i = 0; i < xpathObj->nodesetval->nodeNr; i++) {
-			(*func) (xpathObj->nodesetval->nodeTab[i], user_data);
-			xpathObj->nodesetval->nodeTab[i] = NULL ;
-		}
-	}
-	
-	if (xpathObj)
-		xmlXPathFreeObject (xpathObj);
-}
-
 void
-theoldreader_source_migrate_node(nodePtr node) 
+theoldreader_source_migrate_node (nodePtr node) 
 {
 	/* scan the node for bad ID's, if so, brutally remove the node */
 	itemSetPtr itemset = node_get_itemset (node);
@@ -68,6 +46,7 @@ theoldreader_source_migrate_node(nodePtr node)
 	for (; iter; iter = g_list_next (iter)) {
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
+			// FIXME: does this work?
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
 				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
@@ -78,13 +57,6 @@ theoldreader_source_migrate_node(nodePtr node)
 
 	/* cleanup */
 	itemset_free (itemset);
-}
-
-static void
-theoldreader_source_xml_unlink_node (xmlNodePtr node, gpointer data) 
-{
-	xmlUnlinkNode (node);
-	xmlFreeNode (node);
 }
 
 static itemPtr

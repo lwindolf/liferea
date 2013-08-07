@@ -143,7 +143,7 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
 {
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
-g_print("JSON feed: >>>%s<<<\n", result->data);
+
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "items"));
 			GList		*elements = json_array_get_elements (array);
@@ -179,10 +179,9 @@ g_print("JSON feed: >>>%s<<<\n", result->data);
 
 				item_set_id (item, json_get_string (node, "id"));
 				item_set_title (item, json_get_string (node, "title"));
-g_print("Parsed title (id=%s): %s\n", item->id, item->title);
-				item_set_source (item, json_get_string (node, "link"));	// FIXME: canonical/href
+				item_set_source (item, json_get_string (json_get_node (node, "canonical"), "href"));
 
-				content = json_get_string (node, "content");	// FIXME: summary/content
+				content = json_get_string (json_get_node (node, "summary"), "content");
 				xhtml = xhtml_extract_from_string (content, NULL);
 				item_set_description (item, xhtml);
 				xmlFree (xhtml);

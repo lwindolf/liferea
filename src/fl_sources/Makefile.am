@@ -17,6 +17,10 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
                            dummy_source.c dummy_source.h \
                            google_source.c google_source.h \
                            opml_source.c opml_source.h \
+                           reedah_source.c reedah_source.h \
+			   reedah_source_edit.c reedah_source_edit.h \
+			   reedah_source_feed.c \
+			   reedah_source_feed_list.c reedah_source_feed_list.h \
                            theoldreader_source.c theoldreader_source.h \
 			   theoldreader_source_edit.c theoldreader_source_edit.h \
 			   theoldreader_source_feed.c \
