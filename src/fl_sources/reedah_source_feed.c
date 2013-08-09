@@ -29,6 +29,7 @@
 #include "feedlist.h"
 #include "item_state.h"
 #include "json.h"
+#include "json_api_mapper.h"
 #include "metadata.h"
 #include "node.h"
 #include "reedah_source_edit.h"
@@ -142,86 +143,57 @@ static void
 reedah_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
 	if (result->data && result->httpstatus == 200) {
-		JsonParser	*parser = json_parser_new ();
+		GList		*items = NULL;
+		jsonApiMapping	mapping;
 
-		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
-			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "items"));
-			GList		*elements = json_array_get_elements (array);
-			GList		*iter = elements;
-			GList		*items = NULL;
+		/*
+		   We expect to get something like this
+		   
+		   [{"crawlTimeMsec":"1375821312282",
+		     "id"::"tag:google.com,reader:2005\/item\/4ee371db36f84de2",
+		     "categories":["user\/15724899091976567759\/state\/com.google\/reading-list",
+		     "user\/15724899091976567759\/state\/com.google\/fresh"],
+		     "title":"Firefox 23 Arrives With New Logo, Mixed Content Blocker, and Network Monitor",
+		     "published":1375813680,
+		     "updated":1375821312,
+		     "alternate":[{"href":"http://rss.slashdot.org/~r/Slashdot/slashdot/~3/Q4450FchLQo/story01.htm","type":"text/html"}],
+		     "canonical":[{"href":"http://slashdot.feedsportal.com/c/35028/f/647410/s/2fa2b59c/sc[...]", "type":"text/html"}],
+		     "summary":{"direction":"ltr","content":"An anonymous reader writes [...]"},
+		     "author":"Soulskill",
+		     "origin":{"streamId":"feed/http://rss.slashdot.org/Slashdot/slashdot","title":"Slashdot",
+		     "htmlurl":"http://slashdot.org/"
+		    },
 
-			/*
-			   We expect to get something like this
-			   
-			   [{"crawlTimeMsec":"1375821312282",
-			     "id"::"tag:google.com,reader:2005\/item\/4ee371db36f84de2",
-			     "categories":["user\/15724899091976567759\/state\/com.google\/reading-list",
-			     "user\/15724899091976567759\/state\/com.google\/fresh"],
-			     "title":"Firefox 23 Arrives With New Logo, Mixed Content Blocker, and Network Monitor",
-			     "published":1375813680,
-			     "updated":1375821312,
-			     "alternate":[{"href":"http://rss.slashdot.org/~r/Slashdot/slashdot/~3/Q4450FchLQo/story01.htm","type":"text/html"}],
-			     "canonical":[{"href":"http://slashdot.feedsportal.com/c/35028/f/647410/s/2fa2b59c/sc[...]", "type":"text/html"}],
-			     "summary":{"direction":"ltr","content":"An anonymous reader writes [...]"},
-			     "author":"Soulskill",
-			     "origin":{"streamId":"feed/http://rss.slashdot.org/Slashdot/slashdot","title":"Slashdot",
-			     "htmlurl":"http://slashdot.org/"
-			    },
+                   [...]
+                 */
 
-                           [...]
-                         */
-                         
-			while (iter) {
-				JsonNode *node = (JsonNode *)iter->data;
-				itemPtr item = item_new ();
-				const gchar *content; 
-				gchar *xhtml;
+		mapping.id		= "id";
+		mapping.title		= "title";
+		mapping.link		= "canonical/href";	// FIXME: doesn't work as array needs to be traversed
+		mapping.description	= "summary/content";
+		mapping.updated		= "updated";
+		mapping.author		= "author";
+		mapping.read		= "unread";
+		mapping.flag		= "marked";
 
-				item_set_id (item, json_get_string (node, "id"));
-				item_set_title (item, json_get_string (node, "title"));
-				item_set_source (item, json_get_string (json_get_node (node, "canonical"), "href"));
+		mapping.xhtml		= TRUE;
+		mapping.negateRead	= TRUE;
 
-				content = json_get_string (json_get_node (node, "summary"), "content");
-				xhtml = xhtml_extract_from_string (content, NULL);
-				item_set_description (item, xhtml);
-				xmlFree (xhtml);
-
-				item->time = json_get_int (node, "updated");
+		items = json_api_get_items (result->data, "items", &mapping);
 				
-				if (json_get_bool (node, "unread")) {	// FIXME: test me
-					item->readStatus = FALSE;
-				}
-				else {
-					item->readStatus = TRUE;
-				}
-				if (json_get_bool (node, "marked"))	// FIXME: test me!
-					item->flagStatus = TRUE;
-					
-				items = g_list_append (items, (gpointer)item);
-				
-				iter = g_list_next (iter);
-			}
+		/* merge against feed cache */
+		if (items) {
+			itemSetPtr itemSet = node_get_itemset (subscription->node);
+			gint newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
+			itemlist_merge_itemset (itemSet);
+			itemset_free (itemSet);
 
-			g_list_free (elements);
-
-			/* merge against feed cache */
-			if (items) {
-				itemSetPtr itemSet = node_get_itemset (subscription->node);
-				gint newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
-				itemlist_merge_itemset (itemSet);
-				itemset_free (itemSet);
-
-				feedlist_node_was_updated (subscription->node, newCount);
-			}
-
+			feedlist_node_was_updated (subscription->node, newCount);
 			subscription->node->available = TRUE;
 		} else {
 			subscription->node->available = FALSE;
-
-			g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by tt-rss API!"));
+			g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by Reedah API!"));
 		}
-
-		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
 	}
