@@ -16,6 +16,10 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
                            default_source.c default_source.h \
                            dummy_source.c dummy_source.h \
                            google_source.c google_source.h \
+                           inoreader_source.c inoreader_source.h \
+			   inoreader_source_edit.c inoreader_source_edit.h \
+			   inoreader_source_feed.c \
+			   inoreader_source_feed_list.c inoreader_source_feed_list.h \
                            json_api_mapper.c json_api_mapper.h \
                            opml_source.c opml_source.h \
                            reedah_source.c reedah_source.h \

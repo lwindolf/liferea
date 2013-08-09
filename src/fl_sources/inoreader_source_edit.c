@@ -1,5 +1,5 @@
 /**
- * @file reedah_source_edit.c  Google reader feed list source syncing support
+ * @file inoreader_source_edit.c  Google reader feed list source syncing support
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
@@ -28,8 +28,8 @@
 #include "feedlist.h"
 
 
-#include "reedah_source.h"
-#include "reedah_source_edit.h"
+#include "inoreader_source.h"
+#include "inoreader_source_edit.h"
 #include "config.h"
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlreader.h>
@@ -42,7 +42,7 @@
  * so that google does not end up processing the requests in an 
  * unintended order.
  */
-typedef struct ReedahSourceAction {
+typedef struct InoreaderSourceAction {
 	/**
 	 * The guid of the item to edit. This will be ignored if the 
 	 * edit is acting on an subscription rather than an item.
@@ -66,13 +66,13 @@ typedef struct ReedahSourceAction {
 	/**
 	 * A callback function on completion of the edit.
 	 */
-	void (*callback) (ReedahSourcePtr gsource, struct ReedahSourceAction* edit, gboolean success);
+	void (*callback) (InoreaderSourcePtr gsource, struct InoreaderSourceAction* edit, gboolean success);
 
 	/**
-	 * The type of this ReedahSourceAction.
+	 * The type of this InoreaderSourceAction.
 	 */
 	int actionType ; 
-} *ReedahSourceActionPtr ; 
+} *InoreaderSourceActionPtr ; 
 
 enum { 
 	EDIT_ACTION_MARK_READ,
@@ -85,110 +85,110 @@ enum {
 } ;
 		
 
-typedef struct ReedahSourceAction* editPtr ;
+typedef struct InoreaderSourceAction* editPtr ;
 
-typedef struct ReedahSourceActionCtxt { 
+typedef struct InoreaderSourceActionCtxt { 
 	gchar   *nodeId ;
-	ReedahSourceActionPtr action; 
-} *ReedahSourceActionCtxtPtr; 
+	InoreaderSourceActionPtr action; 
+} *InoreaderSourceActionCtxtPtr; 
 
 
-static void reedah_source_edit_push (ReedahSourcePtr gsource, ReedahSourceActionPtr action, gboolean head);
+static void inoreader_source_edit_push (InoreaderSourcePtr gsource, InoreaderSourceActionPtr action, gboolean head);
 
 
-static ReedahSourceActionPtr 
-reedah_source_action_new (void)
+static InoreaderSourceActionPtr 
+inoreader_source_action_new (void)
 {
-	ReedahSourceActionPtr action = g_slice_new0 (struct ReedahSourceAction);
+	InoreaderSourceActionPtr action = g_slice_new0 (struct InoreaderSourceAction);
 	return action;
 }
 
 static void 
-reedah_source_action_free (ReedahSourceActionPtr action)
+inoreader_source_action_free (InoreaderSourceActionPtr action)
 { 
 	g_free (action->guid);
 	g_free (action->feedUrl);
-	g_slice_free (struct ReedahSourceAction, action);
+	g_slice_free (struct InoreaderSourceAction, action);
 }
 
-static ReedahSourceActionCtxtPtr
-reedah_source_action_context_new(ReedahSourcePtr gsource, ReedahSourceActionPtr action)
+static InoreaderSourceActionCtxtPtr
+inoreader_source_action_context_new(InoreaderSourcePtr gsource, InoreaderSourceActionPtr action)
 {
-	ReedahSourceActionCtxtPtr ctxt = g_slice_new0(struct ReedahSourceActionCtxt);
+	InoreaderSourceActionCtxtPtr ctxt = g_slice_new0(struct InoreaderSourceActionCtxt);
 	ctxt->nodeId = g_strdup(gsource->root->id);
 	ctxt->action = action;
 	return ctxt;
 }
 
 static void
-reedah_source_action_context_free(ReedahSourceActionCtxtPtr ctxt)
+inoreader_source_action_context_free(InoreaderSourceActionCtxtPtr ctxt)
 {
 	g_free(ctxt->nodeId);
-	g_slice_free(struct ReedahSourceActionCtxt, ctxt);
+	g_slice_free(struct InoreaderSourceActionCtxt, ctxt);
 }
 
 static void
-reedah_source_edit_action_complete (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
+inoreader_source_edit_action_complete (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
 { 
-	ReedahSourceActionCtxtPtr     editCtxt = (ReedahSourceActionCtxtPtr) userdata; 
+	InoreaderSourceActionCtxtPtr     editCtxt = (InoreaderSourceActionCtxtPtr) userdata; 
 	nodePtr                       node = node_from_id (editCtxt->nodeId);
-	ReedahSourcePtr               gsource; 
-	ReedahSourceActionPtr         action = editCtxt->action ;
+	InoreaderSourcePtr               gsource; 
+	InoreaderSourceActionPtr         action = editCtxt->action ;
 	
-	reedah_source_action_context_free (editCtxt);
+	inoreader_source_action_context_free (editCtxt);
 
 	if (!node) {
-		reedah_source_action_free (action);
+		inoreader_source_action_free (action);
 		return; /* probably got deleted before this callback */
 	} 
-	gsource = (ReedahSourcePtr) node->data;
+	gsource = (InoreaderSourcePtr) node->data;
 		
 	if (result->data == NULL || !g_str_equal (result->data, "OK")) {
 		if (action->callback) 
 			(*action->callback) (gsource, action, FALSE);
 		debug1 (DEBUG_UPDATE, "The edit action failed with result: %s\n", result->data);
-		reedah_source_action_free (action);
+		inoreader_source_action_free (action);
 		return; /** @todo start a timer for next processing */
 	}
 	
 	if (action->callback)
 		action->callback (gsource, action, TRUE);
 
-	reedah_source_action_free (action);
+	inoreader_source_action_free (action);
 
 	/* process anything else waiting on the edit queue */
-	reedah_source_edit_process (gsource);
+	inoreader_source_edit_process (gsource);
 }
 
-/* the following reedah_source_api_* functions are simply funtions that 
-   convert a ReedahSourceActionPtr to a updateRequestPtr */
+/* the following inoreader_source_api_* functions are simply funtions that 
+   convert a InoreaderSourceActionPtr to a updateRequestPtr */
  
 static void
-reedah_source_api_add_subscription (ReedahSourceActionPtr action, updateRequestPtr request, const gchar* token) 
+inoreader_source_api_add_subscription (InoreaderSourceActionPtr action, updateRequestPtr request, const gchar* token) 
 {
-	update_request_set_source (request, REEDAH_READER_ADD_SUBSCRIPTION_URL);
+	update_request_set_source (request, INOREADER_ADD_SUBSCRIPTION_URL);
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE) ;
-	gchar* postdata = g_strdup_printf (REEDAH_READER_ADD_SUBSCRIPTION_POST, s_escaped, token);
+	gchar* postdata = g_strdup_printf (INOREADER_ADD_SUBSCRIPTION_POST, s_escaped, token);
 	g_free (s_escaped);
 
-	debug1 (DEBUG_UPDATE, "reedah_source: postdata [%s]", postdata);
+	debug1 (DEBUG_UPDATE, "inoreader_source: postdata [%s]", postdata);
 	request->postdata = postdata ;
 }
 
 static void
-reedah_source_api_remove_subscription (ReedahSourceActionPtr action, updateRequestPtr request, const gchar* token) 
+inoreader_source_api_remove_subscription (InoreaderSourceActionPtr action, updateRequestPtr request, const gchar* token) 
 {
-	update_request_set_source (request, REEDAH_READER_REMOVE_SUBSCRIPTION_URL);
+	update_request_set_source (request, INOREADER_REMOVE_SUBSCRIPTION_URL);
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	g_assert (!request->postdata);
-	request->postdata = g_strdup_printf (REEDAH_READER_REMOVE_SUBSCRIPTION_POST, s_escaped, token);
+	request->postdata = g_strdup_printf (INOREADER_REMOVE_SUBSCRIPTION_POST, s_escaped, token);
 	g_free (s_escaped);
 }
 
 static void 
-reedah_source_api_edit_tag (ReedahSourceActionPtr action, updateRequestPtr request, const gchar*token) 
+inoreader_source_api_edit_tag (InoreaderSourceActionPtr action, updateRequestPtr request, const gchar*token) 
 {
-	update_request_set_source (request, REEDAH_READER_EDIT_TAG_URL); 
+	update_request_set_source (request, INOREADER_EDIT_TAG_URL); 
 
 	const gchar* prefix = "feed" ; 
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
@@ -203,7 +203,7 @@ reedah_source_api_edit_tag (ReedahSourceActionPtr action, updateRequestPtr reque
 	 * tag:google.com,2005:reader/user/<sharer's-id>/source/com.google/link
 	 * It is possible that there are items other thank link that has
 	 * the ../user/.. id. The GR API requires the strings after ..:reader/
-	 * while ReedahSourceAction only gives me after :reader/feed/ (or 
+	 * while InoreaderSourceAction only gives me after :reader/feed/ (or 
 	 * :reader/user/ as the case might be). I therefore need to guess
 	 * the prefix ('feed/' or 'user/') from just this information. 
 	 */
@@ -212,29 +212,29 @@ reedah_source_api_edit_tag (ReedahSourceActionPtr action, updateRequestPtr reque
 		prefix = "user" ;
 
 	if (action->actionType == EDIT_ACTION_MARK_UNREAD) {
-		a_escaped = g_uri_escape_string (REEDAH_READER_TAG_KEPT_UNREAD, NULL, TRUE);
-		gchar *r_escaped = g_uri_escape_string (REEDAH_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (REEDAH_READER_EDIT_TAG_AR_TAG, i_escaped, prefix, s_escaped, a_escaped, r_escaped, token);
+		a_escaped = g_uri_escape_string (INOREADER_TAG_KEPT_UNREAD, NULL, TRUE);
+		gchar *r_escaped = g_uri_escape_string (INOREADER_TAG_READ, NULL, TRUE);
+		postdata = g_strdup_printf (INOREADER_EDIT_TAG_AR_TAG, i_escaped, prefix, s_escaped, a_escaped, r_escaped, token);
 		g_free (r_escaped);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_READ) { 
-		a_escaped = g_uri_escape_string (REEDAH_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (REEDAH_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
+		a_escaped = g_uri_escape_string (INOREADER_TAG_READ, NULL, TRUE);
+		postdata = g_strdup_printf (INOREADER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD) {
-		a_escaped = g_uri_escape_string (REEDAH_READER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
-		postdata = g_strdup_printf (REEDAH_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
+		a_escaped = g_uri_escape_string (INOREADER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
+		postdata = g_strdup_printf (INOREADER_EDIT_TAG_ADD_TAG, i_escaped, prefix, s_escaped, a_escaped, token);
 	}  
 	else if (action->actionType == EDIT_ACTION_MARK_STARRED) { 
-		a_escaped = g_uri_escape_string (REEDAH_READER_TAG_STARRED, NULL, TRUE) ;
+		a_escaped = g_uri_escape_string (INOREADER_TAG_STARRED, NULL, TRUE) ;
 		postdata = g_strdup_printf (
-			REEDAH_READER_EDIT_TAG_ADD_TAG, i_escaped, prefix,
+			INOREADER_EDIT_TAG_ADD_TAG, i_escaped, prefix,
 			s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_UNSTARRED) {
-		gchar* r_escaped = g_uri_escape_string(REEDAH_READER_TAG_STARRED, NULL, TRUE);
+		gchar* r_escaped = g_uri_escape_string(INOREADER_TAG_STARRED, NULL, TRUE);
 		postdata = g_strdup_printf (
-			REEDAH_READER_EDIT_TAG_REMOVE_TAG, i_escaped, prefix,
+			INOREADER_EDIT_TAG_REMOVE_TAG, i_escaped, prefix,
 			s_escaped, r_escaped, token);
 	}
 	
@@ -244,19 +244,19 @@ reedah_source_api_edit_tag (ReedahSourceActionPtr action, updateRequestPtr reque
 	g_free (a_escaped); 
 	g_free (i_escaped);
 	
-	debug1 (DEBUG_UPDATE, "reedah_source: postdata [%s]", postdata);
+	debug1 (DEBUG_UPDATE, "inoreader_source: postdata [%s]", postdata);
 
 
 	request->postdata = postdata;
 }
 
 static void
-reedah_source_edit_token_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+inoreader_source_edit_token_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 { 
 	nodePtr          node;
-	ReedahSourcePtr  gsource;
+	InoreaderSourcePtr  gsource;
 	const gchar*     token;
-	ReedahSourceActionPtr          action;
+	InoreaderSourceActionPtr          action;
 	updateRequestPtr request; 
 
 	if (result->httpstatus != 200 || result->data == NULL) { 
@@ -270,7 +270,7 @@ reedah_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	if (!node) {
 		return;
 	}
-	gsource = (ReedahSourcePtr) node->data;
+	gsource = (InoreaderSourcePtr) node->data;
 
 
 	token = result->data; 
@@ -290,19 +290,19 @@ reedah_source_edit_token_cb (const struct updateResult * const result, gpointer 
 	    action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD ||
 	    action->actionType == EDIT_ACTION_MARK_STARRED || 
 	    action->actionType == EDIT_ACTION_MARK_UNSTARRED) 
-		reedah_source_api_edit_tag (action, request, token);
+		inoreader_source_api_edit_tag (action, request, token);
 	else if (action->actionType == EDIT_ACTION_ADD_SUBSCRIPTION ) 
-		reedah_source_api_add_subscription (action, request, token);
+		inoreader_source_api_add_subscription (action, request, token);
 	else if (action->actionType == EDIT_ACTION_REMOVE_SUBSCRIPTION )
-		reedah_source_api_remove_subscription (action, request, token) ;
+		inoreader_source_api_remove_subscription (action, request, token) ;
 
-	update_execute_request (gsource, request, reedah_source_edit_action_complete, reedah_source_action_context_new(gsource, action), 0);
+	update_execute_request (gsource, request, inoreader_source_edit_action_complete, inoreader_source_action_context_new(gsource, action), 0);
 
 	action = g_queue_pop_head (gsource->actionQueue);
 }
 
 void
-reedah_source_edit_process (ReedahSourcePtr gsource)
+inoreader_source_edit_process (InoreaderSourcePtr gsource)
 { 
 	updateRequestPtr request; 
 	
@@ -314,20 +314,20 @@ reedah_source_edit_process (ReedahSourcePtr gsource)
  	* Google reader has a system of tokens. So first, I need to request a 
  	* token from google, before I can make the actual edit request. The
  	* code here is the token code, the actual edit commands are in 
- 	* reedah_source_edit_token_cb
+ 	* inoreader_source_edit_token_cb
 	 */
 	request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
 	request->options = update_options_copy (gsource->root->subscription->updateOptions);
-	request->source = g_strdup (REEDAH_READER_TOKEN_URL);
+	request->source = g_strdup (INOREADER_TOKEN_URL);
 	update_request_set_auth_value(request, gsource->authHeaderValue);
 
-	update_execute_request (gsource, request, reedah_source_edit_token_cb, 
+	update_execute_request (gsource, request, inoreader_source_edit_token_cb, 
 	                        g_strdup(gsource->root->id), 0);
 }
 
 static void
-reedah_source_edit_push_ (ReedahSourcePtr gsource, ReedahSourceActionPtr action, gboolean head)
+inoreader_source_edit_push_ (InoreaderSourcePtr gsource, InoreaderSourceActionPtr action, gboolean head)
 { 
 	g_assert (gsource->actionQueue);
 	if (head) g_queue_push_head (gsource->actionQueue, action);
@@ -335,21 +335,21 @@ reedah_source_edit_push_ (ReedahSourcePtr gsource, ReedahSourceActionPtr action,
 }
 
 static void 
-reedah_source_edit_push (ReedahSourcePtr gsource, ReedahSourceActionPtr action, gboolean head)
+inoreader_source_edit_push (InoreaderSourcePtr gsource, InoreaderSourceActionPtr action, gboolean head)
 {
 	g_assert (gsource);
 	nodePtr root = gsource->root;
-	reedah_source_edit_push_ (gsource, action, head);
+	inoreader_source_edit_push_ (gsource, action, head);
 
 	/** @todo any flags I should specify? */
-	if (gsource->loginState == REEDAH_SOURCE_STATE_NONE) 
-		subscription_update(root->subscription, REEDAH_SOURCE_UPDATE_ONLY_LOGIN);
-	else if ( gsource->loginState == REEDAH_SOURCE_STATE_ACTIVE) 
-		reedah_source_edit_process (gsource);
+	if (gsource->loginState == INOREADER_SOURCE_STATE_NONE) 
+		subscription_update(root->subscription, INOREADER_SOURCE_UPDATE_ONLY_LOGIN);
+	else if ( gsource->loginState == INOREADER_SOURCE_STATE_ACTIVE) 
+		inoreader_source_edit_process (gsource);
 }
 
 static void 
-update_read_state_callback (ReedahSourcePtr gsource, ReedahSourceActionPtr action, gboolean success) 
+update_read_state_callback (InoreaderSourcePtr gsource, InoreaderSourceActionPtr action, gboolean success) 
 {
 	if (success) {
 		// FIXME: call item_read_state_changed (item, newState);
@@ -359,9 +359,9 @@ update_read_state_callback (ReedahSourcePtr gsource, ReedahSourceActionPtr actio
 }
 
 void
-reedah_source_edit_mark_read (ReedahSourcePtr gsource, const gchar *guid, const gchar *feedUrl,	gboolean newStatus)
+inoreader_source_edit_mark_read (InoreaderSourcePtr gsource, const gchar *guid, const gchar *feedUrl,	gboolean newStatus)
 {
-	ReedahSourceActionPtr action = reedah_source_action_new ();
+	InoreaderSourceActionPtr action = inoreader_source_action_new ();
 
 	action->guid = g_strdup (guid);
 	action->feedUrl = g_strdup (feedUrl);
@@ -369,7 +369,7 @@ reedah_source_edit_mark_read (ReedahSourcePtr gsource, const gchar *guid, const 
 	                           EDIT_ACTION_MARK_UNREAD;
 	action->callback = update_read_state_callback;
 	
-	reedah_source_edit_push (gsource, action, FALSE);
+	inoreader_source_edit_push (gsource, action, FALSE);
 
 	if (newStatus == FALSE) { 
 		/*
@@ -377,16 +377,16 @@ reedah_source_edit_mark_read (ReedahSourcePtr gsource, const gchar *guid, const 
 		 * I also need to mark it as tracking-kept-unread in a separate
 		 * network call.
 		 */
-		action = reedah_source_action_new ();
+		action = inoreader_source_action_new ();
 		action->guid = g_strdup (guid);
 		action->feedUrl = g_strdup (feedUrl);
 		action->actionType = EDIT_ACTION_TRACKING_MARK_UNREAD;
-		reedah_source_edit_push (gsource, action, FALSE);
+		inoreader_source_edit_push (gsource, action, FALSE);
 	}
 }
 
 static void
-update_starred_state_callback(ReedahSourcePtr gsource, ReedahSourceActionPtr action, gboolean success) 
+update_starred_state_callback(InoreaderSourcePtr gsource, InoreaderSourceActionPtr action, gboolean success) 
 {
 	if (success) {
 		// FIXME: call item_flag_changed (item, newState);
@@ -396,20 +396,20 @@ update_starred_state_callback(ReedahSourcePtr gsource, ReedahSourceActionPtr act
 }
 
 void
-reedah_source_edit_mark_starred (ReedahSourcePtr gsource, const gchar *guid, const gchar *feedUrl, gboolean newStatus)
+inoreader_source_edit_mark_starred (InoreaderSourcePtr gsource, const gchar *guid, const gchar *feedUrl, gboolean newStatus)
 {
-	ReedahSourceActionPtr action = reedah_source_action_new ();
+	InoreaderSourceActionPtr action = inoreader_source_action_new ();
 
 	action->guid = g_strdup (guid);
 	action->feedUrl = g_strdup (feedUrl);
 	action->actionType = newStatus ? EDIT_ACTION_MARK_STARRED : EDIT_ACTION_MARK_UNSTARRED;
 	action->callback = update_starred_state_callback;
 	
-	reedah_source_edit_push (gsource, action, FALSE);
+	inoreader_source_edit_push (gsource, action, FALSE);
 }
 
 static void 
-update_subscription_list_callback(ReedahSourcePtr gsource, ReedahSourceActionPtr action, gboolean success) 
+update_subscription_list_callback(InoreaderSourcePtr gsource, InoreaderSourceActionPtr action, gboolean success) 
 {
 	if (success) { 
 		/*
@@ -428,23 +428,23 @@ update_subscription_list_callback(ReedahSourcePtr gsource, ReedahSourceActionPtr
 		}
 		
 		debug0 (DEBUG_UPDATE, "Subscription list was updated successful\n");
-		subscription_update (gsource->root->subscription, REEDAH_SOURCE_UPDATE_ONLY_LIST);
+		subscription_update (gsource->root->subscription, INOREADER_SOURCE_UPDATE_ONLY_LIST);
 	} else 
 		debug0 (DEBUG_UPDATE, "Failed to update subscriptions\n");
 }
 
 void 
-reedah_source_edit_add_subscription (ReedahSourcePtr gsource, const gchar* feedUrl)
+inoreader_source_edit_add_subscription (InoreaderSourcePtr gsource, const gchar* feedUrl)
 {
-	ReedahSourceActionPtr action = reedah_source_action_new () ;
+	InoreaderSourceActionPtr action = inoreader_source_action_new () ;
 	action->actionType = EDIT_ACTION_ADD_SUBSCRIPTION; 
 	action->feedUrl = g_strdup (feedUrl);
 	action->callback = update_subscription_list_callback;
-	reedah_source_edit_push (gsource, action, TRUE);
+	inoreader_source_edit_push (gsource, action, TRUE);
 }
 
 static void
-reedah_source_edit_remove_callback (ReedahSourcePtr gsource, ReedahSourceActionPtr action, gboolean success)
+inoreader_source_edit_remove_callback (InoreaderSourcePtr gsource, InoreaderSourceActionPtr action, gboolean success)
 {
 	if (success) {	
 		/* 
@@ -464,21 +464,21 @@ reedah_source_edit_remove_callback (ReedahSourcePtr gsource, ReedahSourceActionP
 		debug0 (DEBUG_UPDATE, "Failed to remove subscription");
 }
 
-void reedah_source_edit_remove_subscription (ReedahSourcePtr gsource, const gchar* feedUrl) 
+void inoreader_source_edit_remove_subscription (InoreaderSourcePtr gsource, const gchar* feedUrl) 
 {
-	ReedahSourceActionPtr action = reedah_source_action_new (); 
+	InoreaderSourceActionPtr action = inoreader_source_action_new (); 
 	action->actionType = EDIT_ACTION_REMOVE_SUBSCRIPTION;
 	action->feedUrl = g_strdup (feedUrl);
-	action->callback = reedah_source_edit_remove_callback;
-	reedah_source_edit_push (gsource, action, TRUE);
+	action->callback = inoreader_source_edit_remove_callback;
+	inoreader_source_edit_push (gsource, action, TRUE);
 }
 
-gboolean reedah_source_edit_is_in_queue (ReedahSourcePtr gsource, const gchar* guid) 
+gboolean inoreader_source_edit_is_in_queue (InoreaderSourcePtr gsource, const gchar* guid) 
 {
 	/* this is inefficient, but works for the time being */
 	GList *cur = gsource->actionQueue->head; 
 	for(; cur; cur = g_list_next (cur)) { 
-		ReedahSourceActionPtr action = cur->data; 
+		InoreaderSourceActionPtr action = cur->data; 
 		if (action->guid && g_str_equal (action->guid, guid))
 			return TRUE;
 	}

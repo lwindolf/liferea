@@ -1,5 +1,5 @@
 /**
- * @file reedah_source.c  Google reader feed list source support
+ * @file inoreader_source.c  Google reader feed list source support
  * 
  * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "fl_sources/reedah_source.h"
+#include "fl_sources/inoreader_source.h"
 
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -41,27 +41,27 @@
 #include "ui/liferea_dialog.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
-#include "fl_sources/reedah_source_edit.h"
-#include "fl_sources/reedah_source_feed_list.h"
+#include "fl_sources/inoreader_source_edit.h"
+#include "fl_sources/inoreader_source_feed_list.h"
 
-/** default Google reader subscription list update interval = once a day */
-#define REEDAH_SOURCE_UPDATE_INTERVAL 60*60*24
+/** default reader subscription list update interval = once a day */
+#define INOREADER_SOURCE_UPDATE_INTERVAL 60*60*24
 
-/** create a google source with given node as root */ 
-static ReedahSourcePtr
-reedah_source_new (nodePtr node) 
+/** create a source with given node as root */ 
+static InoreaderSourcePtr
+inoreader_source_new (nodePtr node) 
 {
-	ReedahSourcePtr source = g_new0 (struct ReedahSource, 1) ;
+	InoreaderSourcePtr source = g_new0 (struct InoreaderSource, 1) ;
 	source->root = node; 
 	source->actionQueue = g_queue_new (); 
-	source->loginState = REEDAH_SOURCE_STATE_NONE; 
+	source->loginState = INOREADER_SOURCE_STATE_NONE; 
 	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	
 	return source;
 }
 
 static void
-reedah_source_free (ReedahSourcePtr gsource) 
+inoreader_source_free (InoreaderSourcePtr gsource) 
 {
 	if (!gsource)
 		return;
@@ -75,13 +75,13 @@ reedah_source_free (ReedahSourcePtr gsource)
 }
 
 static void
-reedah_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+inoreader_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	ReedahSourcePtr	gsource = (ReedahSourcePtr) userdata;
+	InoreaderSourcePtr	gsource = (InoreaderSourcePtr) userdata;
 	gchar		*tmp = NULL;
 	subscriptionPtr subscription = gsource->root->subscription;
 		
-	debug1 (DEBUG_UPDATE, "Reedah login processing... %s", result->data);
+	debug1 (DEBUG_UPDATE, "InoReader login processing... %s", result->data);
 	
 	g_assert (!gsource->authHeaderValue);
 	
@@ -95,30 +95,30 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 			*tmp = '\0';
 		gsource->authHeaderValue = g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5);
 
-		debug1 (DEBUG_UPDATE, "Reedah Auth token found: %s", gsource->authHeaderValue);
+		debug1 (DEBUG_UPDATE, "InoReader Auth token found: %s", gsource->authHeaderValue);
 
-		gsource->loginState = REEDAH_SOURCE_STATE_ACTIVE;
+		gsource->loginState = INOREADER_SOURCE_STATE_ACTIVE;
 		gsource->authFailures = 0;
 
 		/* now that we are authenticated trigger updating to start data retrieval */
-		if (!(flags & REEDAH_SOURCE_UPDATE_ONLY_LOGIN))
+		if (!(flags & INOREADER_SOURCE_UPDATE_ONLY_LOGIN))
 			subscription_update (subscription, flags);
 
 		/* process any edits waiting in queue */
-		reedah_source_edit_process (gsource);
+		inoreader_source_edit_process (gsource);
 
 	} else {
-		debug0 (DEBUG_UPDATE, "google reader login failed! no Auth token found in result!");
+		debug0 (DEBUG_UPDATE, "InoReader login failed! no Auth token found in result!");
 		subscription->node->available = FALSE;
 
 		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("Reedah login failed!"));
+		subscription->updateError = g_strdup (_("InoReader login failed!"));
 		gsource->authFailures++;
 
-		if (gsource->authFailures < REEDAH_SOURCE_MAX_AUTH_FAILURES)
-			gsource->loginState = REEDAH_SOURCE_STATE_NONE;
+		if (gsource->authFailures < INOREADER_SOURCE_MAX_AUTH_FAILURES)
+			gsource->loginState = INOREADER_SOURCE_STATE_NONE;
 		else
-			gsource->loginState = REEDAH_SOURCE_STATE_NO_AUTH;
+			gsource->loginState = INOREADER_SOURCE_STATE_NO_AUTH;
 		
 		auth_dialog_new (subscription, flags);
 	}
@@ -126,17 +126,17 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 
 /**
  * Perform a login to Google Reader, if the login completes the 
- * ReedahSource will have a valid Auth token and will have loginStatus to 
- * REEDAH_SOURCE_LOGIN_ACTIVE.
+ * InoreaderSource will have a valid Auth token and will have loginStatus to 
+ * INOREADER_SOURCE_LOGIN_ACTIVE.
  */
 void
-reedah_source_login (ReedahSourcePtr gsource, guint32 flags) 
+inoreader_source_login (InoreaderSourcePtr gsource, guint32 flags) 
 { 
 	gchar			*username, *password;
 	updateRequestPtr	request;
 	subscriptionPtr		subscription = gsource->root->subscription;
 	
-	if (gsource->loginState != REEDAH_SOURCE_STATE_NONE) {
+	if (gsource->loginState != INOREADER_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session
 		 * doesn't expire. */
 		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", gsource->loginState);
@@ -144,145 +144,145 @@ reedah_source_login (ReedahSourcePtr gsource, guint32 flags)
 
 	request = update_request_new ();
 
-	update_request_set_source (request, REEDAH_READER_LOGIN_URL);
+	update_request_set_source (request, INOREADER_LOGIN_URL);
 
 	/* escape user and password as both are passed using an URI */
 	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
 	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
 
-	request->postdata = g_strdup_printf (REEDAH_READER_LOGIN_POST, username, password);
+	request->postdata = g_strdup_printf (INOREADER_LOGIN_POST, username, password);
 	request->options = update_options_copy (subscription->updateOptions);
 	
 	g_free (username);
 	g_free (password);
 
-	gsource->loginState = REEDAH_SOURCE_STATE_IN_PROGRESS ;
+	gsource->loginState = INOREADER_SOURCE_STATE_IN_PROGRESS ;
 
-	update_execute_request (gsource, request, reedah_source_login_cb, gsource, flags);
+	update_execute_request (gsource, request, inoreader_source_login_cb, gsource, flags);
 }
 
 /* node source type implementation */
 
 static void
-reedah_source_update (nodePtr node)
+inoreader_source_update (nodePtr node)
 {
-	ReedahSourcePtr gsource = (ReedahSourcePtr) node->data;
+	InoreaderSourcePtr gsource = (InoreaderSourcePtr) node->data;
 
-	/* Reset REEDAH_SOURCE_STATE_NO_AUTH as this is a manual
+	/* Reset INOREADER_SOURCE_STATE_NO_AUTH as this is a manual
 	   user interaction and no auto-update so we can query
 	   for credentials again. */
-	if (gsource->loginState == REEDAH_SOURCE_STATE_NO_AUTH)
-		gsource->loginState = REEDAH_SOURCE_STATE_NONE;
+	if (gsource->loginState == INOREADER_SOURCE_STATE_NO_AUTH)
+		gsource->loginState = INOREADER_SOURCE_STATE_NONE;
 
 	subscription_update (node->subscription, 0);  // FIXME: 0 ?
 }
 
 static void
-reedah_source_auto_update (nodePtr node)
+inoreader_source_auto_update (nodePtr node)
 {
 	GTimeVal	now;
-	ReedahSourcePtr gsource = (ReedahSourcePtr) node->data;
+	InoreaderSourcePtr gsource = (InoreaderSourcePtr) node->data;
 
-	if (gsource->loginState == REEDAH_SOURCE_STATE_NONE) {
-		reedah_source_update (node);
+	if (gsource->loginState == INOREADER_SOURCE_STATE_NONE) {
+		inoreader_source_update (node);
 		return;
 	}
 
-	if (gsource->loginState == REEDAH_SOURCE_STATE_IN_PROGRESS) 
+	if (gsource->loginState == INOREADER_SOURCE_STATE_IN_PROGRESS) 
 		return; /* the update will start automatically anyway */
 
 	g_get_current_time (&now);
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll.tv_sec + REEDAH_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
+	if (node->subscription->updateState->lastPoll.tv_sec + INOREADER_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
 		subscription_update (node->subscription, 0);
 		g_get_current_time (&gsource->lastQuickUpdate);
 	}
-	else if (gsource->lastQuickUpdate.tv_sec + REEDAH_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
-		reedah_source_opml_quick_update (gsource);
-		reedah_source_edit_process (gsource);
+	else if (gsource->lastQuickUpdate.tv_sec + INOREADER_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
+		inoreader_source_opml_quick_update (gsource);
+		inoreader_source_edit_process (gsource);
 		g_get_current_time (&gsource->lastQuickUpdate);
 	}
 }
 
 static void
-reedah_source_init (void)
+inoreader_source_init (void)
 {
-	metadata_type_register ("reedah-feed-id", METADATA_TYPE_TEXT);
+	metadata_type_register ("inoreader-feed-id", METADATA_TYPE_TEXT);
 }
 
-static void reedah_source_deinit (void) { }
+static void inoreader_source_deinit (void) { }
 
 static void
-reedah_source_import_node (nodePtr node)
+inoreader_source_import_node (nodePtr node)
 {
 	GSList *iter; 
 	for (iter = node->children; iter; iter = g_slist_next(iter)) {
 		nodePtr subnode = iter->data;
 		if (subnode->subscription)
-			subnode->subscription->type = &reedahSourceFeedSubscriptionType; 
+			subnode->subscription->type = &inoreaderSourceFeedSubscriptionType; 
 		if (subnode->type->capabilities
 		    & NODE_CAPABILITY_SUBFOLDERS)
-			reedah_source_import_node (subnode);
+			inoreader_source_import_node (subnode);
 	}
 }
 
 static void
-reedah_source_import (nodePtr node)
+inoreader_source_import (nodePtr node)
 {
 	opml_source_import (node);
 	
-	node->subscription->type = &reedahSourceOpmlSubscriptionType;
+	node->subscription->type = &inoreaderSourceOpmlSubscriptionType;
 	if (!node->data)
-		node->data = (gpointer) reedah_source_new (node);
+		node->data = (gpointer) inoreader_source_new (node);
 
-	reedah_source_import_node (node);
+	inoreader_source_import_node (node);
 }
 
 static void
-reedah_source_export (nodePtr node)
+inoreader_source_export (nodePtr node)
 {
 	opml_source_export (node);
 }
 
 static gchar *
-reedah_source_get_feedlist (nodePtr node)
+inoreader_source_get_feedlist (nodePtr node)
 {
 	return opml_source_get_feedlist (node);
 }
 
 static void 
-reedah_source_remove (nodePtr node)
+inoreader_source_remove (nodePtr node)
 { 
 	opml_source_remove (node);
 }
 
 static nodePtr
-reedah_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
+inoreader_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
-	debug_enter ("reedah_source_add_subscription");
+	debug_enter ("inoreader_source_add_subscription");
 	nodePtr child = node_new (feed_get_node_type ());
 
-	debug0 (DEBUG_UPDATE, "ReedahSource: Adding a new subscription"); 
+	debug0 (DEBUG_UPDATE, "InoreaderSource: Adding a new subscription"); 
 	node_set_data (child, feed_new ());
 
 	node_set_subscription (child, subscription);
-	child->subscription->type = &reedahSourceFeedSubscriptionType;
+	child->subscription->type = &inoreaderSourceFeedSubscriptionType;
 	
 	node_set_title (child, _("New Subscription"));
 
-	reedah_source_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
+	inoreader_source_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
 	
-	debug_exit ("reedah_source_add_subscription");
+	debug_exit ("inoreader_source_add_subscription");
 	
 	return child;
 }
 
 static void
-reedah_source_remove_node (nodePtr node, nodePtr child) 
+inoreader_source_remove_node (nodePtr node, nodePtr child) 
 { 
 	gchar           *source; 
-	ReedahSourcePtr gsource = node->data;
+	InoreaderSourcePtr gsource = node->data;
 	
 	if (child == node) { 
 		feedlist_node_removed (child);
@@ -294,8 +294,8 @@ reedah_source_remove_node (nodePtr node, nodePtr child)
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
-	if (!reedah_source_opml_get_node_by_source (gsource, source)) 
-		reedah_source_edit_remove_subscription (gsource, source);
+	if (!inoreader_source_opml_get_node_by_source (gsource, source)) 
+		inoreader_source_edit_remove_subscription (gsource, source);
 	
 	g_free (source);
 }
@@ -303,7 +303,7 @@ reedah_source_remove_node (nodePtr node, nodePtr child)
 /* GUI callbacks */
 
 static void
-on_reedah_source_selected (GtkDialog *dialog,
+on_inoreader_source_selected (GtkDialog *dialog,
                            gint response_id,
                            gpointer user_data) 
 {
@@ -311,59 +311,59 @@ on_reedah_source_selected (GtkDialog *dialog,
 	subscriptionPtr	subscription;
 
 	if (response_id == GTK_RESPONSE_OK) {
-		subscription = subscription_new ("http://www.reedah.com/reader", NULL, NULL);
+		subscription = subscription_new ("http://www.inoreader.com/reader", NULL, NULL);
 		node = node_new (node_source_get_node_type ());
-		node_set_title (node, "Reedah");
-		node_source_new (node, reedah_source_get_type ());
+		node_set_title (node, "InoReader");
+		node_source_new (node, inoreader_source_get_type ());
 		node_set_subscription (node, subscription);
 
 		subscription_set_auth_info (subscription,
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
 
-		subscription->type = &reedahSourceOpmlSubscriptionType ; 
+		subscription->type = &inoreaderSourceOpmlSubscriptionType ; 
 
-		node->data = reedah_source_new (node);
+		node->data = inoreader_source_new (node);
 		feedlist_node_added (node);
-		reedah_source_update (node);
+		inoreader_source_update (node);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static void
-ui_reedah_source_get_account_info (void)
+ui_inoreader_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 	
-	dialog = liferea_dialog_new ("reedah_source.ui", "reedah_source_dialog");
+	dialog = liferea_dialog_new ("inoreader_source.ui", "inoreader_source_dialog");
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_reedah_source_selected), 
+			  G_CALLBACK (on_inoreader_source_selected), 
 			  NULL);
 }
 
 static void
-reedah_source_cleanup (nodePtr node)
+inoreader_source_cleanup (nodePtr node)
 {
-	ReedahSourcePtr reader = (ReedahSourcePtr) node->data;
-	reedah_source_free(reader);
+	InoreaderSourcePtr reader = (InoreaderSourcePtr) node->data;
+	inoreader_source_free(reader);
 	node->data = NULL ;
 }
 
 static void 
-reedah_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
+inoreader_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 {
 	nodePtr root = node_source_root_from_node (node);
-	reedah_source_edit_mark_starred ((ReedahSourcePtr)root->data, item->sourceId, node->subscription->source, newStatus);
+	inoreader_source_edit_mark_starred ((InoreaderSourcePtr)root->data, item->sourceId, node->subscription->source, newStatus);
 	item_flag_state_changed (item, newStatus);
 }
 
 static void
-reedah_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
+inoreader_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 {
 	nodePtr root = node_source_root_from_node (node);
-	reedah_source_edit_mark_read ((ReedahSourcePtr)root->data, item->sourceId, node->subscription->source, newStatus);
+	inoreader_source_edit_mark_read ((InoreaderSourcePtr)root->data, item->sourceId, node->subscription->source, newStatus);
 	item_read_state_changed (item, newStatus);
 }
 
@@ -373,45 +373,45 @@ reedah_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
  * @param node The node to migrate (not the nodeSource!)
  */
 static void
-reedah_source_convert_to_local (nodePtr node)
+inoreader_source_convert_to_local (nodePtr node)
 {
-	ReedahSourcePtr gsource = node->data; 
+	InoreaderSourcePtr gsource = node->data; 
 
-	gsource->loginState = REEDAH_SOURCE_STATE_MIGRATE;	
+	gsource->loginState = INOREADER_SOURCE_STATE_MIGRATE;	
 }
 
 /* node source type definition */
 
 static struct nodeSourceType nst = {
-	.id                  = "fl_reedah",
-	.name                = N_("Reedah"),
-	.description         = N_("Integrate the feed list of your Reedah account. Liferea will "
-	                          "present your Reedah subscriptions, and will synchronize your feed list and reading lists."),
+	.id                  = "fl_inoreader",
+	.name                = N_("InoReader"),
+	.description         = N_("Integrate the feed list of your InoReader account. Liferea will "
+	                          "present your InoReader subscriptions, and will synchronize your feed list and reading lists."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
-	.source_type_init    = reedah_source_init,
-	.source_type_deinit  = reedah_source_deinit,
-	.source_new          = ui_reedah_source_get_account_info,
-	.source_delete       = reedah_source_remove,
-	.source_import       = reedah_source_import,
-	.source_export       = reedah_source_export,
-	.source_get_feedlist = reedah_source_get_feedlist,
-	.source_update       = reedah_source_update,
-	.source_auto_update  = reedah_source_auto_update,
-	.free                = reedah_source_cleanup,
-	.item_set_flag       = reedah_source_item_set_flag,
-	.item_mark_read      = reedah_source_item_mark_read,
+	.source_type_init    = inoreader_source_init,
+	.source_type_deinit  = inoreader_source_deinit,
+	.source_new          = ui_inoreader_source_get_account_info,
+	.source_delete       = inoreader_source_remove,
+	.source_import       = inoreader_source_import,
+	.source_export       = inoreader_source_export,
+	.source_get_feedlist = inoreader_source_get_feedlist,
+	.source_update       = inoreader_source_update,
+	.source_auto_update  = inoreader_source_auto_update,
+	.free                = inoreader_source_cleanup,
+	.item_set_flag       = inoreader_source_item_set_flag,
+	.item_mark_read      = inoreader_source_item_mark_read,
 	.add_folder          = NULL, 
-	.add_subscription    = reedah_source_add_subscription,
-	.remove_node         = reedah_source_remove_node,
-	.convert_to_local    = reedah_source_convert_to_local
+	.add_subscription    = inoreader_source_add_subscription,
+	.remove_node         = inoreader_source_remove_node,
+	.convert_to_local    = inoreader_source_convert_to_local
 };
 
 nodeSourceTypePtr
-reedah_source_get_type (void)
+inoreader_source_get_type (void)
 {
 	return &nst;
 }

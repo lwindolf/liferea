@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "fl_sources/reedah_source.h"
+#include "fl_sources/inoreader_source.h"
 
 /**
  * Find a node by the source id.
@@ -26,7 +26,7 @@
  *
  * @returns a node (or NULL)
  */
-nodePtr reedah_source_opml_get_node_by_source(ReedahSourcePtr gsource,
+nodePtr inoreader_source_opml_get_node_by_source(InoreaderSourcePtr gsource,
 					 const gchar *source);
 
 /**
@@ -37,11 +37,11 @@ nodePtr reedah_source_opml_get_node_by_source(ReedahSourcePtr gsource,
  *
  * @returns a node (or NULL)
  */
-nodePtr reedah_source_opml_get_subnode_by_node(nodePtr node, const gchar *source);
+nodePtr inoreader_source_opml_get_subnode_by_node(nodePtr node, const gchar *source);
 
 /**
  * Perform a quick update of the Google Reader source.
  *
  * @param gsource	the Google Reader source
  */
-gboolean reedah_source_opml_quick_update (ReedahSourcePtr gsource);
+gboolean inoreader_source_opml_quick_update (InoreaderSourcePtr gsource);

@@ -182,11 +182,13 @@ src/notification/notification.h
 src/webkit/webkit.c
 [type: gettext/glade]glade/auth.ui
 [type: gettext/glade]glade/google_source.ui
+[type: gettext/glade]glade/inoreader_source.ui
 [type: gettext/glade]glade/liferea.ui
 [type: gettext/glade]glade/new_subscription.ui
 [type: gettext/glade]glade/node_source.ui
 [type: gettext/glade]glade/opml_source.ui
+[type: gettext/glade]glade/prefs.ui
+[type: gettext/glade]glade/reedah_source.ui
+[type: gettext/glade]glade/simple_subscription.ui
 [type: gettext/glade]glade/ttrss_source.ui
 [type: gettext/glade]glade/theoldreader_source.ui
-[type: gettext/glade]glade/simple_subscription.ui
-[type: gettext/glade]glade/prefs.ui

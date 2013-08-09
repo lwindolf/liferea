@@ -1,5 +1,5 @@
 /**
- * @file reedah_source_edit.c  Google reader feed list source syncing support
+ * @file inoreader_source_edit.c  Google reader feed list source syncing support
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
@@ -18,20 +18,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _REEDAH_SOURCE_EDIT_H
-#define _REEDAH_SOURCE_EDIT_H
+#ifndef _INOREADER_SOURCE_EDIT_H
+#define _INOREADER_SOURCE_EDIT_H
 
-#include "reedah_source.h"
+#include "inoreader_source.h"
 
 #include <glib.h>
 
 /**
  * Process the waiting edits on the edit queue. Call this if the state of
- * the ReedahSource has changed.
+ * the InoreaderSource has changed.
  * 
- * @param gsource The ReedahSource whose editQueue should be processed.
+ * @param gsource The InoreaderSource whose editQueue should be processed.
  */
-void reedah_source_edit_process (ReedahSourcePtr gsource);
+void inoreader_source_edit_process (InoreaderSourcePtr gsource);
 
 
 /** Edit wrappers */
@@ -39,48 +39,48 @@ void reedah_source_edit_process (ReedahSourcePtr gsource);
 /**
  * Mark the given item as read. 
  * 
- * @param gsource The ReedahSource structure 
+ * @param gsource The InoreaderSource structure 
  * @param guid   The guid of the item whose status is to be edited
  * @param feedUrl  The feedUrl of the feed containing the item.
  * @param newStatus The new read status of the item (TRUE for read)
  */
-void reedah_source_edit_mark_read (ReedahSourcePtr gsource, const gchar* guid, const gchar* feedUrl, gboolean newStatus);
+void inoreader_source_edit_mark_read (InoreaderSourcePtr gsource, const gchar* guid, const gchar* feedUrl, gboolean newStatus);
 
 /**
  * Mark the given item as starred.
  * 
- * @param gsource The ReedahSource structure 
+ * @param gsource The InoreaderSource structure 
  * @param guid   The guid of the item whose status is to be edited
  * @param feedUrl  The feedUrl of the feed containing the item.
  * @param newStatus The new read status of the item (TRUE for read)
  */
-void reedah_source_edit_mark_starred (ReedahSourcePtr gsource, const gchar *guid, const gchar *feedUrl, gboolean newStatus);
+void inoreader_source_edit_mark_starred (InoreaderSourcePtr gsource, const gchar *guid, const gchar *feedUrl, gboolean newStatus);
 
 
 /**
  * Add a subscription to the google source.
  *
- * @param gsource The ReedahSource structure
+ * @param gsource The InoreaderSource structure
  * @param feedUrl the feed to add
  */
-void reedah_source_edit_add_subscription (ReedahSourcePtr gsource, const gchar* feedUrl);
+void inoreader_source_edit_add_subscription (InoreaderSourcePtr gsource, const gchar* feedUrl);
 
 
 /**
  * Remove a subscription from the google source.
  * 
- * @param gsource The ReedahSource structure
+ * @param gsource The InoreaderSource structure
  * @param feedUrl the feed to remove
  */
-void reedah_source_edit_remove_subscription (ReedahSourcePtr gsource, const gchar* feedUrl);
+void inoreader_source_edit_remove_subscription (InoreaderSourcePtr gsource, const gchar* feedUrl);
 
 /**
  * See if an item with give guid is being modified 
  * in the queue.
  *
- * @param ReedahSource the ReedahSource structure
+ * @param InoreaderSource the InoreaderSource structure
  * @param guid the guid of the item
  */
-gboolean reedah_source_edit_is_in_queue (ReedahSourcePtr gsource, const gchar* guid);
+gboolean inoreader_source_edit_is_in_queue (InoreaderSourcePtr gsource, const gchar* guid);
 
 #endif

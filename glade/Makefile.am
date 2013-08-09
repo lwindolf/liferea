@@ -6,6 +6,7 @@ glade_DATA = liferea.ui \
 	new_subscription.ui \
 	simple_subscription.ui \
 	google_source.ui \
+	inoreader_source.ui \
 	node_source.ui \
 	opml_source.ui \
 	prefs.ui \

@@ -1,5 +1,5 @@
 /**
- * @file reedah_source_feed_list.c  Reedah handling routines.
+ * @file inoreader_source_feed_list.c  Inoreader handling routines.
  * 
  * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
  *
@@ -19,7 +19,7 @@
  */
 
 
-#include "reedah_source_feed_list.h"
+#include "inoreader_source_feed_list.h"
 
 #include <glib.h>
 #include <string.h>
@@ -35,23 +35,23 @@
 #include "xml.h" // FIXME
 
 #include "fl_sources/opml_source.h"
-#include "fl_sources/reedah_source.h"
-#include "fl_sources/reedah_source_edit.h"
+#include "fl_sources/inoreader_source.h"
+#include "fl_sources/inoreader_source_edit.h"
 
 /**
  * Find a node by the source id.
  */
 nodePtr
-reedah_source_opml_get_node_by_source (ReedahSourcePtr gsource, const gchar *source) 
+inoreader_source_opml_get_node_by_source (InoreaderSourcePtr gsource, const gchar *source) 
 {
-	return reedah_source_opml_get_subnode_by_node (gsource->root, source);
+	return inoreader_source_opml_get_subnode_by_node (gsource->root, source);
 }
 
 /**
  * Recursively find a node by the source id.
  */
 nodePtr
-reedah_source_opml_get_subnode_by_node (nodePtr node, const gchar *source) 
+inoreader_source_opml_get_subnode_by_node (nodePtr node, const gchar *source) 
 {
 	nodePtr subnode;
 	nodePtr subsubnode;
@@ -63,7 +63,7 @@ reedah_source_opml_get_subnode_by_node (nodePtr node, const gchar *source)
 			return subnode;
 		else if (subnode->type->capabilities
 			 & NODE_CAPABILITY_SUBFOLDERS) {
-			subsubnode = reedah_source_opml_get_subnode_by_node(subnode, source);
+			subsubnode = inoreader_source_opml_get_subnode_by_node(subnode, source);
 			if (subnode != NULL)
 				return subsubnode;
 		}
@@ -74,17 +74,17 @@ reedah_source_opml_get_subnode_by_node (nodePtr node, const gchar *source)
 /* subscription list merging functions */
 
 static void
-reedah_source_check_for_removal (nodePtr node, gpointer user_data)
+inoreader_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar	*expr = NULL;
 
-	if (node->subscription && g_str_equal (node->subscription->source, REEDAH_READER_BROADCAST_FRIENDS_URL)) 
+	if (node->subscription && g_str_equal (node->subscription->source, INOREADER_BROADCAST_FRIENDS_URL)) 
 		return ; 
 
 	if (IS_FEED (node)) {
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
 	} else if (IS_FOLDER (node)) {
-		node_foreach_child_data (node, reedah_source_check_for_removal, user_data);
+		node_foreach_child_data (node, inoreader_source_check_for_removal, user_data);
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/list[@name='categories']/object[string='%s']", node->title);
 	} else {
 		g_warning ("google_opml_source_check_for_removal(): This should never happen...");
@@ -104,7 +104,7 @@ reedah_source_check_for_removal (nodePtr node, gpointer user_data)
  * Find a node by the name under root or create it.
  */
 static nodePtr
-reedah_source_find_or_create_folder (const gchar *name, nodePtr root)
+inoreader_source_find_or_create_folder (const gchar *name, nodePtr root)
 {
 	nodePtr		folder = NULL;
 	GSList		*iter_parent;
@@ -136,7 +136,7 @@ reedah_source_find_or_create_folder (const gchar *name, nodePtr root)
  * node to the folder with the same name.
  */
 static void
-reedah_source_update_folder (xmlNodePtr match, ReedahSourcePtr gsource, nodePtr node)
+inoreader_source_update_folder (xmlNodePtr match, InoreaderSourcePtr gsource, nodePtr node)
 {
 	xmlNodePtr	xml;
 	xmlChar		*label;
@@ -151,7 +151,7 @@ reedah_source_update_folder (xmlNodePtr match, ReedahSourcePtr gsource, nodePtr 
 		label = xmlNodeListGetString (xml->doc,	xml->xmlChildrenNode, 1);
 		if (parent == gsource->root || ! g_str_equal (label, ptitle)) {
 			debug2 (DEBUG_UPDATE, "GSource feed label changed for %s to '%s'", node->id, label);
-			parent = reedah_source_find_or_create_folder ((gchar*)label, gsource->root);
+			parent = inoreader_source_find_or_create_folder ((gchar*)label, gsource->root);
 			node_reparent (node, parent);
 		}
 		xmlFree (label);
@@ -163,7 +163,7 @@ reedah_source_update_folder (xmlNodePtr match, ReedahSourcePtr gsource, nodePtr 
 }
 
 static void
-reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar *title, const gchar *id)
+inoreader_source_merge_feed (InoreaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id)
 {
 	nodePtr	node;
 	GSList	*iter;
@@ -183,10 +183,10 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 	node_set_data (node, feed_new ());
 		
 	node_set_subscription (node, subscription_new (url, NULL, NULL));
-	node->subscription->type = &reedahSourceFeedSubscriptionType;
+	node->subscription->type = &inoreaderSourceFeedSubscriptionType;
 
-	/* Save Reedah feed id which we need to fetch items... */
-	node->subscription->metadata = metadata_list_append (node->subscription->metadata, "reedah-feed-id", id);
+	/* Save Inoreader feed id which we need to fetch items... */
+	node->subscription->metadata = metadata_list_append (node->subscription->metadata, "inoreader-feed-id", id);
 	db_subscription_update (node->subscription);
 
 	node_set_parent (node, source->root, -1);
@@ -207,7 +207,7 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 static void
 google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	ReedahSourcePtr	source = (ReedahSourcePtr) subscription->node->data;
+	InoreaderSourcePtr	source = (InoreaderSourcePtr) subscription->node->data;
 	
 	// FIXME: the following code is very similar to ttrss!
 	if (result->data && result->httpstatus == 200) {
@@ -237,7 +237,7 @@ g_print(">>> %s\n",result->data);
 				
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "id")) {
-					reedah_source_merge_feed (source, 
+					inoreader_source_merge_feed (source, 
 					                          json_get_string (node, "id") + 5,	// FIXME: Unescape string!
 					                          json_get_string (node, "title"),
 					                          json_get_string (node, "id"));
@@ -275,25 +275,25 @@ g_print(">>> %s\n",result->data);
 			subscription->node->available = TRUE;			
 			//return;
 		} else {
-			g_warning ("Invalid JSON returned on Reedah feed list request! >>>%s<<<", result->data);
+			g_warning ("Invalid JSON returned on Inoreader feed list request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "reedah_subscription_cb(): ERROR: failed to get subscription list!");
+		debug0 (DEBUG_UPDATE, "inoreader_subscription_cb(): ERROR: failed to get subscription list!");
 	}
 
-	if (!(flags & REEDAH_SOURCE_UPDATE_ONLY_LIST))
+	if (!(flags & INOREADER_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
 /** functions for an efficient updating mechanism */
 
 static void
-reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata) 
+inoreader_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata) 
 {
-	ReedahSourcePtr gsource = (ReedahSourcePtr) userdata;
+	InoreaderSourcePtr gsource = (InoreaderSourcePtr) userdata;
 	xmlNodePtr      xmlNode;
 	xmlChar         *id, *newestItemTimestamp;
 	nodePtr         node = NULL; 
@@ -303,9 +303,9 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	id = xmlNodeGetContent (xmlNode); 
 
 	if (g_str_has_prefix (id, "feed/"))
-		node = reedah_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
+		node = inoreader_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
 	else if (g_str_has_suffix (id, "broadcast-friends")) 
-		node = reedah_source_opml_get_node_by_source (gsource, id);
+		node = inoreader_source_opml_get_node_by_source (gsource, id);
 	else {
 		xmlFree (id);
 		return;
@@ -324,7 +324,7 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	if (!oldNewestItemTimestamp ||
 	    (newestItemTimestamp && 
 	     !g_str_equal (newestItemTimestamp, oldNewestItemTimestamp))) { 
-		debug3(DEBUG_UPDATE, "ReedahSource: auto-updating %s "
+		debug3(DEBUG_UPDATE, "InoreaderSource: auto-updating %s "
 		       "[oldtimestamp%s, timestamp %s]", 
 		       id, oldNewestItemTimestamp, newestItemTimestamp);
 		g_hash_table_insert (gsource->lastTimestampMap,
@@ -339,39 +339,39 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 }
 
 static void
-reedah_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
+inoreader_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
 {
-	ReedahSourcePtr gsource = (ReedahSourcePtr) userdata;
+	InoreaderSourcePtr gsource = (InoreaderSourcePtr) userdata;
 	xmlDocPtr       doc;
 
 	if (!result->data) { 
 		/* what do I do? */
-		debug0 (DEBUG_UPDATE, "ReedahSource: Unable to get unread counts, this update is aborted.");
+		debug0 (DEBUG_UPDATE, "InoreaderSource: Unable to get unread counts, this update is aborted.");
 		return;
 	}
 	doc = xml_parse (result->data, result->size, NULL);
 	if (!doc) {
-		debug0 (DEBUG_UPDATE, "ReedahSource: The XML failed to parse, maybe the session has expired. (FIXME)");
+		debug0 (DEBUG_UPDATE, "InoreaderSource: The XML failed to parse, maybe the session has expired. (FIXME)");
 		return;
 	}
 
 	xpath_foreach_match (xmlDocGetRootElement (doc),
 			    "/object/list[@name='unreadcounts']/object", 
-			    reedah_source_opml_quick_update_helper, gsource);
+			    inoreader_source_opml_quick_update_helper, gsource);
 	
 	xmlFreeDoc (doc);
 }
 
 gboolean
-reedah_source_opml_quick_update(ReedahSourcePtr gsource) 
+inoreader_source_opml_quick_update(InoreaderSourcePtr gsource) 
 {
 	updateRequestPtr request = update_request_new ();
 	request->updateState = update_state_copy (gsource->root->subscription->updateState);
 	request->options = update_options_copy (gsource->root->subscription->updateOptions);
-	update_request_set_source (request, REEDAH_READER_UNREAD_COUNTS_URL);
+	update_request_set_source (request, INOREADER_UNREAD_COUNTS_URL);
 	update_request_set_auth_value(request, gsource->authHeaderValue);
 
-	update_execute_request (gsource, request, reedah_source_opml_quick_update_cb,
+	update_execute_request (gsource, request, inoreader_source_opml_quick_update_cb,
 				gsource, 0);
 
 	return TRUE;
@@ -379,25 +379,25 @@ reedah_source_opml_quick_update(ReedahSourcePtr gsource)
 
 
 static void
-reedah_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+inoreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	google_subscription_opml_cb (subscription, result, flags);
 }
 
 static gboolean
-reedah_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+inoreader_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
-	ReedahSourcePtr	gsource = (ReedahSourcePtr)subscription->node->data;
+	InoreaderSourcePtr	gsource = (InoreaderSourcePtr)subscription->node->data;
 	
 	g_assert(gsource);
-	if (gsource->loginState == REEDAH_SOURCE_STATE_NONE) {
-		debug0(DEBUG_UPDATE, "ReedahSource: login");
-		reedah_source_login ((ReedahSourcePtr) subscription->node->data, 0) ;
+	if (gsource->loginState == INOREADER_SOURCE_STATE_NONE) {
+		debug0(DEBUG_UPDATE, "InoreaderSource: login");
+		inoreader_source_login ((InoreaderSourcePtr) subscription->node->data, 0) ;
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating Reedah subscription (node id %s)", subscription->node->id);
+	debug1 (DEBUG_UPDATE, "updating Inoreader subscription (node id %s)", subscription->node->id);
 	
-	update_request_set_source (request, REEDAH_READER_SUBSCRIPTION_LIST_URL);
+	update_request_set_source (request, INOREADER_SUBSCRIPTION_LIST_URL);
 	
 	update_request_set_auth_value (request, gsource->authHeaderValue);
 	
@@ -406,7 +406,7 @@ reedah_source_opml_subscription_prepare_update_request (subscriptionPtr subscrip
 
 /* OPML subscription type definition */
 
-struct subscriptionType reedahSourceOpmlSubscriptionType = {
-	reedah_source_opml_subscription_prepare_update_request,
-	reedah_source_opml_subscription_process_update_result
+struct subscriptionType inoreaderSourceOpmlSubscriptionType = {
+	inoreader_source_opml_subscription_prepare_update_request,
+	inoreader_source_opml_subscription_process_update_result
 };

@@ -96,7 +96,7 @@ reedah_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable
 static void
 reedah_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
 {
-	GoogleSourcePtr gsource = (GoogleSourcePtr) node_source_root_from_node (subscription->node)->data ;
+	ReedahSourcePtr gsource = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data ;
 	xmlNodePtr      xml;
 	nodePtr         node = subscription->node;
 	xmlChar         *id;
@@ -204,10 +204,10 @@ reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                  struct updateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing Reedah feed subscription for update\n");
-	GoogleSourcePtr gsource = (GoogleSourcePtr) node_source_root_from_node (subscription->node)->data; 
+	ReedahSourcePtr gsource = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data; 
 	
 	g_assert(gsource); 
-	if (gsource->loginState == GOOGLE_SOURCE_STATE_NONE) { 
+	if (gsource->loginState == REEDAH_SOURCE_STATE_NONE) { 
 		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
@@ -230,7 +230,7 @@ reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	return TRUE;
 }
 
-struct subscriptionType googleSourceFeedSubscriptionType = {
+struct subscriptionType reedahSourceFeedSubscriptionType = {
 	reedah_feed_subscription_prepare_update_request,
 	reedah_feed_subscription_process_update_result
 };
