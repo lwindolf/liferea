@@ -110,7 +110,7 @@ Liferea from a release tarball. Those are supplied at our SourceForge
 project homepage (http://liferea.sf.net). After you downloaded it extract
 it like this:
 
-   tar zxvf liferea-1.9.0.tar.gz 
+   tar jxvf liferea-1.10.0.tar.bz2 
 
 After unpacking run the standard autotools commands:
 
