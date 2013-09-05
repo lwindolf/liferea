@@ -769,9 +769,12 @@ on_popup_launch_item_selected (void)
 	if (item) {
 		gchar *link = item_make_link (item);
 
-		itemview_launch_URL (link, TRUE /* launch in internal browser */);
+		if (link) {
+			itemview_launch_URL (link, TRUE /* launch in internal browser */);
+			g_free (link);
+		} else
+			ui_show_error_box (_("This item has no link specified!"));
 
-		g_free (link);
 		item_unload (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));

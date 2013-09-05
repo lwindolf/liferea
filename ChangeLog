@@ -8,6 +8,8 @@
 	  (David Smith)
 	* Fixes SF #1105: Start Minimized to Tray Does Not Work 
 	  (reported by bitlord)
+	* Fixes SF #1114: Crashes opening browser on item without link via popup
+	  (reported by Rich Coe, David Smith)
 	* Improved handling of broken Atom author information.
 	  (Lars Windolf)
 	* Removed dead Google Reader code to avoid doing requests to Google.
