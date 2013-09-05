@@ -1,4 +1,6 @@
-	To be released
+2013-09-05   Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.10.2
 	
 	* Patch SF #222: Make media player seekable
 	  (Simon Kågedal Reimer)
