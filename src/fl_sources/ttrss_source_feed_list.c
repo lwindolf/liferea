@@ -92,7 +92,8 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 		JsonParser	*parser = json_parser_new ();
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
-			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "content"));
+			JsonNode	*content = json_get_node (json_parser_get_root (parser), "content");
+			JsonArray	*array;
 			GList		*iter, *elements;
 			GSList		*siter;
 		
@@ -114,8 +115,20 @@ ttrss_subscription_cb (subscriptionPtr subscription, const struct updateResult *
 			   "last_updated":1287853206}, 
 			   [...]
 			   
+
+			   Or an error message that could look like this:
+	
+			      {"seq":null,"status":1,"content":{"error":"NOT_LOGGED_IN"}}
+
 			   */
 
+			if (!content || (JSON_NODE_TYPE (content) != JSON_NODE_ARRAY)) {
+				debug0 (DEBUG_UPDATE, "ttrss_subscription_cb(): Failed to get subscription list!");
+				subscription->node->available = FALSE;
+				return;
+			}
+
+			array = json_node_get_array (content);
 			elements = iter = json_array_get_elements (array);
 			/* Add all new nodes we find */
 			while (iter) {
@@ -184,9 +197,10 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 static gboolean
 ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "ttrs_subscription_prepare_update_request");
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
 	gchar *source_uri;
+
+	debug0 (DEBUG_UPDATE, "ttrs_subscription_prepare_update_request");
 
 	g_assert (source);
 	if (source->loginState == TTRSS_SOURCE_STATE_NONE) {
@@ -202,7 +216,7 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct 
 	update_request_set_source (request, source_uri);
 	g_free (source_uri);
 	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
-	
+	g_print("postdata=%s\n", request->postdata);
 	return TRUE;
 }
 

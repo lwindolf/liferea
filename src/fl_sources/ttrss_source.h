@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.h tt-rss feed list source support
  * 
- * Copyright (C) 2010-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,14 +30,17 @@ typedef struct ttrssSource {
 	nodePtr		root;		/**< the root node in the feed list */
 	gchar		*session_id;	/**< the tt-rss session id */
 	GQueue		*actionQueue;
+	gint		apiLevel;	/**< The API level reported by the instance (or 0) */
 	gint		loginState;	/**< The current login state */
+	gint		authFailures;	/**< Number of authentication failures */
 	gboolean	selfUpdating;	/**< True if remote updating daemon is running */
 } *ttrssSourcePtr;
  
 enum { 
-	TTRSS_SOURCE_STATE_NONE = 0,
-	TTRSS_SOURCE_STATE_IN_PROGRESS,
-	TTRSS_SOURCE_STATE_ACTIVE
+	TTRSS_SOURCE_STATE_NONE = 0,		/**< no authentication tried so far */
+	TTRSS_SOURCE_STATE_IN_PROGRESS,		/**< authentication in progress */
+	TTRSS_SOURCE_STATE_ACTIVE,		/**< authentication succeeded */
+	TTRSS_SOURCE_STATE_NO_AUTH		/**< authentication has failed */
 };
 
 enum  { 
@@ -53,9 +56,15 @@ enum  {
 };
 
 /**
- * tt-rss API URL's
+ * Number of auth failures after which we stop bothering the user while
+ * auto-updating until he manually updates again.
+ */
+#define TTRSS_SOURCE_MAX_AUTH_FAILURES		3
+
+/**
+ * TinyTinyRSS JSON API is documented here:
  *
- * http://tt-rss.org/redmine/wiki/tt-rss/JsonApiReference
+ * http://tt-rss.org/redmine/projects/tt-rss/wiki/JsonApiReference
  */
 
 #define TTRSS_URL "%s/api/"
@@ -77,7 +86,7 @@ enum  {
  *
  * @returns JSON feed list
  */
-#define TTRSS_JSON_SUBSCRIPTION_LIST "{\"op\":\"getFeeds\", \"sid\":\"%s\", \"cat_id\":\"-3\"}"
+#define TTRSS_JSON_SUBSCRIPTION_LIST "{\"op\":\"getFeeds\", \"sid\":\"%s\", \"cat_id\":\"-3\", \"include_nested\":\"true\"}"
 
 /**
  * Fetch tt-rss headlines for a given feed.

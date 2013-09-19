@@ -47,7 +47,7 @@ typedef struct TheOldReaderSource {
 
 enum { 
 	THEOLDREADER_SOURCE_STATE_NONE = 0,		/**< no authentication tried so far */
-	THEOLDREADER_SOURCE_STATE_IN_PROGRESS,	/**< authentication in progress */
+	THEOLDREADER_SOURCE_STATE_IN_PROGRESS,		/**< authentication in progress */
 	THEOLDREADER_SOURCE_STATE_ACTIVE,		/**< authentication succeeded */
 	THEOLDREADER_SOURCE_STATE_NO_AUTH,		/**< authentication has failed */
 	THEOLDREADER_SOURCE_STATE_MIGRATE,		/**< source will be migrated, do not do anything anymore! */
