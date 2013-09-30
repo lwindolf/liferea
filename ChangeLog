@@ -3,6 +3,7 @@
 	* Asking for credentials again if TinyTinyRSS login fails
 	* Asking for TinyTinyRSS credentials only 3 times
 	* Checking wether TinyTinyRSS base URL is lost
+	* "--debug-net --debug-verbose" now traces POST data
 
 
 2013-09-05   Lars Windolf <lars.lindner@gmail.com>

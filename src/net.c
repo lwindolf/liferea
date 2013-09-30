@@ -113,6 +113,8 @@ network_process_request (const updateJobPtr const job)
 
 	g_assert (NULL != job->request);
 	debug1 (DEBUG_NET, "downloading %s", job->request->source);
+	if (job->request->postdata && (debug_level & DEBUG_VERBOSE) && (debug_level & DEBUG_NET))
+		debug1 (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
 
 	/* Prepare the SoupMessage */
 	msg = soup_message_new (job->request->postdata ? SOUP_METHOD_POST : SOUP_METHOD_GET,
