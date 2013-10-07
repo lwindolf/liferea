@@ -1,7 +1,7 @@
 /**
  * @file feedlist.c  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -233,6 +233,49 @@ feedlist_get_parent_node (void)
 		return SELECTED->parent;
 
 	return ROOTNODE;
+}
+
+nodePtr
+feedlist_find_node (nodePtr parent, feedListFindType type, const gchar *str)
+{
+	GSList	*iter;
+
+	g_assert (str);
+
+	iter = parent->children;
+	while (iter) {
+		gboolean found = FALSE;
+		nodePtr result, node = (nodePtr)iter->data;
+
+		/* Check child node */
+		switch (type) {
+			case NODE_BY_URL:
+				if (node->subscription)
+					found = g_str_equal (str, subscription_get_source (node->subscription));
+				break;
+			case NODE_BY_ID:
+				found = g_str_equal (str, node->id);
+				break;
+			case FOLDER_BY_TITLE:
+				if (IS_FOLDER (node))
+					found = g_str_equal (str, node->title);
+				break;
+
+			default:
+				break;
+		}
+		if (found)
+			return node;
+
+		/* And recurse */
+		result = feedlist_find_node (node, type, str);
+		if (result)
+			return result;
+
+		iter = g_slist_next (iter);
+	}
+
+	return NULL;
 }
 
 gboolean

@@ -1,7 +1,7 @@
 /**
  * @file feedlist.h  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2008 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2013 Lars Windolf <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,6 +118,26 @@ void feedlist_node_was_updated (nodePtr node, guint newCount);
  * @returns the feed list root node
  */
 nodePtr feedlist_get_root (void);
+
+typedef enum {
+	NODE_BY_URL,
+	NODE_BY_ID,
+	FOLDER_BY_TITLE
+} feedListFindType;
+
+/**
+ * Search trough list of subscriptions for a node matching exactly 
+ * to an criteria defined by the find type and comparison string.
+ * Searches recursively from a given parent node or the root node.
+ * Always returns just the first occurence in traversal order.
+ *
+ * @param parent	parent node to traverse from (or NULL)
+ * @param type		NODE_BY_(URL|FOLDER_TITLE|ID)
+ * @param str		string to compare to
+ *
+ * @returns a nodePtr or NULL
+ */
+nodePtr feedlist_find_node (nodePtr parent, feedListFindType type, const gchar *str);
 
 /**
  * Adds a new subscription to the feed list.
