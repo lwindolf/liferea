@@ -134,6 +134,7 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	ttrssSourcePtr source = (ttrssSourcePtr) root->data;
 	const gchar *feed_id;
 	gchar *source_name;
+	gint	fetchCount;
 
 	debug0 (DEBUG_UPDATE, "preparing tt-rss feed subscription for update");
 	
@@ -148,7 +149,11 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		g_warning ("tt-rss feed without id! (%s)", subscription->node->title);
 		return FALSE;
 	}
-	request->postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, 15 /* items to fetch */ );
+
+	/* We can always max out as TinyTinyRSS does limit results itself */	
+	fetchCount = feed_get_max_item_count (subscription->node);
+
+	request->postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, fetchCount);
 	source_name = g_strdup_printf (TTRSS_URL, metadata_list_get (root->subscription->metadata, "ttrss-url"));
 	update_request_set_source (request, source_name);
 	g_free (source_name);

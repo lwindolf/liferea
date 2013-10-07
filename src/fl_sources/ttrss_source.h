@@ -21,6 +21,8 @@
 #ifndef _TTRSS_SOURCE_H
 #define _TTRSS_SOURCE_H
 
+#include <glib.h>
+
 #include "fl_sources/node_source.h"
 
 /**
@@ -34,6 +36,8 @@ typedef struct ttrssSource {
 	gint		loginState;	/**< The current login state */
 	gint		authFailures;	/**< Number of authentication failures */
 	gboolean	selfUpdating;	/**< True if remote updating daemon is running */
+	GHashTable	*categories;	/**< Lookup hash for feed id to category id */
+	GHashTable	*categoryNodes;	/**< Lookup hash for category id to folder node id */
 } *ttrssSourcePtr;
  
 enum { 
@@ -87,6 +91,13 @@ enum  {
  * @returns JSON feed list
  */
 #define TTRSS_JSON_SUBSCRIPTION_LIST "{\"op\":\"getFeeds\", \"sid\":\"%s\", \"cat_id\":\"-3\", \"include_nested\":\"true\"}"
+
+/**
+ * Fetch tt-rss categories list (default is fetching it tree like)
+ *
+ * @returns JSON categories list
+ */
+#define TTRSS_JSON_CATEGORIES_LIST "{\"op\":\"getFeedTree\", \"sid\":\"%s\", \"include_empty\":\"true\"}"
 
 /**
  * Fetch tt-rss headlines for a given feed.

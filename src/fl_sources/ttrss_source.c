@@ -38,8 +38,6 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 
-// FIXME: Avoid doing requests when we are not logged in yet!
-
 /** create a tt-rss source with given node as root */ 
 static ttrssSourcePtr
 ttrss_source_new (nodePtr node) 
@@ -48,7 +46,9 @@ ttrss_source_new (nodePtr node)
 	source->root = node;
 	source->apiLevel = 0;
 	source->actionQueue = g_queue_new (); 
-	source->loginState = TTRSS_SOURCE_STATE_NONE; 
+	source->loginState = TTRSS_SOURCE_STATE_NONE;
+	source->categories = g_hash_table_new (g_direct_hash, g_direct_equal);
+	source->categoryNodes = g_hash_table_new (g_direct_hash, g_direct_equal);
 	
 	return source;
 }
@@ -257,17 +257,30 @@ ttrss_source_init (void)
 static void ttrss_source_deinit (void) { }
 
 static void
+ttrss_source_set_subscription_type (nodePtr folder)
+{
+	GSList *iter;
+
+	for (iter = folder->children; iter; iter = g_slist_next(iter)) {
+		nodePtr node = (nodePtr) iter->data;
+
+		if (node->subscription)
+			node->subscription->type = &ttrssSourceFeedSubscriptionType;
+		else
+			ttrss_source_set_subscription_type (node);
+	}
+}
+
+static void
 ttrss_source_import (nodePtr node)
 {
-	GSList *iter; 
 	opml_source_import (node);
 	
 	node->subscription->type = &ttrssSourceSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) ttrss_source_new (node);
 
-	for (iter = node->children; iter; iter = g_slist_next(iter))
-		((nodePtr) iter->data)->subscription->type = &ttrssSourceFeedSubscriptionType;
+	ttrss_source_set_subscription_type (node);
 }
 
 static void
@@ -341,6 +354,8 @@ static void
 ttrss_source_cleanup (nodePtr node)
 {
 	ttrssSourcePtr source = (ttrssSourcePtr) node->data;
+	g_hash_table_destroy (source->categories);
+	g_hash_table_destroy (source->categoryNodes);
 	ttrss_source_free (source);
 	node->data = NULL;
 }
