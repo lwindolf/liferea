@@ -170,7 +170,8 @@ src/fl_sources/node_source.h
 src/fl_sources/reedah_source.c
 src/fl_sources/reedah_source.h
 src/fl_sources/reedah_source_feed.c
-src/fl_sources/reedah_source_feed.h
+src/fl_sources/reedah_source_feed_list.c
+src/fl_sources/reedah_source_feed_list.h
 src/fl_sources/ttrss_source.c
 src/fl_sources/ttrss_source.h
 src/fl_sources/ttrss_source_feed.c
