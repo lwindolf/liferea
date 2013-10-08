@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <id type="desktop">liferea.desktop</id>
+  <licence>CC0</licence>
+  <description>
+    <_p>Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator for 
+	online news feeds. It supports a number of different feed formats including 
+	RSS/RDF, CDF and Atom. There are many other news readers available, but these 
+	others are not available for Linux or require many extra libraries to be 
+	installed. Liferea tries to fill this gap by creating a fast, easy to use, 
+	easy to install news aggregator for GTK/GNOME.
+    </_p>
+    <_p>Distinguishing features:</_p>
+    <ul>
+     <_li>Read articles when offline</_li>
+     <_li>Synchronizes with TheOldReader</_li>
+     <_li>Synchronizes with TinyTinyRSS</_li>
+     <_li>Permanently save headlines in news bins</_li>
+     <_li>Match items using search folders</_li>
+     <_li>Play Podcasts</_li>
+    </ul>
+  </description>
+  <screenshots>
+    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot1.png</screenshot>
+    <screenshot type="default" width="833" height="656">http://lzone.de/liferea/screenshots/screenshot2.png</screenshot>
+    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot3.png</screenshot>
+    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot4.png</screenshot>
+    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot5.png</screenshot>
+    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot6.png</screenshot>
+    <screenshot type="default" width="642" height="438">http://lzone.de/liferea/screenshots/screenshot7.png</screenshot>
+    <screenshot type="default" width="834" height="657">http://lzone.de/liferea/screenshots/screenshot8.png</screenshot>
+    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot9.png</screenshot>
+  </screenshots>
+  <url type="homepage">http://lzone.de/liferea/</url>
+  <updatecontact>liferea-devel@lists.sf.net</updatecontact>
+</application>
