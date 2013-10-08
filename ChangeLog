@@ -5,6 +5,9 @@
 	* Checking wether TinyTinyRSS base URL is lost
 	* "--debug-net --debug-verbose" now traces POST data
 
+	* Updated Italian translation (Gianvito Cavasoli)
+	* Updated Italian localized feed list (Gianvito Cavasoli)
+
 
 2013-09-05   Lars Windolf <lars.lindner@gmail.com>
 

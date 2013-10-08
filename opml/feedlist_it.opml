@@ -6,14 +6,15 @@
 <body>
         <outline text="Notiziari d'esempio">
                 <outline text="Notizie dall'Italia">
-                        <outline text="Gizmodo" htmlUrl="http://www.gizmodo.it/" xmlUrl="http://www.gizmodo.it/" />
+                        <outline text="afNews" htmlUrl="http://www.afnews.info/" xmlUrl="http://www.afnews.info/wordpress/feed/" />
+                        <outline text="Gizmodo" htmlUrl="http://www.gizmodo.it/" xmlUrl="http://www.gizmodo.it/feed/" />
                         <outline text="Google News Italia" htmlUrl="http://news.google.it/nwshp?hl=it&amp;tab=wn" xmlUrl="http://news.google.it/nwshp?ie=UTF-8&amp;oe=UTF-8&amp;hl=it&amp;tab=wn&amp;q=&amp;output=rss" />
                         <outline text="Linux Feed" htmlUrl="http://www.linuxfeed.org/" xmlUrl="http://feedproxy.google.com/linuxfeed" />
-                        <outline text="OndaCinema" htmlUrl="http://www.ondacinema.it/" xmlUrl="http://www.ondacinema.it/feed" />
-                        <outline text="OndaRock" htmlUrl="http://www.ondarock.it/" xmlUrl="http://www.ondarock.it/feed.php" />
+                        <outline text="Lo spazio bianco" htmlUrl="http://www.lospaziobianco.it/" xmlUrl="http://www.lospaziobianco.it/feed/" />
+                        <outline text="Onda Cinema" htmlUrl="http://www.ondacinema.it/" xmlUrl="http://www.ondacinema.it/feed" />
+                        <outline text="Onda Rock" htmlUrl="http://www.ondarock.it/" xmlUrl="http://www.ondarock.it/feed.php" />
                         <outline text="Planet GNOME italia" htmlUrl="http://gnome.ocracy.org/" xmlUrl="http://gnome.ocracy.org/rss20.xml" />
                         <outline text="Punto Informatico" htmlUrl="http://punto-informatico.it/" xmlUrl="http://punto-informatico.it/fader/pixml.xml" />
-                        <outline text="Tecnocino" htmlUrl="http://www.tecnocino.it/" xmlUrl="http://www.tecnocino.it/feed/" />
 	        </outline>
 	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="Notizie internazionali">
