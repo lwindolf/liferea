@@ -18,6 +18,7 @@ configure
 depcomp
 install-sh
 libtool
+liferea.appdata.xml
 liferea.desktop
 ltmain.sh
 missing

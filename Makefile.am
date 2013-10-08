@@ -7,6 +7,12 @@ desktopdir = $(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
 
+appdatadir = $(datadir)/appdata
+appdata_in_files = $(PACKAGE_TARNAME).appdata.xml.in
+appdata_DATA = $(appdata_in_files:.xml.in=.xml)
+
+@INTLTOOL_XML_RULE@
+
 cssdir = $(pkgdatadir)/css
 css_DATA = \
 	css/liferea.css \
@@ -38,6 +44,7 @@ EXTRA_DIST = \
 	$(dtd_DATA) \
 	$(plugin_DATA) \
 	$(gsettings_SCHEMAS)
+	$(appdata_in_files)
 
 DISTCLEANFILES = \
 	liferea.desktop \
@@ -48,6 +55,7 @@ DISTCLEANFILES = \
 
 CLEANFILES = \
 	$(gsettings_SCHEMAS)
+	$(appdata_DATA) 
 
 po/liferea.pot:
 	cd po && $(MAKE) liferea.pot

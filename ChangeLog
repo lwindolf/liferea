@@ -4,6 +4,7 @@
 	* Asking for TinyTinyRSS credentials only 3 times
 	* Checking wether TinyTinyRSS base URL is lost
 	* "--debug-net --debug-verbose" now traces POST data
+	* Patch #230 Add GNOME AppData XML (Mikel Olasagasti)
 
 	* Updated Italian translation (Gianvito Cavasoli)
 	* Updated Italian localized feed list (Gianvito Cavasoli)

@@ -2,6 +2,7 @@
 
 # List of source files containing translatable strings.
 
+liferea.appdata.xml.in
 liferea.desktop.in
 xslt/feed.xml.in
 xslt/source.xml.in
