@@ -90,6 +90,7 @@ ttrss_source_get_config_cb (const struct updateResult * const result, gpointer u
 				source->selfUpdating = TRUE;
 				debug0 (DEBUG_UPDATE, "This TinyTinyRSS source is self-updating!");
 			} else {
+				ui_show_info_box (_("This TinyTinyRSS source is not self-updating and Liferea does not support updating TinyTinyRSS remotely at the moment. Please change the TinyTinyRSS preferences to automatic updating!"));
 				debug0 (DEBUG_UPDATE, "This TinyTinyRSS source is not self-updating!");
 			}
 
