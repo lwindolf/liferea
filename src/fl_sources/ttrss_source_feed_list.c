@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
 #include "ttrss_source_feed_list.h"
 
 #include <glib.h>
@@ -266,7 +265,7 @@ ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr su
 	request->updateState = update_state_copy (subscription->updateState);
 	request->options = update_options_copy (subscription->updateOptions);
 
-	source_uri = g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url"));
+	source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	update_request_set_source (request, source_uri);
 	g_free (source_uri);
 	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
@@ -391,7 +390,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 			/* And trigger the actual feed fetching */
 			ttrss_source_update_subscription_list (source, subscription);
 		} else {
-			g_warning ("Invalid JSON returned on tt-rss request! >>>%s<<<", result->data);
+			g_warning ("Invalid JSON returned on TinyTinyRSS request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
@@ -411,19 +410,18 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct 
 
 	g_assert (source);
 	if (source->loginState == TTRSS_SOURCE_STATE_NONE) {
-		debug0 (DEBUG_UPDATE, "TtRssSource: login");
+		debug0 (DEBUG_UPDATE, "TinyTinyRSS login");
 		ttrss_source_login (source, 0);
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating tt-rss subscription (node id %s)", subscription->node->id);
+	debug1 (DEBUG_UPDATE, "TinyTinyRSS updating subscription (node id %s)", subscription->node->id);
 
 	/* Updating the TinyTinyRSS subscription means updating the list
 	   of categories and the list of feeds in 2 requests and if the
-	   installation is not self-updating to run a remote update first */
+	   installation is not self-updating to run a remote update for
+	   each feed before fetching it's items */
 
-	// FIXME: if (!source->selfUpdating) trigger remote update first!
-
-	source_uri = g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url"));	
+	source_uri = g_strdup_printf (TTRSS_URL, source->url);	
 	update_request_set_source (request, source_uri);
 	g_free (source_uri);
 	request->postdata = g_strdup_printf (TTRSS_JSON_CATEGORIES_LIST, source->session_id);

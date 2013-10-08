@@ -38,7 +38,7 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 
-/** create a tt-rss source with given node as root */ 
+/** Initialize a TinyTinyRSS source with given node as root */ 
 static ttrssSourcePtr
 ttrss_source_new (nodePtr node) 
 {
@@ -72,7 +72,7 @@ ttrss_source_get_config_cb (const struct updateResult * const result, gpointer u
 	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
 	subscriptionPtr subscription = source->root->subscription;
 
-	debug1 (DEBUG_UPDATE, "tt-rss getConfig processing... >>>%s<<<", result->data);
+	debug1 (DEBUG_UPDATE, "TinyTinyRSS getConfig processing... >>>%s<<<", result->data);
 
 	/* We expect something like:
 
@@ -88,9 +88,9 @@ ttrss_source_get_config_cb (const struct updateResult * const result, gpointer u
 			const gchar *result = json_get_string (node, "daemon_is_running");
 			if (result && g_str_equal ("true", result)) {
 				source->selfUpdating = TRUE;
-				debug0 (DEBUG_UPDATE, "This tt-rss source is self-updating!");
+				debug0 (DEBUG_UPDATE, "This TinyTinyRSS source is self-updating!");
 			} else {
-				debug0 (DEBUG_UPDATE, "This tt-rss source is not self-updating!");
+				debug0 (DEBUG_UPDATE, "This TinyTinyRSS source is not self-updating!");
 			}
 
 			g_object_unref (parser);
@@ -111,7 +111,7 @@ ttrss_source_set_login_error (ttrssSourcePtr source, gchar *msg)
 	source->root->subscription->updateError = msg;
 	source->root->available = FALSE;
 
-	g_warning ("tt-rss login failed: error '%s'!\n", msg);
+	g_warning ("TinyTinyRSS login failed: error '%s'!\n", msg);
 
 	if (++source->authFailures < TTRSS_SOURCE_MAX_AUTH_FAILURES)
 		source->loginState = TTRSS_SOURCE_STATE_NONE;
@@ -126,7 +126,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 	subscriptionPtr subscription = source->root->subscription;
 	JsonParser	*parser;
 	
-	debug1 (DEBUG_UPDATE, "tt-rss login processing... >>>%s<<<", result->data);
+	debug1 (DEBUG_UPDATE, "TinyTinyRSS login processing... >>>%s<<<", result->data);
 	
 	g_assert (!source->session_id);
 	
@@ -158,7 +158,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 	source->apiLevel = json_get_int (json_get_node (node, "content"), "api_level");
 	source->session_id = g_strdup (json_get_string (json_get_node (node, "content"), "session_id"));
 	if (source->session_id) {
-		debug2 (DEBUG_UPDATE, "Found session_id: >>>%s<<< (API level %d)!", source->session_id, source->apiLevel);
+		debug2 (DEBUG_UPDATE, "TinyTinyRSS Found session_id: >>>%s<<< (API level %d)!", source->session_id, source->apiLevel);
 	} else {
 		ttrss_source_set_login_error (source, g_strdup_printf ("No session_id found in response!\n%s", result->data));
 	}
@@ -176,7 +176,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 		request->options = update_options_copy (subscription->updateOptions);
 		request->postdata = g_strdup_printf (TTRSS_JSON_GET_CONFIG, source->session_id);
 
-		source_uri = g_strdup_printf (TTRSS_URL, metadata_list_get (subscription->metadata, "ttrss-url"));
+		source_uri = g_strdup_printf (TTRSS_URL, source->url);
 		update_request_set_source (request, source_uri);
 		g_free (source_uri);
 		update_execute_request (source, request, ttrss_source_get_config_cb, source, flags);
@@ -205,13 +205,13 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 	username = g_strescape (subscription->updateOptions->username, NULL);
 	password = g_strescape (subscription->updateOptions->password, NULL);
 
-	source_uri = (gchar *)metadata_list_get (subscription->metadata, "ttrss-url");
-	if (!source_uri) {
+	source->url = metadata_list_get (subscription->metadata, "ttrss-url");
+	if (!source->url) {
 		ttrss_source_set_login_error (source, g_strdup ("Fatal: We've lost the TinyTinyRSS server URL! Please re-subscribe!"));
 		return;
 	}
 
-	source_uri = g_strdup_printf (TTRSS_URL, source_uri);
+	source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	update_request_set_source (request, source_uri);
 	g_free (source_uri);
 
@@ -275,7 +275,7 @@ static void
 ttrss_source_import (nodePtr node)
 {
 	opml_source_import (node);
-	
+
 	node->subscription->type = &ttrssSourceSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) ttrss_source_new (node);
@@ -328,7 +328,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
 		subscription->type = &ttrssSourceSubscriptionType;		
 
-		node->data = ttrss_source_new (node);
+		node->data = (gpointer)ttrss_source_new (node);
 		feedlist_node_added (node);
 		ttrss_source_update (node);
 		db_node_update (node);
@@ -363,7 +363,7 @@ ttrss_source_cleanup (nodePtr node)
 static void
 ttrss_source_remote_update_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	debug2 (DEBUG_UPDATE, "tt-rss result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+	debug2 (DEBUG_UPDATE, "TinyTinyRSS result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 }
 
 /* FIXME: Only simple synchronous item change requests... Get async! */
@@ -379,7 +379,7 @@ ttrss_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 	request->options = update_options_copy (root->subscription->updateOptions);
 	request->postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_FLAG, source->session_id, item_get_id(item), newStatus?1:0 );
 
-	update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (root->subscription->metadata, "ttrss-url")));
+	update_request_set_source (request, g_strdup_printf (TTRSS_URL, source->url));
 	update_execute_request (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
 
 	item_flag_state_changed (item, newStatus);
@@ -396,7 +396,7 @@ ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 	request->options = update_options_copy (root->subscription->updateOptions);
 	request->postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_UNREAD, source->session_id, item_get_id(item), newStatus?0:1 );
 
-	update_request_set_source (request, g_strdup_printf (TTRSS_URL, metadata_list_get (root->subscription->metadata, "ttrss-url")));
+	update_request_set_source (request, g_strdup_printf (TTRSS_URL, source->url));
 	update_execute_request (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
 
 	item_read_state_changed (item, newStatus);

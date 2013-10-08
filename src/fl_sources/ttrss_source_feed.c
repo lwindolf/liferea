@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source_feed.c  tt-rss feed subscription routines
  * 
- * Copyright (C) 2010-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -116,7 +116,7 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 		} else {
 			subscription->node->available = FALSE;
 
-			g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by tt-rss API!"));
+			g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by TinyTinyRSS API!"));
 		}
 
 		g_object_unref (parser);
@@ -129,14 +129,15 @@ static gboolean
 ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
                                                  struct updateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "ttrss_feed_subscription_prepare_update_request()");
-	nodePtr root = node_source_root_from_node (subscription->node);
-	ttrssSourcePtr source = (ttrssSourcePtr) root->data;
-	const gchar *feed_id;
-	gchar *source_name;
-	gint	fetchCount;
+	nodePtr		root = node_source_root_from_node (subscription->node);
+	ttrssSourcePtr	source = (ttrssSourcePtr) root->data;
+	const gchar	*feed_id;
+	gchar		*source_name;
+	gint		fetchCount;
 
-	debug0 (DEBUG_UPDATE, "preparing tt-rss feed subscription for update");
+	debug0 (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
+
+	// FIXME: if (!source->selfUpdating) trigger remote update first!
 	
 	g_assert(source); 
 	if (source->loginState == TTRSS_SOURCE_STATE_NONE) { 
@@ -146,7 +147,7 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	
 	feed_id = metadata_list_get (subscription->metadata, "ttrss-feed-id");
 	if (!feed_id) {
-		g_warning ("tt-rss feed without id! (%s)", subscription->node->title);
+		g_warning ("Fatal: TinyTinyRSS feed without id! (%s)", subscription->node->title);
 		return FALSE;
 	}
 
@@ -154,7 +155,7 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	fetchCount = feed_get_max_item_count (subscription->node);
 
 	request->postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, fetchCount);
-	source_name = g_strdup_printf (TTRSS_URL, metadata_list_get (root->subscription->metadata, "ttrss-url"));
+	source_name = g_strdup_printf (TTRSS_URL, source->url);
 	update_request_set_source (request, source_name);
 	g_free (source_name);
 

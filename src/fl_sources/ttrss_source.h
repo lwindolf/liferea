@@ -30,7 +30,8 @@
  */
 typedef struct ttrssSource {
 	nodePtr		root;		/**< the root node in the feed list */
-	gchar		*session_id;	/**< the tt-rss session id */
+	gchar		*session_id;	/**< the current session id */
+	const gchar	*url;		/**< the API base URL */
 	GQueue		*actionQueue;
 	gint		apiLevel;	/**< The API level reported by the instance (or 0) */
 	gint		loginState;	/**< The current login state */
