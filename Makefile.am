@@ -43,8 +43,9 @@ EXTRA_DIST = \
 	$(css_DATA) \
 	$(dtd_DATA) \
 	$(plugin_DATA) \
-	$(gsettings_SCHEMAS)
-	$(appdata_in_files)
+	$(gsettings_SCHEMAS) \
+	$(appdata_in_files) \
+	$(appdata_DATA)
 
 DISTCLEANFILES = \
 	liferea.desktop \
