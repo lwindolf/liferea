@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes SF #1119: Crash on font resize at startup. 
+	  (reported by David Smith)
+
+
 2013-10-08   Lars Windolf <lars.lindner@gmail.com>
 
 	Version 1.10.3

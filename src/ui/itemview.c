@@ -481,7 +481,9 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 void
 itemview_do_zoom (gboolean in)
 {
-	g_assert(itemview->priv->htmlview != NULL);
+	if (itemview->priv->htmlview == NULL)
+		return;
+
 	liferea_htmlview_do_zoom (itemview->priv->htmlview, in);
 }
 
