@@ -54,7 +54,7 @@ json_api_get_string (JsonNode *parent, const gchar *mapping)
 	JsonNode	*node;
 	const gchar	*field;
 
-	if (!node || !*mapping)
+	if (!node || !mapping)
 		return;
 
 	node = json_api_get_node (parent, mapping);
@@ -73,7 +73,7 @@ json_api_get_int (JsonNode *parent, const gchar *mapping)
 	JsonNode	*node;
 	const gchar	*field;
 
-	if (!node || !*mapping)
+	if (!node || !mapping)
 		return;
 
 	node = json_api_get_node (parent, mapping);
@@ -92,7 +92,7 @@ json_api_get_bool (JsonNode *parent, const gchar *mapping)
 	JsonNode	*node;
 	const gchar	*field;
 
-	if (!node || !*mapping)
+	if (!node || !mapping)
 		return;
 
 	node = json_api_get_node (parent, mapping);
