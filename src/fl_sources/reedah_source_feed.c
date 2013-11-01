@@ -142,24 +142,40 @@ reedah_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subs
 static void
 reedah_item_callback (JsonNode *node, itemPtr item)
 {
-	JsonNode	*alternate = json_get_node (node, "alternate");
+	JsonNode	*canonical, *categories;
 	GList		*elements, *iter;
 
-	/* Link path is "canonical[0]/@href" */
-	if (!alternate || JSON_NODE_TYPE (alternate) != JSON_NODE_ARRAY)
-		return;
-	
-	iter = elements = json_array_get_elements (json_node_get_array (alternate));
-	while (iter) {
-		const gchar *href = json_get_string ((JsonNode *)iter->data, "href");
-		if (href) {
-			item_set_source (item, href);
-			break;
+	/* Determine link: path is "canonical[0]/@href" */
+	canonical = json_get_node (node, "canonical");
+	if (canonical && JSON_NODE_TYPE (canonical) == JSON_NODE_ARRAY) {
+		iter = elements = json_array_get_elements (json_node_get_array (canonical));
+		while (iter) {
+			const gchar *href = json_get_string ((JsonNode *)iter->data, "href");
+			if (href) {
+				item_set_source (item, href);
+				break;
+			}
+			iter = g_list_next (iter);
 		}
-		iter = g_list_next (iter);
+
+		g_list_free (elements);
 	}
 
-	g_list_free (elements);
+	/* Determine read state: check for category with ".*state/com.google/read" */
+	categories = json_get_node (node, "categories");
+	if (categories && JSON_NODE_TYPE (categories) == JSON_NODE_ARRAY) {
+		iter = elements = json_array_get_elements (json_node_get_array (canonical));
+		while (iter) {
+			const gchar *category = json_node_get_string ((JsonNode *)iter->data);
+			if (category) {
+				item->readStatus = (strstr (category, "state\\/com.google\\/read") != NULL);
+				break;
+			}
+			iter = g_list_next (iter);
+		}
+
+		g_list_free (elements);	
+	}
 }
 
 static void
@@ -190,14 +206,15 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
                    [...]
                  */
 
-		/* Note: The link cannot be mapped as there might be multiple ones
+		/* Note: The link and read status cannot be mapped as there might be multiple ones
  		   so the callback helper function extracts the first from the array */
 		mapping.id		= "id";
 		mapping.title		= "title";
+		mapping.link		= NULL;
 		mapping.description	= "summary/content";
+		mapping.read		= NULL;
 		mapping.updated		= "updated";
 		mapping.author		= "author";
-		mapping.read		= "unread";
 		mapping.flag		= "marked";
 
 		mapping.xhtml		= TRUE;
