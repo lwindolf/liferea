@@ -22,6 +22,7 @@
 #define _JSON_API_MAPPER_H
 
 #include "item.h"
+#include "json.h"
 
 typedef struct jsonApiMapping {
 	const gchar	*id;		/**< list of location steps to id field */
@@ -36,15 +37,19 @@ typedef struct jsonApiMapping {
 	gboolean	xhtml;		/**< TRUE if description field is XHTML */
 } jsonApiMapping;
 
+typedef void (*jsonApiItemCallbackFunc)(JsonNode *node, itemPtr item);
+
 /**
  * Extracts all items from a JSON document.
  *
  * @param json		the JSON document to parse
  * @param root		the name of the root node (e.g. "items")
  * @param mapping	hash table defining location steps and logic
+ * @param callback	optional callback function to process item node
+ *			for everything that cannot be easily mapped
  *
  * @returns a list of items (all to be freed with item_free()) or NULL
  */
-GList * json_api_get_items (const gchar *json, const gchar *root, jsonApiMapping *mapping);
+GList * json_api_get_items (const gchar *json, const gchar *root, jsonApiMapping *mapping, jsonApiItemCallbackFunc callback);
 
 #endif

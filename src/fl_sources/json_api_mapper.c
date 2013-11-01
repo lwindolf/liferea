@@ -24,7 +24,6 @@
 
 #include "debug.h"
 #include "item.h"
-#include "json.h"
 #include "metadata.h"
 #include "xml.h"
 
@@ -107,7 +106,7 @@ json_api_get_bool (JsonNode *parent, const gchar *mapping)
 }
 
 GList *
-json_api_get_items (const gchar *json, const gchar *root, jsonApiMapping *mapping)
+json_api_get_items (const gchar *json, const gchar *root, jsonApiMapping *mapping, jsonApiItemCallbackFunc callback)
 {
 	GList		*items = NULL;
 	JsonParser	*parser = json_parser_new ();
@@ -154,6 +153,10 @@ json_api_get_items (const gchar *json, const gchar *root, jsonApiMapping *mappin
 				item->metadata = metadata_list_append (item->metadata, "author", tmp);
 	
 			items = g_list_append (items, (gpointer)item);
+
+			/* Allow optional item callback to process stuff */
+			if (callback)
+				(*callback)(node, item);
 				
 			iter = g_list_next (iter);
 		}

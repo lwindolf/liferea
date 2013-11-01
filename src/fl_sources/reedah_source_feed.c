@@ -140,6 +140,29 @@ reedah_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subs
 }
 
 static void
+reedah_item_callback (JsonNode *node, itemPtr item)
+{
+	JsonNode	*alternate = json_get_node (node, "alternate");
+	GList		*elements, *iter;
+
+	/* Link path is "canonical[0]/@href" */
+	if (!alternate || JSON_NODE_TYPE (alternate) != JSON_NODE_ARRAY)
+		return;
+	
+	iter = elements = json_array_get_elements (json_node_get_array (alternate));
+	while (iter) {
+		const gchar *href = json_get_string ((JsonNode *)iter->data, "href");
+		if (href) {
+			item_set_source (item, href);
+			break;
+		}
+		iter = g_list_next (iter);
+	}
+
+	g_list_free (elements);
+}
+
+static void
 reedah_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
 	if (result->data && result->httpstatus == 200) {
@@ -167,9 +190,10 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
                    [...]
                  */
 
+		/* Note: The link cannot be mapped as there might be multiple ones
+ 		   so the callback helper function extracts the first from the array */
 		mapping.id		= "id";
 		mapping.title		= "title";
-		mapping.link		= "canonical/href";	// FIXME: doesn't work as array needs to be traversed
 		mapping.description	= "summary/content";
 		mapping.updated		= "updated";
 		mapping.author		= "author";
@@ -179,7 +203,7 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		mapping.xhtml		= TRUE;
 		mapping.negateRead	= TRUE;
 
-		items = json_api_get_items (result->data, "items", &mapping);
+		items = json_api_get_items (result->data, "items", &mapping, &reedah_item_callback);
 				
 		/* merge against feed cache */
 		if (items) {
