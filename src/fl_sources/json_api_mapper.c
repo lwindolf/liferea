@@ -52,12 +52,13 @@ json_api_get_node (JsonNode *parent, const gchar *mapping)
 const gchar *
 json_api_get_string (JsonNode *parent, const gchar *mapping)
 {
-	JsonNode	*node = json_api_get_node (parent, mapping);
+	JsonNode	*node;
 	const gchar	*field;
 
 	if (!node || !*mapping)
 		return;
 
+	node = json_api_get_node (parent, mapping);
 	field = strrchr (mapping, '/');
 	if (!field)
 		field = mapping;
@@ -70,12 +71,13 @@ json_api_get_string (JsonNode *parent, const gchar *mapping)
 gint
 json_api_get_int (JsonNode *parent, const gchar *mapping)
 {
-	JsonNode	*node = json_api_get_node (parent, mapping);
+	JsonNode	*node;
 	const gchar	*field;
 
 	if (!node || !*mapping)
 		return;
 
+	node = json_api_get_node (parent, mapping);
 	field = strrchr (mapping, '/');
 	if (!field)
 		field = mapping;
@@ -88,12 +90,13 @@ json_api_get_int (JsonNode *parent, const gchar *mapping)
 gboolean
 json_api_get_bool (JsonNode *parent, const gchar *mapping)
 {
-	JsonNode	*node = json_api_get_node (parent, mapping);
+	JsonNode	*node;
 	const gchar	*field;
 
 	if (!node || !*mapping)
 		return;
 
+	node = json_api_get_node (parent, mapping);
 	field = strrchr (mapping, '/');
 	if (!field)
 		field = mapping;
@@ -113,6 +116,8 @@ json_api_get_items (const gchar *json, const gchar *root, jsonApiMapping *mappin
 		JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), root));
 		GList		*elements = json_array_get_elements (array);
 		GList		*iter = elements;
+
+		debug1 (DEBUG_PARSING, "JSON API: found items root node \"%s\"", root);
                 
 		while (iter) {
 			JsonNode *node = (JsonNode *)iter->data;
@@ -156,7 +161,7 @@ json_api_get_items (const gchar *json, const gchar *root, jsonApiMapping *mappin
 		g_list_free (elements);
 		g_object_unref (parser);
 	} else {
-		debug1 (DEBUG_PARSING, "Could not pass JSON \"%s\"", json);
+		debug1 (DEBUG_PARSING, "Could not parse JSON \"%s\"", json);
 	}
 
 	return items;
