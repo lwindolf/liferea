@@ -127,10 +127,7 @@ able to start it by calling "/usr/local/bin/liferea".
 
 To anonymously check out a source copy execute this:
 
-   git clone git://liferea.git.sourceforge.net/gitroot/liferea/liferea
-
-More information about using GIT with Liferea can be found at 
-https://sourceforge.net/scm/?type=git&group_id=87005
+   git clone https://github.com/lwindolf/liferea.git
 
 Then build it with:
 
