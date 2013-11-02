@@ -1,4 +1,4 @@
-This documentation was last updated for Liferea version 1.10 (31.10.2012).
+This documentation was last updated for Liferea version 1.10.3 (02.11.2013).
 
 Contents
 ========
@@ -10,7 +10,7 @@ Contents
    3. ............. Compiling Liferea Yourself
    3.1. ............. Dependencies
    3.2. ............. Compiling From Tarball
-   3.3. ............. Compiling From GIT
+   3.3. ............. Compiling From Git
 
    4. ............. Contributing
    4.1. ............. No Feature Requests!
@@ -47,7 +47,7 @@ easy to install news aggregator for GTK/GNOME.
 Detailed instructions on how to install Liferea on the different distributions can 
 be found online on our homepage at
 
-	http://liferea.sf.net/install.htm
+	http://lzone.de/liferea/install.htm
 
 
 
@@ -107,8 +107,8 @@ a package named like the library and one with a suffix "-dev" or
 		
 If you do not like version control systems you might want to compile
 Liferea from a release tarball. Those are supplied at our SourceForge
-project homepage (http://liferea.sf.net). After you downloaded it extract
-it like this:
+project homepage (http://lzone.de/liferea). After you downloaded it 
+extract it like this:
 
    tar jxvf liferea-1.10.0.tar.bz2 
 
@@ -122,7 +122,7 @@ After this Liferea will be installed in /usr/local and you should be
 able to start it by calling "/usr/local/bin/liferea".
 
 
-3.3 Compiling from GIT
+3.3 Compiling from Git
 ----------------------
 
 To anonymously check out a source copy execute this:
@@ -173,9 +173,10 @@ Here are some rules to supply patches:
 
 3.) Please include a ChangeLog entry in your patch.
 
-4.) Post the patch on the SourceForge patch tracker or the mailing list.
-    Please always specify with release or GIT version do you made the
-    patch for.
+4.) If possible provide the patch as a Github pull request. If you are
+    not familiar with pull requests post the patch in the mailing list.
+    In such a case please always specify for which release or commit id
+    you created the patch. 
 
 If you are working on some topic feel free to contact us with any question
 on the mailing list on the IRC channel (see Support section).
