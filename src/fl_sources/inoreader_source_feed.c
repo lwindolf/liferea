@@ -144,16 +144,17 @@ inoreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr s
 	InoreaderSourcePtr gsource = (InoreaderSourcePtr) node_source_root_from_node (subscription->node)->data ;
 	xmlNodePtr      xml;
 	nodePtr         node = subscription->node;
-	xmlChar         *id;
+	xmlChar         *id = NULL;
 	gboolean        read = FALSE;
 	gboolean        starred = FALSE;
 
 	xml = entry->children;
 	g_assert (xml);
 
-	id = xmlNodeGetContent (xml);
-
 	for (xml = entry->children; xml; xml = xml->next) {
+		if (!id && g_str_equal (xml->name, "id"))
+			id = xmlNodeGetContent (xml);
+
 		if (g_str_equal (xml->name, "category")) {
 			xmlChar* label = xmlGetProp (xml, "label");
 			if (!label)
@@ -168,9 +169,14 @@ inoreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr s
 		}
 	}
 	
+	if (!id) {
+		g_warning ("Fatal: could not extract item id from InoReader Atom feed!");
+		return;
+	}
+
 	itemPtr item = inoreader_source_load_item_from_sourceid (node, id, cache);
 	if (item && item->sourceId) {
-		if (g_str_equal (item->sourceId, id) && !inoreader_source_edit_is_in_queue(gsource, id)) {
+		if (g_str_equal (item->sourceId, id) && !inoreader_source_edit_is_in_queue (gsource, id)) {
 			
 			if (item->readStatus != read)
 				item_read_state_changed (item, read);
