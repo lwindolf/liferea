@@ -1,7 +1,8 @@
 /**
- * @file inoreader_source_feed.c  Google reader feed subscription routines
+ * @file inoreader_source_feed.c  InoReader feed subscription routines
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
+ * Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -182,7 +183,7 @@ inoreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr s
 }
 
 static void
-google_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+inoreader_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
 	
 	debug_start_measurement (DEBUG_UPDATE);
@@ -268,10 +269,10 @@ google_feed_subscription_process_update_result (subscriptionPtr subscription, co
 }
 
 static gboolean
-google_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
+inoreader_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
                                                  struct updateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update\n");
+	debug0 (DEBUG_UPDATE, "preparing InoReader feed subscription for update\n");
 	InoreaderSourcePtr gsource = (InoreaderSourcePtr) node_source_root_from_node (subscription->node)->data; 
 	
 	g_assert(gsource); 
@@ -279,7 +280,7 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
-	debug0 (DEBUG_UPDATE, "Setting cookies for a Google Reader subscription");
+	debug0 (DEBUG_UPDATE, "Setting cookies for a InoReader subscription");
 
 	if (!g_str_equal (request->source, INOREADER_BROADCAST_FRIENDS_URL)) { 
 		gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
@@ -293,7 +294,7 @@ google_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 }
 
 struct subscriptionType inoreaderSourceFeedSubscriptionType = {
-	google_feed_subscription_prepare_update_request,
-	google_feed_subscription_process_update_result
+	inoreader_feed_subscription_prepare_update_request,
+	inoreader_feed_subscription_process_update_result
 };
 
