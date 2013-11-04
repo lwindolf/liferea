@@ -61,29 +61,29 @@ theoldreader_source_new (nodePtr node)
 }
 
 static void
-theoldreader_source_free (TheOldReaderSourcePtr gsource) 
+theoldreader_source_free (TheOldReaderSourcePtr source) 
 {
-	if (!gsource)
+	if (!source)
 		return;
 
-	update_job_cancel_by_owner (gsource);
+	update_job_cancel_by_owner (source);
 	
-	g_free (gsource->authHeaderValue);
-	g_queue_free (gsource->actionQueue) ;
-	g_hash_table_unref (gsource->lastTimestampMap);
-	g_free (gsource);
+	g_free (source->authHeaderValue);
+	g_queue_free (source->actionQueue) ;
+	g_hash_table_unref (source->lastTimestampMap);
+	g_free (source);
 }
 
 static void
 theoldreader_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	TheOldReaderSourcePtr	gsource = (TheOldReaderSourcePtr) userdata;
-	gchar		*tmp = NULL;
-	subscriptionPtr subscription = gsource->root->subscription;
+	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) userdata;
+	gchar			*tmp = NULL;
+	subscriptionPtr 	subscription = source->root->subscription;
 		
 	debug1 (DEBUG_UPDATE, "TheOldReader login processing... %s", result->data);
 	
-	g_assert (!gsource->authHeaderValue);
+	g_assert (!source->authHeaderValue);
 	
 	if (result->data && result->httpstatus == 200)
 		tmp = strstr (result->data, "Auth=");
@@ -93,19 +93,19 @@ theoldreader_source_login_cb (const struct updateResult * const result, gpointer
 		tmp = strchr (tmp, '\n');
 		if (tmp)
 			*tmp = '\0';
-		gsource->authHeaderValue = g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5);
+		source->authHeaderValue = g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5);
 
-		debug1 (DEBUG_UPDATE, "TheOldReader Auth token found: %s", gsource->authHeaderValue);
+		debug1 (DEBUG_UPDATE, "TheOldReader Auth token found: %s", source->authHeaderValue);
 
-		gsource->loginState = THEOLDREADER_SOURCE_STATE_ACTIVE;
-		gsource->authFailures = 0;
+		source->loginState = THEOLDREADER_SOURCE_STATE_ACTIVE;
+		source->authFailures = 0;
 
 		/* now that we are authenticated trigger updating to start data retrieval */
 		if (!(flags & THEOLDREADER_SOURCE_UPDATE_ONLY_LOGIN))
 			subscription_update (subscription, flags);
 
 		/* process any edits waiting in queue */
-		theoldreader_source_edit_process (gsource);
+		theoldreader_source_edit_process (source);
 
 	} else {
 		debug0 (DEBUG_UPDATE, "TheOldReader login failed! no Auth token found in result!");
@@ -113,12 +113,12 @@ theoldreader_source_login_cb (const struct updateResult * const result, gpointer
 
 		g_free (subscription->updateError);
 		subscription->updateError = g_strdup (_("TheOldReader login failed!"));
-		gsource->authFailures++;
+		source->authFailures++;
 
-		if (gsource->authFailures < THEOLDREADER_SOURCE_MAX_AUTH_FAILURES)
-			gsource->loginState = THEOLDREADER_SOURCE_STATE_NONE;
+		if (source->authFailures < THEOLDREADER_SOURCE_MAX_AUTH_FAILURES)
+			source->loginState = THEOLDREADER_SOURCE_STATE_NONE;
 		else
-			gsource->loginState = THEOLDREADER_SOURCE_STATE_NO_AUTH;
+			source->loginState = THEOLDREADER_SOURCE_STATE_NO_AUTH;
 		
 		auth_dialog_new (subscription, flags);
 	}
@@ -130,16 +130,16 @@ theoldreader_source_login_cb (const struct updateResult * const result, gpointer
  * THEOLDREADER_SOURCE_LOGIN_ACTIVE.
  */
 void
-theoldreader_source_login (TheOldReaderSourcePtr gsource, guint32 flags) 
+theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags) 
 { 
 	gchar			*username, *password;
 	updateRequestPtr	request;
-	subscriptionPtr		subscription = gsource->root->subscription;
+	subscriptionPtr		subscription = source->root->subscription;
 	
-	if (gsource->loginState != THEOLDREADER_SOURCE_STATE_NONE) {
+	if (source->loginState != THEOLDREADER_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session
 		 * doesn't expire. */
-		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", gsource->loginState);
+		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", source->loginState);
 	}
 
 	request = update_request_new ();
@@ -156,9 +156,9 @@ theoldreader_source_login (TheOldReaderSourcePtr gsource, guint32 flags)
 	g_free (username);
 	g_free (password);
 
-	gsource->loginState = THEOLDREADER_SOURCE_STATE_IN_PROGRESS ;
+	source->loginState = THEOLDREADER_SOURCE_STATE_IN_PROGRESS ;
 
-	update_execute_request (gsource, request, theoldreader_source_login_cb, gsource, flags);
+	update_execute_request (source, request, theoldreader_source_login_cb, source, flags);
 }
 
 /* node source type implementation */
@@ -166,13 +166,13 @@ theoldreader_source_login (TheOldReaderSourcePtr gsource, guint32 flags)
 static void
 theoldreader_source_update (nodePtr node)
 {
-	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) node->data;
+	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node->data;
 
 	/* Reset THEOLDREADER_SOURCE_STATE_NO_AUTH as this is a manual
 	   user interaction and no auto-update so we can query
 	   for credentials again. */
-	if (gsource->loginState == THEOLDREADER_SOURCE_STATE_NO_AUTH)
-		gsource->loginState = THEOLDREADER_SOURCE_STATE_NONE;
+	if (source->loginState == THEOLDREADER_SOURCE_STATE_NO_AUTH)
+		source->loginState = THEOLDREADER_SOURCE_STATE_NONE;
 
 	subscription_update (node->subscription, 0);
 }
@@ -181,14 +181,14 @@ static void
 theoldreader_source_auto_update (nodePtr node)
 {
 	GTimeVal	now;
-	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) node->data;
+	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node->data;
 
-	if (gsource->loginState == THEOLDREADER_SOURCE_STATE_NONE) {
+	if (source->loginState == THEOLDREADER_SOURCE_STATE_NONE) {
 		theoldreader_source_update (node);
 		return;
 	}
 
-	if (gsource->loginState == THEOLDREADER_SOURCE_STATE_IN_PROGRESS) 
+	if (source->loginState == THEOLDREADER_SOURCE_STATE_IN_PROGRESS) 
 		return; /* the update will start automatically anyway */
 
 	g_get_current_time (&now);
@@ -196,18 +196,18 @@ theoldreader_source_auto_update (nodePtr node)
 	/* do daily updates for the feed list and feed updates according to the default interval */
 /*	if (node->subscription->updateState->lastPoll.tv_sec + THEOLDREADER_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
 		subscription_update (node->subscription, 0);
-		g_get_current_time (&gsource->lastQuickUpdate);
+		g_get_current_time (&source->lastQuickUpdate);
 	}
-	else if (gsource->lastQuickUpdate.tv_sec + THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
-		theoldreader_source_opml_quick_update (gsource);
-		theoldreader_source_edit_process (gsource);
-		g_get_current_time (&gsource->lastQuickUpdate);
+	else if (source->lastQuickUpdate.tv_sec + THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
+		theoldreader_source_opml_quick_update (source);
+		theoldreader_source_edit_process (source);
+		g_get_current_time (&source->lastQuickUpdate);
 	}*/
 
-	// FIXME: Don't do below, but about logic!
-	if (gsource->lastQuickUpdate.tv_sec + THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
+	// FIXME: Don't do below, but above logic!
+	if (source->lastQuickUpdate.tv_sec + THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
 		subscription_update (node->subscription, 0);
-		g_get_current_time (&gsource->lastQuickUpdate);
+		g_get_current_time (&source->lastQuickUpdate);
 	}
 }
 
@@ -253,23 +253,23 @@ theoldreader_source_add_subscription (nodePtr node, subscriptionPtr subscription
 static void
 theoldreader_source_remove_node (nodePtr node, nodePtr child) 
 { 
-	gchar           *source; 
-	TheOldReaderSourcePtr gsource = node->data;
+	gchar           	*url; 
+	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) node->data;
 	
 	if (child == node) { 
 		feedlist_node_removed (child);
 		return; 
 	}
 
-	source = g_strdup (child->subscription->source);
+	url = g_strdup (child->subscription->source);
 
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
-	if (!theoldreader_source_opml_get_node_by_source (gsource, source)) 
-		theoldreader_source_edit_remove_subscription (gsource, source);
+	if (!theoldreader_source_opml_get_node_by_source (source, url)) 
+		theoldreader_source_edit_remove_subscription (source, url);
 	
-	g_free (source);
+	g_free (url);
 }
 
 /* GUI callbacks */
@@ -320,7 +320,7 @@ theoldreader_source_cleanup (nodePtr node)
 {
 	TheOldReaderSourcePtr reader = (TheOldReaderSourcePtr) node->data;
 	theoldreader_source_free(reader);
-	node->data = NULL ;
+	node->data = NULL;
 }
 
 static void 
@@ -347,9 +347,9 @@ theoldreader_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStat
 static void
 theoldreader_source_convert_to_local (nodePtr node)
 {
-	TheOldReaderSourcePtr gsource = node->data; 
+	TheOldReaderSourcePtr source = node->data; 
 
-	gsource->loginState = THEOLDREADER_SOURCE_STATE_MIGRATE;	
+	source->loginState = THEOLDREADER_SOURCE_STATE_MIGRATE;	
 }
 
 /* node source type definition */
