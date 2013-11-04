@@ -1,5 +1,5 @@
 /**
- * @file ttrss_source.c  tt-rss feed list source support
+ * @file ttrss_source.c  TinyTinyRSS feed list source support
  * 
  * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
  *
@@ -45,7 +45,6 @@ ttrss_source_new (nodePtr node)
 	ttrssSourcePtr source = g_new0 (struct ttrssSource, 1) ;
 	source->root = node;
 	source->apiLevel = 0;
-	source->actionQueue = g_queue_new (); 
 	source->loginState = TTRSS_SOURCE_STATE_NONE;
 	source->categories = g_hash_table_new (g_direct_hash, g_direct_equal);
 	source->categoryNodes = g_hash_table_new (g_direct_hash, g_direct_equal);
@@ -62,7 +61,6 @@ ttrss_source_free (ttrssSourcePtr source)
 	update_job_cancel_by_owner (source);
 	
 	g_free (source->session_id);
-	g_queue_free (source->actionQueue) ;
 	g_free (source);
 }
 
