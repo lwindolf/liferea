@@ -25,6 +25,7 @@
 #include <gmodule.h>
 #include "node.h"
 #include "node_type.h"
+#include "subscription_type.h"
 
 /* Liferea allows to have different sources in the feed list. These
    sources are called "node sources" henceforth. Node sources can 
@@ -65,6 +66,8 @@ typedef struct nodeSourceType {
 	const gchar	*name;		/**< a descriptive source name (for preferences and menus) */
 	const gchar	*description;	/**< more detailed source type description (up to some sentences) */
 	gulong		capabilities;	/**< bitmask of feed list source capabilities */
+
+	subscriptionTypePtr	subscriptionType;	/* the subscription type for all child nodes that are subscriptions */
 
 	/* source type loading and unloading methods */
 	void		(*source_type_init)(void);
