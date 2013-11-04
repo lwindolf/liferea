@@ -78,8 +78,6 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 static gboolean
 node_source_type_register (nodeSourceTypePtr type)
 {
-	g_assert (type->subscriptionType);
-
 	/* allow the plugin to initialize */
 	type->source_type_init ();
 
