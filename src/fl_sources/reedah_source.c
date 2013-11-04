@@ -166,15 +166,17 @@ reedah_source_login (ReedahSourcePtr gsource, guint32 flags)
 static void
 reedah_source_update (nodePtr node)
 {
-	ReedahSourcePtr gsource = (ReedahSourcePtr) node->data;
+	ReedahSourcePtr source = (ReedahSourcePtr) node->data;
+
+	debug0 (DEBUG_UPDATE, "reedah_source_update()");
 
 	/* Reset REEDAH_SOURCE_STATE_NO_AUTH as this is a manual
 	   user interaction and no auto-update so we can query
 	   for credentials again. */
-	if (gsource->loginState == REEDAH_SOURCE_STATE_NO_AUTH)
-		gsource->loginState = REEDAH_SOURCE_STATE_NONE;
+	if (source->loginState == REEDAH_SOURCE_STATE_NO_AUTH)
+		source->loginState = REEDAH_SOURCE_STATE_NONE;
 
-	subscription_update (node->subscription, 0);  // FIXME: 0 ?
+	subscription_update (node->subscription, 0);
 }
 
 static void

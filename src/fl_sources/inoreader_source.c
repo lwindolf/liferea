@@ -125,7 +125,7 @@ inoreader_source_login_cb (const struct updateResult * const result, gpointer us
 }
 
 /**
- * Perform a login to Google Reader, if the login completes the 
+ * Perform a login to InoReader, if the login completes the 
  * InoreaderSource will have a valid Auth token and will have loginStatus to 
  * INOREADER_SOURCE_LOGIN_ACTIVE.
  */
@@ -166,15 +166,17 @@ inoreader_source_login (InoreaderSourcePtr gsource, guint32 flags)
 static void
 inoreader_source_update (nodePtr node)
 {
-	InoreaderSourcePtr gsource = (InoreaderSourcePtr) node->data;
+	InoreaderSourcePtr source = (InoreaderSourcePtr) node->data;
+
+	debug0 (DEBUG_UPDATE, "inoreader_source_update()");
 
 	/* Reset INOREADER_SOURCE_STATE_NO_AUTH as this is a manual
 	   user interaction and no auto-update so we can query
 	   for credentials again. */
-	if (gsource->loginState == INOREADER_SOURCE_STATE_NO_AUTH)
-		gsource->loginState = INOREADER_SOURCE_STATE_NONE;
+	if (source->loginState == INOREADER_SOURCE_STATE_NO_AUTH)
+		source->loginState = INOREADER_SOURCE_STATE_NONE;
 
-	subscription_update (node->subscription, 0);  // FIXME: 0 ?
+	subscription_update (node->subscription, 0);
 }
 
 static void

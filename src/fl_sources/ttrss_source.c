@@ -230,7 +230,16 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 static void
 ttrss_source_update (nodePtr node)
 {
+	ttrssSourcePtr source = (ttrssSourcePtr) node->data;
+
 	debug0 (DEBUG_UPDATE, "ttrss_source_update()");
+
+	/* Reset TTRSS_SOURCE_STATE_NO_AUTH as this is a manual
+	   user interaction and no auto-update so we can query
+	   for credentials again. */
+	if (source->loginState == TTRSS_SOURCE_STATE_NO_AUTH)
+		source->loginState = TTRSS_SOURCE_STATE_NONE;
+
 	subscription_update (node->subscription, 0);
 }
 
