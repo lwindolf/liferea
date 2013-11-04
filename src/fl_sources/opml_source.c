@@ -328,6 +328,7 @@ static struct nodeSourceType nst = {
 	   "automatically add and remove feeds according to the changes of "
 	   "the source OPML document"),
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+	NULL,
 	opml_source_init,
 	opml_source_deinit,
 	ui_opml_source_get_source_url,
@@ -349,6 +350,8 @@ static struct nodeSourceType nst = {
 nodeSourceTypePtr
 opml_source_get_type (void)
 {
+	nst.subscriptionType = feed_get_subscription_type ();
+
 	return &nst;
 }
 

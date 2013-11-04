@@ -78,6 +78,8 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 static gboolean
 node_source_type_register (nodeSourceTypePtr type)
 {
+	g_assert (type->subscriptionType);
+
 	/* allow the plugin to initialize */
 	type->source_type_init ();
 
@@ -122,6 +124,22 @@ node_source_setup_root (void)
 }
 
 static void
+node_source_set_subscription_type (nodePtr folder, subscriptionTypePtr type)
+{
+	GSList *iter;
+
+	for (iter = folder->children; iter; iter = g_slist_next(iter)) {
+		nodePtr node = (nodePtr) iter->data;
+
+		if (node->subscription)
+			node->subscription->type = type;
+
+		/* Recurse for hierarchic nodes... */
+		node_source_set_subscription_type (node, type);
+	}
+}
+
+static void
 node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 {
 	nodeSourceTypePtr	type;
@@ -157,7 +175,10 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		node_source_new (node, type);
 		node_set_subscription (node, subscription_import (xml, trusted));
 	
-		type->source_import (node);	// FIXME: pass trusted flag?
+		type->source_import (node);
+
+		/* Set subscription type for all child nodes imported */
+		node_source_set_subscription_type (node, type->subscriptionType);
 
 		if (!strcmp (typeStr, "fl_bloglines")) {
 			g_warning ("Removing obsolete Bloglines subscription.");

@@ -218,20 +218,6 @@ inoreader_source_init (void)
 static void inoreader_source_deinit (void) { }
 
 static void
-inoreader_source_import_node (nodePtr node)
-{
-	GSList *iter; 
-	for (iter = node->children; iter; iter = g_slist_next(iter)) {
-		nodePtr subnode = iter->data;
-		if (subnode->subscription)
-			subnode->subscription->type = &inoreaderSourceFeedSubscriptionType; 
-		if (subnode->type->capabilities
-		    & NODE_CAPABILITY_SUBFOLDERS)
-			inoreader_source_import_node (subnode);
-	}
-}
-
-static void
 inoreader_source_import (nodePtr node)
 {
 	opml_source_import (node);
@@ -239,8 +225,6 @@ inoreader_source_import (nodePtr node)
 	node->subscription->type = &inoreaderSourceOpmlSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) inoreader_source_new (node);
-
-	inoreader_source_import_node (node);
 }
 
 static void
@@ -396,6 +380,7 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
+	.subscriptionType    = &inoreaderSourceFeedSubscriptionType,
 	.source_type_init    = inoreader_source_init,
 	.source_type_deinit  = inoreader_source_deinit,
 	.source_new          = ui_inoreader_source_get_account_info,

@@ -204,24 +204,8 @@ aol_source_auto_update (nodePtr node)
 	}
 }
 
-static void
-aol_source_init (void) { }
-
+static void aol_source_init (void) { }
 static void aol_source_deinit (void) { }
-
-static void
-aol_source_import_node (nodePtr node)
-{
-	GSList *iter; 
-	for (iter = node->children; iter; iter = g_slist_next(iter)) {
-		nodePtr subnode = iter->data;
-		if (subnode->subscription)
-			subnode->subscription->type = &aolSourceFeedSubscriptionType; 
-		if (subnode->type->capabilities
-		    & NODE_CAPABILITY_SUBFOLDERS)
-			aol_source_import_node (subnode);
-	}
-}
 
 static void
 aol_source_import (nodePtr node)
@@ -231,8 +215,6 @@ aol_source_import (nodePtr node)
 	node->subscription->type = &aolSourceOpmlSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) aol_source_new (node);
-
-	aol_source_import_node (node);
 }
 
 static void
@@ -366,6 +348,7 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
+	.subscriptionType    = &aolSourceFeedSubscriptionType,
 	.source_type_init    = aol_source_init,
 	.source_type_deinit  = aol_source_deinit,
 	.source_new          = aol_source_get_account_info,

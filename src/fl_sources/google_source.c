@@ -82,26 +82,12 @@ google_source_init (void)
 static void google_source_deinit (void) { }
 
 static void
-google_source_import_node (nodePtr node)
-{
-	GSList *iter; 
-	for (iter = node->children; iter; iter = g_slist_next(iter)) {
-		nodePtr subnode = iter->data;
-		if (subnode->type->capabilities
-		    & NODE_CAPABILITY_SUBFOLDERS)
-			google_source_import_node (subnode);
-	}
-}
-
-static void
 google_source_import (nodePtr node)
 {
 	opml_source_import (node);
 	
 	if (!node->data)
 		node->data = (gpointer) google_source_new (node);
-
-	google_source_import_node (node);
 }
 
 static void
@@ -170,5 +156,7 @@ static struct nodeSourceType nst = {
 nodeSourceTypePtr
 google_source_get_type (void)
 {
+	nst.subscriptionType = feed_get_subscription_type ();
+
 	return &nst;
 }

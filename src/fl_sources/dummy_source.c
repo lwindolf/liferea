@@ -42,6 +42,7 @@ static struct nodeSourceType nst = {
 	"Dummy Feed List Source",
 	"The dummy feed list source. Should never be added manually. If you see this then something went wrong!",
 	0,
+	NULL,
 	dummy_source_init,
 	dummy_source_deinit,
 	NULL,

@@ -184,6 +184,7 @@ static struct nodeSourceType nst = {
 	                          NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                          NODE_SOURCE_CAPABILITY_ADD_FOLDER |
 				  NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST,
+	.subscriptionType	= NULL,
 	.source_type_init	= default_source_init,
 	.source_type_deinit	= default_source_deinit,
 	.source_new		= NULL,
@@ -200,4 +201,10 @@ static struct nodeSourceType nst = {
 	.convert_to_local	= NULL
 };
 
-nodeSourceTypePtr default_source_get_type (void) { return &nst; }
+nodeSourceTypePtr
+default_source_get_type (void)
+{
+	nst.subscriptionType = feed_get_subscription_type ();
+
+	return &nst;
+}

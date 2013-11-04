@@ -279,8 +279,8 @@ ttrss_source_set_subscription_type (nodePtr folder)
 
 		if (node->subscription)
 			node->subscription->type = &ttrssSourceFeedSubscriptionType;
-		else
-			ttrss_source_set_subscription_type (node);
+
+		ttrss_source_set_subscription_type (node);
 	}
 }
 
@@ -424,6 +424,7 @@ static struct nodeSourceType nst = {
 	   "present your tt-rss subscriptions, and will synchronize your feed list and reading lists."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC,
+	.subscriptionType    = &ttrssSourceFeedSubscriptionType,
 	.source_type_init    = ttrss_source_init,
 	.source_type_deinit  = ttrss_source_deinit,
 	.source_new          = ui_ttrss_source_get_account_info,
