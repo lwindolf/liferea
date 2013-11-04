@@ -1,5 +1,7 @@
 To be released
 
+	* Added experimental InoReader support
+	* Added experimental Reedah support
 	* Fixes SF #1119: Crash on font resize at startup. 
 	  (reported by David Smith)
 
