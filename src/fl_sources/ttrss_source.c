@@ -297,21 +297,35 @@ ttrss_source_import (nodePtr node)
 }
 
 static void
-ttrss_source_export (nodePtr node)
+ttrss_source_remove_node_cb ()
 {
-	opml_source_export (node);
-}
-
-static gchar *
-ttrss_source_get_feedlist (nodePtr node)
-{
-	return opml_source_get_feedlist (node);
+	// FIXME: Check for error response and warn user
 }
 
 static void 
-ttrss_source_remove (nodePtr node)
-{ 
-	opml_source_remove (node);
+ttrss_source_remove_node (nodePtr root, nodePtr node)
+{
+	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
+	updateRequestPtr	request;
+	const gchar		*id;
+
+	if (source->apiLevel < 5) {
+		ui_show_info_box (_("This TinyTinyRSS version does not support removing feeds. Upgrade to version %s or later!"), "1.7.6");
+		return;
+	}
+
+	id = metadata_list_get (node->subscription->metadata, "ttrss-feed-id");
+	if (!id) {
+		g_warning ("Fatal: cannot remove node as ttrss-feed-id is unknown!");
+		return;
+	}
+
+	request = update_request_new ();
+	request->options = update_options_copy (root->subscription->updateOptions);
+	request->postdata = g_strdup_printf (TTRSS_JSON_UNSUBSCRIBE, source->session_id, id);
+
+	update_request_set_source (request, g_strdup_printf (TTRSS_URL, source->url));
+	update_execute_request (source, request, ttrss_source_remove_node_cb, source, 0 /* flags */);
 }
 
 /* GUI callbacks */
@@ -332,7 +346,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 		metadata_list_set (&subscription->metadata, "ttrss-url", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))));
 
 		node = node_new (node_source_get_node_type ());
-		node_set_title (node, "Tiny Tiny RSS");
+		node_set_title (node, ttrss_source_get_type()->name);
 		node_source_new (node, ttrss_source_get_type ());
 		node_set_subscription (node, subscription);
 		
@@ -420,10 +434,11 @@ ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 static struct nodeSourceType nst = {
 	.id                  = "fl_ttrss",
 	.name                = N_("Tiny Tiny RSS"),
-	.description         = N_("Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
-	   "present your tt-rss subscriptions, and will synchronize your feed list and reading lists."),
+	.description         = N_("Subscribe to all Tiny Tiny RSS versions starting with v1.5."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
-	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC,
+	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
+	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
+	                       NODE_SOURCE_CAPABILITY_ADD_FEED,
 	.subscriptionType    = &ttrssSourceFeedSubscriptionType,
 	.source_type_init    = ttrss_source_init,
 	.source_type_deinit  = ttrss_source_deinit,
@@ -439,7 +454,7 @@ static struct nodeSourceType nst = {
 	.item_mark_read      = ttrss_source_item_mark_read,
 	.add_folder          = NULL,	/* not supported by current tt-rss JSON API (v1.5) */
 	.add_subscription    = NULL,	/* not supported by current tt-rss JSON API (v1.5) */
-	.remove_node         = NULL,	/* not supported by current tt-rss JSON API (v1.5) */
+	.remove_node         = ttrss_source_remove_node,
 	.convert_to_local    = NULL	/* FIXME: implement me to allow data migration from tt-rss! */
 };
 

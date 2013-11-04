@@ -283,7 +283,7 @@ on_inoreader_source_selected (GtkDialog *dialog,
 	if (response_id == GTK_RESPONSE_OK) {
 		subscription = subscription_new ("http://www.inoreader.com/reader", NULL, NULL);
 		node = node_new (node_source_get_node_type ());
-		node_set_title (node, "InoReader");
+		node_set_title (node, inoreader_source_get_type ()->name);
 		node_source_new (node, inoreader_source_get_type ());
 		node_set_subscription (node, subscription);
 

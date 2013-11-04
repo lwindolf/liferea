@@ -283,7 +283,7 @@ on_reedah_source_selected (GtkDialog *dialog,
 	if (response_id == GTK_RESPONSE_OK) {
 		subscription = subscription_new ("http://www.reedah.com/reader", NULL, NULL);
 		node = node_new (node_source_get_node_type ());
-		node_set_title (node, "Reedah");
+		node_set_title (node, reedah_source_get_type ()->name);
 		node_source_new (node, reedah_source_get_type ());
 		node_set_subscription (node, subscription);
 

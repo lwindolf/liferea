@@ -271,7 +271,7 @@ aol_source_get_account_info (void)
 
 	subscription = subscription_new ("http://reader.aol.com/", NULL, NULL);
 	node = node_new (node_source_get_node_type ());
-	node_set_title (node, "AOL Reader");
+	node_set_title (node, aol_source_get_type ()->name);
 	node_source_new (node, aol_source_get_type ());
 	node_set_subscription (node, subscription);
 	subscription->type = &aolSourceOpmlSubscriptionType ; 
