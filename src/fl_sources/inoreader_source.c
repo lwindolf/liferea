@@ -1,5 +1,5 @@
 /**
- * @file inoreader_source.c  Google reader feed list source support
+ * @file inoreader_source.c  InoReader feed list source support
  * 
  * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
