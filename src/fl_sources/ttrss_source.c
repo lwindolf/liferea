@@ -434,7 +434,7 @@ ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 static struct nodeSourceType nst = {
 	.id                  = "fl_ttrss",
 	.name                = N_("Tiny Tiny RSS"),
-	.description         = N_("Subscribe to all Tiny Tiny RSS versions starting with v1.5."),
+	.description         = N_("Tiny Tiny RSS is an Open Source online aggregator that you host on your own server (http://tt-rss.org). Subscribe to all Tiny Tiny RSS versions starting with v1.5."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |

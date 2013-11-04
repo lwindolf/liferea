@@ -355,8 +355,7 @@ inoreader_source_convert_to_local (nodePtr node)
 static struct nodeSourceType nst = {
 	.id                  = "fl_inoreader",
 	.name                = N_("InoReader"),
-	.description         = N_("Integrate the feed list of your InoReader account. Liferea will "
-	                          "present your InoReader subscriptions, and will synchronize your feed list and reading lists."),
+	.description         = N_("InoReader is a free online aggregator (http://inoreader.com)."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |

@@ -355,8 +355,7 @@ reedah_source_convert_to_local (nodePtr node)
 static struct nodeSourceType nst = {
 	.id                  = "fl_reedah",
 	.name                = N_("Reedah"),
-	.description         = N_("Integrate the feed list of your Reedah account. Liferea will "
-	                          "present your Reedah subscriptions, and will synchronize your feed list and reading lists."),
+	.description         = N_("Reedah is a free online aggregator (http://reedah.com)."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |

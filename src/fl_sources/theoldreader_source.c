@@ -357,8 +357,7 @@ theoldreader_source_convert_to_local (nodePtr node)
 static struct nodeSourceType nst = {
 	.id                  = "fl_theoldreader",
 	.name                = N_("TheOldReader"),
-	.description         = N_("Integrate the feed list of your TheOldReader account. Liferea will "
-	                          "present your TheOldReader subscriptions, and will synchronize your feed list and reading lists."),
+	.description         = N_("TheOldReader is a free online aggregator (http://theoldreader.com)."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
