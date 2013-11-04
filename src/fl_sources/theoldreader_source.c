@@ -174,7 +174,7 @@ theoldreader_source_update (nodePtr node)
 	if (gsource->loginState == THEOLDREADER_SOURCE_STATE_NO_AUTH)
 		gsource->loginState = THEOLDREADER_SOURCE_STATE_NONE;
 
-	subscription_update (node->subscription, 0);  // FIXME: 0 ?
+	subscription_update (node->subscription, 0);
 }
 
 static void
@@ -227,24 +227,6 @@ theoldreader_source_import (nodePtr node)
 	node->subscription->type = &theOldReaderSourceOpmlSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) theoldreader_source_new (node);
-}
-
-static void
-theoldreader_source_export (nodePtr node)
-{
-	opml_source_export (node);
-}
-
-static gchar *
-theoldreader_source_get_feedlist (nodePtr node)
-{
-	return opml_source_get_feedlist (node);
-}
-
-static void 
-theoldreader_source_remove (nodePtr node)
-{ 
-	opml_source_remove (node);
 }
 
 static nodePtr
@@ -386,10 +368,10 @@ static struct nodeSourceType nst = {
 	.source_type_init    = theoldreader_source_init,
 	.source_type_deinit  = theoldreader_source_deinit,
 	.source_new          = ui_theoldreader_source_get_account_info,
-	.source_delete       = theoldreader_source_remove,
+	.source_delete       = opml_source_remove,
 	.source_import       = theoldreader_source_import,
-	.source_export       = theoldreader_source_export,
-	.source_get_feedlist = theoldreader_source_get_feedlist,
+	.source_export       = opml_source_export,
+	.source_get_feedlist = opml_source_get_feedlist,
 	.source_update       = theoldreader_source_update,
 	.source_auto_update  = theoldreader_source_auto_update,
 	.free                = theoldreader_source_cleanup,

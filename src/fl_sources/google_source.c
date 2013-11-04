@@ -91,24 +91,6 @@ google_source_import (nodePtr node)
 }
 
 static void
-google_source_export (nodePtr node)
-{
-	opml_source_export (node);
-}
-
-static gchar *
-google_source_get_feedlist (nodePtr node)
-{
-	return opml_source_get_feedlist (node);
-}
-
-static void 
-google_source_remove (nodePtr node)
-{ 
-	opml_source_remove (node);
-}
-
-static void
 google_source_cleanup (nodePtr node)
 {
 	GoogleSourcePtr reader = (GoogleSourcePtr) node->data;
@@ -138,10 +120,10 @@ static struct nodeSourceType nst = {
 	.source_type_init    = google_source_init,
 	.source_type_deinit  = google_source_deinit,
 	.source_new          = NULL,
-	.source_delete       = google_source_remove,
+	.source_delete       = opml_source_remove,
 	.source_import       = google_source_import,
-	.source_export       = google_source_export,
-	.source_get_feedlist = google_source_get_feedlist,
+	.source_export       = opml_source_export,
+	.source_get_feedlist = opml_source_get_feedlist,
 	.source_update       = google_source_update,
 	.source_auto_update  = google_source_auto_update,
 	.free                = google_source_cleanup,

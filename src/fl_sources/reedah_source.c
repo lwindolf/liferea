@@ -227,24 +227,6 @@ reedah_source_import (nodePtr node)
 		node->data = (gpointer) reedah_source_new (node);
 }
 
-static void
-reedah_source_export (nodePtr node)
-{
-	opml_source_export (node);
-}
-
-static gchar *
-reedah_source_get_feedlist (nodePtr node)
-{
-	return opml_source_get_feedlist (node);
-}
-
-static void 
-reedah_source_remove (nodePtr node)
-{ 
-	opml_source_remove (node);
-}
-
 static nodePtr
 reedah_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
@@ -384,10 +366,10 @@ static struct nodeSourceType nst = {
 	.source_type_init    = reedah_source_init,
 	.source_type_deinit  = reedah_source_deinit,
 	.source_new          = ui_reedah_source_get_account_info,
-	.source_delete       = reedah_source_remove,
+	.source_delete       = opml_source_remove,
 	.source_import       = reedah_source_import,
-	.source_export       = reedah_source_export,
-	.source_get_feedlist = reedah_source_get_feedlist,
+	.source_export       = opml_source_export,
+	.source_get_feedlist = opml_source_get_feedlist,
 	.source_update       = reedah_source_update,
 	.source_auto_update  = reedah_source_auto_update,
 	.free                = reedah_source_cleanup,

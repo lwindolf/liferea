@@ -217,24 +217,6 @@ aol_source_import (nodePtr node)
 		node->data = (gpointer) aol_source_new (node);
 }
 
-static void
-aol_source_export (nodePtr node)
-{
-	opml_source_export (node);
-}
-
-static gchar *
-aol_source_get_feedlist (nodePtr node)
-{
-	return opml_source_get_feedlist (node);
-}
-
-static void 
-aol_source_remove (nodePtr node)
-{ 
-	opml_source_remove (node);
-}
-
 static nodePtr
 aol_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
@@ -352,10 +334,10 @@ static struct nodeSourceType nst = {
 	.source_type_init    = aol_source_init,
 	.source_type_deinit  = aol_source_deinit,
 	.source_new          = aol_source_get_account_info,
-	.source_delete       = aol_source_remove,
+	.source_delete       = opml_source_remove,
 	.source_import       = aol_source_import,
-	.source_export       = aol_source_export,
-	.source_get_feedlist = aol_source_get_feedlist,
+	.source_export       = opml_source_export,
+	.source_get_feedlist = opml_source_get_feedlist,
 	.source_update       = aol_source_update,
 	.source_auto_update  = aol_source_auto_update,
 	.free                = aol_source_cleanup,

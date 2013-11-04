@@ -300,7 +300,7 @@ opml_source_remove (nodePtr node)
 static void
 opml_source_update (nodePtr node)
 {
-	subscription_update (node->subscription, 0);  // FIXME: 0 ?
+	subscription_update (node->subscription, 0);
 }
 
 static void

@@ -227,24 +227,6 @@ inoreader_source_import (nodePtr node)
 		node->data = (gpointer) inoreader_source_new (node);
 }
 
-static void
-inoreader_source_export (nodePtr node)
-{
-	opml_source_export (node);
-}
-
-static gchar *
-inoreader_source_get_feedlist (nodePtr node)
-{
-	return opml_source_get_feedlist (node);
-}
-
-static void 
-inoreader_source_remove (nodePtr node)
-{ 
-	opml_source_remove (node);
-}
-
 static nodePtr
 inoreader_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
@@ -384,10 +366,10 @@ static struct nodeSourceType nst = {
 	.source_type_init    = inoreader_source_init,
 	.source_type_deinit  = inoreader_source_deinit,
 	.source_new          = ui_inoreader_source_get_account_info,
-	.source_delete       = inoreader_source_remove,
+	.source_delete       = opml_source_remove,
 	.source_import       = inoreader_source_import,
-	.source_export       = inoreader_source_export,
-	.source_get_feedlist = inoreader_source_get_feedlist,
+	.source_export       = opml_source_export,
+	.source_get_feedlist = opml_source_get_feedlist,
 	.source_update       = inoreader_source_update,
 	.source_auto_update  = inoreader_source_auto_update,
 	.free                = inoreader_source_cleanup,
