@@ -1,5 +1,5 @@
 /**
- * @file ttrss_source.h TinyTinyRSS feed list source support
+ * @file ttrss_source.h  TinyTinyRSS feed list source support
  * 
  * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
  *
@@ -74,7 +74,7 @@ enum  {
 #define TTRSS_URL "%s/api/"
 
 /**
- * Tiny Tiny RSS Login API
+ * TinyTinyRSS Login API
  *
  * @param user		The tt-rss account id
  * @param passwd	The tt-rss account password
@@ -84,13 +84,32 @@ enum  {
 #define TTRSS_JSON_LOGIN "{\"op\":\"login\", \"user\":\"%s\", \"password\":\"%s\"}" 
 
 /**
- * Fetch tt-rss feed list.
+ * Fetch TinyTinyRSS feed list.
  *
  * @param sid	session id
  *
  * @returns JSON feed list
  */
 #define TTRSS_JSON_SUBSCRIPTION_LIST "{\"op\":\"getFeeds\", \"sid\":\"%s\", \"cat_id\":\"-3\", \"include_nested\":\"true\"}"
+
+/**
+ * Add a subscription to TinyTinyRSS
+ *
+ * @param sid		session id
+ * @param feed_url	URL
+ * @param category_id	category id (or 0)
+ * @param login		user name
+ * @param password	password
+ */
+#define TTRSS_JSON_SUBSCRIBE "\"op\":\"subscribeToFeed\", \"sid\":\"%s\", \"feed_url\":\"%s\", \"category_id\":%d, \"login\":\"%s\", \"password\":\"%s\"}"
+
+/**
+ * Removes a subscription from TinyTinyRSS
+ *
+ * @param sid		session id
+ * @param feed_id	TinyTinyRSS feed id
+ */
+#define TTRSS_JSON_UNSUBSCRIBE "\"op\":\"unsubscribeFeed\", \"sid\":\"%s\", \"feed_id\":\"%s\"}"
 
 /**
  * Fetch tt-rss categories list (default is fetching it tree like)
@@ -100,7 +119,7 @@ enum  {
 #define TTRSS_JSON_CATEGORIES_LIST "{\"op\":\"getFeedTree\", \"sid\":\"%s\", \"include_empty\":\"true\"}"
 
 /**
- * Fetch tt-rss headlines for a given feed.
+ * Fetch TinyTinyRSS headlines for a given feed.
  *
  * @param sid		session id
  * @param feed_id	tt-rss feed id
