@@ -248,6 +248,11 @@ ttrss_source_auto_update (nodePtr node)
 {
 	ttrssSourcePtr	source = (ttrssSourcePtr) node->data;
 
+	if (source->loginState == TTRSS_SOURCE_STATE_NONE) {
+		ttrss_source_update (node);
+		return;
+	}
+
 	if (source->loginState == TTRSS_SOURCE_STATE_IN_PROGRESS) 
 		return; /* the update will start automatically anyway */
 

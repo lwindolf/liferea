@@ -183,27 +183,29 @@ static void
 reedah_source_auto_update (nodePtr node)
 {
 	GTimeVal	now;
-	ReedahSourcePtr gsource = (ReedahSourcePtr) node->data;
+	ReedahSourcePtr source = (ReedahSourcePtr) node->data;
 
-	if (gsource->loginState == REEDAH_SOURCE_STATE_NONE) {
+	if (source->loginState == REEDAH_SOURCE_STATE_NONE) {
 		reedah_source_update (node);
 		return;
 	}
 
-	if (gsource->loginState == REEDAH_SOURCE_STATE_IN_PROGRESS) 
+	if (source->loginState == REEDAH_SOURCE_STATE_IN_PROGRESS) 
 		return; /* the update will start automatically anyway */
+
+	debug0 (DEBUG_UPDATE, "reedah_source_auto_update()");
 
 	g_get_current_time (&now);
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
 	if (node->subscription->updateState->lastPoll.tv_sec + REEDAH_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
 		subscription_update (node->subscription, 0);
-		g_get_current_time (&gsource->lastQuickUpdate);
+		g_get_current_time (&source->lastQuickUpdate);
 	}
-	else if (gsource->lastQuickUpdate.tv_sec + REEDAH_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
-		reedah_source_opml_quick_update (gsource);
-		reedah_source_edit_process (gsource);
-		g_get_current_time (&gsource->lastQuickUpdate);
+	else if (source->lastQuickUpdate.tv_sec + REEDAH_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
+		reedah_source_opml_quick_update (source);
+		reedah_source_edit_process (source);
+		g_get_current_time (&source->lastQuickUpdate);
 	}
 }
 
