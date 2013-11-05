@@ -297,9 +297,10 @@ ttrss_source_import (nodePtr node)
 }
 
 static void
-ttrss_source_remove_node_cb ()
+ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
 	// FIXME: Check for error response and warn user
+	debug2 (DEBUG_UPDATE, "TinyTinyRSS remove node result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 }
 
 static void 
@@ -308,6 +309,8 @@ ttrss_source_remove_node (nodePtr root, nodePtr node)
 	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
 	updateRequestPtr	request;
 	const gchar		*id;
+
+	// FIXME: Check for login?
 
 	if (source->apiLevel < 5) {
 		ui_show_info_box (_("This TinyTinyRSS version does not support removing feeds. Upgrade to version %s or later!"), "1.7.6");
@@ -390,7 +393,7 @@ ttrss_source_cleanup (nodePtr node)
 static void
 ttrss_source_remote_update_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	debug2 (DEBUG_UPDATE, "TinyTinyRSS result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+	debug2 (DEBUG_UPDATE, "TinyTinyRSS update result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 }
 
 /* FIXME: Only simple synchronous item change requests... Get async! */
