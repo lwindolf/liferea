@@ -101,7 +101,7 @@ enum  {
  * @param login		user name
  * @param password	password
  */
-#define TTRSS_JSON_SUBSCRIBE "\"op\":\"subscribeToFeed\", \"sid\":\"%s\", \"feed_url\":\"%s\", \"category_id\":%d, \"login\":\"%s\", \"password\":\"%s\"}"
+#define TTRSS_JSON_SUBSCRIBE "{\"op\":\"subscribeToFeed\", \"sid\":\"%s\", \"feed_url\":\"%s\", \"category_id\":%d, \"login\":\"%s\", \"password\":\"%s\"}"
 
 /**
  * Removes a subscription from TinyTinyRSS
@@ -109,7 +109,7 @@ enum  {
  * @param sid		session id
  * @param feed_id	TinyTinyRSS feed id
  */
-#define TTRSS_JSON_UNSUBSCRIBE "\"op\":\"unsubscribeFeed\", \"sid\":\"%s\", \"feed_id\":\"%s\"}"
+#define TTRSS_JSON_UNSUBSCRIBE "{\"op\":\"unsubscribeFeed\", \"sid\":\"%s\", \"feed_id\":\"%s\"}"
 
 /**
  * Fetch tt-rss categories list (default is fetching it tree like)
