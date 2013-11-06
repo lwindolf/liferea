@@ -297,10 +297,57 @@ ttrss_source_import (nodePtr node)
 }
 
 static void
+ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+{
+	subscriptionPtr subscription = (subscriptionPtr) userdata;
+	
+	// FIXME: check for error response and warn user	
+	debug2 (DEBUG_UPDATE, "TinyTinyRSS subscribe result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+
+	subscription_update (subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+}
+
+static nodePtr
+ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
+{
+	gchar			*username, *password, *source_uri;
+	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
+	updateRequestPtr	request;
+	nodePtr			child = node_new (feed_get_node_type ());
+
+	node_set_title (child, _("New Subscription"));
+	node_set_data (child, feed_new ());
+	node_set_subscription (child, subscription);
+	feedlist_node_added (child);
+
+	/* escape user and password for JSON call */
+	username = g_strescape (subscription->updateOptions->username, NULL);
+	password = g_strescape (subscription->updateOptions->password, NULL);
+
+	// FIXME: subscribe
+	request = update_request_new ();
+	request->options = update_options_copy (root->subscription->updateOptions);
+	// FIXME: determine correct category
+	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIBE, source->session_id, subscription->source, 0, username, password);
+
+	update_request_set_source (request, g_strdup_printf (TTRSS_URL, source->url));
+	update_execute_request (source, request, ttrss_source_subscribe_cb, source, 0 /* flags */);
+
+	g_free (username);
+	g_free (password);
+
+	return child;
+}
+
+static void
 ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
+	nodePtr node = (nodePtr) userdata;
+
 	// FIXME: Check for error response and warn user
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS remove node result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+
+	feedlist_node_removed (node);
 }
 
 static void 
@@ -328,7 +375,7 @@ ttrss_source_remove_node (nodePtr root, nodePtr node)
 	request->postdata = g_strdup_printf (TTRSS_JSON_UNSUBSCRIBE, source->session_id, id);
 
 	update_request_set_source (request, g_strdup_printf (TTRSS_URL, source->url));
-	update_execute_request (source, request, ttrss_source_remove_node_cb, source, 0 /* flags */);
+	update_execute_request (source, request, ttrss_source_remove_node_cb, node, 0 /* flags */);
 }
 
 /* GUI callbacks */
@@ -456,7 +503,7 @@ static struct nodeSourceType nst = {
 	.item_set_flag       = ttrss_source_item_set_flag,
 	.item_mark_read      = ttrss_source_item_mark_read,
 	.add_folder          = NULL,	/* not supported by current tt-rss JSON API (v1.5) */
-	.add_subscription    = NULL,	/* not supported by current tt-rss JSON API (v1.5) */
+	.add_subscription    = ttrss_source_add_subscription,
 	.remove_node         = ttrss_source_remove_node,
 	.convert_to_local    = NULL	/* FIXME: implement me to allow data migration from tt-rss! */
 };

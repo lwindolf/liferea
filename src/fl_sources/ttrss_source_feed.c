@@ -1,5 +1,5 @@
 /**
- * @file ttrss_source_feed.c  tt-rss feed subscription routines
+ * @file ttrss_source_feed.c  Tiny Tiny RSS feed subscription routines
  * 
  * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
  *
