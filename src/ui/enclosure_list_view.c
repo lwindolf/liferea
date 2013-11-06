@@ -244,6 +244,11 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	GSList		*list, *filteredList;
 	guint		len;
 
+	/* Ugly workaround to prevent race on startup when item is selected
+	   but enclosure list view not yet initialized. */
+	if (!elv)
+		return;
+
 	/* cleanup old content */
 	gtk_tree_store_clear (elv->priv->treestore);
 	list = elv->priv->enclosures;
