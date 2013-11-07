@@ -1,5 +1,5 @@
 /**
- * @file ttrss_source.c  TinyTinyRSS feed list source support
+ * @file ttrss_source.c  Tiny Tiny RSS feed list source support
  * 
  * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
  *
@@ -304,6 +304,8 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 	// FIXME: check for error response and warn user	
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS subscribe result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
+	/* Result should be {"seq":0,"status":0,"content":{"status":{"code":1}}} */
+
 	subscription_update (subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 }
 
@@ -321,8 +323,8 @@ ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 	feedlist_node_added (child);
 
 	/* escape user and password for JSON call */
-	username = g_strescape (subscription->updateOptions->username, NULL);
-	password = g_strescape (subscription->updateOptions->password, NULL);
+	username = g_strescape (root->subscription->updateOptions->username, NULL);
+	password = g_strescape (root->subscription->updateOptions->password, NULL);
 
 	// FIXME: subscribe
 	request = update_request_new ();
