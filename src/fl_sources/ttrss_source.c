@@ -301,12 +301,22 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
 	
-	// FIXME: check for error response and warn user	
+	// FIXME: check for error response and warn user
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS subscribe result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
 	/* Result should be {"seq":0,"status":0,"content":{"status":{"code":1}}} */
 
-	subscription_update (subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+	/* As TinyTinyRSS does not return the id of the newly subscribed feed
+	   we need to reload the entire feed list. This will actually remove
+	   and re-add the feed node, but due to the current API there is no 
+	   way around it  */
+	ttrss_source_update (subscription->node->source->root);
+}
+
+static gboolean
+ttrss_source_folder_to_id_func (gpointer key, gpointer value, gpointer user_data)
+{
+	return (key == user_data);
 }
 
 static nodePtr
@@ -316,21 +326,27 @@ ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
 	updateRequestPtr	request;
 	nodePtr			child = node_new (feed_get_node_type ());
+	gint			categoryId = 0;
 
 	node_set_title (child, _("New Subscription"));
 	node_set_data (child, feed_new ());
 	node_set_subscription (child, subscription);
 	feedlist_node_added (child);
 
+	/* determine category id */
+	if (child->parent != root) {
+		categoryId = GPOINTER_TO_INT (g_hash_table_find (source->categoryNodes, ttrss_source_folder_to_id_func, child->parent));
+g_print("category=%d\n", categoryId);
+	}
+
 	/* escape user and password for JSON call */
 	username = g_strescape (root->subscription->updateOptions->username, NULL);
 	password = g_strescape (root->subscription->updateOptions->password, NULL);
 
-	// FIXME: subscribe
 	request = update_request_new ();
 	request->options = update_options_copy (root->subscription->updateOptions);
 	// FIXME: determine correct category
-	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIBE, source->session_id, subscription->source, 0, username, password);
+	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIBE, source->session_id, subscription->source, categoryId, username, password);
 
 	update_request_set_source (request, g_strdup_printf (TTRSS_URL, source->url));
 	update_execute_request (source, request, ttrss_source_subscribe_cb, source, 0 /* flags */);
@@ -348,6 +364,8 @@ ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer 
 
 	// FIXME: Check for error response and warn user
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS remove node result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+
+	/* We expect the following {"seq":0,"status":0,"content":{"status":"OK"}} */
 
 	feedlist_node_removed (node);
 }
