@@ -108,7 +108,7 @@ ttrss_source_update_folder (ttrssSourcePtr source, nodePtr node)
 		return;
 
 	category = GPOINTER_TO_INT (g_hash_table_lookup (source->categories, GINT_TO_POINTER (atoi (feedId))));
-	parent = g_hash_table_lookup (source->categoryNodes, GINT_TO_POINTER (category));
+	parent = g_hash_table_lookup (source->categoryToNode, GINT_TO_POINTER (category));
 	if (!parent)
 		return;
 
@@ -297,7 +297,8 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 
 					debug2 (DEBUG_UPDATE, "TinyTinyRSS category id=%ld name=%s", id, name);
 					folder = ttrss_source_find_or_create_folder (name, parent);
-					g_hash_table_insert (source->categoryNodes, GINT_TO_POINTER (id), folder);
+					g_hash_table_insert (source->categoryToNode, GINT_TO_POINTER (id), folder);
+					g_hash_table_insert (source->nodeToCategory, folder, GINT_TO_POINTER (id));
 
 					/* Process child categories ... */
 					if (json_get_node (node, "items"))
@@ -384,7 +385,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 
 			/* Process categories tree recursively */
 			g_hash_table_remove_all (source->categories);
-			g_hash_table_insert (source->categoryNodes, GINT_TO_POINTER (0), source->root);
+			g_hash_table_insert (source->categoryToNode, GINT_TO_POINTER (0), source->root);
 			ttrss_source_merge_categories (source, source->root, 0, items);
 
 			/* And trigger the actual feed fetching */

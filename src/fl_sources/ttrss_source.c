@@ -47,7 +47,8 @@ ttrss_source_new (nodePtr node)
 	source->apiLevel = 0;
 	source->loginState = TTRSS_SOURCE_STATE_NONE;
 	source->categories = g_hash_table_new (g_direct_hash, g_direct_equal);
-	source->categoryNodes = g_hash_table_new (g_direct_hash, g_direct_equal);
+	source->categoryToNode = g_hash_table_new (g_direct_hash, g_direct_equal);
+	source->nodeToCategory = g_hash_table_new (g_direct_hash, g_direct_equal);
 	
 	return source;
 }
@@ -59,7 +60,10 @@ ttrss_source_free (ttrssSourcePtr source)
 		return;
 
 	update_job_cancel_by_owner (source);
-	
+
+	g_hash_table_destroy (source->categories);
+	g_hash_table_destroy (source->categoryToNode);
+	g_hash_table_destroy (source->nodeToCategory);
 	g_free (source->session_id);
 	g_free (source);
 }
@@ -335,7 +339,7 @@ ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 
 	/* determine category id */
 	if (child->parent != root) {
-		categoryId = GPOINTER_TO_INT (g_hash_table_find (source->categoryNodes, ttrss_source_folder_to_id_func, child->parent));
+		categoryId = GPOINTER_TO_INT (g_hash_table_find (source->nodeToCategory, ttrss_source_folder_to_id_func, child->parent));
 g_print("category=%d\n", categoryId);
 	}
 
@@ -451,8 +455,6 @@ static void
 ttrss_source_cleanup (nodePtr node)
 {
 	ttrssSourcePtr source = (ttrssSourcePtr) node->data;
-	g_hash_table_destroy (source->categories);
-	g_hash_table_destroy (source->categoryNodes);
 	ttrss_source_free (source);
 	node->data = NULL;
 }
