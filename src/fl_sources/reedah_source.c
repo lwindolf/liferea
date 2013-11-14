@@ -1,5 +1,5 @@
 /**
- * @file reedah_source.c  Google reader feed list source support
+ * @file reedah_source.c  Reedah source support
  * 
  * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
@@ -44,10 +44,10 @@
 #include "fl_sources/reedah_source_edit.h"
 #include "fl_sources/reedah_source_feed_list.h"
 
-/** default Google reader subscription list update interval = once a day */
+/** default Reedah subscription list update interval = once a day */
 #define REEDAH_SOURCE_UPDATE_INTERVAL 60*60*24
 
-/** create a google source with given node as root */ 
+/** create a Reedah source with given node as root */ 
 static ReedahSourcePtr
 reedah_source_new (nodePtr node) 
 {
@@ -108,7 +108,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 		reedah_source_edit_process (gsource);
 
 	} else {
-		debug0 (DEBUG_UPDATE, "google reader login failed! no Auth token found in result!");
+		debug0 (DEBUG_UPDATE, "Reedah login failed! no Auth token found in result!");
 		subscription->node->available = FALSE;
 
 		g_free (subscription->updateError);
@@ -125,7 +125,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 }
 
 /**
- * Perform a login to Google Reader, if the login completes the 
+ * Perform a login to Reedah, if the login completes the 
  * ReedahSource will have a valid Auth token and will have loginStatus to 
  * REEDAH_SOURCE_LOGIN_ACTIVE.
  */
@@ -338,7 +338,7 @@ reedah_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 }
 
 /**
- * Convert all subscriptions of a google source to local feeds
+ * Convert all subscriptions of a Reedah source to local feeds
  *
  * @param node The node to migrate (not the nodeSource!)
  */

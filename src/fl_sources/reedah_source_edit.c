@@ -1,5 +1,5 @@
 /**
- * @file reedah_source_edit.c  Google reader feed list source syncing support
+ * @file reedah_source_edit.c  Reedah feed list source syncing support
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
@@ -37,9 +37,9 @@
 #include "xml.h"
 
 /**
- * A structure to indicate an edit to the Google Reader "database".
+ * A structure to indicate an edit to the Reedah "database".
  * These edits are put in a queue and processed in sequential order
- * so that google does not end up processing the requests in an 
+ * so that Reedah does not end up processing the requests in an 
  * unintended order.
  */
 typedef struct ReedahSourceAction {

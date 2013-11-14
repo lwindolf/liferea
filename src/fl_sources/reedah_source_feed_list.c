@@ -1,5 +1,5 @@
 /**
- * @file reedah_source_feed_list.c  Reedah handling routines.
+ * @file reedah_source_feed_list.c  Reedah feed list handling routines
  * 
  * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
  *
@@ -78,16 +78,13 @@ reedah_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar	*expr = NULL;
 
-	if (node->subscription && g_str_equal (node->subscription->source, REEDAH_READER_BROADCAST_FRIENDS_URL)) 
-		return ; 
-
 	if (IS_FEED (node)) {
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
 	} else if (IS_FOLDER (node)) {
 		node_foreach_child_data (node, reedah_source_check_for_removal, user_data);
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/list[@name='categories']/object[string='%s']", node->title);
 	} else {
-		g_warning ("google_opml_source_check_for_removal(): This should never happen...");
+		g_warning ("reedah_source_check_for_removal(): This should never happen...");
 		return;
 	}
 	
@@ -132,7 +129,7 @@ reedah_source_find_or_create_folder (const gchar *name, nodePtr root)
 }
 
 /* 
- * Check if folder of a node changed in Google Reader and move
+ * Check if folder of a node changed in Reedah and move
  * node to the folder with the same name.
  */
 static void
@@ -150,7 +147,7 @@ reedah_source_update_folder (xmlNodePtr match, ReedahSourcePtr gsource, nodePtr 
 	if (xml) {
 		label = xmlNodeListGetString (xml->doc,	xml->xmlChildrenNode, 1);
 		if (parent == gsource->root || ! g_str_equal (label, ptitle)) {
-			debug2 (DEBUG_UPDATE, "GSource feed label changed for %s to '%s'", node->id, label);
+			debug2 (DEBUG_UPDATE, "Reedah source feed label changed for %s to '%s'", node->id, label);
 			parent = reedah_source_find_or_create_folder ((gchar*)label, gsource->root);
 			node_reparent (node, parent);
 		}
@@ -205,7 +202,7 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 /* OPML subscription type implementation */
 
 static void
-google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	ReedahSourcePtr	source = (ReedahSourcePtr) subscription->node->data;
 	
@@ -304,8 +301,6 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 
 	if (g_str_has_prefix (id, "feed/"))
 		node = reedah_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
-	else if (g_str_has_suffix (id, "broadcast-friends")) 
-		node = reedah_source_opml_get_node_by_source (gsource, id);
 	else {
 		xmlFree (id);
 		return;
@@ -381,7 +376,7 @@ reedah_source_opml_quick_update(ReedahSourcePtr gsource)
 static void
 reedah_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	google_subscription_opml_cb (subscription, result, flags);
+	reedah_subscription_opml_cb (subscription, result, flags);
 }
 
 static gboolean

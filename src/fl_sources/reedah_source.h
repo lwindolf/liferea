@@ -1,5 +1,5 @@
 /**
- * @file reedah_source.h Google Reader feed list source support
+ * @file reedah_source.h  Reedah feed list source support
  * 
  * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
  *
@@ -24,18 +24,18 @@
 #include "fl_sources/node_source.h"
 
 /**
- * A nodeSource specific for Google Reader
+ * A nodeSource specific for Reedah
  */
 typedef struct ReedahSource {
 	nodePtr		root;		/**< the root node in the feed list */
-	gchar		*authHeaderValue; /**< the Google Authorization token */
+	gchar		*authHeaderValue; /**< the authorization token */
 	GQueue		*actionQueue;
 	gint		loginState;	/**< The current login state */
 	gint		authFailures;	/**< Number of authentication failures */
 
 	/**
-	 * A map from a subscription source to a timestamp when it was last 
-	 * updated (provided by Google).
+	 * A map from a subscription source to a timestamp when it was last
+	 * updated according to API
 	 */
 	GHashTable      *lastTimestampMap; 
 
@@ -72,29 +72,23 @@ enum {
 #define REEDAH_SOURCE_MAX_AUTH_FAILURES		3
 
 /**
- * Google Source API URL's
- * In each of the following, the _URL indicates the URL to use, and _POST
- * indicates the corresponging postdata to send.
+ * API documentation, Reedah is closely modelled after Google Reader, the
+ * differences are outlined under the first link, the second is a documentation
+ * of the original Google Reader API.
+ *
+ * @see https://www.reedah.com/developers.php
  * @see http://code.google.com/p/pyrfeed/wiki/GoogleReaderAPI
- * However as of now, the GoogleReaderAPI documentation seems outdated, some of
- * mark read/unread API does not work as mentioned in the documentation.
  */
 
 /**
- * Google Reader Login api.
- * @param Email The google account email id.
- * @param Passwd The google account password.
+ * Reedah Login API.
+ * @param Email The account email id.
+ * @param Passwd The account password.
  * @return The return data has a line "Auth=xxxx" which will be used as an
  *         Authorization header in future requests. 
  */ 
 #define REEDAH_READER_LOGIN_URL "https://www.reedah.com/accounts/ClientLogin" 
 #define REEDAH_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.reedah.com"
-
-/**
- * Acts like a feed, indicating all the posts shared by the Google Reader
- * friends. Does not take any params, but the Authorization header needs to be set.
- */
-#define REEDAH_READER_BROADCAST_FRIENDS_URL "http://www.reedah.com/reader/atom/user/-/state/com.google/broadcast-friends" 
 
 /**
  * Get a list of subscriptions.
@@ -177,14 +171,14 @@ enum {
 /**
  * Postdata for adding a tag, and removing another tag at the same time, for a 
  * _link_ item, when using REEDAH_READER_EDIT_TAG_URL
- * @param i The guid of the link (as provided by google)
+ * @param i The guid of the link (as provided by Reedah)
  * @param a The tag to add
  * @param r The tag to remove
  * @param T a token obtained using REEDAH_READER_TOKEN_URL
  */
 #define REEDAH_READER_EDIT_TAG_ADD_TAG_FOR_LINK "i=%s&s=user%2F-%2Fsource%2Fcom.google%2Flink&a=%s&r=%s&ac=edit-tags&T=%s&async=true"
 
-/** A set of tags (states) defined by Google reader */
+/** A set of tags (states) defined by Reedah */
 
 #define REEDAH_READER_TAG_KEPT_UNREAD          "user/-/state/com.google/kept-unread"
 #define REEDAH_READER_TAG_READ                 "user/-/state/com.google/read"
@@ -195,7 +189,7 @@ enum {
 #define REEDAH_SOURCE_QUICK_UPDATE_INTERVAL 600
 
 /**
- * @returns Google Reader source type implementation info.
+ * @returns Reedah source type implementation info.
  */
 nodeSourceTypePtr reedah_source_get_type (void);
 
