@@ -1,5 +1,5 @@
 /**
- * @file inoreader_source.h Google Reader feed list source support
+ * @file inoreader_source.h  InoReader feed list source support
  * 
  * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
  *
@@ -24,18 +24,18 @@
 #include "fl_sources/node_source.h"
 
 /**
- * A nodeSource specific for Google Reader
+ * A nodeSource specific for InoReader
  */
 typedef struct InoreaderSource {
 	nodePtr		root;		/**< the root node in the feed list */
-	gchar		*authHeaderValue; /**< the Google Authorization token */
+	gchar		*authHeaderValue; /**< the authorization token */
 	GQueue		*actionQueue;
 	gint		loginState;	/**< The current login state */
 	gint		authFailures;	/**< Number of authentication failures */
 
 	/**
 	 * A map from a subscription source to a timestamp when it was last 
-	 * updated (provided by Google).
+	 * updated provided by remote.
 	 */
 	GHashTable      *lastTimestampMap; 
 
@@ -89,12 +89,6 @@ enum {
  */ 
 #define INOREADER_LOGIN_URL "https://www.inoreader.com/accounts/ClientLogin" 
 #define INOREADER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.inoreader.com"
-
-/**
- * Acts like a feed, indicating all the posts shared by the Google Reader
- * friends. Does not take any params, but the Authorization header needs to be set.
- */
-#define INOREADER_BROADCAST_FRIENDS_URL "http://www.inoreader.com/reader/atom/user/-/state/com.google/broadcast-friends" 
 
 /**
  * Get a list of subscriptions.
@@ -177,14 +171,14 @@ enum {
 /**
  * Postdata for adding a tag, and removing another tag at the same time, for a 
  * _link_ item, when using INOREADER_EDIT_TAG_URL
- * @param i The guid of the link (as provided by google)
+ * @param i The guid of the link (as provided by InoReader)
  * @param a The tag to add
  * @param r The tag to remove
  * @param T a token obtained using INOREADER_TOKEN_URL
  */
 #define INOREADER_EDIT_TAG_ADD_TAG_FOR_LINK "i=%s&s=user%2F-%2Fsource%2Fcom.google%2Flink&a=%s&r=%s&ac=edit-tags&T=%s&async=true"
 
-/** A set of tags (states) defined by Google reader */
+/** A set of tags (states) defined by InoReader */
 
 #define INOREADER_TAG_KEPT_UNREAD          "user/-/state/com.google/kept-unread"
 #define INOREADER_TAG_READ                 "user/-/state/com.google/read"
@@ -195,7 +189,7 @@ enum {
 #define INOREADER_SOURCE_QUICK_UPDATE_INTERVAL 600
 
 /**
- * @returns Google Reader source type implementation info.
+ * @returns InoReader source type implementation info.
  */
 nodeSourceTypePtr inoreader_source_get_type (void);
 
@@ -225,15 +219,7 @@ nodePtr inoreader_source_get_node_from_source (InoreaderSourcePtr gsource, const
 gboolean inoreader_source_quick_update_timeout (gpointer gsource);
 
 /**
- * Migrate a google source child-node from a Liferea 1.4 style read-only
- * google source nodes.
- *
- * @param node The node to migrate (not the nodeSource!)
- */
-void inoreader_source_migrate_node (nodePtr node);
-
-/**
- * Perform login for the given Google source.
+ * Perform login for the given InoReader source.
  *
  * @param gsource	a InoreaderSource
  * @param flags		network request flags

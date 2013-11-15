@@ -91,12 +91,6 @@ enum {
 #define AOL_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.google.com"
 
 /**
- * Acts like a feed, indicating all the posts shared by the Google Reader
- * friends. Does not take any params, but the Authorization header needs to be set.
- */
-#define AOL_READER_BROADCAST_FRIENDS_URL "http://www.google.com/reader/atom/user/-/state/com.google/broadcast-friends" 
-
-/**
  * Get a list of subscriptions.
  */
 #define AOL_READER_SUBSCRIPTION_LIST_URL "http://www.google.com/reader/api/0/subscription/list"

@@ -74,50 +74,12 @@ aol_source_opml_get_subnode_by_node (nodePtr node, const gchar *source)
 	return NULL;
 }
 
-/**
- * Add "broadcast-friends" to the list of subscriptions if required 
- */
-static void
-aol_source_add_broadcast_subscription (AolSourcePtr gsource)
-{
-	const gchar* title = "Friend's Shared Items"; 
-	GSList * iter = NULL; 
-	nodePtr node; 
-
-	for (iter = gsource->root->children; iter; iter = g_slist_next (iter)) {
-		node = (nodePtr) iter->data ; 
-		if (!node->subscription || !node->subscription->source) 
-			continue;
-		if (g_str_equal (node->subscription->source, AOL_READER_BROADCAST_FRIENDS_URL)) {
-			return;
-		}
-	}
-
-	/* aha! add it! */
-
-	node = node_new (feed_get_node_type ());
-	node_set_title (node, title);
-	node_set_data (node, feed_new ());
-
-	node_set_subscription (node, subscription_new (AOL_READER_BROADCAST_FRIENDS_URL, NULL, NULL));
-	node->subscription->type = &aolSourceFeedSubscriptionType;
-	node_set_parent (node, gsource->root, -1);
-	feedlist_node_imported (node);
-	
-	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-	subscription_update_favicon (node->subscription);
-}
-
-
 /* subscription list merging functions */
 
 static void
 aol_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar	*expr = NULL;
-
-	if (node->subscription && g_str_equal (node->subscription->source, AOL_READER_BROADCAST_FRIENDS_URL)) 
-		return ; 
 
 	if (IS_FEED (node)) {
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
@@ -314,7 +276,6 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 			xpath_foreach_match (root, "/object/list[@name='subscriptions']/object",
 			                     aol_source_merge_feed,
 			                     (gpointer)gsource);
-			aol_source_add_broadcast_subscription (gsource) ;
 
 			opml_source_export (subscription->node);	/* save new feeds to feed list */
 						   
@@ -350,8 +311,6 @@ aol_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 
 	if (g_str_has_prefix (id, "feed/"))
 		node = aol_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
-	else if (g_str_has_suffix (id, "broadcast-friends")) 
-		node = aol_source_opml_get_node_by_source (gsource, id);
 	else {
 		xmlFree (id);
 		return;

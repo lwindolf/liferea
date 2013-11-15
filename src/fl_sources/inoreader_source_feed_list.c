@@ -78,9 +78,6 @@ inoreader_source_check_for_removal (nodePtr node, gpointer user_data)
 {
 	gchar	*expr = NULL;
 
-	if (node->subscription && g_str_equal (node->subscription->source, INOREADER_BROADCAST_FRIENDS_URL)) 
-		return ; 
-
 	if (IS_FEED (node)) {
 		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
 	} else if (IS_FOLDER (node)) {
@@ -304,8 +301,6 @@ inoreader_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 
 	if (g_str_has_prefix (id, "feed/"))
 		node = inoreader_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
-	else if (g_str_has_suffix (id, "broadcast-friends")) 
-		node = inoreader_source_opml_get_node_by_source (gsource, id);
 	else {
 		xmlFree (id);
 		return;

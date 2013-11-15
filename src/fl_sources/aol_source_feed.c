@@ -87,56 +87,6 @@ aol_source_xml_unlink_node (xmlNodePtr node, gpointer data)
 	xmlFreeNode (node);
 }
 
-static void
-aol_source_set_orig_source(const xmlNodePtr node, gpointer userdata)
-{
-	itemPtr item = (itemPtr) userdata ;
-	xmlChar*   value = xmlNodeGetContent (node);
-	const gchar*     prefix1 = "tag:google.com,2005:reader/feed/";
-	const gchar*     prefix2 = "tag:google.com,2005:reader/user/";
-
-	debug1(DEBUG_UPDATE, "AolSource: Got %s as id while updating", value);
-
-	if (g_str_has_prefix (value, prefix1) || g_str_has_prefix (value, prefix2)) {
-		metadata_list_set (&item->metadata, "GoogleBroadcastOrigFeed", value + strlen (prefix1));
-	}
-	xmlFree (value);
-}
-
-static void
-aol_source_set_shared_by (xmlNodePtr node, gpointer userdata) 
-{
-	itemPtr     item    = (itemPtr) userdata;
-	xmlChar     *value  = xmlNodeGetContent (node);
-	xmlChar     *apos   = strrchr (value, '\'');
-	gchar       *name;
-
-	if (!apos) return;
-	name = g_strndup (value, apos-value);
-
-	metadata_list_set (&item->metadata, "sharedby", name);
-	
-	g_free (name);
-	xmlFree (value);
-}
-
-static void
-aol_source_fix_broadcast_item (xmlNodePtr entry, itemPtr item) 
-{
-	xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (entry->doc) ;
-	xmlXPathRegisterNs (xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
-	xpathCtxt->node = entry;
-	
-	aol_source_xpath_foreach_match ("./atom:source/atom:id", xpathCtxt, aol_source_set_orig_source, item);
-	
-	/* who is sharing this? */
-	aol_source_xpath_foreach_match ("./atom:link[@rel='via']/@title", xpathCtxt, aol_source_set_shared_by, item);
-
-	db_item_update (item);
-	/* free up xpath related data */
-	if (xpathCtxt) xmlXPathFreeContext (xpathCtxt);
-}
-
 static itemPtr
 aol_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache) 
 {
@@ -210,9 +160,6 @@ aol_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscri
 				item_read_state_changed (item, read);
 			if (item->flagStatus != starred) 
 				item_flag_state_changed (item, starred);
-			
-			if (g_str_equal (subscription->source, AOL_READER_BROADCAST_FRIENDS_URL)) 
-				aol_source_fix_broadcast_item (entry, item);
 		}
 	}
 	if (item) item_unload (item) ;
@@ -242,12 +189,6 @@ aol_feed_subscription_process_update_result (subscriptionPtr subscription, const
 		xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
 		xmlXPathRegisterNs (xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
 		aol_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, aol_source_xml_unlink_node, NULL);
-
-
-		/* delete the via link for broadcast subscription */
-		if (g_str_equal (subscription->source, AOL_READER_BROADCAST_FRIENDS_URL)) 
-			aol_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:link[@rel='via']/@href", xpathCtxt, aol_source_xml_unlink_node, NULL);
-		
 		xmlXPathFreeContext (xpathCtxt);
 		
 		/* good now we have removed the read and unread labels. */
@@ -319,13 +260,12 @@ aol_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	}
 	debug0 (DEBUG_UPDATE, "Setting cookies for a AOL Reader subscription");
 
-	if (!g_str_equal (request->source, AOL_READER_BROADCAST_FRIENDS_URL)) { 
-		gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
-		gchar* newUrl = g_strdup_printf ("http://reader.aol.com/reader/atom/feed/%s", source_escaped);
-		update_request_set_source (request, newUrl);
-		g_free (newUrl);
-		g_free (source_escaped);
-	}
+	gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
+	gchar* newUrl = g_strdup_printf ("http://reader.aol.com/reader/atom/feed/%s", source_escaped);
+	update_request_set_source (request, newUrl);
+	g_free (newUrl);
+	g_free (source_escaped);
+
 	update_request_set_auth_value (request, source->authHeaderValue);
 	return TRUE;
 }

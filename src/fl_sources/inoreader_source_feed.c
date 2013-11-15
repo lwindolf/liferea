@@ -211,12 +211,6 @@ inoreader_feed_subscription_process_update_result (subscriptionPtr subscription,
 		xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
 		xmlXPathRegisterNs (xpathCtxt, "atom", "http://www.w3.org/2005/Atom");
 		inoreader_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:category[@scheme='http://www.inoreader.com/reader/']", xpathCtxt, inoreader_source_xml_unlink_node, NULL);
-
-
-		/* delete the via link for broadcast subscription */
-		if (g_str_equal (subscription->source, INOREADER_BROADCAST_FRIENDS_URL)) 
-			inoreader_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:link[@rel='via']/@href", xpathCtxt, inoreader_source_xml_unlink_node, NULL);
-		
 		xmlXPathFreeContext (xpathCtxt);
 		
 		/* good now we have removed the read and unread labels. */
@@ -288,13 +282,12 @@ inoreader_feed_subscription_prepare_update_request (subscriptionPtr subscription
 	}
 	debug0 (DEBUG_UPDATE, "Setting cookies for a InoReader subscription");
 
-	if (!g_str_equal (request->source, INOREADER_BROADCAST_FRIENDS_URL)) { 
-		gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
-		gchar* newUrl = g_strdup_printf ("http://www.inoreader.com/reader/atom/feed/%s", source_escaped);
-		update_request_set_source (request, newUrl);
-		g_free (newUrl);
-		g_free (source_escaped);
-	}
+	gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
+	gchar* newUrl = g_strdup_printf ("http://www.inoreader.com/reader/atom/feed/%s", source_escaped);
+	update_request_set_source (request, newUrl);
+	g_free (newUrl);
+	g_free (source_escaped);
+
 	update_request_set_auth_value (request, gsource->authHeaderValue);
 	return TRUE;
 }
