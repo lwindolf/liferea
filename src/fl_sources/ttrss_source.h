@@ -1,5 +1,5 @@
 /**
- * @file ttrss_source.h  TinyTinyRSS feed list source support
+ * @file ttrss_source.h  Tiny Tiny RSS feed list source support
  * 
  * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
  *
@@ -37,7 +37,8 @@ typedef struct ttrssSource {
 	gint		authFailures;	/**< Number of authentication failures */
 	gboolean	selfUpdating;	/**< True if remote updating daemon is running */
 	GHashTable	*categories;	/**< Lookup hash for feed id to category id */
-	GHashTable	*categoryNodes;	/**< Lookup hash for category id to folder node id */
+	GHashTable	*categoryToNode;	/**< Lookup hash for category id to folder node id */
+	GHashTable	*nodeToCategory;	/**< Lookup hash for category id to folder node id */
 } *ttrssSourcePtr;
  
 enum { 
