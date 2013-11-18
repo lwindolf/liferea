@@ -36,7 +36,6 @@ typedef struct ttrssSource {
 	gint		apiLevel;	/**< The API level reported by the instance (or 0) */
 	gint		loginState;	/**< The current login state */
 	gint		authFailures;	/**< Number of authentication failures */
-	gboolean	selfUpdating;	/**< True if remote updating daemon is running */
 	GHashTable	*categories;	/**< Lookup hash for feed id to category id */
 	GHashTable	*categoryNodes;	/**< Lookup hash for category id to folder node id */
 } *ttrssSourcePtr;
@@ -128,13 +127,6 @@ enum  {
  * @param mode		0 = read, 1 = unread
  */
 #define TTRSS_JSON_UPDATE_ITEM_UNREAD "{\"op\":\"updateArticle\", \"sid\":\"%s\", \"article_ids\":\"%s\", \"mode\":\"%d\", \"field\":\"2\"}"
-
-/**
- * Determine server settings.
- *
- * @param sid		session id
- */
-#define TTRSS_JSON_GET_CONFIG "{\"op\":\"getConfig\", \"sid\":\"%s\"}"
 
 /**
  * Returns ttss source type implementation info.

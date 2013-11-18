@@ -1,5 +1,7 @@
 To be released
 
+	* Fixes SF #1123: Mistakenly claims "TinyTinyRSS source is not self-updating"
+	  (reported by Dominik Grafenhoher)
 	* Fixes SF #1119: Crash on font resize at startup. 
 	  (reported by David Smith)
 
