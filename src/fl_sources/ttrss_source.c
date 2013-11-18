@@ -69,45 +69,6 @@ ttrss_source_free (ttrssSourcePtr source)
 }
 
 static void
-ttrss_source_get_config_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
-{
-	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
-	subscriptionPtr subscription = source->root->subscription;
-
-	debug1 (DEBUG_UPDATE, "TinyTinyRSS getConfig processing... >>>%s<<<", result->data);
-
-	/* We expect something like:
-
-		 {"icons_dir":"icons","icons_url":"icons","daemon_is_running":true,"num_feeds":71}
-
-	   And are only interested in the "daemon_is_running" value... */
-	
-	if (result->data && result->httpstatus == 200) {
-		JsonParser *parser = json_parser_new ();
-
-		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
-			JsonNode *node = json_parser_get_root (parser);
-			const gchar *result = json_get_string (node, "daemon_is_running");
-			if (result && g_str_equal ("true", result)) {
-				source->selfUpdating = TRUE;
-				debug0 (DEBUG_UPDATE, "This TinyTinyRSS source is self-updating!");
-			} else {
-				ui_show_info_box (_("This TinyTinyRSS source is not self-updating and Liferea does not support updating TinyTinyRSS remotely at the moment. Please change the TinyTinyRSS preferences to automatic updating!"));
-				debug0 (DEBUG_UPDATE, "This TinyTinyRSS source is not self-updating!");
-			}
-
-			g_object_unref (parser);
-		}
-	}
-
-	/* now that we are authenticated and know the config trigger updating to start data retrieval */
-	source->loginState = TTRSS_SOURCE_STATE_ACTIVE;
-
-	if (!(flags & TTRSS_SOURCE_UPDATE_ONLY_LOGIN) && !source->selfUpdating)
-		subscription_update (subscription, flags);
-}
-
-static void
 ttrss_source_set_login_error (ttrssSourcePtr source, gchar *msg)
 {
 	g_free (source->root->subscription->updateError);
@@ -162,28 +123,17 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 	source->session_id = g_strdup (json_get_string (json_get_node (node, "content"), "session_id"));
 	if (source->session_id) {
 		debug2 (DEBUG_UPDATE, "TinyTinyRSS Found session_id: >>>%s<<< (API level %d)!", source->session_id, source->apiLevel);
+
+		source->loginState = TTRSS_SOURCE_STATE_ACTIVE;
+
+		if (!(flags & TTRSS_SOURCE_UPDATE_ONLY_LOGIN))
+			subscription_update (subscription, flags);
+
 	} else {
 		ttrss_source_set_login_error (source, g_strdup_printf ("No session_id found in response!\n%s", result->data));
 	}
 	
 	g_object_unref (parser);
-
-	if (source->session_id) {
-		updateRequestPtr request;
-		gchar *source_uri;
-
-		/* Check for remote update daemon running. This needs to be known
-		   before we start updating to decide whether to actively update
-		   remote feeds or just fetch them. */
-		request = update_request_new ();
-		request->options = update_options_copy (subscription->updateOptions);
-		request->postdata = g_strdup_printf (TTRSS_JSON_GET_CONFIG, source->session_id);
-
-		source_uri = g_strdup_printf (TTRSS_URL, source->url);
-		update_request_set_source (request, source_uri);
-		g_free (source_uri);
-		update_execute_request (source, request, ttrss_source_get_config_cb, source, flags);
-	}
 }
 
 /**
