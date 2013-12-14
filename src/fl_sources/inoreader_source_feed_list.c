@@ -25,6 +25,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "db.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "folder.h"
@@ -214,7 +215,7 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
 			GList		*iter, *elements;
 			GSList		*siter;
-g_print(">>> %s\n",result->data);	
+	
 			/* We expect something like this:
 
 			   [{"id":"feed\/http:\/\/rss.slashdot.org\/Slashdot\/slashdot",
