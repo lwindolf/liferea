@@ -606,8 +606,22 @@ on_Itemlist_row_activated (GtkTreeView *treeview,
 			   GtkTreeViewColumn *column,
 			   gpointer user_data) 
 {
-	// FIXME: Internal or external should be decided on preferences!
-	on_popup_launch_item_selected ();
+	itemPtr		item;
+
+	item = itemlist_get_selected ();
+	if (item) {
+		gchar *link = item_make_link (item);
+
+		if (link) {
+			itemview_launch_URL (link, FALSE);
+			g_free (link);
+		} else
+			ui_show_error_box (_("This item has no link specified!"));
+
+		item_unload (item);
+	} else {
+		liferea_shell_set_important_status_bar (_("No item has been selected"));
+	}
 }
 
 GtkTreeView *
