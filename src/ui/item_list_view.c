@@ -76,6 +76,49 @@ enum is_columns {
 	ITEMSTORE_LEN		/**< Number of columns in the itemstore */
 };
 
+typedef enum {
+	DEFAULT,
+	INTERNAL,
+	TAB,
+	EXTERNAL
+} open_link_target_type;
+
+static void
+launch_item_selected (open_link_target_type open_link_target)
+{
+	itemPtr		item;
+
+	item = itemlist_get_selected ();
+	if (item) {
+		gchar *link = item_make_link (item);
+
+		if (link) {
+			switch (open_link_target)
+			{
+			case DEFAULT:
+				itemview_launch_URL (link, FALSE);
+				break;
+			case INTERNAL:
+				itemview_launch_URL (link, TRUE);
+				break;
+			case TAB:
+				browser_tabs_add_new (link, link, FALSE);
+				break;
+			case EXTERNAL:
+				browser_launch_URL_external (link);
+				break;
+			}
+
+			g_free (link);
+		} else
+			ui_show_error_box (_("This item has no link specified!"));
+
+		item_unload (item);
+	} else {
+		liferea_shell_set_important_status_bar (_("No item has been selected"));
+	}
+}
+
 #define ITEM_LIST_VIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEM_LIST_VIEW_TYPE, ItemListViewPrivate))
 
 struct ItemListViewPrivate {
@@ -606,22 +649,7 @@ on_Itemlist_row_activated (GtkTreeView *treeview,
 			   GtkTreeViewColumn *column,
 			   gpointer user_data) 
 {
-	itemPtr		item;
-
-	item = itemlist_get_selected ();
-	if (item) {
-		gchar *link = item_make_link (item);
-
-		if (link) {
-			itemview_launch_URL (link, FALSE);
-			g_free (link);
-		} else
-			ui_show_error_box (_("This item has no link specified!"));
-
-		item_unload (item);
-	} else {
-		liferea_shell_set_important_status_bar (_("No item has been selected"));
-	}
+    launch_item_selected (DEFAULT);
 }
 
 GtkTreeView *
@@ -777,64 +805,19 @@ item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 void
 on_popup_launch_item_selected (void) 
 {
-	itemPtr		item;
-
-	item = itemlist_get_selected ();
-	if (item) {
-		gchar *link = item_make_link (item);
-
-		if (link) {
-			itemview_launch_URL (link, TRUE /* launch in internal browser */);
-			g_free (link);
-		} else
-			ui_show_error_box (_("This item has no link specified!"));
-
-		item_unload (item);
-	} else {
-		liferea_shell_set_important_status_bar (_("No item has been selected"));
-	}
+    launch_item_selected (INTERNAL);
 }
 
 void
 on_popup_launch_item_in_tab_selected (void) 
 {
-	itemPtr		item;
-	gchar           *link;
-
-	item = itemlist_get_selected ();
-	if (item) {
-		link = item_make_link (item);
-		if (link) {
-			browser_tabs_add_new (link, link, FALSE);
-			g_free (link);
-		} else
-			ui_show_error_box (_("This item has no link specified!"));
-			
-		item_unload (item);
-	} else {
-		liferea_shell_set_important_status_bar (_("No item has been selected"));
-	}
+    launch_item_selected (TAB);
 }
 
 void
 on_popup_launch_item_external_selected (void) 
 {
-	itemPtr		item;
-	gchar           *link;
-
-	item = itemlist_get_selected ();
-	if (item) {
-		link = item_make_link (item);
-		if (link) {
-			browser_launch_URL_external (link);
-			g_free (link);
-		} else
-			ui_show_error_box (_("This item has no link specified!"));
-			
-		item_unload (item);
-	} else {
-		liferea_shell_set_important_status_bar (_("No item has been selected"));
-	}
+    launch_item_selected (EXTERNAL);
 }
 
 /* menu callbacks */
