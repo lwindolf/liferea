@@ -8,6 +8,8 @@ To be released
 	  (reported by David Smith)
 	* Fixes #1056, #1089, #1098: Honor preferences when opening links
 	  (patch by Daniel Seither)
+	* Fixes #1117: Selecting last unread item in reduced feed list jumps to next feed
+	  (reported by Bruce Guenter)
 
 	* Updated Arabic translation (Khaled Hosny)
 

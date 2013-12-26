@@ -53,7 +53,7 @@ feed_list_view_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIt
 	
 	gtk_tree_model_get (model, iter, FS_PTR, &node, -1);
 	if (node)
-		feed_list_node_update_iter(node->id, iter);
+		feed_list_node_update_iter (node->id, iter);
 }
 
 static void
@@ -70,8 +70,12 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 
 		browser_tabs_show_headlines ();		// FIXME: emit signal to item list instead of bother the tabs manager
 		
-		/* update feed list and item list states */
+		/* 1.) update feed list and item list states */
 		feedlist_selection_changed (node);
+
+		/* 2.) Refilter the GtkTreeView to get rid of nodes with 0 unread 
+		   messages when in reduced mode. */
+		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (filter));
 		
 		if (node) {
 			gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
@@ -140,6 +144,12 @@ feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, 
 		return FALSE;
 
 	if (IS_VFOLDER (node))
+		return TRUE;
+
+	/* Do not hide in any case if the node is selected, otherwise
+	   the last unread item of a feed causes the feed to vanish 
+	   when clicking it */
+	if (feedlist_get_selected () == node)
 		return TRUE;
 
 	if (count > 0)
@@ -237,7 +247,7 @@ feed_list_view_init (GtkTreeView *treeview)
 
 	/* Prepare filter */
 	filter = gtk_tree_model_filter_new (GTK_TREE_MODEL(feedstore), NULL);
-	gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER(filter),
+	gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (filter),
 	                                        feed_list_view_filter_visible_function,
 	                                        NULL,
 	                                        NULL);
