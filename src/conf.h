@@ -83,6 +83,9 @@
 #define PROXY_USER			"proxy-authentication-user"
 #define PROXY_PASSWD			"proxy-authentication-password"
 
+/* privacy settings */
+#define USERAGENT_STRING		"useragent-string"
+
 /* initializing methods */
 void	conf_init (void);
 void	conf_deinit (void);

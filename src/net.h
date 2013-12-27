@@ -24,6 +24,7 @@
 
 #include <glib.h>
 #include "update.h"
+#include "conf.h"
 
 /* Simple glue layer to abstract network code */
 

@@ -36,6 +36,7 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "itemlist.h"
+#include "net.h"
 #include "social.h"
 #include "ui/enclosure_list_view.h"
 #include "ui/ui_indicator.h"
@@ -78,10 +79,22 @@ static const gchar * enclosure_download_commands[] = {
 };
 
 /** order must match enclosure_download_commands[] */
-static const gchar *enclosure_download_tool_options[] = { "steadyflow", "gwget", "kget", NULL };
+static const gchar *enclosure_download_tool_options[] = {
+	"steadyflow",
+	"gwget",
+	"kget",
+	NULL
+};
 
 /** GConf representation of toolbar styles */
-static const gchar * gui_toolbar_style_values[] = { "", "both", "both-horiz", "icons", "text", NULL };
+static const gchar * gui_toolbar_style_values[] = {
+	"",
+	"both",
+	"both-horiz",
+	"icons",
+	"text",
+	NULL
+};
 
 static const gchar * gui_toolbar_style_options[] = {
 	N_("GNOME default"),
@@ -112,7 +125,8 @@ static const gchar * browser_skim_key_options[] = {
 static const gchar * default_view_mode_options[] = {
 	N_("Normal View"),
 	N_("Wide View"),
-	N_("Combined View")
+	N_("Combined View"),
+	NULL
 };
 
 const gchar *
@@ -432,6 +446,17 @@ on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data)
 	}
 }
 
+static void
+on_useragent_string_changed (gpointer user_data)
+{
+	/* set configuration */
+	conf_set_str_value (USERAGENT_STRING, gtk_entry_get_text (GTK_ENTRY (user_data)));
+
+	/* reinit networking */
+	network_deinit();
+	network_init();
+}
+
 void
 on_newcountintraybtn_clicked (GtkButton *button, gpointer user_data)
 {
@@ -483,6 +508,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gboolean		bSetting, show_tray_icon;
 	gchar			*proxy_host, *proxy_user, *proxy_passwd;
 	gchar			*browser_command;
+	gchar			*useragent_string;
 	
 	prefdialog = pd;
 	pd->priv = PREFERENCES_DIALOG_GET_PRIVATE (pd);
@@ -811,6 +837,19 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	gtk_container_add (GTK_CONTAINER (alignment), widget);
 	gtk_box_pack_start (GTK_BOX (pd->priv->plugins_box), alignment, TRUE, TRUE, 0);
+
+	/* ================= panel 8 "Privacy" ======================== */
+
+	/* get user-agent setting */
+	conf_get_str_value (USERAGENT_STRING, &useragent_string);
+
+	/* user-agent string widget */
+	GtkEntry *useragent_string_widget;
+	useragent_string_widget = (GtkEntry *) liferea_dialog_lookup (pd->priv->dialog, "useragent_string");
+	gtk_entry_set_text (useragent_string_widget, useragent_string);
+	g_signal_connect(G_OBJECT(useragent_string_widget), "changed", G_CALLBACK(on_useragent_string_changed), pd);
+
+	/* =========================== show =========================== */
 
 	g_signal_connect_object (pd->priv->dialog, "destroy", G_CALLBACK (preferences_dialog_destroy_cb), pd, 0);
 

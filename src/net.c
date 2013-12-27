@@ -209,8 +209,14 @@ network_init (void)
 	SoupLogger	*logger;
 	SoupURI		*proxy;
 
+	/* Get the user agent settings */
+	conf_get_str_value (USERAGENT_STRING, &useragent);
+
 	/* Set an appropriate user agent */
-	if (g_getenv ("LANG")) {
+	if(strlen(useragent) > 0) {
+		useragent = g_strdup_printf ("%s", useragent);
+	}
+	else if (g_getenv ("LANG")) {
 		/* e.g. "Liferea/1.10.0 (Linux; de_DE; http://liferea.sf.net/) AppleWebKit (KHTML, like Gecko)" */
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
 	} else {

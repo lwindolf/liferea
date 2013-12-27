@@ -232,6 +232,11 @@
       <summary>User defined browser-font</summary>
       <description>This option defines which font should be used to render in the browser. If not specified system setting will be used.</description>
     </key>
+    <key name="useragent-string" type="s">
+      <default>''</default>
+      <summary>Custom user-agent string</summary>
+      <description>This is the custom user-agent string used by Liferea to identify itself. To use the default, leave this empty.</description>
+    </key>
   </schema>
 
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="net.sf.liferea.plugins" path="/org/gnome/liferea/plugins/">
