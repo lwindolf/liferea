@@ -1,4 +1,6 @@
-To be released
+2013-12-28   Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.11.0
 
 	* Added experimental InoReader support
 	* Added experimental Reedah support
