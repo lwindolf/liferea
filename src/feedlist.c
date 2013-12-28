@@ -38,7 +38,6 @@
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/feed_list_node.h"
-#include "ui/ui_tray.h"
 #include "fl_sources/node_source.h"
 
 static void feedlist_save	(void);
@@ -170,8 +169,6 @@ feedlist_init (FeedList *fl)
 	/* 3. Ensure folder expansion and unread count*/
 	debug0 (DEBUG_CACHE, "Initializing node state");
 	feedlist_foreach (feedlist_init_node);
-
-	ui_tray_update ();
 
 	/* 4. Check if feeds do need updating. */
 	debug0 (DEBUG_UPDATE, "Performing initial feed update");
@@ -349,7 +346,6 @@ feedlist_update_new_item_count (guint addValue)
 	if (feedlist->priv->newCount > ROOTNODE->unreadCount)
 		feedlist->priv->newCount = ROOTNODE->unreadCount;
 		
-	ui_tray_update ();
 	liferea_shell_update_unread_stats ();
 }
 
@@ -358,7 +354,6 @@ feedlist_reset_new_item_count (void)
 {
 	if (feedlist->priv->newCount) {
 		feedlist->priv->newCount = 0;
-		ui_tray_update ();
 		liferea_shell_update_unread_stats ();
 	}
 }

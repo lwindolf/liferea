@@ -1,5 +1,5 @@
 /**
- * @file main.c Liferea main program
+ * @file main.c Liferea startup
  *
  * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -46,7 +46,6 @@
 #include "update.h"
 #include "xml.h"
 #include "ui/liferea_shell.h"
-#include "notification/notification.h"
 
 static enum {
 	STATE_STARTING,
@@ -161,7 +160,7 @@ main (int argc, char *argv[])
 	gint 		status;
 
 	GOptionEntry entries[] = {
-		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &initialStateOption, N_("Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"), N_("STATE") },
+		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &initialStateOption, N_("Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"), N_("STATE") },
 		{ "version", 'v', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, show_version, N_("Show version information and exit"), NULL },
 		{ "add-feed", 'a', 0, G_OPTION_ARG_STRING, &feedUri, N_("Add a new subscription"), N_("uri") },
 		{ NULL, 0, 0, 0, NULL, NULL, NULL }
@@ -240,9 +239,6 @@ main (int argc, char *argv[])
 	/* order is important! */
 	db_init ();			/* initialize sqlite */
 	xml_init ();			/* initialize libxml2 */
-#ifdef HAVE_LIBNOTIFY
-	notification_plugin_register (&libnotify_plugin);
-#endif
 	social_init ();			/* initialize social bookmarking */
 
 	dbus = liferea_dbus_new ();

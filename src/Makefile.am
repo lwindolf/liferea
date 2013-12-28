@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = parsers notification ui fl_sources webkit .
+SUBDIRS = parsers ui fl_sources webkit .
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -75,18 +75,6 @@ liferea_LDADD =	parsers/libliparsers.a \
 EXTRA_DIST = $(srcdir)/liferea-add-feed.in
 DISTCLEANFILES = $(srcdir)/liferea-add-feed
 AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = liferea-add-feed
-
-if WITH_LIBNOTIFY
-
-liferea_LDADD += notification/libnotify.a $(LIBNOTIFY_LIBS)
-
-endif
-
-if WITH_LIBINDICATE
-
-liferea_LDADD += $(LIBINDICATE_LIBS)
-
-endif
 
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS = Liferea-3.0.gir

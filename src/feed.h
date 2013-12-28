@@ -1,7 +1,7 @@
 /**
  * @file feed.h  common feed handling interface
  * 
- * Copyright (C) 2003-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -58,8 +58,6 @@ typedef struct feed {
 	/* feed specific behaviour settings */
 	gboolean	encAutoDownload;	/**< if TRUE do automatically download enclosures */
 	gboolean	ignoreComments;		/**< if TRUE ignore comment feeds for this feed */
-	gboolean	enforcePopup;		/**< if TRUE enforce popup notifications for this feed */
-	gboolean	preventPopup;		/**< if TRUE prevents popup notifications for this feed */
 	gboolean	markAsRead;		/**< if TRUE downloaded items are automatically marked as read */
 } *feedPtr;
 

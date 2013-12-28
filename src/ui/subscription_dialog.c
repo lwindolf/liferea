@@ -251,13 +251,8 @@ on_propdialog_response (GtkDialog *dialog,
 		feed->encAutoDownload = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enclosureDownloadCheck")));
 		node->loadItemLink = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "loadItemLinkCheck")));
 		feed->ignoreComments = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "ignoreCommentFeeds")));
-		feed->enforcePopup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enforcePopupCheck")));
-		feed->preventPopup = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "preventPopupCheck")));
 		feed->markAsRead = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "markAsReadCheck")));
 		
-		if (feed->enforcePopup && feed->preventPopup)
-			feed->enforcePopup = FALSE;
-
 		feed_list_node_update (node->id);
 		feedlist_schedule_save ();
 		db_subscription_update (subscription);
@@ -506,13 +501,11 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "loadItemLinkCheck")), node->loadItemLink);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "ignoreCommentFeeds")), feed->ignoreComments);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "enforcePopupCheck")), feed->enforcePopup);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "preventPopupCheck")), feed->preventPopup);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "markAsReadCheck")), feed->markAsRead);
 
 	/* Remove tabs we do not need... */
 	if (SUBSCRIPTION_TYPE(subscription) != feed_get_subscription_type ()) {
-		/* Remove "Allgemein", "Source" and "Download" tab */
+		/* Remove "General", "Source" and "Download" tab */
 		gtk_notebook_remove_page (GTK_NOTEBOOK (liferea_dialog_lookup (spd->priv->dialog, "subscriptionPropNotebook")), 0);
 		gtk_notebook_remove_page (GTK_NOTEBOOK (liferea_dialog_lookup (spd->priv->dialog, "subscriptionPropNotebook")), 0);
 		gtk_notebook_remove_page (GTK_NOTEBOOK (liferea_dialog_lookup (spd->priv->dialog, "subscriptionPropNotebook")), 1);

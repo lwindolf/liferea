@@ -34,6 +34,4 @@ libliui_a_SOURCES = \
 	ui_common.c ui_common.h \
 	ui_dnd.c ui_dnd.h \
 	ui_folder.c ui_folder.h \
-	ui_indicator.c ui_indicator.h \
-	ui_tray.c ui_tray.h \
 	ui_update.c ui_update.h 

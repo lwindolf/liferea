@@ -55,11 +55,6 @@
 #define REDUCED_FEEDLIST		"reduced-feedlist"
 
 /* GUI settings and persistency values */
-#define SHOW_TRAY_ICON			"trayicon"
-#define SHOW_NEW_COUNT_IN_TRAY		"trayicon-new-count"
-#define DONT_MINIMIZE_TO_TRAY		"dont-minimize-to-tray"
-#define START_IN_TRAY			"start-in-tray"
-#define SHOW_POPUP_WINDOWS		"show-popup-windows"
 #define DISABLE_TOOLBAR			"disable-toolbar"
 #define TOOLBAR_STYLE			"toolbar-style"
 #define LAST_WINDOW_STATE		"last-window-state"

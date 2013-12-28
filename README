@@ -1,4 +1,4 @@
-This documentation was last updated for Liferea version 1.10.3 (02.11.2013).
+This documentation was last updated for Liferea version 1.11 (28.12.2013).
 
 Contents
 ========
@@ -62,7 +62,7 @@ contact us in IRC (see Support section) to help you with it!
 3.1 Dependencies
 ----------------
 
-Liferea 1.10+ is to be built against GTK+ 3. If you need to build
+Liferea 1.11+ is to be built against GTK+ 3. If you need to build
 for GTK+ 2 please use the most recent 1.8 release.
 
 The compilation and runtime dependencies are:
@@ -80,14 +80,6 @@ Mandatory:
    gsettings-desktop-schemas
 
 Optional:
-
-   -> For normal GTK popup notifications:
-        libnotify >= 0.3.2
-
-   -> For Ubuntu indicator support
-        libnotify >= 0.3.2,
-        libindicate-0.6     or libindicate-0.7,
-        libindicate-gtk-0.6 or libindicate-gtk-0.7
 
    -> For the keyring support
         Python >= 2
@@ -110,7 +102,7 @@ Liferea from a release tarball. Those are supplied at our SourceForge
 project homepage (http://lzone.de/liferea). After you downloaded it 
 extract it like this:
 
-   tar jxvf liferea-1.10.0.tar.bz2 
+   tar jxvf liferea-1.11.0.tar.bz2 
 
 After unpacking run the standard autotools commands:
 

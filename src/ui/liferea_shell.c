@@ -54,7 +54,6 @@
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/ui_tray.h"
 #include "ui/ui_update.h"
 
 extern gboolean searchFolderRebuild; /* db.c */
@@ -492,15 +491,7 @@ on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event)
 static gboolean
 on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
-	gboolean dont_maximize_to_tray;
-
-	conf_get_bool_value (DONT_MINIMIZE_TO_TRAY, &dont_maximize_to_tray);
-
-	if ((ui_tray_get_count() == 0) || dont_maximize_to_tray) {
-		liferea_shutdown ();
-		return TRUE;
-	}
-		
+	liferea_shutdown ();
 	liferea_shell_save_position ();
 	gtk_widget_hide (GTK_WIDGET (shell->priv->window));
 	
@@ -810,7 +801,6 @@ static void
 liferea_shell_online_status_changed (NetworkMonitor *nm, gboolean online, gpointer userdata)
 {
 	liferea_shell_set_online_icon (online);
-	ui_tray_update ();
 }
 
 /* methods to receive URLs which were dropped anywhere in the main window */
@@ -1090,8 +1080,6 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	gchar		*toolbar_style, *accels_file;
 	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
 	gint		resultState;
-	gboolean	show_tray_icon, start_in_tray;
-
 	
 	debug0 (DEBUG_GUI, "Setting toolbar style");
 	
@@ -1121,45 +1109,23 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	if (last_wpane_pos)
 		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
 
-	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
-	conf_get_bool_value (START_IN_TRAY, &start_in_tray);
-
 	/* Apply horrible window state parameter logic:
 	   -> overrideWindowState provides optional command line flags passed by
 	      user or the session manager (prio 1)
 	   -> lastState provides last shutdown preference (prio 2)
-	   -> show_tray_icon and start_in_tray are overriding preferences
-	      (prio 1 only overridden by 'shown' from command line)
 	 */
 
 	/* Initialize with last saved state */
 	conf_get_int_value (LAST_WINDOW_STATE, &resultState);
 
 	/* Override with command line options */
-	if (!g_strcmp0 (overrideWindowState, "iconfied"))
-		resultState = MAINWINDOW_ICONIFIED;
 	if (!g_strcmp0 (overrideWindowState, "hidden"))
 		resultState = MAINWINDOW_HIDDEN;
 	if (!g_strcmp0 (overrideWindowState, "shown"))
 		resultState = MAINWINDOW_SHOWN;
 
-	/* Change hidden to iconify if we have no tray to avoid loosing the window */
-	if (!show_tray_icon && resultState == MAINWINDOW_HIDDEN)
-		resultState = MAINWINDOW_ICONIFIED;
-
-	/* Apply tray hiding preference */
-	if (show_tray_icon && start_in_tray && g_strcmp0 (overrideWindowState, "shown")) {
-		debug0 (DEBUG_GUI, "Ignoring last window state due to hide-in-tray preference");
-		resultState = MAINWINDOW_HIDDEN;
-	}
-
 	/* And set the window to the resulting state */
 	switch (resultState) {
-		case MAINWINDOW_ICONIFIED:
-			debug0 (DEBUG_GUI, "Restoring window state 'hidden (no tray)' / 'iconified'");
-			gtk_window_iconify (shell->priv->window);
-			gtk_widget_show (GTK_WIDGET (shell->priv->window));
-			break;
 		case MAINWINDOW_HIDDEN:
 			debug0 (DEBUG_GUI, "Restoring window state 'hidden (to tray)'");
 			/* Realize needed so that the window structure can be
@@ -1183,7 +1149,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	GtkUIManager	*ui_manager;
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
-	gboolean	show_tray_icon, toggle;
+	gboolean	toggle;
 	gchar		*id;
 	
 	debug_enter ("liferea_shell_create");
@@ -1343,9 +1309,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 
 	shell->priv->feedlist = feedlist_create ();
 
-	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
-	ui_tray_enable (show_tray_icon);
-
 	/* 11.) Restore latest selection */
 
 	// FIXME: Move to feed list code
@@ -1408,7 +1371,6 @@ liferea_shell_destroy (void)
 	feed_list_view_select (NULL);	// FIXME: Move to feed list handling
 
 	liferea_shell_save_position ();
-	ui_tray_enable (FALSE);
 	g_object_unref (shell->priv->tabs);
 	g_object_unref (shell->priv->feedlist);
 	g_object_unref (shell->priv->itemview);

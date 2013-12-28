@@ -38,7 +38,6 @@
 #include "itemlist.h"
 #include "social.h"
 #include "ui/enclosure_list_view.h"
-#include "ui/ui_indicator.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -183,25 +182,6 @@ on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 		/* Note: For simplicity when toggling this preference we 
 		   accept that the current item selection is lost. */
 	}
-}
-
-void
-on_trayiconoptionbtn_clicked (GtkButton *button, gpointer user_data)
-{
-	gboolean		enabled;
-
-	enabled = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(button));
-	conf_set_bool_value (SHOW_TRAY_ICON, enabled);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "newcountintraybtn"), enabled);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "minimizetotraybtn"), enabled);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "startintraybtn"), enabled);
-}
-
-void
-on_popupwindowsoptionbtn_clicked (GtkButton *button, gpointer user_data)
-{
-	gboolean enabled = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
-	conf_set_bool_value (SHOW_POPUP_WINDOWS, enabled);
 }
 
 void
@@ -433,24 +413,6 @@ on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data)
 }
 
 void
-on_newcountintraybtn_clicked (GtkButton *button, gpointer user_data)
-{
-	conf_set_bool_value (SHOW_NEW_COUNT_IN_TRAY, gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(button)));
-}
-
-void
-on_minimizetotraybtn_clicked (GtkButton *button, gpointer user_data)
-{
-	conf_set_bool_value (DONT_MINIMIZE_TO_TRAY, gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)));
-}
-
-void
-on_startintraybtn_clicked (GtkButton *button, gpointer user_data)
-{
-	conf_set_bool_value (START_IN_TRAY, gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button)));
-}
-
-void
 on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	conf_set_bool_value (DISABLE_TOOLBAR, gtk_toggle_button_get_active (button));
@@ -480,7 +442,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	static int		manual;
 	struct browser		*iter;
 	gint			tmp, i, iSetting, proxy_port;
-	gboolean		bSetting, show_tray_icon;
+	gboolean		bSetting;
 	gchar			*proxy_host, *proxy_user, *proxy_passwd;
 	gchar			*browser_command;
 	
@@ -645,50 +607,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "urlhintlabel"), tmp == manual);
 
 	/* ================== panel 4 "GUI" ================ */
-
-	widget = liferea_dialog_lookup (pd->priv->dialog, "popupwindowsoptionbtn");
-	conf_get_bool_value (SHOW_POPUP_WINDOWS, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
-	
-	widget = liferea_dialog_lookup (pd->priv->dialog, "trayiconoptionbtn");
-	conf_get_bool_value (SHOW_TRAY_ICON, &show_tray_icon);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), show_tray_icon);
-
-	widget = liferea_dialog_lookup (pd->priv->dialog, "newcountintraybtn");
-	conf_get_bool_value (SHOW_NEW_COUNT_IN_TRAY, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "newcountintraybtn"), show_tray_icon);
-
-	widget = liferea_dialog_lookup (pd->priv->dialog, "minimizetotraybtn");
-	conf_get_bool_value (DONT_MINIMIZE_TO_TRAY, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "minimizetotraybtn"), show_tray_icon);
-	
-	widget = liferea_dialog_lookup (pd->priv->dialog, "startintraybtn");
-	conf_get_bool_value (START_IN_TRAY, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "startintraybtn"), show_tray_icon);
-
-	if (ui_indicator_is_visible ()) {
-		/*
-		   If we use the indicator applet:
-		   - The "show tray icon" and "minimize to tray icon" settings
-		     are interpreted as "show indicator" and "minimize to indicator"
-		   - The "new count in tray icon" setting doesn't make sense and
-		     is ignored by indicator handling code
-		*/
-		
-		gtk_widget_hide (liferea_dialog_lookup (pd->priv->dialog, "newcountintraybtn"));
-		
-		gtk_button_set_label (GTK_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "trayiconoptionbtn")),
-			_("Integrate with the messaging menu (indicator)"));
-		
-		gtk_button_set_label (GTK_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "minimizetotraybtn")),
-			_("Terminate instead of minimizing to the messaging menu"));
-		
-		gtk_button_set_label (GTK_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "startintraybtn")),
-			_("Start minimized to the messaging menu"));
-	}
 
 	/* tool bar settings */	
 	widget = liferea_dialog_lookup (pd->priv->dialog, "hidetoolbarbtn");

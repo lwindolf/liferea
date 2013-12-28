@@ -1,7 +1,7 @@
 /**
  * @file node.c  hierarchic feed list node handling
  * 
- * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -36,7 +36,6 @@
 #include "fl_sources/node_source.h"
 #include "ui/liferea_shell.h"
 #include "ui/feed_list_node.h"
-#include "ui/ui_tray.h"
 
 static GHashTable *nodes = NULL;	/**< node id -> node lookup table */
 
@@ -226,7 +225,6 @@ node_update_parent_counters (nodePtr node)
 	
 	if (old != node->unreadCount) {
 		feed_list_node_update (node->id);
-		ui_tray_update ();
 		liferea_shell_update_unread_stats ();
 	}
 	

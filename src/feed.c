@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  * 
- * Copyright (C) 2003-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2013 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -39,7 +39,6 @@
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
 #include "ui/feed_list_node.h"
-#include "notification/notification.h"
 
 feedPtr
 feed_new (void)
@@ -90,17 +89,6 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 		feed->ignoreComments = TRUE;
 	xmlFree (tmp);
 
-	/* popup enforcement/prevention flags */
-	tmp = xmlGetProp (xml, BAD_CAST"enforcePopup");
-	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
-		feed->enforcePopup = TRUE;
-	xmlFree (tmp);
-
-	tmp = xmlGetProp (xml, BAD_CAST"preventPopup");
-	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
-		feed->preventPopup = TRUE;
-	xmlFree (tmp);
-
 	tmp = xmlGetProp (xml, BAD_CAST"markAsRead");
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->markAsRead = TRUE;
@@ -146,12 +134,6 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 			
 		if (feed->ignoreComments)
 			xmlNewProp (xml, BAD_CAST"ignoreComments", BAD_CAST"true");
-			
-		if (feed->enforcePopup)
-			xmlNewProp (xml, BAD_CAST"enforcePopup", BAD_CAST"true");
-			
-		if (feed->preventPopup)
-			xmlNewProp (xml, BAD_CAST"preventPopup", BAD_CAST"true");
 			
 		if (feed->markAsRead)
 			xmlNewProp (xml, BAD_CAST"markAsRead", BAD_CAST"true");
@@ -281,9 +263,6 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 				db_subscription_update (subscription);
 
 			liferea_shell_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
-
-			if (!feed->preventPopup)
-				notification_node_has_new_items (node, feed->enforcePopup);
 		}
 
 		feed_free_parser_ctxt (ctxt);

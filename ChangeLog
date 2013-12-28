@@ -13,6 +13,10 @@
 	* Fixes #1117: Selecting last unread item in reduced feed list jumps to next feed
 	  (reported by Bruce Guenter)
 
+	* Removing libindicate support (to be added as plugin maybe)
+	* Removing libnotify support (to be added as plugin maybe)
+	* Removing tray icons support (to be added as plugin maybe)
+
 	* Updated Arabic translation (Khaled Hosny)
 
 

@@ -30,7 +30,6 @@
 #include "net.h"
 #include "update.h"
 #include "ui/liferea_shell.h"
-#include "ui/ui_tray.h"
 
 #define MAX_GCONF_PATHLEN	256
 
@@ -42,7 +41,6 @@ static GSettings *desktop_settings;
 
 /* Function prototypes */
 static void conf_proxy_reset_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
-static void conf_tray_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
 static void conf_toolbar_style_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
 
 static void
@@ -96,13 +94,6 @@ conf_init (void)
 
 	g_signal_connect (
 		settings,
-		"changed::" SHOW_TRAY_ICON,
-		G_CALLBACK (conf_tray_settings_cb),
-		NULL
-	);
-
-	g_signal_connect (
-		settings,
 		"changed::" PROXY_DETECT_MODE,
 		G_CALLBACK (conf_proxy_reset_settings_cb),
 		NULL
@@ -147,18 +138,6 @@ conf_deinit (void)
 {
 	g_object_unref (settings);
 	g_object_unref (desktop_settings);
-}
-
-static void
-conf_tray_settings_cb (GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data)
-{
-	GVariant *gv;
-
-	if (key) {
-		gv = g_settings_get_value (settings, key);
-		if (gv && g_variant_get_type(gv) == G_VARIANT_TYPE_BOOLEAN)
-			ui_tray_enable (g_settings_get_boolean (settings,key));
-	}
 }
 
 static void
