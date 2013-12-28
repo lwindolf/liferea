@@ -412,8 +412,10 @@ htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode)
 	htmlview_finish_output (output);
 
 	debug1 (DEBUG_HTML, "writing %d bytes to HTML view", strlen (output->str));
-	liferea_htmlview_write (htmlview, output->str, baseURL);
-	
+
+	if(baseURL != NULL)
+		liferea_htmlview_write (htmlview, output->str, baseURL);
+
 	g_string_free (output, TRUE);
 	g_free (baseURL);
 }

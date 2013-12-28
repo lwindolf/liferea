@@ -2,6 +2,8 @@
 
 	Version 1.11.0
 
+	* Bugfix empty baseurl
+	* Custom user-agent string
 	* Added experimental InoReader support
 	* Added experimental Reedah support
 	* Fixes SF #1123: Mistakenly claims "TinyTinyRSS source is not self-updating"
