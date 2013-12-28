@@ -20,6 +20,9 @@ Contents
    4.3.2 .............. Update an Existing Translation
    4.3.3 .............. Provide a Localized Feed List
    4.4. ............. How to Create Plugins
+   4.4.1. ............. Why We Use Plugins
+   4.4.2. ............. How to Interact With Liferea
+   4.4.3. ............. Testing Plugins
    4.5. ............. How to Help With Testing
    4.5.1. ............. Bug Reports
    4.5.2. ............. Debugging Crashes
@@ -234,9 +237,17 @@ Liferea 1.10+ support GObject Introspection based plugins using libpeas. The
 Liferea distribution comes with a set of Python plugin e.g. the media player,
 GNOME keyring support, a tray icon plugin and maybe others.
 
+
+4.4.1. Why We Use Plugins
+-------------------------
+
 The idea behind plugins is to extend Liferea without changing compile time
 requirements. With the plugin only activating if all its bindings are available
 Liferea uses plugins to automatically enable features where possible.
+
+
+4.4.2. How to Interact With Liferea
+-----------------------------------
 
 You can develop plugins for your private use or contribute them upstream.
 In any case it makes sense to start by cloning one of the existing plugins
@@ -256,6 +267,18 @@ header files fed into g-ir-scanner. Despite this method names of the core
 functionality in Liferea has proven to be stable during release branches. And
 if you contribute your plugin upstream it will be updated to match renamed
 functionality.
+
+
+4.4.3. Testing Plugins
+----------------------
+
+To test your new plugin you can use ~/.local/share/liferea/plugins. Create 
+the directory and put the plugin script and the .plugin file there and restart
+Liferea.
+
+Watch out for initialization exceptions on the command line as they will
+permanently disable the plugin. Each time this happens you need to reenable
+the plugin from within the plugin tab in the preferences dialog!
 
 
 4.5 How to Help With Testing
