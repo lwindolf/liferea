@@ -17,6 +17,7 @@
 	* Removing libnotify support (to be added as plugin maybe)
 	* Removing tray icons support (to be added as plugin maybe)
 
+	* Updated README on plugin contribution
 	* Updated Arabic translation (Khaled Hosny)
 
 

@@ -19,10 +19,11 @@ Contents
    4.3.1 .............. Create a New Translation
    4.3.2 .............. Update an Existing Translation
    4.3.3 .............. Provide a Localized Feed List
-   4.4. ............. How to Help With Testing
-   4.4.1. ............. Bug Reports
-   4.4.2. ............. Debugging Crashes
-   4.4.3. ............. Debugging Memory Leaks
+   4.4. ............. How to Create Plugins
+   4.5. ............. How to Help With Testing
+   4.5.1. ............. Bug Reports
+   4.5.2. ............. Debugging Crashes
+   4.5.3. ............. Debugging Memory Leaks
    
    5. ............. Browser Integration
 
@@ -226,10 +227,41 @@ Once finished post the result OPML file in the mailing list or the SF patch
 tracker.
 
 
-4.4 How to Help With Testing
+4.4 How to Create Plugins
+-------------------------
+
+Liferea 1.10+ support GObject Introspection based plugins using libpeas. The
+Liferea distribution comes with a set of Python plugin e.g. the media player,
+GNOME keyring support, a tray icon plugin and maybe others.
+
+The idea behind plugins is to extend Liferea without changing compile time
+requirements. With the plugin only activating if all its bindings are available
+Liferea uses plugins to automatically enable features where possible.
+
+You can develop plugins for your private use or contribute them upstream.
+In any case it makes sense to start by cloning one of the existing plugins
+and to think about how to hook into Liferea. There are two common ways:
+
+   1.) using interfaces,
+   2.) or by listening to events on Liferea objects,
+   3.) or not at all by just controlling Liferea from the outside.
+
+The media player is an example for 1.) while the tray icon is an example for 3.)
+If you find you need a new plugin interface (called Activatables) in the code 
+feel free to contact us on the mailing list. In general such a tight coupling
+should be avoided.
+
+About the exposed GIR API: At the moment there is no stable API. Its just some
+header files fed into g-ir-scanner. Despite this method names of the core
+functionality in Liferea has proven to be stable during release branches. And
+if you contribute your plugin upstream it will be updated to match renamed
+functionality.
+
+
+4.5 How to Help With Testing
 ----------------------------
 
-4.4.1. Bug Reports
+4.5.1. Bug Reports
 ------------------
 
 If you want to help with testing grab the latest tarball or follow GIT master
@@ -238,7 +270,7 @@ time help with bug triaging the SF tracker. Check if you see any of the open
 bugs on your setup.
 
 
-4.4.2. Debugging Crashes
+4.5.2. Debugging Crashes
 ------------------------
 
 In case of crashes create gdb backtraces and post them in the bug tracker. To
@@ -251,7 +283,7 @@ situation will only point to the assertion line, which doesn't help much. In cas
 of an assertion simply post a bug report with the assertion message.
 
 
-4.4.3. Debugging Memory Leakage
+4.5.3. Debugging Memory Leakage
 -------------------------------
 
 If you see memory leakage please take the time to do a run 

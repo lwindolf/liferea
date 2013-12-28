@@ -27,7 +27,9 @@ plugin_DATA = \
 	plugins/gnome-keyring.py \
 	plugins/gnome-keyring.plugin \
 	plugins/media-player.py \
-	plugins/media-player.plugin
+	plugins/media-player.plugin \
+	plugins/trayicon.py \
+	plugins/trayicon.plugin
 
 gsettings_SCHEMAS = net.sf.liferea.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
