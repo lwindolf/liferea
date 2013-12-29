@@ -22,8 +22,23 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 	else:
 		Gtk.Window.present (window)
 
+    def trayicon_quit (self, widget, data = None):
+	Liferea.shutdown ()
+
     def trayicon_popup (self, widget, button, time, data = None):
-        print "popup menu triggered"
+        self.menu = Gtk.Menu ()
+
+        menuitem_toggle = Gtk.MenuItem ("Show / Hide")
+        menuitem_quit = Gtk.MenuItem ("Quit")
+
+        menuitem_toggle.connect ("activate", self.trayicon_activate)
+        menuitem_quit.connect ("activate", self.trayicon_quit)
+
+        self.menu.append (menuitem_toggle)
+        self.menu.append (menuitem_quit)
+
+        self.menu.show_all ()
+	self.menu.popup(None, None, lambda w,x: self.staticon.position_menu(self.menu, self.staticon), self.staticon, 3, time)
 
     def do_deactivate (self):
         self.staticon.set_visible (False)
