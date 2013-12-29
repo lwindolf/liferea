@@ -34,6 +34,7 @@
 #include "social.h"
 #include "vfolder.h"
 #include "ui/enclosure_list_view.h"
+#include "ui/feed_list_node.h"
 #include "ui/feed_list_view.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
@@ -257,7 +258,7 @@ ui_popup_properties (gpointer callback_data)
 static void
 ui_popup_delete (gpointer callback_data)
 {
-	feed_list_view_delete_prompt ((nodePtr)callback_data);
+	feed_list_node_remove ((nodePtr)callback_data);
 }
 
 static void

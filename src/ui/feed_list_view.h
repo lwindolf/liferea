@@ -53,16 +53,6 @@ void feed_list_view_select (nodePtr node);
 void feed_list_view_init (GtkTreeView *treeview);
 
 /**
- * Prompt the user for confirmation of a folder or feed, and
- * recursively remove the feed or folder if the user accepts. This
- * function does not block, so the folder/feeds will not have
- * been deleted when this function returns.
- *
- * @param ptr the node to delete
- */
-void feed_list_view_delete_prompt (nodePtr ptr);
-
-/**
  * Sort the feeds of the given folder node.
  *
  * @param folder	the folder

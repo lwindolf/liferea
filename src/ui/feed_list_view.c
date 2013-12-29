@@ -120,7 +120,7 @@ feed_list_view_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer dat
 			if (event->state & GDK_SHIFT_MASK)
 				feedlist_remove_node (node);
 			else
-				feed_list_view_delete_prompt (node);
+				feed_list_node_remove (node);
 			return TRUE;
 		}
 	}
@@ -335,51 +335,6 @@ feed_list_view_select (nodePtr node)
 	}
 }
 
-/* delete feed callbacks */
-
-static void
-feed_list_view_delete_response_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
-{	
-	if (GTK_RESPONSE_ACCEPT == response_id)
-		feedlist_remove_node ((nodePtr)user_data);
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
-}
-
-void
-feed_list_view_delete_prompt (nodePtr node)
-{
-	GtkWidget	*dialog;
-	GtkWindow	*mainwindow;
-	gchar		*text;
-	
-	g_assert (node == feedlist_get_selected ());
-
-	liferea_shell_set_status_bar ("%s \"%s\"", _("Deleting entry"), node_get_title (node));
-	text = g_strdup_printf (IS_FOLDER (node)?_("Are you sure that you want to delete \"%s\" and its contents?"):_("Are you sure that you want to delete \"%s\"?"), node_get_title (node));
-
-	mainwindow = GTK_WINDOW (liferea_shell_get_window ());
-	dialog = gtk_message_dialog_new (mainwindow,
-	                                 GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
-	                                 GTK_MESSAGE_QUESTION,
-	                                 GTK_BUTTONS_NONE,
-	                                 "%s", text);
-	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-	                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-	                        GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
-	                        NULL);
-	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
-	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
-
-	g_free (text);
-	
-	gtk_widget_show_all (dialog);
-
-	g_signal_connect (G_OBJECT (dialog), "response",
-	                  G_CALLBACK (feed_list_view_delete_response_cb), node);
-}
-
 void
 on_menu_properties (GtkMenuItem *menuitem, gpointer user_data)
 {
@@ -388,9 +343,10 @@ on_menu_properties (GtkMenuItem *menuitem, gpointer user_data)
 	NODE_TYPE (node)->request_properties (node);
 }
 
-void on_menu_delete(GtkWidget *widget, gpointer user_data)
+void
+on_menu_delete(GtkWidget *widget, gpointer user_data)
 {
-	feed_list_view_delete_prompt (feedlist_get_selected());
+	feed_list_node_remove (feedlist_get_selected ());
 }
 
 static void
