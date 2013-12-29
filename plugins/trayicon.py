@@ -1,8 +1,4 @@
-from gi.repository import GObject
-from gi.repository import Peas
-from gi.repository import PeasGtk
-from gi.repository import Gtk
-from gi.repository import Liferea
+from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea
 
 class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = 'TrayiconPlugin'
