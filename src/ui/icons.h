@@ -43,6 +43,14 @@ typedef enum {
 } lifereaIcon;
 
 /**
+ * Load all icons from theme and Liferea pixmaps.
+ *
+ * Must be called once before icon_get() may be used!
+ * Must be called only after GTK theme was initialized!
+ */
+void icons_load (void);
+
+/**
  * icon_get:
  * Returns a GdkPixbuf for the requested item.
  *

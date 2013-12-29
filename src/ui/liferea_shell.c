@@ -1287,6 +1287,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	debug0 (DEBUG_GUI, "Setting up item view");
 
 	shell->priv->itemview = itemview_create (GTK_WIDGET (shell->priv->window));
+
+        /* 8.) load icons as required */
+        
+        debug0 (DEBUG_GUI, "Loading icons");
+        
+        icons_load ();
 	
 	/* 9.) update and restore all menu elements */
 

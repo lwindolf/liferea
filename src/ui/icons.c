@@ -83,7 +83,7 @@ icon_get_from_theme (GtkIconTheme *icon_theme, const gchar *name, gint size)
 	return pixbuf;
 }
 
-static void
+void
 icons_load (void)
 {
 	GtkIconTheme	*icon_theme;
@@ -146,8 +146,7 @@ icons_load (void)
 const GdkPixbuf *
 icon_get (lifereaIcon icon)
 {
-	if (!icons)
-		icons_load ();
+	g_assert (NULL != *icons);		
 
 	return icons[icon];
 }
