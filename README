@@ -90,7 +90,7 @@ Optional:
 
    -> For the media player plugin
 	Python >= 2
-        GStreamer library and codecs
+        GStreamer 0.10+ library and codecs
    
 Ensure that you have installed the libraries and their headers.
 If you use distribution packages then you usually need to install
