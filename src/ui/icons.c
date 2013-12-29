@@ -1,7 +1,7 @@
 /**
  * @file icons.c  Using icons from theme and package pixmaps
  *
- * Copyright (C) 2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ icon_get_from_theme (GtkIconTheme *icon_theme, const gchar *name, gint size)
 	return pixbuf;
 }
 
-void
+static void
 icons_load (void)
 {
 	GtkIconTheme	*icon_theme;
@@ -146,6 +146,9 @@ icons_load (void)
 const GdkPixbuf *
 icon_get (lifereaIcon icon)
 {
+	if (!icons)
+		icons_load ();
+
 	return icons[icon];
 }
 

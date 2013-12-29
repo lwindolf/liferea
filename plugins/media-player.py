@@ -1,7 +1,7 @@
 # Make code still work under Python 2.6/2.7
 from __future__ import print_function, division
 
-from gi.repository import GObject, Peas, PeasGtk, Glib, Gtk, Liferea, Gst
+from gi.repository import GObject, Peas, PeasGtk, GLib, Gtk, Liferea, Gst
 
 # FIXME: Upgrade to 0.11
 #import gi

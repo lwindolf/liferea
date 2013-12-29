@@ -1,3 +1,23 @@
+# System Tray Icon Plugin
+#
+# Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+# 
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+# 
+# You should have received a copy of the GNU Library General Public License
+# along with this library; see the file COPYING.LIB.  If not, write to
+# the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+#
+
 from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea
 
 class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
@@ -8,8 +28,8 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 
     def do_activate (self):
         self.staticon = Gtk.StatusIcon ()
-	#self.icon.set_from_file(self.myicon)
-        self.staticon.set_from_stock (Gtk.STOCK_ABOUT)
+	# FIXME: Support a scalable image!
+	self.staticon.set_from_pixbuf (Liferea.icon_create_from_file ("unread.png"))
         self.staticon.connect ("activate", self.trayicon_activate)
         self.staticon.connect ("popup_menu", self.trayicon_popup)
         self.staticon.set_visible (True)
