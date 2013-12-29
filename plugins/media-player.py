@@ -2,7 +2,7 @@
 # GStreamer based embedded Media Player
 #
 # Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
-# Copyright (C) 2013 Simon Kågedal Reimer <skagedal@gmail.com>
+# Copyright (C) 2013 Simon Kagedal Reimer <skagedal@gmail.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
