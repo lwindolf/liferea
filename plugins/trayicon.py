@@ -1,3 +1,4 @@
+#
 # System Tray Icon Plugin
 #
 # Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
