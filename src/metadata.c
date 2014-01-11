@@ -2,7 +2,7 @@
  * @file metadata.c  handling of typed item and feed meta data
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,6 +104,7 @@ metadata_init (void)
 	
 	/* for trackback URL */
 	metadata_type_register ("related",		METADATA_TYPE_URL);
+	metadata_type_register ("via",                  METADATA_TYPE_URL);
 
 	/* for georss:point */
 	metadata_type_register ("point", 		METADATA_TYPE_TEXT);

@@ -12,6 +12,8 @@
 	  (patch by Daniel Seither)
 	* Fixes #1117: Selecting last unread item in reduced feed list jumps to next feed
 	  (reported by Bruce Guenter)
+	* Fixes missing "Via" metadata type
+	  (patch by Rich Coe)
 
 	* Removing libindicate support (to be added as plugin maybe)
 	* Removing libnotify support (to be added as plugin maybe)
