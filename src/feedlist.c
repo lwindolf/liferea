@@ -58,11 +58,18 @@ struct FeedListPrivate {
 	gboolean	loading;	/**< prevents the feed list being saved before it is completely loaded */
 };
 
+enum {
+	NEW_ITEMS,
+	LAST_SIGNAL
+};
+
 #define ROOTNODE feedlist->priv->rootNode
 #define SELECTED feedlist->priv->selectedNode
 
+static guint feedlist_signals[LAST_SIGNAL] = { 0 };
+
 static GObjectClass *parent_class = NULL;
-static FeedList *feedlist = NULL;
+FeedList *feedlist = NULL;
 
 G_DEFINE_TYPE (FeedList, feedlist, G_TYPE_OBJECT);
 
@@ -107,6 +114,18 @@ feedlist_class_init (FeedListClass *klass)
 	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->finalize = feedlist_finalize;
+
+	feedlist_signals[NEW_ITEMS] = 
+		g_signal_new ("new-items", 
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0, 
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
 
 	g_type_class_add_private (object_class, sizeof(FeedListPrivate));
 }
@@ -609,6 +628,17 @@ feedlist_schedule_save (void)
 	   we hope to catch bulks of feed list changes and save 
 	   less often */
 	feedlist->priv->saveTimer = g_timeout_add_seconds (5, feedlist_schedule_save_cb, NULL);
+}
+
+/* Handling updates */
+
+void
+feedlist_new_items (nodePtr node)
+{
+	feed_list_node_update (node->id);
+	feedlist_schedule_save ();
+
+	g_signal_emit_by_name (feedlist, "new-items", node->title);
 }
 
 /* This method is only to be used when exiting the program! */

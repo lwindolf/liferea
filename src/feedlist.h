@@ -39,6 +39,8 @@ typedef struct FeedList		FeedList;
 typedef struct FeedListClass	FeedListClass;
 typedef struct FeedListPrivate	FeedListPrivate;
 
+extern FeedList *feedlist;
+
 struct FeedList
 {
 	GObject		parent;
@@ -264,6 +266,13 @@ void feedlist_selection_changed (nodePtr node);
  * @return a found node or NULL
  */
 nodePtr	feedlist_find_unread_feed (nodePtr folder);
+
+/**
+ * To be called when node subscription update gained new items.
+ *
+ * @param node		the node updated
+ */
+void feedlist_new_items (nodePtr node);
 
 G_END_DECLS
 

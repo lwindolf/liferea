@@ -1,5 +1,5 @@
 #
-# System Tray Icon Plugin
+# libnotify Popup Notifications Plugin
 #
 # Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
 #
@@ -19,48 +19,24 @@
 # Boston, MA 02111-1307, USA.
 #
 
-from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea
+from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Notify
 
-class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
-    __gtype_name__ = 'TrayiconPlugin'
+class LibnotifyPlugin (GObject.Object, Liferea.ShellActivatable):
+    __gtype_name__ = 'LibnotifyPlugin'
 
     object = GObject.property (type=GObject.Object)
     shell = GObject.property (type=Liferea.Shell)
 
     def do_activate (self):
-        self.staticon = Gtk.StatusIcon ()
-	# FIXME: Support a scalable image!
-	self.staticon.set_from_pixbuf (Liferea.icon_create_from_file ("unread.png"))
-        self.staticon.connect ("activate", self.trayicon_activate)
-        self.staticon.connect ("popup_menu", self.trayicon_popup)
-        self.staticon.set_visible (True)
+	self.shell.props.feed_list.connect("new-items", self.on_new_items)
 
-    def trayicon_activate (self, widget, data = None):
-	window = self.shell.get_window ()
-	state = Gtk.Widget.get_visible (window)
-	if True == state:
-		Gtk.Widget.hide (window)
-	else:
-		Gtk.Window.present (window)
-
-    def trayicon_quit (self, widget, data = None):
-	Liferea.shutdown ()
-
-    def trayicon_popup (self, widget, button, time, data = None):
-        self.menu = Gtk.Menu ()
-
-        menuitem_toggle = Gtk.MenuItem ("Show / Hide")
-        menuitem_quit = Gtk.MenuItem ("Quit")
-
-        menuitem_toggle.connect ("activate", self.trayicon_activate)
-        menuitem_quit.connect ("activate", self.trayicon_quit)
-
-        self.menu.append (menuitem_toggle)
-        self.menu.append (menuitem_quit)
-
-        self.menu.show_all ()
-	self.menu.popup(None, None, lambda w,x: self.staticon.position_menu(self.menu, self.staticon), self.staticon, 3, time)
-
-    def do_deactivate (self):
-        self.staticon.set_visible (False)
-        del self.staticon
+    def on_new_items (self, widget, title = None):
+	Notify.init('Liferea')
+	# FIXME: icon
+        notification = Notify.Notification.new(
+          title,
+	  # FIXME: add list of first 5 items...
+          'Items',
+          'dialog-information'
+        )
+        notification.show()

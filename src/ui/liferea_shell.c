@@ -89,6 +89,14 @@ struct LifereaShellPrivate {
 	gboolean	fullscreen;		/**< track fullscreen */
 };
 
+enum {
+	PROP_NONE,
+	PROP_FEED_LIST,
+	PROP_ITEM_LIST,
+	PROP_ITEM_VIEW,
+	PROP_BROWSER_TABS
+};
+
 static GObjectClass *parent_class = NULL;
 static LifereaShell *shell = NULL;
 
@@ -105,13 +113,74 @@ liferea_shell_finalize (GObject *object)
 }
 
 static void
+liferea_shell_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+        LifereaShell *shell = LIFEREA_SHELL (object);
+
+        switch (prop_id) {
+	        case PROP_FEED_LIST:
+			g_value_set_object (value, shell->priv->feedlist);
+			break;
+	        case PROP_ITEM_LIST:
+			g_value_set_object (value, shell->priv->itemlist);
+			break;
+	        case PROP_ITEM_VIEW:
+			g_value_set_object (value, shell->priv->itemview);
+			break;
+	        case PROP_BROWSER_TABS:
+			g_value_set_object (value, shell->priv->tabs);
+			break;
+		default:
+		        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		        break;
+        }
+}
+
+static void
 liferea_shell_class_init (LifereaShellClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
+	object_class->get_property = liferea_shell_get_property;
 	object_class->finalize = liferea_shell_finalize;
+
+	/* LifereaShell:feed-list: */
+	g_object_class_install_property (object_class,
+		                         PROP_FEED_LIST,
+		                         g_param_spec_object ("feed-list",
+		                                              "LifereaFeedList",
+		                                              "LifereaFeedList object",
+		                                              FEEDLIST_TYPE,
+		                                              G_PARAM_READABLE));
+
+	/* LifereaShell:item-list: */
+	g_object_class_install_property (object_class,
+		                         PROP_FEED_LIST,
+		                         g_param_spec_object ("item-list",
+		                                              "LifereaItemList",
+		                                              "LifereaItemList object",
+		                                              ITEMLIST_TYPE,
+		                                              G_PARAM_READABLE));
+
+	/* LifereaShell:item-view: */
+	g_object_class_install_property (object_class,
+		                         PROP_FEED_LIST,
+		                         g_param_spec_object ("item-view",
+		                                              "LifereaItemView",
+		                                              "LifereaItemView object",
+		                                              ITEMVIEW_TYPE,
+		                                              G_PARAM_READABLE));
+
+	/* LifereaShell:browser-tabs: */
+	g_object_class_install_property (object_class,
+		                         PROP_FEED_LIST,
+		                         g_param_spec_object ("browser-tabs",
+		                                              "LifereaBrowserTabs",
+		                                              "LifereaBrowserTabs object",
+		                                              BROWSER_TABS_TYPE,
+		                                              G_PARAM_READABLE));
 
 	g_type_class_add_private (object_class, sizeof(LifereaShellPrivate));
 }
@@ -311,6 +380,7 @@ liferea_shell_update_history_actions (void)
 	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->generalActions, "NextReadItem"), item_history_has_next ());
 }
 
+// FIXME: register on feedlist "new-items" event
 void
 liferea_shell_update_unread_stats (void)
 {

@@ -88,6 +88,7 @@ Liferea_3_0_gir_FILES = \
 	auth.c auth.h \
 	auth_activatable.c auth_activatable.h \
 	enclosure.h \
+	feedlist.c feedlist.h \
 	ui/icons.c ui/icons.h \
 	ui/itemview.c ui/itemview.h \
 	ui/liferea_shell.c ui/liferea_shell.h \
