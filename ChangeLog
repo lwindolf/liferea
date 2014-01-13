@@ -1,4 +1,6 @@
-To be released
+2014-01-13   Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.10.4
 
 	* Fixes SF #1123: Mistakenly claims "TinyTinyRSS source is not self-updating"
 	  (reported by Dominik Grafenhoher)
