@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes #1056, #1089, #1098: Honor preferences when opening links
+	  (patch by Daniel Seither)
+
+
 2014-01-13   Lars Windolf <lars.lindner@gmail.com>
 
 	Version 1.10.4
