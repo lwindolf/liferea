@@ -1,7 +1,7 @@
 /**
  * @file dummy_source.c  dummy feed list source
  * 
- * Copyright (C) 2006-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,12 @@
 
 static gchar * dummy_source_get_feedlist(nodePtr node) { return NULL; }
 
+static void dummy_source_noop (nodePtr node) { }
+
 static void dummy_source_import(nodePtr node) {
  
 	node->icon = (gpointer)icon_get (ICON_UNAVAILABLE);
 }
-
-static void dummy_source_export(nodePtr node) { }
 
 static void dummy_source_init(void) { }
 
@@ -42,16 +42,15 @@ static struct nodeSourceType nst = {
 	"Dummy Feed List Source",
 	"The dummy feed list source. Should never be added manually. If you see this then something went wrong!",
 	0,
-	NULL,
 	dummy_source_init,
 	dummy_source_deinit,
 	NULL,
 	NULL,
 	dummy_source_import,
-	dummy_source_export,
+	dummy_source_noop,		/* export */
 	dummy_source_get_feedlist,
-	NULL,
-	NULL,
+	dummy_source_noop,		/* update */
+	dummy_source_noop,		/* auto_update */
 	NULL,
 	NULL,
 	NULL,
