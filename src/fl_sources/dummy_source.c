@@ -24,12 +24,12 @@
 
 static gchar * dummy_source_get_feedlist(nodePtr node) { return NULL; }
 
+static void dummy_source_noop (nodePtr node) { }
+
 static void dummy_source_import(nodePtr node) {
  
 	node->icon = (gpointer)icon_get (ICON_UNAVAILABLE);
 }
-
-static void dummy_source_export(nodePtr node) { }
 
 static void dummy_source_init(void) { }
 
@@ -47,10 +47,10 @@ static struct nodeSourceType nst = {
 	NULL,
 	NULL,
 	dummy_source_import,
-	dummy_source_export,
+	dummy_source_noop,		/* export */
 	dummy_source_get_feedlist,
-	NULL,
-	NULL,
+	dummy_source_noop,		/* update */
+	dummy_source_noop,		/* auto_update */
 	NULL,
 	NULL,
 	NULL,
