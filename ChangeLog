@@ -4,6 +4,8 @@ To be released
 	  (reported by Dominik Grafenhoher)
 	* Fixes SF #1119: Crash on font resize at startup. 
 	  (reported by David Smith)
+	* Fixes #1117: Selecting last unread item in reduced feed list jumps to next feed
+	  (reported by Bruce Guenter)
 
 	* Updated Arabic translation (Khaled Hosny)
 
