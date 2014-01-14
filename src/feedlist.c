@@ -604,11 +604,12 @@ feedlist_selection_changed (nodePtr node)
 static gboolean
 feedlist_schedule_save_cb (gpointer user_data)
 {
-	/* step 1: request each node to save its state */
+	/* step 1: request each node to save its state, that is 
+	   mostly needed for nodes that are node sources */
 	feedlist_foreach (node_save);
 
 	/* step 2: request saving for the root node and thereby
-	   forcing the root plugin to save the feed list structure */
+	   forcing the default source to write an OPML file */
 	NODE_SOURCE_TYPE (ROOTNODE)->source_export (ROOTNODE);
 	
 	feedlist->priv->saveTimer = 0;
