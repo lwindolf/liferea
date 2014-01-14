@@ -1,7 +1,7 @@
 /**
- * @file item_state.c   item state controller interface
+ * @file item_state.c   item state controller
  * 
- * Copyright (C) 2007-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,9 +59,6 @@ item_flag_state_changed (itemPtr item, gboolean newState)
 	/* 4. update item list GUI state */
 	itemlist_update_item (item);
 
-	/* 5. update notification statistics */
-	feedlist_reset_new_item_count ();
-
 	/* no duplicate state propagation to avoid copies 
 	   in the "Important" search folder */
 }
@@ -104,10 +101,7 @@ item_read_state_changed (itemPtr item, gboolean newState)
 	node = node_from_id (item->nodeId);
 	node_update_counters (node);
 
-	/* 6. update notification statistics */
-	feedlist_reset_new_item_count ();
-
-	/* 7. duplicate state propagation */
+	/* 6. duplicate state propagation */
 	if (item->validGuid) {
 		GSList *duplicates, *iter;
 
