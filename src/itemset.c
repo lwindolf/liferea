@@ -293,7 +293,7 @@ guint
 itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gboolean markAsRead)
 {
 	GList	*iter, *droppedItems = NULL, *items = NULL;
-	guint	max, length, toBeDropped, newCount = 0, flagCount = 0;
+	guint	i, max, length, toBeDropped, newCount = 0, flagCount = 0;
 
 	debug_start_measurement (DEBUG_UPDATE);
 	
@@ -348,20 +348,19 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	   merges with the same feed content */
 	if (length > max) {
 		debug2 (DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", length, max);
-		guint i = 0;
-		GList *iter, *copy;
-		iter = copy = g_list_copy (list);
-		while (iter) {
-			i++;
-			if (i > max) {
-				itemPtr item = (itemPtr) iter->data;
-				debug2 (DEBUG_UPDATE, "ignoring item nr %u (%s)...", i, item_get_title(item));
-				item_unload (item);
-				list = g_list_remove (list, item);
-			}
+
+		/* reach max element */
+		for(i = 0, iter = list; (i < max) && iter; ++i)        
 			iter = g_list_next (iter);
+
+		/* and remove all following elements */
+		while (iter) {
+			itemPtr item = (itemPtr) iter->data;
+			debug2 (DEBUG_UPDATE, "ignoring item nr %u (%s)...", ++i, item_get_title (item));
+			item_unload (item);
+			iter = g_list_next (iter);
+			list = g_list_remove (list, item);
 		}
-		g_list_free (copy);
 	}	 
  
 	/* 3. Merge received items to existing item set

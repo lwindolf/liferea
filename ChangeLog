@@ -1,4 +1,4 @@
-2013-12-28   Lars Windolf <lars.lindner@gmail.com>
+To be released
 
 	Version 1.11.0
 
@@ -18,6 +18,8 @@
 	  some of the node source implementations.
 	* Patch SF #224: Update to new libxml2 buffer API
 	  (Simon Kagedal Reimer)
+	* Patch SF #209: Avoid copying list in itemset_merge_items
+	  (kaloyan)
 
 	* Removing libindicate support (to be added as plugin maybe)
 	* Removing libnotify support (to be added as plugin maybe)
