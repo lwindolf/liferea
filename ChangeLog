@@ -16,6 +16,8 @@
 	  (patch by Rich Coe)
 	* Fixes incorrect new count reset handling in item_state.c and 
 	  some of the node source implementations.
+	* Patch SF #224: Update to new libxml2 buffer API
+	  (Simon Kagedal Reimer)
 
 	* Removing libindicate support (to be added as plugin maybe)
 	* Removing libnotify support (to be added as plugin maybe)
