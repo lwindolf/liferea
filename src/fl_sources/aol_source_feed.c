@@ -1,7 +1,7 @@
 /**
  * @file aol_source_feed.c  AOL reader feed subscription routines
  * 
- * Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2014 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -210,12 +210,6 @@ aol_feed_subscription_process_update_result (subscriptionPtr subscription, const
 		feed_get_subscription_type ()->process_update_result (subscription, result, flags);
 		return ; 
 	}
-	
-	/* FIXME: The following workaround ensure that the code below,
-	   that uses UI callbacks item_*_state_changed(), does not 
-	   reset the newCount of the feed list (see SF #2666478)
-	   by getting the newCount first and setting it again later. */
-	guint newCount = feedlist_get_new_item_count ();
 
 	xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
 	if (doc) {		
@@ -239,9 +233,6 @@ aol_feed_subscription_process_update_result (subscriptionPtr subscription, const
 		debug0 (DEBUG_UPDATE, "aol_feed_subscription_process_update_result(): Couldn't parse XML!");
 		g_warning ("aol_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
-
-	// FIXME: part 2 of the newCount workaround
-	feedlist_update_new_item_count (newCount);
 	
 	debug_end_measurement (DEBUG_UPDATE, "time taken to update statuses");
 }

@@ -167,11 +167,6 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 	if (!result->data)
 		return;
 
-	/* FIXME: We need a workaround to ensure that the code below,
-	   that uses UI callbacks item_*_state_changed(), does not 
-	   reset the newCount of the feed list (see SF #2666478)
-	   by getting the newCount first and setting it again later. */
-
 	xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
 	if (doc) {		
 		xmlNodePtr root = xmlDocGetRootElement (doc);
