@@ -23,7 +23,8 @@ To be released
 
 	* Removing libindicate support (to be added as plugin maybe)
 	* Removing libnotify support (to be added as plugin maybe)
-	* Removing tray icons support (to be added as plugin maybe)
+	* Removing build in tray icon support
+	* Added tray icon plugin
 
 	* Updated README on plugin contribution
 	* Updated Arabic translation (Khaled Hosny)
