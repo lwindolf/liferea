@@ -353,7 +353,7 @@ feedlist_get_new_item_count (void)
 	return (feedlist->priv->newCount > 0)?feedlist->priv->newCount:0;
 }
 
-void
+static void
 feedlist_update_new_item_count (guint addValue)
 {
 	feedlist->priv->newCount += addValue;
