@@ -282,7 +282,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 			liferea_shell_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
 
-			if (!feed->preventPopup)
+			if (!feed->preventPopup && newCount)
 				notification_node_has_new_items (node, feed->enforcePopup);
 		}
 

@@ -4,6 +4,8 @@ To be released
 	  (patch by Daniel Seither)
 	* Fixes SF #1096: missing installation of liferea.convert file
 	  (reported by stqn) 
+	* Fixes Redhat #947358: popup notification only for new items
+	  (patch by Fabrice Bellet)
 
 
 2014-01-13   Lars Windolf <lars.lindner@gmail.com>
