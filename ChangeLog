@@ -17,6 +17,8 @@ To be released
 	  (patch by Rich Coe)
 	* Fixes incorrect new count reset handling in item_state.c and 
 	  some of the node source implementations.
+	* Fixes SF #1096: missing installation of liferea.convert file
+	  (reported by stqn) 
 	* Patch SF #224: Update to new libxml2 buffer API
 	  (Simon Kagedal Reimer)
 	* Patch SF #209: Avoid copying list in itemset_merge_items
