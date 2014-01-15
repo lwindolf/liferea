@@ -33,9 +33,11 @@ gsettings_SCHEMAS = net.sf.liferea.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
+data_convertdir = $(datadir)/GConf/gsettings
+dist_data_convert_DATA = liferea.convert
+
 EXTRA_DIST = \
 	net.sf.liferea.gschema.xml.in \
-	liferea.convert \
 	po/liferea.pot \
 	$(desktop_in_files) \
 	$(desktop_DATA) \
