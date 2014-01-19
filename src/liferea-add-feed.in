@@ -20,4 +20,6 @@ if ! pgrep -x liferea >/dev/null 2>&1; then
 	exit 1
 fi
 
-@prefix@/bin/liferea --add-feed "$URL"
+NEWURL=`echo "$URL" | sed 's/feed\:https/https/'`
+
+@prefix@/bin/liferea --add-feed "$NEWURL"
