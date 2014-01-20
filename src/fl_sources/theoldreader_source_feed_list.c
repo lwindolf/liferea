@@ -111,63 +111,6 @@ theoldreader_source_opml_get_subnode_by_node (nodePtr node, const gchar *source)
 	return NULL;
 }
 
-/* subscription list merging functions */
-
-static void
-theoldreader_source_check_for_removal (nodePtr node, gpointer user_data)
-{
-	gchar	*expr = NULL;
-
-	if (IS_FEED (node)) {
-		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/string[@name='id'][. = 'feed/%s']", node->subscription->source);
-	} else if (IS_FOLDER (node)) {
-		node_foreach_child_data (node, theoldreader_source_check_for_removal, user_data);
-		expr = g_strdup_printf ("/object/list[@name='subscriptions']/object/list[@name='categories']/object[string='%s']", node->title);
-	} else {
-		g_warning ("theoldreader_source_check_for_removal(): This should never happen...");
-		return;
-	}
-	
-	if (!xpath_find ((xmlNodePtr)user_data, expr)) {
-		debug1 (DEBUG_UPDATE, "removing %s...", node_get_title (node));
-		feedlist_node_removed (node);
-	} else {
-		debug1 (DEBUG_UPDATE, "keeping %s...", node_get_title (node));
-	}
-	g_free (expr);
-}
-
-/* 
- * Find a node by the name under root or create it.
- */
-static nodePtr
-theoldreader_source_find_or_create_folder (const gchar *name, nodePtr root)
-{
-	nodePtr		folder = NULL;
-	GSList		*iter_parent;
-
-	/* find a node by the name under root */
-	iter_parent = root->children;
-	while (iter_parent) {
-		if (g_str_equal (name, node_get_title (iter_parent->data))) {
-			folder = (nodePtr)iter_parent->data;
-			break;
-		}
-		iter_parent = g_slist_next (iter_parent);
-	}
-	
-	/* if not found, create new folder */
-	if (!folder) {
-		folder = node_new (folder_get_node_type ());
-		node_set_title (folder, name);
-		node_set_parent (folder, root, -1);
-		feedlist_node_imported (folder);
-		subscription_update (folder->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-	}
-	
-	return folder;
-}
-
 /* JSON subscription list processing implementation */
 
 static void

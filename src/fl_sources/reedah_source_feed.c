@@ -1,7 +1,7 @@
 /**
  * @file theoldreader_source_feed.c  TheOldReader feed subscription routines
  * 
- * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2013-2014  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include "db.h"
 #include "feedlist.h"
 #include "item_state.h"
+#include "itemlist.h"
 #include "json.h"
 #include "json_api_mapper.h"
 #include "metadata.h"
@@ -56,87 +57,6 @@ reedah_source_migrate_node (nodePtr node)
 
 	/* cleanup */
 	itemset_free (itemset);
-}
-
-static itemPtr
-reedah_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache) 
-{
-	gpointer    ret = g_hash_table_lookup (cache, sourceId);
-	itemSetPtr  itemset;
-	int         num = g_hash_table_size (cache);
-	GList       *iter; 
-	itemPtr     item = NULL;
-
-	if (ret)
-		return item_load (GPOINTER_TO_UINT (ret));
-
-	/* skip the top 'num' entries */
-	itemset = node_get_itemset (node);
-	iter = itemset->ids;
-	while (num--) iter = g_list_next (iter);
-
-	for (; iter; iter = g_list_next (iter)) {
-		item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			/* save to cache */
-			g_hash_table_insert (cache, g_strdup(item->sourceId), (gpointer) item->id);
-			if (g_str_equal (item->sourceId, sourceId)) {
-				itemset_free (itemset);
-				return item;
-			}
-		}
-		item_unload (item);
-	}
-
-	g_warning ("Could not find item for %s!", sourceId);
-	itemset_free (itemset);
-	return NULL;
-}
-
-static void
-reedah_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
-{
-	ReedahSourcePtr gsource = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data ;
-	xmlNodePtr      xml;
-	nodePtr         node = subscription->node;
-	xmlChar         *id;
-	gboolean        read = FALSE;
-	gboolean        starred = FALSE;
-
-	xml = entry->children;
-	g_assert (xml);
-	g_assert (g_str_equal (xml->name, "id"));
-
-	id = xmlNodeGetContent (xml);
-
-	for (xml = entry->children; xml; xml = xml->next) {
-		if (g_str_equal (xml->name, "category")) {
-			xmlChar* label = xmlGetProp (xml, "label");
-			if (!label)
-				continue;
-
-			if (g_str_equal (label, "read"))
-				read = TRUE;
-			else if (g_str_equal(label, "starred")) 
-				starred = TRUE;
-
-			xmlFree (label);
-		}
-	}
-	
-	itemPtr item = reedah_source_load_item_from_sourceid (node, id, cache);
-	if (item && item->sourceId) {
-		if (g_str_equal (item->sourceId, id) && !reedah_source_edit_is_in_queue(gsource, id)) {
-			
-			if (item->readStatus != read)
-				item_read_state_changed (item, read);
-			if (item->flagStatus != starred) 
-				item_flag_state_changed (item, starred);
-		}
-	}
-	if (item)
-		item_unload (item);
-	xmlFree (id);
 }
 
 static void

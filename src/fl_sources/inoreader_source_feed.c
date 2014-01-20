@@ -87,23 +87,6 @@ inoreader_source_xml_unlink_node (xmlNodePtr node, gpointer data)
 	xmlFreeNode (node);
 }
 
-static void
-inoreader_source_set_shared_by (xmlNodePtr node, gpointer userdata) 
-{
-	itemPtr     item    = (itemPtr) userdata;
-	xmlChar     *value  = xmlNodeGetContent (node);
-	xmlChar     *apos   = strrchr (value, '\'');
-	gchar       *name;
-
-	if (!apos) return;
-	name = g_strndup (value, apos-value);
-
-	metadata_list_set (&item->metadata, "sharedby", name);
-	
-	g_free (name);
-	xmlFree (value);
-}
-
 static itemPtr
 inoreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache) 
 {

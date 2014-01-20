@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source_feed_list.c  tt-rss feed list handling routines.
  * 
- * Copyright (C) 2010-2013  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2014  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -78,7 +78,6 @@ static nodePtr
 ttrss_source_find_or_create_folder (const gchar *name, nodePtr parent)
 {
 	nodePtr		folder = NULL;
-	GSList		*iter_parent;
 
 	folder = feedlist_find_node (parent, FOLDER_BY_TITLE, name);
 	if (!folder) {
@@ -128,7 +127,6 @@ static void
 ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *title, gint64 id)
 {
 	nodePtr		node;
-	GSList		*iter;
 	gchar		*tmp;
 
 	/* check if node to be merged already exists */
@@ -184,7 +182,6 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 			JsonNode	*content = json_get_node (json_parser_get_root (parser), "content");
 			JsonArray	*array;
 			GList		*iter, *elements;
-			GSList		*siter;
 		
 			/* We expect something like this:
 			
@@ -329,7 +326,6 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonNode	*content = json_get_node (json_parser_get_root (parser), "content");
 			JsonNode	*categories, *items;
-			GSList		*siter;
 	
 			/* We expect something like this:
 

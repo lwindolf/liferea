@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.c  Tiny Tiny RSS feed list source support
  * 
- * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 
 #include "common.h"
 #include "debug.h"
+#include "db.h"
 #include "feedlist.h"
 #include "item_state.h"
 #include "json.h"
@@ -34,6 +35,8 @@
 #include "node.h"
 #include "subscription.h"
 #include "update.h"
+#include "ui/auth_dialog.h"
+#include "ui/ui_common.h"
 #include "ui/liferea_dialog.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
@@ -276,7 +279,7 @@ ttrss_source_folder_to_id_func (gpointer key, gpointer value, gpointer user_data
 static nodePtr
 ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 {
-	gchar			*username, *password, *source_uri;
+	gchar			*username, *password;
 	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
 	updateRequestPtr	request;
 	nodePtr			child = node_new (feed_get_node_type ());
