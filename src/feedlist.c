@@ -122,10 +122,10 @@ feedlist_class_init (FeedListClass *klass)
 		0, 
 		NULL,
 		NULL,
-		g_cclosure_marshal_VOID__STRING,
+		g_cclosure_marshal_VOID__POINTER,
 		G_TYPE_NONE,
 		1,
-		G_TYPE_STRING);
+		G_TYPE_POINTER);
 
 	g_type_class_add_private (object_class, sizeof(FeedListPrivate));
 }
@@ -639,7 +639,7 @@ feedlist_new_items (nodePtr node)
 	feed_list_node_update (node->id);
 	feedlist_schedule_save ();
 
-	g_signal_emit_by_name (feedlist, "new-items", node->title);
+	g_signal_emit_by_name (feedlist, "new-items", node);
 }
 
 /* This method is only to be used when exiting the program! */
