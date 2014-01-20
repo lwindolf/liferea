@@ -957,7 +957,7 @@ liferea_shell_setup_URL_receiver (void)
 }
 
 static const GtkActionEntry liferea_shell_action_entries[] = {
-	{"SubscriptionsMenu", NULL, N_("_Subscriptions")},
+	{"SubscriptionsMenu", NULL, N_("_Subscriptions"), NULL, NULL, NULL},
 	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>U", N_("Updates all subscriptions."),
 	 G_CALLBACK(on_menu_update_all)},
 	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
@@ -966,11 +966,11 @@ static const GtkActionEntry liferea_shell_action_entries[] = {
 	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_("Exports the feed list as OPML."), G_CALLBACK(on_menu_export)},
 	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_menu_quit)},
 
-	{"FeedMenu", NULL, N_("_Feed")},
+	{"FeedMenu", NULL, N_("_Feed"), NULL, NULL, NULL},
 	{"RemoveAllItems", "gtk-delete", N_("Remove _All Items"), NULL, N_("Removes all items of the currently selected feed."),
 	 G_CALLBACK(on_remove_items_activate)},
 
-	{"ItemMenu", NULL, N_("_Item")},
+	{"ItemMenu", NULL, N_("_Item"), NULL, NULL, NULL},
 	{"PrevReadItem", GTK_STOCK_GO_BACK, N_("Previous Item"), "<control><shift>N", NULL,	
 	 G_CALLBACK(on_prev_read_item_activate)},
 	{"NextReadItem", GTK_STOCK_GO_FORWARD, N_("Next Item"), NULL, NULL,	
@@ -981,22 +981,22 @@ static const GtkActionEntry liferea_shell_action_entries[] = {
 	{"NextUnreadItem", GTK_STOCK_JUMP_TO, N_("_Next Unread Item"), "<control>N", NULL,	
 	 G_CALLBACK(on_next_unread_item_activate)},
 
-	{"ViewMenu", NULL, N_("_View")},
+	{"ViewMenu", NULL, N_("_View"), NULL, NULL, NULL},
 	{"ZoomIn", "gtk-zoom-in", N_("_Increase Text Size"), "<control>plus", N_("Increases the text size of the item view."),
 	 G_CALLBACK(on_menu_zoomin_selected)},
 	{"ZoomOut", "gtk-zoom-out", N_("_Decrease Text Size"), "<control>minus", N_("Decreases the text size of the item view."),
 	 G_CALLBACK(on_menu_zoomout_selected)},
 
-	{"ToolsMenu", NULL, N_("_Tools")},
+	{"ToolsMenu", NULL, N_("_Tools"), NULL, NULL, NULL},
 	{"ShowUpdateMonitor", NULL, N_("_Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
 	 G_CALLBACK(on_menu_show_update_monitor)},
 	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
 
-	{"SearchMenu", NULL, N_("S_earch")},
+	{"SearchMenu", NULL, N_("S_earch"), NULL, NULL, NULL},
 	{"SearchFeeds", "gtk-find", N_("Search All Feeds..."), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
 
-	{"HelpMenu", NULL, N_("_Help")},
+	{"HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL},
 	{"ShowHelpContents", "gtk-help", N_("_Contents"), "F1", N_("View help for this application."), G_CALLBACK(on_topics_activate)},
 	{"ShowHelpQuickReference", NULL, N_("_Quick Reference"), NULL, N_("View a list of all Liferea shortcuts."),
 	 G_CALLBACK(on_quick_reference_activate)},
@@ -1015,7 +1015,7 @@ static const GtkRadioActionEntry liferea_shell_view_radio_entries[] = {
 
 static GtkToggleActionEntry liferea_shell_feedlist_toggle_entries[] = {
 	{"ReducedFeedList", NULL, N_("_Reduced Feed List"), NULL, N_("Hide feeds with no unread items."),
-	G_CALLBACK(on_feedlist_reduced_activate)}
+	G_CALLBACK(on_feedlist_reduced_activate), FALSE}
 };
 
 static const GtkActionEntry liferea_shell_add_action_entries[] = {
@@ -1056,9 +1056,9 @@ static const GtkActionEntry liferea_shell_item_action_entries[] = {
 
 static const GtkToggleActionEntry liferea_shell_action_toggle_entries[] = {
 	{"ToggleOfflineMode", NULL, N_("_Work Offline"), NULL, N_("This option allows you to disable subscription updating."),
-	 G_CALLBACK(on_work_offline_activate)},
+	 G_CALLBACK(on_work_offline_activate), FALSE},
 	{"FullScreen", NULL, N_("_Fullscreen"), "F11", N_("Browse at full screen"),
-	 G_CALLBACK(on_menu_fullscreen_activate)},
+	 G_CALLBACK(on_menu_fullscreen_activate), FALSE},
 };
 
 static const char *liferea_shell_ui_desc =
