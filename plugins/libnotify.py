@@ -30,11 +30,11 @@ class LibnotifyPlugin (GObject.Object, Liferea.ShellActivatable):
     def do_activate (self):
 	self.shell.props.feed_list.connect("new-items", self.on_new_items)
 
-    def on_new_items (self, widget, title = None):
+    def on_new_items (self, widget, node):
 	Notify.init('Liferea')
 	# FIXME: icon
         notification = Notify.Notification.new(
-          title,
+          node.title,
 	  # FIXME: add list of first 5 items...
           'Items',
           'dialog-information'
