@@ -1,4 +1,6 @@
-	To be released
+2014-02-24   Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.10.6
 
 	* Fixes SF #1135: liferea-add-feed doesn't process feed:https//
 	  (patch by Kevin Walke)
