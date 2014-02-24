@@ -2,6 +2,8 @@
 
 	* Fixes SF #1135: liferea-add-feed doesn't process feed:https//
 	  (patch by Kevin Walke)
+	* Fixes SF #1137: crash on startup in enclosure_list_view_load 
+	  (reported in Redhat #1048499, Fedora #214888)
 
 
 2014-01-15   Lars Windolf <lars.lindner@gmail.com>

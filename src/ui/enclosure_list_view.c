@@ -244,6 +244,11 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	GSList		*list, *filteredList;
 	guint		len;
 
+	/* FIXME: this is ugly, needed due to race between EnclosureListView
+	   setup by LifereaShell and last item selection */
+	if (!elv)
+		return;
+
 	/* cleanup old content */
 	gtk_tree_store_clear (elv->priv->treestore);
 	list = elv->priv->enclosures;
