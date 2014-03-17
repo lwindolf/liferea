@@ -241,6 +241,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	/* 4. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
+	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
 	g_get_current_time (&subscription->updateState->lastPoll);
 
 	// FIXME: use new-items signal in itemview class	

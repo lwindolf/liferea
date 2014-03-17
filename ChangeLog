@@ -25,6 +25,8 @@ To be released
 	  (Simon Kagedal Reimer)
 	* Patch SF #209: Avoid copying list in itemset_merge_items
 	  (kaloyan)
+	* Make Liferea use ETags and send If-None-Match
+	  (patch by Chris Siebenmann)
 
 	* Removing libindicate support (to be added as plugin maybe)
 	* Removing libnotify support (to be added as plugin maybe)
