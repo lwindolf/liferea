@@ -1,7 +1,7 @@
 /**
  * @file update.c  generic update request and state processing
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2014 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -72,6 +72,21 @@ update_state_set_lastmodified (updateStatePtr state, glong lastModified)
 }
 
 const gchar *
+update_state_get_etag (updateStatePtr state)
+{
+	return state->etag;
+}
+
+void
+update_state_set_etag (updateStatePtr state, const gchar *etag)
+{
+	g_free (state->etag);
+	state->etag = NULL;
+	if (etag)
+		state->etag = g_strdup(etag);
+}
+
+const gchar *
 update_state_get_cookies (updateStatePtr state)
 {
 	return state->cookies;
@@ -94,6 +109,7 @@ update_state_copy (updateStatePtr state)
 	newState = update_state_new ();
 	update_state_set_lastmodified (newState, update_state_get_lastmodified (state));
 	update_state_set_cookies (newState, update_state_get_cookies (state));
+	update_state_set_etag (newState, update_state_get_etag (state));
 	
 	return newState;
 }
@@ -105,6 +121,7 @@ update_state_free (updateStatePtr updateState)
 		return;
 
 	g_free (updateState->cookies);
+	g_free (updateState->etag);
 	g_free (updateState);
 }
 

@@ -242,6 +242,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
+	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
 	g_get_current_time (&subscription->updateState->lastPoll);
 	
 	itemview_update_node_info (subscription->node);

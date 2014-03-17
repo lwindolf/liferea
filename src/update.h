@@ -1,7 +1,7 @@
 /**
  * @file update.h  generic update request and state processing
  *
- * Copyright (C) 2003-2008 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2014 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -79,6 +79,7 @@ typedef struct updateState {
 	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
 	GTimeVal	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
 	gchar		*cookies;		/**< cookies to be used */	
+	gchar		*etag;			/**< ETag sent by the server */
 } *updateStatePtr;
 
 /** structure describing a HTTP update request */

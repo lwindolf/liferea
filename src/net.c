@@ -1,7 +1,7 @@
 /**
  * @file net.c  HTTP network access using libsoup
  *
- * Copyright (C) 2007-2009 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -77,6 +77,12 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 		}
 	}
 
+	/* Update ETag value */
+	tmp = soup_message_headers_get_one (msg->response_headers, "ETag");
+	if (tmp) {
+		job->result->updateState->etag = g_strdup(tmp);
+	}    
+
 	update_process_finished_job (job);
 }
 
@@ -135,16 +141,23 @@ network_process_request (const updateJobPtr const job)
 	}
 
 	/* Set the If-Modified-Since: header */
-	if (job->request->updateState && job->request->updateState->lastModified) {
+	if (job->request->updateState && update_state_get_lastmodified(job->request->updateState)) {
 		gchar *datestr;
 
-		date = soup_date_new_from_time_t (job->request->updateState->lastModified);
+		date = soup_date_new_from_time_t (update_state_get_lastmodified (job->request->updateState));
 		datestr = soup_date_to_string (date, SOUP_DATE_HTTP);
 		soup_message_headers_append (msg->request_headers,
 					     "If-Modified-Since",
 					     datestr);
 		g_free (datestr);
 		soup_date_free (date);
+	}
+
+	/* Set the If-None-Match: header */
+	if (job->request->updateState && update_state_get_etag (job->request->updateState)) {
+		soup_message_headers_append(msg->request_headers,
+					    "If-None-Match",
+					    update_state_get_etag (job->request->updateState));
 	}
 
 	/* Set the authentication */
