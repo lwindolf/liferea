@@ -132,6 +132,9 @@ updateStatePtr update_state_new (void);
 glong update_state_get_lastmodified (updateStatePtr state);
 void update_state_set_lastmodified (updateStatePtr state, glong lastmodified);
 
+const gchar * update_state_get_etag (updateStatePtr state);
+void update_state_set_etag (updateStatePtr state, const gchar *etag);
+
 const gchar * update_state_get_cookies (updateStatePtr state);
 void update_state_set_cookies (updateStatePtr state, const gchar *cookies);
 
