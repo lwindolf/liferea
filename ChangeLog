@@ -1,7 +1,11 @@
-	To be released
+2014-03-26   Lars Windolf <lars.lindner@gmail.com>
+
+	Version 1.10.8
 
 	* Fixes Github #13: Parsing errors not visible with dark themes
 	  (reported by Steve Kelly)
+	* Fixes SF #1137, #1142: startup race with LifereaHtmlView
+	  (reported by Yanko Kaneti)
 
 
 2014-03-17   Lars Windolf <lars.lindner@gmail.com>

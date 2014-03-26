@@ -301,6 +301,9 @@ void
 liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gchar *base)
 { 
 	const gchar	*baseURL = base;
+
+	if (!htmlview)
+		return;
 	
 	htmlview->priv->internal = TRUE;	/* enables special links */
 	
