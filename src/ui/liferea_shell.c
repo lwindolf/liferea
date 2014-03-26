@@ -1387,14 +1387,15 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 		g_free (id);
 
 		// FIXME: Move to item list view code
-		gint item_id;
+		// FIXME: Deactivated due to races causing crashes (see SF #1142, #1137)
+		/*gint item_id;
 		if (conf_get_int_value (LAST_ITEM_SELECTED, &item_id)) {
 			itemPtr item = db_item_load ((gulong)item_id);
 			if (item) {
 				itemview_select_item (item);
 				item_unload (item);
 			}
-		}
+		}*/
 	}
 		
 	/* 12. Connect network monitoring and set icon*/

@@ -21,6 +21,8 @@ To be released
 	  (reported by stqn) 
 	* Fixes SF #1135: liferea-add-feed doesn't process feed:https//
 	  (patch by Kevin Walke)
+	* Fixes SF #1137, #1142: startup race with LifereaHtmlView
+	  (reported by Yanko Kaneti)
 	* Fixes Github #13: Parsing errors not visible with dark themes
 	  (reported by Steve Kelly)
 	* Patch SF #224: Update to new libxml2 buffer API
