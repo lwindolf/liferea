@@ -263,6 +263,7 @@ hr.summary {
 	border-bottom:1px solid black;
 	margin:0;
 	background:#ffa;
+	color:black;
 }
 
 #commentFeedError {
