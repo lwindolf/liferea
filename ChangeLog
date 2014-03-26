@@ -1,3 +1,9 @@
+	To be released
+
+	* Fixes Github #13: Parsing errors not visible with dark themes
+	  (reported by Steve Kelly)
+
+
 2014-03-17   Lars Windolf <lars.lindner@gmail.com>
 
 	Version 1.10.7
