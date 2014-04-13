@@ -1,7 +1,7 @@
 /**
  * @file theoldreader_source_feed_list.c  TheOldReader feed list handling
  * 
- * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2013-2014  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -176,6 +176,8 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) subscription->node->data;
 
 	debug1 (DEBUG_UPDATE,"theoldreader_subscription_cb(): %s", result->data);
+
+	subscription->updateJob = NULL;
 	
 	// FIXME: the following code is very similar to ttrss!
 	if (result->data && result->httpstatus == 200) {

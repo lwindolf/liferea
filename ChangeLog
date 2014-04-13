@@ -2,6 +2,8 @@ To be released
 
 	* Fixes Github #19: non void function should return value
 	  (reported by kwm81)
+	* Fixes SF #1141: Liferea does not update feeds with TinyTinyRSS 
+	  (reported by Dominik Grafenhofer, denk_mal, Fabian Henze)
 
 
 2014-03-26   Lars Windolf <lars.lindner@gmail.com>
