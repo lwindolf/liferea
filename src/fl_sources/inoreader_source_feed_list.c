@@ -1,7 +1,7 @@
 /**
  * @file inoreader_source_feed_list.c  Inoreader handling routines.
  * 
- * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2013-2014  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,6 +120,8 @@ static void
 google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	InoreaderSourcePtr	source = (InoreaderSourcePtr) subscription->node->data;
+
+	subscription->updateJob = NULL;
 	
 	// FIXME: the following code is very similar to ttrss!
 	if (result->data && result->httpstatus == 200) {

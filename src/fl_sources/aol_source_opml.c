@@ -257,6 +257,8 @@ static void
 google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	AolSourcePtr	gsource = (AolSourcePtr) subscription->node->data;
+
+	subscription->updateJob = NULL;
 	
 	if (result->data) {
 		xmlDocPtr doc = xml_parse (result->data, result->size, NULL);

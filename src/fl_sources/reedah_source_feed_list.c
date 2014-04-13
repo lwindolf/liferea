@@ -1,7 +1,7 @@
 /**
  * @file reedah_source_feed_list.c  Reedah feed list handling routines
  * 
- * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2013-2014  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,6 +119,8 @@ static void
 reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	ReedahSourcePtr	source = (ReedahSourcePtr) subscription->node->data;
+
+	subscription->updateJob = NULL;
 	
 	// FIXME: the following code is very similar to ttrss!
 	if (result->data && result->httpstatus == 200) {

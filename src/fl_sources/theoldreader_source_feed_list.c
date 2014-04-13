@@ -1,7 +1,7 @@
 /**
  * @file theoldreader_source_feed_list.c  TheOldReader feed list handling
  * 
- * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2013-2014  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,6 +119,8 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) subscription->node->data;
 
 	debug1 (DEBUG_UPDATE,"theoldreader_subscription_cb(): %s", result->data);
+
+	subscription->updateJob = NULL;
 	
 	// FIXME: the following code is very similar to ttrss!
 	if (result->data && result->httpstatus == 200) {
@@ -197,93 +199,6 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 	if (!(flags & THEOLDREADER_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 }
-
-/** functions for an efficient updating mechanism */
-/*
-static void
-theoldreader_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata) 
-{
-	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) userdata;
-	xmlNodePtr      xmlNode;
-	xmlChar         *id, *newestItemTimestamp;
-	nodePtr         node = NULL; 
-	const gchar     *oldNewestItemTimestamp;
-
-	xmlNode = xpath_find (match, "./string[@name='id']");
-	id = xmlNodeGetContent (xmlNode); 
-
-	if (g_str_has_prefix (id, "feed/"))
-		node = theoldreader_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
-	else {
-		xmlFree (id);
-		return;
-	}
-
-	if (node == NULL) {
-		xmlFree (id);
-		return;
-	}
-
-	xmlNode = xpath_find (match, "./number[@name='newestItemTimestampUsec']");
-	newestItemTimestamp = xmlNodeGetContent (xmlNode);
-
-	oldNewestItemTimestamp = g_hash_table_lookup (gsource->lastTimestampMap, node->subscription->source);
-
-	if (!oldNewestItemTimestamp ||
-	    (newestItemTimestamp && 
-	     !g_str_equal (newestItemTimestamp, oldNewestItemTimestamp))) { 
-		debug3(DEBUG_UPDATE, "TheOldReaderSource: auto-updating %s "
-		       "[oldtimestamp%s, timestamp %s]", 
-		       id, oldNewestItemTimestamp, newestItemTimestamp);
-		g_hash_table_insert (gsource->lastTimestampMap,
-				    g_strdup (node->subscription->source), 
-				    g_strdup (newestItemTimestamp));
-				    
-		subscription_update (node->subscription, 0);
-	}
-
-	xmlFree (newestItemTimestamp);
-	xmlFree (id);
-}
-
-static void
-theoldreader_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
-{
-	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) userdata;
-	xmlDocPtr       doc;
-
-	if (!result->data) { 
-		debug0 (DEBUG_UPDATE, "TheOldReaderSource: Unable to get unread counts, this update is aborted.");
-		return;
-	}
-	doc = xml_parse (result->data, result->size, NULL);
-	if (!doc) {
-		debug0 (DEBUG_UPDATE, "TheOldReaderSource: The XML failed to parse, maybe the session has expired. (FIXME)");
-		return;
-	}
-
-	xpath_foreach_match (xmlDocGetRootElement (doc),
-			    "/object/list[@name='unreadcounts']/object", 
-			    theoldreader_source_opml_quick_update_helper, gsource);
-	
-	xmlFreeDoc (doc);
-}
-
-gboolean
-theoldreader_source_opml_quick_update (TheOldReaderSourcePtr source) 
-{
-	updateRequestPtr request = update_request_new ();
-	request->updateState = update_state_copy (source->root->subscription->updateState);
-	request->options = update_options_copy (source->root->subscription->updateOptions);
-	update_request_set_source (request, THEOLDREADER_READER_UNREAD_COUNTS_URL);
-	update_request_set_auth_value (request, source->authHeaderValue);
-
-	update_execute_request (source, request, theoldreader_source_opml_quick_update_cb,
-				source, 0);
-
-	return TRUE;
-}
-*/
 
 static void
 theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)

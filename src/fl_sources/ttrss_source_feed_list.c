@@ -174,6 +174,8 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
 
 	debug1 (DEBUG_UPDATE,"ttrss_subscription_cb(): %s", result->data);
+
+	subscription->updateJob = NULL;
 	
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();

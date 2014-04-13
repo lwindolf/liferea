@@ -246,6 +246,7 @@ ttrss_source_import (nodePtr node)
 {
 	opml_source_import (node);
 
+	node->subscription->updateInterval = -1;
 	node->subscription->type = &ttrssSourceSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) ttrss_source_new (node);
