@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes Github #19: non void function should return value
+	  (reported by kwm81)
+
+
 2014-03-26   Lars Windolf <lars.lindner@gmail.com>
 
 	Version 1.10.8
