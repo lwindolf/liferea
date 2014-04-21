@@ -356,7 +356,7 @@
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Subscription Properties</property>
-    <property name="resizable">False</property>
+    <property name="resizable">True</property>
     <property name="window_position">center</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
@@ -816,7 +816,7 @@
                                           <object class="GtkLabel" id="label174">
                                             <property name="visible">True</property>
                                             <property name="xalign">0</property>
-                                            <property name="label" translatable="yes">Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information.</property>
+                                            <property name="label" translatable="yes">Liferea can use external filter scripts in order to access feeds and directories in non-supported formats.</property>
                                             <property name="wrap">True</property>
                                           </object>
                                           <packing>
