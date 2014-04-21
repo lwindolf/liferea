@@ -4,6 +4,8 @@ To be released
 	  (reported by kwm81)
 	* Fixes SF #1141: Liferea does not update feeds with TinyTinyRSS 
 	  (reported by Dominik Grafenhofer, denk_mal, Fabian Henze)
+	* Fixes SF #1150: subscription prop/source: not all fields and 
+	  buttons visible (reported by David Smith)
 
 
 2014-03-26   Lars Windolf <lars.lindner@gmail.com>

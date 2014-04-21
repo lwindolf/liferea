@@ -356,7 +356,7 @@
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Subscription Properties</property>
-    <property name="resizable">False</property>
+    <property name="resizable">True</property>
     <property name="window_position">center</property>
     <property name="type_hint">dialog</property>
     <child internal-child="vbox">
