@@ -238,7 +238,6 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
 	
-	// FIXME: check for error response and warn user
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS subscribe result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
 	if (200 != result->httpstatus) {
@@ -258,19 +257,12 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 	ttrss_source_update (subscription->node->source->root);
 }
 
-static gboolean
-ttrss_source_folder_to_id_func (gpointer key, gpointer value, gpointer user_data)
-{
-	return (key == user_data);
-}
-
 static nodePtr
 ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 {
 	gchar			*username, *password;
 	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
 	updateRequestPtr	request;
-	nodePtr			child = node_new (feed_get_node_type ());
 	gint			categoryId = 0;
 
 	/* escape user and password for JSON call */
@@ -288,7 +280,9 @@ ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 	g_free (username);
 	g_free (password);
 
-	return child;
+	// FIXME: leaking subscription?
+
+	return NULL;
 }
 
 static void
@@ -296,10 +290,19 @@ ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer 
 {
 	nodePtr node = (nodePtr) userdata;
 
-	// FIXME: Check for error response and warn user
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS remove node result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
+	if (200 != result->httpstatus) {
+		ui_show_error_box (_("TinyTinyRSS HTTP API not reachable!"));
+		return;
+	}
+
 	/* We expect the following {"seq":0,"status":0,"content":{"status":"OK"}} */
+	// FIXME: poor mans matching
+	if (!strstr (result->data, "\"status\":0")) {
+		ui_show_error_box (_("TinyTinyRSS unsubscribing feed failed!"));
+		return;
+	}	
 
 	feedlist_node_removed (node);
 }
@@ -369,7 +372,6 @@ static void
 ui_ttrss_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
-
 	
 	dialog = liferea_dialog_new ("ttrss_source.ui", "ttrss_source_dialog");
 	
@@ -455,7 +457,7 @@ static struct nodeSourceType nst = {
 	.free                = ttrss_source_cleanup,
 	.item_set_flag       = ttrss_source_item_set_flag,
 	.item_mark_read      = ttrss_source_item_mark_read,
-	.add_folder          = NULL,	/* not supported by current tt-rss JSON API (v1.5) */
+	.add_folder          = NULL,	/* not supported by current tt-rss JSON API (v1.8) */
 	.add_subscription    = ttrss_source_add_subscription,
 	.remove_node         = ttrss_source_remove_node,
 	.convert_to_local    = NULL	/* FIXME: implement me to allow data migration from tt-rss! */
