@@ -228,24 +228,16 @@ theoldreader_source_import (nodePtr node)
 }
 
 static nodePtr
-theoldreader_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
-{ 
-	debug_enter ("theoldreader_source_add_subscription");
-	nodePtr child = node_new (feed_get_node_type ());
+theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription) 
+{
+	// FIXME: determine correct category from parent folder name
+	theoldreader_source_edit_add_subscription (node_source_root_from_node (root)->data, subscription->source);
 
-	debug0 (DEBUG_UPDATE, "TheOldReaderSource: Adding a new subscription"); 
-	node_set_data (child, feed_new ());
+	// FIXME: leaking subscription?
 
-	node_set_subscription (child, subscription);
-	child->subscription->type = node->source->type->feedSubscriptionType;
+	// FIXME: somehow the async subscribing doesn't cause the feed list to update
 	
-	node_set_title (child, _("New Subscription"));
-
-	theoldreader_source_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
-	
-	debug_exit ("theoldreader_source_add_subscription");
-	
-	return child;
+	return NULL;
 }
 
 static void

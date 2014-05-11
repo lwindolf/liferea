@@ -411,26 +411,7 @@ theoldreader_source_edit_mark_starred (TheOldReaderSourcePtr gsource, const gcha
 static void 
 update_subscription_list_callback(TheOldReaderSourcePtr gsource, TheOldReaderSourceActionPtr action, gboolean success) 
 {
-	if (success) { 
-		/*
-		 * It is possible that Google changed the name of the URL that
-		 * was sent to it. In that case, I need to recover the URL 
-		 * from the list. But a node with the old URL has already 
-		 * been created. Allow the subscription update call to fix that.
-		 */
-		GSList* cur = gsource->root->children ;
-		for(; cur; cur = g_slist_next (cur))  {
-			nodePtr node = (nodePtr) cur->data ; 
-			if (g_str_equal (node->subscription->source, action->feedUrl)) {
-				subscription_set_source (node->subscription, "");
-				feedlist_node_added (node);
-			}
-		}
-		
-		debug0 (DEBUG_UPDATE, "Subscription list was updated successful\n");
-		subscription_update (gsource->root->subscription, THEOLDREADER_SOURCE_UPDATE_ONLY_LIST);
-	} else 
-		debug0 (DEBUG_UPDATE, "Failed to update subscriptions\n");
+	subscription_update (gsource->root->subscription, THEOLDREADER_SOURCE_UPDATE_ONLY_LIST);
 }
 
 void 
