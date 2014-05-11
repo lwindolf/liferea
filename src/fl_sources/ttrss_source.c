@@ -50,8 +50,6 @@ ttrss_source_new (nodePtr node)
 	source->apiLevel = 0;
 	source->loginState = TTRSS_SOURCE_STATE_NONE;
 	source->categories = g_hash_table_new (g_direct_hash, g_direct_equal);
-	source->categoryToNode = g_hash_table_new (g_direct_hash, g_direct_equal);
-	source->nodeToCategory = g_hash_table_new (g_direct_hash, g_direct_equal);
 	
 	return source;
 }
@@ -65,8 +63,6 @@ ttrss_source_free (ttrssSourcePtr source)
 	update_job_cancel_by_owner (source);
 
 	g_hash_table_destroy (source->categories);
-	g_hash_table_destroy (source->categoryToNode);
-	g_hash_table_destroy (source->nodeToCategory);
 	g_free (source->session_id);
 	g_free (source);
 }
@@ -291,19 +287,13 @@ ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 	node_set_subscription (child, subscription);
 	feedlist_node_added (child);
 
-	/* determine category id */
-	if (child->parent != root) {
-		categoryId = GPOINTER_TO_INT (g_hash_table_find (source->nodeToCategory, ttrss_source_folder_to_id_func, child->parent));
-g_print("category=%d\n", categoryId);
-	}
-
 	/* escape user and password for JSON call */
 	username = g_strescape (root->subscription->updateOptions->username, NULL);
 	password = g_strescape (root->subscription->updateOptions->password, NULL);
 
 	request = update_request_new ();
 	request->options = update_options_copy (root->subscription->updateOptions);
-	// FIXME: determine correct category
+	// FIXME: determine correct category from parent folder name
 	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIBE, source->session_id, subscription->source, categoryId, username, password);
 
 	update_request_set_source (request, g_strdup_printf (TTRSS_URL, source->url));

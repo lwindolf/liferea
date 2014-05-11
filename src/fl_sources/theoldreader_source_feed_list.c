@@ -47,7 +47,9 @@ theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
 	gboolean	found = FALSE;
 
 	if (IS_FOLDER (node)) {
-		// FIXME: check folders too
+		/* Auto-remove folders if they do not have children */
+		if (!node->children)
+			feedlist_node_removed (node);
 
 		node_foreach_child_data (node, theoldreader_source_check_node_for_removal, user_data);
 	} else {
@@ -71,14 +73,13 @@ theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
 /* 
  * Find a node by the name under root or create it.
  * 
- * @param source	the source
  * @param name		Folder display name
  * @param parent	Parent folder or source root node
  *
  * @returns a valid nodePtr
  */
 static nodePtr
-theoldreader_source_find_or_create_folder (TheOldReaderSourcePtr source, const gchar *name, nodePtr parent)
+theoldreader_source_find_or_create_folder (const gchar *name, nodePtr parent)
 {
 	nodePtr		folder = NULL;
 
@@ -143,10 +144,10 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 		subscription_update_favicon (node->subscription);
 
+	} else {
+		debug2 (DEBUG_UPDATE, "updating folder for %s (%s)", title, url);
+		theoldreader_source_update_folder (source, node, folder);
 	}
-
-	debug2 (DEBUG_UPDATE, "updating folder for %s (%s)", title, url);
-	theoldreader_source_update_folder (source, node, folder);
 }
 
 /**
@@ -227,7 +228,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 					while (citer) {
 						const gchar *label = json_get_string ((JsonNode *)citer->data, "label");
 						if (label) {
-							folder = theoldreader_source_find_or_create_folder (source, label, source->root);
+							folder = theoldreader_source_find_or_create_folder (label, source->root);
 							break;
 						}
 						citer = g_list_next (citer);

@@ -41,6 +41,7 @@ To be released
 	* Removing build in tray icon support
 	* Added tray icon plugin
 	* Added category/folder support for TheOldReader
+	* Added folder auto-removal for TinyTinyRSS & TheOldReader
 
 	* Updated README on plugin contribution
 	* Updated Arabic translation (Khaled Hosny)

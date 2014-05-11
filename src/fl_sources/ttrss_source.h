@@ -36,8 +36,6 @@ typedef struct ttrssSource {
 	gint		loginState;	/**< The current login state */
 	gint		authFailures;	/**< Number of authentication failures */
 	GHashTable	*categories;	/**< Lookup hash for feed id to category id */
-	GHashTable	*categoryToNode;	/**< Lookup hash for category id to folder node id */
-	GHashTable	*nodeToCategory;	/**< Lookup hash for category id to folder node id */
 } *ttrssSourcePtr;
  
 enum { 
