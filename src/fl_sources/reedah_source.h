@@ -1,7 +1,7 @@
 /**
  * @file reedah_source.h  Reedah feed list source support
  * 
- * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -192,9 +192,6 @@ enum {
  * @returns Reedah source type implementation info.
  */
 nodeSourceTypePtr reedah_source_get_type (void);
-
-extern struct subscriptionType reedahSourceFeedSubscriptionType;
-extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 
 /**
  * Find a child node with the given feed source URL.

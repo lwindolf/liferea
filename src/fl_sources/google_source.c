@@ -138,7 +138,7 @@ static struct nodeSourceType nst = {
 nodeSourceTypePtr
 google_source_get_type (void)
 {
-	nst.subscriptionType = feed_get_subscription_type ();
+	nst.feedSubscriptionType = feed_get_subscription_type ();
 
 	return &nst;
 }

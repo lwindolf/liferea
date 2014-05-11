@@ -152,7 +152,4 @@ nodeSourceTypePtr ttrss_source_get_type (void);
 
 void ttrss_source_login (ttrssSourcePtr source, guint32 flags);
 
-extern struct subscriptionType ttrssSourceFeedSubscriptionType;
-extern struct subscriptionType ttrssSourceSubscriptionType;
-
 #endif

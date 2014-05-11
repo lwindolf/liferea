@@ -191,9 +191,6 @@ enum {
  */
 nodeSourceTypePtr theoldreader_source_get_type (void);
 
-extern struct subscriptionType theOldReaderSourceFeedSubscriptionType;
-extern struct subscriptionType theOldReaderSourceOpmlSubscriptionType;
-
 /**
  * Find a child node with the given feed source URL.
  *

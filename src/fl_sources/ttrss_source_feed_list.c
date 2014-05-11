@@ -84,7 +84,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 		node_set_data (node, feed_new ());
 		
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = &ttrssSourceFeedSubscriptionType;
+		node->subscription->type = source->root->source->type->feedSubscriptionType;
 	
 		/* Save tt-rss feed id which we need to fetch items... */
 		tmp = g_strdup_printf ("%" G_GINT64_FORMAT, id);

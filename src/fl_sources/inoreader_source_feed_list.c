@@ -120,7 +120,7 @@ inoreader_source_merge_feed (InoreaderSourcePtr source, const gchar *url, const 
 		node_set_data (node, feed_new ());
 		
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = &inoreaderSourceFeedSubscriptionType;
+		node->subscription->type = source->root->source->type->feedSubscriptionType;
 
 		/* Save Inoreader feed id which we need to fetch items... */
 		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "inoreader-feed-id", id);

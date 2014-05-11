@@ -329,6 +329,7 @@ static struct nodeSourceType nst = {
 	   "the source OPML document"),
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
 	NULL,
+	NULL,
 	opml_source_init,
 	opml_source_deinit,
 	ui_opml_source_get_source_url,
@@ -350,7 +351,7 @@ static struct nodeSourceType nst = {
 nodeSourceTypePtr
 opml_source_get_type (void)
 {
-	nst.subscriptionType = feed_get_subscription_type ();
+	nst.feedSubscriptionType = feed_get_subscription_type ();
 
 	return &nst;
 }
@@ -369,13 +370,8 @@ on_opml_source_selected (GtkDialog *dialog,
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new (node_source_get_node_type ());
 		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
-		node_source_new (node, opml_source_get_type ());
-		source = gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry")));
-		subscription = subscription_new (source, NULL, NULL);
-		subscription->type = &opmlSubscriptionType;
-		node_set_subscription (node, subscription);
+		node_source_new (node, opml_source_get_type (), gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry"))));
 		feedlist_node_added (node);
-		
 		opml_source_update (node);
 	}
 

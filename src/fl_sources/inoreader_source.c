@@ -223,7 +223,7 @@ inoreader_source_import (nodePtr node)
 	opml_source_import (node);
 	
 	node->subscription->updateInterval = -1;
-	node->subscription->type = &inoreaderSourceOpmlSubscriptionType;
+	node->subscription->type = node->source->type->sourceSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) inoreader_source_new (node);
 }
@@ -238,7 +238,7 @@ inoreader_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 	node_set_data (child, feed_new ());
 
 	node_set_subscription (child, subscription);
-	child->subscription->type = &inoreaderSourceFeedSubscriptionType;
+	child->subscription->type = node->source->type->feedSubscriptionType;
 	
 	node_set_title (child, _("New Subscription"));
 
@@ -279,20 +279,14 @@ on_inoreader_source_selected (GtkDialog *dialog,
                            gpointer user_data) 
 {
 	nodePtr		node;
-	subscriptionPtr	subscription;
 
 	if (response_id == GTK_RESPONSE_OK) {
-		subscription = subscription_new ("http://www.inoreader.com/reader", NULL, NULL);
 		node = node_new (node_source_get_node_type ());
-		node_set_title (node, inoreader_source_get_type ()->name);
-		node_source_new (node, inoreader_source_get_type ());
-		node_set_subscription (node, subscription);
+		node_source_new (node, inoreader_source_get_type (), "http://www.inoreader.com/reader");
 
-		subscription_set_auth_info (subscription,
+		subscription_set_auth_info (node->subscription,
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
-
-		subscription->type = &inoreaderSourceOpmlSubscriptionType ; 
 
 		node->data = inoreader_source_new (node);
 		feedlist_node_added (node);
@@ -353,6 +347,9 @@ inoreader_source_convert_to_local (nodePtr node)
 
 /* node source type definition */
 
+extern struct subscriptionType inoreaderSourceFeedSubscriptionType;
+extern struct subscriptionType inoreaderSourceOpmlSubscriptionType;
+
 static struct nodeSourceType nst = {
 	.id                  = "fl_inoreader",
 	.name                = N_("InoReader"),
@@ -362,7 +359,8 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
-	.subscriptionType    = &inoreaderSourceFeedSubscriptionType,
+	.feedSubscriptionType = &inoreaderSourceFeedSubscriptionType,
+	.sourceSubscriptionType = &inoreaderSourceOpmlSubscriptionType,
 	.source_type_init    = inoreader_source_init,
 	.source_type_deinit  = inoreader_source_deinit,
 	.source_new          = ui_inoreader_source_get_account_info,

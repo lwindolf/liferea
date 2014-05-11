@@ -122,7 +122,7 @@ node_source_setup_root (void)
 }
 
 static void
-node_source_set_subscription_type (nodePtr folder, subscriptionTypePtr type)
+node_source_set_feed_subscription_type (nodePtr folder, subscriptionTypePtr type)
 {
 	GSList *iter;
 
@@ -133,7 +133,7 @@ node_source_set_subscription_type (nodePtr folder, subscriptionTypePtr type)
 			node->subscription->type = type;
 
 		/* Recurse for hierarchic nodes... */
-		node_source_set_subscription_type (node, type);
+		node_source_set_feed_subscription_type (node, type);
 	}
 }
 
@@ -170,13 +170,13 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		
 		node->available = TRUE;
 		node->source = NULL;
-		node_source_new (node, type);
+		node_source_new (node, type, NULL);
 		node_set_subscription (node, subscription_import (xml, trusted));
 	
 		type->source_import (node);
 
 		/* Set subscription type for all child nodes imported */
-		node_source_set_subscription_type (node, type->subscriptionType);
+		node_source_set_feed_subscription_type (node, type->feedSubscriptionType);
 
 		if (!strcmp (typeStr, "fl_bloglines")) {
 			g_warning ("Removing obsolete Bloglines subscription.");
@@ -210,12 +210,24 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 }
 
 void
-node_source_new (nodePtr node, nodeSourceTypePtr type)
+node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
 { 
+	subscriptionPtr	subscription;
+
 	g_assert (NULL == node->source);
+
 	node->source = g_new0 (struct nodeSource, 1);
 	node->source->root = node;
 	node->source->type = type;
+
+	node_set_title (node, type->name);
+
+	if (url) {
+		subscription = subscription_new ("http://www.reedah.com/reader", NULL, NULL);
+		node_set_subscription (node, subscription);
+
+		subscription->type = node->source->type->sourceSubscriptionType;
+	}
 }
 
 /* source instance creation dialog */

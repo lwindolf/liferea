@@ -67,7 +67,11 @@ typedef struct nodeSourceType {
 	const gchar	*description;	/**< more detailed source type description (up to some sentences) */
 	gulong		capabilities;	/**< bitmask of feed list source capabilities */
 
-	subscriptionTypePtr	subscriptionType;	/* the subscription type for all child nodes that are subscriptions */
+	/** The subscription type for all child nodes that are subscriptions */
+	subscriptionTypePtr	feedSubscriptionType;
+
+	/** The subscription type for the source itself (can be NULL) */
+	subscriptionTypePtr	sourceSubscriptionType;
 
 	/* source type loading and unloading methods */
 	void		(*source_type_init)(void);
@@ -217,12 +221,15 @@ nodePtr node_source_setup_root (void);
 /**
  * Creates a new source and assigns it to the given new node. 
  * To be used to prepare a source node before adding it to the 
- * feed list.
+ * feed list. This method takes care of setting the proper source
+ * subscription type and setting up the subscription if url != NULL.
+ * The caller needs set additional auth info for the subscription.
  *
  * @param node			a newly created node
  * @param nodeSourceType	the node source type
+ * @param url			subscription URL
  */
-void node_source_new (nodePtr node, nodeSourceTypePtr nodeSourceType);
+void node_source_new (nodePtr node, nodeSourceTypePtr nodeSourceType, const gchar *url);
 
 /**
  * Force the source to update its subscription list and

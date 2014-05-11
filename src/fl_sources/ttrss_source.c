@@ -223,31 +223,14 @@ ttrss_source_init (void)
 static void ttrss_source_deinit (void) { }
 
 static void
-ttrss_source_set_subscription_type (nodePtr folder)
-{
-	GSList *iter;
-
-	for (iter = folder->children; iter; iter = g_slist_next(iter)) {
-		nodePtr node = (nodePtr) iter->data;
-
-		if (node->subscription)
-			node->subscription->type = &ttrssSourceFeedSubscriptionType;
-
-		ttrss_source_set_subscription_type (node);
-	}
-}
-
-static void
 ttrss_source_import (nodePtr node)
 {
 	opml_source_import (node);
 
 	node->subscription->updateInterval = -1;
-	node->subscription->type = &ttrssSourceSubscriptionType;
+	node->subscription->type = node->source->type->sourceSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) ttrss_source_new (node);
-
-	ttrss_source_set_subscription_type (node);
 }
 
 static void
@@ -355,28 +338,25 @@ on_ttrss_source_selected (GtkDialog *dialog,
 {
 	if (response_id == GTK_RESPONSE_OK) {
 		nodePtr		node;
-		subscriptionPtr subscription = subscription_new ("", NULL, NULL);
+
+		node = node_new (node_source_get_node_type ());
+		node_source_new (node, ttrss_source_get_type (), "");
 		
 		/* This is a bit ugly: we need to prevent the tt-rss base
 		   URL from being lost by unwanted permanent redirects on
 		   the getFeeds call, so we save it as the homepage meta
 		   data value... */
-		metadata_list_set (&subscription->metadata, "ttrss-url", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))));
-
-		node = node_new (node_source_get_node_type ());
-		node_set_title (node, ttrss_source_get_type()->name);
-		node_source_new (node, ttrss_source_get_type ());
-		node_set_subscription (node, subscription);
+		metadata_list_set (&node->subscription->metadata, "ttrss-url", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))));
 		
-		subscription_set_auth_info (subscription,
+		subscription_set_auth_info (node->subscription,
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
-		subscription->type = &ttrssSourceSubscriptionType;		
 
 		node->data = (gpointer)ttrss_source_new (node);
 		feedlist_node_added (node);
 		ttrss_source_update (node);
-		db_node_update (node);
+
+		db_node_update (node);	/* because of metadate_list_set() above */
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
@@ -447,6 +427,9 @@ ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 
 /* node source type definition */
 
+extern struct subscriptionType ttrssSourceFeedSubscriptionType;
+extern struct subscriptionType ttrssSourceSubscriptionType;
+
 static struct nodeSourceType nst = {
 	.id                  = "fl_ttrss",
 	.name                = N_("Tiny Tiny RSS"),
@@ -455,7 +438,8 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED,
-	.subscriptionType    = &ttrssSourceFeedSubscriptionType,
+	.feedSubscriptionType = &ttrssSourceFeedSubscriptionType,
+	.sourceSubscriptionType = &ttrssSourceSubscriptionType,
 	.source_type_init    = ttrss_source_init,
 	.source_type_deinit  = ttrss_source_deinit,
 	.source_new          = ui_ttrss_source_get_account_info,

@@ -88,7 +88,7 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 		node_set_data (node, feed_new ());
 		
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = &reedahSourceFeedSubscriptionType;
+		node->subscription->type = source->root->source->type->feedSubscriptionType;
 
 		/* Save Reedah feed id which we need to fetch items... */
 		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "reedah-feed-id", id);

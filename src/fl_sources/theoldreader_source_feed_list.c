@@ -83,7 +83,7 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 		node_set_data (node, feed_new ());
 		
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
-		node->subscription->type = &theOldReaderSourceFeedSubscriptionType;
+		node->subscription->type = source->root->source->type->feedSubscriptionType;
 	
 		/* Save TheOldReader feed id which we need to fetch items... */
 		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);

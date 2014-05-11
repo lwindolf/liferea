@@ -193,9 +193,6 @@ enum {
  */
 nodeSourceTypePtr inoreader_source_get_type (void);
 
-extern struct subscriptionType inoreaderSourceFeedSubscriptionType;
-extern struct subscriptionType inoreaderSourceOpmlSubscriptionType;
-
 /**
  * Find a child node with the given feed source URL.
  *

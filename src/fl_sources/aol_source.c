@@ -268,14 +268,9 @@ aol_source_get_account_info (void)
 {
 	/* We do not need credentials as this will be handled by OAuth2 during login */
 	nodePtr		node;
-	subscriptionPtr	subscription;
 
-	subscription = subscription_new ("http://reader.aol.com/", NULL, NULL);
 	node = node_new (node_source_get_node_type ());
-	node_set_title (node, aol_source_get_type ()->name);
-	node_source_new (node, aol_source_get_type ());
-	node_set_subscription (node, subscription);
-	subscription->type = &aolSourceOpmlSubscriptionType ; 
+	node_source_new (node, aol_source_get_type (), "http://reader.aol.com/");
 
 	node->data = aol_source_new (node);
 	feedlist_node_added (node);
@@ -331,7 +326,8 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
-	.subscriptionType    = &aolSourceFeedSubscriptionType,
+	.feedSubscriptionType = &aolSourceFeedSubscriptionType,
+	.sourceSubscriptionType = &aolSourceOpmlSubscriptionType,
 	.source_type_init    = aol_source_init,
 	.source_type_deinit  = aol_source_deinit,
 	.source_new          = aol_source_get_account_info,
