@@ -75,42 +75,38 @@ reedah_source_opml_get_subnode_by_node (nodePtr node, const gchar *source)
 /* subscription list merging functions */
 
 static void
-reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar *title, const gchar *id)
+reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar *title, const gchar *id, nodePtr folder)
 {
 	nodePtr	node;
 	GSList	*iter;
 
-	/* check if node to be merged already exists */
-	iter = source->root->children;
-	while (iter) {
-		node = (nodePtr)iter->data;
-		if (g_str_equal (node->subscription->source, url))
-			return;
-		iter = g_slist_next (iter);
+	node = feedlist_find_node (source->root, NODE_BY_URL, url);
+	if (!node) {
+		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
+		node = node_new (feed_get_node_type ());
+		node_set_title (node, title);
+		node_set_data (node, feed_new ());
+		
+		node_set_subscription (node, subscription_new (url, NULL, NULL));
+		node->subscription->type = &reedahSourceFeedSubscriptionType;
+
+		/* Save Reedah feed id which we need to fetch items... */
+		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "reedah-feed-id", id);
+		db_subscription_update (node->subscription);
+
+		node_set_parent (node, source->root, -1);
+		feedlist_node_imported (node);
+		
+		/**
+		 * @todo mark the ones as read immediately after this is done
+		 * the feed as retrieved by this has the read and unread
+		 * status inherently.
+		 */
+		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+		subscription_update_favicon (node->subscription);
+	} else {
+		node_source_update_folder (node, folder);
 	}
-
-	debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
-	node = node_new (feed_get_node_type ());
-	node_set_title (node, title);
-	node_set_data (node, feed_new ());
-		
-	node_set_subscription (node, subscription_new (url, NULL, NULL));
-	node->subscription->type = &reedahSourceFeedSubscriptionType;
-
-	/* Save Reedah feed id which we need to fetch items... */
-	node->subscription->metadata = metadata_list_append (node->subscription->metadata, "reedah-feed-id", id);
-	db_subscription_update (node->subscription);
-
-	node_set_parent (node, source->root, -1);
-	feedlist_node_imported (node);
-		
-	/**
-	 * @todo mark the ones as read immediately after this is done
-	 * the feed as retrieved by this has the read and unread
-	 * status inherently.
-	 */
-	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-	subscription_update_favicon (node->subscription);
 }
 
 /* OPML subscription type implementation */
@@ -153,7 +149,7 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 					reedah_source_merge_feed (source, 
 					                          json_get_string (node, "id") + 5,	// FIXME: Unescape string!
 					                          json_get_string (node, "title"),
-					                          json_get_string (node, "id"));
+					                          json_get_string (node, "id"), NULL);
 				}
 				iter = g_list_next (iter);
 			}
@@ -186,7 +182,6 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 			
 			opml_source_export (subscription->node);	/* save new feeds to feed list */				   
 			subscription->node->available = TRUE;			
-			//return;
 		} else {
 			g_warning ("Invalid JSON returned on Reedah feed list request! >>>%s<<<", result->data);
 		}
