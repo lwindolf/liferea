@@ -40,42 +40,113 @@
 #include "fl_sources/theoldreader_source_edit.h"
 
 static void
-theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id)
+theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
+{
+	JsonArray	*array = (JsonArray *)user_data;
+	GList		*iter, *elements;
+	gboolean	found = FALSE;
+
+	if (IS_FOLDER (node)) {
+		// FIXME: check folders too
+
+		node_foreach_child_data (node, theoldreader_source_check_node_for_removal, user_data);
+	} else {
+		elements = iter = json_array_get_elements (array);
+		while (iter) {
+			JsonNode *json_node = (JsonNode *)iter->data;
+			if (g_str_equal (node->subscription->source, json_get_string (json_node, "url"))) {
+				debug1 (DEBUG_UPDATE, "node: %s", node->subscription->source);
+				found = TRUE;
+				break;
+			}
+			iter = g_list_next (iter);
+		}
+		g_list_free (elements);
+
+		if (!found)			
+			feedlist_node_removed (node);
+	}				
+}
+
+/* 
+ * Find a node by the name under root or create it.
+ * 
+ * @param source	the source
+ * @param name		Folder display name
+ * @param parent	Parent folder or source root node
+ *
+ * @returns a valid nodePtr
+ */
+static nodePtr
+theoldreader_source_find_or_create_folder (TheOldReaderSourcePtr source, const gchar *name, nodePtr parent)
+{
+	nodePtr		folder = NULL;
+
+	folder = feedlist_find_node (parent, FOLDER_BY_TITLE, name);
+	if (!folder) {
+		folder = node_new (folder_get_node_type ());
+		node_set_title (folder, name);
+		node_set_parent (folder, parent, -1);
+		feedlist_node_imported (folder);
+		subscription_update (folder->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+	}
+	
+	return folder;
+}
+
+/* 
+ * Check if folder of a node changed in TheOldReader and move node to the correct folder.
+ */
+static void
+theoldreader_source_update_folder (TheOldReaderSourcePtr source, nodePtr node, nodePtr folder)
+{
+	if (!folder)
+		folder = source->root;
+
+	if (node->parent != folder) {
+		debug2 (DEBUG_UPDATE, "TheOldReader Moving node \"%s\" to folder \"%s\"", node->title, folder->title);
+		node_reparent (node, folder);
+	}
+}
+
+static void
+theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id, nodePtr folder)
 {
 	nodePtr	node;
 	GSList	*iter;
 
 	/* check if node to be merged already exists */
-	iter = source->root->children;
-	while (iter) {
-		node = (nodePtr)iter->data;
-		if (g_str_equal (node->subscription->source, url))
-			return;
-		iter = g_slist_next (iter);
+	node = feedlist_find_node (source->root, NODE_BY_URL, url);
+
+	if (!node) {
+		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
+		node = node_new (feed_get_node_type ());
+		node_set_title (node, title);
+		node_set_data (node, feed_new ());
+		
+		node_set_subscription (node, subscription_new (url, NULL, NULL));
+		node->subscription->type = &theOldReaderSourceFeedSubscriptionType;
+	
+		/* Save TheOldReader feed id which we need to fetch items... */
+		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);
+
+		db_subscription_update (node->subscription);
+	
+		node_set_parent (node, folder?folder:source->root, -1);
+		feedlist_node_imported (node);
+		
+		/**
+		 * @todo mark the ones as read immediately after this is done
+		 * the feed as retrieved by this has the read and unread
+		 * status inherently.
+		 */
+		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+		subscription_update_favicon (node->subscription);
+
 	}
-	
-	debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
-	node = node_new (feed_get_node_type ());
-	node_set_title (node, title);
-	node_set_data (node, feed_new ());
-		
-	node_set_subscription (node, subscription_new (url, NULL, NULL));
-	node->subscription->type = &theOldReaderSourceFeedSubscriptionType;
-	
-	/* Save TheOldReader feed id which we need to fetch items... */
-	node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);
-	db_subscription_update (node->subscription);
-	
-	node_set_parent (node, source->root, -1);
-	feedlist_node_imported (node);
-		
-	/**
-	 * @todo mark the ones as read immediately after this is done
-	 * the feed as retrieved by this has the read and unread
-	 * status inherently.
-	 */
-	subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-	subscription_update_favicon (node->subscription);
+
+	debug2 (DEBUG_UPDATE, "updating folder for %s (%s)", title, url);
+	theoldreader_source_update_folder (source, node, folder);
 }
 
 /**
@@ -128,14 +199,14 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
-			GList		*iter, *elements;
+			GList		*iter, *elements, *citer, *celements;
 			GSList		*siter;
-		
+
 			/* We expect something like this:
 
 			   [{"id":"feed/51d49b79d1716c7b18000025",
                              "title":"LZone",
-                             "categories":[],
+                             "categories":[{"id":"user/-/label/myfolder","label":"myfolder"}],
                              "sortid":"51d49b79d1716c7b18000025",
                              "firstitemmsec":"1371403150181",
                              "url":"http://lzone.de/rss.xml",
@@ -146,46 +217,43 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 			elements = iter = json_array_get_elements (array);
 			/* Add all new nodes we find */
 			while (iter) {
-				JsonNode *node = (JsonNode *)iter->data;
+				JsonNode *categories, *node = (JsonNode *)iter->data;
+				nodePtr folder = NULL;
+
+				/* Check for categories, if there use first one as folder */
+				categories = json_get_node (node, "categories");
+				if (categories && JSON_NODE_TYPE (categories) == JSON_NODE_ARRAY) {
+					citer = celements = json_array_get_elements (json_node_get_array (categories));
+					while (citer) {
+						const gchar *label = json_get_string ((JsonNode *)citer->data, "label");
+						if (label) {
+							folder = theoldreader_source_find_or_create_folder (source, label, source->root);
+							break;
+						}
+						citer = g_list_next (citer);
+					}
+					g_list_free (celements);
+				}
 				
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "url")) {
 					theoldreader_source_merge_feed (source, 
 					                                json_get_string (node, "url"),
 					                                json_get_string (node, "title"),
-					                                json_get_string (node, "id"));
+					                                json_get_string (node, "id"),
+									folder);
 				}
 				iter = g_list_next (iter);
 			}
 			g_list_free (elements);
 
 			/* Remove old nodes we cannot find anymore */
-			siter = source->root->children;
-			while (siter) {
-				nodePtr node = (nodePtr)siter->data;
-				gboolean found = FALSE;
-				
-				elements = iter = json_array_get_elements (array);
-				while (iter) {
-					JsonNode *json_node = (JsonNode *)iter->data;
-					if (g_str_equal (node->subscription->source, json_get_string (json_node, "url"))) {
-						debug1 (DEBUG_UPDATE, "node: %s", node->subscription->source);
-						found = TRUE;
-						break;
-					}
-					iter = g_list_next (iter);
-				}
-				g_list_free (elements);
-
-				if (!found)			
-					feedlist_node_removed (node);
-				
-				siter = g_slist_next (siter);
-			}
+			node_foreach_child_data (source->root, theoldreader_source_check_node_for_removal, array);
 			
-			opml_source_export (subscription->node);	/* save new feeds to feed list */				   
+			/* Save new subscription tree to OPML cache file */
+			opml_source_export (subscription->node);
+
 			subscription->node->available = TRUE;			
-			//return;
 		} else {
 			g_warning ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
 		}

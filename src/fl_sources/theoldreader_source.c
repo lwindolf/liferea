@@ -25,8 +25,6 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
-#include <string.h>
-#include <libxml/xpath.h>
 
 #include "common.h"
 #include "debug.h"
@@ -36,7 +34,6 @@
 #include "node.h"
 #include "subscription.h"
 #include "update.h"
-#include "xml.h"
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
 #include "fl_sources/node_source.h"

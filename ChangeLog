@@ -40,6 +40,7 @@ To be released
 	* Removing libnotify support (to be added as plugin maybe)
 	* Removing build in tray icon support
 	* Added tray icon plugin
+	* Added category/folder support for TheOldReader
 
 	* Updated README on plugin contribution
 	* Updated Arabic translation (Khaled Hosny)
