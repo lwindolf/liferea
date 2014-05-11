@@ -1,7 +1,7 @@
 /**
  * @file node_source.h  generic node source interface
  * 
- * Copyright (C) 2005-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -268,6 +268,31 @@ void node_source_remove_node (nodePtr node, nodePtr child);
  * @returns a new node representing the new folder
  */
 nodePtr node_source_add_folder (nodePtr node, const gchar *title);
+
+/**
+ * Called to update a nodes folder. If current folder != given folder 
+ * the node will be reparented.
+ *
+ * @param node		any node
+ * @param folder	the target folder
+ */
+void node_source_update_folder (nodePtr node, nodePtr folder);
+
+/* 
+ * Find a folder by the name under parent or create it. 
+ * 
+ * If a node source doesn't provide ids the category display name should be 
+ * used as id. The worst thing happening then is to evenly named categories 
+ * being merged into one (which the user can easily workaround by renaming 
+ * on the remote side).
+ * 
+ * @param parent	Parent folder (or source root node)
+ * @param id		Folder/category id (or NULL)
+ * @param name		Folder display name
+ *
+ * @returns a valid nodePtr
+ */
+nodePtr node_source_find_or_create_folder (nodePtr parent, const gchar *id, const gchar *label);
 
 /**
  * Called when the read state of an item changes.

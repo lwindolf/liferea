@@ -70,55 +70,12 @@ theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
 	}				
 }
 
-/* 
- * Find a node by the name under root or create it.
- * 
- * @param name		Folder display name
- * @param parent	Parent folder or source root node
- *
- * @returns a valid nodePtr
- */
-static nodePtr
-theoldreader_source_find_or_create_folder (const gchar *name, nodePtr parent)
-{
-	nodePtr		folder = NULL;
-
-	folder = feedlist_find_node (parent, FOLDER_BY_TITLE, name);
-	if (!folder) {
-		folder = node_new (folder_get_node_type ());
-		node_set_title (folder, name);
-		node_set_parent (folder, parent, -1);
-		feedlist_node_imported (folder);
-		subscription_update (folder->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-	}
-	
-	return folder;
-}
-
-/* 
- * Check if folder of a node changed in TheOldReader and move node to the correct folder.
- */
-static void
-theoldreader_source_update_folder (TheOldReaderSourcePtr source, nodePtr node, nodePtr folder)
-{
-	if (!folder)
-		folder = source->root;
-
-	if (node->parent != folder) {
-		debug2 (DEBUG_UPDATE, "TheOldReader Moving node \"%s\" to folder \"%s\"", node->title, folder->title);
-		node_reparent (node, folder);
-	}
-}
-
 static void
 theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id, nodePtr folder)
 {
 	nodePtr	node;
-	GSList	*iter;
 
-	/* check if node to be merged already exists */
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
-
 	if (!node) {
 		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new (feed_get_node_type ());
@@ -145,8 +102,7 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 		subscription_update_favicon (node->subscription);
 
 	} else {
-		debug2 (DEBUG_UPDATE, "updating folder for %s (%s)", title, url);
-		theoldreader_source_update_folder (source, node, folder);
+		node_source_update_folder (node, folder);
 	}
 }
 
@@ -228,7 +184,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 					while (citer) {
 						const gchar *label = json_get_string ((JsonNode *)citer->data, "label");
 						if (label) {
-							folder = theoldreader_source_find_or_create_folder (label, source->root);
+							folder = node_source_find_or_create_folder (source->root, label, label);
 							break;
 						}
 						citer = g_list_next (citer);

@@ -1,7 +1,7 @@
 /**
  * @file node_source.c  generic node source provider implementation
  * 
- * Copyright (C) 2005-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -342,6 +342,41 @@ node_source_add_folder (nodePtr node, const gchar *title)
 		g_warning ("node_source_add_folder(): called on node source type that doesn't implement me!");
 
 	return NULL;
+}
+
+void
+node_source_update_folder (nodePtr node, nodePtr folder)
+{
+	if (!folder)
+		folder = node->source->root;
+
+	if (node->parent != folder) {
+		debug2 (DEBUG_UPDATE, "Moving node \"%s\" to folder \"%s\"", node->title, folder->title);
+		node_reparent (node, folder);
+	}
+}
+
+nodePtr
+node_source_find_or_create_folder (nodePtr parent, const gchar *id, const gchar *name)
+{
+	nodePtr		folder = NULL;
+	gchar		*folderNodeId;
+
+	if (!id)
+		return parent->source->root;	/* No id means folder is root node */
+
+	folderNodeId = g_strdup_printf ("%s-folder-%s", NODE_SOURCE_TYPE (parent->source->root)->id, id);
+	folder = node_from_id (folderNodeId);
+	if (!folder) {
+		folder = node_new (folder_get_node_type ());
+		node_set_id (folder, folderNodeId);
+		node_set_title (folder, name);
+		node_set_parent (folder, parent, -1);
+		feedlist_node_imported (folder);
+		subscription_update (folder->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+	}
+
+	return folder;
 }
 
 void

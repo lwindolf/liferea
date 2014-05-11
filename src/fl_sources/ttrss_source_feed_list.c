@@ -68,55 +68,6 @@ ttrss_source_check_node_for_removal (nodePtr node, gpointer user_data)
 	}				
 }
 
-/* 
- * Find a folder by the name under parent or create it.
- * 
- * @param source	the source
- * @param id		Folder/category id
- * @param name		Folder display name
- * @param parent	Parent folder or source root node
- *
- * @returns a valid nodePtr
- */
-static nodePtr
-ttrss_source_find_or_create_folder (ttrssSourcePtr source, const gchar *id, const gchar *name, nodePtr parent)
-{
-	nodePtr		folder = NULL;
-	gchar		*folderNodeId;
-
-	if (!id)
-		return source->root;	/* No id means folder is root node */
-
-	folderNodeId = g_strdup_printf ("%s-folder-%s", NODE_SOURCE_TYPE (source->root)->id, id);
-	folder = node_from_id (folderNodeId);
-	if (!folder) {
-		folder = node_new (folder_get_node_type ());
-		node_set_id (folder, folderNodeId);
-		node_set_title (folder, name);
-		node_set_parent (folder, parent, -1);
-		feedlist_node_imported (folder);
-		subscription_update (folder->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-	}
-
-	return folder;
-}
-
-/* 
- * Check if folder of a node changed in TinyTinyRSS and move
- * node to the correct folder.
- */
-static void
-ttrss_source_update_folder (ttrssSourcePtr source, nodePtr node, nodePtr folder)
-{
-	if (!folder)
-		folder = source->root;
-
-	if (node->parent != folder) {
-		debug2 (DEBUG_UPDATE, "TinyTinyRSS Moving node \"%s\" to folder \"%s\"", node->title, folder->title);
-		node_reparent (node, folder);
-	}
-}
-
 static void
 ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *title, gint64 id, nodePtr folder)
 {
@@ -154,8 +105,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 		/* Important: we must not loose the feed id! */
 		db_subscription_update (node->subscription);
 	} else {
-		debug2 (DEBUG_UPDATE, "updating folder for %s (%s)", title, url);
-		ttrss_source_update_folder (source, node, folder);
+		node_source_update_folder (node, folder);
 	}
 }
 
@@ -228,7 +178,7 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 					                         json_get_string (node, "feed_url"),
 					                         json_get_string (node, "title"),
 					                         json_get_int (node, "id"),
-								 ttrss_source_find_or_create_folder (source, category, NULL, source->root));
+								 node_source_find_or_create_folder (source->root, category, NULL));
 				}
 				iter = g_list_next (iter);
 			}
@@ -297,7 +247,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 					gchar *folderId = g_strdup_printf ("%d", id);
 
 					debug2 (DEBUG_UPDATE, "TinyTinyRSS category id=%ld name=%s", id, name);
-					folder = ttrss_source_find_or_create_folder (source, folderId, name, parent);
+					folder = node_source_find_or_create_folder (parent, folderId, name);
 					g_free (folderId);
 
 					/* Process child categories ... */
