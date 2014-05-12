@@ -30,16 +30,6 @@ nodePtr theoldreader_source_opml_get_node_by_source(TheOldReaderSourcePtr gsourc
 					 const gchar *source);
 
 /**
- * Recursively find a node by the source id.
- *
- * @param gsource	the TheOldReader source
- * @param source	the feed id to find 
- *
- * @returns a node (or NULL)
- */
-nodePtr theoldreader_source_opml_get_subnode_by_node(nodePtr node, const gchar *source);
-
-/**
  * Perform a quick update of the TheOldReader source.
  *
  * @param gsource	the TheOldReader source

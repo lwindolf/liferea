@@ -1,7 +1,7 @@
 /**
  * @file reedah_source_feed_list.h  Reedah feed list handling
  *
- * Copyright (C) 2013  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2013-2014  Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,16 +30,6 @@
  */
 nodePtr reedah_source_opml_get_node_by_source(ReedahSourcePtr gsource,
 					 const gchar *source);
-
-/**
- * Recursively find a node by the source id.
- *
- * @param gsource	the Reedah source
- * @param source	the feed id to find 
- *
- * @returns a node (or NULL)
- */
-nodePtr reedah_source_opml_get_subnode_by_node(nodePtr node, const gchar *source);
 
 /**
  * Perform a quick update of the Reedah source.

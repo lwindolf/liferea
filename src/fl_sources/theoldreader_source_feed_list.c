@@ -106,39 +106,6 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 	}
 }
 
-/**
- * Find a node by the source id.
- */
-nodePtr
-theoldreader_source_opml_get_node_by_source (TheOldReaderSourcePtr gsource, const gchar *source) 
-{
-	return theoldreader_source_opml_get_subnode_by_node (gsource->root, source);
-}
-
-/**
- * Recursively find a node by the source id.
- */
-nodePtr
-theoldreader_source_opml_get_subnode_by_node (nodePtr node, const gchar *source) 
-{
-	nodePtr subnode;
-	nodePtr subsubnode;
-	GSList  *iter = node->children;
-	for (; iter; iter = g_slist_next (iter)) {
-		subnode = (nodePtr)iter->data;
-		if (subnode->subscription
-		    && g_str_equal (subnode->subscription->source, source))
-			return subnode;
-		else if (subnode->type->capabilities
-			 & NODE_CAPABILITY_SUBFOLDERS) {
-			subsubnode = theoldreader_source_opml_get_subnode_by_node(subnode, source);
-			if (subnode != NULL)
-				return subsubnode;
-		}
-	}
-	return NULL;
-}
-
 /* JSON subscription list processing implementation */
 
 static void

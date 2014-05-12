@@ -256,7 +256,7 @@ theoldreader_source_remove_node (nodePtr node, nodePtr child)
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
-	if (!theoldreader_source_opml_get_node_by_source (source, url)) 
+	if (!feedlist_find_node (source->root, NODE_BY_URL, url)) 
 		theoldreader_source_edit_remove_subscription (source, url);
 	
 	g_free (url);

@@ -265,7 +265,7 @@ reedah_source_remove_node (nodePtr node, nodePtr child)
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
-	if (!reedah_source_opml_get_node_by_source (gsource, source)) 
+	if (!feedlist_find_node (gsource->root, NODE_BY_URL, source)) 
 		reedah_source_edit_remove_subscription (gsource, source);
 	
 	g_free (source);

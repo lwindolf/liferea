@@ -70,39 +70,6 @@ inoreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
 	}				
 }
 
-/**
- * Find a node by the source id.
- */
-nodePtr
-inoreader_source_opml_get_node_by_source (InoreaderSourcePtr gsource, const gchar *source) 
-{
-	return inoreader_source_opml_get_subnode_by_node (gsource->root, source);
-}
-
-/**
- * Recursively find a node by the source id.
- */
-nodePtr
-inoreader_source_opml_get_subnode_by_node (nodePtr node, const gchar *source) 
-{
-	nodePtr subnode;
-	nodePtr subsubnode;
-	GSList  *iter = node->children;
-	for (; iter; iter = g_slist_next (iter)) {
-		subnode = (nodePtr)iter->data;
-		if (subnode->subscription
-		    && g_str_equal (subnode->subscription->source, source))
-			return subnode;
-		else if (subnode->type->capabilities
-			 & NODE_CAPABILITY_SUBFOLDERS) {
-			subsubnode = inoreader_source_opml_get_subnode_by_node(subnode, source);
-			if (subnode != NULL)
-				return subsubnode;
-		}
-	}
-	return NULL;
-}
-
 /* subscription list merging functions */
 
 static void
@@ -139,7 +106,6 @@ inoreader_source_merge_feed (InoreaderSourcePtr source, const gchar *url, const 
 		node_source_update_folder (node, folder);
 	}
 }
-
 
 /* OPML subscription type implementation */
 
@@ -239,7 +205,7 @@ inoreader_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	id = xmlNodeGetContent (xmlNode); 
 
 	if (g_str_has_prefix (id, "feed/"))
-		node = inoreader_source_opml_get_node_by_source (gsource, id + strlen ("feed/"));
+		node = feedlist_find_node (gsource->root, NODE_BY_URL, id + strlen ("feed/"));
 	else {
 		xmlFree (id);
 		return;
