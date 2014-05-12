@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-
 #include "inoreader_source_feed_list.h"
 
 #include <glib.h>
@@ -311,7 +310,6 @@ inoreader_source_opml_quick_update(InoreaderSourcePtr gsource)
 
 	return TRUE;
 }
-
 
 static void
 inoreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
