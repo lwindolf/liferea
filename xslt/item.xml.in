@@ -391,7 +391,7 @@
 
 <!-- comment rendering -->
 <xsl:template match="comments/item">
-   <div class="comment">
+   <div class="comment" dir="{$txtDirection}">
       <div class="comment_title"><xsl:value-of select="title"/></div>
       <div class="comment_body"><xsl:value-of select="description" disable-output-escaping='yes'/></div>
    </div>

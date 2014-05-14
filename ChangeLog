@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes Github #26: RTL comments appear incorrectly
+	  (reported by yaronf)
+
+
 2014-04-21   Lars Windolf <lars.lindner@gmail.com>
 	
 	Version 1.10.9
