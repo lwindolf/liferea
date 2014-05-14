@@ -231,7 +231,7 @@ static nodePtr
 theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription) 
 {
 	// FIXME: determine correct category from parent folder name
-	theoldreader_source_edit_add_subscription (node_source_root_from_node (root)->data, subscription->source);
+	google_reader_edit_add_subscription (node_source_root_from_node (root)->data, subscription->source);
 
 	// FIXME: leaking subscription?
 
