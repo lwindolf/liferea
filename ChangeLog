@@ -29,6 +29,8 @@ To be released
 	  (reported by Dominik Grafenhofer, denk_mal, Fabian Henze)
 	* Fixes SF #1150: subscription prop/source: not all fields and 
 	  buttons visible (reported by David Smith)
+	* Fixes Github #26: RTL comments appear incorrectly
+	  (reported by yaconf)
 	* Patch SF #224: Update to new libxml2 buffer API
 	  (Simon Kagedal Reimer)
 	* Patch SF #209: Avoid copying list in itemset_merge_items
