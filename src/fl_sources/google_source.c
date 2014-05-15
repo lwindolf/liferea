@@ -63,11 +63,6 @@ google_source_free (GoogleSourcePtr gsource)
 /* node source type implementation */
 
 static void
-google_source_update (nodePtr node)
-{
-}
-
-static void
 google_source_auto_update (nodePtr node)
 {
 }
@@ -124,7 +119,6 @@ static struct nodeSourceType nst = {
 	.source_import       = google_source_import,
 	.source_export       = opml_source_export,
 	.source_get_feedlist = opml_source_get_feedlist,
-	.source_update       = google_source_update,
 	.source_auto_update  = google_source_auto_update,
 	.free                = google_source_cleanup,
 	.item_set_flag       = NULL,

@@ -21,8 +21,27 @@
 #ifndef _GOOGLE_READER_API_H
 #define _GOOGLE_READER_API_H
 
+/** A set of tags (states) defined by Google Reader */
+
+#define GOOGLE_READER_TAG_KEPT_UNREAD          "user/-/state/com.google/kept-unread"
+#define GOOGLE_READER_TAG_READ                 "user/-/state/com.google/read"
+#define GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD "user/-/state/com.google/tracking-kept-unread"
+#define GOOGLE_READER_TAG_STARRED              "user/-/state/com.google/starred"
+
 typedef struct googleReaderApi {
-	
-} *googleReaderApiPtr;
+	/** Endpoint definitions */
+	const char	*unread_count;
+	const char	*subscription_list;
+	const char	*add_subscription;
+	const char	*add_subscription_post;
+	const char	*remove_subscription;
+	const char	*remove_subscription_post;
+	const char	*edit_tag;
+	const char	*edit_tag_add_post;
+	const char	*edit_tag_ar_tag_post;
+	const char	*edit_tag_remove_post;
+	const char	*token;
+	/* when extending this list add assertions in node_source_type_register! */
+} googleReaderApi;
 
 #endif

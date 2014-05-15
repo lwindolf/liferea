@@ -298,12 +298,6 @@ opml_source_remove (nodePtr node)
 }
 
 static void
-opml_source_update (nodePtr node)
-{
-	subscription_update (node->subscription, 0);
-}
-
-static void
 opml_source_auto_update (nodePtr node)
 {
 	GTimeVal	now;
@@ -312,7 +306,7 @@ opml_source_auto_update (nodePtr node)
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
 	if (node->subscription->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
-		opml_source_update (node);
+		node_source_update (node);
 }
 
 static void opml_source_init(void) { }
@@ -328,6 +322,7 @@ static struct nodeSourceType nst = {
 	   "automatically add and remove feeds according to the changes of "
 	   "the source OPML document"),
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+	{},
 	NULL,
 	NULL,
 	opml_source_init,
@@ -337,7 +332,6 @@ static struct nodeSourceType nst = {
 	opml_source_import,
 	opml_source_export,
 	opml_source_get_feedlist,
-	opml_source_update,
 	opml_source_auto_update,
 	NULL,	/* free */
 	NULL,	/* item_set_flag */
@@ -372,7 +366,7 @@ on_opml_source_selected (GtkDialog *dialog,
 		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
 		node_source_new (node, opml_source_get_type (), gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry"))));
 		feedlist_node_added (node);
-		opml_source_update (node);
+		node_source_update (node);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));

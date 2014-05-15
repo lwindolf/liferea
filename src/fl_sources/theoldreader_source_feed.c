@@ -134,7 +134,7 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 	
 	itemPtr item = theoldreader_source_load_item_from_sourceid (node, id, cache);
 	if (item && item->sourceId) {
-		if (g_str_equal (item->sourceId, id) && !theoldreader_source_edit_is_in_queue(gsource, id)) {
+		if (g_str_equal (item->sourceId, id) && !google_reader_api_edit_is_in_queue(node->source, id)) {
 			
 			if (item->readStatus != read)
 				item_read_state_changed (item, read);
@@ -201,7 +201,7 @@ theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscript
 	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data; 
 	
 	g_assert (source); 
-	if (source->loginState == THEOLDREADER_SOURCE_STATE_NONE) { 
+	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) { 
 		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
@@ -218,7 +218,7 @@ theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscript
 	g_free (newUrl);
 	g_free (source_escaped);
 
-	update_request_set_auth_value (request, source->authHeaderValue);
+	update_request_set_auth_value (request, subscription->node->source->authToken);
 	return TRUE;
 }
 

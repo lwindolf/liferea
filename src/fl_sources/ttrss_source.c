@@ -48,7 +48,6 @@ ttrss_source_new (nodePtr node)
 	ttrssSourcePtr source = g_new0 (struct ttrssSource, 1) ;
 	source->root = node;
 	source->apiLevel = 0;
-	source->loginState = TTRSS_SOURCE_STATE_NONE;
 	source->categories = g_hash_table_new (g_direct_hash, g_direct_equal);
 	
 	return source;
@@ -76,10 +75,7 @@ ttrss_source_set_login_error (ttrssSourcePtr source, gchar *msg)
 
 	g_warning ("TinyTinyRSS login failed: error '%s'!\n", msg);
 
-	if (++source->authFailures < TTRSS_SOURCE_MAX_AUTH_FAILURES)
-		source->loginState = TTRSS_SOURCE_STATE_NONE;
-	else
-		source->loginState = TTRSS_SOURCE_STATE_NO_AUTH;
+	node_source_set_state (source->root, NODE_SOURCE_STATE_NONE);
 }
 
 static void
@@ -123,9 +119,9 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 	if (source->session_id) {
 		debug2 (DEBUG_UPDATE, "TinyTinyRSS Found session_id: >>>%s<<< (API level %d)!", source->session_id, source->apiLevel);
 
-		source->loginState = TTRSS_SOURCE_STATE_ACTIVE;
+		node_source_set_state (subscription->node, NODE_SOURCE_STATE_ACTIVE);
 
-		if (!(flags & TTRSS_SOURCE_UPDATE_ONLY_LOGIN))
+		if (!(flags & NODE_SOURCE_UPDATE_ONLY_LOGIN))
 			subscription_update (subscription, flags);
 
 	} else {
@@ -137,7 +133,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 
 /**
  * Perform a login to tt-rss, if the login completes the ttrssSource will 
- * have a valid sid and will have loginStatus TTRSS_SOURCE_LOGIN_ACTIVE.
+ * have a valid sid and will have loginStatus NODE_SOURCE_LOGIN_ACTIVE.
  */
 void
 ttrss_source_login (ttrssSourcePtr source, guint32 flags) 
@@ -146,9 +142,9 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 	updateRequestPtr	request;
 	subscriptionPtr		subscription = source->root->subscription;
 	
-	if (source->loginState != TTRSS_SOURCE_STATE_NONE) {
+	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session doesn't expire. */
-		debug1 (DEBUG_UPDATE, "Logging in while login state is %d", source->loginState);
+		debug1 (DEBUG_UPDATE, "Logging in while login state is %d", source->root->source->loginState);
 	}
 
 	request = update_request_new ();
@@ -173,7 +169,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 	g_free (username);
 	g_free (password);
 
-	source->loginState = TTRSS_SOURCE_STATE_IN_PROGRESS ;
+	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
 
 	update_execute_request (source, request, ttrss_source_login_cb, source, flags);
 }
@@ -181,32 +177,14 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 /* node source type implementation */
 
 static void
-ttrss_source_update (nodePtr node)
-{
-	ttrssSourcePtr source = (ttrssSourcePtr) node->data;
-
-	debug0 (DEBUG_UPDATE, "ttrss_source_update()");
-
-	/* Reset TTRSS_SOURCE_STATE_NO_AUTH as this is a manual
-	   user interaction and no auto-update so we can query
-	   for credentials again. */
-	if (source->loginState == TTRSS_SOURCE_STATE_NO_AUTH)
-		source->loginState = TTRSS_SOURCE_STATE_NONE;
-
-	subscription_update (node->subscription, 0);
-}
-
-static void
 ttrss_source_auto_update (nodePtr node)
 {
-	ttrssSourcePtr	source = (ttrssSourcePtr) node->data;
-
-	if (source->loginState == TTRSS_SOURCE_STATE_NONE) {
-		ttrss_source_update (node);
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
+		node_source_update (node);
 		return;
 	}
 
-	if (source->loginState == TTRSS_SOURCE_STATE_IN_PROGRESS) 
+	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS) 
 		return; /* the update will start automatically anyway */
 
 	debug0 (DEBUG_UPDATE, "ttrss_source_auto_update()");
@@ -254,7 +232,7 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 
 	/* As TinyTinyRSS does not return the id of the newly subscribed feed
 	   we need to reload the entire feed list. */
-	ttrss_source_update (subscription->node->source->root);
+	node_source_update (subscription->node->source->root);
 }
 
 static nodePtr
@@ -360,7 +338,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 
 		node->data = (gpointer)ttrss_source_new (node);
 		feedlist_node_added (node);
-		ttrss_source_update (node);
+		node_source_update (node);
 
 		db_node_update (node);	/* because of metadate_list_set() above */
 	}
@@ -452,7 +430,6 @@ static struct nodeSourceType nst = {
 	.source_import       = ttrss_source_import,
 	.source_export       = opml_source_export,
 	.source_get_feedlist = opml_source_get_feedlist,
-	.source_update       = ttrss_source_update,
 	.source_auto_update  = ttrss_source_auto_update,
 	.free                = ttrss_source_cleanup,
 	.item_set_flag       = ttrss_source_item_set_flag,

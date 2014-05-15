@@ -201,7 +201,7 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 		debug0 (DEBUG_UPDATE, "ttrss_subscription_cb(): ERROR: failed to get TinyTinyRSS subscription list!");
 	}
 
-	if (!(flags & TTRSS_SOURCE_UPDATE_ONLY_LIST))
+	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));	
 }
 
@@ -352,18 +352,19 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 static gboolean
 ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
+	nodePtr node = subscription->node;
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
 	gchar *source_uri;
 
 	debug0 (DEBUG_UPDATE, "ttrss_subscription_prepare_update_request");
 
-	g_assert (source);
-	if (source->loginState == TTRSS_SOURCE_STATE_NONE) {
+	g_assert (node->source);
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		debug0 (DEBUG_UPDATE, "TinyTinyRSS login");
 		ttrss_source_login (source, 0);
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "TinyTinyRSS updating subscription (node id %s)", subscription->node->id);
+	debug1 (DEBUG_UPDATE, "TinyTinyRSS updating subscription (node id %s)", node->id);
 
 	/* Updating the TinyTinyRSS subscription means updating the list
 	   of categories and the list of feeds in 2 requests and if the

@@ -186,7 +186,7 @@ inoreader_subscription_opml_cb (subscriptionPtr subscription, const struct updat
 		debug0 (DEBUG_UPDATE, "inoreader_subscription_cb(): ERROR: failed to get subscription list!");
 	}
 
-	if (!(flags & INOREADER_SOURCE_UPDATE_ONLY_LIST))
+	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
@@ -263,16 +263,16 @@ inoreader_source_opml_quick_update_cb (const struct updateResult* const result, 
 }
 
 gboolean
-inoreader_source_opml_quick_update(InoreaderSourcePtr gsource) 
+inoreader_source_opml_quick_update(InoreaderSourcePtr source) 
 {
 	updateRequestPtr request = update_request_new ();
-	request->updateState = update_state_copy (gsource->root->subscription->updateState);
-	request->options = update_options_copy (gsource->root->subscription->updateOptions);
-	update_request_set_source (request, INOREADER_UNREAD_COUNTS_URL);
-	update_request_set_auth_value(request, gsource->authHeaderValue);
+	request->updateState = update_state_copy (source->root->subscription->updateState);
+	request->options = update_options_copy (source->root->subscription->updateOptions);
+	update_request_set_source (request, source->root->source->type->api.unread_count);
+	update_request_set_auth_value(request, source->root->source->authToken);
 
-	update_execute_request (gsource, request, inoreader_source_opml_quick_update_cb,
-				gsource, 0);
+	update_execute_request (source, request, inoreader_source_opml_quick_update_cb,
+				source, 0);
 
 	return TRUE;
 }
@@ -286,19 +286,17 @@ inoreader_source_opml_subscription_process_update_result (subscriptionPtr subscr
 static gboolean
 inoreader_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
-	InoreaderSourcePtr	gsource = (InoreaderSourcePtr)subscription->node->data;
+	nodePtr node = subscription->node;
 	
-	g_assert(gsource);
-	if (gsource->loginState == INOREADER_SOURCE_STATE_NONE) {
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		debug0(DEBUG_UPDATE, "InoreaderSource: login");
-		inoreader_source_login ((InoreaderSourcePtr) subscription->node->data, 0) ;
+		inoreader_source_login ((InoreaderSourcePtr) node->data, 0) ;
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating Inoreader subscription (node id %s)", subscription->node->id);
+	debug1 (DEBUG_UPDATE, "updating Inoreader subscription (node id %s)", node->id);
 	
-	update_request_set_source (request, INOREADER_SUBSCRIPTION_LIST_URL);
-	
-	update_request_set_auth_value (request, gsource->authHeaderValue);
+	update_request_set_source (request, node->source->type->api.subscription_list);	
+	update_request_set_auth_value (request, node->source->authToken);
 	
 	return TRUE;
 }

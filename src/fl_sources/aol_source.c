@@ -42,7 +42,6 @@
 #include "ui/liferea_htmlview.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
-#include "fl_sources/aol_source_edit.h"
 #include "fl_sources/aol_source_opml.h"
 
 /** default AOL reader subscription list update interval = once a day */
@@ -54,8 +53,6 @@ aol_source_new (nodePtr node)
 {
 	AolSourcePtr source = g_new0 (struct AolSource, 1) ;
 	source->root = node; 
-	source->actionQueue = g_queue_new (); 
-	source->loginState = AOL_SOURCE_STATE_NONE; 
 	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	
 	return source;
@@ -69,29 +66,18 @@ aol_source_free (AolSourcePtr source)
 
 	update_job_cancel_by_owner (source);
 	
-	g_free (source->authHeaderValue);
-	g_queue_free (source->actionQueue) ;
 	g_hash_table_unref (source->lastTimestampMap);
 	g_free (source);
-}
-
-void
-aol_source_set_state (AolSourcePtr source, gint state)
-{
-	debug3 (DEBUG_UPDATE, "AOL source '%s' now in state %d (was %d)", source->root->id, state, source->loginState);
-	source->loginState = state;
 }
 
 static void
 aol_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	AolSourcePtr	source = (AolSourcePtr) userdata;
+	nodePtr		node = (nodePtr) userdata;
 	gchar		*tmp = NULL;
-	subscriptionPtr subscription = source->root->subscription;
+	subscriptionPtr subscription = node->subscription;
 		
-	debug1 (DEBUG_UPDATE, "google login processing... %s", result->data);
-	
-	g_assert (!source->authHeaderValue);
+	debug1 (DEBUG_UPDATE, "AolReader Login processing... %s", result->data);
 	
 	if (result->data && result->httpstatus == 200)
 		tmp = strstr (result->data, "Auth=");
@@ -101,32 +87,20 @@ aol_source_login_cb (const struct updateResult * const result, gpointer userdata
 		tmp = strchr (tmp, '\n');
 		if (tmp)
 			*tmp = '\0';
-		source->authHeaderValue = g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5);
-
-		debug1 (DEBUG_UPDATE, "AOL reader Auth token found: %s", source->authHeaderValue);
-
-		aol_source_set_state (source, AOL_SOURCE_STATE_ACTIVE);
-		source->authFailures = 0;
+		node_source_set_auth_token (node, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
 
 		/* now that we are authenticated trigger updating to start data retrieval */
-		if (!(flags & AOL_SOURCE_UPDATE_ONLY_LOGIN))
+		if (!(flags & NODE_SOURCE_UPDATE_ONLY_LOGIN))
 			subscription_update (subscription, flags);
 
 		/* process any edits waiting in queue */
-		aol_source_edit_process (source);
-
+		node_source_edit_process (node);
 	} else {
 		debug0 (DEBUG_UPDATE, "AOL reader login failed! no Auth token found in result!");
-		subscription->node->available = FALSE;
 
 		g_free (subscription->updateError);
 		subscription->updateError = g_strdup (_("AOL Reader login failed!"));
-		source->authFailures++;
-
-		if (source->authFailures < AOL_SOURCE_MAX_AUTH_FAILURES)
-			aol_source_set_state (source, AOL_SOURCE_STATE_NONE);
-		else
-			aol_source_set_state (source, AOL_SOURCE_STATE_NO_AUTH);
+		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
 		
 		auth_dialog_new (subscription, flags);
 	}
@@ -144,10 +118,10 @@ aol_source_login (AolSourcePtr source, guint32 flags)
 	LifereaHtmlView *htmlview;
 
 	/* There will be session expirations due to OAuth2, FIXME: handle them with refresh token! */
-	if (source->loginState != AOL_SOURCE_STATE_NONE)
-		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", source->loginState);
+	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE)
+		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", source->root->source->loginState);
 
-	aol_source_set_state (source, AOL_SOURCE_STATE_IN_PROGRESS);
+	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
 
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW (window), _("AOL Reader Login"));
@@ -163,31 +137,17 @@ aol_source_login (AolSourcePtr source, guint32 flags)
 /* node source type implementation */
 
 static void
-aol_source_update (nodePtr node)
-{
-	AolSourcePtr source = (AolSourcePtr) node->data;
-
-	/* Reset AOL_SOURCE_STATE_NO_AUTH as this is a manual
-	   user interaction and no auto-update so we can query
-	   for credentials again. */
-	if (source->loginState == AOL_SOURCE_STATE_NO_AUTH)
-		aol_source_set_state (source, AOL_SOURCE_STATE_NONE);
-
-	subscription_update (node->subscription, 0);  // FIXME: 0 ?
-}
-
-static void
 aol_source_auto_update (nodePtr node)
 {
 	GTimeVal	now;
 	AolSourcePtr source = (AolSourcePtr) node->data;
 
-	if (source->loginState == AOL_SOURCE_STATE_NONE) {
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		aol_source_update (node);
 		return;
 	}
 
-	if (source->loginState == AOL_SOURCE_STATE_IN_PROGRESS) 
+	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS) 
 		return; /* the update will start automatically anyway */
 
 	g_get_current_time (&now);
@@ -309,9 +269,7 @@ aol_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 static void
 aol_source_convert_to_local (nodePtr node)
 {
-	AolSourcePtr source = node->data; 
-
-	aol_source_set_state (source, AOL_SOURCE_STATE_MIGRATE);
+	node_source_set_state (node->source, NODE_SOURCE_STATE_MIGRATE);
 }
 
 /* node source type definition */
@@ -325,7 +283,8 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
-	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
+	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
+	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
 	.feedSubscriptionType = &aolSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &aolSourceOpmlSubscriptionType,
 	.source_type_init    = aol_source_init,
@@ -335,7 +294,6 @@ static struct nodeSourceType nst = {
 	.source_import       = aol_source_import,
 	.source_export       = opml_source_export,
 	.source_get_feedlist = opml_source_get_feedlist,
-	.source_update       = aol_source_update,
 	.source_auto_update  = aol_source_auto_update,
 	.free                = aol_source_cleanup,
 	.item_set_flag       = aol_source_item_set_flag,

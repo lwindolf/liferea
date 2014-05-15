@@ -28,10 +28,6 @@
  */
 typedef struct AolSource {
 	nodePtr		root;		/**< the root node in the feed list */
-	gchar		*authHeaderValue; /**< the authorization token */
-	GQueue		*actionQueue;
-	gint		loginState;	/**< The current login state */
-	gint		authFailures;	/**< Number of authentication failures */
 
 	/**
 	 * A map from a subscription source to a timestamp when it was last 
@@ -44,32 +40,6 @@ typedef struct AolSource {
 	 */
 	GTimeVal        lastQuickUpdate;
 } *AolSourcePtr;
-
-enum { 
-	AOL_SOURCE_STATE_NONE = 0,		/**< no authentication tried so far */
-	AOL_SOURCE_STATE_IN_PROGRESS,		/**< authentication in progress */
-	AOL_SOURCE_STATE_ACTIVE,		/**< authentication succeeded */
-	AOL_SOURCE_STATE_NO_AUTH,		/**< authentication has failed */
-	AOL_SOURCE_STATE_MIGRATE,		/**< source will be migrated, do not do anything anymore! */
-};
-
-enum { 
-	/**
-	 * Update only the subscription list, and not each node underneath it.
-	 * Note: Uses higher 16 bits to avoid conflict.
-	 */
-	AOL_SOURCE_UPDATE_ONLY_LIST = (1<<16),
-	/**
-	 * Only login, do not do any updates. 
-	 */
-	AOL_SOURCE_UPDATE_ONLY_LOGIN = (1<<17)
-};
-
-/**
- * Number of auth failures after which we stop bothering the user while
- * auto-updating until he manually updates again.
- */
-#define AOL_SOURCE_MAX_AUTH_FAILURES		3
 
 /**
  * AOL API URL's
@@ -177,13 +147,6 @@ enum {
  * @param T a token obtained using AOL_READER_TOKEN_URL
  */
 #define AOL_READER_EDIT_TAG_ADD_TAG_FOR_LINK "i=%s&s=user%2F-%2Fsource%2Fcom.google%2Flink&a=%s&r=%s&ac=edit-tags&T=%s&async=true"
-
-/** A set of tags (states) defined by Google reader */
-
-#define AOL_READER_TAG_KEPT_UNREAD          "user/-/state/com.google/kept-unread"
-#define AOL_READER_TAG_READ                 "user/-/state/com.google/read"
-#define AOL_READER_TAG_TRACKING_KEPT_UNREAD "user/-/state/com.google/tracking-kept-unread"
-#define AOL_READER_TAG_STARRED              "user/-/state/com.google/starred"
 
 /** Interval (in seconds) for doing a Quick Update: 10min */
 #define AOL_SOURCE_QUICK_UPDATE_INTERVAL 600

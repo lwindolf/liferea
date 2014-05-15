@@ -187,7 +187,7 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 		debug0 (DEBUG_UPDATE, "reedah_subscription_cb(): ERROR: failed to get subscription list!");
 	}
 
-	if (!(flags & REEDAH_SOURCE_UPDATE_ONLY_LIST))
+	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
@@ -264,16 +264,16 @@ reedah_source_opml_quick_update_cb (const struct updateResult* const result, gpo
 }
 
 gboolean
-reedah_source_opml_quick_update(ReedahSourcePtr gsource) 
+reedah_source_opml_quick_update(ReedahSourcePtr source) 
 {
 	updateRequestPtr request = update_request_new ();
-	request->updateState = update_state_copy (gsource->root->subscription->updateState);
-	request->options = update_options_copy (gsource->root->subscription->updateOptions);
-	update_request_set_source (request, REEDAH_READER_UNREAD_COUNTS_URL);
-	update_request_set_auth_value(request, gsource->authHeaderValue);
+	request->updateState = update_state_copy (source->root->subscription->updateState);
+	request->options = update_options_copy (source->root->subscription->updateOptions);
+	update_request_set_source (request, source->root->source->type->api.unread_count);
+	update_request_set_auth_value(request, source->root->source->authToken);
 
-	update_execute_request (gsource, request, reedah_source_opml_quick_update_cb,
-				gsource, 0);
+	update_execute_request (source, request, reedah_source_opml_quick_update_cb,
+				source, 0);
 
 	return TRUE;
 }
@@ -288,19 +288,19 @@ reedah_source_opml_subscription_process_update_result (subscriptionPtr subscript
 static gboolean
 reedah_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
-	ReedahSourcePtr	gsource = (ReedahSourcePtr)subscription->node->data;
+	nodePtr node = subscription->node;
+	ReedahSourcePtr	source = (ReedahSourcePtr)node->data;
 	
-	g_assert(gsource);
-	if (gsource->loginState == REEDAH_SOURCE_STATE_NONE) {
+	g_assert(node->source);
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		debug0(DEBUG_UPDATE, "ReedahSource: login");
-		reedah_source_login ((ReedahSourcePtr) subscription->node->data, 0) ;
+		reedah_source_login (source, 0) ;
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating Reedah subscription (node id %s)", subscription->node->id);
+	debug1 (DEBUG_UPDATE, "updating Reedah subscription (node id %s)", node->id);
 	
-	update_request_set_source (request, REEDAH_READER_SUBSCRIPTION_LIST_URL);
-	
-	update_request_set_auth_value (request, gsource->authHeaderValue);
+	update_request_set_source (request, node->source->type->api.subscription_list);	
+	update_request_set_auth_value (request, node->source->authToken);
 	
 	return TRUE;
 }

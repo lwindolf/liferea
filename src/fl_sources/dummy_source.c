@@ -46,7 +46,6 @@ static struct nodeSourceType nst = {
 	.source_import		= dummy_source_import,
 	.source_export		= dummy_source_noop,
 	.source_get_feedlist	= dummy_source_get_feedlist,
-	.source_update		= dummy_source_noop,
 	.source_auto_update	= dummy_source_noop
 };
 

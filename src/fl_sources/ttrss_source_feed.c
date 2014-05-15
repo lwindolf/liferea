@@ -137,10 +137,8 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 
 	debug0 (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
 
-	// FIXME: if (!source->selfUpdating) trigger remote update first!
-	
-	g_assert(source); 
-	if (source->loginState == TTRSS_SOURCE_STATE_NONE) { 
+	g_assert(root->source); 
+	if (root->source->loginState == NODE_SOURCE_STATE_NONE) { 
 		subscription_update (root->subscription, 0);
 		return FALSE;
 	}

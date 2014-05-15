@@ -165,10 +165,10 @@ reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                  struct updateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing Reedah feed subscription for update\n");
-	ReedahSourcePtr gsource = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data; 
+	ReedahSourcePtr source = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data; 
 	
-	g_assert(gsource); 
-	if (gsource->loginState == REEDAH_SOURCE_STATE_NONE) { 
+	g_assert(source); 
+	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) { 
 		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
@@ -187,7 +187,7 @@ reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	g_free (newUrl);
 	g_free (source_escaped);
 
-	update_request_set_auth_value (request, gsource->authHeaderValue);
+	update_request_set_auth_value (request, source->root->source->authToken);
 	return TRUE;
 }
 

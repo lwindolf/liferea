@@ -159,7 +159,7 @@ inoreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr s
 
 	itemPtr item = inoreader_source_load_item_from_sourceid (node, id, cache);
 	if (item && item->sourceId) {
-		if (g_str_equal (item->sourceId, id) && !inoreader_source_edit_is_in_queue (gsource, id)) {
+		if (g_str_equal (item->sourceId, id) && !google_reader_api_edit_is_in_queue (node->source, id)) {
 			
 			if (item->readStatus != read)
 				item_read_state_changed (item, read);
@@ -247,11 +247,10 @@ inoreader_feed_subscription_prepare_update_request (subscriptionPtr subscription
                                                  struct updateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing InoReader feed subscription for update\n");
-	InoreaderSourcePtr gsource = (InoreaderSourcePtr) node_source_root_from_node (subscription->node)->data; 
+	nodePtr node = subscription->node; 
 	
-	g_assert(gsource); 
-	if (gsource->loginState == INOREADER_SOURCE_STATE_NONE) { 
-		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) { 
+		subscription_update (node_source_root_from_node (node)->subscription, 0) ;
 		return FALSE;
 	}
 	debug0 (DEBUG_UPDATE, "Setting cookies for a InoReader subscription");
@@ -262,7 +261,7 @@ inoreader_feed_subscription_prepare_update_request (subscriptionPtr subscription
 	g_free (newUrl);
 	g_free (source_escaped);
 
-	update_request_set_auth_value (request, gsource->authHeaderValue);
+	update_request_set_auth_value (request, node->source->authToken);
 	return TRUE;
 }
 

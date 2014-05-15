@@ -193,7 +193,6 @@ static struct nodeSourceType nst = {
 	.source_import		= default_source_import,
 	.source_export		= default_source_export,
 	.source_get_feedlist	= default_source_source_get_feedlist,
-	.source_update		= default_source_update,
 	.source_auto_update	= default_source_auto_update,
 	.free 			= NULL,
 	.add_subscription	= default_source_add_subscription,

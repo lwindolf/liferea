@@ -292,7 +292,7 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 		debug0 (DEBUG_UPDATE, "google_subscription_opml_cb(): ERROR: failed to get subscription list!\n");
 	}
 
-	if (!(flags & AOL_SOURCE_UPDATE_ONLY_LIST))
+	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 
 }
@@ -370,16 +370,15 @@ aol_source_opml_quick_update_cb (const struct updateResult* const result, gpoint
 }
 
 gboolean
-aol_source_opml_quick_update(AolSourcePtr gsource) 
+aol_source_opml_quick_update(AolSourcePtr source) 
 {
 	updateRequestPtr request = update_request_new ();
-	request->updateState = update_state_copy (gsource->root->subscription->updateState);
-	request->options = update_options_copy (gsource->root->subscription->updateOptions);
+	request->updateState = update_state_copy (source->root->subscription->updateState);
+	request->options = update_options_copy (source->root->subscription->updateOptions);
 	update_request_set_source (request, AOL_READER_UNREAD_COUNTS_URL);
-	update_request_set_auth_value(request, gsource->authHeaderValue);
+	update_request_set_auth_value(request, source->root->source->authToken);
 
-	update_execute_request (gsource, request, aol_source_opml_quick_update_cb,
-				gsource, 0);
+	update_execute_request (source, request, aol_source_opml_quick_update_cb, source, 0);
 
 	return TRUE;
 }
@@ -394,19 +393,18 @@ aol_source_opml_subscription_process_update_result (subscriptionPtr subscription
 static gboolean
 aol_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
-	AolSourcePtr	gsource = (AolSourcePtr)subscription->node->data;
+	nodePtr node = subscription->node;
 	
-	g_assert(gsource);
-	if (gsource->loginState == AOL_SOURCE_STATE_NONE) {
-		debug0(DEBUG_UPDATE, "AolSource: login");
-		aol_source_login ((AolSourcePtr) subscription->node->data, 0) ;
+	g_assert(node->source);
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
+		debug0 (DEBUG_UPDATE, "AolSource: login");
+		aol_source_login (node->data, 0) ;
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating AOL Reader subscription (node id %s)", subscription->node->id);
+	debug1 (DEBUG_UPDATE, "updating AOL Reader subscription (node id %s)", node->id);
 	
-	update_request_set_source (request, AOL_READER_SUBSCRIPTION_LIST_URL);
-	
-	update_request_set_auth_value (request, gsource->authHeaderValue);
+	update_request_set_source (request, NODE_SOURCE_TYPE (node)->api.subscription_list);
+	update_request_set_auth_value (request, node->source->authToken);
 	
 	return TRUE;
 }

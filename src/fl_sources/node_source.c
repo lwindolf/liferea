@@ -81,6 +81,21 @@ node_source_type_register (nodeSourceTypePtr type)
 	/* allow the plugin to initialize */
 	type->source_type_init ();
 
+	/* Check if Google reader clones provide all API methods */
+	if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API) {
+		g_assert (type->api.unread_count);
+		g_assert (type->api.subscription_list);
+		g_assert (type->api.add_subscription);
+		g_assert (type->api.add_subscription_post);
+		g_assert (type->api.remove_subscription);
+		g_assert (type->api.remove_subscription_post);
+		g_assert (type->api.edit_tag);
+		g_assert (type->api.edit_tag_add_post);
+		g_assert (type->api.edit_tag_remove_post);
+		g_assert (type->api.edit_tag_ar_tag_post);
+		g_assert (type->api.token);
+	}
+
 	nodeSourceTypes = g_slist_append (nodeSourceTypes, type);
 	
 	return TRUE;
@@ -219,6 +234,8 @@ node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
 	node->source = g_new0 (struct nodeSource, 1);
 	node->source->root = node;
 	node->source->type = type;
+	node->source->loginState = NODE_SOURCE_STATE_NONE;
+	node->source->actionQueue = g_queue_new ();
 
 	node_set_title (node, type->name);
 
@@ -228,6 +245,37 @@ node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
 
 		subscription->type = node->source->type->sourceSubscriptionType;
 	}
+}
+
+void
+node_source_set_state (nodePtr node, gint newState)
+{
+	debug3 (DEBUG_UPDATE, "node source '%s' now in state %d (was %d)", node->id, newState, node->source->loginState);
+
+	/** State transition actions below... */
+	if (newState == NODE_SOURCE_STATE_ACTIVE)
+		node->source->authFailures = 0;
+
+	if (newState == NODE_SOURCE_STATE_NONE) {
+		node->source->authFailures++;
+		node->available = FALSE;
+	}
+
+	if (node->source->authFailures >= NODE_SOURCE_MAX_AUTH_FAILURES)
+		newState = NODE_SOURCE_STATE_NO_AUTH;
+
+	node->source->loginState = newState;
+}
+
+void
+node_source_set_auth_token (nodePtr node, gchar *token)
+{
+	g_assert (!node->source->authToken);
+
+	debug2 (DEBUG_UPDATE, "node source \"%s\" Auth token found: %s", node->id, token);
+	node->source->authToken = token;
+
+	node_source_set_state (node, NODE_SOURCE_STATE_ACTIVE);
 }
 
 /* source instance creation dialog */
@@ -325,7 +373,21 @@ feed_list_node_source_type_dialog (void)
 void
 node_source_update (nodePtr node)
 {
-	NODE_SOURCE_TYPE (node)->source_update (node);
+	if (node->subscription) {
+		/* Reset NODE_SOURCE_STATE_NO_AUTH as this is a manual
+		   user interaction and no auto-update so we can query
+		   for credentials again. */
+		if (node->source->loginState == NODE_SOURCE_STATE_NO_AUTH)
+			node_source_set_state (node, NODE_SOURCE_STATE_NONE);
+
+		subscription_update (node->subscription, 0);
+
+		/* Note that node sources are required to auto-update child
+		   nodes themselves once login and feed list update is fine. */
+	} else {
+		/* for default source */
+		node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
+	}
 }
 
 void
@@ -510,7 +572,8 @@ node_source_free (nodePtr node)
 {
 	if (NULL != NODE_SOURCE_TYPE (node)->free)
 		NODE_SOURCE_TYPE (node)->free (node);
-		
+
+	g_free (node->source->authToken);		
 	g_free (node->source);
 	node->source = NULL;
 }

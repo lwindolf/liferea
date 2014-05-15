@@ -188,7 +188,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 		debug0 (DEBUG_UPDATE, "theoldreader_subscription_cb(): ERROR: failed to get subscription list!");
 	}
 
-	if (!(flags & THEOLDREADER_SOURCE_UPDATE_ONLY_LIST))
+	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
@@ -201,19 +201,18 @@ theoldreader_source_opml_subscription_process_update_result (subscriptionPtr sub
 static gboolean
 theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
-	TheOldReaderSourcePtr	gsource = (TheOldReaderSourcePtr)subscription->node->data;
+	nodePtr node = subscription->node;
 	
-	g_assert(gsource);
-	if (gsource->loginState == THEOLDREADER_SOURCE_STATE_NONE) {
-		debug0(DEBUG_UPDATE, "TheOldReaderSource: login");
-		theoldreader_source_login ((TheOldReaderSourcePtr) subscription->node->data, 0) ;
+	g_assert(node->source);
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
+		debug0 (DEBUG_UPDATE, "TheOldReaderSource: login");
+		theoldreader_source_login (node->data, 0);
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating TheOldReader subscription (node id %s)", subscription->node->id);
+	debug1 (DEBUG_UPDATE, "updating TheOldReader subscription (node id %s)", node->id);
 	
-	update_request_set_source (request, THEOLDREADER_READER_SUBSCRIPTION_LIST_URL);
-	
-	update_request_set_auth_value (request, gsource->authHeaderValue);
+	update_request_set_source (request, node->source->type->api.subscription_list);
+	update_request_set_auth_value (request, node->source->authToken);
 	
 	return TRUE;
 }

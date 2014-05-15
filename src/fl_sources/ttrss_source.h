@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.h  Tiny Tiny RSS feed list source support
  * 
- * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,35 +33,8 @@ typedef struct ttrssSource {
 	gchar		*session_id;	/**< the current session id */
 	const gchar	*url;		/**< the API base URL */
 	gint		apiLevel;	/**< The API level reported by the instance (or 0) */
-	gint		loginState;	/**< The current login state */
-	gint		authFailures;	/**< Number of authentication failures */
 	GHashTable	*categories;	/**< Lookup hash for feed id to category id */
 } *ttrssSourcePtr;
- 
-enum { 
-	TTRSS_SOURCE_STATE_NONE = 0,		/**< no authentication tried so far */
-	TTRSS_SOURCE_STATE_IN_PROGRESS,		/**< authentication in progress */
-	TTRSS_SOURCE_STATE_ACTIVE,		/**< authentication succeeded */
-	TTRSS_SOURCE_STATE_NO_AUTH		/**< authentication has failed */
-};
-
-enum  { 
-	/**
-	 * Update only the subscription list, and not each node underneath it.
-	 * Note: Uses higher 16 bits to avoid conflict.
-	 */
-	TTRSS_SOURCE_UPDATE_ONLY_LIST = (1<<16),
-	/**
-	 * Only login, do not do any updates. 
-	 */
-	TTRSS_SOURCE_UPDATE_ONLY_LOGIN = (1<<17)
-};
-
-/**
- * Number of auth failures after which we stop bothering the user while
- * auto-updating until he manually updates again.
- */
-#define TTRSS_SOURCE_MAX_AUTH_FAILURES		3
 
 /**
  * TinyTinyRSS JSON API is documented here:
