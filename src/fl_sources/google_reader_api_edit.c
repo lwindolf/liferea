@@ -124,10 +124,10 @@ google_reader_api_action_context_free(GoogleReaderActionCtxtPtr ctxt)
 static void
 google_reader_api_edit_action_complete (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
 { 
-	GoogleReaderActionCtxtPtr     editCtxt = (GoogleReaderActionCtxtPtr) userdata; 
-	nodePtr                       node = node_from_id (editCtxt->nodeId);
-	nodeSourcePtr               source; 
-	GoogleReaderActionPtr         action = editCtxt->action ;
+	GoogleReaderActionCtxtPtr	editCtxt = (GoogleReaderActionCtxtPtr) userdata; 
+	GoogleReaderActionPtr		action = editCtxt->action;
+	nodePtr				node = node_from_id (editCtxt->nodeId);
+	nodeSourcePtr			source = node->source;
 	
 	google_reader_api_action_context_free (editCtxt);
 
@@ -135,7 +135,6 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 		google_reader_api_action_free (action);
 		return; /* probably got deleted before this callback */
 	} 
-	source = (nodeSourcePtr) node->data;
 		
 	if (result->data == NULL || !g_str_equal (result->data, "OK")) {
 		if (action->callback) 
@@ -295,7 +294,6 @@ google_reader_api_edit_process (nodeSourcePtr source)
 	updateRequestPtr request; 
 	
 	g_assert (source);
-g_print("process %p\n", source->actionQueue);
 	if (g_queue_is_empty (source->actionQueue))
 		return;
 	

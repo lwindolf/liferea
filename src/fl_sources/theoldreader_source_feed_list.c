@@ -37,7 +37,6 @@
 
 #include "fl_sources/opml_source.h"
 #include "fl_sources/theoldreader_source.h"
-#include "fl_sources/theoldreader_source_edit.h"
 
 static void
 theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)

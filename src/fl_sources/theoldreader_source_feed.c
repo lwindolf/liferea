@@ -32,7 +32,6 @@
 #include "theoldreader_source.h"
 #include "subscription.h"
 #include "node.h"
-#include "theoldreader_source_edit.h"
 #include "metadata.h"
 #include "db.h"
 #include "item_state.h"

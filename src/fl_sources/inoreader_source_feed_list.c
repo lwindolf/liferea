@@ -36,7 +36,6 @@
 
 #include "fl_sources/opml_source.h"
 #include "fl_sources/inoreader_source.h"
-#include "fl_sources/inoreader_source_edit.h"
 
 static void
 inoreader_source_check_node_for_removal (nodePtr node, gpointer user_data)

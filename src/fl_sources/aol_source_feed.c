@@ -32,7 +32,6 @@
 #include "aol_source.h"
 #include "subscription.h"
 #include "node.h"
-#include "aol_source_edit.h"
 #include "metadata.h"
 #include "db.h"
 #include "item_state.h"
