@@ -319,20 +319,18 @@ feed_list_node_update (const gchar *nodeId)
 	if (node->unreadCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
 		labeltype -= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 
+	label = g_strdup (node_get_title (node));
 	switch (labeltype) {
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
 	     		/* treat like show unread count */
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT:
-			label = g_markup_printf_escaped ("<span weight='bold'>%s</span>", node_get_title (node));
 			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor?countColor:"", node->unreadCount);
 			break;
 		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
-			label = g_markup_printf_escaped ("%s", node_get_title (node));
 			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor?countColor:"", node->itemCount);
 		     	break;
 		default:
-			label = g_markup_printf_escaped ("%s", node_get_title (node));
 			break;
 	}
 

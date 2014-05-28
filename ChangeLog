@@ -25,6 +25,8 @@ To be released
 	  (reported by Yanko Kaneti)
 	* Fixes Github #13: Parsing errors not visible with dark themes
 	  (reported by Steve Kelly)
+	* Fixes Github #29: Do not use bold text for feeds/folders with unread items 
+	  in the leftmost treeview (repored by Jeff Fortin)
 	* Fixes SF #1141: Liferea does not update feeds with TinyTinyRSS 
 	  (reported by Dominik Grafenhofer, denk_mal, Fabian Henze)
 	* Fixes SF #1150: subscription prop/source: not all fields and 
