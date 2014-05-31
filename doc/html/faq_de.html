@@ -106,6 +106,13 @@ class="code">liferea</span>. So aufgerufen wird Liferea beim Absturz eine core-D
 beteilige dich bitte an der Weiterentwicklung des Programms. Um weitere Funktionen
 zu realisieren benötigen wir mehr freiwillige Entwickler!</dd>
 
+<dt>Q: Was bedeutet "Es traten Fehler beim Parsen des Feeds auf!" und was kann ich dagegen tun?</dt>
+<dd>A: Der Feed-Parser von Liferea erwartet gültiges XML. Enthält ein Feed ungültiges XML, so kommt es zu diesem Fehler. Die Gültigkeit eines Feeds lässt sich mit <a href="http://feedvalidator.org/">http://feedvalidator.org/</a> und <a href="http://validator.w3.org/feed/">http://validator.w3.org/feed/</a> prüfen.
+<p>
+Häufig lässt sich der fehlerhafte Feed mit Hilfe von xmllint retten. Dazu muss xmllint beim betreffenden Feed in den "Eigenschaften des Abonnements" im Reiter "Quelle" unter "Benutze einen Filter zum Konvertieren" wie folgt gesetzt werden: <span class="code">xmllint --recover -</pre>
+<p>
+Hinweis: Unter Debian-basierten Distributionen gehört xmllint zum Paket libxml2-utils.
+</dd>
 </dl>
 
 </body>

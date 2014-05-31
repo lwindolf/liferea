@@ -135,6 +135,13 @@ code to implement the feature! Please also consider that the Liferea
 project aims to provide a simple feed reader that might lack more
 complex functionality.</dd>
 
+<dt>Q: What does "There were errors while parsing this feed!" mean and how can I fix it?</dt>
+<dd>A: The feed parser of Liferea expects valid XML. So, this error happens when a feed contains invalid XML. You can check the validity of a feed with <a href="http://feedvalidator.org/">http://feedvalidator.org/</a> and <a href="http://validator.w3.org/feed/">http://validator.w3.org/feed/</a>.
+<p>
+To fix this problem, you can try to sanitize the XML with xmllint. For this, open the subscription properties of the affected feed and add xmllint as a conversion filter in the source tab like this: <span class="code">xmllint --recover -</pre>
+<p>
+Note: On Debian-based distribution xmllint is part of the libxml2-utils package.
+</dd>
 </dl>
 
 </body>
