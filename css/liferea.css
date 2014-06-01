@@ -76,6 +76,7 @@ dd {
 img {
 	border:0;
 	margin:2px;
+	max-width:100%
 }
 
 img.gravatar {

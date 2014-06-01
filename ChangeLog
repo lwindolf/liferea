@@ -33,6 +33,8 @@ To be released
 	  buttons visible (reported by David Smith)
 	* Fixes Github #26: RTL comments appear incorrectly
 	  (reported by yaconf)
+	* Fixes Github #27: Images do not autosize to fit the available space
+	  (reported by Jeff Fortin)
 	* Patch SF #224: Update to new libxml2 buffer API
 	  (Simon Kagedal Reimer)
 	* Patch SF #209: Avoid copying list in itemset_merge_items
