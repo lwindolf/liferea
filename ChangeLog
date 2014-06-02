@@ -42,6 +42,7 @@ To be released
 	* Make Liferea use ETags and send If-None-Match
 	  (patch by Chris Siebenmann)
 
+	* Rename README to README.md
 	* Removing libindicate support (to be added as plugin maybe)
 	* Removing libnotify support (to be added as plugin maybe)
 	* Removing build in tray icon support
