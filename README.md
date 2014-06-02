@@ -1,6 +1,7 @@
 This documentation was last updated for Liferea version 1.11 (02.06.2014).
 
-
+git master status: 
+![build status git master](https://travis-ci.org/lwindolf/liferea.svg?branch=master)
 
 
 Introduction
@@ -12,6 +13,8 @@ RSS/RDF, CDF and Atom. There are many other news readers available, but these
 others are not available for Linux or require many extra libraries to be 
 installed. Liferea tries to fill this gap by creating a fast, easy to use, 
 easy to install news aggregator for GTK/GNOME.
+
+![screenshot](http://lzone.de/liferea/screenshots/screenshot3.png)
 
 
 
