@@ -1,4 +1,4 @@
-This documentation was last updated for Liferea version 1.11 (28.12.2013).
+This documentation was last updated for Liferea version 1.11 (02.06.2014).
 
 Contents
 ========
@@ -140,6 +140,9 @@ try to provide additional help on contributing via OpenHatch.org which
 provides help and easy tasks to start contributing.
 
 	http://openhatch.org/+projects/Liferea
+
+As the project is hosted at Github pull requests and tickets via Github
+are the best way to contribute to Liferea.
 
 
 4.1. No Feature Requests!
