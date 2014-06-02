@@ -73,7 +73,7 @@ dd {
 	padding-left: 30px;
 }
 
-img {
+div.content * img {
 	border:0;
 	margin:2px;
 	max-width:100%;
