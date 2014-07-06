@@ -444,7 +444,7 @@ itemset_check_item (itemSetPtr itemSet, itemPtr item)
 		
 		ruleResult = (*func) (rule, item);
 		result &= (rule->additive)?ruleResult:!ruleResult;
-		if (itemSet->anyMatch && result)
+		if (itemSet->anyMatch && ruleResult)
 			return TRUE;
 
 		iter = g_slist_next (iter);
