@@ -92,6 +92,9 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
  			tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
 			if (tmp) {
 				ctxt->item->time = date_parse_RFC822 (tmp);
+				/* There should not be a ISO8601 date, but sometimes there is... */
+				if (!ctxt->item->time)
+					ctxt->item->time = date_parse_ISO8601 (tmp);
 				g_free(tmp);
 			}
 		} 
