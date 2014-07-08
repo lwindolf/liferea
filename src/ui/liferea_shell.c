@@ -157,7 +157,7 @@ liferea_shell_class_init (LifereaShellClass *klass)
 
 	/* LifereaShell:item-list: */
 	g_object_class_install_property (object_class,
-		                         PROP_FEED_LIST,
+		                         PROP_ITEM_LIST,
 		                         g_param_spec_object ("item-list",
 		                                              "LifereaItemList",
 		                                              "LifereaItemList object",
@@ -166,7 +166,7 @@ liferea_shell_class_init (LifereaShellClass *klass)
 
 	/* LifereaShell:item-view: */
 	g_object_class_install_property (object_class,
-		                         PROP_FEED_LIST,
+		                         PROP_ITEM_VIEW,
 		                         g_param_spec_object ("item-view",
 		                                              "LifereaItemView",
 		                                              "LifereaItemView object",
@@ -175,7 +175,7 @@ liferea_shell_class_init (LifereaShellClass *klass)
 
 	/* LifereaShell:browser-tabs: */
 	g_object_class_install_property (object_class,
-		                         PROP_FEED_LIST,
+		                         PROP_BROWSER_TABS,
 		                         g_param_spec_object ("browser-tabs",
 		                                              "LifereaBrowserTabs",
 		                                              "LifereaBrowserTabs object",
