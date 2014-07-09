@@ -66,6 +66,11 @@ struct ItemViewPrivate {
 	gfloat			zoom;		/**< HTML rendering widget zoom level */
 };
 
+enum {
+	PROP_NONE,
+	PROP_ITEM_LIST_VIEW,
+};
+
 static GObjectClass *parent_class = NULL;
 static ItemView *itemview = NULL;
 
@@ -92,13 +97,40 @@ itemview_finalize (GObject *object)
 }
 
 static void
+itemview_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+	ItemView *itemview = ITEMVIEW (object);
+
+	switch (prop_id) {
+		case PROP_ITEM_LIST_VIEW:
+			g_value_set_object (value, itemview->priv->itemListView);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+			break;
+	}
+}
+
+static void
 itemview_class_init (ItemViewClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
+	object_class->get_property = itemview_get_property;
+
 	object_class->finalize = itemview_finalize;
+
+	/* ItemView:item-list-view: */
+	g_object_class_install_property (object_class,
+					PROP_ITEM_LIST_VIEW,
+					g_param_spec_object (
+						"item-list-view",
+						"ItemListView",
+						"ItemListView object",
+						ITEM_LIST_VIEW_TYPE,
+						G_PARAM_READABLE));
 
 	g_type_class_add_private (object_class, sizeof(ItemViewPrivate));
 }
