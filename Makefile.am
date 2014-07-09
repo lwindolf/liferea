@@ -59,7 +59,7 @@ DISTCLEANFILES = \
 	$(gsettings_SCHEMAS)
 
 CLEANFILES = \
-	$(gsettings_SCHEMAS)
+	$(gsettings_SCHEMAS) \
 	$(appdata_DATA) 
 
 po/liferea.pot:
