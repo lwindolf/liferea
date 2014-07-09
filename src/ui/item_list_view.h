@@ -62,16 +62,21 @@ struct ItemListViewClass
 GType item_list_view_get_type (void);
 
 /**
+ * item_list_view_create:
+ *
  * Create a new ItemListView instance.
  *
  * @param window	parent window widget
+ * @returns: (transfer none):	the ItemListView instance
  */
 ItemListView * item_list_view_create (GtkWidget *window);
 
 /**
+ * item_list_view_get_widget:
+ *
  * Returns the GtkTreeView used by the ItemListView instance.
  *
- * @returns a GtkTreeView
+ * @returns: (transfer none): a GtkTreeView
  */
 GtkTreeView * item_list_view_get_widget (ItemListView *ilv);
 
