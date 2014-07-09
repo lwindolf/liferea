@@ -39,6 +39,8 @@ To be released
 	  (reported by Jeff Fortin)
 	* Fixes Github #44: Support parsing ISO 8601 dates for pubDate
 	  (suggested by Jeff Fortin)
+	* Fixes Github #49: Some dialogs scrolling areas do not request enough height
+	  (reported by Jeff Fortin)
 	* Patch SF #224: Update to new libxml2 buffer API
 	  (Simon Kagedal Reimer)
 	* Patch SF #209: Avoid copying list in itemset_merge_items
