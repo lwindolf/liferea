@@ -19,7 +19,7 @@
 # Boston, MA 02111-1307, USA.
 #
 
-from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea
+from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Gdk
 
 class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = 'TrayiconPlugin'
@@ -29,22 +29,39 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 
     def do_activate (self):
         self.staticon = Gtk.StatusIcon ()
-	# FIXME: Support a scalable image!
-	self.staticon.set_from_pixbuf (Liferea.icon_create_from_file ("unread.png"))
+        # FIXME: Support a scalable image!
+        self.staticon.set_from_pixbuf (Liferea.icon_create_from_file ("unread.png"))
         self.staticon.connect ("activate", self.trayicon_activate)
         self.staticon.connect ("popup_menu", self.trayicon_popup)
         self.staticon.set_visible (True)
+        self.maximizing = False
+        window = self.shell.get_window ()
+        self.minimize_to_tray_handler_id = window.connect('window-state-event', self.window_state_event_cb)
+
+    def window_state_event_cb(self, window, event):
+        window = self.shell.get_window ()
+        state = Gtk.Widget.get_visible (window)
+        if state:
+            if bool(event.new_window_state & Gdk.WindowState.ICONIFIED):
+                if bool(event.new_window_state & Gdk.WindowState.FOCUSED):
+                    if bool(event.new_window_state & Gdk.WindowState.WITHDRAWN):
+                        self.maximizing = True
+                    elif self.maximizing:
+                        self.maximizing = False
+                        window.present()
+                    else:
+                        Gtk.Widget.hide(window)
 
     def trayicon_activate (self, widget, data = None):
-	window = self.shell.get_window ()
-	state = Gtk.Widget.get_visible (window)
-	if True == state:
-		Gtk.Widget.hide (window)
-	else:
-		Gtk.Window.present (window)
+        window = self.shell.get_window ()
+        state = Gtk.Widget.get_visible (window)
+        if True == state:
+            Gtk.Widget.hide (window)
+        else:
+            Gtk.Window.present (window)
 
     def trayicon_quit (self, widget, data = None):
-	Liferea.shutdown ()
+        Liferea.shutdown ()
 
     def trayicon_popup (self, widget, button, time, data = None):
         self.menu = Gtk.Menu ()
@@ -59,8 +76,10 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.menu.append (menuitem_quit)
 
         self.menu.show_all ()
-	self.menu.popup(None, None, lambda w,x: self.staticon.position_menu(self.menu, self.staticon), self.staticon, 3, time)
+        self.menu.popup(None, None, lambda w,x: self.staticon.position_menu(self.menu, self.staticon), self.staticon, 3, time)
 
     def do_deactivate (self):
         self.staticon.set_visible (False)
+        window = self.shell.get_window ()
+        window.disconnect(self.minimize_to_tray_handler_id)
         del self.staticon
