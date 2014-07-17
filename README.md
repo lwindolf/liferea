@@ -72,8 +72,7 @@ a package named like the library and one with a suffix "-dev" or
 _Compiling from Tarball_
 
 If you do not like version control systems you might want to compile
-Liferea from a release tarball. Those are supplied at our SourceForge
-project homepage (http://lzone.de/liferea). After you downloaded it 
+Liferea from a release tarball. Those are supplied at our project homepage (http://lzone.de/liferea). After you downloaded it 
 extract it like this:
 
     tar jxvf liferea-1.11.0.tar.bz2 
@@ -283,7 +282,7 @@ Now there are three major support channels:
 + The mailing list. Good for posting compilation problems and starting longer 
   discussions.
     
-+ The SourceForge bug tracker (http://sf.net/projects/liferea) where you
++ The GitHub bug tracker (https://github.com/lwindolf/liferea/issues) where you
   can post bug reports for all problems you find. Ensure to look for any
   existing reports on your problem!
 
