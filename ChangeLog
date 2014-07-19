@@ -47,6 +47,8 @@ To be released
 	  (kaloyan)
 	* Make Liferea use ETags and send If-None-Match
 	  (patch by Chris Siebenmann)
+	* Support NOCONFIGURE for RPM builds
+	  (Charles A Edwards)
 
 	* Rename README to README.md
 	* Removing libindicate support (to be added as plugin maybe)
