@@ -31,6 +31,7 @@
 #include "metadata.h"
 #include "subscription.h"
 #include "xml.h"
+#include "notification/notification.h"
 
 #include "fl_sources/ttrss_source.h"
 
@@ -110,6 +111,9 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 				itemset_free (itemSet);
 
 				feedlist_node_was_updated (subscription->node, newCount);
+
+				if (newCount)
+					notification_node_has_new_items (subscription->node, FALSE);
 			}
 
 			subscription->node->available = TRUE;
