@@ -41,6 +41,8 @@ To be released
 	  (reported by Jeff Fortin)
 	* Fixes Github #49: Some dialogs scrolling areas do not request enough height
 	  (reported by Jeff Fortin)
+	* Fixes Github #53: Doesn't automatically update feed name and favicon 
+	  for new feed (reported by asl97)
 	* Patch SF #224: Update to new libxml2 buffer API
 	  (Simon Kagedal Reimer)
 	* Patch SF #209: Avoid copying list in itemset_merge_items
