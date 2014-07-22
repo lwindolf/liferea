@@ -1,7 +1,7 @@
 /**
  * @file feedlist.h  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2014 Lars Windolf <lars.lindner@gmail.com>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,11 +100,8 @@ void feedlist_reset_new_item_count (void);
  * update for all affected nodes in the feed list.
  *
  * @param node		the updated node
- * @param newCount	number of new and unread items
- *
- * @todo: use signal instead
  */
-void feedlist_node_was_updated (nodePtr node, guint newCount);
+void feedlist_node_was_updated (nodePtr node);
 
 /**
  * Helper function to query the feed list root node.
@@ -262,9 +259,9 @@ nodePtr	feedlist_find_unread_feed (nodePtr folder);
 /**
  * To be called when node subscription update gained new items.
  *
- * @param node		the node updated
+ * @param newCount	number of new and unread items
  */
-void feedlist_new_items (nodePtr node);
+void feedlist_new_items (guint newCount);
 
 G_END_DECLS
 

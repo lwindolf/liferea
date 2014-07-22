@@ -225,7 +225,7 @@ node_update_parent_counters (nodePtr node)
 	
 	if (old != node->unreadCount) {
 		feed_list_node_update (node->id);
-		liferea_shell_update_unread_stats ();
+		feedlist_new_items (0);	/* add 0 new items, as 'new-items' signal updates unread items also */
 	}
 	
 	if (node->parent)

@@ -243,18 +243,15 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		} else {
 			/* Feed found, process it */
 			itemSetPtr	itemSet;
-			guint		newCount;
 			
 			node->available = TRUE;
 			
 			/* merge the resulting items into the node's item set */
 			itemSet = node_get_itemset (node);
-			newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
+			node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
 			itemlist_merge_itemset (itemSet);
 			itemset_free (itemSet);
-
-			feedlist_node_was_updated (node, newCount);
-			
+		
 			/* restore user defined properties if necessary */
 			if ((flags & FEED_REQ_RESET_TITLE) && ctxt->title)
 				node_set_title (node, ctxt->title);

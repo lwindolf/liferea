@@ -59,7 +59,8 @@ struct FeedListPrivate {
 };
 
 enum {
-	NEW_ITEMS,
+	NEW_ITEMS,		/**< node has new items after update */
+	NODE_UPDATED,		/**< node display info (title, unread count) has changed */
 	LAST_SIGNAL
 };
 
@@ -126,6 +127,18 @@ feedlist_class_init (FeedListClass *klass)
 		G_TYPE_NONE,
 		1,
 		G_TYPE_POINTER);
+
+	feedlist_signals[NODE_UPDATED] = 
+		g_signal_new ("node-updated", 
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0, 
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
 
 	g_type_class_add_private (object_class, sizeof(FeedListPrivate));
 }
@@ -353,35 +366,13 @@ feedlist_get_new_item_count (void)
 	return (feedlist->priv->newCount > 0)?feedlist->priv->newCount:0;
 }
 
-static void
-feedlist_update_new_item_count (guint addValue)
-{
-	feedlist->priv->newCount += addValue;
-	
-	/* On subsequent feed updates with cache drops
-	   more new items can be reported than effectively
-	   were merged. The simplest way to catch this case
-	   is by checking for new count > unread count here. */
-	if (feedlist->priv->newCount > ROOTNODE->unreadCount)
-		feedlist->priv->newCount = ROOTNODE->unreadCount;
-		
-	liferea_shell_update_unread_stats ();
-}
-
 void
 feedlist_reset_new_item_count (void)
 {
-	if (feedlist->priv->newCount) {
+	if (feedlist->priv->newCount)
 		feedlist->priv->newCount = 0;
-		liferea_shell_update_unread_stats ();
-	}
-}
 
-void
-feedlist_node_was_updated (nodePtr node, guint newCount)
-{
-	node_update_counters (node);
-	feedlist_update_new_item_count (newCount);
+	feedlist_new_items (0);
 }
 
 void
@@ -634,12 +625,27 @@ feedlist_schedule_save (void)
 /* Handling updates */
 
 void
-feedlist_new_items (nodePtr node)
+feedlist_new_items (guint newCount)
 {
-	feed_list_node_update (node->id);
+	feedlist->priv->newCount += newCount;
+	
+	/* On subsequent feed updates with cache drops
+	   more new items can be reported than effectively
+	   were merged. The simplest way to catch this case
+	   is by checking for new count > unread count here. */
+	if (feedlist->priv->newCount > ROOTNODE->unreadCount)
+		feedlist->priv->newCount = ROOTNODE->unreadCount;
+
+	g_signal_emit_by_name (feedlist, "new-items", feedlist->priv->newCount);
+}
+
+void
+feedlist_node_was_updated (nodePtr node)
+{
+	node_update_counters (node);
 	feedlist_schedule_save ();
 
-	g_signal_emit_by_name (feedlist, "new-items", node);
+	g_signal_emit_by_name (feedlist, "node-updated", node->id);
 }
 
 /* This method is only to be used when exiting the program! */

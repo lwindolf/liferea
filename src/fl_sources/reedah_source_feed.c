@@ -144,11 +144,10 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		/* merge against feed cache */
 		if (items) {
 			itemSetPtr itemSet = node_get_itemset (subscription->node);
-			gint newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
+			subscription->node->newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
 			itemlist_merge_itemset (itemSet);
 			itemset_free (itemSet);
 
-			feedlist_node_was_updated (subscription->node, newCount);
 			subscription->node->available = TRUE;
 		} else {
 			subscription->node->available = FALSE;

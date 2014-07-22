@@ -183,15 +183,6 @@ void liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead
 void liferea_shell_update_update_menu (gboolean enabled);
 
 /**
- * liferea_shell_update_unread_stats:
- *
- * Updates the unread/new item count right beneath the status bar.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_unread_stats (void);
-
-/**
  * liferea_shell_set_status_bar:
  *
  * Sets the status bar text. Takes printf() like parameters.

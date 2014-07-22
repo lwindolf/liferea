@@ -380,9 +380,8 @@ liferea_shell_update_history_actions (void)
 	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->generalActions, "NextReadItem"), item_history_has_next ());
 }
 
-// FIXME: register on feedlist "new-items" event
-void
-liferea_shell_update_unread_stats (void)
+static void
+liferea_shell_update_unread_stats (gpointer user_data)
 {
 	gint	new_items, unread_items;
 	gchar	*msg, *tmp;
@@ -1378,6 +1377,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	render_init_theme_colors (GTK_WIDGET (shell->priv->window));
 
 	shell->priv->feedlist = feedlist_create ();
+	g_signal_connect (shell->priv->feedlist, "new-items",
+	                  G_CALLBACK (liferea_shell_update_unread_stats), shell->priv->feedlist);
 
 	/* 11.) Restore latest selection */
 

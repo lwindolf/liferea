@@ -236,23 +236,26 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	      to ensure we have valid baseUrl for feed nodes... */
 	g_get_current_time (&now);
 	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
+{ g_print ("Updat favi for %s\n", subscription->node->title);
 		subscription_update_favicon (subscription);
-	
+	}
 	/* 4. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
 	g_get_current_time (&subscription->updateState->lastPoll);
 
-	// FIXME: use new-items signal in itemview class	
+	// FIXME: use new-items signal in itemview class        
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
 
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);
 
-	if (subscription->node->newCount > 0)
-		feedlist_new_items (subscription->node);
+	if (subscription->node->newCount > 0) {
+		feedlist_new_items (node->newCount);
+		feedlist_node_was_updated (node);
+	}
 }
 
 void
