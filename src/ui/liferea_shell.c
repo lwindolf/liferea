@@ -1386,17 +1386,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {
 		feed_list_view_select (node_from_id (id));
 		g_free (id);
-
-		// FIXME: Move to item list view code
-		// FIXME: Deactivated due to races causing crashes (see SF #1142, #1137)
-		/*gint item_id;
-		if (conf_get_int_value (LAST_ITEM_SELECTED, &item_id)) {
-			itemPtr item = db_item_load ((gulong)item_id);
-			if (item) {
-				itemview_select_item (item);
-				item_unload (item);
-			}
-		}*/
 	}
 		
 	/* 12. Connect network monitoring and set icon*/
@@ -1428,19 +1417,6 @@ liferea_shell_destroy (void)
 {
 	nodePtr	node;
 	itemPtr	item;
-
-	/* Save last selection for next start */
-	// FIXME: Move to feed list handling
-	node = feedlist_get_selected ();
-	if (node)
-		conf_set_str_value (LAST_NODE_SELECTED, node->id);
-
-	// FIXME: Move to item list handling
-	item = itemlist_get_selected ();
-	if (item)
-		conf_set_int_value (LAST_ITEM_SELECTED, item->id);
-
-	feed_list_view_select (NULL);	// FIXME: Move to feed list handling
 
 	liferea_shell_save_position ();
 	g_object_unref (shell->priv->tabs);

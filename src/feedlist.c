@@ -95,6 +95,11 @@ feedlist_finalize (GObject *object)
 
 	/* Enforce synchronous save upon exit */
 	feedlist_save ();		
+
+	/* Save last selection for next start */
+	if (feedlist->priv->selectedNode)
+		conf_set_str_value (LAST_NODE_SELECTED, feedlist->priv->selectedNode->id);
+
 	
 	/* And destroy everything */
 	feedlist_foreach (feedlist_free_node);
