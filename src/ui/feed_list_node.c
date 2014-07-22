@@ -319,7 +319,7 @@ feed_list_node_update (const gchar *nodeId)
 	if (node->unreadCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
 		labeltype -= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 
-	label = g_strdup (node_get_title (node));
+	label = g_markup_escape_text (node_get_title (node), -1);
 	switch (labeltype) {
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
