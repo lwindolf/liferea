@@ -22,9 +22,7 @@ Installation from Package
 -------------------------
 
 Detailed instructions on how to install Liferea on the different distributions can 
-be found online on our homepage at
-
-	http://lzone.de/liferea/install.htm
+be found online on our homepage at http://lzone.de/liferea/install.htm
 
 
 
