@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes Github #53: Doesn't automatically update feed name and favicon
+	  for new feed (reported by asl97)
+
+
 2014-07-20   Lars Windolf <lars.lindner@gmail.com>
 
 	* Fixes Github #26: RTL comments appear incorrectly
