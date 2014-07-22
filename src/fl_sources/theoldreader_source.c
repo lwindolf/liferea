@@ -98,7 +98,7 @@ theoldreader_source_login_cb (const struct updateResult * const result, gpointer
 		subscription->node->available = FALSE;
 
 		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("TheOldReader login failed!"));
+		subscription->updateError = g_strdup (_("Login failed!"));
 		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
 		
 		auth_dialog_new (subscription, flags);
@@ -310,7 +310,6 @@ extern struct subscriptionType theOldReaderSourceOpmlSubscriptionType;
 static struct nodeSourceType nst = {
 	.id                  = "fl_theoldreader",
 	.name                = N_("TheOldReader"),
-	.description         = N_("TheOldReader is a free online aggregator (http://theoldreader.com)."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |

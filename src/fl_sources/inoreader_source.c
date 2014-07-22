@@ -98,7 +98,7 @@ inoreader_source_login_cb (const struct updateResult * const result, gpointer us
 		debug0 (DEBUG_UPDATE, "InoReader login failed! no Auth token found in result!");
 
 		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("InoReader login failed!"));
+		subscription->updateError = g_strdup (_("Login failed!"));
 		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
 		
 		auth_dialog_new (subscription, flags);
@@ -306,7 +306,6 @@ extern struct subscriptionType inoreaderSourceOpmlSubscriptionType;
 static struct nodeSourceType nst = {
 	.id                  = "fl_inoreader",
 	.name                = N_("InoReader"),
-	.description         = N_("InoReader is a free online aggregator (http://inoreader.com)."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |

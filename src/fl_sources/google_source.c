@@ -109,8 +109,6 @@ google_source_convert_to_local (nodePtr node)
 static struct nodeSourceType nst = {
 	.id                  = "fl_google",
 	.name                = N_("Google Reader"),
-	.description         = N_("Integrate the feed list of your Google Reader account. Liferea will "
-	                          "present your Google Reader subscriptions, and will synchronize your feed list and reading lists."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
 	.source_type_init    = google_source_init,
 	.source_type_deinit  = google_source_deinit,

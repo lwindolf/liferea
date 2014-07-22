@@ -94,7 +94,6 @@ enum {
 typedef struct nodeSourceType {
 	const gchar	*id;		/**< a unique feed list source type identifier */
 	const gchar	*name;		/**< a descriptive source name (for preferences and menus) */
-	const gchar	*description;	/**< more detailed source type description (up to some sentences) */
 	gulong		capabilities;	/**< bitmask of feed list source capabilities */
 	googleReaderApi	api;		/**< endpoint definitions for Google Reader like JSON API */
 

@@ -99,7 +99,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 		debug0 (DEBUG_UPDATE, "Reedah login failed! no Auth token found in result!");
 
 		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("Reedah login failed!"));
+		subscription->updateError = g_strdup (_("Login failed!"));
 		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
 		
 		auth_dialog_new (subscription, flags);
@@ -307,7 +307,6 @@ extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 static struct nodeSourceType nst = {
 	.id                  = "fl_reedah",
 	.name                = N_("Reedah"),
-	.description         = N_("Reedah is a free online aggregator (http://reedah.com)."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |

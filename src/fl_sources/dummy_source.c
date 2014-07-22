@@ -40,7 +40,6 @@ static void dummy_source_deinit(void) { }
 static struct nodeSourceType nst = {
 	.id			= NODE_SOURCE_TYPE_DUMMY_ID,
 	.name			= "Dummy Feed List Source",
-	.description		= "The dummy feed list source. Should never be added manually. If you see this then something went wrong!",
 	.source_type_init	= dummy_source_init,
 	.source_type_deinit	= dummy_source_deinit,
 	.source_import		= dummy_source_import,
