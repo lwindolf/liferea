@@ -24,6 +24,7 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
+#include "enclosure.h"
 #include "feedlist.h"
 #include "itemlist.h"
 #include "itemset.h"
@@ -42,6 +43,7 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "content"));
+			JsonNode	*attachments;
 			GList		*elements = json_array_get_elements (array);
 			GList		*iter = elements;
 			GList		*items = NULL;
@@ -88,12 +90,43 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 				
 				if (json_get_bool (node, "unread")) {
 					item->readStatus = FALSE;
-				}
-				else {
+				} else {
 					item->readStatus = TRUE;
 				}
 				if (json_get_bool (node, "marked"))
 					item->flagStatus = TRUE;
+
+				/* Extract enclosures */
+				attachments = json_get_node (node, "attachments");
+				if (attachments && JSON_NODE_TYPE (attachments) == JSON_NODE_ARRAY) {
+					GList *aiter, *alist;
+					alist = aiter = json_array_get_elements (json_node_get_array (attachments));
+					while (aiter) {
+						JsonNode *enc_node = (JsonNode *)aiter->data;
+
+						/* attachment nodes should look like this:
+							{"id":"1562",
+                                                         "content_url":"http:\/\/...",
+						         "content_type":"audio\/mpeg",
+						         "post_id":"44572",
+						         "title":"...",
+						         "duration":"29446311"}]
+						 */
+						if (json_get_string (enc_node, "content_url") &&
+						    json_get_string (enc_node, "content_type")) {
+							gchar *encStr = enclosure_values_to_string (
+								json_get_string (enc_node, "content_url"),
+								json_get_string (enc_node, "content_type"), 
+								0 /* length unknown to TinyTiny RSS*/,
+								FALSE /* not yet downloaded */);
+							item->metadata = metadata_list_append (item->metadata, "enclosure", encStr);
+							item->hasEnclosure = TRUE;
+							g_free (encStr);
+						}
+						aiter = g_list_next (aiter);
+					}
+					g_list_free (alist);
+				}
 					
 				items = g_list_append (items, (gpointer)item);
 				

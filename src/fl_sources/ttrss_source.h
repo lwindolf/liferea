@@ -98,7 +98,7 @@ typedef struct ttrssSource {
  *
  * @returns JSON feed list
  */
-#define TTRSS_JSON_HEADLINES "{\"op\":\"getHeadlines\", \"sid\":\"%s\", \"feed_id\":\"%s\", \"limit\":\"%d\", \"show_content\":\"true\", \"view_mode\":\"all_articles\"}"
+#define TTRSS_JSON_HEADLINES "{\"op\":\"getHeadlines\", \"sid\":\"%s\", \"feed_id\":\"%s\", \"limit\":\"%d\", \"show_content\":\"true\", \"view_mode\":\"all_articles\", \"include_attachments\":\"true\"}"
 
 /**
  * Toggle item flag state.

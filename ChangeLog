@@ -35,6 +35,8 @@ To be released
 	  (reported by yaconf)
 	* Fixes Github #27: Images do not autosize to fit the available space
 	  (reported by Jeff Fortin)
+	* Fixes Github #34: Add TinyTinyRSS Enclosure Support
+	  (reported by Adrixan)
 	* Fixes Github #43: "Any of the following" search condition doesn't work
 	  (reported by Jeff Fortin)
 	* Fixes Github #44: Support parsing ISO 8601 dates for pubDate
