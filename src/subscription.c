@@ -236,9 +236,8 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	      to ensure we have valid baseUrl for feed nodes... */
 	g_get_current_time (&now);
 	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
-{ g_print ("Updat favi for %s\n", subscription->node->title);
 		subscription_update_favicon (subscription);
-	}
+	
 	/* 4. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
