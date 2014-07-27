@@ -9,9 +9,10 @@
                 <outline text="Librezale" htmlUrl="http://librezale.org" xmlUrl="http://librezale.org/feed/" />
             </outline>
             <outline text="Egunkariak">
-                <outline text="Berria" htmlUrl="http://www.berria.info" xmlUrl="http://www.berria.info/rss/ediziojarraia.xml" />
-                <outline text="Kazeta.info" htmlUrl="http://www.kazeta.info" xmlUrl="http://www.kazeta.info/rss.php" />
-                <outline text="Sustatu" htmlUrl="http://www.sustatu.com" xmlUrl="http://www.sustatu.com/rdf" />
+                <outline text="Berria" htmlUrl="http://www.berria.eus" xmlUrl="http://www.berria.eus/rss/ediziojarraia.xml" />
+                <outline text="EITB" htmlUrl="http://www.eitb.com/eu" xmlUrl="http://www.eitb.com/eu/rss/albisteak/" />
+                <outline text="Kazeta" htmlUrl="http://www.kazeta.eus" xmlUrl="http://www.kazeta.eus/rss.php" />
+                <outline text="Sustatu" htmlUrl="http://www.sustatu.eus" xmlUrl="http://feeds.feedburner.com/sustatu_osorik?format=xml" />
             </outline>
     </outline>
 
