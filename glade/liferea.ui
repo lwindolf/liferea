@@ -2065,7 +2065,7 @@
     <property name="type_hint">dialog</property>
     <property name="program_name">Liferea</property>
     <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
-    <property name="website">http://liferea.sf.net</property>
+    <property name="website">http://lzone.de/liferea/</property>
     <property name="website_label" translatable="yes">Liferea Homepage</property>
     <property name="license">This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as
