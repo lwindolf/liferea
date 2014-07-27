@@ -6,6 +6,6 @@ Name=GNOME Keyring Support
 Description=Allow Liferea to use GNOME keyring as password store
 Authors=Lars Windolf <lars.lindner@gmail.com>
 Copyright=Copyright © 2012 Lars Windolf
-Website=http://liferea.sf.net
-Help=http://liferea.sf.net
+Website=http://lzone.de/liferea/
+Help=http://lzone.de/liferea/
 
