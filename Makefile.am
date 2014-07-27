@@ -26,6 +26,8 @@ plugindir = $(pkglibdir)/plugins
 plugin_DATA = \
 	plugins/gnome-keyring.py \
 	plugins/gnome-keyring.plugin \
+	plugins/libnotify.py \
+	plugins/libnotify.plugin \
 	plugins/media-player.py \
 	plugins/media-player.plugin \
 	plugins/trayicon.py \
