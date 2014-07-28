@@ -1,4 +1,4 @@
-/**
+//**
  * @file net.c  HTTP network access using libsoup
  *
  * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
@@ -31,7 +31,7 @@
 #include "common.h"
 #include "debug.h"
 
-#define HOMEPAGE	"http://liferea.sf.net/"
+#define HOMEPAGE	"http://lzone.de/liferea/"
 
 static SoupSession *session = NULL;
 
@@ -224,10 +224,10 @@ network_init (void)
 
 	/* Set an appropriate user agent */
 	if (g_getenv ("LANG")) {
-		/* e.g. "Liferea/1.10.0 (Linux; de_DE; http://liferea.sf.net/) AppleWebKit (KHTML, like Gecko)" */
+		/* e.g. "Liferea/1.10.0 (Linux; de_DE; http://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
 	} else {
-		/* e.g. "Liferea/1.10.0 (Linux; http://liferea.sf.net/) AppleWebKit (KHTML, like Gecko)" */
+		/* e.g. "Liferea/1.10.0 (Linux; http://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
 	}
 
