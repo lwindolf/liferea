@@ -2,7 +2,7 @@
  * @file inoreader_source_feed.c  InoReader feed subscription routines
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
- * Copyright (C) 2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

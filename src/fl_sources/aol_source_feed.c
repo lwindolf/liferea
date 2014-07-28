@@ -1,7 +1,7 @@
 /**
  * @file aol_source_feed.c  AOL reader feed subscription routines
  * 
- * Copyright (C) 2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2014 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify

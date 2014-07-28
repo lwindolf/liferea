@@ -2,7 +2,7 @@
  * @file html.c  HTML favicon and feed link auto discovery
  * 
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004-2009 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2009 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

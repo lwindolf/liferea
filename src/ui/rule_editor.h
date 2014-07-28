@@ -1,7 +1,7 @@
 /**
  * @file rule_editor.h  rule editing dialog functionality
  *
- * Copyright (C) 2008-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2011 Lars Windolf <lars.windolf@gmx.de>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

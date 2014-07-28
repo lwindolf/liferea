@@ -1,7 +1,7 @@
 /**
  * @file webkit.c  WebKit browser module for Liferea
  *
- * Copyright (C) 2007-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>

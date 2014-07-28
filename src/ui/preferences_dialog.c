@@ -2,7 +2,7 @@
  * @file preferences_dialog.c Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify

@@ -1,7 +1,7 @@
 /**
  * @file net.h  HTTP network access interface
  * 
- * Copyright (C) 2007-2009 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2009 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify

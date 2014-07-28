@@ -2,7 +2,7 @@
  * @file metadata.c  handling of typed item and feed meta data
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

@@ -1,7 +1,7 @@
 /**
  * @file itemset.c handling sets of items
  * 
- * Copyright (C) 2005-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2011 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify

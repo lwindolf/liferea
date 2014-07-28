@@ -64,7 +64,7 @@ To be released
 	* Updated Arabic translation (Khaled Hosny)
 
 
-2013-10-08   Lars Windolf <lars.lindner@gmail.com>
+2013-10-08   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.3
 
@@ -79,7 +79,7 @@ To be released
 	* Updated Italian localized feed list (Gianvito Cavasoli)
 
 
-2013-09-05   Lars Windolf <lars.lindner@gmail.com>
+2013-09-05   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.2
 	
@@ -104,14 +104,14 @@ To be released
 	  (suggested by Christoph Temmel and Simon Kågedal Reimer)
 
 
-2013-07-28   Lars Windolf <lars.lindner@gmail.com>
+2013-07-28   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.1a
 
 	* Fixes SF #1102: Liferea does not show a window
 	  (reported by genodeftest)
 
-2013-07-28   Lars Windolf <lars.lindner@gmail.com>
+2013-07-28   Lars Windolf <lars.windolf@gmx.de>
 	
 	Version 1.10.1
 
@@ -135,7 +135,7 @@ To be released
 	  (Yanko Kaneti)
 
 
-2013-07-10   Lars Windolf <lars.lindner@gmail.com>
+2013-07-10   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.0
 
@@ -170,7 +170,7 @@ To be released
 	* Updated German translation (Lars Windolf)
 
 
-2013-05-22   Lars Windolf <lars.lindner@gmail.com>
+2013-05-22   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10-RC4
 
@@ -186,7 +186,7 @@ To be released
 	  (reported by David Willmore)
 
 
-2013-05-22   Lars Windolf <lars.lindner@gmail.com>
+2013-05-22   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10-RC3
 
@@ -205,7 +205,7 @@ To be released
 	* Updated Polish translation (Piotr Sokół)
 
 
-2013-05-12   Lars Windolf <lars.lindner@gmail.com>
+2013-05-12   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10-RC2
 
@@ -244,7 +244,7 @@ To be released
 	* Updated Ukrainian translation (Yuri Chornoivan)
 
 
-2013-01-30  Lars Windolf <lars.lindner@gmail.com>
+2013-01-30  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10-RC1
 
@@ -283,7 +283,7 @@ To be released
 	* Fixes missing item list update when browsing item URLs in Liferea
 
 
-2012-10-28  Lars Windolf <lars.lindner@gmail.com>
+2012-10-28  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.7
 
@@ -305,7 +305,7 @@ To be released
 	* Update of German translation
 
 
-2012-10-09  Lars Windolf <lars.lindner@gmail.com>
+2012-10-09  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.6
 
@@ -332,7 +332,7 @@ To be released
 	* Updated Polish translation (Wojciech Myrda)
 
 
-2012-09-14  Lars Windolf <lars.lindner@gmail.com>
+2012-09-14  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.5
 
@@ -352,7 +352,7 @@ To be released
 	  (patch by Yanko Kaneti)
 
 
-2012-08-24  Lars Windolf <lars.lindner@gmail.com>
+2012-08-24  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.4
 
@@ -395,7 +395,7 @@ To be released
 	  Reader subscriptions from DB.
 
 
-2012-03-30  Lars Lindner <lars.lindner@gmail.com>
+2012-03-30  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.3
 
@@ -429,7 +429,7 @@ To be released
 	* Updated Catalan translation (Gil Forcada)
 
 
-2012-03-23  Lars Lindner <lars.lindner@gmail.com>
+2012-03-23  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.2
 
@@ -441,7 +441,7 @@ To be released
 	  to avoid slow item removal. (suggested by Paulo Anes)
 
 
-2012-03-18  Lars Lindner <lars.lindner@gmail.com>
+2012-03-18  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.1
 
@@ -459,7 +459,7 @@ To be released
 	  through items.
 
 
-2011-12-23  Lars Lindner <lars.lindner@gmail.com>
+2011-12-23  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.0
 
@@ -475,7 +475,7 @@ To be released
 	  (reported by Dennis Nezic)
 
 
-2011-12-10  Lars Lindner <lars.lindner@gmail.com>
+2011-12-10  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.8.0
 
@@ -488,7 +488,7 @@ To be released
 	  (suggested by Gabor Kelemen)
 
 
-2011-11-16  Lars Lindner <lars.lindner@gmail.com>
+2011-11-16  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.8 RC2
 
@@ -515,7 +515,7 @@ To be released
 	* Updated Ukrainian translation. (Yuri Chornoivan)
 
 
-2011-09-14   Lars Lindner <lars.lindner@gmail.com>
+2011-09-14   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.8 RC1
 
@@ -529,7 +529,7 @@ To be released
 	* Updated manual page
 
 
-2011-06-21   Lars Lindner <lars.lindner@gmail.com>
+2011-06-21   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.7.6 (Unstable)
 
@@ -561,7 +561,7 @@ To be released
 	* Updated Polish translation (Myrda Wojciech)
 
 
-2011-04-14   Lars Lindner <lars.lindner@gmail.com>
+2011-04-14   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.7.5 (Unstable)
 
@@ -583,7 +583,7 @@ To be released
 	  (suggested by Felipe Ignacio Canas Sabat)
 	* Rewrite of the search folder code. We do not use SQlite
 	  views for rule based matching anymore.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Added identi.ca bookmarking support. (Adrian Bunk)
 	* Added copy text selection to clipboard option.
 	  (patch by Ricardo Cruz)
@@ -602,13 +602,13 @@ To be released
 	  (patch by Matthew Bauer)
 	* Removing feed update state from DB and simplifying
 	  startup feed update options.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes SF #3019939, Debian #586926: Broken Google Reader
 	  authentication. (Arnold Noronha)
 	* Don't ship autogen.sh in release tarballs. (Adrian Bunk)
-	* Added --debug-vfolder option. (Lars Lindner)
+	* Added --debug-vfolder option. (Lars Windolf)
 	* Added feature to sort feeds in a folder alphabetically.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Require WebKitGTK+ >= 1.2.2 to avoid bugs in older versions.
 	  (Adrian Bunk)
 	* Better error messages when essential files are missing under
@@ -621,11 +621,11 @@ To be released
 	* Fixes SF #3067801: crash in enclosure handling
 	  (patch by Peter Oliver)
 	* Fixes SF #3060658: Save As Enclosure doesn't set directory.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Added "Copy Link/Image Location" to HTML view
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Added "Save Link/Image As" to HTML view
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes Debian #593415: Seems to misidentify MIME type
 	  of some podcast enclosures (reported by Celejar)
 	* Removed the obsolete Bloglines support. (Adrian Bunk)
@@ -633,7 +633,7 @@ To be released
 	  (Adrian Bunk)
 	* Removed the outdated .spec file. (Adrian Bunk)
 	* Merged patch SF #3089150: Bidi support (Yaron Sheffer)
-	* Fixes second search not clearing item list. (Lars Lindner)
+	* Fixes second search not clearing item list. (Lars Windolf)
 	* Fixes SF #3019444 and #2978831: incorrect handling
 	  of HTTP 301 (patch by Solomon Peachy)
 	* Added support for the new libnotify API.
@@ -668,7 +668,7 @@ To be released
 	* Updated Albanian translation. (Besnik Bleta)
 	* Updated Arabic translation. (Khaled Hosny)
 	* Updated Chinese/Simplified translation. (Aron Xu)
-	* Updated German translation. (Lars Lindner)
+	* Updated German translation. (Lars Windolf)
 	* Updated Italian translation. (Gianvito Cavasoli)
 	* Updated Russian translation. (Leonid Selivanov)
 	* Updated Slovak translation. (Pavol Klacansk)
@@ -681,17 +681,17 @@ To be released
 	* Merged patch that fixes LP #238958: always present window
 	  on current workspace if tray icon is clicked.
 	  (patch by Fabien Tassin and Sasa Bodiroza)
-	* Cleanup of default stylesheet. Removed used styles. (Lars Lindner)
-	* Permanently removed LUA scripting support. (Lars Lindner)
+	* Cleanup of default stylesheet. Removed used styles. (Lars Windolf)
+	* Permanently removed LUA scripting support. (Lars Windolf)
 	* Added more default feeds to be not so open source specific.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Require libsoup >= 2.28.2 to avoid bugs in older versions.
 	  (Adrian Bunk)
 
 	* Updated Spanish translation. (Rodrigo Gallardo)
 
 
-2010-01-24   Lars Lindner <lars.lindner@gmail.com>
+2010-01-24   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.7.3 (Unstable)
 
@@ -699,9 +699,9 @@ To be released
 	  (patch by Ted Gould)
 	* Implemented folder re-expansion when switching from
 	  reduced feed list mode back to full hierarchic mode.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Updated proxy settings are now forwarded to the internal
-	  renderer again. (Lars Lindner)
+	  renderer again. (Lars Windolf)
 	* Fixes SF #2872001: Allowing compilation against
 	  NetworkManager 0.8 which decided to force 100000 packages
 	  out there to support both "libnm-glib" and "libnm_glib".
@@ -717,11 +717,11 @@ To be released
 	* Readded workaround for zoom setting of zero (which
 	  prevents zooming). (patch by Rafael Kitover)
 	* Use gtk_show_uri() instead of relying on "gnome-open".
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Using g_time_val_from_iso8601 instead of propietary
-	  solution we had. (Lars Lindner)
+	  solution we had. (Lars Windolf)
 	* Simplified pixmaps resolving as we used only one source
-	  directory anyway. (Lars Lindner)
+	  directory anyway. (Lars Windolf)
 
 	* Updated Catalan translation. (Gil Forcada)
 
@@ -739,17 +739,17 @@ To be released
 	  libraries in unusual locations found through pkg-config.
 	  (Adrian Bunk, reported by Leon Nardella)
 	* Fixes SF #2831007: Opening enclosures by URL fails intermitantly
-	  (Lars Lindner, reported by Eric Drechsel)
+	  (Lars Windolf, reported by Eric Drechsel)
 	* Fixes a unique node id check that could have caused duplicate
-	  node ids. (Lars Lindner)
+	  node ids. (Lars Windolf)
 	* Removes the GConf option for a user defined date format.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* We do not update comment feeds returning HTTP 410 anymore.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes SF #2897668: Crash when adding Bloglines subscriptions.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes a crash when deleting items.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes SF #2823526: Increase the width of the left column
 	  in the Script Manager.
 	  (Adrian Bunk, reported by Pavol Klačanský)
@@ -771,7 +771,7 @@ To be released
 	* Stop accessing GTK+ structures directly, use accessors instead
 	  in preparation for GTK+ 3.0. Require gtk+ >= 2.18.0 for it.
 	  (Emilio Pozuelo Monfort)
-	* Simplified DB schema to avoid costly cleanup. (Lars Lindner)
+	* Simplified DB schema to avoid costly cleanup. (Lars Windolf)
 	* Patch SF #2894307: Fixes <tab> key cycling in items list.
 	  (Simon Lipp)
 	* Put the next selected item on top when scrolling in the

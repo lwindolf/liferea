@@ -1,7 +1,7 @@
 /**
  * @file opml_source.c  OPML Planet/Blogroll feed list source
  * 
- * Copyright (C) 2006-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 
 #include "fl_sources/opml_source.h"
 
-#include <gtk/gtk.h>
 #include <unistd.h>
 
 #include "common.h"
@@ -381,7 +380,7 @@ on_opml_file_selected (const gchar *filename, gpointer user_data)
 static void
 on_opml_file_choose_clicked (GtkButton *button, gpointer user_data)
 {
-	ui_choose_file (_("Choose OPML File"), GTK_STOCK_OPEN, FALSE, on_opml_file_selected, NULL, NULL, "*.opml|*.xml", _("OPML Files"), user_data);
+	ui_choose_file (_("Choose OPML File"), _("_Open"), FALSE, on_opml_file_selected, NULL, NULL, "*.opml|*.xml", _("OPML Files"), user_data);
 }
 
 static void
