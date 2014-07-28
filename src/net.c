@@ -1,4 +1,4 @@
-//**
+/**
  * @file net.c  HTTP network access using libsoup
  *
  * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
