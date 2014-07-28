@@ -2,7 +2,7 @@
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -963,21 +963,21 @@ static const GtkActionEntry liferea_shell_action_entries[] = {
 	 G_CALLBACK(on_menu_allfeedsread)},
 	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_menu_import)},
 	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_("Exports the feed list as OPML."), G_CALLBACK(on_menu_export)},
-	{"Quit",GTK_STOCK_QUIT, N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_menu_quit)},
+	{"Quit", "application-exit", N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_menu_quit)},
 
 	{"FeedMenu", NULL, N_("_Feed"), NULL, NULL, NULL},
 	{"RemoveAllItems", "gtk-delete", N_("Remove _All Items"), NULL, N_("Removes all items of the currently selected feed."),
 	 G_CALLBACK(on_remove_items_activate)},
 
 	{"ItemMenu", NULL, N_("_Item"), NULL, NULL, NULL},
-	{"PrevReadItem", GTK_STOCK_GO_BACK, N_("Previous Item"), "<control><shift>N", NULL,	
+	{"PrevReadItem", "go-previous", N_("Previous Item"), "<control><shift>N", NULL,	
 	 G_CALLBACK(on_prev_read_item_activate)},
-	{"NextReadItem", GTK_STOCK_GO_FORWARD, N_("Next Item"), NULL, NULL,	
+	{"NextReadItem", "go-next", N_("Next Item"), NULL, NULL,	
 	 G_CALLBACK(on_next_read_item_activate)},
 
 	/* No tooltip here as it really hinders usability to have it flashing
 	   when skimming through items using "Next Unread"! */
-	{"NextUnreadItem", GTK_STOCK_JUMP_TO, N_("_Next Unread Item"), "<control>N", NULL,	
+	{"NextUnreadItem", "go-jump", N_("_Next Unread Item"), "<control>N", NULL,	
 	 G_CALLBACK(on_next_unread_item_activate)},
 
 	{"ViewMenu", NULL, N_("_View"), NULL, NULL, NULL},
@@ -989,7 +989,7 @@ static const GtkActionEntry liferea_shell_action_entries[] = {
 	{"ToolsMenu", NULL, N_("_Tools"), NULL, NULL, NULL},
 	{"ShowUpdateMonitor", NULL, N_("_Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
 	 G_CALLBACK(on_menu_show_update_monitor)},
-	{"ShowPreferences", GTK_STOCK_PREFERENCES, N_("_Preferences"), NULL, N_("Edit Preferences."),
+	{"ShowPreferences", "preferences-system", N_("_Preferences"), NULL, N_("Edit Preferences."),
 	 G_CALLBACK(on_prefbtn_clicked)},
 
 	{"SearchMenu", NULL, N_("S_earch"), NULL, NULL, NULL},

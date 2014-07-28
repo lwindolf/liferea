@@ -379,7 +379,7 @@ on_selectcmd_pressed (GtkButton *button, gpointer user_data)
 	utfname = gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (dialog,"enc_cmd_entry")));
 	name = g_filename_from_utf8 (utfname, -1, NULL, NULL, NULL);
 	if (name) {
-		ui_choose_file (_("Choose File"), GTK_STOCK_OPEN, FALSE, on_selectcmdok_clicked, name, NULL, NULL, NULL, dialog);
+		ui_choose_file (_("Choose File"), "document-open", FALSE, on_selectcmdok_clicked, name, NULL, NULL, NULL, dialog);
 		g_free (name);
 	}
 }

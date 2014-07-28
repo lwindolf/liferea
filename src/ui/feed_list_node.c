@@ -418,8 +418,8 @@ feed_list_node_remove (nodePtr node)
 	                                 GTK_BUTTONS_NONE,
 	                                 "%s", text);
 	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-	                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-	                        GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
+	                        "_Cancel", GTK_RESPONSE_CANCEL,
+	                        "_Delete", GTK_RESPONSE_ACCEPT,
 	                        NULL);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);

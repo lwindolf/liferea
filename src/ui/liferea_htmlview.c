@@ -648,7 +648,7 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 	
 	if(!link && !image) {
 		GtkWidget *item;
-		item = menu_add_option (menu, NULL, GTK_STOCK_COPY, G_CALLBACK (on_popup_copy_activate), htmlview);
+		item = menu_add_option (menu, _("_Copy"), NULL, G_CALLBACK (on_popup_copy_activate), htmlview);
 		if (!(RENDERER (htmlview)->hasSelection) (htmlview->priv->renderWidget)) 
 			gtk_widget_set_sensitive (item, FALSE);
 

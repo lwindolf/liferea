@@ -1,7 +1,7 @@
 /**
  * @file icons.c  Using icons from theme and package pixmaps
  *
- * Copyright (C) 2010-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2014 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,7 +96,7 @@ icons_load (void)
 		"emblem-important",	/* ICON_FLAG */
 		NULL,			/* ICON_AVAILABLE */
 		NULL,			/* ICON_AVAILABLE_OFFLINE */
-		NULL,			/* ICON_UNAVAILABLE */
+		"dialog-error",		/* ICON_UNAVAILABLE */
 		NULL,			/* ICON_DEFAULT */
 		"folder",		/* ICON_FOLDER */
 		"folder-saved-search",	/* ICON_VFOLDER */
@@ -136,11 +136,6 @@ icons_load (void)
 	for (i = 0; i < MAX_ICONS; i++)
 		if (!icons[i])
 			icons[i] = icon_create_from_file (iconNames[i]);
-
-	/* set up icons that are build from stock */
-	widget = gtk_button_new ();
-	icons[ICON_UNAVAILABLE] = gtk_widget_render_icon (widget, GTK_STOCK_DIALOG_ERROR, GTK_ICON_SIZE_MENU, "");
-	gtk_widget_destroy (widget);
 }
 
 const GdkPixbuf *

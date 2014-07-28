@@ -1,7 +1,7 @@
 /**
  * @file ui_common.c  UI helper functions
  *
- * Copyright (C) 2008-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2014 Lars Windolf <lars.lindner@gmail.com>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -165,7 +165,7 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 	dialog = gtk_file_chooser_dialog_new (title, GTK_WINDOW (liferea_shell_get_window ()),
 	                                      (directory?GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER:
 					       (saving ? GTK_FILE_CHOOSER_ACTION_SAVE : GTK_FILE_CHOOSER_ACTION_OPEN)),
-	                                      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+	                                      _("_Cancel"), GTK_RESPONSE_CANCEL,
 	                                      NULL);
 	if (saving)
 		gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
