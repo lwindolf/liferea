@@ -10,6 +10,8 @@ To be released
 
 2014-07-20   Lars Windolf <lars.lindner@gmail.com>
 
+	Version 1.10.10
+
 	* Fixes Github #26: RTL comments appear incorrectly
 	  (reported by yaronf)
 	* Fixes Github #21: No notifications for Tiny Tiny RSS feeds
