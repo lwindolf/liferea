@@ -65,12 +65,13 @@ a package named like the library and one with a suffix "-dev" or
 _Compiling from Tarball_
 
 If you do not like version control systems you might want to compile
-Liferea from a release tarball. Those are supplied at our project homepage (http://lzone.de/liferea). After you downloaded it 
-extract it like this:
+Liferea from a release tarball. Those are supplied in the Github release
+tracker (https://github.com/lwindolf/liferea/releases). After you download a 
+release extract it like this:
 
     tar jxvf liferea-1.11.0.tar.bz2 
  
-After unpacking run the standard autotools commands:
+After extracting run the standard autotools commands:
 
     ./configure
     make
