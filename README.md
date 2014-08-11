@@ -7,12 +7,7 @@ git master status:
 Introduction
 ------------
 
-Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator for 
-online news feeds. It supports a number of different feed formats including 
-RSS/RDF, CDF and Atom. There are many other news readers available, but these 
-others are not available for Linux or require many extra libraries to be 
-installed. Liferea tries to fill this gap by creating a fast, easy to use, 
-easy to install news aggregator for GTK/GNOME.
+Liferea is a web feed reader/news aggregator that brings together all of the content from your favorite subscriptions into a simple interface that makes it easy to organize and browse feeds. Its GUI is similar to a desktop mail/newsclient, with an embedded graphical browser.
 
 ![screenshot](http://lzone.de/liferea/screenshots/screenshot3.png)
 
