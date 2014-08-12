@@ -251,8 +251,13 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 					g_free (folderId);
 
 					/* Process child categories ... */
-					if (json_get_node (node, "items"))
+					if (json_get_node (node, "items")) {
+						/* Store category id also for folder (needed when subscribing new feeds) */
+						g_hash_table_insert (source->folderToCategory, g_strdup (folder->id), GINT_TO_POINTER (id));
+
+						/* Recurse... */
 						ttrss_source_merge_categories (source, folder, id, json_get_node (node, "items"));
+					}
 				/* Process child feeds */
 				} else {	
 					debug3 (DEBUG_UPDATE, "TinyTinyRSS feed=%s folder=%d (%ld)", name, parentId, id);

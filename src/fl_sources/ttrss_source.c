@@ -49,6 +49,7 @@ ttrss_source_new (nodePtr node)
 	source->root = node;
 	source->apiLevel = 0;
 	source->categories = g_hash_table_new (g_direct_hash, g_direct_equal);
+	source->folderToCategory = g_hash_table_new (g_str_hash, g_str_equal);
 	
 	return source;
 }
@@ -62,6 +63,7 @@ ttrss_source_free (ttrssSourcePtr source)
 	update_job_cancel_by_owner (source);
 
 	g_hash_table_destroy (source->categories);
+	g_hash_table_destroy (source->folderToCategory);
 	g_free (source->session_id);
 	g_free (source);
 }
@@ -225,7 +227,7 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 
 	/* Result should be {"seq":0,"status":0,"content":{"status":{"code":1}}} */
 	// FIXME: poor mans matching
-	if (!strstr (result->data, "\"status\":0")) {
+	if (!strstr (result->data, "\"code\":1")) {
 		ui_show_error_box (_("TinyTinyRSS subscribing to feed failed! Check if you really passed a feed URL!"));
 		return;
 	}		
@@ -238,10 +240,19 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 static nodePtr
 ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 {
+	nodePtr			parent;
 	gchar			*username, *password;
 	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
 	updateRequestPtr	request;
 	gint			categoryId = 0;
+
+	/* Determine correct category from selected folder name */
+	parent = feedlist_get_selected ();
+	if (parent) {
+		if (parent->subscription)
+			parent = parent->parent;
+		categoryId = GPOINTER_TO_INT (g_hash_table_lookup (source->folderToCategory, parent->id));
+	}
 
 	/* escape user and password for JSON call */
 	username = g_strescape (root->subscription->updateOptions->username, NULL);
@@ -249,9 +260,7 @@ ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 
 	request = update_request_new ();
 	request->options = update_options_copy (root->subscription->updateOptions);
-	// FIXME: determine correct category from parent folder name
 	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIBE, source->session_id, subscription->source, categoryId, username, password);
-
 	update_request_set_source (request, g_strdup_printf (TTRSS_URL, source->url));
 	update_execute_request (source, request, ttrss_source_subscribe_cb, source, 0 /* flags */);
 
@@ -301,7 +310,7 @@ ttrss_source_remove_node (nodePtr root, nodePtr node)
 
 	id = metadata_list_get (node->subscription->metadata, "ttrss-feed-id");
 	if (!id) {
-		g_warning ("Fatal: cannot remove node as ttrss-feed-id is unknown!");
+		g_warning ("Cannot remove node on remote side as ttrss-feed-id is unknown!");
 		return;
 	}
 

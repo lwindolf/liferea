@@ -176,7 +176,8 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	
 	feed_id = metadata_list_get (subscription->metadata, "ttrss-feed-id");
 	if (!feed_id) {
-		g_warning ("Fatal: TinyTinyRSS feed without id! (%s)", subscription->node->title);
+		g_warning ("Dropping TinyTinyRSS feed without id! (%s)", subscription->node->title);
+		feedlist_node_removed (subscription->node);
 		return FALSE;
 	}
 

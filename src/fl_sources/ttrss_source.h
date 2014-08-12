@@ -29,11 +29,12 @@
  * A nodeSource specific for tt-rss
  */
 typedef struct ttrssSource {
-	nodePtr		root;		/**< the root node in the feed list */
-	gchar		*session_id;	/**< the current session id */
-	const gchar	*url;		/**< the API base URL */
-	gint		apiLevel;	/**< The API level reported by the instance (or 0) */
-	GHashTable	*categories;	/**< Lookup hash for feed id to category id */
+	nodePtr		root;			/**< the root node in the feed list */
+	gchar		*session_id;		/**< the current session id */
+	const gchar	*url;			/**< the API base URL */
+	gint		apiLevel;		/**< The API level reported by the instance (or 0) */
+	GHashTable	*categories;		/**< Lookup hash for TTRSS feed id to TTRSS category id */
+	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to TTRSS category id */
 } *ttrssSourcePtr;
 
 /**
