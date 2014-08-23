@@ -278,6 +278,7 @@ static struct nodeSourceType nst = {
 	.id                  = "fl_aol",
 	.name                = N_("AOL Reader"),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
+	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |

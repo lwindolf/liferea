@@ -398,6 +398,9 @@ node_source_auto_update (nodePtr node)
 static gboolean
 node_source_is_logged_in (nodePtr node)
 {
+	if (FALSE == (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN))
+		return TRUE;
+
 	if (node->source->loginState != NODE_SOURCE_STATE_ACTIVE)
 		ui_show_error_box (_("Login for '%s' has not yet completed! Please wait until login is done."), node->title);
 

@@ -60,6 +60,7 @@ enum {
 	NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC		= (1<<6),	/**< the item state can and should be sync'ed with remote */
 	NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL		= (1<<7),	/**< node sources of this type can be converted to internal subscription lists */
 	NODE_SOURCE_CAPABILITY_GOOGLE_READER_API	= (1<<8),	/**< node sources of this type are Google Reader clones */
+	NODE_SOURCE_CAPABILITY_CAN_LOGIN		= (1<<9)	/**< node source needs login (means loginState member is to be used) */
 };
 
 /** Node source state model */
