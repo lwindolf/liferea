@@ -51,6 +51,7 @@ theoldreader_source_new (nodePtr node)
 	TheOldReaderSourcePtr source = g_new0 (struct TheOldReaderSource, 1) ;
 	source->root = node; 
 	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+	source->folderToCategory = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	
 	return source;
 }
@@ -64,6 +65,7 @@ theoldreader_source_free (TheOldReaderSourcePtr source)
 	update_job_cancel_by_owner (source);
 	
 	g_hash_table_unref (source->lastTimestampMap);
+	g_hash_table_destroy (source->folderToCategory);
 	g_free (source);
 }
 
@@ -200,8 +202,21 @@ theoldreader_source_import (nodePtr node)
 static nodePtr
 theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription) 
 {
-	// FIXME: determine correct category from parent folder name
+	nodePtr			parent;
+	gchar			*categoryId = NULL;
+	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr)root->data;
+
+	/* Determine correct category from selected folder name */
+	parent = feedlist_get_selected ();
+	if (parent) {
+		if (parent->subscription)
+			parent = parent->parent;
+		categoryId = g_hash_table_lookup (source->folderToCategory, parent->id);
+	}
+
 	google_reader_api_edit_add_subscription (root->source, subscription->source);
+
+	// FIXME: API edit to add category tag!
 
 	// FIXME: leaking subscription?
 

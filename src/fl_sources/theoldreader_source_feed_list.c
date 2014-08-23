@@ -151,6 +151,10 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 						const gchar *label = json_get_string ((JsonNode *)citer->data, "label");
 						if (label) {
 							folder = node_source_find_or_create_folder (source->root, label, label);
+
+							/* Store category id also for folder (needed when subscribing new feeds) */
+							g_hash_table_insert (source->folderToCategory, g_strdup (folder->id), g_strdup (label));
+
 							break;
 						}
 						citer = g_list_next (citer);

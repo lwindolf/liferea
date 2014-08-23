@@ -39,6 +39,8 @@ typedef struct TheOldReaderSource {
 	 * A timestamp when the last Quick update took place.
 	 */
 	GTimeVal        lastQuickUpdate;
+
+	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to TTRSS category id */
 } *TheOldReaderSourcePtr;
 
 /**
