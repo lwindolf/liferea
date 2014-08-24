@@ -1,4 +1,8 @@
 To be released
+	
+	* Fixes Github #81: Inability to add subscriptions
+	  (reported by GreenLunar)
+	* Fixes Javascript links not opening in new browser tabs
 
 	* Updated Hebrew translation (Genghis Khan)
 

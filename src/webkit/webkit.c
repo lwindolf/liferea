@@ -325,12 +325,19 @@ static WebKitWebView*
 webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
 {
 	LifereaHtmlView *htmlview;
-	GtkWidget	*scrollpane;
+	GtkWidget	*container;
 	GtkWidget	*htmlwidget;
+	GList 		*children;
 
 	htmlview = browser_tabs_add_new (NULL, NULL, TRUE);
-	scrollpane = liferea_htmlview_get_widget (htmlview);
-	htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
+	container = liferea_htmlview_get_widget (htmlview);
+
+	/* Ugly lookup of the webview. LifereaHtmlView uses a GtkBox
+	   with first a URL bar (sometimes invisble) and the HTML renderer
+	   as 2nd child */
+	children = gtk_container_get_children (GTK_CONTAINER (container));
+	htmlwidget = gtk_bin_get_child (GTK_BIN (children->next->data));
+
 	return WEBKIT_WEB_VIEW (htmlwidget);
 }
 
