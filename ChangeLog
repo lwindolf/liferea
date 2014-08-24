@@ -1,4 +1,6 @@
-To be released
+2014-08-24   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.10.11
 
 	* Fixes Github #53: Doesn't automatically update feed name and favicon
 	  for new feed (reported by asl97)
