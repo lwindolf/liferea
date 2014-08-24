@@ -4,6 +4,7 @@ To be released
 	  for new feed (reported by asl97)
 	* Fixes Github #67: Missing dist files for documentation
 	  (patch by Mikel Olasagasti)
+	* Fixes Javascript links not opening in new browser tabs
 
 	* Updated French translation (Guillaume Bernard)
 	* Updated Hebrew translation (Genghis Khan)
