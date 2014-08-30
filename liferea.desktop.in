@@ -10,5 +10,5 @@ StartupNotify=true
 Terminal=false
 Type=Application
 Categories=Network;Feed;
-Version=0.9.4
+Version=1.1
 MimeType=application/rss+xml;application/atom+xml;application/rdf+xml;
