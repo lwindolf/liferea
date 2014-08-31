@@ -1,10 +1,13 @@
-To be released
+2014-08-31   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.1
 	
 	* Fixes Github #81: Inability to add subscriptions
 	  (reported by GreenLunar)
 	* Fixes Javascript links not opening in new browser tabs
 
 	* Updated Hebrew translation (Genghis Khan)
+	* Fixes Github #88: Minor DE translation mistake (moraxy)
 
 
 2014-08-12   Lars Windolf <lars.windolf@gmx.de>
