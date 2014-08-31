@@ -385,7 +385,7 @@ msgstr "Gibt Debug-Meldungen für die Konfigurationsverwaltung aus"
 
 #: ../src/main.c:174
 msgid "Print debugging messages of the database handling"
-msgstr "Gibt Debug-Meldungen für die Konfigurationsverwaltung aus"
+msgstr "Gibt Debug-Meldungen für die Datenbanknutzung aus"
 
 #: ../src/main.c:175
 msgid "Print debugging messages of all GUI functions"
