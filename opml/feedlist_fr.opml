@@ -7,11 +7,12 @@
     <outline text="Exemples de flux">
      <outline text="Français">
        <outline text="Standblog" htmlUrl="http://standblog.org/blog/" xmlUrl="http://standblog.org/dotclear/rss.php" />
-       <outline text="Formats Ouverts" htmlUrl="http://formats-ouverts.org/blog/" xmlUrl="http://formats-ouverts.org/rss.php" />
+       <outline text="Formats Ouverts" htmlUrl="http://formats-ouverts.org/" xmlUrl="http://formats-ouverts.org/rss.php" />
        <outline text="Liberation.fr" htmlUrl="http://www.liberation.fr/" xmlUrl="http://www.liberation.fr/rss.php" />
        <outline text="MozillaZine-Fr" htmlUrl="http://www.mozillazine-fr.org/" xmlUrl="http://mozillazine-fr.org/contenu.xml" />
        <outline text="LinuxFR" htmlUrl="http://linuxfr.org/" xmlUrl="http://linuxfr.org/news.atom" />
-       <outline text="Le Monde.fr" htmlUrl="http://www.lemonde.fr/" xmlUrl="http://www.lemonde.fr/rss/sequence/0,2-3208,1-0,0.xml" />
+       <outline text="Le Monde.fr" htmlUrl="http://www.lemonde.fr/" xmlUrl="http://http://rss.lemonde.fr/c/205/f/3050/index.rss" />
+       <outline text="Conseil national du numérique" htmlUrl="http://http://www.cnnumerique.fr/" xmlUrl="http://http://www.cnnumerique.fr/feed" />
        <outline text="Le Nouvel Observateur" htmlUrl="http://permanent.nouvelobs.com/" xmlUrl="http://permanent.nouvelobs.com/rss_permanent.xml" />
      </outline>
 
