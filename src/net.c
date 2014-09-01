@@ -160,6 +160,9 @@ network_process_request (const updateJobPtr const job)
 					    update_state_get_etag (job->request->updateState));
 	}
 
+	/* Support HTTP content negotiation */
+	soup_message_headers_append(msg->request_headers, "Accept", "application/atom+xml,application/xml;q=0.9,text/xml;q=0.8,*/*;q=0.7");
+
 	/* Set the authentication */
 	if (!job->request->authValue &&
 	    job->request->options &&

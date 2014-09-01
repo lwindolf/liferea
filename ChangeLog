@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes Github #86: Support HTTP content negotiation
+	  (suggested by DanMan)
+
+
 2014-08-31   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.11.1
