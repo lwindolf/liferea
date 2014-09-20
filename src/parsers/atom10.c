@@ -246,10 +246,9 @@ atom10_parse_person_construct (xmlNodePtr cur)
 		}
 		cur = cur->next;
 	}
-	if (!name) {
+
+	if (!name)
 		invalid = TRUE;
-		name = g_strdup (_("Invalid Atom feed: unknown author"));
-	}
 
 	if (!invalid)
 		tmp = g_strdup_printf ("%s%s%s", name, uri?uri:"", email?email:"");
