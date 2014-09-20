@@ -234,7 +234,7 @@ atom10_parse_person_construct (xmlNodePtr cur)
 			}
 			
 			if (xmlStrEqual(cur->name, BAD_CAST"uri")) {
-				if (!uri)
+				if (uri)
 					invalid = TRUE;
 				g_free (uri);
 				tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
