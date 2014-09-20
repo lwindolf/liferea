@@ -2,6 +2,8 @@ To be released
 
 	* Fixes Github #86: Support HTTP content negotiation
 	  (suggested by DanMan)
+	* Fixes Github #98:  Stop calling Atom person constructs w/ URI invalid
+	  (patch by Aristotle Pagaltzis)
 
 
 2014-08-24   Lars Windolf <lars.windolf@gmx.de>
