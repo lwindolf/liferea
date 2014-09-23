@@ -45,7 +45,7 @@
    the parameter "--debug-html". Then Liferea will dump HTML
    into 
 
-          ~/.liferea_1.8/output.xhtml
+          ~/.cache/liferea/output.xhtml
 
    each time it renders an item or a feed. So you can check for
    style classes and the layout you want to affect.
