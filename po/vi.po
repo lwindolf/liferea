@@ -379,7 +379,7 @@ msgstr "Hiển thị ra thông tin để gỡ lỗi cho tất cả các hàm GUI
 
 #: ../src/main.c:175
 msgid "Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
-msgstr "Cho phép gỡ lỗi biểu diễn HTML. Mỗi khi Liferea biểu diễn kết xuất HTML nó cũng đồng thời đổ đống trang HTML đã tạo vào ~/.liferea_1.6/output.xhtml"
+msgstr "Cho phép gỡ lỗi biểu diễn HTML. Mỗi khi Liferea biểu diễn kết xuất HTML nó cũng đồng thời đổ đống trang HTML đã tạo vào ~/.cache/liferea/output.xhtml"
 
 #: ../src/main.c:176
 msgid "Print debugging messages of all network activity"
