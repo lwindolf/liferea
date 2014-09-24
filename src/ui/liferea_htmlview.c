@@ -100,13 +100,22 @@ on_htmlview_history_back (GtkWidget *widget, gpointer user_data)
 	LifereaHtmlView	*htmlview = LIFEREA_HTMLVIEW (user_data);
 	gchar		*url;
 
+	/* Going back is a bit more complex than forward as we want to switch
+	   from inline browsing back to headlines when we are in the item view.
+	   So we expect an URL or NULL for switching back to the headline */
 	url = browser_history_back (htmlview->priv->history);
+	if (url) {
+		gtk_widget_set_sensitive (htmlview->priv->forward, browser_history_can_go_forward (htmlview->priv->history));
+		gtk_widget_set_sensitive (htmlview->priv->back,    browser_history_can_go_back (htmlview->priv->history));
 
-	gtk_widget_set_sensitive (htmlview->priv->forward, browser_history_can_go_forward (htmlview->priv->history));
-	gtk_widget_set_sensitive (htmlview->priv->back,    browser_history_can_go_back (htmlview->priv->history));
-
-	liferea_htmlview_launch_URL_internal (htmlview, url);
-	gtk_entry_set_text (GTK_ENTRY (htmlview->priv->urlentry), url);
+		liferea_htmlview_launch_URL_internal (htmlview, url);
+		gtk_entry_set_text (GTK_ENTRY (htmlview->priv->urlentry), url);
+	} else {
+		gtk_widget_hide (htmlview->priv->toolbar);
+		liferea_htmlview_clear (htmlview);
+		itemview_update_all_items ();
+		itemview_update ();
+	}
 }
 
 static void
@@ -263,6 +272,12 @@ liferea_htmlview_proxy_changed (NetworkMonitor *nm, gpointer userdata)
 	                                 network_get_proxy_port (),
 	                                 network_get_proxy_username (),
 	                                 network_get_proxy_password ());
+}
+
+void
+liferea_htmlview_set_headline_view (LifereaHtmlView *htmlview)
+{
+	htmlview->priv->history->headline = TRUE;
 }
 
 LifereaHtmlView *

@@ -1,7 +1,7 @@
 /*
  * @file itemview.c  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -404,6 +404,7 @@ itemview_set_layout (nodeViewType newMode)
 		
 		debug0 (DEBUG_GUI, "Creating HTML widget");
 		ivp->htmlview = liferea_htmlview_new (FALSE);
+		liferea_htmlview_set_headline_view (ivp->htmlview);
 		g_signal_connect (ivp->htmlview, "statusbar-changed", 
 		                  G_CALLBACK (on_important_status_message), NULL);
 		renderWidget = liferea_htmlview_get_widget (ivp->htmlview);

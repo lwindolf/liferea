@@ -4,6 +4,8 @@ To be released
 	  (suggested by DanMan)
 	* Black-list some categories used by Google Reader clones
 	  that should not be visible.
+	* Allowing browser history to go back to previously 
+	  shown headline when browsing inside the item view.
 
 
 2014-08-31   Lars Windolf <lars.windolf@gmx.de>

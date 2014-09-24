@@ -60,6 +60,13 @@ GType liferea_htmlview_get_type	(void);
 LifereaHtmlView * liferea_htmlview_new (gboolean forceInternalBrowsing);
 
 /**
+ * Make this LifereaHtmlView instance a headline view. This causes
+ * an additional "go back" step for the history tab allowing to go back
+ * from Web content to the headline when browsing inline.
+ */
+void liferea_htmlview_set_headline_view (LifereaHtmlView *htmlview);
+
+/**
  * Returns the rendering widget for a HTML view. Only
  * to be used by liferea_shell.c for widget reparenting.
  *

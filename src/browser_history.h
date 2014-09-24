@@ -1,7 +1,7 @@
 /**
- * @file browser_history.h  managing the URI history
+ * @file browser_history.h  managing internal browser URI history
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,12 @@
 
 #include <glib.h>
 
-/** structure holding all URLs visited in a tab */
+/** structure holding all URLs visited in a browser */
 typedef struct browserHistory {
 	GList		*locations;	/**< list of all visited URLs */
 	GList		*current;	/**< pointer into locations */
+	gboolean	headline;	/**< TRUE if browser history is for item view and 
+					     going back to the headline is possible */
 } browserHistory;
 
 /**

@@ -1,7 +1,7 @@
 /**
- * @file browser_history.c  managing the URI history
+ * @file browser_history.c  managing the internal browser history
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,18 +26,27 @@ browser_history_new (void)
 	return (browserHistory *)g_new0 (browserHistory, 1);
 }
 
-void
-browser_history_free (browserHistory *history)
+static void
+browser_history_clear (browserHistory *history)
 {
 	GList	*iter;
 
-	g_return_if_fail (NULL != history);
 	iter = history->locations;
 	while (iter) {
 		g_free (iter->data);
 		iter = g_list_next (iter);
 	}
 	g_list_free (history->locations);
+
+	history->locations = NULL;
+	history->current = NULL;
+}
+
+void
+browser_history_free (browserHistory *history)
+{
+	g_return_if_fail (NULL != history);
+	browser_history_clear (history);
 	g_free (history);
 }
 
@@ -58,9 +67,16 @@ browser_history_back (browserHistory *history)
 	GList	*url = history->current;
 
 	url = g_list_previous (url);
-	history->current = url;
 
-	return url->data;
+	if (url) {
+		history->current = url;
+		return url->data;
+	} else {
+		/* This happens if we go back to the headline */
+		g_assert (history->headline);
+		browser_history_clear (history);
+		return NULL;
+	}
 }
 
 gboolean
@@ -72,7 +88,7 @@ browser_history_can_go_forward (browserHistory *history)
 gboolean
 browser_history_can_go_back (browserHistory *history)
 {
-	return (NULL != g_list_previous (history->current));
+	return (NULL != g_list_previous (history->current)) || history->headline;
 }
 
 void
