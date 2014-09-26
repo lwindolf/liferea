@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-29 17:37+0300\n"
+"POT-Creation-Date: 2014-09-26 12:32+0200\n"
 "PO-Revision-Date: 2012-12-23 18:24+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -102,13 +102,12 @@ msgstr ""
 
 #: ../xslt/feed.xml.in.h:2
 msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code "
-"<xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
-"select=\"httpError\"/></b>"
+"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
 msgstr ""
 "<div style=\"direction:rtl\">העדכון האחרון של הרשמה זו נכשל!<br/><b>HTTP "
-"error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
-"select=\"httpError\"/></b></div>"
+"error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
+"\"httpError\"/></b></div>"
 
 # <div style=\"direction:rtl\">
 # </div>
@@ -245,8 +244,8 @@ msgid ""
 "Add items to this news bin by selecting \"Copy to News Bin\" from the item "
 "list context menu."
 msgstr ""
-"<p dir=\"rtl\">כדי להוסיף פריטים אל סל איסוף זה, יש לבחור \"העתק אל סל "
-"איסוף\" מתוך תפריט ההקשר של רשימת הפריטים.</p>"
+"<p dir=\"rtl\">כדי להוסיף פריטים אל סל איסוף זה, יש לבחור \"העתק אל סל איסוף"
+"\" מתוך תפריט ההקשר של רשימת הפריטים.</p>"
 
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
@@ -387,8 +386,8 @@ msgstr "ייצוא"
 #: ../src/feed.c:236
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication "
-"formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+"points to a resource provided in one of the supported syndication formats!</"
+"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr ""
 "<p dir=\"rtl\">לא ניתן לזהות את טיפוס הערוץ! אנא בדוק כי המקור אכן מצביע "
 "לאחד הפורמטים הנתמכים.</p><p dir=\"rtl\">תוצאת פענוח XML:</p><br /><div "
@@ -550,39 +549,39 @@ msgid "For more information, please visit http://lzone.de/liferea/"
 msgstr ""
 
 #. Some libsoup transport errors
-#: ../src/net.c:342
+#: ../src/net.c:345
 msgid "The update request was cancelled"
 msgstr "בקשת העדכון בוטלה"
 
-#: ../src/net.c:343
+#: ../src/net.c:346
 msgid "Unable to resolve destination host name"
 msgstr "לא ניתן לפענח שם מחשב יעד"
 
-#: ../src/net.c:344
+#: ../src/net.c:347
 msgid "Unable to resolve proxy host name"
 msgstr "לא ניתן לפענח שם מחשב פרוקסי"
 
-#: ../src/net.c:345
+#: ../src/net.c:348
 msgid "Unable to connect to remote host"
 msgstr "לא ניתן להתחבר אל מארח מרוחק"
 
-#: ../src/net.c:346
+#: ../src/net.c:349
 msgid "Unable to connect to proxy"
 msgstr "לא ניתן להתחבר אל פרוקסי"
 
-#: ../src/net.c:347
+#: ../src/net.c:350
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr "אירעה שגיאת תקשורת, או שהקצה המרוחק ניתק את הקשר באופן בלתי צפוי"
 
 # באופן קבוע
 #. http 3xx redirection
-#: ../src/net.c:350
+#: ../src/net.c:353
 msgid "The resource moved permanently to a new location"
 msgstr "המשאב הועבר לצמיתות אל מיקום חדש"
 
 #. http 4xx client error
-#: ../src/net.c:353
+#: ../src/net.c:356
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -590,57 +589,57 @@ msgstr ""
 "אינך מורשה לטעון את ערוץ זה. אנא עדכן את שם המשתמש והסיסמה שלך בתוך תיבת דו "
 "שיח של מאפייני ערוץ"
 
-#: ../src/net.c:355
+#: ../src/net.c:358
 msgid "Payment required"
 msgstr "נדרש תשלום"
 
 # אין באפשרות לגשת אל משאב זה
 # לא מותר לך לגשת אל משאב זה
-#: ../src/net.c:356
+#: ../src/net.c:359
 msgid "You're not allowed to access this resource"
 msgstr "אינך מורשה לגשת אל משאב זה"
 
-#: ../src/net.c:357
+#: ../src/net.c:360
 msgid "Resource Not Found"
 msgstr "משאב לא נמצא"
 
-#: ../src/net.c:358
+#: ../src/net.c:361
 msgid "Method Not Allowed"
 msgstr "שיטה לא מורשית"
 
-#: ../src/net.c:359
+#: ../src/net.c:362
 msgid "Not Acceptable"
 msgstr "לא קביל"
 
-#: ../src/net.c:360
+#: ../src/net.c:363
 msgid "Proxy authentication required"
 msgstr "נדרשת הזדהות אל מול פרוקסי"
 
-#: ../src/net.c:361
+#: ../src/net.c:364
 msgid "Request timed out"
 msgstr "תם הזמן שהוקצב לבקשה"
 
-#: ../src/net.c:362
+#: ../src/net.c:365
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "הערוץ לא קיים. אנא בטל את ההרשמה!"
 
-#: ../src/net.c:367
+#: ../src/net.c:370
 msgid "There was an internal error in the update process"
 msgstr "אירעה שגיאה פנימית בתהליך העדכון"
 
-#: ../src/net.c:369
+#: ../src/net.c:372
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "ערוץ לא זמין: השרת ביקש הפנייה שאינה נתמכת!"
 
-#: ../src/net.c:371
+#: ../src/net.c:374
 msgid "Client Error"
 msgstr "שגיאת לקוח"
 
-#: ../src/net.c:373
+#: ../src/net.c:376
 msgid "Server Error"
 msgstr "שגיאת שרת"
 
-#: ../src/net.c:375
+#: ../src/net.c:378
 msgid "An unknown networking error happened!"
 msgstr "אירעה שגיאת תקשורת לא מוכרת!"
 
@@ -967,7 +966,7 @@ msgstr "_הלאה לפריט הבא שלא נקרא"
 msgid "_View"
 msgstr "_תצוגה"
 
-#: ../src/ui/liferea_shell.c:984 ../src/ui/liferea_htmlview.c:656
+#: ../src/ui/liferea_shell.c:984 ../src/ui/liferea_htmlview.c:671
 msgid "_Increase Text Size"
 msgstr "ה_גדל גודל טקסט"
 
@@ -975,7 +974,7 @@ msgstr "ה_גדל גודל טקסט"
 msgid "Increases the text size of the item view."
 msgstr "הגדל את הטקסט בתצוגת הפריטים."
 
-#: ../src/ui/liferea_shell.c:986 ../src/ui/liferea_htmlview.c:657
+#: ../src/ui/liferea_shell.c:986 ../src/ui/liferea_htmlview.c:672
 msgid "_Decrease Text Size"
 msgstr "ה_קטן גודל טקסט"
 
@@ -1248,44 +1247,44 @@ msgstr "כל הקבצים"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "‏Liferea מצוי כעת במצב לא־מקוון. אין אפשרות לעדכן ערוצים."
 
-#: ../src/ui/liferea_htmlview.c:627
+#: ../src/ui/liferea_htmlview.c:642
 msgid "Open Link In _Tab"
 msgstr "פתח קישור בתוך _כרטיסייה"
 
-#: ../src/ui/liferea_htmlview.c:628
+#: ../src/ui/liferea_htmlview.c:643
 msgid "_Open Link In Browser"
 msgstr "_פתח קישור בתוך דפדפן"
 
-#: ../src/ui/liferea_htmlview.c:629
+#: ../src/ui/liferea_htmlview.c:644
 msgid "_Open Link In External Browser"
 msgstr "_פתח קישור בתוך דפדפן חיצוני"
 
-#: ../src/ui/liferea_htmlview.c:632
+#: ../src/ui/liferea_htmlview.c:647
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_סמן קישור באתר %s"
 
-#: ../src/ui/liferea_htmlview.c:636
+#: ../src/ui/liferea_htmlview.c:651
 msgid "_Copy Link Location"
 msgstr "_העתק מיקום קישור"
 
-#: ../src/ui/liferea_htmlview.c:639
+#: ../src/ui/liferea_htmlview.c:654
 msgid "_Copy Image Location"
 msgstr "_העתק מיקום תמונה"
 
-#: ../src/ui/liferea_htmlview.c:641
+#: ../src/ui/liferea_htmlview.c:656
 msgid "S_ave Link As"
 msgstr "_שמור קישור בשם"
 
-#: ../src/ui/liferea_htmlview.c:643
+#: ../src/ui/liferea_htmlview.c:658
 msgid "S_ave Image As"
 msgstr "שמור _תמונה בשם"
 
-#: ../src/ui/liferea_htmlview.c:646
+#: ../src/ui/liferea_htmlview.c:661
 msgid "_Subscribe..."
 msgstr "ה_רשמה..."
 
-#: ../src/ui/liferea_htmlview.c:651
+#: ../src/ui/liferea_htmlview.c:666
 msgid "_Copy"
 msgstr "ה_עתק"
 
@@ -1387,87 +1386,87 @@ msgstr "_מחק"
 msgid "Convert To Local Subscriptions..."
 msgstr "המרה אל הרשמות מקומיות..."
 
-#: ../src/ui/preferences_dialog.c:86
+#: ../src/ui/preferences_dialog.c:87
 msgid "GNOME default"
 msgstr "ברירת מחדל GNOME"
 
-#: ../src/ui/preferences_dialog.c:87
+#: ../src/ui/preferences_dialog.c:88
 msgid "Text below icons"
 msgstr "טקסט מתחת לסמלים"
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/preferences_dialog.c:89
 msgid "Text beside icons"
 msgstr "טקסט לצד סמלים"
 
-#: ../src/ui/preferences_dialog.c:89
+#: ../src/ui/preferences_dialog.c:90
 msgid "Icons only"
 msgstr "סמלים בלבד"
 
-#: ../src/ui/preferences_dialog.c:90
+#: ../src/ui/preferences_dialog.c:91
 msgid "Text only"
 msgstr "טקסט בלבד"
 
-#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:99 ../src/ui/subscription_dialog.c:43
 msgid "minutes"
 msgstr "דקות"
 
-#: ../src/ui/preferences_dialog.c:99 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr "שעות"
 
-#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:101 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr "ימים"
 
-#: ../src/ui/preferences_dialog.c:105
+#: ../src/ui/preferences_dialog.c:106
 msgid "Space"
 msgstr "רווח"
 
-#: ../src/ui/preferences_dialog.c:106
+#: ../src/ui/preferences_dialog.c:107
 msgid "<Ctrl> Space"
 msgstr "Ctrl + רווח"
 
-#: ../src/ui/preferences_dialog.c:107
+#: ../src/ui/preferences_dialog.c:108
 msgid "<Alt> Space"
 msgstr "Alt + רווח"
 
-#: ../src/ui/preferences_dialog.c:112
+#: ../src/ui/preferences_dialog.c:113
 msgid "Normal View"
 msgstr "תצוגה רגילה"
 
-#: ../src/ui/preferences_dialog.c:113
+#: ../src/ui/preferences_dialog.c:114
 msgid "Wide View"
 msgstr "תצוגה רחבה"
 
-#: ../src/ui/preferences_dialog.c:114
+#: ../src/ui/preferences_dialog.c:115
 msgid "Combined View"
 msgstr "תצוגה משולבת"
 
-#: ../src/ui/preferences_dialog.c:462
+#: ../src/ui/preferences_dialog.c:463
 msgid "Manual"
 msgstr "ידני"
 
-#: ../src/ui/preferences_dialog.c:477
+#: ../src/ui/preferences_dialog.c:478
 msgid "Browser default"
 msgstr "דפדפן ברירת מחדל"
 
-#: ../src/ui/preferences_dialog.c:480
+#: ../src/ui/preferences_dialog.c:481
 msgid "Existing window"
 msgstr "חלון קיים"
 
-#: ../src/ui/preferences_dialog.c:483
+#: ../src/ui/preferences_dialog.c:484
 msgid "New window"
 msgstr "חלון חדש"
 
-#: ../src/ui/preferences_dialog.c:486
+#: ../src/ui/preferences_dialog.c:487
 msgid "New tab"
 msgstr "כרטיסייה חדשה"
 
-#: ../src/ui/preferences_dialog.c:708
+#: ../src/ui/preferences_dialog.c:709
 msgid "Type"
 msgstr "טיפוס"
 
-#: ../src/ui/preferences_dialog.c:711
+#: ../src/ui/preferences_dialog.c:712
 msgid "Program"
 msgstr "תוכנית"
 
@@ -1527,17 +1526,13 @@ msgstr "ללא כותרת"
 msgid "Website"
 msgstr "אתר אינטרנט"
 
-#: ../src/parsers/atom10.c:251
-msgid "Invalid Atom feed: unknown author"
-msgstr "ערוץ Atom לא תקין: מחבר לא ידוע"
-
 #: ../src/parsers/ns_ag.c:70
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
 #: ../src/fl_sources/aol_source.c:102 ../src/fl_sources/inoreader_source.c:101
 #: ../src/fl_sources/reedah_source.c:102
-#: ../src/fl_sources/theoldreader_source.c:101
+#: ../src/fl_sources/theoldreader_source.c:103
 msgid "Login failed!"
 msgstr "התחברות נכשלה!"
 
@@ -1584,9 +1579,14 @@ msgstr "לא נמצאו טיפוסים של מקור רשימת ערוץ!"
 msgid "Source Type"
 msgstr "טיפוס מקור"
 
+#: ../src/fl_sources/node_source.c:405
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr ""
+
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:547
+#: ../src/fl_sources/node_source.c:571
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "ההרשמה '%s' הומרה בהצלחה אל ערוצים מקומיים!"
@@ -1599,21 +1599,21 @@ msgstr ""
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של Reedah!"
 
-#: ../src/fl_sources/ttrss_source.c:222 ../src/fl_sources/ttrss_source.c:274
+#: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr "‏TinyTinyRSS: ‏HTTP API של לא נגיש!"
 
-#: ../src/fl_sources/ttrss_source.c:229
+#: ../src/fl_sources/ttrss_source.c:231
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr "‏TinyTinyRSS הרשמה אל ערוץ נכשלה! בדוק אם באמת העברת URL של ערוץ!"
 
-#: ../src/fl_sources/ttrss_source.c:281
+#: ../src/fl_sources/ttrss_source.c:290
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr "‏TinyTinyRSS: ביטול הרשמת ערוץ נכשל!"
 
-#: ../src/fl_sources/ttrss_source.c:298
+#: ../src/fl_sources/ttrss_source.c:307
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
@@ -1621,7 +1621,7 @@ msgid ""
 msgstr ""
 "גרסת TinyTinyRSS זו לא תומכת בהסרת ערוצים. שדרג אל גרסא %s או חדשה יותר!"
 
-#: ../src/fl_sources/ttrss_source.c:418
+#: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
 msgstr "‏Tiny Tiny RSS"
 
@@ -1629,7 +1629,7 @@ msgstr "‏Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של TinyTinyRSS!"
 
-#: ../src/fl_sources/theoldreader_source.c:312
+#: ../src/fl_sources/theoldreader_source.c:327
 msgid "TheOldReader"
 msgstr ""
 
@@ -1677,7 +1677,8 @@ msgid "Add InoReader Account"
 msgstr "הוסף חשבון InoReader"
 
 #: ../glade/inoreader_source.ui.h:2
-msgid "Please enter your InoReader account settings"
+#, fuzzy
+msgid "Please enter your InoReader account settings."
 msgstr "אנא הזן הגדרות חשבון InoReader"
 
 #: ../glade/liferea.ui.h:2
@@ -1963,15 +1964,15 @@ msgstr "דף הבית של Liferea"
 msgid "Advanced Search"
 msgstr "חיפוש מורחב"
 
-#: ../glade/liferea.ui.h:70
+#: ../glade/liferea.ui.h:70 ../glade/search_folder.ui.h:3
 msgid "Find Items that meet the following criteria"
 msgstr "מציאת פריטים אשר עומדים בקריטריונים המנויים להלן"
 
-#: ../glade/liferea.ui.h:71
+#: ../glade/liferea.ui.h:71 ../glade/search_folder.ui.h:4
 msgid "A_ny Rule Matches"
 msgstr "_כל כלל מתאים"
 
-#: ../glade/liferea.ui.h:72
+#: ../glade/liferea.ui.h:72 ../glade/search_folder.ui.h:5
 msgid "_All Rules Must Match"
 msgstr "_על כל הכללים להתאים"
 
@@ -2258,8 +2259,17 @@ msgid "Add Reedah Account"
 msgstr "הוסף חשבון Reedah"
 
 #: ../glade/reedah_source.ui.h:2
-msgid "Please enter your  Reedah account settings"
+#, fuzzy
+msgid "Please enter your Reedah account settings."
 msgstr "אנא הזן הגדרות חשבון Reedah"
+
+#: ../glade/search_folder.ui.h:1
+msgid "Search Folder Properties"
+msgstr "מאפייני תיקיית חיפוש"
+
+#: ../glade/search_folder.ui.h:2
+msgid "Search _Name:"
+msgstr "_שם חיפוש:"
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
@@ -2278,8 +2288,9 @@ msgid "Add Tiny Tiny RSS Account"
 msgstr "הוסף חשבון ‫Tiny Tiny RSS"
 
 #: ../glade/ttrss_source.ui.h:2
-msgid "Please enter your tt-rss account settings."
-msgstr "אנא הזן את הגדרות חשבון tt-rss."
+#, fuzzy
+msgid "Please enter your TinyTinyRSS account settings."
+msgstr "אנא הזן הגדרות חשבון InoReader"
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
@@ -2296,6 +2307,12 @@ msgstr "הוסף חשבון TheOldReader"
 #: ../glade/theoldreader_source.ui.h:2
 msgid "Please enter your TheOldReader account settings."
 msgstr "אנא הזן הגדרות חשבון TheOldReader."
+
+#~ msgid "Invalid Atom feed: unknown author"
+#~ msgstr "ערוץ Atom לא תקין: מחבר לא ידוע"
+
+#~ msgid "Please enter your tt-rss account settings."
+#~ msgstr "אנא הזן את הגדרות חשבון tt-rss."
 
 # RLO workaround until RTL problem will be solved
 # <p dir=\"rtl\">אין עדיין תגובות.</p>
@@ -2414,12 +2431,6 @@ msgstr "אנא הזן הגדרות חשבון TheOldReader."
 
 #~ msgid "_Never do popup notification for this subscription."
 #~ msgstr "_אל תציג התראה קופצת עבור הרשמה זו."
-
-#~ msgid "Search Folder Properties"
-#~ msgstr "מאפייני תיקיית חיפוש"
-
-#~ msgid "Search _Name:"
-#~ msgstr "_שם חיפוש:"
 
 #~ msgid ""
 #~ "Copyright (c) 2003-2012\n"

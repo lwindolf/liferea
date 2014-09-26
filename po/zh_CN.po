@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-25 23:54+0100\n"
+"POT-Creation-Date: 2014-09-26 12:32+0200\n"
 "PO-Revision-Date: 2011-07-12 18:15+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -18,7 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../liferea.desktop.in.h:1 ../src/main.c:235 ../glade/liferea.ui.h:1
+#: ../liferea.appdata.xml.in.h:1
+msgid ""
+"Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
+"for online news feeds. It supports a number of different feed formats "
+"including RSS/RDF, CDF and Atom. There are many other news readers "
+"available, but these others are not available for Linux or require many "
+"extra libraries to be installed. Liferea tries to fill this gap by creating "
+"a fast, easy to use, easy to install news aggregator for GTK/GNOME."
+msgstr ""
+
+#: ../liferea.appdata.xml.in.h:2
+msgid "Distinguishing features:"
+msgstr ""
+
+#: ../liferea.appdata.xml.in.h:3
+#, fuzzy
+msgid "Read articles when offline"
+msgstr "Lifeare 现为离线模式"
+
+#: ../liferea.appdata.xml.in.h:4
+#, fuzzy
+msgid "Synchronizes with TheOldReader"
+msgstr "<span weight=\"bold\">已与临近主机同步</span>"
+
+#: ../liferea.appdata.xml.in.h:5
+#, fuzzy
+msgid "Synchronizes with TinyTinyRSS"
+msgstr "<span weight=\"bold\">已与临近主机同步</span>"
+
+#: ../liferea.appdata.xml.in.h:6
+#, fuzzy
+msgid "Synchronizes with InoReader"
+msgstr "<span weight=\"bold\">已与临近主机同步</span>"
+
+#: ../liferea.appdata.xml.in.h:7
+#, fuzzy
+msgid "Synchronizes with Reedah"
+msgstr "<span weight=\"bold\">已与临近主机同步</span>"
+
+#: ../liferea.appdata.xml.in.h:8
+msgid "Permanently save headlines in news bins"
+msgstr ""
+
+#: ../liferea.appdata.xml.in.h:9
+msgid "Match items using search folders"
+msgstr ""
+
+#: ../liferea.appdata.xml.in.h:10
+#, fuzzy
+msgid "Play Podcasts"
+msgstr "播客"
+
+#: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/liferea.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -32,6 +84,10 @@ msgstr "Lifera Feed 阅读器"
 
 #: ../liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
+msgstr ""
+
+#: ../liferea.desktop.in.h:5
+msgid "news;feed;aggregator;blog;podcast;"
 msgstr ""
 
 #: ../xslt/feed.xml.in.h:1
@@ -136,26 +192,18 @@ msgid "Creator"
 msgstr "创作者"
 
 #: ../xslt/item.xml.in.h:10
-msgid "No comments yet."
-msgstr "尚无评论。"
-
-#: ../xslt/item.xml.in.h:11
 msgid "Comments"
 msgstr "评论"
 
-#: ../xslt/item.xml.in.h:12
+#: ../xslt/item.xml.in.h:11
 msgid "Updating..."
 msgstr "正在更新..."
 
-#: ../xslt/item.xml.in.h:13
-msgid "Refresh"
-msgstr "刷新"
-
-#: ../xslt/item.xml.in.h:14
+#: ../xslt/item.xml.in.h:12
 msgid "Section"
 msgstr "章节"
 
-#: ../xslt/item.xml.in.h:15
+#: ../xslt/item.xml.in.h:13
 msgid "Department"
 msgstr "部门"
 
@@ -245,61 +293,61 @@ msgid ""
 "correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/export.c:177
+#: ../src/export.c:185
 #, c-format
 msgid "Error renaming %s to %s\n"
 msgstr "无法将 %s 更名为 %s\n"
 
-#: ../src/export.c:406 ../src/export.c:408
+#: ../src/export.c:414 ../src/export.c:416
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "读取 OPML 文件时发生 XML 错误！无法导入“%s”！"
 
-#: ../src/export.c:414 ../src/export.c:416
+#: ../src/export.c:422 ../src/export.c:424
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "空白文档！OPML 文档“%s”在导入时不应是空白文件。"
 
-#: ../src/export.c:437 ../src/export.c:439
+#: ../src/export.c:445 ../src/export.c:447
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "“%s”不是有效的 OPML 文档！Liferea 无法导入该文件！"
 
-#: ../src/export.c:458
+#: ../src/export.c:466
 msgid "Imported feed list"
 msgstr "已导入的 Feed 列表"
 
-#: ../src/export.c:470
+#: ../src/export.c:478
 msgid "Import Feed List"
 msgstr "导入 Feed 列表"
 
-#: ../src/export.c:470
+#: ../src/export.c:478
 msgid "Import"
 msgstr "导入"
 
-#: ../src/export.c:470 ../src/export.c:487 ../src/fl_sources/opml_source.c:387
+#: ../src/export.c:478 ../src/export.c:495 ../src/fl_sources/opml_source.c:383
 #, fuzzy
 msgid "OPML Files"
 msgstr "选择 OPML 文件"
 
-#: ../src/export.c:478
+#: ../src/export.c:486
 msgid "Error while exporting feed list!"
 msgstr "导出 Feed 列表出错！"
 
-#: ../src/export.c:480
+#: ../src/export.c:488
 msgid "Feed List exported!"
 msgstr "Feed 列表已导出！"
 
-#: ../src/export.c:487
+#: ../src/export.c:495
 msgid "Export Feed List"
 msgstr "导出 Feed 列表"
 
-#: ../src/export.c:487
+#: ../src/export.c:495
 msgid "Export"
 msgstr "导出"
 
-#: ../src/feed.c:255
+#: ../src/feed.c:236
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -308,12 +356,12 @@ msgstr ""
 "<p>无法探测此 Feed 类型! 请确认网址指向已支持的正确 Feed 源!</p>XML 解析器输"
 "出：<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:284
+#: ../src/feed.c:262
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "“%s”已更新..."
 
-#: ../src/feed.c:294
+#: ../src/feed.c:269
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "“%s”不可用"
@@ -354,51 +402,51 @@ msgstr "无法确定 Feed 类型。"
 msgid "There are no unread items"
 msgstr "没有未读条目 "
 
-#: ../src/main.c:164
+#: ../src/main.c:163
+#, fuzzy
 msgid ""
-"Start Liferea with its main window in STATE. STATE may be `shown', "
-"`iconified', or `hidden'"
+"Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr " 状态 STATE 可以是 shown, iconified 或 hidden"
 
-#: ../src/main.c:164
+#: ../src/main.c:163
 msgid "STATE"
 msgstr "状态"
 
-#: ../src/main.c:165
+#: ../src/main.c:164
 msgid "Show version information and exit"
 msgstr "显示 Liferea 版本信息并退出"
 
-#: ../src/main.c:166
+#: ../src/main.c:165
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "新增订阅"
 
-#: ../src/main.c:166
+#: ../src/main.c:165
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:171
+#: ../src/main.c:170
 msgid "Print debugging messages of all types"
 msgstr "输出所有调试信息"
 
-#: ../src/main.c:172
+#: ../src/main.c:171
 msgid "Print debugging messages for the cache handling"
 msgstr "输出缓存处理的调试信息"
 
-#: ../src/main.c:173
+#: ../src/main.c:172
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "输出配置处理的调试信息"
 
-#: ../src/main.c:174
+#: ../src/main.c:173
 msgid "Print debugging messages of the database handling"
 msgstr "输出缓存处理的调试信息"
 
-#: ../src/main.c:175
+#: ../src/main.c:174
 msgid "Print debugging messages of all GUI functions"
 msgstr "输出所有图形界面的调试信息"
 
-#: ../src/main.c:176
+#: ../src/main.c:175
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
@@ -406,134 +454,134 @@ msgstr ""
 "启用 HTML 渲染调试。每当 Liferea 渲染 HTML 都将其转储至 ~/.cache/liferea/"
 "output.xhtml"
 
-#: ../src/main.c:177
+#: ../src/main.c:176
 msgid "Print debugging messages of all network activity"
 msgstr "输出所有网络活动的调试信息"
 
-#: ../src/main.c:178
+#: ../src/main.c:177
 msgid "Print debugging messages of all parsing functions"
 msgstr "输出所有解析函数的调试信息"
 
-#: ../src/main.c:179
+#: ../src/main.c:178
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "当某函数运行时间过长时输出调试信息"
 
-#: ../src/main.c:180
+#: ../src/main.c:179
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "输出进入或离开函数时的调试信息"
 
-#: ../src/main.c:181
+#: ../src/main.c:180
 msgid "Print debugging messages of the feed update processing"
 msgstr "输出 Feed 更新的调试信息"
 
-#: ../src/main.c:182
+#: ../src/main.c:181
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "输出缓存处理的调试信息"
 
-#: ../src/main.c:183
+#: ../src/main.c:182
 msgid "Print verbose debugging messages"
 msgstr "输出详细调试信息"
 
-#: ../src/main.c:194 ../src/main.c:195
+#: ../src/main.c:193 ../src/main.c:194
 msgid "Print debugging messages for the given topic"
 msgstr "输出给定主题的调试信息"
 
-#: ../src/main.c:202
+#: ../src/main.c:201
 msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea，Linux Feed 阅读器"
 
-#: ../src/main.c:203
+#: ../src/main.c:202
 msgid "For more information, please visit http://lzone.de/liferea/"
 msgstr "更多信息请访问 http://lzone.de/liferea/"
 
 #. Some libsoup transport errors
-#: ../src/net.c:320
+#: ../src/net.c:345
 msgid "The update request was cancelled"
 msgstr "更新请求已取消"
 
-#: ../src/net.c:321
+#: ../src/net.c:346
 msgid "Unable to resolve destination host name"
 msgstr "无法解析目标主机名"
 
-#: ../src/net.c:322
+#: ../src/net.c:347
 msgid "Unable to resolve proxy host name"
 msgstr "无法解析代理服务器主机名"
 
-#: ../src/net.c:323
+#: ../src/net.c:348
 msgid "Unable to connect to remote host"
 msgstr "无法连接到远程主机"
 
-#: ../src/net.c:324
+#: ../src/net.c:349
 msgid "Unable to connect to proxy"
 msgstr "无法连接到代理服务器"
 
-#: ../src/net.c:325
+#: ../src/net.c:350
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr "发生网络错误，或另一端意外关闭了连接。"
 
 #. http 3xx redirection
-#: ../src/net.c:328
+#: ../src/net.c:353
 msgid "The resource moved permanently to a new location"
 msgstr "资源已经永久移动到新位置。"
 
 #. http 4xx client error
-#: ../src/net.c:331
+#: ../src/net.c:356
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
 msgstr "您无权下载此 Feed。请在 Feed 属性对话框中更新您的帐号与密码。"
 
-#: ../src/net.c:333
+#: ../src/net.c:358
 msgid "Payment required"
 msgstr "需要付费"
 
-#: ../src/net.c:334
+#: ../src/net.c:359
 msgid "You're not allowed to access this resource"
 msgstr "您无法访问这个资源"
 
-#: ../src/net.c:335
+#: ../src/net.c:360
 msgid "Resource Not Found"
 msgstr "资源未找到"
 
-#: ../src/net.c:336
+#: ../src/net.c:361
 msgid "Method Not Allowed"
 msgstr "方法不允许"
 
-#: ../src/net.c:337
+#: ../src/net.c:362
 msgid "Not Acceptable"
 msgstr "无法接受"
 
-#: ../src/net.c:338
+#: ../src/net.c:363
 msgid "Proxy authentication required"
 msgstr "代理服务器需要认证"
 
-#: ../src/net.c:339
+#: ../src/net.c:364
 msgid "Request timed out"
 msgstr "请求超时"
 
-#: ../src/net.c:340
+#: ../src/net.c:365
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "资源不存在。请取消订阅!"
 
-#: ../src/net.c:345
+#: ../src/net.c:370
 msgid "There was an internal error in the update process"
 msgstr "更新过程中发生内部错误"
 
-#: ../src/net.c:347
+#: ../src/net.c:372
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Feed 无法使用：服务器使用未支持的重定向！"
 
-#: ../src/net.c:349
+#: ../src/net.c:374
 msgid "Client Error"
 msgstr "客户端错误"
 
-#: ../src/net.c:351
+#: ../src/net.c:376
 msgid "Server Error"
 msgstr "服务器端错误"
 
-#: ../src/net.c:353
+#: ../src/net.c:378
 msgid "An unknown networking error happened!"
 msgstr "发生未知的网路错误！"
 
@@ -648,46 +696,46 @@ msgstr "“%s”已不再更新。Liferea 将不会再更新它！"
 msgid "\"%s\" has not changed since last update"
 msgstr "“%s”自上次更新后没有改变"
 
-#: ../src/subscription.c:272
+#: ../src/subscription.c:275
 #, c-format
 msgid "Updating \"%s\""
 msgstr "正在更新“%s”"
 
-#: ../src/update.c:259
+#: ../src/update.c:275
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "无法读取用于过滤的临时文件 %s！"
 
-#: ../src/update.c:282
+#: ../src/update.c:298
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s 终止，错误代码：%d"
 
-#: ../src/update.c:288 ../src/update.c:289 ../src/update.c:401
+#: ../src/update.c:304 ../src/update.c:305 ../src/update.c:422
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "错误：无法开启管道“%s”！"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:427
+#: ../src/update.c:448
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "错误：无法打开文件“%s”！"
 
-#: ../src/update.c:433
+#: ../src/update.c:454
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "错误：无此文件“%s”！"
 
-#: ../src/vfolder.c:55
+#: ../src/vfolder.c:54
 msgid "New Search Folder"
 msgstr "新建搜索目录"
 
-#: ../src/xml.c:424
+#: ../src/xml.c:410
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[有更多的错误，输出已被截断！]"
 
-#: ../src/xml.c:577
+#: ../src/xml.c:563
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML 解析器：无法解析文档：\n"
 
@@ -696,39 +744,39 @@ msgid "Attachments"
 msgstr "附件"
 
 #. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:272
+#: ../src/ui/enclosure_list_view.c:277
 msgid " Bytes"
 msgstr " 字节"
 
-#: ../src/ui/enclosure_list_view.c:275
+#: ../src/ui/enclosure_list_view.c:280
 msgid "kB"
 msgstr "KB"
 
-#: ../src/ui/enclosure_list_view.c:279
+#: ../src/ui/enclosure_list_view.c:284
 msgid "MB"
 msgstr "MB"
 
-#: ../src/ui/enclosure_list_view.c:283
+#: ../src/ui/enclosure_list_view.c:288
 msgid "GB"
 msgstr "GB"
 
-#: ../src/ui/enclosure_list_view.c:288
+#: ../src/ui/enclosure_list_view.c:293
 #, c-format
 msgid "%d%s"
 msgstr "%d%s"
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:321
+#: ../src/ui/enclosure_list_view.c:326
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
 msgstr[0] "%d 个附件"
 
-#: ../src/ui/enclosure_list_view.c:377 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/enclosure_list_view.c:382 ../src/ui/subscription_dialog.c:351
 msgid "Choose File"
 msgstr "选择文件"
 
-#: ../src/ui/enclosure_list_view.c:438
+#: ../src/ui/enclosure_list_view.c:443
 #, fuzzy, c-format
 msgid "File Extension .%s"
 msgstr "<b>文件扩展名。%s</b>"
@@ -752,399 +800,383 @@ msgstr "无法找到图形文件: %s"
 # msgid_plural "%d new items!"
 # msgstr[0] "%d 个新条目"
 # msgstr[1] "%d 个新条目"
-#: ../src/ui/liferea_shell.c:325
+#: ../src/ui/liferea_shell.c:396
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d 个新条目)"
 
-#: ../src/ui/liferea_shell.c:330
+#: ../src/ui/liferea_shell.c:401
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d 未读 %s"
 
-#: ../src/ui/liferea_shell.c:716
+#: ../src/ui/liferea_shell.c:779
 msgid "Help Topics"
 msgstr "帮助主题"
 
-#: ../src/ui/liferea_shell.c:722
+#: ../src/ui/liferea_shell.c:785
 msgid "Quick Reference"
 msgstr "快速参考"
 
-#: ../src/ui/liferea_shell.c:728
+#: ../src/ui/liferea_shell.c:791
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/ui/liferea_shell.c:806
+#: ../src/ui/liferea_shell.c:858
 msgid "Liferea is now online"
 msgstr "Liferea 现为在线模式。"
 
-#: ../src/ui/liferea_shell.c:808
+#: ../src/ui/liferea_shell.c:860
 msgid "Work Offline"
 msgstr "离线浏览"
 
-#: ../src/ui/liferea_shell.c:810
+#: ../src/ui/liferea_shell.c:862
 msgid "Liferea is now offline"
 msgstr "Lifeare 现为离线模式"
 
-#: ../src/ui/liferea_shell.c:812
+#: ../src/ui/liferea_shell.c:864
 msgid "Work Online"
 msgstr "在线浏览"
 
-#: ../src/ui/liferea_shell.c:908
+#: ../src/ui/liferea_shell.c:959
 msgid "_Subscriptions"
 msgstr "订阅(_S)"
 
-#: ../src/ui/liferea_shell.c:909
+#: ../src/ui/liferea_shell.c:960
 msgid "Update _All"
 msgstr "更新全部(_A)"
 
-#: ../src/ui/liferea_shell.c:909
+#: ../src/ui/liferea_shell.c:960
 msgid "Updates all subscriptions."
 msgstr "更新全部订阅。"
 
-#: ../src/ui/liferea_shell.c:911
+#: ../src/ui/liferea_shell.c:962
 msgid "Mark All As _Read"
 msgstr "全部标记为已读(_R)"
 
-#: ../src/ui/liferea_shell.c:911
+#: ../src/ui/liferea_shell.c:962
 msgid "Marks read every item of every subscription."
 msgstr "标记所有订阅项的条目为已读。"
 
-#: ../src/ui/liferea_shell.c:913
+#: ../src/ui/liferea_shell.c:964
 msgid "_Import Feed List..."
 msgstr "导入 Feed 列表(_I)..."
 
-#: ../src/ui/liferea_shell.c:913
+#: ../src/ui/liferea_shell.c:964
 msgid "Imports an OPML feed list."
 msgstr "导入 OPML 格式 Feed 列表。"
 
-#: ../src/ui/liferea_shell.c:914
+#: ../src/ui/liferea_shell.c:965
 msgid "_Export Feed List..."
 msgstr "导出 Feed 列表(_E)..."
 
-#: ../src/ui/liferea_shell.c:914
+#: ../src/ui/liferea_shell.c:965
 msgid "Exports the feed list as OPML."
 msgstr "导出 OPML 格式 Feed 列表。"
 
-#: ../src/ui/liferea_shell.c:915
+#: ../src/ui/liferea_shell.c:966 ../src/ui/popup_menu.c:201
 msgid "_Quit"
 msgstr "退出(_Q)"
 
-#: ../src/ui/liferea_shell.c:917
+#: ../src/ui/liferea_shell.c:968
 msgid "_Feed"
 msgstr "_Feed"
 
-#: ../src/ui/liferea_shell.c:918
+#: ../src/ui/liferea_shell.c:969
 msgid "Remove _All Items"
 msgstr "删除所有条目(_A)"
 
-#: ../src/ui/liferea_shell.c:918
+#: ../src/ui/liferea_shell.c:969
 msgid "Removes all items of the currently selected feed."
 msgstr "删除现选定 Feed 的所有条目。"
 
-#: ../src/ui/liferea_shell.c:921
+#: ../src/ui/liferea_shell.c:972
 msgid "_Item"
 msgstr "条目(_I)"
 
-#: ../src/ui/liferea_shell.c:922
+#: ../src/ui/liferea_shell.c:973
 msgid "Previous Item"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:975
 #, fuzzy
 msgid "Next Item"
 msgstr "下一个未读条目(_N)"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:929
+#: ../src/ui/liferea_shell.c:980
 msgid "_Next Unread Item"
 msgstr "下一个未读条目(_N)"
 
-#: ../src/ui/liferea_shell.c:932
+#: ../src/ui/liferea_shell.c:983
 msgid "_View"
 msgstr "视图(_V)"
 
-#: ../src/ui/liferea_shell.c:933 ../src/ui/liferea_htmlview.c:656
+#: ../src/ui/liferea_shell.c:984 ../src/ui/liferea_htmlview.c:671
 msgid "_Increase Text Size"
 msgstr "增大字号(_I)"
 
-#: ../src/ui/liferea_shell.c:933
+#: ../src/ui/liferea_shell.c:984
 msgid "Increases the text size of the item view."
 msgstr "放大条目显示窗口字体大小。"
 
-#: ../src/ui/liferea_shell.c:935 ../src/ui/liferea_htmlview.c:657
+#: ../src/ui/liferea_shell.c:986 ../src/ui/liferea_htmlview.c:672
 msgid "_Decrease Text Size"
 msgstr "减小字号(_D)"
 
-#: ../src/ui/liferea_shell.c:935
+#: ../src/ui/liferea_shell.c:986
 msgid "Decreases the text size of the item view."
 msgstr "缩小条目显示窗口字体大小。"
 
-#: ../src/ui/liferea_shell.c:938
+#: ../src/ui/liferea_shell.c:989
 msgid "_Tools"
 msgstr "工具(_T)"
 
-#: ../src/ui/liferea_shell.c:939
+#: ../src/ui/liferea_shell.c:990
 msgid "_Update Monitor"
 msgstr "更新监视器(_U)"
 
-#: ../src/ui/liferea_shell.c:939
+#: ../src/ui/liferea_shell.c:990
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "显示当前更新队列中的全部 Feed"
 
-#: ../src/ui/liferea_shell.c:941
+#: ../src/ui/liferea_shell.c:992 ../src/ui/popup_menu.c:196
+#: ../src/ui/popup_menu.c:347
 msgid "_Preferences"
 msgstr "首选项(_P)"
 
-#: ../src/ui/liferea_shell.c:941
+#: ../src/ui/liferea_shell.c:992
 msgid "Edit Preferences."
 msgstr "编辑首选项。"
 
-#: ../src/ui/liferea_shell.c:944
+#: ../src/ui/liferea_shell.c:995
 msgid "S_earch"
 msgstr "搜索(_E)"
 
-#: ../src/ui/liferea_shell.c:945
+#: ../src/ui/liferea_shell.c:996
 msgid "Search All Feeds..."
 msgstr "搜索所有 Feed..."
 
-#: ../src/ui/liferea_shell.c:945
+#: ../src/ui/liferea_shell.c:996
 msgid "Show the search dialog."
 msgstr "显示搜索对话框。"
 
-#: ../src/ui/liferea_shell.c:947
+#: ../src/ui/liferea_shell.c:998
 msgid "_Help"
 msgstr "帮助(_H)"
 
-#: ../src/ui/liferea_shell.c:948
+#: ../src/ui/liferea_shell.c:999
 msgid "_Contents"
 msgstr "目录(_C)"
 
-#: ../src/ui/liferea_shell.c:948
+#: ../src/ui/liferea_shell.c:999
 msgid "View help for this application."
 msgstr "查看该程序的帮助。"
 
-#: ../src/ui/liferea_shell.c:949
+#: ../src/ui/liferea_shell.c:1000
 msgid "_Quick Reference"
 msgstr "快速参考(_Q)"
 
-#: ../src/ui/liferea_shell.c:949
+#: ../src/ui/liferea_shell.c:1000
 msgid "View a list of all Liferea shortcuts."
 msgstr "查看所有快捷键列表。"
 
-#: ../src/ui/liferea_shell.c:951
+#: ../src/ui/liferea_shell.c:1002
 msgid "_FAQ"
 msgstr "_FAQ"
 
-#: ../src/ui/liferea_shell.c:951
+#: ../src/ui/liferea_shell.c:1002
 msgid "View the FAQ for this application."
 msgstr "查看该程序的 FAQ。"
 
-#: ../src/ui/liferea_shell.c:952
+#: ../src/ui/liferea_shell.c:1003
 msgid "_About"
 msgstr "关于(_A)"
 
-#: ../src/ui/liferea_shell.c:952
+#: ../src/ui/liferea_shell.c:1003
 msgid "Shows an about dialog."
 msgstr "显示关于对话框。"
 
-#: ../src/ui/liferea_shell.c:956
+#: ../src/ui/liferea_shell.c:1007
 msgid "_Normal View"
 msgstr "正常视图(_N)"
 
-#: ../src/ui/liferea_shell.c:956
+#: ../src/ui/liferea_shell.c:1007
 msgid "Set view mode to mail client mode."
 msgstr "设置查看模式为邮件客户端模式。"
 
-#: ../src/ui/liferea_shell.c:958
+#: ../src/ui/liferea_shell.c:1009
 msgid "_Wide View"
 msgstr "宽视图(_W)"
 
-#: ../src/ui/liferea_shell.c:958
+#: ../src/ui/liferea_shell.c:1009
 msgid "Set view mode to use three vertical panes."
 msgstr "设置查看模式以试用三个竖行。"
 
-#: ../src/ui/liferea_shell.c:960
+#: ../src/ui/liferea_shell.c:1011
 msgid "_Combined View"
 msgstr "合并视图(_C)"
 
-#: ../src/ui/liferea_shell.c:960
+#: ../src/ui/liferea_shell.c:1011
 msgid "Set view mode to two pane mode."
 msgstr "设置查看模式为两栏。"
 
-#: ../src/ui/liferea_shell.c:965
+#: ../src/ui/liferea_shell.c:1016
 msgid "_Reduced Feed List"
 msgstr "减少 Feed 列表(_R)"
 
-#: ../src/ui/liferea_shell.c:965
+#: ../src/ui/liferea_shell.c:1016
 msgid "Hide feeds with no unread items."
 msgstr "隐藏没有未读条目的 Feed。"
 
-#: ../src/ui/liferea_shell.c:970
+#: ../src/ui/liferea_shell.c:1021
 msgid "_New Subscription..."
 msgstr "新增订阅(_N)..."
 
-#: ../src/ui/liferea_shell.c:970
+#: ../src/ui/liferea_shell.c:1021
 msgid "Adds a subscription to the feed list."
 msgstr "新增订阅。"
 
-#: ../src/ui/liferea_shell.c:972 ../src/ui/popup_menu.c:316
+#: ../src/ui/liferea_shell.c:1023 ../src/ui/popup_menu.c:321
 msgid "New _Folder..."
 msgstr "新建目录(_F)..."
 
-#: ../src/ui/liferea_shell.c:972
+#: ../src/ui/liferea_shell.c:1023
 msgid "Adds a folder to the feed list."
 msgstr "向 Feed 列表添加文件夹。"
 
-#: ../src/ui/liferea_shell.c:973 ../src/ui/popup_menu.c:319
+#: ../src/ui/liferea_shell.c:1024 ../src/ui/popup_menu.c:324
 msgid "New S_earch Folder..."
 msgstr "新建搜索目录(_E)..."
 
-#: ../src/ui/liferea_shell.c:973
+#: ../src/ui/liferea_shell.c:1024
 msgid "Adds a new search folder to the feed list."
 msgstr "为 Feed 列表添加心得搜索文件夹。"
 
-#: ../src/ui/liferea_shell.c:974
+#: ../src/ui/liferea_shell.c:1025
 msgid "New _Source..."
 msgstr "添加源(_S)..."
 
-#: ../src/ui/liferea_shell.c:974
+#: ../src/ui/liferea_shell.c:1025
 msgid "Adds a new feed list source."
 msgstr "添加新的 Feed 列表源。"
 
-#: ../src/ui/liferea_shell.c:975 ../src/ui/popup_menu.c:321
+#: ../src/ui/liferea_shell.c:1026 ../src/ui/popup_menu.c:326
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "新目录(_F)..."
 
-#: ../src/ui/liferea_shell.c:975
+#: ../src/ui/liferea_shell.c:1026
 #, fuzzy
 msgid "Adds a new news bin."
 msgstr "新增订阅。"
 
-#: ../src/ui/liferea_shell.c:979
+#: ../src/ui/liferea_shell.c:1030
 msgid "_Mark Items Read"
 msgstr "标记为已读(_M)"
 
-#: ../src/ui/liferea_shell.c:979
+#: ../src/ui/liferea_shell.c:1030
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
 msgstr "标记所有选定订阅下的所有条目或选定目录下的所有订阅为已读。"
 
-#: ../src/ui/liferea_shell.c:981 ../src/ui/popup_menu.c:296
+#: ../src/ui/liferea_shell.c:1032 ../src/ui/popup_menu.c:301
 msgid "_Update"
 msgstr "更新(_U)"
 
-#: ../src/ui/liferea_shell.c:981
+#: ../src/ui/liferea_shell.c:1032
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr "更新选定的订阅项或目录下的所有订阅项目。"
 
-#: ../src/ui/liferea_shell.c:986
+#: ../src/ui/liferea_shell.c:1037
 msgid "_Properties"
 msgstr "属性(_P)"
 
-#: ../src/ui/liferea_shell.c:986
+#: ../src/ui/liferea_shell.c:1037
 msgid "Opens the property dialog for the selected subscription."
 msgstr "开启选定订阅的属性对话框。"
 
-#: ../src/ui/liferea_shell.c:987
+#: ../src/ui/liferea_shell.c:1038
 msgid "_Remove"
 msgstr "删除(_R)"
 
-#: ../src/ui/liferea_shell.c:987
+#: ../src/ui/liferea_shell.c:1038
 msgid "Removes the selected subscription."
 msgstr "删除选定的订阅项。"
 
-#: ../src/ui/liferea_shell.c:991 ../src/ui/popup_menu.c:164
+#: ../src/ui/liferea_shell.c:1042 ../src/ui/popup_menu.c:164
 msgid "Toggle _Read Status"
 msgstr "切换阅读状态(_R)"
 
-#: ../src/ui/liferea_shell.c:991
+#: ../src/ui/liferea_shell.c:1042
 msgid "Toggles the read status of the selected item."
 msgstr "切换选定条目的阅读状态。"
 
-#: ../src/ui/liferea_shell.c:993 ../src/ui/popup_menu.c:165
+#: ../src/ui/liferea_shell.c:1044 ../src/ui/popup_menu.c:165
 msgid "Toggle Item _Flag"
 msgstr "切换条目标签(_F)"
 
-#: ../src/ui/liferea_shell.c:993
+#: ../src/ui/liferea_shell.c:1044
 msgid "Toggles the flag status of the selected item."
 msgstr "切换选定条目的阅读状态。"
 
-#: ../src/ui/liferea_shell.c:995
+#: ../src/ui/liferea_shell.c:1046
 msgid "R_emove"
 msgstr "删除(_E)"
 
-#: ../src/ui/liferea_shell.c:995
+#: ../src/ui/liferea_shell.c:1046
 msgid "Removes the selected item."
 msgstr "删除选定的条目。"
 
-#: ../src/ui/liferea_shell.c:997 ../src/ui/popup_menu.c:128
+#: ../src/ui/liferea_shell.c:1048 ../src/ui/popup_menu.c:128
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:997
+#: ../src/ui/liferea_shell.c:1048
 #, fuzzy
 msgid "Launches the item's link in a new Liferea browser tab."
 msgstr "在设置浏览器中载入此条目链接。"
 
-#: ../src/ui/liferea_shell.c:999 ../src/ui/popup_menu.c:129
+#: ../src/ui/liferea_shell.c:1050 ../src/ui/popup_menu.c:129
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "在浏览器中打开(_L)"
 
-#: ../src/ui/liferea_shell.c:999
+#: ../src/ui/liferea_shell.c:1050
 #, fuzzy
 msgid "Launches the item's link in the Liferea item pane."
 msgstr "在设置浏览器中载入此条目链接。"
 
-#: ../src/ui/liferea_shell.c:1001 ../src/ui/popup_menu.c:130
+#: ../src/ui/liferea_shell.c:1052 ../src/ui/popup_menu.c:130
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">外部浏览器设置</span>"
 
-#: ../src/ui/liferea_shell.c:1001
+#: ../src/ui/liferea_shell.c:1052
 #, fuzzy
 msgid "Launches the item's link in the configured external browser."
 msgstr "在设置浏览器中载入此条目链接。"
 
-#: ../src/ui/liferea_shell.c:1006 ../src/ui/popup_menu.c:194
+#: ../src/ui/liferea_shell.c:1057 ../src/ui/popup_menu.c:194
 msgid "_Work Offline"
 msgstr "离线浏览(_W)"
 
-#: ../src/ui/liferea_shell.c:1006
+#: ../src/ui/liferea_shell.c:1057
 msgid "This option allows you to disable subscription updating."
 msgstr "此选项允许禁用订阅更新。"
 
-#: ../src/ui/liferea_shell.c:1008
+#: ../src/ui/liferea_shell.c:1059
 msgid "_Fullscreen"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:1008
+#: ../src/ui/liferea_shell.c:1059
 msgid "Browse at full screen"
 msgstr ""
-
-#: ../src/ui/liferea_shell.c:1339
-msgid "Liferea - Linux Feed Reader"
-msgstr "Liferea - Linux Feed 阅读器"
-
-#: ../src/ui/liferea_shell.c:1341
-#, fuzzy
-msgid ""
-"<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
-"feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
-"'Subscription' -&gt; 'New Subscription'</li><li>By dropping feed links into "
-"the subscription list</li><li>By right clicking links and choosing "
-"'Subscribe' within Liferea</li></ul></p>"
-msgstr ""
-"<p>欢迎使用 <b>Liferea</b>，一个桌面新闻 Feed 聚合器。</p><p>左侧面板是您的订"
-"阅列表。要订阅一个 Feed，选择 Feed -&gt; 新增订阅。要浏览 Feed 标题，则选中那"
-"个 Feed，程序会把标题自动载入到右侧的主窗口内。</p>"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1155,98 +1187,88 @@ msgstr "输入用户名巨额密码“%s”(%s)："
 msgid "Unknown source"
 msgstr "未知来源"
 
-#: ../src/ui/ui_common.c:205
+#: ../src/ui/ui_common.c:168
+#, fuzzy
+msgid "_Cancel"
+msgstr "取消全部(_A)"
+
+#: ../src/ui/ui_common.c:211
 #, fuzzy
 msgid "All Files"
 msgstr "本地文件(_H)"
 
-#: ../src/ui/feed_list_view.c:341
-msgid "Deleting entry"
-msgstr "删除入口中"
-
-#: ../src/ui/feed_list_view.c:342
-#, c-format
-msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "您确定要删除 %s 及其内容吗？"
-
-#: ../src/ui/feed_list_view.c:342
-#, c-format
-msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "您确定要删除 %s 吗 ？"
-
-#: ../src/ui/feed_list_view.c:354
-msgid "Deletion Confirmation"
-msgstr "删除确认"
-
-#: ../src/ui/feed_list_view.c:385
+#: ../src/ui/feed_list_view.c:358
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea 处于离线模式，无法更新。"
 
-#: ../src/ui/liferea_htmlview.c:627
+#: ../src/ui/liferea_htmlview.c:642
 #, fuzzy
 msgid "Open Link In _Tab"
 msgstr "在标签中打开链接(_T)"
 
-#: ../src/ui/liferea_htmlview.c:628
+#: ../src/ui/liferea_htmlview.c:643
 #, fuzzy
 msgid "_Open Link In Browser"
 msgstr "在浏览器中开启链接(_L)"
 
-#: ../src/ui/liferea_htmlview.c:629
+#: ../src/ui/liferea_htmlview.c:644
 #, fuzzy
 msgid "_Open Link In External Browser"
 msgstr "在浏览器中开启链接(_L)"
 
-#: ../src/ui/liferea_htmlview.c:632
+#: ../src/ui/liferea_htmlview.c:647
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "在 %s 加入书签(_B)"
 
-#: ../src/ui/liferea_htmlview.c:636
+#: ../src/ui/liferea_htmlview.c:651
 msgid "_Copy Link Location"
 msgstr "复制链接地址(_C)"
 
-#: ../src/ui/liferea_htmlview.c:639
+#: ../src/ui/liferea_htmlview.c:654
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "复制链接地址(_C)"
 
-#: ../src/ui/liferea_htmlview.c:641
+#: ../src/ui/liferea_htmlview.c:656
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "另存为..."
 
-#: ../src/ui/liferea_htmlview.c:643
+#: ../src/ui/liferea_htmlview.c:658
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/ui/liferea_htmlview.c:646
+#: ../src/ui/liferea_htmlview.c:661
 msgid "_Subscribe..."
 msgstr "订阅(_S)..."
 
-#: ../src/ui/item_list_view.c:347
-msgid "*** No title ***"
-msgstr "*** 无标题 ***"
+#: ../src/ui/liferea_htmlview.c:666
+msgid "_Copy"
+msgstr ""
 
-#: ../src/ui/item_list_view.c:598
-msgid "Date"
-msgstr "日期"
-
-#: ../src/ui/item_list_view.c:612
-msgid "Headline"
-msgstr "标题"
-
-#: ../src/ui/item_list_view.c:714 ../src/ui/item_list_view.c:735
-#: ../src/ui/item_list_view.c:756 ../src/ui/item_list_view.c:830
-#: ../src/ui/item_list_view.c:915 ../src/ui/item_list_view.c:930
-msgid "No item has been selected"
-msgstr "未选择条目！"
-
-#: ../src/ui/item_list_view.c:731 ../src/ui/item_list_view.c:752
+#: ../src/ui/item_list_view.c:114
 msgid "This item has no link specified!"
 msgstr "此条目没有指定链接！"
 
-#: ../src/ui/item_list_view.c:818
+#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:883
+#: ../src/ui/item_list_view.c:968 ../src/ui/item_list_view.c:983
+msgid "No item has been selected"
+msgstr "未选择条目！"
+
+#: ../src/ui/item_list_view.c:441
+msgid "*** No title ***"
+msgstr "*** 无标题 ***"
+
+#: ../src/ui/item_list_view.c:703
+msgid "Date"
+msgstr "日期"
+
+#: ../src/ui/item_list_view.c:717
+msgid "Headline"
+msgstr "标题"
+
+#: ../src/ui/item_list_view.c:871
 msgid "You must select a feed to delete its items!"
 msgstr "您必须先选择一个 Feed 才能删除条目！"
 
@@ -1288,132 +1310,128 @@ msgstr "更新全部(_U)"
 msgid "_Show Liferea"
 msgstr "显示 Liferea (_S)"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:303
 msgid "_Update Folder"
 msgstr "更新目录(_U)"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:305
 msgid "_Mark All As Read"
 msgstr "全部标记为已读(_M)"
 
-#: ../src/ui/popup_menu.c:310
+#: ../src/ui/popup_menu.c:315
 msgid "_New"
 msgstr "新增(_N)"
 
-#: ../src/ui/popup_menu.c:313
+#: ../src/ui/popup_menu.c:318
 msgid "New _Subscription..."
 msgstr "新增订阅(_S)..."
 
-#: ../src/ui/popup_menu.c:320
+#: ../src/ui/popup_menu.c:325
 msgid "New S_ource..."
 msgstr "新增来源(_O)..."
 
-#: ../src/ui/popup_menu.c:329
+#: ../src/ui/popup_menu.c:334
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "导入 Feed 列表"
 
-#: ../src/ui/popup_menu.c:335
+#: ../src/ui/popup_menu.c:340
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/popup_menu.c:346
+msgid "_Delete"
+msgstr "删除(_D)"
+
+#: ../src/ui/popup_menu.c:352
+#, fuzzy
+msgid "Convert To Local Subscriptions..."
+msgstr "新增订阅(_N)..."
+
+#: ../src/ui/preferences_dialog.c:87
 msgid "GNOME default"
 msgstr "GNOME 默认"
 
-#: ../src/ui/preferences_dialog.c:89
+#: ../src/ui/preferences_dialog.c:88
 msgid "Text below icons"
 msgstr "文本在图标下方"
 
-#: ../src/ui/preferences_dialog.c:90
+#: ../src/ui/preferences_dialog.c:89
 msgid "Text beside icons"
 msgstr "文本在图标旁"
 
-#: ../src/ui/preferences_dialog.c:91
+#: ../src/ui/preferences_dialog.c:90
 msgid "Icons only"
 msgstr "仅图标"
 
-#: ../src/ui/preferences_dialog.c:92
+#: ../src/ui/preferences_dialog.c:91
 msgid "Text only"
 msgstr "仅文本"
 
-#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:99 ../src/ui/subscription_dialog.c:43
 msgid "minutes"
 msgstr "分"
 
-#: ../src/ui/preferences_dialog.c:101 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr "小时"
 
-#: ../src/ui/preferences_dialog.c:102 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:101 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr "天"
 
-#: ../src/ui/preferences_dialog.c:107
+#: ../src/ui/preferences_dialog.c:106
 msgid "Space"
 msgstr "空格键"
 
-#: ../src/ui/preferences_dialog.c:108
+#: ../src/ui/preferences_dialog.c:107
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> 空格键"
 
-#: ../src/ui/preferences_dialog.c:109
+#: ../src/ui/preferences_dialog.c:108
 msgid "<Alt> Space"
 msgstr "<Alt> 空格键"
 
-#: ../src/ui/preferences_dialog.c:114
+#: ../src/ui/preferences_dialog.c:113
 #, fuzzy
 msgid "Normal View"
 msgstr "正常视图(_N)"
 
-#: ../src/ui/preferences_dialog.c:115
+#: ../src/ui/preferences_dialog.c:114
 #, fuzzy
 msgid "Wide View"
 msgstr "宽视图(_W)"
 
-#: ../src/ui/preferences_dialog.c:116
+#: ../src/ui/preferences_dialog.c:115
 #, fuzzy
 msgid "Combined View"
 msgstr "合并视图(_C)"
 
-#: ../src/ui/preferences_dialog.c:499
+#: ../src/ui/preferences_dialog.c:463
 msgid "Manual"
 msgstr "手动"
 
-#: ../src/ui/preferences_dialog.c:514
+#: ../src/ui/preferences_dialog.c:478
 msgid "Browser default"
 msgstr "浏览器预设"
 
-#: ../src/ui/preferences_dialog.c:517
+#: ../src/ui/preferences_dialog.c:481
 msgid "Existing window"
 msgstr "现有窗口"
 
-#: ../src/ui/preferences_dialog.c:520
+#: ../src/ui/preferences_dialog.c:484
 msgid "New window"
 msgstr "新窗口"
 
-#: ../src/ui/preferences_dialog.c:523
+#: ../src/ui/preferences_dialog.c:487
 msgid "New tab"
 msgstr "新标签"
 
-#: ../src/ui/preferences_dialog.c:682
-msgid "Integrate with the messaging menu (indicator)"
-msgstr ""
-
-#: ../src/ui/preferences_dialog.c:685
-#, fuzzy
-msgid "Terminate instead of minimizing to the messaging menu"
-msgstr "退出而不是最小化到托盘(_E)。"
-
-#: ../src/ui/preferences_dialog.c:688
-msgid "Start minimized to the messaging menu"
-msgstr ""
-
-#: ../src/ui/preferences_dialog.c:788
+#: ../src/ui/preferences_dialog.c:709
 msgid "Type"
 msgstr "类型"
 
-#: ../src/ui/preferences_dialog.c:791
+#: ../src/ui/preferences_dialog.c:712
 msgid "Program"
 msgstr "程序"
 
@@ -1421,161 +1439,93 @@ msgstr "程序"
 msgid "(Empty)"
 msgstr ""
 
-#: ../src/ui/feed_list_node.c:321
+#: ../src/ui/feed_list_node.c:341
 #, c-format
 msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
 
-#: ../src/ui/subscription_dialog.c:430
+#: ../src/ui/feed_list_node.c:411
+msgid "Deleting entry"
+msgstr "删除入口中"
+
+#: ../src/ui/feed_list_node.c:412
+#, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "您确定要删除 %s 及其内容吗？"
+
+#: ../src/ui/feed_list_node.c:412
+#, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
+msgstr "您确定要删除 %s 吗 ？"
+
+#: ../src/ui/feed_list_node.c:424
+msgid "Deletion Confirmation"
+msgstr "删除确认"
+
+#: ../src/ui/subscription_dialog.c:351 ../src/fl_sources/opml_source.c:383
+msgid "_Open"
+msgstr ""
+
+#: ../src/ui/subscription_dialog.c:425
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
 "The provider of this feed suggests an update interval of %d minutes."
 msgstr[0] "此 Feed 的提供者建议更新周期为 %d 分钟。"
 
-#: ../src/ui/subscription_dialog.c:434
+#: ../src/ui/subscription_dialog.c:429
 msgid "This feed specifies no default update interval."
 msgstr "此 Feed 未指定默认更新周期。"
 
-#: ../src/ui/browser_tabs.c:155
+#: ../src/ui/browser_tabs.c:153
 msgid "Untitled"
 msgstr ""
-
-# what's this ?
-# #: src/ui_tray.c:90
-# #, c-format
-# msgid "%d new item!"
-# msgid_plural "%d new items!"
-# msgstr[0] "%d 个新条目"
-# msgstr[1] "%d 个新条目"
-# what's this ?
-# #: src/ui_tray.c:90
-# #, c-format
-# msgid "%d new item!"
-# msgid_plural "%d new items!"
-# msgstr[0] "%d 个新条目"
-# msgstr[1] "%d 个新条目"
-#: ../src/ui/ui_tray.c:221
-#, c-format
-msgid "%d new item"
-msgid_plural "%d new items"
-msgstr[0] "%d 个新条目"
-
-# what's this ?
-# #: src/ui_tray.c:90
-# #, c-format
-# msgid "%d new item!"
-# msgid_plural "%d new items!"
-# msgstr[0] "%d 个新条目"
-# msgstr[1] "%d 个新条目"
-# what's this ?
-# #: src/ui_tray.c:90
-# #, c-format
-# msgid "%d new item!"
-# msgid_plural "%d new items!"
-# msgstr[0] "%d 个新条目"
-# msgstr[1] "%d 个新条目"
-#: ../src/ui/ui_tray.c:224
-msgid "No new items"
-msgstr "无新条目"
-
-# what's this ?
-# #: src/ui_tray.c:90
-# #, c-format
-# msgid "%d new item!"
-# msgid_plural "%d new items!"
-# msgstr[0] "%d 个新条目"
-# msgstr[1] "%d 个新条目"
-# what's this ?
-# #: src/ui_tray.c:90
-# #, c-format
-# msgid "%d new item!"
-# msgid_plural "%d new items!"
-# msgstr[0] "%d 个新条目"
-# msgstr[1] "%d 个新条目"
-#: ../src/ui/ui_tray.c:228
-#, c-format
-msgid ""
-"%s\n"
-"%d unread item"
-msgid_plural ""
-"%s\n"
-"%d unread items"
-msgstr[0] ""
-"%s\n"
-"%d 个未读条目"
-
-# what's this ?
-# #: src/ui_tray.c:90
-# #, c-format
-# msgid "%d new item!"
-# msgid_plural "%d new items!"
-# msgstr[0] "%d 个新条目"
-# msgstr[1] "%d 个新条目"
-# what's this ?
-# #: src/ui_tray.c:90
-# #, c-format
-# msgid "%d new item!"
-# msgid_plural "%d new items!"
-# msgstr[0] "%d 个新条目"
-# msgstr[1] "%d 个新条目"
-#: ../src/ui/ui_tray.c:230
-#, c-format
-msgid ""
-"%s\n"
-"No unread items"
-msgstr ""
-"%s\n"
-"没有未读条目"
 
 #: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
 msgid "Website"
 msgstr ""
 
-#: ../src/parsers/atom10.c:251
-msgid "Invalid Atom feed: unknown author"
-msgstr "无效的 Atom Feed：未知作者"
-
 #: ../src/parsers/ns_ag.c:70
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#: ../src/fl_sources/default_source.c:145
-#: ../src/fl_sources/google_source.c:274 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
+#: ../src/fl_sources/aol_source.c:102 ../src/fl_sources/inoreader_source.c:101
+#: ../src/fl_sources/reedah_source.c:102
+#: ../src/fl_sources/theoldreader_source.c:103
+#, fuzzy
+msgid "Login failed!"
+msgstr "Google Reader 登录失败！"
+
+#: ../src/fl_sources/aol_source.c:127
+msgid "AOL Reader Login"
+msgstr ""
+
+#: ../src/fl_sources/aol_source.c:193 ../src/fl_sources/default_source.c:145
+#: ../glade/new_subscription.ui.h:1 ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "新增订阅"
 
-#: ../src/fl_sources/google_source.c:116
-msgid "Google Reader login failed!"
-msgstr "Google Reader 登录失败！"
+#: ../src/fl_sources/aol_source.c:279
+#, fuzzy
+msgid "AOL Reader"
+msgstr "Feed 阅读器"
 
-#: ../src/fl_sources/google_source.c:383
+#: ../src/fl_sources/inoreader_source.c:308
+#, fuzzy
+msgid "InoReader"
+msgstr "Google Reader"
+
+#: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:384
-msgid ""
-"Integrate the feed list of your Google Reader account. Liferea will present "
-"your Google Reader subscriptions, and will synchronize your feed list and "
-"reading lists."
-msgstr ""
-"集成您 Google Reader 帐号中的 Feed 列表。Liferea 将显示您的 Google Reader 订"
-"阅，并与之同步 Feed 列表和阅读列表。"
-
-#: ../src/fl_sources/opml_source.c:325
+#: ../src/fl_sources/opml_source.c:319
 msgid "Planet, BlogRoll, OPML"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:326
-msgid ""
-"Integrate blogrolls or Planets in your feed list. Liferea will automatically "
-"add and remove feeds according to the changes of the source OPML document"
-msgstr ""
-
-#: ../src/fl_sources/opml_source.c:387
+#: ../src/fl_sources/opml_source.c:383
 msgid "Choose OPML File"
 msgstr "选择 OPML 文件"
 
@@ -1583,67 +1533,67 @@ msgstr "选择 OPML 文件"
 msgid "New OPML Subscription"
 msgstr "新增 OPML 订阅"
 
-#: ../src/fl_sources/node_source.c:238
+#: ../src/fl_sources/node_source.c:325
 msgid "No feed list source types found!"
 msgstr "未找到 Feed 列表源类型！"
 
-#: ../src/fl_sources/node_source.c:269
+#: ../src/fl_sources/node_source.c:354
 msgid "Source Type"
 msgstr "来源类型"
 
-#: ../src/fl_sources/ttrss_source.c:362
+#: ../src/fl_sources/node_source.c:405
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr ""
+
+#. FIXME: something is not perfect, because if you immediately
+#. remove the subscription tree afterwards there is a double free
+#: ../src/fl_sources/node_source.c:571
+#, c-format
+msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr ""
+
+#: ../src/fl_sources/reedah_source.c:309
+msgid "Reedah"
+msgstr ""
+
+#: ../src/fl_sources/reedah_source_feed.c:154
+msgid "Could not parse JSON returned by Reedah API!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:231
+msgid ""
+"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
+"URL!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:290
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:307
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
+"%s or later!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:363
+#: ../src/fl_sources/ttrss_source_feed.c:150
+msgid "Could not parse JSON returned by TinyTinyRSS API!"
+msgstr ""
+
+#: ../src/fl_sources/theoldreader_source.c:327
 #, fuzzy
-msgid ""
-"Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
-"present your tt-rss subscriptions, and will synchronize your feed list and "
-"reading lists."
-msgstr ""
-"集成您 Google Reader 帐号中的 Feed 列表。Liferea 将显示您的 Google Reader 订"
-"阅，并与之同步 Feed 列表和阅读列表。"
-
-#: ../src/fl_sources/ttrss_source_feed.c:105
-msgid "Could not parse JSON returned by tt-rss API!"
-msgstr ""
-
-#: ../src/notification/libnotify.c:61 ../src/notification/libnotify.c:83
-#: ../src/notification/libnotify.c:152
-msgid "This feed does not exist anymore!"
-msgstr "此 Feed 已不存在！"
-
-#: ../src/notification/libnotify.c:125
-#, c-format
-msgid "This news entry has no headline"
-msgstr "此新闻条目没有标题"
-
-#: ../src/notification/libnotify.c:130
-msgid "Visit"
-msgstr "访问"
-
-#: ../src/notification/libnotify.c:171 ../src/notification/libnotify.c:274
-msgid "Open feed"
-msgstr "打开 Feed"
-
-#: ../src/notification/libnotify.c:174 ../src/notification/libnotify.c:277
-msgid "Mark all as read"
-msgstr "全部标记为已读"
-
-#: ../src/notification/libnotify.c:254
-#, c-format
-msgid "<b>%s</b> has <b>%d</b> update"
-msgid_plural "<b>%s</b> has <b>%d</b> updates"
-msgstr[0] ""
-
-#: ../src/notification/libnotify.c:257 ../src/notification/libnotify.c:259
-msgid "Feed Update"
-msgstr "Feed 更新"
-
-#: ../src/notification/libnotify.c:271
-msgid "Show details"
-msgstr "显示详细信息"
+msgid "TheOldReader"
+msgstr "Feed 阅读器"
 
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
@@ -1671,13 +1621,26 @@ msgstr "添加 Google Reader 帐号"
 msgid "Please enter your Google Reader account settings."
 msgstr "请输入您的 Google Reader 帐号设置。"
 
-#: ../glade/google_source.ui.h:3 ../glade/ttrss_source.ui.h:4
+#: ../glade/google_source.ui.h:3 ../glade/inoreader_source.ui.h:3
+#: ../glade/reedah_source.ui.h:3 ../glade/ttrss_source.ui.h:4
+#: ../glade/theoldreader_source.ui.h:3
 msgid "_Password"
 msgstr "密码(_P)"
 
-#: ../glade/google_source.ui.h:4
+#: ../glade/google_source.ui.h:4 ../glade/inoreader_source.ui.h:4
+#: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "用户名(电子邮件地址)(_U)"
+
+#: ../glade/inoreader_source.ui.h:1
+#, fuzzy
+msgid "Add InoReader Account"
+msgstr "添加 Google Reader 帐号"
+
+#: ../glade/inoreader_source.ui.h:2
+#, fuzzy
+msgid "Please enter your InoReader account settings."
+msgstr "请输入您的 Google Reader 帐号设置。"
 
 #: ../glade/liferea.ui.h:2
 msgid "normal view"
@@ -1780,11 +1743,11 @@ msgstr "选择文件..."
 msgid "Use conversion _filter"
 msgstr "使用会话过滤器(_F)"
 
-#: ../glade/liferea.ui.h:27 ../glade/new_subscription.ui.h:12
+#: ../glade/liferea.ui.h:27
+#, fuzzy
 msgid ""
-"Liferea can use external filter plugins in order to access feeds and "
-"directories in non-supported formats.  See the documentation for more "
-"information."
+"Liferea can use external filter scripts in order to access feeds and "
+"directories in non-supported formats."
 msgstr ""
 "Liferea 可以使用外挂过滤插件来读取不支持格式的 Feed 和目录，更多信息请查阅文"
 "档。"
@@ -1846,68 +1809,40 @@ msgid "Ignore _comment feeds for this subscription."
 msgstr "忽略此订阅的评论 Feed (_C)。"
 
 #: ../glade/liferea.ui.h:44
-msgid "_Enforce popup notification for this subscription."
-msgstr "强制弹出此订阅提示(_E)。"
-
-#: ../glade/liferea.ui.h:45
-msgid "_Never do popup notification for this subscription."
-msgstr "不再为此订阅弹出提示(_N)。"
-
-#: ../glade/liferea.ui.h:46
 msgid "_Mark downloaded items as read."
 msgstr "标记下载的条目为已读(_M)。"
 
-#: ../glade/liferea.ui.h:47
+#: ../glade/liferea.ui.h:45
 msgid "Advanced"
 msgstr "高级"
 
-#: ../glade/liferea.ui.h:48
+#: ../glade/liferea.ui.h:46
 msgid "New Folder"
 msgstr "新目录"
 
-#: ../glade/liferea.ui.h:49
+#: ../glade/liferea.ui.h:47
 msgid "_Folder name:"
 msgstr "目录名称(_F)："
 
-#: ../glade/liferea.ui.h:50
+#: ../glade/liferea.ui.h:48
 msgid "Rename"
 msgstr "重命名"
 
-#: ../glade/liferea.ui.h:51
+#: ../glade/liferea.ui.h:49
 msgid "_New Name:"
 msgstr "新名称(_N)："
 
-#: ../glade/liferea.ui.h:52
-msgid "Search Folder Properties"
-msgstr "搜索目录属性"
-
-#: ../glade/liferea.ui.h:53
-msgid "Search _Name:"
-msgstr "搜索名称(_N)："
-
-#: ../glade/liferea.ui.h:54
-msgid "Find Items that meet the following criteria"
-msgstr ""
-
-#: ../glade/liferea.ui.h:55
-msgid "A_ny Rule Matches"
-msgstr "所有匹配的规则(_N)"
-
-#: ../glade/liferea.ui.h:56
-msgid "_All Rules Must Match"
-msgstr "必须匹配所有规则(_A)"
-
-#: ../glade/liferea.ui.h:57
+#: ../glade/liferea.ui.h:50
 #, fuzzy
 msgid "Open Enclosure"
 msgstr "开启附件..."
 
-#: ../glade/liferea.ui.h:58
+#: ../glade/liferea.ui.h:51
 #, fuzzy
 msgid "Open an enclosure of type:"
 msgstr "下载附件类型："
 
-#: ../glade/liferea.ui.h:59
+#: ../glade/liferea.ui.h:52
 #, fuzzy
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
@@ -1917,106 +1852,109 @@ msgstr ""
 "Liferea 应如何处理附件？ 请在下面键入您要执行的命令，下载的文件将作为该命令的"
 "参数："
 
-#: ../glade/liferea.ui.h:60
+#: ../glade/liferea.ui.h:53
 msgid "_Browse"
 msgstr "浏览(_B)"
 
-#: ../glade/liferea.ui.h:61
+#: ../glade/liferea.ui.h:54
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "从现在开始自动对所有附件执行此次进行的操作(_D)。"
 
-#: ../glade/liferea.ui.h:62
+#: ../glade/liferea.ui.h:55
 msgid "Search All Feeds"
 msgstr "搜索所有 Feed"
 
-#: ../glade/liferea.ui.h:63
+#: ../glade/liferea.ui.h:56
 msgid "_Search for:"
 msgstr "搜索(_S)："
 
-#: ../glade/liferea.ui.h:64
+#: ../glade/liferea.ui.h:57
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
 msgstr "输入一个让 Liferea 在条目标题或内容中寻找的搜索字符。"
 
-#: ../glade/liferea.ui.h:65
+#: ../glade/liferea.ui.h:58
 msgid "_Advanced..."
 msgstr "高级(_A)..."
 
-#: ../glade/liferea.ui.h:66
+#: ../glade/liferea.ui.h:59
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
 msgstr "开始在所有 Feed 中搜索该文本，结果会出现在条目列表中。"
 
-#: ../glade/liferea.ui.h:67
+#: ../glade/liferea.ui.h:60
 msgid "Update Monitor"
 msgstr "更新监视"
 
-#: ../glade/liferea.ui.h:68
+#: ../glade/liferea.ui.h:61
 #, fuzzy
 msgid "Pending Requests"
 msgstr "<b>待验证请求</b>"
 
-#: ../glade/liferea.ui.h:69
+#: ../glade/liferea.ui.h:62
 #, fuzzy
 msgid "Downloading Now"
 msgstr "<b>立即下载</b>"
 
-#: ../glade/liferea.ui.h:70
+#: ../glade/liferea.ui.h:63
 msgid "Cancel _All"
 msgstr "取消全部(_A)"
 
-#: ../glade/liferea.ui.h:71
+#: ../glade/liferea.ui.h:64
 msgid "Create News Bin"
 msgstr ""
 
-#: ../glade/liferea.ui.h:72
+#: ../glade/liferea.ui.h:65
 msgid "_News Bin Name:"
 msgstr ""
 
-#: ../glade/liferea.ui.h:73
+#: ../glade/liferea.ui.h:66
 msgid "About"
 msgstr "关于"
 
-#: ../glade/liferea.ui.h:74
-#, fuzzy
-msgid ""
-"Copyright (c) 2003-2012\n"
-"The Liferea Team\n"
-msgstr ""
-"版权所有 (C) 2003-2009\n"
-"Liferea 团队\n"
-
-#: ../glade/liferea.ui.h:77
+#: ../glade/liferea.ui.h:67
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea 是 GTK+ 新闻搜集器"
 
-#: ../glade/liferea.ui.h:78
+#: ../glade/liferea.ui.h:68
 msgid "Liferea Homepage"
 msgstr "Liferea 主页"
 
-#: ../glade/liferea.ui.h:79
+#: ../glade/liferea.ui.h:69
 msgid "Advanced Search"
 msgstr "高级搜索"
 
-#: ../glade/liferea.ui.h:80
+#: ../glade/liferea.ui.h:70 ../glade/search_folder.ui.h:3
+msgid "Find Items that meet the following criteria"
+msgstr ""
+
+#: ../glade/liferea.ui.h:71 ../glade/search_folder.ui.h:4
+msgid "A_ny Rule Matches"
+msgstr "所有匹配的规则(_N)"
+
+#: ../glade/liferea.ui.h:72 ../glade/search_folder.ui.h:5
+msgid "_All Rules Must Match"
+msgstr "必须匹配所有规则(_A)"
+
+#: ../glade/liferea.ui.h:73
 msgid "_Search Folder..."
 msgstr "搜索目录(_S)..."
 
-#: ../glade/liferea.ui.h:81
+#: ../glade/liferea.ui.h:74
 msgid "Create Search Engine Feed"
 msgstr "创建搜索引擎 Feed"
 
-#: ../glade/liferea.ui.h:82
+#: ../glade/liferea.ui.h:75
 msgid "enter any search string you want"
 msgstr "输入您想搜索的字符串"
 
-#: ../glade/liferea.ui.h:83
+#: ../glade/liferea.ui.h:76
 msgid "Maximal _Number Of Result Items:"
 msgstr "最大搜索结果数(_N)："
 
-#: ../glade/liferea.ui.h:84
+#: ../glade/liferea.ui.h:77
 #, fuzzy
 msgid ""
 "Note: Liferea will generate a feed subscription which is used to query the "
@@ -2030,6 +1968,15 @@ msgstr ""
 #, fuzzy
 msgid "Download / Postprocessing"
 msgstr "<b>下载/预处理</b>"
+
+#: ../glade/new_subscription.ui.h:12
+msgid ""
+"Liferea can use external filter plugins in order to access feeds and "
+"directories in non-supported formats.  See the documentation for more "
+"information."
+msgstr ""
+"Liferea 可以使用外挂过滤插件来读取不支持格式的 Feed 和目录，更多信息请查阅文"
+"档。"
 
 #: ../glade/node_source.ui.h:1
 msgid "Source Selection"
@@ -2055,36 +2002,6 @@ msgstr "位置(_L)"
 #: ../glade/opml_source.ui.h:4
 msgid "_Select File"
 msgstr "选择文件(_S)"
-
-#: ../glade/ttrss_source.ui.h:1
-msgid "Add Tiny Tiny RSS Account"
-msgstr ""
-
-#: ../glade/ttrss_source.ui.h:2
-#, fuzzy
-msgid "Please enter your tt-rss account settings."
-msgstr "请输入您的 Google Reader 帐号设置。"
-
-#: ../glade/ttrss_source.ui.h:3
-#, fuzzy
-msgid "_Server URL"
-msgstr "服务器端错误"
-
-#: ../glade/ttrss_source.ui.h:5
-msgid "_Username"
-msgstr "用户名(_U)"
-
-#: ../glade/simple_subscription.ui.h:2
-msgid "Advanced..."
-msgstr "高级..."
-
-#: ../glade/simple_subscription.ui.h:4
-msgid ""
-"Enter a website location to use feed autodiscovery or in case you know it "
-"the exact feed location."
-msgstr ""
-"除非您知道确切的 Feed 地址，否则当您输入一个网址时，Liferea 会进行自动 Feed "
-"发现。"
 
 #: ../glade/prefs.ui.h:1
 msgid "Liferea Preferences"
@@ -2219,107 +2136,319 @@ msgstr "浏览器"
 
 #: ../glade/prefs.ui.h:33
 #, fuzzy
-msgid "Notification Settings"
-msgstr "<span weight=\"bold\">程序状态通知设置</span>"
-
-#: ../glade/prefs.ui.h:34
-msgid "Show a _popup window with new headlines."
-msgstr "使用弹出窗口显示新标题(_P)。"
-
-#: ../glade/prefs.ui.h:35
-msgid "Show a status _icon in the notification area (system tray)."
-msgstr "在程序状态通知区中显示状态图标(系统托盘)(_I)。"
-
-#: ../glade/prefs.ui.h:36
-msgid "Show _number of new items in the tray icon."
-msgstr "在托盘图标上显示新条目数量。"
-
-#: ../glade/prefs.ui.h:37
-msgid "T_erminate instead of minimizing to tray icon."
-msgstr "退出而不是最小化到托盘(_E)。"
-
-#: ../glade/prefs.ui.h:38
-msgid "_Start in tray icon."
-msgstr "启动后最小化到托盘(_S)。"
-
-#: ../glade/prefs.ui.h:39
-#, fuzzy
 msgid "Toolbar Settings"
 msgstr "工具栏按钮标签："
 
-#: ../glade/prefs.ui.h:40
+#: ../glade/prefs.ui.h:34
 msgid "_Hide toolbar."
 msgstr "隐藏工具栏(_H)。"
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:35
 msgid "Toolbar _button labels:"
 msgstr "工具栏按钮标签："
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:36
 msgid "GUI"
 msgstr "图形界面"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:37
 msgid "HTTP Proxy Server"
 msgstr ""
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:38
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "自动检测(GNOME 或环境)(_A)"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:39
 msgid "_No Proxy"
 msgstr "不使用代理(_N)"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:40
 msgid "_Manual Setting:"
 msgstr "手工设置(_M)："
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:41
 msgid "Proxy _Port:"
 msgstr "代理服务器端口(_P)："
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:42
 msgid "Proxy _Host:"
 msgstr "代理服务器地址(_H)："
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:43
 msgid "Use Proxy Au_thentication"
 msgstr "使用代理服务器认证(_T)"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:44
 msgid "Proxy Pass_word:"
 msgstr "代理服务器密码(_W)："
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Username:"
 msgstr "代理服务器用户名(_U)："
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:46
 msgid "Proxy"
 msgstr "代理服务器"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:47
 #, fuzzy
 msgid "Downloading Enclosures"
 msgstr "附件下载中"
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:48
 msgid "_Download using"
 msgstr "下载方式(_D)："
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:49
 #, fuzzy
 msgid "Opening Enclosures"
 msgstr "开启附件..."
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:50
 msgid "Enclosures"
 msgstr "附件"
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:51
 msgid "Plugins"
 msgstr ""
+
+#: ../glade/reedah_source.ui.h:1
+#, fuzzy
+msgid "Add Reedah Account"
+msgstr "添加 Google Reader 帐号"
+
+#: ../glade/reedah_source.ui.h:2
+#, fuzzy
+msgid "Please enter your Reedah account settings."
+msgstr "请输入您的 Google Reader 帐号设置。"
+
+#: ../glade/search_folder.ui.h:1
+msgid "Search Folder Properties"
+msgstr "搜索目录属性"
+
+#: ../glade/search_folder.ui.h:2
+msgid "Search _Name:"
+msgstr "搜索名称(_N)："
+
+#: ../glade/simple_subscription.ui.h:2
+msgid "Advanced..."
+msgstr "高级..."
+
+#: ../glade/simple_subscription.ui.h:4
+msgid ""
+"Enter a website location to use feed autodiscovery or in case you know it "
+"the exact feed location."
+msgstr ""
+"除非您知道确切的 Feed 地址，否则当您输入一个网址时，Liferea 会进行自动 Feed "
+"发现。"
+
+#: ../glade/ttrss_source.ui.h:1
+msgid "Add Tiny Tiny RSS Account"
+msgstr ""
+
+#: ../glade/ttrss_source.ui.h:2
+#, fuzzy
+msgid "Please enter your TinyTinyRSS account settings."
+msgstr "请输入您的 Google Reader 帐号设置。"
+
+#: ../glade/ttrss_source.ui.h:3
+#, fuzzy
+msgid "_Server URL"
+msgstr "服务器端错误"
+
+#: ../glade/ttrss_source.ui.h:5
+msgid "_Username"
+msgstr "用户名(_U)"
+
+#: ../glade/theoldreader_source.ui.h:1
+#, fuzzy
+msgid "Add TheOldReader Account"
+msgstr "添加 Google Reader 帐号"
+
+#: ../glade/theoldreader_source.ui.h:2
+#, fuzzy
+msgid "Please enter your TheOldReader account settings."
+msgstr "请输入您的 Google Reader 帐号设置。"
+
+#~ msgid "No comments yet."
+#~ msgstr "尚无评论。"
+
+#~ msgid "Refresh"
+#~ msgstr "刷新"
+
+#~ msgid "Liferea - Linux Feed Reader"
+#~ msgstr "Liferea - Linux Feed 阅读器"
+
+#, fuzzy
+#~ msgid ""
+#~ "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
+#~ "feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
+#~ "'Subscription' -&gt; 'New Subscription'</li><li>By dropping feed links "
+#~ "into the subscription list</li><li>By right clicking links and choosing "
+#~ "'Subscribe' within Liferea</li></ul></p>"
+#~ msgstr ""
+#~ "<p>欢迎使用 <b>Liferea</b>，一个桌面新闻 Feed 聚合器。</p><p>左侧面板是您"
+#~ "的订阅列表。要订阅一个 Feed，选择 Feed -&gt; 新增订阅。要浏览 Feed 标题，"
+#~ "则选中那个 Feed，程序会把标题自动载入到右侧的主窗口内。</p>"
+
+#, fuzzy
+#~ msgid "Terminate instead of minimizing to the messaging menu"
+#~ msgstr "退出而不是最小化到托盘(_E)。"
+
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+#~ msgid "%d new item"
+#~ msgid_plural "%d new items"
+#~ msgstr[0] "%d 个新条目"
+
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+#~ msgid "No new items"
+#~ msgstr "无新条目"
+
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+#~ msgid ""
+#~ "%s\n"
+#~ "%d unread item"
+#~ msgid_plural ""
+#~ "%s\n"
+#~ "%d unread items"
+#~ msgstr[0] ""
+#~ "%s\n"
+#~ "%d 个未读条目"
+
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+# what's this ?
+# #: src/ui_tray.c:90
+# #, c-format
+# msgid "%d new item!"
+# msgid_plural "%d new items!"
+# msgstr[0] "%d 个新条目"
+# msgstr[1] "%d 个新条目"
+#~ msgid ""
+#~ "%s\n"
+#~ "No unread items"
+#~ msgstr ""
+#~ "%s\n"
+#~ "没有未读条目"
+
+#~ msgid "Invalid Atom feed: unknown author"
+#~ msgstr "无效的 Atom Feed：未知作者"
+
+#~ msgid ""
+#~ "Integrate the feed list of your Google Reader account. Liferea will "
+#~ "present your Google Reader subscriptions, and will synchronize your feed "
+#~ "list and reading lists."
+#~ msgstr ""
+#~ "集成您 Google Reader 帐号中的 Feed 列表。Liferea 将显示您的 Google Reader "
+#~ "订阅，并与之同步 Feed 列表和阅读列表。"
+
+#, fuzzy
+#~ msgid ""
+#~ "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
+#~ "present your tt-rss subscriptions, and will synchronize your feed list "
+#~ "and reading lists."
+#~ msgstr ""
+#~ "集成您 Google Reader 帐号中的 Feed 列表。Liferea 将显示您的 Google Reader "
+#~ "订阅，并与之同步 Feed 列表和阅读列表。"
+
+#~ msgid "This feed does not exist anymore!"
+#~ msgstr "此 Feed 已不存在！"
+
+#~ msgid "This news entry has no headline"
+#~ msgstr "此新闻条目没有标题"
+
+#~ msgid "Visit"
+#~ msgstr "访问"
+
+#~ msgid "Open feed"
+#~ msgstr "打开 Feed"
+
+#~ msgid "Mark all as read"
+#~ msgstr "全部标记为已读"
+
+#~ msgid "Feed Update"
+#~ msgstr "Feed 更新"
+
+#~ msgid "Show details"
+#~ msgstr "显示详细信息"
+
+#~ msgid "_Enforce popup notification for this subscription."
+#~ msgstr "强制弹出此订阅提示(_E)。"
+
+#~ msgid "_Never do popup notification for this subscription."
+#~ msgstr "不再为此订阅弹出提示(_N)。"
+
+#, fuzzy
+#~ msgid ""
+#~ "Copyright (c) 2003-2012\n"
+#~ "The Liferea Team\n"
+#~ msgstr ""
+#~ "版权所有 (C) 2003-2009\n"
+#~ "Liferea 团队\n"
+
+#, fuzzy
+#~ msgid "Notification Settings"
+#~ msgstr "<span weight=\"bold\">程序状态通知设置</span>"
+
+#~ msgid "Show a _popup window with new headlines."
+#~ msgstr "使用弹出窗口显示新标题(_P)。"
+
+#~ msgid "Show a status _icon in the notification area (system tray)."
+#~ msgstr "在程序状态通知区中显示状态图标(系统托盘)(_I)。"
+
+#~ msgid "Show _number of new items in the tray icon."
+#~ msgstr "在托盘图标上显示新条目数量。"
+
+#~ msgid "T_erminate instead of minimizing to tray icon."
+#~ msgstr "退出而不是最小化到托盘(_E)。"
+
+#~ msgid "_Start in tray icon."
+#~ msgstr "启动后最小化到托盘(_S)。"
 
 #~ msgid "Download and view feeds"
 #~ msgstr "下载并查看 Feed"
@@ -2379,10 +2508,6 @@ msgstr ""
 
 #~ msgid "_Save downloads in"
 #~ msgstr "将下载保存于(_S)"
-
-#, fuzzy
-#~ msgid "Synchronized with Nearby Hosts"
-#~ msgstr "<span weight=\"bold\">已与临近主机同步</span>"
 
 #~ msgid "_Enable Local LAN Synchronization"
 #~ msgstr "启用本地 LAN 同步(_E)"
@@ -2464,9 +2589,6 @@ msgstr ""
 
 #~ msgid "<i>(empty)</i>"
 #~ msgstr "<i>(空)</i>"
-
-#~ msgid "_Delete"
-#~ msgstr "删除(_D)"
 
 #~ msgid "_Properties..."
 #~ msgstr "属性(_P)..."
