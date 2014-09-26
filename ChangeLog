@@ -6,6 +6,8 @@ To be released
 	  that should not be visible.
 	* Allowing browser history to go back to previously 
 	  shown headline when browsing inside the item view.
+	* Dropping offline option as this is duplicated with
+	  desktop environment in GNOME/network manager.
 
 
 2014-08-31   Lars Windolf <lars.windolf@gmx.de>

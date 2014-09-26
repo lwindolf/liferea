@@ -311,30 +311,6 @@
           <object class="GtkHBox" id="hbox30">
             <property name="visible">True</property>
             <child>
-              <object class="GtkButton" id="onlinebtn">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="relief">none</property>
-                <child>
-                  <object class="GtkImage" id="onlineimage">
-                    <property name="visible">True</property>
-                    <property name="stock">gtk-missing-image</property>
-                    <child internal-child="accessible">
-                      <object class="AtkObject" id="onlineimage-atkobject">
-                        <property name="AtkObject::accessible-name" translatable="yes">Online/Offline Button</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkStatusbar" id="statusbar">
                 <property name="visible">True</property>
               </object>
