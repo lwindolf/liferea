@@ -4,6 +4,8 @@ To be released
 	  (suggested by DanMan)
 	* Fixes Github #98:  Stop calling Atom person constructs w/ URI invalid
 	  (patch by Aristotle Pagaltzis)
+	* Fixes Github #100: Problems with dark Adwaita theme in GTK 3.14
+	  (reported by majutsushi)
 
 
 2014-08-24   Lars Windolf <lars.windolf@gmx.de>

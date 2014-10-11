@@ -298,14 +298,8 @@ feed_list_node_update (const gchar *nodeId)
 	if (!countColor) {
 		const gchar *bg = NULL, *fg = NULL;
 
-		if (render_is_dark_theme ()) {
-			bg = render_get_theme_color ("GTK-COLOR-TEXT");
-			fg = render_get_theme_color ("GTK-COLOR-BG");
-		} else {
-			bg = render_get_theme_color ("GTK-COLOR-DARK");
-			fg = render_get_theme_color ("GTK-COLOR-BG");
-		}
-
+		bg = render_get_theme_color ("FEEDLIST_UNREAD_BG");
+		fg = render_get_theme_color ("FEEDLIST_UNREAD_FG");
 		if (fg && bg) {
 			countColor = g_strdup_printf ("foreground='#%s' background='#%s'", fg, bg);
 			debug1 (DEBUG_HTML, "Feed list unread CSS: %s\n", countColor);
