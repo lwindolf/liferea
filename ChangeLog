@@ -9,6 +9,8 @@ To be released
 	* Dropping offline option as this is duplicated with
 	  desktop environment in GNOME/network manager.
 
+	* Update of Arabic translation (Khaled Hosny)
+
 
 2014-08-31   Lars Windolf <lars.windolf@gmx.de>
 
