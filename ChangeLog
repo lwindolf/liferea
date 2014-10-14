@@ -8,6 +8,8 @@ To be released
 	  shown headline when browsing inside the item view.
 	* Dropping offline option as this is duplicated with
 	  desktop environment in GNOME/network manager.
+	* Fixes Github #100: Problems with dark Adwaita theme in GTK 3.14
+	  (reported by majutsushi)
 
 	* Update of Arabic translation (Khaled Hosny)
 

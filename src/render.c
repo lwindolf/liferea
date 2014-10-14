@@ -182,6 +182,19 @@ render_calculate_theme_color (const gchar *name, GdkColor themeColor)
 	return tc;
 }
 
+static gint
+render_get_rgb_distance (GdkColor *c1, GdkColor *c2)
+{
+	return abs(
+		(299 * c1->red/256 +
+		 587 * c1->green/256 +
+		 114 * c1->blue/256) -
+		(299 * c2->red/256 +
+		 587 * c2->green/256 +
+		 114 * c2->blue/256)
+	       ) / 1000;
+}
+
 void
 render_init_theme_colors (GtkWidget *widget)
 {
@@ -197,8 +210,18 @@ render_init_theme_colors (GtkWidget *widget)
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-LIGHT", style->light[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-DARK",  style->dark[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-MID",   style->mid[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BASE",  style->base[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-TEXT",  style->text[GTK_STATE_NORMAL]));
+
+	/* Sanity check text+base color as this causes many problems on dark
+	   themes. If brightness distance is not enough we set text to fg/bg
+	   which is always safe. */
+	if (render_get_rgb_distance (&style->base[GTK_STATE_NORMAL], &style->text[GTK_STATE_NORMAL]) > 150) {
+		// FIXME: Use theme labels instead of GTK-COLOR-<something> (e.g. CSS-BACKGROUND)
+		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BASE", style->base[GTK_STATE_NORMAL]));
+		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-TEXT", style->text[GTK_STATE_NORMAL]));
+	} else {
+		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BASE", style->bg[GTK_STATE_NORMAL]));
+		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-TEXT", style->fg[GTK_STATE_NORMAL]));
+	}
 
 	color = NULL;
 	gtk_widget_style_get (widget, "link-color", &color, NULL);
@@ -231,6 +254,22 @@ render_init_theme_colors (GtkWidget *widget)
 	if (textAvg > bgAvg) {
 		debug0 (DEBUG_HTML, "Dark GTK theme detected.");
 		darkTheme = TRUE;
+	} 
+
+	if (darkTheme) {
+		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->text[GTK_STATE_NORMAL]));
+		/* Try nice foreground with 'fg' color (note: distance 50 is enough because it should be non-intrusive) */
+		if (render_get_rgb_distance (&style->text[GTK_STATE_NORMAL], &style->fg[GTK_STATE_NORMAL]) > 50)
+			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->fg[GTK_STATE_NORMAL]));
+		else
+			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
+	} else {
+		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
+		/* Try nice foreground with 'dark' color (note: distance 50 is enough because it should be non-intrusive) */
+		if (render_get_rgb_distance (&style->dark[GTK_STATE_NORMAL], &style->bg[GTK_STATE_NORMAL]) > 50)
+			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->dark[GTK_STATE_NORMAL]));
+		else
+			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->fg[GTK_STATE_NORMAL]));
 	}
 }
 
