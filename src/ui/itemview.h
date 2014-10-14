@@ -127,7 +127,7 @@ void itemview_remove_item (itemPtr item);
  * Selects a given item in the view. The item must be
  * added using itemview_add_item before selecting.
  *
- * @param item the item to select
+ * @item: the item to select
  */
 void itemview_select_item (itemPtr item);
 
@@ -144,7 +144,7 @@ void itemview_select_enclosure (guint position);
  *
  * Requests updating the rendering of a given item.
  *
- * @param item	the item to update
+ * @item:	the item to update
  */
 void itemview_update_item (itemPtr item);
 
@@ -160,7 +160,7 @@ void itemview_update_all_items (void);
  *
  * Requests updating the rendering of the node info view.
  *
- * @node node	the node whose info view is to be updated
+ * @node:	the node whose info view is to be updated
  *
  * TODO: register for signal at feed merger instead
  */
@@ -182,18 +182,18 @@ void itemview_update (void);
  * Sets an info display in the item view HTML widget.
  * Used for special functionality like search result info.
  *
- * @param html	HTML to present
+ * @html:	HTML to present
  */
 void itemview_display_info (const gchar *html);
 
 /**
- * itemview_find_unread_item:
+ * itemview_find_unread_item: (skip)
  *
  * Finds the next unread item.
  *
- * @param startId	the item id to start at (or NULL for starting at the top)
+ * @startId:	the item id to start at (or NULL for starting at the top)
  *
- * @results the item found (or NULL)
+ * Returns: (transfer none): the item found (or NULL)
  */
 itemPtr itemview_find_unread_item (gulong startId);
 
@@ -211,7 +211,7 @@ void itemview_scroll (void);
  * Moves the cursor in the item list step times.
  * Negative value means moving backwards.
  * 
- * @param step	moving steps
+ * @step:	moving steps
  */
 void itemview_move_cursor (int step);
 
@@ -227,7 +227,7 @@ void itemview_move_cursor_to_first (void);
  *
  * Switches the layout for the given viewing mode.
  *
- * @param newMode	new view mode (NODE_VIEW_MODE_*)
+ * @newMode:	new view mode (NODE_VIEW_MODE_*)
  */
 void itemview_set_layout (nodeViewType newMode);
 
@@ -237,7 +237,7 @@ void itemview_set_layout (nodeViewType newMode);
  *
  * Creates the item view singleton instance.
  *
- * Return value: (transfer none):	the item view instance
+ * Returns: (transfer none):	the item view instance
  */
 ItemView * itemview_create (GtkWidget *window);
 

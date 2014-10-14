@@ -258,10 +258,6 @@ itemlist_itemset_is_valid (itemSetPtr itemSet)
 	return TRUE;
 }
 
-/**
- * To be called whenever an itemset was updated. If it is the
- * displayed itemset it will be merged against the item view.
- */
 void
 itemlist_merge_itemset (itemSetPtr itemSet) 
 {
@@ -277,10 +273,6 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 	debug_exit ("itemlist_merge_itemset");
 }
 
-/** 
- * To be called whenever a node was selected and should
- * replace the current itemlist.
- */
 void
 itemlist_load (nodePtr node) 
 {

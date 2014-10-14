@@ -55,31 +55,32 @@ struct ItemListClass
 GType itemlist_get_type (void);
 
 /**
- * Set up the feed list.
+ * itemlist_create: (skip)
  *
- * @returns the feed list instance
+ * Set up the item list.
+ *
+ * Returns: the item list instance
  */
 ItemList * itemlist_create (void);
 
 /**
  * Returns the currently displayed node.
  *
- * @returns displayed node (or NULL)
+ * Returns: displayed node (or NULL)
  */
-struct node * itemlist_get_displayed_node(void);
+struct node * itemlist_get_displayed_node (void);
 
 /**
- * Returns a copy of the currently selected item.
- * Note: selected = displayed item
+ * Returns the currently selected and displayed item.
  *
- * @returns displayed item (or NULL) to be free'd using item_unload()
+ * Returns: displayed item (or NULL) to be free'd using item_unload()
  */
 itemPtr itemlist_get_selected (void);
 
 /**
  * Returns the id of the currently selected item.
  *
- * @returns displayed item id (or 0)
+ * Returns: displayed item id (or 0)
  */
 gulong itemlist_get_selected_id (void);
 
@@ -88,49 +89,49 @@ gulong itemlist_get_selected_id (void);
  * displayed feed it is loaded this method decides if the
  * and how the item list GUI needs to be updated.
  *
- * @param itemSet	the item set to be merged
+ * @itemSet:	the item set to be merged
  */
-void itemlist_merge_itemset(itemSetPtr itemSet);
+void itemlist_merge_itemset (itemSetPtr itemSet);
 
 /** 
  * Loads the passed nodes items into the item list.
  *
- * @param node 		the node
+ * @node: 	the node
  */
-void itemlist_load(struct node *node);
+void itemlist_load (struct node *node);
 
 /**
  * Clears the item list. Unsets the currently
  * displayed item set. Optionally marks every item read.
  *
- * @param markRead	if TRUE all items are marked as read
+ * @markRead:	if TRUE all items are marked as read
  */
-void itemlist_unload(gboolean markRead);
+void itemlist_unload (gboolean markRead);
 
 /**
  * Changes the viewing mode property of the item list.
  * Do not use this method to change the viewing mode
  * of a displayed node!
  *
- * @param newMode	(0 = normal, 1 = wide, 2 = combined view)
+ * @newMode:	(0 = normal, 1 = wide, 2 = combined view)
  */
-void itemlist_set_view_mode(guint newMode);
+void itemlist_set_view_mode (guint newMode);
 
 /**
  * Returns the viewing mode property of the currently displayed item set.
  *
- * @returns viewing mode (0 = normal, 1 = wide, 2 = combined view)
+ * Returns: viewing mode (0 = normal, 1 = wide, 2 = combined view)
  */
-guint itemlist_get_view_mode(void);
+guint itemlist_get_view_mode (void);
 
 /**
  * Menu callback that toggles the different viewing modes
  *
- * @param action	the action that emitted the signal
- * @param current	the member of action which was activated
- * @param user_data	unused
+ * @action:	the action that emitted the signal
+ * @current:	the member of action which was activated
+ * @user_data:	unused
  */
-void on_view_activate(GtkRadioAction *action, GtkRadioAction *current, gpointer user_data);
+void on_view_activate (GtkRadioAction *action, GtkRadioAction *current, gpointer user_data);
 
 /**
  * Menu callback to select the previously read item from the item history
@@ -145,7 +146,7 @@ void on_next_read_item_activate (GtkMenuItem *menuitem, gpointer user_data);
 
 /* item handling function */
 
-void itemlist_update_item(itemPtr item);
+void itemlist_update_item (itemPtr item);
 
 
 /**
@@ -153,61 +154,65 @@ void itemlist_update_item(itemPtr item);
  * a single item. If necessary the item will be unselected.
  * The item will be removed immediately.
  *
- * @param item	the item
+ * @item:	the item
  */
-void itemlist_remove_item(itemPtr item);
+void itemlist_remove_item (itemPtr item);
 
 /**
+ * itemlist_remove_items: (skip)
+ *
  * To be called whenever some of the items of an item set
  * are to be removed. In difference to itemlist_remove_item()
  * this function will remove all items first and update the
  * GUI once.
  *
- * @param itemSet	the item set from which items are to be removed
- * @param items		the items to be removed
+ * @itemSet:	the item set from which items are to be removed
+ * @items:	the items to be removed
  */
-void itemlist_remove_items(itemSetPtr itemSet, GList *items);
+void itemlist_remove_items (itemSetPtr itemSet, GList *items);
 
 /**
  * To be called whenever the user wants to remove 
  * all items of a node. Item list selection will be
  * resetted. All items are removed immediately.
  *
- * @param node		the node whose item list is to be removed
+ * @node:	the node whose item list is to be removed
  */
-void itemlist_remove_all_items(struct node *node);
+void itemlist_remove_all_items (struct node *node);
 
 /**
  * Called from GUI when item list selection changes.
  *
- * @param item	new selected item 
+ * @item:	new selected item 
  */
-void itemlist_selection_changed(itemPtr item);
+void itemlist_selection_changed (itemPtr item);
 
 /**
  * Tries to select the next unread item that is currently in the
  * item list. Or does nothing if there are no unread items left.
  */
-void itemlist_select_next_unread(void);
+void itemlist_select_next_unread (void);
 
 /**
  * Toggle the flag of the given item.
  *
- * @param item		the item
+ * @item:		the item
  */
-void itemlist_toggle_flag(itemPtr item);
+void itemlist_toggle_flag (itemPtr item);
 
 /**
  * Toggle the read status of the given item.
  *
- * @param item		the item
+ * @item:		the item
  */
-void itemlist_toggle_read_status(itemPtr item);
+void itemlist_toggle_read_status (itemPtr item);
 
 /**
+ * itemlist_add_search_result: (skip)
+ *
  * Register a search result item loader.
  *
- * @param loader	the search result item loader
+ * @loader:	the search result item loader
  */
 void itemlist_add_search_result (ItemLoader *loader);
 

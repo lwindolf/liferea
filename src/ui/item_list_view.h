@@ -208,13 +208,15 @@ void on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data);
 void on_popup_remove_selected (void);
 
 /**
+ * item_list_view_find_unread_item: (skip)
+ *
  * Finds and selects the next unread item starting at the given
  * item in a ItemListView according to the current GtkTreeView sorting order.
  *
- * @param ilv		the ItemListView
- * @param startId	0 or the item id to start from
+ * @ilv:		the ItemListView
+ * @startId:		0 or the item id to start from
  *
- * @returns unread item (or NULL)
+ * Returns: unread item (or NULL)
  */
 itemPtr item_list_view_find_unread_item (ItemListView *ilv, gulong startId);
 
