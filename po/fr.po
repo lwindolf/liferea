@@ -2,18 +2,20 @@
 # Copyright (C) 2003 Stéphane Jourdan
 # Copyright (C) 2004 Antoine Reversat
 # Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Vincent Lefèvre
+# Copyright (C) Yolateng0
 # This file is distributed under the same license as the Liferea package.
 # Stéphane Jourdan <stephane.jourdan@itris.fr>, 2003.
 # Antoine Reversat <areversat@tuxfamily.org>, 2004.
 # Vincent Lefèvre <vincent@vinc17.net>, 2004-2011.
+# Yolateng0 <yoldc22@free.fr>, 2014
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Liferea 1.8\n"
+"Project-Id-Version: Liferea 1.10\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-26 12:32+0200\n"
-"PO-Revision-Date: 2011-11-22 01:39+0100\n"
-"Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
+"PO-Revision-Date: 2014-10-31 01:39+0100\n"
+"Last-Translator: Yolateng0 <yoldc22@free.fr>, 2014>\n"
 "Language-Team: French\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -30,10 +32,16 @@ msgid ""
 "extra libraries to be installed. Liferea tries to fill this gap by creating "
 "a fast, easy to use, easy to install news aggregator for GTK/GNOME."
 msgstr ""
+" Liferea est l'abréviation de Linux Feed Reader. C'est un agrégateur de flux »
+" pour les nouvelles fraichement en ligne . Il prend en charge un certain nombre de formats de flux différents "
+" y compris RSS/RDF, CDF et Atom . Il existe de nombreux autres lecteurs de nouvelles "
+" disponibles , mais cecis ne sont pas disponibles pour Linux ou exigent beaucoup "
+" d'extensions supplémentaires à installer. Liferea tente de combler cette lacune en créant "
+" un moyen rapide, facile à utiliser et facile à installer. Liferea agrégateur de nouvelles pour GTK / GNOME . "
 
 #: ../liferea.appdata.xml.in.h:2
 msgid "Distinguishing features:"
-msgstr ""
+msgstr "Signes particuliers:"
 
 #: ../liferea.appdata.xml.in.h:3
 #, fuzzy
@@ -43,30 +51,30 @@ msgstr "Liferea est maintenant déconnecté"
 #: ../liferea.appdata.xml.in.h:4
 #, fuzzy
 msgid "Synchronizes with TheOldReader"
-msgstr "Synchronisé avec les machines voisines"
+msgstr "Synchronise avec TheOldReader"
 
 #: ../liferea.appdata.xml.in.h:5
 #, fuzzy
 msgid "Synchronizes with TinyTinyRSS"
-msgstr "Synchronisé avec les machines voisines"
+msgstr "Synchronise avec TinyTinyRSS"
 
 #: ../liferea.appdata.xml.in.h:6
 #, fuzzy
 msgid "Synchronizes with InoReader"
-msgstr "Synchronisé avec les machines voisines"
+msgstr "Synchronise avec InoReader"
 
 #: ../liferea.appdata.xml.in.h:7
 #, fuzzy
 msgid "Synchronizes with Reedah"
-msgstr "Synchronisé avec les machines voisines"
+msgstr "Synchronise avec Reedah"
 
 #: ../liferea.appdata.xml.in.h:8
 msgid "Permanently save headlines in news bins"
-msgstr ""
+msgstr "Définitivement sauvegarder les titres dans les dossiers de news"
 
 #: ../liferea.appdata.xml.in.h:9
 msgid "Match items using search folders"
-msgstr ""
+msgstr "Identifier les articles à l'aide de dossiers de recherche"
 
 #: ../liferea.appdata.xml.in.h:10
 #, fuzzy
@@ -87,11 +95,11 @@ msgstr "Lecteur de flux Liferea"
 
 #: ../liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
-msgstr ""
+msgstr "Lire les dernières nouvelles et articles de blog "
 
 #: ../liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
-msgstr ""
+msgstr "Nouvelles;flux;aggregateur;blog;podcast;"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
@@ -125,7 +133,7 @@ msgstr "Détails"
 
 #: ../xslt/feed.xml.in.h:6
 msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr ""
+msgstr "Vous pouvez contacter l'auteur ou le webmaster pour ce flux"
 
 #: ../xslt/feed.xml.in.h:7
 msgid "There were errors while filtering this feed!"
@@ -137,15 +145,15 @@ msgstr "Détail des erreurs de filtrage"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "Feed:"
-msgstr "Flux :"
+msgstr "Flux:"
 
 #: ../xslt/feed.xml.in.h:10 ../xslt/source.xml.in.h:1
 msgid "Source:"
-msgstr "Source :"
+msgstr "Source:"
 
 #: ../xslt/feed.xml.in.h:11
 msgid "Publisher"
-msgstr "Éditeur (publisher)"
+msgstr "Éditeur"
 
 #: ../xslt/feed.xml.in.h:12
 msgid "Copyright"
@@ -218,15 +226,15 @@ msgstr "Département"
 
 #: ../xslt/newsbin.xml.in.h:1
 msgid "News Bin:"
-msgstr "Boîte à nouvelles :"
+msgstr "Boîte de nouvelles :"
 
 #: ../xslt/newsbin.xml.in.h:2
 msgid ""
 "Add items to this news bin by selecting \"Copy to News Bin\" from the item "
 "list context menu."
 msgstr ""
-"Ajoutez des éléments à cette boîte à nouvelles en sélectionnant « Copier "
-"dans la boîte à nouvelles » à partir du menu contextuel de la liste des "
+"Ajoutez des éléments à cette boîte de nouvelles en sélectionnant « Copier "
+"dans la boîte de nouvelles » à partir du menu contextuel de la liste des "
 "éléments."
 
 #: ../xslt/vfolder.xml.in.h:1
@@ -245,7 +253,7 @@ msgstr "La commande du navigateur a échoué : %s"
 #: ../src/browser.c:230
 #, c-format
 msgid "Starting: \"%s\""
-msgstr "Exécution de : \"%s\""
+msgstr "Exécution de: \"%s\""
 
 #. unauthorized
 #: ../src/comments.c:120
@@ -292,6 +300,8 @@ msgid ""
 "You have not configured a download tool yet! Please do so in the 'Download' "
 "tab in Tools/Preferences."
 msgstr ""
+"Vous n'avez pas encore configuré votre client de téléchargement! onglet 'Télécharger' "
+"menu outil/Préférences."
 
 #: ../src/enclosure.c:306
 #, c-format
@@ -303,6 +313,12 @@ msgid ""
 " Please check whether the configured download tool is installed and working "
 "correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
+"Echec de la commande: \n"
+"\n"
+"%s\n"
+"\n"
+"S'il vous plaît vérifier si l'outil de téléchargement configuré est installé et fonctionne "
+"Vous pouvez le modifier dans l'onglet « Télécharger » dans Outils/Préférences."
 
 #: ../src/export.c:185
 #, c-format
@@ -377,7 +393,7 @@ msgstr ""
 #: ../src/feed.c:262
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "\"%s\" mis à jour..."
+msgstr "\"%s\" mise à jour..."
 
 #: ../src/feed.c:269
 #, c-format
@@ -1847,7 +1863,7 @@ msgstr "_Marquer les éléments téléchargés comme lus."
 
 #: ../glade/liferea.ui.h:45
 msgid "Advanced"
-msgstr "Avancé"
+msgstr "Avancer"
 
 #: ../glade/liferea.ui.h:46
 msgid "New Folder"
@@ -1855,7 +1871,7 @@ msgstr "Nouveau dossier"
 
 #: ../glade/liferea.ui.h:47
 msgid "_Folder name:"
-msgstr "Nom du _dossier :"
+msgstr "_Nom du dossier :"
 
 #: ../glade/liferea.ui.h:48
 msgid "Rename"
@@ -2119,7 +2135,7 @@ msgstr "_Survoler les articles avec :"
 
 #: ../glade/prefs.ui.h:18
 msgid "_Default View Mode:"
-msgstr ""
+msgstr "_Mode de vue par défault"
 
 #: ../glade/prefs.ui.h:19
 msgid "Web Integration"
@@ -2156,12 +2172,12 @@ msgstr "_Ouvrir le lien dans :"
 #: ../glade/prefs.ui.h:28
 #, fuzzy
 msgid "_Manual:"
-msgstr "Manuel"
+msgstr "_Manuel"
 
 #: ../glade/prefs.ui.h:30
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
-msgstr ""
+msgstr"<small>(%s pour URL)</small>"
 
 #: ../glade/prefs.ui.h:31
 msgid "_Browser:"
@@ -2197,7 +2213,7 @@ msgstr "_Détection automatique (GNOME ou environnement)"
 
 #: ../glade/prefs.ui.h:39
 msgid "_No Proxy"
-msgstr "Pa_s de proxy"
+msgstr "_Pas de proxy"
 
 #: ../glade/prefs.ui.h:40
 msgid "_Manual Setting:"
@@ -2209,7 +2225,7 @@ msgstr "_Port du proxy :"
 
 #: ../glade/prefs.ui.h:42
 msgid "Proxy _Host:"
-msgstr "_Hôte du proxy :"
+msgstr "_Hôte du proxy:"
 
 #: ../glade/prefs.ui.h:43
 msgid "Use Proxy Au_thentication"
@@ -2245,7 +2261,7 @@ msgstr "Annexes"
 
 #: ../glade/prefs.ui.h:51
 msgid "Plugins"
-msgstr ""
+msgstr "Extensions"
 
 #: ../glade/reedah_source.ui.h:1
 #, fuzzy
@@ -2267,7 +2283,7 @@ msgstr "Nom de la _recherche :"
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
-msgstr "Avancé..."
+msgstr "Avancer..."
 
 #: ../glade/simple_subscription.ui.h:4
 msgid ""
@@ -2461,7 +2477,7 @@ msgstr "Veuillez entrer les paramètres de votre compte Google Reader."
 #~ msgstr "Vous pouvez valider le flux avec"
 
 #~ msgid "Launch Item In _Tab"
-#~ msgstr "Ouvrir l'élément dans un onglet (_tab)"
+#~ msgstr "Ouvrir l'élément dans un onglet"
 
 #~ msgid "_Launch Item In Browser"
 #~ msgstr "_Ouvrir l'élément dans le navigateur"
@@ -2532,7 +2548,7 @@ msgstr "Veuillez entrer les paramètres de votre compte Google Reader."
 #~ "Jumps to the next unread item. If necessary selects the next feed with "
 #~ "unread items."
 #~ msgstr ""
-#~ "Va au prochain élément non lu. Si nécessaire, sélectionne le prochain "
+#~ "Aller au prochain élément non lu. Si nécessaire, sélectionne le prochain "
 #~ "flux ayant des éléments non lus."
 
 #~ msgid "Liferea Sync %s@%s"
