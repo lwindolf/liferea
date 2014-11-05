@@ -80,6 +80,7 @@ src/webkit/Makefile
 src/parsers/Makefile
 src/fl_sources/Makefile
 src/ui/Makefile
+src/tests/Makefile
 doc/Makefile
 doc/html/Makefile
 xslt/Makefile
