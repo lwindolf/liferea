@@ -44,21 +44,10 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         if state:
             if event.new_window_state & Gdk.WindowState.ICONIFIED:
                 if event.new_window_state & Gdk.WindowState.FOCUSED:
-                    if event.new_window_state & Gdk.WindowState.WITHDRAWN:
-                        self.maximizing = True
-                    elif self.maximizing:
-                        self.maximizing = False
-                        window.present()
-                    else:
-                        Gtk.Widget.hide(window)
+                    self.shell.toggle_visibility()
 
     def trayicon_activate (self, widget, data = None):
-        window = self.shell.get_window ()
-        state = Gtk.Widget.get_visible (window)
-        if True == state:
-            Gtk.Widget.hide (window)
-        else:
-            Gtk.Window.present (window)
+        self.shell.toggle_visibility()
 
     def trayicon_quit (self, widget, data = None):
         Liferea.shutdown ()
