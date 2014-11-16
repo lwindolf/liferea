@@ -36,7 +36,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.staticon.set_visible (True)
         self.maximizing = False
         window = self.shell.get_window ()
-        self.minimize_to_tray_handler_id = window.connect('window-state-event', self.window_state_event_cb)
+        #self.minimize_to_tray_handler_id = window.connect('window-state-event', self.window_state_event_cb)
 
     def window_state_event_cb(self, window, event):
         window = self.shell.get_window ()
@@ -55,10 +55,8 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     def trayicon_activate (self, widget, data = None):
         window = self.shell.get_window ()
         state = Gtk.Widget.get_visible (window)
-        if True == state:
-            Gtk.Widget.hide (window)
-        else:
-            Gtk.Window.present (window)
+	self.shell.toggle_visibility()
+    	return False
 
     def trayicon_quit (self, widget, data = None):
         Liferea.shutdown ()
