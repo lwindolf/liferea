@@ -6,7 +6,6 @@
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">New Subscription</property>
-    <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="default_width">400</property>
