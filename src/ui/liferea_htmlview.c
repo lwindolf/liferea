@@ -1,7 +1,7 @@
 /**
  * @file liferea_htmlview.c  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -316,6 +316,7 @@ void
 liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gchar *base)
 { 
 	const gchar	*baseURL = base;
+	const gchar	*errMsg = "ERROR: Invalid encoded UTF8 buffer passed to HTML widget! This shouldn't happen.";
 
 	if (!htmlview)
 		return;
@@ -333,7 +334,7 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 	
 	if (!g_utf8_validate (string, -1, NULL)) {
 		/* It is really a bug if we get invalid encoded UTF-8 here!!! */
-		g_error ("Invalid encoded UTF8 buffer passed to HTML widget!");
+		(RENDERER (htmlview)->write) (htmlview->priv->renderWidget, errMsg, strlen (errMsg), baseURL, "text/plain");
 	} else {
 		(RENDERER (htmlview)->write) (htmlview->priv->renderWidget, string, strlen (string), baseURL, "application/xhtml+xml");
 	}
