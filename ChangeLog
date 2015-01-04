@@ -2,6 +2,8 @@
 
 	Version 1.10.12
 
+	* Fixes Github #112: Wrapping issue in folder display
+	  (reported by Jeff Fortin)
 	* Fixes Github #86: Support HTTP content negotiation
 	  (suggested by DanMan)
 	* Fixes Github #98:  Stop calling Atom person constructs w/ URI invalid

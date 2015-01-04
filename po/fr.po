@@ -99,7 +99,7 @@ msgstr "titres non lus"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
-msgstr "Dossier :"
+msgstr "Dossier:"
 
 #: ../xslt/item.xml.in.h:1 ../glade/liferea.ui.h:29
 msgid "Source"
