@@ -29,7 +29,7 @@
 
     <outline text="Nederlandse feeds">
       <outline text="Nieuws">
-        <outline text="nu.nl | Het laatste nieuws lees je het eerst op NU.nl" htmlUrl="http://www.nu.nl/" xmlUrl="http://www.nu.nl/deeplink_rss2/index.jsp?r=Algemeen" />
+        <outline text="nu.nl | Het laatste nieuws lees je het eerst op NU.nl" htmlUrl="http://www.nu.nl/" xmlUrl="http://www.nu.nl/rss" />
         <outline text="Tweakers.net" htmlUrl="http://tweakers.net/" xmlUrl="http://tweakers.net/feeds/mixed.xml" />
       </outline>
       <outline text="Blogs">
