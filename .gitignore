@@ -34,6 +34,8 @@ src/liferea
 src/liferea-add-feed
 src/Liferea-3.0.gir
 src/Liferea-3.0.typelib
+src/tests/html_auto
+src/tests/parse_date
 xslt/*.xml
 org.gnome.liferea.gschema.valid
 stamp-h1
