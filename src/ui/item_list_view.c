@@ -448,7 +448,11 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	if (ilv->priv->dateHidden) {
 		/* Append date to headline on hidden date column */
 		gchar *tmp = title;
-		title = g_strdup_printf ("%s\n<span size='smaller'>%s</span>", title, time_str);
+		title = g_strdup_printf ("%s%s%s <span size='smaller'>--- (%s)</span>",
+		                         (FALSE == item->readStatus)?"<span weight='bold'>":"",
+		                         title,
+		                         (FALSE == item->readStatus)?"</span>":"",
+		                         time_str);
 		g_free (tmp);
 	}
 
@@ -465,7 +469,6 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 		            IS_LABEL, title,
 			    IS_TIME_STR, time_str,
 			    IS_STATEICON, state_icon,
-			    ITEMSTORE_UNREAD, item->readStatus ? PANGO_WEIGHT_NORMAL : PANGO_WEIGHT_BOLD,
 			    ITEMSTORE_ALIGN, item_list_title_alignment (title),
 			    -1);
 
@@ -692,6 +695,10 @@ item_list_view_create (gboolean wide)
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
 
 	ilv->priv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
+	if (wide) {
+		gtk_tree_view_set_fixed_height_mode (ilv->priv->treeview, FALSE);
+		gtk_tree_view_set_grid_lines (ilv->priv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
+	}
 	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), GTK_WIDGET (ilv->priv->treeview));
 	gtk_widget_show (GTK_WIDGET (ilv->priv->treeview));
 	gtk_widget_set_name (GTK_WIDGET (ilv->priv->treeview), "itemlist");
@@ -712,7 +719,6 @@ item_list_view_create (gboolean wide)
 	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer, 
 		                                           "text", IS_TIME_STR,
-							   "weight", ITEMSTORE_UNREAD,
 							   NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
@@ -730,13 +736,17 @@ item_list_view_create (gboolean wide)
 	renderer = gtk_cell_renderer_text_new ();
 	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
 	                                                   "markup", IS_LABEL,
-							   "weight", ITEMSTORE_UNREAD,
 							   "xalign", ITEMSTORE_ALIGN,
 							   NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
 	gtk_tree_view_column_set_sort_column_id (headline_column, IS_LABEL);
 	g_object_set (headline_column, "resizable", TRUE, NULL);
-	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+	if (wide) {
+		g_object_set (renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
+		g_object_set (renderer, "wrap-width", 300, NULL);
+	} else {
+		g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+	}
 
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
