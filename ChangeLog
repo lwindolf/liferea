@@ -3,6 +3,8 @@ To be released
 	* Fixes Github #112: Wrapping issue in folder display
 	  (reported by Jeff Fortin)
 	* Fixes Github #114: Avoid termination on UTF-8 validation error
+	* Fixes Github #132: Broken link in documentation
+	  (reported by kallus)
 
 
 2014-10-14   Lars Windolf <lars.windolf@gmx.de>
