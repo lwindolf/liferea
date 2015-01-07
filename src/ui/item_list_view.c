@@ -1,7 +1,7 @@
 /**
  * @file item_list_view.c  presenting items in a GtkTreeView
  *  
- * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -666,7 +666,7 @@ item_list_view_init (ItemListView *ilv)
 }
 
 ItemListView *
-item_list_view_create (GtkWidget *window) 
+item_list_view_create (gboolean wide) 
 {
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
@@ -685,8 +685,6 @@ item_list_view_create (GtkWidget *window)
 	gtk_widget_show (GTK_WIDGET (ilv->priv->treeview));
 	gtk_widget_set_name (GTK_WIDGET (ilv->priv->treeview), "itemlist");
 	gtk_tree_view_set_rules_hint (ilv->priv->treeview, TRUE);
-	
-	g_object_set_data (G_OBJECT (window), "itemlist", ilv->priv->treeview);
 
 	item_list_view_set_tree_store (ilv, item_list_view_create_tree_store ());
 
