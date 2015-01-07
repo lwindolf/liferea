@@ -66,7 +66,7 @@ GType item_list_view_get_type (void);
  *
  * Create a new ItemListView instance.
  *
- * @wide:	TRUE if ItemListView should be optimized for wide view
+ * @wide:	TRUE if ItemListView should be optimized for wide view(itemview->priv->currentLayoutMode == NODE_VIEW_MODE_WIDE)
  *
  * @returns: (transfer none):	the ItemListView instance
  */
