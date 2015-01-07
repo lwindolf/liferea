@@ -1,5 +1,7 @@
 To be released
 
+	* Fixes Github #132: Broken documentation link
+	  (reported by kallus)
 	* Fixes Github #121: Wrapping issue in folder display
 	  (reported by Jeff Forting)
 	* Fixes Github #114: Avoid termination on UTF-8 validation error
