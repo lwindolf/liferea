@@ -130,8 +130,9 @@ struct ItemListViewPrivate {
 	GtkTreeStore	*batch_itemstore;	/**< GtkTreeStore prepared unattached and to be set on update() */
 
 	GtkTreeViewColumn	*enclosureColumn;
+	GtkTreeViewColumn	*faviconColumn;
 
-	gboolean	dateHidden;		/**< TRUE if date has to be rendered into headline column (because date column is invisible) */
+	gboolean	wideView;		/**< TRUE if date has to be rendered into headline column (because date column is invisible) */
 };
 
 static GObjectClass *parent_class = NULL;
@@ -436,6 +437,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	GtkTreeIter	iter;
 	gchar		*title, *time_str;
 	const GdkPixbuf	*state_icon;
+	const gchar	*important = " <span background='red' color='black'> important </span> ";
 	
 	if (!item_list_view_id_to_iter (ilv, item->id, &iter))
 		return;
@@ -445,13 +447,14 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	title = item->title && strlen (item->title) ? item->title : _("*** No title ***");
 	title = g_strstrip (g_markup_escape_text (title, -1));
 
-	if (ilv->priv->dateHidden) {
+	if (ilv->priv->wideView) {
 		/* Append date to headline on hidden date column */
 		gchar *tmp = title;
-		title = g_strdup_printf ("%s%s%s <span size='smaller'>--- (%s)</span>",
-		                         (FALSE == item->readStatus)?"<span weight='bold'>":"",
+		title = g_strdup_printf ("%s<span size='larger'>%s</span>%s %s<span size='smaller'>--- (%s)</span>",
+		                         !item->readStatus?"<span weight='bold'>":"",
 		                         title,
 		                         (FALSE == item->readStatus)?"</span>":"",
+		                         item->flagStatus?important:"",
 		                         time_str);
 		g_free (tmp);
 	}
@@ -691,12 +694,16 @@ item_list_view_create (gboolean wide)
 		
 	ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (ilscrolledwindow);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	if (wide)
+		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	else
+		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
 
 	ilv->priv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
 	if (wide) {
 		gtk_tree_view_set_fixed_height_mode (ilv->priv->treeview, FALSE);
+		gtk_tree_view_set_headers_visible (ilv->priv->treeview, FALSE);
 		gtk_tree_view_set_grid_lines (ilv->priv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
 	}
 	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), GTK_WIDGET (ilv->priv->treeview));
@@ -710,6 +717,8 @@ item_list_view_create (gboolean wide)
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_STATEICON, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
+	if (wide)
+		gtk_tree_view_column_set_visible (column, FALSE);
 	
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_ENCICON, NULL);
@@ -725,13 +734,14 @@ item_list_view_create (gboolean wide)
 	g_object_set (column, "resizable", TRUE, NULL);
 	if (wide) {
 		gtk_tree_view_column_set_visible (column, FALSE);
-		ilv->priv->dateHidden = TRUE;
+		ilv->priv->wideView = TRUE;
 	}
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_FAVICON, NULL);
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
+	ilv->priv->faviconColumn = column;
 	
 	renderer = gtk_cell_renderer_text_new ();
 	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
@@ -794,7 +804,7 @@ item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstor
 		                       IS_TIME, (guint64)item->time,
 		                       IS_NR, item->id,
 				       IS_PARENT, node,
-		                       IS_FAVICON, node->icon,
+		                       IS_FAVICON, ilv->priv->wideView?node_get_large_icon (node):node_get_icon (node),
 		                       IS_ENCICON, item->hasEnclosure?icon_get (ICON_ENCLOSURE):NULL,
 				       IS_ENCLOSURE, item->hasEnclosure,
 				       IS_SOURCE, node,
@@ -822,25 +832,25 @@ item_list_view_add_item (ItemListView *ilv, itemPtr item)
 void
 item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 {
-	gtk_tree_view_column_set_visible (ilv->priv->enclosureColumn, enabled);
+	gtk_tree_view_column_set_visible (ilv->priv->faviconColumn, enabled);
 }
 
 void
 on_popup_launch_item_selected (void) 
 {
-    launch_item_selected (INTERNAL);
+	launch_item_selected (INTERNAL);
 }
 
 void
 on_popup_launch_item_in_tab_selected (void) 
 {
-    launch_item_selected (TAB);
+	launch_item_selected (TAB);
 }
 
 void
 on_popup_launch_item_external_selected (void) 
 {
-    launch_item_selected (EXTERNAL);
+	launch_item_selected (EXTERNAL);
 }
 
 /* menu callbacks */

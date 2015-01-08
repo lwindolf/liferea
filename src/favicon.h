@@ -2,6 +2,7 @@
  * @file favicon.h Liferea favicon handling
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
+ * Copyright (C) 2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,10 +32,11 @@
  * Tries to load a given favicon from cache.
  *
  * @param id		the favicon id
+ * @param size		width / height in pixel
  *
  * @returns a pixmap (or NULL)
  */
-GdkPixbuf * favicon_load_from_cache(const gchar *id);
+GdkPixbuf * favicon_load_from_cache (const gchar *id, guint size);
 
 /**
  * Removes a given favicon from the favicon cache.

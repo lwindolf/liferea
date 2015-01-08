@@ -91,7 +91,6 @@ node_new (nodeTypePtr type)
 	node->sortColumn = NODE_VIEW_SORT_BY_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = TRUE;
-	node_set_icon (node, NULL);	/* initialize favicon file name */
 
 	id = node_new_id ();
 	node_set_id (node, id);
@@ -401,14 +400,20 @@ node_get_title (nodePtr node)
 }
 
 void
-node_set_icon (nodePtr node, gpointer icon)
+node_load_icon (nodePtr node)
 {
+	/* Load pixbuf for all widget based rendering */
 	if (node->icon) 
 		g_object_unref (node->icon);
-	node->icon = icon;
+	if (node->largeIcon)
+		g_object_unref (node->largeIcon);
+
+	node->icon = favicon_load_from_cache (node->id, 16);
+	node->largeIcon = favicon_load_from_cache (node->id, 32);
 	
+	/* Create filename for HTML rendering */
 	g_free (node->iconFile);
-	
+
 	if (node->icon)
 		node->iconFile = common_create_cache_filename ("favicons", node->id, "png");
 	else
@@ -423,6 +428,12 @@ node_get_icon (nodePtr node)
 		return (gpointer) NODE_TYPE(node)->icon;
 
 	return node->icon;
+}
+
+gpointer
+node_get_large_icon (nodePtr node)
+{
+	return node->largeIcon;
 }
 
 const gchar *
