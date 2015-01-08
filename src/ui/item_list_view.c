@@ -754,8 +754,10 @@ item_list_view_create (gboolean wide)
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "popup_menu", G_CALLBACK (on_item_list_view_popup_menu), ilv);
 
-	gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->priv->treeview), TRUE);
-	g_signal_connect (G_OBJECT (ilv->priv->treeview), "query-tooltip", G_CALLBACK (on_item_list_view_query_tooltip), headline_column);
+	if (!wide) {
+		gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->priv->treeview), TRUE);
+		g_signal_connect (G_OBJECT (ilv->priv->treeview), "query-tooltip", G_CALLBACK (on_item_list_view_query_tooltip), headline_column);
+	}
 		  
 	return ilv;
 }
