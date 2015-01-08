@@ -1,7 +1,7 @@
 /**
  * @file item_list_view.c  presenting items in a GtkTreeView
  *  
- * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -128,6 +128,10 @@ struct ItemListViewPrivate {
 
 	gboolean	batch_mode;		/**< TRUE if we are in batch adding mode */
 	GtkTreeStore	*batch_itemstore;	/**< GtkTreeStore prepared unattached and to be set on update() */
+
+	GtkTreeViewColumn	*enclosureColumn;
+
+	gboolean	dateHidden;		/**< TRUE if date has to be rendered into headline column (because date column is invisible) */
 };
 
 static GObjectClass *parent_class = NULL;
@@ -439,7 +443,18 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	time_str = (0 != item->time) ? date_format ((time_t)item->time, NULL) : g_strdup ("");
 
 	title = item->title && strlen (item->title) ? item->title : _("*** No title ***");
-	title = g_strstrip (g_strdup (title));
+	title = g_strstrip (g_markup_escape_text (title, -1));
+
+	if (ilv->priv->dateHidden) {
+		/* Append date to headline on hidden date column */
+		gchar *tmp = title;
+		title = g_strdup_printf ("%s%s%s <span size='smaller'>--- (%s)</span>",
+		                         (FALSE == item->readStatus)?"<span weight='bold'>":"",
+		                         title,
+		                         (FALSE == item->readStatus)?"</span>":"",
+		                         time_str);
+		g_free (tmp);
+	}
 
 	state_icon = item->flagStatus ? icon_get (ICON_FLAG) :
 	             !item->readStatus ? icon_get (ICON_UNREAD) :
@@ -454,7 +469,6 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 		            IS_LABEL, title,
 			    IS_TIME_STR, time_str,
 			    IS_STATEICON, state_icon,
-			    ITEMSTORE_UNREAD, item->readStatus ? PANGO_WEIGHT_NORMAL : PANGO_WEIGHT_BOLD,
 			    ITEMSTORE_ALIGN, item_list_title_alignment (title),
 			    -1);
 
@@ -666,7 +680,7 @@ item_list_view_init (ItemListView *ilv)
 }
 
 ItemListView *
-item_list_view_create (GtkWidget *window) 
+item_list_view_create (gboolean wide) 
 {
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
@@ -681,33 +695,39 @@ item_list_view_create (GtkWidget *window)
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
 
 	ilv->priv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
+	if (wide) {
+		gtk_tree_view_set_fixed_height_mode (ilv->priv->treeview, FALSE);
+		gtk_tree_view_set_grid_lines (ilv->priv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
+	}
 	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), GTK_WIDGET (ilv->priv->treeview));
 	gtk_widget_show (GTK_WIDGET (ilv->priv->treeview));
 	gtk_widget_set_name (GTK_WIDGET (ilv->priv->treeview), "itemlist");
 	gtk_tree_view_set_rules_hint (ilv->priv->treeview, TRUE);
-	
-	g_object_set_data (G_OBJECT (window), "itemlist", ilv->priv->treeview);
 
 	item_list_view_set_tree_store (ilv, item_list_view_create_tree_store ());
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_STATEICON, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
-	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);	
+	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
 	
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_ENCICON, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
+	ilv->priv->enclosureColumn = column;
 
 	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer, 
-	                                                   "text", IS_TIME_STR,
-							   "weight", ITEMSTORE_UNREAD,
+		                                           "text", IS_TIME_STR,
 							   NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
 	g_object_set (column, "resizable", TRUE, NULL);
-	
+	if (wide) {
+		gtk_tree_view_column_set_visible (column, FALSE);
+		ilv->priv->dateHidden = TRUE;
+	}
+
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_FAVICON, NULL);
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
@@ -715,14 +735,18 @@ item_list_view_create (GtkWidget *window)
 	
 	renderer = gtk_cell_renderer_text_new ();
 	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
-	                                                   "text", IS_LABEL,
-							   "weight", ITEMSTORE_UNREAD,
+	                                                   "markup", IS_LABEL,
 							   "xalign", ITEMSTORE_ALIGN,
 							   NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
 	gtk_tree_view_column_set_sort_column_id (headline_column, IS_LABEL);
 	g_object_set (headline_column, "resizable", TRUE, NULL);
-	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+	if (wide) {
+		g_object_set (renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
+		g_object_set (renderer, "wrap-width", 300, NULL);
+	} else {
+		g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+	}
 
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
@@ -796,10 +820,7 @@ item_list_view_add_item (ItemListView *ilv, itemPtr item)
 void
 item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 {
-	/* we depend on the fact that the second column is the favicon column!!! 
-	   if we are in search mode or have a folder or vfolder we show the favicon 
-	   column to give a hint where the item comes from ... */
-	gtk_tree_view_column_set_visible (gtk_tree_view_get_column (ilv->priv->treeview, 3), enabled);
+	gtk_tree_view_column_set_visible (ilv->priv->enclosureColumn, enabled);
 }
 
 void

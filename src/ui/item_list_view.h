@@ -1,7 +1,7 @@
 /**
  * @file item_list_view.h  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This library is free software; you can redistribute it and/or
@@ -66,10 +66,11 @@ GType item_list_view_get_type (void);
  *
  * Create a new ItemListView instance.
  *
- * @param window	parent window widget
+ * @wide:	TRUE if ItemListView should be optimized for wide view(itemview->priv->currentLayoutMode == NODE_VIEW_MODE_WIDE)
+ *
  * @returns: (transfer none):	the ItemListView instance
  */
-ItemListView * item_list_view_create (GtkWidget *window);
+ItemListView * item_list_view_create (gboolean wide);
 
 /**
  * item_list_view_get_widget:

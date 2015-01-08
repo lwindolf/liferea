@@ -650,7 +650,7 @@ feedlist_node_was_updated (nodePtr node)
 	node_update_counters (node);
 	feedlist_schedule_save ();
 
-	g_signal_emit_by_name (feedlist, "node-updated", node->id);
+	g_signal_emit_by_name (feedlist, "node-updated", node->title);
 }
 
 /* This method is only to be used when exiting the program! */

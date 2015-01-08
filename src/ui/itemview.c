@@ -1,7 +1,7 @@
 /*
  * @file itemview.c  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -403,6 +403,7 @@ itemview_set_layout (nodeViewType newMode)
 		GtkWidget *renderWidget;
 		
 		debug0 (DEBUG_GUI, "Creating HTML widget");
+		htmlview_init ();
 		ivp->htmlview = liferea_htmlview_new (FALSE);
 		liferea_htmlview_set_headline_view (ivp->htmlview);
 		g_signal_connect (ivp->htmlview, "statusbar-changed", 
@@ -442,10 +443,20 @@ itemview_set_layout (nodeViewType newMode)
 	}
 
 	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
+	g_assert (htmlWidgetName);
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
 	gtk_widget_reparent (liferea_htmlview_get_widget (ivp->htmlview), liferea_shell_lookup (htmlWidgetName));
-	if (ilWidgetName)
-		gtk_widget_reparent (GTK_WIDGET (ivp->itemListViewContainer), liferea_shell_lookup (ilWidgetName));
+
+	/* Recreate the item list view */
+	if (ivp->itemListViewContainer)
+		gtk_widget_destroy (ivp->itemListViewContainer);
+
+	if (ilWidgetName) {
+		ivp->itemListView = item_list_view_create (newMode == NODE_VIEW_MODE_WIDE);
+		ivp->itemListViewContainer = gtk_widget_get_parent (GTK_WIDGET (item_list_view_get_widget (ivp->itemListView)));
+		g_assert (ivp->itemListViewContainer);
+		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (ilWidgetName)), GTK_WIDGET (ivp->itemListViewContainer));
+	}
 	
 	/* Destroy previous enclosure list. */
 	if (ivp->enclosureView) {
@@ -468,27 +479,18 @@ itemview_create (GtkWidget *window)
 {
 	gint zoom;
 
-	/* 1. Create widgets, load preferences */
-	
 	g_object_new (ITEMVIEW_TYPE, NULL);
-	
-	itemview->priv->currentLayoutMode = NODE_VIEW_MODE_DEFAULT;
-	itemview->priv->itemListView = item_list_view_create (window);
-	itemview->priv->itemListViewContainer = gtk_widget_get_parent (GTK_WIDGET (item_list_view_get_widget (itemview->priv->itemListView)));
+
+	/* 1. Load preferences */
 	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
-	
 	if (zoom == 0) {
 		zoom = 100;
 		conf_set_int_value (LAST_ZOOMLEVEL, zoom);
 	}
 	itemview->priv->zoom = zoom;
-	
-	/* initially we pack the item list in the normal view pane,
-	   which is later changed in itemview_set_layout() */
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewItems")), itemview->priv->itemListViewContainer);
 
-	/* 2. Prepare HTML rendering */
-	htmlview_init ();
+	/* 2. Set initial layout (because no node selected yet) */
+	itemview_set_layout (NODE_VIEW_MODE_WIDE);
 	
 	return itemview;
 }

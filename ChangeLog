@@ -1,8 +1,14 @@
-To be released
+2015-01-06   Lars Windolf <lars.windolf@gmx.de>
 
+	Version 1.11.2
+	
+	* Fixes Github #132: Broken documentation link
+	  (reported by kallus)
 	* Fixes Github #121: Wrapping issue in folder display
 	  (reported by Jeff Forting)
 	* Fixes Github #114: Avoid termination on UTF-8 validation error
+	* Fixes Github #90: Libnotify plugin not working
+	  (reported by asl97)
 	* Fixes Github #86: Support HTTP content negotiation
 	  (suggested by DanMan)
 	* Black-list some categories used by Google Reader clones
