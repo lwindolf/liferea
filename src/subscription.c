@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  * 
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -133,7 +133,7 @@ subscription_favicon_downloaded (gpointer user_data)
 {
 	nodePtr	node = (nodePtr)user_data;
 
-	node_set_icon (node, favicon_load_from_cache (node->id));
+	node_load_icon (node);
 	feed_list_node_update (node->id);
 }
 

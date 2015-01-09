@@ -1,7 +1,7 @@
 /**
  * @file node.h  hierarchic feed list node interface
  * 
- * Copyright (C) 2003-2010 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -57,7 +57,8 @@ typedef struct node {
 	guint			newCount;	/**< number of recently downloaded items */
 
 	gchar			*title;		/**< the label of the node in the feed list */
-	gpointer		icon;		/**< pointer to pixmap, if there is a favicon */
+	gpointer		icon;		/**< 16x16 favicon GdkPixBuf (or NULL) */
+	gpointer		largeIcon;	/**< 32x32 favicon GdkPixBuf (or NULL) */
 	gboolean		available;	/**< availability of this node (usually the last downloading state) */
 	gboolean		expanded;	/**< expansion state (for nodes with childs) */
 
@@ -229,7 +230,15 @@ void node_set_icon(nodePtr node, gpointer icon);
  *
  * @returns a pixmap or NULL
  */
-gpointer node_get_icon(nodePtr node);
+gpointer node_get_icon (nodePtr node);
+
+/**
+ * Returns a large icon for the node. Does not return any default
+ * icons like node_get_icon() does.
+ *
+ * @returns a pixmap or NULL
+ */
+gpointer node_get_large_icon (nodePtr node);
 
 /**
  * Returns the name of the favicon cache file for the given node.

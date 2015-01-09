@@ -73,6 +73,7 @@ struct LifereaShellPrivate {
 	guint		statusbarLockTimer;	/**< timer id for status bar lock reset timer */
 
 	GtkWidget	*statusbar_feedsinfo;
+	GtkWidget	*statusbar_feedsinfo_evbox;
 	GtkActionGroup	*generalActions;
 	GtkActionGroup	*addActions;		/**< all types of "New" options */
 	GtkActionGroup	*feedActions;		/**< update and mark read */
@@ -1281,9 +1282,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	shell->priv->statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
 	shell->priv->statusbarLocked = FALSE;
 	shell->priv->statusbarLockTimer = 0;
+	shell->priv->statusbar_feedsinfo_evbox = gtk_event_box_new ();
 	shell->priv->statusbar_feedsinfo = gtk_label_new("");
-	gtk_widget_show(shell->priv->statusbar_feedsinfo);
-	gtk_box_pack_start (GTK_BOX (shell->priv->statusbar), shell->priv->statusbar_feedsinfo, FALSE, FALSE, 5);
+	gtk_container_add (GTK_CONTAINER (shell->priv->statusbar_feedsinfo_evbox), shell->priv->statusbar_feedsinfo);
+	gtk_widget_show_all (shell->priv->statusbar_feedsinfo_evbox);
+	gtk_box_pack_start (GTK_BOX (shell->priv->statusbar), shell->priv->statusbar_feedsinfo_evbox, FALSE, FALSE, 5);
+	g_signal_connect (G_OBJECT (shell->priv->statusbar_feedsinfo_evbox), "button_release_event", G_CALLBACK (on_next_unread_item_activate), NULL);
 
 	/* 4.) setup tabs */
 	
