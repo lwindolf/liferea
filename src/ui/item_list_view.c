@@ -450,7 +450,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	if (ilv->priv->wideView) {
 		/* Append date to headline on hidden date column */
 		gchar *tmp = title;
-		title = g_strdup_printf ("%s<span size='larger'>%s</span>%s %s<span size='smaller'>--- (%s)</span>",
+		title = g_strdup_printf ("%s%s%s %s<span size='smaller' weight='light'>--- (%s)</span>",
 		                         !item->readStatus?"<span weight='bold'>":"",
 		                         title,
 		                         (FALSE == item->readStatus)?"</span>":"",
