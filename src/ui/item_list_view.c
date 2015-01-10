@@ -703,7 +703,6 @@ item_list_view_create (gboolean wide)
 	ilv->priv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
 	if (wide) {
 		gtk_tree_view_set_fixed_height_mode (ilv->priv->treeview, FALSE);
-		gtk_tree_view_set_headers_visible (ilv->priv->treeview, FALSE);
 		gtk_tree_view_set_grid_lines (ilv->priv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
 	}
 	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), GTK_WIDGET (ilv->priv->treeview));
