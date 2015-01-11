@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes Github #134: Broken default news feed.
+	  (reported by pvdl)
+
+
 2015-01-07   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.13
