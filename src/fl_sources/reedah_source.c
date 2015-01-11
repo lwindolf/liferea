@@ -1,7 +1,7 @@
 /**
  * @file reedah_source.c  Reedah source support
  * 
- * Copyright (C) 2007-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -304,6 +304,8 @@ reedah_source_convert_to_local (nodePtr node)
 extern struct subscriptionType reedahSourceFeedSubscriptionType;
 extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 
+#define BASE_URL "http://www.reedah.com/reader/api/0/"
+
 static struct nodeSourceType nst = {
 	.id                  = "fl_reedah",
 	.name                = N_("Reedah"),
@@ -314,17 +316,19 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
 	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
-	.api.subscription_list		= "http://www.reedah.com/reader/api/0/subscription/list",
-	.api.unread_count		= "http://www.reedah.com/reader/api/0/unread-count?all=true&client=liferea",
-	.api.token			= "http://www.reedah.com/reader/api/0/token",
-	.api.add_subscription		= "http://www.reedah.com/reader/api/0/subscription/edit?client=liferea",
+	.api.subscription_list		= BASE_URL "subscription/list",
+	.api.unread_count		= BASE_URL "unread-count?all=true&client=liferea",
+	.api.token			= BASE_URL "token",
+	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
 	.api.add_subscription_post	= "s=feed%%2F%s&i=null&ac=subscribe&T=%s",
-	.api.remove_subscription	= "http://www.reedah.com/reader/api/0/subscription/edit?client=liferea",
+	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
 	.api.remove_subscription_post	= "s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",
-	.api.edit_tag			= "http://www.reedah.com/reader/api/0/edit-tag?client=liferea",
+	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
 	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_ar_tag_post	= "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true",
+	.api.edit_add_label		= BASE_URL "edit?client=liferea",
+	.api.edit_add_label_post	= "s=%s%%2F%s&a=%s&ac=edit&T=%s&async=true",
 	.feedSubscriptionType = &reedahSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &reedahSourceOpmlSubscriptionType,
 	.source_type_init    = reedah_source_init,

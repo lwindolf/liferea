@@ -2,6 +2,7 @@
  * @file google_reader_api_edit.h  Google Reader API syncing support
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
+ * Copyright (C) 2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,15 +57,14 @@ void google_reader_api_edit_mark_read (nodeSourcePtr gsource, const gchar* guid,
  */
 void google_reader_api_edit_mark_starred (nodeSourcePtr gsource, const gchar *guid, const gchar *feedUrl, gboolean newStatus);
 
-
 /**
  * Add a subscription to the google source.
  *
  * @param gsource The nodeSource structure
  * @param feedUrl the feed to add
+ * @param label   label for new feed (or NULL)
  */
-void google_reader_api_edit_add_subscription (nodeSourcePtr gsource, const gchar* feedUrl);
-
+void google_reader_api_edit_add_subscription (nodeSourcePtr gsource, const gchar* feedUrl, const gchar* label);
 
 /**
  * Remove a subscription from the google source.
@@ -73,6 +73,14 @@ void google_reader_api_edit_add_subscription (nodeSourcePtr gsource, const gchar
  * @param feedUrl the feed to remove
  */
 void google_reader_api_edit_remove_subscription (nodeSourcePtr gsource, const gchar* feedUrl);
+
+/**
+ * Add a category for a subscription
+ * 
+ * @param gsource The nodeSource structure
+ * @param feedUrl the feed to set the category
+ */
+void google_reader_api_edit_add_label (nodeSourcePtr gsource, const gchar* feedUrl, const gchar *label);
 
 /**
  * See if an item with give guid is being modified 
