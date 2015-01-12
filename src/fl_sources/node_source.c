@@ -78,6 +78,8 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 static gboolean
 node_source_type_register (nodeSourceTypePtr type)
 {
+	debug1 (DEBUG_PARSING, "Registering node source type %s", type->name);
+
 	/* allow the plugin to initialize */
 	type->source_type_init ();
 
@@ -89,6 +91,8 @@ node_source_type_register (nodeSourceTypePtr type)
 		g_assert (type->api.add_subscription_post);
 		g_assert (type->api.remove_subscription);
 		g_assert (type->api.remove_subscription_post);
+		g_assert (type->api.edit_add_label);
+		g_assert (type->api.edit_add_label_post);
 		g_assert (type->api.edit_tag);
 		g_assert (type->api.edit_tag_add_post);
 		g_assert (type->api.edit_tag_remove_post);

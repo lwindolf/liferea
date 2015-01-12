@@ -1,3 +1,12 @@
+To be released
+
+	* Fixes Github #134: Broken default news feed.
+	  (reported by pvdl)
+	* Fixes Github #133: Subscribe into TheOldReader categories
+	* Improves Google Reader API error handling
+	* Now using HTTPS only when accessing TheOldReader
+
+
 2015-01-06   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.11.2

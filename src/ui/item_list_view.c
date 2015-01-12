@@ -71,7 +71,7 @@ enum is_columns {
 	IS_ENCLOSURE,		/**< Flag whether enclosure is attached or not */
 	IS_SOURCE,		/**< Source node pointer */
 	IS_STATE,		/**< Original item state (unread, flagged...) for sorting */
-	ITEMSTORE_UNREAD,	/**< Flag whether "unread" icon is to be shown */
+	ITEMSTORE_WEIGHT,		/**< Flag whether weight is to be bold and "unread" icon is to be shown */
 	ITEMSTORE_ALIGN,        /**< How to align title (RTL support) */
 	ITEMSTORE_LEN		/**< Number of columns in the itemstore */
 };
@@ -131,6 +131,7 @@ struct ItemListViewPrivate {
 
 	GtkTreeViewColumn	*enclosureColumn;
 	GtkTreeViewColumn	*faviconColumn;
+	GtkTreeViewColumn	*stateColumn;
 
 	gboolean	wideView;		/**< TRUE if date has to be rendered into headline column (because date column is invisible) */
 };
@@ -272,7 +273,7 @@ item_list_view_create_tree_store (void)
 	                    G_TYPE_BOOLEAN,	/* IS_ENCLOSURE */
 	                    G_TYPE_POINTER,	/* IS_SOURCE */
 	                    G_TYPE_UINT,	/* IS_STATE */
-			    G_TYPE_INT,		/* ITEMSTORE_UNREAD */
+			    G_TYPE_INT,		/* ITEMSTORE_WEIGHT */
 			    G_TYPE_FLOAT        /* ITEMSTORE_ALIGN */
 	);
 }
@@ -437,7 +438,6 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	GtkTreeIter	iter;
 	gchar		*title, *time_str;
 	const GdkPixbuf	*state_icon;
-	const gchar	*important = " <span background='red' color='black'> important </span> ";
 	
 	if (!item_list_view_id_to_iter (ilv, item->id, &iter))
 		return;
@@ -449,8 +449,10 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 
 	if (ilv->priv->wideView) {
 		/* Append date to headline on hidden date column */
-		gchar *tmp = title;
-		title = g_strdup_printf ("%s<span size='larger'>%s</span>%s %s<span size='smaller'>--- (%s)</span>",
+		const gchar	*important = " <span background='red' color='black'> important </span> ";
+		gchar		*tmp = title;
+
+		title = g_strdup_printf ("%s%s%s %s<span size='smaller' weight='light'>--- (%s)</span>",
 		                         !item->readStatus?"<span weight='bold'>":"",
 		                         title,
 		                         (FALSE == item->readStatus)?"</span>":"",
@@ -467,12 +469,14 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 		itemstore = ilv->priv->batch_itemstore;
 	else
 		itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (ilv->priv->treeview));
+
 	gtk_tree_store_set (itemstore,
 	                    &iter,
 		            IS_LABEL, title,
 			    IS_TIME_STR, time_str,
 			    IS_STATEICON, state_icon,
 			    ITEMSTORE_ALIGN, item_list_title_alignment (title),
+	                    ITEMSTORE_WEIGHT, item->readStatus ? PANGO_WEIGHT_NORMAL : PANGO_WEIGHT_BOLD,
 			    -1);
 
 	g_free (time_str);
@@ -567,7 +571,7 @@ on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean key
 
 			gchar *text;
 			gint weight;
-			gtk_tree_model_get (model, &iter, IS_LABEL, &text, ITEMSTORE_UNREAD, &weight, -1);
+			gtk_tree_model_get (model, &iter, IS_LABEL, &text, ITEMSTORE_WEIGHT, &weight, -1);
 
 			gint full_width = get_cell_renderer_width (widget, cell, text, weight);
 			gint column_width = gtk_tree_view_column_get_width (column);
@@ -590,7 +594,6 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
-	GtkTreeViewColumn	*column;
 	itemPtr			item = NULL;
 	gboolean		result = FALSE;
 	
@@ -613,14 +616,15 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 		GdkEventButton *eb = (GdkEventButton*)event; 
 		switch (eb->button) {
 			case 1:
-				column = gtk_tree_view_get_column (ilv->priv->treeview, 0);
-				if (column) {
-					/* Allow flag toggling when left clicking in the flagging column.
-					   We depend on the fact that the state column is the first!!! */
-					if (event->x <= gtk_tree_view_column_get_width (column)) {
-						itemlist_toggle_flag (item);
-						result = TRUE;
-					}
+				/* Allow flag toggling when left clicking in the 
+				   state, favicon and enclosure column. We depend
+				   on the fact that those columns are all left 
+				   of the headline column !!! */
+				if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn) +
+				                 gtk_tree_view_column_get_width (ilv->priv->enclosureColumn) +
+				                 gtk_tree_view_column_get_width (ilv->priv->faviconColumn))) {
+					itemlist_toggle_flag (item);
+					result = TRUE;
 				}
 				break;
 			case 2:
@@ -703,7 +707,6 @@ item_list_view_create (gboolean wide)
 	ilv->priv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
 	if (wide) {
 		gtk_tree_view_set_fixed_height_mode (ilv->priv->treeview, FALSE);
-		gtk_tree_view_set_headers_visible (ilv->priv->treeview, FALSE);
 		gtk_tree_view_set_grid_lines (ilv->priv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
 	}
 	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), GTK_WIDGET (ilv->priv->treeview));
@@ -716,6 +719,7 @@ item_list_view_create (gboolean wide)
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_STATEICON, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
+	ilv->priv->stateColumn = column;
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
 	if (wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
@@ -728,6 +732,7 @@ item_list_view_create (gboolean wide)
 	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer, 
 		                                           "text", IS_TIME_STR,
+	                                                   "weight", ITEMSTORE_WEIGHT,
 							   NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
@@ -756,6 +761,7 @@ item_list_view_create (gboolean wide)
 		g_object_set (renderer, "wrap-width", 300, NULL);
 	} else {
 		g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+		gtk_tree_view_column_add_attribute (headline_column, renderer, "weight", ITEMSTORE_WEIGHT);
 	}
 
 	/* And connect signals */

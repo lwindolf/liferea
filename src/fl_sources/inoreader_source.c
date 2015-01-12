@@ -303,6 +303,8 @@ inoreader_source_convert_to_local (nodePtr node)
 extern struct subscriptionType inoreaderSourceFeedSubscriptionType;
 extern struct subscriptionType inoreaderSourceOpmlSubscriptionType;
 
+#define BASE_URL "http://www.inoreader.com/reader/api/0/"
+
 static struct nodeSourceType nst = {
 	.id                  = "fl_inoreader",
 	.name                = N_("InoReader"),
@@ -313,17 +315,19 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
 	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
-	.api.subscription_list		= "http://www.inoreader.com/reader/api/0/subscription/list",
-	.api.unread_count		= "http://www.inoreader.com/reader/api/0/unread-count?all=true&client=liferea",
-	.api.token			= "http://www.inoreader.com/reader/api/0/token",
-	.api.add_subscription		= "http://www.inoreader.com/reader/api/0/subscription/edit?client=liferea",
+	.api.subscription_list		= BASE_URL "subscription/list",
+	.api.unread_count		= BASE_URL "unread-count?all=true&client=liferea",
+	.api.token			= BASE_URL "token",
+	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
 	.api.add_subscription_post	= "s=feed%%2F%s&i=null&ac=subscribe&T=%s",
-	.api.remove_subscription	= "http://www.inoreader.com/reader/api/0/subscription/edit?client=liferea",
+	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
 	.api.remove_subscription_post	= "s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",
-	.api.edit_tag			= "http://www.inoreader.com/reader/api/0/edit-tag?client=liferea",
+	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
 	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_ar_tag_post	= "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true",
+	.api.edit_add_label		= BASE_URL "edit?client=liferea",
+	.api.edit_add_label_post	= "s=%s%%2F%s&a=%s&ac=edit&T=%s&async=true",
 	.feedSubscriptionType = &inoreaderSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &inoreaderSourceOpmlSubscriptionType,
 	.source_type_init    = inoreader_source_init,
