@@ -1,7 +1,7 @@
 /**
  * @file node_source.c  generic node source provider implementation
  * 
- * Copyright (C) 2005-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 #include "item_state.h"
 #include "node.h"
 #include "node_type.h"
+#include "plugins_engine.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
@@ -46,8 +47,10 @@
 #include "fl_sources/reedah_source.h"
 #include "fl_sources/theoldreader_source.h"
 #include "fl_sources/ttrss_source.h"
+#include "fl_sources/node_source_activatable.h"
 
-static GSList	*nodeSourceTypes = NULL;
+static GSList		*nodeSourceTypes = NULL;
+static PeasExtensionSet	*extensions = NULL;
 
 nodePtr
 node_source_root_from_node (nodePtr node)
@@ -75,7 +78,7 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 	return NULL;
 }
 
-static gboolean
+gboolean
 node_source_type_register (nodeSourceTypePtr type)
 {
 	debug1 (DEBUG_PARSING, "Registering node source type %s", type->name);
@@ -123,6 +126,9 @@ node_source_setup_root (void)
 	node_source_type_register (reedah_source_get_type ());
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());
+
+	extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
+		                             LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, NULL);
 
 	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
 	if (!type) 

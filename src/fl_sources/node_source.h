@@ -366,6 +366,15 @@ void node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState);
  */
 void node_source_convert_to_local (nodePtr node);
 
+/**
+ * Registers a new node source type. Needs to be called before feed list import!
+ * To be used only via NodeSourceTypeActivatable
+ *
+ * @param type		the type to register
+ */
+gboolean node_source_type_register (nodeSourceTypePtr type);
+
+
 /* implementation of the node type interface */
 
 #define IS_NODE_SOURCE(node) (node->type == node_source_get_node_type ())
