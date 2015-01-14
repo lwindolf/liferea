@@ -50,7 +50,7 @@
    A source type implementation can omit all callbacks marked as 
    optional. */
 
-enum {
+typedef enum {
 	NODE_SOURCE_CAPABILITY_IS_ROOT			= (1<<0),	/**< flag only for default feed list source */
 	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION		= (1<<1),	/**< feed list source is user created */
 	NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST	= (1<<2),	/**< the feed list tree of the source can be changed */
@@ -61,19 +61,19 @@ enum {
 	NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL		= (1<<7),	/**< node sources of this type can be converted to internal subscription lists */
 	NODE_SOURCE_CAPABILITY_GOOGLE_READER_API	= (1<<8),	/**< node sources of this type are Google Reader clones */
 	NODE_SOURCE_CAPABILITY_CAN_LOGIN		= (1<<9)	/**< node source needs login (means loginState member is to be used) */
-};
+} nodeSourceCapability;
 
 /** Node source state model */
-enum { 
+typedef enum { 
 	NODE_SOURCE_STATE_NONE = 0,		/**< no authentication tried so far */
 	NODE_SOURCE_STATE_IN_PROGRESS,		/**< authentication in progress */
 	NODE_SOURCE_STATE_ACTIVE,		/**< authentication succeeded */
 	NODE_SOURCE_STATE_NO_AUTH,		/**< authentication has failed */
 	NODE_SOURCE_STATE_MIGRATE,		/**< source will be migrated, do not do anything anymore! */
-};
+} nodeSourceState;
 
 /** Node source subscription update flags */
-enum { 
+typedef enum { 
 	/**
 	 * Update only the subscription list, and not each node underneath it.
 	 * Note: Uses higher 16 bits to avoid conflict.
@@ -83,7 +83,7 @@ enum {
 	 * Only login, do not do any updates. 
 	 */
 	NODE_SOURCE_UPDATE_ONLY_LOGIN = (1<<17)
-};
+} nodeSourceUpdate;
 
 /**
  * Number of auth failures after which we stop bothering the user while
