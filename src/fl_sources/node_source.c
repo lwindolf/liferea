@@ -129,6 +129,7 @@ node_source_setup_root (void)
 
 	extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
 		                             LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, NULL);
+	liferea_plugins_engine_set_default_signals (extensions, NULL);
 
 	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
 	if (!type) 
