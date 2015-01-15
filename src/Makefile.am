@@ -94,14 +94,17 @@ Liferea_3_0_gir_FILES = \
 	itemset.c itemset.h \
 	node.h node.c \
 	node_view.h \
+	subscription_type.h \
 	ui/icons.c ui/icons.h \
 	ui/itemview.c ui/itemview.h \
 	ui/item_list_view.c ui/item_list_view.h \
 	ui/liferea_shell.c ui/liferea_shell.h \
 	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h \
 	ui/media_player.c ui/media_player.h \
-	ui/media_player_activatable.c ui/media_player_activatable.h
-Liferea_3_0_gir_INCLUDES = Gtk-3.0 
+	ui/media_player_activatable.c ui/media_player_activatable.h \
+	fl_sources/node_source.c fl_sources/node_source.h \
+	fl_sources/node_source_activatable.c fl_sources/node_source_activatable.h
+Liferea_3_0_gir_INCLUDES = Gtk-3.0 libxml2-2.0
 
 girdir = $(datadir)/liferea/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)

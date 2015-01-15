@@ -818,24 +818,6 @@ on_menu_export (gpointer callback_data, guint callback_action, GtkWidget *widget
 	export_OPML_file ();
 }
 
-static void
-on_extension_added (PeasExtensionSet *extensions,
-                    PeasPluginInfo   *info,
-                    PeasExtension    *exten,
-                    LifereaShell     *shell)
-{
-	peas_extension_call (exten, "activate");
-}
-
-static void
-on_extension_removed (PeasExtensionSet *extensions,
-                      PeasPluginInfo   *info,
-                      PeasExtension    *exten,
-                      LifereaShell     *shell)
-{
-	peas_extension_call (exten, "deactivate");
-}
-
 /* methods to receive URLs which were dropped anywhere in the main window */
 static void
 liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time_received)
@@ -1353,10 +1335,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	shell->priv->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
 		                             LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
 
-	g_signal_connect (shell->priv->extensions, "extension-added", G_CALLBACK (on_extension_added), shell);
-	g_signal_connect (shell->priv->extensions, "extension-removed",	G_CALLBACK (on_extension_removed), shell);
-
-	peas_extension_set_call (shell->priv->extensions, "activate");
+	liferea_plugins_engine_set_default_signals (shell->priv->extensions, shell);
 
 	/* 14. Rebuild search folders if needed */
 	if (searchFolderRebuild)
