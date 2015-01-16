@@ -16,8 +16,9 @@ Liferea is a desktop feed reader/news aggregator that brings together all of the
 Installation from Package
 -------------------------
 
-Detailed instructions on how to install Liferea on the different distributions can 
-be found online on our homepage at http://lzone.de/liferea/install.htm
+We do not provide packages, but others do. Detailed instructions on how to 
+get Liferea packages installed on the different distributions can 
+be found at http://lzone.de/liferea/install.htm
 
 
 
@@ -56,7 +57,7 @@ a package named like the library and one with a suffix "-dev" or
 
 _Compiling from Tarball_
 
-Download a tarball from https://github.com/lwindolf/liferea/releases)
+Download a tarball from https://github.com/lwindolf/liferea/releases
 and extract and compile with
 
     tar jxvf liferea-1.11.0.tar.bz2 
