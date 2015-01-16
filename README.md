@@ -38,15 +38,7 @@ The compilation and runtime dependencies are:
 
 Mandatory:
 
-- gtk3
-- libxml2
-- libxslt
-- sqlite3
-- libwebkit3
-- libjson-glib
-- libgirepository1.0
-- libpeas
-- gsettings-desktop-schemas
+   gtk3 libxml2 libxslt sqlite3 libwebkit3 libjson-glib libgirepository1.0 libpeas gsettings-desktop-schemas
 
 Optional:
 
@@ -64,26 +56,18 @@ a package named like the library and one with a suffix "-dev" or
 
 _Compiling from Tarball_
 
-If you do not like version control systems you might want to compile
-Liferea from a release tarball. Those are supplied in the Github release
-tracker (https://github.com/lwindolf/liferea/releases). After you download a 
-release extract it like this:
+Download a tarball from https://github.com/lwindolf/liferea/releases)
+and extract and compile with
 
     tar jxvf liferea-1.11.0.tar.bz2 
- 
-After extracting run the standard autotools commands:
-
     ./configure
     make
     make install
-   
-After this Liferea will be installed in /usr/local and you should be
-able to start it by calling "/usr/local/bin/liferea".
 
 
 _Compiling from Git_
 
-To anonymously check out a source copy execute this:
+Check out the code:
 
     git clone https://github.com/lwindolf/liferea.git
 
