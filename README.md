@@ -7,7 +7,7 @@ git master status:
 Introduction
 ------------
 
-Liferea is a web feed reader/news aggregator that brings together all of the content from your favorite subscriptions into a simple interface that makes it easy to organize and browse feeds. Its GUI is similar to a desktop mail/newsclient, with an embedded graphical browser.
+Liferea is a desktop feed reader/news aggregator that brings together all of the content from your favorite subscriptions into a simple interface that makes it easy to organize and browse feeds. Its GUI is similar to a desktop mail/newsclient, with an embedded graphical browser.
 
 ![screenshot](http://lzone.de/liferea/screenshots/screenshot3.png)
 
@@ -16,8 +16,9 @@ Liferea is a web feed reader/news aggregator that brings together all of the con
 Installation from Package
 -------------------------
 
-Detailed instructions on how to install Liferea on the different distributions can 
-be found online on our homepage at http://lzone.de/liferea/install.htm
+We do not provide packages, but others do. Detailed instructions on how to 
+get Liferea packages installed on the different distributions can 
+be found at http://lzone.de/liferea/install.htm
 
 
 
@@ -38,15 +39,7 @@ The compilation and runtime dependencies are:
 
 Mandatory:
 
-- gtk3
-- libxml2
-- libxslt
-- sqlite3
-- libwebkit3
-- libjson-glib
-- libgirepository1.0
-- libpeas
-- gsettings-desktop-schemas
+   gtk3 libxml2 libxslt sqlite3 libwebkit3 libjson-glib libgirepository1.0 libpeas gsettings-desktop-schemas
 
 Optional:
 
@@ -64,26 +57,18 @@ a package named like the library and one with a suffix "-dev" or
 
 _Compiling from Tarball_
 
-If you do not like version control systems you might want to compile
-Liferea from a release tarball. Those are supplied in the Github release
-tracker (https://github.com/lwindolf/liferea/releases). After you download a 
-release extract it like this:
+Download a tarball from https://github.com/lwindolf/liferea/releases
+and extract and compile with
 
     tar jxvf liferea-1.11.0.tar.bz2 
- 
-After extracting run the standard autotools commands:
-
     ./configure
     make
     make install
-   
-After this Liferea will be installed in /usr/local and you should be
-able to start it by calling "/usr/local/bin/liferea".
 
 
 _Compiling from Git_
 
-To anonymously check out a source copy execute this:
+Check out the code:
 
     git clone https://github.com/lwindolf/liferea.git
 
