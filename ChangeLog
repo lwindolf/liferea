@@ -7,6 +7,7 @@ To be released
 	* Now using HTTPS only when accessing TheOldReader
 	* Added LifereaNodeSourceActivatable interface to allow plugins
 	  implementing new node source types.
+	* Downgrade enclosure drop warning from Glib warning to debug trace.
 
 
 2015-01-06   Lars Windolf <lars.windolf@gmx.de>

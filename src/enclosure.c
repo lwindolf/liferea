@@ -80,7 +80,7 @@ enclosure_from_string (const gchar *str)
 	
 	fields = g_regex_split_simple ("^enc:([01]?):([^:]+):(\\d+):(.*)", str, 0, 0);
 	if (6 > g_strv_length (fields)) {
-		g_warning ("Dropping incorrectly encoded enclosure: >>>%s<<< (nr of fields=%d)\n", str, g_strv_length (fields));
+		debug2 (DEBUG_PARSING, "Dropping incorrectly encoded enclosure: >>>%s<<< (nr of fields=%d)\n", str, g_strv_length (fields));
 		return NULL;
 	}
 	
