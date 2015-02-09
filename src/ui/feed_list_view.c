@@ -325,10 +325,11 @@ feed_list_view_select (nodePtr node)
 		if (node->parent)
 			feed_list_view_expand (node->parent);
 
-		gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
-		gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
-		gtk_tree_path_free (path);
-
+		if (path) {
+			gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
+			gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
+			gtk_tree_path_free (path);
+		}
  	} else {
 		GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
 		gtk_tree_selection_unselect_all (selection);

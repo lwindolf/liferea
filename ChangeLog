@@ -2,6 +2,8 @@ To be released
 
 	* Fixes Github #134: Broken default news feed.
 	  (reported by pvdl)
+	* Fixes Github #122: Crashes at launch, "segmentation fault"
+	  (reported by geoffm)
 
 
 2015-01-07   Lars Windolf <lars.windolf@gmx.de>
