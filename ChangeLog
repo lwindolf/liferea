@@ -3,6 +3,8 @@ To be released
 	* Fixes Github #134: Broken default news feed.
 	  (reported by pvdl)
 	* Fixes Github #133: Subscribe into TheOldReader categories
+	* Fixes Github #122: Crashes at launch, "segmentation fault"
+	  (reported by geoffm)
 	* Improves Google Reader API error handling
 	* Now using HTTPS only when accessing TheOldReader
 	* Added LifereaNodeSourceActivatable interface to allow plugins
