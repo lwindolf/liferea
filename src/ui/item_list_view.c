@@ -509,7 +509,7 @@ void
 item_list_view_update (ItemListView *ilv, gboolean hasEnclosures)
 {
 	/* we depend on the fact that the third column is the enclosure icon column!!! */
-	gtk_tree_view_column_set_visible (gtk_tree_view_get_column (ilv->priv->treeview, 1), hasEnclosures);
+	gtk_tree_view_column_set_visible (ilv->priv->enclosureColumn, hasEnclosures);
 
 	if (ilv->priv->batch_mode) {
 		item_list_view_set_tree_store (ilv, ilv->priv->batch_itemstore);
