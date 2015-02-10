@@ -4,6 +4,8 @@ To be released
 	  (reported by pvdl)
 	* Fixes Github #122: Crashes at launch, "segmentation fault"
 	  (reported by geoffm)
+	* Fixes some memory leaks
+	  (patch by Rich Coe)
 
 
 2015-01-07   Lars Windolf <lars.windolf@gmx.de>

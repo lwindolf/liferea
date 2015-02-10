@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2015 Rich Coe <rcoe@wi.rr.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -206,6 +207,8 @@ metadata_list_append (GSList *metadata, const gchar *strid, const gchar *data)
 			/* Avoid duplicate values */
 			if (NULL == g_slist_find_custom (p->data, checked_data, metadata_value_cmp))
 				p->data = g_slist_append (p->data, checked_data);
+                        else
+                                g_free (checked_data);
 			return metadata;
 		}
 		iter = iter->next;
@@ -226,13 +229,8 @@ metadata_list_set (GSList **metadata, const gchar *strid, const gchar *data)
 	while (iter) {
 		p = (struct pair*)iter->data; 
 		if (g_str_equal (p->strid, strid)) {
-			if (p->data) {
-				/* exchange old value */
-				g_free (((GSList *)p->data)->data);
-				((GSList *)p->data)->data = g_strdup (data);
-			} else {
-				p->data = g_slist_append (p->data, g_strdup (data));
-			}
+                        g_slist_free_full (p->data, g_free);
+                        p->data = g_slist_append (NULL, g_strdup (data));
 			return;
 		}
 		iter = iter->next;
@@ -308,18 +306,12 @@ metadata_list_copy (GSList *list)
 void
 metadata_list_free (GSList *metadata)
 {
-	GSList		*list2, *iter2, *iter = metadata;
+	GSList		*iter = metadata, *next;
 	struct pair	*p;
 	
 	while (iter) {
 		p = (struct pair*)iter->data;
-		list2 = p->data;
-		iter2 = list2;
-		while (iter2) {
-			g_free (iter2->data);
-			iter2 = iter2->next;
-		}
-		g_slist_free (list2);
+                g_slist_free_full (p->data, g_free);
 		g_free (p->strid);
 		g_free (p);
 		iter = iter->next;
