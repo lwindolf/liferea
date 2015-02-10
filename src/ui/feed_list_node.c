@@ -344,6 +344,7 @@ feed_list_node_update (const gchar *nodeId)
 	                    FS_COUNT, count,
 	                    -1);
 	g_free (label);
+	g_free (count);
 
 	if (node->parent)
 		feed_list_node_update (node->parent->id);

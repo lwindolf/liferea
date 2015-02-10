@@ -5,6 +5,8 @@ To be released
 	* Fixes Github #133: Subscribe into TheOldReader categories
 	* Fixes Github #122: Crashes at launch, "segmentation fault"
 	  (reported by geoffm)
+	* Fixes some memory leaks
+	  (patch by Rich Coe)
 	* Improves Google Reader API error handling
 	* Now using HTTPS only when accessing TheOldReader
 	* Added LifereaNodeSourceActivatable interface to allow plugins
