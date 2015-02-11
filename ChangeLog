@@ -1,5 +1,7 @@
 To be released
 
+	Version 1.11.3
+
 	* Fixes Github #134: Broken default news feed.
 	  (reported by pvdl)
 	* Fixes Github #133: Subscribe into TheOldReader categories
@@ -7,6 +9,10 @@ To be released
 	  (reported by geoffm)
 	* Fixes some memory leaks
 	  (patch by Rich Coe)
+	* Fixed Github #145: Incorrect method triggered for 'Launch External'
+	  (patch by mozbugbox)
+	* Expose LifereaHtmlView to GObject Introspection
+	  (patch by mozbugbox)
 	* Improves Google Reader API error handling
 	* Now using HTTPS only when accessing TheOldReader
 	* Added LifereaNodeSourceActivatable interface to allow plugins
