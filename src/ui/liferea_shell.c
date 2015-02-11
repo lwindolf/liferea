@@ -996,7 +996,7 @@ static const GtkActionEntry liferea_shell_item_action_entries[] = {
 	{"LaunchItemInBrowser", NULL, N_("_Open In Browser"), NULL, N_("Launches the item's link in the Liferea item pane."),
 	 G_CALLBACK(on_popup_launch_item_selected)},
 	{"LaunchItemInExternalBrowser", NULL, N_("Open In _External Browser"), NULL, N_("Launches the item's link in the configured external browser."),
-	 G_CALLBACK(on_popup_launch_item_selected)}
+	 G_CALLBACK(on_popup_launch_item_external_selected)}
 };
 
 static const GtkToggleActionEntry liferea_shell_action_toggle_entries[] = {
