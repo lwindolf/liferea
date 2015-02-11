@@ -9,8 +9,10 @@ To be released
 	  (reported by geoffm)
 	* Fixes some memory leaks
 	  (patch by Rich Coe)
-	* Fixed Github #145: Incorrect method triggered for 'Launch External'
+	* Fixes Github #145: Incorrect method triggered for 'Launch External'
 	  (patch by mozbugbox)
+	* Fixes Github #48: Window stays hidden on next start after Ctrl+W
+	  (reported by Jeff Fortin)
 	* Expose LifereaHtmlView to GObject Introspection
 	  (patch by mozbugbox)
 	* Improves Google Reader API error handling

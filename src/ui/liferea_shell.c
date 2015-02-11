@@ -562,8 +562,6 @@ static gboolean
 on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
 	liferea_shutdown ();
-	liferea_shell_save_position ();
-	gtk_widget_hide (GTK_WIDGET (shell->priv->window));
 	
 	return TRUE;
 }
@@ -1129,6 +1127,8 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	/* Initialize with last saved state */
 	conf_get_int_value (LAST_WINDOW_STATE, &resultState);
 
+	debug2 (DEBUG_GUI, "Previous window state indicators: dconf=%d, CLI switch=%s", resultState, overrideWindowState);
+
 	/* Override with command line options */
 	if (!g_strcmp0 (overrideWindowState, "hidden"))
 		resultState = MAINWINDOW_HIDDEN;
@@ -1347,15 +1347,13 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 void
 liferea_shell_destroy (void)
 {
-	nodePtr	node;
-	itemPtr	item;
-
 	liferea_shell_save_position ();
 	g_object_unref (shell->priv->tabs);
 	g_object_unref (shell->priv->feedlist);
 	g_object_unref (shell->priv->itemview);
 	g_object_unref (shell->priv->extensions);
 
+	g_signal_handlers_block_by_func (shell, G_CALLBACK (on_window_state_event), shell->priv);
 	gtk_widget_destroy (GTK_WIDGET (shell->priv->window));
 
 	g_object_unref (shell);
