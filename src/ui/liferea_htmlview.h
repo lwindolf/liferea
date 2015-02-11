@@ -51,6 +51,8 @@ struct LifereaHtmlViewClass
 GType liferea_htmlview_get_type	(void);
 
 /** 
+ * liferea_htmlview_new:
+ *
  * Function to set up a new html view widget for any purpose. 
  *
  * @param forceInternalBrowsing		TRUE to act as fully fledged browser
@@ -60,6 +62,8 @@ GType liferea_htmlview_get_type	(void);
 LifereaHtmlView * liferea_htmlview_new (gboolean forceInternalBrowsing);
 
 /**
+ * liferea_htmlview_set_headline_view:
+ *
  * Make this LifereaHtmlView instance a headline view. This causes
  * an additional "go back" step for the history tab allowing to go back
  * from Web content to the headline when browsing inline.
@@ -67,16 +71,20 @@ LifereaHtmlView * liferea_htmlview_new (gboolean forceInternalBrowsing);
 void liferea_htmlview_set_headline_view (LifereaHtmlView *htmlview);
 
 /**
+ * liferea_htmlview_get_widget:
+ *
  * Returns the rendering widget for a HTML view. Only
  * to be used by liferea_shell.c for widget reparenting.
  *
- * @param htmlview	the HTML view
+ * @htmlview:	the HTML view
  *
- * @returns the rendering widget
+ * Returns: (transfer none): the rendering widget
  */
 GtkWidget *liferea_htmlview_get_widget (LifereaHtmlView *htmlview);
 
 /** 
+ * liferea_htmlview_clear:
+ *
  * Loads a emtpy HTML page. Resets any item view state.
  *
  * @param htmlview	the HTML view widget to clear
@@ -84,6 +92,8 @@ GtkWidget *liferea_htmlview_get_widget (LifereaHtmlView *htmlview);
 void	liferea_htmlview_clear (LifereaHtmlView *htmlview);
 
 /**
+ * liferea_htmlview_write:
+ *
  * Method to display the passed HTML source to the HTML widget.
  *
  * @param htmlview	The htmlview widget to be set
@@ -106,6 +116,8 @@ void liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *tit
 void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location);
 
 /**
+ * liferea_htmlview_handle_URL:
+ *
  * Launches the specified URL in the external browser or handles
  * a special URL by triggering HTML generation. Otherwise returns
  * FALSE to indicate the HTML widget should launch the link.
@@ -128,6 +140,8 @@ void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *
 gboolean liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url);
 
 /**
+ * liferea_htmlview_launch_URL_internal:
+ *
  * Enforces loading of the given URL in the given browser widget.
  *
  * @param htmlview	the HTML view to use
@@ -136,6 +150,8 @@ gboolean liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *ur
 void liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *url);
 
 /**
+ * liferea_htmlview_set_zoom:
+ *
  * Function to change the zoom level of the HTML widget.
  * 1.0 is a 1:1 zoom.
  *
@@ -144,6 +160,8 @@ void liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gcha
 void liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat zoom);
 
 /**
+ * liferea_htmlview_get_zoom:
+ *
  * Function to determine the current zoom level.
  *
  * @param htmlview	htmlview to examine
@@ -153,6 +171,8 @@ void liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat zoom);
 gfloat liferea_htmlview_get_zoom (LifereaHtmlView *htmlview);
 
 /**
+ * liferea_htmlview_scroll:
+ *
  * Function scrolls down the given HTML view if possible.
  *
  * @param htmlview	htmlview to scroll
@@ -163,6 +183,8 @@ gfloat liferea_htmlview_get_zoom (LifereaHtmlView *htmlview);
 gboolean liferea_htmlview_scroll (LifereaHtmlView *htmlview);
 
 /**
+ * liferea_htmlview_prepare_context_menu:
+ *
  * Prepares a GtkMenu to be used as a context menu for the HTML view.
  *
  * @param htmlview	the html view
@@ -175,6 +197,8 @@ gboolean liferea_htmlview_scroll (LifereaHtmlView *htmlview);
 void liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu, const gchar *linkUri, const gchar *imageUri);
 
 /**
+ * liferea_htmlview_do_zoom:
+ *
  * To be called when HTML view needs to change the text size
  * of the rendering widget implementation.
  *

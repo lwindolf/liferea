@@ -82,9 +82,11 @@ webkit_get_font (guint *size)
 
 	/* font configuration support */
 	conf_get_str_value (USER_FONT, &font);
-	if (0 == strlen (font)) {
-		g_free (font);
-		font = NULL;
+	if (NULL == font || 0 == strlen (font)) {
+		if (NULL != font) {
+			g_free (font);
+			font = NULL;
+		}
 		conf_get_default_font_from_schema (DEFAULT_FONT, &font);
 	}
 
