@@ -258,8 +258,8 @@ Now there are three major support channels:
 + The IRC channel "#liferea" on freenode.org. If you have easy to solve problems 
   and simple questions feel free to ask the people hanging around there.
     
-+ The mailing list. Good for posting compilation problems and starting longer 
-  discussions.
++ The mailing list (https://lists.sourceforge.net/lists/listinfo/liferea-devel).
+  Good for posting compilation problems and starting longer discussions.
     
 + The GitHub bug tracker (https://github.com/lwindolf/liferea/issues) where you
   can post bug reports for all problems you find. Ensure to look for any
