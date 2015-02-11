@@ -6,6 +6,8 @@ To be released
 	  (reported by geoffm)
 	* Fixes some memory leaks
 	  (patch by Rich Coe)
+	* Fixes Github #145: Wrong method triggered on 'Launch External'
+	  (patch by mozbugbox)
 
 
 2015-01-07   Lars Windolf <lars.windolf@gmx.de>
