@@ -1,6 +1,3 @@
-This documentation was last updated for Liferea version 1.11 (02.06.2014).
-
-git master status: 
 ![build status git master](https://travis-ci.org/lwindolf/liferea.svg?branch=master)
 
 
