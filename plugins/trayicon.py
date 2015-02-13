@@ -79,5 +79,5 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     def do_deactivate (self):
         self.staticon.set_visible (False)
         window = self.shell.get_window ()
-        window.disconnect(self.minimize_to_tray_handler_id)
+        #window.disconnect(self.minimize_to_tray_handler_id)
         del self.staticon
