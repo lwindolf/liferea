@@ -1,5 +1,7 @@
 To be released
 
+	* Github #149: Fixes a random crash on startup
+	  (patch by mozbugbox)
  	* Update of Albanian translation (Besnik Bleta)
  	
 
