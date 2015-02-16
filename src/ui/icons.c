@@ -87,7 +87,6 @@ void
 icons_load (void)
 {
 	GtkIconTheme	*icon_theme;
-	GtkWidget	*widget;
 	gint		i;
 	
 	/* first try to load icons from theme */

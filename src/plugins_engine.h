@@ -52,14 +52,14 @@ GType liferea_plugins_engine_get_type (void) G_GNUC_CONST;
 LifereaPluginsEngine *liferea_plugins_engine_get_default (void);
 
 /**
- * liferea_plugins_set_default_signals:
+ * liferea_plugins_engine_set_default_signals:
  *
  * Set up default "activate" and "deactivate" signals.
  *
  * @extensions:		the extensions set
  * @user_data:		some user data (or NULL)
  */
-void liferea_plugins_set_default_signals (PeasExtensionSet *extensions, gpointer user_data);
+void liferea_plugins_engine_set_default_signals (PeasExtensionSet *extensions, gpointer user_data);
 
 G_END_DECLS
 
