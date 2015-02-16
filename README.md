@@ -1,4 +1,4 @@
-![build status git master](https://travis-ci.org/lwindolf/liferea.svg?branch=master)
+![build status git master](https://travis-ci.org/lwindolf/liferea.svg?branch=master) ![Coverity Scan Build Status](https://scan.coverity.com/projects/4287/badge.svg)
 
 
 Introduction
