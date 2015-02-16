@@ -1070,12 +1070,32 @@ static const char *liferea_shell_ui_desc =
 "      <menuitem action='ShowAbout'/>"
 "    </menu>"
 "  </menubar>"
+"</ui>";
+
+static const char *liferea_shell_tb_desc =
+"<ui>"
 "  <toolbar action='maintoolbar'>"
 "    <separator/>"
 "    <toolitem name='newFeedButton' action='NewSubscription'/>"
 "    <toolitem name='MarkAsReadButton' action='MarkFeedAsRead'/>"
 "    <toolitem name='prevReadButton' action='PrevReadItem'/>"
 "    <toolitem name='nextReadButton' action='NextReadItem'/>"
+"    <toolitem name='nextUnreadButton' action='NextUnreadItem'/>"
+"    <toolitem name='UpdateAllButton' action='UpdateAll'/>"
+"    <toolitem name='SearchButton' action='SearchFeeds'/>"
+"    <separator/>"
+"  </toolbar>"
+"</ui>";
+
+/* same like above just with Next/Prev ordered for RTL */
+static const char *liferea_shell_tb_rtl_desc =
+"<ui>"
+"  <toolbar action='maintoolbar'>"
+"    <separator/>"
+"    <toolitem name='newFeedButton' action='NewSubscription'/>"
+"    <toolitem name='MarkAsReadButton' action='MarkFeedAsRead'/>"
+"    <toolitem name='nextReadButton' action='NextReadItem'/>"
+"    <toolitem name='prevReadButton' action='PrevReadItem'/>"
 "    <toolitem name='nextUnreadButton' action='NextUnreadItem'/>"
 "    <toolitem name='UpdateAllButton' action='UpdateAll'/>"
 "    <toolitem name='SearchButton' action='SearchFeeds'/>"
@@ -1219,6 +1239,14 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 
 	if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_ui_desc, -1, &error))
 		g_error ("building menus failed: %s", error->message);
+
+	if (gtk_widget_get_default_direction () != GTK_TEXT_DIR_RTL) {
+		if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_tb_desc, -1, &error))
+			g_error ("building menus failed: %s", error->message);
+	} else {
+		if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_tb_rtl_desc, -1, &error))
+			g_error ("building menus failed: %s", error->message);
+	}
 
 	shell->priv->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
 	shell->priv->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
