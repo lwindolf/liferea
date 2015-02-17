@@ -78,7 +78,9 @@ Sebastian Keller <sebastian-keller@gmx.de>		Gedit-like tab close buttons
 Maintainer Credits
 ==================
 
-Luis Rodrigo Gallardo Cruz <rodrigo@nul-unu.com>	Debian
+David Michael Smith <sidicas2@gmail.com>		Debian
+Emilio Pozuelo Monfort <pochu@debian.org>		Debian
+Paul Gevers <elbrus@debian.org>				Debian
 Emilio Pozuelo Monfort <pochu27@gmail.com>		Ubuntu
 Phillip Compton	<pcompton@proteinmedia.com>		Fedora
 Dag Wieers <dag@wieers.com>				Fedora
@@ -102,6 +104,7 @@ Spanish			Rodrigo Gallardo <rodrigo@nul-unu.com>
 Japanese		Takeshi AIHANA <takeshi.aihana@gmail.com>
 Japanese		Takeshi Hamasaki <hmatrjp@users.sourceforge.jp>
 French			Vincent Lefèvre <vincent@vinc17.org>
+French			Guillaume Bernard <translate@filorin.fr>
 Swedish			Daniel Nylander <po@danielnylander.se>
 Turkish			Mehmet Atif Ergun <mehmetaergun@gmail.com>
 Turkish			Eren Türkay <turkay.eren@gmail.com>
