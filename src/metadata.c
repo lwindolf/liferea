@@ -307,11 +307,10 @@ metadata_list_copy (GSList *list)
 void
 metadata_list_free (GSList *metadata)
 {
-	GSList		*iter = metadata, *next;
-	struct pair	*p;
+	GSList *iter = metadata;
 	
 	while (iter) {
-		p = (struct pair*)iter->data;
+		struct pair *p = (struct pair*)iter->data;
                 g_slist_free_full (p->data, g_free);
 		g_free (p->strid);
 		g_free (p);

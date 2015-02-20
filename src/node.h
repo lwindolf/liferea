@@ -327,6 +327,16 @@ gchar * node_render(nodePtr node);
 void node_update_favicon (nodePtr node);
 
 /**
+ * node_load_icon:
+ *
+ * Load node icon in memory. Should be called only once on startup
+ * and when the node icon has changed.
+ *
+ * @node:	the node
+ */
+void node_load_icon (nodePtr node);
+
+/**
  * Change/Set the sort column of a given node.
  *
  * @param node		the node

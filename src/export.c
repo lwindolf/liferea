@@ -32,6 +32,7 @@
 #include "favicon.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "node.h"
 #include "xml.h"
 #include "ui/ui_common.h"
 #include "ui/feed_list_node.h"
