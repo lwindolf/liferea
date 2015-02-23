@@ -77,25 +77,20 @@ favicon_load_from_cache (const gchar *id, guint size)
 	GdkPixbuf	*pixbuf, *result = NULL;
 	GError 		*error = NULL;
 
-	debug_enter("favicon_load_from_cache");
-	
-	/* try to load a saved favicon */
 	filename = common_create_cache_filename ("favicons", id, "png");
 	
-	if(0 == stat((const char*)filename, &statinfo)) {
-		pixbuf = gdk_pixbuf_new_from_file(filename, &error);
-		if(pixbuf) {
-			result = gdk_pixbuf_scale_simple(pixbuf, size, size, GDK_INTERP_BILINEAR);
-			g_object_unref(pixbuf);
+	if (0 == stat ((const char*)filename, &statinfo)) {
+		pixbuf = gdk_pixbuf_new_from_file (filename, &error);
+		if (pixbuf && !error) {
+			result = gdk_pixbuf_scale_simple (pixbuf, size, size, GDK_INTERP_BILINEAR);
+			g_object_unref (pixbuf);
 		} else { /* Error */
-			fprintf(stderr, "Failed to load pixbuf file: %s: %s\n",
+			fprintf (stderr, "Failed to load pixbuf file: %s: %s\n",
 			        filename, error->message);
-			g_error_free(error);
+			g_error_free (error);
 		}
 	}
-	g_free(filename);	
-
-	debug_exit("favicon_load_from_cache");
+	g_free (filename);
 	
 	return result;
 }
@@ -315,6 +310,10 @@ favicon_download (subscriptionPtr subscription,
 	g_assert(source_url);
 	if(*source_url != '|') {
 		tmp = tmp2 = g_strstrip (g_strdup (source_url));
+
+		if(tmp[strlen(tmp) - 1] == '/')
+			tmp[strlen(tmp) - 1] = 0;	/* Strip trailing slash */
+
 		tmp = strrchr(tmp, '/');
 		if(tmp) {
 			*tmp = 0;

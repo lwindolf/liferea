@@ -1,5 +1,7 @@
 To be released
 
+	* Fixes Github #154: Crashes while starting (corrupt icon)
+	  (reported by jcamposz)
 	* Github #149: Fixes a random crash on startup
 	  (patch by mozbugbox)
 	* Fixes Github #79: RTL ordering of Back/Forward icons
