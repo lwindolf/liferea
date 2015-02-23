@@ -1,5 +1,7 @@
 To be released
 
+	* Fixes Github #154: Crashes while starting (on corrupt icon)
+	  (reported by jcamposz)
 	* Fixes Github #134: Broken default news feed.
 	  (reported by pvdl)
 	* Fixes Github #122: Crashes at launch, "segmentation fault"
