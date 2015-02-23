@@ -70,7 +70,7 @@ favicon_download_ctxt_free (faviconDownloadCtxtPtr ctxt)
 static void favicon_download_run(faviconDownloadCtxtPtr ctxt);
 
 GdkPixbuf *
-favicon_load_from_cache (const gchar *id, guint size)
+favicon_load_from_cache (const gchar *id)
 {
 	struct stat	statinfo;
 	gchar		*filename;
@@ -82,7 +82,7 @@ favicon_load_from_cache (const gchar *id, guint size)
 	if (0 == stat ((const char*)filename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file (filename, &error);
 		if (pixbuf && !error) {
-			result = gdk_pixbuf_scale_simple (pixbuf, size, size, GDK_INTERP_BILINEAR);
+			result = gdk_pixbuf_scale_simple (pixbuf, 16, 16, GDK_INTERP_BILINEAR);
 			g_object_unref (pixbuf);
 		} else { /* Error */
 			fprintf (stderr, "Failed to load pixbuf file: %s: %s\n",
