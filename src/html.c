@@ -100,7 +100,7 @@ search_links (const gchar* data, gint linkType)
 	gchar	*endptr;
 	
 	while (1) {
-		ptr = common_strcasestr (tmp, "<link ");
+		ptr = common_strcasestr (tmp, "<link");
 		if (!ptr)
 			return NULL;
 		
