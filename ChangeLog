@@ -12,6 +12,7 @@ To be released
 	  (patch by mozbugbox)
 	* Fixes Github #149: Fixes a random crash on startup
 	  (patch by mozbugbox)
+	* Fixes all issues reported by Coverity scan
 
 
 2015-01-07   Lars Windolf <lars.windolf@gmx.de>
