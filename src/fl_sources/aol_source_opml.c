@@ -66,7 +66,7 @@ aol_source_opml_get_subnode_by_node (nodePtr node, const gchar *source)
 		else if (subnode->type->capabilities
 			 & NODE_CAPABILITY_SUBFOLDERS) {
 			subsubnode = aol_source_opml_get_subnode_by_node(subnode, source);
-			if (subnode != NULL)
+			if (subsubnode)
 				return subsubnode;
 		}
 	}

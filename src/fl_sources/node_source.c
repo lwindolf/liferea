@@ -314,9 +314,11 @@ on_node_source_type_response (GtkDialog *dialog, gint response_id, gpointer user
 	if (response_id == GTK_RESPONSE_OK) {
 		selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (liferea_dialog_lookup (GTK_WIDGET (dialog), "type_list")));
 		g_assert (NULL != selection);
-		gtk_tree_selection_get_selected (selection, &model, &iter);
-		gtk_tree_model_get (model, &iter, 1, &type, -1);
-		type->source_new ();
+		if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+			gtk_tree_model_get (model, &iter, 1, &type, -1);
+			if (type)
+				type->source_new ();
+		}
 	}
 	
 	gtk_widget_destroy (GTK_WIDGET (dialog));

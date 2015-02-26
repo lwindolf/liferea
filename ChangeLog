@@ -6,6 +6,7 @@ To be released
 	  (patch by mozbugbox)
 	* Fixes Github #79: RTL ordering of Back/Forward icons
 	  (reported by GreenLunar)
+	* Fixes all defects reported by Coverity scan
  	* Update of Albanian translation (Besnik Bleta)
  	
 
