@@ -1,7 +1,7 @@
 /**
  * @file browser.c  Launching different external browsers
  *
- * Copyright (C) 2003-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2015 Lars Windolf <lars.lindner@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,9 +37,9 @@ static struct browser browsers[] = {
 	{
 		/* tested with Firefox 1.5 and 2.0 */
 		"firefox", "Firefox", "firefox \"%s\"",
-		NULL, "firefox -a firefox -remote \"openURL(%s)\"",
-		NULL, "firefox -a firefox -remote 'openURL(%s,new-window)'",
-		NULL, "firefox -a firefox -remote 'openURL(%s,new-tab)'"
+		"firefox \"%s\"", NULL,
+		"firefox -a firefox -new-window \"%s\"", NULL,
+		"firefox -a firefox -new-tab \"%s\"", NULL
 	},
 	{
 		"google-chrome", "Chrome", "google-chrome \"%s\"",

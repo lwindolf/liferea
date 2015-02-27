@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes launching URLs in Firefox 36+
+          (reported by Geoffrey Leach)
+
+
 2015-02-26   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.14
