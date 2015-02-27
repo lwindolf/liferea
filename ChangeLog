@@ -10,8 +10,10 @@ To be released
 	* Simplied external browser handling. Now Liferea only supports
 	  the gtk_show_uri() launch mechanism for the system default browser
 	  and a user specified browser command.
- 	* Update of Albanian translation (Besnik Bleta)
- 	
+
+	* Update of Albanian translation (Besnik Bleta)
+	* Fixes typo in Italian translation
+
 
 2015-02-11   Lars Windolf <lars.windolf@gmx.de>
 
