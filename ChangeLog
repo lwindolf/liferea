@@ -7,6 +7,9 @@ To be released
 	* Fixes Github #79: RTL ordering of Back/Forward icons
 	  (reported by GreenLunar)
 	* Fixes all defects reported by Coverity scan
+	* Simplied external browser handling. Now Liferea only supports
+	  the gtk_show_uri() launch mechanism for the system default browser
+	  and a user specified browser command.
  	* Update of Albanian translation (Besnik Bleta)
  	
 

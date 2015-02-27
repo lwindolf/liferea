@@ -20,12 +20,7 @@
     <key name="browser-id" type="s">
       <default>'gnome'</default>
       <summary>Selects which browser to use to open external links</summary>
-      <description>Selects which browser to use to open external links. The choices include "gnome", "mozilla", "firefox", "netscape", "opera", "konqueror", and "manual".</description>
-    </key>
-    <key name="browser-place" type="i">
-      <default>0</default>
-      <summary>Location of position to open up the link in the selected browser</summary>
-      <description>Selects the location in the browser to open up the link. Use 0 for the browser's default, 1 for in an existing window, 2 for in a new window, and 3 for in a new tab.</description>
+      <description>Selects which browser to use to open external links. The choices include "default" and "manual".</description>
     </key>
     <key name="default-view-mode" type="i">
       <default>0</default>
