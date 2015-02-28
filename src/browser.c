@@ -56,7 +56,7 @@ browser_execute (const gchar *cmd, const gchar *uri)
 	GError		*error = NULL;
 	gchar 		*safeUri, *tmp, **argv, **iter;
 	gint 		argc;
-	gint		status = 0;
+	gboolean	done = FALSE;
   
 	g_assert (cmd != NULL);
 	g_assert (uri != NULL);
@@ -81,7 +81,7 @@ browser_execute (const gchar *cmd, const gchar *uri)
 		liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
 		debug2 (DEBUG_GUI, "Browser command is invalid: %s : %s", tmp, error->message);
 		g_error_free (error);
-		return;
+		return FALSE;
 	}
   
 	if (argv) {
@@ -99,11 +99,14 @@ browser_execute (const gchar *cmd, const gchar *uri)
 		g_error_free (error);
 	} else {
 		liferea_shell_set_status_bar (_("Starting: \"%s\""), tmp);
+		done = TRUE;
 	}
   
 	g_free (safeUri);
 	g_free (tmp);
 	g_strfreev (argv);
+
+	return done;
 }
 
 gboolean
