@@ -6,6 +6,8 @@ To be released
 	  (patch by mozbugbox)
 	* Fixes Github #79: RTL ordering of Back/Forward icons
 	  (reported by GreenLunar)
+	* Fixes Github #30: Segfault after updating from 1.8 to 1.10
+	  (reported by vakuum)
 	* Fixes all defects reported by Coverity scan
 	* Simplied external browser handling. Now Liferea only supports
 	  the gtk_show_uri() launch mechanism for the system default browser

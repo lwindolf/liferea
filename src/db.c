@@ -1588,7 +1588,7 @@ db_node_find (nodePtr node, gpointer id)
 {
 	GSList *iter;
 
-	if (g_str_equal (node->id, (gchar *)id))
+	if (id && g_str_equal (node->id, (gchar *)id))
 		return TRUE;
 
 	iter = node->children;
