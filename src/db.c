@@ -1588,7 +1588,7 @@ db_node_find (nodePtr node, gpointer id)
 {
 	GSList *iter;
 
-	if (id && g_str_equal (node->id, (gchar *)id))
+	if (g_str_equal (node->id, (gchar *)id))
 		return TRUE;
 
 	iter = node->children;
@@ -1629,7 +1629,7 @@ db_node_cleanup (nodePtr root)
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
 		/* Drop node ids not in feed list anymore */
 		const gchar *id = sqlite3_column_text (stmt, 0);
-		if (!db_node_find (root, (gpointer)id)) {
+		if (id && !db_node_find (root, (gpointer)id)) {
 			db_subscription_remove (id);	/* in case it is a subscription */
 			db_node_remove (id);		/* in case it is a folder */
 		}
