@@ -2,6 +2,8 @@ To be released
 
 	* Fixes launching URLs in Firefox 36+
 	  (reported by Geoffrey Leach)
+	* Fixes Github #30: Segfault after updating from 1.8 to 1.10
+	  (reported by vakuum)
 
 	* Fixes typo in Italian translation.
 

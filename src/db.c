@@ -1588,6 +1588,9 @@ db_node_find (nodePtr node, gpointer id)
 {
 	GSList *iter;
 
+	if (!id)
+		return;
+
 	if (g_str_equal (node->id, (gchar *)id))
 		return TRUE;
 
