@@ -39,6 +39,7 @@
 #include "xml.h"
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
+#include "fl_sources/google_reader_api_edit.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/reedah_source_feed_list.h"
@@ -198,7 +199,7 @@ static nodePtr
 reedah_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
 	// FIXME: determine correct category from parent folder name
-	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
+	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source, NULL);
 
 	// FIXME: leaking subscription?
 
@@ -224,7 +225,7 @@ reedah_source_remove_node (nodePtr node, nodePtr child)
 
 	/* propagate the removal only if there aren't other copies */
 	if (!feedlist_find_node (source->root, NODE_BY_URL, url)) 
-		google_reader_api_edit_remove_subscription (source, url);
+		google_reader_api_edit_remove_subscription (node->source, url);
 	
 	g_free (source);
 }

@@ -39,6 +39,7 @@
 #include "xml.h"
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
+#include "fl_sources/google_reader_api_edit.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/inoreader_source_feed_list.h"
@@ -197,7 +198,7 @@ static nodePtr
 inoreader_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
 	// FIXME: determine correct category from parent folder name
-	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
+	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source, NULL);
 
 	// FIXME: leaking subscription?
 

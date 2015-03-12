@@ -262,6 +262,16 @@ nodePtr node_source_setup_root (void);
 void node_source_new (nodePtr node, nodeSourceTypePtr nodeSourceType, const gchar *url);
 
 /**
+ * node_source_set_state
+ *
+ * Change state of the node source by node
+ *
+ * @node:		the node source node
+ * @newState:		the new state
+ */
+void node_source_set_state (nodePtr node, gint newState);
+
+/**
  * Store any type of authentication token (e.g. a cookie or session id)
  *
  * FIXME: maybe drop this in favour of node metadata

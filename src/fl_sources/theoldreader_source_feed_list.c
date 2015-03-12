@@ -123,7 +123,6 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
 			GList		*iter, *elements, *citer, *celements;
-			GSList		*siter;
 
 			/* We expect something like this:
 

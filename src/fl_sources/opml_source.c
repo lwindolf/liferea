@@ -354,8 +354,6 @@ on_opml_source_selected (GtkDialog *dialog,
                          gpointer user_data)
 {
 	nodePtr node;
-	subscriptionPtr	subscription;
-	const gchar *source;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new (node_source_get_node_type ());

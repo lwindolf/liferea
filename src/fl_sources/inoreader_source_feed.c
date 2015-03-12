@@ -29,6 +29,7 @@
 #include "xml.h"
 
 #include "feedlist.h"
+#include "google_reader_api_edit.h"
 #include "inoreader_source.h"
 #include "subscription.h"
 #include "node.h"
@@ -125,7 +126,6 @@ inoreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTa
 static void
 inoreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
 {
-	InoreaderSourcePtr gsource = (InoreaderSourcePtr) node_source_root_from_node (subscription->node)->data ;
 	xmlNodePtr      xml;
 	nodePtr         node = subscription->node;
 	xmlChar         *id = NULL;
