@@ -114,7 +114,6 @@ browser_launch_URL_external (const gchar *uri)
 {
 	gchar		*cmd = NULL;
 	gboolean	done = FALSE;	
-	gchar		*libname = NULL;
 	
 	g_assert (uri != NULL);
 	
