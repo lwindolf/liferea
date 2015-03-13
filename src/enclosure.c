@@ -127,10 +127,10 @@ enclosure_get_url (const gchar *str)
 	enclosurePtr enclosure = enclosure_from_string(str);
 	gchar *url = NULL;
 
-	if (enclosure)
+	if (enclosure) {
 		url = g_strdup (enclosure->url);
-
-	enclosure_free (enclosure);
+		enclosure_free (enclosure);
+	}
 
 	return url;
 }
@@ -138,13 +138,13 @@ enclosure_get_url (const gchar *str)
 gchar *
 enclosure_get_mime (const gchar *str)
 {
-	enclosurePtr enclosure = enclosure_from_string(str);
-	gchar *mime = NULL;
+	enclosurePtr	enclosure = enclosure_from_string (str);
+	gchar		*mime = NULL;
 
-	if (enclosure)
+	if (enclosure) {
 		mime = g_strdup (enclosure->url);
-
-	enclosure_free (enclosure);
+		enclosure_free (enclosure);
+	}
 
 	return mime;
 }

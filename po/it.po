@@ -2127,7 +2127,7 @@ msgstr "Disa_bilitare Javascript."
 
 #: ../glade/prefs.ui.h:25
 msgid "_Enable browser plugins."
-msgstr "_Abilitare plugin del broser."
+msgstr "_Abilitare plugin del browser."
 
 #: ../glade/prefs.ui.h:26
 msgid "External Browser Settings"

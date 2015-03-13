@@ -245,6 +245,7 @@ gboolean
 conf_get_bool_value_from_schema (GSettings *gsettings, const gchar *key, gboolean *value)
 {
 	g_assert (key != NULL);
+	g_assert (value != NULL);
 
 	if (gsettings == NULL)
 		gsettings = settings;
@@ -256,6 +257,7 @@ gboolean
 conf_get_str_value_from_schema (GSettings *gsettings, const gchar *key, gchar **value)
 {
 	g_assert (key != NULL);
+	g_assert (value != NULL);
 
 	if (gsettings == NULL)
 		gsettings = settings;
@@ -267,6 +269,7 @@ gboolean
 conf_get_int_value_from_schema (GSettings *gsettings, const gchar *key, gint *value)
 {
 	g_assert (key != NULL);
+	g_assert (value != NULL);
 
 	if (gsettings == NULL)
 		gsettings = settings;
@@ -278,6 +281,7 @@ gboolean
 conf_get_default_font_from_schema (const gchar *key, gchar **value)
 {
 	g_assert (key != NULL);
+	g_assert (value != NULL);
 
 	if (desktop_settings)
 		*value = g_strdup (g_settings_get_string (desktop_settings, key));

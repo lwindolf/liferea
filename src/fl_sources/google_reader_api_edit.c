@@ -141,7 +141,6 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 	GoogleReaderActionCtxtPtr	editCtxt = (GoogleReaderActionCtxtPtr) userdata; 
 	GoogleReaderActionPtr		action = editCtxt->action;
 	nodePtr				node = node_from_id (editCtxt->nodeId);
-	nodeSourcePtr			source = node->source;
 	gboolean			failed = FALSE;
 	
 	google_reader_api_action_context_free (editCtxt);
@@ -150,13 +149,13 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 		google_reader_api_action_free (action);
 		return; /* probably got deleted before this callback */
 	} 
-	
+
 	// FIXME: suboptimal check as some results are text, some XML, some JSON...
 	if (!g_str_equal (result->data, "OK")) {
 		if (result->data == NULL) {
 			failed = TRUE;
 		} else {
-			if (source->type->api.json) {
+			if (node->source->type->api.json) {
 				JsonParser *parser = json_parser_new ();
 
 				if (!json_parser_load_from_data (parser, result->data, -1, NULL)) {
@@ -180,7 +179,7 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 
 	if (action->callback) {
 		action->response = result->data;
-		action->callback (source, action, !failed);
+		action->callback (node->source, action, !failed);
 	}
 
 	google_reader_api_action_free (action);
@@ -191,7 +190,7 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 	}
 
 	/* process anything else waiting on the edit queue */
-	google_reader_api_edit_process (source);
+	google_reader_api_edit_process (node->source);
 }
 
 /* the following google_reader_api_* functions are simply functions that 
@@ -473,7 +472,7 @@ google_reader_api_edit_add_subscription_cb (nodeSourcePtr source, GoogleReaderAc
 	if (success) {
 		if (action->label) {
 			/* Extract returned new feed id (FIXME: is this only TheOldReader specific?) */
-			const gchar *id;
+			const gchar *id = NULL;
 			JsonParser *parser = json_parser_new ();
 
 			if (!json_parser_load_from_data (parser, action->response, -1, NULL)) {

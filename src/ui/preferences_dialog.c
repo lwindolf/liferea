@@ -28,7 +28,6 @@
 
 #include <libpeas-gtk/peas-gtk-plugin-manager.h>
 
-#include "browser.h"
 #include "common.h"
 #include "conf.h"
 #include "enclosure.h"
@@ -203,28 +202,19 @@ on_browser_changed (GtkComboBox *optionmenu, gpointer user_data)
 {
 	GtkTreeIter		iter;
 	gint			num = -1;
-	struct browser		*browsers = browser_get_all();
 	
 	if (gtk_combo_box_get_active_iter (optionmenu, &iter)) {
 		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 1, &num, -1);
 
-		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "browsercmd"), browsers[num].id == NULL);	
-		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "manuallabel"), browsers[num].id == NULL);	
-		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "urlhintlabel"), browsers[num].id == NULL);	
+		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "browsercmd"), num != 0);	
+		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "manuallabel"), num != 0);	
+		gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->priv->dialog, "urlhintlabel"), num != 0);	
 
-		if (browsers[num].id == NULL)
-			conf_set_str_value (BROWSER_ID, "manual");
+		if (!num)
+			conf_set_str_value (BROWSER_ID, "default");
 		else
-			conf_set_str_value (BROWSER_ID, browsers[num].id);
+			conf_set_str_value (BROWSER_ID, "manual");
 	}
-}
-
-static void
-on_browser_place_changed (GtkComboBox *optionmenu, gpointer user_data)
-{
-	int num = gtk_combo_box_get_active (optionmenu);
-	
-	conf_set_int_value (BROWSER_PLACE, num);
 }
 
 void
@@ -440,10 +430,8 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gchar			*proxyport;
 	gchar			*configuredBrowser, *name;
 	gboolean		enabled;
-	static int		manual;
-	struct browser		*iter;
 	gint			tmp, i, iSetting, proxy_port;
-	gboolean		bSetting;
+	gboolean		bSetting, manualBrowser;
 	gchar			*proxy_host, *proxy_user, *proxy_passwd;
 	gchar			*browser_command;
 	
@@ -453,39 +441,15 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	/* Set up browser selection popup */
 	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);
-	for(i = 0, iter = browser_get_all (); iter->id != NULL; iter++, i++) {
-		gtk_list_store_append (store, &treeiter);
-		gtk_list_store_set (store, &treeiter, 0, _(iter->display), 1, i, -1);
-	}
-	manual = i;
-	/* This allows the user to choose their own browser by typing in the command. */
 	gtk_list_store_append (store, &treeiter);
-	gtk_list_store_set (store, &treeiter, 0, _("Manual"), 1, i, -1);
+	gtk_list_store_set (store, &treeiter, 0, _("Default Browser"), 1, 0, -1);
+	gtk_list_store_append (store, &treeiter);
+	gtk_list_store_set (store, &treeiter, 0, _("Manual"), 1, 1, -1);
+
 	combo = GTK_COMBO_BOX (liferea_dialog_lookup (pd->priv->dialog, "browserpopup"));
 	gtk_combo_box_set_model (combo, GTK_TREE_MODEL (store));
 	ui_common_setup_combo_text (combo, 0);
 	g_signal_connect(G_OBJECT(combo), "changed", G_CALLBACK(on_browser_changed), pd);
-
-	/* Create location menu */
-	store = gtk_list_store_new (1, G_TYPE_STRING);
-
-	combo = GTK_COMBO_BOX (liferea_dialog_lookup (pd->priv->dialog, "browserlocpopup"));
-	gtk_combo_box_set_model (combo, GTK_TREE_MODEL (store));
-	ui_common_setup_combo_text (combo, 0);
-	g_signal_connect(G_OBJECT(combo), "changed", G_CALLBACK(on_browser_place_changed), pd);
-
-	gtk_list_store_append (store, &treeiter);
-	gtk_list_store_set (store, &treeiter, 0, _("Browser default"), -1);
-
-	gtk_list_store_append (store, &treeiter);
-	gtk_list_store_set (store, &treeiter, 0, _("Existing window"), -1);
-
-	gtk_list_store_append (store, &treeiter);
-	gtk_list_store_set (store, &treeiter, 0, _("New window"), -1);
-
-	gtk_list_store_append (store, &treeiter);
-	gtk_list_store_set (store, &treeiter, 0, _("New tab"), -1);
-
 
 	/* ================== panel 1 "feeds" ==================== */
 
@@ -582,30 +546,20 @@ preferences_dialog_init (PreferencesDialog *pd)
 	conf_get_bool_value(ENABLE_PLUGINS, &bSetting);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), bSetting);
 
-	tmp = 0;
-	conf_get_str_value(BROWSER_ID, &configuredBrowser);
+	conf_get_str_value (BROWSER_ID, &configuredBrowser);
+	manualBrowser = !strcmp (configuredBrowser, "manual");
+	g_free (configuredBrowser);
 
-	if(!strcmp(configuredBrowser, "manual"))
-		tmp = manual;
-	else
-		for(i=0, iter = browser_get_all (); iter->id != NULL; iter++, i++)
-			if(!strcmp(configuredBrowser, iter->id))
-				tmp = i;
-
-	gtk_combo_box_set_active(GTK_COMBO_BOX(liferea_dialog_lookup(pd->priv->dialog, "browserpopup")), tmp);
-	g_free(configuredBrowser);
-
-	conf_get_int_value (BROWSER_PLACE, &iSetting);
-	gtk_combo_box_set_active(GTK_COMBO_BOX(liferea_dialog_lookup(pd->priv->dialog, "browserlocpopup")), iSetting);
+	gtk_combo_box_set_active (GTK_COMBO_BOX (liferea_dialog_lookup (pd->priv->dialog, "browserpopup")), manualBrowser);
 
 	conf_get_str_value (BROWSER_COMMAND, &browser_command);
-	entry = liferea_dialog_lookup(pd->priv->dialog, "browsercmd");
-	gtk_entry_set_text(GTK_ENTRY(entry), browser_command);
+	entry = liferea_dialog_lookup (pd->priv->dialog, "browsercmd");
+	gtk_entry_set_text (GTK_ENTRY(entry), browser_command);
 	g_free (browser_command);
 
-	gtk_widget_set_sensitive (GTK_WIDGET (entry), tmp == manual);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "manuallabel"), tmp == manual);	
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "urlhintlabel"), tmp == manual);
+	gtk_widget_set_sensitive (GTK_WIDGET (entry), manualBrowser);
+	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "manuallabel"), manualBrowser);	
+	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "urlhintlabel"), manualBrowser);
 
 	/* ================== panel 4 "GUI" ================ */
 

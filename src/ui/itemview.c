@@ -236,7 +236,8 @@ itemview_select_item (itemPtr item)
 	else
 		enclosure_list_view_hide (ivp->enclosureView);
 
-	item_history_add (item->id);
+	if (item)
+		item_history_add (item->id);
 }
 
 void

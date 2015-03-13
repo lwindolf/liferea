@@ -25,6 +25,8 @@
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
+#include "favicon.h"
+#include "feedlist.h"
 #include "itemlist.h"
 #include "itemset.h"
 #include "item_state.h"

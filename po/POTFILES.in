@@ -153,7 +153,6 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
-src/fl_sources/aol_source.c
 src/fl_sources/default_source.c
 src/fl_sources/default_source.h
 src/fl_sources/dummy_source.c

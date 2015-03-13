@@ -2,7 +2,7 @@
  * @file conf.h  Liferea configuration (GSettings access)
  *
  * Copyright (C) 2011 Mikel Olasagasti Uranga <mikel@olasagasti.info>
- * Copyright (C) 2003-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,7 +30,6 @@
 #define BROWSE_INSIDE_APPLICATION	"browse-inside-application"
 #define BROWSE_KEY_SETTING		"browse-key-setting"
 #define BROWSER_ID			"browser-id"
-#define BROWSER_PLACE			"browser-place"
 #define BROWSER_COMMAND			"browser"
 
 #define DEFAULT_VIEW_MODE		"default-view-mode"

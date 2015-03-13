@@ -29,6 +29,7 @@
 #include "xml.h"
 
 #include "feedlist.h"
+#include "google_reader_api_edit.h"
 #include "theoldreader_source.h"
 #include "subscription.h"
 #include "node.h"
@@ -77,15 +78,17 @@ theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHas
 
 	for (; iter; iter = g_list_next (iter)) {
 		item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			/* save to cache */
-			g_hash_table_insert (cache, g_strdup(item->sourceId), (gpointer) item->id);
-			if (g_str_equal (item->sourceId, sourceId)) {
-				itemset_free (itemset);
-				return item;
+		if (item) {
+			if (item->sourceId) {
+				/* save to cache */
+				g_hash_table_insert (cache, g_strdup(item->sourceId), (gpointer) item->id);
+				if (g_str_equal (item->sourceId, sourceId)) {
+					itemset_free (itemset);
+					return item;
+				}
 			}
+			item_unload (item);
 		}
-		item_unload (item);
 	}
 
 	g_warning ("Could not find item for %s!", sourceId);
@@ -96,7 +99,6 @@ theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHas
 static void
 theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
 {
-	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data ;
 	xmlNodePtr      xml;
 	nodePtr         node = subscription->node;
 	xmlChar         *id = NULL;

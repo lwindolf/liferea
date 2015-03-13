@@ -27,14 +27,14 @@ any problems compiling the packages or from GIT don't hesitate to
 contact us in IRC (see Support section) to help you with it!
 
 
-_Dependencies_
+###### _Dependencies_
 
 Liferea 1.11+ is to be built against GTK+ 3. If you need to build
 for GTK+ 2 please use the most recent 1.8 release.
 
 The compilation and runtime dependencies are:
 
-Mandatory:
+###### Mandatory:
 
    gtk3 libxml2 libxslt sqlite3 libwebkit3 libjson-glib libgirepository1.0 libpeas gsettings-desktop-schemas
 
@@ -52,7 +52,7 @@ a package named like the library and one with a suffix "-dev" or
 "-devel". You need both to compile Liferea.
 
 
-_Compiling from Tarball_
+###### _Compiling from Tarball_
 
 Download a tarball from https://github.com/lwindolf/liferea/releases
 and extract and compile with
@@ -63,7 +63,7 @@ and extract and compile with
     make install
 
 
-_Compiling from Git_
+###### _Compiling from Git_
 
 Check out the code:
 
@@ -89,7 +89,7 @@ As the project is hosted at Github pull requests and tickets via Github
 are the best way to contribute to Liferea.
 
 
-_Translating_
+###### _Translating_
 
 Before starting to translate you need a translation editor. We suggest
 to use poedit or gtranslator. Please edit the translation using such a 
@@ -100,7 +100,7 @@ Please do not send translation patches. Those are a lot of work to merge
 and the bandwidth saving is not that huge!
 
 
-_New Translations_
+###### _New Translations_
 
 To create a new translation you must load the translation template, which you
 can find in the release tarball as "po/liferea.pot", into the translation 
@@ -108,7 +108,7 @@ editor. After editing it save it under a new name (usually your locales name
 with the extension ".po").
 
 
-_Updating Translations_
+###### _Updating Translations_
 
 When updating an existing translation please ensure to respect earlier 
 translators work. If the latest translation is only a few months old please
@@ -116,7 +116,7 @@ contact the latest translator first asking him to review your changes especially
 if you change already translated literals.
 
 
-_Localizing Feed Lists_
+###### _Localizing Feed Lists_
 
 When Liferea starts for the first time it installs a localized feed list
 if available. If this is not the case for your locale you might want to provide
@@ -134,21 +134,21 @@ Once finished post the result OPML file in the mailing list or the SF patch
 tracker.
 
 
-_Creating Plugins_
+###### _Creating Plugins_
 
 Liferea 1.10+ support GObject Introspection based plugins using libpeas. The
 Liferea distribution comes with a set of Python plugin e.g. the media player,
 GNOME keyring support, a tray icon plugin and maybe others.
 
 
-Why We Use Plugins?
+###### Why We Use Plugins?
 
 The idea behind plugins is to extend Liferea without changing compile time
 requirements. With the plugin only activating if all its bindings are available
 Liferea uses plugins to automatically enable features where possible.
 
 
-How Plugins Interact With Liferea
+###### How Plugins Interact With Liferea
 
 You can develop plugins for your private use or contribute them upstream.
 In any case it makes sense to start by cloning one of the existing plugins
@@ -170,7 +170,7 @@ if you contribute your plugin upstream it will be updated to match renamed
 functionality.
 
 
-Testing Plugins
+###### Testing Plugins
 
 To test your new plugin you can use ~/.local/share/liferea/plugins. Create 
 the directory and put the plugin script and the .plugin file there and restart
@@ -181,9 +181,9 @@ permanently disable the plugin. Each time this happens you need to reenable
 the plugin from within the plugin tab in the preferences dialog!
 
 
-_How to Help With Testing_
+###### _How to Help With Testing_
 
-*Bug Reports*
+###### *Bug Reports*
 
 If you want to help with testing grab the latest tarball or follow GIT master
 and write bug reports for any functional problem you experience. If you have
@@ -191,7 +191,7 @@ time help with bug triaging the SF tracker. Check if you see any of the open
 bugs on your setup.
 
 
-*Debugging Crashes*
+###### *Debugging Crashes*
 
 In case of crashes create gdb backtraces and post them in the bug tracker. To
 create a backtrace start Liferea using "gdb liferea". At the gdb prompt type
@@ -203,7 +203,7 @@ situation will only point to the assertion line, which doesn't help much. In cas
 of an assertion simply post a bug report with the assertion message.
 
 
-*Debugging Memory Leaks*
+###### *Debugging Memory Leaks*
 
 If you see memory leakage please take the time to do a run 
 
@@ -217,13 +217,13 @@ Browser Integration
 
 Liferea allows subscribing directly from Firefox 2.0+ and Epiphany. 
 
-_Ephiphany_
+###### _Ephiphany_
 
 Epiphany provides a standard plugin that allows adding subscription directly 
 to Liferea. Ensure you have installed the Epiphany plugins (often a separate
 package in the distribution) and enabled the plugin in the Epiphany settings.
 
-_Firefox 2.0+_
+###### _Firefox 2.0+_
 
 If you want to subscribe from within Firefox 2.0 you can configure Firefox 2.0 
 to add subscriptions to Liferea directly. To do so click the feed icon in the 

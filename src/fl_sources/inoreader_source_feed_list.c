@@ -75,7 +75,6 @@ static void
 inoreader_source_merge_feed (InoreaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id, nodePtr folder)
 {
 	nodePtr	node;
-	GSList	*iter;
 
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 	if (!node) {
@@ -122,7 +121,6 @@ inoreader_subscription_opml_cb (subscriptionPtr subscription, const struct updat
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
 			GList		*iter, *elements, *citer, *celements;
-			GSList		*siter;
 	
 			/* We expect something like this:
 
