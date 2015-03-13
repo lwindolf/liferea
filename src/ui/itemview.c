@@ -69,6 +69,7 @@ struct ItemViewPrivate {
 enum {
 	PROP_NONE,
 	PROP_ITEM_LIST_VIEW,
+	PROP_HTML_VIEW
 };
 
 static GObjectClass *parent_class = NULL;
@@ -105,6 +106,9 @@ itemview_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec
 		case PROP_ITEM_LIST_VIEW:
 			g_value_set_object (value, itemview->priv->itemListView);
 			break;
+		case PROP_HTML_VIEW:
+			g_value_set_object (value, itemview->priv->htmlview);
+			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 			break;
@@ -130,6 +134,16 @@ itemview_class_init (ItemViewClass *klass)
 						"ItemListView",
 						"ItemListView object",
 						ITEM_LIST_VIEW_TYPE,
+						G_PARAM_READABLE));
+
+	/* ItemView:html-view: */
+	g_object_class_install_property (object_class,
+					PROP_HTML_VIEW,
+					g_param_spec_object (
+						"html-view",
+						"LifereaHtmlView",
+						"LifereaHtmlView object",
+						LIFEREA_HTMLVIEW_TYPE,
 						G_PARAM_READABLE));
 
 	g_type_class_add_private (object_class, sizeof(ItemViewPrivate));
