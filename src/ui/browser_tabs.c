@@ -29,12 +29,59 @@
 #include "ui/item_list_view.h"
 #include "ui/gedit-close-button.h"
 
-/** All widget elements and state of a tab */
-typedef struct tabInfo {
-	GtkWidget	*label;		/**< the tab label */
-	GtkWidget	*widget;	/**< the embedded child widget */
-	LifereaHtmlView	*htmlview;	/**< the tabs HTML view widget */
-} tabInfo;
+/**
+  * tab_info_copy: (skip)
+  *
+  * Creates a copy of @tabInfo
+  */
+static gpointer tab_info_copy (gpointer orig)
+{
+	tabInfo *a = orig;
+	tabInfo *b;
+	b = g_new0 (tabInfo, 1);
+	b->label = a->label;
+	b->widget = a->widget;
+	b->htmlview = a->htmlview;
+	// Shall we?
+	g_object_ref(b->label);
+	g_object_ref(b->widget);
+	g_object_ref(b->htmlview);
+	return b;
+}
+
+/**
+  * tab_info_free: (skip)
+  *
+  * free @tabInfo
+  */
+static void tab_info_free (gpointer orig)
+{
+	tabInfo *a = orig;
+	g_object_unref(a->label);
+	g_object_unref(a->widget);
+	g_object_unref(a->htmlview);
+	g_free(orig);
+}
+
+static GType tab_info_get_type(void);
+#define TAB_INFO_TYPE (tab_info_get_type())
+G_DEFINE_BOXED_TYPE(tabInfo, tab_info, tab_info_copy, tab_info_free)
+
+// gslist type for gproperty
+//https://git.gnome.org/browse/gobject-introspection/tree/tests/gimarshallingtests.c
+static GType
+gi_marshalling_boxed_gslist_get_type (void)
+{
+    static GType type = 0;
+
+    if (type == 0) {
+        type = g_boxed_type_register_static ("GIMarshallingBoxedGSList",
+                (GBoxedCopyFunc) g_slist_copy,
+                (GBoxedFreeFunc) g_slist_free);
+    }
+
+    return type;
+}
 
 /* tab callbacks */
 
@@ -58,6 +105,14 @@ on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
 /* browser tabs object */
 
 #define BROWSER_TABS_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), BROWSER_TABS_TYPE, BrowserTabsPrivate))
+
+enum {
+	PROP_NONE,
+	PROP_NOTEBOOK,
+	PROP_HEAD_LINES,
+	PROP_TAB_INFO_LIST
+
+};
 
 struct BrowserTabsPrivate {
 	GtkNotebook	*notebook;
@@ -96,13 +151,71 @@ browser_tabs_finalize (GObject *object)
 }
 
 static void
+browser_tabs_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+	BrowserTabs	*bt = BROWSER_TABS (object);
+
+	switch (prop_id) {
+		case PROP_NOTEBOOK:
+			g_value_set_object (value, bt->priv->notebook);
+			break;
+		case PROP_HEAD_LINES:
+			g_value_set_object (value, bt->priv->headlines);
+			break;
+		case PROP_TAB_INFO_LIST:
+			g_value_set_boxed (value, bt->priv->list);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+			break;
+	}
+}
+
+static void
 browser_tabs_class_init (BrowserTabsClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
+	object_class->get_property = browser_tabs_get_property;
+
 	object_class->finalize = browser_tabs_finalize;
+
+	/* BrowserTabs:notebook: */
+	g_object_class_install_property (
+			object_class,
+			PROP_NOTEBOOK,
+			g_param_spec_object (
+				"notebook",
+				"GtkNotebook",
+				"GtkNotebook object",
+				GTK_TYPE_NOTEBOOK,
+				G_PARAM_READABLE));
+
+	/* BrowserTabs:headlines: */
+	g_object_class_install_property (
+			object_class,
+			PROP_HEAD_LINES,
+			g_param_spec_object (
+				"head-lines",
+				"GtkWidget",
+				"GtkWidget object",
+				GTK_TYPE_WIDGET,
+				G_PARAM_READABLE));
+
+	/**
+	 * BrowserTabs:tab-info-list: (type GSList(tabInfo)) (transfer none):
+	 */
+	g_object_class_install_property (
+			object_class,
+			PROP_TAB_INFO_LIST,
+			g_param_spec_boxed(
+				"tab-info-list",
+				"SList of browser tab info",
+				"A GList of tab info containing htmlviews",
+				gi_marshalling_boxed_gslist_get_type(),
+				G_PARAM_READABLE));
 
 	g_type_class_add_private (object_class, sizeof(BrowserTabsPrivate));
 }

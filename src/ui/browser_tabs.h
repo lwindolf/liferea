@@ -94,6 +94,28 @@ LifereaHtmlView * browser_tabs_get_active_htmlview (void);
  */
 void browser_tabs_do_zoom (gboolean in);
 
+/** All widget elements and state of a tab */
+typedef struct _tabInfo tabInfo;
+struct _tabInfo {
+	GtkWidget	*label;		/**< the tab label */
+	GtkWidget	*widget;	/**< the embedded child widget */
+	LifereaHtmlView	*htmlview;	/**< the tabs HTML view widget */
+};
+
+/**
+  * tab_info_copy: (skip)
+  *
+  * Creates a copy of @tabInfo
+  */
+static gpointer tab_info_copy (gpointer orig);
+
+/**
+  * tab_info_free: (skip)
+  *
+  * free @tabInfo
+  */
+static void tab_info_free (gpointer orig);
+
 G_END_DECLS
 
 #endif
