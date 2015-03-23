@@ -63,8 +63,6 @@ static void tab_info_free (gpointer orig)
 	g_free(orig);
 }
 
-static GType tab_info_get_type(void);
-#define TAB_INFO_TYPE (tab_info_get_type())
 G_DEFINE_BOXED_TYPE(tabInfo, tab_info, tab_info_copy, tab_info_free)
 
 // gslist type for gproperty

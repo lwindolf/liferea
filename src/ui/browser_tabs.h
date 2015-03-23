@@ -102,20 +102,6 @@ struct _tabInfo {
 	LifereaHtmlView	*htmlview;	/**< the tabs HTML view widget */
 };
 
-/**
-  * tab_info_copy: (skip)
-  *
-  * Creates a copy of @tabInfo
-  */
-static gpointer tab_info_copy (gpointer orig);
-
-/**
-  * tab_info_free: (skip)
-  *
-  * free @tabInfo
-  */
-static void tab_info_free (gpointer orig);
-
 G_END_DECLS
 
 #endif
