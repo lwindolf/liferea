@@ -1,5 +1,5 @@
 # Hebrew translation for liferea.
-# Copyright (c) 2003-2014 The Liferea Team
+# Copyright (c) 2003-2015 The Liferea Team
 # This file is distributed under the same license as the liferea package.
 # Yaron Sheffer <yaronf@gmx.com>, 2010.
 #
@@ -102,12 +102,13 @@ msgstr ""
 
 #: ../xslt/feed.xml.in.h:2
 msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+"The last update of this subscription failed!<br/><b>HTTP error code "
+"<xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+"select=\"httpError\"/></b>"
 msgstr ""
 "<div style=\"direction:rtl\">העדכון האחרון של הרשמה זו נכשל!<br/><b>HTTP "
-"error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
-"\"httpError\"/></b></div>"
+"error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+"select=\"httpError\"/></b></div>"
 
 # <div style=\"direction:rtl\">
 # </div>
@@ -229,11 +230,11 @@ msgstr "מעדכן כעת…"
 
 #: ../xslt/item.xml.in.h:12
 msgid "Section"
-msgstr "סעיף"
+msgstr "פלג"
 
 #: ../xslt/item.xml.in.h:13
 msgid "Department"
-msgstr "מחלקה"
+msgstr "אגף"
 
 #: ../xslt/newsbin.xml.in.h:1
 msgid "News Bin:"
@@ -244,8 +245,8 @@ msgid ""
 "Add items to this news bin by selecting \"Copy to News Bin\" from the item "
 "list context menu."
 msgstr ""
-"<p dir=\"rtl\">כדי להוסיף פריטים אל סל איסוף זה, יש לבחור \"העתק אל סל איסוף"
-"\" מתוך תפריט ההקשר של רשימת הפריטים.</p>"
+"<p dir=\"rtl\">כדי להוסיף פריטים אל סל איסוף זה, יש לבחור \"העתק אל סל "
+"איסוף\" מתוך תפריט ההקשר של רשימת הפריטים.</p>"
 
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
@@ -353,7 +354,7 @@ msgstr "‏\"%s\" אינו מסמך OPML תקין. Liferea לא מסוגל לי�
 
 #: ../src/export.c:466
 msgid "Imported feed list"
-msgstr "רשימת ערוצים מיובאים"
+msgstr "רשימת ערוצים מיובאת"
 
 #: ../src/export.c:478
 msgid "Import Feed List"
@@ -361,7 +362,7 @@ msgstr "ייבוא רשימת ערוצים"
 
 #: ../src/export.c:478
 msgid "Import"
-msgstr "ייבוא"
+msgstr "יב_א"
 
 #: ../src/export.c:478 ../src/export.c:495 ../src/fl_sources/opml_source.c:383
 msgid "OPML Files"
@@ -369,11 +370,11 @@ msgstr "קבצי OPML"
 
 #: ../src/export.c:486
 msgid "Error while exporting feed list!"
-msgstr "שגיאה במהלך ייצוא רשימת ערוצים!"
+msgstr "אירעה שגיאה במהלך ייצוא רשימת ערוצים!"
 
 #: ../src/export.c:488
 msgid "Feed List exported!"
-msgstr "ייצוא רשימת ערוצים הסתיים!"
+msgstr "ייצוא רשימת ערוצים הסתיים בהצלחה!"
 
 #: ../src/export.c:495
 msgid "Export Feed List"
@@ -381,13 +382,13 @@ msgstr "ייצוא רשימת ערוצים"
 
 #: ../src/export.c:495
 msgid "Export"
-msgstr "ייצוא"
+msgstr "יצ_א"
 
 #: ../src/feed.c:236
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+"points to a resource provided in one of the supported syndication "
+"formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr ""
 "<p dir=\"rtl\">לא ניתן לזהות את טיפוס הערוץ! אנא בדוק כי המקור אכן מצביע "
 "לאחד הפורמטים הנתמכים.</p><p dir=\"rtl\">תוצאת פענוח XML:</p><br /><div "
@@ -543,7 +544,7 @@ msgstr ""
 msgid "Liferea, the Linux Feed Reader"
 msgstr ""
 
-# למידע נוסף, אנא בקר בכתובת http://lzone.de/liferea/‎
+# למידע נוסף, אנא בקרו בכתובת http://lzone.de/liferea/‎
 #: ../src/main.c:202
 msgid "For more information, please visit http://lzone.de/liferea/"
 msgstr ""
@@ -912,7 +913,7 @@ msgstr "סימון כל פריט בכל הרשמה ככזה שנקרא."
 
 #: ../src/ui/liferea_shell.c:964
 msgid "_Import Feed List..."
-msgstr "יי_בוא רשימת ערוצים..."
+msgstr "י_בא רשימת ערוצים..."
 
 # מייבא רשימת הזנות מסוג OPML.
 # מייבא רשימת הזנות OPML.
@@ -922,7 +923,7 @@ msgstr "ייבוא רשימת ערוצים בתסדיר OPML."
 
 #: ../src/ui/liferea_shell.c:965
 msgid "_Export Feed List..."
-msgstr "ייצו_א רשימת ערוצים..."
+msgstr "יצ_א רשימת ערוצים..."
 
 #: ../src/ui/liferea_shell.c:965
 msgid "Exports the feed list as OPML."
@@ -954,13 +955,13 @@ msgstr "פריט קודם"
 
 #: ../src/ui/liferea_shell.c:975
 msgid "Next Item"
-msgstr "הלאה"
+msgstr "פריט הבא"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
 #: ../src/ui/liferea_shell.c:980
 msgid "_Next Unread Item"
-msgstr "_הלאה לפריט הבא שלא נקרא"
+msgstr "_פריט הבא שלא נקרא"
 
 #: ../src/ui/liferea_shell.c:983
 msgid "_View"
@@ -1005,11 +1006,11 @@ msgstr "ערוך ההעדפות."
 
 #: ../src/ui/liferea_shell.c:995
 msgid "S_earch"
-msgstr "_חפש"
+msgstr "_חיפוש"
 
 #: ../src/ui/liferea_shell.c:996
 msgid "Search All Feeds..."
-msgstr "חיפוש בכל הערוצים..."
+msgstr "חפש בכל הערוצים..."
 
 #: ../src/ui/liferea_shell.c:996
 msgid "Show the search dialog."
@@ -1336,7 +1337,7 @@ msgstr "פתח צירוף..."
 
 #: ../src/ui/popup_menu.c:180
 msgid "Save As..."
-msgstr "שמירה בשם..."
+msgstr "שמור בשם..."
 
 #: ../src/ui/popup_menu.c:181
 msgid "Copy Link Location"
@@ -1384,7 +1385,7 @@ msgstr "_מחק"
 
 #: ../src/ui/popup_menu.c:352
 msgid "Convert To Local Subscriptions..."
-msgstr "המרה אל הרשמות מקומיות..."
+msgstr "המר אל הרשמות מקומיות..."
 
 #: ../src/ui/preferences_dialog.c:87
 msgid "GNOME default"
@@ -1547,11 +1548,11 @@ msgstr "הרשמה חדשה"
 
 #: ../src/fl_sources/aol_source.c:279
 msgid "AOL Reader"
-msgstr ""
+msgstr "‏AOL Reader"
 
 #: ../src/fl_sources/inoreader_source.c:308
 msgid "InoReader"
-msgstr ""
+msgstr "‏InoReader"
 
 #: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
@@ -1582,7 +1583,7 @@ msgstr "טיפוס מקור"
 #: ../src/fl_sources/node_source.c:405
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
-msgstr ""
+msgstr "כניסה של '%s' עדיין לא הושלמה! אנא המתן עד לסיום הכניסה."
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
@@ -1593,7 +1594,7 @@ msgstr "ההרשמה '%s' הומרה בהצלחה אל ערוצים מקומיי
 
 #: ../src/fl_sources/reedah_source.c:309
 msgid "Reedah"
-msgstr ""
+msgstr "‏Reedah"
 
 #: ../src/fl_sources/reedah_source_feed.c:154
 msgid "Could not parse JSON returned by Reedah API!"
@@ -1631,7 +1632,7 @@ msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של TinyTiny
 
 #: ../src/fl_sources/theoldreader_source.c:327
 msgid "TheOldReader"
-msgstr ""
+msgstr "‏TheOldReader"
 
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
@@ -1677,9 +1678,8 @@ msgid "Add InoReader Account"
 msgstr "הוסף חשבון InoReader"
 
 #: ../glade/inoreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your InoReader account settings."
-msgstr "אנא הזן הגדרות חשבון InoReader"
+msgstr "אנא הזן הגדרות חשבון InoReader."
 
 #: ../glade/liferea.ui.h:2
 msgid "normal view"
@@ -1724,15 +1724,15 @@ msgstr "תדירות עדכון"
 # השתמש בתדירות עדכון _גלובלית.
 #: ../glade/liferea.ui.h:12
 msgid "_Use global default update interval."
-msgstr "_השתמש בברירת מחדל גלובלית של זמן עדכון."
+msgstr "_השתמש בזמן עדכון גלובלי שגרתי."
 
 #: ../glade/liferea.ui.h:13
 msgid "_Feed specific update interval of"
-msgstr "_תדירות עדכון ייחודית לערוץ של"
+msgstr "_תדירות עדכון ערוץ ייחודית בשיעור של"
 
 #: ../glade/liferea.ui.h:14
 msgid "_Don't update this feed automatically."
-msgstr "_אל תעדכן את ערוץ זה אוטומטית."
+msgstr "א_ל תעדכן את ערוץ זה אוטומטית."
 
 #: ../glade/liferea.ui.h:15
 msgid " "
@@ -1774,11 +1774,11 @@ msgstr "_קובץ מקומי"
 
 #: ../glade/liferea.ui.h:25 ../glade/new_subscription.ui.h:7
 msgid "Select File..."
-msgstr "בחירת קובץ..."
+msgstr "בחר קובץ..."
 
 #: ../glade/liferea.ui.h:26 ../glade/new_subscription.ui.h:11
 msgid "Use conversion _filter"
-msgstr "השתמש ב_מסנן המרה"
+msgstr "_השתמש במסנן המרה"
 
 #: ../glade/liferea.ui.h:27
 msgid ""
@@ -1802,20 +1802,19 @@ msgstr ""
 
 #: ../glade/liferea.ui.h:31
 msgid "_Default cache settings"
-msgstr "הגדרות ברירת מחדל של _מטמון"
+msgstr "_הגדרות מטמון ברירת מחדל"
 
 #: ../glade/liferea.ui.h:32
 msgid "Di_sable cache"
 msgstr "_נטרל מטמון"
 
-# מטמון _בלתי מוגבל
 #: ../glade/liferea.ui.h:33
 msgid "_Unlimited cache"
-msgstr "מטמון ללא הג_בלת גודל"
+msgstr "_מטמון בלתי מוגבל"
 
 #: ../glade/liferea.ui.h:34
 msgid "_Number of items to save:"
-msgstr "מ_ספר פריטים לשמור:"
+msgstr "מספר _פריטים לשמור:"
 
 #: ../glade/liferea.ui.h:35
 msgid "Archive"
@@ -1823,11 +1822,11 @@ msgstr "ארכיון"
 
 #: ../glade/liferea.ui.h:36
 msgid "Use HTTP _authentication"
-msgstr "השתמש ב_זיהוי HTTP"
+msgstr "_השתמש בזיהוי HTTP"
 
 #: ../glade/liferea.ui.h:39 ../glade/new_subscription.ui.h:10
 msgid "_Don't use proxy for download"
-msgstr "_אל תעשה שימוש בפרוקסי"
+msgstr "א_ל תשתמש בפרוקסי"
 
 # טעינת פריטים
 #: ../glade/liferea.ui.h:40
@@ -1844,7 +1843,7 @@ msgstr "_טען אוטומטית קישור פריט לתוך דפדפן מוג�
 
 #: ../glade/liferea.ui.h:43
 msgid "Ignore _comment feeds for this subscription."
-msgstr "התעלם מ_תגובות ערוצים עבור הרשמה זו."
+msgstr "ה_תעלם מתגובות ערוצים עבור הרשמה זו."
 
 #: ../glade/liferea.ui.h:44
 msgid "_Mark downloaded items as read."
@@ -1966,7 +1965,7 @@ msgstr "חיפוש מורחב"
 
 #: ../glade/liferea.ui.h:70 ../glade/search_folder.ui.h:3
 msgid "Find Items that meet the following criteria"
-msgstr "מציאת פריטים אשר עומדים בקריטריונים המנויים להלן"
+msgstr "מצא פריטים אשר עומדים בקריטריונים המנויים להלן"
 
 #: ../glade/liferea.ui.h:71 ../glade/search_folder.ui.h:4
 msgid "A_ny Rule Matches"
@@ -2101,7 +2100,7 @@ msgstr "_הצג את כל הפריטים של כל ערוצי המשנה כאש�
 
 #: ../glade/prefs.ui.h:12
 msgid "_Hide read items."
-msgstr "הס_תר פריטים שנקראו."
+msgstr "_הסתר פריטים שנקראו."
 
 #: ../glade/prefs.ui.h:13
 msgid "Feed Icons (Favicons)"
@@ -2220,15 +2219,15 @@ msgstr "_מארח פרוקסי:"
 
 #: ../glade/prefs.ui.h:43
 msgid "Use Proxy Au_thentication"
-msgstr "השתמש ב_זיהוי פרוקסי"
+msgstr "ה_שתמש בזיהוי פרוקסי"
 
 #: ../glade/prefs.ui.h:44
 msgid "Proxy Pass_word:"
-msgstr "_סיסמת פרוקסי:"
+msgstr "סיסמת _פרוקסי:"
 
 #: ../glade/prefs.ui.h:45
 msgid "Proxy _Username:"
-msgstr "_שם משתמש פרוקסי:"
+msgstr "שם מש_תמש פרוקסי:"
 
 #: ../glade/prefs.ui.h:46
 msgid "Proxy"
@@ -2259,9 +2258,8 @@ msgid "Add Reedah Account"
 msgstr "הוסף חשבון Reedah"
 
 #: ../glade/reedah_source.ui.h:2
-#, fuzzy
 msgid "Please enter your Reedah account settings."
-msgstr "אנא הזן הגדרות חשבון Reedah"
+msgstr "אנא הזן הגדרות חשבון Reedah."
 
 #: ../glade/search_folder.ui.h:1
 msgid "Search Folder Properties"
@@ -2288,9 +2286,8 @@ msgid "Add Tiny Tiny RSS Account"
 msgstr "הוסף חשבון ‫Tiny Tiny RSS"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TinyTinyRSS account settings."
-msgstr "אנא הזן הגדרות חשבון InoReader"
+msgstr "אנא הזן הגדרות חשבון TinyTinyRSS."
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
