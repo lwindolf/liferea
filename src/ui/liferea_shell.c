@@ -1376,10 +1376,10 @@ void
 liferea_shell_destroy (void)
 {
 	liferea_shell_save_position ();
+	g_object_unref (shell->priv->extensions);
 	g_object_unref (shell->priv->tabs);
 	g_object_unref (shell->priv->feedlist);
 	g_object_unref (shell->priv->itemview);
-	g_object_unref (shell->priv->extensions);
 
 	g_signal_handlers_block_by_func (shell, G_CALLBACK (on_window_state_event), shell->priv);
 	gtk_widget_destroy (GTK_WIDGET (shell->priv->window));
