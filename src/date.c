@@ -348,10 +348,10 @@ date_parse_RFC822 (const gchar *date)
 	setlocale (LC_TIME, "C");
 	
 	/* standard format with seconds and 4 digit year */
-	if (NULL != (pos = strptime ((const char *)date, " %d %b %Y %T", &tm)))
+	if (NULL != (pos = strptime ((const char *)date, " %d %b %Y %T", &tm)) && tm.tm_year > 0)
 		success = TRUE;
 	/* non-standard format without seconds and 4 digit year */
-	else if (NULL != (pos = strptime ((const char *)date, " %d %b %Y %H:%M", &tm)))
+	else if (NULL != (pos = strptime ((const char *)date, " %d %b %Y %H:%M", &tm)) && tm.tm_year > 0)
 		success = TRUE;
 	/* non-standard format with seconds and 2 digit year */
 	else if (NULL != (pos = strptime ((const char *)date, " %d %b %y %T", &tm)))
