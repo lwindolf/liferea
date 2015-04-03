@@ -88,10 +88,14 @@ static void
 feedlist_finalize (GObject *object)
 {
 	/* Stop all timer based activity */
-	if (feedlist->priv->autoUpdateTimer)
+	if (feedlist->priv->autoUpdateTimer) {
 		g_source_remove (feedlist->priv->autoUpdateTimer);
-	if (feedlist->priv->saveTimer)
+		feedlist->priv->autoUpdateTimer = 0;
+	}
+	if (feedlist->priv->saveTimer) {
 		g_source_remove (feedlist->priv->saveTimer);
+		feedlist->priv->saveTimer = 0;
+	}
 
 	/* Enforce synchronous save upon exit */
 	feedlist_save ();		
