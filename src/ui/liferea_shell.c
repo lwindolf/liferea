@@ -436,6 +436,7 @@ static gboolean
 liferea_shell_unlock_status_bar_cb (gpointer user_data)
 {
 	shell->priv->statusbarLocked = FALSE;
+	shell->priv->statusbarLockTimer = 0;
 	
 	return FALSE;
 }
