@@ -353,21 +353,46 @@ struct FullscreenData {
  */
 static void
 fullscreen_toggle_widget_visible(GtkWidget *wid, gpointer user_data) {
-	const gchar* data_label = "fullscreen_visible";
+	gchar* data_label;
 	struct FullscreenData *fdata;
 	gboolean old_v;
 	gchar *propName;
 
 	fdata = user_data;
 
-	if (GTK_IS_NOTEBOOK(wid)) {
-		propName = "show-tabs";
-	} else {
-		propName = "visible";
+	// remove shadow of scrolled window
+	if (GTK_IS_SCROLLED_WINDOW(wid)) {
+		GtkShadowType shadow_type;
+
+		data_label = "fullscreen_shadow_type";
+		propName = "shadow-type";
+
+		if (fdata->visible == FALSE) {
+			g_object_get(G_OBJECT(wid),
+					propName, &shadow_type, NULL);
+			g_object_set(G_OBJECT(wid),
+					propName, GTK_SHADOW_NONE, NULL);
+			g_object_set_data(G_OBJECT(wid), data_label,
+					GINT_TO_POINTER(shadow_type));
+		} else {
+			shadow_type = GPOINTER_TO_INT(g_object_steal_data(
+						G_OBJECT(wid), data_label));
+			if (shadow_type && shadow_type != GTK_SHADOW_NONE) {
+				g_object_set(G_OBJECT(wid),
+						propName, shadow_type, NULL);
+			}
+		}
 	}
 
 	if (wid == fdata->me && !GTK_IS_NOTEBOOK(wid)) {
 		return;
+	}
+
+	data_label = "fullscreen_visible";
+	if (GTK_IS_NOTEBOOK(wid)) {
+		propName = "show-tabs";
+	} else {
+		propName = "visible";
 	}
 
 	if (fdata->visible == FALSE) {
