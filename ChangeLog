@@ -8,6 +8,8 @@ To be released
 	  (reported by GreenLunar)
 	* Fixes Github #30: Segfault after updating from 1.8 to 1.10
 	  (reported by vakuum)
+	* Fixes Github #87: URL resolving wrong if base tag involved
+	  (reported by DanMan, fixed by mozbugbox)
 	* Fixes all defects reported by Coverity scan
 	* Simplied external browser handling. Now Liferea only supports
 	  the gtk_show_uri() launch mechanism for the system default browser
