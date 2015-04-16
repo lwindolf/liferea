@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes Github #32: Prevent erroneous "Mark all as read"
+	  (reported by Mno-hime)
+ 
+
 2015-04-14   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.11.4

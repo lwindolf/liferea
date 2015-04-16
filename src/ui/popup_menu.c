@@ -301,8 +301,6 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 			ui_popup_add_menuitem (menu, _("_Update"), on_menu_update, node, NULL, 0);
 		else if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
 			ui_popup_add_menuitem (menu, _("_Update Folder"), on_menu_update, node, NULL, 0);
-
-		ui_popup_add_menuitem (menu, _("_Mark All As Read"), ui_popup_mark_as_read, node, NULL, 0);
 	}
 
 	if (writeableFeedlist) {
@@ -333,6 +331,11 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 			ui_popup_add_menuitem (menu, _("Sort Feeds"), ui_popup_sort_feeds, node, NULL, 0);
 		}
+	}
+
+	if (validSelection) {
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
+		ui_popup_add_menuitem (menu, _("_Mark All As Read"), ui_popup_mark_as_read, node, NULL, 0);
 	}
 
 	if (IS_VFOLDER (node)) {
