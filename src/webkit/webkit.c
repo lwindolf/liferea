@@ -343,6 +343,139 @@ webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
 	return WEBKIT_WEB_VIEW (htmlwidget);
 }
 
+struct FullscreenData {
+	GtkWidget *me;
+	gboolean visible;
+};
+
+/**
+ * callback for fullscreen mode gtk_container_foreach()
+ */
+static void
+fullscreen_toggle_widget_visible(GtkWidget *wid, gpointer user_data) {
+	gchar* data_label;
+	struct FullscreenData *fdata;
+	gboolean old_v;
+	gchar *propName;
+
+	fdata = user_data;
+
+	// remove shadow of scrolled window
+	if (GTK_IS_SCROLLED_WINDOW(wid)) {
+		GtkShadowType shadow_type;
+
+		data_label = "fullscreen_shadow_type";
+		propName = "shadow-type";
+
+		if (fdata->visible == FALSE) {
+			g_object_get(G_OBJECT(wid),
+					propName, &shadow_type, NULL);
+			g_object_set(G_OBJECT(wid),
+					propName, GTK_SHADOW_NONE, NULL);
+			g_object_set_data(G_OBJECT(wid), data_label,
+					GINT_TO_POINTER(shadow_type));
+		} else {
+			shadow_type = GPOINTER_TO_INT(g_object_steal_data(
+						G_OBJECT(wid), data_label));
+			if (shadow_type && shadow_type != GTK_SHADOW_NONE) {
+				g_object_set(G_OBJECT(wid),
+						propName, shadow_type, NULL);
+			}
+		}
+	}
+
+	if (wid == fdata->me && !GTK_IS_NOTEBOOK(wid)) {
+		return;
+	}
+
+	data_label = "fullscreen_visible";
+	if (GTK_IS_NOTEBOOK(wid)) {
+		propName = "show-tabs";
+	} else {
+		propName = "visible";
+	}
+
+	if (fdata->visible == FALSE) {
+		g_object_get(G_OBJECT(wid), propName, &old_v, NULL);
+		g_object_set(G_OBJECT(wid), propName, FALSE, NULL);
+		g_object_set_data(G_OBJECT(wid), data_label,
+				GINT_TO_POINTER(old_v));
+	} else {
+		old_v = GPOINTER_TO_INT(g_object_steal_data(
+					G_OBJECT(wid), data_label));
+		if (old_v == TRUE) {
+			g_object_set(G_OBJECT(wid), propName, TRUE, NULL);
+		}
+	}
+}
+
+/**
+ * For fullscreen mode, hide everything except the current webview
+ */
+static void
+fullscreen_toggle_parent_visible(GtkWidget *me, gboolean visible) {
+	GtkWidget *parent;
+	GList *children;
+	struct FullscreenData *fdata;
+	fdata = (struct FullscreenData *)g_new0(struct FullscreenData, 1);
+
+	// Flag fullscreen status
+	g_object_set_data(G_OBJECT(me), "fullscreen_on",
+			GINT_TO_POINTER(!visible));
+
+	parent = gtk_widget_get_parent(me);
+	fdata->visible = visible;
+	while (parent != NULL) {
+		fdata->me = me;
+		gtk_container_foreach(GTK_CONTAINER(parent),
+				(GtkCallback)fullscreen_toggle_widget_visible,
+				(gpointer)fdata);
+		me = parent;
+		parent = gtk_widget_get_parent(me);
+	}
+	g_free(fdata);
+}
+
+/**
+ * WebKitWebView "entering-fullscreen" signal
+ * Hide all the widget except current WebView
+ */
+static gboolean
+webkit_entering_fullscreen (WebKitWebView *view, WebKitDOMHTMLElement *elm)
+{
+	fullscreen_toggle_parent_visible(GTK_WIDGET(view), FALSE);
+	return FALSE;
+}
+
+/**
+ * WebKitWebView "leaving-fullscreen" signal
+ * Restore visibility of hidden widgets
+ */
+static gboolean
+webkit_leaving_fullscreen (WebKitWebView *view, WebKitDOMHTMLElement *elm)
+{
+	fullscreen_toggle_parent_visible(GTK_WIDGET(view), TRUE);
+	return FALSE;
+}
+
+// Hack to force webview exit from fullscreen mode on new page
+static void
+liferea_webkit_load_status_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
+{
+	WebKitLoadStatus loadStatus;
+
+	g_object_get (view, "load-status", &loadStatus, NULL);
+	if (loadStatus == WEBKIT_LOAD_PROVISIONAL) {
+		gboolean isFullscreen;
+		isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
+					G_OBJECT(view), "fullscreen_on"));
+		if (isFullscreen == TRUE) {
+		webkit_web_view_execute_script (view,
+				"document.webkitExitFullscreen();");
+		}
+	}
+}
+
 /**
  * WebKitWebView::populate-popup:
  * @web_view: the object on which the signal is emitted
@@ -484,6 +617,27 @@ liferea_webkit_new (LifereaHtmlView *htmlview)
 		view,
 		"create-web-view",
 		G_CALLBACK (webkit_create_web_view),
+		view
+	);
+
+	g_signal_connect (
+		view,
+		"entering-fullscreen",
+		G_CALLBACK (webkit_entering_fullscreen),
+		view
+	);
+
+	g_signal_connect (
+		view,
+		"leaving-fullscreen",
+		G_CALLBACK (webkit_leaving_fullscreen),
+		view
+	);
+
+	g_signal_connect (
+		view,
+		"notify::load-status",
+		G_CALLBACK (liferea_webkit_load_status_changed),
 		view
 	);
 
