@@ -1,5 +1,7 @@
 To be released
 
+	* Github #178: Implementing full screen mode for videos
+	  (mozbugbox)
 	* Fixes Github #32: Prevent erroneous "Mark all as read"
 	  (reported by Mno-hime)
  
