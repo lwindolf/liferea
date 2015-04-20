@@ -518,7 +518,7 @@ update_dequeue_job (gpointer user_data)
 		update_job_run (job);
 	}
 		
-	return TRUE; /* since I got a job now, there may be more in the queue */
+	return FALSE;
 }
 
 updateJobPtr
