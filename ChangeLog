@@ -4,6 +4,8 @@ To be released
 	  (reported by Geoffrey Leach)
 	* Fixes Github #30: Segfault after updating from 1.8 to 1.10
 	  (reported by vakuum)
+	* Improves Github #36, #113: UI lock up during refresh
+	  (suggested by mozbugbox)
 
 	* Fixes typo in Italian translation.
 
