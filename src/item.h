@@ -70,6 +70,10 @@ typedef struct item {
 	gchar		*nodeId;		/**< Node id the containing node. Might be a comment feed id. */
 	gchar		*parentNodeId;		/**< Real parent node id. Always a feed list node id. */
 	gulong 		sourceNr;		/**< Either equal to nr or the number of the item this one is a copy of */
+
+	/* remote states used during sync of remote accounts */
+	gboolean	remoteReadStatus;	/**< TRUE if the remote copy of the item has been read */
+	gboolean	remoteFlagStatus;	/**< TRUE if the remote copy of the item has been flagged */
 } *itemPtr;
 
 /**
