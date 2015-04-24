@@ -121,14 +121,16 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 			if (0 == strcmp (item_get_id (oldItem), item_get_id (newItem))) {
 				found = TRUE;
 
-				/* found corresponding item, check if they are REALLY equal (eg, read status may have changed) */
-				if(oldItem->readStatus != newItem->readStatus) {
-					equal = FALSE;
-					reason |= 4;
-				}
-				if(oldItem->flagStatus != newItem->flagStatus) {
-					equal = FALSE;
-					reason |= 8;
+				if (allowStateChanges) {
+					/* found corresponding item, check if they are REALLY equal (eg, read status may have changed) */
+					if(oldItem->readStatus != newItem->readStatus) {
+						equal = FALSE;
+						reason |= 4;
+					}
+					if(oldItem->flagStatus != newItem->flagStatus) {
+						equal = FALSE;
+						reason |= 8;
+					}
 				}
 				break;
 			} else {
