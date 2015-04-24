@@ -6,6 +6,8 @@ To be released
 	  (reported by Mno-hime)
 	* Improves Github #36, #113: UI lock up during refresh
 	  (suggested by mozbugbox)
+	* Fixes Github #180: Removing item from (v)folder marks all read
+	  (reported by GreenLunar)
 
 
 2015-04-14   Lars Windolf <lars.windolf@gmx.de>
