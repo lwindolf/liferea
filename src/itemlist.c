@@ -177,25 +177,25 @@ itemlist_get_displayed_node (void)
 static void
 itemlist_check_for_deferred_action (void) 
 {
+	gulong	id = itemlist->priv->selectedId;
 	itemPtr	item;
 	
-	if(itemlist->priv->selectedId) {
-		gulong id = itemlist->priv->selectedId;
-		itemlist_set_selected(NULL);
+	if (id) {
+		itemlist_set_selected (NULL);
 
 		/* check for removals caused by itemlist filter rule */
-		if(itemlist->priv->deferredFilter) {
+		if (itemlist->priv->deferredFilter) {
 			itemlist->priv->deferredFilter = FALSE;
-			item = item_load(id);
-			itemview_remove_item(item);
-			feed_list_node_update(item->nodeId);
+			item = item_load (id);
+			itemview_remove_item (item);
+			feed_list_node_update (item->nodeId);
 		}
 
 		/* check for removals caused by vfolder rules */
-		if(itemlist->priv->deferredRemove) {
+		if (itemlist->priv->deferredRemove) {
 			itemlist->priv->deferredRemove = FALSE;
-			item = item_load(id);
-			itemlist_remove_item(item);
+			item = item_load (id);
+			itemlist_remove_item (item);
 		}
 	}
 }
