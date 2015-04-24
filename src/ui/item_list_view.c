@@ -878,6 +878,7 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 	
 	item = itemlist_get_selected ();
 	if (item) {
+		itemview_select_item (NULL);
 		itemlist_remove_item (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
