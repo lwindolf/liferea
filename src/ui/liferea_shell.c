@@ -43,6 +43,7 @@
 #include "plugins_engine.h"
 #include "render.h"
 #include "vfolder.h"
+#include "ui/batch_feed_property.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_node.h"
 #include "ui/feed_list_view.h"
@@ -980,6 +981,7 @@ static const GtkActionEntry liferea_shell_feed_action_entries[] = {
 
 static const GtkActionEntry liferea_shell_read_write_action_entries[] = {
 	{"Properties", "gtk-properties", N_("_Properties"), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
+	{"BatchProperties", "gtk-properties", N_("_Batch Properties"), NULL, N_("Opens the property dialog for batch change subscriptions."), G_CALLBACK(on_menu_batch_feed_property_change)},
 	{"DeleteSelected", "gtk-delete", N_("_Remove"), NULL, N_("Removes the selected subscription."), G_CALLBACK(on_menu_delete)}
 };
 
@@ -1029,6 +1031,7 @@ static const char *liferea_shell_ui_desc =
 "      <menuitem action='DeleteSelected'/>"
 "      <separator/>"
 "      <menuitem action='Properties'/>"
+"      <menuitem action='BatchProperties'/>"
 "    </menu>"
 "    <menu action='ItemMenu'>"
 "      <menuitem action='NextUnreadItem'/>"

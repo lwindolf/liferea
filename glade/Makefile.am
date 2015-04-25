@@ -3,6 +3,7 @@
 gladedir = $(pkgdatadir)
 glade_DATA = liferea.ui \
 	auth.ui \
+	batch_feed_property.ui \
 	new_subscription.ui \
 	simple_subscription.ui \
 	google_source.ui \

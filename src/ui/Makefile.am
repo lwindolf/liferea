@@ -12,6 +12,7 @@ libliui_a_CFLAGS = $(PACKAGE_CFLAGS) $(LIBINDICATE_CFLAGS)
 libliui_a_SOURCES = \
 	auth_dialog.c auth_dialog.h \
 	browser_tabs.c browser_tabs.h \
+	batch_feed_property.c  batch_feed_property.h \
 	enclosure_list_view.c enclosure_list_view.h \
 	feed_list_view.c feed_list_view.h \
 	feed_list_node.c feed_list_node.h \
