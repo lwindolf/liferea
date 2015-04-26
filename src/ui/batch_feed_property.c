@@ -259,7 +259,7 @@ _batch_decode_url_source(BatchFeedProperty *self, subscriptionPtr subscription)
 		}
 	} else if (source_uri_old && source_uri_old->user) {
 		user_parts = g_strsplit(source_uri_old->user, ":", 2);
-		if (NULL != user_parts[0]) {
+		if (user_parts && NULL != user_parts[0]) {
 			username = user_parts[0];
 			password = user_parts[1];
 		}
