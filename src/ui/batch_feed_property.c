@@ -245,6 +245,8 @@ _batch_decode_url_source(BatchFeedProperty *self, subscriptionPtr subscription)
 	gboolean auth_changed = _batch_changed(self, "HTTPauth");
 
 	password = username = NULL;
+
+	url_changed = url_changed && _batch_changed(self, "feed_loc_");
 	source_uri_old = xmlParseURI(BAD_CAST subscription_get_source(subscription));
 
 	if (auth_changed) {
@@ -307,8 +309,11 @@ _batch_decode_source(BatchFeedProperty *self, subscriptionPtr subscription)
 	gchar *source = NULL;
 	GtkEntry *source_entry = GTK_ENTRY(_batch_get_object(self, "sourceEntry"));
 	const gchar *entry_text = gtk_entry_get_text(source_entry);
+	gboolean auth_changed = _batch_changed(self, "HTTPauth");
 
-	if (_batch_checkbox_actived(self, "feed_loc_file"))
+	if (auth_changed)
+		source = _batch_decode_url_source(self, subscription);
+	else if (_batch_checkbox_actived(self, "feed_loc_file"))
 		source = g_strdup(entry_text);
 	else if (_batch_checkbox_actived(self, "feed_loc_command"))
 		source = g_strdup_printf ("|%s", entry_text);
