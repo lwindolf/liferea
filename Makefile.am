@@ -17,6 +17,7 @@ cssdir = $(pkgdatadir)/css
 css_DATA = \
 	css/liferea.css \
 	css/user.css \
+	css/batch_feed_property.css \
 	css/adblock.css
 
 dtddir = $(pkgdatadir)/dtd

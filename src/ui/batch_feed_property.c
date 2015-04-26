@@ -42,6 +42,9 @@ enum  {
 	BATCH_FEED_PROPERTY_DUMMY_PROPERTY
 };
 
+const gchar *BATCH_FEED_PROPERTY_CSS_CHANGED_CLASS = "batch-feed-property-changed";
+const gchar *BATCH_FEED_PROPERTY_CSS_FILENAME = "batch_feed_property.css";
+
 /*
  * Data for specific FileChooser dialog
  */
@@ -52,7 +55,8 @@ struct BatchSelectFileData {
 };
 
 static void _g_free0_ (gpointer var);
-static void _batch_install_css(const gchar *css_data);
+static void _batch_install_css_file(const gchar *css_fname);
+static void _batch_install_css_once();
 static GObject* _batch_get_object (BatchFeedProperty* self, const gchar* widget_name);
 static gboolean _batch_changed(BatchFeedProperty *self, gchar *key);
 static gboolean _batch_checkbox_actived(BatchFeedProperty *self, const gchar *key);
@@ -75,34 +79,40 @@ static gpointer _g_object_ref0 (gpointer self) {
 	return self ? g_object_ref (self) : NULL;
 }
 
-static void _batch_install_css(const gchar *css_data)
+static void _batch_install_css_file(const gchar *css_fname)
 {
-	static gboolean init_flag = FALSE;
-	if (TRUE == init_flag)
-		return;
-	init_flag = TRUE;
 	GtkCssProvider *css;
 	GdkScreen *screen;
+
 	css = gtk_css_provider_new();
-	gtk_css_provider_load_from_data(css, css_data, -1, NULL);
+	gtk_css_provider_load_from_path(css, css_fname, NULL);
 	screen = gdk_screen_get_default();
 	gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(css),
 			GTK_STYLE_PROVIDER_PRIORITY_USER);
+}
+
+static void _batch_install_css_once()
+{
+	static gboolean init_flag = FALSE;
+	gchar *filename_css;
+
+	if (TRUE == init_flag)
+		return;
+	init_flag = TRUE;
+
+	filename_css = common_create_config_filename (BATCH_FEED_PROPERTY_CSS_FILENAME);
+	if (!g_file_test (filename_css, G_FILE_TEST_EXISTS)) {
+		_g_free0_(filename_css);
+		filename_css = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "css", BATCH_FEED_PROPERTY_CSS_FILENAME, NULL);
+	}
+	_batch_install_css_file(filename_css);
+	_g_free0_(filename_css);
 }
 
 BatchFeedProperty* batch_feed_property_construct (GType object_type, GtkWindow* parent) {
 	BatchFeedProperty *self = NULL;
 	GtkBuilder* builder;
 	GtkDialog* dialog;
-	const gchar *css_data =(
-			".feed-property-changed {" 
-			"    border-width: 2px;" 
-			"    border-color: red;" 
-			"    border-style: solid;" 
-			"    background-color: darkgreen;" 
-			"    color: orange;" 
-			"    margin: 4px;" 
-			"}");
 
 	self = (BatchFeedProperty*) g_object_new (object_type, NULL);
 	self->priv->changed = g_hash_table_new_full (g_str_hash, g_str_equal, _g_free0_, NULL);
@@ -117,7 +127,8 @@ BatchFeedProperty* batch_feed_property_construct (GType object_type, GtkWindow* 
 			"response",
 			G_CALLBACK(on_batch_feed_property_dialog_response),
 			self);
-	_batch_install_css(css_data);
+
+	_batch_install_css_once();
 
 	/* load tree */
 	GtkTreeView *life_tree = GTK_TREE_VIEW(liferea_shell_lookup ("feedlist"));
@@ -339,9 +350,9 @@ static void batch_feed_property_change_feed(BatchFeedProperty *self, subscriptio
 
 		/* updateInterval */
 		if (_batch_changed(self, "updateInterval")) {
-			if (_batch_checkbox_actived(self, "updateIntervalNever")) 
+			if (_batch_checkbox_actived(self, "updateIntervalNever"))
 				subscription_set_update_interval (subscription, -2);
-			else if (_batch_checkbox_actived(self, "updateIntervalDefault")) 
+			else if (_batch_checkbox_actived(self, "updateIntervalDefault"))
 				subscription_set_update_interval (subscription, -1);
 			else if (_batch_checkbox_actived(self, "updateIntervalSpecific")) {
 				gint intervalUnit = gtk_combo_box_get_active (
@@ -457,7 +468,7 @@ void on_batch_feed_property_changed (GtkWidget* wid, gpointer user_data)
 			box = wid;
 		}
 		style_context = gtk_widget_get_style_context(GTK_WIDGET(box));
-		gtk_style_context_add_class(style_context, "feed-property-changed");
+		gtk_style_context_add_class(style_context, BATCH_FEED_PROPERTY_CSS_CHANGED_CLASS);
 	}
 
 	wname = wname0;

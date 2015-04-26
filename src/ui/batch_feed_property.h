@@ -36,6 +36,8 @@ GType batch_feed_property_get_type (void) G_GNUC_CONST;
 BatchFeedProperty* batch_feed_property_new (GtkWindow* parent);
 BatchFeedProperty* batch_feed_property_construct (GType object_type, GtkWindow* parent);
 
+extern const gchar *BATCH_FEED_PROPERTY_CSS_CLASS;
+
 void batch_feed_property_run (BatchFeedProperty* self);
 void on_menu_batch_feed_property_change (GtkMenuItem *menuitem, gpointer user_data);
 
