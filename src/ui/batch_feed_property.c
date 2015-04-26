@@ -79,7 +79,8 @@ static gpointer _g_object_ref0 (gpointer self) {
 	return self ? g_object_ref (self) : NULL;
 }
 
-static void _batch_install_css_file(const gchar *css_fname)
+static void
+_batch_install_css_file(const gchar *css_fname)
 {
 	GtkCssProvider *css;
 	GdkScreen *screen;
@@ -91,7 +92,8 @@ static void _batch_install_css_file(const gchar *css_fname)
 			GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 
-static void _batch_install_css_once()
+static void
+_batch_install_css_once()
 {
 	static gboolean init_flag = FALSE;
 	gchar *filename_css;
@@ -109,7 +111,9 @@ static void _batch_install_css_once()
 	_g_free0_(filename_css);
 }
 
-BatchFeedProperty* batch_feed_property_construct (GType object_type, GtkWindow* parent) {
+BatchFeedProperty*
+batch_feed_property_construct (GType object_type, GtkWindow* parent)
+{
 	BatchFeedProperty *self = NULL;
 	GtkBuilder* builder;
 	GtkDialog* dialog;
@@ -138,7 +142,9 @@ BatchFeedProperty* batch_feed_property_construct (GType object_type, GtkWindow* 
 	return self;
 }
 
-BatchFeedProperty* batch_feed_property_new (GtkWindow* parent) {
+BatchFeedProperty*
+batch_feed_property_new (GtkWindow* parent)
+{
 	return batch_feed_property_construct (TYPE_BATCH_FEED_PROPERTY, parent);
 }
 
@@ -169,7 +175,7 @@ struct SensitiveMap {
 /**
  * run the batch property change dialog
  */
-	void
+void
 batch_feed_property_run (BatchFeedProperty* self)
 {
 	GtkDialog* dlg = self->priv->main_dialog;
@@ -179,7 +185,7 @@ batch_feed_property_run (BatchFeedProperty* self)
 /**
  * menu action for batch feed property change
  */
-	void
+void
 on_menu_batch_feed_property_change (GtkMenuItem *menuitem, gpointer user_data)
 {
 	GtkWindow *parent = GTK_WINDOW(liferea_shell_get_window());
@@ -190,7 +196,8 @@ on_menu_batch_feed_property_change (GtkMenuItem *menuitem, gpointer user_data)
 /**
  * Shortcut to get widget/object from the GtkBuilder
  */
-static GObject* _batch_get_object (BatchFeedProperty* self, const gchar* widget_name)
+static GObject*
+_batch_get_object (BatchFeedProperty* self, const gchar* widget_name)
 {
 	GObject* result = NULL;
 	GtkBuilder* builder = self->priv->builder;
@@ -201,7 +208,8 @@ static GObject* _batch_get_object (BatchFeedProperty* self, const gchar* widget_
 /**
  * Shortcut to get widget/object from the GtkBuilder
  */
-static gboolean _batch_changed(BatchFeedProperty *self, gchar *key)
+static gboolean
+_batch_changed(BatchFeedProperty *self, gchar *key)
 {
 	return g_hash_table_contains(self->priv->changed, key);
 }
@@ -209,7 +217,8 @@ static gboolean _batch_changed(BatchFeedProperty *self, gchar *key)
 /**
  * Shortcut to get `active` value from a GtkToggleButton in GtkBuilder
  */
-static gboolean _batch_checkbox_actived(BatchFeedProperty *self, const gchar *key)
+static gboolean
+_batch_checkbox_actived(BatchFeedProperty *self, const gchar *key)
 {
 	GtkToggleButton *checkbox;
 	checkbox = GTK_TOGGLE_BUTTON(_batch_get_object(self, key));
@@ -219,7 +228,8 @@ static gboolean _batch_checkbox_actived(BatchFeedProperty *self, const gchar *ke
 /**
  * Compose changed URL string from current dialog and subscription
  */
-static gchar* _batch_decode_url_source(BatchFeedProperty *self, subscriptionPtr subscription)
+static gchar*
+_batch_decode_url_source(BatchFeedProperty *self, subscriptionPtr subscription)
 {
 	const gchar *username, *password;
 	gchar *source = NULL;
@@ -291,7 +301,8 @@ static gchar* _batch_decode_url_source(BatchFeedProperty *self, subscriptionPtr 
 /**
  * Compose changed feed source string from current dialog and subscription
  */
-static gchar* _batch_decode_source(BatchFeedProperty *self, subscriptionPtr subscription)
+static gchar*
+_batch_decode_source(BatchFeedProperty *self, subscriptionPtr subscription)
 {
 	gchar *source = NULL;
 	GtkEntry *source_entry = GTK_ENTRY(_batch_get_object(self, "sourceEntry"));
@@ -309,7 +320,8 @@ static gchar* _batch_decode_source(BatchFeedProperty *self, subscriptionPtr subs
 /**
  * Change one feed according to the batch change dialog settings
  */
-static void batch_feed_property_change_feed(BatchFeedProperty *self, subscriptionPtr subscription)
+static void
+batch_feed_property_change_feed(BatchFeedProperty *self, subscriptionPtr subscription)
 {
 	gchar		*newSource = NULL;
 	const gchar	*newFilter;
@@ -407,7 +419,8 @@ static void batch_feed_property_change_feed(BatchFeedProperty *self, subscriptio
 /**
  * main dialog response handler function
  */
-static void on_batch_feed_property_dialog_response (GtkDialog* dlg, gint response_id, gpointer user_data)
+static void
+on_batch_feed_property_dialog_response (GtkDialog* dlg, gint response_id, gpointer user_data)
 {
 	BatchFeedProperty * self = user_data;
 	if (response_id == GTK_RESPONSE_OK) {
@@ -444,7 +457,8 @@ static void on_batch_feed_property_dialog_response (GtkDialog* dlg, gint respons
 /*
  * Keep track on which properties were changed
  */
-void on_batch_feed_property_changed (GtkWidget* wid, gpointer user_data)
+void
+on_batch_feed_property_changed (GtkWidget* wid, gpointer user_data)
 {
 	BatchFeedProperty * self = user_data;
 	GtkWidget *box = NULL;
@@ -487,7 +501,8 @@ void on_batch_feed_property_changed (GtkWidget* wid, gpointer user_data)
 /**
  * generic handler for GtkFileChooserDialog response handler with batchfeedproperty specific data
  */
-static void _batch_select_file_response(GtkFileChooserDialog *dlg, gint resp, gpointer user_data)
+static void
+_batch_select_file_response(GtkFileChooserDialog *dlg, gint resp, gpointer user_data)
 {
 	struct BatchSelectFileData *sf_data = user_data;
 	BatchFeedProperty * self = sf_data->self;
@@ -504,7 +519,8 @@ static void _batch_select_file_response(GtkFileChooserDialog *dlg, gint resp, gp
 	gtk_widget_destroy(GTK_WIDGET(dlg));
 }
 
-static void on_batch_feed_property_select_file(GtkWidget *wid, struct BatchSelectFileData *user_data)
+static void
+on_batch_feed_property_select_file(GtkWidget *wid, struct BatchSelectFileData *user_data)
 {
 	GtkFileChooserDialog *fdialog;
 	BatchFeedProperty *self = user_data->self;
@@ -522,7 +538,8 @@ static void on_batch_feed_property_select_file(GtkWidget *wid, struct BatchSelec
 	_batch_select_file_response(fdialog, res, user_data);
 }
 
-void on_batch_feed_property_select_source_file(GtkWidget *wid, gpointer user_data)
+void
+on_batch_feed_property_select_source_file(GtkWidget *wid, gpointer user_data)
 {
 
 	struct BatchSelectFileData *select_data;
@@ -534,7 +551,8 @@ void on_batch_feed_property_select_source_file(GtkWidget *wid, gpointer user_dat
 	on_batch_feed_property_select_file(wid, select_data);
 }
 
-void on_batch_feed_property_select_filter_file(GtkWidget *wid, gpointer user_data)
+void
+on_batch_feed_property_select_filter_file(GtkWidget *wid, gpointer user_data)
 {
 
 	struct BatchSelectFileData *select_data;
