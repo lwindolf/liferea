@@ -197,8 +197,8 @@ search_links (const gchar* data, gint linkType)
 gchar *
 html_auto_discover_feed (const gchar* data, const gchar *baseUri)
 {
-	gchar	*res, *tmp;
-	gchar   *baseU;
+	gchar		*res, *tmp;
+	const gchar	*baseU;
 
 	baseU = search_tag_link(data, "base", NULL);
 	if (!baseU)
