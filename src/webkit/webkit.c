@@ -415,7 +415,6 @@ fullscreen_toggle_widget_visible(GtkWidget *wid, gpointer user_data) {
 static void
 fullscreen_toggle_parent_visible(GtkWidget *me, gboolean visible) {
 	GtkWidget *parent;
-	GList *children;
 	struct FullscreenData *fdata;
 	fdata = (struct FullscreenData *)g_new0(struct FullscreenData, 1);
 
