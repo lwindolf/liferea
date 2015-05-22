@@ -30,6 +30,7 @@ from gi.repository import GObject, Peas, PeasGtk, GLib, Gtk, Liferea, Gst
 #gi.require_version('Gst', '0.11')
 #from gi.repository import Gst
 
+GMARGIN = 6
 def enum(*sequential, **named):
     """Create an ENUM data type"""
     enums = dict(zip(sequential, range(len(sequential))), **named)
@@ -201,8 +202,8 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
         if len(childList) == 1:
            # We need to add a media player...
            vbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
-           vbox.set_margin_top(3)
-           vbox.set_margin_bottom(3)
+           vbox.props.margin = GMARGIN
+           vbox.props.spacing = GMARGIN
            Gtk.Box.pack_start(parentWidget, vbox, True, True, 0);
 
            image = Gtk.Image()
@@ -227,8 +228,6 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
            Gtk.Box.pack_start(vbox, self.nextButton, False, False, 0)
 
            self.slider = Gtk.Scale(orientation = Gtk.Orientation.HORIZONTAL)
-           self.slider.set_margin_left(6)
-           self.slider.set_margin_right(6)
            self.slider.set_draw_value(False)
            self.slider.set_range(0, 100)
            self.slider.set_increments(1, 10)
@@ -242,8 +241,6 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
 
            self.label = Gtk.Label()
            self.set_label(0)
-           self.label.set_margin_left(6)
-           self.label.set_margin_right(6)
            Gtk.Box.pack_start(vbox, self.label, False, False, 0)
 
            Gtk.Widget.show_all(vbox)
