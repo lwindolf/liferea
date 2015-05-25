@@ -8,12 +8,12 @@
 # modify it under the terms of the GNU Library General Public
 # License as published by the Free Software Foundation; either
 # version 2 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Library General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Library General Public License
 # along with this library; see the file COPYING.LIB.  If not, write to
 # the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -30,6 +30,14 @@ from gi.repository import GObject, Peas, PeasGtk, GLib, Gtk, Liferea, Gst
 #gi.require_version('Gst', '0.11')
 #from gi.repository import Gst
 
+GMARGIN = 6
+def enum(*sequential, **named):
+    """Create an ENUM data type"""
+    enums = dict(zip(sequential, range(len(sequential))), **named)
+    return type('Enum', (), enums)
+
+PlayState = enum("PLAY", "PAUSE", "STOP")
+
 class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
     __gtype_name__ = 'MediaPlayerPlugin'
 
@@ -40,6 +48,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
         self.IS_GST010 = Gst.version() < (0, 11)
 
         playbin = "playbin2" if self.IS_GST010 else "playbin"
+        self.playing = PlayState.STOP
         self.player = Gst.ElementFactory.make(playbin, "player")
         if not self.IS_GST010:
             fakesink = Gst.ElementFactory.make("fakesink", "fakesink")
@@ -53,56 +62,61 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
         self.moving_slider = False
 
     def on_error(self, bus, message):
+        self.playing = PlayState.STOP
         self.player.set_state(Gst.State.NULL)
         err, debug = message.parse_error()
         print("Error: %s" % err, debug)
-        self.playing = False
         self.updateButtons()
 
     def on_eos(self, bus, message):
+        self.playing = PlayState.STOP
         self.player.set_state(Gst.State.NULL)
-        self.playing = False
         self.updateButtons()
 
     def on_finished(self, player):
-        self.playing = False
+        self.playing = PlayState.STOP
         self.slider.set_value(0)
         self.set_label(0)
         self.updateButtons()
 
     def play(self):
+        self.playing = PlayState.PLAY
         uri = Liferea.enclosure_get_url(self.enclosures[self.pos])
         self.player.set_property("uri", uri)
         self.player.set_state(Gst.State.PLAYING)
         Liferea.ItemView.select_enclosure(self.pos)
+        self.updateButtons()
+
         GObject.timeout_add(1000, self.updateSlider)
 
     def stop(self):
+        self.playing = PlayState.STOP
         self.player.set_state(Gst.State.NULL)
-        
-    def playToggled(self, w):
         self.slider.set_value(0)
+        self.updateButtons()
+
+    def pause(self):
+        self.playing = PlayState.PAUSE
+        self.player.set_state(Gst.State.PAUSED)
+        self.updateButtons()
+
+    def playToggled(self, w):
         self.set_label(0)
 
-        if(self.playing == False):
+        if(self.playing != PlayState.PLAY):
                 self.play()
         else:
-                self.stop()
-
-        self.playing=not(self.playing)
-        self.updateButtons()
+                self.pause()
 
     def next(self, w):
         self.stop()
         self.pos+=1
         self.play()
-        self.updateButtons()
 
     def prev(self, w):
         self.stop()
         self.pos-=1
         self.play()
-        self.updateButtons()       
 
     def set_label(self, position):
         format = "%d:%02d"
@@ -135,7 +149,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
             return 0
 
     def updateSlider(self):
-        if not self.playing or self.moving_slider:
+        if self.playing != PlayState.PLAY or self.moving_slider:
             return False # cancel timeout
 
         duration = self.get_player_duration() / Gst.SECOND
@@ -150,13 +164,13 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
         Gtk.Widget.set_sensitive(self.prevButton, (self.pos != 0))
         Gtk.Widget.set_sensitive(self.nextButton, (len(self.enclosures) - 1 > self.pos))
 
-        if(self.playing == False):
+        if(self.playing != PlayState.PLAY):
            self.playButtonImage.set_from_stock("gtk-media-play", Gtk.IconSize.BUTTON)
         else:
-           self.playButtonImage.set_from_stock("gtk-media-stop", Gtk.IconSize.BUTTON)
+           self.playButtonImage.set_from_stock("gtk-media-pause", Gtk.IconSize.BUTTON)
 
     def on_slider_change_value(self, widget, scroll, value):
-        self.set_label(value) 
+        self.set_label(value)
         self.move_to_nanosecs = value * Gst.SECOND
 
         return False
@@ -169,11 +183,11 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
 
         # Stop when moving slider to very near the end
         end_cutoff = self.get_player_duration() - Gst.SECOND
-        if self.move_to_nanosecs > end_cutoff and self.playing:
+        if self.move_to_nanosecs > end_cutoff and self.playing == PlayState.PLAY:
             self.playToggled(None)
         else:
             self.player.seek_simple(Gst.Format.TIME,
-                                    Gst.SeekFlags.FLUSH | 
+                                    Gst.SeekFlags.FLUSH |
                                     Gst.SeekFlags.KEY_UNIT,
                                     self.move_to_nanosecs)
 
@@ -188,8 +202,8 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
         if len(childList) == 1:
            # We need to add a media player...
            vbox = Gtk.Box(Gtk.Orientation.HORIZONTAL, 0)
-           vbox.set_margin_top(3)
-           vbox.set_margin_bottom(3)
+           vbox.props.margin = GMARGIN
+           vbox.props.spacing = GMARGIN
            Gtk.Box.pack_start(parentWidget, vbox, True, True, 0);
 
            image = Gtk.Image()
@@ -214,23 +228,19 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
            Gtk.Box.pack_start(vbox, self.nextButton, False, False, 0)
 
            self.slider = Gtk.Scale(orientation = Gtk.Orientation.HORIZONTAL)
-           self.slider.set_margin_left(6)
-           self.slider.set_margin_right(6)
            self.slider.set_draw_value(False)
            self.slider.set_range(0, 100)
            self.slider.set_increments(1, 10)
            self.slider.connect("change-value", self.on_slider_change_value)
            self.slider.connect("button-press-event",
                                self.on_slider_button_press)
-           self.slider.connect("button-release-event", 
+           self.slider.connect("button-release-event",
                                self.on_slider_button_release)
 
            Gtk.Box.pack_start(vbox, self.slider, True, True, 0)
 
            self.label = Gtk.Label()
            self.set_label(0)
-           self.label.set_margin_left(6)
-           self.label.set_margin_right(6)
            Gtk.Box.pack_start(vbox, self.label, False, False, 0)
 
            Gtk.Widget.show_all(vbox)
