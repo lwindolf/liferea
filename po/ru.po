@@ -4,6 +4,7 @@
 # omsoft <omsoft@gmail.com>, 2007.
 # Justin Forest <justin.forest@gmail.com>, 2009.
 # Sergey Rudchenko <sergey.rudchenko@gmail.com>, 2009.
+# Leonid Selivanov <bravebug@gmail.com>, 2013
 #
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-14 23:00+0200\n"
 "PO-Revision-Date: 2015-06-01 21:00+0300\n"
-"Last-Translator: NIN <n-st@mail.ru>\n"
+"Last-Translator: bboa <n-st@mail.ru>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
