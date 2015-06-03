@@ -956,7 +956,7 @@ msgstr "Диалог поиска"
 
 #: ../src/ui/liferea_shell.c:943
 msgid "_Help"
-msgstr "_?"
+msgstr "_Помощь"
 
 #: ../src/ui/liferea_shell.c:944
 msgid "_Contents"
