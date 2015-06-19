@@ -591,14 +591,12 @@ on_popup_social_bm_link_activate (GtkWidget *widget, gpointer user_data)
 }
 
 static GtkWidget *
-menu_add_option (GtkMenu *menu, const gchar *label, const gchar *stock, gpointer cb, gpointer user_data)
+menu_add_option (GtkMenu *menu, const gchar *label, gpointer cb, gpointer user_data)
 {
 	GtkWidget *item, *image;
 
 	g_assert (label);
-	image = gtk_image_new_from_icon_name (stock, GTK_ICON_SIZE_MENU);
 	item = gtk_menu_item_new_with_mnemonic (label);
-	gtk_menu_item_set_image (GTK__MENU_ITEM (item), image);
 	g_signal_connect (item, "activate", G_CALLBACK (cb), user_data);
 	gtk_widget_show (item);
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
@@ -637,36 +635,36 @@ liferea_htmlview_prepare_context_menu (LifereaHtmlView *htmlview, GtkMenu *menu,
 	/* and now add all we want to see */
 	if (link) {
 		gchar *path;
-		menu_add_option (menu, _("Open Link In _Tab"), NULL, G_CALLBACK (on_popup_open_link_in_tab_activate), (gpointer)linkUri);
-		menu_add_option (menu, _("_Open Link In Browser"), NULL, G_CALLBACK (on_popup_launch_link_activate), (gpointer)linkUri);
-		menu_add_option (menu, _("_Open Link In External Browser"), NULL, G_CALLBACK (on_popup_launch_link_external_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("Open Link In _Tab"), G_CALLBACK (on_popup_open_link_in_tab_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("_Open Link In Browser"), G_CALLBACK (on_popup_launch_link_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("_Open Link In External Browser"), G_CALLBACK (on_popup_launch_link_external_activate), (gpointer)linkUri);
 		menu_add_separator (menu);
 		
 		path = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
-		menu_add_option (menu, path, NULL, on_popup_social_bm_link_activate, (gpointer)linkUri);
+		menu_add_option (menu, path, on_popup_social_bm_link_activate, (gpointer)linkUri);
 		g_free (path);
 
-		menu_add_option (menu, _("_Copy Link Location"), "gtk-copy", G_CALLBACK (on_popup_copy_url_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("_Copy Link Location"), G_CALLBACK (on_popup_copy_url_activate), (gpointer)linkUri);
 	}
 	if (image)
-		menu_add_option (menu, _("_Copy Image Location"), "gtk-copy", G_CALLBACK (on_popup_copy_url_activate), (gpointer)imageUri);
+		menu_add_option (menu, _("_Copy Image Location"), G_CALLBACK (on_popup_copy_url_activate), (gpointer)imageUri);
 	if (link)
-		menu_add_option (menu, _("S_ave Link As"), "gtk-save", G_CALLBACK (on_popup_save_url_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("S_ave Link As"), G_CALLBACK (on_popup_save_url_activate), (gpointer)linkUri);
 	if (image)
-		menu_add_option (menu, _("S_ave Image As"), "gtk-save", G_CALLBACK (on_popup_save_url_activate), (gpointer)imageUri);
+		menu_add_option (menu, _("S_ave Image As"), G_CALLBACK (on_popup_save_url_activate), (gpointer)imageUri);
 	if (link) {	
 		menu_add_separator (menu);
-		menu_add_option (menu, _("_Subscribe..."), "gtk-add", G_CALLBACK (on_popup_subscribe_url_activate), (gpointer)linkUri);
+		menu_add_option (menu, _("_Subscribe..."), G_CALLBACK (on_popup_subscribe_url_activate), (gpointer)linkUri);
 	}
 	
 	if(!link && !image) {
 		GtkWidget *item;
-		item = menu_add_option (menu, _("_Copy"), NULL, G_CALLBACK (on_popup_copy_activate), htmlview);
+		item = menu_add_option (menu, _("_Copy"), G_CALLBACK (on_popup_copy_activate), htmlview);
 		if (!(RENDERER (htmlview)->hasSelection) (htmlview->priv->renderWidget)) 
 			gtk_widget_set_sensitive (item, FALSE);
 
 		menu_add_separator (menu);
-		menu_add_option (menu, _("_Increase Text Size"), "gtk-zoom-in", G_CALLBACK (on_popup_zoomin_activate), htmlview);
-		menu_add_option (menu, _("_Decrease Text Size"), "gtk-zoom-out", G_CALLBACK (on_popup_zoomout_activate), htmlview);
+		menu_add_option (menu, _("_Increase Text Size"), G_CALLBACK (on_popup_zoomin_activate), htmlview);
+		menu_add_option (menu, _("_Decrease Text Size"), G_CALLBACK (on_popup_zoomout_activate), htmlview);
 	}
 }
