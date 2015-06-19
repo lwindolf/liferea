@@ -1127,18 +1127,6 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	
 	liferea_shell_restore_position ();
 
-	debug0 (DEBUG_GUI, "Loading pane proportions");
-		
-	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
-	if (last_vpane_pos)
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
-	conf_get_int_value (LAST_HPANE_POS, &last_hpane_pos);
-	if (last_hpane_pos)
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
-	conf_get_int_value (LAST_WPANE_POS, &last_wpane_pos);
-	if (last_wpane_pos)
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
-
 	/* Apply horrible window state parameter logic:
 	   -> overrideWindowState provides optional command line flags passed by
 	      user or the session manager (prio 1)
@@ -1173,6 +1161,20 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 			debug0 (DEBUG_GUI, "Restoring window state 'shown'");
 			gtk_widget_show (GTK_WIDGET (shell->priv->window));
 	}
+
+	/* This only works after the window has been restored, so we do it last. */
+	debug0 (DEBUG_GUI, "Loading pane proportions");
+
+	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
+	if (last_vpane_pos)
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
+	conf_get_int_value (LAST_HPANE_POS, &last_hpane_pos);
+	if (last_hpane_pos)
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
+	conf_get_int_value (LAST_WPANE_POS, &last_wpane_pos);
+	if (last_wpane_pos)
+		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
+
 }
 
 void

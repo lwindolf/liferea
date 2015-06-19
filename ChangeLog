@@ -8,6 +8,8 @@ To be released
 	  (suggested by mozbugbox)
 	* Fixes Github #180: Removing item from (v)folder marks all read
 	  (reported by GreenLunar)
+	* Fixes Github #140, #158: Vertical pane placement is forgotten.
+	  (patch by foresto)
 	* Updated Russian translation
 	  (bboa)
 
