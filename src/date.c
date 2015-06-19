@@ -36,6 +36,7 @@
 
 #include "date.h"
 
+#include <config.h>
 #include <locale.h>
 #include <ctype.h>
 #include <string.h>

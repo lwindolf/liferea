@@ -10,6 +10,8 @@ To be released
 	  (reported by GreenLunar)
 	* Fixes Github #140, #158: Vertical pane placement is forgotten.
 	  (patch by foresto)
+	* Fixes Github #182: Missing config.h include in date.c
+	  (reported by Paul Gevers)
 	* Updated Russian translation
 	  (bboa)
 
