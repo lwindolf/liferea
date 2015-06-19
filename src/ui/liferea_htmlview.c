@@ -1,7 +1,7 @@
 /**
  * @file liferea_htmlview.c  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -219,7 +219,7 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 	
 	widget = gtk_button_new ();	
 	gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
-	image = gtk_image_new_from_stock ("gtk-go-back", GTK_ICON_SIZE_BUTTON);
+	image = gtk_image_new_from_icon_name ("go-previous", GTK_ICON_SIZE_BUTTON);
 	gtk_widget_show (image);
 	gtk_container_add (GTK_CONTAINER (widget), image);
 	gtk_box_pack_start (GTK_BOX (htmlview->priv->toolbar), widget, FALSE, FALSE, 0);
@@ -229,7 +229,7 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 
 	widget = gtk_button_new ();
 	gtk_button_set_relief (GTK_BUTTON(widget), GTK_RELIEF_NONE);
-	image = gtk_image_new_from_stock ("gtk-go-forward", GTK_ICON_SIZE_BUTTON);
+	image = gtk_image_new_from_icon_name ("go-next", GTK_ICON_SIZE_BUTTON);
 	gtk_widget_show (image);
 	gtk_container_add (GTK_CONTAINER (widget), image);
 	gtk_box_pack_start (GTK_BOX (htmlview->priv->toolbar), widget, FALSE, FALSE, 0);
@@ -595,13 +595,10 @@ menu_add_option (GtkMenu *menu, const gchar *label, const gchar *stock, gpointer
 {
 	GtkWidget *item, *image;
 
-	if (label) {
-		image = gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU);
-		item = gtk_image_menu_item_new_with_mnemonic (label);
-		gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
-	}
-	else
-		item = gtk_image_menu_item_new_from_stock (stock, NULL);
+	g_assert (label);
+	image = gtk_image_new_from_icon_name (stock, GTK_ICON_SIZE_MENU);
+	item = gtk_menu_item_new_with_mnemonic (label);
+	gtk_menu_item_set_image (GTK__MENU_ITEM (item), image);
 	g_signal_connect (item, "activate", G_CALLBACK (cb), user_data);
 	gtk_widget_show (item);
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
