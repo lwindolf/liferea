@@ -1,4 +1,6 @@
-To be released
+2015-06-19  Lars Windolf <lars.windolf@gmx.de<
+
+	Version 1.10.16
 
 	* Fixes Github #180: Removing item from (v)folder marks all read
 	  (reported by GreenLunar)
