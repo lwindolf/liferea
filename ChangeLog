@@ -2,6 +2,8 @@ To be released
 
 	* Fixes Github #180: Removing item from (v)folder marks all read
 	  (reported by GreenLunar)
+	* Fixes Github #140, #158: Vertical pane placement is forgotten.
+	  (patch by foresto)
 
 
 2015-04-20  Lars Windolf <lars.windolf@gmx.de>
