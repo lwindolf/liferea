@@ -1,4 +1,6 @@
-To be released
+2015-06-19   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.5
 
 	* Github #178: Implementing full screen mode for videos
 	  (mozbugbox)
@@ -12,8 +14,8 @@ To be released
 	  (patch by foresto)
 	* Fixes Github #182: Missing config.h include in date.c
 	  (reported by Paul Gevers)
-	* Updated Russian translation
-	  (bboa)
+
+	* Update of Russian translation (bboa)
 
 
 2015-04-14   Lars Windolf <lars.windolf@gmx.de>
