@@ -85,32 +85,21 @@ ui_popup_menu (GtkWidget *menu, guint button, guint32 activate_time)
 }
 
 static GtkWidget*
-ui_popup_add_menuitem (GtkWidget *menu, const gchar *label, gpointer callback, gpointer data, const gchar *icon, gint toggle)
+ui_popup_add_menuitem (GtkWidget *menu, const gchar *label, gpointer callback, gpointer data, gint toggle)
 {
 	GtkWidget	*item;
-	GtkWidget	*image;
 
+	g_assert (label);
 	if (toggle) {
-		item = gtk_check_menu_item_new_with_label (label);
+		item = gtk_check_menu_item_new_with_mnemonic (label);
 		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(item), toggle - UI_POPUP_ITEM_IS_TOGGLE);
 	} else {
-		if (icon) {
-			if (label) {
-				item = gtk_image_menu_item_new_with_label (label);
-				image = gtk_image_new_from_stock (icon, GTK_ICON_SIZE_MENU);
-				gtk_image_menu_item_set_image (GTK_IMAGE_MENU_ITEM (item), image);
-			} else {
-				item = gtk_image_menu_item_new_from_stock (icon, NULL);
-			}
-		} else {
-			item = gtk_menu_item_new_with_label (label);
-		}
+		item = gtk_menu_item_new_with_mnemonic (label);
 	}
 
 	if (callback)
 		g_signal_connect_swapped (G_OBJECT(item), "activate", G_CALLBACK(callback), data);
 
-	gtk_menu_item_set_use_underline (GTK_MENU_ITEM(item), TRUE);
 	gtk_menu_shell_append (GTK_MENU_SHELL(menu), item);
 
 	return item;
@@ -125,9 +114,9 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 
 	menu = gtk_menu_new ();
 
-	ui_popup_add_menuitem (menu, _("Open In _Tab"), on_popup_launch_item_in_tab_selected, NULL, NULL, 0);
-	ui_popup_add_menuitem (menu, _("_Open In Browser"), on_popup_launch_item_selected, NULL, NULL, 0);
-	ui_popup_add_menuitem (menu, _("Open In _External Browser"), on_popup_launch_item_external_selected, NULL, NULL, 0);
+	ui_popup_add_menuitem (menu, _("Open In _Tab"), on_popup_launch_item_in_tab_selected, NULL, 0);
+	ui_popup_add_menuitem (menu, _("_Open In Browser"), on_popup_launch_item_selected, NULL, 0);
+	ui_popup_add_menuitem (menu, _("Open In _External Browser"), on_popup_launch_item_external_selected, NULL, 0);
 
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 
@@ -139,11 +128,11 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 
 		submenu = gtk_menu_new ();
 
-		item = ui_popup_add_menuitem (menu, _("Copy to News Bin"), NULL, NULL, NULL, 0);
+		item = ui_popup_add_menuitem (menu, _("Copy to News Bin"), NULL, NULL, 0);
 
 		while (iter) {
 			nodePtr	node = (nodePtr)iter->data;
-			ui_popup_add_menuitem (submenu, node_get_title (node), on_popup_copy_to_newsbin, GINT_TO_POINTER(i), NULL, 0);
+			ui_popup_add_menuitem (submenu, node_get_title (node), on_popup_copy_to_newsbin, GINT_TO_POINTER(i), 0);
 			iter = g_slist_next (iter);
 			i++;
 		}
@@ -154,16 +143,16 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 	}
 
 	text = g_strdup_printf (_("_Bookmark at %s"), social_get_bookmark_site ());
-	ui_popup_add_menuitem (menu, text, on_popup_social_bm_item_selected, NULL, NULL, 0);
+	ui_popup_add_menuitem (menu, text, on_popup_social_bm_item_selected, NULL, 0);
 	g_free (text);
 
-	ui_popup_add_menuitem (menu, _("Copy Item _Location"), on_popup_copy_URL_clipboard, NULL, NULL, 0);
+	ui_popup_add_menuitem (menu, _("Copy Item _Location"), on_popup_copy_URL_clipboard, NULL, 0);
 	
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 
-	ui_popup_add_menuitem (menu, _("Toggle _Read Status"), on_popup_toggle_read, NULL, NULL, 0);
-	ui_popup_add_menuitem (menu, _("Toggle Item _Flag"), on_popup_toggle_flag, NULL, NULL, 0);
-	ui_popup_add_menuitem (menu, _("R_emove Item"), on_popup_remove_selected, NULL, NULL, 0);
+	ui_popup_add_menuitem (menu, _("Toggle _Read Status"), on_popup_toggle_read, NULL, 0);
+	ui_popup_add_menuitem (menu, _("Toggle Item _Flag"), on_popup_toggle_flag, NULL, 0);
+	ui_popup_add_menuitem (menu, _("R_emove Item"), on_popup_remove_selected, NULL, 0);
 
 	ui_popup_menu (menu, button, activate_time);
 }
@@ -176,9 +165,9 @@ ui_popup_enclosure_menu (enclosurePtr enclosure, guint button,
 
 	menu = gtk_menu_new ();
 
-	ui_popup_add_menuitem (menu, _("Open Enclosure..."), on_popup_open_enclosure, enclosure, NULL, 0);
-	ui_popup_add_menuitem (menu, _("Save As..."), on_popup_save_enclosure, enclosure, NULL, 0);
-	ui_popup_add_menuitem (menu, _("Copy Link Location"), on_popup_copy_enclosure, enclosure, NULL, 0);
+	ui_popup_add_menuitem (menu, _("Open Enclosure..."), on_popup_open_enclosure, enclosure, 0);
+	ui_popup_add_menuitem (menu, _("Save As..."), on_popup_save_enclosure, enclosure, 0);
+	ui_popup_add_menuitem (menu, _("Copy Link Location"), on_popup_copy_enclosure, enclosure, 0);
 
 	ui_popup_menu (menu, button, activate_time);
 }
@@ -191,14 +180,14 @@ ui_popup_systray_menu (GtkMenuPositionFunc func, guint button, guint32 activate_
 
 	menu = gtk_menu_new ();
 
-	ui_popup_add_menuitem (menu, _("_Work Offline"), on_popup_toggle_online, NULL, NULL, (!network_monitor_is_online ()) + UI_POPUP_ITEM_IS_TOGGLE);
-	ui_popup_add_menuitem (menu, _("_Update All"), on_menu_update_all, NULL, NULL, 0);
-	ui_popup_add_menuitem (menu, _("_Preferences"), on_popup_preferences, NULL, "preferences-system", 0);
+	ui_popup_add_menuitem (menu, _("_Work Offline"), on_popup_toggle_online, NULL, (!network_monitor_is_online ()) + UI_POPUP_ITEM_IS_TOGGLE);
+	ui_popup_add_menuitem (menu, _("_Update All"), on_menu_update_all, NULL, 0);
+	ui_popup_add_menuitem (menu, _("_Preferences"), on_popup_preferences, "preferences-system", 0);
 
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 
-	ui_popup_add_menuitem (menu, _("_Show Liferea"), on_toggle_visibility, NULL, NULL, (!(gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) && gtk_widget_get_visible (mainwindow)) + UI_POPUP_ITEM_IS_TOGGLE);
-	ui_popup_add_menuitem (menu, _("_Quit"), on_popup_quit, NULL, "application-exit", 0);
+	ui_popup_add_menuitem (menu, _("_Show Liferea"), on_toggle_visibility, NULL, (!(gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) && gtk_widget_get_visible (mainwindow)) + UI_POPUP_ITEM_IS_TOGGLE);
+	ui_popup_add_menuitem (menu, _("_Quit"), on_popup_quit, "application-exit", 0);
 
 	ui_popup_menu_at_pos (menu, func, button, activate_time, user_data);
 }
@@ -298,9 +287,9 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 
 	if (validSelection) {
 		if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE)
-			ui_popup_add_menuitem (menu, _("_Update"), on_menu_update, node, NULL, 0);
+			ui_popup_add_menuitem (menu, _("_Update"), on_menu_update, node, 0);
 		else if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
-			ui_popup_add_menuitem (menu, _("_Update Folder"), on_menu_update, node, NULL, 0);
+			ui_popup_add_menuitem (menu, _("_Update Folder"), on_menu_update, node, 0);
 	}
 
 	if (writeableFeedlist) {
@@ -310,18 +299,18 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 
 			submenu = gtk_menu_new ();
 
-			item = ui_popup_add_menuitem (menu, _("_New"), NULL, NULL, NULL, 0);
+			item = ui_popup_add_menuitem (menu, _("_New"), NULL, NULL, 0);
 
 			if (node_can_add_child_feed (node))
-				ui_popup_add_menuitem (submenu, _("New _Subscription..."), ui_popup_add_feed, NULL, NULL, 0);
+				ui_popup_add_menuitem (submenu, _("New _Subscription..."), ui_popup_add_feed, NULL, 0);
 			
 			if (node_can_add_child_folder (node))
-				ui_popup_add_menuitem (submenu, _("New _Folder..."), ui_popup_add_folder, NULL, NULL, 0);
+				ui_popup_add_menuitem (submenu, _("New _Folder..."), ui_popup_add_folder, NULL, 0);
 				
 			if (isRoot) {
-				ui_popup_add_menuitem (submenu, _("New S_earch Folder..."), ui_popup_add_vfolder, NULL, NULL, 0);
-				ui_popup_add_menuitem (submenu, _("New S_ource..."), ui_popup_add_source, NULL, NULL, 0);
-				ui_popup_add_menuitem (submenu, _("New _News Bin..."), ui_popup_add_newsbin, NULL, NULL, 0);
+				ui_popup_add_menuitem (submenu, _("New S_earch Folder..."), ui_popup_add_vfolder, NULL, 0);
+				ui_popup_add_menuitem (submenu, _("New S_ource..."), ui_popup_add_source, NULL, 0);
+				ui_popup_add_menuitem (submenu, _("New _News Bin..."), ui_popup_add_newsbin, NULL, 0);
 			}
 
 			gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), submenu);
@@ -329,30 +318,30 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 		
 		if (isRoot && node->children) {
 			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-			ui_popup_add_menuitem (menu, _("Sort Feeds"), ui_popup_sort_feeds, node, NULL, 0);
+			ui_popup_add_menuitem (menu, _("Sort Feeds"), ui_popup_sort_feeds, node, 0);
 		}
 	}
 
 	if (validSelection) {
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-		ui_popup_add_menuitem (menu, _("_Mark All As Read"), ui_popup_mark_as_read, node, NULL, 0);
+		ui_popup_add_menuitem (menu, _("_Mark All As Read"), ui_popup_mark_as_read, node, 0);
 	}
 
 	if (IS_VFOLDER (node)) {
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-		ui_popup_add_menuitem (menu, _("_Rebuild"), ui_popup_rebuild_vfolder, node, NULL, 0);
+		ui_popup_add_menuitem (menu, _("_Rebuild"), ui_popup_rebuild_vfolder, node, 0);
 	}
 
 	if (validSelection) {
 		if (writeableFeedlist) {
 			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-			ui_popup_add_menuitem (menu, _("_Delete"), ui_popup_delete, node, "delete", 0);
-			ui_popup_add_menuitem (menu, _("_Preferences"), ui_popup_properties, node, "preferences-system", 0);
+			ui_popup_add_menuitem (menu, _("_Delete"), ui_popup_delete, node, 0);
+			ui_popup_add_menuitem (menu, _("_Preferences"), ui_popup_properties, node, 0);
 		}
 
 		if (IS_NODE_SOURCE (node) && NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL) {
 			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-			ui_popup_add_menuitem (menu, _("Convert To Local Subscriptions..."), ui_popup_add_convert_to_local, node, NULL, 0);
+			ui_popup_add_menuitem (menu, _("Convert To Local Subscriptions..."), ui_popup_add_convert_to_local, node, 0);
 		}
 	}
 
