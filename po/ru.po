@@ -86,7 +86,7 @@ msgstr "Читайте ленты новостей и блоги"
 
 #: ../liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
-msgstr "news;feed;aggregator;blog;podcast;"
+msgstr "новости;лента;агрегатор;блог;подкаст;"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
