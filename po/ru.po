@@ -319,7 +319,7 @@ msgstr "Ошибка XML при чтении файла OPML! Невозможн
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
-"Документ пуст! OPML-документ \"%s\" не должен быть пустым при импортировании"
+"Документ пуст! OPML-документ \"%s\" не должен быть пустым при импорте"
 
 #: ../src/export.c:445 ../src/export.c:447
 #, c-format
