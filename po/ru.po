@@ -420,7 +420,7 @@ msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown', "
 "`iconified', or `hidden'"
 msgstr ""
-"Запуск Liferea с основным окном в РЕЖИМЕ `shown', `iconified', или `hidden'"
+"Запуск Liferea с основным окном в РЕЖИМЕ `shown', `iconified' или `hidden'"
 
 #: ../src/main.c:164
 msgid "STATE"
