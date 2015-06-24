@@ -183,7 +183,7 @@ msgstr "С помощью"
 
 #: ../xslt/item.xml.in.h:7
 msgid "Related"
-msgstr "Сопутствующий"
+msgstr "Похожие"
 
 #: ../xslt/item.xml.in.h:8
 msgid "Also posted in"
