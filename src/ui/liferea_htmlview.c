@@ -593,7 +593,7 @@ on_popup_social_bm_link_activate (GtkWidget *widget, gpointer user_data)
 static GtkWidget *
 menu_add_option (GtkMenu *menu, const gchar *label, gpointer cb, gpointer user_data)
 {
-	GtkWidget *item, *image;
+	GtkWidget *item;
 
 	g_assert (label);
 	item = gtk_menu_item_new_with_mnemonic (label);
