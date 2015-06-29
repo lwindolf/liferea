@@ -1910,7 +1910,7 @@ msgstr "Загружать статьи в браузере при выборе 
 
 #: ../glade/liferea.ui.h:43
 msgid "Ignore _comment feeds for this subscription."
-msgstr "_Игнорировать ленту комментариев"
+msgstr "_Игнорировать комментарии"
 
 #: ../glade/liferea.ui.h:44
 msgid "_Enforce popup notification for this subscription."
