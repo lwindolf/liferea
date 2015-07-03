@@ -273,8 +273,8 @@ feed_list_view_init (GtkTreeView *treeview)
 	gtk_tree_view_column_add_attribute (column2, countRenderer, "markup", FS_COUNT);
 
 	gtk_tree_view_column_set_expand (column, TRUE);	
-	gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-	gtk_tree_view_column_set_sizing (column2, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+	gtk_tree_view_column_set_sizing (column2, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
 	gtk_tree_view_append_column (treeview, column);
 	gtk_tree_view_append_column (treeview, column2);
 	
