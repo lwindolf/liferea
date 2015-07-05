@@ -34,10 +34,9 @@ struct tc tc_rfc822_full	= { "Mi, 05 Nov 2014 19:24:38 +0100", 1415211878 };
 struct tc tc_rfc822_day		= { "Wed, 5 Nov 2014 18:04", 1415210640 };
 struct tc tc_rfc822_time	= { "Mi, 05 Nov 2014 18:04:58 ", 1415210698 };
 struct tc tc_rfc822_min		= { "Mi, 05 Nov 2014 18:04 ", 1415210640 };
-/* currently entirely broken:
-struct tc tc_rfc822_year2_1	= { "05 Nov 14 18:04:35", 1415210640 };
+struct tc tc_rfc822_year2_1	= { "05 Nov 14 18:04:35", 1415210675 };
 struct tc tc_rfc822_year2_2	= { "05 Nov 14 18:04", 1415210640 };
-*/
+struct tc tc_rfc822_year2_3	= { "Wed, 05 Nov 14 17:04:35 -0100", 1415210675 };
 struct tc tc_rfc822_wrong	= { "Do, 05 Nov 2014 18:04:58", 1415210698 };
 
 struct tc tc_iso8601_full	= { "2014-11-05T19:00:00+0100", 1415210400 };
@@ -72,6 +71,9 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/parse_date/rfc822/day",		&tc_rfc822_day,		&tc_parse_rfc822);
 	g_test_add_data_func ("/parse_date/rfc822/time",	&tc_rfc822_time,	&tc_parse_rfc822);
 	g_test_add_data_func ("/parse_date/rfc822/min",		&tc_rfc822_min,		&tc_parse_rfc822);
+	g_test_add_data_func ("/parse_date/rfc822/year2_1",	&tc_rfc822_year2_1,	&tc_parse_rfc822);
+	g_test_add_data_func ("/parse_date/rfc822/year2_2",	&tc_rfc822_year2_2,	&tc_parse_rfc822);
+	g_test_add_data_func ("/parse_date/rfc822/year2_3",	&tc_rfc822_year2_3,	&tc_parse_rfc822);
 	g_test_add_data_func ("/parse_date/rfc822/wrong",	&tc_rfc822_wrong,	&tc_parse_rfc822);
 
 	g_test_add_data_func ("/parse_date/iso8601/empty",	&tc_empty,		&tc_parse_iso8601);
