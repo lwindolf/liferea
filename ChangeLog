@@ -4,6 +4,8 @@ To be released
 	  (suggested by GreenLunar)
 	* Github #209: Add image icons to plugins
 	  (by GreenLunar)
+	* Github #210: Enable tests for parsing RFC822 dates with 2 digit year
+	  (patch by arunanbala)
 	* Fixes Github #195: Out-dated documentation on enclose download
 	  (reported by brian-in-crawford)
 	* Fixes Github #78: Shaky text in feed list
