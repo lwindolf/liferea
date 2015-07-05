@@ -1,6 +1,7 @@
 [Plugin]
 Module=gnome-keyring
 Loader=python
+Icon=security-medium
 IAge=2
 Name=GNOME Keyring Support
 Name[de]=Unterstützung für GNOME Keyring

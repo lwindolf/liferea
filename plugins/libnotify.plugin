@@ -1,6 +1,7 @@
 [Plugin]
 Module=libnotify
 Loader=python
+Icon=preferences-system-notification
 IAge=2
 Name=Popup Notifications
 Name[de]=Popup-Benachrichtigungen

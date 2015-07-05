@@ -1,6 +1,7 @@
 [Plugin]
 Module=trayicon
 Loader=python
+Icon=preferences-desktop-accessibility
 IAge=2
 Name=Tray Icon (GNOME Classic)
 Name[de]=Tray Icon (GNOME Klassik)

@@ -2,6 +2,8 @@ To be released
 
 	* Github #193: Added x-scheme-handler/feed to desktop file
 	  (suggested by GreenLunar)
+	* Github #209: Add image icons to plugins
+	  (by GreenLunar)
 	* Fixes Github #195: Out-dated documentation on enclose download
 	  (reported by brian-in-crawford)
 	* Fixes Github #78: Shaky text in feed list

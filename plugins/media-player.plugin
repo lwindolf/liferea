@@ -1,6 +1,7 @@
 [Plugin]
 Module=media-player
 Loader=python
+Icon=audio-x-generic
 IAge=2
 Name=Media Player
 Description=Play music and videos directly from Liferea
