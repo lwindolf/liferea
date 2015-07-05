@@ -23,8 +23,8 @@ Building Liferea Yourself
 ------------------------
 
 This section describes how to compile Liferea yourself. If you have
-any problems compiling the packages or from GIT don't hesitate to
-contact us in IRC (see Support section) to help you with it!
+any problems compiling the source file an issue at Github and we will
+help you asap.
 
 
 ###### _Dependencies_
@@ -78,12 +78,6 @@ Then build it with:
 
 Contributing
 ------------
-
-This section describes how you can contribute to Liferea. We currently
-try to provide additional help on contributing via OpenHatch.org which
-provides help and easy tasks to start contributing.
-
-	http://openhatch.org/+projects/Liferea
 
 As the project is hosted at Github pull requests and tickets via Github
 are the best way to contribute to Liferea.
@@ -250,11 +244,8 @@ Before getting support for stable releases:
    Install the latest stable release and check if the problem is solved already. 
    Please do not ask for help for older releases!
 
-Now there are three major support channels:
+At the moment there are two major support channels:
 
-+ The IRC channel "#liferea" on freenode.org. If you have easy to solve problems 
-  and simple questions feel free to ask the people hanging around there.
-    
 + The mailing list (https://lists.sourceforge.net/lists/listinfo/liferea-devel).
   Good for posting compilation problems and starting longer discussions.
     
