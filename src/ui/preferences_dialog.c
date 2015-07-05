@@ -2,7 +2,7 @@
  * @file preferences_dialog.c Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -410,6 +410,12 @@ on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
 	liferea_shell_update_toolbar ();
 }
 
+void
+on_donottrackbtn_toggled (GtkToggleButton *button, gpointer user_data)
+{
+	conf_set_bool_value (DO_NOT_TRACK, gtk_toggle_button_get_active (button));
+}
+
 static void
 preferences_dialog_destroy_cb (GtkWidget *widget, PreferencesDialog *pd)
 {
@@ -558,7 +564,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	g_free (browser_command);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (entry), manualBrowser);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "manuallabel"), manualBrowser);	
+	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "manuallabel"), manualBrowser);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "urlhintlabel"), manualBrowser);
 
 	/* ================== panel 4 "GUI" ================ */
@@ -634,7 +640,13 @@ preferences_dialog_init (PreferencesDialog *pd)
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->priv->dialog, "proxyusernameentry")), "changed", G_CALLBACK (on_proxyusernameentry_changed), pd);
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->priv->dialog, "proxypasswordentry")), "changed", G_CALLBACK (on_proxypasswordentry_changed), pd);
 
-	/* ================= panel 6 "Enclosures" ======================== */
+	/* ================= panel 6 "Privacy" ======================== */
+
+	widget = liferea_dialog_lookup (pd->priv->dialog, "donottrackbtn");
+	conf_get_bool_value (DO_NOT_TRACK, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
+
+	/* ================= panel 7 "Enclosures" ======================== */
 
 	/* menu for download tool */
 	conf_get_int_value (DOWNLOAD_TOOL, &iSetting);
@@ -669,7 +681,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	gtk_tree_selection_set_mode (gtk_tree_view_get_selection (GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
 
-	/* ================= panel 7 "Plugins" ======================== */
+	/* ================= panel 8 "Plugins" ======================== */
 
 	pd->priv->plugins_box = liferea_dialog_lookup (pd->priv->dialog, "plugins_box");
 	g_assert (pd->priv->plugins_box != NULL);

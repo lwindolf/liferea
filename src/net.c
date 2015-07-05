@@ -1,7 +1,7 @@
 /**
  * @file net.c  HTTP network access using libsoup
  *
- * Copyright (C) 2007-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #include <time.h>
 
 #include "common.h"
+#include "conf.h"
 #include "debug.h"
 
 #define HOMEPAGE	"http://lzone.de/liferea/"
@@ -116,6 +117,7 @@ network_process_request (const updateJobPtr const job)
 {
 	SoupMessage	*msg;
 	SoupDate	*date;
+	gboolean	do_not_track = FALSE;
 
 	g_assert (NULL != job->request);
 	debug1 (DEBUG_NET, "downloading %s", job->request->source);
@@ -141,7 +143,7 @@ network_process_request (const updateJobPtr const job)
 	}
 
 	/* Set the If-Modified-Since: header */
-	if (job->request->updateState && update_state_get_lastmodified(job->request->updateState)) {
+	if (job->request->updateState && update_state_get_lastmodified (job->request->updateState)) {
 		gchar *datestr;
 
 		date = soup_date_new_from_time_t (update_state_get_lastmodified (job->request->updateState));
@@ -197,6 +199,11 @@ network_process_request (const updateJobPtr const job)
 	/* If the feed has "dont use a proxy" selected, disable the proxy for the msg */
 	if (job->request->options && job->request->options->dontUseProxy)
 		soup_message_disable_feature (msg, SOUP_TYPE_PROXY_URI_RESOLVER);
+
+	/* Add Do Not Track header according to settings */
+	conf_get_bool_value (DO_NOT_TRACK, &do_not_track);
+	if (do_not_track)
+		soup_message_headers_append (msg->request_headers, "DNT", "1");
 
 	soup_session_queue_message (session, msg, network_process_callback, job);
 }
