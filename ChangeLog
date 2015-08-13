@@ -10,7 +10,9 @@ To be released
 	* Fixes Github #195: Out-dated documentation on enclose download
 	  (reported by brian-in-crawford)
 	* Fixes Github #78: Shaky text in feed list
-	  (reported by Green Lunar)
+	  (reported by GreenLunar)
+	* Fixes Github #216: Untranslatable strings
+	  (reported by GreenLunar)
 
 
 2015-06-19   Lars Windolf <lars.windolf@gmx.de>

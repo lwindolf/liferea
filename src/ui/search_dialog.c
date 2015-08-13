@@ -1,7 +1,7 @@
 /**
  * @file search_dialog.c  Search engine subscription dialog
  *
- * Copyright (C) 2007-2011 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -113,7 +113,7 @@ search_dialog_init (SearchDialog *sd)
 {
 	sd->priv = SEARCH_DIALOG_GET_PRIVATE (sd);
 	sd->priv->vfolder = vfolder_new (node_new (vfolder_get_node_type ()));
-	node_set_title (sd->priv->vfolder->node, "Saved Search");
+	node_set_title (sd->priv->vfolder->node, _("Saved Search"));
 }
 
 static void

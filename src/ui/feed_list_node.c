@@ -2,7 +2,7 @@
  * @file feed_list_node.c  Handling feed list nodes
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -413,8 +413,8 @@ feed_list_node_remove (nodePtr node)
 	                                 GTK_BUTTONS_NONE,
 	                                 "%s", text);
 	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-	                        "_Cancel", GTK_RESPONSE_CANCEL,
-	                        "_Delete", GTK_RESPONSE_ACCEPT,
+	                        _("_Cancel"), GTK_RESPONSE_CANCEL,
+	                        _("_Delete"), GTK_RESPONSE_ACCEPT,
 	                        NULL);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
