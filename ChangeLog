@@ -7,9 +7,11 @@ To be released
 	  (by GreenLunar)
 	* Github #210: Enable tests for parsing RFC822 dates with 2 digit year
 	  (patch by arunanbala)
+	* Fixes Github #78: Shaky text in feed list
+	  (reported by GreenLunar)
 	* Fixes Github #195: Out-dated documentation on enclose download
 	  (reported by brian-in-crawford)
-	* Fixes Github #78: Shaky text in feed list
+	* Fixes Github #198: Traceback on popup notifications
 	  (reported by GreenLunar)
 	* Fixes Github #216: Untranslatable strings
 	  (reported by GreenLunar)

@@ -32,5 +32,5 @@ class LibnotifyPlugin (GObject.Object, Liferea.ShellActivatable):
 
     def on_node_updated (self, widget, nodeTitle):
 	Notify.init ('Liferea')
-        notification = Notify.Notification.new (nodeTitle)
+        notification = Notify.Notification.new (nodeTitle, "was updated", "dialog-information")
         notification.show () 
