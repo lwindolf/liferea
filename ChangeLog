@@ -2,6 +2,8 @@ To be released
 
 	* Fixes Github #195: Out-dated documentation on enclosure download
 	  (reported by brian-in-crawford)
+	* Fixes Github #227: Preference dialog fails to load with latest 
+	  GtkBuilder (patch by Yanko Kaneti)
 
 
 2015-06-19  Lars Windolf <lars.windolf@gmx.de<
