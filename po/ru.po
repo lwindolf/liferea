@@ -1686,7 +1686,7 @@ msgstr "Открыть ленту"
 
 #: ../src/notification/libnotify.c:170 ../src/notification/libnotify.c:266
 msgid "Mark all as read"
-msgstr "Отметить прочитанными"
+msgstr "Прочитано"
 
 #: ../src/notification/libnotify.c:247
 #, c-format
