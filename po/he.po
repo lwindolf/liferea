@@ -42,35 +42,35 @@ msgstr "תכונות מיוחדות:"
 
 #: ../liferea.appdata.xml.in.h:3
 msgid "Read articles when offline"
-msgstr "קרא מאמרים כאשר לא־מקוון"
+msgstr "קריאת מאמרים במצב לא־מקוון"
 
 #: ../liferea.appdata.xml.in.h:4
 msgid "Synchronizes with TheOldReader"
-msgstr "סנכרן עם TheOldReader"
+msgstr "סנכרון בעזרת TheOldReader"
 
 #: ../liferea.appdata.xml.in.h:5
 msgid "Synchronizes with TinyTinyRSS"
-msgstr "סנכרן עם TinyTinyRSS"
+msgstr "סנכרון בעזרת TinyTinyRSS"
 
 #: ../liferea.appdata.xml.in.h:6
 msgid "Synchronizes with InoReader"
-msgstr "סנכרן עם InoReader"
+msgstr "סנכרון בעזרת InoReader"
 
 #: ../liferea.appdata.xml.in.h:7
 msgid "Synchronizes with Reedah"
-msgstr "סנכרן עם Reedah"
+msgstr "סנכרון בעזרת Reedah"
 
 #: ../liferea.appdata.xml.in.h:8
 msgid "Permanently save headlines in news bins"
-msgstr "אחסן כותרות לצמיתה בתוך סלי איסוף"
+msgstr "אחסון כותרות באופן קבוע בתוך סלי איסוף"
 
 #: ../liferea.appdata.xml.in.h:9
 msgid "Match items using search folders"
-msgstr "התאם פריטים באמצעות תיקיות חיפוש"
+msgstr "התאמת פריטים באמצעות תיקיות חיפוש"
 
 #: ../liferea.appdata.xml.in.h:10
 msgid "Play Podcasts"
-msgstr "נגן פודקסטים"
+msgstr "ניגון פודקסטים"
 
 #: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/liferea.ui.h:1
 msgid "Liferea"
