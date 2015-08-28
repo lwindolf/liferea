@@ -1168,7 +1168,7 @@
               <object class="GtkLabel" id="label139">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">GUI</property>
+                <property name="label" translatable="yes">Desktop</property>
               </object>
               <packing>
                 <property name="position">4</property>
