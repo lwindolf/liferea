@@ -1883,7 +1883,7 @@
                         <child>
                           <object class="GtkLabel" id="label227">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Cancel _All</property>
+                            <property name="label" translatable="yes">_Stop</property>
                             <property name="use_underline">True</property>
                           </object>
                           <packing>
