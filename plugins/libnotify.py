@@ -19,6 +19,8 @@
 # Boston, MA 02111-1307, USA.
 #
 
+import gi
+gi.require_version('Notify', '0.7')
 from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Notify
 
 class LibnotifyPlugin (GObject.Object, Liferea.ShellActivatable):
