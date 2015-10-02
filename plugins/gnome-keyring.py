@@ -19,6 +19,8 @@
 # Boston, MA 02111-1307, USA.
 #
 
+import gi
+gi.require_version('GnomeKeyring', '1.0')
 from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, GnomeKeyring
 
 class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
