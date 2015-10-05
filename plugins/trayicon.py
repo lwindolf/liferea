@@ -19,6 +19,10 @@
 # Boston, MA 02111-1307, USA.
 #
 
+import gi
+gi.require_version('Peas', '1.0')
+gi.require_version('PeasGtk', '1.0')
+gi.require_version('Liferea', '3.0')
 from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Gdk
 
 class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
