@@ -25,6 +25,9 @@ from __future__ import print_function, division
 
 import gi
 gi.require_version('Gst', '1.0')
+gi.require_version('Peas', '1.0')
+gi.require_version('PeasGtk', '1.0')
+gi.require_version('Liferea', '3.0')
 from gi.repository import GObject, Peas, PeasGtk, GLib, Gtk, Liferea, Gst
 
 # FIXME: Upgrade to 0.11
