@@ -170,9 +170,9 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
         Gtk.Widget.set_sensitive(self.nextButton, (len(self.enclosures) - 1 > self.pos))
 
         if(self.playing != PlayState.PLAY):
-           self.playButtonImage.set_from_icon_name("media-playback-start", Gtk.IconSize.BUTTON)
+           self.playButtonImage.set_from_stock("gtk-media-play", Gtk.IconSize.BUTTON)
         else:
-           self.playButtonImage.set_from_icon_name("media-playback-pause", Gtk.IconSize.BUTTON)
+           self.playButtonImage.set_from_stock("gtk-media-pause", Gtk.IconSize.BUTTON)
 
     def on_slider_change_value(self, widget, scroll, value):
         self.set_label(value)
@@ -212,21 +212,21 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
            Gtk.Box.pack_start(parentWidget, vbox, True, True, 0);
 
            image = Gtk.Image()
-           image.set_from_icon_name("media-skip-backward", Gtk.IconSize.BUTTON)
+           image.set_from_stock("gtk-media-previous", Gtk.IconSize.BUTTON)
            self.prevButton = Gtk.Button.new()
            self.prevButton.add(image)
            self.prevButton.connect("clicked", self.prev)
            Gtk.Box.pack_start(vbox, self.prevButton, False, False, 0)
 
            self.playButtonImage = Gtk.Image()
-           self.playButtonImage.set_from_icon_name("media-playback-start", Gtk.IconSize.BUTTON)
+           self.playButtonImage.set_from_stock("gtk-media-play", Gtk.IconSize.BUTTON)
            self.playButton = Gtk.Button.new()
            self.playButton.add(self.playButtonImage)
            self.playButton.connect("clicked", self.playToggled)
            Gtk.Box.pack_start(vbox, self.playButton, False, False, 0)
 
            image = Gtk.Image()
-           image.set_from_icon_name("media-skip-forward", Gtk.IconSize.BUTTON)
+           image.set_from_stock("gtk-media-next", Gtk.IconSize.BUTTON)
            self.nextButton = Gtk.Button.new()
            self.nextButton.add(image)
            self.nextButton.connect("clicked", self.next)
@@ -260,3 +260,4 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
 
     def do_deactivate(self):
         window = self.object
+
