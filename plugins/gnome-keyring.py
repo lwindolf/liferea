@@ -20,6 +20,9 @@
 #
 
 import gi
+gi.require_version('Peas', '1.0')
+gi.require_version('PeasGtk', '1.0')
+gi.require_version('Liferea', '3.0')
 gi.require_version('GnomeKeyring', '1.0')
 from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, GnomeKeyring
 
