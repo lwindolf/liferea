@@ -101,6 +101,7 @@ liferea_dialog_new (const gchar *filename, gchar *name)
 {
 	LifereaDialog	*ld;
 	gchar 		*path;
+	GError          *error = NULL;
 
 	/* FIXME: this is so hacky... We should just load the whole file as we
 	 * did with glade, then pick the widget we're told. However GtkBuilder
@@ -113,15 +114,17 @@ liferea_dialog_new (const gchar *filename, gchar *name)
 	gchar	*objs[] = { "adjustment1", "adjustment2", "adjustment3",
 			    "adjustment4", "adjustment5", "adjustment6",
 			    "liststore1", "liststore2", "liststore3",
-			    "liststore4", "liststore5",
+			    "liststore4", "liststore5", "liststore6",
 			    "refreshIntervalSpinButton", name, NULL };
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
 
 	path = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, filename?filename:"liferea.ui", NULL);
 	ld->priv->xml = gtk_builder_new ();
-	if (!gtk_builder_add_objects_from_file (ld->priv->xml, path, objs, NULL))
-		g_error ("Loading %s failed.", path);
+	if (!gtk_builder_add_objects_from_file (ld->priv->xml, path, objs, &error)) {
+		g_error ("Loading %s failed : %s", path, error->message);
+		g_error_free(error);
+	}
 
 	g_free (path);
 
