@@ -114,7 +114,7 @@ liferea_dialog_new (const gchar *filename, gchar *name)
 	gchar	*objs[] = { "adjustment1", "adjustment2", "adjustment3",
 			    "adjustment4", "adjustment5", "adjustment6",
 			    "liststore1", "liststore2", "liststore3",
-			    "liststore4", "liststore5",
+			    "liststore4", "liststore5", "liststore6",
 			    "refreshIntervalSpinButton", name, NULL };
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
