@@ -4,6 +4,8 @@ To be released
 	  (reported by brian-in-crawford)
 	* Fixes Github #227: Preference dialog fails to load with latest 
 	  GtkBuilder (patch by Yanko Kaneti)
+	* Fixes Github #234: Segmentation fault upon attempting to add an OPML
+	  (reported by GreenLunar)
 	* Added debugging for #258: Dialog loading issues
 	  (patch by glitsj16)
 

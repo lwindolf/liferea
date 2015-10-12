@@ -322,28 +322,28 @@ static void opml_source_deinit(void) { }
 /* node source type definition */
 
 static struct nodeSourceType nst = {
-	"fl_opml",
-	N_("Planet, BlogRoll, OPML"),
-	N_("Integrate blogrolls or Planets in your feed list. Liferea will "
-	   "automatically add and remove feeds according to the changes of "
-	   "the source OPML document"),
-	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
-	opml_source_init,
-	opml_source_deinit,
-	ui_opml_source_get_source_url,
-	opml_source_remove,
-	opml_source_import,
-	opml_source_export,
-	opml_source_get_feedlist,
-	opml_source_update,
-	opml_source_auto_update,
-	NULL,	/* free */
-	NULL,	/* item_set_flag */
-	NULL,	/* item_mark_read */
-	NULL,	/* add_folder */
-	NULL,	/* add_subscription */
-	NULL,	/* remove */
-	NULL	/* convert_to_local */
+	.id                  = "fl_opml",
+	.name                = N_("Planet, BlogRoll, OPML"),
+	.description         = N_("Integrate blogrolls or Planets in your feed list. Liferea will "
+	                          "automatically add and remove feeds according to the changes of "
+	                          "the source OPML document"),
+	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+	.source_type_init    = opml_source_init,
+	.source_type_deinit  = opml_source_deinit,
+	.source_new          = ui_opml_source_get_source_url,
+	.source_delete       = opml_source_remove,
+	.source_import       = opml_source_import,
+	.source_export       = opml_source_export,
+	.source_get_feedlist = opml_source_get_feedlist,
+	.source_update       = opml_source_update,
+	.source_auto_update  = opml_source_auto_update,
+	.free                = NULL,
+	.item_set_flag       = NULL,
+	.item_mark_read      = NULL,
+	.add_folder          = NULL,
+	.add_subscription    = NULL,
+	.remove_node         = NULL,
+	.convert_to_local    = NULL
 };
 
 nodeSourceTypePtr
