@@ -315,27 +315,25 @@ static void opml_source_deinit(void) { }
 /* node source type definition */
 
 static struct nodeSourceType nst = {
-	"fl_opml",
-	N_("Planet, BlogRoll, OPML"),
-	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
-	{},
-	NULL,
-	NULL,
-	opml_source_init,
-	opml_source_deinit,
-	ui_opml_source_get_source_url,
-	opml_source_remove,
-	opml_source_import,
-	opml_source_export,
-	opml_source_get_feedlist,
-	opml_source_auto_update,
-	NULL,	/* free */
-	NULL,	/* item_set_flag */
-	NULL,	/* item_mark_read */
-	NULL,	/* add_folder */
-	NULL,	/* add_subscription */
-	NULL,	/* remove */
-	NULL	/* convert_to_local */
+	.id                  = "fl_opml",
+	.name                = N_("Planet, BlogRoll, OPML"),
+	.sourceSubscriptionType = &opmlSubscriptionType,
+	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+	.source_type_init    = opml_source_init,
+	.source_type_deinit  = opml_source_deinit,
+	.source_new          = ui_opml_source_get_source_url,
+	.source_delete       = opml_source_remove,
+	.source_import       = opml_source_import,
+	.source_export       = opml_source_export,
+	.source_get_feedlist = opml_source_get_feedlist,
+	.source_auto_update  = opml_source_auto_update,
+	.free                = NULL,
+	.item_set_flag       = NULL,
+	.item_mark_read      = NULL,
+	.add_folder          = NULL,
+	.add_subscription    = NULL,
+	.remove_node         = NULL,
+	.convert_to_local    = NULL
 };
 
 nodeSourceTypePtr
@@ -353,7 +351,7 @@ on_opml_source_selected (GtkDialog *dialog,
                          gint response_id,
                          gpointer user_data)
 {
-	nodePtr node;
+	nodePtr		node;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new (node_source_get_node_type ());

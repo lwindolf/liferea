@@ -96,7 +96,7 @@ typedef struct nodeSourceType {
 	const gchar	*id;		/**< a unique feed list source type identifier */
 	const gchar	*name;		/**< a descriptive source name (for preferences and menus) */
 	gulong		capabilities;	/**< bitmask of feed list source capabilities */
-	googleReaderApi	api;		/**< endpoint definitions for Google Reader like JSON API */
+	googleReaderApi	api;		/**< OPTIONAL endpoint definitions for Google Reader like JSON API */
 
 	/** The subscription type for all child nodes that are subscriptions */
 	subscriptionTypePtr	feedSubscriptionType;

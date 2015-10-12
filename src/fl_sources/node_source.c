@@ -249,7 +249,7 @@ node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
 	node_set_title (node, type->name);
 
 	if (url) {
-		subscription = subscription_new ("http://www.reedah.com/reader", NULL, NULL);
+		subscription = subscription_new (url, NULL, NULL);
 		node_set_subscription (node, subscription);
 
 		subscription->type = node->source->type->sourceSubscriptionType;
