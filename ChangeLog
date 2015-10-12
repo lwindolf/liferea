@@ -1,4 +1,6 @@
-To be released
+2016-10-12   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.6
 
 	* Added "Do Not Track" support (enabled per default)
 	* Github #193: Added x-scheme-handler/feed to desktop file
