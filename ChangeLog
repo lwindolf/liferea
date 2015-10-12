@@ -4,6 +4,8 @@ To be released
 	  (reported by brian-in-crawford)
 	* Fixes Github #227: Preference dialog fails to load with latest 
 	  GtkBuilder (patch by Yanko Kaneti)
+	* Added debugging for #258: Dialog loading issues
+	  (patch by glitsj16)
 
 
 2015-06-19  Lars Windolf <lars.windolf@gmx.de<
