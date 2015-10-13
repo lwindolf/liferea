@@ -406,31 +406,31 @@ on_menu_allfeedsread (GtkWidget *widget, gpointer user_data)
 }
 
 void
-on_menu_feed_new (GtkMenuItem *menuitem, gpointer user_data)
+on_menu_feed_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (feed_get_node_type ());
 }
 
 void
-on_new_plugin_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_new_plugin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (node_source_get_node_type ());
 }
 
 void
-on_new_newsbin_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_new_newsbin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (newsbin_get_node_type ());
 }
 
 void
-on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data)
+on_menu_folder_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (folder_get_node_type ());
 }
 
 void
-on_new_vfolder_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (vfolder_get_node_type ());
 }
