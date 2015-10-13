@@ -2,6 +2,7 @@
 
 gladedir = $(pkgdatadir)
 glade_DATA = liferea.ui \
+	     liferea_menu.ui \
 	auth.ui \
 	new_subscription.ui \
 	simple_subscription.ui \
