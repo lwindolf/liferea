@@ -962,6 +962,14 @@ static GtkToggleActionEntry liferea_shell_feedlist_toggle_entries[] = {
 	G_CALLBACK(on_feedlist_reduced_activate), FALSE}
 };
 
+static const GActionEntry liferea_shell_add_gaction_entries[] = {
+	{"NewSubscription", on_menu_feed_new, NULL, NULL, NULL},
+	{"NewFolder", on_menu_folder_new, NULL, NULL, NULL},
+	{"NewVFolder", on_new_vfolder_activate, NULL, NULL, NULL},
+	{"NewSource", on_new_plugin_activate, NULL, NULL, NULL},
+	{"NewNewsBin", on_new_newsbin_activate, NULL, NULL, NULL}
+};
+
 static const GtkActionEntry liferea_shell_add_action_entries[] = {
 	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Adds a subscription to the feed list."),
 	 G_CALLBACK(on_menu_feed_new)},
