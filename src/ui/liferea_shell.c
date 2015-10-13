@@ -64,7 +64,6 @@ struct LifereaShellPrivate {
 	GtkBuilder	*xml;
 
 	GtkWindow	*window;		/**< Liferea main window */
-	GtkWidget	*menubar;
 	GtkWidget	*toolbar;
 	GtkTreeView	*feedlistView;
 	
@@ -1189,6 +1188,8 @@ void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 {
 	GtkUIManager	*ui_manager;
+	GtkBuilder	*builder;
+	GMenuModel	*menu_model;
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
 	gboolean	toggle;
@@ -1202,6 +1203,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 
 	gtk_window_set_application (GTK_WINDOW (shell->priv->window), app);
 	
+	/* Add GActions to application */
+	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_add_gaction_entries, G_N_ELEMENTS (liferea_shell_add_gaction_entries), shell->priv);
+
 	/* 1.) menu creation */
 	
 	debug0 (DEBUG_GUI, "Setting up menues");
@@ -1248,9 +1252,13 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 
 	g_signal_connect (gtk_accel_map_get (), "changed", G_CALLBACK (on_accel_change), NULL);
 
-	if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_ui_desc, -1, &error))
-		g_error ("building menus failed: %s", error->message);
+	/* Menu creation */
+	builder = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui");
+	menu_model = G_MENU_MODEL (gtk_builder_get_object (builder, "MainWindowMenuBar"));
+	gtk_application_set_menubar (app, menu_model);
+	g_object_unref(builder);
 
+	/* Toolbars */
 	if (gtk_widget_get_default_direction () != GTK_TEXT_DIR_RTL) {
 		if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_tb_desc, -1, &error))
 			g_error ("building menus failed: %s", error->message);
@@ -1259,7 +1267,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 			g_error ("building menus failed: %s", error->message);
 	}
 
-	shell->priv->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
 	shell->priv->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
 
 	/* Ensure GTK3 toolbar shadows... */
@@ -1278,9 +1285,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 
 	gtk_box_pack_start (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, FALSE, FALSE, 0);
 	gtk_box_reorder_child (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, 0);
-	gtk_box_pack_start (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->menubar, FALSE, FALSE, 0);
-	gtk_box_reorder_child (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->menubar, 0);
-
 	gtk_widget_show_all(GTK_WIDGET(shell->priv->toolbar));
 
 	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_press_event",

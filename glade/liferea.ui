@@ -14,7 +14,7 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkWindow" id="mainwindow">
+  <object class="GtkApplicationWindow" id="mainwindow">
     <property name="title" translatable="yes">Liferea</property>
     <property name="default_width">640</property>
     <property name="default_height">480</property>
