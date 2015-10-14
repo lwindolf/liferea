@@ -786,11 +786,12 @@ on_menu_quit (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 }
 
 static void
-on_menu_fullscreen_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_menu_fullscreen_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	shell->priv->fullscreen == TRUE ?
 		gtk_window_fullscreen(shell->priv->window) :
 		gtk_window_unfullscreen (shell->priv->window);
+	g_simple_action_set_state (action, g_variant_new_boolean (shell->priv->fullscreen));
 }
 
 static void
@@ -922,7 +923,10 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 
 	/* For mysterious reasons, the radio menu magic seem to only works with a
 	 * parameter/state of type string. */
-	{"SetViewMode", NULL, "s", "@s 'normal'", on_view_activate}
+	{"SetViewMode", NULL, "s", "@s 'normal'", on_view_activate},
+	/* Parameter type must be NULL for toggle. */
+	{"FullScreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
+	{"ReducedFeedList", NULL, NULL, "@b false", on_feedlist_reduced_activate}
 };
 
 static const GtkActionEntry liferea_shell_action_entries[] = {
