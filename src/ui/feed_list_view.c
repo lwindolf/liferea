@@ -436,7 +436,11 @@ on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer 
 }
 
 void
-on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data)
+on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feed_list_view_set_reduce_mode (gtk_toggle_action_get_active (menuitem));
+	GVariant *state = g_action_get_state (action);
+	gboolean val = !g_variant_get_boolean (state);
+	feed_list_view_set_reduce_mode (val);
+	g_simple_action_set_state (action, g_variant_new_boolean (val));
+	g_object_unref (state);
 }

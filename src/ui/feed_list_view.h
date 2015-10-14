@@ -75,5 +75,5 @@ void on_new_plugin_activate (GSimpleAction *menuitem, GVariant *parameter, gpoin
 void on_new_newsbin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
 void on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
 
-void on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data);
+void on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 #endif
