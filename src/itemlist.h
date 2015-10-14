@@ -136,12 +136,12 @@ void on_view_activate (GtkRadioAction *action, GtkRadioAction *current, gpointer
 /**
  * Menu callback to select the previously read item from the item history
  */
-void on_prev_read_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_prev_read_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * Menu callback to select the next read item from the item history
  */
-void on_next_read_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_next_read_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 
 /* item handling function */

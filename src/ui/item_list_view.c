@@ -898,7 +898,7 @@ on_popup_toggle_read (void)
 }
 
 void
-on_remove_items_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	nodePtr		node;
 	
@@ -987,7 +987,7 @@ item_list_view_find_unread_item (ItemListView *ilv, gulong startId)
 }
 
 void
-on_next_unread_item_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpointer user_data)
 {
 	itemlist_select_next_unread ();
 }

@@ -133,7 +133,8 @@ on_close_update_monitor_clicked(GtkButton *button, gpointer user_data)
 	gtk_widget_destroy(umdialog);
 }
  
-void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
+void
+on_menu_show_update_monitor(GSimpleAction *action, GVariant *parameter, gpointer user_data) {
 	GtkCellRenderer		*textRenderer, *iconRenderer;	
 	GtkTreeViewColumn 	*column;
 	GtkTreeView		*view;

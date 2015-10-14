@@ -372,7 +372,7 @@ on_menu_update (void)
 }
 
 void
-on_menu_update_all(void)
+on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	do_menu_update (feedlist_get_root ());
 }
@@ -384,7 +384,7 @@ on_menu_allread (GtkWidget *widget, gpointer user_data)
 }
 
 void
-on_menu_allfeedsread (GtkWidget *widget, gpointer user_data)
+on_menu_allfeedsread (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	feedlist_mark_all_read (feedlist_get_root ());
 }

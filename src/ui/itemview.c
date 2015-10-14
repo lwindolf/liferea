@@ -364,7 +364,7 @@ itemview_scroll (void)
 	   bottom of the item view the scrolling will return FALSE and 
 	   we trigger Next-Unread to realize easy headline skimming. */
 	if (liferea_htmlview_scroll (itemview->priv->htmlview) == FALSE)
-		on_next_unread_item_activate (NULL, NULL);
+		on_next_unread_item_activate (NULL, NULL, NULL);
 		
 	/* Note the above condition is duplicated in mozilla/mozsupport.cpp! */
 }
