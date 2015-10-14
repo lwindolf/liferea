@@ -665,13 +665,13 @@ itemlist_select_from_history (gboolean back)
 }
 
 void
-on_prev_read_item_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_prev_read_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemlist_select_from_history (TRUE);
 }
 
 void
-on_next_read_item_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_next_read_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemlist_select_from_history (FALSE);
 }

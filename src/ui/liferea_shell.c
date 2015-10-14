@@ -699,7 +699,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 					return TRUE;
 					break;
 				case GDK_KEY_n:
-					on_next_unread_item_activate (NULL, NULL);
+					on_next_unread_item_activate (NULL, NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_KEY_f:
@@ -747,19 +747,19 @@ on_accel_change (GtkAccelMap *object, gchar *accel_path,
 }
 
 static void
-on_prefbtn_clicked (GtkButton *button, gpointer user_data)
+on_prefbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	preferences_dialog_open ();
 }
 
 static void
-on_searchbtn_clicked (GtkButton *button, gpointer user_data)
+on_searchbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	simple_search_dialog_open ();
 }
 
 static void
-on_about_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_about_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	GtkWidget *dialog;
 
@@ -784,25 +784,25 @@ liferea_shell_add_html_tab (const gchar *file, const gchar *name)
 }
 
 static void
-on_topics_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_topics_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	liferea_shell_add_html_tab ("topics_%s.html", _("Help Topics"));
 }
 
 static void
-on_quick_reference_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_quick_reference_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	liferea_shell_add_html_tab ("reference_%s.html", _("Quick Reference"));
 }
 
 static void
-on_faq_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_faq_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	liferea_shell_add_html_tab ("faq_%s.html", _("FAQ"));
 }
 
 static void
-on_menu_quit (GtkMenuItem *menuitem, gpointer user_data)
+on_menu_quit (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	liferea_shutdown ();
 }
@@ -816,25 +816,25 @@ on_menu_fullscreen_activate (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 static void
-on_menu_zoomin_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
+on_menu_zoomin_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	liferea_shell_do_zoom (TRUE);
 }
 
 static void
-on_menu_zoomout_selected (gpointer callback_data, guint callback_action, GtkWidget *widget)
+on_menu_zoomout_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	liferea_shell_do_zoom (FALSE);
 }
 
 static void
-on_menu_import (gpointer callback_data, guint callback_action, GtkWidget *widget)
+on_menu_import (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	import_OPML_file ();
 }
 
 static void
-on_menu_export (gpointer callback_data, guint callback_action, GtkWidget *widget)
+on_menu_export (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	export_OPML_file ();
 }
@@ -921,6 +921,27 @@ liferea_shell_setup_URL_receiver (void)
 	g_signal_connect (G_OBJECT (mainwindow), "drag_data_received",
 	                  G_CALLBACK (liferea_shell_URL_received), NULL);
 }
+
+static const GActionEntry liferea_shell_gaction_entries[] = {
+	{"UpdateAll", on_menu_update_all, NULL, NULL, NULL},
+	{"MarkAllFeedsAsRead", on_menu_allfeedsread, NULL, NULL, NULL},
+	{"ImportFeedList", on_menu_import, NULL, NULL, NULL},
+	{"ExportFeedList", on_menu_export, NULL, NULL, NULL},
+	{"Quit", on_menu_quit, NULL, NULL, NULL},
+	{"RemoveAllItems", on_remove_items_activate, NULL, NULL, NULL},
+	{"PrevReadItem", on_prev_read_item_activate, NULL, NULL, NULL},
+	{"NextReadItem", on_next_read_item_activate, NULL, NULL, NULL},
+	{"NextUnreadItem", on_next_unread_item_activate, NULL, NULL, NULL},
+	{"ZoomIn", on_menu_zoomin_selected, NULL, NULL, NULL},
+	{"ZoomOut", on_menu_zoomout_selected, NULL, NULL, NULL},
+	{"ShowUpdateMonitor", on_menu_show_update_monitor, NULL, NULL, NULL},
+	{"ShowPreferences", on_prefbtn_clicked, NULL, NULL, NULL},
+	{"SearchFeeds", on_searchbtn_clicked, NULL, NULL, NULL},
+	{"ShowHelpContents", on_topics_activate, NULL, NULL, NULL},
+	{"ShowHelpQuickReference", on_quick_reference_activate, NULL, NULL, NULL},
+	{"ShowHelpFAQ", on_faq_activate, NULL, NULL, NULL},
+	{"ShowAbout", on_about_activate, NULL, NULL, NULL}
+};
 
 static const GtkActionEntry liferea_shell_action_entries[] = {
 	{"SubscriptionsMenu", NULL, N_("_Subscriptions"), NULL, NULL, NULL},

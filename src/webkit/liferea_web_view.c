@@ -706,7 +706,7 @@ scroll_pagedown_callback (GObject *source_object, GAsyncResult *res, gpointer us
 	g_variant_get (result, "(b)", &scrolled);
 
 	if (!scrolled) {
-		on_next_unread_item_activate (NULL, NULL);
+		on_next_unread_item_activate (NULL, NULL, NULL);
 	}
 }
 

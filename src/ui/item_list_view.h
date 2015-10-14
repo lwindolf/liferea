@@ -217,12 +217,12 @@ void on_popup_toggle_flag (void);
 
 /**
  * on_remove_items_activate: (skip)
- * @menuitem: The menuitem that was selected.
+ * @action: The action that was activated.
  * @user_data: Unused.
  *
  * Removes all items from the selected feed.
  */
-void on_remove_items_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * on_remove_item_activate: (skip)
@@ -249,13 +249,13 @@ itemPtr item_list_view_find_unread_item (ItemListView *ilv, gulong startId);
 
 /**
  * on_next_unread_item_activate: (skip)
- * @menuitem: The menuitem that was selected.
+ * @action: The action that was activated.
  * @user_data: Unused.
  *
  * Searches the displayed feed and then all feeds for an unread
  * item. If one it found, it is displayed.
  */
-void on_next_unread_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_next_unread_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * item_list_view_update_item: (skip)
