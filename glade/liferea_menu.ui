@@ -177,16 +177,19 @@
       </section>
       <section>
         <item>
-          <attribute name="action">app.NormalView</attribute>
+          <attribute name="action">app.SetViewMode</attribute>
           <attribute name="label" translatable="yes">_Normal View</attribute>
+          <attribute name="target">normal</attribute>
         </item>
         <item>
-          <attribute name="action">app.WideView</attribute>
+          <attribute name="action">app.SetViewMode</attribute>
           <attribute name="label" translatable="yes">_Wide View</attribute>
+          <attribute name="target">wide</attribute>
         </item>
         <item>
-          <attribute name="action">app.CombinedView</attribute>
+          <attribute name="action">app.SetViewMode</attribute>
           <attribute name="label" translatable="yes">_Combined View</attribute>
+          <attribute name="target">combined</attribute>
         </item>
       </section>
       <section>

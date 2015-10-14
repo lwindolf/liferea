@@ -64,6 +64,7 @@ struct LifereaShellPrivate {
 	GtkBuilder	*xml;
 
 	GtkWindow	*window;		/**< Liferea main window */
+	GtkApplication 	*app;			/**< Convenient way to access the GActions through GActionMap interface. */
 	GtkWidget	*toolbar;
 	GtkTreeView	*feedlistView;
 	
@@ -917,7 +918,11 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"ShowHelpContents", on_topics_activate, NULL, NULL, NULL},
 	{"ShowHelpQuickReference", on_quick_reference_activate, NULL, NULL, NULL},
 	{"ShowHelpFAQ", on_faq_activate, NULL, NULL, NULL},
-	{"ShowAbout", on_about_activate, NULL, NULL, NULL}
+	{"ShowAbout", on_about_activate, NULL, NULL, NULL},
+
+	/* For mysterious reasons, the radio menu magic seem to only works with a
+	 * parameter/state of type string. */
+	{"SetViewMode", NULL, "s", "@s 'normal'", on_view_activate}
 };
 
 static const GtkActionEntry liferea_shell_action_entries[] = {
@@ -1225,10 +1230,10 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	gtk_window_set_application (GTK_WINDOW (shell->priv->window), app);
 	
 	/* Add GActions to application */
-	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_add_gaction_entries,
-	    G_N_ELEMENTS (liferea_shell_add_gaction_entries), shell->priv);
-	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_gaction_entries,
-	    G_N_ELEMENTS (liferea_shell_gaction_entries), shell->priv);
+	shell->priv->app = app;
+	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_add_gaction_entries, G_N_ELEMENTS (liferea_shell_add_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_gaction_entries, G_N_ELEMENTS (liferea_shell_gaction_entries), shell->priv);
+
 
 	/* 1.) menu creation */
 	
@@ -1246,7 +1251,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	gtk_action_group_set_translation_domain (shell->priv->generalActions, PACKAGE);
 	gtk_action_group_add_actions (shell->priv->generalActions, liferea_shell_action_entries, G_N_ELEMENTS (liferea_shell_action_entries), shell->priv);
 	gtk_action_group_add_toggle_actions (shell->priv->generalActions, liferea_shell_action_toggle_entries, G_N_ELEMENTS (liferea_shell_action_toggle_entries), shell->priv);
-	gtk_action_group_add_radio_actions (shell->priv->generalActions, liferea_shell_view_radio_entries, G_N_ELEMENTS (liferea_shell_view_radio_entries), itemlist_get_view_mode (), (GCallback)on_view_activate, (gpointer)TRUE);
 	gtk_action_group_add_toggle_actions (shell->priv->generalActions, liferea_shell_feedlist_toggle_entries, G_N_ELEMENTS (liferea_shell_feedlist_toggle_entries), shell->priv);
 	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->generalActions, 0);
 
@@ -1475,8 +1479,20 @@ liferea_shell_get_window (void)
 void
 liferea_shell_set_view_mode (nodeViewType newMode)
 {
-	GtkRadioAction       *action;
+	GSimpleAction       *action;
 
-	action = GTK_RADIO_ACTION (gtk_action_group_get_action (shell->priv->generalActions, "NormalView"));
-	gtk_radio_action_set_current_value (action, newMode);
+	action = g_action_map_lookup_action (shell->priv->app, "SetViewMode");
+
+	switch (newMode)
+	{
+	  case NODE_VIEW_MODE_NORMAL:
+		g_action_change_state (action, g_variant_new_string("normal"));
+		break;
+	  case NODE_VIEW_MODE_WIDE:
+		g_action_change_state (action, g_variant_new_string("wide"));
+		break;
+	  case NODE_VIEW_MODE_COMBINED:
+		g_action_change_state (action, g_variant_new_string("combined"));
+		break;
+	}
 }
