@@ -1254,8 +1254,11 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	
 	/* Add GActions to application */
 	shell->priv->app = app;
-	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_add_gaction_entries, G_N_ELEMENTS (liferea_shell_add_gaction_entries), shell->priv);
 	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_gaction_entries, G_N_ELEMENTS (liferea_shell_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_add_gaction_entries, G_N_ELEMENTS (liferea_shell_add_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_feed_gaction_entries, G_N_ELEMENTS (liferea_shell_feed_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_item_gaction_entries, G_N_ELEMENTS (liferea_shell_item_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_read_write_gaction_entries, G_N_ELEMENTS (liferea_shell_read_write_gaction_entries), shell->priv);
 
 
 	/* 1.) menu creation */
