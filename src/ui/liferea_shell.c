@@ -1260,7 +1260,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_item_gaction_entries, G_N_ELEMENTS (liferea_shell_item_gaction_entries), shell->priv);
 	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_read_write_gaction_entries, G_N_ELEMENTS (liferea_shell_read_write_gaction_entries), shell->priv);
 
-
 	/* 1.) menu creation */
 	
 	debug0 (DEBUG_GUI, "Setting up menues");
@@ -1310,28 +1309,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	builder = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui");
 	menu_model = G_MENU_MODEL (gtk_builder_get_object (builder, "MainWindowMenuBar"));
 	gtk_application_set_menubar (app, menu_model);
-	g_object_unref(builder);
 
-	/* Toolbars */
-	if (gtk_widget_get_default_direction () != GTK_TEXT_DIR_RTL) {
-		if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_tb_desc, -1, &error))
-			g_error ("building menus failed: %s", error->message);
-	} else {
-		if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_tb_rtl_desc, -1, &error))
-			g_error ("building menus failed: %s", error->message);
-	}
-
-	shell->priv->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
-
-	/* Ensure GTK3 toolbar shadows... */
-	gtk_style_context_add_class (gtk_widget_get_style_context (shell->priv->toolbar), "primary-toolbar");
-
-	/* what a pain, why is there no markup for this option? */
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/newFeedButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/nextUnreadButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/MarkAsReadButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/UpdateAllButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/SearchButton")), "is_important", TRUE, NULL);
+	/* Toolbar */
+	shell->priv->toolbar = GTK_TOOLBAR (gtk_builder_get_object (builder, "maintoolbar"));
 
 	/* 2.) setup containers */
 	
@@ -1354,6 +1334,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	g_signal_connect (G_OBJECT (shell->priv->window), "window_state_event", G_CALLBACK(on_window_state_event), shell->priv);
 	g_signal_connect (G_OBJECT (shell->priv->window), "key_press_event", G_CALLBACK(on_key_press_event), shell->priv);
 	
+	g_object_unref(builder);
+
 	/* 3.) setup status bar */
 	
 	debug0 (DEBUG_GUI, "Setting up status bar");
