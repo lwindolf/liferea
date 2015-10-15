@@ -673,7 +673,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 					if (focusw == GTK_WIDGET (shell->priv->feedlistView))
 						return FALSE;	/* to be handled in feed_list_view_key_press_cb() */
 						
-					on_remove_item_activate (NULL, NULL);
+					on_remove_item_activate (NULL, NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_KEY_n:
@@ -1028,6 +1028,15 @@ static const GActionEntry liferea_shell_read_write_gaction_entries[] = {
 static const GtkActionEntry liferea_shell_read_write_action_entries[] = {
 	{"Properties", "gtk-properties", N_("_Properties"), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
 	{"DeleteSelected", "gtk-delete", N_("_Remove"), NULL, N_("Removes the selected subscription."), G_CALLBACK(on_menu_delete)}
+};
+
+static const GActionEntry liferea_shell_item_gaction_entries[] = {
+	{"ToggleItemReadStatus", on_toggle_unread_status, NULL, NULL, NULL},
+	{"ToggleItemFlag", on_toggle_item_flag, NULL, NULL, NULL},
+	{"RemoveSelectedItem", on_remove_item_activate, NULL, NULL, NULL},
+	{"LaunchItemInTab", on_popup_launch_item_in_tab_selected, NULL, NULL, NULL},
+	{"LaunchItemInBrowser", on_popup_launch_item_selected, NULL, NULL, NULL},
+	{"LaunchItemInExternalBrowser", on_popup_launch_item_external_selected, NULL, NULL, NULL}
 };
 
 static const GtkActionEntry liferea_shell_item_action_entries[] = {

@@ -158,27 +158,27 @@ void item_list_view_update (ItemListView *ilv, gboolean hasEnclosures);
  * Toggles the unread status of the selected item. This is called from
  * a menu.
  */
-void on_toggle_unread_status (GtkMenuItem *menuitem, gpointer user_data);
+void on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * Toggles the flag of the selected item. This is called from a menu.
  */
-void on_toggle_item_flag (GtkMenuItem *menuitem, gpointer user_data);
+void on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * Opens the selected item in a browser.
  */
-void on_popup_launch_item_selected (void);
+void on_popup_launch_item_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * Opens the selected item in a browser.
  */
-void on_popup_launch_item_in_tab_selected (void);
+void on_popup_launch_item_in_tab_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * Opens the selected item in a browser.
  */
-void on_popup_launch_item_external_selected (void);
+void on_popup_launch_item_external_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * Toggles the read status of right-clicked item.
@@ -201,10 +201,10 @@ void on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpoin
 /**
  * Removes the selected item from the selected feed.
  *
- * @param menuitem The menuitem that was selected.
+ * @param action The action that was activated.
  * @param user_data Unused.
  */  
-void on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_remove_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 void on_popup_remove_selected (void);
 

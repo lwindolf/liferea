@@ -525,7 +525,7 @@ on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpoint
 {
 	if ((event->type == GDK_KEY_PRESS) && (event->state == 0)
 	    && (event->keyval == GDK_KEY_Delete))
-		on_remove_item_activate(NULL, NULL);
+		on_remove_item_activate(NULL, NULL, NULL);
 
 	return FALSE;
 }
@@ -842,19 +842,19 @@ item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 }
 
 void
-on_popup_launch_item_selected (void) 
+on_popup_launch_item_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	launch_item_selected (INTERNAL);
 }
 
 void
-on_popup_launch_item_in_tab_selected (void) 
+on_popup_launch_item_in_tab_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	launch_item_selected (TAB);
 }
 
 void
-on_popup_launch_item_external_selected (void) 
+on_popup_launch_item_external_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	launch_item_selected (EXTERNAL);
 }
@@ -862,7 +862,7 @@ on_popup_launch_item_external_selected (void)
 /* menu callbacks */
 
 void
-on_toggle_item_flag (GtkMenuItem *menuitem, gpointer user_data) 
+on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr		item;
 
@@ -876,11 +876,11 @@ on_toggle_item_flag (GtkMenuItem *menuitem, gpointer user_data)
 void 
 on_popup_toggle_flag (void)
 {
-	on_toggle_item_flag (NULL, NULL);
+	on_toggle_item_flag (NULL, NULL, NULL);
 }
 
 void 
-on_toggle_unread_status (GtkMenuItem *menuitem, gpointer user_data) 
+on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr		item;
 
@@ -894,7 +894,7 @@ on_toggle_unread_status (GtkMenuItem *menuitem, gpointer user_data)
 void
 on_popup_toggle_read (void)
 {
-	on_toggle_unread_status (NULL, NULL);
+	on_toggle_unread_status (NULL, NULL, NULL);
 }
 
 void
@@ -911,7 +911,7 @@ on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer u
 }
 
 void
-on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_remove_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr		item;
 	
@@ -927,7 +927,7 @@ on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data)
 void
 on_popup_remove_selected (void)
 {
-	on_remove_item_activate (NULL, NULL);
+	on_remove_item_activate (NULL, NULL, NULL);
 }
 
 void
