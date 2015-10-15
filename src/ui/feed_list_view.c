@@ -353,7 +353,7 @@ feed_list_view_select (nodePtr node)
 }
 
 void
-on_menu_properties (GtkMenuItem *menuitem, gpointer user_data)
+on_menu_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	nodePtr node = feedlist_get_selected ();
 	
@@ -361,7 +361,7 @@ on_menu_properties (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 void
-on_menu_delete(GtkWidget *widget, gpointer user_data)
+on_menu_delete(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	feed_list_node_remove (feedlist_get_selected ());
 }
