@@ -1020,6 +1020,11 @@ static const GtkActionEntry liferea_shell_feed_action_entries[] = {
 	 G_CALLBACK(on_menu_update)}
 };
 
+static const GActionEntry liferea_shell_read_write_gaction_entries[] = {
+	{"Properties", on_menu_properties, NULL, NULL, NULL},
+	{"DeleteSelected", on_menu_delete, NULL, NULL, NULL}
+};
+
 static const GtkActionEntry liferea_shell_read_write_action_entries[] = {
 	{"Properties", "gtk-properties", N_("_Properties"), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
 	{"DeleteSelected", "gtk-delete", N_("_Remove"), NULL, N_("Removes the selected subscription."), G_CALLBACK(on_menu_delete)}
