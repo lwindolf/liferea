@@ -377,7 +377,7 @@ do_menu_update (nodePtr node)
 }
 
 void
-on_menu_update (void)
+on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	nodePtr node = feedlist_get_selected ();
 
@@ -394,7 +394,7 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 }
 
 void
-on_menu_allread (GtkWidget *widget, gpointer user_data)
+on_menu_allread (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {	
 	feedlist_mark_all_read (feedlist_get_selected ());
 }
