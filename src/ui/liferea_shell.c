@@ -1008,6 +1008,11 @@ static const GtkActionEntry liferea_shell_add_action_entries[] = {
 	{"NewNewsBin", NULL, N_("New _News Bin..."), NULL, N_("Adds a new news bin."), G_CALLBACK(on_new_newsbin_activate)}
 };
 
+static const GActionEntry liferea_shell_feed_gaction_entries[] = {
+	{"MarkFeedAsRead", on_menu_allread, NULL, NULL, NULL},
+	{"UpdateSelected", on_menu_update, NULL, NULL, NULL}
+};
+
 static const GtkActionEntry liferea_shell_feed_action_entries[] = {
 	{"MarkFeedAsRead", "gtk-apply", N_("_Mark Items Read"), "<control>R", N_("Marks all items of the selected feed list node / in the item list as read."), 
 	 G_CALLBACK(on_menu_allread)},
