@@ -350,35 +350,52 @@ liferea_shell_update_toolbar (void)
 void
 liferea_shell_update_update_menu (gboolean enabled)
 {
-	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->feedActions, "UpdateSelected"),	enabled);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "UpdateSelected"),	enabled);
 }
 
 void
 liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean readWrite)
 {
-	gtk_action_group_set_sensitive (shell->priv->addActions, add);
-	gtk_action_group_set_sensitive (shell->priv->feedActions, enabled);
-	gtk_action_group_set_sensitive (shell->priv->readWriteActions, readWrite);
+	/* Add actions*/
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "NewSubscription"),	add);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "NewFolder"),	add);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "NewVFolder"),	add);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "NewSource"),	add);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "NewNewsBin"),	add);
+
+	/* Feed actions*/
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "MarkFeedAsRead"), enabled);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "UpdateSelected"), enabled);
+
+	/* Read Write actions */
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "Properties"), readWrite);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "DeleteSelected"), readWrite);
 }
 
 void
 liferea_shell_update_item_menu (gboolean enabled)
 {
-	gtk_action_group_set_sensitive (shell->priv->itemActions, enabled);
+	/* Item actions */
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "ToggleItemReadStatus"), enabled);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "ToggleItemFlag"), enabled);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "RemoveSelectedItem"), enabled);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "LaunchItemInTab"), enabled);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "LaunchItemInBrowser"), enabled);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "LaunchItemInExternalBrowser"), enabled);
 }
 
 void
 liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead)
 {
-	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->generalActions, "RemoveAllItems"), isNotEmpty);
-	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->feedActions, "MarkFeedAsRead"), isRead);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "RemoveAllItems"), isNotEmpty);
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "MarkFeedAsRead"), isRead);
 }
 
 void
 liferea_shell_update_history_actions (void)
 {
-	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->generalActions, "PrevReadItem"), item_history_has_previous ());
-	gtk_action_set_sensitive (gtk_action_group_get_action (shell->priv->generalActions, "NextReadItem"), item_history_has_next ());
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "PrevReadItem"), item_history_has_previous ());
+	g_simple_action_set_enabled (g_action_map_lookup_action (shell->priv->app, "NextReadItem"), item_history_has_next ());
 }
 
 static void
