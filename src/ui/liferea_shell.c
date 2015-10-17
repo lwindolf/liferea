@@ -1295,7 +1295,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* Prepare some toggle button states */	
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
-	liferea_shell_feedlist_toggle_entries[0].is_active = toggle;
+	g_simple_action_set_state ( g_action_map_lookup_action (G_ACTION_MAP (app), "ReducedFeedList"), g_variant_new_boolean (toggle));
 
 	shell->priv->ui_manager = gtk_ui_manager_new ();
 
