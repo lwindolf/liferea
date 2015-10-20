@@ -66,7 +66,6 @@ typedef struct notificationPlugin {
 
 extern struct notificationPlugin libnotify_plugin;
 
-#ifdef HAVE_LIBNOTIFY
 /**
  * "New items" event callback.
  *
@@ -75,10 +74,6 @@ extern struct notificationPlugin libnotify_plugin;
  * 			regardless of global preference
  */
 void notification_node_has_new_items (nodePtr node, gboolean enforced);
-#else
-static inline void notification_node_has_new_items (nodePtr node, gboolean enforced) {};
-#endif
-
 
 void notification_plugin_register (notificationPluginPtr plugin);
 

@@ -6,6 +6,7 @@ To be released
 	  GtkBuilder (patch by Yanko Kaneti)
 	* Fixes Github #234: Segmentation fault upon attempting to add an OPML
 	  (reported by GreenLunar)
+	* Fixes compilation error when there is no libnotify
 	* Added debugging for #258: Dialog loading issues
 	  (patch by glitsj16)
 
