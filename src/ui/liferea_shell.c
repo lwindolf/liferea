@@ -1080,6 +1080,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 
 	/* Menu creation */
 	builder = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui");
+	if (!gtk_builder_add_from_file (builder, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_toolbar.ui", &error))
+		g_error ("Error loading liferea_toolbar.ui : %s", error->message);
 	menu_model = G_MENU_MODEL (gtk_builder_get_object (builder, "MainWindowMenuBar"));
 	gtk_application_set_menubar (app, menu_model);
 
