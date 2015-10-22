@@ -251,4 +251,146 @@
       </section>
     </submenu>
   </menu>
+  <menu id="MainWindowAppMenu">
+    <section>
+      <item>
+        <attribute name="action">app.UpdateAll</attribute>
+        <attribute name="label" translatable="yes">Update _All</attribute>
+        <attribute name="icon">view-refresh</attribute>
+        <attribute name="accel">&lt;control&gt;U</attribute>
+      </item>
+      <item>
+        <attribute name="action">app.MarkAllFeedsAsRead</attribute>
+        <attribute name="label" translatable="yes">Mark All As _Read</attribute>
+        <attribute name="icon">gtk-apply</attribute><!-- legacy stock name -->
+      </item>
+    </section>
+    <submenu>
+      <attribute name="label" translatable="yes">New ... </attribute>
+      <section>
+        <item>
+          <attribute name="action">app.NewSubscription</attribute>
+          <attribute name="label" translatable="yes">_New Subscription...</attribute>
+          <attribute name="icon">list-add</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.NewFolder</attribute>
+          <attribute name="label" translatable="yes">New _Folder...</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.NewVFolder</attribute>
+          <attribute name="label" translatable="yes">New S_earch Folder...</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.NewSource</attribute>
+          <attribute name="label" translatable="yes">New _Source...</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.NewNewsBin</attribute>
+          <attribute name="label" translatable="yes">New _News Bin...</attribute>
+        </item>
+      </section>
+    </submenu>
+    <section>
+      <item>
+        <attribute name="action">app.ImportFeedList</attribute>
+        <attribute name="label" translatable="yes">_Import Feed List...</attribute>
+        <attribute name="icon">document-open</attribute>
+      </item>
+      <item>
+        <attribute name="action">app.ExportFeedList</attribute>
+        <attribute name="label" translatable="yes">_Export Feed List...</attribute>
+        <attribute name="icon">document-save-as</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="action">app.ShowUpdateMonitor</attribute>
+        <attribute name="label" translatable="yes">_Update Monitor</attribute>
+      </item>
+      <item>
+        <attribute name="action">app.ShowPreferences</attribute>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="icon">preferences-system</attribute>
+      </item>
+    </section>
+    <submenu>
+      <attribute name="label" translatable="yes">_Help</attribute>
+      <section>
+        <item>
+          <attribute name="action">app.ShowHelpContents</attribute>
+          <attribute name="label" translatable="yes">_Contents</attribute>
+          <attribute name="icon">help-browser</attribute>
+          <attribute name="accel">F1</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.ShowHelpQuickReference</attribute>
+          <attribute name="label" translatable="yes">_Quick Reference</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.ShowHelpFAQ</attribute>
+          <attribute name="label" translatable="yes">_FAQ</attribute>
+        </item>
+      </section>
+    </submenu>
+    <section>
+      <item>
+        <attribute name="action">app.ShowAbout</attribute>
+        <attribute name="label" translatable="yes">_About</attribute>
+        <attribute name="icon">help-about</attribute>
+      </item>
+      <item>
+        <attribute name="action">app.Quit</attribute>
+        <attribute name="label" translatable="yes">_Quit</attribute>
+        <attribute name="icon">application-exit</attribute>
+        <attribute name="accel">&lt;control&gt;Q</attribute>
+      </item>
+    </section>
+  </menu>
+  <menu id="MainWindowHeaderMenu">
+    <section>
+      <item>
+        <attribute name="action">app.FullScreen</attribute>
+        <attribute name="label" translatable="yes">_Fullscreen</attribute>
+        <attribute name="accel">F11</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="action">app.ZoomIn</attribute>
+        <attribute name="label" translatable="yes">_Increase Text Size</attribute>
+        <attribute name="icon">zoom-in</attribute>
+        <attribute name="accel">&lt;control&gt;plus</attribute>
+      </item>
+      <item>
+        <attribute name="action">app.ZoomOut</attribute>
+        <attribute name="label" translatable="yes">_Decrease Text Size</attribute>
+        <attribute name="icon">zoom-out</attribute>
+        <attribute name="accel">&lt;control&gt;minus</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="action">app.SetViewMode</attribute>
+        <attribute name="label" translatable="yes">_Normal View</attribute>
+        <attribute name="target">normal</attribute>
+      </item>
+      <item>
+        <attribute name="action">app.SetViewMode</attribute>
+        <attribute name="label" translatable="yes">_Wide View</attribute>
+        <attribute name="target">wide</attribute>
+      </item>
+      <item>
+        <attribute name="action">app.SetViewMode</attribute>
+        <attribute name="label" translatable="yes">_Combined View</attribute>
+        <attribute name="target">combined</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
+        <attribute name="action">app.ReducedFeedList</attribute>
+        <attribute name="label" translatable="yes">_Reduced Feed List</attribute>
+      </item>
+    </section>
+  </menu>
 </interface>
