@@ -1078,23 +1078,48 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 
 	g_signal_connect (gtk_accel_map_get (), "changed", G_CALLBACK (on_accel_change), NULL);
 
-	/* Menu creation */
+	/* Menu and toolbar creation */
 	builder = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui");
 	if (!gtk_builder_add_from_file (builder, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_toolbar.ui", &error))
 		g_error ("Error loading liferea_toolbar.ui : %s", error->message);
-	menu_model = G_MENU_MODEL (gtk_builder_get_object (builder, "MainWindowMenuBar"));
-	gtk_application_set_menubar (app, menu_model);
 
-	/* Toolbar */
 	shell->priv->toolbar = GTK_TOOLBAR (gtk_builder_get_object (builder, "maintoolbar"));
+
+	if (gtk_application_prefers_app_menu (shell->priv->app)) {
+		/* Use custom title bar (header bar) with app menu */
+		GtkWidget *button;
+		GtkWidget *header_bar;
+
+		/* Set app menu */
+		menu_model = G_MENU_MODEL (gtk_builder_get_object (builder, "MainWindowAppMenu"));
+		gtk_application_set_app_menu (app, menu_model);
+
+		/* Header bar */
+		header_bar = gtk_builder_get_object (builder, "mainheaderbar");
+		button = gtk_builder_get_object (builder, "headerMenuButton");
+		menu_model = G_MENU_MODEL (gtk_builder_get_object (builder, "MainWindowHeaderMenu"));
+		gtk_menu_button_set_menu_model (GTK_MENU_BUTTON (button), menu_model);
+
+		/* Embed toolbar in header bar */
+		gtk_header_bar_pack_start (GTK_HEADER_BAR (header_bar), shell->priv->toolbar);
+
+		gtk_window_set_titlebar (GTK_WINDOW (shell->priv->window), header_bar);
+	} else 	{
+		/* Use toolbar and menu bar */
+		menu_model = G_MENU_MODEL (gtk_builder_get_object (builder, "MainWindowMenuBar"));
+		gtk_application_set_menubar (app, menu_model);
+
+		/* Ensure GTK3 toolbar shadows... Only when not in header */
+		gtk_style_context_add_class (gtk_widget_get_style_context (shell->priv->toolbar), "primary-toolbar");
+
+		gtk_box_pack_start (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, FALSE, FALSE, 0);
+		gtk_box_reorder_child (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, 0);
+		gtk_widget_show_all(GTK_WIDGET(shell->priv->toolbar));
+	}
 
 	/* 2.) setup containers */
 	
 	debug0 (DEBUG_GUI, "Setting up widget containers");
-
-	gtk_box_pack_start (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, FALSE, FALSE, 0);
-	gtk_box_reorder_child (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, 0);
-	gtk_widget_show_all(GTK_WIDGET(shell->priv->toolbar));
 
 	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_press_event",
 	                  G_CALLBACK (on_key_press_event_null_cb), NULL);

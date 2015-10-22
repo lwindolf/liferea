@@ -1,11 +1,20 @@
 <?xml version="1.0"?>
 <interface>
   <!-- interface-requires gtk+ 3.4 -->
+  <object class="GtkHeaderBar" id="mainheaderbar">
+    <property name="visible">True</property>
+    <property name="show-close-button">True</property>
+    <child>
+      <object class="GtkMenuButton" id="headerMenuButton">
+        <property name="visible">True</property>
+      </object>
+      <packing>
+        <property name="pack_type">end</property>
+      </packing>
+    </child>
+  </object>
   <object class="GtkToolbar" id="maintoolbar">
     <property name="visible">True</property>
-    <style>
-      <class name="primary-toolbar"/>
-    </style>
     <child>
       <object class="GtkToolButton" id="newFeedButton">
         <property name="visible">True</property>
