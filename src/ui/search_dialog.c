@@ -163,7 +163,7 @@ search_dialog_open (const gchar *query)
 		return search;
 		
 	sd = SEARCH_DIALOG (g_object_new (SEARCH_DIALOG_TYPE, NULL));
-	sd->priv->dialog = liferea_dialog_new (NULL, "searchdialog");
+	sd->priv->dialog = liferea_dialog_new ("search.ui", "searchdialog");
 	
 	if (query)
 		itemset_add_rule (sd->priv->vfolder->itemset, "exact", query, TRUE);
