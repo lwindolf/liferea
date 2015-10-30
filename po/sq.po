@@ -264,7 +264,7 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" nuk është kartelë e vlefshme formësimi lloji paketimesh!"
 
 #: ../src/enclosure.c:288
-msgid "You have not configured a download tool yet! Please do so in the 'Download' tab in Tools/Preferences."
+msgid "You have not configured a download tool yet! Please do so in the 'Enclosures' tab in Tools/Preferences."
 msgstr "Ende nuk keni të formësuar mjet shkarkimesh! Ju lutem, bëjeni këtë te skeda 'Shkarko' te Mjete/Parapëlqime."
 
 #: ../src/enclosure.c:306
@@ -274,7 +274,7 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-" Please check whether the configured download tool is installed and working correctly! You can change it in the 'Download' tab in Tools/Preferences."
+" Please check whether the configured download tool is installed and working correctly! You can change it in the 'Enclosures' tab in Tools/Preferences."
 msgstr ""
 "Urdhri dështoi: \n"
 "\n"

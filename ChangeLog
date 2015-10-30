@@ -1,3 +1,9 @@
+To be released
+
+	* Fixes Github #278: No "Download" tab in Tools/Preferences
+	  (docs error, reported by Anders Jonsson)
+
+
 2016-10-12   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.11.6

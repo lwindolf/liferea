@@ -309,7 +309,7 @@ msgid ""
 "%s\n"
 "\n"
 " Please check whether the configured download tool is installed and working "
-"correctly! You can change it in the 'Download' tab in Tools/Preferences."
+"correctly! You can change it in the 'Enclosures' tab in Tools/Preferences."
 msgstr ""
 
 #: ../src/export.c:185
