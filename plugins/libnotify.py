@@ -30,7 +30,10 @@ class LibnotifyPlugin (GObject.Object, Liferea.ShellActivatable):
     shell = GObject.property (type=Liferea.Shell)
 
     def do_activate (self):
-	self.shell.props.feed_list.connect ("node-updated", self.on_node_updated)
+	self._handler_id = self.shell.props.feed_list.connect ("node-updated", self.on_node_updated)
+
+    def do_deactivate (self):
+	self.shell.props.feed_list.disconnect (self._handler_id)
 
     def on_node_updated (self, widget, nodeTitle):
 	Notify.init ('Liferea')
