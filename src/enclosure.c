@@ -285,7 +285,7 @@ enclosure_download (encTypePtr type, const gchar *url, gboolean interactive)
 		const gchar *toolCmd = prefs_get_download_command ();
 		if(!toolCmd) {
 			if (interactive)
-				ui_show_error_box (_("You have not configured a download tool yet! Please do so in the 'Download' tab in Tools/Preferences."));
+				ui_show_error_box (_("You have not configured a download tool yet! Please do so in the 'Enclosures' tab in Tools/Preferences."));
 			return;
 		}
 
