@@ -1,5 +1,7 @@
 To be released
 
+	* Fixes Github #194: Add source dialog visually broken
+	  (reported by k0377)
 	* Fixes Github #195: Out-dated documentation on enclosure download
 	  (reported by brian-in-crawford)
 	* Fixes Github #227: Preference dialog fails to load with latest 
