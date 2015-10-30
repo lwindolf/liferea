@@ -116,7 +116,7 @@ search_folder_dialog_new (nodePtr node)
 	sfd->priv->re = rule_editor_new (sfd->priv->vfolder->itemset);
 	
 	/* Create the dialog */
-	dialog = liferea_dialog_new (NULL, "vfolderdialog");
+	dialog = liferea_dialog_new ("search_folder.ui", "vfolderdialog");
 	
 	/* Setup search folder name */
 	sfd->priv->nameEntry = liferea_dialog_lookup (dialog, "searchNameEntry");

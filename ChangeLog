@@ -1,5 +1,7 @@
 To be released
 
+	* Fixes Github #223: Search folder dialog don't show rules
+	  (reported by Guido Masella)
 	* Fixes Github #194: Add source dialog visually broken
 	  (reported by k0377)
 	* Fixes Github #195: Out-dated documentation on enclosure download
