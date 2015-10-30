@@ -2,6 +2,8 @@ To be released
 
 	* Fixes Github #278: No "Download" tab in Tools/Preferences
 	  (docs error, reported by Anders Jonsson)
+	* Fixes Github #283: Bad .desktop categories definition
+	  (reported by Wuzzy2)
 
 
 2016-10-12   Lars Windolf <lars.windolf@gmx.de>

@@ -9,6 +9,6 @@ Icon=liferea
 StartupNotify=true
 Terminal=false
 Type=Application
-Categories=Network;Feed;
+Categories=Network;News;
 Version=1.1
 MimeType=application/rss+xml;application/atom+xml;application/rdf+xml;x-scheme-handler/feed
