@@ -217,8 +217,16 @@ feed_list_view_sort_folder_compare (gconstpointer a, gconstpointer b)
 void
 feed_list_view_sort_folder (nodePtr folder)
 {
+	GtkTreeView	*treeview;
+
+	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
+	/* Unset the model from the view before clearing it and rebuilding it.*/
+	gtk_tree_view_set_model (treeview, NULL);
 	folder->children = g_slist_sort (folder->children, feed_list_view_sort_folder_compare);
 	feed_list_node_reload_feedlist ();
+	/* Reduce mode didn't actually change but we need to set the
+	 * correct model according to the setting in the same way : */
+	feed_list_view_reduce_mode_changed ();
 	feedlist_foreach (feed_list_view_restore_folder_expansion);
 	feedlist_schedule_save ();
 }

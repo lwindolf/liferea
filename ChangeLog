@@ -1,4 +1,12 @@
+To be released
+
+	* Fixes #83: Segfault when sorting feeds in folder
+	  (patch by Leiaz)
+
+
 2015-10-30  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.10.17
 
 	* Fixes Github #194: Add source dialog visually broken
 	  (reported by k0377)
