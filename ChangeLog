@@ -1,5 +1,7 @@
 To be released
 
+	* Fixes Github #83: Segfault when sorting feeds in folder
+	  (patch by Leiaz)
 	* Fixes Github #278: No "Download" tab in Tools/Preferences
 	  (docs error, reported by Anders Jonsson)
 	* Fixes Github #283: Bad .desktop categories definition
