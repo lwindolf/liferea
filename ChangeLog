@@ -1,5 +1,9 @@
 To be released
 
+	* Github #287: Add support for media:group.
+	  (patch by Leiaz)
+	* Github #287: Fixes issues with media:content.
+	  (patch by Leiaz)
 	* Fixes Github #83: Segfault when sorting feeds in folder
 	  (patch by Leiaz)
 	* Fixes Github #278: No "Download" tab in Tools/Preferences
