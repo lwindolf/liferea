@@ -57,7 +57,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		       
 	   (example quoted from specification)
 	*/
-  	if (xmlStrcmp(cur->name, BAD_CAST"content")) {
+	if (!xmlStrcmp(cur->name, BAD_CAST"content")) {
 		tmp = xml_get_attribute (cur, "url");
 		if (!tmp)
 			return;
@@ -98,6 +98,14 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		g_free (type);
 		g_free (medium);
 		g_free (lengthStr);
+	}
+	else if (!xmlStrcmp (cur->name, BAD_CAST"group")) {
+		cur = cur->xmlChildrenNode;
+		while (cur) {
+			if (cur->type == XML_ELEMENT_NODE)
+				parse_item_tag (ctxt, cur);
+			cur = cur->next;
+		}
 	}
 	
 	// FIXME: should we support media:player too?
