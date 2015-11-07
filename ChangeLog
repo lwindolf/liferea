@@ -4,12 +4,14 @@ To be released
 	  (patch by Leiaz)
 	* Github #287: Fixes issues with media:content.
 	  (patch by Leiaz)
-	* Fixes Github #83: Segfault when sorting feeds in folder
+	* Fixes Github #283: Bad .desktop categories definition
+	  (reported by Wuzzy2)
+	* Fixes Github #279: Fixes rules no visible in searchdialog
 	  (patch by Leiaz)
 	* Fixes Github #278: No "Download" tab in Tools/Preferences
 	  (docs error, reported by Anders Jonsson)
-	* Fixes Github #283: Bad .desktop categories definition
-	  (reported by Wuzzy2)
+	* Fixes Github #83: Segfault when sorting feeds in folder
+	  (patch by Leiaz)
 
 
 2016-10-12   Lars Windolf <lars.windolf@gmx.de>
