@@ -11,6 +11,8 @@ glade_DATA = liferea.ui \
 	opml_source.ui \
 	prefs.ui \
 	reedah_source.ui \
+	search.ui \
+	search_folder.ui \
 	ttrss_source.ui \
 	theoldreader_source.ui
 

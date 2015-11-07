@@ -2,6 +2,8 @@ To be released
 
 	* Fixes #287: media:content support broken
 	  (patch by Leiaz)
+	* Fixes #279: Rules not visible in searchdialog
+	  (patch by Leiaz)
 	* Fixes #83: Segfault when sorting feeds in folder
 	  (patch by Leiaz)
 
