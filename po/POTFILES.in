@@ -185,6 +185,8 @@ src/webkit/webkit.c
 [type: gettext/glade]glade/google_source.ui
 [type: gettext/glade]glade/inoreader_source.ui
 [type: gettext/glade]glade/liferea.ui
+[tyep: gettext/glade]glade/liferea_menu.ui
+[tyep: gettext/glade]glade/liferea_toolbar.ui
 [type: gettext/glade]glade/new_subscription.ui
 [type: gettext/glade]glade/node_source.ui
 [type: gettext/glade]glade/opml_source.ui
