@@ -4,22 +4,22 @@
 # Lars Windolf <lars.lindner@gmail.com>, 2003-2012.
 # Robin Stocker <robin@nibor.org>, 2008-2009.
 # Christian Dywan <christian@twotoasts.de>, 2008-2009.
+# Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.9.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-26 12:32+0200\n"
-"PO-Revision-Date: 2013-07-06 01:24+0100\n"
-"Last-Translator: Lars Windolf <lars.lindner@gmail.com>\n"
+"PO-Revision-Date: 2015-12-20 16:54+0100\n"
+"Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
-"Language: \n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: Germany\n"
+"X-Generator: Poedit 1.6.10\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid ""
@@ -30,31 +30,37 @@ msgid ""
 "extra libraries to be installed. Liferea tries to fill this gap by creating "
 "a fast, easy to use, easy to install news aggregator for GTK/GNOME."
 msgstr ""
+"Liferea ist eine Abkürzung für »Linux Feed Reader«. Es ist ein Aggregator "
+"für Online-News-Feeds. Es unterstützt eine Reihe von verschiedenen Feed-"
+"Formaten, wie RSS/RDF, CDF und Atom. Es gibt viele andere Aggregatoren, doch "
+"diese sind nicht für Linux verfügbar oder setzen voraus dass viele externe "
+"Bibliotheken installiert sind. Liferea versucht diese Lücke zu schließen "
+"indem ein schneller, leicht zu benutzender, und leicht zu installierender "
+"Nachrichten-Aggregator für GTK/Gnome erstellt wird."
 
 #: ../liferea.appdata.xml.in.h:2
 msgid "Distinguishing features:"
 msgstr ""
 
 #: ../liferea.appdata.xml.in.h:3
-#, fuzzy
 msgid "Read articles when offline"
-msgstr "Liferea ist jetzt offline."
+msgstr "Artikel offline lesen"
 
 #: ../liferea.appdata.xml.in.h:4
 msgid "Synchronizes with TheOldReader"
-msgstr ""
+msgstr "Synchronisiert mit TheOldReader"
 
 #: ../liferea.appdata.xml.in.h:5
 msgid "Synchronizes with TinyTinyRSS"
-msgstr ""
+msgstr "Synchronisiert mit TinyTinyRSS"
 
 #: ../liferea.appdata.xml.in.h:6
 msgid "Synchronizes with InoReader"
-msgstr ""
+msgstr "Synchronisiert mit InoReader"
 
 #: ../liferea.appdata.xml.in.h:7
 msgid "Synchronizes with Reedah"
-msgstr ""
+msgstr "Synchronisiert mit Reedah"
 
 #: ../liferea.appdata.xml.in.h:8
 msgid "Permanently save headlines in news bins"
@@ -65,9 +71,8 @@ msgid "Match items using search folders"
 msgstr ""
 
 #: ../liferea.appdata.xml.in.h:10
-#, fuzzy
 msgid "Play Podcasts"
-msgstr "Podcast"
+msgstr "Podcasts abspielen"
 
 #: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/liferea.ui.h:1
 msgid "Liferea"
@@ -87,7 +92,7 @@ msgstr "News-Feeds und Blogs lesen"
 
 #: ../liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
-msgstr ""
+msgstr "Nachrichten;News;Feed;Abonnement;Aggregator;Blog;Podcast;"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
@@ -287,8 +292,8 @@ msgid ""
 "You have not configured a download tool yet! Please do so in the 'Download' "
 "tab in Tools/Preferences."
 msgstr ""
-"Es ist noch kein Download-Programm konfiguriert! Dies muss im Reiter "
-"'Download' unter Tools/Einstellungen eingetragen werden."
+"Es ist noch kein Download-Programm konfiguriert! Bitte tun Sie dies im "
+"Reiter 'Download' unter Tools/Einstellungen."
 
 #: ../src/enclosure.c:306
 #, c-format
@@ -304,9 +309,9 @@ msgstr ""
 "\n"
 "%s\n"
 "\n"
-"Bitte prüfen, ob das konfigurierte Download-Programm installiert ist und "
-"korrekt funktioniert! Im Reiter 'Download' im Menü Tools/Einstellungen kann "
-"dies kontrolliert werden."
+"Bitte überprüfen Sie, ob das konfigurierte Download-Programm installiert ist "
+"und korrekt funktioniert! Im Reiter »Download« im Menü Tools/Einstellungen "
+"kann dies kontrolliert werden."
 
 #: ../src/export.c:185
 #, c-format
@@ -1207,9 +1212,8 @@ msgid "Unknown source"
 msgstr "Unbekannte Quelle"
 
 #: ../src/ui/ui_common.c:168
-#, fuzzy
 msgid "_Cancel"
-msgstr "_Alle abbrechen"
+msgstr "_Abbrechen"
 
 #: ../src/ui/ui_common.c:211
 msgid "All Files"
@@ -1258,7 +1262,7 @@ msgstr "_Abonnieren..."
 
 #: ../src/ui/liferea_htmlview.c:666
 msgid "_Copy"
-msgstr ""
+msgstr "_Kopieren"
 
 #: ../src/ui/item_list_view.c:114
 msgid "This item has no link specified!"
@@ -1352,12 +1356,11 @@ msgstr "_Neu Erzeugen"
 
 #: ../src/ui/popup_menu.c:346
 msgid "_Delete"
-msgstr ""
+msgstr "_Löschen"
 
 #: ../src/ui/popup_menu.c:352
-#, fuzzy
 msgid "Convert To Local Subscriptions..."
-msgstr "_Neues Abonnement..."
+msgstr "In lokales Abonnement umwandeln"
 
 #: ../src/ui/preferences_dialog.c:87
 msgid "GNOME default"
@@ -1476,7 +1479,7 @@ msgstr "Lösch-Bestätigung"
 
 #: ../src/ui/subscription_dialog.c:351 ../src/fl_sources/opml_source.c:383
 msgid "_Open"
-msgstr ""
+msgstr "_Öffnen"
 
 #: ../src/ui/subscription_dialog.c:425
 #, c-format
@@ -1485,7 +1488,7 @@ msgid_plural ""
 "The provider of this feed suggests an update interval of %d minutes."
 msgstr[0] ""
 "Der Anbieter dieses Abonnements schlägt ein Aktualisierungsintervall von %d "
-"Minuten vor."
+"Minute vor."
 msgstr[1] ""
 "Der Anbieter dieses Abonnements schlägt ein Aktualisierungsintervall von %d "
 "Minuten vor."
@@ -1509,13 +1512,12 @@ msgstr "%b %d %H:%M"
 #: ../src/fl_sources/aol_source.c:102 ../src/fl_sources/inoreader_source.c:101
 #: ../src/fl_sources/reedah_source.c:102
 #: ../src/fl_sources/theoldreader_source.c:103
-#, fuzzy
 msgid "Login failed!"
-msgstr "Google-Reader-Login fehlgeschlagen!"
+msgstr "Login fehlgeschlagen!"
 
 #: ../src/fl_sources/aol_source.c:127
 msgid "AOL Reader Login"
-msgstr ""
+msgstr "AOL-Reader-Login"
 
 #: ../src/fl_sources/aol_source.c:193 ../src/fl_sources/default_source.c:145
 #: ../glade/new_subscription.ui.h:1 ../glade/simple_subscription.ui.h:1
@@ -1523,14 +1525,12 @@ msgid "New Subscription"
 msgstr "Neues Abonnement"
 
 #: ../src/fl_sources/aol_source.c:279
-#, fuzzy
 msgid "AOL Reader"
-msgstr "Feedreader"
+msgstr "AOL-Reader"
 
 #: ../src/fl_sources/inoreader_source.c:308
-#, fuzzy
 msgid "InoReader"
-msgstr "Google Reader"
+msgstr "InoReader"
 
 #: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
@@ -1560,6 +1560,8 @@ msgstr "Art der Quelle"
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
+"Login für »%s« ist noch nicht abgeschlossen! Bitte warten Sie bis der Login "
+"abgeschlossen ist."
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
@@ -1567,10 +1569,11 @@ msgstr ""
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr ""
+"Das »%s« Abonement wurde erfolgreich in ein lokales Abonnement umgewandelt!"
 
 #: ../src/fl_sources/reedah_source.c:309
 msgid "Reedah"
-msgstr ""
+msgstr "Reedah"
 
 #: ../src/fl_sources/reedah_source_feed.c:154
 #, fuzzy
@@ -1608,9 +1611,8 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Could not parse JSON returned by tt-rss API!"
 
 #: ../src/fl_sources/theoldreader_source.c:327
-#, fuzzy
 msgid "TheOldReader"
-msgstr "Feedreader"
+msgstr "TheOldReader"
 
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
@@ -1638,7 +1640,7 @@ msgstr "Neues Google-Reader-Konto"
 
 #: ../glade/google_source.ui.h:2
 msgid "Please enter your Google Reader account settings."
-msgstr "Hier sind die Google-Reader-Kontodaten anzugeben."
+msgstr "Bitte geben Sie Ihre Google-Reader-Kontodaten ein."
 
 #: ../glade/google_source.ui.h:3 ../glade/inoreader_source.ui.h:3
 #: ../glade/reedah_source.ui.h:3 ../glade/ttrss_source.ui.h:4
@@ -1652,14 +1654,12 @@ msgid "_Username (Email)"
 msgstr "_Benutzername (Email)"
 
 #: ../glade/inoreader_source.ui.h:1
-#, fuzzy
 msgid "Add InoReader Account"
-msgstr "Neues Google-Reader-Konto"
+msgstr "Neues InoReader-Konto"
 
 #: ../glade/inoreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your InoReader account settings."
-msgstr "Hier sind die Google-Reader-Kontodaten anzugeben."
+msgstr "Bitte geben Sie Ihre InoReader-Kontodaten ein."
 
 #: ../glade/liferea.ui.h:2
 msgid "normal view"
@@ -1865,9 +1865,8 @@ msgid ""
 "want to be executed below. The enclosures URL will be supplied as an "
 "argument for this command:"
 msgstr ""
-"Was sollte Liferea mit diesem Anhang tun? An dieser Stelle kann ein Befehl "
-"zur Ausführung angegeben werden. Der Name der heruntergeladenen Datei wird "
-"als Argument mitgegeben:"
+"Was sollte Liferea mit diesem Anhang tun? Bitte geben Sie den Befehl zur "
+"Ausführung an. Die Adresse des Anhangs wird als Argument mitgegeben:"
 
 #: ../glade/liferea.ui.h:53
 msgid "_Browse"
@@ -2013,7 +2012,7 @@ msgstr "Neue OPML/Planet-Quelle"
 msgid ""
 "Please specify a local file or an URL pointing to a valid OPML feed list."
 msgstr ""
-"Hier ist eine lokale Datei oder URL anzugeben unter der Liferea eine valide "
+"Bitte geben Sie eine lokale Datei oder URL an unter der Liferea eine valide "
 "OPML-Feed-Liste findet."
 
 #: ../glade/opml_source.ui.h:3
@@ -2224,14 +2223,12 @@ msgid "Plugins"
 msgstr "Plugins"
 
 #: ../glade/reedah_source.ui.h:1
-#, fuzzy
 msgid "Add Reedah Account"
-msgstr "Neues Google-Reader-Konto"
+msgstr "Neues Reedah-Konto"
 
 #: ../glade/reedah_source.ui.h:2
-#, fuzzy
 msgid "Please enter your Reedah account settings."
-msgstr "Hier sind die Google-Reader-Kontodaten anzugeben."
+msgstr "Bitte geben Sie Ihre Reedah-Kontodaten ein."
 
 #: ../glade/search_folder.ui.h:1
 msgid "Search Folder Properties"
@@ -2258,9 +2255,8 @@ msgid "Add Tiny Tiny RSS Account"
 msgstr "Neuer Tiny Tiny RSS-Konto"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TinyTinyRSS account settings."
-msgstr "Hier sind die TinyTinyRSS-Kontodaten anzugeben."
+msgstr "Bitte geben Sie Ihre TinyTinyRSS-Kontodaten ein."
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
@@ -2271,14 +2267,12 @@ msgid "_Username"
 msgstr "_Benutzername"
 
 #: ../glade/theoldreader_source.ui.h:1
-#, fuzzy
 msgid "Add TheOldReader Account"
-msgstr "Neues Google-Reader-Konto"
+msgstr "Neues TheOldReader-Konto"
 
 #: ../glade/theoldreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TheOldReader account settings."
-msgstr "Hier sind die Google-Reader-Kontodaten anzugeben."
+msgstr "Bitte geben Sie Ihre TheOldReader-Kontodaten ein."
 
 #~ msgid "No comments yet."
 #~ msgstr "Keine Kommentare bisher."
