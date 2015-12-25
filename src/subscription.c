@@ -251,7 +251,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);
 
-	if (subscription->node->newCount > 0) {
+	if (processing && subscription->node->newCount > 0) {
 		feedlist_new_items (node->newCount);
 		feedlist_node_was_updated (node);
 	}
