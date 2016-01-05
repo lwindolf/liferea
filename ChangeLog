@@ -12,6 +12,8 @@ To be released
 	  (docs error, reported by Anders Jonsson)
 	* Fixes Github #83: Segfault when sorting feeds in folder
 	  (patch by Leiaz)
+	* Fixes French translation
+	  (patch by polo2ro)
 
 
 2016-10-12   Lars Windolf <lars.windolf@gmx.de>
