@@ -1307,7 +1307,7 @@ msgstr "_Publier le lien sur %s"
 #: ../src/ui/popup_menu.c:160
 #, fuzzy
 msgid "Copy Item _Location"
-msgstr "_Copier l'adresse de l'image"
+msgstr "_Copier l'adresse de l'élément"
 
 #: ../src/ui/popup_menu.c:166
 msgid "R_emove Item"
