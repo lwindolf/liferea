@@ -143,10 +143,16 @@ item_make_link (itemPtr item)
 		gchar * pos = (gchar *)base;
 		int host_url_size, i;
 
-		/* Find the third /, start of link on
-		 * site. */
-		for (i = 0; pos && i < 3; i++) {
-			pos = strstr(pos + 1, "/");
+		/* Check for schema-less (protocol-relative) link */
+		if (*(src+1) == '/') {
+			/* Find first /, end of protocol part in base url */
+			pos = strstr (pos, "/");
+		} else {
+			/* Find the third /, start of link on
+			* site. */
+			for (i = 0; pos && i < 3; i++) {
+				pos = strstr(pos + 1, "/");
+			}
 		}
 
 		if (!pos) {
