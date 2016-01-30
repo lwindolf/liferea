@@ -51,6 +51,7 @@ liferea_SOURCES = \
 	node.c node.h \
 	node_type.c node_type.h \
 	node_view.h \
+	notification.c notification.h \
 	plugins_engine.c plugins_engine.h \
 	render.c render.h \
 	rule.c rule.h \

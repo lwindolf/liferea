@@ -1,11 +1,15 @@
 To be released
 
+	Version 1.10.18
+
 	* Fixes #287: media:content support broken
 	  (patch by Leiaz)
 	* Fixes #279: Rules not visible in searchdialog
 	  (patch by Leiaz)
 	* Fixes #83: Segfault when sorting feeds in folder
 	  (patch by Leiaz)
+	* Fixes #302: Broken compilation with --disable-notify
+	  (reported by vostorga)
 
 
 2015-10-30  Lars Windolf <lars.windolf@gmx.de>

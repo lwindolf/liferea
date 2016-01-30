@@ -46,7 +46,7 @@
 #include "update.h"
 #include "xml.h"
 #include "ui/liferea_shell.h"
-#include "notification/notification.h"
+#include "notification.h"
 
 static enum {
 	STATE_STARTING,

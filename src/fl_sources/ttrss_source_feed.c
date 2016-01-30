@@ -31,7 +31,7 @@
 #include "metadata.h"
 #include "subscription.h"
 #include "xml.h"
-#include "notification/notification.h"
+#include "notification.h"
 
 #include "fl_sources/ttrss_source.h"
 

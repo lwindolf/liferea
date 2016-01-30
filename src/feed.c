@@ -39,7 +39,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
 #include "ui/feed_list_node.h"
-#include "notification/notification.h"
+#include "notification.h"
 
 feedPtr
 feed_new (void)

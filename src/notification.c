@@ -24,7 +24,7 @@
 #include "common.h"
 #include "debug.h"
 #include "node.h"
-#include "notification/notification.h"
+#include "notification.h"
 
 notificationPluginPtr notificationPlugin = NULL;
 
