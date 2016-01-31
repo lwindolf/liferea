@@ -3,24 +3,27 @@
 # This file is distributed under the same license as the liferea package.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2007,2009,2012.
 # Takeshi Hamasaki <hmatrjp@users.sourceforge.jp>, 2012.
+# IWAI, Masaharu <iwaim.sub@gmail.com>, 2016.
 #
 # 翻訳の用例 (since 2004-08-16)
 # subscription: 購読
 # items: トピック
 # feed: 配信元
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-09-26 12:32+0200\n"
-"PO-Revision-Date: 2012-10-26 23:32+0900\n"
-"Last-Translator: Takeshi Hamasaki <hmatrjp@users.sourceforge.jp>\n"
+"PO-Revision-Date: 2016-01-31 19:07+0900\n"
+"Last-Translator: IWAI, Masaharu <iwaim.sub@gmail.com>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid ""
@@ -34,7 +37,7 @@ msgstr ""
 
 #: ../liferea.appdata.xml.in.h:2
 msgid "Distinguishing features:"
-msgstr ""
+msgstr "特徴的な機能:"
 
 #: ../liferea.appdata.xml.in.h:3
 #, fuzzy
@@ -42,24 +45,20 @@ msgid "Read articles when offline"
 msgstr "Liferea はオフラインです"
 
 #: ../liferea.appdata.xml.in.h:4
-#, fuzzy
 msgid "Synchronizes with TheOldReader"
-msgstr "近くにあるホストとの同期"
+msgstr "TheOldReader との同期"
 
 #: ../liferea.appdata.xml.in.h:5
-#, fuzzy
 msgid "Synchronizes with TinyTinyRSS"
-msgstr "近くにあるホストとの同期"
+msgstr "TinyTinyRSS との同期"
 
 #: ../liferea.appdata.xml.in.h:6
-#, fuzzy
 msgid "Synchronizes with InoReader"
-msgstr "近くにあるホストとの同期"
+msgstr "InoReader との同期"
 
 #: ../liferea.appdata.xml.in.h:7
-#, fuzzy
 msgid "Synchronizes with Reedah"
-msgstr "近くにあるホストとの同期"
+msgstr "Reedah との同期"
 
 #: ../liferea.appdata.xml.in.h:8
 msgid "Permanently save headlines in news bins"
@@ -70,9 +69,8 @@ msgid "Match items using search folders"
 msgstr ""
 
 #: ../liferea.appdata.xml.in.h:10
-#, fuzzy
 msgid "Play Podcasts"
-msgstr "Podcast"
+msgstr "Podcastを演奏する"
 
 #: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/liferea.ui.h:1
 msgid "Liferea"
@@ -217,7 +215,7 @@ msgstr "部門"
 
 #: ../xslt/newsbin.xml.in.h:1
 msgid "News Bin:"
-msgstr "NewsBin:"
+msgstr "News Bin:"
 
 #: ../xslt/newsbin.xml.in.h:2
 msgid ""
@@ -911,12 +909,11 @@ msgstr "トピック(_I)"
 
 #: ../src/ui/liferea_shell.c:973
 msgid "Previous Item"
-msgstr ""
+msgstr "前のトピック"
 
 #: ../src/ui/liferea_shell.c:975
-#, fuzzy
 msgid "Next Item"
-msgstr "次の未読のトピック(_N)"
+msgstr "次トピック"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
@@ -1147,7 +1144,7 @@ msgstr "現在選択しているトピックを削除します"
 
 #: ../src/ui/liferea_shell.c:1048 ../src/ui/popup_menu.c:128
 msgid "Open In _Tab"
-msgstr ""
+msgstr "タブの中に開く(_T)"
 
 #: ../src/ui/liferea_shell.c:1048
 #, fuzzy
@@ -1155,9 +1152,8 @@ msgid "Launches the item's link in a new Liferea browser tab."
 msgstr "設定したブラウザでトピックのリンクを開きます"
 
 #: ../src/ui/liferea_shell.c:1050 ../src/ui/popup_menu.c:129
-#, fuzzy
 msgid "_Open In Browser"
-msgstr "ブラウザで開く(_L)"
+msgstr "ブラウザで開く(_O)"
 
 #: ../src/ui/liferea_shell.c:1050
 #, fuzzy
@@ -1165,9 +1161,8 @@ msgid "Launches the item's link in the Liferea item pane."
 msgstr "設定したブラウザでトピックのリンクを開きます"
 
 #: ../src/ui/liferea_shell.c:1052 ../src/ui/popup_menu.c:130
-#, fuzzy
 msgid "Open In _External Browser"
-msgstr "外部ブラウザの設定"
+msgstr "外部ブラウザで開く(_E)"
 
 #: ../src/ui/liferea_shell.c:1052
 #, fuzzy
@@ -1184,11 +1179,11 @@ msgstr "このオプションで購読の更新を無効にできます"
 
 #: ../src/ui/liferea_shell.c:1059
 msgid "_Fullscreen"
-msgstr ""
+msgstr "フルスクリーン(_F)"
 
 #: ../src/ui/liferea_shell.c:1059
 msgid "Browse at full screen"
-msgstr ""
+msgstr "フルスクリーンで見る"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1200,9 +1195,8 @@ msgid "Unknown source"
 msgstr "配信元ソースが不明です"
 
 #: ../src/ui/ui_common.c:168
-#, fuzzy
 msgid "_Cancel"
-msgstr "全てキャンセル(_A)"
+msgstr "キャンセル(_A)"
 
 #: ../src/ui/ui_common.c:211
 msgid "All Files"
@@ -1213,19 +1207,16 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (更新はできません)"
 
 #: ../src/ui/liferea_htmlview.c:642
-#, fuzzy
 msgid "Open Link In _Tab"
 msgstr "タブの中に開く(_T)"
 
 #: ../src/ui/liferea_htmlview.c:643
-#, fuzzy
 msgid "_Open Link In Browser"
-msgstr "ブラウザで開く(_L)"
+msgstr "ブラウザで開く(_O)"
 
 #: ../src/ui/liferea_htmlview.c:644
-#, fuzzy
 msgid "_Open Link In External Browser"
-msgstr "ブラウザで開く(_L)"
+msgstr "外部ブラウザで開く(_O)"
 
 #: ../src/ui/liferea_htmlview.c:647
 #, c-format
@@ -1254,7 +1245,7 @@ msgstr "購読する(_S)..."
 
 #: ../src/ui/liferea_htmlview.c:666
 msgid "_Copy"
-msgstr ""
+msgstr "コピー(_C):"
 
 #: ../src/ui/item_list_view.c:114
 msgid "This item has no link specified!"
@@ -1286,14 +1277,13 @@ msgid "Copy to News Bin"
 msgstr "NewsBin にコピーする"
 
 #: ../src/ui/popup_menu.c:156
-#, fuzzy, c-format
+#, c-format
 msgid "_Bookmark at %s"
-msgstr "%s のブックマークに追加(_B)"
+msgstr "ブックマークに追加(_B): %s"
 
 #: ../src/ui/popup_menu.c:160
-#, fuzzy
 msgid "Copy Item _Location"
-msgstr "画像のリンク先のコピー(_C)"
+msgstr "トピックの場所をコピー(_L)"
 
 #: ../src/ui/popup_menu.c:166
 msgid "R_emove Item"
@@ -1349,12 +1339,11 @@ msgstr "再構築(_R)"
 
 #: ../src/ui/popup_menu.c:346
 msgid "_Delete"
-msgstr ""
+msgstr "削除(_D):"
 
 #: ../src/ui/popup_menu.c:352
-#, fuzzy
 msgid "Convert To Local Subscriptions..."
-msgstr "新しい購読(_N)..."
+msgstr ""
 
 #: ../src/ui/preferences_dialog.c:87
 msgid "GNOME default"
@@ -1401,19 +1390,16 @@ msgid "<Alt> Space"
 msgstr "Alt+Space"
 
 #: ../src/ui/preferences_dialog.c:113
-#, fuzzy
 msgid "Normal View"
-msgstr "通常の表示(_N)"
+msgstr "通常の表示"
 
 #: ../src/ui/preferences_dialog.c:114
-#, fuzzy
 msgid "Wide View"
-msgstr "ワイド表示(_W)"
+msgstr "ワイド表示"
 
 #: ../src/ui/preferences_dialog.c:115
-#, fuzzy
 msgid "Combined View"
-msgstr "サマリ表示(_C)"
+msgstr "サマリ表示"
 
 #: ../src/ui/preferences_dialog.c:463
 msgid "Manual"
@@ -1502,9 +1488,8 @@ msgstr "%B%e日 %H:%M"
 #: ../src/fl_sources/aol_source.c:102 ../src/fl_sources/inoreader_source.c:101
 #: ../src/fl_sources/reedah_source.c:102
 #: ../src/fl_sources/theoldreader_source.c:103
-#, fuzzy
 msgid "Login failed!"
-msgstr "Google リーダへのログインに失敗しました！"
+msgstr "ログインに失敗しました！"
 
 #: ../src/fl_sources/aol_source.c:127
 msgid "AOL Reader Login"
@@ -1516,14 +1501,12 @@ msgid "New Subscription"
 msgstr "新しい購読"
 
 #: ../src/fl_sources/aol_source.c:279
-#, fuzzy
 msgid "AOL Reader"
-msgstr "フィード・リーダ"
+msgstr "AOL Reader"
 
 #: ../src/fl_sources/inoreader_source.c:308
-#, fuzzy
 msgid "InoReader"
-msgstr "Google リーダ"
+msgstr "InoReader"
 
 #: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
@@ -1566,9 +1549,8 @@ msgid "Reedah"
 msgstr ""
 
 #: ../src/fl_sources/reedah_source_feed.c:154
-#, fuzzy
 msgid "Could not parse JSON returned by Reedah API!"
-msgstr "tt-rss API が返した JSON を解析できませんでした！"
+msgstr "Reedah API が返した JSON を解析できませんでした！"
 
 #: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
 msgid "TinyTinyRSS HTTP API not reachable!"
@@ -1596,14 +1578,12 @@ msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source_feed.c:150
-#, fuzzy
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr "tt-rss API が返した JSON を解析できませんでした！"
+msgstr "Tiny Tiny RSS API が返した JSON を解析できませんでした！"
 
 #: ../src/fl_sources/theoldreader_source.c:327
-#, fuzzy
 msgid "TheOldReader"
-msgstr "フィード・リーダ"
+msgstr "TheOldReader"
 
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
@@ -1645,14 +1625,12 @@ msgid "_Username (Email)"
 msgstr "ユーザ名 (Eメール)(_U)"
 
 #: ../glade/inoreader_source.ui.h:1
-#, fuzzy
 msgid "Add InoReader Account"
-msgstr "Google リーダのアカウントの追加"
+msgstr "InoReader のアカウントの追加"
 
 #: ../glade/inoreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your InoReader account settings."
-msgstr "Google リーダのアカウント情報を入力して下さい:"
+msgstr "InoReader のアカウント情報を入力して下さい:"
 
 #: ../glade/liferea.ui.h:2
 msgid "normal view"
@@ -1845,14 +1823,12 @@ msgid "_New Name:"
 msgstr "新しい名前(_N):"
 
 #: ../glade/liferea.ui.h:50
-#, fuzzy
 msgid "Open Enclosure"
-msgstr "エンクロージャを開く..."
+msgstr "エンクロージャを開く"
 
 #: ../glade/liferea.ui.h:51
-#, fuzzy
 msgid "Open an enclosure of type:"
-msgstr "ダウンロードするエンクロージャの種類:"
+msgstr "開くエンクロージャの種類:"
 
 #: ../glade/liferea.ui.h:52
 #, fuzzy
@@ -2086,7 +2062,7 @@ msgstr "エントリの斜め読みに使用するキー(_S):"
 
 #: ../glade/prefs.ui.h:18
 msgid "_Default View Mode:"
-msgstr ""
+msgstr "デフォルトの表示モード(_D):"
 
 #: ../glade/prefs.ui.h:19
 msgid "Web Integration"
@@ -2121,14 +2097,13 @@ msgid "_Open link in:"
 msgstr "リンクを開く場所(_O):"
 
 #: ../glade/prefs.ui.h:28
-#, fuzzy
 msgid "_Manual:"
-msgstr "手動"
+msgstr "手動(_M):"
 
 #: ../glade/prefs.ui.h:30
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
-msgstr ""
+msgstr "<small>(%s には URL が入ります)</small>"
 
 #: ../glade/prefs.ui.h:31
 msgid "_Browser:"
@@ -2212,17 +2187,15 @@ msgstr "エンクロージャ"
 
 #: ../glade/prefs.ui.h:51
 msgid "Plugins"
-msgstr ""
+msgstr "プラグイン"
 
 #: ../glade/reedah_source.ui.h:1
-#, fuzzy
 msgid "Add Reedah Account"
-msgstr "Google リーダのアカウントの追加"
+msgstr "Reedah のアカウントの追加"
 
 #: ../glade/reedah_source.ui.h:2
-#, fuzzy
 msgid "Please enter your Reedah account settings."
-msgstr "Google リーダのアカウント情報を入力して下さい:"
+msgstr "Reedah のアカウント情報を入力して下さい:"
 
 #: ../glade/search_folder.ui.h:1
 msgid "Search Folder Properties"
@@ -2249,9 +2222,8 @@ msgid "Add Tiny Tiny RSS Account"
 msgstr "Tiny Tiny RSS アカウントの追加"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TinyTinyRSS account settings."
-msgstr "tt-rss のアカウント情報を入力して下さい:"
+msgstr "Tiny Tiny RSS のアカウント情報を入力して下さい:"
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
@@ -2262,14 +2234,12 @@ msgid "_Username"
 msgstr "ユーザ名(_U)"
 
 #: ../glade/theoldreader_source.ui.h:1
-#, fuzzy
 msgid "Add TheOldReader Account"
-msgstr "Google リーダのアカウントの追加"
+msgstr "TheOldReader のアカウントの追加 "
 
 #: ../glade/theoldreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TheOldReader account settings."
-msgstr "Google リーダのアカウント情報を入力して下さい:"
+msgstr "TheOldReader のアカウント情報を入力して下さい:"
 
 #~ msgid "No comments yet."
 #~ msgstr "コメントなし"
