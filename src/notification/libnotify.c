@@ -40,7 +40,7 @@
 #include "ui/feed_list_view.h"
 #include "ui/ui_tray.h"
 
-#include "notification/notification.h"
+#include "notification.h"
 
 static gboolean supports_actions = FALSE;
 static gboolean supports_append  = FALSE;
