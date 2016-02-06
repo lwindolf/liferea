@@ -130,14 +130,19 @@ node_set_subscription (nodePtr node, subscriptionPtr subscription)
 void
 node_update_subscription (nodePtr node, gpointer user_data) 
 {
+	gint interval;
 	if (node->source->root == node) {
 		node_source_update (node);
 		return;
 	}
 	
-	if (node->subscription)
+	if (node->subscription) {
+	    interval = subscription_get_update_interval (node->subscription);
+	    if (-2 != interval) {
 		subscription_update (node->subscription, GPOINTER_TO_UINT (user_data));
-		
+	    }
+	}
+
 	node_foreach_child_data (node, node_update_subscription, user_data);
 }
 
