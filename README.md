@@ -29,29 +29,17 @@ help you asap.
 
 ###### _Dependencies_
 
-Liferea 1.11+ is to be built against GTK+ 3. If you need to build
-for GTK+ 2 please use the most recent 1.8 release.
-
-The compilation and runtime dependencies are:
-
-###### Mandatory:
+Mandatory:
 
    gtk3 libxml2 libxslt sqlite3 libwebkit3 libjson-glib libgirepository1.0 libpeas gsettings-desktop-schemas
 
 Optional:
 
-- For the keyring support
+- To use plugins:
   - Python >= 2
 - For the media player plugin
-  - Python >= 2
   - GStreamer 0.10+ library and codecs
    
-Ensure that you have installed the libraries and their headers.
-If you use distribution packages then you usually need to install
-a package named like the library and one with a suffix "-dev" or
-"-devel". You need both to compile Liferea.
-
-
 ###### _Compiling from Tarball_
 
 Download a tarball from https://github.com/lwindolf/liferea/releases
@@ -209,25 +197,18 @@ to identify leaks and send in the output.
 Browser Integration
 -------------------
 
-Liferea allows subscribing directly from Firefox 2.0+ and Epiphany. 
+Liferea allows subscribing directly from Firefox and browser with similar mechanism
 
-###### _Ephiphany_
+###### _Firefox_
 
-Epiphany provides a standard plugin that allows adding subscription directly 
-to Liferea. Ensure you have installed the Epiphany plugins (often a separate
-package in the distribution) and enabled the plugin in the Epiphany settings.
+If you want to subscribe from within Firefox you can configure it to add
+subscriptions to Liferea directly. To do so click the feed icon in the 
+location entry. Firefox will then present a menu where you can configure a 
+manual command instead of the Live Bookmarks to add subscriptions. 
 
-###### _Firefox 2.0+_
+There enter
 
-If you want to subscribe from within Firefox 2.0 you can configure Firefox 2.0 
-to add subscriptions to Liferea directly. To do so click the feed icon in the 
-location  entry. Firefox will then present a menu where you can configure a 
-manual command instead of the Live Bookmarks to add subscriptions. Liferea 
-supplies a script named "liferea-add-feed" that you can tell Firefox to use.
-
-If this doesn't work for you please try to run "liferea-add-feed" from the
-command line and look for error messages. Often DBUS problems cause the script
-to fail.
+    liferea-add-feed
 
 
 How to Get Support
