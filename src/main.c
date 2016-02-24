@@ -224,7 +224,7 @@ main (int argc, char *argv[])
 
 	gtk_init (&argc, &argv);
 
-	/* Single instance checks, also note that we pass or only RPC (add-feed)
+	/* Single instance checks, also note that we pass our only RPC (add-feed)
 	   as activate signal payload as it is simply an URI string. */
 	app = gtk_application_new ("net.sourceforge.liferea", G_APPLICATION_HANDLES_OPEN);
 	g_signal_connect (app, "activate", G_CALLBACK (on_app_activate), feedUri);
