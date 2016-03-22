@@ -2,6 +2,9 @@ To be released
 
 	* Github #309: Update of Japanese translation
 	  (IWAI, Masaharu)
+	* Removes GeoIP rendering via OSM to avoid exposing
+	  users to remote JS library resources.
+	  (reported by Paul Gevers)
 
 
 2016-01-30   Lars Windolf <lars.windolf@gmx.de>
