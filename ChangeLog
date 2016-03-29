@@ -2,6 +2,8 @@ To be released
 
 	* Github #309: Update of Japanese translation
 	  (IWAI, Masaharu)
+	* Github #325: Auto-fitting, translated license
+	  (patches by GreenLunar and Adolfo Jayme-Barrientos)
 	* Removes GeoIP rendering via OSM to avoid exposing
 	  users to remote JS library resources.
 	  (reported by Paul Gevers)
