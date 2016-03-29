@@ -40,27 +40,21 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.staticon.set_visible (True)
         self.maximizing = False
         window = self.shell.get_window ()
-        #self.minimize_to_tray_handler_id = window.connect('window-state-event', self.window_state_event_cb)
-
-    def window_state_event_cb(self, window, event):
-        window = self.shell.get_window ()
-        state = Gtk.Widget.get_visible (window)
-        if state:
-            if event.new_window_state & Gdk.WindowState.ICONIFIED:
-                if event.new_window_state & Gdk.WindowState.FOCUSED:
-                    if event.new_window_state & Gdk.WindowState.WITHDRAWN:
-                        self.maximizing = True
-                    elif self.maximizing:
-                        self.maximizing = False
-                        window.present()
-                    else:
-                        Gtk.Widget.hide(window)
+	self.minimize_to_tray_handler_id = window.connect("delete_event",
+						   self.trayicon_minimize)
 
     def trayicon_activate (self, widget, data = None):
+	self.toggle_visibility(widget, data)
+    	return False
+
+    def trayicon_minimize(self, widget, data = None):
+    	self.toggle_visibility(widget, data)
+    	return True
+
+    def toggle_visibility(self, widget, data):
         window = self.shell.get_window ()
         state = Gtk.Widget.get_visible (window)
 	self.shell.toggle_visibility()
-    	return False
 
     def trayicon_quit (self, widget, data = None):
         Liferea.shutdown ()
@@ -83,5 +77,5 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     def do_deactivate (self):
         self.staticon.set_visible (False)
         window = self.shell.get_window ()
-        #window.disconnect(self.minimize_to_tray_handler_id)
+        window.disconnect(self.minimize_to_tray_handler_id)
         del self.staticon
