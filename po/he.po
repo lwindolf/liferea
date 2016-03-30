@@ -1,5 +1,5 @@
 # Hebrew translation for liferea.
-# Copyright (c) 2003-2015 The Liferea Team
+# Copyright (c) 2003-2016 The Liferea Team
 # This file is distributed under the same license as the liferea package.
 # Yaron Sheffer <yaronf@gmx.com>, 2010.
 #
@@ -102,12 +102,13 @@ msgstr ""
 
 #: ../xslt/feed.xml.in.h:2
 msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+"The last update of this subscription failed!<br/><b>HTTP error code "
+"<xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+"select=\"httpError\"/></b>"
 msgstr ""
 "<div style=\"direction:rtl\">העדכון האחרון של הרשמה זו נכשל!<br/><b>HTTP "
-"error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
-"\"httpError\"/></b></div>"
+"error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+"select=\"httpError\"/></b></div>"
 
 # <div style=\"direction:rtl\">
 # </div>
@@ -244,8 +245,8 @@ msgid ""
 "Add items to this news bin by selecting \"Copy to News Bin\" from the item "
 "list context menu."
 msgstr ""
-"<p dir=\"rtl\">כדי להוסיף פריטים אל סל איסוף זה, יש לבחור \"העתק אל סל איסוף"
-"\" מתוך תפריט ההקשר של רשימת הפריטים.</p>"
+"<p dir=\"rtl\">כדי להוסיף פריטים לתוך סל איסוף זה, יש לבחור \"העתק לתוך סל "
+"איסוף\" מתוך תפריט ההקשר של רשימת הפריטים.</p>"
 
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
@@ -302,7 +303,6 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "‏\"%s\" אינו קובץ תצורה תקין של טיפוס צירופים!"
 
 #: ../src/enclosure.c:288
-#, fuzzy
 msgid ""
 "You have not configured a download tool yet! Please do so in the "
 "'Enclosures' tab in Tools/Preferences."
@@ -310,7 +310,7 @@ msgstr ""
 "לא הגדרת כלי הורדה עדיין! אנא עשה זאת בכרטיסייה 'הורדה' בתוך כלים/העדפות."
 
 #: ../src/enclosure.c:306
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Command failed: \n"
 "\n"
@@ -323,8 +323,8 @@ msgstr ""
 "\n"
 "%s\n"
 "\n"
-" אנא בדוק בין אם כלי ההורדה המוגדר הינו מותקן ועובד כראוי! באפשרותך לשנות "
-"זאת בכרטיסייה 'הורדה' בתוך כלים/העדפות."
+" אנא בדוק כי כלי הורדה המוגדר הינו מותקן ועובד כראוי! באפשרותך לשנות זאת "
+"בכרטיסייה 'הורדה' בתוך כלים/העדפות."
 
 # בשינוי השם של
 #: ../src/export.c:186
@@ -383,8 +383,8 @@ msgstr "יצ_א"
 #: ../src/feed.c:236
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+"points to a resource provided in one of the supported syndication "
+"formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr ""
 "<p dir=\"rtl\">לא ניתן לזהות את טיפוס הערוץ! אנא בדוק כי המקור אכן מצביע "
 "לאחד הפורמטים הנתמכים.</p><p dir=\"rtl\">תוצאת פענוח XML:</p><br /><div "
@@ -442,6 +442,8 @@ msgstr "אין פריטים שלא נקראו"
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
+"`shown' וא `hidden' תויהל לוכי STATE. STATE בצמב ישארה ןולחה רשאכ Liferea תא "
+"לחתה"
 
 # cli
 #: ../src/main.c:163
@@ -451,12 +453,12 @@ msgstr ""
 # cli
 #: ../src/main.c:164
 msgid "Show version information and exit"
-msgstr ""
+msgstr "אצו אסרג עדימ גצה"
 
 # cli
 #: ../src/main.c:165
 msgid "Add a new subscription"
-msgstr ""
+msgstr "השדח המשרה ףסוה"
 
 # cli
 #: ../src/main.c:165
@@ -466,27 +468,27 @@ msgstr ""
 # cli
 #: ../src/main.c:170
 msgid "Print debugging messages of all types"
-msgstr ""
+msgstr "סופיט לכמ גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:171
 msgid "Print debugging messages for the cache handling"
-msgstr ""
+msgstr "ןומטמב לופיטה רובע גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:172
 msgid "Print debugging messages for the configuration handling"
-msgstr ""
+msgstr "הרוצתב לופיטה רובע גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:173
 msgid "Print debugging messages of the database handling"
-msgstr ""
+msgstr "םינותנ דסמב לופיטה רובע גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:174
 msgid "Print debugging messages of all GUI functions"
-msgstr ""
+msgstr "GUI תויצקנופ לכ לש גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:175
@@ -494,56 +496,57 @@ msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
+"~/.cache/liferea/output.xhtml ךותל קפומה דוקה תא ליטת םג איה HTML טלפ תרייצמ "
+"Liferea הב םעפ לכב .HTML רויצ גאביד רשפאמ"
 
 # cli
 #: ../src/main.c:176
 msgid "Print debugging messages of all network activity"
-msgstr ""
+msgstr "תשר תוליעפ לכ לש גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:177
 msgid "Print debugging messages of all parsing functions"
-msgstr ""
+msgstr "חונעפ תויצקנופ לכ לש גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:178
 msgid "Print debugging messages when a function takes too long to process"
-msgstr ""
+msgstr "דבעל ןמז ידמ רתוי חקול היצקנופל רשאכ גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:179
 msgid "Print debugging messages when entering/leaving functions"
-msgstr ""
+msgstr "תויצקהופ סיבזוע/םיסנכנ רשאכ גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:180
 msgid "Print debugging messages of the feed update processing"
-msgstr ""
+msgstr "ץורע ינוכדע דוביע לש גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:181
 msgid "Print debugging messages of the search folder matching"
-msgstr ""
+msgstr "שופיח תייקית תמאתה לש גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:182
 msgid "Print verbose debugging messages"
-msgstr ""
+msgstr "בר ללמ תולעב גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:193 ../src/main.c:194
 msgid "Print debugging messages for the given topic"
-msgstr ""
+msgstr "ןותנה אשונה רובע גאביד תועדוה ספדה"
 
 # cli
 #: ../src/main.c:201
 msgid "Liferea, the Linux Feed Reader"
-msgstr ""
+msgstr "סקוניל לש םיצורע דגאמה ,Liferea"
 
-# למידע נוסף, אנא בקרו בכתובת http://lzone.de/liferea/‎
 #: ../src/main.c:202
 msgid "For more information, please visit http://lzone.de/liferea/"
-msgstr ""
+msgstr "http://lzone.de/liferea/ רקב, ףסונ עדימל"
 
 #. Some libsoup transport errors
 #: ../src/net.c:352
@@ -560,11 +563,11 @@ msgstr "לא ניתן לפענח שם מחשב פרוקסי"
 
 #: ../src/net.c:355
 msgid "Unable to connect to remote host"
-msgstr "לא ניתן להתחבר אל מארח מרוחק"
+msgstr "לא ניתן להתחבר למארח מרוחק"
 
 #: ../src/net.c:356
 msgid "Unable to connect to proxy"
-msgstr "לא ניתן להתחבר אל פרוקסי"
+msgstr "לא ניתן להתחבר לפרוקסי"
 
 #: ../src/net.c:357
 msgid ""
@@ -575,7 +578,7 @@ msgstr "אירעה שגיאת תקשורת, או שהקצה המרוחק נית�
 #. http 3xx redirection
 #: ../src/net.c:360
 msgid "The resource moved permanently to a new location"
-msgstr "המשאב הועבר לצמיתות אל מיקום חדש"
+msgstr "המשאב הועבר לצמיתות למיקום חדש"
 
 #. http 4xx client error
 #: ../src/net.c:363
@@ -1198,11 +1201,9 @@ msgstr "_מסך מלא"
 msgid "Browse at full screen"
 msgstr "דפדף במסך מלא"
 
-# מתקדם
 #: ../src/ui/search_dialog.c:116
-#, fuzzy
 msgid "Saved Search"
-msgstr "חיפוש מורחב"
+msgstr "חיפוש שמור"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1294,7 +1295,7 @@ msgstr "עליך לבחור ערוץ כדי למחוק את הפריטים של�
 
 #: ../src/ui/popup_menu.c:131
 msgid "Copy to News Bin"
-msgstr "העתק אל סל איסוף"
+msgstr "העתק לתוך סל איסוף"
 
 #: ../src/ui/popup_menu.c:145
 #, c-format
@@ -1367,7 +1368,7 @@ msgstr "_מחק"
 
 #: ../src/ui/popup_menu.c:344
 msgid "Convert To Local Subscriptions..."
-msgstr "המר אל הרשמות מקומיות..."
+msgstr "המר להרשמות מקומיות..."
 
 #: ../src/ui/preferences_dialog.c:86
 msgid "GNOME default"
@@ -1552,7 +1553,7 @@ msgstr "כניסה של '%s' עדיין לא הושלמה! אנא המתן עד 
 #: ../src/fl_sources/node_source.c:582
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr "ההרשמה '%s' הומרה בהצלחה אל ערוצים מקומיים!"
+msgstr "ההרשמה '%s' הומרה בהצלחה לערוצים מקומיים!"
 
 #: ../src/fl_sources/reedah_source.c:312
 msgid "Reedah"
@@ -1570,7 +1571,7 @@ msgstr "‏TinyTinyRSS: ‏HTTP API של לא נגיש!"
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
-msgstr "‏TinyTinyRSS הרשמה אל ערוץ נכשלה! בדוק אם באמת העברת URL של ערוץ!"
+msgstr "‏TinyTinyRSS הרשמה לערוץ נכשלה! בדוק אם באמת העברת URL ערוץ!"
 
 #: ../src/fl_sources/ttrss_source.c:290
 msgid "TinyTinyRSS unsubscribing feed failed!"
@@ -1581,8 +1582,7 @@ msgstr "‏TinyTinyRSS: ביטול הרשמת ערוץ נכשל!"
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
-msgstr ""
-"גרסת TinyTinyRSS זו לא תומכת בהסרת ערוצים. שדרג אל גרסא %s או חדשה יותר!"
+msgstr "גרסת TinyTinyRSS זו לא תומכת בהסרת ערוצים. שדרג לגרסא %s או חדשה יותר!"
 
 #: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
@@ -1756,7 +1756,7 @@ msgid ""
 "exits. Marked items are always saved to the cache."
 msgstr ""
 "הגדרות מטמון קובעות אם וכמה מתוכני הערוצים יישמרו כאשר היישום Liferea יוצא. "
-"פריטים מסומנים נשמרים תמיד אל המטמון."
+"פריטים מסומנים נשמרים תמיד לתוך המטמון."
 
 #: ../glade/liferea.ui.h:30
 msgid "_Default cache settings"
@@ -1836,7 +1836,7 @@ msgid "Open an enclosure of type:"
 msgstr "הורדת צירוף מן טיפוס:"
 
 # ינופקו
-# שם הקובץ שלתוכו מורד הצירוף יועבר כפרמטר אל פקודה זו
+# שם הקובץ שלתוכו מורד הצירוף יועבר כפרמטר לפקודה זו
 #: ../glade/liferea.ui.h:51
 msgid ""
 "What should Liferea do with this enclosure? Please enter the command you "
@@ -1949,7 +1949,7 @@ msgid ""
 "directories in non-supported formats.  See the documentation for more "
 "information."
 msgstr ""
-"‏Liferea מסוגל לעבוד עם תוספות מסננות חיצוניות על מנת לגשת לערוצים ולתיקיות "
+"‏Liferea מסוגל לעבוד עם תוספים מסננים חיצוניים על מנת לגשת לערוצים ולתיקיות "
 "בפורמטים שלא נתמכים.  ראה את התיעוד למידע נוסף."
 
 #: ../glade/node_source.ui.h:1
@@ -2085,7 +2085,7 @@ msgstr "_נטרל Javascript."
 
 #: ../glade/prefs.ui.h:25
 msgid "_Enable browser plugins."
-msgstr "_אפשר תוספות דפדפן."
+msgstr "_אפשר תוספי דפדפן."
 
 #: ../glade/prefs.ui.h:26
 msgid "External Browser Settings"
@@ -2124,7 +2124,7 @@ msgstr "_תוויות כפתורים בסרגל כלים:"
 # מ.מ.ג.
 #: ../glade/prefs.ui.h:35
 msgid "GUI"
-msgstr "ממשק משתמש גרפי"
+msgstr "ממשק"
 
 #: ../glade/prefs.ui.h:36
 msgid "HTTP Proxy Server"
@@ -2167,17 +2167,16 @@ msgid "Proxy"
 msgstr "פרוקסי"
 
 #: ../glade/prefs.ui.h:46
-#, fuzzy
 msgid "Privacy Settings"
-msgstr "הגדרות תצוגת תיקיות"
+msgstr "הגדרות פרטיות"
 
 #: ../glade/prefs.ui.h:47
 msgid "Tell sites that I do _not want to be tracked"
-msgstr ""
+msgstr "אמור לאתרים כי אני _לא רוצה להיות נתון למעקב"
 
 #: ../glade/prefs.ui.h:48
 msgid "Privacy"
-msgstr ""
+msgstr "פרטיות"
 
 #: ../glade/prefs.ui.h:49
 msgid "Downloading Enclosures"
@@ -2197,7 +2196,7 @@ msgstr "צירופים"
 
 #: ../glade/prefs.ui.h:53
 msgid "Plugins"
-msgstr "תוספות"
+msgstr "תוספים"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
