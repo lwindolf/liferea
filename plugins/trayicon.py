@@ -28,54 +28,67 @@ from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Gdk
 class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = 'TrayiconPlugin'
 
-    object = GObject.property (type=GObject.Object)
-    shell = GObject.property (type=Liferea.Shell)
+    object = GObject.property(type=GObject.Object)
+    shell = GObject.property(type=Liferea.Shell)
 
-    def do_activate (self):
+    def do_activate(self):
         self.staticon = Gtk.StatusIcon ()
         # FIXME: Support a scalable image!
-        self.staticon.set_from_pixbuf (Liferea.icon_create_from_file ("unread.png"))
-        self.staticon.connect ("activate", self.trayicon_activate)
-        self.staticon.connect ("popup_menu", self.trayicon_popup)
-        self.staticon.set_visible (True)
-        self.maximizing = False
-        window = self.shell.get_window ()
-	self.minimize_to_tray_handler_id = window.connect("delete_event",
-						   self.trayicon_minimize)
+        self.staticon.set_from_pixbuf(Liferea.icon_create_from_file("unread.png"))
+        self.staticon.connect("activate", self.trayicon_click)
+        self.staticon.connect("popup_menu", self.trayicon_popup)
+        self.staticon.set_visible(True)
 
-    def trayicon_activate (self, widget, data = None):
-	self.toggle_visibility(widget, data)
-    	return False
+        self.menu = Gtk.Menu()
+        menuitem_toggle = Gtk.MenuItem("Show / Hide")
+        menuitem_quit = Gtk.MenuItem("Quit")
+        menuitem_toggle.connect("activate", self.trayicon_toggle)
+        menuitem_quit.connect("activate", self.trayicon_quit)
+        self.menu.append(menuitem_toggle)
+        self.menu.append(menuitem_quit)
+        self.menu.show_all()
 
-    def trayicon_minimize(self, widget, data = None):
-    	self.toggle_visibility(widget, data)
-    	return True
+        self.window = self.shell.get_window()
+        self.minimize_to_tray_delete_handler = self.window.connect("delete_event",
+                                                                   self.trayicon_minimize_on_close)
+        self.minimize_to_tray_minimize_handler = self.window.connect("window-state-event",
+                                                                     self.window_state_event_cb)
 
-    def toggle_visibility(self, widget, data):
-        window = self.shell.get_window ()
-        state = Gtk.Widget.get_visible (window)
-	self.shell.toggle_visibility()
+        # show the window if it is hidden when starting liferea
+        self.window.deiconify()
+        self.window.show()
 
-    def trayicon_quit (self, widget, data = None):
-        Liferea.shutdown ()
+    def window_state_event_cb(self, widget, event):
+        "Hide window when minimize"
+        if event.changed_mask & event.new_window_state & Gdk.WindowState.ICONIFIED:
+            self.window.hide()
 
-    def trayicon_popup (self, widget, button, time, data = None):
-        self.menu = Gtk.Menu ()
+    def trayicon_click(self, widget, data = None):
+        self.window.deiconify()
+        self.window.show()
 
-        menuitem_toggle = Gtk.MenuItem ("Show / Hide")
-        menuitem_quit = Gtk.MenuItem ("Quit")
+    def trayicon_minimize_on_close(self, widget, data = None):
+        self.window.hide()
+        return True
 
-        menuitem_toggle.connect ("activate", self.trayicon_activate)
-        menuitem_quit.connect ("activate", self.trayicon_quit)
+    def trayicon_toggle(self, widget, data = None):
+        self.shell.toggle_visibility()
 
-        self.menu.append (menuitem_toggle)
-        self.menu.append (menuitem_quit)
+    def trayicon_quit(self, widget, data = None):
+        Liferea.shutdown()
 
-        self.menu.show_all ()
-        self.menu.popup(None, None, lambda w,x: self.staticon.position_menu(self.menu, self.staticon), self.staticon, 3, time)
+    def trayicon_popup(self, widget, button, time, data = None):
+        self.menu.popup(None, None, self.staticon.position_menu, self.staticon, 3, time)
 
-    def do_deactivate (self):
-        self.staticon.set_visible (False)
-        window = self.shell.get_window ()
-        window.disconnect(self.minimize_to_tray_handler_id)
+    def do_deactivate(self):
+        self.staticon.set_visible(False)
+        self.window.disconnect(self.minimize_to_tray_delete_handler)
+        self.window.disconnect(self.minimize_to_tray_minimize_handler)
+
+        # unhide the window when deactivating the plugin
+        self.window.deiconify()
+        self.window.show()
+
         del self.staticon
+        del self.window
+        del self.menu
