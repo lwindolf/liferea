@@ -1,7 +1,7 @@
 /**
  * @file webkit.c  WebKit browser module for Liferea
  *
- * Copyright (C) 2007-2010 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
@@ -416,7 +416,7 @@ static void
 fullscreen_toggle_parent_visible(GtkWidget *me, gboolean visible) {
 	GtkWidget *parent;
 	struct FullscreenData *fdata;
-	fdata = (struct FullscreenData *)g_new0(struct FullscreenData, 1);
+	fdata = g_new0(struct FullscreenData, 1);
 
 	// Flag fullscreen status
 	g_object_set_data(G_OBJECT(me), "fullscreen_on",

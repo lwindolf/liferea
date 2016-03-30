@@ -2,7 +2,7 @@
  * @file feed_list_node.c  Handling feed list nodes
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2016 Lars Windolf <lars.windolf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -197,7 +197,7 @@ feed_list_node_add (nodePtr node)
 	g_assert (NULL == feed_list_node_to_iter (node->id));
 
 	/* if parent is NULL we have the root folder and don't create a new row! */
-	iter = (GtkTreeIter *)g_new0 (GtkTreeIter, 1);
+	iter = g_new0 (GtkTreeIter, 1);
 	
 	/* if reduced feedlist, show flat treeview */
 	if (feedlist_reduced_unread)

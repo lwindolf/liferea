@@ -1,7 +1,7 @@
 /**
  * @file node.c  hierarchic feed list node handling
  * 
- * Copyright (C) 2003-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -87,7 +87,7 @@ node_new (nodeTypePtr type)
 	
 	g_assert (NULL != type);
 
-	node = (nodePtr)g_new0 (struct node, 1);
+	node = g_new0 (struct node, 1);
 	node->type = type;
 	node->viewMode = NODE_VIEW_MODE_DEFAULT;
 	node->sortColumn = NODE_VIEW_SORT_BY_TIME;
