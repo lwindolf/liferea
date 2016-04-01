@@ -179,10 +179,8 @@ gfloat liferea_htmlview_get_zoom (LifereaHtmlView *htmlview);
  *
  * @param htmlview	htmlview to scroll
  *
- * @return FALSE if the scrolled window vertical scroll position is at
- * the maximum and TRUE if the vertical adjustment was increased.
  */
-gboolean liferea_htmlview_scroll (LifereaHtmlView *htmlview);
+void liferea_htmlview_scroll (LifereaHtmlView *htmlview);
 
 /**
  * liferea_htmlview_prepare_context_menu:
@@ -221,8 +219,8 @@ typedef struct htmlviewImpl {
 	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);
 	gboolean	(*hasSelection)		(GtkWidget *widget);
 	void		(*copySelection)	(GtkWidget *widget);
-	gboolean	(*scrollPagedown)	(GtkWidget *widget);
 	void		(*setProxy)		(ProxyDetectMode mode, const gchar *hostname, guint port, const gchar *username, const gchar *password);
+	void		(*scrollPagedown)	(GtkWidget *widget);
 	void		(*setOffLine)		(gboolean offline);
 } *htmlviewImplPtr;
 
