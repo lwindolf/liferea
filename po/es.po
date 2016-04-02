@@ -30,7 +30,7 @@ msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-22 12:26+0100\n"
-"PO-Revision-Date: 2015-05-05 05:39-0600\n"
+"PO-Revision-Date: 2016-04-01 18:25-0600\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <en@li.org>\n"
 "Language: es\n"
@@ -38,7 +38,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid ""
@@ -86,7 +86,7 @@ msgstr "Guardado permanente de titulares en bandejas de noticias"
 
 #: ../liferea.appdata.xml.in.h:9
 msgid "Match items using search folders"
-msgstr "Comparación de elementos con carpetas virtuales"
+msgstr "Correspondencia de artículos mediante carpetas virtuales"
 
 #: ../liferea.appdata.xml.in.h:10
 msgid "Play Podcasts"
@@ -302,16 +302,15 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "«%s» no es un archivo válido de configuración de adjuntos"
 
 #: ../src/enclosure.c:288
-#, fuzzy
 msgid ""
 "You have not configured a download tool yet! Please do so in the "
 "'Enclosures' tab in Tools/Preferences."
 msgstr ""
 "No se configuró aún ningún gestor de descargas. Hágalo en la pestaña "
-"«Descarga» en Herramientas > Preferencias."
+"«Adjuntos» en Herramientas > Preferencias."
 
 #: ../src/enclosure.c:306
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Command failed: \n"
 "\n"
@@ -336,7 +335,7 @@ msgstr "Error al renombrar %s a %s\n"
 #: ../src/export.c:415 ../src/export.c:417
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
-msgstr "XML erroneo en el documento OPML «%s». No fue posible importarlo."
+msgstr "Error de XML en el documento OPML. No se pudo importar «%s»."
 
 #: ../src/export.c:423 ../src/export.c:425
 #, c-format
@@ -566,7 +565,7 @@ msgstr "Ocurrió un error de red, o el servidor remoto cerró la conexión"
 #. http 3xx redirection
 #: ../src/net.c:360
 msgid "The resource moved permanently to a new location"
-msgstr "El elemento solicitado cambió permanentemente de ubicación"
+msgstr "El recurso cambió permanentemente de ubicación"
 
 #. http 4xx client error
 #: ../src/net.c:363
@@ -583,7 +582,7 @@ msgstr "Es necesario pagar"
 
 #: ../src/net.c:366
 msgid "You're not allowed to access this resource"
-msgstr "No tiene permiso para acceder a este elemento"
+msgstr "No tiene permiso para acceder a este recurso"
 
 #: ../src/net.c:367
 msgid "Resource Not Found"
@@ -607,7 +606,7 @@ msgstr "Expiró el tiempo de respuesta"
 
 #: ../src/net.c:372
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Esta fuente ya no existe. Elimínela, por favor."
+msgstr "Este recurso ya no existe. Elimine su suscripción."
 
 #: ../src/net.c:377
 msgid "There was an internal error in the update process"
@@ -919,7 +918,7 @@ msgstr "_Artículo"
 
 #: ../src/ui/liferea_shell.c:918
 msgid "Previous Item"
-msgstr "Elemento anterior"
+msgstr "Artículo anterior"
 
 #: ../src/ui/liferea_shell.c:920
 msgid "Next Item"
@@ -1170,7 +1169,7 @@ msgstr "_Abrir en el navegador"
 
 #: ../src/ui/liferea_shell.c:995
 msgid "Launches the item's link in the Liferea item pane."
-msgstr "Abre el enlace del artículo en el panel de elementos de Liferea."
+msgstr "Abre el enlace del artículo en el panel de artículos de Liferea."
 
 #: ../src/ui/liferea_shell.c:997 ../src/ui/popup_menu.c:119
 msgid "Open In _External Browser"
@@ -1189,9 +1188,8 @@ msgid "Browse at full screen"
 msgstr "Ver en pantalla completa"
 
 #: ../src/ui/search_dialog.c:116
-#, fuzzy
 msgid "Saved Search"
-msgstr "Búsqueda avanzada"
+msgstr "Búsqueda guardada"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1213,7 +1211,7 @@ msgstr "Todos los archivos"
 #: ../src/ui/feed_list_view.c:367
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
-"Liferea está trabajando sin conexión. No se pueden actualizar las fuentes"
+"Liferea está trabajando sin conexión. No se puede realizar una actualización."
 
 #: ../src/ui/liferea_htmlview.c:638
 msgid "Open Link In _Tab"
@@ -1292,7 +1290,7 @@ msgstr "Crear un marcador en %s"
 
 #: ../src/ui/popup_menu.c:149
 msgid "Copy Item _Location"
-msgstr "Copiar la dirección del elemento"
+msgstr "Copiar la _dirección del artículo"
 
 #: ../src/ui/popup_menu.c:155
 msgid "R_emove Item"
@@ -2148,17 +2146,16 @@ msgid "Proxy"
 msgstr "Proxy"
 
 #: ../glade/prefs.ui.h:46
-#, fuzzy
 msgid "Privacy Settings"
-msgstr "Opciones de presentación de carpetas"
+msgstr "Opciones de privacidad"
 
 #: ../glade/prefs.ui.h:47
 msgid "Tell sites that I do _not want to be tracked"
-msgstr ""
+msgstr "Indicar a los sitios que _no quiero que me rastreen"
 
 #: ../glade/prefs.ui.h:48
 msgid "Privacy"
-msgstr ""
+msgstr "Privacidad"
 
 #: ../glade/prefs.ui.h:49
 msgid "Downloading Enclosures"
