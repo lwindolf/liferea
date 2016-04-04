@@ -1,5 +1,7 @@
 To be released
 
+	* Fixes Github # 73: Problem with favicon update
+	  (reported by asl97)
 	* Github #297: Minimize to systray on window close
 	  (patch by Hugo Arregui)
 	* Github #325: Auto-fitting, translated license
