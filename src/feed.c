@@ -293,6 +293,8 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		liferea_shell_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
 	}
 
+	feed_list_node_update (node->id);
+
 	debug_exit ("feed_process_update_result");
 }
 

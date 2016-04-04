@@ -1,3 +1,12 @@
+2016-04-04  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.10.19
+
+	* Fixes #317: Compilation problems in 1.10.18 release
+	* Fixes #73: Problem with updating favicons
+	  (reported by asl97)
+
+
 2016-01-30  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.18
