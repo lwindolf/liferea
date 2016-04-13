@@ -152,7 +152,9 @@ itemview_class_init (ItemViewClass *klass)
 void
 itemview_clear (void) 
 {
-	item_list_view_clear (itemview->priv->itemListView);
+	if (itemview->priv->itemListView) {
+		item_list_view_clear (itemview->priv->itemListView);
+	}
 	htmlview_clear ();
 	enclosure_list_view_hide (itemview->priv->enclosureView);
 	itemview->priv->hasEnclosures = FALSE;
@@ -313,11 +315,14 @@ itemview_update_node_info (nodePtr node)
 void
 itemview_update (void)
 {
-	item_list_view_update (itemview->priv->itemListView, itemview->priv->hasEnclosures);
-	
-	if (itemview->priv->node) {
-		item_list_view_enable_favicon_column (itemview->priv->itemListView, NODE_TYPE (itemview->priv->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
-		item_list_view_set_sort_column (itemview->priv->itemListView, itemview->priv->node->sortColumn, itemview->priv->node->sortReversed);
+	if (itemview->priv->itemListView) {
+
+		item_list_view_update (itemview->priv->itemListView, itemview->priv->hasEnclosures);
+
+		if (itemview->priv->node) {
+			item_list_view_enable_favicon_column (itemview->priv->itemListView, NODE_TYPE (itemview->priv->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
+			item_list_view_set_sort_column (itemview->priv->itemListView, itemview->priv->node->sortColumn, itemview->priv->node->sortReversed);
+		}
 	}
 	
 	if (itemview->priv->needsHTMLViewUpdate) {
@@ -463,8 +468,11 @@ itemview_set_layout (nodeViewType newMode)
 	gtk_widget_reparent (liferea_htmlview_get_widget (ivp->htmlview), liferea_shell_lookup (htmlWidgetName));
 
 	/* Recreate the item list view */
-	if (ivp->itemListViewContainer)
+	if (ivp->itemListViewContainer) {
 		gtk_widget_destroy (ivp->itemListViewContainer);
+		ivp->itemListViewContainer = NULL;
+		ivp->itemListView = NULL;
+        }
 
 	if (ilWidgetName) {
 		ivp->itemListView = item_list_view_create (newMode == NODE_VIEW_MODE_WIDE);
