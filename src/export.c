@@ -182,8 +182,8 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 		xmlFreeDoc (doc);
 		
 		if (!error) {
-			if (rename (backupFilename, filename) < 0) {
-				g_warning (_("Error renaming %s to %s\n"), backupFilename, filename);
+			if (g_rename (backupFilename, filename) < 0) {
+				g_warning (_("Error renaming %s to %s: %s\n"), backupFilename, filename, strerror (errno));
 				error = TRUE;
 			}
 		}
