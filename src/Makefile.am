@@ -79,11 +79,11 @@ AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = liferea-add-feed
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS = Liferea-3.0.gir
 
-Liferea-3.0.gir: liferea
+Liferea-3.0.gir: liferea$(EXEEXT)
 INTROSPECTION_SCANNER_ARGS = -I$(top_srcdir)/src --warn-all --accept-unprefixed --identifier-prefix=Liferea --verbose
 Liferea_3_0_gir_NAMESPACE = Liferea
 Liferea_3_0_gir_VERSION = 3.0
-Liferea_3_0_gir_PROGRAM = $(builddir)/liferea
+Liferea_3_0_gir_PROGRAM = $(builddir)/liferea$(EXEEXT)
 Liferea_3_0_gir_FILES = \
 	auth.c auth.h \
 	auth_activatable.c auth_activatable.h \
