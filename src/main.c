@@ -245,8 +245,9 @@ main (int argc, char *argv[])
 
 	signal (SIGTERM, signal_handler);
 	signal (SIGINT, signal_handler);
+#ifdef SIGHUP
 	signal (SIGHUP, signal_handler);
-
+#endif
 	/* Note: we explicitely do not use the gdk_thread_*
 	   locking in Liferea because it freezes the program
 	   when running Flash applets */
