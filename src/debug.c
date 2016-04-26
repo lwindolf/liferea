@@ -32,6 +32,10 @@
 
 #include "debug.h"
 
+#if defined (G_OS_WIN32) && !defined (HAVE_LOCALTIME_R)
+#define localtime_r(t,o) localtime_s (o,t)
+#endif
+
 unsigned long debug_level = 0;
 static GHashTable * t2d = NULL; /**< per thread call tree depth */
 static GHashTable *startTimes = NULL;
