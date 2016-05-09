@@ -1,7 +1,7 @@
 /**
  * @file browser_history.c  managing the internal browser history
  *
- * Copyright (C) 2012-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2016 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 browserHistory *
 browser_history_new (void)
 {	
-	return (browserHistory *)g_new0 (browserHistory, 1);
+	return g_new0 (browserHistory, 1);
 }
 
 static void

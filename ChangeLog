@@ -1,5 +1,29 @@
 To be released
 
+	* Fixes Github # 73: Problem with favicon update
+	  (reported by asl97)
+	* Github #297: Minimize to systray on window close
+	  (patch by Hugo Arregui)
+	* Github #325: Auto-fitting, translated license
+	  (patches by GreenLunar and Adolfo Jayme-Barrientos)
+	* Removes GeoIP rendering via OSM to avoid exposing
+	  users to remote JS library resources.
+	  (reported by Paul Gevers)
+
+	* Github #309: Update of Japanese translation
+	  (IWAI, Masaharu)
+	* Github #329: Update of Hebrew translation
+	  (GreenLunar)
+	* Github #330: Update of Spanish translation
+	  (Adolfo Jayme-Barrientos)
+	* Update of Swedish translation
+	  (Andreas Ronnquist)
+
+
+2016-01-30   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.7
+
 	* Github #287: Add support for media:group.
 	  (patch by Leiaz)
 	* Github #287: Fixes issues with media:content.
@@ -12,9 +36,13 @@ To be released
 	  (docs error, reported by Anders Jonsson)
 	* Fixes Github #83: Segfault when sorting feeds in folder
 	  (patch by Leiaz)
+	* Fixes French translation
+	  (patch by polo2ro)
+	* Github #300: Updated manpage
+	  (patch by GreenLunar)
 
 
-2016-10-12   Lars Windolf <lars.windolf@gmx.de>
+2015-10-12   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.11.6
 
