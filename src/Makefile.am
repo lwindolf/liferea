@@ -108,7 +108,7 @@ Liferea_3_0_gir_FILES = \
 	fl_sources/node_source.c fl_sources/node_source.h \
 	fl_sources/node_source_activatable.c fl_sources/node_source_activatable.h
 Liferea_3_0_gir_INCLUDES = Gtk-3.0 libxml2-2.0
-
+if HAVE_INTROSPECTION
 girdir = $(datadir)/liferea/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)
 
@@ -118,3 +118,4 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 CLEANFILES = \
 	$(gir_DATA)	\
 	$(typelib_DATA)
+endif
