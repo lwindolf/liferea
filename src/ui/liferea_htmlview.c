@@ -22,7 +22,9 @@
 #include "ui/liferea_htmlview.h"
 
 #include <string.h>
+#if !defined (G_OS_WIN32) || defined (HAVE_SYS_WAIT_H)
 #include <sys/wait.h>
+#endif
 #include <glib.h>
 
 #include "browser.h"

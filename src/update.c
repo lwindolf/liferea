@@ -32,7 +32,9 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#if !defined (G_OS_WIN32) || defined (HAVE_SYS_WAIT_H)
 #include <sys/wait.h>
+#endif
 #include <string.h>
 
 #include "auth_activatable.h"
@@ -42,6 +44,11 @@
 #include "plugins_engine.h"
 #include "xml.h"
 #include "ui/liferea_shell.h"
+
+#if defined (G_OS_WIN32) && !defined (WIFEXITED) && !defined (WEXITSTATUS)
+#define WIFEXITED(x) (x != 0)
+#define WEXITSTATUS(x) (x)
+#endif
 
 /** global update job list, used for lookups when cancelling */
 static GSList	*jobs = NULL;

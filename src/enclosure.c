@@ -19,7 +19,6 @@
  */
 
 #include <string.h>
-#include <sys/wait.h>
 
 #include "common.h"
 #include "conf.h"
@@ -28,6 +27,10 @@
 #include "xml.h"
 #include "ui/preferences_dialog.h"	// FIXME: remove this!
 #include "ui/ui_common.h"
+
+#if !defined (G_OS_WIN32) || defined (HAVE_SYS_WAIT_H)
+#include <sys/wait.h>
+#endif
 
 /*
    Liferea manages a MIME type configuration to allow
