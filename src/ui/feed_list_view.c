@@ -210,8 +210,16 @@ feed_list_view_sort_folder_compare (gconstpointer a, gconstpointer b)
 {
 	nodePtr n1 = (nodePtr)a;
 	nodePtr n2 = (nodePtr)b;	
+
+	gchar *s1 = g_utf8_casefold (n1->title, -1);
+	gchar *s2 = g_utf8_casefold (n2->title, -1);
 	
-	return strcmp (n1->title, n2->title);
+	gint result = strcmp (s1, s2);
+
+	g_free (s1);
+	g_free (s2);
+
+	return result;
 }
 
 void

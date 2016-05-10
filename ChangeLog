@@ -9,6 +9,8 @@ To be released
 	* Removes GeoIP rendering via OSM to avoid exposing
 	  users to remote JS library resources.
 	  (reported by Paul Gevers)
+	* Fixes Github #337: Case sensitive sorting
+	  (reported by Pi03k)
 
 	* Github #309: Update of Japanese translation
 	  (IWAI, Masaharu)
