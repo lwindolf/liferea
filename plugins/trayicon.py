@@ -23,7 +23,8 @@ import gi
 gi.require_version('Peas', '1.0')
 gi.require_version('PeasGtk', '1.0')
 gi.require_version('Liferea', '3.0')
-from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Gdk
+from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea
+from gi.repository import Gdk, GdkPixbuf
 import cairo
 from collections import namedtuple
 
@@ -94,6 +95,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.staticon.set_from_pixbuf(Liferea.icon_create_from_file("unread.png"))
         self.staticon.connect("activate", self.trayicon_click)
         self.staticon.connect("popup_menu", self.trayicon_popup)
+        self.staticon.connect("size-changed", self.trayicon_size_changed)
         self.staticon.set_visible(True)
 
         self.menu = Gtk.Menu()
@@ -155,8 +157,10 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.staticon.props.pixbuf = pix
         return pix
 
-    def feedlist_new_items_cb(self, feedlist, new_count=-1):
+    def feedlist_new_items_cb(self, feedlist=None, new_count=-1):
         if new_count < 0:
+            if feedlist is None:
+                feedlist = self.shell.props.feed_list
             new_count = feedlist.get_new_item_count()
         if new_count > 0:
             double_figure = min(99, new_count) # show max 2 digit
@@ -164,8 +168,17 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         else:
             pix = self.read_pix
 
+        icon_size = self.staticon.props.size
+        if pix.props.height < icon_size:
+            pix = pix.scale_simple(icon_size, icon_size,
+                    GdkPixbuf.InterpType.HYPER)
+
         if  self.staticon.props.pixbuf != pix:
             self.staticon.props.pixbuf = pix
+
+    def trayicon_size_changed(self, widget, size):
+        self.feedlist_new_items_cb()
+        return True
 
     def do_deactivate(self):
         self.staticon.set_visible(False)
