@@ -173,7 +173,6 @@ vfolder_import (nodePtr node,
 	/* We use the itemset only to keep itemset rules, not to 
 	   have the items in memory! Maybe the itemset<->filtering
 	   dependency is not a good idea... */
-	vfolder->itemset = g_new0 (struct itemSet, 1);
 	
 	vfolder_import_rules (cur, vfolder);
 }
