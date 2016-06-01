@@ -54,7 +54,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
                                               LIFEREA_TYPE_PLUGINS_ENGINE,
                                               LifereaPluginsEnginePrivate);
 
-  peas_engine_enable_loader (PEAS_ENGINE (engine), "python");
+  peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
 
   engine->priv->plugin_settings = g_settings_new ("net.sf.liferea.plugins");
 

@@ -20,9 +20,6 @@
 # Boston, MA 02111-1307, USA.
 #
 
-# Make code still work under Python 2.6/2.7
-from __future__ import print_function, division
-
 import gi
 gi.require_version('Gst', '1.0')
 gi.require_version('Peas', '1.0')
@@ -70,7 +67,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
         self.playing = PlayState.STOP
         self.player.set_state(Gst.State.NULL)
         err, debug = message.parse_error()
-        print("Error: %s" % err, debug)
+        print("Error: {}".format(err), debug)
         self.updateButtons()
 
     def on_eos(self, bus, message):

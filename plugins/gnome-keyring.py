@@ -32,7 +32,7 @@ class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
     object = GObject.property(type=GObject.Object)
 
     def do_activate(self):
-	GnomeKeyring.unlock_sync("liferea", None)
+        GnomeKeyring.unlock_sync("liferea", None)
 
     def do_deactivate(self):
         window = self.object
@@ -43,22 +43,22 @@ class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
         GnomeKeyring.Attribute.list_append_string(attrs, 'id', id)
         result, value = GnomeKeyring.find_items_sync(GnomeKeyring.ItemType.GENERIC_SECRET, attrs)
         if result != GnomeKeyring.Result.OK:
-          return
+            return
 
-	#print 'password %s = %s' % (id, value[0].secret)
-	#print 'password id = %s' % value[0].item_id
+        #print 'password %s = %s' % (id, value[0].secret)
+        #print 'password id = %s' % value[0].item_id
 
-	username, password = value[0].secret.split('@@@')
-  	Liferea.auth_info_from_store(id, username, password)
+        username, password = value[0].secret.split('@@@')
+        Liferea.auth_info_from_store(id, username, password)
 
     def do_delete(self, id):
         keyring = GnomeKeyring.get_default_keyring_sync()[1]
         GnomeKeyring.item_delete_sync(keyring, id)
 
     def do_store(self, id, username, password):
-	GnomeKeyring.create_sync("liferea", None)
+        GnomeKeyring.create_sync("liferea", None)
         attrs = GnomeKeyring.Attribute.list_new()
         GnomeKeyring.Attribute.list_append_string(attrs, 'id', id)
         GnomeKeyring.Attribute.list_append_string(attrs, 'user', username)
-	GnomeKeyring.item_create_sync("liferea", GnomeKeyring.ItemType.GENERIC_SECRET, repr(id), attrs, '@@@'.join([username, password]), True)
+        GnomeKeyring.item_create_sync("liferea", GnomeKeyring.ItemType.GENERIC_SECRET, repr(id), attrs, '@@@'.join([username, password]), True)
 
