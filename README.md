@@ -36,7 +36,7 @@ Mandatory:
 Optional:
 
 - To use plugins:
-  - Python >= 2
+  - Python 3
 - For the media player plugin
   - GStreamer 0.10+ library and codecs
    

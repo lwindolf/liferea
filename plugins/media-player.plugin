@@ -1,6 +1,6 @@
 [Plugin]
 Module=media-player
-Loader=python
+Loader=python3
 Icon=audio-x-generic
 IAge=2
 Name=Media Player
