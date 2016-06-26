@@ -625,7 +625,13 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 						   By ignoring the space here it will be passed to the HTML
 						   widget which in turn will pass it back if it is not eaten by
 						   any input field currently focussed. */
-						return FALSE;
+
+						/* pass through space keys only if HTML widget has the focus */
+						focusw = gtk_window_get_focus (GTK_WINDOW (widget));
+						type = g_type_name (G_OBJECT_TYPE (focusw));
+						if (type && (g_str_equal (type, "WebKitWebView")))
+							return FALSE;
+						break;
 					case 1:
 						modifier_matches = ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK);
 						break;
