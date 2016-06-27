@@ -19,11 +19,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <sys/stat.h>
-
 #include "export.h"
 
+#include <errno.h>
+#include <glib.h>
 #include <libxml/tree.h>
+#include <sys/stat.h>
 
 #include "auth.h"
 #include "common.h"
@@ -182,8 +183,9 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 		xmlFreeDoc (doc);
 		
 		if (!error) {
-			if (g_rename (backupFilename, filename) < 0) {
-				g_warning (_("Error renaming %s to %s: %s\n"), backupFilename, filename, strerror (errno));
+			// FIXME: Use g_rename() once we've reached Glib 2.6+
+			if (rename (backupFilename, filename) < 0) {
+				g_warning (_("Error renaming %s to %s: %s\n"), backupFilename, filename, g_strerror (errno));
 				error = TRUE;
 			}
 		}
