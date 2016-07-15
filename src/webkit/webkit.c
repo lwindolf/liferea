@@ -28,6 +28,7 @@
 #include "browser.h"
 #include "conf.h"
 #include "common.h"
+#include "enclosure.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_htmlview.h"
 
@@ -525,6 +526,32 @@ liferea_webkit_javascript_message  (WebKitWebView *view,
 	return TRUE;
 }
 
+static gboolean
+liferea_webkit_mime_type_policy_decision_requested (WebKitWebView 		*view,
+						    WebKitWebFrame 		*frame,
+						    WebKitNetworkRequest 	*request,
+						    gchar 			*mimetype,
+						    WebKitWebPolicyDecision 	*policy_decision,
+						    gpointer			user_data)
+{
+	/* Request download of unsupported MIME types */
+	if (!webkit_web_view_can_show_mime_type (view,mimetype)) {
+		webkit_web_policy_decision_download (policy_decision);
+		return TRUE;
+	}
+	/* Otherwise apply default policy (download attachments, display supported MIME types) */
+	return FALSE;
+}
+
+static gboolean
+liferea_webkit_on_download_requested (WebKitWebView *view,
+				      WebKitDownload *download,
+				      gpointer user_data)
+{
+	enclosure_download (NULL, webkit_download_get_uri (download), TRUE);
+	return FALSE; /* We handle the download, the WebKitDownload will be cancelled by the view.*/
+}
+
 /**
  * Initializes WebKit
  *
@@ -564,6 +591,18 @@ liferea_webkit_new (LifereaHtmlView *htmlview)
 	);
 
 	/** Connect signal callbacks */
+	g_signal_connect (
+		view,
+		"mime-type-policy-decision-requested",
+		G_CALLBACK (liferea_webkit_mime_type_policy_decision_requested),
+		view
+	);
+	g_signal_connect (
+		view,
+		"download-requested",
+		G_CALLBACK (liferea_webkit_on_download_requested),
+		view
+	);
 	g_signal_connect (
 		view,
 		"notify::title",
