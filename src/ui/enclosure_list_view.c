@@ -459,8 +459,7 @@ on_popup_open_enclosure (gpointer callback_data)
 {
 	gchar		*typestr, *tmp = NULL;
 	enclosurePtr	enclosure = (enclosurePtr)callback_data;
-	gboolean	found = FALSE;
-	encTypePtr	etp = NULL;
+	encTypePtr	etp_tmp = NULL, etp_found = NULL;
 	GSList		*iter;
 
 	/* 1.) Always try to determine the file extension... */
@@ -487,32 +486,27 @@ on_popup_open_enclosure (gpointer callback_data)
 
 	debug2 (DEBUG_CACHE, "url:%s, mime:%s", enclosure->url, enclosure->mime);
 	
-	/* FIXME: improve following check to first try to match
-	   MIME types and if no match was found to check for
-	   file extensions afterwards... */
-	   
 	/* 2.) Search for type configuration based on MIME or file extension... */
 	iter = (GSList *)enclosure_mime_types_get ();
 	while (iter) {
-		etp = (encTypePtr)(iter->data);
-		if (enclosure->mime && etp->mime) {
-			/* match know MIME types */
-			if (!strcmp(enclosure->mime, etp->mime)) {
-				found = TRUE;
+		etp_tmp = (encTypePtr)(iter->data);
+		if (enclosure->mime && etp_tmp->mime) {
+			/* match know MIME types and stop looking if found */
+			if (!strcmp(enclosure->mime, etp_tmp->mime)) {
+				etp_found = etp_tmp;
 				break;
 			}
 		} else {
-			/* match known file extensions */
-			if (!strcmp(typestr, etp->extension)) {
-				found = TRUE;
-				break;
+			/* match known file extensions and keep looking for matching MIME type */
+			if (!strcmp(typestr, etp_tmp->extension)) {
+				etp_found = etp_tmp;
 			}
 		}
 		iter = g_slist_next (iter);
 	}
 	
-	if (found) {
-		enclosure_download (etp, enclosure->url, TRUE);
+	if (etp_found) {
+		enclosure_download (etp_found, enclosure->url, TRUE);
 	} else {
 		if (enclosure->mime)
 			ui_enclosure_type_setup (NULL, enclosure, enclosure->mime);
