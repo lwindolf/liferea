@@ -186,7 +186,6 @@ enclosure_list_view_new ()
 	elv->priv->treeview = gtk_tree_view_new ();
 	gtk_container_add (GTK_CONTAINER (widget), elv->priv->treeview);
 	gtk_widget_show (elv->priv->treeview);
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (elv->priv->treeview), TRUE);
 	
 	elv->priv->treestore = gtk_tree_store_new (ES_LEN,
 	                                           G_TYPE_STRING,	/* ES_NAME_STR */
