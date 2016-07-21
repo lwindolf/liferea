@@ -498,7 +498,7 @@ on_popup_open_enclosure (gpointer callback_data)
 				etp_found = etp_tmp;
 				break;
 			}
-		} else {
+		} else if (etp_tmp->extension) {
 			/* match known file extensions and keep looking for matching MIME type */
 			if (!strcmp(typestr, etp_tmp->extension)) {
 				etp_found = etp_tmp;

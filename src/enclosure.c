@@ -81,7 +81,7 @@ enclosure_from_string (const gchar *str)
 		return enclosure;
 	}
 	
-	fields = g_regex_split_simple ("^enc:([01]?):([^:]+):(\\d+):(.*)", str, 0, 0);
+	fields = g_regex_split_simple ("^enc:([01]?):([^:]*):(\\d+):(.*)", str, 0, 0);
 	if (6 > g_strv_length (fields)) {
 		debug2 (DEBUG_PARSING, "Dropping incorrectly encoded enclosure: >>>%s<<< (nr of fields=%d)\n", str, g_strv_length (fields));
 		return NULL;
@@ -109,7 +109,7 @@ enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gb
 		size = 0;
 		
 	safeUrl = common_uri_escape (url);
-	result = g_strdup_printf ("enc:%s:%s:%" G_GSSIZE_FORMAT ":%s", downloaded?"1":"0", mime, size, safeUrl);
+	result = g_strdup_printf ("enc:%s:%s:%" G_GSSIZE_FORMAT ":%s", downloaded?"1":"0", mime?mime:"", size, safeUrl);
 	g_free (safeUrl);
 	
 	return result;
