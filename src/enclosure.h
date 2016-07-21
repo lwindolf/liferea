@@ -21,6 +21,8 @@
 #ifndef _ENCLOSURE_H
 #define _ENCLOSURE_H
 
+#include <glib.h>
+
 /** structure describing the preferences for a MIME type or file extension */
 typedef struct encType {
 	gchar		*mime;		/**< either mime or extension is set */
@@ -110,7 +112,7 @@ void enclosure_free (enclosurePtr enclosure);
  *
  * @returns list of encType structures
  */
-const GSList const * enclosure_mime_types_get (void);
+const GSList * enclosure_mime_types_get (void);
 
 /**
  * enclosure_mime_type_add:

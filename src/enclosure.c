@@ -84,6 +84,7 @@ enclosure_from_string (const gchar *str)
 	fields = g_regex_split_simple ("^enc:([01]?):([^:]*):(\\d+):(.*)", str, 0, 0);
 	if (6 > g_strv_length (fields)) {
 		debug2 (DEBUG_PARSING, "Dropping incorrectly encoded enclosure: >>>%s<<< (nr of fields=%d)\n", str, g_strv_length (fields));
+		enclosure_free (enclosure);
 		return NULL;
 	}
 	
@@ -108,7 +109,7 @@ enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gb
 	if (size < 0)
 		size = 0;
 		
-	safeUrl = common_uri_escape (url);
+	safeUrl = (gchar *) common_uri_escape (BAD_CAST url);
 	result = g_strdup_printf ("enc:%s:%s:%" G_GSSIZE_FORMAT ":%s", downloaded?"1":"0", mime?mime:"", size, safeUrl);
 	g_free (safeUrl);
 	
@@ -145,7 +146,7 @@ enclosure_get_mime (const gchar *str)
 	gchar		*mime = NULL;
 
 	if (enclosure) {
-		mime = g_strdup (enclosure->url);
+		mime = g_strdup (enclosure->mime);
 		enclosure_free (enclosure);
 	}
 
@@ -187,9 +188,9 @@ enclosure_mime_types_load (void)
 							while (cur) {
 								if ((!xmlStrcmp (cur->name, BAD_CAST"type"))) {
 									etp = g_new0 (struct encType, 1);
-									etp->mime = xmlGetProp (cur, BAD_CAST"mime");
-									etp->extension = xmlGetProp (cur, BAD_CAST"extension");
-									etp->cmd = xmlGetProp (cur, BAD_CAST"cmd");
+									etp->mime = (gchar *) xmlGetProp (cur, BAD_CAST"mime");
+									etp->extension = (gchar *) xmlGetProp (cur, BAD_CAST"extension");
+									etp->cmd = (gchar *) xmlGetProp (cur, BAD_CAST"cmd");
 									etp->permanent = TRUE;
 									types = g_slist_append (types, etp);
 								}
@@ -218,18 +219,18 @@ enclosure_mime_types_save (void)
 	GSList		*iter;
 	gchar		*filename;
 
-	doc = xmlNewDoc ("1.0");	
+	doc = xmlNewDoc (BAD_CAST "1.0");
 	root = xmlNewDocNode (doc, NULL, BAD_CAST"types", NULL);
 	
 	iter = types;
 	while (iter) {
 		etp = (encTypePtr)iter->data;
 		cur = xmlNewChild (root, NULL, BAD_CAST"type", NULL);
-		xmlNewProp (cur, BAD_CAST"cmd", etp->cmd);
+		xmlNewProp (cur, BAD_CAST"cmd", BAD_CAST etp->cmd);
 		if (etp->mime)
-			xmlNewProp (cur, BAD_CAST"mime", etp->mime);
+			xmlNewProp (cur, BAD_CAST"mime", BAD_CAST etp->mime);
 		if (etp->extension)
-			xmlNewProp (cur, BAD_CAST"extension", etp->extension);
+			xmlNewProp (cur, BAD_CAST"extension", BAD_CAST etp->extension);
 		iter = g_slist_next (iter);
 	}
 	
@@ -243,7 +244,7 @@ enclosure_mime_types_save (void)
 	xmlFreeDoc (doc);
 }
 
-const GSList const *
+const GSList *
 enclosure_mime_types_get (void)
 {
 	if (!typesLoaded)
