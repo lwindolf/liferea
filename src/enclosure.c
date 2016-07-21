@@ -1,4 +1,4 @@
-/**
+/*
  * @file enclosure.c enclosures/podcast support
  *
  * Copyright (C) 2007-2012 Lars Windolf <lars.windolf@gmx.de>
