@@ -1,0 +1,17 @@
+#
+# Display the number of contributors active in the past six months, per organization
+#
+# git log --no-merges --pretty='%aN <%aE>' --since '6 months ago' | sort | uniq | git -c mailmap.file=.organizationmap check-mailmap --stdin | sort | uniq -c | sort -rn | nl
+#     1	      9 FLOSS Contributor <contact@floss.cc>
+#
+# This is the primary source of information for https://www.wikidata.org/wiki/Q953757
+#
+FLOSS Contributor <contact@floss.cc> Руслан Ижбулатов <lrn1986@gmail.com>
+FLOSS Contributor <contact@floss.cc> Sebastian Grabowski <sebastian@grabel.de>
+FLOSS Contributor <contact@floss.cc> mozbugbox <mozbugbox@yahoo.com.au>
+FLOSS Contributor <contact@floss.cc> leiaz <leiaz@free.fr>
+FLOSS Contributor <contact@floss.cc> Lars Windolf <lars.windolf@gmx.de>
+FLOSS Contributor <contact@floss.cc> IWAI, Masaharu <iwaim.sub@gmail.com>
+FLOSS Contributor <contact@floss.cc> GreenLunar <genghiskhan@gmx.ca>
+FLOSS Contributor <contact@floss.cc> ASL97 <asl97@outlook.com>
+FLOSS Contributor <contact@floss.cc> Adolfo Jayme Barrientos <fitojb@ubuntu.com>
