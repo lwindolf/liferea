@@ -1,22 +1,28 @@
 To be released
 
-	* Fixes Github #73: Problem with favicon update
-	  (reported by asl97)
-	* Fixes Github #177, #350: Tray icon not scaled properly
-	  (patch by mozbugbox)
-	* Github #292: Show not item count in tray icon
+	* Github #348: Added support for downloading content that
+	  cannot be displayed by HTML widget (e.g. PDFs)
+	  (Leiaz)
+	* Github #355: Migrate to Python3 libpeas loader
+	  (patch by picsel2)
+	* Github #292: Show new item count in tray icon
 	  (patch by mozbugbox)
 	* Github #297: Minimize to systray on window close
 	  (patch by Hugo Arregui)
 	* Github #325: Auto-fitting, translated license
 	  (patches by GreenLunar and Adolfo Jayme-Barrientos)
+
+	* Fixes Github #73: Problem with favicon update
+	  (reported by asl97)
+	* Fixes Github #177, #350: Tray icon not scaled properly
+	  (patch by mozbugbox)
 	* Removes GeoIP rendering via OSM to avoid exposing
 	  users to remote JS library resources.
 	  (reported by Paul Gevers)
 	* Fixes Github #337: Case sensitive sorting
 	  (reported by Pi03k)
-	* Github #355: Migrate to Python3 libpeas loader
-	  (patch by picsel2)
+	* Fixes Github #368: Segfault on liferea-feed-add
+	  (Leiaz)
 
 	* Github #309: Update of Japanese translation
 	  (IWAI, Masaharu)
