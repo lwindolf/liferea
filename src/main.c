@@ -256,7 +256,7 @@ main (int argc, char *argv[])
 	
 	debug_end_measurement (DEBUG_DB, "startup");
 
-	status = g_application_run (G_APPLICATION (app), 0, NULL);
+	g_application_register (G_APPLICATION (app), NULL, NULL);
 
 	/* Trigger RPCs if we are not primary instance (currently only feed-add) */
 	if (feedUri && g_application_get_is_remote (G_APPLICATION (app))) {
@@ -268,6 +268,8 @@ main (int argc, char *argv[])
 		g_object_unref (uris[0]);
 	}
 	
+	status = g_application_run (G_APPLICATION (app), 0, NULL);
+
 	g_object_unref (G_OBJECT (dbus));
 	g_object_unref (app);
 
