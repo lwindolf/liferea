@@ -353,7 +353,7 @@ feed_list_view_select (nodePtr node)
 }
 
 void
-on_menu_properties (GtkMenuItem *menuitem, gpointer user_data)
+on_menu_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	nodePtr node = feedlist_get_selected ();
 	
@@ -361,7 +361,7 @@ on_menu_properties (GtkMenuItem *menuitem, gpointer user_data)
 }
 
 void
-on_menu_delete(GtkWidget *widget, gpointer user_data)
+on_menu_delete(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	feed_list_node_remove (feedlist_get_selected ());
 }
@@ -377,7 +377,7 @@ do_menu_update (nodePtr node)
 }
 
 void
-on_menu_update (void)
+on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	nodePtr node = feedlist_get_selected ();
 
@@ -388,55 +388,59 @@ on_menu_update (void)
 }
 
 void
-on_menu_update_all(void)
+on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	do_menu_update (feedlist_get_root ());
 }
 
 void
-on_menu_allread (GtkWidget *widget, gpointer user_data)
+on_menu_allread (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {	
 	feedlist_mark_all_read (feedlist_get_selected ());
 }
 
 void
-on_menu_allfeedsread (GtkWidget *widget, gpointer user_data)
+on_menu_allfeedsread (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	feedlist_mark_all_read (feedlist_get_root ());
 }
 
 void
-on_menu_feed_new (GtkMenuItem *menuitem, gpointer user_data)
+on_menu_feed_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (feed_get_node_type ());
 }
 
 void
-on_new_plugin_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_new_plugin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (node_source_get_node_type ());
 }
 
 void
-on_new_newsbin_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_new_newsbin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (newsbin_get_node_type ());
 }
 
 void
-on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data)
+on_menu_folder_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (folder_get_node_type ());
 }
 
 void
-on_new_vfolder_activate (GtkMenuItem *menuitem, gpointer user_data)
+on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_type_request_interactive_add (vfolder_get_node_type ());
 }
 
 void
-on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data)
+on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feed_list_view_set_reduce_mode (gtk_toggle_action_get_active (menuitem));
+	GVariant *state = g_action_get_state (action);
+	gboolean val = !g_variant_get_boolean (state);
+	feed_list_view_set_reduce_mode (val);
+	g_simple_action_set_state (action, g_variant_new_boolean (val));
+	g_object_unref (state);
 }

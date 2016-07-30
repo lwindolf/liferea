@@ -126,22 +126,23 @@ guint itemlist_get_view_mode (void);
 
 /**
  * Menu callback that toggles the different viewing modes
+ * This is the 'change_state' callback for the action.
  *
  * @action:	the action that emitted the signal
- * @current:	the member of action which was activated
+ * @value:	string in a GVariant, representing the requested mode.
  * @user_data:	unused
  */
-void on_view_activate (GtkRadioAction *action, GtkRadioAction *current, gpointer user_data);
+void on_view_activate (GSimpleAction *action, GVariant *value, gpointer user_data);
 
 /**
  * Menu callback to select the previously read item from the item history
  */
-void on_prev_read_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_prev_read_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * Menu callback to select the next read item from the item history
  */
-void on_next_read_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_next_read_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 
 /* item handling function */
