@@ -45,12 +45,16 @@ struct _LifereaWebViewClass {
 G_DEFINE_TYPE (LifereaWebView, liferea_web_view, WEBKIT_TYPE_WEB_VIEW)
 
 static void
-liferea_web_view_dispose(GObject *gobject)
+liferea_web_view_finalize(GObject *gobject)
 {
 	LifereaWebView *self = LIFEREA_WEB_VIEW(gobject);
 
-	/* Chaining dispose from parent class. */
-	G_OBJECT_CLASS(liferea_web_view_parent_class)->dispose(gobject);
+	if (self->dbus_connection) {
+		g_object_remove_weak_pointer (G_OBJECT (self->dbus_connection), (gpointer *) &self->dbus_connection);
+	}
+
+	/* Chaining fianlize from parent class. */
+	G_OBJECT_CLASS(liferea_web_view_parent_class)->finalize(gobject);
 }
 
 static void
@@ -58,7 +62,7 @@ liferea_web_view_class_init(LifereaWebViewClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-	gobject_class->dispose = liferea_web_view_dispose;
+	gobject_class->finalize = liferea_web_view_finalize;
 }
 
 static void
