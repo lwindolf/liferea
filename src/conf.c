@@ -197,7 +197,7 @@ conf_proxy_reset_settings_cb (GSettings *settings,
 		  proxyusername != NULL ? proxyusername : "NULL",
 		  proxypassword != NULL ? proxypassword : "NULL");
 
-	network_set_proxy (proxyname, proxyport, proxyusername, proxypassword);
+	network_set_proxy (proxydetectmode, proxyname, proxyport, proxyusername, proxypassword);
 }
 
 /*----------------------------------------------------------------------*/

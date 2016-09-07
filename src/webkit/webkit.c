@@ -29,6 +29,7 @@
 #include "conf.h"
 #include "common.h"
 #include "enclosure.h"
+#include "net.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_htmlview.h"
 
@@ -791,22 +792,39 @@ liferea_webkit_scroll_pagedown (GtkWidget *scrollpane)
 }
 
 static void
-liferea_webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar *pwd)
+liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, const gchar *user, const gchar *pwd)
 {
-	SoupURI *proxy = NULL;
+	SoupURI *uri = NULL;
+	SoupSession *session = webkit_get_default_session ();
 
-	if (host) {
-		proxy = soup_uri_new (NULL);
-		soup_uri_set_scheme (proxy, SOUP_URI_SCHEME_HTTP);
-		soup_uri_set_host (proxy, host);
-		soup_uri_set_port (proxy, port);
-		soup_uri_set_user (proxy, user);
-		soup_uri_set_password (proxy, pwd);
+	switch (mode) {
+		case PROXY_DETECT_MODE_AUTO:
+			/* Sets proxy-resolver to the default resolver, this unsets proxy-uri. */
+			g_object_set (G_OBJECT (session),
+				SOUP_SESSION_PROXY_RESOLVER, g_proxy_resolver_get_default (),
+				NULL);
+			break;
+		case PROXY_DETECT_MODE_NONE:
+			/* Sets proxy-resolver to NULL, this unsets proxy-uri. */
+			g_object_set (G_OBJECT (session),
+				SOUP_SESSION_PROXY_RESOLVER, NULL,
+				NULL);
+			break;
+		case PROXY_DETECT_MODE_MANUAL:
+			uri = soup_uri_new (NULL);
+			soup_uri_set_scheme (uri, SOUP_URI_SCHEME_HTTP);
+			soup_uri_set_host (uri, host);
+			soup_uri_set_port (uri, port);
+			soup_uri_set_user (uri, user);
+			soup_uri_set_password (uri, pwd);
+
+			/* Sets proxy-uri, this unsets proxy-resolver. */
+			g_object_set (G_OBJECT (session),
+				SOUP_SESSION_PROXY_URI, uri,
+				NULL);
+			soup_uri_free (uri);
+			break;
 	}
-
-	g_object_set (webkit_get_default_session (),
-		      SOUP_SESSION_PROXY_URI, proxy,
-		      NULL);
 }
 
 static struct

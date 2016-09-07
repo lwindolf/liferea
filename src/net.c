@@ -36,6 +36,7 @@
 
 static SoupSession *session = NULL;
 
+static ProxyDetectMode proxymode = PROXY_DETECT_MODE_AUTO;
 static gchar	*proxyname = NULL;
 static gchar	*proxyusername = NULL;
 static gchar	*proxypassword = NULL;
@@ -223,6 +224,41 @@ network_authenticate (
 	// FIXME: Handle HTTP 401 too
 }
 
+static void
+network_set_soup_session_proxy (SoupSession *session, ProxyDetectMode mode, const gchar *host, guint port, const gchar *user, const gchar *password)
+{
+	SoupURI *uri = NULL;
+
+	switch (mode) {
+		case PROXY_DETECT_MODE_AUTO:
+			/* Sets proxy-resolver to the default resolver, this unsets proxy-uri. */
+			g_object_set (G_OBJECT (session),
+				SOUP_SESSION_PROXY_RESOLVER, g_proxy_resolver_get_default (),
+				NULL);
+			break;
+		case PROXY_DETECT_MODE_NONE:
+			/* Sets proxy-resolver to NULL, this unsets proxy-uri. */
+			g_object_set (G_OBJECT (session),
+				SOUP_SESSION_PROXY_RESOLVER, NULL,
+				NULL);
+			break;
+		case PROXY_DETECT_MODE_MANUAL:
+			uri = soup_uri_new (NULL);
+			soup_uri_set_scheme (uri, SOUP_URI_SCHEME_HTTP);
+			soup_uri_set_host (uri, host);
+			soup_uri_set_port (uri, port);
+			soup_uri_set_user (uri, user);
+			soup_uri_set_password (uri, password);
+
+			/* Sets proxy-uri, this unsets proxy-resolver. */
+			g_object_set (G_OBJECT (session),
+				SOUP_SESSION_PROXY_URI, uri,
+				NULL);
+			soup_uri_free (uri);
+			break;
+	}
+}
+
 void
 network_init (void)
 {
@@ -230,7 +266,6 @@ network_init (void)
 	SoupCookieJar	*cookies;
 	gchar		*filename;
 	SoupLogger	*logger;
-	SoupURI		*proxy;
 
 	/* Set an appropriate user agent */
 	if (g_getenv ("LANG")) {
@@ -247,7 +282,6 @@ network_init (void)
 	g_free (filename);
 
 	/* Initialize libsoup */
-	proxy = network_get_proxy_uri ();
 	session = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
 						       SOUP_SESSION_TIMEOUT, 120,
 						       SOUP_SESSION_IDLE_TIMEOUT, 30,
@@ -255,17 +289,12 @@ network_init (void)
 	                                               SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
 						       NULL);
 
-	if (proxy) {
-		debug1 (DEBUG_NET, "Initializing libsoup with proxy '%s'", proxy);
-		g_object_set (G_OBJECT (session),
-			      SOUP_SESSION_PROXY_URI, proxy,
-			      NULL);
-		soup_uri_free (proxy);
-	} else {
-		debug0 (DEBUG_NET, "Initializing libsoup with libproxy defaults");
-		soup_session_add_feature_by_type (session, SOUP_TYPE_PROXY_RESOLVER_DEFAULT);
-	}
-		
+	network_set_soup_session_proxy (session, network_get_proxy_detect_mode(),
+		network_get_proxy_host (),
+		network_get_proxy_port (),
+		network_get_proxy_username (),
+		network_get_proxy_password ());
+
 	g_signal_connect (session, "authenticate", G_CALLBACK (network_authenticate), NULL);
 
 	/* Soup debugging */
@@ -283,6 +312,12 @@ network_deinit (void)
 	g_free (proxyname);
 	g_free (proxyusername);
 	g_free (proxypassword);
+}
+
+ProxyDetectMode
+network_get_proxy_detect_mode (void)
+{
+	return proxymode;
 }
 
 const gchar *
@@ -312,12 +347,13 @@ network_get_proxy_password (void)
 extern void network_monitor_proxy_changed (void);
 
 void
-network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
+network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, gchar *password)
 {
 	/* FIXME: make arguments const and use the SoupURI in network_get_proxy_* ? */
 	g_free (proxyname);
 	g_free (proxyusername);
 	g_free (proxypassword);
+	proxymode = mode;
 	proxyname = host;
 	proxyport = port;
 	proxyusername = user;
@@ -326,14 +362,7 @@ network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
 	/* The sessions will be NULL if we were called from conf_init() as that's called
 	 * before net_init() */
 	if (session) {
-		SoupURI *newproxy = network_get_proxy_uri ();
-		
-		g_object_set (G_OBJECT (session),
-			      SOUP_SESSION_PROXY_URI, newproxy,
-			      NULL);
-
-		if (newproxy)
-			soup_uri_free (newproxy);
+		network_set_soup_session_proxy (session, mode, host, port, user, password);
 	}
 
 	debug4 (DEBUG_NET, "proxy set to http://%s:%s@%s:%d", user, password, host, port);
