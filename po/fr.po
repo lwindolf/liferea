@@ -30,10 +30,16 @@ msgid ""
 "extra libraries to be installed. Liferea tries to fill this gap by creating "
 "a fast, easy to use, easy to install news aggregator for GTK/GNOME."
 msgstr ""
+"Lifera est une abbréviation de Linux Feed Reader. C'est un aggrégateur de flux "
+"pour sites web. Il gère un certain nombre de formats de flux "
+"dont RSS/RDF, CDF et ATOM. Il y a d'autres lecteurs de nouvelles "
+"disponibles mais ceux-ci ne sont soit pas disponible pour Linux ou nécessitent beaucoup "
+"de bibliothèques externes pour être installé. Lifrea essaie de combler ce manque en créant "
+"un aggrégateur de flux rapide, façile à utiliser et façile à installer pour GTK/Gnome."
 
 #: ../liferea.appdata.xml.in.h:2
 msgid "Distinguishing features:"
-msgstr ""
+msgstr "Fonctionalités importantes :"
 
 #: ../liferea.appdata.xml.in.h:3
 #, fuzzy
@@ -62,11 +68,11 @@ msgstr "Synchronisé avec les machines voisines"
 
 #: ../liferea.appdata.xml.in.h:8
 msgid "Permanently save headlines in news bins"
-msgstr ""
+msgstr "Sauvegarder des titres dans des boîtes à nouvelles"
 
 #: ../liferea.appdata.xml.in.h:9
 msgid "Match items using search folders"
-msgstr ""
+msgstr "Retrouvez des articles en utilisant des dossiers de recherche"
 
 #: ../liferea.appdata.xml.in.h:10
 #, fuzzy
