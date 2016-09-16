@@ -1,4 +1,5 @@
 Note: Travis is disabled because of Webkit2 requiring Ubuntu 16.04+ not yet supported.
+
 ![build status git master](https://travis-ci.org/lwindolf/liferea.svg?branch=master) ![Coverity Scan Build Status](https://scan.coverity.com/projects/4287/badge.svg)
 
 
