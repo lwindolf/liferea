@@ -712,7 +712,6 @@ item_list_view_create (gboolean wide)
 	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), GTK_WIDGET (ilv->priv->treeview));
 	gtk_widget_show (GTK_WIDGET (ilv->priv->treeview));
 	gtk_widget_set_name (GTK_WIDGET (ilv->priv->treeview), "itemlist");
-	gtk_tree_view_set_rules_hint (ilv->priv->treeview, TRUE);
 
 	item_list_view_set_tree_store (ilv, item_list_view_create_tree_store ());
 

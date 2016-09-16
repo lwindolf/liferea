@@ -186,7 +186,6 @@ enclosure_list_view_new ()
 	elv->priv->treeview = gtk_tree_view_new ();
 	gtk_container_add (GTK_CONTAINER (widget), elv->priv->treeview);
 	gtk_widget_show (elv->priv->treeview);
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (elv->priv->treeview), TRUE);
 	
 	elv->priv->treestore = gtk_tree_store_new (ES_LEN,
 	                                           G_TYPE_STRING,	/* ES_NAME_STR */
@@ -265,47 +264,47 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	while (list) {
 		enclosurePtr enclosure = enclosure_from_string (list->data);
 		if (enclosure) {
+			GtkTreeIter	iter;
+			gchar		*sizeStr;
+			guint		size = enclosure->size;
+
+			/* The following literals are the enclosure list size units */
+			gchar *unit = _(" Bytes");
+			if (size > 1024) {
+				size /= 1024;
+				unit = _("kB");
+			}
+			if (size > 1024) {
+				size /= 1024;
+				unit = _("MB");
+			}
+			if (size > 1024) {
+				size /= 1024;
+				unit = _("GB");
+			}
+			/* The following literal is the format string for enclosure sizes (number + unit string) */
+			if (size > 0)
+				sizeStr = g_strdup_printf (_("%d%s"), size, unit);
+			else
+				sizeStr = g_strdup ("");
+
+			gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
+			gtk_tree_store_set (elv->priv->treestore, &iter,
+				            ES_NAME_STR, enclosure->url,
+					    ES_MIME_STR, enclosure->mime?enclosure->mime:"",
+				            ES_DOWNLOADED, enclosure->downloaded,
+					    ES_SIZE, enclosure->size,
+					    ES_SIZE_STR, sizeStr,
+					    ES_SERIALIZED, list->data,
+					    -1);
+			g_free (sizeStr);
+
+			elv->priv->enclosures = g_slist_append (elv->priv->enclosures, enclosure);
+
 			// Filter unwanted MIME types (we only want audio/* and video/*)
 			if (enclosure->mime &&
                             (g_str_has_prefix (enclosure->mime, "video/") ||
 			    (g_str_has_prefix (enclosure->mime, "audio/")))) {
-				GtkTreeIter	iter;
-				gchar		*sizeStr;
-				guint		size = enclosure->size;
-
-				/* The following literals are the enclosure list size units */
-				gchar *unit = _(" Bytes");
-				if (size > 1024) {
-					size /= 1024;
-					unit = _("kB");
-				}
-				if (size > 1024) {
-					size /= 1024;
-					unit = _("MB");
-				}
-				if (size > 1024) {
-					size /= 1024;
-					unit = _("GB");
-				}			
-			
-				/* The following literal is the format string for enclosure sizes (number + unit string) */
-				if (size > 0)
-					sizeStr = g_strdup_printf (_("%d%s"), size, unit);
-				else
-					sizeStr = g_strdup ("");
-
-				gtk_tree_store_append (elv->priv->treestore, &iter, NULL);
-				gtk_tree_store_set (elv->priv->treestore, &iter, 
-					            ES_NAME_STR, enclosure->url,
-						    ES_MIME_STR, enclosure->mime?enclosure->mime:"",
-					            ES_DOWNLOADED, enclosure->downloaded,
-						    ES_SIZE, enclosure->size,
-						    ES_SIZE_STR, sizeStr,
-						    ES_SERIALIZED, list->data,
-						    -1);
-				g_free (sizeStr);
-
-				elv->priv->enclosures = g_slist_append (elv->priv->enclosures, enclosure);
 				filteredList = g_slist_append (filteredList, list->data);
 			}
 		}
@@ -328,7 +327,9 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 	g_free (text);
 
 	/* Load the optional media player plugin */
-	liferea_media_player_load (elv->priv->container, filteredList);
+	if (g_slist_length (filteredList) > 0) {
+		liferea_media_player_load (elv->priv->container, filteredList);
+	}
 }
 
 void
@@ -379,7 +380,7 @@ on_selectcmd_pressed (GtkButton *button, gpointer user_data)
 	utfname = gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (dialog,"enc_cmd_entry")));
 	name = g_filename_from_utf8 (utfname, -1, NULL, NULL, NULL);
 	if (name) {
-		ui_choose_file (_("Choose File"), "document-open", FALSE, on_selectcmdok_clicked, name, NULL, NULL, NULL, dialog);
+		ui_choose_file (_("Choose File"), "gtk-open", FALSE, on_selectcmdok_clicked, name, NULL, NULL, NULL, dialog);
 		g_free (name);
 	}
 }
@@ -460,8 +461,7 @@ on_popup_open_enclosure (gpointer callback_data)
 {
 	gchar		*typestr, *tmp = NULL;
 	enclosurePtr	enclosure = (enclosurePtr)callback_data;
-	gboolean	found = FALSE;
-	encTypePtr	etp = NULL;
+	encTypePtr	etp_tmp = NULL, etp_found = NULL;
 	GSList		*iter;
 
 	/* 1.) Always try to determine the file extension... */
@@ -488,32 +488,27 @@ on_popup_open_enclosure (gpointer callback_data)
 
 	debug2 (DEBUG_CACHE, "url:%s, mime:%s", enclosure->url, enclosure->mime);
 	
-	/* FIXME: improve following check to first try to match
-	   MIME types and if no match was found to check for
-	   file extensions afterwards... */
-	   
 	/* 2.) Search for type configuration based on MIME or file extension... */
 	iter = (GSList *)enclosure_mime_types_get ();
 	while (iter) {
-		etp = (encTypePtr)(iter->data);
-		if (enclosure->mime && etp->mime) {
-			/* match know MIME types */
-			if (!strcmp(enclosure->mime, etp->mime)) {
-				found = TRUE;
+		etp_tmp = (encTypePtr)(iter->data);
+		if (enclosure->mime && etp_tmp->mime) {
+			/* match know MIME types and stop looking if found */
+			if (!strcmp(enclosure->mime, etp_tmp->mime)) {
+				etp_found = etp_tmp;
 				break;
 			}
-		} else {
-			/* match known file extensions */
-			if (!strcmp(typestr, etp->extension)) {
-				found = TRUE;
-				break;
+		} else if (etp_tmp->extension) {
+			/* match known file extensions and keep looking for matching MIME type */
+			if (!strcmp(typestr, etp_tmp->extension)) {
+				etp_found = etp_tmp;
 			}
 		}
 		iter = g_slist_next (iter);
 	}
 	
-	if (found) {
-		enclosure_download (etp, enclosure->url, TRUE);
+	if (etp_found) {
+		enclosure_download (etp_found, enclosure->url, TRUE);
 	} else {
 		if (enclosure->mime)
 			ui_enclosure_type_setup (NULL, enclosure, enclosure->mime);
