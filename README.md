@@ -31,7 +31,7 @@ help you asap.
 
 Mandatory:
 
-   gtk3 libxml2 libxslt sqlite3 libwebkit3 libjson-glib libgirepository1.0 libpeas gsettings-desktop-schemas
+   gtk3 libxml2 libxslt sqlite3 libwebkit4 libjson-glib libgirepository1.0 libpeas gsettings-desktop-schemas
 
 Optional:
 
@@ -45,7 +45,7 @@ Optional:
 Download a tarball from https://github.com/lwindolf/liferea/releases
 and extract and compile with
 
-    tar jxvf liferea-1.11.0.tar.bz2 
+    tar jxvf liferea-1.12.0.tar.bz2 
     ./configure
     make
     make install

@@ -1,7 +1,8 @@
 /**
- * @file webkit.c  WebKit browser module for Liferea
+ * @file webkit.c  WebKit2 browser module for Liferea
  *
- * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2016 Leiaz <leiaz@free.fr>
+ * Copyright (C) 2007-2010 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
@@ -21,18 +22,81 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <libsoup/soup.h>
-#include <webkit/webkit.h>
+#include <webkit2/webkit2.h>
 #include <string.h>
 
 #include "browser.h"
 #include "conf.h"
 #include "common.h"
-#include "enclosure.h"
+#include "enclosure.h" /* Only for enclosure_download */
 #include "ui/browser_tabs.h"
 #include "ui/liferea_htmlview.h"
 
-static WebKitWebSettings *settings = NULL;
+#include "web_extension/liferea_web_extension_names.h"
+#include "liferea_web_view.h"
+
+#define LIFEREA_TYPE_WEBKIT_IMPL liferea_webkit_impl_get_type ()
+
+G_DECLARE_FINAL_TYPE (LifereaWebKitImpl, liferea_webkit_impl, LIFEREA, WEBKIT_IMPL, GObject)
+
+struct _LifereaWebKitImpl {
+	GObject parent;
+
+	WebKitSettings 	*settings;
+	GDBusServer 	*dbus_server;
+	GList 		*dbus_connections;
+};
+
+G_DEFINE_TYPE (LifereaWebKitImpl, liferea_webkit_impl, G_TYPE_OBJECT)
+
+enum {
+	PAGE_CREATED_SIGNAL,
+	N_SIGNALS
+};
+
+static guint liferea_webkit_impl_signals [N_SIGNALS];
+
+static void
+liferea_webkit_impl_dispose (GObject *gobject)
+{
+	LifereaWebKitImpl *self = LIFEREA_WEBKIT_IMPL(gobject);
+
+	g_object_unref (self->settings);
+	g_clear_object (&self->dbus_server);
+	g_list_free_full (self->dbus_connections, g_object_unref);
+
+	/* Chaining dispose from parent class. */
+	G_OBJECT_CLASS(liferea_webkit_impl_parent_class)->dispose(gobject);
+}
+
+static void
+liferea_webkit_impl_class_init (LifereaWebKitImplClass *klass)
+{
+	GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
+
+	GType signal_params[2] = {G_TYPE_POINTER, G_TYPE_UINT64};
+
+	liferea_webkit_impl_signals[PAGE_CREATED_SIGNAL] = g_signal_newv (
+		"page-created",
+		LIFEREA_TYPE_WEBKIT_IMPL,
+		G_SIGNAL_RUN_FIRST,
+		NULL,
+		NULL,
+		NULL,
+		NULL,
+		G_TYPE_NONE,
+		2,
+		signal_params);
+
+	gobject_class->dispose = liferea_webkit_impl_dispose;
+}
+
+
+static LifereaWebKitImpl *
+liferea_webkit_impl_new (void)
+{
+	return g_object_new (LIFEREA_TYPE_WEBKIT_IMPL,NULL);
+}
 
 /**
  * Update the settings object if the preferences change.
@@ -42,13 +106,13 @@ static WebKitWebSettings *settings = NULL;
 static void
 liferea_webkit_disable_javascript_cb (GSettings *gsettings,
 				      gchar *key,
-				      gpointer user_data)
+				      gpointer webkit_settings)
 {
 	g_return_if_fail (key != NULL);
 
 	g_object_set (
-		settings,
-		"enable-scripts",
+		webkit_settings,
+		"enable-javascript",
 		!g_settings_get_boolean (gsettings, key),
 		NULL
 	);
@@ -62,12 +126,12 @@ liferea_webkit_disable_javascript_cb (GSettings *gsettings,
 static void
 liferea_webkit_enable_plugins_cb (GSettings *gsettings,
 				  gchar *key,
-				  gpointer user_data)
+				  gpointer webkit_settings)
 {
 	g_return_if_fail (key != NULL);
 
 	g_object_set (
-		settings,
+		webkit_settings,
 		"enable-plugins",
 		g_settings_get_boolean (gsettings, key),
 		NULL
@@ -103,30 +167,184 @@ webkit_get_font (guint *size)
 	return font;
 }
 
-/**
- * HTML renderer init method
- */
+static gboolean
+liferea_webkit_authorize_authenticated_peer (GDBusAuthObserver 	*observer,
+					     GIOStream		*stream,
+					     GCredentials	*credentials,
+					     gpointer		user_data)
+{
+	gboolean authorized = FALSE;
+	GCredentials *own_credentials = NULL;
+	GError *error = NULL;
+
+	if (!credentials) {
+		g_printerr ("No credentials received from web extension.\n");
+		return FALSE;
+	}
+
+	own_credentials = g_credentials_new ();
+
+	if (g_credentials_is_same_user (credentials, own_credentials, &error)) {
+		authorized = TRUE;
+	} else {
+		g_printerr ("Error authorizing web extension : %s\n", error->message);
+		g_error_free (error);
+	}
+	g_object_unref (own_credentials);
+
+	return authorized;
+}
+
 static void
-liferea_webkit_init (void)
+liferea_webkit_on_dbus_connection_close (GDBusConnection *connection,
+					 gboolean        remote_peer_vanished,
+					 GError          *error,
+					 gpointer        user_data)
+{
+	LifereaWebKitImpl *webkit_impl = LIFEREA_WEBKIT_IMPL (user_data);
+
+	if (!remote_peer_vanished && error)
+	{
+		g_warning ("DBus connection closed with error : %s", error->message);
+	}
+	webkit_impl->dbus_connections = g_list_remove (webkit_impl->dbus_connections, connection);
+	g_object_unref (connection);
+}
+
+static void
+liferea_webkit_emit_page_created (GDBusConnection *connection,
+			     const gchar *sender_name,
+			     const gchar *object_path,
+			     const gchar *interface_name,
+			     const gchar *signal_name,
+			     GVariant *parameters,
+			     gpointer user_data)
+{
+	guint64 page_id;
+	LifereaWebKitImpl *webkit_impl = LIFEREA_WEBKIT_IMPL (user_data);
+
+	g_variant_get (parameters, "(t)", &page_id);
+	g_signal_emit (webkit_impl,
+		liferea_webkit_impl_signals[PAGE_CREATED_SIGNAL],
+		0,
+		(gpointer) connection,
+		page_id);
+}
+
+static void
+on_page_created (LifereaWebKitImpl *instance,
+		 GDBusConnection *connection,
+		 guint64 page_id,
+		 gpointer web_view)
+{
+	if (webkit_web_view_get_page_id (WEBKIT_WEB_VIEW (web_view)) == page_id) {
+		liferea_web_view_set_dbus_connection (LIFEREA_WEB_VIEW (web_view), connection);
+	}
+}
+
+
+static gboolean
+liferea_webkit_on_new_dbus_connection (GDBusServer *server, GDBusConnection *connection, gpointer user_data)
+{
+	LifereaWebKitImpl *webkit_impl = LIFEREA_WEBKIT_IMPL (user_data);
+
+	webkit_impl->dbus_connections = g_list_append (webkit_impl->dbus_connections, g_object_ref (connection));
+	g_signal_connect (connection,
+			  "closed",
+			  G_CALLBACK (liferea_webkit_on_dbus_connection_close),
+			  webkit_impl);
+
+	g_dbus_connection_signal_subscribe (
+		connection,
+		NULL,
+		LIFEREA_WEB_EXTENSION_INTERFACE_NAME,
+		"PageCreated",
+		LIFEREA_WEB_EXTENSION_OBJECT_PATH,
+		NULL,
+		G_DBUS_SIGNAL_FLAGS_NONE,
+		(GDBusSignalCallback)liferea_webkit_emit_page_created,
+                webkit_impl,
+                NULL);
+
+	return TRUE;
+}
+
+static void
+liferea_webkit_initialize_web_extensions (WebKitWebContext 	*context,
+					  gpointer		user_data)
+{
+	gchar 	*guid = NULL;
+	gchar 	*address = NULL;
+	gchar 	*server_address = NULL;
+	GError	*error = NULL;
+	GDBusAuthObserver *observer = NULL;
+	LifereaWebKitImpl *webkit_impl = LIFEREA_WEBKIT_IMPL (user_data);
+
+	guid = g_dbus_generate_guid ();
+	address = g_strdup_printf ("unix:tmpdir=%s", g_get_tmp_dir ());
+	observer = g_dbus_auth_observer_new ();
+
+	g_signal_connect (observer,
+			  "authorize-authenticated-peer",
+			  G_CALLBACK (liferea_webkit_authorize_authenticated_peer),
+			  NULL);
+
+	webkit_impl->dbus_server = g_dbus_server_new_sync (address,
+					      G_DBUS_SERVER_FLAGS_NONE,//Flags
+					      guid,
+					      observer,
+					      NULL, //Cancellable
+					      &error);
+	g_free (guid);
+	g_free (address);
+	g_object_unref (observer);
+	if (webkit_impl->dbus_server == NULL) {
+		g_printerr ("Error creating DBus server : %s\n", error->message);
+		g_error_free (error);
+		return;
+        }
+	g_dbus_server_start (webkit_impl->dbus_server);
+
+	g_signal_connect (webkit_impl->dbus_server,
+			  "new-connection",
+			  G_CALLBACK (liferea_webkit_on_new_dbus_connection),
+			  webkit_impl);
+
+	webkit_web_context_set_web_extensions_directory (context, WEB_EXTENSIONS_DIR);
+	server_address = g_strdup (g_dbus_server_get_client_address (webkit_impl->dbus_server));
+	webkit_web_context_set_web_extensions_initialization_user_data (context, g_variant_new_take_string (server_address));
+}
+
+static void
+liferea_webkit_impl_download_started (WebKitWebContext	*context,
+				      WebKitDownload 	*download,
+				      gpointer 		user_data)
+{
+	WebKitURIRequest *request = webkit_download_get_request (download);
+	webkit_download_cancel (download);
+	enclosure_download (NULL, webkit_uri_request_get_uri (request), TRUE);
+}
+
+static void
+liferea_webkit_impl_init (LifereaWebKitImpl *self)
 {
 	gboolean	disable_javascript, enable_plugins;
 	gchar		*font;
 	guint		fontSize;
 
-	g_assert (!settings);
-
-	settings = webkit_web_settings_new ();
+	self->dbus_connections = NULL;
+	self->settings = webkit_settings_new ();
 	font = webkit_get_font (&fontSize);
 
 	if (font) {
 		g_object_set (
-			settings,
+			self->settings,
 			"default-font-family",
 			font,
 			NULL
 		);
 		g_object_set (
-			settings,
+			self->settings,
 			"default-font-size",
 			fontSize,
 			NULL
@@ -134,21 +352,21 @@ liferea_webkit_init (void)
 		g_free (font);
 	}
 	g_object_set (
-		settings,
+		self->settings,
 		"minimum-font-size",
 		7,
 		NULL
 	);
 	conf_get_bool_value (DISABLE_JAVASCRIPT, &disable_javascript);
 	g_object_set (
-		settings,
-		"enable-scripts",
+		self->settings,
+		"enable-javascript",
 		!disable_javascript,
 		NULL
 	);
 	conf_get_bool_value (ENABLE_PLUGINS, &enable_plugins);
 	g_object_set (
-		settings,
+		self->settings,
 		"enable-plugins",
 		enable_plugins,
 		NULL
@@ -157,15 +375,43 @@ liferea_webkit_init (void)
 	conf_signal_connect (
 		"changed::" DISABLE_JAVASCRIPT,
 		G_CALLBACK (liferea_webkit_disable_javascript_cb),
-		NULL
+		self->settings
 	);
 
 	conf_signal_connect (
 		"changed::" ENABLE_PLUGINS,
 		G_CALLBACK (liferea_webkit_enable_plugins_cb),
-		NULL
+		self->settings
 	);
+
+	/* Webkit web extensions */
+	g_signal_connect (
+		webkit_web_context_get_default (),
+		"initialize-web-extensions",
+		G_CALLBACK (liferea_webkit_initialize_web_extensions),
+		self);
+
+	g_signal_connect (
+		webkit_web_context_get_default (),
+		"download-started",
+		G_CALLBACK (liferea_webkit_impl_download_started),
+		self);
 }
+
+
+static LifereaWebKitImpl *liferea_webkit_impl = NULL;
+
+/**
+ * HTML renderer init method
+ */
+static void
+liferea_webkit_init (void)
+{
+	g_assert (!liferea_webkit_impl);
+
+	liferea_webkit_impl = liferea_webkit_impl_new ();
+}
+
 
 /**
  * Load HTML string into the rendering scrollpane
@@ -175,413 +421,42 @@ liferea_webkit_init (void)
  */
 static void
 liferea_webkit_write_html (
-	GtkWidget *scrollpane,
+	GtkWidget *webview,
 	const gchar *string,
 	const guint length,
 	const gchar *base,
 	const gchar *content_type
 )
 {
-	GtkWidget *htmlwidget;
-	
-	htmlwidget = gtk_bin_get_child (GTK_BIN (scrollpane));
-
+	// FIXME Avoid doing a copy ?
+	GBytes *string_bytes = g_bytes_new (string, length);
 	/* Note: we explicitely ignore the passed base URL
 	   because we don't need it as Webkit supports <div href="">
 	   and throws a security exception when accessing file://
 	   with a non-file:// base URL */
-	webkit_web_view_load_string (WEBKIT_WEB_VIEW (htmlwidget), string,
-				     content_type, "UTF-8", "file://");
-}
-
-static void
-liferea_webkit_title_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
-{
-	LifereaHtmlView	*htmlview;
-	gchar *title;
-
-	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
-	g_object_get (view, "title", &title, NULL);
-
-	liferea_htmlview_title_changed (htmlview, title);
-	g_free (title);
-}
-
-static void
-liferea_webkit_progress_changed (WebKitWebView *view, gint progress, gpointer user_data)
-{
-}
-
-static void
-liferea_webkit_location_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
-{
-	LifereaHtmlView	*htmlview;
-	gchar *location;
-
-	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
-	g_object_get (view, "uri", &location, NULL);
-
-	liferea_htmlview_location_changed (htmlview, location);
-	g_free (location);
-}
-
-/**
- * Action executed when user hovers over a link
- */
-static void
-liferea_webkit_on_url (WebKitWebView *view, const gchar *title, const gchar *url, gpointer user_data)
-{
-	LifereaHtmlView	*htmlview;
-	gchar *selected_url;
-
-	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
-	selected_url = g_object_get_data (G_OBJECT (view), "selected_url");
-	if (selected_url)
-		g_free (selected_url);
-
-	selected_url = url ? g_strdup (url) : g_strdup ("");
-
-	/* overwrite or clear last status line text */
-	liferea_htmlview_on_url (htmlview, selected_url);
-
-	g_object_set_data (G_OBJECT (view), "selected_url", selected_url);
-}
-
-/**
- * A link has been clicked
- *
- * When a link has been clicked the link management is dispatched to Liferea
- * core in order to manage the different filetypes, remote URLs.
- */
-static gboolean
-liferea_webkit_link_clicked (WebKitWebView *view,
-			     WebKitWebFrame *frame,
-			     WebKitNetworkRequest *request,
-			     WebKitWebNavigationAction *navigation_action,
-			     WebKitWebPolicyDecision *policy_decision)
-{
-	const gchar			*uri;
-	WebKitWebNavigationReason	reason;
-	gboolean			url_handled;
-
-	g_return_val_if_fail (WEBKIT_IS_WEB_VIEW (view), FALSE);
-	g_return_val_if_fail (WEBKIT_IS_NETWORK_REQUEST (request), FALSE);
-
-	reason = webkit_web_navigation_action_get_reason (navigation_action);
-
-	/* iframes in items return WEBKIT_WEB_NAVIGATION_REASON_OTHER
-	   and shouldn't be handled as clicks                          */
-	if (reason != WEBKIT_WEB_NAVIGATION_REASON_LINK_CLICKED)
-		return FALSE;
-
-	uri = webkit_network_request_get_uri (request);
-
-	if (webkit_web_navigation_action_get_button (navigation_action) == 2) { /* middle click */
-		browser_tabs_add_new (uri, uri, FALSE);
-		webkit_web_policy_decision_ignore (policy_decision);
-		return TRUE;
-	}
-
-	url_handled = liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
-
-	if (url_handled)
-		webkit_web_policy_decision_ignore (policy_decision);
-
-	return url_handled;
-}
-
-/**
- * A new window was requested. This is the case e.g. if the link
- * has target="_blank". In that case, we don't open the link in a new
- * tab, but do what the user requested as if it didn't have a target.
- */
-static gboolean
-liferea_webkit_new_window_requested (WebKitWebView *view,
-				     WebKitWebFrame *frame,
-				     WebKitNetworkRequest *request,
-				     WebKitWebNavigationAction *navigation_action,
-				     WebKitWebPolicyDecision *policy_decision)
-{
-	const gchar *uri = webkit_network_request_get_uri (request);
-
-	if (webkit_web_navigation_action_get_button (navigation_action) == 2) {
-		/* middle-click, let's open the link in a new tab */
-		browser_tabs_add_new (uri, uri, FALSE);
-	} else if (liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri)) {
-		/* The link is to be opened externally, let's do nothing here */
-	} else {
-		/* If the link is not to be opened in a new tab, nor externally,
-		 * it was likely a normal click on a target="_blank" link.
-		 * Let's open it in the current view to not disturb users */
-		webkit_web_view_load_uri (view, uri);
-	}
-
-	/* We handled the request ourselves */
-	webkit_web_policy_decision_ignore (policy_decision);
-	return TRUE;
-}
-
-/**
- *  e.g. after a click on javascript:openZoom()
- */
-static WebKitWebView*
-webkit_create_web_view (WebKitWebView *view, WebKitWebFrame *frame)
-{
-	LifereaHtmlView *htmlview;
-	GtkWidget	*container;
-	GtkWidget	*htmlwidget;
-	GList 		*children;
-
-	htmlview = browser_tabs_add_new (NULL, NULL, TRUE);
-	container = liferea_htmlview_get_widget (htmlview);
-
-	/* Ugly lookup of the webview. LifereaHtmlView uses a GtkBox
-	   with first a URL bar (sometimes invisble) and the HTML renderer
-	   as 2nd child */
-	children = gtk_container_get_children (GTK_CONTAINER (container));
-	htmlwidget = gtk_bin_get_child (GTK_BIN (children->next->data));
-
-	return WEBKIT_WEB_VIEW (htmlwidget);
-}
-
-struct FullscreenData {
-	GtkWidget *me;
-	gboolean visible;
-};
-
-/**
- * callback for fullscreen mode gtk_container_foreach()
- */
-static void
-fullscreen_toggle_widget_visible(GtkWidget *wid, gpointer user_data) {
-	gchar* data_label;
-	struct FullscreenData *fdata;
-	gboolean old_v;
-	gchar *propName;
-
-	fdata = user_data;
-
-	// remove shadow of scrolled window
-	if (GTK_IS_SCROLLED_WINDOW(wid)) {
-		GtkShadowType shadow_type;
-
-		data_label = "fullscreen_shadow_type";
-		propName = "shadow-type";
-
-		if (fdata->visible == FALSE) {
-			g_object_get(G_OBJECT(wid),
-					propName, &shadow_type, NULL);
-			g_object_set(G_OBJECT(wid),
-					propName, GTK_SHADOW_NONE, NULL);
-			g_object_set_data(G_OBJECT(wid), data_label,
-					GINT_TO_POINTER(shadow_type));
-		} else {
-			shadow_type = GPOINTER_TO_INT(g_object_steal_data(
-						G_OBJECT(wid), data_label));
-			if (shadow_type && shadow_type != GTK_SHADOW_NONE) {
-				g_object_set(G_OBJECT(wid),
-						propName, shadow_type, NULL);
-			}
-		}
-	}
-
-	if (wid == fdata->me && !GTK_IS_NOTEBOOK(wid)) {
-		return;
-	}
-
-	data_label = "fullscreen_visible";
-	if (GTK_IS_NOTEBOOK(wid)) {
-		propName = "show-tabs";
-	} else {
-		propName = "visible";
-	}
-
-	if (fdata->visible == FALSE) {
-		g_object_get(G_OBJECT(wid), propName, &old_v, NULL);
-		g_object_set(G_OBJECT(wid), propName, FALSE, NULL);
-		g_object_set_data(G_OBJECT(wid), data_label,
-				GINT_TO_POINTER(old_v));
-	} else {
-		old_v = GPOINTER_TO_INT(g_object_steal_data(
-					G_OBJECT(wid), data_label));
-		if (old_v == TRUE) {
-			g_object_set(G_OBJECT(wid), propName, TRUE, NULL);
-		}
-	}
-}
-
-/**
- * For fullscreen mode, hide everything except the current webview
- */
-static void
-fullscreen_toggle_parent_visible(GtkWidget *me, gboolean visible) {
-	GtkWidget *parent;
-	struct FullscreenData *fdata;
-	fdata = g_new0(struct FullscreenData, 1);
-
-	// Flag fullscreen status
-	g_object_set_data(G_OBJECT(me), "fullscreen_on",
-			GINT_TO_POINTER(!visible));
-
-	parent = gtk_widget_get_parent(me);
-	fdata->visible = visible;
-	while (parent != NULL) {
-		fdata->me = me;
-		gtk_container_foreach(GTK_CONTAINER(parent),
-				(GtkCallback)fullscreen_toggle_widget_visible,
-				(gpointer)fdata);
-		me = parent;
-		parent = gtk_widget_get_parent(me);
-	}
-	g_free(fdata);
-}
-
-/**
- * WebKitWebView "entering-fullscreen" signal
- * Hide all the widget except current WebView
- */
-static gboolean
-webkit_entering_fullscreen (WebKitWebView *view, WebKitDOMHTMLElement *elm)
-{
-	fullscreen_toggle_parent_visible(GTK_WIDGET(view), FALSE);
-	return FALSE;
-}
-
-/**
- * WebKitWebView "leaving-fullscreen" signal
- * Restore visibility of hidden widgets
- */
-static gboolean
-webkit_leaving_fullscreen (WebKitWebView *view, WebKitDOMHTMLElement *elm)
-{
-	fullscreen_toggle_parent_visible(GTK_WIDGET(view), TRUE);
-	return FALSE;
-}
-
-// Hack to force webview exit from fullscreen mode on new page
-static void
-liferea_webkit_load_status_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
-{
-	WebKitLoadStatus loadStatus;
-
-	g_object_get (view, "load-status", &loadStatus, NULL);
-	if (loadStatus == WEBKIT_LOAD_PROVISIONAL) {
-		gboolean isFullscreen;
-		isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
-					G_OBJECT(view), "fullscreen_on"));
-		if (isFullscreen == TRUE) {
-		webkit_web_view_execute_script (view,
-				"document.webkitExitFullscreen();");
-		}
-	}
-}
-
-/**
- * WebKitWebView::populate-popup:
- * @web_view: the object on which the signal is emitted
- * @menu: the context menu
- *
- * When a context menu is about to be displayed this signal is emitted.
- *
- * Add menu items to #menu to extend the context menu.
- */
-static void
-liferea_webkit_on_menu (WebKitWebView *view, GtkMenu *menu)
-{
-	LifereaHtmlView			*htmlview;
-	gchar				*imageUri = NULL;
-	gchar				*linkUri = NULL;
-	WebKitHitTestResult*		hitResult;
-	WebKitHitTestResultContext	context;
-	GdkEvent			*event;
-
-	event = gtk_get_current_event ();
-	hitResult = webkit_web_view_get_hit_test_result (view, (GdkEventButton *)event);
-	g_object_get (hitResult, "context", &context, NULL);
-
-	if (context & WEBKIT_HIT_TEST_RESULT_CONTEXT_LINK)
-		g_object_get (hitResult, "link-uri", &linkUri, NULL);
-	if (context & WEBKIT_HIT_TEST_RESULT_CONTEXT_IMAGE)
-		g_object_get (hitResult, "image-uri", &imageUri, NULL);
-	if (context & WEBKIT_HIT_TEST_RESULT_CONTEXT_MEDIA)
-		g_object_get (hitResult, "media-uri", &linkUri, NULL);		/* treat media as normal link */
-		
-	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
-	
-	liferea_htmlview_prepare_context_menu (htmlview, menu, linkUri, imageUri);
-}
-
-/**
- * WebKitWebView::console-message:
- * A JavaScript console message was created.
- *
- * And we ignore them.
- */
-static gboolean
-liferea_webkit_javascript_message  (WebKitWebView *view,
-				    const char *message,
-				    int line,
-				    const char *source_id)
-{
-	return TRUE;
-}
-
-static gboolean
-liferea_webkit_mime_type_policy_decision_requested (WebKitWebView 		*view,
-						    WebKitWebFrame 		*frame,
-						    WebKitNetworkRequest 	*request,
-						    gchar 			*mimetype,
-						    WebKitWebPolicyDecision 	*policy_decision,
-						    gpointer			user_data)
-{
-	/* Request download of unsupported MIME types */
-	if (!webkit_web_view_can_show_mime_type (view,mimetype)) {
-		webkit_web_policy_decision_download (policy_decision);
-		return TRUE;
-	}
-	/* Otherwise apply default policy (download attachments, display supported MIME types) */
-	return FALSE;
-}
-
-static gboolean
-liferea_webkit_on_download_requested (WebKitWebView *view,
-				      WebKitDownload *download,
-				      gpointer user_data)
-{
-	enclosure_download (NULL, webkit_download_get_uri (download), TRUE);
-	return FALSE; /* We handle the download, the WebKitDownload will be cancelled by the view.*/
+	webkit_web_view_load_bytes (WEBKIT_WEB_VIEW (webview), string_bytes, content_type, "UTF-8", "file://");
+	g_bytes_unref (string_bytes);
 }
 
 /**
  * Initializes WebKit
  *
- * Initializes the WebKit HTML rendering engine. Creates a GTK scrollpane widget
- * and embeds WebKitWebView into it.
+ * Initializes the WebKit HTML rendering engine. Creates a WebKitWebView.
  */
 static GtkWidget *
 liferea_webkit_new (LifereaHtmlView *htmlview)
 {
-	WebKitWebView *view;
-	GtkWidget *scrollpane;
+	WebKitWebView 		*view;
 
-	scrollpane = gtk_scrolled_window_new (NULL, NULL);
+	view = WEBKIT_WEB_VIEW (liferea_web_view_new ());
+	webkit_web_view_set_settings (view, liferea_webkit_impl->settings);
 
-	gtk_scrolled_window_set_policy (
-		GTK_SCROLLED_WINDOW (scrollpane),
-		GTK_POLICY_AUTOMATIC,
-		GTK_POLICY_AUTOMATIC
-	);
-	gtk_scrolled_window_set_shadow_type (
-		GTK_SCROLLED_WINDOW (scrollpane),
-		GTK_SHADOW_IN
-	);
-
-	/** Create HTML widget and pack it into the scrolled window */
-	view = WEBKIT_WEB_VIEW (webkit_web_view_new ());
-
-	webkit_web_view_set_settings (view, settings);
-
-	gtk_container_add (GTK_CONTAINER (scrollpane), GTK_WIDGET (view));
+	g_signal_connect_object (
+		liferea_webkit_impl,
+		"page-created",
+		G_CALLBACK (on_page_created),
+		view,
+		G_CONNECT_AFTER);
 
 	/** Pass LifereaHtmlView into the WebKitWebView object */
 	g_object_set_data (
@@ -590,104 +465,15 @@ liferea_webkit_new (LifereaHtmlView *htmlview)
 		htmlview
 	);
 
-	/** Connect signal callbacks */
-	g_signal_connect (
-		view,
-		"mime-type-policy-decision-requested",
-		G_CALLBACK (liferea_webkit_mime_type_policy_decision_requested),
-		view
-	);
-	g_signal_connect (
-		view,
-		"download-requested",
-		G_CALLBACK (liferea_webkit_on_download_requested),
-		view
-	);
-	g_signal_connect (
-		view,
-		"notify::title",
-		G_CALLBACK (liferea_webkit_title_changed),
-		view
-	);
-	g_signal_connect (
-		view,
-		"load-progress-changed",
-		G_CALLBACK (liferea_webkit_progress_changed),
-		view
-	);
-	g_signal_connect (
-		view,
-		"hovering-over-link",
-		G_CALLBACK (liferea_webkit_on_url),
-		view
-	);
-	g_signal_connect (
-		view,
-		"navigation-policy-decision-requested",
-		G_CALLBACK (liferea_webkit_link_clicked),
-		view
-	);
-	g_signal_connect (
-		view,
-		"new-window-policy-decision-requested",
-		G_CALLBACK (liferea_webkit_new_window_requested),
-		view
-	);
-	g_signal_connect (
-		view,
-		"populate-popup",
-		G_CALLBACK (liferea_webkit_on_menu),
-		view
-	);
-	g_signal_connect (
-		view,
-		"notify::uri",
-		G_CALLBACK (liferea_webkit_location_changed),
-		view
-	);
-	g_signal_connect (
-		view,
-		"console-message",
-		G_CALLBACK (liferea_webkit_javascript_message),
-		view
-	);
-	g_signal_connect (
-		view,
-		"create-web-view",
-		G_CALLBACK (webkit_create_web_view),
-		view
-	);
-
-	g_signal_connect (
-		view,
-		"entering-fullscreen",
-		G_CALLBACK (webkit_entering_fullscreen),
-		view
-	);
-
-	g_signal_connect (
-		view,
-		"leaving-fullscreen",
-		G_CALLBACK (webkit_leaving_fullscreen),
-		view
-	);
-
-	g_signal_connect (
-		view,
-		"notify::load-status",
-		G_CALLBACK (liferea_webkit_load_status_changed),
-		view
-	);
-
 	gtk_widget_show (GTK_WIDGET (view));
-	return scrollpane;
+	return GTK_WIDGET (view);
 }
 
 /**
  * Launch URL
  */
 static void
-liferea_webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
+liferea_webkit_launch_url (GtkWidget *webview, const gchar *url)
 {
 	// FIXME: hack to make URIs like "gnome.org" work
 	// https://bugs.webkit.org/show_bug.cgi?id=24195
@@ -699,7 +485,7 @@ liferea_webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
 	}
 
 	webkit_web_view_load_uri (
-		WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane))),
+		WEBKIT_WEB_VIEW (webview),
 		http_url
 	);
 
@@ -710,103 +496,47 @@ liferea_webkit_launch_url (GtkWidget *scrollpane, const gchar *url)
  * Change zoom level of the HTML scrollpane
  */
 static void
-liferea_webkit_change_zoom_level (GtkWidget *scrollpane, gfloat zoom_level)
+liferea_webkit_change_zoom_level (GtkWidget *webview, gfloat zoom_level)
 {
-	WebKitWebView *view;
-	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
-	webkit_web_view_set_zoom_level (view, zoom_level);
-}
-
-/**
- * Return whether text is selected
- */
-static gboolean
-liferea_webkit_has_selection (GtkWidget *scrollpane)
-{
-	WebKitWebView *view;
-	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
-
-	/* 
-	   Currently (libwebkit-1.0 1.2.0) this doesn't work:
-
-		return webkit_web_view_has_selection (view);
-
-	   So we use *_can_copy_clipboard() as a workaround.
-	*/
-	
-	return webkit_web_view_can_copy_clipboard (view);
+	webkit_web_view_set_zoom_level (WEBKIT_WEB_VIEW (webview), zoom_level);
 }
 
 /**
  * Copy selected text to the clipboard
  */
 static void
-liferea_webkit_copy_selection (GtkWidget *scrollpane)
+liferea_webkit_copy_selection (GtkWidget *webview)
 {
-	WebKitWebView *view;
-	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
-	webkit_web_view_copy_clipboard (view);
+	webkit_web_view_execute_editing_command (WEBKIT_WEB_VIEW (webview), WEBKIT_EDITING_COMMAND_COPY);
 }
 
 /**
  * Return current zoom level as a float
  */
 static gfloat
-liferea_webkit_get_zoom_level (GtkWidget *scrollpane)
+liferea_webkit_get_zoom_level (GtkWidget *webview)
 {
-	WebKitWebView *view;
-	view = WEBKIT_WEB_VIEW (gtk_bin_get_child (GTK_BIN (scrollpane)));
-	return webkit_web_view_get_zoom_level (view);
+	return webkit_web_view_get_zoom_level (WEBKIT_WEB_VIEW (webview));
 }
 
 /**
  * Scroll page down (via shortcut key)
- *
- * Copied from gtkhtml/gtkhtml.c
  */
-static gboolean
-liferea_webkit_scroll_pagedown (GtkWidget *scrollpane)
+static void
+liferea_webkit_scroll_pagedown (GtkWidget *webview)
 {
-	GtkScrolledWindow *itemview;
-	GtkAdjustment *vertical_adjustment;
-	gdouble old_value;
-	gdouble	new_value;
-	gdouble	limit;
-
-	itemview = GTK_SCROLLED_WINDOW (scrollpane);
-	g_assert (NULL != itemview);
-	vertical_adjustment = gtk_scrolled_window_get_vadjustment (itemview);
-	old_value = gtk_adjustment_get_value (vertical_adjustment);
-	new_value = old_value + gtk_adjustment_get_page_increment (vertical_adjustment);
-	limit = gtk_adjustment_get_upper (vertical_adjustment) - gtk_adjustment_get_page_size (vertical_adjustment);
-	if (new_value > limit) {
-		new_value = limit;
-	}
-	gtk_adjustment_set_value (vertical_adjustment, new_value);
-	gtk_scrolled_window_set_vadjustment (
-		GTK_SCROLLED_WINDOW (itemview),
-		vertical_adjustment
-	);
-	return (new_value > old_value);
+	liferea_web_view_scroll_pagedown (LIFEREA_WEB_VIEW (webview));
 }
 
 static void
 liferea_webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar *pwd)
 {
-	SoupURI *proxy = NULL;
-
-	if (host) {
-		proxy = soup_uri_new (NULL);
-		soup_uri_set_scheme (proxy, SOUP_URI_SCHEME_HTTP);
-		soup_uri_set_host (proxy, host);
-		soup_uri_set_port (proxy, port);
-		soup_uri_set_user (proxy, user);
-		soup_uri_set_password (proxy, pwd);
-	}
-
-	g_object_set (webkit_get_default_session (),
-		      SOUP_SESSION_PROXY_URI, proxy,
-		      NULL);
+	/*
+	 * FIXME
+	 *  Webkit2 uses global proxy settings :
+	 *  https://bugs.webkit.org/show_bug.cgi?id=128674
+	 *  https://bugs.webkit.org/show_bug.cgi?id=113663
+	 */
 }
 
 static struct
@@ -817,10 +547,10 @@ htmlviewImpl webkitImpl = {
 	.launch		= liferea_webkit_launch_url,
 	.zoomLevelGet	= liferea_webkit_get_zoom_level,
 	.zoomLevelSet	= liferea_webkit_change_zoom_level,
-	.hasSelection	= liferea_webkit_has_selection,
-	.copySelection	= liferea_webkit_copy_selection,
+	.hasSelection	= NULL,  /* Was only useful for the context menu, can be removed */
+	.copySelection	= liferea_webkit_copy_selection, /* Same. */
 	.scrollPagedown	= liferea_webkit_scroll_pagedown,
-	.setProxy	= liferea_webkit_set_proxy,
+	.setProxy	= NULL,
 	.setOffLine	= NULL // FIXME: blocked on https://bugs.webkit.org/show_bug.cgi?id=18893
 };
 

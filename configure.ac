@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.11.7],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.12-RC1],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -39,7 +39,7 @@ pkg_modules="	gtk+-3.0 >= 3.4.0
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
 		libsoup-2.4 >= 2.28.2
-		webkitgtk-3.0
+		webkit2gtk-4.0
 		json-glib-1.0
 		gobject-introspection-1.0
 		gsettings-desktop-schemas
@@ -52,6 +52,12 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
+
+PKG_CHECK_MODULES([WEB_EXTENSION], [
+                  webkit2gtk-web-extension-4.0
+                  ])
+AC_SUBST([WEB_EXTENSION_CFLAGS])
+AC_SUBST([WEB_EXTENSION_LIBS])
 
 uname=`uname`
 AC_DEFINE_UNQUOTED(OS, $uname, [defines a OS version string, used for OS specific code])
@@ -77,6 +83,7 @@ Makefile
 net.sf.liferea.gschema.xml
 src/Makefile
 src/webkit/Makefile
+src/webkit/web_extension/Makefile
 src/parsers/Makefile
 src/fl_sources/Makefile
 src/ui/Makefile

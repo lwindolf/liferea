@@ -1,3 +1,7 @@
+Open problems before release
+
+	* Article skimming currently broken
+
 To be released
 
 	* Github #348: Added support for downloading content that
@@ -5,6 +9,8 @@ To be released
 	  (Leiaz)
 	* Github #355: Migrate to Python3 libpeas loader
 	  (patch by picsel2)
+	* Github #311: Upgrade to WebKit2
+	  (patch by Leiaz)
 	* Github #292: Show new item count in tray icon
 	  (patch by mozbugbox)
 	* Github #297: Minimize to systray on window close

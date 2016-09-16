@@ -2,6 +2,9 @@
 *.a
 *.gmo
 *.o
+*.Po
+*.la
+*.lo
 Makefile
 Makefile.in
 aclocal.m4
