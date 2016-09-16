@@ -23,6 +23,7 @@
 #define _NET_H
 
 #include <glib.h>
+
 #include "update.h"
 
 /* Simple glue layer to abstract network code */
@@ -37,17 +38,30 @@ void network_init (void);
  */
 void network_deinit (void);
 
+typedef enum {
+	PROXY_DETECT_MODE_AUTO = 0, 	/* Use system settings */
+	PROXY_DETECT_MODE_NONE,		/* No Proxy */
+	PROXY_DETECT_MODE_MANUAL	/* Manually configured proxy */
+} ProxyDetectMode;
+
 /**
  * Configures the network client to use the given proxy
  * settings. If the host name is NULL then no proxy will
  * be used.
  *
+ * @param mode		indicate whether to use the system setting, no proxy or the following parameters.
  * @param host		the new proxy host
  * @param port		the new proxy port
  * @param user		the new proxy username or NULL
  * @param password	the new proxy password or NULL
  */
-void network_set_proxy (gchar *host, guint port, gchar *user, gchar *password);
+void network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, gchar *password);
+
+/**
+ * Returns the proxy detect mode.
+ *
+ */
+ProxyDetectMode network_get_proxy_detect_mode (void);
 
 /**
  * Returns the currently configured proxy host.

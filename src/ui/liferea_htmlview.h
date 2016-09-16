@@ -23,6 +23,8 @@
 
 #include <gtk/gtk.h>
 
+#include "net.h"
+
 G_BEGIN_DECLS
 
 #define LIFEREA_HTMLVIEW_TYPE		(liferea_htmlview_get_type ())
@@ -220,7 +222,7 @@ typedef struct htmlviewImpl {
 	gboolean	(*hasSelection)		(GtkWidget *widget);
 	void		(*copySelection)	(GtkWidget *widget);
 	gboolean	(*scrollPagedown)	(GtkWidget *widget);
-	void		(*setProxy)		(const gchar *hostname, guint port, const gchar *username, const gchar *password);
+	void		(*setProxy)		(ProxyDetectMode mode, const gchar *hostname, guint port, const gchar *username, const gchar *password);
 	void		(*setOffLine)		(gboolean offline);
 } *htmlviewImplPtr;
 
