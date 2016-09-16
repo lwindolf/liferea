@@ -36,7 +36,6 @@
 #include "enclosure.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "net.h"
 #include "net_monitor.h"
 #include "social.h"
 #include "render.h"
@@ -270,7 +269,8 @@ liferea_htmlview_proxy_changed (NetworkMonitor *nm, gpointer userdata)
 {
 	LifereaHtmlView *htmlview = LIFEREA_HTMLVIEW (userdata);
 
-	(RENDERER (htmlview)->setProxy) (network_get_proxy_host (),
+	(RENDERER (htmlview)->setProxy) (network_get_proxy_detect_mode (),
+					 network_get_proxy_host (),
 	                                 network_get_proxy_port (),
 	                                 network_get_proxy_username (),
 	                                 network_get_proxy_password ());
@@ -299,10 +299,8 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 	                  G_CALLBACK (liferea_htmlview_proxy_changed),
 	                  htmlview);
 
-	if (NULL != network_get_proxy_host ()) {
-		debug0 (DEBUG_NET, "Setting initial HTML widget proxy...");
-		liferea_htmlview_proxy_changed (network_monitor_get (), htmlview);
-	}
+	debug0 (DEBUG_NET, "Setting initial HTML widget proxy...");
+	liferea_htmlview_proxy_changed (network_monitor_get (), htmlview);
 	
 	return htmlview;
 }

@@ -529,7 +529,7 @@ liferea_webkit_scroll_pagedown (GtkWidget *webview)
 }
 
 static void
-liferea_webkit_set_proxy (const gchar *host, guint port, const gchar *user, const gchar *pwd)
+liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, const gchar *user, const gchar *pwd)
 {
 	/*
 	 * FIXME
@@ -550,7 +550,7 @@ htmlviewImpl webkitImpl = {
 	.hasSelection	= NULL,  /* Was only useful for the context menu, can be removed */
 	.copySelection	= liferea_webkit_copy_selection, /* Same. */
 	.scrollPagedown	= liferea_webkit_scroll_pagedown,
-	.setProxy	= NULL,
+	.setProxy	= NULL, // FIXME: readd later
 	.setOffLine	= NULL // FIXME: blocked on https://bugs.webkit.org/show_bug.cgi?id=18893
 };
 
