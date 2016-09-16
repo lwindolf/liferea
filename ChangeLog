@@ -29,6 +29,8 @@ To be released
 	  (reported by Pi03k)
 	* Fixes Github #368: Segfault on liferea-feed-add
 	  (Leiaz)
+	* Fixes Github #383: Broken proxy settings
+	  (Leiaz)
 
 	* Github #309: Update of Japanese translation
 	  (IWAI, Masaharu)

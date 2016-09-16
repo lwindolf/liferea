@@ -38,7 +38,7 @@ pkg_modules="	gtk+-3.0 >= 3.4.0
 		sqlite3 >= 3.7.0
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
-		libsoup-2.4 >= 2.28.2
+		libsoup-2.4 >= 2.42
 		webkit2gtk-4.0
 		json-glib-1.0
 		gobject-introspection-1.0
