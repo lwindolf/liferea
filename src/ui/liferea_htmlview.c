@@ -269,11 +269,12 @@ liferea_htmlview_proxy_changed (NetworkMonitor *nm, gpointer userdata)
 {
 	LifereaHtmlView *htmlview = LIFEREA_HTMLVIEW (userdata);
 
-	(RENDERER (htmlview)->setProxy) (network_get_proxy_detect_mode (),
-					 network_get_proxy_host (),
-	                                 network_get_proxy_port (),
-	                                 network_get_proxy_username (),
-	                                 network_get_proxy_password ());
+	if (RENDERER (htmlview)->setProxy)
+		(RENDERER (htmlview)->setProxy) (network_get_proxy_detect_mode (),
+						 network_get_proxy_host (),
+						 network_get_proxy_port (),
+						 network_get_proxy_username (),
+						 network_get_proxy_password ());
 }
 
 void
