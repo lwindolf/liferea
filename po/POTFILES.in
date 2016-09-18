@@ -78,6 +78,8 @@ src/vfolder_loader.c
 src/vfolder_loader.h
 src/xml.c
 src/xml.h
+src/ui/batch_feed_property.c
+src/ui/batch_feed_property.h
 src/ui/enclosure_list_view.c
 src/ui/enclosure_list_view.h
 src/ui/icons.c
@@ -182,6 +184,7 @@ src/fl_sources/theoldreader_source_feed_list.c
 src/fl_sources/theoldreader_source_feed_list.h
 src/webkit/webkit.c
 [type: gettext/glade]glade/auth.ui
+[type: gettext/glade]glade/batch_feed_property.ui
 [type: gettext/glade]glade/google_source.ui
 [type: gettext/glade]glade/inoreader_source.ui
 [type: gettext/glade]glade/liferea.ui

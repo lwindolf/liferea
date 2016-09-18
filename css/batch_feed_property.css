@@ -1,0 +1,11 @@
+/**
+ * @file batch_feed_property.css  Liferea batch feed proprety dialog stylesheet
+ */
+.batch-feed-property-changed {
+	border-width: 2px;
+	border-color: red;
+	border-style: solid;
+	background-color: darkgreen;
+	color: orange;
+	margin: 4px;
+}
