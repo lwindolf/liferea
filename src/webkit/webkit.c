@@ -37,15 +37,24 @@
 
 #define LIFEREA_TYPE_WEBKIT_IMPL liferea_webkit_impl_get_type ()
 
-G_DECLARE_FINAL_TYPE (LifereaWebKitImpl, liferea_webkit_impl, LIFEREA, WEBKIT_IMPL, GObject)
+#define LIFEREA_WEBKIT_IMPL(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_TYPE_WEBKIT_IMPL, LifereaWebKitImpl))
+#define IS_LIFEREA_WEBKIT_IMPL(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_TYPE_WEBKIT_IMPL))
+#define LIFEREA_WEBKIT_IMPL_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), LIFEREA_TYPE_WEBKIT_IMPL, LifereaWebKitImplClass))
+#define IS_LIFEREA_WEBKIT_IMPL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_TYPE_WEBKIT_IMPL))
+#define LIFEREA_WEBKIT_IMPL_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), LIFEREA_TYPE_WEBKIT_IMPL, LifereaWebKitImplClass))
 
-struct _LifereaWebKitImpl {
+
+typedef struct _LifereaWebKitImpl {
 	GObject parent;
 
 	WebKitSettings 	*settings;
 	GDBusServer 	*dbus_server;
 	GList 		*dbus_connections;
-};
+} LifereaWebKitImpl;
+
+typedef struct _LifereaWebKitImplClass {
+	GObjectClass parent_class;
+} LifereaWebKitImplClass;
 
 G_DEFINE_TYPE (LifereaWebKitImpl, liferea_webkit_impl, G_TYPE_OBJECT)
 

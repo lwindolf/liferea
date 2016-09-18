@@ -34,7 +34,12 @@
 struct _LifereaWebView {
 	WebKitWebView		parent;
 
+	GActionGroup            *menu_action_group;
 	GDBusConnection 	*dbus_connection;
+};
+
+struct _LifereaWebViewClass {
+	WebKitWebViewClass parent_class;
 };
 
 G_DEFINE_TYPE (LifereaWebView, liferea_web_view, WEBKIT_TYPE_WEB_VIEW)
@@ -72,7 +77,7 @@ can_copy_callback (GObject *web_view, GAsyncResult *result, gpointer user_data)
 		return;
 	}
 
-	action_group = gtk_widget_get_action_group (GTK_WIDGET (web_view), "liferea_web_view");
+	action_group = LIFEREA_WEB_VIEW (web_view)->menu_action_group;
 	copy_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "CopySelection"));
 	g_simple_action_set_enabled (copy_action, enabled);
 }
@@ -621,8 +626,6 @@ liferea_webkit_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, 
 static void
 liferea_web_view_init(LifereaWebView *self)
 {
-	GActionGroup *actions;
-
 	self->dbus_connection = NULL;
 
 	g_signal_connect (
@@ -633,9 +636,9 @@ liferea_web_view_init(LifereaWebView *self)
 	);
 
 	/* Context menu actions */
-	actions = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP(actions), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
-	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", actions);
+	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
+	g_action_map_add_action_entries (G_ACTION_MAP(self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
+	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", self->menu_action_group);
 
 
 	g_signal_connect (

@@ -34,6 +34,10 @@ struct _LifereaWebExtension {
 	gboolean 		initialized;
 };
 
+struct _LifereaWebExtensionClass {
+	GObjectClass parent_class;
+};
+
 G_DEFINE_TYPE (LifereaWebExtension, liferea_web_extension, G_TYPE_OBJECT)
 
 static const char introspection_xml[] =
