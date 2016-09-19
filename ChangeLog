@@ -2,7 +2,9 @@ Open problems before release
 
 	* Article skimming currently broken
 
-To be released
+2016-09-19   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12-rc1
 
 	* Github #348: Added support for downloading content that
 	  cannot be displayed by HTML widget (e.g. PDFs)
