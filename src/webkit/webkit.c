@@ -24,6 +24,7 @@
 
 #include <webkit2/webkit2.h>
 #include <string.h>
+#include <math.h>
 
 #include "browser.h"
 #include "conf.h"
@@ -145,6 +146,40 @@ liferea_webkit_enable_plugins_cb (GSettings *gsettings,
 		g_settings_get_boolean (gsettings, key),
 		NULL
 	);
+}
+
+/* Font size math from Epiphany embed/ephy-embed-prefs.c to get font size in
+ * pixels according to actual screen dpi. */
+static gdouble
+get_screen_dpi (GdkScreen *screen)
+{
+	gdouble dpi;
+	gdouble dp, di;
+
+	dpi = gdk_screen_get_resolution (screen);
+	if (dpi != -1)
+		return dpi;
+
+	dp = hypot (gdk_screen_get_width (screen), gdk_screen_get_height (screen));
+	di = hypot (gdk_screen_get_width_mm (screen), gdk_screen_get_height_mm (screen)) / 25.4;
+
+	return dp / di;
+}
+
+static guint
+normalize_font_size (gdouble font_size)
+{
+	/* WebKit2 uses font sizes in pixels. */
+	GdkScreen *screen;
+	gdouble dpi;
+
+	/* FIXME: We should use the view screen instead of the detault one
+	 * but we don't have access to the view here.
+	 */
+	screen = gdk_screen_get_default ();
+	dpi = screen ? get_screen_dpi (screen) : 96;
+
+	return font_size / 72.0 * dpi;
 }
 
 static gchar *
@@ -355,7 +390,7 @@ liferea_webkit_impl_init (LifereaWebKitImpl *self)
 		g_object_set (
 			self->settings,
 			"default-font-size",
-			fontSize,
+			normalize_font_size (fontSize),
 			NULL
 		);
 		g_free (font);
@@ -363,7 +398,7 @@ liferea_webkit_impl_init (LifereaWebKitImpl *self)
 	g_object_set (
 		self->settings,
 		"minimum-font-size",
-		7,
+		normalize_font_size (7),
 		NULL
 	);
 	conf_get_bool_value (DISABLE_JAVASCRIPT, &disable_javascript);
