@@ -70,7 +70,8 @@ liferea_LDADD =	parsers/libliparsers.a \
 		$(PACKAGE_LIBS) \
 		$(INTLLIBS) \
 		$(WEBKIT_LIBS) \
-		$(INTROSPECTION_LIBS)
+		$(INTROSPECTION_LIBS) \
+		-lm
 
 EXTRA_DIST = $(srcdir)/liferea-add-feed.in
 DISTCLEANFILES = $(srcdir)/liferea-add-feed
