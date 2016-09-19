@@ -25,7 +25,16 @@
 
 #define LIFEREA_TYPE_WEB_VIEW liferea_web_view_get_type ()
 
-G_DECLARE_FINAL_TYPE (LifereaWebView, liferea_web_view, LIFEREA, WEB_VIEW, WebKitWebView)
+#define LIFEREA_WEB_VIEW(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_TYPE_WEB_VIEW, LifereaWebView))
+#define IS_LIFEREA_WEB_VIEW(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_TYPE_WEB_VIEW))
+#define LIFEREA_WEB_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), LIFEREA_TYPE_WEB_VIEW, LifereaWebViewClass))
+#define IS_LIFEREA_WEB_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_TYPE_WEB_VIEW))
+#define LIFEREA_WEB_VIEW_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), LIFEREA_TYPE_WEB_VIEW, LifereaWebViewClass))
+
+typedef struct _LifereaWebView LifereaWebView;
+typedef struct _LifereaWebViewClass LifereaWebViewClass;
+
+GType liferea_web_view_get_type (void);
 
 LifereaWebView *
 liferea_web_view_new (void);
