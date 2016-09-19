@@ -31,8 +31,10 @@ To be released
 	  (Leiaz)
 	* Fixes Github #368: Segfault on liferea-feed-add
 	  (Leiaz)
-	* Fixes Github #383: Broken proxy settings
+	* Fixes Github #382: Broken Auto-Detect/No Proxy setting
 	  (Leiaz)
+	* Fixes Github #383: Per feed don't use proxy setting is broken
+	  (reported by Leiaz)
 
 	* Github #309: Update of Japanese translation
 	  (IWAI, Masaharu)

@@ -34,7 +34,8 @@
 
 #define HOMEPAGE	"http://lzone.de/liferea/"
 
-static SoupSession *session = NULL;
+static SoupSession *session = NULL;	/* Session configured for preferences */
+static SoupSession *session2 = NULL;	/* Session for "Don't use proxy feature" */
 
 static ProxyDetectMode proxymode = PROXY_DETECT_MODE_AUTO;
 static gchar	*proxyname = NULL;
@@ -197,16 +198,16 @@ network_process_request (const updateJobPtr const job)
 	 * msg to a callback in case of 401 (see soup_message_add_status_code_handler())
 	 * displaying the dialog ourselves, and requeing the msg if we get credentials */
 
-	/* If the feed has "dont use a proxy" selected, disable the proxy for the msg */
-	if (job->request->options && job->request->options->dontUseProxy)
-		soup_message_disable_feature (msg, SOUP_TYPE_PROXY_URI_RESOLVER);
-
 	/* Add Do Not Track header according to settings */
 	conf_get_bool_value (DO_NOT_TRACK, &do_not_track);
 	if (do_not_track)
 		soup_message_headers_append (msg->request_headers, "DNT", "1");
 
-	soup_session_queue_message (session, msg, network_process_callback, job);
+	/* If the feed has "dont use a proxy" selected, use 'session2' which is non-proxy */
+	if (job->request->options && job->request->options->dontUseProxy)
+		soup_session_queue_message (session2, msg, network_process_callback, job);
+	else
+		soup_session_queue_message (session, msg, network_process_callback, job);
 }
 
 static void
@@ -288,7 +289,14 @@ network_init (void)
 						       SOUP_SESSION_ADD_FEATURE, cookies,
 	                                               SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
 						       NULL);
+	session2 = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+						        SOUP_SESSION_TIMEOUT, 120,
+						        SOUP_SESSION_IDLE_TIMEOUT, 30,
+						        SOUP_SESSION_ADD_FEATURE, cookies,
+	                                                SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
+						        NULL);
 
+	/* Only 'session' gets proxy, 'session2' is for non-proxy requests */
 	network_set_soup_session_proxy (session, network_get_proxy_detect_mode(),
 		network_get_proxy_host (),
 		network_get_proxy_port (),
