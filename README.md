@@ -65,6 +65,16 @@ Then build it with:
     make
     make install
 
+If you compile with a --prefix directory which does not match $XDG_DATA_DIRS
+you will get a runtime error about the schema not being found. To workaround
+set $XDG_DATA_DIRS before starting Liferea. For example:
+
+    my_dir=$HOME/tmp/liferea
+    ./autogen.sh --prefix=$my_dir
+    make
+    make install
+    env XDG_DATA_DIRS="$my_dir/share:$XDG_DATA_DIRS" $my_dir/bin/liferea
+
 
 Contributing
 ------------
