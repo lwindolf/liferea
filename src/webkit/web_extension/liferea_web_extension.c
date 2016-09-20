@@ -47,10 +47,6 @@ static const char introspection_xml[] =
   "   <arg type='t' name='page_id' direction='in'/>"
   "   <arg type='b' name='scrolled' direction='out'/>"
   "  </method>"
-  "  <method name='HasSelection'>"
-  "   <arg type='t' name='page_id' direction='in'/>"
-  "   <arg type='b' name='has_selection' direction='out'/>"
-  "  </method>"
   "  <signal name='PageCreated'>"
   "   <arg type='t' name='page_id' direction='out'/>"
   "  </signal>"
@@ -96,7 +92,7 @@ liferea_web_extension_get_dom_window (LifereaWebExtension *self, guint64 page_id
 	return window;
 }
 
-/**
+/*
  * \returns TRUE if scrolling happened, FALSE if the end was reached
  */
 static gboolean
@@ -113,24 +109,6 @@ liferea_web_extension_scroll_page_down (LifereaWebExtension *self, guint64 page_
 	new_scroll_y = webkit_dom_dom_window_get_scroll_y (window);
 
 	return (new_scroll_y > old_scroll_y);
-}
-
-/**
- * \returns TRUE if text is selected.
- */
-static gboolean
-liferea_web_extension_has_selection (LifereaWebExtension *self, guint64 page_id)
-{
-	WebKitDOMDOMWindow *window;
-	WebKitDOMDOMSelection *selection;
-	gboolean is_collapsed;
-
-	window = liferea_web_extension_get_dom_window (self, page_id);
-	selection = webkit_dom_dom_window_get_selection (window);
-	g_object_get (selection, "is_collapsed", &is_collapsed, NULL);
-	g_object_unref (selection);
-
-	return (!is_collapsed);
 }
 
 static gboolean
@@ -178,13 +156,6 @@ handle_dbus_method_call (GDBusConnection 	*connection,
 		g_variant_get (parameters, "(t)", &page_id);
 		scrolled = liferea_web_extension_scroll_page_down (LIFEREA_WEB_EXTENSION (user_data), page_id);
 		g_dbus_method_invocation_return_value (invocation, g_variant_new ("(b)", scrolled));
-	} else if (g_strcmp0 (method_name, "HasSelection") == 0) {
-		guint64 page_id;
-		gboolean has_selection;
-
-		g_variant_get (parameters, "(t)", &page_id);
-		has_selection = liferea_web_extension_has_selection (LIFEREA_WEB_EXTENSION (user_data), page_id);
-		g_dbus_method_invocation_return_value (invocation, g_variant_new ("(b)", has_selection));
 	}
 }
 
