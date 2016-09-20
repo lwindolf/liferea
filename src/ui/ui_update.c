@@ -1,7 +1,7 @@
 /**
  * @file ui_update.c GUI update monitor
  * 
- * Copyright (C) 2006-2008 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -139,7 +139,7 @@ void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
 	GtkTreeView		*view;
 
 	if(!umdialog) {
-		umdialog = liferea_dialog_new (NULL, "updatedialog");
+		umdialog = liferea_dialog_new ("update_monitor");
 		g_signal_connect (G_OBJECT (umdialog), "destroy", G_CALLBACK (on_update_monitor_destroyed_cb), NULL);
 		
 		/* Set up left store and view */

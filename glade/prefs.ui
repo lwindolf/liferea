@@ -37,7 +37,7 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkDialog" id="prefdialog">
+  <object class="GtkDialog" id="prefs">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -45,7 +45,7 @@
     <property name="window_position">center</property>
     <property name="default_width">300</property>
     <property name="type_hint">dialog</property>
-    <signal name="delete-event" handler="gtk_widget_destroy" object="prefdialog" swapped="yes"/>
+    <signal name="delete-event" handler="gtk_widget_destroy" object="prefs" swapped="yes"/>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox5">
         <property name="visible">True</property>
@@ -66,7 +66,7 @@
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="gtk_widget_hide" object="prefdialog" swapped="yes"/>
+                <signal name="clicked" handler="gtk_widget_hide" object="prefs" swapped="yes"/>
               </object>
               <packing>
                 <property name="expand">False</property>

@@ -1,7 +1,7 @@
 /**
  * @file search_dialog.c  Search engine subscription dialog
  *
- * Copyright (C) 2007-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -163,7 +163,7 @@ search_dialog_open (const gchar *query)
 		return search;
 		
 	sd = SEARCH_DIALOG (g_object_new (SEARCH_DIALOG_TYPE, NULL));
-	sd->priv->dialog = liferea_dialog_new ("search.ui", "searchdialog");
+	sd->priv->dialog = liferea_dialog_new ("search_dialog");
 	
 	if (query)
 		itemset_add_rule (sd->priv->vfolder->itemset, "exact", query, TRUE);
@@ -296,7 +296,7 @@ simple_search_dialog_open (void)
 		return simpleSearch;
 
 	ssd = SIMPLE_SEARCH_DIALOG (g_object_new (SIMPLE_SEARCH_DIALOG_TYPE, NULL));
-	ssd->priv->dialog = liferea_dialog_new (NULL, "simplesearchdialog");
+	ssd->priv->dialog = liferea_dialog_new ("simple_search");
 	ssd->priv->query = liferea_dialog_lookup (ssd->priv->dialog, "searchentry");
 	
 	gtk_window_set_focus (GTK_WINDOW (ssd->priv->dialog), ssd->priv->query);

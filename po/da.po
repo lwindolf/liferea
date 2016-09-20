@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-20 22:14+0200\n"
+"POT-Creation-Date: 2016-09-21 00:06+0200\n"
 "PO-Revision-Date: 2013-06-15 20:36+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -87,7 +87,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podcast"
 
-#: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/liferea.ui.h:1
+#: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -180,7 +180,7 @@ msgstr "ulæste overskrifter"
 msgid "Folder:"
 msgstr "Mappe:"
 
-#: ../xslt/item.xml.in.h:1 ../glade/liferea.ui.h:28
+#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:22
 msgid "Source"
 msgstr "Kilde"
 
@@ -845,356 +845,356 @@ msgstr "Filendelse .%s"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Kunne ikke finde pixmap-fil: %s"
 
-#: ../src/ui/liferea_shell.c:397
+#: ../src/ui/liferea_shell.c:390
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d ny)"
 msgstr[1] " (%d nye)"
 
-#: ../src/ui/liferea_shell.c:402
+#: ../src/ui/liferea_shell.c:395
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d ulæst%s"
 msgstr[1] "%d ulæste%s"
 
-#: ../src/ui/liferea_shell.c:776
+#: ../src/ui/liferea_shell.c:769
 msgid "Help Topics"
 msgstr "Hjælpeemner"
 
-#: ../src/ui/liferea_shell.c:782
+#: ../src/ui/liferea_shell.c:775
 msgid "Quick Reference"
 msgstr "Hurtig hjælp"
 
-#: ../src/ui/liferea_shell.c:788
+#: ../src/ui/liferea_shell.c:781
 msgid "FAQ"
 msgstr "OSS"
 
-#: ../src/ui/liferea_shell.c:913
+#: ../src/ui/liferea_shell.c:906
 msgid "_Subscriptions"
 msgstr "_Abonnementer"
 
-#: ../src/ui/liferea_shell.c:914
+#: ../src/ui/liferea_shell.c:907
 msgid "Update _All"
 msgstr "Opdater _alle"
 
-#: ../src/ui/liferea_shell.c:914
+#: ../src/ui/liferea_shell.c:907
 msgid "Updates all subscriptions."
 msgstr "Opdaterer alle abonnementer."
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:909
 msgid "Mark All As _Read"
 msgstr "Marker alle som _læst"
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:909
 msgid "Marks read every item of every subscription."
 msgstr "Markerer alle poster på alle abonnementer som læst."
 
-#: ../src/ui/liferea_shell.c:918
+#: ../src/ui/liferea_shell.c:911
 msgid "_Import Feed List..."
 msgstr "_Importer nyhedskildeliste ..."
 
-#: ../src/ui/liferea_shell.c:918
+#: ../src/ui/liferea_shell.c:911
 msgid "Imports an OPML feed list."
 msgstr "Importerer en OPML-nyhedskildeliste."
 
-#: ../src/ui/liferea_shell.c:919
+#: ../src/ui/liferea_shell.c:912
 msgid "_Export Feed List..."
 msgstr "_Eksporter nyhedskildeliste ..."
 
-#: ../src/ui/liferea_shell.c:919
+#: ../src/ui/liferea_shell.c:912
 msgid "Exports the feed list as OPML."
 msgstr "Eksporterer nyhedskildelisten som OPML."
 
-#: ../src/ui/liferea_shell.c:920 ../src/ui/popup_menu.c:190
+#: ../src/ui/liferea_shell.c:913 ../src/ui/popup_menu.c:190
 msgid "_Quit"
 msgstr "_Afslut"
 
-#: ../src/ui/liferea_shell.c:922
+#: ../src/ui/liferea_shell.c:915
 msgid "_Feed"
 msgstr "_Nyhedskilde"
 
-#: ../src/ui/liferea_shell.c:923
+#: ../src/ui/liferea_shell.c:916
 msgid "Remove _All Items"
 msgstr "Fjern _Alle punkter"
 
-#: ../src/ui/liferea_shell.c:923
+#: ../src/ui/liferea_shell.c:916
 msgid "Removes all items of the currently selected feed."
 msgstr "Fjern alle punkter på den aktuelt valgte nyhedskilde."
 
-#: ../src/ui/liferea_shell.c:926
+#: ../src/ui/liferea_shell.c:919
 msgid "_Item"
 msgstr "_Punkt"
 
-#: ../src/ui/liferea_shell.c:927
+#: ../src/ui/liferea_shell.c:920
 msgid "Previous Item"
 msgstr "Forrige punkt"
 
-#: ../src/ui/liferea_shell.c:929
+#: ../src/ui/liferea_shell.c:922
 msgid "Next Item"
 msgstr "Næste punkt"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:934
+#: ../src/ui/liferea_shell.c:927
 msgid "_Next Unread Item"
 msgstr "_Næste ulæste punkt"
 
-#: ../src/ui/liferea_shell.c:937
+#: ../src/ui/liferea_shell.c:930
 msgid "_View"
 msgstr "_Vis"
 
-#: ../src/ui/liferea_shell.c:938 ../src/ui/liferea_htmlview.c:668
+#: ../src/ui/liferea_shell.c:931 ../src/ui/liferea_htmlview.c:668
 #: ../src/webkit/liferea_web_view.c:207
 msgid "_Increase Text Size"
 msgstr "_Øg tekststørrelse"
 
-#: ../src/ui/liferea_shell.c:938
+#: ../src/ui/liferea_shell.c:931
 msgid "Increases the text size of the item view."
 msgstr "Øger tekststørrelsen af punktvisningen."
 
-#: ../src/ui/liferea_shell.c:940 ../src/ui/liferea_htmlview.c:669
+#: ../src/ui/liferea_shell.c:933 ../src/ui/liferea_htmlview.c:669
 #: ../src/webkit/liferea_web_view.c:208
 msgid "_Decrease Text Size"
 msgstr "_Formindsk tekststørrelse"
 
-#: ../src/ui/liferea_shell.c:940
+#: ../src/ui/liferea_shell.c:933
 msgid "Decreases the text size of the item view."
 msgstr "Formindsker tekststørrelsen på punktvisningen."
 
-#: ../src/ui/liferea_shell.c:943
+#: ../src/ui/liferea_shell.c:936
 msgid "_Tools"
 msgstr "_Værktøjer"
 
-#: ../src/ui/liferea_shell.c:944
+#: ../src/ui/liferea_shell.c:937
 msgid "_Update Monitor"
 msgstr "_Opdater skærm"
 
-#: ../src/ui/liferea_shell.c:944
+#: ../src/ui/liferea_shell.c:937
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Vis en liste over alle nyhedskilder, der nu er i opdateringskøen"
 
-#: ../src/ui/liferea_shell.c:946 ../src/ui/popup_menu.c:185
+#: ../src/ui/liferea_shell.c:939 ../src/ui/popup_menu.c:185
 #: ../src/ui/popup_menu.c:339
 msgid "_Preferences"
 msgstr "_Indstillinger"
 
-#: ../src/ui/liferea_shell.c:946
+#: ../src/ui/liferea_shell.c:939
 msgid "Edit Preferences."
 msgstr "Rediger indstillinger."
 
-#: ../src/ui/liferea_shell.c:949
+#: ../src/ui/liferea_shell.c:942
 msgid "S_earch"
 msgstr "S_øg"
 
-#: ../src/ui/liferea_shell.c:950
+#: ../src/ui/liferea_shell.c:943
 msgid "Search All Feeds..."
 msgstr "Søg i alle nyhedskilder ..."
 
-#: ../src/ui/liferea_shell.c:950
+#: ../src/ui/liferea_shell.c:943
 msgid "Show the search dialog."
 msgstr "Vis søgedialogen."
 
-#: ../src/ui/liferea_shell.c:952
+#: ../src/ui/liferea_shell.c:945
 msgid "_Help"
 msgstr "_Hjælp"
 
-#: ../src/ui/liferea_shell.c:953
+#: ../src/ui/liferea_shell.c:946
 msgid "_Contents"
 msgstr "_Indhold"
 
-#: ../src/ui/liferea_shell.c:953
+#: ../src/ui/liferea_shell.c:946
 msgid "View help for this application."
 msgstr "Vis hjælp for dette program."
 
-#: ../src/ui/liferea_shell.c:954
+#: ../src/ui/liferea_shell.c:947
 msgid "_Quick Reference"
 msgstr "_Hurtig hjælp"
 
-#: ../src/ui/liferea_shell.c:954
+#: ../src/ui/liferea_shell.c:947
 msgid "View a list of all Liferea shortcuts."
 msgstr "Vis en liste over alle genveje i Liferea."
 
-#: ../src/ui/liferea_shell.c:956
+#: ../src/ui/liferea_shell.c:949
 msgid "_FAQ"
 msgstr "_OSS"
 
-#: ../src/ui/liferea_shell.c:956
+#: ../src/ui/liferea_shell.c:949
 msgid "View the FAQ for this application."
 msgstr "Vis OSS'en for dette program."
 
-#: ../src/ui/liferea_shell.c:957
+#: ../src/ui/liferea_shell.c:950
 msgid "_About"
 msgstr "_Om"
 
-#: ../src/ui/liferea_shell.c:957
+#: ../src/ui/liferea_shell.c:950
 msgid "Shows an about dialog."
 msgstr "Viser en om-dialog."
 
-#: ../src/ui/liferea_shell.c:961
+#: ../src/ui/liferea_shell.c:954
 msgid "_Normal View"
 msgstr "_Normal visning"
 
-#: ../src/ui/liferea_shell.c:961
+#: ../src/ui/liferea_shell.c:954
 msgid "Set view mode to mail client mode."
 msgstr "Sæt visningstilstand til postklienttilstand."
 
-#: ../src/ui/liferea_shell.c:963
+#: ../src/ui/liferea_shell.c:956
 msgid "_Wide View"
 msgstr "_Bred visning"
 
-#: ../src/ui/liferea_shell.c:963
+#: ../src/ui/liferea_shell.c:956
 msgid "Set view mode to use three vertical panes."
 msgstr "Sæt visningstilstand til at bruge tre lodrette paneler."
 
-#: ../src/ui/liferea_shell.c:965
+#: ../src/ui/liferea_shell.c:958
 msgid "_Combined View"
 msgstr "_Kombineret visning"
 
-#: ../src/ui/liferea_shell.c:965
+#: ../src/ui/liferea_shell.c:958
 msgid "Set view mode to two pane mode."
 msgstr "Sæt visningstilstand til topaneltilstand."
 
-#: ../src/ui/liferea_shell.c:970
+#: ../src/ui/liferea_shell.c:963
 msgid "_Reduced Feed List"
 msgstr "_Reduceret nyhedskildeliste"
 
-#: ../src/ui/liferea_shell.c:970
+#: ../src/ui/liferea_shell.c:963
 msgid "Hide feeds with no unread items."
 msgstr "Skjul nyhedskilder uden ulæste punkter."
 
-#: ../src/ui/liferea_shell.c:975
+#: ../src/ui/liferea_shell.c:968
 msgid "_New Subscription..."
 msgstr "_Nyt abonnement ..."
 
-#: ../src/ui/liferea_shell.c:975
+#: ../src/ui/liferea_shell.c:968
 msgid "Adds a subscription to the feed list."
 msgstr "Tilføjer et abonnement til nyhedskildelisten."
 
-#: ../src/ui/liferea_shell.c:977 ../src/ui/popup_menu.c:308
+#: ../src/ui/liferea_shell.c:970 ../src/ui/popup_menu.c:308
 msgid "New _Folder..."
 msgstr "Ny _mappe ..."
 
-#: ../src/ui/liferea_shell.c:977
+#: ../src/ui/liferea_shell.c:970
 msgid "Adds a folder to the feed list."
 msgstr "Tilføjer en mappe til kildelisten."
 
-#: ../src/ui/liferea_shell.c:978 ../src/ui/popup_menu.c:311
+#: ../src/ui/liferea_shell.c:971 ../src/ui/popup_menu.c:311
 msgid "New S_earch Folder..."
 msgstr "Ny _søgemappe ..."
 
-#: ../src/ui/liferea_shell.c:978
+#: ../src/ui/liferea_shell.c:971
 msgid "Adds a new search folder to the feed list."
 msgstr "Tilføjer en ny søgemappe til nyhedskildelisten."
 
-#: ../src/ui/liferea_shell.c:979
+#: ../src/ui/liferea_shell.c:972
 msgid "New _Source..."
 msgstr "Ny _kilde ..."
 
-#: ../src/ui/liferea_shell.c:979
+#: ../src/ui/liferea_shell.c:972
 msgid "Adds a new feed list source."
 msgstr "Tilføjer en ny kilde for nyhedskildeliste."
 
-#: ../src/ui/liferea_shell.c:980 ../src/ui/popup_menu.c:313
+#: ../src/ui/liferea_shell.c:973 ../src/ui/popup_menu.c:313
 msgid "New _News Bin..."
 msgstr "Ny _nyhedsbakke ..."
 
-#: ../src/ui/liferea_shell.c:980
+#: ../src/ui/liferea_shell.c:973
 msgid "Adds a new news bin."
 msgstr "Tilføjer en ny nyhedsbakke."
 
-#: ../src/ui/liferea_shell.c:984
+#: ../src/ui/liferea_shell.c:977
 msgid "_Mark Items Read"
 msgstr "_Marker punkter som læst"
 
-#: ../src/ui/liferea_shell.c:984
+#: ../src/ui/liferea_shell.c:977
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
 msgstr ""
 "Marker alle punkter på den valgte kildelisteknude / i punktlisten som læste."
 
-#: ../src/ui/liferea_shell.c:986 ../src/ui/popup_menu.c:290
+#: ../src/ui/liferea_shell.c:979 ../src/ui/popup_menu.c:290
 msgid "_Update"
 msgstr "_Opdater"
 
-#: ../src/ui/liferea_shell.c:986
+#: ../src/ui/liferea_shell.c:979
 msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr ""
 "Opdaterer det valgte abonnement eller alle abonnementer på den valgte mappe."
 
-#: ../src/ui/liferea_shell.c:991
+#: ../src/ui/liferea_shell.c:984
 msgid "_Properties"
 msgstr "_Egenskaber"
 
-#: ../src/ui/liferea_shell.c:991
+#: ../src/ui/liferea_shell.c:984
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Åbner egenskabsdialogen for det valgte abonnement."
 
-#: ../src/ui/liferea_shell.c:992
+#: ../src/ui/liferea_shell.c:985
 msgid "_Remove"
 msgstr "_Fjern"
 
-#: ../src/ui/liferea_shell.c:992
+#: ../src/ui/liferea_shell.c:985
 msgid "Removes the selected subscription."
 msgstr "Fjerner det valgte abonnement."
 
-#: ../src/ui/liferea_shell.c:996 ../src/ui/popup_menu.c:153
+#: ../src/ui/liferea_shell.c:989 ../src/ui/popup_menu.c:153
 msgid "Toggle _Read Status"
 msgstr "Skift _læsningsstatus"
 
-#: ../src/ui/liferea_shell.c:996
+#: ../src/ui/liferea_shell.c:989
 msgid "Toggles the read status of the selected item."
 msgstr "Skifter læsningsstatus på det valgte punkt."
 
-#: ../src/ui/liferea_shell.c:998 ../src/ui/popup_menu.c:154
+#: ../src/ui/liferea_shell.c:991 ../src/ui/popup_menu.c:154
 msgid "Toggle Item _Flag"
 msgstr "Skift punkt_flag"
 
-#: ../src/ui/liferea_shell.c:998
+#: ../src/ui/liferea_shell.c:991
 msgid "Toggles the flag status of the selected item."
 msgstr "Skifter flagstatus på det valgte punkt."
 
-#: ../src/ui/liferea_shell.c:1000
+#: ../src/ui/liferea_shell.c:993
 msgid "R_emove"
 msgstr "_Fjern"
 
-#: ../src/ui/liferea_shell.c:1000
+#: ../src/ui/liferea_shell.c:993
 msgid "Removes the selected item."
 msgstr "Fjerner det valgte punkt."
 
-#: ../src/ui/liferea_shell.c:1002 ../src/ui/popup_menu.c:117
+#: ../src/ui/liferea_shell.c:995 ../src/ui/popup_menu.c:117
 msgid "Open In _Tab"
 msgstr "Åbn i _faneblad"
 
-#: ../src/ui/liferea_shell.c:1002
+#: ../src/ui/liferea_shell.c:995
 msgid "Launches the item's link in a new Liferea browser tab."
 msgstr "Åbner punktets adresse i et nyt browserfaneblad for Liferea."
 
-#: ../src/ui/liferea_shell.c:1004 ../src/ui/popup_menu.c:118
+#: ../src/ui/liferea_shell.c:997 ../src/ui/popup_menu.c:118
 msgid "_Open In Browser"
 msgstr "_Åbn i browser"
 
-#: ../src/ui/liferea_shell.c:1004
+#: ../src/ui/liferea_shell.c:997
 msgid "Launches the item's link in the Liferea item pane."
 msgstr "Åbner punktets adresse i punktets panel for Liferea."
 
-#: ../src/ui/liferea_shell.c:1006 ../src/ui/popup_menu.c:119
+#: ../src/ui/liferea_shell.c:999 ../src/ui/popup_menu.c:119
 msgid "Open In _External Browser"
 msgstr "Åbn i _ekstern browser"
 
-#: ../src/ui/liferea_shell.c:1006
+#: ../src/ui/liferea_shell.c:999
 msgid "Launches the item's link in the configured external browser."
 msgstr "Åbner punktets adresse i den konfigurerede eksterne browser."
 
-#: ../src/ui/liferea_shell.c:1011
+#: ../src/ui/liferea_shell.c:1004
 msgid "_Fullscreen"
 msgstr "_Fuldskærm"
 
 # fuldskærmsvisning
-#: ../src/ui/liferea_shell.c:1011
+#: ../src/ui/liferea_shell.c:1004
 msgid "Browse at full screen"
 msgstr "Gennemse i fuld skærm"
 
@@ -1613,15 +1613,27 @@ msgstr "_Åbn adresse i browser"
 msgid "Open Link In External Browser"
 msgstr "_Åbn adresse i ekstern browser"
 
+#: ../glade/about.ui.h:1
+msgid "About"
+msgstr "Om"
+
+#: ../glade/about.ui.h:2
+msgid "Liferea is a news aggregator for GTK+"
+msgstr "Liferea er en nyhedsindsamler til GTK+"
+
+#: ../glade/about.ui.h:3
+msgid "Liferea Homepage"
+msgstr "Lifereas hjemmeside"
+
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
 msgstr "Godkendelse"
 
-#: ../glade/auth.ui.h:4 ../glade/liferea.ui.h:36
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:30
 msgid "_Password:"
 msgstr "_Adgangskode:"
 
-#: ../glade/auth.ui.h:5 ../glade/liferea.ui.h:37
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:31
 msgid "User_name:"
 msgstr "Bruger_navn:"
 
@@ -1633,6 +1645,33 @@ msgstr ""
 "Bemærk: <i>Brugernavn og adgangskode vil blive gemt i din kildelistefil til "
 "Liferea uden brug af kryptering.</i>"
 
+#: ../glade/enclosure_handler.ui.h:1
+msgid "Open Enclosure"
+msgstr "Åbn pakke"
+
+#: ../glade/enclosure_handler.ui.h:2
+msgid "Open an enclosure of type:"
+msgstr "Åbn pakketypen:"
+
+#: ../glade/enclosure_handler.ui.h:3
+msgid ""
+"What should Liferea do with this enclosure? Please enter the command you "
+"want to be executed below. The enclosures URL will be supplied as an "
+"argument for this command:"
+msgstr ""
+"Hvad skal Liferea gøre med denne pakke? Indtast venligst kommandoen du "
+"ønsker at køre nedenfor. Hentede pakkers adresse vil blive angivet som et "
+"argument for denne kommando:"
+
+#: ../glade/enclosure_handler.ui.h:4
+msgid "_Browse"
+msgstr "_Gennemse"
+
+# i fremtiden
+#: ../glade/enclosure_handler.ui.h:5
+msgid "_Do this automatically for enclosures like this from now on."
+msgstr "_Gør dette automatisk for pakker som dette fremadrettet."
+
 #: ../glade/google_source.ui.h:1
 msgid "Add Google Reader Account"
 msgstr "Tilføj Google Reader-konto"
@@ -1642,8 +1681,8 @@ msgid "Please enter your Google Reader account settings."
 msgstr "Indtast venligst din kontoopsætning for Google Reader."
 
 #: ../glade/google_source.ui.h:3 ../glade/inoreader_source.ui.h:3
-#: ../glade/reedah_source.ui.h:3 ../glade/ttrss_source.ui.h:4
-#: ../glade/theoldreader_source.ui.h:3
+#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
+#: ../glade/ttrss_source.ui.h:4
 msgid "_Password"
 msgstr "_Adgangskode"
 
@@ -1662,316 +1701,84 @@ msgstr "Tilføj Google Reader-konto"
 msgid "Please enter your InoReader account settings."
 msgstr "Indtast venligst din kontoopsætning for Google Reader."
 
-#: ../glade/liferea.ui.h:2
+#: ../glade/mainwindow.ui.h:2
 msgid "normal view"
 msgstr "normal visning"
 
-#: ../glade/liferea.ui.h:3
+#: ../glade/mainwindow.ui.h:3
 msgid "wide view"
 msgstr "bred visning"
 
-#: ../glade/liferea.ui.h:4
+#: ../glade/mainwindow.ui.h:4
 msgid "View Headlines"
 msgstr "Vis overskrifter"
 
-#: ../glade/liferea.ui.h:5
+#: ../glade/mainwindow.ui.h:5
 msgid "combined view"
 msgstr "kombineret visning"
 
-#: ../glade/liferea.ui.h:6 ../glade/prefs.ui.h:21
+#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:21
 msgid "Headlines"
 msgstr "Overskrifter"
 
-#: ../glade/liferea.ui.h:7
-msgid "Subscription Properties"
-msgstr "Abonnementegenskaber"
+#: ../glade/new_folder.ui.h:1
+msgid "New Folder"
+msgstr "Ny mappe"
 
-#: ../glade/liferea.ui.h:8
-msgid "Feed Name"
-msgstr "Navn på nyhedskilde"
+#: ../glade/new_folder.ui.h:2
+msgid "_Folder name:"
+msgstr "_Mappenavn:"
 
-#: ../glade/liferea.ui.h:9
-msgid "Feed _Name:"
-msgstr "_Navn på nyhedskilde:"
+#: ../glade/new_newsbin.ui.h:1
+msgid "Create News Bin"
+msgstr "Opret nyhedsbakke"
 
-# Opdater interval eller opdateringsinterval
-# Nu er det jo lidt svært at læse ud fra to ord, men hvis det interval man 
-# ændrer fx er, hvor tit et element på skrivebordet bliver opdateret, burde 
-# det så ikke være 'Opdaterings interval'?
-#: ../glade/liferea.ui.h:10
-msgid "Update Interval"
-msgstr "Opdater interval"
+#: ../glade/new_newsbin.ui.h:2
+msgid "_News Bin Name:"
+msgstr "_Nyhedsbakkenavn:"
 
-#: ../glade/liferea.ui.h:11
-msgid "_Use global default update interval."
-msgstr "_Brug globalt standardopdateringsinterval."
-
-#: ../glade/liferea.ui.h:12
-msgid "_Feed specific update interval of"
-msgstr "Specifikt opdateringsinterval på _nyhedskilde"
-
-#: ../glade/liferea.ui.h:13
-msgid "_Don't update this feed automatically."
-msgstr "_Opdater ikke denne nyhedskilde automatisk."
-
-#: ../glade/liferea.ui.h:14
-msgid " "
-msgstr " "
-
-#: ../glade/liferea.ui.h:16
-#, no-c-format
-msgid "This feed provider suggests an update interval of %d minutes."
-msgstr ""
-"Denne nyhedskildeleverandør foreslår et opdateringsinterval på %d minutter."
-
-#: ../glade/liferea.ui.h:17
-msgid "General"
-msgstr "Generelt"
-
-#: ../glade/liferea.ui.h:18 ../glade/new_subscription.ui.h:2
+#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:12
 #: ../glade/simple_subscription.ui.h:3
 msgid "Feed Source"
 msgstr "Nyhedskilde"
 
-#: ../glade/liferea.ui.h:19 ../glade/new_subscription.ui.h:8
-msgid "Source Type:"
-msgstr "Kildetype:"
-
-#: ../glade/liferea.ui.h:20 ../glade/new_subscription.ui.h:3
+#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:14
 msgid "_Source:"
 msgstr "_Kilde:"
 
-#: ../glade/liferea.ui.h:21 ../glade/new_subscription.ui.h:4
+#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:15
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/liferea.ui.h:22 ../glade/new_subscription.ui.h:5
+#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:16
 msgid "_Command"
 msgstr "_Kommando"
 
-#: ../glade/liferea.ui.h:23 ../glade/new_subscription.ui.h:6
+#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:17
 msgid "_Local File"
 msgstr "_Lokal fil"
 
-#: ../glade/liferea.ui.h:24 ../glade/new_subscription.ui.h:7
+#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:18
 msgid "Select File..."
 msgstr "Vælg fil ..."
 
-#: ../glade/liferea.ui.h:25 ../glade/new_subscription.ui.h:11
-msgid "Use conversion _filter"
-msgstr "Brug konversions_filter"
-
-#: ../glade/liferea.ui.h:26
-#, fuzzy
-msgid ""
-"Liferea can use external filter scripts in order to access feeds and "
-"directories in non-supported formats."
-msgstr ""
-"Liferea kan bruge eksterne filterudvidelsesmoduler for at tilgå nyhedskilder "
-"og mappe i ikkeunderstøttede formater. Se dokumentationen for yderligere "
-"information."
-
-#: ../glade/liferea.ui.h:27 ../glade/new_subscription.ui.h:13
-msgid "Convert _using:"
-msgstr "Konverter med _brug af:"
-
-#: ../glade/liferea.ui.h:29
-msgid ""
-"The cache setting controls if the contents of feeds are saved when Liferea "
-"exits. Marked items are always saved to the cache."
-msgstr ""
-"Mellemlagerindstillingen kontrollerer om indholdet af nyhedskilder gemmes, "
-"når Liferea afsluttes. Markerede punkter gemmes altid til mellemlageret."
-
-#: ../glade/liferea.ui.h:30
-msgid "_Default cache settings"
-msgstr "_Standardopsætning af mellemlager"
-
-#: ../glade/liferea.ui.h:31
-msgid "Di_sable cache"
-msgstr "_Deaktiver mellemlager"
-
-#: ../glade/liferea.ui.h:32
-msgid "_Unlimited cache"
-msgstr "_Ubegrænset mellemlager"
-
-#: ../glade/liferea.ui.h:33
-msgid "_Number of items to save:"
-msgstr "_Antal punkter at gemme:"
-
-#: ../glade/liferea.ui.h:34
-msgid "Archive"
-msgstr "Arkiv"
-
-#: ../glade/liferea.ui.h:35
-msgid "Use HTTP _authentication"
-msgstr "Brug HTTP-_godkendelse"
-
-#: ../glade/liferea.ui.h:38 ../glade/new_subscription.ui.h:10
-msgid "_Don't use proxy for download"
-msgstr "_Brug ikke proxy til hentning"
-
-#: ../glade/liferea.ui.h:39
-msgid "Download"
-msgstr "Hent"
-
-#: ../glade/liferea.ui.h:40
-msgid "_Automatically download all enclosures of this feed."
-msgstr "_Hent automatisk alle pakker fra denne nyhedskilde."
-
-#: ../glade/liferea.ui.h:41
-msgid "Auto-_load item link in configured browser when selecting articles."
-msgstr ""
-"_Indlæs automatisk punktadresse i konfigureret browser når der vælges "
-"artikler."
-
-#: ../glade/liferea.ui.h:42
-msgid "Ignore _comment feeds for this subscription."
-msgstr "Ignorer _bemærkningsnyhedskilder for dette abonnement."
-
-#: ../glade/liferea.ui.h:43
-msgid "_Mark downloaded items as read."
-msgstr "_Marker hentede punkter som læst."
-
-#: ../glade/liferea.ui.h:44
-msgid "Advanced"
-msgstr "Avanceret"
-
-#: ../glade/liferea.ui.h:45
-msgid "New Folder"
-msgstr "Ny mappe"
-
-#: ../glade/liferea.ui.h:46
-msgid "_Folder name:"
-msgstr "_Mappenavn:"
-
-#: ../glade/liferea.ui.h:47
-msgid "Rename"
-msgstr "Omdøb"
-
-#: ../glade/liferea.ui.h:48
-msgid "_New Name:"
-msgstr "_Nyt navn:"
-
-#: ../glade/liferea.ui.h:49
-msgid "Open Enclosure"
-msgstr "Åbn pakke"
-
-#: ../glade/liferea.ui.h:50
-msgid "Open an enclosure of type:"
-msgstr "Åbn pakketypen:"
-
-#: ../glade/liferea.ui.h:51
-msgid ""
-"What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. The enclosures URL will be supplied as an "
-"argument for this command:"
-msgstr ""
-"Hvad skal Liferea gøre med denne pakke? Indtast venligst kommandoen du "
-"ønsker at køre nedenfor. Hentede pakkers adresse vil blive angivet som et "
-"argument for denne kommando:"
-
-#: ../glade/liferea.ui.h:52
-msgid "_Browse"
-msgstr "_Gennemse"
-
-# i fremtiden
-#: ../glade/liferea.ui.h:53
-msgid "_Do this automatically for enclosures like this from now on."
-msgstr "_Gør dette automatisk for pakker som dette fremadrettet."
-
-#: ../glade/liferea.ui.h:54
-msgid "Search All Feeds"
-msgstr "Søg i alle nyhedskilder"
-
-#: ../glade/liferea.ui.h:55
-msgid "_Search for:"
-msgstr "_Søg efter:"
-
-#: ../glade/liferea.ui.h:56
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
-msgstr ""
-"Indtast en søgestreng som Liferea skal finde enten i en punkttitel eller i "
-"dennes indhold."
-
-#: ../glade/liferea.ui.h:57
-msgid "_Advanced..."
-msgstr "_Avanceret ..."
-
-#: ../glade/liferea.ui.h:58
-msgid ""
-"Starts searching for the specified text in all feeds. The search result will "
-"appear in the item list."
-msgstr ""
-"Begynder søgning efter den angivne tekst i alle nyhedskilder. Søgeresultatet "
-"vil fremkomme i punktlisten."
-
-#: ../glade/liferea.ui.h:59
-msgid "Update Monitor"
-msgstr "Opdater skærm"
-
-#: ../glade/liferea.ui.h:60
-msgid "Pending Requests"
-msgstr "Afventende anmodninger"
-
-#: ../glade/liferea.ui.h:61
-msgid "Downloading Now"
-msgstr "Henter nu"
-
-#: ../glade/liferea.ui.h:62
-msgid "Cancel _All"
-msgstr "Afbryd _alle"
-
-#: ../glade/liferea.ui.h:63
-msgid "Create News Bin"
-msgstr "Opret nyhedsbakke"
-
-#: ../glade/liferea.ui.h:64
-msgid "_News Bin Name:"
-msgstr "_Nyhedsbakkenavn:"
-
-#: ../glade/liferea.ui.h:65
-msgid "About"
-msgstr "Om"
-
-#: ../glade/liferea.ui.h:66
-msgid "Liferea is a news aggregator for GTK+"
-msgstr "Liferea er en nyhedsindsamler til GTK+"
-
-#: ../glade/liferea.ui.h:67
-msgid "Liferea Homepage"
-msgstr "Lifereas hjemmeside"
-
-#: ../glade/liferea.ui.h:68
-msgid "Create Search Engine Feed"
-msgstr "Opret søgemotornyhedskilde"
-
-#: ../glade/liferea.ui.h:69
-msgid "enter any search string you want"
-msgstr "indtast en ønsket søgestreng"
-
-#: ../glade/liferea.ui.h:70
-msgid "Maximal _Number Of Result Items:"
-msgstr "Maksimalt _antal resultatpunkter:"
-
-#: ../glade/liferea.ui.h:71
-msgid ""
-"Note: Liferea will generate a feed subscription which is used to query the "
-"search engine results for the specified search string. You can keep this "
-"feed permanently and update it like any other subscription."
-msgstr ""
-"Bemærk: Liferea vil oprette et nyhedskildeabonnement, som bruges til at "
-"forespørge søgemotorens resultater for den angivne søgestreng. Du kan "
-"beholde denne nyhedskilde permanent og opdatere den som ethvert andet "
-"abonnement."
+#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:13
+msgid "Source Type:"
+msgstr "Kildetype:"
 
 # Det er nok implicit at det er "indstillinger for", eller noget lignende
 # ville sige: Hentning / efterbehandling
 #: ../glade/new_subscription.ui.h:9
 msgid "Download / Postprocessing"
 msgstr "Hentning / efterbehandling"
+
+#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:32
+msgid "_Don't use proxy for download"
+msgstr "_Brug ikke proxy til hentning"
+
+#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:19
+msgid "Use conversion _filter"
+msgstr "Brug konversions_filter"
 
 #: ../glade/new_subscription.ui.h:12
 msgid ""
@@ -1982,6 +1789,10 @@ msgstr ""
 "Liferea kan bruge eksterne filterudvidelsesmoduler for at tilgå nyhedskilder "
 "og mappe i ikkeunderstøttede formater. Se dokumentationen for yderligere "
 "information."
+
+#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:21
+msgid "Convert _using:"
+msgstr "Konverter med _brug af:"
 
 #: ../glade/node_source.ui.h:1
 msgid "Source Selection"
@@ -2221,6 +2032,120 @@ msgstr "Pakker"
 msgid "Plugins"
 msgstr "Udvidelsesmodul"
 
+#: ../glade/properties.ui.h:1
+msgid "Subscription Properties"
+msgstr "Abonnementegenskaber"
+
+#: ../glade/properties.ui.h:2
+msgid "Feed Name"
+msgstr "Navn på nyhedskilde"
+
+#: ../glade/properties.ui.h:3
+msgid "Feed _Name:"
+msgstr "_Navn på nyhedskilde:"
+
+# Opdater interval eller opdateringsinterval
+# Nu er det jo lidt svært at læse ud fra to ord, men hvis det interval man 
+# ændrer fx er, hvor tit et element på skrivebordet bliver opdateret, burde 
+# det så ikke være 'Opdaterings interval'?
+#: ../glade/properties.ui.h:4
+msgid "Update Interval"
+msgstr "Opdater interval"
+
+#: ../glade/properties.ui.h:5
+msgid "_Use global default update interval."
+msgstr "_Brug globalt standardopdateringsinterval."
+
+#: ../glade/properties.ui.h:6
+msgid "_Feed specific update interval of"
+msgstr "Specifikt opdateringsinterval på _nyhedskilde"
+
+#: ../glade/properties.ui.h:7
+msgid "_Don't update this feed automatically."
+msgstr "_Opdater ikke denne nyhedskilde automatisk."
+
+#: ../glade/properties.ui.h:8
+msgid " "
+msgstr " "
+
+#: ../glade/properties.ui.h:10
+#, no-c-format
+msgid "This feed provider suggests an update interval of %d minutes."
+msgstr ""
+"Denne nyhedskildeleverandør foreslår et opdateringsinterval på %d minutter."
+
+#: ../glade/properties.ui.h:11
+msgid "General"
+msgstr "Generelt"
+
+#: ../glade/properties.ui.h:20
+#, fuzzy
+msgid ""
+"Liferea can use external filter scripts in order to access feeds and "
+"directories in non-supported formats."
+msgstr ""
+"Liferea kan bruge eksterne filterudvidelsesmoduler for at tilgå nyhedskilder "
+"og mappe i ikkeunderstøttede formater. Se dokumentationen for yderligere "
+"information."
+
+#: ../glade/properties.ui.h:23
+msgid ""
+"The cache setting controls if the contents of feeds are saved when Liferea "
+"exits. Marked items are always saved to the cache."
+msgstr ""
+"Mellemlagerindstillingen kontrollerer om indholdet af nyhedskilder gemmes, "
+"når Liferea afsluttes. Markerede punkter gemmes altid til mellemlageret."
+
+#: ../glade/properties.ui.h:24
+msgid "_Default cache settings"
+msgstr "_Standardopsætning af mellemlager"
+
+#: ../glade/properties.ui.h:25
+msgid "Di_sable cache"
+msgstr "_Deaktiver mellemlager"
+
+#: ../glade/properties.ui.h:26
+msgid "_Unlimited cache"
+msgstr "_Ubegrænset mellemlager"
+
+#: ../glade/properties.ui.h:27
+msgid "_Number of items to save:"
+msgstr "_Antal punkter at gemme:"
+
+#: ../glade/properties.ui.h:28
+msgid "Archive"
+msgstr "Arkiv"
+
+#: ../glade/properties.ui.h:29
+msgid "Use HTTP _authentication"
+msgstr "Brug HTTP-_godkendelse"
+
+#: ../glade/properties.ui.h:33
+msgid "Download"
+msgstr "Hent"
+
+#: ../glade/properties.ui.h:34
+msgid "_Automatically download all enclosures of this feed."
+msgstr "_Hent automatisk alle pakker fra denne nyhedskilde."
+
+#: ../glade/properties.ui.h:35
+msgid "Auto-_load item link in configured browser when selecting articles."
+msgstr ""
+"_Indlæs automatisk punktadresse i konfigureret browser når der vælges "
+"artikler."
+
+#: ../glade/properties.ui.h:36
+msgid "Ignore _comment feeds for this subscription."
+msgstr "Ignorer _bemærkningsnyhedskilder for dette abonnement."
+
+#: ../glade/properties.ui.h:37
+msgid "_Mark downloaded items as read."
+msgstr "_Marker hentede punkter som læst."
+
+#: ../glade/properties.ui.h:38
+msgid "Advanced"
+msgstr "Avanceret"
+
 #: ../glade/reedah_source.ui.h:1
 #, fuzzy
 msgid "Add Reedah Account"
@@ -2231,16 +2156,23 @@ msgstr "Tilføj Google Reader-konto"
 msgid "Please enter your Reedah account settings."
 msgstr "Indtast venligst din kontoopsætning for Google Reader."
 
-#: ../glade/search.ui.h:1
-msgid "Advanced Search"
-msgstr "Avanceret søgning"
+#: ../glade/rename_node.ui.h:1
+msgid "Rename"
+msgstr "Omdøb"
 
-# tror det skal forstås som 'søg i mappe'
-#: ../glade/search.ui.h:2
-msgid "_Search Folder..."
-msgstr "_Søg i mappe ..."
+#: ../glade/rename_node.ui.h:2
+msgid "_New Name:"
+msgstr "_Nyt navn:"
 
-#: ../glade/search.ui.h:3 ../glade/search_folder.ui.h:3
+#: ../glade/search_folder.ui.h:1
+msgid "Search Folder Properties"
+msgstr "Egenskaber for søgemappe"
+
+#: ../glade/search_folder.ui.h:2
+msgid "Search _Name:"
+msgstr "Søge_navn:"
+
+#: ../glade/search_folder.ui.h:3 ../glade/search.ui.h:3
 msgid "Find Items that meet the following criteria"
 msgstr "Find punkter som opfylder de følgende kriterier"
 
@@ -2255,21 +2187,66 @@ msgstr "Find punkter som opfylder de følgende kriterier"
 # (eller være 'opfyldt').  Det er i modsætning til at de allesammen skal
 # være opfyldt for at en post bliver fundet.
 # Så jeg foreslår: _Mindst én regel opfyldt
-#: ../glade/search.ui.h:4 ../glade/search_folder.ui.h:4
+#: ../glade/search_folder.ui.h:4 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
 msgstr "_Mindst én regel opfyldt"
 
-#: ../glade/search.ui.h:5 ../glade/search_folder.ui.h:5
+#: ../glade/search_folder.ui.h:5 ../glade/search.ui.h:5
 msgid "_All Rules Must Match"
 msgstr "_Alle regler skal være opfyldt"
 
-#: ../glade/search_folder.ui.h:1
-msgid "Search Folder Properties"
-msgstr "Egenskaber for søgemappe"
+#: ../glade/search.ui.h:1
+msgid "Advanced Search"
+msgstr "Avanceret søgning"
 
-#: ../glade/search_folder.ui.h:2
-msgid "Search _Name:"
-msgstr "Søge_navn:"
+# tror det skal forstås som 'søg i mappe'
+#: ../glade/search.ui.h:2
+msgid "_Search Folder..."
+msgstr "_Søg i mappe ..."
+
+#: ../glade/simple_search.ui.h:1
+msgid "Search All Feeds"
+msgstr "Søg i alle nyhedskilder"
+
+#: ../glade/simple_search.ui.h:2
+msgid "_Search for:"
+msgstr "_Søg efter:"
+
+#: ../glade/simple_search.ui.h:3
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr ""
+"Indtast en søgestreng som Liferea skal finde enten i en punkttitel eller i "
+"dennes indhold."
+
+#: ../glade/simple_search.ui.h:4
+msgid "_Advanced..."
+msgstr "_Avanceret ..."
+
+#: ../glade/simple_search.ui.h:5
+msgid ""
+"Starts searching for the specified text in all feeds. The search result will "
+"appear in the item list."
+msgstr ""
+"Begynder søgning efter den angivne tekst i alle nyhedskilder. Søgeresultatet "
+"vil fremkomme i punktlisten."
+
+#: ../glade/simple_search.ui.h:6 ../glade/update_monitor.ui.h:1
+msgid "Update Monitor"
+msgstr "Opdater skærm"
+
+#: ../glade/simple_search.ui.h:7 ../glade/update_monitor.ui.h:2
+msgid "Pending Requests"
+msgstr "Afventende anmodninger"
+
+#: ../glade/simple_search.ui.h:8 ../glade/update_monitor.ui.h:3
+msgid "Downloading Now"
+msgstr "Henter nu"
+
+#: ../glade/simple_search.ui.h:9 ../glade/update_monitor.ui.h:4
+msgid "Cancel _All"
+msgstr "Afbryd _alle"
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
@@ -2282,6 +2259,16 @@ msgid ""
 msgstr ""
 "Indtast en internetsideplacering til brug for automatisk opdagelse af "
 "nyhedskilde, eller hvis du kender den, den præcise placering af nyhedskilden."
+
+#: ../glade/theoldreader_source.ui.h:1
+#, fuzzy
+msgid "Add TheOldReader Account"
+msgstr "Tilføj Google Reader-konto"
+
+#: ../glade/theoldreader_source.ui.h:2
+#, fuzzy
+msgid "Please enter your TheOldReader account settings."
+msgstr "Indtast venligst din kontoopsætning for Google Reader."
 
 #: ../glade/ttrss_source.ui.h:1
 msgid "Add Tiny Tiny RSS Account"
@@ -2300,15 +2287,24 @@ msgstr "_Serveradresse"
 msgid "_Username"
 msgstr "_Brugernavn"
 
-#: ../glade/theoldreader_source.ui.h:1
-#, fuzzy
-msgid "Add TheOldReader Account"
-msgstr "Tilføj Google Reader-konto"
+#~ msgid "Create Search Engine Feed"
+#~ msgstr "Opret søgemotornyhedskilde"
 
-#: ../glade/theoldreader_source.ui.h:2
-#, fuzzy
-msgid "Please enter your TheOldReader account settings."
-msgstr "Indtast venligst din kontoopsætning for Google Reader."
+#~ msgid "enter any search string you want"
+#~ msgstr "indtast en ønsket søgestreng"
+
+#~ msgid "Maximal _Number Of Result Items:"
+#~ msgstr "Maksimalt _antal resultatpunkter:"
+
+#~ msgid ""
+#~ "Note: Liferea will generate a feed subscription which is used to query "
+#~ "the search engine results for the specified search string. You can keep "
+#~ "this feed permanently and update it like any other subscription."
+#~ msgstr ""
+#~ "Bemærk: Liferea vil oprette et nyhedskildeabonnement, som bruges til at "
+#~ "forespørge søgemotorens resultater for den angivne søgestreng. Du kan "
+#~ "beholde denne nyhedskilde permanent og opdatere den som ethvert andet "
+#~ "abonnement."
 
 #~ msgid "Liferea is now online"
 #~ msgstr "Liferea er nu på nettet"

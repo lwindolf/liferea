@@ -1,7 +1,7 @@
 /**
  * @file reedah_source.c  Reedah source support
  * 
- * Copyright (C) 2007-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -260,7 +260,7 @@ ui_reedah_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 	
-	dialog = liferea_dialog_new ("reedah_source.ui", "reedah_source_dialog");
+	dialog = liferea_dialog_new ("reedah_source");
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_reedah_source_selected), 

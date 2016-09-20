@@ -374,7 +374,7 @@ feed_list_node_rename (nodePtr node)
 	GtkWidget	*nameentry;
 	
 	if (!nodenamedialog || !G_IS_OBJECT (nodenamedialog))
-		nodenamedialog = liferea_dialog_new (NULL, "nodenamedialog");
+		nodenamedialog = liferea_dialog_new ("rename_node");
 
 	nameentry = liferea_dialog_lookup (nodenamedialog, "nameentry");
 	gtk_entry_set_text (GTK_ENTRY (nameentry), node_get_title (node));

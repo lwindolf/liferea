@@ -2,7 +2,7 @@
  * @file preferences_dialog.c Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -443,7 +443,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	
 	prefdialog = pd;
 	pd->priv = PREFERENCES_DIALOG_GET_PRIVATE (pd);
-	pd->priv->dialog = liferea_dialog_new ("prefs.ui", "prefdialog");
+	pd->priv->dialog = liferea_dialog_new ("prefs");
 
 	/* Set up browser selection popup */
 	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_INT);

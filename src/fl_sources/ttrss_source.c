@@ -360,7 +360,7 @@ ui_ttrss_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 	
-	dialog = liferea_dialog_new ("ttrss_source.ui", "ttrss_source_dialog");
+	dialog = liferea_dialog_new ("ttrss_source");
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_ttrss_source_selected), 

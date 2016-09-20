@@ -1,7 +1,7 @@
 /**
  * @file opml_source.c  OPML Planet/Blogroll feed list source
  * 
- * Copyright (C) 2006-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -384,7 +384,7 @@ ui_opml_source_get_source_url (void)
 {
 	GtkWidget	*dialog, *button;
 
-	dialog = liferea_dialog_new ("opml_source.ui", "opml_source_dialog");
+	dialog = liferea_dialog_new ("opml_source");
 	button = liferea_dialog_lookup (dialog, "select_button");
 
 	g_signal_connect (G_OBJECT (dialog), "response",

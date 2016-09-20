@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.c enclosures/podcast handling GUI
  *
- * Copyright (C) 2005-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2016 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -433,7 +433,7 @@ ui_enclosure_type_setup (encTypePtr type, enclosurePtr enclosure, gchar *typestr
 	GtkWidget	*dialog;
 	gchar		*tmp;
 
-	dialog = liferea_dialog_new (NULL, "enchandlerdialog");
+	dialog = liferea_dialog_new ("enclosure_handler");
 	if (type) {
 		typestr = type->mime?type->mime:type->extension;
 		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (dialog, "enc_cmd_entry")), type->cmd);

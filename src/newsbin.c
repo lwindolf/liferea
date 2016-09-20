@@ -82,7 +82,7 @@ ui_newsbin_add (void)
 	GtkWidget	*nameentry;
 	
 	if (!newnewsbindialog || !G_IS_OBJECT (newnewsbindialog))
-		newnewsbindialog = liferea_dialog_new (NULL, "newnewsbindialog");
+		newnewsbindialog = liferea_dialog_new ("new_newsbin");
 
 	nameentry = liferea_dialog_lookup (newnewsbindialog, "newsbinnameentry");
 	gtk_entry_set_text (GTK_ENTRY (nameentry), "");

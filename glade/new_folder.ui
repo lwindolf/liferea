@@ -1,42 +1,33 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="2.18"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkDialog" id="opml_source">
+  <object class="GtkDialog" id="new_folder">
     <property name="visible">True</property>
-    <property name="title" translatable="yes">Add OPML/Planet</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">New Folder</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
     <property name="type_hint">dialog</property>
+    <signal name="delete_event" handler="gtk_widget_hide" object="new_folder"/>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox6">
         <property name="visible">True</property>
+        <property name="spacing">2</property>
         <child>
-          <object class="GtkVBox" id="vbox1">
+          <object class="GtkVBox" id="vbox10">
             <property name="visible">True</property>
-            <property name="border_width">12</property>
-            <property name="spacing">12</property>
             <child>
-              <object class="GtkLabel" id="label1">
+              <object class="GtkHBox" id="hbox12">
                 <property name="visible">True</property>
-                <property name="xalign">0</property>
-                <property name="label" translatable="yes">Please specify a local file or an URL pointing to a valid OPML feed list.</property>
-                <property name="wrap">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkHBox" id="hbox1">
-                <property name="visible">True</property>
-                <property name="spacing">6</property>
+                <property name="border_width">5</property>
+                <property name="spacing">12</property>
                 <child>
-                  <object class="GtkLabel" id="label2">
+                  <object class="GtkLabel" id="label20">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">_Location</property>
+                    <property name="label" translatable="yes">_Folder name:</property>
                     <property name="use_underline">True</property>
-                    <property name="mnemonic_widget">location_entry</property>
+                    <property name="mnemonic_widget">foldertitleentry</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -45,51 +36,38 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="location_entry">
+                  <object class="GtkEntry" id="foldertitleentry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="activates_default">True</property>
                   </object>
                   <packing>
                     <property name="position">1</property>
                   </packing>
                 </child>
-                <child>
-                  <object class="GtkButton" id="select_button">
-                    <property name="label" translatable="yes">_Select File</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="use_underline">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
               </object>
               <packing>
-                <property name="expand">False</property>
-                <property name="position">1</property>
+                <property name="position">0</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkHButtonBox" id="dialog-action_area6">
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="cancelbutton1">
+              <object class="GtkButton" id="button3">
                 <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="gtk_widget_hide" object="new_folder"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -98,13 +76,16 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="okbutton1">
+              <object class="GtkButton" id="button2">
                 <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
+                <property name="has_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="on_newfolderbtn_clicked"/>
+                <signal name="clicked" handler="gtk_widget_hide" object="new_folder" after="yes"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -122,8 +103,8 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="-6">cancelbutton1</action-widget>
-      <action-widget response="-5">okbutton1</action-widget>
+      <action-widget response="-6">button3</action-widget>
+      <action-widget response="-5">button2</action-widget>
     </action-widgets>
   </object>
 </interface>

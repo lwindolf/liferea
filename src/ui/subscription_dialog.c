@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.c  property dialog for feed subscriptions
  *
- * Copyright (C) 2004-2011 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -518,7 +518,7 @@ subscription_prop_dialog_init (SubscriptionPropDialog *spd)
 	GtkWidget	*propdialog;
 	
 	spd->priv = SUBSCRIPTION_PROP_DIALOG_GET_PRIVATE (spd);
-	spd->priv->dialog = propdialog = liferea_dialog_new (NULL, "propdialog");
+	spd->priv->dialog = propdialog = liferea_dialog_new ("properties");
 
 	/* set default update interval spin button and unit combo box */
 	ui_common_setup_combo_menu (liferea_dialog_lookup (propdialog, "refreshIntervalUnitComboBox"),
@@ -631,7 +631,7 @@ new_subscription_dialog_init (NewSubscriptionDialog *nsd)
 	GtkWidget	*newdialog;
 	
 	nsd->priv = NEW_SUBSCRIPTION_DIALOG_GET_PRIVATE (nsd);
-	nsd->priv->dialog = newdialog = liferea_dialog_new ("new_subscription.ui", "newdialog");
+	nsd->priv->dialog = newdialog = liferea_dialog_new ("new_subscription");
 	
 	/* Setup source entry */
 	nsd->priv->sourceEntry = liferea_dialog_lookup (newdialog,"sourceEntry");
@@ -726,7 +726,7 @@ simple_subscription_dialog_init (SimpleSubscriptionDialog *ssd)
 	GtkWidget	*newdialog;
 	
 	ssd->priv = SIMPLE_SUBSCRIPTION_DIALOG_GET_PRIVATE (ssd);
-	ssd->priv->dialog = newdialog = liferea_dialog_new ("simple_subscription.ui", "simplenewdialog");
+	ssd->priv->dialog = newdialog = liferea_dialog_new ("simple_subscription");
 	
 	/* Setup source entry */
 	ssd->priv->sourceEntry = liferea_dialog_lookup (newdialog, "sourceEntry");

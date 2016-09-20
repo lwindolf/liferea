@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.19.0 -->
 <interface>
   <requires lib="gtk+" version="3.0"/>
-  <object class="GtkDialog" id="searchdialog">
+  <object class="GtkDialog" id="search">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="border_width">5</property>

@@ -1,0 +1,324 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.18"/>
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkWindow" id="mainwindow">
+    <property name="title" translatable="yes">Liferea</property>
+    <property name="default_width">640</property>
+    <property name="default_height">480</property>
+    <property name="icon_name">liferea</property>
+    <child>
+      <object class="GtkVBox" id="vbox1">
+        <property name="visible">True</property>
+        <child>
+          <object class="GtkHPaned" id="leftpane">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="position">170</property>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow3">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">never</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <property name="shadow_type">in</property>
+                <child>
+                  <object class="GtkTreeView" id="feedlist">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="has_focus">True</property>
+                    <property name="headers_visible">False</property>
+                    <property name="reorderable">True</property>
+                    <signal name="button_press_event" handler="on_mainfeedlist_button_press_event"/>
+                    <signal name="popup_menu" handler="on_mainfeedlist_popup_menu"/>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">False</property>
+                <property name="shrink">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkNotebook" id="browsertabs">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="show_border">False</property>
+                <property name="scrollable">True</property>
+                <child>
+                  <object class="GtkVBox" id="vbox18">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkNotebook" id="itemtabs">
+                        <property name="visible">True</property>
+                        <property name="show_tabs">False</property>
+                        <property name="show_border">False</property>
+                        <child>
+                          <object class="GtkVPaned" id="normalViewPane">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="position">199</property>
+                            <child>
+                              <object class="GtkViewport" id="normalViewItems">
+                                <property name="visible">True</property>
+                                <property name="shadow_type">none</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="resize">False</property>
+                                <property name="shrink">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkVBox" id="normalViewVBox">
+                                <property name="visible">True</property>
+                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                <child>
+                                  <object class="GtkViewport" id="normalViewHtml">
+                                    <property name="visible">True</property>
+                                    <property name="shadow_type">none</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="resize">True</property>
+                                <property name="shrink">True</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="tab">
+                          <object class="GtkLabel" id="label30">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">normal view</property>
+                          </object>
+                          <packing>
+                            <property name="tab_fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkHPaned" id="wideViewPane">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="position">100</property>
+                            <child>
+                              <object class="GtkViewport" id="wideViewItems">
+                                <property name="visible">True</property>
+                                <property name="shadow_type">none</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="resize">False</property>
+                                <property name="shrink">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkVBox" id="wideViewVBox">
+                                <property name="visible">True</property>
+                                <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+                                <child>
+                                  <object class="GtkViewport" id="wideViewHtml">
+                                    <property name="visible">True</property>
+                                    <property name="shadow_type">none</property>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="resize">True</property>
+                                <property name="shrink">True</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child type="tab">
+                          <object class="GtkLabel" id="label252">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">wide view</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                            <property name="tab_fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVBox" id="vbox2628">
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkToolbar" id="toolbar1">
+                                <child>
+                                  <object class="GtkToolItem" id="toolitem1">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <object class="GtkButton" id="button9">
+                                        <property name="label">gtk-go-back</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="use_stock">True</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkToolItem" id="toolitem2">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <object class="GtkButton" id="button10">
+                                        <property name="label">gtk-go-forward</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">False</property>
+                                        <property name="use_stock">True</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkToolItem" id="toolitem3">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <object class="GtkSpinButton" id="spinbutton1">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="adjustment">adjustment6</property>
+                                        <property name="climb_rate">1</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkToolItem" id="toolitem4">
+                                    <property name="visible">True</property>
+                                    <child>
+                                      <object class="GtkLabel" id="label253">
+                                        <property name="visible">True</property>
+                                        <property name="label" translatable="yes">View Headlines</property>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkViewport" id="combinedViewHtml">
+                                <property name="visible">True</property>
+                                <property name="shadow_type">none</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child type="tab">
+                          <object class="GtkLabel" id="label133">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">combined view</property>
+                          </object>
+                          <packing>
+                            <property name="position">2</property>
+                            <property name="tab_fill">False</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+                <child type="tab">
+                  <object class="GtkLabel" id="label162">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Headlines</property>
+                  </object>
+                  <packing>
+                    <property name="tab_fill">False</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">True</property>
+                <property name="shrink">True</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="hbox30">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkStatusbar" id="statusbar">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAdjustment" id="adjustment6">
+    <property name="value">1</property>
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+  </object>
+</interface>

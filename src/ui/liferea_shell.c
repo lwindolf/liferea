@@ -198,20 +198,13 @@ liferea_shell_lookup (const gchar *name)
 static void
 liferea_shell_init (LifereaShell *ls)
 {
-	/* FIXME: we should only need to load mainwindow, but GtkBuilder won't
-	 * load the other required objects, so we need to do it manually...
-	 * See fixme in liferea_dialog_new()
-	 * http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=508585
-	 */
-	gchar *objs[] = { "adjustment6", "mainwindow", NULL };
 	/* globally accessible singleton */
 	g_assert (NULL == shell);
-	shell = ls;
-	
+	shell = ls;	
 	shell->priv = LIFEREA_SHELL_GET_PRIVATE (ls);
-	shell->priv->xml = gtk_builder_new ();
-	if (!gtk_builder_add_objects_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea.ui", objs, NULL))
-		g_error ("Loading " PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S  "liferea.ui failed");
+	shell->priv->xml = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui");
+	if (!shell->priv->xml)
+		g_error ("Loading " PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui failed");
 
 	gtk_builder_connect_signals (shell->priv->xml, NULL);
 }
@@ -750,7 +743,7 @@ on_about_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
 	GtkWidget *dialog;
 
-	dialog = liferea_dialog_new (NULL, "aboutdialog");
+	dialog = liferea_dialog_new ("aboutdialog");
 	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (dialog), VERSION);
 	g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_hide), NULL);
 	gtk_widget_show (dialog);

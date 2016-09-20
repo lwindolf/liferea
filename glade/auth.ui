@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkDialog" id="authdialog">
+  <object class="GtkDialog" id="auth">
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Authentication</property>

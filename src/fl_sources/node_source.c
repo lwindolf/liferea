@@ -1,7 +1,7 @@
 /**
  * @file node_source.c  generic node source provider implementation
  * 
- * Copyright (C) 2005-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2016 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -338,7 +338,7 @@ feed_list_node_source_type_dialog (void)
 	}		
 
 	/* set up the dialog */
-	dialog = liferea_dialog_new ("node_source.ui", "node_source_type_dialog");
+	dialog = liferea_dialog_new ("node_source");
 
 	treestore = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
 	
