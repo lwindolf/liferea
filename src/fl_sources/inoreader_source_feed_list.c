@@ -174,7 +174,7 @@ inoreader_subscription_opml_cb (subscriptionPtr subscription, const struct updat
 			opml_source_export (subscription->node);
 			subscription->node->available = TRUE;			
 		} else {
-			g_warning ("Invalid JSON returned on Inoreader feed list request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on Inoreader feed list request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);

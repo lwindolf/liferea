@@ -73,7 +73,7 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 		iter = g_slist_next (iter);
 	}
 	
-	g_warning ("Could not find source type \"%s\"\n!", typeStr);
+	g_print ("Could not find source type \"%s\"\n!", typeStr);
 	return NULL;
 }
 
@@ -203,11 +203,11 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		node_source_set_feed_subscription_type (node, type->feedSubscriptionType);
 
 		if (!strcmp (typeStr, "fl_bloglines")) {
-			g_warning ("Removing obsolete Bloglines subscription.");
+			g_print ("Removing obsolete Bloglines subscription.");
 			feedlist_node_removed (node);
 		}
 	} else {
-		g_warning ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
+		g_print ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
 	}	
 
 	debug_exit ("node_source_import");
@@ -427,7 +427,7 @@ node_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 	if (NODE_SOURCE_TYPE (node)->add_subscription)
 		return NODE_SOURCE_TYPE (node)->add_subscription (node, subscription);
 	else
-		g_warning ("node_source_add_subscription(): called on node source type that doesn't implement me!");
+		g_print ("node_source_add_subscription(): called on node source type that doesn't implement me!");
 		
 	return NULL;
 }
@@ -441,7 +441,7 @@ node_source_add_folder (nodePtr node, const gchar *title)
 	if (NODE_SOURCE_TYPE (node)->add_folder)
 		return NODE_SOURCE_TYPE (node)->add_folder (node, title);
 	else
-		g_warning ("node_source_add_folder(): called on node source type that doesn't implement me!");
+		g_print ("node_source_add_folder(): called on node source type that doesn't implement me!");
 
 	return NULL;
 }
@@ -496,7 +496,7 @@ node_source_remove_node (nodePtr node, nodePtr child)
 	if (NODE_SOURCE_TYPE (node)->remove_node)
 		NODE_SOURCE_TYPE (node)->remove_node (node, child);
 	else
-		g_warning ("node_source_remove_node(): called on node source type that doesn't implement me!");
+		g_print ("node_source_remove_node(): called on node source type that doesn't implement me!");
 }
 
 void

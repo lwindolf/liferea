@@ -175,7 +175,7 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 			opml_source_export (subscription->node);
 			subscription->node->available = TRUE;			
 		} else {
-			g_warning ("Invalid JSON returned on Reedah feed list request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on Reedah feed list request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);

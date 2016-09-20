@@ -105,7 +105,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 			xpath_foreach_match (match, "./outline", opml_source_merge_feed, (gpointer)mc);
 			g_free (mc);
 		} else {
-			g_warning ("opml_source_merge_feed(): bad! bad! very bad!");
+			g_print ("opml_source_merge_feed(): bad! bad! very bad!");
 		}
 	}
 
@@ -125,7 +125,7 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 		node_foreach_child_data (node, opml_source_check_for_removal, user_data);
 		expr = g_strdup_printf ("//outline[ (@title='%s') or (@text='%s') or (@description='%s')]", node->title, node->title, node->title);
 	} else {
-		g_warning ("opml_source_check_for_removal(): This should never happen...");
+		g_print ("opml_source_check_for_removal(): This should never happen...");
 		return;
 	}
 	
@@ -207,7 +207,7 @@ opml_subscription_process_update_result (subscriptionPtr subscription, const str
 			
 			node->available = TRUE;
 		} else {
-			g_warning ("Cannot parse downloaded OPML document!");
+			g_print ("Cannot parse downloaded OPML document!");
 		}
 	}
 	
@@ -247,7 +247,7 @@ opml_source_import (nodePtr node)
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		import_OPML_feedlist (filename, node, FALSE, TRUE);
 	} else {
-		g_warning ("cannot open \"%s\"", filename);
+		g_print ("cannot open \"%s\"", filename);
 		node->available = FALSE;
 	}
 	g_free (filename);

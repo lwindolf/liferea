@@ -2,6 +2,12 @@ Open problems before release
 
 	* Article skimming currently broken
 
+To be released
+
+	* Change all g_warnings() to g_print() for remote source
+	  to avoid "crashing" on errors.
+
+
 2016-09-20   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12-rc1a

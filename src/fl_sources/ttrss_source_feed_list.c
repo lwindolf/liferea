@@ -192,7 +192,7 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 
 			subscription->node->available = TRUE;			
 		} else {
-			g_warning ("Invalid JSON returned on TinyTinyRSSS request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on TinyTinyRSSS request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
@@ -344,7 +344,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 			/* And trigger the actual feed fetching */
 			ttrss_source_update_subscription_list (source, subscription);
 		} else {
-			g_warning ("Invalid JSON returned on TinyTinyRSS request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on TinyTinyRSS request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);

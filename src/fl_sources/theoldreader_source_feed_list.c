@@ -182,7 +182,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 
 			subscription->node->available = TRUE;			
 		} else {
-			g_warning ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);

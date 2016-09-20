@@ -91,7 +91,7 @@ theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHas
 		}
 	}
 
-	g_warning ("Could not find item for %s!", sourceId);
+	g_print ("Could not find item for %s!", sourceId);
 	itemset_free (itemset);
 	return NULL;
 }
@@ -129,7 +129,7 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 	}
 
 	if (!id) {
-		g_warning ("Skipping item without id in theoldreader_source_item_retrieve_status()!");
+		g_print ("Skipping item without id in theoldreader_source_item_retrieve_status()!");
 		return;
 	}
 	
@@ -188,7 +188,7 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 		xmlFreeDoc (doc);
 	} else { 
 		debug0 (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
-		g_warning ("theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
+		g_print ("theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
 	
 	debug_end_measurement (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result");
@@ -208,7 +208,7 @@ theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscript
 	}
 
 	if (!metadata_list_get (subscription->metadata, "theoldreader-feed-id")) {
-		g_warning ("Skipping TheOldReader feed '%s' (%s) without id!", subscription->source, subscription->node->id);
+		g_print ("Skipping TheOldReader feed '%s' (%s) without id!", subscription->source, subscription->node->id);
 		return FALSE;
 	}
 

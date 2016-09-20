@@ -118,7 +118,7 @@ inoreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTa
 		}
 	}
 
-	g_warning ("Could not find item for %s!", sourceId);
+	g_print ("Could not find item for %s!", sourceId);
 	itemset_free (itemset);
 	return NULL;
 }
@@ -154,7 +154,7 @@ inoreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr s
 	}
 	
 	if (!id) {
-		g_warning ("Fatal: could not extract item id from InoReader Atom feed!");
+		g_print ("Fatal: could not extract item id from InoReader Atom feed!");
 		return;
 	}
 
@@ -237,7 +237,7 @@ inoreader_feed_subscription_process_update_result (subscriptionPtr subscription,
 		xmlFreeDoc (doc);
 	} else { 
 		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
-		g_warning ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
+		g_print ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
 	
 	debug_end_measurement (DEBUG_UPDATE, "time taken to update statuses");

@@ -172,7 +172,7 @@ reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	}
 
 	if (!metadata_list_get (subscription->metadata, "reedah-feed-id")) {
-		g_warning ("Skipping Reedah feed '%s' (%s) without id!", subscription->source, subscription->node->id);
+		g_print ("Skipping Reedah feed '%s' (%s) without id!", subscription->source, subscription->node->id);
 		return FALSE;
 	}
 
