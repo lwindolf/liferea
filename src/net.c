@@ -251,11 +251,13 @@ network_set_soup_session_proxy (SoupSession *session, ProxyDetectMode mode, cons
 			soup_uri_set_user (uri, user);
 			soup_uri_set_password (uri, password);
 
-			/* Sets proxy-uri, this unsets proxy-resolver. */
-			g_object_set (G_OBJECT (session),
-				SOUP_SESSION_PROXY_URI, uri,
-				NULL);
-			soup_uri_free (uri);
+			if (SOUP_URI_IS_VALID (uri)) {
+				/* Sets proxy-uri, this unsets proxy-resolver. */
+				g_object_set (G_OBJECT (session),
+					SOUP_SESSION_PROXY_URI, uri,
+					NULL);
+				soup_uri_free (uri);
+			}
 			break;
 	}
 }
@@ -283,18 +285,20 @@ network_init (void)
 	g_free (filename);
 
 	/* Initialize libsoup */
-	session = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
-						       SOUP_SESSION_TIMEOUT, 120,
-						       SOUP_SESSION_IDLE_TIMEOUT, 30,
-						       SOUP_SESSION_ADD_FEATURE, cookies,
-	                                               SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
-						       NULL);
-	session2 = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
-						        SOUP_SESSION_TIMEOUT, 120,
-						        SOUP_SESSION_IDLE_TIMEOUT, 30,
-						        SOUP_SESSION_ADD_FEATURE, cookies,
-	                                                SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
-						        NULL);
+	session = soup_session_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+						 SOUP_SESSION_TIMEOUT, 120,
+						 SOUP_SESSION_IDLE_TIMEOUT, 30,
+						 SOUP_SESSION_ADD_FEATURE, cookies,
+	                                         SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
+						 NULL);
+	session2 = soup_session_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+						  SOUP_SESSION_TIMEOUT, 120,
+						  SOUP_SESSION_IDLE_TIMEOUT, 30,
+						  SOUP_SESSION_ADD_FEATURE, cookies,
+	                                          SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
+						  SOUP_SESSION_PROXY_URI, NULL,
+						  SOUP_SESSION_PROXY_RESOLVER, NULL,
+						  NULL);
 
 	/* Only 'session' gets proxy, 'session2' is for non-proxy requests */
 	network_set_soup_session_proxy (session, network_get_proxy_detect_mode(),
@@ -357,7 +361,6 @@ extern void network_monitor_proxy_changed (void);
 void
 network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, gchar *password)
 {
-	/* FIXME: make arguments const and use the SoupURI in network_get_proxy_* ? */
 	g_free (proxyname);
 	g_free (proxyusername);
 	g_free (proxypassword);
@@ -367,11 +370,10 @@ network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, g
 	proxyusername = user;
 	proxypassword = password;
 
-	/* The sessions will be NULL if we were called from conf_init() as that's called
+	/* session will be NULL if we were called from conf_init() as that's called
 	 * before net_init() */
-	if (session) {
+	if (session)
 		network_set_soup_session_proxy (session, mode, host, port, user, password);
-	}
 
 	debug4 (DEBUG_NET, "proxy set to http://%s:%s@%s:%d", user, password, host, port);
 	
