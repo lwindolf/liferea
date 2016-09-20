@@ -2,6 +2,12 @@ Open problems before release
 
 	* Article skimming currently broken
 
+2016-09-20   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12-rc1a
+
+	* Fixing missing header files
+
 2016-09-19   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12-rc1
