@@ -9,6 +9,7 @@ glade_DATA = liferea.ui \
 	inoreader_source.ui \
 	node_source.ui \
 	opml_source.ui \
+	owncloudnews_source.ui \
 	prefs.ui \
 	reedah_source.ui \
 	search.ui \

@@ -20,6 +20,9 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
 			   inoreader_source_feed_list.c inoreader_source_feed_list.h \
                            json_api_mapper.c json_api_mapper.h \
                            opml_source.c opml_source.h \
+                           owncloudnews_source.c owncloudnews_source.h \
+                           owncloudnews_source_feed.c \
+                           owncloudnews_source_feed_list.c owncloudnews_source_feed_list.h \
                            reedah_source.c reedah_source.h \
 			   reedah_source_feed.c \
 			   reedah_source_feed_list.c reedah_source_feed_list.h \

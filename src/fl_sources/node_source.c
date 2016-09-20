@@ -43,6 +43,7 @@
 #include "fl_sources/google_source.h"
 #include "fl_sources/inoreader_source.h"
 #include "fl_sources/opml_source.h"
+#include "fl_sources/owncloudnews_source.h"
 #include "fl_sources/reedah_source.h"
 #include "fl_sources/theoldreader_source.h"
 #include "fl_sources/ttrss_source.h"
@@ -124,6 +125,7 @@ node_source_setup_root (void)
 	node_source_type_register (reedah_source_get_type ());
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());
+	node_source_type_register (owncloudnews_source_get_type ());
 
 	extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
 		                             LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, NULL);
@@ -438,10 +440,12 @@ node_source_add_folder (nodePtr node, const gchar *title)
 	if (!node_source_is_logged_in (node))
 		return NULL;
 
-	if (NODE_SOURCE_TYPE (node)->add_folder)
+	if (NODE_SOURCE_TYPE (node)->add_folder) {
 		return NODE_SOURCE_TYPE (node)->add_folder (node, title);
-	else
-		g_warning ("node_source_add_folder(): called on node source type that doesn't implement me!");
+	} else {
+		g_warning (
+			"node_source_add_folder(): called on node source type that doesn't implement me!");
+	}
 
 	return NULL;
 }

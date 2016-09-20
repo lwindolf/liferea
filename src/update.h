@@ -94,6 +94,8 @@ typedef struct updateRequest {
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
+	gchar		*method;		/**< Set to 'PUT' if you don't want GET or POST, other values of it are ignored for now. */
+	gchar		*contentType;	/**< Request Content-Type header (ignored if NULL) */
 } *updateRequestPtr;
 
 /** structure to store results of the processing of an update request */

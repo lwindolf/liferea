@@ -257,17 +257,16 @@ feedlist_get_selected (void)
 
 static nodePtr
 feedlist_get_parent_node (void)
-{ 
-
+{
 	g_assert (NULL != ROOTNODE);
 
 	if (!SELECTED)
 		return ROOTNODE;
-	
-	if (IS_FOLDER (SELECTED))
+
+	if (IS_FOLDER (SELECTED) || IS_NODE_SOURCE(SELECTED))
 		return SELECTED;
-	
-	if (SELECTED->parent) 
+
+	if (SELECTED->parent)
 		return SELECTED->parent;
 
 	return ROOTNODE;
@@ -394,7 +393,7 @@ feedlist_add_folder (const gchar *title)
 	parent = feedlist_get_parent_node ();
 
 	if(0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
-		return;	
+		return;
 
 	node_source_add_folder (parent->source->root, title);
 }

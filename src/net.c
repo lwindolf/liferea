@@ -126,9 +126,18 @@ network_process_request (const updateJobPtr const job)
 	if (job->request->postdata && (debug_level & DEBUG_VERBOSE) && (debug_level & DEBUG_NET))
 		debug1 (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
 
+	const char *method;
+	if (job->request->method == "PUT") {
+		method = SOUP_METHOD_PUT;
+	} else if (job->request->method == "DELETE") {
+		method = SOUP_METHOD_DELETE;
+	} else if (job->request->postdata) {
+		method = SOUP_METHOD_POST;
+	} else {
+		method = SOUP_METHOD_GET;
+	}
 	/* Prepare the SoupMessage */
-	msg = soup_message_new (job->request->postdata ? SOUP_METHOD_POST : SOUP_METHOD_GET,
-				job->request->source);
+	msg = soup_message_new (method, job->request->source);
 
 	if (!msg) {
 		g_warning ("The request for %s could not be parsed!", job->request->source);
@@ -181,6 +190,11 @@ network_process_request (const updateJobPtr const job)
 	if (job->request->authValue) {
 		soup_message_headers_append (msg->request_headers, "Authorization",
 					     job->request->authValue);
+	}
+
+	if (job->request->contentType) {
+		soup_message_headers_append (msg->request_headers, "Content-Type",
+									 job->request->contentType);
 	}
 
 	/* Add requested cookies */
