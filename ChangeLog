@@ -7,6 +7,10 @@ To be released
 	* Change all g_warnings() to g_print() for remote source
 	  to avoid "crashing" on errors.
 
+	* Fixes Github #208: gtk_tree_store_get_path: assertion
+	  'iter->stamp == priv->stamp'
+	  (reported by Mno-hime)
+
 
 2016-09-20   Lars Windolf <lars.windolf@gmx.de>
 

@@ -124,7 +124,7 @@ launch_item_selected (open_link_target_type open_link_target)
 struct ItemListViewPrivate {
 	GtkTreeView	*treeview;
 	
-	GHashTable 	*item_id_to_iter;	/**< hash table used for fast item id->tree iter lookup */
+	GSList		*item_ids;		/**< list of all currently known item ids */
 
 	gboolean	batch_mode;		/**< TRUE if we are in batch adding mode */
 	GtkTreeStore	*batch_itemstore;	/**< GtkTreeStore prepared unattached and to be set on update() */
@@ -145,8 +145,7 @@ item_list_view_finalize (GObject *object)
 {
 	ItemListViewPrivate *priv = ITEM_LIST_VIEW_GET_PRIVATE (object);
 
-	if (priv->item_id_to_iter)
-		g_hash_table_destroy (priv->item_id_to_iter);
+	g_slist_free (priv->item_ids);
 	if (priv->batch_itemstore)
 		g_object_unref (priv->batch_itemstore);
 
@@ -167,12 +166,6 @@ item_list_view_class_init (ItemListViewClass *klass)
 
 /* helper functions for item <-> iter conversion */
 
-gboolean
-item_list_view_contains_id (ItemListView *ilv, gulong id)
-{
-	return (NULL != g_hash_table_lookup (ilv->priv->item_id_to_iter, GUINT_TO_POINTER (id)));
-}
-
 static gulong
 item_list_view_iter_to_id (ItemListView *ilv, GtkTreeIter *iter)
 {
@@ -182,17 +175,50 @@ item_list_view_iter_to_id (ItemListView *ilv, GtkTreeIter *iter)
 	return id;
 }
 
+gboolean
+item_list_view_contains_id (ItemListView *ilv, gulong id)
+{
+	return (NULL != g_slist_find (ilv->priv->item_ids, GUINT_TO_POINTER (id)));
+}
+
 static gboolean
 item_list_view_id_to_iter (ItemListView *ilv, gulong id, GtkTreeIter *iter)
 {
-	GtkTreeIter *old_iter;
+	gboolean        valid;
+	GtkTreeIter	old_iter;
+	GtkTreeModel    *model;
 
-	old_iter = g_hash_table_lookup (ilv->priv->item_id_to_iter, GUINT_TO_POINTER (id));
-	if (!old_iter)
-		return FALSE;
-	
-	*iter = *old_iter;
-	return TRUE;
+	/* Problem here is batch insertion using batch_itemstore
+	   so the item can be in the GtkTreeView attached store or
+	    in the batch_itemstore */
+
+	if (item_list_view_contains_id (ilv, id)) {
+		/* First search the tree view */
+		model = gtk_tree_view_get_model (ilv->priv->treeview);
+		valid = gtk_tree_model_get_iter_first (model, &old_iter);
+		while (valid) {
+		        gulong current_id = item_list_view_iter_to_id (ilv, &old_iter);
+	                if(current_id == id) {
+				*iter = old_iter;
+	                        return TRUE;
+			}
+	                valid = gtk_tree_model_iter_next (model, &old_iter);
+		}
+
+		/* Next search the batch store */
+		model = GTK_TREE_MODEL (ilv->priv->batch_itemstore);
+		valid = gtk_tree_model_get_iter_first (model, &old_iter);
+		while (valid) {
+			gulong current_id;
+			gtk_tree_model_get (model, &old_iter, IS_NR, &current_id, -1);
+	                if(current_id == id) {
+				*iter = old_iter;
+	                        return TRUE;
+			}
+	                valid = gtk_tree_model_iter_next (model, &old_iter);
+		}
+	}
+	return FALSE;
 }
 
 static gint
@@ -360,22 +386,22 @@ item_list_view_set_tree_store (ItemListView *ilv, GtkTreeStore *itemstore)
 void
 item_list_view_remove_item (ItemListView *ilv, itemPtr item)
 {
-	GtkTreeIter	*iter;
+	GtkTreeIter	iter;
 
 	g_assert (NULL != item);
-	iter = g_hash_table_lookup (ilv->priv->item_id_to_iter, GUINT_TO_POINTER (item->id));
-	if (iter) {
+	if (item_list_view_id_to_iter (ilv, item->id, &iter)) {
 		/* Using the GtkTreeIter check if it is currently selected. If yes,
 		   scroll down by one in the sorted GtkTreeView to ensure something
 		   is selected after removing the GtkTreeIter */
-		if (gtk_tree_selection_iter_is_selected (gtk_tree_view_get_selection (ilv->priv->treeview), iter))
+		if (gtk_tree_selection_iter_is_selected (gtk_tree_view_get_selection (ilv->priv->treeview), &iter))
 			ui_common_treeview_move_cursor (ilv->priv->treeview, 1);
 	
-		gtk_tree_store_remove (GTK_TREE_STORE (gtk_tree_view_get_model (ilv->priv->treeview)), iter);
-		g_hash_table_remove (ilv->priv->item_id_to_iter, GUINT_TO_POINTER (item->id));
+		gtk_tree_store_remove (GTK_TREE_STORE (gtk_tree_view_get_model (ilv->priv->treeview)), &iter);
 	} else {
-		g_warning ("Fatal: item to be removed not found in iter lookup hash!");
+		g_warning ("Fatal: item to be removed not found in item id list!");
 	}
+	
+	ilv->priv->item_ids = g_slist_remove (ilv->priv->item_ids, GUINT_TO_POINTER (item->id));
 }
 
 /* cleans up the item list, sets up the iter hash when called for the first time */
@@ -402,10 +428,10 @@ item_list_view_clear (ItemListView *ilv)
 
 	if (itemstore)
 		gtk_tree_store_clear (itemstore);
-	if (ilv->priv->item_id_to_iter)
-		g_hash_table_destroy (ilv->priv->item_id_to_iter);
+	if (ilv->priv->item_ids)
+		g_slist_free (ilv->priv->item_ids);
 	
-	ilv->priv->item_id_to_iter = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_free);
+	ilv->priv->item_ids = NULL;
 	
 	/* enable batch mode for following item adds */
 	ilv->priv->batch_mode = TRUE;
@@ -502,7 +528,20 @@ item_list_view_update_item_foreach (gpointer key,
 void 
 item_list_view_update_all_items (ItemListView *ilv) 
 {
-	g_hash_table_foreach (ilv->priv->item_id_to_iter, item_list_view_update_item_foreach, (gpointer)ilv);
+        gboolean        valid;
+        GtkTreeIter     iter;
+        gulong          id;
+	GtkTreeModel    *model;
+
+	model = gtk_tree_view_get_model (ilv->priv->treeview);
+        gtk_tree_model_get_iter_first (model, &iter);
+	while (valid) {
+		gtk_tree_model_get (model, &iter, IS_NR, &id, -1);
+                itemPtr	item = item_load (id);
+                item_list_view_update_item (ilv, item);
+                item_unload (item);
+                valid = gtk_tree_model_iter_next (model, &iter);
+	}
 }
 
 void
@@ -683,7 +722,6 @@ static void
 item_list_view_init (ItemListView *ilv)
 {
 	ilv->priv = ITEM_LIST_VIEW_GET_PRIVATE (ilv);
-	ilv->priv->item_id_to_iter = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, g_free);
 }
 
 ItemListView *
@@ -802,7 +840,7 @@ item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstor
 	{
 		iter = g_new0 (GtkTreeIter, 1);
 		gtk_tree_store_prepend (itemstore, iter, NULL);
-		g_hash_table_insert (ilv->priv->item_id_to_iter, GUINT_TO_POINTER (item->id), (gpointer)iter);
+		ilv->priv->item_ids = g_slist_append (ilv->priv->item_ids, GUINT_TO_POINTER (item->id));
 	}
 
 	gtk_tree_store_set (itemstore, iter,
@@ -939,8 +977,7 @@ item_list_view_select (ItemListView *ilv, itemPtr item)
 	
 	if (item) {
 		GtkTreeIter		iter;
-		GtkTreePath		*path;
-		
+		GtkTreePath		*path;		
 		if (!item_list_view_id_to_iter(ilv, item->id, &iter))
 			/* This is an evil hack to fix SF #1870052: crash
 			   upon hitting <enter> when no headline selected.
