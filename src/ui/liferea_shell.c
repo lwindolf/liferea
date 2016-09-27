@@ -743,7 +743,7 @@ on_about_activate (GtkMenuItem *menuitem, gpointer user_data)
 {
 	GtkWidget *dialog;
 
-	dialog = liferea_dialog_new ("aboutdialog");
+	dialog = liferea_dialog_new ("about");
 	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (dialog), VERSION);
 	g_signal_connect (dialog, "response", G_CALLBACK (gtk_widget_hide), NULL);
 	gtk_widget_show (dialog);
