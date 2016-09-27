@@ -765,6 +765,22 @@ item_list_view_create (gboolean wide)
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_ENCICON, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->enclosureColumn = column;
+	
+	renderer = gtk_cell_renderer_text_new ();
+	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
+	                                                   "markup", IS_LABEL,
+							   "xalign", ITEMSTORE_ALIGN,
+							   NULL);
+	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
+	gtk_tree_view_column_set_sort_column_id (headline_column, IS_LABEL);
+	g_object_set (headline_column, "resizable", TRUE, NULL);
+	if (wide) {
+		g_object_set (renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
+		g_object_set (renderer, "wrap-width", 300, NULL);
+	} else {
+		g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
+		gtk_tree_view_column_add_attribute (headline_column, renderer, "weight", ITEMSTORE_WEIGHT);
+	}
 
 	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer, 
@@ -784,22 +800,7 @@ item_list_view_create (gboolean wide)
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->faviconColumn = column;
-	
-	renderer = gtk_cell_renderer_text_new ();
-	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
-	                                                   "markup", IS_LABEL,
-							   "xalign", ITEMSTORE_ALIGN,
-							   NULL);
-	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
-	gtk_tree_view_column_set_sort_column_id (headline_column, IS_LABEL);
-	g_object_set (headline_column, "resizable", TRUE, NULL);
-	if (wide) {
-		g_object_set (renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
-		g_object_set (renderer, "wrap-width", 300, NULL);
-	} else {
-		g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
-		gtk_tree_view_column_add_attribute (headline_column, renderer, "weight", ITEMSTORE_WEIGHT);
-	}
+
 
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
