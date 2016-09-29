@@ -771,6 +771,7 @@ item_list_view_create (gboolean wide)
 	                                                   "markup", IS_LABEL,
 							   "xalign", ITEMSTORE_ALIGN,
 							   NULL);
+	gtk_tree_view_column_set_expand (headline_column, TRUE);
 	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
 	gtk_tree_view_column_set_sort_column_id (headline_column, IS_LABEL);
 	g_object_set (headline_column, "resizable", TRUE, NULL);
@@ -787,6 +788,7 @@ item_list_view_create (gboolean wide)
 		                                           "text", IS_TIME_STR,
 	                                                   "weight", ITEMSTORE_WEIGHT,
 							   NULL);
+	gtk_tree_view_column_set_fixed_width (column, 200);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
 	g_object_set (column, "resizable", TRUE, NULL);
