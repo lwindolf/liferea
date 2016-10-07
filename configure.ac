@@ -29,7 +29,7 @@ PKG_PROG_PKG_CONFIG()
 ################################################################################
 # Mandatory library dependencies
 
-pkg_modules="	gtk+-3.0 >= 3.4.0
+pkg_modules="	gtk+-3.0 >= 3.14.0
 		glib-2.0 >= 2.28.0
 		gio-2.0 >= 2.26.0
 		pango >= 1.4.0 
