@@ -797,7 +797,6 @@ item_list_view_create (gboolean wide)
 	gtk_tree_view_column_set_fixed_width (column, 200);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
-	g_object_set (column, "resizable", TRUE, NULL);
 	if (wide) {
 		gtk_tree_view_column_set_visible (column, FALSE);
 		ilv->priv->wideView = TRUE;
