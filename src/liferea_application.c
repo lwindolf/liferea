@@ -147,12 +147,19 @@ on_app_startup (GApplication *gapp, gpointer user_data)
 static void
 on_app_shutdown (GApplication *app, gpointer user_data)
 {
+	GList *list;
+
 	debug_enter ("liferea_shutdown");
 
 	/* order is important ! */
 	update_deinit ();
 
-	liferea_shell_destroy ();
+	/* When application is started as a service, it waits 10 seconds for a message.
+	 * If no message arrives, it will shutdown without having created a window. */
+	list = gtk_application_get_windows (GTK_APPLICATION (app));
+	if (list) {
+		liferea_shell_destroy ();
+	}
 
 	db_deinit ();
 	social_free ();
