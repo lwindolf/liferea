@@ -660,7 +660,6 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 				   on the fact that those columns are all left 
 				   of the headline column !!! */
 				if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn) +
-				                 gtk_tree_view_column_get_width (ilv->priv->enclosureColumn) +
 				                 gtk_tree_view_column_get_width (ilv->priv->faviconColumn))) {
 					itemlist_toggle_flag (item);
 					result = TRUE;
