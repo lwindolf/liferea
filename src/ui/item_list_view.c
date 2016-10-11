@@ -656,7 +656,7 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 		switch (eb->button) {
 			case 1:
 				/* Allow flag toggling when left clicking in the 
-				   state, favicon and enclosure column. We depend
+				   state or favicon column. We depend
 				   on the fact that those columns are all left 
 				   of the headline column !!! */
 				if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn) +
