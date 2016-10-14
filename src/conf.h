@@ -52,6 +52,7 @@
 #define FOLDER_DISPLAY_MODE		"folder-display-mode"
 #define FOLDER_DISPLAY_HIDE_READ	"folder-display-hide-read"
 #define REDUCED_FEEDLIST		"reduced-feedlist"
+#define FEEDLIST_UNREAD_ITEMS_BOLD	"feedlist-unread-items-bold"
 
 /* GUI settings and persistency values */
 #define DISABLE_TOOLBAR			"disable-toolbar"

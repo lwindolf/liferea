@@ -127,6 +127,11 @@
       <summary>Determines the style of the toolbar buttons</summary>
       <description>Determines the style of the toolbar buttons locally, overriding the GNOME settings. Valid values are "both", "both-horiz", "icons", and "text". If empty or not specified, the GNOME settings are used.</description>
     </key>
+    <key name="feedlist-unread-items-bold" type="b">
+      <default>false</default>
+      <summary>Use bold text for feeds/folders with unread items</summary>
+      <description>Use bold text for the labels of feeds/folders with unread items in the feed list view.</description>
+    </key>
     <key name="trayicon" type="b">
       <default>true</default>
       <summary>Determines if the system tray icon is to be shown</summary>

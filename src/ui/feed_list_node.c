@@ -22,6 +22,7 @@
 #include "ui/feed_list_node.h"
 
 #include "common.h"
+#include "conf.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "fl_sources/node_source.h"
@@ -288,6 +289,7 @@ feed_list_node_update (const gchar *nodeId)
 	nodePtr		node;
 
 	static gchar	*countColor = NULL;
+	gboolean        unread_label_bold;
 
 	node = node_from_id (nodeId);
 	iter = feed_list_node_to_iter (nodeId);
@@ -313,18 +315,22 @@ feed_list_node_update (const gchar *nodeId)
 	if (node->unreadCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
 		labeltype &= ~NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 
-	label = g_markup_escape_text (node_get_title (node), -1);
 	switch (labeltype) {
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
 	     		/* treat like show unread count */
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT:
+			conf_get_bool_value (FEEDLIST_UNREAD_ITEMS_BOLD, &unread_label_bold);
+
+			label = g_markup_printf_escaped ("<span weight='%s'>%s</span>", unread_label_bold?"bold":"normal", node_get_title (node));
 			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor?countColor:"", node->unreadCount);
 			break;
 		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
+			label = g_markup_escape_text (node_get_title (node), -1);
 			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor?countColor:"", node->itemCount);
 		     	break;
 		default:
+			label = g_markup_escape_text (node_get_title (node), -1);
 			break;
 	}
 
