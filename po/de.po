@@ -1852,11 +1852,11 @@ msgstr "Durch Artikel _blättern mit:"
 
 #: ../glade/prefs.ui.h:18
 msgid "_Default View Mode:"
-msgstr "_Standard Ansicht"
+msgstr "_Standardansicht"
 
 #: ../glade/prefs.ui.h:19
 msgid "Web Integration"
-msgstr "Web Integration"
+msgstr "Web-Integration"
 
 #: ../glade/prefs.ui.h:20
 msgid "_Post Bookmarks to"
@@ -1876,7 +1876,7 @@ msgstr "Javascript _deaktivieren."
 
 #: ../glade/prefs.ui.h:25
 msgid "_Enable browser plugins."
-msgstr "_Browser Plugins aktivieren"
+msgstr "_Browser-Plugins aktivieren"
 
 #: ../glade/prefs.ui.h:26
 msgid "External Browser Settings"
@@ -1917,7 +1917,7 @@ msgstr "Oberfläche"
 
 #: ../glade/prefs.ui.h:36
 msgid "HTTP Proxy Server"
-msgstr "HTTP Proxy Server"
+msgstr "HTTP-Proxy-Server"
 
 #: ../glade/prefs.ui.h:37
 msgid "_Auto Detect (GNOME or environment)"
