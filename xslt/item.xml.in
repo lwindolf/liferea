@@ -43,10 +43,6 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 </head>
 <xsl:element name="body">  
-<!-- GeoRSS OpenStreet map rendering needs this -->
-<xsl:if test="item/attributes/attribute[ @name = 'point' ]">
-   <xsl:attribute name="onload">load()</xsl:attribute>
-</xsl:if>
 
 <!-- base URL of the itemset -->
 <div href="{$baseUrl}">
@@ -318,32 +314,6 @@
 
 </div> <!-- item -->
 </div> <!-- shading -->
-
-<!-- extra item content handling for GeoRSS coordinates, adding an OpenStreet map -->
-<xsl:if test="attributes/attribute[ @name = 'point' ]">  
-	<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-	<script type="text/javascript">
-		  <![CDATA[var lat=]]><xsl:value-of select="substring-before(attributes/attribute[ @name = 'point' ],' ')"/><![CDATA[
-		  var lon=]]><xsl:value-of select="substring-after(attributes/attribute[ @name = 'point' ],' ')"/>
-		  var zoom=9
-
-
-		  var map;
-        	  function load() {
-			map = new OpenLayers.Map("mapdiv");
-			map.addLayer(new OpenLayers.Layer.OSM());
-			var lonLat = new OpenLayers.LonLat(lon,lat)
-			.transform(
-				new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-				map.getProjectionObject() // to Spherical Mercator Projection
-			);
-			var markers = new OpenLayers.Layer.Markers("Markers");
-			map.addLayer(markers);
-			markers.addMarker(new OpenLayers.Marker(lonLat));
-			map.setCenter (lonLat, zoom);
-        	  }
-	</script>
-</xsl:if>
 
 </xsl:template>
 

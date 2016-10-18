@@ -12,6 +12,8 @@ To be released
 	* Fixes Github #208: gtk_tree_store_get_path: assertion
 	  'iter->stamp == priv->stamp'
 	  (reported by Mno-hime)
+	* Fixes Github #403: Leftover OSM XSLT in item view
+	  (reported by Paul Gevers)
 
 	* Updated German translation
 
