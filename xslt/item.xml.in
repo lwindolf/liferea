@@ -243,7 +243,29 @@
      </span></b>
    </td>
  </tr>
-</xsl:if>  
+</xsl:if>
+
+<xsl:if test="attributes/attribute[ @name = 'point' ]">
+ <tr>
+   <td valign="top" class='point'>
+     <_span>Coordinates</_span>
+     <b><span class='point'>
+     <xsl:value-of select="substring-before(attributes/attribute[ @name = 'point' ],' ')" />,
+     <xsl:value-of select="substring-after(attributes/attribute[ @name = 'point' ],' ')" />
+     </span></b>
+   </td>
+ </tr>
+  <tr>
+   <td valign="top" class='point'>
+     <_span>Map</_span>
+     <b><span class='point'>
+     <xsl:variable name="lat" select="substring-before(attributes/attribute[ @name = 'point' ],' ')"/>
+     <xsl:variable name="lng" select="substring-after(attributes/attribute[ @name = 'point' ],' ')"/>
+     <a href="https://www.openstreetmap.org/?mlat={$lat}&amp;mlon={$lng}#map=12/{$lat}/{$lng}">OpenStreeMap</a>
+     </span></b>
+   </td>
+ </tr>
+</xsl:if>
 
 </table> <!-- end of header metadata -->
 
