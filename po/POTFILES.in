@@ -3,7 +3,7 @@
 # List of source files containing translatable strings.
 
 liferea.appdata.xml.in
-liferea.desktop.in
+net.sourceforge.liferea.desktop.in
 xslt/feed.xml.in
 xslt/source.xml.in
 xslt/folder.xml.in
@@ -51,6 +51,7 @@ src/itemlist.c
 src/itemlist.h
 src/itemset.c
 src/itemset.h
+src/liferea_application.c
 src/main.c
 src/metadata.c
 src/metadata.h
