@@ -504,10 +504,10 @@ liferea_htmlview_get_zoom (LifereaHtmlView *htmlview)
 	return (RENDERER (htmlview)->zoomLevelGet) (htmlview->priv->renderWidget);
 }
 
-gboolean
+void
 liferea_htmlview_scroll (LifereaHtmlView *htmlview)
 {
-	return (RENDERER (htmlview)->scrollPagedown) (htmlview->priv->renderWidget);
+	(RENDERER (htmlview)->scrollPagedown) (htmlview->priv->renderWidget);
 }
 
 void

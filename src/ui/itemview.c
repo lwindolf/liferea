@@ -360,13 +360,7 @@ itemview_find_unread_item (gulong startId)
 void
 itemview_scroll (void)
 {
-	/* We try to scroll the HTML view, but if we are already at the
-	   bottom of the item view the scrolling will return FALSE and 
-	   we trigger Next-Unread to realize easy headline skimming. */
-	if (liferea_htmlview_scroll (itemview->priv->htmlview) == FALSE)
-		on_next_unread_item_activate (NULL, NULL);
-		
-	/* Note the above condition is duplicated in mozilla/mozsupport.cpp! */
+	liferea_htmlview_scroll (itemview->priv->htmlview);
 }
 
 void
