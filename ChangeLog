@@ -10,6 +10,8 @@ To be released
 	  GtkBuilder handling.
 	* Github #425: Add GeoRSS info and map link in item header
 	  (Mikel Olasagasti)
+	* Github #407: Replacing deprecated elements in preferences
+	  (Leiaz)
 
 	* Fixes Github #208: gtk_tree_store_get_path: assertion
 	  'iter->stamp == priv->stamp'
