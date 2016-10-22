@@ -393,6 +393,10 @@ liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *title)
 void
 liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location)
 {
+	if (g_strcmp0 (location, "file:///")) {
+		/* A URI different from the locally generated html base url is being loaded. */
+		htmlview->priv->internal = FALSE;
+	}
 	if (!htmlview->priv->internal) {
 		browser_history_add_location (htmlview->priv->history, location);
 
@@ -465,8 +469,6 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 	}
 	
 	if(htmlview->priv->forceInternalBrowsing || browse_inside_application) {	   
-	   	/* before loading external content suppress internal link schema again */
-		htmlview->priv->internal = FALSE;
 		
 		return FALSE;
 	} else {
@@ -479,10 +481,6 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 void
 liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *url)
 {
-	/* before loading untrusted URLs suppress internal link schema */
-	htmlview->priv->internal = FALSE;
-
-	browser_history_add_location (htmlview->priv->history, (gchar *)url);
 
 	gtk_widget_set_sensitive (htmlview->priv->forward, browser_history_can_go_forward (htmlview->priv->history));
 	gtk_widget_set_sensitive (htmlview->priv->back,    browser_history_can_go_back (htmlview->priv->history));
