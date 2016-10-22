@@ -1,4 +1,4 @@
-/**
+/*
  * @file liferea_htmlview.c  Liferea embedded HTML rendering
  *
  * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
@@ -59,19 +59,19 @@
 #define LIFEREA_HTMLVIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_HTMLVIEW_TYPE, LifereaHtmlViewPrivate))
 
 struct LifereaHtmlViewPrivate {
-	GtkWidget	*renderWidget;		/**< The HTML widget (e.g. Webkit widget) */
-	GtkWidget	*container;		/**< Outer container including render widget and toolbar */
-	GtkWidget	*toolbar;		/**< The navigation toolbar */
+	GtkWidget	*renderWidget;		/*<< The HTML widget (e.g. Webkit widget) */
+	GtkWidget	*container;		/*<< Outer container including render widget and toolbar */
+	GtkWidget	*toolbar;		/*<< The navigation toolbar */
 
-	GtkWidget	*forward;		/**< The forward button */
-	GtkWidget	*back;			/**< The back button */
-	GtkWidget	*urlentry;		/**< The URL entry widget */
-	browserHistory	*history;		/**< The browser history */
+	GtkWidget	*forward;		/*<< The forward button */
+	GtkWidget	*back;			/*<< The back button */
+	GtkWidget	*urlentry;		/*<< The URL entry widget */
+	browserHistory	*history;		/*<< The browser history */
 
-	gboolean	internal;		/**< TRUE if internal view presenting generated HTML with special links */
-	gboolean	forceInternalBrowsing;	/**< TRUE if clicked links should be force loaded within this view (regardless of global preference) */
+	gboolean	internal;		/*<< TRUE if internal view presenting generated HTML with special links */
+	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded within this view (regardless of global preference) */
 	
-	htmlviewImplPtr impl;			/**< Browser widget support implementation */
+	htmlviewImplPtr impl;			/*<< Browser widget support implementation */
 };
 
 enum {
