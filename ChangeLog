@@ -14,6 +14,8 @@ To be released
 	  (Leiaz)
 	* Github #396: Create LifereaApplication type
 	  (Leiaz)
+	* Github #434: Partial RFC3229+feed support for bandwidth savings
+	  (Daniel Aleksandersen)
 
 	* Fixes Github #208: gtk_tree_store_get_path: assertion
 	  'iter->stamp == priv->stamp'
