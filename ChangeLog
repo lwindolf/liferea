@@ -22,6 +22,8 @@ To be released
 	  (reported by Mno-hime)
 	* Fixes Github #403: Leftover OSM XSLT in item view
 	  (reported by Paul Gevers)
+	* Fixes Github #423: Internal browser shows files system on go-back
+	  (Leiaz, reported by Paul Gevers)
 
 	* Updated German translation
 
