@@ -157,11 +157,14 @@ network_process_request (const updateJobPtr const job)
 		soup_date_free (date);
 	}
 
-	/* Set the If-None-Match: header */
+	/* Set the If-None-Match: and A-IM: headers */
 	if (job->request->updateState && update_state_get_etag (job->request->updateState)) {
 		soup_message_headers_append(msg->request_headers,
 					    "If-None-Match",
 					    update_state_get_etag (job->request->updateState));
+		soup_message_headers_append(msg->request_headers,
+					    "A-IM",
+					    "feed");
 	}
 
 	/* Support HTTP content negotiation */
