@@ -622,7 +622,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 						/* pass through space keys only if HTML widget has the focus */
 						focusw = gtk_window_get_focus (GTK_WINDOW (widget));
 						type = g_type_name (G_OBJECT_TYPE (focusw));
-						if (type && (g_str_equal (type, "WebKitWebView")))
+						if (type && (g_str_equal (type, "LifereaWebView")))
 							return FALSE;
 						break;
 					case 1:
@@ -664,7 +664,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 
 		/* prevent usage of navigation keys in HTML view */
 		type = g_type_name (G_OBJECT_TYPE (focusw));
-		if (type && (g_str_equal (type, "WebKitWebView")))
+		if (type && (g_str_equal (type, "LifereaWebView")))
 			return FALSE;
 		
 		/* check for treeview navigation */
