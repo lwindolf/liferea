@@ -94,11 +94,11 @@ msgstr "Lecteur de flux Liferea"
 
 #: ../liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
-msgstr ""
+msgstr "Lecteurs de nouvelles et de blogs"
 
 #: ../liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
-msgstr ""
+msgstr "news;feed;aggregator;blog;podcast;nouvelle;actualité;aggrégateur;"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
@@ -132,7 +132,7 @@ msgstr "Détails"
 
 #: ../xslt/feed.xml.in.h:6
 msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr ""
+msgstr "Vous pouvez contacter l'auteur/webmaster du flux à ce sujet !"
 
 #: ../xslt/feed.xml.in.h:7
 msgid "There were errors while filtering this feed!"
@@ -169,7 +169,7 @@ msgstr "titres non lus"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
-msgstr "Dossier:"
+msgstr "Dossier :"
 
 #: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:22
 msgid "Source"
@@ -906,12 +906,12 @@ msgstr "_Élément"
 
 #: ../src/ui/liferea_shell.c:920
 msgid "Previous Item"
-msgstr ""
+msgstr "Élément précédent"
 
 #: ../src/ui/liferea_shell.c:922
 #, fuzzy
 msgid "Next Item"
-msgstr "Élément _non lu suivant"
+msgstr "Élément suivant"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
@@ -1148,7 +1148,7 @@ msgstr "Supprime l'élément sélectionné."
 
 #: ../src/ui/liferea_shell.c:995 ../src/ui/popup_menu.c:117
 msgid "Open In _Tab"
-msgstr ""
+msgstr "Ouvrir dans un _onglet"
 
 #: ../src/ui/liferea_shell.c:995
 #, fuzzy
@@ -1177,11 +1177,11 @@ msgstr "Ouvre le lien de l'élément dans le navigateur configuré."
 
 #: ../src/ui/liferea_shell.c:1004
 msgid "_Fullscreen"
-msgstr ""
+msgstr "_Plein écran"
 
 #: ../src/ui/liferea_shell.c:1004
 msgid "Browse at full screen"
-msgstr ""
+msgstr "Naviguer en plein écran"
 
 #: ../src/ui/search_dialog.c:116
 #, fuzzy
@@ -1215,17 +1215,17 @@ msgstr ""
 #: ../src/ui/liferea_htmlview.c:639 ../src/webkit/liferea_web_view.c:169
 #, fuzzy
 msgid "Open Link In _Tab"
-msgstr "Ouvrir le lien dans un onglet (_tab)"
+msgstr "Ouvrir le lien dans un _onglet"
 
 #: ../src/ui/liferea_htmlview.c:640
 #, fuzzy
 msgid "_Open Link In Browser"
-msgstr "_Ouvrir le lien dans le navigateur"
+msgstr "Ouvrir le lien dans le _navigateur"
 
 #: ../src/ui/liferea_htmlview.c:641
 #, fuzzy
 msgid "_Open Link In External Browser"
-msgstr "_Ouvrir le lien dans le navigateur"
+msgstr "Ouvrir le lien dans le navigateur _externe"
 
 #: ../src/ui/liferea_htmlview.c:644 ../src/webkit/liferea_web_view.c:177
 #, c-format
@@ -1254,7 +1254,7 @@ msgstr "S'_abonner..."
 
 #: ../src/ui/liferea_htmlview.c:663 ../src/webkit/liferea_web_view.c:201
 msgid "_Copy"
-msgstr ""
+msgstr "_Copier"
 
 #: ../src/ui/item_list_view.c:114
 msgid "This item has no link specified!"
@@ -1353,7 +1353,7 @@ msgstr "_Reconstruire"
 
 #: ../src/ui/popup_menu.c:338 ../src/ui/feed_list_node.c:417
 msgid "_Delete"
-msgstr ""
+msgstr "_Supprimer"
 
 #: ../src/ui/popup_menu.c:344
 #, fuzzy
@@ -1466,7 +1466,7 @@ msgstr "Confirmation de la suppression"
 
 #: ../src/ui/subscription_dialog.c:351 ../src/fl_sources/opml_source.c:379
 msgid "_Open"
-msgstr ""
+msgstr "_Ouvrir"
 
 #: ../src/ui/subscription_dialog.c:425
 #, c-format
@@ -1886,7 +1886,7 @@ msgstr "_Survoler les articles avec :"
 
 #: ../glade/prefs.ui.h:18
 msgid "_Default View Mode:"
-msgstr ""
+msgstr "Mode de vue par _défaut :"
 
 #: ../glade/prefs.ui.h:19
 msgid "Web Integration"
@@ -1924,7 +1924,7 @@ msgstr "Manuel"
 #: ../glade/prefs.ui.h:29
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
-msgstr ""
+msgstr "<small>(%s pour l'URL)</small>"
 
 #: ../glade/prefs.ui.h:30
 msgid "_Browser:"
@@ -1997,11 +1997,11 @@ msgstr "Réglages d'affichage des dossiers"
 
 #: ../glade/prefs.ui.h:47
 msgid "Tell sites that I do _not want to be tracked"
-msgstr ""
+msgstr "Indiquer aux sites que je _ne veux pas être pisté"
 
 #: ../glade/prefs.ui.h:48
 msgid "Privacy"
-msgstr ""
+msgstr "Vie privée"
 
 #: ../glade/prefs.ui.h:49
 msgid "Downloading Enclosures"
@@ -2021,7 +2021,7 @@ msgstr "Annexes"
 
 #: ../glade/prefs.ui.h:53
 msgid "Plugins"
-msgstr ""
+msgstr "Extensions"
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
@@ -2224,7 +2224,7 @@ msgstr "En cours de téléchargement"
 
 #: ../glade/simple_search.ui.h:9 ../glade/update_monitor.ui.h:4
 msgid "Cancel _All"
-msgstr "_Annuler le tout"
+msgstr "Tout _Annuler"
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
