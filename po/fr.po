@@ -2224,7 +2224,7 @@ msgstr "En cours de téléchargement"
 
 #: ../glade/simple_search.ui.h:9 ../glade/update_monitor.ui.h:4
 msgid "Cancel _All"
-msgstr "Tout _Annuler"
+msgstr "Tout _annuler"
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
