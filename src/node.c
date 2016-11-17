@@ -407,11 +407,8 @@ node_load_icon (nodePtr node)
 	/* Load pixbuf for all widget based rendering */
 	if (node->icon) 
 		g_object_unref (node->icon);
-	if (node->largeIcon)
-		g_object_unref (node->largeIcon);
 
-	node->icon = favicon_load_from_cache (node->id, 16);
-	node->largeIcon = favicon_load_from_cache (node->id, 32);
+	node->icon = favicon_load_from_cache (node->id, 32);
 	
 	/* Create filename for HTML rendering */
 	g_free (node->iconFile);
@@ -430,12 +427,6 @@ node_get_icon (nodePtr node)
 		return (gpointer) NODE_TYPE(node)->icon;
 
 	return node->icon;
-}
-
-gpointer
-node_get_large_icon (nodePtr node)
-{
-	return node->largeIcon;
 }
 
 const gchar *

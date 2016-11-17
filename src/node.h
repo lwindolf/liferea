@@ -57,8 +57,7 @@ typedef struct node {
 	guint			newCount;	/**< number of recently downloaded items */
 
 	gchar			*title;		/**< the label of the node in the feed list */
-	gpointer		icon;		/**< 16x16 favicon GdkPixBuf (or NULL) */
-	gpointer		largeIcon;	/**< 32x32 favicon GdkPixBuf (or NULL) */
+	gpointer		icon;		/**< favicon GdkPixBuf (or NULL) */
 	gboolean		available;	/**< availability of this node (usually the last downloading state) */
 	gboolean		expanded;	/**< expansion state (for nodes with childs) */
 
