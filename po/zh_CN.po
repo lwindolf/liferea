@@ -487,8 +487,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea，Linux Feed 阅读器"
 
 #: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
-msgstr "更多信息请访问 http://lzone.de/liferea/"
+msgid "For more information, please visit https://lzone.de/liferea/"
+msgstr "更多信息请访问 https://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:391

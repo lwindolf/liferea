@@ -519,9 +519,9 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, програма для читання подач у Linux"
 
 #: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
+msgid "For more information, please visit https://lzone.de/liferea/"
 msgstr ""
-"Докладніше про програму можна дізнатися за адресою http://lzone.de/liferea/"
+"Докладніше про програму можна дізнатися за адресою https://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:391
