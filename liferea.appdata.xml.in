@@ -23,16 +23,16 @@
     </ul>
   </description>
   <screenshots>
-    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot1.png</screenshot>
-    <screenshot type="default" width="833" height="656">http://lzone.de/liferea/screenshots/screenshot2.png</screenshot>
-    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot3.png</screenshot>
-    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot4.png</screenshot>
-    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot5.png</screenshot>
-    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot6.png</screenshot>
-    <screenshot type="default" width="642" height="438">http://lzone.de/liferea/screenshots/screenshot7.png</screenshot>
-    <screenshot type="default" width="834" height="657">http://lzone.de/liferea/screenshots/screenshot8.png</screenshot>
-    <screenshot type="default" width="837" height="657">http://lzone.de/liferea/screenshots/screenshot9.png</screenshot>
+    <screenshot type="default" width="837" height="657">https://lzone.de/liferea/screenshots/screenshot1.png</screenshot>
+    <screenshot type="default" width="833" height="656">https://lzone.de/liferea/screenshots/screenshot2.png</screenshot>
+    <screenshot type="default" width="837" height="657">https://lzone.de/liferea/screenshots/screenshot3.png</screenshot>
+    <screenshot type="default" width="837" height="657">https://lzone.de/liferea/screenshots/screenshot4.png</screenshot>
+    <screenshot type="default" width="837" height="657">https://lzone.de/liferea/screenshots/screenshot5.png</screenshot>
+    <screenshot type="default" width="837" height="657">https://lzone.de/liferea/screenshots/screenshot6.png</screenshot>
+    <screenshot type="default" width="642" height="438">https://lzone.de/liferea/screenshots/screenshot7.png</screenshot>
+    <screenshot type="default" width="834" height="657">https://lzone.de/liferea/screenshots/screenshot8.png</screenshot>
+    <screenshot type="default" width="837" height="657">https://lzone.de/liferea/screenshots/screenshot9.png</screenshot>
   </screenshots>
-  <url type="homepage">http://lzone.de/liferea/</url>
+  <url type="homepage">https://lzone.de/liferea/</url>
   <updatecontact>liferea-devel@lists.sf.net</updatecontact>
 </application>

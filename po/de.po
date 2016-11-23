@@ -507,8 +507,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, der Linux Feed Reader"
 
 #: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
-msgstr "Weitere Informationen auf http://lzone.de/liferea/"
+msgid "For more information, please visit https://lzone.de/liferea/"
+msgstr "Weitere Informationen auf https://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:391

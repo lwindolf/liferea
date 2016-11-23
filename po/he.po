@@ -544,8 +544,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "סקוניל לש םיצורע דגאמה ,Liferea"
 
 #: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
-msgstr "http://lzone.de/liferea/ רקב, ףסונ עדימל"
+msgid "For more information, please visit https://lzone.de/liferea/"
+msgstr "https://lzone.de/liferea/ רקב, ףסונ עדימל"
 
 #. Some libsoup transport errors
 #: ../src/net.c:391
