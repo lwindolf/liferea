@@ -137,37 +137,17 @@ item_make_link (itemPtr item)
 	if (!src)
 		return NULL;
 
-	/* check for relative link */
-	if (*src == '/') {
+	/* check for absolute URL */
+	if (strstr (src, "://")) {
+		link = g_strdup (src);
+	} else {
 		const gchar * base = item_get_base_url (item);
-		gchar * pos = (gchar *)base;
-		int host_url_size, i;
 
-		/* Check for schema-less (protocol-relative) link */
-		if (*(src+1) == '/') {
-			/* Find first /, end of protocol part in base url */
-			pos = strstr (pos, "/");
-		} else {
-			/* Find the third /, start of link on
-			* site. */
-			for (i = 0; pos && i < 3; i++) {
-				pos = strstr(pos + 1, "/");
-			}
-		}
-
-		if (!pos) {
+		link = (gchar *) common_build_url (src, base);
+		if (!link) {
 			debug0 (DEBUG_PARSING, "Feed contains relative link and invalid base URL");
 			return NULL;
 		}
-
-		host_url_size = pos - base + 1;
-
-		link = g_malloc (host_url_size + strlen(src));
-		strncpy (link, base, host_url_size - 1);
-		pos = link + host_url_size - 1;
-		strcpy (pos, src);
-	} else {
-		link = g_strdup (src);
 	}
 	
 	return link;
