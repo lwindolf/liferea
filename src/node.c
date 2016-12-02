@@ -522,8 +522,12 @@ node_get_base_url(nodePtr node)
 {
 	const gchar 	*baseUrl = NULL;
 
-	if (node->subscription)
+	if (node->subscription) {
 		baseUrl = subscription_get_homepage (node->subscription);
+		if (!baseUrl)
+			baseUrl = subscription_get_source (node->subscription);
+	}
+
 
 	/* prevent feed scraping commands to end up as base URI */
 	if (!((baseUrl != NULL) &&
