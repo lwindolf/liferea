@@ -22,7 +22,8 @@ glade_DATA = about.ui \
 	simple_subscription.ui \
 	theoldreader_source.ui \
 	ttrss_source.ui \
-	update_monitor.ui
+	update_monitor.ui \
+	liferea.css
 
 EXTRA_DIST = \
 	$(glade_DATA)
