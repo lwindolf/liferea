@@ -53,7 +53,7 @@ struct LifereaHtmlViewClass
 GType liferea_htmlview_get_type	(void);
 
 /** 
- * liferea_htmlview_new:
+ * liferea_htmlview_new: (skip)
  * @forceInternalBrowsing:		TRUE to act as fully fledged browser
  *
  * Function to set up a new html view widget for any purpose. 
@@ -72,7 +72,7 @@ LifereaHtmlView * liferea_htmlview_new (gboolean forceInternalBrowsing);
 void liferea_htmlview_set_headline_view (LifereaHtmlView *htmlview);
 
 /**
- * liferea_htmlview_get_widget:
+ * liferea_htmlview_get_widget: (skip)
  * @htmlview:	the HTML view
  *
  * Returns the rendering widget for a HTML view. Only
@@ -83,7 +83,7 @@ void liferea_htmlview_set_headline_view (LifereaHtmlView *htmlview);
 GtkWidget *liferea_htmlview_get_widget (LifereaHtmlView *htmlview);
 
 /** 
- * liferea_htmlview_clear:
+ * liferea_htmlview_clear: (skip)
  * @htmlview:	the HTML view widget to clear
  *
  * Loads a emtpy HTML page. Resets any item view state.
@@ -91,7 +91,7 @@ GtkWidget *liferea_htmlview_get_widget (LifereaHtmlView *htmlview);
 void	liferea_htmlview_clear (LifereaHtmlView *htmlview);
 
 /**
- * liferea_htmlview_write:
+ * liferea_htmlview_write: (skip)
  * @htmlview:	The htmlview widget to be set
  * @string:		HTML source
  * @base:		base url for resolving relative links
@@ -101,7 +101,7 @@ void	liferea_htmlview_clear (LifereaHtmlView *htmlview);
 void	liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gchar *base);
 
 /**
- * liferea_html_view_on_url:
+ * liferea_html_view_on_url: (skip)
  * @htmlview:		the htmlview causing the event
  * @url:		new URL (or empty string)
  *
@@ -115,7 +115,7 @@ void liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *tit
 void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location);
 
 /**
- * liferea_htmlview_handle_URL:
+ * liferea_htmlview_handle_URL: (skip)
  * @htmlview:		the HTML view to use
  * @url:		URL to launch
  *
@@ -138,7 +138,7 @@ void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *
 gboolean liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url);
 
 /**
- * liferea_htmlview_launch_URL_internal:
+ * liferea_htmlview_launch_URL_internal: (skip)
  * @htmlview:		the HTML view to use
  * @url:		the URL to load
  *

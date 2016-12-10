@@ -1,4 +1,4 @@
-/**
+/*
  * @file node.h  hierarchic feed list node interface
  * 
  * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
@@ -38,359 +38,397 @@
    complexity for the GUI, scripting and updating functionality.
  */
 
-/** generic feed list node structure */
+/* generic feed list node structure */
 typedef struct node {
-	gpointer		data;		/**< node type specific data structure */
-	struct subscription	*subscription;	/**< subscription attached to this node (or NULL) */
-	struct nodeType		*type;		/**< node type implementation */	
-	struct nodeSource	*source;	/**< the feed list source handling this node */
-	gchar			*iconFile;	/**< the path of the favicon file */
+	gpointer		data;		/*<< node type specific data structure */
+	struct subscription	*subscription;	/*<< subscription attached to this node (or NULL) */
+	struct nodeType		*type;		/*<< node type implementation */
+	struct nodeSource	*source;	/*<< the feed list source handling this node */
+	gchar			*iconFile;	/*<< the path of the favicon file */
 
 	/* feed list state properties of this node */
-	struct node		*parent;	/**< the parent node (or NULL if at root level) */
-	GSList			*children;	/**< ordered list of node children */
-	gchar			*id;		/**< unique node identifier string */
+	struct node		*parent;	/*<< the parent node (or NULL if at root level) */
+	GSList			*children;	/*<< ordered list of node children */
+	gchar			*id;		/*<< unique node identifier string */
 
-	guint			itemCount;	/**< number of items */
-	guint			unreadCount;	/**< number of unread items */
-	guint			popupCount;	/**< number of items to be notified */
-	guint			newCount;	/**< number of recently downloaded items */
+	guint			itemCount;	/*<< number of items */
+	guint			unreadCount;	/*<< number of unread items */
+	guint			popupCount;	/*<< number of items to be notified */
+	guint			newCount;	/*<< number of recently downloaded items */
 
-	gchar			*title;		/**< the label of the node in the feed list */
-	gpointer		icon;		/**< 16x16 favicon GdkPixBuf (or NULL) */
-	gpointer		largeIcon;	/**< 32x32 favicon GdkPixBuf (or NULL) */
-	gboolean		available;	/**< availability of this node (usually the last downloading state) */
-	gboolean		expanded;	/**< expansion state (for nodes with childs) */
+	gchar			*title;		/*<< the label of the node in the feed list */
+	gpointer		icon;		/*<< 16x16 favicon GdkPixBuf (or NULL) */
+	gpointer		largeIcon;	/*<< 32x32 favicon GdkPixBuf (or NULL) */
+	gboolean		available;	/*<< availability of this node (usually the last downloading state) */
+	gboolean		expanded;	/*<< expansion state (for nodes with childs) */
 
 	/* item list state properties of this node */
-	nodeViewType		viewMode;	/**< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
-	nodeViewSortType	sortColumn;	/**< Node specific item view sort attribute. */
-	gboolean		sortReversed;	/**< Sort in the reverse order? */
+	nodeViewType		viewMode;	/*<< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
+	nodeViewSortType	sortColumn;	/*<< Node specific item view sort attribute. */
+	gboolean		sortReversed;	/*<< Sort in the reverse order? */
 	
 	/* rendering behaviour of this node */
-	gboolean	loadItemLink;	/**< if TRUE do automatically load the item link into the HTML pane */
+	gboolean	loadItemLink;	/*<< if TRUE do automatically load the item link into the HTML pane */
 	
 	/* current state of this node */	
-	gboolean	needsUpdate;	/**< if TRUE: the item list has changed and the nodes feed list representation needs to be updated */
-	gboolean	needsRecount;	/**< if TRUE: the number of unread/total items is currently unknown and needs recounting */
+	gboolean	needsUpdate;	/*<< if TRUE: the item list has changed and the nodes feed list representation needs to be updated */
+	gboolean	needsRecount;	/*<< if TRUE: the number of unread/total items is currently unknown and needs recounting */
 
 } *nodePtr;
 
 /**
+ * node_new: (skip)
  * Creates a new node structure.
  *
- * @returns the new node
+ * Returns: (transfer full): the new node
  */
 nodePtr node_new (struct nodeType *type);
 
 /**
+ * node_is_used_id: (skip)
+ * @id:	the node id to check
+ *
  * Can be used to check whether an id is used or not.
  *
- * @param id	the node id to check
- *
- * @returns the node with the given id (or NULL)
+ * Returns: (transfer none) (nullable): the node with the given id (or NULL)
  */
 nodePtr node_is_used_id (const gchar *id);
 
 /**
+ * node_from_id: (skip)
+ * @id:	the node id to look up
+ *
  * Node lookup by node id. Will report an error if the queried
  * id does not exist.
  *
- * @param id	the node id to look up
- *
- * @returns the node with the given id (or NULL)
+ * Returns: (transfer none) (nullable): the node with the given id (or NULL)
  */
 nodePtr node_from_id (const gchar *id);
 
 /**
+ * node_set_parent: (skip)
+ * @node:		the node
+ * @parent: (nullable):	the parent node (optional can be NULL)
+ * @position:   	insert position (optional can be 0)
+ *
  * Sets a nodes parent. If no parent node is given the 
  * parent node of the currently selected feed or the 
  * selected folder will be used.
  *
  * To be used before calling feedlist_node_added()
- *
- * @param node		the node
- * @param parent	the parent node (optional can be NULL)
- * @param position	insert position (optional can be 0)
  */
 void node_set_parent (nodePtr node, nodePtr parent, gint position);
 
 /**
+ * node_reparent: (skip)
+ * @node:		the node
+ * @new_parent: 	nodes new parent
+ *
  * Set a node's new parent and update UI. If a node already has a parent, 
  * it will be removed from its parent children list. 
- * 
- * @param node			the node
- * @param new_parent	nodes new parent
  */ 
 void node_reparent (nodePtr node, nodePtr new_parent);
 
 /**
- * Removes all data associated with the given node.
+ * node_remove: (skip)
+ * @node:		the node
  *
- * @param node		the node
+ * Removes all data associated with the given node.
  */
 void node_remove (nodePtr node);
 
 /**
- * Attaches a data structure to the given node.
+ * node_set_data: (skip)
+ * @node: 	the node to attach to
+ * @data:	the structure
  *
- * @param node 	the node to attach to
- * @param data	the structure
+ * Attaches a data structure to the given node.
  */
 void node_set_data(nodePtr node, gpointer data);
 
 /**
- * Attaches the subscription to the given node.
+ * node_set_subscription: (skip)
+ * @node:		the node
+ * @subscription:	the subscription
  *
- * @param node		the node
- * @param subscription	the subscription
+ * Attaches the subscription to the given node.
  */
 void node_set_subscription (nodePtr node, struct subscription *subscription);
 
 /**
+ * node_update_subscription: (skip)
+ * @node:		the node
+ * @user_data:  	update flags
+ *
  * Helper function to be used with node_foreach_child()
  * to mass-update subscriptions.
- *
- * @param node		the node
- * @param user_data	update flags
  */
 void node_update_subscription (nodePtr node, gpointer user_data);
 
 /**
+ * node_auto_update_subscription: (skip)
+ * @node:		the node
+ *
  * Helper function to be used with node_foreach_child()
  * to mass-auto-update subscriptions.
- *
- * @param node		the node
  */
 void node_auto_update_subscription (nodePtr node);
 
 /**
+ * node_reset_update_counter: (skip)
+ * @node:		the node
+ * @now:		the current timestamp
+ *
  * Helper function to be used with node_foreach_child()
  * to mass-auto-update subscriptions.
- *
- * @param node		the node
- * @param now		the current timestamp
  */
 void node_reset_update_counter (nodePtr node, GTimeVal *now);
 
 /**
+ * node_is_ancestor: (skip)
+ * @node1:		the possible ancestor
+ * @node2:		the possible child
+ *
  * Determines whether node1 is an ancestor of node2
  *
- * @param node1		the possible ancestor
- * @param node2		the possible child
- * @returns TRUE if node1 is ancestor of node2
+ * Returns: TRUE if node1 is ancestor of node2
  */
 gboolean node_is_ancestor(nodePtr node1, nodePtr node2);
 
 /** 
+ * node_get_title: (skip)
+ * @node:	the node
+ *
  * Query the node's title for the feed list.
  *
- * @param node	the node
- *
- * @returns the title
+ * Returns: the title
  */
 const gchar * node_get_title(nodePtr node);
 
 /**
- * Sets the node's title for the feed list.
+ * node_set_title: (skip)
+ * @node:	the node
+ * @title:	the title
  *
- * @param node	the node
- * @param title	the title
+ * Sets the node's title for the feed list.
  */
 void node_set_title(nodePtr node, const gchar *title);
 
 /**
+ * node_update_counters: (skip)
+ * @node:	the node
+ *
  * Update the number of items and unread items of a node from
  * the DB. This method ensures propagation to parent folders.
- *
- * @param node	the node
  */
 void node_update_counters(nodePtr node);
 
 /**
- * Recursively marks all items of the given node as read.
+ * node_mark_all_read: (skip)
+ * @node:	the node to process
  *
- * @param node	the node to process
+ * Recursively marks all items of the given node as read.
  */
 void node_mark_all_read(nodePtr node);
 
 /**
- * Assigns a new pixmaps as the favicon representing this node.
+ * node_set_icon: (skip)
+ * @node:		the node
+ * @icon: (nullable):	a pixmap or NULL
  *
- * @param node		the node
- * @param icon		a pixmap or NULL
+ * Assigns a new pixmaps as the favicon representing this node.
  */
 void node_set_icon(nodePtr node, gpointer icon);
 
 /**
+ * node_get_icon: (skip)
+ *
  * Returns an appropriate icon for the given node. If the node
  * is unavailable the "unavailable" icon will be returned. If
  * the node is available an existing favicon or the node type
  * specific default icon will be returned.
  *
- * @returns a pixmap or NULL
+ * Returns: (nullable): a pixmap or NULL
  */
 gpointer node_get_icon (nodePtr node);
 
 /**
+ * node_get_large_icon: (skip)
+ *
  * Returns a large icon for the node. Does not return any default
  * icons like node_get_icon() does.
  *
- * @returns a pixmap or NULL
+ * Returns: (nullable): a pixmap or NULL
  */
 gpointer node_get_large_icon (nodePtr node);
 
 /**
+ * node_get_favicon_file: (skip)
+ * @node:		the node
+ *
  * Returns the name of the favicon cache file for the given node.
  * If there is no favicon a default icon file name will be returned.
  *
- * @param node		the node
- *
- * @return a file name
+ * Returns: a file name
  */
 const gchar * node_get_favicon_file(nodePtr node);
 
 /**
+ * node_new_id:
+ *
  * Returns a new unused unique node id.
  *
- * @returns new id (to be free'd using g_free)
+ * Returns: (transfer full): new id (to be free'd using g_free)
  */
 gchar * node_new_id (void);
 
 /**
+ * node_get_id: (skip)
+ * @node:	the node
+ *
  * Query the unique id string of the node.
  *
- * @param node	the node
- *
- * @returns id string
+ * Returns: id string
  */
 const gchar *node_get_id (nodePtr node);
 
 /** 
- * Set the unique id string of the node.
+ * node_set_id: (skip)
+ * @node:	the node
+ * @id: 	the id string
  *
- * @param node	the node
- * @param id 	the id string
+ * Set the unique id string of the node.
  */
 void node_set_id(nodePtr node, const gchar *id);
 
 /** 
- * Frees a given node structure.
+ * node_free: (skip)
+ * @node: the node to free
  *
- * @param the node to free
+ * Frees a given node structure.
  */
 void node_free(nodePtr node);
 
 /**
+ * node_default_render: (skip)
+ * @node:		the node to render
+ *
  * Helper function for generic node rendering. Performs
  * a generic node serialization to XML and passes the
  * generated XML source document to the XSLT stylesheet
  * with the same name as the node type id.
  *
- * @param node		the node to render
- *
- * @returns XHTML string
+ * Returns: XHTML string
  */
 gchar * node_default_render(nodePtr node);
 
 /**
- * Saves the given node to cache.
+ * node_save: (skip)
+ * @node:	the node
  *
- * @param node	the node
+ * Saves the given node to cache.
  */
 void node_save(nodePtr node);
 
 /**
+ * node_get_itemset: (skip)
+ * @node:	the node
+ *
  * Loads all items of the given node into memory.
  * The caller needs to free the item set using itemset_free()
  *
- * @param node	the node
- *
- * @returns the item set
+ * Returns: the item set
  */
 itemSetPtr node_get_itemset(nodePtr node);
 
 /**
+ * node_render: (skip)
+ * @node:	the node
+ *
  * Node content rendering
  *
- * @param node	the node
- *
- * @returns string with node rendered in HTML
+ * Returns: string with node rendered in HTML
  */
 gchar * node_render(nodePtr node);
 
 /**
- * Called when updating favicons is requested.
+ * node_update_favicon: (skip)
+ * @node:		the node
  *
- * @param node		the node
+ * Called when updating favicons is requested.
  */
 void node_update_favicon (nodePtr node);
 
 /**
- * node_load_icon:
+ * node_load_icon: (skip)
+ * @node:	the node
  *
  * Load node icon in memory. Should be called only once on startup
  * and when the node icon has changed.
- *
- * @node:	the node
  */
 void node_load_icon (nodePtr node);
 
 /**
+ * node_set_sort_column: (skip)
+ * @node:		the node
+ * @sortColumn: 	sort column id
+ * @reversed:   	TRUE if order should be reversed
+ *
  * Change/Set the sort column of a given node.
  *
- * @param node		the node
- * @param sortColumn	sort column id
- * @param reversed	TRUE if order should be reversed
- *
- * @returns TRUE if the passed settings were different from the previous ones
+ * Returns: TRUE if the passed settings were different from the previous ones
  */
 gboolean node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboolean reversed);
 
 /**
- * Change/Set the viewing mode of a given node.
+ * node_set_view_mode: (skip)
+ * @node:		the node
+ * @newMode:    	viewing mode (NODE_VIEW_MODE_*)
  *
- * @param node		the node
- * @param newMode	viewing mode (NODE_VIEW_MODE_*)
+ * Change/Set the viewing mode of a given node.
  */
 void node_set_view_mode(nodePtr node, nodeViewType newMode);
 
 /**
+ * node_get_view_mode: (skip)
+ * @node: 	the node
+ *
  * Query the effective viewing mode setting of a given mode.
  * When node viewing mode is set to default it will return the
  * configured default.
  *
- * @param node 	the node
- *
- * @returns viewing mode (NODE_VIEW_MODE_*)
+ * Returns: viewing mode (NODE_VIEW_MODE_*)
  */
 nodeViewType node_get_view_mode(nodePtr node);
 
 /**
+ * node_get_base_url: (skip)
+ * @node:	the node
+ *
  * Returns the base URL for the given node.
  * If it is a mixed item set NULL will be returned.
  *
- * @param node	the node
- *
- * @returns base URL
+ * Returns: base URL
  */
 const gchar * node_get_base_url(nodePtr node);
 
 /**
+ * node_can_add_child_feed: (skip)
+ * @node:	the node
+ *
  * Query whether a feed be added to the given node.
  *
- * @param node	the node
- *
- * @returns TRUE if a feed can be added
+ * Returns: TRUE if a feed can be added
  */
 gboolean node_can_add_child_feed (nodePtr node);
 
 /**
+ * node_can_add_child_folder: (skip)
+ * @node:	the node
+ *
  * Query whether a folder be added to the given node.
  *
- * @param node	the node
- *
- * @returns TRUE if a folder can be added
+ * Returns: TRUE if a folder can be added
  */
 gboolean node_can_add_child_folder (nodePtr node);
 
@@ -399,30 +437,32 @@ gboolean node_can_add_child_folder (nodePtr node);
 typedef void 	(*nodeActionFunc)	(nodePtr node);
 typedef void 	(*nodeActionDataFunc)	(nodePtr node, gpointer user_data);
 
-/**
+/*
  * Do not call this method directly! Do use
  * node_foreach_child() or node_foreach_child_data()!
  */
 void node_foreach_child_full(nodePtr ptr, gpointer func, gint params, gpointer user_data);
 
 /**
+ * node_foreach_child: (skip)
+ * @node:	node pointer whose children should be processed
+ * @func:	the function to process all found elements
+ *
  * Helper function to call node methods for all
  * children of a given node. The given function may
  * modify the children list.
- *
- * @param node	node pointer whose children should be processed
- * @param func	the function to process all found elements
  */
 #define node_foreach_child(node, func) node_foreach_child_full(node,func,0,NULL)
 
 /**
+ * node_foreach_child_data: (skip)
+ * @node:	node pointer whose children should be processed
+ * @func:	the function to process all found elements
+ * @user_data:  specifies the second argument that func should be passed
+ *
  * Helper function to call node methods for all
  * children of a given node. The given function may 
  * modify the children list.
- *
- * @param node	node pointer whose children should be processed
- * @param func	the function to process all found elements
- * @param user_data specifies the second argument that func should be passed
  */
 #define node_foreach_child_data(node, func, user_data) node_foreach_child_full(node,func,1,user_data)
 

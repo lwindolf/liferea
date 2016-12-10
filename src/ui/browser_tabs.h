@@ -1,4 +1,4 @@
-/**
+/*
  * @file browser_tabs.h  internal browsing using multiple tabs
  *
  * Copyright (C) 2004-2008 Lars Windolf <lars.windolf@gmx.de>
@@ -56,50 +56,58 @@ struct BrowserTabsClass
 GType browser_tabs_get_type (void);
 
 /**
- * Returns the singleton browser tabs instance.
+ * browser_tabs_create: (skip)
+ * @notebook:	GtkNotebook widget to use
  *
- * @param notebook	GtkNotebook widget to use
+ * Returns: the singleton browser tabs instance.
+ *
  */
 BrowserTabs * browser_tabs_create (GtkNotebook *notebook);
 
 /**
+ * browser_tabs_add_new:
+ * @url:	URL to be loaded in new tab (can be NULL to do nothing)
+ * @title:	title of the tab to be created
+ * @activate:   Should the new tab be put in the foreground?
+ *
  * Adds a new tab with the specified URL and title.
  *
- * @param url	URL to be loaded in new tab (can be NULL to do nothing)
- * @param title	title of the tab to be created
- * @param activate Should the new tab be put in the foreground?
- *
- * @returns the newly created HTML view
+ * Returns: the newly created HTML view
  */
 LifereaHtmlView * browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate);
 
 /**
+ * browser_tabs_show_headlines:
+ *
  * makes the headline tab visible 
  */
 void browser_tabs_show_headlines (void);
 
 /**
+ * browser_tabs_get_active_htmlview:
+ *
  * Used to determine which HTML view (a tab or the headlines view)
  * is currently visible and can be used to display HTML that
  * is to be loaded
  *
- * @returns HTML view widget
+ * Returns: (transfer none) (nullable): HTML view widget
  */
 LifereaHtmlView * browser_tabs_get_active_htmlview (void);
 
 /**
- * Requests the tab to change zoom level.
+ * browser_tabs_do_zoom:
+ * @in:	TRUE if zooming in, FALSE for zooming out
  *
- * @param in	TRUE if zooming in, FALSE for zooming out
+ * Requests the tab to change zoom level.
  */
 void browser_tabs_do_zoom (gboolean in);
 
-/** All widget elements and state of a tab */
+/* All widget elements and state of a tab */
 typedef struct _tabInfo tabInfo;
 struct _tabInfo {
-	GtkWidget	*label;		/**< the tab label */
-	GtkWidget	*widget;	/**< the embedded child widget */
-	LifereaHtmlView	*htmlview;	/**< the tabs HTML view widget */
+	GtkWidget	*label;		/*<< the tab label */
+	GtkWidget	*widget;	/*<< the embedded child widget */
+	LifereaHtmlView	*htmlview;	/*<< the tabs HTML view widget */
 };
 
 G_END_DECLS

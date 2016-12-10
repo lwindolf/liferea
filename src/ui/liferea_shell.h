@@ -29,12 +29,12 @@
 
 #include "node.h"
 
-/** possible main window states */
+/* possible main window states */
 enum mainwindowState {
-	MAINWINDOW_SHOWN,	/**< main window is visible */
-	MAINWINDOW_MAXIMIZED,	/**< main window is visible and maximized */
-	MAINWINDOW_ICONIFIED,	/**< main window is iconified */
-	MAINWINDOW_HIDDEN	/**< main window is not visible at all */
+	MAINWINDOW_SHOWN,	/*<< main window is visible */
+	MAINWINDOW_MAXIMIZED,	/*<< main window is visible and maximized */
+	MAINWINDOW_ICONIFIED,	/*<< main window is iconified */
+	MAINWINDOW_HIDDEN	/*<< main window is not visible at all */
 };
 
 G_BEGIN_DECLS
@@ -73,22 +73,21 @@ GType liferea_shell_get_type	(void);
  * Searches the glade XML UI tree for the given widget
  * name and returns the found widget.
  *
- * Returns: (transfer none): the widget found or NULL
+ * Returns: (transfer none) (nullable): the widget found or NULL
  */
 GtkWidget * liferea_shell_lookup (const gchar *name);
 
 /**
- * liferea_shell_create:
+ * liferea_shell_create: (skip)
+ * @app:	                the GtkApplication to attach the main window to
+ * @overrideWindowState:	optional parameter for window state (or NULL)
  *
  * Set up the Liferea main window.
- *
- * @param app	the GtkApplication to attach the main window to
- * @param overrideWindowState	optional parameter for window state (or NULL)
  */
 void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState);
 
 /**
- * liferea_shell_destroy:
+ * liferea_shell_destroy: (skip)
  *
  * Destroys the global liferea_shell object.
  */
@@ -110,15 +109,14 @@ void liferea_shell_toggle_visibility (void);
 
 /**
  * liferea_shell_set_toolbar_style:
+ * @toolbar_style: text string containing the type of style to use
  *
  * Sets the toolbar to a particular style
- *
- * @param toolbar_style text string containing the type of style to use
  */
 void liferea_shell_set_toolbar_style (const gchar *toolbar_style);
 
 /**
- * liferea_shell_update_toolbar:
+ * liferea_shell_update_toolbar: (skip)
  *
  * According to the preferences this function enables/disables the toolbar.
  *
@@ -127,7 +125,7 @@ void liferea_shell_set_toolbar_style (const gchar *toolbar_style);
 void liferea_shell_update_toolbar (void);
 
 /**
- * liferea_shell_update_history_actions:
+ * liferea_shell_update_history_actions: (skip)
  *
  * Update item history menu actions and toolbar buttons.
  *
@@ -136,47 +134,43 @@ void liferea_shell_update_toolbar (void);
 void liferea_shell_update_history_actions (void);
 
 /**
- * liferea_shell_update_feed_menu:
+ * liferea_shell_update_feed_menu: (skip)
+ * @add:                TRUE if subscribing is to be enabled
+ * @enabled:    	TRUE if feed actions are to be enabled
+ * @readWrite:  	TRUE if feed list modifying actions are enabled
  *
  * Update the sensitivity of options affecting single feeds.
- *
- * @param add           TRUE if subscribing is to be enabled
- * @param enabled	TRUE if feed actions are to be enabled
- * @param readWrite	TRUE if feed list modifying actions are enabled
  *
  * TODO: use signal instead
  */
 void liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean readWrite);
 
 /**
- * liferea_shell_update_item_menu:
+ * liferea_shell_update_item_menu: (skip)
+ * @enabled:	TRUE if item actions are to be enabled
  *
  * Update the sensitivity of options affecting single items.
- *
- * @param enabled	TRUE if item actions are to be enabled
  *
  * TODO: use signal instead
  */
 void liferea_shell_update_item_menu (gboolean enabled);
 
 /**
- * liferea_shell_update_allitems_actions:
+ * liferea_shell_update_allitems_actions: (skip)
+ * @isNotEmpty: 	TRUE if there is a non-empty item set active
+ * @isRead:     	TRUE if there are no unread items in the item set
  *
  * Update the sensitivity of options affecting item sets.
- *
- * @param isNotEmpty	TRUE if there is a non-empty item set active
- * @param isRead	TRUE if there are no unread items in the item set
  *
  * TODO: use signal instead
  */
 void liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead);
 
 /**
- * liferea_shell_update_update_menu:
+ * liferea_shell_update_update_menu: (skip)
+ * @enabled:	TRUE if menu options are to be enabled
  *
  * Set the sensitivity of items in the update menu.
- *
- * @param enabled	TRUE if menu options are to be enabled
  *
  * TODO: use signal instead
  */

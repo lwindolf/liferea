@@ -1,4 +1,4 @@
-/**
+/*
  * @file icons.h  Using icons from theme and package pixmaps
  *
  * Copyright (C) 2010-2013 Lars Windolf <lars.windolf@gmx.de>
@@ -43,6 +43,8 @@ typedef enum {
 } lifereaIcon;
 
 /**
+ * icons_load: (skip)
+ *
  * Load all icons from theme and Liferea pixmaps.
  *
  * Must be called once before icon_get() may be used!
@@ -52,9 +54,9 @@ void icons_load (void);
 
 /**
  * icon_get:
- * Returns a GdkPixbuf for the requested item.
+ * @icon:	the icon
  *
- * @param icon	the icon
+ * Returns a GdkPixbuf for the requested item.
  *
  * Returns: (transfer none): GdkPixbuf
  */
@@ -62,11 +64,11 @@ const GdkPixbuf * icon_get (lifereaIcon icon);
 
 /**
  * icon_create_from_file:
+ * @file name:	the name of the file
+ *
  * Takes a file name relative to "pixmaps" directory and tries to load the 
  * image into a GdkPixbuf. Can be used to load icons not in lifereaIcon
  * on demand.
- *
- * @param file name	the name of the file
  *
  * Returns: (transfer none): a new pixbuf or NULL
  */
