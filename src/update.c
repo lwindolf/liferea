@@ -579,6 +579,21 @@ update_process_result_idle_cb (gpointer user_data)
 	return FALSE;
 }
 
+static void
+update_apply_filter_async(GTask *task, gpointer src, gpointer tdata, GCancellable *ccan)
+{
+    updateJobPtr job = tdata;
+    update_apply_filter(job);
+    g_task_return_int(task, 0);
+}
+
+static void
+update_apply_filter_finish(GObject *src, GAsyncResult *result, gpointer user_data)
+{
+    updateJobPtr job = user_data;
+    g_idle_add(update_process_result_idle_cb, job);
+}
+
 void
 update_process_finished_job (updateJobPtr job)
 {
@@ -596,8 +611,13 @@ update_process_finished_job (updateJobPtr job)
 	} 
 
 	/* Finally execute the postfilter */
-	if (job->result->data && job->request->filtercmd) 
-		update_apply_filter (job);
+	if (job->result->data && job->request->filtercmd) {
+                GTask *task = g_task_new(NULL, NULL, update_apply_filter_finish, job);
+                g_task_set_task_data(task, job, NULL);
+                g_task_run_in_thread(task, update_apply_filter_async);
+                g_object_unref(task);
+                return;
+        }
 		
 	g_idle_add (update_process_result_idle_cb, job);
 }
