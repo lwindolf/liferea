@@ -6,6 +6,8 @@ Open problems before 1.12 release
 
 	* Fixes #415: Filter commands are not asynchronous
 	  (Rich Coe)
+	* FIxes #459: Fixes GtkDoc warnings
+	  (Leiaz)
 
 
 2016-11-11   Lars Windolf <lars.windolf@gmx.de>
