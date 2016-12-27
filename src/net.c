@@ -32,7 +32,7 @@
 #include "conf.h"
 #include "debug.h"
 
-#define HOMEPAGE	"http://lzone.de/liferea/"
+#define HOMEPAGE	"https://lzone.de/liferea/"
 
 static SoupSession *session = NULL;	/* Session configured for preferences */
 static SoupSession *session2 = NULL;	/* Session for "Don't use proxy feature" */
@@ -281,10 +281,10 @@ network_init (void)
 
 	/* Set an appropriate user agent */
 	if (g_getenv ("LANG")) {
-		/* e.g. "Liferea/1.10.0 (Linux; de_DE; http://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+		/* e.g. "Liferea/1.10.0 (Linux; de_DE; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
 	} else {
-		/* e.g. "Liferea/1.10.0 (Linux; http://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+		/* e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
 	}
 

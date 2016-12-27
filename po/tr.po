@@ -526,7 +526,7 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea - Linux Haber Okuyucusu"
 
 #: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
+msgid "For more information, please visit https://lzone.de/liferea/"
 msgstr ""
 
 #. Some libsoup transport errors

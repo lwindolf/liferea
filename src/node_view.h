@@ -1,4 +1,4 @@
-/**
+/*
  * @file node_view.h  node view modes
  * 
  * Copyright (C) 2009-2012 Lars Windolf <lars.windolf@gmx.de>

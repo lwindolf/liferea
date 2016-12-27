@@ -509,8 +509,8 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Liferea, Linux Feed Reader"
 
 #: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
-msgstr "Meer informatie vindt u op http://lzone.de/liferea/"
+msgid "For more information, please visit https://lzone.de/liferea/"
+msgstr "Meer informatie vindt u op https://lzone.de/liferea/"
 
 #. Some libsoup transport errors
 #: ../src/net.c:391
@@ -2767,11 +2767,11 @@ msgstr "_Gebruikersnaam"
 
 #~ msgid ""
 #~ "<p>Could not determine the feed type. Please check that it is <a href="
-#~ "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://lzone.de/"
+#~ "\"http://feedvalidator.org\">valid</a> and in a <a href=\"https://lzone.de/"
 #~ "liferea/supported_formats.htm\">supported format</a>.</p>"
 #~ msgstr ""
 #~ "<p>Het feed type kon niet worden bepaald. Controleer of de feed <ahref="
-#~ "\"http://feedvalidator.org\">geldig</a> is en een <a href=\"http://lzone."
+#~ "\"http://feedvalidator.org\">geldig</a> is en een <a href=\"https://lzone."
 #~ "de/liferea/supported_formats.htm\">ondersteundformaat</a> heeft."
 
 #~ msgid ""

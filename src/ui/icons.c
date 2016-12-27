@@ -1,4 +1,4 @@
-/**
+/*
  * @file icons.c  Using icons from theme and package pixmaps
  *
  * Copyright (C) 2010-2014 Lars Windolf <lars.windolf@gmx.de>

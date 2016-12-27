@@ -43,7 +43,8 @@ typedef enum {
 } lifereaIcon;
 
 /**
- * icons_load:
+ * icons_load: (skip)
+ *
  * Load all icons from theme and Liferea pixmaps.
  *
  * Must be called once before icon_get() may be used!
@@ -63,11 +64,11 @@ const GIcon * icon_get (lifereaIcon icon);
 
 /**
  * icon_create_from_file:
+ * @filename:	the name of the file
+ *
  * Takes a file name relative to "pixmaps" directory and tries to load the 
  * image into a GdkPixbuf. Can be used to load icons not in lifereaIcon
  * on demand.
- *
- * @filename:	the name of the file
  *
  * Returns: (transfer full): a new pixbuf or NULL
  */

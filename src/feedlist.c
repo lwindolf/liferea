@@ -1,4 +1,4 @@
-/**
+/*
  * @file feedlist.c  subscriptions as an hierarchic tree
  *
  * Copyright (C) 2005-2013 Lars Windolf <lars.windolf@gmx.de>
@@ -45,22 +45,22 @@ static void feedlist_save	(void);
 #define FEEDLIST_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), FEEDLIST_TYPE, FeedListPrivate))
 
 struct FeedListPrivate {
-	guint		newCount;	/**< overall new item count */
+	guint		newCount;	/*<< overall new item count */
 
-	nodePtr		rootNode;	/**< the feed list root node */
-	nodePtr		selectedNode;	/**< matches the node selected in the feed list tree view, which
+	nodePtr		rootNode;	/*<< the feed list root node */
+	nodePtr		selectedNode;	/*<< matches the node selected in the feed list tree view, which
 					     is not necessarily the displayed one (e.g. folders without recursive
 					     display enabled) */
 
-	guint		saveTimer;	/**< timer id for delayed feed list saving */
-	guint		autoUpdateTimer; /**< timer id for auto update */
+	guint		saveTimer;	/*<< timer id for delayed feed list saving */
+	guint		autoUpdateTimer; /*<< timer id for auto update */
 
-	gboolean	loading;	/**< prevents the feed list being saved before it is completely loaded */
+	gboolean	loading;	/*<< prevents the feed list being saved before it is completely loaded */
 };
 
 enum {
-	NEW_ITEMS,		/**< node has new items after update */
-	NODE_UPDATED,		/**< node display info (title, unread count) has changed */
+	NEW_ITEMS,		/*<< node has new items after update */
+	NODE_UPDATED,		/*<< node display info (title, unread count) has changed */
 	LAST_SIGNAL
 };
 

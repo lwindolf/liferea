@@ -32,7 +32,7 @@
 #include "vfolder.h"
 
 /* You can find a schema description used by this version of Liferea at:
-   http://lzone.de/wiki/doku.php?id=liferea:v1.8:db_schema */
+   https://lzone.de/wiki/doku.php?id=liferea:v1.8:db_schema */
 
 static sqlite3	*db = NULL;
 gboolean searchFolderRebuild = FALSE;

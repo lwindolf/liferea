@@ -1,8 +1,20 @@
-Open problems before release
+Open problems before 1.12 release
 
 	* Article skimming currently broken
 
-To be released
+	Version 1.12-rc3
+
+	* Fixes #459: Fixes GtkDoc warnings
+	  (Leiaz)
+	* Fixes #415: Filter commands are not asynchronous
+	  (Rich Coe)
+	* Fixes #363: Missing space above internal browser address bar
+	  (reported by nekohayo, patch by Mikel Olasagasti)
+
+
+2016-11-11   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12-rc2
 
 	* Change all g_warnings() to g_print() for remote source
 	  to avoid "crashing" on errors.

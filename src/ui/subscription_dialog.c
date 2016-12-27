@@ -128,13 +128,13 @@ ui_subscription_create_url (gchar *url,
 
 	/* Use the values in the textboxes if also specified in the URL! */
 	if(auth) {
-		xmlURIPtr uri = xmlParseURI(BAD_CAST str);
+		xmlURIPtr uri = xmlParseURI(str);
 		if (uri != NULL) {
 			xmlChar *sourceUrl;
 			xmlFree(uri->user);
 			uri->user = g_strdup_printf("%s:%s", username, password);
 			sourceUrl = xmlSaveUri(uri);
-			source = g_strdup(sourceUrl);
+			source = g_strdup((gchar *) sourceUrl);
 			g_free(uri->user);
 			uri->user = NULL;
 			xmlFree(sourceUrl);
@@ -439,7 +439,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 			ui_subscription_prop_enable_httpauth(spd->priv, FALSE);
 			gtk_widget_set_sensitive(spd->priv->selectFile, TRUE);
 		} else if(strstr(subscription_get_source(subscription), "://") != NULL) {
-			xmlURIPtr uri = xmlParseURI(BAD_CAST subscription_get_source(subscription));
+			xmlURIPtr uri = xmlParseURI(subscription_get_source(subscription));
 			xmlChar *parsedUrl;
 			if(uri) {
 				if(uri->user) {
@@ -456,7 +456,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 					gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->authcheckbox), TRUE);
 				}
 				parsedUrl = xmlSaveUri(uri);
-				gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), parsedUrl);
+				gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), (gchar *) parsedUrl);
 				xmlFree(parsedUrl);
 				xmlFreeURI(uri);
 			} else {
@@ -538,7 +538,7 @@ subscription_prop_dialog_init (SubscriptionPropDialog *spd)
 	spd->priv->authcheckbox = liferea_dialog_lookup (propdialog, "HTTPauthCheck");
 	spd->priv->username = liferea_dialog_lookup (propdialog, "usernameEntry");
 	spd->priv->password = liferea_dialog_lookup (propdialog, "passwordEntry");
-	spd->priv->credTable = liferea_dialog_lookup (propdialog, "table4");
+	spd->priv->credTable = liferea_dialog_lookup (propdialog, "httpAuthBox");
 	
 	g_signal_connect (spd->priv->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), spd->priv);
 	g_signal_connect (spd->priv->urlRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), spd->priv);

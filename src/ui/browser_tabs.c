@@ -1,4 +1,4 @@
-/**
+/*
  * @file browser_tabs.c  internal browsing using multiple tabs
  *
  * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
@@ -115,9 +115,9 @@ enum {
 struct BrowserTabsPrivate {
 	GtkNotebook	*notebook;
 
-	GtkWidget	*headlines;	/**< widget of the headlines tab */
+	GtkWidget	*headlines;	/*<< widget of the headlines tab */
 	
-	GSList		*list;		/**< tabInfo structures for all tabs */
+	GSList		*list;		/*<< tabInfo structures for all tabs */
 };
 
 static GObjectClass *parent_class = NULL;
@@ -125,7 +125,7 @@ static BrowserTabs *tabs = NULL;
 
 G_DEFINE_TYPE (BrowserTabs, browser_tabs, G_TYPE_OBJECT);
 
-/** Removes tab info structure */
+/* Removes tab info structure */
 static void
 browser_tabs_remove_tab (tabInfo *tab)
 {
@@ -283,7 +283,7 @@ on_htmlview_close_tab (gpointer object, gpointer user_data)
 	browser_tabs_close_tab((tabInfo *)user_data);
 }
 
-/** Close tab and removes tab info structure */
+/* Close tab and removes tab info structure */
 static void
 browser_tabs_close_tab (tabInfo *tab)
 {	

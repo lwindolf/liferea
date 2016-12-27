@@ -515,7 +515,7 @@ msgid "Liferea, the Linux Feed Reader"
 msgstr "Lifeera 偏好"
 
 #: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
+msgid "For more information, please visit https://lzone.de/liferea/"
 msgstr ""
 
 #. Some libsoup transport errors
@@ -3162,11 +3162,11 @@ msgstr "使用者名稱:"
 #~ msgid ""
 #~ "<p>Could not determine the feed type. Please check that it is a <a href="
 #~ "\"http://feedvalidator.org\">valid</a> type and listed in the <a href="
-#~ "\"http://lzone.de/liferea/supported_formats.htm\">supported formats</a>.</"
+#~ "\"https://lzone.de/liferea/supported_formats.htm\">supported formats</a>.</"
 #~ "p>"
 #~ msgstr ""
 #~ "<p>無法偵測饋流類型。請確定為 <a href=\"http://feedvalidator.org\">有效的"
-#~ "饋流類型</a>，並為 <a href=\"http://lzone.de/liferea/supported_formats.htm"
+#~ "饋流類型</a>，並為 <a href=\"https://lzone.de/liferea/supported_formats.htm"
 #~ "\">支援的格式</a>。</p>"
 
 #~ msgid "Please do a search first!"
