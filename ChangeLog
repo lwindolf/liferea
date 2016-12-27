@@ -2,6 +2,12 @@ Open problems before 1.12 release
 
 	* Article skimming currently broken
 
+	Version 1.12-rc3
+
+	* Fixes #415: Filter commands are not asynchronous
+	  (Rich Coe)
+
+
 2016-11-11   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12-rc2
