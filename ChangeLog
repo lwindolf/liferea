@@ -10,6 +10,8 @@ Open problems before 1.12 release
 	  (Rich Coe)
 	* Fixes #363: Missing space above internal browser address bar
 	  (reported by nekohayo, patch by Mikel Olasagasti)
+	* Fixes #251: Liferea does not always use theme icons when it is launched
+	  on system startup (reported by GreenLunar, fix by Leiaz)
 
 
 2016-11-11   Lars Windolf <lars.windolf@gmx.de>
