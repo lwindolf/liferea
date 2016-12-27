@@ -54,23 +54,23 @@ void icons_load (void);
 
 /**
  * icon_get:
+ * Returns a GIcon for the requested item.
+ *
  * @icon:	the icon
  *
- * Returns a GdkPixbuf for the requested item.
- *
- * Returns: (transfer none): GdkPixbuf
+ * Returns: (transfer none): GIcon
  */
-const GdkPixbuf * icon_get (lifereaIcon icon);
+const GIcon * icon_get (lifereaIcon icon);
 
 /**
  * icon_create_from_file:
- * @file name:	the name of the file
+ * @filename:	the name of the file
  *
  * Takes a file name relative to "pixmaps" directory and tries to load the 
  * image into a GdkPixbuf. Can be used to load icons not in lifereaIcon
  * on demand.
  *
- * Returns: (transfer none): a new pixbuf or NULL
+ * Returns: (transfer full): a new pixbuf or NULL
  */
 GdkPixbuf * icon_create_from_file (const gchar *filename);
 

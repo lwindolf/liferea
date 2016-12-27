@@ -291,11 +291,11 @@ item_list_view_create_tree_store (void)
 	                    G_TYPE_UINT64,	/* IS_TIME */
 	                    G_TYPE_STRING, 	/* IS_TIME_STR */
 	                    G_TYPE_STRING,	/* IS_LABEL */
-	                    GDK_TYPE_PIXBUF,	/* IS_STATEICON */
+	                    G_TYPE_ICON,	/* IS_STATEICON */
 	                    G_TYPE_ULONG,	/* IS_NR */
 	                    G_TYPE_POINTER,	/* IS_PARENT */
-	                    GDK_TYPE_PIXBUF,	/* IS_FAVICON */
-	                    GDK_TYPE_PIXBUF,	/* IS_ENCICON */
+	                    G_TYPE_ICON,	/* IS_FAVICON */
+	                    G_TYPE_ICON,	/* IS_ENCICON */
 	                    G_TYPE_BOOLEAN,	/* IS_ENCLOSURE */
 	                    G_TYPE_POINTER,	/* IS_SOURCE */
 	                    G_TYPE_UINT,	/* IS_STATE */
@@ -463,7 +463,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	GtkTreeStore	*itemstore;
 	GtkTreeIter	iter;
 	gchar		*title, *time_str;
-	const GdkPixbuf	*state_icon;
+	const GIcon	*state_icon;
 	
 	if (!item_list_view_id_to_iter (ilv, item->id, &iter))
 		return;
@@ -754,7 +754,7 @@ item_list_view_create (gboolean wide)
 	item_list_view_set_tree_store (ilv, item_list_view_create_tree_store ());
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
-	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_STATEICON, NULL);
+	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_STATEICON, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->stateColumn = column;
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
@@ -762,7 +762,7 @@ item_list_view_create (gboolean wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
 	
 	renderer = gtk_cell_renderer_pixbuf_new ();
-	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_ENCICON, NULL);
+	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_ENCICON, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->enclosureColumn = column;
 
@@ -780,7 +780,13 @@ item_list_view_create (gboolean wide)
 	}
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
-	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_FAVICON, NULL);
+	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_FAVICON, NULL);
+	if (wide) {
+		g_object_set (renderer, "stock-size", GTK_ICON_SIZE_DND, NULL);
+	} else {
+		g_object_set (renderer, "stock-size", GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+	}
+
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->faviconColumn = column;
@@ -847,7 +853,7 @@ item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstor
 		                       IS_TIME, (guint64)item->time,
 		                       IS_NR, item->id,
 				       IS_PARENT, node,
-		                       IS_FAVICON, ilv->priv->wideView?node_get_large_icon (node):node_get_icon (node),
+		                       IS_FAVICON, node_get_icon (node),
 		                       IS_ENCICON, item->hasEnclosure?icon_get (ICON_ENCLOSURE):NULL,
 				       IS_ENCLOSURE, item->hasEnclosure,
 				       IS_SOURCE, node,
