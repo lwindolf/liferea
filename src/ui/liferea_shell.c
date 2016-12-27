@@ -63,31 +63,31 @@ extern gboolean searchFolderRebuild; /* db.c */
 struct LifereaShellPrivate {
 	GtkBuilder	*xml;
 
-	GtkWindow	*window;		/**< Liferea main window */
+	GtkWindow	*window;		/*<< Liferea main window */
 	GtkWidget	*menubar;
 	GtkWidget	*toolbar;
 	GtkTreeView	*feedlistView;
 	
-	GtkStatusbar	*statusbar;		/**< main window status bar */
-	gboolean	statusbarLocked;	/**< flag locking important message on status bar */
-	guint		statusbarLockTimer;	/**< timer id for status bar lock reset timer */
+	GtkStatusbar	*statusbar;		/*<< main window status bar */
+	gboolean	statusbarLocked;	/*<< flag locking important message on status bar */
+	guint		statusbarLockTimer;	/*<< timer id for status bar lock reset timer */
 
 	GtkWidget	*statusbar_feedsinfo;
 	GtkWidget	*statusbar_feedsinfo_evbox;
 	GtkActionGroup	*generalActions;
-	GtkActionGroup	*addActions;		/**< all types of "New" options */
-	GtkActionGroup	*feedActions;		/**< update and mark read */
-	GtkActionGroup	*readWriteActions;	/**< node remove and properties, node itemset items remove */
-	GtkActionGroup	*itemActions;		/**< item state toggline, single item remove */
+	GtkActionGroup	*addActions;		/*<< all types of "New" options */
+	GtkActionGroup	*feedActions;		/*<< update and mark read */
+	GtkActionGroup	*readWriteActions;	/*<< node remove and properties, node itemset items remove */
+	GtkActionGroup	*itemActions;		/*<< item state toggline, single item remove */
 
 	ItemList	*itemlist;	
 	FeedList	*feedlist;
 	ItemView	*itemview;
 	BrowserTabs	*tabs;
 
-	PeasExtensionSet *extensions;		/**< Plugin management */
+	PeasExtensionSet *extensions;		/*<< Plugin management */
 
-	gboolean	fullscreen;		/**< track fullscreen */
+	gboolean	fullscreen;		/*<< track fullscreen */
 };
 
 enum {

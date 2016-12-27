@@ -1,4 +1,4 @@
-/**
+/*
  * @file icons.c  Using icons from theme and package pixmaps
  *
  * Copyright (C) 2010-2014 Lars Windolf <lars.windolf@gmx.de>
@@ -26,7 +26,7 @@
 
 #include "common.h"
 
-static GdkPixbuf *icons[MAX_ICONS];	/**< list of icon assignments */
+static GdkPixbuf *icons[MAX_ICONS];	/*<< list of icon assignments */
 
 static gchar *
 icon_find_pixmap_file (const gchar *filename)

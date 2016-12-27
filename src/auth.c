@@ -27,8 +27,8 @@
 #include <libpeas/peas-extension-set.h>
 
 // FIXME: This should be a member of some object!
-static PeasExtensionSet *extensions = NULL;	/**< Plugin management */
-static gint		count = 0;		/**< Number of active auth plugins */
+static PeasExtensionSet *extensions = NULL;	/*<< Plugin management */
+static gint		count = 0;		/*<< Number of active auth plugins */
 
 static void
 on_extension_added (PeasExtensionSet *extensions,

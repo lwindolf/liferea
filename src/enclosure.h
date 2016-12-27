@@ -64,7 +64,7 @@ enclosurePtr enclosure_from_string (const gchar *str);
 gchar * enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gboolean downloaded);
 
 /**
- * enclosure_to_string:
+ * enclosure_to_string: (skip)
  * @enclosure:		the enclosure
  *
  * Serialize enclosure to string.
@@ -94,7 +94,7 @@ gchar * enclosure_get_url (const gchar *str);
 gchar * enclosure_get_mime (const gchar *str);
 
 /**
- * enclosure_free:
+ * enclosure_free: (skip)
  * @enclosure:	the enclosure
  *
  * Free all memory associated with the enclosure.
@@ -111,7 +111,7 @@ void enclosure_free (enclosurePtr enclosure);
 const GSList * enclosure_mime_types_get (void);
 
 /**
- * enclosure_mime_type_add:
+ * enclosure_mime_type_add: (skip)
  * @type:	the new definition
  *
  * Adds a new MIME type handling definition.
@@ -119,7 +119,7 @@ const GSList * enclosure_mime_types_get (void);
 void enclosure_mime_type_add (encTypePtr type);
 
 /**
- * enclosure_mime_type_remove:
+ * enclosure_mime_type_remove: (skip)
  * @type:	the definition to remove
  *
  * Removes an existing MIME type handling definition.
@@ -128,14 +128,14 @@ void enclosure_mime_type_add (encTypePtr type);
 void enclosure_mime_type_remove (encTypePtr type);
 
 /**
- * enclosure_mime_types_save:
+ * enclosure_mime_types_save: (skip)
  *
  * Save all MIME type definitions.
  */
 void enclosure_mime_types_save (void);
 
 /**
- * enclosure_download:
+ * enclosure_download: (skip)
  * @type:		ULL or pointer to type structure
  * @url:		valid HTTP URL
  * @interactive:	TRUE if triggered by user interaction
