@@ -115,7 +115,7 @@ network_get_proxy_uri (void)
    last modified string.
  */
 void
-network_process_request (const updateJobPtr const job)
+network_process_request (const updateJobPtr job)
 {
 	SoupMessage	*msg;
 	SoupDate	*date;
@@ -259,14 +259,15 @@ network_set_soup_session_proxy (SoupSession *session, ProxyDetectMode mode, cons
 			soup_uri_set_port (uri, port);
 			soup_uri_set_user (uri, user);
 			soup_uri_set_password (uri, password);
+			soup_uri_set_path (uri, "/");
 
 			if (SOUP_URI_IS_VALID (uri)) {
 				/* Sets proxy-uri, this unsets proxy-resolver. */
 				g_object_set (G_OBJECT (session),
 					SOUP_SESSION_PROXY_URI, uri,
 					NULL);
-				soup_uri_free (uri);
 			}
+			soup_uri_free (uri);
 			break;
 	}
 }
