@@ -4,7 +4,6 @@ sudo: false
 script:
   - ./autogen.sh
   - ./configure && make
-  - sudo make install
 
 compiler:
   - clang
