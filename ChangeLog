@@ -1,6 +1,8 @@
 Open problems before 1.12 release
 
 	* Article skimming currently broken
+	* Tray icon needs to be auto-disabled along with a popup
+	  informing users who previously had it enabled
 
 	Version 1.12-rc3
 
