@@ -15,6 +15,12 @@ Open problems before 1.12 release
 	* Fixes #251: Liferea does not always use theme icons when it is launched
 	  on system startup (reported by GreenLunar, fix by Leiaz)
 
+	* Updated Finnish translation (Jorma Karvonen)
+	* Updated Latvian translation (Rihards Prieditis)
+	* Updated Albanian translation (Bensik Bleta)
+	* Updated Hungarian translation (Balázs Úr)
+	* Updated Brazlian translation (Rafael Ferreira)
+
 
 2016-11-11   Lars Windolf <lars.windolf@gmx.de>
 
