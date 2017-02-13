@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.7.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-21 00:06+0200\n"
+"POT-Creation-Date: 2017-02-13 22:52+0100\n"
 "PO-Revision-Date: 2010-08-19 16:32+0100\n"
 "Last-Translator: Anxo Outeiral <bassball93@gmail.com>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -69,23 +69,24 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podcast"
 
-#: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/mainwindow.ui.h:1
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:79
+#: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../liferea.desktop.in.h:2
+#: ../net.sourceforge.liferea.desktop.in.h:2
 msgid "Feed Reader"
 msgstr "Lector de fontes"
 
-#: ../liferea.desktop.in.h:3
+#: ../net.sourceforge.liferea.desktop.in.h:3
 msgid "Liferea Feed Reader"
 msgstr "Lector de fontes Liferea"
 
-#: ../liferea.desktop.in.h:4
+#: ../net.sourceforge.liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
 msgstr ""
 
-#: ../liferea.desktop.in.h:5
+#: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
 msgstr ""
 
@@ -196,18 +197,26 @@ msgid "Creator"
 msgstr "Creador"
 
 #: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:12
 msgid "Comments"
 msgstr "Comentarios"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:13
 msgid "Updating..."
 msgstr "Actualizando..."
 
-#: ../xslt/item.xml.in.h:12
+#: ../xslt/item.xml.in.h:14
 msgid "Section"
 msgstr "Sección"
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:15
 msgid "Department"
 msgstr "Departamento"
 
@@ -408,7 +417,7 @@ msgstr "Non foi posíbel determinar o tipo de fonte."
 msgid "There are no unread items"
 msgstr "Non hai artigos non lidos"
 
-#: ../src/main.c:163
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -417,45 +426,45 @@ msgstr ""
 "mostrala, «iconified» para deixala na área de notificación, ou «hidden»  "
 "para ocultala"
 
-#: ../src/main.c:163
+#: ../src/liferea_application.c:282
 msgid "STATE"
 msgstr "ESTADO"
 
-#: ../src/main.c:164
+#: ../src/liferea_application.c:283
 msgid "Show version information and exit"
 msgstr "Amosa información da versión e finaliza"
 
-#: ../src/main.c:165
+#: ../src/liferea_application.c:284
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Nova subscrición"
 
-#: ../src/main.c:165
+#: ../src/liferea_application.c:284
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:170
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages of all types"
 msgstr "Amosa todas as mensaxes de depuración"
 
-#: ../src/main.c:171
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the cache handling"
 msgstr "Amosa mensaxes de depuración para a xestión da caché"
 
-#: ../src/main.c:172
+#: ../src/liferea_application.c:291
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "Amosa mensaxes de depuración da xestión de configuración"
 
-#: ../src/main.c:173
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of the database handling"
 msgstr "Amosa mensaxes de depuración da xestión de bases de datos"
 
-#: ../src/main.c:174
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages of all GUI functions"
 msgstr "Amosa mensaxes de depuración de todas as funcións da interface gráfica"
 
-#: ../src/main.c:175
+#: ../src/liferea_application.c:294
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
@@ -463,80 +472,72 @@ msgstr ""
 "Activa a depuración de renderización HTML. Cada vez que Liferea produza HTML "
 "de saída gardará ese contido no arquivo ~/.cache/liferea/output.xhtml"
 
-#: ../src/main.c:176
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all network activity"
 msgstr "Amosa mensaxes de depuración de toda a actividade de rede"
 
-#: ../src/main.c:177
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages of all parsing functions"
 msgstr "Amosa mensaxes de depuración de todas as funcións de procesamento"
 
-#: ../src/main.c:178
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "Amosa mensaxes de depuración cando unha función demórase moito tempo"
 
-#: ../src/main.c:179
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Amosa mensaxes de depuración na entrada e saída de funcións"
 
-#: ../src/main.c:180
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the feed update processing"
 msgstr "Amosa mensaxes de depuración do proceso de actualización de fontes"
 
-#: ../src/main.c:181
+#: ../src/liferea_application.c:300
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "Amosa mensaxes de depuración para a xestión da caché"
 
-#: ../src/main.c:182
+#: ../src/liferea_application.c:301
 msgid "Print verbose debugging messages"
 msgstr "Amosa máis información nas mensaxes de depuración"
 
-#: ../src/main.c:193 ../src/main.c:194
+#: ../src/liferea_application.c:306 ../src/liferea_application.c:307
 msgid "Print debugging messages for the given topic"
 msgstr "Amosa mensaxes de depuración para asunto especificado"
 
-#: ../src/main.c:201
-msgid "Liferea, the Linux Feed Reader"
-msgstr "Liferea, lector de fontes para Linux"
-
-#: ../src/main.c:202
-msgid "For more information, please visit https://lzone.de/liferea/"
-msgstr "Para máis información, por favor visite https://lzone.de/liferea/"
-
 #. Some libsoup transport errors
-#: ../src/net.c:391
+#: ../src/net.c:400
 msgid "The update request was cancelled"
 msgstr "A solicitude de actualización foi cancelada"
 
-#: ../src/net.c:392
+#: ../src/net.c:401
 msgid "Unable to resolve destination host name"
 msgstr "Non foi posíbel resolver o nome do host de destino"
 
-#: ../src/net.c:393
+#: ../src/net.c:402
 msgid "Unable to resolve proxy host name"
 msgstr "Non foi posíbel resolver o nome do host proxy"
 
-#: ../src/net.c:394
+#: ../src/net.c:403
 msgid "Unable to connect to remote host"
 msgstr "Non foi posíbel conectar co host remoto"
 
-#: ../src/net.c:395
+#: ../src/net.c:404
 msgid "Unable to connect to proxy"
 msgstr "Non foi posíbel conectar co proxy"
 
-#: ../src/net.c:396
+#: ../src/net.c:405
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr "Produciuse un erro de rede, ou o host de destino fechou a conexión"
 
 #. http 3xx redirection
-#: ../src/net.c:399
+#: ../src/net.c:408
 msgid "The resource moved permanently to a new location"
 msgstr "O recurso foi movido permanentemente a unha nova localización"
 
 #. http 4xx client error
-#: ../src/net.c:402
+#: ../src/net.c:411
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -544,56 +545,56 @@ msgstr ""
 "Non está autorizado para descargar esta fonte. Por favor, actualice o seu "
 "nome de usuario e contrasinal na caixa de diálogo das propiedades da fonte"
 
-#: ../src/net.c:404
+#: ../src/net.c:413
 msgid "Payment required"
 msgstr "É necesario o pagamento"
 
-#: ../src/net.c:405
+#: ../src/net.c:414
 msgid "You're not allowed to access this resource"
 msgstr "Non ten permiso para acceder a este recurso"
 
-#: ../src/net.c:406
+#: ../src/net.c:415
 msgid "Resource Not Found"
 msgstr "Recurso non atopado"
 
-#: ../src/net.c:407
+#: ../src/net.c:416
 msgid "Method Not Allowed"
 msgstr "Método non atopado"
 
-#: ../src/net.c:408
+#: ../src/net.c:417
 msgid "Not Acceptable"
 msgstr "Non é aceptábel"
 
-#: ../src/net.c:409
+#: ../src/net.c:418
 msgid "Proxy authentication required"
 msgstr "O proxy require autenticación"
 
-#: ../src/net.c:410
+#: ../src/net.c:419
 msgid "Request timed out"
 msgstr "Excedeuse o tempo de espera"
 
-#: ../src/net.c:411
+#: ../src/net.c:420
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Xa non está, o recuso non existe. Por favor, cancele a subscrición!"
 
-#: ../src/net.c:416
+#: ../src/net.c:425
 msgid "There was an internal error in the update process"
 msgstr "Ocorreu un erro interno no proceso de actualización"
 
-#: ../src/net.c:418
+#: ../src/net.c:427
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Fonte non dispoñíbel: O servidor solicitou unha redirección non válida!"
 
-#: ../src/net.c:420
+#: ../src/net.c:429
 msgid "Client Error"
 msgstr "Erro do cliente"
 
-#: ../src/net.c:422
+#: ../src/net.c:431
 msgid "Server Error"
 msgstr "Erro do servidor"
 
-#: ../src/net.c:424
+#: ../src/net.c:433
 msgid "An unknown networking error happened!"
 msgstr "Ocorreu un erro de rede descoñecido!"
 
@@ -902,8 +903,7 @@ msgstr "_Seguinte artigo non lido"
 msgid "_View"
 msgstr "_Ver"
 
-#: ../src/ui/liferea_shell.c:931 ../src/ui/liferea_htmlview.c:668
-#: ../src/webkit/liferea_web_view.c:207
+#: ../src/ui/liferea_shell.c:931 ../src/webkit/liferea_web_view.c:211
 msgid "_Increase Text Size"
 msgstr "_Aumentar o tamaño do texto"
 
@@ -911,8 +911,7 @@ msgstr "_Aumentar o tamaño do texto"
 msgid "Increases the text size of the item view."
 msgstr "Aumenta o tamaño do texto na vista do artigo."
 
-#: ../src/ui/liferea_shell.c:933 ../src/ui/liferea_htmlview.c:669
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/ui/liferea_shell.c:933 ../src/webkit/liferea_web_view.c:212
 msgid "_Decrease Text Size"
 msgstr "_Diminuír o tamaño do texto"
 
@@ -1187,58 +1186,12 @@ msgstr "Ficheiro _local"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea está en modo sen conexión. Non é posíbel actualizar."
 
-#: ../src/ui/liferea_htmlview.c:639 ../src/webkit/liferea_web_view.c:169
-#, fuzzy
-msgid "Open Link In _Tab"
-msgstr "Iniciar a ligazón nun _separador"
-
-#: ../src/ui/liferea_htmlview.c:640
-#, fuzzy
-msgid "_Open Link In Browser"
-msgstr "_Inicia a ligazón no navegador"
-
-#: ../src/ui/liferea_htmlview.c:641
-#, fuzzy
-msgid "_Open Link In External Browser"
-msgstr "_Inicia a ligazón no navegador"
-
-#: ../src/ui/liferea_htmlview.c:644 ../src/webkit/liferea_web_view.c:177
-#, c-format
-msgid "_Bookmark Link at %s"
-msgstr "_Marcar ligazón en %s"
-
-#: ../src/ui/liferea_htmlview.c:648 ../src/webkit/liferea_web_view.c:181
-msgid "_Copy Link Location"
-msgstr "_Copiar localización da ligazón"
-
-#: ../src/ui/liferea_htmlview.c:651 ../src/webkit/liferea_web_view.c:184
-#, fuzzy
-msgid "_Copy Image Location"
-msgstr "_Copiar localización da ligazón"
-
-#: ../src/ui/liferea_htmlview.c:653 ../src/webkit/liferea_web_view.c:187
-#, fuzzy
-msgid "S_ave Link As"
-msgstr "Gardar como..."
-
-#: ../src/ui/liferea_htmlview.c:655 ../src/webkit/liferea_web_view.c:190
-msgid "S_ave Image As"
-msgstr ""
-
-#: ../src/ui/liferea_htmlview.c:658 ../src/webkit/liferea_web_view.c:197
-msgid "_Subscribe..."
-msgstr "_Subscribirse..."
-
-#: ../src/ui/liferea_htmlview.c:663 ../src/webkit/liferea_web_view.c:201
-msgid "_Copy"
-msgstr ""
-
 #: ../src/ui/item_list_view.c:114
 msgid "This item has no link specified!"
 msgstr "Este artigo non ten ligazón especificada!"
 
-#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:960
-#: ../src/ui/item_list_view.c:1046 ../src/ui/item_list_view.c:1061
+#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:966
+#: ../src/ui/item_list_view.c:1052 ../src/ui/item_list_view.c:1067
 msgid "No item has been selected"
 msgstr "Non se escolleu ningún artigo"
 
@@ -1250,11 +1203,11 @@ msgstr "*** Sen título ***"
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/item_list_view.c:789
+#: ../src/ui/item_list_view.c:795
 msgid "Headline"
 msgstr "Encabezamento"
 
-#: ../src/ui/item_list_view.c:947
+#: ../src/ui/item_list_view.c:953
 msgid "You must select a feed to delete its items!"
 msgstr "Seleccione unha fonte para eliminar os seus artigos!"
 
@@ -1569,15 +1522,51 @@ msgstr ""
 msgid "TheOldReader"
 msgstr "Lector de fontes"
 
-#: ../src/webkit/liferea_web_view.c:170
+#: ../src/webkit/liferea_web_view.c:173
+#, fuzzy
+msgid "Open Link In _Tab"
+msgstr "Iniciar a ligazón nun _separador"
+
+#: ../src/webkit/liferea_web_view.c:174
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "_Inicia a ligazón no navegador"
 
-#: ../src/webkit/liferea_web_view.c:171
+#: ../src/webkit/liferea_web_view.c:175
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "_Inicia a ligazón no navegador"
+
+#: ../src/webkit/liferea_web_view.c:181
+#, c-format
+msgid "_Bookmark Link at %s"
+msgstr "_Marcar ligazón en %s"
+
+#: ../src/webkit/liferea_web_view.c:185
+msgid "_Copy Link Location"
+msgstr "_Copiar localización da ligazón"
+
+#: ../src/webkit/liferea_web_view.c:188
+#, fuzzy
+msgid "_Copy Image Location"
+msgstr "_Copiar localización da ligazón"
+
+#: ../src/webkit/liferea_web_view.c:191
+#, fuzzy
+msgid "S_ave Link As"
+msgstr "Gardar como..."
+
+#: ../src/webkit/liferea_web_view.c:194
+msgid "S_ave Image As"
+msgstr ""
+
+#: ../src/webkit/liferea_web_view.c:201
+msgid "_Subscribe..."
+msgstr "_Subscribirse..."
+
+#: ../src/webkit/liferea_web_view.c:205
+msgid "_Copy"
+msgstr ""
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1595,11 +1584,11 @@ msgstr "Páxina principal do Liferea"
 msgid "Authentication"
 msgstr "Autenticación"
 
-#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:30
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:33
 msgid "_Password:"
 msgstr "_Contrasinal:"
 
-#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:31
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "User_name:"
 msgstr "_Nome do usuario:"
 
@@ -1687,7 +1676,7 @@ msgstr "Visualizar titulares"
 msgid "combined view"
 msgstr "vista combinada"
 
-#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:21
+#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "Titulares"
 
@@ -1713,36 +1702,36 @@ msgstr "Nome da bandexa de _novas:"
 msgid "Feed Source"
 msgstr "<b>Orixe da fonte</b>"
 
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:14
-msgid "_Source:"
-msgstr "_Orixe:"
+#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:13
+msgid "Source Type:"
+msgstr "Tipo de fonte:"
 
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:15
+#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:14
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:16
+#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:15
 msgid "_Command"
 msgstr "_Comando"
 
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:17
+#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:16
 msgid "_Local File"
 msgstr "Ficheiro _local"
 
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:18
+#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:17
 msgid "Select File..."
 msgstr "Seleccionar ficheiro..."
 
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:13
-msgid "Source Type:"
-msgstr "Tipo de fonte:"
+#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:18
+msgid "_Source:"
+msgstr "_Orixe:"
 
 #: ../glade/new_subscription.ui.h:9
 #, fuzzy
 msgid "Download / Postprocessing"
 msgstr "<b>Descarga / Postprocesado</b>"
 
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:32
+#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
 msgid "_Don't use proxy for download"
 msgstr "_Non empregar o proxy para descargas"
 
@@ -1803,22 +1792,30 @@ msgstr ""
 msgid "Default _number of items per feed to save:"
 msgstr "_Número de artigos predeterminados a gardar por fonte:"
 
-#: ../glade/prefs.ui.h:4
+#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
+msgid "0"
+msgstr ""
+
+#: ../glade/prefs.ui.h:5
 #, fuzzy
 msgid "Feed Update Settings"
 msgstr "Actualizar fonte"
 
-#: ../glade/prefs.ui.h:5
+#: ../glade/prefs.ui.h:6
 #, fuzzy
 msgid "_Update all subscriptions at startup."
 msgstr "Actualizar todas as subscricións."
 
-#: ../glade/prefs.ui.h:6
+#: ../glade/prefs.ui.h:7
 msgid "Default Feed Refresh _Interval:"
 msgstr "_Intervalo de actualización predeterminado:"
 
+#: ../glade/prefs.ui.h:8 ../glade/properties.ui.h:7
+msgid "1"
+msgstr ""
+
 #. Feed update interval hint in preference dialog.
-#: ../glade/prefs.ui.h:8
+#: ../glade/prefs.ui.h:10
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
 "waste of bandwidth to poll feeds more often than each hour.</i>"
@@ -1827,191 +1824,191 @@ msgstr ""
 "Normalmente é un desperdicio de largura de banda obter fontes máis dunha vez "
 "cada hora.</i>"
 
-#: ../glade/prefs.ui.h:9
+#: ../glade/prefs.ui.h:11
 msgid "Feeds"
 msgstr "Fontes"
 
-#: ../glade/prefs.ui.h:10
+#: ../glade/prefs.ui.h:12
 #, fuzzy
 msgid "Folder Display Settings"
 msgstr ""
 "<span weight=\"bold\">Preferencias de visualización dos cartafoles</span>"
 
-#: ../glade/prefs.ui.h:11
+#: ../glade/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr ""
 "_Amosar os artigos de todas as fontes fillas ao seleccionar un cartafol."
 
-#: ../glade/prefs.ui.h:12
+#: ../glade/prefs.ui.h:14
 msgid "_Hide read items."
 msgstr "_Ocultar artigos lidos."
 
-#: ../glade/prefs.ui.h:13
+#: ../glade/prefs.ui.h:15
 #, fuzzy
 msgid "Feed Icons (Favicons)"
 msgstr "<span weight=\"bold\">Iconas das fontes (Iconas das páxinas)</span>"
 
-#: ../glade/prefs.ui.h:14
+#: ../glade/prefs.ui.h:16
 msgid "_Update all favicons now"
 msgstr "_Actualizar todas as iconas das páxinas agora"
 
-#: ../glade/prefs.ui.h:15
+#: ../glade/prefs.ui.h:17
 msgid "Folders"
 msgstr "Cartafoles"
 
-#: ../glade/prefs.ui.h:16
+#: ../glade/prefs.ui.h:18
 #, fuzzy
 msgid "Reading Headlines"
 msgstr "titulares non lidos"
 
-#: ../glade/prefs.ui.h:17
+#: ../glade/prefs.ui.h:19
 msgid "_Skim through articles with:"
 msgstr "_Avanzar polos artigos con:"
 
-#: ../glade/prefs.ui.h:18
+#: ../glade/prefs.ui.h:20
 msgid "_Default View Mode:"
 msgstr ""
 
-#: ../glade/prefs.ui.h:19
+#: ../glade/prefs.ui.h:21
 #, fuzzy
 msgid "Web Integration"
 msgstr "Orientación"
 
-#: ../glade/prefs.ui.h:20
+#: ../glade/prefs.ui.h:22
 msgid "_Post Bookmarks to"
 msgstr "_Publicar os marcadores en"
 
-#: ../glade/prefs.ui.h:22
+#: ../glade/prefs.ui.h:24
 #, fuzzy
 msgid "Internal Browser Settings"
 msgstr "<span weight=\"bold\">Preferencias do navegador interno</span>"
 
-#: ../glade/prefs.ui.h:23
+#: ../glade/prefs.ui.h:25
 msgid "Open links in Liferea's _window."
 msgstr "Abrir as ligazóns na _xanela do Liferea."
 
-#: ../glade/prefs.ui.h:24
+#: ../glade/prefs.ui.h:26
 msgid "_Disable Javascript."
 msgstr "_Desactivar Javascript."
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:27
 #, fuzzy
 msgid "_Enable browser plugins."
 msgstr "<span weight=\"bold\">Preferencias do navegador externo</span>"
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:28
 #, fuzzy
 msgid "External Browser Settings"
 msgstr "<span weight=\"bold\">Preferencias do navegador externo</span>"
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:29
+msgid "_Browser:"
+msgstr "_Navegador:"
+
+#: ../glade/prefs.ui.h:30
 #, fuzzy
 msgid "_Manual:"
 msgstr "Manual"
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:32
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr ""
 
-#: ../glade/prefs.ui.h:30
-msgid "_Browser:"
-msgstr "_Navegador:"
-
-#: ../glade/prefs.ui.h:31
+#: ../glade/prefs.ui.h:33
 msgid "Browser"
 msgstr "Navegador"
 
-#: ../glade/prefs.ui.h:32
+#: ../glade/prefs.ui.h:34
 #, fuzzy
 msgid "Toolbar Settings"
 msgstr "Etiquetas dos _botóns da barra de ferramentas:"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:35
 msgid "_Hide toolbar."
 msgstr "_Ocultar a barra de ferramentas."
 
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:36
 msgid "Toolbar _button labels:"
 msgstr "Etiquetas dos _botóns da barra de ferramentas:"
 
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:37
 msgid "GUI"
 msgstr "Interface gráfica de usuario"
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:38
 msgid "HTTP Proxy Server"
 msgstr ""
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:39
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "Detectar _automaticamente (do GNOME ou do ambiente)"
 
-#: ../glade/prefs.ui.h:38
+#: ../glade/prefs.ui.h:40
 msgid "_No Proxy"
 msgstr "_Sen proxy"
 
-#: ../glade/prefs.ui.h:39
+#: ../glade/prefs.ui.h:41
 msgid "_Manual Setting:"
 msgstr "Configuración _manual:"
 
-#: ../glade/prefs.ui.h:40
-msgid "Proxy _Port:"
-msgstr "_Porto do proxy:"
-
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:42
 msgid "Proxy _Host:"
 msgstr "_Servidor proxy:"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:43
+msgid "Proxy _Port:"
+msgstr "_Porto do proxy:"
+
+#: ../glade/prefs.ui.h:44
 msgid "Use Proxy Au_thentication"
 msgstr "Utilizar _autenticación proxy"
 
-#: ../glade/prefs.ui.h:43
-msgid "Proxy Pass_word:"
-msgstr "_Contrasinal do proxy:"
-
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Username:"
 msgstr "Nome de _usuario do proxy:"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:46
+msgid "Proxy Pass_word:"
+msgstr "_Contrasinal do proxy:"
+
+#: ../glade/prefs.ui.h:47
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:48
 #, fuzzy
 msgid "Privacy Settings"
 msgstr ""
 "<span weight=\"bold\">Preferencias de visualización dos cartafoles</span>"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:49
 msgid "Tell sites that I do _not want to be tracked"
 msgstr ""
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:50
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:51
 #, fuzzy
 msgid "Downloading Enclosures"
 msgstr "Descargando contido asociado"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:52
 msgid "_Download using"
 msgstr "_Descargar empregando"
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:53
 #, fuzzy
 msgid "Opening Enclosures"
 msgstr "Abrir contido asociado..."
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:54
 msgid "Enclosures"
 msgstr "Contido asociado"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:55
 msgid "Plugins"
 msgstr ""
 
@@ -2041,13 +2038,9 @@ msgstr "_Utilizar o intervalo de actualización establecido globalmente."
 msgid "_Feed specific update interval of"
 msgstr "Intervalo de actualización específico da _fonte de"
 
-#: ../glade/properties.ui.h:7
+#: ../glade/properties.ui.h:8
 msgid "_Don't update this feed automatically."
 msgstr "_Non actualizar esta fonte automaticamente."
-
-#: ../glade/properties.ui.h:8
-msgid " "
-msgstr " "
 
 #: ../glade/properties.ui.h:10
 #, no-c-format
@@ -2094,37 +2087,37 @@ msgstr "Caché _sen límite"
 msgid "_Number of items to save:"
 msgstr "_Número de artigos a gardar:"
 
-#: ../glade/properties.ui.h:28
+#: ../glade/properties.ui.h:29
 msgid "Archive"
 msgstr "Arquivo"
 
-#: ../glade/properties.ui.h:29
+#: ../glade/properties.ui.h:30
 msgid "Use HTTP _authentication"
 msgstr "Utilizar _autenticación HTTP"
 
-#: ../glade/properties.ui.h:33
+#: ../glade/properties.ui.h:34
 msgid "Download"
 msgstr "Descarga"
 
-#: ../glade/properties.ui.h:34
+#: ../glade/properties.ui.h:35
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Descargar _automaticamente todos os contidos asociados desta fonte."
 
-#: ../glade/properties.ui.h:35
+#: ../glade/properties.ui.h:36
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Cargar _automaticamente no navegador configurado a ligazón dos artigos que "
 "sexan seleccionados."
 
-#: ../glade/properties.ui.h:36
+#: ../glade/properties.ui.h:37
 msgid "Ignore _comment feeds for this subscription."
 msgstr "Ignorar fontes de _comentarios para esta subscrición."
 
-#: ../glade/properties.ui.h:37
+#: ../glade/properties.ui.h:38
 msgid "_Mark downloaded items as read."
 msgstr "_Marcar artigos descargados coma lidos."
 
-#: ../glade/properties.ui.h:38
+#: ../glade/properties.ui.h:39
 msgid "Advanced"
 msgstr "Avanzado"
 
@@ -2180,22 +2173,10 @@ msgid "Search All Feeds"
 msgstr "Procurar en todas as fontes"
 
 #: ../glade/simple_search.ui.h:2
-msgid "_Search for:"
-msgstr "_Procurar por:"
-
-#: ../glade/simple_search.ui.h:3
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
-msgstr ""
-"Introduza unha cadea de busca que o Liferea debe procurar nos títulos dos "
-"artigos ou nos seus contidos."
-
-#: ../glade/simple_search.ui.h:4
 msgid "_Advanced..."
 msgstr "_Avanzado..."
 
-#: ../glade/simple_search.ui.h:5
+#: ../glade/simple_search.ui.h:3
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -2203,23 +2184,17 @@ msgstr ""
 "Inicia unha procura do texto especificado en todas as fontes. O resultado da "
 "procura aparecerá na lista de artigos."
 
-#: ../glade/simple_search.ui.h:6 ../glade/update_monitor.ui.h:1
-msgid "Update Monitor"
-msgstr "Monitor de actualizacións"
+#: ../glade/simple_search.ui.h:4
+msgid "_Search for:"
+msgstr "_Procurar por:"
 
-#: ../glade/simple_search.ui.h:7 ../glade/update_monitor.ui.h:2
-#, fuzzy
-msgid "Pending Requests"
-msgstr "<b>Solicitudes pendentes</b>"
-
-#: ../glade/simple_search.ui.h:8 ../glade/update_monitor.ui.h:3
-#, fuzzy
-msgid "Downloading Now"
-msgstr "<b>Descargando</b>"
-
-#: ../glade/simple_search.ui.h:9 ../glade/update_monitor.ui.h:4
-msgid "Cancel _All"
-msgstr "Cancelar _todo"
+#: ../glade/simple_search.ui.h:5
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr ""
+"Introduza unha cadea de busca que o Liferea debe procurar nos títulos dos "
+"artigos ou nos seus contidos."
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
@@ -2261,6 +2236,42 @@ msgstr "Erro do servidor"
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
 msgstr "Nome de _usuario"
+
+#: ../glade/update_monitor.ui.h:1
+msgid "Update Monitor"
+msgstr "Monitor de actualizacións"
+
+#: ../glade/update_monitor.ui.h:2
+#, fuzzy
+msgid "Cancel All"
+msgstr "Cancelar _todo"
+
+#: ../glade/update_monitor.ui.h:3
+#, fuzzy
+msgid "Pending Requests"
+msgstr "<b>Solicitudes pendentes</b>"
+
+#: ../glade/update_monitor.ui.h:4
+#, fuzzy
+msgid "Downloading Now"
+msgstr "<b>Descargando</b>"
+
+#~ msgid "Liferea, the Linux Feed Reader"
+#~ msgstr "Liferea, lector de fontes para Linux"
+
+#~ msgid "For more information, please visit https://lzone.de/liferea/"
+#~ msgstr "Para máis información, por favor visite https://lzone.de/liferea/"
+
+#, fuzzy
+#~ msgid "_Open Link In Browser"
+#~ msgstr "_Inicia a ligazón no navegador"
+
+#, fuzzy
+#~ msgid "_Open Link In External Browser"
+#~ msgstr "_Inicia a ligazón no navegador"
+
+#~ msgid " "
+#~ msgstr " "
 
 #~ msgid "Create Search Engine Feed"
 #~ msgstr "Crear unha fonte de motor de busca"
