@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the liferea package.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2007,2009,2012.
 # Takeshi Hamasaki <hmatrjp@users.sourceforge.jp>, 2012.
-# IWAI, Masaharu <iwaim.sub@gmail.com>, 2016.
+# IWAI, Masaharu <iwaim.sub@gmail.com>, 2016-2017.
 #
 # 翻訳の用例 (since 2004-08-16)
 # subscription: 購読
@@ -12,10 +12,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea-1.8-rc1\n"
+"Project-Id-Version: liferea-1.12-rc2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-13 22:52+0100\n"
-"PO-Revision-Date: 2016-01-31 19:07+0900\n"
+"PO-Revision-Date: 2017-02-15 16:56+0900\n"
 "Last-Translator: IWAI, Masaharu <iwaim.sub@gmail.com>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
 "Language: ja\n"
@@ -23,7 +23,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid ""
@@ -131,7 +130,7 @@ msgstr "この配信元をフィルタリングする際にエラーが発生し
 
 #: ../xslt/feed.xml.in.h:8
 msgid "Filter Error Details"
-msgstr "フィルタ・エラーの詳細"
+msgstr "フィルター・エラーの詳細"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "Feed:"
@@ -307,9 +306,9 @@ msgid ""
 msgstr ""
 
 #: ../src/export.c:188
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming %s to %s: %s\n"
-msgstr "%s から %s へ名前を変更する際にエラー\n"
+msgstr "%s から %s へ名前を変更する際にエラー: %s\n"
 
 #: ../src/export.c:417 ../src/export.c:419
 #, c-format
@@ -726,7 +725,7 @@ msgstr "\"%s\" の更新中"
 #: ../src/update.c:282
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
-msgstr "フィルタに使用する作業ファイル \"%s\" を開く際にエラーが発生しました！"
+msgstr "フィルターに使用する作業ファイル \"%s\" を開く際にエラーが発生しました！"
 
 #: ../src/update.c:305
 #, c-format
@@ -1389,7 +1388,7 @@ msgstr "削除の確認"
 
 #: ../src/ui/subscription_dialog.c:351 ../src/fl_sources/opml_source.c:379
 msgid "_Open"
-msgstr ""
+msgstr "開く(_O)"
 
 #: ../src/ui/subscription_dialog.c:425
 #, c-format
@@ -1511,14 +1510,12 @@ msgid "Open Link In _Tab"
 msgstr "タブの中に開く(_T)"
 
 #: ../src/webkit/liferea_web_view.c:174
-#, fuzzy
 msgid "Open Link In Browser"
-msgstr "ブラウザで開く(_O)"
+msgstr "ブラウザで開く"
 
 #: ../src/webkit/liferea_web_view.c:175
-#, fuzzy
 msgid "Open Link In External Browser"
-msgstr "外部ブラウザで開く(_O)"
+msgstr "外部ブラウザで開く"
 
 #: ../src/webkit/liferea_web_view.c:181
 #, c-format
@@ -1710,17 +1707,14 @@ msgstr "ダウンロード時にプロキシを使用しない(_D)"
 
 #: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:19
 msgid "Use conversion _filter"
-msgstr "変換フィルタを利用する(_F)"
+msgstr "変換フィルターを利用する(_F)"
 
 #: ../glade/new_subscription.ui.h:12
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
 "information."
-msgstr ""
-"Liferea は、サポート外の配信元とフォルダにアクセスするために、外部のフィルタ"
-"をプラグインとして利用することが可能です。詳細はドキュメントを参照して下さ"
-"い。"
+msgstr "Liferea は、サポート外の配信元とフォルダにアクセスするために、外部のフィルターをプラグインとして利用することが可能です。詳細はドキュメントを参照して下さい。"
 
 #: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:21
 msgid "Convert _using:"
@@ -1935,9 +1929,8 @@ msgid "Proxy"
 msgstr "プロキシ"
 
 #: ../glade/prefs.ui.h:48
-#, fuzzy
 msgid "Privacy Settings"
-msgstr "表示の設定"
+msgstr "プライバシーの設定"
 
 #: ../glade/prefs.ui.h:49
 msgid "Tell sites that I do _not want to be tracked"
@@ -1945,7 +1938,7 @@ msgstr ""
 
 #: ../glade/prefs.ui.h:50
 msgid "Privacy"
-msgstr ""
+msgstr "プライバシー"
 
 #: ../glade/prefs.ui.h:51
 msgid "Downloading Enclosures"
@@ -2005,14 +1998,10 @@ msgid "General"
 msgstr "全般"
 
 #: ../glade/properties.ui.h:20
-#, fuzzy
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
 "directories in non-supported formats."
-msgstr ""
-"Liferea は、サポート外の配信元とフォルダにアクセスするために、外部のフィルタ"
-"をプラグインとして利用することが可能です。詳細はドキュメントを参照して下さ"
-"い。"
+msgstr "Liferea は、サポート外の配信元とフォルダにアクセスするために、外部フィルタースクリプトを利用できます。"
 
 #: ../glade/properties.ui.h:23
 msgid ""
@@ -2181,9 +2170,8 @@ msgid "Update Monitor"
 msgstr "更新モニタ"
 
 #: ../glade/update_monitor.ui.h:2
-#, fuzzy
 msgid "Cancel All"
-msgstr "全てキャンセル(_A)"
+msgstr "全てキャンセル"
 
 #: ../glade/update_monitor.ui.h:3
 msgid "Pending Requests"
