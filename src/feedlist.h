@@ -77,7 +77,7 @@ nodePtr feedlist_get_selected (void);
 /**
  * feedlist_get_unread_item_count:
  *
- * Query overall number of of unread items.
+ * Query overall number of unread items.
  *
  * Returns: overall number of unread items.
  */
