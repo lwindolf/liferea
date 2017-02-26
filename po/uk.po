@@ -2,13 +2,13 @@
 # Copyright © Free Software Foundation, 2010-2011
 # This file is distributed under the same license as the liferea package.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2010, 2011, 2013.
+# Yuri Chornoivan <yurchor@ukr.net>, 2010, 2011, 2013, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-13 22:52+0100\n"
-"PO-Revision-Date: 2013-06-12 17:45+0300\n"
+"PO-Revision-Date: 2017-02-14 22:34+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
 "Language: uk\n"
@@ -28,48 +28,49 @@ msgid ""
 "extra libraries to be installed. Liferea tries to fill this gap by creating "
 "a fast, easy to use, easy to install news aggregator for GTK/GNOME."
 msgstr ""
+"Liferea — абревіатура від Linux Feed Reader (засіб читання подач у Linux). Це "
+"програма для збирання нових із подач у інтернеті. У програмі передбачено "
+"підтримку декількох різних форматів подач, зокрема RSS/RDF, CDF та Atom. "
+"Існує багато інших програм для читання новин, але вони або недоступні у "
+"Linux, або потребують встановлення багатьох додаткових бібліотек. Liferea є "
+"спробою заповнити цю прогалину створенням швидкої, простої у користуванні та "
+"простої у встановленні програми для читання новин із використанням GTK/GNOME."
 
 #: ../liferea.appdata.xml.in.h:2
 msgid "Distinguishing features:"
-msgstr ""
+msgstr "Визначні особливості:"
 
 #: ../liferea.appdata.xml.in.h:3
-#, fuzzy
 msgid "Read articles when offline"
-msgstr "Liferea працює у автономному режимі"
+msgstr "Читання статей у автономному режимі."
 
 #: ../liferea.appdata.xml.in.h:4
-#, fuzzy
 msgid "Synchronizes with TheOldReader"
-msgstr "Синхронізація з близькими вузлами"
+msgstr "Синхронізація з TheOldReader."
 
 #: ../liferea.appdata.xml.in.h:5
-#, fuzzy
 msgid "Synchronizes with TinyTinyRSS"
-msgstr "Синхронізація з близькими вузлами"
+msgstr "Синхронізація з TinyTinyRSS."
 
 #: ../liferea.appdata.xml.in.h:6
-#, fuzzy
 msgid "Synchronizes with InoReader"
-msgstr "Синхронізація з близькими вузлами"
+msgstr "Синхронізація з InoReader."
 
 #: ../liferea.appdata.xml.in.h:7
-#, fuzzy
 msgid "Synchronizes with Reedah"
-msgstr "Синхронізація з близькими вузлами"
+msgstr "Синхронізація з Reedah."
 
 #: ../liferea.appdata.xml.in.h:8
 msgid "Permanently save headlines in news bins"
-msgstr ""
+msgstr "Зберігання заголовків записів новин."
 
 #: ../liferea.appdata.xml.in.h:9
 msgid "Match items using search folders"
-msgstr ""
+msgstr "Встановлення відповідності записів з використанням тек пошуку."
 
 #: ../liferea.appdata.xml.in.h:10
-#, fuzzy
 msgid "Play Podcasts"
-msgstr "Трансляція"
+msgstr "Відтворення трансляцій."
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:79
 #: ../glade/mainwindow.ui.h:1
@@ -91,6 +92,8 @@ msgstr "Читання подач новин та блогів"
 #: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
 msgstr ""
+"новини;подачі;стрічки;агрегатор;блоґ;блог;трансляція;news;feed;aggregator;blog"
+";podcast;"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
@@ -202,11 +205,11 @@ msgstr "Створено у"
 
 #: ../xslt/item.xml.in.h:10
 msgid "Coordinates"
-msgstr ""
+msgstr "Координати"
 
 #: ../xslt/item.xml.in.h:11
 msgid "Map"
-msgstr ""
+msgstr "Карта"
 
 #: ../xslt/item.xml.in.h:12
 msgid "Comments"
@@ -291,16 +294,15 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "«%s» не коректним файлом налаштувань типів вкладень."
 
 #: ../src/enclosure.c:292
-#, fuzzy
 msgid ""
 "You have not configured a download tool yet! Please do so in the "
 "'Enclosures' tab in Tools/Preferences."
 msgstr ""
 "Вами ще не налаштовано інструмент звантаження! Будь ласка, налаштуйте його "
-"за допомогою вкладки «Звантаження» у вікні «Інструменти → Параметри»."
+"за допомогою вкладки «Вкладення» у вікні «Інструменти → Параметри»."
 
 #: ../src/enclosure.c:310
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Command failed: \n"
 "\n"
@@ -315,13 +317,13 @@ msgstr ""
 "\n"
 " Будь ласка, переконайтеся, що вказану вами програму для звантаження даних "
 "встановлено і що ця програма працює належним чином. Змінити параметри "
-"програми можна за допомогою вкладки «Звантаження» у вікні «Інструменти → "
+"програми можна за допомогою вкладки «Отримання» у вікні «Інструменти → "
 "Параметри»."
 
 #: ../src/export.c:188
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming %s to %s: %s\n"
-msgstr "Помилка під час спроби перейменування %s на %s\n"
+msgstr "Помилка під час спроби перейменування %s на %s: %s\n"
 
 #: ../src/export.c:417 ../src/export.c:419
 #, c-format
@@ -436,13 +438,11 @@ msgid "There are no unread items"
 msgstr "Немає непрочитаних пунктів"
 
 #: ../src/liferea_application.c:282
-#, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "Запустити Liferea з головним вікном у режимі СТАН. СТАН може приймати "
-"значення «shown» (показ), «iconified» (згортання) або "
-"«hidden» (приховування)."
+"значення «shown» (показ) або «hidden» (приховування)."
 
 #: ../src/liferea_application.c:282
 msgid "STATE"
@@ -1188,9 +1188,8 @@ msgid "Browse at full screen"
 msgstr "Перегляд у повноекранному режимі"
 
 #: ../src/ui/search_dialog.c:116
-#, fuzzy
 msgid "Saved Search"
-msgstr "Складний пошук"
+msgstr "Збережений пошук"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1202,9 +1201,8 @@ msgid "Unknown source"
 msgstr "Невідоме джерело"
 
 #: ../src/ui/ui_common.c:168 ../src/ui/feed_list_node.c:416
-#, fuzzy
 msgid "_Cancel"
-msgstr "Скасувати _всі"
+msgstr "_Скасувати"
 
 #: ../src/ui/ui_common.c:211
 msgid "All Files"
@@ -1421,7 +1419,7 @@ msgstr "Підтвердження вилучення"
 
 #: ../src/ui/subscription_dialog.c:351 ../src/fl_sources/opml_source.c:379
 msgid "_Open"
-msgstr ""
+msgstr "_Відкрити"
 
 #: ../src/ui/subscription_dialog.c:425
 #, c-format
@@ -1461,14 +1459,12 @@ msgstr "Нова підписка"
 #: ../src/fl_sources/inoreader_source.c:102
 #: ../src/fl_sources/reedah_source.c:103
 #: ../src/fl_sources/theoldreader_source.c:104
-#, fuzzy
 msgid "Login failed!"
-msgstr "Помилка під час спроби входу до системи Google Reader."
+msgstr "Невдала спроба увійти!"
 
 #: ../src/fl_sources/inoreader_source.c:311
-#, fuzzy
 msgid "InoReader"
-msgstr "Google Reader"
+msgstr "InoReader"
 
 #: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
@@ -1498,6 +1494,8 @@ msgstr "Тип джерела"
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
+"Вхід до «%s» ще не завершено. Будь ласка, зачекайте на завершення процедури "
+"входу."
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
@@ -1508,27 +1506,28 @@ msgstr "Ппідписні дані «%s» успішно перетворено
 
 #: ../src/fl_sources/reedah_source.c:312
 msgid "Reedah"
-msgstr ""
+msgstr "Reedah"
 
 #: ../src/fl_sources/reedah_source_feed.c:154
-#, fuzzy
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr ""
-"Не вдалося обробити код JSON, повернутий програмним інтерфейсом tt-rss!"
+"Не вдалося обробити код JSON, повернутий програмним інтерфейсом Reedah!"
 
 #: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
 msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr ""
+msgstr "Програмний інтерфейс HTTP TinyTinyRSS недоступний!"
 
 #: ../src/fl_sources/ttrss_source.c:231
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr ""
+"Спроба підписатися на TinyTinyRSS завершилася невдало! Перевірте, чи передали "
+"ви адресу подачі!"
 
 #: ../src/fl_sources/ttrss_source.c:290
 msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr ""
+msgstr "Не вдалося відписатися від подачі TinyTinyRSS!"
 
 #: ../src/fl_sources/ttrss_source.c:307
 #, c-format
@@ -1536,35 +1535,33 @@ msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr ""
+"У цій версії TinyTinyRSS не передбачено підтримки вилучення подач. Оновіть "
+"програму до версії %s або новішої!"
 
 #: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source_feed.c:150
-#, fuzzy
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
-"Не вдалося обробити код JSON, повернутий програмним інтерфейсом tt-rss!"
+"Не вдалося обробити код JSON, повернутий програмним інтерфейсом TinyTinyRSS!"
 
 #: ../src/fl_sources/theoldreader_source.c:329
-#, fuzzy
 msgid "TheOldReader"
-msgstr "Програма для читання подач"
+msgstr "TheOldReader"
 
 #: ../src/webkit/liferea_web_view.c:173
 msgid "Open Link In _Tab"
 msgstr "Відкрити посилання у в_кладці"
 
 #: ../src/webkit/liferea_web_view.c:174
-#, fuzzy
 msgid "Open Link In Browser"
-msgstr "Ві_дкрити посилання у переглядачі"
+msgstr "Відкрити посилання у переглядачі"
 
 #: ../src/webkit/liferea_web_view.c:175
-#, fuzzy
 msgid "Open Link In External Browser"
-msgstr "Ві_дкрити посилання у зовнішньому переглядачі"
+msgstr "Відкрити посилання в зовнішньому переглядачі"
 
 #: ../src/webkit/liferea_web_view.c:181
 #, c-format
@@ -1593,7 +1590,7 @@ msgstr "_Підписатися…"
 
 #: ../src/webkit/liferea_web_view.c:205
 msgid "_Copy"
-msgstr ""
+msgstr "_Копіювати"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1674,14 +1671,12 @@ msgid "_Username (Email)"
 msgstr "_Користувач (адреса ел. пошти)"
 
 #: ../glade/inoreader_source.ui.h:1
-#, fuzzy
 msgid "Add InoReader Account"
-msgstr "Додавання облікового запису Google Reader"
+msgstr "Додавання облікового запису InoReader"
 
 #: ../glade/inoreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your InoReader account settings."
-msgstr "Будь ласка, вкажіть параметри вашого облікового запису Google Reader."
+msgstr "Будь ласка, вкажіть параметри вашого облікового запису InoReader."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "normal view"
@@ -1750,7 +1745,7 @@ msgstr "Д_жерело:"
 
 #: ../glade/new_subscription.ui.h:9
 msgid "Download / Postprocessing"
-msgstr "Звантаження/Обробка"
+msgstr "Отримання/Обробка"
 
 #: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
 msgid "_Don't use proxy for download"
@@ -1816,7 +1811,7 @@ msgstr "Типова _кількість збережених пунктів н�
 
 #: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: ../glade/prefs.ui.h:5
 msgid "Feed Update Settings"
@@ -1832,7 +1827,7 @@ msgstr "Типовий проміжок між _оновленнями пода�
 
 #: ../glade/prefs.ui.h:8 ../glade/properties.ui.h:7
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #. Feed update interval hint in preference dialog.
 #: ../glade/prefs.ui.h:10
@@ -1986,25 +1981,24 @@ msgid "Proxy"
 msgstr "Проксі"
 
 #: ../glade/prefs.ui.h:48
-#, fuzzy
 msgid "Privacy Settings"
-msgstr "Параметри показу тек"
+msgstr "Параметри конфіденційності"
 
 #: ../glade/prefs.ui.h:49
 msgid "Tell sites that I do _not want to be tracked"
-msgstr ""
+msgstr "Повідомляти сайтам, що с_теження є небажаним"
 
 #: ../glade/prefs.ui.h:50
 msgid "Privacy"
-msgstr ""
+msgstr "Конфіденційність"
 
 #: ../glade/prefs.ui.h:51
 msgid "Downloading Enclosures"
-msgstr "Звантаження вкладень"
+msgstr "Отримання вкладень"
 
 #: ../glade/prefs.ui.h:52
 msgid "_Download using"
-msgstr "_Звантажувати за допомогою"
+msgstr "_Отримувати за допомогою"
 
 #: ../glade/prefs.ui.h:53
 msgid "Opening Enclosures"
@@ -2057,15 +2051,13 @@ msgid "General"
 msgstr "Загальне"
 
 #: ../glade/properties.ui.h:20
-#, fuzzy
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
 "directories in non-supported formats."
 msgstr ""
-"У Liferea передбачено використання зовнішніх додатків фільтрування для "
+"У Liferea передбачено використання зовнішніх скриптів фільтрування для "
 "доступу до даних подач і каталогів, формат яких не підтримується основною "
-"програмою. Докладніше про ці додатки можна дізнатися з документації до "
-"програми."
+"програмою."
 
 #: ../glade/properties.ui.h:23
 msgid ""
@@ -2102,7 +2094,7 @@ msgstr "Використовувати HTTP-_розпізнавання"
 
 #: ../glade/properties.ui.h:34
 msgid "Download"
-msgstr "Звантажити"
+msgstr "Отримати"
 
 #: ../glade/properties.ui.h:35
 msgid "_Automatically download all enclosures of this feed."
@@ -2126,14 +2118,12 @@ msgid "Advanced"
 msgstr "Додатково"
 
 #: ../glade/reedah_source.ui.h:1
-#, fuzzy
 msgid "Add Reedah Account"
-msgstr "Додавання облікового запису Google Reader"
+msgstr "Додавання облікового запису Reedah"
 
 #: ../glade/reedah_source.ui.h:2
-#, fuzzy
 msgid "Please enter your Reedah account settings."
-msgstr "Будь ласка, вкажіть параметри вашого облікового запису Google Reader."
+msgstr "Будь ласка, вкажіть параметри вашого облікового запису Reedah."
 
 #: ../glade/rename_node.ui.h:1
 msgid "Rename"
@@ -2211,23 +2201,20 @@ msgstr ""
 "відома, точну адресу подачі."
 
 #: ../glade/theoldreader_source.ui.h:1
-#, fuzzy
 msgid "Add TheOldReader Account"
-msgstr "Додавання облікового запису Google Reader"
+msgstr "Додавання облікового запису TheOldReader"
 
 #: ../glade/theoldreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TheOldReader account settings."
-msgstr "Будь ласка, вкажіть параметри вашого облікового запису Google Reader."
+msgstr "Будь ласка, вкажіть параметри вашого облікового запису TheOldReader."
 
 #: ../glade/ttrss_source.ui.h:1
 msgid "Add Tiny Tiny RSS Account"
 msgstr "Додавання облікового запису Tiny Tiny RSS"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TinyTinyRSS account settings."
-msgstr "Будь ласка, вкажіть параметри вашого облікового запису tt-rss."
+msgstr "Будь ласка, вкажіть параметри вашого облікового запису TinyTinyRSS."
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
@@ -2242,9 +2229,8 @@ msgid "Update Monitor"
 msgstr "Спостереження за оновленням"
 
 #: ../glade/update_monitor.ui.h:2
-#, fuzzy
 msgid "Cancel All"
-msgstr "Скасувати _всі"
+msgstr "Скасувати усе"
 
 #: ../glade/update_monitor.ui.h:3
 msgid "Pending Requests"
@@ -2252,7 +2238,7 @@ msgstr "Запити у черзі"
 
 #: ../glade/update_monitor.ui.h:4
 msgid "Downloading Now"
-msgstr "Звантаження"
+msgstr "Отримання"
 
 #~ msgid "Liferea, the Linux Feed Reader"
 #~ msgstr "Liferea, програма для читання подач у Linux"
