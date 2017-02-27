@@ -109,7 +109,7 @@ network_get_proxy_uri (void)
 
 /* Downloads a feed specified in the request structure, returns 
    the downloaded data or NULL in the request structure.
-   If the the webserver reports a permanent redirection, the
+   If the webserver reports a permanent redirection, the
    feed url will be modified and the old URL 'll be freed. The
    request structure will also contain the HTTP status and the
    last modified string.
