@@ -2759,8 +2759,8 @@ msgstr "Bijwerken"
 #~ msgid "<p>Could not find Atom 1.0 header!</p>"
 #~ msgstr "<p>Atom 1.0 header niet gevonden!</p>"
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid "internal error! time conversion error! mktime failed!\n"
 #~ msgstr "interne fout! fout bij tijdconversie! mktime mislukt!\n"

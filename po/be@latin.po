@@ -3091,8 +3091,8 @@ msgstr "<b>Zahružajecca zaraz</b>"
 #~ msgid "No link selected!"
 #~ msgstr "Spasyłka nie zaznačanaja!"
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid "Updates all subscriptions. This does not update OCS directories."
 #~ msgstr "Aktualizoŭvaje ŭsie padpiski. Katalohi OCS nie aktualizoŭvajucca."

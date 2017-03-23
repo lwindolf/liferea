@@ -2860,8 +2860,8 @@ msgstr "Deskargatzen"
 #~ msgid "Could not download \"%s\". Will retry in %d seconds."
 #~ msgstr "Ezin izan da \"%s\" deskargatu. Saiatu berriro %d segundo barru."
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid "Show Menu _And Toolbar"
 #~ msgstr "Erakutsi menua _eta tresna-barra"

@@ -2226,8 +2226,8 @@ msgstr "Po shkarkohet Tani"
 #~ msgid "Liferea, the Linux Feed Reader"
 #~ msgstr "Liferea - Lexuesi Linux i Prurjeve"
 
-#~ msgid "For more information, please visit http://liferea.sourceforge.net/"
-#~ msgstr "Për më tepër të dhëna, vizitoni http://liferea.sourceforge.net/"
+#~ msgid "For more information, please visit http://lzone.de/liferea/"
+#~ msgstr "Për më tepër të dhëna, vizitoni http://lzone.de/liferea/"
 
 #~ msgid "Liferea is now online"
 #~ msgstr "Liferea tani është e lidhur"

@@ -2224,8 +2224,8 @@ msgstr "Lejupielādēt tagad"
 #~ msgid "Liferea, the Linux Feed Reader"
 #~ msgstr "Liferea, Linux plūsmu lasītājs"
 
-#~ msgid "For more information, please visit http://liferea.sourceforge.net/"
-#~ msgstr "Lai uzzinātu vairāk, apmeklējiet http://liferea.sourceforge.net/"
+#~ msgid "For more information, please visit http://lzone.de/liferea/"
+#~ msgstr "Lai uzzinātu vairāk, apmeklējiet http://lzone.de/liferea/"
 
 #~ msgid "Liferea is now online"
 #~ msgstr "Liferea ir tiešsaistē"

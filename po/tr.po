@@ -3000,8 +3000,8 @@ msgstr "Şimdi İndiriliyor"
 #~ msgid "No link selected!"
 #~ msgstr "Hiçbir link seçilmedi!"
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid "Updates all subscriptions. This does not update OCS directories."
 #~ msgstr "Bütün abonelikleri günceller. Bu, OCS dizinlerini güncellemez."

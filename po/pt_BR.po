@@ -2245,9 +2245,9 @@ msgstr "Baixando Agora"
 #~ msgid "Liferea, the Linux Feed Reader"
 #~ msgstr "Liferea, o Leitor de Notícias para Linux"
 
-#~ msgid "For more information, please visit http://liferea.sourceforge.net/"
+#~ msgid "For more information, please visit http://lzone.de/liferea/"
 #~ msgstr ""
-#~ "Para mais informações, por favor acesse http://liferea.sourceforge.net/"
+#~ "Para mais informações, por favor acesse http://lzone.de/liferea/"
 
 #~ msgid "Liferea is now online"
 #~ msgstr "Liferea está online"
@@ -3053,8 +3053,8 @@ msgstr "Baixando Agora"
 #~ msgid "No link selected!"
 #~ msgstr "Nenhum link selecionado!"
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid "Updates all subscriptions. This does not update OCS directories."
 #~ msgstr "Atualiza todas assinaturas. Isto não atualiza diretórios OCS."

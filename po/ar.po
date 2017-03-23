@@ -2929,8 +2929,8 @@ msgstr "يُنزّل الآن"
 #~ msgid "Could not download \"%s\". Will retry in %d seconds."
 #~ msgstr "تعذّر تنزيل \"%s\". سأعيد المحاولة خلال %d من الثواني."
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid "_Limit cache to"
 #~ msgstr "حُدّ الذاكرة المخبّأة بـ"

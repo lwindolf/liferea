@@ -2805,8 +2805,8 @@ msgstr "<b>Se descarcă acum</b>"
 #~ msgid "The --session argument must be given a parameter.\n"
 #~ msgstr "Argumentul sesiunii trebuie să aibă un paramentru.\n"
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid "Feed link auto discovery failed! No feed links found!"
 #~ msgstr ""
@@ -3275,8 +3275,8 @@ msgstr "<b>Se descarcă acum</b>"
 #~ msgid "  --iconify        Start the program iconified"
 #~ msgstr "  --iconify        Pornește programul iconificat"
 
-#~ msgid "http://liferea.sf.net/help/help"
-#~ msgstr "http://liferea.sf.net/help/help"
+#~ msgid "http://lzone.de/liferea/help/help"
+#~ msgstr "http://lzone.de/liferea/help/help"
 
 #~ msgid ".rdf"
 #~ msgstr ".rdf"

@@ -3135,8 +3135,8 @@ msgstr "<b>Λαμβάνονται τώρα</b>"
 #~ msgid "No link selected!"
 #~ msgstr "Δεν επιλέχθηκε σύνδεσμος!"
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid "Updates all subscriptions. This does not update OCS directories."
 #~ msgstr "Ενημέρωση όλων των συνδρομών. Δεν ενημερώνονται οι κατάλογοι OCS."

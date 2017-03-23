@@ -2781,8 +2781,8 @@ msgstr "Изтегля се приложения"
 #~ msgid "Exec Command"
 #~ msgstr "_Команда"
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid ""
 #~ "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
@@ -3285,10 +3285,10 @@ msgstr "Изтегля се приложения"
 
 #, fuzzy
 #~ msgid ""
-#~ "<iframe src=\"http://liferea.sf.net/11progress.htm\" width=\"100%\" "
+#~ "<iframe src=\"http://lzone.de/liferea/11progress.htm\" width=\"100%\" "
 #~ "height=\"150px\"></iframe></div>"
 #~ msgstr ""
-#~ "<iframe src=\"http://liferea.sf.net/11progress.htm\" width=\"100%\" "
+#~ "<iframe src=\"http://lzone.de/liferea/11progress.htm\" width=\"100%\" "
 #~ "height=\"150px\"></iframe>"
 
 #~ msgid "New _VFolder..."

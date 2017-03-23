@@ -2911,8 +2911,8 @@ msgstr "<b>Právě stahované</b>"
 #~ msgid "Could not download \"%s\". Will retry in %d seconds."
 #~ msgstr "Nepodařilo se stáhnout „%s“. Další pokus bude za %d sekund."
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid ""
 #~ "Bart Kreska <bartkreska@users.sourceforge.net>\n"

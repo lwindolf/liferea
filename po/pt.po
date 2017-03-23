@@ -2888,8 +2888,8 @@ msgstr "<b>A Transferir Agora</b>"
 #~ "Não foi possível transferir \"%s\". Uma nova tentativa será "
 #~ "efectuadadentro de %d segundos."
 
-#~ msgid "http://liferea.sf.net"
-#~ msgstr "http://liferea.sf.net"
+#~ msgid "http://lzone.de/liferea/"
+#~ msgstr "http://lzone.de/liferea/"
 
 #~ msgid "Show Menu _And Toolbar"
 #~ msgstr "Mostra Menu e B_arra de Ferramentas"
