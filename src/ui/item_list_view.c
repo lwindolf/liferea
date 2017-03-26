@@ -311,12 +311,17 @@ on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer user_data)
 	GtkTreeModel	*model;
 	itemPtr		item = NULL;
 
-	if (gtk_tree_selection_get_selected (selection, &model, &iter))
-		item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
-
-	liferea_shell_update_item_menu (NULL != item);
-	if (item)
-		itemlist_selection_changed (item);
+	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
+		gulong id = item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter);
+		if (id != itemlist_get_selected_id ()) {
+			item = item_load (id);
+			liferea_shell_update_item_menu (NULL != item);
+			if (item)
+				itemlist_selection_changed (item);
+		}
+	} else {
+		liferea_shell_update_item_menu (FALSE);
+	}
 }
 
 static void
