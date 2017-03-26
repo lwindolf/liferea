@@ -4,6 +4,8 @@ Open problems before 1.12 release
 	* Tray icon needs to be auto-disabled along with a popup
 	  informing users who previously had it enabled
 
+2017-03-26   Lars Windolf <lars.windolf@gmx.de>
+
 	Version 1.12-rc3
 
 	* Fixes #459: Fixes GtkDoc warnings
