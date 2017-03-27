@@ -766,7 +766,6 @@ item_list_view_create (gboolean wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
 	
 	renderer = gtk_cell_renderer_pixbuf_new ();
-
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_ENCICON, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->enclosureColumn = column;
@@ -795,7 +794,6 @@ item_list_view_create (gboolean wide)
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->faviconColumn = column;
-
 	renderer = gtk_cell_renderer_text_new ();
 	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
 	                                                   "markup", IS_LABEL,
@@ -819,19 +817,17 @@ item_list_view_create (gboolean wide)
 	ilv->priv->enclosureColumn = column;
 
 	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer, 
+	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer,
 		                                           "text", IS_TIME_STR,
 	                                                   "weight", ITEMSTORE_WEIGHT,
 							   NULL);
-	//gtk_tree_view_column_set_fixed_width (column, 200);
-        gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
 	if (wide) {
 		gtk_tree_view_column_set_visible (column, FALSE);
 		ilv->priv->wideView = TRUE;
 	}
-
 
 
 	/* And connect signals */
