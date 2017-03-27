@@ -254,7 +254,7 @@ feed_list_view_init (GtkTreeView *treeview)
 	/* Set up store */
 	feedstore = gtk_tree_store_new (FS_LEN,
 	                                G_TYPE_STRING,
-	                                GDK_TYPE_PIXBUF,
+	                                G_TYPE_ICON,
 	                                G_TYPE_POINTER,
 	                                G_TYPE_UINT,
 					G_TYPE_STRING);
@@ -284,7 +284,7 @@ feed_list_view_init (GtkTreeView *treeview)
 	gtk_tree_view_column_pack_start (column, titleRenderer, TRUE);
 	gtk_tree_view_column_pack_end (column2, countRenderer, FALSE);
 	
-	gtk_tree_view_column_add_attribute (column, iconRenderer, "pixbuf", FS_ICON);
+	gtk_tree_view_column_add_attribute (column, iconRenderer, "gicon", FS_ICON);
 	gtk_tree_view_column_add_attribute (column, titleRenderer, "markup", FS_LABEL);
 	gtk_tree_view_column_add_attribute (column2, countRenderer, "markup", FS_COUNT);
 

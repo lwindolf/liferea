@@ -13,7 +13,7 @@
 			<outline text="HWSW" htmlUrl="http://hwsw.hu/" xmlUrl="http://www.hwsw.hu/xml/latest_news_rss.xml" />
 		</outline>
 		<outline text="Nyílt forrás">		<!-- translate this for localized feed list -->
-			<outline text="Liferea Blog" htmlUrl="http://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
+			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />
 			<outline text="HUP" htmlUrl="http://hup.hu/" xmlUrl="http://feeds.feedburner.com/HUP" />
 			<outline text="FSF.hu alapítvány" htmlUrl="http://fsf.hu/blog" xmlUrl="http://fsf.hu/blog/feed/" />

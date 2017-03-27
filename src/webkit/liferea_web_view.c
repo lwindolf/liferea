@@ -45,12 +45,16 @@ struct _LifereaWebViewClass {
 G_DEFINE_TYPE (LifereaWebView, liferea_web_view, WEBKIT_TYPE_WEB_VIEW)
 
 static void
-liferea_web_view_dispose(GObject *gobject)
+liferea_web_view_finalize(GObject *gobject)
 {
 	LifereaWebView *self = LIFEREA_WEB_VIEW(gobject);
 
-	/* Chaining dispose from parent class. */
-	G_OBJECT_CLASS(liferea_web_view_parent_class)->dispose(gobject);
+	if (self->dbus_connection) {
+		g_object_remove_weak_pointer (G_OBJECT (self->dbus_connection), (gpointer *) &self->dbus_connection);
+	}
+
+	/* Chaining fianlize from parent class. */
+	G_OBJECT_CLASS(liferea_web_view_parent_class)->finalize(gobject);
 }
 
 static void
@@ -58,7 +62,7 @@ liferea_web_view_class_init(LifereaWebViewClass *klass)
 {
 	GObjectClass *gobject_class = G_OBJECT_CLASS(klass);
 
-	gobject_class->dispose = liferea_web_view_dispose;
+	gobject_class->finalize = liferea_web_view_finalize;
 }
 
 static void
@@ -240,7 +244,7 @@ static void
 on_popup_copy_link_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	GtkClipboard	*clipboard;
-	gchar		*link = common_uri_sanitize (g_variant_get_string (parameter, NULL));
+	gchar		*link = (gchar *) common_uri_sanitize (BAD_CAST g_variant_get_string (parameter, NULL));
 
 	clipboard = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
 	gtk_clipboard_set_text (clipboard, link, -1);
@@ -316,19 +320,6 @@ liferea_web_view_title_changed (WebKitWebView *view, GParamSpec *pspec, gpointer
 
 	liferea_htmlview_title_changed (htmlview, title);
 	g_free (title);
-}
-
-static void
-liferea_web_view_location_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
-{
-	LifereaHtmlView	*htmlview;
-	gchar *location;
-
-	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
-	g_object_get (view, "uri", &location, NULL);
-
-	liferea_htmlview_location_changed (htmlview, location);
-	g_free (location);
 }
 
 /*
@@ -609,17 +600,27 @@ liferea_web_view_create_web_view (WebKitWebView *view, WebKitNavigationAction *a
 	return WEBKIT_WEB_VIEW (htmlwidget);
 }
 
-// Hack to force webview exit from fullscreen mode on new page
 static void
 liferea_webkit_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, gpointer user_data)
 {
-	if (event == WEBKIT_LOAD_STARTED) {
-		gboolean isFullscreen;
-		isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
-					G_OBJECT(view), "fullscreen_on"));
-		if (isFullscreen == TRUE) {
-			webkit_web_view_run_javascript (view, "document.webkitExitFullscreen();", NULL, NULL, NULL);
-		}
+	LifereaHtmlView	*htmlview;
+	gboolean isFullscreen;
+
+	switch (event) {
+		case WEBKIT_LOAD_STARTED:
+			// Hack to force webview exit from fullscreen mode on new page
+			isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
+						G_OBJECT(view), "fullscreen_on"));
+			if (isFullscreen == TRUE) {
+				webkit_web_view_run_javascript (view, "document.webkitExitFullscreen();", NULL, NULL, NULL);
+			}
+			break;
+		case WEBKIT_LOAD_COMMITTED:
+			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+			liferea_htmlview_location_changed (htmlview, webkit_web_view_get_uri (view));
+			break;
+		default:
+			break;
 	}
 }
 
@@ -645,12 +646,6 @@ liferea_web_view_init(LifereaWebView *self)
 		self,
 		"notify::title",
 		G_CALLBACK (liferea_web_view_title_changed),
-		NULL
-	);
-	g_signal_connect (
-		self,
-		"notify::uri",
-		G_CALLBACK (liferea_web_view_location_changed),
 		NULL
 	);
 	g_signal_connect (

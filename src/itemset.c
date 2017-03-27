@@ -1,4 +1,4 @@
-/**
+/*
  * @file itemset.c handling sets of items
  * 
  * Copyright (C) 2005-2015 Lars Windolf <lars.windolf@gmx.de>
@@ -62,17 +62,18 @@ itemset_get_max_item_count (itemSetPtr itemSet)
 }
 
 /**
- * Generic merge logic suitable for feeds
- *
- * @param items		existing items
- * @param newItem	new item to merge
- * @param maxChecks     maximum number of item checks
- * @param allowUpdates	TRUE if item content update is to be
+ * itemset_generic_merge_check: (skip)
+ * @items:		existing items
+ * @newItem:		new item to merge
+ * @maxChecks: 		maximum number of item checks
+ * @allowUpdates:	TRUE if item content update is to be
  *      		allowed for existing items
- * @param allowStateChanges	TRUE if item state shall be
+ * @allowStateChanges:	TRUE if item state shall be
  *				overwritten by source
  *
- * @returns TRUE if merging instead of updating is necessary) 
+ * Generic merge logic suitable for feeds
+ *
+ * Returns: TRUE if merging instead of updating is necessary)
  */
 static gboolean
 itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboolean allowUpdates, gboolean allowStateChanges)

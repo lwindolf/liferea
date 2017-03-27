@@ -32,7 +32,9 @@ class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
     object = GObject.property(type=GObject.Object)
 
     def do_activate(self):
-        GnomeKeyring.unlock_sync("liferea", None)
+        result = GnomeKeyring.unlock_sync("liferea", None)
+        if GnomeKeyring.Result.OK != result:
+            raise ValueError("Failed to unlock GnomeKeyring, error "+result)
 
     def do_deactivate(self):
         window = self.object

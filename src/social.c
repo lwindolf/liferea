@@ -1,4 +1,4 @@
-/**
+/*
  * @file social.c  social networking integration
  * 
  * Copyright (C) 2006-2013 Lars Windolf <lars.windolf@gmx.de>
@@ -24,10 +24,10 @@
 #include "debug.h"
 #include "ui/browser_tabs.h"
 
-/** list of registered bookmarking sites */
+/* list of registered bookmarking sites */
 GSList *bookmarkSites = NULL;
 
-/** the currently configured bookmarking site */
+/* the currently configured bookmarking site */
 static socialSitePtr bookmarkSite = NULL;
 
 void

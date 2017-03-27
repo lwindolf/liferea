@@ -1,4 +1,4 @@
-/**
+/*
  * @file node_source.c  generic node source provider implementation
  * 
  * Copyright (C) 2005-2016 Lars Windolf <lars.windolf@gmx.de>
@@ -261,7 +261,7 @@ node_source_set_state (nodePtr node, gint newState)
 {
 	debug3 (DEBUG_UPDATE, "node source '%s' now in state %d (was %d)", node->id, newState, node->source->loginState);
 
-	/** State transition actions below... */
+	/* State transition actions below... */
 	if (newState == NODE_SOURCE_STATE_ACTIVE)
 		node->source->authFailures = 0;
 

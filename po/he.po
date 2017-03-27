@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-21 00:06+0200\n"
+"POT-Creation-Date: 2017-02-13 22:52+0100\n"
 "PO-Revision-Date: 2012-12-23 18:24+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -72,23 +72,24 @@ msgstr "התאמת פריטים באמצעות תיקיות חיפוש"
 msgid "Play Podcasts"
 msgstr "ניגון פודקסטים"
 
-#: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/mainwindow.ui.h:1
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:79
+#: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "‫Liferea"
 
-#: ../liferea.desktop.in.h:2
+#: ../net.sourceforge.liferea.desktop.in.h:2
 msgid "Feed Reader"
 msgstr "קורא ערוצים"
 
-#: ../liferea.desktop.in.h:3
+#: ../net.sourceforge.liferea.desktop.in.h:3
 msgid "Liferea Feed Reader"
 msgstr "קורא ערוצים Liferea"
 
-#: ../liferea.desktop.in.h:4
+#: ../net.sourceforge.liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
 msgstr "קרא ערוצי חדשות ובלוגים"
 
-#: ../liferea.desktop.in.h:5
+#: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
 msgstr "חדשות;ערוץ;הזנה;פיד;מאגד;בלוג;פודקסט;"
 
@@ -217,21 +218,29 @@ msgstr "פורסם גם בערוץ"
 msgid "Creator"
 msgstr "יוצר"
 
+#: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr ""
+
 # RLO workaround until RTL problem will be solved
 # <p dir=\"rtl\">תגובות</p>
-#: ../xslt/item.xml.in.h:10
+#: ../xslt/item.xml.in.h:12
 msgid "Comments"
 msgstr "תגובות‮"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:13
 msgid "Updating..."
 msgstr "מעדכן כעת…"
 
-#: ../xslt/item.xml.in.h:12
+#: ../xslt/item.xml.in.h:14
 msgid "Section"
 msgstr "פלג"
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:15
 msgid "Department"
 msgstr "אגף"
 
@@ -437,7 +446,7 @@ msgstr "לא ניתן לקבוע את טיפוס הערוץ."
 msgid "There are no unread items"
 msgstr "אין פריטים שלא נקראו"
 
-#: ../src/main.c:163
+#: ../src/liferea_application.c:282
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
@@ -445,52 +454,52 @@ msgstr ""
 "לחתה"
 
 # cli
-#: ../src/main.c:163
+#: ../src/liferea_application.c:282
 msgid "STATE"
 msgstr ""
 
 # cli
-#: ../src/main.c:164
+#: ../src/liferea_application.c:283
 msgid "Show version information and exit"
 msgstr "אצו אסרג עדימ גצה"
 
 # cli
-#: ../src/main.c:165
+#: ../src/liferea_application.c:284
 msgid "Add a new subscription"
 msgstr "השדח המשרה ףסוה"
 
 # cli
-#: ../src/main.c:165
+#: ../src/liferea_application.c:284
 msgid "uri"
 msgstr ""
 
 # cli
-#: ../src/main.c:170
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages of all types"
 msgstr "סופיט לכמ גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:171
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the cache handling"
 msgstr "ןומטמב לופיטה רובע גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:172
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages for the configuration handling"
 msgstr "הרוצתב לופיטה רובע גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:173
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of the database handling"
 msgstr "םינותנ דסמב לופיטה רובע גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:174
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages of all GUI functions"
 msgstr "GUI תויצקנופ לכ לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:175
+#: ../src/liferea_application.c:294
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
@@ -499,88 +508,79 @@ msgstr ""
 "Liferea הב םעפ לכב .HTML רויצ גאביד רשפאמ"
 
 # cli
-#: ../src/main.c:176
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all network activity"
 msgstr "תשר תוליעפ לכ לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:177
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages of all parsing functions"
 msgstr "חונעפ תויצקנופ לכ לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:178
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "דבעל ןמז ידמ רתוי חקול היצקנופל רשאכ גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:179
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "תויצקהופ סיבזוע/םיסנכנ רשאכ גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:180
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the feed update processing"
 msgstr "ץורע ינוכדע דוביע לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:181
+#: ../src/liferea_application.c:300
 msgid "Print debugging messages of the search folder matching"
 msgstr "שופיח תייקית תמאתה לש גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:182
+#: ../src/liferea_application.c:301
 msgid "Print verbose debugging messages"
 msgstr "בר ללמ תולעב גאביד תועדוה ספדה"
 
 # cli
-#: ../src/main.c:193 ../src/main.c:194
+#: ../src/liferea_application.c:306 ../src/liferea_application.c:307
 msgid "Print debugging messages for the given topic"
 msgstr "ןותנה אשונה רובע גאביד תועדוה ספדה"
 
-# cli
-#: ../src/main.c:201
-msgid "Liferea, the Linux Feed Reader"
-msgstr "סקוניל לש םיצורע דגאמה ,Liferea"
-
-#: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
-msgstr "http://lzone.de/liferea/ רקב, ףסונ עדימל"
-
 #. Some libsoup transport errors
-#: ../src/net.c:391
+#: ../src/net.c:400
 msgid "The update request was cancelled"
 msgstr "בקשת העדכון בוטלה"
 
-#: ../src/net.c:392
+#: ../src/net.c:401
 msgid "Unable to resolve destination host name"
 msgstr "לא ניתן לפענח שם מחשב יעד"
 
-#: ../src/net.c:393
+#: ../src/net.c:402
 msgid "Unable to resolve proxy host name"
 msgstr "לא ניתן לפענח שם מחשב פרוקסי"
 
-#: ../src/net.c:394
+#: ../src/net.c:403
 msgid "Unable to connect to remote host"
 msgstr "לא ניתן להתחבר למארח מרוחק"
 
-#: ../src/net.c:395
+#: ../src/net.c:404
 msgid "Unable to connect to proxy"
 msgstr "לא ניתן להתחבר לפרוקסי"
 
-#: ../src/net.c:396
+#: ../src/net.c:405
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr "אירעה שגיאת תקשורת, או שהקצה המרוחק ניתק את הקשר באופן בלתי צפוי"
 
 # באופן קבוע
 #. http 3xx redirection
-#: ../src/net.c:399
+#: ../src/net.c:408
 msgid "The resource moved permanently to a new location"
 msgstr "המשאב הועבר לצמיתות למיקום חדש"
 
 #. http 4xx client error
-#: ../src/net.c:402
+#: ../src/net.c:411
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -588,57 +588,57 @@ msgstr ""
 "אינך מורשה לטעון את ערוץ זה. אנא עדכן את שם המשתמש והסיסמה שלך בתוך תיבת דו "
 "שיח של מאפייני ערוץ"
 
-#: ../src/net.c:404
+#: ../src/net.c:413
 msgid "Payment required"
 msgstr "נדרש תשלום"
 
 # אין באפשרות לגשת אל משאב זה
 # לא מותר לך לגשת אל משאב זה
-#: ../src/net.c:405
+#: ../src/net.c:414
 msgid "You're not allowed to access this resource"
 msgstr "אינך מורשה לגשת אל משאב זה"
 
-#: ../src/net.c:406
+#: ../src/net.c:415
 msgid "Resource Not Found"
 msgstr "משאב לא נמצא"
 
-#: ../src/net.c:407
+#: ../src/net.c:416
 msgid "Method Not Allowed"
 msgstr "שיטה לא מורשית"
 
-#: ../src/net.c:408
+#: ../src/net.c:417
 msgid "Not Acceptable"
 msgstr "לא קביל"
 
-#: ../src/net.c:409
+#: ../src/net.c:418
 msgid "Proxy authentication required"
 msgstr "נדרשת הזדהות אל מול פרוקסי"
 
-#: ../src/net.c:410
+#: ../src/net.c:419
 msgid "Request timed out"
 msgstr "תם הזמן שהוקצב לבקשה"
 
-#: ../src/net.c:411
+#: ../src/net.c:420
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "הערוץ לא קיים. אנא בטל את ההרשמה!"
 
-#: ../src/net.c:416
+#: ../src/net.c:425
 msgid "There was an internal error in the update process"
 msgstr "אירעה שגיאה פנימית בתהליך העדכון"
 
-#: ../src/net.c:418
+#: ../src/net.c:427
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "ערוץ לא זמין: השרת ביקש הפנייה שאינה נתמכת!"
 
-#: ../src/net.c:420
+#: ../src/net.c:429
 msgid "Client Error"
 msgstr "שגיאת לקוח"
 
-#: ../src/net.c:422
+#: ../src/net.c:431
 msgid "Server Error"
 msgstr "שגיאת שרת"
 
-#: ../src/net.c:424
+#: ../src/net.c:433
 msgid "An unknown networking error happened!"
 msgstr "אירעה שגיאת תקשורת לא מוכרת!"
 
@@ -949,8 +949,7 @@ msgstr "_פריט הבא שלא נקרא"
 msgid "_View"
 msgstr "_תצוגה"
 
-#: ../src/ui/liferea_shell.c:931 ../src/ui/liferea_htmlview.c:668
-#: ../src/webkit/liferea_web_view.c:207
+#: ../src/ui/liferea_shell.c:931 ../src/webkit/liferea_web_view.c:211
 msgid "_Increase Text Size"
 msgstr "ה_גדל גודל טקסט"
 
@@ -958,8 +957,7 @@ msgstr "ה_גדל גודל טקסט"
 msgid "Increases the text size of the item view."
 msgstr "הגדל את הטקסט בתצוגת הפריטים."
 
-#: ../src/ui/liferea_shell.c:933 ../src/ui/liferea_htmlview.c:669
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/ui/liferea_shell.c:933 ../src/webkit/liferea_web_view.c:212
 msgid "_Decrease Text Size"
 msgstr "ה_קטן גודל טקסט"
 
@@ -1228,53 +1226,12 @@ msgstr "כל הקבצים"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "‏Liferea מצוי כעת במצב לא־מקוון. אין אפשרות לעדכן ערוצים."
 
-#: ../src/ui/liferea_htmlview.c:639 ../src/webkit/liferea_web_view.c:169
-msgid "Open Link In _Tab"
-msgstr "פתח קישור בתוך _כרטיסייה"
-
-#: ../src/ui/liferea_htmlview.c:640
-msgid "_Open Link In Browser"
-msgstr "_פתח קישור בתוך דפדפן"
-
-#: ../src/ui/liferea_htmlview.c:641
-msgid "_Open Link In External Browser"
-msgstr "_פתח קישור בתוך דפדפן חיצוני"
-
-#: ../src/ui/liferea_htmlview.c:644 ../src/webkit/liferea_web_view.c:177
-#, c-format
-msgid "_Bookmark Link at %s"
-msgstr "_סמן קישור באתר %s"
-
-#: ../src/ui/liferea_htmlview.c:648 ../src/webkit/liferea_web_view.c:181
-msgid "_Copy Link Location"
-msgstr "_העתק מיקום קישור"
-
-#: ../src/ui/liferea_htmlview.c:651 ../src/webkit/liferea_web_view.c:184
-msgid "_Copy Image Location"
-msgstr "_העתק מיקום תמונה"
-
-#: ../src/ui/liferea_htmlview.c:653 ../src/webkit/liferea_web_view.c:187
-msgid "S_ave Link As"
-msgstr "_שמור קישור בשם"
-
-#: ../src/ui/liferea_htmlview.c:655 ../src/webkit/liferea_web_view.c:190
-msgid "S_ave Image As"
-msgstr "שמור _תמונה בשם"
-
-#: ../src/ui/liferea_htmlview.c:658 ../src/webkit/liferea_web_view.c:197
-msgid "_Subscribe..."
-msgstr "ה_רשמה..."
-
-#: ../src/ui/liferea_htmlview.c:663 ../src/webkit/liferea_web_view.c:201
-msgid "_Copy"
-msgstr "ה_עתק"
-
 #: ../src/ui/item_list_view.c:114
 msgid "This item has no link specified!"
 msgstr "לפריט זה לא צוין קישור!"
 
-#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:960
-#: ../src/ui/item_list_view.c:1046 ../src/ui/item_list_view.c:1061
+#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:966
+#: ../src/ui/item_list_view.c:1052 ../src/ui/item_list_view.c:1067
 msgid "No item has been selected"
 msgstr "לא נבחר אף פריט"
 
@@ -1286,11 +1243,11 @@ msgstr "*** בלי כותרת ***"
 msgid "Date"
 msgstr "תאריך"
 
-#: ../src/ui/item_list_view.c:789
+#: ../src/ui/item_list_view.c:795
 msgid "Headline"
 msgstr "כותרת"
 
-#: ../src/ui/item_list_view.c:947
+#: ../src/ui/item_list_view.c:953
 msgid "You must select a feed to delete its items!"
 msgstr "עליך לבחור ערוץ כדי למחוק את הפריטים שלו!"
 
@@ -1597,15 +1554,48 @@ msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של TinyTiny
 msgid "TheOldReader"
 msgstr "‏TheOldReader"
 
-#: ../src/webkit/liferea_web_view.c:170
+#: ../src/webkit/liferea_web_view.c:173
+msgid "Open Link In _Tab"
+msgstr "פתח קישור בתוך _כרטיסייה"
+
+#: ../src/webkit/liferea_web_view.c:174
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "_פתח קישור בתוך דפדפן"
 
-#: ../src/webkit/liferea_web_view.c:171
+#: ../src/webkit/liferea_web_view.c:175
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "_פתח קישור בתוך דפדפן חיצוני"
+
+#: ../src/webkit/liferea_web_view.c:181
+#, c-format
+msgid "_Bookmark Link at %s"
+msgstr "_סמן קישור באתר %s"
+
+#: ../src/webkit/liferea_web_view.c:185
+msgid "_Copy Link Location"
+msgstr "_העתק מיקום קישור"
+
+#: ../src/webkit/liferea_web_view.c:188
+msgid "_Copy Image Location"
+msgstr "_העתק מיקום תמונה"
+
+#: ../src/webkit/liferea_web_view.c:191
+msgid "S_ave Link As"
+msgstr "_שמור קישור בשם"
+
+#: ../src/webkit/liferea_web_view.c:194
+msgid "S_ave Image As"
+msgstr "שמור _תמונה בשם"
+
+#: ../src/webkit/liferea_web_view.c:201
+msgid "_Subscribe..."
+msgstr "ה_רשמה..."
+
+#: ../src/webkit/liferea_web_view.c:205
+msgid "_Copy"
+msgstr "ה_עתק"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1623,11 +1613,11 @@ msgstr "דף הבית של Liferea"
 msgid "Authentication"
 msgstr "אימות"
 
-#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:30
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:33
 msgid "_Password:"
 msgstr "_סיסמה:"
 
-#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:31
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "User_name:"
 msgstr "_שם משתמש:"
 
@@ -1709,7 +1699,7 @@ msgstr "הצג כותרות"
 msgid "combined view"
 msgstr "תצוגה משולבת"
 
-#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:21
+#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "כותרות"
 
@@ -1734,35 +1724,35 @@ msgstr "שם _סל איסוף:"
 msgid "Feed Source"
 msgstr "מקור ערוץ"
 
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:14
-msgid "_Source:"
-msgstr "_מקור:"
+#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:13
+msgid "Source Type:"
+msgstr "טיפוס מקור:"
 
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:15
+#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:14
 msgid "_URL"
 msgstr "_כתובת URL"
 
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:16
+#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:15
 msgid "_Command"
 msgstr "_פקודה"
 
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:17
+#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:16
 msgid "_Local File"
 msgstr "_קובץ מקומי"
 
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:18
+#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:17
 msgid "Select File..."
 msgstr "בחר קובץ..."
 
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:13
-msgid "Source Type:"
-msgstr "טיפוס מקור:"
+#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:18
+msgid "_Source:"
+msgstr "_מקור:"
 
 #: ../glade/new_subscription.ui.h:9
 msgid "Download / Postprocessing"
 msgstr "טעינה \\ עיבוד־מאוחר"
 
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:32
+#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
 msgid "_Don't use proxy for download"
 msgstr "א_ל תשתמש בפרוקסי"
 
@@ -1826,21 +1816,29 @@ msgstr "ניהול הטמנת ערוצים"
 msgid "Default _number of items per feed to save:"
 msgstr "_ברירת מחדל למספר הפריטים שיישמרו מכל ערוץ:"
 
-#: ../glade/prefs.ui.h:4
+#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
+msgid "0"
+msgstr ""
+
+#: ../glade/prefs.ui.h:5
 msgid "Feed Update Settings"
 msgstr "הגדרות עדכון ערוץ"
 
-#: ../glade/prefs.ui.h:5
+#: ../glade/prefs.ui.h:6
 msgid "_Update all subscriptions at startup."
 msgstr "_עדכן את כל ההרשמות בעת הפעלה."
 
 # תדירות _רענון ערוץ שגרתית:
-#: ../glade/prefs.ui.h:6
+#: ../glade/prefs.ui.h:7
 msgid "Default Feed Refresh _Interval:"
 msgstr "ב_רירת מחדל לזמן רענון ערוץ:"
 
+#: ../glade/prefs.ui.h:8 ../glade/properties.ui.h:7
+msgid "1"
+msgstr ""
+
 #. Feed update interval hint in preference dialog.
-#: ../glade/prefs.ui.h:8
+#: ../glade/prefs.ui.h:10
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
 "waste of bandwidth to poll feeds more often than each hour.</i>"
@@ -1848,11 +1846,11 @@ msgstr ""
 "הערה: <i>רצוי לקבוע זמן רענון הגיוני. בדרך כלל תשאול של ערוצים כל שעה או "
 "פחות מהווה בזבוז של רוחב פס.</i>"
 
-#: ../glade/prefs.ui.h:9
+#: ../glade/prefs.ui.h:11
 msgid "Feeds"
 msgstr "ערוצים"
 
-#: ../glade/prefs.ui.h:10
+#: ../glade/prefs.ui.h:12
 msgid "Folder Display Settings"
 msgstr "הגדרות תצוגת תיקיות"
 
@@ -1862,170 +1860,170 @@ msgstr "הגדרות תצוגת תיקיות"
 # תהליך צאצא child process
 # תהליך הורה parent process
 # _הצג את כל הפריטים של כל ההזנות המשניות כאשר תיקייה נבחרת.
-#: ../glade/prefs.ui.h:11
+#: ../glade/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr "_הצג את כל הפריטים של כל ערוצי המשנה כאשר תיקייה נבחרת."
 
-#: ../glade/prefs.ui.h:12
+#: ../glade/prefs.ui.h:14
 msgid "_Hide read items."
 msgstr "_הסתר פריטים שנקראו."
 
-#: ../glade/prefs.ui.h:13
+#: ../glade/prefs.ui.h:15
 msgid "Feed Icons (Favicons)"
 msgstr "סמלי ערוץ (Favicons)"
 
-#: ../glade/prefs.ui.h:14
+#: ../glade/prefs.ui.h:16
 msgid "_Update all favicons now"
 msgstr "_עדכן את כל הסמלים כעת"
 
-#: ../glade/prefs.ui.h:15
+#: ../glade/prefs.ui.h:17
 msgid "Folders"
 msgstr "תיקיות"
 
-#: ../glade/prefs.ui.h:16
+#: ../glade/prefs.ui.h:18
 msgid "Reading Headlines"
 msgstr "קריאת כותרות"
 
-#: ../glade/prefs.ui.h:17
+#: ../glade/prefs.ui.h:19
 msgid "_Skim through articles with:"
 msgstr "_קרא מאמרים ברפרוף בעזרת:"
 
-#: ../glade/prefs.ui.h:18
+#: ../glade/prefs.ui.h:20
 msgid "_Default View Mode:"
 msgstr "_מצב תצוגה שגרתי:"
 
-#: ../glade/prefs.ui.h:19
+#: ../glade/prefs.ui.h:21
 msgid "Web Integration"
 msgstr "מיזוג רשת"
 
-#: ../glade/prefs.ui.h:20
+#: ../glade/prefs.ui.h:22
 msgid "_Post Bookmarks to"
 msgstr "_פרסם סימניות באתר"
 
-#: ../glade/prefs.ui.h:22
+#: ../glade/prefs.ui.h:24
 msgid "Internal Browser Settings"
 msgstr "הגדרות דפדפן פנימי"
 
-#: ../glade/prefs.ui.h:23
+#: ../glade/prefs.ui.h:25
 msgid "Open links in Liferea's _window."
 msgstr "פתח קישורים ב_חלון של Liferea."
 
-#: ../glade/prefs.ui.h:24
+#: ../glade/prefs.ui.h:26
 msgid "_Disable Javascript."
 msgstr "_נטרל Javascript."
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
 msgstr "_אפשר תוספי דפדפן."
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:28
 msgid "External Browser Settings"
 msgstr "הגדרות דפדפן חיצוני"
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:29
+msgid "_Browser:"
+msgstr "_דפדפן:"
+
+#: ../glade/prefs.ui.h:30
 msgid "_Manual:"
 msgstr "_ידני:"
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:32
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr "<small>(s% עבור URL)</small>"
 
-#: ../glade/prefs.ui.h:30
-msgid "_Browser:"
-msgstr "_דפדפן:"
-
-#: ../glade/prefs.ui.h:31
+#: ../glade/prefs.ui.h:33
 msgid "Browser"
 msgstr "דפדפן"
 
-#: ../glade/prefs.ui.h:32
+#: ../glade/prefs.ui.h:34
 msgid "Toolbar Settings"
 msgstr "הגדרות סרגל כלים"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:35
 msgid "_Hide toolbar."
 msgstr "הס_תר סרגל כלים."
 
 # סיווג
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:36
 msgid "Toolbar _button labels:"
 msgstr "_תוויות כפתורים בסרגל כלים:"
 
 # מ.מ.ג.
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:37
 msgid "GUI"
 msgstr "ממשק"
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:38
 msgid "HTTP Proxy Server"
 msgstr "שרת פרוקסי HTTP"
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:39
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_אתר אוטומטית (GNOME או סביבת עבודה)"
 
-#: ../glade/prefs.ui.h:38
+#: ../glade/prefs.ui.h:40
 msgid "_No Proxy"
 msgstr "_בלי פרוקסי"
 
-#: ../glade/prefs.ui.h:39
+#: ../glade/prefs.ui.h:41
 msgid "_Manual Setting:"
 msgstr "_הגדרה ידנית:"
 
-#: ../glade/prefs.ui.h:40
-msgid "Proxy _Port:"
-msgstr "_יציאת פרוקסי:"
-
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:42
 msgid "Proxy _Host:"
 msgstr "_מארח פרוקסי:"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:43
+msgid "Proxy _Port:"
+msgstr "_יציאת פרוקסי:"
+
+#: ../glade/prefs.ui.h:44
 msgid "Use Proxy Au_thentication"
 msgstr "ה_שתמש בזיהוי פרוקסי"
 
-#: ../glade/prefs.ui.h:43
-msgid "Proxy Pass_word:"
-msgstr "סיסמת _פרוקסי:"
-
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Username:"
 msgstr "שם מש_תמש פרוקסי:"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:46
+msgid "Proxy Pass_word:"
+msgstr "סיסמת _פרוקסי:"
+
+#: ../glade/prefs.ui.h:47
 msgid "Proxy"
 msgstr "פרוקסי"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:48
 msgid "Privacy Settings"
 msgstr "הגדרות פרטיות"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:49
 msgid "Tell sites that I do _not want to be tracked"
 msgstr "אמור לאתרים כי אני _לא רוצה להיות נתון למעקב"
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:50
 msgid "Privacy"
 msgstr "פרטיות"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:51
 msgid "Downloading Enclosures"
 msgstr "הורדת צירופים"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:52
 msgid "_Download using"
 msgstr "_הורד באמצעות"
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:53
 msgid "Opening Enclosures"
 msgstr "פתיחת צירופים"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:54
 msgid "Enclosures"
 msgstr "צירופים"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:55
 msgid "Plugins"
 msgstr "תוספים"
 
@@ -2054,13 +2052,9 @@ msgstr "_השתמש בזמן עדכון גלובלי שגרתי."
 msgid "_Feed specific update interval of"
 msgstr "_תדירות עדכון ערוץ ייחודית בשיעור של"
 
-#: ../glade/properties.ui.h:7
+#: ../glade/properties.ui.h:8
 msgid "_Don't update this feed automatically."
 msgstr "א_ל תעדכן את ערוץ זה אוטומטית."
-
-#: ../glade/properties.ui.h:8
-msgid " "
-msgstr " "
 
 #: ../glade/properties.ui.h:10
 #, no-c-format
@@ -2103,36 +2097,36 @@ msgstr "_מטמון בלתי מוגבל"
 msgid "_Number of items to save:"
 msgstr "מספר _פריטים לשמור:"
 
-#: ../glade/properties.ui.h:28
+#: ../glade/properties.ui.h:29
 msgid "Archive"
 msgstr "ארכיון"
 
-#: ../glade/properties.ui.h:29
+#: ../glade/properties.ui.h:30
 msgid "Use HTTP _authentication"
 msgstr "_השתמש בזיהוי HTTP"
 
 # טעינת פריטים
-#: ../glade/properties.ui.h:33
+#: ../glade/properties.ui.h:34
 msgid "Download"
 msgstr "טעינה"
 
-#: ../glade/properties.ui.h:34
+#: ../glade/properties.ui.h:35
 msgid "_Automatically download all enclosures of this feed."
 msgstr "_הורד אוטומטית את כל הצירופים של ערוץ זה."
 
-#: ../glade/properties.ui.h:35
+#: ../glade/properties.ui.h:36
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr "_טען אוטומטית קישור פריט לתוך דפדפן מוגדר בעת בחירת מאמרים."
 
-#: ../glade/properties.ui.h:36
+#: ../glade/properties.ui.h:37
 msgid "Ignore _comment feeds for this subscription."
 msgstr "ה_תעלם מתגובות ערוצים עבור הרשמה זו."
 
-#: ../glade/properties.ui.h:37
+#: ../glade/properties.ui.h:38
 msgid "_Mark downloaded items as read."
 msgstr "_סמן פריטים שנטענו ככאלה שנקראו."
 
-#: ../glade/properties.ui.h:38
+#: ../glade/properties.ui.h:39
 msgid "Advanced"
 msgstr "מתקדם"
 
@@ -2186,42 +2180,24 @@ msgid "Search All Feeds"
 msgstr "חיפוש בכל הערוצים"
 
 #: ../glade/simple_search.ui.h:2
-msgid "_Search for:"
-msgstr "_חפש:"
-
-#: ../glade/simple_search.ui.h:3
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
-msgstr "הזן מחרוזת תווים שאותה יחפש Liferea בכותרות הפריטים או בתוכנם."
-
-#: ../glade/simple_search.ui.h:4
 msgid "_Advanced..."
 msgstr "_מורחב..."
 
-#: ../glade/simple_search.ui.h:5
+#: ../glade/simple_search.ui.h:3
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
 msgstr "חיפוש הטקסט שצוין בכל הערוצים. תוצאות החיפוש יופיעו ברשימת הפריטים."
 
-# מנטר העדכונים
-#: ../glade/simple_search.ui.h:6 ../glade/update_monitor.ui.h:1
-msgid "Update Monitor"
-msgstr "ניטור אחר עדכונים"
+#: ../glade/simple_search.ui.h:4
+msgid "_Search for:"
+msgstr "_חפש:"
 
-#: ../glade/simple_search.ui.h:7 ../glade/update_monitor.ui.h:2
-msgid "Pending Requests"
-msgstr "בקשות ממתינות"
-
-#: ../glade/simple_search.ui.h:8 ../glade/update_monitor.ui.h:3
-msgid "Downloading Now"
-msgstr "ערוצים שנטענים כעת"
-
-# _עצור
-#: ../glade/simple_search.ui.h:9 ../glade/update_monitor.ui.h:4
-msgid "Cancel _All"
-msgstr "_בטל הכל"
+#: ../glade/simple_search.ui.h:5
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr "הזן מחרוזת תווים שאותה יחפש Liferea בכותרות הפריטים או בתוכנם."
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
@@ -2258,6 +2234,41 @@ msgstr "כתובת _שרת"
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
 msgstr "_שם משתמש"
+
+# מנטר העדכונים
+#: ../glade/update_monitor.ui.h:1
+msgid "Update Monitor"
+msgstr "ניטור אחר עדכונים"
+
+# _עצור
+#: ../glade/update_monitor.ui.h:2
+#, fuzzy
+msgid "Cancel All"
+msgstr "_בטל הכל"
+
+#: ../glade/update_monitor.ui.h:3
+msgid "Pending Requests"
+msgstr "בקשות ממתינות"
+
+#: ../glade/update_monitor.ui.h:4
+msgid "Downloading Now"
+msgstr "ערוצים שנטענים כעת"
+
+# cli
+#~ msgid "Liferea, the Linux Feed Reader"
+#~ msgstr "סקוניל לש םיצורע דגאמה ,Liferea"
+
+#~ msgid "For more information, please visit https://lzone.de/liferea/"
+#~ msgstr "https://lzone.de/liferea/ רקב, ףסונ עדימל"
+
+#~ msgid "_Open Link In Browser"
+#~ msgstr "_פתח קישור בתוך דפדפן"
+
+#~ msgid "_Open Link In External Browser"
+#~ msgstr "_פתח קישור בתוך דפדפן חיצוני"
+
+#~ msgid " "
+#~ msgstr " "
 
 #~ msgid "Create Search Engine Feed"
 #~ msgstr "צור ערוץ של מנוע חיפוש"

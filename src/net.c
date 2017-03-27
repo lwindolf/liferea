@@ -32,7 +32,7 @@
 #include "conf.h"
 #include "debug.h"
 
-#define HOMEPAGE	"http://lzone.de/liferea/"
+#define HOMEPAGE	"https://lzone.de/liferea/"
 
 static SoupSession *session = NULL;	/* Session configured for preferences */
 static SoupSession *session2 = NULL;	/* Session for "Don't use proxy feature" */
@@ -109,13 +109,13 @@ network_get_proxy_uri (void)
 
 /* Downloads a feed specified in the request structure, returns 
    the downloaded data or NULL in the request structure.
-   If the the webserver reports a permanent redirection, the
+   If the webserver reports a permanent redirection, the
    feed url will be modified and the old URL 'll be freed. The
    request structure will also contain the HTTP status and the
    last modified string.
  */
 void
-network_process_request (const updateJobPtr const job)
+network_process_request (const updateJobPtr job)
 {
 	SoupMessage	*msg;
 	SoupDate	*date;
@@ -157,11 +157,20 @@ network_process_request (const updateJobPtr const job)
 		soup_date_free (date);
 	}
 
-	/* Set the If-None-Match: header */
+	/* Set the If-None-Match header */
 	if (job->request->updateState && update_state_get_etag (job->request->updateState)) {
 		soup_message_headers_append(msg->request_headers,
 					    "If-None-Match",
 					    update_state_get_etag (job->request->updateState));
+	}
+
+	/* Set the I-AM header */
+	if (job->request->updateState &&
+	    (update_state_get_lastmodified (job->request->updateState) ||
+	     update_state_get_etag (job->request->updateState))) {
+		soup_message_headers_append(msg->request_headers,
+					    "A-IM",
+					    "feed");
 	}
 
 	/* Support HTTP content negotiation */
@@ -250,14 +259,15 @@ network_set_soup_session_proxy (SoupSession *session, ProxyDetectMode mode, cons
 			soup_uri_set_port (uri, port);
 			soup_uri_set_user (uri, user);
 			soup_uri_set_password (uri, password);
+			soup_uri_set_path (uri, "/");
 
 			if (SOUP_URI_IS_VALID (uri)) {
 				/* Sets proxy-uri, this unsets proxy-resolver. */
 				g_object_set (G_OBJECT (session),
 					SOUP_SESSION_PROXY_URI, uri,
 					NULL);
-				soup_uri_free (uri);
 			}
+			soup_uri_free (uri);
 			break;
 	}
 }
@@ -272,10 +282,10 @@ network_init (void)
 
 	/* Set an appropriate user agent */
 	if (g_getenv ("LANG")) {
-		/* e.g. "Liferea/1.10.0 (Linux; de_DE; http://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+		/* e.g. "Liferea/1.10.0 (Linux; de_DE; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
 	} else {
-		/* e.g. "Liferea/1.10.0 (Linux; http://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+		/* e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
 	}
 

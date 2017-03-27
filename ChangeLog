@@ -1,19 +1,60 @@
-Open problems before release
+Open problems before 1.12 release
 
 	* Article skimming currently broken
+	* Tray icon needs to be auto-disabled along with a popup
+	  informing users who previously had it enabled
 
-To be released
+2017-03-26   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12-rc3
+
+	* Fixes #459: Fixes GtkDoc warnings
+	  (Leiaz)
+	* Fixes #415: Filter commands are not asynchronous
+	  (Rich Coe)
+	* Fixes #363: Missing space above internal browser address bar
+	  (reported by nekohayo, patch by Mikel Olasagasti)
+	* Fixes #208: All "Unread" search folder items marked read at once
+	  (Leiaz)
+	* Fixes #251: Liferea does not always use theme icons when it is launched
+	  on system startup (reported by GreenLunar, fix by Leiaz)
+
+	* Updated Finnish translation (Jorma Karvonen)
+	* Updated Latvian translation (Rihards Prieditis)
+	* Updated Albanian translation (Bensik Bleta)
+	* Updated Hungarian translation (Balázs Úr)
+	* Updated Brazlian translation (Rafael Ferreira)
+	* Updated French translation (Guillaume Bernard)
+
+
+2016-11-11   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12-rc2
 
 	* Change all g_warnings() to g_print() for remote source
 	  to avoid "crashing" on errors.
 	* Reorganized all UI definitions in separate files to simplify
 	  GtkBuilder handling.
+	* Github #425: Add GeoRSS info and map link in item header
+	  (Mikel Olasagasti)
+	* Github #407: Replacing deprecated elements in preferences
+	  (Leiaz)
+	* Github #396: Create LifereaApplication type
+	  (Leiaz)
+	* Github #434: Partial RFC3229+feed support for bandwidth savings
+	  (Daniel Aleksandersen)
 
 	* Fixes Github #208: gtk_tree_store_get_path: assertion
 	  'iter->stamp == priv->stamp'
 	  (reported by Mno-hime)
+	* Fixes Github #403: Leftover OSM XSLT in item view
+	  (reported by Paul Gevers)
+	* Fixes Github #423: Internal browser shows files system on go-back
+	  (Leiaz, reported by Paul Gevers)
 
 	* Updated German translation
+	* Github #441: Updated French translation
+	  (Surfoo)
 
 
 2016-09-20   Lars Windolf <lars.windolf@gmx.de>

@@ -1,21 +1,22 @@
 # Albanian Translation of liferea.pot
 # Copyright (C) 2009,2012
 # This file is distributed under the same license as the Liferea package.
-# Besnik Bleta <besnik@programeshqip.org>, 2009, 2012, 2015.
+# Besnik Bleta <besnik@programeshqip.org>, 2009, 2012, 2015, 2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-21 00:06+0200\n"
-"PO-Revision-Date: 2015-02-15 19:01+0200\n"
+"POT-Creation-Date: 2017-02-13 22:52+0100\n"
+"PO-Revision-Date: 2016-11-10 20:22+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Poedit 1.6.10\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid ""
@@ -69,23 +70,24 @@ msgstr "Gjej përputhje për zëra duke përdorur dosje kërkimi"
 msgid "Play Podcasts"
 msgstr "Luaj Podcast-e"
 
-#: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/mainwindow.ui.h:1
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:79
+#: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../liferea.desktop.in.h:2
+#: ../net.sourceforge.liferea.desktop.in.h:2
 msgid "Feed Reader"
 msgstr "Lexues Prurjesh"
 
-#: ../liferea.desktop.in.h:3
+#: ../net.sourceforge.liferea.desktop.in.h:3
 msgid "Liferea Feed Reader"
 msgstr "Lexuesi i Prurjeve Liferea"
 
-#: ../liferea.desktop.in.h:4
+#: ../net.sourceforge.liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
 msgstr "Lexoni blogje dhe prurje lajmesh"
 
-#: ../liferea.desktop.in.h:5
+#: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
 msgstr "lajme;prurje;grumbullues;blog;podcast;"
 
@@ -94,8 +96,8 @@ msgid ""
 "This feed is discontinued. It's no longer available. Liferea won't update it "
 "anymore but you can still access the cached headlines."
 msgstr ""
-"Kjo prurje është ndërprerë. Nuk mund të kihet më. Liferea s’do ta "
-"përditësojë më, por ende mund të hapni titujt e ruajtur në fshehtinë."
+"Kjo prurje është ndërprerë. S’mund të kihet më. Liferea s’do ta përditësojë "
+"më, por ende mund të hapni titujt e ruajtur në fshehtinë."
 
 #: ../xslt/feed.xml.in.h:2
 msgid ""
@@ -125,7 +127,7 @@ msgstr ""
 
 #: ../xslt/feed.xml.in.h:7
 msgid "There were errors while filtering this feed!"
-msgstr "Pati gabime ndërsa filtrohej kjo prurje!"
+msgstr "Pati gabime teksa filtrohej kjo prurje!"
 
 #: ../xslt/feed.xml.in.h:8
 msgid "Filter Error Details"
@@ -170,7 +172,7 @@ msgstr "Prurje"
 
 #: ../xslt/item.xml.in.h:3
 msgid "Filed under"
-msgstr "Skeduar te:"
+msgstr "Skeduar te"
 
 #: ../xslt/item.xml.in.h:4
 msgid "Author"
@@ -197,18 +199,26 @@ msgid "Creator"
 msgstr "Krijues"
 
 #: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:12
 msgid "Comments"
 msgstr "Komente"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:13
 msgid "Updating..."
-msgstr "Po përditësohet..."
+msgstr "Po përditësohet…"
 
-#: ../xslt/item.xml.in.h:12
+#: ../xslt/item.xml.in.h:14
 msgid "Section"
 msgstr "Ndarje"
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:15
 msgid "Department"
 msgstr "Degë"
 
@@ -246,17 +256,17 @@ msgstr "Gabim Autorizimi"
 #: ../src/common.c:66
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
-msgstr "Nuk krijohet dot drejtoria fshehtinë \"%s\"!"
+msgstr "S’krijohet dot drejtoria fshehtinë \"%s\"!"
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:777
 msgid "Today %l:%M %p"
-msgstr "Sot %l:%M %p"
+msgstr "Sot më %l:%M %p"
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
 #: ../src/date.c:788
 msgid "Yesterday %l:%M %p"
-msgstr "Dje %l:%M %p"
+msgstr "Dje më %l:%M %p"
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
 #: ../src/date.c:801
@@ -279,15 +289,16 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" nuk është kartelë e vlefshme formësimi lloji paketimesh!"
 
 #: ../src/enclosure.c:292
+#, fuzzy
 msgid ""
 "You have not configured a download tool yet! Please do so in the "
 "'Enclosures' tab in Tools/Preferences."
 msgstr ""
-"Ende nuk keni të formësuar mjet shkarkimesh! Ju lutem, bëjeni këtë te skeda "
-"'Shkarko' te Mjete/Parapëlqime."
+"Ende s’keni të formësuar mjet shkarkimesh! Ju lutemi, bëjeni këtë te skeda "
+"'Shkarko', te Mjete/Parapëlqime."
 
 #: ../src/enclosure.c:310
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Command failed: \n"
 "\n"
@@ -312,14 +323,15 @@ msgstr "Gabim në riemërtimin e %s si %s\n"
 #: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
-msgstr "Gabim XML ndërsa lexohej kartelë OPML! Nuk u importua dot \"%s\"!"
+msgstr "Gabim XML ndërsa lexohej kartelë OPML! S’u importua dot \"%s\"!"
 
 #: ../src/export.c:425 ../src/export.c:427
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
-"Dokument bosh! Dokumenti OPML \"%s\" nuk duhet të jetë bosh kur importohet."
+"Dokument i zbrazët! Dokumenti OPML \"%s\" s’duhet të jetë i zbrazët kur "
+"importohet."
 
 #: ../src/export.c:448 ../src/export.c:450
 #, c-format
@@ -366,19 +378,19 @@ msgid ""
 "points to a resource provided in one of the supported syndication formats!</"
 "p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr ""
-"<p>Nuk zbuloi dot llojin e kësaj prurje! Ju lutemi, shihni nëse burimi "
-"vërtet shpie te një burim i dhënë nën një nga formatet e pranuar për prurje!"
-"</p>Përgjigje nga Përtypësi i XML-ve:<br /><div class='xmlparseroutput'>"
+"<p>S’u zbulua dot lloji i kësaj prurje! Ju lutemi, shihni nëse burimi vërtet "
+"shpie te një burim i dhënë nën një nga formatet e pranuar për prurje!</"
+"p>Përgjigje nga Përtypësi i XML-ve:<br /><div class='xmlparseroutput'>"
 
 #: ../src/feed.c:262
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "\"%s\" u përditësua..."
+msgstr "\"%s\" u përditësua…"
 
 #: ../src/feed.c:269
 #, c-format
 msgid "\"%s\" is not available"
-msgstr "\"%s\" nuk është e mundshme"
+msgstr "\"%s\" nuk është e passhme"
 
 #: ../src/feed_parser.c:137
 msgid ""
@@ -393,11 +405,11 @@ msgstr ""
 #: ../src/feed_parser.c:170
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "Gabim XML ndërsa lexohej prurje! Prurja \"%s\" nuk u ngarkua dot!"
+msgstr "Gabim XML ndërsa lexohej prurje! Prurja \"%s\" s’u ngarkua dot!"
 
 #: ../src/feed_parser.c:175
 msgid "Empty document!"
-msgstr "Dokument bosh!"
+msgstr "Dokument i zbrazët!"
 
 #: ../src/feed_parser.c:187
 msgid "Invalid XML!"
@@ -409,57 +421,58 @@ msgstr "Burimi shpie te dokument HTML."
 
 #: ../src/feed_parser.c:230
 msgid "Could not determine the feed type."
-msgstr "Nuk u përcaktua dot lloji i prurjes."
+msgstr "S’u përcaktua dot lloji i prurjes."
 
 #. if we don't find a feed with unread items do nothing
 #: ../src/itemlist.c:396
 msgid "There are no unread items"
-msgstr "Nuk ka zëra të palexuar"
+msgstr "S’ka zëra të palexuar"
 
-#: ../src/main.c:163
+#: ../src/liferea_application.c:282
+#, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "Nise Liferea-n me dritaren e tij kryesore në GJENDJEN. GJENDJA mund të jetë "
-"`e shfaqur' ose `e fshehur'"
+"`e shfaqur', `e ikonizuar' ,ose `e fshehur'"
 
-#: ../src/main.c:163
+#: ../src/liferea_application.c:282
 msgid "STATE"
 msgstr "GJENDJE"
 
-#: ../src/main.c:164
+#: ../src/liferea_application.c:283
 msgid "Show version information and exit"
 msgstr "Shfaq të dhëna versioni dhe dil"
 
-#: ../src/main.c:165
+#: ../src/liferea_application.c:284
 msgid "Add a new subscription"
 msgstr "Shtoni pajtim të ri"
 
-#: ../src/main.c:165
+#: ../src/liferea_application.c:284
 msgid "uri"
 msgstr "uri"
 
-#: ../src/main.c:170
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages of all types"
 msgstr "Shtyp mesazhe diagnostikimi të krejt llojeve"
 
-#: ../src/main.c:171
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the cache handling"
 msgstr "Shtyp mesazhe diagnostikimi gjatë trajtimit të fshehtinës"
 
-#: ../src/main.c:172
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages for the configuration handling"
 msgstr "Shtyp mesazhe diagnostikimi gjatë trajtimit të formësimit"
 
-#: ../src/main.c:173
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of the database handling"
 msgstr "Shtyp mesazhe diagnostikimi gjatë trajtimit të bazës së të dhënave"
 
-#: ../src/main.c:174
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages of all GUI functions"
 msgstr "Shtyp mesazhe diagnostikimi të krejt funksioneve GUI"
 
-#: ../src/main.c:175
+#: ../src/liferea_application.c:294
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
@@ -467,81 +480,73 @@ msgstr ""
 "Aktivizon diagnostikimin e vizatimit HTML. Sa herë që Liferea vizaton HTML, "
 "do ta hedhë HTML-në e krijuar edhe te ~/.cache/liferea/output.xhtml"
 
-#: ../src/main.c:176
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all network activity"
 msgstr "Shtyp mesazhe diagnostikimi për krejt veprimtarinë në rrjet"
 
-#: ../src/main.c:177
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages of all parsing functions"
 msgstr "Shtyp mesazhe diagnostikimi për krejt funksionet e përtypjes"
 
-#: ../src/main.c:178
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Shtyp mesazhe diagnostikimi kur plotësimi i një funksioni zgjatet shumë"
 
-#: ../src/main.c:179
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages when entering/leaving functions"
-msgstr "Shtyp mesazhe diagnostikimi për funksionet hyjnë/dalin"
+msgstr "Shtyp mesazhe diagnostikimi për hyrje/dalje në funksione"
 
-#: ../src/main.c:180
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the feed update processing"
 msgstr "Shtyp mesazhe diagnostikimi për procesin e përditësimit të prurjes"
 
-#: ../src/main.c:181
+#: ../src/liferea_application.c:300
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "Shtyp mesazhe diagnostikimi gjatë kërkimit të përputhjeve te dosje kërkimesh"
 
-#: ../src/main.c:182
+#: ../src/liferea_application.c:301
 msgid "Print verbose debugging messages"
 msgstr "Shtyp mesazhe fjalamane diagnostikimi"
 
-#: ../src/main.c:193 ../src/main.c:194
+#: ../src/liferea_application.c:306 ../src/liferea_application.c:307
 msgid "Print debugging messages for the given topic"
 msgstr "Shtyp mesazhe diagnostikimi për temën e treguar"
 
-#: ../src/main.c:201
-msgid "Liferea, the Linux Feed Reader"
-msgstr "Liferea - Lexuesi Linux i Prurjeve"
-
-#: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
-msgstr "Për më tepër të dhëna, ju lutemi, vizitoni http://lzone.de/liferea/"
-
 #. Some libsoup transport errors
-#: ../src/net.c:391
+#: ../src/net.c:400
 msgid "The update request was cancelled"
 msgstr "Kërkesa për përditësim u anulua"
 
-#: ../src/net.c:392
+#: ../src/net.c:401
 msgid "Unable to resolve destination host name"
 msgstr "I pazoti të zbulojë emrin e strehës për destinacionin"
 
-#: ../src/net.c:393
+#: ../src/net.c:402
 msgid "Unable to resolve proxy host name"
 msgstr "I pazoti të zbulojë emrin e strehës për ndërmjetësin"
 
-#: ../src/net.c:394
+#: ../src/net.c:403
 msgid "Unable to connect to remote host"
 msgstr "I pazoti të lidhet te strehë e largët"
 
-#: ../src/net.c:395
+#: ../src/net.c:404
 msgid "Unable to connect to proxy"
 msgstr "I pazoti të lidhet te ndërmjetësi"
 
-#: ../src/net.c:396
+#: ../src/net.c:405
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr "Ndodhi një gabim rrjeti, ose ana tjetër e mbylli lidhjen papritmas"
 
 #. http 3xx redirection
-#: ../src/net.c:399
+#: ../src/net.c:408
 msgid "The resource moved permanently to a new location"
 msgstr "Burimi kaloi përgjithmonë në një vend të ri"
 
 #. http 4xx client error
-#: ../src/net.c:402
+#: ../src/net.c:411
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -550,55 +555,55 @@ msgstr ""
 "tuaj të përdoruesit dhe fjalëkalimin përmes kutisë së dialogut te vetitë e "
 "prurjes"
 
-#: ../src/net.c:404
+#: ../src/net.c:413
 msgid "Payment required"
 msgstr "Lypset pagesë"
 
-#: ../src/net.c:405
+#: ../src/net.c:414
 msgid "You're not allowed to access this resource"
-msgstr "Nuk ju lejohet të hyni në këtë burim"
+msgstr "S’ju lejohet të hyni në këtë burim"
 
-#: ../src/net.c:406
+#: ../src/net.c:415
 msgid "Resource Not Found"
-msgstr "Nuk u Gjet Burim"
+msgstr "S’u Gjet Burim"
 
-#: ../src/net.c:407
+#: ../src/net.c:416
 msgid "Method Not Allowed"
-msgstr "Metodë Jo e Lejuar"
+msgstr "Metodë e Palejuar"
 
-#: ../src/net.c:408
+#: ../src/net.c:417
 msgid "Not Acceptable"
 msgstr "I papranueshëm"
 
-#: ../src/net.c:409
+#: ../src/net.c:418
 msgid "Proxy authentication required"
 msgstr "Lypset mirëfilltësim ndërmjetësi"
 
-#: ../src/net.c:410
+#: ../src/net.c:419
 msgid "Request timed out"
 msgstr "Kërkesës i mbaroi koha"
 
-#: ../src/net.c:411
+#: ../src/net.c:420
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Ka avulluar! Burimi nuk ekziston. Ju lutemi, çregjistrohuni!"
+msgstr "Ka avulluar! Burimi s’ekziston. Ju lutemi, çregjistrohuni!"
 
-#: ../src/net.c:416
+#: ../src/net.c:425
 msgid "There was an internal error in the update process"
 msgstr "Pati një gabim të brendshëm te procesi i përditësimit"
 
-#: ../src/net.c:418
+#: ../src/net.c:427
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Nuk ka prurje: Shërbyesi kërkoi ridrejtim të pambuluar!"
 
-#: ../src/net.c:420
+#: ../src/net.c:429
 msgid "Client Error"
 msgstr "Gabim Klienti"
 
-#: ../src/net.c:422
+#: ../src/net.c:431
 msgid "Server Error"
 msgstr "Gabim Shërbyesi"
 
-#: ../src/net.c:424
+#: ../src/net.c:433
 msgid "An unknown networking error happened!"
 msgstr "Ndodhi një gabim i panjohur rrjeti!"
 
@@ -618,7 +623,7 @@ msgstr "nuk përmban"
 
 #: ../src/rule.c:175
 msgid "Item title"
-msgstr "Titull zëri"
+msgstr "Titulli i zërit"
 
 #: ../src/rule.c:176
 msgid "Item body"
@@ -670,7 +675,7 @@ msgstr "është caktuar"
 
 #: ../src/rule.c:180
 msgid "is not set"
-msgstr "nuk është caktuar"
+msgstr "s’është caktuar"
 
 #: ../src/rule.c:181
 msgid "Feed title"
@@ -679,13 +684,13 @@ msgstr "Titull prurjeje"
 #: ../src/subscription.c:105
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
-msgstr "Pajtimi \"%s\" po përditësohet!"
+msgstr "Pajtimi \"%s\" po përditësohet tashmë!"
 
 #: ../src/subscription.c:110
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr "Pajtimi \"%s\" nuk vazhdon më. Liferea nuk do ta përditësojë më!"
+msgstr "Pajtimi \"%s\" është ndërprerë. Liferea s’do ta përditësojë më!"
 
 #: ../src/subscription.c:144
 #, c-format
@@ -734,7 +739,7 @@ msgstr "%s përfundoi me gjendje %d"
 #: ../src/update.c:311 ../src/update.c:312 ../src/update.c:429
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
-msgstr "Gabim: S’u hap dot tubin \"%s\""
+msgstr "Gabim: S’u hap dot tubi \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
 #: ../src/update.c:455
@@ -745,7 +750,7 @@ msgstr "Gabim: S’u hap dot kartela \"%s\""
 #: ../src/update.c:461
 #, c-format
 msgid "Error: There is no file \"%s\""
-msgstr "Gabim: Nuk ka kartelë \"%s\""
+msgstr "Gabim: S’ka kartelë \"%s\""
 
 #: ../src/vfolder.c:54
 msgid "New Search Folder"
@@ -827,7 +832,7 @@ msgstr "Zëra Ndihme"
 
 #: ../src/ui/liferea_shell.c:775
 msgid "Quick Reference"
-msgstr "Reference e Shpejtë"
+msgstr "Referencë e Shpejtë"
 
 #: ../src/ui/liferea_shell.c:781
 msgid "FAQ"
@@ -855,7 +860,7 @@ msgstr "Shënon si të lexuar çdo zë të çdo pajtimi."
 
 #: ../src/ui/liferea_shell.c:911
 msgid "_Import Feed List..."
-msgstr "_Importo Listë Prurjesh..."
+msgstr "_Importo Listë Prurjesh…"
 
 #: ../src/ui/liferea_shell.c:911
 msgid "Imports an OPML feed list."
@@ -863,7 +868,7 @@ msgstr "Importon një listë prurjesh OPML."
 
 #: ../src/ui/liferea_shell.c:912
 msgid "_Export Feed List..."
-msgstr "_Eksporto Listë Prurjesh..."
+msgstr "_Eksporto Listë Prurjesh…"
 
 #: ../src/ui/liferea_shell.c:912
 msgid "Exports the feed list as OPML."
@@ -879,7 +884,7 @@ msgstr "_Prurje"
 
 #: ../src/ui/liferea_shell.c:916
 msgid "Remove _All Items"
-msgstr "Hiqi Tërë Zërat"
+msgstr "Hiqi _Krejt Zërat"
 
 #: ../src/ui/liferea_shell.c:916
 msgid "Removes all items of the currently selected feed."
@@ -907,8 +912,7 @@ msgstr "Zëri _Pasues i Palexuar"
 msgid "_View"
 msgstr "_Parje"
 
-#: ../src/ui/liferea_shell.c:931 ../src/ui/liferea_htmlview.c:668
-#: ../src/webkit/liferea_web_view.c:207
+#: ../src/ui/liferea_shell.c:931 ../src/webkit/liferea_web_view.c:211
 msgid "_Increase Text Size"
 msgstr "_Rrit Madhësi Teksti"
 
@@ -916,8 +920,7 @@ msgstr "_Rrit Madhësi Teksti"
 msgid "Increases the text size of the item view."
 msgstr "Rrit madhësinë e tekstit për parjen e zërit."
 
-#: ../src/ui/liferea_shell.c:933 ../src/ui/liferea_htmlview.c:669
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/ui/liferea_shell.c:933 ../src/webkit/liferea_web_view.c:212
 msgid "_Decrease Text Size"
 msgstr "_Zvogëlo Madhësi Teksti"
 
@@ -935,7 +938,7 @@ msgstr "_Përditëso Monitorin"
 
 #: ../src/ui/liferea_shell.c:937
 msgid "Show a list of all feeds currently in the update queue"
-msgstr "Shfaq një listë të tërë prurjeve hëpërhë në radhë për përditësime"
+msgstr "Shfaq një listë të tërë prurjeve hëpërhë në radhë për përditësim"
 
 #: ../src/ui/liferea_shell.c:939 ../src/ui/popup_menu.c:185
 #: ../src/ui/popup_menu.c:339
@@ -952,7 +955,7 @@ msgstr "_Kërko"
 
 #: ../src/ui/liferea_shell.c:943
 msgid "Search All Feeds..."
-msgstr "Kërkoni Në Tërë Prurjet..."
+msgstr "Kërkoni Në Tërë Prurjet…"
 
 #: ../src/ui/liferea_shell.c:943
 msgid "Show the search dialog."
@@ -1004,7 +1007,7 @@ msgstr "Caktoni si mënyrë parjeje mënyrën klient poste."
 
 #: ../src/ui/liferea_shell.c:956
 msgid "_Wide View"
-msgstr "Parje _Gjerasi"
+msgstr "Parje _Gjerazi"
 
 #: ../src/ui/liferea_shell.c:956
 msgid "Set view mode to use three vertical panes."
@@ -1028,7 +1031,7 @@ msgstr "Fshihi prurjet pa zëra të palexuar."
 
 #: ../src/ui/liferea_shell.c:968
 msgid "_New Subscription..."
-msgstr "Pajtim i _Ri..."
+msgstr "Pajtim i _Ri…"
 
 #: ../src/ui/liferea_shell.c:968
 msgid "Adds a subscription to the feed list."
@@ -1036,15 +1039,15 @@ msgstr "Shton te lista e prurjeve një pajtim."
 
 #: ../src/ui/liferea_shell.c:970 ../src/ui/popup_menu.c:308
 msgid "New _Folder..."
-msgstr "_Dosje e Re..."
+msgstr "_Dosje e Re…"
 
 #: ../src/ui/liferea_shell.c:970
 msgid "Adds a folder to the feed list."
-msgstr "Shto dosje te lista e prurjeve."
+msgstr "Shton dosje te lista e prurjeve."
 
 #: ../src/ui/liferea_shell.c:971 ../src/ui/popup_menu.c:311
 msgid "New S_earch Folder..."
-msgstr "_Dosje e Re Kërkimesh..."
+msgstr "_Dosje e Re Kërkimesh…"
 
 #: ../src/ui/liferea_shell.c:971
 msgid "Adds a new search folder to the feed list."
@@ -1052,7 +1055,7 @@ msgstr "Shton dosje të re kërkimesh te lista e prurjeve."
 
 #: ../src/ui/liferea_shell.c:972
 msgid "New _Source..."
-msgstr "_Burim i Ri..."
+msgstr "_Burim i Ri…"
 
 #: ../src/ui/liferea_shell.c:972
 msgid "Adds a new feed list source."
@@ -1060,7 +1063,7 @@ msgstr "Shton burim të ri liste prurjesh."
 
 #: ../src/ui/liferea_shell.c:973 ../src/ui/popup_menu.c:313
 msgid "New _News Bin..."
-msgstr "Kosh i Ri _Lajmesh..."
+msgstr "Kosh i Ri _Lajmesh…"
 
 #: ../src/ui/liferea_shell.c:973
 msgid "Adds a new news bin."
@@ -1094,7 +1097,7 @@ msgstr "_Veti"
 
 #: ../src/ui/liferea_shell.c:984
 msgid "Opens the property dialog for the selected subscription."
-msgstr "Hap dialog vetish të pajtimit të përzgjedhur."
+msgstr "Hap dialogun e vetive të pajtimit të përzgjedhur."
 
 #: ../src/ui/liferea_shell.c:985
 msgid "_Remove"
@@ -1118,7 +1121,7 @@ msgstr "Këmbe _Shenjë Zëri"
 
 #: ../src/ui/liferea_shell.c:991
 msgid "Toggles the flag status of the selected item."
-msgstr "Këmben gjendje shenjeje për zërin e përzgjedhur."
+msgstr "Këmben gjendje shenje për zërin e përzgjedhur."
 
 #: ../src/ui/liferea_shell.c:993
 msgid "R_emove"
@@ -1158,7 +1161,7 @@ msgstr "_Sa Krejt Ekrani"
 
 #: ../src/ui/liferea_shell.c:1004
 msgid "Browse at full screen"
-msgstr "Shfletoni me ekran të plotë"
+msgstr "Shfletoni nën ekran të plotë"
 
 #: ../src/ui/search_dialog.c:116
 #, fuzzy
@@ -1186,55 +1189,14 @@ msgstr "Krejt Kartelat"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea është nën mënyrën jo në linjë. Përditësimi është i pamundur."
 
-#: ../src/ui/liferea_htmlview.c:639 ../src/webkit/liferea_web_view.c:169
-msgid "Open Link In _Tab"
-msgstr "Hape Lidhjen Në _Skedë"
-
-#: ../src/ui/liferea_htmlview.c:640
-msgid "_Open Link In Browser"
-msgstr "_Hape Lidhjen Në Shfletues"
-
-#: ../src/ui/liferea_htmlview.c:641
-msgid "_Open Link In External Browser"
-msgstr "_Hape Lidhjen Në Shfletues të Jashtëm"
-
-#: ../src/ui/liferea_htmlview.c:644 ../src/webkit/liferea_web_view.c:177
-#, c-format
-msgid "_Bookmark Link at %s"
-msgstr "_Faqeruaje Lidhjen te %s"
-
-#: ../src/ui/liferea_htmlview.c:648 ../src/webkit/liferea_web_view.c:181
-msgid "_Copy Link Location"
-msgstr "_Kopjo Vendndodhje Lidhjeje"
-
-#: ../src/ui/liferea_htmlview.c:651 ../src/webkit/liferea_web_view.c:184
-msgid "_Copy Image Location"
-msgstr "_Kopjo Vendndodhje Figure"
-
-#: ../src/ui/liferea_htmlview.c:653 ../src/webkit/liferea_web_view.c:187
-msgid "S_ave Link As"
-msgstr "_Ruajeni Lidhjen Si"
-
-#: ../src/ui/liferea_htmlview.c:655 ../src/webkit/liferea_web_view.c:190
-msgid "S_ave Image As"
-msgstr "_Ruaje Figurën Si"
-
-#: ../src/ui/liferea_htmlview.c:658 ../src/webkit/liferea_web_view.c:197
-msgid "_Subscribe..."
-msgstr "_Pajtohuni..."
-
-#: ../src/ui/liferea_htmlview.c:663 ../src/webkit/liferea_web_view.c:201
-msgid "_Copy"
-msgstr "_Kopjoje"
-
 #: ../src/ui/item_list_view.c:114
 msgid "This item has no link specified!"
-msgstr "Këtij zëri nuk i është caktuar lidhje!"
+msgstr "Këtij zëri s’i është caktuar lidhje!"
 
-#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:960
-#: ../src/ui/item_list_view.c:1046 ../src/ui/item_list_view.c:1061
+#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:966
+#: ../src/ui/item_list_view.c:1052 ../src/ui/item_list_view.c:1067
 msgid "No item has been selected"
-msgstr "Nuk është përzgjedhur zë"
+msgstr "S’është përzgjedhur zë"
 
 #: ../src/ui/item_list_view.c:473
 msgid "*** No title ***"
@@ -1244,11 +1206,11 @@ msgstr "*** Pa titull ***"
 msgid "Date"
 msgstr "Datë"
 
-#: ../src/ui/item_list_view.c:789
+#: ../src/ui/item_list_view.c:795
 msgid "Headline"
 msgstr "Titull"
 
-#: ../src/ui/item_list_view.c:947
+#: ../src/ui/item_list_view.c:953
 msgid "You must select a feed to delete its items!"
 msgstr "Duhet përzgjedhur një prurje, që të mund të fshihen zërat e saj!"
 
@@ -1263,7 +1225,7 @@ msgstr "_Faqeruaje te %s"
 
 #: ../src/ui/popup_menu.c:149
 msgid "Copy Item _Location"
-msgstr "Kopjo _Vendin e Zërit"
+msgstr "Kopjo _Vendndodhje Zëri"
 
 #: ../src/ui/popup_menu.c:155
 msgid "R_emove Item"
@@ -1271,11 +1233,11 @@ msgstr "_Hiqe Zërin"
 
 #: ../src/ui/popup_menu.c:168
 msgid "Open Enclosure..."
-msgstr "Hapni Paketimin..."
+msgstr "Hapni Paketimin…"
 
 #: ../src/ui/popup_menu.c:169
 msgid "Save As..."
-msgstr "Ruajeni Si..."
+msgstr "Ruajeni Si…"
 
 #: ../src/ui/popup_menu.c:170
 msgid "Copy Link Location"
@@ -1303,11 +1265,11 @@ msgstr "I _ri"
 
 #: ../src/ui/popup_menu.c:305
 msgid "New _Subscription..."
-msgstr "Pajtim i _Ri..."
+msgstr "Pajtim i _Ri…"
 
 #: ../src/ui/popup_menu.c:312
 msgid "New S_ource..."
-msgstr "_Burim i Ri..."
+msgstr "_Burim i Ri…"
 
 #: ../src/ui/popup_menu.c:321
 msgid "Sort Feeds"
@@ -1315,7 +1277,7 @@ msgstr "Renditi Prurjet"
 
 #: ../src/ui/popup_menu.c:327
 msgid "_Mark All As Read"
-msgstr "_Shënoji Krejt Si të Lexuar"
+msgstr "_Shënoji Krejt Si të Lexuara"
 
 #: ../src/ui/popup_menu.c:332
 msgid "_Rebuild"
@@ -1327,7 +1289,7 @@ msgstr "_Fshije"
 
 #: ../src/ui/popup_menu.c:344
 msgid "Convert To Local Subscriptions..."
-msgstr "Shndërroje Në Pajtim Vendor..."
+msgstr "Shndërroje Në Pajtime Vendore…"
 
 #: ../src/ui/preferences_dialog.c:86
 msgid "GNOME default"
@@ -1379,7 +1341,7 @@ msgstr "Parje Normale"
 
 #: ../src/ui/preferences_dialog.c:113
 msgid "Wide View"
-msgstr "Parje Së Gjeri"
+msgstr "Parje Gjerazi"
 
 #: ../src/ui/preferences_dialog.c:114
 msgid "Combined View"
@@ -1426,7 +1388,7 @@ msgstr "Jeni i sigurt se doni të fshihet \"%s\" dhe lënda e saj?"
 #: ../src/ui/feed_list_node.c:407
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "Jeni të sigurt se doni të fshihen \"%s\"?"
+msgstr "Jeni i sigurt se doni të fshihen \"%s\"?"
 
 #: ../src/ui/feed_list_node.c:419
 msgid "Deletion Confirmation"
@@ -1442,15 +1404,15 @@ msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
 "The provider of this feed suggests an update interval of %d minutes."
 msgstr[0] ""
-"Mundësuesi i kësaj prurjeje këshillon një interval përditësimi prej %d "
+"Furnizuesi i kësaj prurjeje këshillon një interval përditësimi prej %d "
 "minute."
 msgstr[1] ""
-"Mundësuesi i kësaj prurjeje këshillon një interval përditësimi prej %d "
+"Furnizuesi i kësaj prurjeje këshillon një interval përditësimi prej %d "
 "minutash."
 
 #: ../src/ui/subscription_dialog.c:429
 msgid "This feed specifies no default update interval."
-msgstr "Kjo prurje nuk ka të përcaktuar interval parazgjedhje përditësimi."
+msgstr "Kjo prurje s’ka të përcaktuar interval parazgjedhje përditësimi."
 
 #: ../src/ui/browser_tabs.c:264
 msgid "Untitled"
@@ -1497,7 +1459,7 @@ msgstr "Pajtim i Ri OPML"
 
 #: ../src/fl_sources/node_source.c:336
 msgid "No feed list source types found!"
-msgstr "Nuk u gjetën lloje burimi listash prurjesh!"
+msgstr "S’u gjetën lloje burimi listash prurjesh!"
 
 #: ../src/fl_sources/node_source.c:365
 msgid "Source Type"
@@ -1522,8 +1484,9 @@ msgid "Reedah"
 msgstr "Reedah"
 
 #: ../src/fl_sources/reedah_source_feed.c:154
+#, fuzzy
 msgid "Could not parse JSON returned by Reedah API!"
-msgstr "Nuk përtypi dot JSON-in e kthyer nga API i Reedah-s!"
+msgstr "S’përtypi dot JSON-in e kthyer nga API i tt-rss-së!"
 
 #: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
 msgid "TinyTinyRSS HTTP API not reachable!"
@@ -1562,15 +1525,48 @@ msgstr "Nuk përtypi dot JSON-in e kthyer nga API i TinyTinyRSS-së!"
 msgid "TheOldReader"
 msgstr "TheOldReader"
 
-#: ../src/webkit/liferea_web_view.c:170
+#: ../src/webkit/liferea_web_view.c:173
+msgid "Open Link In _Tab"
+msgstr "Hape Lidhjen Në _Skedë"
+
+#: ../src/webkit/liferea_web_view.c:174
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "_Hape Lidhjen Në Shfletues"
 
-#: ../src/webkit/liferea_web_view.c:171
+#: ../src/webkit/liferea_web_view.c:175
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "_Hape Lidhjen Në Shfletues të Jashtëm"
+
+#: ../src/webkit/liferea_web_view.c:181
+#, c-format
+msgid "_Bookmark Link at %s"
+msgstr "_Faqeruaje Lidhjen te %s"
+
+#: ../src/webkit/liferea_web_view.c:185
+msgid "_Copy Link Location"
+msgstr "_Kopjo Vendndodhje Lidhjeje"
+
+#: ../src/webkit/liferea_web_view.c:188
+msgid "_Copy Image Location"
+msgstr "_Kopjo Vendndodhje Figure"
+
+#: ../src/webkit/liferea_web_view.c:191
+msgid "S_ave Link As"
+msgstr "_Ruaje Lidhjen Si"
+
+#: ../src/webkit/liferea_web_view.c:194
+msgid "S_ave Image As"
+msgstr "_Ruaje Figurën Si"
+
+#: ../src/webkit/liferea_web_view.c:201
+msgid "_Subscribe..."
+msgstr "_Pajtohuni…"
+
+#: ../src/webkit/liferea_web_view.c:205
+msgid "_Copy"
+msgstr "_Kopjoje"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1588,11 +1584,11 @@ msgstr "Faqja Hyrëse e Liferea-s"
 msgid "Authentication"
 msgstr "Mirëfilltësim"
 
-#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:30
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:33
 msgid "_Password:"
 msgstr "_Fjalëkalim:"
 
-#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:31
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "User_name:"
 msgstr "_Emër përdoruesi:"
 
@@ -1628,7 +1624,7 @@ msgstr "_Shfletoni"
 
 #: ../glade/enclosure_handler.ui.h:5
 msgid "_Do this automatically for enclosures like this from now on."
-msgstr "_Nga tani e tutje, bëje këtë vetvetiu për paketime si kjo."
+msgstr "_Tani e tutje, bëje këtë vetvetiu për paketime si kjo."
 
 #: ../glade/google_source.ui.h:1
 msgid "Add Google Reader Account"
@@ -1663,7 +1659,7 @@ msgstr "parje normale"
 
 #: ../glade/mainwindow.ui.h:3
 msgid "wide view"
-msgstr "parje gjerazi"
+msgstr "parje gjerazi "
 
 #: ../glade/mainwindow.ui.h:4
 msgid "View Headlines"
@@ -1673,7 +1669,7 @@ msgstr "Shihni Titujt"
 msgid "combined view"
 msgstr "pamje e ndërthurur"
 
-#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:21
+#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "Tituj"
 
@@ -1698,35 +1694,35 @@ msgstr "_Emër Koshi Lajmesh:"
 msgid "Feed Source"
 msgstr "Burim Prurjeje"
 
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:14
-msgid "_Source:"
-msgstr "_Burim:"
+#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:13
+msgid "Source Type:"
+msgstr "Lloj Burimi:"
 
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:15
+#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:14
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:16
+#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:15
 msgid "_Command"
 msgstr "_Urdhër"
 
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:17
+#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:16
 msgid "_Local File"
 msgstr "_Kartelë Vendore"
 
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:18
+#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:17
 msgid "Select File..."
-msgstr "Përzgjidhni Kartelë..."
+msgstr "Përzgjidhni Kartelë…"
 
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:13
-msgid "Source Type:"
-msgstr "Lloj Burimi:"
+#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:18
+msgid "_Source:"
+msgstr "_Burim:"
 
 #: ../glade/new_subscription.ui.h:9
 msgid "Download / Postprocessing"
 msgstr "Shkarkim / Paspërpunim"
 
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:32
+#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
 msgid "_Don't use proxy for download"
 msgstr "_Mos përdor ndërmjetës për shkarkime"
 
@@ -1740,13 +1736,13 @@ msgid ""
 "directories in non-supported formats.  See the documentation for more "
 "information."
 msgstr ""
-"Liferea mund të përdorë shtojca filtrimi të jashtme për të mundur të hyjë në "
-"prurje dhe drejtori në formate jo të mbuluar.  Për më tepër të dhëna shihni "
+"Liferea mund të përdorë shtojca filtrimi të jashtme që të mund të hyjë në "
+"prurje dhe drejtori në formate të pambuluar.  Për më tepër të dhëna, shihni "
 "dokumentimin."
 
 #: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:21
 msgid "Convert _using:"
-msgstr "Shndërro _duke përdorur:"
+msgstr "Shndërroje _duke përdorur:"
 
 #: ../glade/node_source.ui.h:1
 msgid "Source Selection"
@@ -1754,7 +1750,7 @@ msgstr "Përzgjedhje Burimi"
 
 #: ../glade/node_source.ui.h:2
 msgid "Select the source type you want to add..."
-msgstr "Përzgjidhni llojin e burimit që doni të shtohet..."
+msgstr "Përzgjidhni llojin e burimit që doni të shtohet…"
 
 #: ../glade/opml_source.ui.h:1
 msgid "Add OPML/Planet"
@@ -1787,20 +1783,28 @@ msgstr "Trajtim Fshehtine Prurjesh"
 msgid "Default _number of items per feed to save:"
 msgstr "_Numër parazgjedhje zërash për prurje për t’u ruajtur:"
 
-#: ../glade/prefs.ui.h:4
+#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
+msgid "0"
+msgstr ""
+
+#: ../glade/prefs.ui.h:5
 msgid "Feed Update Settings"
 msgstr "Rregullime Përditësimi Prurjesh"
 
-#: ../glade/prefs.ui.h:5
+#: ../glade/prefs.ui.h:6
 msgid "_Update all subscriptions at startup."
 msgstr "_Përditësoji krejt pajtimet gjatë nisjes."
 
-#: ../glade/prefs.ui.h:6
+#: ../glade/prefs.ui.h:7
 msgid "Default Feed Refresh _Interval:"
 msgstr "_Interval Parazgjedhje Rifreskimi Prurjeje:"
 
+#: ../glade/prefs.ui.h:8 ../glade/properties.ui.h:7
+msgid "1"
+msgstr ""
+
 #. Feed update interval hint in preference dialog.
-#: ../glade/prefs.ui.h:8
+#: ../glade/prefs.ui.h:10
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
 "waste of bandwidth to poll feeds more often than each hour.</i>"
@@ -1809,177 +1813,177 @@ msgstr ""
 "Zakonisht, vjelja e prurjeve më shpesh se një herë në çdo orë, është "
 "shpërdorim i bandës.</i>"
 
-#: ../glade/prefs.ui.h:9
+#: ../glade/prefs.ui.h:11
 msgid "Feeds"
 msgstr "Prurje"
 
-#: ../glade/prefs.ui.h:10
+#: ../glade/prefs.ui.h:12
 msgid "Folder Display Settings"
 msgstr "Rregullime Paraqitjeje Dosjesh"
 
-#: ../glade/prefs.ui.h:11
+#: ../glade/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr "_Kur përzgjidhet një dosje, shfaq zërat e tërë prurjeve pjella."
 
-#: ../glade/prefs.ui.h:12
+#: ../glade/prefs.ui.h:14
 msgid "_Hide read items."
 msgstr "_Fshihi zërat e lexuar."
 
-#: ../glade/prefs.ui.h:13
+#: ../glade/prefs.ui.h:15
 msgid "Feed Icons (Favicons)"
 msgstr "Ikona Prurjesh (Favikona)"
 
-#: ../glade/prefs.ui.h:14
+#: ../glade/prefs.ui.h:16
 msgid "_Update all favicons now"
 msgstr "_Përditësoji tërë favikonat tani"
 
-#: ../glade/prefs.ui.h:15
+#: ../glade/prefs.ui.h:17
 msgid "Folders"
 msgstr "Dosje"
 
-#: ../glade/prefs.ui.h:16
+#: ../glade/prefs.ui.h:18
 msgid "Reading Headlines"
 msgstr "Po lexohen Titujt"
 
-#: ../glade/prefs.ui.h:17
+#: ../glade/prefs.ui.h:19
 msgid "_Skim through articles with:"
 msgstr "Shihi artikujt për_ciptas me:"
 
-#: ../glade/prefs.ui.h:18
+#: ../glade/prefs.ui.h:20
 msgid "_Default View Mode:"
 msgstr "Mënyra Parazgjedhje për Parjet:"
 
-#: ../glade/prefs.ui.h:19
+#: ../glade/prefs.ui.h:21
 msgid "Web Integration"
 msgstr "Integrim Web"
 
-#: ../glade/prefs.ui.h:20
+#: ../glade/prefs.ui.h:22
 msgid "_Post Bookmarks to"
 msgstr "_Postoji Faqerojtësit te"
 
-#: ../glade/prefs.ui.h:22
+#: ../glade/prefs.ui.h:24
 msgid "Internal Browser Settings"
 msgstr "Rregullime Shfletuesi të Brendshëm"
 
-#: ../glade/prefs.ui.h:23
+#: ../glade/prefs.ui.h:25
 msgid "Open links in Liferea's _window."
 msgstr "Lidhjet hapi në dritaren e Liferea-s."
 
-#: ../glade/prefs.ui.h:24
+#: ../glade/prefs.ui.h:26
 msgid "_Disable Javascript."
 msgstr "_Çaktivizo Javascript-in."
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
 msgstr "_Aktivizoni shtojca shfletuesi."
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:28
 msgid "External Browser Settings"
 msgstr "Rregullime Shfletuesi të Jashtëm"
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:29
+msgid "_Browser:"
+msgstr "_Shfletues:"
+
+#: ../glade/prefs.ui.h:30
 msgid "_Manual:"
 msgstr "_Dorazi:"
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:32
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr "<small>(%s për URL)</small>"
 
-#: ../glade/prefs.ui.h:30
-msgid "_Browser:"
-msgstr "_Shfletues:"
-
-#: ../glade/prefs.ui.h:31
+#: ../glade/prefs.ui.h:33
 msgid "Browser"
 msgstr "Shfletues"
 
-#: ../glade/prefs.ui.h:32
+#: ../glade/prefs.ui.h:34
 msgid "Toolbar Settings"
 msgstr "Rregullime Paneli"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:35
 msgid "_Hide toolbar."
 msgstr "_Fshihe panelin."
 
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:36
 msgid "Toolbar _button labels:"
 msgstr "_Etiketa butonash paneli:"
 
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:37
 msgid "GUI"
 msgstr "GUI"
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:38
 msgid "HTTP Proxy Server"
 msgstr "Shërbyes HTTP Ndërmjetës"
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:39
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Vetëzbuloje (GNOME ose mjedis)"
 
-#: ../glade/prefs.ui.h:38
+#: ../glade/prefs.ui.h:40
 msgid "_No Proxy"
 msgstr "_Pa Ndërmjetës"
 
-#: ../glade/prefs.ui.h:39
+#: ../glade/prefs.ui.h:41
 msgid "_Manual Setting:"
 msgstr "_Rregullim Dorazi:"
 
-#: ../glade/prefs.ui.h:40
-msgid "Proxy _Port:"
-msgstr "Portë Ndërmjetësi:"
-
-#: ../glade/prefs.ui.h:41
-msgid "Proxy _Host:"
-msgstr "Strehë Ndërmjetësi:"
-
 #: ../glade/prefs.ui.h:42
-msgid "Use Proxy Au_thentication"
-msgstr "Përdor Mirëfilltësim Përmes Ndërmjetësi"
+msgid "Proxy _Host:"
+msgstr "_Strehë Ndërmjetësi:"
 
 #: ../glade/prefs.ui.h:43
-msgid "Proxy Pass_word:"
-msgstr "Fjalëkalim Ndërmjetësi:"
+msgid "Proxy _Port:"
+msgstr "_Portë Ndërmjetësi:"
 
 #: ../glade/prefs.ui.h:44
+msgid "Use Proxy Au_thentication"
+msgstr "Përdor _Mirëfilltësim Përmes Ndërmjetësi"
+
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Username:"
 msgstr "_Emër Përdoruesi Ndërmjetësi:"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:46
+msgid "Proxy Pass_word:"
+msgstr "_Fjalëkalim Ndërmjetësi:"
+
+#: ../glade/prefs.ui.h:47
 msgid "Proxy"
 msgstr "Ndërmjetës"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:48
 #, fuzzy
 msgid "Privacy Settings"
 msgstr "Rregullime Paraqitjeje Dosjesh"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:49
 msgid "Tell sites that I do _not want to be tracked"
 msgstr ""
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:50
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:51
 msgid "Downloading Enclosures"
 msgstr "Shkarkim Paketimesh"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:52
 msgid "_Download using"
-msgstr "_Shkarko duke përdorur"
+msgstr "_Shkarkoje duke përdorur"
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:53
 msgid "Opening Enclosures"
 msgstr "Hapje Paketimesh"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:54
 msgid "Enclosures"
 msgstr "Paketime"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:55
 msgid "Plugins"
 msgstr "Shtojca"
 
@@ -2007,19 +2011,15 @@ msgstr "_Përdor interval parazgjedhje të përgjithshëm përditësimesh."
 msgid "_Feed specific update interval of"
 msgstr "_Interval i caktuar përditësimi prurjeje i"
 
-#: ../glade/properties.ui.h:7
+#: ../glade/properties.ui.h:8
 msgid "_Don't update this feed automatically."
 msgstr "_Mos e përditëso këtë prurje vetvetiu."
-
-#: ../glade/properties.ui.h:8
-msgid " "
-msgstr " "
 
 #: ../glade/properties.ui.h:10
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr ""
-"Ky mundësues prurjesh këshillon një interval përditësimi prej %d minutash."
+"Ky furnizues prurjesh këshillon një interval përditësimi prej %d minutash."
 
 #: ../glade/properties.ui.h:11
 msgid "General"
@@ -2047,7 +2047,7 @@ msgstr "Rregullime _parazgjedhje për fshehtinë"
 
 #: ../glade/properties.ui.h:25
 msgid "Di_sable cache"
-msgstr "Çaktivizo fshehtinë"
+msgstr "Çaktivizo fshehtinën"
 
 #: ../glade/properties.ui.h:26
 msgid "_Unlimited cache"
@@ -2057,37 +2057,37 @@ msgstr "_Fshehtinë e pakufizuar"
 msgid "_Number of items to save:"
 msgstr "_Numër zërash për t’u ruajtur:"
 
-#: ../glade/properties.ui.h:28
+#: ../glade/properties.ui.h:29
 msgid "Archive"
 msgstr "Arkiv"
 
-#: ../glade/properties.ui.h:29
+#: ../glade/properties.ui.h:30
 msgid "Use HTTP _authentication"
 msgstr "Përdor mirëfilltësim HTTP"
 
-#: ../glade/properties.ui.h:33
+#: ../glade/properties.ui.h:34
 msgid "Download"
 msgstr "Shkarkoje"
 
-#: ../glade/properties.ui.h:34
+#: ../glade/properties.ui.h:35
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Shkarko _vetvetiu tërë paketimet e kësaj prurjeje."
 
-#: ../glade/properties.ui.h:35
+#: ../glade/properties.ui.h:36
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Kur përzgjidhen artikuj, _vetëngarko lidhje zëri te shfletuesi i formësuar "
 "për këtë."
 
-#: ../glade/properties.ui.h:36
+#: ../glade/properties.ui.h:37
 msgid "Ignore _comment feeds for this subscription."
 msgstr "Shpërfilli prurjet e _komenteve për këtë pajtim."
 
-#: ../glade/properties.ui.h:37
+#: ../glade/properties.ui.h:38
 msgid "_Mark downloaded items as read."
 msgstr "_Shënoji zërat e shkarkuar si të lexuar."
 
-#: ../glade/properties.ui.h:38
+#: ../glade/properties.ui.h:39
 msgid "Advanced"
 msgstr "Të mëtejshme"
 
@@ -2096,8 +2096,9 @@ msgid "Add Reedah Account"
 msgstr "Shtoni Llogari Reedah"
 
 #: ../glade/reedah_source.ui.h:2
+#, fuzzy
 msgid "Please enter your Reedah account settings."
-msgstr "Ju lutemi, jepni të dhënat e llogarisë suaj Reedah."
+msgstr "Ju lutemi, jepni të dhënat e llogarisë suaj InoReader."
 
 #: ../glade/rename_node.ui.h:1
 msgid "Rename"
@@ -2133,29 +2134,17 @@ msgstr "Kërkim i Thelluar"
 
 #: ../glade/search.ui.h:2
 msgid "_Search Folder..."
-msgstr "_Dosje Kërkimesh..."
+msgstr "_Dosje Kërkimesh…"
 
 #: ../glade/simple_search.ui.h:1
 msgid "Search All Feeds"
 msgstr "Kërkoni Në Tërë Prurjet"
 
 #: ../glade/simple_search.ui.h:2
-msgid "_Search for:"
-msgstr "_Kërko për:"
+msgid "_Advanced..."
+msgstr "Të _mëtejshme…"
 
 #: ../glade/simple_search.ui.h:3
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
-msgstr ""
-"Jepni varg kërkimi të cilin Liferea do të duhej ta gjente te titulli ose "
-"lënda e një zëri."
-
-#: ../glade/simple_search.ui.h:4
-msgid "_Advanced..."
-msgstr "Të _mëtejshme..."
-
-#: ../glade/simple_search.ui.h:5
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -2163,25 +2152,21 @@ msgstr ""
 "Fillon të kërkojë nëpër tërë prurjet për tekstin e dhënë. Përfundimi i "
 "kërkimit do të shfaqet te lista e zërave."
 
-#: ../glade/simple_search.ui.h:6 ../glade/update_monitor.ui.h:1
-msgid "Update Monitor"
-msgstr "Përditëso Monitorin"
+#: ../glade/simple_search.ui.h:4
+msgid "_Search for:"
+msgstr "_Kërko për:"
 
-#: ../glade/simple_search.ui.h:7 ../glade/update_monitor.ui.h:2
-msgid "Pending Requests"
-msgstr "Kërkesa Në Pritje të Shqyrtimit"
-
-#: ../glade/simple_search.ui.h:8 ../glade/update_monitor.ui.h:3
-msgid "Downloading Now"
-msgstr "Po shkarkohet Tani"
-
-#: ../glade/simple_search.ui.h:9 ../glade/update_monitor.ui.h:4
-msgid "Cancel _All"
-msgstr "Anuloji të Tëra"
+#: ../glade/simple_search.ui.h:5
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr ""
+"Jepni varg kërkimi të cilin Liferea do të duhej ta gjente te titulli ose "
+"lënda e një zëri."
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
-msgstr "Të mëtejshme..."
+msgstr "Të mëtejshme…"
 
 #: ../glade/simple_subscription.ui.h:4
 msgid ""
@@ -2215,24 +2200,34 @@ msgstr "URL _Shërbyesi"
 msgid "_Username"
 msgstr "_Emër përdoruesi"
 
-#~ msgid "Create Search Engine Feed"
-#~ msgstr "Krijo Prurje Motori Kërkimesh"
+#: ../glade/update_monitor.ui.h:1
+msgid "Update Monitor"
+msgstr "Përditëso Monitorin"
 
-#~ msgid "enter any search string you want"
-#~ msgstr "jepni çfarëdo varg kërkimi që doni"
+#: ../glade/update_monitor.ui.h:2
+#, fuzzy
+msgid "Cancel All"
+msgstr "Anuloji të _Tëra"
 
-#~ msgid "Maximal _Number Of Result Items:"
-#~ msgstr "_Numri më i Madh Zërash Përfundim:"
+#: ../glade/update_monitor.ui.h:3
+msgid "Pending Requests"
+msgstr "Kërkesa Në Pritje të Shqyrtimit"
 
-#~ msgid ""
-#~ "Note: Liferea will generate a feed subscription which is used to query "
-#~ "the search engine results for the specified search string. You can keep "
-#~ "this feed permanently and update it like any other subscription."
-#~ msgstr ""
-#~ "Shënim: Liferea do të prodhojë një pajtim prurjeje i cili përdoret për "
-#~ "kërkim brenda përfundimeve të dhëna nga motori i kërkimeve në lidhje me "
-#~ "vargun e dhënë të kërkimit. Këtë prurje mund ta mbani përgjithmonë dhe ta "
-#~ "përditësoni atë si çdo pajtim tjetër."
+#: ../glade/update_monitor.ui.h:4
+msgid "Downloading Now"
+msgstr "Po shkarkohet Tani"
+
+#~ msgid "No comments yet."
+#~ msgstr "Ende pa komente."
+
+#~ msgid "Refresh"
+#~ msgstr "Rifreskoje"
+
+#~ msgid "Liferea, the Linux Feed Reader"
+#~ msgstr "Liferea - Lexuesi Linux i Prurjeve"
+
+#~ msgid "For more information, please visit http://lzone.de/liferea/"
+#~ msgstr "Për më tepër të dhëna, vizitoni http://lzone.de/liferea/"
 
 #~ msgid "Liferea is now online"
 #~ msgstr "Liferea tani është e lidhur"
@@ -2241,43 +2236,13 @@ msgstr "_Emër përdoruesi"
 #~ msgstr "Puno i palidhur"
 
 #~ msgid "Liferea is now offline"
-#~ msgstr "Liferea tani është i palidhur"
+#~ msgstr "Liferea tani është e palidhur"
 
 #~ msgid "Work Online"
 #~ msgstr "Puno Në Linjë"
 
 #~ msgid "This option allows you to disable subscription updating."
 #~ msgstr "Kjo mundësi ju lejon të çaktivizoni përditësim pajtimi."
-
-#~ msgid "Browser default"
-#~ msgstr "Parazgjedhje shfletuesi"
-
-#~ msgid "Existing window"
-#~ msgstr "Dritare ekzistuese"
-
-#~ msgid "New window"
-#~ msgstr "Dritare e re"
-
-#~ msgid "New tab"
-#~ msgstr "Skedë e re"
-
-#~ msgid "AOL Reader Login"
-#~ msgstr "Hyrje te AOL Reader"
-
-#~ msgid "AOL Reader"
-#~ msgstr "AOL Reader"
-
-#~ msgid "Online/Offline Button"
-#~ msgstr "Buton Në Linjë|Jashtë Linje"
-
-#~ msgid "_Open link in:"
-#~ msgstr "_Hap lidhje në:"
-
-#~ msgid "No comments yet."
-#~ msgstr "Ende pa komente."
-
-#~ msgid "Refresh"
-#~ msgstr "Rifreskoje"
 
 #~ msgid "Liferea - Linux Feed Reader"
 #~ msgstr "Liferea - Lexues Linux Prurjesh"
@@ -2296,6 +2261,18 @@ msgstr "_Emër përdoruesi"
 #~ "djathtasklikuar lidhje dhe duke zgjedhur 'Pajtomë' te Liferea</li></ul></"
 #~ "p>"
 
+#~ msgid "Browser default"
+#~ msgstr "Parazgjedhje shfletuesi"
+
+#~ msgid "Existing window"
+#~ msgstr "Dritare ekzistuese"
+
+#~ msgid "New window"
+#~ msgstr "Dritare e re"
+
+#~ msgid "New tab"
+#~ msgstr "Skedë e re"
+
 #~ msgid "Integrate with the messaging menu (indicator)"
 #~ msgstr "Integroje me menunë e mesazheve (indikator)"
 
@@ -2303,7 +2280,7 @@ msgstr "_Emër përdoruesi"
 #~ msgstr "Në vend që ta minimizosh si ikonë paneli, përfundoje"
 
 #~ msgid "Start minimized to the messaging menu"
-#~ msgstr "Fillo i minimizuar sa menuja e mesazheve"
+#~ msgstr "Fillo e minimizuar sa menuja e mesazheve"
 
 #~ msgid "%d new item"
 #~ msgid_plural "%d new items"
@@ -2336,6 +2313,9 @@ msgstr "_Emër përdoruesi"
 #~ msgid "Invalid Atom feed: unknown author"
 #~ msgstr "Prurje Atom e pavlefshme: autor i panjohur"
 
+#~ msgid "Google Reader login failed!"
+#~ msgstr "Hyrja në Google Reader dështoi!"
+
 #~ msgid ""
 #~ "Integrate the feed list of your Google Reader account. Liferea will "
 #~ "present your Google Reader subscriptions, and will synchronize your feed "
@@ -2364,10 +2344,10 @@ msgstr "_Emër përdoruesi"
 #~ "tuaj të prurjeve dhe listat e leximeve."
 
 #~ msgid "This feed does not exist anymore!"
-#~ msgstr "Kjo prurje nuk ekziston më!"
+#~ msgstr "Kjo prurje s’ekziston më!"
 
 #~ msgid "This news entry has no headline"
-#~ msgstr "Ky zë i ri nuk ka titull"
+#~ msgstr "Ky zë i ri s’ka titull"
 
 #~ msgid "Visit"
 #~ msgstr "Vizitojeni"
@@ -2389,11 +2369,42 @@ msgstr "_Emër përdoruesi"
 #~ msgid "Show details"
 #~ msgstr "Shfaq hollësi"
 
+#~ msgid "Online/Offline Button"
+#~ msgstr "Buton Në Linjë/Jashtë Linje"
+
+#~ msgid " "
+#~ msgstr " "
+
 #~ msgid "_Enforce popup notification for this subscription."
 #~ msgstr "_Njoftimet flluskë për këtë pajtim bëji të detyrueshme."
 
 #~ msgid "_Never do popup notification for this subscription."
 #~ msgstr "_Mos bëj kurrë njoftime flluskë për këtë pajtim."
+
+#~ msgid "Create Search Engine Feed"
+#~ msgstr "Krijo Prurje Motori Kërkimesh"
+
+#~ msgid "enter any search string you want"
+#~ msgstr "jepni çfarëdo varg kërkimi që doni"
+
+#~ msgid "Maximal _Number Of Result Items:"
+#~ msgstr "_Numri më i Madh Zërash Përfundim:"
+
+#~ msgid ""
+#~ "Note: Liferea will generate a feed subscription which is used to query "
+#~ "the search engine results for the specified search string. You can keep "
+#~ "this feed permanently and update it like any other subscription."
+#~ msgstr ""
+#~ "Shënim: Liferea do të prodhojë një pajtim prurjeje i cili përdoret për "
+#~ "kërkim brenda përfundimeve të dhëna nga motori i kërkimeve në lidhje me "
+#~ "vargun e dhënë të kërkimit. Këtë prurje mund ta mbani përgjithmonë dhe ta "
+#~ "përditësoni atë si çdo pajtim tjetër."
+
+#~ msgid "Please enter your tt-rss account settings."
+#~ msgstr "Ju lutemi, jepni rregullimet e llogarisë suaj tt-rss."
+
+#~ msgid "_Open link in:"
+#~ msgstr "_Hape lidhjen në:"
 
 #~ msgid "Notification Settings"
 #~ msgstr "Rregullime Njoftimesh"
@@ -2412,3 +2423,9 @@ msgstr "_Emër përdoruesi"
 
 #~ msgid "_Start in tray icon."
 #~ msgstr "_Fillo si ikonë paneli."
+
+#~ msgid "AOL Reader Login"
+#~ msgstr "Hyrje te AOL Reader"
+
+#~ msgid "AOL Reader"
+#~ msgstr "AOL Reader"

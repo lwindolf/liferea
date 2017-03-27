@@ -6,13 +6,12 @@
   <body>
     <outline text="Euskarazko jarioak">
             <outline text="Software Librea">
-                <outline text="Librezale" htmlUrl="http://librezale.org" xmlUrl="http://librezale.org/feed/" />
+                <outline text="Librezale" htmlUrl="http://librezale.eus" xmlUrl="http://librezale.eus/feed/" />
             </outline>
             <outline text="Egunkariak">
                 <outline text="Berria" htmlUrl="http://www.berria.eus" xmlUrl="http://www.berria.eus/rss/ediziojarraia.xml" />
-                <outline text="EITB" htmlUrl="http://www.eitb.com/eu" xmlUrl="http://www.eitb.com/eu/rss/albisteak/" />
-                <outline text="Kazeta" htmlUrl="http://www.kazeta.eus" xmlUrl="http://www.kazeta.eus/rss.php" />
-                <outline text="Sustatu" htmlUrl="http://www.sustatu.eus" xmlUrl="http://feeds.feedburner.com/sustatu_osorik?format=xml" />
+                <outline text="EITB" htmlUrl="http://www.eitb.eus/eu/" xmlUrl="http://www.eitb.eus/eu/rss/albisteak/" />
+                <outline text="Sustatu" htmlUrl="http://www.sustatu.eus" xmlUrl="http://feeds.feedburner.com/sustatu" />
             </outline>
     </outline>
 
@@ -25,7 +24,7 @@
 			<outline text="Science" htmlUrl="http://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
 		</outline>
 		<outline text="Software librea">		<!-- translate this title for localized feed list -->
-			<outline text="Liferea Blog" htmlUrl="http://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
+			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 		</outline>
 		<outline text="Podcast eta musika">		<!-- translate this title for localized feed list -->
@@ -33,7 +32,7 @@
 			<outline text="Free Music Archive" htmlUrl="http://freemusicarchive.org/" xmlUrl="http://freemusicarchive.org/recent.atom"/>
 			<outline text="Gorilla vs. Bear" htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
 		</outline>
-		<outline text="Comics">
+		<outline text="Komikiak">
 			<outline text="xkcd" htmlUrl="http://xkcd.com/" xmlUrl="http://xkcd.com/atom.xml"/>
 		</outline>
 	</outline>

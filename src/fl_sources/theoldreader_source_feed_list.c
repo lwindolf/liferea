@@ -131,8 +131,8 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
                              "categories":[{"id":"user/-/label/myfolder","label":"myfolder"}],
                              "sortid":"51d49b79d1716c7b18000025",
                              "firstitemmsec":"1371403150181",
-                             "url":"http://lzone.de/rss.xml",
-                             "htmlUrl":"http://lzone.de",
+                             "url":"https://lzone.de/rss.xml",
+                             "htmlUrl":"https://lzone.de",
                              "iconUrl":"http://s.yeoldereader.com/system/uploads/feed/picture/5152/884a/4dce/57aa/7e00/icon_0a6a.ico"},
                            ... 
 			*/

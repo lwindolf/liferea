@@ -1,4 +1,4 @@
-/**
+/*
  * @file itemlist.c  item list handling
  *
  * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
@@ -61,17 +61,17 @@
 
 struct ItemListPrivate
 {
-	GHashTable	*guids;			/**< list of GUID to avoid having duplicates in currently loaded list */
-	itemSetPtr	filter;			/**< currently active filter rules */
-	nodePtr		currentNode;		/**< the node whose own or its child items are currently displayed */
-	gulong		selectedId;		/**< the currently selected (and displayed) item id */
+	GHashTable	*guids;			/*<< list of GUID to avoid having duplicates in currently loaded list */
+	itemSetPtr	filter;			/*<< currently active filter rules */
+	nodePtr		currentNode;		/*<< the node whose own or its child items are currently displayed */
+	gulong		selectedId;		/*<< the currently selected (and displayed) item id */
 	
-	nodeViewType	viewMode;		/**< current viewing mode */
-	guint 		loading;		/**< if >0 prevents selection effects when loading the item list */
-	itemPtr		invalidSelection;	/**< if set then the next selection might need to do an unselect first */
+	nodeViewType	viewMode;		/*<< current viewing mode */
+	guint 		loading;		/*<< if >0 prevents selection effects when loading the item list */
+	itemPtr		invalidSelection;	/*<< if set then the next selection might need to do an unselect first */
 
-	gboolean 	deferredRemove;		/**< TRUE if selected item needs to be removed from cache on unselecting */
-	gboolean 	deferredFilter;		/**< TRUE if selected item needs to be filtered on unselecting */
+	gboolean 	deferredRemove;		/*<< TRUE if selected item needs to be removed from cache on unselecting */
+	gboolean 	deferredFilter;		/*<< TRUE if selected item needs to be filtered on unselecting */
 };
 
 static GObjectClass *parent_class = NULL;

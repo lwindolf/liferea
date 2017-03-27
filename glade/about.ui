@@ -11,7 +11,7 @@
     <property name="type_hint">dialog</property>
     <property name="program_name">Liferea</property>
     <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
-    <property name="website">http://lzone.de/liferea/</property>
+    <property name="website">https://lzone.de/liferea/</property>
     <property name="website_label" translatable="yes">Liferea Homepage</property>
     <property name="license_type">gpl-2-0</property>
     <property name="authors">
@@ -120,6 +120,7 @@ Mindaugas Baranauskas
 Trần Ngọc Quân
 Pauli Virtanen
 Jorma Karvonen
+Guillaume Bernard
 </property>
     <property name="logo_icon_name">liferea</property>
     <child internal-child="vbox">

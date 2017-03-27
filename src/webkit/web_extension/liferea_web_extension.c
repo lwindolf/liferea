@@ -32,6 +32,8 @@ struct _LifereaWebExtension {
 	WebKitWebExtension 	*webkit_extension;
 	GArray 			*pending_pages_created;
 	gboolean 		initialized;
+
+	GSettings 		*liferea_settings;
 };
 
 struct _LifereaWebExtensionClass {
@@ -47,10 +49,6 @@ static const char introspection_xml[] =
   "   <arg type='t' name='page_id' direction='in'/>"
   "   <arg type='b' name='scrolled' direction='out'/>"
   "  </method>"
-  "  <method name='HasSelection'>"
-  "   <arg type='t' name='page_id' direction='in'/>"
-  "   <arg type='b' name='has_selection' direction='out'/>"
-  "  </method>"
   "  <signal name='PageCreated'>"
   "   <arg type='t' name='page_id' direction='out'/>"
   "  </signal>"
@@ -64,6 +62,7 @@ liferea_web_extension_dispose (GObject *object)
 
 	g_clear_object (&extension->connection);
 	g_clear_object (&extension->webkit_extension);
+	g_clear_object (&extension->liferea_settings);
 }
 
 static void
@@ -80,6 +79,7 @@ liferea_web_extension_init (LifereaWebExtension *self)
 	self->connection = NULL;
 	self->pending_pages_created = NULL;
 	self->initialized = FALSE;
+	self->liferea_settings = g_settings_new ("net.sf.liferea");
 }
 
 static WebKitDOMDOMWindow*
@@ -96,7 +96,7 @@ liferea_web_extension_get_dom_window (LifereaWebExtension *self, guint64 page_id
 	return window;
 }
 
-/**
+/*
  * \returns TRUE if scrolling happened, FALSE if the end was reached
  */
 static gboolean
@@ -113,24 +113,6 @@ liferea_web_extension_scroll_page_down (LifereaWebExtension *self, guint64 page_
 	new_scroll_y = webkit_dom_dom_window_get_scroll_y (window);
 
 	return (new_scroll_y > old_scroll_y);
-}
-
-/**
- * \returns TRUE if text is selected.
- */
-static gboolean
-liferea_web_extension_has_selection (LifereaWebExtension *self, guint64 page_id)
-{
-	WebKitDOMDOMWindow *window;
-	WebKitDOMDOMSelection *selection;
-	gboolean is_collapsed;
-
-	window = liferea_web_extension_get_dom_window (self, page_id);
-	selection = webkit_dom_dom_window_get_selection (window);
-	g_object_get (selection, "is_collapsed", &is_collapsed, NULL);
-	g_object_unref (selection);
-
-	return (!is_collapsed);
 }
 
 static gboolean
@@ -178,13 +160,6 @@ handle_dbus_method_call (GDBusConnection 	*connection,
 		g_variant_get (parameters, "(t)", &page_id);
 		scrolled = liferea_web_extension_scroll_page_down (LIFEREA_WEB_EXTENSION (user_data), page_id);
 		g_dbus_method_invocation_return_value (invocation, g_variant_new ("(b)", scrolled));
-	} else if (g_strcmp0 (method_name, "HasSelection") == 0) {
-		guint64 page_id;
-		gboolean has_selection;
-
-		g_variant_get (parameters, "(t)", &page_id);
-		has_selection = liferea_web_extension_has_selection (LIFEREA_WEB_EXTENSION (user_data), page_id);
-		g_dbus_method_invocation_return_value (invocation, g_variant_new ("(b)", has_selection));
 	}
 }
 
@@ -233,12 +208,39 @@ liferea_web_extension_emit_pending_pages_created (LifereaWebExtension *extension
 	extension->pending_pages_created = NULL;
 }
 
+static gboolean
+on_send_request (WebKitWebPage 		*web_page,
+		 WebKitURIRequest 	*request,
+		 WebKitURIResponse 	*redirected_response,
+		 gpointer 		web_extension)
+{
+	SoupMessageHeaders *headers = webkit_uri_request_get_http_headers (request);
+	gboolean do_not_track;
+
+	do_not_track = g_settings_get_boolean (
+	    LIFEREA_WEB_EXTENSION (web_extension)->liferea_settings,
+	    "do-not-track");
+
+	if (do_not_track && headers) {
+		soup_message_headers_append (headers, "DNT", "1");
+	}
+
+	return FALSE;
+}
+
 static void
 on_page_created (WebKitWebExtension *webkit_extension,
 		 WebKitWebPage      *web_page,
 		 gpointer            extension)
 {
 	guint64 page_id;
+
+	g_signal_connect (
+		web_page,
+		"send-request",
+		G_CALLBACK (on_send_request),
+		extension
+	);
 
 	page_id = webkit_web_page_get_id (web_page);
 	if (LIFEREA_WEB_EXTENSION (extension)->connection) {

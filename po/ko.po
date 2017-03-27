@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-21 00:06+0200\n"
+"POT-Creation-Date: 2017-02-13 22:52+0100\n"
 "PO-Revision-Date: 2005-12-11 13:52+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at tisphie.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -68,25 +68,26 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr ""
 
-#: ../liferea.desktop.in.h:1 ../src/main.c:234 ../glade/mainwindow.ui.h:1
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:79
+#: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr ""
 
-#: ../liferea.desktop.in.h:2
+#: ../net.sourceforge.liferea.desktop.in.h:2
 #, fuzzy
 msgid "Feed Reader"
 msgstr "피드 캐시"
 
-#: ../liferea.desktop.in.h:3
+#: ../net.sourceforge.liferea.desktop.in.h:3
 #, fuzzy
 msgid "Liferea Feed Reader"
 msgstr "Liferea - 리눅스 피드 보기"
 
-#: ../liferea.desktop.in.h:4
+#: ../net.sourceforge.liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
 msgstr ""
 
-#: ../liferea.desktop.in.h:5
+#: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
 msgstr ""
 
@@ -208,20 +209,28 @@ msgid "Creator"
 msgstr "제작자"
 
 #: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:12
 #, fuzzy
 msgid "Comments"
 msgstr "덧말"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:13
 #, fuzzy
 msgid "Updating..."
 msgstr "%s을(를) 새로고치는 중"
 
-#: ../xslt/item.xml.in.h:12
+#: ../xslt/item.xml.in.h:14
 msgid "Section"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:15
 msgid "Department"
 msgstr ""
 
@@ -431,7 +440,7 @@ msgstr "<p>RDF 헤더를 찾을 수 없습니다!</p>"
 msgid "There are no unread items"
 msgstr "읽지 않은 아이템이 없습니다 "
 
-#: ../src/main.c:163
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -439,140 +448,131 @@ msgstr ""
 "                   상태는 'shown', 'iconified', 혹은 'hidden'이 될 수 있습니"
 "다."
 
-#: ../src/main.c:163
+#: ../src/liferea_application.c:282
 msgid "STATE"
 msgstr ""
 
-#: ../src/main.c:164
+#: ../src/liferea_application.c:283
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version        Liferea의 버전 정보를 보여주고 끝냅니다."
 
-#: ../src/main.c:165
+#: ../src/liferea_application.c:284
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "새 서명"
 
-#: ../src/main.c:165
+#: ../src/liferea_application.c:284
 msgid "uri"
 msgstr ""
 
-#: ../src/main.c:170
+#: ../src/liferea_application.c:289
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr "  --debug-all      모든 종류의 디버깅 메시지를 뿌립니다."
 
-#: ../src/main.c:171
+#: ../src/liferea_application.c:290
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr "  --debug-cache    캐시 다루기에 대한 디버깅 메시지를 보여줍니다."
 
-#: ../src/main.c:172
+#: ../src/liferea_application.c:291
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "  --debug-conf     설정 다루기에 대한 디버깅 메시지를 보여줍니다."
 
-#: ../src/main.c:173
+#: ../src/liferea_application.c:292
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr "  --debug-cache    캐시 다루기에 대한 디버깅 메시지를 보여줍니다."
 
-#: ../src/main.c:174
+#: ../src/liferea_application.c:293
 #, fuzzy
 msgid "Print debugging messages of all GUI functions"
 msgstr "  --debug-gui      GUI 함수에 대한 디버깅 메시지를 보여줍니다."
 
-#: ../src/main.c:175
+#: ../src/liferea_application.c:294
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
 msgstr ""
 
-#: ../src/main.c:176
+#: ../src/liferea_application.c:295
 #, fuzzy
 msgid "Print debugging messages of all network activity"
 msgstr "  --debug-all      모든 종류의 디버깅 메시지를 뿌립니다."
 
-#: ../src/main.c:177
+#: ../src/liferea_application.c:296
 #, fuzzy
 msgid "Print debugging messages of all parsing functions"
 msgstr "  --debug-parsing  모든 파싱 함수에 대한 디버깅 메시지를 보여줍니다."
 
-#: ../src/main.c:178
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 
-#: ../src/main.c:179
+#: ../src/liferea_application.c:298
 #, fuzzy
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    함수를 들어가고 나오는것에 대한 디버깅 메시지를 보여줍니"
 "다."
 
-#: ../src/main.c:180
+#: ../src/liferea_application.c:299
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   피드를 업데이트하는 것에 대한 디버깅 메시지를 보여줍니다."
 
-#: ../src/main.c:181
+#: ../src/liferea_application.c:300
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "  --debug-cache    캐시 다루기에 대한 디버깅 메시지를 보여줍니다."
 
-#: ../src/main.c:182
+#: ../src/liferea_application.c:301
 #, fuzzy
 msgid "Print verbose debugging messages"
 msgstr "  --debug-verbose  자세한 디버깅 메시지를 보여줍니다."
 
-#: ../src/main.c:193 ../src/main.c:194
+#: ../src/liferea_application.c:306 ../src/liferea_application.c:307
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr "  --debug-cache    캐시 다루기에 대한 디버깅 메시지를 보여줍니다."
 
-#: ../src/main.c:201
-#, fuzzy
-msgid "Liferea, the Linux Feed Reader"
-msgstr "Liferea - 리눅스 피드 보기"
-
-#: ../src/main.c:202
-msgid "For more information, please visit http://lzone.de/liferea/"
-msgstr ""
-
 #. Some libsoup transport errors
-#: ../src/net.c:391
+#: ../src/net.c:400
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:392
+#: ../src/net.c:401
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:393
+#: ../src/net.c:402
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:394
+#: ../src/net.c:403
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "원격 호스트로 접속하던 중 에러"
 
-#: ../src/net.c:395
+#: ../src/net.c:404
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:396
+#: ../src/net.c:405
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:399
+#: ../src/net.c:408
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:402
+#: ../src/net.c:411
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -581,58 +581,58 @@ msgstr ""
 "이 피드를 다운로드 할 수 있도록 인증되지 않았습니다. 사용자 이름과 열쇠글을 "
 "피드 등록정보 대화상자에서 확인해주세요."
 
-#: ../src/net.c:404
+#: ../src/net.c:413
 #, fuzzy
 msgid "Payment required"
 msgstr "(돈)지불이 필요합니다"
 
-#: ../src/net.c:405
+#: ../src/net.c:414
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:406
+#: ../src/net.c:415
 msgid "Resource Not Found"
 msgstr "자원을 찾을 수 없습니다"
 
-#: ../src/net.c:407
+#: ../src/net.c:416
 msgid "Method Not Allowed"
 msgstr "동작이 허용되지 않습니다"
 
-#: ../src/net.c:408
+#: ../src/net.c:417
 msgid "Not Acceptable"
 msgstr "받아들일 수 없습니다"
 
-#: ../src/net.c:409
+#: ../src/net.c:418
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "프록시 인증이 필요합니다"
 
-#: ../src/net.c:410
+#: ../src/net.c:419
 #, fuzzy
 msgid "Request timed out"
 msgstr "요청 시간이 초과되었습니다"
 
-#: ../src/net.c:411
+#: ../src/net.c:420
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "사라짐.자원이 더 이상 존재하지 않습니다. 해지 해 주세요."
 
-#: ../src/net.c:416
+#: ../src/net.c:425
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:418
+#: ../src/net.c:427
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "피드 사용 불가: 서버가 지원되지 않는 리다이렉션을 요청받았습니다."
 
-#: ../src/net.c:420
+#: ../src/net.c:429
 msgid "Client Error"
 msgstr "클라이언트 에러"
 
-#: ../src/net.c:422
+#: ../src/net.c:431
 msgid "Server Error"
 msgstr "서버 에러"
 
-#: ../src/net.c:424
+#: ../src/net.c:433
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(알 수 없는 네트워크 에러가 일어남)"
@@ -959,8 +959,7 @@ msgstr "다음 안 읽은 아이템(_N)"
 msgid "_View"
 msgstr "보기(_V)"
 
-#: ../src/ui/liferea_shell.c:931 ../src/ui/liferea_htmlview.c:668
-#: ../src/webkit/liferea_web_view.c:207
+#: ../src/ui/liferea_shell.c:931 ../src/webkit/liferea_web_view.c:211
 msgid "_Increase Text Size"
 msgstr "글자 크기 크게하기(_I)"
 
@@ -968,8 +967,7 @@ msgstr "글자 크기 크게하기(_I)"
 msgid "Increases the text size of the item view."
 msgstr "아이템 보기의 글자 크기를 늘입니다."
 
-#: ../src/ui/liferea_shell.c:933 ../src/ui/liferea_htmlview.c:669
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/ui/liferea_shell.c:933 ../src/webkit/liferea_web_view.c:212
 msgid "_Decrease Text Size"
 msgstr "글자 크기 작게하기(_D)"
 
@@ -1268,60 +1266,12 @@ msgstr "로컬 파일(_L)"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea가 오프라인 상태로 동작중입니다. 새로고침이 불가능합니다."
 
-#: ../src/ui/liferea_htmlview.c:639 ../src/webkit/liferea_web_view.c:169
-#, fuzzy
-msgid "Open Link In _Tab"
-msgstr "/링크를 탭으로 띄우기(_T)"
-
-#: ../src/ui/liferea_htmlview.c:640
-#, fuzzy
-msgid "_Open Link In Browser"
-msgstr "/링크를 브라우져로 띄우기(_L)"
-
-#: ../src/ui/liferea_htmlview.c:641
-#, fuzzy
-msgid "_Open Link In External Browser"
-msgstr "/링크를 브라우져로 띄우기(_L)"
-
-#: ../src/ui/liferea_htmlview.c:644 ../src/webkit/liferea_web_view.c:177
-#, c-format
-msgid "_Bookmark Link at %s"
-msgstr ""
-
-#: ../src/ui/liferea_htmlview.c:648 ../src/webkit/liferea_web_view.c:181
-#, fuzzy
-msgid "_Copy Link Location"
-msgstr "/링크 위치 복사하기(_C)"
-
-#: ../src/ui/liferea_htmlview.c:651 ../src/webkit/liferea_web_view.c:184
-#, fuzzy
-msgid "_Copy Image Location"
-msgstr "/링크 위치 복사하기(_C)"
-
-#: ../src/ui/liferea_htmlview.c:653 ../src/webkit/liferea_web_view.c:187
-#, fuzzy
-msgid "S_ave Link As"
-msgstr "다른 이름으로 저장..."
-
-#: ../src/ui/liferea_htmlview.c:655 ../src/webkit/liferea_web_view.c:190
-msgid "S_ave Image As"
-msgstr ""
-
-#: ../src/ui/liferea_htmlview.c:658 ../src/webkit/liferea_web_view.c:197
-#, fuzzy
-msgid "_Subscribe..."
-msgstr "/구독(_S)..."
-
-#: ../src/ui/liferea_htmlview.c:663 ../src/webkit/liferea_web_view.c:201
-msgid "_Copy"
-msgstr ""
-
 #: ../src/ui/item_list_view.c:114
 msgid "This item has no link specified!"
 msgstr "이 아이템은 어떠한 연결도 할당되지 않았습니다."
 
-#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:960
-#: ../src/ui/item_list_view.c:1046 ../src/ui/item_list_view.c:1061
+#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:966
+#: ../src/ui/item_list_view.c:1052 ../src/ui/item_list_view.c:1067
 msgid "No item has been selected"
 msgstr "아이템이 선택되지 않았습니다"
 
@@ -1334,11 +1284,11 @@ msgstr "[제목 없음]"
 msgid "Date"
 msgstr "날짜"
 
-#: ../src/ui/item_list_view.c:789
+#: ../src/ui/item_list_view.c:795
 msgid "Headline"
 msgstr "머릿글"
 
-#: ../src/ui/item_list_view.c:947
+#: ../src/ui/item_list_view.c:953
 msgid "You must select a feed to delete its items!"
 msgstr "아이템을 지울 피드를 선택해야 합니다!"
 
@@ -1665,15 +1615,53 @@ msgstr ""
 msgid "TheOldReader"
 msgstr "피드 캐시"
 
-#: ../src/webkit/liferea_web_view.c:170
+#: ../src/webkit/liferea_web_view.c:173
+#, fuzzy
+msgid "Open Link In _Tab"
+msgstr "/링크를 탭으로 띄우기(_T)"
+
+#: ../src/webkit/liferea_web_view.c:174
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "/링크를 브라우져로 띄우기(_L)"
 
-#: ../src/webkit/liferea_web_view.c:171
+#: ../src/webkit/liferea_web_view.c:175
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "/링크를 브라우져로 띄우기(_L)"
+
+#: ../src/webkit/liferea_web_view.c:181
+#, c-format
+msgid "_Bookmark Link at %s"
+msgstr ""
+
+#: ../src/webkit/liferea_web_view.c:185
+#, fuzzy
+msgid "_Copy Link Location"
+msgstr "/링크 위치 복사하기(_C)"
+
+#: ../src/webkit/liferea_web_view.c:188
+#, fuzzy
+msgid "_Copy Image Location"
+msgstr "/링크 위치 복사하기(_C)"
+
+#: ../src/webkit/liferea_web_view.c:191
+#, fuzzy
+msgid "S_ave Link As"
+msgstr "다른 이름으로 저장..."
+
+#: ../src/webkit/liferea_web_view.c:194
+msgid "S_ave Image As"
+msgstr ""
+
+#: ../src/webkit/liferea_web_view.c:201
+#, fuzzy
+msgid "_Subscribe..."
+msgstr "/구독(_S)..."
+
+#: ../src/webkit/liferea_web_view.c:205
+msgid "_Copy"
+msgstr ""
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1692,11 +1680,11 @@ msgstr "Liferea - 리눅스 피드 보기"
 msgid "Authentication"
 msgstr "인증"
 
-#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:30
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:33
 msgid "_Password:"
 msgstr "열쇠글(_P):"
 
-#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:31
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "User_name:"
 msgstr "사용자 이름:"
 
@@ -1782,7 +1770,7 @@ msgstr "머릿글을 보는 방법(_V)"
 msgid "combined view"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:21
+#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "머릿글"
 
@@ -1807,36 +1795,36 @@ msgstr ""
 msgid "Feed Source"
 msgstr "피드 소스"
 
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:14
-msgid "_Source:"
-msgstr "소스(_S):"
+#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:13
+msgid "Source Type:"
+msgstr "소스 종류:"
 
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:15
+#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:14
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:16
+#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:15
 msgid "_Command"
 msgstr "명령(_C)"
 
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:17
+#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:16
 msgid "_Local File"
 msgstr "로컬 파일(_L)"
 
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:18
+#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:17
 msgid "Select File..."
 msgstr "파일 고르기..."
 
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:13
-msgid "Source Type:"
-msgstr "소스 종류:"
+#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:18
+msgid "_Source:"
+msgstr "소스(_S):"
 
 #: ../glade/new_subscription.ui.h:9
 #, fuzzy
 msgid "Download / Postprocessing"
 msgstr "다운로드 프로그램(_D)"
 
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:32
+#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
 msgid "_Don't use proxy for download"
 msgstr ""
 
@@ -1898,22 +1886,30 @@ msgstr "피드 다루기 설정"
 msgid "Default _number of items per feed to save:"
 msgstr "각 피드당 저장될 기본 아이템 숫자(_N):"
 
-#: ../glade/prefs.ui.h:4
+#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
+msgid "0"
+msgstr ""
+
+#: ../glade/prefs.ui.h:5
 #, fuzzy
 msgid "Feed Update Settings"
 msgstr "피드 캐시"
 
-#: ../glade/prefs.ui.h:5
+#: ../glade/prefs.ui.h:6
 #, fuzzy
 msgid "_Update all subscriptions at startup."
 msgstr "새 구독 더하기."
 
-#: ../glade/prefs.ui.h:6
+#: ../glade/prefs.ui.h:7
 msgid "Default Feed Refresh _Interval:"
 msgstr "기본 피드 새로고침 간격(_I):"
 
+#: ../glade/prefs.ui.h:8 ../glade/properties.ui.h:7
+msgid "1"
+msgstr ""
+
 #. Feed update interval hint in preference dialog.
-#: ../glade/prefs.ui.h:8
+#: ../glade/prefs.ui.h:10
 #, fuzzy
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
@@ -1923,192 +1919,192 @@ msgstr ""
 "는 피드를15분 간격으로 다시 읽는것은 좋지 않습니다. 자동 갱신을 끄시려면 시"
 "간 간격을0으로 정해주세요.</i>"
 
-#: ../glade/prefs.ui.h:9
+#: ../glade/prefs.ui.h:11
 msgid "Feeds"
 msgstr "피드"
 
-#: ../glade/prefs.ui.h:10
+#: ../glade/prefs.ui.h:12
 #, fuzzy
 msgid "Folder Display Settings"
 msgstr "<span weight=\"bold\">폴더 표시 설정</span>"
 
-#: ../glade/prefs.ui.h:11
+#: ../glade/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr "선택된 폴더안에 들은 모든 자식 피드의 아이템들을 보여줍니다(_S)."
 
-#: ../glade/prefs.ui.h:12
+#: ../glade/prefs.ui.h:14
 msgid "_Hide read items."
 msgstr "읽은 아이템 숨기기(_H)"
 
-#: ../glade/prefs.ui.h:13
+#: ../glade/prefs.ui.h:15
 #, fuzzy
 msgid "Feed Icons (Favicons)"
 msgstr "<span weight=\"bold\">피드 아이콘(Favicons)</span>"
 
-#: ../glade/prefs.ui.h:14
+#: ../glade/prefs.ui.h:16
 msgid "_Update all favicons now"
 msgstr "모든 피드아이콘을 지금 갱신합니다(_U)."
 
-#: ../glade/prefs.ui.h:15
+#: ../glade/prefs.ui.h:17
 msgid "Folders"
 msgstr "폴더"
 
-#: ../glade/prefs.ui.h:16
+#: ../glade/prefs.ui.h:18
 #, fuzzy
 msgid "Reading Headlines"
 msgstr "머릿글"
 
-#: ../glade/prefs.ui.h:17
+#: ../glade/prefs.ui.h:19
 msgid "_Skim through articles with:"
 msgstr "다음 항목으로 넘어가기 위한 키(_S):"
 
-#: ../glade/prefs.ui.h:18
+#: ../glade/prefs.ui.h:20
 msgid "_Default View Mode:"
 msgstr ""
 
-#: ../glade/prefs.ui.h:19
+#: ../glade/prefs.ui.h:21
 #, fuzzy
 msgid "Web Integration"
 msgstr "방침"
 
-#: ../glade/prefs.ui.h:20
+#: ../glade/prefs.ui.h:22
 msgid "_Post Bookmarks to"
 msgstr ""
 
-#: ../glade/prefs.ui.h:22
+#: ../glade/prefs.ui.h:24
 #, fuzzy
 msgid "Internal Browser Settings"
 msgstr "외부 브라우져"
 
-#: ../glade/prefs.ui.h:23
+#: ../glade/prefs.ui.h:25
 msgid "Open links in Liferea's _window."
 msgstr "링크를 Liferea 윈도우 안에서 엽니다(_W)."
 
-#: ../glade/prefs.ui.h:24
+#: ../glade/prefs.ui.h:26
 msgid "_Disable Javascript."
 msgstr "자바스크립트 비활성화(_D)."
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:27
 #, fuzzy
 msgid "_Enable browser plugins."
 msgstr "외부 브라우져"
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:28
 #, fuzzy
 msgid "External Browser Settings"
 msgstr "외부 브라우져"
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:29
+msgid "_Browser:"
+msgstr "브라우져(_B):"
+
+#: ../glade/prefs.ui.h:30
 #, fuzzy
 msgid "_Manual:"
 msgstr "수동"
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:32
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr ""
 
-#: ../glade/prefs.ui.h:30
-msgid "_Browser:"
-msgstr "브라우져(_B):"
-
-#: ../glade/prefs.ui.h:31
+#: ../glade/prefs.ui.h:33
 msgid "Browser"
 msgstr "브라우져"
 
-#: ../glade/prefs.ui.h:32
+#: ../glade/prefs.ui.h:34
 #, fuzzy
 msgid "Toolbar Settings"
 msgstr "프록시 설정"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:35
 msgid "_Hide toolbar."
 msgstr ""
 
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:36
 #, fuzzy
 msgid "Toolbar _button labels:"
 msgstr "프록시 설정"
 
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:37
 msgid "GUI"
 msgstr "GUI"
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:38
 msgid "HTTP Proxy Server"
 msgstr "HTTP 프록시 서버"
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:39
 msgid "_Auto Detect (GNOME or environment)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:38
+#: ../glade/prefs.ui.h:40
 #, fuzzy
 msgid "_No Proxy"
 msgstr "프록시"
 
-#: ../glade/prefs.ui.h:39
+#: ../glade/prefs.ui.h:41
 #, fuzzy
 msgid "_Manual Setting:"
 msgstr "메뉴 설정"
 
-#: ../glade/prefs.ui.h:40
-msgid "Proxy _Port:"
-msgstr "프록시 포트(_P):"
-
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:42
 msgid "Proxy _Host:"
 msgstr "프록시 호스트(_H):"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:43
+msgid "Proxy _Port:"
+msgstr "프록시 포트(_P):"
+
+#: ../glade/prefs.ui.h:44
 #, fuzzy
 msgid "Use Proxy Au_thentication"
 msgstr "프록시 인증을 사용합니다(_A)"
 
-#: ../glade/prefs.ui.h:43
-msgid "Proxy Pass_word:"
-msgstr "프록시 열쇠글(_W):"
-
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Username:"
 msgstr "사용자 이름(_U):"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:46
+msgid "Proxy Pass_word:"
+msgstr "프록시 열쇠글(_W):"
+
+#: ../glade/prefs.ui.h:47
 msgid "Proxy"
 msgstr "프록시"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:48
 #, fuzzy
 msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">폴더 표시 설정</span>"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:49
 msgid "Tell sites that I do _not want to be tracked"
 msgstr ""
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:50
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:51
 #, fuzzy
 msgid "Downloading Enclosures"
 msgstr "첨부파일 다운로드"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:52
 msgid "_Download using"
 msgstr "다운로드 프로그램(_D)"
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:53
 #, fuzzy
 msgid "Opening Enclosures"
 msgstr "/첨부 열기..."
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:54
 msgid "Enclosures"
 msgstr "첨부"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:55
 msgid "Plugins"
 msgstr ""
 
@@ -2138,13 +2134,9 @@ msgstr "기본 갱신 주기를 사용합니다(_U)."
 msgid "_Feed specific update interval of"
 msgstr "피드 지정 새로 고침 간격"
 
-#: ../glade/properties.ui.h:7
+#: ../glade/properties.ui.h:8
 msgid "_Don't update this feed automatically."
 msgstr "이 피드를 자동으로 업데이트 하지 말것(_D)."
-
-#: ../glade/properties.ui.h:8
-msgid " "
-msgstr " "
 
 #: ../glade/properties.ui.h:10
 #, no-c-format
@@ -2189,38 +2181,38 @@ msgstr "무제한 캐시(_U)"
 msgid "_Number of items to save:"
 msgstr "각 피드당 저장될 기본 아이템 숫자(_N):"
 
-#: ../glade/properties.ui.h:28
+#: ../glade/properties.ui.h:29
 msgid "Archive"
 msgstr ""
 
-#: ../glade/properties.ui.h:29
+#: ../glade/properties.ui.h:30
 msgid "Use HTTP _authentication"
 msgstr "HTTP 인증을 사용합니다(_A)"
 
-#: ../glade/properties.ui.h:33
+#: ../glade/properties.ui.h:34
 #, fuzzy
 msgid "Download"
 msgstr "다운로드 프로그램(_D)"
 
-#: ../glade/properties.ui.h:34
+#: ../glade/properties.ui.h:35
 msgid "_Automatically download all enclosures of this feed."
 msgstr "이피드의 모든 첨부물을 자동으로 다운로드 받습니다(_A)."
 
-#: ../glade/properties.ui.h:35
+#: ../glade/properties.ui.h:36
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 
-#: ../glade/properties.ui.h:36
+#: ../glade/properties.ui.h:37
 #, fuzzy
 msgid "Ignore _comment feeds for this subscription."
 msgstr "선택된 구독을 위한 속성 대화창을 엽니다."
 
-#: ../glade/properties.ui.h:37
+#: ../glade/properties.ui.h:38
 #, fuzzy
 msgid "_Mark downloaded items as read."
 msgstr "선택한 것들을 읽은 것으로 표시(_M)"
 
-#: ../glade/properties.ui.h:38
+#: ../glade/properties.ui.h:39
 msgid "Advanced"
 msgstr ""
 
@@ -2279,44 +2271,25 @@ msgid "Search All Feeds"
 msgstr "모든 피드에서 찾기."
 
 #: ../glade/simple_search.ui.h:2
-msgid "_Search for:"
-msgstr "찾기(_S):"
-
-#: ../glade/simple_search.ui.h:3
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
-msgstr "Liferea가 아이템 제목이나 내용에서 찾을 단어를 입력해주세요."
-
-#: ../glade/simple_search.ui.h:4
 msgid "_Advanced..."
 msgstr ""
 
-#: ../glade/simple_search.ui.h:5
+#: ../glade/simple_search.ui.h:3
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
 msgstr ""
 "모든 피드에서 지정한 내용을 찾습니다. 결과는 아이템 목록에 나타날 것 입니다."
 
-#: ../glade/simple_search.ui.h:6 ../glade/update_monitor.ui.h:1
-#, fuzzy
-msgid "Update Monitor"
-msgstr "/디렉토리 갱신(_U)"
+#: ../glade/simple_search.ui.h:4
+msgid "_Search for:"
+msgstr "찾기(_S):"
 
-#: ../glade/simple_search.ui.h:7 ../glade/update_monitor.ui.h:2
-msgid "Pending Requests"
-msgstr ""
-
-#: ../glade/simple_search.ui.h:8 ../glade/update_monitor.ui.h:3
-#, fuzzy
-msgid "Downloading Now"
-msgstr "첨부파일 다운로드"
-
-#: ../glade/simple_search.ui.h:9 ../glade/update_monitor.ui.h:4
-#, fuzzy
-msgid "Cancel _All"
-msgstr "전부 갱신(_A)"
+#: ../glade/simple_search.ui.h:5
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr "Liferea가 아이템 제목이나 내용에서 찾을 단어를 입력해주세요."
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
@@ -2353,6 +2326,40 @@ msgstr "피드 URL"
 #, fuzzy
 msgid "_Username"
 msgstr "사용자 이름:"
+
+#: ../glade/update_monitor.ui.h:1
+#, fuzzy
+msgid "Update Monitor"
+msgstr "/디렉토리 갱신(_U)"
+
+#: ../glade/update_monitor.ui.h:2
+#, fuzzy
+msgid "Cancel All"
+msgstr "전부 갱신(_A)"
+
+#: ../glade/update_monitor.ui.h:3
+msgid "Pending Requests"
+msgstr ""
+
+#: ../glade/update_monitor.ui.h:4
+#, fuzzy
+msgid "Downloading Now"
+msgstr "첨부파일 다운로드"
+
+#, fuzzy
+#~ msgid "Liferea, the Linux Feed Reader"
+#~ msgstr "Liferea - 리눅스 피드 보기"
+
+#, fuzzy
+#~ msgid "_Open Link In Browser"
+#~ msgstr "/링크를 브라우져로 띄우기(_L)"
+
+#, fuzzy
+#~ msgid "_Open Link In External Browser"
+#~ msgstr "/링크를 브라우져로 띄우기(_L)"
+
+#~ msgid " "
+#~ msgstr " "
 
 #~ msgid "enter any search string you want"
 #~ msgstr "아무거나 원하는 찾을 말을 입력해보세요"
@@ -3258,11 +3265,11 @@ msgstr "사용자 이름:"
 #~ msgid ""
 #~ "<p>Could not determine the feed type. Please check that it is a <a href="
 #~ "\"http://feedvalidator.org\">valid</a> type and listed in the <a href="
-#~ "\"http://lzone.de/liferea/supported_formats.htm\">supported formats</a>.</"
-#~ "p>"
+#~ "\"https://lzone.de/liferea/supported_formats.htm\">supported formats</a>."
+#~ "</p>"
 #~ msgstr ""
 #~ "<p>피드 종류를 알 수 없습니다.·그것이 <a·href=\"http://feedvalidator.org"
-#~ "\">맞는 형식</a>인지 확인하시고 <a·href=\"http://lzone.de/liferea/index."
+#~ "\">맞는 형식</a>인지 확인하시고 <a·href=\"https://lzone.de/liferea/index."
 #~ "php#supported_formats\">지원되는 형식</a>인지 확인해 주세요.</p>"
 
 #~ msgid "Please do a search first!"
@@ -3353,8 +3360,8 @@ msgstr "사용자 이름:"
 #~ "to change the update interval, title, authentication or caching "
 #~ "properties of a subscription.</p></li></ul><p>To learn more about Liferea "
 #~ "you should read the documentation provided in the help feed or in the <a "
-#~ "href=\"http://lzone.de/liferea/faq.htm\">FAQ</a> available at the <a href="
-#~ "\"http://liferea.sf.net\">project homepage</a>.</p>"
+#~ "href=\"https://lzone.de/liferea/faq.htm\">FAQ</a> available at the <a "
+#~ "href=\"http://lzone.de/liferea\">project homepage</a>.</p>"
 #~ msgstr ""
 #~ "<h2>Liferea에 오신것을 환영합니다</h2><p>왼쪽의 판자는 당신이 새로 추가할 "
 #~ "수 있는 새로운 구독을 가지고 있습니다. 그것을 선택해서 머릿글을 읽을 수 있"
@@ -3370,7 +3377,7 @@ msgstr "사용자 이름:"
 #~ "독 등록정보 수정</b> - 가끔 새로 고침 간격이나 제목, 인증 방법이나 캐싱 등"
 #~ "록정보 등을 고치고 싶을 때가 합니다.</p></li></ul><p>Liferea에 대해 더 자"
 #~ "세히 알고 싶으시면 도움말 피드에서 제공되는 문서나 <a href=\"http://"
-#~ "liferea.sf.net\">프로젝트 홈페이지</a>의 <a href=\"http://liferea."
+#~ "lzone.de/liferea\">프로젝트 홈페이지</a>의 <a href=\"http://liferea."
 #~ "sourceforge.net/faq.htm\">FAQ</a>를 꼭 읽어보세요.</p>"
 
 #~ msgid "Toggle Search Box"
@@ -3379,8 +3386,8 @@ msgstr "사용자 이름:"
 #~ msgid "  --iconify        Start the program iconified"
 #~ msgstr "  --iconify        프로그램을 아이콘화 한 채 시작합니다"
 
-#~ msgid "http://liferea.sf.net/help/help"
-#~ msgstr "http://liferea.sf.net/help/help"
+#~ msgid "http://lzone.de/liferea/help/help"
+#~ msgstr "http://lzone.de/liferea/help/help"
 
 #~ msgid ".rdf"
 #~ msgstr ".rdf"

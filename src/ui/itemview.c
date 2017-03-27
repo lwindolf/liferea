@@ -46,24 +46,24 @@
 #define ITEMVIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEMVIEW_TYPE, ItemViewPrivate))
 
 struct ItemViewPrivate {
-	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
-	guint		mode;			/**< current item view mode */
-	nodePtr		node;			/**< the node whose items are displayed */
-	gboolean	browsing;		/**< TRUE if itemview is used as internal browser right now */
-	gboolean	needsHTMLViewUpdate;	/**< flag to be set when HTML rendering is to be 
+	gboolean	htmlOnly;		/*<< TRUE if HTML only mode */
+	guint		mode;			/*<< current item view mode */
+	nodePtr		node;			/*<< the node whose items are displayed */
+	gboolean	browsing;		/*<< TRUE if itemview is used as internal browser right now */
+	gboolean	needsHTMLViewUpdate;	/*<< flag to be set when HTML rendering is to be
 						     updated, used to delay HTML updates */
-	gboolean	hasEnclosures;		/**< TRUE if at least one item of the current itemset has an enclosure */
+	gboolean	hasEnclosures;		/*<< TRUE if at least one item of the current itemset has an enclosure */
 						     
-	nodeViewType	viewMode;		/**< current viewing mode */
-	guint		currentLayoutMode;	/**< layout mode (3 pane, 2 pane, wide view) */
+	nodeViewType	viewMode;		/*<< current viewing mode */
+	guint		currentLayoutMode;	/*<< layout mode (3 pane, 2 pane, wide view) */
 								     
-	GtkWidget	*itemListViewContainer;	/**< scrolled window holding item list tree view */
-	ItemListView	*itemListView;		/**< widget instance used to present items in list mode */
+	GtkWidget	*itemListViewContainer;	/*<< scrolled window holding item list tree view */
+	ItemListView	*itemListView;		/*<< widget instance used to present items in list mode */
 
-	EnclosureListView	*enclosureView;	/**< Enclosure list widget */
-	LifereaHtmlView		*htmlview;	/**< HTML rendering widget instance used to render single items and summaries mode */
+	EnclosureListView	*enclosureView;	/*<< Enclosure list widget */
+	LifereaHtmlView		*htmlview;	/*<< HTML rendering widget instance used to render single items and summaries mode */
 
-	gfloat			zoom;		/**< HTML rendering widget zoom level */
+	gfloat			zoom;		/*<< HTML rendering widget zoom level */
 };
 
 enum {
@@ -360,13 +360,7 @@ itemview_find_unread_item (gulong startId)
 void
 itemview_scroll (void)
 {
-	/* We try to scroll the HTML view, but if we are already at the
-	   bottom of the item view the scrolling will return FALSE and 
-	   we trigger Next-Unread to realize easy headline skimming. */
-	if (liferea_htmlview_scroll (itemview->priv->htmlview) == FALSE)
-		on_next_unread_item_activate (NULL, NULL);
-		
-	/* Note the above condition is duplicated in mozilla/mozsupport.cpp! */
+	liferea_htmlview_scroll (itemview->priv->htmlview);
 }
 
 void

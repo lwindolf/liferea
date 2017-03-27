@@ -575,12 +575,54 @@ liferea_webkit_scroll_pagedown (GtkWidget *webview)
 static void
 liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, const gchar *user, const gchar *pwd)
 {
-	/*
-	 * FIXME
-	 *  Webkit2 uses global proxy settings :
-	 *  https://bugs.webkit.org/show_bug.cgi?id=128674
-	 *  https://bugs.webkit.org/show_bug.cgi?id=113663
-	 */
+#if WEBKIT_CHECK_VERSION (2, 15, 3)
+	WebKitNetworkProxySettings *proxy_settings = NULL;
+	gchar *proxy_uri = NULL;
+	gchar *user_pass = NULL, *host_port = NULL;
+
+	switch (mode) {
+		case PROXY_DETECT_MODE_AUTO:
+			webkit_web_context_set_network_proxy_settings (webkit_web_context_get_default (), WEBKIT_NETWORK_PROXY_MODE_DEFAULT, NULL);
+			break;
+		case PROXY_DETECT_MODE_NONE:
+			webkit_web_context_set_network_proxy_settings (webkit_web_context_get_default (), WEBKIT_NETWORK_PROXY_MODE_NO_PROXY, NULL);
+			break;
+		case PROXY_DETECT_MODE_MANUAL:
+			/* Construct user:password part of the URI if specified. */
+			if (user) {
+				user_pass = g_uri_escape_string (user, NULL, TRUE);
+				if (pwd) {
+					gchar *enc_user = user_pass;
+					gchar *enc_pass = g_uri_escape_string (pwd, NULL, TRUE);
+					user_pass = g_strdup_printf ("%s:%s", enc_user, enc_pass);
+					g_free (enc_user);
+					g_free (enc_pass);
+				}
+			}
+
+			/* Construct the host:port part of the URI. */
+			if (port) {
+				host_port = g_strdup_printf ("%s:%d", host, port);
+			} else {
+				host_port = g_strdup (host);
+			}
+
+			/* Construct proxy URI. */
+			if (user) {
+				proxy_uri = g_strdup_printf("http://%s@%s", user_pass, host_port);
+			} else {
+				proxy_uri = g_strdup_printf("http://%s", host_port);
+			}
+
+			g_free (user_pass);
+			g_free (host_port);
+			proxy_settings = webkit_network_proxy_settings_new (proxy_uri, NULL);
+			g_free (proxy_uri);
+			webkit_web_context_set_network_proxy_settings (webkit_web_context_get_default (), WEBKIT_NETWORK_PROXY_MODE_CUSTOM, proxy_settings);
+			webkit_network_proxy_settings_free (proxy_settings);
+			break;
+	}
+#endif
 }
 
 static struct
@@ -594,7 +636,7 @@ htmlviewImpl webkitImpl = {
 	.hasSelection	= NULL,  /* Was only useful for the context menu, can be removed */
 	.copySelection	= liferea_webkit_copy_selection, /* Same. */
 	.scrollPagedown	= liferea_webkit_scroll_pagedown,
-	.setProxy	= NULL, // FIXME: readd later
+	.setProxy	= liferea_webkit_set_proxy,
 	.setOffLine	= NULL // FIXME: blocked on https://bugs.webkit.org/show_bug.cgi?id=18893
 };
 

@@ -8,7 +8,7 @@ Introduction
 
 Liferea is a desktop feed reader/news aggregator that brings together all of the content from your favorite subscriptions into a simple interface that makes it easy to organize and browse feeds. Its GUI is similar to a desktop mail/newsclient, with an embedded graphical browser.
 
-![screenshot](http://lzone.de/liferea/screenshots/screenshot3.png)
+![screenshot](https://lzone.de/liferea/screenshots/screenshot3.png)
 
 
 
@@ -17,7 +17,7 @@ Installation from Package
 
 We do not provide packages, but others do. Detailed instructions on how to 
 get Liferea packages installed on the different distributions can 
-be found at http://lzone.de/liferea/install.htm
+be found at https://lzone.de/liferea/install.htm
 
 
 

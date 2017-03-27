@@ -1,4 +1,4 @@
-/**
+/*
  * @file node.c  hierarchic feed list node handling
  * 
  * Copyright (C) 2003-2016 Lars Windolf <lars.windolf@gmx.de>
@@ -39,7 +39,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/feed_list_node.h"
 
-static GHashTable *nodes = NULL;	/**< node id -> node lookup table */
+static GHashTable *nodes = NULL;	/*<< node id -> node lookup table */
 
 #define NODE_ID_LEN	7
 
@@ -407,11 +407,8 @@ node_load_icon (nodePtr node)
 	/* Load pixbuf for all widget based rendering */
 	if (node->icon) 
 		g_object_unref (node->icon);
-	if (node->largeIcon)
-		g_object_unref (node->largeIcon);
 
-	node->icon = favicon_load_from_cache (node->id, 16);
-	node->largeIcon = favicon_load_from_cache (node->id, 32);
+	node->icon = favicon_load_from_cache (node->id, 32);
 	
 	/* Create filename for HTML rendering */
 	g_free (node->iconFile);
@@ -422,7 +419,7 @@ node_load_icon (nodePtr node)
 		node->iconFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "pixmaps", "default.png", NULL);
 }
 
-/** determines the nodes favicon or default icon */
+/* determines the nodes favicon or default icon */
 gpointer
 node_get_icon (nodePtr node)
 {
@@ -430,12 +427,6 @@ node_get_icon (nodePtr node)
 		return (gpointer) NODE_TYPE(node)->icon;
 
 	return node->icon;
-}
-
-gpointer
-node_get_large_icon (nodePtr node)
-{
-	return node->largeIcon;
 }
 
 const gchar *

@@ -1,15 +1,15 @@
 SUBDIRS = 16x16 22x22 24x24 32x32 48x48 scalable
 EXTRA_DIST = \
-	attachment.png	\
+	mail-attachment.png	\
 	available.png   \
 	available_offline.png \
 	default.png	\
-	directory.png   \
+	folder.png   \
 	empty.png       \
 	empty_offline.png \
-	flag.png        \
+	emblem-important.png        \
 	unread.png      \
-	vfolder.png     \
+	folder-saved-search.png     \
 	fl_opml.png	\
 	newsbin.png	
 
