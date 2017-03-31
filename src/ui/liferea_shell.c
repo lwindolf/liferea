@@ -1270,10 +1270,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	
 	debug0 (DEBUG_GUI, "Setting up widget containers");
 
-	gtk_box_pack_start (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, FALSE, FALSE, 0);
-	gtk_box_reorder_child (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, 0);
-	gtk_box_pack_start (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->menubar, FALSE, FALSE, 0);
-	gtk_box_reorder_child (GTK_BOX (liferea_shell_lookup ("vbox1")), shell->priv->menubar, 0);
+	gtk_grid_attach_next_to (GTK_GRID (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, NULL, GTK_POS_TOP, 1,1);
+	gtk_grid_attach_next_to (GTK_GRID (liferea_shell_lookup ("vbox1")), shell->priv->menubar, NULL, GTK_POS_TOP, 1,1);
 
 	gtk_widget_show_all(GTK_WIDGET(shell->priv->toolbar));
 
