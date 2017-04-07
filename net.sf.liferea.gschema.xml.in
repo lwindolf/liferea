@@ -228,9 +228,9 @@
       <description>This option defines which font should be used to render in the browser. If not specified system setting will be used.</description>
     </key>
     <key name="do-not-track" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>Send "Do Not Track" header</summary>
-      <description>Configures wether the "DNT" header is to be sent. If enabled sends "DNT" with value "1"</description>
+      <description>Configures wether the "DNT" header is to be sent. If enabled sends "DNT: 1", meaning Do Not Track.</description>
     </key>
 
   </schema>
