@@ -983,17 +983,12 @@ item_list_view_select (ItemListView *ilv, itemPtr item)
 {
 	GtkTreeView		*treeview = ilv->priv->treeview;
 	GtkTreeSelection	*selection;
+	GtkTreeIter		iter;
 	
 	selection = gtk_tree_view_get_selection (treeview);
 	
-	if (item) {
-		GtkTreeIter		iter;
-		GtkTreePath		*path;		
-		if (!item_list_view_id_to_iter(ilv, item->id, &iter))
-			/* This is an evil hack to fix SF #1870052: crash
-			   upon hitting <enter> when no headline selected.
-			   FIXME: This code is rotten! Rewrite it! Now! */
-			itemlist_selection_changed (NULL);
+	if (item && item_list_view_id_to_iter(ilv, item->id, &iter)){
+		GtkTreePath	*path = NULL;
 
 		path = gtk_tree_model_get_path (gtk_tree_view_get_model (treeview), &iter);
 		if (path) {
@@ -1002,6 +997,8 @@ item_list_view_select (ItemListView *ilv, itemPtr item)
 			gtk_tree_path_free (path);
 		}
 	} else {
+		if (item)
+			g_warning ("item_list_view_select : attempt to select an item which is not present in the view.");
 		gtk_tree_selection_unselect_all (selection);
 	}
 }
