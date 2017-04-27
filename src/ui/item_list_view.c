@@ -664,10 +664,18 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 				   state or favicon column. We depend
 				   on the fact that those columns are all left 
 				   of the headline column !!! */
-				if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn) +
-				                 gtk_tree_view_column_get_width (ilv->priv->faviconColumn))) {
-					itemlist_toggle_flag (item);
-					result = TRUE;
+				if(gtk_tree_view_column_get_visible (ilv->priv->faviconColumn)){
+					if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn) +
+					                 gtk_tree_view_column_get_width (ilv->priv->faviconColumn))) {
+						itemlist_toggle_flag (item);
+						result = TRUE;
+					}
+				}
+				else{
+					if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn))) {
+						itemlist_toggle_flag (item);
+						result = TRUE;
+					}
 				}
 				break;
 			case 2:
@@ -765,11 +773,6 @@ item_list_view_create (gboolean wide)
 	if (wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
 	
-	renderer = gtk_cell_renderer_pixbuf_new ();
-	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_ENCICON, NULL);
-	gtk_tree_view_append_column (ilv->priv->treeview, column);
-	ilv->priv->enclosureColumn = column;
-
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_FAVICON, NULL);
@@ -782,6 +785,8 @@ item_list_view_create (gboolean wide)
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->faviconColumn = column;
+
+
 	renderer = gtk_cell_renderer_text_new ();
 	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
 	                                                   "markup", IS_LABEL,
@@ -800,7 +805,7 @@ item_list_view_create (gboolean wide)
 	}
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
-	column = gtk_tree_view_column_new_with_attributes ("", renderer, "pixbuf", IS_ENCICON, NULL);
+	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_ENCICON, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->enclosureColumn = column;
 
