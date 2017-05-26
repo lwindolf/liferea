@@ -1,7 +1,7 @@
 /*
  * @file itemview.c  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,29 +46,30 @@
 #define ITEMVIEW_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEMVIEW_TYPE, ItemViewPrivate))
 
 struct ItemViewPrivate {
-	gboolean	htmlOnly;		/**< TRUE if HTML only mode */
-	guint		mode;			/**< current item view mode */
-	nodePtr		node;			/**< the node whose items are displayed */
-	gboolean	browsing;		/**< TRUE if itemview is used as internal browser right now */
-	gboolean	needsHTMLViewUpdate;	/**< flag to be set when HTML rendering is to be 
+	gboolean	htmlOnly;		/*<< TRUE if HTML only mode */
+	guint		mode;			/*<< current item view mode */
+	nodePtr		node;			/*<< the node whose items are displayed */
+	gboolean	browsing;		/*<< TRUE if itemview is used as internal browser right now */
+	gboolean	needsHTMLViewUpdate;	/*<< flag to be set when HTML rendering is to be
 						     updated, used to delay HTML updates */
-	gboolean	hasEnclosures;		/**< TRUE if at least one item of the current itemset has an enclosure */
+	gboolean	hasEnclosures;		/*<< TRUE if at least one item of the current itemset has an enclosure */
 						     
-	nodeViewType	viewMode;		/**< current viewing mode */
-	guint		currentLayoutMode;	/**< layout mode (3 pane, 2 pane, wide view) */
+	nodeViewType	viewMode;		/*<< current viewing mode */
+	guint		currentLayoutMode;	/*<< layout mode (3 pane, 2 pane, wide view) */
 								     
-	GtkWidget	*itemListViewContainer;	/**< scrolled window holding item list tree view */
-	ItemListView	*itemListView;		/**< widget instance used to present items in list mode */
+	GtkWidget	*itemListViewContainer;	/*<< scrolled window holding item list tree view */
+	ItemListView	*itemListView;		/*<< widget instance used to present items in list mode */
 
-	EnclosureListView	*enclosureView;	/**< Enclosure list widget */
-	LifereaHtmlView		*htmlview;	/**< HTML rendering widget instance used to render single items and summaries mode */
+	EnclosureListView	*enclosureView;	/*<< Enclosure list widget */
+	LifereaHtmlView		*htmlview;	/*<< HTML rendering widget instance used to render single items and summaries mode */
 
-	gfloat			zoom;		/**< HTML rendering widget zoom level */
+	gfloat			zoom;		/*<< HTML rendering widget zoom level */
 };
 
 enum {
 	PROP_NONE,
 	PROP_ITEM_LIST_VIEW,
+	PROP_HTML_VIEW
 };
 
 static GObjectClass *parent_class = NULL;
@@ -105,6 +106,9 @@ itemview_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec
 		case PROP_ITEM_LIST_VIEW:
 			g_value_set_object (value, itemview->priv->itemListView);
 			break;
+		case PROP_HTML_VIEW:
+			g_value_set_object (value, itemview->priv->htmlview);
+			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 			break;
@@ -130,6 +134,16 @@ itemview_class_init (ItemViewClass *klass)
 						"ItemListView",
 						"ItemListView object",
 						ITEM_LIST_VIEW_TYPE,
+						G_PARAM_READABLE));
+
+	/* ItemView:html-view: */
+	g_object_class_install_property (object_class,
+					PROP_HTML_VIEW,
+					g_param_spec_object (
+						"html-view",
+						"LifereaHtmlView",
+						"LifereaHtmlView object",
+						LIFEREA_HTMLVIEW_TYPE,
 						G_PARAM_READABLE));
 
 	g_type_class_add_private (object_class, sizeof(ItemViewPrivate));
@@ -222,7 +236,8 @@ itemview_select_item (itemPtr item)
 	else
 		enclosure_list_view_hide (ivp->enclosureView);
 
-	item_history_add (item->id);
+	if (item)
+		item_history_add (item->id);
 }
 
 void
@@ -345,13 +360,7 @@ itemview_find_unread_item (gulong startId)
 void
 itemview_scroll (void)
 {
-	/* We try to scroll the HTML view, but if we are already at the
-	   bottom of the item view the scrolling will return FALSE and 
-	   we trigger Next-Unread to realize easy headline skimming. */
-	if (liferea_htmlview_scroll (itemview->priv->htmlview) == FALSE)
-		on_next_unread_item_activate (NULL, NULL);
-		
-	/* Note the above condition is duplicated in mozilla/mozsupport.cpp! */
+	liferea_htmlview_scroll (itemview->priv->htmlview);
 }
 
 void
@@ -403,7 +412,9 @@ itemview_set_layout (nodeViewType newMode)
 		GtkWidget *renderWidget;
 		
 		debug0 (DEBUG_GUI, "Creating HTML widget");
+		htmlview_init ();
 		ivp->htmlview = liferea_htmlview_new (FALSE);
+		liferea_htmlview_set_headline_view (ivp->htmlview);
 		g_signal_connect (ivp->htmlview, "statusbar-changed", 
 		                  G_CALLBACK (on_important_status_message), NULL);
 		renderWidget = liferea_htmlview_get_widget (ivp->htmlview);
@@ -441,10 +452,20 @@ itemview_set_layout (nodeViewType newMode)
 	}
 
 	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
+	g_assert (htmlWidgetName);
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
 	gtk_widget_reparent (liferea_htmlview_get_widget (ivp->htmlview), liferea_shell_lookup (htmlWidgetName));
-	if (ilWidgetName)
-		gtk_widget_reparent (GTK_WIDGET (ivp->itemListViewContainer), liferea_shell_lookup (ilWidgetName));
+
+	/* Recreate the item list view */
+	if (ivp->itemListViewContainer)
+		gtk_widget_destroy (ivp->itemListViewContainer);
+
+	if (ilWidgetName) {
+		ivp->itemListView = item_list_view_create (newMode == NODE_VIEW_MODE_WIDE);
+		ivp->itemListViewContainer = gtk_widget_get_parent (GTK_WIDGET (item_list_view_get_widget (ivp->itemListView)));
+		g_assert (ivp->itemListViewContainer);
+		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (ilWidgetName)), GTK_WIDGET (ivp->itemListViewContainer));
+	}
 	
 	/* Destroy previous enclosure list. */
 	if (ivp->enclosureView) {
@@ -467,27 +488,18 @@ itemview_create (GtkWidget *window)
 {
 	gint zoom;
 
-	/* 1. Create widgets, load preferences */
-	
 	g_object_new (ITEMVIEW_TYPE, NULL);
-	
-	itemview->priv->currentLayoutMode = NODE_VIEW_MODE_DEFAULT;
-	itemview->priv->itemListView = item_list_view_create (window);
-	itemview->priv->itemListViewContainer = gtk_widget_get_parent (GTK_WIDGET (item_list_view_get_widget (itemview->priv->itemListView)));
+
+	/* 1. Load preferences */
 	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
-	
 	if (zoom == 0) {
 		zoom = 100;
 		conf_set_int_value (LAST_ZOOMLEVEL, zoom);
 	}
 	itemview->priv->zoom = zoom;
-	
-	/* initially we pack the item list in the normal view pane,
-	   which is later changed in itemview_set_layout() */
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewItems")), itemview->priv->itemListViewContainer);
 
-	/* 2. Prepare HTML rendering */
-	htmlview_init ();
+	/* 2. Set initial layout (because no node selected yet) */
+	itemview_set_layout (NODE_VIEW_MODE_WIDE);
 	
 	return itemview;
 }

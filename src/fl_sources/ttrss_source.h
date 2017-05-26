@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.h  Tiny Tiny RSS feed list source support
  * 
- * Copyright (C) 2010-2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2010-2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,11 +29,12 @@
  * A nodeSource specific for tt-rss
  */
 typedef struct ttrssSource {
-	nodePtr		root;		/**< the root node in the feed list */
-	gchar		*session_id;	/**< the current session id */
-	const gchar	*url;		/**< the API base URL */
-	gint		apiLevel;	/**< The API level reported by the instance (or 0) */
-	GHashTable	*categories;	/**< Lookup hash for feed id to category id */
+	nodePtr		root;			/**< the root node in the feed list */
+	gchar		*session_id;		/**< the current session id */
+	const gchar	*url;			/**< the API base URL */
+	gint		apiLevel;		/**< The API level reported by the instance (or 0) */
+	GHashTable	*categories;		/**< Lookup hash for TTRSS feed id to TTRSS category id */
+	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to TTRSS category id */
 } *ttrssSourcePtr;
 
 /**
@@ -98,7 +99,7 @@ typedef struct ttrssSource {
  *
  * @returns JSON feed list
  */
-#define TTRSS_JSON_HEADLINES "{\"op\":\"getHeadlines\", \"sid\":\"%s\", \"feed_id\":\"%s\", \"limit\":\"%d\", \"show_content\":\"true\", \"view_mode\":\"all_articles\"}"
+#define TTRSS_JSON_HEADLINES "{\"op\":\"getHeadlines\", \"sid\":\"%s\", \"feed_id\":\"%s\", \"limit\":\"%d\", \"show_content\":\"true\", \"view_mode\":\"all_articles\", \"include_attachments\":\"true\"}"
 
 /**
  * Toggle item flag state.

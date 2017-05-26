@@ -2,7 +2,7 @@
  * @file conf.c Liferea configuration (GSettings access)
  *
  * Copyright (C) 2011 Mikel Olasagasti Uranga <mikel@olasagasti.info>
- * Copyright (C) 2003-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -197,7 +197,7 @@ conf_proxy_reset_settings_cb (GSettings *settings,
 		  proxyusername != NULL ? proxyusername : "NULL",
 		  proxypassword != NULL ? proxypassword : "NULL");
 
-	network_set_proxy (proxyname, proxyport, proxyusername, proxypassword);
+	network_set_proxy (proxydetectmode, proxyname, proxyport, proxyusername, proxypassword);
 }
 
 /*----------------------------------------------------------------------*/
@@ -245,6 +245,7 @@ gboolean
 conf_get_bool_value_from_schema (GSettings *gsettings, const gchar *key, gboolean *value)
 {
 	g_assert (key != NULL);
+	g_assert (value != NULL);
 
 	if (gsettings == NULL)
 		gsettings = settings;
@@ -256,6 +257,7 @@ gboolean
 conf_get_str_value_from_schema (GSettings *gsettings, const gchar *key, gchar **value)
 {
 	g_assert (key != NULL);
+	g_assert (value != NULL);
 
 	if (gsettings == NULL)
 		gsettings = settings;
@@ -267,6 +269,7 @@ gboolean
 conf_get_int_value_from_schema (GSettings *gsettings, const gchar *key, gint *value)
 {
 	g_assert (key != NULL);
+	g_assert (value != NULL);
 
 	if (gsettings == NULL)
 		gsettings = settings;
@@ -278,6 +281,7 @@ gboolean
 conf_get_default_font_from_schema (const gchar *key, gchar **value)
 {
 	g_assert (key != NULL);
+	g_assert (value != NULL);
 
 	if (desktop_settings)
 		*value = g_strdup (g_settings_get_string (desktop_settings, key));

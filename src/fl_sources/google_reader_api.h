@@ -1,7 +1,7 @@
 /**
  * @file google_reader_api.h  Interface for implementing the Google Reader API
  * 
- * Copyright (C) 2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2014-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 #define GOOGLE_READER_TAG_STARRED              "user/-/state/com.google/starred"
 
 typedef struct googleReaderApi {
+	gboolean	json;	/**< Returns mostly JSON */
+
 	/** Endpoint definitions */
 	const char	*unread_count;
 	const char	*subscription_list;
@@ -40,6 +42,8 @@ typedef struct googleReaderApi {
 	const char	*edit_tag_add_post;
 	const char	*edit_tag_ar_tag_post;
 	const char	*edit_tag_remove_post;
+	const char	*edit_add_label;
+	const char	*edit_add_label_post;
 	const char	*token;
 	/* when extending this list add assertions in node_source_type_register! */
 } googleReaderApi;

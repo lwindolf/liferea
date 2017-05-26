@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.c  property dialog for feed subscriptions
  *
- * Copyright (C) 2004-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -128,13 +128,13 @@ ui_subscription_create_url (gchar *url,
 
 	/* Use the values in the textboxes if also specified in the URL! */
 	if(auth) {
-		xmlURIPtr uri = xmlParseURI(BAD_CAST str);
+		xmlURIPtr uri = xmlParseURI(str);
 		if (uri != NULL) {
 			xmlChar *sourceUrl;
 			xmlFree(uri->user);
 			uri->user = g_strdup_printf("%s:%s", username, password);
 			sourceUrl = xmlSaveUri(uri);
-			source = g_strdup(sourceUrl);
+			source = g_strdup((gchar *) sourceUrl);
 			g_free(uri->user);
 			uri->user = NULL;
 			xmlFree(sourceUrl);
@@ -348,7 +348,7 @@ on_selectfile_pressed (GtkButton *button,
 	}
 	
 	name = g_filename_from_utf8 (utfname, -1, NULL, NULL, NULL);
-	ui_choose_file (_("Choose File"), GTK_STOCK_OPEN, FALSE, on_selectfileok_clicked, name, NULL, NULL, NULL, ui_data);
+	ui_choose_file (_("Choose File"), _("_Open"), FALSE, on_selectfileok_clicked, name, NULL, NULL, NULL, ui_data);
 	g_free (name);
 }
  
@@ -439,7 +439,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 			ui_subscription_prop_enable_httpauth(spd->priv, FALSE);
 			gtk_widget_set_sensitive(spd->priv->selectFile, TRUE);
 		} else if(strstr(subscription_get_source(subscription), "://") != NULL) {
-			xmlURIPtr uri = xmlParseURI(BAD_CAST subscription_get_source(subscription));
+			xmlURIPtr uri = xmlParseURI(subscription_get_source(subscription));
 			xmlChar *parsedUrl;
 			if(uri) {
 				if(uri->user) {
@@ -456,7 +456,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 					gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(spd->priv->authcheckbox), TRUE);
 				}
 				parsedUrl = xmlSaveUri(uri);
-				gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), parsedUrl);
+				gtk_entry_set_text(GTK_ENTRY(spd->priv->sourceEntry), (gchar *) parsedUrl);
 				xmlFree(parsedUrl);
 				xmlFreeURI(uri);
 			} else {
@@ -518,7 +518,7 @@ subscription_prop_dialog_init (SubscriptionPropDialog *spd)
 	GtkWidget	*propdialog;
 	
 	spd->priv = SUBSCRIPTION_PROP_DIALOG_GET_PRIVATE (spd);
-	spd->priv->dialog = propdialog = liferea_dialog_new (NULL, "propdialog");
+	spd->priv->dialog = propdialog = liferea_dialog_new ("properties");
 
 	/* set default update interval spin button and unit combo box */
 	ui_common_setup_combo_menu (liferea_dialog_lookup (propdialog, "refreshIntervalUnitComboBox"),
@@ -538,7 +538,7 @@ subscription_prop_dialog_init (SubscriptionPropDialog *spd)
 	spd->priv->authcheckbox = liferea_dialog_lookup (propdialog, "HTTPauthCheck");
 	spd->priv->username = liferea_dialog_lookup (propdialog, "usernameEntry");
 	spd->priv->password = liferea_dialog_lookup (propdialog, "passwordEntry");
-	spd->priv->credTable = liferea_dialog_lookup (propdialog, "table4");
+	spd->priv->credTable = liferea_dialog_lookup (propdialog, "httpAuthBox");
 	
 	g_signal_connect (spd->priv->selectFile, "clicked", G_CALLBACK (on_selectfile_pressed), spd->priv);
 	g_signal_connect (spd->priv->urlRadio, "toggled", G_CALLBACK (on_feed_prop_url_radio), spd->priv);
@@ -631,7 +631,7 @@ new_subscription_dialog_init (NewSubscriptionDialog *nsd)
 	GtkWidget	*newdialog;
 	
 	nsd->priv = NEW_SUBSCRIPTION_DIALOG_GET_PRIVATE (nsd);
-	nsd->priv->dialog = newdialog = liferea_dialog_new ("new_subscription.ui", "newdialog");
+	nsd->priv->dialog = newdialog = liferea_dialog_new ("new_subscription");
 	
 	/* Setup source entry */
 	nsd->priv->sourceEntry = liferea_dialog_lookup (newdialog,"sourceEntry");
@@ -726,7 +726,7 @@ simple_subscription_dialog_init (SimpleSubscriptionDialog *ssd)
 	GtkWidget	*newdialog;
 	
 	ssd->priv = SIMPLE_SUBSCRIPTION_DIALOG_GET_PRIVATE (ssd);
-	ssd->priv->dialog = newdialog = liferea_dialog_new ("simple_subscription.ui", "simplenewdialog");
+	ssd->priv->dialog = newdialog = liferea_dialog_new ("simple_subscription");
 	
 	/* Setup source entry */
 	ssd->priv->sourceEntry = liferea_dialog_lookup (newdialog, "sourceEntry");

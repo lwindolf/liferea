@@ -1,7 +1,7 @@
 /**
  * @file common.c common routines for Liferea
  * 
- * Copyright (C) 2003-2013  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2013  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  *
@@ -38,6 +38,10 @@
 
 #include "common.h"
 #include "debug.h"
+
+#if defined (G_OS_WIN32) && !defined (HAVE_GMTIME_R)
+#define gmtime_r(t,o) gmtime_s (o,t)
+#endif
 
 static gboolean pathsChecked = FALSE;
 

@@ -1,7 +1,7 @@
 /**
  * @file reedah_source.c  Reedah source support
  * 
- * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -39,6 +39,7 @@
 #include "xml.h"
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
+#include "fl_sources/google_reader_api_edit.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/reedah_source_feed_list.h"
@@ -99,7 +100,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 		debug0 (DEBUG_UPDATE, "Reedah login failed! no Auth token found in result!");
 
 		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("Reedah login failed!"));
+		subscription->updateError = g_strdup (_("Login failed!"));
 		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
 		
 		auth_dialog_new (subscription, flags);
@@ -198,7 +199,7 @@ static nodePtr
 reedah_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
 	// FIXME: determine correct category from parent folder name
-	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
+	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source, NULL);
 
 	// FIXME: leaking subscription?
 
@@ -224,7 +225,7 @@ reedah_source_remove_node (nodePtr node, nodePtr child)
 
 	/* propagate the removal only if there aren't other copies */
 	if (!feedlist_find_node (source->root, NODE_BY_URL, url)) 
-		google_reader_api_edit_remove_subscription (source, url);
+		google_reader_api_edit_remove_subscription (node->source, url);
 	
 	g_free (source);
 }
@@ -259,7 +260,7 @@ ui_reedah_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 	
-	dialog = liferea_dialog_new ("reedah_source.ui", "reedah_source_dialog");
+	dialog = liferea_dialog_new ("reedah_source");
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_reedah_source_selected), 
@@ -304,27 +305,31 @@ reedah_source_convert_to_local (nodePtr node)
 extern struct subscriptionType reedahSourceFeedSubscriptionType;
 extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 
+#define BASE_URL "http://www.reedah.com/reader/api/0/"
+
 static struct nodeSourceType nst = {
 	.id                  = "fl_reedah",
 	.name                = N_("Reedah"),
-	.description         = N_("Reedah is a free online aggregator (http://reedah.com)."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
+	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
 	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
-	.api.subscription_list		= "http://www.reedah.com/reader/api/0/subscription/list",
-	.api.unread_count		= "http://www.reedah.com/reader/api/0/unread-count?all=true&client=liferea",
-	.api.token			= "http://www.reedah.com/reader/api/0/token",
-	.api.add_subscription		= "http://www.reedah.com/reader/api/0/subscription/edit?client=liferea",
+	.api.subscription_list		= BASE_URL "subscription/list",
+	.api.unread_count		= BASE_URL "unread-count?all=true&client=liferea",
+	.api.token			= BASE_URL "token",
+	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
 	.api.add_subscription_post	= "s=feed%%2F%s&i=null&ac=subscribe&T=%s",
-	.api.remove_subscription	= "http://www.reedah.com/reader/api/0/subscription/edit?client=liferea",
+	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
 	.api.remove_subscription_post	= "s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",
-	.api.edit_tag			= "http://www.reedah.com/reader/api/0/edit-tag?client=liferea",
+	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
 	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_ar_tag_post	= "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true",
+	.api.edit_add_label		= BASE_URL "edit?client=liferea",
+	.api.edit_add_label_post	= "s=%s%%2F%s&a=%s&ac=edit&T=%s&async=true",
 	.feedSubscriptionType = &reedahSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &reedahSourceOpmlSubscriptionType,
 	.source_type_init    = reedah_source_init,

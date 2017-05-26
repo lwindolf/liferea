@@ -1,7 +1,7 @@
 /**
  * @file ns_media.c  Yahoo media namespace support
  *
- * Copyright (C) 2007-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2010 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		       
 	   (example quoted from specification)
 	*/
-  	if (xmlStrcmp(cur->name, BAD_CAST"content")) {
+	if (!xmlStrcmp(cur->name, BAD_CAST"content")) {
 		tmp = xml_get_attribute (cur, "url");
 		if (!tmp)
 			return;
@@ -98,6 +98,14 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		g_free (type);
 		g_free (medium);
 		g_free (lengthStr);
+	}
+	else if (!xmlStrcmp (cur->name, BAD_CAST"group")) {
+		cur = cur->xmlChildrenNode;
+		while (cur) {
+			if (cur->type == XML_ELEMENT_NODE)
+				parse_item_tag (ctxt, cur);
+			cur = cur->next;
+		}
 	}
 	
 	// FIXME: should we support media:player too?

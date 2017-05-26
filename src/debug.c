@@ -5,7 +5,7 @@
  * Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
  *
  * Liferea specific adaptations
- * Copyright (C) 2004-2012  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,10 @@
 #include <glib.h>
 
 #include "debug.h"
+
+#if defined (G_OS_WIN32) && !defined (HAVE_LOCALTIME_R)
+#define localtime_r(t,o) localtime_s (o,t)
+#endif
 
 unsigned long debug_level = 0;
 static GHashTable * t2d = NULL; /**< per thread call tree depth */

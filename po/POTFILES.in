@@ -3,7 +3,7 @@
 # List of source files containing translatable strings.
 
 liferea.appdata.xml.in
-liferea.desktop.in
+net.sourceforge.liferea.desktop.in
 xslt/feed.xml.in
 xslt/source.xml.in
 xslt/folder.xml.in
@@ -51,6 +51,7 @@ src/itemlist.c
 src/itemlist.h
 src/itemset.c
 src/itemset.h
+src/liferea_application.c
 src/main.c
 src/metadata.c
 src/metadata.h
@@ -153,7 +154,6 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
-src/fl_sources/aol_source.c
 src/fl_sources/default_source.c
 src/fl_sources/default_source.h
 src/fl_sources/dummy_source.c
@@ -182,15 +182,28 @@ src/fl_sources/theoldreader_source_feed.c
 src/fl_sources/theoldreader_source_feed_list.c
 src/fl_sources/theoldreader_source_feed_list.h
 src/webkit/webkit.c
+src/webkit/liferea_web_view.c
+src/webkit/web_extension/liferea_web_extension.c
+src/webkit/web_extension/web_extension_main.c
+[type: gettext/glade]glade/about.ui
 [type: gettext/glade]glade/auth.ui
+[type: gettext/glade]glade/enclosure_handler.ui
 [type: gettext/glade]glade/google_source.ui
 [type: gettext/glade]glade/inoreader_source.ui
-[type: gettext/glade]glade/liferea.ui
+[type: gettext/glade]glade/mainwindow.ui
+[type: gettext/glade]glade/new_folder.ui
+[type: gettext/glade]glade/new_newsbin.ui
 [type: gettext/glade]glade/new_subscription.ui
 [type: gettext/glade]glade/node_source.ui
 [type: gettext/glade]glade/opml_source.ui
 [type: gettext/glade]glade/prefs.ui
+[type: gettext/glade]glade/properties.ui
 [type: gettext/glade]glade/reedah_source.ui
+[type: gettext/glade]glade/rename_node.ui
+[type: gettext/glade]glade/search_folder.ui
+[type: gettext/glade]glade/search.ui
+[type: gettext/glade]glade/simple_search.ui
 [type: gettext/glade]glade/simple_subscription.ui
-[type: gettext/glade]glade/ttrss_source.ui
 [type: gettext/glade]glade/theoldreader_source.ui
+[type: gettext/glade]glade/ttrss_source.ui
+[type: gettext/glade]glade/update_monitor.ui

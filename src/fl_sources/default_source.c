@@ -1,7 +1,7 @@
 /**
  * @file default_source.c  default static feed list source
  * 
- * Copyright (C) 2005-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2014 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -124,12 +124,6 @@ default_source_export (nodePtr node)
 }
 
 static void
-default_source_update (nodePtr node)
-{	
-	node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
-}
-
-static void
 default_source_auto_update (nodePtr node)
 {	
 	node_foreach_child (node, node_auto_update_subscription);
@@ -178,7 +172,6 @@ static void default_source_deinit (void) { }
 static struct nodeSourceType nst = {
 	.id			= "fl_default",
 	.name			= "Static Feed List",
-	.description		= "The default feed list source. Should never be added manually. If you see this then something went wrong!",
 	.capabilities		= NODE_SOURCE_CAPABILITY_IS_ROOT |
 				  NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST |
 	                          NODE_SOURCE_CAPABILITY_ADD_FEED |

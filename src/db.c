@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  * 
- * Copyright (C) 2007-2012  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #include "vfolder.h"
 
 /* You can find a schema description used by this version of Liferea at:
-   http://lzone.de/wiki/doku.php?id=liferea:v1.8:db_schema */
+   https://lzone.de/wiki/doku.php?id=liferea:v1.8:db_schema */
 
 static sqlite3	*db = NULL;
 gboolean searchFolderRebuild = FALSE;
@@ -106,13 +106,14 @@ db_table_exists (const gchar *name)
 {
 	gchar		*sql;
 	sqlite3_stmt	*stmt;
-	gint		res;
+	gint		res = 0;
 
 	sql = sqlite3_mprintf ("SELECT COUNT(type) FROM sqlite_master WHERE type = 'table' AND name = '%s';", name);
 	db_prepare_stmt (&stmt, sql);
 	sqlite3_reset (stmt);
-	sqlite3_step (stmt);
-	res = sqlite3_column_int (stmt, 0);
+	if (SQLITE_ROW == sqlite3_step (stmt))
+		res = sqlite3_column_int (stmt, 0);
+	
 	sqlite3_finalize (stmt);
 	sqlite3_free (sql);
 	return (1 == res);
@@ -133,7 +134,7 @@ db_set_schema_version (gint schemaVersion)
 static gint
 db_get_schema_version (void)
 {
-	guint		schemaVersion;
+	guint		schemaVersion = 0;
 	sqlite3_stmt	*stmt;
 	
 	if (!db_table_exists ("info")) {
@@ -146,8 +147,8 @@ db_get_schema_version (void)
 	}
 	
 	db_prepare_stmt (&stmt, "SELECT value FROM info WHERE name = 'schemaVersion'");
-	sqlite3_step (stmt);
-	schemaVersion = sqlite3_column_int (stmt, 0);
+	if (SQLITE_ROW == sqlite3_step (stmt))
+		schemaVersion = sqlite3_column_int (stmt, 0);
 	sqlite3_finalize (stmt);
 	
 	return schemaVersion;
@@ -896,7 +897,7 @@ db_item_load (gulong id)
 
 	if (sqlite3_step (stmt) == SQLITE_ROW) {
 		item = db_load_item_from_columns (stmt);
-		sqlite3_step (stmt);
+		(void) sqlite3_step (stmt);
 	} else {
 		debug1 (DEBUG_DB, "Could not load item with id %lu!", id);
 	}
@@ -1628,7 +1629,7 @@ db_node_cleanup (nodePtr root)
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
 		/* Drop node ids not in feed list anymore */
 		const gchar *id = sqlite3_column_text (stmt, 0);
-		if (!db_node_find (root, (gpointer)id)) {
+		if (id && !db_node_find (root, (gpointer)id)) {
 			db_subscription_remove (id);	/* in case it is a subscription */
 			db_node_remove (id);		/* in case it is a folder */
 		}

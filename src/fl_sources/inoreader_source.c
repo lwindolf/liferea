@@ -1,7 +1,7 @@
 /**
  * @file inoreader_source.c  InoReader source support
  * 
- * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -39,6 +39,7 @@
 #include "xml.h"
 #include "ui/auth_dialog.h"
 #include "ui/liferea_dialog.h"
+#include "fl_sources/google_reader_api_edit.h"
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/inoreader_source_feed_list.h"
@@ -98,7 +99,7 @@ inoreader_source_login_cb (const struct updateResult * const result, gpointer us
 		debug0 (DEBUG_UPDATE, "InoReader login failed! no Auth token found in result!");
 
 		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("InoReader login failed!"));
+		subscription->updateError = g_strdup (_("Login failed!"));
 		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
 		
 		auth_dialog_new (subscription, flags);
@@ -197,7 +198,7 @@ static nodePtr
 inoreader_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
 	// FIXME: determine correct category from parent folder name
-	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source);
+	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source, NULL);
 
 	// FIXME: leaking subscription?
 
@@ -258,7 +259,7 @@ ui_inoreader_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 	
-	dialog = liferea_dialog_new ("inoreader_source.ui", "inoreader_source_dialog");
+	dialog = liferea_dialog_new ("inoreader_source");
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_inoreader_source_selected), 
@@ -303,27 +304,31 @@ inoreader_source_convert_to_local (nodePtr node)
 extern struct subscriptionType inoreaderSourceFeedSubscriptionType;
 extern struct subscriptionType inoreaderSourceOpmlSubscriptionType;
 
+#define BASE_URL "http://www.inoreader.com/reader/api/0/"
+
 static struct nodeSourceType nst = {
 	.id                  = "fl_inoreader",
 	.name                = N_("InoReader"),
-	.description         = N_("InoReader is a free online aggregator (http://inoreader.com)."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
+	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
 	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
-	.api.subscription_list		= "http://www.inoreader.com/reader/api/0/subscription/list",
-	.api.unread_count		= "http://www.inoreader.com/reader/api/0/unread-count?all=true&client=liferea",
-	.api.token			= "http://www.inoreader.com/reader/api/0/token",
-	.api.add_subscription		= "http://www.inoreader.com/reader/api/0/subscription/edit?client=liferea",
+	.api.subscription_list		= BASE_URL "subscription/list",
+	.api.unread_count		= BASE_URL "unread-count?all=true&client=liferea",
+	.api.token			= BASE_URL "token",
+	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
 	.api.add_subscription_post	= "s=feed%%2F%s&i=null&ac=subscribe&T=%s",
-	.api.remove_subscription	= "http://www.inoreader.com/reader/api/0/subscription/edit?client=liferea",
+	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
 	.api.remove_subscription_post	= "s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",
-	.api.edit_tag			= "http://www.inoreader.com/reader/api/0/edit-tag?client=liferea",
+	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
 	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_ar_tag_post	= "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true",
+	.api.edit_add_label		= BASE_URL "edit?client=liferea",
+	.api.edit_add_label_post	= "s=%s%%2F%s&a=%s&ac=edit&T=%s&async=true",
 	.feedSubscriptionType = &inoreaderSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &inoreaderSourceOpmlSubscriptionType,
 	.source_type_init    = inoreader_source_init,

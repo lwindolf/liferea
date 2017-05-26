@@ -1,7 +1,7 @@
 /**
  * @file rule_editor.c  rule editing dialog functionality
  *
- * Copyright (C) 2008-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2008-2012 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -268,7 +268,7 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 	changeRequest->hbox = hbox;
 	changeRequest->paramHBox = hbox2;
 	changeRequest->editor = re;
-	widget = gtk_button_new_from_stock ("gtk-remove");
+	widget = gtk_button_new_with_label ("Remove");
 	gtk_box_pack_end (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
 	g_signal_connect (G_OBJECT (widget), "clicked", G_CALLBACK (on_ruleremove_clicked), changeRequest);
 

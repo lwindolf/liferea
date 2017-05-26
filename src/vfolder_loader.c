@@ -1,7 +1,7 @@
 /**
  * @file vfolder_loader.c   Loader for search folder items
  *
- * Copyright (C) 2011-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2011-2012 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

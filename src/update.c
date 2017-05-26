@@ -1,7 +1,7 @@
 /**
  * @file update.c  generic update request and state processing
  *
- * Copyright (C) 2003-2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -32,7 +32,9 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#if !defined (G_OS_WIN32) || defined (HAVE_SYS_WAIT_H)
 #include <sys/wait.h>
+#endif
 #include <string.h>
 
 #include "auth_activatable.h"
@@ -42,6 +44,11 @@
 #include "plugins_engine.h"
 #include "xml.h"
 #include "ui/liferea_shell.h"
+
+#if defined (G_OS_WIN32) && !defined (WIFEXITED) && !defined (WEXITSTATUS)
+#define WIFEXITED(x) (x != 0)
+#define WEXITSTATUS(x) (x)
+#endif
 
 /** global update job list, used for lookups when cancelling */
 static GSList	*jobs = NULL;
@@ -518,7 +525,7 @@ update_dequeue_job (gpointer user_data)
 		update_job_run (job);
 	}
 		
-	return TRUE; /* since I got a job now, there may be more in the queue */
+	return FALSE;
 }
 
 updateJobPtr
@@ -572,6 +579,21 @@ update_process_result_idle_cb (gpointer user_data)
 	return FALSE;
 }
 
+static void
+update_apply_filter_async(GTask *task, gpointer src, gpointer tdata, GCancellable *ccan)
+{
+    updateJobPtr job = tdata;
+    update_apply_filter(job);
+    g_task_return_int(task, 0);
+}
+
+static void
+update_apply_filter_finish(GObject *src, GAsyncResult *result, gpointer user_data)
+{
+    updateJobPtr job = user_data;
+    g_idle_add(update_process_result_idle_cb, job);
+}
+
 void
 update_process_finished_job (updateJobPtr job)
 {
@@ -589,8 +611,13 @@ update_process_finished_job (updateJobPtr job)
 	} 
 
 	/* Finally execute the postfilter */
-	if (job->result->data && job->request->filtercmd) 
-		update_apply_filter (job);
+	if (job->result->data && job->request->filtercmd) {
+                GTask *task = g_task_new(NULL, NULL, update_apply_filter_finish, job);
+                g_task_set_task_data(task, job, NULL);
+                g_task_run_in_thread(task, update_apply_filter_async);
+                g_object_unref(task);
+                return;
+        }
 		
 	g_idle_add (update_process_result_idle_cb, job);
 }

@@ -1,7 +1,7 @@
 /**
  * @file net.c  HTTP network access using libsoup
  *
- * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,12 +29,15 @@
 #include <time.h>
 
 #include "common.h"
+#include "conf.h"
 #include "debug.h"
 
-#define HOMEPAGE	"http://liferea.sf.net/"
+#define HOMEPAGE	"https://lzone.de/liferea/"
 
-static SoupSession *session = NULL;
+static SoupSession *session = NULL;	/* Session configured for preferences */
+static SoupSession *session2 = NULL;	/* Session for "Don't use proxy feature" */
 
+static ProxyDetectMode proxymode = PROXY_DETECT_MODE_AUTO;
 static gchar	*proxyname = NULL;
 static gchar	*proxyusername = NULL;
 static gchar	*proxypassword = NULL;
@@ -106,16 +109,17 @@ network_get_proxy_uri (void)
 
 /* Downloads a feed specified in the request structure, returns 
    the downloaded data or NULL in the request structure.
-   If the the webserver reports a permanent redirection, the
+   If the webserver reports a permanent redirection, the
    feed url will be modified and the old URL 'll be freed. The
    request structure will also contain the HTTP status and the
    last modified string.
  */
 void
-network_process_request (const updateJobPtr const job)
+network_process_request (const updateJobPtr job)
 {
 	SoupMessage	*msg;
 	SoupDate	*date;
+	gboolean	do_not_track = FALSE;
 
 	g_assert (NULL != job->request);
 	debug1 (DEBUG_NET, "downloading %s", job->request->source);
@@ -141,7 +145,7 @@ network_process_request (const updateJobPtr const job)
 	}
 
 	/* Set the If-Modified-Since: header */
-	if (job->request->updateState && update_state_get_lastmodified(job->request->updateState)) {
+	if (job->request->updateState && update_state_get_lastmodified (job->request->updateState)) {
 		gchar *datestr;
 
 		date = soup_date_new_from_time_t (update_state_get_lastmodified (job->request->updateState));
@@ -153,12 +157,24 @@ network_process_request (const updateJobPtr const job)
 		soup_date_free (date);
 	}
 
-	/* Set the If-None-Match: header */
+	/* Set the If-None-Match header */
 	if (job->request->updateState && update_state_get_etag (job->request->updateState)) {
 		soup_message_headers_append(msg->request_headers,
 					    "If-None-Match",
 					    update_state_get_etag (job->request->updateState));
 	}
+
+	/* Set the I-AM header */
+	if (job->request->updateState &&
+	    (update_state_get_lastmodified (job->request->updateState) ||
+	     update_state_get_etag (job->request->updateState))) {
+		soup_message_headers_append(msg->request_headers,
+					    "A-IM",
+					    "feed");
+	}
+
+	/* Support HTTP content negotiation */
+	soup_message_headers_append(msg->request_headers, "Accept", "application/atom+xml,application/xml;q=0.9,text/xml;q=0.8,*/*;q=0.7");
 
 	/* Set the authentication */
 	if (!job->request->authValue &&
@@ -191,11 +207,16 @@ network_process_request (const updateJobPtr const job)
 	 * msg to a callback in case of 401 (see soup_message_add_status_code_handler())
 	 * displaying the dialog ourselves, and requeing the msg if we get credentials */
 
-	/* If the feed has "dont use a proxy" selected, disable the proxy for the msg */
-	if (job->request->options && job->request->options->dontUseProxy)
-		soup_message_disable_feature (msg, SOUP_TYPE_PROXY_URI_RESOLVER);
+	/* Add Do Not Track header according to settings */
+	conf_get_bool_value (DO_NOT_TRACK, &do_not_track);
+	if (do_not_track)
+		soup_message_headers_append (msg->request_headers, "DNT", "1");
 
-	soup_session_queue_message (session, msg, network_process_callback, job);
+	/* If the feed has "dont use a proxy" selected, use 'session2' which is non-proxy */
+	if (job->request->options && job->request->options->dontUseProxy)
+		soup_session_queue_message (session2, msg, network_process_callback, job);
+	else
+		soup_session_queue_message (session, msg, network_process_callback, job);
 }
 
 static void
@@ -213,6 +234,44 @@ network_authenticate (
 	// FIXME: Handle HTTP 401 too
 }
 
+static void
+network_set_soup_session_proxy (SoupSession *session, ProxyDetectMode mode, const gchar *host, guint port, const gchar *user, const gchar *password)
+{
+	SoupURI *uri = NULL;
+
+	switch (mode) {
+		case PROXY_DETECT_MODE_AUTO:
+			/* Sets proxy-resolver to the default resolver, this unsets proxy-uri. */
+			g_object_set (G_OBJECT (session),
+				SOUP_SESSION_PROXY_RESOLVER, g_proxy_resolver_get_default (),
+				NULL);
+			break;
+		case PROXY_DETECT_MODE_NONE:
+			/* Sets proxy-resolver to NULL, this unsets proxy-uri. */
+			g_object_set (G_OBJECT (session),
+				SOUP_SESSION_PROXY_RESOLVER, NULL,
+				NULL);
+			break;
+		case PROXY_DETECT_MODE_MANUAL:
+			uri = soup_uri_new (NULL);
+			soup_uri_set_scheme (uri, SOUP_URI_SCHEME_HTTP);
+			soup_uri_set_host (uri, host);
+			soup_uri_set_port (uri, port);
+			soup_uri_set_user (uri, user);
+			soup_uri_set_password (uri, password);
+			soup_uri_set_path (uri, "/");
+
+			if (SOUP_URI_IS_VALID (uri)) {
+				/* Sets proxy-uri, this unsets proxy-resolver. */
+				g_object_set (G_OBJECT (session),
+					SOUP_SESSION_PROXY_URI, uri,
+					NULL);
+			}
+			soup_uri_free (uri);
+			break;
+	}
+}
+
 void
 network_init (void)
 {
@@ -220,14 +279,13 @@ network_init (void)
 	SoupCookieJar	*cookies;
 	gchar		*filename;
 	SoupLogger	*logger;
-	SoupURI		*proxy;
 
 	/* Set an appropriate user agent */
 	if (g_getenv ("LANG")) {
-		/* e.g. "Liferea/1.10.0 (Linux; de_DE; http://liferea.sf.net/) AppleWebKit (KHTML, like Gecko)" */
+		/* e.g. "Liferea/1.10.0 (Linux; de_DE; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
 	} else {
-		/* e.g. "Liferea/1.10.0 (Linux; http://liferea.sf.net/) AppleWebKit (KHTML, like Gecko)" */
+		/* e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
 		useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
 	}
 
@@ -237,25 +295,28 @@ network_init (void)
 	g_free (filename);
 
 	/* Initialize libsoup */
-	proxy = network_get_proxy_uri ();
-	session = soup_session_async_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
-						       SOUP_SESSION_TIMEOUT, 120,
-						       SOUP_SESSION_IDLE_TIMEOUT, 30,
-						       SOUP_SESSION_ADD_FEATURE, cookies,
-	                                               SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
-						       NULL);
+	session = soup_session_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+						 SOUP_SESSION_TIMEOUT, 120,
+						 SOUP_SESSION_IDLE_TIMEOUT, 30,
+						 SOUP_SESSION_ADD_FEATURE, cookies,
+	                                         SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
+						 NULL);
+	session2 = soup_session_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
+						  SOUP_SESSION_TIMEOUT, 120,
+						  SOUP_SESSION_IDLE_TIMEOUT, 30,
+						  SOUP_SESSION_ADD_FEATURE, cookies,
+	                                          SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
+						  SOUP_SESSION_PROXY_URI, NULL,
+						  SOUP_SESSION_PROXY_RESOLVER, NULL,
+						  NULL);
 
-	if (proxy) {
-		debug1 (DEBUG_NET, "Initializing libsoup with proxy '%s'", proxy);
-		g_object_set (G_OBJECT (session),
-			      SOUP_SESSION_PROXY_URI, proxy,
-			      NULL);
-		soup_uri_free (proxy);
-	} else {
-		debug0 (DEBUG_NET, "Initializing libsoup with libproxy defaults");
-		soup_session_add_feature_by_type (session, SOUP_TYPE_PROXY_RESOLVER_DEFAULT);
-	}
-		
+	/* Only 'session' gets proxy, 'session2' is for non-proxy requests */
+	network_set_soup_session_proxy (session, network_get_proxy_detect_mode(),
+		network_get_proxy_host (),
+		network_get_proxy_port (),
+		network_get_proxy_username (),
+		network_get_proxy_password ());
+
 	g_signal_connect (session, "authenticate", G_CALLBACK (network_authenticate), NULL);
 
 	/* Soup debugging */
@@ -273,6 +334,12 @@ network_deinit (void)
 	g_free (proxyname);
 	g_free (proxyusername);
 	g_free (proxypassword);
+}
+
+ProxyDetectMode
+network_get_proxy_detect_mode (void)
+{
+	return proxymode;
 }
 
 const gchar *
@@ -302,29 +369,21 @@ network_get_proxy_password (void)
 extern void network_monitor_proxy_changed (void);
 
 void
-network_set_proxy (gchar *host, guint port, gchar *user, gchar *password)
+network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, gchar *password)
 {
-	/* FIXME: make arguments const and use the SoupURI in network_get_proxy_* ? */
 	g_free (proxyname);
 	g_free (proxyusername);
 	g_free (proxypassword);
+	proxymode = mode;
 	proxyname = host;
 	proxyport = port;
 	proxyusername = user;
 	proxypassword = password;
 
-	/* The sessions will be NULL if we were called from conf_init() as that's called
+	/* session will be NULL if we were called from conf_init() as that's called
 	 * before net_init() */
-	if (session) {
-		SoupURI *newproxy = network_get_proxy_uri ();
-		
-		g_object_set (G_OBJECT (session),
-			      SOUP_SESSION_PROXY_URI, newproxy,
-			      NULL);
-
-		if (newproxy)
-			soup_uri_free (newproxy);
-	}
+	if (session)
+		network_set_soup_session_proxy (session, mode, host, port, user, password);
 
 	debug4 (DEBUG_NET, "proxy set to http://%s:%s@%s:%d", user, password, host, port);
 	

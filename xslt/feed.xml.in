@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (feed description view)
  *
- * Copyright (C) 2006-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@
 
 <!-- error header tables -->
 <xsl:if test="parseError or filterError or updateError or httpError or feedDiscontinued = '1'">
-<div id='errors'>
+<div id='errors' dir="{$appDirection}">
 
 <xsl:if test="feedDiscontinued = '1'">
   <div id='updateError'>
@@ -177,7 +177,15 @@
 <xsl:template name="strippwd">
    <xsl:param name="string"/>
    <xsl:choose>
-       <xsl:when test="contains($string, '@')"><xsl:value-of select="substring-before($string, '://')"/>://<xsl:value-of select="substring-after($string, '@')"/></xsl:when>
+       <xsl:when test="contains($string, '@')">
+       <xsl:choose>
+             <!-- between "://" and "@" only user:pass is allowed, so check if it has "/" to remove or not confidential data -->
+             <xsl:when test="contains(substring-after(substring-before($string, '@'), '://'), '/')">
+                <xsl:value-of select="$string"/>
+             </xsl:when>
+             <xsl:otherwise><xsl:value-of select="substring-before($string, '://')"/>://<xsl:value-of select="substring-after($string, '@')"/></xsl:otherwise>
+       </xsl:choose>
+       </xsl:when>
        <xsl:otherwise><xsl:value-of select="$string"/></xsl:otherwise>
    </xsl:choose>
 </xsl:template>

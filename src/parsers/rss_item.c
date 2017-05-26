@@ -1,7 +1,7 @@
 /**
  * @file rss_item.c  RSS/RDF item parsing 
  *
- * Copyright (C) 2003-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2010 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,9 +92,6 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
  			tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
 			if (tmp) {
 				ctxt->item->time = date_parse_RFC822 (tmp);
-				/* There should not be a ISO8601 date, but sometimes there is... */
-				if (!ctxt->item->time)
-					ctxt->item->time = date_parse_ISO8601 (tmp);
 				g_free(tmp);
 			}
 		} 

@@ -2,6 +2,9 @@
 *.a
 *.gmo
 *.o
+*.Po
+*.la
+*.lo
 Makefile
 Makefile.in
 aclocal.m4
@@ -24,6 +27,8 @@ ltmain.sh
 missing
 net.sf.liferea.gschema.valid
 net.sf.liferea.gschema.xml
+net.sourceforge.liferea.desktop
+net.sourceforge.liferea.service
 po/.intltool-merge-cache
 po/Makefile.in.in
 po/POTFILES
@@ -34,6 +39,8 @@ src/liferea
 src/liferea-add-feed
 src/Liferea-3.0.gir
 src/Liferea-3.0.typelib
+src/tests/html_auto
+src/tests/parse_date
 xslt/*.xml
 org.gnome.liferea.gschema.valid
 stamp-h1

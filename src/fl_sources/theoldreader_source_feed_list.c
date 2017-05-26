@@ -1,7 +1,7 @@
 /**
  * @file theoldreader_source_feed_list.c  TheOldReader feed list handling
  * 
- * Copyright (C) 2013-2014  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2013-2014  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,7 +123,6 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
 			GList		*iter, *elements, *citer, *celements;
-			GSList		*siter;
 
 			/* We expect something like this:
 
@@ -132,8 +131,8 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
                              "categories":[{"id":"user/-/label/myfolder","label":"myfolder"}],
                              "sortid":"51d49b79d1716c7b18000025",
                              "firstitemmsec":"1371403150181",
-                             "url":"http://lzone.de/rss.xml",
-                             "htmlUrl":"http://lzone.de",
+                             "url":"https://lzone.de/rss.xml",
+                             "htmlUrl":"https://lzone.de",
                              "iconUrl":"http://s.yeoldereader.com/system/uploads/feed/picture/5152/884a/4dce/57aa/7e00/icon_0a6a.ico"},
                            ... 
 			*/
@@ -149,8 +148,13 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 					citer = celements = json_array_get_elements (json_node_get_array (categories));
 					while (citer) {
 						const gchar *label = json_get_string ((JsonNode *)citer->data, "label");
+						const gchar *id    = json_get_string ((JsonNode *)citer->data, "id");
 						if (label) {
 							folder = node_source_find_or_create_folder (source->root, label, label);
+
+							/* Store category id also for folder (needed when subscribing new feeds) */
+							g_hash_table_insert (source->folderToCategory, g_strdup (folder->id), g_strdup (id));
+
 							break;
 						}
 						citer = g_list_next (citer);
@@ -178,7 +182,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 
 			subscription->node->available = TRUE;			
 		} else {
-			g_warning ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);

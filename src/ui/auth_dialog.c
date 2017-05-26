@@ -1,7 +1,7 @@
 /**
  * @file auth_dialog.c  authentication dialog
  *
- * Copyright (C) 2007-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2016  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -134,7 +134,7 @@ auth_dialog_init (AuthDialog *ad)
 {
 	ad->priv = AUTH_DIALOG_GET_PRIVATE (ad);
 	
-	ad->priv->dialog = liferea_dialog_new ("auth.ui", "authdialog");
+	ad->priv->dialog = liferea_dialog_new ("auth");
 	ad->priv->username = liferea_dialog_lookup (ad->priv->dialog, "usernameEntry");
 	ad->priv->password = liferea_dialog_lookup (ad->priv->dialog, "passwordEntry");
 	

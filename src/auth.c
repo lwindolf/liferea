@@ -1,7 +1,7 @@
 /*
  * @file auth.c  authentication helpers
  *
- * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,8 +27,8 @@
 #include <libpeas/peas-extension-set.h>
 
 // FIXME: This should be a member of some object!
-static PeasExtensionSet *extensions = NULL;	/**< Plugin management */
-static gint		count = 0;		/**< Number of active auth plugins */
+static PeasExtensionSet *extensions = NULL;	/*<< Plugin management */
+static gint		count = 0;		/*<< Number of active auth plugins */
 
 static void
 on_extension_added (PeasExtensionSet *extensions,

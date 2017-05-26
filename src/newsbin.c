@@ -1,7 +1,7 @@
 /**
  * @file newsbin.c  news bin node type implementation
  * 
- * Copyright (C) 2006-2010 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,7 +82,7 @@ ui_newsbin_add (void)
 	GtkWidget	*nameentry;
 	
 	if (!newnewsbindialog || !G_IS_OBJECT (newnewsbindialog))
-		newnewsbindialog = liferea_dialog_new (NULL, "newnewsbindialog");
+		newnewsbindialog = liferea_dialog_new ("new_newsbin");
 
 	nameentry = liferea_dialog_lookup (newnewsbindialog, "newsbinnameentry");
 	gtk_entry_set_text (GTK_ENTRY (nameentry), "");
@@ -144,7 +144,7 @@ newsbin_get_node_type (void)
 
 	if (!nodeType) {
 		/* derive the plugin node type from the folder node type */
-		nodeType = (nodeTypePtr)g_new0(struct nodeType, 1);
+		nodeType = g_new0 (struct nodeType, 1);
 		nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS |
 		                                  NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT;

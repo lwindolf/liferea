@@ -32,10 +32,10 @@
 				<outline text="Ars Technica" htmlUrl="http://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
 				<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
 				<outline text="BBC" htmlUrl="http://newsrss.bbc.co.uk/" xmlUrl="http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"/>
-				<outline text="Science" htmlUrl="http://www.sciencenews.org" xmlUrl="http://www.sciencenews.org/view/feed/type/news/name/news.rss"/>
+				<outline text="Science" htmlUrl="http://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
 			</outline>
 			<outline text="קוד פתוח">		<!-- translate this for localized feed list -->
-				<outline text="Liferea Blog" htmlUrl="http://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
+				<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
 				<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 			</outline>	
 			<outline text="Podcasts &amp; Music">		<!-- translate this title for localized feed list -->

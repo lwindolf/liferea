@@ -1,7 +1,7 @@
 /**
  * @file theoldreader_source.c  TheOldReader feed list source support
  * 
- * Copyright (C) 2007-2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -29,6 +29,7 @@
 #include "common.h"
 #include "debug.h"
 #include "feedlist.h"
+#include "folder.h"
 #include "item_state.h"
 #include "metadata.h"
 #include "node.h"
@@ -51,6 +52,7 @@ theoldreader_source_new (nodePtr node)
 	TheOldReaderSourcePtr source = g_new0 (struct TheOldReaderSource, 1) ;
 	source->root = node; 
 	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+	source->folderToCategory = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	
 	return source;
 }
@@ -64,6 +66,7 @@ theoldreader_source_free (TheOldReaderSourcePtr source)
 	update_job_cancel_by_owner (source);
 	
 	g_hash_table_unref (source->lastTimestampMap);
+	g_hash_table_destroy (source->folderToCategory);
 	g_free (source);
 }
 
@@ -98,7 +101,7 @@ theoldreader_source_login_cb (const struct updateResult * const result, gpointer
 		subscription->node->available = FALSE;
 
 		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("TheOldReader login failed!"));
+		subscription->updateError = g_strdup (_("Login failed!"));
 		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
 		
 		auth_dialog_new (subscription, flags);
@@ -200,9 +203,21 @@ theoldreader_source_import (nodePtr node)
 static nodePtr
 theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription) 
 {
-	// FIXME: determine correct category from parent folder name
-	google_reader_api_edit_add_subscription (root->source, subscription->source);
+	nodePtr			parent;
+	gchar			*categoryId = NULL;
+	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr)root->data;
 
+
+
+	/* Determine correct category from selected folder name */
+	parent = feedlist_get_selected ();
+	if (parent) {
+		if (parent->subscription)
+			parent = parent->parent;
+		categoryId = g_hash_table_lookup (source->folderToCategory, parent->id);
+	}
+
+	google_reader_api_edit_add_subscription (root->source, subscription->source, categoryId);
 	// FIXME: leaking subscription?
 
 	// FIXME: somehow the async subscribing doesn't cause the feed list to update
@@ -262,7 +277,7 @@ ui_theoldreader_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
 	
-	dialog = liferea_dialog_new ("theoldreader_source.ui", "theoldreader_source_dialog");
+	dialog = liferea_dialog_new ("theoldreader_source");
 	
 	g_signal_connect (G_OBJECT (dialog), "response",
 			  G_CALLBACK (on_theoldreader_source_selected), 
@@ -307,27 +322,33 @@ theoldreader_source_convert_to_local (nodePtr node)
 extern struct subscriptionType theOldReaderSourceFeedSubscriptionType;
 extern struct subscriptionType theOldReaderSourceOpmlSubscriptionType;
 
+#define BASE_URL "https://theoldreader.com/reader/api/0/"
+
 static struct nodeSourceType nst = {
 	.id                  = "fl_theoldreader",
 	.name                = N_("TheOldReader"),
-	.description         = N_("TheOldReader is a free online aggregator (http://theoldreader.com)."),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
+	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
+	                       NODE_SOURCE_CAPABILITY_ADD_FOLDER |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
 	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
-	.api.subscription_list		= "http://theoldreader.com/reader/api/0/subscription/list?output=json",
-	.api.unread_count		= "http://theoldreader.com/reader/api/0/unread-count?all=true&client=liferea",
-	.api.token			= "http://theoldreader.com/reader/api/0/token",
-	.api.add_subscription		= "http://theoldreader.com/reader/api/0/subscription/edit?client=liferea",
-	.api.add_subscription_post	= "s=feed%%2F%s&i=null&ac=subscribe&T=%s",
-	.api.remove_subscription	= "http://theoldreader.com/reader/api/0/subscription/edit?client=liferea",
-	.api.remove_subscription_post	= "s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",
-	.api.edit_tag			= "http://theoldreader.com/reader/api/0/edit-tag?client=liferea",
+	.api.json			= TRUE,
+	.api.subscription_list		= BASE_URL "subscription/list?output=json",
+	.api.unread_count		= BASE_URL "unread-count?all=true&client=liferea",
+	.api.token			= BASE_URL "token",
+	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
+	.api.add_subscription_post	= "s=feed%%2F%s&ac=subscribe&T=%s",
+	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
+	.api.remove_subscription_post	= "s=feed%%2F%s&ac=unsubscribe&T=%s",
+	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
 	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_ar_tag_post	= "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true",
+	.api.edit_add_label		= BASE_URL "subscription/edit?client=liferea",
+	.api.edit_add_label_post	= "s=%s&a=%s&ac=edit&T=%s",
 	.feedSubscriptionType = &theOldReaderSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &theOldReaderSourceOpmlSubscriptionType,
 	.source_type_init    = theoldreader_source_init,

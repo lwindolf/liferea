@@ -1,7 +1,7 @@
 /**
  * @file ns_ag.c mod_aggregation support
  *
- * Copyright (C) 2003-2009 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2009 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

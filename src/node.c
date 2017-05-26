@@ -1,7 +1,7 @@
-/**
+/*
  * @file node.c  hierarchic feed list node handling
  * 
- * Copyright (C) 2003-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,6 +25,8 @@
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
+#include "favicon.h"
+#include "feedlist.h"
 #include "itemlist.h"
 #include "itemset.h"
 #include "item_state.h"
@@ -37,7 +39,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/feed_list_node.h"
 
-static GHashTable *nodes = NULL;	/**< node id -> node lookup table */
+static GHashTable *nodes = NULL;	/*<< node id -> node lookup table */
 
 #define NODE_ID_LEN	7
 
@@ -85,13 +87,12 @@ node_new (nodeTypePtr type)
 	
 	g_assert (NULL != type);
 
-	node = (nodePtr)g_new0 (struct node, 1);
+	node = g_new0 (struct node, 1);
 	node->type = type;
 	node->viewMode = NODE_VIEW_MODE_DEFAULT;
 	node->sortColumn = NODE_VIEW_SORT_BY_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = TRUE;
-	node_set_icon (node, NULL);	/* initialize favicon file name */
 
 	id = node_new_id ();
 	node_set_id (node, id);
@@ -120,7 +121,7 @@ node_set_subscription (nodePtr node, subscriptionPtr subscription)
 	
 	/* Besides the favicon age we have no persistent 
 	   update state field, so everything else goes NULL */
-	if (node->iconFile) {
+	if (node->iconFile && !strstr(node->iconFile, "default.png")) {
 		subscription->updateState->lastFaviconPoll.tv_sec = common_get_mod_time (node->iconFile);
 		debug2 (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll.tv_sec);
 	}
@@ -225,7 +226,7 @@ node_update_parent_counters (nodePtr node)
 	
 	if (old != node->unreadCount) {
 		feed_list_node_update (node->id);
-		liferea_shell_update_unread_stats ();
+		feedlist_new_items (0);	/* add 0 new items, as 'new-items' signal updates unread items also */
 	}
 	
 	if (node->parent)
@@ -401,21 +402,24 @@ node_get_title (nodePtr node)
 }
 
 void
-node_set_icon (nodePtr node, gpointer icon)
+node_load_icon (nodePtr node)
 {
+	/* Load pixbuf for all widget based rendering */
 	if (node->icon) 
 		g_object_unref (node->icon);
-	node->icon = icon;
+
+	node->icon = favicon_load_from_cache (node->id, 32);
 	
+	/* Create filename for HTML rendering */
 	g_free (node->iconFile);
-	
+
 	if (node->icon)
 		node->iconFile = common_create_cache_filename ("favicons", node->id, "png");
 	else
 		node->iconFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "pixmaps", "default.png", NULL);
 }
 
-/** determines the nodes favicon or default icon */
+/* determines the nodes favicon or default icon */
 gpointer
 node_get_icon (nodePtr node)
 {

@@ -1,7 +1,7 @@
 /**
  * @file inoreader_source_feed_list.c  Inoreader handling routines.
  * 
- * Copyright (C) 2013-2014  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2013-2014  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,6 @@ static void
 inoreader_source_merge_feed (InoreaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id, nodePtr folder)
 {
 	nodePtr	node;
-	GSList	*iter;
 
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 	if (!node) {
@@ -122,7 +121,6 @@ inoreader_subscription_opml_cb (subscriptionPtr subscription, const struct updat
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
 			GList		*iter, *elements, *citer, *celements;
-			GSList		*siter;
 	
 			/* We expect something like this:
 
@@ -176,7 +174,7 @@ inoreader_subscription_opml_cb (subscriptionPtr subscription, const struct updat
 			opml_source_export (subscription->node);
 			subscription->node->available = TRUE;			
 		} else {
-			g_warning ("Invalid JSON returned on Inoreader feed list request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on Inoreader feed list request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);

@@ -1,7 +1,7 @@
 /**
  * @file dummy_source.c  dummy feed list source
  * 
- * Copyright (C) 2006-2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,6 @@ static void dummy_source_deinit(void) { }
 static struct nodeSourceType nst = {
 	.id			= NODE_SOURCE_TYPE_DUMMY_ID,
 	.name			= "Dummy Feed List Source",
-	.description		= "The dummy feed list source. Should never be added manually. If you see this then something went wrong!",
 	.source_type_init	= dummy_source_init,
 	.source_type_deinit	= dummy_source_deinit,
 	.source_import		= dummy_source_import,

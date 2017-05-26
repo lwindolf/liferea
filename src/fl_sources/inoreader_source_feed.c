@@ -2,7 +2,7 @@
  * @file inoreader_source_feed.c  InoReader feed subscription routines
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
- * Copyright (C) 2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include "xml.h"
 
 #include "feedlist.h"
+#include "google_reader_api_edit.h"
 #include "inoreader_source.h"
 #include "subscription.h"
 #include "node.h"
@@ -104,18 +105,20 @@ inoreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTa
 
 	for (; iter; iter = g_list_next (iter)) {
 		item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			/* save to cache */
-			g_hash_table_insert (cache, g_strdup(item->sourceId), (gpointer) item->id);
-			if (g_str_equal (item->sourceId, sourceId)) {
-				itemset_free (itemset);
-				return item;
+		if (item) {
+			if (item->sourceId) {
+				/* save to cache */
+				g_hash_table_insert (cache, g_strdup(item->sourceId), (gpointer) item->id);
+				if (g_str_equal (item->sourceId, sourceId)) {
+					itemset_free (itemset);
+					return item;
+				}
 			}
+			item_unload (item);
 		}
-		item_unload (item);
 	}
 
-	g_warning ("Could not find item for %s!", sourceId);
+	g_print ("Could not find item for %s!", sourceId);
 	itemset_free (itemset);
 	return NULL;
 }
@@ -123,7 +126,6 @@ inoreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTa
 static void
 inoreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
 {
-	InoreaderSourcePtr gsource = (InoreaderSourcePtr) node_source_root_from_node (subscription->node)->data ;
 	xmlNodePtr      xml;
 	nodePtr         node = subscription->node;
 	xmlChar         *id = NULL;
@@ -152,7 +154,7 @@ inoreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr s
 	}
 	
 	if (!id) {
-		g_warning ("Fatal: could not extract item id from InoReader Atom feed!");
+		g_print ("Fatal: could not extract item id from InoReader Atom feed!");
 		return;
 	}
 
@@ -235,7 +237,7 @@ inoreader_feed_subscription_process_update_result (subscriptionPtr subscription,
 		xmlFreeDoc (doc);
 	} else { 
 		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
-		g_warning ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
+		g_print ("google_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
 	
 	debug_end_measurement (DEBUG_UPDATE, "time taken to update statuses");

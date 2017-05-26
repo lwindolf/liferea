@@ -1,11 +1,16 @@
 [Plugin]
 Module=libnotify
-Loader=python
+Loader=python3
+Icon=preferences-system-notification
 IAge=2
 Name=Popup Notifications
+Name[de]=Popup-Benachrichtigungen
+Name[he]=התראות קופצות
 Description=Display popups informing about new updates.
-Authors=Lars Windolf <lars.lindner@gmail.com>
+Description[de]=Zeigt Popup-Benachrichtigungen an wenn Abonnements aktualisiert werden
+Description[he]=הצג התראות המיידעות על עדכונים חדשים
+Authors=Lars Windolf <lars.windolf@gmx.de>
 Copyright=Copyright © 2013 Lars Windolf
-Website=http://liferea.sf.net
-Help=http://liferea.sf.net
+Website=https://lzone.de/liferea/
+Help=https://lzone.de/liferea/
 

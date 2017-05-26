@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = parsers ui fl_sources webkit .
+SUBDIRS = parsers ui fl_sources webkit tests .
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -43,6 +43,7 @@ liferea_SOURCES = \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
 	json.c json.h \
+	liferea_application.c liferea_application.h \
 	metadata.c metadata.h \
 	migrate.c migrate.h \
 	net.c net.h \
@@ -70,7 +71,8 @@ liferea_LDADD =	parsers/libliparsers.a \
 		$(PACKAGE_LIBS) \
 		$(INTLLIBS) \
 		$(WEBKIT_LIBS) \
-		$(INTROSPECTION_LIBS)
+		$(INTROSPECTION_LIBS) \
+		-lm
 
 EXTRA_DIST = $(srcdir)/liferea-add-feed.in
 DISTCLEANFILES = $(srcdir)/liferea-add-feed
@@ -79,11 +81,11 @@ AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = liferea-add-feed
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS = Liferea-3.0.gir
 
-Liferea-3.0.gir: liferea
+Liferea-3.0.gir: liferea$(EXEEXT)
 INTROSPECTION_SCANNER_ARGS = -I$(top_srcdir)/src --warn-all --accept-unprefixed --identifier-prefix=Liferea --verbose
 Liferea_3_0_gir_NAMESPACE = Liferea
 Liferea_3_0_gir_VERSION = 3.0
-Liferea_3_0_gir_PROGRAM = $(builddir)/liferea
+Liferea_3_0_gir_PROGRAM = $(builddir)/liferea$(EXEEXT)
 Liferea_3_0_gir_FILES = \
 	auth.c auth.h \
 	auth_activatable.c auth_activatable.h \
@@ -94,15 +96,21 @@ Liferea_3_0_gir_FILES = \
 	itemset.c itemset.h \
 	node.h node.c \
 	node_view.h \
+	social.c social.h \
+	subscription_type.h \
+	ui/browser_tabs.c ui/browser_tabs.h \
 	ui/icons.c ui/icons.h \
 	ui/itemview.c ui/itemview.h \
 	ui/item_list_view.c ui/item_list_view.h \
+	ui/liferea_htmlview.c ui/liferea_htmlview.h \
 	ui/liferea_shell.c ui/liferea_shell.h \
 	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h \
 	ui/media_player.c ui/media_player.h \
-	ui/media_player_activatable.c ui/media_player_activatable.h
-Liferea_3_0_gir_INCLUDES = Gtk-3.0 
-
+	ui/media_player_activatable.c ui/media_player_activatable.h \
+	fl_sources/node_source.c fl_sources/node_source.h \
+	fl_sources/node_source_activatable.c fl_sources/node_source_activatable.h
+Liferea_3_0_gir_INCLUDES = Gtk-3.0 libxml2-2.0
+if HAVE_INTROSPECTION
 girdir = $(datadir)/liferea/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)
 
@@ -112,3 +120,4 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 CLEANFILES = \
 	$(gir_DATA)	\
 	$(typelib_DATA)
+endif

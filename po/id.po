@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.10.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-13 22:06+0100\n"
+"POT-Creation-Date: 2017-02-13 22:52+0100\n"
 "PO-Revision-Date: 2014-07-16 15:15+0700\n"
 "Last-Translator: Samsul Ma'arif <mail@samsul.web.id>\n"
 "Language-Team: Indonesian\n"
@@ -18,8 +18,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
 #: ../liferea.appdata.xml.in.h:1
-msgid "Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator for online news feeds. It supports a number of different feed formats including RSS/RDF, CDF and Atom. There are many other news readers available, but these others are not available for Linux or require many extra libraries to be installed. Liferea tries to fill this gap by creating a fast, easy to use, easy to install news aggregator for GTK/GNOME."
-msgstr "Liferea ialah akronim untuk Linux Feed Reader. Agregator berita untuk feed berita online. Mendukung berbagai format feed yang berbeda termasuk RSS/RDF, CDF dan Atom. Ada banyak pembaca berita yang tersedia, namun tidak tersedia untuk Linux atau memerlukan pustaka ekstra untuk diinstal. Liferea mencoba untuk memenuhinya dengan membuat agregator untuk GTK/GNOME yang cepat, mudah digunakan, mudah diinstall."
+msgid ""
+"Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
+"for online news feeds. It supports a number of different feed formats "
+"including RSS/RDF, CDF and Atom. There are many other news readers "
+"available, but these others are not available for Linux or require many "
+"extra libraries to be installed. Liferea tries to fill this gap by creating "
+"a fast, easy to use, easy to install news aggregator for GTK/GNOME."
+msgstr ""
+"Liferea ialah akronim untuk Linux Feed Reader. Agregator berita untuk feed "
+"berita online. Mendukung berbagai format feed yang berbeda termasuk RSS/RDF, "
+"CDF dan Atom. Ada banyak pembaca berita yang tersedia, namun tidak tersedia "
+"untuk Linux atau memerlukan pustaka ekstra untuk diinstal. Liferea mencoba "
+"untuk memenuhinya dengan membuat agregator untuk GTK/GNOME yang cepat, mudah "
+"digunakan, mudah diinstall."
 
 #: ../liferea.appdata.xml.in.h:2
 msgid "Distinguishing features:"
@@ -38,44 +50,63 @@ msgid "Synchronizes with TinyTinyRSS"
 msgstr "Sinkronisasi dengan TinyTinyRSS"
 
 #: ../liferea.appdata.xml.in.h:6
+#, fuzzy
+msgid "Synchronizes with InoReader"
+msgstr "Sinkronisasi dengan TheOldReader"
+
+#: ../liferea.appdata.xml.in.h:7
+#, fuzzy
+msgid "Synchronizes with Reedah"
+msgstr "Sinkronisasi dengan TheOldReader"
+
+#: ../liferea.appdata.xml.in.h:8
 msgid "Permanently save headlines in news bins"
 msgstr "Simpan headline di news bin"
 
-#: ../liferea.appdata.xml.in.h:7
+#: ../liferea.appdata.xml.in.h:9
 msgid "Match items using search folders"
 msgstr "Item yang sesuai menggunakan pencarian folder"
 
-#: ../liferea.appdata.xml.in.h:8
+#: ../liferea.appdata.xml.in.h:10
 msgid "Play Podcasts"
 msgstr "Mainkan Podcast"
 
-#: ../liferea.desktop.in.h:1 ../src/main.c:235 ../glade/liferea.ui.h:1
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:79
+#: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
-#: ../liferea.desktop.in.h:2
+#: ../net.sourceforge.liferea.desktop.in.h:2
 msgid "Feed Reader"
 msgstr "Pembaca Feed"
 
-#: ../liferea.desktop.in.h:3
+#: ../net.sourceforge.liferea.desktop.in.h:3
 msgid "Liferea Feed Reader"
 msgstr "Pembaca Feed Liferea"
 
-#: ../liferea.desktop.in.h:4
+#: ../net.sourceforge.liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
 msgstr "Baca feed berita dan blog"
 
-#: ../liferea.desktop.in.h:5
+#: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
 msgstr "news;feed;aggregator;blog;podcast;"
 
 #: ../xslt/feed.xml.in.h:1
-msgid "This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."
-msgstr "Feed ini dihentikan. Tidak lagi tersedia. Liferea tidak akan memerbaruinya lagi namun Anda masih dapat mengakses cache berita utama."
+msgid ""
+"This feed is discontinued. It's no longer available. Liferea won't update it "
+"anymore but you can still access the cached headlines."
+msgstr ""
+"Feed ini dihentikan. Tidak lagi tersedia. Liferea tidak akan memerbaruinya "
+"lagi namun Anda masih dapat mengakses cache berita utama."
 
 #: ../xslt/feed.xml.in.h:2
-msgid "The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr "Pembaruan terakhir langganan ini gagal! <br/><b>HTTP error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+msgid ""
+"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+msgstr ""
+"Pembaruan terakhir langganan ini gagal! <br/><b>HTTP error code <xsl:value-"
+"of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
 
 #: ../xslt/feed.xml.in.h:3
 msgid "There were errors while parsing this feed!"
@@ -130,7 +161,7 @@ msgstr "belum dibaca"
 msgid "Folder:"
 msgstr "Folder:"
 
-#: ../xslt/item.xml.in.h:1 ../glade/liferea.ui.h:29
+#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:22
 msgid "Source"
 msgstr "Sumber"
 
@@ -167,18 +198,26 @@ msgid "Creator"
 msgstr "Pembuat"
 
 #: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:12
 msgid "Comments"
 msgstr "Komentar"
 
-#: ../xslt/item.xml.in.h:11
+#: ../xslt/item.xml.in.h:13
 msgid "Updating..."
 msgstr "Memerbarui..."
 
-#: ../xslt/item.xml.in.h:12
+#: ../xslt/item.xml.in.h:14
 msgid "Section"
 msgstr "Bagian"
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:15
 msgid "Department"
 msgstr "Departemen"
 
@@ -187,23 +226,23 @@ msgid "News Bin:"
 msgstr "Bin Berita:"
 
 #: ../xslt/newsbin.xml.in.h:2
-msgid "Add items to this news bin by selecting \"Copy to News Bin\" from the item list context menu."
-msgstr "Tambahkan item ke bin berita dengan memilih \"Salin ke Bin Berita\" dari menu konteks daftar item."
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+"Tambahkan item ke bin berita dengan memilih \"Salin ke Bin Berita\" dari "
+"menu konteks daftar item."
 
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Cari Folder:"
 
-#: ../src/browser.c:32
-msgid "Default Browser"
-msgstr "Peramban Bawaan"
-
-#: ../src/browser.c:207 ../src/browser.c:227
+#: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Perintah peramban gagal: %s"
 
-#: ../src/browser.c:230
+#: ../src/browser.c:101
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Memulai: \"%s\""
@@ -213,129 +252,151 @@ msgstr "Memulai: \"%s\""
 msgid "Authorization Error"
 msgstr "Kesalahan Otorisasi"
 
-#: ../src/common.c:62
+#: ../src/common.c:66
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Tidak dapat membuat direktori cache \"%s\""
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/date.c:80
+#: ../src/date.c:777
 msgid "Today %l:%M %p"
 msgstr "Hari ini %l:%M %p"
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/date.c:91
+#: ../src/date.c:788
 msgid "Yesterday %l:%M %p"
 msgstr "Kemarin %l:%M %p"
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/date.c:104
+#: ../src/date.c:801
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/date.c:113
+#: ../src/date.c:810
 msgid "%b %d %l:%M %p"
 msgstr "%d %b %l:%M %p"
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/date.c:116
+#: ../src/date.c:813
 msgid "%b %d %Y"
 msgstr "%d %b %Y"
 
-#: ../src/enclosure.c:197
+#: ../src/enclosure.c:201
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" bukan enklosure jenis file konfigurasi yang benar!"
 
-#: ../src/enclosure.c:288
-msgid "You have not configured a download tool yet! Please do so in the 'Download' tab in Tools/Preferences."
-msgstr "Anda belum mengonfigurasi alat unduh! Silahkan lakukan di tab 'Unduh' di Alat/Preferensi."
+#: ../src/enclosure.c:292
+#, fuzzy
+msgid ""
+"You have not configured a download tool yet! Please do so in the "
+"'Enclosures' tab in Tools/Preferences."
+msgstr ""
+"Anda belum mengonfigurasi alat unduh! Silahkan lakukan di tab 'Unduh' di "
+"Alat/Preferensi."
 
-#: ../src/enclosure.c:306
-#, c-format
+#: ../src/enclosure.c:310
+#, fuzzy, c-format
 msgid ""
 "Command failed: \n"
 "\n"
 "%s\n"
 "\n"
-" Please check whether the configured download tool is installed and working correctly! You can change it in the 'Download' tab in Tools/Preferences."
+" Please check whether the configured download tool is installed and working "
+"correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
 "Perintah gagal: \n"
 "\n"
 "%s\n"
 "\n"
-" Silakan periksa apakah konfigurasi alat unduh terpasang dan berjalan dengan baik! Anda dapat mengubahnyya di tab 'Unduh' di Alat/Preferesi.."
+" Silakan periksa apakah konfigurasi alat unduh terpasang dan berjalan dengan "
+"baik! Anda dapat mengubahnyya di tab 'Unduh' di Alat/Preferesi.."
 
-#: ../src/export.c:185
-#, c-format
-msgid "Error renaming %s to %s\n"
+#: ../src/export.c:188
+#, fuzzy, c-format
+msgid "Error renaming %s to %s: %s\n"
 msgstr "Error mengganti nama %s ke %s\n"
 
-#: ../src/export.c:414 ../src/export.c:416
+#: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "XML error ketika membaca berkas OPML! Tidak dapat mengimpor \"%s\"!"
 
-#: ../src/export.c:422 ../src/export.c:424
+#: ../src/export.c:425 ../src/export.c:427
 #, c-format
-msgid "Empty document! OPML document \"%s\" should not be empty when importing."
+msgid ""
+"Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Dokumen kosong! Dokumen OPML \"%s\" tidak boleh kosong ketika diimpor."
 
-#: ../src/export.c:445 ../src/export.c:447
+#: ../src/export.c:448 ../src/export.c:450
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr "\"%s\" bukan dokumen OPML yang benar! Liferea tidak dapat mengimpor berkas ini!"
+msgstr ""
+"\"%s\" bukan dokumen OPML yang benar! Liferea tidak dapat mengimpor berkas "
+"ini!"
 
-#: ../src/export.c:466
+#: ../src/export.c:469
 msgid "Imported feed list"
 msgstr "Daftar feed yang diimpor"
 
-#: ../src/export.c:478
+#: ../src/export.c:481
 msgid "Import Feed List"
 msgstr "Impor Daftar Feed"
 
-#: ../src/export.c:478
+#: ../src/export.c:481
 msgid "Import"
 msgstr "Impor"
 
-#: ../src/export.c:478 ../src/export.c:495 ../src/fl_sources/opml_source.c:394
+#: ../src/export.c:481 ../src/export.c:498 ../src/fl_sources/opml_source.c:379
 msgid "OPML Files"
 msgstr "Berkas OPML"
 
-#: ../src/export.c:486
+#: ../src/export.c:489
 msgid "Error while exporting feed list!"
 msgstr "Error ketika mengekspor daftar feed!"
 
-#: ../src/export.c:488
+#: ../src/export.c:491
 msgid "Feed List exported!"
 msgstr "Daftar Feed diekspor!"
 
-#: ../src/export.c:495
+#: ../src/export.c:498
 msgid "Export Feed List"
 msgstr "Ekspor Daftar Feed"
 
-#: ../src/export.c:495
+#: ../src/export.c:498
 msgid "Export"
 msgstr "Ekspor"
 
-#: ../src/feed.c:254
-msgid "<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr "<p>Tidak dapat mendeteksi tipe feed ini! Silahkan perika sumber apakah benar-benar mengarah ke sumber daya yang tersedia di salah satu format sindikasi didukung!</p>Keluaran Pengurai XML:<br /><div class='xmlparseroutput'>"
+#: ../src/feed.c:236
+msgid ""
+"<p>Could not detect the type of this feed! Please check if the source really "
+"points to a resource provided in one of the supported syndication formats!</"
+"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+msgstr ""
+"<p>Tidak dapat mendeteksi tipe feed ini! Silahkan perika sumber apakah benar-"
+"benar mengarah ke sumber daya yang tersedia di salah satu format sindikasi "
+"didukung!</p>Keluaran Pengurai XML:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:283
+#: ../src/feed.c:262
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" diperbarui..."
 
-#: ../src/feed.c:293
+#: ../src/feed.c:269
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" tidak tersedia"
 
 #: ../src/feed_parser.c:137
-msgid "The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."
-msgstr "URL yang ingin Anda lanngankan ke Liferea mengarah ke sebuah laman web dan pencarian otomatis tidak menemukan feed di halaman ini. Mungkin laman web ini tidak mendukung pencarian feed otomatis."
+msgid ""
+"The URL you want Liferea to subscribe to points to a webpage and the auto "
+"discovery found no feeds on this page. Maybe this webpage just does not "
+"support feed auto discovery."
+msgstr ""
+"URL yang ingin Anda lanngankan ke Liferea mengarah ke sebuah laman web dan "
+"pencarian otomatis tidak menemukan feed di halaman ini. Mungkin laman web "
+"ini tidak mendukung pencarian feed otomatis."
 
 #: ../src/feed_parser.c:170
 #, c-format
@@ -359,178 +420,185 @@ msgid "Could not determine the feed type."
 msgstr "Tidak dapat menentukan tipe feed."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:404
+#: ../src/itemlist.c:396
 msgid "There are no unread items"
 msgstr "Tidak ada item yang belum dibaca"
 
-#: ../src/main.c:164
-msgid "Start Liferea with its main window in STATE. STATE may be `shown', `iconified', or `hidden'"
-msgstr "Mulai Liferea dengan jendela utamanya di STATE. STATE mungkin `shown`, `iconified`, atau `hidden`"
+#: ../src/liferea_application.c:282
+#, fuzzy
+msgid ""
+"Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
+msgstr ""
+"Mulai Liferea dengan jendela utamanya di STATE. STATE mungkin `shown`, "
+"`iconified`, atau `hidden`"
 
-#: ../src/main.c:164
+#: ../src/liferea_application.c:282
 msgid "STATE"
 msgstr "STATE"
 
-#: ../src/main.c:165
+#: ../src/liferea_application.c:283
 msgid "Show version information and exit"
 msgstr "Tampilkan informasi versi dan keluar"
 
-#: ../src/main.c:166
+#: ../src/liferea_application.c:284
 msgid "Add a new subscription"
 msgstr "Tambahkan langganan baru"
 
-#: ../src/main.c:166
+#: ../src/liferea_application.c:284
 msgid "uri"
 msgstr "uri"
 
-#: ../src/main.c:171
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages of all types"
 msgstr "Cetak pesan debut semua tipe"
 
-#: ../src/main.c:172
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the cache handling"
 msgstr "Cetak pesan debug untuk menangani cache"
 
-#: ../src/main.c:173
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages for the configuration handling"
 msgstr "Cetak pesan debug untuk menangani konfigurasi"
 
-#: ../src/main.c:174
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of the database handling"
 msgstr "Cetak pesan debug untuk mengangani basisdata"
 
-#: ../src/main.c:175
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages of all GUI functions"
 msgstr "Cetak pesan debut untuk semua fungsi GUI"
 
-#: ../src/main.c:176
-msgid "Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
-msgstr "Aktifkan debug HTML render. Setiap Liferea merender keluaran HTML akan melimpahkan HTML yang digenerate ke ~/.cache/liferea/output.xhtml"
+#: ../src/liferea_application.c:294
+msgid ""
+"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
+"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+msgstr ""
+"Aktifkan debug HTML render. Setiap Liferea merender keluaran HTML akan "
+"melimpahkan HTML yang digenerate ke ~/.cache/liferea/output.xhtml"
 
-#: ../src/main.c:177
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all network activity"
 msgstr "Cetak pesan debug untuk semua aktifitas jaringan"
 
-#: ../src/main.c:178
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages of all parsing functions"
 msgstr "Cetak pesan debug untuk mengurai semua fungsi"
 
-#: ../src/main.c:179
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "Cetak pesan debug ketika fungsi sangat lama diproses"
 
-#: ../src/main.c:180
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Cetak pesan debug ketika memasuki/keluar dari fungsi"
 
-#: ../src/main.c:181
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the feed update processing"
 msgstr "Cetak pesan debug dari proses pembaruan feed"
 
-#: ../src/main.c:182
+#: ../src/liferea_application.c:300
 msgid "Print debugging messages of the search folder matching"
 msgstr "Cetak pesan debug untuk pencarian folder yang cocok"
 
-#: ../src/main.c:183
+#: ../src/liferea_application.c:301
 msgid "Print verbose debugging messages"
 msgstr "Cetak secara verbose pesan debug"
 
-#: ../src/main.c:194 ../src/main.c:195
+#: ../src/liferea_application.c:306 ../src/liferea_application.c:307
 msgid "Print debugging messages for the given topic"
 msgstr "Cetak pesan debug untuk topik yang diberikan"
 
-#: ../src/main.c:202
-msgid "Liferea, the Linux Feed Reader"
-msgstr "Liferea, Pembaca Feed Linux"
-
-#: ../src/main.c:203
-msgid "For more information, please visit http://lzone.de/liferea/"
-msgstr "Untuk informasi, silahkan kunjungi http://lzone.de/liferea/"
-
 #. Some libsoup transport errors
-#: ../src/net.c:329
+#: ../src/net.c:400
 msgid "The update request was cancelled"
 msgstr "Permintaan pembaruan dibatalkan"
 
-#: ../src/net.c:330
+#: ../src/net.c:401
 msgid "Unable to resolve destination host name"
 msgstr "Tidak dapat menemukan tujuan nama host"
 
-#: ../src/net.c:331
+#: ../src/net.c:402
 msgid "Unable to resolve proxy host name"
 msgstr "Tidak dapat menemukan nama host proxy"
 
-#: ../src/net.c:332
+#: ../src/net.c:403
 msgid "Unable to connect to remote host"
 msgstr "Tidak dapat terhubung ke remote host"
 
-#: ../src/net.c:333
+#: ../src/net.c:404
 msgid "Unable to connect to proxy"
 msgstr "Tidak dapat terhubung ke proxy"
 
-#: ../src/net.c:334
-msgid "A network error occurred, or the other end closed the connection unexpectedly"
-msgstr "Terjadi kesalahan jaringan, atau yang lain menutp koneksi yang tidak diharapkan"
+#: ../src/net.c:405
+msgid ""
+"A network error occurred, or the other end closed the connection unexpectedly"
+msgstr ""
+"Terjadi kesalahan jaringan, atau yang lain menutp koneksi yang tidak "
+"diharapkan"
 
 #. http 3xx redirection
-#: ../src/net.c:337
+#: ../src/net.c:408
 msgid "The resource moved permanently to a new location"
 msgstr "Sumberdaya dipindah ke lokasi baru secara permanen"
 
 #. http 4xx client error
-#: ../src/net.c:340
-msgid "You are unauthorized to download this feed. Please update your username and password in the feed properties dialog box"
-msgstr "Anda tidak berhak mengunduh feed ini. Silahkan perbarui nama pengguna dan sandi lewat Anda di kotak dialog properti feed"
+#: ../src/net.c:411
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box"
+msgstr ""
+"Anda tidak berhak mengunduh feed ini. Silahkan perbarui nama pengguna dan "
+"sandi lewat Anda di kotak dialog properti feed"
 
-#: ../src/net.c:342
+#: ../src/net.c:413
 msgid "Payment required"
 msgstr "Pembayaran diperlukan"
 
-#: ../src/net.c:343
+#: ../src/net.c:414
 msgid "You're not allowed to access this resource"
 msgstr "Anda tidak diperbolehkan mengakses sumber daya ini"
 
-#: ../src/net.c:344
+#: ../src/net.c:415
 msgid "Resource Not Found"
 msgstr "Sumber Daya Tidak Ditemukan"
 
-#: ../src/net.c:345
+#: ../src/net.c:416
 msgid "Method Not Allowed"
 msgstr "Metode Tidak Diperbolehkan"
 
-#: ../src/net.c:346
+#: ../src/net.c:417
 msgid "Not Acceptable"
 msgstr "Tidak Dapat Diterima"
 
-#: ../src/net.c:347
+#: ../src/net.c:418
 msgid "Proxy authentication required"
 msgstr "Otentikasi proxy diperlukan"
 
-#: ../src/net.c:348
+#: ../src/net.c:419
 msgid "Request timed out"
 msgstr "Permintaan terlalu lama"
 
-#: ../src/net.c:349
+#: ../src/net.c:420
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Telah pergi. Sumberdaya tidak ada. Silahkan unsubscribe!"
 
-#: ../src/net.c:354
+#: ../src/net.c:425
 msgid "There was an internal error in the update process"
 msgstr "Ada kesalahan internal pada proses update"
 
-#: ../src/net.c:356
+#: ../src/net.c:427
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Feed tidak tersedia: Server meminta redireksi yang tak didukung!"
 
-#: ../src/net.c:358
+#: ../src/net.c:429
 msgid "Client Error"
 msgstr "Klien Error"
 
-#: ../src/net.c:360
+#: ../src/net.c:431
 msgid "Server Error"
 msgstr "Server Error"
 
-#: ../src/net.c:362
+#: ../src/net.c:433
 msgid "An unknown networking error happened!"
 msgstr "Terjadi error jaringan yang tidak diketahui!"
 
@@ -615,8 +683,10 @@ msgstr "Langganan \"%s\" sedang diperbarui!"
 
 #: ../src/subscription.c:110
 #, c-format
-msgid "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr "Langganan \"%s\" tidak dilanjutkan. Liferea tidak akan memerbaruinya lagi!"
+msgid ""
+"The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
+msgstr ""
+"Langganan \"%s\" tidak dilanjutkan. Liferea tidak akan memerbaruinya lagi!"
 
 #: ../src/subscription.c:144
 #, c-format
@@ -624,8 +694,12 @@ msgid "Updating favicon for \"%s\""
 msgstr "Memerbarui favicon untuk \"%s\""
 
 #: ../src/subscription.c:193
-msgid "There was a problem while reading this subscription. Please check the URL and console output."
-msgstr "Ada masalah ketika membaca langganan. Silahkan periksa URL dan keluaran konsol."
+msgid ""
+"There was a problem while reading this subscription. Please check the URL "
+"and console output."
+msgstr ""
+"Ada masalah ketika membaca langganan. Silahkan periksa URL dan keluaran "
+"konsol."
 
 #: ../src/subscription.c:211
 #, c-format
@@ -642,33 +716,33 @@ msgstr "\"%s\" tidak dilanjutkan. Liferea tidak akan memerbaruinya lagi!"
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" tidak berubah sejak pembaruan terakhir"
 
-#: ../src/subscription.c:272
+#: ../src/subscription.c:275
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Memerbarui \"%s\""
 
-#: ../src/update.c:258
+#: ../src/update.c:282
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Error membuka berkas temp %s untuk penyaringan!"
 
-#: ../src/update.c:281
+#: ../src/update.c:305
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s keluar dengan status %d"
 
-#: ../src/update.c:287 ../src/update.c:288 ../src/update.c:400
+#: ../src/update.c:311 ../src/update.c:312 ../src/update.c:429
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Error: Tidak dapat membuka pipa \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:426
+#: ../src/update.c:455
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Error: Tidak dapat membuka berkas \"%s\""
 
-#: ../src/update.c:432
+#: ../src/update.c:461
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Error: Tidak ada berkas \"%s\""
@@ -706,24 +780,24 @@ msgstr "MB"
 msgid "GB"
 msgstr "GB"
 
-#: ../src/ui/enclosure_list_view.c:288
+#: ../src/ui/enclosure_list_view.c:287
 #, c-format
 msgid "%d%s"
 msgstr "%d%s"
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:321
+#: ../src/ui/enclosure_list_view.c:325
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
 msgstr[0] "%d lampiran"
 msgstr[1] "%d lampiran"
 
-#: ../src/ui/enclosure_list_view.c:377 ../src/ui/subscription_dialog.c:356
+#: ../src/ui/enclosure_list_view.c:383 ../src/ui/subscription_dialog.c:351
 msgid "Choose File"
 msgstr "Pilih Berkas"
 
-#: ../src/ui/enclosure_list_view.c:438
+#: ../src/ui/enclosure_list_view.c:444
 #, c-format
 msgid "File Extension .%s"
 msgstr "Ekstensi Berkas .%s"
@@ -733,373 +807,361 @@ msgstr "Ekstensi Berkas .%s"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Tidak dapat menemukan berkas pixmap: %s"
 
-#: ../src/ui/liferea_shell.c:328
+#: ../src/ui/liferea_shell.c:390
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d baru)"
 msgstr[1] " (%d baru)"
 
-#: ../src/ui/liferea_shell.c:333
+#: ../src/ui/liferea_shell.c:395
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d belum dibaca%s"
 msgstr[1] "%d belum dibaca%s"
 
-#: ../src/ui/liferea_shell.c:719
+#: ../src/ui/liferea_shell.c:769
 msgid "Help Topics"
 msgstr "Topik Bantuan"
 
-#: ../src/ui/liferea_shell.c:725
+#: ../src/ui/liferea_shell.c:775
 msgid "Quick Reference"
 msgstr "Referensi Cepat"
 
-#: ../src/ui/liferea_shell.c:731
+#: ../src/ui/liferea_shell.c:781
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/ui/liferea_shell.c:798
-msgid "Liferea is now online"
-msgstr "Liferea sekarang daring"
-
-#: ../src/ui/liferea_shell.c:800
-msgid "Work Offline"
-msgstr "Bekerja Luring"
-
-#: ../src/ui/liferea_shell.c:802
-msgid "Liferea is now offline"
-msgstr "Liferea sekarang luring"
-
-#: ../src/ui/liferea_shell.c:804
-msgid "Work Online"
-msgstr "Bekerja Daring"
-
-#: ../src/ui/liferea_shell.c:900
+#: ../src/ui/liferea_shell.c:906
 msgid "_Subscriptions"
 msgstr "_Langganan"
 
-#: ../src/ui/liferea_shell.c:901
+#: ../src/ui/liferea_shell.c:907
 msgid "Update _All"
 msgstr "Perbarui Semu_a"
 
-#: ../src/ui/liferea_shell.c:901
+#: ../src/ui/liferea_shell.c:907
 msgid "Updates all subscriptions."
 msgstr "Perbarui semua langganan."
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:909
 msgid "Mark All As _Read"
 msgstr "Tandai Semua Sudah Di_baca"
 
-#: ../src/ui/liferea_shell.c:903
+#: ../src/ui/liferea_shell.c:909
 msgid "Marks read every item of every subscription."
 msgstr "Tandai sudah dibaca setiap item setiap langganan."
 
-#: ../src/ui/liferea_shell.c:905
+#: ../src/ui/liferea_shell.c:911
 msgid "_Import Feed List..."
 msgstr "_Impor Daftar Feed..."
 
-#: ../src/ui/liferea_shell.c:905
+#: ../src/ui/liferea_shell.c:911
 msgid "Imports an OPML feed list."
 msgstr "Impor daftar feed OPML."
 
-#: ../src/ui/liferea_shell.c:906
+#: ../src/ui/liferea_shell.c:912
 msgid "_Export Feed List..."
 msgstr "_Ekspor Daftar Feed..."
 
-#: ../src/ui/liferea_shell.c:906
+#: ../src/ui/liferea_shell.c:912
 msgid "Exports the feed list as OPML."
 msgstr "Ekspor daftar feed sebagai OPML."
 
-#: ../src/ui/liferea_shell.c:907
+#: ../src/ui/liferea_shell.c:913 ../src/ui/popup_menu.c:190
 msgid "_Quit"
 msgstr "_Keluar"
 
-#: ../src/ui/liferea_shell.c:909
+#: ../src/ui/liferea_shell.c:915
 msgid "_Feed"
 msgstr "_Feed"
 
-#: ../src/ui/liferea_shell.c:910
+#: ../src/ui/liferea_shell.c:916
 msgid "Remove _All Items"
 msgstr "Hapus _Semua Item"
 
-#: ../src/ui/liferea_shell.c:910
+#: ../src/ui/liferea_shell.c:916
 msgid "Removes all items of the currently selected feed."
 msgstr "Hapus semua item feed yang sedang dipilih."
 
-#: ../src/ui/liferea_shell.c:913
+#: ../src/ui/liferea_shell.c:919
 msgid "_Item"
 msgstr "_Item"
 
-#: ../src/ui/liferea_shell.c:914
+#: ../src/ui/liferea_shell.c:920
 msgid "Previous Item"
 msgstr "Item Sebelumnya"
 
-#: ../src/ui/liferea_shell.c:916
+#: ../src/ui/liferea_shell.c:922
 msgid "Next Item"
 msgstr "Item Selanjutnya"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:921
+#: ../src/ui/liferea_shell.c:927
 msgid "_Next Unread Item"
 msgstr "Item _Belum Dibaca Selanjutnya"
 
-#: ../src/ui/liferea_shell.c:924
+#: ../src/ui/liferea_shell.c:930
 msgid "_View"
 msgstr "_Lihat"
 
-#: ../src/ui/liferea_shell.c:925 ../src/ui/liferea_htmlview.c:653
+#: ../src/ui/liferea_shell.c:931 ../src/webkit/liferea_web_view.c:211
 msgid "_Increase Text Size"
 msgstr "_Perbesar Ukuran Teks"
 
-#: ../src/ui/liferea_shell.c:925
+#: ../src/ui/liferea_shell.c:931
 msgid "Increases the text size of the item view."
 msgstr "Perbesar ukuran teks item ditampilkan."
 
-#: ../src/ui/liferea_shell.c:927 ../src/ui/liferea_htmlview.c:654
+#: ../src/ui/liferea_shell.c:933 ../src/webkit/liferea_web_view.c:212
 msgid "_Decrease Text Size"
 msgstr "_Kecilkan Ukuran Teks"
 
-#: ../src/ui/liferea_shell.c:927
+#: ../src/ui/liferea_shell.c:933
 msgid "Decreases the text size of the item view."
 msgstr "Kecilkan ukuran teks item ditampilkan."
 
-#: ../src/ui/liferea_shell.c:930
+#: ../src/ui/liferea_shell.c:936
 msgid "_Tools"
 msgstr "_Alat"
 
-#: ../src/ui/liferea_shell.c:931
+#: ../src/ui/liferea_shell.c:937
 msgid "_Update Monitor"
 msgstr "_Monitor Pembaruan"
 
-#: ../src/ui/liferea_shell.c:931
+#: ../src/ui/liferea_shell.c:937
 msgid "Show a list of all feeds currently in the update queue"
 msgstr "Tampilkan selua daftar feed yang sedang dalam antrian pembaruan"
 
-#: ../src/ui/liferea_shell.c:933
+#: ../src/ui/liferea_shell.c:939 ../src/ui/popup_menu.c:185
+#: ../src/ui/popup_menu.c:339
 msgid "_Preferences"
 msgstr "_Preferensi"
 
-#: ../src/ui/liferea_shell.c:933
+#: ../src/ui/liferea_shell.c:939
 msgid "Edit Preferences."
 msgstr "Sunting Preferensi."
 
-#: ../src/ui/liferea_shell.c:936
+#: ../src/ui/liferea_shell.c:942
 msgid "S_earch"
 msgstr "_Cari"
 
-#: ../src/ui/liferea_shell.c:937
+#: ../src/ui/liferea_shell.c:943
 msgid "Search All Feeds..."
 msgstr "Cari Semua Feed..."
 
-#: ../src/ui/liferea_shell.c:937
+#: ../src/ui/liferea_shell.c:943
 msgid "Show the search dialog."
 msgstr "Tampilkan dialog pencarian."
 
-#: ../src/ui/liferea_shell.c:939
+#: ../src/ui/liferea_shell.c:945
 msgid "_Help"
 msgstr "_Bantuan"
 
-#: ../src/ui/liferea_shell.c:940
+#: ../src/ui/liferea_shell.c:946
 msgid "_Contents"
 msgstr "_Isi"
 
-#: ../src/ui/liferea_shell.c:940
+#: ../src/ui/liferea_shell.c:946
 msgid "View help for this application."
 msgstr "Tampilkan bantuan untuk aplikasi ini."
 
-#: ../src/ui/liferea_shell.c:941
+#: ../src/ui/liferea_shell.c:947
 msgid "_Quick Reference"
 msgstr "_Referensi Cepat"
 
-#: ../src/ui/liferea_shell.c:941
+#: ../src/ui/liferea_shell.c:947
 msgid "View a list of all Liferea shortcuts."
 msgstr "Tampilkan daftar pintasan Liferea."
 
-#: ../src/ui/liferea_shell.c:943
+#: ../src/ui/liferea_shell.c:949
 msgid "_FAQ"
 msgstr "_FAQ"
 
-#: ../src/ui/liferea_shell.c:943
+#: ../src/ui/liferea_shell.c:949
 msgid "View the FAQ for this application."
 msgstr "Tampilkan FAQ untuk aplikasi ini."
 
-#: ../src/ui/liferea_shell.c:944
+#: ../src/ui/liferea_shell.c:950
 msgid "_About"
 msgstr "_Tentang"
 
-#: ../src/ui/liferea_shell.c:944
+#: ../src/ui/liferea_shell.c:950
 msgid "Shows an about dialog."
 msgstr "Tampilkan dialog tentang."
 
-#: ../src/ui/liferea_shell.c:948
+#: ../src/ui/liferea_shell.c:954
 msgid "_Normal View"
 msgstr "Tampilan _Normal"
 
-#: ../src/ui/liferea_shell.c:948
+#: ../src/ui/liferea_shell.c:954
 msgid "Set view mode to mail client mode."
 msgstr "Atur mode tampilan ke mode klien surel."
 
-#: ../src/ui/liferea_shell.c:950
+#: ../src/ui/liferea_shell.c:956
 msgid "_Wide View"
 msgstr "Tampilan _Lebar"
 
-#: ../src/ui/liferea_shell.c:950
+#: ../src/ui/liferea_shell.c:956
 msgid "Set view mode to use three vertical panes."
 msgstr "Atur mode tampilan untuk menggunakan tiga panel vertikal."
 
-#: ../src/ui/liferea_shell.c:952
+#: ../src/ui/liferea_shell.c:958
 msgid "_Combined View"
 msgstr "_Kombinasikan Tampilan"
 
-#: ../src/ui/liferea_shell.c:952
+#: ../src/ui/liferea_shell.c:958
 msgid "Set view mode to two pane mode."
 msgstr "Atur mode tampilan ke mode dua panel."
 
-#: ../src/ui/liferea_shell.c:957
+#: ../src/ui/liferea_shell.c:963
 msgid "_Reduced Feed List"
 msgstr "_Kurangi Daftar Feed"
 
-#: ../src/ui/liferea_shell.c:957
+#: ../src/ui/liferea_shell.c:963
 msgid "Hide feeds with no unread items."
 msgstr "Sembunyikan feed dengan item tak terbaca."
 
-#: ../src/ui/liferea_shell.c:962
+#: ../src/ui/liferea_shell.c:968
 msgid "_New Subscription..."
 msgstr "_Langganan Baru..."
 
-#: ../src/ui/liferea_shell.c:962
+#: ../src/ui/liferea_shell.c:968
 msgid "Adds a subscription to the feed list."
 msgstr "Tambahkan langganan ke daftar feed."
 
-#: ../src/ui/liferea_shell.c:964 ../src/ui/popup_menu.c:320
+#: ../src/ui/liferea_shell.c:970 ../src/ui/popup_menu.c:308
 msgid "New _Folder..."
 msgstr "_Folder Baru..."
 
-#: ../src/ui/liferea_shell.c:964
+#: ../src/ui/liferea_shell.c:970
 msgid "Adds a folder to the feed list."
 msgstr "Tambahkan folder ke daftar feed."
 
-#: ../src/ui/liferea_shell.c:965 ../src/ui/popup_menu.c:323
+#: ../src/ui/liferea_shell.c:971 ../src/ui/popup_menu.c:311
 msgid "New S_earch Folder..."
 msgstr "Folder P_encarian Baru..."
 
-#: ../src/ui/liferea_shell.c:965
+#: ../src/ui/liferea_shell.c:971
 msgid "Adds a new search folder to the feed list."
 msgstr "Tambahkan folder pencarian baru ke daftar feed."
 
-#: ../src/ui/liferea_shell.c:966
+#: ../src/ui/liferea_shell.c:972
 msgid "New _Source..."
 msgstr "_Sumber Baru..."
 
-#: ../src/ui/liferea_shell.c:966
+#: ../src/ui/liferea_shell.c:972
 msgid "Adds a new feed list source."
 msgstr "Tambahkan sumber daftar feed baru."
 
-#: ../src/ui/liferea_shell.c:967 ../src/ui/popup_menu.c:325
+#: ../src/ui/liferea_shell.c:973 ../src/ui/popup_menu.c:313
 msgid "New _News Bin..."
 msgstr "Berita _Bin Baru..."
 
-#: ../src/ui/liferea_shell.c:967
+#: ../src/ui/liferea_shell.c:973
 msgid "Adds a new news bin."
 msgstr "Tambahkan berita bin baru."
 
-#: ../src/ui/liferea_shell.c:971
+#: ../src/ui/liferea_shell.c:977
 msgid "_Mark Items Read"
 msgstr "_Tandai Item Dibaca"
 
-#: ../src/ui/liferea_shell.c:971
-msgid "Marks all items of the selected feed list node / in the item list as read."
-msgstr "Tandai semua item dari node daftar feed terpilih / di daftar item sebagai telah dibaca."
+#: ../src/ui/liferea_shell.c:977
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Tandai semua item dari node daftar feed terpilih / di daftar item sebagai "
+"telah dibaca."
 
-#: ../src/ui/liferea_shell.c:973 ../src/ui/popup_menu.c:300
+#: ../src/ui/liferea_shell.c:979 ../src/ui/popup_menu.c:290
 msgid "_Update"
 msgstr "_Perbarui"
 
-#: ../src/ui/liferea_shell.c:973
-msgid "Updates the selected subscription or all subscriptions of the selected folder."
-msgstr "Perbarui langganan terpilih untuk seluruh langganan pada folder terpilih."
+#: ../src/ui/liferea_shell.c:979
+msgid ""
+"Updates the selected subscription or all subscriptions of the selected "
+"folder."
+msgstr ""
+"Perbarui langganan terpilih untuk seluruh langganan pada folder terpilih."
 
-#: ../src/ui/liferea_shell.c:978
+#: ../src/ui/liferea_shell.c:984
 msgid "_Properties"
 msgstr "_Properti"
 
-#: ../src/ui/liferea_shell.c:978
+#: ../src/ui/liferea_shell.c:984
 msgid "Opens the property dialog for the selected subscription."
 msgstr "Buka dialog properti untuk langganan terpilih."
 
-#: ../src/ui/liferea_shell.c:979
+#: ../src/ui/liferea_shell.c:985
 msgid "_Remove"
 msgstr "_Hapus"
 
-#: ../src/ui/liferea_shell.c:979
+#: ../src/ui/liferea_shell.c:985
 msgid "Removes the selected subscription."
 msgstr "Hapus langganan terpilih."
 
-#: ../src/ui/liferea_shell.c:983 ../src/ui/popup_menu.c:163
+#: ../src/ui/liferea_shell.c:989 ../src/ui/popup_menu.c:153
 msgid "Toggle _Read Status"
 msgstr "Toggle Status _Baca"
 
-#: ../src/ui/liferea_shell.c:983
+#: ../src/ui/liferea_shell.c:989
 msgid "Toggles the read status of the selected item."
 msgstr "Alihkan status baca dari item terpilih."
 
-#: ../src/ui/liferea_shell.c:985 ../src/ui/popup_menu.c:164
+#: ../src/ui/liferea_shell.c:991 ../src/ui/popup_menu.c:154
 msgid "Toggle Item _Flag"
 msgstr "Toggle _Bendera Item"
 
-#: ../src/ui/liferea_shell.c:985
+#: ../src/ui/liferea_shell.c:991
 msgid "Toggles the flag status of the selected item."
 msgstr "Alihkan bendera status dari item terpilih."
 
-#: ../src/ui/liferea_shell.c:987
+#: ../src/ui/liferea_shell.c:993
 msgid "R_emove"
 msgstr "Ha_pus"
 
-#: ../src/ui/liferea_shell.c:987
+#: ../src/ui/liferea_shell.c:993
 msgid "Removes the selected item."
 msgstr "Hapus item terpilih."
 
-#: ../src/ui/liferea_shell.c:989 ../src/ui/popup_menu.c:127
+#: ../src/ui/liferea_shell.c:995 ../src/ui/popup_menu.c:117
 msgid "Open In _Tab"
 msgstr "Buka di _Tab"
 
-#: ../src/ui/liferea_shell.c:989
+#: ../src/ui/liferea_shell.c:995
 msgid "Launches the item's link in a new Liferea browser tab."
 msgstr "Luncurkan tautan item ke tab peramban Liferea baru."
 
-#: ../src/ui/liferea_shell.c:991 ../src/ui/popup_menu.c:128
+#: ../src/ui/liferea_shell.c:997 ../src/ui/popup_menu.c:118
 msgid "_Open In Browser"
 msgstr "_Buka di Peramban"
 
-#: ../src/ui/liferea_shell.c:991
+#: ../src/ui/liferea_shell.c:997
 msgid "Launches the item's link in the Liferea item pane."
 msgstr "Luncurkan tautan item di item panel Liferea."
 
-#: ../src/ui/liferea_shell.c:993 ../src/ui/popup_menu.c:129
+#: ../src/ui/liferea_shell.c:999 ../src/ui/popup_menu.c:119
 msgid "Open In _External Browser"
 msgstr "Buka di Peramban _Eksternal"
 
-#: ../src/ui/liferea_shell.c:993
+#: ../src/ui/liferea_shell.c:999
 msgid "Launches the item's link in the configured external browser."
 msgstr "Luncurkan tautan item di peramban eksternal terkonfigurasi."
 
-#: ../src/ui/liferea_shell.c:998 ../src/ui/popup_menu.c:193
-msgid "_Work Offline"
-msgstr "Bekerja _Luring"
-
-#: ../src/ui/liferea_shell.c:998
-msgid "This option allows you to disable subscription updating."
-msgstr "Pilihan ini mengizinkan Anda untuk menonaktifkan pembaruan langganan."
-
-#: ../src/ui/liferea_shell.c:1000
+#: ../src/ui/liferea_shell.c:1004
 msgid "_Fullscreen"
 msgstr "Layar _Penuh"
 
-#: ../src/ui/liferea_shell.c:1000
+#: ../src/ui/liferea_shell.c:1004
 msgid "Browse at full screen"
 msgstr "Jelajah pada layar penuh"
+
+#: ../src/ui/search_dialog.c:116
+#, fuzzy
+msgid "Saved Search"
+msgstr "Pencarian Lanjutan"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1110,258 +1172,190 @@ msgstr "Masukkan nama pengguna dan kata sandi untuk \"%s\" (%s):"
 msgid "Unknown source"
 msgstr "Sumber tidak diketahui"
 
+#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_node.c:416
+#, fuzzy
+msgid "_Cancel"
+msgstr "Batalkan _Semua"
+
 #: ../src/ui/ui_common.c:211
 msgid "All Files"
 msgstr "Semua Berkas"
 
-#: ../src/ui/feed_list_view.c:358
-msgid "Deleting entry"
-msgstr "Menghapus Entri"
-
-#: ../src/ui/feed_list_view.c:359
-#, c-format
-msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "Anda yakin ingin menghapus \"%s\" dan isinya?"
-
-#: ../src/ui/feed_list_view.c:359
-#, c-format
-msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "Anda yakin hendak menghapus \"%s\"?"
-
-#: ../src/ui/feed_list_view.c:371
-msgid "Deletion Confirmation"
-msgstr "Konfirmasi Penghapusan"
-
-#: ../src/ui/feed_list_view.c:402
+#: ../src/ui/feed_list_view.c:375
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea dalam mode luring. Pembaruan tidak memungkinkan."
 
-#: ../src/ui/liferea_htmlview.c:624
-msgid "Open Link In _Tab"
-msgstr "Buka Tautan di _Tab"
-
-#: ../src/ui/liferea_htmlview.c:625
-msgid "_Open Link In Browser"
-msgstr "Buka Tautan di _Peramban"
-
-#: ../src/ui/liferea_htmlview.c:626
-msgid "_Open Link In External Browser"
-msgstr "_Buka Tautan di Peramban Eksternal"
-
-#: ../src/ui/liferea_htmlview.c:629
-#, c-format
-msgid "_Bookmark Link at %s"
-msgstr "_Markah Tautan pada %s"
-
-#: ../src/ui/liferea_htmlview.c:633
-msgid "_Copy Link Location"
-msgstr "_Salin Tautan Lokasi"
-
-#: ../src/ui/liferea_htmlview.c:636
-msgid "_Copy Image Location"
-msgstr "Salin Lokasi _Gambar"
-
-#: ../src/ui/liferea_htmlview.c:638
-msgid "S_ave Link As"
-msgstr "Simpan T_autan dengan Nama"
-
-#: ../src/ui/liferea_htmlview.c:640
-msgid "S_ave Image As"
-msgstr "Simpan Gam_bar dengan Nama"
-
-#: ../src/ui/liferea_htmlview.c:643
-msgid "_Subscribe..."
-msgstr "_Langgan..."
-
-#: ../src/ui/item_list_view.c:398
-msgid "*** No title ***"
-msgstr "** Tidak ada judul ***"
-
-#: ../src/ui/item_list_view.c:661
-msgid "Date"
-msgstr "Tanggal"
-
-#: ../src/ui/item_list_view.c:675
-msgid "Headline"
-msgstr "Pokok Berita"
-
-#: ../src/ui/item_list_view.c:776 ../src/ui/item_list_view.c:797
-#: ../src/ui/item_list_view.c:818
+#: ../src/ui/item_list_view.c:114
 msgid "This item has no link specified!"
 msgstr "Item ini tidak memiliki tautan khusus!"
 
-#: ../src/ui/item_list_view.c:780 ../src/ui/item_list_view.c:801
-#: ../src/ui/item_list_view.c:822 ../src/ui/item_list_view.c:886
-#: ../src/ui/item_list_view.c:971 ../src/ui/item_list_view.c:986
+#: ../src/ui/item_list_view.c:118 ../src/ui/item_list_view.c:966
+#: ../src/ui/item_list_view.c:1052 ../src/ui/item_list_view.c:1067
 msgid "No item has been selected"
 msgstr "Tidak ada item terpilih"
 
-#: ../src/ui/item_list_view.c:874
+#: ../src/ui/item_list_view.c:473
+msgid "*** No title ***"
+msgstr "** Tidak ada judul ***"
+
+#: ../src/ui/item_list_view.c:770
+msgid "Date"
+msgstr "Tanggal"
+
+#: ../src/ui/item_list_view.c:795
+msgid "Headline"
+msgstr "Pokok Berita"
+
+#: ../src/ui/item_list_view.c:953
 msgid "You must select a feed to delete its items!"
 msgstr "Anda harus memilih feed yang akan dihapus itemnya!"
 
-#: ../src/ui/popup_menu.c:141
+#: ../src/ui/popup_menu.c:131
 msgid "Copy to News Bin"
 msgstr "Salin ke Berita Bin"
 
-#: ../src/ui/popup_menu.c:155
+#: ../src/ui/popup_menu.c:145
 #, c-format
 msgid "_Bookmark at %s"
 msgstr "_Markah pada %s"
 
-#: ../src/ui/popup_menu.c:159
+#: ../src/ui/popup_menu.c:149
 msgid "Copy Item _Location"
 msgstr "Salin _Lokasi Item"
 
-#: ../src/ui/popup_menu.c:165
+#: ../src/ui/popup_menu.c:155
 msgid "R_emove Item"
 msgstr "Hapus It_em"
 
-#: ../src/ui/popup_menu.c:178
+#: ../src/ui/popup_menu.c:168
 msgid "Open Enclosure..."
 msgstr "Buka Lampiran..."
 
-#: ../src/ui/popup_menu.c:179
+#: ../src/ui/popup_menu.c:169
 msgid "Save As..."
 msgstr "Simpan dengan Nama..."
 
-#: ../src/ui/popup_menu.c:180
+#: ../src/ui/popup_menu.c:170
 msgid "Copy Link Location"
 msgstr "Salin Lokasi Tautan"
 
-#: ../src/ui/popup_menu.c:194
+#: ../src/ui/popup_menu.c:183
+msgid "_Work Offline"
+msgstr "Bekerja _Luring"
+
+#: ../src/ui/popup_menu.c:184
 msgid "_Update All"
 msgstr "Perbarui _Semua"
 
-#: ../src/ui/popup_menu.c:199
+#: ../src/ui/popup_menu.c:189
 msgid "_Show Liferea"
 msgstr "_Tampilkan Liferea"
 
-#: ../src/ui/popup_menu.c:302
+#: ../src/ui/popup_menu.c:292
 msgid "_Update Folder"
 msgstr "_Perbarui Folder"
 
-#: ../src/ui/popup_menu.c:304
-msgid "_Mark All As Read"
-msgstr "Tandai Semua Telah _Dibaca"
-
-#: ../src/ui/popup_menu.c:314
+#: ../src/ui/popup_menu.c:302
 msgid "_New"
 msgstr "_Baru"
 
-#: ../src/ui/popup_menu.c:317
+#: ../src/ui/popup_menu.c:305
 msgid "New _Subscription..."
 msgstr "_Langganan Baru..."
 
-#: ../src/ui/popup_menu.c:324
+#: ../src/ui/popup_menu.c:312
 msgid "New S_ource..."
 msgstr "Sumber Ba_ru..."
 
-#: ../src/ui/popup_menu.c:333
+#: ../src/ui/popup_menu.c:321
 msgid "Sort Feeds"
 msgstr "Feed Pendek"
 
-#: ../src/ui/popup_menu.c:339
+#: ../src/ui/popup_menu.c:327
+msgid "_Mark All As Read"
+msgstr "Tandai Semua Telah _Dibaca"
+
+#: ../src/ui/popup_menu.c:332
 msgid "_Rebuild"
 msgstr "Ban_gun Ulang"
 
-#: ../src/ui/popup_menu.c:351
+#: ../src/ui/popup_menu.c:338 ../src/ui/feed_list_node.c:417
+msgid "_Delete"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:344
 msgid "Convert To Local Subscriptions..."
 msgstr "Konversi Ke Langganan Lokal..."
 
-#: ../src/ui/preferences_dialog.c:87
+#: ../src/ui/preferences_dialog.c:86
 msgid "GNOME default"
 msgstr "Bawaan GNOME"
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/preferences_dialog.c:87
 msgid "Text below icons"
 msgstr "Teks di bawah ikon"
 
-#: ../src/ui/preferences_dialog.c:89
+#: ../src/ui/preferences_dialog.c:88
 msgid "Text beside icons"
 msgstr "Teks di samping ikon"
 
-#: ../src/ui/preferences_dialog.c:90
+#: ../src/ui/preferences_dialog.c:89
 msgid "Icons only"
 msgstr "Hanya ikon"
 
-#: ../src/ui/preferences_dialog.c:91
+#: ../src/ui/preferences_dialog.c:90
 msgid "Text only"
 msgstr "Hanya teks"
 
-#: ../src/ui/preferences_dialog.c:99 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:43
 msgid "minutes"
 msgstr "menit"
 
-#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:99 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr "jam"
 
-#: ../src/ui/preferences_dialog.c:101 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr "hari"
 
-#: ../src/ui/preferences_dialog.c:106
+#: ../src/ui/preferences_dialog.c:105
 msgid "Space"
 msgstr "Spasi"
 
-#: ../src/ui/preferences_dialog.c:107
+#: ../src/ui/preferences_dialog.c:106
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Spasi"
 
-#: ../src/ui/preferences_dialog.c:108
+#: ../src/ui/preferences_dialog.c:107
 msgid "<Alt> Space"
 msgstr "<Alt> Spasi"
 
-#: ../src/ui/preferences_dialog.c:113
+#: ../src/ui/preferences_dialog.c:112
 msgid "Normal View"
 msgstr "Tampilan Normal"
 
-#: ../src/ui/preferences_dialog.c:114
+#: ../src/ui/preferences_dialog.c:113
 msgid "Wide View"
 msgstr "Tampilan Luas"
 
-#: ../src/ui/preferences_dialog.c:115
+#: ../src/ui/preferences_dialog.c:114
 msgid "Combined View"
 msgstr "Tampilan Gabungan"
 
-#: ../src/ui/preferences_dialog.c:500
+#: ../src/ui/preferences_dialog.c:451
+msgid "Default Browser"
+msgstr "Peramban Bawaan"
+
+#: ../src/ui/preferences_dialog.c:453
 msgid "Manual"
 msgstr "Manual"
 
-#: ../src/ui/preferences_dialog.c:515
-msgid "Browser default"
-msgstr "Peramban bawaan"
-
-#: ../src/ui/preferences_dialog.c:518
-msgid "Existing window"
-msgstr "Jendela yang ada"
-
-#: ../src/ui/preferences_dialog.c:521
-msgid "New window"
-msgstr "Jendela baru"
-
-#: ../src/ui/preferences_dialog.c:524
-msgid "New tab"
-msgstr "Tab baru"
-
-#: ../src/ui/preferences_dialog.c:684
-msgid "Integrate with the messaging menu (indicator)"
-msgstr "Integrasi dengan menu perpesanan (indikator)"
-
-#: ../src/ui/preferences_dialog.c:687
-msgid "Terminate instead of minimizing to the messaging menu"
-msgstr "Akhiri daripada meminimalkan menu perpesanan"
-
-#: ../src/ui/preferences_dialog.c:690
-msgid "Start minimized to the messaging menu"
-msgstr "Mulai minimalkan ke menu perpesanan"
-
-#: ../src/ui/preferences_dialog.c:790
+#: ../src/ui/preferences_dialog.c:675
 msgid "Type"
 msgstr "Tipe"
 
-#: ../src/ui/preferences_dialog.c:793
+#: ../src/ui/preferences_dialog.c:678
 msgid "Program"
 msgstr "Program"
 
@@ -1369,7 +1363,7 @@ msgstr "Program"
 msgid "(Empty)"
 msgstr "(Kosong)"
 
-#: ../src/ui/feed_list_node.c:343
+#: ../src/ui/feed_list_node.c:335
 #, c-format
 msgid ""
 "%s\n"
@@ -1378,121 +1372,77 @@ msgstr ""
 "%s\n"
 "<i>Membangun ulang</i>"
 
-#: ../src/ui/subscription_dialog.c:430
+#: ../src/ui/feed_list_node.c:406
+msgid "Deleting entry"
+msgstr "Menghapus Entri"
+
+#: ../src/ui/feed_list_node.c:407
+#, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "Anda yakin ingin menghapus \"%s\" dan isinya?"
+
+#: ../src/ui/feed_list_node.c:407
+#, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
+msgstr "Anda yakin hendak menghapus \"%s\"?"
+
+#: ../src/ui/feed_list_node.c:419
+msgid "Deletion Confirmation"
+msgstr "Konfirmasi Penghapusan"
+
+#: ../src/ui/subscription_dialog.c:351 ../src/fl_sources/opml_source.c:379
+msgid "_Open"
+msgstr ""
+
+#: ../src/ui/subscription_dialog.c:425
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
-msgid_plural "The provider of this feed suggests an update interval of %d minutes."
+msgid_plural ""
+"The provider of this feed suggests an update interval of %d minutes."
 msgstr[0] "Penyedia feed ini menyarankan interval pembaruan %d menit."
 msgstr[1] "Penyedia feed ini menyarankan interval pembaruan %d menit."
 
-#: ../src/ui/subscription_dialog.c:434
+#: ../src/ui/subscription_dialog.c:429
 msgid "This feed specifies no default update interval."
 msgstr "Feed ini tidak ditentukan interval pembaruannya."
 
-#: ../src/ui/browser_tabs.c:153
+#: ../src/ui/browser_tabs.c:264
 msgid "Untitled"
 msgstr "Tak berjudul"
-
-#: ../src/ui/ui_tray.c:221
-#, c-format
-msgid "%d new item"
-msgid_plural "%d new items"
-msgstr[0] "%d item baru"
-msgstr[1] "%d item baru"
-
-#: ../src/ui/ui_tray.c:224
-msgid "No new items"
-msgstr "Tidak ada item baru"
-
-#: ../src/ui/ui_tray.c:228
-#, c-format
-msgid ""
-"%s\n"
-"%d unread item"
-msgid_plural ""
-"%s\n"
-"%d unread items"
-msgstr[0] ""
-"%s\n"
-"%d item belum dibaca"
-msgstr[1] ""
-"%s\n"
-"%d item belum dibaca"
-
-#: ../src/ui/ui_tray.c:230
-#, c-format
-msgid ""
-"%s\n"
-"No unread items"
-msgstr ""
-"%s\n"
-"Tidak ada item yang belum dibaca"
 
 #: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
 msgid "Website"
 msgstr "Website"
 
-#: ../src/parsers/atom10.c:251
-msgid "Invalid Atom feed: unknown author"
-msgstr "Atom Feed salah: penulis tidak diketahui"
-
 #: ../src/parsers/ns_ag.c:70
 msgid "%b %d %H:%M"
 msgstr "%d %b %H:%M"
 
-#: ../src/fl_sources/aol_source.c:123
-msgid "AOL Reader login failed!"
-msgstr "AOL Reader gagal login!"
-
-#: ../src/fl_sources/aol_source.c:153
-msgid "AOL Reader Login"
-msgstr "AOL Reader Login"
-
-#: ../src/fl_sources/aol_source.c:268 ../src/fl_sources/default_source.c:145
-#: ../src/fl_sources/inoreader_source.c:272
-#: ../src/fl_sources/reedah_source.c:272
-#: ../src/fl_sources/theoldreader_source.c:278
-#: ../glade/new_subscription.ui.h:1 ../glade/simple_subscription.ui.h:1
+#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
+#: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Langganan Baru"
 
-#: ../src/fl_sources/aol_source.c:361
-msgid "AOL Reader"
-msgstr "Pembaca AOL"
+#: ../src/fl_sources/inoreader_source.c:102
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+#, fuzzy
+msgid "Login failed!"
+msgstr "Reedah login gagal!"
 
-#: ../src/fl_sources/aol_source.c:362
-msgid "Integrate the feed list of your AOL Reader account. Liferea will present your AOL Reader subscriptions, and will synchronize your feed list and reading lists."
-msgstr "Integrasi daftar feed dengan akun AOL Reader Anda. Liferea akan menyajikan langganan AOL Reader Anda, dan akan menyingkronkan daftar feed dan daftar bacaan."
-
-#: ../src/fl_sources/inoreader_source.c:115
-msgid "InoReader login failed!"
-msgstr "InoReader login gagal!"
-
-#: ../src/fl_sources/inoreader_source.c:387
+#: ../src/fl_sources/inoreader_source.c:311
 msgid "InoReader"
 msgstr "InoReader"
 
-#: ../src/fl_sources/inoreader_source.c:388
-msgid "Integrate the feed list of your InoReader account. Liferea will present your InoReader subscriptions, and will synchronize your feed list and reading lists."
-msgstr "Integrasi dengan daftar feed akun InoReader Anda. Liferea akan menyajikan langganan InoReader Anda, dan akan menyingkronkan daftar feed dan daftar bacaan."
-
-#: ../src/fl_sources/google_source.c:148
+#: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/google_source.c:149
-msgid "Integrate the feed list of your Google Reader account. Liferea will present your Google Reader subscriptions, and will synchronize your feed list and reading lists."
-msgstr "Integrasi dengan daftar feed akun Google Reader Anda. Liferea akan menyajikan langganan Google Reader Anda, dan akan menyingkronkan daftar feed dan daftar bacaan."
-
-#: ../src/fl_sources/opml_source.c:326
+#: ../src/fl_sources/opml_source.c:319
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/fl_sources/opml_source.c:327
-msgid "Integrate blogrolls or Planets in your feed list. Liferea will automatically add and remove feeds according to the changes of the source OPML document"
-msgstr "Integradi blogroll atau planet di daftar feed Anda. Liferea akan menambahkan dan membuang feed secara otomatis sesuai perubahan pada sumber dokumen OPML"
-
-#: ../src/fl_sources/opml_source.c:394
+#: ../src/fl_sources/opml_source.c:379
 msgid "Choose OPML File"
 msgstr "Pilih Berkas OPML"
 
@@ -1500,113 +1450,167 @@ msgstr "Pilih Berkas OPML"
 msgid "New OPML Subscription"
 msgstr "Langganan OPML Baru"
 
-#: ../src/fl_sources/node_source.c:246
+#: ../src/fl_sources/node_source.c:336
 msgid "No feed list source types found!"
 msgstr "Tidak ada tipe daftar feed sumber yang ditemukan!"
 
-#: ../src/fl_sources/node_source.c:276
+#: ../src/fl_sources/node_source.c:365
 msgid "Source Type"
 msgstr "Tipe Sumber"
 
+#: ../src/fl_sources/node_source.c:416
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr ""
+
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:420
+#: ../src/fl_sources/node_source.c:582
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "Langganan '%s' telah berhasil dikonversi ke feed lokal!"
 
-#: ../src/fl_sources/reedah_source.c:115
-msgid "Reedah login failed!"
-msgstr "Reedah login gagal!"
-
-#: ../src/fl_sources/reedah_source.c:387
+#: ../src/fl_sources/reedah_source.c:312
 msgid "Reedah"
 msgstr "Reedah"
 
-#: ../src/fl_sources/reedah_source.c:388
-msgid "Integrate the feed list of your Reedah account. Liferea will present your Reedah subscriptions, and will synchronize your feed list and reading lists."
-msgstr "Integrasi dengan daftar feed akun Reedah Anda. Liferea akan menyajikan langganan Reedah Anda, dan akan menyingkronkan daftar feed dan daftar bacaan."
-
-#: ../src/fl_sources/reedah_source_feed.c:236
+#: ../src/fl_sources/reedah_source_feed.c:154
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "Tidak dapat mengurai JSON yang dihasilkan oleh API Reedah!"
 
-#: ../src/fl_sources/ttrss_source.c:359
+#: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:231
+msgid ""
+"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
+"URL!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:290
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:307
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
+"%s or later!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
-#: ../src/fl_sources/ttrss_source.c:360
-msgid "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will present your tt-rss subscriptions, and will synchronize your feed list and reading lists."
-msgstr "Integrasi dengan daftar feed akun Tiny Tiny RSS 1.5+ Anda. Liferea akan menyajikan langganan tt-rss Anda, dan akan menyingkronkan daftar feed dan daftar bacaan."
-
-#: ../src/fl_sources/ttrss_source_feed.c:119
+#: ../src/fl_sources/ttrss_source_feed.c:150
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Tidak dapat mengurai JSON yang dihasilkan oleh API TinyTinyRSS!"
 
-#: ../src/fl_sources/theoldreader_source.c:115
-msgid "TheOldReader login failed!"
-msgstr "TheOldReader login gagal!"
-
-#: ../src/fl_sources/theoldreader_source.c:393
+#: ../src/fl_sources/theoldreader_source.c:329
 msgid "TheOldReader"
 msgstr "TheOldReader"
 
-#: ../src/fl_sources/theoldreader_source.c:394
-msgid "Integrate the feed list of your TheOldReader account. Liferea will present your TheOldReader subscriptions, and will synchronize your feed list and reading lists."
-msgstr "Integrasi dengan daftar bacaan akun TheOldReader Anda. Liferea akan menyajikan langganan TheOldReader Anda, dan akan menyingkronkan daftar feed dan daftar bacaan."
+#: ../src/webkit/liferea_web_view.c:173
+msgid "Open Link In _Tab"
+msgstr "Buka Tautan di _Tab"
 
-#: ../src/notification/libnotify.c:61 ../src/notification/libnotify.c:83
-#: ../src/notification/libnotify.c:152
-msgid "This feed does not exist anymore!"
-msgstr "Feed ini sudah tidak ada!"
+#: ../src/webkit/liferea_web_view.c:174
+#, fuzzy
+msgid "Open Link In Browser"
+msgstr "Buka Tautan di _Peramban"
 
-#: ../src/notification/libnotify.c:125
+#: ../src/webkit/liferea_web_view.c:175
+#, fuzzy
+msgid "Open Link In External Browser"
+msgstr "_Buka Tautan di Peramban Eksternal"
+
+#: ../src/webkit/liferea_web_view.c:181
 #, c-format
-msgid "This news entry has no headline"
-msgstr "Berita ini tidak memiliki pokok berita"
+msgid "_Bookmark Link at %s"
+msgstr "_Markah Tautan pada %s"
 
-#: ../src/notification/libnotify.c:130
-msgid "Visit"
-msgstr "Kunjungi"
+#: ../src/webkit/liferea_web_view.c:185
+msgid "_Copy Link Location"
+msgstr "_Salin Tautan Lokasi"
 
-#: ../src/notification/libnotify.c:167 ../src/notification/libnotify.c:263
-msgid "Open feed"
-msgstr "Buka feed"
+#: ../src/webkit/liferea_web_view.c:188
+msgid "_Copy Image Location"
+msgstr "Salin Lokasi _Gambar"
 
-#: ../src/notification/libnotify.c:170 ../src/notification/libnotify.c:266
-msgid "Mark all as read"
-msgstr "Tandai semua telah dibaca"
+#: ../src/webkit/liferea_web_view.c:191
+msgid "S_ave Link As"
+msgstr "Simpan T_autan dengan Nama"
 
-#: ../src/notification/libnotify.c:247
-#, c-format
-msgid "<b>%s</b> has <b>%d</b> update"
-msgid_plural "<b>%s</b> has <b>%d</b> updates"
-msgstr[0] "<b>%s</b> memiliki <b>%d</b> pembaruan"
-msgstr[1] "<b>%s</b> memiliki <b>%d</b> pembaruan"
+#: ../src/webkit/liferea_web_view.c:194
+msgid "S_ave Image As"
+msgstr "Simpan Gam_bar dengan Nama"
 
-#: ../src/notification/libnotify.c:249
-msgid "Feed Update"
-msgstr "Pembaruan Feed"
+#: ../src/webkit/liferea_web_view.c:201
+msgid "_Subscribe..."
+msgstr "_Langgan..."
 
-#: ../src/notification/libnotify.c:260
-msgid "Show details"
-msgstr "Tampilkan rincian"
+#: ../src/webkit/liferea_web_view.c:205
+msgid "_Copy"
+msgstr ""
+
+#: ../glade/about.ui.h:1
+msgid "About"
+msgstr "Tentang"
+
+#: ../glade/about.ui.h:2
+msgid "Liferea is a news aggregator for GTK+"
+msgstr "Liferea ialah agregator berita untuk GTK+"
+
+#: ../glade/about.ui.h:3
+msgid "Liferea Homepage"
+msgstr "Halaman Depan Liferea"
 
 #: ../glade/auth.ui.h:1
 msgid "Authentication"
 msgstr "Otentikasi"
 
-#: ../glade/auth.ui.h:4 ../glade/liferea.ui.h:37
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:33
 msgid "_Password:"
 msgstr "_Kata sandi:"
 
-#: ../glade/auth.ui.h:5 ../glade/liferea.ui.h:38
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "User_name:"
 msgstr "_Nama pengguna"
 
 #: ../glade/auth.ui.h:6
-msgid "Note: <i>The username and password will be saved to your Liferea feedlist file without using encryption.</i>"
-msgstr "Catatan: <i>Nama pengguna dan kata sandi akan disimpan dalam daftar feed Liferea Anda tanpa menggunakan enkripsi.</i>"
+msgid ""
+"Note: <i>The username and password will be saved to your Liferea feedlist "
+"file without using encryption.</i>"
+msgstr ""
+"Catatan: <i>Nama pengguna dan kata sandi akan disimpan dalam daftar feed "
+"Liferea Anda tanpa menggunakan enkripsi.</i>"
+
+#: ../glade/enclosure_handler.ui.h:1
+msgid "Open Enclosure"
+msgstr "Buka Lampiran"
+
+#: ../glade/enclosure_handler.ui.h:2
+msgid "Open an enclosure of type:"
+msgstr "Buka lampiran bertipe:"
+
+#: ../glade/enclosure_handler.ui.h:3
+msgid ""
+"What should Liferea do with this enclosure? Please enter the command you "
+"want to be executed below. The enclosures URL will be supplied as an "
+"argument for this command:"
+msgstr ""
+"Apa yang harus Liferea lakukan dengan lampiran ini? Silahkan masukkan "
+"perintah yang Anda inginkan untuk dieksekusi di bawah. URL lampiran akan "
+"disediakan sebagai argumen untuk perintah ini:"
+
+#: ../glade/enclosure_handler.ui.h:4
+msgid "_Browse"
+msgstr "_Jelajah"
+
+#: ../glade/enclosure_handler.ui.h:5
+msgid "_Do this automatically for enclosures like this from now on."
+msgstr "_Lakukan secara otomatis untuk lampiran semacam ini mulai sekarang."
 
 #: ../glade/google_source.ui.h:1
 msgid "Add Google Reader Account"
@@ -1617,8 +1621,8 @@ msgid "Please enter your Google Reader account settings."
 msgstr "Silahkan masukkan pengaturan akun Google Reader Anda."
 
 #: ../glade/google_source.ui.h:3 ../glade/inoreader_source.ui.h:3
-#: ../glade/reedah_source.ui.h:3 ../glade/ttrss_source.ui.h:4
-#: ../glade/theoldreader_source.ui.h:3
+#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
+#: ../glade/ttrss_source.ui.h:4
 msgid "_Password"
 msgstr "_Kata sandi"
 
@@ -1632,318 +1636,100 @@ msgid "Add InoReader Account"
 msgstr "Tambahkan Akun InoReader"
 
 #: ../glade/inoreader_source.ui.h:2
-msgid "Please enter your InoReader account settings"
+#, fuzzy
+msgid "Please enter your InoReader account settings."
 msgstr "Silahkan masukkan pengaturan akun InoReader Anda"
 
-#: ../glade/liferea.ui.h:2
+#: ../glade/mainwindow.ui.h:2
 msgid "normal view"
 msgstr "tampilan normal"
 
-#: ../glade/liferea.ui.h:3
+#: ../glade/mainwindow.ui.h:3
 msgid "wide view"
 msgstr "tampilan luas"
 
-#: ../glade/liferea.ui.h:4
+#: ../glade/mainwindow.ui.h:4
 msgid "View Headlines"
 msgstr "Tampilan Pokok Berita"
 
-#: ../glade/liferea.ui.h:5
+#: ../glade/mainwindow.ui.h:5
 msgid "combined view"
 msgstr "tampilan gabungan"
 
-#: ../glade/liferea.ui.h:6 ../glade/prefs.ui.h:21
+#: ../glade/mainwindow.ui.h:6 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "Pokok berita"
 
-#: ../glade/liferea.ui.h:7
-msgid "Online/Offline Button"
-msgstr "Tombol Daring/Luring"
+#: ../glade/new_folder.ui.h:1
+msgid "New Folder"
+msgstr "Folder Baru"
 
-#: ../glade/liferea.ui.h:8
-msgid "Subscription Properties"
-msgstr "Properti Langganan"
+#: ../glade/new_folder.ui.h:2
+msgid "_Folder name:"
+msgstr "Nama _Folder:"
 
-#: ../glade/liferea.ui.h:9
-msgid "Feed Name"
-msgstr "Nama Feed"
+#: ../glade/new_newsbin.ui.h:1
+msgid "Create News Bin"
+msgstr "Buat Berita Bin"
 
-#: ../glade/liferea.ui.h:10
-msgid "Feed _Name:"
-msgstr "_Nama Feed:"
+#: ../glade/new_newsbin.ui.h:2
+msgid "_News Bin Name:"
+msgstr "_Nama Berita Bin:"
 
-#: ../glade/liferea.ui.h:11
-msgid "Update Interval"
-msgstr "Interval Pembaruan"
-
-#: ../glade/liferea.ui.h:12
-msgid "_Use global default update interval."
-msgstr "Gunakan interval pembaruan bawaan global."
-
-#: ../glade/liferea.ui.h:13
-msgid "_Feed specific update interval of"
-msgstr "Interval pembaruan _feed spesifik dari"
-
-#: ../glade/liferea.ui.h:14
-msgid "_Don't update this feed automatically."
-msgstr "_Jangan perbarui feed ini secara otomatis."
-
-#: ../glade/liferea.ui.h:15
-msgid " "
-msgstr " "
-
-#: ../glade/liferea.ui.h:17
-#, no-c-format
-msgid "This feed provider suggests an update interval of %d minutes."
-msgstr "Penyedia feed ini menyarankan interval pembaruan %d menit."
-
-#: ../glade/liferea.ui.h:18
-msgid "General"
-msgstr "Umum"
-
-#: ../glade/liferea.ui.h:19 ../glade/new_subscription.ui.h:2
+#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:12
 #: ../glade/simple_subscription.ui.h:3
 msgid "Feed Source"
 msgstr "Sumber Feed"
 
-#: ../glade/liferea.ui.h:20 ../glade/new_subscription.ui.h:8
+#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:13
 msgid "Source Type:"
 msgstr "Tipe Sumber:"
 
-#: ../glade/liferea.ui.h:21 ../glade/new_subscription.ui.h:3
-msgid "_Source:"
-msgstr "_Sumber:"
-
-#: ../glade/liferea.ui.h:22 ../glade/new_subscription.ui.h:4
+#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:14
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/liferea.ui.h:23 ../glade/new_subscription.ui.h:5
+#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:15
 msgid "_Command"
 msgstr "_Perintah"
 
-#: ../glade/liferea.ui.h:24 ../glade/new_subscription.ui.h:6
+#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:16
 msgid "_Local File"
 msgstr "Berkas _Lokal"
 
-#: ../glade/liferea.ui.h:25 ../glade/new_subscription.ui.h:7
+#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:17
 msgid "Select File..."
 msgstr "Pilih Berkas..."
 
-#: ../glade/liferea.ui.h:26 ../glade/new_subscription.ui.h:11
-msgid "Use conversion _filter"
-msgstr "Gunakan penyaring _percakapan"
-
-#: ../glade/liferea.ui.h:27 ../glade/new_subscription.ui.h:12
-msgid "Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for more information."
-msgstr "Liferea dapat menggunakan pengaya penyaring untuk mengakses feed dan direktori dalam format yang tidak didukung. Lihat dokumentasti untuk informasi lebih lengkap."
-
-#: ../glade/liferea.ui.h:28 ../glade/new_subscription.ui.h:13
-msgid "Convert _using:"
-msgstr "Konversi mengg_unakan:"
-
-#: ../glade/liferea.ui.h:30
-msgid "The cache setting controls if the contents of feeds are saved when Liferea exits. Marked items are always saved to the cache."
-msgstr "Pengaturan cache mengontrol jika konten feed tersimpan ketika Liferea ada. Item tertandai selalu disimpan ke cache."
-
-#: ../glade/liferea.ui.h:31
-msgid "_Default cache settings"
-msgstr "Pengaturan cache _bawaan"
-
-#: ../glade/liferea.ui.h:32
-msgid "Di_sable cache"
-msgstr "Nona_ktifkan cache"
-
-#: ../glade/liferea.ui.h:33
-msgid "_Unlimited cache"
-msgstr "_Cache tak terbatas"
-
-#: ../glade/liferea.ui.h:34
-msgid "_Number of items to save:"
-msgstr "_Jumlah item untuk disimpan:"
-
-#: ../glade/liferea.ui.h:35
-msgid "Archive"
-msgstr "Arsip"
-
-#: ../glade/liferea.ui.h:36
-msgid "Use HTTP _authentication"
-msgstr "Gunakan _otentikasi HTTP"
-
-#: ../glade/liferea.ui.h:39 ../glade/new_subscription.ui.h:10
-msgid "_Don't use proxy for download"
-msgstr "_Jangan gunakan proxy untuk mengunduh"
-
-#: ../glade/liferea.ui.h:40
-msgid "Download"
-msgstr "Unduh"
-
-#: ../glade/liferea.ui.h:41
-msgid "_Automatically download all enclosures of this feed."
-msgstr "_Unduh seluruh lampiran untuk feed ini secara otomatis."
-
-#: ../glade/liferea.ui.h:42
-msgid "Auto-_load item link in configured browser when selecting articles."
-msgstr "Muat-_otomatis tautan item pada peramban terkonfigurasi ketika memilih artikel."
-
-#: ../glade/liferea.ui.h:43
-msgid "Ignore _comment feeds for this subscription."
-msgstr "Abaikan _komentar feed untuk langganan ini."
-
-#: ../glade/liferea.ui.h:44
-msgid "_Enforce popup notification for this subscription."
-msgstr "_Paksa popup notifikasi untuk langganan ini."
-
-#: ../glade/liferea.ui.h:45
-msgid "_Never do popup notification for this subscription."
-msgstr "_Jangan pernah beri popup notifikasi untuk langganan ini."
-
-#: ../glade/liferea.ui.h:46
-msgid "_Mark downloaded items as read."
-msgstr "Tandai inte_m terunduh telah dibaca."
-
-#: ../glade/liferea.ui.h:47
-msgid "Advanced"
-msgstr "Tingkat Lanjut"
-
-#: ../glade/liferea.ui.h:48
-msgid "New Folder"
-msgstr "Folder Baru"
-
-#: ../glade/liferea.ui.h:49
-msgid "_Folder name:"
-msgstr "Nama _Folder:"
-
-#: ../glade/liferea.ui.h:50
-msgid "Rename"
-msgstr "Ganti Nama"
-
-#: ../glade/liferea.ui.h:51
-msgid "_New Name:"
-msgstr "_Nama Baru:"
-
-#: ../glade/liferea.ui.h:52
-msgid "Search Folder Properties"
-msgstr "Properti Pencarian Folder"
-
-#: ../glade/liferea.ui.h:53
-msgid "Search _Name:"
-msgstr "Cari _Nama:"
-
-#: ../glade/liferea.ui.h:54
-msgid "Find Items that meet the following criteria"
-msgstr "Temukan Item yang sesuai dengan kriteria berikut"
-
-#: ../glade/liferea.ui.h:55
-msgid "A_ny Rule Matches"
-msgstr "Beberapa Peratura_n Cocok"
-
-#: ../glade/liferea.ui.h:56
-msgid "_All Rules Must Match"
-msgstr "Semu_a Peraturan Harus Cocok"
-
-#: ../glade/liferea.ui.h:57
-msgid "Open Enclosure"
-msgstr "Buka Lampiran"
-
-#: ../glade/liferea.ui.h:58
-msgid "Open an enclosure of type:"
-msgstr "Buka lampiran bertipe:"
-
-#: ../glade/liferea.ui.h:59
-msgid "What should Liferea do with this enclosure? Please enter the command you want to be executed below. The enclosures URL will be supplied as an argument for this command:"
-msgstr "Apa yang harus Liferea lakukan dengan lampiran ini? Silahkan masukkan perintah yang Anda inginkan untuk dieksekusi di bawah. URL lampiran akan disediakan sebagai argumen untuk perintah ini:"
-
-#: ../glade/liferea.ui.h:60
-msgid "_Browse"
-msgstr "_Jelajah"
-
-#: ../glade/liferea.ui.h:61
-msgid "_Do this automatically for enclosures like this from now on."
-msgstr "_Lakukan secara otomatis untuk lampiran semacam ini mulai sekarang."
-
-#: ../glade/liferea.ui.h:62
-msgid "Search All Feeds"
-msgstr "Cari Semua Feed"
-
-#: ../glade/liferea.ui.h:63
-msgid "_Search for:"
-msgstr "_Cari untuk:"
-
-#: ../glade/liferea.ui.h:64
-msgid "Enter a search string Liferea should find either in a items title or in its content."
-msgstr "Masukkan string pencarian Liferea akan menemukan di antara judul item atau kontennya."
-
-#: ../glade/liferea.ui.h:65
-msgid "_Advanced..."
-msgstr "Tingkat _Lanjut..."
-
-#: ../glade/liferea.ui.h:66
-msgid "Starts searching for the specified text in all feeds. The search result will appear in the item list."
-msgstr "Mulai mencari untuk teks spesifik pada semua feed. Hasil pencarian akan nampak di daftar item."
-
-#: ../glade/liferea.ui.h:67
-msgid "Update Monitor"
-msgstr "Monitor Pembaruan"
-
-#: ../glade/liferea.ui.h:68
-msgid "Pending Requests"
-msgstr "Batalkan Permintaan"
-
-#: ../glade/liferea.ui.h:69
-msgid "Downloading Now"
-msgstr "Sedang Mengunduh"
-
-#: ../glade/liferea.ui.h:70
-msgid "Cancel _All"
-msgstr "Batalkan _Semua"
-
-#: ../glade/liferea.ui.h:71
-msgid "Create News Bin"
-msgstr "Buat Berita Bin"
-
-#: ../glade/liferea.ui.h:72
-msgid "_News Bin Name:"
-msgstr "_Nama Berita Bin:"
-
-#: ../glade/liferea.ui.h:73
-msgid "About"
-msgstr "Tentang"
-
-#: ../glade/liferea.ui.h:74
-msgid "Liferea is a news aggregator for GTK+"
-msgstr "Liferea ialah agregator berita untuk GTK+"
-
-#: ../glade/liferea.ui.h:75
-msgid "Liferea Homepage"
-msgstr "Halaman Depan Liferea"
-
-#: ../glade/liferea.ui.h:76
-msgid "Advanced Search"
-msgstr "Pencarian Lanjutan"
-
-#: ../glade/liferea.ui.h:77
-msgid "_Search Folder..."
-msgstr "_Folder Pencarian..."
-
-#: ../glade/liferea.ui.h:78
-msgid "Create Search Engine Feed"
-msgstr "Buat Mesin Pencarian Feed"
-
-#: ../glade/liferea.ui.h:79
-msgid "enter any search string you want"
-msgstr "masukkan string pencarian yang Anda inginkan"
-
-#: ../glade/liferea.ui.h:80
-msgid "Maximal _Number Of Result Items:"
-msgstr "Jumlah _Maksimal Hasil:"
-
-#: ../glade/liferea.ui.h:81
-msgid "Note: Liferea will generate a feed subscription which is used to query the search engine results for the specified search string. You can keep this feed permanently and update it like any other subscription."
-msgstr "Catatan: Liferea akan menghasilkan feed langganan yang digunakan untuk query hasil mesin pencarian untuk menentukan string pencarian. Anda dapat memertahankan feed ini secara permanen dan memerbaruinya seperti langganan lain."
+#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:18
+msgid "_Source:"
+msgstr "_Sumber:"
 
 #: ../glade/new_subscription.ui.h:9
 msgid "Download / Postprocessing"
 msgstr "Mengunduh / Postproses"
+
+#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
+msgid "_Don't use proxy for download"
+msgstr "_Jangan gunakan proxy untuk mengunduh"
+
+#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:19
+msgid "Use conversion _filter"
+msgstr "Gunakan penyaring _percakapan"
+
+#: ../glade/new_subscription.ui.h:12
+msgid ""
+"Liferea can use external filter plugins in order to access feeds and "
+"directories in non-supported formats.  See the documentation for more "
+"information."
+msgstr ""
+"Liferea dapat menggunakan pengaya penyaring untuk mengakses feed dan "
+"direktori dalam format yang tidak didukung. Lihat dokumentasti untuk "
+"informasi lebih lengkap."
+
+#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:21
+msgid "Convert _using:"
+msgstr "Konversi mengg_unakan:"
 
 #: ../glade/node_source.ui.h:1
 msgid "Source Selection"
@@ -1958,8 +1744,11 @@ msgid "Add OPML/Planet"
 msgstr "Tambahkan OPML/Planet"
 
 #: ../glade/opml_source.ui.h:2
-msgid "Please specify a local file or an URL pointing to a valid OPML feed list."
-msgstr "Silahkan tentukan berkas lokal atau URL yang mengarah ke daftar feed OPML yang valid."
+msgid ""
+"Please specify a local file or an URL pointing to a valid OPML feed list."
+msgstr ""
+"Silahkan tentukan berkas lokal atau URL yang mengarah ke daftar feed OPML "
+"yang valid."
 
 #: ../glade/opml_source.ui.h:3
 msgid "_Location"
@@ -1981,235 +1770,416 @@ msgstr "Penanganan Cache Feed"
 msgid "Default _number of items per feed to save:"
 msgstr "_Jumlah item per feed bawaan untuk disimpan:"
 
-#: ../glade/prefs.ui.h:4
+#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
+msgid "0"
+msgstr ""
+
+#: ../glade/prefs.ui.h:5
 msgid "Feed Update Settings"
 msgstr "Pengaturan Pembaruan Feed"
 
-#: ../glade/prefs.ui.h:5
+#: ../glade/prefs.ui.h:6
 msgid "_Update all subscriptions at startup."
 msgstr "_Perbarui semua langganan ketika memulai."
 
-#: ../glade/prefs.ui.h:6
+#: ../glade/prefs.ui.h:7
 msgid "Default Feed Refresh _Interval:"
 msgstr "_Interval Penyegaran Feed Bawaan:"
 
-#. Feed update interval hint in preference dialog.
-#: ../glade/prefs.ui.h:8
-msgid "Note: <i>Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.</i>"
-msgstr "Catatan: <i>Harap diingat untuk mengatur waktu penyegaran yang beralasan. Biasanya hal ini menyianyiakan bandwidth untuk menarik feed lebih sering dari setiap jam.</i>"
+#: ../glade/prefs.ui.h:8 ../glade/properties.ui.h:7
+msgid "1"
+msgstr ""
 
-#: ../glade/prefs.ui.h:9
+#. Feed update interval hint in preference dialog.
+#: ../glade/prefs.ui.h:10
+msgid ""
+"Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
+"waste of bandwidth to poll feeds more often than each hour.</i>"
+msgstr ""
+"Catatan: <i>Harap diingat untuk mengatur waktu penyegaran yang beralasan. "
+"Biasanya hal ini menyianyiakan bandwidth untuk menarik feed lebih sering "
+"dari setiap jam.</i>"
+
+#: ../glade/prefs.ui.h:11
 msgid "Feeds"
 msgstr "Feed"
 
-#: ../glade/prefs.ui.h:10
+#: ../glade/prefs.ui.h:12
 msgid "Folder Display Settings"
 msgstr "Pengaturan Tampilan Folder"
 
-#: ../glade/prefs.ui.h:11
+#: ../glade/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr "Tampilkan item dari _semua feed di bawah folder terpilih."
 
-#: ../glade/prefs.ui.h:12
+#: ../glade/prefs.ui.h:14
 msgid "_Hide read items."
 msgstr "Sembun_yikan item terbaca."
 
-#: ../glade/prefs.ui.h:13
+#: ../glade/prefs.ui.h:15
 msgid "Feed Icons (Favicons)"
 msgstr "Ikon Feed (Favicon)"
 
-#: ../glade/prefs.ui.h:14
+#: ../glade/prefs.ui.h:16
 msgid "_Update all favicons now"
 msgstr "Perbarui sel_uruh favicon sekarang"
 
-#: ../glade/prefs.ui.h:15
+#: ../glade/prefs.ui.h:17
 msgid "Folders"
 msgstr "Folder"
 
-#: ../glade/prefs.ui.h:16
+#: ../glade/prefs.ui.h:18
 msgid "Reading Headlines"
 msgstr "Membaca Pokok Berita"
 
-#: ../glade/prefs.ui.h:17
+#: ../glade/prefs.ui.h:19
 msgid "_Skim through articles with:"
 msgstr "Tepi_s artikel dengan:"
 
-#: ../glade/prefs.ui.h:18
+#: ../glade/prefs.ui.h:20
 msgid "_Default View Mode:"
 msgstr "Mode _Tampilan Bawaan:"
 
-#: ../glade/prefs.ui.h:19
+#: ../glade/prefs.ui.h:21
 msgid "Web Integration"
 msgstr "Integrasi Website"
 
-#: ../glade/prefs.ui.h:20
+#: ../glade/prefs.ui.h:22
 msgid "_Post Bookmarks to"
 msgstr "_Posting Markah ke"
 
-#: ../glade/prefs.ui.h:22
+#: ../glade/prefs.ui.h:24
 msgid "Internal Browser Settings"
 msgstr "Pengaturan Peramban Internal"
 
-#: ../glade/prefs.ui.h:23
+#: ../glade/prefs.ui.h:25
 msgid "Open links in Liferea's _window."
 msgstr "Buka tautan di _jendela Liferea."
 
-#: ../glade/prefs.ui.h:24
+#: ../glade/prefs.ui.h:26
 msgid "_Disable Javascript."
 msgstr "_Nonaktifkan Javascript."
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
 msgstr "_Aktifkan pengaya peramban."
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:28
 msgid "External Browser Settings"
 msgstr "Pengaturan Peramban Eksternal"
 
-#: ../glade/prefs.ui.h:27
-msgid "_Open link in:"
-msgstr "_Buka tautan di:"
+#: ../glade/prefs.ui.h:29
+msgid "_Browser:"
+msgstr "_Peramban:"
 
-#: ../glade/prefs.ui.h:28
+#: ../glade/prefs.ui.h:30
 msgid "_Manual:"
 msgstr "_Manual:"
 
-#: ../glade/prefs.ui.h:30
+#: ../glade/prefs.ui.h:32
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr "<small>(%s untuk URL)</small>"
 
-#: ../glade/prefs.ui.h:31
-msgid "_Browser:"
-msgstr "_Peramban:"
-
-#: ../glade/prefs.ui.h:32
+#: ../glade/prefs.ui.h:33
 msgid "Browser"
 msgstr "Peramban"
 
-#: ../glade/prefs.ui.h:33
-msgid "Notification Settings"
-msgstr "Pengaturan Notifikasi"
-
 #: ../glade/prefs.ui.h:34
-msgid "Show a _popup window with new headlines."
-msgstr "Perlihatkan jendela popup dengan pokok berita baru."
-
-#: ../glade/prefs.ui.h:35
-msgid "Show a status _icon in the notification area (system tray)."
-msgstr "Perlihatkan _ikon status di area notifikasi (sistem tray)."
-
-#: ../glade/prefs.ui.h:36
-msgid "Show _number of new items in the tray icon."
-msgstr "Perlihatkan _jumlah item baru di ikon tray."
-
-#: ../glade/prefs.ui.h:37
-msgid "T_erminate instead of minimizing to tray icon."
-msgstr "H_entikan ketimbang minimalkan ke ikon tray."
-
-#: ../glade/prefs.ui.h:38
-msgid "_Start in tray icon."
-msgstr "_Mulai di ikon tray."
-
-#: ../glade/prefs.ui.h:39
 msgid "Toolbar Settings"
 msgstr "Pengaturan Toolbar"
 
-#: ../glade/prefs.ui.h:40
+#: ../glade/prefs.ui.h:35
 msgid "_Hide toolbar."
 msgstr "_Sembunyikan toolbar."
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:36
 msgid "Toolbar _button labels:"
 msgstr "La_bel tombol toolbar:"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:37
 msgid "GUI"
 msgstr "GUI"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:38
 msgid "HTTP Proxy Server"
 msgstr "HTTP Proxy Server"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:39
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Deteksi Otomatis (GNOME atau lingkungan)"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:40
 msgid "_No Proxy"
 msgstr "_Tanpa Proxy"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:41
 msgid "_Manual Setting:"
 msgstr "Pengaturan _Manual:"
 
-#: ../glade/prefs.ui.h:47
-msgid "Proxy _Port:"
-msgstr "_Port Proxy:"
-
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:42
 msgid "Proxy _Host:"
 msgstr "_Host Proxy:"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:43
+msgid "Proxy _Port:"
+msgstr "_Port Proxy:"
+
+#: ../glade/prefs.ui.h:44
 msgid "Use Proxy Au_thentication"
 msgstr "Gunakan Oten_tikasi Proxy"
 
-#: ../glade/prefs.ui.h:50
-msgid "Proxy Pass_word:"
-msgstr "_Kata Sandi Proxy:"
-
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Username:"
 msgstr "_Nama Pengguna Proxy:"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:46
+msgid "Proxy Pass_word:"
+msgstr "_Kata Sandi Proxy:"
+
+#: ../glade/prefs.ui.h:47
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:48
+#, fuzzy
+msgid "Privacy Settings"
+msgstr "Pengaturan Tampilan Folder"
+
+#: ../glade/prefs.ui.h:49
+msgid "Tell sites that I do _not want to be tracked"
+msgstr ""
+
+#: ../glade/prefs.ui.h:50
+msgid "Privacy"
+msgstr ""
+
+#: ../glade/prefs.ui.h:51
 msgid "Downloading Enclosures"
 msgstr "Mengunduh Lampiran"
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:52
 msgid "_Download using"
 msgstr "_Unduh menggunakan"
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:53
 msgid "Opening Enclosures"
 msgstr "Membuka Lampiran"
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:54
 msgid "Enclosures"
 msgstr "Lampiran"
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:55
 msgid "Plugins"
 msgstr "Pengaya"
+
+#: ../glade/properties.ui.h:1
+msgid "Subscription Properties"
+msgstr "Properti Langganan"
+
+#: ../glade/properties.ui.h:2
+msgid "Feed Name"
+msgstr "Nama Feed"
+
+#: ../glade/properties.ui.h:3
+msgid "Feed _Name:"
+msgstr "_Nama Feed:"
+
+#: ../glade/properties.ui.h:4
+msgid "Update Interval"
+msgstr "Interval Pembaruan"
+
+#: ../glade/properties.ui.h:5
+msgid "_Use global default update interval."
+msgstr "Gunakan interval pembaruan bawaan global."
+
+#: ../glade/properties.ui.h:6
+msgid "_Feed specific update interval of"
+msgstr "Interval pembaruan _feed spesifik dari"
+
+#: ../glade/properties.ui.h:8
+msgid "_Don't update this feed automatically."
+msgstr "_Jangan perbarui feed ini secara otomatis."
+
+#: ../glade/properties.ui.h:10
+#, no-c-format
+msgid "This feed provider suggests an update interval of %d minutes."
+msgstr "Penyedia feed ini menyarankan interval pembaruan %d menit."
+
+#: ../glade/properties.ui.h:11
+msgid "General"
+msgstr "Umum"
+
+#: ../glade/properties.ui.h:20
+#, fuzzy
+msgid ""
+"Liferea can use external filter scripts in order to access feeds and "
+"directories in non-supported formats."
+msgstr ""
+"Liferea dapat menggunakan pengaya penyaring untuk mengakses feed dan "
+"direktori dalam format yang tidak didukung. Lihat dokumentasti untuk "
+"informasi lebih lengkap."
+
+#: ../glade/properties.ui.h:23
+msgid ""
+"The cache setting controls if the contents of feeds are saved when Liferea "
+"exits. Marked items are always saved to the cache."
+msgstr ""
+"Pengaturan cache mengontrol jika konten feed tersimpan ketika Liferea ada. "
+"Item tertandai selalu disimpan ke cache."
+
+#: ../glade/properties.ui.h:24
+msgid "_Default cache settings"
+msgstr "Pengaturan cache _bawaan"
+
+#: ../glade/properties.ui.h:25
+msgid "Di_sable cache"
+msgstr "Nona_ktifkan cache"
+
+#: ../glade/properties.ui.h:26
+msgid "_Unlimited cache"
+msgstr "_Cache tak terbatas"
+
+#: ../glade/properties.ui.h:27
+msgid "_Number of items to save:"
+msgstr "_Jumlah item untuk disimpan:"
+
+#: ../glade/properties.ui.h:29
+msgid "Archive"
+msgstr "Arsip"
+
+#: ../glade/properties.ui.h:30
+msgid "Use HTTP _authentication"
+msgstr "Gunakan _otentikasi HTTP"
+
+#: ../glade/properties.ui.h:34
+msgid "Download"
+msgstr "Unduh"
+
+#: ../glade/properties.ui.h:35
+msgid "_Automatically download all enclosures of this feed."
+msgstr "_Unduh seluruh lampiran untuk feed ini secara otomatis."
+
+#: ../glade/properties.ui.h:36
+msgid "Auto-_load item link in configured browser when selecting articles."
+msgstr ""
+"Muat-_otomatis tautan item pada peramban terkonfigurasi ketika memilih "
+"artikel."
+
+#: ../glade/properties.ui.h:37
+msgid "Ignore _comment feeds for this subscription."
+msgstr "Abaikan _komentar feed untuk langganan ini."
+
+#: ../glade/properties.ui.h:38
+msgid "_Mark downloaded items as read."
+msgstr "Tandai inte_m terunduh telah dibaca."
+
+#: ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "Tingkat Lanjut"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
 msgstr "Tambahkan Akun Reedah"
 
 #: ../glade/reedah_source.ui.h:2
-msgid "Please enter your  Reedah account settings"
+#, fuzzy
+msgid "Please enter your Reedah account settings."
 msgstr "Silahkan masukkan pengaturan akun Reedah Anda"
+
+#: ../glade/rename_node.ui.h:1
+msgid "Rename"
+msgstr "Ganti Nama"
+
+#: ../glade/rename_node.ui.h:2
+msgid "_New Name:"
+msgstr "_Nama Baru:"
+
+#: ../glade/search_folder.ui.h:1
+msgid "Search Folder Properties"
+msgstr "Properti Pencarian Folder"
+
+#: ../glade/search_folder.ui.h:2
+msgid "Search _Name:"
+msgstr "Cari _Nama:"
+
+#: ../glade/search_folder.ui.h:3 ../glade/search.ui.h:3
+msgid "Find Items that meet the following criteria"
+msgstr "Temukan Item yang sesuai dengan kriteria berikut"
+
+#: ../glade/search_folder.ui.h:4 ../glade/search.ui.h:4
+msgid "A_ny Rule Matches"
+msgstr "Beberapa Peratura_n Cocok"
+
+#: ../glade/search_folder.ui.h:5 ../glade/search.ui.h:5
+msgid "_All Rules Must Match"
+msgstr "Semu_a Peraturan Harus Cocok"
+
+#: ../glade/search.ui.h:1
+msgid "Advanced Search"
+msgstr "Pencarian Lanjutan"
+
+#: ../glade/search.ui.h:2
+msgid "_Search Folder..."
+msgstr "_Folder Pencarian..."
+
+#: ../glade/simple_search.ui.h:1
+msgid "Search All Feeds"
+msgstr "Cari Semua Feed"
+
+#: ../glade/simple_search.ui.h:2
+msgid "_Advanced..."
+msgstr "Tingkat _Lanjut..."
+
+#: ../glade/simple_search.ui.h:3
+msgid ""
+"Starts searching for the specified text in all feeds. The search result will "
+"appear in the item list."
+msgstr ""
+"Mulai mencari untuk teks spesifik pada semua feed. Hasil pencarian akan "
+"nampak di daftar item."
+
+#: ../glade/simple_search.ui.h:4
+msgid "_Search for:"
+msgstr "_Cari untuk:"
+
+#: ../glade/simple_search.ui.h:5
+msgid ""
+"Enter a search string Liferea should find either in a items title or in its "
+"content."
+msgstr ""
+"Masukkan string pencarian Liferea akan menemukan di antara judul item atau "
+"kontennya."
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
 msgstr "Tingkat Mahir..."
 
 #: ../glade/simple_subscription.ui.h:4
-msgid "Enter a website location to use feed autodiscovery or in case you know it the exact feed location."
-msgstr "Masukkan lokasi website untuk menggunakan feed autodiscovery atau jika Anda benar-benar tahu lokasi feednya."
+msgid ""
+"Enter a website location to use feed autodiscovery or in case you know it "
+"the exact feed location."
+msgstr ""
+"Masukkan lokasi website untuk menggunakan feed autodiscovery atau jika Anda "
+"benar-benar tahu lokasi feednya."
+
+#: ../glade/theoldreader_source.ui.h:1
+msgid "Add TheOldReader Account"
+msgstr "Tambahkan Akun TheOldReader"
+
+#: ../glade/theoldreader_source.ui.h:2
+msgid "Please enter your TheOldReader account settings."
+msgstr "Silahkan masukkan pengaturan akun TheOldReader Anda."
 
 #: ../glade/ttrss_source.ui.h:1
 msgid "Add Tiny Tiny RSS Account"
 msgstr "Tambahkan Akun Tiny Tiny RSS"
 
 #: ../glade/ttrss_source.ui.h:2
-msgid "Please enter your tt-rss account settings."
-msgstr "Silahkan masukkan pengaturan akun tt-rss Anda."
+#, fuzzy
+msgid "Please enter your TinyTinyRSS account settings."
+msgstr "Silahkan masukkan pengaturan akun InoReader Anda"
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
@@ -2219,13 +2189,261 @@ msgstr "URL _Server"
 msgid "_Username"
 msgstr "_Nama Pengguna"
 
-#: ../glade/theoldreader_source.ui.h:1
-msgid "Add TheOldReader Account"
-msgstr "Tambahkan Akun TheOldReader"
+#: ../glade/update_monitor.ui.h:1
+msgid "Update Monitor"
+msgstr "Monitor Pembaruan"
 
-#: ../glade/theoldreader_source.ui.h:2
-msgid "Please enter your TheOldReader account settings."
-msgstr "Silahkan masukkan pengaturan akun TheOldReader Anda."
+#: ../glade/update_monitor.ui.h:2
+#, fuzzy
+msgid "Cancel All"
+msgstr "Batalkan _Semua"
+
+#: ../glade/update_monitor.ui.h:3
+msgid "Pending Requests"
+msgstr "Batalkan Permintaan"
+
+#: ../glade/update_monitor.ui.h:4
+msgid "Downloading Now"
+msgstr "Sedang Mengunduh"
+
+#~ msgid "Liferea, the Linux Feed Reader"
+#~ msgstr "Liferea, Pembaca Feed Linux"
+
+#~ msgid "For more information, please visit https://lzone.de/liferea/"
+#~ msgstr "Untuk informasi, silahkan kunjungi https://lzone.de/liferea/"
+
+#~ msgid "_Open Link In Browser"
+#~ msgstr "Buka Tautan di _Peramban"
+
+#~ msgid "_Open Link In External Browser"
+#~ msgstr "_Buka Tautan di Peramban Eksternal"
+
+#~ msgid " "
+#~ msgstr " "
+
+#~ msgid "Create Search Engine Feed"
+#~ msgstr "Buat Mesin Pencarian Feed"
+
+#~ msgid "enter any search string you want"
+#~ msgstr "masukkan string pencarian yang Anda inginkan"
+
+#~ msgid "Maximal _Number Of Result Items:"
+#~ msgstr "Jumlah _Maksimal Hasil:"
+
+#~ msgid ""
+#~ "Note: Liferea will generate a feed subscription which is used to query "
+#~ "the search engine results for the specified search string. You can keep "
+#~ "this feed permanently and update it like any other subscription."
+#~ msgstr ""
+#~ "Catatan: Liferea akan menghasilkan feed langganan yang digunakan untuk "
+#~ "query hasil mesin pencarian untuk menentukan string pencarian. Anda dapat "
+#~ "memertahankan feed ini secara permanen dan memerbaruinya seperti "
+#~ "langganan lain."
+
+#~ msgid "Liferea is now online"
+#~ msgstr "Liferea sekarang daring"
+
+#~ msgid "Work Offline"
+#~ msgstr "Bekerja Luring"
+
+#~ msgid "Liferea is now offline"
+#~ msgstr "Liferea sekarang luring"
+
+#~ msgid "Work Online"
+#~ msgstr "Bekerja Daring"
+
+#~ msgid "This option allows you to disable subscription updating."
+#~ msgstr ""
+#~ "Pilihan ini mengizinkan Anda untuk menonaktifkan pembaruan langganan."
+
+#~ msgid "Browser default"
+#~ msgstr "Peramban bawaan"
+
+#~ msgid "Existing window"
+#~ msgstr "Jendela yang ada"
+
+#~ msgid "New window"
+#~ msgstr "Jendela baru"
+
+#~ msgid "New tab"
+#~ msgstr "Tab baru"
+
+#~ msgid "AOL Reader Login"
+#~ msgstr "AOL Reader Login"
+
+#~ msgid "AOL Reader"
+#~ msgstr "Pembaca AOL"
+
+#~ msgid "Online/Offline Button"
+#~ msgstr "Tombol Daring/Luring"
+
+#~ msgid "_Open link in:"
+#~ msgstr "_Buka tautan di:"
+
+#~ msgid "Integrate with the messaging menu (indicator)"
+#~ msgstr "Integrasi dengan menu perpesanan (indikator)"
+
+#~ msgid "Terminate instead of minimizing to the messaging menu"
+#~ msgstr "Akhiri daripada meminimalkan menu perpesanan"
+
+#~ msgid "Start minimized to the messaging menu"
+#~ msgstr "Mulai minimalkan ke menu perpesanan"
+
+#~ msgid "%d new item"
+#~ msgid_plural "%d new items"
+#~ msgstr[0] "%d item baru"
+#~ msgstr[1] "%d item baru"
+
+#~ msgid "No new items"
+#~ msgstr "Tidak ada item baru"
+
+#~ msgid ""
+#~ "%s\n"
+#~ "%d unread item"
+#~ msgid_plural ""
+#~ "%s\n"
+#~ "%d unread items"
+#~ msgstr[0] ""
+#~ "%s\n"
+#~ "%d item belum dibaca"
+#~ msgstr[1] ""
+#~ "%s\n"
+#~ "%d item belum dibaca"
+
+#~ msgid ""
+#~ "%s\n"
+#~ "No unread items"
+#~ msgstr ""
+#~ "%s\n"
+#~ "Tidak ada item yang belum dibaca"
+
+#~ msgid "Invalid Atom feed: unknown author"
+#~ msgstr "Atom Feed salah: penulis tidak diketahui"
+
+#~ msgid "AOL Reader login failed!"
+#~ msgstr "AOL Reader gagal login!"
+
+#~ msgid ""
+#~ "Integrate the feed list of your AOL Reader account. Liferea will present "
+#~ "your AOL Reader subscriptions, and will synchronize your feed list and "
+#~ "reading lists."
+#~ msgstr ""
+#~ "Integrasi daftar feed dengan akun AOL Reader Anda. Liferea akan "
+#~ "menyajikan langganan AOL Reader Anda, dan akan menyingkronkan daftar feed "
+#~ "dan daftar bacaan."
+
+#~ msgid "InoReader login failed!"
+#~ msgstr "InoReader login gagal!"
+
+#~ msgid ""
+#~ "Integrate the feed list of your InoReader account. Liferea will present "
+#~ "your InoReader subscriptions, and will synchronize your feed list and "
+#~ "reading lists."
+#~ msgstr ""
+#~ "Integrasi dengan daftar feed akun InoReader Anda. Liferea akan menyajikan "
+#~ "langganan InoReader Anda, dan akan menyingkronkan daftar feed dan daftar "
+#~ "bacaan."
+
+#~ msgid ""
+#~ "Integrate the feed list of your Google Reader account. Liferea will "
+#~ "present your Google Reader subscriptions, and will synchronize your feed "
+#~ "list and reading lists."
+#~ msgstr ""
+#~ "Integrasi dengan daftar feed akun Google Reader Anda. Liferea akan "
+#~ "menyajikan langganan Google Reader Anda, dan akan menyingkronkan daftar "
+#~ "feed dan daftar bacaan."
+
+#~ msgid ""
+#~ "Integrate blogrolls or Planets in your feed list. Liferea will "
+#~ "automatically add and remove feeds according to the changes of the source "
+#~ "OPML document"
+#~ msgstr ""
+#~ "Integradi blogroll atau planet di daftar feed Anda. Liferea akan "
+#~ "menambahkan dan membuang feed secara otomatis sesuai perubahan pada "
+#~ "sumber dokumen OPML"
+
+#~ msgid ""
+#~ "Integrate the feed list of your Reedah account. Liferea will present your "
+#~ "Reedah subscriptions, and will synchronize your feed list and reading "
+#~ "lists."
+#~ msgstr ""
+#~ "Integrasi dengan daftar feed akun Reedah Anda. Liferea akan menyajikan "
+#~ "langganan Reedah Anda, dan akan menyingkronkan daftar feed dan daftar "
+#~ "bacaan."
+
+#~ msgid ""
+#~ "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
+#~ "present your tt-rss subscriptions, and will synchronize your feed list "
+#~ "and reading lists."
+#~ msgstr ""
+#~ "Integrasi dengan daftar feed akun Tiny Tiny RSS 1.5+ Anda. Liferea akan "
+#~ "menyajikan langganan tt-rss Anda, dan akan menyingkronkan daftar feed dan "
+#~ "daftar bacaan."
+
+#~ msgid "TheOldReader login failed!"
+#~ msgstr "TheOldReader login gagal!"
+
+#~ msgid ""
+#~ "Integrate the feed list of your TheOldReader account. Liferea will "
+#~ "present your TheOldReader subscriptions, and will synchronize your feed "
+#~ "list and reading lists."
+#~ msgstr ""
+#~ "Integrasi dengan daftar bacaan akun TheOldReader Anda. Liferea akan "
+#~ "menyajikan langganan TheOldReader Anda, dan akan menyingkronkan daftar "
+#~ "feed dan daftar bacaan."
+
+#~ msgid "This feed does not exist anymore!"
+#~ msgstr "Feed ini sudah tidak ada!"
+
+#~ msgid "This news entry has no headline"
+#~ msgstr "Berita ini tidak memiliki pokok berita"
+
+#~ msgid "Visit"
+#~ msgstr "Kunjungi"
+
+#~ msgid "Open feed"
+#~ msgstr "Buka feed"
+
+#~ msgid "Mark all as read"
+#~ msgstr "Tandai semua telah dibaca"
+
+#~ msgid "<b>%s</b> has <b>%d</b> update"
+#~ msgid_plural "<b>%s</b> has <b>%d</b> updates"
+#~ msgstr[0] "<b>%s</b> memiliki <b>%d</b> pembaruan"
+#~ msgstr[1] "<b>%s</b> memiliki <b>%d</b> pembaruan"
+
+#~ msgid "Feed Update"
+#~ msgstr "Pembaruan Feed"
+
+#~ msgid "Show details"
+#~ msgstr "Tampilkan rincian"
+
+#~ msgid "_Enforce popup notification for this subscription."
+#~ msgstr "_Paksa popup notifikasi untuk langganan ini."
+
+#~ msgid "_Never do popup notification for this subscription."
+#~ msgstr "_Jangan pernah beri popup notifikasi untuk langganan ini."
+
+#~ msgid "Notification Settings"
+#~ msgstr "Pengaturan Notifikasi"
+
+#~ msgid "Show a _popup window with new headlines."
+#~ msgstr "Perlihatkan jendela popup dengan pokok berita baru."
+
+#~ msgid "Show a status _icon in the notification area (system tray)."
+#~ msgstr "Perlihatkan _ikon status di area notifikasi (sistem tray)."
+
+#~ msgid "Show _number of new items in the tray icon."
+#~ msgstr "Perlihatkan _jumlah item baru di ikon tray."
+
+#~ msgid "T_erminate instead of minimizing to tray icon."
+#~ msgstr "H_entikan ketimbang minimalkan ke ikon tray."
+
+#~ msgid "_Start in tray icon."
+#~ msgstr "_Mulai di ikon tray."
+
+#~ msgid "Please enter your tt-rss account settings."
+#~ msgstr "Silahkan masukkan pengaturan akun tt-rss Anda."
 
 #~ msgid "No comments yet."
 #~ msgstr "Belum ada komentar."

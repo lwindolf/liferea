@@ -2,7 +2,7 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkDialog" id="ttrss_source_dialog">
+  <object class="GtkDialog" id="ttrss_source">
     <property name="visible">True</property>
     <property name="title" translatable="yes">Add Tiny Tiny RSS Account</property>
     <property name="type_hint">dialog</property>
@@ -18,7 +18,7 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="xalign">0</property>
-                <property name="label" translatable="yes">Please enter your tt-rss account settings.</property>
+                <property name="label" translatable="yes">Please enter your TinyTinyRSS account settings.</property>
                 <property name="wrap">True</property>
               </object>
               <packing>

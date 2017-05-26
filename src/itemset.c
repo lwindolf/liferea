@@ -1,7 +1,7 @@
-/**
+/*
  * @file itemset.c handling sets of items
  * 
- * Copyright (C) 2005-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2005-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -62,17 +62,18 @@ itemset_get_max_item_count (itemSetPtr itemSet)
 }
 
 /**
- * Generic merge logic suitable for feeds
- *
- * @param items		existing items
- * @param newItem	new item to merge
- * @param maxChecks     maximum number of item checks
- * @param allowUpdates	TRUE if item content update is to be
+ * itemset_generic_merge_check: (skip)
+ * @items:		existing items
+ * @newItem:		new item to merge
+ * @maxChecks: 		maximum number of item checks
+ * @allowUpdates:	TRUE if item content update is to be
  *      		allowed for existing items
- * @param allowStateChanges	TRUE if item state shall be
+ * @allowStateChanges:	TRUE if item state shall be
  *				overwritten by source
  *
- * @returns TRUE if merging instead of updating is necessary) 
+ * Generic merge logic suitable for feeds
+ *
+ * Returns: TRUE if merging instead of updating is necessary)
  */
 static gboolean
 itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboolean allowUpdates, gboolean allowStateChanges)
@@ -80,6 +81,7 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 	GList		*oldItemIdIter = items;
 	itemPtr		oldItem = NULL;
 	gboolean	found, equal = FALSE;
+	guint		reason = 0;
 
 	/* determine if we should add it... */
 	debug3 (DEBUG_CACHE, "check new item for merging: \"%s\", %i, %i", item_get_title (newItem), allowUpdates, allowStateChanges);
@@ -104,28 +106,39 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 		equal = TRUE;
 
 		if (((item_get_title (oldItem) != NULL) && (item_get_title (newItem) != NULL)) && 
-		     (0 != strcmp (item_get_title (oldItem), item_get_title (newItem))))		
+		     (0 != strcmp (item_get_title (oldItem), item_get_title (newItem)))) {
 	    		equal = FALSE;
+			reason |= 1;
+		}
 
 		if (((item_get_description (oldItem) != NULL) && (item_get_description (newItem) != NULL)) && 
-		     (0 != strcmp (item_get_description(oldItem), item_get_description (newItem))))
+		     (0 != strcmp (item_get_description(oldItem), item_get_description (newItem)))) {
 	    		equal = FALSE;
+			reason |= 2;
+		}
 
 		/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
 		if (item_get_id (oldItem)) {			
 			if (0 == strcmp (item_get_id (oldItem), item_get_id (newItem))) {
 				found = TRUE;
 
-				/* found corresponding item, check if they are REALLY equal (eg, read status may have changed) */
-				if(oldItem->readStatus != newItem->readStatus) 
-					equal = FALSE;
-				if(oldItem->flagStatus != newItem->flagStatus)
-					equal = FALSE;
+				if (allowStateChanges) {
+					/* found corresponding item, check if they are REALLY equal (eg, read status may have changed) */
+					if(oldItem->readStatus != newItem->readStatus) {
+						equal = FALSE;
+						reason |= 4;
+					}
+					if(oldItem->flagStatus != newItem->flagStatus) {
+						equal = FALSE;
+						reason |= 8;
+					}
+				}
 				break;
 			} else {
 				/* different ids, but the content might be still equal (e.g. empty)
 				   so we need to explicitly unset the equal flag !!!  */
 				equal = FALSE;
+				reason |= 16;
 			}
 		}
 			
@@ -133,11 +146,6 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 			found = TRUE;
 			break;
 		}
-		
-/*		if (i++ > maxChecks) {
-			found = FALSE;
-			break;
-		}*/
 
 		oldItemIdIter = g_list_next (oldItemIdIter);
 	}
@@ -177,7 +185,7 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 				}
 				
 				db_item_update (oldItem);
-				debug0 (DEBUG_CACHE, "-> item already existing and was updated");
+				debug1 (DEBUG_CACHE, "-> item already existing and was updated, reason %x", reason);
 			} else {
 				debug0 (DEBUG_CACHE, "-> item updates not merged because of parser errors");
 			}

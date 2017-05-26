@@ -1,7 +1,7 @@
 /**
  * @file xml.c XML helper methods for Liferea
  * 
- * Copyright (C) 2003-2013  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2016  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -431,7 +431,7 @@ xml_process_entities (void *ctxt, const xmlChar *name)
 			/* returning as faked predefined entity... */
 			tmp = xmlStrdup (found->content);
 			tmp = unhtmlize (tmp);	/* arghh ... slow... */
-			entity = (xmlEntityPtr)g_new0 (xmlEntity, 1);
+			entity = g_new0 (xmlEntity, 1);
 			entity->type = XML_ENTITY_DECL;
 			entity->name = name;
 			entity->orig = NULL;

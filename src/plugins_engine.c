@@ -4,7 +4,7 @@
  *
  * Copyright (C) 2002-2005 Paolo Maggi 
  * Copyright (C) 2010 Steve Frécinaux
- * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2012-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
                                               LIFEREA_TYPE_PLUGINS_ENGINE,
                                               LifereaPluginsEnginePrivate);
 
-  peas_engine_enable_loader (PEAS_ENGINE (engine), "python");
+  peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
 
   engine->priv->plugin_settings = g_settings_new ("net.sf.liferea.plugins");
 
@@ -100,6 +100,36 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
   g_settings_bind (engine->priv->plugin_settings,
                    "active-plugins",
                    engine, "loaded-plugins", G_SETTINGS_BIND_DEFAULT);
+}
+
+/* Provide default signal handlers */
+
+static void
+on_extension_added (PeasExtensionSet *extensions,
+                    PeasPluginInfo   *info,
+                    PeasExtension    *exten,
+                    gpointer         user_data)
+{
+	peas_extension_call (exten, "activate");
+}
+
+static void
+on_extension_removed (PeasExtensionSet *extensions,
+                      PeasPluginInfo   *info,
+                      PeasExtension    *exten,
+                      gpointer         user_data)
+{
+	peas_extension_call (exten, "deactivate");
+}
+
+void
+liferea_plugins_engine_set_default_signals (PeasExtensionSet *extensions,
+                                            gpointer user_data)
+{
+	g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), user_data);
+	g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), user_data);
+
+	peas_extension_set_call (extensions, "activate");
 }
 
 static void

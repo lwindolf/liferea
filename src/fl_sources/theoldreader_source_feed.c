@@ -2,7 +2,7 @@
  * @file theoldreader_source_feed.c  TheOldReader feed subscription routines
  * 
  * Copyright (C) 2008  Arnold Noronha <arnstein87@gmail.com>
- * Copyright (C) 2014  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2014  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include "xml.h"
 
 #include "feedlist.h"
+#include "google_reader_api_edit.h"
 #include "theoldreader_source.h"
 #include "subscription.h"
 #include "node.h"
@@ -77,18 +78,20 @@ theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHas
 
 	for (; iter; iter = g_list_next (iter)) {
 		item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			/* save to cache */
-			g_hash_table_insert (cache, g_strdup(item->sourceId), (gpointer) item->id);
-			if (g_str_equal (item->sourceId, sourceId)) {
-				itemset_free (itemset);
-				return item;
+		if (item) {
+			if (item->sourceId) {
+				/* save to cache */
+				g_hash_table_insert (cache, g_strdup(item->sourceId), (gpointer) item->id);
+				if (g_str_equal (item->sourceId, sourceId)) {
+					itemset_free (itemset);
+					return item;
+				}
 			}
+			item_unload (item);
 		}
-		item_unload (item);
 	}
 
-	g_warning ("Could not find item for %s!", sourceId);
+	g_print ("Could not find item for %s!", sourceId);
 	itemset_free (itemset);
 	return NULL;
 }
@@ -96,7 +99,6 @@ theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHas
 static void
 theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
 {
-	TheOldReaderSourcePtr gsource = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data ;
 	xmlNodePtr      xml;
 	nodePtr         node = subscription->node;
 	xmlChar         *id = NULL;
@@ -127,7 +129,7 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 	}
 
 	if (!id) {
-		g_warning ("Skipping item without id in theoldreader_source_item_retrieve_status()!");
+		g_print ("Skipping item without id in theoldreader_source_item_retrieve_status()!");
 		return;
 	}
 	
@@ -186,7 +188,7 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 		xmlFreeDoc (doc);
 	} else { 
 		debug0 (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
-		g_warning ("theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
+		g_print ("theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
 	
 	debug_end_measurement (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result");
@@ -206,7 +208,7 @@ theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscript
 	}
 
 	if (!metadata_list_get (subscription->metadata, "theoldreader-feed-id")) {
-		g_warning ("Skipping TheOldReader feed '%s' (%s) without id!", subscription->source, subscription->node->id);
+		g_print ("Skipping TheOldReader feed '%s' (%s) without id!", subscription->source, subscription->node->id);
 		return FALSE;
 	}
 

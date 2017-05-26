@@ -1,4 +1,268 @@
-To be released
+Open problems before 1.12 release
+
+	* Article skimming currently broken
+	* Tray icon needs to be auto-disabled along with a popup
+	  informing users who previously had it enabled
+
+2017-03-26   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12-rc3
+
+	* Fixes #459: Fixes GtkDoc warnings
+	  (Leiaz)
+	* Fixes #415: Filter commands are not asynchronous
+	  (Rich Coe)
+	* Fixes #363: Missing space above internal browser address bar
+	  (reported by nekohayo, patch by Mikel Olasagasti)
+	* Fixes #208: All "Unread" search folder items marked read at once
+	  (Leiaz)
+	* Fixes #251: Liferea does not always use theme icons when it is launched
+	  on system startup (reported by GreenLunar, fix by Leiaz)
+
+	* Updated Finnish translation (Jorma Karvonen)
+	* Updated Latvian translation (Rihards Prieditis)
+	* Updated Albanian translation (Bensik Bleta)
+	* Updated Hungarian translation (Balázs Úr)
+	* Updated Brazlian translation (Rafael Ferreira)
+	* Updated French translation (Guillaume Bernard)
+
+
+2016-11-11   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12-rc2
+
+	* Change all g_warnings() to g_print() for remote source
+	  to avoid "crashing" on errors.
+	* Reorganized all UI definitions in separate files to simplify
+	  GtkBuilder handling.
+	* Github #425: Add GeoRSS info and map link in item header
+	  (Mikel Olasagasti)
+	* Github #407: Replacing deprecated elements in preferences
+	  (Leiaz)
+	* Github #396: Create LifereaApplication type
+	  (Leiaz)
+	* Github #434: Partial RFC3229+feed support for bandwidth savings
+	  (Daniel Aleksandersen)
+
+	* Fixes Github #208: gtk_tree_store_get_path: assertion
+	  'iter->stamp == priv->stamp'
+	  (reported by Mno-hime)
+	* Fixes Github #403: Leftover OSM XSLT in item view
+	  (reported by Paul Gevers)
+	* Fixes Github #423: Internal browser shows files system on go-back
+	  (Leiaz, reported by Paul Gevers)
+
+	* Updated German translation
+	* Github #441: Updated French translation
+	  (Surfoo)
+
+
+2016-09-20   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12-rc1a
+
+	* Fixing missing header files
+
+2016-09-19   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12-rc1
+
+	* Github #348: Added support for downloading content that
+	  cannot be displayed by HTML widget (e.g. PDFs)
+	  (Leiaz)
+	* Github #355: Migrate to Python3 libpeas loader
+	  (patch by picsel2)
+	* Github #311: Upgrade to WebKit2
+	  (patch by Leiaz)
+	* Github #292: Show new item count in tray icon
+	  (patch by mozbugbox)
+	* Github #297: Minimize to systray on window close
+	  (patch by Hugo Arregui)
+	* Github #325: Auto-fitting, translated license
+	  (patches by GreenLunar and Adolfo Jayme-Barrientos)
+
+	* Fixes Github #73: Problem with favicon update
+	  (reported by asl97)
+	* Fixes Github #177, #350: Tray icon not scaled properly
+	  (patch by mozbugbox)
+	* Removes GeoIP rendering via OSM to avoid exposing
+	  users to remote JS library resources.
+	  (reported by Paul Gevers)
+	* Fixes Github #337: Case sensitive sorting
+	  (reported by Pi03k)
+	* Fixes Github #361: Show all enclosuers
+	  (Leiaz)
+	* Fixes Github #368: Segfault on liferea-feed-add
+	  (Leiaz)
+	* Fixes Github #382: Broken Auto-Detect/No Proxy setting
+	  (Leiaz)
+	* Fixes Github #383: Per feed don't use proxy setting is broken
+	  (reported by Leiaz)
+
+	* Github #309: Update of Japanese translation
+	  (IWAI, Masaharu)
+	* Github #329: Update of Hebrew translation
+	  (GreenLunar)
+	* Github #330: Update of Spanish translation
+	  (Adolfo Jayme-Barrientos)
+	* Update of Swedish translation
+	  (Andreas Ronnquist)
+
+
+2016-01-30   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.7
+
+	* Github #287: Add support for media:group.
+	  (patch by Leiaz)
+	* Github #287: Fixes issues with media:content.
+	  (patch by Leiaz)
+	* Fixes Github #283: Bad .desktop categories definition
+	  (reported by Wuzzy2)
+	* Fixes Github #279: Fixes rules no visible in searchdialog
+	  (patch by Leiaz)
+	* Fixes Github #278: No "Download" tab in Tools/Preferences
+	  (docs error, reported by Anders Jonsson)
+	* Fixes Github #83: Segfault when sorting feeds in folder
+	  (patch by Leiaz)
+	* Fixes French translation
+	  (patch by polo2ro)
+	* Github #300: Updated manpage
+	  (patch by GreenLunar)
+
+
+2015-10-12   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.6
+
+	* Added "Do Not Track" support (enabled per default)
+	* Github #193: Added x-scheme-handler/feed to desktop file
+	  (suggested by GreenLunar)
+	* Github #209: Add image icons to plugins
+	  (by GreenLunar)
+	* Github #210: Enable tests for parsing RFC822 dates with 2 digit year
+	  (patch by arunanbala)
+	* Fixes Github #78: Shaky text in feed list
+	  (reported by GreenLunar)
+	* Fixes Github #195: Out-dated documentation on enclose download
+	  (reported by brian-in-crawford)
+	* Fixes Github #198: Traceback on popup notifications
+	  (reported by GreenLunar)
+	* Fixes Github #216: Untranslatable strings
+	  (reported by GreenLunar)
+	* Fixes Github #256: PyGIWarnings on loading plugins
+	  (patch by glitjs16)
+
+
+2015-06-19   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.5
+
+	* Github #178: Implementing full screen mode for videos
+	  (mozbugbox)
+	* Fixes Github #32: Prevent erroneous "Mark all as read"
+	  (reported by Mno-hime)
+	* Improves Github #36, #113: UI lock up during refresh
+	  (suggested by mozbugbox)
+	* Fixes Github #180: Removing item from (v)folder marks all read
+	  (reported by GreenLunar)
+	* Fixes Github #140, #158: Vertical pane placement is forgotten.
+	  (patch by foresto)
+	* Fixes Github #182: Missing config.h include in date.c
+	  (reported by Paul Gevers)
+
+	* Update of Russian translation (bboa)
+
+
+2015-04-14   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.4
+
+	* Fixes Github #154: Crashes while starting (corrupt icon)
+	  (reported by jcamposz)
+	* Github #149: Fixes a random crash on startup
+	  (patch by mozbugbox)
+	* Fixes Github #79: RTL ordering of Back/Forward icons
+	  (reported by GreenLunar)
+	* Fixes Github #30: Segfault after updating from 1.8 to 1.10
+	  (reported by vakuum)
+	* Fixes Github #87: URL resolving wrong if base tag involved
+	  (reported by DanMan, fixed by mozbugbox)
+	* Fixes all defects reported by Coverity scan
+	* Simplied external browser handling. Now Liferea only supports
+	  the gtk_show_uri() launch mechanism for the system default browser
+	  and a user specified browser command.
+
+	* Update of Albanian translation (Besnik Bleta)
+	* Update of Hebrew translation (Genghis Khan)
+	* Update of Spanish translation (Juan Campos Zambrana)
+	* Fixes typo in Italian translation
+
+
+2015-02-11   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.3
+
+	* Fixes Github #134: Broken default news feed.
+	  (reported by pvdl)
+	* Fixes Github #133: Subscribe into TheOldReader categories
+	* Fixes Github #122: Crashes at launch, "segmentation fault"
+	  (reported by geoffm)
+	* Fixes some memory leaks
+	  (patch by Rich Coe)
+	* Fixes Github #145: Incorrect method triggered for 'Launch External'
+	  (patch by mozbugbox)
+	* Fixes Github #48: Window stays hidden on next start after Ctrl+W
+	  (reported by Jeff Fortin)
+	* Expose LifereaHtmlView to GObject Introspection
+	  (patch by mozbugbox)
+	* Improves Google Reader API error handling
+	* Now using HTTPS only when accessing TheOldReader
+	* Added LifereaNodeSourceActivatable interface to allow plugins
+	  implementing new node source types.
+	* Downgrade enclosure drop warning from Glib warning to debug trace.
+
+
+2015-01-06   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.2
+	
+	* Fixes Github #132: Broken documentation link
+	  (reported by kallus)
+	* Fixes Github #121: Wrapping issue in folder display
+	  (reported by Jeff Forting)
+	* Fixes Github #114: Avoid termination on UTF-8 validation error
+	* Fixes Github #90: Libnotify plugin not working
+	  (reported by asl97)
+	* Fixes Github #86: Support HTTP content negotiation
+	  (suggested by DanMan)
+	* Black-list some categories used by Google Reader clones
+	  that should not be visible.
+	* Allowing browser history to go back to previously 
+	  shown headline when browsing inside the item view.
+	* Dropping offline option as this is duplicated with
+	  desktop environment in GNOME/network manager.
+	* Fixes Github #100: Problems with dark Adwaita theme in GTK 3.14
+	  (reported by majutsushi)
+	* Fixes for preferences dialog width.
+	  (patch by Jeff Fortin)
+
+	* Update of Arabic translation (Khaled Hosny)
+
+
+2014-08-31   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.11.1
+	
+	* Fixes Github #81: Inability to add subscriptions
+	  (reported by GreenLunar)
+	* Fixes Javascript links not opening in new browser tabs
+
+	* Updated Hebrew translation (Genghis Khan)
+	* Fixes Github #88: Minor DE translation mistake (moraxy)
+
+
+2014-08-12   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.11.0
 
@@ -35,18 +299,22 @@ To be released
 	  (reported by yaconf)
 	* Fixes Github #27: Images do not autosize to fit the available space
 	  (reported by Jeff Fortin)
+	* Fixes Github #34: Add TinyTinyRSS Enclosure Support
+	  (reported by Adrixan)
 	* Fixes Github #43: "Any of the following" search condition doesn't work
 	  (reported by Jeff Fortin)
-	* Fixes Github #44: Support parsing ISO 8601 dates for pubDate
-	  (suggested by Jeff Fortin)
 	* Fixes Github #49: Some dialogs scrolling areas do not request enough height
 	  (reported by Jeff Fortin)
+	* Fixes Github #53: Doesn't automatically update feed name and favicon 
+	  for new feed (reported by asl97)
 	* Patch SF #224: Update to new libxml2 buffer API
 	  (Simon Kagedal Reimer)
 	* Patch SF #209: Avoid copying list in itemset_merge_items
 	  (kaloyan)
 	* Make Liferea use ETags and send If-None-Match
 	  (patch by Chris Siebenmann)
+	* Support NOCONFIGURE for RPM builds
+	  (Charles A Edwards)
 
 	* Rename README to README.md
 	* Removing libindicate support (to be added as plugin maybe)
@@ -60,7 +328,7 @@ To be released
 	* Updated Arabic translation (Khaled Hosny)
 
 
-2013-10-08   Lars Windolf <lars.lindner@gmail.com>
+2013-10-08   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.3
 
@@ -75,7 +343,7 @@ To be released
 	* Updated Italian localized feed list (Gianvito Cavasoli)
 
 
-2013-09-05   Lars Windolf <lars.lindner@gmail.com>
+2013-09-05   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.2
 	
@@ -100,14 +368,14 @@ To be released
 	  (suggested by Christoph Temmel and Simon Kågedal Reimer)
 
 
-2013-07-28   Lars Windolf <lars.lindner@gmail.com>
+2013-07-28   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.1a
 
 	* Fixes SF #1102: Liferea does not show a window
 	  (reported by genodeftest)
 
-2013-07-28   Lars Windolf <lars.lindner@gmail.com>
+2013-07-28   Lars Windolf <lars.windolf@gmx.de>
 	
 	Version 1.10.1
 
@@ -131,7 +399,7 @@ To be released
 	  (Yanko Kaneti)
 
 
-2013-07-10   Lars Windolf <lars.lindner@gmail.com>
+2013-07-10   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.0
 
@@ -166,7 +434,7 @@ To be released
 	* Updated German translation (Lars Windolf)
 
 
-2013-05-22   Lars Windolf <lars.lindner@gmail.com>
+2013-05-22   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10-RC4
 
@@ -182,7 +450,7 @@ To be released
 	  (reported by David Willmore)
 
 
-2013-05-22   Lars Windolf <lars.lindner@gmail.com>
+2013-05-22   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10-RC3
 
@@ -201,7 +469,7 @@ To be released
 	* Updated Polish translation (Piotr Sokół)
 
 
-2013-05-12   Lars Windolf <lars.lindner@gmail.com>
+2013-05-12   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10-RC2
 
@@ -240,7 +508,7 @@ To be released
 	* Updated Ukrainian translation (Yuri Chornoivan)
 
 
-2013-01-30  Lars Windolf <lars.lindner@gmail.com>
+2013-01-30  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10-RC1
 
@@ -279,7 +547,7 @@ To be released
 	* Fixes missing item list update when browsing item URLs in Liferea
 
 
-2012-10-28  Lars Windolf <lars.lindner@gmail.com>
+2012-10-28  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.7
 
@@ -301,7 +569,7 @@ To be released
 	* Update of German translation
 
 
-2012-10-09  Lars Windolf <lars.lindner@gmail.com>
+2012-10-09  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.6
 
@@ -328,7 +596,7 @@ To be released
 	* Updated Polish translation (Wojciech Myrda)
 
 
-2012-09-14  Lars Windolf <lars.lindner@gmail.com>
+2012-09-14  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.5
 
@@ -348,7 +616,7 @@ To be released
 	  (patch by Yanko Kaneti)
 
 
-2012-08-24  Lars Windolf <lars.lindner@gmail.com>
+2012-08-24  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.4
 
@@ -391,7 +659,7 @@ To be released
 	  Reader subscriptions from DB.
 
 
-2012-03-30  Lars Lindner <lars.lindner@gmail.com>
+2012-03-30  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.3
 
@@ -425,7 +693,7 @@ To be released
 	* Updated Catalan translation (Gil Forcada)
 
 
-2012-03-23  Lars Lindner <lars.lindner@gmail.com>
+2012-03-23  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.2
 
@@ -437,7 +705,7 @@ To be released
 	  to avoid slow item removal. (suggested by Paulo Anes)
 
 
-2012-03-18  Lars Lindner <lars.lindner@gmail.com>
+2012-03-18  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.1
 
@@ -455,7 +723,7 @@ To be released
 	  through items.
 
 
-2011-12-23  Lars Lindner <lars.lindner@gmail.com>
+2011-12-23  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.9.0
 
@@ -471,7 +739,7 @@ To be released
 	  (reported by Dennis Nezic)
 
 
-2011-12-10  Lars Lindner <lars.lindner@gmail.com>
+2011-12-10  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.8.0
 
@@ -484,7 +752,7 @@ To be released
 	  (suggested by Gabor Kelemen)
 
 
-2011-11-16  Lars Lindner <lars.lindner@gmail.com>
+2011-11-16  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.8 RC2
 
@@ -511,7 +779,7 @@ To be released
 	* Updated Ukrainian translation. (Yuri Chornoivan)
 
 
-2011-09-14   Lars Lindner <lars.lindner@gmail.com>
+2011-09-14   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.8 RC1
 
@@ -525,7 +793,7 @@ To be released
 	* Updated manual page
 
 
-2011-06-21   Lars Lindner <lars.lindner@gmail.com>
+2011-06-21   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.7.6 (Unstable)
 
@@ -557,7 +825,7 @@ To be released
 	* Updated Polish translation (Myrda Wojciech)
 
 
-2011-04-14   Lars Lindner <lars.lindner@gmail.com>
+2011-04-14   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.7.5 (Unstable)
 
@@ -579,7 +847,7 @@ To be released
 	  (suggested by Felipe Ignacio Canas Sabat)
 	* Rewrite of the search folder code. We do not use SQlite
 	  views for rule based matching anymore.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Added identi.ca bookmarking support. (Adrian Bunk)
 	* Added copy text selection to clipboard option.
 	  (patch by Ricardo Cruz)
@@ -598,13 +866,13 @@ To be released
 	  (patch by Matthew Bauer)
 	* Removing feed update state from DB and simplifying
 	  startup feed update options.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes SF #3019939, Debian #586926: Broken Google Reader
 	  authentication. (Arnold Noronha)
 	* Don't ship autogen.sh in release tarballs. (Adrian Bunk)
-	* Added --debug-vfolder option. (Lars Lindner)
+	* Added --debug-vfolder option. (Lars Windolf)
 	* Added feature to sort feeds in a folder alphabetically.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Require WebKitGTK+ >= 1.2.2 to avoid bugs in older versions.
 	  (Adrian Bunk)
 	* Better error messages when essential files are missing under
@@ -617,11 +885,11 @@ To be released
 	* Fixes SF #3067801: crash in enclosure handling
 	  (patch by Peter Oliver)
 	* Fixes SF #3060658: Save As Enclosure doesn't set directory.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Added "Copy Link/Image Location" to HTML view
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Added "Save Link/Image As" to HTML view
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes Debian #593415: Seems to misidentify MIME type
 	  of some podcast enclosures (reported by Celejar)
 	* Removed the obsolete Bloglines support. (Adrian Bunk)
@@ -629,7 +897,7 @@ To be released
 	  (Adrian Bunk)
 	* Removed the outdated .spec file. (Adrian Bunk)
 	* Merged patch SF #3089150: Bidi support (Yaron Sheffer)
-	* Fixes second search not clearing item list. (Lars Lindner)
+	* Fixes second search not clearing item list. (Lars Windolf)
 	* Fixes SF #3019444 and #2978831: incorrect handling
 	  of HTTP 301 (patch by Solomon Peachy)
 	* Added support for the new libnotify API.
@@ -664,7 +932,7 @@ To be released
 	* Updated Albanian translation. (Besnik Bleta)
 	* Updated Arabic translation. (Khaled Hosny)
 	* Updated Chinese/Simplified translation. (Aron Xu)
-	* Updated German translation. (Lars Lindner)
+	* Updated German translation. (Lars Windolf)
 	* Updated Italian translation. (Gianvito Cavasoli)
 	* Updated Russian translation. (Leonid Selivanov)
 	* Updated Slovak translation. (Pavol Klacansk)
@@ -677,17 +945,17 @@ To be released
 	* Merged patch that fixes LP #238958: always present window
 	  on current workspace if tray icon is clicked.
 	  (patch by Fabien Tassin and Sasa Bodiroza)
-	* Cleanup of default stylesheet. Removed used styles. (Lars Lindner)
-	* Permanently removed LUA scripting support. (Lars Lindner)
+	* Cleanup of default stylesheet. Removed used styles. (Lars Windolf)
+	* Permanently removed LUA scripting support. (Lars Windolf)
 	* Added more default feeds to be not so open source specific.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Require libsoup >= 2.28.2 to avoid bugs in older versions.
 	  (Adrian Bunk)
 
 	* Updated Spanish translation. (Rodrigo Gallardo)
 
 
-2010-01-24   Lars Lindner <lars.lindner@gmail.com>
+2010-01-24   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.7.3 (Unstable)
 
@@ -695,9 +963,9 @@ To be released
 	  (patch by Ted Gould)
 	* Implemented folder re-expansion when switching from
 	  reduced feed list mode back to full hierarchic mode.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Updated proxy settings are now forwarded to the internal
-	  renderer again. (Lars Lindner)
+	  renderer again. (Lars Windolf)
 	* Fixes SF #2872001: Allowing compilation against
 	  NetworkManager 0.8 which decided to force 100000 packages
 	  out there to support both "libnm-glib" and "libnm_glib".
@@ -713,11 +981,11 @@ To be released
 	* Readded workaround for zoom setting of zero (which
 	  prevents zooming). (patch by Rafael Kitover)
 	* Use gtk_show_uri() instead of relying on "gnome-open".
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Using g_time_val_from_iso8601 instead of propietary
-	  solution we had. (Lars Lindner)
+	  solution we had. (Lars Windolf)
 	* Simplified pixmaps resolving as we used only one source
-	  directory anyway. (Lars Lindner)
+	  directory anyway. (Lars Windolf)
 
 	* Updated Catalan translation. (Gil Forcada)
 
@@ -735,17 +1003,17 @@ To be released
 	  libraries in unusual locations found through pkg-config.
 	  (Adrian Bunk, reported by Leon Nardella)
 	* Fixes SF #2831007: Opening enclosures by URL fails intermitantly
-	  (Lars Lindner, reported by Eric Drechsel)
+	  (Lars Windolf, reported by Eric Drechsel)
 	* Fixes a unique node id check that could have caused duplicate
-	  node ids. (Lars Lindner)
+	  node ids. (Lars Windolf)
 	* Removes the GConf option for a user defined date format.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* We do not update comment feeds returning HTTP 410 anymore.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes SF #2897668: Crash when adding Bloglines subscriptions.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes a crash when deleting items.
-	  (Lars Lindner)
+	  (Lars Windolf)
 	* Fixes SF #2823526: Increase the width of the left column
 	  in the Script Manager.
 	  (Adrian Bunk, reported by Pavol Klačanský)
@@ -767,7 +1035,7 @@ To be released
 	* Stop accessing GTK+ structures directly, use accessors instead
 	  in preparation for GTK+ 3.0. Require gtk+ >= 2.18.0 for it.
 	  (Emilio Pozuelo Monfort)
-	* Simplified DB schema to avoid costly cleanup. (Lars Lindner)
+	* Simplified DB schema to avoid costly cleanup. (Lars Windolf)
 	* Patch SF #2894307: Fixes <tab> key cycling in items list.
 	  (Simon Lipp)
 	* Put the next selected item on top when scrolling in the

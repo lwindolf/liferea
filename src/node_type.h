@@ -1,7 +1,7 @@
 /**
  * @file node_type.h  node type interface
  * 
- * Copyright (C) 2007-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2012 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ enum {
 typedef struct nodeType {
 	gulong		capabilities;	/**< bitmask of node type capabilities */
 	const gchar	*id;		/**< type id (used for type attribute in OPML export) */
-	const GdkPixbuf	*icon;		/**< default icon for nodes of this type (if no favicon available) */
+	const GIcon	*icon;		/**< default icon for nodes of this type (if no favicon available) */
 	
 	/* For method documentation see the wrappers defined below! 
 	   All methods are mandatory for each node type. */

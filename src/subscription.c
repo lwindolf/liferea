@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  * 
- * Copyright (C) 2003-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -133,7 +133,7 @@ subscription_favicon_downloaded (gpointer user_data)
 {
 	nodePtr	node = (nodePtr)user_data;
 
-	node_set_icon (node, favicon_load_from_cache (node->id));
+	node_load_icon (node);
 	feed_list_node_update (node->id);
 }
 
@@ -244,15 +244,17 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
 	g_get_current_time (&subscription->updateState->lastPoll);
 
-	// FIXME: use new-items signal in itemview class	
+	// FIXME: use new-items signal in itemview class        
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
 
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);
 
-	if (subscription->node->newCount > 0)
-		feedlist_new_items (subscription->node);
+	if (processing && subscription->node->newCount > 0) {
+		feedlist_new_items (node->newCount);
+		feedlist_node_was_updated (node);
+	}
 }
 
 void

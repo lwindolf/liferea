@@ -1,7 +1,7 @@
 /**
  * @file theoldreader_source_feed.c  TheOldReader feed subscription routines
  * 
- * Copyright (C) 2013-2014  Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2013-2014  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -144,11 +144,10 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		/* merge against feed cache */
 		if (items) {
 			itemSetPtr itemSet = node_get_itemset (subscription->node);
-			gint newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
+			subscription->node->newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
 			itemlist_merge_itemset (itemSet);
 			itemset_free (itemSet);
 
-			feedlist_node_was_updated (subscription->node, newCount);
 			subscription->node->available = TRUE;
 		} else {
 			subscription->node->available = FALSE;
@@ -173,7 +172,7 @@ reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	}
 
 	if (!metadata_list_get (subscription->metadata, "reedah-feed-id")) {
-		g_warning ("Skipping Reedah feed '%s' (%s) without id!", subscription->source, subscription->node->id);
+		g_print ("Skipping Reedah feed '%s' (%s) without id!", subscription->source, subscription->node->id);
 		return FALSE;
 	}
 

@@ -1,7 +1,7 @@
 /*
  * plugins_engine.h: Liferea Plugins using libpeas
  *
- * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2012-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
 #ifndef _PLUGINS_ENGINE
 #define _PLUGINS_ENGINE
 
-#include <glib.h>
 #include <libpeas/peas-engine.h>
+#include <libpeas/peas-extension-set.h>
 
 G_BEGIN_DECLS
 
@@ -50,6 +50,16 @@ struct _LifereaPluginsEngineClass {
 GType liferea_plugins_engine_get_type (void) G_GNUC_CONST;
 
 LifereaPluginsEngine *liferea_plugins_engine_get_default (void);
+
+/**
+ * liferea_plugins_engine_set_default_signals:
+ *
+ * Set up default "activate" and "deactivate" signals.
+ *
+ * @extensions:		the extensions set
+ * @user_data:		some user data (or NULL)
+ */
+void liferea_plugins_engine_set_default_signals (PeasExtensionSet *extensions, gpointer user_data);
 
 G_END_DECLS
 

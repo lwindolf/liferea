@@ -2,7 +2,7 @@
  * @file export.c  OPML feed list import & export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <sys/stat.h>
-
 #include "export.h"
 
+#include <errno.h>
+#include <glib.h>
 #include <libxml/tree.h>
+#include <sys/stat.h>
 
 #include "auth.h"
 #include "common.h"
@@ -32,6 +33,7 @@
 #include "favicon.h"
 #include "feedlist.h"
 #include "folder.h"
+#include "node.h"
 #include "xml.h"
 #include "ui/ui_common.h"
 #include "ui/feed_list_node.h"
@@ -181,8 +183,9 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 		xmlFreeDoc (doc);
 		
 		if (!error) {
+			// FIXME: Use g_rename() once we've reached Glib 2.6+
 			if (rename (backupFilename, filename) < 0) {
-				g_warning (_("Error renaming %s to %s\n"), backupFilename, filename);
+				g_warning (_("Error renaming %s to %s: %s\n"), backupFilename, filename, g_strerror (errno));
 				error = TRUE;
 			}
 		}
@@ -327,7 +330,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		node->expanded = TRUE;
 	
 	/* 3. Try to load the favicon (needs to be done before adding to the feed list) */
-	node_set_icon (node, favicon_load_from_cache (node->id));
+	node_load_icon (node);
 			
 	/* 4. add to GUI parent */
 	feedlist_node_imported (node);

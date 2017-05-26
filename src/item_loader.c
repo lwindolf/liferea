@@ -1,7 +1,7 @@
 /**
  * @file item_loader.c   Asynchronously loading items
  *
- * Copyright (C) 2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2011 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,8 +48,10 @@ item_loader_finalize (GObject *object)
 {
 	ItemLoader *il = ITEM_LOADER (object);
 
-	if (il->priv->idleId)
+	if (il->priv->idleId) {
 		g_source_remove (il->priv->idleId);
+		il->priv->idleId = 0;
+	}
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -111,8 +113,10 @@ item_loader_fetch (gpointer user_data)
 	result = (*il->priv->fetchCallback)(il->priv->fetchCallbackData, &resultItems);
 	if (result)
 		g_signal_emit_by_name (il, "item-batch-fetched", resultItems);
-	else
+	else {
+		il->priv->idleId = 0;
 		g_signal_emit_by_name (il, "finished");
+	}
 
 	return result;
 }

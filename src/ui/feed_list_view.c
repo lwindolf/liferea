@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.c  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2013 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  * 
@@ -210,15 +210,31 @@ feed_list_view_sort_folder_compare (gconstpointer a, gconstpointer b)
 {
 	nodePtr n1 = (nodePtr)a;
 	nodePtr n2 = (nodePtr)b;	
+
+	gchar *s1 = g_utf8_casefold (n1->title, -1);
+	gchar *s2 = g_utf8_casefold (n2->title, -1);
 	
-	return strcmp (n1->title, n2->title);
+	gint result = strcmp (s1, s2);
+
+	g_free (s1);
+	g_free (s2);
+
+	return result;
 }
 
 void
 feed_list_view_sort_folder (nodePtr folder)
 {
+	GtkTreeView             *treeview;
+
+	treeview = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
+	/* Unset the model from the view before clearing it and rebuilding it.*/
+	gtk_tree_view_set_model (treeview, NULL);
 	folder->children = g_slist_sort (folder->children, feed_list_view_sort_folder_compare);
 	feed_list_node_reload_feedlist ();
+	/* Reduce mode didn't actually change but we need to set the
+	 * correct model according to the setting in the same way : */
+	feed_list_view_reduce_mode_changed ();
 	feedlist_foreach (feed_list_view_restore_folder_expansion);
 	feedlist_schedule_save ();
 }
@@ -238,7 +254,7 @@ feed_list_view_init (GtkTreeView *treeview)
 	/* Set up store */
 	feedstore = gtk_tree_store_new (FS_LEN,
 	                                G_TYPE_STRING,
-	                                GDK_TYPE_PIXBUF,
+	                                G_TYPE_ICON,
 	                                G_TYPE_POINTER,
 	                                G_TYPE_UINT,
 					G_TYPE_STRING);
@@ -268,13 +284,13 @@ feed_list_view_init (GtkTreeView *treeview)
 	gtk_tree_view_column_pack_start (column, titleRenderer, TRUE);
 	gtk_tree_view_column_pack_end (column2, countRenderer, FALSE);
 	
-	gtk_tree_view_column_add_attribute (column, iconRenderer, "pixbuf", FS_ICON);
+	gtk_tree_view_column_add_attribute (column, iconRenderer, "gicon", FS_ICON);
 	gtk_tree_view_column_add_attribute (column, titleRenderer, "markup", FS_LABEL);
 	gtk_tree_view_column_add_attribute (column2, countRenderer, "markup", FS_COUNT);
 
 	gtk_tree_view_column_set_expand (column, TRUE);	
-	gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
-	gtk_tree_view_column_set_sizing (column2, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	gtk_tree_view_column_set_sizing (column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+	gtk_tree_view_column_set_sizing (column2, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
 	gtk_tree_view_append_column (treeview, column);
 	gtk_tree_view_append_column (treeview, column2);
 	
@@ -325,10 +341,11 @@ feed_list_view_select (nodePtr node)
 		if (node->parent)
 			feed_list_view_expand (node->parent);
 
-		gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
-		gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
-		gtk_tree_path_free (path);
-
+		if (path) {
+			gtk_tree_view_scroll_to_cell (treeview, path, NULL, FALSE, 0.0, 0.0);
+			gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
+			gtk_tree_path_free (path);
+		}
  	} else {
 		GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
 		gtk_tree_selection_unselect_all (selection);

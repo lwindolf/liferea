@@ -2,10 +2,20 @@
 
 SUBDIRS = doc man opml pixmaps po src xslt glade
 
-desktop_in_files = liferea.desktop.in
+desktop_in_files = net.sourceforge.liferea.desktop.in
 desktopdir = $(datadir)/applications
 desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_DESKTOP_RULE@
+
+dbusservicedir = $(datadir)/dbus-1/services
+dbusservice_DATA = net.sourceforge.liferea.service
+
+net.sourceforge.liferea.service: Makefile
+	$(AM_V_GEN) (echo '[D-BUS Service]'; \
+		echo 'Name=net.sourceforge.liferea'; \
+		echo 'Exec=${bindir}/liferea --gapplication-service') > $@.tmp && \
+		mv $@.tmp $@
+
 
 appdatadir = $(datadir)/appdata
 appdata_in_files = $(PACKAGE_TARNAME).appdata.xml.in
@@ -26,6 +36,8 @@ plugindir = $(pkglibdir)/plugins
 plugin_DATA = \
 	plugins/gnome-keyring.py \
 	plugins/gnome-keyring.plugin \
+	plugins/libnotify.py \
+	plugins/libnotify.plugin \
 	plugins/media-player.py \
 	plugins/media-player.plugin \
 	plugins/trayicon.py \

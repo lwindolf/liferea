@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.18"/>
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkAboutDialog" id="about">
+    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">About</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="program_name">Liferea</property>
+    <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
+    <property name="website">https://lzone.de/liferea/</property>
+    <property name="website_label" translatable="yes">Liferea Homepage</property>
+    <property name="license_type">gpl-2-0</property>
+    <property name="authors">
+Developers:
+
+Lars Windolf
+Nathan Conrad
+Arnold Noronha
+Adrian Bunk
+Emilio Pozuelo Monfort
+
+Contributors: Code, Patches, Debugging
+
+James Doherty
+Jeremy Messenger
+John McKnight
+Tomasz Maka
+Karl Soderstrom
+Christophe Barbe
+Juho Snellman
+Roshan Revankar
+Johannes Schlueter
+Niklas Morberg
+Pierre Phaneuf
+ahmed el-helw
+James Bowes
+Marc Deslauriers
+Amit D. Chaudhary
+Christoph Hohmann
+Raphael Slinckx
+Bjorn Monnens
+Thomas de Grenier de Latour
+Aristotle Pagaltzis
+Norman Jonas
+Sebastian Droege
+Daniel Gryniewicz
+Remi Cardona
+Frederic Peters
+Don Malcolm
+Ed Catmur
+Chris Pirillo
+Eric Anderson
+Daniel Gryniewicz
+Ori Avtalion
+Stephan Maka
+Alexander Sack
+Gustavo Chain
+Lars Strojny
+Jon Forsberg
+Mathie Leplatre
+Mikel Olasagasti
+Maia Kozheva
+Peter Oliver
+Sergey Snitsaruk
+and many more...</property>
+    <property name="documenters">Lars Windolf</property>
+    <property name="translator_credits">Bart Kreska
+Wojciech Myrda
+Piotr Sokół
+Dario Conigliaro
+Emanuele Grande
+Gianvito Cavasoli
+Fernando Ike de Oliveira
+Og Maciel
+Leon Nardella
+Khaled Hosny
+Sargate Kanogan
+Rodrigo Gallardo
+Takeshi AIHANA
+Takeshi Hamasaki
+Vincent Lef&#xE8;vre
+Daniel Nylander
+Mehmet Atif Ergun
+Eren T&#xFC;rkay
+Ihar Hrachyshka
+Ant&#xF3;nio Lima
+Bruno Miguel
+Martin Picek
+Justin Forest
+Oleg Maloglovets
+Sergey Rudchenko
+Leonid Selivanov
+M&#xE1;t&#xE9; &#x150;ry
+Gabor Kelemen
+Pavol Kla&#x10D;ansk&#xFD;
+Evgenia Petoumenou
+Besnik Bleta
+Christian Dywan
+Robin Stocker
+Paul Seyfert
+Gil Forcada
+I&#xF1;aki Larra&#xF1;aga Murgoitio
+Mikel Olasagasti Uranga
+Adi Roiban
+Erwin Poeze
+Anxo Outeiral
+Aron Xu
+Joe Hansen
+Marquinos
+Iñigo Varela
+Yaron Sheffer
+Yuri Chornoivan
+Rūdolfs Mazurs
+Rihards Priedītis
+Mindaugas Baranauskas
+Trần Ngọc Quân
+Pauli Virtanen
+Jorma Karvonen
+Guillaume Bernard
+</property>
+    <property name="logo_icon_name">liferea</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox23">
+        <property name="visible">True</property>
+        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area23">
+            <property name="visible">True</property>
+            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

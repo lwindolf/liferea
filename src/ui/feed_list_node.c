@@ -2,7 +2,7 @@
  * @file feed_list_node.c  Handling feed list nodes
  * 
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2016 Lars Windolf <lars.windolf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -197,7 +197,7 @@ feed_list_node_add (nodePtr node)
 	g_assert (NULL == feed_list_node_to_iter (node->id));
 
 	/* if parent is NULL we have the root folder and don't create a new row! */
-	iter = (GtkTreeIter *)g_new0 (GtkTreeIter, 1);
+	iter = g_new0 (GtkTreeIter, 1);
 	
 	/* if reduced feedlist, show flat treeview */
 	if (feedlist_reduced_unread)
@@ -298,14 +298,8 @@ feed_list_node_update (const gchar *nodeId)
 	if (!countColor) {
 		const gchar *bg = NULL, *fg = NULL;
 
-		if (render_is_dark_theme ()) {
-			bg = render_get_theme_color ("GTK-COLOR-TEXT");
-			fg = render_get_theme_color ("GTK-COLOR-BG");
-		} else {
-			bg = render_get_theme_color ("GTK-COLOR-DARK");
-			fg = render_get_theme_color ("GTK-COLOR-BG");
-		}
-
+		bg = render_get_theme_color ("FEEDLIST_UNREAD_BG");
+		fg = render_get_theme_color ("FEEDLIST_UNREAD_FG");
 		if (fg && bg) {
 			countColor = g_strdup_printf ("foreground='#%s' background='#%s'", fg, bg);
 			debug1 (DEBUG_HTML, "Feed list unread CSS: %s\n", countColor);
@@ -317,9 +311,9 @@ feed_list_node_update (const gchar *nodeId)
         	      NODE_CAPABILITY_SHOW_ITEM_COUNT);
 
 	if (node->unreadCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
-		labeltype -= NODE_CAPABILITY_SHOW_UNREAD_COUNT;
+		labeltype &= ~NODE_CAPABILITY_SHOW_UNREAD_COUNT;
 
-	label = g_strdup (node_get_title (node));
+	label = g_markup_escape_text (node_get_title (node), -1);
 	switch (labeltype) {
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
@@ -350,6 +344,7 @@ feed_list_node_update (const gchar *nodeId)
 	                    FS_COUNT, count,
 	                    -1);
 	g_free (label);
+	g_free (count);
 
 	if (node->parent)
 		feed_list_node_update (node->parent->id);
@@ -379,7 +374,7 @@ feed_list_node_rename (nodePtr node)
 	GtkWidget	*nameentry;
 	
 	if (!nodenamedialog || !G_IS_OBJECT (nodenamedialog))
-		nodenamedialog = liferea_dialog_new (NULL, "nodenamedialog");
+		nodenamedialog = liferea_dialog_new ("rename_node");
 
 	nameentry = liferea_dialog_lookup (nodenamedialog, "nameentry");
 	gtk_entry_set_text (GTK_ENTRY (nameentry), node_get_title (node));
@@ -418,8 +413,8 @@ feed_list_node_remove (nodePtr node)
 	                                 GTK_BUTTONS_NONE,
 	                                 "%s", text);
 	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
-	                        GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-	                        GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT,
+	                        _("_Cancel"), GTK_RESPONSE_CANCEL,
+	                        _("_Delete"), GTK_RESPONSE_ACCEPT,
 	                        NULL);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);

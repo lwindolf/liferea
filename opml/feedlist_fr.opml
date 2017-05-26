@@ -12,7 +12,7 @@
        <outline text="MozillaZine-Fr" htmlUrl="http://www.mozillazine-fr.org/" xmlUrl="http://mozillazine-fr.org/contenu.xml" />
        <outline text="LinuxFR" htmlUrl="http://linuxfr.org/" xmlUrl="http://linuxfr.org/news.atom" />
        <outline text="Le Monde.fr" htmlUrl="http://www.lemonde.fr/" xmlUrl="http://www.lemonde.fr/rss/sequence/0,2-3208,1-0,0.xml" />
-       <outline text="Le Nouvel Observateur" htmlUrl="http://permanent.nouvelobs.com/" xmlUrl="http://permanent.nouvelobs.com/rss_permanent.xml" />
+       <outline text="Le Nouvel Observateur" htmlUrl="https://tempsreel.nouvelobs.com/" xmlUrl="https://tempsreel.nouvelobs.com/rss.xml" />
      </outline>
 
 	<!-- lets keep this default English block in sync over all feed lists! -->
@@ -21,10 +21,10 @@
 			<outline text="Ars Technica" htmlUrl="http://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
 			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
 			<outline text="BBC" htmlUrl="http://newsrss.bbc.co.uk/" xmlUrl="http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"/>
-			<outline text="Science" htmlUrl="http://www.sciencenews.org" xmlUrl="http://www.sciencenews.org/view/feed/type/news/name/news.rss"/>
+			<outline text="Science" htmlUrl="http://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
 		</outline>
 		<outline text="Open Source">		<!-- translate this title for localized feed list -->
-			<outline text="Liferea Blog" htmlUrl="http://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
+			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 		</outline>
 		<outline text="Podcasts &amp; Music">		<!-- translate this title for localized feed list -->

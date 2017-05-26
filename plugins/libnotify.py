@@ -1,7 +1,7 @@
 #
 # libnotify Popup Notifications Plugin
 #
-# Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
+# Copyright (C) 2013-2015 Lars Windolf <lars.windolf@gmx.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -19,6 +19,8 @@
 # Boston, MA 02111-1307, USA.
 #
 
+import gi
+gi.require_version('Notify', '0.7')
 from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Notify
 
 class LibnotifyPlugin (GObject.Object, Liferea.ShellActivatable):
@@ -28,15 +30,12 @@ class LibnotifyPlugin (GObject.Object, Liferea.ShellActivatable):
     shell = GObject.property (type=Liferea.Shell)
 
     def do_activate (self):
-	self.shell.props.feed_list.connect("new-items", self.on_new_items)
+        self._handler_id = self.shell.props.feed_list.connect ("node-updated", self.on_node_updated)
 
-    def on_new_items (self, widget, node):
-	Notify.init('Liferea')
-	# FIXME: icon
-        notification = Notify.Notification.new(
-          node.title,
-	  # FIXME: add list of first 5 items...
-          'Items',
-          'dialog-information'
-        )
-        notification.show()
+    def do_deactivate (self):
+        self.shell.props.feed_list.disconnect (self._handler_id)
+
+    def on_node_updated (self, widget, nodeTitle):
+        Notify.init ('Liferea')
+        notification = Notify.Notification.new (nodeTitle, "was updated", "dialog-information")
+        notification.show () 

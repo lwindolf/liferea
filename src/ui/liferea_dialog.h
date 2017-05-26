@@ -1,7 +1,7 @@
 /**
  * @file ui_dialog.h UI dialog handling
  *
- * Copyright (C) 2007 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2016  Lars Windolf <lars.windolf@gmx.de>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -56,12 +56,11 @@ GType liferea_dialog_get_type	(void);
 /**
  * Convenience wrapper to create a new dialog and set up its GUI
  *
- * @param filename	name of widget file (or NULL for default)
  * @param name		the dialog name
  *
  * @returns the dialog widget
  */
-GtkWidget * liferea_dialog_new (const gchar *filename, gchar *name);
+GtkWidget * liferea_dialog_new (const gchar *name);
 
 /**
  * Helper function to look up child widgets of a dialog window.

@@ -1,7 +1,7 @@
 /**
  * @file search-folder-dialog.c  Search folder properties dialog
  *
- * Copyright (C) 2007-2011 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -116,7 +116,7 @@ search_folder_dialog_new (nodePtr node)
 	sfd->priv->re = rule_editor_new (sfd->priv->vfolder->itemset);
 	
 	/* Create the dialog */
-	dialog = liferea_dialog_new ("search_folder.ui", "vfolderdialog");
+	dialog = liferea_dialog_new ("search_folder");
 	
 	/* Setup search folder name */
 	sfd->priv->nameEntry = liferea_dialog_lookup (dialog, "searchNameEntry");

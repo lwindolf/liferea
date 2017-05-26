@@ -1,7 +1,7 @@
 /**
  * @file opml_source.c  OPML Planet/Blogroll feed list source
  * 
- * Copyright (C) 2006-2013 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 
 #include "fl_sources/opml_source.h"
 
-#include <gtk/gtk.h>
 #include <unistd.h>
 
 #include "common.h"
@@ -106,7 +105,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 			xpath_foreach_match (match, "./outline", opml_source_merge_feed, (gpointer)mc);
 			g_free (mc);
 		} else {
-			g_warning ("opml_source_merge_feed(): bad! bad! very bad!");
+			g_print ("opml_source_merge_feed(): bad! bad! very bad!");
 		}
 	}
 
@@ -126,7 +125,7 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 		node_foreach_child_data (node, opml_source_check_for_removal, user_data);
 		expr = g_strdup_printf ("//outline[ (@title='%s') or (@text='%s') or (@description='%s')]", node->title, node->title, node->title);
 	} else {
-		g_warning ("opml_source_check_for_removal(): This should never happen...");
+		g_print ("opml_source_check_for_removal(): This should never happen...");
 		return;
 	}
 	
@@ -208,7 +207,7 @@ opml_subscription_process_update_result (subscriptionPtr subscription, const str
 			
 			node->available = TRUE;
 		} else {
-			g_warning ("Cannot parse downloaded OPML document!");
+			g_print ("Cannot parse downloaded OPML document!");
 		}
 	}
 	
@@ -248,7 +247,7 @@ opml_source_import (nodePtr node)
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		import_OPML_feedlist (filename, node, FALSE, TRUE);
 	} else {
-		g_warning ("cannot open \"%s\"", filename);
+		g_print ("cannot open \"%s\"", filename);
 		node->available = FALSE;
 	}
 	g_free (filename);
@@ -316,30 +315,25 @@ static void opml_source_deinit(void) { }
 /* node source type definition */
 
 static struct nodeSourceType nst = {
-	"fl_opml",
-	N_("Planet, BlogRoll, OPML"),
-	N_("Integrate blogrolls or Planets in your feed list. Liferea will "
-	   "automatically add and remove feeds according to the changes of "
-	   "the source OPML document"),
-	NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
-	{},
-	NULL,
-	NULL,
-	opml_source_init,
-	opml_source_deinit,
-	ui_opml_source_get_source_url,
-	opml_source_remove,
-	opml_source_import,
-	opml_source_export,
-	opml_source_get_feedlist,
-	opml_source_auto_update,
-	NULL,	/* free */
-	NULL,	/* item_set_flag */
-	NULL,	/* item_mark_read */
-	NULL,	/* add_folder */
-	NULL,	/* add_subscription */
-	NULL,	/* remove */
-	NULL	/* convert_to_local */
+	.id                  = "fl_opml",
+	.name                = N_("Planet, BlogRoll, OPML"),
+	.sourceSubscriptionType = &opmlSubscriptionType,
+	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION,
+	.source_type_init    = opml_source_init,
+	.source_type_deinit  = opml_source_deinit,
+	.source_new          = ui_opml_source_get_source_url,
+	.source_delete       = opml_source_remove,
+	.source_import       = opml_source_import,
+	.source_export       = opml_source_export,
+	.source_get_feedlist = opml_source_get_feedlist,
+	.source_auto_update  = opml_source_auto_update,
+	.free                = NULL,
+	.item_set_flag       = NULL,
+	.item_mark_read      = NULL,
+	.add_folder          = NULL,
+	.add_subscription    = NULL,
+	.remove_node         = NULL,
+	.convert_to_local    = NULL
 };
 
 nodeSourceTypePtr
@@ -357,9 +351,7 @@ on_opml_source_selected (GtkDialog *dialog,
                          gint response_id,
                          gpointer user_data)
 {
-	nodePtr node;
-	subscriptionPtr	subscription;
-	const gchar *source;
+	nodePtr		node;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new (node_source_get_node_type ());
@@ -384,7 +376,7 @@ on_opml_file_selected (const gchar *filename, gpointer user_data)
 static void
 on_opml_file_choose_clicked (GtkButton *button, gpointer user_data)
 {
-	ui_choose_file (_("Choose OPML File"), GTK_STOCK_OPEN, FALSE, on_opml_file_selected, NULL, NULL, "*.opml|*.xml", _("OPML Files"), user_data);
+	ui_choose_file (_("Choose OPML File"), _("_Open"), FALSE, on_opml_file_selected, NULL, NULL, "*.opml|*.xml", _("OPML Files"), user_data);
 }
 
 static void
@@ -392,7 +384,7 @@ ui_opml_source_get_source_url (void)
 {
 	GtkWidget	*dialog, *button;
 
-	dialog = liferea_dialog_new ("opml_source.ui", "opml_source_dialog");
+	dialog = liferea_dialog_new ("opml_source");
 	button = liferea_dialog_lookup (dialog, "select_button");
 
 	g_signal_connect (G_OBJECT (dialog), "response",

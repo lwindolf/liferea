@@ -1,7 +1,7 @@
-/**
+/*
  * @file itemlist.c  item list handling
  *
- * Copyright (C) 2004-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,17 +61,17 @@
 
 struct ItemListPrivate
 {
-	GHashTable	*guids;			/**< list of GUID to avoid having duplicates in currently loaded list */
-	itemSetPtr	filter;			/**< currently active filter rules */
-	nodePtr		currentNode;		/**< the node whose own or its child items are currently displayed */
-	gulong		selectedId;		/**< the currently selected (and displayed) item id */
+	GHashTable	*guids;			/*<< list of GUID to avoid having duplicates in currently loaded list */
+	itemSetPtr	filter;			/*<< currently active filter rules */
+	nodePtr		currentNode;		/*<< the node whose own or its child items are currently displayed */
+	gulong		selectedId;		/*<< the currently selected (and displayed) item id */
 	
-	nodeViewType	viewMode;		/**< current viewing mode */
-	guint 		loading;		/**< if >0 prevents selection effects when loading the item list */
-	itemPtr		invalidSelection;	/**< if set then the next selection might need to do an unselect first */
+	nodeViewType	viewMode;		/*<< current viewing mode */
+	guint 		loading;		/*<< if >0 prevents selection effects when loading the item list */
+	itemPtr		invalidSelection;	/*<< if set then the next selection might need to do an unselect first */
 
-	gboolean 	deferredRemove;		/**< TRUE if selected item needs to be removed from cache on unselecting */
-	gboolean 	deferredFilter;		/**< TRUE if selected item needs to be filtered on unselecting */
+	gboolean 	deferredRemove;		/*<< TRUE if selected item needs to be removed from cache on unselecting */
+	gboolean 	deferredFilter;		/*<< TRUE if selected item needs to be filtered on unselecting */
 };
 
 static GObjectClass *parent_class = NULL;
@@ -177,25 +177,25 @@ itemlist_get_displayed_node (void)
 static void
 itemlist_check_for_deferred_action (void) 
 {
+	gulong	id = itemlist->priv->selectedId;
 	itemPtr	item;
 	
-	if(itemlist->priv->selectedId) {
-		gulong id = itemlist->priv->selectedId;
-		itemlist_set_selected(NULL);
+	if (id) {
+		itemlist_set_selected (NULL);
 
 		/* check for removals caused by itemlist filter rule */
-		if(itemlist->priv->deferredFilter) {
+		if (itemlist->priv->deferredFilter) {
 			itemlist->priv->deferredFilter = FALSE;
-			item = item_load(id);
-			itemview_remove_item(item);
-			feed_list_node_update(item->nodeId);
+			item = item_load (id);
+			itemview_remove_item (item);
+			feed_list_node_update (item->nodeId);
 		}
 
 		/* check for removals caused by vfolder rules */
-		if(itemlist->priv->deferredRemove) {
+		if (itemlist->priv->deferredRemove) {
 			itemlist->priv->deferredRemove = FALSE;
-			item = item_load(id);
-			itemlist_remove_item(item);
+			item = item_load (id);
+			itemlist_remove_item (item);
 		}
 	}
 }
@@ -258,10 +258,6 @@ itemlist_itemset_is_valid (itemSetPtr itemSet)
 	return TRUE;
 }
 
-/**
- * To be called whenever an itemset was updated. If it is the
- * displayed itemset it will be merged against the item view.
- */
 void
 itemlist_merge_itemset (itemSetPtr itemSet) 
 {
@@ -277,10 +273,6 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 	debug_exit ("itemlist_merge_itemset");
 }
 
-/** 
- * To be called whenever a node was selected and should
- * replace the current itemlist.
- */
 void
 itemlist_load (nodePtr node) 
 {

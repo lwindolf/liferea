@@ -2,7 +2,7 @@
  * @file google_reader_api_edit.c  Google Reader API syncing support
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
- * Copyright (C) 2014 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2014-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,12 @@
 
 #include "google_reader_api_edit.h"
 
+#include "common.h"
 #include "debug.h"
+#include "feedlist.h"
+#include "json.h"
 #include "update.h"
 #include "subscription.h"
-#include "common.h"
-#include "feedlist.h"
 
 /**
  * A structure to indicate an edit to the node source remote feed "database".
@@ -52,7 +53,13 @@ typedef struct GoogleReaderAction {
 	 * opposed to posts) in broadcast-friends. The unique id of the source
 	 * is of the form <feedUrlType>/<feedUrl>.
 	 */
-	gchar* feedUrlType; 
+	gchar* feedUrlType;
+
+	/**
+         * An optional label id to use for an action (e.g. to add a feed label)
+         * Must be of syntax "user/-/label/MyLabel"
+         */
+	gchar* label;
 
 	/**
 	 * A callback function on completion of the edit.
@@ -68,6 +75,11 @@ typedef struct GoogleReaderAction {
 	 * The node source this action runs against (mandatory).
 	 */
 	nodeSourcePtr source;
+
+	/**
+	 * The action result data (available on callback)
+	 */
+	gchar *response;
 } *GoogleReaderActionPtr;
 
 enum { 
@@ -77,7 +89,8 @@ enum {
 	EDIT_ACTION_MARK_STARRED,
 	EDIT_ACTION_MARK_UNSTARRED,
 	EDIT_ACTION_ADD_SUBSCRIPTION,
-	EDIT_ACTION_REMOVE_SUBSCRIPTION
+	EDIT_ACTION_REMOVE_SUBSCRIPTION,
+	EDIT_ACTION_ADD_LABEL
 };
 
 typedef struct GoogleReaderAction* editPtr;
@@ -102,6 +115,7 @@ google_reader_api_action_free (GoogleReaderActionPtr action)
 { 
 	g_free (action->guid);
 	g_free (action->feedUrl);
+	g_free (action->label);
 	g_slice_free (struct GoogleReaderAction, action);
 }
 
@@ -127,7 +141,7 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 	GoogleReaderActionCtxtPtr	editCtxt = (GoogleReaderActionCtxtPtr) userdata; 
 	GoogleReaderActionPtr		action = editCtxt->action;
 	nodePtr				node = node_from_id (editCtxt->nodeId);
-	nodeSourcePtr			source = node->source;
+	gboolean			failed = FALSE;
 	
 	google_reader_api_action_context_free (editCtxt);
 
@@ -135,22 +149,48 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 		google_reader_api_action_free (action);
 		return; /* probably got deleted before this callback */
 	} 
-		
-	if (result->data == NULL || !g_str_equal (result->data, "OK")) {
-		if (action->callback) 
-			(*action->callback) (source, action, FALSE);
-		debug1 (DEBUG_UPDATE, "The edit action failed with result: %s\n", result->data);
-		google_reader_api_action_free (action);
-		return; /** @todo start a timer for next processing */
+
+	// FIXME: suboptimal check as some results are text, some XML, some JSON...
+	if (!g_str_equal (result->data, "OK")) {
+		if (result->data == NULL) {
+			failed = TRUE;
+		} else {
+			if (node->source->type->api.json) {
+				JsonParser *parser = json_parser_new ();
+
+				if (!json_parser_load_from_data (parser, result->data, -1, NULL)) {
+					debug0 (DEBUG_UPDATE, "Failed to parse JSON update");
+					failed = TRUE;
+				} else {
+					const gchar *error = json_get_string (json_parser_get_root (parser), "error");
+					if (error) {
+						debug1 (DEBUG_UPDATE, "Request failed with error '%s'", error);
+						failed = TRUE;
+					}
+				}
+				// FIXME: also check for "errors" array
+
+				g_object_unref (parser);
+			} else {
+				failed = TRUE;
+			}
+		}
 	}
-	
-	if (action->callback)
-		action->callback (source, action, TRUE);
+
+	if (action->callback) {
+		action->response = result->data;
+		action->callback (node->source, action, !failed);
+	}
 
 	google_reader_api_action_free (action);
 
+	if (failed) {
+		debug1 (DEBUG_UPDATE, "The edit action failed with result: %s\n", result->data);
+		return; /** @todo start a timer for next processing */
+	}
+
 	/* process anything else waiting on the edit queue */
-	google_reader_api_edit_process (source);
+	google_reader_api_edit_process (node->source);
 }
 
 /* the following google_reader_api_* functions are simply functions that 
@@ -160,12 +200,9 @@ static void
 google_reader_api_add_subscription (GoogleReaderActionPtr action, updateRequestPtr request, const gchar* token) 
 {
 	update_request_set_source (request, action->source->type->api.add_subscription);
-	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE) ;
-	gchar* postdata = g_strdup_printf (action->source->type->api.add_subscription_post, s_escaped, token);
+	gchar *s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
+	request->postdata = g_strdup_printf (action->source->type->api.add_subscription_post, s_escaped, token);
 	g_free (s_escaped);
-
-	debug1 (DEBUG_UPDATE, "google_reader_api: postdata [%s]", postdata);
-	request->postdata = postdata ;
 }
 
 static void
@@ -178,16 +215,27 @@ google_reader_api_remove_subscription (GoogleReaderActionPtr action, updateReque
 	g_free (s_escaped);
 }
 
+static void
+google_reader_api_add_label (GoogleReaderActionPtr action, updateRequestPtr request, const gchar* token)
+{
+	update_request_set_source (request, action->source->type->api.edit_add_label);
+	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
+	gchar *a_escaped = g_uri_escape_string (action->label, NULL, TRUE);
+	request->postdata = g_strdup_printf (action->source->type->api.edit_add_label_post, s_escaped, a_escaped, token);
+	g_free (a_escaped);
+	g_free (s_escaped);
+}
+
 static void 
 google_reader_api_edit_tag (GoogleReaderActionPtr action, updateRequestPtr request, const gchar *token) 
 {
 	update_request_set_source (request, action->source->type->api.edit_tag); 
 
-	const gchar* prefix = "feed" ; 
+	const gchar* prefix = "feed"; 
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
-	gchar* a_escaped = NULL ;
-	gchar* i_escaped = g_uri_escape_string (action->guid, NULL, TRUE);
-	gchar* postdata = NULL ;
+	gchar* a_escaped = NULL;
+	gchar* i_escaped = g_uri_escape_string (action->guid, NULL, TRUE);;
+	gchar* postdata = NULL;
 
 	/*
 	 * If the source of the item is a feed then the source *id* will be of
@@ -234,9 +282,6 @@ google_reader_api_edit_tag (GoogleReaderActionPtr action, updateRequestPtr reque
 	g_free (s_escaped);
 	g_free (a_escaped); 
 	g_free (i_escaped);
-	
-	debug1 (DEBUG_UPDATE, "google_reader_api: postdata [%s]", postdata);
-
 
 	request->postdata = postdata;
 }
@@ -278,11 +323,14 @@ google_reader_api_edit_token_cb (const struct updateResult * const result, gpoin
 	    action->actionType == EDIT_ACTION_MARK_STARRED || 
 	    action->actionType == EDIT_ACTION_MARK_UNSTARRED) 
 		google_reader_api_edit_tag (action, request, token);
-	else if (action->actionType == EDIT_ACTION_ADD_SUBSCRIPTION ) 
+	else if (action->actionType == EDIT_ACTION_ADD_SUBSCRIPTION) 
 		google_reader_api_add_subscription (action, request, token);
-	else if (action->actionType == EDIT_ACTION_REMOVE_SUBSCRIPTION )
-		google_reader_api_remove_subscription (action, request, token) ;
+	else if (action->actionType == EDIT_ACTION_REMOVE_SUBSCRIPTION)
+		google_reader_api_remove_subscription (action, request, token);
+	else if (action->actionType == EDIT_ACTION_ADD_LABEL)
+		google_reader_api_add_label (action, request, token);
 
+	debug1 (DEBUG_UPDATE, "google_reader_api: postdata [%s]", request->postdata);
 	update_execute_request (node->source, request, google_reader_api_edit_action_complete, google_reader_api_action_context_new(node->source, action), 0);
 
 	action = g_queue_pop_head (node->source->actionQueue);
@@ -388,37 +436,77 @@ google_reader_api_edit_mark_starred (nodeSourcePtr source, const gchar *guid, co
 	google_reader_api_edit_push (source, action, FALSE);
 }
 
-static void 
-update_subscription_list_callback(nodeSourcePtr source, GoogleReaderActionPtr action, gboolean success) 
+static void
+google_reader_api_edit_add_subscription_complete (nodeSourcePtr source, GoogleReaderActionPtr action)
 {
-	if (success) { 
-		/*
-		 * It is possible that Google changed the name of the URL that
-		 * was sent to it. In that case, I need to recover the URL 
-		 * from the list. But a node with the old URL has already 
-		 * been created. Allow the subscription update call to fix that.
-		 */
-		GSList* cur = source->root->children ;
-		for(; cur; cur = g_slist_next (cur))  {
-			nodePtr node = (nodePtr) cur->data ; 
+	/*
+	 * It is possible that remote changed the name of the URL that
+	 * was sent to it. In that case, we need to recover the URL 
+	 * from the list. But a node with the old URL has already 
+	 * been created. Allow the subscription update call to fix that.
+	 */
+	GSList* cur = source->root->children ;
+	for(; cur; cur = g_slist_next (cur))  {
+		nodePtr node = (nodePtr) cur->data;
+		if (node->subscription) {
 			if (g_str_equal (node->subscription->source, action->feedUrl)) {
 				subscription_set_source (node->subscription, "");
 				feedlist_node_added (node);
 			}
 		}
-		
-		debug0 (DEBUG_UPDATE, "Subscription list was updated successful");
-		subscription_update (source->root->subscription, NODE_SOURCE_UPDATE_ONLY_LIST);
-	} else 
-		debug0 (DEBUG_UPDATE, "Failed to update subscriptions");
+	}
+
+	subscription_update (source->root->subscription, NODE_SOURCE_UPDATE_ONLY_LIST);
+}
+
+static void
+google_reader_api_edit_add_subscription2_cb (nodeSourcePtr source, GoogleReaderActionPtr action, gboolean success) 
+{
+	google_reader_api_edit_add_subscription_complete (source, action);
+}
+
+/* Subscription callback #1 (to set label (folder) before updating the feed list) */
+static void
+google_reader_api_edit_add_subscription_cb (nodeSourcePtr source, GoogleReaderActionPtr action, gboolean success) 
+{
+	if (success) {
+		if (action->label) {
+			/* Extract returned new feed id (FIXME: is this only TheOldReader specific?) */
+			const gchar *id = NULL;
+			JsonParser *parser = json_parser_new ();
+
+			if (!json_parser_load_from_data (parser, action->response, -1, NULL)) {
+				debug0 (DEBUG_UPDATE, "Failed to parse JSON response");
+			} else {
+				id = json_get_string (json_parser_get_root (parser), "streamId");
+				if (!id)
+					debug0 (DEBUG_UPDATE, "ERROR: Found no 'streamId' in response. Cannot set folder label!");
+			}
+
+			if (id) {
+				GoogleReaderActionPtr a = google_reader_api_action_new (EDIT_ACTION_ADD_LABEL);
+				a->feedUrl = g_strdup (id);
+				a->label = g_strdup (action->label);
+				a->callback = google_reader_api_edit_add_subscription2_cb;
+				google_reader_api_edit_push (source, a, TRUE);
+			}
+			g_object_unref (parser);
+		} else {
+			google_reader_api_edit_add_subscription_complete (source, action);
+		}
+	} else {
+		debug0 (DEBUG_UPDATE, "Failed to subscribe");
+		// FIXME: real error handling (dialog...)
+	}
 }
 
 void 
-google_reader_api_edit_add_subscription (nodeSourcePtr source, const gchar* feedUrl)
+google_reader_api_edit_add_subscription (nodeSourcePtr source, const gchar* feedUrl, const gchar *label)
 {
 	GoogleReaderActionPtr action = google_reader_api_action_new (EDIT_ACTION_ADD_SUBSCRIPTION);
 	action->feedUrl = g_strdup (feedUrl);
-	action->callback = update_subscription_list_callback;
+	action->label = g_strdup (label);
+	action->callback = google_reader_api_edit_add_subscription_cb;
 	google_reader_api_edit_push (source, action, TRUE);
 }
 
@@ -443,7 +531,8 @@ google_reader_api_edit_remove_callback (nodeSourcePtr source, GoogleReaderAction
 		debug0 (DEBUG_UPDATE, "Failed to remove subscription");
 }
 
-void google_reader_api_edit_remove_subscription (nodeSourcePtr source, const gchar* feedUrl) 
+void
+google_reader_api_edit_remove_subscription (nodeSourcePtr source, const gchar* feedUrl) 
 {
 	GoogleReaderActionPtr action = google_reader_api_action_new (EDIT_ACTION_REMOVE_SUBSCRIPTION); 
 	action->feedUrl = g_strdup (feedUrl);

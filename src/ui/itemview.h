@@ -1,7 +1,7 @@
 /*
  * @file itemview.h  viewing feed content in different presentation modes
  * 
- * Copyright (C) 2006-2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2006-2012 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,67 +67,62 @@ struct ItemViewClass
 GType itemview_get_type (void);
 
 /** 
- * itemview_clear:
+ * itemview_clear: (skip)
  *
  * Removes all currently loaded items from the item view.
  */
 void itemview_clear (void);
     
 /**
- * itemview_set_displayed_node:
+ * itemview_set_displayed_node: (skip)
+ * @node:	the node whose items are to be presented
  *
  * Prepares the view for displaying items of the given node.
- *
- * @param node	the node whose items are to be presented
  */
 void itemview_set_displayed_node (nodePtr node);
 
-/** item view display mode type */
+/* item view display mode type */
 typedef enum {
-	ITEMVIEW_SINGLE_ITEM,	/**< 3 panes, item view shows the selected item only in HTML view */
-	ITEMVIEW_ALL_ITEMS,	/**< 2 panes, item view shows all items combined in HTML view */
-	ITEMVIEW_NODE_INFO	/**< 3 panes, item view shows the selected node description in HTML view*/
+	ITEMVIEW_SINGLE_ITEM,	/*<< 3 panes, item view shows the selected item only in HTML view */
+	ITEMVIEW_ALL_ITEMS,	/*<< 2 panes, item view shows all items combined in HTML view */
+	ITEMVIEW_NODE_INFO	/*<< 3 panes, item view shows the selected node description in HTML view*/
 } itemViewMode;
 
 /**
  * itemview_set_mode:
+ * @mode:		item view mode constant
  *
  * Set/unset the display mode of the item view.
- *
- * @param mode		item view mode constant
  */
 void itemview_set_mode (itemViewMode mode);
 
 /**
- * itemview_add_item:
+ * itemview_add_item: (skip)
+ * @item:		the item to add
  *
  * Adds an item to the view for rendering. The item must belong
  * to the item set that was announced with itemview_set_displayed_node().
- *
- * @param item		the item to add
  *
  * TODO: use item merger signal instead
  */
 void itemview_add_item (itemPtr item);
 
 /**
- * itemview_remove_item:
+ * itemview_remove_item: (skip)
+ * @item:	the item to remove
  *
  * Removes a given item from the view.
- *
- * @param item	the item to remove
  *
  * TODO: use item merger signal instead
  */
 void itemview_remove_item (itemPtr item);
 
 /**
- * itemview_select_item:
+ * itemview_select_item: (skip)
+ * @item: the item to select
  *
  * Selects a given item in the view. The item must be
  * added using itemview_add_item before selecting.
- *
- * @param item the item to select
  */
 void itemview_select_item (itemPtr item);
 
@@ -140,11 +135,10 @@ void itemview_select_item (itemPtr item);
 void itemview_select_enclosure (guint position);
 
 /**
- * itemview_update_item:
+ * itemview_update_item: (skip)
+ * @item:	the item to update
  *
  * Requests updating the rendering of a given item.
- *
- * @param item	the item to update
  */
 void itemview_update_item (itemPtr item);
 
@@ -156,18 +150,17 @@ void itemview_update_item (itemPtr item);
 void itemview_update_all_items (void);
 
 /**
- * itemview_update_node_info:
+ * itemview_update_node_info: (skip)
+ * @node:	the node whose info view is to be updated
  *
  * Requests updating the rendering of the node info view.
- *
- * @node node	the node whose info view is to be updated
  *
  * TODO: register for signal at feed merger instead
  */
 void itemview_update_node_info (struct node *node);
 
 /**
- * itemview_update:
+ * itemview_update: (skip)
  *
  * Refreshes the item view. Needs to be called after each
  * add, remove or update of one or more items.
@@ -178,22 +171,20 @@ void itemview_update (void);
 
 /**
  * itemview_display_info:
+ * @html:	HTML to present
  *
  * Sets an info display in the item view HTML widget.
  * Used for special functionality like search result info.
- *
- * @param html	HTML to present
  */
 void itemview_display_info (const gchar *html);
 
 /**
- * itemview_find_unread_item:
+ * itemview_find_unread_item: (skip)
+ * @startId:	the item id to start at (or NULL for starting at the top)
  *
  * Finds the next unread item.
  *
- * @param startId	the item id to start at (or NULL for starting at the top)
- *
- * @results the item found (or NULL)
+ * Returns: (transfer none): the item found (or NULL)
  */
 itemPtr itemview_find_unread_item (gulong startId);
 
@@ -207,11 +198,10 @@ void itemview_scroll (void);
 
 /**
  * itemview_move_cursor:
+ * @step:	moving steps
  *
  * Moves the cursor in the item list step times.
  * Negative value means moving backwards.
- * 
- * @param step	moving steps
  */
 void itemview_move_cursor (int step);
 
@@ -224,39 +214,37 @@ void itemview_move_cursor_to_first (void);
 
 /**
  * itemview_set_layout:
+ * @newMode:	new view mode (NODE_VIEW_MODE_*)
  *
  * Switches the layout for the given viewing mode.
- *
- * @param newMode	new view mode (NODE_VIEW_MODE_*)
  */
 void itemview_set_layout (nodeViewType newMode);
 
 /**
- * itemview_create:
+ * itemview_create: (skip)
  * @window:		parent window widget
  *
  * Creates the item view singleton instance.
  *
- * Return value: (transfer none):	the item view instance
+ * Returns: (transfer none):	the item view instance
  */
 ItemView * itemview_create (GtkWidget *window);
 
 /**
  * itemview_launch_URL:
+ * @url:	        the link to load
+ * @internal:	TRUE if internal browsing is to be enforced
  *
  * Launch the given URL in the currently active HTML view.
  *
- * @param url		the link to load
- * @param forceInternal	TRUE if internal browsing is to be enforced
  */
 void itemview_launch_URL (const gchar *url, gboolean internal);
 
 /**
  * itemview_do_zoom:
+ * @in:	TRUE if zooming in, FALSE for zooming out
  *
  * Requests the item view to change zoom level.
- *
- * @param in	TRUE if zooming in, FALSE for zooming out
  */
 void itemview_do_zoom (gboolean in);
 

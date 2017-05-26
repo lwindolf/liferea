@@ -1,7 +1,7 @@
 /*
  * @file liferea_media_player.c  media player helpers
  *
- * Copyright (C) 2012 Lars Windolf <lars.lindner@gmail.com>
+ * Copyright (C) 2012-2015 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,31 +23,9 @@
 #include "plugins_engine.h"
 
 #include <libpeas/peas-activatable.h>
-#include <libpeas/peas-extension-set.h>
 
 // FIXME: This should be a member of some object!
-static PeasExtensionSet *extensions = NULL;	/**< Plugin management */
-static gint		count = 0;		/**< Number of active auth plugins */
-
-static void
-on_extension_added (PeasExtensionSet *extensions,
-                    PeasPluginInfo   *info,
-                    PeasExtension    *exten,
-                    gpointer         user_data)
-{
-	peas_extension_call (exten, "activate");
-	count++;
-}
-
-static void
-on_extension_removed (PeasExtensionSet *extensions,
-                      PeasPluginInfo   *info,
-                      PeasExtension    *exten,
-                      gpointer         user_data)
-{
-	peas_extension_call (exten, "deactivate");
-	count--;
-}
+static PeasExtensionSet *extensions = NULL;
 
 static PeasExtensionSet *
 liferea_media_player_get_extension_set (void)
@@ -56,10 +34,7 @@ liferea_media_player_get_extension_set (void)
 		extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
 		                             LIFEREA_MEDIA_PLAYER_ACTIVATABLE_TYPE, NULL);
 
-		g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
-		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
-
-		peas_extension_set_foreach (extensions, on_extension_added, NULL);
+		liferea_plugins_engine_set_default_signals (extensions, NULL);
 	}
 
 	return extensions;
