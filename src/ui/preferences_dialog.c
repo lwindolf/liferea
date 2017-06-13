@@ -562,6 +562,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	entry = liferea_dialog_lookup (pd->priv->dialog, "browsercmd");
 	gtk_entry_set_text (GTK_ENTRY(entry), browser_command);
 	g_free (browser_command);
+	g_signal_connect (entry, "changed", G_CALLBACK (on_browsercmd_changed), pd);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (entry), manualBrowser);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->priv->dialog, "manuallabel"), manualBrowser);
