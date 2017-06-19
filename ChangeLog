@@ -18,6 +18,7 @@ Open problems before 1.12 release
 	  (Leiaz)
 	* Fixes #251: Liferea does not always use theme icons when it is launched
 	  on system startup (reported by GreenLunar, fix by Leiaz)
+	* Change headline column sorting in wide view to time sorted
 
 	* Updated Finnish translation (Jorma Karvonen)
 	* Updated Latvian translation (Rihards Prieditis)

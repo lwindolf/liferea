@@ -266,9 +266,6 @@ item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortType, gb
 		case NODE_VIEW_SORT_BY_PARENT:
 			sortColumn = IS_PARENT;
 			break;
-		case NODE_VIEW_SORT_BY_STATE:
-			sortColumn = IS_STATE;
-			break;
 		case NODE_VIEW_SORT_BY_TIME:
 		default:
 			sortColumn = IS_TIME;
@@ -347,8 +344,6 @@ itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_da
 			nodeSort = NODE_VIEW_SORT_BY_TITLE;
 			break;
 		case IS_STATE:
-			nodeSort = NODE_VIEW_SORT_BY_STATE;
-			break;
 		case IS_PARENT:
 		case IS_SOURCE:
 			nodeSort = NODE_VIEW_SORT_BY_PARENT;
@@ -504,6 +499,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	gtk_tree_store_set (itemstore,
 	                    &iter,
 		            IS_LABEL, title,
+	                    IS_TIME, item->time,
 			    IS_TIME_STR, time_str,
 			    IS_STATEICON, state_icon,
 			    ITEMSTORE_ALIGN, item_list_title_alignment (title),
@@ -802,12 +798,13 @@ item_list_view_create (gboolean wide)
 							   "xalign", ITEMSTORE_ALIGN,
 							   NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
-	gtk_tree_view_column_set_sort_column_id (headline_column, IS_LABEL);
 	g_object_set (headline_column, "resizable", TRUE, NULL);
 	if (wide) {
+		gtk_tree_view_column_set_sort_column_id (headline_column, IS_TIME);
 		g_object_set (renderer, "wrap-mode", PANGO_WRAP_WORD, NULL);
 		g_object_set (renderer, "wrap-width", 300, NULL);
 	} else {
+		gtk_tree_view_column_set_sort_column_id (headline_column, IS_LABEL);
 		g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 		gtk_tree_view_column_add_attribute (headline_column, renderer, "weight", ITEMSTORE_WEIGHT);
 	}
