@@ -686,16 +686,13 @@ preferences_dialog_init (PreferencesDialog *pd)
 	pd->priv->plugins_box = liferea_dialog_lookup (pd->priv->dialog, "plugins_box");
 	g_assert (pd->priv->plugins_box != NULL);
 
-	GtkWidget *alignment;
-
-	alignment = gtk_alignment_new (0., 0., 1., 1.);
-	gtk_alignment_set_padding (GTK_ALIGNMENT (alignment), 12, 12, 12, 12);
-
 	widget = peas_gtk_plugin_manager_new (NULL);
 	g_assert (widget != NULL);
-
-	gtk_container_add (GTK_CONTAINER (alignment), widget);
-	gtk_box_pack_start (GTK_BOX (pd->priv->plugins_box), alignment, TRUE, TRUE, 0);
+	gtk_widget_set_margin_start(widget, 12);
+	gtk_widget_set_margin_end(widget, 12);
+	gtk_widget_set_margin_top(widget, 12);
+	gtk_widget_set_margin_bottom(widget, 12);
+	gtk_box_pack_start (GTK_BOX (pd->priv->plugins_box), widget, TRUE, TRUE, 0);
 
 	g_signal_connect_object (pd->priv->dialog, "destroy", G_CALLBACK (preferences_dialog_destroy_cb), pd, 0);
 

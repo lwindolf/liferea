@@ -557,7 +557,7 @@ on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
 	guint signal_id = g_signal_lookup ("delete_event",  GTK_TYPE_WINDOW);
 
-	if (g_signal_has_handler_pending(widget, signal_id, NULL, TRUE))
+	if (g_signal_has_handler_pending(widget, signal_id, (GQuark) 0, TRUE))
 		return FALSE;
 	liferea_shutdown ();
 	return TRUE;
