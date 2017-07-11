@@ -393,7 +393,7 @@ liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *title)
 void
 liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location)
 {
-	if (g_strcmp0 (location, "file:///") && g_strcmp0 (location, "file://")) {
+	if (!g_str_has_prefix (location, "liferea")) {
 		/* A URI different from the locally generated html base url is being loaded. */
 		htmlview->priv->internal = FALSE;
 	}

@@ -375,10 +375,13 @@ liferea_webkit_impl_init (LifereaWebKitImpl *self)
 	gboolean	disable_javascript, enable_plugins;
 	gchar		*font;
 	guint		fontSize;
-
+	WebKitSecurityManager *security_manager;
 	self->dbus_connections = NULL;
 	self->settings = webkit_settings_new ();
 	font = webkit_get_font (&fontSize);
+
+	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
+	webkit_security_manager_register_uri_scheme_as_local (security_manager, "liferea");
 
 	if (font) {
 		g_object_set (
@@ -478,7 +481,7 @@ liferea_webkit_write_html (
 	   because we don't need it as Webkit supports <div href="">
 	   and throws a security exception when accessing file://
 	   with a non-file:// base URL */
-	webkit_web_view_load_bytes (WEBKIT_WEB_VIEW (webview), string_bytes, content_type, "UTF-8", "file://");
+	webkit_web_view_load_bytes (WEBKIT_WEB_VIEW (webview), string_bytes, content_type, "UTF-8", "liferea://");
 	g_bytes_unref (string_bytes);
 }
 
