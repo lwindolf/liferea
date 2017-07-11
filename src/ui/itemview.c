@@ -400,6 +400,7 @@ void
 itemview_set_layout (nodeViewType newMode)
 {
 	ItemViewPrivate *ivp = itemview->priv;
+	GtkWidget 	*previous_parent = NULL;
 	const gchar	*htmlWidgetName, *ilWidgetName, *encViewVBoxName;
 	
 	if (newMode == ivp->currentLayoutMode)
@@ -409,18 +410,13 @@ itemview_set_layout (nodeViewType newMode)
 	liferea_shell_set_view_mode (newMode);
 	
 	if (!ivp->htmlview) {
-		GtkWidget *renderWidget;
-		
 		debug0 (DEBUG_GUI, "Creating HTML widget");
 		htmlview_init ();
 		ivp->htmlview = liferea_htmlview_new (FALSE);
 		liferea_htmlview_set_headline_view (ivp->htmlview);
 		g_signal_connect (ivp->htmlview, "statusbar-changed", 
 		                  G_CALLBACK (on_important_status_message), NULL);
-		renderWidget = liferea_htmlview_get_widget (ivp->htmlview);
-		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup ("normalViewHtml")), renderWidget);
-		gtk_widget_show (renderWidget);
-		
+
 		/* Set initial zoom */
 		liferea_htmlview_set_zoom (itemview->priv->htmlview, itemview->priv->zoom/100.);
 	} else {	
@@ -454,7 +450,10 @@ itemview_set_layout (nodeViewType newMode)
 	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
 	g_assert (htmlWidgetName);
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
-	gtk_widget_reparent (liferea_htmlview_get_widget (ivp->htmlview), liferea_shell_lookup (htmlWidgetName));
+	previous_parent = gtk_widget_get_parent (liferea_htmlview_get_widget (ivp->htmlview));
+	if (previous_parent)
+		gtk_container_remove (GTK_CONTAINER (previous_parent), liferea_htmlview_get_widget (ivp->htmlview));
+	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (htmlWidgetName)), liferea_htmlview_get_widget (ivp->htmlview));
 
 	/* Recreate the item list view */
 	if (ivp->itemListViewContainer)
@@ -476,9 +475,9 @@ itemview_set_layout (nodeViewType newMode)
 	/* Create a new enclosure list GtkTreeView. */		
 	if (encViewVBoxName) {
 		ivp->enclosureView = enclosure_list_view_new ();
-		gtk_box_pack_end (GTK_BOX (liferea_shell_lookup (encViewVBoxName)),
+		gtk_grid_attach_next_to (GTK_GRID (liferea_shell_lookup (encViewVBoxName)),
 		                  enclosure_list_view_get_widget (ivp->enclosureView),
-				  FALSE, FALSE, 0);
+				  NULL, GTK_POS_BOTTOM, 1,1);
 		gtk_widget_show_all (liferea_shell_lookup (encViewVBoxName));
 	}
 }

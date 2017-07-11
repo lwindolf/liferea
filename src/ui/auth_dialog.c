@@ -99,7 +99,7 @@ auth_dialog_load (AuthDialog *ad,
 	ad->priv->subscription = subscription;
 	ad->priv->flags = flags;
 	
-	uri = xmlParseURI (BAD_CAST subscription_get_source (ad->priv->subscription));
+	uri = xmlParseURI (subscription_get_source (ad->priv->subscription));
 	
 	if (uri) {
 		if (uri->user) {
@@ -116,7 +116,7 @@ auth_dialog_load (AuthDialog *ad,
 		}
 		xmlFree (uri->user);
 		uri->user = NULL;
-		source = xmlSaveUri (uri);
+		source = (gchar *) xmlSaveUri (uri);
 		xmlFreeURI (uri);
 	}
 	

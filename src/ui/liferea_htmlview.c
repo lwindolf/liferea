@@ -149,6 +149,7 @@ liferea_htmlview_finalize (GObject *object)
 	LifereaHtmlView *htmlview = LIFEREA_HTMLVIEW (object);
 
 	browser_history_free (htmlview->priv->history);
+	g_clear_object (&htmlview->priv->container);
 
 	g_signal_handlers_disconnect_by_data (network_monitor_get (), object);
 
@@ -215,6 +216,7 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 	htmlview->priv->impl = htmlview_get_impl ();
 	htmlview->priv->renderWidget = RENDERER (htmlview)->create (htmlview);
 	htmlview->priv->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
+	g_object_ref_sink (htmlview->priv->container);
 	htmlview->priv->history = browser_history_new ();
 	htmlview->priv->toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 	
