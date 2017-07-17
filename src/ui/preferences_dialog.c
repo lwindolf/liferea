@@ -27,6 +27,7 @@
 #endif
 
 #include <libpeas-gtk/peas-gtk-plugin-manager.h>
+#include <webkit2/webkit2.h>
 
 #include "common.h"
 #include "conf.h"
@@ -593,6 +594,9 @@ preferences_dialog_init (PreferencesDialog *pd)
 	                            i);
 
 	/* ================= panel 5 "proxy" ======================== */
+
+#if WEBKIT_CHECK_VERSION (2, 15, 3)
+	gtk_widget_destroy (GTK_WIDGET (liferea_dialog_lookup (pd->priv->dialog, "proxyDisabledInfobar")));
 	conf_get_str_value (PROXY_HOST, &proxy_host);
 	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->priv->dialog, "proxyhostentry")), proxy_host);
 	g_free (proxy_host);
@@ -639,6 +643,13 @@ preferences_dialog_init (PreferencesDialog *pd)
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->priv->dialog, "proxyportentry")), "changed", G_CALLBACK (on_proxyportentry_changed), pd);
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->priv->dialog, "proxyusernameentry")), "changed", G_CALLBACK (on_proxyusernameentry_changed), pd);
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->priv->dialog, "proxypasswordentry")), "changed", G_CALLBACK (on_proxypasswordentry_changed), pd);
+#else
+	gtk_widget_show (GTK_WIDGET (liferea_dialog_lookup (pd->priv->dialog, "proxyDisabledInfobar")));
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->priv->dialog, "proxybox")), FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->priv->dialog, "proxyAutoDetectRadio")), TRUE);
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->priv->dialog, "noProxyRadio")), FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->priv->dialog, "manualProxyRadio")), FALSE);
+#endif
 
 	/* ================= panel 6 "Privacy" ======================== */
 
