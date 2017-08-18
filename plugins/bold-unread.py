@@ -21,5 +21,6 @@ class NrBoldUnreadPlugin (GObject.Object, Liferea.ShellActivatable):
 
     def do_deactivate (self):
         self.ticol.set_cell_data_func (self.layout[1], None)
+        self.layout[1].set_property("weight", Pango.Weight.NORMAL)
         self.treeview.queue_draw ()
         return
