@@ -8,6 +8,8 @@ To be released
 
 	* #532: Add plugin to make unread feeds titles bold
 	  (Yanko Kaneti)
+	* Workaround for #503: Liferea deanonymize Tor
+	  (Leiaz)
 
 
 2017-03-26   Lars Windolf <lars.windolf@gmx.de>
