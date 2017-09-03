@@ -478,7 +478,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 		const gchar	*important = " <span background='red' color='black'> important </span> ";
 		gchar		*tmp = title;
 
-		title = g_strdup_printf ("%s%s%s %s<span size='smaller' weight='light'>— (%s)</span>",
+		title = g_strdup_printf ("%s%s%s %s<span size='smaller' weight='light'>— %s</span>",
 		                         !item->readStatus?"<span weight='bold'>":"",
 		                         title,
 		                         (FALSE == item->readStatus)?"</span>":"",
