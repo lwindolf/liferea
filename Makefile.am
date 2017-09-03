@@ -34,6 +34,8 @@ dtd_DATA = dtd/html.ent
 
 plugindir = $(pkglibdir)/plugins
 plugin_DATA = \
+	plugins/bold-unread.py \
+	plugins/bold-unread.plugin \
 	plugins/gnome-keyring.py \
 	plugins/gnome-keyring.plugin \
 	plugins/libnotify.py \

@@ -1,0 +1,8 @@
+[Plugin]
+Module=bold-unread
+Loader=python3
+IAge=2
+Name=Bold Unread
+Description=Bold text for subscriptions with unread items in the feedlist
+Authors=Yanko Kaneti
+Copyright=Copyright © 2017 Yanko Kaneti
