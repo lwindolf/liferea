@@ -3,6 +3,9 @@ Open problems before 1.12 release
 	* Article skimming currently broken
 	* Tray icon needs to be auto-disabled along with a popup
 	  informing users who previously had it enabled
+	* Dropped del.icio.us from social bookmarking options
+	  as it is a read-only service now.
+
 
 To be released
 
