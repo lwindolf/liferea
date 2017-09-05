@@ -113,10 +113,6 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.minimize_to_tray_minimize_handler = self.window.connect("window-state-event",
                                                                      self.window_state_event_cb)
 
-        # show the window if it is hidden when starting liferea
-        self.window.deiconify()
-        self.window.show()
-
         feedlist = self.shell.props.feed_list
         self.feedlist_new_items_cb(feedlist)
         sigid = feedlist.connect("new-items", self.feedlist_new_items_cb)
@@ -127,10 +123,10 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         "Hide window when minimize"
         if event.changed_mask & event.new_window_state & Gdk.WindowState.ICONIFIED:
             self.window.hide()
+            self.window.deiconify()
 
     def trayicon_click(self, widget, data = None):
-        self.window.deiconify()
-        self.window.show()
+        self.shell.toggle_visibility()
 
     def trayicon_minimize_on_close(self, widget, data = None):
         self.window.hide()
