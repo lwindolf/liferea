@@ -1424,6 +1424,7 @@ liferea_shell_toggle_visibility (void)
 	else if (!gtk_widget_get_visible (mainwindow)) {
 		/* The window is neither iconified nor on another workspace, but is not visible */
 		liferea_shell_restore_position ();
+		gtk_window_deiconify (GTK_WINDOW (mainwindow));
 		gtk_window_present (shell->priv->window);
 	} else {
 		liferea_shell_save_position ();

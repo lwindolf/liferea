@@ -13,6 +13,9 @@ To be released
 	  (Yanko Kaneti)
 	* Workaround for #503: Liferea deanonymize Tor
 	  (Leiaz)
+	* Fixes #538: toggle_visibility() does not make a minimized window
+	  visible again
+	  (reported by Balló György)
 	* Fixes #419, #457: Handling of relative URLs in Atom parser
 	  (Leiaz)
 	* Dropped del.icio.us from social bookmarking options
