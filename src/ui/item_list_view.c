@@ -657,14 +657,21 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 		switch (eb->button) {
 			case 1:
 				/* Allow flag toggling when left clicking in the 
-				   state, favicon and enclosure column. We depend
+				   state or favicon column. We depend
 				   on the fact that those columns are all left 
 				   of the headline column !!! */
-				if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn) +
-				                 gtk_tree_view_column_get_width (ilv->priv->enclosureColumn) +
-				                 gtk_tree_view_column_get_width (ilv->priv->faviconColumn))) {
-					itemlist_toggle_flag (item);
-					result = TRUE;
+				if(gtk_tree_view_column_get_visible (ilv->priv->faviconColumn)){
+					if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn) +
+					                 gtk_tree_view_column_get_width (ilv->priv->faviconColumn))) {
+						itemlist_toggle_flag (item);
+						result = TRUE;
+					}
+				}
+				else{
+					if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn))) {
+						itemlist_toggle_flag (item);
+						result = TRUE;
+					}
 				}
 				break;
 			case 2:
@@ -762,23 +769,6 @@ item_list_view_create (gboolean wide)
 	if (wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
 	
-	renderer = gtk_cell_renderer_pixbuf_new ();
-	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_ENCICON, NULL);
-	gtk_tree_view_append_column (ilv->priv->treeview, column);
-	ilv->priv->enclosureColumn = column;
-
-	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer, 
-		                                           "text", IS_TIME_STR,
-	                                                   "weight", ITEMSTORE_WEIGHT,
-							   NULL);
-	gtk_tree_view_append_column (ilv->priv->treeview, column);
-	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
-	g_object_set (column, "resizable", TRUE, NULL);
-	if (wide) {
-		gtk_tree_view_column_set_visible (column, FALSE);
-		ilv->priv->wideView = TRUE;
-	}
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_FAVICON, NULL);
@@ -791,12 +781,14 @@ item_list_view_create (gboolean wide)
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->faviconColumn = column;
-	
+
+
 	renderer = gtk_cell_renderer_text_new ();
 	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer, 
 	                                                   "markup", IS_LABEL,
 							   "xalign", ITEMSTORE_ALIGN,
 							   NULL);
+	gtk_tree_view_column_set_expand (headline_column, TRUE);
 	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
 	g_object_set (headline_column, "resizable", TRUE, NULL);
 	if (wide) {
@@ -808,6 +800,25 @@ item_list_view_create (gboolean wide)
 		g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 		gtk_tree_view_column_add_attribute (headline_column, renderer, "weight", ITEMSTORE_WEIGHT);
 	}
+
+	renderer = gtk_cell_renderer_pixbuf_new ();
+	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_ENCICON, NULL);
+	gtk_tree_view_append_column (ilv->priv->treeview, column);
+	ilv->priv->enclosureColumn = column;
+
+	renderer = gtk_cell_renderer_text_new ();
+	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer,
+		                                           "text", IS_TIME_STR,
+	                                                   "weight", ITEMSTORE_WEIGHT,
+							   NULL);
+	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+	gtk_tree_view_append_column (ilv->priv->treeview, column);
+	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
+	if (wide) {
+		gtk_tree_view_column_set_visible (column, FALSE);
+		ilv->priv->wideView = TRUE;
+	}
+
 
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
