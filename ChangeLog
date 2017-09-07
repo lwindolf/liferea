@@ -1,21 +1,22 @@
 Open problems before 1.12 release
 
-	* Article skimming currently broken
 	* Tray icon needs to be auto-disabled along with a popup
 	  informing users who previously had it enabled
-	* Dropped del.icio.us from social bookmarking options
-	  as it is a read-only service now.
 
 
 To be released
 
+	* #399: Reorder columns in 'Normal' email-like view
+	  to have the date column always at the end
+	  (Leiaz)
 	* #532: Add plugin to make unread feeds titles bold
 	  (Yanko Kaneti)
 	* Workaround for #503: Liferea deanonymize Tor
 	  (Leiaz)
 	* Fixes #419, #457: Handling of relative URLs in Atom parser
 	  (Leiaz)
-
+	* Dropped del.icio.us from social bookmarking options
+	  as it is a read-only service now.
 
 2017-03-26   Lars Windolf <lars.windolf@gmx.de>
 
