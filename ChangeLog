@@ -13,6 +13,8 @@ To be released
 	  (Yanko Kaneti)
 	* Workaround for #503: Liferea deanonymize Tor
 	  (Leiaz)
+	* Fixes #419, #457: Handling of relative URLs in Atom parser
+	  (Leiaz)
 
 
 2017-03-26   Lars Windolf <lars.windolf@gmx.de>
