@@ -1,6 +1,7 @@
 [Plugin]
 Module=bold-unread
 Loader=python3
+Icon=format-text-bold
 IAge=2
 Name=Bold Unread
 Description=Bold text for subscriptions with unread items in the feedlist
