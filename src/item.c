@@ -137,37 +137,17 @@ item_make_link (itemPtr item)
 	if (!src)
 		return NULL;
 
-	/* check for relative link */
-	if (*src == '/') {
+	/* check for absolute URL */
+	if (strstr (src, "://")) {
+		link = g_strdup (src);
+	} else {
 		const gchar * base = item_get_base_url (item);
-		gchar * pos = (gchar *)base;
-		int host_url_size, i;
 
-		/* Check for schema-less (protocol-relative) link */
-		if (*(src+1) == '/') {
-			/* Find first /, end of protocol part in base url */
-			pos = strstr (pos, "/");
-		} else {
-			/* Find the third /, start of link on
-			* site. */
-			for (i = 0; pos && i < 3; i++) {
-				pos = strstr(pos + 1, "/");
-			}
-		}
-
-		if (!pos) {
+		link = (gchar *) common_build_url (src, base);
+		if (!link) {
 			debug0 (DEBUG_PARSING, "Feed contains relative link and invalid base URL");
 			return NULL;
 		}
-
-		host_url_size = pos - base + 1;
-
-		link = g_malloc (host_url_size + strlen(src));
-		strncpy (link, base, host_url_size - 1);
-		pos = link + host_url_size - 1;
-		strcpy (pos, src);
-	} else {
-		link = g_strdup (src);
 	}
 	
 	return link;
@@ -207,50 +187,50 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 	gchar		*tmp;
 	gchar		*tmp2;
 	
-	itemNode = xmlNewChild (parentNode, NULL, "item", NULL);
+	itemNode = xmlNewChild (parentNode, NULL, BAD_CAST "item", NULL);
 	g_return_if_fail (itemNode);
 
-	xmlNewTextChild (itemNode, NULL, "title", item_get_title (item)?item_get_title (item):"");
+	xmlNewTextChild (itemNode, NULL, BAD_CAST "title", BAD_CAST (item_get_title (item)?item_get_title (item):""));
 
 	if (item_get_description (item)) {
 		tmp = xhtml_strip_dhtml (item_get_description (item));
 		tmp2 = xhtml_strip_unsupported_tags (tmp);
-		xmlNewTextChild (itemNode, NULL, "description", tmp2);
+		xmlNewTextChild (itemNode, NULL, BAD_CAST "description", BAD_CAST tmp2);
 		g_free (tmp);
 		g_free (tmp2);
 	}
 	
 	if (item_get_source (item))
-		xmlNewTextChild (itemNode, NULL, "source", item_get_source (item));
+		xmlNewTextChild (itemNode, NULL, BAD_CAST "source", BAD_CAST item_get_source (item));
 
 	tmp = g_strdup_printf ("%ld", item->id);
-	xmlNewTextChild (itemNode, NULL, "nr", tmp);
+	xmlNewTextChild (itemNode, NULL, BAD_CAST "nr", BAD_CAST tmp);
 	g_free (tmp);
 
 	tmp = g_strdup_printf ("%d", item->readStatus?1:0);
-	xmlNewTextChild (itemNode, NULL, "readStatus", tmp);
+	xmlNewTextChild (itemNode, NULL, BAD_CAST "readStatus", BAD_CAST tmp);
 	g_free (tmp);
 
 	tmp = g_strdup_printf ("%d", item->updateStatus?1:0);
-	xmlNewTextChild (itemNode, NULL, "updateStatus", tmp);
+	xmlNewTextChild (itemNode, NULL, BAD_CAST "updateStatus", BAD_CAST tmp);
 	g_free (tmp);
 
 	tmp = g_strdup_printf ("%d", item->flagStatus?1:0);
-	xmlNewTextChild (itemNode, NULL, "mark", tmp);
+	xmlNewTextChild (itemNode, NULL, BAD_CAST "mark", BAD_CAST tmp);
 	g_free (tmp);
 
 	tmp = g_strdup_printf ("%ld", item->time);
-	xmlNewTextChild (itemNode, NULL, "time", tmp);
+	xmlNewTextChild (itemNode, NULL, BAD_CAST "time", BAD_CAST tmp);
 	g_free (tmp);
 
 	tmp = date_format (item->time, NULL);
-	xmlNewTextChild (itemNode, NULL, "timestr", tmp);
+	xmlNewTextChild (itemNode, NULL, BAD_CAST "timestr", BAD_CAST tmp);
 	g_free (tmp);
 
 	if (item->validGuid) {
 		GSList	*iter, *duplicates;
 		
-		duplicatesNode = xmlNewChild(itemNode, NULL, "duplicates", NULL);
+		duplicatesNode = xmlNewChild(itemNode, NULL, BAD_CAST "duplicates", NULL);
 		duplicates = iter = db_item_get_duplicates(item->sourceId);
 		while (iter) {
 			gulong id = GPOINTER_TO_UINT (iter->data);
@@ -258,8 +238,8 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 			if (duplicate) {
 				nodePtr duplicateNode = node_from_id (duplicate->nodeId);
 				if (duplicateNode && (item->id != duplicate->id))
-					xmlNewTextChild (duplicatesNode, NULL, "duplicateNode", 
-					                 node_get_title (duplicateNode));
+					xmlNewTextChild (duplicatesNode, NULL, BAD_CAST "duplicateNode",
+					                 BAD_CAST node_get_title (duplicateNode));
 				item_unload (duplicate);
 			}
 			iter = g_slist_next (iter);
@@ -267,10 +247,10 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 		g_slist_free (duplicates);
 	}
 		
-	xmlNewTextChild (itemNode, NULL, "sourceId", item->nodeId);
+	xmlNewTextChild (itemNode, NULL, BAD_CAST "sourceId", BAD_CAST item->nodeId);
 		
 	tmp = g_strdup_printf ("%ld", item->id);
-	xmlNewTextChild (itemNode, NULL, "sourceNr", tmp);
+	xmlNewTextChild (itemNode, NULL, BAD_CAST "sourceNr", BAD_CAST tmp);
 	g_free (tmp);
 
 	metadata_add_xml_nodes (item->metadata, itemNode);
@@ -283,7 +263,7 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 				if (item->commentFeedId)
 					comments_to_xml (itemNode, item->commentFeedId);
 			} else {
-				xmlNewTextChild (itemNode, NULL, "commentsSuppressed", "true");
+				xmlNewTextChild (itemNode, NULL, BAD_CAST "commentsSuppressed", BAD_CAST "true");
 			}
 		}
 	}
