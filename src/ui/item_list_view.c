@@ -535,7 +535,7 @@ item_list_view_update_all_items (ItemListView *ilv)
 	GtkTreeModel    *model;
 
 	model = gtk_tree_view_get_model (ilv->priv->treeview);
-        gtk_tree_model_get_iter_first (model, &iter);
+        valid = gtk_tree_model_get_iter_first (model, &iter);
 	while (valid) {
 		gtk_tree_model_get (model, &iter, IS_NR, &id, -1);
                 itemPtr	item = item_load (id);
