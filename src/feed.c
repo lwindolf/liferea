@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  * 
- * Copyright (C) 2003-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #include "debug.h"
 #include "favicon.h"
 #include "feedlist.h"
+#include "html.h"
 #include "itemlist.h"
 #include "metadata.h"
 #include "node.h"
@@ -207,6 +208,54 @@ feed_get_max_item_count (nodePtr node)
 	}
 }
 
+// HTML5 Headline enrichment
+
+static void
+feed_enrich_items_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags) {
+	itemPtr item = (itemPtr)userdata;
+	gchar	*article;
+g_print("CB for %ld\n", item->id);
+
+	if (!result->data || result->httpstatus >= 400)
+		return;
+
+	article = xhtml_strip_dhtml (html_get_article (result->data, result->source));
+	if(article) {
+		g_print ("Found article: %s\n", article);
+		item_set_description (item, article);
+		db_item_update (item);
+		g_free (article);
+	}
+	item_unload (item);
+}
+
+/**
+ * Checks content of all items and tries to crawl content if description is 
+ * very short indicating link/teaser only feed items
+ */
+static void
+feed_enrich_items (subscriptionPtr subscription, itemSetPtr itemSet) {
+	GList *iter = itemSet->ids;
+
+	while (iter) {
+		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
+		updateRequestPtr request;
+
+		// Fetch item->link document and try to parse it as XHTML
+		g_print("Fetching %ld %s : %s\n", item->id, item->title, item->source);
+		request = update_request_new ();
+		update_request_set_source (request, item->source);
+
+		// Pass options of parent feed (e.g. password, proxy...)
+		request->options = update_options_copy (subscription->updateOptions);
+
+		update_execute_request (subscription, request, feed_enrich_items_cb, item, 0);
+
+		iter = g_list_next (iter);
+	}
+}
+
+
 /* implementation of subscription type interface */
 
 static void
@@ -250,6 +299,8 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			itemSet = node_get_itemset (node);
 			node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
 			itemlist_merge_itemset (itemSet);
+			feed_enrich_items (subscription, itemSet);
+
 			itemset_free (itemSet);
 		
 			/* restore user defined properties if necessary */

@@ -1,8 +1,8 @@
 /**
- * @file html.c  HTML favicon and feed link auto discovery
+ * @file html.c  HTML parsing
  * 
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004-2009 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2017 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -235,4 +235,21 @@ html_discover_favicon (const gchar * data, const gchar * baseUri)
 	}
 	
 	return res;
+}
+
+gchar *
+html_get_article (const gchar *data, const gchar *baseUri) {
+	xmlDocPtr	doc = NULL;
+	xmlNodePtr	node = NULL;
+
+	doc = xhtml_parse ((gchar *)data, (size_t)strlen(data));
+	if (!doc)
+		return NULL;
+
+	// Find article, we only expect a single article...
+	node = xpath_find (xmlDocGetRootElement (doc), "//article");
+	if (!node)
+		return NULL;
+
+	return xhtml_extract (node, 1, baseUri);
 }

@@ -1,7 +1,7 @@
 /**
  * @file feed_parser.c  parsing of different feed formats
  * 
- * Copyright (C) 2008-2010 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2017 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -206,7 +206,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 				ctxt->failed = FALSE;
 
 				ctxt->feed->fhp = handler;
-				(*(handler->feedParser))(ctxt, cur);		/* parse it */
+				(*(handler->feedParser))(ctxt, cur);
 
 				break;
 			}
