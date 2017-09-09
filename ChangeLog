@@ -1,11 +1,7 @@
-Open problems before 1.12 release
-
-	* Tray icon needs to be auto-disabled along with a popup
-	  informing users who previously had it enabled
-
-
 To be released
 
+	* Fixes unhiding from tray icon when activated via GApplication
+	  (when starting Liferea a 2nd time)
 	* #399: Reorder columns in 'Normal' email-like view
 	  to have the date column always at the end
 	  (Leiaz)
