@@ -31,6 +31,7 @@
 enum {
 	LINK_FAVICON,
 	LINK_RSS_ALTERNATE,
+	LINK_AMPHTML
 };
 
 /**
@@ -94,6 +95,9 @@ checkLinkRef (const gchar* str, gint linkType)
 		     (common_strcasestr (str, "rss+xml") != NULL) ||
 		     (common_strcasestr (str, "rdf+xml") != NULL) ||
 		     (common_strcasestr (str, "atom+xml") != NULL)))
+			return res;
+	} else if (linkType == LINK_AMPHTML) {
+		if (common_strcasestr (str, "amphtml") != NULL)
 			return res;
 	}
 	g_free (res);
@@ -307,4 +311,9 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 	html_article_clean (node);
 
 	return xhtml_extract (node, 1, baseUri);
+}
+
+gchar *
+html_get_amp_url (const gchar *data) {
+	return search_links (data, LINK_AMPHTML);
 }

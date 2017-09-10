@@ -60,4 +60,15 @@ gchar * html_discover_favicon(const gchar* data, const gchar *baseUri);
  */
 gchar * html_get_article(const gchar *data, const gchar *baseUri);
 
+/**
+ * html_get_amp_url:
+ *
+ * Parse HTML and return AMP URL if found
+ *
+ * @data:	the HTML to check
+ *
+ * Returns: AMP URL or NULL. Must be free'd by caller
+ */
+gchar * html_get_amp_url(const gchar *data);
+
 #endif

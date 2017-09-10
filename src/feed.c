@@ -220,14 +220,31 @@ feed_enrich_items_cb (const struct updateResult * const result, gpointer userdat
 
 	article = html_get_article (result->data, result->source);
 
-	// FIXME: If there is no HTML5 article try to fetch AMP source if there is one
-
 	if (article)
 		article = xhtml_strip_dhtml (article);
 	if (article) {
+		// Enable AMP images by replacing <amg-img> by <img>
+		gchar *tmp = g_strjoinv("<img", g_strsplit(article, "<amp-img", 0));
+		g_free (article);
+		article = tmp;
+
 		item_set_description (item, article);
 		db_item_update (item);
 		g_free (article);
+	} else {
+		// If there is no HTML5 article try to fetch AMP source if there is one
+		gchar *ampurl = html_get_amp_url (result->data);
+		if (ampurl) {
+			updateRequestPtr request;
+
+			debug3 (DEBUG_HTML, "Fetching AMP HTML %ld %s : %s", item->id, item->title, ampurl);
+			request = update_request_new ();
+			update_request_set_source (request, ampurl);
+			// Explicitely do not pass proxy/auth options to Google
+			request->options = g_new0 (struct updateOptions, 1);	
+			update_execute_request (NULL, request, feed_enrich_items_cb, item, 0);
+			return;
+		}
 	}
 	item_unload (item);
 }
@@ -245,7 +262,7 @@ feed_enrich_items (subscriptionPtr subscription, itemSetPtr itemSet) {
 		updateRequestPtr request;
 
 		// Fetch item->link document and try to parse it as XHTML
-		g_print("Fetching %ld %s : %s\n", item->id, item->title, item->source);
+		debug3 (DEBUG_HTML, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
 		request = update_request_new ();
 		update_request_set_source (request, item->source);
 
