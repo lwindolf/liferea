@@ -214,14 +214,17 @@ static void
 feed_enrich_items_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags) {
 	itemPtr item = (itemPtr)userdata;
 	gchar	*article;
-g_print("CB for %ld\n", item->id);
 
 	if (!result->data || result->httpstatus >= 400)
 		return;
 
-	article = xhtml_strip_dhtml (html_get_article (result->data, result->source));
-	if(article) {
-		g_print ("Found article: %s\n", article);
+	article = html_get_article (result->data, result->source);
+
+	// FIXME: If there is no HTML5 article try to fetch AMP source if there is one
+
+	if (article)
+		article = xhtml_strip_dhtml (article);
+	if (article) {
 		item_set_description (item, article);
 		db_item_update (item);
 		g_free (article);
