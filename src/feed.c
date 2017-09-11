@@ -312,6 +312,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		} else {
 			/* Feed found, process it */
 			itemSetPtr	itemSet;
+			gboolean	html5_enabled;
 			
 			node->available = TRUE;
 			
@@ -319,7 +320,10 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			itemSet = node_get_itemset (node);
 			node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
 			itemlist_merge_itemset (itemSet);
-			feed_enrich_items (subscription, itemSet);
+
+			conf_get_bool_value (FETCH_HTML5_DETAILS, &html5_enabled);
+			if (html5_enabled)
+				feed_enrich_items (subscription, itemSet);
 
 			itemset_free (itemSet);
 		

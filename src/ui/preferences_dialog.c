@@ -193,6 +193,13 @@ on_startupactionbtn_toggled (GtkButton *button, gpointer user_data)
 }
 
 void
+on_fetchhtml5btn_toggled (GtkButton *button, gpointer user_data)
+{
+	gboolean enabled = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
+	conf_set_bool_value (FETCH_HTML5_DETAILS, enabled);
+}
+
+void
 on_browsercmd_changed (GtkEditable *editable, gpointer user_data)
 {
 	conf_set_str_value (BROWSER_COMMAND, gtk_editable_get_chars (editable,0,-1));
@@ -463,6 +470,8 @@ preferences_dialog_init (PreferencesDialog *pd)
 	/* check box for feed startup update */
 	conf_get_int_value (STARTUP_FEED_ACTION, &iSetting);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "startupactionbtn")), (iSetting == 0)); 
+	conf_get_bool_value (FETCH_HTML5_DETAILS, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "fetchhtml5btn")), bSetting); 
 
 	/* cache size setting */
 	widget = liferea_dialog_lookup (pd->priv->dialog, "itemCountBtn");
