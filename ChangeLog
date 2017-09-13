@@ -16,6 +16,7 @@ To be released
 	  (patch by jonmstone)
 	* Fixes #419, #457: Handling of relative URLs in Atom parser
 	  (Leiaz)
+	* Added 'View Image' context menu option in HTML view
 	* Dropped del.icio.us from social bookmarking options
 	  as it is a read-only service now.
 

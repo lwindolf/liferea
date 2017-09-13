@@ -185,6 +185,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 		menu_add_item (section, _("_Copy Link Location"), "liferea_web_view.CopyLink", link_uri);
 	}
 	if (image) {
+		menu_add_item (section, _("_View Image"),           "liferea_web_view.OpenLinkInTab", image_uri);
 		menu_add_item (section, _("_Copy Image Location"),  "liferea_web_view.CopyLink", image_uri);
 	}
 	if (link) {
@@ -301,7 +302,7 @@ static const GActionEntry liferea_web_view_gaction_entries[] = {
         {"OpenLinkInBrowser", on_popup_open_link_activate, "s", NULL, NULL},
         {"OpenLinkInExternalBrowser", on_popup_open_link_external_activate, "s", NULL, NULL},
         {"SocialBookmarkLink", on_popup_social_bm_link_activate, "s", NULL, NULL},
-        {"CopyLink", on_popup_copy_link_activate, "s", NULL, NULL},
+        {"ViewImage", on_popup_open_link_activate, "s", NULL, NULL},
         {"SaveLink", on_popup_save_link_activate, "s", NULL, NULL},
         {"SubscribeLink", on_popup_subscribe_link_activate, "s", NULL, NULL},
         {"CopySelection", on_popup_copy_activate, NULL, NULL, NULL},
