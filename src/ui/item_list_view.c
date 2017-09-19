@@ -259,20 +259,25 @@ void
 item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortType, gboolean sortReversed)
 {
 	gint sortColumn;
-	
+
 	switch (sortType) {
 		case NODE_VIEW_SORT_BY_TITLE:
-			sortColumn = IS_LABEL;
+			/* Some ugly switching here, because in wide view
+			   we do sort headlines by date */
+			if (ilv->priv->wideView)
+				sortColumn = IS_TIME;
+			else
+				sortColumn = IS_LABEL;
 			break;
 		case NODE_VIEW_SORT_BY_PARENT:
-			sortColumn = IS_PARENT;
+			sortColumn = IS_SOURCE;
 			break;
 		case NODE_VIEW_SORT_BY_TIME:
 		default:
 			sortColumn = IS_TIME;
 			break;
 	}
-	
+
 	gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (gtk_tree_view_get_model (ilv->priv->treeview)),
 	                                      sortColumn, 
 	                                      sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
