@@ -20,6 +20,7 @@ To be released
 	* Dropped del.icio.us from social bookmarking options
 	  as it is a read-only service now.
 	* Redesign of the wide view mode: larger titles with small text teasers
+	* Add AMP/HTML5 content enrichment feature
 
 
 2017-03-26   Lars Windolf <lars.windolf@gmx.de>
