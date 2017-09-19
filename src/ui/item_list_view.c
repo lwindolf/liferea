@@ -480,7 +480,6 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	title = g_strstrip (g_markup_escape_text (title, -1));
 
 	if (ilv->priv->wideView) {
-		const gchar     *important = " <span background='red' color='black'> important </span> ";
 		gboolean	ellipsize = FALSE;
 		gchar		*tmpDesc = common_strreplace (unxmlize (g_strdup (item->description)), "\n", " ");
 		gchar		*tmpTitle = title;
@@ -502,12 +501,10 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 			teaser = g_strdup ("");
 		else
 			teaser = g_markup_escape_text (teaser, -1);
-		
 
-		title = g_strdup_printf ("<span weight='%s' size='larger'>%s</span>%s\n<span weight='%s'>%s%s</span><span size='smaller' weight='ultralight'> — %s</span>",
+		title = g_strdup_printf ("<span weight='%s' size='larger'>%s</span>\n<span weight='%s'>%s%s</span><span size='smaller' weight='ultralight'> — %s</span>",
 		                         item->readStatus?"normal":"ultrabold",
 		                         title,
-					 item->flagStatus?important:"",
 		                         item->readStatus?"ultralight":"light",
 		                         teaser,
 					 (ellipsize?"…":""),
