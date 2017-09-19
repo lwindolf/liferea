@@ -481,7 +481,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 
 	if (ilv->priv->wideView) {
 		gboolean	ellipsize = FALSE;
-		gchar		*tmpDesc = common_strreplace (unxmlize (g_strdup (item->description)), "\n", " ");
+		gchar		*tmpDesc = g_strstrip (common_strreplace (unxmlize (g_strdup (item->description)), "\n", " "));
 		gchar		*tmpTitle = title;
 		gchar		*teaser = NULL;
 
@@ -489,7 +489,6 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 			ellipsize = TRUE;
 			// Truncate hard at pos 200 and search backward for a space
 			tmpDesc[200] = 0;
-			// FIXME: doesn't this depend on text direction?
 			gchar *last_space = g_strrstr (tmpDesc, " ");
 			if (last_space) {
 				*last_space = 0;
