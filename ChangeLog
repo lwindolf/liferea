@@ -18,6 +18,7 @@ To be released
 	  (Leiaz)
 	* Dropped del.icio.us from social bookmarking options
 	  as it is a read-only service now.
+	* Redesign of the wide view mode: larger titles with small text teasers
 
 
 2017-03-26   Lars Windolf <lars.windolf@gmx.de>
