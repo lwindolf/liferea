@@ -2,7 +2,7 @@
  * @file conf.h  Liferea configuration (GSettings access)
  *
  * Copyright (C) 2011 Mikel Olasagasti Uranga <mikel@olasagasti.info>
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -47,6 +47,7 @@
 #define DEFAULT_MAX_ITEMS		"maxitemcount"
 #define DEFAULT_UPDATE_INTERVAL		"default-update-interval"
 #define STARTUP_FEED_ACTION		"startup-feed-action"
+#define FETCH_HTML5_DETAILS		"fetch-html5-details"
 
 /* folder handling settings */
 #define FOLDER_DISPLAY_MODE		"folder-display-mode"

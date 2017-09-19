@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  * 
- * Copyright (C) 2003-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #include "debug.h"
 #include "favicon.h"
 #include "feedlist.h"
+#include "html.h"
 #include "itemlist.h"
 #include "metadata.h"
 #include "node.h"
@@ -207,6 +208,75 @@ feed_get_max_item_count (nodePtr node)
 	}
 }
 
+// HTML5 Headline enrichment
+
+static void
+feed_enrich_items_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags) {
+	itemPtr item = (itemPtr)userdata;
+	gchar	*article;
+
+	if (!result->data || result->httpstatus >= 400)
+		return;
+
+	article = html_get_article (result->data, result->source);
+
+	if (article)
+		article = xhtml_strip_dhtml (article);
+	if (article) {
+		// Enable AMP images by replacing <amg-img> by <img>
+		gchar *tmp = g_strjoinv("<img", g_strsplit(article, "<amp-img", 0));
+		g_free (article);
+		article = tmp;
+
+		item_set_description (item, article);
+		db_item_update (item);
+		g_free (article);
+	} else {
+		// If there is no HTML5 article try to fetch AMP source if there is one
+		gchar *ampurl = html_get_amp_url (result->data);
+		if (ampurl) {
+			updateRequestPtr request;
+
+			debug3 (DEBUG_HTML, "Fetching AMP HTML %ld %s : %s", item->id, item->title, ampurl);
+			request = update_request_new ();
+			update_request_set_source (request, ampurl);
+			// Explicitely do not pass proxy/auth options to Google
+			request->options = g_new0 (struct updateOptions, 1);	
+			update_execute_request (NULL, request, feed_enrich_items_cb, item, 0);
+			return;
+		}
+	}
+	item_unload (item);
+}
+
+/**
+ * Checks content of all items and tries to crawl content if description is 
+ * very short indicating link/teaser only feed items
+ */
+static void
+feed_enrich_items (subscriptionPtr subscription, itemSetPtr itemSet) {
+	GList *iter = itemSet->ids;
+
+	while (iter) {
+		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
+		if (item) {
+			updateRequestPtr request;
+
+			// Fetch item->link document and try to parse it as XHTML
+			debug3 (DEBUG_HTML, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
+			request = update_request_new ();
+			update_request_set_source (request, item->source);
+
+			// Pass options of parent feed (e.g. password, proxy...)
+			request->options = update_options_copy (subscription->updateOptions);
+
+			update_execute_request (subscription, request, feed_enrich_items_cb, item, 0);
+		}
+		iter = g_list_next (iter);
+	}
+}
+
+
 /* implementation of subscription type interface */
 
 static void
@@ -243,6 +313,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		} else {
 			/* Feed found, process it */
 			itemSetPtr	itemSet;
+			gboolean	html5_enabled;
 			
 			node->available = TRUE;
 			
@@ -250,6 +321,11 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			itemSet = node_get_itemset (node);
 			node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
 			itemlist_merge_itemset (itemSet);
+
+			conf_get_bool_value (FETCH_HTML5_DETAILS, &html5_enabled);
+			if (html5_enabled)
+				feed_enrich_items (subscription, itemSet);
+
 			itemset_free (itemSet);
 		
 			/* restore user defined properties if necessary */
