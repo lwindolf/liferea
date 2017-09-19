@@ -40,6 +40,7 @@
 #include "itemview.h"
 #include "newsbin.h"
 #include "social.h"
+#include "xml.h"
 #include "ui/browser_tabs.h"
 #include "ui/icons.h"
 #include "ui/liferea_shell.h"
@@ -258,20 +259,25 @@ void
 item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortType, gboolean sortReversed)
 {
 	gint sortColumn;
-	
+
 	switch (sortType) {
 		case NODE_VIEW_SORT_BY_TITLE:
-			sortColumn = IS_LABEL;
+			/* Some ugly switching here, because in wide view
+			   we do sort headlines by date */
+			if (ilv->priv->wideView)
+				sortColumn = IS_TIME;
+			else
+				sortColumn = IS_LABEL;
 			break;
 		case NODE_VIEW_SORT_BY_PARENT:
-			sortColumn = IS_PARENT;
+			sortColumn = IS_SOURCE;
 			break;
 		case NODE_VIEW_SORT_BY_TIME:
 		default:
 			sortColumn = IS_TIME;
 			break;
 	}
-	
+
 	gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (gtk_tree_view_get_model (ilv->priv->treeview)),
 	                                      sortColumn, 
 	                                      sortReversed?GTK_SORT_DESCENDING:GTK_SORT_ASCENDING);
@@ -474,17 +480,41 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	title = g_strstrip (g_markup_escape_text (title, -1));
 
 	if (ilv->priv->wideView) {
-		/* Append date to headline on hidden date column */
-		const gchar	*important = " <span background='red' color='black'> important </span> ";
-		gchar		*tmp = title;
+		const gchar     *important = " <span background='red' color='black'> important </span> ";
+		gboolean	ellipsize = FALSE;
+		gchar		*tmpDesc = common_strreplace (unxmlize (g_strdup (item->description)), "\n", " ");
+		gchar		*tmpTitle = title;
+		gchar		*teaser = NULL;
 
-		title = g_strdup_printf ("%s%s%s %s<span size='smaller' weight='light'>— %s</span>",
-		                         !item->readStatus?"<span weight='bold'>":"",
+		if (strlen(tmpDesc) > 200) {
+			ellipsize = TRUE;
+			// Truncate hard at pos 200 and search backward for a space
+			tmpDesc[200] = 0;
+			// FIXME: doesn't this depend on text direction?
+			gchar *last_space = g_strrstr (tmpDesc, " ");
+			if (last_space) {
+				*last_space = 0;
+				teaser = tmpDesc;
+			}
+		}
+
+		if (NULL == teaser)
+			teaser = g_strdup ("");
+		else
+			teaser = g_markup_escape_text (teaser, -1);
+		
+
+		title = g_strdup_printf ("<span weight='%s' size='larger'>%s</span>%s\n<span weight='%s'>%s%s</span><span size='smaller' weight='ultralight'> — %s</span>",
+		                         item->readStatus?"normal":"ultrabold",
 		                         title,
-		                         (FALSE == item->readStatus)?"</span>":"",
-		                         item->flagStatus?important:"",
-		                         time_str);
-		g_free (tmp);
+					 item->flagStatus?important:"",
+		                         item->readStatus?"ultralight":"light",
+		                         teaser,
+					 (ellipsize?"…":""),
+					 time_str);
+		g_free (tmpTitle);
+		g_free (tmpDesc);
+		g_free (teaser);
 	}
 
 	state_icon = item->flagStatus ? icon_get (ICON_FLAG) :
@@ -741,9 +771,11 @@ item_list_view_create (gboolean wide)
 	GtkWidget 		*ilscrolledwindow;
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
+	ilv->priv->wideView = wide;
 		
 	ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (ilscrolledwindow);
+
 	if (wide)
 		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	else
@@ -763,20 +795,16 @@ item_list_view_create (gboolean wide)
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_STATEICON, NULL);
+	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE_TOOLBAR:GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	ilv->priv->stateColumn = column;
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
 	if (wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
 	
-
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_FAVICON, NULL);
-	if (wide) {
-		g_object_set (renderer, "stock-size", GTK_ICON_SIZE_DND, NULL);
-	} else {
-		g_object_set (renderer, "stock-size", GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
-	}
+	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_DIALOG:GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
 
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
@@ -814,11 +842,8 @@ item_list_view_create (gboolean wide)
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
-	if (wide) {
+	if (wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
-		ilv->priv->wideView = TRUE;
-	}
-
 
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
@@ -895,6 +920,10 @@ void
 item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 {
 	gtk_tree_view_column_set_visible (ilv->priv->faviconColumn, enabled);
+
+	// In wide view we want to save vertical space and hide the state column
+	if (ilv->priv->wideView)
+		gtk_tree_view_column_set_visible (ilv->priv->stateColumn, !enabled);
 }
 
 void
