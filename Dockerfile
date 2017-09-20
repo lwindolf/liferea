@@ -10,5 +10,5 @@ WORKDIR /src/
 
 COPY . /src/
 RUN ./autogen.sh
-RUN ./configure && make && make test
+RUN ./configure && make && cd src/tests && make test
 

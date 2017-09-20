@@ -2,7 +2,11 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS = html_auto parse_date
+TEST_PROGS = html_auto parse_date 
+
+test: $(TEST_PROGS)
+	echo $(TEST_PROGS) | sed "s/^/.\//;s/ / \&\& .\//" | xargs -I{} sh -c "{}"
+.PHONY: test
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -20,7 +24,8 @@ progs_ldadd =	../parsers/libliparsers.a \
 		$(PACKAGE_LIBS) \
 		$(INTLLIBS) \
 		$(WEBKIT_LIBS) \
-		$(INTROSPECTION_LIBS)
+		$(INTROSPECTION_LIBS) \
+		-lm
 
 html_auto_SOURCES = html.c
 html_auto_LDADD = $(progs_ldadd) ../html.o ../common.o ../debug.o ../xml.o
@@ -28,4 +33,6 @@ html_auto_LDADD = $(progs_ldadd) ../html.o ../common.o ../debug.o ../xml.o
 parse_date_SOURCES = parse_date.c
 parse_date_LDADD = $(progs_ldadd) ../date.o ../common.o ../debug.o ../e-date.o
 
+#item_SOURCES = item.c
+#item_LDADD = $(progs_ldadd) ../item.o ../metadata.o ../xml.o ../debug.o ../common.o ../date.o ../node.o
 
