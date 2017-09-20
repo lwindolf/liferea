@@ -260,17 +260,21 @@ feed_enrich_items (subscriptionPtr subscription, itemSetPtr itemSet) {
 	while (iter) {
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item) {
-			updateRequestPtr request;
+			if (item->source) {
+				updateRequestPtr request;
 
-			// Fetch item->link document and try to parse it as XHTML
-			debug3 (DEBUG_HTML, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
-			request = update_request_new ();
-			update_request_set_source (request, item->source);
+				// Fetch item->link document and try to parse it as XHTML
+				debug3 (DEBUG_HTML, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
+				request = update_request_new ();
+				update_request_set_source (request, item->source);
 
-			// Pass options of parent feed (e.g. password, proxy...)
-			request->options = update_options_copy (subscription->updateOptions);
+				// Pass options of parent feed (e.g. password, proxy...)
+				request->options = update_options_copy (subscription->updateOptions);
 
-			update_execute_request (subscription, request, feed_enrich_items_cb, item, 0);
+				update_execute_request (subscription, request, feed_enrich_items_cb, item, 0);
+			} else {
+				item_unload (item);
+			}
 		}
 		iter = g_list_next (iter);
 	}
