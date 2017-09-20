@@ -480,36 +480,17 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	title = g_strstrip (g_markup_escape_text (title, -1));
 
 	if (ilv->priv->wideView) {
-		gboolean	ellipsize = FALSE;
-		gchar		*tmpDesc = g_strstrip (common_strreplace (unxmlize (g_strdup (item->description)), "\n", " "));
-		gchar		*tmpTitle = title;
-		gchar		*teaser = NULL;
-
-		if (strlen(tmpDesc) > 200) {
-			ellipsize = TRUE;
-			// Truncate hard at pos 200 and search backward for a space
-			tmpDesc[200] = 0;
-			gchar *last_space = g_strrstr (tmpDesc, " ");
-			if (last_space) {
-				*last_space = 0;
-				teaser = tmpDesc;
-			}
-		}
-
-		if (NULL == teaser)
-			teaser = g_strdup ("");
-		else
-			teaser = g_markup_escape_text (teaser, -1);
+		gchar *teaser = item_get_teaser (item);
+		gchar *tmp = title;
 
 		title = g_strdup_printf ("<span weight='%s' size='larger'>%s</span>\n<span weight='%s'>%s%s</span><span size='smaller' weight='ultralight'> — %s</span>",
 		                         item->readStatus?"normal":"ultrabold",
 		                         title,
 		                         item->readStatus?"ultralight":"light",
-		                         teaser,
-					 (ellipsize?"…":""),
+		                         teaser?teaser:"",
+		                         teaser?"…":"",
 					 time_str);
-		g_free (tmpTitle);
-		g_free (tmpDesc);
+		g_free (tmp);
 		g_free (teaser);
 	}
 

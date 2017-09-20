@@ -1,7 +1,7 @@
 /*
- * @file item.h common item handling
+ * @file item.h item handling
  * 
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -137,6 +137,16 @@ const gchar *	item_get_title(itemPtr item);
 const gchar *	item_get_description(itemPtr item);
 /* Returns the source of item. */
 const gchar *	item_get_source(itemPtr item);
+
+/**
+ * item_get_teaser: (skip)
+ * @item:	the item
+ *
+ * Create a plain text teaser from the item description
+ *
+ * Returns: (transer full): newly allocated string to be free'd using g_free() (or NULL)
+ */
+gchar * item_get_teaser(itemPtr item);
 
 /**
  * item_make_link: (skip)

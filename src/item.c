@@ -1,7 +1,7 @@
 /**
- * @file item.c common item handling
+ * @file item.c item handling
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *	      
  * This program is free software; you can redistribute it and/or modify
@@ -126,6 +126,43 @@ const gchar *	item_get_id(itemPtr item) { return item->sourceId; }
 const gchar *	item_get_title(itemPtr item) {return item->title; }
 const gchar *	item_get_description(itemPtr item) { return item->description; }
 const gchar *	item_get_source(itemPtr item) { return item->source; }
+
+static GRegex *whitespace_strip_re = NULL;
+
+gchar *
+item_get_teaser (itemPtr item)
+{
+	gchar		*input, *tmpDesc;
+	gchar		*teaser = NULL;
+
+	if (!whitespace_strip_re) {
+		whitespace_strip_re = g_regex_new ("(\n+|\\s\\s+)", G_REGEX_MULTILINE, 0, NULL);
+		g_assert (NULL != whitespace_strip_re);
+	}
+
+	input = unxmlize (g_strdup (item->description));
+	tmpDesc = g_regex_replace_literal (whitespace_strip_re, input, -1, 0, " ", 0, NULL);
+
+	if (strlen (tmpDesc) > 200) {
+		// Truncate hard at pos 200 and search backward for a space
+		tmpDesc[200] = 0;
+		gchar *last_space = g_strrstr (tmpDesc, " ");
+		if (last_space) {
+			*last_space = 0;
+			teaser = tmpDesc;
+		}
+	}
+
+	if (!teaser)
+		return NULL;
+
+	teaser = g_strstrip (g_markup_escape_text (teaser, -1));
+
+	g_free (input);
+	g_free (tmpDesc);
+
+	return teaser;
+}
 
 gchar *
 item_make_link (itemPtr item)
