@@ -4,7 +4,7 @@ To be released
 	  (when starting Liferea a 2nd time)
 	* #399: Reorder columns in 'Normal' email-like view
 	  to have the date column always at the end
-	  (Leiaz)
+	  (Mikel Olasagasti)
 	* #532: Add plugin to make unread feeds titles bold
 	  (Yanko Kaneti)
 	* Workaround for #503: Liferea deanonymize Tor
