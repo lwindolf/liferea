@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.c  property dialog for feed subscriptions
  *
- * Copyright (C) 2004-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -249,9 +249,10 @@ on_propdialog_response (GtkDialog *dialog,
 
 		/* "Advanced" options */
 		feed->encAutoDownload = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enclosureDownloadCheck")));
-		node->loadItemLink = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "loadItemLinkCheck")));
-		feed->ignoreComments = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "ignoreCommentFeeds")));
-		feed->markAsRead = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "markAsReadCheck")));
+		node->loadItemLink    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "loadItemLinkCheck")));
+		feed->ignoreComments  = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "ignoreCommentFeeds")));
+		feed->markAsRead      = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "markAsReadCheck")));
+		feed->html5Extract    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "html5ExtractCheck")));
 		
 		feed_list_node_update (node->id);
 		feedlist_schedule_save ();
@@ -502,6 +503,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "loadItemLinkCheck")), node->loadItemLink);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "ignoreCommentFeeds")), feed->ignoreComments);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "markAsReadCheck")), feed->markAsRead);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->priv->dialog, "html5ExtractCheck")), feed->html5Extract);
 
 	/* Remove tabs we do not need... */
 	if (SUBSCRIPTION_TYPE(subscription) != feed_get_subscription_type ()) {

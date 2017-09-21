@@ -31,12 +31,6 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkListStore" id="liststore5">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkDialog" id="prefs">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -177,72 +171,6 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkCheckButton" id="startupactionbtn">
-                        <property name="label" translatable="yes">_Update all subscriptions at startup.</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="halign">start</property>
-                        <property name="margin_start">12</property>
-                        <property name="use_underline">True</property>
-                        <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_startupactionbtn_toggled" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">2</property>
-                        <property name="width">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_start">12</property>
-                        <property name="label" translatable="yes">Default Feed Refresh _Interval:</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">globalRefreshIntervalSpinButton</property>
-                        <property name="xalign">0</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="globalRefreshIntervalSpinButton">
-                        <property name="width_request">60</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="text" translatable="yes">1</property>
-                        <property name="adjustment">adjustment2</property>
-                        <property name="climb_rate">1</property>
-                        <property name="value">1</property>
-                        <signal name="value-changed" handler="on_default_update_interval_value_changed" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkComboBox" id="globalRefreshIntervalUnitComboBox">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="model">liststore5</property>
-                        <child>
-                          <object class="GtkCellRendererText" id="cellrenderertext5"/>
-                          <attributes>
-                            <attribute name="text">0</attribute>
-                          </attributes>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="top_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkInfoBar" id="infobar1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -296,22 +224,81 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkCheckButton" id="fetchhtml5btn">
-                        <property name="label" translatable="yes">Extract full content from HTML5 source and Google AMP</property>
+                      <object class="GtkCheckButton" id="startupactionbtn">
+                        <property name="label" translatable="yes">_Update all subscriptions at startup.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="halign">start</property>
+                        <property name="margin_left">12</property>
                         <property name="margin_start">12</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_fetchhtml5btn_toggled" swapped="no"/>
+                        <signal name="toggled" handler="on_startupactionbtn_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
                         <property name="top_attach">1</property>
                         <property name="width">3</property>
                       </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_left">12</property>
+                        <property name="margin_start">12</property>
+                        <property name="label" translatable="yes">Default Feed Refresh _Interval:</property>
+                        <property name="use_underline">True</property>
+                        <property name="mnemonic_widget">globalRefreshIntervalSpinButton</property>
+                        <property name="xalign">0</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSpinButton" id="globalRefreshIntervalSpinButton">
+                        <property name="width_request">60</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="text" translatable="yes">1</property>
+                        <property name="adjustment">adjustment2</property>
+                        <property name="climb_rate">1</property>
+                        <property name="value">1</property>
+                        <signal name="value-changed" handler="on_default_update_interval_value_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="globalRefreshIntervalUnitComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="model">liststore5</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="cellrenderertext5"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>
@@ -1488,5 +1475,11 @@
     <action-widgets>
       <action-widget response="-7">prefclosebtn</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkListStore" id="liststore5">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

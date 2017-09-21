@@ -47,7 +47,6 @@
 #define DEFAULT_MAX_ITEMS		"maxitemcount"
 #define DEFAULT_UPDATE_INTERVAL		"default-update-interval"
 #define STARTUP_FEED_ACTION		"startup-feed-action"
-#define FETCH_HTML5_DETAILS		"fetch-html5-details"
 
 /* folder handling settings */
 #define FOLDER_DISPLAY_MODE		"folder-display-mode"

@@ -1,7 +1,7 @@
 /*
  * @file itemset.c handling sets of items
  * 
- * Copyright (C) 2005-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "conf.h"
 #include "db.h"
 #include "debug.h"
 #include "enclosure.h"
@@ -201,6 +202,7 @@ static gboolean
 itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChecks, gboolean allowUpdates)
 {
 	gboolean	allowStateChanges = FALSE;
+	gboolean	html5_enabled;
 	gboolean	merge;
 	nodePtr		node;
 
@@ -227,10 +229,14 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 		
 		/* step 2: add to itemset */
 		itemSet->ids = g_list_prepend (itemSet->ids, GUINT_TO_POINTER (item->id));
+
+		/* step 3: enrich item description */
+		if (node && IS_FEED (node) && ((feedPtr)node->data)->html5Extract)
+			feed_enrich_item (node->subscription, item);
 				
 		debug3 (DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title (item), item->id, itemSet);
 		
-		/* step 3: duplicate detection, mark read if it is a duplicate */
+		/* step 4: duplicate detection, mark read if it is a duplicate */
 		if (item->validGuid) {
 			GSList	*iter, *duplicates;
 
@@ -248,7 +254,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 			g_slist_free (duplicates);
 		}
 
-		/* step 4: Check item for new enclosures to download */
+		/* step 5: Check item for new enclosures to download */
 		if (node && (((feedPtr)node->data)->encAutoDownload)) {
 			GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
 			while (iter) {

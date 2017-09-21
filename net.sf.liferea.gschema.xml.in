@@ -122,11 +122,6 @@
       <summary>Determines if subscriptions are to be updated at startup</summary>
       <description>Numeric value determines whether Liferea shall updates all subscriptions at startup (0=yes, otherwise=no). Inverse logic for compatibility reasons.</description>
     </key>
-    <key name="fetch-html5-details" type="b">
-      <default>true</default>
-      <summary>Wether to fetch additional headline details from HTML5 article or Google AMP</summary>
-      <description>If enabled will check if headline source is a HTML5 document or if there is a AMP source link. If HTML is HTML5 or AMP source was successfully fetched the HTML5 article is extracted and used as headline content.</description>
-    </key>
     <key name="toolbar-style" type="s">
       <default>''</default>
       <summary>Determines the style of the toolbar buttons</summary>

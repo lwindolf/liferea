@@ -94,6 +94,11 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->markAsRead = TRUE;
 	xmlFree (tmp);
+
+	tmp = xmlGetProp (xml, BAD_CAST"html5Extract");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		feed->html5Extract = TRUE;
+	xmlFree (tmp);
 							
 	title = xmlGetProp (xml, BAD_CAST"title");
 	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
@@ -138,6 +143,9 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 			
 		if (feed->markAsRead)
 			xmlNewProp (xml, BAD_CAST"markAsRead", BAD_CAST"true");
+
+		if (feed->html5Extract)
+			xmlNewProp (xml, BAD_CAST"html5Extract", BAD_CAST"true");
 	}
 
 	if (node->subscription)
@@ -211,11 +219,15 @@ feed_get_max_item_count (nodePtr node)
 // HTML5 Headline enrichment
 
 static void
-feed_enrich_items_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags) {
-	itemPtr item = (itemPtr)userdata;
+feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags) {
+	itemPtr item;
 	gchar	*article;
 
 	if (!result->data || result->httpstatus >= 400)
+		return;
+
+	item = item_load (GPOINTER_TO_UINT (userdata));
+	if (!item)
 		return;
 
 	article = html_get_article (result->data, result->source);
@@ -230,6 +242,7 @@ feed_enrich_items_cb (const struct updateResult * const result, gpointer userdat
 
 		item_set_description (item, article);
 		db_item_update (item);
+		itemlist_update_item (item);
 		g_free (article);
 	} else {
 		// If there is no HTML5 article try to fetch AMP source if there is one
@@ -242,42 +255,32 @@ feed_enrich_items_cb (const struct updateResult * const result, gpointer userdat
 			update_request_set_source (request, ampurl);
 			// Explicitely do not pass proxy/auth options to Google
 			request->options = g_new0 (struct updateOptions, 1);	
-			update_execute_request (NULL, request, feed_enrich_items_cb, item, 0);
-			return;
+			update_execute_request (NULL, request, feed_enrich_item_cb, item, 0);
 		}
 	}
 	item_unload (item);
 }
 
 /**
- * Checks content of all items and tries to crawl content if description is 
- * very short indicating link/teaser only feed items
+ * Checks content of an items source and tries to crawl content 
  */
-static void
-feed_enrich_items (subscriptionPtr subscription, itemSetPtr itemSet) {
-	GList *iter = itemSet->ids;
+void
+feed_enrich_item (subscriptionPtr subscription, itemPtr item)
+{
+	updateRequestPtr request;
 
-	while (iter) {
-		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item) {
-			if (item->source) {
-				updateRequestPtr request;
+	if (!item->source)
+		return;
 
-				// Fetch item->link document and try to parse it as XHTML
-				debug3 (DEBUG_HTML, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
-				request = update_request_new ();
-				update_request_set_source (request, item->source);
+	// Fetch item->link document and try to parse it as XHTML
+	debug3 (DEBUG_HTML, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
+	request = update_request_new ();
+	update_request_set_source (request, item->source);
 
-				// Pass options of parent feed (e.g. password, proxy...)
-				request->options = update_options_copy (subscription->updateOptions);
+	// Pass options of parent feed (e.g. password, proxy...)
+	request->options = update_options_copy (subscription->updateOptions);
 
-				update_execute_request (subscription, request, feed_enrich_items_cb, item, 0);
-			} else {
-				item_unload (item);
-			}
-		}
-		iter = g_list_next (iter);
-	}
+	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), 0);
 }
 
 
@@ -325,11 +328,6 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			itemSet = node_get_itemset (node);
 			node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
 			itemlist_merge_itemset (itemSet);
-
-			conf_get_bool_value (FETCH_HTML5_DETAILS, &html5_enabled);
-			if (html5_enabled)
-				feed_enrich_items (subscription, itemSet);
-
 			itemset_free (itemSet);
 		
 			/* restore user defined properties if necessary */

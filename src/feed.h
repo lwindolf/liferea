@@ -1,7 +1,7 @@
 /**
  * @file feed.h  common feed handling interface
  * 
- * Copyright (C) 2003-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -59,6 +59,7 @@ typedef struct feed {
 	gboolean	encAutoDownload;	/**< if TRUE do automatically download enclosures */
 	gboolean	ignoreComments;		/**< if TRUE ignore comment feeds for this feed */
 	gboolean	markAsRead;		/**< if TRUE downloaded items are automatically marked as read */
+	gboolean	html5Extract;		/**< if TRUE try to fetch extra content via HTML5 / Google AMP */
 } *feedPtr;
 
 /**
@@ -80,6 +81,7 @@ feedPtr feed_new(void);
  */
 xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr xml);
 
+// FIXME: doesn't seem to belong here (looks like a subscription type method)
 /**
  * Returns the feed-specific maximum cache size.
  * If none is set it returns the global default 
@@ -90,6 +92,16 @@ xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr xml);
  * @returns max item count
  */
 guint feed_get_max_item_count(nodePtr node);
+
+// FIXME: doesn't seem to belong here (looks like a subscription method)
+/**
+ * feed_enrich_item:
+ * Tries to fetch extra content for the item description
+ *
+ * @subscription: the subscription
+ * @item: the item
+ */
+void feed_enrich_item (subscriptionPtr subscription, itemPtr item);
 
 /**
  * Returns the subscription type implementation for simple feed nodes.

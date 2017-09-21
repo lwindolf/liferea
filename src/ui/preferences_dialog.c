@@ -2,7 +2,7 @@
  * @file preferences_dialog.c Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -64,7 +64,6 @@ enum fts_columns {
 	FTS_LEN
 };
 
-extern GSList *htmlviewPlugins;
 extern GSList *bookmarkSites;	/* from social.c */
 
 static PreferencesDialog *prefdialog = NULL;
@@ -190,13 +189,6 @@ on_startupactionbtn_toggled (GtkButton *button, gpointer user_data)
 {
 	gboolean enabled = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
 	conf_set_int_value (STARTUP_FEED_ACTION, enabled?0:1);
-}
-
-void
-on_fetchhtml5btn_toggled (GtkButton *button, gpointer user_data)
-{
-	gboolean enabled = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (button));
-	conf_set_bool_value (FETCH_HTML5_DETAILS, enabled);
 }
 
 void
@@ -470,8 +462,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	/* check box for feed startup update */
 	conf_get_int_value (STARTUP_FEED_ACTION, &iSetting);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "startupactionbtn")), (iSetting == 0)); 
-	conf_get_bool_value (FETCH_HTML5_DETAILS, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->priv->dialog, "fetchhtml5btn")), bSetting); 
 
 	/* cache size setting */
 	widget = liferea_dialog_lookup (pd->priv->dialog, "itemCountBtn");
