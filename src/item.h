@@ -144,7 +144,7 @@ const gchar *	item_get_source(itemPtr item);
  *
  * Create a plain text teaser from the item description
  *
- * Returns: (transer full): newly allocated string to be free'd using g_free() (or NULL)
+ * Returns: (transfer full): newly allocated string to be free'd using g_free() (or NULL)
  */
 gchar * item_get_teaser(itemPtr item);
 
