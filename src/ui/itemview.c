@@ -202,16 +202,15 @@ itemview_add_item (itemPtr item)
 void
 itemview_remove_item (itemPtr item)
 {
-	if (!htmlview_contains_id (item->id))
-		return;
-
 	if (itemview->priv->itemListView) {
 		/* remove item in 3 pane mode */
-		item_list_view_remove_item (itemview->priv->itemListView, item);
+		if (item_list_view_contains_id (itemview->priv->itemListView, item->id))
+			item_list_view_remove_item (itemview->priv->itemListView, item);
 	}
 	else
 		/* force HTML update in 2 pane mode */
-		itemview->priv->needsHTMLViewUpdate = TRUE;
+		if (htmlview_contains_id (item->id))
+			itemview->priv->needsHTMLViewUpdate = TRUE;
 
 	htmlview_remove_item (item);
 }
