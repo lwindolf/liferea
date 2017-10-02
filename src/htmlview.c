@@ -101,6 +101,16 @@ htmlview_set_displayed_node (nodePtr node)
 	htmlView_priv.node = node;
 }
 
+gboolean
+htmlview_contains_id (gulong id)
+{
+	gpointer	chunk;
+
+	chunk = g_hash_table_lookup (htmlView_priv.chunkHash, GUINT_TO_POINTER (id));
+
+	return (chunk?TRUE:FALSE);
+}
+
 void
 htmlview_add_item (itemPtr item) 
 {

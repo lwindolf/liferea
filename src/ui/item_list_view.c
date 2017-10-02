@@ -124,6 +124,7 @@ launch_item_selected (open_link_target_type open_link_target)
 
 struct ItemListViewPrivate {
 	GtkTreeView	*treeview;
+	GtkWidget 	*ilscrolledwindow;	/*<< The complete ItemListView widget */
 	
 	GSList		*item_ids;		/*<< list of all currently known item ids */
 
@@ -149,6 +150,8 @@ item_list_view_finalize (GObject *object)
 	g_slist_free (priv->item_ids);
 	if (priv->batch_itemstore)
 		g_object_unref (priv->batch_itemstore);
+	if (priv->ilscrolledwindow)
+		g_object_unref (priv->ilscrolledwindow);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -727,10 +730,22 @@ on_Itemlist_row_activated (GtkTreeView *treeview,
     launch_item_selected (DEFAULT);
 }
 
-GtkTreeView *
+GtkWidget *
 item_list_view_get_widget (ItemListView *ilv)
 {
-	return ITEM_LIST_VIEW_GET_PRIVATE (ilv)->treeview;
+	return ITEM_LIST_VIEW_GET_PRIVATE (ilv)->ilscrolledwindow;
+}
+
+void
+item_list_view_move_cursor (ItemListView *ilv, int step)
+{
+	ui_common_treeview_move_cursor (ITEM_LIST_VIEW_GET_PRIVATE (ilv)->treeview, step);
+}
+
+void
+item_list_view_move_cursor_to_first (ItemListView *ilv)
+{
+	ui_common_treeview_move_cursor_to_first (ITEM_LIST_VIEW_GET_PRIVATE (ilv)->treeview);
 }
 
 static void
@@ -745,26 +760,26 @@ item_list_view_create (gboolean wide)
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column, *headline_column;
-	GtkWidget 		*ilscrolledwindow;
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
 	ilv->priv->wideView = wide;
 		
-	ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
-	gtk_widget_show (ilscrolledwindow);
+	ilv->priv->ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
+	g_object_ref_sink (ilv->priv->ilscrolledwindow);
+	gtk_widget_show (ilv->priv->ilscrolledwindow);
 
 	if (wide)
-		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->priv->ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	else
-		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilscrolledwindow), GTK_SHADOW_IN);
+		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->priv->ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilv->priv->ilscrolledwindow), GTK_SHADOW_IN);
 
 	ilv->priv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
 	if (wide) {
 		gtk_tree_view_set_fixed_height_mode (ilv->priv->treeview, FALSE);
 		gtk_tree_view_set_grid_lines (ilv->priv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
 	}
-	gtk_container_add (GTK_CONTAINER (ilscrolledwindow), GTK_WIDGET (ilv->priv->treeview));
+	gtk_container_add (GTK_CONTAINER (ilv->priv->ilscrolledwindow), GTK_WIDGET (ilv->priv->treeview));
 	gtk_widget_show (GTK_WIDGET (ilv->priv->treeview));
 	gtk_widget_set_name (GTK_WIDGET (ilv->priv->treeview), "itemlist");
 
