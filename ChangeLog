@@ -1,4 +1,6 @@
-To be released
+2017-11-30   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12.0
 
 	* Fixes unhiding from tray icon when activated via GApplication
 	  (when starting Liferea a 2nd time)
@@ -8,6 +10,8 @@ To be released
 	* #532: Add plugin to make unread feeds titles bold
 	  (Yanko Kaneti)
 	* Workaround for #503: Liferea deanonymize Tor
+	  (Leiaz)
+	* Fixes #450: #546 Resize both panes in normal and wide view
 	  (Leiaz)
 	* Fixes #538: toggle_visibility() does not make a minimized window
 	  visible again
@@ -20,7 +24,7 @@ To be released
 	* Dropped del.icio.us from social bookmarking options
 	  as it is a read-only service now.
 	* Redesign of the wide view mode: larger titles with small text teasers
-	* Add AMP/HTML5 content enrichment feature
+	* Added optional AMP/HTML5 content enrichment feature
 
 
 2017-03-26   Lars Windolf <lars.windolf@gmx.de>
