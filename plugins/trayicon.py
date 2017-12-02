@@ -113,10 +113,6 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.minimize_to_tray_minimize_handler = self.window.connect("window-state-event",
                                                                      self.window_state_event_cb)
 
-        # show the window if it is hidden when starting liferea
-        self.window.deiconify()
-        self.window.show()
-
         feedlist = self.shell.props.feed_list
         self.feedlist_new_items_cb(feedlist)
         sigid = feedlist.connect("new-items", self.feedlist_new_items_cb)
