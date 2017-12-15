@@ -8,6 +8,7 @@
 # item = headline = otsikko
 # enclosure = liitetiedosto
 #
+# Jiri Grönroos <jiri.gronroos+l10n@iki.fi>, 2017
 # Pauli Virtanen <pauli.virtanen@hut.fi>, 2004-2005.
 # Jorma Karvonen <karvonen.jorma@gmail.com>, 2010, 2012-2013.
 #
@@ -16,16 +17,16 @@ msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-13 22:52+0100\n"
-"PO-Revision-Date: 2013-08-24 18:47+0300\n"
-"Last-Translator: Jorma Karvonen <karvonen.jorma@gmail.com>\n"
-"Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
+"PO-Revision-Date: 2017-12-09 21:00+0200\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
+"Language-Team: Finnish <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid ""
@@ -36,48 +37,48 @@ msgid ""
 "extra libraries to be installed. Liferea tries to fill this gap by creating "
 "a fast, easy to use, easy to install news aggregator for GTK/GNOME."
 msgstr ""
+"Liferea on lyhenne sanoista Linux Feed Reader, eli Linux-syötteenlukija. Se "
+"on uutiskeräin verkossa oleville syötteille. Liferea tukee lukuisia eri "
+"muotoja, mukaan lukien RSS/RDF, CDF ja Atom. Vaikka olemassa on myös muita "
+"uutislukijoita, ne eivät ole saatavilla Linuxille tai vaativat useita eri "
+"lisäkirjastoja asennettavaksi. Liferea pyrkii vastaamaan tarpeeseen "
+"tarjoamalla nopean ja heppokäyttöisen uutiskeräimen GNOME-työpöydälle."
 
 #: ../liferea.appdata.xml.in.h:2
 msgid "Distinguishing features:"
-msgstr ""
+msgstr "Ominaisuuksia:"
 
 #: ../liferea.appdata.xml.in.h:3
-#, fuzzy
 msgid "Read articles when offline"
-msgstr "Liferea ei ole yhteydessä verkkoon."
+msgstr "Lue artikkeleita kun et ole yhteydessä verkkoon"
 
 #: ../liferea.appdata.xml.in.h:4
-#, fuzzy
 msgid "Synchronizes with TheOldReader"
-msgstr "Synkroinoitu läheisiin verkkokoneisiin"
+msgstr "Synkronoi TheOldReaderin kanssa"
 
 #: ../liferea.appdata.xml.in.h:5
-#, fuzzy
 msgid "Synchronizes with TinyTinyRSS"
-msgstr "Synkroinoitu läheisiin verkkokoneisiin"
+msgstr "Synkronoi TinyTinyRSS:n kanssa"
 
 #: ../liferea.appdata.xml.in.h:6
-#, fuzzy
 msgid "Synchronizes with InoReader"
-msgstr "Synkroinoitu läheisiin verkkokoneisiin"
+msgstr "Synkronoi InoReaderin kanssa"
 
 #: ../liferea.appdata.xml.in.h:7
-#, fuzzy
 msgid "Synchronizes with Reedah"
-msgstr "Synkroinoitu läheisiin verkkokoneisiin"
+msgstr "Synkronoi Reedahin kanssa"
 
 #: ../liferea.appdata.xml.in.h:8
 msgid "Permanently save headlines in news bins"
-msgstr ""
+msgstr "Tallenna uutisotsikot pysyvästi uutiskoreihin"
 
 #: ../liferea.appdata.xml.in.h:9
 msgid "Match items using search folders"
-msgstr ""
+msgstr "Hae tuloksia käyttämällä hakukansioita"
 
 #: ../liferea.appdata.xml.in.h:10
-#, fuzzy
 msgid "Play Podcasts"
-msgstr "Podcast"
+msgstr "Toista podcasteja"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:79
 #: ../glade/mainwindow.ui.h:1
@@ -90,7 +91,7 @@ msgstr "Syötteenlukija"
 
 #: ../net.sourceforge.liferea.desktop.in.h:3
 msgid "Liferea Feed Reader"
-msgstr "Liferea syötteenlukija"
+msgstr "Liferea-syötteenlukija"
 
 #: ../net.sourceforge.liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
@@ -98,7 +99,7 @@ msgstr "Lue uutissyötteitä ja blogeja"
 
 #: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
-msgstr ""
+msgstr "news;feed;aggregator;blog;podcast;uutiset;syöte;rss;"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
@@ -156,7 +157,7 @@ msgstr "Julkaisija"
 
 #: ../xslt/feed.xml.in.h:12
 msgid "Copyright"
-msgstr "Copyright"
+msgstr "Tekijänoikeus"
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
@@ -209,11 +210,11 @@ msgstr "Kirjoittaja"
 
 #: ../xslt/item.xml.in.h:10
 msgid "Coordinates"
-msgstr ""
+msgstr "Koordinaatit"
 
 #: ../xslt/item.xml.in.h:11
 msgid "Map"
-msgstr ""
+msgstr "Kartta"
 
 #: ../xslt/item.xml.in.h:12
 msgid "Comments"
@@ -437,12 +438,10 @@ msgid "There are no unread items"
 msgstr "Lukemattomia otsikkoja ei ole"
 
 #: ../src/liferea_application.c:282
-#, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
-"Käynnistä Liferea pääikkunassaan TILAssa. TILA voi olla ”shown”, "
-"”iconified”, tai ”hidden”"
+"Käynnistä Liferea pääikkunassaan TILAssa. TILA voi olla ”shown” tai ”hidden”"
 
 #: ../src/liferea_application.c:282
 msgid "STATE"
@@ -1171,9 +1170,8 @@ msgid "Browse at full screen"
 msgstr "Selaa kokoruutunäytöllä"
 
 #: ../src/ui/search_dialog.c:116
-#, fuzzy
 msgid "Saved Search"
-msgstr "Monimutkaisempi haku"
+msgstr "Tallennettu haku"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1185,9 +1183,8 @@ msgid "Unknown source"
 msgstr "Tuntematon lähde"
 
 #: ../src/ui/ui_common.c:168 ../src/ui/feed_list_node.c:416
-#, fuzzy
 msgid "_Cancel"
-msgstr "Peru _kaikki"
+msgstr "_Peru"
 
 #: ../src/ui/ui_common.c:211
 msgid "All Files"
@@ -1404,9 +1401,8 @@ msgid "Deletion Confirmation"
 msgstr "Poiston vahvistus"
 
 #: ../src/ui/subscription_dialog.c:351 ../src/fl_sources/opml_source.c:379
-#, fuzzy
 msgid "_Open"
-msgstr "/Avaa"
+msgstr "_Avaa"
 
 #: ../src/ui/subscription_dialog.c:425
 #, c-format
@@ -1442,14 +1438,12 @@ msgstr "Uusi syöte"
 #: ../src/fl_sources/inoreader_source.c:102
 #: ../src/fl_sources/reedah_source.c:103
 #: ../src/fl_sources/theoldreader_source.c:104
-#, fuzzy
 msgid "Login failed!"
-msgstr "Google-lukija-kirjautuminen epäonnistui!"
+msgstr "Kirjautuminen epäonnistui!"
 
 #: ../src/fl_sources/inoreader_source.c:311
-#, fuzzy
 msgid "InoReader"
-msgstr "Google-lukija"
+msgstr "InoReader"
 
 #: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
@@ -1479,6 +1473,8 @@ msgstr "Lähteen tyyppi"
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
+"\"%s\"-kirjautuminen ei ole vielä valmistunut! Odota kunnes kirjautuminen on "
+"valmis."
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
@@ -1489,27 +1485,28 @@ msgstr "Tilaus ’%s’ muunnettiin onnistuneesti paikalliseksi syötteiksi!"
 
 #: ../src/fl_sources/reedah_source.c:312
 msgid "Reedah"
-msgstr ""
+msgstr "Reedah"
 
 #: ../src/fl_sources/reedah_source_feed.c:154
-#, fuzzy
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr ""
-"Ei kyetty jäsentämään tt-rss API-rajapinnan palauttamaa JSON-rakennetta"
+"Ei kyetty jäsentämään Reedahin API-rajapinnan palauttamaa JSON-rakennetta!"
 
 #: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
 msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr ""
+msgstr "TinyTinyRSS:n HTTP API ei ole saavutettavissa!"
 
 #: ../src/fl_sources/ttrss_source.c:231
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr ""
+"TinyTinyRSS:n syötteen tilaaminen epäonnistui! Tarkista että annoit oikein "
+"syötteen osoitteen!"
 
 #: ../src/fl_sources/ttrss_source.c:290
 msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr ""
+msgstr "TinyTinyRSS:n syötteen poistaminen epäonnistui!"
 
 #: ../src/fl_sources/ttrss_source.c:307
 #, c-format
@@ -1517,35 +1514,34 @@ msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr ""
+"Tämä TinyTinyRSS-versio ei tue syötteiden poistamista. Päivitä versioon %s "
+"tai uudempaan!"
 
 #: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source_feed.c:150
-#, fuzzy
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
-"Ei kyetty jäsentämään tt-rss API-rajapinnan palauttamaa JSON-rakennetta"
+"Ei kyetty jäsentämään TinyTinyRSS:n API-rajapinnan palauttamaa JSON-"
+"rakennetta!"
 
 #: ../src/fl_sources/theoldreader_source.c:329
-#, fuzzy
 msgid "TheOldReader"
-msgstr "Syötteenlukija"
+msgstr "TheOldReader"
 
 #: ../src/webkit/liferea_web_view.c:173
 msgid "Open Link In _Tab"
 msgstr "Avaa linkki _välilehdessä"
 
 #: ../src/webkit/liferea_web_view.c:174
-#, fuzzy
 msgid "Open Link In Browser"
-msgstr "_Avaa linkki selaimessa"
+msgstr "Avaa linkki selaimessa"
 
 #: ../src/webkit/liferea_web_view.c:175
-#, fuzzy
 msgid "Open Link In External Browser"
-msgstr "_Avaa linkki selaimessa"
+msgstr "Avaa linkki ulkoisessa selaimessa"
 
 #: ../src/webkit/liferea_web_view.c:181
 #, c-format
@@ -1574,7 +1570,7 @@ msgstr "_Uusi syöte..."
 
 #: ../src/webkit/liferea_web_view.c:205
 msgid "_Copy"
-msgstr ""
+msgstr "_Kopioi"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1654,14 +1650,12 @@ msgid "_Username (Email)"
 msgstr "_Käyttäjätunnus (sähköposti)"
 
 #: ../glade/inoreader_source.ui.h:1
-#, fuzzy
 msgid "Add InoReader Account"
-msgstr "Lisää Google-lukijatili"
+msgstr "Lisää InoReader-tili"
 
 #: ../glade/inoreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your InoReader account settings."
-msgstr "Kirjoita Google-lukijatiliasetuksesi."
+msgstr "Kirjoita InoReader-tiliasetuksesi."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "normal view"
@@ -1763,7 +1757,7 @@ msgstr "Lisää lähdetyyppi, jonka haluat lisätä..."
 
 #: ../glade/opml_source.ui.h:1
 msgid "Add OPML/Planet"
-msgstr "Lisää OPML/PLanet"
+msgstr "Lisää OPML/Planet"
 
 #: ../glade/opml_source.ui.h:2
 msgid ""
@@ -1794,7 +1788,7 @@ msgstr "Oletusa_rvoisesti tallennettava otsikkojen määrä per syöte:"
 
 #: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: ../glade/prefs.ui.h:5
 msgid "Feed Update Settings"
@@ -1810,7 +1804,7 @@ msgstr "Oletusarvoinen syötteen _päivitystaajuus:"
 
 #: ../glade/prefs.ui.h:8 ../glade/properties.ui.h:7
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #. Feed update interval hint in preference dialog.
 #: ../glade/prefs.ui.h:10
@@ -1964,17 +1958,16 @@ msgid "Proxy"
 msgstr "Välityspalvelin"
 
 #: ../glade/prefs.ui.h:48
-#, fuzzy
 msgid "Privacy Settings"
-msgstr "Kansion näyttöasetukset"
+msgstr "Yksityisyysasetukset"
 
 #: ../glade/prefs.ui.h:49
 msgid "Tell sites that I do _not want to be tracked"
-msgstr ""
+msgstr "Kerro sivustoille _etten halua minua seurattavan"
 
 #: ../glade/prefs.ui.h:50
 msgid "Privacy"
-msgstr ""
+msgstr "Yksityisyys"
 
 #: ../glade/prefs.ui.h:51
 msgid "Downloading Enclosures"
@@ -2101,14 +2094,12 @@ msgid "Advanced"
 msgstr "Edistyneet ominaisuudet"
 
 #: ../glade/reedah_source.ui.h:1
-#, fuzzy
 msgid "Add Reedah Account"
-msgstr "Lisää Google-lukijatili"
+msgstr "Lisää Reedah-tili"
 
 #: ../glade/reedah_source.ui.h:2
-#, fuzzy
 msgid "Please enter your Reedah account settings."
-msgstr "Kirjoita Google-lukijatiliasetuksesi."
+msgstr "Kirjoita Reedah-tiliasetuksesi."
 
 #: ../glade/rename_node.ui.h:1
 msgid "Rename"
@@ -2186,27 +2177,24 @@ msgstr ""
 "tai siinä tapauksessa, että tiedät sen tarkan syötesijainnin."
 
 #: ../glade/theoldreader_source.ui.h:1
-#, fuzzy
 msgid "Add TheOldReader Account"
-msgstr "Lisää Google-lukijatili"
+msgstr "Lisää TheOldReader-tili"
 
 #: ../glade/theoldreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TheOldReader account settings."
-msgstr "Kirjoita Google-lukijatiliasetuksesi."
+msgstr "Kirjoita TheOldReader-tiliasetuksesi."
 
 #: ../glade/ttrss_source.ui.h:1
 msgid "Add Tiny Tiny RSS Account"
 msgstr "Lisää Tiny Tiny RSS -tili"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TinyTinyRSS account settings."
-msgstr "Kirjoita tt-rss-tiliasetuksesi."
+msgstr "Kirjoita TinyTinyRSS-tiliasetuksesi."
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
-msgstr "_Palvelinverkko-osoite"
+msgstr "_Palvelimen verkko-osoite"
 
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
@@ -2217,9 +2205,8 @@ msgid "Update Monitor"
 msgstr "Päivitä valvonta"
 
 #: ../glade/update_monitor.ui.h:2
-#, fuzzy
 msgid "Cancel All"
-msgstr "Peru _kaikki"
+msgstr "Peru kaikki"
 
 #: ../glade/update_monitor.ui.h:3
 msgid "Pending Requests"
@@ -2239,8 +2226,7 @@ msgstr "Ladataan nyt"
 #~ msgstr "Liferea, Linux-syötelukija"
 
 #~ msgid "For more information, please visit http://lzone.de/liferea/"
-#~ msgstr ""
-#~ "Vieraile lisätietoja varten osoitteessa http://lzone.de/liferea/"
+#~ msgstr "Vieraile lisätietoja varten osoitteessa http://lzone.de/liferea/"
 
 #~ msgid "Liferea is now online"
 #~ msgstr "Liferea on nyt yhteydessä verkkoon."
