@@ -1,17 +1,17 @@
 # Indonesian translations for Liferea package.
 # Copyright (C) 2014 THE Liferea'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Liferea package.
-# Samsul Ma'arif <mail@samsul.web.id>, 2014.
+# Samsul Ma'arif <mail@samsul.web.id>, 2014, 2017
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.10.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-18 00:24+0100\n"
-"PO-Revision-Date: 2014-07-16 15:15+0700\n"
+"PO-Revision-Date: 2017-05-27 04:04+0700\n"
 "Last-Translator: Samsul Ma'arif <mail@samsul.web.id>\n"
 "Language-Team: Indonesian\n"
-"Language: id_ID\n"
+"Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -55,14 +55,12 @@ msgid "Synchronizes with TinyTinyRSS"
 msgstr "Sinkronisasi dengan TinyTinyRSS"
 
 #: ../liferea.appdata.xml.in.h:7
-#, fuzzy
 msgid "Synchronizes with InoReader"
-msgstr "Sinkronisasi dengan TheOldReader"
+msgstr "Sinkronisasi dengan InoReader"
 
 #: ../liferea.appdata.xml.in.h:8
-#, fuzzy
 msgid "Synchronizes with Reedah"
-msgstr "Sinkronisasi dengan TheOldReader"
+msgstr "Sinkronisasi dengan Reedah"
 
 #: ../liferea.appdata.xml.in.h:9
 msgid "Permanently save headlines in news bins"
@@ -299,16 +297,15 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" bukan enklosure jenis file konfigurasi yang benar!"
 
 #: ../src/enclosure.c:292
-#, fuzzy
 msgid ""
 "You have not configured a download tool yet! Please do so in the "
 "'Enclosures' tab in Tools/Preferences."
 msgstr ""
-"Anda belum mengonfigurasi alat unduh! Silahkan lakukan di tab 'Unduh' di "
+"Anda belum mengonfigurasi alat unduh! Silahkan lakukan di tab 'Lampiran' di "
 "Alat/Preferensi."
 
 #: ../src/enclosure.c:310
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Command failed: \n"
 "\n"
@@ -322,17 +319,18 @@ msgstr ""
 "%s\n"
 "\n"
 " Silakan periksa apakah konfigurasi alat unduh terpasang dan berjalan dengan "
-"baik! Anda dapat mengubahnyya di tab 'Unduh' di Alat/Preferesi.."
+"baik! Anda dapat mengubahnyya di tab 'Unduh' di Alat/Preferesi."
 
 #: ../src/export.c:188
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming %s to %s: %s\n"
-msgstr "Error mengganti nama %s ke %s\n"
+msgstr "Kesalahan mengganti nama %s ke %s: %s\n"
 
 #: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
-msgstr "XML error ketika membaca berkas OPML! Tidak dapat mengimpor \"%s\"!"
+msgstr ""
+"Kesalahan XML ketika membaca berkas OPML! Tidak dapat mengimpor \"%s\"!"
 
 #: ../src/export.c:425 ../src/export.c:427
 #, c-format
@@ -365,7 +363,7 @@ msgstr "Berkas OPML"
 
 #: ../src/export.c:489
 msgid "Error while exporting feed list!"
-msgstr "Error ketika mengekspor daftar feed!"
+msgstr "Kesalahan ketika mengekspor daftar feed!"
 
 #: ../src/export.c:491
 msgid "Feed List exported!"
@@ -412,7 +410,7 @@ msgstr ""
 #: ../src/feed_parser.c:170
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "XML error ketika membaca feed! Feed \"%s\" tidak dapat dimuat!"
+msgstr "Kesalahan XML ketika membaca feed! Feed \"%s\" tidak dapat dimuat!"
 
 #: ../src/feed_parser.c:175
 msgid "Empty document!"
@@ -436,12 +434,11 @@ msgid "There are no unread items"
 msgstr "Tidak ada item yang belum dibaca"
 
 #: ../src/liferea_application.c:283
-#, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
-"Mulai Liferea dengan jendela utamanya di STATE. STATE mungkin `shown`, "
-"`iconified`, atau `hidden`"
+"Mulai Liferea dengan jendela utamanya di STATE. STATE mungkin `shown`, atau "
+"`hidden`"
 
 #: ../src/liferea_application.c:283
 msgid "STATE"
@@ -603,15 +600,15 @@ msgstr "Feed tidak tersedia: Server meminta redireksi yang tak didukung!"
 
 #: ../src/net.c:430
 msgid "Client Error"
-msgstr "Klien Error"
+msgstr "Kesalahan Klien"
 
 #: ../src/net.c:432
 msgid "Server Error"
-msgstr "Server Error"
+msgstr "Kesalahan Server"
 
 #: ../src/net.c:434
 msgid "An unknown networking error happened!"
-msgstr "Terjadi error jaringan yang tidak diketahui!"
+msgstr "Terjadi kesalahan jaringan yang tidak diketahui!"
 
 #. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
@@ -745,18 +742,18 @@ msgstr "%s keluar dengan status %d"
 #: ../src/update.c:311 ../src/update.c:312 ../src/update.c:429
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
-msgstr "Error: Tidak dapat membuka pipa \"%s\""
+msgstr "Kesalahan: Tidak dapat membuka pipa \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
 #: ../src/update.c:455
 #, c-format
 msgid "Error: Could not open file \"%s\""
-msgstr "Error: Tidak dapat membuka berkas \"%s\""
+msgstr "Kesalahan: Tidak dapat membuka berkas \"%s\""
 
 #: ../src/update.c:461
 #, c-format
 msgid "Error: There is no file \"%s\""
-msgstr "Error: Tidak ada berkas \"%s\""
+msgstr "Kesalahan: Tidak ada berkas \"%s\""
 
 #: ../src/vfolder.c:54
 msgid "New Search Folder"
@@ -1169,9 +1166,8 @@ msgid "Browse at full screen"
 msgstr "Jelajah pada layar penuh"
 
 #: ../src/ui/search_dialog.c:116
-#, fuzzy
 msgid "Saved Search"
-msgstr "Pencarian Lanjutan"
+msgstr "Pencarian Tersimpan"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1183,9 +1179,8 @@ msgid "Unknown source"
 msgstr "Sumber tidak diketahui"
 
 #: ../src/ui/ui_common.c:168 ../src/ui/feed_list_node.c:416
-#, fuzzy
 msgid "_Cancel"
-msgstr "Batalkan _Semua"
+msgstr "Ba_talkan"
 
 #: ../src/ui/ui_common.c:211
 msgid "All Files"
@@ -1406,7 +1401,7 @@ msgstr "Konfirmasi Penghapusan"
 
 #: ../src/ui/subscription_dialog.c:352 ../src/fl_sources/opml_source.c:379
 msgid "_Open"
-msgstr ""
+msgstr "_Buka"
 
 #: ../src/ui/subscription_dialog.c:426
 #, c-format
@@ -1426,7 +1421,7 @@ msgstr "Tak berjudul"
 
 #: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
 msgid "Website"
-msgstr "Website"
+msgstr "Situs web"
 
 #: ../src/parsers/ns_ag.c:70
 msgid "%b %d %H:%M"
@@ -1440,9 +1435,8 @@ msgstr "Langganan Baru"
 #: ../src/fl_sources/inoreader_source.c:102
 #: ../src/fl_sources/reedah_source.c:103
 #: ../src/fl_sources/theoldreader_source.c:104
-#, fuzzy
 msgid "Login failed!"
-msgstr "Reedah login gagal!"
+msgstr "Gagal masuk!"
 
 #: ../src/fl_sources/inoreader_source.c:311
 msgid "InoReader"
@@ -1476,6 +1470,7 @@ msgstr "Tipe Sumber"
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
+"Masuk untuk '%s' belum selesai! Silakan tunggu higga proses masuk selesai"
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
@@ -1494,17 +1489,19 @@ msgstr "Tidak dapat mengurai JSON yang dihasilkan oleh API Reedah!"
 
 #: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
 msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr ""
+msgstr "HTTP API milik TinyTinyRSS tidak dapat dijangkau!"
 
 #: ../src/fl_sources/ttrss_source.c:231
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr ""
+"Gagal berlangganan feed ke TinyTinyRSS! Periksa apakah Anda telah "
+"menyelesaikan URL feed!"
 
 #: ../src/fl_sources/ttrss_source.c:290
 msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr ""
+msgstr "Gagal berhenti berlangganan feed TinyTinyRSS!"
 
 #: ../src/fl_sources/ttrss_source.c:307
 #, c-format
@@ -1512,6 +1509,8 @@ msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr ""
+"Versi TinyTinyRSS ini tidak mendukung penghapusan feed. Perbarui ke versi %s "
+"atau lebih baru!"
 
 #: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
@@ -1530,14 +1529,12 @@ msgid "Open Link In _Tab"
 msgstr "Buka Tautan di _Tab"
 
 #: ../src/webkit/liferea_web_view.c:174
-#, fuzzy
 msgid "Open Link In Browser"
-msgstr "Buka Tautan di _Peramban"
+msgstr "Buka Tautan di Peramban"
 
 #: ../src/webkit/liferea_web_view.c:175
-#, fuzzy
 msgid "Open Link In External Browser"
-msgstr "_Buka Tautan di Peramban Eksternal"
+msgstr "Buka Tautan di Peramban Eksternal"
 
 #: ../src/webkit/liferea_web_view.c:181
 #, c-format
@@ -1571,7 +1568,7 @@ msgstr "_Langgan..."
 
 #: ../src/webkit/liferea_web_view.c:206
 msgid "_Copy"
-msgstr ""
+msgstr "_Salin"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1655,9 +1652,8 @@ msgid "Add InoReader Account"
 msgstr "Tambahkan Akun InoReader"
 
 #: ../glade/inoreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your InoReader account settings."
-msgstr "Silahkan masukkan pengaturan akun InoReader Anda"
+msgstr "Silahkan masukkan pengaturan akun InoReader Anda."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1669,7 +1665,7 @@ msgstr ""
 
 #: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: ../glade/mainwindow.ui.h:5
 msgid "View Headlines"
@@ -1817,7 +1813,7 @@ msgstr "_Interval Penyegaran Feed Bawaan:"
 
 #: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:7
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: ../glade/prefs.ui.h:11
 msgid "Feeds"
@@ -1967,17 +1963,16 @@ msgid "Proxy"
 msgstr "Proxy"
 
 #: ../glade/prefs.ui.h:49
-#, fuzzy
 msgid "Privacy Settings"
-msgstr "Pengaturan Tampilan Folder"
+msgstr "Pengaturan Privasi"
 
 #: ../glade/prefs.ui.h:50
 msgid "Tell sites that I do _not want to be tracked"
-msgstr ""
+msgstr "Beritahu situs bahwa saya ti_dak ingin dilacak"
 
 #: ../glade/prefs.ui.h:51
 msgid "Privacy"
-msgstr ""
+msgstr "Privasi"
 
 #: ../glade/prefs.ui.h:52
 msgid "Downloading Enclosures"
@@ -2037,14 +2032,12 @@ msgid "General"
 msgstr "Umum"
 
 #: ../glade/properties.ui.h:20
-#, fuzzy
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
 "directories in non-supported formats."
 msgstr ""
 "Liferea dapat menggunakan pengaya penyaring untuk mengakses feed dan "
-"direktori dalam format yang tidak didukung. Lihat dokumentasti untuk "
-"informasi lebih lengkap."
+"direktori dalam format yang tidak didukung."
 
 #: ../glade/properties.ui.h:23
 msgid ""
@@ -2113,9 +2106,8 @@ msgid "Add Reedah Account"
 msgstr "Tambahkan Akun Reedah"
 
 #: ../glade/reedah_source.ui.h:2
-#, fuzzy
 msgid "Please enter your Reedah account settings."
-msgstr "Silahkan masukkan pengaturan akun Reedah Anda"
+msgstr "Silahkan masukkan pengaturan akun Reedah Anda."
 
 #: ../glade/rename_node.ui.h:1
 msgid "Rename"
@@ -2206,9 +2198,8 @@ msgid "Add Tiny Tiny RSS Account"
 msgstr "Tambahkan Akun Tiny Tiny RSS"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TinyTinyRSS account settings."
-msgstr "Silahkan masukkan pengaturan akun InoReader Anda"
+msgstr "Silahkan masukkan pengaturan akun TinyTinyRSS Anda"
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
@@ -2223,9 +2214,8 @@ msgid "Update Monitor"
 msgstr "Monitor Pembaruan"
 
 #: ../glade/update_monitor.ui.h:2
-#, fuzzy
 msgid "Cancel All"
-msgstr "Batalkan _Semua"
+msgstr "Batalkan Semua"
 
 #: ../glade/update_monitor.ui.h:3
 msgid "Pending Requests"
