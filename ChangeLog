@@ -1,3 +1,11 @@
+To be released
+
+	Version 1.12.1
+
+	* Fixes #562: Lintian spelling errors
+	  (reported by Paul Gevers)
+	  
+
 2017-11-30   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12.0

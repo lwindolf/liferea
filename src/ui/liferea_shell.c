@@ -1199,7 +1199,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	
 	/* 1.) menu creation */
 	
-	debug0 (DEBUG_GUI, "Setting up menues");
+	debug0 (DEBUG_GUI, "Setting up menus");
 
 	shell->priv->itemlist = itemlist_create ();
 
@@ -1316,7 +1316,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 
 	/* 6.) setup menu sensivity */
 	
-	debug0 (DEBUG_GUI, "Initialising menues");
+	debug0 (DEBUG_GUI, "Initialising menus");
 		
 	/* On start, no item or feed is selected, so Item menu should be insensitive: */
 	liferea_shell_update_item_menu (FALSE);
