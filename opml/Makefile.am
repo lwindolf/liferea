@@ -9,6 +9,7 @@ EXTRA_DIST = \
 	feedlist_he.opml \
 	feedlist_hu.opml \
 	feedlist_gl.opml \
+	feedlist_id.opml \
 	feedlist_it.opml \
 	feedlist_pl.opml \
 	feedlist_pt.opml \
