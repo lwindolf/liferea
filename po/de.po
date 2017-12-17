@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-18 00:24+0100\n"
-"PO-Revision-Date: 2015-12-20 16:54+0100\n"
+"PO-Revision-Date: 2017-12-18 00:36+0100\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,12 +19,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.6.10\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: ../liferea.appdata.xml.in.h:1
-#, fuzzy
 msgid "RSS feed reader"
-msgstr "Feedreader"
+msgstr "RSS Feedreader"
 
 #: ../liferea.appdata.xml.in.h:2
 msgid ""
@@ -272,6 +271,9 @@ msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
 msgstr ""
+"Die von Ihnen verwendete Version von WebKitGTK+ unterstützt das Ändern des "
+"Proxies durch Liferea noch nicht. Es können nur die System Proxy "
+"Einstellungen verwendet werden."
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:777
@@ -1223,7 +1225,7 @@ msgstr "*** Kein Titel ***"
 
 #: ../src/ui/item_list_view.c:483
 msgid " <span background='red' color='black'> important </span> "
-msgstr ""
+msgstr " <span background='red' color='black'> wichtig </span> "
 
 #: ../src/ui/item_list_view.c:793
 msgid "Headline"
@@ -1513,17 +1515,19 @@ msgstr "Could not parse JSON returned by Reedah API!"
 
 #: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
 msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr ""
+msgstr "Die TinyTinyRSS HTTP API ist nicht erreichbar!"
 
 #: ../src/fl_sources/ttrss_source.c:231
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr ""
+"Das Abonnieren eines Abonnements mit TinyTinyRSS ist fehlgeschlagen! Bitte "
+"prüfen Sie den Feed-Link!"
 
 #: ../src/fl_sources/ttrss_source.c:290
 msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr ""
+msgstr "Das Entfernen eines Abonnements aus TinyTinyRSS ist fehlgeschlagen!"
 
 #: ../src/fl_sources/ttrss_source.c:307
 #, c-format
@@ -1531,6 +1535,8 @@ msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr ""
+"Die von Ihnen verwendete Version von TinyTinyRSS erlaubt das Entfernen von "
+"Abonnements noch nicht. Bitte aktualisieren Sie auf Version %s oder neuer!"
 
 #: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
@@ -1538,7 +1544,7 @@ msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source_feed.c:150
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr ""
+msgstr "Die JSON -Antwort der TinyTinyRSS-API ist fehlerhaft!"
 
 #: ../src/fl_sources/theoldreader_source.c:329
 msgid "TheOldReader"
@@ -1566,9 +1572,8 @@ msgid "_Copy Link Location"
 msgstr "_Link kopieren"
 
 #: ../src/webkit/liferea_web_view.c:188
-#, fuzzy
 msgid "_View Image"
-msgstr "B_ild Speichern Als"
+msgstr "B_ild Anzeigen"
 
 #: ../src/webkit/liferea_web_view.c:189
 msgid "_Copy Image Location"
@@ -1976,6 +1981,9 @@ msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
+"Die von Ihnen verwendete Version von WebKitGTK+ ist älter als 2.15.3 und "
+"unterstützt das Ändern des Proxies durch Liferea noch nicht. Es wird die "
+"System Proxy Einstellungen verwendet."
 
 #: ../glade/prefs.ui.h:48
 msgid "Proxy"
@@ -1987,7 +1995,7 @@ msgstr "Privatsphäre"
 
 #: ../glade/prefs.ui.h:50
 msgid "Tell sites that I do _not want to be tracked"
-msgstr ""
+msgstr "Webseiten eine \"Do Not Track\" Information _senden"
 
 #: ../glade/prefs.ui.h:51
 msgid "Privacy"
@@ -2114,7 +2122,7 @@ msgstr "_Markiere heruntergeladene Schlagzeilen als gelesen."
 
 #: ../glade/properties.ui.h:39
 msgid "Extract full content from HTML5 and Google AMP"
-msgstr ""
+msgstr "Vollen Artikel aus HTML5 und Google AMP Seiten extrahieren"
 
 #: ../glade/properties.ui.h:40
 msgid "Advanced"
