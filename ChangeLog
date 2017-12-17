@@ -4,7 +4,9 @@ To be released
 
 	* Fixes #562: Lintian spelling errors
 	  (reported by Paul Gevers)
-	  
+	* Fixes #563: Appstream data has new format
+	  (patch by Paul Gevers)
+
 
 2017-11-30   Lars Windolf <lars.windolf@gmx.de>
 
