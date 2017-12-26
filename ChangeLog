@@ -6,6 +6,8 @@ To be released
 	  (reported by Paul Gevers)
 	* Fixes #563: Appstream data has new format
 	  (patch by Paul Gevers)
+	* Fixes #572: Doesn't remember some sort orders
+	  (reported by geplus)
 
 	* #566: Update of Italian translation (Janvitus)
 	* #514: Update of Indonesian translation (Samsul Ma'arif)

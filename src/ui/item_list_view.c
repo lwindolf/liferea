@@ -72,7 +72,7 @@ enum is_columns {
 	IS_ENCLOSURE,		/*<< Flag whether enclosure is attached or not */
 	IS_SOURCE,		/*<< Source node pointer */
 	IS_STATE,		/*<< Original item state (unread, flagged...) for sorting */
-	ITEMSTORE_WEIGHT,		/*<< Flag whether weight is to be bold and "unread" icon is to be shown */
+	ITEMSTORE_WEIGHT,	/*<< Flag whether weight is to be bold and "unread" icon is to be shown */
 	ITEMSTORE_ALIGN,        /*<< How to align title (RTL support) */
 	ITEMSTORE_LEN		/*<< Number of columns in the itemstore */
 };
@@ -272,6 +272,9 @@ item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortType, gb
 		case NODE_VIEW_SORT_BY_PARENT:
 			sortColumn = IS_SOURCE;
 			break;
+		case NODE_VIEW_SORT_BY_STATE:
+			sortColumn = IS_STATE;
+			break;
 		case NODE_VIEW_SORT_BY_TIME:
 		default:
 			sortColumn = IS_TIME;
@@ -350,6 +353,8 @@ itemlist_sort_column_changed_cb (GtkTreeSortable *treesortable, gpointer user_da
 			nodeSort = NODE_VIEW_SORT_BY_TITLE;
 			break;
 		case IS_STATE:
+			nodeSort = NODE_VIEW_SORT_BY_STATE;
+			break;
 		case IS_PARENT:
 		case IS_SOURCE:
 			nodeSort = NODE_VIEW_SORT_BY_PARENT;
