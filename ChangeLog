@@ -1,5 +1,25 @@
 To be released
 
+	Version 1.12.1
+
+	* Fixes #562: Lintian spelling errors
+	  (reported by Paul Gevers)
+	* Fixes #563: Appstream data has new format
+	  (patch by Paul Gevers)
+	* Fixes #572: Doesn't remember some sort orders
+	  (reported by geplus)
+
+	* #566: Update of Italian translation (Gianvito Cavasoli)
+	* #566: Update of Italian default feed list (Gianvito Cavasoli)
+	* #514: Update of Indonesian translation (Samsul Ma'arif)
+	* #514: Added Indonesian default feed list (Samsul Ma'arif)
+	* Update of German translation
+
+
+2017-11-30   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12.0
+
 	* Fixes unhiding from tray icon when activated via GApplication
 	  (when starting Liferea a 2nd time)
 	* #399: Reorder columns in 'Normal' email-like view
@@ -8,6 +28,8 @@ To be released
 	* #532: Add plugin to make unread feeds titles bold
 	  (Yanko Kaneti)
 	* Workaround for #503: Liferea deanonymize Tor
+	  (Leiaz)
+	* Fixes #450: #546 Resize both panes in normal and wide view
 	  (Leiaz)
 	* Fixes #538: toggle_visibility() does not make a minimized window
 	  visible again
@@ -20,7 +42,7 @@ To be released
 	* Dropped del.icio.us from social bookmarking options
 	  as it is a read-only service now.
 	* Redesign of the wide view mode: larger titles with small text teasers
-	* Add AMP/HTML5 content enrichment feature
+	* Added optional AMP/HTML5 content enrichment feature
 
 
 2017-03-26   Lars Windolf <lars.windolf@gmx.de>

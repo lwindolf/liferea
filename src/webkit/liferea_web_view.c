@@ -298,16 +298,17 @@ on_popup_social_bm_link_activate (GSimpleAction *action, GVariant *parameter, gp
 
 
 static const GActionEntry liferea_web_view_gaction_entries[] = {
-        {"OpenLinkInTab", on_popup_open_link_in_tab_activate, "s", NULL, NULL},
-        {"OpenLinkInBrowser", on_popup_open_link_activate, "s", NULL, NULL},
-        {"OpenLinkInExternalBrowser", on_popup_open_link_external_activate, "s", NULL, NULL},
-        {"SocialBookmarkLink", on_popup_social_bm_link_activate, "s", NULL, NULL},
-        {"ViewImage", on_popup_open_link_activate, "s", NULL, NULL},
-        {"SaveLink", on_popup_save_link_activate, "s", NULL, NULL},
-        {"SubscribeLink", on_popup_subscribe_link_activate, "s", NULL, NULL},
-        {"CopySelection", on_popup_copy_activate, NULL, NULL, NULL},
-        {"ZoomIn", on_popup_zoomin_activate, NULL, NULL, NULL},
-        {"ZoomOut", on_popup_zoomout_activate, NULL, NULL, NULL}
+	{"OpenLinkInTab", on_popup_open_link_in_tab_activate, "s", NULL, NULL},
+	{"OpenLinkInBrowser", on_popup_open_link_activate, "s", NULL, NULL},
+	{"OpenLinkInExternalBrowser", on_popup_open_link_external_activate, "s", NULL, NULL},
+	{"SocialBookmarkLink", on_popup_social_bm_link_activate, "s", NULL, NULL},
+	{"CopyLink", on_popup_copy_link_activate, "s", NULL, NULL},
+	{"ViewImage", on_popup_open_link_activate, "s", NULL, NULL},
+	{"SaveLink", on_popup_save_link_activate, "s", NULL, NULL},
+	{"SubscribeLink", on_popup_subscribe_link_activate, "s", NULL, NULL},
+	{"CopySelection", on_popup_copy_activate, NULL, NULL, NULL},
+	{"ZoomIn", on_popup_zoomin_activate, NULL, NULL, NULL},
+	{"ZoomOut", on_popup_zoomout_activate, NULL, NULL, NULL}
 };
 
 static void
