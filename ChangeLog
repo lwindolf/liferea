@@ -10,6 +10,8 @@ To be released
 	  (reported by geplus)
 	* Fixes #504: Fix assertions/crashes on changing view layouts
 	  (Leiaz)
+	* Fixes #573: Workaround to avoid GtkPaned shrinking
+	  (Leiaz)
 
 	* #566: Update of Italian translation (Gianvito Cavasoli)
 	* #566: Update of Italian default feed list (Gianvito Cavasoli)
