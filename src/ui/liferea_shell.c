@@ -570,10 +570,15 @@ on_window_state_event (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 		GdkWindowState changed = ((GdkEventWindowState*)event)->changed_mask, state = ((GdkEventWindowState*)event)->new_window_state;
 
 		if (changed == GDK_WINDOW_STATE_MAXIMIZED && !(state & GDK_WINDOW_STATE_WITHDRAWN)) {
-			if (state & GDK_WINDOW_STATE_MAXIMIZED)
+			if (state & GDK_WINDOW_STATE_MAXIMIZED) {
 				conf_set_bool_value (LAST_WINDOW_MAXIMIZED, TRUE);
-			else
+			} else {
 				conf_set_bool_value (LAST_WINDOW_MAXIMIZED, FALSE);
+				gtk_container_child_set (GTK_CONTAINER (liferea_shell_lookup ("normalViewPane")), liferea_shell_lookup ("normalViewItems"),
+					"resize", TRUE, NULL);
+				gtk_container_child_set (GTK_CONTAINER (liferea_shell_lookup ("wideViewPane")), liferea_shell_lookup ("wideViewItems"),
+					"resize", TRUE, NULL);
+			}
 		}
 		if (state & GDK_WINDOW_STATE_ICONIFIED)
 			conf_set_int_value (LAST_WINDOW_STATE, MAINWINDOW_ICONIFIED);
@@ -1113,6 +1118,7 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	gchar		*toolbar_style, *accels_file;
 	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
 	gint		resultState;
+	gboolean 	last_window_maximized;
 	
 	debug0 (DEBUG_GUI, "Setting toolbar style");
 	
@@ -1178,6 +1184,13 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	if (last_wpane_pos)
 		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
 
+	conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
+	if (!last_window_maximized) {
+		gtk_container_child_set (GTK_CONTAINER (liferea_shell_lookup ("normalViewPane")), liferea_shell_lookup ("normalViewItems"),
+			"resize", TRUE, NULL);
+		gtk_container_child_set (GTK_CONTAINER (liferea_shell_lookup ("wideViewPane")), liferea_shell_lookup ("wideViewItems"),
+			"resize", TRUE, NULL);
+	}
 }
 
 void
