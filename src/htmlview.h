@@ -46,6 +46,14 @@ void	htmlview_clear (void);
 void	htmlview_set_displayed_node (nodePtr node);
 
 /**
+ * htmlview_contains_id:
+ * @id: an item id
+ *
+ * Returns: TRUE if the item is in the list of items to be displayed
+ */
+gboolean htmlview_contains_id (gulong id);
+
+/**
  * Adds an item to the HTML view for rendering. The item must belong
  * to the item set that was announced with htmlview_set_displayed_node().
  *

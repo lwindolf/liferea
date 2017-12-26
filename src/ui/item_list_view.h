@@ -74,11 +74,29 @@ ItemListView * item_list_view_create (gboolean wide);
 /**
  * item_list_view_get_widget:
  *
- * Returns the GtkTreeView used by the ItemListView instance.
+ * Returns the GtkWidget used by the ItemListView instance.
  *
- * Returns: (transfer none): a GtkTreeView
+ * Returns: (transfer none): a GtkWidget
  */
-GtkTreeView * item_list_view_get_widget (ItemListView *ilv);
+GtkWidget * item_list_view_get_widget (ItemListView *ilv);
+
+/**
+ * item_list_view_move_cursor:
+ * @ilv: 	the ItemListView
+ * @step:	move distance
+ *
+ * Moves the cursor in the item list step times.
+ * Negative value means moving backwards.
+ */
+void item_list_view_move_cursor (ItemListView *ilv, int step);
+
+/**
+ * item_list_view_move_cursor_to_first:
+ * @ilv: 	the ItemListView
+ *
+ * Moves the cursor to the first element.
+ */
+void item_list_view_move_cursor_to_first (ItemListView *ilv);
 
 /**
  * item_list_view_contains_id:

@@ -20,7 +20,6 @@
 
 #include <string.h>
 
-#include "common.h"
 #include "conf.h"
 #include "debug.h"
 #include "folder.h"
@@ -57,7 +56,6 @@ struct ItemViewPrivate {
 	nodeViewType	viewMode;		/*<< current viewing mode */
 	guint		currentLayoutMode;	/*<< layout mode (3 pane, 2 pane, wide view) */
 								     
-	GtkWidget	*itemListViewContainer;	/*<< scrolled window holding item list tree view */
 	ItemListView	*itemListView;		/*<< widget instance used to present items in list mode */
 
 	EnclosureListView	*enclosureView;	/*<< Enclosure list widget */
@@ -152,7 +150,8 @@ itemview_class_init (ItemViewClass *klass)
 void
 itemview_clear (void) 
 {
-	item_list_view_clear (itemview->priv->itemListView);
+	if (itemview->priv->itemListView)
+		item_list_view_clear (itemview->priv->itemListView);
 	htmlview_clear ();
 	enclosure_list_view_hide (itemview->priv->enclosureView);
 	itemview->priv->hasEnclosures = FALSE;
@@ -190,7 +189,7 @@ itemview_add_item (itemPtr item)
 {
 	itemview->priv->hasEnclosures |= item->hasEnclosure;
 
-	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
+	if (itemview->priv->itemListView)
 		/* add item in 3 pane mode */
 		item_list_view_add_item (itemview->priv->itemListView, item);
 	else
@@ -203,15 +202,15 @@ itemview_add_item (itemPtr item)
 void
 itemview_remove_item (itemPtr item)
 {
-	if (!item_list_view_contains_id (itemview->priv->itemListView, item->id))
-		return;
-
-	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
+	if (itemview->priv->itemListView) {
 		/* remove item in 3 pane mode */
-		item_list_view_remove_item (itemview->priv->itemListView, item);
+		if (item_list_view_contains_id (itemview->priv->itemListView, item->id))
+			item_list_view_remove_item (itemview->priv->itemListView, item);
+	}
 	else
 		/* force HTML update in 2 pane mode */
-		itemview->priv->needsHTMLViewUpdate = TRUE;
+		if (htmlview_contains_id (item->id))
+			itemview->priv->needsHTMLViewUpdate = TRUE;
 
 	htmlview_remove_item (item);
 }
@@ -227,8 +226,9 @@ itemview_select_item (itemPtr item)
 
 	ivp->needsHTMLViewUpdate = TRUE;
 	ivp->browsing = FALSE;
-	
-	item_list_view_select (ivp->itemListView, item);
+
+	if (ivp->itemListView)
+		item_list_view_select (ivp->itemListView, item);
 	htmlview_select_item (item);
 
 	if (item)
@@ -250,7 +250,7 @@ void
 itemview_update_item (itemPtr item)
 {
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
-	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
+	if (itemview->priv->itemListView)
 		item_list_view_update_item (itemview->priv->itemListView, item);
 
 	/* Bail if we do internal browsing, and no item is shown */
@@ -261,7 +261,7 @@ itemview_update_item (itemPtr item)
 	switch (itemview->priv->mode) {
 		case ITEMVIEW_ALL_ITEMS:
 			/* No HTML update needed if 2 pane mode and item not in item set */
-			if (!item_list_view_contains_id (itemview->priv->itemListView, item->id))
+			if (!htmlview_contains_id (item->id))
 				return;
 			break;
 		case ITEMVIEW_SINGLE_ITEM:		
@@ -283,7 +283,7 @@ void
 itemview_update_all_items (void)
 {
 	/* Always update the GtkTreeView (bail-out done in ui_itemlist_update_item() */
-	if (ITEMVIEW_ALL_ITEMS != itemview->priv->mode)
+	if (itemview->priv->itemListView)
 		item_list_view_update_all_items (itemview->priv->itemListView);
 
 	itemview->priv->needsHTMLViewUpdate = TRUE;
@@ -313,9 +313,10 @@ itemview_update_node_info (nodePtr node)
 void
 itemview_update (void)
 {
-	item_list_view_update (itemview->priv->itemListView, itemview->priv->hasEnclosures);
+	if (itemview->priv->itemListView)
+		item_list_view_update (itemview->priv->itemListView, itemview->priv->hasEnclosures);
 	
-	if (itemview->priv->node) {
+	if (itemview->priv->itemListView && itemview->priv->node) {
 		item_list_view_enable_favicon_column (itemview->priv->itemListView, NODE_TYPE (itemview->priv->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
 		item_list_view_set_sort_column (itemview->priv->itemListView, itemview->priv->node->sortColumn, itemview->priv->node->sortReversed);
 	}
@@ -345,6 +346,11 @@ itemview_find_unread_item (gulong startId)
 	/* Note: to select in sorting order we need to do it in the ItemListView
 	   otherwise we would have to sort the item list here... */
 
+	if (!itemview->priv->itemListView)
+		/* If there is no itemListView we are in combined view and all
+		 * items are treated as read. */
+		return NULL;
+
 	/* First do a scan from the start position (usually the selected 
 	   item to the end of the sorted item list) if one is given. */	
 	if (startId)
@@ -366,13 +372,15 @@ itemview_scroll (void)
 void
 itemview_move_cursor (int step)
 {
-	ui_common_treeview_move_cursor (item_list_view_get_widget (itemview->priv->itemListView), step);
+	if (itemview->priv->itemListView)
+		item_list_view_move_cursor (itemview->priv->itemListView, step);
 }
 
 void
 itemview_move_cursor_to_first (void)
 {
-	ui_common_treeview_move_cursor_to_first (item_list_view_get_widget (itemview->priv->itemListView));
+	if (itemview->priv->itemListView)
+		item_list_view_move_cursor_to_first (itemview->priv->itemListView);
 }
 
 static void
@@ -456,14 +464,16 @@ itemview_set_layout (nodeViewType newMode)
 	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (htmlWidgetName)), liferea_htmlview_get_widget (ivp->htmlview));
 
 	/* Recreate the item list view */
-	if (ivp->itemListViewContainer)
-		gtk_widget_destroy (ivp->itemListViewContainer);
+	if (ivp->itemListView) {
+		previous_parent = gtk_widget_get_parent (item_list_view_get_widget (ivp->itemListView));
+		if (previous_parent)
+			gtk_container_remove (GTK_CONTAINER (previous_parent), item_list_view_get_widget (ivp->itemListView));
+		g_clear_object (&ivp->itemListView);
+	}
 
 	if (ilWidgetName) {
 		ivp->itemListView = item_list_view_create (newMode == NODE_VIEW_MODE_WIDE);
-		ivp->itemListViewContainer = gtk_widget_get_parent (GTK_WIDGET (item_list_view_get_widget (ivp->itemListView)));
-		g_assert (ivp->itemListViewContainer);
-		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (ilWidgetName)), GTK_WIDGET (ivp->itemListViewContainer));
+		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (ilWidgetName)), item_list_view_get_widget (ivp->itemListView));
 	}
 	
 	/* Destroy previous enclosure list. */
