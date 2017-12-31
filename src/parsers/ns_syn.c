@@ -42,6 +42,7 @@ ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	xmlChar	*tmp;
 	gint	period;
 	gint	frequency = 1;
+	gint	maxage = ctxt->subscription->updateState->maxAgeMinutes;
 	
 	period = subscription_get_default_update_interval (ctxt->subscription);
 	if (!xmlStrcmp (cur->name, BAD_CAST"updatePeriod")) {
@@ -55,7 +56,7 @@ ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 				period = 7*24*60;
 			else if (!xmlStrcmp (tmp, BAD_CAST"monthly"))
 				/* FIXME: not really exact...*/
-				period = 31*7*24*60;	
+				period = 30*7*24*60;	
 			else if (!xmlStrcmp (tmp, BAD_CAST"yearly"))
 				period = 365*24*60;
 
@@ -73,7 +74,8 @@ ns_syn_parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	if (0 != frequency)
 		period /= frequency;
 
-	subscription_set_default_update_interval (ctxt->subscription, period);
+	/* override maxage only when period is longer */
+	ctxt->subscription->updateState->maxAgeMinutes = ((period >= maxage) ? period : maxage);
 }
 
 static void

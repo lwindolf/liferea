@@ -93,6 +93,21 @@ update_state_set_etag (updateStatePtr state, const gchar *etag)
 		state->etag = g_strdup(etag);
 }
 
+void
+update_state_set_cache_maxage (updateStatePtr state, const gint maxage)
+{
+	if (0 < maxage)
+		state->maxAgeMinutes = maxage;
+	else
+		state->maxAgeMinutes = -1;
+}
+
+gint
+update_state_get_cache_maxage (updateStatePtr state)
+{
+	return state->maxAgeMinutes;
+}
+
 const gchar *
 update_state_get_cookies (updateStatePtr state)
 {

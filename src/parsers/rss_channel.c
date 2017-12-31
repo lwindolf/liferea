@@ -64,6 +64,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar			*tmp, *tmp2, *tmp3;
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
+	gint maxage = ctxt->subscription->updateState->maxAgeMinutes;
 	
 	g_assert(NULL != cur);
 			
@@ -104,7 +105,8 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
  			if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
-				subscription_set_default_update_interval(ctxt->subscription, atoi(tmp));
+				/* override maxage only when time-to-live is longer */
+				ctxt->subscription->updateState->maxAgeMinutes = ((atoi(tmp) >= maxage) ? atoi(tmp) : maxage);
 				g_free(tmp);
 			}
 		}

@@ -200,6 +200,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
 	GTimeVal	now;
+	gint		maxage = -1;
 
 	/* 1. preprocessing */
 
@@ -224,6 +225,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		processing = TRUE;
 	}
 
+	update_state_set_cache_maxage (subscription->updateState, update_state_get_cache_maxage (result->updateState));
 	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
 
 	subscription->updateJob = NULL;
@@ -232,13 +234,23 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (processing)
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 
-	/* 3. call favicon updating after subscription processing
+	/* 3. set default update interval  */
+	if (0 < update_state_get_cache_maxage (subscription->updateState)) {
+		maxage = update_state_get_cache_maxage (subscription->updateState);
+		/* enforce 5 minutes default minimum */
+		if (5 > maxage) {
+			maxage = 5;
+		}
+	}
+	subscription_set_default_update_interval (subscription, maxage);
+
+	/* 4. call favicon updating after subscription processing
 	      to ensure we have valid baseUrl for feed nodes... */
 	g_get_current_time (&now);
 	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
 		subscription_update_favicon (subscription);
 	
-	/* 4. generic postprocessing */
+	/* 5. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));

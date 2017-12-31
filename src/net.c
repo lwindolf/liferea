@@ -49,6 +49,9 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	updateJobPtr	job = (updateJobPtr)user_data;
 	SoupDate	*last_modified;
 	const gchar	*tmp = NULL;
+	GHashTable	*params;
+	gint		maxage;
+	gint		age;
 
 	job->result->source = soup_uri_to_string (soup_message_get_uri(msg), FALSE);
 	if (SOUP_STATUS_IS_TRANSPORT_ERROR (msg->status_code)) {
@@ -85,6 +88,32 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	if (tmp) {
 		job->result->updateState->etag = g_strdup(tmp);
 	}    
+
+	/* Update cache max-age  */
+	tmp = soup_message_headers_get_list (msg->response_headers, "Cache-Control");
+	if (tmp) {
+		params = soup_header_parse_param_list (tmp);
+		if (params) {
+			tmp = g_hash_table_lookup (params, "max-age");
+			if (tmp) {
+				maxage = atoi (tmp);
+				if (0 < maxage) {
+					/* subtract Age from max-age */
+					tmp = soup_message_headers_get_one (msg->response_headers, "Age");
+					if (age) {
+						age = atoi (tmp);
+						if (0 < age) {
+							maxage = maxage - age;
+						}
+					}
+					if (0 < maxage) {
+						job->result->updateState->maxAgeMinutes = maxage / 60;
+					}
+				}
+			}
+		}
+		soup_header_free_param_list (params);
+	}
 
 	update_process_finished_job (job);
 }
