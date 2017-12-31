@@ -50,6 +50,7 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	SoupDate	*last_modified;
 	const gchar	*tmp = NULL;
 	GHashTable	*params;
+	gboolean	revalidated = FALSE;
 	gint		maxage;
 	gint		age;
 
@@ -62,6 +63,9 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 		job->result->returncode = 0;
 	}
 
+	/* keep some request headers for revalidated responses */
+	revalidated = (304 == job->result->httpstatus);
+
 	debug1 (DEBUG_NET, "download status code: %d", msg->status_code);
 	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
 
@@ -72,22 +76,30 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	job->result->contentType = g_strdup (soup_message_headers_get_content_type (msg->response_headers, NULL));
 
 	/* Update last-modified date */
-	tmp = soup_message_headers_get_one (msg->response_headers, "Last-Modified");
-	if (tmp) {
-		/* The string may be badly formatted, which will make
-		 * soup_date_new_from_string() return NULL */
-		last_modified = soup_date_new_from_string (tmp);
-		if (last_modified) {
-			job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
-			soup_date_free (last_modified);
+	if (revalidated) {
+		 job->result->updateState->lastModified = update_state_get_lastmodified (job->request->updateState);
+	} else {
+		tmp = soup_message_headers_get_one (msg->response_headers, "Last-Modified");
+		if (tmp) {
+			/* The string may be badly formatted, which will make
+			* soup_date_new_from_string() return NULL */
+			last_modified = soup_date_new_from_string (tmp);
+			if (last_modified) {
+				job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
+				soup_date_free (last_modified);
+			}
 		}
 	}
 
 	/* Update ETag value */
-	tmp = soup_message_headers_get_one (msg->response_headers, "ETag");
-	if (tmp) {
-		job->result->updateState->etag = g_strdup(tmp);
-	}    
+	if (revalidated) {
+		job->result->updateState->etag = g_strdup (update_state_get_etag (job->request->updateState));
+	} else {
+		tmp = soup_message_headers_get_one (msg->response_headers, "ETag");
+		if (tmp) {
+			job->result->updateState->etag = g_strdup (tmp);
+		}
+	}
 
 	/* Update cache max-age  */
 	tmp = soup_message_headers_get_list (msg->response_headers, "Cache-Control");
