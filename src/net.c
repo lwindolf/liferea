@@ -280,14 +280,9 @@ network_init (void)
 	gchar		*filename;
 	SoupLogger	*logger;
 
-	/* Set an appropriate user agent */
-	if (g_getenv ("LANG")) {
-		/* e.g. "Liferea/1.10.0 (Linux; de_DE; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
-		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
-	} else {
-		/* e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
-		useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
-	}
+	/* Set an appropriate user agent,
+	 * e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+	useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
 
 	/* Cookies */
 	filename = common_create_config_filename ("cookies.txt");
