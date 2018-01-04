@@ -31,6 +31,7 @@
 
 #include "browser.h"
 #include "common.h"
+#include "conf.h"
 #include "date.h"
 #include "debug.h"
 #include "feed.h"
@@ -644,6 +645,22 @@ on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean key
 	return ret;
 }
 
+static void
+on_item_list_view_columns_changed_event (GtkTreeView *treeview, GtkTreeViewColumn *date_column)
+{
+	int	current_date_col_pos;
+	GList	*columns;
+
+	/* Drag and drop reordering only happens with full column list, currently 5 */
+	if (gtk_tree_view_get_n_columns(treeview) != 5)
+		return;
+
+	columns = gtk_tree_view_get_columns (treeview);
+	current_date_col_pos = g_list_index (columns, date_column);
+	conf_set_int_value (LAST_DATE_COLUMN_POS, current_date_col_pos);
+	g_list_free (columns);
+}
+
 static gboolean
 on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
 {
@@ -765,6 +782,7 @@ item_list_view_create (gboolean wide)
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column, *headline_column;
+	int			date_column_pos = -1;
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
 	ilv->priv->wideView = wide;
@@ -837,12 +855,15 @@ item_list_view_create (gboolean wide)
 	                                                   "weight", ITEMSTORE_WEIGHT,
 							   NULL);
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
-	gtk_tree_view_append_column (ilv->priv->treeview, column);
+	conf_get_int_value(LAST_DATE_COLUMN_POS, &date_column_pos);
+	gtk_tree_view_insert_column (ilv->priv->treeview, column, date_column_pos);
+	g_object_set (column, "reorderable", TRUE, NULL);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
 	if (wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
 
 	/* And connect signals */
+	g_signal_connect (G_OBJECT (ilv->priv->treeview), "columns_changed", G_CALLBACK (on_item_list_view_columns_changed_event), column);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "row_activated", G_CALLBACK (on_Itemlist_row_activated), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), ilv);
