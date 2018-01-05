@@ -667,6 +667,7 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
+	GtkTreeViewColumn	*column;
 	itemPtr			item = NULL;
 	gboolean		result = FALSE;
 
@@ -677,7 +678,7 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 	if (event->window != gtk_tree_view_get_bin_window (ilv->priv->treeview))
 		return FALSE;
 
-	if (!gtk_tree_view_get_path_at_pos (ilv->priv->treeview, (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL))
+	if (!gtk_tree_view_get_path_at_pos (ilv->priv->treeview, (gint)event->x, (gint)event->y, &path, &column, NULL, NULL))
 		return FALSE;
 
 	if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->priv->treeview), &iter, path))
@@ -689,21 +690,9 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 		GdkEventButton *eb = (GdkEventButton*)event;
 		switch (eb->button) {
 			case 1:
-				/* Allow flag toggling when left clicking in the
-				   state or favicon column. We depend
-				   on the fact that those columns are all left
-				   of the headline column !!! */
-				if(gtk_tree_view_column_get_visible (ilv->priv->faviconColumn)){
-					if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->faviconColumn))) {
-						itemlist_toggle_flag (item);
-						result = TRUE;
-					}
-				}
-				else{
-					if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn))) {
-						itemlist_toggle_flag (item);
-						result = TRUE;
-					}
+				if (column == ilv->priv->faviconColumn || column == ilv->priv->stateColumn) {
+					itemlist_toggle_flag (item);
+					result = TRUE;
 				}
 				break;
 			case 2:
