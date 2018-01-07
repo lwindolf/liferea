@@ -3,7 +3,7 @@
      { "No Mark All Read":
                 { "module"      : "markallreadinactive",
                   "category"    : "Menu",
-                  "source"      : "https://github.com/whizse/liferea-plugins",
+                  "source"      : "whizse/liferea-plugins",
                   "description" : "Disables the menu entry for 'Subscriptions' → 'Mark All As Read' as it is a little bit too easy to hit by mistake."
      }},
      { "Shades": 
