@@ -74,8 +74,9 @@ Peter Oliver						Google Reader Label Support
 Sergey Snitsaruk <narren96c@gmail.com>			Google Reader Label Support 
 Sebastian Keller <sebastian-keller@gmx.de>		Gedit-like tab close buttons
 Simon Kågedal Reimer <skagedal@gmail.com>		Seekable GStreamer media player
-Leiaz <leiaz@free.fr>					Webkit2 port
+Leiaz <leiaz@free.fr>					Webkit2 implementation and maintenance
 Daneil Aleksandersen 					Partial RFC3229 support saving bandwidth
+                                                        Security fixes, network improvements
 
 
 Maintainer Credits
