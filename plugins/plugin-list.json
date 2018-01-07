@@ -1,0 +1,10 @@
+{ "schemaVersion": 1,
+  "plugins":[
+     { "Shades": 
+                { "module"      : "shades",
+                  "category"    : "GUI",
+                  "source"      : "lwindolf/liferea-plugin-studio",
+                  "description" : "Substitute bright/white background colors with a darker background color in Web view."
+     }}
+   ]
+}
