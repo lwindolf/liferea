@@ -6,6 +6,12 @@
                   "source"      : "whizse/liferea-plugins",
                   "description" : "Disables the menu entry for 'Subscriptions' → 'Mark All As Read' as it is a little bit too easy to hit by mistake."
      }},
+     { "Feed Alerts":
+                { "module"      : "feedalerts",
+                  "category"    : "Notifications",
+                  "source"      : "ExpatPaul/liferea-plugins",
+                  "description" : "Configurable feed notifier. Needs to be configured with regex filters in ~/.local/share/liferea/plugins/feedalerts/feedalerts.conf"
+     }},
      { "Shades": 
                 { "module"      : "shades",
                   "category"    : "GUI",
