@@ -1,3 +1,20 @@
+To be released
+
+	Version 1.12.2
+
+	* Adding a plugin installer plugin that allows discovering
+	  and automatically installing 3rd party plugins
+	* #585: Drop language from user agent to increase privacy
+	  (Daniel Aleksandersen)
+	* #583: Add transmission-gtk and aria2 as download tool options
+	  (Daniel Aleksandersen)
+
+	* #584: Fixes broken OPML feed list entries
+	  (Daniel Aleksandersen)
+	* #584: Added Norwegian feed list
+	  (Daniel Aleksandersen)
+
+
 2017-12-27   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12.1

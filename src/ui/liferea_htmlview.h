@@ -72,7 +72,7 @@ LifereaHtmlView * liferea_htmlview_new (gboolean forceInternalBrowsing);
 void liferea_htmlview_set_headline_view (LifereaHtmlView *htmlview);
 
 /**
- * liferea_htmlview_get_widget: (skip)
+ * liferea_htmlview_get_widget:
  * @htmlview:	the HTML view
  *
  * Returns the rendering widget for a HTML view. Only

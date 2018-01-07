@@ -2,7 +2,7 @@
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,6 +62,7 @@ extern gboolean searchFolderRebuild; /* db.c */
 
 struct LifereaShellPrivate {
 	GtkBuilder	*xml;
+	GtkUIManager	*ui_manager;
 
 	GtkWindow	*window;		/*<< Liferea main window */
 	GtkWidget	*menubar;
@@ -95,7 +96,8 @@ enum {
 	PROP_FEED_LIST,
 	PROP_ITEM_LIST,
 	PROP_ITEM_VIEW,
-	PROP_BROWSER_TABS
+	PROP_BROWSER_TABS,
+	PROP_UI_MANAGER
 };
 
 static GObjectClass *parent_class = NULL;
@@ -130,6 +132,9 @@ liferea_shell_get_property (GObject *object, guint prop_id, GValue *value, GPara
 			break;
 	        case PROP_BROWSER_TABS:
 			g_value_set_object (value, shell->priv->tabs);
+			break;
+	        case PROP_UI_MANAGER:
+			g_value_set_object (value, shell->priv->ui_manager);
 			break;
 		default:
 		        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -181,6 +186,15 @@ liferea_shell_class_init (LifereaShellClass *klass)
 		                                              "LifereaBrowserTabs",
 		                                              "LifereaBrowserTabs object",
 		                                              BROWSER_TABS_TYPE,
+		                                              G_PARAM_READABLE));
+
+	/* LifereaShell:ui-manager: */
+	g_object_class_install_property (object_class,
+		                         PROP_UI_MANAGER,
+		                         g_param_spec_object ("ui-manager",
+		                                              "GtkUIManager",
+		                                              "Liferea user interfaces definitions",
+		                                              GTK_TYPE_UI_MANAGER,
 		                                              G_PARAM_READABLE));
 
 	g_type_class_add_private (object_class, sizeof(LifereaShellPrivate));
@@ -1196,7 +1210,6 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 {
-	GtkUIManager	*ui_manager;
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
 	gboolean	toggle;
@@ -1220,7 +1233,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
 	liferea_shell_feedlist_toggle_entries[0].is_active = toggle;
 
-	ui_manager = gtk_ui_manager_new ();
+	shell->priv->ui_manager = gtk_ui_manager_new ();
 
 	shell->priv->generalActions = gtk_action_group_new ("GeneralActions");
 	gtk_action_group_set_translation_domain (shell->priv->generalActions, PACKAGE);
@@ -1228,57 +1241,57 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	gtk_action_group_add_toggle_actions (shell->priv->generalActions, liferea_shell_action_toggle_entries, G_N_ELEMENTS (liferea_shell_action_toggle_entries), shell->priv);
 	gtk_action_group_add_radio_actions (shell->priv->generalActions, liferea_shell_view_radio_entries, G_N_ELEMENTS (liferea_shell_view_radio_entries), itemlist_get_view_mode (), (GCallback)on_view_activate, (gpointer)TRUE);
 	gtk_action_group_add_toggle_actions (shell->priv->generalActions, liferea_shell_feedlist_toggle_entries, G_N_ELEMENTS (liferea_shell_feedlist_toggle_entries), shell->priv);
-	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->generalActions, 0);
+	gtk_ui_manager_insert_action_group (shell->priv->ui_manager, shell->priv->generalActions, 0);
 
 	shell->priv->addActions = gtk_action_group_new ("AddActions");
 	gtk_action_group_set_translation_domain (shell->priv->addActions, PACKAGE);
 	gtk_action_group_add_actions (shell->priv->addActions, liferea_shell_add_action_entries, G_N_ELEMENTS (liferea_shell_add_action_entries), shell->priv);
-	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->addActions, 0);
+	gtk_ui_manager_insert_action_group (shell->priv->ui_manager, shell->priv->addActions, 0);
 
 	shell->priv->feedActions = gtk_action_group_new ("FeedActions");
 	gtk_action_group_set_translation_domain (shell->priv->feedActions, PACKAGE);
 	gtk_action_group_add_actions (shell->priv->feedActions, liferea_shell_feed_action_entries, G_N_ELEMENTS (liferea_shell_feed_action_entries), shell->priv);
-	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->feedActions, 0);
+	gtk_ui_manager_insert_action_group (shell->priv->ui_manager, shell->priv->feedActions, 0);
 
 	shell->priv->readWriteActions = gtk_action_group_new("ReadWriteActions");
 	gtk_action_group_set_translation_domain (shell->priv->readWriteActions, PACKAGE);
 	gtk_action_group_add_actions (shell->priv->readWriteActions, liferea_shell_read_write_action_entries, G_N_ELEMENTS (liferea_shell_read_write_action_entries), shell->priv);
-	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->readWriteActions, 0);
+	gtk_ui_manager_insert_action_group (shell->priv->ui_manager, shell->priv->readWriteActions, 0);
 
 	shell->priv->itemActions = gtk_action_group_new ("ItemActions");
 	gtk_action_group_set_translation_domain (shell->priv->itemActions, PACKAGE);
 	gtk_action_group_add_actions (shell->priv->itemActions, liferea_shell_item_action_entries, G_N_ELEMENTS (liferea_shell_item_action_entries), shell->priv);
-	gtk_ui_manager_insert_action_group (ui_manager, shell->priv->itemActions, 0);
+	gtk_ui_manager_insert_action_group (shell->priv->ui_manager, shell->priv->itemActions, 0);
 
-	accel_group = gtk_ui_manager_get_accel_group (ui_manager);
+	accel_group = gtk_ui_manager_get_accel_group (shell->priv->ui_manager);
 	gtk_window_add_accel_group (GTK_WINDOW (shell->priv->window), accel_group);
 	g_object_unref (accel_group);
 
 	g_signal_connect (gtk_accel_map_get (), "changed", G_CALLBACK (on_accel_change), NULL);
 
-	if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_ui_desc, -1, &error))
+	if (!gtk_ui_manager_add_ui_from_string (shell->priv->ui_manager, liferea_shell_ui_desc, -1, &error))
 		g_error ("building menus failed: %s", error->message);
 
 	if (gtk_widget_get_default_direction () != GTK_TEXT_DIR_RTL) {
-		if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_tb_desc, -1, &error))
+		if (!gtk_ui_manager_add_ui_from_string (shell->priv->ui_manager, liferea_shell_tb_desc, -1, &error))
 			g_error ("building menus failed: %s", error->message);
 	} else {
-		if (!gtk_ui_manager_add_ui_from_string (ui_manager, liferea_shell_tb_rtl_desc, -1, &error))
+		if (!gtk_ui_manager_add_ui_from_string (shell->priv->ui_manager, liferea_shell_tb_rtl_desc, -1, &error))
 			g_error ("building menus failed: %s", error->message);
 	}
 
-	shell->priv->menubar = gtk_ui_manager_get_widget (ui_manager, "/MainwindowMenubar");
-	shell->priv->toolbar = gtk_ui_manager_get_widget (ui_manager, "/maintoolbar");
+	shell->priv->menubar = gtk_ui_manager_get_widget (shell->priv->ui_manager, "/MainwindowMenubar");
+	shell->priv->toolbar = gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar");
 
 	/* Ensure GTK3 toolbar shadows... */
 	gtk_style_context_add_class (gtk_widget_get_style_context (shell->priv->toolbar), "primary-toolbar");
 
 	/* what a pain, why is there no markup for this option? */
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/newFeedButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/nextUnreadButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/MarkAsReadButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/UpdateAllButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (ui_manager, "/maintoolbar/SearchButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/newFeedButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/nextUnreadButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/MarkAsReadButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/UpdateAllButton")), "is_important", TRUE, NULL);
+	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/SearchButton")), "is_important", TRUE, NULL);
 
 	/* 2.) setup containers */
 	
