@@ -13,9 +13,7 @@ Liferea is a desktop feed reader/news aggregator that brings together all of the
 Installation from Package
 -------------------------
 
-We do not provide packages, but others do. Detailed instructions on how to 
-get Liferea packages installed on the different distributions can 
-be found at https://lzone.de/liferea/install.htm
+For distro specific package installation check out https://lzone.de/liferea/install.htm
 
 
 
