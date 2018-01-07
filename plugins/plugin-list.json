@@ -5,6 +5,27 @@
                   "category"    : "GUI",
                   "source"      : "lwindolf/liferea-plugin-studio",
                   "description" : "Substitute bright/white background colors with a darker background color in Web view."
-     }}
+     }},
+     { "Webkit Settings": 
+                { "module"      : "webkit-setting",
+                  "category"    : "Advanced",
+                  "source"      : "lwindolf/liferea-plugin-studio",
+                  "description" : "Change advanced WebKitGtk settings for HTML rendering."
+     }},
+     { "BlockLink": 
+                { "module"      : "blocklink-addon",
+                  "category"    : "GUI",
+                  "source"      : "lwindolf/liferea-plugin-studio",
+                  "description" : "Block unwanted URLs for the Web view.",
+                  "deps"        : {
+                      "pkgmgr"   : {
+                          "name": "pip3",
+                          "check":      ["pip3", "-V"],
+                          "checkPkg":   ["pip3", "show"],
+                          "installPkg": ["pip3", "install"]
+                      },
+                      "packages" : [ "adblockparser" ]
+                  }
+     }},
    ]
 }
