@@ -236,6 +236,13 @@ conf_set_str_value (const gchar *key, const gchar *value)
 }
 
 void
+conf_set_strv_value (const gchar *key, const gchar **value)
+{
+	g_assert (key != NULL);
+	g_settings_set_strv (settings, key, value);
+}
+
+void
 conf_set_int_value (const gchar *key, gint value)
 {
 	g_assert (key != NULL);
@@ -279,6 +286,18 @@ conf_get_str_value_from_schema (GSettings *gsettings, const gchar *key, gchar **
 	if (gsettings == NULL)
 		gsettings = settings;
 	*value = g_settings_get_string (gsettings, key);
+	return (NULL != value);
+}
+
+gboolean
+conf_get_strv_value_from_schema (GSettings *gsettings, const gchar *key, gchar ***value)
+{
+	g_assert (key != NULL);
+	g_assert (value != NULL);
+
+	if (gsettings == NULL)
+		gsettings = settings;
+	*value = g_settings_get_strv (gsettings, key);
 	return (NULL != value);
 }
 
