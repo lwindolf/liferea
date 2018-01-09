@@ -232,6 +232,11 @@
       <summary>Send "Do Not Track" header</summary>
       <description>Configures wether the "DNT" header is to be sent. If enabled sends "DNT: 1", meaning Do Not Track.</description>
     </key>
+    <key name="list-view-column-order" type="as">
+      <default>[ 'state', 'favicon', 'headline', 'enclosure', 'date' ]</default>
+      <summary>Item list view column order</summary>
+      <description>The column order in the item list view.</description>
+    </key>
 
   </schema>
 

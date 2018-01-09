@@ -31,6 +31,7 @@
 
 #include "browser.h"
 #include "common.h"
+#include "conf.h"
 #include "date.h"
 #include "debug.h"
 #include "feed.h"
@@ -753,6 +754,7 @@ item_list_view_create (gboolean wide)
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column, *headline_column;
+	gchar			**conf_column_order, **li;
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
 	ilv->priv->wideView = wide;
@@ -784,7 +786,6 @@ item_list_view_create (gboolean wide)
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_STATEICON, NULL);
 	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE_TOOLBAR:GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
 	g_hash_table_insert (ilv->priv->columns, "state", column);
-	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
 	if (wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
@@ -795,7 +796,6 @@ item_list_view_create (gboolean wide)
 
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	g_hash_table_insert (ilv->priv->columns, "favicon", column);
-	gtk_tree_view_append_column (ilv->priv->treeview, column);
 
 	renderer = gtk_cell_renderer_text_new ();
 	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer,
@@ -804,7 +804,6 @@ item_list_view_create (gboolean wide)
 							   NULL);
 	gtk_tree_view_column_set_expand (headline_column, TRUE);
 	g_hash_table_insert (ilv->priv->columns, "headline", headline_column);
-	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
 	g_object_set (headline_column, "resizable", TRUE, NULL);
 	if (wide) {
 		gtk_tree_view_column_set_sort_column_id (headline_column, IS_TIME);
@@ -819,7 +818,6 @@ item_list_view_create (gboolean wide)
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_ENCICON, NULL);
 	g_hash_table_insert (ilv->priv->columns, "enclosure", column);
-	gtk_tree_view_append_column (ilv->priv->treeview, column);
 
 	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer,
@@ -828,10 +826,15 @@ item_list_view_create (gboolean wide)
 							   NULL);
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
 	g_hash_table_insert (ilv->priv->columns, "date", column);
-	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
 	if (wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
+
+	conf_get_strv_value (LIST_VIEW_COLUMN_ORDER, &conf_column_order);
+	li = conf_column_order;
+	while (*li)
+		gtk_tree_view_append_column (ilv->priv->treeview, g_hash_table_lookup (ilv->priv->columns, *li++));
+	g_strfreev (conf_column_order);
 
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);

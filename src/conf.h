@@ -67,6 +67,7 @@
 #define LAST_WPANE_POS			"last-wpane-pos"
 #define LAST_ZOOMLEVEL			"last-zoomlevel"
 #define LAST_NODE_SELECTED		"last-node-selected"
+#define LIST_VIEW_COLUMN_ORDER		"list-view-column-order"
 
 /* networking settings */
 #define PROXY_DETECT_MODE		"proxy-detect-mode"
