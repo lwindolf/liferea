@@ -130,9 +130,7 @@ struct ItemListViewPrivate {
 	gboolean	batch_mode;		/*<< TRUE if we are in batch adding mode */
 	GtkTreeStore	*batch_itemstore;	/*<< GtkTreeStore prepared unattached and to be set on update() */
 
-	GtkTreeViewColumn	*enclosureColumn;
-	GtkTreeViewColumn	*faviconColumn;
-	GtkTreeViewColumn	*stateColumn;
+	GHashTable	*columns;               /*<< Named GtkTreeViewColumns */
 
 	gboolean	wideView;		/*<< TRUE if date has to be rendered into headline column (because date column is invisible) */
 };
@@ -565,7 +563,7 @@ void
 item_list_view_update (ItemListView *ilv, gboolean hasEnclosures)
 {
 	/* we depend on the fact that the third column is the enclosure icon column!!! */
-	gtk_tree_view_column_set_visible (ilv->priv->enclosureColumn, hasEnclosures);
+	gtk_tree_view_column_set_visible (g_hash_table_lookup(ilv->priv->columns, "enclosure"), hasEnclosures);
 
 	if (ilv->priv->batch_mode) {
 		item_list_view_set_tree_store (ilv, ilv->priv->batch_itemstore);
@@ -650,6 +648,7 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
+	GtkTreeViewColumn	*column;
 	itemPtr			item = NULL;
 	gboolean		result = FALSE;
 
@@ -660,7 +659,7 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 	if (event->window != gtk_tree_view_get_bin_window (ilv->priv->treeview))
 		return FALSE;
 
-	if (!gtk_tree_view_get_path_at_pos (ilv->priv->treeview, (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL))
+	if (!gtk_tree_view_get_path_at_pos (ilv->priv->treeview, (gint)event->x, (gint)event->y, &path, &column, NULL, NULL))
 		return FALSE;
 
 	if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->priv->treeview), &iter, path))
@@ -672,21 +671,10 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 		GdkEventButton *eb = (GdkEventButton*)event;
 		switch (eb->button) {
 			case 1:
-				/* Allow flag toggling when left clicking in the
-				   state or favicon column. We depend
-				   on the fact that those columns are all left
-				   of the headline column !!! */
-				if(gtk_tree_view_column_get_visible (ilv->priv->faviconColumn)){
-					if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->faviconColumn))) {
-						itemlist_toggle_flag (item);
-						result = TRUE;
-					}
-				}
-				else{
-					if (event->x <= (gtk_tree_view_column_get_width (ilv->priv->stateColumn))) {
-						itemlist_toggle_flag (item);
-						result = TRUE;
-					}
+				if (column == g_hash_table_lookup(ilv->priv->columns, "favicon") ||
+				    column == g_hash_table_lookup(ilv->priv->columns, "state")) {
+					itemlist_toggle_flag (item);
+					result = TRUE;
 				}
 				break;
 			case 2:
@@ -768,6 +756,8 @@ item_list_view_create (gboolean wide)
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
 	ilv->priv->wideView = wide;
+
+	ilv->priv->columns = g_hash_table_new (g_str_hash, g_str_equal);
 		
 	ilv->priv->ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
 	g_object_ref_sink (ilv->priv->ilscrolledwindow);
@@ -793,8 +783,8 @@ item_list_view_create (gboolean wide)
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_STATEICON, NULL);
 	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE_TOOLBAR:GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+	g_hash_table_insert (ilv->priv->columns, "state", column);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
-	ilv->priv->stateColumn = column;
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
 	if (wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
@@ -804,9 +794,8 @@ item_list_view_create (gboolean wide)
 	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_DIALOG:GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
 
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
+	g_hash_table_insert (ilv->priv->columns, "favicon", column);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
-	ilv->priv->faviconColumn = column;
-
 
 	renderer = gtk_cell_renderer_text_new ();
 	headline_column = gtk_tree_view_column_new_with_attributes (_("Headline"), renderer,
@@ -814,6 +803,7 @@ item_list_view_create (gboolean wide)
 							   "xalign", ITEMSTORE_ALIGN,
 							   NULL);
 	gtk_tree_view_column_set_expand (headline_column, TRUE);
+	g_hash_table_insert (ilv->priv->columns, "headline", headline_column);
 	gtk_tree_view_append_column (ilv->priv->treeview, headline_column);
 	g_object_set (headline_column, "resizable", TRUE, NULL);
 	if (wide) {
@@ -828,8 +818,8 @@ item_list_view_create (gboolean wide)
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_ENCICON, NULL);
+	g_hash_table_insert (ilv->priv->columns, "enclosure", column);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
-	ilv->priv->enclosureColumn = column;
 
 	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes (_("Date"), renderer,
@@ -837,6 +827,7 @@ item_list_view_create (gboolean wide)
 	                                                   "weight", ITEMSTORE_WEIGHT,
 							   NULL);
 	gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+	g_hash_table_insert (ilv->priv->columns, "date", column);
 	gtk_tree_view_append_column (ilv->priv->treeview, column);
 	gtk_tree_view_column_set_sort_column_id(column, IS_TIME);
 	if (wide)
@@ -916,11 +907,11 @@ item_list_view_add_item (ItemListView *ilv, itemPtr item)
 void
 item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 {
-	gtk_tree_view_column_set_visible (ilv->priv->faviconColumn, enabled);
+	gtk_tree_view_column_set_visible (g_hash_table_lookup(ilv->priv->columns, "favicon"), enabled);
 
 	// In wide view we want to save vertical space and hide the state column
 	if (ilv->priv->wideView)
-		gtk_tree_view_column_set_visible (ilv->priv->stateColumn, !enabled);
+		gtk_tree_view_column_set_visible (g_hash_table_lookup(ilv->priv->columns, "state"), !enabled);
 }
 
 void
