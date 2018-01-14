@@ -201,8 +201,11 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
 	GTimeVal	now;
+	gint		next_update = 0;
+	gint		update_time_sources = 0;
 	gint		maxage = -1;
 	gint		syn_update = -1;
+	gint		ttl = subscription->updateState->timeToLive = -1;
 
 	/* 1. preprocessing */
 
@@ -227,6 +230,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		processing = TRUE;
 	}
 
+	
 	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
 
 	subscription->updateJob = NULL;
@@ -236,29 +240,34 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 
 	/* 3. set default update interval  */
+	update_state_set_cache_maxage (subscription->updateState, update_state_get_cache_maxage (result->updateState));
+	maxage = subscription->updateState->maxAgeMinutes;
+
 	if (0 < subscription->updateState->synFrequency &&
 		0 < subscription->updateState->synPeriod) {
 		syn_update = ceil ( (float) (subscription->updateState->synPeriod / subscription->updateState->synFrequency) );
 	} else if (0 < subscription->updateState->synPeriod) {
 		syn_update = subscription->updateState->synPeriod;
 	}
-	update_state_set_cache_maxage (subscription->updateState, update_state_get_cache_maxage (result->updateState));
-	maxage = subscription->updateState->maxAgeMinutes;
-
-	/* use either average of maxage and syn_update, or whichever (if any) is set*/
-	if (1 > maxage) {
-		maxage = syn_update;
-	} else if (0 < syn_update ) {
-		maxage = ceil ( (float) ((maxage + syn_update) / 2) );
+	if (0 < subscription->updateState->timeToLive) {
+		ttl = subscription->updateState->timeToLive;
 	}
 
-	/* enforce 5 minutes default minimum */
-	if (0 < maxage && 5 > maxage) {
-		maxage = 5;
+	if (0 < maxage    ) { update_time_sources++; next_update += maxage;     }
+	if (0 < syn_update) { update_time_sources++; next_update += syn_update; }
+	if (0 < ttl       ) { update_time_sources++; next_update += ttl;        }
+	
+	if (0 < update_time_sources) {
+		next_update = ceil ((float) (next_update / update_time_sources));
+
+		/* enforce a 5 minutes default minimum */
+		if (0 < next_update && 5 > next_update) {
+			next_update = 5;
+		}
 	}
 
-	debug1 (DEBUG_UPDATE, "The next suggested update time is in %d minutes.", maxage);
-	subscription_set_default_update_interval (subscription, maxage);
+	debug1 (DEBUG_UPDATE, "The next suggested update time is in %d minutes.", next_update);
+	subscription_set_default_update_interval (subscription, next_update);
 
 	/* 4. call favicon updating after subscription processing
 	      to ensure we have valid baseUrl for feed nodes... */

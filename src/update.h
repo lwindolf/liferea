@@ -83,6 +83,7 @@ typedef struct updateState {
 	gint		maxAgeMinutes;		/**< default update interval, greatest value sourced from HTTP and XML */
 	gint		synFrequency;		/**< syn:updateFrequency */
 	gint		synPeriod;		/**< syn:updatePeriod */
+	gint		timeToLive;		/**< ttl */
 } *updateStatePtr;
 
 /** structure describing a HTTP update request */
