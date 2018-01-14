@@ -81,6 +81,8 @@ typedef struct updateState {
 	gchar		*cookies;		/**< cookies to be used */	
 	gchar		*etag;			/**< ETag sent by the server */
 	gint		maxAgeMinutes;		/**< default update interval, greatest value sourced from HTTP and XML */
+	gint		synFrequency;		/**< syn:updateFrequency */
+	gint		synPeriod;		/**< syn:updatePeriod */
 } *updateStatePtr;
 
 /** structure describing a HTTP update request */

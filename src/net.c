@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include <libsoup/soup.h>
+#include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -119,7 +120,7 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 						}
 					}
 					if (0 < maxage) {
-						job->result->updateState->maxAgeMinutes = maxage / 60;
+						job->result->updateState->maxAgeMinutes = ceil ( (float) (maxage / 60));
 					}
 				}
 			}

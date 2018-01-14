@@ -20,6 +20,7 @@
 
 #include "subscription.h"
 
+#include <math.h>
 #include <string.h>
 
 #include "auth.h"
@@ -201,6 +202,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	gboolean	processing = FALSE;
 	GTimeVal	now;
 	gint		maxage = -1;
+	gint		syn_update = -1;
 
 	/* 1. preprocessing */
 
@@ -225,7 +227,6 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		processing = TRUE;
 	}
 
-	update_state_set_cache_maxage (subscription->updateState, update_state_get_cache_maxage (result->updateState));
 	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
 
 	subscription->updateJob = NULL;
@@ -235,13 +236,28 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 
 	/* 3. set default update interval  */
-	if (0 < update_state_get_cache_maxage (subscription->updateState)) {
-		maxage = update_state_get_cache_maxage (subscription->updateState);
-		/* enforce 5 minutes default minimum */
-		if (5 > maxage) {
-			maxage = 5;
-		}
+	if (0 < subscription->updateState->synFrequency &&
+		0 < subscription->updateState->synPeriod) {
+		syn_update = ceil ( (float) (subscription->updateState->synPeriod / subscription->updateState->synFrequency) );
+	} else if (0 < subscription->updateState->synPeriod) {
+		syn_update = subscription->updateState->synPeriod;
 	}
+	update_state_set_cache_maxage (subscription->updateState, update_state_get_cache_maxage (result->updateState));
+	maxage = subscription->updateState->maxAgeMinutes;
+
+	/* use either average of maxage and syn_update, or whichever (if any) is set*/
+	if (1 > maxage) {
+		maxage = syn_update;
+	} else if (0 < syn_update ) {
+		maxage = ceil ( (float) ((maxage + syn_update) / 2) );
+	}
+
+	/* enforce 5 minutes default minimum */
+	if (0 < maxage && 5 > maxage) {
+		maxage = 5;
+	}
+
+	debug1 (DEBUG_UPDATE, "The next suggested update time is in %d minutes.", maxage);
 	subscription_set_default_update_interval (subscription, maxage);
 
 	/* 4. call favicon updating after subscription processing
