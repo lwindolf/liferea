@@ -239,7 +239,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (processing)
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 
-	/* 3. set default update interval  */
+	/* 3. set default update interval */
 	update_state_set_cache_maxage (subscription->updateState, update_state_get_cache_maxage (result->updateState));
 	maxage = subscription->updateState->maxAgeMinutes;
 
@@ -258,12 +258,15 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (0 < ttl       ) { update_time_sources++; next_update += ttl;        }
 	
 	if (0 < update_time_sources) {
+		/* enforce a 5 minute minimum update interval.
+		   round up to nearest 5-minute block to coalesce updates (battery optimization). */
 		next_update = ceil ((float) (next_update / update_time_sources));
-
-		/* enforce a 5 minutes default minimum */
-		if (0 < next_update && 5 > next_update) {
+		next_update -= next_update % 5;
+		if (5 > next_update) {
 			next_update = 5;
 		}
+	} else {
+		next_update = -1;
 	}
 
 	debug1 (DEBUG_UPDATE, "The next suggested update time is in %d minutes.", next_update);
