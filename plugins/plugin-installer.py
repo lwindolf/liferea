@@ -115,7 +115,7 @@ class PluginBrowser(Gtk.Window):
             column.set_sort_column_id(i)
 
         self._categories = Gtk.ListStore(str)
-        for category in ["GUI", "Menu", "Notifications"]:
+        for category in ["All", "GUI", "Menu", "Notifications"]:
             self._categories.append([category])
 
         self._catcombo = Gtk.ComboBox.new_with_model(self._categories)
