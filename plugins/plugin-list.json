@@ -34,7 +34,7 @@
                           "name": "pip3",
                           "check":      ["pip3", "-V"],
                           "checkPkg":   ["pip3", "show"],
-                          "installPkg": ["pip3", "install"]
+                          "installPkg": ["pip3", "install", "--user"]
                       },
                       "packages" : [ "adblockparser" ]
                   }
