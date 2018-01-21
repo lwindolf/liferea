@@ -64,8 +64,7 @@ class AppActivatable(GObject.Object, Liferea.ShellActivatable):
 class PluginBrowser(Gtk.Window):
 
     def __init__(self):
-        Gtk.Window.__init__(self, title="Plugin Browser")
-
+        Gtk.Window.__init__(self, title="Plugin Installer")
 
         # FIXME: using safe XDG paths would be better
         self.target_dir = os.path.expanduser("~/.local/share/liferea/plugins/")
@@ -85,7 +84,8 @@ class PluginBrowser(Gtk.Window):
             try:
                 name = next(iter(ref))
                 installed = False
-                if os.path.isfile('%s%s.plugin' % (self.target_dir, ref[name]['module'])):
+                if(os.path.isfile('%s%s.plugin' % (self.target_dir, ref[name]['module'])) or
+                   os.path.isdir('%s%s' % (self.target_dir, ref[name]['module']))):
                    installed = True
                 if not 'icon' in ref[name]:
                    ref[name]['icon'] = 'libpeas-plugin'
@@ -101,6 +101,7 @@ class PluginBrowser(Gtk.Window):
         #creating the treeview, making it use the filter as a model, and adding the columns
         self.treeview = Gtk.TreeView.new_with_model(self.category_filter)
         self.treeview.connect("row-activated", self.on_row_activated)
+        self.treeview.get_selection().connect("changed", self.on_selection_changed)
         for i, column_title in enumerate(["Inst.", "Icon", "Name", "Category", "Description"]):
             if column_title == 'Inst.':
                 renderer = Gtk.CellRendererToggle()
@@ -124,13 +125,20 @@ class PluginBrowser(Gtk.Window):
         self._catcombo.add_attribute(renderer_text, "text", 0)
         self._catcombo.connect("changed", self.on_catcombo_changed)
         self._catlabel = Gtk.Label("Filter by category")
+        self._catcombo.set_active(0)
 
-        #setting up the layout, putting the treeview in a scrollwindow, and the buttons in a row
+        # Setting up the layout, putting the treeview in a scrollwindow, and the buttons in a row
         self.scrollable_treelist = Gtk.ScrolledWindow()
         self.scrollable_treelist.set_vexpand(True)
+
+        self._installButton = Gtk.Button.new_with_mnemonic("_Install")
+        self._installButton.connect("clicked", self.on_row_activated)
+        self._installButton.set_sensitive(False)
+
         self.grid.attach(self.scrollable_treelist, 0, 0, 8, 10)
         self.grid.attach_next_to(self._catlabel, self.scrollable_treelist, Gtk.PositionType.TOP, 1, 1)
         self.grid.attach_next_to(self._catcombo, self._catlabel, Gtk.PositionType.RIGHT, 2, 1)
+        self.grid.attach_next_to(self._installButton, self.scrollable_treelist, Gtk.PositionType.BOTTOM, 1, 1)
 
         self.scrollable_treelist.add(self.treeview)
 
@@ -160,7 +168,13 @@ class PluginBrowser(Gtk.Window):
             self.current_filter_category = None
         self.category_filter.refilter()
 
-    def on_row_activated(self, path, column, user_data):
+    def on_selection_changed(self, selection):
+        model, treeiter = selection.get_selected()
+        if treeiter != None:
+            print(model[treeiter][0])
+            self._installButton.set_sensitive(model[treeiter][0] == 0)
+
+    def on_row_activated(self, path=None, column=None, user_data=None):
         selection = self.treeview.get_selection()
         model, treeiter = selection.get_selected()
         if treeiter != None:
