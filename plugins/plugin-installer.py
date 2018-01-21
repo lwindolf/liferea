@@ -29,6 +29,8 @@ from gi.repository import GObject, Liferea, Gtk
 class AppActivatable(GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = "PluginBrowserAppActivatable"
 
+    SCHEMA_ID = "org.gnome.liferea.plugins"
+
     shell = GObject.property(type=Liferea.Shell)
 
     def __init__(self):
