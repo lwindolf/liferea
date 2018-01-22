@@ -23,13 +23,10 @@ import gi
 
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import Gtk
-from gi.repository import GObject, Liferea, Gtk
+from gi.repository import GObject, Liferea, Gtk, Gio
 
 class AppActivatable(GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = "PluginBrowserAppActivatable"
-
-    SCHEMA_ID = "org.gnome.liferea.plugins"
 
     shell = GObject.property(type=Liferea.Shell)
 
@@ -64,6 +61,7 @@ class AppActivatable(GObject.Object, Liferea.ShellActivatable):
         self._browser.show_all()
 
 class PluginBrowser(Gtk.Window):
+    SCHEMA_ID = "net.sf.liferea.plugins"
 
     def __init__(self):
         Gtk.Window.__init__(self, title="Plugin Installer")
@@ -173,7 +171,6 @@ class PluginBrowser(Gtk.Window):
     def on_selection_changed(self, selection):
         model, treeiter = selection.get_selected()
         if treeiter != None:
-            print(model[treeiter][0])
             self._installButton.set_sensitive(model[treeiter][0] == 0)
 
     def on_row_activated(self, path=None, column=None, user_data=None):
