@@ -100,7 +100,6 @@ class PluginBrowser(Gtk.Window):
 
         #creating the treeview, making it use the filter as a model, and adding the columns
         self.treeview = Gtk.TreeView.new_with_model(self.category_filter)
-        self.treeview.connect("row-activated", self.on_row_activated)
         self.treeview.get_selection().connect("changed", self.on_selection_changed)
         for i, column_title in enumerate(["Inst.", "Icon", "Name", "Category", "Description"]):
             if column_title == 'Inst.':
@@ -132,13 +131,19 @@ class PluginBrowser(Gtk.Window):
         self.scrollable_treelist.set_vexpand(True)
 
         self._installButton = Gtk.Button.new_with_mnemonic("_Install")
-        self._installButton.connect("clicked", self.on_row_activated)
+        self._installButton.connect("clicked", self.install)
         self._installButton.set_sensitive(False)
+
+        self._uninstallButton = Gtk.Button.new_with_mnemonic("_Uninstall")
+        self._uninstallButton.connect("clicked", self.uninstall)
+        self._uninstallButton.set_sensitive(False)
+
 
         self.grid.attach(self.scrollable_treelist, 0, 0, 8, 10)
         self.grid.attach_next_to(self._catlabel, self.scrollable_treelist, Gtk.PositionType.TOP, 1, 1)
         self.grid.attach_next_to(self._catcombo, self._catlabel, Gtk.PositionType.RIGHT, 2, 1)
         self.grid.attach_next_to(self._installButton, self.scrollable_treelist, Gtk.PositionType.BOTTOM, 1, 1)
+        self.grid.attach_next_to(self._uninstallButton, self._installButton, Gtk.PositionType.RIGHT, 1, 1)
 
         self.scrollable_treelist.add(self.treeview)
 
@@ -169,25 +174,42 @@ class PluginBrowser(Gtk.Window):
         self.category_filter.refilter()
 
     def on_selection_changed(self, selection):
-        model, treeiter = selection.get_selected()
+        self.update_buttons()
+
+    def update_buttons(self):
+        model, treeiter = self.treeview.get_selection().get_selected()
         if treeiter != None:
             self._installButton.set_sensitive(model[treeiter][0] == 0)
+            self._uninstallButton.set_sensitive(model[treeiter][0] != 0)
 
-    def on_row_activated(self, path=None, column=None, user_data=None):
+    def get_plugin_by_name(self, plugin):
+        plugin_info = None
+
+        # Get infos on selected plugin
+        for ref in self._plugin_list['plugins']:
+            if plugin == next(iter(ref)):
+                plugin_info = ref[plugin]
+
+        if plugin_info == None:
+            raise Exception("Fatal: Failed to get plugin infos from tree list!")
+
+        return plugin_info
+
+    def install(self, path=None, column=None, user_data=None):
         selection = self.treeview.get_selection()
         model, treeiter = selection.get_selected()
         if treeiter != None:
-            plugin = model[treeiter][2]
+            model[treeiter][0] = self.install_plugin(self.get_plugin_by_name(model[treeiter][2]))
 
-            # Get infos on selected plugin
-            for ref in self._plugin_list['plugins']:
-                if plugin == next(iter(ref)):
-                    model[treeiter][0] = self.install_plugin(ref[plugin])
-                    return
+        self.update_buttons()
 
-            if plugin_info == None:
-                print("Failed to get plugin infos for git fetch!")
-                return
+    def uninstall(self, path=None, column=None, user_data=None):
+        selection = self.treeview.get_selection()
+        model, treeiter = selection.get_selected()
+        if treeiter != None:
+            model[treeiter][0] = self.uninstall_plugin(self.get_plugin_by_name(model[treeiter][2]))
+
+        self.update_buttons()
 
     def show_message(self, message, error = False, buttons = Gtk.ButtonsType.CLOSE):
         dialog = Gtk.MessageDialog(self, Gtk.DialogFlags.DESTROY_WITH_PARENT, (Gtk.MessageType.ERROR if error else Gtk.MessageType.INFO), buttons, message)
@@ -317,4 +339,58 @@ class PluginBrowser(Gtk.Window):
 
         self.show_message("Plugin '%s' is now installed. Ensure to restart Liferea!" % plugin_info['module'])
         return True
+
+    def uninstall_plugin(self, plugin_info):
+        """Deletes all possible files and directories that might belong to the plugin"""
+        error = False
+
+        # Remove plugin from active-plugins
+        try:
+            settings = Gio.Settings.new(self.SCHEMA_ID)
+            current_plugins = settings.get_strv('active-plugins')
+            current_plugins.remove(plugin_info['module'])
+            settings.set_strv('active-plugins', current_plugins)
+        except:
+            print("Failed to disable plugin (%s)!" % sys.exc_info()[0])
+            error = True
+
+        # Drop plugin dir (for directory plugins)
+        src_dir = '%s/%s' % (self.target_dir, plugin_info['module'])
+        try:
+            if os.path.isdir(src_dir):
+                print("Deleting '%s'" % src_dir)
+                shutil.rmtree(src_dir)
+        except:
+            print("Failed to remove directory '%s' (%s)!" % (src_dir, sys.exc_info()[0]))
+            error = True
+
+        # Drop plugin source file (for single file plugins)
+        src_file = '%s/%s.py' % (self.target_dir, plugin_info['module'])
+        try:
+            if os.path.isfile(src_file):
+                print("Deleting '%s'" % src_file)
+                os.remove(src_file)
+        except:
+            print("Failed to remove .py file!")
+            error = True
+
+        # Drop plugin file
+        src_file = '%s/%s/%s.plugin' % (self.target_dir, plugin_info['module'], plugin_info['module'])
+        try:
+            if os.path.isfile(src_file):
+                print("Deleting '%s'" % src_file)
+                os.remove(src_file)
+        except:
+            print("Failed to remove .plugin file!")
+            error = True
+
+        # FIXME: Drop plugin schema files
+        #
+        # Removing schemas does not really work, as the schema files can have
+        # arbitrary names...
+
+        if error:
+            self.show_message("Sorry! Plugin removal failed!.", True)
+        else:
+            self.show_message("Plugin was removed. Please restart Liferea once for it to take full effect!.", False)
 
