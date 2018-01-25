@@ -81,6 +81,11 @@ enum {
 	LAST_SIGNAL
 };
 
+enum {
+	PROP_NONE,
+	PROP_RENDER_WIDGET
+};
+
 /* LifereaHtmlView toolbar callbacks */
 
 static gboolean
@@ -157,13 +162,40 @@ liferea_htmlview_finalize (GObject *object)
 }
 
 static void
+liferea_htmlview_get_property (GObject *gobject, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+	LifereaHtmlView *self = LIFEREA_HTMLVIEW(gobject);
+
+	switch (prop_id) {
+		case PROP_RENDER_WIDGET:
+			g_value_set_object (value, self->priv->renderWidget);
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+			break;
+	}
+}
+
+static void
 liferea_htmlview_class_init (LifereaHtmlViewClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
+	object_class->get_property = liferea_htmlview_get_property;
 	object_class->finalize = liferea_htmlview_finalize;
+
+	/* LifereaHtmlView:renderWidget: */
+	g_object_class_install_property (
+			object_class,
+			PROP_RENDER_WIDGET,
+			g_param_spec_object (
+				"renderwidget",
+				"GtkWidget",
+				"GtkWidget object",
+				GTK_TYPE_WIDGET,
+				G_PARAM_READABLE));
 	
 	liferea_htmlview_signals[STATUSBAR_CHANGED] = 
 		g_signal_new ("statusbar-changed", 
