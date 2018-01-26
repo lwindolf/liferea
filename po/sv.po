@@ -869,11 +869,11 @@ msgstr "Uppdaterar alla prenumerationer."
 
 #: ../src/ui/liferea_shell.c:910
 msgid "Mark All As _Read"
-msgstr "Markera alla som _lästa"
+msgstr "Märk alla som _lästa"
 
 #: ../src/ui/liferea_shell.c:910
 msgid "Marks read every item of every subscription."
-msgstr "Markerar alla artiklar i alla prenumerationer som lästa."
+msgstr "Märk alla artiklar i alla prenumerationer som lästa."
 
 #: ../src/ui/liferea_shell.c:912
 msgid "_Import Feed List..."
@@ -905,7 +905,7 @@ msgstr "Ta bort _alla artiklar"
 
 #: ../src/ui/liferea_shell.c:917
 msgid "Removes all items of the currently selected feed."
-msgstr "Tar bort alla artiklar i det för närvarande markerade flödet."
+msgstr "Tar bort alla artiklar i det för närvarande valda flödet."
 
 #: ../src/ui/liferea_shell.c:920
 msgid "_Item"
@@ -1087,13 +1087,13 @@ msgstr "Lägger till en ny nyhetskorg."
 
 #: ../src/ui/liferea_shell.c:978
 msgid "_Mark Items Read"
-msgstr "_Markera artiklar som lästa"
+msgstr "_Märk artiklar som lästa"
 
 #: ../src/ui/liferea_shell.c:978
 msgid ""
 "Marks all items of the selected feed list node / in the item list as read."
 msgstr ""
-"Markerar alla artiklar i den valda flödeslistnoden / i artikellistan som "
+"Märker alla artiklar i den valda flödeslistnoden / i artikellistan som "
 "lästa."
 
 #: ../src/ui/liferea_shell.c:980 ../src/ui/popup_menu.c:290
@@ -1105,8 +1105,8 @@ msgid ""
 "Updates the selected subscription or all subscriptions of the selected "
 "folder."
 msgstr ""
-"Uppdaterar den markerade prenumerationen eller alla prenumerationer i den "
-"markerade mappen."
+"Uppdaterar den valda prenumerationen eller alla prenumerationer i den "
+"valda mappen."
 
 #: ../src/ui/liferea_shell.c:985 ../src/ui/popup_menu.c:339
 msgid "_Properties"
@@ -1114,7 +1114,7 @@ msgstr "_Egenskaper"
 
 #: ../src/ui/liferea_shell.c:985
 msgid "Opens the property dialog for the selected subscription."
-msgstr "Öppnar egenskapsdialogen för den markerade prenumerationen."
+msgstr "Öppnar egenskapsdialogen för den valda prenumerationen."
 
 #: ../src/ui/liferea_shell.c:986
 msgid "_Remove"
@@ -1122,7 +1122,7 @@ msgstr "_Ta bort"
 
 #: ../src/ui/liferea_shell.c:986
 msgid "Removes the selected subscription."
-msgstr "Tar bort den markerade prenumerationen."
+msgstr "Tar bort den valda prenumerationen."
 
 #: ../src/ui/liferea_shell.c:990 ../src/ui/popup_menu.c:153
 msgid "Toggle _Read Status"
@@ -1130,7 +1130,7 @@ msgstr "Växla _lässtatus"
 
 #: ../src/ui/liferea_shell.c:990
 msgid "Toggles the read status of the selected item."
-msgstr "Växlar lässtatus för den markerade artikeln."
+msgstr "Växlar lässtatus för den valda artikeln."
 
 #: ../src/ui/liferea_shell.c:992 ../src/ui/popup_menu.c:154
 msgid "Toggle Item _Flag"
@@ -1138,7 +1138,7 @@ msgstr "Växla artikel_flagga"
 
 #: ../src/ui/liferea_shell.c:992
 msgid "Toggles the flag status of the selected item."
-msgstr "Växlar flaggstatus för den markerade artikeln."
+msgstr "Växlar flaggstatus för den valda artikeln."
 
 #: ../src/ui/liferea_shell.c:994
 msgid "R_emove"
@@ -1146,7 +1146,7 @@ msgstr "Ta _bort"
 
 #: ../src/ui/liferea_shell.c:994
 msgid "Removes the selected item."
-msgstr "Tar bort den markerade artikeln."
+msgstr "Tar bort den valda artikeln."
 
 #: ../src/ui/liferea_shell.c:996 ../src/ui/popup_menu.c:117
 msgid "Open In _Tab"
@@ -1212,7 +1212,7 @@ msgstr "Artikeln har ingen angiven länk!"
 #: ../src/ui/item_list_view.c:119 ../src/ui/item_list_view.c:986
 #: ../src/ui/item_list_view.c:1069 ../src/ui/item_list_view.c:1084
 msgid "No item has been selected"
-msgstr "Ingen artikel har markerats"
+msgstr "Ingen artikel har valts"
 
 #: ../src/ui/item_list_view.c:479
 msgid "*** No title ***"
@@ -1232,7 +1232,7 @@ msgstr "Datum"
 
 #: ../src/ui/item_list_view.c:973
 msgid "You must select a feed to delete its items!"
-msgstr "Du måste markera ett flöde för att ta bort dess artiklar!"
+msgstr "Du måste välja ett flöde för att ta bort dess artiklar!"
 
 #: ../src/ui/popup_menu.c:131
 msgid "Copy to News Bin"
@@ -1297,7 +1297,7 @@ msgstr "Sortera flöden"
 
 #: ../src/ui/popup_menu.c:327
 msgid "_Mark All As Read"
-msgstr "_Markera alla som lästa"
+msgstr "_Märk alla som lästa"
 
 #: ../src/ui/popup_menu.c:332
 msgid "_Rebuild"
@@ -1841,7 +1841,7 @@ msgstr "Inställningar för mappvisning"
 
 #: ../glade/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
-msgstr "_Visa artiklar i alla underflöden när en mapp är markerad."
+msgstr "_Visa artiklarna i alla underflöden när en mapp är vald."
 
 #: ../glade/prefs.ui.h:14
 msgid "_Hide read items."
@@ -2028,7 +2028,7 @@ msgstr "Uppdateringsintervall"
 
 #: ../glade/properties.ui.h:5
 msgid "_Use global default update interval."
-msgstr "_Använd globalt standardintervall för uppdatering."
+msgstr "_Använd global standardintervall för uppdatering."
 
 #: ../glade/properties.ui.h:6
 msgid "_Feed specific update interval of"
@@ -2062,7 +2062,7 @@ msgid ""
 "exits. Marked items are always saved to the cache."
 msgstr ""
 "Cacheinställningen bestämmer om flödenas innehåll ska sparas när Liferea "
-"avslutas. Markerade artiklar sparas alltid till cachen."
+"avslutas. Märkta artiklar sparas alltid till cachen."
 
 #: ../glade/properties.ui.h:24
 msgid "_Default cache settings"
@@ -2100,7 +2100,7 @@ msgstr "Hämta _automatiskt alla bilagor för detta flöde."
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Läs a_utomatiskt in artikellänk i konfigurerad webbläsare när artiklar "
-"markeras."
+"väljs."
 
 #: ../glade/properties.ui.h:37
 msgid "Ignore _comment feeds for this subscription."
@@ -2108,11 +2108,11 @@ msgstr "Ignorera _kommentarflöden för denna prenumeration."
 
 #: ../glade/properties.ui.h:38
 msgid "_Mark downloaded items as read."
-msgstr "_Markera hämtade artiklar som lästa."
+msgstr "_Märk hämtade artiklar som lästa."
 
 #: ../glade/properties.ui.h:39
 msgid "Extract full content from HTML5 and Google AMP"
-msgstr ""
+msgstr "Extrahera fullt innehåll från HTML5 och Google AMP"
 
 #: ../glade/properties.ui.h:40
 msgid "Advanced"
