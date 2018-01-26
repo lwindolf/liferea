@@ -12,12 +12,6 @@
                   "source"      : "ExpatPaul/liferea-plugins",
                   "description" : "Configurable feed notifier. Needs to be configured with regex filters in ~/.local/share/liferea/plugins/feedalerts/feedalerts.conf"
      }},
-     { "Shades": 
-                { "module"      : "shades",
-                  "category"    : "GUI",
-                  "source"      : "lwindolf/liferea-plugin-studio",
-                  "description" : "Substitute bright/white background colors with a darker background color in Web view."
-     }},
      { "Webkit Settings": 
                 { "module"      : "webkit-setting",
                   "category"    : "Advanced",
