@@ -2112,7 +2112,7 @@ msgstr "_Märk hämtade artiklar som lästa."
 
 #: ../glade/properties.ui.h:39
 msgid "Extract full content from HTML5 and Google AMP"
-msgstr "Extrahera fullt innehåll från HTML5 och Google AMP"
+msgstr "Extrahera hela innehållet från HTML5 och Google AMP"
 
 #: ../glade/properties.ui.h:40
 msgid "Advanced"
