@@ -9,6 +9,8 @@ To be released
 	* #583: Add transmission-gtk and aria2 as download tool options
 	  (Daniel Aleksandersen)
 
+	* #594: Update of Polish default feed list
+	  (wmyrda)
 	* #584: Fixes broken OPML feed list entries
 	  (Daniel Aleksandersen)
 	* #584: Added Norwegian feed list

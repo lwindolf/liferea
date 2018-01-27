@@ -4,15 +4,20 @@
     <title>Przykładowa lista subskrypcji Liferea</title>
   </head>
   <body>
-    <outline text="Przykładowe Subskrypcje">
-      <outline text="polskie">
-        <outline text="7thGuard.net" htmlUrl="http://www.7thguard.net/" xmlUrl="http://rss.7thguard.net/7thguard.xml" />
-        <outline text="Linux.pl" htmlUrl="http://linux.pl/" xmlUrl="http://www.linux.pl/rss.php" />
-      <outline text="Hacking.pl" htmlUrl="http://hacking.pl/" xmlUrl="http://rss.hacking.pl/" />
-      </outline>
+  <outline text="Przykładowe Subskrypcje">
+    <outline text="Wiadomości IT">
+      <outline text="Benchmark.pl" htmlUrl="http://www.benchmark.pl/" xmlUrl="http://www.benchmark.pl/rss/aktualnosci-pliki.xml" />
+      <outline text="dobreprogramy" htmlUrl="https://www.dobreprogramy.pl/" xmlUrl="http://feeds.feedburner.com/dobreprogramy/Aktualnosci?format=xml" />
+      <outline text="Dziennik Internautów" htmlUrl="http://di.com.pl/" xmlUrl="http://feeds.feedburner.com/glowny-di?format=xml" />
+      <outline text="TwojePC.pl" htmlUrl="https://twojepc.pl/" xmlUrl="https://twojepc.pl/news_rss.php" />
+    </outline>
+    <outline text="Bezpieczeństwo IT"> 
+      <outline text="Sekurak" htmlUrl="https://sekurak.pl/" xmlUrl="http://feeds.feedburner.com/Sekurak?format=xml" />
+      <outline text="Niebezpiecznik.pl" htmlUrl="https://niebezpiecznik.pl/" xmlUrl="http://feeds.feedburner.com/niebezpiecznik?format=xml" />
+    </outline>
 
-      <!-- lets keep this English block in sync over all feed lists! -->
-      <outline text="międzynarodowe">
+  <!-- lets keep this English block in sync over all feed lists! -->
+    <outline text="międzynarodowe">
 		<outline text="News">		<!-- translate this title for localized feed list -->
 			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
 			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="http://rss.slashdot.org/Slashdot/slashdot" />
