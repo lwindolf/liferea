@@ -1,0 +1,12 @@
+[Plugin]
+Module=headerbar
+Loader=python3
+IAge=2
+Name=Header Bar
+Version=0.1
+Description=Get a GNOME style header bar for Liferea
+Authors=Mozbugbox <mozbugbox@yahoo.com.au>
+Copyright=Copyright © 2014-2015 Mozbugbox <mozbugbox@yahoo.com.au>
+Website=http://lzone.de/liferea/
+Help=http://lzone.de/liferea/
+
