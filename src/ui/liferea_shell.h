@@ -2,7 +2,7 @@
  * @file liferea_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -81,10 +81,11 @@ GtkWidget * liferea_shell_lookup (const gchar *name);
  * liferea_shell_create: (skip)
  * @app:	                the GtkApplication to attach the main window to
  * @overrideWindowState:	optional parameter for window state (or NULL)
+ * @pluginsDisabled		1 if plugins are not to be loaded
  *
  * Set up the Liferea main window.
  */
-void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState);
+void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled);
 
 /**
  * liferea_shell_destroy: (skip)

@@ -1208,7 +1208,7 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 }
 
 void
-liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
+liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
@@ -1389,11 +1389,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState)
 	}
 
 	/* 12. Setup shell plugins */
+	if(0 == pluginsDisabled) {
+		shell->priv->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
+				                     LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
 
-	shell->priv->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
-		                             LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
-
-	liferea_plugins_engine_set_default_signals (shell->priv->extensions, shell);
+		liferea_plugins_engine_set_default_signals (shell->priv->extensions, shell);
+	}
 
 	/* 14. Rebuild search folders if needed */
 	if (searchFolderRebuild)

@@ -8,6 +8,8 @@ To be released
 	  (Daniel Aleksandersen)
 	* #583: Add transmission-gtk and aria2 as download tool options
 	  (Daniel Aleksandersen)
+	* #495: New command line option --disable-plugins (-p) to start
+	  with all plugins disabled.
 
 	* #594: Update of Polish default feed list
 	  (wmyrda)
