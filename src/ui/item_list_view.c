@@ -296,7 +296,7 @@ static GtkTreeStore *
 item_list_view_create_tree_store (void)
 {
 	return gtk_tree_store_new (ITEMSTORE_LEN,
-	                    G_TYPE_UINT64,	/* IS_TIME */
+	                    G_TYPE_INT64,	/* IS_TIME */
 	                    G_TYPE_STRING, 	/* IS_TIME_STR */
 	                    G_TYPE_STRING,	/* IS_LABEL */
 	                    G_TYPE_ICON,	/* IS_STATEICON */
@@ -885,7 +885,7 @@ item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstor
 	}
 
 	gtk_tree_store_set (itemstore, iter,
-		                       IS_TIME, (guint64)item->time,
+		                       IS_TIME, item->time,
 		                       IS_NR, item->id,
 				       IS_PARENT, node,
 		                       IS_FAVICON, node_get_icon (node),
