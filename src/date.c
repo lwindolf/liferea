@@ -846,162 +846,147 @@ date_format (time_t date, const gchar *date_format)
 
 /* date parsing methods */
 
-time_t
+gint64
 date_parse_ISO8601 (const gchar *date)
 {
-	struct tm	tm;
-	time_t		t, t2, offset = 0;
-	gboolean	success = FALSE;
-	gchar *pos;
+	GTimeVal 	timeval;
+	GDateTime 	*datetime = NULL;
+	gboolean 	result;
+	guint64 	year, month, day;
+	gint64 		t = 0;
+	gchar		*pos, *next, *ascii_date = NULL;
 	
 	g_assert (date != NULL);
-	
-	memset (&tm, 0, sizeof (struct tm));
 	
 	/* we expect at least something like "2003-08-07T15:28:19" and
 	   don't require the second fractions and the timezone info
 
 	   the most specific format:   YYYY-MM-DDThh:mm:ss.sTZD
 	 */
-	 
-	/* full specified variant */
-	pos = strptime (date, "%t%Y-%m-%dT%H:%M%t", &tm);
-	if (pos) {
-		/* Parse seconds */
-		if (*pos == ':')
-			pos++;
-		if (isdigit (pos[0]) && !isdigit (pos[1])) {
-			tm.tm_sec = pos[0] - '0';
-			pos++;
-		} else if (isdigit (pos[0]) && isdigit (pos[1])) {
-			tm.tm_sec = 10*(pos[0]-'0') + pos[1] - '0';
-			pos +=2;
-		}
-		/* Parse second fractions */
-		if (*pos == '.') {
-			while (*pos == '.' || isdigit (pos[0]))
-				pos++;
-		}
-		/* Parse timezone */
-		if (*pos == 'Z')
-			offset = 0;
-		else if ((*pos == '+' || *pos == '-') && isdigit (pos[1]) && isdigit (pos[2]) && strlen (pos) >= 3) {
-			offset = (10*(pos[1] - '0') + (pos[2] - '0')) * 60 * 60;
-			
-			if (pos[3] == ':' && isdigit (pos[4]) && isdigit (pos[5]))
-				offset +=  (10*(pos[4] - '0') + (pos[5] - '0')) * 60;
-			else if (isdigit (pos[3]) && isdigit (pos[4]))
-				offset +=  (10*(pos[3] - '0') + (pos[4] - '0')) * 60;
-			
-			offset *= (pos[0] == '+') ? 1 : -1;
 
-		}
-		success = TRUE;
+	/* full specified variant */
+	result = g_time_val_from_iso8601 (date, &timeval);
+	if (result)
+		return timeval.tv_sec;
+
+
 	/* only date */
-	} else if (NULL != strptime (date, "%t%Y-%m-%d", &tm)) {
-		success = TRUE;
-	}
+	ascii_date = g_str_to_ascii (date, "C");
+	ascii_date = g_strstrip (ascii_date);
+
+	/* Parsing year */
+	year = g_ascii_strtoull (ascii_date, &next, 10);
+	if ((*next != '-') || (next == ascii_date))
+		goto parsing_failed;
+	pos = next + 1;
+
+	/* Parsing month */
+	month = g_ascii_strtoull (pos, &next, 10);
+	if ((*next != '-') || (next == pos))
+		goto parsing_failed;
+	pos = next + 1;
+
+	/* Parsing day */
+	day = g_ascii_strtoull (pos, &next, 10);
+	if ((*next != '\0') || (next == pos))
+		goto parsing_failed;
+
 	/* there were others combinations too... */
 
-	if (success) {
-		if ((time_t)(-1) != (t = mktime (&tm))) {
-			/* Correct for the local timezone*/
-			struct tm tmp_tm;
-			
-			t = t - offset;
-			gmtime_r (&t, &tmp_tm);
-			t2 = mktime (&tmp_tm);
-			t = t - (t2 - t);
-			
-			return t;
-		} else {
-			debug0 (DEBUG_PARSING, "Internal error! time conversion error! mktime failed!");
-		}
-	} else {
-		debug0 (DEBUG_PARSING, "Invalid ISO8601 date format! Ignoring <dc:date> information!");
+	datetime = g_date_time_new_utc (year, month, day, 0,0,0);
+	if (datetime) {
+		t = g_date_time_to_unix (datetime);
+		g_date_time_unref (datetime);
 	}
 	
-	return 0;
+parsing_failed:
+	if (!t)
+		debug0 (DEBUG_PARSING, "Invalid ISO8601 date format! Ignoring <dc:date> information!");
+	g_free (ascii_date);
+	return t;
 }
 
 /* in theory, we'd need only the RFC822 timezones here
    in practice, feeds also use other timezones...        */
 static struct {
 	const char *name;
-	int offset;
+	const char *offset;
 } tz_offsets [] = {
-	{ "IDLW", -1200 },
-	{ "HAST", -1000 },
-	{ "AKST", -900 },
-	{ "AKDT", -800 },
-	{ "WESZ", 100 },
-	{ "WEST", 100 },
-	{ "WEDT", 100 },
-	{ "MEST", 200 },
-	{ "MESZ", 200 },
-	{ "CEST", 200 },
-	{ "CEDT", 200 },
-	{ "EEST", 300 },
-	{ "EEDT", 300 },
-	{ "IRST", 430 },
-	{ "CNST", 800 },
-	{ "ACST", 930 },
-	{ "ACDT", 1030 },
-	{ "AEST", 1000 },
-	{ "AEDT", 1100 },
-	{ "IDLE", 1200 },
-	{ "NZST", 1200 },
-	{ "NZDT", 1300 },
-	{ "GMT", 0 },
-	{ "EST", -500 },
-	{ "EDT", -400 },
-	{ "CST", -600 },
-	{ "CDT", -500 },
-	{ "MST", -700 },
-	{ "MDT", -600 },
-	{ "PST", -800 },
-	{ "PDT", -700 },
-	{ "HDT", -900 },
-	{ "YST", -900 },
-	{ "YDT", -800 },
-	{ "AST", -400 },
-	{ "ADT", -300 },
-	{ "VST", -430 },
-	{ "NST", -330 },
-	{ "NDT", -230 },
-	{ "WET", 0 },
-	{ "WEZ", 0 },
-	{ "IST", 100 },
-	{ "CET", 100 },
-	{ "MEZ", 100 },
-	{ "EET", 200 },
-	{ "MSK", 300 },
-	{ "MSD", 400 },
-	{ "IRT", 330 },
-	{ "IST", 530 },
-	{ "ICT", 700 },
-	{ "JST", 900 },
-	{ "NFT", 1130 },
-	{ "UT", 0 },
-	{ "PT", -800 },
-	{ "BT", 300 },
-	{ "Z", 0 },
-	{ "A", -100 },
-	{ "M", -1200 },
-	{ "N", 100 },
-	{ "Y", 1200 }
+	{ "IDLW","-1200" },
+	{ "HAST","-1000" },
+	{ "AKST","-0900" },
+	{ "AKDT","-0800" },
+	{ "WESZ","+0100" },
+	{ "WEST","+0100" },
+	{ "WEDT","+0100" },
+	{ "MEST","+0200" },
+	{ "MESZ","+0200" },
+	{ "CEST","+0200" },
+	{ "CEDT","+0200" },
+	{ "EEST","+0300" },
+	{ "EEDT","+0300" },
+	{ "IRST","+0430" },
+	{ "CNST","+0800" },
+	{ "ACST","+0930" },
+	{ "ACDT","+1030" },
+	{ "AEST","+1000" },
+	{ "AEDT","+1100" },
+	{ "IDLE","+1200" },
+	{ "NZST","+1200" },
+	{ "NZDT","+1300" },
+	{ "GMT", "+00" },
+	{ "EST", "-0500" },
+	{ "EDT", "-0400" },
+	{ "CST", "-0600" },
+	{ "CDT", "-0500" },
+	{ "MST", "-0700" },
+	{ "MDT", "-0600" },
+	{ "PST", "-0800" },
+	{ "PDT", "-0700" },
+	{ "HDT", "-0900" },
+	{ "YST", "-0900" },
+	{ "YDT", "-0800" },
+	{ "AST", "-0400" },
+	{ "ADT", "-0300" },
+	{ "VST", "-0430" },
+	{ "NST", "-0330" },
+	{ "NDT", "-0230" },
+	{ "WET", "+00" },
+	{ "WEZ", "+00" },
+	{ "IST", "+0100" },
+	{ "CET", "+0100" },
+	{ "MEZ", "+0100" },
+	{ "EET", "+0200" },
+	{ "MSK", "+0300" },
+	{ "MSD", "+0400" },
+	{ "IRT", "+0330" },
+	{ "IST", "+0530" },
+	{ "ICT", "+0700" },
+	{ "JST", "+0900" },
+	{ "NFT", "+1130" },
+	{ "UT", "+00" },
+	{ "PT", "-0800" },
+	{ "BT", "+0300" },
+	{ "Z", "+00" },
+	{ "A", "-0100" },
+	{ "M", "-1200" },
+	{ "N", "+0100" },
+	{ "Y", "+1200" }
 };
 
-/** @returns timezone offset in seconds */
-static time_t
+/** date_parse_rfc822_tz:
+ * @token: String representing the timezone.
+ *
+ * Returns: (transfer full): a GTimeZone to be freed by g_time_zone_unref
+ */
+static GTimeZone *
 date_parse_rfc822_tz (char *token)
 {
-	int offset = 0;
 	const char *inptr = token;
 	int num_timezones = sizeof (tz_offsets) / sizeof ((tz_offsets)[0]);
 
 	if (*inptr == '+' || *inptr == '-') {
-		offset = atoi (inptr);
+		return g_time_zone_new (inptr);
 	} else {
 		int t;
 
@@ -1009,25 +994,35 @@ date_parse_rfc822_tz (char *token)
 			inptr++;
 
 		for (t = 0; t < num_timezones; t++)
-			if (!strncmp (inptr, tz_offsets[t].name, strlen (tz_offsets[t].name))) {
-				offset = tz_offsets[t].offset;
-				break;
-			}
+			if (!strncmp (inptr, tz_offsets[t].name, strlen (tz_offsets[t].name)))
+				return g_time_zone_new (tz_offsets[t].offset);
 	}
 	
-	return 60 * ((offset / 100) * 60 + (offset % 100));
+	return g_time_zone_new_utc ();
 }
 
-time_t
+static const gchar * rfc822_months[] = { "Jan", "Feb", "Mar", "Apr", "May",
+	     "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+GDateMonth
+date_parse_month (const gchar *str)
+{
+	int i;
+	for (i = 0;i < 12;i++) {
+		if (!g_ascii_strncasecmp (str, rfc822_months[i], 3))
+			return i + 1;
+	}
+	return 0;
+}
+
+gint64
 date_parse_RFC822 (const gchar *date)
 {
-	struct tm	tm;
-	time_t		t, t2;
-	char 		*oldlocale;
-	char		*pos;
-	gboolean	success = FALSE;
-
-	memset (&tm, 0, sizeof (struct tm));
+	guint64 	day, month, year, hour, minute, second = 0;
+	GTimeZone	*tz = NULL;
+	GDateTime 	*datetime = NULL;
+	gint64		t = 0;
+	gchar		*pos, *next, *ascii_date = NULL;
 
 	/* we expect at least something like "03 Dec 12 01:38:34" 
 	   and don't require a day of week or the timezone
@@ -1040,45 +1035,76 @@ date_parse_RFC822 (const gchar *date)
 	if (pos)
 		date = ++pos;
 
-	/* we expect English month names, so we set the locale */
-	oldlocale = g_strdup (setlocale (LC_TIME, NULL));
-	setlocale (LC_TIME, "C");
-	
-	/* standard format with seconds and 4 digit year */
-	if (NULL != (pos = strptime ((const char *)date, " %d %b %Y %T", &tm)) && tm.tm_year > 0)
-		success = TRUE;
-	/* non-standard format without seconds and 4 digit year */
-	else if (NULL != (pos = strptime ((const char *)date, " %d %b %Y %H:%M", &tm)) && tm.tm_year > 0)
-		success = TRUE;
-	/* non-standard format with seconds and 2 digit year */
-	else if (NULL != (pos = strptime ((const char *)date, " %d %b %y %T", &tm)))
-		success = TRUE;
-	/* non-standard format without seconds 2 digit year */
-	else if (NULL != (pos = strptime ((const char *)date, " %d %b %y %H:%M", &tm)))
-		success = TRUE;
-	
+	ascii_date = g_str_to_ascii (date, "C");
+
+	/* Parsing day */
+	day = g_ascii_strtoull (ascii_date, &next, 10);
+	if ((*next == '\0') || (next == ascii_date))
+		goto parsing_failed;
+	pos = next;
+
+	/* Parsing month */
+	while (pos && *pos != '\0' && isspace ((int)*pos))       /* skip whitespaces before month */
+		pos++;
+	if (strlen (pos) < 3)
+		goto parsing_failed;
+	month = date_parse_month (pos);
+	pos += 3;
+
+	/* Parsing year */
+	year = g_ascii_strtoull (pos, &next, 10);
+	if ((*next == '\0') || (next == pos))
+		goto parsing_failed;
+	if (year < 100) {
+		/* If year is 2 digits, years after 68 are in 20th century (strptime convention) */
+		if (year > 68)
+			year += 1900;
+		else
+			year += 2000;
+	}
+	pos = next;
+
+	/* Parsing hour */
+	hour = g_ascii_strtoull (pos, &next, 10);
+	if ((next == pos) || (*next != ':'))
+		goto parsing_failed;
+	pos = next + 1;
+
+	/* Parsing minute */
+	minute = g_ascii_strtoull (pos, &next, 10);
+	if (next == pos)
+		goto parsing_failed;
+
+	/* Optional second */
+	if (*next == ':') {
+		pos = next + 1;
+		second = g_ascii_strtoull (pos, &next, 10);
+		if (next == pos)
+			goto parsing_failed;
+	}
+	pos = next;
+
+	/* Optional Timezone */
 	while (pos && *pos != '\0' && isspace ((int)*pos))       /* skip whitespaces before timezone */
 		pos++;
-	
-	if (oldlocale) {
-		setlocale (LC_TIME, oldlocale);	/* and reset it again */
-		g_free (oldlocale);
-	}
-	
-	if (success) {
-		if ((time_t)(-1) != (t = mktime (&tm))) {
-			/* GMT time, with no daylight savings time
-			   correction. (Usually, there is no daylight savings
-			   time since the input is GMT.) */
-			t = t - date_parse_rfc822_tz (pos);
-			t2 = mktime (gmtime(&t));
-			t = t - (t2 - t);
-			return t;
-		} else {
-			debug0 (DEBUG_PARSING, "internal error! time conversion error! mktime failed!");
-		}
-	}
-	
-	return 0;
-}
+	if (*pos != '\0')
+		tz = date_parse_rfc822_tz (pos);
 
+	if (!tz)
+		datetime = g_date_time_new_utc (year, month, day, hour, minute, second);
+	else {
+		datetime = g_date_time_new (tz, year, month, day, hour, minute, second);
+		g_time_zone_unref (tz);
+	}
+
+	if (datetime) {
+		t = g_date_time_to_unix (datetime);
+		g_date_time_unref (datetime);
+	}
+	
+parsing_failed:
+	if (!t)
+		debug0 (DEBUG_PARSING, "Invalid RFC822 date !");
+	g_free (ascii_date);
+	return t;
+}
