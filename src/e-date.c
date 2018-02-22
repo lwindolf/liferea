@@ -22,12 +22,8 @@
  * 02111-1307, USA.
  */
 
-#include <config.h>
-
 #include <glib.h>
 #include <glib/gi18n.h>
-
-#include <string.h>
 
 #include "e-date.h"
 
@@ -50,83 +46,47 @@
  * there isn't a stray space.
  **/
 
-static size_t e_strftime_fix_am_pm(char *s, size_t max, const char *fmt, const struct tm *tm)
+gchar *
+e_utf8_strftime_fix_am_pm (const char *fmt, const GDateTime *tm)
 {
-	char buf[10];
+	gchar *buf;
 	char *sp;
 	char *ffmt;
-	size_t ret;
+	gchar *datestr;
 
-	if (strstr(fmt, "%p")==NULL && strstr(fmt, "%P")==NULL) {
+	if (g_strstr_len (fmt, -1, "%p")==NULL && g_strstr_len (fmt, -1, "%P")==NULL) {
 		/* No AM/PM involved - can use the fmt string directly */
-		ret=strftime(s, max, fmt, tm);
+		datestr = g_date_time_format (tm, fmt);
 	} else {
 		/* Get the AM/PM symbol from the locale */
-		strftime (buf, 10, "%p", tm);
+		buf = g_date_time_format (tm, "%p");
 
-		if (buf[0]) {
+		if (buf && buf[0]) {
 			/**
 			 * AM/PM have been defined in the locale
 			 * so we can use the fmt string directly
 			 **/
-			ret=strftime(s, max, fmt, tm);
+			datestr = g_date_time_format (tm, fmt);
 		} else {
 			/**
 			 * No AM/PM defined by locale
 			 * must change to 24 hour clock
 			 **/
 			ffmt=g_strdup(fmt);
-			for (sp=ffmt; (sp=strstr(sp, "%l")); sp++) {
+			for (sp=ffmt; (sp = g_strstr_len (sp, -1, "%l")); sp++) {
 				/**
 				 * Maybe this should be 'k', but I have never
 				 * seen a 24 clock actually use that format
 				 **/
 				sp[1]='H';
 			}
-			for (sp=ffmt; (sp=strstr(sp, "%I")); sp++) {
+			for (sp=ffmt; (sp=g_strstr_len (sp, -1, "%I")); sp++) {
 				sp[1]='H';
 			}
-			ret=strftime(s, max, ffmt, tm);
+			datestr = g_date_time_format (tm, ffmt);
 			g_free(ffmt);
 		}
+		g_free (buf);
 	}
-	return(ret);
+	return datestr;
 }
-
-size_t
-e_utf8_strftime_fix_am_pm(char *s, size_t max, const char *fmt, const struct tm *tm)
-{
-	size_t sz, ret;
-	char *locale_fmt, *buf;
-
-	locale_fmt = g_locale_from_utf8(fmt, -1, NULL, &sz, NULL);
-	if (!locale_fmt)
-		return 0;
-
-	ret = e_strftime_fix_am_pm(s, max, locale_fmt, tm);
-	if (!ret) {
-		g_free (locale_fmt);
-		return 0;
-	}
-
-	buf = g_locale_to_utf8(s, ret, NULL, &sz, NULL);
-	if (!buf) {
-		g_free (locale_fmt);
-		return 0;
-	}
-
-	if (sz >= max) {
-		char *tmp = buf + max - 1;
-		tmp = g_utf8_find_prev_char(buf, tmp);
-		if (tmp)
-			sz = tmp - buf;
-		else
-			sz = 0;
-	}
-	memcpy(s, buf, sz);
-	s[sz] = '\0';
-	g_free(locale_fmt);
-	g_free(buf);
-	return sz;
-}
-

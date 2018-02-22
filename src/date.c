@@ -34,30 +34,19 @@
 
 #include "date.h"
 
-#include <config.h>
-#include <locale.h>
-#include <ctype.h>
 #include <string.h>
 
 #include "common.h"
 #include "debug.h"
 #include "e-date.h"
 
-#if defined (G_OS_WIN32) && !defined (HAVE_LOCALTIME_R)
-#define localtime_r(t,o) localtime_s (o,t)
-#endif
-
-#define	TIMESTRLEN	256
-
 /* date formatting methods */
 
 /* This function is originally from the Evolution 2.6.2 code (e-cell-date.c) */
 static gchar *
-date_format_nice (time_t date)
+date_format_nice (gint64 date)
 {
-	time_t nowdate = time(NULL);
-	time_t yesdate;
-	struct tm then, now, yesterday;
+	GDateTime *then, *now, *yesterday;
 	gchar *temp, *buf;
 	gboolean done = FALSE;
 	
@@ -65,10 +54,8 @@ date_format_nice (time_t date)
 		return g_strdup ("");
 	}
 	
-	buf = g_new0(gchar, TIMESTRLEN + 1);
-
-	localtime_r (&date, &then);
-	localtime_r (&nowdate, &now);
+	then = g_date_time_new_from_unix_local (date);
+	now = g_date_time_new_now_local ();
 
 /*	if (nowdate - date < 60 * 60 * 8 && nowdate > date) {
 		e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("%l:%M %p"), &then);
@@ -76,47 +63,42 @@ date_format_nice (time_t date)
 	}*/
 
 	if (!done) {
-		if (then.tm_mday == now.tm_mday &&
-		    then.tm_mon == now.tm_mon &&
-		    then.tm_year == now.tm_year) {
+		if (g_date_time_get_day_of_year (then) == g_date_time_get_day_of_year (now) &&
+		    g_date_time_get_year (then) == g_date_time_get_year (now)) {
 		    	/* translation hint: date format for today, reorder format codes as necessary */
-			e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("Today %l:%M %p"), &then);
+			buf = e_utf8_strftime_fix_am_pm (_("Today %l:%M %p"), then);
 			done = TRUE;
 		}
 	}
 	if (!done) {
-		yesdate = nowdate - 60 * 60 * 24;
-		localtime_r (&yesdate, &yesterday);
-		if (then.tm_mday == yesterday.tm_mday &&
-		    then.tm_mon == yesterday.tm_mon &&
-		    then.tm_year == yesterday.tm_year) {
+		yesterday = g_date_time_add_days (now, -1);
+		if (g_date_time_get_day_of_year (then) == g_date_time_get_day_of_year (yesterday) &&
+		    g_date_time_get_year (then) == g_date_time_get_year (yesterday)) {
 		    	/* translation hint: date format for yesterday, reorder format codes as necessary */
-			e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("Yesterday %l:%M %p"), &then);
+			buf = e_utf8_strftime_fix_am_pm (_("Yesterday %l:%M %p"), then);
 			done = TRUE;
 		}
+		g_date_time_unref (yesterday);
 	}
 	if (!done) {
-		int i;
-		for (i = 2; i < 7; i++) {
-			yesdate = nowdate - 60 * 60 * 24 * i;
-			localtime_r (&yesdate, &yesterday);
-			if (then.tm_mday == yesterday.tm_mday &&
-			    then.tm_mon == yesterday.tm_mon &&
-			    then.tm_year == yesterday.tm_year) {
-			    	/* translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary */
-				e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("%a %l:%M %p"), &then);
-				done = TRUE;
-				break;
-			}
+		yesterday = g_date_time_add_days (now, -6);
+		if ((g_date_time_compare (now, then) > 0) &&
+		    (g_date_time_compare (then, yesterday) > 0 ||
+		     (g_date_time_get_day_of_year (then) == g_date_time_get_day_of_year (yesterday) &&
+		      g_date_time_get_year (then) == g_date_time_get_year (yesterday)))) {
+			/* translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary */
+			buf = e_utf8_strftime_fix_am_pm (_("%a %l:%M %p"), then);
+			done = TRUE;
 		}
+		g_date_time_unref (yesterday);
 	}
 	if (!done) {
-		if (then.tm_year == now.tm_year) {
+		if (g_date_time_get_year (then) == g_date_time_get_year (now)) {
 			/* translation hint: date format for dates older than a week but from this year, reorder format codes as necessary */
-			e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("%b %d %l:%M %p"), &then);
+			buf = e_utf8_strftime_fix_am_pm (_("%b %d %l:%M %p"), then);
 		} else {
 			/* translation hint: date format for dates from the last years, reorder format codes as necessary */
-			e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("%b %d %Y"), &then);
+			buf = e_utf8_strftime_fix_am_pm (_("%b %d %Y"), then);
 		}
 	}
 
@@ -129,20 +111,19 @@ date_format_nice (time_t date)
 }
 
 gchar *
-date_format (time_t date, const gchar *date_format)
+date_format (gint64 date, const gchar *date_format)
 {
 	gchar		*result;
-	struct tm	date_tm;
+	GDateTime 	*date_tm;
 	
 	if (date == 0) {
 		return g_strdup ("");
 	}
 
 	if (date_format) {
-		localtime_r (&date, &date_tm);
-	
-		result = g_new0 (gchar, TIMESTRLEN);
-		e_utf8_strftime_fix_am_pm (result, TIMESTRLEN, date_format, &date_tm);
+		date_tm = g_date_time_new_from_unix_local (date);
+		result = e_utf8_strftime_fix_am_pm (date_format, date_tm);
+		g_date_time_unref (date_tm);
 	} else {
 		result = date_format_nice (date);
 	}
@@ -350,7 +331,7 @@ date_parse_RFC822 (const gchar *date)
 	pos = next;
 
 	/* Parsing month */
-	while (pos && *pos != '\0' && isspace ((int)*pos))       /* skip whitespaces before month */
+	while (pos && *pos != '\0' && g_ascii_isspace (*pos))       /* skip whitespaces before month */
 		pos++;
 	if (strlen (pos) < 3)
 		goto parsing_failed;
@@ -391,7 +372,7 @@ date_parse_RFC822 (const gchar *date)
 	pos = next;
 
 	/* Optional Timezone */
-	while (pos && *pos != '\0' && isspace ((int)*pos))       /* skip whitespaces before timezone */
+	while (pos && *pos != '\0' && g_ascii_isspace (*pos))       /* skip whitespaces before timezone */
 		pos++;
 	if (*pos != '\0')
 		tz = date_parse_rfc822_tz (pos);
@@ -407,7 +388,7 @@ date_parse_RFC822 (const gchar *date)
 		t = g_date_time_to_unix (datetime);
 		g_date_time_unref (datetime);
 	}
-	
+
 parsing_failed:
 	if (!t)
 		debug0 (DEBUG_PARSING, "Invalid RFC822 date !");

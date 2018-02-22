@@ -25,9 +25,9 @@
 #ifndef _E_UTIL_H_
 #define _E_UTIL_H_
 
-size_t   e_utf8_strftime_fix_am_pm  (char             *s,
-				     size_t            max,
-				     const char       *fmt,
-				     const struct tm  *tm);
+#include <glib.h>
+
+gchar * e_utf8_strftime_fix_am_pm  (const gchar 	*fmt,
+				    const GDateTime 	*tm);
 
 #endif
