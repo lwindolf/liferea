@@ -26,7 +26,6 @@ liferea_SOURCES = \
 	db.c db.h \
 	dbus.c dbus.h \
 	debug.c debug.h \
-	e-date.c e-date.h \
 	enclosure.c enclosure.h \
 	export.c export.h \
 	favicon.c favicon.h \

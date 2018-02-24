@@ -21,7 +21,6 @@
 #include <glib.h>
 
 #include "date.h"
-#include "e-date.h"
 
 typedef struct tc {
 	gchar	*date_string;
