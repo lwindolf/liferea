@@ -62,7 +62,7 @@
  **/
 
 static gchar *
-e_utf8_strftime_fix_am_pm (const char *fmt, const GDateTime *tm)
+e_utf8_strftime_fix_am_pm (const char *fmt, GDateTime *tm)
 {
 	gchar *buf;
 	char *sp;
