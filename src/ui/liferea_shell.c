@@ -1266,6 +1266,7 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
+	GMenuModel	*menubar_model;
 	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
 	gboolean	toggle;
@@ -1342,18 +1343,16 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 			g_error ("building menus failed: %s", error->message);
 	}
 
-	shell->priv->menubar = gtk_ui_manager_get_widget (shell->priv->ui_manager, "/MainwindowMenubar");
-	shell->priv->toolbar = gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar");
+	/* Menu creation */
+	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui", NULL);
+	menubar_model = G_MENU_MODEL (gtk_builder_get_object (shell->priv->xml, "menubar"));
+	shell->priv->menubar = gtk_menu_bar_new_from_model (menubar_model);
+	gtk_widget_show (shell->priv->menubar);
 
-	/* Ensure GTK3 toolbar shadows... */
-	gtk_style_context_add_class (gtk_widget_get_style_context (shell->priv->toolbar), "primary-toolbar");
+	/* Toolbar */
+	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_toolbar.ui", NULL);
 
-	/* what a pain, why is there no markup for this option? */
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/newFeedButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/nextUnreadButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/MarkAsReadButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/UpdateAllButton")), "is_important", TRUE, NULL);
-	g_object_set (G_OBJECT (gtk_ui_manager_get_widget (shell->priv->ui_manager, "/maintoolbar/SearchButton")), "is_important", TRUE, NULL);
+	shell->priv->toolbar = gtk_builder_get_object (shell->priv->xml, "maintoolbar");
 
 	/* 2.) setup containers */
 	
