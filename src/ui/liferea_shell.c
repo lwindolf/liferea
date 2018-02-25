@@ -940,7 +940,11 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"ShowHelpContents", on_topics_activate, NULL, NULL, NULL},
 	{"ShowHelpQuickReference", on_quick_reference_activate, NULL, NULL, NULL},
 	{"ShowHelpFAQ", on_faq_activate, NULL, NULL, NULL},
-	{"ShowAbout", on_about_activate, NULL, NULL, NULL}
+	{"ShowAbout", on_about_activate, NULL, NULL, NULL},
+
+	/* For mysterious reasons, the radio menu magic seem to only works with a
+	 * parameter/state of type string. */
+	{"SetViewMode", NULL, "s", "@s 'normal'", on_view_activate}
 };
 
 static const GtkActionEntry liferea_shell_action_entries[] = {
@@ -1268,7 +1272,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_action_group_set_translation_domain (shell->priv->generalActions, PACKAGE);
 	gtk_action_group_add_actions (shell->priv->generalActions, liferea_shell_action_entries, G_N_ELEMENTS (liferea_shell_action_entries), shell->priv);
 	gtk_action_group_add_toggle_actions (shell->priv->generalActions, liferea_shell_action_toggle_entries, G_N_ELEMENTS (liferea_shell_action_toggle_entries), shell->priv);
-	gtk_action_group_add_radio_actions (shell->priv->generalActions, liferea_shell_view_radio_entries, G_N_ELEMENTS (liferea_shell_view_radio_entries), itemlist_get_view_mode (), (GCallback)on_view_activate, (gpointer)TRUE);
 	gtk_action_group_add_toggle_actions (shell->priv->generalActions, liferea_shell_feedlist_toggle_entries, G_N_ELEMENTS (liferea_shell_feedlist_toggle_entries), shell->priv);
 	gtk_ui_manager_insert_action_group (shell->priv->ui_manager, shell->priv->generalActions, 0);
 
@@ -1492,13 +1495,4 @@ GtkWidget *
 liferea_shell_get_window (void)
 {
 	return GTK_WIDGET (shell->priv->window);
-}
-
-void
-liferea_shell_set_view_mode (nodeViewType newMode)
-{
-	GtkRadioAction       *action;
-
-	action = GTK_RADIO_ACTION (gtk_action_group_get_action (shell->priv->generalActions, "NormalView"));
-	gtk_radio_action_set_current_value (action, newMode);
 }

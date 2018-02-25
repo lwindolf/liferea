@@ -140,12 +140,13 @@ guint itemlist_get_view_mode (void);
 /**
  * on_view_activate: (skip)
  * @action:	the action that emitted the signal
- * @current:	the member of action which was activated
+ * @value:	string in a GVariant, representing the requested mode.
  * @user_data:	unused
  *
  * Menu callback that toggles the different viewing modes
+ * This is the 'change_state' callback for the "SetViewMode" action.
  */
-void on_view_activate (GtkRadioAction *action, GtkRadioAction *current, gpointer user_data);
+void on_view_activate (GSimpleAction *action, GVariant *value, gpointer user_data);
 
 /**
  * on_prev_read_item_activate: (skip)

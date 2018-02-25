@@ -630,10 +630,25 @@ itemlist_set_view_mode (guint newMode)
 }
 
 void
-on_view_activate (GtkRadioAction *action, GtkRadioAction *current, gpointer user_data)
+on_view_activate (GSimpleAction *action, GVariant *value, gpointer user_data)
 {
-	gint val = gtk_radio_action_get_current_value (current);
+
+	const gchar *s_val = g_variant_get_string (value, NULL);
+	gint val = 0;
+	if (!g_strcmp0 ("normal",s_val))
+	{
+		val = NODE_VIEW_MODE_NORMAL;
+	}
+	if (!g_strcmp0 ("wide",s_val))
+	{
+		val = NODE_VIEW_MODE_WIDE;
+	}
+	if (!g_strcmp0 ("combined",s_val))
+	{
+		val = NODE_VIEW_MODE_COMBINED;
+	}
 	itemlist_set_view_mode (val);
+	g_simple_action_set_state (action, value);
 }
 
 static void
