@@ -62,7 +62,6 @@ extern gboolean searchFolderRebuild; /* db.c */
 
 struct LifereaShellPrivate {
 	GtkBuilder	*xml;
-	GtkUIManager	*ui_manager;
 
 	GtkWindow	*window;		/*<< Liferea main window */
 	GtkWidget	*menubar;
@@ -97,7 +96,7 @@ enum {
 	PROP_ITEM_LIST,
 	PROP_ITEM_VIEW,
 	PROP_BROWSER_TABS,
-	PROP_UI_MANAGER
+	PROP_BUILDER
 };
 
 static GObjectClass *parent_class = NULL;
@@ -133,8 +132,8 @@ liferea_shell_get_property (GObject *object, guint prop_id, GValue *value, GPara
 	        case PROP_BROWSER_TABS:
 			g_value_set_object (value, shell->priv->tabs);
 			break;
-	        case PROP_UI_MANAGER:
-			g_value_set_object (value, shell->priv->ui_manager);
+	        case PROP_BUILDER:
+			g_value_set_object (value, shell->priv->xml);
 			break;
 		default:
 		        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -188,13 +187,13 @@ liferea_shell_class_init (LifereaShellClass *klass)
 		                                              BROWSER_TABS_TYPE,
 		                                              G_PARAM_READABLE));
 
-	/* LifereaShell:ui-manager: */
+	/* LifereaShell:builder: */
 	g_object_class_install_property (object_class,
-		                         PROP_UI_MANAGER,
-		                         g_param_spec_object ("ui-manager",
-		                                              "GtkUIManager",
+		                         PROP_BUILDER,
+		                         g_param_spec_object ("builder",
+		                                              "GtkBuilder",
 		                                              "Liferea user interfaces definitions",
-		                                              GTK_TYPE_UI_MANAGER,
+		                                              GTK_TYPE_BUILDER,
 		                                              G_PARAM_READABLE));
 
 	g_type_class_add_private (object_class, sizeof(LifereaShellPrivate));
@@ -1063,7 +1062,6 @@ void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
 	GMenuModel	*menubar_model;
-	GtkAccelGroup	*accel_group;
 	GError		*error = NULL;	
 	gboolean	toggle;
 	gchar		*id;
@@ -1107,12 +1105,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
 	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "ReducedFeedList")), g_variant_new_boolean (toggle));
 
-	shell->priv->ui_manager = gtk_ui_manager_new ();
-
-	accel_group = gtk_ui_manager_get_accel_group (shell->priv->ui_manager);
-	gtk_window_add_accel_group (GTK_WINDOW (shell->priv->window), accel_group);
-	g_object_unref (accel_group);
-
 	g_signal_connect (gtk_accel_map_get (), "changed", G_CALLBACK (on_accel_change), NULL);
 
 	/* Menu creation */
@@ -1124,7 +1116,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	/* Toolbar */
 	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_toolbar.ui", NULL);
 
-	shell->priv->toolbar = gtk_builder_get_object (shell->priv->xml, "maintoolbar");
+	shell->priv->toolbar = GTK_WIDGET (gtk_builder_get_object (shell->priv->xml, "maintoolbar"));
 
 	/* 2.) setup containers */
 	

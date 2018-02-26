@@ -34,27 +34,19 @@ class AppActivatable(GObject.Object, Liferea.ShellActivatable):
         GObject.Object.__init__(self)
 
     def do_activate(self):
-        self._action = Gtk.Action('InstallPlugins', 'Install Plugins', 'Easily discover and install plugins', None)
-        self._action.connect("activate", self._run)
+        action = Gio.SimpleAction.new ('InstallPlugins', None)
+        action.connect("activate", self._run)
 
-        self._actiongroup = Gtk.ActionGroup("InstallPlugins")
-        self._actiongroup.add_action(self._action)
+        self._app = self.shell.get_window().get_application ()
+        self._app.add_action (action)
 
-        self._ui_manager = self.shell.get_property("ui-manager")
-        self._ui_manager.insert_action_group(self._actiongroup)
-        self._ui_manager.add_ui_from_string(
-	          """<ui>
-                        <menubar name='MainwindowMenubar'>
-                          <menu action='ToolsMenu'>
-                            <menuitem action='InstallPlugins'/>
-                          </menu>
-                        </menubar>
-                     </ui>"""
-	)
+        toolsmenu = self.shell.get_property("builder").get_object ("tools_menu")
+        toolsmenu.append ('Install Plugins', 'app.InstallPlugins')
 
     def do_deactivate(self):
-        self._ui_manager.remove_action_group(self._actiongroup)
         self._browser = None
+        self._app.remove_action ('InstallPlugins')
+        self.app = None
 
     def _run(self, action, data=None):
         self._browser = PluginBrowser()

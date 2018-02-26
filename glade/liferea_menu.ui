@@ -2,7 +2,7 @@
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
   <menu id="menubar">
-    <submenu>
+    <submenu id="subscription_menu">
       <attribute name="label" translatable="yes">_Subscriptions</attribute>
       <section>
         <item>
@@ -61,7 +61,7 @@
         </item>
       </section>
     </submenu>
-    <submenu>
+    <submenu id="feed_menu" >
       <attribute name="label" translatable="yes">_Feed</attribute>
       <section>
         <item>
@@ -96,7 +96,7 @@
         </item>
       </section>
     </submenu>
-    <submenu>
+    <submenu id = "item_menu">
       <attribute name="label" translatable="yes">_Item</attribute>
       <section>
         <item>
@@ -152,7 +152,7 @@
         </item>
       </section>
     </submenu>
-    <submenu>
+    <submenu id="view_menu">
       <attribute name="label" translatable="yes">_View</attribute>
       <section>
         <item>
@@ -199,7 +199,7 @@
         </item>
       </section>
     </submenu>
-    <submenu>
+    <submenu id="tools_menu">
       <attribute name="label" translatable="yes">_Tools</attribute>
       <section>
         <item>
@@ -224,7 +224,7 @@
         </item>
       </section>
     </submenu>
-    <submenu>
+    <submenu id="help_menu">
       <attribute name="label" translatable="yes">_Help</attribute>
       <section>
         <item>
