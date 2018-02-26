@@ -221,3 +221,26 @@ ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoo
 {
 	ui_choose_file_or_dir (title, buttonName, saving, FALSE, callback, currentPath, defaultFilename, filterstring, filtername, user_data);
 }
+
+void
+ui_common_simple_action_group_set_enabled (GActionGroup *group, gboolean enabled)
+{
+	gchar **actions_list = g_action_group_list_actions (group);
+	gint i;
+	for (i=0;actions_list[i] != NULL;i++) {
+		g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (group), actions_list [i])), enabled);
+	}
+	g_strfreev (actions_list);
+}
+
+void
+ui_common_add_action_group_to_map (GActionGroup *group, GActionMap *map)
+{
+	gchar **actions_list = g_action_group_list_actions (group);
+	gint i;
+	for (i=0;actions_list[i] != NULL;i++) {
+		g_action_map_add_action (map, g_action_map_lookup_action (G_ACTION_MAP (group), actions_list [i]));
+	}
+	g_strfreev (actions_list);
+
+}
