@@ -951,68 +951,6 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"ReducedFeedList", NULL, NULL, "@b false", on_feedlist_reduced_activate}
 };
 
-static const GtkActionEntry liferea_shell_action_entries[] = {
-	{"SubscriptionsMenu", NULL, N_("_Subscriptions"), NULL, NULL, NULL},
-	{"UpdateAll", "gtk-refresh", N_("Update _All"), "<control>U", N_("Updates all subscriptions."),
-	 G_CALLBACK(on_menu_update_all)},
-	{"MarkAllFeedsAsRead", "gtk-apply", N_("Mark All As _Read"), NULL, N_("Marks read every item of every subscription."),
-	 G_CALLBACK(on_menu_allfeedsread)},
-	{"ImportFeedList", "gtk-open", N_("_Import Feed List..."), NULL, N_("Imports an OPML feed list."), G_CALLBACK(on_menu_import)},
-	{"ExportFeedList", "gtk-save-as", N_("_Export Feed List..."), NULL, N_("Exports the feed list as OPML."), G_CALLBACK(on_menu_export)},
-	{"Quit", "application-exit", N_("_Quit"), "<control>Q", NULL, G_CALLBACK(on_menu_quit)},
-
-	{"FeedMenu", NULL, N_("_Feed"), NULL, NULL, NULL},
-	{"RemoveAllItems", "gtk-delete", N_("Remove _All Items"), NULL, N_("Removes all items of the currently selected feed."),
-	 G_CALLBACK(on_remove_items_activate)},
-
-	{"ItemMenu", NULL, N_("_Item"), NULL, NULL, NULL},
-	{"PrevReadItem", "go-previous", N_("Previous Item"), "<control><shift>N", NULL,	
-	 G_CALLBACK(on_prev_read_item_activate)},
-	{"NextReadItem", "go-next", N_("Next Item"), NULL, NULL,	
-	 G_CALLBACK(on_next_read_item_activate)},
-
-	/* No tooltip here as it really hinders usability to have it flashing
-	   when skimming through items using "Next Unread"! */
-	{"NextUnreadItem", "go-jump", N_("_Next Unread Item"), "<control>N", NULL,	
-	 G_CALLBACK(on_next_unread_item_activate)},
-
-	{"ViewMenu", NULL, N_("_View"), NULL, NULL, NULL},
-	{"ZoomIn", "gtk-zoom-in", N_("_Increase Text Size"), "<control>plus", N_("Increases the text size of the item view."),
-	 G_CALLBACK(on_menu_zoomin_selected)},
-	{"ZoomOut", "gtk-zoom-out", N_("_Decrease Text Size"), "<control>minus", N_("Decreases the text size of the item view."),
-	 G_CALLBACK(on_menu_zoomout_selected)},
-
-	{"ToolsMenu", NULL, N_("_Tools"), NULL, NULL, NULL},
-	{"ShowUpdateMonitor", NULL, N_("_Update Monitor"), NULL, N_("Show a list of all feeds currently in the update queue"),
-	 G_CALLBACK(on_menu_show_update_monitor)},
-	{"ShowPreferences", "preferences-system", N_("_Preferences"), NULL, N_("Edit Preferences."),
-	 G_CALLBACK(on_prefbtn_clicked)},
-
-	{"SearchMenu", NULL, N_("S_earch"), NULL, NULL, NULL},
-	{"SearchFeeds", "gtk-find", N_("Search All Feeds..."), "<control>F", N_("Show the search dialog."), G_CALLBACK(on_searchbtn_clicked)},
-
-	{"HelpMenu", NULL, N_("_Help"), NULL, NULL, NULL},
-	{"ShowHelpContents", "gtk-help", N_("_Contents"), "F1", N_("View help for this application."), G_CALLBACK(on_topics_activate)},
-	{"ShowHelpQuickReference", NULL, N_("_Quick Reference"), NULL, N_("View a list of all Liferea shortcuts."),
-	 G_CALLBACK(on_quick_reference_activate)},
-	{"ShowHelpFAQ", NULL, N_("_FAQ"), NULL, N_("View the FAQ for this application."), G_CALLBACK(on_faq_activate)},
-	{"ShowAbout", "gtk-about", N_("_About"), NULL, N_("Shows an about dialog."), G_CALLBACK(on_about_activate)}
-};
-
-static const GtkRadioActionEntry liferea_shell_view_radio_entries[] = {
-	{"NormalView", NULL, N_("_Normal View"), NULL, N_("Set view mode to mail client mode."),
-	 0},
-	{"WideView", NULL, N_("_Wide View"), NULL, N_("Set view mode to use three vertical panes."),
-	 1},
-	{"CombinedView", NULL, N_("_Combined View"), NULL, N_("Set view mode to two pane mode."),
-	 2}
-};
-
-static GtkToggleActionEntry liferea_shell_feedlist_toggle_entries[] = {
-	{"ReducedFeedList", NULL, N_("_Reduced Feed List"), NULL, N_("Hide feeds with no unread items."),
-	G_CALLBACK(on_feedlist_reduced_activate), FALSE}
-};
-
 static const GActionEntry liferea_shell_add_gaction_entries[] = {
 	{"NewSubscription", on_menu_feed_new, NULL, NULL, NULL},
 	{"NewFolder", on_menu_folder_new, NULL, NULL, NULL},
@@ -1021,35 +959,14 @@ static const GActionEntry liferea_shell_add_gaction_entries[] = {
 	{"NewNewsBin", on_new_newsbin_activate, NULL, NULL, NULL}
 };
 
-static const GtkActionEntry liferea_shell_add_action_entries[] = {
-	{"NewSubscription", "gtk-add", N_("_New Subscription..."), NULL, N_("Adds a subscription to the feed list."),
-	 G_CALLBACK(on_menu_feed_new)},
-	{"NewFolder", NULL, N_("New _Folder..."), NULL, N_("Adds a folder to the feed list."), G_CALLBACK(on_menu_folder_new)},
-	{"NewVFolder", NULL, N_("New S_earch Folder..."), NULL, N_("Adds a new search folder to the feed list."), G_CALLBACK(on_new_vfolder_activate)},
-	{"NewSource", NULL, N_("New _Source..."), NULL, N_("Adds a new feed list source."), G_CALLBACK(on_new_plugin_activate)},
-	{"NewNewsBin", NULL, N_("New _News Bin..."), NULL, N_("Adds a new news bin."), G_CALLBACK(on_new_newsbin_activate)}
-};
-
 static const GActionEntry liferea_shell_feed_gaction_entries[] = {
 	{"MarkFeedAsRead", on_menu_allread, NULL, NULL, NULL},
 	{"UpdateSelected", on_menu_update, NULL, NULL, NULL}
 };
 
-static const GtkActionEntry liferea_shell_feed_action_entries[] = {
-	{"MarkFeedAsRead", "gtk-apply", N_("_Mark Items Read"), "<control>R", N_("Marks all items of the selected feed list node / in the item list as read."), 
-	 G_CALLBACK(on_menu_allread)},
-	{"UpdateSelected", "gtk-refresh", N_("_Update"), NULL, N_("Updates the selected subscription or all subscriptions of the selected folder."),
-	 G_CALLBACK(on_menu_update)}
-};
-
 static const GActionEntry liferea_shell_read_write_gaction_entries[] = {
 	{"Properties", on_menu_properties, NULL, NULL, NULL},
 	{"DeleteSelected", on_menu_delete, NULL, NULL, NULL}
-};
-
-static const GtkActionEntry liferea_shell_read_write_action_entries[] = {
-	{"Properties", "gtk-properties", N_("_Properties"), NULL, N_("Opens the property dialog for the selected subscription."), G_CALLBACK(on_menu_properties)},
-	{"DeleteSelected", "gtk-delete", N_("_Remove"), NULL, N_("Removes the selected subscription."), G_CALLBACK(on_menu_delete)}
 };
 
 static const GActionEntry liferea_shell_item_gaction_entries[] = {
@@ -1060,127 +977,6 @@ static const GActionEntry liferea_shell_item_gaction_entries[] = {
 	{"LaunchItemInBrowser", on_popup_launch_item_selected, NULL, NULL, NULL},
 	{"LaunchItemInExternalBrowser", on_popup_launch_item_external_selected, NULL, NULL, NULL}
 };
-
-static const GtkActionEntry liferea_shell_item_action_entries[] = {
-	{"ToggleItemReadStatus", "gtk-apply", N_("Toggle _Read Status"), "<control>M", N_("Toggles the read status of the selected item."),
-	 G_CALLBACK(on_toggle_unread_status)},
-	{"ToggleItemFlag", NULL, N_("Toggle Item _Flag"), "<control>T", N_("Toggles the flag status of the selected item."),
-	 G_CALLBACK(on_toggle_item_flag)},
-	{"RemoveSelectedItem", "gtk-delete", N_("R_emove"), NULL, N_("Removes the selected item."),
-	 G_CALLBACK(on_remove_item_activate)},
-	{"LaunchItemInTab", NULL, N_("Open In _Tab"), NULL, N_("Launches the item's link in a new Liferea browser tab."),
-	 G_CALLBACK(on_popup_launch_item_in_tab_selected)},
-	{"LaunchItemInBrowser", NULL, N_("_Open In Browser"), NULL, N_("Launches the item's link in the Liferea item pane."),
-	 G_CALLBACK(on_popup_launch_item_selected)},
-	{"LaunchItemInExternalBrowser", NULL, N_("Open In _External Browser"), NULL, N_("Launches the item's link in the configured external browser."),
-	 G_CALLBACK(on_popup_launch_item_external_selected)}
-};
-
-static const GtkToggleActionEntry liferea_shell_action_toggle_entries[] = {
-	{"FullScreen", NULL, N_("_Fullscreen"), "F11", N_("Browse at full screen"),
-	 G_CALLBACK(on_menu_fullscreen_activate), FALSE},
-};
-
-static const char *liferea_shell_ui_desc =
-"<ui>"
-"  <menubar name='MainwindowMenubar'>"
-"    <menu action='SubscriptionsMenu'>"
-"      <menuitem action='UpdateAll'/>"
-"      <menuitem action='MarkAllFeedsAsRead'/>"
-"      <separator/>"
-"      <menuitem action='NewSubscription'/>"
-"      <menuitem action='NewFolder'/>"
-"      <menuitem action='NewVFolder'/>"
-"      <menuitem action='NewSource'/>"
-"      <menuitem action='NewNewsBin'/>"
-"      <separator/>"
-"      <menuitem action='ImportFeedList'/>"
-"      <menuitem action='ExportFeedList'/>"
-"      <separator/>"
-"      <menuitem action='Quit'/>"
-"    </menu>"
-"    <menu action='FeedMenu'>"
-"      <menuitem action='UpdateSelected'/>"
-"      <menuitem action='MarkFeedAsRead'/>"
-"      <separator/>"
-"      <menuitem action='RemoveAllItems'/>"
-"      <menuitem action='DeleteSelected'/>"
-"      <separator/>"
-"      <menuitem action='Properties'/>"
-"    </menu>"
-"    <menu action='ItemMenu'>"
-"      <menuitem action='NextUnreadItem'/>"
-"      <separator/>"
-"      <menuitem action='PrevReadItem'/>"
-"      <menuitem action='NextReadItem'/>"
-"      <separator/>"
-"      <menuitem action='ToggleItemReadStatus'/>"
-"      <menuitem action='ToggleItemFlag'/>"
-"      <menuitem action='RemoveSelectedItem'/>"
-"      <separator/>"
-"      <menuitem action='LaunchItemInTab'/>"
-"      <menuitem action='LaunchItemInBrowser'/>"
-"      <menuitem action='LaunchItemInExternalBrowser'/>"
-"    </menu>"
-"    <menu action='ViewMenu'>"
-"      <menuitem action='FullScreen'/>"
-"      <separator/>"
-"      <menuitem action='ZoomIn'/>"
-"      <menuitem action='ZoomOut'/>"
-"      <separator/>"
-"      <menuitem action='NormalView'/>"
-"      <menuitem action='WideView'/>"
-"      <menuitem action='CombinedView'/>"
-"      <separator/>"
-"      <menuitem action='ReducedFeedList'/>"
-"    </menu>"
-"    <menu action='ToolsMenu'>"
-"      <menuitem action='ShowUpdateMonitor'/>"
-"      <menuitem action='ShowPreferences'/>"
-"    </menu>"
-"    <menu action='SearchMenu'>"
-"      <menuitem action='SearchFeeds'/>"
-"    </menu>"
-"    <menu action='HelpMenu'>"
-"      <menuitem action='ShowHelpContents'/>"
-"      <menuitem action='ShowHelpQuickReference'/>"
-"      <menuitem action='ShowHelpFAQ'/>"
-"      <separator/>"
-"      <menuitem action='ShowAbout'/>"
-"    </menu>"
-"  </menubar>"
-"</ui>";
-
-static const char *liferea_shell_tb_desc =
-"<ui>"
-"  <toolbar action='maintoolbar'>"
-"    <separator/>"
-"    <toolitem name='newFeedButton' action='NewSubscription'/>"
-"    <toolitem name='MarkAsReadButton' action='MarkFeedAsRead'/>"
-"    <toolitem name='prevReadButton' action='PrevReadItem'/>"
-"    <toolitem name='nextReadButton' action='NextReadItem'/>"
-"    <toolitem name='nextUnreadButton' action='NextUnreadItem'/>"
-"    <toolitem name='UpdateAllButton' action='UpdateAll'/>"
-"    <toolitem name='SearchButton' action='SearchFeeds'/>"
-"    <separator/>"
-"  </toolbar>"
-"</ui>";
-
-/* same like above just with Next/Prev ordered for RTL */
-static const char *liferea_shell_tb_rtl_desc =
-"<ui>"
-"  <toolbar action='maintoolbar'>"
-"    <separator/>"
-"    <toolitem name='newFeedButton' action='NewSubscription'/>"
-"    <toolitem name='MarkAsReadButton' action='MarkFeedAsRead'/>"
-"    <toolitem name='nextReadButton' action='NextReadItem'/>"
-"    <toolitem name='prevReadButton' action='PrevReadItem'/>"
-"    <toolitem name='nextUnreadButton' action='NextUnreadItem'/>"
-"    <toolitem name='UpdateAllButton' action='UpdateAll'/>"
-"    <toolitem name='SearchButton' action='SearchFeeds'/>"
-"    <separator/>"
-"  </toolbar>"
-"</ui>";
 
 static void
 liferea_shell_restore_state (const gchar *overrideWindowState)
