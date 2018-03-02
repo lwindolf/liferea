@@ -64,7 +64,6 @@ struct LifereaShellPrivate {
 	GtkBuilder	*xml;
 
 	GtkWindow	*window;		/*<< Liferea main window */
-	GtkWidget	*menubar;
 	GtkWidget	*toolbar;
 	GtkTreeView	*feedlistView;
 	
@@ -1110,8 +1109,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	/* Menu creation */
 	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui", NULL);
 	menubar_model = G_MENU_MODEL (gtk_builder_get_object (shell->priv->xml, "menubar"));
-	shell->priv->menubar = gtk_menu_bar_new_from_model (menubar_model);
-	gtk_widget_show (shell->priv->menubar);
+	gtk_application_set_menubar (app, menubar_model);
 
 	/* Toolbar */
 	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_toolbar.ui", NULL);
@@ -1123,7 +1121,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	debug0 (DEBUG_GUI, "Setting up widget containers");
 
 	gtk_grid_attach_next_to (GTK_GRID (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, NULL, GTK_POS_TOP, 1,1);
-	gtk_grid_attach_next_to (GTK_GRID (liferea_shell_lookup ("vbox1")), shell->priv->menubar, NULL, GTK_POS_TOP, 1,1);
 
 	gtk_widget_show_all(GTK_WIDGET(shell->priv->toolbar));
 
