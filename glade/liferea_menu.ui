@@ -9,7 +9,6 @@
           <attribute name="action">app.UpdateAll</attribute>
           <attribute name="label" translatable="yes">Update _All</attribute>
           <attribute name="icon">view-refresh</attribute>
-          <attribute name="accel">&lt;control&gt;U</attribute>
         </item>
         <item>
           <attribute name="action">app.MarkAllFeedsAsRead</attribute>
@@ -57,7 +56,6 @@
           <attribute name="action">app.Quit</attribute>
           <attribute name="label" translatable="yes">_Quit</attribute>
           <attribute name="icon">application-exit</attribute>
-          <attribute name="accel">&lt;control&gt;Q</attribute>
         </item>
       </section>
     </submenu>
@@ -73,7 +71,6 @@
           <attribute name="action">app.MarkFeedAsRead</attribute>
           <attribute name="label" translatable="yes">_Mark Items Read</attribute>
           <attribute name="icon">gtk-apply</attribute><!-- legacy stock name -->
-          <attribute name="accel">&lt;control&gt;R</attribute>
         </item>
       </section>
       <section>
@@ -103,7 +100,6 @@
           <attribute name="action">app.NextUnreadItem</attribute>
           <attribute name="label" translatable="yes">_Next Unread Item</attribute>
           <attribute name="icon">go-jump</attribute>
-          <attribute name="accel">&lt;control&gt;N</attribute>
         </item>
       </section>
       <section>
@@ -111,7 +107,6 @@
           <attribute name="action">app.PrevReadItem</attribute>
           <attribute name="label" translatable="yes">Previous Item</attribute>
           <attribute name="icon">go-previous</attribute>
-          <attribute name="accel">&lt;control&gt;&lt;shift&gt;N</attribute>
         </item>
         <item>
           <attribute name="action">app.NextReadItem</attribute>
@@ -124,12 +119,10 @@
           <attribute name="action">app.ToggleItemReadStatus</attribute>
           <attribute name="label" translatable="yes">Toggle _Read Status</attribute>
           <attribute name="icon">gtk-apply</attribute> <!-- legacy stock name -->
-          <attribute name="accel">&lt;control&gt;M</attribute>
         </item>
         <item>
           <attribute name="action">app.ToggleItemFlag</attribute>
           <attribute name="label" translatable="yes">Toggle Item _Flag</attribute>
-          <attribute name="accel">&lt;control&gt;T</attribute>
         </item>
         <item>
           <attribute name="action">app.RemoveSelectedItem</attribute>
@@ -158,7 +151,6 @@
         <item>
           <attribute name="action">app.FullScreen</attribute>
           <attribute name="label" translatable="yes">_Fullscreen</attribute>
-          <attribute name="accel">F11</attribute>
         </item>
       </section>
       <section>
@@ -166,13 +158,11 @@
           <attribute name="action">app.ZoomIn</attribute>
           <attribute name="label" translatable="yes">_Increase Text Size</attribute>
           <attribute name="icon">zoom-in</attribute>
-          <attribute name="accel">&lt;control&gt;plus</attribute>
         </item>
         <item>
           <attribute name="action">app.ZoomOut</attribute>
           <attribute name="label" translatable="yes">_Decrease Text Size</attribute>
           <attribute name="icon">zoom-out</attribute>
-          <attribute name="accel">&lt;control&gt;minus</attribute>
         </item>
       </section>
       <section>
@@ -220,7 +210,6 @@
           <attribute name="action">app.SearchFeeds</attribute>
           <attribute name="label" translatable="yes">Search All Feeds...</attribute>
           <attribute name="icon">edit-find</attribute>
-          <attribute name="accel">&lt;control&gt;F</attribute>
         </item>
       </section>
     </submenu>
@@ -231,7 +220,6 @@
           <attribute name="action">app.ShowHelpContents</attribute>
           <attribute name="label" translatable="yes">_Contents</attribute>
           <attribute name="icon">help-browser</attribute>
-          <attribute name="accel">F1</attribute>
         </item>
         <item>
           <attribute name="action">app.ShowHelpQuickReference</attribute>

@@ -1032,6 +1032,19 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	}
 }
 
+static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};
+static const gchar * liferea_accels_quit[] = {"<Control>q", NULL};
+static const gchar * liferea_accels_mark_feed_as_read[] = {"<Control>r", NULL};
+static const gchar * liferea_accels_next_unread_item[] = {"<Control>n", NULL};
+static const gchar * liferea_accels_prev_read_item[] = {"<Control><Shift>n", NULL};
+static const gchar * liferea_accels_toggle_item_read_status[] = {"<Control>m", NULL};
+static const gchar * liferea_accels_toggle_item_flag[] = {"<Control>t", NULL};
+static const gchar * liferea_accels_fullscreen[] = {"F11", NULL};
+static const gchar * liferea_accels_zoom_in[] = {"<Control>plus", NULL};
+static const gchar * liferea_accels_zoom_out[] = {"<Control>minus", NULL};
+static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
+static const gchar * liferea_accels_show_help_contents[] = {"F1", NULL};
+
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
@@ -1083,6 +1096,20 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui", NULL);
 	menubar_model = G_MENU_MODEL (gtk_builder_get_object (shell->priv->xml, "menubar"));
 	gtk_application_set_menubar (app, menubar_model);
+
+	/* Add accelerators */
+	gtk_application_set_accels_for_action (app, "app.UpdateAll", liferea_accels_update_all);
+	gtk_application_set_accels_for_action (app, "app.Quit", liferea_accels_quit);
+	gtk_application_set_accels_for_action (app, "app.MarkFeedAsRead", liferea_accels_mark_feed_as_read);
+	gtk_application_set_accels_for_action (app, "app.NextUnreadItem", liferea_accels_next_unread_item);
+	gtk_application_set_accels_for_action (app, "app.PrevReadItem", liferea_accels_prev_read_item);
+	gtk_application_set_accels_for_action (app, "app.ToggleItemReadStatus", liferea_accels_toggle_item_read_status);
+	gtk_application_set_accels_for_action (app, "app.ToggleItemFlag", liferea_accels_toggle_item_flag);
+	gtk_application_set_accels_for_action (app, "app.FullScreen", liferea_accels_fullscreen);
+	gtk_application_set_accels_for_action (app, "app.ZoomIn", liferea_accels_zoom_in);
+	gtk_application_set_accels_for_action (app, "app.ZoomOut", liferea_accels_zoom_out);
+	gtk_application_set_accels_for_action (app, "app.SearchFeeds", liferea_accels_search_feeds);
+	gtk_application_set_accels_for_action (app, "app.ShowHelpContents", liferea_accels_show_help_contents);
 
 	/* Toolbar */
 	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_toolbar.ui", NULL);
