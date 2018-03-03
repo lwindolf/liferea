@@ -725,25 +725,6 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 	return FALSE;
 }
 
-static gboolean
-liferea_shell_save_accels (gpointer data)
-{
-	gchar *accels_file = NULL;
-
-	accels_file = common_create_config_filename ("accels");
-	gtk_accel_map_save (accels_file);
-	g_free (accels_file);
-	return FALSE;
-}
-
-static void
-on_accel_change (GtkAccelMap *object, gchar *accel_path,
-		guint accel_key, GdkModifierType accel_mode,
-		gpointer user_data)
-{
-	g_idle_add (liferea_shell_save_accels, NULL);
-}
-
 static void
 on_prefbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
@@ -979,7 +960,7 @@ static const GActionEntry liferea_shell_item_gaction_entries[] = {
 static void
 liferea_shell_restore_state (const gchar *overrideWindowState)
 {
-	gchar		*toolbar_style, *accels_file;
+	gchar		*toolbar_style;
 	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
 	gint		resultState;
 	gboolean 	last_window_maximized;
@@ -989,12 +970,6 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	toolbar_style = conf_get_toolbar_style ();	
 	liferea_shell_set_toolbar_style (toolbar_style);
 	g_free (toolbar_style);
-
-	debug0 (DEBUG_GUI, "Loading accelerators");
-	
-	accels_file = common_create_config_filename ("accels");
-	gtk_accel_map_load (accels_file);
-	g_free (accels_file);	
 
 	debug0 (DEBUG_GUI, "Restoring window position");
 	
@@ -1103,8 +1078,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	/* Prepare some toggle button states */	
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
 	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "ReducedFeedList")), g_variant_new_boolean (toggle));
-
-	g_signal_connect (gtk_accel_map_get (), "changed", G_CALLBACK (on_accel_change), NULL);
 
 	/* Menu creation */
 	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui", NULL);
