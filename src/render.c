@@ -1,7 +1,7 @@
 /**
  * @file render.c  generic GTK theme and XSLT rendering handling
  * 
- * Copyright (C) 2006-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 #include <locale.h>
+#include <math.h>
 #include <string.h>
 
 #include "conf.h"
@@ -195,14 +196,25 @@ render_get_rgb_distance (GdkColor *c1, GdkColor *c2)
 	       ) / 1000;
 }
 
+static void
+rgba_to_color (GdkColor *color, GdkRGBA *rgba)
+{
+	color->red   = lrint (rgba->red   * 65535);
+	color->green = lrint (rgba->green * 65535);
+	color->blue  = lrint (rgba->blue  * 65535);
+}
+
 void
 render_init_theme_colors (GtkWidget *widget)
 {
 	GtkStyle	*style;
-	GdkColor	*color;
+	GtkStyleContext	*sctxt;
+	GdkColor	color;
+	GdkRGBA		rgba;
 	gint		textAvg, bgAvg;
 
 	style = gtk_widget_get_style (widget);
+	sctxt = gtk_widget_get_style_context (widget);
 
 	g_assert (NULL == themeColors);
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
@@ -223,21 +235,13 @@ render_init_theme_colors (GtkWidget *widget)
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-TEXT", style->fg[GTK_STATE_NORMAL]));
 	}
 
-	color = NULL;
-	gtk_widget_style_get (widget, "link-color", &color, NULL);
-	if (color) {
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-NORMAL-LINK", *color));
-		debug0 (DEBUG_HTML, "successfully set the color for links");
-		gdk_color_free (color);
-	}
+	gtk_style_context_get_color (sctxt, GTK_STATE_FLAG_LINK, &rgba);
+	rgba_to_color (&color, &rgba);
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-LINK", color));
 
-	color = NULL;
-	gtk_widget_style_get (widget, "visited-link-color", &color, NULL);
-	if (color) {
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color("GTK-COLOR-VISITED-LINK", *color));
-		debug0 (DEBUG_HTML, "successfully set the color for visited links");
-		gdk_color_free (color);
-	}
+	gtk_style_context_get_color (sctxt, GTK_STATE_FLAG_VISITED, &rgba);
+	rgba_to_color (&color, &rgba);
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-VISITED-LINK", color));
 
 	/* As there doesn't seem to be a safe way to determine wether we have a 
 	   dark GTK theme, let's guess it from the foreground vs. background
