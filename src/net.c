@@ -43,6 +43,28 @@ static gchar	*proxyusername = NULL;
 static gchar	*proxypassword = NULL;
 static int	proxyport = 0;
 
+
+static void
+network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
+{
+	updateJobPtr	job = (updateJobPtr)user_data;
+	const gchar	*location = NULL;
+	SoupURI		*newuri;
+	
+	if (301 == msg->status_code || 308 == msg->status_code)
+	{
+		location = soup_message_headers_get_one (msg->response_headers, "Location");
+		newuri = soup_uri_new (location);
+
+		if (SOUP_URI_IS_VALID (newuri) && ! soup_uri_equal (newuri, soup_message_get_uri (msg))) {
+			debug2 (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"", soup_uri_to_string (soup_message_get_uri (msg), FALSE),
+							            soup_uri_to_string (newuri, FALSE));
+			job->result->returncode = msg->status_code;
+			job->result->source = soup_uri_to_string (newuri, FALSE);
+		}
+	}
+}
+
 static void
 network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_data)
 {
@@ -56,7 +78,6 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 		job->result->httpstatus = 0;
 	} else {
 		job->result->httpstatus = msg->status_code;
-		job->result->returncode = 0;
 	}
 
 	debug1 (DEBUG_NET, "download status code: %d", msg->status_code);
@@ -211,6 +232,10 @@ network_process_request (const updateJobPtr job)
 	conf_get_bool_value (DO_NOT_TRACK, &do_not_track);
 	if (do_not_track)
 		soup_message_headers_append (msg->request_headers, "DNT", "1");
+
+	/* Process permanent redirects (update feed location) */
+	soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, job);
+	soup_message_add_status_code_handler (msg, "got_body", 308, (GCallback) network_process_redirect_callback, job);
 
 	/* If the feed has "dont use a proxy" selected, use 'session2' which is non-proxy */
 	if (job->request->options && job->request->options->dontUseProxy)
