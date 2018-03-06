@@ -23,7 +23,6 @@
 #define _ITEM_H
 
 #include <glib.h>
-#include <time.h>
 
 /* Currently Liferea knows only a single type of items used
    for the itemset types feed, folder and search folder. So each 
@@ -58,7 +57,7 @@ typedef struct item {
 	
 	GSList		*metadata;		/*<< Metadata of this item */
 	GHashTable	*tmpdata;		/*<< Temporary data hash used during stateful parsing */
-	time_t		time;			/*<< Last modified date of the headline */
+	gint64		time;			/*<< Last modified date of the headline */
 
 	gchar		*commentFeedId;		/*<< Id of the comment feed of this item (or NULL if there is no comment feed) */
 	
