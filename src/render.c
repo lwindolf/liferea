@@ -237,7 +237,7 @@ render_init_theme_colors (GtkWidget *widget)
 
 	gtk_style_context_get_color (sctxt, GTK_STATE_FLAG_LINK, &rgba);
 	rgba_to_color (&color, &rgba);
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-LINK", color));
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-NORMAL-LINK", color));
 
 	gtk_style_context_get_color (sctxt, GTK_STATE_FLAG_VISITED, &rgba);
 	rgba_to_color (&color, &rgba);
