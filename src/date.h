@@ -34,7 +34,7 @@
  *
  * @returns a newly allocated formatted date string (encoded in UTF-8)
  */
-gchar * date_format (time_t date, const gchar *date_format);
+gchar * date_format (gint64 date, const gchar *date_format);
 
 /**
  * Parses a ISO8601 date.
