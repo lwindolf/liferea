@@ -11,6 +11,9 @@ To be released
 	* #495: New command line option --disable-plugins (-p) to start
 	  with all plugins disabled.
 
+	* Fixes #602: CSS style for GTK link colors not used
+	  (reported by pupyc)
+
 	* #594: Update of Polish default feed list
 	  (wmyrda)
 	* #584: Fixes broken OPML feed list entries
