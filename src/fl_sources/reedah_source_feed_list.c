@@ -1,7 +1,7 @@
 /**
  * @file reedah_source_feed_list.c  Reedah feed list handling routines
  * 
- * Copyright (C) 2013-2014  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2013-2018  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 #include "metadata.h"
 #include "node.h"
 #include "subscription.h"
+#include "subscription_icon.h"
 #include "xml.h" // FIXME
 
 #include "fl_sources/opml_source.h"
@@ -100,7 +101,7 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 		 * status inherently.
 		 */
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-		subscription_update_favicon (node->subscription);
+		subscription_icon_update (node->subscription);
 	} else {
 		node_source_update_folder (node, folder);
 	}

@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source_feed_list.c  tt-rss feed list handling routines.
  * 
- * Copyright (C) 2010-2014  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2018  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #include "metadata.h"
 #include "node.h"
 #include "subscription.h"
+#include "subscription_icon.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/ttrss_source.h"
 
@@ -100,7 +101,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 		 * status inherently.
 		 */
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-		subscription_update_favicon (node->subscription);
+		subscription_icon_update (node->subscription);
 	
 		/* Important: we must not loose the feed id! */
 		db_subscription_update (node->subscription);

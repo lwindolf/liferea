@@ -70,6 +70,8 @@ src/social.c
 src/social.h
 src/subscription.c
 src/subscription.h
+src/subscription_icon.c
+src/subscription_icon.h
 src/subscription_type.h
 src/update.c
 src/update.h

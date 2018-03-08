@@ -2,7 +2,7 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS = html_auto parse_date 
+TEST_PROGS = html_auto favicon parse_date 
 
 test: $(TEST_PROGS)
 	echo $(TEST_PROGS) | sed "s/^/.\//;s/ / \&\& .\//" | xargs -I{} sh -c "{}"
@@ -26,6 +26,9 @@ progs_ldadd =	../parsers/libliparsers.a \
 		$(WEBKIT_LIBS) \
 		$(INTROSPECTION_LIBS) \
 		-lm
+
+favicon_SOURCES = favicon.c
+favicon_LDADD = $(progs_ldadd) ../html.o ../common.o ../metadata.o ../favicon.o ../debug.o ../xml.o
 
 html_auto_SOURCES = html.c
 html_auto_LDADD = $(progs_ldadd) ../html.o ../common.o ../debug.o ../xml.o
