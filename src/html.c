@@ -89,6 +89,13 @@ checkLinkRef (const gchar* str, gint linkType)
 		     (NULL != common_strcasestr (str, "image/png")) ||
 		     (NULL != common_strcasestr (str, "image/gif")))*/)
 			return res;
+
+		/* Also support high res (~128px) device icons */
+		if((NULL != common_strcasestr (str, "rel=\"apple-touch-icon\"")) &&
+		   ((NULL != common_strcasestr (str, "sizes=\"152x152\"")) ||
+		    (NULL != common_strcasestr (str, "sizes=\"144x144\"")) ||
+		    (NULL != common_strcasestr (str, "sizes=\"120x120\""))))
+			return res;
 	} else if (linkType == LINK_RSS_ALTERNATE) {
 		if ((common_strcasestr (str, "alternate") != NULL) &&
 		    ((common_strcasestr (str, "text/xml") != NULL) || 
@@ -151,6 +158,7 @@ search_tag_link(const gchar* data, const gchar *tagName, gchar** tagEnd)
 	return result;
 }
 
+// FIXME: implement multiple links
 static gchar *
 search_links (const gchar* data, gint linkType)
 {
@@ -230,6 +238,9 @@ html_discover_favicon (const gchar * data, const gchar * baseUri)
 	debug0 (DEBUG_UPDATE, "searching through link tags");
 	res = search_links (data, LINK_FAVICON);
 	debug1 (DEBUG_UPDATE, "search result: %s", res? res : "none found");
+
+	// FIXME: take multiple links from search_links() and rank them by sizes
+	// and return an ordered list
 
 	if (res) {
 		/* turn relative URIs into absolute URIs */

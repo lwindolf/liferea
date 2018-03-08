@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  * 
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,10 @@
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
-#include "favicon.h"
 #include "feedlist.h"
 #include "metadata.h"
 #include "net.h"
+#include "subscription_icon.h"
 #include "ui/auth_dialog.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
@@ -128,29 +128,6 @@ subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now)
 	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.", subscription->updateState->lastPoll.tv_sec);
 }
 
-static void
-subscription_favicon_downloaded (gpointer user_data)
-{
-	nodePtr	node = (nodePtr)user_data;
-
-	node_load_icon (node);
-	feed_list_node_update (node->id);
-}
-
-void
-subscription_update_favicon (subscriptionPtr subscription)
-{
-	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
-	liferea_shell_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
-	g_get_current_time (&subscription->updateState->lastFaviconPoll);
-	favicon_download (subscription,
-	                  node_get_base_url (subscription->node),
-			  subscription_get_source (subscription),
-			  subscription->updateOptions,		// FIXME: correct?
-	                  subscription_favicon_downloaded, 
-			  (gpointer)subscription->node);
-}
-
 /**
  * Updates the error status of the given subscription
  *
@@ -233,10 +210,12 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 
 	/* 3. call favicon updating after subscription processing
-	      to ensure we have valid baseUrl for feed nodes... */
+	      to ensure we have valid baseUrl for feed nodes... 
+
+	      check creation date and update favicon if older than one month */
 	g_get_current_time (&now);
-	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
-		subscription_update_favicon (subscription);
+	if (now.tv_sec > (subscription->updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
+		subscription_icon_update (subscription);
 	
 	/* 4. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
