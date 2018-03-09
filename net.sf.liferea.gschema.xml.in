@@ -182,6 +182,11 @@
       <summary>Send "Do Not Track" header</summary>
       <description>Configures wether the "DNT" header is to be sent. If enabled sends "DNT: 1", meaning Do Not Track.</description>
     </key>
+    <key name="last-date-column-pos" type="i">
+      <default>-1</default>
+      <summary>Date column position</summary>
+      <description>The position of the date column in the item list view. Automatically saved after being reordered by dragging. Default is last.</description>
+    </key>
 
   </schema>
 
