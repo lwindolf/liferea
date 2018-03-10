@@ -5,8 +5,8 @@ IAge=2
 Name=Header Bar
 Version=0.1
 Description=Get a GNOME style header bar for Liferea
-Authors=Mozbugbox <mozbugbox@yahoo.com.au>
-Copyright=Copyright © 2014-2015 Mozbugbox <mozbugbox@yahoo.com.au>
+Authors=Lars Windolf <lars.windolf@gmx.de>
+Copyright=Copyright © 2018 Lars Windolf <lars.windolf@gmx.de>
 Website=http://lzone.de/liferea/
 Help=http://lzone.de/liferea/
 
