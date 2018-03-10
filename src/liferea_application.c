@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea startup
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *  
  * Some code like the command line handling was inspired by 
@@ -46,10 +46,11 @@
 #include <girepository.h>
 
 struct _LifereaApplication {
-	GtkApplication parent;
-	gchar *initialStateOption;
-	LifereaDBus *dbus;
-	gulong debug_flags;
+	GtkApplication	parent;
+	gchar		*initialStateOption;
+	gint		pluginsDisabled;
+	LifereaDBus	*dbus;
+	gulong		debug_flags;
 };
 
 struct _LifereaApplicationClass {
@@ -79,15 +80,14 @@ on_app_open (GApplication *application,
              gchar        *hint,
              gpointer      user_data)
 {
-	GFile **uris = (GFile **)files;
-	GList		*list;
-	int i;
+	int			i;
+	GFile			**uris = (GFile **)files;
+	GtkApplication		*gtk_app = GTK_APPLICATION (application);
+	GList			*list = gtk_application_get_windows (gtk_app);
+	LifereaApplication	*app = LIFEREA_APPLICATION (application);
 
-	list = gtk_application_get_windows (GTK_APPLICATION (application));
-
-	if (!list) {
-		liferea_shell_create (GTK_APPLICATION (application), LIFEREA_APPLICATION (application)->initialStateOption);
-	}
+	if (!list)
+		liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
 
 	for (i=0;(i<n_files) && uris[i];i++) {
 		gchar *uri = g_file_get_uri (uris[i]);
@@ -107,11 +107,10 @@ on_app_open (GApplication *application,
 static void
 on_app_activate (GtkApplication *gtk_app, gpointer user_data)
 {
-	gchar *css_filename;
-	GFile *css_file;
-	GtkCssProvider *provider;
-	GError *error = NULL;
-
+	gchar		*css_filename;
+	GFile		*css_file;
+	GtkCssProvider	*provider;
+	GError		*error = NULL;
 	GList		*list;
 	LifereaApplication *app = LIFEREA_APPLICATION (gtk_app);
 
@@ -121,7 +120,7 @@ on_app_activate (GtkApplication *gtk_app, gpointer user_data)
 		gtk_window_deiconify (GTK_WINDOW (list->data));		
 		gtk_window_present (GTK_WINDOW (list->data));
 	} else {
-		liferea_shell_create (gtk_app, app->initialStateOption);
+		liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
 	}
 
 	css_filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "liferea.css", NULL);
@@ -283,6 +282,7 @@ liferea_application_init (LifereaApplication *self)
 		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &self->initialStateOption, N_("Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"), N_("STATE") },
 		{ "version", 'v', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, NULL, N_("Show version information and exit"), NULL },
 		{ "add-feed", 'a', 0, G_OPTION_ARG_STRING, NULL, N_("Add a new subscription"), N_("uri") },
+		{ "disable-plugins", 'p', 0, G_OPTION_FLAG_NONE, &self->pluginsDisabled, N_("Start with all plugins disabled"), NULL },
 		{ NULL, 0, 0, 0, NULL, NULL, NULL }
 	};
 

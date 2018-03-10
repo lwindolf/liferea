@@ -1,4 +1,4 @@
-To be released
+2018-03-07   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12.2
 
@@ -8,12 +8,32 @@ To be released
 	  (Daniel Aleksandersen)
 	* #583: Add transmission-gtk and aria2 as download tool options
 	  (Daniel Aleksandersen)
+	* #495: New command line option --disable-plugins (-p) to start
+	  with all plugins disabled.
 
+	* Fixes #610: Liferea not showing up in GNOME Software
+	  (Yanko Kaneti)
+	* Fixes #604: Correctly print error message when failing
+	  to unlock GNOME keyring
+	  (ghost)
+	* Fixes #602: CSS style for GTK link colors not used
+	  (reported by pupyc)
+	* Fixes #581: Redirect location updates and adds HTTP 308 (RFC 7538) support
+	  (Daniel Aleksandersen)
+	* Fixes #578: Unable to set unread items in bold
+	  (Leiaz, reported by EverEve)
+
+	* #612: Update of French translation
+	  (Guillaume Bernard)
+	* #596: Update of Swedish translation
+	  (jony0008)
 	* #594: Update of Polish default feed list
 	  (wmyrda)
 	* #584: Fixes broken OPML feed list entries
 	  (Daniel Aleksandersen)
 	* #584: Added Norwegian feed list
+	  (Daniel Aleksandersen)
+	* #577: Fixes newsbin doc typo
 	  (Daniel Aleksandersen)
 
 

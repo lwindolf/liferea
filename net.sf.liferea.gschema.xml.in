@@ -42,20 +42,10 @@
       <summary>Disable displaying the toolbar in the Liferea main window</summary>
       <description>Disable displaying the toolbar in the Liferea main window.</description>
     </key>
-    <key name="enable-fetch-retries" type="b">
-      <default>true</default>
-      <summary>Try to refetch feeds after network errors?</summary>
-      <description>If set to true, and a network error is encountered while fetching a feed, Liferea will do a few more tries. This is useful in case of temporary loss of network/internet connection.</description>
-    </key>
     <key name="last-hpane-pos" type="i">
       <default>0</default>
       <summary>Height of the itemlist pane in the mainwindow</summary>
       <description>Height of the itemlist pane in the mainwindow. Use 0 to let GTK+ decide the height.</description>
-    </key>
-    <key name="last-itemlist-mode" type="b">
-      <default>false</default>
-      <summary>Enables condensed mode</summary>
-      <description>Set to true to make Liferea use condensed mode or false to make Liferea use the three pane mode.</description>
     </key>
     <key name="last-vpane-pos" type="i">
       <default>0</default>
@@ -102,20 +92,10 @@
       <summary>Node id of the last feed list selection</summary>
       <description>When shutting down Liferea saves the last selected node id here to be restored on startup.</description>
     </key>
-    <key name="last-item-selected" type="i">
-      <default>0</default>
-      <summary>Item id of the last item list selection</summary>
-      <description>When shutting down Liferea saves the last selected item id here to be restored on startup.</description>
-    </key>
     <key name="maxitemcount" type="i">
       <default>100</default>
       <summary>Determines the default number of items saved on each feed</summary>
       <description>This value is used to determine how many items are saved in each feed when Liferea exits. Note that marked items are always saved.</description>
-    </key>
-    <key name="show-popup-windows" type="b">
-      <default>false</default>
-      <summary>Display popup window advertising new items as they are downloaded</summary>
-      <description>Display popup window advertising new items as they are downloaded.</description>
     </key>
     <key name="startup-feed-action" type="i">
       <default>0</default>
@@ -126,31 +106,6 @@
       <default>''</default>
       <summary>Determines the style of the toolbar buttons</summary>
       <description>Determines the style of the toolbar buttons locally, overriding the GNOME settings. Valid values are "both", "both-horiz", "icons", and "text". If empty or not specified, the GNOME settings are used.</description>
-    </key>
-    <key name="trayicon" type="b">
-      <default>true</default>
-      <summary>Determines if the system tray icon is to be shown</summary>
-      <description>Determines if the system tray icon is to be shown</description>
-    </key>
-    <key name="trayicon-new-count" type="b">
-      <default>false</default>
-      <summary>Determines if the number of new items is shown in the system tray icon</summary>
-      <description>Determines if the number of new items is shown in the system tray icon</description>
-    </key>
-    <key name="dont-minimize-to-tray" type="b">
-      <default>false</default>
-      <summary>Determines if minimize to tray is not desired</summary>
-      <description>Determines if minimize to tray is not desired. This is relevant when the user clicks the close button or presses the window close hotkey of the window manager. If this option is disabled Liferea will just hide the window and keep running. If the option is enabled the application will terminate.</description>
-    </key>
-    <key name="update-thread-concurrency" type="i">
-      <default>3</default>
-      <summary>Number of update threads used in downloading</summary>
-      <description>Number of threads used to download feeds and web objects in Liferea. An additional thread is created that only services 'interactive' requests (for example when a user manually selects a feed to update).</description>
-    </key>
-    <key name="popup-placement" type="i">
-      <default>0</default>
-      <summary>Placement of the mini popup window</summary>
-      <description>The placement of the mini popup window that is opened to notify the user of new items. The popup window is positioned at one of the desktop borders (1 = upper left, 2 = upper right, 3 = lower right, 4 = lower left).</description>
     </key>
     <key name="folder-display-mode" type="i">
       <default>1</default>
@@ -206,11 +161,6 @@
       <default>''</default>
       <summary>Social bookmark site</summary>
       <description>This option determines which social bookmark site use to save links.</description>
-    </key>
-    <key name="start-in-tray" type="b">
-      <default>false</default>
-      <summary>Start in tray</summary>
-      <description>This option determines if liferea should start in tray mode.</description>
     </key>
     <key name="last-wpane-pos" type="i">
       <default>0</default>

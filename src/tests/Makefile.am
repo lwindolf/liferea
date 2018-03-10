@@ -31,7 +31,7 @@ html_auto_SOURCES = html.c
 html_auto_LDADD = $(progs_ldadd) ../html.o ../common.o ../debug.o ../xml.o
 
 parse_date_SOURCES = parse_date.c
-parse_date_LDADD = $(progs_ldadd) ../date.o ../common.o ../debug.o ../e-date.o
+parse_date_LDADD = $(progs_ldadd) ../date.o ../common.o ../debug.o
 
 #item_SOURCES = item.c
 #item_LDADD = $(progs_ldadd) ../item.o ../metadata.o ../xml.o ../debug.o ../common.o ../date.o ../node.o
