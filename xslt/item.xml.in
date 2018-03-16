@@ -145,7 +145,7 @@
 </tr>
 </xsl:if>
 
-<!-- In summary mode we are potential presenting multiple feeds
+<!-- In summary mode we are potentially presenting multiple feeds
      and we should display the source feed title for the item. -->
 <xsl:if test="$summary = '1' or $showFeedName = '1'">
 <tr>

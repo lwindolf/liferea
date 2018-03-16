@@ -336,7 +336,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 		if (writeableFeedlist) {
 			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
 			ui_popup_add_menuitem (menu, _("_Delete"), ui_popup_delete, node, 0);
-			ui_popup_add_menuitem (menu, _("_Preferences"), ui_popup_properties, node, 0);
+			ui_popup_add_menuitem (menu, _("_Properties"), ui_popup_properties, node, 0);
 		}
 
 		if (IS_NODE_SOURCE (node) && NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL) {

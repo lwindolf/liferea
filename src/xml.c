@@ -37,7 +37,7 @@
 
 static void xml_buffer_parse_error(void *ctxt, const gchar * msg, ...);
 
-static xmlDocPtr
+xmlDocPtr
 xhtml_parse (const gchar *html, gint len)
 {
 	xmlDocPtr out = NULL;

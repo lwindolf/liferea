@@ -1,8 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
 <interface>
-  <requires lib="gtk+" version="2.18"/>
-  <!-- interface-naming-policy toplevel-contextual -->
+  <requires lib="gtk+" version="3.14"/>
   <object class="GtkAboutDialog" id="about">
+    <property name="can_focus">False</property>
     <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">About</property>
@@ -13,7 +14,6 @@
     <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
     <property name="website">https://lzone.de/liferea/</property>
     <property name="website_label" translatable="yes">Liferea Homepage</property>
-    <property name="license_type">gpl-2-0</property>
     <property name="authors">
 Developers:
 
@@ -82,28 +82,28 @@ Sargate Kanogan
 Rodrigo Gallardo
 Takeshi AIHANA
 Takeshi Hamasaki
-Vincent Lef&#xE8;vre
+Vincent Lefèvre
 Daniel Nylander
 Mehmet Atif Ergun
-Eren T&#xFC;rkay
+Eren Türkay
 Ihar Hrachyshka
-Ant&#xF3;nio Lima
+António Lima
 Bruno Miguel
 Martin Picek
 Justin Forest
 Oleg Maloglovets
 Sergey Rudchenko
 Leonid Selivanov
-M&#xE1;t&#xE9; &#x150;ry
+Máté Őry
 Gabor Kelemen
-Pavol Kla&#x10D;ansk&#xFD;
+Pavol Klačanský
 Evgenia Petoumenou
 Besnik Bleta
 Christian Dywan
 Robin Stocker
 Paul Seyfert
 Gil Forcada
-I&#xF1;aki Larra&#xF1;aga Murgoitio
+Iñaki Larrañaga Murgoitio
 Mikel Olasagasti Uranga
 Adi Roiban
 Erwin Poeze
@@ -120,29 +120,38 @@ Mindaugas Baranauskas
 Trần Ngọc Quân
 Pauli Virtanen
 Jorma Karvonen
+Guillaume Bernard
 </property>
     <property name="logo_icon_name">liferea</property>
+    <property name="license_type">gpl-2-0</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox23">
+      <object class="GtkBox" id="dialog-vbox23">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
-        <child>
-          <placeholder/>
-        </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area23">
+          <object class="GtkButtonBox" id="dialog-action_area23">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
             <property name="layout_style">end</property>
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">False</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
+        <child>
+          <placeholder/>
+        </child>
       </object>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </object>
 </interface>

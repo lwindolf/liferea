@@ -31,12 +31,6 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkListStore" id="liststore5">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkDialog" id="prefs">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -177,12 +171,66 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkInfoBar" id="infobar1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_start">12</property>
+                        <child internal-child="action_area">
+                          <object class="GtkButtonBox">
+                            <property name="can_focus">False</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child internal-child="content_area">
+                          <object class="GtkBox">
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkLabel" id="label135">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes" comments="Feed update interval hint in preference dialog.">Note: &lt;i&gt;Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.&lt;/i&gt;</property>
+                                <property name="use_markup">True</property>
+                                <property name="wrap">True</property>
+                                <property name="xalign">0</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">4</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkCheckButton" id="startupactionbtn">
                         <property name="label" translatable="yes">_Update all subscriptions at startup.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
                         <property name="halign">start</property>
+                        <property name="margin_left">12</property>
                         <property name="margin_start">12</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
@@ -198,6 +246,7 @@
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
+                        <property name="margin_left">12</property>
                         <property name="margin_start">12</property>
                         <property name="label" translatable="yes">Default Feed Refresh _Interval:</property>
                         <property name="use_underline">True</property>
@@ -243,63 +292,13 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkInfoBar" id="infobar1">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_start">12</property>
-                        <child internal-child="action_area">
-                          <object class="GtkButtonBox">
-                            <property name="can_focus">False</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child internal-child="content_area">
-                          <object class="GtkBox">
-                            <property name="can_focus">False</property>
-                            <child>
-                              <object class="GtkLabel" id="label135">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label" translatable="yes" comments="Feed update interval hint in preference dialog.">Note: &lt;i&gt;Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.&lt;/i&gt;</property>
-                                <property name="use_markup">True</property>
-                                <property name="wrap">True</property>
-                                <property name="xalign">0</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">False</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </object>
-                      <packing>
-                        <property name="left_attach">0</property>
-                        <property name="top_attach">3</property>
-                        <property name="width">3</property>
-                      </packing>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>
@@ -736,16 +735,6 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBox" id="browserpopup">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="top_attach">1</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkLabel" id="manuallabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -765,6 +754,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="activates_default">True</property>
+                        <signal name="changed" handler="on_browsercmd_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -784,6 +774,16 @@
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="browserpopup">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">1</property>
                       </packing>
                     </child>
                     <child>
@@ -937,7 +937,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -955,7 +955,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
+                    <property name="top_attach">3</property>
                   </packing>
                 </child>
                 <child>
@@ -973,7 +973,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">4</property>
                   </packing>
                 </child>
                 <child>
@@ -1126,7 +1126,60 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkInfoBar" id="proxyDisabledInfobar">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="message_type">warning</property>
+                    <child internal-child="action_area">
+                      <object class="GtkButtonBox">
+                        <property name="can_focus">False</property>
+                        <property name="spacing">6</property>
+                        <property name="layout_style">end</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child internal-child="content_area">
+                      <object class="GtkBox">
+                        <property name="can_focus">False</property>
+                        <property name="spacing">16</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per application proxy settings. The system's default proxy settings will be used.</property>
+                            <property name="wrap">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
                   </packing>
                 </child>
               </object>
@@ -1422,5 +1475,11 @@
     <action-widgets>
       <action-widget response="-7">prefclosebtn</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkListStore" id="liststore5">
+    <columns>
+      <!-- column-name item -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

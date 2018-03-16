@@ -283,9 +283,11 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 		if (title)
 			escTitle = g_markup_escape_text (title, -1);
 		
-		if (!xmlHasNsProp (cur, BAD_CAST"rel", NULL) || !relation || g_str_equal (relation, BAD_CAST"alternate"))
+		if (!xmlHasNsProp (cur, BAD_CAST"rel", NULL) || !relation || g_str_equal (relation, BAD_CAST"alternate")) {
 			alternate = g_strdup (url);
-		else if (g_str_equal (relation, "replies")) {
+		} else if (g_str_equal (relation, "self")) {
+			alternate = g_strdup (url);
+		} else if (g_str_equal (relation, "replies")) {
 			if (!type || g_str_equal (type, BAD_CAST"application/atom+xml")) {
 				gchar *commentUri = (gchar *)common_build_url ((gchar *)url, subscription_get_homepage (ctxt->subscription));
 				if (ctxt->item)

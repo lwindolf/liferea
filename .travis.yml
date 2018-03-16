@@ -1,24 +1,11 @@
 language: c
-sudo: false
+sudo: required
+
+services:
+  - docker
+
+before_install:
+- docker pull ubuntu:16.04
 
 script:
-  - ./autogen.sh
-  - ./configure && make
-
-compiler:
-  - clang
-  - gcc
-
-addons:
-  apt:
-    packages:
-      - intltool
-      - libxml2-dev
-      - libxslt1-dev
-      - libgtk-3-dev
-      - libwebkit2gtk-4.0-dev
-      - libpeas-dev
-      - libsqlite3-dev
-      - libjson-glib-dev
-      - libgirepository1.0-dev
-      - gsettings-desktop-schemas-dev
+  - docker build .

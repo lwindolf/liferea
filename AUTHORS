@@ -74,8 +74,9 @@ Peter Oliver						Google Reader Label Support
 Sergey Snitsaruk <narren96c@gmail.com>			Google Reader Label Support 
 Sebastian Keller <sebastian-keller@gmx.de>		Gedit-like tab close buttons
 Simon Kågedal Reimer <skagedal@gmail.com>		Seekable GStreamer media player
-Leiaz <leiaz@free.fr>					Webkit2 port
+Leiaz <leiaz@free.fr>					Webkit2 implementation and maintenance
 Daneil Aleksandersen 					Partial RFC3229 support saving bandwidth
+                                                        Security fixes, network improvements
 
 
 Maintainer Credits
@@ -108,7 +109,7 @@ Japanese		Takeshi AIHANA <takeshi.aihana@gmail.com>
 Japanese		Takeshi Hamasaki <hmatrjp@users.sourceforge.jp>
 Japanese                IWAI, Masaharu <iwaim.sub@gmail.com>
 French			Vincent Lefèvre <vincent@vinc17.org>
-French			Guillaume Bernard <translate@filorin.fr>
+French			Guillaume Bernard <contact@guillaume-bernard.fr>
 Swedish			Daniel Nylander <po@danielnylander.se>
 Swedish			Andreas Ronnquist <gusnan.mailinglists@openmailbox.org>
 Turkish			Mehmet Atif Ergun <mehmetaergun@gmail.com>

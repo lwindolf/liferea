@@ -1,7 +1,7 @@
 /**
  * @file xml.h  XML helper methods for Liferea
  * 
- * Copyright (C) 2003-2010  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -54,6 +54,19 @@ gchar * unhtmlize (gchar *string);
  * @returns stripped UTF-8 XHTML string
  */
 gchar * unxmlize (gchar *string);
+
+/**
+ * xhtml_parse:
+ *
+ * DOM parse an XHTML string.
+ *
+ * @html:	The HTML
+ * @nodeBase:	An URI to set as xml:base, or #NULL
+ *
+ * Returns: XHTML version of the HTML
+ */
+
+xmlDocPtr xhtml_parse (const gchar *html, gint len);
 
 /**
  * Extract XHTML from a string of HTML and place it in a div tag.

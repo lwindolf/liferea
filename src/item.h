@@ -1,7 +1,7 @@
 /*
- * @file item.h common item handling
+ * @file item.h item handling
  * 
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,6 @@
 #define _ITEM_H
 
 #include <glib.h>
-#include <time.h>
 
 /* Currently Liferea knows only a single type of items used
    for the itemset types feed, folder and search folder. So each 
@@ -58,7 +57,7 @@ typedef struct item {
 	
 	GSList		*metadata;		/*<< Metadata of this item */
 	GHashTable	*tmpdata;		/*<< Temporary data hash used during stateful parsing */
-	time_t		time;			/*<< Last modified date of the headline */
+	gint64		time;			/*<< Last modified date of the headline */
 
 	gchar		*commentFeedId;		/*<< Id of the comment feed of this item (or NULL if there is no comment feed) */
 	
@@ -137,6 +136,16 @@ const gchar *	item_get_title(itemPtr item);
 const gchar *	item_get_description(itemPtr item);
 /* Returns the source of item. */
 const gchar *	item_get_source(itemPtr item);
+
+/**
+ * item_get_teaser: (skip)
+ * @item:	the item
+ *
+ * Create a plain text teaser from the item description
+ *
+ * Returns: (transfer full): newly allocated string to be free'd using g_free() (or NULL)
+ */
+gchar * item_get_teaser(itemPtr item);
 
 /**
  * item_make_link: (skip)

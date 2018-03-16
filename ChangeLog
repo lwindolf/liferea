@@ -1,8 +1,94 @@
-Open problems before 1.12 release
+2018-03-07   Lars Windolf <lars.windolf@gmx.de>
 
-	* Article skimming currently broken
-	* Tray icon needs to be auto-disabled along with a popup
-	  informing users who previously had it enabled
+	Version 1.12.2
+
+	* Adding a plugin installer plugin that allows discovering
+	  and automatically installing 3rd party plugins
+	* #585: Drop language from user agent to increase privacy
+	  (Daniel Aleksandersen)
+	* #583: Add transmission-gtk and aria2 as download tool options
+	  (Daniel Aleksandersen)
+	* #495: New command line option --disable-plugins (-p) to start
+	  with all plugins disabled.
+
+	* Fixes #610: Liferea not showing up in GNOME Software
+	  (Yanko Kaneti)
+	* Fixes #604: Correctly print error message when failing
+	  to unlock GNOME keyring
+	  (ghost)
+	* Fixes #602: CSS style for GTK link colors not used
+	  (reported by pupyc)
+	* Fixes #581: Redirect location updates and adds HTTP 308 (RFC 7538) support
+	  (Daniel Aleksandersen)
+	* Fixes #578: Unable to set unread items in bold
+	  (Leiaz, reported by EverEve)
+
+	* #612: Update of French translation
+	  (Guillaume Bernard)
+	* #596: Update of Swedish translation
+	  (jony0008)
+	* #594: Update of Polish default feed list
+	  (wmyrda)
+	* #584: Fixes broken OPML feed list entries
+	  (Daniel Aleksandersen)
+	* #584: Added Norwegian feed list
+	  (Daniel Aleksandersen)
+	* #577: Fixes newsbin doc typo
+	  (Daniel Aleksandersen)
+
+
+2017-12-27   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12.1
+
+	* Fixes #562: Lintian spelling errors
+	  (reported by Paul Gevers)
+	* Fixes #563: Appstream data has new format
+	  (patch by Paul Gevers)
+	* Fixes #572: Doesn't remember some sort orders
+	  (reported by geplus)
+	* Fixes #504: Fix assertions/crashes on changing view layouts
+	  (Leiaz)
+	* Fixes #573: Workaround to avoid GtkPaned shrinking
+	  (Leiaz)
+
+	* #566: Update of Italian translation (Gianvito Cavasoli)
+	* #566: Update of Italian default feed list (Gianvito Cavasoli)
+	* #514: Update of Indonesian translation (Samsul Ma'arif)
+	* #514: Added Indonesian default feed list (Samsul Ma'arif)
+	* Update of German translation
+
+
+2017-11-30   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12.0
+
+	* Fixes unhiding from tray icon when activated via GApplication
+	  (when starting Liferea a 2nd time)
+	* #399: Reorder columns in 'Normal' email-like view
+	  to have the date column always at the end
+	  (Mikel Olasagasti)
+	* #532: Add plugin to make unread feeds titles bold
+	  (Yanko Kaneti)
+	* Workaround for #503: Liferea deanonymize Tor
+	  (Leiaz)
+	* Fixes #450: #546 Resize both panes in normal and wide view
+	  (Leiaz)
+	* Fixes #538: toggle_visibility() does not make a minimized window
+	  visible again
+	  (reported by Balló György)
+	* Fixes #522: Segfault when switching feed in combined view
+	  (patch by jonmstone)
+	* Fixes #419, #457: Handling of relative URLs in Atom parser
+	  (Leiaz)
+	* Added 'View Image' context menu option in HTML view
+	* Dropped del.icio.us from social bookmarking options
+	  as it is a read-only service now.
+	* Redesign of the wide view mode: larger titles with small text teasers
+	* Added optional AMP/HTML5 content enrichment feature
+
+
+2017-03-26   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12-rc3
 
@@ -12,14 +98,18 @@ Open problems before 1.12 release
 	  (Rich Coe)
 	* Fixes #363: Missing space above internal browser address bar
 	  (reported by nekohayo, patch by Mikel Olasagasti)
+	* Fixes #208: All "Unread" search folder items marked read at once
+	  (Leiaz)
 	* Fixes #251: Liferea does not always use theme icons when it is launched
 	  on system startup (reported by GreenLunar, fix by Leiaz)
+	* Change headline column sorting in wide view to time sorted
 
 	* Updated Finnish translation (Jorma Karvonen)
 	* Updated Latvian translation (Rihards Prieditis)
 	* Updated Albanian translation (Bensik Bleta)
 	* Updated Hungarian translation (Balázs Úr)
 	* Updated Brazlian translation (Rafael Ferreira)
+	* Updated French translation (Guillaume Bernard)
 
 
 2016-11-11   Lars Windolf <lars.windolf@gmx.de>

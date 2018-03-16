@@ -4,32 +4,37 @@
     <title>Przykładowa lista subskrypcji Liferea</title>
   </head>
   <body>
-    <outline text="Przykładowe Subskrypcje">
-      <outline text="polskie">
-        <outline text="7thGuard.net" htmlUrl="http://www.7thguard.net/" xmlUrl="http://rss.7thguard.net/7thguard.xml" />
-        <outline text="Linux.pl" htmlUrl="http://linux.pl/" xmlUrl="http://www.linux.pl/rss.php" />
-      <outline text="Hacking.pl" htmlUrl="http://hacking.pl/" xmlUrl="http://rss.hacking.pl/" />
-      </outline>
+  <outline text="Przykładowe Subskrypcje">
+    <outline text="Wiadomości IT">
+      <outline text="Benchmark.pl" htmlUrl="http://www.benchmark.pl/" xmlUrl="http://www.benchmark.pl/rss/aktualnosci-pliki.xml" />
+      <outline text="dobreprogramy" htmlUrl="https://www.dobreprogramy.pl/" xmlUrl="http://feeds.feedburner.com/dobreprogramy/Aktualnosci?format=xml" />
+      <outline text="Dziennik Internautów" htmlUrl="http://di.com.pl/" xmlUrl="http://feeds.feedburner.com/glowny-di?format=xml" />
+      <outline text="TwojePC.pl" htmlUrl="https://twojepc.pl/" xmlUrl="https://twojepc.pl/news_rss.php" />
+    </outline>
+    <outline text="Bezpieczeństwo IT"> 
+      <outline text="Sekurak" htmlUrl="https://sekurak.pl/" xmlUrl="http://feeds.feedburner.com/Sekurak?format=xml" />
+      <outline text="Niebezpiecznik.pl" htmlUrl="https://niebezpiecznik.pl/" xmlUrl="http://feeds.feedburner.com/niebezpiecznik?format=xml" />
+    </outline>
 
-      <!-- lets keep this English block in sync over all feed lists! -->
-      <outline text="międzynarodowe">
+  <!-- lets keep this English block in sync over all feed lists! -->
+    <outline text="międzynarodowe">
 		<outline text="News">		<!-- translate this title for localized feed list -->
-			<outline text="Ars Technica" htmlUrl="http://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
-			<outline text="Slashdot" htmlUrl="http://slashdot.org"  xmlUrl="http://slashdot.org/slashdot.rss" />
-			<outline text="BBC" htmlUrl="http://newsrss.bbc.co.uk/" xmlUrl="http://newsrss.bbc.co.uk/rss/newsonline_world_edition/front_page/rss.xml"/>
-			<outline text="Science" htmlUrl="http://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
+			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
+			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="http://rss.slashdot.org/Slashdot/slashdot" />
+			<outline text="BBC" htmlUrl="http://www.bbc.com/news" xmlUrl="http://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
+			<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
 		</outline>
 		<outline text="Open Source">		<!-- translate this title for localized feed list -->
 			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
 		</outline>
 		<outline text="Podcasts &amp; Music">		<!-- translate this title for localized feed list -->
-			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/podcast.xml"/>
-			<outline text="Free Music Archive" htmlUrl="http://freemusicarchive.org/" xmlUrl="http://freemusicarchive.org/recent.atom"/>
+			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/feed/atom/"/>
+			<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.orgrecent.atom"/>
 			<outline text="Gorilla vs. Bear" htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
 		</outline>
 		<outline text="Comics">
-			<outline text="xkcd" htmlUrl="http://xkcd.com/" xmlUrl="http://xkcd.com/atom.xml"/>
+			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
 		</outline>
       </outline>
 	<!-- end of default block -->

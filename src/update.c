@@ -538,6 +538,7 @@ update_execute_request (gpointer owner,
 	updateJobPtr job;
 	
 	g_assert (request->options != NULL);
+	g_assert (request->source != NULL);
 	
 	job = update_job_new (owner, request, callback, user_data, flags);
 	job->state = REQUEST_STATE_PENDING;	

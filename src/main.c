@@ -4,11 +4,6 @@
  * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *  
- * Some code like the command line handling was inspired by 
- *
- * Pan - A Newsreader for Gtk+
- * Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
- *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or

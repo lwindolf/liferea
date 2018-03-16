@@ -1,8 +1,8 @@
 /**
- * @file html.c  HTML favicon and feed link auto discovery
+ * @file html.c  HTML parsing
  * 
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004-2009 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2017 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 enum {
 	LINK_FAVICON,
 	LINK_RSS_ALTERNATE,
+	LINK_AMPHTML
 };
 
 /**
@@ -94,6 +95,9 @@ checkLinkRef (const gchar* str, gint linkType)
 		     (common_strcasestr (str, "rss+xml") != NULL) ||
 		     (common_strcasestr (str, "rdf+xml") != NULL) ||
 		     (common_strcasestr (str, "atom+xml") != NULL)))
+			return res;
+	} else if (linkType == LINK_AMPHTML) {
+		if (common_strcasestr (str, "amphtml") != NULL)
 			return res;
 	}
 	g_free (res);
@@ -235,4 +239,81 @@ html_discover_favicon (const gchar * data, const gchar * baseUri)
 	}
 	
 	return res;
+}
+
+/* Black and whitelisting patterns inspired by Mozillas Reader mode matching */
+static GRegex *unlikelyCandidates = NULL;
+static GRegex *maybeCandidates = NULL;
+
+#define UNLIKELY_CANDIDATES "author|author-line|published|banner|breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|foot|header|legends|menu|modal|related|remark|replies|rss|shoutbox|sidebar|skyscraper|social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup|yom-remote"
+#define MAYBE_CANDIDATES    "and|article|body|column|main|shadow"
+
+static void
+html_article_clean (xmlNodePtr node)
+{
+	xmlNodePtr	cur;
+	GError		*err = NULL;
+
+	// Setup regexes
+	if (!unlikelyCandidates) {
+		unlikelyCandidates = g_regex_new (UNLIKELY_CANDIDATES, G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
+		maybeCandidates    = g_regex_new (MAYBE_CANDIDATES   , G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
+	}
+
+	cur = node->xmlChildrenNode;
+	while (cur) {
+		gchar		*class, *id;
+		xmlNodePtr	unlink = NULL;
+
+	 	if (!cur->name || cur->type != XML_ELEMENT_NODE) {
+			cur = cur->next;
+			continue;
+		}
+
+		if (g_str_equal (cur->name , "h1"))
+			unlink = cur;
+		
+		class = xml_get_attribute (cur, "class");
+		id    = xml_get_attribute (cur, "id");
+		if ((class && g_regex_match (unlikelyCandidates, class, 0, NULL) &&
+                             !g_regex_match (maybeCandidates, class, 0, NULL)) ||
+                    (id && g_regex_match (unlikelyCandidates, id, 0, NULL) &&
+		          !g_regex_match (maybeCandidates, id, 0, NULL)))
+			unlink = cur;
+
+		if (!unlink)
+			html_article_clean (cur);
+
+		cur = cur->next;
+
+		if (unlink)
+			xmlUnlinkNode (unlink);
+
+		g_free (class);
+		g_free (id);
+	}
+}
+
+gchar *
+html_get_article (const gchar *data, const gchar *baseUri) {
+	xmlDocPtr	doc;
+	xmlNodePtr	node;
+
+	doc = xhtml_parse ((gchar *)data, (size_t)strlen(data));
+	if (!doc)
+		return NULL;
+
+	// Find article, we only expect a single article...
+	node = xpath_find (xmlDocGetRootElement (doc), "//article");
+	if (!node)
+		return NULL;
+
+	html_article_clean (node);
+
+	return xhtml_extract (node, 1, baseUri);
+}
+
+gchar *
+html_get_amp_url (const gchar *data) {
+	return search_links (data, LINK_AMPHTML);
 }

@@ -23,6 +23,7 @@
 #include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
+#include <webkit2/webkit2.h>
 
 #include "common.h"
 #include "conf.h"
@@ -164,13 +165,29 @@ conf_proxy_reset_settings_cb (GSettings *settings,
 	gint		proxyport;
 	gint		proxydetectmode;
 	gboolean	proxyuseauth;
+	GtkWidget 	*dialog = NULL;
 
 	proxyname = NULL;
 	proxyport = 0;
 	proxyusername = NULL;
 	proxypassword = NULL;
-
 	conf_get_int_value (PROXY_DETECT_MODE, &proxydetectmode);
+
+#if !WEBKIT_CHECK_VERSION (2, 15, 3)
+	if (proxydetectmode != PROXY_DETECT_MODE_AUTO)
+	{
+		dialog = gtk_message_dialog_new (NULL,
+			0,
+			GTK_MESSAGE_INFO,
+			GTK_BUTTONS_CLOSE,
+			_("Your version of WebKitGTK+ doesn't support changing the proxy settings from Liferea. The system's default proxy settings will be used."));
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
+		conf_set_int_value (PROXY_DETECT_MODE, PROXY_DETECT_MODE_AUTO);
+		return;
+	}
+#endif
 	switch (proxydetectmode) {
 		default:
 		case 0:

@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  * 
- * Copyright (C) 2003-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #include "debug.h"
 #include "favicon.h"
 #include "feedlist.h"
+#include "html.h"
 #include "itemlist.h"
 #include "metadata.h"
 #include "node.h"
@@ -93,6 +94,11 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->markAsRead = TRUE;
 	xmlFree (tmp);
+
+	tmp = xmlGetProp (xml, BAD_CAST"html5Extract");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		feed->html5Extract = TRUE;
+	xmlFree (tmp);
 							
 	title = xmlGetProp (xml, BAD_CAST"title");
 	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
@@ -137,6 +143,9 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 			
 		if (feed->markAsRead)
 			xmlNewProp (xml, BAD_CAST"markAsRead", BAD_CAST"true");
+
+		if (feed->html5Extract)
+			xmlNewProp (xml, BAD_CAST"html5Extract", BAD_CAST"true");
 	}
 
 	if (node->subscription)
@@ -207,6 +216,74 @@ feed_get_max_item_count (nodePtr node)
 	}
 }
 
+// HTML5 Headline enrichment
+
+static void
+feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags) {
+	itemPtr item;
+	gchar	*article;
+
+	if (!result->data || result->httpstatus >= 400)
+		return;
+
+	item = item_load (GPOINTER_TO_UINT (userdata));
+	if (!item)
+		return;
+
+	article = html_get_article (result->data, result->source);
+
+	if (article)
+		article = xhtml_strip_dhtml (article);
+	if (article) {
+		// Enable AMP images by replacing <amg-img> by <img>
+		gchar *tmp = g_strjoinv("<img", g_strsplit(article, "<amp-img", 0));
+		g_free (article);
+		article = tmp;
+
+		item_set_description (item, article);
+		db_item_update (item);
+		itemlist_update_item (item);
+		g_free (article);
+	} else {
+		// If there is no HTML5 article try to fetch AMP source if there is one
+		gchar *ampurl = html_get_amp_url (result->data);
+		if (ampurl) {
+			updateRequestPtr request;
+
+			debug3 (DEBUG_HTML, "Fetching AMP HTML %ld %s : %s", item->id, item->title, ampurl);
+			request = update_request_new ();
+			update_request_set_source (request, ampurl);
+			// Explicitely do not pass proxy/auth options to Google
+			request->options = g_new0 (struct updateOptions, 1);	
+			update_execute_request (NULL, request, feed_enrich_item_cb, item, 0);
+		}
+	}
+	item_unload (item);
+}
+
+/**
+ * Checks content of an items source and tries to crawl content 
+ */
+void
+feed_enrich_item (subscriptionPtr subscription, itemPtr item)
+{
+	updateRequestPtr request;
+
+	if (!item->source)
+		return;
+
+	// Fetch item->link document and try to parse it as XHTML
+	debug3 (DEBUG_HTML, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
+	request = update_request_new ();
+	update_request_set_source (request, item->source);
+
+	// Pass options of parent feed (e.g. password, proxy...)
+	request->options = update_options_copy (subscription->updateOptions);
+
+	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), 0);
+}
+
+
 /* implementation of subscription type interface */
 
 static void
@@ -243,6 +320,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		} else {
 			/* Feed found, process it */
 			itemSetPtr	itemSet;
+			gboolean	html5_enabled;
 			
 			node->available = TRUE;
 			

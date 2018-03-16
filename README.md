@@ -1,6 +1,4 @@
-Note: Travis is disabled because of Webkit2 requiring Ubuntu 16.04+ not yet supported.
-
-![build status git master](https://travis-ci.org/lwindolf/liferea.svg?branch=master) ![Coverity Scan Build Status](https://scan.coverity.com/projects/4287/badge.svg)
+[![Build Status](https://travis-ci.org/lwindolf/liferea.svg?branch=master)](https://travis-ci.org/lwindolf/liferea) ![Coverity Scan Build Status](https://scan.coverity.com/projects/4287/badge.svg)
 
 
 Introduction
@@ -15,9 +13,7 @@ Liferea is a desktop feed reader/news aggregator that brings together all of the
 Installation from Package
 -------------------------
 
-We do not provide packages, but others do. Detailed instructions on how to 
-get Liferea packages installed on the different distributions can 
-be found at https://lzone.de/liferea/install.htm
+For distro specific package installation check out https://lzone.de/liferea/install.htm
 
 
 
