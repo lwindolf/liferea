@@ -1,31 +1,28 @@
-# translation of tr_new.po to
-# translation of tr.po.4.po to
-# Liferea Turkish Translation
+# Turkish translation for Liferea
 # Copyright (C) 2007 Mehmet Atif Ergun
 # This file is distributed under the same license as the Liferea package.
-#
 # Mehmet Atif Ergun <mehmetaergun@gmail.com>, 2007.
 # Eren Türkay <turkay.eren@gmail.com>, 2007.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: tr_new\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-18 00:24+0100\n"
-"PO-Revision-Date: 2017-02-27 13:00+0300\n"
+"PO-Revision-Date: 2018-03-16 14:35+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
-"Language-Team: turkce@pardus.org.tr\n"
+"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n < 2 ? 0 : 1;\n"
-"X-Generator: Poedit 1.8.9\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: ../liferea.appdata.xml.in.h:1
-#, fuzzy
 msgid "RSS feed reader"
-msgstr "Besleme Okuyucusu"
+msgstr "RSS besleme okuyucu"
 
 #: ../liferea.appdata.xml.in.h:2
 msgid ""
@@ -38,9 +35,9 @@ msgid ""
 msgstr ""
 "Liferea, Linux Feed Reader'ın bir kısaltmasıdır. Çevrim içi haber "
 "beslemeleri için bir haber toplayıcısıdır. RSS/RDF, CDF ve Atom gibi çok "
-"sayıda farklı besleme biçimini destekler. Birçok haber okuyucu bulunabilir "
-"fakat bunlar Linux'ta kullanılamayabilir ya da yüklenmek için birçok ek "
-"kütüphane gereksinir. Liferea; hızlı, kullanımı kolay, GTK/GNOME için "
+"sayıda farklı besleme biçimini destekler. Birçok farklı haber okuyucu vardır "
+"ancak bunlar Linux'ta kullanılamayabilir ya da yüklenmek için birçok ek "
+"kütüphane gerektirir. Liferea hızlı, kullanımı kolay ve GTK/GNOME için "
 "kurulumu kolay haber toplayıcısı olarak bu boşluğu kapatmayı denemektedir."
 
 #: ../liferea.appdata.xml.in.h:3
@@ -86,11 +83,11 @@ msgstr "Liferea"
 
 #: ../net.sourceforge.liferea.desktop.in.h:2
 msgid "Feed Reader"
-msgstr "Besleme Okuyucusu"
+msgstr "Besleme Okuyucu"
 
 #: ../net.sourceforge.liferea.desktop.in.h:3
 msgid "Liferea Feed Reader"
-msgstr "Liferea Besleme Okuyucusu"
+msgstr "Liferea Besleme Okuyucu"
 
 #: ../net.sourceforge.liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
@@ -160,12 +157,12 @@ msgstr "Telif Hakkı"
 
 #: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
 msgid "children with"
-msgstr "alttakiler ile"
+msgstr "alt ile birlikte"
 
 #: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
 #: ../xslt/vfolder.xml.in.h:2
 msgid "unread headlines"
-msgstr "okunmamış haber başlıkları"
+msgstr "okunmamış haber başlığı"
 
 #: ../xslt/folder.xml.in.h:1
 msgid "Folder:"
@@ -201,7 +198,7 @@ msgstr "İlişkili"
 
 #: ../xslt/item.xml.in.h:8
 msgid "Also posted in"
-msgstr "Tekrarlanan yer"
+msgstr "Yinelenen yer"
 
 #: ../xslt/item.xml.in.h:9
 msgid "Creator"
@@ -225,11 +222,11 @@ msgstr "Güncelleniyor..."
 
 #: ../xslt/item.xml.in.h:14
 msgid "Section"
-msgstr "Kısım"
+msgstr "Bölüm"
 
 #: ../xslt/item.xml.in.h:15
 msgid "Department"
-msgstr "Bölüm"
+msgstr "Şube"
 
 #: ../xslt/newsbin.xml.in.h:1
 msgid "News Bin:"
@@ -272,6 +269,8 @@ msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
 msgstr ""
+"WebKitGTK+ sürümünüz vekil ayarlarını Liferea'dan değiştirmeyi "
+"desteklemiyor. Sistemin öntanımlı vekil ayarları kullanılacak."
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:777
@@ -550,8 +549,7 @@ msgstr "Vekile bağlanılamıyor"
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
-"Bir ağ hatası oluştu, ya da diğer taraf bağlantıyı beklenmedik şekilde "
-"kapattı"
+"Bir ağ hatası oluştu ya da diğer taraf bağlantıyı beklenmedik şekilde kapattı"
 
 #. http 3xx redirection
 #: ../src/net.c:409
@@ -565,7 +563,7 @@ msgid ""
 "password in the feed properties dialog box"
 msgstr ""
 "Bu beslemeyi indirmeye yetkili değilsiniz. Lütfen kullanıcı adınızı ve "
-"şifrenizi besleme özellikleri iletişim kutusunu kullanarak güncelleyiniz."
+"parolanızı besleme özellikleri iletişim kutusunu kullanarak güncelleyiniz."
 
 #: ../src/net.c:414
 msgid "Payment required"
@@ -807,7 +805,6 @@ msgstr "%d%s"
 msgid "%d attachment"
 msgid_plural "%d attachments"
 msgstr[0] "%d ek"
-msgstr[1] "%d ek"
 
 #: ../src/ui/enclosure_list_view.c:383 ../src/ui/subscription_dialog.c:352
 msgid "Choose File"
@@ -828,14 +825,12 @@ msgstr "Pixmap dosyasını bulamadı: %s"
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d yeni)"
-msgstr[1] " (%d yeni)"
 
 #: ../src/ui/liferea_shell.c:395
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d okunmamış%s"
-msgstr[1] "%d okunmamış%s"
 
 #: ../src/ui/liferea_shell.c:770
 msgid "Help Topics"
@@ -1110,7 +1105,7 @@ msgstr "Seçili abonelik için özellikler penceresini açar."
 
 #: ../src/ui/liferea_shell.c:986
 msgid "_Remove"
-msgstr "_Kaldır"
+msgstr "Kaldı_r"
 
 #: ../src/ui/liferea_shell.c:986
 msgid "Removes the selected subscription."
@@ -1158,11 +1153,11 @@ msgstr "Ögenin bağlantısını Liferea öge panosunun içinde açar"
 
 #: ../src/ui/liferea_shell.c:1000 ../src/ui/popup_menu.c:119
 msgid "Open In _External Browser"
-msgstr "_Harici Tarayıcıda Aç"
+msgstr "_Dış Tarayıcıda Aç"
 
 #: ../src/ui/liferea_shell.c:1000
 msgid "Launches the item's link in the configured external browser."
-msgstr "Ögenin bağlantısını yapılandırılmış harici tarayıcıda açar."
+msgstr "Ögenin bağlantısını yapılandırılmış dış tarayıcıda açar."
 
 #: ../src/ui/liferea_shell.c:1005
 msgid "_Fullscreen"
@@ -1179,7 +1174,7 @@ msgstr "Kaydedilmiş Arama"
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "\"%s\" (%s) için kullanıcı adı ve şifre giriniz:"
+msgstr "\"%s\" (%s) için kullanıcı adı ve parola giriniz:"
 
 #: ../src/ui/auth_dialog.c:125
 msgid "Unknown source"
@@ -1212,7 +1207,7 @@ msgstr "*** Başlık yok ***"
 
 #: ../src/ui/item_list_view.c:483
 msgid " <span background='red' color='black'> important </span> "
-msgstr ""
+msgstr " <span background='red' color='black'> önemli </span> "
 
 #: ../src/ui/item_list_view.c:793
 msgid "Headline"
@@ -1305,7 +1300,7 @@ msgstr "Yerel Aboneliklere Dönüştür..."
 
 #: ../src/ui/preferences_dialog.c:86
 msgid "GNOME default"
-msgstr "GNOME ön tanımlısı"
+msgstr "GNOME öntanımlısı"
 
 #: ../src/ui/preferences_dialog.c:87
 msgid "Text below icons"
@@ -1361,7 +1356,7 @@ msgstr "Birleşik Görünüm"
 
 #: ../src/ui/preferences_dialog.c:451
 msgid "Default Browser"
-msgstr "Ön Tanımlı Tarayıcı"
+msgstr "Öntanımlı Tarayıcı"
 
 #: ../src/ui/preferences_dialog.c:453
 msgid "Manual"
@@ -1390,7 +1385,7 @@ msgstr ""
 
 #: ../src/ui/feed_list_node.c:406
 msgid "Deleting entry"
-msgstr "Girişi siliyor"
+msgstr "Girdi siliniyor"
 
 #: ../src/ui/feed_list_node.c:407
 #, c-format
@@ -1416,11 +1411,10 @@ msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
 "The provider of this feed suggests an update interval of %d minutes."
 msgstr[0] "Bu beslemenin sunucusu %d dakikalık güncelleme aralığı öneriyor."
-msgstr[1] "Bu beslemenin sunucusu %d dakikalık güncelleme aralığı öneriyor."
 
 #: ../src/ui/subscription_dialog.c:430
 msgid "This feed specifies no default update interval."
-msgstr "Bu beslemenin ön tanımlı güncelleme aralığı yok."
+msgstr "Bu beslemenin öntanımlı güncelleme aralığı yok."
 
 #: ../src/ui/browser_tabs.c:264
 msgid "Untitled"
@@ -1540,7 +1534,7 @@ msgstr "Bağlantıyı Tarayıcıda Aç"
 
 #: ../src/webkit/liferea_web_view.c:175
 msgid "Open Link In External Browser"
-msgstr "Bağlantıyı Harici Tarayıcıda Aç"
+msgstr "Bağlantıyı Dış Tarayıcıda Aç"
 
 #: ../src/webkit/liferea_web_view.c:181
 #, c-format
@@ -1552,9 +1546,8 @@ msgid "_Copy Link Location"
 msgstr "Bağlantı Konumunu _Kopyala"
 
 #: ../src/webkit/liferea_web_view.c:188
-#, fuzzy
 msgid "_View Image"
-msgstr "Resmi F_arklı Kaydet"
+msgstr "Resmi _Gör"
 
 #: ../src/webkit/liferea_web_view.c:189
 msgid "_Copy Image Location"
@@ -1582,7 +1575,7 @@ msgstr "Hakkında"
 
 #: ../glade/about.ui.h:2
 msgid "Liferea is a news aggregator for GTK+"
-msgstr "Liferea, GTK+ için bir haber okuyucusudur"
+msgstr "Liferea, GTK+ için bir haber okuyucudur"
 
 #: ../glade/about.ui.h:3
 msgid "Liferea Homepage"
@@ -1597,7 +1590,7 @@ msgid ""
 "Note: <i>The username and password will be saved to your Liferea feedlist "
 "file without using encryption.</i>"
 msgstr ""
-"Not: <i>Kullanıcı adı ve şifre, Liferea'nın besleme listesi dosyasında "
+"Not: <i>Kullanıcı adı ve parola, Liferea'nın besleme listesi dosyasında "
 "şifrelemeden saklanacaktır.</i>"
 
 #: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
@@ -1606,7 +1599,7 @@ msgstr "Kullanıcı _adı:"
 
 #: ../glade/auth.ui.h:6 ../glade/properties.ui.h:33
 msgid "_Password:"
-msgstr "_Şifre:"
+msgstr "_Parola:"
 
 #: ../glade/enclosure_handler.ui.h:1
 msgid "Open Enclosure"
@@ -1646,7 +1639,7 @@ msgstr "Lütfen Google Okuyucu hesap bilgilerini giriniz."
 #: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
 #: ../glade/ttrss_source.ui.h:4
 msgid "_Password"
-msgstr "_Şifre"
+msgstr "_Parola"
 
 #: ../glade/google_source.ui.h:4 ../glade/inoreader_source.ui.h:4
 #: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
@@ -1663,11 +1656,11 @@ msgstr "Lütfen InoReader hesap ayarlarınızı giriniz."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
-msgstr ""
+msgstr "sayfa 1"
 
 #: ../glade/mainwindow.ui.h:3
 msgid "page 2"
-msgstr ""
+msgstr "sayfa 2"
 
 #: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
 msgid "0"
@@ -1679,7 +1672,7 @@ msgstr "Haber Başlıklarını Görüntüle"
 
 #: ../glade/mainwindow.ui.h:6
 msgid "page 3"
-msgstr ""
+msgstr "sayfa 3"
 
 #: ../glade/mainwindow.ui.h:7 ../glade/prefs.ui.h:23
 msgid "Headlines"
@@ -1732,7 +1725,7 @@ msgstr "_Kaynak:"
 
 #: ../glade/new_subscription.ui.h:9
 msgid "Download / Postprocessing"
-msgstr "İndir / Ardişlem"
+msgstr "İndirme / Ardişlem"
 
 #: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
 msgid "_Don't use proxy for download"
@@ -1748,8 +1741,8 @@ msgid ""
 "directories in non-supported formats.  See the documentation for more "
 "information."
 msgstr ""
-"Liferea, desteklenmeyen biçim kullanan haber kaynağı ve dizinlerine erişmek "
-"için harici süzgeç eklentileri kullanabilir. Daha çok bilgi için yardım "
+"Liferea, desteklenmeyen biçim kullanan haber kaynağına ve dizinlere erişmek "
+"için dış süzgeç eklentileri kullanabilir. Daha çok bilgi için yardım "
 "belgelerine bakınız."
 
 #: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:21
@@ -1793,7 +1786,7 @@ msgstr "Besleme Önbelleği İşlenmesi"
 
 #: ../glade/prefs.ui.h:3
 msgid "Default _number of items per feed to save:"
-msgstr "Besleme başına saklanacak ön tanımlı öge _sayısı:"
+msgstr "Besleme başına saklanacak öntanımlı öge _sayısı:"
 
 #: ../glade/prefs.ui.h:5
 msgid "Feed Update Settings"
@@ -1815,7 +1808,7 @@ msgstr "Başlangıçta tüm abonelikleri _güncelle."
 
 #: ../glade/prefs.ui.h:9
 msgid "Default Feed Refresh _Interval:"
-msgstr "Ön Tanımlı Besleme Güncelleme _Aralığı:"
+msgstr "Öntanımlı Besleme Güncelleme _Aralığı:"
 
 #: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:7
 msgid "1"
@@ -1831,7 +1824,7 @@ msgstr "Klasör Görüntüleme Ayarları"
 
 #: ../glade/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
-msgstr "_Klasörü seçince, içerdiği tüm ögeleri göster"
+msgstr "Klasör seçildiğinde tüm alt beslemelerin ögelerini _göster."
 
 #: ../glade/prefs.ui.h:14
 msgid "_Hide read items."
@@ -1839,11 +1832,11 @@ msgstr "_Okunan ögeleri gizle."
 
 #: ../glade/prefs.ui.h:15
 msgid "Feed Icons (Favicons)"
-msgstr "Besleme Simgeleri (GözdeSimge)"
+msgstr "Besleme Simgeleri (Simgeler)"
 
 #: ../glade/prefs.ui.h:16
 msgid "_Update all favicons now"
-msgstr "_Tüm GözdeSimgeleri şimdi güncelle"
+msgstr "_Tüm simgeleri şimdi güncelle"
 
 #: ../glade/prefs.ui.h:17
 msgid "Folders"
@@ -1859,11 +1852,11 @@ msgstr "_Makaleleri şu tuş(lar)la gözden geçir:"
 
 #: ../glade/prefs.ui.h:20
 msgid "_Default View Mode:"
-msgstr "_Ön Tanımlı Görüntüleme Kipi:"
+msgstr "_Öntanımlı Görüntüleme Kipi:"
 
 #: ../glade/prefs.ui.h:21
 msgid "Web Integration"
-msgstr "Web Bütünleştirmesi"
+msgstr "Web Tümleşmesi"
 
 #: ../glade/prefs.ui.h:22
 msgid "_Post Bookmarks to"
@@ -1871,7 +1864,7 @@ msgstr "_Yer imlerini gönder"
 
 #: ../glade/prefs.ui.h:24
 msgid "Internal Browser Settings"
-msgstr "Dahili Tarayıcı Ayarları"
+msgstr "İç Tarayıcı Ayarları"
 
 #: ../glade/prefs.ui.h:25
 msgid "Open links in Liferea's _window."
@@ -1887,7 +1880,7 @@ msgstr "Tarayıcı eklentilerini _etkinleştir."
 
 #: ../glade/prefs.ui.h:28
 msgid "External Browser Settings"
-msgstr "Harici Tarayıcı Ayarları"
+msgstr "Dış Tarayıcı Ayarları"
 
 #: ../glade/prefs.ui.h:29
 msgid "_Browser:"
@@ -1956,13 +1949,15 @@ msgstr "Vekil _Kullanıcı Adı:"
 
 #: ../glade/prefs.ui.h:46
 msgid "Proxy Pass_word:"
-msgstr "Vekil _Şifresi:"
+msgstr "Vekil Par_olası:"
 
 #: ../glade/prefs.ui.h:47
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
+"WebKitGTK+ sürümünüz 2.15.3'ten eskidir. Her bir uygulama için başka vekil "
+"ayarlarını desteklemez. Sistemin öntanımlı vekil ayarları kullanılacak."
 
 #: ../glade/prefs.ui.h:48
 msgid "Proxy"
@@ -1982,15 +1977,15 @@ msgstr "Gizlilik"
 
 #: ../glade/prefs.ui.h:52
 msgid "Downloading Enclosures"
-msgstr "Ekler İndiriliyor"
+msgstr "Ekleri İndirme"
 
 #: ../glade/prefs.ui.h:53
 msgid "_Download using"
-msgstr "_Kullanarak indir"
+msgstr "Şunu kullanarak _indir"
 
 #: ../glade/prefs.ui.h:54
 msgid "Opening Enclosures"
-msgstr "Eklerin Açılması"
+msgstr "Ekleri Açma"
 
 #: ../glade/prefs.ui.h:55
 msgid "Enclosures"
@@ -2018,7 +2013,7 @@ msgstr "Güncelleme Aralığı"
 
 #: ../glade/properties.ui.h:5
 msgid "_Use global default update interval."
-msgstr "_Evrensel ön tanımlı güncelleme aralığını kullan."
+msgstr "_Evrensel öntanımlı güncelleme aralığını kullan."
 
 #: ../glade/properties.ui.h:6
 msgid "_Feed specific update interval of"
@@ -2042,8 +2037,8 @@ msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
 "directories in non-supported formats."
 msgstr ""
-"Liferea, desteklenmeyen biçim kullanan besleme ve dizinlere erişmek için "
-"harici süzgeç eklentileri kullanabilir."
+"Liferea, desteklenmeyen biçim kullanan besleme ve dizinlere erişmek için dış "
+"süzgeç eklentileri kullanabilir."
 
 #: ../glade/properties.ui.h:23
 msgid ""
@@ -2055,7 +2050,7 @@ msgstr ""
 
 #: ../glade/properties.ui.h:24
 msgid "_Default cache settings"
-msgstr "_Ön tanımlı önbellek ayarları"
+msgstr "_Öntanımlı önbellek ayarları"
 
 #: ../glade/properties.ui.h:25
 msgid "Di_sable cache"
@@ -2100,7 +2095,7 @@ msgstr "İndirilen ögeleri okundu olarak _imle."
 
 #: ../glade/properties.ui.h:39
 msgid "Extract full content from HTML5 and Google AMP"
-msgstr ""
+msgstr "HTML5 ve Google AMP'den tam içeriği ayıkla"
 
 #: ../glade/properties.ui.h:40
 msgid "Advanced"
@@ -2187,7 +2182,7 @@ msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
 msgstr ""
-"Kendiliğinden besleme keşfini kullanmak istediğiniz, ya da haber kaynağının "
+"Kendiliğinden besleme keşfini kullanmak istediğiniz veya haber kaynağının "
 "tam yerini bildiğiniz web sitesinin adresini belirtiniz. "
 
 #: ../glade/theoldreader_source.ui.h:1
@@ -2208,11 +2203,11 @@ msgstr "Lütfen TinyTinyRSS hesap ayarlarınızı giriniz."
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
-msgstr "_Sunucu Adresi"
+msgstr "_Sunucu URL'si"
 
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
-msgstr "_Kullanıcı adı"
+msgstr "_Kullanıcı Adı"
 
 #: ../glade/update_monitor.ui.h:1
 msgid "Update Monitor"
