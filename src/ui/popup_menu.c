@@ -45,30 +45,6 @@
 #define UI_POPUP_ITEM_IS_TOGGLE		1
 
 static void
-on_popup_quit (void)
-{
-	liferea_shutdown ();
-}
-
-static void
-on_toggle_visibility (void)
-{
-	liferea_shell_toggle_visibility ();
-}
-
-static void
-on_popup_toggle_online (void)
-{
-	network_monitor_set_online (!network_monitor_is_online ());
-}
-
-static void
-on_popup_preferences (void)
-{
-	preferences_dialog_open ();
-}
-
-static void
 ui_popup_menu_at_pos (GtkWidget *menu, GtkMenuPositionFunc func, guint button, guint32 activate_time, gpointer user_data)
 {
 	g_signal_connect_after (G_OBJECT(menu), "unmap-event", G_CALLBACK(gtk_widget_destroy), NULL);
@@ -170,26 +146,6 @@ ui_popup_enclosure_menu (enclosurePtr enclosure, guint button,
 	ui_popup_add_menuitem (menu, _("Copy Link Location"), on_popup_copy_enclosure, enclosure, 0);
 
 	ui_popup_menu (menu, button, activate_time);
-}
-
-void
-ui_popup_systray_menu (GtkMenuPositionFunc func, guint button, guint32 activate_time, gpointer user_data)
-{
-	GtkWidget	*menu;
-	GtkWidget 	*mainwindow = liferea_shell_get_window ();
-
-	menu = gtk_menu_new ();
-
-	ui_popup_add_menuitem (menu, _("_Work Offline"), on_popup_toggle_online, NULL, (!network_monitor_is_online ()) + UI_POPUP_ITEM_IS_TOGGLE);
-	ui_popup_add_menuitem (menu, _("_Update All"), on_menu_update_all, NULL, 0);
-	ui_popup_add_menuitem (menu, _("_Preferences"), on_popup_preferences, "preferences-system", 0);
-
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-
-	ui_popup_add_menuitem (menu, _("_Show Liferea"), on_toggle_visibility, NULL, (!(gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) && gtk_widget_get_visible (mainwindow)) + UI_POPUP_ITEM_IS_TOGGLE);
-	ui_popup_add_menuitem (menu, _("_Quit"), on_popup_quit, "application-exit", 0);
-
-	ui_popup_menu_at_pos (menu, func, button, activate_time, user_data);
 }
 
 /* popup callback wrappers */
