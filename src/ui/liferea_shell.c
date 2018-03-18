@@ -40,8 +40,10 @@
 #include "item_history.h"
 #include "itemlist.h"
 #include "net_monitor.h"
+#include "newsbin.h"
 #include "plugins_engine.h"
 #include "render.h"
+#include "social.h"
 #include "vfolder.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_node.h"
@@ -693,7 +695,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 					if (focusw == GTK_WIDGET (shell->priv->feedlistView))
 						return FALSE;	/* to be handled in feed_list_view_key_press_cb() */
 						
-					on_remove_item_activate (NULL, NULL, NULL);
+					on_action_remove_item (NULL, NULL, NULL);
 					return TRUE;
 					break;
 				case GDK_KEY_n:
@@ -951,10 +953,64 @@ static const GActionEntry liferea_shell_read_write_gaction_entries[] = {
 static const GActionEntry liferea_shell_item_gaction_entries[] = {
 	{"toggle-selected-item-read-status", on_toggle_unread_status, NULL, NULL, NULL},
 	{"toggle-selected-item-flag", on_toggle_item_flag, NULL, NULL, NULL},
-	{"remove-selected-item", on_remove_item_activate, NULL, NULL, NULL},
-	{"launch-selected-item-in-tab", on_popup_launch_item_in_tab_selected, NULL, NULL, NULL},
-	{"launch-selected-item-in-browser", on_popup_launch_item_selected, NULL, NULL, NULL},
-	{"launch-selected-item-in-external-browser", on_popup_launch_item_external_selected, NULL, NULL, NULL}
+	{"remove-selected-item", on_action_remove_item, NULL, NULL, NULL},
+	{"launch-selected-item-in-tab", on_action_launch_item_in_tab, NULL, NULL, NULL},
+	{"launch-selected-item-in-browser", on_action_launch_item_in_browser, NULL, NULL, NULL},
+	{"launch-selected-item-in-external-browser", on_action_launch_item_in_external_browser, NULL, NULL, NULL}
+};
+
+static void
+on_action_open_link_in_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	itemview_launch_URL (g_variant_get_string (parameter, NULL), TRUE /* use internal browser */);
+}
+
+static void
+on_action_open_link_in_external_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	browser_launch_URL_external (g_variant_get_string (parameter, NULL));
+}
+
+static void
+on_action_open_link_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	browser_tabs_add_new (g_variant_get_string (parameter, NULL), g_variant_get_string (parameter, NULL), FALSE);
+}
+
+static void
+on_action_social_bookmark_link (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	gchar *social_url, *link, *title;
+
+	g_variant_get (parameter, "(ss)", &link, &title);
+	social_url = social_get_bookmark_url (link, title);
+	(void)browser_tabs_add_new (social_url, social_url, TRUE);
+	g_free (social_url);
+}
+
+static void
+on_action_copy_link_to_clipboard (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	GtkClipboard	*clipboard;
+	gchar		*link = (gchar *) common_uri_sanitize (BAD_CAST g_variant_get_string (parameter, NULL));
+
+	clipboard = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
+	gtk_clipboard_set_text (clipboard, link, -1);
+
+	clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+	gtk_clipboard_set_text (clipboard, link, -1);
+
+	g_free (link);
+
+}
+
+static const GActionEntry liferea_shell_link_gaction_entries[] = {
+	{"open-link-in-tab", on_action_open_link_in_tab, "s", NULL, NULL},
+	{"open-link-in-browser", on_action_open_link_in_browser, "s", NULL, NULL},
+	{"open-link-in-external-browser", on_action_open_link_in_external_browser, "s", NULL, NULL},
+	/* The parameters are link, then title. */
+	{"social-bookmark-link", on_action_social_bookmark_link, "(ss)", NULL, NULL},
+	{"copy-link-to-clipboard", on_action_copy_link_to_clipboard, "s", NULL, NULL}
 };
 
 static void
@@ -1049,7 +1105,6 @@ void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
 	GMenuModel	*menubar_model;
-	GError		*error = NULL;	
 	gboolean	toggle;
 	gchar		*id;
 	
@@ -1081,6 +1136,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->priv->readWriteActions = G_ACTION_GROUP (g_simple_action_group_new ());
 	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->readWriteActions), liferea_shell_read_write_gaction_entries, G_N_ELEMENTS (liferea_shell_read_write_gaction_entries), NULL);
 	ui_common_add_action_group_to_map (shell->priv->readWriteActions, G_ACTION_MAP (app));
+
+	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_link_gaction_entries, G_N_ELEMENTS (liferea_shell_link_gaction_entries), NULL);
 
 	/* 1.) menu creation */
 	

@@ -85,11 +85,8 @@ typedef enum {
 } open_link_target_type;
 
 static void
-launch_item_selected (open_link_target_type open_link_target)
+launch_item (itemPtr item, open_link_target_type open_link_target)
 {
-	itemPtr		item;
-
-	item = itemlist_get_selected ();
 	if (item) {
 		gchar *link = item_make_link (item);
 
@@ -114,9 +111,6 @@ launch_item_selected (open_link_target_type open_link_target)
 		} else
 			ui_show_error_box (_("This item has no link specified!"));
 
-		item_unload (item);
-	} else {
-		liferea_shell_set_important_status_bar (_("No item has been selected"));
 	}
 }
 
@@ -581,7 +575,7 @@ on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpoint
 {
 	if ((event->type == GDK_KEY_PRESS) && (event->state == 0)
 	    && (event->keyval == GDK_KEY_Delete))
-		on_remove_item_activate(NULL, NULL, NULL);
+		on_action_remove_item(NULL, NULL, NULL);
 
 	return FALSE;
 }
@@ -695,7 +689,6 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 				result = TRUE;
 				break;
 			case 3:
-				item_list_view_select (ilv, item);
 				ui_popup_item_menu (item, eb->button, eb->time);
 				result = TRUE;
 				break;
@@ -727,12 +720,19 @@ on_item_list_view_popup_menu (GtkWidget *widget, gpointer user_data)
 }
 
 static void
-on_Itemlist_row_activated (GtkTreeView *treeview,
+on_item_list_row_activated (GtkTreeView *treeview,
                            GtkTreePath *path,
 			   GtkTreeViewColumn *column,
 			   gpointer user_data)
 {
-    launch_item_selected (DEFAULT);
+	GtkTreeModel *model = gtk_tree_view_get_model (treeview);
+	GtkTreeIter iter;
+
+	if (gtk_tree_model_get_iter (model, &iter, path)) {
+		itemPtr item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
+		launch_item (item, DEFAULT);
+		item_unload (item);
+	}
 }
 
 GtkWidget *
@@ -844,7 +844,7 @@ item_list_view_create (gboolean wide)
 
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
-	g_signal_connect (G_OBJECT (ilv->priv->treeview), "row_activated", G_CALLBACK (on_Itemlist_row_activated), ilv);
+	g_signal_connect (G_OBJECT (ilv->priv->treeview), "row_activated", G_CALLBACK (on_item_list_row_activated), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "popup_menu", G_CALLBACK (on_item_list_view_popup_menu), ilv);
 
@@ -924,21 +924,48 @@ item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 }
 
 void
-on_popup_launch_item_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_action_launch_item_in_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	launch_item_selected (INTERNAL);
+	itemPtr item = NULL;
+	if (parameter)
+		item = item_load (g_variant_get_uint64 (parameter));
+	else
+		item = itemlist_get_selected ();
+
+	if (item) {
+	      launch_item (item, INTERNAL);
+	      item_unload (item);
+	}
 }
 
 void
-on_popup_launch_item_in_tab_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_action_launch_item_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	launch_item_selected (TAB);
+	itemPtr item = NULL;
+	if (parameter)
+		item = item_load (g_variant_get_uint64 (parameter));
+	else
+		item = itemlist_get_selected ();
+
+	if (item) {
+	      launch_item (item, TAB);
+	      item_unload (item);
+	}
 }
 
 void
-on_popup_launch_item_external_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_action_launch_item_in_external_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	launch_item_selected (EXTERNAL);
+	itemPtr item = NULL;
+	if (parameter)
+		item = item_load (g_variant_get_uint64 (parameter));
+	else
+		item = itemlist_get_selected ();
+
+	if (item) {
+	      launch_item (item, EXTERNAL);
+	      item_unload (item);
+	}
 }
 
 /* menu callbacks */
@@ -946,37 +973,31 @@ on_popup_launch_item_external_selected (GSimpleAction *action, GVariant *paramet
 void
 on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	itemPtr		item;
+	itemPtr item = NULL;
+	if (parameter)
+		item = item_load (g_variant_get_uint64 (parameter));
+	else
+		item = itemlist_get_selected ();
 
-	item = itemlist_get_selected ();
 	if (item) {
 		itemlist_toggle_flag (item);
 		item_unload (item);
 	}
 }
 
-void
-on_popup_toggle_flag (void)
-{
-	on_toggle_item_flag (NULL, NULL, NULL);
-}
-
 void 
 on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	itemPtr		item;
+	itemPtr item = NULL;
+	if (parameter)
+		item = item_load (g_variant_get_uint64 (parameter));
+	else
+		item = itemlist_get_selected ();
 
-	item = itemlist_get_selected ();
 	if (item) {
 		itemlist_toggle_read_status (item);
 		item_unload (item);
 	}
-}
-
-void
-on_popup_toggle_read (void)
-{
-	on_toggle_unread_status (NULL, NULL, NULL);
 }
 
 void
@@ -993,23 +1014,20 @@ on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer u
 }
 
 void
-on_remove_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_action_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	itemPtr		item;
+	itemPtr item = NULL;
+	if (parameter)
+		item = item_load (g_variant_get_uint64 (parameter));
+	else
+		item = itemlist_get_selected ();
 
-	item = itemlist_get_selected ();
 	if (item) {
 		itemview_select_item (NULL);
 		itemlist_remove_item (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
 	}
-}
-
-void
-on_popup_remove_selected (void)
-{
-	on_remove_item_activate (NULL, NULL, NULL);
 }
 
 void
@@ -1071,7 +1089,7 @@ on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpoin
 }
 
 void
-on_popup_copy_URL_clipboard (void)
+on_popup_copy_URL_clipboard (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr         item;
 
@@ -1090,7 +1108,7 @@ on_popup_copy_URL_clipboard (void)
 }
 
 void
-on_popup_social_bm_item_selected (void)
+on_popup_social_bm_item_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item;
 
