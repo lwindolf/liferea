@@ -1063,23 +1063,23 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	
 	/* Add GActions to application */
 	shell->priv->generalActions = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->generalActions), liferea_shell_gaction_entries, G_N_ELEMENTS (liferea_shell_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->generalActions), liferea_shell_gaction_entries, G_N_ELEMENTS (liferea_shell_gaction_entries), NULL);
 	ui_common_add_action_group_to_map (shell->priv->generalActions, G_ACTION_MAP (app));
 
 	shell->priv->addActions = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->addActions), liferea_shell_add_gaction_entries, G_N_ELEMENTS (liferea_shell_add_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->addActions), liferea_shell_add_gaction_entries, G_N_ELEMENTS (liferea_shell_add_gaction_entries), NULL);
 	ui_common_add_action_group_to_map (shell->priv->addActions, G_ACTION_MAP (app));
 
 	shell->priv->feedActions = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->feedActions), liferea_shell_feed_gaction_entries, G_N_ELEMENTS (liferea_shell_feed_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->feedActions), liferea_shell_feed_gaction_entries, G_N_ELEMENTS (liferea_shell_feed_gaction_entries), NULL);
 	ui_common_add_action_group_to_map (shell->priv->feedActions, G_ACTION_MAP (app));
 
 	shell->priv->itemActions = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->itemActions), liferea_shell_item_gaction_entries, G_N_ELEMENTS (liferea_shell_item_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->itemActions), liferea_shell_item_gaction_entries, G_N_ELEMENTS (liferea_shell_item_gaction_entries), NULL);
 	ui_common_add_action_group_to_map (shell->priv->itemActions, G_ACTION_MAP (app));
 
 	shell->priv->readWriteActions = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->readWriteActions), liferea_shell_read_write_gaction_entries, G_N_ELEMENTS (liferea_shell_read_write_gaction_entries), shell->priv);
+	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->readWriteActions), liferea_shell_read_write_gaction_entries, G_N_ELEMENTS (liferea_shell_read_write_gaction_entries), NULL);
 	ui_common_add_action_group_to_map (shell->priv->readWriteActions, G_ACTION_MAP (app));
 
 	/* 1.) menu creation */
