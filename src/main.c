@@ -19,9 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
+#include <config.h>
 
 #include <gtk/gtk.h>
 
@@ -63,11 +61,9 @@ main (int argc, char *argv[])
 	signal (SIGHUP, signal_handler);
 #endif
 
-#ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
-#endif
 
 	liferea_app = liferea_application_new ();
 	g_set_prgname ("liferea");

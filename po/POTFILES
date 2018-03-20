@@ -1,7 +1,3 @@
-[encoding: UTF-8]
-
-# List of source files containing translatable strings.
-
 liferea.appdata.xml.in
 net.sourceforge.liferea.desktop.in
 xslt/feed.xml.in
@@ -185,25 +181,25 @@ src/webkit/webkit.c
 src/webkit/liferea_web_view.c
 src/webkit/web_extension/liferea_web_extension.c
 src/webkit/web_extension/web_extension_main.c
-[type: gettext/glade]glade/about.ui
-[type: gettext/glade]glade/auth.ui
-[type: gettext/glade]glade/enclosure_handler.ui
-[type: gettext/glade]glade/google_source.ui
-[type: gettext/glade]glade/inoreader_source.ui
-[type: gettext/glade]glade/mainwindow.ui
-[type: gettext/glade]glade/new_folder.ui
-[type: gettext/glade]glade/new_newsbin.ui
-[type: gettext/glade]glade/new_subscription.ui
-[type: gettext/glade]glade/node_source.ui
-[type: gettext/glade]glade/opml_source.ui
-[type: gettext/glade]glade/prefs.ui
-[type: gettext/glade]glade/properties.ui
-[type: gettext/glade]glade/reedah_source.ui
-[type: gettext/glade]glade/rename_node.ui
-[type: gettext/glade]glade/search_folder.ui
-[type: gettext/glade]glade/search.ui
-[type: gettext/glade]glade/simple_search.ui
-[type: gettext/glade]glade/simple_subscription.ui
-[type: gettext/glade]glade/theoldreader_source.ui
-[type: gettext/glade]glade/ttrss_source.ui
-[type: gettext/glade]glade/update_monitor.ui
+glade/about.ui
+glade/auth.ui
+glade/enclosure_handler.ui
+glade/google_source.ui
+glade/inoreader_source.ui
+glade/mainwindow.ui
+glade/new_folder.ui
+glade/new_newsbin.ui
+glade/new_subscription.ui
+glade/node_source.ui
+glade/opml_source.ui
+glade/prefs.ui
+glade/properties.ui
+glade/reedah_source.ui
+glade/rename_node.ui
+glade/search_folder.ui
+glade/search.ui
+glade/simple_search.ui
+glade/simple_subscription.ui
+glade/theoldreader_source.ui
+glade/ttrss_source.ui
+glade/update_monitor.ui

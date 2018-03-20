@@ -135,7 +135,7 @@
 <xsl:if test="attributes/attribute[ @name = 'realSourceUrl' ]">
 <tr>
  <td valign="top" class='source'> 
-     <_span>Source</_span>
+     <span>Source</span>
      <b><span class='source'>
        <a href="{attributes/attribute[ @name = 'realSourceUrl' ]}">
          <xsl:value-of select="attributes/attribute[ @name = 'realSourceTitle' ]"/>
@@ -150,7 +150,7 @@
 <xsl:if test="$summary = '1' or $showFeedName = '1'">
 <tr>
  <td valign="top" class='source'> 
-     <_span>Feed</_span>
+     <span>Feed</span>
      <b><span class='source'>
        <a href="{/itemset/feed/attributes/attribute[ @name = 'homepage' ]}">
          <xsl:value-of select="/itemset/feed/feedTitle"/>
@@ -163,7 +163,7 @@
 <xsl:if test="attributes/attribute[ @name = 'category' ]">
 <tr>
  <td valign="top" class='categories'>
-     <_span>Filed under</_span>
+     <span>Filed under</span>
      <b><span class='categories'>
        <xsl:for-each select="attributes/attribute[ @name = 'category' ]">
          <xsl:if test="position() != 1">, </xsl:if>
@@ -177,7 +177,7 @@
 <xsl:if test="attributes/attribute[ @name = 'author' ]">
  <tr>
    <td valign="top" class='author'>
-     <_span>Author</_span>
+     <span>Author</span>
      <b><span class='author'>
        <xsl:value-of select="attributes/attribute[ @name = 'author' ]" disable-output-escaping='yes'/>
      </span></b>
@@ -188,7 +188,7 @@
 <xsl:if test="attributes/attribute[ @name = 'sharedby' ]">
  <tr>
    <td valign="top" class='sharedby'>
-     <_span>Shared by</_span>
+     <span>Shared by</span>
      <b><span class='sharedby'>
        <xsl:value-of select="attributes/attribute[ @name = 'sharedby' ]" disable-output-escaping='yes'/>
      </span></b>
@@ -200,7 +200,7 @@
 <xsl:for-each select="attributes/attribute[ @name = 'via' ]">
 <tr>
  <td valign="top" class='source'> 
-     <_span>Via</_span>
+     <span>Via</span>
      <b><span class='source'>
        <a href="{.}">
          <xsl:value-of select="."/>
@@ -212,7 +212,7 @@
 <xsl:for-each select="attributes/attribute[ @name = 'related' ]">
 <tr>
  <td valign="top" class='source'> 
-     <_span>Related</_span>
+     <span>Related</span>
      <b><span class='source'>
        <a href="{.}">
          <xsl:value-of select="."/>
@@ -226,7 +226,7 @@
 <xsl:for-each select="duplicates/duplicateNode">
 <tr>
  <td valign="top" class='source'> 
-     <_span>Also posted in</_span>
+     <span>Also posted in</span>
      <b><span class='source'>
          <xsl:value-of select="."/>
      </span></b>
@@ -237,7 +237,7 @@
 <xsl:if test="attributes/attribute[ @name = 'creator' ]">
  <tr>
    <td valign="top" class='creator'>
-     <_span>Creator</_span>
+     <span>Creator</span>
      <b><span class='creator'>
        <xsl:value-of select="attributes/attribute[ @name = 'creator' ]" disable-output-escaping='yes'/>
      </span></b>
@@ -250,13 +250,13 @@
  <xsl:variable name="lng" select="substring-after(attributes/attribute[ @name = 'point' ],' ')"/>
  <tr>
    <td valign="top" class='point'>
-     <_span>Coordinates</_span>
+     <span>Coordinates</span>
      <b><span class='point'><xsl:value-of select="$lat"/>, <xsl:value-of select="$lng"/></span></b>
    </td>
  </tr>
   <tr>
    <td valign="top" class='point'>
-     <_span>Map</_span>
+     <span>Map</span>
      <b><span class='point'>
      <a href="https://www.openstreetmap.org/?mlat={$lat}&amp;mlon={$lng}#map=12/{$lat}/{$lng}">OpenStreeMap</a>
      </span></b>
@@ -300,13 +300,13 @@
   <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed) and $single = 1"> 
      <p>     
         <xsl:if test="count(comments/item) != 0">
-	   <b><_span>Comments</_span></b>
+	   <b><span>Comments</span></b>
 	</xsl:if>
   
      <!-- Display "comment feed updating" hint -->
         <xsl:if test="comments/updateState = 'updating'">
            (<span>
-	      <_span>Updating...</_span>
+	      <span>Updating...</span>
 	    </span>)
 	</xsl:if>     
      </p>
@@ -340,9 +340,9 @@
 
 <!-- slashdot namespace -->
 <xsl:template match="attributes/attribute[ @name = 'slash']">
-  <span class="slashSection"><_span>Section</_span></span>
+  <span class="slashSection"><span>Section</span></span>
   <span class="slashValue"><xsl:value-of select="substring-before(., ',')"/></span>
-  <span class="slashDepartment"><_span>Department</_span></span>
+  <span class="slashDepartment"><span>Department</span></span>
   <span class="slashValue"><xsl:value-of select="substring-after(., ',')"/></span>
 </xsl:template>
 

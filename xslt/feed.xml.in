@@ -45,7 +45,7 @@
 
 <xsl:if test="feedDiscontinued = '1'">
   <div id='updateError'>
-     <_span>This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines.</_span>
+     <span>This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines.</span>
   </div>
 </xsl:if>
 
@@ -57,42 +57,42 @@
 
 <xsl:if test="httpError">
   <div id='httpError'>
-    <_span>The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select="httpErrorCode"/>: <xsl:value-of select="httpError"/></b></_span>    
+    <span>The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select="httpErrorCode"/>: <xsl:value-of select="httpError"/></b></span>    
   </div>
 </xsl:if>
 
 <xsl:if test="parseError">
   <div id='parseError'>
-    <_span>There were errors while parsing this feed!</_span>
+    <span>There were errors while parsing this feed!</span>
 
     <span id="pdl" class="detaillink">
       (<span class="showmore" onclick="javascript:document.getElementById('pd').style.visibility='visible';document.getElementById('pd').style.display='block';document.getElementById('pdl').style.visibility='hidden';document.getElementById('pdl').style.display='none';">
-        <_span>Parser Error Details</_span>
+        <span>Parser Error Details</span>
       </span>)
     </span>
 
     <span class="details" id='pd'>
-      <b><_span>Details</_span></b><br />
+      <b><span>Details</span></b><br />
       <xsl:value-of select="parseError" disable-output-escaping='yes'/>
       <script language="javascript" type="text/javascript">document.getElementById('pdl').style.visibility='visible';document.getElementById('pdl').style.display='inline';</script>
 
-       <br /><_span>You may want to contact the author/webmaster of the feed about this!</_span>
+       <br /><span>You may want to contact the author/webmaster of the feed about this!</span>
     </span>
   </div>
 </xsl:if>
 
 <xsl:if test="filterError">
   <div id='filterError'>
-    <_span>There were errors while filtering this feed!</_span>
+    <span>There were errors while filtering this feed!</span>
 
     <span id="fdl" class="detaillink">
       (<span class="showmore" onclick="javascript:document.getElementById('fd').style.visibility='visible';document.getElementById('fd').style.display='block';document.getElementById('fdl').style.visibility='hidden';document.getElementById('fdl').style.display='none';">
-        <_span>Filter Error Details</_span>
+        <span>Filter Error Details</span>
       </span>)
     </span>
 
     <span class="details" id='fd'>
-      <b><_span>Details</_span></b><br />
+      <b><span>Details</span></b><br />
       <xsl:value-of select="filterError" disable-output-escaping='yes'/>
       <script language="javascript" type="text/javascript">document.getElementById('fdl').style.visibility='visible';document.getElementById('fdl').style.display='inline';</script>
     </span>
@@ -106,7 +106,7 @@
 <table class="feedhead" cellspacing="0" dir="{$appDirection}">
 <tr>
   <td valign="middle" class="headleft">
-    <b><_span>Feed:</_span></b>
+    <b><span>Feed:</span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
      <a href="{attributes/attribute[ @name = 'homepage' ]}">
@@ -116,7 +116,7 @@
 </tr>
 <tr>
   <td valign="middle" class="headleft">
-    <b><_span>Source:</_span></b>
+    <b><span>Source:</span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
      <xsl:variable name="href">
@@ -138,7 +138,7 @@
 <xsl:if test="attributes/attribute[ @name = 'publisher' ]">
 <tr>
  <td valign="top" class='publisher'>
-     <b><_span>Publisher</_span></b>
+     <b><span>Publisher</span></b>
      <span class='publisher'>
        <xsl:value-of select="attributes/attribute[ @name = 'publisher' ]" disable-output-escaping='yes'/>
      </span>
@@ -148,7 +148,7 @@
 <xsl:if test="attributes/attribute[ @name = 'copyright' ]">
 <tr>
  <td valign="top" class='copyright'>
-     <b><_span>Copyright</_span></b>
+     <b><span>Copyright</span></b>
      <span class='copyright'>
        <xsl:value-of select="attributes/attribute[ @name = 'copyright' ]" disable-output-escaping='yes'/>
      </span>

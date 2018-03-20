@@ -43,7 +43,7 @@
 <table class="feedhead" cellspacing="0" dir="{$appDirection}">
 <tr>
   <td valign="middle" class="headleft">
-    <b><_span>News Bin:</_span></b>
+    <b><span>News Bin:</span></b>
   </td>
   <td width="100%" valign="middle" class="headright">
      <xsl:value-of select="feedTitle"/>
@@ -53,7 +53,7 @@
 
 <div class='content'>
 <p>
-<_span>Add items to this news bin by selecting "Copy to News Bin" from the item list context menu.</_span>
+<span>Add items to this news bin by selecting "Copy to News Bin" from the item list context menu.</span>
 </p>
 </div>
 
