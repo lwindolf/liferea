@@ -10,7 +10,7 @@
       <object class="GtkToolButton" id="newFeedButton">
         <property name="visible">True</property>
         <property name="is_important">True</property>
-        <property name="action_name">app.NewSubscription</property>
+        <property name="action_name">app.new-subscription</property>
         <property name="use-underline">True</property>
         <property name="label" translatable="yes">_New Subscription...</property>
         <property name="tooltip-text" translatable="yes">Adds a subscription to the feed list.</property>
@@ -21,7 +21,7 @@
       <object class="GtkToolButton" id="MarkAsReadButton">
         <property name="visible">True</property>
         <property name="is_important">True</property>
-        <property name="action_name">app.MarkFeedAsRead</property>
+        <property name="action_name">app.mark-selected-feed-as-read</property>
         <property name="use-underline">True</property>
         <property name="label" translatable="yes">_Mark Items Read</property>
         <property name="tooltip-text" translatable="yes">Marks all items of the selected feed list node / in the item list as read.</property>
@@ -32,7 +32,7 @@
       <object class="GtkToolButton" id="prevReadButton">
         <property name="visible">True</property>
         <property name="is_important">False</property>
-        <property name="action_name">app.PrevReadItem</property>
+        <property name="action_name">app.prev-read-item</property>
         <property name="label" translatable="yes">Previous Item</property>
         <property name="icon-name">go-previous</property>
       </object>
@@ -41,7 +41,7 @@
       <object class="GtkToolButton" id="nextReadButton">
         <property name="visible">True</property>
         <property name="is_important">False</property>
-        <property name="action_name">app.NextReadItem</property>
+        <property name="action_name">app.next-read-item</property>
         <property name="label" translatable="yes">Next Item</property>
         <property name="icon-name">go-next</property>
       </object>
@@ -50,7 +50,7 @@
       <object class="GtkToolButton" id="nextUnreadButton">
         <property name="visible">True</property>
         <property name="is_important">True</property>
-        <property name="action_name">app.NextUnreadItem</property>
+        <property name="action_name">app.next-unread-item</property>
         <property name="use-underline">True</property>
         <property name="label" translatable="yes">_Next Unread Item</property>
         <property name="icon-name">go-jump</property>
@@ -60,7 +60,7 @@
       <object class="GtkToolButton" id="UpdateAllButton">
         <property name="visible">True</property>
         <property name="is_important">True</property>
-        <property name="action_name">app.UpdateAll</property>
+        <property name="action_name">app.update-all</property>
         <property name="use-underline">True</property>
         <property name="label" translatable="yes">Update _All</property>
         <property name="tooltip-text" translatable="yes">Updates all subscriptions.</property>
@@ -71,7 +71,7 @@
       <object class="GtkToolButton" id="searchButton">
         <property name="visible">True</property>
         <property name="is_important">True</property>
-        <property name="action_name">app.SearchFeeds</property>
+        <property name="action_name">app.search-feeds</property>
         <property name="label" translatable="yes">Search All Feeds...</property>
         <property name="tooltip-text" translatable="yes">Show the search dialog.</property>
         <property name="icon-name">edit-find</property>

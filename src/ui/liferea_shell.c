@@ -355,7 +355,7 @@ liferea_shell_update_toolbar (void)
 void
 liferea_shell_update_update_menu (gboolean enabled)
 {
-	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->feedActions), "UpdateSelected")), enabled);
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->feedActions), "update-selected")), enabled);
 }
 
 void
@@ -375,15 +375,15 @@ liferea_shell_update_item_menu (gboolean enabled)
 void
 liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead)
 {
-	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->generalActions), "RemoveAllItems")), isNotEmpty);
-	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->feedActions), "MarkFeedAsRead")), isRead);
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->generalActions), "remove-selected-feed-items")), isNotEmpty);
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->feedActions), "mark-selected-feed-as-read")), isRead);
 }
 
 void
 liferea_shell_update_history_actions (void)
 {
-	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->generalActions), "PrevReadItem")), item_history_has_previous ());
-	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->generalActions), "NextReadItem")), item_history_has_next ());
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->generalActions), "prev-read-item")), item_history_has_previous ());
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->priv->generalActions), "next-read-item")), item_history_has_next ());
 }
 
 static void
@@ -903,58 +903,58 @@ liferea_shell_setup_URL_receiver (void)
 }
 
 static const GActionEntry liferea_shell_gaction_entries[] = {
-	{"UpdateAll", on_menu_update_all, NULL, NULL, NULL},
-	{"MarkAllFeedsAsRead", on_menu_allfeedsread, NULL, NULL, NULL},
-	{"ImportFeedList", on_menu_import, NULL, NULL, NULL},
-	{"ExportFeedList", on_menu_export, NULL, NULL, NULL},
-	{"Quit", on_menu_quit, NULL, NULL, NULL},
-	{"RemoveAllItems", on_remove_items_activate, NULL, NULL, NULL},
-	{"PrevReadItem", on_prev_read_item_activate, NULL, NULL, NULL},
-	{"NextReadItem", on_next_read_item_activate, NULL, NULL, NULL},
-	{"NextUnreadItem", on_next_unread_item_activate, NULL, NULL, NULL},
-	{"ZoomIn", on_menu_zoomin_selected, NULL, NULL, NULL},
-	{"ZoomOut", on_menu_zoomout_selected, NULL, NULL, NULL},
-	{"ShowUpdateMonitor", on_menu_show_update_monitor, NULL, NULL, NULL},
-	{"ShowPreferences", on_prefbtn_clicked, NULL, NULL, NULL},
-	{"SearchFeeds", on_searchbtn_clicked, NULL, NULL, NULL},
-	{"ShowHelpContents", on_topics_activate, NULL, NULL, NULL},
-	{"ShowHelpQuickReference", on_quick_reference_activate, NULL, NULL, NULL},
-	{"ShowHelpFAQ", on_faq_activate, NULL, NULL, NULL},
-	{"ShowAbout", on_about_activate, NULL, NULL, NULL},
+	{"update-all", on_menu_update_all, NULL, NULL, NULL},
+	{"mark-all-feeds-read", on_menu_allfeedsread, NULL, NULL, NULL},
+	{"import-feed-list", on_menu_import, NULL, NULL, NULL},
+	{"export-feed-list", on_menu_export, NULL, NULL, NULL},
+	{"quit", on_menu_quit, NULL, NULL, NULL},
+	{"remove-selected-feed-items", on_remove_items_activate, NULL, NULL, NULL},
+	{"prev-read-item", on_prev_read_item_activate, NULL, NULL, NULL},
+	{"next-read-item", on_next_read_item_activate, NULL, NULL, NULL},
+	{"next-unread-item", on_next_unread_item_activate, NULL, NULL, NULL},
+	{"zoom-in", on_menu_zoomin_selected, NULL, NULL, NULL},
+	{"zoom-out", on_menu_zoomout_selected, NULL, NULL, NULL},
+	{"show-update-monitor", on_menu_show_update_monitor, NULL, NULL, NULL},
+	{"show-preferences", on_prefbtn_clicked, NULL, NULL, NULL},
+	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
+	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},
+	{"show-help-quick-reference", on_quick_reference_activate, NULL, NULL, NULL},
+	{"show-help-faq", on_faq_activate, NULL, NULL, NULL},
+	{"show-about", on_about_activate, NULL, NULL, NULL},
 
 	/* For mysterious reasons, the radio menu magic seem to only works with a
 	 * parameter/state of type string. */
-	{"SetViewMode", NULL, "s", "@s 'normal'", on_view_activate},
+	{"set-view-mode", NULL, "s", "@s 'normal'", on_view_activate},
 	/* Parameter type must be NULL for toggle. */
-	{"FullScreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
-	{"ReducedFeedList", NULL, NULL, "@b false", on_feedlist_reduced_activate}
+	{"fullscreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
+	{"reduced-feed-list", NULL, NULL, "@b false", on_feedlist_reduced_activate}
 };
 
 static const GActionEntry liferea_shell_add_gaction_entries[] = {
-	{"NewSubscription", on_menu_feed_new, NULL, NULL, NULL},
-	{"NewFolder", on_menu_folder_new, NULL, NULL, NULL},
-	{"NewVFolder", on_new_vfolder_activate, NULL, NULL, NULL},
-	{"NewSource", on_new_plugin_activate, NULL, NULL, NULL},
-	{"NewNewsBin", on_new_newsbin_activate, NULL, NULL, NULL}
+	{"new-subscription", on_menu_feed_new, NULL, NULL, NULL},
+	{"new-folder", on_menu_folder_new, NULL, NULL, NULL},
+	{"new-vfolder", on_new_vfolder_activate, NULL, NULL, NULL},
+	{"new-source", on_new_plugin_activate, NULL, NULL, NULL},
+	{"new-newsbin", on_new_newsbin_activate, NULL, NULL, NULL}
 };
 
 static const GActionEntry liferea_shell_feed_gaction_entries[] = {
-	{"MarkFeedAsRead", on_menu_allread, NULL, NULL, NULL},
-	{"UpdateSelected", on_menu_update, NULL, NULL, NULL}
+	{"mark-selected-feed-as-read", on_menu_allread, NULL, NULL, NULL},
+	{"update-selected", on_menu_update, NULL, NULL, NULL}
 };
 
 static const GActionEntry liferea_shell_read_write_gaction_entries[] = {
-	{"Properties", on_menu_properties, NULL, NULL, NULL},
-	{"DeleteSelected", on_menu_delete, NULL, NULL, NULL}
+	{"selected-node-properties", on_menu_properties, NULL, NULL, NULL},
+	{"deleted-selected", on_menu_delete, NULL, NULL, NULL}
 };
 
 static const GActionEntry liferea_shell_item_gaction_entries[] = {
-	{"ToggleItemReadStatus", on_toggle_unread_status, NULL, NULL, NULL},
-	{"ToggleItemFlag", on_toggle_item_flag, NULL, NULL, NULL},
-	{"RemoveSelectedItem", on_remove_item_activate, NULL, NULL, NULL},
-	{"LaunchItemInTab", on_popup_launch_item_in_tab_selected, NULL, NULL, NULL},
-	{"LaunchItemInBrowser", on_popup_launch_item_selected, NULL, NULL, NULL},
-	{"LaunchItemInExternalBrowser", on_popup_launch_item_external_selected, NULL, NULL, NULL}
+	{"toggle-selected-item-read-status", on_toggle_unread_status, NULL, NULL, NULL},
+	{"toggle-selected-item-flag", on_toggle_item_flag, NULL, NULL, NULL},
+	{"remove-selected-item", on_remove_item_activate, NULL, NULL, NULL},
+	{"launch-selected-item-in-tab", on_popup_launch_item_in_tab_selected, NULL, NULL, NULL},
+	{"launch-selected-item-in-browser", on_popup_launch_item_selected, NULL, NULL, NULL},
+	{"launch-selected-item-in-external-browser", on_popup_launch_item_external_selected, NULL, NULL, NULL}
 };
 
 static void
@@ -1090,7 +1090,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* Prepare some toggle button states */	
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
-	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "ReducedFeedList")), g_variant_new_boolean (toggle));
+	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "reduced-feed-list")), g_variant_new_boolean (toggle));
 
 	/* Menu creation */
 	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui", NULL);
@@ -1098,18 +1098,18 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_menubar (app, menubar_model);
 
 	/* Add accelerators */
-	gtk_application_set_accels_for_action (app, "app.UpdateAll", liferea_accels_update_all);
-	gtk_application_set_accels_for_action (app, "app.Quit", liferea_accels_quit);
-	gtk_application_set_accels_for_action (app, "app.MarkFeedAsRead", liferea_accels_mark_feed_as_read);
-	gtk_application_set_accels_for_action (app, "app.NextUnreadItem", liferea_accels_next_unread_item);
-	gtk_application_set_accels_for_action (app, "app.PrevReadItem", liferea_accels_prev_read_item);
-	gtk_application_set_accels_for_action (app, "app.ToggleItemReadStatus", liferea_accels_toggle_item_read_status);
-	gtk_application_set_accels_for_action (app, "app.ToggleItemFlag", liferea_accels_toggle_item_flag);
-	gtk_application_set_accels_for_action (app, "app.FullScreen", liferea_accels_fullscreen);
-	gtk_application_set_accels_for_action (app, "app.ZoomIn", liferea_accels_zoom_in);
-	gtk_application_set_accels_for_action (app, "app.ZoomOut", liferea_accels_zoom_out);
-	gtk_application_set_accels_for_action (app, "app.SearchFeeds", liferea_accels_search_feeds);
-	gtk_application_set_accels_for_action (app, "app.ShowHelpContents", liferea_accels_show_help_contents);
+	gtk_application_set_accels_for_action (app, "app.update-all", liferea_accels_update_all);
+	gtk_application_set_accels_for_action (app, "app.quit", liferea_accels_quit);
+	gtk_application_set_accels_for_action (app, "app.mark-selected-feed-as-read", liferea_accels_mark_feed_as_read);
+	gtk_application_set_accels_for_action (app, "app.next-unread-item", liferea_accels_next_unread_item);
+	gtk_application_set_accels_for_action (app, "app.prev-read-item", liferea_accels_prev_read_item);
+	gtk_application_set_accels_for_action (app, "app.toggle-selected-item-read-status", liferea_accels_toggle_item_read_status);
+	gtk_application_set_accels_for_action (app, "app.toggle-selected-item-flag", liferea_accels_toggle_item_flag);
+	gtk_application_set_accels_for_action (app, "app.fullscreen", liferea_accels_fullscreen);
+	gtk_application_set_accels_for_action (app, "app.zoom-in", liferea_accels_zoom_in);
+	gtk_application_set_accels_for_action (app, "app.zoom-out", liferea_accels_zoom_out);
+	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
+	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help_contents);
 
 	/* Toolbar */
 	gtk_builder_add_from_file (shell->priv->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_toolbar.ui", NULL);
