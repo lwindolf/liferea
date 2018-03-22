@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-18 00:24+0100\n"
-"PO-Revision-Date: 2018-03-06 22:18+0100\n"
+"PO-Revision-Date: 2018-03-22 11:30+0100\n"
 "Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -38,11 +38,11 @@ msgid ""
 msgstr ""
 "Liferea est l’abréviation de Linux Feed Reader. C’est un agrégateur de flux "
 "pour sites web. Il gère un certain nombre de formats de flux dont RSS/RDF, "
-"CDF et ATOM. D’autres lecteurs de flux existent mais soit ils "
-"ne sont pas disponibles pour Linux, soit ils nécessitent beaucoup de "
-"bibliothèques externes pour être installés. Liferea essaie de combler ce "
-"manque en créant un agrégateur de flux rapide, facile à utiliser et à "
-"installer pour GTK/Gnome."
+"CDF et ATOM. D’autres lecteurs de flux existent mais soit ils ne sont pas "
+"disponibles pour Linux, soit ils nécessitent beaucoup de bibliothèques "
+"externes pour être installés. Liferea essaie de combler ce manque en créant "
+"un agrégateur de flux rapide, facile à utiliser et à installer pour GTK/"
+"Gnome."
 
 #: ../liferea.appdata.xml.in.h:3
 msgid "Distinguishing features:"
@@ -344,8 +344,8 @@ msgstr "Erreur lors du renommage de %s en %s : %s\n"
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
-"Erreur XML pendant la lecture du fichier OPML ! Impossible d’importer « %s "
-"» !"
+"Erreur XML pendant la lecture du fichier OPML ! Impossible d’importer "
+"« %s » !"
 
 #: ../src/export.c:425 ../src/export.c:427
 #, c-format
@@ -621,7 +621,8 @@ msgstr "Il y a eu une erreur interne lors du traitement de la mise à jour"
 #: ../src/net.c:428
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
-"Flux indisponible : le serveur a demandé une redirection non supportée !"
+"Flux indisponible : le serveur a demandé une redirection qui n’est pas prise "
+"en charge !"
 
 #: ../src/net.c:430
 msgid "Client Error"
@@ -1775,7 +1776,8 @@ msgid ""
 msgstr ""
 "Liferea peut utiliser des filtres de conversion externes sous forme de "
 "greffons pour accéder aux flux et aux répertoires qui sont dans des formats "
-"non supportés. Lisez la documentation pour de plus amples informations."
+"qui ne sont pas pris en charge. Lisez la documentation pour de plus amples "
+"informations."
 
 #: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:21
 msgid "Convert _using:"
@@ -2075,7 +2077,7 @@ msgid ""
 "directories in non-supported formats."
 msgstr ""
 "Liferea peut utiliser des filtres de conversion externes pour accéder aux "
-"flux et aux répertoires qui sont dans des formats non supportés."
+"flux et aux répertoires qui sont dans des formats non pris en charge."
 
 #: ../glade/properties.ui.h:23
 msgid ""
