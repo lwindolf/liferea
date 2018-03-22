@@ -945,7 +945,7 @@ static const GActionEntry liferea_shell_feed_gaction_entries[] = {
 
 static const GActionEntry liferea_shell_read_write_gaction_entries[] = {
 	{"selected-node-properties", on_menu_properties, NULL, NULL, NULL},
-	{"deleted-selected", on_menu_delete, NULL, NULL, NULL}
+	{"delete-selected", on_menu_delete, NULL, NULL, NULL}
 };
 
 static const GActionEntry liferea_shell_item_gaction_entries[] = {
