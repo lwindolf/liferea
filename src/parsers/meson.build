@@ -1,0 +1,30 @@
+liparsers_sources = [
+  'atom10.c',
+  'cdf_channel.c',
+  'cdf_item.c',
+  'ns_admin.c',
+  'ns_ag.c',
+  'ns_blogChannel.c',
+  'ns_cC.c',
+  'ns_content.c',
+  'ns_dc.c',
+  'ns_georss.c',
+  'ns_itunes.c',
+  'ns_media.c',
+  'ns_photo.c',
+  'ns_slash.c',
+  'ns_syn.c',
+  'ns_trackback.c',
+  'ns_wfw.c',
+  'pie_entry.c',
+  'pie_feed.c',
+  'rss_channel.c',
+  'rss_item.c'
+]
+
+liparsers = static_library ('liparsers',
+  liparsers_sources,
+  include_directories : src_inc,
+  dependencies : liferea_deps,
+  install : false,
+)

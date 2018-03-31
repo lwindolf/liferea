@@ -3,25 +3,25 @@
   <id>net.sourceforge.liferea.desktop</id>
   <metadata_license>CC0</metadata_license>
   <name>Liferea</name>
-  <_summary>RSS feed reader</_summary>
+  <summary>RSS feed reader</summary>
   <description>
-    <_p>Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator for
+    <p>Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator for
 	online news feeds. It supports a number of different feed formats including 
 	RSS/RDF, CDF and Atom. There are many other news readers available, but these 
 	others are not available for Linux or require many extra libraries to be 
 	installed. Liferea tries to fill this gap by creating a fast, easy to use, 
 	easy to install news aggregator for GTK/GNOME.
-    </_p>
-    <_p>Distinguishing features:</_p>
+    </p>
+    <p>Distinguishing features:</p>
     <ul>
-     <_li>Read articles when offline</_li>
-     <_li>Synchronizes with TheOldReader</_li>
-     <_li>Synchronizes with TinyTinyRSS</_li>
-     <_li>Synchronizes with InoReader</_li>
-     <_li>Synchronizes with Reedah</_li>
-     <_li>Permanently save headlines in news bins</_li>
-     <_li>Match items using search folders</_li>
-     <_li>Play Podcasts</_li>
+     <li>Read articles when offline</li>
+     <li>Synchronizes with TheOldReader</li>
+     <li>Synchronizes with TinyTinyRSS</li>
+     <li>Synchronizes with InoReader</li>
+     <li>Synchronizes with Reedah</li>
+     <li>Permanently save headlines in news bins</li>
+     <li>Match items using search folders</li>
+     <li>Play Podcasts</li>
     </ul>
   </description>
   <screenshots>

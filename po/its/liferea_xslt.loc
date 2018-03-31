@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<locatingRules>
+  <locatingRule name="Liferea" pattern="*.xml">
+    <documentRule target="liferea_xslt.its"/>
+  </locatingRule>
+</locatingRules>
