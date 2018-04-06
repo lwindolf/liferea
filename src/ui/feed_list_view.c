@@ -379,7 +379,12 @@ do_menu_update (nodePtr node)
 void
 on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr node = feedlist_get_selected ();
+	nodePtr node = NULL;
+
+	if (user_data)
+		node = (nodePtr) user_data;
+	else
+		node = feedlist_get_selected ();
 
 	if (node)
 		do_menu_update (node);
