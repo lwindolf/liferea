@@ -4,6 +4,8 @@ To be released
 
 	* #608: Refactoring UI code to switch to GAction and GtkBuilder
 	  (Leiaz)
+	* Fixes #625: Avoid exception in trayicon.py
+	  (Lars Windolf)
 
 
 2018-03-07   Lars Windolf <lars.windolf@gmx.de>
