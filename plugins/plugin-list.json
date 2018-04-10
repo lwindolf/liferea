@@ -1,5 +1,11 @@
 { "schemaVersion": 1,
   "plugins":[
+     { "Floating Statusbar":
+                { "module"      : "",
+                  "category"    : "Menu",
+                  "source"      : "whizse/liferea-plugins",
+                  "description" : "Regain some screen real estate by replacing the static statusbar with a floating counterpart. Similar to the ones used in web browsers"
+     }},
      { "No Mark All Read":
                 { "module"      : "markallreadinactive",
                   "category"    : "Menu",
