@@ -1,7 +1,7 @@
 #
 # System Tray Icon Plugin
 #
-# Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
+# Copyright (C) 2013-2018 Lars Windolf <lars.windolf@gmx.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -168,6 +168,9 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             pix = self.show_new_count(double_figure)
         else:
             pix = self.read_pix
+
+        if None == pix:
+            return
 
         icon_size = self.staticon.props.size
         if pix.props.height < icon_size:
