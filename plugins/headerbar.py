@@ -89,4 +89,3 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         self.shell.lookup("mainwindow").set_show_menubar(True)
         self.hb = None
 
-
