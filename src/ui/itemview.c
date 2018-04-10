@@ -415,8 +415,6 @@ itemview_set_layout (nodeViewType newMode)
 		return;
 	ivp->currentLayoutMode = newMode;
 
-	liferea_shell_set_view_mode (newMode);
-	
 	if (!ivp->htmlview) {
 		debug0 (DEBUG_GUI, "Creating HTML widget");
 		htmlview_init ();

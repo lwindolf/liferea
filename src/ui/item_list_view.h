@@ -179,61 +179,56 @@ void item_list_view_update (ItemListView *ilv, gboolean hasEnclosures);
 
 /* menu callbacks */
 
-/*
+/**
+ * on_toggle_unread_status: (skip)
+ * @action: The activated action.
+ * @parameter: The item id as a GVariant of type "t", or NULL for the selected item.
+ * @user_data: unused
+ *
  * Toggles the unread status of the selected item. This is called from
  * a menu.
  */
-void on_toggle_unread_status (GtkMenuItem *menuitem, gpointer user_data);
+void on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
-/*
+/**
+ * on_toggle_item_flag: (skip)
+ * @action: The activated action.
+ * @parameter: The item id as a GVariant of type "t", or NULL for the selected item.
+ * @user_data: unused
+ *
  * Toggles the flag of the selected item. This is called from a menu.
  */
-void on_toggle_item_flag (GtkMenuItem *menuitem, gpointer user_data);
+void on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /*
  * Opens the selected item in a browser.
  */
-void on_popup_launch_item_selected (void);
+void on_action_launch_item_in_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /*
  * Opens the selected item in a browser.
  */
-void on_popup_launch_item_in_tab_selected (void);
+void on_action_launch_item_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /*
  * Opens the selected item in a browser.
  */
-void on_popup_launch_item_external_selected (void);
+void on_action_launch_item_in_external_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /*
- * Toggles the read status of right-clicked item.
- */
-void on_popup_toggle_read (void);
-
-/*
- * Toggles the flag of right-clicked item.
- */
-void on_popup_toggle_flag (void);
-
-/**
- * on_remove_items_activate: (skip)
- * @menuitem: The menuitem that was selected.
- * @user_data: Unused.
- *
  * Removes all items from the selected feed.
  */
-void on_remove_items_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
- * on_remove_item_activate: (skip)
- * @menuitem: The menuitem that was selected.
+ * on_action_remove_item: (skip)
+ * @action: The activated action.
+ * @parameter: The item id as a GVariant of type "t", or NULL for the selected item.
  * @user_data: Unused.
  *
  * Removes the selected item from the selected feed.
  */  
-void on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data);
-
-void on_popup_remove_selected (void);
+void on_action_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * item_list_view_find_unread_item: (skip)
@@ -249,13 +244,13 @@ itemPtr item_list_view_find_unread_item (ItemListView *ilv, gulong startId);
 
 /**
  * on_next_unread_item_activate: (skip)
- * @menuitem: The menuitem that was selected.
+ * @action: The action that was activated.
  * @user_data: Unused.
  *
  * Searches the displayed feed and then all feeds for an unread
  * item. If one it found, it is displayed.
  */
-void on_next_unread_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_next_unread_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * item_list_view_update_item: (skip)
@@ -280,8 +275,11 @@ void item_list_view_update_all_items (ItemListView *ilv);
  *
  * Copies the selected items URL to the clipboard.
  */
-void on_popup_copy_URL_clipboard (void);
+void on_popup_copy_URL_clipboard (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
-void on_popup_social_bm_item_selected (void);
+/**
+ * Bookmarks the selected item to social bookmark service.
+ */
+void on_popup_social_bm_item_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 #endif

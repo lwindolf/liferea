@@ -44,6 +44,7 @@
 
 #define UI_POPUP_ITEM_IS_TOGGLE		1
 
+
 static void
 ui_popup_menu_at_pos (GtkWidget *menu, GtkMenuPositionFunc func, guint button, guint32 activate_time, gpointer user_data)
 {
@@ -81,55 +82,110 @@ ui_popup_add_menuitem (GtkWidget *menu, const gchar *label, gpointer callback, g
 	return item;
 }
 
+static const GActionEntry ui_popup_item_gaction_entries[] = {
+	{"copy-item-to-newsbin", on_action_copy_to_newsbin, "(umt)", NULL, NULL},
+	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
+	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
+	{"remove-item", on_action_remove_item, "t", NULL, NULL}
+};
+
 void
 ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 {
 	GtkWidget	*menu;
+	GMenu		*menu_model, *section;
+	GMenuItem	*menu_item;
+	GSimpleActionGroup *action_group;
 	GSList		*iter;
-	gchar		*text;
+	gchar		*text, *item_link;
 
-	menu = gtk_menu_new ();
+	item_link = item_make_link (item);
+	menu_model = g_menu_new ();
+	menu_item = g_menu_item_new (NULL, NULL);
 
-	ui_popup_add_menuitem (menu, _("Open In _Tab"), on_popup_launch_item_in_tab_selected, NULL, 0);
-	ui_popup_add_menuitem (menu, _("_Open In Browser"), on_popup_launch_item_selected, NULL, 0);
-	ui_popup_add_menuitem (menu, _("Open In _External Browser"), on_popup_launch_item_external_selected, NULL, 0);
+	section = g_menu_new ();
+	g_menu_item_set_label (menu_item, _("Open In _Tab"));
+	g_menu_item_set_action_and_target (menu_item, "app.open-link-in-tab", "s", item_link);
+	g_menu_append_item (section, menu_item);
 
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
+	g_menu_item_set_label (menu_item, _("_Open In Browser"));
+	g_menu_item_set_action_and_target (menu_item, "app.open-link-in-browser", "s", item_link);
+	g_menu_append_item (section, menu_item);
+
+	g_menu_item_set_label (menu_item, _("Open In _External Browser"));
+	g_menu_item_set_action_and_target (menu_item, "app.open-link-in-external-browser", "s", item_link);
+	g_menu_append_item (section, menu_item);
+
+	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+	g_object_unref (section);
 
 	iter = newsbin_get_list ();
 	if (iter) {
-		GtkWidget	*item;
-		GtkWidget	*submenu;
-		int		i = 0;
+		GMenu 		*submenu;
+		guint32		i = 0;
 
-		submenu = gtk_menu_new ();
-
-		item = ui_popup_add_menuitem (menu, _("Copy to News Bin"), NULL, NULL, 0);
+		section = g_menu_new ();
+		submenu = g_menu_new ();
 
 		while (iter) {
 			nodePtr	node = (nodePtr)iter->data;
-			ui_popup_add_menuitem (submenu, node_get_title (node), on_popup_copy_to_newsbin, GINT_TO_POINTER(i), 0);
+			g_menu_item_set_label (menu_item, node_get_title (node));
+			g_menu_item_set_action_and_target (menu_item, "item.copy-item-to-newsbin", "(umt)", i, TRUE, (guint64) item->id);
+			g_menu_append_item (submenu, menu_item);
 			iter = g_slist_next (iter);
 			i++;
 		}
 
-		gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
-
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
+		g_menu_append_submenu (section, _("Copy to News Bin"), G_MENU_MODEL (submenu));
+		g_object_unref (submenu);
+		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+		g_object_unref (section);
 	}
 
+	section = g_menu_new ();
+
 	text = g_strdup_printf (_("_Bookmark at %s"), social_get_bookmark_site ());
-	ui_popup_add_menuitem (menu, text, on_popup_social_bm_item_selected, NULL, 0);
+	g_menu_item_set_label (menu_item, text);
+	g_menu_item_set_action_and_target (menu_item, "app.social-bookmark-link", "(ss)", item_link, item_get_title (item));
+	g_menu_append_item (section, menu_item);
 	g_free (text);
 
-	ui_popup_add_menuitem (menu, _("Copy Item _Location"), on_popup_copy_URL_clipboard, NULL, 0);
-	
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
+	g_menu_item_set_label (menu_item, _("Copy Item _Location"));
+	g_menu_item_set_action_and_target (menu_item, "app.copy-link-to-clipboard", "s", item_link);
+	g_menu_append_item (section, menu_item);
 
-	ui_popup_add_menuitem (menu, _("Toggle _Read Status"), on_popup_toggle_read, NULL, 0);
-	ui_popup_add_menuitem (menu, _("Toggle Item _Flag"), on_popup_toggle_flag, NULL, 0);
-	ui_popup_add_menuitem (menu, _("R_emove Item"), on_popup_remove_selected, NULL, 0);
+	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+	g_object_unref (section);
 
+	section = g_menu_new ();
+
+	g_menu_item_set_label (menu_item, _("Toggle _Read Status"));
+	g_menu_item_set_action_and_target (menu_item, "item.toggle-item-read-status", "t", (guint64) item->id);
+	g_menu_append_item (section, menu_item);
+
+	g_menu_item_set_label (menu_item, _("Toggle Item _Flag"));
+	g_menu_item_set_action_and_target (menu_item, "item.toggle-item-flag", "t", (guint64) item->id);
+	g_menu_append_item (section, menu_item);
+
+	g_menu_item_set_label (menu_item, _("R_emove Item"));
+	g_menu_item_set_action_and_target (menu_item, "item.remove-item", "t", (guint64) item->id);
+	g_menu_append_item (section, menu_item);
+
+	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+	g_object_unref (section);
+
+	g_object_unref (menu_item);
+	g_free (item_link);
+	g_menu_freeze (menu_model);
+	menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
+
+	action_group = g_simple_action_group_new ();
+	g_action_map_add_action_entries (G_ACTION_MAP(action_group), ui_popup_item_gaction_entries, G_N_ELEMENTS (ui_popup_item_gaction_entries), NULL);
+	gtk_widget_insert_action_group (menu, "item", G_ACTION_GROUP (action_group));
+
+	/* The menu has to be attached to an application window or one of its children for access to app actions.*/
+	gtk_menu_attach_to_widget (GTK_MENU (menu), liferea_shell_lookup ("mainwindow"), NULL);
+	g_object_unref (menu_model);
 	ui_popup_menu (menu, button, activate_time);
 }
 
@@ -151,72 +207,53 @@ ui_popup_enclosure_menu (enclosurePtr enclosure, guint button,
 /* popup callback wrappers */
 
 static void
-ui_popup_mark_as_read (gpointer callback_data) 
+ui_popup_mark_as_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feedlist_mark_all_read ((nodePtr)callback_data);
+	feedlist_mark_all_read ((nodePtr)user_data);
 }
 
 static void
-ui_popup_add_feed (void)
+ui_popup_rebuild_vfolder (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	node_type_request_interactive_add (feed_get_node_type ());
+	vfolder_rebuild ((nodePtr)user_data);
 }
 
 static void
-ui_popup_add_folder (void)
+ui_popup_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	node_type_request_interactive_add (folder_get_node_type ());
-}
-
-static void
-ui_popup_add_vfolder (void)
-{
-	node_type_request_interactive_add (vfolder_get_node_type ());
-}
-
-static void
-ui_popup_rebuild_vfolder (gpointer callback_data)
-{
-	vfolder_rebuild ((nodePtr)callback_data);
-}
-
-static void
-ui_popup_add_source (void)
-{
-	node_type_request_interactive_add (node_source_get_node_type ());
-}
-
-static void
-ui_popup_add_newsbin (void)
-{
-	node_type_request_interactive_add (newsbin_get_node_type ());
-}
-
-static void
-ui_popup_properties (gpointer callback_data)
-{
-	nodePtr node = (nodePtr) callback_data;
+	nodePtr node = (nodePtr) user_data;
 	
 	NODE_TYPE (node)->request_properties (node);
 }
 
 static void
-ui_popup_delete (gpointer callback_data)
+ui_popup_delete (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feed_list_node_remove ((nodePtr)callback_data);
+	feed_list_node_remove ((nodePtr)user_data);
 }
 
 static void
-ui_popup_sort_feeds (gpointer callback_data)
+ui_popup_sort_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feed_list_view_sort_folder ((nodePtr)callback_data);
+	feed_list_view_sort_folder ((nodePtr)user_data);
 }
 
 static void
-ui_popup_add_convert_to_local (gpointer callback_data)
+ui_popup_add_convert_to_local (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	node_source_convert_to_local ((nodePtr)callback_data);
+	node_source_convert_to_local ((nodePtr)user_data);
 }
+
+/* Those actions work on the node passed as user_data parameter. */
+static const GActionEntry ui_popup_node_gaction_entries[] = {
+  {"node-mark-all-read", ui_popup_mark_as_read, NULL, NULL, NULL},
+  {"node-rebuild-vfolder", ui_popup_rebuild_vfolder, NULL, NULL, NULL},
+  {"node-properties", ui_popup_properties, NULL, NULL, NULL},
+  {"node-delete", ui_popup_delete, NULL, NULL, NULL},
+  {"node-sort-feeds", ui_popup_sort_feeds, NULL, NULL, NULL},
+  {"node-convert-to-local", ui_popup_add_convert_to_local, NULL, NULL, NULL},
+  {"node-update", on_menu_update, NULL, NULL, NULL}
+};
 
 /** 
  * Shows popup menus for the feed list depending on the
@@ -225,11 +262,11 @@ ui_popup_add_convert_to_local (gpointer callback_data)
 static void
 ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32 activate_time)
 {
-	GtkWidget	*menu;
-	gboolean	writeableFeedlist, isRoot, addChildren;
+	GtkWidget		*menu;
+	GMenu 			*menu_model, *section;
+	GSimpleActionGroup 	*action_group;
+	gboolean		writeableFeedlist, isRoot, addChildren;
 
-	menu = gtk_menu_new ();
-	
 	if (node->parent) {
 		writeableFeedlist = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
 		isRoot = NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
@@ -241,65 +278,88 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 		addChildren = TRUE;
 	}
 
+	menu_model = g_menu_new ();
+	section = g_menu_new ();
+
 	if (validSelection) {
 		if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE)
-			ui_popup_add_menuitem (menu, _("_Update"), on_menu_update, node, 0);
+			g_menu_append (section, _("_Update"), "node.node-update");
 		else if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
-			ui_popup_add_menuitem (menu, _("_Update Folder"), on_menu_update, node, 0);
+			g_menu_append (section, _("_Update Folder"), "node.node-update");
 	}
 
 	if (writeableFeedlist) {
 		if (addChildren) {
-			GtkWidget	*item;
-			GtkWidget	*submenu;
+			GMenu		*submenu;
 
-			submenu = gtk_menu_new ();
-
-			item = ui_popup_add_menuitem (menu, _("_New"), NULL, NULL, 0);
+			submenu = g_menu_new ();
 
 			if (node_can_add_child_feed (node))
-				ui_popup_add_menuitem (submenu, _("New _Subscription..."), ui_popup_add_feed, NULL, 0);
+				g_menu_append (submenu, _("New _Subscription..."), "app.new-subscription");
 			
 			if (node_can_add_child_folder (node))
-				ui_popup_add_menuitem (submenu, _("New _Folder..."), ui_popup_add_folder, NULL, 0);
+				g_menu_append (submenu, _("New _Folder..."), "app.new-folder");
 				
 			if (isRoot) {
-				ui_popup_add_menuitem (submenu, _("New S_earch Folder..."), ui_popup_add_vfolder, NULL, 0);
-				ui_popup_add_menuitem (submenu, _("New S_ource..."), ui_popup_add_source, NULL, 0);
-				ui_popup_add_menuitem (submenu, _("New _News Bin..."), ui_popup_add_newsbin, NULL, 0);
+				g_menu_append (submenu, _("New S_earch Folder..."), "app.new-vfolder");
+				g_menu_append (submenu, _("New S_ource..."), "app.new-source");
+				g_menu_append (submenu, _("New _News Bin..."), "app.new-newsbin");
 			}
 
-			gtk_menu_item_set_submenu (GTK_MENU_ITEM(item), submenu);
+			g_menu_append_submenu (section, _("_New"), G_MENU_MODEL (submenu));
+			g_object_unref (submenu);
 		}
 		
 		if (isRoot && node->children) {
-			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-			ui_popup_add_menuitem (menu, _("Sort Feeds"), ui_popup_sort_feeds, node, 0);
+			/* Ending section and starting a new one to get a separator : */
+			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+			g_object_unref (section);
+			section = g_menu_new ();
+			g_menu_append (section, _("Sort Feeds"), "node.node-sort-feeds");
 		}
 	}
 
 	if (validSelection) {
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-		ui_popup_add_menuitem (menu, _("_Mark All As Read"), ui_popup_mark_as_read, node, 0);
+		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+		g_object_unref (section);
+		section = g_menu_new ();
+		g_menu_append (section, _("_Mark All As Read"), "node.node-mark-all-read");
 	}
 
 	if (IS_VFOLDER (node)) {
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-		ui_popup_add_menuitem (menu, _("_Rebuild"), ui_popup_rebuild_vfolder, node, 0);
+		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+		g_object_unref (section);
+		section = g_menu_new ();
+		g_menu_append (section, _("_Rebuild"), "node.node-rebuild-vfolder");
 	}
 
 	if (validSelection) {
 		if (writeableFeedlist) {
-			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-			ui_popup_add_menuitem (menu, _("_Delete"), ui_popup_delete, node, 0);
-			ui_popup_add_menuitem (menu, _("_Properties"), ui_popup_properties, node, 0);
+			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+			g_object_unref (section);
+			section = g_menu_new ();
+			g_menu_append (section, _("_Delete"), "node.node-delete");
+			g_menu_append (section, _("_Properties"), "node.node-properties");
 		}
 
 		if (IS_NODE_SOURCE (node) && NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL) {
-			gtk_menu_shell_append (GTK_MENU_SHELL (menu), gtk_separator_menu_item_new ());
-			ui_popup_add_menuitem (menu, _("Convert To Local Subscriptions..."), ui_popup_add_convert_to_local, node, 0);
+			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+			g_object_unref (section);
+			section = g_menu_new ();
+			g_menu_append (section, _("Convert To Local Subscriptions..."), "node.node-convert-to-local");
 		}
 	}
+
+	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+	g_object_unref (section);
+
+	g_menu_freeze (menu_model);
+	action_group = g_simple_action_group_new ();
+	g_action_map_add_action_entries (G_ACTION_MAP(action_group), ui_popup_node_gaction_entries, G_N_ELEMENTS (ui_popup_node_gaction_entries), node);
+	menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
+	gtk_widget_insert_action_group (menu, "node", G_ACTION_GROUP (action_group));
+	gtk_menu_attach_to_widget (GTK_MENU (menu), liferea_shell_lookup ("mainwindow"), NULL);
+	g_object_unref (menu_model);
 
 	ui_popup_menu (menu, button, activate_time);
 }

@@ -59,21 +59,21 @@ void feed_list_view_init (GtkTreeView *treeview);
  */
 void feed_list_view_sort_folder (nodePtr folder);
 
-void on_menu_delete (GtkWidget *widget, gpointer user_data);
+void on_menu_delete (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
-void on_menu_update (void);
-void on_menu_update_all (void);
+void on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void on_menu_update_all (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
-void on_menu_allread (GtkWidget *widget, gpointer user_data);
-void on_menu_allfeedsread (GtkWidget *widget, gpointer user_data);
+void on_menu_allread (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void on_menu_allfeedsread (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
-void on_menu_properties (GtkMenuItem *menuitem, gpointer user_data);
-void on_menu_feed_new (GtkMenuItem *menuitem, gpointer user_data);
-void on_menu_folder_new (GtkMenuItem *menuitem, gpointer user_data);
+void on_menu_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void on_menu_feed_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
+void on_menu_folder_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
 
-void on_new_plugin_activate (GtkMenuItem *menuitem, gpointer user_data);
-void on_new_newsbin_activate (GtkMenuItem *menuitem, gpointer user_data);
-void on_new_vfolder_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_new_plugin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
+void on_new_newsbin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
+void on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
 
-void on_feedlist_reduced_activate (GtkToggleAction *menuitem, gpointer user_data);
+void on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 #endif

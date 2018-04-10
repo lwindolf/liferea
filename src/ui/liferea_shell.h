@@ -202,14 +202,6 @@ void liferea_shell_set_important_status_bar (const char *format, ...);
  */
 GtkWidget * liferea_shell_get_window (void);
 
-/**
- * liferea_shell_set_view_mode:
- * @newMode:	the new mode
- *
- * Update the mode selection in the menu
- */
-void liferea_shell_set_view_mode (nodeViewType newMode);
-
 void liferea_shutdown (void);
 
 G_END_DECLS

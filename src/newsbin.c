@@ -107,13 +107,21 @@ on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
 }
 
 void 
-on_popup_copy_to_newsbin (gpointer data)
+on_action_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	nodePtr		newsbin;
-	itemPtr		item, copy;
+	itemPtr		item = NULL, copy;
+	guint32 	newsbin_index;
+	guint64 	item_id;
+	gboolean 	maybe_item_id;
 
-	newsbin = g_slist_nth_data(newsbin_list, GPOINTER_TO_INT(data));
-	item = itemlist_get_selected();
+	g_variant_get (parameter, "(umt)", &newsbin_index, &maybe_item_id, &item_id);
+	if (maybe_item_id)
+		item = item_load (item_id);
+	else
+		item = itemlist_get_selected();
+
+	newsbin = g_slist_nth_data(newsbin_list, newsbin_index);
 	if(item) {
 		copy = item_copy(item);
 		copy->nodeId = newsbin->id;	/* necessary to become independent of original item */
