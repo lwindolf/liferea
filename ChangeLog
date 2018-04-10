@@ -1,3 +1,11 @@
+To be released
+
+	Version 1.12.3
+
+	* #608: Refactoring UI code to switch to GAction and GtkBuilder
+	  (Leiaz)
+
+
 2018-03-07   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12.2
