@@ -65,10 +65,11 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         self.hb.pack_start(box)
 
         # Right side buttons
-        button = Gtk.Button()
+        button = Gtk.MenuButton()
         icon = Gio.ThemedIcon(name="open-menu-symbolic")
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
-        # FIXME: signal
+        builder = self.shell.get_property("builder")
+        button.set_menu_model(builder.get_object("menubar"))
         button.add(image)
         self.hb.pack_end(button)
 
@@ -85,7 +86,7 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         self.hb.show_all()
 
     def do_deactivate (self):
-        self.shell.lookup("maintoolbar").set_visible(True)
+        self.shell.lookup("mainwindow").set_titlebar(None)
         self.shell.lookup("mainwindow").set_show_menubar(True)
+        self.shell.lookup("maintoolbar").set_visible(True)
         self.hb = None
-
