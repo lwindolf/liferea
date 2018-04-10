@@ -47,12 +47,19 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
 
         button = Gtk.Button()
         button.add(Gtk.Arrow(Gtk.ArrowType.LEFT, Gtk.ShadowType.NONE))
-        button.connect("clicked", self._on_back)
+        button.set_action_name("app.prev-read-item")
         box.add(button)
 
         button = Gtk.Button()
         button.add(Gtk.Arrow(Gtk.ArrowType.RIGHT, Gtk.ShadowType.NONE))
-        # FIXME: signal
+        button.set_action_name("app.next-read-item")
+        box.add(button)
+
+        button = Gtk.Button()
+        icon = Gio.ThemedIcon(name="edit-redo-symbolic")
+        image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
+        button.add(image)
+        button.set_action_name("app.next-unread-item")
         box.add(button)
 
         self.hb.pack_start(box)
@@ -68,23 +75,18 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         button = Gtk.Button()
         icon = Gio.ThemedIcon(name="edit-find-symbolic")
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
-        # FIXME: signal
         button.add(image)
+        button.set_action_name("app.search-feeds")
         self.hb.pack_end(button)
 
         self.shell.lookup("mainwindow").set_titlebar(self.hb)
-
-        ui_manager = self.shell.get_property("ui-manager")
-        ui_manager.get_widget("/maintoolbar/").set_visible(False)
-        ui_manager.get_widget("/MainwindowMenubar/").set_visible(False)
+        self.shell.lookup("mainwindow").set_show_menubar(False)
+        self.shell.lookup("maintoolbar").set_visible(False)
         self.hb.show_all()
 
     def do_deactivate (self):
-        ui_manager = self.shell.get_property("ui-manager")
-        ui_manager.get_widget("/maintoolbar/").set_visible(True)
-        ui_manager.get_widget("/MainwindowMenubar/").set_visible(True)
+        self.shell.lookup("maintoolbar").set_visible(True)
+        self.shell.lookup("mainwindow").set_show_menubar(True)
         self.hb = None
 
-    def _on_back(self, button):
-        print("FIXME: do something")
 
