@@ -1,7 +1,7 @@
 { "schemaVersion": 1,
   "plugins":[
      { "Floating Statusbar":
-                { "module"      : "",
+                { "module"      : "floating-statusbar",
                   "category"    : "Menu",
                   "source"      : "whizse/liferea-plugins",
                   "description" : "Regain some screen real estate by replacing the static statusbar with a floating counterpart. Similar to the ones used in web browsers"
