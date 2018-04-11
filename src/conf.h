@@ -67,6 +67,7 @@
 #define LAST_WPANE_POS			"last-wpane-pos"
 #define LAST_ZOOMLEVEL			"last-zoomlevel"
 #define LAST_NODE_SELECTED		"last-node-selected"
+#define LIST_VIEW_COLUMN_ORDER		"list-view-column-order"
 
 /* networking settings */
 #define PROXY_DETECT_MODE		"proxy-detect-mode"
@@ -85,6 +86,7 @@ void	conf_deinit (void);
 
 #define conf_get_bool_value(key, value) conf_get_bool_value_from_schema (NULL, key, value)
 #define conf_get_str_value(key, value) conf_get_str_value_from_schema (NULL, key, value)
+#define conf_get_strv_value(key, value) conf_get_strv_value_from_schema (NULL, key, value)
 #define conf_get_int_value(key, value) conf_get_int_value_from_schema (NULL, key, value)
 
 /**
@@ -109,6 +111,18 @@ gboolean conf_get_bool_value_from_schema (GSettings *gsettings, const gchar *key
  * @returns TRUE if the configuration key was found
  */
 gboolean conf_get_str_value_from_schema (GSettings *gsettings,const gchar *key, gchar **value);
+
+/**
+ * Retrieves the value of the given string array configuration key.
+ * The string array has to be freed by the caller.
+ *
+ * @param gsettings	gsettings schema to use
+ * @param key	the configuration key
+ * @param value the value, if the function returned FALSE an empty string
+ *
+ * @returns TRUE if the configuration key was found
+ */
+gboolean conf_get_strv_value_from_schema (GSettings *gsettings,const gchar *key, gchar ***value);
 
 /**
  * Retrieves the value of the given integer configuration key.
@@ -137,6 +151,15 @@ void conf_set_bool_value (const gchar *key, gboolean value);
  * @param value	the new string value
  */
 void conf_set_str_value (const gchar *key, const gchar *value);
+
+/**
+ * Sets the value of the given string configuration key.
+ * The given value will not be free'd after setting it!
+ *
+ * @param key	the configuration key
+ * @param value	the new string value
+ */
+void conf_set_strv_value (const gchar *key, const gchar **value);
 
 /**
  * Sets the value of the given integer configuration key
