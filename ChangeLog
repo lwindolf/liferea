@@ -10,6 +10,8 @@ To be released
 	  possible real column drag&drop. Introduces a new DConf setting
 	  for the column order.
 	  (Yanki Kaneti)
+	* Fixes #280: Mark read toolbar button always disabled for search folders
+	  (Lars Windolf, reported by dvahalev)
 	* Fixes #625: Avoid exception in trayicon.py
 	  (Lars Windolf)
 	* Fixes #627: GnomeKeyring plugin fails to activate when keyring doesn't exist
