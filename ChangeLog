@@ -3,6 +3,8 @@ To be released
 	Version 1.12.3
 
 	* #608: Refactoring UI code to switch to GAction and GtkBuilder
+	  Note: this implies not having icons in the main menu anymore 
+	  which were still there for all non-GNOME users (see #626).
 	  (Leiaz)
 	* Fixes #625: Avoid exception in trayicon.py
 	  (Lars Windolf)
