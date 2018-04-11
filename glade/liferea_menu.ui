@@ -8,19 +8,16 @@
         <item>
           <attribute name="action">app.update-all</attribute>
           <attribute name="label" translatable="yes">Update _All</attribute>
-          <attribute name="icon">view-refresh</attribute>
         </item>
         <item>
           <attribute name="action">app.mark-all-feeds-read</attribute>
           <attribute name="label" translatable="yes">Mark All As _Read</attribute>
-          <attribute name="icon">gtk-apply</attribute><!-- legacy stock name -->
         </item>
       </section>
       <section>
         <item>
           <attribute name="action">app.new-subscription</attribute>
           <attribute name="label" translatable="yes">_New Subscription...</attribute>
-          <attribute name="icon">list-add</attribute>
         </item>
         <item>
           <attribute name="action">app.new-folder</attribute>
@@ -43,19 +40,16 @@
         <item>
           <attribute name="action">app.import-feed-list</attribute>
           <attribute name="label" translatable="yes">_Import Feed List...</attribute>
-          <attribute name="icon">document-open</attribute>
         </item>
         <item>
           <attribute name="action">app.export-feed-list</attribute>
           <attribute name="label" translatable="yes">_Export Feed List...</attribute>
-          <attribute name="icon">document-save-as</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="action">app.quit</attribute>
           <attribute name="label" translatable="yes">_Quit</attribute>
-          <attribute name="icon">application-exit</attribute>
         </item>
       </section>
     </submenu>
@@ -65,31 +59,26 @@
         <item>
           <attribute name="action">app.update-selected</attribute>
           <attribute name="label" translatable="yes">_Update</attribute>
-          <attribute name="icon">view-refresh</attribute>
         </item>
         <item>
           <attribute name="action">app.mark-selected-feed-as-read</attribute>
           <attribute name="label" translatable="yes">_Mark Items Read</attribute>
-          <attribute name="icon">gtk-apply</attribute><!-- legacy stock name -->
         </item>
       </section>
       <section>
         <item>
           <attribute name="action">app.remove-selected-feed-items</attribute>
           <attribute name="label" translatable="yes">Remove _All Items</attribute>
-          <attribute name="icon">edit-delete</attribute>
         </item>
         <item>
           <attribute name="action">app.delete-selected</attribute>
           <attribute name="label" translatable="yes">_Remove</attribute>
-          <attribute name="icon">edit-delete</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="action">app.selected-node-properties</attribute>
           <attribute name="label" translatable="yes">_Properties</attribute>
-          <attribute name="icon">document-properties</attribute>
         </item>
       </section>
     </submenu>
@@ -99,26 +88,22 @@
         <item>
           <attribute name="action">app.next-unread-item</attribute>
           <attribute name="label" translatable="yes">_Next Unread Item</attribute>
-          <attribute name="icon">go-jump</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="action">app.prev-read-item</attribute>
           <attribute name="label" translatable="yes">Previous Item</attribute>
-          <attribute name="icon">go-previous</attribute>
         </item>
         <item>
           <attribute name="action">app.next-read-item</attribute>
           <attribute name="label" translatable="yes">Next Item</attribute>
-          <attribute name="icon">go-next</attribute>
         </item>
       </section>
       <section>
         <item>
           <attribute name="action">app.toggle-selected-item-read-status</attribute>
           <attribute name="label" translatable="yes">Toggle _Read Status</attribute>
-          <attribute name="icon">gtk-apply</attribute> <!-- legacy stock name -->
         </item>
         <item>
           <attribute name="action">app.toggle-selected-item-flag</attribute>
@@ -127,7 +112,6 @@
         <item>
           <attribute name="action">app.remove-selected-item</attribute>
           <attribute name="label" translatable="yes">R_emove</attribute>
-          <attribute name="icon">edit-delete</attribute>
         </item>
       </section>
       <section>
@@ -157,12 +141,10 @@
         <item>
           <attribute name="action">app.zoom-in</attribute>
           <attribute name="label" translatable="yes">_Increase Text Size</attribute>
-          <attribute name="icon">zoom-in</attribute>
         </item>
         <item>
           <attribute name="action">app.zoom-out</attribute>
           <attribute name="label" translatable="yes">_Decrease Text Size</attribute>
-          <attribute name="icon">zoom-out</attribute>
         </item>
       </section>
       <section>
@@ -199,7 +181,6 @@
         <item>
           <attribute name="action">app.show-preferences</attribute>
           <attribute name="label" translatable="yes">_Preferences</attribute>
-          <attribute name="icon">preferences-system</attribute>
         </item>
       </section>
     </submenu>
@@ -209,7 +190,6 @@
         <item>
           <attribute name="action">app.search-feeds</attribute>
           <attribute name="label" translatable="yes">Search All Feeds...</attribute>
-          <attribute name="icon">edit-find</attribute>
         </item>
       </section>
     </submenu>
@@ -219,7 +199,6 @@
         <item>
           <attribute name="action">app.show-help-contents</attribute>
           <attribute name="label" translatable="yes">_Contents</attribute>
-          <attribute name="icon">help-browser</attribute>
         </item>
         <item>
           <attribute name="action">app.show-help-quick-reference</attribute>
@@ -234,7 +213,6 @@
         <item>
           <attribute name="action">app.show-about</attribute>
           <attribute name="label" translatable="yes">_About</attribute>
-          <attribute name="icon">help-about</attribute>
         </item>
       </section>
     </submenu>
