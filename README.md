@@ -25,18 +25,11 @@ any problems compiling the source file an issue at Github and we will
 help you asap.
 
 
-###### _Dependencies_
+###### _Mandatory Dependencies_
 
-Mandatory:
+   gtk3 libxml2 libxslt sqlite3 libwebkit4 libjson-glib libgirepository1.0
+   libpeas gsettings-desktop-schemas python3
 
-   gtk3 libxml2 libxslt sqlite3 libwebkit4 libjson-glib libgirepository1.0 libpeas gsettings-desktop-schemas
-
-Optional:
-
-- To use plugins:
-  - Python 3
-- For the media player plugin
-  - GStreamer 0.10+ library and codecs
    
 ###### _Compiling from Tarball_
 
