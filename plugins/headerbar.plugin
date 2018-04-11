@@ -1,0 +1,12 @@
+[Plugin]
+Module=headerbar
+Loader=python3
+IAge=2
+Name=Header Bar
+Version=0.1
+Description=Get a GNOME style header bar for Liferea
+Authors=Lars Windolf <lars.windolf@gmx.de>
+Copyright=Copyright © 2018 Lars Windolf <lars.windolf@gmx.de>
+Website=https://lzone.de/liferea/
+Help=https://lzone.de/liferea/
+
