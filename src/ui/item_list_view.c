@@ -142,6 +142,8 @@ item_list_view_finalize (GObject *object)
 	/* Disconnect the treeview signals to avoid spurious calls during teardown */
 	g_signal_handlers_disconnect_by_data (G_OBJECT (priv->treeview), object);
 
+	g_hash_table_destroy (priv->columns);
+
 	g_slist_free (priv->item_ids);
 	if (priv->batch_itemstore)
 		g_object_unref (priv->batch_itemstore);
