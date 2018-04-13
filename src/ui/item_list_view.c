@@ -732,7 +732,6 @@ on_item_list_row_activated (GtkTreeView *treeview,
 static void
 on_item_list_view_columns_changed (GtkTreeView *treeview, ItemListView *ilv)
 {
-	gint n = gtk_tree_view_get_n_columns(treeview);
 	gint i = 0;
 	GList *columns;
 	GHashTableIter iter;
@@ -742,20 +741,20 @@ on_item_list_view_columns_changed (GtkTreeView *treeview, ItemListView *ilv)
 	/* This handler is only used for drag and drop reordering, so it
 	   should not be hooked up with less than the full number of columns
 	   eg: on item_list_view creation or teardown */
-	g_return_if_fail (n == 5);
+	g_return_if_fail (gtk_tree_view_get_n_columns(treeview) == 5);
 
 	columns = gtk_tree_view_get_columns (treeview);
 	for (GList *li = columns; li; li = li->next) {
 		g_hash_table_iter_init (&iter, ilv->priv->columns);
 		while (g_hash_table_iter_next (&iter, &colname, &colptr)) {
 			if (li->data == colptr) {
-				strv[i++] = g_strdup (colname);
+				strv[i++] = colname;
 				strv[i] = NULL;
 				break;
 			}
 		}
 	}
-	conf_set_strv_value (LIST_VIEW_COLUMN_ORDER, &strv);
+	conf_set_strv_value (LIST_VIEW_COLUMN_ORDER, strv);
 
 	g_list_free (columns);
 }
@@ -790,7 +789,7 @@ item_list_view_create (gboolean wide)
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column, *headline_column;
-	gchar			**conf_column_order, **li;
+	gchar			**conf_column_order;
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
 	ilv->priv->wideView = wide;
@@ -867,7 +866,7 @@ item_list_view_create (gboolean wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
 
 	conf_get_strv_value (LIST_VIEW_COLUMN_ORDER, &conf_column_order);
-	for (li = conf_column_order; *li; *li++) {
+	for (gchar **li = conf_column_order; *li; li++) {
 		column = g_hash_table_lookup (ilv->priv->columns, *li);
 		g_object_set (column, "reorderable", TRUE, NULL);
 		gtk_tree_view_append_column (ilv->priv->treeview, column);
