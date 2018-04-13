@@ -108,10 +108,12 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.menu.show_all()
 
         self.window = self.shell.get_window()
-        self.minimize_to_tray_delete_handler = self.window.connect("delete_event",
-                                                                   self.trayicon_minimize_on_close)
-        self.minimize_to_tray_minimize_handler = self.window.connect("window-state-event",
-                                                                     self.window_state_event_cb)
+        self.delete_signal_id = GObject.signal_lookup("delete_event", Gtk.Window)
+        GObject.signal_handlers_block_matched (self.window,
+                                               GObject.SignalMatchType.ID | GObject.SignalMatchType.DATA,
+                                               self.delete_signal_id, 0, None, None, None)
+        self.window.connect("delete_event", self.trayicon_minimize_on_close)
+        self.window.connect("window-state-event", self.window_state_event_cb)
 
         # show the window if it is hidden when starting liferea
         self.window.deiconify()
@@ -133,7 +135,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.window.deiconify()
         self.window.show()
 
-    def trayicon_minimize_on_close(self, widget, data = None):
+    def trayicon_minimize_on_close(self, widget, event):
         self.window.hide()
         return True
 
@@ -186,8 +188,11 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 
     def do_deactivate(self):
         self.staticon.set_visible(False)
-        self.window.disconnect(self.minimize_to_tray_delete_handler)
-        self.window.disconnect(self.minimize_to_tray_minimize_handler)
+        self.window.disconnect_by_func(self.trayicon_minimize_on_close)
+        GObject.signal_handlers_unblock_matched (self.window,
+                                                 GObject.SignalMatchType.ID | GObject.SignalMatchType.DATA,
+                                                 self.delete_signal_id, 0, None,None,None)
+        self.window.disconnect_by_func(self.window_state_event_cb)
 
         self.feedlist.disconnect(self.feedlist_new_items_cb_id)
 

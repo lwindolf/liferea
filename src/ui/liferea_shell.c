@@ -1186,7 +1186,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "scroll_event",
 	                  G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
 	
-	g_signal_connect (G_OBJECT (shell->priv->window), "delete_event", G_CALLBACK(on_close), shell->priv);
+	g_signal_connect (G_OBJECT (shell->priv->window), "delete_event", G_CALLBACK(on_close), NULL);
 	g_signal_connect (G_OBJECT (shell->priv->window), "window_state_event", G_CALLBACK(on_window_state_event), shell->priv);
 	g_signal_connect (G_OBJECT (shell->priv->window), "key_press_event", G_CALLBACK(on_key_press_event), shell->priv);
 	
