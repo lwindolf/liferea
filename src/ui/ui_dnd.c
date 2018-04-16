@@ -28,6 +28,7 @@
 #include "ui/item_list_view.h"
 #include "ui/feed_list_view.h"
 #include "ui/feed_list_node.h"
+#include "ui/liferea_shell.h"
 #include "ui/ui_dnd.h"
 #include "fl_sources/node_source.h"
 
@@ -145,7 +146,17 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 	if (result) {
 		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_dest), &iter, dest)) {
 			gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter, FS_PTR, &node, -1);
-			
+
+			/* If we don't do anything, then because DnD is implemented by removal and
+			   re-insertion, and the removed node is selected, the treeview selects
+			   the next row after the removal, which is supremely irritating.
+			   But setting a selection at this point is pointless, because the treeview
+			   will reset it as soon as the DnD callback returns. Instead, we set
+			   the cursor, which controls where treeview resets the selection later.
+			 */
+			gtk_tree_view_set_cursor(GTK_TREE_VIEW (liferea_shell_lookup ("feedlist")),
+			    dest, NULL, FALSE);
+
 			/* remove from old parents child list */
 			oldParent = node->parent;
 			g_assert (oldParent);
