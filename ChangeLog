@@ -16,6 +16,8 @@ To be released
 	  (Lars Windolf)
 	* Fixes #627: GnomeKeyring plugin fails to activate when keyring doesn't exist
 	  (Lars Windolf)
+	* Fixes #633: Big Memory leak in date code
+	  (Leiaz)
 
 
 2018-03-07   Lars Windolf <lars.windolf@gmx.de>

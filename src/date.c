@@ -166,6 +166,9 @@ date_format_nice (gint64 date)
 		}
 	}
 
+	g_date_time_unref (then);
+	g_date_time_unref (now);
+
 	temp = buf;
 	while ((temp = strstr (temp, "  "))) {
 		memmove (temp, temp + 1, strlen (temp));
