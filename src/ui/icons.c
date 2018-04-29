@@ -26,7 +26,7 @@
 
 #include "common.h"
 
-static GIcon *icons[MAX_ICONS];	/**<< list of icon assignments */
+static GIcon *icons[MAX_ICONS];	/*<< list of icon assignments */
 
 static gchar *
 icon_find_pixmap_file (const gchar *filename)

@@ -278,6 +278,8 @@ void item_list_view_update_all_items (ItemListView *ilv);
 void on_popup_copy_URL_clipboard (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
+ * on_popup_social_bm_item_selected: (skip)
+ *
  * Bookmarks the selected item to social bookmark service.
  */
 void on_popup_social_bm_item_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data);
