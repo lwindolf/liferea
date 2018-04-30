@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.20.4 -->
 <interface>
   <requires lib="gtk+" version="3.14"/>
   <object class="GtkAdjustment" id="adjustment2">
@@ -12,24 +12,6 @@
     <property name="upper">1000000</property>
     <property name="value">1</property>
     <property name="step_increment">1</property>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkListStore" id="liststore2">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
-  <object class="GtkListStore" id="liststore3">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
   </object>
   <object class="GtkDialog" id="prefs">
     <property name="visible">True</property>
@@ -278,7 +260,6 @@
                       <object class="GtkComboBox" id="globalRefreshIntervalUnitComboBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="model">liststore5</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext5"/>
                           <attributes>
@@ -505,7 +486,6 @@
                       <object class="GtkComboBox" id="skimKeyCombo">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="model">liststore3</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext3"/>
                           <attributes>
@@ -522,7 +502,6 @@
                       <object class="GtkComboBox" id="defaultViewModeCombo">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="model">liststore3</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext4"/>
                           <attributes>
@@ -872,7 +851,6 @@
                   <object class="GtkComboBox" id="toolbarCombo">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="model">liststore2</property>
                     <child>
                       <object class="GtkCellRendererText" id="cellrenderertext2"/>
                       <attributes>
@@ -1279,7 +1257,7 @@
                       <packing>
                         <property name="left_attach">0</property>
                         <property name="top_attach">0</property>
-                        <property name="width">2</property>
+                        <property name="width">3</property>
                       </packing>
                     </child>
                     <child>
@@ -1297,10 +1275,56 @@
                       </packing>
                     </child>
                     <child>
+                      <object class="GtkRadioButton" id="predefinedDownload">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <signal name="toggled" handler="on_enclosure_download_predefined_toggled" swapped="no"/>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkRadioButton" id="customDownload">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">False</property>
+                        <property name="active">True</property>
+                        <property name="draw_indicator">True</property>
+                        <property name="group">predefinedDownload</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">&lt;small&gt;(%s for URL)&lt;/small&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="xalign">1</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkComboBox" id="downloadToolCombo">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="model">liststore1</property>
                         <child>
                           <object class="GtkCellRendererText" id="cellrenderertext1"/>
                           <attributes>
@@ -1309,8 +1333,20 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="left_attach">1</property>
+                        <property name="left_attach">2</property>
                         <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="customDownloadEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="placeholder_text" translatable="yes">custom-command %s</property>
+                        <signal name="changed" handler="on_enclosure_download_custom_command_changed" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">2</property>
                       </packing>
                     </child>
                   </object>
@@ -1475,11 +1511,8 @@
     <action-widgets>
       <action-widget response="-7">prefclosebtn</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkListStore" id="liststore5">
-    <columns>
-      <!-- column-name item -->
-      <column type="gchararray"/>
-    </columns>
+    <child>
+      <placeholder/>
+    </child>
   </object>
 </interface>

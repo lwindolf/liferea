@@ -54,11 +54,11 @@ struct PreferencesDialogClass
 GType preferences_dialog_get_type	(void);
 
 /**
- * Returns a download tool definition.
+ * prefs_get_download_command:
  *
- * @return the download command definition
+ * Returns: (transfer full): The download command.
  */
-const gchar * prefs_get_download_command (void);
+gchar * prefs_get_download_command (void);
 
 /**
  * Show the preferences dialog.
@@ -77,6 +77,8 @@ void on_enableplugins_toggled (GtkToggleButton *togglebutton, gpointer user_data
 void on_itemCountBtn_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
 void on_default_update_interval_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
 void on_useProxyAuth_toggled (GtkToggleButton *button, gpointer user_data);
+void on_enclosure_download_custom_command_changed (GtkEditable *entry, gpointer user_data);
+void on_enclosure_download_predefined_toggled (GtkToggleButton *button, gpointer user_data);
 void on_enc_action_change_btn_clicked (GtkButton *button, gpointer user_data);
 void on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data);
 void on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data);
