@@ -207,12 +207,6 @@ ui_popup_enclosure_menu (enclosurePtr enclosure, guint button,
 /* popup callback wrappers */
 
 static void
-ui_popup_mark_as_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	feedlist_mark_all_read ((nodePtr)user_data);
-}
-
-static void
 ui_popup_rebuild_vfolder (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	vfolder_rebuild ((nodePtr)user_data);
@@ -246,7 +240,7 @@ ui_popup_add_convert_to_local (GSimpleAction *action, GVariant *parameter, gpoin
 
 /* Those actions work on the node passed as user_data parameter. */
 static const GActionEntry ui_popup_node_gaction_entries[] = {
-  {"node-mark-all-read", ui_popup_mark_as_read, NULL, NULL, NULL},
+  {"node-mark-all-read", on_action_mark_all_read, NULL, NULL, NULL},
   {"node-rebuild-vfolder", ui_popup_rebuild_vfolder, NULL, NULL, NULL},
   {"node-properties", ui_popup_properties, NULL, NULL, NULL},
   {"node-delete", ui_popup_delete, NULL, NULL, NULL},

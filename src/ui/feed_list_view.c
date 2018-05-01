@@ -400,10 +400,13 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 }
 
 void
-on_menu_allread (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_action_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {	
-	gboolean confirm_mark_read;
-	gboolean do_mark_read = TRUE;
+	nodePtr 	feedlist;
+	gboolean 	confirm_mark_read;
+	gboolean 	do_mark_read = TRUE;
+
+	feedlist = user_data ? (nodePtr) user_data:feedlist_get_selected ();
 
 	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
 
@@ -421,7 +424,7 @@ on_menu_allread (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	}
 
 	if (do_mark_read)
-		feedlist_mark_all_read (feedlist_get_selected ());
+		feedlist_mark_all_read (feedlist);
 }
 
 void

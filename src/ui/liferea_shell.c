@@ -941,7 +941,7 @@ static const GActionEntry liferea_shell_add_gaction_entries[] = {
 };
 
 static const GActionEntry liferea_shell_feed_gaction_entries[] = {
-	{"mark-selected-feed-as-read", on_menu_allread, NULL, NULL, NULL},
+	{"mark-selected-feed-as-read", on_action_mark_all_read, NULL, NULL, NULL},
 	{"update-selected", on_menu_update, NULL, NULL, NULL}
 };
 
