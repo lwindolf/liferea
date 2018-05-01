@@ -65,7 +65,6 @@ void on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_d
 void on_menu_update_all (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 void on_action_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-void on_menu_allfeedsread (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 void on_menu_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 void on_menu_feed_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
