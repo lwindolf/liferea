@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include <libsoup/soup.h>
+#include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,6 +72,10 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	updateJobPtr	job = (updateJobPtr)user_data;
 	SoupDate	*last_modified;
 	const gchar	*tmp = NULL;
+	GHashTable	*params;
+	gboolean	revalidated = FALSE;
+	gint		maxage;
+	gint		age;
 
 	job->result->source = soup_uri_to_string (soup_message_get_uri(msg), FALSE);
 	if (SOUP_STATUS_IS_TRANSPORT_ERROR (msg->status_code)) {
@@ -79,6 +84,9 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	} else {
 		job->result->httpstatus = msg->status_code;
 	}
+
+	/* keep some request headers for revalidated responses */
+	revalidated = (304 == job->result->httpstatus);
 
 	debug1 (DEBUG_NET, "download status code: %d", msg->status_code);
 	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
@@ -90,22 +98,56 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	job->result->contentType = g_strdup (soup_message_headers_get_content_type (msg->response_headers, NULL));
 
 	/* Update last-modified date */
-	tmp = soup_message_headers_get_one (msg->response_headers, "Last-Modified");
-	if (tmp) {
-		/* The string may be badly formatted, which will make
-		 * soup_date_new_from_string() return NULL */
-		last_modified = soup_date_new_from_string (tmp);
-		if (last_modified) {
-			job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
-			soup_date_free (last_modified);
+	if (revalidated) {
+		 job->result->updateState->lastModified = update_state_get_lastmodified (job->request->updateState);
+	} else {
+		tmp = soup_message_headers_get_one (msg->response_headers, "Last-Modified");
+		if (tmp) {
+			/* The string may be badly formatted, which will make
+			* soup_date_new_from_string() return NULL */
+			last_modified = soup_date_new_from_string (tmp);
+			if (last_modified) {
+				job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
+				soup_date_free (last_modified);
+			}
 		}
 	}
 
 	/* Update ETag value */
-	tmp = soup_message_headers_get_one (msg->response_headers, "ETag");
+	if (revalidated) {
+		job->result->updateState->etag = g_strdup (update_state_get_etag (job->request->updateState));
+	} else {
+		tmp = soup_message_headers_get_one (msg->response_headers, "ETag");
+		if (tmp) {
+			job->result->updateState->etag = g_strdup (tmp);
+		}
+	}
+
+	/* Update cache max-age  */
+	tmp = soup_message_headers_get_list (msg->response_headers, "Cache-Control");
 	if (tmp) {
-		job->result->updateState->etag = g_strdup(tmp);
-	}    
+		params = soup_header_parse_param_list (tmp);
+		if (params) {
+			tmp = g_hash_table_lookup (params, "max-age");
+			if (tmp) {
+				maxage = atoi (tmp);
+				if (0 < maxage) {
+					/* subtract Age from max-age */
+					tmp = soup_message_headers_get_one (msg->response_headers, "Age");
+					if (age) {
+						age = atoi (tmp);
+						if (0 < age) {
+							maxage = maxage - age;
+						}
+					}
+					if (0 < maxage) {
+						job->result->updateState->maxAgeMinutes = ceil ( (float) (maxage / 60));
+					}
+				}
+			}
+		}
+		soup_header_free_param_list (params);
+	}
 
 	update_process_finished_job (job);
 }

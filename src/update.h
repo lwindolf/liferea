@@ -80,6 +80,10 @@ typedef struct updateState {
 	GTimeVal	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
 	gchar		*cookies;		/**< cookies to be used */	
 	gchar		*etag;			/**< ETag sent by the server */
+	gint		maxAgeMinutes;		/**< default update interval, greatest value sourced from HTTP and XML */
+	gint		synFrequency;		/**< syn:updateFrequency */
+	gint		synPeriod;		/**< syn:updatePeriod */
+	gint		timeToLive;		/**< ttl */
 } *updateStatePtr;
 
 /** structure describing a HTTP update request */
@@ -134,6 +138,9 @@ void update_state_set_lastmodified (updateStatePtr state, glong lastmodified);
 
 const gchar * update_state_get_etag (updateStatePtr state);
 void update_state_set_etag (updateStatePtr state, const gchar *etag);
+
+gint update_state_get_cache_maxage (updateStatePtr state);
+void update_state_set_cache_maxage (updateStatePtr state, const gint maxage);
 
 const gchar * update_state_get_cookies (updateStatePtr state);
 void update_state_set_cookies (updateStatePtr state, const gchar *cookies);

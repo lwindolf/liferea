@@ -104,7 +104,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		} 
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
  			if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
-				subscription_set_default_update_interval(ctxt->subscription, atoi(tmp));
+				ctxt->subscription->updateState->timeToLive = atoi (tmp);
 				g_free(tmp);
 			}
 		}
