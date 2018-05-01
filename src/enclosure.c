@@ -286,7 +286,7 @@ enclosure_download (encTypePtr type, const gchar *url, gboolean interactive)
 		debug2 (DEBUG_UPDATE, "passing URL %s to command %s...", urlQ, type->cmd);
 		cmd = g_strdup_printf ("%s %s", type->cmd, urlQ);
 	} else {
-		const gchar *toolCmd = prefs_get_download_command ();
+		gchar *toolCmd = prefs_get_download_command ();
 		if(!toolCmd) {
 			if (interactive)
 				ui_show_error_box (_("You have not configured a download tool yet! Please do so in the 'Enclosures' tab in Tools/Preferences."));
@@ -295,6 +295,7 @@ enclosure_download (encTypePtr type, const gchar *url, gboolean interactive)
 
 		debug2 (DEBUG_UPDATE, "downloading URL %s with %s...", urlQ, toolCmd);
 		cmd = g_strdup_printf (toolCmd, urlQ);
+		g_free (toolCmd);
 	}
 
 	g_free (urlQ);

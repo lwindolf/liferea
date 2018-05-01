@@ -41,7 +41,9 @@
 #define ENABLE_PLUGINS			"enable-plugins"
 
 /* enclosure handling */
+#define DOWNLOAD_CUSTOM_COMMAND 	"download-custom-command"
 #define DOWNLOAD_TOOL			"download-tool"
+#define DOWNLOAD_USE_CUSTOM_COMMAND	"download-use-custom-command"
 
 /* feed handling settings */
 #define DEFAULT_MAX_ITEMS		"maxitemcount"
