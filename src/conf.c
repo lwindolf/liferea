@@ -329,3 +329,10 @@ conf_signal_connect (const gchar *signal, GCallback cb, gpointer data)
 {
 	g_signal_connect (settings, signal, cb, data);
 }
+
+void
+conf_bind (const gchar *key, gpointer object, const gchar *property, GSettingsBindFlags flags)
+{
+	g_assert (settings);
+	g_settings_bind (settings, key, object, property, flags);
+}

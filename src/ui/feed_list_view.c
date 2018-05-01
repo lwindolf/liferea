@@ -35,6 +35,7 @@
 #include "newsbin.h"
 #include "vfolder.h"
 #include "ui/browser_tabs.h"
+#include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
 #include "ui/ui_dnd.h"
@@ -401,7 +402,26 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 void
 on_menu_allread (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {	
-	feedlist_mark_all_read (feedlist_get_selected ());
+	gboolean confirm_mark_read;
+	gboolean do_mark_read = TRUE;
+
+	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
+
+	if (confirm_mark_read) {
+		gint result;
+		GtkDialog *confirm_dialog = GTK_DIALOG (liferea_dialog_new ("mark_read_dialog"));
+		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
+
+		conf_bind (CONFIRM_MARK_ALL_READ, dont_ask_toggle, "active", G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
+
+		result = gtk_dialog_run (confirm_dialog);
+		if (result != GTK_RESPONSE_OK)
+			do_mark_read = FALSE;
+		gtk_widget_destroy (GTK_WIDGET (confirm_dialog));
+	}
+
+	if (do_mark_read)
+		feedlist_mark_all_read (feedlist_get_selected ());
 }
 
 void
