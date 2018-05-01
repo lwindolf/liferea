@@ -35,6 +35,7 @@
 #include "newsbin.h"
 #include "vfolder.h"
 #include "ui/browser_tabs.h"
+#include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
 #include "ui/ui_dnd.h"
@@ -399,15 +400,42 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 }
 
 void
-on_menu_allread (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_action_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {	
-	feedlist_mark_all_read (feedlist_get_selected ());
-}
+	nodePtr 	feedlist;
+	gboolean 	confirm_mark_read;
+	gboolean 	do_mark_read = TRUE;
 
-void
-on_menu_allfeedsread (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	feedlist_mark_all_read (feedlist_get_root ());
+	if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-all-feeds-read"))
+		feedlist = feedlist_get_root ();
+	else if (user_data)
+		feedlist = (nodePtr) user_data;
+	else
+		feedlist = feedlist_get_selected ();
+
+	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
+
+	if (confirm_mark_read) {
+		gint result;
+		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
+		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
+		const gchar *feed_title = (feedlist_get_root () == feedlist) ? _("all feeds"):node_get_title (feedlist);
+		gchar *primary_message = g_strdup_printf (_("Mark %s as read ?"), feed_title);
+
+		g_object_set (confirm_dialog, "text", primary_message, NULL);
+		g_free (primary_message);
+		gtk_message_dialog_format_secondary_text (confirm_dialog, _("Are you sure you want to mark all items in %s as read ?"), feed_title);
+
+		conf_bind (CONFIRM_MARK_ALL_READ, dont_ask_toggle, "active", G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
+
+		result = gtk_dialog_run (GTK_DIALOG (confirm_dialog));
+		if (result != GTK_RESPONSE_OK)
+			do_mark_read = FALSE;
+		gtk_widget_destroy (GTK_WIDGET (confirm_dialog));
+	}
+
+	if (do_mark_read)
+		feedlist_mark_all_read (feedlist);
 }
 
 void

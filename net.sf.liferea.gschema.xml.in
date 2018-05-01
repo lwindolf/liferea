@@ -22,6 +22,11 @@
       <summary>Selects which browser to use to open external links</summary>
       <description>Selects which browser to use to open external links. The choices include "default" and "manual".</description>
     </key>
+    <key name="confirm-mark-all-read" type="b">
+      <default>true</default>
+      <summary>Get a confirmation dialog when marking all read</summary>
+      <description>If TRUE Liferea will display a confirmation dialog before marking all items of the selected feed as read.</description>
+    </key>
     <key name="default-view-mode" type="i">
       <default>0</default>
       <summary>The default view mode for feed list nodes.</summary>

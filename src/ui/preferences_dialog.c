@@ -595,6 +595,8 @@ preferences_dialog_init (PreferencesDialog *pd)
 	                            G_CALLBACK (on_gui_toolbar_style_changed),
 	                            i);
 
+	conf_bind (CONFIRM_MARK_ALL_READ, liferea_dialog_lookup (pd->priv->dialog, "confirmMarkAllReadButton"), "active", G_SETTINGS_BIND_DEFAULT);
+
 	/* ================= panel 5 "proxy" ======================== */
 
 #if WEBKIT_CHECK_VERSION (2, 15, 3)

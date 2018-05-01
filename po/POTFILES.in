@@ -193,6 +193,7 @@ src/webkit/web_extension/web_extension_main.c
 [tyep: gettext/glade]glade/liferea_menu.ui
 [tyep: gettext/glade]glade/liferea_toolbar.ui
 [type: gettext/glade]glade/mainwindow.ui
+[type: gettext/glade]glade/mark_read_dialog.ui
 [type: gettext/glade]glade/new_folder.ui
 [type: gettext/glade]glade/new_newsbin.ui
 [type: gettext/glade]glade/new_subscription.ui

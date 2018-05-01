@@ -54,6 +54,7 @@
 #define REDUCED_FEEDLIST		"reduced-feedlist"
 
 /* GUI settings and persistency values */
+#define CONFIRM_MARK_ALL_READ 		"confirm-mark-all-read"
 #define DISABLE_TOOLBAR			"disable-toolbar"
 #define TOOLBAR_STYLE			"toolbar-style"
 #define LAST_WINDOW_STATE		"last-window-state"
@@ -195,4 +196,14 @@ gboolean conf_get_default_font_from_schema (const gchar *key, gchar **value);
  */
 void conf_signal_connect (const gchar *signal, GCallback cb, gpointer data);
 
+/**
+ * conf_bind:
+ * @key: the configuration key
+ * @object: a GObject
+ * @property: the object's property to bind
+ * @flags: binding flags
+ *
+ * This is a convenience function that calls g_settings_bind with Liferea settings.
+ */
+void conf_bind (const gchar *key, gpointer object, const gchar *property, GSettingsBindFlags flags);
 #endif
