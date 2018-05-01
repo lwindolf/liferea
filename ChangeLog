@@ -2,6 +2,10 @@ To be released
 
 	Version 1.12.3
 
+	* #634: Added setting for custom download commands
+	  (Leiaz)
+	* #614: GTK Headerbar support via plugin
+	  (Lars Windolf)
 	* #608: Refactoring UI code to switch to GAction and GtkBuilder
 	  Note: this implies not having icons in the main menu anymore 
 	  which were still there for all non-GNOME users (see #626).
@@ -10,14 +14,22 @@ To be released
 	  possible real column drag&drop. Introduces a new DConf setting
 	  for the column order.
 	  (Yanki Kaneti)
+
 	* Fixes #280: Mark read toolbar button always disabled for search folders
 	  (Lars Windolf, reported by dvahalev)
+	* Fixes #591: Please add a safety question when "marking all read"
+	  (Leiaz, reported by Nudin)
 	* Fixes #625: Avoid exception in trayicon.py
 	  (Lars Windolf)
 	* Fixes #627: GnomeKeyring plugin fails to activate when keyring doesn't exist
 	  (Lars Windolf)
+	* Fixes #630: Fix feed list selection after DnD
+	  (Peter Zaitev)
 	* Fixes #633: Big Memory leak in date code
 	  (Leiaz)
+
+	* Update of Turkish translation (emintufan)
+	* Update of French translation (guilieb)
 
 
 2018-03-07   Lars Windolf <lars.windolf@gmx.de>
