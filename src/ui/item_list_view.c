@@ -855,8 +855,7 @@ item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstor
 {
 	gint		state = 0;
 	nodePtr		node;
-	GtkTreeIter	*iter;
-	GtkTreeIter	old_iter;
+	GtkTreeIter	iter;
 	gboolean	exists;
 
 	if (item->flagStatus)
@@ -868,17 +867,15 @@ item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstor
 	if(!node)
 		return;	/* comment items do cause this... maybe filtering them earlier would be a good idea... */
 
-	exists = item_list_view_id_to_iter (ilv, item->id, &old_iter);
-	iter = &old_iter;
+	exists = item_list_view_id_to_iter (ilv, item->id, &iter);
 
 	if (!exists)
 	{
-		iter = g_new0 (GtkTreeIter, 1);
-		gtk_tree_store_prepend (itemstore, iter, NULL);
+		gtk_tree_store_prepend (itemstore, &iter, NULL);
 		ilv->priv->item_ids = g_slist_append (ilv->priv->item_ids, GUINT_TO_POINTER (item->id));
 	}
 
-	gtk_tree_store_set (itemstore, iter,
+	gtk_tree_store_set (itemstore, &iter,
 		                       IS_TIME, item->time,
 		                       IS_NR, item->id,
 				       IS_PARENT, node,
