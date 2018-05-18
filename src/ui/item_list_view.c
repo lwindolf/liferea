@@ -38,6 +38,7 @@
 #include "feedlist.h"
 #include "item.h"
 #include "itemlist.h"
+#include "item_state.h"
 #include "itemview.h"
 #include "newsbin.h"
 #include "social.h"
@@ -108,6 +109,7 @@ launch_item (itemPtr item, open_link_target_type open_link_target)
 				break;
 			}
 
+			item_set_read_state (item, TRUE);
 			g_free (link);
 		} else
 			ui_show_error_box (_("This item has no link specified!"));
