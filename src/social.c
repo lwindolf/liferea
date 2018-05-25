@@ -1,7 +1,7 @@
 /*
  * @file social.c  social networking integration
  * 
- * Copyright (C) 2006-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2017 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,7 +120,6 @@ social_init (void)
 	social_register_bookmark_site ("reddit",	"http://reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Slashdot",	"http://slashdot.org/slashdot-it.pl?op=basic&amp;url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Squidoo",	"http://www.squidoo.com/lensmaster/bookmark?%s", FALSE, FALSE);
-	social_register_bookmark_site ("StumbleUpon",	"http://www.stumbleupon.com/submit/?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Twitter",	"http://twitter.com/home?status=%s", FALSE, FALSE);
 	social_register_bookmark_site ("Yahoo My Web",	"http://myweb2.search.yahoo.com/myresults/bookmarklet?u=%s&t=%s", TRUE, FALSE);
 
