@@ -134,7 +134,7 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 				if (0 < maxage) {
 					/* subtract Age from max-age */
 					tmp = soup_message_headers_get_one (msg->response_headers, "Age");
-					if (age) {
+					if (tmp) {
 						age = atoi (tmp);
 						if (0 < age) {
 							maxage = maxage - age;
