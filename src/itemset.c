@@ -29,6 +29,7 @@
 #include "feed.h"
 #include "itemlist.h"
 #include "itemset.h"
+#include "item_state.h"
 #include "metadata.h"
 #include "node.h"
 #include "rule.h"
@@ -180,9 +181,9 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 					/* To avoid notification spam from external
 					   sources: never set read items to unread again! */
 					if ((!oldItem->readStatus) && (newItem->readStatus))
-						oldItem->readStatus = newItem->readStatus;
+						item_read_state_changed (oldItem, newItem->readStatus);
 
-					oldItem->flagStatus = newItem->flagStatus;
+					item_flag_state_changed (oldItem, newItem->flagStatus);
 				}
 				
 				db_item_update (oldItem);
