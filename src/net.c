@@ -351,9 +351,9 @@ network_init (void)
 	 * e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
 	useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
 
-	/* Cookies */
-	filename = common_create_config_filename ("cookies.txt");
-	cookies = soup_cookie_jar_text_new (filename, FALSE);
+	/* Session cookies */
+	filename = common_create_config_filename ("session_cookies.txt");
+	cookies = soup_cookie_jar_text_new (filename, TRUE);
 	g_free (filename);
 
 	/* Initialize libsoup */
