@@ -253,13 +253,11 @@ static void vfolder_save (nodePtr node) { }
 static void
 vfolder_update_counters (nodePtr node) 
 {
-	/* There is no unread handling for search folders for performance reasons.
-	   Still the unread count controls menu/toolbar sensitivity. So as a
-	   workaround (see github#280) we set the number to 1 and rely on it
-	   being rendered nowhere (currently we always render the item counter
-	   for search folders in the feed list treeview) */
+	/* There is no unread handling for search folders for performance
+	 * reasons.So set everything to 0 here and don't bother with GUI
+	 * updates... */
 	node->needsUpdate = TRUE;
-	node->unreadCount = 1;
+	node->unreadCount = 0;
 	node->itemCount = db_search_folder_get_item_count (node->id);
 }
 

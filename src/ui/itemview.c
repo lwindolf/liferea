@@ -28,6 +28,7 @@
 #include "itemlist.h"
 #include "itemview.h"
 #include "node.h"
+#include "vfolder.h"
 #include "ui/ui_common.h"
 #include "ui/enclosure_list_view.h"
 #include "ui/liferea_shell.h"
@@ -327,7 +328,7 @@ itemview_update (void)
 	}
 
 	if (itemview->priv->node)
-		liferea_shell_update_allitems_actions (0 != itemview->priv->node->itemCount, 0 != itemview->priv->node->unreadCount);
+		liferea_shell_update_allitems_actions (0 != itemview->priv->node->itemCount, (0 != itemview->priv->node->unreadCount) || IS_VFOLDER (itemview->priv->node));
 }
 
 void
