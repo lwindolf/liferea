@@ -202,7 +202,6 @@ static gboolean
 itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChecks, gboolean allowUpdates)
 {
 	gboolean	allowStateChanges = FALSE;
-	gboolean	html5_enabled;
 	gboolean	merge;
 	nodePtr		node;
 
@@ -308,6 +307,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 {
 	GList	*iter, *droppedItems = NULL, *items = NULL;
 	guint	i, max, length, toBeDropped, newCount = 0, flagCount = 0;
+	nodePtr	node;
 
 	debug_start_measurement (DEBUG_UPDATE);
 	
@@ -400,7 +400,11 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	g_list_free (list);
 
 	vfolder_foreach (node_update_counters);
-	
+
+	node = node_from_id (itemSet->nodeId);
+	if (node && (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC))
+		node_update_counters (node);
+
 	debug1(DEBUG_UPDATE, "added %d new items", newCount);
 	
 	/* 4. Apply cache limit for effective item set size
