@@ -114,12 +114,12 @@ date_format_nice (gint64 date)
 	gchar *temp, *buf;
 	gboolean done = FALSE;
 	
-	if (date == 0) {
-		return g_strdup ("");
-	}
-	
 	then = g_date_time_new_from_unix_local (date);
 	now = g_date_time_new_now_local ();
+
+	if ((date == 0) || (then == NULL)) {
+		return g_strdup ("");
+	}
 
 /*	if (nowdate - date < 60 * 60 * 8 && nowdate > date) {
 		e_utf8_strftime_fix_am_pm (buf, TIMESTRLEN, _("%l:%M %p"), &then);
