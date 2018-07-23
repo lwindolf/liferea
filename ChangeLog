@@ -1,4 +1,26 @@
-To be released
+2018-07-23   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12.4
+
+	* Fixes #660: Added installable plugin to change accels
+	  (Lars Windolf)
+	* Fixes #654: Segfault on date out of range
+	  (Leaiz)
+	* Fixes #651: Fixes Free Music Archive link in default OPMLs
+	  (reported by benjbrandall)
+	* Fixes #649: Switch from persistent to session-only cookies
+	  (Daniel Alexandersen)
+	* Fixes #645, #646: unread count of vfolder
+	  (Leaiz)
+	* Fixes #637: Extra keywords in .desktop file (syndication; rss; atom)
+	  (Daniel Alexandersen)
+	* Fixes #557: Updating counters for remote sources
+	  (Leiaz)
+
+	* Updated cookie usage hint in FAQ
+
+
+2018-05-02   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12.3
 
