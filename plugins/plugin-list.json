@@ -44,6 +44,12 @@
                       },
                       "packages" : [ "adblockparser" ]
                   }
-     }}
+     }},
+     { "Custom Accels":
+                { "module"      : "accels",
+                  "category"    : "Advanced",
+                  "source"      : "mozbugbox/liferea-plugin-studio",
+                  "description" : "Editing Accels/shortcuts for Liferea action."
+     }}     
    ]
 }
