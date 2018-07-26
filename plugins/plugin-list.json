@@ -30,21 +30,6 @@
                   "source"      : "mozbugbox/liferea-plugin-studio",
                   "description" : "Change advanced WebKitGtk settings for HTML rendering."
      }},
-     { "BlockLink": 
-                { "module"      : "blocklink-addon",
-                  "category"    : "GUI",
-                  "source"      : "lwindolf/liferea-plugin-studio",
-                  "description" : "Block unwanted URLs for the Web view.",
-                  "deps"        : {
-                      "pkgmgr"   : {
-                          "name": "pip3",
-                          "check":      ["pip3", "-V"],
-                          "checkPkg":   ["pip3", "show"],
-                          "installPkg": ["pip3", "install", "--user"]
-                      },
-                      "packages" : [ "adblockparser" ]
-                  }
-     }},
      { "Custom Accels":
                 { "module"      : "accels",
                   "category"    : "Advanced",
