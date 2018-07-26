@@ -27,7 +27,7 @@
      { "Webkit Settings": 
                 { "module"      : "webkit-setting",
                   "category"    : "Advanced",
-                  "source"      : "lwindolf/liferea-plugin-studio",
+                  "source"      : "mozbugbox/liferea-plugin-studio",
                   "description" : "Change advanced WebKitGtk settings for HTML rendering."
      }},
      { "BlockLink": 
