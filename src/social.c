@@ -117,7 +117,7 @@ social_init (void)
 	social_register_bookmark_site ("Linkroll",	"http://www.linkroll.com/index.php?action=insertLink&url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("netvouz",	"http://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Newsvine",	"http://www.newsvine.com/_wine/save?u=%s&h=%s", TRUE, FALSE);
-	social_register_bookmark_site ("reddit",	"http://reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
+	social_register_bookmark_site ("Reddit",	"https://www.reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
         social_register_bookmark_site ("Twitter",	"https://twitter.com/intent/tweet?text=%s&url=%s", TRUE, TRUE);
 
 	conf_get_str_value (SOCIAL_BM_SITE, &tmp);
