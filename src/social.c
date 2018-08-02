@@ -116,7 +116,7 @@ social_init (void)
 	social_register_bookmark_site ("netvouz",	"http://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Pocket",	"https://getpocket.com/save?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Reddit",	"https://www.reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
-        social_register_bookmark_site ("Twitter",	"https://twitter.com/intent/tweet?text=%s&url=%s", TRUE, TRUE);
+	social_register_bookmark_site ("Twitter",	"https://twitter.com/intent/tweet?text=%s&url=%s", TRUE, TRUE);
 
 	conf_get_str_value (SOCIAL_BM_SITE, &tmp);
 	social_set_bookmark_site (tmp);
