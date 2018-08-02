@@ -105,7 +105,7 @@ social_init (void)
 	social_register_bookmark_site ("blogmarks",	"http://blogmarks.net/my/new.php?mini=1&title=%s&url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("Buddymarks",	"http://buddymarks.com/add_bookmark.php?bookmark_title=%s&bookmark_url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("CiteUlike",	"http://www.citeulike.org/posturl?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("digg",		"http://digg.com/submit?phase=2&url=%s", FALSE, FALSE);
+	social_register_bookmark_site ("digg",		"https://digg.com/submit?phase=2&url=%s", FALSE, FALSE);
 	social_register_bookmark_site ("diigo",		"http://www.diigo.com/post?url=%s&title=%s&desc=", TRUE, FALSE);
 	social_register_bookmark_site ("Facebook",	"https://www.facebook.com/share.php?u=%s", FALSE, FALSE);
 	social_register_bookmark_site ("Google Bookmarks",	"https://www.google.com/bookmarks/mark?op=edit&output=&bkmk=%s&title=%s", TRUE, FALSE);
