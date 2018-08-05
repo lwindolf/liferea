@@ -1,7 +1,8 @@
 #
-# GNOME Keyring Plugin
+# Libsecret Plugin
 #
 # Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
+# Copyright (C) 2018 Bastian Germann <bastiangermann@fishpost.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -33,8 +34,8 @@ SCHEMA = Secret.Schema.new(
     {'id': Secret.SchemaAttributeType.STRING}
 )
 
-class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
-    __gtype_name__ = 'GnomeKeyringPlugin'
+class LibsecretPlugin(GObject.Object, Liferea.AuthActivatable):
+    __gtype_name__ = 'LibsecretPlugin'
 
     object = GObject.property(type=GObject.Object)
 
