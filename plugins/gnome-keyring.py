@@ -23,44 +23,47 @@ import gi
 gi.require_version('Peas', '1.0')
 gi.require_version('PeasGtk', '1.0')
 gi.require_version('Liferea', '3.0')
-gi.require_version('GnomeKeyring', '1.0')
-from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, GnomeKeyring
+gi.require_version('Secret', '1')
+from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Secret
+
+LABEL = 'liferea'
+SCHEMA = Secret.Schema.new(
+    "net.sf.liferea.Secret",
+    Secret.SchemaFlags.NONE,
+    {'id': Secret.SchemaAttributeType.STRING}
+)
 
 class GnomeKeyringPlugin(GObject.Object, Liferea.AuthActivatable):
     __gtype_name__ = 'GnomeKeyringPlugin'
 
     object = GObject.property(type=GObject.Object)
 
-    def do_activate(self):
-        result = GnomeKeyring.unlock_sync("liferea", None)
-        if GnomeKeyring.Result.OK != result:
-            print("There doesn't seem to be a keyring yet.")
+    def get_collection(self):
+        service = Secret.Service.get_sync(Secret.ServiceFlags.LOAD_COLLECTIONS, None)
+        colls = service.get_collections()
+        for c in colls:
+            if c.get_label() == LABEL:
+                return c
+        return None
 
     def do_deactivate(self):
         window = self.object
 
     def do_query(self, id):
-        # Fetch secret by id
-        attrs = GnomeKeyring.Attribute.list_new()
-        GnomeKeyring.Attribute.list_append_string(attrs, 'id', id)
-        result, value = GnomeKeyring.find_items_sync(GnomeKeyring.ItemType.GENERIC_SECRET, attrs)
-        if result != GnomeKeyring.Result.OK:
-            return
-
-        #print 'password %s = %s' % (id, value[0].secret)
-        #print 'password id = %s' % value[0].item_id
-
-        username, password = value[0].secret.split('@@@')
-        Liferea.auth_info_from_store(id, username, password)
+        coll = self.get_collection()
+        if coll:
+            items = coll.search_sync(None, {'id': id}, Secret.SearchFlags.UNLOCK, None)
+            if items and items[0].load_secret_sync(None):
+                username, password = items[0].get_secret().get_text().split('@@@')
+                Liferea.auth_info_from_store(id, username, password)
 
     def do_delete(self, id):
-        keyring = GnomeKeyring.get_default_keyring_sync()[1]
-        GnomeKeyring.item_delete_sync(keyring, id)
+        Secret.password_clear_sync(SCHEMA, {'id': id}, None)
 
     def do_store(self, id, username, password):
-        GnomeKeyring.create_sync("liferea", None)
-        attrs = GnomeKeyring.Attribute.list_new()
-        GnomeKeyring.Attribute.list_append_string(attrs, 'id', id)
-        GnomeKeyring.Attribute.list_append_string(attrs, 'user', username)
-        GnomeKeyring.item_create_sync("liferea", GnomeKeyring.ItemType.GENERIC_SECRET, repr(id), attrs, '@@@'.join([username, password]), True)
-
+        coll = self.get_collection()
+        if not coll:
+            coll = Secret.Collection.create_sync(None, LABEL, None, Secret.CollectionCreateFlags(0), None)
+        login = '@@@'.join([username, password])
+        secret = Secret.Value.new(login, len(login), 'text/plain')
+        Secret.Item.create_sync(coll, SCHEMA, {'id': id}, repr(id), secret, Secret.ItemCreateFlags.REPLACE, None)

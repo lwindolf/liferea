@@ -121,7 +121,7 @@ tracker.
 
 Liferea 1.10+ support GObject Introspection based plugins using libpeas. The
 Liferea distribution comes with a set of Python plugin e.g. the media player,
-GNOME keyring support, a tray icon plugin and maybe others.
+libsecret support, a tray icon plugin and maybe others.
 
 
 ###### Why We Use Plugins?
