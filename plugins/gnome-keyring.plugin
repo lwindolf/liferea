@@ -1,5 +1,5 @@
 [Plugin]
-Module=libsecret
+Module=gnome-keyring
 Loader=python3
 Icon=security-medium
 IAge=2
