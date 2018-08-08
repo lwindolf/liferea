@@ -110,7 +110,7 @@ social_init (void)
 	social_register_bookmark_site ("Google Bookmarks",	"https://www.google.com/bookmarks/mark?op=edit&output=&bkmk=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Google Plus",	"https://plus.google.com/share?url=%s", FALSE, FALSE);
 	social_register_bookmark_site ("identi.ca",	"https://identi.ca/index.php?action=bookmarklet&status_textarea=%%E2%%80%%9C%s%%E2%%80%%9D%%20%%E2%%80%%94%%20%s", TRUE, TRUE);
-	social_register_bookmark_site ("Instapaper",	"https://www.instapaper.com/edit?url=%s&title=%s", TRUE, FALSE);
+	social_register_bookmark_site ("Instapaper",	"https://www.instapaper.com/hello2?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title=%s&url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("Linkroll",	"https://www.linkroll.com/index.php?action=insertLink&url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("netvouz",	"http://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
