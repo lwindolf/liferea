@@ -497,6 +497,7 @@ liferea_webkit_new (LifereaHtmlView *htmlview)
 
 	view = WEBKIT_WEB_VIEW (liferea_web_view_new ());
 	webkit_web_view_set_settings (view, liferea_webkit_impl->settings);
+	webkit_settings_set_user_agent_with_application_details (liferea_webkit_impl->settings, "Liferea", VERSION);
 
 	g_signal_connect_object (
 		liferea_webkit_impl,
