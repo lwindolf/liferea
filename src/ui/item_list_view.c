@@ -139,6 +139,11 @@ item_list_view_finalize (GObject *object)
 {
 	ItemListViewPrivate *priv = ITEM_LIST_VIEW_GET_PRIVATE (object);
 
+	/* Disconnect the treeview signals to avoid spurious calls during teardown */
+	g_signal_handlers_disconnect_by_data (G_OBJECT (priv->treeview), object);
+
+	g_hash_table_destroy (priv->columns);
+
 	g_slist_free (priv->item_ids);
 	if (priv->batch_itemstore)
 		g_object_unref (priv->batch_itemstore);
@@ -724,6 +729,37 @@ on_item_list_row_activated (GtkTreeView *treeview,
 	}
 }
 
+static void
+on_item_list_view_columns_changed (GtkTreeView *treeview, ItemListView *ilv)
+{
+	gint i = 0;
+	GList *columns;
+	GHashTableIter iter;
+	gpointer colname, colptr;
+	gchar *strv[6];
+
+	/* This handler is only used for drag and drop reordering, so it
+	   should not be hooked up with less than the full number of columns
+	   eg: on item_list_view creation or teardown */
+	if (gtk_tree_view_get_n_columns(treeview) != 5)
+		return;
+
+	columns = gtk_tree_view_get_columns (treeview);
+	for (GList *li = columns; li; li = li->next) {
+		g_hash_table_iter_init (&iter, ilv->priv->columns);
+		while (g_hash_table_iter_next (&iter, &colname, &colptr)) {
+			if (li->data == colptr) {
+				strv[i++] = colname;
+				strv[i] = NULL;
+				break;
+			}
+		}
+	}
+	conf_set_strv_value (LIST_VIEW_COLUMN_ORDER, strv);
+
+	g_list_free (columns);
+}
+
 GtkWidget *
 item_list_view_get_widget (ItemListView *ilv)
 {
@@ -754,13 +790,13 @@ item_list_view_create (gboolean wide)
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
 	GtkTreeViewColumn 	*column, *headline_column;
-	gchar			**conf_column_order, **li;
+	gchar			**conf_column_order;
 
 	ilv = g_object_new (ITEM_LIST_VIEW_TYPE, NULL);
 	ilv->priv->wideView = wide;
 
 	ilv->priv->columns = g_hash_table_new (g_str_hash, g_str_equal);
-		
+
 	ilv->priv->ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
 	g_object_ref_sink (ilv->priv->ilscrolledwindow);
 	gtk_widget_show (ilv->priv->ilscrolledwindow);
@@ -831,13 +867,16 @@ item_list_view_create (gboolean wide)
 		gtk_tree_view_column_set_visible (column, FALSE);
 
 	conf_get_strv_value (LIST_VIEW_COLUMN_ORDER, &conf_column_order);
-	li = conf_column_order;
-	while (*li)
-		gtk_tree_view_append_column (ilv->priv->treeview, g_hash_table_lookup (ilv->priv->columns, *li++));
+	for (gchar **li = conf_column_order; *li; li++) {
+		column = g_hash_table_lookup (ilv->priv->columns, *li);
+		g_object_set (column, "reorderable", TRUE, NULL);
+		gtk_tree_view_append_column (ilv->priv->treeview, column);
+	}
 	g_strfreev (conf_column_order);
 
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
+	g_signal_connect (G_OBJECT (ilv->priv->treeview), "columns_changed", G_CALLBACK (on_item_list_view_columns_changed), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "row_activated", G_CALLBACK (on_item_list_row_activated), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), ilv);
 	g_signal_connect (G_OBJECT (ilv->priv->treeview), "popup_menu", G_CALLBACK (on_item_list_view_popup_menu), ilv);
@@ -976,7 +1015,7 @@ on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_d
 	}
 }
 
-void 
+void
 on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item = NULL;
