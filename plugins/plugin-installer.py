@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# vim: set ts=4 et sw=4 sts=4: 
+# vim: set ts=4 et sw=4 sts=4:
 
 # Plugin browser plugin for Liferea
 # Copyright (C) 2018 Lars Windolf <lars.windolf@gmx.de>
@@ -23,7 +23,7 @@ import gi
 
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import GObject, Liferea, Gtk, Gio
+from gi.repository import GObject, Liferea, Gtk, Gio, PeasGtk
 
 class AppActivatable(GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = "PluginBrowserAppActivatable"
@@ -41,7 +41,7 @@ class AppActivatable(GObject.Object, Liferea.ShellActivatable):
         self._app.add_action (action)
 
         toolsmenu = self.shell.get_property("builder").get_object ("tools_menu")
-        toolsmenu.append ('Install Plugins', 'app.InstallPlugins')
+        toolsmenu.append ('Plugins', 'app.InstallPlugins')
 
     def do_deactivate(self):
         self._browser = None
@@ -65,10 +65,15 @@ class PluginBrowser(Gtk.Window):
         self.set_border_width(10)
         self.set_default_size(600,300)
 
-        self.grid = Gtk.Grid()
-        self.grid.set_column_homogeneous(True)
-        self.grid.set_row_homogeneous(True)
-        self.add(self.grid)
+        self._grid = Gtk.Grid()
+        self._grid.set_column_homogeneous(True)
+        self._grid.set_row_homogeneous(True)
+
+        self._notebook = Gtk.Notebook()
+        self._notebook.append_page(PeasGtk.PluginManager(None), Gtk.Label("Activate Plugins"))
+        self._notebook.append_page(self._grid, Gtk.Label("Download Plugins"))
+
+        self.add(self._notebook)
 
         self._liststore = Gtk.ListStore(bool, str, str, str, str)
         self._plugin_list = self.fetch_list()
@@ -82,7 +87,7 @@ class PluginBrowser(Gtk.Window):
                 if not 'icon' in ref[name]:
                    ref[name]['icon'] = 'libpeas-plugin'
 
-                self._liststore.append((installed, ref[name]['icon'], name, ref[name]['category'], ref[name]['description']))
+                self._liststore.append((installed, ref[name]['icon'], name, ref[name]['category'], ('<b>%s</b>\n%s') % (name, ref[name]['description'])))
             except:
                 print("Bad fields for plugin entry %s" % name)
 
@@ -90,10 +95,10 @@ class PluginBrowser(Gtk.Window):
         self.category_filter = self._liststore.filter_new()
         self.category_filter.set_visible_func(self.category_filter_func)
 
-        #creating the treeview, making it use the filter as a model, and adding the columns
+        # creating the treeview, making it use the filter as a model, and adding the columns
         self.treeview = Gtk.TreeView.new_with_model(self.category_filter)
         self.treeview.get_selection().connect("changed", self.on_selection_changed)
-        for i, column_title in enumerate(["Inst.", "Icon", "Name", "Category", "Description"]):
+        for i, column_title in enumerate(["Inst.", "Icon", "Description"]):
             if column_title == 'Inst.':
                 renderer = Gtk.CellRendererToggle()
                 column = Gtk.TreeViewColumn(column_title, renderer, active=i)
@@ -102,12 +107,12 @@ class PluginBrowser(Gtk.Window):
                 column = Gtk.TreeViewColumn(column_title, renderer, icon_name=i)
             else:
                 renderer = Gtk.CellRendererText()
-                column = Gtk.TreeViewColumn(column_title, renderer, text=i)
+                column = Gtk.TreeViewColumn(column_title, renderer, markup=4)
             self.treeview.append_column(column)
             column.set_sort_column_id(i)
 
         self._categories = Gtk.ListStore(str)
-        for category in ["All", "GUI", "Menu", "Notifications"]:
+        for category in ["All", "Advanced", "Menu", "Notifications"]:
             self._categories.append([category])
 
         self._catcombo = Gtk.ComboBox.new_with_model(self._categories)
@@ -130,12 +135,11 @@ class PluginBrowser(Gtk.Window):
         self._uninstallButton.connect("clicked", self.uninstall)
         self._uninstallButton.set_sensitive(False)
 
-
-        self.grid.attach(self.scrollable_treelist, 0, 0, 8, 10)
-        self.grid.attach_next_to(self._catlabel, self.scrollable_treelist, Gtk.PositionType.TOP, 1, 1)
-        self.grid.attach_next_to(self._catcombo, self._catlabel, Gtk.PositionType.RIGHT, 2, 1)
-        self.grid.attach_next_to(self._installButton, self.scrollable_treelist, Gtk.PositionType.BOTTOM, 1, 1)
-        self.grid.attach_next_to(self._uninstallButton, self._installButton, Gtk.PositionType.RIGHT, 1, 1)
+        self._grid.attach(self.scrollable_treelist, 0, 0, 8, 10)
+        self._grid.attach_next_to(self._catlabel, self.scrollable_treelist, Gtk.PositionType.TOP, 1, 1)
+        self._grid.attach_next_to(self._catcombo, self._catlabel, Gtk.PositionType.RIGHT, 2, 1)
+        self._grid.attach_next_to(self._installButton, self.scrollable_treelist, Gtk.PositionType.BOTTOM, 1, 1)
+        self._grid.attach_next_to(self._uninstallButton, self._installButton, Gtk.PositionType.RIGHT, 1, 1)
 
         self.scrollable_treelist.add(self.treeview)
 
@@ -208,7 +212,7 @@ class PluginBrowser(Gtk.Window):
         response = Gtk.Dialog.run(dialog)
         Gtk.Widget.destroy(dialog)
         return response
- 
+
     def install_plugin(self, plugin_info):
         """Fetches github repo for a plugin and tries to install the plugin"""
         DIR_NAME = "/tmp/liferea-pluginbrowser-%s" % plugin_info['module']
@@ -314,7 +318,7 @@ class PluginBrowser(Gtk.Window):
 	        	# FIXME: error checking
         except:
             self.show_message("Failed to install schema files (%s)!" % sys.exc_info()[0], True)
-            return False 
+            return False
 
         # Enable plugin (for next restart)
         try:
@@ -324,7 +328,7 @@ class PluginBrowser(Gtk.Window):
             settings.set_strv('active-plugins', current_plugins)
         except:
             self.show_message("Failed to enable plugin (%s)!" % sys.exc_info()[0], True)
-            return False 
+            return False
 
         # Cleanup
         shutil.rmtree(DIR_NAME)
@@ -385,4 +389,3 @@ class PluginBrowser(Gtk.Window):
             self.show_message("Sorry! Plugin removal failed!.", True)
         else:
             self.show_message("Plugin was removed. Please restart Liferea once for it to take full effect!.", False)
-
