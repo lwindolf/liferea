@@ -741,7 +741,8 @@ on_item_list_view_columns_changed (GtkTreeView *treeview, ItemListView *ilv)
 	/* This handler is only used for drag and drop reordering, so it
 	   should not be hooked up with less than the full number of columns
 	   eg: on item_list_view creation or teardown */
-	g_return_if_fail (gtk_tree_view_get_n_columns(treeview) == 5);
+	if (gtk_tree_view_get_n_columns(treeview) != 5)
+		return;
 
 	columns = gtk_tree_view_get_columns (treeview);
 	for (GList *li = columns; li; li = li->next) {
@@ -795,7 +796,7 @@ item_list_view_create (gboolean wide)
 	ilv->priv->wideView = wide;
 
 	ilv->priv->columns = g_hash_table_new (g_str_hash, g_str_equal);
-		
+
 	ilv->priv->ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
 	g_object_ref_sink (ilv->priv->ilscrolledwindow);
 	gtk_widget_show (ilv->priv->ilscrolledwindow);
@@ -1014,7 +1015,7 @@ on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_d
 	}
 }
 
-void 
+void
 on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item = NULL;
