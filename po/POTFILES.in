@@ -158,8 +158,6 @@ src/fl_sources/default_source.c
 src/fl_sources/default_source.h
 src/fl_sources/dummy_source.c
 src/fl_sources/dummy_source.h
-src/fl_sources/inoreader_source.c
-src/fl_sources/inoreader_source.h
 src/fl_sources/google_source.c
 src/fl_sources/google_source.h
 src/fl_sources/opml_source.c

@@ -1,7 +1,7 @@
 /*
  * @file node_source.c  generic node source provider implementation
  * 
- * Copyright (C) 2005-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,6 @@
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
 #include "fl_sources/google_source.h"
-#include "fl_sources/inoreader_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/reedah_source.h"
 #include "fl_sources/theoldreader_source.h"
@@ -120,7 +119,6 @@ node_source_setup_root (void)
 	node_source_type_register (dummy_source_get_type ());
 	node_source_type_register (opml_source_get_type ());
 	node_source_type_register (google_source_get_type ());
-	node_source_type_register (inoreader_source_get_type ());
 	node_source_type_register (reedah_source_get_type ());
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());

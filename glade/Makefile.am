@@ -5,7 +5,6 @@ glade_DATA = about.ui \
 	auth.ui \
 	enclosure_handler.ui \
 	google_source.ui \
-	inoreader_source.ui \
 	liferea_menu.ui \
 	liferea_toolbar.ui \
 	mainwindow.ui \
