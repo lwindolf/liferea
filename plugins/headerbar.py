@@ -62,6 +62,13 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         button.set_action_name("app.next-unread-item")
         box.add(button)
 
+        button = Gtk.Button()
+        icon = Gio.ThemedIcon(name="emblem-ok-symbolic")
+        image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
+        button.add(image)
+        button.set_action_name("app.mark-all-feeds-read")
+        box.add(button)
+
         self.hb.pack_start(box)
 
         # Right side buttons
