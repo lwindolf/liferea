@@ -2,6 +2,9 @@ To be released
 
 	Version 1.12.5
 
+	* Fixes #271: Consistent over usage of CPU (trigger by "Next Unread" loop)
+	  (reported by GreenLunar)
+
 	* #472: Dropping Inoreader support (API broke)
 
 2018-07-23   Lars Windolf <lars.windolf@gmx.de>
