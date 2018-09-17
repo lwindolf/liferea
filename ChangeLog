@@ -1,8 +1,25 @@
-To be released
+2018-09-07   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12.5
 
-	* #472: Dropping Inoreader support (API broke)
+	* #665: Webkit browser now supplies 'Liferea' component in user agent
+	* #664: Added "Mark All As Read" button to headerbar plugin
+	* #620: Added flatpak JSON
+	  (glitsj16)
+	* #579: Added item list column drag and drop reordering
+	  (Yanko Kaneti)
+	* #436, #662: Move from GnomeKeyring to libsecret
+	  (bgermann)
+
+	* Fixes #663: Correct instapaper sharing link
+	  (Daniel Alexandersen)
+	* Fixes #661: Update sharing links
+	  (Daniel Alexandersen)
+	* Fixes #271: Consistent over usage of CPU (trigger by "Next Unread" loop)
+	  (reported by GreenLunar)
+
+	* #472, #632: Dropping Inoreader support (API broke)
+
 
 2018-07-23   Lars Windolf <lars.windolf@gmx.de>
 
@@ -41,7 +58,7 @@ To be released
 	* #589: Item list view column order rework as a preparation for
 	  possible real column drag&drop. Introduces a new DConf setting
 	  for the column order.
-	  (Yanki Kaneti)
+	  (Yanko Kaneti)
 
 	* Fixes #280: Mark read toolbar button always disabled for search folders
 	  (Lars Windolf, reported by dvahalev)

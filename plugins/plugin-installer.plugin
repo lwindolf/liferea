@@ -6,6 +6,7 @@ Name=Plugin Installer
 Name[de]=Plugin Installer
 Description=Discover and install useful Liferea extensions more easily.
 Description[de]=Einfaches Auffinden und Installieren von Liferea Plugins
+Builtin=true
 Icon=emblem-default
 Authors=Lars Windolf <lars.windolf@gmx.de>
 Copyright=Copyright © 2017 Lars Windolf

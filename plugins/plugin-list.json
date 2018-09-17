@@ -6,6 +6,12 @@
                   "source"      : "whizse/liferea-plugins",
                   "description" : "Regain some screen real estate by replacing the static statusbar with a floating counterpart. Similar to the ones used in web browsers"
      }},
+     { "Python Console":
+                { "module"      : "python-console",
+                  "category"    : "Advanced",
+                  "source"      : "whizse/liferea-plugins",
+                  "description" : "Add a Python console option to the 'Tools' menu. Great for debugging."
+     }},
      { "No Mark All Read":
                 { "module"      : "markallreadinactive",
                   "category"    : "Menu",
