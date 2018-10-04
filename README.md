@@ -27,8 +27,8 @@ help you asap.
 
 ###### _Mandatory Dependencies_
 
-   gtk3 libxml2 libxslt sqlite3 libwebkit4 libjson-glib libgirepository1.0
-   libpeas gsettings-desktop-schemas python3
+   gtk3 libxml2 libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0
+   libpeas-dev gsettings-desktop-schemas-dev python3
 
    
 ###### _Compiling from Tarball_
