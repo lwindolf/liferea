@@ -113,10 +113,6 @@ If you want to provide/update a localized feed list please follow these rules:
 + Provide good and short feed titles
 + Provide HTML URLs for each feed.
 
-Once finished post the result OPML file in the mailing list or the SF patch
-tracker.
-
-
 ###### _Creating Plugins_
 
 Liferea 1.10+ support GObject Introspection based plugins using libpeas. The
@@ -170,8 +166,8 @@ the plugin from within the plugin tab in the preferences dialog!
 
 If you want to help with testing grab the latest tarball or follow GIT master
 and write bug reports for any functional problem you experience. If you have
-time help with bug triaging the SF tracker. Check if you see any of the open
-bugs on your setup.
+time help with bug triaging. Check if you see any of the open bugs that are
+not yet confirmed.
 
 
 ###### *Debugging Crashes*
