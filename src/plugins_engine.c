@@ -49,6 +49,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
 {
   gchar *typelib_dir;
   GError *error = NULL;
+  PeasPluginInfo *plugin_installer_plugin_info = NULL;
 
   engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine,
                                               LIFEREA_TYPE_PLUGINS_ENGINE,
@@ -100,6 +101,12 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
   g_settings_bind (engine->priv->plugin_settings,
                    "active-plugins",
                    engine, "loaded-plugins", G_SETTINGS_BIND_DEFAULT);
+
+  plugin_installer_plugin_info = peas_engine_get_plugin_info (PEAS_ENGINE (engine), "plugin-installer");
+  if (plugin_installer_plugin_info)
+	peas_engine_load_plugin (PEAS_ENGINE (engine), plugin_installer_plugin_info);
+  else
+	g_warning ("The plugin-installer plugin was not found.");
 }
 
 /* Provide default signal handlers */
