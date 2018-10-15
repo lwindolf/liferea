@@ -801,10 +801,7 @@ item_list_view_create (gboolean wide)
 	g_object_ref_sink (ilv->priv->ilscrolledwindow);
 	gtk_widget_show (ilv->priv->ilscrolledwindow);
 
-	if (wide)
-		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->priv->ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	else
-		gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->priv->ilscrolledwindow), GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->priv->ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilv->priv->ilscrolledwindow), GTK_SHADOW_IN);
 
 	ilv->priv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
