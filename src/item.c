@@ -190,15 +190,13 @@ item_make_link (itemPtr item)
 	return link;
 }
 
-gchar *
+const gchar *
 item_get_author(itemPtr item)
 {
-	const gchar	*src;
-	gchar		*link, *author;
+	gchar *author;
 
 	author = metadata_list_get (item->metadata, "author");
-
-    return author;
+	return author;
 }
 
 void
