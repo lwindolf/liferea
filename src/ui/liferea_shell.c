@@ -1003,42 +1003,48 @@ on_action_copy_link_to_clipboard (GSimpleAction *action, GVariant *parameter, gp
 static void
 email_the_author(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-    itemPtr item = NULL;
-    item = itemlist_get_selected ();
+	itemPtr item = NULL;
 
-	if (item) {
-        gchar *author, *subject;
-	    GError		*error = NULL;
-	    gchar 		*cmd, **argv;
-	    gint 		argc;
+	if (parameter)
+		item = item_load (g_variant_get_uint64 (parameter));
+	else
+		item = itemlist_get_selected ();
 
-        author = item_get_author(item);
-        subject = item_get_title (item);
+	if(item) {
+		const gchar *author, *subject;
+		GError		*error = NULL;
+		gchar 		*cmd, **argv;
+		gint 		argc;
 
-        g_assert (author != NULL);
+		author = item_get_author(item);
+		subject = item_get_title (item);
 
-        cmd = malloc(255 * sizeof(char));
-        sprintf(cmd, "xdg-email mailto:%s --subject '%s'", author, subject);
+		g_assert (author != NULL);
 
-        g_shell_parse_argv (cmd, &argc, &argv, &error);
+		cmd = g_strdup_printf ("xdg-email mailto:%s --subject '%s'", author, subject);
 
-        if (error && (0 != error->code)) {
-            liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
-            debug2 (DEBUG_GUI, "Mail client command is invalid: %s : %s", cmd, error->message);
-            g_error_free (error);
-        }
+		g_shell_parse_argv (cmd, &argc, &argv, &error);
 
-        g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
+		printf("cmd: %s, argc: %d\n", cmd, argc);
 
-        if (error && (0 != error->code)) {
-	        debug2 (DEBUG_GUI, "Mail client command failed: %s : %s", cmd, error->message);
-	        liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
-	        g_error_free (error);
-        } else {
-            liferea_shell_set_status_bar (_("Starting: \"%s\""), cmd);
-        }
+		if (error && (0 != error->code)) {
+			liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
+			debug2 (DEBUG_GUI, "Mail client command is invalid: %s : %s", cmd, error->message);
+			g_error_free (error);
+		}
 
-        g_free(cmd);
+		g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
+
+		if (error && (0 != error->code)) {
+			debug2 (DEBUG_GUI, "Mail client command failed: %s : %s", cmd, error->message);
+			liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
+			g_error_free (error);
+		} else {
+			liferea_shell_set_status_bar (_("Starting: \"%s\""), cmd);
+		}
+
+		free(cmd);
+		g_strfreev(argv);
 	}
 }
 
@@ -1049,7 +1055,7 @@ static const GActionEntry liferea_shell_link_gaction_entries[] = {
 	/* The parameters are link, then title. */
 	{"social-bookmark-link", on_action_social_bookmark_link, "(ss)", NULL, NULL},
 	{"copy-link-to-clipboard", on_action_copy_link_to_clipboard, "s", NULL, NULL},
-	{"email-the-author", email_the_author, "s", NULL, NULL}
+	{"email-the-author", email_the_author, "t", NULL, NULL}
 };
 
 static void
