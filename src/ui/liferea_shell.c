@@ -1025,8 +1025,6 @@ email_the_author(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 
 		g_shell_parse_argv (cmd, &argc, &argv, &error);
 
-		printf("cmd: %s, argc: %d\n", cmd, argc);
-
 		if (error && (0 != error->code)) {
 			liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
 			debug2 (DEBUG_GUI, "Mail client command is invalid: %s : %s", cmd, error->message);
