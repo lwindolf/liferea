@@ -1020,16 +1020,16 @@ email_the_author(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 
 		g_assert (author != NULL);
 
-		argv[0] = g_strdup("xdg-email");
-		argv[1] = g_strdup_printf ("mailto:%s", author);
-		argv[2] = g_strdup("--subject");
-		argv[3] = g_strdup_printf ("%s", subject);
+		argv[0] = g_strdup("xdg-email\0");
+		argv[1] = g_strdup_printf ("mailto:%s\0", author);
+		argv[2] = g_strdup("--subject\0");
+		argv[3] = g_strdup_printf ("%s\0", subject);
 
 		g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
 
 		if (error && (0 != error->code)) {
-			debug2 (DEBUG_GUI, "Mail client command failed: %s : %s", argv[0], error->message);
-			liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
+			debug2 (DEBUG_GUI, "Email command failed: %s : %s", argv[0], error->message);
+			liferea_shell_set_important_status_bar (_("Email command failed: %s"), error->message);
 			g_error_free (error);
 		} else {
 			liferea_shell_set_status_bar (_("Starting: \"%s\""), argv[0]);
