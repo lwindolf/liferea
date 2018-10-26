@@ -1013,17 +1013,18 @@ email_the_author(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	if(item) {
 		const gchar *author, *subject;
 		GError		*error = NULL;
-		gchar 		*argv[4];
+		gchar 		*argv[5];
 
 		author = item_get_author(item);
 		subject = item_get_title (item);
 
 		g_assert (author != NULL);
 
-		argv[0] = g_strdup("xdg-email\0");
-		argv[1] = g_strdup_printf ("mailto:%s\0", author);
-		argv[2] = g_strdup("--subject\0");
-		argv[3] = g_strdup_printf ("%s\0", subject);
+		argv[0] = g_strdup("xdg-email");
+		argv[1] = g_strdup_printf ("mailto:%s", author);
+		argv[2] = g_strdup("--subject");
+		argv[3] = g_strdup_printf ("%s", subject);
+		argv[4] = NULL;
 
 		g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
 
