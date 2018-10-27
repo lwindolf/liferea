@@ -704,16 +704,21 @@ simple_subscription_dialog_class_init (SimpleSubscriptionDialogClass *klass)
 static void
 on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data) 
 {
-	SimpleSubscriptionDialog *ssd = (SimpleSubscriptionDialog *)user_data;
+	SimpleSubscriptionDialog *ssd = (SimpleSubscriptionDialog *) user_data;
 	gchar *source = NULL;
+	nodePtr duplicateUrlNode = NULL;
 	
 	if (response_id == GTK_RESPONSE_OK) {
 		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->priv->sourceEntry))),
 		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-		feedlist_add_subscription (source, NULL, NULL,
-					   FEED_REQ_PRIORITY_HIGH);
-		g_free (source);
+		duplicateUrlNode = feedlist_find_node(feedlist_get_root(), NODE_BY_URL, source);
+		if (duplicateUrlNode == NULL) {
+			feedlist_add_subscription (source, NULL, NULL, FEED_REQ_PRIORITY_HIGH);
+			g_free (source);
+		} else {
+			feed_list_node_add_duplicate_url (source, duplicateUrlNode);
+		}
 	}
 	
 	if (response_id == GTK_RESPONSE_APPLY) /* misused for "Advanced" */
