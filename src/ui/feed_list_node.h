@@ -122,6 +122,6 @@ void feed_list_node_remove (nodePtr node);
  * @param tempSubscription	the duplicate URL subscription
  * @param exNode			the existing node
  */
-void feed_list_node_add_duplicate_url_subscription(subscriptionPtr tempSubscription, nodePtr exNode);
+void feed_list_node_add_duplicate_url_subscription (subscriptionPtr tempSubscription, nodePtr exNode);
 
 #endif
