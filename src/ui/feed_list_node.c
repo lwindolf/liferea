@@ -431,24 +431,32 @@ feed_list_node_remove (nodePtr node)
 static void
 feed_list_node_add_duplicate_url_cb(GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	if (GTK_RESPONSE_ACCEPT == response_id)
-		feedlist_add_subscription ((gchar *) user_data, NULL, NULL, FEED_REQ_PRIORITY_HIGH);
+	subscriptionPtr tempSubscription = (subscriptionPtr) user_data;
 
-	g_free (user_data);
+	if (GTK_RESPONSE_ACCEPT == response_id) {
+		feedlist_add_subscription (
+				subscription_get_source(tempSubscription),
+				subscription_get_filter(tempSubscription),
+				update_options_copy(tempSubscription->updateOptions),
+				FEED_REQ_PRIORITY_HIGH
+		);
+	}
+
+	subscription_free (tempSubscription);
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
-feed_list_node_add_duplicate_url(gchar *source, nodePtr exNode)
+feed_list_node_add_duplicate_url_subscription(subscriptionPtr tempSubscription, nodePtr exNode)
 {
 	GtkWidget	*dialog;
 	GtkWindow	*mainwindow;
 	gchar		*text;
 
 	text = g_strdup_printf (
-			_("Are you sure that you want to add a subscription with URL \"%s\"? Another subscription with the same URL already exists (\"%s\")."),
-			source,
+			_("Are you sure that you want to add a tempSubscription with URL \"%s\"? Another subscription with the same URL already exists (\"%s\")."),
+			tempSubscription->source,
 			node_get_title(exNode)
 	);
 
@@ -470,5 +478,5 @@ feed_list_node_add_duplicate_url(gchar *source, nodePtr exNode)
 	gtk_widget_show_all (dialog);
 
 	g_signal_connect (G_OBJECT (dialog), "response",
-					  G_CALLBACK (feed_list_node_add_duplicate_url_cb), (gpointer) source);
+					  G_CALLBACK (feed_list_node_add_duplicate_url_cb), tempSubscription);
 }

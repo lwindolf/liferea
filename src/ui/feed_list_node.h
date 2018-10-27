@@ -23,6 +23,7 @@
 #define _feed_list_node_H
 
 #include <gtk/gtk.h>
+#include <src/subscription.h>
 #include "node.h"
 
 /**
@@ -118,9 +119,9 @@ void feed_list_node_remove (nodePtr node);
  * Prompt the user for confirmation and forces adding the node,
  * even though another node with the same URL exists.
  *
- * @param source    the duplicate URL
- * @param exNode    the existing node
+ * @param tempSubscription	the duplicate URL subscription
+ * @param exNode			the existing node
  */
-void feed_list_node_add_duplicate_url (gchar *source, nodePtr exNode);
+void feed_list_node_add_duplicate_url_subscription(subscriptionPtr tempSubscription, nodePtr exNode);
 
 #endif
