@@ -110,8 +110,17 @@ void feed_list_node_rename (nodePtr node);
  * function does not block, so the folder/feeds will not have
  * been deleted when this function returns.
  *
- * @param node	the node to remove
+ * @param node		the node to remove
  */
 void feed_list_node_remove (nodePtr node);
+
+/**
+ * Prompt the user for confirmation and forces adding the node,
+ * even though another node with the same URL exists.
+ *
+ * @param source    the duplicate URL
+ * @param exNode    the existing node
+ */
+void feed_list_node_add_duplicate_url (gchar *source, nodePtr exNode);
 
 #endif

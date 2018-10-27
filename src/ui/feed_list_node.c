@@ -427,3 +427,48 @@ feed_list_node_remove (nodePtr node)
 	g_signal_connect (G_OBJECT (dialog), "response",
 	                  G_CALLBACK (feed_list_node_remove_cb), node);
 }
+
+static void
+feed_list_node_add_duplicate_url_cb(GtkDialog *dialog, gint response_id, gpointer user_data)
+{
+	if (GTK_RESPONSE_ACCEPT == response_id)
+		feedlist_add_subscription ((gchar *) user_data, NULL, NULL, FEED_REQ_PRIORITY_HIGH);
+
+	g_free (user_data);
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+void
+feed_list_node_add_duplicate_url(gchar *source, nodePtr exNode)
+{
+	GtkWidget	*dialog;
+	GtkWindow	*mainwindow;
+	gchar		*text;
+
+	text = g_strdup_printf (
+			_("Are you sure that you want to add a subscription with URL \"%s\"? Another subscription with the same URL already exists (\"%s\")."),
+			source,
+			node_get_title(exNode)
+	);
+
+	mainwindow = GTK_WINDOW (liferea_shell_get_window ());
+	dialog = gtk_message_dialog_new (mainwindow,
+									 GTK_DIALOG_DESTROY_WITH_PARENT | GTK_DIALOG_MODAL,
+									 GTK_MESSAGE_QUESTION,
+									 GTK_BUTTONS_NONE,
+									 "%s", text);
+	gtk_dialog_add_buttons (GTK_DIALOG (dialog),
+							_("_Cancel"), GTK_RESPONSE_CANCEL,
+							_("_Add"), GTK_RESPONSE_ACCEPT,
+							NULL);
+	gtk_window_set_title (GTK_WINDOW (dialog), _("Adding Duplicate Subscription Confirmation"));
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
+
+	g_free (text);
+
+	gtk_widget_show_all (dialog);
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+					  G_CALLBACK (feed_list_node_add_duplicate_url_cb), (gpointer) source);
+}
