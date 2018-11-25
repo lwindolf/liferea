@@ -5,41 +5,36 @@ msgstr ""
 "Project-Id-Version: Liferea 1.5.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-18 00:24+0100\n"
-"PO-Revision-Date: 2008-07-29 19:19+0100\n"
+"PO-Revision-Date: 2018-11-21 15:54+0100\n"
 "Last-Translator: Martin Picek <picek.martin@gnome-cesko.cz>\n"
 "Language-Team: Martin Picek <picek.martin@gnome-cesko.cz>\n"
-"Language: \n"
+"Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 2.1.1\n"
 
 #: ../liferea.appdata.xml.in.h:1
-#, fuzzy
 msgid "RSS feed reader"
-msgstr "Čtečka kanálů"
+msgstr "Čtečka RSS kanálů"
 
 #: ../liferea.appdata.xml.in.h:2
 msgid ""
-"Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
-"for online news feeds. It supports a number of different feed formats "
-"including RSS/RDF, CDF and Atom. There are many other news readers "
-"available, but these others are not available for Linux or require many "
-"extra libraries to be installed. Liferea tries to fill this gap by creating "
-"a fast, easy to use, easy to install news aggregator for GTK/GNOME."
+"Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator for online news feeds. It supports a number of different feed "
+"formats including RSS/RDF, CDF and Atom. There are many other news readers available, but these others are not available for Linux or "
+"require many extra libraries to be installed. Liferea tries to fill this gap by creating a fast, easy to use, easy to install news "
+"aggregator for GTK/GNOME."
 msgstr ""
 
 #: ../liferea.appdata.xml.in.h:3
 msgid "Distinguishing features:"
-msgstr ""
+msgstr "Charakteristické vlastnosti:"
 
 #: ../liferea.appdata.xml.in.h:4
-#, fuzzy
 msgid "Read articles when offline"
-msgstr "Liferea je nyní odpojena od sítě"
+msgstr "Číst články při stavu offline"
 
 #: ../liferea.appdata.xml.in.h:5
 msgid "Synchronizes with TheOldReader"
@@ -66,12 +61,10 @@ msgid "Match items using search folders"
 msgstr ""
 
 #: ../liferea.appdata.xml.in.h:11
-#, fuzzy
 msgid "Play Podcasts"
-msgstr "Podcast"
+msgstr ""
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:74
-#: ../glade/mainwindow.ui.h:1
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:74 ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -85,27 +78,23 @@ msgstr "Čtečka kanálů Liferea"
 
 #: ../net.sourceforge.liferea.desktop.in.h:4
 msgid "Read news feeds and blogs"
-msgstr ""
+msgstr "Čtění zpravodajských kanálů a blogů"
 
 #: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;"
 msgstr ""
 
 #: ../xslt/feed.xml.in.h:1
-msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
-msgstr ""
-"Tento kanál je přerušen a již není dostupný. Liferea ho již nebude "
-"aktualizovat, ale jeho články jsou stále přístupné v paměti."
+msgid "This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."
+msgstr "Tento kanál je přerušen a již není dostupný. Liferea ho již nebude aktualizovat, ale jeho články jsou stále přístupné v paměti."
 
 #: ../xslt/feed.xml.in.h:2
 msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+"The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
+"\"httpError\"/></b>"
 msgstr ""
-"Poslední aktualizace tohoto odběru selhala!<br/><b>Chybový kód HTTP <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+"Poslední aktualizace tohoto odběru selhala!<br/><b>Chybový kód HTTP <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
+"\"httpError\"/></b>"
 
 #: ../xslt/feed.xml.in.h:3
 msgid "There were errors while parsing this feed!"
@@ -151,8 +140,7 @@ msgstr "Autorská práva"
 msgid "children with"
 msgstr ""
 
-#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
+#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3 ../xslt/vfolder.xml.in.h:2
 msgid "unread headlines"
 msgstr "nepřečtené články"
 
@@ -210,7 +198,7 @@ msgstr "Komentáře"
 
 #: ../xslt/item.xml.in.h:13
 msgid "Updating..."
-msgstr "Aktualizuje se…"
+msgstr "Aktualizuje se..."
 
 #: ../xslt/item.xml.in.h:14
 msgid "Section"
@@ -225,12 +213,8 @@ msgid "News Bin:"
 msgstr "Rubrika:"
 
 #: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Přidejte články do této rubriky výběrem „Kopírovat do rubriky“ z kontextové "
-"nabídky seznamu kanálů."
+msgid "Add items to this news bin by selecting \"Copy to News Bin\" from the item list context menu."
+msgstr "Přidejte články do této rubriky výběrem „Kopírovat do rubriky“ z kontextové nabídky seznamu kanálů."
 
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
@@ -258,8 +242,7 @@ msgstr "Nepodařilo se vytvořit adresář „%s“ pro vyrovnávací paměť!"
 
 #: ../src/conf.c:183
 msgid ""
-"Your version of WebKitGTK+ doesn't support changing the proxy settings from "
-"Liferea. The system's default proxy settings will be used."
+"Your version of WebKitGTK+ doesn't support changing the proxy settings from Liferea. The system's default proxy settings will be used."
 msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
@@ -293,9 +276,7 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr ""
 
 #: ../src/enclosure.c:292
-msgid ""
-"You have not configured a download tool yet! Please do so in the "
-"'Enclosures' tab in Tools/Preferences."
+msgid "You have not configured a download tool yet! Please do so in the 'Enclosures' tab in Tools/Preferences."
 msgstr ""
 
 #: ../src/enclosure.c:310
@@ -305,34 +286,29 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-" Please check whether the configured download tool is installed and working "
-"correctly! You can change it in the 'Download' tab in Tools/Preferences."
+" Please check whether the configured download tool is installed and working correctly! You can change it in the 'Download' tab in Tools/"
+"Preferences."
 msgstr ""
 
 #: ../src/export.c:188
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming %s to %s: %s\n"
-msgstr "Chyba při přejmenovávání %s na %s\n"
+msgstr "Chyba při přejmenovávání %s to %s: %s\n"
 
 #: ../src/export.c:417 ../src/export.c:419
-#, fuzzy, c-format
+#, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
-msgstr ""
-"Chyba XML při čtení souboru s vyrovnávací pamětí! Nepodařilo se importovat "
-"„%s“!"
+msgstr "Chyba XML při čtení OPML souboru! Nelze importovat \"%s\"!"
 
 #: ../src/export.c:425 ../src/export.c:427
 #, c-format
-msgid ""
-"Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr ""
-"Prázdný dokument! Dokument OPML „%s“ by neměl být při importování prázdný."
+msgid "Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr "Prázdný dokument! Dokument OPML „%s“ by neměl být při importování prázdný."
 
 #: ../src/export.c:448 ../src/export.c:450
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr ""
-"„%s“ není platným dokumentem OPML! Liferea nemohla tento soubor importovat!"
+msgstr "„%s“ není platným dokumentem OPML! Liferea nemohla tento soubor importovat!"
 
 #: ../src/export.c:469
 msgid "Imported feed list"
@@ -347,9 +323,8 @@ msgid "Import"
 msgstr "Importovat"
 
 #: ../src/export.c:481 ../src/export.c:498 ../src/fl_sources/opml_source.c:379
-#, fuzzy
 msgid "OPML Files"
-msgstr "Vybrat soubor OPML"
+msgstr "Soubory OPML"
 
 #: ../src/export.c:489
 msgid "Error while exporting feed list!"
@@ -369,18 +344,16 @@ msgstr "Exportovat"
 
 #: ../src/feed.c:313
 msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+"<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported "
+"syndication formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr ""
-"<p>Nepodařilo se zjistit typ tohoto kanálu! Prosím, zkontrolujte, jestli "
-"jeho zdroj opravdu ukazuje na zdroj v jednom z podporovaných formátů "
-"syndikace.</p>Výstup zpracovatele XML:<br /><div class='xmlparseroutput'>"
+"<p>Nepodařilo se zjistit typ tohoto kanálu! Prosím, zkontrolujte, jestli jeho zdroj opravdu ukazuje na zdroj v jednom z podporovaných "
+"formátů syndikace.</p>Výstup zpracovatele XML:<br /><div class='xmlparseroutput'>"
 
 #: ../src/feed.c:340
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "Kanál „%s“ aktualizován…"
+msgstr "Kanál „%s“ aktualizován..."
 
 #: ../src/feed.c:347
 #, c-format
@@ -389,13 +362,11 @@ msgstr "Kanál „%s“ je nedostupný"
 
 #: ../src/feed_parser.c:137
 msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
+"The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just "
+"does not support feed auto discovery."
 msgstr ""
-"URL, které chcete odebírat, ukazuje na webovou stránku, která neobsahuje "
-"žádný kanál. Možná ale tato stránka jen nepodporuje automatické objevování "
-"kanálů."
+"URL, které chcete odebírat, ukazuje na webovou stránku, která neobsahuje žádný kanál. Možná ale tato stránka jen nepodporuje automatické "
+"objevování kanálů."
 
 #: ../src/feed_parser.c:170
 #, c-format
@@ -420,14 +391,12 @@ msgstr "Nepodařilo se určit typ kanálu."
 
 #. if we don't find a feed with unread items do nothing
 #: ../src/itemlist.c:396
-#, fuzzy
 msgid "There are no unread items"
 msgstr "Nejsou zde žádné nepřečtené články"
 
 #: ../src/liferea_application.c:283
 #, fuzzy
-msgid ""
-"Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
+msgid "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr "                 STAV může být „shown“, „iconified“ nebo „hidden“."
 
 #: ../src/liferea_application.c:283
@@ -440,9 +409,8 @@ msgid "Show version information and exit"
 msgstr " --version       Vypsat informace o verzi a ukončit."
 
 #: ../src/liferea_application.c:285
-#, fuzzy
 msgid "Add a new subscription"
-msgstr "Nový odběr"
+msgstr "Přidat nový odběr"
 
 #: ../src/liferea_application.c:285
 msgid "uri"
@@ -474,8 +442,8 @@ msgstr ""
 
 #: ../src/liferea_application.c:295
 msgid ""
-"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.cache/liferea/"
+"output.xhtml"
 msgstr ""
 
 #: ../src/liferea_application.c:296
@@ -535,8 +503,7 @@ msgid "Unable to connect to proxy"
 msgstr ""
 
 #: ../src/net.c:406
-msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+msgid "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
@@ -547,12 +514,8 @@ msgstr ""
 #. http 4xx client error
 #: ../src/net.c:412
 #, fuzzy
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box"
-msgstr ""
-"Nejste oprávněni odebírat tento kanál. Prosím, aktualizujte své uživatelské "
-"jméno a heslo v dialogu Vlastnosti."
+msgid "You are unauthorized to download this feed. Please update your username and password in the feed properties dialog box"
+msgstr "Nejste oprávněni odebírat tento kanál. Prosím, aktualizujte své uživatelské jméno a heslo v dialogu Vlastnosti."
 
 #: ../src/net.c:414
 #, fuzzy
@@ -691,8 +654,7 @@ msgstr "Odběr „%s“ již byl aktualizován!"
 
 #: ../src/subscription.c:110
 #, c-format
-msgid ""
-"The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
+msgid "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "Odběr „%s“ byl přerušen. Liferea jej již nebude aktualizovat!"
 
 #: ../src/subscription.c:144
@@ -701,12 +663,8 @@ msgid "Updating favicon for \"%s\""
 msgstr "Aktualizuje se ikonka pro „%s“"
 
 #: ../src/subscription.c:193
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Při čtení tohoto odběru se vyskytl problém. Prosím, zkontrolujte URL a "
-"výstup na konzoli."
+msgid "There was a problem while reading this subscription. Please check the URL and console output."
+msgstr "Při čtení tohoto odběru se vyskytl problém. Prosím, zkontrolujte URL a výstup na konzoli."
 
 #: ../src/subscription.c:211
 #, c-format
@@ -767,26 +725,25 @@ msgid "XML Parser: Could not parse document:\n"
 msgstr "Zpracovatel XML: Nepodařilo se zpracovat dokument:\n"
 
 #: ../src/ui/enclosure_list_view.c:175
-#, fuzzy
 msgid "Attachments"
-msgstr "%d příloha"
+msgstr "Přílohy"
 
 #. The following literals are the enclosure list size units
 #: ../src/ui/enclosure_list_view.c:272
 msgid " Bytes"
-msgstr ""
+msgstr " bajtů"
 
 #: ../src/ui/enclosure_list_view.c:275
 msgid "kB"
-msgstr ""
+msgstr "kB"
 
 #: ../src/ui/enclosure_list_view.c:279
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #: ../src/ui/enclosure_list_view.c:283
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 #: ../src/ui/enclosure_list_view.c:287
 #, c-format
@@ -807,9 +764,9 @@ msgid "Choose File"
 msgstr "Vybrat soubor"
 
 #: ../src/ui/enclosure_list_view.c:444
-#, fuzzy, c-format
+#, c-format
 msgid "File Extension .%s"
-msgstr "<b>Přípona souboru: .%s</b>"
+msgstr "Přípona souboru .%s"
 
 #: ../src/ui/icons.c:54
 #, c-format
@@ -853,9 +810,8 @@ msgid "Update _All"
 msgstr "_Aktualizovat vše"
 
 #: ../src/ui/liferea_shell.c:908
-#, fuzzy
 msgid "Updates all subscriptions."
-msgstr "Nový odběr"
+msgstr "Aktualizovat všechny odběry."
 
 #: ../src/ui/liferea_shell.c:910
 msgid "Mark All As _Read"
@@ -867,7 +823,7 @@ msgstr "Označit všechny články všech kanálů jako přečtené."
 
 #: ../src/ui/liferea_shell.c:912
 msgid "_Import Feed List..."
-msgstr "_Importovat seznam kanálů…"
+msgstr "_Importovat seznam kanálů..."
 
 #: ../src/ui/liferea_shell.c:912
 msgid "Imports an OPML feed list."
@@ -875,7 +831,7 @@ msgstr "Importovat seznam kanálů OPML."
 
 #: ../src/ui/liferea_shell.c:913
 msgid "_Export Feed List..."
-msgstr "_Exportovat seznam kanálů…"
+msgstr "_Exportovat seznam kanálů..."
 
 #: ../src/ui/liferea_shell.c:913
 msgid "Exports the feed list as OPML."
@@ -903,12 +859,11 @@ msgstr "Č_lánek"
 
 #: ../src/ui/liferea_shell.c:921
 msgid "Previous Item"
-msgstr ""
+msgstr "Předchozí článek"
 
 #: ../src/ui/liferea_shell.c:923
-#, fuzzy
 msgid "Next Item"
-msgstr "_Další nepřečtený článek"
+msgstr "Další článek"
 
 #. No tooltip here as it really hinders usability to have it flashing
 #. when skimming through items using "Next Unread"!
@@ -950,20 +905,19 @@ msgstr "Zobrazit seznam všech kanálů ve frontě na aktualizaci"
 
 #: ../src/ui/liferea_shell.c:940 ../src/ui/popup_menu.c:185
 msgid "_Preferences"
-msgstr "_Nastavení"
+msgstr "_Předvolby"
 
 #: ../src/ui/liferea_shell.c:940
 msgid "Edit Preferences."
-msgstr "Měnit nastavení."
+msgstr "Upravit předvolby."
 
 #: ../src/ui/liferea_shell.c:943
-#, fuzzy
 msgid "S_earch"
 msgstr "_Hledání"
 
 #: ../src/ui/liferea_shell.c:944
 msgid "Search All Feeds..."
-msgstr "Prohledat všechny kanály…"
+msgstr "Prohledat všechny kanály..."
 
 #: ../src/ui/liferea_shell.c:944
 msgid "Show the search dialog."
@@ -1031,16 +985,15 @@ msgstr "Nastavit zobrazení na mód dvou oblastí."
 
 #: ../src/ui/liferea_shell.c:964
 msgid "_Reduced Feed List"
-msgstr ""
+msgstr "_Redukovaný seznam kanálů"
 
 #: ../src/ui/liferea_shell.c:964
-#, fuzzy
 msgid "Hide feeds with no unread items."
-msgstr "Nejsou zde žádné nepřečtené články"
+msgstr "Skrýt kanály bez nepřečtených článků."
 
 #: ../src/ui/liferea_shell.c:969
 msgid "_New Subscription..."
-msgstr "Nový _odběr…"
+msgstr "Nový _odběr..."
 
 #: ../src/ui/liferea_shell.c:969
 msgid "Adds a subscription to the feed list."
@@ -1048,7 +1001,7 @@ msgstr "Přidat odběr do seznamu kanálů."
 
 #: ../src/ui/liferea_shell.c:971 ../src/ui/popup_menu.c:308
 msgid "New _Folder..."
-msgstr "Nová _složka…"
+msgstr "Nová _složka..."
 
 #: ../src/ui/liferea_shell.c:971
 msgid "Adds a folder to the feed list."
@@ -1056,7 +1009,7 @@ msgstr "Přidat novou složku do seznamu kanálů."
 
 #: ../src/ui/liferea_shell.c:972 ../src/ui/popup_menu.c:311
 msgid "New S_earch Folder..."
-msgstr "Nová složka _hledání…"
+msgstr "Nová složka _hledání..."
 
 #: ../src/ui/liferea_shell.c:972
 msgid "Adds a new search folder to the feed list."
@@ -1064,7 +1017,7 @@ msgstr "Přidat novou složku hledání do seznamu kanálů."
 
 #: ../src/ui/liferea_shell.c:973
 msgid "New _Source..."
-msgstr "Nový _zdroj…"
+msgstr "Nový _zdroj..."
 
 #: ../src/ui/liferea_shell.c:973
 msgid "Adds a new feed list source."
@@ -1072,33 +1025,27 @@ msgstr "Přidat nový zdroj seznamu kanálů."
 
 #: ../src/ui/liferea_shell.c:974 ../src/ui/popup_menu.c:313
 msgid "New _News Bin..."
-msgstr "Nová _rubrika…"
+msgstr "Nová _rubrika..."
 
 #: ../src/ui/liferea_shell.c:974
 msgid "Adds a new news bin."
 msgstr "Přidat novou rubriku."
 
 #: ../src/ui/liferea_shell.c:978
-#, fuzzy
 msgid "_Mark Items Read"
-msgstr "Označit jako _přečtené"
+msgstr "Označit články jako _přečtené"
 
 #: ../src/ui/liferea_shell.c:978
 #, fuzzy
-msgid ""
-"Marks all items of the selected feed list node / in the item list as read."
-msgstr ""
-"Označit všechny články vybraného odběru nebo všech odběrů vybrané složky "
-"jako přečtené."
+msgid "Marks all items of the selected feed list node / in the item list as read."
+msgstr "Označit všechny články vybraného odběru nebo všech odběrů vybrané složky jako přečtené."
 
 #: ../src/ui/liferea_shell.c:980 ../src/ui/popup_menu.c:290
 msgid "_Update"
 msgstr "_Aktualizovat"
 
 #: ../src/ui/liferea_shell.c:980
-msgid ""
-"Updates the selected subscription or all subscriptions of the selected "
-"folder."
+msgid "Updates the selected subscription or all subscriptions of the selected folder."
 msgstr "Aktualizovat vybraný odběr nebo všechny odběry vybrané složky."
 
 #: ../src/ui/liferea_shell.c:985 ../src/ui/popup_menu.c:339
@@ -1143,7 +1090,7 @@ msgstr "Odstranit vybraný článek."
 
 #: ../src/ui/liferea_shell.c:996 ../src/ui/popup_menu.c:117
 msgid "Open In _Tab"
-msgstr ""
+msgstr "Otevřít v _kartě"
 
 #: ../src/ui/liferea_shell.c:996
 #, fuzzy
@@ -1151,7 +1098,6 @@ msgid "Launches the item's link in a new Liferea browser tab."
 msgstr "Otevřít odkaz článku v nastaveném prohlížeči."
 
 #: ../src/ui/liferea_shell.c:998 ../src/ui/popup_menu.c:118
-#, fuzzy
 msgid "_Open In Browser"
 msgstr "Otevřít v pro_hlížeči"
 
@@ -1161,9 +1107,8 @@ msgid "Launches the item's link in the Liferea item pane."
 msgstr "Otevřít odkaz článku v nastaveném prohlížeči."
 
 #: ../src/ui/liferea_shell.c:1000 ../src/ui/popup_menu.c:119
-#, fuzzy
 msgid "Open In _External Browser"
-msgstr "<span weight=\"bold\">Nastavení externího prohlížeče</span>"
+msgstr "Otevřít v _externím prohlížeči"
 
 #: ../src/ui/liferea_shell.c:1000
 #, fuzzy
@@ -1172,16 +1117,15 @@ msgstr "Otevřít odkaz článku v nastaveném prohlížeči."
 
 #: ../src/ui/liferea_shell.c:1005
 msgid "_Fullscreen"
-msgstr ""
+msgstr "_Celá obrazovka"
 
 #: ../src/ui/liferea_shell.c:1005
 msgid "Browse at full screen"
 msgstr ""
 
 #: ../src/ui/search_dialog.c:116
-#, fuzzy
 msgid "Saved Search"
-msgstr "Pokročilé"
+msgstr "Uložené vyhledávání"
 
 #: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
 #, no-c-format
@@ -1193,14 +1137,12 @@ msgid "Unknown source"
 msgstr "Neznámý zdroj"
 
 #: ../src/ui/ui_common.c:168 ../src/ui/feed_list_node.c:416
-#, fuzzy
 msgid "_Cancel"
-msgstr "Zrušit _vše"
+msgstr "_Zrušit"
 
 #: ../src/ui/ui_common.c:211
-#, fuzzy
 msgid "All Files"
-msgstr "_Místní soubor"
+msgstr "Všechny soubory"
 
 #: ../src/ui/feed_list_view.c:375
 msgid "Liferea is in offline mode. No update possible."
@@ -1210,8 +1152,7 @@ msgstr "Liferea je odpojena od sítě. Nejsou dostupné žádné aktualizace."
 msgid "This item has no link specified!"
 msgstr "Tento článek nemá specifikován žádný odkaz!"
 
-#: ../src/ui/item_list_view.c:119 ../src/ui/item_list_view.c:986
-#: ../src/ui/item_list_view.c:1069 ../src/ui/item_list_view.c:1084
+#: ../src/ui/item_list_view.c:119 ../src/ui/item_list_view.c:986 ../src/ui/item_list_view.c:1069 ../src/ui/item_list_view.c:1084
 msgid "No item has been selected"
 msgstr "Žádný článek nebyl vybrán"
 
@@ -1236,97 +1177,82 @@ msgid "You must select a feed to delete its items!"
 msgstr "Musíte vybrat kanál, aby šlo odstranit články!"
 
 #: ../src/ui/popup_menu.c:131
-#, fuzzy
 msgid "Copy to News Bin"
-msgstr "/Kopírovat do rubriky/%s"
+msgstr "Kopírovat do rubriky"
 
 #: ../src/ui/popup_menu.c:145
-#, fuzzy, c-format
+#, c-format
 msgid "_Bookmark at %s"
-msgstr "/_Zazáložkovat odkaz do %s"
+msgstr "_Zazáložkovat odkaz do %s"
 
 #: ../src/ui/popup_menu.c:149
-#, fuzzy
 msgid "Copy Item _Location"
-msgstr "/_Kopírovat umístění odkazu"
+msgstr "Kopírovat umístění odkazu"
 
 #: ../src/ui/popup_menu.c:155
-#, fuzzy
 msgid "R_emove Item"
-msgstr "/_Odstranit článek"
+msgstr "_Odstranit článek"
 
 #: ../src/ui/popup_menu.c:168
-#, fuzzy
 msgid "Open Enclosure..."
-msgstr "/Otevřít přílohy…"
+msgstr "Otevřít přílohu..."
 
 #: ../src/ui/popup_menu.c:169
-#, fuzzy
 msgid "Save As..."
-msgstr "/Uložit jako…"
+msgstr "Uložit jako..."
 
 #: ../src/ui/popup_menu.c:170
-#, fuzzy
 msgid "Copy Link Location"
-msgstr "/_Kopírovat umístění odkazu"
+msgstr "Kopírovat umístění odkazu"
 
 #: ../src/ui/popup_menu.c:183
 msgid "_Work Offline"
 msgstr "O_dpojit od sítě"
 
 #: ../src/ui/popup_menu.c:184
-#, fuzzy
 msgid "_Update All"
-msgstr "/_Aktualizovat vše"
+msgstr "_Aktualizovat vše"
 
 #: ../src/ui/popup_menu.c:189
-#, fuzzy
 msgid "_Show Liferea"
-msgstr "Liferea"
+msgstr "_Zobrazit Liferea"
 
 #: ../src/ui/popup_menu.c:292
-#, fuzzy
 msgid "_Update Folder"
-msgstr "/_Aktualizovat složku"
+msgstr "_Aktualizovat složku"
 
 #: ../src/ui/popup_menu.c:302
-#, fuzzy
 msgid "_New"
-msgstr "/_Vytvořit"
+msgstr "_Nové"
 
 #: ../src/ui/popup_menu.c:305
-#, fuzzy
 msgid "New _Subscription..."
-msgstr "Nový _odběr…"
+msgstr "Nový _odběr..."
 
 #: ../src/ui/popup_menu.c:312
-#, fuzzy
 msgid "New S_ource..."
-msgstr "Nový _zdroj…"
+msgstr "Nový _zdroj..."
 
 #: ../src/ui/popup_menu.c:321
-#, fuzzy
 msgid "Sort Feeds"
-msgstr "Importovat seznam kanálů"
+msgstr "Setřídit kanály"
 
 #: ../src/ui/popup_menu.c:327
-#, fuzzy
 msgid "_Mark All As Read"
-msgstr "/Označit vše jako _přečtené"
+msgstr "Označit vše jako _přečtené"
 
 #: ../src/ui/popup_menu.c:332
 msgid "_Rebuild"
 msgstr ""
 
 #: ../src/ui/popup_menu.c:338 ../src/ui/feed_list_node.c:417
-#, fuzzy
 msgid "_Delete"
-msgstr "/_Odstranit"
+msgstr "_Odstranit"
 
 #: ../src/ui/popup_menu.c:344
 #, fuzzy
 msgid "Convert To Local Subscriptions..."
-msgstr "Nový _odběr…"
+msgstr "Nový _odběr..."
 
 #: ../src/ui/preferences_dialog.c:86
 msgid "GNOME default"
@@ -1373,24 +1299,20 @@ msgid "<Alt> Space"
 msgstr "Alt+Mezerník"
 
 #: ../src/ui/preferences_dialog.c:112
-#, fuzzy
 msgid "Normal View"
-msgstr "_Normální zobrazení"
+msgstr "Normální zobrazení"
 
 #: ../src/ui/preferences_dialog.c:113
-#, fuzzy
 msgid "Wide View"
-msgstr "Ši_roké zobrazení"
+msgstr "Široké zobrazení"
 
 #: ../src/ui/preferences_dialog.c:114
-#, fuzzy
 msgid "Combined View"
-msgstr "_Kombinované zobrazení"
+msgstr "Kombinované zobrazení"
 
 #: ../src/ui/preferences_dialog.c:451
-#, fuzzy
 msgid "Default Browser"
-msgstr "Výchozí prohlížeč GNOME"
+msgstr "Výchozí prohlížeč"
 
 #: ../src/ui/preferences_dialog.c:453
 msgid "Manual"
@@ -1440,8 +1362,7 @@ msgstr ""
 #: ../src/ui/subscription_dialog.c:426
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
-msgid_plural ""
-"The provider of this feed suggests an update interval of %d minutes."
+msgid_plural "The provider of this feed suggests an update interval of %d minutes."
 msgstr[0] "Poskytovatel kanálu navrhuje interval aktualizace %d minutu."
 msgstr[1] "Poskytovatel kanálu navrhuje interval aktualizace %d minuty."
 msgstr[2] "Poskytovatel kanálu navrhuje interval aktualizace %d minut."
@@ -1462,22 +1383,17 @@ msgstr ""
 msgid "%b %d %H:%M"
 msgstr "%d. %M., %G.%i"
 
-#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
+#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1 ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Nový odběr"
 
-#: ../src/fl_sources/inoreader_source.c:102
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-#, fuzzy
+#: ../src/fl_sources/inoreader_source.c:102 ../src/fl_sources/reedah_source.c:103 ../src/fl_sources/theoldreader_source.c:104
 msgid "Login failed!"
-msgstr "Přihlášení ke Google Reader selhalo!"
+msgstr "Přihlášení se nezdařilo!"
 
 #: ../src/fl_sources/inoreader_source.c:311
-#, fuzzy
 msgid "InoReader"
-msgstr "Google Reader"
+msgstr "InoReader"
 
 #: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
@@ -1528,9 +1444,7 @@ msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr ""
 
 #: ../src/fl_sources/ttrss_source.c:231
-msgid ""
-"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
-"URL!"
+msgid "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed URL!"
 msgstr ""
 
 #: ../src/fl_sources/ttrss_source.c:290
@@ -1539,81 +1453,69 @@ msgstr ""
 
 #: ../src/fl_sources/ttrss_source.c:307
 #, c-format
-msgid ""
-"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
-"%s or later!"
+msgid "This TinyTinyRSS version does not support removing feeds. Upgrade to version %s or later!"
 msgstr ""
 
 #: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
-msgstr ""
+msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source_feed.c:150
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 
 #: ../src/fl_sources/theoldreader_source.c:329
-#, fuzzy
 msgid "TheOldReader"
-msgstr "Čtečka kanálů"
+msgstr "TheOldReader"
 
 #: ../src/webkit/liferea_web_view.c:173
-#, fuzzy
 msgid "Open Link In _Tab"
-msgstr "/O_tevřít odkaz v kartě"
+msgstr "O_tevřít odkaz v kartě"
 
 #: ../src/webkit/liferea_web_view.c:174
-#, fuzzy
 msgid "Open Link In Browser"
-msgstr "/Otevřít odkaz v proh_lížeči"
+msgstr "Otevřít odkaz v prohlížeči"
 
 #: ../src/webkit/liferea_web_view.c:175
-#, fuzzy
 msgid "Open Link In External Browser"
-msgstr "/Otevřít odkaz v proh_lížeči"
+msgstr "Otevřít odkaz v externím prohlížeči"
 
+# c-format
 #: ../src/webkit/liferea_web_view.c:181
-#, fuzzy, c-format
 msgid "_Bookmark Link at %s"
-msgstr "/_Zazáložkovat odkaz do %s"
+msgstr "_Zazáložkovat odkaz do %s"
 
 #: ../src/webkit/liferea_web_view.c:185
-#, fuzzy
 msgid "_Copy Link Location"
-msgstr "/_Kopírovat umístění odkazu"
+msgstr "Kopírovat umístění odkazu"
 
 #: ../src/webkit/liferea_web_view.c:188
-#, fuzzy
 msgid "_View Image"
-msgstr "_Zobrazit"
+msgstr "Zobrazit obrázek"
 
 #: ../src/webkit/liferea_web_view.c:189
-#, fuzzy
 msgid "_Copy Image Location"
-msgstr "/_Kopírovat umístění odkazu"
+msgstr "_Kopírovat umístění obrázku"
 
 #: ../src/webkit/liferea_web_view.c:192
-#, fuzzy
 msgid "S_ave Link As"
-msgstr "/Uložit jako…"
+msgstr "_Uložit odkaz jako"
 
 #: ../src/webkit/liferea_web_view.c:195
 msgid "S_ave Image As"
-msgstr ""
+msgstr "_Uložit obrázek jako"
 
 #: ../src/webkit/liferea_web_view.c:202
-#, fuzzy
 msgid "_Subscribe..."
-msgstr "/_Odebírat…"
+msgstr "_Odebírat..."
 
 #: ../src/webkit/liferea_web_view.c:206
 msgid "_Copy"
-msgstr ""
+msgstr "_Kopírovat"
 
 #: ../glade/about.ui.h:1
-#, fuzzy
 msgid "About"
-msgstr "O _aplikaci"
+msgstr "O aplikaci"
 
 #: ../glade/about.ui.h:2
 msgid "Liferea is a news aggregator for GTK+"
@@ -1628,12 +1530,8 @@ msgid "Authentication"
 msgstr "Autentizace"
 
 #: ../glade/auth.ui.h:4
-msgid ""
-"Note: <i>The username and password will be saved to your Liferea feedlist "
-"file without using encryption.</i>"
-msgstr ""
-"<small>Poznámka: Uživatelské jméno a heslo budou uloženy v seznamu kanálů "
-"bez použití šifrování.</small>"
+msgid "Note: <i>The username and password will be saved to your Liferea feedlist file without using encryption.</i>"
+msgstr "<small>Poznámka: Uživatelské jméno a heslo budou uloženy v seznamu kanálů bez použití šifrování.</small>"
 
 #: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "User_name:"
@@ -1644,24 +1542,19 @@ msgid "_Password:"
 msgstr "_Heslo:"
 
 #: ../glade/enclosure_handler.ui.h:1
-#, fuzzy
 msgid "Open Enclosure"
-msgstr "/Otevřít přílohy…"
+msgstr "Otevřít přílohu"
 
 #: ../glade/enclosure_handler.ui.h:2
-#, fuzzy
 msgid "Open an enclosure of type:"
-msgstr "Stahování příloh typu:"
+msgstr "Otevřít přílohu typu:"
 
 #: ../glade/enclosure_handler.ui.h:3
-#, fuzzy
 msgid ""
-"What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. The enclosures URL will be supplied as an "
-"argument for this command:"
+"What should Liferea do with this enclosure? Please enter the command you want to be executed below. The enclosures URL will be supplied "
+"as an argument for this command:"
 msgstr ""
-"Co má Liferea provést s touto přílohou? Prosím, vložte příkaz, který chcete "
-"spustit. Stahované přílohy budou předány jako argument tohoto příkazu:"
+"Co má Liferea provést s touto přílohou? Níže zadejte příkaz, který chcete spustit. URL přílohy bude předáno jako argument tohoto příkazu:"
 
 #: ../glade/enclosure_handler.ui.h:4
 msgid "_Browse"
@@ -1669,7 +1562,7 @@ msgstr "_Procházet"
 
 #: ../glade/enclosure_handler.ui.h:5
 msgid "_Do this automatically for enclosures like this from now on."
-msgstr "O_d těď toto provádět se všemi podobnými přílohami automaticky."
+msgstr "O_d teď toto provádět se všemi podobnými přílohami automaticky."
 
 #: ../glade/google_source.ui.h:1
 msgid "Add Google Reader Account"
@@ -1677,28 +1570,24 @@ msgstr "Přidat účet Google Reader"
 
 #: ../glade/google_source.ui.h:2
 msgid "Please enter your Google Reader account settings."
-msgstr "Prosím, vložte nastavení svého účtu na Google Reader."
+msgstr "Zadejte prosím nastavení účtu Google Reader."
 
-#: ../glade/google_source.ui.h:3 ../glade/inoreader_source.ui.h:3
-#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
+#: ../glade/google_source.ui.h:3 ../glade/inoreader_source.ui.h:3 ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
 #: ../glade/ttrss_source.ui.h:4
 msgid "_Password"
 msgstr "_Heslo"
 
-#: ../glade/google_source.ui.h:4 ../glade/inoreader_source.ui.h:4
-#: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
+#: ../glade/google_source.ui.h:4 ../glade/inoreader_source.ui.h:4 ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
-msgstr "_Uživatelské jméno"
+msgstr "_Uživatelské jméno (E-mail)"
 
 #: ../glade/inoreader_source.ui.h:1
-#, fuzzy
 msgid "Add InoReader Account"
-msgstr "Přidat účet Google Reader"
+msgstr "Přidat účet InoReader"
 
 #: ../glade/inoreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your InoReader account settings."
-msgstr "Prosím, vložte nastavení svého účtu na Google Reader."
+msgstr "Zadejte prosím nastavení účtu InoReader."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1740,15 +1629,13 @@ msgstr "Vytvořit rubriku"
 msgid "_News Bin Name:"
 msgstr "_Nová rubrika:"
 
-#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:12
-#: ../glade/simple_subscription.ui.h:3
-#, fuzzy
+#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:12 ../glade/simple_subscription.ui.h:3
 msgid "Feed Source"
-msgstr "<b>Zdroj kanálu</b>"
+msgstr "Zdroj kanálu"
 
 #: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:13
 msgid "Source Type:"
-msgstr "Typ zdroje"
+msgstr "Typ zdroje:"
 
 #: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:14
 msgid "_URL"
@@ -1764,16 +1651,15 @@ msgstr "_Místní soubor"
 
 #: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:17
 msgid "Select File..."
-msgstr "Vybrat soubor…"
+msgstr "Vybrat soubor..."
 
 #: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:18
 msgid "_Source:"
 msgstr "_Zdroj:"
 
 #: ../glade/new_subscription.ui.h:9
-#, fuzzy
 msgid "Download / Postprocessing"
-msgstr "<b>Stahování a následné zpracování</b>"
+msgstr "Stažení a následné zpracování"
 
 #: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
 msgid "_Don't use proxy for download"
@@ -1785,13 +1671,11 @@ msgstr "Použít konverzní _filtr"
 
 #: ../glade/new_subscription.ui.h:12
 msgid ""
-"Liferea can use external filter plugins in order to access feeds and "
-"directories in non-supported formats.  See the documentation for more "
-"information."
+"Liferea can use external filter plugins in order to access feeds and directories in non-supported formats.  See the documentation for "
+"more information."
 msgstr ""
-"Liferea může využívat externí filtrovací moduly pro přístup ke kanálům a "
-"složkám v nepodporovaných formátech. Nahlédněte do dokumentace pro více "
-"informací."
+"Liferea může využívat externí filtrovací moduly pro přístup ke kanálům a složkám v nepodporovaných formátech. Nahlédněte do dokumentace "
+"pro více informací."
 
 #: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:21
 msgid "Convert _using:"
@@ -1803,18 +1687,15 @@ msgstr "Výběr zdroje"
 
 #: ../glade/node_source.ui.h:2
 msgid "Select the source type you want to add..."
-msgstr "Vyberte typ zdroje, který chcete přidat…"
+msgstr "Vyberte typ zdroje, který chcete přidat..."
 
 #: ../glade/opml_source.ui.h:1
 msgid "Add OPML/Planet"
 msgstr "Přidat OPML/Planet"
 
 #: ../glade/opml_source.ui.h:2
-msgid ""
-"Please specify a local file or an URL pointing to a valid OPML feed list."
-msgstr ""
-"Prosím, specifikujte místní soubor nebo URL ukazující na platný seznam "
-"kanálů OPML."
+msgid "Please specify a local file or an URL pointing to a valid OPML feed list."
+msgstr "Prosím, specifikujte místní soubor nebo URL ukazující na platný seznam kanálů OPML."
 
 #: ../glade/opml_source.ui.h:3
 msgid "_Location"
@@ -1826,34 +1707,31 @@ msgstr "Vybrat _soubor"
 
 #: ../glade/prefs.ui.h:1
 msgid "Liferea Preferences"
-msgstr "Nastavení Liferea"
+msgstr "Předvolby Liferea"
 
 #: ../glade/prefs.ui.h:2
 msgid "Feed Cache Handling"
-msgstr ""
+msgstr "Zacházení s mezipamětí kanálu"
 
 #: ../glade/prefs.ui.h:3
 msgid "Default _number of items per feed to save:"
 msgstr "Výchozí _počet uložených článků v jednom kanálu:"
 
 #: ../glade/prefs.ui.h:5
-#, fuzzy
 msgid "Feed Update Settings"
-msgstr "Aktualizovaný kanál"
+msgstr "Nastavení aktualizace kanálu"
 
 #. Feed update interval hint in preference dialog.
 #: ../glade/prefs.ui.h:7
 msgid ""
-"Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
-"waste of bandwidth to poll feeds more often than each hour.</i>"
+"Note: <i>Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.</"
+"i>"
 msgstr ""
-"<small>Poznámka: Nastavte prosím rozumný čas aktualizace. Obvykle je "
-"plýtváním aktualizovat kanály častěji než jednou za hodinu.</small>"
+"<small>Poznámka: Nastavte prosím rozumný čas aktualizace. Obvykle je plýtváním aktualizovat kanály častěji než jednou za hodinu.</small>"
 
 #: ../glade/prefs.ui.h:8
-#, fuzzy
 msgid "_Update all subscriptions at startup."
-msgstr "Nový odběr"
+msgstr "_Aktualizovat všechny odběry při spuštění."
 
 #: ../glade/prefs.ui.h:9
 msgid "Default Feed Refresh _Interval:"
@@ -1868,9 +1746,8 @@ msgid "Feeds"
 msgstr "Kanály"
 
 #: ../glade/prefs.ui.h:12
-#, fuzzy
 msgid "Folder Display Settings"
-msgstr "<span weight=\"bold\">Nastavení zobrazování složek</span>"
+msgstr "Nastavení zobrazení složky"
 
 #: ../glade/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
@@ -1881,9 +1758,8 @@ msgid "_Hide read items."
 msgstr "Skrývat _přečtené články."
 
 #: ../glade/prefs.ui.h:15
-#, fuzzy
 msgid "Feed Icons (Favicons)"
-msgstr "<span weight=\"bold\">Ikonky kanálu</span>"
+msgstr "Ikonky kanálu (favicony)"
 
 #: ../glade/prefs.ui.h:16
 msgid "_Update all favicons now"
@@ -1894,9 +1770,8 @@ msgid "Folders"
 msgstr "Složky"
 
 #: ../glade/prefs.ui.h:18
-#, fuzzy
 msgid "Reading Headlines"
-msgstr "nepřečtené články"
+msgstr "Čtení titulků"
 
 #: ../glade/prefs.ui.h:19
 msgid "_Skim through articles with:"
@@ -1904,21 +1779,19 @@ msgstr "_Otevírat články klávesou:"
 
 #: ../glade/prefs.ui.h:20
 msgid "_Default View Mode:"
-msgstr ""
+msgstr "_Výchozí režim zobrazení:"
 
 #: ../glade/prefs.ui.h:21
-#, fuzzy
 msgid "Web Integration"
-msgstr "Orientace"
+msgstr "Webová integrace"
 
 #: ../glade/prefs.ui.h:22
 msgid "_Post Bookmarks to"
 msgstr "_Posílat záložky do"
 
 #: ../glade/prefs.ui.h:24
-#, fuzzy
 msgid "Internal Browser Settings"
-msgstr "<span weight=\"bold\">Nastavení interního prohlížeče</span>"
+msgstr "Nastavení interního prohlížeče"
 
 #: ../glade/prefs.ui.h:25
 msgid "Open links in Liferea's _window."
@@ -1929,23 +1802,20 @@ msgid "_Disable Javascript."
 msgstr "Zakázat _JavaScript."
 
 #: ../glade/prefs.ui.h:27
-#, fuzzy
 msgid "_Enable browser plugins."
-msgstr "<span weight=\"bold\">Nastavení externího prohlížeče</span>"
+msgstr "_Povolit zásuvné moduly prohlížeče."
 
 #: ../glade/prefs.ui.h:28
-#, fuzzy
 msgid "External Browser Settings"
-msgstr "<span weight=\"bold\">Nastavení externího prohlížeče</span>"
+msgstr "Nastavení externího prohlížeče"
 
 #: ../glade/prefs.ui.h:29
 msgid "_Browser:"
 msgstr "_Prohlížeč:"
 
 #: ../glade/prefs.ui.h:30
-#, fuzzy
 msgid "_Manual:"
-msgstr "Ručně"
+msgstr "_Ručně:"
 
 #: ../glade/prefs.ui.h:32
 #, no-c-format
@@ -1957,13 +1827,12 @@ msgid "Browser"
 msgstr "Prohlížeč"
 
 #: ../glade/prefs.ui.h:34
-#, fuzzy
 msgid "Toolbar Settings"
-msgstr "_Popisky tlačítek na liště nástrojů:"
+msgstr "Nastavení lišty nástrojů"
 
 #: ../glade/prefs.ui.h:35
 msgid "_Hide toolbar."
-msgstr ""
+msgstr "_Skrýt lištu nástrojů."
 
 #: ../glade/prefs.ui.h:36
 msgid "Toolbar _button labels:"
@@ -2011,8 +1880,8 @@ msgstr "Heslo pro pro_xy:"
 
 #: ../glade/prefs.ui.h:47
 msgid ""
-"Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
-"application proxy settings. The system's default proxy settings will be used."
+"Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per application proxy settings. The system's default proxy settings "
+"will be used."
 msgstr ""
 
 #: ../glade/prefs.ui.h:48
@@ -2020,20 +1889,18 @@ msgid "Proxy"
 msgstr "Proxy"
 
 #: ../glade/prefs.ui.h:49
-#, fuzzy
 msgid "Privacy Settings"
-msgstr "<span weight=\"bold\">Nastavení zobrazování složek</span>"
+msgstr "Nastavení soukromí"
 
 #: ../glade/prefs.ui.h:50
 msgid "Tell sites that I do _not want to be tracked"
-msgstr ""
+msgstr "Informovat stránky, že nechci být sledován(a)"
 
 #: ../glade/prefs.ui.h:51
 msgid "Privacy"
-msgstr ""
+msgstr "Soukromí"
 
 #: ../glade/prefs.ui.h:52
-#, fuzzy
 msgid "Downloading Enclosures"
 msgstr "Stahování příloh"
 
@@ -2042,9 +1909,8 @@ msgid "_Download using"
 msgstr "Stahovat _pomocí"
 
 #: ../glade/prefs.ui.h:54
-#, fuzzy
 msgid "Opening Enclosures"
-msgstr "/Otevřít přílohy…"
+msgstr "Otevírání příloh"
 
 #: ../glade/prefs.ui.h:55
 msgid "Enclosures"
@@ -2052,25 +1918,23 @@ msgstr "Přílohy"
 
 #: ../glade/prefs.ui.h:56
 msgid "Plugins"
-msgstr ""
+msgstr "Zásuvné moduly"
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
 msgstr "Vlastnosti odběru"
 
 #: ../glade/properties.ui.h:2
-#, fuzzy
 msgid "Feed Name"
-msgstr "_Název kanálu:"
+msgstr "Název kanálu"
 
 #: ../glade/properties.ui.h:3
 msgid "Feed _Name:"
 msgstr "_Název kanálu:"
 
 #: ../glade/properties.ui.h:4
-#, fuzzy
 msgid "Update Interval"
-msgstr "Sledování aktualizací"
+msgstr "Interval aktualizace"
 
 #: ../glade/properties.ui.h:5
 msgid "_Use global default update interval."
@@ -2095,21 +1959,16 @@ msgstr "Obecné"
 
 #: ../glade/properties.ui.h:20
 #, fuzzy
-msgid ""
-"Liferea can use external filter scripts in order to access feeds and "
-"directories in non-supported formats."
+msgid "Liferea can use external filter scripts in order to access feeds and directories in non-supported formats."
 msgstr ""
-"Liferea může využívat externí filtrovací moduly pro přístup ke kanálům a "
-"složkám v nepodporovaných formátech. Nahlédněte do dokumentace pro více "
-"informací."
+"Liferea může využívat externí filtrovací moduly pro přístup ke kanálům a složkám v nepodporovaných formátech. Nahlédněte do dokumentace "
+"pro více informací."
 
 #: ../glade/properties.ui.h:23
-msgid ""
-"The cache setting controls if the contents of feeds are saved when Liferea "
-"exits. Marked items are always saved to the cache."
+msgid "The cache setting controls if the contents of feeds are saved when Liferea exits. Marked items are always saved to the cache."
 msgstr ""
-"Nastavení vyrovnávací paměti určuje, jestli se při ukončení aplikace ukládá "
-"obsah kanálů. Označené články jsou do vyrovnávací paměti ukládány vždy."
+"Nastavení vyrovnávací paměti určuje, jestli se při ukončení aplikace ukládá obsah kanálů. Označené články jsou do vyrovnávací paměti "
+"ukládány vždy."
 
 #: ../glade/properties.ui.h:24
 msgid "_Default cache settings"
@@ -2166,14 +2025,12 @@ msgid "Advanced"
 msgstr "Pokročilé"
 
 #: ../glade/reedah_source.ui.h:1
-#, fuzzy
 msgid "Add Reedah Account"
-msgstr "Přidat účet Google Reader"
+msgstr "Přidat účet Reedah"
 
 #: ../glade/reedah_source.ui.h:2
-#, fuzzy
 msgid "Please enter your Reedah account settings."
-msgstr "Prosím, vložte nastavení svého účtu na Google Reader."
+msgstr "Zadejte prosím nastavení účtu Reedah."
 
 #: ../glade/rename_node.ui.h:1
 msgid "Rename"
@@ -2192,93 +2049,72 @@ msgid "Search _Name:"
 msgstr "_Název hledání:"
 
 #: ../glade/search_folder.ui.h:3 ../glade/search.ui.h:3
-#, fuzzy
 msgid "Find Items that meet the following criteria"
-msgstr "<b>Najít články, které vyhovují následujícím kritériím</b>"
+msgstr "Najít články, které vyhovují následujícím kritériím"
 
 #: ../glade/search_folder.ui.h:4 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
-msgstr ""
+msgstr "_Jakékoliv pravidlo se shoduje"
 
 #: ../glade/search_folder.ui.h:5 ../glade/search.ui.h:5
 msgid "_All Rules Must Match"
 msgstr "Všechn_a pravidla musí souhlasit"
 
 #: ../glade/search.ui.h:1
-#, fuzzy
 msgid "Advanced Search"
-msgstr "Pokročilé"
+msgstr "Pokročilé hledání"
 
 #: ../glade/search.ui.h:2
-#, fuzzy
 msgid "_Search Folder..."
-msgstr "Složka hledání"
+msgstr "_Složka hledání..."
 
 #: ../glade/simple_search.ui.h:1
 msgid "Search All Feeds"
 msgstr "Prohledat všechny kanály"
 
 #: ../glade/simple_search.ui.h:2
-#, fuzzy
 msgid "_Advanced..."
-msgstr "Pokročilé…"
+msgstr "_Pokročilé..."
 
 #: ../glade/simple_search.ui.h:3
-msgid ""
-"Starts searching for the specified text in all feeds. The search result will "
-"appear in the item list."
-msgstr ""
-"Spustit vyhledávání zadaného textu ve všech kanálech. Výsledky hledání se "
-"objeví v seznamu článků."
+msgid "Starts searching for the specified text in all feeds. The search result will appear in the item list."
+msgstr "Spustit vyhledávání zadaného textu ve všech kanálech. Výsledky hledání se objeví v seznamu článků."
 
 #: ../glade/simple_search.ui.h:4
 msgid "_Search for:"
 msgstr "_Vyhledat:"
 
 #: ../glade/simple_search.ui.h:5
-msgid ""
-"Enter a search string Liferea should find either in a items title or in its "
-"content."
-msgstr ""
-"Vložte text, který má Liferea vyhledat buď v titulku článku, nebo jeho "
-"obsahu."
+msgid "Enter a search string Liferea should find either in a items title or in its content."
+msgstr "Vložte text, který má Liferea vyhledat buď v titulku článku, nebo jeho obsahu."
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
-msgstr "Pokročilé…"
+msgstr "Pokročilé..."
 
 #: ../glade/simple_subscription.ui.h:4
-msgid ""
-"Enter a website location to use feed autodiscovery or in case you know it "
-"the exact feed location."
-msgstr ""
-"Vložte umístění webové stránky, kde se má automaticky najít kanál, nebo "
-"přesnou adresu kanálu."
+msgid "Enter a website location to use feed autodiscovery or in case you know it the exact feed location."
+msgstr "Vložte umístění webové stránky, kde se má automaticky najít kanál, nebo přesnou adresu kanálu."
 
 #: ../glade/theoldreader_source.ui.h:1
-#, fuzzy
 msgid "Add TheOldReader Account"
-msgstr "Přidat účet Google Reader"
+msgstr "Přidat účet TheOldReader"
 
 #: ../glade/theoldreader_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TheOldReader account settings."
-msgstr "Prosím, vložte nastavení svého účtu na Google Reader."
+msgstr "Zadejte prosím nastavení účtu TheOldReader."
 
 #: ../glade/ttrss_source.ui.h:1
-#, fuzzy
 msgid "Add Tiny Tiny RSS Account"
-msgstr "Přidat účet Bloglines"
+msgstr "Přidat účet Tiny Tiny RSS"
 
 #: ../glade/ttrss_source.ui.h:2
-#, fuzzy
 msgid "Please enter your TinyTinyRSS account settings."
-msgstr "Prosím, vložte nastavení svého účtu na Bloglines."
+msgstr "Zadejte prosím nastavení účtu TinyTinyRSS."
 
 #: ../glade/ttrss_source.ui.h:3
-#, fuzzy
 msgid "_Server URL"
-msgstr "Chyba serveru"
+msgstr "URL adresa _serveru"
 
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
@@ -2289,19 +2125,17 @@ msgid "Update Monitor"
 msgstr "Sledování aktualizací"
 
 #: ../glade/update_monitor.ui.h:2
-#, fuzzy
 msgid "Cancel All"
-msgstr "Zrušit _vše"
+msgstr "Zrušit vše"
 
 #: ../glade/update_monitor.ui.h:3
 #, fuzzy
 msgid "Pending Requests"
-msgstr "<b>Nevyřešené požadavky</b>"
+msgstr "Nevyřešené požadavky"
 
 #: ../glade/update_monitor.ui.h:4
-#, fuzzy
 msgid "Downloading Now"
-msgstr "<b>Právě stahované</b>"
+msgstr "Právě stahované"
 
 #~ msgid "normal view"
 #~ msgstr "normální zobrazení"
@@ -2384,16 +2218,13 @@ msgstr "<b>Právě stahované</b>"
 
 #, fuzzy
 #~ msgid ""
-#~ "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news "
-#~ "feeds.</p><p>You can add new subscriptions <ul><li>From main menu "
-#~ "'Subscription' -&gt; 'New Subscription'</li><li>By dropping feed links "
-#~ "into the subscription list</li><li>By right clicking links and choosing "
-#~ "'Subscribe' within Liferea</li></ul></p>"
+#~ "<p>Welcome to <b>Liferea</b>, a desktop news aggregator for online news feeds.</p><p>You can add new subscriptions <ul><li>From main "
+#~ "menu 'Subscription' -&gt; 'New Subscription'</li><li>By dropping feed links into the subscription list</li><li>By right clicking "
+#~ "links and choosing 'Subscribe' within Liferea</li></ul></p>"
 #~ msgstr ""
-#~ "<p>Vítejte v <b>Liferea</b>, agregátoru novinkových kanálů.</p><p>Levá "
-#~ "oblast okna obsahuje seznam vašich odběrů; nový odběr lze přidat vybráním "
-#~ "položky Nový odběr v nabídce Kanály. Články lze prohlížet vybráním kanálu "
-#~ "z jejich seznamu, načtou se do pravé oblasti okna.</p>"
+#~ "<p>Vítejte v <b>Liferea</b>, agregátoru novinkových kanálů.</p><p>Levá oblast okna obsahuje seznam vašich odběrů; nový odběr lze "
+#~ "přidat vybráním položky Nový odběr v nabídce Kanály. Články lze prohlížet vybráním kanálu z jejich seznamu, načtou se do pravé "
+#~ "oblasti okna.</p>"
 
 #, fuzzy
 #~ msgid "Terminate instead of minimizing to the messaging menu"
@@ -2436,32 +2267,26 @@ msgstr "<b>Právě stahované</b>"
 
 #, fuzzy
 #~ msgid ""
-#~ "Integrate the feed list of your Google Reader account. Liferea will "
-#~ "present your Google Reader subscriptions, and will synchronize your feed "
-#~ "list and reading lists."
+#~ "Integrate the feed list of your Google Reader account. Liferea will present your Google Reader subscriptions, and will synchronize "
+#~ "your feed list and reading lists."
 #~ msgstr ""
-#~ "Integrovat seznam vašich kanálů z Google Reader. Liferea bude brát vaše "
-#~ "odběry na Google Reader jako podstrom ve vašem seznamu kanálů určený "
-#~ "pouze ke čtení."
+#~ "Integrovat seznam vašich kanálů z Google Reader. Liferea bude brát vaše odběry na Google Reader jako podstrom ve vašem seznamu kanálů "
+#~ "určený pouze ke čtení."
 
 #~ msgid ""
-#~ "Integrate blogrolls or Planets in your feed list. Liferea will "
-#~ "automatically add and remove feeds according to the changes of the source "
-#~ "OPML document"
+#~ "Integrate blogrolls or Planets in your feed list. Liferea will automatically add and remove feeds according to the changes of the "
+#~ "source OPML document"
 #~ msgstr ""
-#~ "Integrovat BlogRoll nebo Planet do vašeho seznamu kanálů. Liferea bude "
-#~ "automaticky přidávat a odstraňovat kanály podle změn ve zdrojovém "
-#~ "dokumentu OPML."
+#~ "Integrovat BlogRoll nebo Planet do vašeho seznamu kanálů. Liferea bude automaticky přidávat a odstraňovat kanály podle změn ve "
+#~ "zdrojovém dokumentu OPML."
 
 #, fuzzy
 #~ msgid ""
-#~ "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will "
-#~ "present your tt-rss subscriptions, and will synchronize your feed list "
-#~ "and reading lists."
+#~ "Integrate the feed list of your Tiny Tiny RSS 1.5+ account. Liferea will present your tt-rss subscriptions, and will synchronize your "
+#~ "feed list and reading lists."
 #~ msgstr ""
-#~ "Integrovat seznam vašich kanálů z Google Reader. Liferea bude brát vaše "
-#~ "odběry na Google Reader jako podstrom ve vašem seznamu kanálů určený "
-#~ "pouze ke čtení."
+#~ "Integrovat seznam vašich kanálů z Google Reader. Liferea bude brát vaše odběry na Google Reader jako podstrom ve vašem seznamu kanálů "
+#~ "určený pouze ke čtení."
 
 #~ msgid "This feed does not exist anymore!"
 #~ msgstr "Tento kanál již neexistuje!"
@@ -2540,14 +2365,11 @@ msgstr "<b>Právě stahované</b>"
 
 #, fuzzy
 #~ msgid ""
-#~ "This version of Liferea uses a new cache format and has migrated your "
-#~ "feed cache. The cache content in %s was not deleted automatically. Please "
-#~ "remove this directory manually once you are sure migration was successful!"
+#~ "This version of Liferea uses a new cache format and has migrated your feed cache. The cache content in %s was not deleted "
+#~ "automatically. Please remove this directory manually once you are sure migration was successful!"
 #~ msgstr ""
-#~ "Tato verze Liferea používá nový formát vyrovnávací paměti; vaše "
-#~ "vyrovnávací paměť byla migrována do nového formátu. Obsah staré "
-#~ "vyrovnávací paměti v adresáři ~/.liferea_1.2 ale nebyl smazán. Smažte jej "
-#~ "ručně, jste-li si jisti, že migrace proběhla úspěšně."
+#~ "Tato verze Liferea používá nový formát vyrovnávací paměti; vaše vyrovnávací paměť byla migrována do nového formátu. Obsah staré "
+#~ "vyrovnávací paměti v adresáři ~/.liferea_1.2 ale nebyl smazán. Smažte jej ručně, jste-li si jisti, že migrace proběhla úspěšně."
 
 #, fuzzy
 #~ msgid "Download FAILED: \"%s\""
@@ -2582,12 +2404,8 @@ msgstr "<b>Právě stahované</b>"
 #~ msgid "Downloading Enclosure"
 #~ msgstr "Stahování příloh"
 
-#~ msgid ""
-#~ "Jumps to the next unread item. If necessary selects the next feed with "
-#~ "unread items."
-#~ msgstr ""
-#~ "Skočit na další nepřečtený článek. Je-li to nezbytné, vybrat další kanál "
-#~ "s nepřečtenými články."
+#~ msgid "Jumps to the next unread item. If necessary selects the next feed with unread items."
+#~ msgstr "Skočit na další nepřečtený článek. Je-li to nezbytné, vybrat další kanál s nepřečtenými články."
 
 #~ msgid "Liferea Sync %s@%s"
 #~ msgstr "Synchronizace Liferea %s@%s"
@@ -2627,7 +2445,7 @@ msgstr "<b>Právě stahované</b>"
 #~ msgstr "Povolit konfigurovat a upravovat skripty LUA"
 
 #~ msgid "Search With ..."
-#~ msgstr "Hledat pomocí…"
+#~ msgstr "Hledat pomocí..."
 
 #~ msgid "%d Search Result for \"%s\""
 #~ msgid_plural "%d Search Results for \"%s\""
@@ -2643,15 +2461,11 @@ msgstr "<b>Právě stahované</b>"
 #~ msgstr[2] "%d výsledků hledání výrazu „%s“"
 
 #~ msgid ""
-#~ "The item list now contains all items matching the specified search "
-#~ "pattern. If you want to save this search result permanently you can click "
-#~ "the \"Search Folder\" button in the search dialog and Liferea will add a "
-#~ "search folder to your feed list."
+#~ "The item list now contains all items matching the specified search pattern. If you want to save this search result permanently you "
+#~ "can click the \"Search Folder\" button in the search dialog and Liferea will add a search folder to your feed list."
 #~ msgstr ""
-#~ "Seznam článků nyní obsahuje všechny články odpovídající hledanému vzoru. "
-#~ "Chcete-li uložit toto hledání natrvalo, můžete kliknout na tlačítko "
-#~ "„Složka hledání“ v dialogu hledání a Liferea přidá tuto složku hledání do "
-#~ "vašeho seznamu kanálů."
+#~ "Seznam článků nyní obsahuje všechny články odpovídající hledanému vzoru. Chcete-li uložit toto hledání natrvalo, můžete kliknout na "
+#~ "tlačítko „Složka hledání“ v dialogu hledání a Liferea přidá tuto složku hledání do vašeho seznamu kanálů."
 
 #~ msgid "Count"
 #~ msgstr "Počet"
@@ -2664,7 +2478,7 @@ msgstr "<b>Právě stahované</b>"
 
 #, fuzzy
 #~ msgid "_Properties..."
-#~ msgstr "/Vlastnos_ti…"
+#~ msgstr "/Vlastnos_ti..."
 
 #~ msgid "Update out-dated feeds"
 #~ msgstr "Aktualizovat neaktuální kanály"
@@ -2721,12 +2535,11 @@ msgstr "<b>Právě stahované</b>"
 #~ msgstr "Bloglines"
 
 #~ msgid ""
-#~ "Integrate the feed list of your Bloglines account. Liferea will present "
-#~ "your Bloglines subscription as a read-only subtree in the feed list."
+#~ "Integrate the feed list of your Bloglines account. Liferea will present your Bloglines subscription as a read-only subtree in the "
+#~ "feed list."
 #~ msgstr ""
-#~ "Integrovat seznam vašich kanálů z Bloglines. Liferea bude brát vaše "
-#~ "odběry na Bloglines jako podstrom ve vašem seznamu kanálů určený pouze ke "
-#~ "čtení."
+#~ "Integrovat seznam vašich kanálů z Bloglines. Liferea bude brát vaše odběry na Bloglines jako podstrom ve vašem seznamu kanálů určený "
+#~ "pouze ke čtení."
 
 #~ msgid "feedlist.opml"
 #~ msgstr "feedlist_cs.opml"
@@ -2758,12 +2571,8 @@ msgstr "<b>Právě stahované</b>"
 #~ msgid "<b>text/plain</b>"
 #~ msgstr "<b>text/plain</b>"
 
-#~ msgid ""
-#~ "<i>This option can cause significant delays when loading folders "
-#~ "containing many feeds.</i>"
-#~ msgstr ""
-#~ "<small>Tato volba může způsobit významné zpoždění při načítání složek "
-#~ "obsahujících mnoho kanálů.</small>"
+#~ msgid "<i>This option can cause significant delays when loading folders containing many feeds.</i>"
+#~ msgstr "<small>Tato volba může způsobit významné zpoždění při načítání složek obsahujících mnoho kanálů.</small>"
 
 #~ msgid "<span weight=\"bold\">Downloading Enclosures</span>"
 #~ msgstr "<span weight=\"bold\">Stahování příloh</span>"
@@ -2853,19 +2662,19 @@ msgstr "<b>Právě stahované</b>"
 #~ msgstr "/_Aktualizovat"
 
 #~ msgid "/_New/New _Subscription..."
-#~ msgstr "/_Vytvořit/_Odběr…"
+#~ msgstr "/_Vytvořit/_Odběr..."
 
 #~ msgid "/_New/New _Folder..."
-#~ msgstr "/_Vytvořit/_Složku…"
+#~ msgstr "/_Vytvořit/_Složku..."
 
 #~ msgid "/_New/New S_earch Folder..."
-#~ msgstr "/_Vytvořit/Složku _hledání…"
+#~ msgstr "/_Vytvořit/Složku _hledání..."
 
 #~ msgid "/_New/New S_ource..."
-#~ msgstr "/_Vytvořit/_Zdroj…"
+#~ msgstr "/_Vytvořit/_Zdroj..."
 
 #~ msgid "/_New/New _News Bin..."
-#~ msgstr "/_Vytvořit/_Rubriku…"
+#~ msgstr "/_Vytvořit/_Rubriku..."
 
 #~ msgid ""
 #~ "This program is free software; you can redistribute it and/or modify\n"
@@ -2880,8 +2689,7 @@ msgstr "<b>Právě stahované</b>"
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
-#~ "USA."
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 #~ msgstr ""
 #~ "This program is free software; you can redistribute it and/or modify\n"
 #~ "it under the terms of the GNU General Public License as\n"
@@ -2895,8 +2703,7 @@ msgstr "<b>Právě stahované</b>"
 #~ "\n"
 #~ "You should have received a copy of the GNU General Public License\n"
 #~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
-#~ "USA."
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #~ msgid "Access Forbidden"
 #~ msgstr "Přístup odepřen"
@@ -2911,14 +2718,10 @@ msgstr "<b>Právě stahované</b>"
 #~ msgstr "                 Spustit Liferea s hlavním oknem, které má STAV."
 
 #~ msgid "                   Possible topics are: all,cache,conf,db,gui,html"
-#~ msgstr ""
-#~ "                 Možná témata jsou: „all“, „cache“, „conf“, „db“, „gui“, "
-#~ "„html“,"
+#~ msgstr "                 Možná témata jsou: „all“, „cache“, „conf“, „db“, „gui“, „html“,"
 
 #~ msgid "                   net,parsing,plugins,trace,update,verbose"
-#~ msgstr ""
-#~ "                 „net“, „parsing“, „plugins“, „trace“, „update“, "
-#~ "„verbose“."
+#~ msgstr "                 „net“, „parsing“, „plugins“, „trace“, „update“, „verbose“."
 
 #~ msgid "The --mainwindow-state argument must be given a parameter.\n"
 #~ msgstr "Argumentu --mainwindow-state musí být předán parametr.\n"
@@ -2942,9 +2745,7 @@ msgstr "<b>Právě stahované</b>"
 #~ msgstr "článků."
 
 #~ msgid "Feed link auto discovery failed! No feed links found!"
-#~ msgstr ""
-#~ "Automatické objevování kanálů selhalo! Žádné odkazy na kanály nebyly "
-#~ "nalezeny!"
+#~ msgstr "Automatické objevování kanálů selhalo! Žádné odkazy na kanály nebyly nalezeny!"
 
 #~ msgid "Could not download \"%s\". Will retry in %d seconds."
 #~ msgstr "Nepodařilo se stáhnout „%s“. Další pokus bude za %d sekund."
@@ -2974,11 +2775,8 @@ msgstr "<b>Právě stahované</b>"
 #~ "Og Maciel <ogmaciel@ubuntu.com>\n"
 #~ "Martin Picek <picek.martin@gnome-cesko.cz>\n"
 
-#~ msgid ""
-#~ "Saves this search as a search folder, which will appear in the feed list."
-#~ msgstr ""
-#~ "Uložit toto hledání jako složku hledání, která se zobrazí v seznamu "
-#~ "kanálů."
+#~ msgid "Saves this search as a search folder, which will appear in the feed list."
+#~ msgstr "Uložit toto hledání jako složku hledání, která se zobrazí v seznamu kanálů."
 
 #~ msgid "Show Menu _And Toolbar"
 #~ msgstr "Zobrazovat nabídku _a lištu nástrojů"
@@ -2999,14 +2797,10 @@ msgstr "<b>Právě stahované</b>"
 #~ msgstr "gtk-save-as"
 
 #~ msgid "search"
-#~ msgstr "hledat"
+#~ msgstr "search"
 
-#~ msgid ""
-#~ "Unexpected end of character sequence or corrupt UTF-8 encoding! Some "
-#~ "characters were dropped!"
-#~ msgstr ""
-#~ "Neočekávaný konec sekvence znaků nebo porušené kódování UTF-8! Některé "
-#~ "znaky byly vynechány!"
+#~ msgid "Unexpected end of character sequence or corrupt UTF-8 encoding! Some characters were dropped!"
+#~ msgstr "Neočekávaný konec sekvence znaků nebo porušené kódování UTF-8! Některé znaky byly vynechány!"
 
 #~ msgid "does match"
 #~ msgstr "odpovídá"
@@ -3017,12 +2811,8 @@ msgstr "<b>Právě stahované</b>"
 #~ msgid "NAME"
 #~ msgstr "NÁZEV"
 
-#~ msgid ""
-#~ "Sorry, I was not able to load any installed browser plugin! Try the --"
-#~ "debug-plugins option to get debug information!"
-#~ msgstr ""
-#~ "Bohužel nebylo možné načíst žádný instalovaný modul prohlížeče! Zkuste "
-#~ "volbu --debug-plugins k získání ladících informací."
+#~ msgid "Sorry, I was not able to load any installed browser plugin! Try the --debug-plugins option to get debug information!"
+#~ msgstr "Bohužel nebylo možné načíst žádný instalovaný modul prohlížeče! Zkuste volbu --debug-plugins k získání ladících informací."
 
 #~ msgid "This item does not have a link assigned!"
 #~ msgstr "Článek nemá přiřazený odkaz!"
