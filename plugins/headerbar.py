@@ -27,6 +27,18 @@ gi.require_version('Gtk', '3.0')
 
 from gi.repository import GObject, Gio, Gtk, Gdk, PeasGtk, Liferea
 
+# Initialize translations for tooltips
+# Fallback to English if gettext module can't find the translations
+# (That's possible if they are installed in a nontraditional dir)
+import gettext
+_ = lambda x: x
+try:
+    t = gettext.translation("liferea")
+except FileNotFoundError:
+    pass
+else:
+    _ = t.gettext
+
 class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = "HeaderBarPlugin"
 
@@ -48,11 +60,13 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         button = Gtk.Button()
         button.add(Gtk.Arrow(Gtk.ArrowType.LEFT, Gtk.ShadowType.NONE))
         button.set_action_name("app.prev-read-item")
+        button.set_tooltip_text(_("Previous Item"))
         box.add(button)
 
         button = Gtk.Button()
         button.add(Gtk.Arrow(Gtk.ArrowType.RIGHT, Gtk.ShadowType.NONE))
         button.set_action_name("app.next-read-item")
+        button.set_tooltip_text(_("Next Item"))
         box.add(button)
 
         button = Gtk.Button()
@@ -60,6 +74,7 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         button.add(image)
         button.set_action_name("app.next-unread-item")
+        button.set_tooltip_text(_("_Next Unread Item").replace("_", ""))
         box.add(button)
 
         button = Gtk.Button()
@@ -67,6 +82,7 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         button.add(image)
         button.set_action_name("app.mark-all-feeds-read")
+        button.set_tooltip_text(_("_Mark Items Read").replace("_", ""))
         box.add(button)
 
         self.hb.pack_start(box)
@@ -85,6 +101,7 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         image = Gtk.Image.new_from_gicon(icon, Gtk.IconSize.BUTTON)
         button.add(image)
         button.set_action_name("app.search-feeds")
+        button.set_tooltip_text(_("Search All Feeds..."))
         self.hb.pack_end(button)
 
         self.shell.lookup("mainwindow").set_titlebar(self.hb)
