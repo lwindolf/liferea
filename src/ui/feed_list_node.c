@@ -431,18 +431,18 @@ feed_list_node_remove (nodePtr node)
 static void
 feed_list_node_add_duplicate_url_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	subscriptionPtr tempSubscription = (subscriptionPtr) user_data;
+	subscriptionPtr newSubscription = (subscriptionPtr) user_data;
 
 	if (GTK_RESPONSE_ACCEPT == response_id) {
 		feedlist_add_subscription (
-				subscription_get_source (tempSubscription),
-				subscription_get_filter (tempSubscription),
-				update_options_copy (tempSubscription->updateOptions),
+				subscription_get_source (newSubscription),
+				subscription_get_filter (newSubscription),
+				update_options_copy (newSubscription->updateOptions),
 				FEED_REQ_PRIORITY_HIGH
 		);
 	}
 
-	subscription_free (tempSubscription);
+	subscription_free (newSubscription);
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
