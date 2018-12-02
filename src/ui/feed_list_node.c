@@ -455,7 +455,7 @@ feed_list_node_add_duplicate_url_subscription (subscriptionPtr tempSubscription,
 	gchar		*text;
 
 	text = g_strdup_printf (
-			_("Are you sure that you want to add a tempSubscription with URL \"%s\"? Another subscription with the same URL already exists (\"%s\")."),
+			_("Are you sure that you want to add a new subscription with URL \"%s\"? Another subscription with the same URL already exists (\"%s\")."),
 			tempSubscription->source,
 			node_get_title (exNode)
 	);
