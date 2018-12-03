@@ -1,3 +1,24 @@
+To be released
+
+	Version 1.12.6
+
+	* Fixes #689: When resuming from sleep feeds were being fetched
+	  before Wifi cam up
+	  (ghost)
+	* Fixes #685: Headerbar plugin "Mark All Read" button is not
+	  feed-specific
+	  (Robbie Cooper)
+	* Fixes #549: Scrollbars not always present in the headline area
+	  (Leiaz)
+	* Fixes #543: Next update overrides HTML5 enrichment
+	  (Lars Windolf)
+
+	* #692: Update of Czech translation
+	  (RadimNo)
+	* #688: Adding translatable tooltips for the headerbar plugin
+	  (Robbie Cooper)
+
+
 2018-09-07   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12.5
