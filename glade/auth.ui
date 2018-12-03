@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.14"/>
   <object class="GtkDialog" id="auth">
@@ -9,6 +9,9 @@
     <property name="title" translatable="yes">Authentication</property>
     <property name="resizable">False</property>
     <property name="type_hint">dialog</property>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox14">
         <property name="visible">True</property>
@@ -63,6 +66,8 @@
           <object class="GtkGrid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="hexpand">False</property>
             <property name="border_width">5</property>
             <property name="orientation">vertical</property>
             <property name="row_spacing">12</property>
@@ -77,20 +82,6 @@
               <packing>
                 <property name="left_attach">0</property>
                 <property name="top_attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Note: &lt;i&gt;The username and password will be saved to your Liferea feedlist file without using encryption.&lt;/i&gt;</property>
-                <property name="use_markup">True</property>
-                <property name="wrap">True</property>
-                <property name="xalign">0</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">2</property>
               </packing>
             </child>
             <child>
@@ -169,8 +160,5 @@
       <action-widget response="-6">cancelbutton2</action-widget>
       <action-widget response="-5">okbutton1</action-widget>
     </action-widgets>
-    <child>
-      <placeholder/>
-    </child>
   </object>
 </interface>

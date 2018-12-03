@@ -12,6 +12,10 @@ To be released
 	  (Leiaz)
 	* Fixes #543: Next update overrides HTML5 enrichment
 	  (Lars Windolf)
+	* Fixes overly wide label in enclosure preferences dialog
+	  (Lars Windolf)
+	* Dropped unencrypted warning from auth dialog (not true anymore)
+	  (Lars Windolf)
 
 	* #692: Update of Czech translation
 	  (RadimNo)
