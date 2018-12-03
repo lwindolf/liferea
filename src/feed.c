@@ -1,13 +1,13 @@
 /**
  * @file feed.c  feed node and subscription type
- * 
+ *
  * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -45,7 +45,7 @@ feedPtr
 feed_new (void)
 {
 	feedPtr		feed;
-	
+
 	feed = g_new0 (struct feed, 1);
 
 	feed->cacheLimit = CACHE_DEFAULT;
@@ -57,16 +57,16 @@ feed_new (void)
 static void
 feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 {
-	gchar		*cacheLimitStr, *title; 
-	gchar		*tmp; 
+	gchar		*cacheLimitStr, *title;
+	gchar		*tmp;
 	feedPtr		feed = NULL;
-		
+
 	xmlChar	*typeStr = xmlGetProp (xml, BAD_CAST"type");
-		
+
 	feed = feed_new ();
 	feed->fhp = feed_type_str_to_fhp (typeStr);
 	xmlFree (typeStr);
-		
+
 	node_set_data (node, feed);
 	node_set_subscription (node, subscription_import (xml, trusted));
 
@@ -77,13 +77,13 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	else
 		feed->cacheLimit = common_parse_long (cacheLimitStr, CACHE_DEFAULT);
 	xmlFree (cacheLimitStr);
-	
+
 	/* enclosure auto download flag */
 	tmp = xmlGetProp (xml, BAD_CAST"encAutoDownload");
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->encAutoDownload = TRUE;
 	xmlFree (tmp);
-			
+
 	/* comment feed handling flag */
 	tmp = xmlGetProp (xml, BAD_CAST"ignoreComments");
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
@@ -99,7 +99,7 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
 		feed->html5Extract = TRUE;
 	xmlFree (tmp);
-							
+
 	title = xmlGetProp (xml, BAD_CAST"title");
 	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
 		if (title)
@@ -109,12 +109,12 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 
 	node_set_title (node, title);
 	xmlFree (title);
-	
+
 	if (node->subscription)
-		debug4 (DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d", 
-		        node_get_title (node), 
-	        	subscription_get_source (node->subscription), 
-		        typeStr, 
+		debug4 (DEBUG_CACHE, "import feed: title=%s source=%s typeStr=%s interval=%d",
+		        node_get_title (node),
+	        	subscription_get_source (node->subscription),
+		        typeStr,
 		        subscription_get_update_interval (node->subscription));
 }
 
@@ -137,10 +137,10 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 
 		if (feed->encAutoDownload)
 			xmlNewProp (xml, BAD_CAST"encAutoDownload", BAD_CAST"true");
-			
+
 		if (feed->ignoreComments)
 			xmlNewProp (xml, BAD_CAST"ignoreComments", BAD_CAST"true");
-			
+
 		if (feed->markAsRead)
 			xmlNewProp (xml, BAD_CAST"markAsRead", BAD_CAST"true");
 
@@ -150,7 +150,7 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 
 	if (node->subscription)
 		debug3 (DEBUG_CACHE, "adding feed: source=%s interval=%d cacheLimit=%s",
-		        subscription_get_source (node->subscription), 
+		        subscription_get_source (node->subscription),
 			subscription_get_update_interval (node->subscription),
 		        (cacheLimit != NULL ? cacheLimit : ""));
 	g_free (cacheLimit);
@@ -161,7 +161,7 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 {
 	feedPtr	feed = (feedPtr)node->data;
 	gchar	*tmp;
-	
+
 	xmlNewTextChild (feedNode, NULL, "feedId", node_get_id (node));
 	xmlNewTextChild (feedNode, NULL, "feedTitle", node_get_title (node));
 
@@ -184,14 +184,14 @@ xmlDocPtr
 feed_to_xml (nodePtr node, xmlNodePtr feedNode)
 {
 	xmlDocPtr	doc = NULL;
-	
+
 	if (!feedNode) {
 		doc = xmlNewDoc ("1.0");
 		feedNode = xmlNewDocNode (doc, NULL, "feed", NULL);
 		xmlDocSetRootElement (doc, feedNode);
 	}
 	feed_add_xml_attributes (node, feedNode);
-	
+
 	return doc;
 }
 
@@ -200,7 +200,7 @@ feed_get_max_item_count (nodePtr node)
 {
 	gint	default_max_items;
 	feedPtr	feed = (feedPtr)node->data;
-	
+
 	switch (feed->cacheLimit) {
 		case CACHE_DEFAULT:
 			conf_get_int_value (DEFAULT_MAX_ITEMS, &default_max_items);
@@ -240,7 +240,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 		g_free (article);
 		article = tmp;
 
-		item_set_description (item, article);
+		metadata_list_set (&(item->metadata), "richContent", article);
 		db_item_update (item);
 		itemlist_update_item (item);
 		g_free (article);
@@ -254,7 +254,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 			request = update_request_new ();
 			update_request_set_source (request, ampurl);
 			// Explicitely do not pass proxy/auth options to Google
-			request->options = g_new0 (struct updateOptions, 1);	
+			request->options = g_new0 (struct updateOptions, 1);
 			update_execute_request (NULL, request, feed_enrich_item_cb, item, 0);
 		}
 	}
@@ -262,7 +262,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 }
 
 /**
- * Checks content of an items source and tries to crawl content 
+ * Checks content of an items source and tries to crawl content
  */
 void
 feed_enrich_item (subscriptionPtr subscription, itemPtr item)
@@ -270,6 +270,10 @@ feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 	updateRequestPtr request;
 
 	if (!item->source)
+		return;
+
+	// Don't enrich twice
+	if (NULL != metadata_list_get (item->metadata, "richContent"))
 		return;
 
 	// Fetch item->link document and try to parse it as XHTML
@@ -294,7 +298,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 	feedPtr			feed = (feedPtr)node->data;
 
 	debug_enter ("feed_process_update_result");
-	
+
 	if (result->data) {
 		/* parse the new downloaded feed into feed and itemSet */
 		ctxt = feed_create_parser_ctxt ();
@@ -305,7 +309,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 		/* try to parse the feed */
 		feed_parse (ctxt);
-		
+
 		if (ctxt->failed) {
 			/* No feed found, display an error */
 			node->available = FALSE;
@@ -321,15 +325,15 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 			/* Feed found, process it */
 			itemSetPtr	itemSet;
 			gboolean	html5_enabled;
-			
+
 			node->available = TRUE;
-			
+
 			/* merge the resulting items into the node's item set */
 			itemSet = node_get_itemset (node);
 			node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
 			itemlist_merge_itemset (itemSet);
 			itemset_free (itemSet);
-		
+
 			/* restore user defined properties if necessary */
 			if ((flags & FEED_REQ_RESET_TITLE) && ctxt->title)
 				node_set_title (node, ctxt->title);
@@ -356,7 +360,7 @@ static gboolean
 feed_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
 {
 	/* Nothing to do. Feeds require no subscription extra handling. */
-	
+
 	return TRUE;
 }
 
@@ -385,7 +389,7 @@ static void
 feed_remove (nodePtr node)
 {
 	feed_list_node_remove_node (node);
-	
+
 	favicon_remove_from_cache (node->id);
 	db_subscription_remove (node->id);
 }
@@ -449,13 +453,13 @@ feed_get_subscription_type (void)
 		feed_prepare_update_request,
 		feed_process_update_result
 	};
-	
+
 	return &sti;
 }
 
 nodeTypePtr
 feed_get_node_type (void)
-{ 
+{
 	static struct nodeType nti = {
 		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		NODE_CAPABILITY_UPDATE |
@@ -475,6 +479,6 @@ feed_get_node_type (void)
 		feed_free
 	};
 	nti.icon = icon_get (ICON_DEFAULT);
-	
-	return &nti; 
+
+	return &nti;
 }

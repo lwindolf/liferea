@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- *	      
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 #include "item.h"
 
 #include <glib.h>
@@ -36,10 +36,10 @@ itemPtr
 item_new (void)
 {
 	itemPtr		item;
-	
+
 	item = g_new0 (struct item, 1);
 	item->popupStatus = TRUE;
-	
+
 	return item;
 }
 
@@ -58,7 +58,7 @@ item_copy (itemPtr item)
 	item_set_source (copy, item->source);
 	item_set_description (copy, item->description);
 	item_set_id (copy, item->sourceId);
-	
+
 	copy->updateStatus = item->updateStatus;
 	copy->readStatus = item->readStatus;
 	copy->popupStatus = FALSE;
@@ -66,15 +66,15 @@ item_copy (itemPtr item)
 	copy->time = item->time;
 	copy->validGuid = item->validGuid;
 	copy->hasEnclosure = item->hasEnclosure;
-	
+
 	/* the following line allows state propagation in item.c */
 	copy->nodeId = NULL;
 	copy->sourceNr = item->id;
 
 	/* this copies metadata */
 	copy->metadata = metadata_list_copy (item->metadata);
-	
-	/* no deep copy of comments necessary as they are automatically 
+
+	/* no deep copy of comments necessary as they are automatically
 	   retrieved when reading the article */
 
 	return copy;
@@ -109,7 +109,7 @@ void
 item_set_source (itemPtr item, const gchar * source)
 {
 	g_free (item->source);
-	if (source) 
+	if (source)
 		item->source = g_strstrip (g_strdup (source));
 	else
 		item->source = NULL;
@@ -186,12 +186,12 @@ item_make_link (itemPtr item)
 			return NULL;
 		}
 	}
-	
+
 	return link;
 }
 
 void
-item_unload (itemPtr item) 
+item_unload (itemPtr item)
 {
 	g_free (item->title);
 	g_free (item->source);
@@ -200,7 +200,7 @@ item_unload (itemPtr item)
 	g_free (item->commentFeedId);
 	g_free (item->nodeId);
 	g_free (item->parentNodeId);
-	
+
 	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
 	metadata_list_free (item->metadata);
 
@@ -210,7 +210,7 @@ item_unload (itemPtr item)
 const gchar *
 item_get_base_url (itemPtr item)
 {
-	/* item->node is always the source node for the item 
+	/* item->node is always the source node for the item
 	   never a search folder or folder */
 	return node_get_base_url (node_from_id (item->nodeId));
 }
@@ -219,24 +219,29 @@ void
 item_to_xml (itemPtr item, gpointer xmlNode)
 {
 	xmlNodePtr	parentNode = (xmlNodePtr)xmlNode;
-	xmlNodePtr	duplicatesNode;		
+	xmlNodePtr	duplicatesNode;
 	xmlNodePtr	itemNode;
 	gchar		*tmp;
 	gchar		*tmp2;
-	
+
 	itemNode = xmlNewChild (parentNode, NULL, BAD_CAST "item", NULL);
 	g_return_if_fail (itemNode);
 
 	xmlNewTextChild (itemNode, NULL, BAD_CAST "title", BAD_CAST (item_get_title (item)?item_get_title (item):""));
 
 	if (item_get_description (item)) {
-		tmp = xhtml_strip_dhtml (item_get_description (item));
+		/* Prefer full article over feed inline content */
+		const gchar *content = metadata_list_get (item->metadata, "richContent");
+		if (NULL == content)
+			content = item_get_description (item);
+
+		tmp = xhtml_strip_dhtml (content);
 		tmp2 = xhtml_strip_unsupported_tags (tmp);
 		xmlNewTextChild (itemNode, NULL, BAD_CAST "description", BAD_CAST tmp2);
 		g_free (tmp);
 		g_free (tmp2);
 	}
-	
+
 	if (item_get_source (item))
 		xmlNewTextChild (itemNode, NULL, BAD_CAST "source", BAD_CAST item_get_source (item));
 
@@ -266,7 +271,7 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 
 	if (item->validGuid) {
 		GSList	*iter, *duplicates;
-		
+
 		duplicatesNode = xmlNewChild(itemNode, NULL, BAD_CAST "duplicates", NULL);
 		duplicates = iter = db_item_get_duplicates(item->sourceId);
 		while (iter) {
@@ -283,9 +288,9 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 		}
 		g_slist_free (duplicates);
 	}
-		
+
 	xmlNewTextChild (itemNode, NULL, BAD_CAST "sourceId", BAD_CAST item->nodeId);
-		
+
 	tmp = g_strdup_printf ("%ld", item->id);
 	xmlNewTextChild (itemNode, NULL, BAD_CAST "sourceNr", BAD_CAST tmp);
 	g_free (tmp);
