@@ -605,6 +605,7 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		gchar *source = NULL;
 		const gchar *filter = NULL;
 		updateOptionsPtr options;
+		nodePtr duplicateUrlNode = NULL;
 
 		/* Source */
 		source = ui_subscription_dialog_decode_source (nsd->priv);
@@ -618,10 +619,14 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		
 		options = g_new0 (struct updateOptions, 1);
 		options->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup(GTK_WIDGET (dialog), "dontUseProxyCheck")));
-		
-		feedlist_add_subscription (source, filter, options,
-					   FEED_REQ_PRIORITY_HIGH);
-		g_free (source);
+
+		duplicateUrlNode = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
+		if (duplicateUrlNode == NULL) {
+			feedlist_add_subscription (source, filter, options, FEED_REQ_PRIORITY_HIGH);
+			g_free (source);
+		} else {
+			feed_list_node_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicateUrlNode);
+		}
 	}
 
 	g_object_unref (nsd);
@@ -704,16 +709,21 @@ simple_subscription_dialog_class_init (SimpleSubscriptionDialogClass *klass)
 static void
 on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data) 
 {
-	SimpleSubscriptionDialog *ssd = (SimpleSubscriptionDialog *)user_data;
+	SimpleSubscriptionDialog *ssd = (SimpleSubscriptionDialog *) user_data;
 	gchar *source = NULL;
+	nodePtr duplicateUrlNode = NULL;
 	
 	if (response_id == GTK_RESPONSE_OK) {
 		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->priv->sourceEntry))),
 		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-		feedlist_add_subscription (source, NULL, NULL,
-					   FEED_REQ_PRIORITY_HIGH);
-		g_free (source);
+		duplicateUrlNode = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
+		if (duplicateUrlNode == NULL) {
+			feedlist_add_subscription (source, NULL, NULL, FEED_REQ_PRIORITY_HIGH);
+			g_free (source);
+		} else {
+			feed_list_node_add_duplicate_url_subscription (subscription_new (source, NULL, NULL), duplicateUrlNode);
+		}
 	}
 	
 	if (response_id == GTK_RESPONSE_APPLY) /* misused for "Advanced" */
