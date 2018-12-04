@@ -2,6 +2,9 @@ To be released
 
 	Version 1.12.6
 
+	* #658: Add confirmation dialog when adding duplicate subscription
+	  (dymoksc)
+
 	* Fixes #689: When resuming from sleep feeds were being fetched
 	  before Wifi cam up
 	  (ghost)
