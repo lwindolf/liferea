@@ -1,3 +1,10 @@
+To be released
+
+	* Fixes headline large images/videos or images with margins
+	  causing horizontal scrolling in headline view
+	  (Lars Windolf)
+
+
 2019-12-04   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12.6
