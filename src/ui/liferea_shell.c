@@ -7,7 +7,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -68,7 +68,7 @@ struct LifereaShellPrivate {
 	GtkWindow	*window;		/*<< Liferea main window */
 	GtkWidget	*toolbar;
 	GtkTreeView	*feedlistView;
-	
+
 	GtkStatusbar	*statusbar;		/*<< main window status bar */
 	gboolean	statusbarLocked;	/*<< flag locking important message on status bar */
 	guint		statusbarLockTimer;	/*<< timer id for status bar lock reset timer */
@@ -81,7 +81,7 @@ struct LifereaShellPrivate {
 	GActionGroup	*readWriteActions;	/*<< node remove and properties, node itemset items remove */
 	GActionGroup	*itemActions;		/*<< item state toggline, single item remove */
 
-	ItemList	*itemlist;	
+	ItemList	*itemlist;
 	FeedList	*feedlist;
 	ItemView	*itemview;
 	BrowserTabs	*tabs;
@@ -109,7 +109,7 @@ static void
 liferea_shell_finalize (GObject *object)
 {
 	LifereaShell *ls = LIFEREA_SHELL (object);
-	
+
 	g_object_unref (ls->priv->xml);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -176,7 +176,7 @@ liferea_shell_class_init (LifereaShellClass *klass)
 		                         g_param_spec_object ("item-view",
 		                                              "LifereaItemView",
 		                                              "LifereaItemView object",
-		                                              ITEMVIEW_TYPE,
+		                                              ITEM_VIEW_TYPE,
 		                                              G_PARAM_READABLE));
 
 	/* LifereaShell:browser-tabs: */
@@ -214,7 +214,7 @@ liferea_shell_init (LifereaShell *ls)
 {
 	/* globally accessible singleton */
 	g_assert (NULL == shell);
-	shell = ls;	
+	shell = ls;
 	shell->priv = LIFEREA_SHELL_GET_PRIVATE (ls);
 	shell->priv->xml = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui");
 	if (!shell->priv->xml)
@@ -239,12 +239,12 @@ liferea_shell_restore_position (void)
 
 	conf_get_int_value (LAST_WINDOW_WIDTH, &w);
 	conf_get_int_value (LAST_WINDOW_HEIGHT, &h);
-	
+
 	debug4 (DEBUG_GUI, "Retrieved saved setting: size %dx%d position %d:%d", w, h, x, y);
-	
+
 	/* Restore position only if the width and height were saved */
 	if (w != 0 && h != 0) {
-	
+
 		if (x >= gdk_screen_width ())
 			x = gdk_screen_width () - 100;
 		else if (x + w < 0)
@@ -254,7 +254,7 @@ liferea_shell_restore_position (void)
 			y = gdk_screen_height () - 100;
 		else if (y + w < 0)
 			y  = 100;
-			
+
 		debug4 (DEBUG_GUI, "Restoring to size %dx%d position %d:%d", w, h, x, y);
 
 		gtk_window_move (GTK_WINDOW (shell->priv->window), x, y);
@@ -297,7 +297,7 @@ liferea_shell_save_position (void)
 		y = gtk_paned_get_position (GTK_PANED (pane));
 		conf_set_int_value (LAST_WPANE_POS, y);
 	}
-	
+
 	/* The following needs to be skipped when the window is not visible */
 	if (!gtk_widget_get_visible (GTK_WIDGET (shell->priv->window)))
 		return;
@@ -328,7 +328,7 @@ liferea_shell_save_position (void)
 
 void
 liferea_shell_set_toolbar_style (const gchar *toolbar_style)
-{	
+{
 	if (!toolbar_style) /* default to icons */
 		gtk_toolbar_set_style (GTK_TOOLBAR (shell->priv->toolbar), GTK_TOOLBAR_ICONS);
 	else if (g_str_equal (toolbar_style, "text"))
@@ -420,23 +420,23 @@ liferea_shell_update_unread_stats (gpointer user_data)
    allow to keep messages on top of the stack for some time without
    overwriting them with newly arriving messages we need some extra
    handling here.
-   
+
    Liferea knows two types of status messages:
-   
+
      -> low prio messages (e.g. updating status messages)
      -> high prio messages (caused by user interaction, e.g. link hovering)
-   
+
    The ideas is to keep the high prio messages always visible no matter
    what low prio messages arrive. To solve this we define the status bar
    stack is always a stack of two messages at most. At the bottom of the
    stack is always the latest low prio message and on top of the stack
    is the latest high prio message (or none at all).
-   
+
    To enforce this using GtkStatusBar we use a lock to avoid adding
    low prio messages on top of high priority ones. This lock is valid
    for at most 5s which should be enough to read the high priority
    message. Afterwards new low priority messages will overrule the
-   out-dated high priority message.  
+   out-dated high priority message.
  */
 
 static gboolean
@@ -444,7 +444,7 @@ liferea_shell_unlock_status_bar_cb (gpointer user_data)
 {
 	shell->priv->statusbarLocked = FALSE;
 	shell->priv->statusbarLockTimer = 0;
-	
+
 	return FALSE;
 }
 
@@ -454,7 +454,7 @@ liferea_shell_set_status_bar_important_cb (gpointer user_data)
 	gchar		*text = (gchar *)user_data;
 	guint		id;
 	GtkStatusbar	*statusbar;
-	
+
 	statusbar = GTK_STATUSBAR (shell->priv->statusbar);
 	id = gtk_statusbar_get_context_id (statusbar, "important");
 	gtk_statusbar_pop (statusbar, id);
@@ -485,7 +485,7 @@ liferea_shell_set_status_bar (const char *format, ...)
 {
 	va_list		args;
 	gchar		*text;
-	
+
 	if (shell->priv->statusbarLocked)
 		return;
 
@@ -503,7 +503,7 @@ liferea_shell_set_important_status_bar (const char *format, ...)
 {
 	va_list		args;
 	gchar		*text;
-	
+
 	g_return_if_fail (format != NULL);
 
 	va_start (args, format);
@@ -515,15 +515,15 @@ liferea_shell_set_important_status_bar (const char *format, ...)
 		g_source_remove (shell->priv->statusbarLockTimer);
 		shell->priv->statusbarLockTimer = 0;
 	}
-	
-	/* URL hover messages are reset with an empty string, so 
+
+	/* URL hover messages are reset with an empty string, so
 	   we must locking the status bar on empty strings! */
 	if (!g_str_equal (text, "")) {
 		/* Realize 5s locking for important messages... */
 		shell->priv->statusbarLocked = TRUE;
 		shell->priv->statusbarLockTimer = g_timeout_add_seconds (5, liferea_shell_unlock_status_bar_cb, NULL);
 	}
-	
+
 	g_idle_add ((GSourceFunc)liferea_shell_set_status_bar_important_cb, (gpointer)text);
 }
 
@@ -629,7 +629,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 						/* Hack to make space handled in the module. This is necessary
 						   because the HTML widget code must be able to catch spaces
 						   for input fields.
-						   
+
 						   By ignoring the space here it will be passed to the HTML
 						   widget which in turn will pass it back if it is not eaten by
 						   any input field currently focussed. */
@@ -648,14 +648,14 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 						modifier_matches = ((event->state & GDK_MOD1_MASK) == GDK_MOD1_MASK);
 						break;
 				}
-				
+
 				if (modifier_matches) {
 					itemview_scroll ();
 					return TRUE;
 				}
 				break;
 		}
-		
+
 		/* some <Ctrl> hotkeys that overrule the HTML view */
 		if ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK) {
 			switch (event->keyval) {
@@ -682,7 +682,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 		type = g_type_name (G_OBJECT_TYPE (focusw));
 		if (type && (g_str_equal (type, "LifereaWebView")))
 			return FALSE;
-		
+
 		/* check for treeview navigation */
 		if (0 == (event->state & default_modifiers)) {
 			switch (event->keyval) {
@@ -690,7 +690,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 				case GDK_KEY_Delete:
 					if (focusw == GTK_WIDGET (shell->priv->feedlistView))
 						return FALSE;	/* to be handled in feed_list_view_key_press_cb() */
-						
+
 					on_action_remove_item (NULL, NULL, NULL);
 					return TRUE;
 					break;
@@ -719,7 +719,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 			}
 		}
 	}
-	
+
 	return FALSE;
 }
 
@@ -830,9 +830,9 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	GtkTreeIter	iter;
 	nodePtr		node;
 	gint		tx, ty;
-	
+
 	g_return_if_fail (gtk_selection_data_get_data (data) != NULL);
-		
+
 	mainwindow = GTK_WIDGET (shell->priv->window);
 	treeview = GTK_TREE_VIEW (shell->priv->feedlistView);
 	model = gtk_tree_view_get_model (treeview);
@@ -849,7 +849,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	   (y > alloc.y+alloc.height) || (y < alloc.y)) {
 		gtk_drag_finish (context, FALSE, FALSE, time_received);
 		return;
-	}		
+	}
 
 	if ((gtk_selection_data_get_length (data) >= 0) && (gtk_selection_data_get_format (data) == 8)) {
 		/* extra handling to accept multiple drops */
@@ -895,7 +895,7 @@ liferea_shell_setup_URL_receiver (void)
 	gtk_drag_dest_set (mainwindow, GTK_DEST_DEFAULT_ALL,
 	                   target_table, sizeof (target_table)/sizeof (target_table[0]),
 	                   GDK_ACTION_COPY | GDK_ACTION_MOVE | GDK_ACTION_LINK);
-		       
+
 	g_signal_connect (G_OBJECT (mainwindow), "drag_data_received",
 	                  G_CALLBACK (liferea_shell_URL_received), NULL);
 }
@@ -1016,15 +1016,15 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
 	gint		resultState;
 	gboolean 	last_window_maximized;
-	
+
 	debug0 (DEBUG_GUI, "Setting toolbar style");
-	
-	toolbar_style = conf_get_toolbar_style ();	
+
+	toolbar_style = conf_get_toolbar_style ();
 	liferea_shell_set_toolbar_style (toolbar_style);
 	g_free (toolbar_style);
 
 	debug0 (DEBUG_GUI, "Restoring window position");
-	
+
 	liferea_shell_restore_position ();
 
 	/* Apply horrible window state parameter logic:
@@ -1103,7 +1103,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	GMenuModel	*menubar_model;
 	gboolean	toggle;
 	gchar		*id;
-	
+
 	debug_enter ("liferea_shell_create");
 
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
@@ -1111,7 +1111,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->priv->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 
 	gtk_window_set_application (GTK_WINDOW (shell->priv->window), app);
-	
+
 	/* Add GActions to application */
 	shell->priv->generalActions = G_ACTION_GROUP (g_simple_action_group_new ());
 	g_action_map_add_action_entries (G_ACTION_MAP(shell->priv->generalActions), liferea_shell_gaction_entries, G_N_ELEMENTS (liferea_shell_gaction_entries), NULL);
@@ -1136,12 +1136,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_link_gaction_entries, G_N_ELEMENTS (liferea_shell_link_gaction_entries), NULL);
 
 	/* 1.) menu creation */
-	
+
 	debug0 (DEBUG_GUI, "Setting up menus");
 
 	shell->priv->itemlist = itemlist_create ();
 
-	/* Prepare some toggle button states */	
+	/* Prepare some toggle button states */
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
 	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "reduced-feed-list")), g_variant_new_boolean (toggle));
 
@@ -1170,7 +1170,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->priv->toolbar = GTK_WIDGET (gtk_builder_get_object (shell->priv->xml, "maintoolbar"));
 
 	/* 2.) setup containers */
-	
+
 	debug0 (DEBUG_GUI, "Setting up widget containers");
 
 	gtk_grid_attach_next_to (GTK_GRID (liferea_shell_lookup ("vbox1")), shell->priv->toolbar, NULL, GTK_POS_TOP, 1,1);
@@ -1182,18 +1182,18 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_release_event",
 	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
-	
+
 	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "scroll_event",
 	                  G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
-	
+
 	g_signal_connect (G_OBJECT (shell->priv->window), "delete_event", G_CALLBACK(on_close), NULL);
 	g_signal_connect (G_OBJECT (shell->priv->window), "window_state_event", G_CALLBACK(on_window_state_event), shell->priv);
 	g_signal_connect (G_OBJECT (shell->priv->window), "key_press_event", G_CALLBACK(on_key_press_event), shell->priv);
-	
+
 	/* 3.) setup status bar */
-	
+
 	debug0 (DEBUG_GUI, "Setting up status bar");
-	
+
 	shell->priv->statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
 	shell->priv->statusbarLocked = FALSE;
 	shell->priv->statusbarLockTimer = 0;
@@ -1205,10 +1205,10 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect (G_OBJECT (shell->priv->statusbar_feedsinfo_evbox), "button_release_event", G_CALLBACK (on_next_unread_item_activate), NULL);
 
 	/* 4.) setup tabs */
-	
-	debug0 (DEBUG_GUI, "Setting up tabbed browsing");	
+
+	debug0 (DEBUG_GUI, "Setting up tabbed browsing");
 	shell->priv->tabs = browser_tabs_create (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
-	
+
 	/* 5.) setup feed list */
 
 	debug0 (DEBUG_GUI, "Setting up feed list");
@@ -1216,35 +1216,35 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	feed_list_view_init (shell->priv->feedlistView);
 
 	/* 6.) setup menu sensivity */
-	
+
 	debug0 (DEBUG_GUI, "Initialising menus");
-		
+
 	/* On start, no item or feed is selected, so Item menu should be insensitive: */
 	liferea_shell_update_item_menu (FALSE);
 
 	/* necessary to prevent selection signals when filling the feed list
 	   and setting the 2/3 pane mode view */
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), FALSE);
-	
+
 	/* 7.) setup item view */
-	
+
 	debug0 (DEBUG_GUI, "Setting up item view");
 
 	shell->priv->itemview = itemview_create (GTK_WIDGET (shell->priv->window));
 
         /* 8.) load icons as required */
-        
+
         debug0 (DEBUG_GUI, "Loading icons");
-        
+
         icons_load ();
-	
+
 	/* 9.) update and restore all menu elements */
 
 	liferea_shell_update_toolbar ();
 	liferea_shell_update_history_actions ();
 	liferea_shell_setup_URL_receiver ();
 	liferea_shell_restore_state (overrideWindowState);
-	
+
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->priv->feedlistView), TRUE);
 
 	/* 10.) After main window is realized get theme colors and set up feed
@@ -1297,7 +1297,7 @@ void
 liferea_shell_present (void)
 {
 	GtkWidget *mainwindow = GTK_WIDGET (shell->priv->window);
-	
+
 	if ((gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) || !gtk_widget_get_visible (mainwindow))
 		liferea_shell_restore_position ();
 
@@ -1308,7 +1308,7 @@ void
 liferea_shell_toggle_visibility (void)
 {
 	GtkWidget *mainwindow = GTK_WIDGET (shell->priv->window);
-	
+
 	if (gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) {
 		/* The window is either iconified, or on another workspace */
 		/* Raise it in one click */
@@ -1317,8 +1317,8 @@ liferea_shell_toggle_visibility (void)
 			gtk_widget_hide (mainwindow);
 		}
 		liferea_shell_restore_position ();
-		/* Note: Without deiconify() desktop moving doesn't work in 
-		   GNOME+metacity. The window would be moved correctly by 
+		/* Note: Without deiconify() desktop moving doesn't work in
+		   GNOME+metacity. The window would be moved correctly by
 		   present() but not become visible. */
 		gtk_window_deiconify (GTK_WINDOW (mainwindow));
 		gtk_window_present (GTK_WINDOW (mainwindow));

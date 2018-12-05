@@ -1,12 +1,12 @@
 /*
  * @file itemview.h  viewing feed content in different presentation modes
- * 
- * Copyright (C) 2006-2012 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 #ifndef _ITEMVIEW_H
 #define _ITEMVIEW_H
 
@@ -34,45 +34,23 @@
    changes according to the subscription preferences and if
    the user requests it on-the-fly. Also the view contents
    are refreshed automatically.
-   
+
    The view consist of an optional GtkTreeView presenting
    the list of the relevant items and a HTML widget rendering
    a feed info, a single item or multiple items at once. */
 
 G_BEGIN_DECLS
 
-#define ITEMVIEW_TYPE		(itemview_get_type ())
-#define ITEMVIEW(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), ITEMVIEW_TYPE, ItemView))
-#define ITEMVIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), ITEMVIEW_TYPE, ItemViewClass))
-#define IS_ITEMVIEW(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), ITEMVIEW_TYPE))
-#define IS_ITEMVIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), ITEMVIEW_TYPE))
+#define ITEM_VIEW_TYPE		(itemview_get_type ())
+G_DECLARE_FINAL_TYPE (ItemView, itemview, ITEM, VIEW, GObject)
 
-typedef struct ItemView		ItemView;
-typedef struct ItemViewClass	ItemViewClass;
-typedef struct ItemViewPrivate	ItemViewPrivate;
-
-struct ItemView
-{
-	GObject		parent;
-	
-	/*< private >*/
-	ItemViewPrivate	*priv;
-};
-
-struct ItemViewClass 
-{
-	GObjectClass parent_class;	
-};
-
-GType itemview_get_type (void);
-
-/** 
+/**
  * itemview_clear: (skip)
  *
  * Removes all currently loaded items from the item view.
  */
 void itemview_clear (void);
-    
+
 /**
  * itemview_set_displayed_node: (skip)
  * @node:	the node whose items are to be presented
