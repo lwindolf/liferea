@@ -8,21 +8,21 @@
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Library General Public License
  * along with this library; see the file COPYING.LIB.  If not, write to
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #ifndef _LIFEREA_SHELL_H
 #define _LIFEREA_SHELL_H
- 
+
 #include <glib-object.h>
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -31,40 +31,16 @@
 
 /* possible main window states */
 enum mainwindowState {
-	MAINWINDOW_SHOWN,	/*<< main window is visible */
+	MAINWINDOW_SHOWN,		/*<< main window is visible */
 	MAINWINDOW_MAXIMIZED,	/*<< main window is visible and maximized */
 	MAINWINDOW_ICONIFIED,	/*<< main window is iconified */
-	MAINWINDOW_HIDDEN	/*<< main window is not visible at all */
+	MAINWINDOW_HIDDEN		/*<< main window is not visible at all */
 };
 
 G_BEGIN_DECLS
 
 #define LIFEREA_SHELL_TYPE		(liferea_shell_get_type ())
-#define LIFEREA_SHELL(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_SHELL_TYPE, LifereaShell))
-#define LIFEREA_SHELL_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), LIFEREA_SHELL_TYPE, LifereaShellClass))
-#define IS_LIFEREA_SHELL(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_SHELL_TYPE))
-#define IS_LIFEREA_SHELL_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_SHELL_TYPE))
-
-typedef struct LifereaShell		LifereaShell;
-typedef struct LifereaShellClass	LifereaShellClass;
-typedef struct LifereaShellPrivate	LifereaShellPrivate;
-
-extern LifereaShell *liferea_shell;
-
-struct LifereaShell
-{
-	GObject		parent;
-	
-	/*< private >*/
-	LifereaShellPrivate	*priv;
-};
-
-struct LifereaShellClass 
-{
-	GObjectClass parent_class;
-};
-
-GType liferea_shell_get_type	(void);
+G_DECLARE_FINAL_TYPE (LifereaShell, liferea_shell, LIFEREA, SHELL, GObject)
 
 /**
  * liferea_shell_lookup:
@@ -105,7 +81,7 @@ void liferea_shell_present (void);
  * liferea_shell_toggle_visibility:
  *
  * Toggles main window visibility.
- */ 
+ */
 void liferea_shell_toggle_visibility (void);
 
 /**
@@ -205,5 +181,5 @@ GtkWidget * liferea_shell_get_window (void);
 void liferea_shutdown (void);
 
 G_END_DECLS
- 
+
 #endif

@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.h  property dialog for feed subscriptions
  *
- * Copyright (C) 2007-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,99 +27,33 @@
 
 G_BEGIN_DECLS
 
-typedef struct SubscriptionDialogPrivate	SubscriptionDialogPrivate;
-
-#define SUBSCRIPTION_PROP_DIALOG_TYPE			(subscription_prop_dialog_get_type ())
-#define SUBSCRIPTION_PROP_DIALOG(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), SUBSCRIPTION_PROP_DIALOG_TYPE, SubscriptionPropDialog))
-#define SUBSCRIPTION_PROP_DIALOG_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), SUBSCRIPTION_PROP_DIALOG_TYPE, SubscriptionPropDialogClass))
-#define IS_SUBSCRIPTION_PROP_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), SUBSCRIPTION_PROP_DIALOG_TYPE))
-#define IS_SUBSCRIPTION_PROP_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), SUBSCRIPTION_PROP_DIALOG_TYPE))
-
-typedef struct SubscriptionPropDialog		SubscriptionPropDialog;
-typedef struct SubscriptionPropDialogClass	SubscriptionPropDialogClass;
-
-struct SubscriptionPropDialog
-{
-	GObject parent;
-	
-	/*< private >*/
-	SubscriptionDialogPrivate	*priv;
-};
-
-struct SubscriptionPropDialogClass 
-{
-	GObjectClass parent_class;
-};
-
-GType subscription_prop_dialog_get_type	(void);
+#define SUBSCRIPTION_PROP_DIALOG_TYPE (subscription_prop_dialog_get_type ())
+G_DECLARE_FINAL_TYPE (SubscriptionPropDialog, subscription_prop_dialog, SUBSCRIPTION_PROP, DIALOG, GObject)
 
 /**
- * Creates a feed properties dialog (FIXME: handle 
+ * subscription_prop_dialog_new:
+ * Creates a feed properties dialog (FIXME: handle
  * generic subscriptions too)
  *
- * @param subscription	the subscription to load into the dialog
+ * @subscription:	the subscription to load into the dialog
  *
- * @returns a properties dialog
+ * Returns: (transfer none): a properties dialog
  */
 SubscriptionPropDialog *subscription_prop_dialog_new	(subscriptionPtr subscription);
 
+#define NEW_SUBSCRIPTION_DIALOG_TYPE (new_subscription_dialog_get_type ())
+G_DECLARE_FINAL_TYPE (NewSubscriptionDialog, new_subscription_dialog, NEW_SUBSCRIPTION, DIALOG, GObject)
 
-#define NEW_SUBSCRIPTION_DIALOG_TYPE		(new_subscription_dialog_get_type ())
-#define NEW_SUBSCRIPTION_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), NEW_SUBSCRIPTION_DIALOG_TYPE, NewSubscriptionDialog))
-#define NEW_SUBSCRIPTION_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), NEW_SUBSCRIPTION_DIALOG_TYPE, NewSubscriptionDialogClass))
-#define IS_NEW_SUBSCRIPTION_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), NEW_SUBSCRIPTION_DIALOG_TYPE))
-#define IS_NEW_SUBSCRIPTION_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), NEW_SUBSCRIPTION_DIALOG_TYPE))
-
-typedef struct NewSubscriptionDialog		NewSubscriptionDialog;
-typedef struct NewSubscriptionDialogClass	NewSubscriptionDialogClass;
-
-struct NewSubscriptionDialog
-{
-	GObject parent;
-	
-	/*< private >*/
-	SubscriptionDialogPrivate	*priv;
-};
-
-struct NewSubscriptionDialogClass 
-{
-	GObjectClass parent_class;
-};
-
-GType new_subscription_dialog_get_type	(void);
-
-
-#define SIMPLE_SUBSCRIPTION_DIALOG_TYPE			(simple_subscription_dialog_get_type ())
-#define SIMPLE_SUBSCRIPTION_DIALOG(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), SIMPLE_SUBSCRIPTION_DIALOG_TYPE, SimpleSubscriptionDialog))
-#define SIMPLE_SUBSCRIPTION_DIALOG_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), SIMPLE_SUBSCRIPTION_DIALOG_TYPE, SimpleSubscriptionDialogClass))
-#define IS_SIMPLE_SUBSCRIPTION_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), SIMPLE_SUBSCRIPTION_DIALOG_TYPE))
-#define IS_SIMPLE_SUBSCRIPTION_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), SIMPLE_SUBSCRIPTION_DIALOG_TYPE))
-
-typedef struct SimpleSubscriptionDialog		SimpleSubscriptionDialog;
-typedef struct SimpleSubscriptionDialogClass	SimpleSubscriptionDialogClass;
-
-struct SimpleSubscriptionDialog
-{
-	GObject parent;
-	
-	/*< private >*/
-	SubscriptionDialogPrivate	*priv;
-};
-
-struct SimpleSubscriptionDialogClass 
-{
-	GObjectClass parent_class;
-};
-
-GType simple_subscription_dialog_get_type (void);
+#define SIMPLE_SUBSCRIPTION_DIALOG_TYPE (simple_subscription_dialog_get_type ())
+G_DECLARE_FINAL_TYPE (SimpleSubscriptionDialog, simple_subscription_dialog, SIMPLE_SUBSCRIPTION, DIALOG, GObject)
 
 /**
+ * subscription_dialog_new:
  * Create a simple subscription dialog.
  *
- * @returns dialog instance
+ * Returns: (transfer none): dialog instance
  */
 SimpleSubscriptionDialog *subscription_dialog_new (void);
-
 
 G_END_DECLS
 
