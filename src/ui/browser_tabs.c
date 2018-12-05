@@ -1,7 +1,7 @@
 /*
  * @file browser_tabs.c  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include "ui/browser_tabs.h"
@@ -28,6 +28,14 @@
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
 #include "ui/gedit-close-button.h"
+
+/* All widget elements and state of a tab */
+typedef struct _tabInfo tabInfo;
+struct _tabInfo {
+	GtkWidget	*label;		/*<< the tab label */
+	GtkWidget	*widget;	/*<< the embedded child widget */
+	LifereaHtmlView	*htmlview;	/*<< the tabs HTML view widget */
+};
 
 /**
   * tab_info_copy: (skip)
@@ -63,7 +71,7 @@ static void tab_info_free (gpointer orig)
 	g_free(orig);
 }
 
-G_DEFINE_BOXED_TYPE(tabInfo, tab_info, tab_info_copy, tab_info_free)
+G_DEFINE_BOXED_TYPE (tabInfo, tab_info, tab_info_copy, tab_info_free)
 
 // gslist type for gproperty
 //https://git.gnome.org/browse/gobject-introspection/tree/tests/gimarshallingtests.c
@@ -96,13 +104,11 @@ on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
 		browser_tabs_close_tab ((tabInfo *)data);
 		return TRUE;
 	}
-	
+
 	return FALSE;
 }
 
 /* browser tabs object */
-
-#define BROWSER_TABS_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), BROWSER_TABS_TYPE, BrowserTabsPrivate))
 
 enum {
 	PROP_NONE,
@@ -112,15 +118,16 @@ enum {
 
 };
 
-struct BrowserTabsPrivate {
+struct _BrowserTabs {
+	GObject		parentInstance;
+
 	GtkNotebook	*notebook;
 
 	GtkWidget	*headlines;	/*<< widget of the headlines tab */
-	
+
 	GSList		*list;		/*<< tabInfo structures for all tabs */
 };
 
-static GObjectClass *parent_class = NULL;
 static BrowserTabs *tabs = NULL;
 
 G_DEFINE_TYPE (BrowserTabs, browser_tabs, G_TYPE_OBJECT);
@@ -129,7 +136,7 @@ G_DEFINE_TYPE (BrowserTabs, browser_tabs, G_TYPE_OBJECT);
 static void
 browser_tabs_remove_tab (tabInfo *tab)
 {
-	tabs->priv->list = g_slist_remove (tabs->priv->list, tab);
+	tabs->list = g_slist_remove (tabs->list, tab);
 	g_object_unref (tab->htmlview);
 	g_free (tab);
 }
@@ -138,14 +145,12 @@ static void
 browser_tabs_finalize (GObject *object)
 {
 	BrowserTabs	*bt = BROWSER_TABS (object);
-	GSList		*iter = bt->priv->list;
+	GSList		*iter = bt->list;
 
 	while (iter) {
 		browser_tabs_remove_tab (iter->data);
 		iter = g_slist_next (iter);
 	}
-	
-	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -155,13 +160,13 @@ browser_tabs_get_property (GObject *object, guint prop_id, GValue *value, GParam
 
 	switch (prop_id) {
 		case PROP_NOTEBOOK:
-			g_value_set_object (value, bt->priv->notebook);
+			g_value_set_object (value, bt->notebook);
 			break;
 		case PROP_HEAD_LINES:
-			g_value_set_object (value, bt->priv->headlines);
+			g_value_set_object (value, bt->headlines);
 			break;
 		case PROP_TAB_INFO_LIST:
-			g_value_set_boxed (value, bt->priv->list);
+			g_value_set_boxed (value, bt->list);
 			break;
 		default:
 			G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -174,10 +179,7 @@ browser_tabs_class_init (BrowserTabsClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-	parent_class = g_type_class_peek_parent (klass);
-
 	object_class->get_property = browser_tabs_get_property;
-
 	object_class->finalize = browser_tabs_finalize;
 
 	/* BrowserTabs:notebook: */
@@ -214,8 +216,6 @@ browser_tabs_class_init (BrowserTabsClass *klass)
 				"A GList of tab info containing htmlviews",
 				gi_marshalling_boxed_gslist_get_type(),
 				G_PARAM_READABLE));
-
-	g_type_class_add_private (object_class, sizeof(BrowserTabsPrivate));
 }
 
 static void
@@ -224,20 +224,18 @@ browser_tabs_init (BrowserTabs *bt)
 	/* globally accessible singleton */
 	g_assert (NULL == tabs);
 	tabs = bt;
-	
-	tabs->priv = BROWSER_TABS_GET_PRIVATE (tabs);
 }
 
 BrowserTabs *
 browser_tabs_create (GtkNotebook *notebook)
 {
 	g_object_new (BROWSER_TABS_TYPE, NULL);
-	
-	tabs->priv->notebook = notebook;
-	tabs->priv->headlines = gtk_notebook_get_nth_page (notebook, 0);
 
-	gtk_notebook_set_show_tabs (tabs->priv->notebook, FALSE);
-	
+	tabs->notebook = notebook;
+	tabs->headlines = gtk_notebook_get_nth_page (notebook, 0);
+
+	gtk_notebook_set_show_tabs (tabs->notebook, FALSE);
+
 	return tabs;
 }
 
@@ -286,12 +284,12 @@ on_htmlview_close_tab (gpointer object, gpointer user_data)
 /* Close tab and removes tab info structure */
 static void
 browser_tabs_close_tab (tabInfo *tab)
-{	
+{
 	int	n = 0;
 	GList	*iter, *list;
 
 	/* Find the tab index that needs to be closed */
-	iter = list = gtk_container_get_children (GTK_CONTAINER (tabs->priv->notebook));
+	iter = list = gtk_container_get_children (GTK_CONTAINER (tabs->notebook));
 	while (iter) {
 		if (tab->widget == GTK_WIDGET (iter->data))
 			break;
@@ -301,13 +299,13 @@ browser_tabs_close_tab (tabInfo *tab)
 	g_list_free (list);
 
 	if (iter) {
-		gtk_notebook_remove_page (tabs->priv->notebook, n);
+		gtk_notebook_remove_page (tabs->notebook, n);
 		browser_tabs_remove_tab (tab);
 	}
-		
+
 	/* check if all tabs are closed */
-	if (1 == gtk_notebook_get_n_pages (tabs->priv->notebook))
-		gtk_notebook_set_show_tabs (tabs->priv->notebook, FALSE);
+	if (1 == gtk_notebook_get_n_pages (tabs->notebook))
+		gtk_notebook_set_show_tabs (tabs->notebook, FALSE);
 }
 
 static void
@@ -328,13 +326,13 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	tab = g_new0 (tabInfo, 1);
 	tab->htmlview = liferea_htmlview_new (TRUE /* internal browsing */);
 	tab->widget = liferea_htmlview_get_widget (tab->htmlview);
-	tabs->priv->list = g_slist_append (tabs->priv->list, tab);
+	tabs->list = g_slist_append (tabs->list, tab);
 
-	g_object_set_data (G_OBJECT (tab->widget), "tabInfo", tab);	
+	g_object_set_data (G_OBJECT (tab->widget), "tabInfo", tab);
 
 	g_signal_connect (tab->htmlview, "title-changed", G_CALLBACK (on_htmlview_title_changed), tab);
 	g_signal_connect (tab->htmlview, "statusbar-changed", G_CALLBACK (on_htmlview_status_message), NULL);
-	
+
 	/* create tab widgets */
 
 	tab->label = gtk_label_new (create_label_text (title));
@@ -349,16 +347,16 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	g_signal_connect ((gpointer)close_button, "clicked", G_CALLBACK (on_htmlview_close_tab), (gpointer)tab);
 
 	gtk_widget_show_all (labelBox);
-	
-	i = gtk_notebook_append_page (tabs->priv->notebook, tab->widget, labelBox);
-	g_signal_connect (gtk_notebook_get_nth_page (tabs->priv->notebook, i), 
+
+	i = gtk_notebook_append_page (tabs->notebook, tab->widget, labelBox);
+	g_signal_connect (gtk_notebook_get_nth_page (tabs->notebook, i),
 	                  "key-press-event", G_CALLBACK (on_tab_key_press), (gpointer)tab);
-	gtk_notebook_set_show_tabs (tabs->priv->notebook, TRUE);
-	gtk_notebook_set_tab_reorderable (tabs->priv->notebook, tab->widget, TRUE);	
-		
+	gtk_notebook_set_show_tabs (tabs->notebook, TRUE);
+	gtk_notebook_set_tab_reorderable (tabs->notebook, tab->widget, TRUE);
+
 	if (activate && (i != -1))
-		gtk_notebook_set_current_page (tabs->priv->notebook, i);
-	 
+		gtk_notebook_set_current_page (tabs->notebook, i);
+
 	if (url)
 		liferea_htmlview_launch_URL_internal (tab->htmlview, (gchar *)url);
 
@@ -368,7 +366,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 void
 browser_tabs_show_headlines (void)
 {
-	gtk_notebook_set_current_page (tabs->priv->notebook, gtk_notebook_page_num (tabs->priv->notebook, tabs->priv->headlines));
+	gtk_notebook_set_current_page (tabs->notebook, gtk_notebook_page_num (tabs->notebook, tabs->headlines));
 }
 
 LifereaHtmlView *
@@ -376,12 +374,12 @@ browser_tabs_get_active_htmlview (void)
 {
 	tabInfo		*tab;
 	gint		current;
-	
-	current = gtk_notebook_get_current_page (tabs->priv->notebook);
+
+	current = gtk_notebook_get_current_page (tabs->notebook);
 	if (0 == current)
 		return NULL;	/* never return the first page widget (because it is the item view) */
-		
-	tab = g_object_get_data (G_OBJECT (gtk_notebook_get_nth_page (tabs->priv->notebook, current)), "tabInfo");
+
+	tab = g_object_get_data (G_OBJECT (gtk_notebook_get_nth_page (tabs->notebook, current)), "tabInfo");
 	return tab->htmlview;
 }
 

@@ -41,7 +41,7 @@
 
 G_BEGIN_DECLS
 
-#define ITEM_VIEW_TYPE		(itemview_get_type ())
+#define ITEM_VIEW_TYPE (itemview_get_type ())
 G_DECLARE_FINAL_TYPE (ItemView, itemview, ITEM, VIEW, GObject)
 
 /**
