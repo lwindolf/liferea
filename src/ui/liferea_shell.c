@@ -46,7 +46,6 @@
 #include "social.h"
 #include "vfolder.h"
 #include "ui/browser_tabs.h"
-#include "ui/feed_list_node.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/itemview.h"
@@ -153,7 +152,7 @@ liferea_shell_class_init (LifereaShellClass *klass)
 		                         g_param_spec_object ("feed-list",
 		                                              "LifereaFeedList",
 		                                              "LifereaFeedList object",
-		                                              FEEDLIST_TYPE,
+		                                              FEED_LIST_TYPE,
 		                                              G_PARAM_READABLE));
 
 	/* LifereaShell:item-list: */
@@ -1204,7 +1203,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	debug0 (DEBUG_GUI, "Setting up feed list");
 	shell->feedlistView = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
-	feed_list_view_init (shell->feedlistView);
+	feed_list_view_create (shell->feedlistView);
 
 	/* 6.) setup menu sensivity */
 

@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  *
- * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -39,7 +39,7 @@
 #include "ui/icons.h"
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
-#include "ui/feed_list_node.h"
+#include "ui/feed_list_view.h"
 
 feedPtr
 feed_new (void)
@@ -351,7 +351,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		liferea_shell_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
 	}
 
-	feed_list_node_update (node->id);
+	feed_list_view_update_node (node->id);
 
 	debug_exit ("feed_process_update_result");
 }
@@ -388,7 +388,7 @@ feed_update_counters (nodePtr node)
 static void
 feed_remove (nodePtr node)
 {
-	feed_list_node_remove_node (node);
+	feed_list_view_remove_node (node);
 
 	favicon_remove_from_cache (node->id);
 	db_subscription_remove (node->id);

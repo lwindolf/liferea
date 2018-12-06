@@ -1,12 +1,12 @@
 /*
  * @file node_source.c  generic node source provider implementation
- * 
+ *
  * Copyright (C) 2005-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -37,7 +37,7 @@
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/feed_list_node.h"
+#include "ui/feed_list_view.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
 #include "fl_sources/google_source.h"
@@ -52,10 +52,10 @@ static PeasExtensionSet	*extensions = NULL;
 
 nodePtr
 node_source_root_from_node (nodePtr node)
-{ 
-	while (node->parent->source == node->source) 
+{
+	while (node->parent->source == node->source)
 		node = node->parent;
-		
+
 	return node;
 }
 
@@ -63,7 +63,7 @@ static nodeSourceTypePtr
 node_source_type_find (const gchar *typeStr, guint capabilities)
 {
 	GSList *iter = nodeSourceTypes;
-	
+
 	while (iter) {
 		nodeSourceTypePtr type = (nodeSourceTypePtr)iter->data;
 		if (((NULL == typeStr) || !strcmp(type->id, typeStr)) &&
@@ -71,7 +71,7 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 			return type;
 		iter = g_slist_next (iter);
 	}
-	
+
 	g_print ("Could not find source type \"%s\"\n!", typeStr);
 	return NULL;
 }
@@ -102,7 +102,7 @@ node_source_type_register (nodeSourceTypePtr type)
 	}
 
 	nodeSourceTypes = g_slist_append (nodeSourceTypes, type);
-	
+
 	return TRUE;
 }
 
@@ -111,9 +111,9 @@ node_source_setup_root (void)
 {
 	nodePtr	rootNode;
 	nodeSourceTypePtr type;
-	
+
 	debug_enter ("node_source_setup_root");
-	
+
 	/* we need to register all source types once before doing anything... */
 	node_source_type_register (default_source_get_type ());
 	node_source_type_register (dummy_source_get_type ());
@@ -128,9 +128,9 @@ node_source_setup_root (void)
 	liferea_plugins_engine_set_default_signals (extensions, NULL);
 
 	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
-	if (!type) 
+	if (!type)
 		g_error ("No root capable node source found!");
-		
+
 	rootNode = node_new (root_get_node_type());
 	rootNode->title = g_strdup ("root");
 	rootNode->source = g_new0 (struct nodeSource, 1);
@@ -139,7 +139,7 @@ node_source_setup_root (void)
 	type->source_import (rootNode);
 
 	debug_exit ("node_source_setup_root");
-	
+
 	return rootNode;
 }
 
@@ -178,7 +178,7 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 
 		/* scan for matching node source and create new instance */
 		type = node_source_type_find (typeStr, 0);
-		
+
 		if (!type) {
 			/* Source type is not available for some reason, but
 			   we need a representation to keep the node source
@@ -189,12 +189,12 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 			g_assert (NULL != type);
 			node->data = g_strdup (typeStr);
 		}
-		
+
 		node->available = TRUE;
 		node->source = NULL;
 		node_source_new (node, type, NULL);
 		node_set_subscription (node, subscription_import (xml, trusted));
-	
+
 		type->source_import (node);
 
 		/* Set subscription type for all child nodes imported */
@@ -206,7 +206,7 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		}
 	} else {
 		g_print ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
-	}	
+	}
 
 	debug_exit ("node_source_import");
 }
@@ -217,7 +217,7 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 	debug_enter ("node_source_export");
 
 	debug2 (DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE (node)->id);
-	
+
 	/* If the node source type was loaded using the dummy node source
 	   type we need to restore the original node source type id from
 	   temporarily saved into node->data */
@@ -225,7 +225,7 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 		xmlNewProp (xml, BAD_CAST"sourceType", BAD_CAST (node->data));
 	else
 		xmlNewProp (xml, BAD_CAST"sourceType", BAD_CAST (NODE_SOURCE_TYPE(node)->id));
-		
+
 	subscription_export (node->subscription, xml, trusted);
 
 	debug_exit("node_source_export");
@@ -233,7 +233,7 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 
 void
 node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
-{ 
+{
 	subscriptionPtr	subscription;
 
 	g_assert (NULL == node->source);
@@ -306,7 +306,7 @@ on_node_source_type_response (GtkDialog *dialog, gint response_id, gpointer user
 	GtkTreeModel		*model;
 	GtkTreeIter		iter;
 	nodeSourceTypePtr	type;
-	
+
 	if (response_id == GTK_RESPONSE_OK) {
 		selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (liferea_dialog_lookup (GTK_WIDGET (dialog), "type_list")));
 		g_assert (NULL != selection);
@@ -316,7 +316,7 @@ on_node_source_type_response (GtkDialog *dialog, gint response_id, gpointer user
 				type->source_new ();
 		}
 	}
-	
+
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
@@ -333,20 +333,20 @@ feed_list_node_source_type_dialog (void)
 	if (!nodeSourceTypes) {
 		ui_show_error_box (_("No feed list source types found!"));
 		return FALSE;
-	}		
+	}
 
 	/* set up the dialog */
 	dialog = liferea_dialog_new ("node_source");
 
 	treestore = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_POINTER);
-	
+
 	/* add available feed list source to treestore */
 	while (iter) {
 		type = (nodeSourceTypePtr) iter->data;
 		if (type->capabilities & NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION) {
 
 			gtk_tree_store_append (treestore, &treeiter, NULL);
-			gtk_tree_store_set (treestore, &treeiter, 
+			gtk_tree_store_set (treestore, &treeiter,
 			                               0, type->name,
 			                               1, type,
 						       -1);
@@ -368,13 +368,13 @@ feed_list_node_source_type_dialog (void)
 	                             GTK_SELECTION_SINGLE);
 
 	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_node_source_type_response), 
+			  G_CALLBACK (on_node_source_type_response),
 			  NULL);
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview))), "changed",
 	                  G_CALLBACK (on_node_source_type_selected),
 	                  liferea_dialog_lookup (dialog, "ok_button"));
-	               
-			  
+
+
 	return TRUE;
 }
 
@@ -426,7 +426,7 @@ node_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 		return NODE_SOURCE_TYPE (node)->add_subscription (node, subscription);
 	else
 		g_print ("node_source_add_subscription(): called on node source type that doesn't implement me!");
-		
+
 	return NULL;
 }
 
@@ -490,7 +490,7 @@ node_source_remove_node (nodePtr node, nodePtr child)
 
 	g_assert (child != node);
 	g_assert (child != child->source->root);
-	
+
 	if (NODE_SOURCE_TYPE (node)->remove_node)
 		NODE_SOURCE_TYPE (node)->remove_node (node, child);
 	else
@@ -504,7 +504,7 @@ node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState)
 	   implementations. If they are supported the implementation
 	   has to call item_read_state_changed(), otherwise we do
 	   call it here. */
-	   
+
 	if (NODE_SOURCE_TYPE (node)->item_mark_read)
 		NODE_SOURCE_TYPE (node)->item_mark_read (node, item, newState);
 	else
@@ -518,7 +518,7 @@ node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState)
 	   implementations. If they are supported the implementation
 	   has to call item_flag_state_changed(), otherwise we do
 	   call it here. */
-	   
+
 	if (NODE_SOURCE_TYPE (node)->item_set_flag)
 		NODE_SOURCE_TYPE (node)->item_set_flag (node, item, newState);
 	else
@@ -526,11 +526,11 @@ node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState)
 }
 
 static void
-node_source_convert_to_local_child_node (nodePtr node) 
+node_source_convert_to_local_child_node (nodePtr node)
 {
-	/* Ensure to remove special subscription types and cancel updates 
+	/* Ensure to remove special subscription types and cancel updates
 	   Note: we expect that all feeds already have the subscription URL
-	   set. This might need to be done by the node type specific 
+	   set. This might need to be done by the node type specific
 	   convert_to_local() method! */
 	if (node->subscription) {
 		update_job_cancel_by_owner ((gpointer)node);
@@ -563,7 +563,7 @@ node_source_convert_to_local (nodePtr node)
 		NODE_SOURCE_TYPE (node)->convert_to_local (node);
 
 	/* Perform conversion */
-	
+
 	debug0 (DEBUG_UPDATE, "Converting root node to folder...");
 	node->source = ((nodePtr)feedlist_get_root ())->source;
 	node->type = folder_get_node_type ();
@@ -574,7 +574,7 @@ node_source_convert_to_local (nodePtr node)
 
 	feedlist_schedule_save ();
 
-	/* FIXME: something is not perfect, because if you immediately 
+	/* FIXME: something is not perfect, because if you immediately
 	   remove the subscription tree afterwards there is a double free */
 
 	ui_show_info_box (_("The '%s' subscription was successfully converted to local feeds!"), node->title);
@@ -589,11 +589,11 @@ node_source_remove (nodePtr node)
 		return;
 
 	g_assert (node == node->source->root);
-	
+
 	if (NULL != NODE_SOURCE_TYPE (node)->source_delete)
 		NODE_SOURCE_TYPE (node)->source_delete (node);
-		
-	feed_list_node_remove_node (node);
+
+	feed_list_view_remove_node (node);
 }
 
 static void
@@ -608,7 +608,7 @@ node_source_free (nodePtr node)
 	if (NULL != NODE_SOURCE_TYPE (node)->free)
 		NODE_SOURCE_TYPE (node)->free (node);
 
-	g_free (node->source->authToken);		
+	g_free (node->source->authToken);
 	g_free (node->source);
 	node->source = NULL;
 }
@@ -638,9 +638,9 @@ node_source_get_node_type (void)
 		nodeType->remove		= node_source_remove;
 		nodeType->render		= node_default_render;
 		nodeType->request_add		= feed_list_node_source_type_dialog;
-		nodeType->request_properties	= feed_list_node_rename;
+		nodeType->request_properties	= feed_list_view_rename_node;
 		nodeType->free			= node_source_free;
 	}
 
-	return nodeType; 
+	return nodeType;
 }

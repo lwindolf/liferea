@@ -32,9 +32,9 @@
 #include "feedlist.h"
 #include "node.h"
 #include "update.h"
+#include "ui/feed_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
-#include "ui/feed_list_node.h"
 
 /* Note: these update interval literals should be kept in sync with the
    ones in ui_prefs.c! */
@@ -262,7 +262,7 @@ on_propdialog_response (GtkDialog *dialog,
 		feed->markAsRead      = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "markAsReadCheck")));
 		feed->html5Extract    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "html5ExtractCheck")));
 
-		feed_list_node_update (node->id);
+		feed_list_view_update_node (node->id);
 		feedlist_schedule_save ();
 		db_subscription_update (subscription);
 		if (needsUpdate)
@@ -617,7 +617,7 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 			feedlist_add_subscription (source, filter, options, FEED_REQ_PRIORITY_HIGH);
 			g_free (source);
 		} else {
-			feed_list_node_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicateUrlNode);
+			feed_list_view_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicateUrlNode);
 		}
 	}
 
@@ -705,7 +705,7 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 			feedlist_add_subscription (source, NULL, NULL, FEED_REQ_PRIORITY_HIGH);
 			g_free (source);
 		} else {
-			feed_list_node_add_duplicate_url_subscription (subscription_new (source, NULL, NULL), duplicateUrlNode);
+			feed_list_view_add_duplicate_url_subscription (subscription_new (source, NULL, NULL), duplicateUrlNode);
 		}
 	}
 

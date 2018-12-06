@@ -23,10 +23,10 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "vfolder.h"
+#include "ui/feed_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
 #include "ui/rule_editor.h"
-#include "ui/feed_list_node.h"
 
 struct _SearchFolderDialog {
 	GObject		parentInstance;
@@ -80,7 +80,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		if (!sfd->node->parent)
 			feedlist_node_added (sfd->node);
 
-		feed_list_node_update (sfd->node->id);
+		feed_list_view_update_node (sfd->node->id);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
