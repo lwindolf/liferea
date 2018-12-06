@@ -23,7 +23,7 @@
 #define _feed_list_node_H
 
 #include <gtk/gtk.h>
-#include <src/subscription.h>
+#include "subscription.h"
 #include "node.h"
 
 /**
