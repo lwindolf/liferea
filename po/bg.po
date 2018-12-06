@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea Bulgarian translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-18 00:24+0100\n"
+"POT-Creation-Date: 2018-12-06 17:12+0100\n"
 "PO-Revision-Date: 2006-03-17 12:10+0200\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -94,7 +94,7 @@ msgid "Read news feeds and blogs"
 msgstr ""
 
 #: ../net.sourceforge.liferea.desktop.in.h:5
-msgid "news;feed;aggregator;blog;podcast;"
+msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
 #: ../xslt/feed.xml.in.h:1
@@ -284,27 +284,27 @@ msgid ""
 msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/date.c:777
+#: ../src/date.c:133
 msgid "Today %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/date.c:788
+#: ../src/date.c:142
 msgid "Yesterday %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/date.c:801
+#: ../src/date.c:154
 msgid "%a %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/date.c:810
+#: ../src/date.c:162
 msgid "%b %d %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/date.c:813
+#: ../src/date.c:165
 msgid "%b %d %Y"
 msgstr ""
 
@@ -319,7 +319,7 @@ msgid ""
 "'Enclosures' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/enclosure.c:310
+#: ../src/enclosure.c:311
 #, c-format
 msgid ""
 "Command failed: \n"
@@ -387,7 +387,7 @@ msgstr "Изнасяне на списък с емисиите"
 msgid "Export"
 msgstr "Изнасяне"
 
-#: ../src/feed.c:313
+#: ../src/feed.c:317
 #, fuzzy
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -397,12 +397,12 @@ msgstr ""
 "<p>Видът на емисията не може да бъде определен. Проверете дали това е "
 "поддържан от програмата формат!</p>%s"
 
-#: ../src/feed.c:340
+#: ../src/feed.c:344
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "„%s“ е актуализирана..."
 
-#: ../src/feed.c:347
+#: ../src/feed.c:351
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "„%s“ не е достъпна"
@@ -450,29 +450,33 @@ msgstr "<p>Не може да намери началото на RDF!</p>"
 msgid "There are no unread items"
 msgstr "Няма непрочетени записи "
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "                   СЪСТОЯНИЕ-то може да е „shown“, „iconified“ или „hidden“"
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:282
 msgid "STATE"
 msgstr ""
 
-#: ../src/liferea_application.c:284
+#: ../src/liferea_application.c:283
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version         Изписване на информация за версията и напускане"
 
-#: ../src/liferea_application.c:285
+#: ../src/liferea_application.c:284
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Нова емисия"
 
-#: ../src/liferea_application.c:285
+#: ../src/liferea_application.c:284
 msgid "uri"
+msgstr ""
+
+#: ../src/liferea_application.c:285
+msgid "Start with all plugins disabled"
 msgstr ""
 
 #: ../src/liferea_application.c:290
@@ -567,39 +571,39 @@ msgstr ""
 "обработката на кеша"
 
 #. Some libsoup transport errors
-#: ../src/net.c:401
+#: ../src/net.c:463
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:402
+#: ../src/net.c:464
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:403
+#: ../src/net.c:465
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:404
+#: ../src/net.c:466
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Грешка при свързването с отдалечения адрес"
 
-#: ../src/net.c:405
+#: ../src/net.c:467
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:406
+#: ../src/net.c:468
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:409
+#: ../src/net.c:471
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:412
+#: ../src/net.c:474
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -608,60 +612,60 @@ msgstr ""
 "Нямате право да изтеглите тази емисия. Актуализирайте вашето име и парола в "
 "настройките на емисията."
 
-#: ../src/net.c:414
+#: ../src/net.c:476
 #, fuzzy
 msgid "Payment required"
 msgstr "Изисква се заплащане"
 
-#: ../src/net.c:415
+#: ../src/net.c:477
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:416
+#: ../src/net.c:478
 msgid "Resource Not Found"
 msgstr "Ресурсът не е намерен"
 
-#: ../src/net.c:417
+#: ../src/net.c:479
 msgid "Method Not Allowed"
 msgstr "Непозволен метод"
 
-#: ../src/net.c:418
+#: ../src/net.c:480
 msgid "Not Acceptable"
 msgstr "Неприемлив"
 
-#: ../src/net.c:419
+#: ../src/net.c:481
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Нужна е идентификация в сървъра-посредник"
 
-#: ../src/net.c:420
+#: ../src/net.c:482
 #, fuzzy
 msgid "Request timed out"
 msgstr "Заявката изтече"
 
-#: ../src/net.c:421
+#: ../src/net.c:483
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Този ресурс вече не съществува. Изтрийте го!"
 
-#: ../src/net.c:426
+#: ../src/net.c:488
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:428
+#: ../src/net.c:490
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Емисията не е на разположение: Сървърът докладва за неподдържано "
 "пренасочване!"
 
-#: ../src/net.c:430
+#: ../src/net.c:492
 msgid "Client Error"
 msgstr "Грешка в клиента"
 
-#: ../src/net.c:432
+#: ../src/net.c:494
 msgid "Server Error"
 msgstr "Грешка в сървъра"
 
-#: ../src/net.c:434
+#: ../src/net.c:496
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(непозната мрежова грешка)"
@@ -744,23 +748,23 @@ msgstr ""
 msgid "Feed title"
 msgstr "Заглавие на емисията"
 
-#: ../src/subscription.c:105
+#: ../src/subscription.c:106
 #, fuzzy, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "Тази емисия „%s“ вече беше актуализирана!"
 
-#: ../src/subscription.c:110
+#: ../src/subscription.c:111
 #, fuzzy, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "Емисията „%s“ няма продължение. Liferea няма да я актуализира повече!"
 
-#: ../src/subscription.c:144
+#: ../src/subscription.c:145
 #, fuzzy, c-format
 msgid "Updating favicon for \"%s\""
 msgstr "Актуализиране иконата на емисията „%s“"
 
-#: ../src/subscription.c:193
+#: ../src/subscription.c:194
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -768,48 +772,48 @@ msgstr ""
 "Имаше проблем при прочитането на емисията. Проверете адреса и изходната "
 "информация в конзолата."
 
-#: ../src/subscription.c:211
+#: ../src/subscription.c:217
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "Адресът на „%s“ беше променен за постоянно и затова беше осъвременен"
 
-#: ../src/subscription.c:219
+#: ../src/subscription.c:225
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "„%s“ не е продължен. Liferea няма да го осъвременява повече!"
 
-#: ../src/subscription.c:222
+#: ../src/subscription.c:228
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "„%s“ не се промени след последното осъвременяване"
 
-#: ../src/subscription.c:275
+#: ../src/subscription.c:315
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Актуализиране на „%s“"
 
-#: ../src/update.c:282
+#: ../src/update.c:297
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Грешка при отваряне на временния файл %s за филтриране!"
 
-#: ../src/update.c:305
+#: ../src/update.c:320
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s приключи работа със статус %d"
 
-#: ../src/update.c:311 ../src/update.c:312 ../src/update.c:429
+#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:444
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Грешка: Тръбата „%s“ не може да бъде отворена"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:455
+#: ../src/update.c:470
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Грешка: Файлът „%s“ не може да бъде отворен"
 
-#: ../src/update.c:461
+#: ../src/update.c:476
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Грешка: Файлът „%s“ не съществува"
@@ -880,386 +884,31 @@ msgstr "<b>Файлово разширение .%s</b>"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Файлът с картата с пиксели %s не може да бъде открит."
 
-#: ../src/ui/liferea_shell.c:390
+#: ../src/ui/liferea_shell.c:404
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d нов запис"
 msgstr[1] "%d нови записа"
 
-#: ../src/ui/liferea_shell.c:395
+#: ../src/ui/liferea_shell.c:409
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "е непрочетен"
 msgstr[1] "е непрочетен"
 
-#: ../src/ui/liferea_shell.c:770
+#: ../src/ui/liferea_shell.c:766
 msgid "Help Topics"
 msgstr "Раздели в помощта"
 
-#: ../src/ui/liferea_shell.c:776
+#: ../src/ui/liferea_shell.c:772
 msgid "Quick Reference"
 msgstr "Бърз справочник"
 
-#: ../src/ui/liferea_shell.c:782
+#: ../src/ui/liferea_shell.c:778
 msgid "FAQ"
 msgstr "Често задавани въпроси"
-
-#: ../src/ui/liferea_shell.c:907
-#, fuzzy
-msgid "_Subscriptions"
-msgstr "Нова емисия"
-
-#: ../src/ui/liferea_shell.c:908
-msgid "Update _All"
-msgstr "Актуализиране на _всички"
-
-#: ../src/ui/liferea_shell.c:908
-#, fuzzy
-msgid "Updates all subscriptions."
-msgstr "Добавяне на нова емисия."
-
-#: ../src/ui/liferea_shell.c:910
-msgid "Mark All As _Read"
-msgstr "Отбелязване на всички като _прочетени"
-
-#: ../src/ui/liferea_shell.c:910
-msgid "Marks read every item of every subscription."
-msgstr "Отбелязване на абсолютно всички обекти като прочетени"
-
-#: ../src/ui/liferea_shell.c:912
-msgid "_Import Feed List..."
-msgstr "_Внасяне на списък с емисии..."
-
-#: ../src/ui/liferea_shell.c:912
-msgid "Imports an OPML feed list."
-msgstr "Внасяне на списък с емисии в OPML формат."
-
-#: ../src/ui/liferea_shell.c:913
-msgid "_Export Feed List..."
-msgstr "_Изнасяне на списък с емисии..."
-
-#: ../src/ui/liferea_shell.c:913
-#, fuzzy
-msgid "Exports the feed list as OPML."
-msgstr ">Изнасяне на списък с емисии във формат OPML."
-
-#: ../src/ui/liferea_shell.c:914 ../src/ui/popup_menu.c:190
-msgid "_Quit"
-msgstr "_Спиране на програмата"
-
-#: ../src/ui/liferea_shell.c:916
-#, fuzzy
-msgid "_Feed"
-msgstr "_Емисии"
-
-#: ../src/ui/liferea_shell.c:917
-#, fuzzy
-msgid "Remove _All Items"
-msgstr "Премахване на _всички"
-
-#: ../src/ui/liferea_shell.c:917
-msgid "Removes all items of the currently selected feed."
-msgstr "Премахване на всички записи от текущата емисия."
-
-#: ../src/ui/liferea_shell.c:920
-#, fuzzy
-msgid "_Item"
-msgstr "_Записи"
-
-#: ../src/ui/liferea_shell.c:921
-msgid "Previous Item"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:923
-#, fuzzy
-msgid "Next Item"
-msgstr "_Следващ непрочетен запис"
-
-#. No tooltip here as it really hinders usability to have it flashing
-#. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:928
-msgid "_Next Unread Item"
-msgstr "_Следващ непрочетен запис"
-
-#: ../src/ui/liferea_shell.c:931
-msgid "_View"
-msgstr "_Изглед"
-
-#: ../src/ui/liferea_shell.c:932 ../src/webkit/liferea_web_view.c:212
-msgid "_Increase Text Size"
-msgstr "_Увеличаване на големината на шрифта"
-
-#: ../src/ui/liferea_shell.c:932
-msgid "Increases the text size of the item view."
-msgstr "Увеличаване на размера на текста на записите."
-
-#: ../src/ui/liferea_shell.c:934 ../src/webkit/liferea_web_view.c:213
-msgid "_Decrease Text Size"
-msgstr "_Намаляване на големината на шрифта"
-
-#: ../src/ui/liferea_shell.c:934
-msgid "Decreases the text size of the item view."
-msgstr "Намаляване на размера на текста, при прегледа на записи."
-
-#: ../src/ui/liferea_shell.c:937
-msgid "_Tools"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:938
-#, fuzzy
-msgid "_Update Monitor"
-msgstr "/_Актуализиране на папка"
-
-#: ../src/ui/liferea_shell.c:938
-msgid "Show a list of all feeds currently in the update queue"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:940 ../src/ui/popup_menu.c:185
-msgid "_Preferences"
-msgstr "_Настройки"
-
-#: ../src/ui/liferea_shell.c:940
-msgid "Edit Preferences."
-msgstr "Промяна на настройките."
-
-#: ../src/ui/liferea_shell.c:943
-#, fuzzy
-msgid "S_earch"
-msgstr "Търсене"
-
-#: ../src/ui/liferea_shell.c:944
-#, fuzzy
-msgid "Search All Feeds..."
-msgstr "Търсене във всички емисии"
-
-#: ../src/ui/liferea_shell.c:944
-msgid "Show the search dialog."
-msgstr "Показване на полето за търсене."
-
-#: ../src/ui/liferea_shell.c:946
-msgid "_Help"
-msgstr "_Помощ"
-
-#: ../src/ui/liferea_shell.c:947
-msgid "_Contents"
-msgstr "_Ръководство"
-
-#: ../src/ui/liferea_shell.c:947
-msgid "View help for this application."
-msgstr "Преглед на помощта за тази програма."
-
-#: ../src/ui/liferea_shell.c:948
-msgid "_Quick Reference"
-msgstr "_Бърз справочник"
-
-#: ../src/ui/liferea_shell.c:948
-msgid "View a list of all Liferea shortcuts."
-msgstr "Преглед на списък с всички бързи клавиши в Liferea."
-
-#: ../src/ui/liferea_shell.c:950
-msgid "_FAQ"
-msgstr "_Често задавани въпроси"
-
-#: ../src/ui/liferea_shell.c:950
-msgid "View the FAQ for this application."
-msgstr "Преглед на често задаваните въпроси."
-
-#: ../src/ui/liferea_shell.c:951
-msgid "_About"
-msgstr "_Относно програмата"
-
-#: ../src/ui/liferea_shell.c:951
-msgid "Shows an about dialog."
-msgstr "Показване на диалогов прозорец с информация за програмата."
-
-#: ../src/ui/liferea_shell.c:955
-#, fuzzy
-msgid "_Normal View"
-msgstr "Локален _файл"
-
-#: ../src/ui/liferea_shell.c:955
-msgid "Set view mode to mail client mode."
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:957
-#, fuzzy
-msgid "_Wide View"
-msgstr "_Изглед"
-
-#: ../src/ui/liferea_shell.c:957
-msgid "Set view mode to use three vertical panes."
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:959
-#, fuzzy
-msgid "_Combined View"
-msgstr "_Общ изглед"
-
-#: ../src/ui/liferea_shell.c:959
-msgid "Set view mode to two pane mode."
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:964
-msgid "_Reduced Feed List"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:964
-#, fuzzy
-msgid "Hide feeds with no unread items."
-msgstr "Няма непрочетени записи "
-
-#: ../src/ui/liferea_shell.c:969
-msgid "_New Subscription..."
-msgstr "_Нова емисия..."
-
-#: ../src/ui/liferea_shell.c:969
-#, fuzzy
-msgid "Adds a subscription to the feed list."
-msgstr "Добавяне на нова емисия."
-
-#: ../src/ui/liferea_shell.c:971 ../src/ui/popup_menu.c:308
-msgid "New _Folder..."
-msgstr "Нова _папка..."
-
-#: ../src/ui/liferea_shell.c:971
-#, fuzzy
-msgid "Adds a folder to the feed list."
-msgstr "Добавяне на папка към списъка с емисии."
-
-#: ../src/ui/liferea_shell.c:972 ../src/ui/popup_menu.c:311
-#, fuzzy
-msgid "New S_earch Folder..."
-msgstr "Нова _папка..."
-
-#: ../src/ui/liferea_shell.c:972
-#, fuzzy
-msgid "Adds a new search folder to the feed list."
-msgstr "Добавяне на нова виртуална папка към списъка с емисии."
-
-#: ../src/ui/liferea_shell.c:973
-#, fuzzy
-msgid "New _Source..."
-msgstr "/_Нов/_Нова папка..."
-
-#: ../src/ui/liferea_shell.c:973
-#, fuzzy
-msgid "Adds a new feed list source."
-msgstr "Добавяне на нова виртуална папка към списъка с емисии."
-
-#: ../src/ui/liferea_shell.c:974 ../src/ui/popup_menu.c:313
-#, fuzzy
-msgid "New _News Bin..."
-msgstr "/_Нов/Нова _приставка..."
-
-#: ../src/ui/liferea_shell.c:974
-#, fuzzy
-msgid "Adds a new news bin."
-msgstr "Добавяне на нова емисия."
-
-#: ../src/ui/liferea_shell.c:978
-#, fuzzy
-msgid "_Mark Items Read"
-msgstr "Избиране като прочетен"
-
-#: ../src/ui/liferea_shell.c:978
-#, fuzzy
-msgid ""
-"Marks all items of the selected feed list node / in the item list as read."
-msgstr "Отбелязване като прочетено на всичко в избраната папка."
-
-#: ../src/ui/liferea_shell.c:980 ../src/ui/popup_menu.c:290
-#, fuzzy
-msgid "_Update"
-msgstr "/_Актуализиране"
-
-#: ../src/ui/liferea_shell.c:980
-msgid ""
-"Updates the selected subscription or all subscriptions of the selected "
-"folder."
-msgstr ""
-"Актуализиране на избраните емисии или на всички емисии от избраната папка."
-
-#: ../src/ui/liferea_shell.c:985 ../src/ui/popup_menu.c:339
-#, fuzzy
-msgid "_Properties"
-msgstr "_Настройки..."
-
-#: ../src/ui/liferea_shell.c:985
-msgid "Opens the property dialog for the selected subscription."
-msgstr "Отваряне на прозореца за предпочитанията за избраната емисия."
-
-#: ../src/ui/liferea_shell.c:986
-#, fuzzy
-msgid "_Remove"
-msgstr "Премахване на _всички"
-
-#: ../src/ui/liferea_shell.c:986
-msgid "Removes the selected subscription."
-msgstr "Изтриване на избраната емисия."
-
-#: ../src/ui/liferea_shell.c:990 ../src/ui/popup_menu.c:153
-msgid "Toggle _Read Status"
-msgstr "П_ревключване на състояние: \"прочетено/непрочетено“"
-
-#: ../src/ui/liferea_shell.c:990
-msgid "Toggles the read status of the selected item."
-msgstr "Превключване на състоянието „прочетено/непрочетено“ на избрания запис."
-
-#: ../src/ui/liferea_shell.c:992 ../src/ui/popup_menu.c:154
-msgid "Toggle Item _Flag"
-msgstr "Прикрепяне на флаг към записа"
-
-#: ../src/ui/liferea_shell.c:992
-msgid "Toggles the flag status of the selected item."
-msgstr "Превключване на флага за състоянието на избрания запис."
-
-#: ../src/ui/liferea_shell.c:994
-#, fuzzy
-msgid "R_emove"
-msgstr "/Пре_махване на запис"
-
-#: ../src/ui/liferea_shell.c:994
-msgid "Removes the selected item."
-msgstr "Премахване на избрания запис."
-
-#: ../src/ui/liferea_shell.c:996 ../src/ui/popup_menu.c:117
-msgid "Open In _Tab"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:996
-#, fuzzy
-msgid "Launches the item's link in a new Liferea browser tab."
-msgstr "Отваряне на адреса на записа в настроения за това браузър."
-
-#: ../src/ui/liferea_shell.c:998 ../src/ui/popup_menu.c:118
-#, fuzzy
-msgid "_Open In Browser"
-msgstr "_Отваряне в браузър"
-
-#: ../src/ui/liferea_shell.c:998
-#, fuzzy
-msgid "Launches the item's link in the Liferea item pane."
-msgstr "Отваряне на адреса на записа в настроения за това браузър."
-
-#: ../src/ui/liferea_shell.c:1000 ../src/ui/popup_menu.c:119
-#, fuzzy
-msgid "Open In _External Browser"
-msgstr "<span weight=\"bold\">Външен браузър</span>"
-
-#: ../src/ui/liferea_shell.c:1000
-#, fuzzy
-msgid "Launches the item's link in the configured external browser."
-msgstr "Отваряне на адреса на записа в настроения за това браузър."
-
-#: ../src/ui/liferea_shell.c:1005
-msgid "_Fullscreen"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:1005
-msgid "Browse at full screen"
-msgstr ""
 
 #: ../src/ui/search_dialog.c:116
 #, fuzzy
@@ -1276,6 +925,7 @@ msgid "Unknown source"
 msgstr "Непознат източник"
 
 #: ../src/ui/ui_common.c:168 ../src/ui/feed_list_node.c:416
+#: ../src/ui/feed_list_node.c:470
 #, fuzzy
 msgid "_Cancel"
 msgstr "Актуализиране на _всички"
@@ -1285,128 +935,175 @@ msgstr "Актуализиране на _всички"
 msgid "All Files"
 msgstr "Локален _файл"
 
-#: ../src/ui/feed_list_view.c:375
+#: ../src/ui/feed_list_view.c:376
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea е в режим „изключен“. Не е възможно да актуализирате емисиите."
 
-#: ../src/ui/item_list_view.c:115
+#: ../src/ui/feed_list_view.c:422
+#, fuzzy
+msgid "all feeds"
+msgstr "Търсене във всички емисии."
+
+#: ../src/ui/feed_list_view.c:423
+#, fuzzy, c-format
+msgid "Mark %s as read ?"
+msgstr "Отбелязване на всички като _прочетени"
+
+#: ../src/ui/feed_list_view.c:427
+#, fuzzy, c-format
+msgid "Are you sure you want to mark all items in %s as read ?"
+msgstr "Сигурни ли сте, че искате да изтриете „%s“?"
+
+#: ../src/ui/item_list_view.c:113
 msgid "This item has no link specified!"
 msgstr "Този запис няма не съдържа връзка!"
 
-#: ../src/ui/item_list_view.c:119 ../src/ui/item_list_view.c:986
-#: ../src/ui/item_list_view.c:1069 ../src/ui/item_list_view.c:1084
-msgid "No item has been selected"
-msgstr "Няма избран запис"
-
-#: ../src/ui/item_list_view.c:479
+#: ../src/ui/item_list_view.c:484
 #, fuzzy
 msgid "*** No title ***"
 msgstr "[Без заглавие]"
 
-#: ../src/ui/item_list_view.c:483
+#: ../src/ui/item_list_view.c:488
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:793
+#: ../src/ui/item_list_view.c:834
 msgid "Headline"
 msgstr "Заглавие"
 
-#: ../src/ui/item_list_view.c:816
+#: ../src/ui/item_list_view.c:856
 msgid "Date"
 msgstr "Дата"
 
-#: ../src/ui/item_list_view.c:973
+#: ../src/ui/item_list_view.c:1040
 msgid "You must select a feed to delete its items!"
 msgstr "Трябва да изберете емисия, за да изтриете нейните записи!"
 
-#: ../src/ui/popup_menu.c:131
+#: ../src/ui/item_list_view.c:1056 ../src/ui/item_list_view.c:1133
+#: ../src/ui/item_list_view.c:1148
+msgid "No item has been selected"
+msgstr "Няма избран запис"
+
+#: ../src/ui/popup_menu.c:107
+msgid "Open In _Tab"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:111
+#, fuzzy
+msgid "_Open In Browser"
+msgstr "_Отваряне в браузър"
+
+#: ../src/ui/popup_menu.c:115
+#, fuzzy
+msgid "Open In _External Browser"
+msgstr "<span weight=\"bold\">Външен браузър</span>"
+
+#: ../src/ui/popup_menu.c:139
 msgid "Copy to News Bin"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:145
+#: ../src/ui/popup_menu.c:147
 #, c-format
 msgid "_Bookmark at %s"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:149
+#: ../src/ui/popup_menu.c:153
 #, fuzzy
 msgid "Copy Item _Location"
 msgstr "/_Копиране адреса на записа"
 
-#: ../src/ui/popup_menu.c:155
+#: ../src/ui/popup_menu.c:162
+msgid "Toggle _Read Status"
+msgstr "П_ревключване на състояние: \"прочетено/непрочетено“"
+
+#: ../src/ui/popup_menu.c:166
+msgid "Toggle Item _Flag"
+msgstr "Прикрепяне на флаг към записа"
+
+#: ../src/ui/popup_menu.c:170
 #, fuzzy
 msgid "R_emove Item"
 msgstr "/Пре_махване на запис"
 
-#: ../src/ui/popup_menu.c:168
+#: ../src/ui/popup_menu.c:200
 #, fuzzy
 msgid "Open Enclosure..."
 msgstr "/Отваряне на приложение..."
 
-#: ../src/ui/popup_menu.c:169
+#: ../src/ui/popup_menu.c:201
 #, fuzzy
 msgid "Save As..."
 msgstr "/Запазване като..."
 
-#: ../src/ui/popup_menu.c:170
+#: ../src/ui/popup_menu.c:202
 #, fuzzy
 msgid "Copy Link Location"
 msgstr "/_Копиране адреса на записа"
 
-#: ../src/ui/popup_menu.c:183
-msgid "_Work Offline"
-msgstr "Режим: „_изключен“"
-
-#: ../src/ui/popup_menu.c:184
+#: ../src/ui/popup_menu.c:280
 #, fuzzy
-msgid "_Update All"
-msgstr "/_Актуализиране на всички"
+msgid "_Update"
+msgstr "/_Актуализиране"
 
-#: ../src/ui/popup_menu.c:189
-#, fuzzy
-msgid "_Show Liferea"
-msgstr "Събирач на RSS емисии (Liferea)"
-
-#: ../src/ui/popup_menu.c:292
+#: ../src/ui/popup_menu.c:282
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/_Актуализиране на папка"
 
-#: ../src/ui/popup_menu.c:302
-#, fuzzy
-msgid "_New"
-msgstr "/_Нов"
-
-#: ../src/ui/popup_menu.c:305
+#: ../src/ui/popup_menu.c:292
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "_Нова емисия..."
 
-#: ../src/ui/popup_menu.c:312
+#: ../src/ui/popup_menu.c:295
+msgid "New _Folder..."
+msgstr "Нова _папка..."
+
+#: ../src/ui/popup_menu.c:298
+#, fuzzy
+msgid "New S_earch Folder..."
+msgstr "Нова _папка..."
+
+#: ../src/ui/popup_menu.c:299
 #, fuzzy
 msgid "New S_ource..."
 msgstr "/_Нов/_Нова папка..."
 
-#: ../src/ui/popup_menu.c:321
+#: ../src/ui/popup_menu.c:300
+#, fuzzy
+msgid "New _News Bin..."
+msgstr "/_Нов/Нова _приставка..."
+
+#: ../src/ui/popup_menu.c:303
+#, fuzzy
+msgid "_New"
+msgstr "/_Нов"
+
+#: ../src/ui/popup_menu.c:312
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "Вмъкване на списък с емисии"
 
-#: ../src/ui/popup_menu.c:327
+#: ../src/ui/popup_menu.c:320
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/_Отбелязване на всички като прочетени"
 
-#: ../src/ui/popup_menu.c:332
+#: ../src/ui/popup_menu.c:327
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:338 ../src/ui/feed_list_node.c:417
+#: ../src/ui/popup_menu.c:335 ../src/ui/feed_list_node.c:417
 #, fuzzy
 msgid "_Delete"
 msgstr "/_Изтриване"
 
-#: ../src/ui/popup_menu.c:344
+#: ../src/ui/popup_menu.c:336
+#, fuzzy
+msgid "_Properties"
+msgstr "_Настройки..."
+
+#: ../src/ui/popup_menu.c:343
 #, fuzzy
 msgid "Convert To Local Subscriptions..."
 msgstr "_Нова емисия..."
@@ -1471,20 +1168,20 @@ msgstr "_Изглед"
 msgid "Combined View"
 msgstr "_Общ изглед"
 
-#: ../src/ui/preferences_dialog.c:451
+#: ../src/ui/preferences_dialog.c:476
 #, fuzzy
 msgid "Default Browser"
 msgstr "Браузър"
 
-#: ../src/ui/preferences_dialog.c:453
+#: ../src/ui/preferences_dialog.c:478
 msgid "Manual"
 msgstr "Ръчно зададено"
 
-#: ../src/ui/preferences_dialog.c:685
+#: ../src/ui/preferences_dialog.c:725
 msgid "Type"
 msgstr "Тип"
 
-#: ../src/ui/preferences_dialog.c:688
+#: ../src/ui/preferences_dialog.c:728
 msgid "Program"
 msgstr "Програма"
 
@@ -1515,6 +1212,22 @@ msgstr "Сигурни ли сте, че искате да изтриете „%
 
 #: ../src/ui/feed_list_node.c:419
 msgid "Deletion Confirmation"
+msgstr "Потвърждаване на изтриването"
+
+#: ../src/ui/feed_list_node.c:458
+#, c-format
+msgid ""
+"Are you sure that you want to add a new subscription with URL \"%s\"? "
+"Another subscription with the same URL already exists (\"%s\")."
+msgstr ""
+
+#: ../src/ui/feed_list_node.c:471
+msgid "_Add"
+msgstr ""
+
+#: ../src/ui/feed_list_node.c:473
+#, fuzzy
+msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Потвърждаване на изтриването"
 
 #: ../src/ui/subscription_dialog.c:352 ../src/fl_sources/opml_source.c:379
@@ -1554,17 +1267,6 @@ msgstr ""
 msgid "New Subscription"
 msgstr "Нова емисия"
 
-#: ../src/fl_sources/inoreader_source.c:102
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-msgid "Login failed!"
-msgstr ""
-
-#: ../src/fl_sources/inoreader_source.c:311
-#, fuzzy
-msgid "InoReader"
-msgstr "Временни файлове на емисията"
-
 #: ../src/fl_sources/google_source.c:111
 #, fuzzy
 msgid "Google Reader"
@@ -1584,25 +1286,30 @@ msgstr "Избор на файл"
 msgid "New OPML Subscription"
 msgstr "Нова емисия"
 
-#: ../src/fl_sources/node_source.c:336
+#: ../src/fl_sources/node_source.c:334
 msgid "No feed list source types found!"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:365
+#: ../src/fl_sources/node_source.c:363
 #, fuzzy
 msgid "Source Type"
 msgstr "Вид на източника:"
 
-#: ../src/fl_sources/node_source.c:416
+#: ../src/fl_sources/node_source.c:414
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:582
+#: ../src/fl_sources/node_source.c:580
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr ""
+
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+msgid "Login failed!"
 msgstr ""
 
 #: ../src/fl_sources/reedah_source.c:312
@@ -1647,58 +1354,66 @@ msgstr ""
 msgid "TheOldReader"
 msgstr "Временни файлове на емисията"
 
-#: ../src/webkit/liferea_web_view.c:173
+#: ../src/webkit/liferea_web_view.c:175
 #, fuzzy
 msgid "Open Link In _Tab"
 msgstr "/_Зареждане на връзката в _таб"
 
-#: ../src/webkit/liferea_web_view.c:174
+#: ../src/webkit/liferea_web_view.c:176
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "/_Зареждане на връзката в браузър"
 
-#: ../src/webkit/liferea_web_view.c:175
+#: ../src/webkit/liferea_web_view.c:177
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "/_Зареждане на връзката в браузър"
 
-#: ../src/webkit/liferea_web_view.c:181
+#: ../src/webkit/liferea_web_view.c:183
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:190
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Копиране адреса на записа"
 
-#: ../src/webkit/liferea_web_view.c:188
+#: ../src/webkit/liferea_web_view.c:193
 #, fuzzy
 msgid "_View Image"
 msgstr "_Изглед"
 
-#: ../src/webkit/liferea_web_view.c:189
+#: ../src/webkit/liferea_web_view.c:194
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "/_Копиране адреса на записа"
 
-#: ../src/webkit/liferea_web_view.c:192
+#: ../src/webkit/liferea_web_view.c:197
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "/Запазване като..."
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:200
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:202
+#: ../src/webkit/liferea_web_view.c:207
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Абониране..."
 
-#: ../src/webkit/liferea_web_view.c:206
+#: ../src/webkit/liferea_web_view.c:211
 msgid "_Copy"
 msgstr ""
+
+#: ../src/webkit/liferea_web_view.c:217
+msgid "_Increase Text Size"
+msgstr "_Увеличаване на големината на шрифта"
+
+#: ../src/webkit/liferea_web_view.c:218
+msgid "_Decrease Text Size"
+msgstr "_Намаляване на големината на шрифта"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1717,19 +1432,11 @@ msgstr "Събирач на RSS емисии (Liferea)"
 msgid "Authentication"
 msgstr "Идентифициране"
 
-#: ../glade/auth.ui.h:4
-msgid ""
-"Note: <i>The username and password will be saved to your Liferea feedlist "
-"file without using encryption.</i>"
-msgstr ""
-"Бележка: <i>Потребителското име и паролата ще бъдат запазени в списъка с "
-"емисии без да се използва криптиране.</i>"
-
-#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:32
 msgid "User_name:"
 msgstr "Потребителско _име:"
 
-#: ../glade/auth.ui.h:6 ../glade/properties.ui.h:33
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:33
 msgid "_Password:"
 msgstr "_Парола:"
 
@@ -1773,24 +1480,15 @@ msgstr ""
 msgid "Please enter your Google Reader account settings."
 msgstr ""
 
-#: ../glade/google_source.ui.h:3 ../glade/inoreader_source.ui.h:3
-#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
-#: ../glade/ttrss_source.ui.h:4
+#: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
+#: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
 #, fuzzy
 msgid "_Password"
 msgstr "_Парола:"
 
-#: ../glade/google_source.ui.h:4 ../glade/inoreader_source.ui.h:4
-#: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
+#: ../glade/google_source.ui.h:4 ../glade/reedah_source.ui.h:4
+#: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
-msgstr ""
-
-#: ../glade/inoreader_source.ui.h:1
-msgid "Add InoReader Account"
-msgstr ""
-
-#: ../glade/inoreader_source.ui.h:2
-msgid "Please enter your InoReader account settings."
 msgstr ""
 
 #: ../glade/mainwindow.ui.h:2
@@ -1817,6 +1515,20 @@ msgstr ""
 #: ../glade/mainwindow.ui.h:7 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "Заглавия"
+
+#: ../glade/mark_read_dialog.ui.h:1
+#, fuzzy
+msgid "Mark all as read ?"
+msgstr "Отбелязване на всички като _прочетени"
+
+#: ../glade/mark_read_dialog.ui.h:2
+#, fuzzy
+msgid "Mark all as read"
+msgstr "Отбелязване на всички като _прочетени"
+
+#: ../glade/mark_read_dialog.ui.h:3
+msgid "Do not ask again"
+msgstr ""
 
 #: ../glade/new_folder.ui.h:1
 msgid "New Folder"
@@ -2066,92 +1778,100 @@ msgid "Toolbar _button labels:"
 msgstr ""
 
 #: ../glade/prefs.ui.h:37
-msgid "GUI"
-msgstr "Интерфейс"
+msgid "Other"
+msgstr ""
 
 #: ../glade/prefs.ui.h:38
-msgid "HTTP Proxy Server"
+msgid "Ask for confirmation when marking all items as read"
 msgstr ""
 
 #: ../glade/prefs.ui.h:39
+msgid "GUI"
+msgstr "Интерфейс"
+
+#: ../glade/prefs.ui.h:40
+msgid "HTTP Proxy Server"
+msgstr ""
+
+#: ../glade/prefs.ui.h:41
 msgid "_Auto Detect (GNOME or environment)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:40
+#: ../glade/prefs.ui.h:42
 #, fuzzy
 msgid "_No Proxy"
 msgstr "Сървър-посредник"
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:43
 msgid "_Manual Setting:"
 msgstr ""
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:44
 msgid "Proxy _Host:"
 msgstr "_Адрес:"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Port:"
 msgstr "_Порт:"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:46
 #, fuzzy
 msgid "Use Proxy Au_thentication"
 msgstr "Използване на _идентификация"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:47
 msgid "Proxy _Username:"
 msgstr "Потребителско _име:"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:48
 msgid "Proxy Pass_word:"
 msgstr "_Парола:"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:49
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:50
 msgid "Proxy"
 msgstr "Сървър-посредник"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:51
 #, fuzzy
 msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">Изобразяване на папките</span>"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:52
 msgid "Tell sites that I do _not want to be tracked"
 msgstr ""
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:53
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:54
 #, fuzzy
 msgid "Downloading Enclosures"
 msgstr "Изтегля се приложения"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:55
 msgid "_Download using"
 msgstr "_Чрез програмата"
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:57
+#, no-c-format
+msgid "custom-command %s"
+msgstr ""
+
+#: ../glade/prefs.ui.h:58
 #, fuzzy
 msgid "Opening Enclosures"
 msgstr "/Отваряне на приложение..."
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:59
 msgid "Enclosures"
 msgstr "Приложения"
-
-#: ../glade/prefs.ui.h:56
-#, fuzzy
-msgid "Plugins"
-msgstr "Нова _приставка"
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
@@ -2402,6 +2122,238 @@ msgid "Downloading Now"
 msgstr "Изтегля се приложения"
 
 #, fuzzy
+#~ msgid "_Subscriptions"
+#~ msgstr "Нова емисия"
+
+#~ msgid "Update _All"
+#~ msgstr "Актуализиране на _всички"
+
+#, fuzzy
+#~ msgid "Updates all subscriptions."
+#~ msgstr "Добавяне на нова емисия."
+
+#~ msgid "Mark All As _Read"
+#~ msgstr "Отбелязване на всички като _прочетени"
+
+#~ msgid "Marks read every item of every subscription."
+#~ msgstr "Отбелязване на абсолютно всички обекти като прочетени"
+
+#~ msgid "_Import Feed List..."
+#~ msgstr "_Внасяне на списък с емисии..."
+
+#~ msgid "Imports an OPML feed list."
+#~ msgstr "Внасяне на списък с емисии в OPML формат."
+
+#~ msgid "_Export Feed List..."
+#~ msgstr "_Изнасяне на списък с емисии..."
+
+#, fuzzy
+#~ msgid "Exports the feed list as OPML."
+#~ msgstr ">Изнасяне на списък с емисии във формат OPML."
+
+#~ msgid "_Quit"
+#~ msgstr "_Спиране на програмата"
+
+#, fuzzy
+#~ msgid "_Feed"
+#~ msgstr "_Емисии"
+
+#, fuzzy
+#~ msgid "Remove _All Items"
+#~ msgstr "Премахване на _всички"
+
+#~ msgid "Removes all items of the currently selected feed."
+#~ msgstr "Премахване на всички записи от текущата емисия."
+
+#, fuzzy
+#~ msgid "_Item"
+#~ msgstr "_Записи"
+
+#, fuzzy
+#~ msgid "Next Item"
+#~ msgstr "_Следващ непрочетен запис"
+
+#~ msgid "_Next Unread Item"
+#~ msgstr "_Следващ непрочетен запис"
+
+#~ msgid "_View"
+#~ msgstr "_Изглед"
+
+#~ msgid "Increases the text size of the item view."
+#~ msgstr "Увеличаване на размера на текста на записите."
+
+#~ msgid "Decreases the text size of the item view."
+#~ msgstr "Намаляване на размера на текста, при прегледа на записи."
+
+#, fuzzy
+#~ msgid "_Update Monitor"
+#~ msgstr "/_Актуализиране на папка"
+
+#~ msgid "_Preferences"
+#~ msgstr "_Настройки"
+
+#~ msgid "Edit Preferences."
+#~ msgstr "Промяна на настройките."
+
+#, fuzzy
+#~ msgid "S_earch"
+#~ msgstr "Търсене"
+
+#, fuzzy
+#~ msgid "Search All Feeds..."
+#~ msgstr "Търсене във всички емисии"
+
+#~ msgid "Show the search dialog."
+#~ msgstr "Показване на полето за търсене."
+
+#~ msgid "_Help"
+#~ msgstr "_Помощ"
+
+#~ msgid "_Contents"
+#~ msgstr "_Ръководство"
+
+#~ msgid "View help for this application."
+#~ msgstr "Преглед на помощта за тази програма."
+
+#~ msgid "_Quick Reference"
+#~ msgstr "_Бърз справочник"
+
+#~ msgid "View a list of all Liferea shortcuts."
+#~ msgstr "Преглед на списък с всички бързи клавиши в Liferea."
+
+#~ msgid "_FAQ"
+#~ msgstr "_Често задавани въпроси"
+
+#~ msgid "View the FAQ for this application."
+#~ msgstr "Преглед на често задаваните въпроси."
+
+#~ msgid "_About"
+#~ msgstr "_Относно програмата"
+
+#~ msgid "Shows an about dialog."
+#~ msgstr "Показване на диалогов прозорец с информация за програмата."
+
+#, fuzzy
+#~ msgid "_Normal View"
+#~ msgstr "Локален _файл"
+
+#, fuzzy
+#~ msgid "_Wide View"
+#~ msgstr "_Изглед"
+
+#, fuzzy
+#~ msgid "_Combined View"
+#~ msgstr "_Общ изглед"
+
+#, fuzzy
+#~ msgid "Hide feeds with no unread items."
+#~ msgstr "Няма непрочетени записи "
+
+#~ msgid "_New Subscription..."
+#~ msgstr "_Нова емисия..."
+
+#, fuzzy
+#~ msgid "Adds a subscription to the feed list."
+#~ msgstr "Добавяне на нова емисия."
+
+#, fuzzy
+#~ msgid "Adds a folder to the feed list."
+#~ msgstr "Добавяне на папка към списъка с емисии."
+
+#, fuzzy
+#~ msgid "Adds a new search folder to the feed list."
+#~ msgstr "Добавяне на нова виртуална папка към списъка с емисии."
+
+#, fuzzy
+#~ msgid "New _Source..."
+#~ msgstr "/_Нов/_Нова папка..."
+
+#, fuzzy
+#~ msgid "Adds a new feed list source."
+#~ msgstr "Добавяне на нова виртуална папка към списъка с емисии."
+
+#, fuzzy
+#~ msgid "Adds a new news bin."
+#~ msgstr "Добавяне на нова емисия."
+
+#, fuzzy
+#~ msgid "_Mark Items Read"
+#~ msgstr "Избиране като прочетен"
+
+#, fuzzy
+#~ msgid ""
+#~ "Marks all items of the selected feed list node / in the item list as read."
+#~ msgstr "Отбелязване като прочетено на всичко в избраната папка."
+
+#~ msgid ""
+#~ "Updates the selected subscription or all subscriptions of the selected "
+#~ "folder."
+#~ msgstr ""
+#~ "Актуализиране на избраните емисии или на всички емисии от избраната папка."
+
+#~ msgid "Opens the property dialog for the selected subscription."
+#~ msgstr "Отваряне на прозореца за предпочитанията за избраната емисия."
+
+#, fuzzy
+#~ msgid "_Remove"
+#~ msgstr "Премахване на _всички"
+
+#~ msgid "Removes the selected subscription."
+#~ msgstr "Изтриване на избраната емисия."
+
+#~ msgid "Toggles the read status of the selected item."
+#~ msgstr ""
+#~ "Превключване на състоянието „прочетено/непрочетено“ на избрания запис."
+
+#~ msgid "Toggles the flag status of the selected item."
+#~ msgstr "Превключване на флага за състоянието на избрания запис."
+
+#, fuzzy
+#~ msgid "R_emove"
+#~ msgstr "/Пре_махване на запис"
+
+#~ msgid "Removes the selected item."
+#~ msgstr "Премахване на избрания запис."
+
+#, fuzzy
+#~ msgid "Launches the item's link in a new Liferea browser tab."
+#~ msgstr "Отваряне на адреса на записа в настроения за това браузър."
+
+#, fuzzy
+#~ msgid "Launches the item's link in the Liferea item pane."
+#~ msgstr "Отваряне на адреса на записа в настроения за това браузър."
+
+#, fuzzy
+#~ msgid "Launches the item's link in the configured external browser."
+#~ msgstr "Отваряне на адреса на записа в настроения за това браузър."
+
+#~ msgid "_Work Offline"
+#~ msgstr "Режим: „_изключен“"
+
+#, fuzzy
+#~ msgid "_Update All"
+#~ msgstr "/_Актуализиране на всички"
+
+#, fuzzy
+#~ msgid "_Show Liferea"
+#~ msgstr "Събирач на RSS емисии (Liferea)"
+
+#, fuzzy
+#~ msgid "InoReader"
+#~ msgstr "Временни файлове на емисията"
+
+#~ msgid ""
+#~ "Note: <i>The username and password will be saved to your Liferea feedlist "
+#~ "file without using encryption.</i>"
+#~ msgstr ""
+#~ "Бележка: <i>Потребителското име и паролата ще бъдат запазени в списъка с "
+#~ "емисии без да се използва криптиране.</i>"
+
+#, fuzzy
+#~ msgid "Plugins"
+#~ msgstr "Нова _приставка"
+
+#, fuzzy
 #~ msgid "Liferea, the Linux Feed Reader"
 #~ msgstr "Събирач на RSS емисии (Liferea)"
 
@@ -2526,10 +2478,6 @@ msgstr "Изтегля се приложения"
 #, fuzzy
 #~ msgid "This feed does not exist anymore!"
 #~ msgstr "Този запис не съдържа връзка!"
-
-#, fuzzy
-#~ msgid "Mark all as read"
-#~ msgstr "Отбелязване на всички като _прочетени"
 
 #, fuzzy
 #~ msgid "<b>%s</b> has <b>%d</b> update"
@@ -3463,9 +3411,6 @@ msgstr "Изтегля се приложения"
 
 #~ msgid "Update All"
 #~ msgstr "Осъвременяване на всички"
-
-#~ msgid "Search all feeds."
-#~ msgstr "Търсене във всички емисии."
 
 #~ msgid "Viewing Mode"
 #~ msgstr "Режим на изгледа"

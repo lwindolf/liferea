@@ -183,6 +183,7 @@ src/webkit/webkit.c
 src/webkit/liferea_web_view.c
 src/webkit/web_extension/liferea_web_extension.c
 src/webkit/web_extension/web_extension_main.c
+plugins/headerbar.py
 [type: gettext/glade]glade/about.ui
 [type: gettext/glade]glade/auth.ui
 [type: gettext/glade]glade/enclosure_handler.ui
