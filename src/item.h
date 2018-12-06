@@ -157,6 +157,16 @@ gchar * item_get_teaser(itemPtr item);
  */
 gchar *	item_make_link(itemPtr item);
 
+/**
+ * item_get_author: (skip)
+ * @item:	the item
+ *
+ * Returns the resolved author for the item
+ *
+ * Returns: pointer to string in GSList meta data
+ */
+const gchar * item_get_author	(itemPtr item);
+
 /* Sets the item title */
 void		item_set_title(itemPtr item, const gchar * title);
 

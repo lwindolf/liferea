@@ -98,10 +98,12 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 	GSimpleActionGroup *action_group;
 	GSList		*iter;
 	gchar		*text, *item_link;
+	const gchar *author;
 
 	item_link = item_make_link (item);
 	menu_model = g_menu_new ();
 	menu_item = g_menu_item_new (NULL, NULL);
+	author = item_get_author(item);
 
 	section = g_menu_new ();
 	g_menu_item_set_label (menu_item, _("Open In _Tab"));
@@ -115,6 +117,12 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 	g_menu_item_set_label (menu_item, _("Open In _External Browser"));
 	g_menu_item_set_action_and_target (menu_item, "app.open-link-in-external-browser", "s", item_link);
 	g_menu_append_item (section, menu_item);
+
+	if(author){
+		g_menu_item_set_label (menu_item, _("Email The Author"));
+		g_menu_item_set_action_and_target (menu_item, "app.email-the-author", "t", (guint64) item->id);
+		g_menu_append_item (section, menu_item);
+	}
 
 	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 	g_object_unref (section);

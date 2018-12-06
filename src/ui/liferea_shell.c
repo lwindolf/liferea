@@ -991,13 +991,58 @@ on_action_copy_link_to_clipboard (GSimpleAction *action, GVariant *parameter, gp
 
 }
 
+static void
+email_the_author(GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	itemPtr item = NULL;
+
+	if (parameter)
+		item = item_load (g_variant_get_uint64 (parameter));
+	else
+		item = itemlist_get_selected ();
+
+	if(item) {
+		const gchar *author, *subject;
+		GError		*error = NULL;
+		gchar 		*argv[5];
+
+		author = item_get_author(item);
+		subject = item_get_title (item);
+
+		g_assert (author != NULL);
+
+		argv[0] = g_strdup("xdg-email");
+		argv[1] = g_strdup_printf ("mailto:%s", author);
+		argv[2] = g_strdup("--subject");
+		argv[3] = g_strdup_printf ("%s", subject);
+		argv[4] = NULL;
+
+		g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
+
+		if (error && (0 != error->code)) {
+			debug2 (DEBUG_GUI, "Email command failed: %s : %s", argv[0], error->message);
+			liferea_shell_set_important_status_bar (_("Email command failed: %s"), error->message);
+			g_error_free (error);
+		} else {
+			liferea_shell_set_status_bar (_("Starting: \"%s\""), argv[0]);
+		}
+
+		g_free(argv[0]);
+		g_free(argv[1]);
+		g_free(argv[2]);
+		g_free(argv[3]);
+		item_unload(item);
+	}
+}
+
 static const GActionEntry liferea_shell_link_gaction_entries[] = {
 	{"open-link-in-tab", on_action_open_link_in_tab, "s", NULL, NULL},
 	{"open-link-in-browser", on_action_open_link_in_browser, "s", NULL, NULL},
 	{"open-link-in-external-browser", on_action_open_link_in_external_browser, "s", NULL, NULL},
 	/* The parameters are link, then title. */
 	{"social-bookmark-link", on_action_social_bookmark_link, "(ss)", NULL, NULL},
-	{"copy-link-to-clipboard", on_action_copy_link_to_clipboard, "s", NULL, NULL}
+	{"copy-link-to-clipboard", on_action_copy_link_to_clipboard, "s", NULL, NULL},
+	{"email-the-author", email_the_author, "t", NULL, NULL}
 };
 
 static void
