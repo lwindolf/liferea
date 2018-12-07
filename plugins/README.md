@@ -3,7 +3,7 @@
 Plugins are usually in Python and it is easier than ever to change
 core behaviours of Liferea using plugins!
 
-To get an idea how simple it is to modify/extebd Liferea with 
+To get an idea how simple it is to modify or extend Liferea with 
 a plugin have a look at "bold-unread.py" which grabs a handle to
 the feed list and changes the visual rendering of feed titles.
 
