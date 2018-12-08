@@ -30,6 +30,7 @@
 #include "node.h"
 #include "vfolder.h"
 #include "ui/ui_common.h"
+#include "ui/browser_tabs.h"
 #include "ui/enclosure_list_view.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
@@ -155,6 +156,8 @@ itemview_clear (void)
 void
 itemview_set_mode (itemViewMode mode)
 {
+	browser_tabs_show_headlines ();
+
 	if (itemview->mode != mode) {
 		/* FIXME: Not being able to call itemview_clear() here is awful! */
 		itemview->mode = mode;

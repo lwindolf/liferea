@@ -35,7 +35,6 @@
 #include "newsbin.h"
 #include "render.h"
 #include "vfolder.h"
-#include "ui/browser_tabs.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -101,7 +100,7 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 
 		debug1 (DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title (node));
 
-		browser_tabs_show_headlines ();		// FIXME: emit signal to item list instead of bother the tabs manager
+		// FIXME: emit signal for selection-changed
 
 		/* 1.) update feed list and item list states */
 		feedlist_selection_changed (node);
