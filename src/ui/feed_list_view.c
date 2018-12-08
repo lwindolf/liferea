@@ -53,7 +53,14 @@ struct _FeedListView {
 	gboolean		feedlist_reduced_unread;	/**< TRUE when feed list is in reduced mode (no folders, only unread feeds) */
 };
 
+enum {
+	SELECTION_CHANGED,
+	LAST_SIGNAL
+};
+
 static FeedListView *flv = NULL;	// singleton
+
+static guint feed_list_view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (FeedListView, feed_list_view, G_TYPE_OBJECT);
 
@@ -68,6 +75,18 @@ feed_list_view_class_init (FeedListViewClass *klass)
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	object_class->finalize = feed_list_view_finalize;
+
+	feed_list_view_signals[SELECTION_CHANGED] =
+		g_signal_new ("selection-changed",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
 }
 
 static void
@@ -99,8 +118,7 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 	 	gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
 
 		debug1 (DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title (node));
-
-		// FIXME: emit signal for selection-changed
+		g_signal_emit_by_name (flv, "selection-changed", node->id);
 
 		/* 1.) update feed list and item list states */
 		feedlist_selection_changed (node);
@@ -499,7 +517,7 @@ on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer 
 void
 on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	GVariant *state = g_action_get_state (action);
+	GVariant *state = g_action_get_state (G_ACTION (action));
 	gboolean val = !g_variant_get_boolean (state);
 	feed_list_view_set_reduce_mode (val);
 	g_simple_action_set_state (action, g_variant_new_boolean (val));
