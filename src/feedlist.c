@@ -417,7 +417,7 @@ feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filt
 	if (duplicate_url_node == NULL) {
 		feedlist_add_subscription (source, filter, options, FEED_REQ_PRIORITY_HIGH);
 	} else {
-		feed_list_node_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicate_url_node);
+        feed_list_view_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicate_url_node);
 	}
 }
 
