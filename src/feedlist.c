@@ -418,6 +418,19 @@ feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptio
 }
 
 void
+feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
+{
+	nodePtr duplicate_url_node = NULL;
+
+	duplicate_url_node = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
+	if (duplicate_url_node == NULL) {
+		feedlist_add_subscription (source, filter, options, FEED_REQ_PRIORITY_HIGH);
+	} else {
+		feed_list_node_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicate_url_node);
+	}
+}
+
+void
 feedlist_node_imported (nodePtr node)
 {
 	feed_list_node_add (node);
