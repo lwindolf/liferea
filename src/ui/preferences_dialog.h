@@ -2,7 +2,7 @@
  * @file preferences_dialog.h Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,31 +27,7 @@
 G_BEGIN_DECLS
 
 #define PREFERENCES_DIALOG_TYPE		(preferences_dialog_get_type ())
-#define PREFERENCES_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), PREFERENCES_DIALOG_TYPE, PreferencesDialog))
-#define PREFERENCES_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), PREFERENCES_DIALOG_TYPE, PreferencesDialogClass))
-#define IS_PREFERENCES_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), PREFERENCES_DIALOG_TYPE))
-#define IS_PREFERENCES_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), PREFERENCES_DIALOG_TYPE))
-
-typedef struct PreferencesDialog	PreferencesDialog;
-typedef struct PreferencesDialogClass	PreferencesDialogClass;
-typedef struct PreferencesDialogPrivate	PreferencesDialogPrivate;
-
-extern PreferencesDialog *preferences_dialog;
-
-struct PreferencesDialog
-{
-	GObject		parent;
-	
-	/*< private >*/
-	PreferencesDialogPrivate	*priv;
-};
-
-struct PreferencesDialogClass 
-{
-	GObjectClass parent_class;
-};
-
-GType preferences_dialog_get_type	(void);
+G_DECLARE_FINAL_TYPE (PreferencesDialog, preferences_dialog, PREFERENCES, DIALOG, GObject)
 
 /**
  * prefs_get_download_command:
@@ -61,6 +37,7 @@ GType preferences_dialog_get_type	(void);
 gchar * prefs_get_download_command (void);
 
 /**
+ * preferences_dialog_open:
  * Show the preferences dialog.
  */
 void preferences_dialog_open (void);

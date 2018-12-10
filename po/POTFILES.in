@@ -114,8 +114,6 @@ src/ui/popup_menu.c
 src/ui/popup_menu.h
 src/ui/preferences_dialog.c
 src/ui/preferences_dialog.h
-src/ui/feed_list_node.c
-src/ui/feed_list_node.h
 src/ui/subscription_dialog.c
 src/ui/subscription_dialog.h
 src/ui/browser_tabs.c

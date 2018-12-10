@@ -1,12 +1,12 @@
 /**
  * @file subscription.c  common subscription handling
- * 
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,9 +33,9 @@
 #include "metadata.h"
 #include "net.h"
 #include "ui/auth_dialog.h"
+#include "ui/feed_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
-#include "ui/feed_list_node.h"
 
 /* The allowed feed protocol prefixes (see http://25hoursaday.com/draft-obasanjo-feed-URI-scheme-02.html) */
 #define FEED_PROTOCOL_PREFIX "feed://"
@@ -47,23 +47,23 @@ subscription_new (const gchar *source,
                   updateOptionsPtr options)
 {
 	subscriptionPtr	subscription;
-	
+
 	subscription = g_new0 (struct subscription, 1);
 	subscription->type = feed_get_subscription_type ();
 	subscription->updateOptions = options;
-	
+
 	if (!subscription->updateOptions)
 		subscription->updateOptions = g_new0 (struct updateOptions, 1);
-		
-	subscription->updateState = g_new0 (struct updateState, 1);	
+
+	subscription->updateState = g_new0 (struct updateState, 1);
 	subscription->updateInterval = -1;
 	subscription->defaultInterval = -1;
-	
+
 	if (source) {
 		gboolean feedPrefix = FALSE;
 		gchar *uri = g_strdup (source);
 		g_strstrip (uri);	/* strip confusing whitespaces */
-		
+
 		/* strip feed protocol prefix variant 1 */
 		if (uri == strstr (uri, FEED_PROTOCOL_PREFIX)) {
 			gchar *tmp = uri;
@@ -79,22 +79,22 @@ subscription_new (const gchar *source,
 			g_free (tmp);
 			feedPrefix = TRUE;
 		}
-			
-		/* ensure protocol prefix (but only for feed:[//] URIs to avoid 
+
+		/* ensure protocol prefix (but only for feed:[//] URIs to avoid
 		   breaking local file and command line subscriptions) */
 		if (feedPrefix && !strstr (uri, "://")) {
 			gchar *tmp = uri;
 			uri = g_strdup_printf ("http://%s", uri);
 			g_free (tmp);
 		}
-			
+
 		subscription_set_source (subscription, uri);
 		g_free (uri);
 	}
-	
+
 	if (filter)
 		subscription_set_filter (subscription, filter);
-	
+
 	return subscription;
 }
 
@@ -106,7 +106,7 @@ subscription_can_be_updated (subscriptionPtr subscription)
 		liferea_shell_set_status_bar (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
 		return FALSE;
 	}
-	
+
 	if (subscription->discontinued) {
 		liferea_shell_set_status_bar (_("The subscription \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title (subscription->node));
 		return FALSE;
@@ -117,14 +117,14 @@ subscription_can_be_updated (subscriptionPtr subscription)
 		return FALSE;
 	}
 	return TRUE;
-}	
+}
 
 void
-subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now) 
+subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now)
 {
 	if (!subscription)
 		return;
-		
+
 	subscription->updateState->lastPoll.tv_sec = now->tv_sec;
 	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.", subscription->updateState->lastPoll.tv_sec);
 }
@@ -135,7 +135,7 @@ subscription_favicon_downloaded (gpointer user_data)
 	nodePtr	node = (nodePtr)user_data;
 
 	node_load_icon (node);
-	feed_list_node_update (node->id);
+	feed_list_view_update_node (node->id);
 }
 
 void
@@ -148,7 +148,7 @@ subscription_update_favicon (subscriptionPtr subscription)
 	                  node_get_base_url (subscription->node),
 			  subscription_get_source (subscription),
 			  subscription->updateOptions,		// FIXME: correct?
-	                  subscription_favicon_downloaded, 
+	                  subscription_favicon_downloaded,
 			  (gpointer)subscription->node);
 }
 
@@ -230,7 +230,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		processing = TRUE;
 	}
 
-	
+
 	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
 
 	subscription->updateJob = NULL;
@@ -256,7 +256,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (0 < maxage    ) { update_time_sources++; next_update += maxage;     }
 	if (0 < syn_update) { update_time_sources++; next_update += syn_update; }
 	if (0 < ttl       ) { update_time_sources++; next_update += ttl;        }
-	
+
 	if (0 < update_time_sources) {
 		/* enforce a 5 minute minimum update interval.
 		   round up to nearest 5-minute block to coalesce updates (battery optimization). */
@@ -277,14 +277,14 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	g_get_current_time (&now);
 	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
 		subscription_update_favicon (subscription);
-	
+
 	/* 5. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
 	g_get_current_time (&subscription->updateState->lastPoll);
 
-	// FIXME: use new-items signal in itemview class        
+	// FIXME: use new-items signal in itemview class
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
 
@@ -302,15 +302,15 @@ subscription_update (subscriptionPtr subscription, guint flags)
 {
 	updateRequestPtr		request;
 	GTimeVal			now;
-	
+
 	if (!subscription)
 		return;
-		
+
 	if (subscription->updateJob)
 		return;
-	
+
 	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
-	 
+
 	if (subscription_can_be_updated (subscription)) {
 		liferea_shell_set_status_bar (_("Updating \"%s\""), node_get_title (subscription->node));
 
@@ -337,19 +337,19 @@ subscription_auto_update (subscriptionPtr subscription)
 	gint		interval;
 	guint		flags = 0;
 	GTimeVal	now;
-	
+
 	if (!subscription)
 		return;
 
 	interval = subscription_get_update_interval (subscription);
 	if (-1 == interval)
 		conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
-			
+
 	if (-2 >= interval || 0 == interval)
 		return;		/* don't update this subscription */
-		
+
 	g_get_current_time (&now);
-	
+
 	if (subscription->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
 		subscription_update (subscription, flags);
 }
@@ -372,7 +372,7 @@ subscription_get_update_interval (subscriptionPtr subscription)
 
 void
 subscription_set_update_interval (subscriptionPtr subscription, gint interval)
-{	
+{
 	if (0 == interval) {
 		interval = -1;	/* This is evil, I know, but when this method
 				   is called to set the update interval to 0
@@ -400,7 +400,7 @@ subscription_set_default_update_interval (subscriptionPtr subscription, guint in
 static const gchar *
 subscription_get_orig_source (subscriptionPtr subscription)
 {
-	return subscription->origSource; 
+	return subscription->origSource;
 }
 
 const gchar *
@@ -446,7 +446,7 @@ void
 subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl)
 {
 	gchar 	*htmlUrl = NULL;
-	
+
 	if (newHtmlUrl) {
 		if (strstr (newHtmlUrl, "://")) {
 			/* absolute URI can be used directly */
@@ -454,7 +454,7 @@ subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl
 		} else {
 			/* relative URI part needs to be expanded */
 			gchar *tmp, *source;
-			
+
 			source = g_strdup (subscription_get_source (subscription));
 			tmp = strrchr (source, '/');
 			if (tmp)
@@ -463,7 +463,7 @@ subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl
 			htmlUrl = common_build_url (newHtmlUrl, source);
 			g_free (source);
 		}
-		
+
 		metadata_list_set (&subscription->metadata, "homepage", htmlUrl);
 		g_free (htmlUrl);
 	}
@@ -483,7 +483,7 @@ subscription_set_auth_info (subscriptionPtr subscription,
                             const gchar *password)
 {
 	g_assert (NULL != subscription->updateOptions);
-		
+
 	g_free (subscription->updateOptions->username);
 	g_free (subscription->updateOptions->password);
 
@@ -500,11 +500,11 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 	xmlChar		*source, *homepage, *filter, *intervalStr, *tmp;
 
 	subscription = subscription_new (NULL, NULL, NULL);
-	
+
 	source = xmlGetProp (xml, BAD_CAST "xmlUrl");
 	if (!source)
 		source = xmlGetProp (xml, BAD_CAST "xmlurl");	/* e.g. for AmphetaDesk */
-		
+
 	if (source) {
 		if (!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
@@ -513,7 +513,7 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 			xmlFree (source);
 			source = tmp;
 		}
-	
+
 		subscription_set_source (subscription, source);
 		xmlFree (source);
 
@@ -534,22 +534,22 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 			subscription_set_filter (subscription, filter);
 			xmlFree (filter);
 		}
-		
+
 		intervalStr = xmlGetProp (xml, BAD_CAST "updateInterval");
 		subscription_set_update_interval (subscription, common_parse_long (intervalStr, -1));
 		xmlFree (intervalStr);
-	
+
 		/* no proxy flag */
 		tmp = xmlGetProp (xml, BAD_CAST "dontUseProxy");
 		if (tmp && !xmlStrcmp (tmp, BAD_CAST "true"))
 			subscription->updateOptions->dontUseProxy = TRUE;
 		xmlFree (tmp);
-	
+
 		/* authentication options */
 		subscription->updateOptions->username = xmlGetProp (xml, BAD_CAST "username");
 		subscription->updateOptions->password = xmlGetProp (xml, BAD_CAST "password");
 	}
-	
+
 	return subscription;
 }
 
@@ -564,16 +564,16 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST subscription_get_homepage (subscription));
 	else
 		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST "");
-	
+
 	if (subscription_get_filter (subscription))
 		xmlNewProp (xml, BAD_CAST"filtercmd", BAD_CAST subscription_get_filter (subscription));
-		
+
 	if(trusted) {
 		xmlNewProp (xml, BAD_CAST"updateInterval", BAD_CAST interval);
 
 		if (subscription->updateOptions->dontUseProxy)
 			xmlNewProp (xml, BAD_CAST"dontUseProxy", BAD_CAST"true");
-		
+
 		if (!liferea_auth_has_active_store ()) {
 			if (subscription->updateOptions->username)
 				xmlNewProp (xml, BAD_CAST"username", subscription->updateOptions->username);
@@ -581,7 +581,7 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 				xmlNewProp (xml, BAD_CAST"password", subscription->updateOptions->password);
 		}
 	}
-	
+
 	g_free (interval);
 }
 
@@ -589,7 +589,7 @@ void
 subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml)
 {
 	gchar	*tmp;
-	
+
 	xmlNewTextChild (xml, NULL, "feedSource", subscription_get_source (subscription));
 	xmlNewTextChild (xml, NULL, "feedOrigSource", subscription_get_orig_source (subscription));
 
@@ -621,18 +621,18 @@ subscription_free (subscriptionPtr subscription)
 {
 	if (!subscription)
 		return;
-		
+
 	g_free (subscription->updateError);
 	g_free (subscription->filterError);
 	g_free (subscription->httpError);
 	g_free (subscription->source);
 	g_free (subscription->origSource);
 	g_free (subscription->filtercmd);
-	
+
 	update_job_cancel_by_owner (subscription);
 	update_options_free (subscription->updateOptions);
 	update_state_free (subscription->updateState);
 	metadata_list_free (subscription->metadata);
-	
+
 	g_free (subscription);
 }

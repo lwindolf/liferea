@@ -6,7 +6,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,12 +27,11 @@
 #include "debug.h"
 #include "ui/item_list_view.h"
 #include "ui/feed_list_view.h"
-#include "ui/feed_list_node.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_dnd.h"
 #include "fl_sources/node_source.h"
 
-/* 
+/*
     Why does Liferea need such a complex DnD handling (for the feed list)?
 
      -> Because parts of the feed list might be un-draggable.
@@ -40,17 +39,17 @@
 	with even incompatible subscription types.
      -> Because removal at drag source and insertion at drop target
         must be atomic to avoid subscription losses.
-	
+
     For simplicity the DnD code reuses the UI node removal and insertion
     methods that asynchronously apply the actions at the node source.
-    
+
     (FIXME: implement the last part)
  */
 
 static gboolean (*old_feed_drop_possible)(GtkTreeDragDest   *drag_dest,
                                           GtkTreePath       *dest_path,
                                           GtkSelectionData  *selection_data);
-					  		     
+
 static gboolean (*old_feed_drag_data_received)(GtkTreeDragDest *drag_dest,
                                                GtkTreePath *dest,
                                                GtkSelectionData *selection_data);
@@ -63,16 +62,16 @@ ui_dnd_feed_draggable (GtkTreeDragSource *drag_source, GtkTreePath *path)
 {
 	GtkTreeIter	iter;
 	nodePtr		node;
-	
+
 	debug1 (DEBUG_GUI, "DnD check if feed dragging is possible (%d)", path);
 
 	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_source), &iter, path)) {
 		gtk_tree_model_get (GTK_TREE_MODEL (drag_source), &iter, FS_PTR, &node, -1);
-		
+
 		/* never drag "empty" entries or nodes of read-only subscription lists*/
 		if (!node || !(NODE_SOURCE_TYPE (node->parent)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST))
 			return FALSE;
-		
+
 		return TRUE;
 	} else {
 		g_warning ("fatal error! could not resolve tree path!");
@@ -87,9 +86,9 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 	GtkTreePath	*src_path = NULL;
 	GtkTreeIter	iter;
 	nodePtr		sourceNode, targetNode;
-	
+
 	debug1 (DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
-		   	
+
 	if (!(old_feed_drop_possible) (drag_dest, dest_path, selection_data))
 		return FALSE;
 
@@ -163,10 +162,10 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			oldPos = g_slist_index (oldParent->children, node);
 			oldParent->children = g_slist_remove (oldParent->children, node);
 			node_update_counters (oldParent);
-			
+
 			if (0 == g_slist_length (oldParent->children))
-				feed_list_node_add_empty_node (feed_list_node_to_iter (oldParent->id));
-			
+				feed_list_view_add_empty_node (feed_list_view_to_iter (oldParent->id));
+
 			/* and rebuild new parents child list */
 			if (gtk_tree_model_iter_parent (GTK_TREE_MODEL (drag_dest), &parentIter, &iter)) {
 				gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &parentIter, FS_PTR, &newParent, -1);
@@ -181,19 +180,19 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			g_slist_free (newParent->children);
 			newParent->children = NULL;
 			node->parent = newParent;
-			
+
 			debug0 (DEBUG_GUI, "new newParent child list:");
-				
+
 			/* and rebuild it from the tree model */
 			if (feedlist_get_root() != newParent)
 				valid = gtk_tree_model_iter_children (GTK_TREE_MODEL (drag_dest), &iter2, &parentIter);
 			else
 				valid = gtk_tree_model_iter_children (GTK_TREE_MODEL (drag_dest), &iter2, NULL);
-				
+
 			pos = 0;
 			added = FALSE;
 			while (valid) {
-				nodePtr	child;			
+				nodePtr	child;
 				gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter2, FS_PTR, &child, -1);
 				if (child) {
 					/* Well this is a bit complicated... If we move a feed inside a folder
@@ -202,7 +201,7 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 					   added is set once the new copy is encountered. The remaining copy
 					   is skipped automatically when the flag is set.
 					 */
-					 
+
 					/* check if this is a copy of the dragged node or the original itself */
 					if ((newParent == oldParent) && !strcmp(node->id, child->id)) {
 						if ((pos == oldPos) || added) {
@@ -222,19 +221,19 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 				} else {
 					debug0 (DEBUG_GUI, "   -> removing empty node");
 					/* remove possible existing "(empty)" node from newParent */
-					feed_list_node_remove_empty_node (&parentIter);
+					feed_list_view_remove_empty_node (&parentIter);
 				}
 				valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (drag_dest), &iter2);
 				pos++;
 			}
-			
+
 			db_node_update (node);
 			node_update_counters (newParent);
-			
+
 			feedlist_schedule_save ();
 		}
 	}
-						      
+
 	return result;
 }
 

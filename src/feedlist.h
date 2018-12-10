@@ -2,7 +2,7 @@
  * @file feedlist.h  subscriptions as an hierarchic tree
  *
  * Copyright (C) 2005-2014 Lars Windolf <lars.windolf@gmx.de>
- *	      
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -29,32 +29,8 @@
 
 G_BEGIN_DECLS
 
-#define FEEDLIST_TYPE		(feedlist_get_type ())
-#define FEEDLIST(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), FEEDLIST_TYPE, FeedList))
-#define FEEDLIST_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), FEEDLIST_TYPE, FeedListClass))
-#define IS_FEEDLIST(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), FEEDLIST_TYPE))
-#define IS_FEEDLIST_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), FEEDLIST_TYPE))
-
-typedef struct FeedList		FeedList;
-typedef struct FeedListClass	FeedListClass;
-typedef struct FeedListPrivate	FeedListPrivate;
-
-extern FeedList *feedlist;
-
-struct FeedList
-{
-	GObject		parent;
-	
-	/*< private >*/
-	FeedListPrivate	*priv;
-};
-
-struct FeedListClass 
-{
-	GObjectClass parent_class;	
-};
-
-GType feedlist_get_type (void);
+#define FEED_LIST_TYPE		(feedlist_get_type ())
+G_DECLARE_FINAL_TYPE (FeedList, feedlist, FEED, LIST, GObject)
 
 /**
  * feedlist_create: (skip)
@@ -68,7 +44,7 @@ FeedList * feedlist_create (void);
 /**
  * feedlist_get_selected: (skip)
  *
- * Get currently selected feed list node 
+ * Get currently selected feed list node
  *
  * Returns: (transfer none) (nullable): selected node (or NULL)
  */
@@ -136,7 +112,7 @@ typedef enum {
  * @type:		        NODE_BY_(URL|FOLDER_TITLE|ID)
  * @str:		        string to compare to
  *
- * Search trough list of subscriptions for a node matching exactly 
+ * Search trough list of subscriptions for a node matching exactly
  * to an criteria defined by the find type and comparison string.
  * Searches recursively from a given parent node or the root node.
  * Always returns just the first occurence in traversal order.
@@ -182,11 +158,11 @@ void feedlist_add_folder (const gchar *title);
  *
  * Notifies the feed list controller that a new node
  * was added to the feed list. This method will insert
- * the new node into the feed list view and select 
+ * the new node into the feed list view and select
  * the new node.
  *
  * This method is used for all node types (feeds, folders...).
- * 
+ *
  * Before calling this method the node must be given
  * a parent node using node_set_parent().
  *
@@ -203,7 +179,7 @@ void feedlist_node_added (nodePtr node);
  * selection won't be changed.
  *
  * This method is used for all node types (feeds, folders...).
- * 
+ *
  * Before calling this method the node must be given
  * a parent node using node_set_parent().
  *
@@ -224,7 +200,7 @@ void feedlist_remove_node (nodePtr node);
  *
  * Notifies the feed list controller that an existing
  * node was removed from it's source (feed list subtree)
- * and is to be destroyed and to be removed from the 
+ * and is to be destroyed and to be removed from the
  * feed list view.
  *
  */
@@ -293,12 +269,12 @@ void feedlist_mark_all_read (nodePtr node);
  */
 void feedlist_selection_changed (nodePtr node);
 
-/** 
+/**
  * feedlist_find_unread_feed: (skip)
  * @folder:	the folder to search
  *
  * Tries to find the first node with an unread item in the given folder.
- * 
+ *
  * Returns: (nullable) (transfer none): a found node or NULL
  */
 nodePtr	feedlist_find_unread_feed (nodePtr folder);

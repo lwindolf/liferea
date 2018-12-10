@@ -17,7 +17,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include "ui/popup_menu.h"
@@ -34,7 +34,6 @@
 #include "social.h"
 #include "vfolder.h"
 #include "ui/enclosure_list_view.h"
-#include "ui/feed_list_node.h"
 #include "ui/feed_list_view.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
@@ -98,10 +97,12 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 	GSimpleActionGroup *action_group;
 	GSList		*iter;
 	gchar		*text, *item_link;
+	const gchar *author;
 
 	item_link = item_make_link (item);
 	menu_model = g_menu_new ();
 	menu_item = g_menu_item_new (NULL, NULL);
+	author = item_get_author(item);
 
 	section = g_menu_new ();
 	g_menu_item_set_label (menu_item, _("Open In _Tab"));
@@ -115,6 +116,12 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 	g_menu_item_set_label (menu_item, _("Open In _External Browser"));
 	g_menu_item_set_action_and_target (menu_item, "app.open-link-in-external-browser", "s", item_link);
 	g_menu_append_item (section, menu_item);
+
+	if(author){
+		g_menu_item_set_label (menu_item, _("Email The Author"));
+		g_menu_item_set_action_and_target (menu_item, "app.email-the-author", "t", (guint64) item->id);
+		g_menu_append_item (section, menu_item);
+	}
 
 	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 	g_object_unref (section);
@@ -216,14 +223,14 @@ static void
 ui_popup_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	nodePtr node = (nodePtr) user_data;
-	
+
 	NODE_TYPE (node)->request_properties (node);
 }
 
 static void
 ui_popup_delete (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feed_list_node_remove ((nodePtr)user_data);
+	feed_list_view_remove ((nodePtr)user_data);
 }
 
 static void
@@ -249,7 +256,7 @@ static const GActionEntry ui_popup_node_gaction_entries[] = {
   {"node-update", on_menu_update, NULL, NULL, NULL}
 };
 
-/** 
+/**
  * Shows popup menus for the feed list depending on the
  * node type.
  */
@@ -290,10 +297,10 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 
 			if (node_can_add_child_feed (node))
 				g_menu_append (submenu, _("New _Subscription..."), "app.new-subscription");
-			
+
 			if (node_can_add_child_folder (node))
 				g_menu_append (submenu, _("New _Folder..."), "app.new-folder");
-				
+
 			if (isRoot) {
 				g_menu_append (submenu, _("New S_earch Folder..."), "app.new-vfolder");
 				g_menu_append (submenu, _("New S_ource..."), "app.new-source");
@@ -303,7 +310,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, guint button, guint32
 			g_menu_append_submenu (section, _("_New"), G_MENU_MODEL (submenu));
 			g_object_unref (submenu);
 		}
-		
+
 		if (isRoot && node->children) {
 			/* Ending section and starting a new one to get a separator : */
 			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
@@ -379,7 +386,7 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 
 	eb = (GdkEventButton*)event;
 
-	/* determine node */	
+	/* determine node */
 	if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (treeview), event->x, event->y, &path, NULL, NULL, NULL)) {
 		model = gtk_tree_view_get_model (GTK_TREE_VIEW (treeview));
 		gtk_tree_model_get_iter (model, &iter, path);
@@ -389,7 +396,7 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 		selected = FALSE;
 		node = feedlist_get_root ();
 	}
-	
+
 	/* apply action */
 	switch (eb->button) {
 		default:
@@ -415,7 +422,7 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 			ui_popup_node_menu (node, selected, eb->button, eb->time);
 			break;
 	}
-			
+
 	return TRUE;
 }
 

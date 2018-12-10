@@ -1,12 +1,12 @@
 /**
  * @file render.c  generic GTK theme and XSLT rendering handling
- * 
+ *
  * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -44,14 +44,14 @@
 /* Liferea provides special screens and the item and the feed displays
    using self-generated HTML. To separate code and layout and to easily
    localize the layout it is provided by automake XSL stylesheet templates.
-   
+
    Using automake translations are merged into those XSL stylesheets. On
    startup Liferea loads those expanded XSL stylesheets. During startup
    Liferea initially reduces the contained translations to the currently
    used ones by stripping all others from the XSL stylesheet using the
    localization stylesheet (xslt/i18n-filter.xslt). The resulting XSLT
-   instance is kept in memory and used to render each items and feeds. 
-   
+   instance is kept in memory and used to render each items and feeds.
+
    The following code uses a hash table to maintain stylesheet instance
    and performs CSS adaptions to the current GTK theme. */
 
@@ -148,7 +148,7 @@ render_load_stylesheet (const gchar *xsltName)
 	xsltFreeStylesheet (i18n_filter);
 
 	g_hash_table_insert (stylesheets, g_strdup (xsltName), xslt);
-	
+
 	return xslt;
 }
 
@@ -243,7 +243,7 @@ render_init_theme_colors (GtkWidget *widget)
 	rgba_to_color (&color, &rgba);
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-VISITED-LINK", color));
 
-	/* As there doesn't seem to be a safe way to determine wether we have a 
+	/* As there doesn't seem to be a safe way to determine wether we have a
 	   dark GTK theme, let's guess it from the foreground vs. background
 	   color average */
 
@@ -258,7 +258,7 @@ render_init_theme_colors (GtkWidget *widget)
 	if (textAvg > bgAvg) {
 		debug0 (DEBUG_HTML, "Dark GTK theme detected.");
 		darkTheme = TRUE;
-	} 
+	}
 
 	if (darkTheme) {
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->text[GTK_STATE_NORMAL]));
@@ -281,13 +281,13 @@ static gchar *
 render_set_theme_colors (gchar *css)
 {
 	GSList	*iter = themeColors;
-	
+
 	while (iter) {
 		themeColorPtr tc = (themeColorPtr)iter->data;
 		css = common_strreplace (css, tc->name, tc->value);
 		iter = g_slist_next (iter);
 	}
-	
+
 	return css;
 }
 
@@ -295,7 +295,7 @@ const gchar *
 render_get_theme_color (const gchar *name)
 {
 	GSList	*iter;
-	
+
 	if (!themeColors)
 		return NULL;
 
@@ -394,7 +394,7 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	xmlDocPtr		resDoc;
 	xsltStylesheetPtr	xslt;
 	xmlOutputBufferPtr	buf;
-	
+
 	xslt = render_load_stylesheet(xsltName);
 	if (!xslt)
 		return NULL;
@@ -408,14 +408,14 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 		g_warning ("fatal: applying rendering stylesheet (%s) failed!", xsltName);
 		return NULL;
 	}
-	
+
 	/* for debugging use: xsltSaveResultToFile(stdout, resDoc, xslt); */
-	
+
 	/* save results into return string */
 	buf = xmlAllocOutputBuffer (NULL);
 	if (-1 == xsltSaveResultTo(buf, resDoc, xslt))
 		g_warning ("fatal: retrieving result of rendering stylesheet failed (%s)!", xsltName);
-		
+
 #ifdef LIBXML2_NEW_BUFFER
 	if (xmlOutputBufferGetSize (buf) > 0)
 		output = xmlCharStrdup (xmlOutputBufferGetContent (buf));
@@ -427,10 +427,10 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	xmlOutputBufferClose (buf);
 	xmlFreeDoc (resDoc);
 	render_parameter_free (paramSet);
-	
+
 	if (output) {
 		gchar *tmp;
-		
+
 		/* Return only the body contents */
 		tmp = strstr (output, "<body");
 		if (tmp) {
@@ -461,10 +461,10 @@ render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...)
 {
 	gchar	*new, *value, *name;
 	va_list args;
-	
+
 	g_assert (NULL != fmt);
 	g_assert (NULL != paramSet);
-	
+
 	va_start (args, fmt);
 	new = g_strdup_vprintf (fmt, args);
 	va_end (args);
@@ -474,7 +474,7 @@ render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...)
 	g_assert (NULL != value);
 	*value = 0;
 	value++;
-	
+
 	paramSet->len += 2;
 	paramSet->params = (gchar **)g_realloc (paramSet->params, (paramSet->len + 1)*sizeof(gchar *));
 	paramSet->params[paramSet->len] = NULL;

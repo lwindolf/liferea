@@ -1,12 +1,12 @@
 /**
  * @file newsbin.c  news bin node type implementation
- * 
+ *
  * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,7 +30,7 @@
 #include "metadata.h"
 #include "render.h"
 #include "ui/icons.h"
-#include "ui/feed_list_node.h"
+#include "ui/feed_list_view.h"
 #include "ui/liferea_dialog.h"
 
 static GtkWidget *newnewsbindialog = NULL;
@@ -46,13 +46,13 @@ static void
 newsbin_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 {
 	feed_get_node_type ()->import (node, parent, cur, trusted);
-	
+
 	/* but we don't need a subscription (created by feed_import()) */
 	g_free (node->subscription);
 	node->subscription = NULL;
-	
+
 	((feedPtr)node->data)->cacheLimit = CACHE_UNLIMITED;
-	
+
 	newsbin_list = g_slist_append(newsbin_list, node);
 }
 
@@ -80,7 +80,7 @@ static gboolean
 ui_newsbin_add (void)
 {
 	GtkWidget	*nameentry;
-	
+
 	if (!newnewsbindialog || !G_IS_OBJECT (newnewsbindialog))
 		newnewsbindialog = liferea_dialog_new ("new_newsbin");
 
@@ -88,25 +88,25 @@ ui_newsbin_add (void)
 	gtk_entry_set_text (GTK_ENTRY (nameentry), "");
 
 	gtk_window_present (GTK_WINDOW (newnewsbindialog));
-	
+
 	return TRUE;
 }
 
-void 
+void
 on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
 {
 	nodePtr		newsbin;
-	
+
 	newsbin = node_new (newsbin_get_node_type ());
 	node_set_title (newsbin, (gchar *)gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (newnewsbindialog, "newsbinnameentry"))));
 	node_set_data (newsbin, (gpointer)feed_new ());
 
 	newsbin_list = g_slist_append(newsbin_list, newsbin);
-	
+
 	feedlist_node_added (newsbin);
 }
 
-void 
+void
 on_action_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	nodePtr		newsbin;
@@ -126,19 +126,19 @@ on_action_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer 
 		copy = item_copy(item);
 		copy->nodeId = newsbin->id;	/* necessary to become independent of original item */
 		copy->parentNodeId = g_strdup (item->nodeId);
-		
+
 		/* To avoid item doubling in vfolders we reset
 		   simple vfolder match attributes */
 		copy->readStatus = TRUE;
 		copy->flagStatus = FALSE;
-		
-		/* To provide a hint in the rendered output what the orginial 
-		   feed was the original website link/title are added */		
+
+		/* To provide a hint in the rendered output what the orginial
+		   feed was the original website link/title are added */
 		if(!metadata_list_get (copy->metadata, "realSourceUrl"))
 			metadata_list_set (&(copy->metadata), "realSourceUrl", node_get_base_url(node_from_id(item->nodeId)));
 		if(!metadata_list_get (copy->metadata, "realSourceTitle"))
 			metadata_list_set (&(copy->metadata), "realSourceTitle", node_get_title(node_from_id(item->nodeId)));
-		
+
 		/* do the same as in node_merge_item(s) */
 		db_item_update(copy);
 		node_update_counters(newsbin);
@@ -158,7 +158,7 @@ newsbin_get_node_type (void)
 		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT;
 		nodeType->id			= "newsbin";
 		nodeType->icon			= icon_get (ICON_NEWSBIN);
-		nodeType->load			= feed_get_node_type()->load;		
+		nodeType->load			= feed_get_node_type()->load;
 		nodeType->import		= newsbin_import;
 		nodeType->export		= feed_get_node_type()->export;
 		nodeType->save			= feed_get_node_type()->save;
@@ -166,9 +166,9 @@ newsbin_get_node_type (void)
 		nodeType->remove		= newsbin_remove;
 		nodeType->render		= newsbin_render;
 		nodeType->request_add		= ui_newsbin_add;
-		nodeType->request_properties	= feed_list_node_rename;
+		nodeType->request_properties	= feed_list_view_rename_node;
 		nodeType->free			= feed_get_node_type()->free;
 	}
 
-	return nodeType; 
+	return nodeType;
 }

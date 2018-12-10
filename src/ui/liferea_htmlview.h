@@ -1,7 +1,7 @@
 /*
  * @file liferea_htmlview.h  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2010 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,35 +28,13 @@
 G_BEGIN_DECLS
 
 #define LIFEREA_HTMLVIEW_TYPE		(liferea_htmlview_get_type ())
-#define LIFEREA_HTMLVIEW(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_HTMLVIEW_TYPE, LifereaHtmlView))
-#define LIFEREA_HTMLVIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), LIFEREA_HTMLVIEW_TYPE, LifereaHtmlViewClass))
-#define IS_LIFEREA_HTMLVIEW(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_HTMLVIEW_TYPE))
-#define IS_LIFEREA_HTMLVIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_HTMLVIEW_TYPE))
+G_DECLARE_FINAL_TYPE (LifereaHtmlView, liferea_htmlview, LIFEREA, HTMLVIEW, GObject)
 
-typedef struct LifereaHtmlView		LifereaHtmlView;
-typedef struct LifereaHtmlViewClass	LifereaHtmlViewClass;
-typedef struct LifereaHtmlViewPrivate	LifereaHtmlViewPrivate;
-
-struct LifereaHtmlView
-{
-	GObject		parent;
-	
-	/*< private >*/
-	LifereaHtmlViewPrivate	*priv;
-};
-
-struct LifereaHtmlViewClass 
-{
-	GObjectClass parent_class;
-};
-
-GType liferea_htmlview_get_type	(void);
-
-/** 
+/**
  * liferea_htmlview_new: (skip)
  * @forceInternalBrowsing:		TRUE to act as fully fledged browser
  *
- * Function to set up a new html view widget for any purpose. 
+ * Function to set up a new html view widget for any purpose.
  *
  * Returns: a new Liferea HTML widget
  */
@@ -82,7 +60,7 @@ void liferea_htmlview_set_headline_view (LifereaHtmlView *htmlview);
  */
 GtkWidget *liferea_htmlview_get_widget (LifereaHtmlView *htmlview);
 
-/** 
+/**
  * liferea_htmlview_clear: (skip)
  * @htmlview:	the HTML view widget to clear
  *
@@ -105,7 +83,7 @@ void	liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, con
  * @htmlview:		the htmlview causing the event
  * @url:		new URL (or empty string)
  *
- * Callback for plugins to process on-url events. Depending on 
+ * Callback for plugins to process on-url events. Depending on
  * the link type the link will be copied to the status bar.
  */
 void liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url);
@@ -127,7 +105,7 @@ void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *
  *
  *    liferea_htmlview_launch_URL_internal(htmlview, url)
  *
- * or 
+ * or
  *
  *    browser_launch_URL_external(url)
  *

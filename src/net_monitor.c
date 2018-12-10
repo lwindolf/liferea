@@ -101,10 +101,8 @@ network_monitor_class_init (NetworkMonitorClass *klass)
 
 static gboolean is_nm_connected (guint state)
 {
-	if (state == 3 ||  /* NM_STATE_CONNECTED */
-	    state == 50 || /* NM_STATE_CONNECTED_LOCAL */
-	    state == 60 || /* NM_STATE_CONNECTED_SITE */
-	    state == 70)   /* NM_STATE_CONNECTED_GLOBAL */
+	if (state == 60 || /* NM_STATE_CONNECTED_SITE */
+		state == 70)   /* NM_STATE_CONNECTED_GLOBAL */
 		return TRUE;
 	return FALSE;
 }

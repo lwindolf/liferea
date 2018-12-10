@@ -1641,7 +1641,7 @@ msgid ""
 "want to be executed below. The enclosures URL will be supplied as an "
 "argument for this command:"
 msgstr ""
-"Was sollte Liferea mit diesem Anhang tun? Bitte geben Sie den Befehl zur "
+"Was soll Liferea mit diesem Anhangstyp tun? Bitte geben Sie den Befehl zur "
 "Ausführung an. Die Adresse des Anhangs wird als Argument mitgegeben:"
 
 #: ../glade/enclosure_handler.ui.h:4
