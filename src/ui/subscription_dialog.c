@@ -597,7 +597,6 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		gchar *source = NULL;
 		const gchar *filter = NULL;
 		updateOptionsPtr options;
-		nodePtr duplicateUrlNode = NULL;
 
 		/* Source */
 		source = ui_subscription_dialog_decode_source (&(nsd->ui_data));
@@ -612,13 +611,8 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		options = g_new0 (struct updateOptions, 1);
 		options->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (nsd->ui_data.dialog, "dontUseProxyCheck")));
 
-		duplicateUrlNode = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
-		if (duplicateUrlNode == NULL) {
-			feedlist_add_subscription (source, filter, options, FEED_REQ_PRIORITY_HIGH);
-			g_free (source);
-		} else {
-			feed_list_view_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicateUrlNode);
-		}
+		feedlist_add_subscription_check_duplicate (source, filter, options, FEED_REQ_PRIORITY_HIGH);
+		g_free (source);
 	}
 
 	g_object_unref (nsd);
@@ -694,19 +688,13 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 {
 	SimpleSubscriptionDialog *ssd = (SimpleSubscriptionDialog *) user_data;
 	gchar *source = NULL;
-	nodePtr duplicateUrlNode = NULL;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->ui_data.sourceEntry))),
 		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-		duplicateUrlNode = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
-		if (duplicateUrlNode == NULL) {
-			feedlist_add_subscription (source, NULL, NULL, FEED_REQ_PRIORITY_HIGH);
-			g_free (source);
-		} else {
-			feed_list_view_add_duplicate_url_subscription (subscription_new (source, NULL, NULL), duplicateUrlNode);
-		}
+		feedlist_add_subscription_check_duplicate (source, NULL, NULL, FEED_REQ_PRIORITY_HIGH);
+		g_free (source);
 	}
 
 	if (response_id == GTK_RESPONSE_APPLY) /* misused for "Advanced" */
