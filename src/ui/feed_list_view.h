@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.h  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2019 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *

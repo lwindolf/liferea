@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.c  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2019 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *
@@ -43,12 +43,13 @@
 #include "fl_sources/node_source.h"
 
 struct _FeedListView {
+	GObject			parentInstance;
+
 	GtkTreeView		*treeview;
 	GtkTreeModel	*filter;
 	GtkTreeStore	*feedstore;
 
 	GHashTable		*flIterHash;				/**< hash table used for fast node id <-> tree iter lookup */
-	GtkWidget		*nodenamedialog;
 
 	gboolean		feedlist_reduced_unread;	/**< TRUE when feed list is in reduced mode (no folders, only unread feeds) */
 };
@@ -92,9 +93,6 @@ feed_list_view_class_init (FeedListViewClass *klass)
 static void
 feed_list_view_init (FeedListView *f)
 {
-	/* globally accessible singleton */
-	g_assert (NULL == flv);
-	flv = f;
 }
 
 static void
@@ -118,10 +116,9 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 	 	gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
 
 		debug1 (DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title (node));
-		g_signal_emit_by_name (flv, "selection-changed", node->id);
 
 		/* 1.) update feed list and item list states */
-		feedlist_selection_changed (node);
+		g_signal_emit_by_name (FEED_LIST_VIEW (flv), "selection-changed", node->id);
 
 		/* 2.) Refilter the GtkTreeView to get rid of nodes with 0 unread
 		   messages when in reduced mode. */
@@ -293,10 +290,12 @@ feed_list_view_create (GtkTreeView *treeview)
 	GtkTreeViewColumn 	*column, *column2;
 	GtkTreeSelection	*select;
 
-	debug_enter ("feed_list_view_init");
+	debug_enter ("feed_list_view_create");
 
 	/* Set up store */
+	g_assert (NULL == flv);
 	flv = FEED_LIST_VIEW (g_object_new (FEED_LIST_VIEW_TYPE, NULL));
+
 	flv->treeview = treeview;
 	flv->feedstore = gtk_tree_store_new (FS_LEN,
 	                                     G_TYPE_STRING,
@@ -361,7 +360,7 @@ feed_list_view_create (GtkTreeView *treeview)
 	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
 	liferea_shell_update_allitems_actions (FALSE, FALSE);
 
-	debug_exit ("feed_list_view_init");
+	debug_exit ("feed_list_view_create");
 
 	return flv;
 }
@@ -852,22 +851,20 @@ on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
-	flv->nodenamedialog = NULL;
 }
 
 void
 feed_list_view_rename_node (nodePtr node)
 {
-	GtkWidget	*nameentry;
+	GtkWidget	*nameentry, *dialog;
 
-	if (!flv->nodenamedialog || !G_IS_OBJECT (flv->nodenamedialog))
-		flv->nodenamedialog = liferea_dialog_new ("rename_node");
+	dialog = liferea_dialog_new ("rename_node");
 
-	nameentry = liferea_dialog_lookup (flv->nodenamedialog, "nameentry");
+	nameentry = liferea_dialog_lookup (dialog, "nameentry");
 	gtk_entry_set_text (GTK_ENTRY (nameentry), node_get_title (node));
-	g_signal_connect (G_OBJECT (flv->nodenamedialog), "response",
+	g_signal_connect (G_OBJECT (dialog), "response",
 	                  G_CALLBACK (on_nodenamedialog_response), node);
-	gtk_widget_show (flv->nodenamedialog);
+	gtk_widget_show (dialog);
 }
 
 /* node deletion dialog */

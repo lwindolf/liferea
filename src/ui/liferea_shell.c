@@ -66,7 +66,7 @@ struct _LifereaShell {
 
 	GtkWindow	*window;			/*<< Liferea main window */
 	GtkWidget	*toolbar;
-	GtkTreeView	*feedlistView;
+	GtkTreeView	*feedlistViewWidget;
 
 	GtkStatusbar	*statusbar;		/*<< main window status bar */
 	gboolean	statusbarLocked;	/*<< flag locking important message on status bar */
@@ -678,7 +678,7 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 			switch (event->keyval) {
 				case GDK_KEY_KP_Delete:
 				case GDK_KEY_Delete:
-					if (focusw == GTK_WIDGET (shell->feedlistView))
+					if (focusw == GTK_WIDGET (shell->feedlistViewWidget))
 						return FALSE;	/* to be handled in feed_list_view_key_press_cb() */
 
 					on_action_remove_item (NULL, NULL, NULL);
@@ -697,12 +697,12 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 					return TRUE;
 					break;
 				case GDK_KEY_u:
-					ui_common_treeview_move_cursor (shell->feedlistView, -1);
+					ui_common_treeview_move_cursor (shell->feedlistViewWidget, -1);
 					itemview_move_cursor_to_first ();
 					return TRUE;
 					break;
 				case GDK_KEY_d:
-					ui_common_treeview_move_cursor (shell->feedlistView, 1);
+					ui_common_treeview_move_cursor (shell->feedlistViewWidget, 1);
 					itemview_move_cursor_to_first ();
 					return TRUE;
 					break;
@@ -824,7 +824,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	g_return_if_fail (gtk_selection_data_get_data (data) != NULL);
 
 	mainwindow = GTK_WIDGET (shell->window);
-	treeview = GTK_TREE_VIEW (shell->feedlistView);
+	treeview = GTK_TREE_VIEW (shell->feedlistViewWidget);
 	model = gtk_tree_view_get_model (treeview);
 
 	/* x and y are relative to the main window, make them relative to the treeview */
@@ -1135,9 +1135,10 @@ static const gchar * liferea_accels_show_help_contents[] = {"F1", NULL};
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
-	GMenuModel	*menubar_model;
-	gboolean	toggle;
-	gchar		*id;
+	GMenuModel		*menubar_model;
+	gboolean		toggle;
+	gchar			*id;
+	FeedListView	*feedListView;
 
 	debug_enter ("liferea_shell_create");
 
@@ -1247,8 +1248,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	/* 5.) setup feed list */
 
 	debug0 (DEBUG_GUI, "Setting up feed list");
-	shell->feedlistView = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
-	feed_list_view_create (shell->feedlistView);
+	shell->feedlistViewWidget = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
+	feedListView = feed_list_view_create (shell->feedlistViewWidget);
 
 	/* 6.) setup menu sensivity */
 
@@ -1259,7 +1260,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* necessary to prevent selection signals when filling the feed list
 	   and setting the 2/3 pane mode view */
-	gtk_widget_set_sensitive (GTK_WIDGET (shell->feedlistView), FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (shell->feedlistViewWidget), FALSE);
 
 	/* 7.) setup item view */
 
@@ -1280,13 +1281,13 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	liferea_shell_setup_URL_receiver ();
 	liferea_shell_restore_state (overrideWindowState);
 
-	gtk_widget_set_sensitive (GTK_WIDGET (shell->feedlistView), TRUE);
+	gtk_widget_set_sensitive (GTK_WIDGET (shell->feedlistViewWidget), TRUE);
 
 	/* 10.) After main window is realized get theme colors and set up feed
  	        list and tray icon */
 	render_init_theme_colors (GTK_WIDGET (shell->window));
 
-	shell->feedlist = feedlist_create ();
+	shell->feedlist = feedlist_create (feedListView);
 	g_signal_connect (shell->feedlist, "new-items",
 	                  G_CALLBACK (liferea_shell_update_unread_stats), shell->feedlist);
 
