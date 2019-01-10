@@ -85,7 +85,10 @@ static const GActionEntry ui_popup_item_gaction_entries[] = {
 	{"copy-item-to-newsbin", on_action_copy_to_newsbin, "(umt)", NULL, NULL},
 	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
 	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
-	{"remove-item", on_action_remove_item, "t", NULL, NULL}
+	{"remove-item", on_action_remove_item, "t", NULL, NULL},
+	{"open-item-in-tab", on_action_launch_item_in_tab, "t", NULL, NULL},
+	{"open-item-in-browser", on_action_launch_item_in_browser, "t", NULL, NULL},
+	{"open-item-in-external-browser", on_action_launch_item_in_external_browser, "t", NULL, NULL}
 };
 
 void
@@ -106,15 +109,15 @@ ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time)
 
 	section = g_menu_new ();
 	g_menu_item_set_label (menu_item, _("Open In _Tab"));
-	g_menu_item_set_action_and_target (menu_item, "app.open-link-in-tab", "s", item_link);
+	g_menu_item_set_action_and_target (menu_item, "item.open-item-in-tab", "t", (guint64) item->id);
 	g_menu_append_item (section, menu_item);
 
 	g_menu_item_set_label (menu_item, _("_Open In Browser"));
-	g_menu_item_set_action_and_target (menu_item, "app.open-link-in-browser", "s", item_link);
+	g_menu_item_set_action_and_target (menu_item, "item.open-item-in-browser", "t", (guint64) item->id);
 	g_menu_append_item (section, menu_item);
 
 	g_menu_item_set_label (menu_item, _("Open In _External Browser"));
-	g_menu_item_set_action_and_target (menu_item, "app.open-link-in-external-browser", "s", item_link);
+	g_menu_item_set_action_and_target (menu_item, "item.open-item-in-external-browser", "t", (guint64) item->id);
 	g_menu_append_item (section, menu_item);
 
 	if(author){
