@@ -59,13 +59,30 @@ void enclosure_list_view_load (EnclosureListView *elv, itemPtr item);
 
 /**
  * enclosure_list_view_select:
- *
- * Select the nth enclosure in the enclosure list.
- *
  * @elv:		the enclosure list view
  * @position:	the position to select
+ *
+ * Select the nth enclosure in the enclosure list.
  */
 void enclosure_list_view_select (EnclosureListView *elv, guint position);
+
+/**
+ * enclosure_list_view_select_next:
+ * @elv:	the enclosure list view
+ *
+ * Select the next enclosure in the list, or the first if none was
+ * selected or the end of the list was reached.
+ */
+void enclosure_list_view_select_next (EnclosureListView *elv);
+
+
+/**
+ * enclosure_list_view_open_next:
+ * @elv: the enclosure list view
+ *
+ * Select the next enclosure in the list and open it.
+ */
+void enclosure_list_view_open_next (EnclosureListView *elv);
 
 /**
  * enclosure_list_view_hide:

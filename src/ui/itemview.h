@@ -113,6 +113,14 @@ void itemview_select_item (itemPtr item);
 void itemview_select_enclosure (guint position);
 
 /**
+ * itemview_open_next_enclosure:
+ * @view: The ItemView
+ *
+ * Selects and open the next enclosure in the list.
+ */
+void itemview_open_next_enclosure (ItemView *view);
+
+/**
  * itemview_update_item: (skip)
  * @item:	the item to update
  *
