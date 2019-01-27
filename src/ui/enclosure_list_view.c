@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.c enclosures/podcast handling GUI
  *
- * Copyright (C) 2005-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ G_DEFINE_TYPE (EnclosureListView, enclosure_list_view, G_TYPE_OBJECT);
 static void
 enclosure_list_view_finalize (GObject *object)
 {
-	// FIXME: free enclosures GSList
+	g_slist_free_full (ENCLOSURE_LIST_VIEW (object)->enclosures, (GDestroyNotify)enclosure_free);
 }
 
 static void
@@ -243,12 +243,7 @@ enclosure_list_view_load (EnclosureListView *elv, itemPtr item)
 
 	/* cleanup old content */
 	gtk_tree_store_clear (elv->treestore);
-	list = elv->enclosures;
-	while (list) {
-		enclosure_free ((enclosurePtr)list->data);
-		list = g_slist_next (list);
-	}
-	g_slist_free (elv->enclosures);
+	g_slist_free_full (elv->enclosures, (GDestroyNotify)enclosure_free);
 	elv->enclosures = NULL;
 
 	/* load list into tree view */
