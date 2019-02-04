@@ -12,6 +12,10 @@
 			<outline text="BBC" htmlUrl="http://www.bbc.com/news" xmlUrl="http://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
 			<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
 		</outline>
+		<outline text="Knowledge">
+			<outline text="Aeon" htmlUrl="https://aeon.co/" xmlUrl="https://aeon.co/feed.rss"/>
+			<outline text="Quanta Magazine" htmlUrl="https://api.quantamagazine.org/" xmlUrl="https://api.quantamagazine.org/feed/"/>
+		</outline>
 		<outline text="Open Source">		<!-- translate this title for localized feed list -->
 			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
 			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
