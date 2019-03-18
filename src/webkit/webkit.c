@@ -1,7 +1,7 @@
 /**
  * @file webkit.c  WebKit2 browser module for Liferea
  *
- * Copyright (C) 2016 Leiaz <leiaz@free.fr>
+ * Copyright (C) 2016-2019 Leiaz <leiaz@free.fr>
  * Copyright (C) 2007-2010 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
