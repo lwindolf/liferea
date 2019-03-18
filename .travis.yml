@@ -8,4 +8,4 @@ before_install:
   - docker pull ubuntu:18.04
 
 script:
-  - docker build -f Dockerfile.travis
+  - docker build -f Dockerfile.travis .
