@@ -4,12 +4,12 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
- * Copyright (C) 2006-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,7 +20,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
---> 
+-->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml">
@@ -42,10 +42,10 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 </head>
-<xsl:element name="body">  
+<xsl:element name="body">
 
 <!-- base URL of the itemset -->
-<div href="{$baseUrl}">
+<div class="item" href="{$baseUrl}">
 
 <xsl:for-each select="item">
   <xsl:choose>
@@ -91,7 +91,7 @@
 <tr>
   <td valign="middle" class="headleft">
     <!-- Feed link as favicon -->
-    
+
     <xsl:variable name="favicon">
       <xsl:choose>
         <xsl:when test="not(sourceFavicon)">
@@ -100,9 +100,9 @@
         <xsl:otherwise>
           <xsl:value-of select="sourceFavicon"/>
         </xsl:otherwise>
-      </xsl:choose>   
+      </xsl:choose>
     </xsl:variable>
-    
+
     <a class="favicon" href="{/itemset/feed/attributes/attribute[ @name = 'homepage' ]}">
       <img src="{$favicon}"/>
     </a>
@@ -111,10 +111,10 @@
     <!-- Item title as link -->
     <a class="itemhead" href="{source}">
       <xsl:value-of select="title"/>
-      <!-- the title added above might be empty, in this 
+      <!-- the title added above might be empty, in this
            case we add the date of the post -->
       <xsl:if test="title = ''">
-         <xsl:value-of select="timestr"/> 
+         <xsl:value-of select="timestr"/>
       </xsl:if>
     </a>
   </td>
@@ -126,15 +126,15 @@
 
 <xsl:if test="attributes/attribute[ @name = 'slash' ]">
 <tr>
- <td valign="top" class='slash'> 
+ <td valign="top" class='slash'>
    <xsl:apply-templates select="attributes/attribute[ @name = 'slash']"/>
  </td>
-</tr> 
+</tr>
 </xsl:if>
 
 <xsl:if test="attributes/attribute[ @name = 'realSourceUrl' ]">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Source</_span>
      <b><span class='source'>
        <a href="{attributes/attribute[ @name = 'realSourceUrl' ]}">
@@ -149,7 +149,7 @@
      and we should display the source feed title for the item. -->
 <xsl:if test="$summary = '1' or $showFeedName = '1'">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Feed</_span>
      <b><span class='source'>
        <a href="{/itemset/feed/attributes/attribute[ @name = 'homepage' ]}">
@@ -183,7 +183,7 @@
      </span></b>
    </td>
  </tr>
-</xsl:if>  
+</xsl:if>
 
 <xsl:if test="attributes/attribute[ @name = 'sharedby' ]">
  <tr>
@@ -194,12 +194,12 @@
      </span></b>
    </td>
  </tr>
-</xsl:if>  
+</xsl:if>
 
 <!-- Indicate Atom "via" and "related" links -->
 <xsl:for-each select="attributes/attribute[ @name = 'via' ]">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Via</_span>
      <b><span class='source'>
        <a href="{.}">
@@ -211,7 +211,7 @@
 </xsl:for-each>
 <xsl:for-each select="attributes/attribute[ @name = 'related' ]">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Related</_span>
      <b><span class='source'>
        <a href="{.}">
@@ -225,7 +225,7 @@
 <!-- Indicate all duplicates -->
 <xsl:for-each select="duplicates/duplicateNode">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Also posted in</_span>
      <b><span class='source'>
          <xsl:value-of select="."/>
@@ -279,11 +279,11 @@
     <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
        <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
     </xsl:if>
-    
+
     <!-- the real text content -->
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
-  
+
   <!-- photo namespace handling -->
   <xsl:if test="attributes/attribute[ @name = 'photo' ]">
      <xsl:element name="img">
@@ -295,22 +295,22 @@
         </xsl:attribute>
      </xsl:element>
   </xsl:if>
-  
+
   <!-- comment handling -->
-  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed) and $single = 1"> 
-     <p>     
+  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed) and $single = 1">
+     <p>
         <xsl:if test="count(comments/item) != 0">
 	   <b><_span>Comments</_span></b>
 	</xsl:if>
-  
+
      <!-- Display "comment feed updating" hint -->
         <xsl:if test="comments/updateState = 'updating'">
            (<span>
 	      <_span>Updating...</_span>
 	    </span>)
-	</xsl:if>     
+	</xsl:if>
      </p>
-     
+
      <!-- Display error box if necessary -->
      <xsl:if test="comments/updateError">
         <p>
@@ -321,12 +321,12 @@
 	   </div>
 	</p>
      </xsl:if>
-     
-     <p>     
+
+     <p>
         <xsl:apply-templates select="comments/item">
            <xsl:sort select="time"/>
         </xsl:apply-templates>
-     </p>    
+     </p>
   </xsl:if>
 </div>
 </div> <!-- end of base URL div -->
@@ -367,7 +367,7 @@
       <xsl:otherwise>summaryunshaded</xsl:otherwise>
    </xsl:choose>
 </xsl:variable>
-    
+
 <div class="{$summaryShading}">
   <table cellspacing="0" cellpadding="0" width="100%">
   <tr>
@@ -390,7 +390,7 @@
     </td>
   </tr>
   </table>
-    
+
   <hr class='summary'/>
 
 </div>
@@ -402,10 +402,10 @@
 <xsl:template name="substring-after-last">
     <xsl:param name="input" />
     <xsl:param name="substr" />
-    
+
     <!-- Extract the string which comes after the first occurence -->
     <xsl:variable name="temp" select="substring-after($input,$substr)"/>
-    
+
     <xsl:choose>
       <!-- If it still contains the search string then recursively process -->
       <xsl:when test="$substr and contains($temp,$substr)">
