@@ -97,7 +97,7 @@ enclosure_list_view_get_selected_enclosure (EnclosureListView *elv, GtkTreeIter 
 }
 
 static gboolean
-on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
+on_enclosure_list_button_press (GtkWidget *treeview, GdkEvent *event, gpointer user_data)
 {
 	GdkEventButton		*eb = (GdkEventButton *)event;
 	GtkTreePath		*path;
@@ -108,14 +108,14 @@ on_enclosure_list_button_press (GtkWidget *treeview, GdkEventButton *event, gpoi
 		return FALSE;
 
 	/* avoid handling header clicks */
-	if (event->window != gtk_tree_view_get_bin_window (GTK_TREE_VIEW (treeview)))
+	if (eb->window != gtk_tree_view_get_bin_window (GTK_TREE_VIEW (treeview)))
 		return FALSE;
 
-	if (!gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (treeview), (gint)event->x, (gint)event->y, &path, NULL, NULL, NULL))
+	if (!gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (treeview), (gint)eb->x, (gint)eb->y, &path, NULL, NULL, NULL))
 		return FALSE;
 
 	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (elv->treestore), &iter, path))
-		ui_popup_enclosure_menu (enclosure_list_view_get_selected_enclosure (elv, &iter), eb->button, eb->time);
+		ui_popup_enclosure_menu (enclosure_list_view_get_selected_enclosure (elv, &iter), event);
 
 	return TRUE;
 }
@@ -129,7 +129,7 @@ on_enclosure_list_popup_menu (GtkWidget *widget, gpointer user_data)
 	EnclosureListView 	*elv = (EnclosureListView *)user_data;
 
 	if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter)) {
-		ui_popup_enclosure_menu (enclosure_list_view_get_selected_enclosure (elv, &iter), 3, 0);
+		ui_popup_enclosure_menu (enclosure_list_view_get_selected_enclosure (elv, &iter), NULL);
 		return TRUE;
 	}
 

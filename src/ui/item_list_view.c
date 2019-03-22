@@ -637,23 +637,26 @@ on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean key
 }
 
 static gboolean
-on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
+on_item_list_view_button_press_event (GtkWidget *treeview, GdkEvent *event, gpointer user_data)
 {
 	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
 	GtkTreeViewColumn	*column;
+	GdkEventButton 		*eb;
 	itemPtr			item = NULL;
 	gboolean		result = FALSE;
 
 	if (event->type != GDK_BUTTON_PRESS)
 		return FALSE;
 
+	eb = (GdkEventButton*) event;
+
 	/* avoid handling header clicks */
-	if (event->window != gtk_tree_view_get_bin_window (ilv->treeview))
+	if (eb->window != gtk_tree_view_get_bin_window (ilv->treeview))
 		return FALSE;
 
-	if (!gtk_tree_view_get_path_at_pos (ilv->treeview, (gint)event->x, (gint)event->y, &path, &column, NULL, NULL))
+	if (!gtk_tree_view_get_path_at_pos (ilv->treeview, (gint)eb->x, (gint)eb->y, &path, &column, NULL, NULL))
 		return FALSE;
 
 	if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->treeview), &iter, path))
@@ -662,7 +665,6 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 	gtk_tree_path_free (path);
 
 	if (item) {
-		GdkEventButton *eb = (GdkEventButton*)event;
 		switch (eb->button) {
 			case 1:
 				if (column == g_hash_table_lookup(ilv->columns, "favicon") ||
@@ -677,7 +679,7 @@ on_item_list_view_button_press_event (GtkWidget *treeview, GdkEventButton *event
 				result = TRUE;
 				break;
 			case 3:
-				ui_popup_item_menu (item, eb->button, eb->time);
+				ui_popup_item_menu (item, event);
 				result = TRUE;
 				break;
 			default:
@@ -699,7 +701,7 @@ on_item_list_view_popup_menu (GtkWidget *widget, gpointer user_data)
 
 	if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter)) {
 		itemPtr item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
-		ui_popup_item_menu (item, 3, 0);
+		ui_popup_item_menu (item, NULL);
 		item_unload (item);
 		return TRUE;
 	}

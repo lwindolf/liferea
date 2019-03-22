@@ -34,28 +34,25 @@
  * (Open Link, Copy Item, Copy Link...)
  *
  * @param item	the selected item
- * @param button	the mouse button which was pressed to initiate the event
- * @param activate_time	the time at which the activation event occurred
+ * @param event The event that triggered the popup
  */
-void ui_popup_item_menu (itemPtr item, guint button, guint32 activate_time);
+void ui_popup_item_menu (itemPtr item, const GdkEvent *event);
 
 /**
  * Shows a popup menu for the enclosure list view.
  * (Save As, Open With...)
  *
  * @param enclosure	the enclosure
- * @param button	the mouse button which was pressed to initiate the event
- * @param activate_time	the time at which the activation event occurred
+ * @param event		the event that triggered the popup
  */
-void ui_popup_enclosure_menu (enclosurePtr enclosure, guint button,
-			      guint32 activate_time);
+void ui_popup_enclosure_menu (enclosurePtr enclosure, const GdkEvent *event);
 
 /* GUI callbacks */
 
 gboolean
 on_mainfeedlist_button_press_event     (GtkWidget       *widget,
-                                        GdkEventButton  *event,
-                                        gpointer         user_data);
+                                        GdkEvent 	*event,
+                                        gpointer 	user_data);
 
 gboolean
 on_mainfeedlist_popup_menu (GtkWidget *widget,
