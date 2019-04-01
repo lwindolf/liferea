@@ -146,8 +146,6 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	gchar			*link_uri = NULL;
 	gchar			*link_title = NULL;
 	gboolean 		link, image;
-	guint 			event_button = 0;
-	guint32			event_time = 0;
 
 	if (webkit_hit_test_result_context_is_link (hit_result))
 		g_object_get (hit_result, "link-uri", &link_uri, "link-title", &link_title, NULL);
@@ -229,16 +227,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
 	gtk_menu_attach_to_widget (GTK_MENU (menu), GTK_WIDGET (view), NULL);
 
-	/* Event can be GDK_NOTHING, which is code word for NULL */
-	if (event) {
-		gdk_event_get_button (event, &event_button);
-		event_time = gdk_event_get_time (event);
-	} else {
-		event_time = gtk_get_current_event_time ();
-		event_button = 0;
-	}
-
-	gtk_menu_popup(GTK_MENU (menu), NULL,NULL,NULL,NULL, event_button, event_time);
+	gtk_menu_popup_at_pointer (GTK_MENU (menu), event);
 
 	return TRUE; // TRUE to ignore WebKit's menu as we make our own menu.
 }
