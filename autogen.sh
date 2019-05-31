@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if ! command autoreconf; then
 	echo "ERROR: You need to install autoconf!"
