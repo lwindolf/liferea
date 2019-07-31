@@ -115,7 +115,26 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 	 	gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
 
-		debug1 (DEBUG_GUI, "feed list selection changed to \"%s\"", node_get_title (node));
+		debug1 (DEBUG_GUI, "feed list selection changed to \"%s\"", node?node_get_title (node):"Empty node");
+
+		if (!node) {
+			/* The selected iter is an "empty" node added to an empty folder. We get the parent's node
+			 * to set it as the selected node. This is useful if the user adds a feed, the folder will
+			 * be used as location for the new node. */
+			GtkTreeIter parent;
+			if (gtk_tree_model_iter_parent (model, &parent, &iter))
+				gtk_tree_model_get (model, &parent, FS_PTR, &node, -1);
+			else {
+				debug0 (DEBUG_GUI, "A selected null node has no parent. This should not happen.");
+				return;
+			}
+			liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
+		} else {
+			gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
+			liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
+			                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
+			liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
+		}
 
 		/* 1.) update feed list and item list states */
 		g_signal_emit_by_name (FEED_LIST_VIEW (flv), "selection-changed", node->id);
@@ -124,14 +143,6 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 		   messages when in reduced mode. */
 		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (flv->filter));
 
-		if (node) {
-			gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
-			liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
-			                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
-			liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
-		} else {
-			liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
-		}
 	} else {
 		/* If we cannot get the new selection we keep the old one
 		   this happens when we're doing drag&drop for example. */
