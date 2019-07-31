@@ -18,8 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <string.h>
-
 #include "comments.h"
 #include "common.h"
 #include "db.h"
@@ -107,7 +105,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 	g_return_if_fail (item != NULL);
 	
 	/* note this is to update the feed URL on permanent redirects */
-	if (result->source && !strcmp (result->source, metadata_list_get (item->metadata, "commentFeedUri"))) {
+	if (result->source && !g_strcmp0 (result->source, metadata_list_get (item->metadata, "commentFeedUri"))) {
 	
 		debug2 (DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"", 
 		                      metadata_list_get (item->metadata, "commentFeedUri"), 
@@ -247,7 +245,7 @@ comments_to_xml (xmlNodePtr parentNode, const gchar *id)
 	if (!commentFeed)
 		return;
 
-	commentsNode = xmlNewChild (parentNode, NULL, "comments", NULL);
+	commentsNode = xmlNewChild (parentNode, NULL, BAD_CAST "comments", NULL);
 	
 	itemSet = db_itemset_load (id);
 	g_return_if_fail (itemSet != NULL);
@@ -261,11 +259,10 @@ comments_to_xml (xmlNodePtr parentNode, const gchar *id)
 		iter = g_list_next (iter);
 	}
 
-	xmlNewTextChild (commentsNode, NULL, "updateState", 
-	                 (commentFeed->updateJob)?"updating":"ok");
+	xmlNewTextChild (commentsNode, NULL, BAD_CAST "updateState", BAD_CAST ((commentFeed->updateJob)?"updating":"ok"));
 		
 	if (commentFeed->error)
-		xmlNewTextChild (commentsNode, NULL, "updateError", commentFeed->error);
+		xmlNewTextChild (commentsNode, NULL, BAD_CAST "updateError", BAD_CAST commentFeed->error);
 			
 	itemset_free (itemSet);
 }
