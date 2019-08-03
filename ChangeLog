@@ -4,6 +4,8 @@
 
 	* #734: Fixes crash when selecting empty nodes
 	  (Leiaz)
+	* Fixes #727: Out-dated documentation on Firefox live bookmarks
+	  (reported by blueray453)
 	* Fixes headline large images/videos or images with margins
 	  causing horizontal scrolling in headline view
 	  (Lars Windolf)

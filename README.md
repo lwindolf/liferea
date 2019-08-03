@@ -191,23 +191,6 @@ If you see memory leakage please take the time to do a run
 to identify leaks and send in the output.
 
 
-Browser Integration
--------------------
-
-Liferea allows subscribing directly from Firefox and browser with similar mechanism
-
-###### _Firefox_
-
-If you want to subscribe from within Firefox you can configure it to add
-subscriptions to Liferea directly. To do so click the feed icon in the 
-location entry. Firefox will then present a menu where you can configure a 
-manual command instead of the Live Bookmarks to add subscriptions. 
-
-There enter
-
-    liferea-add-feed
-
-
 How to Get Support
 ------------------
 
