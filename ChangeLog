@@ -1,5 +1,9 @@
-To be released
+2019-08-03   Lars Windolf <lars.windolf@gmx.de>
 
+	Version 1.12.7
+
+	* #734: Fixes crash when selecting empty nodes
+	  (Leiaz)
 	* Fixes headline large images/videos or images with margins
 	  causing horizontal scrolling in headline view
 	  (Lars Windolf)
