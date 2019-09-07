@@ -948,7 +948,7 @@ msgid ""
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 "Si è sicuri di voler aggiungere un nuovo abbonamento all'indirizzo \"%s\"? "
-"Un abbonamento all'indirizzo \"%s\" esiste già."
+"Un abbonamento con lo stesso indirizzo esiste già (\"%s\")."
 
 #: ../src/ui/feed_list_view.c:966
 msgid "_Add"
