@@ -890,6 +890,13 @@ liferea_shell_setup_URL_receiver (void)
 	                  G_CALLBACK (liferea_shell_URL_received), NULL);
 }
 
+static void
+on_action_open_enclosure (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	LifereaShell *shell = LIFEREA_SHELL (user_data);
+	itemview_open_next_enclosure (shell->itemview);
+}
+
 static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"update-all", on_menu_update_all, NULL, NULL, NULL},
 	{"mark-all-feeds-read", on_action_mark_all_read, NULL, NULL, NULL},
@@ -942,7 +949,8 @@ static const GActionEntry liferea_shell_item_gaction_entries[] = {
 	{"remove-selected-item", on_action_remove_item, NULL, NULL, NULL},
 	{"launch-selected-item-in-tab", on_action_launch_item_in_tab, NULL, NULL, NULL},
 	{"launch-selected-item-in-browser", on_action_launch_item_in_browser, NULL, NULL, NULL},
-	{"launch-selected-item-in-external-browser", on_action_launch_item_in_external_browser, NULL, NULL, NULL}
+	{"launch-selected-item-in-external-browser", on_action_launch_item_in_external_browser, NULL, NULL, NULL},
+	{"open-selected-item-enclosure", on_action_open_enclosure, NULL, NULL, NULL}
 };
 
 static void
@@ -1131,6 +1139,7 @@ static const gchar * liferea_accels_zoom_in[] = {"<Control>plus", NULL};
 static const gchar * liferea_accels_zoom_out[] = {"<Control>minus", NULL};
 static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
 static const gchar * liferea_accels_show_help_contents[] = {"F1", NULL};
+static const gchar * liferea_accels_open_selected_item_enclosure[] = {"<Control>o", NULL};
 
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
@@ -1162,7 +1171,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	ui_common_add_action_group_to_map (shell->feedActions, G_ACTION_MAP (app));
 
 	shell->itemActions = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP(shell->itemActions), liferea_shell_item_gaction_entries, G_N_ELEMENTS (liferea_shell_item_gaction_entries), NULL);
+	g_action_map_add_action_entries (G_ACTION_MAP(shell->itemActions), liferea_shell_item_gaction_entries, G_N_ELEMENTS (liferea_shell_item_gaction_entries), shell);
 	ui_common_add_action_group_to_map (shell->itemActions, G_ACTION_MAP (app));
 
 	shell->readWriteActions = G_ACTION_GROUP (g_simple_action_group_new ());
@@ -1199,6 +1208,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_accels_for_action (app, "app.zoom-out", liferea_accels_zoom_out);
 	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
 	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help_contents);
+	gtk_application_set_accels_for_action (app, "app.open-selected-item-enclosure", liferea_accels_open_selected_item_enclosure);
 
 	/* Toolbar */
 	gtk_builder_add_from_file (shell->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_toolbar.ui", NULL);
