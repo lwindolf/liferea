@@ -332,6 +332,37 @@ enclosure_list_view_select (EnclosureListView *elv, guint position)
 }
 
 void
+enclosure_list_view_select_next (EnclosureListView *elv)
+{
+	GtkTreeIter selected_iter;
+	GtkTreeSelection *selection;
+	GtkTreeModel *model;
+
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (elv->treeview));
+
+	if (gtk_tree_selection_get_selected (selection, &model, &selected_iter) &&
+	    gtk_tree_model_iter_next (model, &selected_iter))
+		gtk_tree_selection_select_iter (selection, &selected_iter);
+	else
+		enclosure_list_view_select (elv, 0);
+}
+
+void
+enclosure_list_view_open_next (EnclosureListView *elv)
+{
+	GtkTreeIter selected_iter;
+
+	enclosure_list_view_select_next (elv);
+
+	if (gtk_tree_selection_get_selected (
+	      gtk_tree_view_get_selection (GTK_TREE_VIEW (elv->treeview)), NULL, &selected_iter)) {
+		enclosurePtr enclosure;
+		enclosure = enclosure_list_view_get_selected_enclosure (elv, &selected_iter);
+		on_popup_open_enclosure ((gpointer) enclosure);
+	}
+}
+
+void
 enclosure_list_view_hide (EnclosureListView *elv)
 {
 	if (!elv)

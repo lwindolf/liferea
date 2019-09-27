@@ -237,7 +237,15 @@ itemview_select_item (itemPtr item)
 void
 itemview_select_enclosure (guint position)
 {
-	enclosure_list_view_select (itemview->enclosureView, position);
+	if (itemview->enclosureView)
+		enclosure_list_view_select (itemview->enclosureView, position);
+}
+
+void
+itemview_open_next_enclosure (ItemView *view)
+{
+	if (view->enclosureView)
+		enclosure_list_view_open_next (view->enclosureView);
 }
 
 void
