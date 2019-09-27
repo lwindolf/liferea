@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.14"/>
   <object class="GtkDialog" id="rename_node">
@@ -11,6 +11,9 @@
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="gtk_widget_hide_on_delete" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox7">
         <property name="visible">True</property>
@@ -75,6 +78,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_New Name:</property>
                 <property name="use_underline">True</property>
+                <property name="mnemonic_widget">nameentry</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -105,8 +109,5 @@
       <action-widget response="0">cancelbutton1</action-widget>
       <action-widget response="-5">namechangebtn</action-widget>
     </action-widgets>
-    <child>
-      <placeholder/>
-    </child>
   </object>
 </interface>

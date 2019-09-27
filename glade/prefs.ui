@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.4 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.14"/>
   <object class="GtkAdjustment" id="adjustment2">
@@ -22,6 +22,9 @@
     <property name="default_width">300</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="gtk_widget_destroy" object="prefs" swapped="yes"/>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -179,7 +182,9 @@
                                 <property name="can_focus">False</property>
                                 <property name="label" translatable="yes" comments="Feed update interval hint in preference dialog.">Note: &lt;i&gt;Please remember to set a reasonable refresh time. Usually it is a waste of bandwidth to poll feeds more often than each hour.&lt;/i&gt;</property>
                                 <property name="use_markup">True</property>
+                                <property name="use_underline">True</property>
                                 <property name="wrap">True</property>
+                                <property name="mnemonic_widget">globalRefreshIntervalUnitComboBox</property>
                                 <property name="xalign">0</property>
                               </object>
                               <packing>
@@ -884,9 +889,9 @@
                     <property name="label" translatable="yes">Ask for confirmation when marking all items as read</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="margin_start">12</property>
                     <property name="receives_default">False</property>
                     <property name="halign">start</property>
+                    <property name="margin_start">12</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -1080,6 +1085,7 @@
                             <property name="margin_start">12</property>
                             <property name="label" translatable="yes">Proxy _Username:</property>
                             <property name="use_underline">True</property>
+                            <property name="mnemonic_widget">proxyusernameentry</property>
                             <property name="xalign">0</property>
                           </object>
                           <packing>
@@ -1299,6 +1305,7 @@
                         <property name="margin_start">12</property>
                         <property name="label" translatable="yes">_Download using</property>
                         <property name="use_underline">True</property>
+                        <property name="mnemonic_widget">predefinedDownload</property>
                         <property name="xalign">0</property>
                       </object>
                       <packing>
@@ -1346,6 +1353,8 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;small&gt;(%s for URL)&lt;/small&gt;</property>
                         <property name="use_markup">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="mnemonic_widget">customDownload</property>
                         <property name="xalign">1</property>
                       </object>
                       <packing>
@@ -1401,6 +1410,8 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Opening Enclosures</property>
+                        <property name="use_underline">True</property>
+                        <property name="mnemonic_widget">enc_action_view</property>
                         <property name="xalign">0</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
@@ -1518,8 +1529,5 @@
     <action-widgets>
       <action-widget response="-7">prefclosebtn</action-widget>
     </action-widgets>
-    <child>
-      <placeholder/>
-    </child>
   </object>
 </interface>

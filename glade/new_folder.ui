@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.14"/>
   <object class="GtkDialog" id="new_folder">
@@ -11,6 +11,9 @@
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="gtk_widget_hide_on_delete" swapped="no"/>
+    <child>
+      <placeholder/>
+    </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox6">
         <property name="visible">True</property>
@@ -77,6 +80,7 @@
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">_Folder name:</property>
                 <property name="use_underline">True</property>
+                <property name="mnemonic_widget">foldertitleentry</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -107,8 +111,5 @@
       <action-widget response="-6">button3</action-widget>
       <action-widget response="-5">button2</action-widget>
     </action-widgets>
-    <child>
-      <placeholder/>
-    </child>
   </object>
 </interface>
