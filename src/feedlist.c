@@ -209,7 +209,7 @@ feedlist_init (FeedList *fl)
 		/* Update all feeds */
 		if (network_monitor_is_online ()) {
 			debug0 (DEBUG_UPDATE, "initial update: updating all feeds");
-			node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));
+			node_auto_update_subscription (feedlist_get_root ());
 		} else {
 			debug0 (DEBUG_UPDATE, "initial update: prevented because we are offline");
 		}

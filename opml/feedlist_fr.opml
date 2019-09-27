@@ -7,7 +7,7 @@
     <outline text="Exemples de flux">
      <outline text="Français">
        <outline text="Standblog" htmlUrl="http://standblog.org/blog/" xmlUrl="http://standblog.org/dotclear/rss.php" />
-       <outline text="Formats Ouverts" htmlUrl="http://formats-ouverts.org/blog/" xmlUrl="http://formats-ouverts.org/rss.php" />
+       <outline text="Formats Ouverts" htmlUrl="http://formats-ouverts.org/" xmlUrl="http://formats-ouverts.org/feed/atom" />
        <outline text="Liberation.fr" htmlUrl="http://www.liberation.fr/" xmlUrl="http://www.liberation.fr/rss.php" />
        <outline text="MozillaZine-Fr" htmlUrl="http://www.mozillazine-fr.org/" xmlUrl="http://mozillazine-fr.org/contenu.xml" />
        <outline text="LinuxFR" htmlUrl="http://linuxfr.org/" xmlUrl="http://linuxfr.org/news.atom" />
