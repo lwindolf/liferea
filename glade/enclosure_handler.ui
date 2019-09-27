@@ -106,8 +106,10 @@
                   <object class="GtkLabel" id="label206">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">What should Liferea do with this enclosure? Please enter the command you want to be executed below. The enclosures URL will be supplied as an argument for this command:</property>
+                    <property name="label" translatable="yes">_What should Liferea do with this enclosure? Please enter the command you want to be executed below. The enclosures URL will be supplied as an argument for this command:</property>
+                    <property name="use_underline">True</property>
                     <property name="wrap">True</property>
+                    <property name="mnemonic_widget">enc_cmd_entry</property>
                     <property name="width_chars">60</property>
                     <property name="max_width_chars">60</property>
                     <property name="xalign">0</property>
