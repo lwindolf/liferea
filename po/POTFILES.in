@@ -184,7 +184,6 @@ src/webkit/web_extension/web_extension_main.c
 [type: gettext/glade]glade/about.ui
 [type: gettext/glade]glade/auth.ui
 [type: gettext/glade]glade/enclosure_handler.ui
-[type: gettext/glade]glade/google_source.ui
 [tyep: gettext/glade]glade/liferea_menu.ui
 [tyep: gettext/glade]glade/liferea_toolbar.ui
 [type: gettext/glade]glade/mainwindow.ui
