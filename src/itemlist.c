@@ -318,10 +318,7 @@ itemlist_load (nodePtr node)
 	itemlist->priv->currentNode = node;
 	itemview_set_displayed_node (itemlist->priv->currentNode);
 
-	if (NODE_VIEW_MODE_COMBINED != node_get_view_mode (node))
-		itemview_set_mode (ITEMVIEW_NODE_INFO);
-	else
-		itemview_set_mode (ITEMVIEW_ALL_ITEMS);
+	itemview_set_mode (ITEMVIEW_NODE_INFO);
 
 	itemSet = node_get_itemset (itemlist->priv->currentNode);
 	itemlist_merge_itemset (itemSet);

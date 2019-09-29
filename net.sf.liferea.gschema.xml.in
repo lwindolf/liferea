@@ -30,7 +30,7 @@
     <key name="default-view-mode" type="i">
       <default>0</default>
       <summary>The default view mode for feed list nodes.</summary>
-      <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane, 2=combined view 2-pane</description>
+      <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane</description>
     </key>
     <key name="default-update-interval" type="i">
       <default>0</default>

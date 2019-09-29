@@ -2,9 +2,26 @@ To be released
 
 	Version 1.13.0
 
+	* Add Readability.js library (Apache 2.0 licensed)
+	  and auto-apply Readability.js to all headlines
+	  (Lars Windolf)
+
 	* Drop unused glade/google_source.ui
+	  (Lars Windolf)
+
+	* Drop support of combined view mode, this is necessary
+	  to add rich content support which relies on DOM
+	  transformation and Readability.js
+	  (Lars Windolf)
+
+	* Drop ns_photo support, as it is rarely used and
+	  allows us to get rid of XSLT extra handling
+	  (Lars Windolf)
+
 	* #746: Fix accessibility fatals reported by gla11y
 	  (reported by Paul Gevers)
+
+	* Update inline docs on headline view modes
 
 
 2019-12-04   Lars Windolf <lars.windolf@gmx.de>

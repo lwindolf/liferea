@@ -1,7 +1,7 @@
 /*
  * @file itemview.c  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -261,11 +261,6 @@ itemview_update_item (itemPtr item)
 
 	/* Bail out if no HTML update necessary */
 	switch (itemview->mode) {
-		case ITEMVIEW_ALL_ITEMS:
-			/* No HTML update needed if 2 pane mode and item not in item set */
-			if (!htmlview_contains_id (item->id))
-				return;
-			break;
 		case ITEMVIEW_SINGLE_ITEM:
 			/* No HTML update needed if 3 pane mode and item not displayed */
 			if (item->id != itemlist_get_selected_id ())
@@ -430,6 +425,9 @@ itemview_set_layout (nodeViewType newMode)
 	debug1 (DEBUG_GUI, "Setting item list layout mode: %d", newMode);
 
 	switch (newMode) {
+		case NODE_VIEW_MODE_COMBINED:
+			// Not supported anymore, fall through to NORMAL
+
 		case NODE_VIEW_MODE_NORMAL:
 			htmlWidgetName = "normalViewHtml";
 			ilWidgetName = "normalViewItems";
@@ -439,11 +437,6 @@ itemview_set_layout (nodeViewType newMode)
 			htmlWidgetName = "wideViewHtml";
 			ilWidgetName = "wideViewItems";
 			encViewVBoxName = "wideViewVBox";
-			break;
-		case NODE_VIEW_MODE_COMBINED:
-			htmlWidgetName = "combinedViewHtml";
-			ilWidgetName = NULL;
-			encViewVBoxName = NULL;
 			break;
 		default:
 			g_warning("fatal: illegal viewing mode!");

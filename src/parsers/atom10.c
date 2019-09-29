@@ -2,7 +2,7 @@
  * @file atom10.c  Atom 1.0 Parser
  * 
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@
 #include "ns_dc.h"
 #include "ns_georss.h"
 #include "ns_itunes.h"
-#include "ns_photo.h"
 #include "ns_media.h"
 #include "ns_slash.h"
 #include "ns_syn.h"
@@ -880,8 +879,6 @@ atom10_init_feed_handler (void)
 		atom10_add_ns_handler (ns_admin_get_handler ());
 		atom10_add_ns_handler (ns_ag_get_handler ());
 		atom10_add_ns_handler (ns_cC_get_handler ());
-		atom10_add_ns_handler (ns_photo_get_handler ());
-		atom10_add_ns_handler (ns_pb_get_handler ());
 		atom10_add_ns_handler (ns_wfw_get_handler ());
 		atom10_add_ns_handler (ns_media_get_handler ());
 		atom10_add_ns_handler (ns_trackback_get_handler ());

@@ -109,7 +109,6 @@ static const gchar * browser_skim_key_options[] = {
 static const gchar * default_view_mode_options[] = {
 	N_("Normal View"),
 	N_("Wide View"),
-	N_("Combined View"),
 	NULL
 };
 
