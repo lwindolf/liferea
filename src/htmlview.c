@@ -1,7 +1,11 @@
 /**
  * @file htmlview.c  item view interface for HTML rendering
  *
+<<<<<<< HEAD
  * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
+=======
+ * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
+>>>>>>> Add Readability.js to nicely format all AMP/HTML5 fetched content
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,6 +40,150 @@
 // clearly shows the need to merge htmlview.c and src/ui/ui_htmlview.c,
 // maybe with a separate a HTML cache object...
 
+<<<<<<< HEAD
+=======
+static struct htmlView_priv
+{
+	GHashTable	*chunkHash;	/**< cache of HTML chunks of all displayed items */
+	GSList		*orderedChunks;	/**< ordered list of chunks */
+	nodePtr		node;		/**< the node whose items are displayed */
+	guint		missingContent;	/**< counter for items without content */
+} htmlView_priv;
+
+typedef struct htmlChunk
+{
+	gulong 		id;	/**< item id */
+	gchar		*html;	/**< the rendered HTML (or NULL if not yet rendered) */
+	time_t		date;	/**< date as sorting criteria */
+} *htmlChunkPtr;
+
+static void
+htmlview_chunk_free (htmlChunkPtr chunk)
+{
+	g_free (chunk->html);
+	g_free (chunk);
+}
+
+static gint
+htmlview_chunk_sort (gconstpointer a,
+                     gconstpointer b)
+{
+	return (((htmlChunkPtr)a)->date) - (((htmlChunkPtr)b)->date);
+}
+
+void
+htmlview_init (void)
+{
+	htmlView_priv.chunkHash = NULL;
+	htmlView_priv.orderedChunks = NULL;
+	htmlview_clear ();
+}
+
+void
+htmlview_clear (void)
+{
+	if (htmlView_priv.chunkHash)
+		g_hash_table_destroy (htmlView_priv.chunkHash);
+
+	GSList	*iter = htmlView_priv.orderedChunks;
+	while (iter)
+	{
+		htmlview_chunk_free (iter->data);
+		iter = g_slist_next (iter);
+	}
+
+	if (htmlView_priv.orderedChunks)
+		g_slist_free (htmlView_priv.orderedChunks);
+
+	htmlView_priv.chunkHash = g_hash_table_new (g_direct_hash, g_direct_equal);
+	htmlView_priv.orderedChunks = NULL;
+	htmlView_priv.missingContent = 0;
+}
+
+void
+htmlview_set_displayed_node (nodePtr node)
+{
+	g_assert (0 == g_hash_table_size (htmlView_priv.chunkHash));
+	htmlView_priv.node = node;
+}
+
+gboolean
+htmlview_contains_id (gulong id)
+{
+	gpointer	chunk;
+
+	chunk = g_hash_table_lookup (htmlView_priv.chunkHash, GUINT_TO_POINTER (id));
+
+	return (chunk?TRUE:FALSE);
+}
+
+void
+htmlview_add_item (itemPtr item)
+{
+	htmlChunkPtr	chunk;
+
+	debug1 (DEBUG_HTML, "HTML view: adding \"%s\"", item_get_title (item));
+
+	chunk = g_new0 (struct htmlChunk, 1);
+	chunk->id = item->id;
+	g_hash_table_insert (htmlView_priv.chunkHash, GUINT_TO_POINTER (item->id), chunk);
+
+	htmlView_priv.orderedChunks = g_slist_insert_sorted (htmlView_priv.orderedChunks, chunk, htmlview_chunk_sort);
+
+	if (!item_get_description (item) || (0 == strlen (item_get_description (item))))
+		htmlView_priv.missingContent++;
+}
+
+void
+htmlview_remove_item (itemPtr item)
+{
+	htmlChunkPtr	chunk;
+
+	debug1 (DEBUG_HTML, "HTML view: removing \"%s\"", item_get_title (item));
+
+	chunk = g_hash_table_lookup (htmlView_priv.chunkHash, GUINT_TO_POINTER (item->id));
+	if (chunk)
+	{
+		g_hash_table_remove (htmlView_priv.chunkHash, GUINT_TO_POINTER (item->id));
+		htmlView_priv.orderedChunks = g_slist_remove (htmlView_priv.orderedChunks, chunk);
+		htmlview_chunk_free (chunk);
+	}
+}
+
+void
+htmlview_select_item (itemPtr item)
+{
+	debug1(DEBUG_HTML, "HTML view: selecting \"%s\"", item?item_get_title(item):"none");
+	/* nothing to do... */
+}
+
+void
+htmlview_update_item (itemPtr item)
+{
+	htmlChunkPtr	chunk;
+
+	/* ensure rerendering on next update by replace old HTML chunk with NULL */
+	chunk = (htmlChunkPtr) g_hash_table_lookup (htmlView_priv.chunkHash, GUINT_TO_POINTER (item->id));
+	if (chunk)
+	{
+		g_free (chunk->html);
+		chunk->html = NULL;
+	}
+}
+
+void
+htmlview_update_all_items (void)
+{
+	GSList	*iter = htmlView_priv.orderedChunks;
+	while (iter) {
+		htmlChunkPtr chunk = (htmlChunkPtr)iter->data;
+		g_free (chunk->html);
+		chunk->html = NULL;
+		iter = g_slist_next (iter);
+	}
+}
+
+>>>>>>> Add Readability.js to nicely format all AMP/HTML5 fetched content
 static const gchar *
 htmlview_get_item_direction(itemPtr item)
 {
@@ -65,6 +213,11 @@ htmlview_render_item (itemPtr item,
 	/* don't use node from htmlView_priv as this would be
 	   wrong for folders and other merged item sets */
 	node = node_from_id (item->nodeId);
+<<<<<<< HEAD
+=======
+
+	isMergedItemset = (node != htmlView_priv.node);
+>>>>>>> Add Readability.js to nicely format all AMP/HTML5 fetched content
 
 	/* do the XML serialization */
 	doc = xmlNewDoc (BAD_CAST "1.0");
@@ -89,7 +242,12 @@ htmlview_render_item (itemPtr item,
 		render_parameter_add (params, "baseUrl='%s'", baseUrl);
 	}
 
+<<<<<<< HEAD
 	render_parameter_add (params, "showFeedName='%d'", (node != feedlist_get_selected ())?1:0);
+=======
+	render_parameter_add (params, "showFeedName='%d'", isMergedItemset?1:0);
+	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?1:0);
+>>>>>>> Add Readability.js to nicely format all AMP/HTML5 fetched content
 	render_parameter_add (params, "txtDirection='%s'", text_direction);
 	render_parameter_add (params, "appDirection='%s'", common_get_app_direction ());
 	output = render_xml (doc, "item", params);

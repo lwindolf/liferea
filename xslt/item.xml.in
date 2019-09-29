@@ -274,7 +274,17 @@
 </tbody>
 </table> <!-- end of header metadata -->
 
+<<<<<<< HEAD
 <div id='content' class='content'>
+=======
+<xsl:variable name="shading">
+  <xsl:if test="$single = '0' and readStatus = '0'">itemshaded</xsl:if>
+  <xsl:if test="$single = '0' and readStatus != '0'">itemunshaded</xsl:if>
+</xsl:variable>
+
+<div class="shading {$shading}">
+<div class='content'>
+>>>>>>> Add Readability.js to nicely format all AMP/HTML5 fetched content
   <!-- the item's content -->
   <p dir="{$txtDirection}">
     <!-- optional gravatar -->

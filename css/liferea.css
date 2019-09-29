@@ -237,6 +237,48 @@ a.favicon img {
 	padding:0;
 }
 
+<<<<<<< HEAD
+=======
+/* styles to realize shading of new items in condensed mode */
+.itemshaded { background:#ffe; color:black; padding:1px; margin:0; }
+
+.itemunshaded { padding:1px; margin:0; }
+
+.summaryshaded, .summaryunshaded {
+	padding:0px 6px;
+	margin:0;
+}
+
+.summaryshaded a {
+	display:block;
+	background:#ffe;
+	color:black;
+	text-decoration:none;
+	padding:1px 0px;
+	font-weight:bold;
+}
+
+.summaryunshaded a {
+	display:block;
+	color:#GTK-COLOR-TEXT;
+	text-decoration:none;
+	padding:1px 0px;
+}
+
+.summarytime {
+	padding-right:15px;
+	white-space:nowrap;
+	color:#999;
+}
+
+hr.summary {
+	border:0;
+	padding:0;
+	margin:2px;
+	border-bottom:1px dashed #ddd;
+}
+
+>>>>>>> Add Readability.js to nicely format all AMP/HTML5 fetched content
 /* style for the HTTP error box at the beginning
    of the feed description and for item comment feeds */
 #errors, #commentFeedError {
