@@ -122,10 +122,6 @@ src/ui/ui_update.c
 src/ui/ui_update.h
 src/parsers/atom10.c
 src/parsers/atom10.h
-src/parsers/cdf_channel.c
-src/parsers/cdf_channel.h
-src/parsers/cdf_item.c
-src/parsers/cdf_item.h
 src/parsers/ns_admin.c
 src/parsers/ns_admin.h
 src/parsers/ns_ag.c
@@ -144,10 +140,6 @@ src/parsers/ns_slash.c
 src/parsers/ns_slash.h
 src/parsers/ns_syn.c
 src/parsers/ns_syn.h
-src/parsers/pie_entry.c
-src/parsers/pie_entry.h
-src/parsers/pie_feed.c
-src/parsers/pie_feed.h
 src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
