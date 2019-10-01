@@ -103,16 +103,19 @@ feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
 static void
 feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 {
-	gchar	*source;
-	
+	gchar	*source = NULL;
+	GSList	*links;
+
 	if (ctxt->feed->parseErrors)
 		g_string_truncate (ctxt->feed->parseErrors, 0);
 	else
 		ctxt->feed->parseErrors = g_string_new(NULL);
-		
+
 	debug1 (DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
-	
-	source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription));
+
+	links = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription));
+	if (links)
+		source = links->data;	// FIXME: let user choose feed!
 
 	/* FIXME: we only need the !g_str_equal as a workaround after a 404 */
 	if (source && !g_str_equal (source, subscription_get_source (ctxt->subscription))) {
@@ -206,7 +209,11 @@ feed_parse (feedParserCtxtPtr ctxt)
 			handlerIter = handlerIter->next;
 		}
 	} while(0);
-	
+
+	// FIXME: don't do auto-discovery here, let's do auto-discovery only on initial
+	// subscription. This makes us robust against hotel wifi proxies
+	// which perform rewrites...
+
 	/* if the given URI isn't valid we need to start auto discovery */
 	if(ctxt->failed)
 		feed_parser_auto_discover (ctxt);

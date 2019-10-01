@@ -1,13 +1,13 @@
 /**
  * @file html.h HTML parsing
- * 
+ *
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,9 +33,9 @@
  *
  * @data:	HTML source
  * @baseUri:	URI that relative links will be based off of
- * Returns:	feed URL or NULL. Must be freed by caller.
+ * Returns:	a list of feed URLs or NULL. Must be freed by caller.
  */
-gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri);
+GSList * html_auto_discover_feed(const gchar* data, const gchar *baseUri);
 
 /**
  * html_discover_favicon:

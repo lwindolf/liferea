@@ -1,13 +1,13 @@
 /**
  * @file html.c  HTML parsing
- * 
+ *
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -34,11 +34,13 @@ enum {
 	LINK_AMPHTML
 };
 
+#define XPATH_LINK_RSS_ALTERNATE "/html/head/link[@rel='alternate'][@type='application/atom+xml' or @type='application/rss+xml' or @type='application/rdf+xml' or @type='text/xml']"
+
 /**
  * Fetch attribute of a html tag string
  */
 static gchar *
-getAttrib (const gchar* str, gchar *attrib_name) {
+html_get_attrib (const gchar* str, gchar *attrib_name) {
 	gchar		*res;
 	const gchar	*tmp, *tmp2;
 	size_t		len = 0;
@@ -70,11 +72,11 @@ getAttrib (const gchar* str, gchar *attrib_name) {
 }
 
 static gchar *
-checkLinkRef (const gchar* str, gint linkType)
+html_check_link_ref (const gchar* str, gint linkType)
 {
 	gchar		*res;
 
-	res = getAttrib(str, "href");
+	res = html_get_attrib (str, "href");
 
 	if (linkType == LINK_FAVICON) {
 		/* The type attribute is optional, so don't check for it,
@@ -91,7 +93,7 @@ checkLinkRef (const gchar* str, gint linkType)
 			return res;
 	} else if (linkType == LINK_RSS_ALTERNATE) {
 		if ((common_strcasestr (str, "alternate") != NULL) &&
-		    ((common_strcasestr (str, "text/xml") != NULL) || 
+		    ((common_strcasestr (str, "text/xml") != NULL) ||
 		     (common_strcasestr (str, "rss+xml") != NULL) ||
 		     (common_strcasestr (str, "rdf+xml") != NULL) ||
 		     (common_strcasestr (str, "atom+xml") != NULL)))
@@ -108,12 +110,11 @@ checkLinkRef (const gchar* str, gint linkType)
  * Search tag in a html content, return link of the tag pointed by href
  */
 static gchar *
-search_tag_link(const gchar* data, const gchar *tagName, gchar** tagEnd)
+search_tag_link_dirty (const gchar* data, const gchar *tagName, gchar** tagEnd)
 {
 	gchar	*ptr;
 	const gchar	*tmp = data;
 	gchar	*result = NULL;
-	gchar	*res;
 	gchar	*tstr;
 	gchar	*endptr;
 	gchar   *tagname_start;
@@ -134,9 +135,8 @@ search_tag_link(const gchar* data, const gchar *tagName, gchar** tagEnd)
 	*endptr = '\0';
 	tstr = g_strdup (ptr);
 	*endptr = '>';
-	res = getAttrib(tstr, "href");
+	result = html_get_attrib (tstr, "href");
 	g_free (tstr);
-	result = res;
 
 	if (tagEnd) {
 		endptr++;
@@ -152,7 +152,7 @@ search_tag_link(const gchar* data, const gchar *tagName, gchar** tagEnd)
 }
 
 static gchar *
-search_links (const gchar* data, gint linkType)
+search_links_dirty (const gchar* data, gint linkType)
 {
 	gchar	*ptr;
 	const gchar	*tmp = data;
@@ -160,27 +160,27 @@ search_links (const gchar* data, gint linkType)
 	gchar	*res;
 	gchar	*tstr;
 	gchar	*endptr;
-	
+
 	while (1) {
 		ptr = common_strcasestr (tmp, "<link");
 		if (!ptr)
 			return NULL;
-		
+
 		endptr = strchr (ptr, '>');
 		if (!endptr)
 			return NULL;
 		*endptr = '\0';
 		tstr = g_strdup (ptr);
 		*endptr = '>';
-		res = checkLinkRef (tstr, linkType);
+		res = html_check_link_ref (tstr, linkType);
 		g_free (tstr);
 		if (res) {
 			result = res;
 			break;
-/*		deactivated as long as we support only subscribing 
+/*		deactivated as long as we support only subscribing
 		to the first found link (BTW this code crashes on
 		sites like Groklaw!)
-		
+
 			gchar* t;
 			if(result == NULL)
 				result = res;
@@ -193,33 +193,62 @@ search_links (const gchar* data, gint linkType)
 		}
 		tmp = endptr;
 	}
-	
+
 	result = unhtmlize (result); /* URIs can contain escaped things.... All ampersands must be escaped, for example */
 	return result;
 }
 
-gchar *
-html_auto_discover_feed (const gchar* data, const gchar *baseUri)
+static void
+html_auto_discover_collect_links (xmlNodePtr match, gpointer user_data)
 {
-	gchar		*res, *tmp;
-	const gchar	*baseU;
+	GSList **links = (GSList **)user_data;
+	gchar *link = xml_get_attribute (match, "href");
+	if(link)
+		*links = g_slist_append (*links, link);
+}
 
-	baseU = search_tag_link(data, "base", NULL);
-	if (!baseU)
-		baseU = baseUri;
+GSList *
+html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
+{
+	GSList		*iter, *links = NULL;
+	gchar		*baseUri;
+	xmlDocPtr	doc;
+	xmlNodePtr	node, root;
+
+	// If possible we want to use XML instead of tag soup
+	doc = xhtml_parse ((gchar *)data, (size_t)strlen(data));
+	root = xmlDocGetRootElement (doc);
+
+	// Base URL resolving
+	node = xpath_find (root, "/html/head/base");
+	if (node)
+		baseUri = xml_get_attribute (node, "href");
+	if (!baseUri)
+		baseUri = g_strdup (search_tag_link_dirty (data, "base", NULL));
+	if (!baseUri)
+		baseUri = g_strdup (defaultBaseUri);
 
 	debug0 (DEBUG_UPDATE, "searching through link tags");
-	res = search_links (data, LINK_RSS_ALTERNATE);
-	debug1 (DEBUG_UPDATE, "search result: %s", res?res:"none found");
-
-	if (res) {
-		/* turn relative URIs into absolute URIs */
-		tmp = res;
-		res = common_build_url (res, baseU);
-		g_free (tmp);
+	xpath_foreach_match (root, XPATH_LINK_RSS_ALTERNATE, html_auto_discover_collect_links, (gpointer)&links);
+	if (!links) {
+		gchar *tmp = search_links_dirty (data, LINK_RSS_ALTERNATE);
+		if (tmp)
+			links = g_slist_append (links, tmp);
 	}
 
-	return res;
+	/* Turn relative URIs into absolute URIs */
+	iter = links;
+	while (iter) {
+		gchar *tmp = iter->data;
+		iter->data = common_build_url (tmp, baseUri);
+		g_free (tmp);
+		debug1 (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
+		iter = g_slist_next (iter);
+	}
+
+	g_free (baseUri);
+
+	return links;
 }
 
 gchar *
@@ -228,7 +257,7 @@ html_discover_favicon (const gchar * data, const gchar * baseUri)
 	gchar	*res, *tmp;
 
 	debug0 (DEBUG_UPDATE, "searching through link tags");
-	res = search_links (data, LINK_FAVICON);
+	res = search_links_dirty (data, LINK_FAVICON);
 	debug1 (DEBUG_UPDATE, "search result: %s", res? res : "none found");
 
 	if (res) {
@@ -237,61 +266,8 @@ html_discover_favicon (const gchar * data, const gchar * baseUri)
 		res = common_build_url (res, baseUri);
 		g_free (tmp);
 	}
-	
+
 	return res;
-}
-
-/* Black and whitelisting patterns inspired by Mozillas Reader mode matching */
-static GRegex *unlikelyCandidates = NULL;
-static GRegex *maybeCandidates = NULL;
-
-#define UNLIKELY_CANDIDATES "author|author-line|published|banner|breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|foot|header|legends|menu|modal|related|remark|replies|rss|shoutbox|sidebar|skyscraper|social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup|yom-remote"
-#define MAYBE_CANDIDATES    "and|article|body|column|main|shadow"
-
-static void
-html_article_clean (xmlNodePtr node)
-{
-	xmlNodePtr	cur;
-	GError		*err = NULL;
-
-	// Setup regexes
-	if (!unlikelyCandidates) {
-		unlikelyCandidates = g_regex_new (UNLIKELY_CANDIDATES, G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
-		maybeCandidates    = g_regex_new (MAYBE_CANDIDATES   , G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
-	}
-
-	cur = node->xmlChildrenNode;
-	while (cur) {
-		gchar		*class, *id;
-		xmlNodePtr	unlink = NULL;
-
-	 	if (!cur->name || cur->type != XML_ELEMENT_NODE) {
-			cur = cur->next;
-			continue;
-		}
-
-		if (g_str_equal (cur->name , "h1"))
-			unlink = cur;
-		
-		class = xml_get_attribute (cur, "class");
-		id    = xml_get_attribute (cur, "id");
-		if ((class && g_regex_match (unlikelyCandidates, class, 0, NULL) &&
-                             !g_regex_match (maybeCandidates, class, 0, NULL)) ||
-                    (id && g_regex_match (unlikelyCandidates, id, 0, NULL) &&
-		          !g_regex_match (maybeCandidates, id, 0, NULL)))
-			unlink = cur;
-
-		if (!unlink)
-			html_article_clean (cur);
-
-		cur = cur->next;
-
-		if (unlink)
-			xmlUnlinkNode (unlink);
-
-		g_free (class);
-		g_free (id);
-	}
 }
 
 gchar *
@@ -308,12 +284,12 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 	if (!node)
 		return NULL;
 
-	html_article_clean (node);
+    // No HTML DOM stripping here as we rely on using DOMPurify and Readability.js in Webkit
 
 	return xhtml_extract (node, 1, baseUri);
 }
 
 gchar *
 html_get_amp_url (const gchar *data) {
-	return search_links (data, LINK_AMPHTML);
+	return search_links_dirty (data, LINK_AMPHTML);
 }
