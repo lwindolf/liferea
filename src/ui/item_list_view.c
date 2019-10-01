@@ -751,7 +751,7 @@ on_item_list_view_columns_changed (GtkTreeView *treeview, ItemListView *ilv)
 			}
 		}
 	}
-	conf_set_strv_value (LIST_VIEW_COLUMN_ORDER, strv);
+	conf_set_strv_value (LIST_VIEW_COLUMN_ORDER, (const gchar **)strv);
 
 	g_list_free (columns);
 }
