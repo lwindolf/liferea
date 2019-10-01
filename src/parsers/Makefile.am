@@ -12,8 +12,6 @@ noinst_LIBRARIES = libliparsers.a
 libliparsers_a_CFLAGS = $(PACKAGE_FLAGS)
 libliparsers_a_SOURCES = \
 	atom10.c atom10.h \
-	cdf_channel.c cdf_channel.h \
-	cdf_item.c cdf_item.h \
 	html5_feed.c html5_feed.h \
 	ns_admin.c ns_admin.h \
 	ns_ag.c ns_ag.h \
@@ -28,7 +26,5 @@ libliparsers_a_SOURCES = \
 	ns_syn.c ns_syn.h \
 	ns_trackback.c ns_trackback.h \
 	ns_wfw.c ns_wfw.h \
-	pie_entry.c pie_entry.h \
-	pie_feed.c pie_feed.h \
 	rss_channel.c rss_channel.h \
 	rss_item.c rss_item.h 

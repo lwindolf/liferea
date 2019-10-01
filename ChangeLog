@@ -33,6 +33,15 @@ To be released
 	  and auto-apply Readability.js to all headlines
 	  (Lars Windolf)
 
+	* Support multi-feed discovery
+	  (Lars Windolf)
+
+	* Drop CDF channel legacy support
+	  (Lars Windolf)
+
+	* Drop Atom 0.2/0.3 (aka Pie) legacy support
+	  (Lars Windolf)
+
 	* Drop unused glade/google_source.ui
 	  (Lars Windolf)
 
