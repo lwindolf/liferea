@@ -36,6 +36,10 @@ To be released
 	* Support multi-feed discovery
 	  (Lars Windolf)
 
+	* Default to https:// instead of http:// when user doesn't
+	  provide protocol on subscribing feed
+	  (Lars Windolf)
+
 	* Drop CDF channel legacy support
 	  (Lars Windolf)
 
