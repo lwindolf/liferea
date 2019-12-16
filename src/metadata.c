@@ -111,6 +111,10 @@ metadata_init (void)
 	/* for georss:point */
 	metadata_type_register ("point", 		METADATA_TYPE_TEXT);
 
+	/* for mediaRSS */
+	metadata_type_register ("mediadescription", 		METADATA_TYPE_HTML);
+	metadata_type_register ("mediathumbnail", 		METADATA_TYPE_URL);
+
 	return;
 }
 

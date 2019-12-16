@@ -277,7 +277,15 @@
   <p dir="{$txtDirection}">
     <!-- optional gravatar -->
     <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
-       <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
+      <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
+    </xsl:if>
+    <!-- optional MediaRSS thumbnail -->
+    <xsl:if test="attributes/attribute[ @name = 'mediathumbnail' ]">
+      <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
+    </xsl:if>
+    <!-- optional MediaRSS description -->
+    <xsl:if test="attributes/attribute[ @name = 'mediadescription' ]">
+      <xsl:value-of select="attributes/attribute[ @name = 'mediadescription' ]" disable-output-escaping='yes'/>
     </xsl:if>
 
     <!-- the real text content -->

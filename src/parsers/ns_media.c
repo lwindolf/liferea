@@ -1,6 +1,7 @@
 /**
- * @file ns_media.c  Yahoo media namespace support
+ * @file ns_media.c  Yahoo media namespace support / Media RSS Specification
  *
+ * Copyright (C) 2019 Mikel Olasagasti Uranga <mikel@olasagasti.info>
  * Copyright (C) 2007-2010 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,13 +30,13 @@
 #include "xml.h"
 
 /* a namespace documentation can be found at 
-   http://search.yahoo.com/mrss   
+   http://www.rssboard.org/media-rss
 */
 
 static void
 parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
-	gchar *tmp, *tmp2;
+	gchar *description, *tmp, *tmp2, *thumbnail;
 	/*
 	   Maximual definition could look like this:
 	   
@@ -107,6 +108,24 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			cur = cur->next;
 		}
 	}
+	else if (!xmlStrcmp(cur->name, BAD_CAST"thumbnail")) {
+		thumbnail = xml_get_attribute (cur, "url");
+		if (!thumbnail)
+			return;
+
+		metadata_list_set (&(ctxt->item->metadata), "mediathumbnail", thumbnail);
+		g_free(thumbnail);
+
+	}
+	else if (!xmlStrcmp(cur->name, BAD_CAST"description")) {
+		description = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
+
+		if (!description)
+			return;
+
+		metadata_list_set (&(ctxt->item->metadata), "mediadescription", description);
+		g_free (description);
+	}
 	
 	// FIXME: should we support media:player too?
 }
@@ -115,7 +134,7 @@ static void
 ns_media_register_ns (NsHandler *nsh, GHashTable *prefixhash, GHashTable *urihash)
 {
 	g_hash_table_insert (prefixhash, "media", nsh);
-	g_hash_table_insert (urihash, "http://search.yahoo.com/mrss", nsh);
+	g_hash_table_insert (urihash, "http://www.rssboard.org/media-rss", nsh);
 }
 
 NsHandler *
