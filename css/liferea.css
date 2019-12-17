@@ -84,6 +84,11 @@ div.content * img {
 	margin:2px;
 }
 
+div.content img.thumbnail {
+	border:0;
+	margin-right:12px;
+}
+
 img.gravatar {
 	/* gravatars have align="left" so we need proper margin */
 	margin-right:12px;

@@ -285,7 +285,9 @@
     </xsl:if>
     <!-- optional MediaRSS description -->
     <xsl:if test="attributes/attribute[ @name = 'mediadescription' ]">
-      <xsl:value-of select="attributes/attribute[ @name = 'mediadescription' ]" disable-output-escaping='yes'/>
+      <xsl:call-template name="add-newline">
+        <xsl:with-param name="input"  select="attributes/attribute[ @name = 'mediadescription' ]"/>
+       </xsl:call-template>
     </xsl:if>
 
     <!-- the real text content -->
@@ -426,6 +428,24 @@
         <xsl:value-of select="$temp" />
       </xsl:otherwise>
     </xsl:choose>
+</xsl:template>
+
+<!-- newline to br based in https://stackoverflow.com/questions/3309746/how-to-convert-newline-into-br-with-xslt -->
+<xsl:template name="add-newline">
+  <xsl:param name="input" />
+
+  <xsl:choose>
+    <xsl:when test="not(contains($input, '&#xA;'))">
+      <xsl:copy-of select="$input"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="substring-before($input, '&#xA;')" disable-output-escaping='yes'/>
+      <br />
+      <xsl:call-template name="add-newline">
+        <xsl:with-param name="input" select="substring-after($input, '&#xA;')"/>
+      </xsl:call-template>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>
