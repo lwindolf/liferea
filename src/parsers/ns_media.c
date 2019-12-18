@@ -36,7 +36,7 @@
 static void
 parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
-	gchar *description, *tmp, *tmp2, *thumbnail;
+	gchar *description, *tmp, *tmp2, *thumbnail, *count, *max, *avg, *views;
 	/*
 	   Maximual definition could look like this:
 	   
@@ -114,7 +114,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			return;
 
 		metadata_list_set (&(ctxt->item->metadata), "mediathumbnail", thumbnail);
-		g_free(thumbnail);
+		g_free (thumbnail);
 
 	}
 	else if (!xmlStrcmp(cur->name, BAD_CAST"description")) {
@@ -126,7 +126,36 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		metadata_list_set (&(ctxt->item->metadata), "mediadescription", description);
 		g_free (description);
 	}
-	
+	else if (!xmlStrcmp (cur->name, BAD_CAST"community")) {
+		cur = cur->xmlChildrenNode;
+		while (cur) {
+			if (cur->type == XML_ELEMENT_NODE)
+				parse_item_tag (ctxt, cur);
+			cur = cur->next;
+		}
+
+	}
+	else if (!xmlStrcmp(cur->name, BAD_CAST"starRating")) {
+			count = xml_get_attribute (cur, "count");
+			avg = xml_get_attribute (cur, "average");
+			max = xml_get_attribute (cur, "max");
+			if (!avg)
+				return;
+			metadata_list_set (&(ctxt->item->metadata), "mediastarRatingcount", count);
+			metadata_list_set (&(ctxt->item->metadata), "mediastarRatingavg", avg);
+			metadata_list_set (&(ctxt->item->metadata), "mediastarRatingmax", max);
+			g_free (count);
+			g_free (avg);
+			g_free (max);
+	}
+	else if (!xmlStrcmp(cur->name, BAD_CAST"statistics")) {
+			views = xml_get_attribute (cur, "views");
+
+			if (!views)
+				return;
+			metadata_list_set (&(ctxt->item->metadata), "mediaviews", views);
+			g_free (views);
+	}
 	// FIXME: should we support media:player too?
 }
 
