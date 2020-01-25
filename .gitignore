@@ -5,6 +5,8 @@
 *.Po
 *.la
 *.lo
+*.lai
+*.so
 Makefile
 Makefile.in
 aclocal.m4
