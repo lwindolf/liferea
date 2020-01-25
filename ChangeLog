@@ -5,6 +5,8 @@ To be released
 	* Drop unused glade/google_source.ui
 	* #746: Fix accessibility fatals reported by gla11y
 	  (reported by Paul Gevers)
+	* #773: Add WebKit Inspector menu option to HTML view when
+	  run with --debug-html (by sillyslux)
 
 
 2019-12-04   Lars Windolf <lars.windolf@gmx.de>
