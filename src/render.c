@@ -370,6 +370,7 @@ render_get_css (gboolean externalCss)
 
 		g_free(adblockStyleSheetFile);
 
+		/* this should probably be in a separate function */
 		if (externalCss) {
 			/* dump CSS to cache file and create a <style> tag to use it */
 			gchar *filename = common_create_cache_filename (NULL, "style", "css");
