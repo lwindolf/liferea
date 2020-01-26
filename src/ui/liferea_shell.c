@@ -1249,6 +1249,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_widget_show_all (shell->statusbar_feedsinfo_evbox);
 	gtk_box_pack_start (GTK_BOX (shell->statusbar), shell->statusbar_feedsinfo_evbox, FALSE, FALSE, 5);
 	g_signal_connect (G_OBJECT (shell->statusbar_feedsinfo_evbox), "button_release_event", G_CALLBACK (on_next_unread_item_activate), NULL);
+	g_signal_connect (G_OBJECT (shell->statusbar), "style-updated", G_CALLBACK(liferea_shell_rebuild_css), NULL);
 
 	/* 4.) setup tabs */
 
