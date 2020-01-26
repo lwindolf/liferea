@@ -1385,3 +1385,9 @@ liferea_shell_get_window (void)
 {
 	return GTK_WIDGET (shell->window);
 }
+
+void
+liferea_shell_rebuild_css (void)
+{
+	render_init_theme_colors (GTK_WIDGET (shell->window));
+}

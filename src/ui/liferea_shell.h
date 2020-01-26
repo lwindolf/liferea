@@ -180,6 +180,13 @@ GtkWidget * liferea_shell_get_window (void);
 
 void liferea_shutdown (void);
 
+/**
+ * liferea_shell_rebuild_css:
+ *
+ * Invokes a rebuild of the WebView CSS.
+ */
+void liferea_shell_rebuild_css (void);
+
 G_END_DECLS
 
 #endif

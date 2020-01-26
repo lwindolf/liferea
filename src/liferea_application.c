@@ -331,3 +331,9 @@ liferea_application_new(void)
 		"application-id", "net.sourceforge.liferea",
 		NULL);
 }
+
+void
+liferea_application_rebuild_css(void)
+{
+	liferea_shell_rebuild_css ();
+}

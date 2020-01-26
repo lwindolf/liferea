@@ -39,4 +39,6 @@ GType liferea_application_get_type ();
 
 LifereaApplication * liferea_application_new();
 
+void liferea_application_rebuild_css (void);
+
 #endif

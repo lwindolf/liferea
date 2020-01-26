@@ -52,6 +52,12 @@ signal_handler (int sig)
 	liferea_shutdown ();
 }
 
+static void
+rebuild_css (int sig)
+{
+	liferea_application_rebuild_css ();
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -59,8 +65,9 @@ main (int argc, char *argv[])
 
 	signal (SIGTERM, signal_handler);
 	signal (SIGINT, signal_handler);
+
 #ifdef SIGHUP
-	signal (SIGHUP, signal_handler);
+	signal (SIGHUP, rebuild_css);
 #endif
 
 #ifdef ENABLE_NLS
