@@ -469,6 +469,12 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 	GtkTreeIter	iter;
 	gchar		*title, *time_str;
 	const GIcon	*state_icon;
+	gint		state = 0;
+
+	if (item->flagStatus)
+		state += 2;
+	if (!item->readStatus)
+		state += 1;
 
 	if (!item_list_view_id_to_iter (ilv, item->id, &iter))
 		return;
@@ -511,6 +517,7 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 			    IS_TIME_STR, time_str,
 			    IS_STATEICON, state_icon,
 			    ITEMSTORE_ALIGN, item_list_title_alignment (title),
+		            IS_STATE, state,
 	                    ITEMSTORE_WEIGHT, item->readStatus ? PANGO_WEIGHT_NORMAL : PANGO_WEIGHT_BOLD,
 			    -1);
 
