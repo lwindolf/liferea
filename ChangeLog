@@ -1,12 +1,35 @@
-To be released
+2020-03-04   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.0
 
-	* Drop unused glade/google_source.ui
-	* #746: Fix accessibility fatals reported by gla11y
-	  (reported by Paul Gevers)
+	* #764: Add MediaRSS support (e.g. Youtube feeds) to display
+	  descriptions and thumbnails
+	  (Mikel Olasagasti)
 	* #773: Add WebKit Inspector menu option to HTML view when
 	  run with --debug-html (by sillyslux)
+	* #714: Replaces deprecated gtk_menu_popup
+	  (Leiaz)
+	* #705: New hotkey Ctrl-O to open enclosures
+	  (Leiaz)
+	* #680: Add xdg-email command to item list popup menu
+	  (poetsmeniet)
+
+	* Drop unused glade/google_source.ui
+	* #699: Refactoring of duplicate check handlingg
+	  (dymoksc)
+
+	* #746: Fix accessibility fatals reported by gla11y
+	  (reported by Paul Gevers)
+	* Fixes #730: "Update all subscriptions at startup" overrides
+	  "Don't update this feed automatically"
+	  (Dymtro Kyrychuk, reported by Paul Wise)
+	* Fixes #639: Right clicking on article no longer selects it
+	  (Leiaz, reported by Bruce Guenter)
+
+	* #737: Update of Italian translation
+	  (madmurphy)
+	* #745: URL fix for French example feeds
+	  (sblondon)
 
 
 2019-12-04   Lars Windolf <lars.windolf@gmx.de>
