@@ -904,6 +904,7 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"export-feed-list", on_menu_export, NULL, NULL, NULL},
 	{"quit", on_menu_quit, NULL, NULL, NULL},
 	{"remove-selected-feed-items", on_remove_items_activate, NULL, NULL, NULL},
+	{"remove-item", on_action_remove_item, "u", NULL, NULL},
 	{"prev-read-item", on_prev_read_item_activate, NULL, NULL, NULL},
 	{"next-read-item", on_next_read_item_activate, NULL, NULL, NULL},
 	{"next-unread-item", on_next_unread_item_activate, NULL, NULL, NULL},
