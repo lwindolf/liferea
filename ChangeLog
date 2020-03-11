@@ -2,6 +2,9 @@ To be released
 
 	Version 1.13.1
 
+	* Fixes #799: plugins/headerbar.py translations not active
+	  (reported by Paul Gevers)
+
 
 2020-03-04   Lars Windolf <lars.windolf@gmx.de>
 
