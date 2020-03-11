@@ -959,7 +959,6 @@ static const GActionEntry liferea_shell_item_gaction_entries[] = {
 	{"launch-item-in-browser", on_action_launch_item_in_browser, "t", NULL, NULL},
 	{"launch-item-in-external-browser", on_action_launch_item_in_external_browser, "t", NULL, NULL},
 	{"open-item-enclosure", on_action_open_enclosure, "t", NULL, NULL},
-	{"copy-item-to-newsbin", on_action_copy_to_newsbin, "(umt)", NULL, NULL},
 };
 
 static void
