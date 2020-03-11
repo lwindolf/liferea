@@ -904,7 +904,6 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"export-feed-list", on_menu_export, NULL, NULL, NULL},
 	{"quit", on_menu_quit, NULL, NULL, NULL},
 	{"remove-selected-feed-items", on_remove_items_activate, NULL, NULL, NULL},
-	{"remove-item", on_action_remove_item, "t", NULL, NULL},
 	{"prev-read-item", on_prev_read_item_activate, NULL, NULL, NULL},
 	{"next-read-item", on_next_read_item_activate, NULL, NULL, NULL},
 	{"next-unread-item", on_next_unread_item_activate, NULL, NULL, NULL},
@@ -951,7 +950,16 @@ static const GActionEntry liferea_shell_item_gaction_entries[] = {
 	{"launch-selected-item-in-tab", on_action_launch_item_in_tab, NULL, NULL, NULL},
 	{"launch-selected-item-in-browser", on_action_launch_item_in_browser, NULL, NULL, NULL},
 	{"launch-selected-item-in-external-browser", on_action_launch_item_in_external_browser, NULL, NULL, NULL},
-	{"open-selected-item-enclosure", on_action_open_enclosure, NULL, NULL, NULL}
+	{"open-selected-item-enclosure", on_action_open_enclosure, NULL, NULL, NULL},
+
+	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
+	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
+	{"remove-item", on_action_remove_item, "t", NULL, NULL},
+	{"launch-item-in-tab", on_action_launch_item_in_tab, "t", NULL, NULL},
+	{"launch-item-in-browser", on_action_launch_item_in_browser, "t", NULL, NULL},
+	{"launch-item-in-external-browser", on_action_launch_item_in_external_browser, "t", NULL, NULL},
+	{"open-item-enclosure", on_action_open_enclosure, "t", NULL, NULL},
+	{"copy-item-to-newsbin", on_action_copy_to_newsbin, "(umt)", NULL, NULL},
 };
 
 static void
