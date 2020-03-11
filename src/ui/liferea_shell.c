@@ -922,7 +922,15 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"set-view-mode", NULL, "s", "@s 'normal'", on_view_activate},
 	/* Parameter type must be NULL for toggle. */
 	{"fullscreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
-	{"reduced-feed-list", NULL, NULL, "@b false", on_feedlist_reduced_activate}
+	{"reduced-feed-list", NULL, NULL, "@b false", on_feedlist_reduced_activate},
+
+	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
+	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
+	{"remove-item", on_action_remove_item, "t", NULL, NULL},
+	{"launch-item-in-tab", on_action_launch_item_in_tab, "t", NULL, NULL},
+	{"launch-item-in-browser", on_action_launch_item_in_browser, "t", NULL, NULL},
+	{"launch-item-in-external-browser", on_action_launch_item_in_external_browser, "t", NULL, NULL},
+	{"open-item-enclosure", on_action_open_enclosure, "t", NULL, NULL},
 };
 
 static const GActionEntry liferea_shell_add_gaction_entries[] = {
@@ -950,15 +958,7 @@ static const GActionEntry liferea_shell_item_gaction_entries[] = {
 	{"launch-selected-item-in-tab", on_action_launch_item_in_tab, NULL, NULL, NULL},
 	{"launch-selected-item-in-browser", on_action_launch_item_in_browser, NULL, NULL, NULL},
 	{"launch-selected-item-in-external-browser", on_action_launch_item_in_external_browser, NULL, NULL, NULL},
-	{"open-selected-item-enclosure", on_action_open_enclosure, NULL, NULL, NULL},
-
-	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
-	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
-	{"remove-item", on_action_remove_item, "t", NULL, NULL},
-	{"launch-item-in-tab", on_action_launch_item_in_tab, "t", NULL, NULL},
-	{"launch-item-in-browser", on_action_launch_item_in_browser, "t", NULL, NULL},
-	{"launch-item-in-external-browser", on_action_launch_item_in_external_browser, "t", NULL, NULL},
-	{"open-item-enclosure", on_action_open_enclosure, "t", NULL, NULL},
+	{"open-selected-item-enclosure", on_action_open_enclosure, NULL, NULL, NULL}
 };
 
 static void
