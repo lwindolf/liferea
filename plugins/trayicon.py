@@ -104,9 +104,10 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         menuitem_close_behavior = Gtk.CheckMenuItem("Minimize to tray on close")
         menuitem_quit = Gtk.MenuItem("Quit")
 
-        min_enabled = self.get_config()
+        self.config_path = self.get_config_path()
+        self.min_enabled = self.get_config()
 
-        if min_enabled == "True":
+        if self.min_enabled == "True":
             menuitem_close_behavior.set_active(True)
         else:
             menuitem_close_behavior.set_active(False)
@@ -157,9 +158,8 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 
     def get_config(self):
         """Load configuration file"""
-        config_path = self.get_config_path()
         try:
-            with open(config_path, "r") as f:
+            with open(self.config_path, "r") as f:
                 setting = f.readline()
             if setting == "":
                 setting = "True"
@@ -171,8 +171,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 
     def save_config(self, minimize_setting):
         """Save configuration file"""
-        config_path = self.get_config_path()
-        with open(config_path, "w") as f:
+        with open(self.config_path, "w") as f:
             f.write(minimize_setting)
 
     def trayicon_click(self, widget, data = None):
@@ -191,7 +190,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             self.min_enabled = "True"
         else:
             self.min_enabled = "False"
-        save_config(self.min_enabled)
+        self.save_config(self.min_enabled)
 
     def trayicon_toggle(self, widget, data = None):
         self.shell.toggle_visibility()
@@ -257,4 +256,3 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         del self.staticon
         del self.window
         del self.menu
-
