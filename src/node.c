@@ -412,7 +412,7 @@ node_load_icon (nodePtr node)
 	// FIXME: don't use constant size, but size corresponding to GTK icon
 	// size used in wide view
 	node->icon = favicon_load_from_cache (node->id, 128);
-
+	
 	/* Create filename for HTML rendering */
 	g_free (node->iconFile);
 

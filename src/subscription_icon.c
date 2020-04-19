@@ -88,7 +88,7 @@ subscription_icon_download_data_cb (const struct updateResult * const result, gp
 	} else {
 		debug1 (DEBUG_UPDATE, "No data in download result for favicon %s!", ctxt->id);
 	}
-
+	
 	if (!success) {
 		subscription_icon_download_next (ctxt);
 	} else {
@@ -101,12 +101,12 @@ static void
 subscription_icon_download_html_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags)
 {
 	iconDownloadCtxtPtr ctxt = (iconDownloadCtxtPtr)user_data;
-
+	
 	if (result->size > 0 && result->data) {
 		gchar *iconUri = html_discover_favicon (result->data, result->source);
 		if (iconUri) {
 			updateRequestPtr request;
-
+			
 			debug2 (DEBUG_UPDATE, "Found link for favicon %s: %s", ctxt->id, iconUri);
 			request = update_request_new ();
 			request->source = iconUri;
@@ -130,7 +130,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 	update_result_cb	callback;
 
 	debug_enter("subscription_icon_download_next");
-
+	
 	if (ctxt->urls) {
 		url = (gchar *)ctxt->urls->data;
 		ctxt->urls = g_slist_remove (ctxt->urls, url);
@@ -150,7 +150,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 		debug1 (DEBUG_UPDATE, "Icon '%s' could not be downloaded!", ctxt->id);
 		subscription_icon_download_ctxt_free (ctxt);
 	}
-
+	
 	debug_exit ("subscription_icon_download_next");
 }
 
