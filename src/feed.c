@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  *
- * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -243,6 +243,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 		metadata_list_set (&(item->metadata), "richContent", article);
 		db_item_update (item);
 		itemlist_update_item (item);
+		item_unload (item);
 		g_free (article);
 	} else {
 		// If there is no HTML5 article try to fetch AMP source if there is one
@@ -250,15 +251,17 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 		if (ampurl) {
 			updateRequestPtr request;
 
-			debug3 (DEBUG_HTML, "Fetching AMP HTML %ld %s : %s", item->id, item->title, ampurl);
+			debug3 (DEBUG_PARSING, "Fetching AMP HTML %ld %s : %s", item->id, item->title, ampurl);
 			request = update_request_new ();
 			update_request_set_source (request, ampurl);
-			// Explicitely do not pass proxy/auth options to Google
+			// Explicitely do not pass proxy/auth options to Google (AMP)!
 			request->options = g_new0 (struct updateOptions, 1);
+			// FIXME: how do we prevent an endless loop here?
 			update_execute_request (NULL, request, feed_enrich_item_cb, item, 0);
+
+			g_free (ampurl);
 		}
 	}
-	item_unload (item);
 }
 
 /**
@@ -269,15 +272,19 @@ feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 {
 	updateRequestPtr request;
 
-	if (!item->source)
+	if (!item->source) {
+		debug1 (DEBUG_PARSING, "Cannot HTML5-enrich item %s because it has no source!\n", item->title);
 		return;
+	}
 
 	// Don't enrich twice
-	if (NULL != metadata_list_get (item->metadata, "richContent"))
+	if (NULL != metadata_list_get (item->metadata, "richContent")) {
+		debug1 (DEBUG_PARSING, "Skipping already HTML5 enriched item %s\n", item->title);
 		return;
+	}
 
 	// Fetch item->link document and try to parse it as XHTML
-	debug3 (DEBUG_HTML, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
+	debug3 (DEBUG_PARSING, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
 	request = update_request_new ();
 	update_request_set_source (request, item->source);
 

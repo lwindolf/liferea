@@ -1,13 +1,13 @@
 /**
  * @file html.h HTML parsing
- * 
+ *
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2017-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -63,7 +63,7 @@ gchar * html_get_article(const gchar *data, const gchar *baseUri);
 /**
  * html_get_amp_url:
  *
- * Parse HTML and return AMP URL if found
+ * Parse HTML and returns AMP URL if found
  *
  * @data:	the HTML to check
  *

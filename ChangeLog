@@ -2,6 +2,10 @@ To be released
 
 	Version 1.13.1
 
+	* Add support for subscribing to HTML5 websites
+	  without RSS/Atom feeds by extracting article
+	  titles,links and descriptions
+
 	* Fixes #799: plugins/headerbar.py translations not active
 	  (reported by Paul Gevers)
 

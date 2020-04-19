@@ -127,12 +127,12 @@ updateStatePtr
 update_state_copy (updateStatePtr state)
 {
 	updateStatePtr newState;
-	
+
 	newState = update_state_new ();
 	update_state_set_lastmodified (newState, update_state_get_lastmodified (state));
 	update_state_set_cookies (newState, update_state_get_cookies (state));
 	update_state_set_etag (newState, update_state_get_etag (state));
-	
+
 	return newState;
 }
 
@@ -160,7 +160,7 @@ update_request_free (updateRequestPtr request)
 {
 	if (!request)
 		return;
-	
+
 	update_state_free (request->updateState);
 	update_options_free (request->options);
 
@@ -171,10 +171,10 @@ update_request_free (updateRequestPtr request)
 }
 
 void
-update_request_set_source(updateRequestPtr request, const gchar* source) 
+update_request_set_source(updateRequestPtr request, const gchar* source)
 {
 	g_free (request->source);
-	request->source = g_strdup(source) ;
+	request->source = g_strdup (source);
 }
 
 void
@@ -188,10 +188,10 @@ updateResultPtr
 update_result_new (void)
 {
 	updateResultPtr	result;
-	
+
 	result = g_new0 (struct updateResult, 1);
 	result->updateState = update_state_new ();
-	
+
 	return result;
 }
 
@@ -200,7 +200,7 @@ update_result_free (updateResultPtr result)
 {
 	if (!result)
 		return;
-		
+
 	update_state_free (result->updateState);
 
 	g_free (result->data);
@@ -214,12 +214,12 @@ updateOptionsPtr
 update_options_copy (updateOptionsPtr options)
 {
 	updateOptionsPtr newOptions;
-	
+
 	newOptions = g_new0 (struct updateOptions, 1);
 	newOptions->username = g_strdup (options->username);
 	newOptions->password = g_strdup (options->password);
 	newOptions->dontUseProxy = options->dontUseProxy;
-	
+
 	return newOptions;
 }
 
@@ -228,7 +228,7 @@ update_options_free (updateOptionsPtr options)
 {
 	if (!options)
 		return;
-		
+
 	g_free (options->username);
 	g_free (options->password);
 	g_free (options);
@@ -244,16 +244,16 @@ update_job_new (gpointer owner,
 		updateFlags flags)
 {
 	updateJobPtr	job;
-	
+
 	job = g_new0 (struct updateJob, 1);
 	job->owner = owner;
 	job->request = request;
 	job->result = update_result_new ();
 	job->callback = callback;
 	job->user_data = user_data;
-	job->flags = flags;	
+	job->flags = flags;
 	job->state = REQUEST_STATE_INITIALIZED;
-	
+
 	return job;
 }
 
@@ -268,9 +268,9 @@ update_job_free (updateJobPtr job)
 {
 	if (!job)
 		return;
-		
+
 	jobs = g_slist_remove (jobs, job);
-	
+
 	update_request_free (job->request);
 	update_result_free (job->result);
 	g_free (job);
@@ -286,19 +286,19 @@ update_exec_filter_cmd (gchar *cmd, gchar *data, gchar **errorOutput, size_t *si
 	char		*tmpfilename;
 	char		*out = NULL;
 	FILE		*file, *p;
-	
+
 	*errorOutput = NULL;
 	tmpfilename = g_build_filename (tmpdir, "liferea-XXXXXX", NULL);
-	
+
 	fd = g_mkstemp(tmpfilename);
-	
+
 	if(fd == -1) {
 		debug1(DEBUG_UPDATE, "Error opening temp file %s to use for filtering!", tmpfilename);
 		*errorOutput = g_strdup_printf(_("Error opening temp file %s to use for filtering!"), tmpfilename);
 		g_free(tmpfilename);
 		return NULL;
-	}	
-		
+	}
+
 	file = fdopen(fd, "w");
 	fwrite(data, strlen(data), 1, file);
 	fclose(file);
@@ -341,7 +341,7 @@ update_apply_xslt (updateJobPtr job)
 	gchar			*output = NULL;
 
 	g_assert (NULL != job->result);
-	
+
 	do {
 		srcDoc = xml_parse (job->result->data, job->result->size, NULL);
 		if (!srcDoc) {
@@ -367,7 +367,7 @@ update_apply_xslt (updateJobPtr job)
 			g_warning ("fatal: retrieving result of filter stylesheet failed (%s)!", job->request->filtercmd);
 			break;
 		}
-		
+
 #ifdef LIBXML2_NEW_BUFFER
 		if (xmlOutputBufferGetSize (buf) > 0)
 			output = xmlCharStrdup (xmlOutputBufferGetContent (buf));
@@ -375,7 +375,7 @@ update_apply_xslt (updateJobPtr job)
 		if (xmlBufferLength (buf->buffer) > 0)
 			output = xmlCharStrdup (xmlBufferContent (buf->buffer));
 #endif
- 
+
 		xmlOutputBufferClose (buf);
 	} while (FALSE);
 
@@ -385,7 +385,7 @@ update_apply_xslt (updateJobPtr job)
 		xmlFreeDoc (resDoc);
 	if (xslt)
 		xsltFreeStylesheet (xslt);
-	
+
 	return output;
 }
 
@@ -419,11 +419,11 @@ update_exec_cmd (updateJobPtr job)
 	FILE	*f;
 	int	status;
 	size_t	len;
-	
+
 	job->result = update_result_new ();
-		
+
 	/* if the first char is a | we have a pipe else a file */
-	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", (job->request->source) + 1);	
+	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", (job->request->source) + 1);
 	f = popen ((job->request->source) + 1, "r");
 	if (f) {
 		while (!feof (f) && !ferror (f)) {
@@ -435,7 +435,7 @@ update_exec_cmd (updateJobPtr job)
 		status = pclose (f);
 		if (WIFEXITED (status) && WEXITSTATUS (status) == 0)
 			job->result->httpstatus = 200;
-		else 
+		else
 			job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 
 		if (job->result->data)
@@ -444,7 +444,7 @@ update_exec_cmd (updateJobPtr job)
 		liferea_shell_set_status_bar (_("Error: Could not open pipe \"%s\""), (job->request->source) + 1);
 		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
-	
+
 	update_process_finished_job (job);
 }
 
@@ -453,9 +453,9 @@ update_load_file (updateJobPtr job)
 {
 	gchar *filename = job->request->source;
 	gchar *anchor;
-	
+
 	job->result = update_result_new ();
-	
+
 	if (!strncmp (filename, "file://",7))
 		filename += 7;
 
@@ -476,7 +476,7 @@ update_load_file (updateJobPtr job)
 		liferea_shell_set_status_bar (_("Error: There is no file \"%s\""), filename);
 		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
-	
+
 	update_process_finished_job (job);
 }
 
@@ -487,20 +487,20 @@ update_job_run (updateJobPtr job)
 	   methods which then do anything they want with the job and
 	   pass the processed job to update_process_finished_job()
 	   for result dequeuing */
-	
+
 	/* everything starting with '|' is a local command */
 	if (*(job->request->source) == '|') {
 		debug1 (DEBUG_UPDATE, "Recognized local command: %s", job->request->source);
 		update_exec_cmd (job);
 		return;
 	}
-	
+
 	/* if it has a protocol "://" prefix, but not "file://" it is an URI */
 	if (strstr (job->request->source, "://") && strncmp (job->request->source, "file://", 7)) {
 		network_process_request (job);
 		return;
 	}
-	
+
 	/* otherwise it must be a local file... */
 	{
 		debug1 (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
@@ -513,13 +513,13 @@ static gboolean
 update_dequeue_job (gpointer user_data)
 {
 	updateJobPtr job;
-	
+
 	if (!pendingJobs)
 		return FALSE;	/* we must be in shutdown */
-		
-	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS) 
+
+	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS)
 		return FALSE;	/* we'll be called again when a job finishes */
-	
+
 
 	job = (updateJobPtr)g_async_queue_try_pop(pendingHighPrioJobs);
 
@@ -539,24 +539,24 @@ update_dequeue_job (gpointer user_data)
 	} else {
 		update_job_run (job);
 	}
-		
+
 	return FALSE;
 }
 
 updateJobPtr
-update_execute_request (gpointer owner, 
-                        updateRequestPtr request, 
-			update_result_cb callback, 
-			gpointer user_data, 
+update_execute_request (gpointer owner,
+                        updateRequestPtr request,
+			update_result_cb callback,
+			gpointer user_data,
 			updateFlags flags)
 {
 	updateJobPtr job;
-	
+
 	g_assert (request->options != NULL);
 	g_assert (request->source != NULL);
-	
+
 	job = update_job_new (owner, request, callback, user_data, flags);
-	job->state = REQUEST_STATE_PENDING;	
+	job->state = REQUEST_STATE_PENDING;
 	jobs = g_slist_append (jobs, job);
 
 	if (flags & FEED_REQ_PRIORITY_HIGH) {
@@ -586,12 +586,12 @@ static gboolean
 update_process_result_idle_cb (gpointer user_data)
 {
 	updateJobPtr job = (updateJobPtr)user_data;
-	
+
 	if (job->callback)
 		(job->callback) (job->result, job->user_data, job->flags);
 
 	update_job_free (job);
-		
+
 	return FALSE;
 }
 
@@ -614,17 +614,17 @@ void
 update_process_finished_job (updateJobPtr job)
 {
 	job->state = REQUEST_STATE_DEQUEUE;
-	
+
 	g_assert(numberOfActiveJobs > 0);
 	numberOfActiveJobs--;
 	g_idle_add (update_dequeue_job, NULL);
 
 	/* Handling abandoned requests (e.g. after feed deletion) */
-	if (job->callback == NULL) {	
+	if (job->callback == NULL) {
 		debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
 		update_job_free (job);
 		return;
-	} 
+	}
 
 	/* Finally execute the postfilter */
 	if (job->result->data && job->request->filtercmd) {
@@ -634,7 +634,7 @@ update_process_finished_job (updateJobPtr job)
                 g_object_unref(task);
                 return;
         }
-		
+
 	g_idle_add (update_process_result_idle_cb, job);
 }
 
@@ -660,7 +660,7 @@ update_deinit (void)
 
 	g_async_queue_unref (pendingJobs);
 	g_async_queue_unref (pendingHighPrioJobs);
-	
+
 	g_slist_free (jobs);
 	jobs = NULL;
 }
