@@ -27,7 +27,6 @@
 #include "debug.h"
 #include "html.h"
 #include "xml.h"
-#include "parsers/html5_feed.h"
 
 enum {
 	LINK_FAVICON,
