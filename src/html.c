@@ -298,23 +298,42 @@ html_article_clean (xmlNodePtr node)
 gchar *
 html_get_article (const gchar *data, const gchar *baseUri) {
 	xmlDocPtr	doc;
-	xmlNodePtr	node;
+	xmlNodePtr	node, root;
+	gchar		*result = NULL;
 
 	doc = xhtml_parse ((gchar *)data, (size_t)strlen(data));
-	if (!doc)
+	if (!doc) {
+		debug1 (DEBUG_PARSING, "XHTML parsing error during HTML5 fetch of '%s'\n", baseUri);
 		return NULL;
+	}
 
-	// Find article, we only expect a single article...
-	node = xpath_find (xmlDocGetRootElement (doc), "//article");
-	if (!node)
-		return NULL;
+	root = xmlDocGetRootElement (doc);
+	if (root) {
+		// Find HTML5 <article>, we only expect a single article...
+		node = xpath_find (root, "//article");
 
-	html_article_clean (node);
+		// Fallback to microformat <div property='articleBody'>
+		if (!node)
+			node = xpath_find (root, "//div[@property='articleBody']");
 
-	return xhtml_extract (node, 1, baseUri);
+		// Fallback to <div id='content'> which is a quite common
+		if (!node)
+			node = xpath_find (root, "//div[@id='content']");
+
+		if (node) {
+			html_article_clean (node);
+			result = xhtml_extract (node, 1, baseUri);
+		} else {
+			debug1 (DEBUG_PARSING, "No article found during HTML5 parsing of '%s'\n", baseUri);
+		}
+		xmlFreeDoc (doc);
+	}
+
+	return result;
 }
 
 gchar *
-html_get_amp_url (const gchar *data) {
+html_get_amp_url (const gchar *data)
+{
 	return search_links (data, LINK_AMPHTML);
 }

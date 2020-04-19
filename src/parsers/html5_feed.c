@@ -20,9 +20,7 @@
  */
 #include "html5_feed.h"
 
-#include <string.h>
-#include <stdlib.h>
-
+#include "common.h"
 #include "date.h"
 #include "feed_parser.h"
 #include "metadata.h"
@@ -65,7 +63,9 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 	if (cur = xpath_find (itemNode, ".//a/@href")) {
 		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp) {
-			item_set_source (ctxt->item, tmp);
+			gchar *link = common_build_url (tmp, ctxt->subscription->source);
+			item_set_source (ctxt->item, link);
+			g_free (link);
 
 			// we use the link as id, as on websites link point to unique
 			// content in 99% of the cases
