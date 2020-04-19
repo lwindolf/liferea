@@ -1,13 +1,13 @@
 /**
  * @file html.c  HTML parsing
- * 
+ *
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,6 +27,7 @@
 #include "debug.h"
 #include "html.h"
 #include "xml.h"
+#include "parsers/html5_feed.h"
 
 enum {
 	LINK_FAVICON,
@@ -91,7 +92,7 @@ checkLinkRef (const gchar* str, gint linkType)
 			return res;
 	} else if (linkType == LINK_RSS_ALTERNATE) {
 		if ((common_strcasestr (str, "alternate") != NULL) &&
-		    ((common_strcasestr (str, "text/xml") != NULL) || 
+		    ((common_strcasestr (str, "text/xml") != NULL) ||
 		     (common_strcasestr (str, "rss+xml") != NULL) ||
 		     (common_strcasestr (str, "rdf+xml") != NULL) ||
 		     (common_strcasestr (str, "atom+xml") != NULL)))
@@ -160,12 +161,12 @@ search_links (const gchar* data, gint linkType)
 	gchar	*res;
 	gchar	*tstr;
 	gchar	*endptr;
-	
+
 	while (1) {
 		ptr = common_strcasestr (tmp, "<link");
 		if (!ptr)
 			return NULL;
-		
+
 		endptr = strchr (ptr, '>');
 		if (!endptr)
 			return NULL;
@@ -177,10 +178,10 @@ search_links (const gchar* data, gint linkType)
 		if (res) {
 			result = res;
 			break;
-/*		deactivated as long as we support only subscribing 
+/*		deactivated as long as we support only subscribing
 		to the first found link (BTW this code crashes on
 		sites like Groklaw!)
-		
+
 			gchar* t;
 			if(result == NULL)
 				result = res;
@@ -193,7 +194,7 @@ search_links (const gchar* data, gint linkType)
 		}
 		tmp = endptr;
 	}
-	
+
 	result = unhtmlize (result); /* URIs can contain escaped things.... All ampersands must be escaped, for example */
 	return result;
 }
@@ -225,7 +226,7 @@ html_auto_discover_feed (const gchar* data, const gchar *baseUri)
 gchar *
 html_discover_favicon (const gchar * data, const gchar * baseUri)
 {
-	gchar	*res, *tmp;
+	gchar			*res, *tmp;
 
 	debug0 (DEBUG_UPDATE, "searching through link tags");
 	res = search_links (data, LINK_FAVICON);
@@ -237,7 +238,7 @@ html_discover_favicon (const gchar * data, const gchar * baseUri)
 		res = common_build_url (res, baseUri);
 		g_free (tmp);
 	}
-	
+
 	return res;
 }
 
@@ -272,7 +273,7 @@ html_article_clean (xmlNodePtr node)
 
 		if (g_str_equal (cur->name , "h1"))
 			unlink = cur;
-		
+
 		class = xml_get_attribute (cur, "class");
 		id    = xml_get_attribute (cur, "id");
 		if ((class && g_regex_match (unlikelyCandidates, class, 0, NULL) &&

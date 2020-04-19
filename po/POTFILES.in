@@ -126,6 +126,8 @@ src/parsers/cdf_channel.c
 src/parsers/cdf_channel.h
 src/parsers/cdf_item.c
 src/parsers/cdf_item.h
+src/parsers/html5_feed.c
+src/parsers/html5_feed.h
 src/parsers/ns_admin.c
 src/parsers/ns_admin.h
 src/parsers/ns_ag.c
