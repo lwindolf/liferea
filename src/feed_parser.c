@@ -109,8 +109,10 @@ feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
  * tries to download it. If it finds a valid feed source it parses
  * this source instead into the given feed parsing context. It also
  * replaces the HTTP URI with the found feed source.
+ *
+ * Mutates ctxt->failed and ctxt->feed->parseErrors
  */
-static void
+static gboolean
 feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 {
 	gchar		*source;
@@ -141,9 +143,28 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 	}
 }
 
+static void
+feed_parser_ctxt_cleanup (feedParserCtxtPtr ctxt)
+{
+	/* free old temp. parsing data, don't free right after parsing because
+	it can be used until the last feed request is finished, move me
+	to the place where the last request in list otherRequests is
+	finished :-) */
+	g_hash_table_destroy (ctxt->tmpdata);
+	ctxt->tmpdata = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+
+	/* we always drop old metadata */
+	metadata_list_free (ctxt->subscription->metadata);
+
+	ctxt->subscription->metadata = NULL;
+	ctxt->failed = FALSE;
+}
+
 /**
  * General feed source parsing function. Parses the passed feed source
- * and tries to determine the source type.
+ * and tries to determine the source type. If all feed handlers fail
+ * tries to do HTML5 feed extraction. If this also fails starts feed
+ * link auto-discovery.
  *
  * @param ctxt		feed parsing context
  *
@@ -167,7 +188,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 	else
 		ctxt->feed->parseErrors = g_string_new (NULL);
 
-	/* try to parse buffer with XML and to create a DOM tree */
+	/* 1.) try to parse downloaded data as XML and try to read a feed format */
 	do {
 		if (NULL == xml_parse_feed (ctxt)) {
 			g_string_append_printf (ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), subscription_get_source (ctxt->subscription));
@@ -196,28 +217,26 @@ feed_parse (feedParserCtxtPtr ctxt)
 		while(handlerIter) {
 			feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
 			if(handler && handler->checkFormat && (*(handler->checkFormat))(ctxt->doc, cur)) {
-				/* free old temp. parsing data, don't free right after parsing because
-				   it can be used until the last feed request is finished, move me
-				   to the place where the last request in list otherRequests is
-				   finished :-) */
-				g_hash_table_destroy(ctxt->tmpdata);
-				ctxt->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
-
-				/* we always drop old metadata */
-				metadata_list_free(ctxt->subscription->metadata);
-				ctxt->subscription->metadata = NULL;
-				ctxt->failed = FALSE;
-
 				ctxt->feed->fhp = handler;
-				(*(handler->feedParser))(ctxt, cur);
-
+				feed_parser_ctxt_cleanup (ctxt);
+				(*(handler->feedParser)) (ctxt, cur);
 				break;
 			}
 			handlerIter = handlerIter->next;
 		}
 	} while(0);
 
-	/* alternatively try to parse as HTML5 */
+	if (ctxt->doc) {
+		xmlFreeDoc(ctxt->doc);
+		ctxt->doc = NULL;
+	}
+
+	/* 2.) None of the feed formats did work, chance is high that we are
+           working on a HTML documents. Let's look for feed links inside it! */
+	if (ctxt->failed)
+		feed_parser_auto_discover (ctxt);
+
+	/* 3.) alternatively try to parse the HTML document we are on as HTML5 feed */
 	if (ctxt->failed) {
 		do {
 			if (ctxt->doc = xhtml_parse (ctxt->data, ctxt->dataLength))
@@ -225,57 +244,41 @@ feed_parse (feedParserCtxtPtr ctxt)
 			else
 				break;
 
-			if (NULL == (cur = xmlDocGetRootElement(ctxt->doc))) {
+			if (NULL == (cur = xmlDocGetRootElement (ctxt->doc))) {
 				g_string_append(ctxt->feed->parseErrors, _("Empty document!"));
 				break;
 			}
 
 			ctxt->feed->fhp = html5_init_feed_handler ();
 			if ((*(ctxt->feed->fhp->checkFormat)) (ctxt->doc, cur)) {
-					// FIXME: the following is duplicated!
-					/* free old temp. parsing data, don't free right after parsing because
-					it can be used until the last feed request is finished, move me
-					to the place where the last request in list otherRequests is
-					finished :-) */
-					g_hash_table_destroy(ctxt->tmpdata);
-					ctxt->tmpdata = g_hash_table_new_full(g_str_hash, g_str_equal, NULL, g_free);
-
-					/* we always drop old metadata */
-					metadata_list_free(ctxt->subscription->metadata);
-					ctxt->subscription->metadata = NULL;
-					ctxt->failed = FALSE;
-
-					(*(ctxt->feed->fhp->feedParser))(ctxt, cur);
+					feed_parser_ctxt_cleanup (ctxt);
+					(*(ctxt->feed->fhp->feedParser)) (ctxt, cur);
 			}
 		} while(0);
 	}
 
-	/* if the given URI isn't valid we need to start auto discovery */
-	if(ctxt->failed)
-		feed_parser_auto_discover (ctxt);
-
-	if(ctxt->failed) {
-		/* Autodiscovery failed */
-		/* test if we have a HTML page */
-		if((strstr(ctxt->data, "<html>") || strstr(ctxt->data, "<HTML>") ||
-		    strstr(ctxt->data, "<html ") || strstr(ctxt->data, "<HTML "))) {
-			debug0(DEBUG_UPDATE, "HTML document detected!");
-			g_string_append(ctxt->feed->parseErrors, _("Source points to HTML document."));
-		} else {
-			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
-			g_string_append(ctxt->feed->parseErrors, _("Could not determine the feed type."));
-		}
-	} else {
-		debug1(DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
-		success = TRUE;
-	}
-
-	if(ctxt->doc) {
+	if (ctxt->doc) {
 		xmlFreeDoc(ctxt->doc);
 		ctxt->doc = NULL;
 	}
 
-	debug_exit("feed_parse");
+	/* 4.) We give up and inform the user */
+	if (ctxt->failed) {
+		/* test if we have a HTML page */
+		if((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
+		    strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML "))) {
+			debug0(DEBUG_UPDATE, "HTML document detected!");
+			g_string_append (ctxt->feed->parseErrors, _("Source points to HTML document."));
+		} else {
+			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
+			g_string_append (ctxt->feed->parseErrors, _("Could not determine the feed type."));
+		}
+	} else {
+		debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
+		success = TRUE;
+	}
+
+	debug_exit ("feed_parse");
 
 	return success;
 }
