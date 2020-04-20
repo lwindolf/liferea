@@ -1,10 +1,10 @@
 /**
  * @file main.c Liferea startup
  *
- * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- *  
- * Some code like the command line handling was inspired by 
+ *
+ * Some code like the command line handling was inspired by
  *
  * Pan - A Newsreader for Gtk+
  * Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
@@ -59,6 +59,7 @@ struct _LifereaApplicationClass {
 
 G_DEFINE_TYPE (LifereaApplication, liferea_application, GTK_TYPE_APPLICATION)
 
+static LifereaApplication *liferea_app = NULL;
 
 static void
 liferea_application_finalize (GObject *gobject)
@@ -117,7 +118,7 @@ on_app_activate (GtkApplication *gtk_app, gpointer user_data)
 	list = gtk_application_get_windows (gtk_app);
 
 	if (list) {
-		gtk_window_deiconify (GTK_WINDOW (list->data));		
+		gtk_window_deiconify (GTK_WINDOW (list->data));
 		gtk_window_present (GTK_WINDOW (list->data));
 	} else {
 		liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
@@ -323,11 +324,36 @@ liferea_application_init (LifereaApplication *self)
 	g_signal_connect (G_OBJECT (self), "handle-local-options", G_CALLBACK (on_handle_local_options), NULL);
 }
 
-LifereaApplication *
-liferea_application_new(void)
+static gboolean
+liferea_application_shutdown_source_func (gpointer userdata)
 {
-	return g_object_new (LIFEREA_TYPE_APPLICATION,
-		"flags", G_APPLICATION_HANDLES_OPEN,
-		"application-id", "net.sourceforge.liferea",
-		NULL);
+	g_application_quit (G_APPLICATION (liferea_app));
+	return FALSE;
+}
+
+void
+liferea_application_shutdown (void)
+{
+	g_idle_add (liferea_application_shutdown_source_func, NULL);
+}
+
+gint
+liferea_application_new (int argc, char *argv[])
+{
+	gint status;
+
+	g_assert (NULL == liferea_app);
+
+	liferea_app = g_object_new (LIFEREA_TYPE_APPLICATION,
+		                    "flags", G_APPLICATION_HANDLES_OPEN,
+		                    "application-id", "net.sourceforge.liferea",
+		                    NULL);
+
+	g_set_prgname ("liferea");
+	g_set_application_name (_("Liferea"));
+	gtk_window_set_default_icon_name ("liferea");	/* GTK theme support */
+	status = g_application_run (G_APPLICATION (liferea_app), argc, argv);
+	g_object_unref (liferea_app);
+
+	return status;
 }

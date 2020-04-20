@@ -7,6 +7,10 @@ To be released
 	  titles,links and descriptions
 	  (Lars Windolf)
 
+	* #816: Increase size of stored favicons to 128x128px
+	  to improve icon quality in 3-pane wide view. Also add
+	  favicon URL discovery tests.
+
 	* Fixes #799: plugins/headerbar.py translations not active
 	  (reported by Paul Gevers)
 

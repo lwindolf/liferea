@@ -33,6 +33,7 @@
 #include "node.h"
 #include "node_view.h"
 #include "render.h"
+#include "subscription_icon.h"
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
@@ -257,7 +258,7 @@ node_update_favicon (nodePtr node)
 {
 	if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_FAVICON) {
 		debug1 (DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
-		subscription_update_favicon (node->subscription);
+		subscription_icon_update (node->subscription);
 	}
 
 	/* Recursion */
@@ -408,8 +409,10 @@ node_load_icon (nodePtr node)
 	if (node->icon)
 		g_object_unref (node->icon);
 
-	node->icon = favicon_load_from_cache (node->id, 32);
-
+	// FIXME: don't use constant size, but size corresponding to GTK icon
+	// size used in wide view
+	node->icon = favicon_load_from_cache (node->id, 128);
+	
 	/* Create filename for HTML rendering */
 	g_free (node->iconFile);
 

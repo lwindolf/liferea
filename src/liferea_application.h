@@ -37,6 +37,19 @@ typedef struct _LifereaApplicationClass LifereaApplicationClass;
 
 GType liferea_application_get_type ();
 
-LifereaApplication * liferea_application_new();
+/*
+ * Start a new GApplication representing Liferea
+ *
+ * @param argc  number of arguments
+ * @param argv  arguments
+ *
+ * Returns: exit code
+ */
+gint liferea_application_new (int argc, char *argv[]);
+
+/*
+ * Shutdown GApplication
+ */
+void liferea_application_shutdown (void);
 
 #endif

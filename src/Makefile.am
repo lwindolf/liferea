@@ -56,6 +56,7 @@ liferea_SOURCES = \
 	rule.c rule.h \
 	social.c social.h \
 	subscription.c subscription.h \
+	subscription_icon.c subscription_icon.h \
 	subscription_type.h \
 	update.c update.h \
 	main.c \

@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  *
- * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,10 @@
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
-#include "favicon.h"
 #include "feedlist.h"
 #include "metadata.h"
 #include "net.h"
+#include "subscription_icon.h"
 #include "ui/auth_dialog.h"
 #include "ui/feed_list_view.h"
 #include "ui/itemview.h"
@@ -129,29 +129,6 @@ subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now)
 	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.", subscription->updateState->lastPoll.tv_sec);
 }
 
-static void
-subscription_favicon_downloaded (gpointer user_data)
-{
-	nodePtr	node = (nodePtr)user_data;
-
-	node_load_icon (node);
-	feed_list_view_update_node (node->id);
-}
-
-void
-subscription_update_favicon (subscriptionPtr subscription)
-{
-	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
-	liferea_shell_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
-	g_get_current_time (&subscription->updateState->lastFaviconPoll);
-	favicon_download (subscription,
-	                  node_get_base_url (subscription->node),
-			  subscription_get_source (subscription),
-			  subscription->updateOptions,		// FIXME: correct?
-	                  subscription_favicon_downloaded,
-			  (gpointer)subscription->node);
-}
-
 /**
  * Updates the error status of the given subscription
  *
@@ -239,46 +216,15 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (processing)
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 
-	/* 3. set default update interval */
-	update_state_set_cache_maxage (subscription->updateState, update_state_get_cache_maxage (result->updateState));
-	maxage = subscription->updateState->maxAgeMinutes;
+	/* 3. call favicon updating after subscription processing
+	      to ensure we have valid baseUrl for feed nodes...
 
-	if (0 < subscription->updateState->synFrequency &&
-		0 < subscription->updateState->synPeriod) {
-		syn_update = ceil ( (float) (subscription->updateState->synPeriod / subscription->updateState->synFrequency) );
-	} else if (0 < subscription->updateState->synPeriod) {
-		syn_update = subscription->updateState->synPeriod;
-	}
-	if (0 < subscription->updateState->timeToLive) {
-		ttl = subscription->updateState->timeToLive;
-	}
-
-	if (0 < maxage    ) { update_time_sources++; next_update += maxage;     }
-	if (0 < syn_update) { update_time_sources++; next_update += syn_update; }
-	if (0 < ttl       ) { update_time_sources++; next_update += ttl;        }
-
-	if (0 < update_time_sources) {
-		/* enforce a 5 minute minimum update interval.
-		   round up to nearest 5-minute block to coalesce updates (battery optimization). */
-		next_update = ceil ((float) (next_update / update_time_sources));
-		next_update -= next_update % 5;
-		if (5 > next_update) {
-			next_update = 5;
-		}
-	} else {
-		next_update = -1;
-	}
-
-	debug1 (DEBUG_UPDATE, "The next suggested update time is in %d minutes.", next_update);
-	subscription_set_default_update_interval (subscription, next_update);
-
-	/* 4. call favicon updating after subscription processing
-	      to ensure we have valid baseUrl for feed nodes... */
+	      check creation date and update favicon if older than one month */
 	g_get_current_time (&now);
-	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
-		subscription_update_favicon (subscription);
-
-	/* 5. generic postprocessing */
+	if (now.tv_sec > (subscription->updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
+		subscription_icon_update (subscription);
+	
+	/* 4. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
