@@ -2,10 +2,10 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS = html_auto favicon parse_date
+TEST_PROGS = html_auto favicon parse_date parse_xml
 
 test: $(TEST_PROGS)
-	echo $(TEST_PROGS) | sed "s/^/.\//;s/ / \&\& .\//" | xargs -I{} sh -c "{}"
+	echo $(TEST_PROGS) | sed "s/^/.\//;s/ / \&\& .\//g" | xargs -I{} sh -c "{}"
 .PHONY: test
 
 AM_CPPFLAGS = \
@@ -86,4 +86,8 @@ html_auto_LDADD = $(favicon_LDADD)
 parse_date_SOURCES = parse_date.c
 parse_date_CFLAGS = $(AM_CPPFLAGS)
 parse_date_LDADD = $(favicon_LDADD)
+
+parse_xml_SOURCES = parse_xml.c
+parse_xml_CFLAGS = $(AM_CPPFLAGS)
+parse_xml_LDADD = $(favicon_LDADD)
 
