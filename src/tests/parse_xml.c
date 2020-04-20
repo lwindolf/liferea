@@ -1,7 +1,7 @@
 /**
  * @file parse_xml.c  Test cases for XML helpers
  *
- * Copyright (C) 2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ struct tcXPath tc_xpath[][3] = {
 	{
 		"<?xml version = \"1.0\"?>\n<nothing/>",
 		"/html/body",
-		FALSE
+		TRUE		// counter-intuitive, but a body is automatically added by libxml2!
 	},
 	{
 		"<?xml version = \"1.0\"?>\n<html><body/></html>",
@@ -48,7 +48,8 @@ struct tcXPath tc_xpath[][3] = {
 		"<html><head><link rel=\"alternate\" type=\"application/atom+xml\" title=\"Aktuelle News von heise online\" href=\"https://www.heise.de/rss/heise-atom.xml\"></head></html>",
 		"/html/head/link[@rel='alternate' and @type='application/atom+xml']/@href",
 		TRUE
-	}
+	},
+	NULL
 };
 
 
@@ -64,8 +65,6 @@ tc_xpath_find (gconstpointer user_data)
 	root = xmlDocGetRootElement (doc);
 	g_assert_false (!root);
 
-(void) xpath_find (root, g_strdup (tc->xpath_expression));
-g_print("%s %d\n", tc->xpath_expression,xpath_find (root, g_strdup (tc->xpath_expression)) != NULL);
 	g_assert_true ((xpath_find (root, g_strdup (tc->xpath_expression)) != NULL) == tc->result);
 }
 
@@ -74,7 +73,7 @@ main (int argc, char *argv[])
 {
 	g_test_init (&argc, &argv, NULL);
 
-	for (int i = 0; i < sizeof (tc_xpath); i++) {
+	for (int i = 0; tc_xpath[i]->xml_string != NULL; i++) {
 		g_test_add_data_func (g_strdup_printf ("/parse_xml/%d", i), &tc_xpath[i], &tc_xpath_find);
 	}
 
