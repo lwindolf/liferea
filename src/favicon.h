@@ -1,8 +1,8 @@
 /**
  * @file favicon.h Liferea favicon handling
- * 
+ *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2015-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2015-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ void favicon_remove_from_cache (const gchar *id);
  *
  * Returns: TRUE on success
  */
-gboolean 
+gboolean
 favicon_save_from_data (const struct updateResult * const result, const gchar *id);
 
 /**

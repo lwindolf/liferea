@@ -2,7 +2,7 @@
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@
 #include "htmlview.h"
 #include "item_history.h"
 #include "itemlist.h"
+#include "liferea_application.h"
 #include "net_monitor.h"
 #include "newsbin.h"
 #include "plugins_engine.h"
@@ -559,7 +560,7 @@ on_notebook_scroll_event_null_cb (GtkWidget *widget, GdkEventScroll *event)
 static gboolean
 on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
-	liferea_shutdown ();
+	liferea_application_shutdown ();
 	return TRUE;
 }
 
@@ -771,7 +772,7 @@ on_faq_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 static void
 on_menu_quit (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	liferea_shutdown ();
+	liferea_application_shutdown ();
 }
 
 static void

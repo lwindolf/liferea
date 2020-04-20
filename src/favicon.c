@@ -1,8 +1,8 @@
 /**
  * @file favicon.c  Saving, loading and discovering favicons
- * 
+ *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2015-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2015-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ favicon_load_from_cache (const gchar *id, guint size)
 	GError 		*error = NULL;
 
 	filename = common_create_cache_filename ("favicons", id, "png");
-	
+
 	if (0 == stat ((const char*)filename, &statinfo)) {
 		pixbuf = gdk_pixbuf_new_from_file (filename, &error);
 		if (pixbuf && !error) {
@@ -59,7 +59,7 @@ favicon_load_from_cache (const gchar *id, guint size)
 		}
 	}
 	g_free (filename);
-	
+
 	return result;
 }
 
@@ -67,7 +67,7 @@ void favicon_remove_from_cache(const gchar *id) {
 	gchar		*filename;
 
 	debug_enter("favicon_remove");
-	
+
 	/* try to load a saved favicon */
 	filename = common_create_cache_filename ("favicons", id, "png");
 	if(g_file_test(filename, G_FILE_TEST_EXISTS)) {
@@ -91,7 +91,7 @@ favicon_pixbuf_size_prepared_cb (GdkPixbufLoader *loader, gint width, gint heigh
 	}
 }
 
-gboolean 
+gboolean
 favicon_save_from_data (const struct updateResult * const result, const gchar *id)
 {
 	GdkPixbufLoader *loader = gdk_pixbuf_loader_new ();
@@ -137,10 +137,10 @@ favicon_save_from_data (const struct updateResult * const result, const gchar *i
 static gint count_slashes(const gchar *str) {
 	const gchar	*tmp = str;
 	gint		slashes = 0;
-	
+
 	slashes = 0;
 	while(*tmp) { if(*tmp == '/') slashes++;tmp++; }
-	
+
 	return slashes;
 }
 
