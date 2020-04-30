@@ -2097,16 +2097,12 @@ msgid "Subscription Properties"
 msgstr "Propriétés des abonnements"
 
 #: ../glade/properties.ui.h:2
-msgid "Feed Name"
-msgstr "Nom du flux"
-
-#: ../glade/properties.ui.h:3
-msgid "Feed _Name:"
-msgstr "Nom du _flux :"
+msgid "Feed _Name"
+msgstr "_Nom du flux"
 
 #: ../glade/properties.ui.h:4
-msgid "Update Interval"
-msgstr "Intervalle de mise à jour"
+msgid "Update _Interval"
+msgstr "_Intervalle de mise à jour"
 
 #: ../glade/properties.ui.h:5
 msgid "_Use global default update interval."
@@ -2319,9 +2315,9 @@ msgid "Cancel All"
 msgstr "Tout annuler"
 
 #: ../glade/update_monitor.ui.h:3
-msgid "Pending Requests"
-msgstr "Demandes en attente"
+msgid "_Pending Requests"
+msgstr "Demandes en _attente"
 
 #: ../glade/update_monitor.ui.h:4
-msgid "Downloading Now"
-msgstr "En cours de téléchargement"
+msgid "_Downloading Now"
+msgstr "En cours de _téléchargement"
