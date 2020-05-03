@@ -129,13 +129,14 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         "Hide window when minimize"
         if event.changed_mask & event.new_window_state & Gdk.WindowState.ICONIFIED:
             self.window.deiconify()
+            self.shell.save_position()
             self.window.hide()
 
     def trayicon_click(self, widget, data = None):
-        self.window.deiconify()
-        self.window.show()
+        self.shell.toggle_visibility()
 
     def trayicon_minimize_on_close(self, widget, event):
+        self.shell.save_position()
         self.window.hide()
         return True
 

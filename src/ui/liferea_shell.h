@@ -54,6 +54,14 @@ G_DECLARE_FINAL_TYPE (LifereaShell, liferea_shell, LIFEREA, SHELL, GObject)
 GtkWidget * liferea_shell_lookup (const gchar *name);
 
 /**
+ * liferea_shell_save_position
+ *
+ * Save the position of the Liferea main window.
+ */
+void
+liferea_shell_save_position (void);
+
+/**
  * liferea_shell_create: (skip)
  * @app:	                the GtkApplication to attach the main window to
  * @overrideWindowState:	optional parameter for window state (or NULL)
