@@ -24,32 +24,29 @@
 #include <glib-object.h>
 #include <gtk/gtk.h>
 
-#define LIFEREA_TYPE_APPLICATION (liferea_application_get_type ())
-#define LIFEREA_APPLICATION(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_TYPE_APPLICATION, LifereaApplication))
-#define IS_LIFEREA_APPLICATION(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_APPLICATION_TYPE))
-#define LIFEREA_APPLICATION_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), LIFEREA_TYPE_APPLICATION, LifereaApplicationClass))
-#define IS_LIFEREA_APPLICATION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_TYPE_APPLICATION))
-#define LIFEREA_APPLICATION_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), LIFEREA_TYPE_APPLICATION, LifereaApplicationClass))
+G_BEGIN_DECLS
 
-typedef struct _LifereaApplication LifereaApplication;
+#define LIFEREA_APPLICATION_TYPE (liferea_application_get_type ())
+G_DECLARE_FINAL_TYPE (LifereaApplication, liferea_application, LIFEREA, APPLICATION, GtkApplication)
 
-typedef struct _LifereaApplicationClass LifereaApplicationClass;
-
-GType liferea_application_get_type ();
-
-/*
- * Start a new GApplication representing Liferea
+/**
+ * liferea_application_new: (skip)
+ * @argc: number of arguments
+ * @argv: arguments
  *
- * @param argc  number of arguments
- * @param argv  arguments
+ * Start a new GApplication representing Liferea
  *
  * Returns: exit code
  */
 gint liferea_application_new (int argc, char *argv[]);
 
-/*
+/**
+ * liferea_application_shutdown:
+ *
  * Shutdown GApplication
  */
 void liferea_application_shutdown (void);
+
+G_END_DECLS
 
 #endif

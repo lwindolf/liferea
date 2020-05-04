@@ -144,7 +144,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.shell.toggle_visibility()
 
     def trayicon_quit(self, widget, data = None):
-        Liferea.shutdown()
+        Liferea.Application.shutdown()
 
     def trayicon_popup(self, widget, button, time, data = None):
         self.menu.popup(None, None, self.staticon.position_menu, self.staticon, 3, time)

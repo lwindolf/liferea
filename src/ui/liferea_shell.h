@@ -186,8 +186,6 @@ void liferea_shell_set_important_status_bar (const char *format, ...);
  */
 GtkWidget * liferea_shell_get_window (void);
 
-void liferea_shutdown (void);
-
 G_END_DECLS
 
 #endif
