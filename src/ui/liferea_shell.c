@@ -1364,6 +1364,15 @@ liferea_shell_window_is_on_other_desktop(GdkWindow *gdkwindow)
 #endif
 }
 
+static void
+liferea_shell_window_move_to_current_desktop(GdkWindow *gdkwindow)
+{
+#ifdef GDK_WINDOWING_X11
+	if (GDK_IS_X11_DISPLAY (gdk_window_get_display (gdkwindow)))
+	    gdk_x11_window_move_to_current_desktop (gdkwindow);
+#endif
+}
+
 void
 liferea_shell_toggle_visibility (void)
 {
@@ -1371,9 +1380,7 @@ liferea_shell_toggle_visibility (void)
 	GdkWindow *gdkwindow = gtk_widget_get_window (mainwindow);
 
 	if (liferea_shell_window_is_on_other_desktop (gdkwindow)) {
-#ifdef GDK_WINDOWING_X11
-		gdk_x11_window_move_to_current_desktop (gdkwindow);
-#endif
+		liferea_shell_window_move_to_current_desktop (gdkwindow);
 		liferea_shell_restore_position ();
 		gtk_window_deiconify (GTK_WINDOW (mainwindow));
 		gtk_window_present (shell->window);
