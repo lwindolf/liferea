@@ -11,6 +11,9 @@ To be released
 	  to improve icon quality in 3-pane wide view. Also add
 	  favicon URL discovery tests.
 
+	* Fixes #821: Skip current selected unread item on
+	  'next unread item'
+	  (Tom Perez)
 	* Fixes #799: plugins/headerbar.py translations not active
 	  (reported by Paul Gevers)
 
