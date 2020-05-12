@@ -133,7 +133,8 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             self.window.hide()
 
     def trayicon_click(self, widget, data = None):
-        self.shell.toggle_visibility()
+        # Always show the window on click, as some window managers misbehave.
+        self.shell.show_window()
 
     def trayicon_minimize_on_close(self, widget, event):
         self.shell.save_position()

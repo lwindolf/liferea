@@ -1373,21 +1373,27 @@ liferea_shell_window_move_to_current_desktop(GdkWindow *gdkwindow)
 #endif
 }
 
+void liferea_shell_show_window (void)
+{
+	GtkWidget *mainwindow = GTK_WIDGET (shell->window);
+	GdkWindow *gdkwindow = gtk_widget_get_window (mainwindow);
+
+	liferea_shell_window_move_to_current_desktop (gdkwindow);
+	if (!gtk_widget_get_visible (GTK_WIDGET (mainwindow)))
+		liferea_shell_restore_position ();
+	gtk_window_deiconify (GTK_WINDOW (mainwindow));
+	gtk_window_present (shell->window);
+}
+
 void
 liferea_shell_toggle_visibility (void)
 {
 	GtkWidget *mainwindow = GTK_WIDGET (shell->window);
 	GdkWindow *gdkwindow = gtk_widget_get_window (mainwindow);
 
-	if (liferea_shell_window_is_on_other_desktop (gdkwindow)) {
-		liferea_shell_window_move_to_current_desktop (gdkwindow);
-		liferea_shell_restore_position ();
-		gtk_window_deiconify (GTK_WINDOW (mainwindow));
-		gtk_window_present (shell->window);
-	} else if (!gtk_widget_get_visible (mainwindow)) {
-		liferea_shell_restore_position ();
-		gtk_window_deiconify (GTK_WINDOW (mainwindow));
-		gtk_window_present (shell->window);
+	if (liferea_shell_window_is_on_other_desktop (gdkwindow) ||
+	    !gtk_widget_get_visible (mainwindow)) {
+		liferea_shell_show_window ();
 	} else {
 		liferea_shell_save_position ();
 		gtk_widget_hide (mainwindow);

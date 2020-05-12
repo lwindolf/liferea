@@ -86,6 +86,13 @@ void liferea_shell_destroy (void);
 void liferea_shell_present (void);
 
 /**
+ * liferea_shell_show_window:
+ *
+ * Show the main window.
+ */
+void liferea_shell_show_window (void);
+
+/**
  * liferea_shell_toggle_visibility:
  *
  * Toggles main window visibility.
