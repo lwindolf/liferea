@@ -126,7 +126,7 @@ subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now)
 		return;
 
 	subscription->updateState->lastPoll.tv_sec = now->tv_sec;
-	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.", subscription->updateState->lastPoll.tv_sec);
+	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %ld.", subscription->source, subscription->updateState->lastPoll.tv_sec);
 }
 
 /**
@@ -223,7 +223,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	g_get_current_time (&now);
 	if (now.tv_sec > (subscription->updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
 		subscription_icon_update (subscription);
-	
+
 	/* 4. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
