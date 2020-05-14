@@ -1,7 +1,7 @@
 #
 # System Tray Icon Plugin
 #
-# Copyright (C) 2013-2018 Lars Windolf <lars.windolf@gmx.de>
+# Copyright (C) 2013-2020 Lars Windolf <lars.windolf@gmx.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -26,6 +26,7 @@ gi.require_version('Liferea', '3.0')
 from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea
 from gi.repository import Gdk, GdkPixbuf
 import cairo
+import pathlib
 from collections import namedtuple
 
 # Cairo text extents
@@ -100,10 +101,22 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 
         self.menu = Gtk.Menu()
         menuitem_toggle = Gtk.MenuItem("Show / Hide")
+        menuitem_close_behavior = Gtk.CheckMenuItem("Minimize to tray on close")
         menuitem_quit = Gtk.MenuItem("Quit")
+
+        self.config_path = self.get_config_path()
+        self.min_enabled = self.get_config()
+
+        if self.min_enabled == "True":
+            menuitem_close_behavior.set_active(True)
+        else:
+            menuitem_close_behavior.set_active(False)
+
         menuitem_toggle.connect("activate", self.trayicon_toggle)
+        menuitem_close_behavior.connect("toggled", self.trayicon_close_behavior)
         menuitem_quit.connect("activate", self.trayicon_quit)
         self.menu.append(menuitem_toggle)
+        self.menu.append(menuitem_close_behavior)
         self.menu.append(menuitem_quit)
         self.menu.show_all()
 
@@ -112,7 +125,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         GObject.signal_handlers_block_matched (self.window,
                                                GObject.SignalMatchType.ID | GObject.SignalMatchType.DATA,
                                                self.delete_signal_id, 0, None, None, None)
-        self.window.connect("delete_event", self.trayicon_minimize_on_close)
+        self.window.connect("delete_event", self.trayicon_close_action)
         self.window.connect("window-state-event", self.window_state_event_cb)
 
         # show the window if it is hidden when starting liferea
@@ -132,14 +145,53 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             self.shell.save_position()
             self.window.hide()
 
+    def get_config_path(self):
+        """Return data file path"""
+        data_dir = pathlib.Path.joinpath(
+            pathlib.Path.home(),
+            ".config/liferea/plugins/trayicon"
+        )
+        if not data_dir.exists():
+            data_dir.mkdir(0o700, True, True)
+
+        config_path = data_dir / "trayicon.conf"
+        return config_path
+
+    def get_config(self):
+        """Load configuration file"""
+        try:
+            with open(self.config_path, "r") as f:
+                setting = f.readline()
+            if setting == "":
+                setting = "True"
+        except FileNotFoundError:
+            self.save_config("True")
+            setting = "True"
+        return setting
+
+    def save_config(self, minimize_setting):
+        """Save configuration file"""
+        with open(self.config_path, "w") as f:
+            f.write(minimize_setting)
+
     def trayicon_click(self, widget, data = None):
         # Always show the window on click, as some window managers misbehave.
         self.shell.show_window()
 
-    def trayicon_minimize_on_close(self, widget, event):
+    def trayicon_close_action(self, widget, event):
         self.shell.save_position()
-        self.window.hide()
-        return True
+        if self.min_enabled == "True":
+            self.window.hide()
+            return True
+        else:
+            Liferea.shutdown()
+
+    def trayicon_close_behavior(self, widget, data = None):
+        if widget.get_active():
+            self.min_enabled = "True"
+        else:
+            self.min_enabled = "False"
+        self.save_config(self.min_enabled)
 
     def trayicon_toggle(self, widget, data = None):
         self.shell.toggle_visibility()
@@ -190,7 +242,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 
     def do_deactivate(self):
         self.staticon.set_visible(False)
-        self.window.disconnect_by_func(self.trayicon_minimize_on_close)
+        self.window.disconnect_by_func(self.trayicon_close_action)
         GObject.signal_handlers_unblock_matched (self.window,
                                                  GObject.SignalMatchType.ID | GObject.SignalMatchType.DATA,
                                                  self.delete_signal_id, 0, None,None,None)

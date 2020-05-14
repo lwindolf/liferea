@@ -6,14 +6,14 @@
 # Stéphane Jourdan <stephane.jourdan@itris.fr>, 2003.
 # Antoine Reversat <areversat@tuxfamily.org>, 2004.
 # Vincent Lefèvre <vincent@vinc17.net>, 2004-2011.
-# Guillaume Bernard <associations@guillaume-bernard.fr>, 2017-2018
+# Guillaume Bernard <associations@guillaume-bernard.fr>, 2017-2020
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-18 00:24+0100\n"
-"PO-Revision-Date: 2018-03-22 11:30+0100\n"
+"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"PO-Revision-Date: 2020-02-24 21:21+0100\n"
 "Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.3\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -98,8 +98,9 @@ msgid "Read news feeds and blogs"
 msgstr "Lecteurs de nouvelles et de blogs"
 
 #: ../net.sourceforge.liferea.desktop.in.h:5
-msgid "news;feed;aggregator;blog;podcast;"
-msgstr "news;feed;aggregator;blog;podcast;nouvelle;actualité;agrégateur;"
+msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
+msgstr ""
+"news;feed;aggregator;blog;podcast;nouvelle;actualité;agrégateur;rss;atom"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
@@ -475,6 +476,10 @@ msgstr "Ajoute un nouvel abonnement"
 #: ../src/liferea_application.c:285
 msgid "uri"
 msgstr "uri"
+
+#: ../src/liferea_application.c:285
+msgid "Start with all plugins disabled"
+msgstr "Démarrer avec l’ensemble des greffons désactivés"
 
 #: ../src/liferea_application.c:290
 msgid "Print debugging messages of all types"
@@ -1217,7 +1222,21 @@ msgstr "Tous les fichiers"
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea est hors-ligne. Les mises à jour sont impossibles."
 
-#: ../src/ui/item_list_view.c:115
+#: ../src/ui/feed_list_view.c:422
+msgid "all feeds"
+msgstr "tous les flux"
+
+#: ../src/ui/feed_list_view.c:423
+#, c-format
+msgid "Mark %s as read ?"
+msgstr "Marquer %s comme lu ?"
+
+#: ../src/ui/feed_list_view.c:427
+#, c-format
+msgid "Are you sure you want to mark all items in %s as read ?"
+msgstr "Êtes-vous sûr de vouloir marquer tous les éléments de %s comme lus ?"
+
+#: ../src/ui/item_list_view.c:113
 msgid "This item has no link specified!"
 msgstr "Aucun lien n’est spécifié pour cet élément !"
 
@@ -1425,6 +1444,23 @@ msgstr "Êtes-vous sûr de vouloir supprimer « %s » ?"
 #: ../src/ui/feed_list_node.c:419
 msgid "Deletion Confirmation"
 msgstr "Confirmation de la suppression"
+
+#: ../src/ui/feed_list_node.c:458
+#, c-format
+msgid ""
+"Are you sure that you want to add a new subscription with URL \"%s\"? "
+"Another subscription with the same URL already exists (\"%s\")."
+msgstr ""
+"Êtes-vous sûr de vouloir ajouter un nouvel abonnement avec l’URL « %s » ? Un "
+"autre abonnement avec la même URL existe déjà (« %s »)."
+
+#: ../src/ui/feed_list_node.c:471
+msgid "_Add"
+msgstr "_Ajouter"
+
+#: ../src/ui/feed_list_node.c:473
+msgid "Adding Duplicate Subscription Confirmation"
+msgstr "Confirmation d’ajout pour un abonnement en double"
 
 #: ../src/ui/subscription_dialog.c:352 ../src/fl_sources/opml_source.c:379
 msgid "_Open"
@@ -1711,6 +1747,18 @@ msgstr "page 3"
 msgid "Headlines"
 msgstr "Titres"
 
+#: ../glade/mark_read_dialog.ui.h:1
+msgid "Mark all as read ?"
+msgstr "Marquer le tout comme lu ?"
+
+#: ../glade/mark_read_dialog.ui.h:2
+msgid "Mark all as read"
+msgstr "Marquer le tout comme lu"
+
+#: ../glade/mark_read_dialog.ui.h:3
+msgid "Do not ask again"
+msgstr "Ne plus demander"
+
 #: ../glade/new_folder.ui.h:1
 msgid "New Folder"
 msgstr "Nouveau dossier"
@@ -1947,7 +1995,14 @@ msgstr "_Cacher la barre d’outils."
 msgid "Toolbar _button labels:"
 msgstr "_Boutons de la barre d’outils :"
 
-#: ../glade/prefs.ui.h:37
+msgid "Other"
+msgstr "Autre"
+
+#: ../glade/prefs.ui.h:38
+msgid "Ask for confirmation when marking all items as read"
+msgstr "Demander confirmation pour marquer tous les éléments comme lus"
+
+#: ../glade/prefs.ui.h:39
 msgid "GUI"
 msgstr "Interface"
 
@@ -2020,7 +2075,12 @@ msgstr "Téléchargement des pièces jointes"
 msgid "_Download using"
 msgstr "_Télécharger en utilisant"
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:57
+#, no-c-format
+msgid "custom-command %s"
+msgstr "custom-command %s"
+
+#: ../glade/prefs.ui.h:58
 msgid "Opening Enclosures"
 msgstr "Ouverture des pièces jointes"
 
@@ -2037,16 +2097,12 @@ msgid "Subscription Properties"
 msgstr "Propriétés des abonnements"
 
 #: ../glade/properties.ui.h:2
-msgid "Feed Name"
-msgstr "Nom du flux"
-
-#: ../glade/properties.ui.h:3
-msgid "Feed _Name:"
-msgstr "Nom du _flux :"
+msgid "Feed _Name"
+msgstr "_Nom du flux"
 
 #: ../glade/properties.ui.h:4
-msgid "Update Interval"
-msgstr "Intervalle de mise à jour"
+msgid "Update _Interval"
+msgstr "_Intervalle de mise à jour"
 
 #: ../glade/properties.ui.h:5
 msgid "_Use global default update interval."
@@ -2259,9 +2315,9 @@ msgid "Cancel All"
 msgstr "Tout annuler"
 
 #: ../glade/update_monitor.ui.h:3
-msgid "Pending Requests"
-msgstr "Demandes en attente"
+msgid "_Pending Requests"
+msgstr "Demandes en _attente"
 
 #: ../glade/update_monitor.ui.h:4
-msgid "Downloading Now"
-msgstr "En cours de téléchargement"
+msgid "_Downloading Now"
+msgstr "En cours de _téléchargement"
