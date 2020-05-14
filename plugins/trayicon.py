@@ -1,7 +1,7 @@
 #
 # System Tray Icon Plugin
 #
-# Copyright (C) 2013-2018 Lars Windolf <lars.windolf@gmx.de>
+# Copyright (C) 2013-2020 Lars Windolf <lars.windolf@gmx.de>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
@@ -148,12 +148,12 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         """Return data file path"""
         data_dir = pathlib.Path.joinpath(
             pathlib.Path.home(),
-            ".local/share/liferea/plugins/trayicon"
+            ".config/liferea/plugins/trayicon"
         )
         if not data_dir.exists():
             data_dir.mkdir(0o700, True, True)
-            self.save_config("True")
-        config_path = data_dir / "trayicon.txt"
+
+        config_path = data_dir / "trayicon.conf"
         return config_path
 
     def get_config(self):
@@ -164,7 +164,6 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             if setting == "":
                 setting = "True"
         except FileNotFoundError:
-            print("Config file not found, creating...")
             self.save_config("True")
             setting = "True"
         return setting
@@ -241,7 +240,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 
     def do_deactivate(self):
         self.staticon.set_visible(False)
-        self.window.disconnect_by_func(self.trayicon_close_behavior)
+        self.window.disconnect_by_func(self.trayicon_close_action)
         GObject.signal_handlers_unblock_matched (self.window,
                                                  GObject.SignalMatchType.ID | GObject.SignalMatchType.DATA,
                                                  self.delete_signal_id, 0, None,None,None)
