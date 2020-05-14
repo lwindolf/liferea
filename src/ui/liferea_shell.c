@@ -26,6 +26,7 @@
 #include "ui/liferea_shell.h"
 
 #include <gtk/gtk.h>
+#include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
 #include <libpeas/peas-extension-set.h>
 
@@ -263,7 +264,7 @@ liferea_shell_restore_position (void)
 
 }
 
-static void
+void
 liferea_shell_save_position (void)
 {
 	GtkWidget	*pane;
@@ -1351,30 +1352,48 @@ liferea_shell_present (void)
 	gtk_window_present (shell->window);
 }
 
+static gboolean
+liferea_shell_window_is_on_other_desktop(GdkWindow *gdkwindow)
+{
+#ifdef GDK_WINDOWING_X11
+	return GDK_IS_X11_DISPLAY (gdk_window_get_display (gdkwindow)) &&
+	    (gdk_x11_window_get_desktop (gdkwindow) !=
+	     gdk_x11_screen_get_current_desktop (gdk_window_get_screen (gdkwindow)));
+#else
+	return FALSE;
+#endif
+}
+
+static void
+liferea_shell_window_move_to_current_desktop(GdkWindow *gdkwindow)
+{
+#ifdef GDK_WINDOWING_X11
+	if (GDK_IS_X11_DISPLAY (gdk_window_get_display (gdkwindow)))
+	    gdk_x11_window_move_to_current_desktop (gdkwindow);
+#endif
+}
+
+void liferea_shell_show_window (void)
+{
+	GtkWidget *mainwindow = GTK_WIDGET (shell->window);
+	GdkWindow *gdkwindow = gtk_widget_get_window (mainwindow);
+
+	liferea_shell_window_move_to_current_desktop (gdkwindow);
+	if (!gtk_widget_get_visible (GTK_WIDGET (mainwindow)))
+		liferea_shell_restore_position ();
+	gtk_window_deiconify (GTK_WINDOW (mainwindow));
+	gtk_window_present (shell->window);
+}
+
 void
 liferea_shell_toggle_visibility (void)
 {
 	GtkWidget *mainwindow = GTK_WIDGET (shell->window);
+	GdkWindow *gdkwindow = gtk_widget_get_window (mainwindow);
 
-	if (gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) {
-		/* The window is either iconified, or on another workspace */
-		/* Raise it in one click */
-		if (gtk_widget_get_visible (mainwindow)) {
-			liferea_shell_save_position ();
-			gtk_widget_hide (mainwindow);
-		}
-		liferea_shell_restore_position ();
-		/* Note: Without deiconify() desktop moving doesn't work in
-		   GNOME+metacity. The window would be moved correctly by
-		   present() but not become visible. */
-		gtk_window_deiconify (GTK_WINDOW (mainwindow));
-		gtk_window_present (GTK_WINDOW (mainwindow));
-	}
-	else if (!gtk_widget_get_visible (mainwindow)) {
-		/* The window is neither iconified nor on another workspace, but is not visible */
-		liferea_shell_restore_position ();
-		gtk_window_deiconify (GTK_WINDOW (mainwindow));
-		gtk_window_present (shell->window);
+	if (liferea_shell_window_is_on_other_desktop (gdkwindow) ||
+	    !gtk_widget_get_visible (mainwindow)) {
+		liferea_shell_show_window ();
 	} else {
 		liferea_shell_save_position ();
 		gtk_widget_hide (mainwindow);

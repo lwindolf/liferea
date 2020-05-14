@@ -142,6 +142,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         "Hide window when minimize"
         if event.changed_mask & event.new_window_state & Gdk.WindowState.ICONIFIED:
             self.window.deiconify()
+            self.shell.save_position()
             self.window.hide()
 
     def get_config_path(self):
@@ -174,10 +175,11 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             f.write(minimize_setting)
 
     def trayicon_click(self, widget, data = None):
-        self.window.deiconify()
-        self.window.show()
+        # Always show the window on click, as some window managers misbehave.
+        self.shell.show_window()
 
     def trayicon_close_action(self, widget, event):
+        self.shell.save_position()
         if self.min_enabled == "True":
             self.window.hide()
             return True
@@ -195,7 +197,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.shell.toggle_visibility()
 
     def trayicon_quit(self, widget, data = None):
-        Liferea.shutdown()
+        Liferea.Application.shutdown()
 
     def trayicon_popup(self, widget, button, time, data = None):
         self.menu.popup(None, None, self.staticon.position_menu, self.staticon, 3, time)
