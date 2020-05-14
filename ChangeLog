@@ -2,6 +2,9 @@ To be released
 
 	Version 1.13.1
 
+	* #826: Fix save/restore position issues with tray icon
+	  (Matthew Horan)
+
 	* #815: Add support for subscribing to HTML5 websites
 	  without RSS/Atom feeds by extracting article
 	  titles,links and descriptions
