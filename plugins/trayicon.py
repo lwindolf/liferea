@@ -184,7 +184,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             self.window.hide()
             return True
         else:
-            Liferea.shutdown()
+            Liferea.Application.shutdown()
 
     def trayicon_close_behavior(self, widget, data = None):
         if widget.get_active():
