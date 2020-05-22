@@ -1,13 +1,13 @@
 /**
  * @file html.c  HTML parsing
- * 
+ *
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -89,9 +89,16 @@ checkLinkRef (const gchar* str, gint linkType)
 		     (NULL != common_strcasestr (str, "image/png")) ||
 		     (NULL != common_strcasestr (str, "image/gif")))*/)
 			return res;
+
+		/* Also support high res (~128px) device icons */
+		if((NULL != common_strcasestr (str, "rel=\"apple-touch-icon\"")) &&
+		   ((NULL != common_strcasestr (str, "sizes=\"152x152\"")) ||
+		    (NULL != common_strcasestr (str, "sizes=\"144x144\"")) ||
+		    (NULL != common_strcasestr (str, "sizes=\"120x120\""))))
+			return res;
 	} else if (linkType == LINK_RSS_ALTERNATE) {
 		if ((common_strcasestr (str, "alternate") != NULL) &&
-		    ((common_strcasestr (str, "text/xml") != NULL) || 
+		    ((common_strcasestr (str, "text/xml") != NULL) ||
 		     (common_strcasestr (str, "rss+xml") != NULL) ||
 		     (common_strcasestr (str, "rdf+xml") != NULL) ||
 		     (common_strcasestr (str, "atom+xml") != NULL)))
@@ -151,6 +158,7 @@ search_tag_link(const gchar* data, const gchar *tagName, gchar** tagEnd)
 	return result;
 }
 
+// FIXME: implement multiple links
 static gchar *
 search_links (const gchar* data, gint linkType)
 {
@@ -160,12 +168,12 @@ search_links (const gchar* data, gint linkType)
 	gchar	*res;
 	gchar	*tstr;
 	gchar	*endptr;
-	
+
 	while (1) {
 		ptr = common_strcasestr (tmp, "<link");
 		if (!ptr)
 			return NULL;
-		
+
 		endptr = strchr (ptr, '>');
 		if (!endptr)
 			return NULL;
@@ -177,10 +185,10 @@ search_links (const gchar* data, gint linkType)
 		if (res) {
 			result = res;
 			break;
-/*		deactivated as long as we support only subscribing 
+/*		deactivated as long as we support only subscribing
 		to the first found link (BTW this code crashes on
 		sites like Groklaw!)
-		
+
 			gchar* t;
 			if(result == NULL)
 				result = res;
@@ -193,7 +201,7 @@ search_links (const gchar* data, gint linkType)
 		}
 		tmp = endptr;
 	}
-	
+
 	result = unhtmlize (result); /* URIs can contain escaped things.... All ampersands must be escaped, for example */
 	return result;
 }
@@ -225,11 +233,14 @@ html_auto_discover_feed (const gchar* data, const gchar *baseUri)
 gchar *
 html_discover_favicon (const gchar * data, const gchar * baseUri)
 {
-	gchar	*res, *tmp;
+	gchar			*res, *tmp;
 
 	debug0 (DEBUG_UPDATE, "searching through link tags");
 	res = search_links (data, LINK_FAVICON);
 	debug1 (DEBUG_UPDATE, "search result: %s", res? res : "none found");
+
+	// FIXME: take multiple links from search_links() and rank them by sizes
+	// and return an ordered list
 
 	if (res) {
 		/* turn relative URIs into absolute URIs */
@@ -237,7 +248,7 @@ html_discover_favicon (const gchar * data, const gchar * baseUri)
 		res = common_build_url (res, baseUri);
 		g_free (tmp);
 	}
-	
+
 	return res;
 }
 
@@ -272,7 +283,7 @@ html_article_clean (xmlNodePtr node)
 
 		if (g_str_equal (cur->name , "h1"))
 			unlink = cur;
-		
+
 		class = xml_get_attribute (cur, "class");
 		id    = xml_get_attribute (cur, "id");
 		if ((class && g_regex_match (unlikelyCandidates, class, 0, NULL) &&
@@ -297,23 +308,42 @@ html_article_clean (xmlNodePtr node)
 gchar *
 html_get_article (const gchar *data, const gchar *baseUri) {
 	xmlDocPtr	doc;
-	xmlNodePtr	node;
+	xmlNodePtr	node, root;
+	gchar		*result = NULL;
 
 	doc = xhtml_parse ((gchar *)data, (size_t)strlen(data));
-	if (!doc)
+	if (!doc) {
+		debug1 (DEBUG_PARSING, "XHTML parsing error during HTML5 fetch of '%s'\n", baseUri);
 		return NULL;
+	}
 
-	// Find article, we only expect a single article...
-	node = xpath_find (xmlDocGetRootElement (doc), "//article");
-	if (!node)
-		return NULL;
+	root = xmlDocGetRootElement (doc);
+	if (root) {
+		// Find HTML5 <article>, we only expect a single article...
+		node = xpath_find (root, "//article");
 
-	html_article_clean (node);
+		// Fallback to microformat <div property='articleBody'>
+		if (!node)
+			node = xpath_find (root, "//div[@property='articleBody']");
 
-	return xhtml_extract (node, 1, baseUri);
+		// Fallback to <div id='content'> which is a quite common
+		if (!node)
+			node = xpath_find (root, "//div[@id='content']");
+
+		if (node) {
+			html_article_clean (node);
+			result = xhtml_extract (node, 1, baseUri);
+		} else {
+			debug1 (DEBUG_PARSING, "No article found during HTML5 parsing of '%s'\n", baseUri);
+		}
+		xmlFreeDoc (doc);
+	}
+
+	return result;
 }
 
 gchar *
-html_get_amp_url (const gchar *data) {
+html_get_amp_url (const gchar *data)
+{
 	return search_links (data, LINK_AMPHTML);
 }

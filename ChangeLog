@@ -1,8 +1,24 @@
 To be released
 
-	Version 1.13.0
+	Version 1.13.1
 
-	* Add Readability.js library (Apache 2.0 licensed)
+	* #826: Fix save/restore position issues with tray icon
+	  (Matthew Horan)
+
+	* #815: Add support for subscribing to HTML5 websites
+	  without RSS/Atom feeds by extracting article
+	  titles,links and descriptions
+	  (Lars Windolf)
+
+	* #816: Increase size of stored favicons to 128x128px
+	  to improve icon quality in 3-pane wide view. Also add
+	  favicon URL discovery tests.
+	
+	* #752: Trayicon plugin has now a configuration option
+	  to change the behaviour when closing Liferea.
+	  (BurnhamG)
+    
+ 	* Add Readability.js library (Apache 2.0 licensed)
 	  and auto-apply Readability.js to all headlines
 	  (Lars Windolf)
 
@@ -18,8 +34,45 @@ To be released
 	  allows us to get rid of XSLT extra handling
 	  (Lars Windolf)
 
+	* Fixes #821: Skip current selected unread item on
+	  'next unread item'
+	  (Tom Perez)
+	* Fixes #799: plugins/headerbar.py translations not active
+	  (reported by Paul Gevers)
+
+
+2020-03-04   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.13.0
+
+	* #764: Add MediaRSS support (e.g. Youtube feeds) to display
+	  descriptions and thumbnails
+	  (Mikel Olasagasti)
+	* #773: Add WebKit Inspector menu option to HTML view when
+	  run with --debug-html (by sillyslux)
+	* #714: Replaces deprecated gtk_menu_popup
+	  (Leiaz)
+	* #705: New hotkey Ctrl-O to open enclosures
+	  (Leiaz)
+	* #680: Add xdg-email command to item list popup menu
+	  (poetsmeniet)
+
+	* Drop unused glade/google_source.ui
+	* #699: Refactoring of duplicate check handlingg
+	  (dymoks
+
 	* #746: Fix accessibility fatals reported by gla11y
 	  (reported by Paul Gevers)
+	* Fixes #730: "Update all subscriptions at startup" overrides
+	  "Don't update this feed automatically"
+	  (Dymtro Kyrychuk, reported by Paul Wise)
+	* Fixes #639: Right clicking on article no longer selects it
+	  (Leiaz, reported by Bruce Guenter)
+
+	* #737: Update of Italian translation
+	  (madmurphy)
+	* #745: URL fix for French example feeds
+	  (sblondon)
 
 	* Update inline docs on headline view modes
 

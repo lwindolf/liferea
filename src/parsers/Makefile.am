@@ -14,6 +14,7 @@ libliparsers_a_SOURCES = \
 	atom10.c atom10.h \
 	cdf_channel.c cdf_channel.h \
 	cdf_item.c cdf_item.h \
+	html5_feed.c html5_feed.h \
 	ns_admin.c ns_admin.h \
 	ns_ag.c ns_ag.h \
 	ns_blogChannel.c ns_blogChannel.h \
