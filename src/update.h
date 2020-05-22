@@ -1,7 +1,7 @@
 /**
  * @file update.h  generic update request and state processing
  *
- * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,6 +24,7 @@
 
 #include <time.h>
 #include <glib.h>
+#include <glib-object.h>
 
 /* Update requests do represent feed updates, favicon and enclosure 
    downloads. A request can be started synchronously or asynchronously.
@@ -86,13 +87,17 @@ typedef struct updateState {
 	gint		timeToLive;		/**< ttl */
 } *updateStatePtr;
 
-/** structure describing a HTTP update request */
-typedef struct updateRequest {
+G_BEGIN_DECLS
+#define UPDATE_REQUEST_TYPE (update_request_get_type ())
+G_DECLARE_FINAL_TYPE (UpdateRequest, update_request, UPDATE, REQUEST, GObject)
+
+typedef struct _UpdateRequest {
+	GObject		parent;
+
 	gchar 		*source;	/**< Location of the source. If it starts with
 					     '|', it is a command. If it contains "://",
 					     then it is parsed as a URL, otherwise it is a
-					     filename. Eventually, everything should be a
-					     URL. Use file:// and exec:// */
+		filename. */
 	gchar           *postdata;      /**< HTTP POST request data (NULL for non-POST requests) */
 	gchar           *authValue;     /**< Custom value for Authorization: header */
 	updateOptionsPtr options;	/**< Update options for the request */
@@ -117,7 +122,7 @@ typedef struct updateResult {
 
 /** structure describing an HTTP update job */
 typedef struct updateJob {
-	updateRequestPtr	request;
+	UpdateRequest		*request;
 	updateResultPtr		result;
 	gpointer		owner;		/**< owner of this job (used for matching when cancelling) */
 	update_result_cb	callback;	/**< result processing callback */
@@ -189,16 +194,9 @@ void update_deinit (void);
 /** 
  * Creates a new request structure.
  *
- * @returns a new request (to be passed and free'd by update_execute_request())
+ * @returns a new request GObject to be passed to update_execute_request()
  */
-updateRequestPtr update_request_new (void);
-
-/**
- * Free's the given update request.
- *
- * @param request	the update request
- */
-void update_request_free (updateRequestPtr request);
+UpdateRequest * update_request_new (void);
 
 /**
  * Sets the source for an updateRequest
@@ -206,7 +204,7 @@ void update_request_free (updateRequestPtr request);
  * @param request       the update request
  * @param source        the new source
  */
-void update_request_set_source(updateRequestPtr request, const gchar* source);
+void update_request_set_source (UpdateRequest *request, const gchar* source);
 
 /**
  * Sets a custom authorization header value.
@@ -214,12 +212,10 @@ void update_request_set_source(updateRequestPtr request, const gchar* source);
  * @param request        the update request
  * @param authValue      the authorization header value
  */
-void update_request_set_auth_value(updateRequestPtr request, const gchar* authValue);
+void update_request_set_auth_value (UpdateRequest *request, const gchar* authValue);
 
 /**
  * Creates a new update result for the given update request.
- *
- * @param request	the update request
  *
  * @returns update result (to be free'd using update_result_free())
  */
@@ -245,7 +241,7 @@ void update_result_free (updateResultPtr result);
  * @returns the new update job
  */
 updateJobPtr update_execute_request (gpointer owner,
-                                     updateRequestPtr request,
+                                     UpdateRequest *request,
                                      update_result_cb callback,
                                      gpointer user_data,
                                      updateFlags flags);
@@ -273,5 +269,7 @@ void update_job_cancel_by_owner (gpointer owner);
  * @returns update job state (see enum request_state)
  */
 gint update_job_get_state (updateJobPtr job);
+
+G_END_DECLS
 
 #endif

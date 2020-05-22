@@ -17,7 +17,6 @@ libliparsers_a_SOURCES = \
 	html5_feed.c html5_feed.h \
 	ns_admin.c ns_admin.h \
 	ns_ag.c ns_ag.h \
-	ns_blogChannel.c ns_blogChannel.h \
 	ns_cC.c ns_cC.h \
 	ns_content.c ns_content.h \
 	ns_dc.c ns_dc.h \

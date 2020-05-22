@@ -157,8 +157,8 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 }
 
 static gboolean
-ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
-                                                 struct updateRequest *request)
+ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
+                                                UpdateRequest *request)
 {
 	nodePtr		root = node_source_root_from_node (subscription->node);
 	ttrssSourcePtr	source = (ttrssSourcePtr) root->data;

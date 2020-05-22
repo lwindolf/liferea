@@ -31,7 +31,6 @@
 #include "feedlist.h"
 #include "ns_admin.h"
 #include "ns_ag.h"
-#include "ns_blogChannel.h"
 #include "ns_cC.h"
 #include "ns_content.h"
 #include "ns_dc.h"
@@ -871,8 +870,7 @@ atom10_init_feed_handler (void)
 		atom10_nstable = g_hash_table_new (g_str_hash, g_str_equal);
 		ns_atom10_ns_uri_table = g_hash_table_new (g_str_hash, g_str_equal);
 		
-		/* register name space handlers */		
-		atom10_add_ns_handler (ns_bC_get_handler ());
+		/* register name space handlers */
 		atom10_add_ns_handler (ns_dc_get_handler ());
   		atom10_add_ns_handler (ns_slash_get_handler ());
 		atom10_add_ns_handler (ns_content_get_handler ());

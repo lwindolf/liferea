@@ -2,6 +2,9 @@ To be released
 
 	Version 1.13.1
 
+	* #828: Fix segfault after opening feed articles
+	  (reported by chronoszc)
+
 	* #826: Fix save/restore position issues with tray icon
 	  (Matthew Horan)
 

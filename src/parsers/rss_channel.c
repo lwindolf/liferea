@@ -1,7 +1,7 @@
 /**
  * @file rss_channel.c  some tolerant and generic RSS/RDF channel parsing
  *
- * Copyright (C) 2003-2010 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net> 
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -31,7 +31,6 @@
 #include "metadata.h"
 #include "ns_admin.h"
 #include "ns_ag.h"
-#include "ns_blogChannel.h"
 #include "ns_cC.h"
 #include "ns_content.h"
 #include "ns_dc.h"
@@ -360,7 +359,6 @@ rss_init_feed_handler (void)
 		ns_rss_ns_uri_table = g_hash_table_new (g_str_hash, g_str_equal);
 
 		/* register name space handlers */		
-		rss_add_ns_handler (ns_bC_get_handler ());
 		rss_add_ns_handler (ns_dc_get_handler ());
   		rss_add_ns_handler (ns_slash_get_handler ());
 		rss_add_ns_handler (ns_content_get_handler ());

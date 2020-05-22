@@ -147,19 +147,14 @@ update_state_free (updateStatePtr updateState)
 	g_free (updateState);
 }
 
-/* update request processing */
+/* update request object */
 
-updateRequestPtr
-update_request_new (void)
-{
-	return g_new0 (struct updateRequest, 1);
-}
+G_DEFINE_TYPE (UpdateRequest, update_request, G_TYPE_OBJECT);
 
-void
-update_request_free (updateRequestPtr request)
+static void
+update_request_finalize (GObject *obj)
 {
-	if (!request)
-		return;
+	UpdateRequest *request = UPDATE_REQUEST (obj);
 
 	update_state_free (request->updateState);
 	update_options_free (request->options);
@@ -167,7 +162,24 @@ update_request_free (updateRequestPtr request)
 	g_free (request->postdata);
 	g_free (request->source);
 	g_free (request->filtercmd);
-	g_free (request);
+}
+
+static void
+update_request_class_init (UpdateRequestClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	object_class->finalize = update_request_finalize;
+}
+
+static void
+update_request_init (UpdateRequest *request)
+{
+}
+
+UpdateRequest *
+update_request_new (void)
+{
+	return UPDATE_REQUEST (g_object_new (UPDATE_REQUEST_TYPE, NULL));
 }
 
 void
@@ -183,6 +195,8 @@ update_request_set_auth_value(updateRequestPtr request, const gchar* authValue)
 	g_free(request->authValue);
 	request->authValue = g_strdup(authValue);
 }
+
+/* update result object */
 
 updateResultPtr
 update_result_new (void)
@@ -247,7 +261,7 @@ update_job_new (gpointer owner,
 
 	job = g_new0 (struct updateJob, 1);
 	job->owner = owner;
-	job->request = request;
+	job->request = UPDATE_REQUEST (g_object_ref (request));
 	job->result = update_result_new ();
 	job->callback = callback;
 	job->user_data = user_data;
@@ -271,7 +285,7 @@ update_job_free (updateJobPtr job)
 
 	jobs = g_slist_remove (jobs, job);
 
-	update_request_free (job->request);
+	g_object_unref (job->request);
 	update_result_free (job->result);
 	g_free (job);
 }

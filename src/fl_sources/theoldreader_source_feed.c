@@ -195,8 +195,8 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 }
 
 static gboolean
-theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
-                                                       struct updateRequest *request)
+theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription,
+                                                       UpdateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");
 	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data; 
