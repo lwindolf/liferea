@@ -45,7 +45,7 @@
 #include "fl_sources/reedah_source_feed_list.h"
 
 /** default Reedah subscription list update interval = once a day */
-#define NODE_SOURCE_UPDATE_INTERVAL 60*60*24*1000*1000
+#define NODE_SOURCE_UPDATE_INTERVAL 60*60*24 * G_USEC_PER_SEC
 
 /** create a Reedah source with given node as root */ 
 static ReedahSourcePtr

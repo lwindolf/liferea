@@ -126,7 +126,7 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 		return;
 
 	subscription->updateState->lastPoll = now;
-	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %ld.", subscription->source, subscription->updateState->lastPoll / 1000 / 1000);
+	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %ld.", subscription->source, subscription->updateState->lastPoll / G_USEC_PER_SEC);
 }
 
 /**
@@ -221,7 +221,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 
 	      check creation date and update favicon if older than one month */
 	now = g_get_real_time();
-	if (now > (subscription->updateState->lastFaviconPoll + 60*60*24*31*1000*1000))
+	if (now > (subscription->updateState->lastFaviconPoll + 60*60*24*31 * G_USEC_PER_SEC))
 		subscription_icon_update (subscription);
 
 	/* 4. generic postprocessing */

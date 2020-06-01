@@ -304,7 +304,7 @@ opml_source_auto_update (nodePtr node)
 	now = g_get_real_time();
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll / 1000000 + OPML_SOURCE_UPDATE_INTERVAL <= now / 1000000)
+	if (node->subscription->updateState->lastPoll + OPML_SOURCE_UPDATE_INTERVAL * G_USEC_PER_SEC<= now)
 		node_source_update (node);
 }
 
