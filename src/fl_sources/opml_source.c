@@ -299,12 +299,12 @@ opml_source_remove (nodePtr node)
 static void
 opml_source_auto_update (nodePtr node)
 {
-	GTimeVal	now;
+	guint64	now;
 	
-	g_get_current_time (&now);
+	now = g_get_real_time();
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll.tv_sec + OPML_SOURCE_UPDATE_INTERVAL <= now.tv_sec)
+	if (node->subscription->updateState->lastPoll / 1000000 + OPML_SOURCE_UPDATE_INTERVAL <= now / 1000000)
 		node_source_update (node);
 }
 
