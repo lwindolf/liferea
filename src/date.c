@@ -219,11 +219,11 @@ date_parse_ISO8601 (const gchar *date)
 
 	/* full specified variant */
 	datetime = g_date_time_new_from_iso8601 (date, NULL);
-  if (datetime) {
+	if (datetime) {
 		t = g_date_time_to_unix (datetime);
 		g_date_time_unref (datetime);
-    if (t)
-      return t;
+		if (t)
+			return t;
 	}
 
 

@@ -102,7 +102,7 @@ debug_start_measurement_func (const char * function)
 		g_hash_table_insert (startTimes, g_strdup(function), startTime);
 	}
 
-  *startTime = g_get_monotonic_time();
+	*startTime = g_get_monotonic_time();
 }
 
 void
@@ -126,24 +126,24 @@ debug_end_measurement_func (const char * function,
 	if (!startTime) 
 		return;
 		
-  endTime = g_get_monotonic_time();
-  duration = endTime - *startTime;
-  if (duration < 1000)
-    return;
-	
+	endTime = g_get_monotonic_time();
+	duration = endTime - *startTime;
+	if (duration < 1000)
+		return;
+
 	g_print ("%s: ", debug_get_prefix (flags));
 	if (debug_level & DEBUG_TRACE)
 		g_print ("[%p] ", g_thread_self ());
 	for (i = 0; i < debug_get_depth (); i++) 
 		g_print ("   ");
 	g_print ("= %s took %01ld,%03lds\n", name, 
-	                                   duration / 1000000, 
-					   duration/1000);
-					     
+					duration / 1000000, 
+					duration/1000);
+
 	if (duration > 250)
 		debug2 (DEBUG_PERF, "function \"%s\" is slow! Took %dms.", name, duration);
 }
- 
+
 void
 set_debug_level (unsigned long level)
 {
