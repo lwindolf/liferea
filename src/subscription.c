@@ -41,6 +41,8 @@
 #define FEED_PROTOCOL_PREFIX "feed://"
 #define FEED_PROTOCOL_PREFIX2 "feed:"
 
+#define ONE_MONTH_MICROSECONDS (guint64)(60*60*24*31) * (guint64)G_USEC_PER_SEC
+
 subscriptionPtr
 subscription_new (const gchar *source,
                   const gchar *filter,
@@ -125,7 +127,7 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 	if (!subscription)
 		return;
 
-	subscription->updateState->lastPoll = now;
+	subscription->updateState->lastPoll = *now;
 	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %ld.", subscription->source, subscription->updateState->lastPoll / G_USEC_PER_SEC);
 }
 
@@ -177,7 +179,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
-	guint64	now;
+	guint64		now;
 	gint		next_update = 0;
 	gint		update_time_sources = 0;
 	gint		maxage = -1;
@@ -221,7 +223,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 
 	      check creation date and update favicon if older than one month */
 	now = g_get_real_time();
-	if (now > (subscription->updateState->lastFaviconPoll + 60*60*24*31 * G_USEC_PER_SEC))
+	if (now > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
 		subscription_icon_update (subscription);
 
 	/* 4. generic postprocessing */
