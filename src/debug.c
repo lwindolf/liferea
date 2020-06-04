@@ -127,8 +127,8 @@ debug_end_measurement_func (const char * function,
 		return;
 		
 	endTime = g_get_monotonic_time();
-	duration = endTime - *startTime;
-	if (duration < 1000)
+	duration = (endTime - *startTime) / 1000;
+	if (duration < 1)
 		return;
 
 	g_print ("%s: ", debug_get_prefix (flags));
@@ -137,8 +137,8 @@ debug_end_measurement_func (const char * function,
 	for (i = 0; i < debug_get_depth (); i++) 
 		g_print ("   ");
 	g_print ("= %s took %01ld,%03lds\n", name, 
-					duration / G_USEC_PER_SEC, 
-					duration / 1000);
+					duration / 1000, 
+					duration);
 
 	if (duration > 250)
 		debug2 (DEBUG_PERF, "function \"%s\" is slow! Took %dms.", name, duration);
