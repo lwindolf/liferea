@@ -128,7 +128,7 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 		return;
 
 	subscription->updateState->lastPoll = *now;
-	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %ld.", subscription->source, subscription->updateState->lastPoll / G_USEC_PER_SEC);
+	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
 }
 
 /**
