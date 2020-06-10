@@ -298,7 +298,7 @@ subscription_auto_update (subscriptionPtr subscription)
 
 	now = g_get_real_time();
 
-	if (subscription->updateState->lastPoll + interval*60*1000*1000 <= now)
+	if (subscription->updateState->lastPoll + (guint64)interval * (guint64)(60 * G_USEC_PER_SEC) <= now)
 		subscription_update (subscription, flags);
 }
 
