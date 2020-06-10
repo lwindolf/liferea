@@ -1,12 +1,12 @@
 /**
  * @file reedah_source_feed_list.c  Reedah feed list handling routines
- * 
+ *
  * Copyright (C) 2013-2018  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -66,9 +66,9 @@ reedah_source_check_node_for_removal (nodePtr node, gpointer user_data)
 		}
 		g_list_free (elements);
 
-		if (!found)			
+		if (!found)
 			feedlist_node_removed (node);
-	}				
+	}
 }
 
 /* subscription list merging functions */
@@ -84,7 +84,7 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
-		
+
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = source->root->source->type->feedSubscriptionType;
 
@@ -94,7 +94,7 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 
 		node_set_parent (node, source->root, -1);
 		feedlist_node_imported (node);
-		
+
 		/**
 		 * @todo mark the ones as read immediately after this is done
 		 * the feed as retrieved by this has the read and unread
@@ -115,7 +115,7 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 	ReedahSourcePtr	source = (ReedahSourcePtr) subscription->node->data;
 
 	subscription->updateJob = NULL;
-	
+
 	// FIXME: the following code is very similar to ttrss!
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
@@ -123,7 +123,7 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
 			GList		*iter, *elements, *citer, *celements;
-	
+
 			/* We expect something like this:
 
 			   [{"id":"feed\/http:\/\/rss.slashdot.org\/Slashdot\/slashdot",
@@ -131,9 +131,9 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
                              "categories":[],
                              "firstitemmsec":"1368112925514",
                              "htmlUrl":"null"},
-                           ... 
+                           ...
 
-			   Note that the data doesn't contain an URL. 
+			   Note that the data doesn't contain an URL.
 			   We recover it from the id field.
 			*/
 			elements = iter = json_array_get_elements (array);
@@ -156,10 +156,10 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 					}
 					g_list_free (celements);
 				}
-				
+
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "id")) {
-					reedah_source_merge_feed (source, 
+					reedah_source_merge_feed (source,
 					                          json_get_string (node, "id") + 5,	// FIXME: Unescape string!
 					                          json_get_string (node, "title"),
 					                          json_get_string (node, "id"),
@@ -171,10 +171,10 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 
 			/* Remove old nodes we cannot find anymore */
 			node_foreach_child_data (source->root, reedah_source_check_node_for_removal, array);
-			
+
 			/* Save new subscription tree to OPML cache file */
 			opml_source_export (subscription->node);
-			subscription->node->available = TRUE;			
+			subscription->node->available = TRUE;
 		} else {
 			g_print ("Invalid JSON returned on Reedah feed list request! >>>%s<<<", result->data);
 		}
@@ -192,16 +192,16 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 /** functions for an efficient updating mechanism */
 
 static void
-reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata) 
+reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 {
 	ReedahSourcePtr gsource = (ReedahSourcePtr) userdata;
 	xmlNodePtr      xmlNode;
 	xmlChar         *id, *newestItemTimestamp;
-	nodePtr         node = NULL; 
+	nodePtr         node = NULL;
 	const gchar     *oldNewestItemTimestamp;
 
 	xmlNode = xpath_find (match, "./string[@name='id']");
-	id = xmlNodeGetContent (xmlNode); 
+	id = xmlNodeGetContent (xmlNode);
 
 	if (g_str_has_prefix (id, "feed/"))
 		node = feedlist_find_node (gsource->root, NODE_BY_URL, id + strlen ("feed/"));
@@ -221,15 +221,15 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	oldNewestItemTimestamp = g_hash_table_lookup (gsource->lastTimestampMap, node->subscription->source);
 
 	if (!oldNewestItemTimestamp ||
-	    (newestItemTimestamp && 
-	     !g_str_equal (newestItemTimestamp, oldNewestItemTimestamp))) { 
+	    (newestItemTimestamp &&
+	     !g_str_equal (newestItemTimestamp, oldNewestItemTimestamp))) {
 		debug3(DEBUG_UPDATE, "ReedahSource: auto-updating %s "
-		       "[oldtimestamp%s, timestamp %s]", 
+		       "[oldtimestamp%s, timestamp %s]",
 		       id, oldNewestItemTimestamp, newestItemTimestamp);
 		g_hash_table_insert (gsource->lastTimestampMap,
-				    g_strdup (node->subscription->source), 
+				    g_strdup (node->subscription->source),
 				    g_strdup (newestItemTimestamp));
-				    
+
 		subscription_update (node->subscription, 0);
 	}
 
@@ -238,12 +238,12 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 }
 
 static void
-reedah_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
+reedah_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags)
 {
 	ReedahSourcePtr gsource = (ReedahSourcePtr) userdata;
 	xmlDocPtr       doc;
 
-	if (!result->data) { 
+	if (!result->data) {
 		/* what do I do? */
 		debug0 (DEBUG_UPDATE, "ReedahSource: Unable to get unread counts, this update is aborted.");
 		return;
@@ -255,16 +255,16 @@ reedah_source_opml_quick_update_cb (const struct updateResult* const result, gpo
 	}
 
 	xpath_foreach_match (xmlDocGetRootElement (doc),
-			    "/object/list[@name='unreadcounts']/object", 
+			    "/object/list[@name='unreadcounts']/object",
 			    reedah_source_opml_quick_update_helper, gsource);
-	
+
 	xmlFreeDoc (doc);
 }
 
 gboolean
-reedah_source_opml_quick_update(ReedahSourcePtr source) 
+reedah_source_opml_quick_update(ReedahSourcePtr source)
 {
-	updateRequestPtr request = update_request_new ();
+	UpdateRequest *request = update_request_new ();
 	request->updateState = update_state_copy (source->root->subscription->updateState);
 	request->options = update_options_copy (source->root->subscription->updateOptions);
 	update_request_set_source (request, source->root->source->type->api.unread_count);
@@ -284,11 +284,11 @@ reedah_source_opml_subscription_process_update_result (subscriptionPtr subscript
 }
 
 static gboolean
-reedah_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+reedah_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	nodePtr node = subscription->node;
 	ReedahSourcePtr	source = (ReedahSourcePtr)node->data;
-	
+
 	g_assert(node->source);
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		debug0(DEBUG_UPDATE, "ReedahSource: login");
@@ -296,10 +296,10 @@ reedah_source_opml_subscription_prepare_update_request (subscriptionPtr subscrip
 		return FALSE;
 	}
 	debug1 (DEBUG_UPDATE, "updating Reedah subscription (node id %s)", node->id);
-	
-	update_request_set_source (request, node->source->type->api.subscription_list);	
+
+	update_request_set_source (request, node->source->type->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);
-	
+
 	return TRUE;
 }
 

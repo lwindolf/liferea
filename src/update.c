@@ -183,14 +183,14 @@ update_request_new (void)
 }
 
 void
-update_request_set_source(updateRequestPtr request, const gchar* source)
+update_request_set_source(UpdateRequest *request, const gchar* source)
 {
 	g_free (request->source);
 	request->source = g_strdup (source);
 }
 
 void
-update_request_set_auth_value(updateRequestPtr request, const gchar* authValue)
+update_request_set_auth_value(UpdateRequest *request, const gchar* authValue)
 {
 	g_free(request->authValue);
 	request->authValue = g_strdup(authValue);
@@ -252,7 +252,7 @@ update_options_free (updateOptionsPtr options)
 
 static updateJobPtr
 update_job_new (gpointer owner,
-                updateRequestPtr request,
+                UpdateRequest *request,
 		update_result_cb callback,
 		gpointer user_data,
 		updateFlags flags)
@@ -559,7 +559,7 @@ update_dequeue_job (gpointer user_data)
 
 updateJobPtr
 update_execute_request (gpointer owner,
-                        updateRequestPtr request,
+                        UpdateRequest *request,
 			update_result_cb callback,
 			gpointer user_data,
 			updateFlags flags)

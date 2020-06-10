@@ -141,7 +141,7 @@ void
 ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 {
 	gchar			*username, *password, *source_uri;
-	updateRequestPtr	request;
+	UpdateRequest		*request;
 	subscriptionPtr		subscription = source->root->subscription;
 
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
@@ -243,7 +243,7 @@ ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 	nodePtr			parent;
 	gchar			*username, *password;
 	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
-	updateRequestPtr	request;
+	UpdateRequest		*request;
 	gint			categoryId = 0;
 
 	/* Determine correct category from selected folder name */
@@ -297,9 +297,9 @@ ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer 
 static void
 ttrss_source_remove_node (nodePtr root, nodePtr node)
 {
-	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
-	updateRequestPtr	request;
-	const gchar		*id;
+	ttrssSourcePtr	source = (ttrssSourcePtr)root->data;
+	UpdateRequest	*request;
+	const gchar	*id;
 
 	// FIXME: Check for login?
 
@@ -386,9 +386,9 @@ ttrss_source_remote_update_cb (const struct updateResult * const result, gpointe
 static void
 ttrss_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 {
-	nodePtr			root = node_source_root_from_node (node);
-	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
-	updateRequestPtr	request;
+	nodePtr		root = node_source_root_from_node (node);
+	ttrssSourcePtr	source = (ttrssSourcePtr)root->data;
+	UpdateRequest	*request;
 
 	request = update_request_new ();
 	request->options = update_options_copy (root->subscription->updateOptions);
@@ -403,9 +403,9 @@ ttrss_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 static void
 ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 {
-	nodePtr			root = node_source_root_from_node (node);
-	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
-	updateRequestPtr	request;
+	nodePtr		root = node_source_root_from_node (node);
+	ttrssSourcePtr	source = (ttrssSourcePtr)root->data;
+	UpdateRequest	*request;
 
 	request = update_request_new ();
 	request->options = update_options_copy (root->subscription->updateOptions);

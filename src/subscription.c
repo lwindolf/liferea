@@ -246,8 +246,8 @@ subscription_process_update_result (const struct updateResult * const result, gp
 void
 subscription_update (subscriptionPtr subscription, guint flags)
 {
-	updateRequestPtr		request;
-	GTimeVal			now;
+	UpdateRequest	*request;
+	GTimeVal	now;
 
 	if (!subscription)
 		return;

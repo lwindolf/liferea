@@ -249,7 +249,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 		// If there is no HTML5 article try to fetch AMP source if there is one
 		gchar *ampurl = html_get_amp_url (result->data);
 		if (ampurl) {
-			updateRequestPtr request;
+			UpdateRequest *request;
 
 			debug3 (DEBUG_PARSING, "Fetching AMP HTML %ld %s : %s", item->id, item->title, ampurl);
 			request = update_request_new ();
@@ -270,7 +270,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 void
 feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 {
-	updateRequestPtr request;
+	UpdateRequest *request;
 
 	if (!item->source) {
 		debug1 (DEBUG_PARSING, "Cannot HTML5-enrich item %s because it has no source!\n", item->title);
@@ -364,7 +364,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 }
 
 static gboolean
-feed_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+feed_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	/* Nothing to do. Feeds require no subscription extra handling. */
 

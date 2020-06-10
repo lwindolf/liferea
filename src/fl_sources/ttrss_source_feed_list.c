@@ -209,8 +209,8 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 static void
 ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr subscription)
 {
-	updateRequestPtr	request;
-	gchar			*source_uri;
+	UpdateRequest	*request;
+	gchar		*source_uri;
 
 	request = update_request_new ();
 	request->updateState = update_state_copy (subscription->updateState);

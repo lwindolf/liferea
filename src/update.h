@@ -26,21 +26,21 @@
 #include <glib.h>
 #include <glib-object.h>
 
-/* Update requests do represent feed updates, favicon and enclosure 
+/* Update requests do represent feed updates, favicon and enclosure
    downloads. A request can be started synchronously or asynchronously.
    In the latter case it can be cancelled at any time. If the processing
-   of a update request is done the request callback will be triggered. 
-   
+   of a update request is done the request callback will be triggered.
+
    A request can have an update state assigned. This is to support
    the different bandwidth saving methods. For caching along feeds
-   there are XML (de)serialization functions for the update state. 
-   
+   there are XML (de)serialization functions for the update state.
+
    For proxy support and authentication an update request can have
    update options assigned.
-   
+
    Finally the request system has an on/offline state. When offline
-   no new network requests are accepted. Filesystem and internal 
-   requests are still processed. Currently running downloads are 
+   no new network requests are accepted. Filesystem and internal
+   requests are still processed. Currently running downloads are
    not terminated. */
 
 typedef enum {
@@ -79,7 +79,7 @@ typedef struct updateState {
 	glong		lastModified;		/**< Last modified string as sent by the server */
 	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
 	GTimeVal	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
-	gchar		*cookies;		/**< cookies to be used */	
+	gchar		*cookies;		/**< cookies to be used */
 	gchar		*etag;			/**< ETag sent by the server */
 	gint		maxAgeMinutes;		/**< default update interval, greatest value sourced from HTTP and XML */
 	gint		synFrequency;		/**< syn:updateFrequency */
@@ -103,20 +103,20 @@ typedef struct _UpdateRequest {
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
-} *updateRequestPtr;
+};
 
 /** structure to store results of the processing of an update request */
 typedef struct updateResult {
-	gchar 		*source;	/**< Location of the downloaded document, in case of redirects different from 
+	gchar 		*source;	/**< Location of the downloaded document, in case of redirects different from
 					     the one given along with the update request */
-	
+
 	int		returncode;	/**< Download status (0=success, otherwise error) */
 	int		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
 	gchar		*data;		/**< Downloaded data */
 	size_t		size;		/**< Size of downloaded data */
 	gchar		*contentType;	/**< Content type of received data */
 	gchar		*filterErrors;	/**< Error messages from filter execution */
-	
+
 	updateStatePtr	updateState;	/**< New update state of the requested object (etags, last modified...) */
 } *updateResultPtr;
 
@@ -132,7 +132,7 @@ typedef struct updateJob {
 } *updateJobPtr;
 
 /**
- * Creates a new update state structure 
+ * Creates a new update state structure
  *
  * @return a new state structure (to be free'd using update_state_free())
  */
@@ -179,19 +179,19 @@ updateOptionsPtr update_options_copy (updateOptionsPtr options);
 void update_options_free (updateOptionsPtr options);
 
 /**
- * Initialises the download subsystem. 
+ * Initialises the download subsystem.
  *
  * Must be called before gtk_init() and after thread initialization
  * as threads are used and for proper network-manager initialization.
  */
-void update_init (void); 
+void update_init (void);
 
 /**
  * Stops all update processing and frees all used memory.
  */
 void update_deinit (void);
 
-/** 
+/**
  * Creates a new request structure.
  *
  * @returns a new request GObject to be passed to update_execute_request()
@@ -200,7 +200,7 @@ UpdateRequest * update_request_new (void);
 
 /**
  * Sets the source for an updateRequest
- * 
+ *
  * @param request       the update request
  * @param source        the new source
  */
@@ -230,7 +230,7 @@ void update_result_free (updateResultPtr result);
 
 /**
  * Executes the given request. The request might be
- * delayed if other requests are pending. 
+ * delayed if other requests are pending.
  *
  * @param owner		request owner (allows cancelling, can be NULL)
  * @param request	the request to execute
