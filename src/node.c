@@ -123,7 +123,7 @@ node_set_subscription (nodePtr node, subscriptionPtr subscription)
 	/* Besides the favicon age we have no persistent
 	   update state field, so everything else goes NULL */
 	if (node->iconFile && !strstr(node->iconFile, "default.png")) {
-		subscription->updateState->lastFaviconPoll = common_get_mod_time (node->iconFile) * G_USEC_PER_SEC;
+		subscription->updateState->lastFaviconPoll = (guint64)(common_get_mod_time (node->iconFile)) * G_USEC_PER_SEC;
 		debug2 (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll / G_USEC_PER_SEC);
 	}
 }
