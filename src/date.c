@@ -203,7 +203,6 @@ date_format (gint64 date, const gchar *date_format)
 gint64
 date_parse_ISO8601 (const gchar *date)
 {
-	GTimeVal 	timeval;
 	GDateTime 	*datetime = NULL;
 	gboolean 	result;
 	guint64 	year, month, day;
@@ -219,9 +218,13 @@ date_parse_ISO8601 (const gchar *date)
 	 */
 
 	/* full specified variant */
-	result = g_time_val_from_iso8601 (date, &timeval);
-	if (result)
-		return timeval.tv_sec;
+	datetime = g_date_time_new_from_iso8601 (date, NULL);
+	if (datetime) {
+		t = g_date_time_to_unix (datetime);
+		g_date_time_unref (datetime);
+		if (t)
+			return t;
+	}
 
 
 	/* only date */

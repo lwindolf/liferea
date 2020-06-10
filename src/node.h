@@ -181,7 +181,7 @@ void node_auto_update_subscription (nodePtr node);
  * Helper function to be used with node_foreach_child()
  * to mass-auto-update subscriptions.
  */
-void node_reset_update_counter (nodePtr node, GTimeVal *now);
+void node_reset_update_counter (nodePtr node, guint64 *now);
 
 /**
  * node_is_ancestor: (skip)
