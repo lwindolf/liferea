@@ -160,7 +160,7 @@ subscription_icon_update (subscriptionPtr subscription)
 	iconDownloadCtxtPtr	ctxt;
 
 	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
-	g_get_current_time (&subscription->updateState->lastFaviconPoll);
+  subscription->updateState->lastFaviconPoll = g_get_real_time();
 
 	ctxt = subscription_icon_download_ctxt_new ();
 	ctxt->id = g_strdup (subscription->node->id);

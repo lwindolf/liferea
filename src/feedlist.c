@@ -650,12 +650,12 @@ feedlist_save (void)
 void
 feedlist_reset_update_counters (nodePtr node)
 {
-	GTimeVal now;
+	guint64 now;
 
 	if (!node)
 		node = feedlist_get_root ();
 
-	g_get_current_time (&now);
+	now = g_get_real_time();
 	node_foreach_child_data (node, node_reset_update_counter, &now);
 }
 
