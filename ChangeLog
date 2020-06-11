@@ -11,6 +11,9 @@ To be released
 	* #826: Fix save/restore position issues with tray icon
 	  (Matthew Horan)
 
+	* #822: Improve performance of item list loading
+	  (Rich Coe)
+
 	* #815: Add support for subscribing to HTML5 websites
 	  without RSS/Atom feeds by extracting article
 	  titles,links and descriptions
