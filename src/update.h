@@ -79,7 +79,7 @@ typedef struct updateState {
 	glong		lastModified;		/**< Last modified string as sent by the server */
 	guint64  	lastPoll;		/**< time at which the feed was last updated */
 	guint64 	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
-	gchar		*cookies;		/**< cookies to be used */	
+	gchar		*cookies;		/**< cookies to be used */
 	gchar		*etag;			/**< ETag sent by the server */
 	gint		maxAgeMinutes;		/**< default update interval, greatest value sourced from HTTP and XML */
 	gint		synFrequency;		/**< syn:updateFrequency */
@@ -91,7 +91,7 @@ G_BEGIN_DECLS
 #define UPDATE_REQUEST_TYPE (update_request_get_type ())
 G_DECLARE_FINAL_TYPE (UpdateRequest, update_request, UPDATE, REQUEST, GObject)
 
-typedef struct _UpdateRequest {
+struct _UpdateRequest {
 	GObject		parent;
 
 	gchar 		*source;	/**< Location of the source. If it starts with
