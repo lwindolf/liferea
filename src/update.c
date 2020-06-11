@@ -162,6 +162,8 @@ update_request_finalize (GObject *obj)
 	g_free (request->postdata);
 	g_free (request->source);
 	g_free (request->filtercmd);
+
+	G_OBJECT_CLASS (update_request_parent_class)->finalize (obj);
 }
 
 static void
