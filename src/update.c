@@ -263,7 +263,7 @@ update_job_new (gpointer owner,
 
 	job = g_new0 (struct updateJob, 1);
 	job->owner = owner;
-	job->request = UPDATE_REQUEST (g_object_ref (request));
+	job->request = UPDATE_REQUEST (request);
 	job->result = update_result_new ();
 	job->callback = callback;
 	job->user_data = user_data;

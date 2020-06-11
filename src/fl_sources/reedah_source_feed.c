@@ -1,12 +1,12 @@
 /**
  * @file theoldreader_source_feed.c  TheOldReader feed subscription routines
- * 
+ *
  * Copyright (C) 2013-2014  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -38,7 +38,7 @@
 #include "xml.h"
 
 void
-reedah_source_migrate_node (nodePtr node) 
+reedah_source_migrate_node (nodePtr node)
 {
 	/* scan the node for bad ID's, if so, brutally remove the node */
 	itemSetPtr itemset = node_get_itemset (node);
@@ -49,7 +49,7 @@ reedah_source_migrate_node (nodePtr node)
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
 				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
-			} 
+			}
 		}
 		if (item) item_unload (item);
 	}
@@ -93,7 +93,7 @@ reedah_item_callback (JsonNode *node, itemPtr item)
 			iter = g_list_next (iter);
 		}
 
-		g_list_free (elements);	
+		g_list_free (elements);
 	}
 }
 
@@ -106,7 +106,7 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
 
 		/*
 		   We expect to get something like this
-		   
+
 		   [{"crawlTimeMsec":"1375821312282",
 		     "id"::"tag:google.com,reader:2005\/item\/4ee371db36f84de2",
 		     "categories":["user\/15724899091976567759\/state\/com.google\/reading-list",
@@ -140,7 +140,7 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
 		mapping.negateRead	= TRUE;
 
 		items = json_api_get_items (result->data, "items", &mapping, &reedah_item_callback);
-				
+
 		/* merge against feed cache */
 		if (items) {
 			itemSetPtr itemSet = node_get_itemset (subscription->node);
@@ -159,14 +159,14 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
 }
 
 static gboolean
-reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
-                                                 struct updateRequest *request)
+reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
+                                                 UpdateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing Reedah feed subscription for update\n");
-	ReedahSourcePtr source = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data; 
-	
-	g_assert(source); 
-	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) { 
+	ReedahSourcePtr source = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data;
+
+	g_assert(source);
+	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) {
 		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
@@ -193,4 +193,3 @@ struct subscriptionType reedahSourceFeedSubscriptionType = {
 	reedah_feed_subscription_prepare_update_request,
 	reedah_feed_subscription_process_update_result
 };
-
