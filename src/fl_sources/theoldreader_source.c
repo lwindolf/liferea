@@ -150,35 +150,16 @@ theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
 static void
 theoldreader_source_auto_update (nodePtr node)
 {
-	guint64	now;
-	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node->data;
-
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		node_source_update (node);
 		return;
 	}
 
-	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS) 
+	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
 		return; /* the update will start automatically anyway */
 
-	now = g_get_real_time();
-	
-	/* do daily updates for the feed list and feed updates according to the default interval */
-/*	if (node->subscription->updateState->lastPoll + NODE_SOURCE_UPDATE_INTERVAL <= now) {
-		subscription_update (node->subscription, 0);
-		source->lastQuickUpdate = g_get_real_time();
-	}
-	else if (source->lastQuickUpdate + NODE_SOURCE_QUICK_UPDATE_INTERVAL <= now) {
-		theoldreader_source_opml_quick_update (source);
-		google_reader_api_edit_process (node->source);
-		source->lastQuickUpdate = g_get_real_time();
-	}*/
-
-	// FIXME: Don't do below, but above logic!
-	if (source->lastQuickUpdate + THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL <= now) {
-		subscription_update (node->subscription, 0);
-		source->lastQuickUpdate = g_get_real_time();
-	}
+	debug0 (DEBUG_UPDATE, "theoldreader_source_auto_update()");
+	subscription_auto_update (node->subscription);
 }
 
 static
