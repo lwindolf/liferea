@@ -1,5 +1,7 @@
 /**
- * Copyright (C) 2009 Adrian Bunk  <bunk@users.sourceforge.net>
+ * @file html5_feed.h  Parsing semantic annotated HTML5 webpages like feeds
+ *
+ * Copyright (C) 2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,15 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "fl_sources/theoldreader_source.h"
+#ifndef _HTML5_FEED_H
+#define _HTML5_FEED_H
 
-/**
- * Find a node by the source id.
- *
- * @param gsource	the TheOldReader source
- * @param source	the feed id to find
- *
- * @returns a node (or NULL)
- */
-nodePtr theoldreader_source_opml_get_node_by_source(TheOldReaderSourcePtr gsource,
-					 const gchar *source);
+#include "feed_parser.h"
+
+feedHandlerPtr	html5_init_feed_handler(void);
+
+#endif

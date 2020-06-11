@@ -1,10 +1,12 @@
 /**
- * Copyright (C) 2009 Adrian Bunk  <bunk@users.sourceforge.net>
+ * @file subscription_icon.c  Downloading suitable subscription icons
+ * 
+ * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * (at your option) any later version. 
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,15 +18,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "fl_sources/theoldreader_source.h"
+#ifndef _SUBSCRIPTION_ICON_H
+#define _SUBSCRIPTION_ICON_H
+
+#include "subscription.h"
 
 /**
- * Find a node by the source id.
+ * subscription_icon_update:
+ * Start an icon update for a given subscription. On success the feed list
+ * node will be updated with the new icon and the icon will be stored in
+ * the icon cache.
  *
- * @param gsource	the TheOldReader source
- * @param source	the feed id to find
- *
- * @returns a node (or NULL)
+ * @subscription: the subscription
  */
-nodePtr theoldreader_source_opml_get_node_by_source(TheOldReaderSourcePtr gsource,
-					 const gchar *source);
+void
+subscription_icon_update (subscriptionPtr subscription);
+
+#endif

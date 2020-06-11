@@ -70,6 +70,8 @@ src/social.c
 src/social.h
 src/subscription.c
 src/subscription.h
+src/subscription_icon.c
+src/subscription_icon.h
 src/subscription_type.h
 src/update.c
 src/update.h
@@ -126,6 +128,8 @@ src/parsers/cdf_channel.c
 src/parsers/cdf_channel.h
 src/parsers/cdf_item.c
 src/parsers/cdf_item.h
+src/parsers/html5_feed.c
+src/parsers/html5_feed.h
 src/parsers/ns_admin.c
 src/parsers/ns_admin.h
 src/parsers/ns_ag.c
@@ -181,6 +185,7 @@ src/webkit/webkit.c
 src/webkit/liferea_web_view.c
 src/webkit/web_extension/liferea_web_extension.c
 src/webkit/web_extension/web_extension_main.c
+plugins/headerbar.py
 [type: gettext/glade]glade/about.ui
 [type: gettext/glade]glade/auth.ui
 [type: gettext/glade]glade/enclosure_handler.ui

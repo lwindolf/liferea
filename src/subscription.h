@@ -173,7 +173,7 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
  *
  * @param subscription	the subscription
  */
-void subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now);
+void subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now);
 
 void subscription_update_favicon (subscriptionPtr subscription);
 

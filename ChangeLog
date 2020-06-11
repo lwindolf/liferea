@@ -1,12 +1,71 @@
 To be released
 
+	Version 1.13.1
+
+	* Fixes #840: OPML source subfolders not working
+	  (fixed by Tomáš Janoušek)
+
+	* #827: Respect global update refresh interval for TheOldReader
+	  (Matthew Horan)
+
+	* #826: Fix save/restore position issues with tray icon
+	  (Matthew Horan)
+
+	* #822: Improve performance of item list loading
+	  (Rich Coe)
+
+	* #815: Add support for subscribing to HTML5 websites
+	  without RSS/Atom feeds by extracting article
+	  titles,links and descriptions
+	  (Lars Windolf)
+
+	* #816: Increase size of stored favicons to 128x128px
+	  to improve icon quality in 3-pane wide view. Also add
+	  favicon URL discovery tests.
+
+	* #752: Trayicon plugin has now a configuration option
+	  to change the behaviour when closing Liferea.
+	  (BurnhamG)
+
+	* Fixes #821: Skip current selected unread item on
+	  'next unread item'
+	  (Tom Perez)
+	* Fixes #799: plugins/headerbar.py translations not active
+	  (reported by Paul Gevers)
+
+
+2020-03-04   Lars Windolf <lars.windolf@gmx.de>
+
 	Version 1.13.0
 
-	* Drop unused glade/google_source.ui
-	* #746: Fix accessibility fatals reported by gla11y
-	  (reported by Paul Gevers)
+	* #764: Add MediaRSS support (e.g. Youtube feeds) to display
+	  descriptions and thumbnails
+	  (Mikel Olasagasti)
 	* #773: Add WebKit Inspector menu option to HTML view when
 	  run with --debug-html (by sillyslux)
+	* #714: Replaces deprecated gtk_menu_popup
+	  (Leiaz)
+	* #705: New hotkey Ctrl-O to open enclosures
+	  (Leiaz)
+	* #680: Add xdg-email command to item list popup menu
+	  (poetsmeniet)
+
+	* Drop unused glade/google_source.ui
+	* #699: Refactoring of duplicate check handlingg
+	  (dymoksc)
+
+	* #746: Fix accessibility fatals reported by gla11y
+	  (reported by Paul Gevers)
+	* Fixes #730: "Update all subscriptions at startup" overrides
+	  "Don't update this feed automatically"
+	  (Dymtro Kyrychuk, reported by Paul Wise)
+	* Fixes #639: Right clicking on article no longer selects it
+	  (Leiaz, reported by Bruce Guenter)
+
+	* #737: Update of Italian translation
+	  (madmurphy)
+	* #745: URL fix for French example feeds
+	  (sblondon)
 
 
 2019-12-04   Lars Windolf <lars.windolf@gmx.de>
@@ -91,7 +150,7 @@ To be released
 	* #614: GTK Headerbar support via plugin
 	  (Lars Windolf)
 	* #608: Refactoring UI code to switch to GAction and GtkBuilder
-	  Note: this implies not having icons in the main menu anymore 
+	  Note: this implies not having icons in the main menu anymore
 	  which were still there for all non-GNOME users (see #626).
 	  (Leiaz)
 	* #589: Item list view column order rework as a preparation for
@@ -429,7 +488,7 @@ To be released
 2015-01-06   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.11.2
-	
+
 	* Fixes Github #132: Broken documentation link
 	  (reported by kallus)
 	* Fixes Github #121: Wrapping issue in folder display
@@ -441,7 +500,7 @@ To be released
 	  (suggested by DanMan)
 	* Black-list some categories used by Google Reader clones
 	  that should not be visible.
-	* Allowing browser history to go back to previously 
+	* Allowing browser history to go back to previously
 	  shown headline when browsing inside the item view.
 	* Dropping offline option as this is duplicated with
 	  desktop environment in GNOME/network manager.
@@ -456,7 +515,7 @@ To be released
 2014-08-31   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.11.1
-	
+
 	* Fixes Github #81: Inability to add subscriptions
 	  (reported by GreenLunar)
 	* Fixes Javascript links not opening in new browser tabs
@@ -474,7 +533,7 @@ To be released
 
 	* Fixes SF #1123: Mistakenly claims "TinyTinyRSS source is not self-updating"
 	  (reported by Dominik Grafenhoher)
-	* Fixes SF #1119: Crash on font resize at startup. 
+	* Fixes SF #1119: Crash on font resize at startup.
 	  (reported by David Smith)
 	* Fixes #1056, #1089, #1098: Honor preferences when opening links
 	  (patch by Daniel Seither)
@@ -482,21 +541,21 @@ To be released
 	  (reported by Bruce Guenter)
 	* Fixes missing "Via" metadata type
 	  (patch by Rich Coe)
-	* Fixes incorrect new count reset handling in item_state.c and 
+	* Fixes incorrect new count reset handling in item_state.c and
 	  some of the node source implementations.
 	* Fixes SF #1096: missing installation of liferea.convert file
-	  (reported by stqn) 
+	  (reported by stqn)
 	* Fixes SF #1135: liferea-add-feed doesn't process feed:https//
 	  (patch by Kevin Walke)
 	* Fixes SF #1137, #1142: startup race with LifereaHtmlView
 	  (reported by Yanko Kaneti)
 	* Fixes Github #13: Parsing errors not visible with dark themes
 	  (reported by Steve Kelly)
-	* Fixes Github #29: Do not use bold text for feeds/folders with unread items 
+	* Fixes Github #29: Do not use bold text for feeds/folders with unread items
 	  in the leftmost treeview (repored by Jeff Fortin)
-	* Fixes SF #1141: Liferea does not update feeds with TinyTinyRSS 
+	* Fixes SF #1141: Liferea does not update feeds with TinyTinyRSS
 	  (reported by Dominik Grafenhofer, denk_mal, Fabian Henze)
-	* Fixes SF #1150: subscription prop/source: not all fields and 
+	* Fixes SF #1150: subscription prop/source: not all fields and
 	  buttons visible (reported by David Smith)
 	* Fixes Github #26: RTL comments appear incorrectly
 	  (reported by yaconf)
@@ -508,7 +567,7 @@ To be released
 	  (reported by Jeff Fortin)
 	* Fixes Github #49: Some dialogs scrolling areas do not request enough height
 	  (reported by Jeff Fortin)
-	* Fixes Github #53: Doesn't automatically update feed name and favicon 
+	* Fixes Github #53: Doesn't automatically update feed name and favicon
 	  for new feed (reported by asl97)
 	* Patch SF #224: Update to new libxml2 buffer API
 	  (Simon Kagedal Reimer)
@@ -549,14 +608,14 @@ To be released
 2013-09-05   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.10.2
-	
+
 	* Patch SF #222: Make media player seekable
 	  (Simon Kågedal Reimer)
 	* Fixes SF #1102: Spelling error in man page
 	  (David Smith)
-	* Fixes SF #1104: liferea.desktop missing keywords 
+	* Fixes SF #1104: liferea.desktop missing keywords
 	  (David Smith)
-	* Fixes SF #1105: Start Minimized to Tray Does Not Work 
+	* Fixes SF #1105: Start Minimized to Tray Does Not Work
 	  (reported by bitlord)
 	* Fixes SF #1114: Crashes opening browser on item without link via popup
 	  (reported by Rich Coe, David Smith)
@@ -579,14 +638,14 @@ To be released
 	  (reported by genodeftest)
 
 2013-07-28   Lars Windolf <lars.windolf@gmx.de>
-	
+
 	Version 1.10.1
 
 	* Fixes SF #1059: Liferea crashes with system proxy enabled
 	  (reported by genodeftest)
-	* Fixes SF #1095: Theme color detection bug / white fonts. 
+	* Fixes SF #1095: Theme color detection bug / white fonts.
 	  (reported by David Smith and others)
-	* Fixes SF #1097: Default feed refresh interval cannot be set to 0 
+	* Fixes SF #1097: Default feed refresh interval cannot be set to 0
 	  (reported by stqn)
 	* Fixes SF #1100: --debug-gui crashes with segmentation fault
 	  (reported by genodeftest)
@@ -594,7 +653,7 @@ To be released
 	  (reported by genodeftest)
 	* Patch SF #225: Make media player work with GStreamer 1.0
 	  (Simon Kågedal Reimer)
-	* Patch SF #226: Add trailing semi-colon to MimeType so that the desktop 
+	* Patch SF #226: Add trailing semi-colon to MimeType so that the desktop
 	  file validates (Yanko Kaneti)
 	* Patch SF #227: Remove letfover square bracket configure.ac
 	  (Yanko Kaneti)
@@ -917,7 +976,7 @@ To be released
 	  This fixes SF #3465106 (reported by Vincent Lefevre)
 	* Fixes SF #3477582: welcome screen not using theme colors.
 	  (reported by stqn)
-	* Do not update DB node and subscription info on startup 
+	* Do not update DB node and subscription info on startup
 	  for performance reasons.
 	* Perform VACCUM only when page fragmentation ratio < 10%.
 	  (suggested by adriatic)

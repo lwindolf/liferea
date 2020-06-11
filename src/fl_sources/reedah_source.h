@@ -38,7 +38,7 @@ typedef struct ReedahSource {
 	/**
 	 * A timestamp when the last Quick update took place.
 	 */
-	GTimeVal        lastQuickUpdate;
+	guint64         lastQuickUpdate;
 } *ReedahSourcePtr;
 
 /**
@@ -60,8 +60,8 @@ typedef struct ReedahSource {
 #define REEDAH_READER_LOGIN_URL "https://www.reedah.com/accounts/ClientLogin" 
 #define REEDAH_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://www.reedah.com"
 
-/** Interval (in seconds) for doing a Quick Update: 10min */
-#define REEDAH_SOURCE_QUICK_UPDATE_INTERVAL 600
+/** Interval (in micro seconds) for doing a Quick Update: 10min */
+#define REEDAH_SOURCE_QUICK_UPDATE_INTERVAL 600 * G_USEC_PER_SEC
 
 /**
  * @returns Reedah source type implementation info.
