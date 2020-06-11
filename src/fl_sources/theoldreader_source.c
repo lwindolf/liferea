@@ -150,7 +150,7 @@ theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
 static void
 theoldreader_source_auto_update (nodePtr node)
 {
-	GTimeVal	now;
+	guint64	now;
 	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node->data;
 
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
@@ -161,23 +161,23 @@ theoldreader_source_auto_update (nodePtr node)
 	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
 		return; /* the update will start automatically anyway */
 
-	g_get_current_time (&now);
-
+	now = g_get_real_time();
+	
 	/* do daily updates for the feed list and feed updates according to the default interval */
-/*	if (node->subscription->updateState->lastPoll.tv_sec + NODE_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
+/*	if (node->subscription->updateState->lastPoll + NODE_SOURCE_UPDATE_INTERVAL <= now) {
 		subscription_update (node->subscription, 0);
-		g_get_current_time (&source->lastQuickUpdate);
+		source->lastQuickUpdate = g_get_real_time();
 	}
-	else if (source->lastQuickUpdate.tv_sec + NODE_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
+	else if (source->lastQuickUpdate + NODE_SOURCE_QUICK_UPDATE_INTERVAL <= now) {
 		theoldreader_source_opml_quick_update (source);
 		google_reader_api_edit_process (node->source);
-		g_get_current_time (&source->lastQuickUpdate);
+		source->lastQuickUpdate = g_get_real_time();
 	}*/
 
 	// FIXME: Don't do below, but above logic!
-	if (source->lastQuickUpdate.tv_sec + THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
+	if (source->lastQuickUpdate + THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL <= now) {
 		subscription_update (node->subscription, 0);
-		g_get_current_time (&source->lastQuickUpdate);
+		source->lastQuickUpdate = g_get_real_time();
 	}
 }
 

@@ -77,9 +77,9 @@ typedef struct updateOptions {
 /** defines all state data an updatable object (e.g. a feed) needs */
 typedef struct updateState {
 	glong		lastModified;		/**< Last modified string as sent by the server */
-	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
-	GTimeVal	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
-	gchar		*cookies;		/**< cookies to be used */
+	guint64  	lastPoll;		/**< time at which the feed was last updated */
+	guint64 	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
+	gchar		*cookies;		/**< cookies to be used */	
 	gchar		*etag;			/**< ETag sent by the server */
 	gint		maxAgeMinutes;		/**< default update interval, greatest value sourced from HTTP and XML */
 	gint		synFrequency;		/**< syn:updateFrequency */

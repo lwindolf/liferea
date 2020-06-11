@@ -27,7 +27,7 @@ help you asap.
 
 ###### _Mandatory Dependencies_
 
-   libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0
+   libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0-dev
    libpeas-dev gsettings-desktop-schemas-dev python3
 
    

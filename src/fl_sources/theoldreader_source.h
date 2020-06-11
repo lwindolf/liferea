@@ -38,7 +38,7 @@ typedef struct TheOldReaderSource {
 	/**
 	 * A timestamp when the last Quick update took place.
 	 */
-	GTimeVal        lastQuickUpdate;
+	guint64         lastQuickUpdate;
 
 	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to TTRSS category id */
 } *TheOldReaderSourcePtr;
@@ -60,8 +60,8 @@ typedef struct TheOldReaderSource {
 #define THEOLDREADER_READER_LOGIN_URL "https://theoldreader.com/accounts/ClientLogin" 
 #define THEOLDREADER_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://theoldreader.com"
 
-/** Interval (in seconds) for doing a Quick Update: 10min */
-#define THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL 600
+/** Interval (in microseconds) for doing a Quick Update: 10min */
+#define THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL 600 * G_USEC_PER_SEC
 
 /**
  * @returns TheOldReader source type implementation info.
