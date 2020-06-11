@@ -41,6 +41,8 @@
 #define FEED_PROTOCOL_PREFIX "feed://"
 #define FEED_PROTOCOL_PREFIX2 "feed:"
 
+#define ONE_MONTH_MICROSECONDS (guint64)(60*60*24*31) * (guint64)G_USEC_PER_SEC
+
 subscriptionPtr
 subscription_new (const gchar *source,
                   const gchar *filter,
@@ -120,13 +122,13 @@ subscription_can_be_updated (subscriptionPtr subscription)
 }
 
 void
-subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now)
+subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 {
 	if (!subscription)
 		return;
 
-	subscription->updateState->lastPoll.tv_sec = now->tv_sec;
-	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.", subscription->updateState->lastPoll.tv_sec);
+	subscription->updateState->lastPoll = *now;
+	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
 }
 
 /**
@@ -177,7 +179,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
-	GTimeVal	now;
+	guint64		now;
 	gint		next_update = 0;
 	gint		update_time_sources = 0;
 	gint		maxage = -1;
@@ -220,15 +222,15 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	      to ensure we have valid baseUrl for feed nodes...
 
 	      check creation date and update favicon if older than one month */
-	g_get_current_time (&now);
-	if (now.tv_sec > (subscription->updateState->lastFaviconPoll.tv_sec + 60*60*24*31))
+	now = g_get_real_time();
+	if (now > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
 		subscription_icon_update (subscription);
-	
+
 	/* 4. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
-	g_get_current_time (&subscription->updateState->lastPoll);
+	subscription->updateState->lastPoll = g_get_real_time();
 
 	// FIXME: use new-items signal in itemview class
 	itemview_update_node_info (subscription->node);
@@ -247,7 +249,7 @@ void
 subscription_update (subscriptionPtr subscription, guint flags)
 {
 	updateRequestPtr		request;
-	GTimeVal			now;
+	guint64			now;
 
 	if (!subscription)
 		return;
@@ -260,7 +262,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	if (subscription_can_be_updated (subscription)) {
 		liferea_shell_set_status_bar (_("Updating \"%s\""), node_get_title (subscription->node));
 
-		g_get_current_time (&now);
+		now = g_get_real_time();
 		subscription_reset_update_counter (subscription, &now);
 
 		request = update_request_new ();
@@ -282,7 +284,7 @@ subscription_auto_update (subscriptionPtr subscription)
 {
 	gint		interval;
 	guint		flags = 0;
-	GTimeVal	now;
+	guint64	now;
 
 	if (!subscription)
 		return;
@@ -294,9 +296,9 @@ subscription_auto_update (subscriptionPtr subscription)
 	if (-2 >= interval || 0 == interval)
 		return;		/* don't update this subscription */
 
-	g_get_current_time (&now);
+	now = g_get_real_time();
 
-	if (subscription->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
+	if (subscription->updateState->lastPoll + (guint64)interval * (guint64)(60 * G_USEC_PER_SEC) <= now)
 		subscription_update (subscription, flags);
 }
 

@@ -53,10 +53,6 @@ struct _LifereaApplication {
 	gulong		debug_flags;
 };
 
-struct _LifereaApplicationClass {
-	GtkApplicationClass parent;
-};
-
 G_DEFINE_TYPE (LifereaApplication, liferea_application, GTK_TYPE_APPLICATION)
 
 static LifereaApplication *liferea_app = NULL;
@@ -344,7 +340,7 @@ liferea_application_new (int argc, char *argv[])
 
 	g_assert (NULL == liferea_app);
 
-	liferea_app = g_object_new (LIFEREA_TYPE_APPLICATION,
+	liferea_app = g_object_new (LIFEREA_APPLICATION_TYPE,
 		                    "flags", G_APPLICATION_HANDLES_OPEN,
 		                    "application-id", "net.sourceforge.liferea",
 		                    NULL);

@@ -1101,7 +1101,8 @@ item_list_view_find_unread_item (ItemListView *ilv, gulong startId)
 	while (valid) {
 		itemPtr	item = item_load (item_list_view_iter_to_id (ilv, &iter));
 		if (item) {
-			if (!item->readStatus)
+			/* Skip the selected item */
+			if (!item->readStatus && item->id != startId)
 				return item;
 			item_unload (item);
 		}

@@ -45,7 +45,7 @@
 #include "fl_sources/reedah_source_feed_list.h"
 
 /** default Reedah subscription list update interval = once a day */
-#define NODE_SOURCE_UPDATE_INTERVAL 60*60*24
+#define NODE_SOURCE_UPDATE_INTERVAL (guint64)(60*60*24) * (guint64)G_USEC_PER_SEC
 
 /** create a Reedah source with given node as root */ 
 static ReedahSourcePtr
@@ -149,7 +149,7 @@ reedah_source_login (ReedahSourcePtr source, guint32 flags)
 static void
 reedah_source_auto_update (nodePtr node)
 {
-	GTimeVal	now;
+	guint64	now;
 	ReedahSourcePtr source = (ReedahSourcePtr) node->data;
 
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
@@ -162,17 +162,17 @@ reedah_source_auto_update (nodePtr node)
 
 	debug0 (DEBUG_UPDATE, "reedah_source_auto_update()");
 
-	g_get_current_time (&now);
+	now = g_get_real_time();
 	
 	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll.tv_sec + NODE_SOURCE_UPDATE_INTERVAL <= now.tv_sec) {
+	if (node->subscription->updateState->lastPoll + NODE_SOURCE_UPDATE_INTERVAL <= now) {
 		subscription_update (node->subscription, 0);
-		g_get_current_time (&source->lastQuickUpdate);
+		source->lastQuickUpdate = g_get_real_time();
 	}
-	else if (source->lastQuickUpdate.tv_sec + REEDAH_SOURCE_QUICK_UPDATE_INTERVAL <= now.tv_sec) {
+	else if (source->lastQuickUpdate + REEDAH_SOURCE_QUICK_UPDATE_INTERVAL <= now) {
 		reedah_source_opml_quick_update (source);
 		google_reader_api_edit_process (node->source);
-		g_get_current_time (&source->lastQuickUpdate);
+		source->lastQuickUpdate = g_get_real_time();
 	}
 }
 

@@ -94,6 +94,7 @@ Liferea_3_0_gir_FILES = \
 	item.h \
 	itemlist.c itemlist.h \
 	itemset.c itemset.h \
+	liferea_application.h \
 	node.h node.c \
 	node_view.h \
 	social.c social.h \

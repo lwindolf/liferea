@@ -65,7 +65,6 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 
 	feed = feed_new ();
 	feed->fhp = feed_type_str_to_fhp (typeStr);
-	xmlFree (typeStr);
 
 	node_set_data (node, feed);
 	node_set_subscription (node, subscription_import (xml, trusted));
@@ -116,6 +115,7 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 	        	subscription_get_source (node->subscription),
 		        typeStr,
 		        subscription_get_update_interval (node->subscription));
+	xmlFree (typeStr);
 }
 
 static void

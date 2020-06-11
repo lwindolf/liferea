@@ -2,6 +2,9 @@ To be released
 
 	Version 1.13.1
 
+	* #826: Fix save/restore position issues with tray icon
+	  (Matthew Horan)
+
 	* #815: Add support for subscribing to HTML5 websites
 	  without RSS/Atom feeds by extracting article
 	  titles,links and descriptions
@@ -10,7 +13,14 @@ To be released
 	* #816: Increase size of stored favicons to 128x128px
 	  to improve icon quality in 3-pane wide view. Also add
 	  favicon URL discovery tests.
+	
+	* #752: Trayicon plugin has now a configuration option
+	  to change the behaviour when closing Liferea.
+	  (BurnhamG)
 
+	* Fixes #821: Skip current selected unread item on
+	  'next unread item'
+	  (Tom Perez)
 	* Fixes #799: plugins/headerbar.py translations not active
 	  (reported by Paul Gevers)
 
