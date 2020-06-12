@@ -53,9 +53,9 @@ body {
 }
 
 blockquote {
-        border-left: 2px solid #GTK-COLOR-DARK;
+        border-left: 3px solid #GTK-COLOR-DARK;
         background: #GTK-COLOR-BG;
-        padding: 5px;
+        padding: 6px;
         font-style: italic;
         margin: 5px 20px;
 	clear:both;
@@ -106,7 +106,7 @@ table.itemhead, table.feedhead {
 	margin:0;
 	width:100%;
 	border:0;
-	border-bottom: 1px solid #GTK-COLOR-DARK;
+	border-bottom: 2px solid #GTK-COLOR-DARK;
 	clear:both;
 	color:#GTK-COLOR-TEXT;
 }
@@ -144,7 +144,7 @@ table.headmeta {
 
 table.headmeta td {
 	padding:1px 6px 1px 12px;
-	font-size:0.8em;
+	font-size:0.9em;
 }
 
 .hidden {

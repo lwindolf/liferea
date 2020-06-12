@@ -2,9 +2,9 @@
  * plugins_engine.c: Liferea Plugins using libpeas
  * (derived from gtranslator code)
  *
- * Copyright (C) 2002-2005 Paolo Maggi 
+ * Copyright (C) 2002-2005 Paolo Maggi
  * Copyright (C) 2010 Steve Frécinaux
- * Copyright (C) 2012-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,8 +18,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, 
- * Boston, MA 02111-1307, USA. 
+ * Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -35,12 +35,12 @@
 
 #include "plugins_engine.h"
 
-G_DEFINE_TYPE (LifereaPluginsEngine, liferea_plugins_engine, PEAS_TYPE_ENGINE)
-
 struct _LifereaPluginsEnginePrivate
 {
   GSettings *plugin_settings;
 };
+
+G_DEFINE_TYPE_WITH_CODE (LifereaPluginsEngine, liferea_plugins_engine, PEAS_TYPE_ENGINE, G_ADD_PRIVATE (LifereaPluginsEngine))
 
 LifereaPluginsEngine *default_engine = NULL;
 
@@ -51,9 +51,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
   GError *error = NULL;
   PeasPluginInfo *plugin_installer_plugin_info = NULL;
 
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine,
-                                              LIFEREA_TYPE_PLUGINS_ENGINE,
-                                              LifereaPluginsEnginePrivate);
+  engine->priv = liferea_plugins_engine_get_instance_private (engine);
 
   peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
 
@@ -158,8 +156,6 @@ liferea_plugins_engine_class_init (LifereaPluginsEngineClass * klass)
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	object_class->dispose = liferea_plugins_engine_dispose;
-
-	g_type_class_add_private (klass, sizeof (LifereaPluginsEnginePrivate));
 }
 
 LifereaPluginsEngine *

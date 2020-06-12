@@ -1,7 +1,7 @@
 /**
  * @file opml_source.c  OPML Planet/Blogroll feed list source
  *
- * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 			node = node_new (folder_get_node_type ());
 		}
 		node_set_title (node, title);
-		node_set_parent (node, mergeCtxt->rootNode, -1);
+		node_set_parent (node, mergeCtxt->parent, -1);
 		feedlist_node_imported (node);
 
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
