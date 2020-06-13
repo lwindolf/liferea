@@ -195,7 +195,7 @@ item_get_author(itemPtr item)
 {
 	gchar *author;
 
-	author = metadata_list_get (item->metadata, "author");
+	author = (gchar *)metadata_list_get (item->metadata, "author");
 	return author;
 }
 

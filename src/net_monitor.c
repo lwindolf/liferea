@@ -1,7 +1,7 @@
 /**
  * @file network_monitor.c  network status monitor
  *
- * Copyright (C) 2009 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2009-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2010 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -28,12 +28,12 @@
 
 struct NetworkMonitorPrivate {
 	GDBusConnection *conn;
-	guint subscription_id;
+	guint		subscription_id;
 
-	gboolean		online;
+	gboolean	online;
 };
 
-G_DEFINE_TYPE (NetworkMonitor, network_monitor, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_CODE (NetworkMonitor, network_monitor, G_TYPE_OBJECT, G_ADD_PRIVATE (NetworkMonitor))
 
 enum {
 	ONLINE_STATUS_CHANGED,
@@ -72,31 +72,29 @@ network_monitor_class_init (NetworkMonitorClass *klass)
 	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->finalize = network_monitor_finalize;
-	
-	network_monitor_signals [ONLINE_STATUS_CHANGED] = 
+
+	network_monitor_signals [ONLINE_STATUS_CHANGED] =
 		g_signal_new ("online-status-changed",
 		G_OBJECT_CLASS_TYPE (object_class),
 		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
-		0, 
+		0,
 		NULL,
 		NULL,
 		g_cclosure_marshal_VOID__BOOLEAN,
 		G_TYPE_NONE,
 		1,
 		G_TYPE_BOOLEAN);
-		
-	network_monitor_signals [PROXY_CHANGED] = 
+
+	network_monitor_signals [PROXY_CHANGED] =
 		g_signal_new ("proxy-changed",
 		G_OBJECT_CLASS_TYPE (object_class),
 		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
-		0, 
+		0,
 		NULL,
 		NULL,
 		g_cclosure_marshal_VOID__VOID,
 		G_TYPE_NONE,
 		0);
-
-	g_type_class_add_private (object_class, sizeof (NetworkMonitorPrivate));
 }
 
 static gboolean is_nm_connected (guint state)
@@ -192,9 +190,7 @@ on_bus_get_cb (GObject *source_object, GAsyncResult *result, gpointer user_data)
 static void
 network_monitor_init (NetworkMonitor *nm)
 {
-	nm->priv = G_TYPE_INSTANCE_GET_PRIVATE (nm,
-						NETWORK_MONITOR_TYPE,
-						NetworkMonitorPrivate);
+	nm->priv = network_monitor_get_instance_private (nm);
 	nm->priv->online = TRUE;
 
 	/* For now accessing the network monitor also sets up the network! */
