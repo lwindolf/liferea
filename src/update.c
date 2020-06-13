@@ -1,7 +1,7 @@
 /**
  * @file update.c  generic update request and state processing
  *
- * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -60,7 +60,7 @@ static guint numberOfActiveJobs = 0;
 
 /* update state interface */
 
-updateStatePtr
+static updateStatePtr
 update_state_new (void)
 {
 	return g_new0 (struct updateState, 1);
@@ -123,7 +123,7 @@ update_state_set_cookies (updateStatePtr state, const gchar *cookies)
 		state->cookies = g_strdup (cookies);
 }
 
-updateStatePtr
+static updateStatePtr
 update_state_copy (updateStatePtr state)
 {
 	updateStatePtr newState;
@@ -145,6 +145,29 @@ update_state_free (updateStatePtr updateState)
 	g_free (updateState->cookies);
 	g_free (updateState->etag);
 	g_free (updateState);
+}
+
+/* update options */
+
+updateOptionsPtr
+update_options_copy (updateOptionsPtr options)
+{
+	updateOptionsPtr newOptions;
+	newOptions = g_new0 (struct updateOptions, 1);
+	newOptions->username = g_strdup (options->username);
+	newOptions->password = g_strdup (options->password);
+	newOptions->dontUseProxy = options->dontUseProxy;
+	return newOptions;
+}
+void
+update_options_free (updateOptionsPtr options)
+{
+	if (!options)
+		return;
+
+	g_free (options->username);
+	g_free (options->password);
+	g_free (options);
 }
 
 /* update request object */
@@ -179,9 +202,24 @@ update_request_init (UpdateRequest *request)
 }
 
 UpdateRequest *
-update_request_new (void)
+update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr options)
 {
-	return UPDATE_REQUEST (g_object_new (UPDATE_REQUEST_TYPE, NULL));
+	UpdateRequest *request = UPDATE_REQUEST (g_object_new (UPDATE_REQUEST_TYPE, NULL));
+
+	request->source = g_strdup (source);
+
+	if (state)
+		request->updateState = update_state_copy (state);
+	else
+		request->updateState = update_state_new ();
+
+
+	if (options)
+		request->options = update_options_copy (options);
+	else
+		request->options = g_new0 (struct updateOptions, 1);
+
+	return request;
 }
 
 void
@@ -224,30 +262,6 @@ update_result_free (updateResultPtr result)
 	g_free (result->contentType);
 	g_free (result->filterErrors);
 	g_free (result);
-}
-
-updateOptionsPtr
-update_options_copy (updateOptionsPtr options)
-{
-	updateOptionsPtr newOptions;
-
-	newOptions = g_new0 (struct updateOptions, 1);
-	newOptions->username = g_strdup (options->username);
-	newOptions->password = g_strdup (options->password);
-	newOptions->dontUseProxy = options->dontUseProxy;
-
-	return newOptions;
-}
-
-void
-update_options_free (updateOptionsPtr options)
-{
-	if (!options)
-		return;
-
-	g_free (options->username);
-	g_free (options->password);
-	g_free (options);
 }
 
 /* update job handling */

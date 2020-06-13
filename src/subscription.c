@@ -265,10 +265,12 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		now = g_get_real_time();
 		subscription_reset_update_counter (subscription, &now);
 
-		request = update_request_new ();
-		request->updateState = update_state_copy (subscription->updateState);
-		request->options = update_options_copy (subscription->updateOptions);
-		request->source = g_strdup (subscription_get_source (subscription));
+		request = update_request_new (
+			subscription_get_source (subscription),
+			subscription->updateState,
+			subscription->updateOptions
+		);
+
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
 

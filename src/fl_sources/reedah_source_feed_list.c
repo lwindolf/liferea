@@ -264,10 +264,14 @@ reedah_source_opml_quick_update_cb (const struct updateResult* const result, gpo
 gboolean
 reedah_source_opml_quick_update(ReedahSourcePtr source)
 {
-	UpdateRequest *request = update_request_new ();
-	request->updateState = update_state_copy (source->root->subscription->updateState);
-	request->options = update_options_copy (source->root->subscription->updateOptions);
-	update_request_set_source (request, source->root->source->type->api.unread_count);
+	subscriptionPtr subscription = source->root->subscription;
+
+	UpdateRequest *request = update_request_new (
+		source->root->source->type->api.unread_count,
+		subscription->updateState,
+		subscription->updateOptions
+	);
+
 	update_request_set_auth_value(request, source->root->source->authToken);
 
 	update_execute_request (source, request, reedah_source_opml_quick_update_cb,

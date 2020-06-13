@@ -312,9 +312,11 @@ google_reader_api_edit_token_cb (const struct updateResult * const result, gpoin
 
 	action = g_queue_peek_head (node->source->actionQueue);
 
-	request = update_request_new ();
-	request->updateState = update_state_copy (node->subscription->updateState);
-	request->options = update_options_copy (node->subscription->updateOptions) ;
+	request = update_request_new (
+		"NOT THE REAL URL",	// real URL will be set later based on action
+		node->subscription->updateState,
+		node->subscription->updateOptions
+	);
 	update_request_set_auth_value (request, node->source->authToken);
 
 	if (action->actionType == EDIT_ACTION_MARK_READ ||
@@ -351,10 +353,11 @@ google_reader_api_edit_process (nodeSourcePtr source)
  	* code here is the token code, the actual edit commands are in
  	* google_reader_api_edit_token_cb
 	 */
-	request = update_request_new ();
-	request->updateState = update_state_copy (source->root->subscription->updateState);
-	request->options = update_options_copy (source->root->subscription->updateOptions);
-	request->source = g_strdup (source->type->api.token);
+	request = update_request_new (
+		source->type->api.token,
+		source->root->subscription->updateState,
+		source->root->subscription->updateOptions
+	);
 	update_request_set_auth_value(request, source->authToken);
 
 	update_execute_request (source, request, google_reader_api_edit_token_cb,

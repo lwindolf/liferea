@@ -212,13 +212,16 @@ ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr su
 	UpdateRequest	*request;
 	gchar		*source_uri;
 
-	request = update_request_new ();
-	request->updateState = update_state_copy (subscription->updateState);
-	request->options = update_options_copy (subscription->updateOptions);
-
 	source_uri = g_strdup_printf (TTRSS_URL, source->url);
-	update_request_set_source (request, source_uri);
+
+	request = update_request_new (
+		source_uri,
+		subscription->updateState,
+		subscription->updateOptions
+	);
+
 	g_free (source_uri);
+
 	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
 
 	subscription->updateJob = update_execute_request (subscription, request, ttrss_source_subscription_list_cb, subscription, 0);

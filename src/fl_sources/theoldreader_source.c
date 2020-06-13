@@ -126,16 +126,17 @@ theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
 		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", source->root->source->loginState);
 	}
 
-	request = update_request_new ();
-
-	update_request_set_source (request, THEOLDREADER_READER_LOGIN_URL);
+	request = update_request_new (
+		THEOLDREADER_READER_LOGIN_URL,
+		NULL,
+		subscription->updateOptions
+	);
 
 	/* escape user and password as both are passed using an URI */
 	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
 	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
 
 	request->postdata = g_strdup_printf (THEOLDREADER_READER_LOGIN_POST, username, password);
-	request->options = update_options_copy (subscription->updateOptions);
 
 	g_free (username);
 	g_free (password);
@@ -162,7 +163,7 @@ theoldreader_source_auto_update (nodePtr node)
 		return; /* the update will start automatically anyway */
 
 	now = g_get_real_time();
-	
+
 	/* do daily updates for the feed list and feed updates according to the default interval */
 /*	if (node->subscription->updateState->lastPoll + NODE_SOURCE_UPDATE_INTERVAL <= now) {
 		subscription_update (node->subscription, 0);

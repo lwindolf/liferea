@@ -252,11 +252,12 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 			UpdateRequest *request;
 
 			debug3 (DEBUG_PARSING, "Fetching AMP HTML %ld %s : %s", item->id, item->title, ampurl);
-			request = update_request_new ();
-			update_request_set_source (request, ampurl);
-			// Explicitely do not pass proxy/auth options to Google (AMP)!
-			request->options = g_new0 (struct updateOptions, 1);
-			// FIXME: how do we prevent an endless loop here?
+			request = update_request_new (
+				ampurl,
+				NULL, 	// No update state needed? How do we prevent an endless redirection loop?
+				NULL 	// Explicitely do not the feed's proxy/auth options to 3rd parties like Google (AMP)!
+			);
+
 			update_execute_request (NULL, request, feed_enrich_item_cb, item, 0);
 
 			g_free (ampurl);
@@ -285,11 +286,11 @@ feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 
 	// Fetch item->link document and try to parse it as XHTML
 	debug3 (DEBUG_PARSING, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
-	request = update_request_new ();
-	update_request_set_source (request, item->source);
-
-	// Pass options of parent feed (e.g. password, proxy...)
-	request->options = update_options_copy (subscription->updateOptions);
+	request = update_request_new (
+		item->source,
+		NULL,	// updateState
+		subscription->updateOptions	// Pass options of parent feed (e.g. password, proxy...)
+	);
 
 	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), 0);
 }

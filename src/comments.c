@@ -1,7 +1,7 @@
 /**
  * @file comments.c comment feed handling
  *
- * Copyright (C) 2007-2009 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -215,16 +215,19 @@ comments_refresh (itemPtr item)
 			commentFeed = g_new0 (struct commentFeed, 1);
 			commentFeed->id = g_strdup (item->commentFeedId);
 			commentFeed->itemId = item->id;
-			commentFeed->updateState = update_state_new ();
 
 			if (!commentFeeds)
 				commentFeeds = g_hash_table_new (g_str_hash, g_str_equal);
 			g_hash_table_insert (commentFeeds, commentFeed->id, commentFeed);
 		}
 
-		request = update_request_new ();
-		request->options = g_new0 (struct updateOptions, 1);	// FIXME: use copy of parent subscription options
-		request->source = g_strdup (url);
+		request = update_request_new (
+			url,
+			commentFeed->updateState,
+			NULL	// FIXME: use copy of parent subscription options
+		);
+
+		commentFeed->updateState = request->updateState;
 		commentFeed->updateJob = update_execute_request (commentFeed, request, comments_process_update_result, commentFeed, FEED_REQ_PRIORITY_HIGH);
 
 		/* Item view refresh to change link from "Update" to "Updating..." */

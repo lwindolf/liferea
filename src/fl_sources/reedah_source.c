@@ -122,19 +122,20 @@ reedah_source_login (ReedahSourcePtr source, guint32 flags)
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session
 		 * doesn't expire. */
-		debug1(DEBUG_UPDATE, "Logging in while login state is %d\n", source->root->source->loginState);
+		debug1 (DEBUG_UPDATE, "Logging in while login state is %d\n", source->root->source->loginState);
 	}
 
-	request = update_request_new ();
-
-	update_request_set_source (request, REEDAH_READER_LOGIN_URL);
+	request = update_request_new (
+		REEDAH_READER_LOGIN_URL,
+		subscription->updateState,
+		NULL	// auth is done via POST below!
+	);
 
 	/* escape user and password as both are passed using an URI */
 	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
 	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
 
 	request->postdata = g_strdup_printf (REEDAH_READER_LOGIN_POST, username, password);
-	request->options = update_options_copy (subscription->updateOptions);
 
 	g_free (username);
 	g_free (password);
@@ -163,7 +164,7 @@ reedah_source_auto_update (nodePtr node)
 	debug0 (DEBUG_UPDATE, "reedah_source_auto_update()");
 
 	now = g_get_real_time();
-	
+
 	/* do daily updates for the feed list and feed updates according to the default interval */
 	if (node->subscription->updateState->lastPoll + NODE_SOURCE_UPDATE_INTERVAL <= now) {
 		subscription_update (node->subscription, 0);
