@@ -17,7 +17,7 @@ net.sourceforge.liferea.service: Makefile
 		mv $@.tmp $@
 
 
-appdatadir = $(datadir)/appdata
+appdatadir = $(datadir)/metainfo
 appdata_in_files = $(PACKAGE_TARNAME).appdata.xml.in
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 
