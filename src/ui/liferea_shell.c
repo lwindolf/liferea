@@ -225,6 +225,7 @@ liferea_shell_restore_position (void)
 	/* load window position */
 	int x, y, w, h;
 	gboolean last_window_maximized;
+	GdkRectangle work_area;
 
 	conf_get_int_value (LAST_WINDOW_X, &x);
 	conf_get_int_value (LAST_WINDOW_Y, &y);
@@ -236,14 +237,15 @@ liferea_shell_restore_position (void)
 
 	/* Restore position only if the width and height were saved */
 	if (w != 0 && h != 0) {
+		gdk_monitor_get_workarea (gdk_display_get_primary_monitor (gdk_display_get_default ()), &work_area);
 
-		if (x >= gdk_screen_width ())
-			x = gdk_screen_width () - 100;
+		if (x >= work_area.width)
+			x = work_area.width - 100;
 		else if (x + w < 0)
 			x  = 100;
 
-		if (y >= gdk_screen_height ())
-			y = gdk_screen_height () - 100;
+		if (y >= work_area.height)
+			y = work_area.height - 100;
 		else if (y + w < 0)
 			y  = 100;
 
@@ -270,6 +272,7 @@ liferea_shell_save_position (void)
 	GtkWidget	*pane;
 	gint		x, y, w, h;
 	gboolean	last_window_maximized;
+	GdkRectangle work_area;
 
 	/* save pane proportions */
 	pane = liferea_shell_lookup ("leftpane");
@@ -302,9 +305,11 @@ liferea_shell_save_position (void)
 	gtk_window_get_position (shell->window, &x, &y);
 	gtk_window_get_size (shell->window, &w, &h);
 
+	gdk_monitor_get_workarea (gdk_display_get_primary_monitor (gdk_display_get_default ()), &work_area);
+
 	if (x+w<0 || y+h<0 ||
-	    x > gdk_screen_width () ||
-	    y > gdk_screen_height ())
+	    x > work_area.width ||
+	    y > work_area.height)
 		return;
 
 	debug4 (DEBUG_GUI, "Saving window size and position: %dx%d %d:%d", w, h, x, y);
