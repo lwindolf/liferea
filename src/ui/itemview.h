@@ -234,6 +234,13 @@ void itemview_launch_URL (const gchar *url, gboolean internal);
  */
 void itemview_do_zoom (gboolean in);
 
+/**
+ * itemview_style_update:
+ * 
+ * Invokes a change of the href attribute in WebView's <link> tag
+ */
+void itemview_style_update (void);
+
 G_END_DECLS
 
 #endif

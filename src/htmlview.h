@@ -123,4 +123,11 @@ void	htmlview_start_output (GString *buffer, const gchar *base, gboolean css, gb
  */
 void	htmlview_finish_output (GString *buffer);
 
+/**
+ * Invokes an update of the href attribute in WebView's <link> tag
+ * 
+ * @param htmlview  current HTML view
+ */
+void    htmlview_update_style_element (LifereaHtmlView *htmlview);
+
 #endif

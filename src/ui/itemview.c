@@ -539,3 +539,9 @@ itemview_do_zoom (gboolean in)
 
 	liferea_htmlview_do_zoom (itemview->htmlview, in);
 }
+
+void
+itemview_style_update (void)
+{
+	liferea_htmlview_update_style_element (itemview->htmlview);
+}

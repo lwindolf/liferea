@@ -652,6 +652,15 @@ liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, c
 #endif
 }
 
+/**
+ * Execute JS Function in WebView to reload the stylesheet
+ */
+static void
+liferea_webkit_reload_style (GtkWidget *webview)
+{
+    webkit_web_view_run_javascript (WEBKIT_WEB_VIEW (webview), "updateStyle();", NULL, NULL, NULL);
+}
+
 static struct
 htmlviewImpl webkitImpl = {
 	.init		= liferea_webkit_init,
@@ -664,7 +673,8 @@ htmlviewImpl webkitImpl = {
 	.copySelection	= liferea_webkit_copy_selection, /* Same. */
 	.scrollPagedown	= liferea_webkit_scroll_pagedown,
 	.setProxy	= liferea_webkit_set_proxy,
-	.setOffLine	= NULL // FIXME: blocked on https://bugs.webkit.org/show_bug.cgi?id=18893
+	.setOffLine	= NULL, // FIXME: blocked on https://bugs.webkit.org/show_bug.cgi?id=18893
+	.reloadStyle	= liferea_webkit_reload_style
 };
 
 DECLARE_HTMLVIEW_IMPL (webkitImpl);

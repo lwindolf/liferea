@@ -309,6 +309,7 @@ htmlview_start_output (GString *buffer,
 		""
 		"	window.clearTimeout(popupTimeout);"
 		"}"
+		"function updateStyle() {const link = document.querySelector('head link'); link.href = link.href.replace(/\\?\\d+/, `?${Date.now()}`);}"
 		"</script>");
 	}
 	
@@ -427,3 +428,9 @@ htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode)
 	g_string_free (output, TRUE);
 	g_free (baseURL);
 }
+
+void
+htmlview_update_style_element (LifereaHtmlView *htmlview)
+{
+	liferea_htmlview_update_style_element (htmlview);
+};
