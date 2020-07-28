@@ -2,7 +2,9 @@ To be released
 
 	Version 1.13.2
 
-	* ...
+	* #854: Adding new search folder options to match
+	  subscription source ULR and parent folder name.
+	  (suggested by muhlinux)
 
 
 2020-06-11   Lars Windolf <lars.windolf@gmx.de>
