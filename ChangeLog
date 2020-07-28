@@ -5,6 +5,13 @@ To be released
 	* #250 Update some dialog labels
 	  (GreenLunar)
 
+	* #854: Adding new search folder options to match
+	  subscription source ULR and parent folder name.
+	  (suggested by muhlinux)
+
+	* Updated German translation
+	  (Lars Windolf)
+
 
 2020-06-11   Lars Windolf <lars.windolf@gmx.de>
 
