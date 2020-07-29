@@ -12,6 +12,9 @@ To be released
 	* #851: Add accessibility check to code tests
 	  (Lars Windolf)
 
+	* #851: Fix accessibility annotations for several combo boxes.
+	  (Lars Windolf)
+
 	* Updated German translation
 	  (Lars Windolf)
 
