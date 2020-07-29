@@ -5,7 +5,7 @@ noinst_PROGRAMS = $(TEST_PROGS)
 TEST_PROGS = html_auto favicon parse_date parse_xml
 
 test_gla11y:
-	if gla11y 2>/dev/null; then \
+	if command -vp gla11y >/dev/null; then \
 	  gla11y ../../glade/*.ui | grep FATAL && exit 1; \
 	fi
 
