@@ -9,6 +9,9 @@ To be released
 	  subscription source ULR and parent folder name.
 	  (suggested by muhlinux)
 
+	* #851: Add accessibility check to code tests
+	  (Lars Windolf)
+
 	* Updated German translation
 	  (Lars Windolf)
 

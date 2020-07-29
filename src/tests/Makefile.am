@@ -4,7 +4,12 @@ noinst_PROGRAMS = $(TEST_PROGS)
 
 TEST_PROGS = html_auto favicon parse_date parse_xml
 
-test: $(TEST_PROGS)
+test_gla11y:
+	if gla11y 2>/dev/null; then \
+	  gla11y ../../glade/*.ui | grep FATAL && exit 1; \
+	fi
+
+test: $(TEST_PROGS) test_gla11y
 	echo $(TEST_PROGS) | sed "s/^/.\//;s/ / \&\& .\//g" | xargs -I{} sh -c "{}"
 .PHONY: test
 
