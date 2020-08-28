@@ -29,8 +29,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-28 12:24+0200\n"
-"PO-Revision-Date: 2016-04-01 18:25-0600\n"
+"POT-Creation-Date: 2020-08-28 16:40+0200\n"
+"PO-Revision-Date: 2020-08-18 12:15-0400\n"
 "Last-Translator: Adolfo Jayme Barrientos <fitojb@ubuntu.com>\n"
 "Language-Team: Spanish <en@li.org>\n"
 "Language: es\n"
@@ -38,10 +38,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.3.1\n"
 
 #: ../liferea.appdata.xml.in.h:1
-#, fuzzy
 msgid "RSS feed reader"
 msgstr "Lector de noticias"
 
@@ -137,7 +136,7 @@ msgstr ""
 
 #: ../xslt/feed.xml.in.h:3
 msgid "There were errors while parsing this feed!"
-msgstr "Se encontraron errores al procesar este canal."
+msgstr "¡Se encontraron errores al procesar este canal!"
 
 #: ../xslt/feed.xml.in.h:4
 msgid "Parser Error Details"
@@ -150,12 +149,12 @@ msgstr "Detalles"
 #: ../xslt/feed.xml.in.h:6
 msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
-"Si lo desea, póngase en contacto con el autor del canal para informarle de "
-"este problema."
+"¡Si lo desea, póngase en contacto con el autor del canal para informarle de "
+"este problema!"
 
 #: ../xslt/feed.xml.in.h:7
 msgid "There were errors while filtering this feed!"
-msgstr "Se encontraron errores al filtrar este canal."
+msgstr "¡Se encontraron errores al filtrar este canal!"
 
 #: ../xslt/feed.xml.in.h:8
 msgid "Filter Error Details"
@@ -228,11 +227,11 @@ msgstr "Creador"
 
 #: ../xslt/item.xml.in.h:10
 msgid "Coordinates"
-msgstr ""
+msgstr "Coordenadas"
 
 #: ../xslt/item.xml.in.h:11
 msgid "Map"
-msgstr ""
+msgstr "Mapa"
 
 #: ../xslt/item.xml.in.h:12
 msgid "View count"
@@ -248,7 +247,7 @@ msgstr "Comentarios"
 
 #: ../xslt/item.xml.in.h:15
 msgid "Updating..."
-msgstr "Actualizando…"
+msgstr "Actualizando..."
 
 #: ../xslt/item.xml.in.h:16
 msgid "Section"
@@ -292,13 +291,15 @@ msgstr "Error de autorización"
 #: ../src/common.c:66
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
-msgstr "No se puede crear la carpeta de almacenamiento temporal «%s»."
+msgstr "¡No se puede crear la carpeta de almacenamiento temporal «%s»!"
 
 #: ../src/conf.c:183
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
 msgstr ""
+"Su version de WebkitGTK+ no soporta cambiar la configuración de proxy desde "
+"Liferea. Se usará la configuración de proxy por defecto del sistema."
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:133
@@ -328,7 +329,7 @@ msgstr "%d/%b/%Y"
 #: ../src/enclosure.c:201
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "«%s» no es un archivo válido de configuración de adjuntos"
+msgstr "¡«%s» no es un archivo válido de configuración de adjuntos!"
 
 #: ../src/enclosure.c:292
 msgid ""
@@ -357,14 +358,14 @@ msgstr ""
 "Preferencias."
 
 #: ../src/export.c:188
-#, fuzzy, c-format
+#, c-format
 msgid "Error renaming %s to %s: %s\n"
-msgstr "Error al renombrar %s a %s\n"
+msgstr "Error al renombrar %s a %s: %s\n"
 
 #: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
-msgstr "Error de XML en el documento OPML. No se pudo importar «%s»."
+msgstr "¡Error de XML en el documento OPML. No se pudo importar «%s»!"
 
 #: ../src/export.c:425 ../src/export.c:427
 #, c-format
@@ -376,7 +377,7 @@ msgstr "El documento OPML «%s», que se quería importar, está vacío."
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
-"«%s» no es un documento OPML válido. Liferea no pudo importar el archivo."
+"¡«%s» no es un documento OPML válido. Liferea no pudo importar el archivo!"
 
 #: ../src/export.c:469
 msgid "Imported feed list"
@@ -396,11 +397,11 @@ msgstr "Archivos OPML"
 
 #: ../src/export.c:489
 msgid "Error while exporting feed list!"
-msgstr "Ocurrió un error mientras se exportaba la lista de canales."
+msgstr "¡Ocurrió un error mientras se exportaba la lista de canales!"
 
 #: ../src/export.c:491
 msgid "Feed List exported!"
-msgstr "La lista de canales se ha exportado con éxito."
+msgstr "¡La lista de canales se ha exportado con éxito!"
 
 #: ../src/export.c:498
 msgid "Export Feed List"
@@ -423,7 +424,7 @@ msgstr ""
 #: ../src/feed.c:351
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "«%s» actualizada…"
+msgstr "«%s» actualizada..."
 
 #: ../src/feed.c:358
 #, c-format
@@ -443,15 +444,15 @@ msgstr ""
 #: ../src/feed_parser.c:194
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "Error XML mientras se leía el canal «%s». No se ha podido cargar."
+msgstr "¡Error XML mientras se leía el canal «%s». No se ha podido cargar!"
 
 #: ../src/feed_parser.c:199 ../src/feed_parser.c:248
 msgid "Empty document!"
-msgstr "El documento está vacío."
+msgstr "¡El documento está vacío!"
 
 #: ../src/feed_parser.c:211
 msgid "Invalid XML!"
-msgstr "XML no válido"
+msgstr "¡XML no válido!"
 
 #: ../src/feed_parser.c:271
 msgid "Source points to HTML document."
@@ -631,7 +632,7 @@ msgstr "Expiró el tiempo de respuesta"
 
 #: ../src/net.c:483
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Este recurso ya no existe. Elimine su suscripción."
+msgstr "Este recurso ya no existe. ¡Elimine su suscripción!"
 
 #: ../src/net.c:488
 msgid "There was an internal error in the update process"
@@ -640,8 +641,8 @@ msgstr "Ocurrió un error interno durante la actualización"
 #: ../src/net.c:490
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
-"Canal no disponible: El servidor solicitó una forma de redirección "
-"desconocida."
+"Canal no disponible: ¡El servidor solicitó una forma de redirección "
+"desconocida!"
 
 #: ../src/net.c:492
 msgid "Client Error"
@@ -653,7 +654,7 @@ msgstr "Error del servidor"
 
 #: ../src/net.c:496
 msgid "An unknown networking error happened!"
-msgstr "Ocurrió un error de red desconocido"
+msgstr "¡Ocurrió un error de red desconocido!"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
@@ -743,13 +744,13 @@ msgstr ""
 #: ../src/subscription.c:108
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
-msgstr "El canal «%s» ya se está actualizando"
+msgstr "¡El canal «%s» ya se está actualizando!"
 
 #: ../src/subscription.c:113
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr "El canal «%s» ya no existe. Liferea no volverá a actualizarlo."
+msgstr "¡El canal «%s» ya no existe. Liferea no volverá a actualizarlo!"
 
 #: ../src/subscription.c:173
 msgid ""
@@ -767,7 +768,7 @@ msgstr "El URL de «%s» cambió permanentemente y se actualizó"
 #: ../src/subscription.c:204
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "«%s» fue abandonado. Liferea ya no la actualizará."
+msgstr "«%s» fue abandonado. ¡Liferea ya no la actualizará!"
 
 #: ../src/subscription.c:207
 #, c-format
@@ -782,7 +783,7 @@ msgstr "Actualizando: «%s»"
 #: ../src/update.c:297
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
-msgstr "Se produjo un error al abrir el archivo temporal %s para filtrar"
+msgstr "¡Se produjo un error al abrir el archivo temporal %s para filtrar!"
 
 #: ../src/update.c:320
 #, c-format
@@ -824,7 +825,7 @@ msgstr "Adjuntos"
 #. The following literals are the enclosure list size units
 #: ../src/ui/enclosure_list_view.c:260
 msgid " Bytes"
-msgstr "bytes"
+msgstr " Bytes"
 
 #: ../src/ui/enclosure_list_view.c:263
 msgid "kB"
@@ -991,7 +992,7 @@ msgstr "Confirmar eliminación"
 
 #: ../src/ui/item_list_view.c:115
 msgid "This item has no link specified!"
-msgstr "Este artículo no tiene un enlace asignado"
+msgstr "¡Este artículo no tiene un enlace asignado!"
 
 #: ../src/ui/item_list_view.c:482
 msgid "*** No title ***"
@@ -999,7 +1000,7 @@ msgstr "*** Sin título ***"
 
 #: ../src/ui/item_list_view.c:486
 msgid " <span background='red' color='black'> important </span> "
-msgstr ""
+msgstr " <span background='red' color='black'> importante </span> "
 
 #: ../src/ui/item_list_view.c:865
 msgid "Headline"
@@ -1011,7 +1012,7 @@ msgstr "Fecha"
 
 #: ../src/ui/item_list_view.c:1056
 msgid "You must select a feed to delete its items!"
-msgstr "Debe elegir un canal para eliminar sus artículos"
+msgstr "¡Debe elegir un canal para eliminar sus artículos!"
 
 #: ../src/ui/item_list_view.c:1072 ../src/ui/item_list_view.c:1150
 #: ../src/ui/item_list_view.c:1165
@@ -1061,11 +1062,11 @@ msgstr "_Eliminar artículo"
 
 #: ../src/ui/popup_menu.c:200
 msgid "Open Enclosure..."
-msgstr "Abrir adjunto…"
+msgstr "Abrir adjunto..."
 
 #: ../src/ui/popup_menu.c:201
 msgid "Save As..."
-msgstr "Guardar como…"
+msgstr "Guardar como..."
 
 #: ../src/ui/popup_menu.c:202
 msgid "Copy Link Location"
@@ -1081,23 +1082,23 @@ msgstr "_Actualizar carpeta"
 
 #: ../src/ui/popup_menu.c:292
 msgid "New _Subscription..."
-msgstr "_Suscripción nueva…"
+msgstr "_Suscripción nueva..."
 
 #: ../src/ui/popup_menu.c:295
 msgid "New _Folder..."
-msgstr "_Carpeta nueva…"
+msgstr "_Carpeta nueva..."
 
 #: ../src/ui/popup_menu.c:298
 msgid "New S_earch Folder..."
-msgstr "Carpeta _virtual nueva…"
+msgstr "Carpeta _virtual nueva..."
 
 #: ../src/ui/popup_menu.c:299
 msgid "New S_ource..."
-msgstr "_Fuente nueva…"
+msgstr "_Fuente nueva..."
 
 #: ../src/ui/popup_menu.c:300
 msgid "New _News Bin..."
-msgstr "Ba_ndeja nueva…"
+msgstr "Ba_ndeja nueva..."
 
 #: ../src/ui/popup_menu.c:303
 msgid "_New"
@@ -1121,7 +1122,7 @@ msgstr "_Propiedades"
 
 #: ../src/ui/popup_menu.c:343
 msgid "Convert To Local Subscriptions..."
-msgstr "Convertir a suscripciones locales…"
+msgstr "Convertir a suscripciones locales..."
 
 #: ../src/ui/preferences_dialog.c:84
 msgid "GNOME default"
@@ -1246,7 +1247,7 @@ msgstr "Suscripción OPML nueva"
 
 #: ../src/fl_sources/node_source.c:334
 msgid "No feed list source types found!"
-msgstr "No se han encontrado tipos de fuentes de listas de canales."
+msgstr "¡No se han encontrado tipos de fuentes de listas de canales!"
 
 #: ../src/fl_sources/node_source.c:363
 msgid "Source Type"
@@ -1263,12 +1264,12 @@ msgstr ""
 #: ../src/fl_sources/node_source.c:580
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr "La suscripción «%s» se convirtió correctamente en canales locales."
+msgstr "¡La suscripción «%s» se convirtió correctamente en canales locales!"
 
 #: ../src/fl_sources/reedah_source.c:103
 #: ../src/fl_sources/theoldreader_source.c:104
 msgid "Login failed!"
-msgstr "Falló el acceso."
+msgstr "¡Falló el acceso!"
 
 #: ../src/fl_sources/reedah_source.c:312
 msgid "Reedah"
@@ -1276,23 +1277,23 @@ msgstr "Reedah"
 
 #: ../src/fl_sources/reedah_source_feed.c:154
 msgid "Could not parse JSON returned by Reedah API!"
-msgstr "No se pudo procesar el JSON devuelto por la API de Reedah."
+msgstr "¡No se pudo procesar el JSON devuelto por la API de Reedah!"
 
 #: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
 msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr "No se puede acceder a la API HTTP de TinyTinyRSS."
+msgstr "¡No se puede acceder a la API HTTP de TinyTinyRSS!"
 
 #: ../src/fl_sources/ttrss_source.c:231
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr ""
-"Falló la suscripción al canal de TinyTinyRSS. Compruebe que el URL "
-"proporcionado pertenece a un canal."
+"¡Falló la suscripción al canal de TinyTinyRSS. Compruebe que el URL "
+"proporcionado pertenece a un canal!"
 
 #: ../src/fl_sources/ttrss_source.c:290
 msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr "Falló la cancelación de suscripción de TinyTinyRSS."
+msgstr "¡Falló la cancelación de suscripción de TinyTinyRSS!"
 
 #: ../src/fl_sources/ttrss_source.c:307
 #, c-format
@@ -1300,8 +1301,8 @@ msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr ""
-"Esta versión de TinyTinyRSS no admite la eliminación de canales. Actualice, "
-"como mínimo, a la versión %s."
+"Esta versión de TinyTinyRSS no admite la eliminación de canales. ¡Actualice, "
+"como mínimo, a la versión %s!"
 
 #: ../src/fl_sources/ttrss_source.c:427
 msgid "Tiny Tiny RSS"
@@ -1309,7 +1310,7 @@ msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source_feed.c:150
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr "No se pudo procesar el JSON devuelto por la API de TinyTinyRSS."
+msgstr "¡No se pudo procesar el JSON devuelto por la API de TinyTinyRSS!"
 
 #: ../src/fl_sources/theoldreader_source.c:310
 msgid "TheOldReader"
@@ -1320,12 +1321,10 @@ msgid "Open Link In _Tab"
 msgstr "Abrir el enlace en una _pestaña"
 
 #: ../src/webkit/liferea_web_view.c:177
-#, fuzzy
 msgid "Open Link In Browser"
 msgstr "_Abrir el enlace en el navegador"
 
 #: ../src/webkit/liferea_web_view.c:178
-#, fuzzy
 msgid "Open Link In External Browser"
 msgstr "_Abrir el enlace en un navegador externo"
 
@@ -1339,7 +1338,6 @@ msgid "_Copy Link Location"
 msgstr "_Copiar la dirección del enlace"
 
 #: ../src/webkit/liferea_web_view.c:194
-#, fuzzy
 msgid "_View Image"
 msgstr "_Guardar la imagen como"
 
@@ -1357,7 +1355,7 @@ msgstr "_Guardar la imagen como"
 
 #: ../src/webkit/liferea_web_view.c:208
 msgid "_Subscribe..."
-msgstr "_Suscribirse…"
+msgstr "_Suscribirse..."
 
 #: ../src/webkit/liferea_web_view.c:212
 msgid "_Copy"
@@ -1389,7 +1387,7 @@ msgstr "_Marcar como leído"
 
 #: ../plugins/headerbar.py:104
 msgid "Search All Feeds..."
-msgstr "Buscar en todos los canales…"
+msgstr "Buscar en todos los canales..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1449,15 +1447,15 @@ msgstr "Hacer lo mismo _de forma automática para este tipo de archivos."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
-msgstr ""
+msgstr "página 1"
 
 #: ../glade/mainwindow.ui.h:3
 msgid "page 2"
-msgstr ""
+msgstr "página 2"
 
 #: ../glade/mainwindow.ui.h:4
 msgid "page 3"
-msgstr ""
+msgstr "página 3"
 
 #: ../glade/mainwindow.ui.h:5 ../glade/prefs.ui.h:23
 msgid "Headlines"
@@ -1491,7 +1489,7 @@ msgstr "Crear una bandeja de noticias"
 
 #: ../glade/new_newsbin.ui.h:2
 msgid "_News Bin Name:"
-msgstr "_Nombre de la bandeja"
+msgstr "_Nombre de la bandeja:"
 
 #: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
@@ -1515,7 +1513,7 @@ msgstr "Archivo _local"
 
 #: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:16
 msgid "Select File..."
-msgstr "Seleccionar archivo…"
+msgstr "Seleccionar archivo..."
 
 #: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:17
 msgid "_Source:"
@@ -1553,7 +1551,7 @@ msgstr "Selección de fuente"
 #: ../glade/node_source.ui.h:2
 #, fuzzy
 msgid "_Select the source type you want to add..."
-msgstr "Seleccione el tipo de fuente que quiera añadir…"
+msgstr "Seleccione el tipo de fuente que quiera añadir..."
 
 #: ../glade/opml_source.ui.h:1
 msgid "Add OPML/Planet"
@@ -1588,7 +1586,7 @@ msgstr "_Número de artículos que almacenar por canal:"
 
 #: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:27
 msgid "0"
-msgstr ""
+msgstr "0"
 
 #: ../glade/prefs.ui.h:5
 msgid "Feed Update Settings"
@@ -1609,11 +1607,11 @@ msgstr "Act_ualizar todas las suscripciones al iniciar."
 
 #: ../glade/prefs.ui.h:9
 msgid "Default Feed Refresh _Interval:"
-msgstr "_Intervalo de actualización predeterminado"
+msgstr "_Intervalo de actualización predeterminado:"
 
 #: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:6
 msgid "1"
-msgstr ""
+msgstr "1"
 
 #: ../glade/prefs.ui.h:11
 msgid "Feeds"
@@ -1711,7 +1709,7 @@ msgstr "Ocultar la barra de herramientas."
 
 #: ../glade/prefs.ui.h:36
 msgid "Toolbar _button labels:"
-msgstr "Etiquetas de la _barra de herramientas"
+msgstr "Etiquetas de la _barra de herramientas:"
 
 #: ../glade/prefs.ui.h:37
 msgid "Other"
@@ -1766,6 +1764,9 @@ msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
+"Su versión de WebKitGTK+ es anterior a 2.15.3. No soporta configuración de "
+"proxy por aplicación. Se usará la configuración de proxy por defecto del "
+"sistema."
 
 #: ../glade/prefs.ui.h:50
 msgid "Proxy"
@@ -1828,7 +1829,7 @@ msgstr "Establecer un intervalo especí_fico de"
 
 #: ../glade/properties.ui.h:7
 msgid "_Don't update this feed automatically."
-msgstr "No actualizar automáticamente este canal"
+msgstr "No actualizar automáticamente este canal."
 
 #: ../glade/properties.ui.h:9
 #, no-c-format
@@ -1902,11 +1903,11 @@ msgstr "Ignorar los canales de comentarios de esta suscripción."
 
 #: ../glade/properties.ui.h:37
 msgid "_Mark downloaded items as read."
-msgstr "_Marcar artículos descargados como leídos"
+msgstr "_Marcar artículos descargados como leídos."
 
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
-msgstr ""
+msgstr "Extraer el contenido completo del HTML5 y Google AMP"
 
 #: ../glade/properties.ui.h:39
 msgid "Advanced"
@@ -1963,7 +1964,7 @@ msgstr "Búsqueda avanzada"
 
 #: ../glade/search.ui.h:2
 msgid "_Search Folder..."
-msgstr "Carpeta _virtual…"
+msgstr "Carpeta _virtual..."
 
 #: ../glade/simple_search.ui.h:1
 msgid "Search All Feeds"
@@ -1971,7 +1972,7 @@ msgstr "Buscar en todos los canales"
 
 #: ../glade/simple_search.ui.h:2
 msgid "_Advanced..."
-msgstr "_Avanzado…"
+msgstr "_Avanzado..."
 
 #: ../glade/simple_search.ui.h:3
 msgid ""
@@ -1995,7 +1996,7 @@ msgstr ""
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
-msgstr "Avanzado…"
+msgstr "Avanzado..."
 
 #: ../glade/simple_subscription.ui.h:3
 #, fuzzy
@@ -2052,13 +2053,6 @@ msgstr "Transacciones pendientes"
 msgid "_Downloading Now"
 msgstr "En descarga"
 
-#~ msgid "GUI"
-#~ msgstr "Interfaz gráfica"
-
-#, fuzzy
-#~ msgid "Cancel All"
-#~ msgstr "C_ancelar todo"
-
 #~ msgid "Updating favicon for \"%s\""
 #~ msgstr "Actualizando el icono de «%s»"
 
@@ -2069,19 +2063,19 @@ msgstr "En descarga"
 #~ msgstr "_Actualizar todas"
 
 #~ msgid "Updates all subscriptions."
-#~ msgstr "Actualiza todas las suscripciones"
+#~ msgstr "Actualiza todas las suscripciones."
 
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Marca como leídos todos los artículos de todas las suscripciones."
 
 #~ msgid "_Import Feed List..."
-#~ msgstr "_Importar lista de canales…"
+#~ msgstr "_Importar lista de canales..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importa una lista de canales en formato OPML."
 
 #~ msgid "_Export Feed List..."
-#~ msgstr "E_xportar lista de canales…"
+#~ msgstr "E_xportar lista de canales..."
 
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Exporta la lista de canales en formato OPML."
@@ -2181,10 +2175,10 @@ msgstr "En descarga"
 #~ msgstr "Lista de canales _reducida"
 
 #~ msgid "Hide feeds with no unread items."
-#~ msgstr "Oculta los canales sin articulos nuevos"
+#~ msgstr "Oculta los canales sin artículos nuevos."
 
 #~ msgid "_New Subscription..."
-#~ msgstr "Suscripción _nueva…"
+#~ msgstr "Suscripción _nueva..."
 
 #~ msgid "Adds a subscription to the feed list."
 #~ msgstr "Añade una suscripción a la lista de canales."
@@ -2196,7 +2190,7 @@ msgstr "En descarga"
 #~ msgstr "Añade una carpeta virtual a la lista de canales."
 
 #~ msgid "New _Source..."
-#~ msgstr "_Fuente nueva…"
+#~ msgstr "_Fuente nueva..."
 
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Agrega una nueva fuente de listas de canales."
@@ -2288,11 +2282,17 @@ msgstr "En descarga"
 #~ msgid "View Headlines"
 #~ msgstr "Ver titulares"
 
+#~ msgid "GUI"
+#~ msgstr "Interfaz gráfica"
+
 #~ msgid "Plugins"
 #~ msgstr "Complementos"
 
 #~ msgid "Feed Name"
-#~ msgstr "Nombre del canal:"
+#~ msgstr "Nombre del canal"
+
+#~ msgid "Cancel All"
+#~ msgstr "C_ancelar todo"
 
 #~ msgid "normal view"
 #~ msgstr "vista normal"
