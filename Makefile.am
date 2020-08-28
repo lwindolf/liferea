@@ -29,6 +29,10 @@ css_DATA = \
 	css/user.css \
 	css/adblock.css
 
+jsdir = $(pkgdatadir)/js
+js_DATA = \
+	js/Readability.js
+
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
@@ -63,6 +67,7 @@ EXTRA_DIST = \
 	$(desktop_DATA) \
 	$(schema_DATA) \
 	$(css_DATA) \
+	$(js_DATA) \
 	$(dtd_DATA) \
 	$(plugin_DATA) \
 	$(gsettings_SCHEMAS) \

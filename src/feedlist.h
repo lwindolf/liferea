@@ -1,7 +1,7 @@
 /*
  * @file feedlist.h  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

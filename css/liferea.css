@@ -1,7 +1,7 @@
 /**
  * @file liferea.css  Liferea rendering stylesheet
  *
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004 delusional <delusional@dx13.co.uk>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,21 +19,21 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/* 
+/*
 
-   Font Definitions: 
+   Font Definitions:
    =================
 
    No style definition should set absolute font sizes,
    font families or line heigth and spacing. This is to allow a GNOME
-   preference controlled default font size. 
-   
+   preference controlled default font size.
+
    Color Definitions:
    ==================
-   
-   To allow using GTK theme colors the following key words 
+
+   To allow using GTK theme colors the following key words
    will be replaced with the corresponding GTK theme color values:
-   
+
    GTK-COLOR-FG
    GTK-COLOR-BG
    GTK-COLOR-LIGHT
@@ -53,9 +53,9 @@ body {
 }
 
 blockquote {
-        border-left: 2px solid #GTK-COLOR-DARK;
+        border-left: 3px solid #GTK-COLOR-DARK;
         background: #GTK-COLOR-BG;
-        padding: 5px;
+        padding: 6px;
         font-style: italic;
         margin: 5px 20px;
 	clear:both;
@@ -73,10 +73,20 @@ dd {
 	padding-left: 30px;
 }
 
-section, video, svg, iframe, figure, div.content * img {
+section, svg, div.content * img {
 	max-width: 100%;
-	object-fit: scale-down;
 	box-sizing: border-box;
+	object-fit: scale-down;
+}
+
+figure, iframe {
+	max-width: 100%;
+	box-sizing: border-box;
+
+	/* Note: object-fit would be best practice here, but it fails
+	   on embedded Youtube videos (pushing the embed iframe far
+	   to the right with the controls being not in the place
+	   visually shown) */
 }
 
 div.content * img {
@@ -106,7 +116,7 @@ table.itemhead, table.feedhead {
 	margin:0;
 	width:100%;
 	border:0;
-	border-bottom: 1px solid #GTK-COLOR-DARK;
+	border-bottom: 2px solid #GTK-COLOR-DARK;
 	clear:both;
 	color:#GTK-COLOR-TEXT;
 }
@@ -144,7 +154,7 @@ table.headmeta {
 
 table.headmeta td {
 	padding:1px 6px 1px 12px;
-	font-size:0.8em;
+	font-size:0.9em;
 }
 
 .hidden {
@@ -171,7 +181,7 @@ table.headmeta td {
 	font-family:sans-serif;
 	padding:0;
 	margin:0;
-	position:relative; 
+	position:relative;
 	top:-3px;
 }
 
@@ -179,7 +189,7 @@ table.headmeta td {
 	padding:0;
 	margin:0;
 	height:16px;
-	position:relative; 
+	position:relative;
 	top:1px;
 }
 
@@ -225,45 +235,6 @@ a.favicon img {
 	border:0;
 	margin:0;
 	padding:0;
-}
-
-/* styles to realize shading of new items in condensed mode */
-.itemshaded { background:#ffe; color:black; padding:1px; margin:0; }
-
-.itemunshaded { padding:1px; margin:0; }
-
-.summaryshaded, .summaryunshaded { 
-	padding:0px 6px; 
-	margin:0;
-}
-
-.summaryshaded a {
-	display:block;
-	background:#ffe;
-	color:black;
-	text-decoration:none;
-	padding:1px 0px;
-	font-weight:bold;
-}
-
-.summaryunshaded a {
-	display:block;
-	color:#GTK-COLOR-TEXT;
-	text-decoration:none;
-	padding:1px 0px;
-}
-
-.summarytime {
-	padding-right:15px;
-	white-space:nowrap;
-	color:#999;
-}
-
-hr.summary {
-	border:0;
-	padding:0;
-	margin:2px;
-	border-bottom:1px dashed #ddd;
 }
 
 /* style for the HTTP error box at the beginning
@@ -350,5 +321,3 @@ div.photoheader {
 	background-color:#GTK-COLOR-DARK;
 	color:#GTK-COLOR-TEXT;
 }
-
-

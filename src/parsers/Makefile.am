@@ -24,7 +24,6 @@ libliparsers_a_SOURCES = \
 	ns_georss.c ns_georss.h \
 	ns_itunes.c ns_itunes.h \
 	ns_media.c ns_media.h \
-	ns_photo.c ns_photo.h \
 	ns_slash.c ns_slash.h \
 	ns_syn.c ns_syn.h \
 	ns_trackback.c ns_trackback.h \

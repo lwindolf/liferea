@@ -153,7 +153,6 @@ liferea_webkit_enable_plugins_cb (GSettings *gsettings,
 static gdouble
 get_screen_dpi (GdkMonitor *monitor)
 {
-	gdouble dpi;
 	gdouble dp, di;
 	GdkRectangle rect;
 

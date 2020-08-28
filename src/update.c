@@ -420,8 +420,6 @@ update_exec_cmd (updateJobPtr job)
 	int	status;
 	size_t	len;
 
-	job->result = update_result_new ();
-
 	/* if the first char is a | we have a pipe else a file */
 	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", (job->request->source) + 1);
 	f = popen ((job->request->source) + 1, "r");
@@ -453,8 +451,6 @@ update_load_file (updateJobPtr job)
 {
 	gchar *filename = job->request->source;
 	gchar *anchor;
-
-	job->result = update_result_new ();
 
 	if (!strncmp (filename, "file://",7))
 		filename += 7;

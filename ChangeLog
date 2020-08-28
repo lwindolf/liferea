@@ -1,9 +1,52 @@
 To be released
 
+	Version 1.13.2
+
+	* #250 Update some dialog labels
+	  (GreenLunar)
+
+	* #854: Adding new search folder options to match
+	  subscription source ULR and parent folder name.
+	  (suggested by muhlinux)
+
+	* #851: Add accessibility check to code tests
+	  (Lars Windolf)
+
+ 	* #749: Add Readability.js library (Apache 2.0 licensed)
+	  and auto-apply Readability.js to all headlines
+	  (Lars Windolf)
+
+	* Drop unused glade/google_source.ui
+	  (Lars Windolf)
+
+	* Drop support of combined view mode, this is necessary
+	  to add rich content support which relies on DOM
+	  transformation and Readability.js
+	  (Lars Windolf)
+
+	* Drop ns_photo support, as it is rarely used and
+	  allows us to get rid of XSLT extra handling
+	  (Lars Windolf)
+
+	* #851: Fix accessibility annotations for several combo boxes.
+	  (Lars Windolf)
+
+	* #850: Fix embedded youtube video bug.
+    (reported by sblondon)
+
+	* Updated German translation
+	  (Lars Windolf)
+
+
+2020-06-11   Lars Windolf <lars.windolf@gmx.de>
+
 	Version 1.13.1
 
 	* Fixes #840: OPML source subfolders not working
 	  (fixed by Tomáš Janoušek)
+
+	* #837: Removing GTimeVal references
+	  (Tom Perez)
 
 	* #827: Respect global update refresh interval for TheOldReader
 	  (Matthew Horan)
@@ -14,6 +57,9 @@ To be released
 	* #822: Improve performance of item list loading
 	  (Rich Coe)
 
+	* Fixes #821: Skip current item when finding next unread item
+	  (Tom Perez)
+
 	* #815: Add support for subscribing to HTML5 websites
 	  without RSS/Atom feeds by extracting article
 	  titles,links and descriptions
@@ -23,15 +69,25 @@ To be released
 	  to improve icon quality in 3-pane wide view. Also add
 	  favicon URL discovery tests.
 
+	* Fixes #821: Skip current selected unread item on
+	  'next unread item'
+	  (Tom Perez)
+
+	* #800: Expose remove-item action for plugins
+	  (mozbugbox)
+
+	* Fixes #799: plugins/headerbar.py translations not active
+	  (reported by Paul Gevers)
+
+	* Fixes #783: Update IS_STATE when update item in itemlistview
+	  (mozbugbox)
+
 	* #752: Trayicon plugin has now a configuration option
 	  to change the behaviour when closing Liferea.
 	  (BurnhamG)
 
-	* Fixes #821: Skip current selected unread item on
-	  'next unread item'
-	  (Tom Perez)
-	* Fixes #799: plugins/headerbar.py translations not active
-	  (reported by Paul Gevers)
+	* Fixes #693: Add trayicon plugin option to disable minimizing to tray
+	  (BurnhamG)
 
 
 2020-03-04   Lars Windolf <lars.windolf@gmx.de>
@@ -52,7 +108,7 @@ To be released
 
 	* Drop unused glade/google_source.ui
 	* #699: Refactoring of duplicate check handlingg
-	  (dymoksc)
+	  (dymoks
 
 	* #746: Fix accessibility fatals reported by gla11y
 	  (reported by Paul Gevers)
@@ -66,6 +122,8 @@ To be released
 	  (madmurphy)
 	* #745: URL fix for French example feeds
 	  (sblondon)
+
+	* Update inline docs on headline view modes
 
 
 2019-12-04   Lars Windolf <lars.windolf@gmx.de>
