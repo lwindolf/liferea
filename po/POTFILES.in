@@ -189,8 +189,8 @@ plugins/headerbar.py
 [type: gettext/glade]glade/about.ui
 [type: gettext/glade]glade/auth.ui
 [type: gettext/glade]glade/enclosure_handler.ui
-[tyep: gettext/glade]glade/liferea_menu.ui
-[tyep: gettext/glade]glade/liferea_toolbar.ui
+[type: gettext/glade]glade/liferea_menu.ui
+[type: gettext/glade]glade/liferea_toolbar.ui
 [type: gettext/glade]glade/mainwindow.ui
 [type: gettext/glade]glade/mark_read_dialog.ui
 [type: gettext/glade]glade/new_folder.ui
