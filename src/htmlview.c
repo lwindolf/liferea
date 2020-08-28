@@ -248,6 +248,7 @@ htmlview_render_item (itemPtr item,
 	return output;
 }
 
+// FIXME: drop script parameter
 void
 htmlview_start_output (GString *buffer,
                        const gchar *base,
@@ -273,53 +274,15 @@ htmlview_start_output (GString *buffer,
 	if (css)
 		g_string_append (buffer, render_get_css (TRUE /* external CSS supported */));
 
-	/* add predefined scripts to be used for item menu */
-	if (script)
-	{
-		g_string_append (buffer,  "<script language=\"javascript\" type=\"text/javascript\">"
-		"var popupTimeout;"
-		"var lastId;"
-		""
-		"function doShowCb(id) {"
-		""
-		"	/* hide last id */"
-		"	var obj = document.getElementById(lastId);"
-		"	if(obj) {"
-		"		obj.style.visibility = \"hidden\";"
-		"		obj.style.display = \"none\";"
-		"	}"
-		""
-		"	/* show new id */"
-		"	obj = document.getElementById(id);"
-		"	if(obj) {"
-		"		obj.style.visibility = \"visible\";"
-		"		obj.style.display = \"block\";"
-		"		lastId = id;"
-		"	}"
-		"}"
-		""
-		"function doShow(id) {"
-		""
-		"	window.clearTimeout(popupTimeout);"
-		"	popupTimeout = window.setTimeout(\"doShowCb('\"+id+\"')\", 1000);"
-		"}"
-		""
-		"function stopShow() {"
-		""
-		"	window.clearTimeout(popupTimeout);"
-		"}"
-		"</script>");
-	}
-
 	g_string_append (buffer,  "<script language=\"javascript\" type=\"text/javascript\">"
 	"if (window.addEventListener) {"
 	"	var documentIsReady = function() {"
 	"		window.removeEventListener('load', documentIsReady);"
 	"		var documentClone = document.cloneNode(true);"
-    "       documentClone.body.innerHTML = documentClone.getElementById('shading').innerHTML;"
+	"		documentClone.body.innerHTML = documentClone.getElementById('content').innerHTML;"
 	"		var article = new Readability(documentClone).parse();"
 	"		console.log(article);"
-	"		document.getElementById('shading').firstChild.innerHTML=article.content"
+	"		document.getElementById('content').innerHTML=article.content"
 	"	};"
 	"	window.addEventListener('load', function() { window.setTimeout(documentIsReady, 0); });"
     "}"
