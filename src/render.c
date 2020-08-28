@@ -402,6 +402,7 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	if (!paramSet)
 		paramSet = render_parameter_new ();
 	render_parameter_add (paramSet, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	render_parameter_add (paramSet, "jsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "js" G_DIR_SEPARATOR_S "'");
 
 	resDoc = xsltApplyStylesheet (xslt, doc, (const gchar **)paramSet->params);
 	if (!resDoc) {

@@ -12,11 +12,27 @@ To be released
 	* #851: Add accessibility check to code tests
 	  (Lars Windolf)
 
+ 	* #749: Add Readability.js library (Apache 2.0 licensed)
+	  and auto-apply Readability.js to all headlines
+	  (Lars Windolf)
+
+	* Drop unused glade/google_source.ui
+	  (Lars Windolf)
+
+	* Drop support of combined view mode, this is necessary
+	  to add rich content support which relies on DOM
+	  transformation and Readability.js
+	  (Lars Windolf)
+
+	* Drop ns_photo support, as it is rarely used and
+	  allows us to get rid of XSLT extra handling
+	  (Lars Windolf)
+
 	* #851: Fix accessibility annotations for several combo boxes.
 	  (Lars Windolf)
 
 	* #850: Fix embedded youtube video bug.
-          (reported by sblondon)
+    (reported by sblondon)
 
 	* Updated German translation
 	  (Lars Windolf)
@@ -92,7 +108,7 @@ To be released
 
 	* Drop unused glade/google_source.ui
 	* #699: Refactoring of duplicate check handlingg
-	  (dymoksc)
+	  (dymoks
 
 	* #746: Fix accessibility fatals reported by gla11y
 	  (reported by Paul Gevers)
@@ -106,6 +122,8 @@ To be released
 	  (madmurphy)
 	* #745: URL fix for French example feeds
 	  (sblondon)
+
+	* Update inline docs on headline view modes
 
 
 2019-12-04   Lars Windolf <lars.windolf@gmx.de>

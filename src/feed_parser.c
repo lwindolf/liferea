@@ -46,10 +46,10 @@ feed_parsers_get_list (void)
 
 	feedHandlers = g_slist_append (feedHandlers, rss_init_feed_handler ());
 	feedHandlers = g_slist_append (feedHandlers, cdf_init_feed_handler ());
-	feedHandlers = g_slist_append (feedHandlers, atom10_init_feed_handler ());  /* Must be before pie */
+	feedHandlers = g_slist_append (feedHandlers, atom10_init_feed_handler ());
 	feedHandlers = g_slist_append (feedHandlers, pie_init_feed_handler ());
 
-	// Do not register HTML5 feed parser here, as it is a HTML parser
+	// Do not register HTML5 feed parser here, as it is a HTML and not a feed parser
 
 	return feedHandlers;
 }
@@ -74,9 +74,9 @@ feed_type_str_to_fhp (const gchar *str)
 	if (strstr(str, "pie"))
 		return feed_type_str_to_fhp ("atom");
 
-	for(iter = feed_parsers_get_list (); iter != NULL; iter = iter->next) {
+	for (iter = feed_parsers_get_list (); iter != NULL; iter = iter->next) {
 		fhp = (feedHandlerPtr)iter->data;
-		if(!strcmp(str, fhp->typeStr))
+		if (!strcmp(str, fhp->typeStr))
 			return fhp;
 	}
 
@@ -225,6 +225,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 			handlerIter = handlerIter->next;
 		}
 	} while(0);
+
 
 	if (ctxt->doc) {
 		xmlFreeDoc(ctxt->doc);

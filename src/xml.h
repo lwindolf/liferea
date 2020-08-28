@@ -1,6 +1,6 @@
 /**
  * @file xml.h  XML helper methods for Liferea
- * 
+ *
  * Copyright (C) 2003-2017  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
@@ -47,7 +47,7 @@ gchar * unhtmlize (gchar *string);
 /**
  * Retrieves the text content of an XML chunk. All entities
  * will be replaced. All XML tags are stripped. The passed
- * string will be freed.s
+ * string will be freed.
  *
  * @param string	the chunk to strip
  *
@@ -78,14 +78,14 @@ xmlDocPtr xhtml_parse (const gchar *html, gint len);
  */
 gchar * xhtml_extract_from_string (const gchar *html, const gchar *nodeBase);
 
-/** 
+/**
  * Extract XHTML from the children of the passed node.
  *
  * @param cur         parent of the nodes that will be returned
  * @param xhtmlMode   If 0, reads escaped HTML.
  *                    If 1, reads XHTML nodes as children, and wrap in div tag
  *                    If 2, Find a div tag, and return it as a string
- * @param defaultBase 
+ * @param defaultBase
  * @returns XHTML version of children of passed node
  */
 gchar * xhtml_extract (xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase);
@@ -170,7 +170,7 @@ typedef struct errorCtxt {
 
 /**
  * Common function to create a XML DOM object from a given XML buffer.
- * 
+ *
  * The function returns a XML document pointer or NULL
  * if the document could not be read.
  *
@@ -186,11 +186,11 @@ xmlDocPtr xml_parse (gchar *data, size_t length, errorCtxtPtr errors);
  * Common function to create a XML DOM object from a given
  * XML buffer. This function sets up a parser context
  * and sets up the error handler.
- * 
+ *
  * The function returns a XML document pointer or NULL
- * if the document could not be read. It also sets 
+ * if the document could not be read. It also sets
  * errormsg to the last error messages on parsing
- * errors. 
+ * errors.
  *
  * @param fpc	feed parsing context with valid data
  *
