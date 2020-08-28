@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-28 23:24+0200\n"
+"POT-Creation-Date: 2020-08-28 12:24+0200\n"
 "PO-Revision-Date: 2020-07-28 23:37+0200\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
@@ -883,8 +883,8 @@ msgstr "Email Kommando fehlgeschlagen: %s"
 msgid "Saved Search"
 msgstr "Suche Speichern"
 
-#: ../src/ui/auth_dialog.c:114 ../glade/auth.ui.h:3
-#, no-c-format
+#: ../src/ui/auth_dialog.c:114
+#, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Bitte Benutzername und Passwort für \"%s\" (%s) eingeben:"
 
@@ -1394,6 +1394,11 @@ msgstr "Liferea-Webseite"
 msgid "Authentication"
 msgstr "Authentifizierung"
 
+#: ../glade/auth.ui.h:3
+#, fuzzy, no-c-format
+msgid "Enter the username and password for \"%s\" (%s)"
+msgstr "Bitte Benutzername und Passwort für \"%s\" (%s) eingeben:"
+
 #: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
 msgid "User_name:"
 msgstr "_Benutzername:"
@@ -1700,8 +1705,8 @@ msgid "Ask for confirmation when marking all items as read"
 msgstr "Bestätigen wenn alle Schlagzeilen als gelesen markiert werden"
 
 #: ../glade/prefs.ui.h:39
-msgid "GUI"
-msgstr "Oberfläche"
+msgid "Desktop"
+msgstr ""
 
 #: ../glade/prefs.ui.h:40
 msgid "HTTP Proxy Server"
@@ -2014,8 +2019,8 @@ msgid "Update Monitor"
 msgstr "Aktualisierungsstatus"
 
 #: ../glade/update_monitor.ui.h:2
-msgid "Cancel All"
-msgstr "_Alle abbrechen"
+msgid "Stop All"
+msgstr ""
 
 #: ../glade/update_monitor.ui.h:3
 msgid "_Pending Requests"
@@ -2024,6 +2029,12 @@ msgstr "_Warteschlange"
 #: ../glade/update_monitor.ui.h:4
 msgid "_Downloading Now"
 msgstr "_In Bearbeitung"
+
+#~ msgid "GUI"
+#~ msgstr "Oberfläche"
+
+#~ msgid "Cancel All"
+#~ msgstr "_Alle abbrechen"
 
 #~ msgid "Updating favicon for \"%s\""
 #~ msgstr "Aktualisiere Symbol für Abonnement \"%s\""
