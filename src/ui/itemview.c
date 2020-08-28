@@ -357,6 +357,10 @@ itemview_find_unread_item (gulong startId)
 	if (!result)
 		result = item_list_view_find_unread_item (itemview->itemListView, 0);
 
+	/* Return NULL if not found, or only the selected item is unread */
+	if (result && result->id == startId) 
+		return NULL;
+
 	return result;
 }
 

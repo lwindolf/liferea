@@ -56,7 +56,7 @@
    is done by the 'item view'.
  */
 
-#define ITEMLIST_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEMLIST_TYPE, ItemListPrivate))
+#define ITEMLIST_GET_PRIVATE itemlist_get_instance_private
 
 struct ItemListPrivate
 {
@@ -76,7 +76,7 @@ struct ItemListPrivate
 static GObjectClass *parent_class = NULL;
 static ItemList *itemlist = NULL;
 
-G_DEFINE_TYPE (ItemList, itemlist, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_CODE (ItemList, itemlist, G_TYPE_OBJECT, G_ADD_PRIVATE (ItemList));
 
 static void
 itemlist_init (ItemList *il)
@@ -142,8 +142,6 @@ itemlist_class_init (ItemListClass *klass)
 	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->finalize = itemlist_finalize;
-
-	g_type_class_add_private (object_class, sizeof(ItemListPrivate));
 }
 
 /* member wrappers */

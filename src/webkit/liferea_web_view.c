@@ -20,6 +20,7 @@
 
 #include "liferea_web_view.h"
 
+#include "../debug.h"
 #include "browser.h"
 #include "common.h"
 #include "enclosure.h"
@@ -53,7 +54,7 @@ liferea_web_view_finalize(GObject *gobject)
 		g_object_remove_weak_pointer (G_OBJECT (self->dbus_connection), (gpointer *) &self->dbus_connection);
 	}
 
-	/* Chaining fianlize from parent class. */
+	/* Chaining finalize from parent class. */
 	G_OBJECT_CLASS(liferea_web_view_parent_class)->finalize(gobject);
 }
 
@@ -224,6 +225,13 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	g_free (image_uri);
 	g_free (link_title);
 
+	if(debug_level & DEBUG_HTML) {
+		section = g_menu_new ();
+		g_menu_append (section, "Inspect", "liferea_web_view.web-inspector");
+		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+		g_object_unref (section);
+	}
+
 	menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
 	gtk_menu_attach_to_widget (GTK_MENU (menu), GTK_WIDGET (view), NULL);
 
@@ -264,12 +272,23 @@ on_popup_zoomout_activate (GSimpleAction *action, GVariant *parameter, gpointer 
 	liferea_htmlview_do_zoom (htmlview, FALSE);
 }
 
+static void
+on_popup_webinspector_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	WebKitSettings *settings = webkit_web_view_get_settings (WEBKIT_WEB_VIEW (user_data));
+	g_object_set (G_OBJECT(settings), "enable-developer-extras", TRUE, NULL);
+
+	WebKitWebInspector *inspector = webkit_web_view_get_inspector (WEBKIT_WEB_VIEW (user_data));
+	webkit_web_inspector_show (WEBKIT_WEB_INSPECTOR(inspector));
+}
+
 static const GActionEntry liferea_web_view_gaction_entries[] = {
 	{"save-link", on_popup_save_link_activate, "s", NULL, NULL},
 	{"subscribe-link", on_popup_subscribe_link_activate, "s", NULL, NULL},
 	{"copy-selection", on_popup_copy_activate, NULL, NULL, NULL},
 	{"zoom-in", on_popup_zoomin_activate, NULL, NULL, NULL},
-	{"zoom-out", on_popup_zoomout_activate, NULL, NULL, NULL}
+	{"zoom-out", on_popup_zoomout_activate, NULL, NULL, NULL},
+	{"web-inspector", on_popup_webinspector_activate, NULL, NULL, NULL}
 };
 
 static void

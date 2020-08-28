@@ -4,6 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
+ * Copyright (C) 2009-2019 Mikel Olasagasti Uranga <mikel@olasagasti.info>
  * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -258,6 +259,31 @@
  </tr>
 </xsl:if>
 
+<xsl:if test="attributes/attribute[ @name = 'mediaviews' ]">
+ <tr>
+   <td valign="top" class='mediaviews'>
+     <_span>View count </_span>
+     <b><span class='mediaviews'>
+       <xsl:value-of select="attributes/attribute[ @name = 'mediaviews' ]"/>
+     </span></b>
+   </td>
+ </tr>
+</xsl:if>
+
+<xsl:if test="(attributes/attribute[ @name = 'mediastarRatingmax' ]) and (attributes/attribute[ @name = 'mediastarRatingavg' ])">
+ <tr>
+   <td valign="top" class='mediastarRating'>
+     <_span>Rating </_span>
+     <b><span class='mediastarRating'>
+       <xsl:value-of select="attributes/attribute[ @name = 'mediastarRatingavg' ]"/> / <xsl:value-of select="attributes/attribute[ @name = 'mediastarRatingmax' ]" />
+       <xsl:if test="attributes/attribute[ @name = 'mediastarRatingcount' ]">
+         (<xsl:value-of select="attributes/attribute[ @name = 'mediastarRatingcount' ]" /> votes)
+       </xsl:if>
+     </span></b>
+   </td>
+ </tr>
+</xsl:if>
+
 </table> <!-- end of header metadata -->
 
 <xsl:variable name="shading">
@@ -271,7 +297,23 @@
   <p dir="{$txtDirection}">
     <!-- optional gravatar -->
     <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
-       <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
+      <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
+    </xsl:if>
+    <!-- optional MediaRSS thumbnail -->
+    <xsl:if test="attributes/attribute[ @name = 'mediathumbnail' ]">
+      <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
+    </xsl:if>
+    <!-- optional MediaRSS YouTube links-->
+    <xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>
+    <xsl:if test="contains($url,'https://www.youtube.com/watch?v=')">
+      <xsl:variable name="youtubeid" select="substring-after($url,'https://www.youtube.com/watch?v=')"/>
+      <p><iframe width="640" height="480" src="https://www.youtube.com/embed/{$youtubeid}" frameborder="0" allowfullscreen="1"></iframe></p>
+    </xsl:if>
+    <!-- optional MediaRSS description -->
+    <xsl:if test="attributes/attribute[ @name = 'mediadescription' ]">
+      <xsl:call-template name="add-newline">
+        <xsl:with-param name="input"  select="attributes/attribute[ @name = 'mediadescription' ]"/>
+       </xsl:call-template>
     </xsl:if>
 
     <!-- the real text content -->

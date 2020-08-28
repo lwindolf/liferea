@@ -70,7 +70,7 @@ metadata_init (void)
 	metadata_type_register ("commentFeedUri",	METADATA_TYPE_URL);
 	metadata_type_register ("feedTitle",		METADATA_TYPE_HTML);
 	metadata_type_register ("description",		METADATA_TYPE_HTML);
-	metadata_type_register ("richContent",		METADATA_TYPE_HTML);
+	metadata_type_register ("richContent",		METADATA_TYPE_HTML5);
 
 	/* types for aggregation NS */
 	metadata_type_register ("agSource",		METADATA_TYPE_URL);
@@ -110,6 +110,14 @@ metadata_init (void)
 
 	/* for georss:point */
 	metadata_type_register ("point", 		METADATA_TYPE_TEXT);
+
+	/* for mediaRSS */
+	metadata_type_register ("mediadescription", 	METADATA_TYPE_HTML);
+	metadata_type_register ("mediathumbnail", 	METADATA_TYPE_URL);
+	metadata_type_register ("mediastarRatingcount", METADATA_TYPE_TEXT);
+	metadata_type_register ("mediastarRatingavg", 	METADATA_TYPE_TEXT);
+	metadata_type_register ("mediastarRatingmax", 	METADATA_TYPE_TEXT);
+	metadata_type_register ("mediaviews", 		METADATA_TYPE_TEXT);
 
 	return;
 }
@@ -200,6 +208,10 @@ metadata_list_append (GSList *metadata, const gchar *strid, const gchar *data)
 			/* And needs to remove DHTML */
 			checked_data = xhtml_strip_dhtml (tmp);
 			g_free (tmp);
+			break;
+		case METADATA_TYPE_HTML5:
+			/* Remove DHTML */
+			checked_data = g_strdup (data);
 			break;
 	}
 

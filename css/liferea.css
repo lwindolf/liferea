@@ -1,7 +1,7 @@
 /**
  * @file liferea.css  Liferea rendering stylesheet
  *
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004 delusional <delusional@dx13.co.uk>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -53,9 +53,9 @@ body {
 }
 
 blockquote {
-        border-left: 2px solid #GTK-COLOR-DARK;
+        border-left: 3px solid #GTK-COLOR-DARK;
         background: #GTK-COLOR-BG;
-        padding: 5px;
+        padding: 6px;
         font-style: italic;
         margin: 5px 20px;
 	clear:both;
@@ -73,15 +73,30 @@ dd {
 	padding-left: 30px;
 }
 
-section, video, svg, figure, div.content * img {
+section, svg, div.content * img {
 	max-width: 100%;
-	object-fit: scale-down;
 	box-sizing: border-box;
+	object-fit: scale-down;
+}
+
+figure, iframe {
+	max-width: 100%;
+	box-sizing: border-box;
+
+	/* Note: object-fit would be best practice here, but it fails
+	   on embedded Youtube videos (pushing the embed iframe far
+	   to the right with the controls being not in the place
+	   visually shown) */
 }
 
 div.content * img {
 	border:0;
 	margin:2px;
+}
+
+div.content img.thumbnail {
+	border:0;
+	margin-right:12px;
 }
 
 img.gravatar {
@@ -101,7 +116,7 @@ table.itemhead, table.feedhead {
 	margin:0;
 	width:100%;
 	border:0;
-	border-bottom: 1px solid #GTK-COLOR-DARK;
+	border-bottom: 2px solid #GTK-COLOR-DARK;
 	clear:both;
 	color:#GTK-COLOR-TEXT;
 }
@@ -139,7 +154,7 @@ table.headmeta {
 
 table.headmeta td {
 	padding:1px 6px 1px 12px;
-	font-size:0.8em;
+	font-size:0.9em;
 }
 
 .hidden {

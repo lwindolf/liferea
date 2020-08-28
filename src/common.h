@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 #ifndef _COMMON_H
 #define _COMMON_H
 
@@ -112,8 +112,8 @@ xmlChar * common_uri_unescape(const xmlChar *uri);
 
 /**
  * Takes an URI of uncertain safety (e.g. partially escaped) and
- * returns if fully escaped safe for passing to a shell or browser. 
- * This means the resulting URL is ensured to have no quotes, spaces 
+ * returns if fully escaped safe for passing to a shell or browser.
+ * This means the resulting URL is ensured to have no quotes, spaces
  * or &. Note: commata are not escaped!
  *
  * @param uri		the URI to escape
@@ -122,7 +122,7 @@ xmlChar * common_uri_unescape(const xmlChar *uri);
  */
 xmlChar * common_uri_sanitize(const xmlChar *uri);
 
-/** 
+/**
  * To correctly escape and expand URLs, does not touch the
  * passed strings.
  *
@@ -134,7 +134,7 @@ xmlChar * common_uri_sanitize(const xmlChar *uri);
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
 
 /**
- * Analyzes the string, returns a diection setting immediately
+ * Analyzes the string, returns a direction setting immediately
  * useful for insertion into HTML
  *
  * @param text		string to analyze
@@ -172,7 +172,7 @@ gchar *common_strreplace(gchar *string, const gchar *delimiter, const gchar *rep
  * @param pneedle	a string to find
  * @param phaystack	the string to search in
  *
- * @returns first found position or NULL 
+ * @returns first found position or NULL
  */
 char * common_strcasestr(const char *phaystack, const char *pneedle);
 

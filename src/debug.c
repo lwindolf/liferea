@@ -86,7 +86,7 @@ debug_get_depth (void)
 void
 debug_start_measurement_func (const char * function)
 {
-	GTimeVal	*startTime = NULL;
+	gint64	*startTime = NULL;
 	
 	if (!function)
 		return;
@@ -94,15 +94,15 @@ debug_start_measurement_func (const char * function)
 	if (!startTimes)
 		startTimes = g_hash_table_new (g_str_hash, g_str_equal);
 	
-	startTime = (GTimeVal *) g_hash_table_lookup (startTimes, function);
+	startTime = (gint64 *) g_hash_table_lookup (startTimes, function);
 	
 	if (!startTime)
 	{
-		startTime = g_new0 (GTimeVal, 1);
+		startTime = g_new0 (gint64, 1);
 		g_hash_table_insert (startTimes, g_strdup(function), startTime);
 	}
 
-	g_get_current_time (startTime);
+	*startTime = g_get_monotonic_time();
 }
 
 void
@@ -110,8 +110,8 @@ debug_end_measurement_func (const char * function,
                             unsigned long flags, 
 			    const char *name)
 {
-	GTimeVal	*startTime = NULL;
-	GTimeVal	endTime;
+	gint64	*startTime = NULL;
+	gint64	endTime;
 	unsigned long	duration = 0;
 	int		i;
 		
@@ -126,27 +126,24 @@ debug_end_measurement_func (const char * function,
 	if (!startTime) 
 		return;
 		
-	g_get_current_time (&endTime);
-	g_time_val_add (&endTime, (-1) * startTime->tv_usec);
-	
-	if ((0 == endTime.tv_sec - startTime->tv_sec) &&
-	    (0 == endTime.tv_usec/1000))
+	endTime = g_get_monotonic_time();
+	duration = (endTime - *startTime) / 1000;
+	if (duration < 1)
 		return;
-	
+
 	g_print ("%s: ", debug_get_prefix (flags));
 	if (debug_level & DEBUG_TRACE)
 		g_print ("[%p] ", g_thread_self ());
 	for (i = 0; i < debug_get_depth (); i++) 
 		g_print ("   ");
 	g_print ("= %s took %01ld,%03lds\n", name, 
-	                                   endTime.tv_sec - startTime->tv_sec, 
-					   endTime.tv_usec/1000);
-					     
-	duration = (endTime.tv_sec - startTime->tv_sec)*1000 + endTime.tv_usec/1000;
+					duration / 1000, 
+					duration % 1000);
+
 	if (duration > 250)
 		debug2 (DEBUG_PERF, "function \"%s\" is slow! Took %dms.", name, duration);
 }
- 
+
 void
 set_debug_level (unsigned long level)
 {
