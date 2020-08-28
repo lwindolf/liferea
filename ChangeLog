@@ -15,6 +15,9 @@ To be released
 	* #851: Fix accessibility annotations for several combo boxes.
 	  (Lars Windolf)
 
+	* #850: Fix embedded youtube video bug.
+          (reported by sblondon)
+
 	* Updated German translation
 	  (Lars Windolf)
 
