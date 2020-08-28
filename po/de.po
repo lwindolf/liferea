@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2017-12-18 00:36+0100\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
@@ -883,20 +883,20 @@ msgstr "_Abbrechen"
 msgid "All Files"
 msgstr "Alle Dateien"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea ist offline. Keine Aktualisierungen möglich."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 msgid "all feeds"
 msgstr "alle Abonnements"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, c-format
 msgid "Mark %s as read ?"
 msgstr "%s als gelesen markieren?"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Sind Sie sicher, dass Sie \"%s\" als gelesen markieren wollen?"
@@ -930,15 +930,15 @@ msgstr "Zum Löschen von Schlagzeilen muss ein Abonnement ausgewählt werden!"
 msgid "No item has been selected"
 msgstr "Es wurde keine Schlagzeile ausgewählt."
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "In _Tab öffnen"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "Im _Browser öffnen"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Im _externen Browser öffnen"
 
@@ -955,11 +955,11 @@ msgstr "_Lesezeichen mit %s"
 msgid "Copy Item _Location"
 msgstr "_Link der Schlagzeile kopieren"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Lesestatus ändern"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "_Flagge setzen"
 
@@ -979,7 +979,7 @@ msgstr "Speichern unter..."
 msgid "Copy Link Location"
 msgstr "Link kopieren"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Aktualisieren"
 
@@ -991,11 +991,11 @@ msgstr "_Ordner _aktualisieren"
 msgid "New _Subscription..."
 msgstr "_Neues Abonnement..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Neuer _Ordner..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Neuer S_uchordner..."
 
@@ -1003,7 +1003,7 @@ msgstr "Neuer S_uchordner..."
 msgid "New S_ource..."
 msgstr "Neue _Quelle..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Neuer Sa_mmelordner..."
 
@@ -1027,7 +1027,7 @@ msgstr "_Neu Erzeugen"
 msgid "_Delete"
 msgstr "_Löschen"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Eigenschaften"
 
@@ -1144,8 +1144,8 @@ msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
-"Sind Sie sich sicher, dass sie ein weiteres Abonnement mit der URL "
-"\"%s\" anlegen möchten? Das Abonnement \"%s\" hat dieselbe Quelle."
+"Sind Sie sich sicher, dass sie ein weiteres Abonnement mit der URL \"%s\" "
+"anlegen möchten? Das Abonnement \"%s\" hat dieselbe Quelle."
 
 #: ../src/ui/feed_list_node.c:471
 msgid "_Add"
@@ -1326,13 +1326,38 @@ msgstr "_Abonnieren..."
 msgid "_Copy"
 msgstr "_Kopieren"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "Schriftgrad ver_größern"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "Schriftgrad ver_kleinern"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Vorherige Schlagzeile"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Nächste Schlagzeile"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "Nächste _Ungelesene"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "Als gelesen _markieren"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Alle Feeds durchsuchen..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1400,6 +1425,137 @@ msgstr "_Passwort"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Benutzername (Email)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Abonnements"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "_Alle aktualisieren"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Alle als gelesen markieren"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Neues Abonnement..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Neue _Quelle..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "Abonnements _importieren..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "Abonnements _exportieren..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Beenden"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Abonnement"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Lösche _alle Schlagzeilen"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Löschen"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Schlagzeile"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "_Löschen"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Ansicht"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "Vollbild"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Normale Ansicht"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Breite Ansicht"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Kombinierte Ansicht"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Reduzierte Abonnements"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Tools"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Aktualisierungsstatus"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Einstellungen"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_Suche"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Hilfe"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Inhalt"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Kurzreferenz"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_FAQ"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Info"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Neues Abonnement hinzufügen."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Markiert alle Schlagzeilen des ausgewählten Abonnement oder aller "
+"Abonnements des ausgewählten Ordners als gelesen."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Aktualisieren aller Abonnements."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Öffnen des Suchdialogs."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1995,59 +2151,17 @@ msgstr "Warteschlange"
 msgid "Downloading Now"
 msgstr "In Bearbeitung"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Abonnements"
-
-#~ msgid "Update _All"
-#~ msgstr "_Alle aktualisieren"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Aktualisieren aller Abonnements."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Alle als gelesen markieren"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Markiert alle Schlagzeilen des Abonnements als gelesen."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "Abonnements _importieren..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importiert Abonnements aus einer OPML Datei."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "Abonnements _exportieren..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Exportiert alle Abonnements als OPML Datei."
 
-#~ msgid "_Quit"
-#~ msgstr "_Beenden"
-
-#~ msgid "_Feed"
-#~ msgstr "_Abonnement"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Lösche _alle Schlagzeilen"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Löscht alle Schlagzeilen des ausgewählten Abonnements."
-
-#~ msgid "_Item"
-#~ msgstr "_Schlagzeile"
-
-#~ msgid "Previous Item"
-#~ msgstr "Vorherige Schlagzeile"
-
-#~ msgid "Next Item"
-#~ msgstr "Nächste Schlagzeile"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "Nächste _Ungelesene"
-
-#~ msgid "_View"
-#~ msgstr "_Ansicht"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Vergrößern des Schriftgrades der Schlagzeilenansicht."
@@ -2055,88 +2169,37 @@ msgstr "In Bearbeitung"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Verkleinern des Schriftgrades der Schlagzeilenansicht."
 
-#~ msgid "_Tools"
-#~ msgstr "_Tools"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Aktualisierungsstatus"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Eine Liste aller zur Zeit laufenden Aktualisierungen anzeigen."
-
-#~ msgid "_Preferences"
-#~ msgstr "_Einstellungen"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Einstellungen ändern."
 
-#~ msgid "S_earch"
-#~ msgstr "_Suche"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Alle Feeds durchsuchen..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Öffnen des Suchdialogs."
-
-#~ msgid "_Help"
-#~ msgstr "_Hilfe"
-
-#~ msgid "_Contents"
-#~ msgstr "_Inhalt"
-
 #~ msgid "View help for this application."
 #~ msgstr "Die Hilfe für diese Anwendung anzeigen."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Kurzreferenz"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Eine Liste aller Tastenkürzel zeigen."
 
-#~ msgid "_FAQ"
-#~ msgstr "_FAQ"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Häufig gestellte Fragen für diese Anwendung anzeigen."
-
-#~ msgid "_About"
-#~ msgstr "_Info"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Anzeigen \"Über\"-Dialogs."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Normale Ansicht"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Ansicht wie eine Email-Anwendung verwenden."
 
-#~ msgid "_Wide View"
-#~ msgstr "_Breite Ansicht"
-
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Ansicht mit drei vertikalen Spalten verwenden."
-
-#~ msgid "_Combined View"
-#~ msgstr "_Kombinierte Ansicht"
 
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr ""
 #~ "Ansicht mit zwei Spalten und einer kombinierten Schlagzeilenansicht "
 #~ "verwenden."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Reduzierte Abonnements"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Verberge Abonnements ohne ungelesene Schlagzeilen."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Neues Abonnement..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Neues Abonnement hinzufügen."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Einen Ordner der Liste der Abonnements hinzufügen."
@@ -2144,23 +2207,11 @@ msgstr "In Bearbeitung"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Einen neuen Suchordner zu den Abonnements hinzufügen."
 
-#~ msgid "New _Source..."
-#~ msgstr "Neue _Quelle..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Eine neue Quelle zu den Abonnements hinzufügen."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Einen neuen Sammelordner zu den Abonnements hinzufügen."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "Als gelesen _markieren"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Markiert alle Schlagzeilen des ausgewählten Abonnement oder aller "
-#~ "Abonnements des ausgewählten Ordners als gelesen."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2172,9 +2223,6 @@ msgstr "In Bearbeitung"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Öffnet den Eigenschaften-Dialog für das ausgewählte Abonnement."
 
-#~ msgid "_Remove"
-#~ msgstr "_Löschen"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Entfernt das ausgewählte Abonnement."
 
@@ -2183,9 +2231,6 @@ msgstr "In Bearbeitung"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Ändert den Markierungsstatus der gewählten Schlagzeile."
-
-#~ msgid "R_emove"
-#~ msgstr "_Löschen"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Entfernt die ausgewählte Schlagzeile."
@@ -2199,9 +2244,6 @@ msgstr "In Bearbeitung"
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr ""
 #~ "Öffnet die ausgewählten Schlagzeile im konfigurierten externen Browser."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "Vollbild"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Im Vollbildmodus lesen"

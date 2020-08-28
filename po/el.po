@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2008-12-30 22:50+0200\n"
 "Last-Translator: Jennie Petoumenou <epetoumenou@gmail.com>\n"
 "Language-Team:  <team@gnome.gr>\n"
@@ -910,21 +910,21 @@ msgstr "Ακύρωση ό_λων"
 msgid "All Files"
 msgstr "_Τοπικό αρχείο"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Το Liferea λειτουργεί χωρίς σύνδεση. Δεν είναι δυνατή η ενημέρωση."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Αναζήτηση στις ροές"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Σημείωση όλων ως αναγνωσμένων"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Σίγουρα θέλετε να διαγράψετε το %s?"
@@ -959,16 +959,16 @@ msgstr "Πρέπει πρώτα να επιλέξετε ροή για να δι�
 msgid "No item has been selected"
 msgstr "Δεν επιλέχθηκε άρθρο"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "Άνοιγμα στον _περιηγητή"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">Ρυθμίσεις εξωτερικού περιηγητή</span>"
@@ -988,11 +988,11 @@ msgstr "/_Δημιουργία σελιδοδείκτη στο %s"
 msgid "Copy Item _Location"
 msgstr "/_Αντιγραφή τοποθεσίας συνδέσμου"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Ε_ναλλαγή μεταξύ αναγνωσμένου και μη"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Εναλλαγή _σημαίας άρθρου"
 
@@ -1016,7 +1016,7 @@ msgstr "/_Αποθήκευση ως..."
 msgid "Copy Link Location"
 msgstr "/_Αντιγραφή τοποθεσίας συνδέσμου"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Ενημέρωση"
 
@@ -1030,11 +1030,11 @@ msgstr "/_Ενημέρωση φακέλου"
 msgid "New _Subscription..."
 msgstr "_Νέα συνδρομή"
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Νέος _φάκελος..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Νέος φάκελος ανα_ζήτησης..."
 
@@ -1043,7 +1043,7 @@ msgstr "Νέος φάκελος ανα_ζήτησης..."
 msgid "New S_ource..."
 msgstr "Νέα _πηγή..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Νέος φάκελος _αποκομμάτων..."
 
@@ -1071,7 +1071,7 @@ msgstr ""
 msgid "_Delete"
 msgstr "/_Διαγραφή"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 #, fuzzy
 msgid "_Properties"
 msgstr "_Ιδιότητες..."
@@ -1372,13 +1372,40 @@ msgstr "/_Συνδρομή..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Αύξηση μεγέθους γραμματοσειράς"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Μείωση μεγέθους γραμματοσειράς"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+#, fuzzy
+msgid "Next Item"
+msgstr "_Επόμενο μη αναγνωσμένο"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Επόμενο μη αναγνωσμένο"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+#, fuzzy
+msgid "_Mark Items Read"
+msgstr "_Σημείωση ως αναγνωσμένου"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Αναζήτηση στις ροές"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1453,6 +1480,140 @@ msgstr "_Συνθηματικό"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "Όνομα _χρήστη (email)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Συνδρομές"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "_Ενημέρωση όλων"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Ση_μείωση όλων ως αναγνωσμένων"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Νέα συνδρομή"
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Νέα _πηγή..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "Ε_ισαγωγή λίστας ροών..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "Εξα_γωγή λίστας ροών..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "Έ_ξοδος"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Ροή"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Αφαίρεση ό_λων των άρθρων"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "Α_φαίρεση"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "Άρ_θρο"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Α_φαίρεση"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Προβολή"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Κανονική προβολή"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Διευρυμένη προβολή"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Συνδυασμένη προβολή"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Εργαλεία"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "Παρακολούθηση _ενημερώσεων"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Προτιμήσεις"
+
+#: ../glade/liferea_menu.ui.h:39
+#, fuzzy
+msgid "S_earch"
+msgstr "_Αναζήτηση"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Βοήθεια"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Περιεχόμενα"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Σύντομος οδηγός"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "Συ_χνές ερωτήσεις"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "Πε_ρί"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Προσθήκη συνδρομής στη λίστα ροών."
+
+#: ../glade/liferea_toolbar.ui.h:4
+#, fuzzy
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Σημειώνονται ως αναγνωσμένα όλα τα άρθρα είτε της επιλεγμένης συνδρομής είτε "
+"του συνόλου των συνδρομών στον επιλεγμένο φάκελο."
+
+#: ../glade/liferea_toolbar.ui.h:9
+#, fuzzy
+msgid "Updates all subscriptions."
+msgstr "Νέα συνδρομή"
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Εμφάνιση του διαλόγου αναζήτησης."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -2084,58 +2245,17 @@ msgstr "<b>Εκκρεμούν</b>"
 msgid "Downloading Now"
 msgstr "<b>Λαμβάνονται τώρα</b>"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Συνδρομές"
-
-#~ msgid "Update _All"
-#~ msgstr "_Ενημέρωση όλων"
-
-#, fuzzy
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Νέα συνδρομή"
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Ση_μείωση όλων ως αναγνωσμένων"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Σημείωση ως αναγνωσμένων όλων των άρθρων σε όλες τις συνδρομές."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "Ε_ισαγωγή λίστας ροών..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Εισαγωγή λίστας ροών σε μορφή OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "Εξα_γωγή λίστας ροών..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Εξαγωγή της λίστας ροών σε μορφή OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "Έ_ξοδος"
-
-#~ msgid "_Feed"
-#~ msgstr "_Ροή"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Αφαίρεση ό_λων των άρθρων"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Αφαίρεση όλων των άρθρων της επιλεγμένης ροής."
-
-#~ msgid "_Item"
-#~ msgstr "Άρ_θρο"
-
-#, fuzzy
-#~ msgid "Next Item"
-#~ msgstr "_Επόμενο μη αναγνωσμένο"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Επόμενο μη αναγνωσμένο"
-
-#~ msgid "_View"
-#~ msgstr "_Προβολή"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Αυξάνει το μέγεθος της γραμματοσειράς των άρθρων."
@@ -2143,73 +2263,30 @@ msgstr "<b>Λαμβάνονται τώρα</b>"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Μειώνει το μέγεθος της γραμματοσειράς των άρθρων."
 
-#~ msgid "_Tools"
-#~ msgstr "_Εργαλεία"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "Παρακολούθηση _ενημερώσεων"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Εμφανίζει λίστα με τις ροές των οποίων εκκρεμεί η ενημέρωση"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Προτιμήσεις"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Επεξεργασία προτιμήσεων."
 
-#, fuzzy
-#~ msgid "S_earch"
-#~ msgstr "_Αναζήτηση"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Αναζήτηση στις ροές"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Εμφάνιση του διαλόγου αναζήτησης."
-
-#~ msgid "_Help"
-#~ msgstr "_Βοήθεια"
-
-#~ msgid "_Contents"
-#~ msgstr "_Περιεχόμενα"
-
 #~ msgid "View help for this application."
 #~ msgstr "Προβολή της βοήθειας της εφαρμογής."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Σύντομος οδηγός"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Προβολή λίστας με όλες τις συντομεύσεις του Liferea."
 
-#~ msgid "_FAQ"
-#~ msgstr "Συ_χνές ερωτήσεις"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Προβολή των συχνών ερωτήσεων της εφαρμογής."
 
-#~ msgid "_About"
-#~ msgstr "Πε_ρί"
-
 #~ msgid "Shows an about dialog."
 #~ msgstr "Προβολή του διαλόγου πληροφοριών της εφαρμογής."
-
-#~ msgid "_Normal View"
-#~ msgstr "_Κανονική προβολή"
 
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr ""
 #~ "Προβολή στη μορφή που χρησιμοποιούν συνήθως οι εφαρμογές αλληλογραφίας."
 
-#~ msgid "_Wide View"
-#~ msgstr "_Διευρυμένη προβολή"
-
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Προβολή σε τρία κάθετα πλαίσια."
-
-#~ msgid "_Combined View"
-#~ msgstr "_Συνδυασμένη προβολή"
 
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Προβολή σε δύο πλαίσια."
@@ -2218,37 +2295,17 @@ msgstr "<b>Λαμβάνονται τώρα</b>"
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Δεν υπάρχουν μη αναγνωσμένα άρθρα"
 
-#~ msgid "_New Subscription..."
-#~ msgstr "_Νέα συνδρομή"
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Προσθήκη συνδρομής στη λίστα ροών."
-
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Προσθήκη φακέλου στη λίστα ροών."
 
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Προσθήκη νέου φακέλου αναζήτησης στη λίστα ροών."
 
-#~ msgid "New _Source..."
-#~ msgstr "Νέα _πηγή..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Προσθήκη νέας πηγής λίστας ροής."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Προσθήκη νέου φακέλου αποκομμάτων."
-
-#, fuzzy
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Σημείωση ως αναγνωσμένου"
-
-#, fuzzy
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Σημειώνονται ως αναγνωσμένα όλα τα άρθρα είτε της επιλεγμένης συνδρομής "
-#~ "είτε του συνόλου των συνδρομών στον επιλεγμένο φάκελο."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2260,9 +2317,6 @@ msgstr "<b>Λαμβάνονται τώρα</b>"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Εμφάνιση του διαλόγου ιδιοτήτων της επιλεγμένης συνδρομής."
 
-#~ msgid "_Remove"
-#~ msgstr "Α_φαίρεση"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Αφαίρεση της επιλεγμένης συνδρομής."
 
@@ -2271,9 +2325,6 @@ msgstr "<b>Λαμβάνονται τώρα</b>"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Αν υπάρχει ή όχι σημαία στο επιλεγμένο άρθρο."
-
-#~ msgid "R_emove"
-#~ msgstr "Α_φαίρεση"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Αφαιρεί το επιλεγμένο άρθρο."

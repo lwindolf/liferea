@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2009-06-04 01:08+0000\n"
 "Last-Translator: António Lima <amrlima@gmail.com>\n"
 "Language-Team: Portuguese <liferea-devel@lists.sourceforge.net>\n"
@@ -876,21 +876,21 @@ msgstr "C_ancelar Todos"
 msgid "All Files"
 msgstr "Ficheiro _Local"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "O Liferea está em modo desligado. Não é possível actualizar."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Procurar em Todas as Fontes"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Ma_rcar todos como lidos"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Tem a certeza que deseja apagar \"%s\"?"
@@ -924,16 +924,16 @@ msgstr "Seleccione um fonte para apagar os seus itens!"
 msgid "No item has been selected"
 msgstr "Nenhum item foi selecionado"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "_Abrir No Navegador"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">Configurações do Navegador Externo</span>"
@@ -952,11 +952,11 @@ msgstr "_Marcar Link em %s"
 msgid "Copy Item _Location"
 msgstr "_Copiar Localização do Link"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Alte_rnar para Lido ou Não Lido"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Alternar Sinalizador do Item"
 
@@ -976,7 +976,7 @@ msgstr "Guardar Como..."
 msgid "Copy Link Location"
 msgstr "Copiar Localização do Link"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Actualizar"
 
@@ -988,11 +988,11 @@ msgstr "Act_ualizar Pasta"
 msgid "New _Subscription..."
 msgstr "_Nova Subscrição..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Nova _Pasta..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Nova Pasta de Procura..."
 
@@ -1000,7 +1000,7 @@ msgstr "Nova Pasta de Procura..."
 msgid "New S_ource..."
 msgstr "Nova Fo_nte..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "_Novo Recipiente de Notícias..."
 
@@ -1025,7 +1025,7 @@ msgstr ""
 msgid "_Delete"
 msgstr "_Apagar"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Propriedades"
 
@@ -1325,13 +1325,39 @@ msgstr "_Subscrever..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Aumentar Tamanho do Texto"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Diminuir Tamanho do Texto"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+#, fuzzy
+msgid "Next Item"
+msgstr "_Avançar Para Item Não Lido"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Avançar Para Item Não Lido"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Marcar Itens Como Lidos"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Procurar em Todas as Fontes..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1404,6 +1430,137 @@ msgstr "_Senha"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "Nome de _Utilizador (E-mail)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Subscrições"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Ac_tualizar Todas"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Ma_rcar Todos Como Lidos"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Nova Subscrição..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Nova Fo_nte..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Importar Lista de Fontes..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Exportar Lista de Fontes.."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Sair"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Fonte"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Remover _Todos Itens"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Remover"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Itens"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "R_emover"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Ver"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "Visualização _Normal"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "Visualização Alargada"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "Visualização _Combinada"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "Lista de Fontes _Reduzida"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "Ferramentas"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "Monitor de Actualização"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Preferências"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_Procurar"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Ajuda"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Índice"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "R_eferência Rápida"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_FAQ"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Sobre"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Adiciona uma nova subscrição à lista de fontes."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Marca todos os itens do nó da lista de subscrição seleccionada / na lista de "
+"itens como lidos."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Actualizar todas as subscrições."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Exibe o diálogo de procura."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -2028,57 +2185,17 @@ msgstr "<b>Pedidos Pendentes</b>"
 msgid "Downloading Now"
 msgstr "<b>A Transferir Agora</b>"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Subscrições"
-
-#~ msgid "Update _All"
-#~ msgstr "Ac_tualizar Todas"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Actualizar todas as subscrições."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Ma_rcar Todos Como Lidos"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Marca todos itens de todas as subscrições como lidos."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Importar Lista de Fontes..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importa uma lista OPML de fontes."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Exportar Lista de Fontes.."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Exporta a lista de fontes como OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "_Sair"
-
-#~ msgid "_Feed"
-#~ msgstr "_Fonte"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Remover _Todos Itens"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Remove todos os item seleccionados da fonte actual."
-
-#~ msgid "_Item"
-#~ msgstr "_Itens"
-
-#, fuzzy
-#~ msgid "Next Item"
-#~ msgstr "_Avançar Para Item Não Lido"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Avançar Para Item Não Lido"
-
-#~ msgid "_View"
-#~ msgstr "_Ver"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Aumenta o tamanho do texto de exibição do item."
@@ -2086,86 +2203,35 @@ msgstr "<b>A Transferir Agora</b>"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Diminui o tamanho do texto de exibição do item."
 
-#~ msgid "_Tools"
-#~ msgstr "Ferramentas"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "Monitor de Actualização"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Exibe uma lista de todas as fontes na fila de actualização"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Preferências"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Editar Preferências."
 
-#~ msgid "S_earch"
-#~ msgstr "_Procurar"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Procurar em Todas as Fontes..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Exibe o diálogo de procura."
-
-#~ msgid "_Help"
-#~ msgstr "_Ajuda"
-
-#~ msgid "_Contents"
-#~ msgstr "_Índice"
-
 #~ msgid "View help for this application."
 #~ msgstr "Veja a ajuda para esta aplicação."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "R_eferência Rápida"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Exibir uma lista de atalhos do Liferea."
 
-#~ msgid "_FAQ"
-#~ msgstr "_FAQ"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Exibir as FAQ desta aplicação."
-
-#~ msgid "_About"
-#~ msgstr "_Sobre"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Mostra o diálogo 'sobre'."
 
-#~ msgid "_Normal View"
-#~ msgstr "Visualização _Normal"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Define o modo de visualização para o modo de cliente de e-mail."
-
-#~ msgid "_Wide View"
-#~ msgstr "Visualização Alargada"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Define o modo de visualização para usar três painéis verticais."
 
-#~ msgid "_Combined View"
-#~ msgstr "Visualização _Combinada"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Define o modo de visualização para um modo com dois painéis."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "Lista de Fontes _Reduzida"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Ocultar fontes sem artigos não lidos "
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Nova Subscrição..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Adiciona uma nova subscrição à lista de fontes."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Adiciona uma pasta à lista de fontes."
@@ -2173,23 +2239,11 @@ msgstr "<b>A Transferir Agora</b>"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Adicionar uma nova pasta de procura à lista de fontes."
 
-#~ msgid "New _Source..."
-#~ msgstr "Nova Fo_nte..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Adicionar uma nova fonte de lista de fontes."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Adiciona um novo recipiente de notícias."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Marcar Itens Como Lidos"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Marca todos os itens do nó da lista de subscrição seleccionada / na lista "
-#~ "de itens como lidos."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2201,9 +2255,6 @@ msgstr "<b>A Transferir Agora</b>"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Abre o diálogo de propriedades para a subscrição seleccionada."
 
-#~ msgid "_Remove"
-#~ msgstr "_Remover"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Remove as subscrições seleccionadas."
 
@@ -2212,9 +2263,6 @@ msgstr "<b>A Transferir Agora</b>"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Alterna o sinalizador de estado do item seleccionado."
-
-#~ msgid "R_emove"
-#~ msgstr "R_emover"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Remove os itens seleccionados."

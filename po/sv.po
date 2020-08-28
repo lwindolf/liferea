@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.11.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2017-05-03 16:56+0200\n"
 "Last-Translator: Jonatan Nyberg <jonatan@autistici.org>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -882,21 +882,21 @@ msgstr "_Avbryt"
 msgid "All Files"
 msgstr "Alla filer"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea är i frånkopplat läge. Inga uppdateringar är möjliga."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Sök i alla flöden"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Märk alla som _lästa"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Är du säker på att du vill ta bort \"%s\"?"
@@ -930,15 +930,15 @@ msgstr "Du måste välja ett flöde för att ta bort dess artiklar!"
 msgid "No item has been selected"
 msgstr "Ingen artikel har valts"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Öppna i _Flik"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Öppna i webbläsare"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Öppna i _extern webbläsare"
 
@@ -955,11 +955,11 @@ msgstr "_Bokmärk på %s"
 msgid "Copy Item _Location"
 msgstr "Kopiera artike_lplats"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Växla _lässtatus"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Växla artikel_flagga"
 
@@ -979,7 +979,7 @@ msgstr "Spara som..."
 msgid "Copy Link Location"
 msgstr "Kopiera länkadress"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Uppdatera"
 
@@ -991,11 +991,11 @@ msgstr "_Uppdatera mapp"
 msgid "New _Subscription..."
 msgstr "Ny p_renumeration..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Ny _mapp..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Ny sö_kmapp..."
 
@@ -1003,7 +1003,7 @@ msgstr "Ny sö_kmapp..."
 msgid "New S_ource..."
 msgstr "Ny _källa..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Ny _nyhetskorg..."
 
@@ -1027,7 +1027,7 @@ msgstr "Bygg _om"
 msgid "_Delete"
 msgstr "_Ta bort"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Egenskaper"
 
@@ -1322,13 +1322,38 @@ msgstr "_Prenumerera..."
 msgid "_Copy"
 msgstr "_Kopiera"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Större textstorlek"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Mindre textstorlek"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Föregående artikel"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Nästa artikel"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Nästa olästa artikel"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Märk artiklar som lästa"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Sök i alla flöden..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1397,6 +1422,137 @@ msgstr "_Lösenord"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "A_nvändarnamn (e-post)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Prenumerationer"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Uppdatera _alla"
+
+#: ../glade/liferea_menu.ui.h:3
+#, fuzzy
+msgid "Mark All As _Read"
+msgstr "_Märk alla som lästa"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Ny prenumeration..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Ny _källa..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Importera flödeslista..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Exportera flödeslista..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "A_vsluta"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Flöde"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Ta bort _alla artiklar"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Ta bort"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Artikel"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Ta _bort"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Visa"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_Helskärm"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Normal vy"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Bred vy"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Kombinerad vy"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Minskad flödeslista"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Verktyg"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Uppdateringsövervakare"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Inställningar"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "S_ök"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Hjälp"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Innehåll"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Snabbreferens"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_Vanliga frågor och svar"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Om"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Lägger till en prenumeration till flödeslistan."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Märker alla artiklar i den valda flödeslistnoden / i artikellistan som lästa."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Uppdaterar alla prenumerationer."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Visa sökrutan."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1990,56 +2146,17 @@ msgstr "Väntande förfrågningar"
 msgid "Downloading Now"
 msgstr "Hämtar nu"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Prenumerationer"
-
-#~ msgid "Update _All"
-#~ msgstr "Uppdatera _alla"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Uppdaterar alla prenumerationer."
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Märk alla artiklar i alla prenumerationer som lästa."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Importera flödeslista..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importerar en OPML-flödeslista."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Exportera flödeslista..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Exporterar flödeslistan som OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "A_vsluta"
-
-#~ msgid "_Feed"
-#~ msgstr "_Flöde"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Ta bort _alla artiklar"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Tar bort alla artiklar i det för närvarande valda flödet."
-
-#~ msgid "_Item"
-#~ msgstr "_Artikel"
-
-#~ msgid "Previous Item"
-#~ msgstr "Föregående artikel"
-
-#~ msgid "Next Item"
-#~ msgstr "Nästa artikel"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Nästa olästa artikel"
-
-#~ msgid "_View"
-#~ msgstr "_Visa"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Ökar textstorleken i artikelvyn."
@@ -2047,86 +2164,35 @@ msgstr "Hämtar nu"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Minskar textstorleken i artikelvyn."
 
-#~ msgid "_Tools"
-#~ msgstr "_Verktyg"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Uppdateringsövervakare"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Visa en lista över alla flöden som finns i uppdateringskön"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Inställningar"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Redigera inställningar."
 
-#~ msgid "S_earch"
-#~ msgstr "S_ök"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Sök i alla flöden..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Visa sökrutan."
-
-#~ msgid "_Help"
-#~ msgstr "_Hjälp"
-
-#~ msgid "_Contents"
-#~ msgstr "_Innehåll"
-
 #~ msgid "View help for this application."
 #~ msgstr "Visa hjälp för detta program."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Snabbreferens"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Visa en lista över alla genvägar i Liferea."
 
-#~ msgid "_FAQ"
-#~ msgstr "_Vanliga frågor och svar"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Visa de vanligast ställda frågorna och svaren."
-
-#~ msgid "_About"
-#~ msgstr "_Om"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Visar en \"Om\"-dialog."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Normal vy"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Ställ in vyläge till e-postklientläget."
-
-#~ msgid "_Wide View"
-#~ msgstr "_Bred vy"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Ställ in vyläge till att använda tre vertikala paneler."
 
-#~ msgid "_Combined View"
-#~ msgstr "_Kombinerad vy"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Ställ in vyläge till tvåpanelsläget."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Minskad flödeslista"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Dölj flöden med inga olästa artiklar."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Ny prenumeration..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Lägger till en prenumeration till flödeslistan."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Lägger till en mapp till flödeslistan."
@@ -2134,23 +2200,11 @@ msgstr "Hämtar nu"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Lägger till en ny sökmapp till flödeslistan."
 
-#~ msgid "New _Source..."
-#~ msgstr "Ny _källa..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Lägger till en ny flödeslistkälla."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Lägger till en ny nyhetskorg."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Märk artiklar som lästa"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Märker alla artiklar i den valda flödeslistnoden / i artikellistan som "
-#~ "lästa."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2162,9 +2216,6 @@ msgstr "Hämtar nu"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Öppnar egenskapsdialogen för den valda prenumerationen."
 
-#~ msgid "_Remove"
-#~ msgstr "_Ta bort"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Tar bort den valda prenumerationen."
 
@@ -2173,9 +2224,6 @@ msgstr "Hämtar nu"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Växlar flaggstatus för den valda artikeln."
-
-#~ msgid "R_emove"
-#~ msgstr "Ta _bort"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Tar bort den valda artikeln."
@@ -2188,9 +2236,6 @@ msgstr "Hämtar nu"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Öppnar artikelns länk i den konfigurerade externa webbläsaren."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_Helskärm"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Läs i helskärm"

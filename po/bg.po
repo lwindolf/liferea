@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea Bulgarian translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2006-03-17 12:10+0200\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -935,21 +935,21 @@ msgstr "Актуализиране на _всички"
 msgid "All Files"
 msgstr "Локален _файл"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea е в режим „изключен“. Не е възможно да актуализирате емисиите."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Търсене във всички емисии."
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Отбелязване на всички като _прочетени"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Сигурни ли сте, че искате да изтриете „%s“?"
@@ -984,16 +984,16 @@ msgstr "Трябва да изберете емисия, за да изтрие�
 msgid "No item has been selected"
 msgstr "Няма избран запис"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "_Отваряне в браузър"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">Външен браузър</span>"
@@ -1012,11 +1012,11 @@ msgstr ""
 msgid "Copy Item _Location"
 msgstr "/_Копиране адреса на записа"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "П_ревключване на състояние: \"прочетено/непрочетено“"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Прикрепяне на флаг към записа"
 
@@ -1040,7 +1040,7 @@ msgstr "/Запазване като..."
 msgid "Copy Link Location"
 msgstr "/_Копиране адреса на записа"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 #, fuzzy
 msgid "_Update"
 msgstr "/_Актуализиране"
@@ -1055,11 +1055,11 @@ msgstr "/_Актуализиране на папка"
 msgid "New _Subscription..."
 msgstr "_Нова емисия..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Нова _папка..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 #, fuzzy
 msgid "New S_earch Folder..."
 msgstr "Нова _папка..."
@@ -1069,7 +1069,7 @@ msgstr "Нова _папка..."
 msgid "New S_ource..."
 msgstr "/_Нов/_Нова папка..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "/_Нов/Нова _приставка..."
@@ -1098,7 +1098,7 @@ msgstr ""
 msgid "_Delete"
 msgstr "/_Изтриване"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 #, fuzzy
 msgid "_Properties"
 msgstr "_Настройки..."
@@ -1407,13 +1407,41 @@ msgstr "/_Абониране..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Увеличаване на големината на шрифта"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Намаляване на големината на шрифта"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+#, fuzzy
+msgid "Next Item"
+msgstr "_Следващ непрочетен запис"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Следващ непрочетен запис"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+#, fuzzy
+msgid "_Mark Items Read"
+msgstr "Избиране като прочетен"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+#, fuzzy
+msgid "Search All Feeds..."
+msgstr "Търсене във всички емисии"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1490,6 +1518,150 @@ msgstr "_Парола:"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr ""
+
+#: ../glade/liferea_menu.ui.h:1
+#, fuzzy
+msgid "_Subscriptions"
+msgstr "Нова емисия"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Актуализиране на _всички"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Отбелязване на всички като _прочетени"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Нова емисия..."
+
+#: ../glade/liferea_menu.ui.h:7
+#, fuzzy
+msgid "New _Source..."
+msgstr "/_Нов/_Нова папка..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Внасяне на списък с емисии..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Изнасяне на списък с емисии..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Спиране на програмата"
+
+#: ../glade/liferea_menu.ui.h:12
+#, fuzzy
+msgid "_Feed"
+msgstr "_Емисии"
+
+#: ../glade/liferea_menu.ui.h:15
+#, fuzzy
+msgid "Remove _All Items"
+msgstr "Премахване на _всички"
+
+#: ../glade/liferea_menu.ui.h:16
+#, fuzzy
+msgid "_Remove"
+msgstr "Премахване на _всички"
+
+#: ../glade/liferea_menu.ui.h:18
+#, fuzzy
+msgid "_Item"
+msgstr "_Записи"
+
+#: ../glade/liferea_menu.ui.h:24
+#, fuzzy
+msgid "R_emove"
+msgstr "/Пре_махване на запис"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Изглед"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+#, fuzzy
+msgid "_Normal View"
+msgstr "Локален _файл"
+
+#: ../glade/liferea_menu.ui.h:33
+#, fuzzy
+msgid "_Wide View"
+msgstr "_Изглед"
+
+#: ../glade/liferea_menu.ui.h:34
+#, fuzzy
+msgid "_Combined View"
+msgstr "_Общ изглед"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:37
+#, fuzzy
+msgid "_Update Monitor"
+msgstr "/_Актуализиране на папка"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Настройки"
+
+#: ../glade/liferea_menu.ui.h:39
+#, fuzzy
+msgid "S_earch"
+msgstr "Търсене"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Помощ"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Ръководство"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Бърз справочник"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_Често задавани въпроси"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Относно програмата"
+
+#: ../glade/liferea_toolbar.ui.h:2
+#, fuzzy
+msgid "Adds a subscription to the feed list."
+msgstr "Добавяне на нова емисия."
+
+#: ../glade/liferea_toolbar.ui.h:4
+#, fuzzy
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr "Отбелязване като прочетено на всичко в избраната папка."
+
+#: ../glade/liferea_toolbar.ui.h:9
+#, fuzzy
+msgid "Updates all subscriptions."
+msgstr "Добавяне на нова емисия."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Показване на полето за търсене."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -2121,63 +2293,18 @@ msgstr ""
 msgid "Downloading Now"
 msgstr "Изтегля се приложения"
 
-#, fuzzy
-#~ msgid "_Subscriptions"
-#~ msgstr "Нова емисия"
-
-#~ msgid "Update _All"
-#~ msgstr "Актуализиране на _всички"
-
-#, fuzzy
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Добавяне на нова емисия."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Отбелязване на всички като _прочетени"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Отбелязване на абсолютно всички обекти като прочетени"
 
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Внасяне на списък с емисии..."
-
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Внасяне на списък с емисии в OPML формат."
-
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Изнасяне на списък с емисии..."
 
 #, fuzzy
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr ">Изнасяне на списък с емисии във формат OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "_Спиране на програмата"
-
-#, fuzzy
-#~ msgid "_Feed"
-#~ msgstr "_Емисии"
-
-#, fuzzy
-#~ msgid "Remove _All Items"
-#~ msgstr "Премахване на _всички"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Премахване на всички записи от текущата емисия."
-
-#, fuzzy
-#~ msgid "_Item"
-#~ msgstr "_Записи"
-
-#, fuzzy
-#~ msgid "Next Item"
-#~ msgstr "_Следващ непрочетен запис"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Следващ непрочетен запис"
-
-#~ msgid "_View"
-#~ msgstr "_Изглед"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Увеличаване на размера на текста на записите."
@@ -2185,76 +2312,24 @@ msgstr "Изтегля се приложения"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Намаляване на размера на текста, при прегледа на записи."
 
-#, fuzzy
-#~ msgid "_Update Monitor"
-#~ msgstr "/_Актуализиране на папка"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Настройки"
-
 #~ msgid "Edit Preferences."
 #~ msgstr "Промяна на настройките."
-
-#, fuzzy
-#~ msgid "S_earch"
-#~ msgstr "Търсене"
-
-#, fuzzy
-#~ msgid "Search All Feeds..."
-#~ msgstr "Търсене във всички емисии"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Показване на полето за търсене."
-
-#~ msgid "_Help"
-#~ msgstr "_Помощ"
-
-#~ msgid "_Contents"
-#~ msgstr "_Ръководство"
 
 #~ msgid "View help for this application."
 #~ msgstr "Преглед на помощта за тази програма."
 
-#~ msgid "_Quick Reference"
-#~ msgstr "_Бърз справочник"
-
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Преглед на списък с всички бързи клавиши в Liferea."
 
-#~ msgid "_FAQ"
-#~ msgstr "_Често задавани въпроси"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Преглед на често задаваните въпроси."
-
-#~ msgid "_About"
-#~ msgstr "_Относно програмата"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Показване на диалогов прозорец с информация за програмата."
 
 #, fuzzy
-#~ msgid "_Normal View"
-#~ msgstr "Локален _файл"
-
-#, fuzzy
-#~ msgid "_Wide View"
-#~ msgstr "_Изглед"
-
-#, fuzzy
-#~ msgid "_Combined View"
-#~ msgstr "_Общ изглед"
-
-#, fuzzy
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Няма непрочетени записи "
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Нова емисия..."
-
-#, fuzzy
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Добавяне на нова емисия."
 
 #, fuzzy
 #~ msgid "Adds a folder to the feed list."
@@ -2265,25 +2340,12 @@ msgstr "Изтегля се приложения"
 #~ msgstr "Добавяне на нова виртуална папка към списъка с емисии."
 
 #, fuzzy
-#~ msgid "New _Source..."
-#~ msgstr "/_Нов/_Нова папка..."
-
-#, fuzzy
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Добавяне на нова виртуална папка към списъка с емисии."
 
 #, fuzzy
 #~ msgid "Adds a new news bin."
 #~ msgstr "Добавяне на нова емисия."
-
-#, fuzzy
-#~ msgid "_Mark Items Read"
-#~ msgstr "Избиране като прочетен"
-
-#, fuzzy
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr "Отбелязване като прочетено на всичко в избраната папка."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2294,10 +2356,6 @@ msgstr "Изтегля се приложения"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Отваряне на прозореца за предпочитанията за избраната емисия."
 
-#, fuzzy
-#~ msgid "_Remove"
-#~ msgstr "Премахване на _всички"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Изтриване на избраната емисия."
 
@@ -2307,10 +2365,6 @@ msgstr "Изтегля се приложения"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Превключване на флага за състоянието на избрания запис."
-
-#, fuzzy
-#~ msgid "R_emove"
-#~ msgstr "/Пре_махване на запис"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Премахване на избрания запис."

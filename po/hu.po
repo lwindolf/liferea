@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2014-05-28 22:13+0200\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -876,21 +876,21 @@ msgstr "Összes _megszakítása"
 msgid "All Files"
 msgstr "Minden fájl"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "A Liferea nem kapcsolódik az internetre, nem lehet frissíteni."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Keresés az összes hírforrásban"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Összes megjelölése olvasottnak"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Biztosan törli a következőt: „%s”?"
@@ -924,15 +924,15 @@ msgstr "Válasszon ki egy hírforrást az elemeinek törléséhez."
 msgid "No item has been selected"
 msgstr "Nincs kiválasztott elem"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Megnyitás l_apon"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Megnyitás böngészőben"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Megnyitás _külső böngészőben"
 
@@ -949,11 +949,11 @@ msgstr "Hivatkozás i_de: %s"
 msgid "Copy Item _Location"
 msgstr "_Elem helyének másolása"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Olvasottság átka_pcsolása"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Megjelöl_tség átkapcsolása"
 
@@ -973,7 +973,7 @@ msgstr "Mentés másként…"
 msgid "Copy Link Location"
 msgstr "Hivatkozás megnyitása"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Frissítés"
 
@@ -985,11 +985,11 @@ msgstr "Mappa f_rissítése"
 msgid "New _Subscription..."
 msgstr "Új _feliratkozás…"
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Új _mappa…"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Új ke_resőmappa…"
 
@@ -997,7 +997,7 @@ msgstr "Új ke_resőmappa…"
 msgid "New S_ource..."
 msgstr "Új _forrás…"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Új _hírgyűjtő…"
 
@@ -1021,7 +1021,7 @@ msgstr "Újjáé_pítés"
 msgid "_Delete"
 msgstr "_Törlés"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "T_ulajdonságok"
 
@@ -1315,13 +1315,38 @@ msgstr "_Feliratkozás…"
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "Szövegméret _növelése"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "Szövegméret _csökkentése"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Előző elem"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Következő elem"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Következő olvasatlan elem"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Olvasottnak jelölés"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Keresés az összes forrásban…"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1389,6 +1414,136 @@ msgstr "Jel_szó"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "Felhasználó_név (e-mail)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Feliratkozások"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Öss_zes frissítése"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Összes _olvasottnak jelölése"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "Új _feliratkozás…"
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Új f_orrás…"
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "Hírforráslista i_mportálása…"
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "Hírforráslista _exportálása…"
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Kilépés"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "F_orrás"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Minden elem _törlése"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Eltávolítás"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "Ele_m"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "_Eltávolítás"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Nézet"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_Teljes képernyő"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "N_ormál nézet"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Széles nézet"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Kombinált nézet"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "Csökkentett _hírforráslista"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Eszközök"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Frissítésfigyelő"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Beállítások"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_Keresés"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Súgó"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Tartalom"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "Rövid _leírás"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_GYIK"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Névjegy"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Új feliratkozást ad a forráslistához."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"A kiválasztott hírforráslista-csomópont összes elemét olvasottnak jelöli."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Minden feliratkozás frissítése."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Megjeleníti a keresés párbeszédpanelt."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1994,59 +2149,17 @@ msgstr "Függőben lévő kérések"
 msgid "Downloading Now"
 msgstr "Letöltés most"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Feliratkozások"
-
-#~ msgid "Update _All"
-#~ msgstr "Öss_zes frissítése"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Minden feliratkozás frissítése."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Összes _olvasottnak jelölése"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Minden feliratkozás minden elemét olvasottnak jelöli"
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "Hírforráslista i_mportálása…"
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Egy OPML hírforráslistát importál."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "Hírforráslista _exportálása…"
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "A hírcsoportlistát exportálja OPML formátumban."
 
-#~ msgid "_Quit"
-#~ msgstr "_Kilépés"
-
-#~ msgid "_Feed"
-#~ msgstr "F_orrás"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Minden elem _törlése"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Eltávolít minden elemet a jelenlegi hírforrásból."
-
-#~ msgid "_Item"
-#~ msgstr "Ele_m"
-
-#~ msgid "Previous Item"
-#~ msgstr "Előző elem"
-
-#~ msgid "Next Item"
-#~ msgstr "Következő elem"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Következő olvasatlan elem"
-
-#~ msgid "_View"
-#~ msgstr "_Nézet"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Növeli az elemnézetben használt betűk méretét."
@@ -2054,87 +2167,36 @@ msgstr "Letöltés most"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Csökkenti az elemnézetben használt betűk méretét."
 
-#~ msgid "_Tools"
-#~ msgstr "_Eszközök"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Frissítésfigyelő"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "A jelenleg frissítés alatt álló források felsorolása"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Beállítások"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Beállítások szerkesztése."
 
-#~ msgid "S_earch"
-#~ msgstr "_Keresés"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Keresés az összes forrásban…"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Megjeleníti a keresés párbeszédpanelt."
-
-#~ msgid "_Help"
-#~ msgstr "_Súgó"
-
-#~ msgid "_Contents"
-#~ msgstr "_Tartalom"
-
 #~ msgid "View help for this application."
 #~ msgstr "Súgó megjelenítése az alkalmazáshoz."
 
-#~ msgid "_Quick Reference"
-#~ msgstr "Rövid _leírás"
-
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Egy felsorolás megtekintése a Liferea gyorsbillentyűiről."
-
-#~ msgid "_FAQ"
-#~ msgstr "_GYIK"
 
 #~ msgid "View the FAQ for this application."
 #~ msgstr ""
 #~ "Az alkalmazással kapcsolatos gyakran ismételt kérdések megjelenítése."
 
-#~ msgid "_About"
-#~ msgstr "_Névjegy"
-
 #~ msgid "Shows an about dialog."
 #~ msgstr "Megjeleníti a névjegy ablakot."
-
-#~ msgid "_Normal View"
-#~ msgstr "N_ormál nézet"
 
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Levelezőkhöz hasonló megjelenési mód."
 
-#~ msgid "_Wide View"
-#~ msgstr "_Széles nézet"
-
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Három függőleges ablaktábla megjelenítése."
-
-#~ msgid "_Combined View"
-#~ msgstr "_Kombinált nézet"
 
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Két ablaktáblás nézet."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "Csökkentett _hírforráslista"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Az új elemeket nem tartalmazó hírforrások elrejtése."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "Új _feliratkozás…"
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Új feliratkozást ad a forráslistához."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Mappát ad a forráslistához."
@@ -2142,22 +2204,11 @@ msgstr "Letöltés most"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Új keresőmappát ad a forráslistához."
 
-#~ msgid "New _Source..."
-#~ msgstr "Új f_orrás…"
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Új forráslista-forrást ad hozzá."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Új hírgyűjtő felvétele."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Olvasottnak jelölés"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "A kiválasztott hírforráslista-csomópont összes elemét olvasottnak jelöli."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2169,9 +2220,6 @@ msgstr "Letöltés most"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Megnyitja a tulajdonságok ablakot a kiválasztott feliratkozáshoz."
 
-#~ msgid "_Remove"
-#~ msgstr "_Eltávolítás"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Eltávolítja a kiválasztott feliratkozást."
 
@@ -2180,9 +2228,6 @@ msgstr "Letöltés most"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Az elem megjelöltségét ki/bekapcsolja."
-
-#~ msgid "R_emove"
-#~ msgstr "_Eltávolítás"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Eltávolítja a kiválasztott elemet."
@@ -2195,9 +2240,6 @@ msgstr "Letöltés most"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Megnyitja az elemhivatkozást a beállított külső böngészőben."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_Teljes képernyő"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Teljes képernyős üzemmód"

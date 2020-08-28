@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2013-06-15 20:36+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -911,21 +911,21 @@ msgstr "Afbryd _alle"
 msgid "All Files"
 msgstr "Alle filer"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea er i frakoblet tilstand. Ingen opdatering mulig."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Søg i alle nyhedskilder"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Marker alle som læst"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Er du sikker på, at du ønsker at slette »%s«?"
@@ -959,15 +959,15 @@ msgstr "Du skal vælge en nyhedskilde for at slette dens punkter!"
 msgid "No item has been selected"
 msgstr "Intet punkt er blevet valgt"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Åbn i _faneblad"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Åbn i browser"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Åbn i _ekstern browser"
 
@@ -984,11 +984,11 @@ msgstr "_Bogmærk på %s"
 msgid "Copy Item _Location"
 msgstr "Kopier _punktplacering"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Skift _læsningsstatus"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Skift punkt_flag"
 
@@ -1008,7 +1008,7 @@ msgstr "Gem som ..."
 msgid "Copy Link Location"
 msgstr "Kopier adresseplacering"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Opdater"
 
@@ -1020,11 +1020,11 @@ msgstr "_Opdater mappe"
 msgid "New _Subscription..."
 msgstr "Nyt _abonnement ..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Ny _mappe ..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Ny _søgemappe ..."
 
@@ -1032,7 +1032,7 @@ msgstr "Ny _søgemappe ..."
 msgid "New S_ource..."
 msgstr "Ny _kilde ..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Ny _nyhedsbakke ..."
 
@@ -1056,7 +1056,7 @@ msgstr "_Genbyg"
 msgid "_Delete"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Egenskaber"
 
@@ -1357,13 +1357,38 @@ msgstr "_Abonner ..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Øg tekststørrelse"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Formindsk tekststørrelse"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Forrige punkt"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Næste punkt"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Næste ulæste punkt"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Marker punkter som læst"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Søg i alle nyhedskilder ..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1433,6 +1458,136 @@ msgstr "_Adgangskode"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Brugernavn (e-post)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Abonnementer"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Opdater _alle"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Marker alle som _læst"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Nyt abonnement ..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Ny _kilde ..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Importer nyhedskildeliste ..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Eksporter nyhedskildeliste ..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Afslut"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Nyhedskilde"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Fjern _Alle punkter"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Fjern"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Punkt"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "_Fjern"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Vis"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_Fuldskærm"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Normal visning"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Bred visning"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Kombineret visning"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Reduceret nyhedskildeliste"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Værktøjer"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Opdater skærm"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Indstillinger"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "S_øg"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Hjælp"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Indhold"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Hurtig hjælp"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_OSS"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Om"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Tilføjer et abonnement til nyhedskildelisten."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Marker alle punkter på den valgte kildelisteknude / i punktlisten som læste."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Opdaterer alle abonnementer."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Vis søgedialogen."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -2057,59 +2212,17 @@ msgstr "Afventende anmodninger"
 msgid "Downloading Now"
 msgstr "Henter nu"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Abonnementer"
-
-#~ msgid "Update _All"
-#~ msgstr "Opdater _alle"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Opdaterer alle abonnementer."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Marker alle som _læst"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Markerer alle poster på alle abonnementer som læst."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Importer nyhedskildeliste ..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importerer en OPML-nyhedskildeliste."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Eksporter nyhedskildeliste ..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Eksporterer nyhedskildelisten som OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "_Afslut"
-
-#~ msgid "_Feed"
-#~ msgstr "_Nyhedskilde"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Fjern _Alle punkter"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Fjern alle punkter på den aktuelt valgte nyhedskilde."
-
-#~ msgid "_Item"
-#~ msgstr "_Punkt"
-
-#~ msgid "Previous Item"
-#~ msgstr "Forrige punkt"
-
-#~ msgid "Next Item"
-#~ msgstr "Næste punkt"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Næste ulæste punkt"
-
-#~ msgid "_View"
-#~ msgstr "_Vis"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Øger tekststørrelsen af punktvisningen."
@@ -2117,86 +2230,35 @@ msgstr "Henter nu"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Formindsker tekststørrelsen på punktvisningen."
 
-#~ msgid "_Tools"
-#~ msgstr "_Værktøjer"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Opdater skærm"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Vis en liste over alle nyhedskilder, der nu er i opdateringskøen"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Indstillinger"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Rediger indstillinger."
 
-#~ msgid "S_earch"
-#~ msgstr "S_øg"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Søg i alle nyhedskilder ..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Vis søgedialogen."
-
-#~ msgid "_Help"
-#~ msgstr "_Hjælp"
-
-#~ msgid "_Contents"
-#~ msgstr "_Indhold"
-
 #~ msgid "View help for this application."
 #~ msgstr "Vis hjælp for dette program."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Hurtig hjælp"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Vis en liste over alle genveje i Liferea."
 
-#~ msgid "_FAQ"
-#~ msgstr "_OSS"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Vis OSS'en for dette program."
-
-#~ msgid "_About"
-#~ msgstr "_Om"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Viser en om-dialog."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Normal visning"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Sæt visningstilstand til postklienttilstand."
-
-#~ msgid "_Wide View"
-#~ msgstr "_Bred visning"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Sæt visningstilstand til at bruge tre lodrette paneler."
 
-#~ msgid "_Combined View"
-#~ msgstr "_Kombineret visning"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Sæt visningstilstand til topaneltilstand."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Reduceret nyhedskildeliste"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Skjul nyhedskilder uden ulæste punkter."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Nyt abonnement ..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Tilføjer et abonnement til nyhedskildelisten."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Tilføjer en mappe til kildelisten."
@@ -2204,23 +2266,11 @@ msgstr "Henter nu"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Tilføjer en ny søgemappe til nyhedskildelisten."
 
-#~ msgid "New _Source..."
-#~ msgstr "Ny _kilde ..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Tilføjer en ny kilde for nyhedskildeliste."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Tilføjer en ny nyhedsbakke."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Marker punkter som læst"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Marker alle punkter på den valgte kildelisteknude / i punktlisten som "
-#~ "læste."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2232,9 +2282,6 @@ msgstr "Henter nu"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Åbner egenskabsdialogen for det valgte abonnement."
 
-#~ msgid "_Remove"
-#~ msgstr "_Fjern"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Fjerner det valgte abonnement."
 
@@ -2243,9 +2290,6 @@ msgstr "Henter nu"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Skifter flagstatus på det valgte punkt."
-
-#~ msgid "R_emove"
-#~ msgstr "_Fjern"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Fjerner det valgte punkt."
@@ -2258,9 +2302,6 @@ msgstr "Henter nu"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Åbner punktets adresse i den konfigurerede eksterne browser."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_Fuldskærm"
 
 # fuldskærmsvisning
 #~ msgid "Browse at full screen"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea_trunk_ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2014-10-11 19:28+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -869,21 +869,21 @@ msgstr "أ_لغِ"
 msgid "All Files"
 msgstr "كل الملفات"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "لايفريا في وضع دون اتصال. لا يمكن التحديث."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "ابحث في كل التلقيمات"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "علّم الكل مقروء"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "أواثق من رغبتك في حذف \"%s\"؟"
@@ -917,15 +917,15 @@ msgstr "يجب أن تختار تلقيمة لحذف عناصرها!"
 msgid "No item has been selected"
 msgstr "لم تختر أية عناصر"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "افتح _لسان"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "ا_فتح في المتصفح"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "افتح في متصفح _خارجي"
 
@@ -942,11 +942,11 @@ msgstr "_علّم في %s"
 msgid "Copy Item _Location"
 msgstr "انسخ م_كان العنصر"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "بدّل حالة ال_قراءة"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "بدّل _شارة العنصر"
 
@@ -966,7 +966,7 @@ msgstr "احفظ ك‍..."
 msgid "Copy Link Location"
 msgstr "انسخ موقع الوصلة"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_حدّث"
 
@@ -978,11 +978,11 @@ msgstr "_حدّث المجلّد"
 msgid "New _Subscription..."
 msgstr "اشتراك _جديد..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "_مجلّد جديد..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "مجلّد _بحث جديد..."
 
@@ -990,7 +990,7 @@ msgstr "مجلّد _بحث جديد..."
 msgid "New S_ource..."
 msgstr "م_صدر جديد..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "_سلّة أخبار جديدة..."
 
@@ -1014,7 +1014,7 @@ msgstr "أعد الب_ناء"
 msgid "_Delete"
 msgstr "ا_حذف"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "ال_خصائص"
 
@@ -1311,13 +1311,38 @@ msgstr "ا_شترك..."
 msgid "_Copy"
 msgstr "ا_نسخ"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "زِ_د حجم النص"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_قلل حجم النص"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "العنصر السابق"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "العنصر التالي"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "العنصر غير المقروء ال_تالي"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_علّم العناصر مقروءة"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "ابحث في كل التلقيمات..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1387,6 +1412,135 @@ msgstr "_كلمة السر"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "ا_سم المستخدم (البريد)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "الا_شتراكات"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "حدّث ال_كل"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "علّم الكل _مقروء"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "اشتراك _جديد..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "م_صدر جديد..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "ا_ستورد قائمة التلقيمات..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_صدّر قائمة التلقيمات..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "ا_خرج"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_تلقيم"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "احذف _كل العناصر"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "ا_حذف"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_عنصر"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "أ_زل"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_عرض"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_ملء الشاشة"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "المنظور ال_عادي"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "منظور _عريض"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "منظور مركّ_ب"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_ضُم قائمة التلقيمات"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "أ_دوات"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_مراقب التحديثات"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "ال_تفضيلات"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_بحث"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_مساعدة"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "الم_حتويات"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "مرجع _سريع"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "أ_سئلة شائعة"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_عن"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "أضِف اشتراك إلى قائمة التلقيمات."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr "علّم كل عناصر الاشتراك المحدد مقروءة."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "حدّث كل الاشتراكات."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "اعرض حوار البحث."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1974,59 +2128,17 @@ msgstr "الطلبات المنتظرة"
 msgid "Downloading Now"
 msgstr "يُنزّل الآن"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "الا_شتراكات"
-
-#~ msgid "Update _All"
-#~ msgstr "حدّث ال_كل"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "حدّث كل الاشتراكات."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "علّم الكل _مقروء"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "علّم كل عنصر في كل اشتراك مقروء."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "ا_ستورد قائمة التلقيمات..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "استورد قائمة تلقيمات OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_صدّر قائمة التلقيمات..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "يصدّر قائمة التلقيمات كـ OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "ا_خرج"
-
-#~ msgid "_Feed"
-#~ msgstr "_تلقيم"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "احذف _كل العناصر"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "يحذف كل عناصر التلقيمات المُحددة حالياً."
-
-#~ msgid "_Item"
-#~ msgstr "_عنصر"
-
-#~ msgid "Previous Item"
-#~ msgstr "العنصر السابق"
-
-#~ msgid "Next Item"
-#~ msgstr "العنصر التالي"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "العنصر غير المقروء ال_تالي"
-
-#~ msgid "_View"
-#~ msgstr "_عرض"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "يزيد حجم النص عند عرض العنصر."
@@ -2034,86 +2146,35 @@ msgstr "يُنزّل الآن"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "يقلل حجم النص عند عرض العنصر."
 
-#~ msgid "_Tools"
-#~ msgstr "أ_دوات"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_مراقب التحديثات"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "اعرض قائمة بكل التلقيمات الموجودة حاليا في طابور التحديث"
-
-#~ msgid "_Preferences"
-#~ msgstr "ال_تفضيلات"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "حرّر التفضيلات."
 
-#~ msgid "S_earch"
-#~ msgstr "_بحث"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "ابحث في كل التلقيمات..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "اعرض حوار البحث."
-
-#~ msgid "_Help"
-#~ msgstr "_مساعدة"
-
-#~ msgid "_Contents"
-#~ msgstr "الم_حتويات"
-
 #~ msgid "View help for this application."
 #~ msgstr "اعرض مساعدة هذا التطبيق."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "مرجع _سريع"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "اعرض قائمة بكل اختصارات لايفريا."
 
-#~ msgid "_FAQ"
-#~ msgstr "أ_سئلة شائعة"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "اعرض الأسئلة الشائعة عن التطبيق."
-
-#~ msgid "_About"
-#~ msgstr "_عن"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "اعرض حوار عن."
 
-#~ msgid "_Normal View"
-#~ msgstr "المنظور ال_عادي"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "اضبط نمط العرض كنمط عميل البريد."
-
-#~ msgid "_Wide View"
-#~ msgstr "منظور _عريض"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "اضبط نمط العرض ليستخدم ثلاث ألواح رأسيّة."
 
-#~ msgid "_Combined View"
-#~ msgstr "منظور مركّ_ب"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "اضبط نمط العرض إلى نمط اللوحين."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_ضُم قائمة التلقيمات"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "أخفِ التلقيمات التي لا تحتوي عناصر غير مقروءة."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "اشتراك _جديد..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "أضِف اشتراك إلى قائمة التلقيمات."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "أضِف مجلّد إلى قائمة التلقيمات."
@@ -2121,21 +2182,11 @@ msgstr "يُنزّل الآن"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "أضِف مجلّد بحث جديد إلى قائمة التلقيمات."
 
-#~ msgid "New _Source..."
-#~ msgstr "م_صدر جديد..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "أضِف مصدر قائمة تلقيمات جديد."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "أضِف سلّة أخبار جديدة."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_علّم العناصر مقروءة"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr "علّم كل عناصر الاشتراك المحدد مقروءة."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2145,9 +2196,6 @@ msgstr "يُنزّل الآن"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "يفتح حوار خصائص الاشتراك المحدد."
 
-#~ msgid "_Remove"
-#~ msgstr "ا_حذف"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "يحذف الاشتراك المحدد."
 
@@ -2156,9 +2204,6 @@ msgstr "يُنزّل الآن"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "تبدّل حالة شارة العنصر المحدد."
-
-#~ msgid "R_emove"
-#~ msgstr "أ_زل"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "يحذف العنصر المحدد."
@@ -2171,9 +2216,6 @@ msgstr "يُنزّل الآن"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "يفتح وصله العنصر في المتصفّح الخارجي المعدّ."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_ملء الشاشة"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "تصفح مع ملء الشاشة"

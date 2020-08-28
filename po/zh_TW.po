@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2005-12-11 13:22+0800\n"
 "Last-Translator: Jim Huang <jserv@kaffe.org>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -906,21 +906,21 @@ msgstr "更新全部(_A)"
 msgid "All Files"
 msgstr "本地檔案(_L)"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea 在離線模式。無法更新！"
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "搜尋所有饋流"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "全部標示為已讀(_R)"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "您確定要刪除 %s 嗎 ？"
@@ -955,16 +955,16 @@ msgstr "您必須先選擇一個饋流才能刪除!"
 msgid "No item has been selected"
 msgstr "未選擇項目!"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "載入瀏覽器(_L)"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">外部瀏覽器設定</span>"
@@ -983,11 +983,11 @@ msgstr ""
 msgid "Copy Item _Location"
 msgstr "/複製連結位址(_C)"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "切換閱讀狀態(_R)"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "切換項目旗標(_F)"
 
@@ -1011,7 +1011,7 @@ msgstr "/另存新檔為..."
 msgid "Copy Link Location"
 msgstr "/複製連結位址(_C)"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 #, fuzzy
 msgid "_Update"
 msgstr "/更新(U)"
@@ -1026,11 +1026,11 @@ msgstr "/更新目錄(_U)"
 msgid "New _Subscription..."
 msgstr "新增訂閱(_N)..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "新目錄(_F)..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 #, fuzzy
 msgid "New S_earch Folder..."
 msgstr "新目錄(_F)..."
@@ -1040,7 +1040,7 @@ msgstr "新目錄(_F)..."
 msgid "New S_ource..."
 msgstr "/新增(_N)/新增目錄(_O)"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "/新增(_N)/新增目錄(_O)"
@@ -1069,7 +1069,7 @@ msgstr ""
 msgid "_Delete"
 msgstr "/刪除饋流(_D)"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 #, fuzzy
 msgid "_Properties"
 msgstr "屬性(_P)..."
@@ -1374,13 +1374,41 @@ msgstr "/訂閱(_S)"
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "放大字型(_I)"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "縮小字型(D)"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+#, fuzzy
+msgid "Next Item"
+msgstr "下筆未讀項目(_N)"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "下筆未讀項目(_N)"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+#, fuzzy
+msgid "_Mark Items Read"
+msgstr "全部標示為已讀"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+#, fuzzy
+msgid "Search All Feeds..."
+msgstr "搜尋所有饋流"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1451,6 +1479,153 @@ msgstr "密碼(_P):"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr ""
+
+#: ../glade/liferea_menu.ui.h:1
+#, fuzzy
+msgid "_Subscriptions"
+msgstr "新增訂閱"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "更新全部(_A)"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "全部標示為已讀(_R)"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "新增訂閱(_N)..."
+
+#: ../glade/liferea_menu.ui.h:7
+#, fuzzy
+msgid "New _Source..."
+msgstr "/新增(_N)/新增目錄(_O)"
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "匯入饋流列表(_I)..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "匯出饋流列表(_E)..."
+
+#: ../glade/liferea_menu.ui.h:11
+#, fuzzy
+msgid "_Quit"
+msgstr "/離開(_Q)"
+
+#: ../glade/liferea_menu.ui.h:12
+#, fuzzy
+msgid "_Feed"
+msgstr "饋流(_F)"
+
+#: ../glade/liferea_menu.ui.h:15
+#, fuzzy
+msgid "Remove _All Items"
+msgstr "移除所有項目(_A)"
+
+#: ../glade/liferea_menu.ui.h:16
+#, fuzzy
+msgid "_Remove"
+msgstr "移除所有項目(_A)"
+
+#: ../glade/liferea_menu.ui.h:18
+#, fuzzy
+msgid "_Item"
+msgstr "項目(_I)"
+
+#: ../glade/liferea_menu.ui.h:24
+#, fuzzy
+msgid "R_emove"
+msgstr "/移除項目(_E)"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "檢視項目(_V)"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+#, fuzzy
+msgid "_Normal View"
+msgstr "本地檔案(_L)"
+
+#: ../glade/liferea_menu.ui.h:33
+#, fuzzy
+msgid "_Wide View"
+msgstr "檢視項目(_V)"
+
+#: ../glade/liferea_menu.ui.h:34
+#, fuzzy
+msgid "_Combined View"
+msgstr "啟動摘要模式(_C)"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:37
+#, fuzzy
+msgid "_Update Monitor"
+msgstr "/更新目錄(_U)"
+
+#: ../glade/liferea_menu.ui.h:38
+#, fuzzy
+msgid "_Preferences"
+msgstr "偏好設定"
+
+#: ../glade/liferea_menu.ui.h:39
+#, fuzzy
+msgid "S_earch"
+msgstr "搜尋"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "求助(_H)"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "內容(_C)"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "快速參考(_Q)"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "關於(_A)"
+
+#: ../glade/liferea_toolbar.ui.h:2
+#, fuzzy
+msgid "Adds a subscription to the feed list."
+msgstr "新增訂閱到餽流列表"
+
+#: ../glade/liferea_toolbar.ui.h:4
+#, fuzzy
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr "標示所有選擇的項目或目錄下所有的項目為已讀。"
+
+#: ../glade/liferea_toolbar.ui.h:9
+#, fuzzy
+msgid "Updates all subscriptions."
+msgstr "新增訂閱"
+
+#: ../glade/liferea_toolbar.ui.h:11
+#, fuzzy
+msgid "Show the search dialog."
+msgstr "顯示或隱藏搜尋視窗"
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -2068,64 +2243,18 @@ msgstr ""
 msgid "Downloading Now"
 msgstr "附件下載中"
 
-#, fuzzy
-#~ msgid "_Subscriptions"
-#~ msgstr "新增訂閱"
-
-#~ msgid "Update _All"
-#~ msgstr "更新全部(_A)"
-
-#, fuzzy
-#~ msgid "Updates all subscriptions."
-#~ msgstr "新增訂閱"
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "全部標示為已讀(_R)"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "標示每個訂閱的所有項目為已讀"
 
-#~ msgid "_Import Feed List..."
-#~ msgstr "匯入饋流列表(_I)..."
-
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "匯入 OPML 格式饋流列表"
-
-#~ msgid "_Export Feed List..."
-#~ msgstr "匯出饋流列表(_E)..."
 
 #, fuzzy
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "匯出 OPML 格式饋流列表"
 
-#, fuzzy
-#~ msgid "_Quit"
-#~ msgstr "/離開(_Q)"
-
-#, fuzzy
-#~ msgid "_Feed"
-#~ msgstr "饋流(_F)"
-
-#, fuzzy
-#~ msgid "Remove _All Items"
-#~ msgstr "移除所有項目(_A)"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "移除現選擇饋流的所有項目。"
-
-#, fuzzy
-#~ msgid "_Item"
-#~ msgstr "項目(_I)"
-
-#, fuzzy
-#~ msgid "Next Item"
-#~ msgstr "下筆未讀項目(_N)"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "下筆未讀項目(_N)"
-
-#~ msgid "_View"
-#~ msgstr "檢視項目(_V)"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "放大項目顯示視窗字型大小"
@@ -2134,37 +2263,8 @@ msgstr "附件下載中"
 #~ msgstr "縮小項目顯示視窗字型大小"
 
 #, fuzzy
-#~ msgid "_Update Monitor"
-#~ msgstr "/更新目錄(_U)"
-
-#, fuzzy
-#~ msgid "_Preferences"
-#~ msgstr "偏好設定"
-
-#, fuzzy
 #~ msgid "Edit Preferences."
 #~ msgstr "編輯偏好設定。"
-
-#, fuzzy
-#~ msgid "S_earch"
-#~ msgstr "搜尋"
-
-#, fuzzy
-#~ msgid "Search All Feeds..."
-#~ msgstr "搜尋所有饋流"
-
-#, fuzzy
-#~ msgid "Show the search dialog."
-#~ msgstr "顯示或隱藏搜尋視窗"
-
-#~ msgid "_Help"
-#~ msgstr "求助(_H)"
-
-#~ msgid "_Contents"
-#~ msgstr "內容(_C)"
-
-#~ msgid "_Quick Reference"
-#~ msgstr "快速參考(_Q)"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "檢視所有捷徑的列表"
@@ -2172,34 +2272,12 @@ msgstr "附件下載中"
 #~ msgid "View the FAQ for this application."
 #~ msgstr "檢視本應用程式的 FAQ 文件"
 
-#~ msgid "_About"
-#~ msgstr "關於(_A)"
-
 #~ msgid "Shows an about dialog."
 #~ msgstr "顯示關於對話視窗"
 
 #, fuzzy
-#~ msgid "_Normal View"
-#~ msgstr "本地檔案(_L)"
-
-#, fuzzy
-#~ msgid "_Wide View"
-#~ msgstr "檢視項目(_V)"
-
-#, fuzzy
-#~ msgid "_Combined View"
-#~ msgstr "啟動摘要模式(_C)"
-
-#, fuzzy
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "沒有未讀項目 "
-
-#~ msgid "_New Subscription..."
-#~ msgstr "新增訂閱(_N)..."
-
-#, fuzzy
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "新增訂閱到餽流列表"
 
 #, fuzzy
 #~ msgid "Adds a folder to the feed list."
@@ -2210,25 +2288,12 @@ msgstr "附件下載中"
 #~ msgstr "新增目錄到餽流列表中。"
 
 #, fuzzy
-#~ msgid "New _Source..."
-#~ msgstr "/新增(_N)/新增目錄(_O)"
-
-#, fuzzy
 #~ msgid "Adds a new feed list source."
 #~ msgstr "新增目錄到餽流列表中。"
 
 #, fuzzy
 #~ msgid "Adds a new news bin."
 #~ msgstr "新增訂閱"
-
-#, fuzzy
-#~ msgid "_Mark Items Read"
-#~ msgstr "全部標示為已讀"
-
-#, fuzzy
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr "標示所有選擇的項目或目錄下所有的項目為已讀。"
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2238,10 +2303,6 @@ msgstr "附件下載中"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "開啟選擇訂閱的屬性設定視窗"
 
-#, fuzzy
-#~ msgid "_Remove"
-#~ msgstr "移除所有項目(_A)"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "移除選擇的訂閱項目。"
 
@@ -2250,10 +2311,6 @@ msgstr "附件下載中"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "切換選擇項目的狀態。"
-
-#, fuzzy
-#~ msgid "R_emove"
-#~ msgstr "/移除項目(_E)"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "移除選擇的項目。"

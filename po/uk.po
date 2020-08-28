@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2017-02-14 22:34+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -899,21 +899,21 @@ msgstr "_Скасувати"
 msgid "All Files"
 msgstr "Всі файли"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea працює у автономному режимі. Оновлення даних неможливе."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Шукати у всіх подачах"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Позначити всі як прочитані"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Ви справді бажаєте вилучити «%s»?"
@@ -947,15 +947,15 @@ msgstr "Для вилучення пунктів подачі слід вказ�
 msgid "No item has been selected"
 msgstr "Не позначено жодного пункту"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Відкрити у в_кладці"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "Ві_дкрити у переглядачі"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Відкрити у _зовнішньому переглядачі"
 
@@ -972,11 +972,11 @@ msgstr "С_творити закладку для %s"
 msgid "Copy Item _Location"
 msgstr "Копіювати _адресу пункту"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Перемкнути стан п_рочитання"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Перемкнути п_рапорець пункту"
 
@@ -996,7 +996,7 @@ msgstr "Зберегти як…"
 msgid "Copy Link Location"
 msgstr "Скопіювати адресу посилання"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Оновити"
 
@@ -1008,11 +1008,11 @@ msgstr "_Оновити теку"
 msgid "New _Subscription..."
 msgstr "Нова п_ідписка…"
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "С_творити теку…"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Створити т_еку пошуку…"
 
@@ -1020,7 +1020,7 @@ msgstr "Створити т_еку пошуку…"
 msgid "New S_ource..."
 msgstr "Нове д_жерело…"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Ст_ворити кошик новин…"
 
@@ -1044,7 +1044,7 @@ msgstr "П_еребудувати"
 msgid "_Delete"
 msgstr "В_илучити"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Властивості"
 
@@ -1346,13 +1346,38 @@ msgstr "_Підписатися…"
 msgid "_Copy"
 msgstr "_Копіювати"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "З_більшити розмір символів"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "З_меншити розмір символів"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Попередній пункт"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Наступний пункт"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Наступний непрочитаний пункт"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "П_означити пункти як прочитані"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Шукати у всіх подачах…"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1422,6 +1447,137 @@ msgstr "_Пароль"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Користувач (адреса ел. пошти)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Підписки"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Оновити _всі"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Позначити всі _як прочитані"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "О_формити підписку…"
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Створити д_жерело…"
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Імпортувати список подач…"
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Експортувати список подач…"
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "Ви_йти"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "П_одача"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Вилу_чити всі пункти"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "В_илучити"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "П_ункт"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Ви_лучити"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "П_ерегляд"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "На весь _екран"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Звичайний перегляд"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Широкий режим"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Комбінований перегляд"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "Ст_ислий список подач"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Інструменти"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "С_постереження за оновленням"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "П_араметри"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "По_шук"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Довідка"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Зміст"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Швидке ознайомлення"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_ЧаП"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Про програму"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Додати до списку подач новий запис подачі."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Позначити всі пункти позначеного вузла у списку подач або у списку пунктів "
+"як прочитані."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Оновити всі підписки."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Показати діалогове вікно пошуку."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -2017,59 +2173,17 @@ msgstr "Запити у черзі"
 msgid "Downloading Now"
 msgstr "Отримання"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Підписки"
-
-#~ msgid "Update _All"
-#~ msgstr "Оновити _всі"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Оновити всі підписки."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Позначити всі _як прочитані"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Позначити всі пункти у всіх підписках як прочитані."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Імпортувати список подач…"
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Імпортувати список подач у форматі OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Експортувати список подач…"
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Експортувати список подач у форматі OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "Ви_йти"
-
-#~ msgid "_Feed"
-#~ msgstr "П_одача"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Вилу_чити всі пункти"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Вилучити всі пункти з поточної позначеної подачі."
-
-#~ msgid "_Item"
-#~ msgstr "П_ункт"
-
-#~ msgid "Previous Item"
-#~ msgstr "Попередній пункт"
-
-#~ msgid "Next Item"
-#~ msgstr "Наступний пункт"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Наступний непрочитаний пункт"
-
-#~ msgid "_View"
-#~ msgstr "П_ерегляд"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Збільшити розмір символів на панелі перегляду."
@@ -2077,88 +2191,37 @@ msgstr "Отримання"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Зменшити розмір символів на панелі перегляду."
 
-#~ msgid "_Tools"
-#~ msgstr "_Інструменти"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "С_постереження за оновленням"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr ""
 #~ "Показати список всіх пунктів подач, які перебувають у черзі оновлення"
 
-#~ msgid "_Preferences"
-#~ msgstr "П_араметри"
-
 #~ msgid "Edit Preferences."
 #~ msgstr "Змінити параметри роботи програми."
-
-#~ msgid "S_earch"
-#~ msgstr "По_шук"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Шукати у всіх подачах…"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Показати діалогове вікно пошуку."
-
-#~ msgid "_Help"
-#~ msgstr "_Довідка"
-
-#~ msgid "_Contents"
-#~ msgstr "_Зміст"
 
 #~ msgid "View help for this application."
 #~ msgstr "Показати довідку до цієї програми."
 
-#~ msgid "_Quick Reference"
-#~ msgstr "_Швидке ознайомлення"
-
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Показати список всіх клавіатурних скорочень Liferea."
-
-#~ msgid "_FAQ"
-#~ msgstr "_ЧаП"
 
 #~ msgid "View the FAQ for this application."
 #~ msgstr ""
 #~ "Показати список поширених питань щодо програми та відповідей на них."
 
-#~ msgid "_About"
-#~ msgstr "_Про програму"
-
 #~ msgid "Shows an about dialog."
 #~ msgstr "Показати діалогове вікно даними щодо програми."
-
-#~ msgid "_Normal View"
-#~ msgstr "_Звичайний перегляд"
 
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Перемкнути програму у режим перегляду клієнта електронної пошти."
 
-#~ msgid "_Wide View"
-#~ msgstr "_Широкий режим"
-
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Перемкнути програму у режим показу трьох вертикальних панелей."
-
-#~ msgid "_Combined View"
-#~ msgstr "_Комбінований перегляд"
 
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Перемкнути програму у режим перегляду з двома панелями."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "Ст_ислий список подач"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Приховати подачі, у яких немає непрочитаних пунктів."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "О_формити підписку…"
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Додати до списку подач новий запис подачі."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Додати до списку подач нову теку."
@@ -2166,23 +2229,11 @@ msgstr "Отримання"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Додати до списку подач новий запис теки пошуку."
 
-#~ msgid "New _Source..."
-#~ msgstr "Створити д_жерело…"
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Додати нове джерело списку подач."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Додати новий кошик новин."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "П_означити пункти як прочитані"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Позначити всі пункти позначеного вузла у списку подач або у списку "
-#~ "пунктів як прочитані."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2192,9 +2243,6 @@ msgstr "Отримання"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Відкрити діалогове вікно параметрів позначеного пункту підписки."
 
-#~ msgid "_Remove"
-#~ msgstr "В_илучити"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Вилучити позначений пункт підписки."
 
@@ -2203,9 +2251,6 @@ msgstr "Отримання"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Перемкнути прапорець стану позначеного пункту."
-
-#~ msgid "R_emove"
-#~ msgstr "Ви_лучити"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Вилучити позначений пункт."
@@ -2220,9 +2265,6 @@ msgstr "Отримання"
 #~ msgstr ""
 #~ "Відкрити посилання пункту у вказаній вами зовнішній програмі для "
 #~ "перегляду інтернету."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "На весь _екран"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Перегляд у повноекранному режимі"

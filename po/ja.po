@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.12-rc2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2017-02-15 16:56+0900\n"
 "Last-Translator: IWAI, Masaharu <iwaim.sub@gmail.com>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
@@ -870,21 +870,21 @@ msgstr "キャンセル(_A)"
 msgid "All Files"
 msgstr "全てのファイル"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (更新はできません)"
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "全ての配信元から検索"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "全て既読にする"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "本当に \"%s\" を削除してもよろしいですか？"
@@ -918,15 +918,15 @@ msgstr "トピックを削除する配信元を選択して下さい！"
 msgid "No item has been selected"
 msgstr "トピックが選択されていません"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "タブの中に開く(_T)"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "ブラウザで開く(_O)"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "外部ブラウザで開く(_E)"
 
@@ -943,11 +943,11 @@ msgstr "ブックマークに追加(_B): %s"
 msgid "Copy Item _Location"
 msgstr "トピックの場所をコピー(_L)"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "既読ステータスの切り替え(_R)"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "トピック・フラグの切り替え(_F)"
 
@@ -967,7 +967,7 @@ msgstr "別名で保存..."
 msgid "Copy Link Location"
 msgstr "リンク先のアドレスのコピー"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "更新(_U)"
 
@@ -979,11 +979,11 @@ msgstr "フォルダの更新(_U)"
 msgid "New _Subscription..."
 msgstr "新しい購読(_S)..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "新しいフォルダ(_F)..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "新しい検索フォルダ(_E)..."
 
@@ -991,7 +991,7 @@ msgstr "新しい検索フォルダ(_E)..."
 msgid "New S_ource..."
 msgstr "新しい場所(_O)..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "新しい NewsBin(_N)..."
 
@@ -1015,7 +1015,7 @@ msgstr "再構築(_R)"
 msgid "_Delete"
 msgstr "削除(_D):"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "プロパティ(_P)"
 
@@ -1300,13 +1300,38 @@ msgstr "購読する(_S)..."
 msgid "_Copy"
 msgstr "コピー(_C):"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "文字を大きくする(_I)"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "文字を小さくする(_D)"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "前のトピック"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "次トピック"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "次の未読のトピック(_N)"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "全て既読にする(_M)"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "全ての配信元から検索..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1376,6 +1401,136 @@ msgstr "パスワード(_P)"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "ユーザ名 (Eメール)(_U)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "購読(_S)"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "全て更新(_A)"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "全て既読にする(_R)"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "新しい購読(_N)..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "新しい場所(_S)..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "配信元一覧のインポート(_I)..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "配信元一覧のエキスポート(_E)..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "終了(_Q)"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "配信元(_F)"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "全て削除(_A)"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "削除(_R)"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "トピック(_I)"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "トピックの削除(_E)"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "表示(_V)"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "フルスクリーン(_F)"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "通常の表示(_N)"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "ワイド表示(_W)"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "サマリ表示(_C)"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "既読の配信一覧を隠す(_R)"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "ツール(_T)"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "更新モニタ(_U)"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "設定(_P)"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "検索(_E)"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "ヘルプ(_H)"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "目次(_C)"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "クイック・リファレンス(_Q)"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "FAQ(_F)"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "このアプリケーションについて(_A)"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "新しい購読を配信元一覧に追加します"
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"現在選択している配信元一覧や購読の一覧にある全てのトピックを既読にします"
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "全ての購読先を更新します"
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "検索ダイアログを表示します"
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1963,59 +2118,17 @@ msgstr "保留中のリクエスト"
 msgid "Downloading Now"
 msgstr "ダウンロード中のリクエスト"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "購読(_S)"
-
-#~ msgid "Update _All"
-#~ msgstr "全て更新(_A)"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "全ての購読先を更新します"
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "全て既読にする(_R)"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "全ての購読の全てのトピックに既読マークを付与します"
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "配信元一覧のインポート(_I)..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "OPML 配信元一覧をインポートします"
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "配信元一覧のエキスポート(_E)..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "OPML の配信元一覧としてエキスポートします"
 
-#~ msgid "_Quit"
-#~ msgstr "終了(_Q)"
-
-#~ msgid "_Feed"
-#~ msgstr "配信元(_F)"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "全て削除(_A)"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "現在選択している全てのトピックを削除します"
-
-#~ msgid "_Item"
-#~ msgstr "トピック(_I)"
-
-#~ msgid "Previous Item"
-#~ msgstr "前のトピック"
-
-#~ msgid "Next Item"
-#~ msgstr "次トピック"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "次の未読のトピック(_N)"
-
-#~ msgid "_View"
-#~ msgstr "表示(_V)"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "エントリの表示サイズを大きくします"
@@ -2023,86 +2136,35 @@ msgstr "ダウンロード中のリクエスト"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "エントリの表示サイズを小さくします"
 
-#~ msgid "_Tools"
-#~ msgstr "ツール(_T)"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "更新モニタ(_U)"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "更新キューの中にある全ての配信元の一覧を表示します"
-
-#~ msgid "_Preferences"
-#~ msgstr "設定(_P)"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "設定を編集します"
 
-#~ msgid "S_earch"
-#~ msgstr "検索(_E)"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "全ての配信元から検索..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "検索ダイアログを表示します"
-
-#~ msgid "_Help"
-#~ msgstr "ヘルプ(_H)"
-
-#~ msgid "_Contents"
-#~ msgstr "目次(_C)"
-
 #~ msgid "View help for this application."
 #~ msgstr "このアプリケーションのヘルプを表示します"
-
-#~ msgid "_Quick Reference"
-#~ msgstr "クイック・リファレンス(_Q)"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "ショートカット・キーの一覧を表示します"
 
-#~ msgid "_FAQ"
-#~ msgstr "FAQ(_F)"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "このアプリケーションの FAQ を表示します"
-
-#~ msgid "_About"
-#~ msgstr "このアプリケーションについて(_A)"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "情報ダイアログを表示します"
 
-#~ msgid "_Normal View"
-#~ msgstr "通常の表示(_N)"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "メーラー・モードで表示します"
-
-#~ msgid "_Wide View"
-#~ msgstr "ワイド表示(_W)"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "ニュースやトピック、その内容を縦型に表示します"
 
-#~ msgid "_Combined View"
-#~ msgstr "サマリ表示(_C)"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "トピックを要約して表示します"
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "既読の配信一覧を隠す(_R)"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "トピックが全て既読の配信元を非表示にします"
-
-#~ msgid "_New Subscription..."
-#~ msgstr "新しい購読(_N)..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "新しい購読を配信元一覧に追加します"
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "新しいフォルダを配信元一覧に追加します"
@@ -2110,22 +2172,11 @@ msgstr "ダウンロード中のリクエスト"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "新しい検索フォルダを配信元一覧に追加します"
 
-#~ msgid "New _Source..."
-#~ msgstr "新しい場所(_S)..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "新しい配信元一覧の場所を追加します"
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "新しい NewsBin を追加します"
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "全て既読にする(_M)"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "現在選択している配信元一覧や購読の一覧にある全てのトピックを既読にします"
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2135,9 +2186,6 @@ msgstr "ダウンロード中のリクエスト"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "選択した購読のプロパティ・ダイアログを開きます"
 
-#~ msgid "_Remove"
-#~ msgstr "削除(_R)"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "選択した購読を削除します"
 
@@ -2146,9 +2194,6 @@ msgstr "ダウンロード中のリクエスト"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "選択したトピックの既読ステータスを切り替えます"
-
-#~ msgid "R_emove"
-#~ msgstr "トピックの削除(_E)"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "現在選択しているトピックを削除します"
@@ -2164,9 +2209,6 @@ msgstr "ダウンロード中のリクエスト"
 #, fuzzy
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "設定したブラウザでトピックのリンクを開きます"
-
-#~ msgid "_Fullscreen"
-#~ msgstr "フルスクリーン(_F)"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "フルスクリーンで見る"

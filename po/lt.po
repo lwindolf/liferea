@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2011-08-22 15:08+0300\n"
 "Last-Translator: Mindaugas Baranauskas <embar@users.berlios.de>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -854,21 +854,21 @@ msgstr "_Atšaukti visus"
 msgid "All Files"
 msgstr "_Vietinė rinkmena"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "„Liferea“ veikia neprisijungusia veiksena. Atnaujinti negalima."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Paieška visuose naujienų kanaluose"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Visus pažymėti skaitytais"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Tikrai pašalinti „%s“?"
@@ -902,16 +902,16 @@ msgstr "Nurodykite naujienų kanalą, kurio straipsnius norite pašalinti!"
 msgid "No item has been selected"
 msgstr "Nepažymėtas nei vienas straipsnis"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "Atverti _naršyklėje"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">Išorinės naršyklės nuostatos</span>"
@@ -930,11 +930,11 @@ msgstr "Įtraukti į %s _adresyną"
 msgid "Copy Item _Location"
 msgstr "_Kopijuoti nuorodą"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Keisti _skaitymo būseną"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Keisti straipsnio s_varbumą"
 
@@ -954,7 +954,7 @@ msgstr "Įrašyti kaip..."
 msgid "Copy Link Location"
 msgstr "Kopijuoti nuorodą"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Atnaujinti"
 
@@ -966,11 +966,11 @@ msgstr "_Atnaujinti aplanką"
 msgid "New _Subscription..."
 msgstr "Nauja p_renumerata..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Naujas _aplankas..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Naujas pa_ieškos aplankas..."
 
@@ -978,7 +978,7 @@ msgstr "Naujas pa_ieškos aplankas..."
 msgid "New S_ource..."
 msgstr "Naujas _šaltinis"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr ""
 
@@ -1003,7 +1003,7 @@ msgstr ""
 msgid "_Delete"
 msgstr "_Šalinti"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Savybės..."
 
@@ -1301,13 +1301,39 @@ msgstr "_Prenumeruoti..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "Pa_didinti teksto dydį"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "Su_mažinti teksto dydį"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+#, fuzzy
+msgid "Next Item"
+msgstr "_Tolesnis neskaitytas"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Tolesnis neskaitytas"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "Žymėti _skaitytu"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Ieškoti visuose naujienų kanaluose..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1375,6 +1401,135 @@ msgstr "_Slaptažodis"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Naudotojo vardas (el. p. adresas)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Prenumeratos"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Viską _atnaujinti"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Visus žymėti _skaitytais"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "Nauja prenumerata..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Naujas _šaltinis..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Importuoti kanalų sąrašą..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Eksportuoti kanalų sąrašą..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Baigti"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Kanalas"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Pašalinti _visus"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "Pa_šalinti"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Straipsnis"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Pa_šalinti"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "Ro_dymas"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Normalus rodinys"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Platus rodinys"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Bendras rodinys"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Sutrumpintas kanalų sąrašas"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "Į_rankiai"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Atnaujinimo stebėjimas"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Nuostatos"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "Pa_ieška"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Pagalba"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Turinys"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Trumpa informacija"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_D. U. K."
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Apie"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Prenumeruoti naują naujienų kanalą"
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Atnaujinti visas prenumeratas."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Rodyti paieškos dialogo langą."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1970,57 +2125,17 @@ msgstr "<b>Laukiančios užklausos</b>"
 msgid "Downloading Now"
 msgstr "<b>Šiuo metu parsiunčiama</b>"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Prenumeratos"
-
-#~ msgid "Update _All"
-#~ msgstr "Viską _atnaujinti"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Atnaujinti visas prenumeratas."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Visus žymėti _skaitytais"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Pažymėti visų prenumeratų visus straipsnius."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Importuoti kanalų sąrašą..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importuoti OPML naujienų kanalų sąrašą."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Eksportuoti kanalų sąrašą..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Eksportuoti naujienų kanalų sąrašą kaip OPML"
 
-#~ msgid "_Quit"
-#~ msgstr "_Baigti"
-
-#~ msgid "_Feed"
-#~ msgstr "_Kanalas"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Pašalinti _visus"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Pašalinti visus pasirinkto naujienų kanalo straipsnius."
-
-#~ msgid "_Item"
-#~ msgstr "_Straipsnis"
-
-#, fuzzy
-#~ msgid "Next Item"
-#~ msgstr "_Tolesnis neskaitytas"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Tolesnis neskaitytas"
-
-#~ msgid "_View"
-#~ msgstr "Ro_dymas"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Padidinti rodinio teksto dydį."
@@ -2028,83 +2143,32 @@ msgstr "<b>Šiuo metu parsiunčiama</b>"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Sumažinti rodinio teksto dydį."
 
-#~ msgid "_Tools"
-#~ msgstr "Į_rankiai"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Atnaujinimo stebėjimas"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Rodo visus atnaujinimo eilėje esančius naujienų kanalų sąrašą"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Nuostatos"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Keisti nuostatas"
 
-#~ msgid "S_earch"
-#~ msgstr "Pa_ieška"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Ieškoti visuose naujienų kanaluose..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Rodyti paieškos dialogo langą."
-
-#~ msgid "_Help"
-#~ msgstr "_Pagalba"
-
-#~ msgid "_Contents"
-#~ msgstr "_Turinys"
-
 #~ msgid "View help for this application."
 #~ msgstr "Rodyti šios programos žinyną."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Trumpa informacija"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Rodyti visus „Liferea“ sparčiuosius klavišus."
 
-#~ msgid "_FAQ"
-#~ msgstr "_D. U. K."
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Rodyti dažniausiai užduodamus klausimus."
-
-#~ msgid "_About"
-#~ msgstr "_Apie"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Rodyti dialogo langą apie programą."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Normalus rodinys"
-
-#~ msgid "_Wide View"
-#~ msgstr "_Platus rodinys"
-
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Rodyti trijuose vertikaliuose polangiuose"
-
-#~ msgid "_Combined View"
-#~ msgstr "_Bendras rodinys"
 
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Rodyti dviejuose polangiuose"
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Sutrumpintas kanalų sąrašas"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Slėpti naujienų kanalus, kuriuose nėra neskaitytų straipsnių."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "Nauja prenumerata..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Prenumeruoti naują naujienų kanalą"
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Naujienų kanalų sąraše sukurti naują aplanką."
@@ -2112,14 +2176,8 @@ msgstr "<b>Šiuo metu parsiunčiama</b>"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Naujienų kanalų sąraše sukurti naują paieškos aplanką."
 
-#~ msgid "New _Source..."
-#~ msgstr "Naujas _šaltinis..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Pridėti naują kanalų sąrašo šaltinį."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "Žymėti _skaitytu"
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2131,9 +2189,6 @@ msgstr "<b>Šiuo metu parsiunčiama</b>"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Atverti pasirinktos prenumeratos savybių dialogą."
 
-#~ msgid "_Remove"
-#~ msgstr "Pa_šalinti"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Nutraukti pasirinktą prenumeratą."
 
@@ -2142,9 +2197,6 @@ msgstr "<b>Šiuo metu parsiunčiama</b>"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Pakeisti pasirinkto straipsnio svarbumo būseną."
-
-#~ msgid "R_emove"
-#~ msgstr "Pa_šalinti"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Pašalinti pasirinktą straipsnį."

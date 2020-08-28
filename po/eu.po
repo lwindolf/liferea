@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2013-06-13 22:57+0100\n"
 "Last-Translator: Mikel Olasagasti Uranga <mikel@olasagasti.info>\n"
 "Language-Team: Basque <translation-team-eu@lists.sourceforge.net>\n"
@@ -877,21 +877,21 @@ msgstr "_Utzi dena"
 msgid "All Files"
 msgstr "Fitxategi guztiak"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea lineaz kanpoko moduan dago. Ezin da eguneraketarik burutua."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Bilatu iturri denak"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Markatu denak irakurritako gisa"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Ziur zaude \"%s\" ezabatzea nahi duzula?"
@@ -925,15 +925,15 @@ msgstr "Iturri bat hautatu behar duzu bere edukia ezabatzeko."
 msgid "No item has been selected"
 msgstr "Ez da elementurik hautatu"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Ireki fitxan"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Abiarazi arakatzailean"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Ireki _kanpoko arakatzailearen"
 
@@ -950,11 +950,11 @@ msgstr "Egin estekaren _laster-marka %s-(e)n"
 msgid "Copy Item _Location"
 msgstr "_Kopiatu elementuaren helbidea"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Txandakatu irakurketaren egoera"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Txandakatu elementuaren bandera"
 
@@ -974,7 +974,7 @@ msgstr "Gorde honela..."
 msgid "Copy Link Location"
 msgstr "Kopiatu estekaren helbidea"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Eguneratu"
 
@@ -986,11 +986,11 @@ msgstr "_Eguneratu karpeta"
 msgid "New _Subscription..."
 msgstr "_Harpidetza berria..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "_Karpeta berria..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "_Bilaketa karpeta berria..."
 
@@ -998,7 +998,7 @@ msgstr "_Bilaketa karpeta berria..."
 msgid "New S_ource..."
 msgstr "_Iturburu berria..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "_Albisteen erretilu berria..."
 
@@ -1023,7 +1023,7 @@ msgstr "_Berregin"
 msgid "_Delete"
 msgstr "/_Ezabatu"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Propietateak"
 
@@ -1319,13 +1319,38 @@ msgstr "_Harpidetu..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Handitu testuaren tamaina"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Gutxiagotu testu-tamaina"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Aurreko elementua"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Hurrengo elementua"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Hurrengo irakurri gabeko elementua"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Markatu denak irakurritako gisa"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Bilatu iturri guztiak..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1394,6 +1419,137 @@ msgstr "_Pasahitza"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Erabiltzaile-izena (email)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Harpidetzak"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Eguneratu _denak"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "_Markatu denak irakurritako gisa"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Harpidetza berria..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "_Iturburu berria..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Inportatu iturrien zerrenda..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Esportatu iturrien zerrenda"
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "I_rten"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Iturria"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Kendu elementu _denak"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Kendu"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Elementua"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "_Kendu"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Ikusi"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_Pantaila osoa"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Ikuspegi normala"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Ikuspegi zabala"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "Ikuspegi _konbinatua"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Murriztu iturri zerrenda"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Tresnak"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Eguneraketaren monitorea"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Hobespenak"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_Bilatu"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Laguntza"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Edukia"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Erreferentzia azkarra"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_MEG"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "Honi _buruz"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Harpidetza bat gehitzen du iturrien zerrendara."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Hautatutako harpidetzaren edo karpetaren harpidetza guztien elementu guztiak "
+"markatzen ditu irakurritako gisa."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Eguneratu harpidetza guztiak."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Erakutsi bilaketaren elkarrizketa-koadroa."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1994,59 +2150,17 @@ msgstr "Falta diren eskaerak"
 msgid "Downloading Now"
 msgstr "Deskargatzen"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Harpidetzak"
-
-#~ msgid "Update _All"
-#~ msgstr "Eguneratu _denak"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Eguneratu harpidetza guztiak."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "_Markatu denak irakurritako gisa"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Markatu irakurrita gisa harpidetza bakoitzeko elementu bakoitza"
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Inportatu iturrien zerrenda..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Iturrien OPML zerrenda inportatzen du"
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Esportatu iturrien zerrenda"
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Esportatu iturrien zerrenda OPML gisa."
 
-#~ msgid "_Quit"
-#~ msgstr "I_rten"
-
-#~ msgid "_Feed"
-#~ msgstr "_Iturria"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Kendu elementu _denak"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Unean hautatutako iturritik elemen tu guztiak kentzen ditu."
-
-#~ msgid "_Item"
-#~ msgstr "_Elementua"
-
-#~ msgid "Previous Item"
-#~ msgstr "Aurreko elementua"
-
-#~ msgid "Next Item"
-#~ msgstr "Hurrengo elementua"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Hurrengo irakurri gabeko elementua"
-
-#~ msgid "_View"
-#~ msgstr "_Ikusi"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Testuaren tamaina handitzen du elementuaren ikuspegian."
@@ -2054,86 +2168,35 @@ msgstr "Deskargatzen"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Testuaren tamaina gutxiagotzen du elementuaren ikuspegian."
 
-#~ msgid "_Tools"
-#~ msgstr "_Tresnak"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Eguneraketaren monitorea"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Erakutsi eguneratzeko ilaran unean dauden iturri guztien zerrenda"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Hobespenak"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Editatu hobespenak."
 
-#~ msgid "S_earch"
-#~ msgstr "_Bilatu"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Bilatu iturri guztiak..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Erakutsi bilaketaren elkarrizketa-koadroa."
-
-#~ msgid "_Help"
-#~ msgstr "_Laguntza"
-
-#~ msgid "_Contents"
-#~ msgstr "_Edukia"
-
 #~ msgid "View help for this application."
 #~ msgstr "Ikusi aplikazio honen laguntza."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Erreferentzia azkarra"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Ikusi Liferearen laster-tekla guztien zerrenda."
 
-#~ msgid "_FAQ"
-#~ msgstr "_MEG"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Ikusi aplikazio honen Maiz Egindako Galderak (MEG)."
-
-#~ msgid "_About"
-#~ msgstr "Honi _buruz"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Erakutsi 'honi buruz' elkarrizketa-koadroa."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Ikuspegi normala"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Ezarri ikuspegi modua posta bezero moduan."
-
-#~ msgid "_Wide View"
-#~ msgstr "_Ikuspegi zabala"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Ezarri ikuspegi modua hiru panel bertikal erabiltzeko."
 
-#~ msgid "_Combined View"
-#~ msgstr "Ikuspegi _konbinatua"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Ezarri ikuspegi modua bi panelekin."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Murriztu iturri zerrenda"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Ezkutatu irakurri gabeko elementurik ez duten jarioak."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Harpidetza berria..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Harpidetza bat gehitzen du iturrien zerrendara."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Karpeta bat gehitzen du iturrien zerrendara."
@@ -2141,23 +2204,11 @@ msgstr "Deskargatzen"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Bilaketako karpeta berri bat gehitzen du iturrien zerrendan."
 
-#~ msgid "New _Source..."
-#~ msgstr "_Iturburu berria..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Iturrien zerrenda berria gehitzen du."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Albisteen erretilu berria gehitzen du."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Markatu denak irakurritako gisa"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Hautatutako harpidetzaren edo karpetaren harpidetza guztien elementu "
-#~ "guztiak markatzen ditu irakurritako gisa."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2169,9 +2220,6 @@ msgstr "Deskargatzen"
 #~ msgstr ""
 #~ "Hautatutako harpidetzaren propietateen elkarrizketa-koadroa irekitzen du."
 
-#~ msgid "_Remove"
-#~ msgstr "_Kendu"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Hautatutako harpidetza ezabatzen du."
 
@@ -2180,9 +2228,6 @@ msgstr "Deskargatzen"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Hautatutako elementuaren banderaren egoera aldatzen du."
-
-#~ msgid "R_emove"
-#~ msgstr "_Kendu"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Kandu hautatutako elementua."
@@ -2198,9 +2243,6 @@ msgstr "Deskargatzen"
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr ""
 #~ "Bistaratu elementuaren esteka konfiguratutako kanpoko arakatzailean."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_Pantaila osoa"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Arakatu pantaila osoan"

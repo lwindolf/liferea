@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2017-12-09 21:00+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: Finnish <lokalisointi-lista@googlegroups.com>\n"
@@ -882,22 +882,22 @@ msgstr "_Peru"
 msgid "All Files"
 msgstr "Kaikki tiedostot"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr ""
 "Liferea ei ole yhteydessä verkkoon, joten päivittäminen ei ole mahdollista."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Etsi kaikista syötteistä."
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Merkitse kaikki luetuiksi"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Haluatko poistaa syötteen ”%s”?"
@@ -931,15 +931,15 @@ msgstr "Syöte, jonka otsikot poistetaan, täytyy valita!"
 msgid "No item has been selected"
 msgstr "Otsikkoja ei ole valittu."
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Avaa välileh_dessä"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Avaa selaimessa"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Avaa ulkoisessa selaimessa"
 
@@ -956,11 +956,11 @@ msgstr "Kirja_nmerkintä osoitteessa %s"
 msgid "Copy Item _Location"
 msgstr "_Kopioi otsikkosijainti"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Merkitse _luetuksi tai lukemattomaksi"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "_Merkitse otsikko"
 
@@ -980,7 +980,7 @@ msgstr "Tallenna nimellä..."
 msgid "Copy Link Location"
 msgstr "_Kopioi linkki"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Päivitä"
 
@@ -992,11 +992,11 @@ msgstr "_Päivitä kansio"
 msgid "New _Subscription..."
 msgstr "_Uusi syöte..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Uu_si kansio..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Uusi _etsintäkansio..."
 
@@ -1004,7 +1004,7 @@ msgstr "Uusi _etsintäkansio..."
 msgid "New S_ource..."
 msgstr "Uusi läh_de..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Uusi uutis_kori..."
 
@@ -1028,7 +1028,7 @@ msgstr "_Rakenna uudelleen"
 msgid "_Delete"
 msgstr "Po_ista syöte"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Ominaisuudet"
 
@@ -1327,13 +1327,38 @@ msgstr "_Uusi syöte..."
 msgid "_Copy"
 msgstr "_Kopioi"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Kasvata tekstin kokoa"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Pienennä tekstin kokoa"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Edellinen otsikko"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Seuraava otsikko"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Seuraava lukematon otsikko"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Merkitse luetuksi"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Etsi kaikista syötteistä..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1402,6 +1427,137 @@ msgstr "_Salasana"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Käyttäjätunnus (sähköposti)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "Uu_det syötteet"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "_Päivitä kaikki"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "_Merkitse kaikki luetuiksi"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Uusi syöte..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Uusi _lähde..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Tuo syöteluettelo..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Vie syöteluettelo..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Lopeta"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Syöte"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Poist_a kaikki otsikot"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "Po_ista"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Otsikko"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Poist_a"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Näytä"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "K_okoruutunäyttö"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Normaalinäkymä"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "Le_veä näkymä"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "Näytä yh_distettynä"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "P_iennenetty syöteluettelo"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Työkalut"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Päivitä valvonta"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "As_etukset"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_Etsi"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Ohje"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "Sisäl_tö"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Pikaviite"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_UKK"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "Lifereasta"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Lisää uuden syötteen syöteluetteloon."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Merkitse valittujen syötteiden tai valitun kansion sisältämien syötteiden "
+"otsikot luetuiksi."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Päivittää kaikki syötteet."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Näyttää tai piilottaa etsintälaatikon."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1994,59 +2150,17 @@ msgstr "Odottavat pyynnöt"
 msgid "Downloading Now"
 msgstr "Ladataan nyt"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "Uu_det syötteet"
-
-#~ msgid "Update _All"
-#~ msgstr "_Päivitä kaikki"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Päivittää kaikki syötteet."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "_Merkitse kaikki luetuiksi"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Merkitsee kaikkien syötteiden kaikki uutiset luetuiksi."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Tuo syöteluettelo..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Tuo OPML-muotoisen syöteluettelon."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Vie syöteluettelo..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Vie OPML-muotoisen syöteluettelon."
 
-#~ msgid "_Quit"
-#~ msgstr "_Lopeta"
-
-#~ msgid "_Feed"
-#~ msgstr "_Syöte"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Poist_a kaikki otsikot"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Poistaa kaikki otsikot valitusta syötteestä."
-
-#~ msgid "_Item"
-#~ msgstr "_Otsikko"
-
-#~ msgid "Previous Item"
-#~ msgstr "Edellinen otsikko"
-
-#~ msgid "Next Item"
-#~ msgstr "Seuraava otsikko"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Seuraava lukematon otsikko"
-
-#~ msgid "_View"
-#~ msgstr "_Näytä"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Kasvattaa tekstin kokoa otsikkonäkymässä."
@@ -2054,87 +2168,36 @@ msgstr "Ladataan nyt"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Pienentää tekstin kokoa otsikkonäkymässä."
 
-#~ msgid "_Tools"
-#~ msgstr "_Työkalut"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Päivitä valvonta"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Näytä nykyisen päivitysjonon kaikkien syötteiden luettelo"
-
-#~ msgid "_Preferences"
-#~ msgstr "As_etukset"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Muokkaa asetuksia."
 
-#~ msgid "S_earch"
-#~ msgstr "_Etsi"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Etsi kaikista syötteistä..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Näyttää tai piilottaa etsintälaatikon."
-
-#~ msgid "_Help"
-#~ msgstr "_Ohje"
-
-#~ msgid "_Contents"
-#~ msgstr "Sisäl_tö"
-
 #~ msgid "View help for this application."
 #~ msgstr "Katso tämän sovelluksen opastetta."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Pikaviite"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Katso Liferea-pikanäppäinten luetteloa."
 
-#~ msgid "_FAQ"
-#~ msgstr "_UKK"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Katso tämän sovelluksen Usein Kysyttyjä Kysymyksiä."
-
-#~ msgid "_About"
-#~ msgstr "Lifereasta"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Näyttää tietoja Lifereasta."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Normaalinäkymä"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Aseta näkymätilaksi sähköpostiasiakastila."
-
-#~ msgid "_Wide View"
-#~ msgstr "Le_veä näkymä"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Aseta näkymä käyttämään kolmea pystysuoraa paneelia."
 
-#~ msgid "_Combined View"
-#~ msgstr "Näytä yh_distettynä"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Aseta näkymätilaksi kahden paneelin tila."
-
-#~ msgid "_Reduced Feed List"
-#~ msgstr "P_iennenetty syöteluettelo"
 
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr ""
 #~ "Jos valittu, vain lukemattomia otsikoita sisältävät syötteet näkyvät."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Uusi syöte..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Lisää uuden syötteen syöteluetteloon."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Lisää kansion syöteluetteloon."
@@ -2142,23 +2205,11 @@ msgstr "Ladataan nyt"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Lisää uuden etsintäkansion syöteluetteloon."
 
-#~ msgid "New _Source..."
-#~ msgstr "Uusi _lähde..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Lisää uuden syöteluettelolähteen."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Lisää uuden uutiskorin."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Merkitse luetuksi"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Merkitse valittujen syötteiden tai valitun kansion sisältämien syötteiden "
-#~ "otsikot luetuiksi."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2169,9 +2220,6 @@ msgstr "Ladataan nyt"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Avaa valitun syötteen ominaisuusikkunan."
 
-#~ msgid "_Remove"
-#~ msgstr "Po_ista"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Poistaa valitut syötteet."
 
@@ -2180,9 +2228,6 @@ msgstr "Ladataan nyt"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Merkitse otsikko lukemattomaksi tai luetuksi."
-
-#~ msgid "R_emove"
-#~ msgstr "Poist_a"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Poistaa valitun otsikon."
@@ -2195,9 +2240,6 @@ msgstr "Ladataan nyt"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Avaa otsikon linkin asetusten mukaisessa ulkoisessa selaimessa."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "K_okoruutunäyttö"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Selaa kokoruutunäytöllä"

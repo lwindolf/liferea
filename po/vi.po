@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea git-master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2017-02-18 15:18+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <gnome-vi-list@gnome.org>\n"
@@ -878,21 +878,21 @@ msgstr "T_hôi"
 msgid "All Files"
 msgstr "Mọi kiểu tập tin"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea đang ở trạng thái ngoại tuyến. Cập nhật là điều không thể."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Tìm trong tất cả các Feed"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Đánh dấu là tất cả đã đọc"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Bạn có chắc muốn xóa bỏ\"%s\" không?"
@@ -926,15 +926,15 @@ msgstr "Bạn phải chọn một feed để mà xóa bỏ các mục tin của 
 msgid "No item has been selected"
 msgstr "Không có mục nào được chọn"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Mở Trong _Tab"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Mở trong trình duyệt"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Mở liên kết trong bộ duyệt _Bên ngoài"
 
@@ -951,11 +951,11 @@ msgstr "Đánh dấ_u ở %s"
 msgid "Copy Item _Location"
 msgstr "Sao chép địa chỉ _Mục tin"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Bật/Tắt trạng thái đọc"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Bật/Tắt Cờ của mục tin"
 
@@ -975,7 +975,7 @@ msgstr "Ghi lại bằng tên mới…"
 msgid "Copy Link Location"
 msgstr "Sao chép địa chỉ liên kết"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Cập nhật"
 
@@ -987,11 +987,11 @@ msgstr "Cập nhật thư mục"
 msgid "New _Subscription..."
 msgstr "Thêm một địa chỉ đặt dài hạn…"
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Thư _mục mới…"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Thêm thư mục tìm _kiếm…"
 
@@ -999,7 +999,7 @@ msgstr "Thêm thư mục tìm _kiếm…"
 msgid "New S_ource..."
 msgstr "Nguồn mới…"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Thùng rác tin tức mới…"
 
@@ -1023,7 +1023,7 @@ msgstr "_Xây dụng lại"
 msgid "_Delete"
 msgstr "_Xóa"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Thuộc tính"
 
@@ -1317,13 +1317,38 @@ msgstr "Đặt _dài hạn…"
 msgid "_Copy"
 msgstr "_Sao chép"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "Tăn_g kích thước chữ"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "Giả_m kích thước chữ"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Mục kế trước"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Mục kế tiếp"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "Mục chưa đọc _kế tiếp"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "Đánh dấ_u các mục là đã đọc"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Tìm trong tất cả các Feed…"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1393,6 +1418,137 @@ msgstr "_Mật khẩu"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Tài khoản (Email)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "Địa chỉ đặt xem dài hạn"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Cập nhật _tất cả"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Đánh dấu là tất cả đã đọ_c"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "Thêm một địa chỉ đặt xem dài hạn…"
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Thêm _Nguồn mới…"
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Nhập vào danh sách feed…"
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Xuất ra danh sách feed…"
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "T_hoát"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Feed"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Gỡ bỏ _mọi mục tin"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Xóa bỏ"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Mục"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Gỡ _bỏ"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Trình bày"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "Chế độ t_oàn màn hình"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "Trình bày _bình thường"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "Trình bày kiểu _rộng"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "Trình bày kiểu tổ hợ_p"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Tiết giảm danh sách feed"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Công cụ"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Cập nhật bộ theo dõi"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Tùy chỉnh"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "Tìm _kiếm"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "Trợ g_iúp"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Nội dung"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Tham khảo nhanh"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_FAQ"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Giới thiệu"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Thêm địa chỉ đặt xem dài hạn vào danh sách feed."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Đánh dấu tất cả những mục tin của nút feed đã được chọn / trong danh sách "
+"mục tin như là đã được đọc."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Cập nhật tất cả các địa chỉ đặt xem dài hạn"
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Hiển thị hộp thoại tìm kiếm."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1987,59 +2143,17 @@ msgstr "Các yêu cầu còn treo"
 msgid "Downloading Now"
 msgstr "Tải về ngay"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "Địa chỉ đặt xem dài hạn"
-
-#~ msgid "Update _All"
-#~ msgstr "Cập nhật _tất cả"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Cập nhật tất cả các địa chỉ đặt xem dài hạn"
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Đánh dấu là tất cả đã đọ_c"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Đánh dấu đọc cho mỗi mục tin của mỗi địa chỉ đặt xem dài hạn."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Nhập vào danh sách feed…"
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Nhập vào danh sách feed kiểu OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Xuất ra danh sách feed…"
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Xuất ra danh sách feed kiểu OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "T_hoát"
-
-#~ msgid "_Feed"
-#~ msgstr "_Feed"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Gỡ bỏ _mọi mục tin"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Gỡ bỏ tất cả các mục của feed hiện hành đã được chọn."
-
-#~ msgid "_Item"
-#~ msgstr "_Mục"
-
-#~ msgid "Previous Item"
-#~ msgstr "Mục kế trước"
-
-#~ msgid "Next Item"
-#~ msgstr "Mục kế tiếp"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "Mục chưa đọc _kế tiếp"
-
-#~ msgid "_View"
-#~ msgstr "_Trình bày"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Tăng kích thước hiển thị các mục."
@@ -2047,87 +2161,36 @@ msgstr "Tải về ngay"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Giảm kích thước hiển thị các mục"
 
-#~ msgid "_Tools"
-#~ msgstr "_Công cụ"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Cập nhật bộ theo dõi"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr ""
 #~ "Hiển thị danh sách toàn bộ feed hiện tại đang trong hàng đợi cập nhật"
 
-#~ msgid "_Preferences"
-#~ msgstr "_Tùy chỉnh"
-
 #~ msgid "Edit Preferences."
 #~ msgstr "Sửa sở thích riêng."
-
-#~ msgid "S_earch"
-#~ msgstr "Tìm _kiếm"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Tìm trong tất cả các Feed…"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Hiển thị hộp thoại tìm kiếm."
-
-#~ msgid "_Help"
-#~ msgstr "Trợ g_iúp"
-
-#~ msgid "_Contents"
-#~ msgstr "_Nội dung"
 
 #~ msgid "View help for this application."
 #~ msgstr "Hiển thị trợ giúp cho ứng dụng này."
 
-#~ msgid "_Quick Reference"
-#~ msgstr "_Tham khảo nhanh"
-
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Hiển thị danh sách của các phím tắt dành cho Liferea."
-
-#~ msgid "_FAQ"
-#~ msgstr "_FAQ"
 
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Hiển thị câu hỏi thường gặp (FAQ) của ứng dụng này."
 
-#~ msgid "_About"
-#~ msgstr "_Giới thiệu"
-
 #~ msgid "Shows an about dialog."
 #~ msgstr "Hiển thị hộp thoại giới thiệu chương trình."
-
-#~ msgid "_Normal View"
-#~ msgstr "Trình bày _bình thường"
 
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Đặt chế độ trình bày cho chế độ máy khách thư"
 
-#~ msgid "_Wide View"
-#~ msgstr "Trình bày kiểu _rộng"
-
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Đặt chế độ hiển thị để sử dụng cho chế độ 3 bảng đứng"
-
-#~ msgid "_Combined View"
-#~ msgstr "Trình bày kiểu tổ hợ_p"
 
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Đặt chế độ trình bày cho chế độ hai cửa sổ"
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Tiết giảm danh sách feed"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Ẩn đi những feed mà không có mục tin nào chưa đọc cả."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "Thêm một địa chỉ đặt xem dài hạn…"
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Thêm địa chỉ đặt xem dài hạn vào danh sách feed."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Thêm một thư mục vào danh sách feed."
@@ -2135,23 +2198,11 @@ msgstr "Tải về ngay"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Thêm một thư mục tìm kiếm mới vào danh sách feed."
 
-#~ msgid "New _Source..."
-#~ msgstr "Thêm _Nguồn mới…"
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Thêm vào một nguồn danh sách feed mới."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Thêm một thùng rác tin tức mới."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "Đánh dấ_u các mục là đã đọc"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Đánh dấu tất cả những mục tin của nút feed đã được chọn / trong danh sách "
-#~ "mục tin như là đã được đọc."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2163,9 +2214,6 @@ msgstr "Tải về ngay"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Mở hộp thoại thuộc tính cho địa chỉ đặt dài hạn đã được chọn."
 
-#~ msgid "_Remove"
-#~ msgstr "_Xóa bỏ"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Gỡ bỏ những địa chỉ đặt dài hạn đã chọn."
 
@@ -2174,9 +2222,6 @@ msgstr "Tải về ngay"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Bật/tắt trạng thái cờ của mục tin đã chọn."
-
-#~ msgid "R_emove"
-#~ msgstr "Gỡ _bỏ"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Gỡ bỏ mục đã được chọn."
@@ -2189,9 +2234,6 @@ msgstr "Tải về ngay"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Mở liên kết trong trình duyệt bên ngoài đã được cấu hình sẵn."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "Chế độ t_oàn màn hình"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Duyệt toàn màn hình"

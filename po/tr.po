@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2018-03-16 14:35+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
@@ -871,21 +871,21 @@ msgstr "_İptal Et"
 msgid "All Files"
 msgstr "Tüm Dosyalar"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea çevrim dışı. Güncelleme olanaksız."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Tüm Beslemeleri Ara"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Hepsini okundu olarak işaretle"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "\"%s\"yi silmek istediğinizden emin misiniz?"
@@ -919,15 +919,15 @@ msgstr "Ögelerini silmek için bir besleme seçmelisiniz!"
 msgid "No item has been selected"
 msgstr "Hiçbir öge seçilmedi"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "_Sekmede Aç"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "Tarayıcıda _Aç"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "_Dış Tarayıcıda Aç"
 
@@ -944,11 +944,11 @@ msgstr "%s'de _yer imi olarak ekle"
 msgid "Copy Item _Location"
 msgstr "Öge _Konumunu Kopyala"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "_Okunma Durumunu Değiştir"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Öge _İmini Değiştir"
 
@@ -968,7 +968,7 @@ msgstr "Farklı Kaydet..."
 msgid "Copy Link Location"
 msgstr "Bağlantı Konumunu Kopyala"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Güncelle"
 
@@ -980,11 +980,11 @@ msgstr "Klasörü _Güncelle"
 msgid "New _Subscription..."
 msgstr "Yeni _Abonelik..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Yeni _Klasör..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Yeni A_rama Klasörü..."
 
@@ -992,7 +992,7 @@ msgstr "Yeni A_rama Klasörü..."
 msgid "New S_ource..."
 msgstr "Yeni _Kaynak..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Yeni _Haber Sepeti..."
 
@@ -1016,7 +1016,7 @@ msgstr "_Yeniden inşa et"
 msgid "_Delete"
 msgstr "_Sil"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Özellikler"
 
@@ -1306,13 +1306,38 @@ msgstr "_Abone Ol..."
 msgid "_Copy"
 msgstr "_Kopyala"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "Metin Boyutunu _Büyüt"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "Metin Boyutunu _Küçült"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Önceki Öge"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Sonraki Öge"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Sonraki Okunmamış Öge"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Ögeleri Okundu Olarak İmle"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Tüm Beslemeleri Ara..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1381,6 +1406,137 @@ msgstr "_Parola"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Kullanıcı Adı (E-posta)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "A_bonelikler"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "_Tümünü Güncelle"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Tümünü _Okundu Olarak İmle"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Yeni Abonelik..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Yeni _Kaynak..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "Besleme Listesini _İçeri Aktar..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "Besleme Listesini _Dışarı Aktar..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Çık"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Besleme"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Tüm Ögeleri _Sil"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "Kaldı_r"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Öge"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "K_aldır"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Görüntüle"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_Tam ekran"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Olağan Görünüm"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Geniş Görünüm"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Birleşik Görünüm"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Daraltılmış Besleme Listesi"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "A_raçlar"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Güncelleme Gözlemcisi"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Seçenekler"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_Ara"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Yardım"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_İçindekiler"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Hızlı Başvuru"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_SSS"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Hakkında"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Besleme listesine yeni abonelik ekler."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Seçili besleme listesi düğümündeki veya öge listesindeki tüm ögeleri okundu "
+"olarak imle."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Tüm abonelikleri günceller."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Arama penceresini göster."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1975,59 +2131,17 @@ msgstr "Beklemedeki İstemler"
 msgid "Downloading Now"
 msgstr "Şimdi İndiriliyor"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "A_bonelikler"
-
-#~ msgid "Update _All"
-#~ msgstr "_Tümünü Güncelle"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Tüm abonelikleri günceller."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Tümünü _Okundu Olarak İmle"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Her aboneliğin her ögesini okundu olarak imler."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "Besleme Listesini _İçeri Aktar..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "OPML besleme listesini içeri aktarır."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "Besleme Listesini _Dışarı Aktar..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Besleme listesini OPML dosyası olarak dışarı aktarır."
 
-#~ msgid "_Quit"
-#~ msgstr "_Çık"
-
-#~ msgid "_Feed"
-#~ msgstr "_Besleme"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Tüm Ögeleri _Sil"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Seçili beslemedeki tüm ögeleri siler."
-
-#~ msgid "_Item"
-#~ msgstr "_Öge"
-
-#~ msgid "Previous Item"
-#~ msgstr "Önceki Öge"
-
-#~ msgid "Next Item"
-#~ msgstr "Sonraki Öge"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Sonraki Okunmamış Öge"
-
-#~ msgid "_View"
-#~ msgstr "_Görüntüle"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Öge görünümünün metin boyutunu büyütür."
@@ -2035,86 +2149,35 @@ msgstr "Şimdi İndiriliyor"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Öge görünümünün metin boyutunu küçültür."
 
-#~ msgid "_Tools"
-#~ msgstr "A_raçlar"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Güncelleme Gözlemcisi"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Güncelleme kuyruğundaki tüm beslemelerin bir listesini göster"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Seçenekler"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Seçenekleri Düzenle."
 
-#~ msgid "S_earch"
-#~ msgstr "_Ara"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Tüm Beslemeleri Ara..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Arama penceresini göster."
-
-#~ msgid "_Help"
-#~ msgstr "_Yardım"
-
-#~ msgid "_Contents"
-#~ msgstr "_İçindekiler"
-
 #~ msgid "View help for this application."
 #~ msgstr "Bu uygulamanın yardımını görüntüle."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Hızlı Başvuru"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Liferea kısayollarının bir listesini göster."
 
-#~ msgid "_FAQ"
-#~ msgstr "_SSS"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Bu uygulamanın sıkça sorulan sorularını göster"
-
-#~ msgid "_About"
-#~ msgstr "_Hakkında"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Hakkında penceresini gösterir."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Olağan Görünüm"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Görünüm kipini, posta istemci kipine ayarla."
-
-#~ msgid "_Wide View"
-#~ msgstr "_Geniş Görünüm"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Görünüm kipini, üç dikey pano kullanacak şekilde ayarla."
 
-#~ msgid "_Combined View"
-#~ msgstr "_Birleşik Görünüm"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Görünüm kipini, iki pano kipine ayarla."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Daraltılmış Besleme Listesi"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Okunmamış ögesi olmayan beslemeleri gizle."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Yeni Abonelik..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Besleme listesine yeni abonelik ekler."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Besleme listesine yeni klasör ekler."
@@ -2122,23 +2185,11 @@ msgstr "Şimdi İndiriliyor"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Besleme listesine yeni arama klasörü ekler."
 
-#~ msgid "New _Source..."
-#~ msgstr "Yeni _Kaynak..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Yeni besleme listesi kaynağı ekler."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Yeni haber sepeti ekler."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Ögeleri Okundu Olarak İmle"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Seçili besleme listesi düğümündeki veya öge listesindeki tüm ögeleri "
-#~ "okundu olarak imle."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2149,9 +2200,6 @@ msgstr "Şimdi İndiriliyor"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Seçili abonelik için özellikler penceresini açar."
 
-#~ msgid "_Remove"
-#~ msgstr "Kaldı_r"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Seçili aboneliği siler."
 
@@ -2160,9 +2208,6 @@ msgstr "Şimdi İndiriliyor"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Seçili ögenin imini ekler ya da siler"
-
-#~ msgid "R_emove"
-#~ msgstr "K_aldır"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Seçili ögeyi siler."
@@ -2175,9 +2220,6 @@ msgstr "Şimdi İndiriliyor"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Ögenin bağlantısını yapılandırılmış dış tarayıcıda açar."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_Tam ekran"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Tam ekranda göz at"

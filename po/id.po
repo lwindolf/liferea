@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.10.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2017-05-27 04:04+0700\n"
 "Last-Translator: Samsul Ma'arif <mail@samsul.web.id>\n"
 "Language-Team: Indonesian\n"
@@ -868,21 +868,21 @@ msgstr "Ba_talkan"
 msgid "All Files"
 msgstr "Semua Berkas"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea dalam mode luring. Pembaruan tidak memungkinkan."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Cari Semua Feed"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Tandai semua telah dibaca"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Anda yakin hendak menghapus \"%s\"?"
@@ -916,15 +916,15 @@ msgstr "Anda harus memilih feed yang akan dihapus itemnya!"
 msgid "No item has been selected"
 msgstr "Tidak ada item terpilih"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Buka di _Tab"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Buka di Peramban"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Buka di Peramban _Eksternal"
 
@@ -941,11 +941,11 @@ msgstr "_Markah pada %s"
 msgid "Copy Item _Location"
 msgstr "Salin _Lokasi Item"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Toggle Status _Baca"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Toggle _Bendera Item"
 
@@ -965,7 +965,7 @@ msgstr "Simpan dengan Nama..."
 msgid "Copy Link Location"
 msgstr "Salin Lokasi Tautan"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Perbarui"
 
@@ -977,11 +977,11 @@ msgstr "_Perbarui Folder"
 msgid "New _Subscription..."
 msgstr "_Langganan Baru..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "_Folder Baru..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Folder P_encarian Baru..."
 
@@ -989,7 +989,7 @@ msgstr "Folder P_encarian Baru..."
 msgid "New S_ource..."
 msgstr "Sumber Ba_ru..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Berita _Bin Baru..."
 
@@ -1013,7 +1013,7 @@ msgstr "Ban_gun Ulang"
 msgid "_Delete"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Properti"
 
@@ -1306,13 +1306,38 @@ msgstr "_Langgan..."
 msgid "_Copy"
 msgstr "_Salin"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Perbesar Ukuran Teks"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Kecilkan Ukuran Teks"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Item Sebelumnya"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Item Selanjutnya"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "Item _Belum Dibaca Selanjutnya"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Tandai Item Dibaca"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Cari Semua Feed..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1381,6 +1406,137 @@ msgstr "_Kata sandi"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Nama pengguna (Surel)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Langganan"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Perbarui Semu_a"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Tandai Semua Sudah Di_baca"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Langganan Baru..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "_Sumber Baru..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Impor Daftar Feed..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Ekspor Daftar Feed..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Keluar"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Feed"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Hapus _Semua Item"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Hapus"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Item"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Ha_pus"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Lihat"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "Layar _Penuh"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "Tampilan _Normal"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "Tampilan _Lebar"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Kombinasikan Tampilan"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Kurangi Daftar Feed"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Alat"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Monitor Pembaruan"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Preferensi"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_Cari"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Bantuan"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Isi"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Referensi Cepat"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_FAQ"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Tentang"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Tambahkan langganan ke daftar feed."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Tandai semua item dari node daftar feed terpilih / di daftar item sebagai "
+"telah dibaca."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Perbarui semua langganan."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Tampilkan dialog pencarian."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1974,59 +2130,17 @@ msgstr "Batalkan Permintaan"
 msgid "Downloading Now"
 msgstr "Sedang Mengunduh"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Langganan"
-
-#~ msgid "Update _All"
-#~ msgstr "Perbarui Semu_a"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Perbarui semua langganan."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Tandai Semua Sudah Di_baca"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Tandai sudah dibaca setiap item setiap langganan."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Impor Daftar Feed..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Impor daftar feed OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Ekspor Daftar Feed..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Ekspor daftar feed sebagai OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "_Keluar"
-
-#~ msgid "_Feed"
-#~ msgstr "_Feed"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Hapus _Semua Item"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Hapus semua item feed yang sedang dipilih."
-
-#~ msgid "_Item"
-#~ msgstr "_Item"
-
-#~ msgid "Previous Item"
-#~ msgstr "Item Sebelumnya"
-
-#~ msgid "Next Item"
-#~ msgstr "Item Selanjutnya"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "Item _Belum Dibaca Selanjutnya"
-
-#~ msgid "_View"
-#~ msgstr "_Lihat"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Perbesar ukuran teks item ditampilkan."
@@ -2034,86 +2148,35 @@ msgstr "Sedang Mengunduh"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Kecilkan ukuran teks item ditampilkan."
 
-#~ msgid "_Tools"
-#~ msgstr "_Alat"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Monitor Pembaruan"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Tampilkan selua daftar feed yang sedang dalam antrian pembaruan"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Preferensi"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Sunting Preferensi."
 
-#~ msgid "S_earch"
-#~ msgstr "_Cari"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Cari Semua Feed..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Tampilkan dialog pencarian."
-
-#~ msgid "_Help"
-#~ msgstr "_Bantuan"
-
-#~ msgid "_Contents"
-#~ msgstr "_Isi"
-
 #~ msgid "View help for this application."
 #~ msgstr "Tampilkan bantuan untuk aplikasi ini."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Referensi Cepat"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Tampilkan daftar pintasan Liferea."
 
-#~ msgid "_FAQ"
-#~ msgstr "_FAQ"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Tampilkan FAQ untuk aplikasi ini."
-
-#~ msgid "_About"
-#~ msgstr "_Tentang"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Tampilkan dialog tentang."
 
-#~ msgid "_Normal View"
-#~ msgstr "Tampilan _Normal"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Atur mode tampilan ke mode klien surel."
-
-#~ msgid "_Wide View"
-#~ msgstr "Tampilan _Lebar"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Atur mode tampilan untuk menggunakan tiga panel vertikal."
 
-#~ msgid "_Combined View"
-#~ msgstr "_Kombinasikan Tampilan"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Atur mode tampilan ke mode dua panel."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Kurangi Daftar Feed"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Sembunyikan feed dengan item tak terbaca."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Langganan Baru..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Tambahkan langganan ke daftar feed."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Tambahkan folder ke daftar feed."
@@ -2121,23 +2184,11 @@ msgstr "Sedang Mengunduh"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Tambahkan folder pencarian baru ke daftar feed."
 
-#~ msgid "New _Source..."
-#~ msgstr "_Sumber Baru..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Tambahkan sumber daftar feed baru."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Tambahkan berita bin baru."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Tandai Item Dibaca"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Tandai semua item dari node daftar feed terpilih / di daftar item sebagai "
-#~ "telah dibaca."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2148,9 +2199,6 @@ msgstr "Sedang Mengunduh"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Buka dialog properti untuk langganan terpilih."
 
-#~ msgid "_Remove"
-#~ msgstr "_Hapus"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Hapus langganan terpilih."
 
@@ -2159,9 +2207,6 @@ msgstr "Sedang Mengunduh"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Alihkan bendera status dari item terpilih."
-
-#~ msgid "R_emove"
-#~ msgstr "Ha_pus"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Hapus item terpilih."
@@ -2174,9 +2219,6 @@ msgstr "Sedang Mengunduh"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Luncurkan tautan item di peramban eksternal terkonfigurasi."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "Layar _Penuh"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Jelajah pada layar penuh"

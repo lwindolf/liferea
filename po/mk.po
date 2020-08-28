@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2004-10-24 02:34+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -913,21 +913,21 @@ msgstr "_Ажурирај ги сите"
 msgid "All Files"
 msgstr "_Датотека"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Лајфри е во офлајн режим. Нема можност за ажурирање."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Барај во сите вести."
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "/_Обележи сè како прочитанo"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Дали сте сигурни дека саката да избришете \"%s\"?"
@@ -963,16 +963,16 @@ msgstr "Мора да одбереш вест за бришење на став�
 msgid "No item has been selected"
 msgstr "Нема означени ставки!"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "_Отвори во прелистувач"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">Подесувања за надворешниот прелистувач</span>"
@@ -991,11 +991,11 @@ msgstr ""
 msgid "Copy Item _Location"
 msgstr "/_Копирај ја локацијата на врската"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Промени статус во (не)прочитано"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Промени го _знаменцето"
 
@@ -1017,7 +1017,7 @@ msgstr ""
 msgid "Copy Link Location"
 msgstr "/_Копирај ја локацијата на врската"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 #, fuzzy
 msgid "_Update"
 msgstr "/_Ажурирај"
@@ -1032,11 +1032,11 @@ msgstr "/_Ажурирај"
 msgid "New _Subscription..."
 msgstr "_Нова претплата..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 #, fuzzy
 msgid "New S_earch Folder..."
 msgstr "_Нова папка..."
@@ -1046,7 +1046,7 @@ msgstr "_Нова папка..."
 msgid "New S_ource..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "_Нова папка..."
@@ -1075,7 +1075,7 @@ msgstr ""
 msgid "_Delete"
 msgstr "/_Избриши вест"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 #, fuzzy
 msgid "_Properties"
 msgstr "_Својства..."
@@ -1380,13 +1380,41 @@ msgstr "/_Претплати се..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Зголеми го текстот"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Намали го текстот"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+#, fuzzy
+msgid "Next Item"
+msgstr "_Следна непрочитана вест"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Следна непрочитана вест"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+#, fuzzy
+msgid "_Mark Items Read"
+msgstr "_Обележи како прочитано"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+#, fuzzy
+msgid "Search All Feeds..."
+msgstr "Барај во сите вести."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1456,6 +1484,159 @@ msgstr "_Лозинка:"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr ""
+
+#: ../glade/liferea_menu.ui.h:1
+#, fuzzy
+msgid "_Subscriptions"
+msgstr "Нова претплата"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "_Ажурирај ги сите"
+
+#: ../glade/liferea_menu.ui.h:3
+#, fuzzy
+msgid "Mark All As _Read"
+msgstr "/_Обележи сè како прочитанo"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Нова претплата..."
+
+#: ../glade/liferea_menu.ui.h:7
+#, fuzzy
+msgid "New _Source..."
+msgstr "_Нова папка..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Увези листа на вести..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Извези листа на вести..."
+
+#: ../glade/liferea_menu.ui.h:11
+#, fuzzy
+msgid "_Quit"
+msgstr "/_Излез"
+
+#: ../glade/liferea_menu.ui.h:12
+#, fuzzy
+msgid "_Feed"
+msgstr "_Вести"
+
+#: ../glade/liferea_menu.ui.h:15
+#, fuzzy
+msgid "Remove _All Items"
+msgstr "Отстрани ги сите"
+
+#: ../glade/liferea_menu.ui.h:16
+#, fuzzy
+msgid "_Remove"
+msgstr "Отстрани ги сите"
+
+#: ../glade/liferea_menu.ui.h:18
+#, fuzzy
+msgid "_Item"
+msgstr "_Предмети"
+
+#: ../glade/liferea_menu.ui.h:24
+#, fuzzy
+msgid "R_emove"
+msgstr "/Отстрани го предметот"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Поглед"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+#, fuzzy
+msgid "_Normal View"
+msgstr "Промени _компактност на преглед"
+
+#: ../glade/liferea_menu.ui.h:33
+#, fuzzy
+msgid "_Wide View"
+msgstr "_Поглед"
+
+#: ../glade/liferea_menu.ui.h:34
+#, fuzzy
+msgid "_Combined View"
+msgstr "Промени _компактност на преглед"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:37
+#, fuzzy
+msgid "_Update Monitor"
+msgstr "/_Ажурирај"
+
+#: ../glade/liferea_menu.ui.h:38
+#, fuzzy
+msgid "_Preferences"
+msgstr "Параметри"
+
+#: ../glade/liferea_menu.ui.h:39
+#, fuzzy
+msgid "S_earch"
+msgstr "Пребарувај"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Помош"
+
+#: ../glade/liferea_menu.ui.h:42
+#, fuzzy
+msgid "_Contents"
+msgstr "коментари"
+
+#: ../glade/liferea_menu.ui.h:43
+#, fuzzy
+msgid "_Quick Reference"
+msgstr "Уреди ги параметрите."
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:45
+#, fuzzy
+msgid "_About"
+msgstr "За"
+
+#: ../glade/liferea_toolbar.ui.h:2
+#, fuzzy
+msgid "Adds a subscription to the feed list."
+msgstr "Додај нова претплата."
+
+#: ../glade/liferea_toolbar.ui.h:4
+#, fuzzy
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Означи ги сите вести во означената ставка како прочитани или сите вести во "
+"означената папка."
+
+#: ../glade/liferea_toolbar.ui.h:9
+#, fuzzy
+msgid "Updates all subscriptions."
+msgstr "Додај нова претплата."
+
+#: ../glade/liferea_toolbar.ui.h:11
+#, fuzzy
+msgid "Show the search dialog."
+msgstr "Ја покажува или сокрива лентата за барање."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -2094,61 +2275,14 @@ msgstr ""
 msgid "Downloading Now"
 msgstr ""
 
-#, fuzzy
-#~ msgid "_Subscriptions"
-#~ msgstr "Нова претплата"
-
-#~ msgid "Update _All"
-#~ msgstr "_Ажурирај ги сите"
-
-#, fuzzy
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Додај нова претплата."
-
-#, fuzzy
-#~ msgid "Mark All As _Read"
-#~ msgstr "/_Обележи сè како прочитанo"
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Увези листа на вести..."
-
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Увезува OPML листа на вести."
-
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Извези листа на вести..."
 
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Ја извезува листата на вести како OPML."
 
-#, fuzzy
-#~ msgid "_Quit"
-#~ msgstr "/_Излез"
-
-#, fuzzy
-#~ msgid "_Feed"
-#~ msgstr "_Вести"
-
-#, fuzzy
-#~ msgid "Remove _All Items"
-#~ msgstr "Отстрани ги сите"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Ги отстранува сите предмети од тековните вести."
-
-#, fuzzy
-#~ msgid "_Item"
-#~ msgstr "_Предмети"
-
-#, fuzzy
-#~ msgid "Next Item"
-#~ msgstr "_Следна непрочитана вест"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Следна непрочитана вест"
-
-#~ msgid "_View"
-#~ msgstr "_Поглед"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Го зголемуива текстот во делот за читање на вестите."
@@ -2157,80 +2291,19 @@ msgstr ""
 #~ msgstr "Го намалува текстот во делот за читање на вестите."
 
 #, fuzzy
-#~ msgid "_Update Monitor"
-#~ msgstr "/_Ажурирај"
-
-#, fuzzy
-#~ msgid "_Preferences"
-#~ msgstr "Параметри"
-
-#, fuzzy
 #~ msgid "Edit Preferences."
 #~ msgstr "Уреди ги параметрите."
-
-#, fuzzy
-#~ msgid "S_earch"
-#~ msgstr "Пребарувај"
-
-#, fuzzy
-#~ msgid "Search All Feeds..."
-#~ msgstr "Барај во сите вести."
-
-#, fuzzy
-#~ msgid "Show the search dialog."
-#~ msgstr "Ја покажува или сокрива лентата за барање."
-
-#~ msgid "_Help"
-#~ msgstr "_Помош"
-
-#, fuzzy
-#~ msgid "_Quick Reference"
-#~ msgstr "Уреди ги параметрите."
-
-#, fuzzy
-#~ msgid "_About"
-#~ msgstr "За"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Го покажува дијалогот за заслуги."
 
 #, fuzzy
-#~ msgid "_Wide View"
-#~ msgstr "_Поглед"
-
-#, fuzzy
-#~ msgid "_Combined View"
-#~ msgstr "Промени _компактност на преглед"
-
-#, fuzzy
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Ако е активно, сите вести со прочитани ставки се скриени."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Нова претплата..."
-
-#, fuzzy
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Додај нова претплата."
-
-#, fuzzy
-#~ msgid "New _Source..."
-#~ msgstr "_Нова папка..."
 
 #, fuzzy
 #~ msgid "Adds a new news bin."
 #~ msgstr "Додај нова претплата."
-
-#, fuzzy
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Обележи како прочитано"
-
-#, fuzzy
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Означи ги сите вести во означената ставка како прочитани или сите вести "
-#~ "во означената папка."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2239,10 +2312,6 @@ msgstr ""
 
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Го отвора дијалогот за параметри на означените вести."
-
-#, fuzzy
-#~ msgid "_Remove"
-#~ msgstr "Отстрани ги сите"
 
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Отстранува вести, односно нивното ажурирање."
@@ -2253,10 +2322,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Го менува статусот на прочитано на означениот предмет."
-
-#, fuzzy
-#~ msgid "R_emove"
-#~ msgstr "/Отстрани го предметот"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Ја отстранува избраната ставка"

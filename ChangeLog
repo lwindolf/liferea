@@ -1,3 +1,12 @@
+2020-08-28  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12.9
+
+	* Fixes #846, #864: Translations not applied to application
+	  menu bar and tool bar.
+	  (Skif-off)
+
+
 2020-06-11  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.12.8

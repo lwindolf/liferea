@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8-rc1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2013-03-31 17:15+0100\n"
 "Last-Translator: Iñigo Varela <ivarela@ubuntu.com>\n"
 "Language-Team: Asturian <ubuntu-l10n-ast@lists.ubuntu.com>\n"
@@ -867,21 +867,21 @@ msgstr "Encaboxar _too"
 msgid "All Files"
 msgstr "Tolos ficheros"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea ta trabayando ensin conexón. Nun pueden anovase les fontes"
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Guetar en toles canales"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Conseñar too como lleíu"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "¿Daveres quies desaniciar \"%s\"?"
@@ -915,16 +915,16 @@ msgstr "¡Seleiciona una canal pa desaniciar los sos artículos!"
 msgid "No item has been selected"
 msgstr "Nun se seleicionó dengún artículu"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "_Abrir nel restolador"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">Opciones del restolador esternu</span>"
@@ -943,11 +943,11 @@ msgstr "Crear un marcador del enllaz en %s"
 msgid "Copy Item _Location"
 msgstr "_Copiar direición de la imaxe"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "_Camudar ente lleíu y non lleíu"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Asignar o quitar _etiqueta"
 
@@ -967,7 +967,7 @@ msgstr "Guardar como..."
 msgid "Copy Link Location"
 msgstr "_Copiar la direición del enllaz"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Anovar"
 
@@ -979,11 +979,11 @@ msgstr "_Anovar Carpeta"
 msgid "New _Subscription..."
 msgstr "Nueva _soscripción"
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Nueva _carpeta..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Nueva carpeta de _gueta..."
 
@@ -991,7 +991,7 @@ msgstr "Nueva carpeta de _gueta..."
 msgid "New S_ource..."
 msgstr "Nueva f_onte..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Nueva ban_dexa..."
 
@@ -1015,7 +1015,7 @@ msgstr ""
 msgid "_Delete"
 msgstr "_Desaniciar"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Propiedaes"
 
@@ -1310,13 +1310,39 @@ msgstr "_Soscribise..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Aumentar el tamañu del testu"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Amenorgar el tamañu del testu"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+#, fuzzy
+msgid "Next Item"
+msgstr "Siguiente artículu _nuevu"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "Siguiente artículu _nuevu"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Conseñar artículos lleíos"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Guetar en toles canales..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1387,6 +1413,137 @@ msgstr "Cont_raseña"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "Nome d'_usuariu (Email)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Soscripciones"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "_Anovar toes"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Conseñar _too como lleío"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Nueva soscripción..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Nueva _fonte..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Importar llista de canales..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Esportar llista de canales..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Colar"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Canal"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Desanici_ar tolos elementos"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "D_esaniciar"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Elementu"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "D_esaniciar"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Ver"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Vista normal"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Vista enantada"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "Vista _combinada"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "Llista de canales _amenorgada"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Ferramientes"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "Monitor d'anovamiento_s"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Preferencies"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "Gu_etar"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "A_ida"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Conteníos"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Referencia rápida"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_FAQ"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Tocante a"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Axuntar una soscripción a la llista de canales."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Conseña como lleíos tolos artículos de la canal esbillada o, nel casu d'una "
+"carpeta de tolos sos canales."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Anova toles soscripciones"
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Amosar el ventanu de gueta."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1998,57 +2155,17 @@ msgstr "Solicitúes pendientes"
 msgid "Downloading Now"
 msgstr "Baxando agora"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Soscripciones"
-
-#~ msgid "Update _All"
-#~ msgstr "_Anovar toes"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Anova toles soscripciones"
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Conseñar _too como lleío"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Conseña como lleíos tolos artículos de toles soscripciones."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Importar llista de canales..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importa una llista de canales en formatu OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Esportar llista de canales..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Esporta la llista de canales en formatu OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "_Colar"
-
-#~ msgid "_Feed"
-#~ msgstr "_Canal"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Desanici_ar tolos elementos"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Desaniciar tolos artículos de la canal seleccionada."
-
-#~ msgid "_Item"
-#~ msgstr "_Elementu"
-
-#, fuzzy
-#~ msgid "Next Item"
-#~ msgstr "Siguiente artículu _nuevu"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "Siguiente artículu _nuevu"
-
-#~ msgid "_View"
-#~ msgstr "_Ver"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Aumenta'l tamañu del testu na vista del artículu."
@@ -2056,86 +2173,35 @@ msgstr "Baxando agora"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Amenorga'l tamañu del testu de la vista del artículu"
 
-#~ msgid "_Tools"
-#~ msgstr "_Ferramientes"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "Monitor d'anovamiento_s"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Amosar llista de tolos canales con anovamientos pendientes"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Preferencies"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Editar Preferencies."
 
-#~ msgid "S_earch"
-#~ msgstr "Gu_etar"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Guetar en toles canales..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Amosar el ventanu de gueta."
-
-#~ msgid "_Help"
-#~ msgstr "A_ida"
-
-#~ msgid "_Contents"
-#~ msgstr "_Conteníos"
-
 #~ msgid "View help for this application."
 #~ msgstr "Amosa aida pa esta aplicación."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Referencia rápida"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Amosar toles combinaciones de tecles de Liferea."
 
-#~ msgid "_FAQ"
-#~ msgstr "_FAQ"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Amosar les entrugues más frecuentes (FAQ) del programa."
-
-#~ msgid "_About"
-#~ msgstr "_Tocante a"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Amosar el ventanu Tocante a."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Vista normal"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Visualiza en mou veceru de corréu."
-
-#~ msgid "_Wide View"
-#~ msgstr "_Vista enantada"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Afita la visualización usando tres paneles verticales."
 
-#~ msgid "_Combined View"
-#~ msgstr "Vista _combinada"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Afita la visualización usando dos paneles."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "Llista de canales _amenorgada"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Anubrir los canales ensin artículos nuevos"
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Nueva soscripción..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Axuntar una soscripción a la llista de canales."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Axuntar una carpeta a la llista de canales."
@@ -2143,23 +2209,11 @@ msgstr "Baxando agora"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Axuntar una carpeta de gueta a la llista de canales."
 
-#~ msgid "New _Source..."
-#~ msgstr "Nueva _fonte..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Axuntar una nueva fonte de llistes de canales."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Axuntar una nueva bandexa de noticies."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Conseñar artículos lleíos"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Conseña como lleíos tolos artículos de la canal esbillada o, nel casu "
-#~ "d'una carpeta de tolos sos canales."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2171,9 +2225,6 @@ msgstr "Baxando agora"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Abre'l cuadru de propiedaes de la canal esbillada."
 
-#~ msgid "_Remove"
-#~ msgstr "D_esaniciar"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Desaniciar la canal esbillada."
 
@@ -2182,9 +2233,6 @@ msgstr "Baxando agora"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Crea o desanicia una etiqueta nel artículu seleccionáu."
-
-#~ msgid "R_emove"
-#~ msgstr "D_esaniciar"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Desaniciar l'artículu esbilláu."

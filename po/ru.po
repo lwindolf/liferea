@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2015-06-24 16:34+0300\n"
 "Last-Translator: ned <n-st@mail.ru>\n"
 "Language-Team: \n"
@@ -877,21 +877,21 @@ msgstr "_Отменить всё"
 msgid "All Files"
 msgstr "Все файлы"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea в автономном режиме. Обновление невозможно"
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Поиск новостей"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Прочитано"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Удалить \"%s\"?"
@@ -925,15 +925,15 @@ msgstr "Необходимо выбрать ленту для удаления �
 msgid "No item has been selected"
 msgstr "Нет выбранных новостей"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Открыть во вкладк_е"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Открыть в браузере"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Во внешнем _браузере"
 
@@ -950,11 +950,11 @@ msgstr "_Закладка в %s"
 msgid "Copy Item _Location"
 msgstr "_Копировать URL"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "_Прочитано или нет"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "_Важно или нет"
 
@@ -974,7 +974,7 @@ msgstr "Сохранить как..."
 msgid "Copy Link Location"
 msgstr "Копировать URL"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Обновить"
 
@@ -986,11 +986,11 @@ msgstr "_Обновить папку"
 msgid "New _Subscription..."
 msgstr "Новая _подписка..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Новая пап_ка..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Новая папка п_оиска..."
 
@@ -998,7 +998,7 @@ msgstr "Новая папка п_оиска..."
 msgid "New S_ource..."
 msgstr "Новый _источник..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Новый _ящик новостей..."
 
@@ -1022,7 +1022,7 @@ msgstr "_Обновить"
 msgid "_Delete"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Свойства"
 
@@ -1314,13 +1314,38 @@ msgstr "_Подписаться..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "У_величить шрифт"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "У_меньшить шрифт"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "_Назад"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Вперёд"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Далее"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Прочитано"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Найти..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1388,6 +1413,135 @@ msgstr "_Пароль"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "Логи_н (Email)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Подписки"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Обновить всё"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "_Прочитано всё"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Добавить..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Новый ис_точник лент..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Импорт списка лент..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Экспорт списка лент..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Выход"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Лента"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "О_чистить"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Удалить"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Новость"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "_Удалить"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Вид"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "Во _весь экран"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Обычный вид"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Широкий вид"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Сводный вид"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Краткий список лент"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Инструменты"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Монитор обновления"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Настройки"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "П_оиск"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Помощь"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Справка"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Руководство"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_FAQ"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_О программе"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Добавить подписку на ленту"
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr "Отметить ленту или папку прочитанными"
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Обновить все ленты"
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Диалог поиска"
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1974,59 +2128,17 @@ msgstr "Очередь"
 msgid "Downloading Now"
 msgstr "Загрузка"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Подписки"
-
-#~ msgid "Update _All"
-#~ msgstr "Обновить всё"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Обновить все ленты"
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "_Прочитано всё"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Отметить прочитанными все новости во всех лентах"
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Импорт списка лент..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Импорт списка лент OPML"
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Экспорт списка лент..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Экспорт списока лент OPML"
 
-#~ msgid "_Quit"
-#~ msgstr "_Выход"
-
-#~ msgid "_Feed"
-#~ msgstr "_Лента"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "О_чистить"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Удалить все новости выбранной ленты"
-
-#~ msgid "_Item"
-#~ msgstr "_Новость"
-
-#~ msgid "Previous Item"
-#~ msgstr "_Назад"
-
-#~ msgid "Next Item"
-#~ msgstr "Вперёд"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Далее"
-
-#~ msgid "_View"
-#~ msgstr "_Вид"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Увеличить размер шрифта новости"
@@ -2034,86 +2146,35 @@ msgstr "Загрузка"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Уменьшить размер шрифта новости"
 
-#~ msgid "_Tools"
-#~ msgstr "_Инструменты"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Монитор обновления"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Список лент, ожидающих обновления"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Настройки"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Изменить настройки"
 
-#~ msgid "S_earch"
-#~ msgstr "П_оиск"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Найти..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Диалог поиска"
-
-#~ msgid "_Help"
-#~ msgstr "_Помощь"
-
-#~ msgid "_Contents"
-#~ msgstr "_Справка"
-
 #~ msgid "View help for this application."
 #~ msgstr "Справка этого приложения"
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Руководство"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Сочетания клавиш Liferea"
 
-#~ msgid "_FAQ"
-#~ msgstr "_FAQ"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Часто задаваемые вопросы"
-
-#~ msgid "_About"
-#~ msgstr "_О программе"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Диалог \"О программе\""
 
-#~ msgid "_Normal View"
-#~ msgstr "_Обычный вид"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Вид обычного почтового клиента"
-
-#~ msgid "_Wide View"
-#~ msgstr "_Широкий вид"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Три вертикальных панели"
 
-#~ msgid "_Combined View"
-#~ msgstr "_Сводный вид"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Две панели"
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Краткий список лент"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Скрыть прочитанные ленты"
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Добавить..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Добавить подписку на ленту"
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Добавить папку в список лент"
@@ -2121,21 +2182,11 @@ msgstr "Загрузка"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Добавить папку поиска в список лент"
 
-#~ msgid "New _Source..."
-#~ msgstr "Новый ис_точник лент..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Добавить источник списка лент"
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Добавить ящик новостей"
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Прочитано"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr "Отметить ленту или папку прочитанными"
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2145,9 +2196,6 @@ msgstr "Загрузка"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Открыть диалог свойств выбранной подписки"
 
-#~ msgid "_Remove"
-#~ msgstr "_Удалить"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Удалить выбранные подписки"
 
@@ -2156,9 +2204,6 @@ msgstr "Загрузка"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Переключение важности новости"
-
-#~ msgid "R_emove"
-#~ msgstr "_Удалить"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Удалить выбранную запись"
@@ -2171,9 +2216,6 @@ msgstr "Загрузка"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Открыть ссылку на новость в заданном внешнем браузере"
-
-#~ msgid "_Fullscreen"
-#~ msgstr "Во _весь экран"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Полноэкранный режим просмотра"

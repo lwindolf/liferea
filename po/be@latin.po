@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2007-08-19 13:26+0300\n"
 "Last-Translator:  <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin\n"
@@ -904,21 +904,21 @@ msgstr "Anuluj _usie"
 msgid "All Files"
 msgstr "_Lakalny fajł"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea u adłučanym režymie. Aktualizacyja niemahčymaja."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Šukaj va ŭsich kanałach"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Zaznač usie jak pračytanyja"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Ty ŭpeŭnieny, što chočaš vydalić \"%s\"?"
@@ -952,16 +952,16 @@ msgstr "Ty pavinny abrać kanał, dla jakoha vydalić elementy!"
 msgid "No item has been selected"
 msgstr "Elementy nie zaznačanyja"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "_Adčyni ŭ hartačy"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">Nałady vonkavaha hartača</span>"
@@ -981,11 +981,11 @@ msgstr "/_Zrabi zakładku dla spasyłki na %s"
 msgid "Copy Item _Location"
 msgstr "/_Skapijuj adras spasyłki"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Źmiani _stan pračytanaści"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Źmiani ś_ciah elementu"
 
@@ -1009,7 +1009,7 @@ msgstr "/Zapišy jak..."
 msgid "Copy Link Location"
 msgstr "/_Skapijuj adras spasyłki"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Aktualizuj"
 
@@ -1023,11 +1023,11 @@ msgstr "/_Aktualizuj kataloh"
 msgid "New _Subscription..."
 msgstr "_Novaja padpiska..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Novy _kataloh..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Novy kataloh _pošuku..."
 
@@ -1036,7 +1036,7 @@ msgstr "Novy kataloh _pošuku..."
 msgid "New S_ource..."
 msgstr "Novaja _krynica..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Novy _koš navinaŭ..."
 
@@ -1064,7 +1064,7 @@ msgstr ""
 msgid "_Delete"
 msgstr "/_Vydal"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 #, fuzzy
 msgid "_Properties"
 msgstr "_Ułaścivaści..."
@@ -1366,13 +1366,40 @@ msgstr "/_Padpišysia..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "Pa_vialič pamier tekstu"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "Pa_mienš pamier tekstu"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+#, fuzzy
+msgid "Next Item"
+msgstr "_Nastupny niečytany element"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Nastupny niečytany element"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+#, fuzzy
+msgid "_Mark Items Read"
+msgstr "/_Zaznač jak pračytanaje"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Šukaj va ŭsich kanałach..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1445,6 +1472,140 @@ msgstr "_Parol"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Nazva karystalnika (Email)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Padpiski"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Aktualizuj _usie"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Paznač usie jak _čytanyja"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Novaja padpiska..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Novaja _krynica..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Impartuj śpis kanałaŭ..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Ekspartuj śpis kanałaŭ..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Vyjdzi"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "Kanał"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Vydal _usie elementy"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Vydal"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Element"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "_Vydal"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Vyhlad"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Zvyčajny vyhlad"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "Š_yroki vyhlad"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Kambinavany vyhlad"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Pryładździe"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Manitor aktualizacyj"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Nałady"
+
+#: ../glade/liferea_menu.ui.h:39
+#, fuzzy
+msgid "S_earch"
+msgstr "_Šukaj"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Dapamoha"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Źmieściva"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Chutki ahlad"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_Pytańni j adkazy"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Ab prahramie"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Dadaje padpisku ŭ śpis kanałaŭ."
+
+#: ../glade/liferea_toolbar.ui.h:4
+#, fuzzy
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Zaznačaje ŭsie elementy abranaje padpiski albo ŭsich padpisak abranaha "
+"katalohu jak pračytanyja."
+
+#: ../glade/liferea_toolbar.ui.h:9
+#, fuzzy
+msgid "Updates all subscriptions."
+msgstr "Novaja padpiska"
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Pakažy dyjalohavaje vakno pošuku."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -2075,58 +2236,17 @@ msgstr "<b>Zapyty ŭ čakańni</b>"
 msgid "Downloading Now"
 msgstr "<b>Zahružajecca zaraz</b>"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Padpiski"
-
-#~ msgid "Update _All"
-#~ msgstr "Aktualizuj _usie"
-
-#, fuzzy
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Novaja padpiska"
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Paznač usie jak _čytanyja"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Paznačaje čytanym kožny element z kožnaje padpiski."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Impartuj śpis kanałaŭ..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Impartuje śpis kanałaŭ u farmacie OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Ekspartuj śpis kanałaŭ..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Ekspartuje śpis kanałaŭ u farmacie OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "_Vyjdzi"
-
-#~ msgid "_Feed"
-#~ msgstr "Kanał"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Vydal _usie elementy"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Vydalaje ŭsie elementy z dziejna abranaha kanału."
-
-#~ msgid "_Item"
-#~ msgstr "_Element"
-
-#, fuzzy
-#~ msgid "Next Item"
-#~ msgstr "_Nastupny niečytany element"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Nastupny niečytany element"
-
-#~ msgid "_View"
-#~ msgstr "_Vyhlad"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Pavialičvaje pamier tekstu ŭ vyhladzie elementaŭ."
@@ -2134,74 +2254,31 @@ msgstr "<b>Zahružajecca zaraz</b>"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Pamianšaje pamier tekstu ŭ vyhladzie elementaŭ."
 
-#~ msgid "_Tools"
-#~ msgstr "_Pryładździe"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Manitor aktualizacyj"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr ""
 #~ "Pakažy śpis usich kanałaŭ, što dziejna znachdziacca ŭ čarzie na "
 #~ "aktualizacyju"
 
-#~ msgid "_Preferences"
-#~ msgstr "_Nałady"
-
 #~ msgid "Edit Preferences."
 #~ msgstr "Redahuj nałady."
-
-#, fuzzy
-#~ msgid "S_earch"
-#~ msgstr "_Šukaj"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Šukaj va ŭsich kanałach..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Pakažy dyjalohavaje vakno pošuku."
-
-#~ msgid "_Help"
-#~ msgstr "_Dapamoha"
-
-#~ msgid "_Contents"
-#~ msgstr "_Źmieściva"
 
 #~ msgid "View help for this application."
 #~ msgstr "Pakažy dapamohu dla hetaje aplikacyi."
 
-#~ msgid "_Quick Reference"
-#~ msgstr "_Chutki ahlad"
-
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Pakažy śpis usich skarotaŭ Liferea."
-
-#~ msgid "_FAQ"
-#~ msgstr "_Pytańni j adkazy"
 
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Pakažy Pytańni j Adkazy dla hetaje aplikacyi."
 
-#~ msgid "_About"
-#~ msgstr "_Ab prahramie"
-
 #~ msgid "Shows an about dialog."
 #~ msgstr "Pakazvaje dyjalohavaje vakno sa źviestkami ab prahramie."
-
-#~ msgid "_Normal View"
-#~ msgstr "_Zvyčajny vyhlad"
 
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Vyznač režym ahladu paštovaha klijenta."
 
-#~ msgid "_Wide View"
-#~ msgstr "Š_yroki vyhlad"
-
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Vyznač režym ahladu z tryma vertykalnymi panelami."
-
-#~ msgid "_Combined View"
-#~ msgstr "_Kambinavany vyhlad"
 
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Vyznač režym ahladu z dvuma panelami."
@@ -2210,37 +2287,17 @@ msgstr "<b>Zahružajecca zaraz</b>"
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Nia niečytanych elementaŭ "
 
-#~ msgid "_New Subscription..."
-#~ msgstr "_Novaja padpiska..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Dadaje padpisku ŭ śpis kanałaŭ."
-
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Dadaje kataloh u śpis kanałaŭ."
 
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Dadaje novy kataloh pošuku ŭ śpis kanałaŭ."
 
-#~ msgid "New _Source..."
-#~ msgstr "Novaja _krynica..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Dadaje novuju krynicu śpisu kanałaŭ."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Dadaje novy koš navinaŭ."
-
-#, fuzzy
-#~ msgid "_Mark Items Read"
-#~ msgstr "/_Zaznač jak pračytanaje"
-
-#, fuzzy
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Zaznačaje ŭsie elementy abranaje padpiski albo ŭsich padpisak abranaha "
-#~ "katalohu jak pračytanyja."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2251,9 +2308,6 @@ msgstr "<b>Zahružajecca zaraz</b>"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Adčyniaje dyjalohavaje vakno ŭłaścivaściaŭ dla abranaje padpiski."
 
-#~ msgid "_Remove"
-#~ msgstr "_Vydal"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Vydalaje abranuju padpisku."
 
@@ -2262,9 +2316,6 @@ msgstr "<b>Zahružajecca zaraz</b>"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Źmianiaje stan ściahu dla abranaha elementu."
-
-#~ msgid "R_emove"
-#~ msgstr "_Vydal"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Vydalaje abrany element."

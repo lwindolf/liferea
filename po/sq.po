@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2016-11-10 20:22+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
@@ -877,21 +877,21 @@ msgstr "_Anuloje"
 msgid "All Files"
 msgstr "Krejt Kartelat"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea është nën mënyrën jo në linjë. Përditësimi është i pamundur."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Kërkoni Në Tërë Prurjet"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Shënoji të tëra si të lexuara"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Jeni i sigurt se doni të fshihen \"%s\"?"
@@ -925,15 +925,15 @@ msgstr "Duhet përzgjedhur një prurje, që të mund të fshihen zërat e saj!"
 msgid "No item has been selected"
 msgstr "S’është përzgjedhur zë"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Hape Në _Skedë"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Hape Në Shfletues"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Hape në Shfletues të J_ashtëm"
 
@@ -950,11 +950,11 @@ msgstr "_Faqeruaje te %s"
 msgid "Copy Item _Location"
 msgstr "Kopjo _Vendndodhje Zëri"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Këmbe Gjendje _Leximi"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Këmbe _Shenjë Zëri"
 
@@ -974,7 +974,7 @@ msgstr "Ruajeni Si…"
 msgid "Copy Link Location"
 msgstr "_Kopjo Vendndodhje Lidhjeje"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Përditësoje"
 
@@ -986,11 +986,11 @@ msgstr "_Përditësoje Dosjen"
 msgid "New _Subscription..."
 msgstr "Pajtim i _Ri…"
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "_Dosje e Re…"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "_Dosje e Re Kërkimesh…"
 
@@ -998,7 +998,7 @@ msgstr "_Dosje e Re Kërkimesh…"
 msgid "New S_ource..."
 msgstr "_Burim i Ri…"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Kosh i Ri _Lajmesh…"
 
@@ -1022,7 +1022,7 @@ msgstr "_Rikrijoje"
 msgid "_Delete"
 msgstr "_Fshije"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Veti"
 
@@ -1323,13 +1323,38 @@ msgstr "_Pajtohuni…"
 msgid "_Copy"
 msgstr "_Kopjoje"
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "_Rrit Madhësi Teksti"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Zvogëlo Madhësi Teksti"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Zëri i Mëparshëm"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Zëri Pasues"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "Zëri _Pasues i Palexuar"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Shënoji Zërat Si të Lexuar"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Kërkoni Në Tërë Prurjet…"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1398,6 +1423,137 @@ msgstr "_Fjalëkalim"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Emër përdoruesi (Email)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Pajtime"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Përditësoji _Krejt"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Shënoji Krejt Si të _Lexuara"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "Pajtim i _Ri…"
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "_Burim i Ri…"
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Importo Listë Prurjesh…"
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Eksporto Listë Prurjesh…"
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Dil"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Prurje"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Hiqi _Krejt Zërat"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Hiqe"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Zë"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "_Hiqe"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Parje"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_Sa Krejt Ekrani"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "Parje _Normale"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "Parje _Gjerazi"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "Pamje e _Ndërthurur"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "Listë Prurjesh e _Mpakur"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Mjete"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Përditëso Monitorin"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Parapëlqime"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_Kërko"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Ndihmë"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Lëndë"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Referencë e Shpejtë"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_FAQ"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Rreth"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Shton te lista e prurjeve një pajtim."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Shënoji si të lexuar krejt zërat e nyjës së përzgjedhur te lista e "
+"prurjeve / te pjesa e listës."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Përditëso krejt pajtimet."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Shfaq dialogun e kërkimeve."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1995,59 +2151,17 @@ msgstr "Kërkesa Në Pritje të Shqyrtimit"
 msgid "Downloading Now"
 msgstr "Po shkarkohet Tani"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Pajtime"
-
-#~ msgid "Update _All"
-#~ msgstr "Përditësoji _Krejt"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Përditëso krejt pajtimet."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Shënoji Krejt Si të _Lexuara"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Shënon si të lexuar çdo zë të çdo pajtimi."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Importo Listë Prurjesh…"
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importon një listë prurjesh OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Eksporto Listë Prurjesh…"
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Eksporton listë prurjesh si OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "_Dil"
-
-#~ msgid "_Feed"
-#~ msgstr "_Prurje"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Hiqi _Krejt Zërat"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Heq tërë zërat e prurjes së përzgjedhur për çastin."
-
-#~ msgid "_Item"
-#~ msgstr "_Zë"
-
-#~ msgid "Previous Item"
-#~ msgstr "Zëri i Mëparshëm"
-
-#~ msgid "Next Item"
-#~ msgstr "Zëri Pasues"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "Zëri _Pasues i Palexuar"
-
-#~ msgid "_View"
-#~ msgstr "_Parje"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Rrit madhësinë e tekstit për parjen e zërit."
@@ -2055,86 +2169,35 @@ msgstr "Po shkarkohet Tani"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Zvogëlon madhësinë e tekstit për parjen e zërit."
 
-#~ msgid "_Tools"
-#~ msgstr "_Mjete"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Përditëso Monitorin"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Shfaq një listë të tërë prurjeve hëpërhë në radhë për përditësim"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Parapëlqime"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Përpunoni Parapëlqimet."
 
-#~ msgid "S_earch"
-#~ msgstr "_Kërko"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Kërkoni Në Tërë Prurjet…"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Shfaq dialogun e kërkimeve."
-
-#~ msgid "_Help"
-#~ msgstr "_Ndihmë"
-
-#~ msgid "_Contents"
-#~ msgstr "_Lëndë"
-
 #~ msgid "View help for this application."
 #~ msgstr "Shihni ndihmën për këtë aplikacion."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Referencë e Shpejtë"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Shihni një listë të tërë shkurtoreve të Liferea-s."
 
-#~ msgid "_FAQ"
-#~ msgstr "_FAQ"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Shihni FAQ për këtë aplikacion."
-
-#~ msgid "_About"
-#~ msgstr "_Rreth"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Shfaq një dialog \"rreth\"."
 
-#~ msgid "_Normal View"
-#~ msgstr "Parje _Normale"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Caktoni si mënyrë parjeje mënyrën klient poste."
-
-#~ msgid "_Wide View"
-#~ msgstr "Parje _Gjerazi"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Caktoni si mënyrë parjeje përdorimin e tre kuadrateve horizontalë."
 
-#~ msgid "_Combined View"
-#~ msgstr "Pamje e _Ndërthurur"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Caktoni si mënyrë parjeje mënyrën me dy kuadrate."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "Listë Prurjesh e _Mpakur"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Fshihi prurjet pa zëra të palexuar."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "Pajtim i _Ri…"
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Shton te lista e prurjeve një pajtim."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Shton dosje te lista e prurjeve."
@@ -2142,23 +2205,11 @@ msgstr "Po shkarkohet Tani"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Shton dosje të re kërkimesh te lista e prurjeve."
 
-#~ msgid "New _Source..."
-#~ msgstr "_Burim i Ri…"
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Shton burim të ri liste prurjesh."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Shton një kosh të ri lajmesh."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "_Shënoji Zërat Si të Lexuar"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Shënoji si të lexuar krejt zërat e nyjës së përzgjedhur te lista e "
-#~ "prurjeve / te pjesa e listës."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2170,9 +2221,6 @@ msgstr "Po shkarkohet Tani"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Hap dialogun e vetive të pajtimit të përzgjedhur."
 
-#~ msgid "_Remove"
-#~ msgstr "_Hiqe"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Heq pajtimin e përzgjedhur."
 
@@ -2181,9 +2229,6 @@ msgstr "Po shkarkohet Tani"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Këmben gjendje shenje për zërin e përzgjedhur."
-
-#~ msgid "R_emove"
-#~ msgstr "_Hiqe"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Heq zërin e përzgjedhur."
@@ -2196,9 +2241,6 @@ msgstr "Po shkarkohet Tani"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Hap lidhjen e zërit në shfletuesin e jashtëm të përzgjedhur."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_Sa Krejt Ekrani"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Shfletoni nën ekran të plotë"

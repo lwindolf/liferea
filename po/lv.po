@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 17:12+0100\n"
+"POT-Creation-Date: 2020-08-28 17:33+0200\n"
 "PO-Revision-Date: 2014-04-20 20:59+0300\n"
 "Last-Translator: Rihards Prieditis <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
@@ -877,21 +877,21 @@ msgstr "_Atcelt visu"
 msgid "All Files"
 msgstr "Visas datnes"
 
-#: ../src/ui/feed_list_view.c:376
+#: ../src/ui/feed_list_view.c:387
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea ir bezsaites režīmā. Nevar veikt atjaunināšanu."
 
-#: ../src/ui/feed_list_view.c:422
+#: ../src/ui/feed_list_view.c:433
 #, fuzzy
 msgid "all feeds"
 msgstr "Meklēt visās plūsmās"
 
-#: ../src/ui/feed_list_view.c:423
+#: ../src/ui/feed_list_view.c:434
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Atzīmēt visas kā lasītas"
 
-#: ../src/ui/feed_list_view.c:427
+#: ../src/ui/feed_list_view.c:438
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Vai tiešām vēlaties dzēst “%s”?"
@@ -925,15 +925,15 @@ msgstr "Jums jāizvēlas plūsma, lai dzēstu tās vienumus!"
 msgid "No item has been selected"
 msgstr "Nav izvēlētu vienumu"
 
-#: ../src/ui/popup_menu.c:107
+#: ../src/ui/popup_menu.c:107 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Atvērt _cilnē"
 
-#: ../src/ui/popup_menu.c:111
+#: ../src/ui/popup_menu.c:111 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "Atvērt pār_lūkā"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:115 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "_Atvērt ārējā pārlūkā"
 
@@ -950,11 +950,11 @@ msgstr "Ie_grāmatot %s"
 msgid "Copy Item _Location"
 msgstr "Kopēt _vienuma adresi"
 
-#: ../src/ui/popup_menu.c:162
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Pā_rslēgt lasīšanas statusu"
 
-#: ../src/ui/popup_menu.c:166
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Pārslēgt vienuma _atzīmi"
 
@@ -974,7 +974,7 @@ msgstr "Saglabāt kā..."
 msgid "Copy Link Location"
 msgstr "Kopēt saites vietu"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "Atja_unināt"
 
@@ -986,11 +986,11 @@ msgstr "Atja_unināt mapi"
 msgid "New _Subscription..."
 msgstr "Jaun_s abonements..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Jauna _mape..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Jauna m_eklēšanas mape..."
 
@@ -998,7 +998,7 @@ msgstr "Jauna m_eklēšanas mape..."
 msgid "New S_ource..."
 msgstr "Jauns av_ots..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Jau_ns ziņu grozs..."
 
@@ -1022,7 +1022,7 @@ msgstr "Pā_rbūvēt"
 msgid "_Delete"
 msgstr "_Dzēst"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "Ī_pašības"
 
@@ -1317,13 +1317,38 @@ msgstr "_Abonēt..."
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:217
+#: ../src/webkit/liferea_web_view.c:217 ../glade/liferea_menu.ui.h:30
 msgid "_Increase Text Size"
 msgstr "Pal_ielināt teksta izmēru"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:218 ../glade/liferea_menu.ui.h:31
 msgid "_Decrease Text Size"
 msgstr "_Samazināt teksta izmēru"
+
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Iepriekšējais vienums"
+
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Nākamais vienums"
+
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Nākamais nelasītais"
+
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "Atzī_mēt kā lasītus"
+
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Meklēt visās plūsmās..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1391,6 +1416,137 @@ msgstr "_Parole"
 #: ../glade/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Lietotājvārds (e-pasts)"
+
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Abonementi"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "_Atjaunināt visus"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Atzīmēt visus kā _lasītus"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "Jau_ns abonements..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Jaun_s avots..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Importēt plūsmu sarakstu..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Eksportēt plūsmu sarakstu..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "_Iziet"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Plūsma"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Izņemt _visus vienumus"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Izņemt"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "V_ienums"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Izņ_emt"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Skats"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_Pilnekrāns"
+
+#: ../glade/liferea_menu.ui.h:32
+msgid "_Normal View"
+msgstr "_Normāls skats"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Wide View"
+msgstr "_Plašs skats"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Combined View"
+msgstr "_Kombinētais skats"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Reducētais plūsmu saraksts"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Rīki"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "Atjaunināšanas _uzraugs"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Iestatījumi"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "M_eklēt"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Palīdzība"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Saturs"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Ātrā atsauce"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_BUJ"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "P_ar"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Pievieno abonementu plūsmu sarakstam."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Atzīmē visus vienumus izvēlētajā plūsmas saraksta mezglā / vienumu sarakstā "
+"kā lasītus."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Atjaunina visus abonementus."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Rādīt meklēšanas dialogu."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1990,59 +2146,17 @@ msgstr "Gaidošie pieprasījumi"
 msgid "Downloading Now"
 msgstr "Lejupielādēt tagad"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Abonementi"
-
-#~ msgid "Update _All"
-#~ msgstr "_Atjaunināt visus"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Atjaunina visus abonementus."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Atzīmēt visus kā _lasītus"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Atzīmē kā lasītus visus vienumus katrā abonementā."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Importēt plūsmu sarakstu..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importē OPML plūsmu sarakstu."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Eksportēt plūsmu sarakstu..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Eksportē plūsmu sarakstu kā OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "_Iziet"
-
-#~ msgid "_Feed"
-#~ msgstr "_Plūsma"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Izņemt _visus vienumus"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Izņem visus vienumus no pašlaik izvēlētās plūsmas."
-
-#~ msgid "_Item"
-#~ msgstr "V_ienums"
-
-#~ msgid "Previous Item"
-#~ msgstr "Iepriekšējais vienums"
-
-#~ msgid "Next Item"
-#~ msgstr "Nākamais vienums"
-
-#~ msgid "_Next Unread Item"
-#~ msgstr "_Nākamais nelasītais"
-
-#~ msgid "_View"
-#~ msgstr "_Skats"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Palielina teksta izmēru vienumu skatā."
@@ -2050,86 +2164,35 @@ msgstr "Lejupielādēt tagad"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Samazina teksta izmēru vienumu skatā."
 
-#~ msgid "_Tools"
-#~ msgstr "_Rīki"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "Atjaunināšanas _uzraugs"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Rādīt sarakstu ar visām plūsmām, kas atrodas atjaunināšanas rindā"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Iestatījumi"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Rediģēt iestatījumus."
 
-#~ msgid "S_earch"
-#~ msgstr "M_eklēt"
-
-#~ msgid "Search All Feeds..."
-#~ msgstr "Meklēt visās plūsmās..."
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Rādīt meklēšanas dialogu."
-
-#~ msgid "_Help"
-#~ msgstr "_Palīdzība"
-
-#~ msgid "_Contents"
-#~ msgstr "_Saturs"
-
 #~ msgid "View help for this application."
 #~ msgstr "Skatīt šīs lietotnes palīdzību."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Ātrā atsauce"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Skatīt sarakstu ar visiem Liferea īsceļiem."
 
-#~ msgid "_FAQ"
-#~ msgstr "_BUJ"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Skatīt šīs lietotnes BUJ."
-
-#~ msgid "_About"
-#~ msgstr "P_ar"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Parāda informāciju par programmu."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Normāls skats"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Iestatīt skata režīmu uz pasta klienta režīmu."
-
-#~ msgid "_Wide View"
-#~ msgstr "_Plašs skats"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Iestatīt skatīšanas režīmu uz trīs vertikālām rūtīm."
 
-#~ msgid "_Combined View"
-#~ msgstr "_Kombinētais skats"
-
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Iestatīt skatīšanas režīmu uz divu rūšu režīmu."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Reducētais plūsmu saraksts"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Slēpt plūsmas ar nelasītiem vienumiem."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "Jau_ns abonements..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Pievieno abonementu plūsmu sarakstam."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Pievieno mapi plūsmu sarakstam."
@@ -2137,23 +2200,11 @@ msgstr "Lejupielādēt tagad"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Pievieno jaunu meklēšanas mapi plūsmu sarakstam."
 
-#~ msgid "New _Source..."
-#~ msgstr "Jaun_s avots..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Pievieno jaunu plūsmas saraksta avotu."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Pievieno jaunu ziņu grozu."
-
-#~ msgid "_Mark Items Read"
-#~ msgstr "Atzī_mēt kā lasītus"
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Atzīmē visus vienumus izvēlētajā plūsmas saraksta mezglā / vienumu "
-#~ "sarakstā kā lasītus."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2164,9 +2215,6 @@ msgstr "Lejupielādēt tagad"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Atver īpašību dialogu izvēlētajiem abonementiem."
 
-#~ msgid "_Remove"
-#~ msgstr "_Izņemt"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Izņem izvēlēto abonementu."
 
@@ -2175,9 +2223,6 @@ msgstr "Lejupielādēt tagad"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Pārslēdz atzīmes statusu izvēlētajam vienumam."
-
-#~ msgid "R_emove"
-#~ msgstr "Izņ_emt"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Izņem izvēlēto vienumu."
@@ -2190,9 +2235,6 @@ msgstr "Lejupielādēt tagad"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Atver vienuma saiti konfigurētajā ārējā pārlūkā."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_Pilnekrāns"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Pārlūkot pilnekrānā"
