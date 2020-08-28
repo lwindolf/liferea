@@ -1,7 +1,7 @@
 /**
  * @file rule.c  item matching rules used by search folders
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
 #define ITEM_DESC_MATCH_RULE_ID		"exact_desc"
 #define FEED_TITLE_MATCH_RULE_ID	"feed_title"
+#define FEED_SOURCE_MATCH_RULE_ID	"feed_source"
+#define PARENT_FOLDER_MATCH_RULE_ID	"parent_folder"
 
 /** list of available search folder rules */
 static GSList *ruleFunctions = NULL;
@@ -41,7 +43,7 @@ rule_get_available_rules (void)
 {
 	if (!ruleFunctions)
 		rule_init ();
-		
+
 	return ruleFunctions;
 }
 
@@ -50,10 +52,10 @@ rule_get_available_rules (void)
 rulePtr
 rule_new (const gchar *ruleId,
           const gchar *value,
-          gboolean additive) 
+          gboolean additive)
 {
 	GSList		*iter;
-	
+
 	iter = rule_get_available_rules ();
 	while (iter) {
 		ruleInfoPtr ruleInfo = (ruleInfoPtr)iter->data;
@@ -61,16 +63,16 @@ rule_new (const gchar *ruleId,
 			rulePtr rule = (rulePtr) g_new0 (struct rule, 1);
 			rule->ruleInfo = ruleInfo;
 			rule->additive = additive;
-			rule->value = common_strreplace (g_strdup (value), "'", "");	
+			rule->value = common_strreplace (g_strdup (value), "'", "");
 			return rule;
 		}
-		
+
 		iter = g_slist_next (iter);
-	}	
+	}
 	return NULL;
 }
 
-void 
+void
 rule_free (rulePtr rule)
 {
 	g_free (rule->value);
@@ -82,13 +84,13 @@ rule_free (rulePtr rule)
 static gboolean
 rule_check_item_title (rulePtr rule, itemPtr item)
 {
-	return (NULL != item->title && NULL != g_strstr_len (item->title, -1, rule->value));
+	return (item->title && g_strstr_len (item->title, -1, rule->value));
 }
 
 static gboolean
 rule_check_item_description (rulePtr rule, itemPtr item)
 {
-	return (NULL != item->description && NULL != g_strstr_len (item->description, -1, rule->value));
+	return (item->description && g_strstr_len (item->description, -1, rule->value));
 }
 
 static gboolean
@@ -138,14 +140,36 @@ rule_check_feed_title (rulePtr rule, itemPtr item)
 	if (!feedNode)
 		return FALSE;
 
-	return (NULL != feedNode->title && NULL != g_strstr_len (feedNode->title, -1, rule->value));
+	return (feedNode->title && g_strstr_len (feedNode->title, -1, rule->value));
+}
+
+static gboolean
+rule_check_feed_source (rulePtr rule, itemPtr item)
+{
+	nodePtr feedNode = node_from_id (item->parentNodeId);
+	if (!feedNode)
+		return FALSE;
+
+	return (feedNode->subscription && g_strstr_len (feedNode->subscription->source, -1, rule->value));
+}
+
+static gboolean
+rule_check_parent_folder (rulePtr rule, itemPtr item)
+{
+	nodePtr node = node_from_id (item->parentNodeId);
+	if (!node)
+		return FALSE;
+
+	node = node->parent;
+
+	return (node && g_strstr_len (node->title, -1, rule->value));
 }
 
 /* rule initialization */
 
 static void
 rule_info_add (ruleCheckFunc checkFunc,
-          const gchar *ruleId, 
+          const gchar *ruleId,
           gchar *title,
           gchar *positive,
           gchar *negative,
@@ -158,27 +182,29 @@ rule_info_add (ruleCheckFunc checkFunc,
 	ruleInfo->title = title;
 	ruleInfo->positive = positive;
 	ruleInfo->negative = negative;
-	ruleInfo->needsParameter = needsParameter;	
+	ruleInfo->needsParameter = needsParameter;
 	ruleInfo->checkFunc = checkFunc;
 	ruleFunctions = g_slist_append (ruleFunctions, ruleInfo);
 }
 
 static void
-rule_init (void) 
+rule_init (void)
 {
 	debug_enter ("rule_init");
 
-	/*        SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param */ 
-	/*        ========================================================================================================================================================================================*/
-	
-	rule_info_add (rule_check_item_all,		ITEM_MATCH_RULE_ID,		_("Item"),		_("does contain"),	_("does not contain"),	TRUE);
-	rule_info_add (rule_check_item_title,		ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),	_("does contain"),	_("does not contain"),	TRUE);
-	rule_info_add (rule_check_item_description,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),		_("does contain"),	_("does not contain"),	TRUE);
-	rule_info_add (rule_check_item_is_unread,	"unread",			_("Read status"),	_("is unread"),		_("is read"),		FALSE);
-	rule_info_add (rule_check_item_is_flagged,	"flagged",			_("Flag status"),	_("is flagged"),	_("is unflagged"),	FALSE);
-	rule_info_add (rule_check_item_has_enc,		"enclosure",			_("Podcast"),		_("included"),		_("not included"),	FALSE);
-	rule_info_add (rule_check_item_category,	"category",			_("Category"),		_("is set"),		_("is not set"),	TRUE);
-	rule_info_add (rule_check_feed_title,		FEED_TITLE_MATCH_RULE_ID,	_("Feed title"),	_("does contain"),	_("does not contain"),	TRUE);
+	/*            in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param */
+	/*            ========================================================================================================================================================================================*/
+
+	rule_info_add (rule_check_item_all,		ITEM_MATCH_RULE_ID,		_("Item"),			_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_check_item_title,		ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_check_item_description,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),			_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_check_item_is_unread,	"unread",			_("Read status"),		_("is unread"),		_("is read"),		FALSE);
+	rule_info_add (rule_check_item_is_flagged,	"flagged",			_("Flag status"),		_("is flagged"),	_("is unflagged"),	FALSE);
+	rule_info_add (rule_check_item_has_enc,		"enclosure",			_("Podcast"),			_("included"),		_("not included"),	FALSE);
+	rule_info_add (rule_check_item_category,	"category",			_("Category"),			_("is set"),		_("is not set"),	TRUE);
+	rule_info_add (rule_check_feed_title,		FEED_TITLE_MATCH_RULE_ID,	_("Feed title"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_check_feed_source,		FEED_SOURCE_MATCH_RULE_ID,	_("Feed source"),		_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_check_parent_folder,	PARENT_FOLDER_MATCH_RULE_ID,	_("Parent folder title"),	_("does contain"),	_("does not contain"),	TRUE);
 
 	debug_exit ("rule_init");
 }

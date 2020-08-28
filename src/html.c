@@ -336,6 +336,7 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 		} else {
 			debug1 (DEBUG_PARSING, "No article found during HTML5 parsing of '%s'\n", baseUri);
 		}
+
 		xmlFreeDoc (doc);
 	}
 

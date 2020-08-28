@@ -123,8 +123,8 @@ node_set_subscription (nodePtr node, subscriptionPtr subscription)
 	/* Besides the favicon age we have no persistent
 	   update state field, so everything else goes NULL */
 	if (node->iconFile && !strstr(node->iconFile, "default.png")) {
-		subscription->updateState->lastFaviconPoll.tv_sec = common_get_mod_time (node->iconFile);
-		debug2 (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll.tv_sec);
+		subscription->updateState->lastFaviconPoll = (guint64)(common_get_mod_time (node->iconFile)) * G_USEC_PER_SEC;
+		debug2 (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll / G_USEC_PER_SEC);
 	}
 }
 
@@ -157,7 +157,7 @@ node_auto_update_subscription (nodePtr node)
 }
 
 void
-node_reset_update_counter (nodePtr node, GTimeVal *now)
+node_reset_update_counter (nodePtr node, guint64 *now)
 {
 	subscription_reset_update_counter (node->subscription, now);
 

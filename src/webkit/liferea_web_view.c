@@ -54,7 +54,7 @@ liferea_web_view_finalize(GObject *gobject)
 		g_object_remove_weak_pointer (G_OBJECT (self->dbus_connection), (gpointer *) &self->dbus_connection);
 	}
 
-	/* Chaining fianlize from parent class. */
+	/* Chaining finalize from parent class. */
 	G_OBJECT_CLASS(liferea_web_view_parent_class)->finalize(gobject);
 }
 

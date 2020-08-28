@@ -27,8 +27,8 @@ help you asap.
 
 ###### _Mandatory Dependencies_
 
-   libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0
-   libpeas-dev gsettings-desktop-schemas-dev python3
+   libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0-dev
+   libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool
 
    
 ###### _Compiling from Tarball_
@@ -39,7 +39,7 @@ and extract and compile with
     tar jxvf liferea-1.12.0.tar.bz2 
     ./configure
     make
-    make install
+    sudo make install
 
 
 ###### _Compiling from Git_
@@ -52,7 +52,7 @@ Then build it with:
 
     ./autogen.sh
     make
-    make install
+    sudo make install
 
 If you compile with a --prefix directory which does not match $XDG_DATA_DIRS
 you will get a runtime error about the schema not being found. To workaround
@@ -61,7 +61,7 @@ set $XDG_DATA_DIRS before starting Liferea. For example:
     my_dir=$HOME/tmp/liferea
     ./autogen.sh --prefix=$my_dir
     make
-    make install
+    sudo make install
     env XDG_DATA_DIRS="$my_dir/share:$XDG_DATA_DIRS" $my_dir/bin/liferea
 
 

@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  * 
- * Copyright (C) 2007-2012  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2020  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,6 @@
 #include "itemset.h"
 #include "metadata.h"
 #include "vfolder.h"
-
-/* You can find a schema description used by this version of Liferea at:
-   https://lzone.de/wiki/doku.php?id=liferea:v1.8:db_schema */
 
 static sqlite3	*db = NULL;
 gboolean searchFolderRebuild = FALSE;

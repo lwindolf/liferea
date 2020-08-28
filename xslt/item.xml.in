@@ -4,6 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
+ * Copyright (C) 2009-2019 Mikel Olasagasti Uranga <mikel@olasagasti.info>
  * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -301,6 +302,12 @@
     <!-- optional MediaRSS thumbnail -->
     <xsl:if test="attributes/attribute[ @name = 'mediathumbnail' ]">
       <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
+    </xsl:if>
+    <!-- optional MediaRSS YouTube links-->
+    <xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>
+    <xsl:if test="contains($url,'https://www.youtube.com/watch?v=')">
+      <xsl:variable name="youtubeid" select="substring-after($url,'https://www.youtube.com/watch?v=')"/>
+      <p><iframe width="640" height="480" src="https://www.youtube.com/embed/{$youtubeid}" frameborder="0" allowfullscreen="1"></iframe></p>
     </xsl:if>
     <!-- optional MediaRSS description -->
     <xsl:if test="attributes/attribute[ @name = 'mediadescription' ]">
