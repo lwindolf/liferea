@@ -2,6 +2,9 @@
 
 	Version 1.12.9
 
+	* #850: Fix embedded youtube video bug.
+          (reported by sblondon)
+
 	* Fixes #846, #864: Translations not applied to application
 	  menu bar and tool bar.
 	  (Skif-off)

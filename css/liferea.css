@@ -73,10 +73,20 @@ dd {
 	padding-left: 30px;
 }
 
-section, video, svg, iframe, figure, div.content * img {
+section, svg, div.content * img {
 	max-width: 100%;
-	object-fit: scale-down;
 	box-sizing: border-box;
+	object-fit: scale-down;
+}
+
+figure, iframe {
+	max-width: 100%;
+	box-sizing: border-box;
+
+	/* Note: object-fit would be best practice here, but it fails
+	   on embedded Youtube videos (pushing the embed iframe far
+	   to the right with the controls being not in the place
+	   visually shown) */
 }
 
 div.content * img {
