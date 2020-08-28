@@ -265,7 +265,7 @@
   <xsl:if test="$single = '0' and readStatus != '0'">itemunshaded</xsl:if>
 </xsl:variable>
 
-<div class="shading {$shading}">
+<div id="shading" class="shading {$shading}">
 <div class='content'>
   <!-- the item's content -->
   <p dir="{$txtDirection}">
