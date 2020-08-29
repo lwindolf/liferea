@@ -1090,7 +1090,11 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	g_free (toolbar_style);
 
 	debug0 (DEBUG_GUI, "Restoring window position");
-
+	/* Realize needed so that the window structure can be
+	   accessed... otherwise we get a GTK warning when window is
+	   shown by clicking on notification icon or when theme
+	   colors are fetched. */
+	gtk_widget_realize (GTK_WIDGET (shell->window));
 	liferea_shell_restore_position ();
 
 	/* Apply horrible window state parameter logic:
@@ -1114,11 +1118,6 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	switch (resultState) {
 		case MAINWINDOW_HIDDEN:
 			debug0 (DEBUG_GUI, "Restoring window state 'hidden (to tray)'");
-			/* Realize needed so that the window structure can be
-			   accessed... otherwise we get a GTK warning when window is
-			   shown by clicking on notification icon or when theme
-			   colors are fetched. */
-			gtk_widget_realize (GTK_WIDGET (shell->window));
 			gtk_widget_hide (GTK_WIDGET (shell->window));
 			break;
 		case MAINWINDOW_SHOWN:
