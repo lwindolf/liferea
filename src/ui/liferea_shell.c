@@ -240,7 +240,7 @@ liferea_shell_restore_position (void)
 	/* Restore position only if the width and height were saved */
 	if (w != 0 && h != 0) {
 		gdk_window = gtk_widget_get_window (GTK_WIDGET (shell->window));
-		monitor = gdk_display_get_monitor_at_window (gdk_display_get_default (), gdk_window);
+		monitor = gdk_display_get_monitor_at_window (gtk_widget_get_display (GTK_WIDGET(shell->window)), gdk_window);
 		gdk_monitor_get_workarea (monitor, &work_area);
 
 		if (x >= work_area.width)
@@ -312,7 +312,7 @@ liferea_shell_save_position (void)
 	gtk_window_get_size (shell->window, &w, &h);
 
 	gdk_window = gtk_widget_get_window (GTK_WIDGET (shell->window));
-	monitor = gdk_display_get_monitor_at_window (gdk_display_get_default (), gdk_window);
+	monitor = gdk_display_get_monitor_at_window (gtk_widget_get_display (GTK_WIDGET(shell->window)), gdk_window);
 	gdk_monitor_get_workarea (monitor, &work_area);
 
 	if (x+w<0 || y+h<0 ||
