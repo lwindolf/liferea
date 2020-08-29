@@ -375,7 +375,7 @@ liferea_htmlview_clear (LifereaHtmlView *htmlview)
 	GString	*buffer;
 
 	buffer = g_string_new (NULL);
-	htmlview_start_output (buffer, NULL, FALSE, FALSE);
+	htmlview_start_output (buffer, NULL, FALSE);
 	htmlview_finish_output (buffer);
 	liferea_htmlview_write (htmlview, buffer->str, NULL);
 	g_string_free (buffer, TRUE);

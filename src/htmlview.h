@@ -1,12 +1,12 @@
 /**
  * @file htmlview.h  item view interface for HTML rendering
- * 
- * Copyright (C) 2006-2007 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 #ifndef _HTMLVIEW_H
 #define _HTMLVIEW_H
 
@@ -29,12 +29,12 @@
 /* interface for item and item set HTML rendering */
 
 /**
- * Initialize the HTML view 
+ * Initialize the HTML view
  */
 void	htmlview_init (void);
 
 /**
- * To be called to clear the HTML view 
+ * To be called to clear the HTML view
  */
 void	htmlview_clear (void);
 
@@ -112,9 +112,8 @@ void	htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode);
  * @param buffer	buffer to add the HTML to
  * @param base		base URL of HTML content
  * @param css		TRUE if CSS definitions are to be added
- * @param script	TRUE if item menu scripts are to be added
  */
-void	htmlview_start_output (GString *buffer, const gchar *base, gboolean css, gboolean script);
+void	htmlview_start_output (GString *buffer, const gchar *base, gboolean css);
 
 /**
  * Function to add HTML source footer to create a valid HTML source.

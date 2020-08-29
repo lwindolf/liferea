@@ -1,7 +1,7 @@
 /**
  * @file htmlview.c  item view interface for HTML rendering
  *
- * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -248,12 +248,10 @@ htmlview_render_item (itemPtr item,
 	return output;
 }
 
-// FIXME: drop script parameter
 void
 htmlview_start_output (GString *buffer,
                        const gchar *base,
-		       gboolean css,
-		       gboolean script)
+		       gboolean css)
 {
 	g_string_append (buffer, "<?xml version=\"1.0\" encoding=\"utf-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
 	g_string_append (buffer, "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
@@ -327,7 +325,7 @@ htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode)
 		baseURL = g_markup_escape_text (baseURL, -1);
 
 	output = g_string_new (NULL);
-	htmlview_start_output (output, baseURL, TRUE, TRUE);
+	htmlview_start_output (output, baseURL, TRUE);
 
 	/* HTML view updating means checking which items
 	   need to be updated, render them and then
