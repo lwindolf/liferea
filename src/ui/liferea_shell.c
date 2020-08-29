@@ -225,6 +225,9 @@ liferea_shell_restore_position (void)
 	/* load window position */
 	int x, y, w, h;
 	gboolean last_window_maximized;
+	GdkWindow *gdk_window;
+	GdkMonitor *monitor;
+	GdkRectangle work_area;
 
 	conf_get_int_value (LAST_WINDOW_X, &x);
 	conf_get_int_value (LAST_WINDOW_Y, &y);
@@ -236,14 +239,17 @@ liferea_shell_restore_position (void)
 
 	/* Restore position only if the width and height were saved */
 	if (w != 0 && h != 0) {
+		gdk_window = gtk_widget_get_window (GTK_WIDGET (shell->window));
+		monitor = gdk_display_get_monitor_at_window (gtk_widget_get_display (GTK_WIDGET(shell->window)), gdk_window);
+		gdk_monitor_get_workarea (monitor, &work_area);
 
-		if (x >= gdk_screen_width ())
-			x = gdk_screen_width () - 100;
+		if (x >= work_area.width)
+			x = work_area.width - 100;
 		else if (x + w < 0)
 			x  = 100;
 
-		if (y >= gdk_screen_height ())
-			y = gdk_screen_height () - 100;
+		if (y >= work_area.height)
+			y = work_area.height - 100;
 		else if (y + w < 0)
 			y  = 100;
 
@@ -267,9 +273,12 @@ liferea_shell_restore_position (void)
 void
 liferea_shell_save_position (void)
 {
-	GtkWidget	*pane;
-	gint		x, y, w, h;
-	gboolean	last_window_maximized;
+	GtkWidget		*pane;
+	gint			x, y, w, h;
+	gboolean		last_window_maximized;
+	GdkWindow 		*gdk_window;
+	GdkMonitor 		*monitor;
+	GdkRectangle	work_area;
 
 	/* save pane proportions */
 	pane = liferea_shell_lookup ("leftpane");
@@ -302,9 +311,13 @@ liferea_shell_save_position (void)
 	gtk_window_get_position (shell->window, &x, &y);
 	gtk_window_get_size (shell->window, &w, &h);
 
+	gdk_window = gtk_widget_get_window (GTK_WIDGET (shell->window));
+	monitor = gdk_display_get_monitor_at_window (gtk_widget_get_display (GTK_WIDGET(shell->window)), gdk_window);
+	gdk_monitor_get_workarea (monitor, &work_area);
+
 	if (x+w<0 || y+h<0 ||
-	    x > gdk_screen_width () ||
-	    y > gdk_screen_height ())
+	    x > work_area.width ||
+	    y > work_area.height)
 		return;
 
 	debug4 (DEBUG_GUI, "Saving window size and position: %dx%d %d:%d", w, h, x, y);
@@ -1077,7 +1090,11 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	g_free (toolbar_style);
 
 	debug0 (DEBUG_GUI, "Restoring window position");
-
+	/* Realize needed so that the window structure can be
+	   accessed... otherwise we get a GTK warning when window is
+	   shown by clicking on notification icon or when theme
+	   colors are fetched. */
+	gtk_widget_realize (GTK_WIDGET (shell->window));
 	liferea_shell_restore_position ();
 
 	/* Apply horrible window state parameter logic:
@@ -1101,11 +1118,6 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	switch (resultState) {
 		case MAINWINDOW_HIDDEN:
 			debug0 (DEBUG_GUI, "Restoring window state 'hidden (to tray)'");
-			/* Realize needed so that the window structure can be
-			   accessed... otherwise we get a GTK warning when window is
-			   shown by clicking on notification icon or when theme
-			   colors are fetched. */
-			gtk_widget_realize (GTK_WIDGET (shell->window));
 			gtk_widget_hide (GTK_WIDGET (shell->window));
 			break;
 		case MAINWINDOW_SHOWN:
