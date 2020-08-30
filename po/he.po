@@ -526,9 +526,9 @@ msgstr "GUI תויצקנופ לכ לש גאביד תועדוה ספדה"
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
-"~/.cache/liferea/output.xhtml ךותל קפומה דוקה תא ליטת םג איה HTML טלפ תרייצמ "
+"~/.cache/liferea/output.html ךותל קפומה דוקה תא ליטת םג איה HTML טלפ תרייצמ "
 "Liferea הב םעפ לכב .HTML רויצ גאביד רשפאמ"
 
 # cli

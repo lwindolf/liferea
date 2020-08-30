@@ -485,10 +485,10 @@ msgstr "Vypíše správy ladenia všetkých GUI funkcíí"
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Povolí ladenie HTML vykresľovania. Zakaždým ako Liferea vykreslí HTML "
-"výstup, tak bude tiež generovaný HTML výpis do ~/.cache/liferea/output.xhtml"
+"výstup, tak bude tiež generovaný HTML výpis do ~/.cache/liferea/output.html"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"

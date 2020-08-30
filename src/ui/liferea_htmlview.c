@@ -353,7 +353,7 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 		baseURL = "file:///";
 
 	if (debug_level & DEBUG_HTML) {
-		gchar *filename = common_create_cache_filename (NULL, "output", "xhtml");
+		gchar *filename = common_create_cache_filename (NULL, "output", "html");
 		g_file_set_contents (filename, string, -1, NULL);
 		g_free (filename);
 	}
@@ -362,7 +362,7 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 		/* It is really a bug if we get invalid encoded UTF-8 here!!! */
 		(RENDERER (htmlview)->write) (htmlview->renderWidget, errMsg, strlen (errMsg), baseURL, "text/plain");
 	} else {
-		(RENDERER (htmlview)->write) (htmlview->renderWidget, string, strlen (string), baseURL, "application/xhtml+xml");
+		(RENDERER (htmlview)->write) (htmlview->renderWidget, string, strlen (string), baseURL, "text/html");
 	}
 
 	/* We hide the toolbar as it should only be shown when loading external content */

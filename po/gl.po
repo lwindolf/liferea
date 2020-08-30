@@ -490,10 +490,10 @@ msgstr "Amosa mensaxes de depuración de todas as funcións da interface gráfic
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Activa a depuración de renderización HTML. Cada vez que Liferea produza HTML "
-"de saída gardará ese contido no arquivo ~/.cache/liferea/output.xhtml"
+"de saída gardará ese contido no arquivo ~/.cache/liferea/output.html"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"

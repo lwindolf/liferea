@@ -492,10 +492,10 @@ msgstr "Cetak pesan debut untuk semua fungsi GUI"
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Aktifkan debug HTML render. Setiap Liferea merender keluaran HTML akan "
-"melimpahkan HTML yang digenerate ke ~/.cache/liferea/output.xhtml"
+"melimpahkan HTML yang digenerate ke ~/.cache/liferea/output.html"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"

@@ -24,158 +24,17 @@
 #include "common.h"
 #include "debug.h"
 #include "feed.h"
+#include "feedlist.h"
 #include "folder.h"
 #include "htmlview.h"
 #include "item.h"
 #include "itemlist.h"
 #include "render.h"
-#include "vfolder.h"
 #include "ui/liferea_htmlview.h"
 
 // FIXME: namespace clash of LifereaHtmlView *htmlview and htmlView_priv
 // clearly shows the need to merge htmlview.c and src/ui/ui_htmlview.c,
 // maybe with a separate a HTML cache object...
-
-static struct htmlView_priv
-{
-	GHashTable	*chunkHash;	/**< cache of HTML chunks of all displayed items */
-	GSList		*orderedChunks;	/**< ordered list of chunks */
-	nodePtr		node;		/**< the node whose items are displayed */
-	guint		missingContent;	/**< counter for items without content */
-} htmlView_priv;
-
-typedef struct htmlChunk
-{
-	gulong 		id;	/**< item id */
-	gchar		*html;	/**< the rendered HTML (or NULL if not yet rendered) */
-	time_t		date;	/**< date as sorting criteria */
-} *htmlChunkPtr;
-
-static void
-htmlview_chunk_free (htmlChunkPtr chunk)
-{
-	g_free (chunk->html);
-	g_free (chunk);
-}
-
-static gint
-htmlview_chunk_sort (gconstpointer a,
-                     gconstpointer b)
-{
-	return (((htmlChunkPtr)a)->date) - (((htmlChunkPtr)b)->date);
-}
-
-void
-htmlview_init (void)
-{
-	htmlView_priv.chunkHash = NULL;
-	htmlView_priv.orderedChunks = NULL;
-	htmlview_clear ();
-}
-
-void
-htmlview_clear (void)
-{
-	if (htmlView_priv.chunkHash)
-		g_hash_table_destroy (htmlView_priv.chunkHash);
-
-	GSList	*iter = htmlView_priv.orderedChunks;
-	while (iter)
-	{
-		htmlview_chunk_free (iter->data);
-		iter = g_slist_next (iter);
-	}
-
-	if (htmlView_priv.orderedChunks)
-		g_slist_free (htmlView_priv.orderedChunks);
-
-	htmlView_priv.chunkHash = g_hash_table_new (g_direct_hash, g_direct_equal);
-	htmlView_priv.orderedChunks = NULL;
-	htmlView_priv.missingContent = 0;
-}
-
-void
-htmlview_set_displayed_node (nodePtr node)
-{
-	g_assert (0 == g_hash_table_size (htmlView_priv.chunkHash));
-	htmlView_priv.node = node;
-}
-
-gboolean
-htmlview_contains_id (gulong id)
-{
-	gpointer	chunk;
-
-	chunk = g_hash_table_lookup (htmlView_priv.chunkHash, GUINT_TO_POINTER (id));
-
-	return (chunk?TRUE:FALSE);
-}
-
-void
-htmlview_add_item (itemPtr item)
-{
-	htmlChunkPtr	chunk;
-
-	debug1 (DEBUG_HTML, "HTML view: adding \"%s\"", item_get_title (item));
-
-	chunk = g_new0 (struct htmlChunk, 1);
-	chunk->id = item->id;
-	g_hash_table_insert (htmlView_priv.chunkHash, GUINT_TO_POINTER (item->id), chunk);
-
-	htmlView_priv.orderedChunks = g_slist_insert_sorted (htmlView_priv.orderedChunks, chunk, htmlview_chunk_sort);
-
-	if (!item_get_description (item) || (0 == strlen (item_get_description (item))))
-		htmlView_priv.missingContent++;
-}
-
-void
-htmlview_remove_item (itemPtr item)
-{
-	htmlChunkPtr	chunk;
-
-	debug1 (DEBUG_HTML, "HTML view: removing \"%s\"", item_get_title (item));
-
-	chunk = g_hash_table_lookup (htmlView_priv.chunkHash, GUINT_TO_POINTER (item->id));
-	if (chunk)
-	{
-		g_hash_table_remove (htmlView_priv.chunkHash, GUINT_TO_POINTER (item->id));
-		htmlView_priv.orderedChunks = g_slist_remove (htmlView_priv.orderedChunks, chunk);
-		htmlview_chunk_free (chunk);
-	}
-}
-
-void
-htmlview_select_item (itemPtr item)
-{
-	debug1(DEBUG_HTML, "HTML view: selecting \"%s\"", item?item_get_title(item):"none");
-	/* nothing to do... */
-}
-
-void
-htmlview_update_item (itemPtr item)
-{
-	htmlChunkPtr	chunk;
-
-	/* ensure rerendering on next update by replace old HTML chunk with NULL */
-	chunk = (htmlChunkPtr) g_hash_table_lookup (htmlView_priv.chunkHash, GUINT_TO_POINTER (item->id));
-	if (chunk)
-	{
-		g_free (chunk->html);
-		chunk->html = NULL;
-	}
-}
-
-void
-htmlview_update_all_items (void)
-{
-	GSList	*iter = htmlView_priv.orderedChunks;
-	while (iter) {
-		htmlChunkPtr chunk = (htmlChunkPtr)iter->data;
-		g_free (chunk->html);
-		chunk->html = NULL;
-		iter = g_slist_next (iter);
-	}
-}
 
 static const gchar *
 htmlview_get_item_direction(itemPtr item)
@@ -196,19 +55,16 @@ htmlview_render_item (itemPtr item,
 {
 	renderParamPtr	params;
 	gchar		*output = NULL, *baseUrl = NULL;
-	nodePtr		node;
+	nodePtr		node, selected;
 	xmlDocPtr 	doc;
 	xmlNodePtr 	xmlNode;
 	const gchar     *text_direction = NULL;
-	gboolean	isMergedItemset;
 
 	debug_enter ("htmlview_render_item");
 
 	/* don't use node from htmlView_priv as this would be
 	   wrong for folders and other merged item sets */
 	node = node_from_id (item->nodeId);
-
-	isMergedItemset = (node != htmlView_priv.node);
 
 	/* do the XML serialization */
 	doc = xmlNewDoc (BAD_CAST "1.0");
@@ -233,8 +89,7 @@ htmlview_render_item (itemPtr item,
 		render_parameter_add (params, "baseUrl='%s'", baseUrl);
 	}
 
-	render_parameter_add (params, "showFeedName='%d'", isMergedItemset?1:0);
-	render_parameter_add (params, "single='%d'", (viewMode == ITEMVIEW_SINGLE_ITEM)?1:0);
+	render_parameter_add (params, "showFeedName='%d'", (node != feedlist_get_selected ())?1:0);
 	render_parameter_add (params, "txtDirection='%s'", text_direction);
 	render_parameter_add (params, "appDirection='%s'", common_get_app_direction ());
 	output = render_xml (doc, "item", params);
@@ -253,11 +108,11 @@ htmlview_start_output (GString *buffer,
                        const gchar *base,
 		       gboolean css)
 {
-	g_string_append (buffer, "<?xml version=\"1.0\" encoding=\"utf-8\"?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n");
-	g_string_append (buffer, "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n");
-	g_string_append (buffer, "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-	g_string_append (buffer, "<head>\n<title></title>");
-	g_string_append (buffer, "<script type='text/javascript' src='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "js" G_DIR_SEPARATOR_S "Readability.js'/>");
+	/* Prepare HTML boilderplate */
+	g_string_append (buffer, "<!DOCTYPE html>\n");
+	g_string_append (buffer, "<html>\n");
+	g_string_append (buffer, "<head>\n<title>HTML View</title>");
+	g_string_append (buffer, "<script src='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "js" G_DIR_SEPARATOR_S "Readability.js'></script>");
 	g_string_append (buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
 
 	if (base)
@@ -278,24 +133,34 @@ htmlview_start_output (GString *buffer,
         "       	try {"
 	"			window.removeEventListener('load', documentIsReady);"
 	"			var documentClone = document.cloneNode(true);"
-	"			documentClone.body.innerHTML = documentClone.getElementById('content').innerHTML;"
+	"			documentClone.body.innerHTML = decodeURIComponent(content);"
+	"			documentClone.getElementById('content').innerHTML = '';"
+	"			document.body.innerHTML = documentClone.body.innerHTML;"
+	"			documentClone.body.innerHTML = decodeURIComponent(content);"
 	"			var article = new Readability(documentClone).parse();"
 	"			document.getElementById('content').innerHTML=article.content"
 	"		} catch(e) {"
 	"			console.log('Reader mode failed ('+e+')');"
+	"			document.body.innerHTML = decodeURIComponent(content);"
 	"		}"
 	"	};"
 	"	window.addEventListener('load', function() { window.setTimeout(documentIsReady, 0); });"
 	"}"
-	"</script>");
-
-	g_string_append (buffer, "</head>");
+	"\n</script>");
 }
 
 void
-htmlview_finish_output (GString *buffer)
+htmlview_finish_output (GString *buffer, gchar *content)
 {
-	g_string_append (buffer, "</html>");
+	if (content) {
+		/* URI escape our content for safe transfer to Readability.js
+		   URI escaping is needed for UTF-8 conservation and for JS stringification */
+		gchar *uri_escaped = g_uri_escape_string (content, NULL, TRUE);
+		g_string_append_printf (buffer, "<script type='text/javascript'>\nvar content = '%s';</script>", uri_escaped);
+		g_free (uri_escaped);
+	}
+
+	g_string_append (buffer, "</head><body></body></html>");
 }
 
 void
@@ -303,8 +168,10 @@ htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode)
 {
 	GSList		*iter;
 	GString		*output;
+	nodePtr		node = feedlist_get_selected ();
 	itemPtr		item = NULL;
 	gchar		*baseURL = NULL;
+	gchar		*content = NULL;
 
 	/* determine base URL */
 	switch (mode) {
@@ -315,9 +182,11 @@ htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode)
 				item_unload (item);
 			}
 			break;
-		default:
-			if (htmlView_priv.node)
-				baseURL = (gchar *) node_get_base_url (htmlView_priv.node);
+		case ITEMVIEW_NODE_INFO:
+			if (!node)
+				return;
+
+			baseURL = (gchar *) node_get_base_url (node);
 			break;
 	}
 
@@ -334,34 +203,22 @@ htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode)
 		case ITEMVIEW_SINGLE_ITEM:
 			item = itemlist_get_selected ();
 			if (item) {
-				gchar *html = htmlview_render_item (item, mode);
-				if (html) {
-					g_string_append (output, html);
-					g_free (html);
-				}
+				content = htmlview_render_item (item, mode);
 
 				item_unload (item);
 			}
 			break;
 		case ITEMVIEW_NODE_INFO:
-			{
-				gchar *html;
-
-				if (htmlView_priv.node) {
-					html = node_render (htmlView_priv.node);
-					if (html) {
-						g_string_append (output, html);
-						g_free (html);
-					}
-				}
-			}
+			if (node)
+				content = node_render (node);
 			break;
 		default:
 			g_warning ("HTML view: invalid viewing mode!!!");
 			break;
 	}
 
-	htmlview_finish_output (output);
+	htmlview_finish_output (output, content);
+	g_free (content);
 
 	debug1 (DEBUG_HTML, "writing %d bytes to HTML view", strlen (output->str));
 	liferea_htmlview_write (htmlview, output->str, baseURL);

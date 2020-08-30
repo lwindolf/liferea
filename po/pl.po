@@ -504,11 +504,11 @@ msgstr "Wypisuje komunikaty diagnozowania błędów interfejsu graficznego"
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Włącza diagnozowanie błędów renderowania HTML. Za każdym razem kiedy program "
 "renderuje kod HTML, wygenerowany kod zastanie również zapisany do pliku ~/."
-"cache/liferea/output.xhtml"
+"cache/liferea/output.html"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"

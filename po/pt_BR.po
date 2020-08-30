@@ -501,11 +501,11 @@ msgstr "Mostra mensagens de depuração para todas as funções de GUI"
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Habilita a depuração de renderização de HTML. Sempre que o Liferea "
 "renderizar saída HTML ele também vai despejar o HTML gerado em ~/.cache/"
-"liferea/output.xhtml"
+"liferea/output.html"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"

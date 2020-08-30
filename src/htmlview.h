@@ -21,79 +21,8 @@
 #ifndef _HTMLVIEW_H
 #define _HTMLVIEW_H
 
-#include "item.h"
-#include "node.h"
 #include "ui/itemview.h"
 #include "ui/liferea_htmlview.h"
-
-/* interface for item and item set HTML rendering */
-
-/**
- * Initialize the HTML view
- */
-void	htmlview_init (void);
-
-/**
- * To be called to clear the HTML view
- */
-void	htmlview_clear (void);
-
-/**
- * Prepares the HTML view for displaying items of the given node.
- *
- * @param node	the node whose items will be rendered
- */
-void	htmlview_set_displayed_node (nodePtr node);
-
-/**
- * htmlview_contains_id:
- * @id: an item id
- *
- * Returns: TRUE if the item is in the list of items to be displayed
- */
-gboolean htmlview_contains_id (gulong id);
-
-/**
- * Adds an item to the HTML view for rendering. The item must belong
- * to the item set that was announced with htmlview_set_displayed_node().
- *
- * This method _DOES NOT_ update the rendering output.
- *
- * @param item		the item to add to the rendering output
- */
-void	htmlview_add_item (itemPtr item);
-
-/**
- * Removes a given item from the HTML view rendering.
- *
- * This method _DOES NOT_ update the rendering output.
- *
- * @param item		the item to remove from the rendering output
- */
-void	htmlview_remove_item (itemPtr item);
-
-/**
- * Updates the output of the selected item in the HTML view rendering.
- *
- * This method _DOES NOT_ update the rendering output.
- *
- * @param item		the item to mark for update
- */
-void	htmlview_select_item (itemPtr item);
-
-/**
- * Updates the output of a given item in the HTML view rendering.
- *
- * This method _DOES NOT_ update the rendering output.
- *
- * @param item		the item to mark for update
- */
-void	htmlview_update_item (itemPtr item);
-
-/**
- * Like htmlview_update_item(), processes all items.
- */
-void	htmlview_update_all_items (void);
 
 /**
  * Renders all added items to the given HTML view. To be called

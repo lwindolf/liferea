@@ -501,11 +501,11 @@ msgstr ""
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Aktiverar felsökning av HTML-rendering. Varje gång som Liferea renderar HTML-"
 "utdata så kommer även den genererade HTML-koden att skrivas i ~/.cache/"
-"liferea/output.xhtml"
+"liferea/output.html"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"
