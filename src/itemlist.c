@@ -652,7 +652,6 @@ on_view_activate (GSimpleAction *action, GVariant *value, gpointer user_data)
 		val = NODE_VIEW_MODE_NORMAL;
 	}
 	itemlist_set_view_mode (val);
-	g_variant_unref (value);
 
 	/* Getting the actual value to reflect current state even if for some
 	 * reason, other functions couldn't make the requested change.
