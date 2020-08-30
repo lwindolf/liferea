@@ -172,7 +172,7 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 	}
 
 	/* case 2: */
-	if (html_url) {
+	if (html_url && strstr (html_url, "://")) {
 		tmp = g_strstrip (g_strdup (html_url));
 		urls = g_slist_append (urls, tmp);
 		debug1 (DEBUG_UPDATE, "(2) adding favicon search URL: %s", tmp);
