@@ -51,6 +51,7 @@ jobs:
        sh autogen.sh
        ./configure
        make
+       cd src/tests && make test
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
