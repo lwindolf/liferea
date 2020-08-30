@@ -15,7 +15,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #ifndef _BROWSER_HISTORY_H
@@ -27,8 +27,6 @@
 typedef struct browserHistory {
 	GList		*locations;	/**< list of all visited URLs */
 	GList		*current;	/**< pointer into locations */
-	gboolean	headline;	/**< TRUE if browser history is for item view and 
-					     going back to the headline is possible */
 } browserHistory;
 
 /**
@@ -90,4 +88,3 @@ gboolean browser_history_can_go_back (browserHistory *history);
 void browser_history_add_location (browserHistory *history, const gchar *url);
 
 #endif
-

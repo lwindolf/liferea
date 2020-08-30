@@ -69,7 +69,7 @@ struct _LifereaHtmlView {
 	browserHistory	*history;		/*<< The browser history */
 
 	gboolean	internal;			/*<< TRUE if internal view presenting generated HTML with special links */
-	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded within this view (regardless of global preference) */
+	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
 
 	htmlviewImplPtr impl;			/*<< Browser widget support implementation */
 };
@@ -106,22 +106,13 @@ on_htmlview_history_back (GtkWidget *widget, gpointer user_data)
 	LifereaHtmlView	*htmlview = LIFEREA_HTMLVIEW (user_data);
 	gchar		*url;
 
-	/* Going back is a bit more complex than forward as we want to switch
-	   from inline browsing back to headlines when we are in the item view.
-	   So we expect an URL or NULL for switching back to the headline */
 	url = browser_history_back (htmlview->history);
-	if (url) {
-		gtk_widget_set_sensitive (htmlview->forward, browser_history_can_go_forward (htmlview->history));
-		gtk_widget_set_sensitive (htmlview->back,    browser_history_can_go_back (htmlview->history));
 
-		liferea_htmlview_launch_URL_internal (htmlview, url);
-		gtk_entry_set_text (GTK_ENTRY (htmlview->urlentry), url);
-	} else {
-		gtk_widget_hide (htmlview->toolbar);
-		liferea_htmlview_clear (htmlview);
-		itemview_update_all_items ();
-		itemview_update ();
-	}
+	gtk_widget_set_sensitive (htmlview->forward, browser_history_can_go_forward (htmlview->history));
+	gtk_widget_set_sensitive (htmlview->back,    browser_history_can_go_back (htmlview->history));
+
+	liferea_htmlview_launch_URL_internal (htmlview, url);
+	gtk_entry_set_text (GTK_ENTRY (htmlview->urlentry), url);
 }
 
 static void
@@ -300,12 +291,6 @@ liferea_htmlview_proxy_changed (NetworkMonitor *nm, gpointer userdata)
 						 network_get_proxy_port (),
 						 network_get_proxy_username (),
 						 network_get_proxy_password ());
-}
-
-void
-liferea_htmlview_set_headline_view (LifereaHtmlView *htmlview)
-{
-	htmlview->history->headline = TRUE;
 }
 
 LifereaHtmlView *
@@ -488,7 +473,6 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 	}
 
 	if(htmlview->forceInternalBrowsing || browse_inside_application) {
-
 		return FALSE;
 	} else {
 		(void)browser_launch_URL_external (url);
