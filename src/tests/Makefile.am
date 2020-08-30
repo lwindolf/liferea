@@ -4,11 +4,9 @@ noinst_PROGRAMS = $(TEST_PROGS)
 
 TEST_PROGS = html_auto favicon parse_date parse_xml
 
-test_gla11y:
-	./test_a11y.sh
-
-test: $(TEST_PROGS) test_gla11y
+test: $(TEST_PROGS)
 	echo $(TEST_PROGS) | sed "s/^/.\//;s/ / \&\& .\//g" | xargs -I{} sh -c "{}"
+	./test_a11y.sh
 .PHONY: test
 
 AM_CPPFLAGS = \
