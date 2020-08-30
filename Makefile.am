@@ -26,8 +26,7 @@ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 cssdir = $(pkgdatadir)/css
 css_DATA = \
 	css/liferea.css \
-	css/user.css \
-	css/adblock.css
+	css/user.css
 
 jsdir = $(pkgdatadir)/js
 js_DATA = \
