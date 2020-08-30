@@ -594,8 +594,8 @@ itemlist_get_view_mode (void)
 	return itemlist->priv->viewMode;
 }
 
-void
-itemlist_set_view_mode (guint newMode)
+static void
+itemlist_set_view_mode (nodeViewType newMode)
 {
 	nodePtr		node;
 	itemPtr		item;
@@ -626,9 +626,18 @@ itemlist_set_view_mode (guint newMode)
 void
 on_view_activate (GSimpleAction *action, GVariant *value, gpointer user_data)
 {
-
 	const gchar *s_val = g_variant_get_string (value, NULL);
-	gint val = 0;
+	GVariant *cur_state = g_action_get_state (G_ACTION(action));
+	const gchar *s_cur_state = g_variant_get_string (cur_state,NULL);
+	/* If requested state is the same as current state, leave without doing
+	 * anything. */
+	if (!g_strcmp0 (s_val,s_cur_state)) {
+		g_variant_unref (cur_state);
+		return;
+	}
+	g_variant_unref (cur_state);
+
+	nodeViewType val = 0;
 	if (!g_strcmp0 ("normal",s_val))
 	{
 		val = NODE_VIEW_MODE_NORMAL;
@@ -639,10 +648,26 @@ on_view_activate (GSimpleAction *action, GVariant *value, gpointer user_data)
 	}
 	if (!g_strcmp0 ("combined",s_val))
 	{
-		val = NODE_VIEW_MODE_COMBINED;
+		/* Combined is removed : default to normal */
+		val = NODE_VIEW_MODE_NORMAL;
 	}
 	itemlist_set_view_mode (val);
-	g_simple_action_set_state (action, value);
+
+	/* Getting the actual value to reflect current state even if for some
+	 * reason, other functions couldn't make the requested change.
+	 * May be overkill. */
+	val = itemlist_get_view_mode ();
+	switch (val)
+	{
+	  case NODE_VIEW_MODE_NORMAL:
+	  case NODE_VIEW_MODE_DEFAULT:
+	  case NODE_VIEW_MODE_COMBINED:
+		g_simple_action_set_state (action, g_variant_new_string("normal"));
+		break;
+	  case NODE_VIEW_MODE_WIDE:
+		g_simple_action_set_state (action, g_variant_new_string("wide"));
+		break;
+	}
 }
 
 static void
