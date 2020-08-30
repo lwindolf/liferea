@@ -5,6 +5,9 @@ To be released
 	* Fixes XLST exception on mediarss feeds with description
 	  (Lars Windolf)
 
+	* Drop blogChannel namespace support
+	  (Lars Windolf)
+
 
 2020-08-29   Lars Windolf <lars.windolf@gmx.de>
 

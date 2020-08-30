@@ -130,8 +130,6 @@ src/parsers/ns_admin.c
 src/parsers/ns_admin.h
 src/parsers/ns_ag.c
 src/parsers/ns_ag.h
-src/parsers/ns_blogChannel.c
-src/parsers/ns_blogChannel.h
 src/parsers/ns_cC.c
 src/parsers/ns_cC.h
 src/parsers/ns_content.c
