@@ -119,16 +119,6 @@ void itemlist_load (struct node *node);
 void itemlist_unload (gboolean markRead);
 
 /**
- * itemlist_set_view_mode:
- * @newMode:	0 = normal, 1 = wide, 2 = combined view
- *
- * Changes the viewing mode property of the item list.
- * Do not use this method to change the viewing mode
- * of a displayed node!
- */
-void itemlist_set_view_mode (guint newMode);
-
-/**
  * itemlist_get_view_mode:
  *
  * Returns the viewing mode property of the currently displayed item set.
