@@ -664,7 +664,7 @@ feedlist_create (gpointer flv)
 {
 	FeedList *fl = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
 
-    g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), fl);
+	g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), fl);
 
 	return fl;
 }
