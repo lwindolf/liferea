@@ -140,6 +140,7 @@ htmlview_start_output (GString *buffer,
 	"\n			documentClone.getElementById('content').innerHTML = '';"
 	"\n			document.body.innerHTML = documentClone.body.innerHTML;"
 	"\n			documentClone.body.innerHTML = decodeURIComponent(content);"
+	"\n			documentClone.body.innerHTML = documentClone.getElementById('content').innerHTML;"
 	"\n"
 	"\n			// Drop Readability.js created <header>"
 	"\n			var header = documentClone.getElementsByTagName('header');"
