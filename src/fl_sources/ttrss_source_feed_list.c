@@ -356,7 +356,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 }
 
 static gboolean
-ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+ttrss_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	nodePtr node = subscription->node;
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
