@@ -1425,3 +1425,24 @@ liferea_shell_get_window (void)
 {
 	return GTK_WIDGET (shell->window);
 }
+
+void
+liferea_shell_set_view_mode (nodeViewType newMode)
+{
+	GAction       *action;
+
+	action = g_action_map_lookup_action (G_ACTION_MAP(shell->generalActions), "set-view-mode");
+
+	switch (newMode)
+	{
+	  case NODE_VIEW_MODE_NORMAL:
+	  case NODE_VIEW_MODE_DEFAULT:
+	  case NODE_VIEW_MODE_COMBINED:
+	    /* Combined is removed, default to normal */
+		g_action_change_state (action, g_variant_new_string("normal"));
+		break;
+	  case NODE_VIEW_MODE_WIDE:
+		g_action_change_state (action, g_variant_new_string("wide"));
+		break;
+	}
+}
