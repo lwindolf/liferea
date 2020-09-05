@@ -662,23 +662,6 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 				break;
 		}
 
-		/* some <Ctrl> hotkeys that overrule the HTML view */
-		if ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK) {
-			switch (event->keyval) {
-				case GDK_KEY_KP_Add:
-				case GDK_KEY_equal:
-				case GDK_KEY_plus:
-					liferea_shell_do_zoom (1);
-					return TRUE;
-					break;
-				case GDK_KEY_KP_Subtract:
-				case GDK_KEY_minus:
-					liferea_shell_do_zoom (-1);
-					return TRUE;
-					break;
-			}
-		}
-
 		/* prevent usage of navigation keys in entries */
 		focusw = gtk_window_get_focus (GTK_WINDOW (widget));
 		if (!focusw || GTK_IS_ENTRY (focusw))
@@ -1165,7 +1148,7 @@ static const gchar * liferea_accels_prev_read_item[] = {"<Control><Shift>n", NUL
 static const gchar * liferea_accels_toggle_item_read_status[] = {"<Control>m", NULL};
 static const gchar * liferea_accels_toggle_item_flag[] = {"<Control>t", NULL};
 static const gchar * liferea_accels_fullscreen[] = {"F11", NULL};
-static const gchar * liferea_accels_zoom_in[] = {"<Control>plus", NULL};
+static const gchar * liferea_accels_zoom_in[] = {"<Control>plus", "<Control>equal",NULL};
 static const gchar * liferea_accels_zoom_out[] = {"<Control>minus", NULL};
 static const gchar * liferea_accels_zoom_reset[] = {"<Control>0", NULL};
 static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
