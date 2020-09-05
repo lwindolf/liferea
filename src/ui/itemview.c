@@ -502,10 +502,10 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 }
 
 void
-itemview_do_zoom (gboolean in)
+itemview_do_zoom (gint zoom)
 {
 	if (itemview->htmlview == NULL)
 		return;
 
-	liferea_htmlview_do_zoom (itemview->htmlview, in);
+	liferea_htmlview_do_zoom (itemview->htmlview, zoom);
 }

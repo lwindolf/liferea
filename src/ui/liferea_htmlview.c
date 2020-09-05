@@ -528,9 +528,13 @@ liferea_htmlview_scroll (LifereaHtmlView *htmlview)
 }
 
 void
-liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in)
+liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom)
 {
-	gfloat factor = in?1.2:0.8;
+	if (!zoom)
+		liferea_htmlview_set_zoom (htmlview, 1.0);
+	else if (zoom > 0)
+		liferea_htmlview_set_zoom (htmlview, 1.2 * liferea_htmlview_get_zoom (htmlview));
+	else
+		liferea_htmlview_set_zoom (htmlview, 0.8 * liferea_htmlview_get_zoom (htmlview));
 
-	liferea_htmlview_set_zoom (htmlview, factor * liferea_htmlview_get_zoom (htmlview));
 }
