@@ -5,6 +5,23 @@ To be released
 	* Fixes XLST exception on mediarss feeds with description
 	  (Lars Windolf)
 
+	* Drop blogChannel namespace support
+	  (Lars Windolf)
+
+	* Support multi-feed discovery
+	  (Lars Windolf)
+
+	* Default to https:// instead of http:// when user doesn't
+	  provide protocol on subscribing feed
+	  (Lars Windolf)
+
+	* Drop CDF channel legacy support
+	  (Lars Windolf)
+
+	* Drop Atom 0.2/0.3 (aka Pie) legacy support
+	  (Lars Windolf)
+
+
 
 2020-08-29   Lars Windolf <lars.windolf@gmx.de>
 
@@ -129,11 +146,9 @@ To be released
 	  (Leiaz)
 	* #680: Add xdg-email command to item list popup menu
 	  (poetsmeniet)
-
 	* Drop unused glade/google_source.ui
 	* #699: Refactoring of duplicate check handlingg
-	  (dymoks
-
+	  (dymoksc)
 	* #746: Fix accessibility fatals reported by gla11y
 	  (reported by Paul Gevers)
 	* Fixes #730: "Update all subscriptions at startup" overrides

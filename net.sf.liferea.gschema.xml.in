@@ -38,7 +38,7 @@
       <description>This value specifies how often Liferea tries to update feeds. The value is given in minutes. When setting the interval always consider the traffic it produces. Setting a value less than 15min almost never makes sense.</description>
     </key>
     <key name="disable-javascript" type="b">
-      <default>false</default>
+      <default>true</default>
       <summary>Allows to disable Javascript.</summary>
       <description>Allows to disable Javascript.</description>
     </key>

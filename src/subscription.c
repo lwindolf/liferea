@@ -275,7 +275,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request))
 			subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, subscription, flags);
 		else
-			update_request_free (request);
+			g_object_unref (request);
 	}
 }
 

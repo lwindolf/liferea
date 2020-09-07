@@ -182,9 +182,6 @@ itemview_add_item (itemPtr item)
 	if (itemview->itemListView)
 		/* add item in 3 pane mode */
 		item_list_view_add_item (itemview->itemListView, item);
-	else
-		/* force HTML update in 2 pane mode */
-		itemview->needsHTMLViewUpdate = TRUE;
 }
 
 void
@@ -393,7 +390,6 @@ itemview_set_layout (nodeViewType newMode)
 	if (!itemview->htmlview) {
 		debug0 (DEBUG_GUI, "Creating HTML widget");
 		itemview->htmlview = liferea_htmlview_new (FALSE);
-		liferea_htmlview_set_headline_view (itemview->htmlview);
 		g_signal_connect (itemview->htmlview, "statusbar-changed",
 		                  G_CALLBACK (on_important_status_message), NULL);
 

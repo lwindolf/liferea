@@ -642,7 +642,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="disablejavascript">
-                        <property name="label" translatable="yes">_Disable Javascript.</property>
+                        <property name="label" translatable="yes">_Never run external Javascript.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>

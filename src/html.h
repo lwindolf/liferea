@@ -33,9 +33,9 @@
  *
  * @data:	HTML source
  * @baseUri:	URI that relative links will be based off of
- * Returns:	feed URL or NULL. Must be freed by caller.
+ * Returns:	a list of feed URLs or NULL. Must be freed by caller.
  */
-gchar * html_auto_discover_feed(const gchar* data, const gchar *baseUri);
+GSList * html_auto_discover_feed(const gchar* data, const gchar *baseUri);
 
 /**
  * html_discover_favicon:
