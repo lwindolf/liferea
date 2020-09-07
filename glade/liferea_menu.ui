@@ -140,13 +140,17 @@
       <section>
         <item>
           <attribute name="action">app.zoom-in</attribute>
-          <attribute name="label" translatable="yes">_Increase Text Size</attribute>
+          <attribute name="label" translatable="yes">Zoom _In</attribute>
         </item>
         <item>
           <attribute name="action">app.zoom-out</attribute>
-          <attribute name="label" translatable="yes">_Decrease Text Size</attribute>
+          <attribute name="label" translatable="yes">Zoom _Out</attribute>
         </item>
-      </section>
+        <item>
+          <attribute name="action">app.zoom-reset</attribute>
+          <attribute name="label" translatable="yes">_Normal size</attribute>
+        </item>
+       </section>
       <section>
         <item>
           <attribute name="action">app.set-view-mode</attribute>
@@ -157,11 +161,6 @@
           <attribute name="action">app.set-view-mode</attribute>
           <attribute name="label" translatable="yes">_Wide View</attribute>
           <attribute name="target">wide</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.set-view-mode</attribute>
-          <attribute name="label" translatable="yes">_Combined View</attribute>
-          <attribute name="target">combined</attribute>
         </item>
       </section>
       <section>

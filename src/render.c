@@ -325,7 +325,6 @@ render_get_css (gboolean externalCss)
 	if (!css) {
 		gchar	*defaultStyleSheetFile;
 		gchar	*userStyleSheetFile;
-		gchar	*adblockStyleSheetFile;
 		gchar	*tmp;
 
 		if (!themeColors)
@@ -354,15 +353,6 @@ render_get_css (gboolean externalCss)
 		}
 
 		g_free(userStyleSheetFile);
-
-		adblockStyleSheetFile = g_build_filename(PACKAGE_DATA_DIR, PACKAGE, "css", "adblock.css", NULL);
-
-		if (g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
-			g_string_append(css, tmp);
-			g_free(tmp);
-		}
-
-		g_free(adblockStyleSheetFile);
 
 		if (externalCss) {
 			/* dump CSS to cache file and create a <style> tag to use it */
@@ -402,6 +392,7 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	if (!paramSet)
 		paramSet = render_parameter_new ();
 	render_parameter_add (paramSet, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	render_parameter_add (paramSet, "jsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "js" G_DIR_SEPARATOR_S "'");
 
 	resDoc = xsltApplyStylesheet (xslt, doc, (const gchar **)paramSet->params);
 	if (!resDoc) {

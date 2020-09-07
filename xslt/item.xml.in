@@ -4,7 +4,8 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
- * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2009-2019 Mikel Olasagasti Uranga <mikel@olasagasti.info>
+ * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +30,11 @@
 
 <!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
 <xsl:param name="pixmapsDir"/>
-<xsl:param name="baseUrl"/>
-<xsl:param name="summary"/>	<!-- 1=summary rendering, 0=normal rendering -->
+<!-- the local Javascript lib directory (e.g. /usr/share/liferea/js/) -->
+<xsl:param name="jsDir"/>
+
+<xsl:param name="baseUrl"/> <!-- item specific content base URL -->
 <xsl:param name="showFeedName"/>
-<xsl:param name="single"/>	<!-- 1=single item rendering, 0=2 pane mode -->
 <xsl:param name="txtDirection"/>	<!-- text direction, either "ltr" or "rtl" -->
 <xsl:param name="appDirection"/>	<!-- text direction, either "ltr" or "rtl" -->
 
@@ -48,14 +50,7 @@
 <div class="item" href="{$baseUrl}">
 
 <xsl:for-each select="item">
-  <xsl:choose>
-    <xsl:when test="$summary = '1'">
-      <xsl:call-template name="item_summary"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:call-template name="item"/>
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:call-template name="item"/>
 </xsl:for-each>
 
 </div> <!-- end of base URL div -->
@@ -67,27 +62,14 @@
 
 <!-- ==================================================================== -->
 
-<!---single item detailed mode rendering -->
 <xsl:template name="item">
 
 <!-- base URL of parent feed -->
 <div href="{/itemset/feed/feedSource}">
 
-<!-- the item -->
-
-<xsl:variable name="onMouseOver">
-   <xsl:text disable-output-escaping='yes'>doShow('</xsl:text>
-   <xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/>
-   <xsl:text disable-output-escaping='yes'>');</xsl:text>
-</xsl:variable>
-
-<!-- entering header starts delayed show of the item menu -->
-<!-- leaving header stops show counter -->
-<div onmouseover="{$onMouseOver}" onmouseout="stopShow();">
-
 <!-- header table -->
 <table class="itemhead" cellspacing="0" cellpadding="0" dir="{$txtDirection}">
-
+<tbody>
 <tr>
   <td valign="middle" class="headleft">
     <!-- Feed link as favicon -->
@@ -119,11 +101,12 @@
     </a>
   </td>
 </tr>
+</tbody>
 </table>
 
 <!-- header metadata (author + categories + date + source feed) -->
 <table class='headmeta' cellspacing="0" cellpadding="0" dir="{$appDirection}">
-
+<tbody>
 <xsl:if test="attributes/attribute[ @name = 'slash' ]">
 <tr>
  <td valign="top" class='slash'>
@@ -145,9 +128,8 @@
 </tr>
 </xsl:if>
 
-<!-- In summary mode we are potentially presenting multiple feeds
-     and we should display the source feed title for the item. -->
-<xsl:if test="$summary = '1' or $showFeedName = '1'">
+<!-- When presenting multiple feeds we display the source feed title for the item. -->
+<xsl:if test="$showFeedName = '1'">
 <tr>
  <td valign="top" class='source'>
      <_span>Feed</_span>
@@ -289,15 +271,10 @@
  </tr>
 </xsl:if>
 
+</tbody>
 </table> <!-- end of header metadata -->
 
-<xsl:variable name="shading">
-  <xsl:if test="$single = '0' and readStatus = '0'">itemshaded</xsl:if>
-  <xsl:if test="$single = '0' and readStatus != '0'">itemunshaded</xsl:if>
-</xsl:variable>
-
-<div id="shading" class="{$shading}">
-<div class='content'>
+<div id='content' class='content'>
   <!-- the item's content -->
   <p dir="{$txtDirection}">
     <!-- optional gravatar -->
@@ -307,6 +284,12 @@
     <!-- optional MediaRSS thumbnail -->
     <xsl:if test="attributes/attribute[ @name = 'mediathumbnail' ]">
       <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
+    </xsl:if>
+    <!-- optional MediaRSS YouTube links-->
+    <xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>
+    <xsl:if test="contains($url,'https://www.youtube.com/watch?v=')">
+      <xsl:variable name="youtubeid" select="substring-after($url,'https://www.youtube.com/watch?v=')"/>
+      <p><iframe width="640" height="480" src="https://www.youtube.com/embed/{$youtubeid}" frameborder="0" allowfullscreen="1"></iframe></p>
     </xsl:if>
     <!-- optional MediaRSS description -->
     <xsl:if test="attributes/attribute[ @name = 'mediadescription' ]">
@@ -319,20 +302,8 @@
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
 
-  <!-- photo namespace handling -->
-  <xsl:if test="attributes/attribute[ @name = 'photo' ]">
-     <xsl:element name="img">
-        <xsl:attribute name="src">
-	   <xsl:call-template name="substring-after-last">
-	     <xsl:with-param name="input"  select="attributes/attribute[ @name = 'photo' ]" />
-	     <xsl:with-param name="substr" select="','" />
-	   </xsl:call-template>
-        </xsl:attribute>
-     </xsl:element>
-  </xsl:if>
-
   <!-- comment handling -->
-  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed) and $single = 1">
+  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed)">
      <p>
         <xsl:if test="count(comments/item) != 0">
 	   <b><_span>Comments</_span></b>
@@ -363,11 +334,9 @@
         </xsl:apply-templates>
      </p>
   </xsl:if>
-</div>
-</div> <!-- end of base URL div -->
 
-</div> <!-- item -->
-</div> <!-- shading -->
+</div> <!-- end of content -->
+</div> <!-- end of base URL -->
 
 </xsl:template>
 
@@ -393,66 +362,24 @@
 
 <!-- ==================================================================== -->
 
-<!--- single item summary mode rendering -->
-<xsl:template name="item_summary">
-
-<xsl:variable name="summaryShading">
-   <xsl:choose>
-      <xsl:when test="readStatus = '0'">summaryshaded</xsl:when>
-      <xsl:otherwise>summaryunshaded</xsl:otherwise>
-   </xsl:choose>
-</xsl:variable>
-
-<div class="{$summaryShading}">
-  <table cellspacing="0" cellpadding="0" width="100%">
-  <tr>
-    <td class="summarytime" valign="top">
-      <xsl:value-of select="timestr"/>
-    </td>
-    <td width="100%">
-      <!-- Item title as link -->
-      <a href="{source}">
-        <xsl:value-of select="title"/>
-      </a>
-
-      <!-- summary mode means most of the items have no description,
-           but lets output them for those who have one... -->
-      <xsl:if test="description">
-        <br/><br/>
-        <xsl:value-of select="description" disable-output-escaping='yes'/>
-      </xsl:if>
-
-    </td>
-  </tr>
-  </table>
-
-  <hr class='summary'/>
-
-</div>
-</xsl:template>
-
-<!-- ==================================================================== -->
-
 <!--- substring after last occurance also from "XSLT Cookbook"... -->
 <xsl:template name="substring-after-last">
-    <xsl:param name="input" />
-    <xsl:param name="substr" />
-
-    <!-- Extract the string which comes after the first occurence -->
-    <xsl:variable name="temp" select="substring-after($input,$substr)"/>
-
-    <xsl:choose>
-      <!-- If it still contains the search string then recursively process -->
-      <xsl:when test="$substr and contains($temp,$substr)">
-        <xsl:call-template name="substring-after-last">
-          <xsl:with-param name="input"  select="$temp" />
-          <xsl:with-param name="substr" select="$substr" />
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$temp" />
-      </xsl:otherwise>
-    </xsl:choose>
+  <xsl:param name="input" />
+  <xsl:param name="substr" />
+  <!-- Extract the string which comes after the first occurence -->
+  <xsl:variable name="temp" select="substring-after($input,$substr)"/>
+  <xsl:choose>
+    <!-- If it still contains the search string then recursively process -->
+    <xsl:when test="$substr and contains($temp,$substr)">
+      <xsl:call-template name="substring-after-last">
+        <xsl:with-param name="input"  select="$temp" />
+        <xsl:with-param name="substr" select="$substr" />
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="$temp" />
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <!-- newline to br based in https://stackoverflow.com/questions/3309746/how-to-convert-newline-into-br-with-xslt -->

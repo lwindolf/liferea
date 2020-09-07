@@ -1,12 +1,82 @@
 To be released
 
-	Version 1.13.2
+	Version 1.13.3
 
-	* Dropping blogChannel RSS namespace support.
+	* Fixes XLST exception on mediarss feeds with description
 	  (Lars Windolf)
 
-	* #828: Fix segfault after opening feed articles
-	  (reported by chronoszc)
+	* Drop blogChannel namespace support
+	  (Lars Windolf)
+
+	* Support multi-feed discovery
+	  (Lars Windolf)
+
+	* Default to https:// instead of http:// when user doesn't
+	  provide protocol on subscribing feed
+	  (Lars Windolf)
+
+	* Drop CDF channel legacy support
+	  (Lars Windolf)
+
+	* Drop Atom 0.2/0.3 (aka Pie) legacy support
+	  (Lars Windolf)
+
+
+
+2020-08-29   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.13.2
+
+	* #846, #864, #735: Fix main menu/toolbar not being translated
+	  (reported by nesfla, Qik000, SingleMalt2104)
+
+	* #854: Adding new search folder options to match
+	  subscription source ULR and parent folder name.
+	  (suggested by muhlinux)
+
+	* #851: Add accessibility check to code tests
+	  (Lars Windolf)
+
+	* #851: Fix accessibility annotations for several combo boxes.
+	  (Lars Windolf)
+
+	* #850: Fix embedded youtube video bug.
+	  (reported by sblondon)
+
+	* #765: Embed YouTube videos from MediaRSS feeds
+	  (Mikel Olasagasti)
+
+ 	* #749: Add Readability.js library (Apache 2.0 licensed)
+	  and auto-apply Readability.js to all headlines
+	  (Lars Windolf)
+
+	* Drop unused glade/google_source.ui
+	  (Lars Windolf)
+
+	* Drop support of combined view mode, this is necessary
+	  to add rich content support which relies on DOM
+	  transformation and Readability.js
+	  (Lars Windolf)
+
+	* Drop ns_photo support, as it is rarely used and
+	  allows us to get rid of XSLT extra handling
+	  (Lars Windolf)
+
+	* #747: Font improvements
+	  (Azhar Mithani)
+
+	* #250 Update some dialog labels
+	  (GreenLunar)
+
+	* #803: Fix legacy links to mailing list and IRC in
+	  documentation.
+	  (reported by Bill Dietrich)
+
+	* Updated German translation
+	  (Lars Windolf)
+
+	* #861: Updated Spanish translation
+	  (vosian)
 
 
 2020-06-11   Lars Windolf <lars.windolf@gmx.de>
@@ -76,11 +146,9 @@ To be released
 	  (Leiaz)
 	* #680: Add xdg-email command to item list popup menu
 	  (poetsmeniet)
-
 	* Drop unused glade/google_source.ui
 	* #699: Refactoring of duplicate check handlingg
 	  (dymoksc)
-
 	* #746: Fix accessibility fatals reported by gla11y
 	  (reported by Paul Gevers)
 	* Fixes #730: "Update all subscriptions at startup" overrides
@@ -93,6 +161,8 @@ To be released
 	  (madmurphy)
 	* #745: URL fix for French example feeds
 	  (sblondon)
+
+	* Update inline docs on headline view modes
 
 
 2019-12-04   Lars Windolf <lars.windolf@gmx.de>

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-18 00:24+0100\n"
+"POT-Creation-Date: 2020-08-28 12:24+0200\n"
 "PO-Revision-Date: 2014-04-20 20:59+0300\n"
 "Last-Translator: Rihards Prieditis <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
@@ -81,7 +81,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podraide"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:74
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -99,7 +99,7 @@ msgid "Read news feeds and blogs"
 msgstr "Lasīt ziņu plūsmas un blogus"
 
 #: ../net.sourceforge.liferea.desktop.in.h:5
-msgid "news;feed;aggregator;blog;podcast;"
+msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
 #: ../xslt/feed.xml.in.h:1
@@ -173,7 +173,7 @@ msgstr "nelasīti virsraksti"
 msgid "Folder:"
 msgstr "Mape:"
 
-#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:22
+#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:21
 msgid "Source"
 msgstr "Avots"
 
@@ -218,18 +218,26 @@ msgid "Map"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:12
+msgid "View count"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:13
+msgid "Rating"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:14
 msgid "Comments"
 msgstr "Komentāri"
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:15
 msgid "Updating..."
 msgstr "Atjaunina..."
 
-#: ../xslt/item.xml.in.h:14
+#: ../xslt/item.xml.in.h:16
 msgid "Section"
 msgstr "Sadaļa"
 
-#: ../xslt/item.xml.in.h:15
+#: ../xslt/item.xml.in.h:17
 msgid "Department"
 msgstr "Nodaļa"
 
@@ -254,13 +262,13 @@ msgstr "Meklēšanas mape:"
 msgid "Browser command failed: %s"
 msgstr "Pārlūka komanda cieta neveiksmi — %s"
 
-#: ../src/browser.c:101
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1044
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Palaiž: “%s”"
 
 #. unauthorized
-#: ../src/comments.c:120
+#: ../src/comments.c:118
 msgid "Authorization Error"
 msgstr "Pilnvarošanas kļūda"
 
@@ -276,27 +284,27 @@ msgid ""
 msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/date.c:777
+#: ../src/date.c:133
 msgid "Today %l:%M %p"
 msgstr "Šodien %l:%M %p"
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/date.c:788
+#: ../src/date.c:142
 msgid "Yesterday %l:%M %p"
 msgstr "Vakar %l:%M %p"
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/date.c:801
+#: ../src/date.c:154
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/date.c:810
+#: ../src/date.c:162
 msgid "%b %d %l:%M %p"
 msgstr "%b %d %l:%M %p"
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/date.c:813
+#: ../src/date.c:165
 msgid "%b %d %Y"
 msgstr "%d %b %Y"
 
@@ -314,7 +322,7 @@ msgstr ""
 "Jūs vēl  neesat konfigurējis lejupielādes rīku! Lūdzu, izdariet to Rīki/"
 "Iestatījumi cilnē “Lejupielādes”"
 
-#: ../src/enclosure.c:310
+#: ../src/enclosure.c:311
 #, c-format
 msgid ""
 "Command failed: \n"
@@ -384,7 +392,7 @@ msgstr "Eksportēt plūsmu sarakstu"
 msgid "Export"
 msgstr "Eksportēt"
 
-#: ../src/feed.c:313
+#: ../src/feed.c:324
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -394,17 +402,17 @@ msgstr ""
 "norāda uz resursu, kurš ir kādā no atbalstītajiem sindikāta formātiem!</p> "
 "XML parsētāja izvade:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:340
+#: ../src/feed.c:351
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "“%s” ir atjaunināts..."
 
-#: ../src/feed.c:347
+#: ../src/feed.c:358
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "“%s” nav pieejams"
 
-#: ../src/feed_parser.c:137
+#: ../src/feed_parser.c:142
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -414,33 +422,33 @@ msgstr ""
 "plūsmas. Iespējams, ka šī lapa vienkārši neatbalsta plūsmu automātisku "
 "atklāšanu."
 
-#: ../src/feed_parser.c:170
+#: ../src/feed_parser.c:194
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr "XML kļūda, parsējot plūsmu! Nevarēja ielādēt plūsmu “%s”!"
 
-#: ../src/feed_parser.c:175
+#: ../src/feed_parser.c:199 ../src/feed_parser.c:248
 msgid "Empty document!"
 msgstr "Tukšs dokuments!"
 
-#: ../src/feed_parser.c:187
+#: ../src/feed_parser.c:211
 msgid "Invalid XML!"
 msgstr "Nederīgs XML!"
 
-#: ../src/feed_parser.c:227
+#: ../src/feed_parser.c:271
 msgid "Source points to HTML document."
 msgstr "Avota norāda uz HTML dokumentu."
 
-#: ../src/feed_parser.c:230
+#: ../src/feed_parser.c:274
 msgid "Could not determine the feed type."
 msgstr "Nevarēja noteikt plūsmas tipu."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:396
+#: ../src/itemlist.c:393
 msgid "There are no unread items"
 msgstr "Nav nelasītu vienumu "
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:279
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -448,115 +456,119 @@ msgstr ""
 "Palaist Liferea ar tā galveno logu stāvoklī STATE. STATE var būt “shown”, "
 "“iconified” vai “hidden”"
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:279
 msgid "STATE"
 msgstr "STATE"
 
-#: ../src/liferea_application.c:284
+#: ../src/liferea_application.c:280
 msgid "Show version information and exit"
 msgstr "Parādīt informāciju par versiju un iziet"
 
-#: ../src/liferea_application.c:285
+#: ../src/liferea_application.c:281
 msgid "Add a new subscription"
 msgstr "Pievienot jaunu abonementu"
 
-#: ../src/liferea_application.c:285
+#: ../src/liferea_application.c:281
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:282
+msgid "Start with all plugins disabled"
+msgstr ""
+
+#: ../src/liferea_application.c:287
 msgid "Print debugging messages of all types"
 msgstr "Izdrukāt atkļūdošanas ziņojumus visiem tipiem"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages for the cache handling"
 msgstr "Izdrukāt atkļūdošanas ziņojumus kešatmiņas apstrādāšanai"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the configuration handling"
 msgstr "Izdrukāt atkļūdošanas ziņojumus konfigurācijas apstrādāšanai"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages of the database handling"
 msgstr "Izdrukāt atkļūdošanas ziņojumus datubāzes apstrādāšanai"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of all GUI functions"
 msgstr "Izdrukāt atkļūdošanas ziņojumus visām GUI funkcijām"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Aktivē HTML renderēšanas atkļūdošanu. Katru reizi, kad Liferea renderē HTML "
-"izvadu, tas novieto HTML datnē ~/.cache/liferea/output.xhtml"
+"izvadu, tas novieto HTML datnē ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"
 msgstr "Izdrukāt atkļūdošanas ziņojumus visām tīkla aktivitātēm"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all parsing functions"
 msgstr "Izdrukāt atkļūdošanas ziņojumus visām parsēšanas funkcijām"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "Izdrukāt atkļūdošanas ziņojumus, kad funkcija aizņem pārāk daudz laika"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Izdrukāt atkļūdošanas ziņojumus, kad ieiet/pamet funkcijas"
 
-#: ../src/liferea_application.c:300
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages of the feed update processing"
 msgstr "Izdrukāt atkļūdošanas ziņojumus par plūsmu atjaunināšanas apstrādi"
 
-#: ../src/liferea_application.c:301
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the search folder matching"
 msgstr "Izdrukāt atkļūdošanas ziņojumus atbilstošām meklēšanas mapēm"
 
-#: ../src/liferea_application.c:302
+#: ../src/liferea_application.c:299
 msgid "Print verbose debugging messages"
 msgstr "Izdrukāt detalizētus atkļūdošanas ziņojumus"
 
-#: ../src/liferea_application.c:307 ../src/liferea_application.c:308
+#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
 msgid "Print debugging messages for the given topic"
 msgstr "Izdrukāt atkļūdošanas ziņojumus dotajam tematam"
 
 #. Some libsoup transport errors
-#: ../src/net.c:401
+#: ../src/net.c:463
 msgid "The update request was cancelled"
 msgstr "Atjaunināšanas pieprasījums tika atcelts"
 
-#: ../src/net.c:402
+#: ../src/net.c:464
 msgid "Unable to resolve destination host name"
 msgstr "Neizdevās sameklēt mērķa datora nosaukumu"
 
-#: ../src/net.c:403
+#: ../src/net.c:465
 msgid "Unable to resolve proxy host name"
 msgstr "Neizdevās sameklēt starpniekservera nosaukumu"
 
-#: ../src/net.c:404
+#: ../src/net.c:466
 msgid "Unable to connect to remote host"
 msgstr "Neizdevās savienoties ar attālināto datoru"
 
-#: ../src/net.c:405
+#: ../src/net.c:467
 msgid "Unable to connect to proxy"
 msgstr "Neizdevās savienoties ar starpniekserveri"
 
-#: ../src/net.c:406
+#: ../src/net.c:468
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr "Radās tīkla kļūda, vai arī otrā puse negaidīti aizvēra savienojumu"
 
 #. http 3xx redirection
-#: ../src/net.c:409
+#: ../src/net.c:471
 msgid "The resource moved permanently to a new location"
 msgstr "Resurss ir pastāvīgi pārvietos uz citu vietu"
 
 #. http 4xx client error
-#: ../src/net.c:412
+#: ../src/net.c:474
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -564,149 +576,155 @@ msgstr ""
 "Jūs neesat pilnvarots lejupielādēt šo plūsmu. Lūdzu, norādiet savu lietotāja "
 "vārdu un paroli plūsmas īpašību dialoglodziņā"
 
-#: ../src/net.c:414
+#: ../src/net.c:476
 msgid "Payment required"
 msgstr "Nepieciešama apmaksa"
 
-#: ../src/net.c:415
+#: ../src/net.c:477
 msgid "You're not allowed to access this resource"
 msgstr "Jums nav atļaujas piekļūt šim resursam"
 
-#: ../src/net.c:416
+#: ../src/net.c:478
 msgid "Resource Not Found"
 msgstr "Resurss nav atrasts"
 
-#: ../src/net.c:417
+#: ../src/net.c:479
 msgid "Method Not Allowed"
 msgstr "Metode nav atļauta"
 
-#: ../src/net.c:418
+#: ../src/net.c:480
 msgid "Not Acceptable"
 msgstr "Nav pieņemams"
 
-#: ../src/net.c:419
+#: ../src/net.c:481
 msgid "Proxy authentication required"
 msgstr "Nepieciešama starpniekservera autentifikācija"
 
-#: ../src/net.c:420
+#: ../src/net.c:482
 msgid "Request timed out"
 msgstr "Laiks iztecējis"
 
-#: ../src/net.c:421
+#: ../src/net.c:483
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Nav. Resurss neeksistē. Lūdzu, atrakstieties!"
 
-#: ../src/net.c:426
+#: ../src/net.c:488
 msgid "There was an internal error in the update process"
 msgstr "Atjauninot radās iekšēja kļūda"
 
-#: ../src/net.c:428
+#: ../src/net.c:490
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Plūsma nav pieejama — serveris pieprasīja neatbalstītu pāradresēšanu!"
 
-#: ../src/net.c:430
+#: ../src/net.c:492
 msgid "Client Error"
 msgstr "Klienta kļūda"
 
-#: ../src/net.c:432
+#: ../src/net.c:494
 msgid "Server Error"
 msgstr "Servera kļūda"
 
-#: ../src/net.c:434
+#: ../src/net.c:496
 msgid "An unknown networking error happened!"
 msgstr "Radās nezināma tīkla kļūda!"
 
-#. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
+#. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:174
+#: ../src/rule.c:198
 msgid "Item"
 msgstr "Vienums"
 
-#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
+#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
+#: ../src/rule.c:206 ../src/rule.c:207
 msgid "does contain"
 msgstr "satur"
 
-#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
+#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
+#: ../src/rule.c:206 ../src/rule.c:207
 msgid "does not contain"
 msgstr "nesatur"
 
-#: ../src/rule.c:175
+#: ../src/rule.c:199
 msgid "Item title"
 msgstr "Vienuma virsraksts"
 
-#: ../src/rule.c:176
+#: ../src/rule.c:200
 msgid "Item body"
 msgstr "Vienuma pamatteksts"
 
-#: ../src/rule.c:177
+#: ../src/rule.c:201
 msgid "Read status"
 msgstr "Lasīšanas statuss"
 
-#: ../src/rule.c:177
+#: ../src/rule.c:201
 msgid "is unread"
 msgstr "nav lasīts"
 
-#: ../src/rule.c:177
+#: ../src/rule.c:201
 msgid "is read"
 msgstr "ir lasīts"
 
-#: ../src/rule.c:178
+#: ../src/rule.c:202
 msgid "Flag status"
 msgstr "Atzīmes statuss"
 
-#: ../src/rule.c:178
+#: ../src/rule.c:202
 msgid "is flagged"
 msgstr "ir atzīmēts"
 
-#: ../src/rule.c:178
+#: ../src/rule.c:202
 msgid "is unflagged"
 msgstr "nav atzīmēts"
 
-#: ../src/rule.c:179
+#: ../src/rule.c:203
 msgid "Podcast"
 msgstr "Podraide"
 
-#: ../src/rule.c:179
+#: ../src/rule.c:203
 msgid "included"
 msgstr "iekļauts"
 
-#: ../src/rule.c:179
+#: ../src/rule.c:203
 msgid "not included"
 msgstr "nav iekļauts"
 
-#: ../src/rule.c:180
+#: ../src/rule.c:204
 msgid "Category"
 msgstr "Kategorija"
 
-#: ../src/rule.c:180
+#: ../src/rule.c:204
 msgid "is set"
 msgstr "ir iestatīts"
 
-#: ../src/rule.c:180
+#: ../src/rule.c:204
 msgid "is not set"
 msgstr "nav iestatīts"
 
-#: ../src/rule.c:181
+#: ../src/rule.c:205
 msgid "Feed title"
 msgstr "Barotnes virsraksts"
 
-#: ../src/subscription.c:105
+#: ../src/rule.c:206
+#, fuzzy
+msgid "Feed source"
+msgstr "Plūsmas avots"
+
+#: ../src/rule.c:207
+msgid "Parent folder title"
+msgstr ""
+
+#: ../src/subscription.c:108
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "Abonements “%s” jau tiek atjaunināts!"
 
-#: ../src/subscription.c:110
+#: ../src/subscription.c:113
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "Abonements “%s” vairs nav pieejams. Liferea to vairs neatjauninās!"
 
-#: ../src/subscription.c:144
-#, c-format
-msgid "Updating favicon for \"%s\""
-msgstr "Atjaunina “%s” favicon ikonu"
-
-#: ../src/subscription.c:193
+#: ../src/subscription.c:173
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -714,48 +732,48 @@ msgstr ""
 "Lasot šo abonementu, radās problēma. Lūdzu, pārbaudiet URL un konsoles "
 "izvadi."
 
-#: ../src/subscription.c:211
+#: ../src/subscription.c:196
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "“%s” URL ir mainīts pastāvīgi un tika atjaunināts"
 
-#: ../src/subscription.c:219
+#: ../src/subscription.c:204
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "“%s” ir pārtraukts. Liferea to vairs neatjauninās!"
 
-#: ../src/subscription.c:222
+#: ../src/subscription.c:207
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "“%s” nav mainīts kopš iepriekšējās atjaunināšanas"
 
-#: ../src/subscription.c:275
+#: ../src/subscription.c:263
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Atjaunina “%s”"
 
-#: ../src/update.c:282
+#: ../src/update.c:297
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Kļūda, atverot pagaidu datni %s, lai to izmantotu filtrēšanai!"
 
-#: ../src/update.c:305
+#: ../src/update.c:320
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s izgāja ar statusu %d"
 
-#: ../src/update.c:311 ../src/update.c:312 ../src/update.c:429
+#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:442
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Kļūda — nevarēja atvērt konveijeru “%s”"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:455
+#: ../src/update.c:466
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Kļūda — nevarēja atvērt datni “%s”"
 
-#: ../src/update.c:461
+#: ../src/update.c:472
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Kļūda — nav datnes “%s”"
@@ -772,34 +790,34 @@ msgstr "[Bija vairākas kļūdas. Izvade ir saīsināta!]"
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML parsētājs — neizdevās analizēt dokumentu:\n"
 
-#: ../src/ui/enclosure_list_view.c:175
+#: ../src/ui/enclosure_list_view.c:168
 msgid "Attachments"
 msgstr "Pielikumi"
 
 #. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:272
+#: ../src/ui/enclosure_list_view.c:260
 msgid " Bytes"
 msgstr " Baiti"
 
-#: ../src/ui/enclosure_list_view.c:275
+#: ../src/ui/enclosure_list_view.c:263
 msgid "kB"
 msgstr "kB"
 
-#: ../src/ui/enclosure_list_view.c:279
+#: ../src/ui/enclosure_list_view.c:267
 msgid "MB"
 msgstr "MB"
 
-#: ../src/ui/enclosure_list_view.c:283
+#: ../src/ui/enclosure_list_view.c:271
 msgid "GB"
 msgstr "GB"
 
-#: ../src/ui/enclosure_list_view.c:287
+#: ../src/ui/enclosure_list_view.c:275
 #, c-format
 msgid "%d%s"
 msgstr "%d%s"
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:325
+#: ../src/ui/enclosure_list_view.c:313
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
@@ -807,11 +825,11 @@ msgstr[0] "%d pielikums"
 msgstr[1] "%d pielikumi"
 msgstr[2] "%d pielikumu"
 
-#: ../src/ui/enclosure_list_view.c:383 ../src/ui/subscription_dialog.c:352
+#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:355
 msgid "Choose File"
 msgstr "Izvēlieties datni"
 
-#: ../src/ui/enclosure_list_view.c:444
+#: ../src/ui/enclosure_list_view.c:463
 #, c-format
 msgid "File Extension .%s"
 msgstr "Datnes paplašinājums .%s"
@@ -821,7 +839,7 @@ msgstr "Datnes paplašinājums .%s"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Nevarēja atrast bitkartes datni — %s"
 
-#: ../src/ui/liferea_shell.c:390
+#: ../src/ui/liferea_shell.c:396
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -829,7 +847,7 @@ msgstr[0] " (%d jauns)"
 msgstr[1] " (%d jauni)"
 msgstr[2] " (%d jaunu)"
 
-#: ../src/ui/liferea_shell.c:395
+#: ../src/ui/liferea_shell.c:401
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -837,356 +855,39 @@ msgstr[0] "%d nelasīta%s"
 msgstr[1] "%d nelasītas%s"
 msgstr[2] "%d nelasītu%s"
 
-#: ../src/ui/liferea_shell.c:770
+#: ../src/ui/liferea_shell.c:758
 msgid "Help Topics"
 msgstr "Palīdzības tēmas"
 
-#: ../src/ui/liferea_shell.c:776
+#: ../src/ui/liferea_shell.c:764
 msgid "Quick Reference"
 msgstr "Ātrā rokasgrāmata"
 
-#: ../src/ui/liferea_shell.c:782
+#: ../src/ui/liferea_shell.c:770
 msgid "FAQ"
 msgstr "BUJ"
 
-#: ../src/ui/liferea_shell.c:907
-msgid "_Subscriptions"
-msgstr "_Abonementi"
-
-#: ../src/ui/liferea_shell.c:908
-msgid "Update _All"
-msgstr "_Atjaunināt visus"
-
-#: ../src/ui/liferea_shell.c:908
-msgid "Updates all subscriptions."
-msgstr "Atjaunina visus abonementus."
-
-#: ../src/ui/liferea_shell.c:910
-msgid "Mark All As _Read"
-msgstr "Atzīmēt visus kā _lasītus"
-
-#: ../src/ui/liferea_shell.c:910
-msgid "Marks read every item of every subscription."
-msgstr "Atzīmē kā lasītus visus vienumus katrā abonementā."
-
-#: ../src/ui/liferea_shell.c:912
-msgid "_Import Feed List..."
-msgstr "_Importēt plūsmu sarakstu..."
-
-#: ../src/ui/liferea_shell.c:912
-msgid "Imports an OPML feed list."
-msgstr "Importē OPML plūsmu sarakstu."
-
-#: ../src/ui/liferea_shell.c:913
-msgid "_Export Feed List..."
-msgstr "_Eksportēt plūsmu sarakstu..."
-
-#: ../src/ui/liferea_shell.c:913
-msgid "Exports the feed list as OPML."
-msgstr "Eksportē plūsmu sarakstu kā OPML."
-
-#: ../src/ui/liferea_shell.c:914 ../src/ui/popup_menu.c:190
-msgid "_Quit"
-msgstr "_Iziet"
-
-#: ../src/ui/liferea_shell.c:916
-msgid "_Feed"
-msgstr "_Plūsma"
-
-#: ../src/ui/liferea_shell.c:917
-msgid "Remove _All Items"
-msgstr "Izņemt _visus vienumus"
-
-#: ../src/ui/liferea_shell.c:917
-msgid "Removes all items of the currently selected feed."
-msgstr "Izņem visus vienumus no pašlaik izvēlētās plūsmas."
-
-#: ../src/ui/liferea_shell.c:920
-msgid "_Item"
-msgstr "V_ienums"
-
-#: ../src/ui/liferea_shell.c:921
-msgid "Previous Item"
-msgstr "Iepriekšējais vienums"
-
-#: ../src/ui/liferea_shell.c:923
-msgid "Next Item"
-msgstr "Nākamais vienums"
-
-#. No tooltip here as it really hinders usability to have it flashing
-#. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:928
-msgid "_Next Unread Item"
-msgstr "_Nākamais nelasītais"
-
-#: ../src/ui/liferea_shell.c:931
-msgid "_View"
-msgstr "_Skats"
-
-#: ../src/ui/liferea_shell.c:932 ../src/webkit/liferea_web_view.c:212
-msgid "_Increase Text Size"
-msgstr "Pal_ielināt teksta izmēru"
-
-#: ../src/ui/liferea_shell.c:932
-msgid "Increases the text size of the item view."
-msgstr "Palielina teksta izmēru vienumu skatā."
-
-#: ../src/ui/liferea_shell.c:934 ../src/webkit/liferea_web_view.c:213
-msgid "_Decrease Text Size"
-msgstr "_Samazināt teksta izmēru"
-
-#: ../src/ui/liferea_shell.c:934
-msgid "Decreases the text size of the item view."
-msgstr "Samazina teksta izmēru vienumu skatā."
-
-#: ../src/ui/liferea_shell.c:937
-msgid "_Tools"
-msgstr "_Rīki"
-
-#: ../src/ui/liferea_shell.c:938
-msgid "_Update Monitor"
-msgstr "Atjaunināšanas _uzraugs"
-
-#: ../src/ui/liferea_shell.c:938
-msgid "Show a list of all feeds currently in the update queue"
-msgstr "Rādīt sarakstu ar visām plūsmām, kas atrodas atjaunināšanas rindā"
-
-#: ../src/ui/liferea_shell.c:940 ../src/ui/popup_menu.c:185
-msgid "_Preferences"
-msgstr "_Iestatījumi"
-
-#: ../src/ui/liferea_shell.c:940
-msgid "Edit Preferences."
-msgstr "Rediģēt iestatījumus."
-
-#: ../src/ui/liferea_shell.c:943
-msgid "S_earch"
-msgstr "M_eklēt"
-
-#: ../src/ui/liferea_shell.c:944
-msgid "Search All Feeds..."
-msgstr "Meklēt visās plūsmās..."
-
-#: ../src/ui/liferea_shell.c:944
-msgid "Show the search dialog."
-msgstr "Rādīt meklēšanas dialogu."
-
-#: ../src/ui/liferea_shell.c:946
-msgid "_Help"
-msgstr "_Palīdzība"
-
-#: ../src/ui/liferea_shell.c:947
-msgid "_Contents"
-msgstr "_Saturs"
-
-#: ../src/ui/liferea_shell.c:947
-msgid "View help for this application."
-msgstr "Skatīt šīs lietotnes palīdzību."
-
-#: ../src/ui/liferea_shell.c:948
-msgid "_Quick Reference"
-msgstr "_Ātrā atsauce"
-
-#: ../src/ui/liferea_shell.c:948
-msgid "View a list of all Liferea shortcuts."
-msgstr "Skatīt sarakstu ar visiem Liferea īsceļiem."
-
-#: ../src/ui/liferea_shell.c:950
-msgid "_FAQ"
-msgstr "_BUJ"
-
-#: ../src/ui/liferea_shell.c:950
-msgid "View the FAQ for this application."
-msgstr "Skatīt šīs lietotnes BUJ."
-
-#: ../src/ui/liferea_shell.c:951
-msgid "_About"
-msgstr "P_ar"
-
-#: ../src/ui/liferea_shell.c:951
-msgid "Shows an about dialog."
-msgstr "Parāda informāciju par programmu."
-
-#: ../src/ui/liferea_shell.c:955
-msgid "_Normal View"
-msgstr "_Normāls skats"
-
-#: ../src/ui/liferea_shell.c:955
-msgid "Set view mode to mail client mode."
-msgstr "Iestatīt skata režīmu uz pasta klienta režīmu."
-
-#: ../src/ui/liferea_shell.c:957
-msgid "_Wide View"
-msgstr "_Plašs skats"
-
-#: ../src/ui/liferea_shell.c:957
-msgid "Set view mode to use three vertical panes."
-msgstr "Iestatīt skatīšanas režīmu uz trīs vertikālām rūtīm."
-
-#: ../src/ui/liferea_shell.c:959
-msgid "_Combined View"
-msgstr "_Kombinētais skats"
-
-#: ../src/ui/liferea_shell.c:959
-msgid "Set view mode to two pane mode."
-msgstr "Iestatīt skatīšanas režīmu uz divu rūšu režīmu."
-
-#: ../src/ui/liferea_shell.c:964
-msgid "_Reduced Feed List"
-msgstr "_Reducētais plūsmu saraksts"
-
-#: ../src/ui/liferea_shell.c:964
-msgid "Hide feeds with no unread items."
-msgstr "Slēpt plūsmas ar nelasītiem vienumiem."
-
-#: ../src/ui/liferea_shell.c:969
-msgid "_New Subscription..."
-msgstr "Jau_ns abonements..."
-
-#: ../src/ui/liferea_shell.c:969
-msgid "Adds a subscription to the feed list."
-msgstr "Pievieno abonementu plūsmu sarakstam."
-
-#: ../src/ui/liferea_shell.c:971 ../src/ui/popup_menu.c:308
-msgid "New _Folder..."
-msgstr "Jauna _mape..."
-
-#: ../src/ui/liferea_shell.c:971
-msgid "Adds a folder to the feed list."
-msgstr "Pievieno mapi plūsmu sarakstam."
-
-#: ../src/ui/liferea_shell.c:972 ../src/ui/popup_menu.c:311
-msgid "New S_earch Folder..."
-msgstr "Jauna m_eklēšanas mape..."
-
-#: ../src/ui/liferea_shell.c:972
-msgid "Adds a new search folder to the feed list."
-msgstr "Pievieno jaunu meklēšanas mapi plūsmu sarakstam."
-
-#: ../src/ui/liferea_shell.c:973
-msgid "New _Source..."
-msgstr "Jaun_s avots..."
-
-#: ../src/ui/liferea_shell.c:973
-msgid "Adds a new feed list source."
-msgstr "Pievieno jaunu plūsmas saraksta avotu."
-
-#: ../src/ui/liferea_shell.c:974 ../src/ui/popup_menu.c:313
-msgid "New _News Bin..."
-msgstr "Jau_ns ziņu grozs..."
-
-#: ../src/ui/liferea_shell.c:974
-msgid "Adds a new news bin."
-msgstr "Pievieno jaunu ziņu grozu."
-
-#: ../src/ui/liferea_shell.c:978
-msgid "_Mark Items Read"
-msgstr "Atzī_mēt kā lasītus"
-
-#: ../src/ui/liferea_shell.c:978
-msgid ""
-"Marks all items of the selected feed list node / in the item list as read."
-msgstr ""
-"Atzīmē visus vienumus izvēlētajā plūsmas saraksta mezglā / vienumu sarakstā "
-"kā lasītus."
-
-#: ../src/ui/liferea_shell.c:980 ../src/ui/popup_menu.c:290
-msgid "_Update"
-msgstr "Atja_unināt"
-
-#: ../src/ui/liferea_shell.c:980
-msgid ""
-"Updates the selected subscription or all subscriptions of the selected "
-"folder."
-msgstr "Atjaunina izvēlētos abonementus vai visus abonementus izvēlētajā mapē."
-
-#: ../src/ui/liferea_shell.c:985 ../src/ui/popup_menu.c:339
-msgid "_Properties"
-msgstr "Ī_pašības"
-
-#: ../src/ui/liferea_shell.c:985
-msgid "Opens the property dialog for the selected subscription."
-msgstr "Atver īpašību dialogu izvēlētajiem abonementiem."
-
-#: ../src/ui/liferea_shell.c:986
-msgid "_Remove"
-msgstr "_Izņemt"
-
-#: ../src/ui/liferea_shell.c:986
-msgid "Removes the selected subscription."
-msgstr "Izņem izvēlēto abonementu."
-
-#: ../src/ui/liferea_shell.c:990 ../src/ui/popup_menu.c:153
-msgid "Toggle _Read Status"
-msgstr "Pā_rslēgt lasīšanas statusu"
-
-#: ../src/ui/liferea_shell.c:990
-msgid "Toggles the read status of the selected item."
-msgstr "Pārslēdz lasīšanas statusu izvēlētajiem vienumiem."
-
-#: ../src/ui/liferea_shell.c:992 ../src/ui/popup_menu.c:154
-msgid "Toggle Item _Flag"
-msgstr "Pārslēgt vienuma _atzīmi"
-
-#: ../src/ui/liferea_shell.c:992
-msgid "Toggles the flag status of the selected item."
-msgstr "Pārslēdz atzīmes statusu izvēlētajam vienumam."
-
-#: ../src/ui/liferea_shell.c:994
-msgid "R_emove"
-msgstr "Izņ_emt"
-
-#: ../src/ui/liferea_shell.c:994
-msgid "Removes the selected item."
-msgstr "Izņem izvēlēto vienumu."
-
-#: ../src/ui/liferea_shell.c:996 ../src/ui/popup_menu.c:117
-msgid "Open In _Tab"
-msgstr "Atvērt _cilnē"
-
-#: ../src/ui/liferea_shell.c:996
-msgid "Launches the item's link in a new Liferea browser tab."
-msgstr "Atver vienuma saiti Liferea pārlūka cilnē."
-
-#: ../src/ui/liferea_shell.c:998 ../src/ui/popup_menu.c:118
-msgid "_Open In Browser"
-msgstr "Atvērt pār_lūkā"
-
-#: ../src/ui/liferea_shell.c:998
-msgid "Launches the item's link in the Liferea item pane."
-msgstr "Atver vienuma saiti Liferea vienuma rūtī."
-
-#: ../src/ui/liferea_shell.c:1000 ../src/ui/popup_menu.c:119
-msgid "Open In _External Browser"
-msgstr "_Atvērt ārējā pārlūkā"
-
-#: ../src/ui/liferea_shell.c:1000
-msgid "Launches the item's link in the configured external browser."
-msgstr "Atver vienuma saiti konfigurētajā ārējā pārlūkā."
-
-#: ../src/ui/liferea_shell.c:1005
-msgid "_Fullscreen"
-msgstr "_Pilnekrāns"
-
-#: ../src/ui/liferea_shell.c:1005
-msgid "Browse at full screen"
-msgstr "Pārlūkot pilnekrānā"
-
-#: ../src/ui/search_dialog.c:116
+#: ../src/ui/liferea_shell.c:1041
+#, fuzzy, c-format
+msgid "Email command failed: %s"
+msgstr "Pārlūka komanda cieta neveiksmi — %s"
+
+#: ../src/ui/search_dialog.c:107
 #, fuzzy
 msgid "Saved Search"
 msgstr "Paplašinātā meklēšana"
 
-#: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
-#, no-c-format
+#: ../src/ui/auth_dialog.c:114
+#, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Ievadiet “%s” lietotāja vārdu un paroli (%s):"
 
-#: ../src/ui/auth_dialog.c:125
+#: ../src/ui/auth_dialog.c:116
 msgid "Unknown source"
 msgstr "Nezināms avots"
 
-#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_node.c:416
+#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_view.c:911
+#: ../src/ui/feed_list_view.c:965
 #, fuzzy
 msgid "_Cancel"
 msgstr "_Atcelt visu"
@@ -1195,193 +896,30 @@ msgstr "_Atcelt visu"
 msgid "All Files"
 msgstr "Visas datnes"
 
-#: ../src/ui/feed_list_view.c:375
+#: ../src/ui/feed_list_view.c:432
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea ir bezsaites režīmā. Nevar veikt atjaunināšanu."
 
-#: ../src/ui/item_list_view.c:115
-msgid "This item has no link specified!"
-msgstr "Šim vienumam nav norādīta saite!"
+#: ../src/ui/feed_list_view.c:478
+#, fuzzy
+msgid "all feeds"
+msgstr "Meklēt visās plūsmās"
 
-#: ../src/ui/item_list_view.c:119 ../src/ui/item_list_view.c:986
-#: ../src/ui/item_list_view.c:1069 ../src/ui/item_list_view.c:1084
-msgid "No item has been selected"
-msgstr "Nav izvēlētu vienumu"
+#: ../src/ui/feed_list_view.c:479
+#, fuzzy, c-format
+msgid "Mark %s as read ?"
+msgstr "Atzīmēt visas kā lasītas"
 
-#: ../src/ui/item_list_view.c:479
-msgid "*** No title ***"
-msgstr "*** Nav virsraksta ***"
+#: ../src/ui/feed_list_view.c:483
+#, fuzzy, c-format
+msgid "Are you sure you want to mark all items in %s as read ?"
+msgstr "Vai tiešām vēlaties dzēst “%s”?"
 
-#: ../src/ui/item_list_view.c:483
-msgid " <span background='red' color='black'> important </span> "
-msgstr ""
-
-#: ../src/ui/item_list_view.c:793
-msgid "Headline"
-msgstr "Virsraksts"
-
-#: ../src/ui/item_list_view.c:816
-msgid "Date"
-msgstr "Datums"
-
-#: ../src/ui/item_list_view.c:973
-msgid "You must select a feed to delete its items!"
-msgstr "Jums jāizvēlas plūsma, lai dzēstu tās vienumus!"
-
-#: ../src/ui/popup_menu.c:131
-msgid "Copy to News Bin"
-msgstr "Kopēt uz ziņu grozu"
-
-#: ../src/ui/popup_menu.c:145
-#, c-format
-msgid "_Bookmark at %s"
-msgstr "Ie_grāmatot %s"
-
-#: ../src/ui/popup_menu.c:149
-msgid "Copy Item _Location"
-msgstr "Kopēt _vienuma adresi"
-
-#: ../src/ui/popup_menu.c:155
-msgid "R_emove Item"
-msgstr "Izņ_emt vienumu"
-
-#: ../src/ui/popup_menu.c:168
-msgid "Open Enclosure..."
-msgstr "Atvērt ietvaru..."
-
-#: ../src/ui/popup_menu.c:169
-msgid "Save As..."
-msgstr "Saglabāt kā..."
-
-#: ../src/ui/popup_menu.c:170
-msgid "Copy Link Location"
-msgstr "Kopēt saites vietu"
-
-#: ../src/ui/popup_menu.c:183
-msgid "_Work Offline"
-msgstr "_Strādāt nesaistē"
-
-#: ../src/ui/popup_menu.c:184
-msgid "_Update All"
-msgstr "_Atjaunināt visas"
-
-#: ../src/ui/popup_menu.c:189
-msgid "_Show Liferea"
-msgstr "_Rādīt Liferea"
-
-#: ../src/ui/popup_menu.c:292
-msgid "_Update Folder"
-msgstr "Atja_unināt mapi"
-
-#: ../src/ui/popup_menu.c:302
-msgid "_New"
-msgstr "Jau_ns"
-
-#: ../src/ui/popup_menu.c:305
-msgid "New _Subscription..."
-msgstr "Jaun_s abonements..."
-
-#: ../src/ui/popup_menu.c:312
-msgid "New S_ource..."
-msgstr "Jauns av_ots..."
-
-#: ../src/ui/popup_menu.c:321
-msgid "Sort Feeds"
-msgstr "Sakārtot plūsmas"
-
-#: ../src/ui/popup_menu.c:327
-msgid "_Mark All As Read"
-msgstr "Atzī_mēt visas kā lasītas"
-
-#: ../src/ui/popup_menu.c:332
-msgid "_Rebuild"
-msgstr "Pā_rbūvēt"
-
-#: ../src/ui/popup_menu.c:338 ../src/ui/feed_list_node.c:417
-msgid "_Delete"
-msgstr "_Dzēst"
-
-#: ../src/ui/popup_menu.c:344
-msgid "Convert To Local Subscriptions..."
-msgstr "Konvertēt uz lokālu abonementu..."
-
-#: ../src/ui/preferences_dialog.c:86
-msgid "GNOME default"
-msgstr "GNOME noklusējuma"
-
-#: ../src/ui/preferences_dialog.c:87
-msgid "Text below icons"
-msgstr "Teksts zem ikonām"
-
-#: ../src/ui/preferences_dialog.c:88
-msgid "Text beside icons"
-msgstr "Teksts blakus ikonām"
-
-#: ../src/ui/preferences_dialog.c:89
-msgid "Icons only"
-msgstr "Tikai ikonas"
-
-#: ../src/ui/preferences_dialog.c:90
-msgid "Text only"
-msgstr "Tikai teksts"
-
-#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:43
-msgid "minutes"
-msgstr "minūtes"
-
-#: ../src/ui/preferences_dialog.c:99 ../src/ui/subscription_dialog.c:44
-msgid "hours"
-msgstr "stundas"
-
-#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:45
-msgid "days"
-msgstr "dienas"
-
-#: ../src/ui/preferences_dialog.c:105
-msgid "Space"
-msgstr "Atstarpe"
-
-#: ../src/ui/preferences_dialog.c:106
-msgid "<Ctrl> Space"
-msgstr "<Ctrl> Atstarpe"
-
-#: ../src/ui/preferences_dialog.c:107
-msgid "<Alt> Space"
-msgstr "<Alt> Atstarpe"
-
-#: ../src/ui/preferences_dialog.c:112
-msgid "Normal View"
-msgstr "Normāls skats"
-
-#: ../src/ui/preferences_dialog.c:113
-msgid "Wide View"
-msgstr "Plats skats"
-
-#: ../src/ui/preferences_dialog.c:114
-msgid "Combined View"
-msgstr "Kombinētais skats"
-
-#: ../src/ui/preferences_dialog.c:451
-msgid "Default Browser"
-msgstr "Noklusētais pārlūks"
-
-#: ../src/ui/preferences_dialog.c:453
-msgid "Manual"
-msgstr "Manuāli"
-
-#: ../src/ui/preferences_dialog.c:685
-msgid "Type"
-msgstr "Veids"
-
-#: ../src/ui/preferences_dialog.c:688
-msgid "Program"
-msgstr "Programma"
-
-#: ../src/ui/feed_list_node.c:124
+#: ../src/ui/feed_list_view.c:621
 msgid "(Empty)"
 msgstr "(Tukšs)"
 
-#: ../src/ui/feed_list_node.c:335
+#: ../src/ui/feed_list_view.c:832
 #, c-format
 msgid ""
 "%s\n"
@@ -1390,29 +928,255 @@ msgstr ""
 "%s\n"
 "<i>Pārbūvē</i>"
 
-#: ../src/ui/feed_list_node.c:406
+#: ../src/ui/feed_list_view.c:901
 msgid "Deleting entry"
 msgstr "Dzēš ierakstu"
 
-#: ../src/ui/feed_list_node.c:407
+#: ../src/ui/feed_list_view.c:902
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Vai tiešām vēlaties dzēst “%s” un tās saturu?"
 
-#: ../src/ui/feed_list_node.c:407
+#: ../src/ui/feed_list_view.c:902
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Vai tiešām vēlaties dzēst “%s”?"
 
-#: ../src/ui/feed_list_node.c:419
+#: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
+msgid "_Delete"
+msgstr "_Dzēst"
+
+#: ../src/ui/feed_list_view.c:914
 msgid "Deletion Confirmation"
 msgstr "Dzēšanas apstiprināšana"
 
-#: ../src/ui/subscription_dialog.c:352 ../src/fl_sources/opml_source.c:379
+#: ../src/ui/feed_list_view.c:953
+#, c-format
+msgid ""
+"Are you sure that you want to add a new subscription with URL \"%s\"? "
+"Another subscription with the same URL already exists (\"%s\")."
+msgstr ""
+
+#: ../src/ui/feed_list_view.c:966
+msgid "_Add"
+msgstr ""
+
+#: ../src/ui/feed_list_view.c:968
+#, fuzzy
+msgid "Adding Duplicate Subscription Confirmation"
+msgstr "Dzēšanas apstiprināšana"
+
+#: ../src/ui/item_list_view.c:115
+msgid "This item has no link specified!"
+msgstr "Šim vienumam nav norādīta saite!"
+
+#: ../src/ui/item_list_view.c:482
+msgid "*** No title ***"
+msgstr "*** Nav virsraksta ***"
+
+#: ../src/ui/item_list_view.c:486
+msgid " <span background='red' color='black'> important </span> "
+msgstr ""
+
+#: ../src/ui/item_list_view.c:865
+msgid "Headline"
+msgstr "Virsraksts"
+
+#: ../src/ui/item_list_view.c:887
+msgid "Date"
+msgstr "Datums"
+
+#: ../src/ui/item_list_view.c:1056
+msgid "You must select a feed to delete its items!"
+msgstr "Jums jāizvēlas plūsma, lai dzēstu tās vienumus!"
+
+#: ../src/ui/item_list_view.c:1072 ../src/ui/item_list_view.c:1150
+#: ../src/ui/item_list_view.c:1165
+msgid "No item has been selected"
+msgstr "Nav izvēlētu vienumu"
+
+#: ../src/ui/popup_menu.c:102
+msgid "Open In _Tab"
+msgstr "Atvērt _cilnē"
+
+#: ../src/ui/popup_menu.c:106
+msgid "_Open In Browser"
+msgstr "Atvērt pār_lūkā"
+
+#: ../src/ui/popup_menu.c:110
+msgid "Open In _External Browser"
+msgstr "_Atvērt ārējā pārlūkā"
+
+#: ../src/ui/popup_menu.c:115
+msgid "Email The Author"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:140
+msgid "Copy to News Bin"
+msgstr "Kopēt uz ziņu grozu"
+
+#: ../src/ui/popup_menu.c:148
+#, c-format
+msgid "_Bookmark at %s"
+msgstr "Ie_grāmatot %s"
+
+#: ../src/ui/popup_menu.c:154
+msgid "Copy Item _Location"
+msgstr "Kopēt _vienuma adresi"
+
+#: ../src/ui/popup_menu.c:163
+msgid "Toggle _Read Status"
+msgstr "Pā_rslēgt lasīšanas statusu"
+
+#: ../src/ui/popup_menu.c:167
+msgid "Toggle Item _Flag"
+msgstr "Pārslēgt vienuma _atzīmi"
+
+#: ../src/ui/popup_menu.c:171
+msgid "R_emove Item"
+msgstr "Izņ_emt vienumu"
+
+#: ../src/ui/popup_menu.c:200
+msgid "Open Enclosure..."
+msgstr "Atvērt ietvaru..."
+
+#: ../src/ui/popup_menu.c:201
+msgid "Save As..."
+msgstr "Saglabāt kā..."
+
+#: ../src/ui/popup_menu.c:202
+msgid "Copy Link Location"
+msgstr "Kopēt saites vietu"
+
+#: ../src/ui/popup_menu.c:280
+msgid "_Update"
+msgstr "Atja_unināt"
+
+#: ../src/ui/popup_menu.c:282
+msgid "_Update Folder"
+msgstr "Atja_unināt mapi"
+
+#: ../src/ui/popup_menu.c:292
+msgid "New _Subscription..."
+msgstr "Jaun_s abonements..."
+
+#: ../src/ui/popup_menu.c:295
+msgid "New _Folder..."
+msgstr "Jauna _mape..."
+
+#: ../src/ui/popup_menu.c:298
+msgid "New S_earch Folder..."
+msgstr "Jauna m_eklēšanas mape..."
+
+#: ../src/ui/popup_menu.c:299
+msgid "New S_ource..."
+msgstr "Jauns av_ots..."
+
+#: ../src/ui/popup_menu.c:300
+msgid "New _News Bin..."
+msgstr "Jau_ns ziņu grozs..."
+
+#: ../src/ui/popup_menu.c:303
+msgid "_New"
+msgstr "Jau_ns"
+
+#: ../src/ui/popup_menu.c:312
+msgid "Sort Feeds"
+msgstr "Sakārtot plūsmas"
+
+#: ../src/ui/popup_menu.c:320
+msgid "_Mark All As Read"
+msgstr "Atzī_mēt visas kā lasītas"
+
+#: ../src/ui/popup_menu.c:327
+msgid "_Rebuild"
+msgstr "Pā_rbūvēt"
+
+#: ../src/ui/popup_menu.c:336
+msgid "_Properties"
+msgstr "Ī_pašības"
+
+#: ../src/ui/popup_menu.c:343
+msgid "Convert To Local Subscriptions..."
+msgstr "Konvertēt uz lokālu abonementu..."
+
+#: ../src/ui/preferences_dialog.c:84
+msgid "GNOME default"
+msgstr "GNOME noklusējuma"
+
+#: ../src/ui/preferences_dialog.c:85
+msgid "Text below icons"
+msgstr "Teksts zem ikonām"
+
+#: ../src/ui/preferences_dialog.c:86
+msgid "Text beside icons"
+msgstr "Teksts blakus ikonām"
+
+#: ../src/ui/preferences_dialog.c:87
+msgid "Icons only"
+msgstr "Tikai ikonas"
+
+#: ../src/ui/preferences_dialog.c:88
+msgid "Text only"
+msgstr "Tikai teksts"
+
+#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:43
+msgid "minutes"
+msgstr "minūtes"
+
+#: ../src/ui/preferences_dialog.c:97 ../src/ui/subscription_dialog.c:44
+msgid "hours"
+msgstr "stundas"
+
+#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:45
+msgid "days"
+msgstr "dienas"
+
+#: ../src/ui/preferences_dialog.c:103
+msgid "Space"
+msgstr "Atstarpe"
+
+#: ../src/ui/preferences_dialog.c:104
+msgid "<Ctrl> Space"
+msgstr "<Ctrl> Atstarpe"
+
+#: ../src/ui/preferences_dialog.c:105
+msgid "<Alt> Space"
+msgstr "<Alt> Atstarpe"
+
+#: ../src/ui/preferences_dialog.c:110
+msgid "Normal View"
+msgstr "Normāls skats"
+
+#: ../src/ui/preferences_dialog.c:111
+msgid "Wide View"
+msgstr "Plats skats"
+
+#: ../src/ui/preferences_dialog.c:112
+msgid "Combined View"
+msgstr "Kombinētais skats"
+
+#: ../src/ui/preferences_dialog.c:467
+msgid "Default Browser"
+msgstr "Noklusētais pārlūks"
+
+#: ../src/ui/preferences_dialog.c:469
+msgid "Manual"
+msgstr "Manuāli"
+
+#: ../src/ui/preferences_dialog.c:716
+msgid "Type"
+msgstr "Veids"
+
+#: ../src/ui/preferences_dialog.c:719
+msgid "Program"
+msgstr "Programma"
+
+#: ../src/ui/subscription_dialog.c:355 ../src/fl_sources/opml_source.c:379
 msgid "_Open"
 msgstr ""
 
-#: ../src/ui/subscription_dialog.c:426
+#: ../src/ui/subscription_dialog.c:427
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1421,11 +1185,11 @@ msgstr[0] "Šīs plūsmas piegādātājs iesaka atjaunināšanas intervālu %d m
 msgstr[1] "Šīs plūsmas piegādātājs iesaka atjaunināšanas intervālu %d minūtes."
 msgstr[2] "Šīs plūsmas piegādātājs iesaka atjaunināšanas intervālu %d minūšu."
 
-#: ../src/ui/subscription_dialog.c:430
+#: ../src/ui/subscription_dialog.c:431
 msgid "This feed specifies no default update interval."
 msgstr "Plūsma nenorāda noklusēto atjaunināšanas intervālu."
 
-#: ../src/ui/browser_tabs.c:264
+#: ../src/ui/browser_tabs.c:262
 msgid "Untitled"
 msgstr "Nenosaukts"
 
@@ -1441,18 +1205,6 @@ msgstr "%b %d %H:%M"
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Jauns abonements"
-
-#: ../src/fl_sources/inoreader_source.c:102
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-#, fuzzy
-msgid "Login failed!"
-msgstr "Google Reader pieteikšanās neizdevās!"
-
-#: ../src/fl_sources/inoreader_source.c:311
-#, fuzzy
-msgid "InoReader"
-msgstr "Google Reader"
 
 #: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
@@ -1470,25 +1222,31 @@ msgstr "Izvēlieties OPML datni"
 msgid "New OPML Subscription"
 msgstr "Jauns OPML abonements"
 
-#: ../src/fl_sources/node_source.c:336
+#: ../src/fl_sources/node_source.c:334
 msgid "No feed list source types found!"
 msgstr "Nav atrasti plūsmas saraksta avota tipi!"
 
-#: ../src/fl_sources/node_source.c:365
+#: ../src/fl_sources/node_source.c:363
 msgid "Source Type"
 msgstr "Avota veids"
 
-#: ../src/fl_sources/node_source.c:416
+#: ../src/fl_sources/node_source.c:414
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:582
+#: ../src/fl_sources/node_source.c:580
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "“%s” abonements tika veiksmīgi pārveidots par lokālajām plūsmām!"
+
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+#, fuzzy
+msgid "Login failed!"
+msgstr "Google Reader pieteikšanās neizdevās!"
 
 #: ../src/fl_sources/reedah_source.c:312
 msgid "Reedah"
@@ -1529,58 +1287,86 @@ msgstr "Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Nevarēja parsēt JSON, atgriezta tt-rss API!"
 
-#: ../src/fl_sources/theoldreader_source.c:329
+#: ../src/fl_sources/theoldreader_source.c:310
 #, fuzzy
 msgid "TheOldReader"
 msgstr "Plūsmu lasītājs"
 
-#: ../src/webkit/liferea_web_view.c:173
+#: ../src/webkit/liferea_web_view.c:176
 msgid "Open Link In _Tab"
 msgstr "Atvērt sai_ti cilnē"
 
-#: ../src/webkit/liferea_web_view.c:174
+#: ../src/webkit/liferea_web_view.c:177
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "Atvērt saiti pār_lūkā"
 
-#: ../src/webkit/liferea_web_view.c:175
+#: ../src/webkit/liferea_web_view.c:178
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "Atvērt saiti ārējā pār_lūkā"
 
-#: ../src/webkit/liferea_web_view.c:181
+#: ../src/webkit/liferea_web_view.c:184
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Ie_grāmatot saiti %s"
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:191
 msgid "_Copy Link Location"
 msgstr "_Kopēt saites adresi"
 
-#: ../src/webkit/liferea_web_view.c:188
+#: ../src/webkit/liferea_web_view.c:194
 #, fuzzy
 msgid "_View Image"
 msgstr "S_aglabāt attēlu kā"
 
-#: ../src/webkit/liferea_web_view.c:189
+#: ../src/webkit/liferea_web_view.c:195
 msgid "_Copy Image Location"
 msgstr "_Kopēt attēla adresi"
 
-#: ../src/webkit/liferea_web_view.c:192
+#: ../src/webkit/liferea_web_view.c:198
 msgid "S_ave Link As"
 msgstr "S_aglabāt saiti kā"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:201
 msgid "S_ave Image As"
 msgstr "S_aglabāt attēlu kā"
 
-#: ../src/webkit/liferea_web_view.c:202
+#: ../src/webkit/liferea_web_view.c:208
 msgid "_Subscribe..."
 msgstr "_Abonēt..."
 
-#: ../src/webkit/liferea_web_view.c:206
+#: ../src/webkit/liferea_web_view.c:212
 msgid "_Copy"
 msgstr ""
+
+#: ../src/webkit/liferea_web_view.c:218
+msgid "_Increase Text Size"
+msgstr "Pal_ielināt teksta izmēru"
+
+#: ../src/webkit/liferea_web_view.c:219
+msgid "_Decrease Text Size"
+msgstr "_Samazināt teksta izmēru"
+
+#: ../plugins/headerbar.py:63
+msgid "Previous Item"
+msgstr "Iepriekšējais vienums"
+
+#: ../plugins/headerbar.py:69
+msgid "Next Item"
+msgstr "Nākamais vienums"
+
+#: ../plugins/headerbar.py:77
+msgid "_Next Unread Item"
+msgstr "_Nākamais nelasītais"
+
+#: ../plugins/headerbar.py:85
+msgid "_Mark Items Read"
+msgstr "Atzī_mēt kā lasītus"
+
+#: ../plugins/headerbar.py:104
+msgid "Search All Feeds..."
+msgstr "Meklēt visās plūsmās..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1598,19 +1384,16 @@ msgstr "Liferea mājaslapa"
 msgid "Authentication"
 msgstr "Autentifikācija"
 
-#: ../glade/auth.ui.h:4
-msgid ""
-"Note: <i>The username and password will be saved to your Liferea feedlist "
-"file without using encryption.</i>"
-msgstr ""
-"Piezīme: <i>Lietotājvārds un parole tiks saglabāta Liferea plūsmu saraksta "
-"datnē bez šifrēšanas.</i>"
+#: ../glade/auth.ui.h:3
+#, fuzzy, no-c-format
+msgid "Enter the username and password for \"%s\" (%s)"
+msgstr "Ievadiet “%s” lietotāja vārdu un paroli (%s):"
 
-#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
 msgid "User_name:"
 msgstr "_Lietotājvārds:"
 
-#: ../glade/auth.ui.h:6 ../glade/properties.ui.h:33
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "_Password:"
 msgstr "_Parole:"
 
@@ -1623,8 +1406,9 @@ msgid "Open an enclosure of type:"
 msgstr "Atvērt ietvaru ar tipu:"
 
 #: ../glade/enclosure_handler.ui.h:3
+#, fuzzy
 msgid ""
-"What should Liferea do with this enclosure? Please enter the command you "
+"_What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The enclosures URL will be supplied as an "
 "argument for this command:"
 msgstr ""
@@ -1639,35 +1423,6 @@ msgstr "_Pārlūkot"
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "Šā_diem ietvariem to turpmāk darīt automātiski."
 
-#: ../glade/google_source.ui.h:1
-msgid "Add Google Reader Account"
-msgstr "Pievienot Google Reader kontu"
-
-#: ../glade/google_source.ui.h:2
-msgid "Please enter your Google Reader account settings."
-msgstr "Lūdzu, ievadiet sava Google Reader konta iestatījumus."
-
-#: ../glade/google_source.ui.h:3 ../glade/inoreader_source.ui.h:3
-#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
-#: ../glade/ttrss_source.ui.h:4
-msgid "_Password"
-msgstr "_Parole"
-
-#: ../glade/google_source.ui.h:4 ../glade/inoreader_source.ui.h:4
-#: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
-msgid "_Username (Email)"
-msgstr "_Lietotājvārds (e-pasts)"
-
-#: ../glade/inoreader_source.ui.h:1
-#, fuzzy
-msgid "Add InoReader Account"
-msgstr "Pievienot Google Reader kontu"
-
-#: ../glade/inoreader_source.ui.h:2
-#, fuzzy
-msgid "Please enter your InoReader account settings."
-msgstr "Lūdzu, ievadiet sava Google Reader konta iestatījumus."
-
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
 msgstr ""
@@ -1676,21 +1431,26 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
-msgid "0"
-msgstr ""
-
-#: ../glade/mainwindow.ui.h:5
-msgid "View Headlines"
-msgstr "Skatīt virsrakstus"
-
-#: ../glade/mainwindow.ui.h:6
+#: ../glade/mainwindow.ui.h:4
 msgid "page 3"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:7 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:5 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "Virsraksti"
+
+#: ../glade/mark_read_dialog.ui.h:1
+#, fuzzy
+msgid "Mark all as read ?"
+msgstr "Atzīmēt visas kā lasītas"
+
+#: ../glade/mark_read_dialog.ui.h:2
+msgid "Mark all as read"
+msgstr "Atzīmēt visas kā lasītas"
+
+#: ../glade/mark_read_dialog.ui.h:3
+msgid "Do not ask again"
+msgstr ""
 
 #: ../glade/new_folder.ui.h:1
 msgid "New Folder"
@@ -1708,32 +1468,31 @@ msgstr "Izveidot ziņu grozu"
 msgid "_News Bin Name:"
 msgstr "Ziņu groza _nosaukums:"
 
-#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:12
-#: ../glade/simple_subscription.ui.h:3
+#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
 msgstr "Plūsmas avots"
 
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:13
+#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:12
 msgid "Source Type:"
 msgstr "Avota veids:"
 
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:14
+#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:13
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:15
+#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:14
 msgid "_Command"
 msgstr "_Komanda"
 
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:16
+#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:15
 msgid "_Local File"
 msgstr "_Lokāla datne"
 
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:17
+#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:16
 msgid "Select File..."
 msgstr "Izvēlēties datni..."
 
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:18
+#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:17
 msgid "_Source:"
 msgstr "Avot_s:"
 
@@ -1741,11 +1500,11 @@ msgstr "Avot_s:"
 msgid "Download / Postprocessing"
 msgstr "Lejupielāde / pēcapstrāde"
 
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
+#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:30
 msgid "_Don't use proxy for download"
 msgstr "Neizmantot starpniekserveri lejupielā_dēšanai"
 
-#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:19
+#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:18
 msgid "Use conversion _filter"
 msgstr "Izmantot pārveidošanas _filtru"
 
@@ -1758,7 +1517,7 @@ msgstr ""
 "Liferea var izmantot ārējus filtru spraudņus, lai piekļūtu plūsmām un mapēm "
 "nestandarta formātos. Skatiet dokumentāciju, lai iegūtu vairāk informācijas."
 
-#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:21
+#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:20
 msgid "Convert _using:"
 msgstr "Pār_veidot izmantojot:"
 
@@ -1767,7 +1526,8 @@ msgid "Source Selection"
 msgstr "Avota izvēle"
 
 #: ../glade/node_source.ui.h:2
-msgid "Select the source type you want to add..."
+#, fuzzy
+msgid "_Select the source type you want to add..."
 msgstr "Izvēlieties avota tipu, ko vēlaties pievienot..."
 
 #: ../glade/opml_source.ui.h:1
@@ -1801,6 +1561,10 @@ msgstr "Plūsmu kešatmiņas apkalpošana"
 msgid "Default _number of items per feed to save:"
 msgstr "_Noklusētais vienumu skaits plūsmai, ko saglabāt:"
 
+#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:27
+msgid "0"
+msgstr ""
+
 #: ../glade/prefs.ui.h:5
 msgid "Feed Update Settings"
 msgstr "Plūsmas atjaunināšanas iestatījumi"
@@ -1823,7 +1587,7 @@ msgstr "_Atjaunināt visus abonementus palaižoties."
 msgid "Default Feed Refresh _Interval:"
 msgstr "Noklusētais plūsmas atsvaidzināšanas _intervāls:"
 
-#: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:7
+#: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:6
 msgid "1"
 msgstr ""
 
@@ -1925,126 +1689,133 @@ msgid "Toolbar _button labels:"
 msgstr "Rīkjoslas _pogu etiķetes:"
 
 #: ../glade/prefs.ui.h:37
-msgid "GUI"
-msgstr "GUI"
+msgid "Other"
+msgstr ""
 
 #: ../glade/prefs.ui.h:38
+msgid "Ask for confirmation when marking all items as read"
+msgstr ""
+
+#: ../glade/prefs.ui.h:39
+msgid "Desktop"
+msgstr ""
+
+#: ../glade/prefs.ui.h:40
 msgid "HTTP Proxy Server"
 msgstr "HTTP starpniekserveris"
 
-#: ../glade/prefs.ui.h:39
+#: ../glade/prefs.ui.h:41
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Automātiski noteikt (GNOME vai vide)"
 
-#: ../glade/prefs.ui.h:40
+#: ../glade/prefs.ui.h:42
 msgid "_No Proxy"
 msgstr "_Nav starpniekservera"
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:43
 msgid "_Manual Setting:"
 msgstr "_Manuāli iestatījumi:"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:44
 msgid "Proxy _Host:"
 msgstr "Sta_rpniekserveris:"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Port:"
 msgstr "Starpnieka _ports:"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:46
 msgid "Use Proxy Au_thentication"
 msgstr "Izmantot starpniekservera _autentificēšanu"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:47
 msgid "Proxy _Username:"
 msgstr "Starpnieka _lietotājvārds:"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:48
 msgid "Proxy Pass_word:"
 msgstr "Starpnieka pa_role:"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:49
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:50
 msgid "Proxy"
 msgstr "Starpniekserveris"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:51
 #, fuzzy
 msgid "Privacy Settings"
 msgstr "Mapju attēlošanas iestatījumi"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:52
 msgid "Tell sites that I do _not want to be tracked"
 msgstr ""
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:53
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:54
 msgid "Downloading Enclosures"
 msgstr "Lejupielādēt ietvarus"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:55
 msgid "_Download using"
 msgstr "Lejupielā_dēt izmantojot"
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:57
+#, no-c-format
+msgid "custom-command %s"
+msgstr ""
+
+#: ../glade/prefs.ui.h:58
 msgid "Opening Enclosures"
 msgstr "Atver ietvarus"
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:59
 msgid "Enclosures"
 msgstr "Ietvari"
-
-#: ../glade/prefs.ui.h:56
-msgid "Plugins"
-msgstr "Spraudņi"
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
 msgstr "Abonementa īpašības"
 
 #: ../glade/properties.ui.h:2
-msgid "Feed Name"
-msgstr "Plūsmas nosaukums"
-
-#: ../glade/properties.ui.h:3
-msgid "Feed _Name:"
+#, fuzzy
+msgid "Feed _Name"
 msgstr "Plūsmas _nosaukums:"
 
-#: ../glade/properties.ui.h:4
-msgid "Update Interval"
+#: ../glade/properties.ui.h:3
+#, fuzzy
+msgid "Update _Interval"
 msgstr "Atjaunināšanas intervāls"
 
-#: ../glade/properties.ui.h:5
+#: ../glade/properties.ui.h:4
 msgid "_Use global default update interval."
 msgstr "Izmantot globālos nokl_usētos atjaunināšanas intervālus."
 
-#: ../glade/properties.ui.h:6
+#: ../glade/properties.ui.h:5
 msgid "_Feed specific update interval of"
 msgstr "Plūsmai speci_fiskais atjaunināšanas intervāls"
 
-#: ../glade/properties.ui.h:8
+#: ../glade/properties.ui.h:7
 msgid "_Don't update this feed automatically."
 msgstr "_Neatjaunināt šo plūsmu automātiski."
 
-#: ../glade/properties.ui.h:10
+#: ../glade/properties.ui.h:9
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Šīs plūsmas piegādātājs iesaka atjaunināšanas intervālu %d minūtes."
 
-#: ../glade/properties.ui.h:11
+#: ../glade/properties.ui.h:10
 msgid "General"
 msgstr "Vispārīgi"
 
-#: ../glade/properties.ui.h:20
+#: ../glade/properties.ui.h:19
 #, fuzzy
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
@@ -2053,7 +1824,7 @@ msgstr ""
 "Liferea var izmantot ārējus filtru spraudņus, lai piekļūtu plūsmām un mapēm "
 "nestandarta formātos. Skatiet dokumentāciju, lai iegūtu vairāk informācijas."
 
-#: ../glade/properties.ui.h:23
+#: ../glade/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -2061,56 +1832,56 @@ msgstr ""
 "Kešatmiņas iestatījumi nosaka, vai plūsmu saturs tiek saglabāts, kad Liferea "
 "iziet. Atzīmētie vienumi vienmēr tiek saglabāti kešatmiņā."
 
-#: ../glade/properties.ui.h:24
+#: ../glade/properties.ui.h:23
 msgid "_Default cache settings"
 msgstr "_Noklusētie kešatmiņas iestatījumi"
 
-#: ../glade/properties.ui.h:25
+#: ../glade/properties.ui.h:24
 msgid "Di_sable cache"
 msgstr "De_aktivēt kešatmiņu"
 
-#: ../glade/properties.ui.h:26
+#: ../glade/properties.ui.h:25
 msgid "_Unlimited cache"
 msgstr "_Neierobežota kešatmiņa"
 
-#: ../glade/properties.ui.h:27
+#: ../glade/properties.ui.h:26
 msgid "_Number of items to save:"
 msgstr "Saglabājamo vie_numu skaits:"
 
-#: ../glade/properties.ui.h:29
+#: ../glade/properties.ui.h:28
 msgid "Archive"
 msgstr "Arhīvs"
 
-#: ../glade/properties.ui.h:30
+#: ../glade/properties.ui.h:29
 msgid "Use HTTP _authentication"
 msgstr "Izmantot HTTP _autentificēšanu"
 
-#: ../glade/properties.ui.h:34
+#: ../glade/properties.ui.h:33
 msgid "Download"
 msgstr "Lejupielādēt"
 
-#: ../glade/properties.ui.h:35
+#: ../glade/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
 msgstr "_Automātiski lejupielādēt visus ietvarus šai plūsmai."
 
-#: ../glade/properties.ui.h:36
+#: ../glade/properties.ui.h:35
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Automātiski ie_lādēt vienuma saiti konfigurētā pārlūkā, kad izvēlas rakstus."
 
-#: ../glade/properties.ui.h:37
+#: ../glade/properties.ui.h:36
 msgid "Ignore _comment feeds for this subscription."
 msgstr "Ignorēt _komentāru plūsmas šim abonementam."
 
-#: ../glade/properties.ui.h:38
+#: ../glade/properties.ui.h:37
 msgid "_Mark downloaded items as read."
 msgstr "Atzī_mēt lejupielādētos vienumus kā lasītus."
 
-#: ../glade/properties.ui.h:39
+#: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr ""
 
-#: ../glade/properties.ui.h:40
+#: ../glade/properties.ui.h:39
 msgid "Advanced"
 msgstr "Paplašināti"
 
@@ -2123,6 +1894,15 @@ msgstr "Pievienot Google Reader kontu"
 #, fuzzy
 msgid "Please enter your Reedah account settings."
 msgstr "Lūdzu, ievadiet sava Google Reader konta iestatījumus."
+
+#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
+#: ../glade/ttrss_source.ui.h:4
+msgid "_Password"
+msgstr "_Parole"
+
+#: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
+msgid "_Username (Email)"
+msgstr "_Lietotājvārds (e-pasts)"
 
 #: ../glade/rename_node.ui.h:1
 msgid "Rename"
@@ -2192,6 +1972,11 @@ msgstr ""
 msgid "Advanced..."
 msgstr "Paplašināti..."
 
+#: ../glade/simple_subscription.ui.h:3
+#, fuzzy
+msgid "Feed _Source"
+msgstr "Plūsmas avots"
+
 #: ../glade/simple_subscription.ui.h:4
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
@@ -2232,17 +2017,263 @@ msgid "Update Monitor"
 msgstr "Atjaunināšanas uzraugs"
 
 #: ../glade/update_monitor.ui.h:2
-#, fuzzy
-msgid "Cancel All"
-msgstr "_Atcelt visu"
+msgid "Stop All"
+msgstr ""
 
 #: ../glade/update_monitor.ui.h:3
-msgid "Pending Requests"
+#, fuzzy
+msgid "_Pending Requests"
 msgstr "Gaidošie pieprasījumi"
 
 #: ../glade/update_monitor.ui.h:4
-msgid "Downloading Now"
+#, fuzzy
+msgid "_Downloading Now"
 msgstr "Lejupielādēt tagad"
+
+#~ msgid "GUI"
+#~ msgstr "GUI"
+
+#, fuzzy
+#~ msgid "Cancel All"
+#~ msgstr "_Atcelt visu"
+
+#~ msgid "Updating favicon for \"%s\""
+#~ msgstr "Atjaunina “%s” favicon ikonu"
+
+#~ msgid "_Subscriptions"
+#~ msgstr "_Abonementi"
+
+#~ msgid "Update _All"
+#~ msgstr "_Atjaunināt visus"
+
+#~ msgid "Updates all subscriptions."
+#~ msgstr "Atjaunina visus abonementus."
+
+#~ msgid "Mark All As _Read"
+#~ msgstr "Atzīmēt visus kā _lasītus"
+
+#~ msgid "Marks read every item of every subscription."
+#~ msgstr "Atzīmē kā lasītus visus vienumus katrā abonementā."
+
+#~ msgid "_Import Feed List..."
+#~ msgstr "_Importēt plūsmu sarakstu..."
+
+#~ msgid "Imports an OPML feed list."
+#~ msgstr "Importē OPML plūsmu sarakstu."
+
+#~ msgid "_Export Feed List..."
+#~ msgstr "_Eksportēt plūsmu sarakstu..."
+
+#~ msgid "Exports the feed list as OPML."
+#~ msgstr "Eksportē plūsmu sarakstu kā OPML."
+
+#~ msgid "_Quit"
+#~ msgstr "_Iziet"
+
+#~ msgid "_Feed"
+#~ msgstr "_Plūsma"
+
+#~ msgid "Remove _All Items"
+#~ msgstr "Izņemt _visus vienumus"
+
+#~ msgid "Removes all items of the currently selected feed."
+#~ msgstr "Izņem visus vienumus no pašlaik izvēlētās plūsmas."
+
+#~ msgid "_Item"
+#~ msgstr "V_ienums"
+
+#~ msgid "_View"
+#~ msgstr "_Skats"
+
+#~ msgid "Increases the text size of the item view."
+#~ msgstr "Palielina teksta izmēru vienumu skatā."
+
+#~ msgid "Decreases the text size of the item view."
+#~ msgstr "Samazina teksta izmēru vienumu skatā."
+
+#~ msgid "_Tools"
+#~ msgstr "_Rīki"
+
+#~ msgid "_Update Monitor"
+#~ msgstr "Atjaunināšanas _uzraugs"
+
+#~ msgid "Show a list of all feeds currently in the update queue"
+#~ msgstr "Rādīt sarakstu ar visām plūsmām, kas atrodas atjaunināšanas rindā"
+
+#~ msgid "_Preferences"
+#~ msgstr "_Iestatījumi"
+
+#~ msgid "Edit Preferences."
+#~ msgstr "Rediģēt iestatījumus."
+
+#~ msgid "S_earch"
+#~ msgstr "M_eklēt"
+
+#~ msgid "Show the search dialog."
+#~ msgstr "Rādīt meklēšanas dialogu."
+
+#~ msgid "_Help"
+#~ msgstr "_Palīdzība"
+
+#~ msgid "_Contents"
+#~ msgstr "_Saturs"
+
+#~ msgid "View help for this application."
+#~ msgstr "Skatīt šīs lietotnes palīdzību."
+
+#~ msgid "_Quick Reference"
+#~ msgstr "_Ātrā atsauce"
+
+#~ msgid "View a list of all Liferea shortcuts."
+#~ msgstr "Skatīt sarakstu ar visiem Liferea īsceļiem."
+
+#~ msgid "_FAQ"
+#~ msgstr "_BUJ"
+
+#~ msgid "View the FAQ for this application."
+#~ msgstr "Skatīt šīs lietotnes BUJ."
+
+#~ msgid "_About"
+#~ msgstr "P_ar"
+
+#~ msgid "Shows an about dialog."
+#~ msgstr "Parāda informāciju par programmu."
+
+#~ msgid "_Normal View"
+#~ msgstr "_Normāls skats"
+
+#~ msgid "Set view mode to mail client mode."
+#~ msgstr "Iestatīt skata režīmu uz pasta klienta režīmu."
+
+#~ msgid "_Wide View"
+#~ msgstr "_Plašs skats"
+
+#~ msgid "Set view mode to use three vertical panes."
+#~ msgstr "Iestatīt skatīšanas režīmu uz trīs vertikālām rūtīm."
+
+#~ msgid "_Combined View"
+#~ msgstr "_Kombinētais skats"
+
+#~ msgid "Set view mode to two pane mode."
+#~ msgstr "Iestatīt skatīšanas režīmu uz divu rūšu režīmu."
+
+#~ msgid "_Reduced Feed List"
+#~ msgstr "_Reducētais plūsmu saraksts"
+
+#~ msgid "Hide feeds with no unread items."
+#~ msgstr "Slēpt plūsmas ar nelasītiem vienumiem."
+
+#~ msgid "_New Subscription..."
+#~ msgstr "Jau_ns abonements..."
+
+#~ msgid "Adds a subscription to the feed list."
+#~ msgstr "Pievieno abonementu plūsmu sarakstam."
+
+#~ msgid "Adds a folder to the feed list."
+#~ msgstr "Pievieno mapi plūsmu sarakstam."
+
+#~ msgid "Adds a new search folder to the feed list."
+#~ msgstr "Pievieno jaunu meklēšanas mapi plūsmu sarakstam."
+
+#~ msgid "New _Source..."
+#~ msgstr "Jaun_s avots..."
+
+#~ msgid "Adds a new feed list source."
+#~ msgstr "Pievieno jaunu plūsmas saraksta avotu."
+
+#~ msgid "Adds a new news bin."
+#~ msgstr "Pievieno jaunu ziņu grozu."
+
+#~ msgid ""
+#~ "Marks all items of the selected feed list node / in the item list as read."
+#~ msgstr ""
+#~ "Atzīmē visus vienumus izvēlētajā plūsmas saraksta mezglā / vienumu "
+#~ "sarakstā kā lasītus."
+
+#~ msgid ""
+#~ "Updates the selected subscription or all subscriptions of the selected "
+#~ "folder."
+#~ msgstr ""
+#~ "Atjaunina izvēlētos abonementus vai visus abonementus izvēlētajā mapē."
+
+#~ msgid "Opens the property dialog for the selected subscription."
+#~ msgstr "Atver īpašību dialogu izvēlētajiem abonementiem."
+
+#~ msgid "_Remove"
+#~ msgstr "_Izņemt"
+
+#~ msgid "Removes the selected subscription."
+#~ msgstr "Izņem izvēlēto abonementu."
+
+#~ msgid "Toggles the read status of the selected item."
+#~ msgstr "Pārslēdz lasīšanas statusu izvēlētajiem vienumiem."
+
+#~ msgid "Toggles the flag status of the selected item."
+#~ msgstr "Pārslēdz atzīmes statusu izvēlētajam vienumam."
+
+#~ msgid "R_emove"
+#~ msgstr "Izņ_emt"
+
+#~ msgid "Removes the selected item."
+#~ msgstr "Izņem izvēlēto vienumu."
+
+#~ msgid "Launches the item's link in a new Liferea browser tab."
+#~ msgstr "Atver vienuma saiti Liferea pārlūka cilnē."
+
+#~ msgid "Launches the item's link in the Liferea item pane."
+#~ msgstr "Atver vienuma saiti Liferea vienuma rūtī."
+
+#~ msgid "Launches the item's link in the configured external browser."
+#~ msgstr "Atver vienuma saiti konfigurētajā ārējā pārlūkā."
+
+#~ msgid "_Fullscreen"
+#~ msgstr "_Pilnekrāns"
+
+#~ msgid "Browse at full screen"
+#~ msgstr "Pārlūkot pilnekrānā"
+
+#~ msgid "_Work Offline"
+#~ msgstr "_Strādāt nesaistē"
+
+#~ msgid "_Update All"
+#~ msgstr "_Atjaunināt visas"
+
+#~ msgid "_Show Liferea"
+#~ msgstr "_Rādīt Liferea"
+
+#, fuzzy
+#~ msgid "InoReader"
+#~ msgstr "Google Reader"
+
+#~ msgid ""
+#~ "Note: <i>The username and password will be saved to your Liferea feedlist "
+#~ "file without using encryption.</i>"
+#~ msgstr ""
+#~ "Piezīme: <i>Lietotājvārds un parole tiks saglabāta Liferea plūsmu "
+#~ "saraksta datnē bez šifrēšanas.</i>"
+
+#~ msgid "Add Google Reader Account"
+#~ msgstr "Pievienot Google Reader kontu"
+
+#~ msgid "Please enter your Google Reader account settings."
+#~ msgstr "Lūdzu, ievadiet sava Google Reader konta iestatījumus."
+
+#, fuzzy
+#~ msgid "Add InoReader Account"
+#~ msgstr "Pievienot Google Reader kontu"
+
+#, fuzzy
+#~ msgid "Please enter your InoReader account settings."
+#~ msgstr "Lūdzu, ievadiet sava Google Reader konta iestatījumus."
+
+#~ msgid "View Headlines"
+#~ msgstr "Skatīt virsrakstus"
+
+#~ msgid "Plugins"
+#~ msgstr "Spraudņi"
+
+#~ msgid "Feed Name"
+#~ msgstr "Plūsmas nosaukums"
 
 #~ msgid "normal view"
 #~ msgstr "normāls skats"
@@ -2386,9 +2417,6 @@ msgstr "Lejupielādēt tagad"
 
 #~ msgid "Open feed"
 #~ msgstr "Atvērt plūsmu"
-
-#~ msgid "Mark all as read"
-#~ msgstr "Atzīmēt visas kā lasītas"
 
 #~ msgid "<b>%s</b> has <b>%d</b> update"
 #~ msgid_plural "<b>%s</b> has <b>%d</b> updates"

@@ -120,9 +120,9 @@ ui_subscription_create_url (gchar *url,
 	/* First, strip leading and trailing whitespace */
 	str = g_strstrip(url);
 
-	/* Add http:// if needed */
+	/* Add https:// if needed */
 	if (strstr(str, "://") == NULL) {
-		tmp2 = g_strdup_printf("http://%s",str);
+		tmp2 = g_strdup_printf("https://%s",str);
 		g_free(str);
 		str = tmp2;
 	}

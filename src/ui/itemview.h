@@ -1,7 +1,7 @@
 /*
  * @file itemview.h  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,7 +62,6 @@ void itemview_set_displayed_node (nodePtr node);
 /* item view display mode type */
 typedef enum {
 	ITEMVIEW_SINGLE_ITEM,	/*<< 3 panes, item view shows the selected item only in HTML view */
-	ITEMVIEW_ALL_ITEMS,	/*<< 2 panes, item view shows all items combined in HTML view */
 	ITEMVIEW_NODE_INFO	/*<< 3 panes, item view shows the selected node description in HTML view*/
 } itemViewMode;
 
@@ -228,11 +227,11 @@ void itemview_launch_URL (const gchar *url, gboolean internal);
 
 /**
  * itemview_do_zoom:
- * @in:	TRUE if zooming in, FALSE for zooming out
+ * @zoom:	1 for zoom in, -1 for zoom out, 0 for reset
  *
  * Requests the item view to change zoom level.
  */
-void itemview_do_zoom (gboolean in);
+void itemview_do_zoom (gint zoom);
 
 G_END_DECLS
 

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.0-rc6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-18 00:24+0100\n"
+"POT-Creation-Date: 2020-08-28 12:24+0200\n"
 "PO-Revision-Date: 2009-10-06 19:11+0200\n"
 "Last-Translator: Adi Roiban <adi@roiban.ro>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podcast"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/main.c:74
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -92,7 +92,7 @@ msgid "Read news feeds and blogs"
 msgstr ""
 
 #: ../net.sourceforge.liferea.desktop.in.h:5
-msgid "news;feed;aggregator;blog;podcast;"
+msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
 #: ../xslt/feed.xml.in.h:1
@@ -165,7 +165,7 @@ msgstr "titluri necitite"
 msgid "Folder:"
 msgstr "Dosar:"
 
-#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:22
+#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:21
 msgid "Source"
 msgstr "Sursă"
 
@@ -210,18 +210,26 @@ msgid "Map"
 msgstr ""
 
 #: ../xslt/item.xml.in.h:12
+msgid "View count"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:13
+msgid "Rating"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:14
 msgid "Comments"
 msgstr "Comentarii"
 
-#: ../xslt/item.xml.in.h:13
+#: ../xslt/item.xml.in.h:15
 msgid "Updating..."
 msgstr "În curs de actualizare..."
 
-#: ../xslt/item.xml.in.h:14
+#: ../xslt/item.xml.in.h:16
 msgid "Section"
 msgstr "Secțiune"
 
-#: ../xslt/item.xml.in.h:15
+#: ../xslt/item.xml.in.h:17
 msgid "Department"
 msgstr "Departament"
 
@@ -246,13 +254,13 @@ msgstr "Dosare căutare:"
 msgid "Browser command failed: %s"
 msgstr "Comanda de navigare a eșuat: %s"
 
-#: ../src/browser.c:101
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1044
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Se pornește: \"%s\""
 
 #. unauthorized
-#: ../src/comments.c:120
+#: ../src/comments.c:118
 msgid "Authorization Error"
 msgstr "Eroare autorizare"
 
@@ -268,27 +276,27 @@ msgid ""
 msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/date.c:777
+#: ../src/date.c:133
 msgid "Today %l:%M %p"
 msgstr "Astăzi %l:%M %p"
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/date.c:788
+#: ../src/date.c:142
 msgid "Yesterday %l:%M %p"
 msgstr "Ieri %l:%M %p"
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/date.c:801
+#: ../src/date.c:154
 msgid "%a %l:%M %p"
 msgstr "%a %l:%M %p"
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/date.c:810
+#: ../src/date.c:162
 msgid "%b %d %l:%M %p"
 msgstr "%b %d %l:%M %p"
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/date.c:813
+#: ../src/date.c:165
 msgid "%b %d %Y"
 msgstr "%b %d %Y"
 
@@ -303,7 +311,7 @@ msgid ""
 "'Enclosures' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/enclosure.c:310
+#: ../src/enclosure.c:311
 #, c-format
 msgid ""
 "Command failed: \n"
@@ -370,7 +378,7 @@ msgstr "Exportă listă flux"
 msgid "Export"
 msgstr "Exportă"
 
-#: ../src/feed.c:313
+#: ../src/feed.c:324
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -380,17 +388,17 @@ msgstr ""
 "resursă în unul dintre formatele suportate!</p>Rezultat analizator XML:<br /"
 "><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:340
+#: ../src/feed.c:351
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "„%s” actualizat..."
 
-#: ../src/feed.c:347
+#: ../src/feed.c:358
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "„%s” nu este disponibil"
 
-#: ../src/feed_parser.c:137
+#: ../src/feed_parser.c:142
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -400,34 +408,34 @@ msgstr ""
 "autodescoperire nu a găsit nici un flux pe acetă pagină. Este posibil ca "
 "acestă pagină să nu suporte autodescoperirea."
 
-#: ../src/feed_parser.c:170
+#: ../src/feed_parser.c:194
 #, c-format
 msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 msgstr "Eroare XML la citirea fluxului! Fluxul „%s” nu poate fi încărcat!"
 
-#: ../src/feed_parser.c:175
+#: ../src/feed_parser.c:199 ../src/feed_parser.c:248
 msgid "Empty document!"
 msgstr "Document gol!"
 
-#: ../src/feed_parser.c:187
+#: ../src/feed_parser.c:211
 msgid "Invalid XML!"
 msgstr "XML nevalid!"
 
-#: ../src/feed_parser.c:227
+#: ../src/feed_parser.c:271
 msgid "Source points to HTML document."
 msgstr "Sursa duce la un document HTML."
 
-#: ../src/feed_parser.c:230
+#: ../src/feed_parser.c:274
 msgid "Could not determine the feed type."
 msgstr "Nu s-a putut determina tipul fluxului."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:396
+#: ../src/itemlist.c:393
 #, fuzzy
 msgid "There are no unread items"
 msgstr "Nu există elemente necitite "
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:279
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -435,111 +443,115 @@ msgstr ""
 "Pornește Liferea cu fereastră principală în STAREA. STAREA poate să fie "
 "„shown”, „iconified” sau „hidden”"
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:279
 msgid "STATE"
 msgstr "STARE"
 
-#: ../src/liferea_application.c:284
+#: ../src/liferea_application.c:280
 msgid "Show version information and exit"
 msgstr "Arată informația despre versiune și ieși"
 
-#: ../src/liferea_application.c:285
+#: ../src/liferea_application.c:281
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Înscriere nouă"
 
-#: ../src/liferea_application.c:285
+#: ../src/liferea_application.c:281
 msgid "uri"
 msgstr ""
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:282
+msgid "Start with all plugins disabled"
+msgstr ""
+
+#: ../src/liferea_application.c:287
 msgid "Print debugging messages of all types"
 msgstr "Afișează mesaje de notificare de toate tipurile"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages for the cache handling"
 msgstr "Afișează mesaje de depanare pentru gestionarea cacheului"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:289
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "Afișează mesaje de depanare pentru gestionarea configurației"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages of the database handling"
 msgstr "Afișează mesaje de depanare pentru gestionarea bazei de date"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "Afișează mesaje de depanare pentru toate funcțiile interfeței cu utilizator"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Activează depanarea randării HTMLL. De fiecare dată când Liferea randează "
-"HTML va copia HTML-ul generat în ~/.cache/liferea/output.xhtml"
+"HTML va copia HTML-ul generat în ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"
 msgstr "Afișează mesaje de depanare pentru toată activitatea de rețea"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all parsing functions"
 msgstr "Afișează mesaje de depanare pentru toate funcțiile de analizare"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Afișează mesaje de depanare atunci când procesarea unei funcții durează prea "
 "mult"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Afișează mesaje de depanare la intrarea și ieșirea din funcții"
 
-#: ../src/liferea_application.c:300
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "Afișează mesaje de depanare pentru procesul de actualizare a fluxurilor"
 
-#: ../src/liferea_application.c:301
+#: ../src/liferea_application.c:298
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "Afișează mesaje de depanare pentru gestionarea cacheului"
 
-#: ../src/liferea_application.c:302
+#: ../src/liferea_application.c:299
 msgid "Print verbose debugging messages"
 msgstr "Afișează mesaje de depanare detaliate"
 
-#: ../src/liferea_application.c:307 ../src/liferea_application.c:308
+#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
 msgid "Print debugging messages for the given topic"
 msgstr "Afișează mesaje de depanare pentru subiectul specificat"
 
 #. Some libsoup transport errors
-#: ../src/net.c:401
+#: ../src/net.c:463
 msgid "The update request was cancelled"
 msgstr "Cererea de actualizare a fost anulată"
 
-#: ../src/net.c:402
+#: ../src/net.c:464
 msgid "Unable to resolve destination host name"
 msgstr "Nu s-a putut rezolva numele destinație"
 
-#: ../src/net.c:403
+#: ../src/net.c:465
 msgid "Unable to resolve proxy host name"
 msgstr "Nu s-a putut rezolva numele proxyului"
 
-#: ../src/net.c:404
+#: ../src/net.c:466
 msgid "Unable to connect to remote host"
 msgstr "Nu s-a putut conecta la calculatorul la distanță"
 
-#: ../src/net.c:405
+#: ../src/net.c:467
 msgid "Unable to connect to proxy"
 msgstr "Nu s-a putut conecta la proxy"
 
-#: ../src/net.c:406
+#: ../src/net.c:468
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
@@ -547,12 +559,12 @@ msgstr ""
 "neașteptat"
 
 #. http 3xx redirection
-#: ../src/net.c:409
+#: ../src/net.c:471
 msgid "The resource moved permanently to a new location"
 msgstr "Resursa a fost mutată permanent la o nouă locație"
 
 #. http 4xx client error
-#: ../src/net.c:412
+#: ../src/net.c:474
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -560,150 +572,156 @@ msgstr ""
 "Nu aveți permisiunea de a descărca acest flux. Actualizați numele de "
 "utilizator și parola din dialogul de proprietăți a fluxului."
 
-#: ../src/net.c:414
+#: ../src/net.c:476
 msgid "Payment required"
 msgstr "Necesită plată"
 
-#: ../src/net.c:415
+#: ../src/net.c:477
 msgid "You're not allowed to access this resource"
 msgstr "Nu aveți permisiunea de a accesa această resursă"
 
-#: ../src/net.c:416
+#: ../src/net.c:478
 msgid "Resource Not Found"
 msgstr "Nu au fost găsite resursele"
 
-#: ../src/net.c:417
+#: ../src/net.c:479
 msgid "Method Not Allowed"
 msgstr "Metoda nu este acceptată"
 
-#: ../src/net.c:418
+#: ../src/net.c:480
 msgid "Not Acceptable"
 msgstr "Nu este acceptabil"
 
-#: ../src/net.c:419
+#: ../src/net.c:481
 msgid "Proxy authentication required"
 msgstr "Autentificare proxy necesară"
 
-#: ../src/net.c:420
+#: ../src/net.c:482
 msgid "Request timed out"
 msgstr "Cererea a expirat"
 
-#: ../src/net.c:421
+#: ../src/net.c:483
 msgid "Gone. Resource doesn't exist. Please unsubscribe!"
 msgstr "Dus. Resursa nu există. Vă rugăm să vă dezabonați!"
 
-#: ../src/net.c:426
+#: ../src/net.c:488
 msgid "There was an internal error in the update process"
 msgstr "S-a produs o eroare internă în procesul de actualizare"
 
-#: ../src/net.c:428
+#: ../src/net.c:490
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Fluxul nu este disponibil: Redirecționare nesuportată cerută de server!"
 
-#: ../src/net.c:430
+#: ../src/net.c:492
 msgid "Client Error"
 msgstr "Eroare la client"
 
-#: ../src/net.c:432
+#: ../src/net.c:494
 msgid "Server Error"
 msgstr "Eroare la server"
 
-#: ../src/net.c:434
+#: ../src/net.c:496
 msgid "An unknown networking error happened!"
 msgstr "S-a produs o eroare necunoscută de rețea!"
 
-#. SQL condition builder function	in-memory check function	feedlist.opml rule id           rule menu label         positive menu option    negative menu option    has param
+#. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:174
+#: ../src/rule.c:198
 msgid "Item"
 msgstr "Element"
 
-#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
+#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
+#: ../src/rule.c:206 ../src/rule.c:207
 msgid "does contain"
 msgstr "conține"
 
-#: ../src/rule.c:174 ../src/rule.c:175 ../src/rule.c:176 ../src/rule.c:181
+#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
+#: ../src/rule.c:206 ../src/rule.c:207
 msgid "does not contain"
 msgstr "nu conține"
 
-#: ../src/rule.c:175
+#: ../src/rule.c:199
 msgid "Item title"
 msgstr "Titlu element"
 
-#: ../src/rule.c:176
+#: ../src/rule.c:200
 msgid "Item body"
 msgstr "Corp element"
 
-#: ../src/rule.c:177
+#: ../src/rule.c:201
 msgid "Read status"
 msgstr "Starea de citit"
 
-#: ../src/rule.c:177
+#: ../src/rule.c:201
 msgid "is unread"
 msgstr "este necitit"
 
-#: ../src/rule.c:177
+#: ../src/rule.c:201
 msgid "is read"
 msgstr "este citit"
 
-#: ../src/rule.c:178
+#: ../src/rule.c:202
 msgid "Flag status"
 msgstr "Stare fanion"
 
-#: ../src/rule.c:178
+#: ../src/rule.c:202
 msgid "is flagged"
 msgstr "este marcat"
 
-#: ../src/rule.c:178
+#: ../src/rule.c:202
 msgid "is unflagged"
 msgstr "este nemarcat"
 
-#: ../src/rule.c:179
+#: ../src/rule.c:203
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:179
+#: ../src/rule.c:203
 msgid "included"
 msgstr "inclus"
 
-#: ../src/rule.c:179
+#: ../src/rule.c:203
 msgid "not included"
 msgstr "neinclus"
 
-#: ../src/rule.c:180
+#: ../src/rule.c:204
 msgid "Category"
 msgstr "Categorie"
 
-#: ../src/rule.c:180
+#: ../src/rule.c:204
 msgid "is set"
 msgstr "este definit"
 
-#: ../src/rule.c:180
+#: ../src/rule.c:204
 msgid "is not set"
 msgstr "nu este definit"
 
-#: ../src/rule.c:181
+#: ../src/rule.c:205
 msgid "Feed title"
 msgstr "Titlu flux"
 
-#: ../src/subscription.c:105
+#: ../src/rule.c:206
+#, fuzzy
+msgid "Feed source"
+msgstr "Sursa feedului"
+
+#: ../src/rule.c:207
+msgid "Parent folder title"
+msgstr ""
+
+#: ../src/subscription.c:108
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
 msgstr "Abonamentul „%s” deja se actualizează!"
 
-#: ../src/subscription.c:110
+#: ../src/subscription.c:113
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "Abonamentul „%s” a fost deconectat. Liferea nu îl va mai actualiza!"
 
-#: ../src/subscription.c:144
-#, c-format
-msgid "Updating favicon for \"%s\""
-msgstr "Se actualizeaza favicon pentru „%s”"
-
-#: ../src/subscription.c:193
+#: ../src/subscription.c:173
 msgid ""
 "There was a problem while reading this subscription. Please check the URL "
 "and console output."
@@ -711,49 +729,49 @@ msgstr ""
 "A apărut o problemă la citirea abonamentului. Verificați URL-ul și ieșirea "
 "consolei."
 
-#: ../src/subscription.c:211
+#: ../src/subscription.c:196
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL-ul „%s„ s-a modificat permanent și a fost actualizat"
 
-#: ../src/subscription.c:219
+#: ../src/subscription.c:204
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "„%s” este întrerupt. Liferea nu îl va mai actualiza!"
 
-#: ../src/subscription.c:222
+#: ../src/subscription.c:207
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "„%s” a fost modificat de la ultima actualizare."
 
-#: ../src/subscription.c:275
+#: ../src/subscription.c:263
 #, c-format
 msgid "Updating \"%s\""
 msgstr "Se actualizează „%s”"
 
-#: ../src/update.c:282
+#: ../src/update.c:297
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr ""
 "Eroare la deschidere fișierului temporar %s pentru a fi folosit la filtrare!"
 
-#: ../src/update.c:305
+#: ../src/update.c:320
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s a ieșit în starea %d"
 
-#: ../src/update.c:311 ../src/update.c:312 ../src/update.c:429
+#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:442
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Eroare: Nu s-a putut face legătura „%s”"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:455
+#: ../src/update.c:466
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Eroare: Nu s-a putut deschide fișierul „%s”!"
 
-#: ../src/update.c:461
+#: ../src/update.c:472
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Eroare: Nu este nici un fișier „%s”"
@@ -770,34 +788,34 @@ msgstr "[Au existat mai multe erori. Ieșirea a fost trunchiată!]"
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Analizator XML: Nu s-a putut analiza documentul:\n"
 
-#: ../src/ui/enclosure_list_view.c:175
+#: ../src/ui/enclosure_list_view.c:168
 msgid "Attachments"
 msgstr "Atașamente"
 
 #. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:272
+#: ../src/ui/enclosure_list_view.c:260
 msgid " Bytes"
 msgstr " Octeți"
 
-#: ../src/ui/enclosure_list_view.c:275
+#: ../src/ui/enclosure_list_view.c:263
 msgid "kB"
 msgstr "kO"
 
-#: ../src/ui/enclosure_list_view.c:279
+#: ../src/ui/enclosure_list_view.c:267
 msgid "MB"
 msgstr "MO"
 
-#: ../src/ui/enclosure_list_view.c:283
+#: ../src/ui/enclosure_list_view.c:271
 msgid "GB"
 msgstr "GO"
 
-#: ../src/ui/enclosure_list_view.c:287
+#: ../src/ui/enclosure_list_view.c:275
 #, c-format
 msgid "%d%s"
 msgstr "%d%s"
 
 #. update list title
-#: ../src/ui/enclosure_list_view.c:325
+#: ../src/ui/enclosure_list_view.c:313
 #, c-format
 msgid "%d attachment"
 msgid_plural "%d attachments"
@@ -805,11 +823,11 @@ msgstr[0] "%d atașament"
 msgstr[1] "%d atașamente"
 msgstr[2] "%d de atașamente"
 
-#: ../src/ui/enclosure_list_view.c:383 ../src/ui/subscription_dialog.c:352
+#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:355
 msgid "Choose File"
 msgstr "Alegere fișier"
 
-#: ../src/ui/enclosure_list_view.c:444
+#: ../src/ui/enclosure_list_view.c:463
 #, fuzzy, c-format
 msgid "File Extension .%s"
 msgstr "<b>Extensie fișier .%s</b>"
@@ -819,7 +837,7 @@ msgstr "<b>Extensie fișier .%s</b>"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Nu s-a putut găsi fișierul imagine: %s"
 
-#: ../src/ui/liferea_shell.c:390
+#: ../src/ui/liferea_shell.c:396
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -827,7 +845,7 @@ msgstr[0] " (%d nou)"
 msgstr[1] " (%d noi)"
 msgstr[2] " (%d noi)"
 
-#: ../src/ui/liferea_shell.c:395
+#: ../src/ui/liferea_shell.c:401
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -835,364 +853,39 @@ msgstr[0] "%d necitit%s"
 msgstr[1] "%d necitite%s"
 msgstr[2] "%d necitite%s"
 
-#: ../src/ui/liferea_shell.c:770
+#: ../src/ui/liferea_shell.c:758
 msgid "Help Topics"
 msgstr "Sumar pentru ajutor"
 
-#: ../src/ui/liferea_shell.c:776
+#: ../src/ui/liferea_shell.c:764
 msgid "Quick Reference"
 msgstr "Referință rapidă"
 
-#: ../src/ui/liferea_shell.c:782
+#: ../src/ui/liferea_shell.c:770
 msgid "FAQ"
 msgstr "Întrebări frecvente"
 
-#: ../src/ui/liferea_shell.c:907
-msgid "_Subscriptions"
-msgstr "_Abonamente"
-
-#: ../src/ui/liferea_shell.c:908
-msgid "Update _All"
-msgstr "_Actualizează toate"
-
-#: ../src/ui/liferea_shell.c:908
-msgid "Updates all subscriptions."
-msgstr "Actualizează toate abonamentele."
-
-#: ../src/ui/liferea_shell.c:910
-msgid "Mark All As _Read"
-msgstr "Ma_rchează toate ca citite"
-
-#: ../src/ui/liferea_shell.c:910
-msgid "Marks read every item of every subscription."
-msgstr "Marchează ca citite toate elementele din toate abonamentele."
-
-#: ../src/ui/liferea_shell.c:912
-msgid "_Import Feed List..."
-msgstr "_Import listă flux..."
-
-#: ../src/ui/liferea_shell.c:912
-msgid "Imports an OPML feed list."
-msgstr "Importă o lista flux OPML."
-
-#: ../src/ui/liferea_shell.c:913
-msgid "_Export Feed List..."
-msgstr "_Export listă flux..."
-
-#: ../src/ui/liferea_shell.c:913
-msgid "Exports the feed list as OPML."
-msgstr "Exportă lista de fluxuri ca OPML."
-
-#: ../src/ui/liferea_shell.c:914 ../src/ui/popup_menu.c:190
-msgid "_Quit"
-msgstr "_Ieșire"
-
-#: ../src/ui/liferea_shell.c:916
-msgid "_Feed"
-msgstr "_Flux"
-
-#: ../src/ui/liferea_shell.c:917
-msgid "Remove _All Items"
-msgstr "Elimină to_ate elementele"
-
-#: ../src/ui/liferea_shell.c:917
-msgid "Removes all items of the currently selected feed."
-msgstr "Elimină toate elementele din fluxul selectat curent."
-
-#: ../src/ui/liferea_shell.c:920
-msgid "_Item"
-msgstr "_Element"
-
-#: ../src/ui/liferea_shell.c:921
-msgid "Previous Item"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:923
-#, fuzzy
-msgid "Next Item"
-msgstr "_Următorul element necitit"
-
-#. No tooltip here as it really hinders usability to have it flashing
-#. when skimming through items using "Next Unread"!
-#: ../src/ui/liferea_shell.c:928
-msgid "_Next Unread Item"
-msgstr "_Următorul element necitit"
-
-#: ../src/ui/liferea_shell.c:931
-msgid "_View"
-msgstr "_Vizualizare"
-
-#: ../src/ui/liferea_shell.c:932 ../src/webkit/liferea_web_view.c:212
-msgid "_Increase Text Size"
-msgstr "Crește măr_imea textului"
-
-#: ../src/ui/liferea_shell.c:932
-msgid "Increases the text size of the item view."
-msgstr "Crește mărimea textului din elementul vizualizat."
-
-#: ../src/ui/liferea_shell.c:934 ../src/webkit/liferea_web_view.c:213
-msgid "_Decrease Text Size"
-msgstr "Sca_de mărimea textului"
-
-#: ../src/ui/liferea_shell.c:934
-msgid "Decreases the text size of the item view."
-msgstr "Scade mărimea textului din elementul vizualizat."
-
-#: ../src/ui/liferea_shell.c:937
-msgid "_Tools"
-msgstr "Ins_trumente"
-
-#: ../src/ui/liferea_shell.c:938
-msgid "_Update Monitor"
-msgstr "Monitor act_ualizare"
-
-#: ../src/ui/liferea_shell.c:938
-msgid "Show a list of all feeds currently in the update queue"
-msgstr "Afișează o lista a tuturor fluxurilor în coada de actualizări curente"
-
-#: ../src/ui/liferea_shell.c:940 ../src/ui/popup_menu.c:185
-msgid "_Preferences"
-msgstr "_Preferințe"
-
-#: ../src/ui/liferea_shell.c:940
-msgid "Edit Preferences."
-msgstr "Editare preferințe."
-
-#: ../src/ui/liferea_shell.c:943
-msgid "S_earch"
-msgstr "_Căutare"
-
-#: ../src/ui/liferea_shell.c:944
-msgid "Search All Feeds..."
-msgstr "Căută toate fluxurile..."
-
-#: ../src/ui/liferea_shell.c:944
-msgid "Show the search dialog."
-msgstr "Afișează dialogul de căutare."
-
-#: ../src/ui/liferea_shell.c:946
-msgid "_Help"
-msgstr "_Help"
-
-#: ../src/ui/liferea_shell.c:947
-msgid "_Contents"
-msgstr "_Conținut"
-
-#: ../src/ui/liferea_shell.c:947
-msgid "View help for this application."
-msgstr "Vizualizare ajutor pentru această aplicație."
-
-#: ../src/ui/liferea_shell.c:948
-msgid "_Quick Reference"
-msgstr "Referință ra_pidă"
-
-#: ../src/ui/liferea_shell.c:948
-msgid "View a list of all Liferea shortcuts."
-msgstr "Vizualizează o listă a tuturor scurtăturilor din Liferea."
-
-#: ../src/ui/liferea_shell.c:950
-msgid "_FAQ"
-msgstr "Întrebări _frecvente"
-
-#: ../src/ui/liferea_shell.c:950
-msgid "View the FAQ for this application."
-msgstr "Vizualizează întrebările frecvente ale acestei aplicații"
-
-#: ../src/ui/liferea_shell.c:951
-msgid "_About"
-msgstr "_Despre"
-
-#: ../src/ui/liferea_shell.c:951
-msgid "Shows an about dialog."
-msgstr "Afișează dialogul despre."
-
-#: ../src/ui/liferea_shell.c:955
-msgid "_Normal View"
-msgstr "Vizualizare _normală"
-
-#: ../src/ui/liferea_shell.c:955
-msgid "Set view mode to mail client mode."
-msgstr "Definește modul de vizualizare la modul de vizualizare client email."
-
-#: ../src/ui/liferea_shell.c:957
-msgid "_Wide View"
-msgstr "Vizualizare _lată"
-
-#: ../src/ui/liferea_shell.c:957
-msgid "Set view mode to use three vertical panes."
-msgstr "Definește modul de vizualizare pentru a folosi trei panouri verticale"
-
-#: ../src/ui/liferea_shell.c:959
-msgid "_Combined View"
-msgstr "Vizualizare _combinată"
-
-#: ../src/ui/liferea_shell.c:959
-msgid "Set view mode to two pane mode."
-msgstr "Definește mod vizualizare în modul cu 2 panouri."
-
-#: ../src/ui/liferea_shell.c:964
-msgid "_Reduced Feed List"
-msgstr "Listă _redusă fluxuri"
-
-#: ../src/ui/liferea_shell.c:964
-msgid "Hide feeds with no unread items."
-msgstr "Ascunde fluxurile fără elemente necitite."
-
-#: ../src/ui/liferea_shell.c:969
-msgid "_New Subscription..."
-msgstr "Abonament _nou..."
-
-#: ../src/ui/liferea_shell.c:969
-msgid "Adds a subscription to the feed list."
-msgstr "Adaugă un abonament la lista de flux."
-
-#: ../src/ui/liferea_shell.c:971 ../src/ui/popup_menu.c:308
-msgid "New _Folder..."
-msgstr "_Dosar nou..."
-
-#: ../src/ui/liferea_shell.c:971
-msgid "Adds a folder to the feed list."
-msgstr "Adaugă un dosar la lista de flux."
-
-#: ../src/ui/liferea_shell.c:972 ../src/ui/popup_menu.c:311
-msgid "New S_earch Folder..."
-msgstr "Dosar de cău_tare nou..."
-
-#: ../src/ui/liferea_shell.c:972
-msgid "Adds a new search folder to the feed list."
-msgstr "Adaugă un nou dosar de căutare la lista de flux."
-
-#: ../src/ui/liferea_shell.c:973
-msgid "New _Source..."
-msgstr "_Sursă nouă..."
-
-#: ../src/ui/liferea_shell.c:973
-msgid "Adds a new feed list source."
-msgstr "Adaugă o nouă sursă de liste fluxuri."
-
-#: ../src/ui/liferea_shell.c:974 ../src/ui/popup_menu.c:313
-msgid "New _News Bin..."
-msgstr "_Colecție știri nouă..."
-
-#: ../src/ui/liferea_shell.c:974
-msgid "Adds a new news bin."
-msgstr "Adaugă o colecție de știri nouă."
-
-#: ../src/ui/liferea_shell.c:978
-msgid "_Mark Items Read"
-msgstr "_Marchează elementele ca citite"
-
-#: ../src/ui/liferea_shell.c:978
-msgid ""
-"Marks all items of the selected feed list node / in the item list as read."
-msgstr ""
-"Marchează ca citite toate elementele din fluxul selectat sau în lista de "
-"elemente."
-
-#: ../src/ui/liferea_shell.c:980 ../src/ui/popup_menu.c:290
-msgid "_Update"
-msgstr "Act_ualizează"
-
-#: ../src/ui/liferea_shell.c:980
-msgid ""
-"Updates the selected subscription or all subscriptions of the selected "
-"folder."
-msgstr ""
-"Actualizează abonamentele selectate sau toate abonamentele din dosarul "
-"selectat."
-
-#: ../src/ui/liferea_shell.c:985 ../src/ui/popup_menu.c:339
-msgid "_Properties"
-msgstr "_Proprietăți"
-
-#: ../src/ui/liferea_shell.c:985
-msgid "Opens the property dialog for the selected subscription."
-msgstr "Deschide dialogul de proprietăți pentru abonamentul selectat."
-
-#: ../src/ui/liferea_shell.c:986
-msgid "_Remove"
-msgstr "Ște_rge"
-
-#: ../src/ui/liferea_shell.c:986
-msgid "Removes the selected subscription."
-msgstr "Șterge abonamentul selectat."
-
-#: ../src/ui/liferea_shell.c:990 ../src/ui/popup_menu.c:153
-msgid "Toggle _Read Status"
-msgstr "Comută starea de _citire"
-
-#: ../src/ui/liferea_shell.c:990
-msgid "Toggles the read status of the selected item."
-msgstr "Comută starea de citire pentru elementele selectate."
-
-#: ../src/ui/liferea_shell.c:992 ../src/ui/popup_menu.c:154
-msgid "Toggle Item _Flag"
-msgstr "Comută _fanion element"
-
-#: ../src/ui/liferea_shell.c:992
-msgid "Toggles the flag status of the selected item."
-msgstr "Comută starea de citire pentru elementele selectate."
-
-#: ../src/ui/liferea_shell.c:994
-msgid "R_emove"
-msgstr "_Elimină"
-
-#: ../src/ui/liferea_shell.c:994
-msgid "Removes the selected item."
-msgstr "Elimină elementul selectat."
-
-#: ../src/ui/liferea_shell.c:996 ../src/ui/popup_menu.c:117
-msgid "Open In _Tab"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:996
-#, fuzzy
-msgid "Launches the item's link in a new Liferea browser tab."
-msgstr "Deschide legăturile din elemente în navigatorul configurat."
-
-#: ../src/ui/liferea_shell.c:998 ../src/ui/popup_menu.c:118
-#, fuzzy
-msgid "_Open In Browser"
-msgstr "_Lansează în navigator"
-
-#: ../src/ui/liferea_shell.c:998
-#, fuzzy
-msgid "Launches the item's link in the Liferea item pane."
-msgstr "Deschide legăturile din elemente în navigatorul configurat."
-
-#: ../src/ui/liferea_shell.c:1000 ../src/ui/popup_menu.c:119
-#, fuzzy
-msgid "Open In _External Browser"
-msgstr "<span weight=\"bold\">Preferințe navigatorului extern</span>"
-
-#: ../src/ui/liferea_shell.c:1000
-#, fuzzy
-msgid "Launches the item's link in the configured external browser."
-msgstr "Deschide legăturile din elemente în navigatorul configurat."
-
-#: ../src/ui/liferea_shell.c:1005
-msgid "_Fullscreen"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:1005
-msgid "Browse at full screen"
-msgstr ""
-
-#: ../src/ui/search_dialog.c:116
+#: ../src/ui/liferea_shell.c:1041
+#, fuzzy, c-format
+msgid "Email command failed: %s"
+msgstr "Comanda de navigare a eșuat: %s"
+
+#: ../src/ui/search_dialog.c:107
 #, fuzzy
 msgid "Saved Search"
 msgstr "Căutare avansată"
 
-#: ../src/ui/auth_dialog.c:123 ../glade/auth.ui.h:3
-#, no-c-format
+#: ../src/ui/auth_dialog.c:114
+#, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Introduceți numele de utilizator și parola pentru „%s” (%s):"
 
-#: ../src/ui/auth_dialog.c:125
+#: ../src/ui/auth_dialog.c:116
 msgid "Unknown source"
 msgstr "Sursă necunoscută"
 
-#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_node.c:416
+#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_view.c:911
+#: ../src/ui/feed_list_view.c:965
 #, fuzzy
 msgid "_Cancel"
 msgstr "_Anulează tot"
@@ -1202,229 +895,294 @@ msgstr "_Anulează tot"
 msgid "All Files"
 msgstr "Fișier _local"
 
-#: ../src/ui/feed_list_view.c:375
+#: ../src/ui/feed_list_view.c:432
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea este în modul deconectat. Nu se pot face actualizări."
 
-#: ../src/ui/item_list_view.c:115
-msgid "This item has no link specified!"
-msgstr "Acest element nu are specificată o legătură!"
+#: ../src/ui/feed_list_view.c:478
+#, fuzzy
+msgid "all feeds"
+msgstr "Caută în toate feedurile."
 
-#: ../src/ui/item_list_view.c:119 ../src/ui/item_list_view.c:986
-#: ../src/ui/item_list_view.c:1069 ../src/ui/item_list_view.c:1084
-msgid "No item has been selected"
-msgstr "Nu a fost selectat nici un element"
-
-#: ../src/ui/item_list_view.c:479
-msgid "*** No title ***"
-msgstr "*** Fără titlu ***"
-
-#: ../src/ui/item_list_view.c:483
-msgid " <span background='red' color='black'> important </span> "
-msgstr ""
-
-#: ../src/ui/item_list_view.c:793
-msgid "Headline"
-msgstr "Titlul"
-
-#: ../src/ui/item_list_view.c:816
-msgid "Date"
-msgstr "Data"
-
-#: ../src/ui/item_list_view.c:973
-msgid "You must select a feed to delete its items!"
-msgstr "Trebuie să alegeți un flux pentru ai șterge elementele!"
-
-#: ../src/ui/popup_menu.c:131
-msgid "Copy to News Bin"
-msgstr "Copiază în colecție știri"
-
-#: ../src/ui/popup_menu.c:145
+#: ../src/ui/feed_list_view.c:479
 #, fuzzy, c-format
-msgid "_Bookmark at %s"
-msgstr "_Memorează legătura la %s"
+msgid "Mark %s as read ?"
+msgstr "Marchează toate ca citite"
 
-#: ../src/ui/popup_menu.c:149
-#, fuzzy
-msgid "Copy Item _Location"
-msgstr "_Copiază locația legăturii"
+#: ../src/ui/feed_list_view.c:483
+#, fuzzy, c-format
+msgid "Are you sure you want to mark all items in %s as read ?"
+msgstr "Doriți să ștergeți %s?"
 
-#: ../src/ui/popup_menu.c:155
-msgid "R_emove Item"
-msgstr "_Elimină element"
-
-#: ../src/ui/popup_menu.c:168
-msgid "Open Enclosure..."
-msgstr "Deschide atașament..."
-
-#: ../src/ui/popup_menu.c:169
-msgid "Save As..."
-msgstr "Salvează ca..."
-
-#: ../src/ui/popup_menu.c:170
-msgid "Copy Link Location"
-msgstr "Copiază locația legăturii"
-
-#: ../src/ui/popup_menu.c:183
-msgid "_Work Offline"
-msgstr "_Mod deconectat"
-
-#: ../src/ui/popup_menu.c:184
-msgid "_Update All"
-msgstr "Act_ualizează tot"
-
-#: ../src/ui/popup_menu.c:189
-msgid "_Show Liferea"
-msgstr "_Afișează Liferea"
-
-#: ../src/ui/popup_menu.c:292
-msgid "_Update Folder"
-msgstr "Act_ualizare dosar"
-
-#: ../src/ui/popup_menu.c:302
-msgid "_New"
-msgstr "_Nou"
-
-#: ../src/ui/popup_menu.c:305
-msgid "New _Subscription..."
-msgstr "A_bonament nou..."
-
-#: ../src/ui/popup_menu.c:312
-msgid "New S_ource..."
-msgstr "Sursă n_ouă..."
-
-#: ../src/ui/popup_menu.c:321
-#, fuzzy
-msgid "Sort Feeds"
-msgstr "Importă listă flux"
-
-#: ../src/ui/popup_menu.c:327
-msgid "_Mark All As Read"
-msgstr "_Marchează tot ca citit"
-
-#: ../src/ui/popup_menu.c:332
-msgid "_Rebuild"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:338 ../src/ui/feed_list_node.c:417
-msgid "_Delete"
-msgstr "Șt_erge"
-
-#: ../src/ui/popup_menu.c:344
-#, fuzzy
-msgid "Convert To Local Subscriptions..."
-msgstr "Abonament _nou..."
-
-#: ../src/ui/preferences_dialog.c:86
-msgid "GNOME default"
-msgstr "Implicit GNOME"
-
-#: ../src/ui/preferences_dialog.c:87
-msgid "Text below icons"
-msgstr "Text sub iconițe"
-
-#: ../src/ui/preferences_dialog.c:88
-msgid "Text beside icons"
-msgstr "Text lângă iconițe"
-
-#: ../src/ui/preferences_dialog.c:89
-msgid "Icons only"
-msgstr "Doar iconițe"
-
-#: ../src/ui/preferences_dialog.c:90
-msgid "Text only"
-msgstr "Doar text"
-
-#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:43
-msgid "minutes"
-msgstr "minute"
-
-#: ../src/ui/preferences_dialog.c:99 ../src/ui/subscription_dialog.c:44
-msgid "hours"
-msgstr "ore"
-
-#: ../src/ui/preferences_dialog.c:100 ../src/ui/subscription_dialog.c:45
-msgid "days"
-msgstr "zile"
-
-#: ../src/ui/preferences_dialog.c:105
-msgid "Space"
-msgstr "Spațiu"
-
-#: ../src/ui/preferences_dialog.c:106
-msgid "<Ctrl> Space"
-msgstr "<Ctrl> Spațiu"
-
-#: ../src/ui/preferences_dialog.c:107
-msgid "<Alt> Space"
-msgstr "<Alt> Spațiu"
-
-#: ../src/ui/preferences_dialog.c:112
-#, fuzzy
-msgid "Normal View"
-msgstr "Vizualizare _normală"
-
-#: ../src/ui/preferences_dialog.c:113
-#, fuzzy
-msgid "Wide View"
-msgstr "Vizualizare _lată"
-
-#: ../src/ui/preferences_dialog.c:114
-#, fuzzy
-msgid "Combined View"
-msgstr "Vizualizare _combinată"
-
-#: ../src/ui/preferences_dialog.c:451
-#, fuzzy
-msgid "Default Browser"
-msgstr "Navigator implicit GNOME"
-
-#: ../src/ui/preferences_dialog.c:453
-msgid "Manual"
-msgstr "Manual"
-
-#: ../src/ui/preferences_dialog.c:685
-msgid "Type"
-msgstr "Tip"
-
-#: ../src/ui/preferences_dialog.c:688
-msgid "Program"
-msgstr "Program"
-
-#: ../src/ui/feed_list_node.c:124
+#: ../src/ui/feed_list_view.c:621
 msgid "(Empty)"
 msgstr ""
 
-#: ../src/ui/feed_list_node.c:335
+#: ../src/ui/feed_list_view.c:832
 #, c-format
 msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
 
-#: ../src/ui/feed_list_node.c:406
+#: ../src/ui/feed_list_view.c:901
 msgid "Deleting entry"
 msgstr "Se șterge intrarea"
 
-#: ../src/ui/feed_list_node.c:407
+#: ../src/ui/feed_list_view.c:902
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Doriți să ștergeți %s și conținutul lui?"
 
-#: ../src/ui/feed_list_node.c:407
+#: ../src/ui/feed_list_view.c:902
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Doriți să ștergeți %s?"
 
-#: ../src/ui/feed_list_node.c:419
+#: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
+msgid "_Delete"
+msgstr "Șt_erge"
+
+#: ../src/ui/feed_list_view.c:914
 msgid "Deletion Confirmation"
 msgstr "Confirmare ștergere"
 
-#: ../src/ui/subscription_dialog.c:352 ../src/fl_sources/opml_source.c:379
+#: ../src/ui/feed_list_view.c:953
+#, c-format
+msgid ""
+"Are you sure that you want to add a new subscription with URL \"%s\"? "
+"Another subscription with the same URL already exists (\"%s\")."
+msgstr ""
+
+#: ../src/ui/feed_list_view.c:966
+msgid "_Add"
+msgstr ""
+
+#: ../src/ui/feed_list_view.c:968
+#, fuzzy
+msgid "Adding Duplicate Subscription Confirmation"
+msgstr "Confirmare ștergere"
+
+#: ../src/ui/item_list_view.c:115
+msgid "This item has no link specified!"
+msgstr "Acest element nu are specificată o legătură!"
+
+#: ../src/ui/item_list_view.c:482
+msgid "*** No title ***"
+msgstr "*** Fără titlu ***"
+
+#: ../src/ui/item_list_view.c:486
+msgid " <span background='red' color='black'> important </span> "
+msgstr ""
+
+#: ../src/ui/item_list_view.c:865
+msgid "Headline"
+msgstr "Titlul"
+
+#: ../src/ui/item_list_view.c:887
+msgid "Date"
+msgstr "Data"
+
+#: ../src/ui/item_list_view.c:1056
+msgid "You must select a feed to delete its items!"
+msgstr "Trebuie să alegeți un flux pentru ai șterge elementele!"
+
+#: ../src/ui/item_list_view.c:1072 ../src/ui/item_list_view.c:1150
+#: ../src/ui/item_list_view.c:1165
+msgid "No item has been selected"
+msgstr "Nu a fost selectat nici un element"
+
+#: ../src/ui/popup_menu.c:102
+msgid "Open In _Tab"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:106
+#, fuzzy
+msgid "_Open In Browser"
+msgstr "_Lansează în navigator"
+
+#: ../src/ui/popup_menu.c:110
+#, fuzzy
+msgid "Open In _External Browser"
+msgstr "<span weight=\"bold\">Preferințe navigatorului extern</span>"
+
+#: ../src/ui/popup_menu.c:115
+msgid "Email The Author"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:140
+msgid "Copy to News Bin"
+msgstr "Copiază în colecție știri"
+
+#: ../src/ui/popup_menu.c:148
+#, fuzzy, c-format
+msgid "_Bookmark at %s"
+msgstr "_Memorează legătura la %s"
+
+#: ../src/ui/popup_menu.c:154
+#, fuzzy
+msgid "Copy Item _Location"
+msgstr "_Copiază locația legăturii"
+
+#: ../src/ui/popup_menu.c:163
+msgid "Toggle _Read Status"
+msgstr "Comută starea de _citire"
+
+#: ../src/ui/popup_menu.c:167
+msgid "Toggle Item _Flag"
+msgstr "Comută _fanion element"
+
+#: ../src/ui/popup_menu.c:171
+msgid "R_emove Item"
+msgstr "_Elimină element"
+
+#: ../src/ui/popup_menu.c:200
+msgid "Open Enclosure..."
+msgstr "Deschide atașament..."
+
+#: ../src/ui/popup_menu.c:201
+msgid "Save As..."
+msgstr "Salvează ca..."
+
+#: ../src/ui/popup_menu.c:202
+msgid "Copy Link Location"
+msgstr "Copiază locația legăturii"
+
+#: ../src/ui/popup_menu.c:280
+msgid "_Update"
+msgstr "Act_ualizează"
+
+#: ../src/ui/popup_menu.c:282
+msgid "_Update Folder"
+msgstr "Act_ualizare dosar"
+
+#: ../src/ui/popup_menu.c:292
+msgid "New _Subscription..."
+msgstr "A_bonament nou..."
+
+#: ../src/ui/popup_menu.c:295
+msgid "New _Folder..."
+msgstr "_Dosar nou..."
+
+#: ../src/ui/popup_menu.c:298
+msgid "New S_earch Folder..."
+msgstr "Dosar de cău_tare nou..."
+
+#: ../src/ui/popup_menu.c:299
+msgid "New S_ource..."
+msgstr "Sursă n_ouă..."
+
+#: ../src/ui/popup_menu.c:300
+msgid "New _News Bin..."
+msgstr "_Colecție știri nouă..."
+
+#: ../src/ui/popup_menu.c:303
+msgid "_New"
+msgstr "_Nou"
+
+#: ../src/ui/popup_menu.c:312
+#, fuzzy
+msgid "Sort Feeds"
+msgstr "Importă listă flux"
+
+#: ../src/ui/popup_menu.c:320
+msgid "_Mark All As Read"
+msgstr "_Marchează tot ca citit"
+
+#: ../src/ui/popup_menu.c:327
+msgid "_Rebuild"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:336
+msgid "_Properties"
+msgstr "_Proprietăți"
+
+#: ../src/ui/popup_menu.c:343
+#, fuzzy
+msgid "Convert To Local Subscriptions..."
+msgstr "Abonament _nou..."
+
+#: ../src/ui/preferences_dialog.c:84
+msgid "GNOME default"
+msgstr "Implicit GNOME"
+
+#: ../src/ui/preferences_dialog.c:85
+msgid "Text below icons"
+msgstr "Text sub iconițe"
+
+#: ../src/ui/preferences_dialog.c:86
+msgid "Text beside icons"
+msgstr "Text lângă iconițe"
+
+#: ../src/ui/preferences_dialog.c:87
+msgid "Icons only"
+msgstr "Doar iconițe"
+
+#: ../src/ui/preferences_dialog.c:88
+msgid "Text only"
+msgstr "Doar text"
+
+#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:43
+msgid "minutes"
+msgstr "minute"
+
+#: ../src/ui/preferences_dialog.c:97 ../src/ui/subscription_dialog.c:44
+msgid "hours"
+msgstr "ore"
+
+#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:45
+msgid "days"
+msgstr "zile"
+
+#: ../src/ui/preferences_dialog.c:103
+msgid "Space"
+msgstr "Spațiu"
+
+#: ../src/ui/preferences_dialog.c:104
+msgid "<Ctrl> Space"
+msgstr "<Ctrl> Spațiu"
+
+#: ../src/ui/preferences_dialog.c:105
+msgid "<Alt> Space"
+msgstr "<Alt> Spațiu"
+
+#: ../src/ui/preferences_dialog.c:110
+#, fuzzy
+msgid "Normal View"
+msgstr "Vizualizare _normală"
+
+#: ../src/ui/preferences_dialog.c:111
+#, fuzzy
+msgid "Wide View"
+msgstr "Vizualizare _lată"
+
+#: ../src/ui/preferences_dialog.c:112
+#, fuzzy
+msgid "Combined View"
+msgstr "Vizualizare _combinată"
+
+#: ../src/ui/preferences_dialog.c:467
+#, fuzzy
+msgid "Default Browser"
+msgstr "Navigator implicit GNOME"
+
+#: ../src/ui/preferences_dialog.c:469
+msgid "Manual"
+msgstr "Manual"
+
+#: ../src/ui/preferences_dialog.c:716
+msgid "Type"
+msgstr "Tip"
+
+#: ../src/ui/preferences_dialog.c:719
+msgid "Program"
+msgstr "Program"
+
+#: ../src/ui/subscription_dialog.c:355 ../src/fl_sources/opml_source.c:379
 msgid "_Open"
 msgstr ""
 
-#: ../src/ui/subscription_dialog.c:426
+#: ../src/ui/subscription_dialog.c:427
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1436,11 +1194,11 @@ msgstr[1] ""
 msgstr[2] ""
 "Furnizorul acestui flux sugerează un interval de actualizare de %d de minute."
 
-#: ../src/ui/subscription_dialog.c:430
+#: ../src/ui/subscription_dialog.c:431
 msgid "This feed specifies no default update interval."
 msgstr "Acest flux nu are nici un interval implicit de actualizare."
 
-#: ../src/ui/browser_tabs.c:264
+#: ../src/ui/browser_tabs.c:262
 msgid "Untitled"
 msgstr "Fără titlu"
 
@@ -1456,18 +1214,6 @@ msgstr "%b %d %H:%M"
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Abonament nou"
-
-#: ../src/fl_sources/inoreader_source.c:102
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-#, fuzzy
-msgid "Login failed!"
-msgstr "Autentificare Google Reader eșuată!"
-
-#: ../src/fl_sources/inoreader_source.c:311
-#, fuzzy
-msgid "InoReader"
-msgstr "Google Reader"
 
 #: ../src/fl_sources/google_source.c:111
 msgid "Google Reader"
@@ -1485,25 +1231,31 @@ msgstr "Alege fișier OPML"
 msgid "New OPML Subscription"
 msgstr "Abonament OPML nou"
 
-#: ../src/fl_sources/node_source.c:336
+#: ../src/fl_sources/node_source.c:334
 msgid "No feed list source types found!"
 msgstr "Nu s-a găsit tipul listei de fluxuri!"
 
-#: ../src/fl_sources/node_source.c:365
+#: ../src/fl_sources/node_source.c:363
 msgid "Source Type"
 msgstr "Tip sursă"
 
-#: ../src/fl_sources/node_source.c:416
+#: ../src/fl_sources/node_source.c:414
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:582
+#: ../src/fl_sources/node_source.c:580
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr ""
+
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+#, fuzzy
+msgid "Login failed!"
+msgstr "Autentificare Google Reader eșuată!"
 
 #: ../src/fl_sources/reedah_source.c:312
 msgid "Reedah"
@@ -1542,61 +1294,90 @@ msgstr ""
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 
-#: ../src/fl_sources/theoldreader_source.c:329
+#: ../src/fl_sources/theoldreader_source.c:310
 #, fuzzy
 msgid "TheOldReader"
 msgstr "Cititor fluxuri"
 
-#: ../src/webkit/liferea_web_view.c:173
+#: ../src/webkit/liferea_web_view.c:176
 #, fuzzy
 msgid "Open Link In _Tab"
 msgstr "Deschide legătură în _tab"
 
-#: ../src/webkit/liferea_web_view.c:174
+#: ../src/webkit/liferea_web_view.c:177
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "Deschide _legătură în navigator"
 
-#: ../src/webkit/liferea_web_view.c:175
+#: ../src/webkit/liferea_web_view.c:178
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "Deschide _legătură în navigator"
 
-#: ../src/webkit/liferea_web_view.c:181
+#: ../src/webkit/liferea_web_view.c:184
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_Memorează legătura la %s"
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:191
 msgid "_Copy Link Location"
 msgstr "_Copiază locația legăturii"
 
-#: ../src/webkit/liferea_web_view.c:188
+#: ../src/webkit/liferea_web_view.c:194
 #, fuzzy
 msgid "_View Image"
 msgstr "_Vizualizare"
 
-#: ../src/webkit/liferea_web_view.c:189
+#: ../src/webkit/liferea_web_view.c:195
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "_Copiază locația legăturii"
 
-#: ../src/webkit/liferea_web_view.c:192
+#: ../src/webkit/liferea_web_view.c:198
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "Salvează ca..."
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:201
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:202
+#: ../src/webkit/liferea_web_view.c:208
 msgid "_Subscribe..."
 msgstr "_Abonare..."
 
-#: ../src/webkit/liferea_web_view.c:206
+#: ../src/webkit/liferea_web_view.c:212
 msgid "_Copy"
 msgstr ""
+
+#: ../src/webkit/liferea_web_view.c:218
+msgid "_Increase Text Size"
+msgstr "Crește măr_imea textului"
+
+#: ../src/webkit/liferea_web_view.c:219
+msgid "_Decrease Text Size"
+msgstr "Sca_de mărimea textului"
+
+#: ../plugins/headerbar.py:63
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:69
+#, fuzzy
+msgid "Next Item"
+msgstr "_Următorul element necitit"
+
+#: ../plugins/headerbar.py:77
+msgid "_Next Unread Item"
+msgstr "_Următorul element necitit"
+
+#: ../plugins/headerbar.py:85
+msgid "_Mark Items Read"
+msgstr "_Marchează elementele ca citite"
+
+#: ../plugins/headerbar.py:104
+msgid "Search All Feeds..."
+msgstr "Căută toate fluxurile..."
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1614,19 +1395,16 @@ msgstr "Pagina web Liferea"
 msgid "Authentication"
 msgstr "Autentificare"
 
-#: ../glade/auth.ui.h:4
-msgid ""
-"Note: <i>The username and password will be saved to your Liferea feedlist "
-"file without using encryption.</i>"
-msgstr ""
-"Notă:<i>Numele de utilizator și parola vor fi salvate în lista de fluxuri "
-"fără a se folosi vreo metodă de criptare.</i>"
+#: ../glade/auth.ui.h:3
+#, fuzzy, no-c-format
+msgid "Enter the username and password for \"%s\" (%s)"
+msgstr "Introduceți numele de utilizator și parola pentru „%s” (%s):"
 
-#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
+#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
 msgid "User_name:"
 msgstr "_Nume utilizator:"
 
-#: ../glade/auth.ui.h:6 ../glade/properties.ui.h:33
+#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "_Password:"
 msgstr "_Parolă:"
 
@@ -1643,7 +1421,7 @@ msgstr "Descărcare atașament de tipul:"
 #: ../glade/enclosure_handler.ui.h:3
 #, fuzzy
 msgid ""
-"What should Liferea do with this enclosure? Please enter the command you "
+"_What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The enclosures URL will be supplied as an "
 "argument for this command:"
 msgstr ""
@@ -1659,35 +1437,6 @@ msgstr "_Navighează"
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_De acum încolo fă asta automat pentru atașamente de acest timp."
 
-#: ../glade/google_source.ui.h:1
-msgid "Add Google Reader Account"
-msgstr "Adaugă cont Google Reader"
-
-#: ../glade/google_source.ui.h:2
-msgid "Please enter your Google Reader account settings."
-msgstr "Introduceți configurările contului Google Reader."
-
-#: ../glade/google_source.ui.h:3 ../glade/inoreader_source.ui.h:3
-#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
-#: ../glade/ttrss_source.ui.h:4
-msgid "_Password"
-msgstr "_Parolă"
-
-#: ../glade/google_source.ui.h:4 ../glade/inoreader_source.ui.h:4
-#: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
-msgid "_Username (Email)"
-msgstr "N_ume utilizator (email)"
-
-#: ../glade/inoreader_source.ui.h:1
-#, fuzzy
-msgid "Add InoReader Account"
-msgstr "Adaugă cont Google Reader"
-
-#: ../glade/inoreader_source.ui.h:2
-#, fuzzy
-msgid "Please enter your InoReader account settings."
-msgstr "Introduceți configurările contului Google Reader."
-
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
 msgstr ""
@@ -1696,21 +1445,26 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:4 ../glade/properties.ui.h:28
-msgid "0"
-msgstr ""
-
-#: ../glade/mainwindow.ui.h:5
-msgid "View Headlines"
-msgstr "Vizualizare titluri"
-
-#: ../glade/mainwindow.ui.h:6
+#: ../glade/mainwindow.ui.h:4
 msgid "page 3"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:7 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:5 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "Titluri"
+
+#: ../glade/mark_read_dialog.ui.h:1
+#, fuzzy
+msgid "Mark all as read ?"
+msgstr "Marchează toate ca citite"
+
+#: ../glade/mark_read_dialog.ui.h:2
+msgid "Mark all as read"
+msgstr "Marchează toate ca citite"
+
+#: ../glade/mark_read_dialog.ui.h:3
+msgid "Do not ask again"
+msgstr ""
 
 #: ../glade/new_folder.ui.h:1
 msgid "New Folder"
@@ -1728,32 +1482,31 @@ msgstr "Crează colecție știri"
 msgid "_News Bin Name:"
 msgstr "_Nume colecție știri:"
 
-#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:12
-#: ../glade/simple_subscription.ui.h:3
+#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
 msgstr "Sursa feedului"
 
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:13
+#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:12
 msgid "Source Type:"
 msgstr "Tip sursă:"
 
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:14
+#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:13
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:15
+#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:14
 msgid "_Command"
 msgstr "_Comandă"
 
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:16
+#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:15
 msgid "_Local File"
 msgstr "Fișier _local"
 
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:17
+#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:16
 msgid "Select File..."
 msgstr "Alegere fișier..."
 
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:18
+#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:17
 msgid "_Source:"
 msgstr "_Sursă:"
 
@@ -1762,11 +1515,11 @@ msgstr "_Sursă:"
 msgid "Download / Postprocessing"
 msgstr "<b>Descărcare / Postprocesare</b>"
 
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:31
+#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:30
 msgid "_Don't use proxy for download"
 msgstr "Nu folosi proxy pentru _descărcări"
 
-#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:19
+#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:18
 msgid "Use conversion _filter"
 msgstr "Folosește _filtrul de conversie"
 
@@ -1780,7 +1533,7 @@ msgstr ""
 "pentru formate nesuportate. Pentru mai multe informații consulați "
 "documentația."
 
-#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:21
+#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:20
 msgid "Convert _using:"
 msgstr "Con_vertește folosind:"
 
@@ -1789,7 +1542,8 @@ msgid "Source Selection"
 msgstr "Alegere sursă"
 
 #: ../glade/node_source.ui.h:2
-msgid "Select the source type you want to add..."
+#, fuzzy
+msgid "_Select the source type you want to add..."
 msgstr "Alegeți tipul sursei pe care doriți să o adăugați"
 
 #: ../glade/opml_source.ui.h:1
@@ -1823,6 +1577,10 @@ msgstr ""
 msgid "Default _number of items per feed to save:"
 msgstr "_Numărul implicit de elemente per flux care să fie salvate:"
 
+#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:27
+msgid "0"
+msgstr ""
+
 #: ../glade/prefs.ui.h:5
 #, fuzzy
 msgid "Feed Update Settings"
@@ -1847,7 +1605,7 @@ msgstr "Actualizează toate abonamentele."
 msgid "Default Feed Refresh _Interval:"
 msgstr "_Intervalul implicit de actualizare flux:"
 
-#: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:7
+#: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:6
 msgid "1"
 msgstr ""
 
@@ -1957,89 +1715,98 @@ msgid "Toolbar _button labels:"
 msgstr "Etichete _butoane bară de unelte:"
 
 #: ../glade/prefs.ui.h:37
-msgid "GUI"
-msgstr "GUI"
+msgid "Other"
+msgstr ""
 
 #: ../glade/prefs.ui.h:38
-msgid "HTTP Proxy Server"
+msgid "Ask for confirmation when marking all items as read"
 msgstr ""
 
 #: ../glade/prefs.ui.h:39
+msgid "Desktop"
+msgstr ""
+
+#: ../glade/prefs.ui.h:40
+msgid "HTTP Proxy Server"
+msgstr ""
+
+#: ../glade/prefs.ui.h:41
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Auto detectare (GNOME sau mediu de lucru)"
 
-#: ../glade/prefs.ui.h:40
+#: ../glade/prefs.ui.h:42
 msgid "_No Proxy"
 msgstr "Fără _proxy"
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:43
 msgid "_Manual Setting:"
 msgstr "Configurări _manuale:"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:44
 msgid "Proxy _Host:"
 msgstr "_Gazdă proxy:"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Port:"
 msgstr "_Port proxy:"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:46
 msgid "Use Proxy Au_thentication"
 msgstr "Folosește au_tentificare proxy"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:47
 msgid "Proxy _Username:"
 msgstr "N_ume utilizator proxy:"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:48
 msgid "Proxy Pass_word:"
 msgstr "Parolă pro_xy:"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:49
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:50
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:51
 #, fuzzy
 msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">Preferințe afișare dosar</span>"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:52
 msgid "Tell sites that I do _not want to be tracked"
 msgstr ""
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:53
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:54
 #, fuzzy
 msgid "Downloading Enclosures"
 msgstr "Descărcare atașament"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:55
 msgid "_Download using"
 msgstr "_Descarcă folosind"
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:57
+#, no-c-format
+msgid "custom-command %s"
+msgstr ""
+
+#: ../glade/prefs.ui.h:58
 #, fuzzy
 msgid "Opening Enclosures"
 msgstr "Deschide atașament..."
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:59
 msgid "Enclosures"
 msgstr "Atașamente"
-
-#: ../glade/prefs.ui.h:56
-msgid "Plugins"
-msgstr ""
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
@@ -2047,40 +1814,36 @@ msgstr "Proprietăți abonamente"
 
 #: ../glade/properties.ui.h:2
 #, fuzzy
-msgid "Feed Name"
+msgid "Feed _Name"
 msgstr "_Nume flux:"
 
 #: ../glade/properties.ui.h:3
-msgid "Feed _Name:"
-msgstr "_Nume flux:"
-
-#: ../glade/properties.ui.h:4
 #, fuzzy
-msgid "Update Interval"
+msgid "Update _Interval"
 msgstr "Monitor actualizări"
 
-#: ../glade/properties.ui.h:5
+#: ../glade/properties.ui.h:4
 msgid "_Use global default update interval."
 msgstr "Folosește interval global de act_ualizare."
 
-#: ../glade/properties.ui.h:6
+#: ../glade/properties.ui.h:5
 msgid "_Feed specific update interval of"
 msgstr "Interval actualizare specific _flux de"
 
-#: ../glade/properties.ui.h:8
+#: ../glade/properties.ui.h:7
 msgid "_Don't update this feed automatically."
 msgstr "_Nu actualiza automat acest flux."
 
-#: ../glade/properties.ui.h:10
+#: ../glade/properties.ui.h:9
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Sursa acestui flux sugerează un interval de actualizare de %d minute."
 
-#: ../glade/properties.ui.h:11
+#: ../glade/properties.ui.h:10
 msgid "General"
 msgstr "Generale"
 
-#: ../glade/properties.ui.h:20
+#: ../glade/properties.ui.h:19
 #, fuzzy
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
@@ -2090,7 +1853,7 @@ msgstr ""
 "pentru formate nesuportate. Pentru mai multe informații consulați "
 "documentația."
 
-#: ../glade/properties.ui.h:23
+#: ../glade/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -2099,57 +1862,57 @@ msgstr ""
 "salvate când se închide Liferea. Elementele marcate sunt întotdeauna salvate "
 "în cache."
 
-#: ../glade/properties.ui.h:24
+#: ../glade/properties.ui.h:23
 msgid "_Default cache settings"
 msgstr "Configurări _implicite cache"
 
-#: ../glade/properties.ui.h:25
+#: ../glade/properties.ui.h:24
 msgid "Di_sable cache"
 msgstr "De_zactivare cache"
 
-#: ../glade/properties.ui.h:26
+#: ../glade/properties.ui.h:25
 msgid "_Unlimited cache"
 msgstr "Cache _nelimitat"
 
-#: ../glade/properties.ui.h:27
+#: ../glade/properties.ui.h:26
 msgid "_Number of items to save:"
 msgstr "_Număr elemente salvate:"
 
-#: ../glade/properties.ui.h:29
+#: ../glade/properties.ui.h:28
 msgid "Archive"
 msgstr "Arhivă"
 
-#: ../glade/properties.ui.h:30
+#: ../glade/properties.ui.h:29
 msgid "Use HTTP _authentication"
 msgstr "Folosește _autenficare HTTP"
 
-#: ../glade/properties.ui.h:34
+#: ../glade/properties.ui.h:33
 msgid "Download"
 msgstr "Descarcă"
 
-#: ../glade/properties.ui.h:35
+#: ../glade/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
 msgstr "Descarcă _automat toate atașamentele acestui flux."
 
-#: ../glade/properties.ui.h:36
+#: ../glade/properties.ui.h:35
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "La selectarea elementelor, încarcă automat _legătura elementului în "
 "navigatorul configurat."
 
-#: ../glade/properties.ui.h:37
+#: ../glade/properties.ui.h:36
 msgid "Ignore _comment feeds for this subscription."
 msgstr "Ignoră _comentariile fluxului pentru acest abonament."
 
-#: ../glade/properties.ui.h:38
+#: ../glade/properties.ui.h:37
 msgid "_Mark downloaded items as read."
 msgstr "_Marchează elementele descărcate ca citite."
 
-#: ../glade/properties.ui.h:39
+#: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr ""
 
-#: ../glade/properties.ui.h:40
+#: ../glade/properties.ui.h:39
 msgid "Advanced"
 msgstr "Avansat"
 
@@ -2162,6 +1925,15 @@ msgstr "Adaugă cont Google Reader"
 #, fuzzy
 msgid "Please enter your Reedah account settings."
 msgstr "Introduceți configurările contului Google Reader."
+
+#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
+#: ../glade/ttrss_source.ui.h:4
+msgid "_Password"
+msgstr "_Parolă"
+
+#: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
+msgid "_Username (Email)"
+msgstr "N_ume utilizator (email)"
 
 #: ../glade/rename_node.ui.h:1
 msgid "Rename"
@@ -2232,6 +2004,11 @@ msgstr ""
 msgid "Advanced..."
 msgstr "Avansat..."
 
+#: ../glade/simple_subscription.ui.h:3
+#, fuzzy
+msgid "Feed _Source"
+msgstr "Sursa feedului"
+
 #: ../glade/simple_subscription.ui.h:4
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
@@ -2274,19 +2051,262 @@ msgid "Update Monitor"
 msgstr "Monitor actualizări"
 
 #: ../glade/update_monitor.ui.h:2
-#, fuzzy
-msgid "Cancel All"
-msgstr "_Anulează tot"
+msgid "Stop All"
+msgstr ""
 
 #: ../glade/update_monitor.ui.h:3
 #, fuzzy
-msgid "Pending Requests"
+msgid "_Pending Requests"
 msgstr "<b>Cereri în așteptare</b>"
 
 #: ../glade/update_monitor.ui.h:4
 #, fuzzy
-msgid "Downloading Now"
+msgid "_Downloading Now"
 msgstr "<b>Se descarcă acum</b>"
+
+#~ msgid "GUI"
+#~ msgstr "GUI"
+
+#, fuzzy
+#~ msgid "Cancel All"
+#~ msgstr "_Anulează tot"
+
+#~ msgid "Updating favicon for \"%s\""
+#~ msgstr "Se actualizeaza favicon pentru „%s”"
+
+#~ msgid "_Subscriptions"
+#~ msgstr "_Abonamente"
+
+#~ msgid "Update _All"
+#~ msgstr "_Actualizează toate"
+
+#~ msgid "Updates all subscriptions."
+#~ msgstr "Actualizează toate abonamentele."
+
+#~ msgid "Mark All As _Read"
+#~ msgstr "Ma_rchează toate ca citite"
+
+#~ msgid "Marks read every item of every subscription."
+#~ msgstr "Marchează ca citite toate elementele din toate abonamentele."
+
+#~ msgid "_Import Feed List..."
+#~ msgstr "_Import listă flux..."
+
+#~ msgid "Imports an OPML feed list."
+#~ msgstr "Importă o lista flux OPML."
+
+#~ msgid "_Export Feed List..."
+#~ msgstr "_Export listă flux..."
+
+#~ msgid "Exports the feed list as OPML."
+#~ msgstr "Exportă lista de fluxuri ca OPML."
+
+#~ msgid "_Quit"
+#~ msgstr "_Ieșire"
+
+#~ msgid "_Feed"
+#~ msgstr "_Flux"
+
+#~ msgid "Remove _All Items"
+#~ msgstr "Elimină to_ate elementele"
+
+#~ msgid "Removes all items of the currently selected feed."
+#~ msgstr "Elimină toate elementele din fluxul selectat curent."
+
+#~ msgid "_Item"
+#~ msgstr "_Element"
+
+#~ msgid "_View"
+#~ msgstr "_Vizualizare"
+
+#~ msgid "Increases the text size of the item view."
+#~ msgstr "Crește mărimea textului din elementul vizualizat."
+
+#~ msgid "Decreases the text size of the item view."
+#~ msgstr "Scade mărimea textului din elementul vizualizat."
+
+#~ msgid "_Tools"
+#~ msgstr "Ins_trumente"
+
+#~ msgid "_Update Monitor"
+#~ msgstr "Monitor act_ualizare"
+
+#~ msgid "Show a list of all feeds currently in the update queue"
+#~ msgstr ""
+#~ "Afișează o lista a tuturor fluxurilor în coada de actualizări curente"
+
+#~ msgid "_Preferences"
+#~ msgstr "_Preferințe"
+
+#~ msgid "Edit Preferences."
+#~ msgstr "Editare preferințe."
+
+#~ msgid "S_earch"
+#~ msgstr "_Căutare"
+
+#~ msgid "Show the search dialog."
+#~ msgstr "Afișează dialogul de căutare."
+
+#~ msgid "_Help"
+#~ msgstr "_Help"
+
+#~ msgid "_Contents"
+#~ msgstr "_Conținut"
+
+#~ msgid "View help for this application."
+#~ msgstr "Vizualizare ajutor pentru această aplicație."
+
+#~ msgid "_Quick Reference"
+#~ msgstr "Referință ra_pidă"
+
+#~ msgid "View a list of all Liferea shortcuts."
+#~ msgstr "Vizualizează o listă a tuturor scurtăturilor din Liferea."
+
+#~ msgid "_FAQ"
+#~ msgstr "Întrebări _frecvente"
+
+#~ msgid "View the FAQ for this application."
+#~ msgstr "Vizualizează întrebările frecvente ale acestei aplicații"
+
+#~ msgid "_About"
+#~ msgstr "_Despre"
+
+#~ msgid "Shows an about dialog."
+#~ msgstr "Afișează dialogul despre."
+
+#~ msgid "_Normal View"
+#~ msgstr "Vizualizare _normală"
+
+#~ msgid "Set view mode to mail client mode."
+#~ msgstr ""
+#~ "Definește modul de vizualizare la modul de vizualizare client email."
+
+#~ msgid "_Wide View"
+#~ msgstr "Vizualizare _lată"
+
+#~ msgid "Set view mode to use three vertical panes."
+#~ msgstr ""
+#~ "Definește modul de vizualizare pentru a folosi trei panouri verticale"
+
+#~ msgid "_Combined View"
+#~ msgstr "Vizualizare _combinată"
+
+#~ msgid "Set view mode to two pane mode."
+#~ msgstr "Definește mod vizualizare în modul cu 2 panouri."
+
+#~ msgid "_Reduced Feed List"
+#~ msgstr "Listă _redusă fluxuri"
+
+#~ msgid "Hide feeds with no unread items."
+#~ msgstr "Ascunde fluxurile fără elemente necitite."
+
+#~ msgid "_New Subscription..."
+#~ msgstr "Abonament _nou..."
+
+#~ msgid "Adds a subscription to the feed list."
+#~ msgstr "Adaugă un abonament la lista de flux."
+
+#~ msgid "Adds a folder to the feed list."
+#~ msgstr "Adaugă un dosar la lista de flux."
+
+#~ msgid "Adds a new search folder to the feed list."
+#~ msgstr "Adaugă un nou dosar de căutare la lista de flux."
+
+#~ msgid "New _Source..."
+#~ msgstr "_Sursă nouă..."
+
+#~ msgid "Adds a new feed list source."
+#~ msgstr "Adaugă o nouă sursă de liste fluxuri."
+
+#~ msgid "Adds a new news bin."
+#~ msgstr "Adaugă o colecție de știri nouă."
+
+#~ msgid ""
+#~ "Marks all items of the selected feed list node / in the item list as read."
+#~ msgstr ""
+#~ "Marchează ca citite toate elementele din fluxul selectat sau în lista de "
+#~ "elemente."
+
+#~ msgid ""
+#~ "Updates the selected subscription or all subscriptions of the selected "
+#~ "folder."
+#~ msgstr ""
+#~ "Actualizează abonamentele selectate sau toate abonamentele din dosarul "
+#~ "selectat."
+
+#~ msgid "Opens the property dialog for the selected subscription."
+#~ msgstr "Deschide dialogul de proprietăți pentru abonamentul selectat."
+
+#~ msgid "_Remove"
+#~ msgstr "Ște_rge"
+
+#~ msgid "Removes the selected subscription."
+#~ msgstr "Șterge abonamentul selectat."
+
+#~ msgid "Toggles the read status of the selected item."
+#~ msgstr "Comută starea de citire pentru elementele selectate."
+
+#~ msgid "Toggles the flag status of the selected item."
+#~ msgstr "Comută starea de citire pentru elementele selectate."
+
+#~ msgid "R_emove"
+#~ msgstr "_Elimină"
+
+#~ msgid "Removes the selected item."
+#~ msgstr "Elimină elementul selectat."
+
+#, fuzzy
+#~ msgid "Launches the item's link in a new Liferea browser tab."
+#~ msgstr "Deschide legăturile din elemente în navigatorul configurat."
+
+#, fuzzy
+#~ msgid "Launches the item's link in the Liferea item pane."
+#~ msgstr "Deschide legăturile din elemente în navigatorul configurat."
+
+#, fuzzy
+#~ msgid "Launches the item's link in the configured external browser."
+#~ msgstr "Deschide legăturile din elemente în navigatorul configurat."
+
+#~ msgid "_Work Offline"
+#~ msgstr "_Mod deconectat"
+
+#~ msgid "_Update All"
+#~ msgstr "Act_ualizează tot"
+
+#~ msgid "_Show Liferea"
+#~ msgstr "_Afișează Liferea"
+
+#, fuzzy
+#~ msgid "InoReader"
+#~ msgstr "Google Reader"
+
+#~ msgid ""
+#~ "Note: <i>The username and password will be saved to your Liferea feedlist "
+#~ "file without using encryption.</i>"
+#~ msgstr ""
+#~ "Notă:<i>Numele de utilizator și parola vor fi salvate în lista de fluxuri "
+#~ "fără a se folosi vreo metodă de criptare.</i>"
+
+#~ msgid "Add Google Reader Account"
+#~ msgstr "Adaugă cont Google Reader"
+
+#~ msgid "Please enter your Google Reader account settings."
+#~ msgstr "Introduceți configurările contului Google Reader."
+
+#, fuzzy
+#~ msgid "Add InoReader Account"
+#~ msgstr "Adaugă cont Google Reader"
+
+#, fuzzy
+#~ msgid "Please enter your InoReader account settings."
+#~ msgstr "Introduceți configurările contului Google Reader."
+
+#~ msgid "View Headlines"
+#~ msgstr "Vizualizare titluri"
+
+#, fuzzy
+#~ msgid "Feed Name"
+#~ msgstr "_Nume flux:"
 
 #~ msgid "normal view"
 #~ msgstr "vizualizare normală"
@@ -2473,9 +2493,6 @@ msgstr "<b>Se descarcă acum</b>"
 
 #~ msgid "Open feed"
 #~ msgstr "Deschide flux"
-
-#~ msgid "Mark all as read"
-#~ msgstr "Marchează toate ca citite"
 
 #~ msgid "Feed Update"
 #~ msgstr "Actualizare flux"
@@ -3259,9 +3276,6 @@ msgstr "<b>Se descarcă acum</b>"
 
 #~ msgid "Update All"
 #~ msgstr "Updatează toate"
-
-#~ msgid "Search all feeds."
-#~ msgstr "Caută în toate feedurile."
 
 #~ msgid "Liferea notification"
 #~ msgstr "Notificare pentru Liferea"

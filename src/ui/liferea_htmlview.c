@@ -69,7 +69,7 @@ struct _LifereaHtmlView {
 	browserHistory	*history;		/*<< The browser history */
 
 	gboolean	internal;			/*<< TRUE if internal view presenting generated HTML with special links */
-	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded within this view (regardless of global preference) */
+	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
 
 	htmlviewImplPtr impl;			/*<< Browser widget support implementation */
 };
@@ -106,22 +106,13 @@ on_htmlview_history_back (GtkWidget *widget, gpointer user_data)
 	LifereaHtmlView	*htmlview = LIFEREA_HTMLVIEW (user_data);
 	gchar		*url;
 
-	/* Going back is a bit more complex than forward as we want to switch
-	   from inline browsing back to headlines when we are in the item view.
-	   So we expect an URL or NULL for switching back to the headline */
 	url = browser_history_back (htmlview->history);
-	if (url) {
-		gtk_widget_set_sensitive (htmlview->forward, browser_history_can_go_forward (htmlview->history));
-		gtk_widget_set_sensitive (htmlview->back,    browser_history_can_go_back (htmlview->history));
 
-		liferea_htmlview_launch_URL_internal (htmlview, url);
-		gtk_entry_set_text (GTK_ENTRY (htmlview->urlentry), url);
-	} else {
-		gtk_widget_hide (htmlview->toolbar);
-		liferea_htmlview_clear (htmlview);
-		itemview_update_all_items ();
-		itemview_update ();
-	}
+	gtk_widget_set_sensitive (htmlview->forward, browser_history_can_go_forward (htmlview->history));
+	gtk_widget_set_sensitive (htmlview->back,    browser_history_can_go_back (htmlview->history));
+
+	liferea_htmlview_launch_URL_internal (htmlview, url);
+	gtk_entry_set_text (GTK_ENTRY (htmlview->urlentry), url);
 }
 
 static void
@@ -302,12 +293,6 @@ liferea_htmlview_proxy_changed (NetworkMonitor *nm, gpointer userdata)
 						 network_get_proxy_password ());
 }
 
-void
-liferea_htmlview_set_headline_view (LifereaHtmlView *htmlview)
-{
-	htmlview->history->headline = TRUE;
-}
-
 LifereaHtmlView *
 liferea_htmlview_new (gboolean forceInternalBrowsing)
 {
@@ -353,7 +338,7 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 		baseURL = "file:///";
 
 	if (debug_level & DEBUG_HTML) {
-		gchar *filename = common_create_cache_filename (NULL, "output", "xhtml");
+		gchar *filename = common_create_cache_filename (NULL, "output", "html");
 		g_file_set_contents (filename, string, -1, NULL);
 		g_free (filename);
 	}
@@ -362,7 +347,7 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 		/* It is really a bug if we get invalid encoded UTF-8 here!!! */
 		(RENDERER (htmlview)->write) (htmlview->renderWidget, errMsg, strlen (errMsg), baseURL, "text/plain");
 	} else {
-		(RENDERER (htmlview)->write) (htmlview->renderWidget, string, strlen (string), baseURL, "application/xhtml+xml");
+		(RENDERER (htmlview)->write) (htmlview->renderWidget, string, strlen (string), baseURL, "text/html");
 	}
 
 	/* We hide the toolbar as it should only be shown when loading external content */
@@ -372,13 +357,7 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 void
 liferea_htmlview_clear (LifereaHtmlView *htmlview)
 {
-	GString	*buffer;
-
-	buffer = g_string_new (NULL);
-	htmlview_start_output (buffer, NULL, FALSE, FALSE);
-	htmlview_finish_output (buffer);
-	liferea_htmlview_write (htmlview, buffer->str, NULL);
-	g_string_free (buffer, TRUE);
+	liferea_htmlview_write (htmlview, "<html><body></body></html>", NULL);
 }
 
 static gboolean
@@ -494,7 +473,6 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 	}
 
 	if(htmlview->forceInternalBrowsing || browse_inside_application) {
-
 		return FALSE;
 	} else {
 		(void)browser_launch_URL_external (url);
@@ -534,9 +512,13 @@ liferea_htmlview_scroll (LifereaHtmlView *htmlview)
 }
 
 void
-liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in)
+liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom)
 {
-	gfloat factor = in?1.2:0.8;
+	if (!zoom)
+		liferea_htmlview_set_zoom (htmlview, 1.0);
+	else if (zoom > 0)
+		liferea_htmlview_set_zoom (htmlview, 1.2 * liferea_htmlview_get_zoom (htmlview));
+	else
+		liferea_htmlview_set_zoom (htmlview, 0.8 * liferea_htmlview_get_zoom (htmlview));
 
-	liferea_htmlview_set_zoom (htmlview, factor * liferea_htmlview_get_zoom (htmlview));
 }

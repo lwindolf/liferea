@@ -70,7 +70,7 @@ metadata_init (void)
 	metadata_type_register ("commentFeedUri",	METADATA_TYPE_URL);
 	metadata_type_register ("feedTitle",		METADATA_TYPE_HTML);
 	metadata_type_register ("description",		METADATA_TYPE_HTML);
-	metadata_type_register ("richContent",		METADATA_TYPE_HTML);
+	metadata_type_register ("richContent",		METADATA_TYPE_HTML5);
 
 	/* types for aggregation NS */
 	metadata_type_register ("agSource",		METADATA_TYPE_URL);
@@ -208,6 +208,10 @@ metadata_list_append (GSList *metadata, const gchar *strid, const gchar *data)
 			/* And needs to remove DHTML */
 			checked_data = xhtml_strip_dhtml (tmp);
 			g_free (tmp);
+			break;
+		case METADATA_TYPE_HTML5:
+			/* Remove DHTML */
+			checked_data = g_strdup (data);
 			break;
 	}
 

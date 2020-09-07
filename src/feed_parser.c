@@ -1,7 +1,7 @@
 /**
  * @file feed_parser.c  parsing of different feed formats
  *
- * Copyright (C) 2008-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,7 @@
 #include "metadata.h"
 #include "xml.h"
 #include "parsers/atom10.h"
-#include "parsers/cdf_channel.h"
 #include "parsers/html5_feed.h"
-#include "parsers/pie_feed.h"
 #include "parsers/rss_channel.h"
 
 static GSList *feedHandlers = NULL;	/**< list of available parser implementations */
@@ -45,11 +43,9 @@ feed_parsers_get_list (void)
 		return feedHandlers;
 
 	feedHandlers = g_slist_append (feedHandlers, rss_init_feed_handler ());
-	feedHandlers = g_slist_append (feedHandlers, cdf_init_feed_handler ());
 	feedHandlers = g_slist_append (feedHandlers, atom10_init_feed_handler ());  /* Must be before pie */
-	feedHandlers = g_slist_append (feedHandlers, pie_init_feed_handler ());
 
-	// Do not register HTML5 feed parser here, as it is a HTML parser
+	// Do not register HTML5 feed parser here, as it is a HTML and not a feed parser
 
 	return feedHandlers;
 }
@@ -71,12 +67,9 @@ feed_type_str_to_fhp (const gchar *str)
 	if (!str)
 		return NULL;
 
-	if (strstr(str, "pie"))
-		return feed_type_str_to_fhp ("atom");
-
-	for(iter = feed_parsers_get_list (); iter != NULL; iter = iter->next) {
+	for (iter = feed_parsers_get_list (); iter != NULL; iter = iter->next) {
 		fhp = (feedHandlerPtr)iter->data;
-		if(!strcmp(str, fhp->typeStr))
+		if (!strcmp(str, fhp->typeStr))
 			return fhp;
 	}
 
@@ -115,7 +108,8 @@ feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
 static gboolean
 feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 {
-	gchar		*source;
+	gchar	*source = NULL;
+	GSList	*links;
 
 	if (ctxt->feed->parseErrors)
 		g_string_truncate (ctxt->feed->parseErrors, 0);
@@ -124,7 +118,9 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 
 	debug1 (DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
 
-	source = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription));
+	links = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription));
+	if (links)
+		source = links->data;	// FIXME: let user choose feed!
 
 	/* FIXME: we only need the !g_str_equal as a workaround after a 404 */
 	if (source && !g_str_equal (source, subscription_get_source (ctxt->subscription))) {
@@ -225,6 +221,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 			handlerIter = handlerIter->next;
 		}
 	} while(0);
+
 
 	if (ctxt->doc) {
 		xmlFreeDoc(ctxt->doc);

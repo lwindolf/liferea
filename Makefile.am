@@ -17,7 +17,7 @@ net.sourceforge.liferea.service: Makefile
 		mv $@.tmp $@
 
 
-appdatadir = $(datadir)/appdata
+appdatadir = $(datadir)/metainfo
 appdata_in_files = $(PACKAGE_TARNAME).appdata.xml.in
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 
@@ -26,8 +26,11 @@ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 cssdir = $(pkgdatadir)/css
 css_DATA = \
 	css/liferea.css \
-	css/user.css \
-	css/adblock.css
+	css/user.css
+
+jsdir = $(pkgdatadir)/js
+js_DATA = \
+	js/Readability.js
 
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
@@ -63,6 +66,7 @@ EXTRA_DIST = \
 	$(desktop_DATA) \
 	$(schema_DATA) \
 	$(css_DATA) \
+	$(js_DATA) \
 	$(dtd_DATA) \
 	$(plugin_DATA) \
 	$(gsettings_SCHEMAS) \

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.14"/>
   <object class="GtkAdjustment" id="adjustment2">
@@ -22,7 +22,7 @@
     <property name="default_width">300</property>
     <property name="type_hint">dialog</property>
     <signal name="delete-event" handler="gtk_widget_destroy" object="prefs" swapped="yes"/>
-    <child>
+    <child type="titlebar">
       <placeholder/>
     </child>
     <child internal-child="vbox">
@@ -642,7 +642,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="disablejavascript">
-                        <property name="label" translatable="yes">_Disable Javascript.</property>
+                        <property name="label" translatable="yes">_Never run external Javascript.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -909,7 +909,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">GUI</property>
+                <property name="label" translatable="yes">Desktop</property>
               </object>
               <packing>
                 <property name="position">4</property>
@@ -1299,7 +1299,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="downloadToolComboLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="margin_start">12</property>
@@ -1307,6 +1307,9 @@
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">predefinedDownload</property>
                         <property name="xalign">0</property>
+                        <accessibility>
+                          <relation type="label-for" target="downloadToolCombo"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -1348,7 +1351,7 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="customDownloadEntryLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;small&gt;(%s for URL)&lt;/small&gt;</property>
@@ -1356,6 +1359,9 @@
                         <property name="use_underline">True</property>
                         <property name="mnemonic_widget">customDownload</property>
                         <property name="xalign">1</property>
+                        <accessibility>
+                          <relation type="label-for" target="customDownloadEntry"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -1372,6 +1378,9 @@
                             <attribute name="text">0</attribute>
                           </attributes>
                         </child>
+                        <accessibility>
+                          <relation type="labelled-by" target="downloadToolComboLabel"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">2</property>
@@ -1384,6 +1393,9 @@
                         <property name="can_focus">True</property>
                         <property name="placeholder_text" translatable="yes">custom-command %s</property>
                         <signal name="changed" handler="on_enclosure_download_custom_command_changed" swapped="no"/>
+                        <accessibility>
+                          <relation type="labelled-by" target="customDownloadEntryLabel"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">2</property>

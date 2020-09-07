@@ -97,7 +97,7 @@ struct _UpdateRequest {
 	gchar 		*source;	/**< Location of the source. If it starts with
 					     '|', it is a command. If it contains "://",
 					     then it is parsed as a URL, otherwise it is a
-		filename. */
+					     filename. */
 	gchar           *postdata;      /**< HTTP POST request data (NULL for non-POST requests) */
 	gchar           *authValue;     /**< Custom value for Authorization: header */
 	updateOptionsPtr options;	/**< Update options for the request */

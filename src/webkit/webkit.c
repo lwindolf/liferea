@@ -48,7 +48,9 @@
 typedef struct _LifereaWebKitImpl {
 	GObject parent;
 
-	WebKitSettings 	*settings;
+	WebKitSettings 	*settings;		/**< settings object used for rendering headlines */
+	WebKitSettings	*settings_extern;	/**< settings object used for tabs and external content  */
+
 	GDBusServer 	*dbus_server;
 	GList 		*dbus_connections;
 } LifereaWebKitImpl;
@@ -153,7 +155,6 @@ liferea_webkit_enable_plugins_cb (GSettings *gsettings,
 static gdouble
 get_screen_dpi (GdkMonitor *monitor)
 {
-	gdouble dpi;
 	gdouble dp, di;
 	GdkRectangle rect;
 
@@ -382,35 +383,38 @@ liferea_webkit_impl_init (LifereaWebKitImpl *self)
 	gboolean	disable_javascript, enable_plugins;
 	WebKitSecurityManager *security_manager;
 	self->dbus_connections = NULL;
-	self->settings = webkit_settings_new ();
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
 	webkit_security_manager_register_uri_scheme_as_local (security_manager, "liferea");
+
+	/* Note: we manage 2 webkit settings here, one for headline display
+	   where Javascript is always on as we use Readability.js and another
+	   setting for tabs where Javascript can be toggled using the preferences */
+
+	self->settings        = webkit_settings_new ();
+	self->settings_extern = webkit_settings_new ();
+
 	conf_get_bool_value (DISABLE_JAVASCRIPT, &disable_javascript);
-	g_object_set (
-		self->settings,
-		"enable-javascript",
-		!disable_javascript,
-		NULL
-	);
+	g_object_set (self->settings,        "enable-javascript", TRUE, NULL);
+	g_object_set (self->settings_extern, "enable-javascript", !disable_javascript, NULL);
+
 	conf_get_bool_value (ENABLE_PLUGINS, &enable_plugins);
-	g_object_set (
-		self->settings,
-		"enable-plugins",
-		enable_plugins,
-		NULL
-	);
+	g_object_set (self->settings,        "enable-plugins", FALSE, NULL);
+	g_object_set (self->settings_extern, "enable-plugins", enable_plugins, NULL);
+
+	webkit_settings_set_user_agent_with_application_details (self->settings,        "Liferea", VERSION);
+	webkit_settings_set_user_agent_with_application_details (self->settings_extern, "Liferea", VERSION);
 
 	conf_signal_connect (
 		"changed::" DISABLE_JAVASCRIPT,
 		G_CALLBACK (liferea_webkit_disable_javascript_cb),
-		self->settings
+		self->settings_extern
 	);
 
 	conf_signal_connect (
 		"changed::" ENABLE_PLUGINS,
 		G_CALLBACK (liferea_webkit_enable_plugins_cb),
-		self->settings
+		self->settings_extern
 	);
 
 	/* Webkit web extensions */
@@ -457,48 +461,52 @@ liferea_webkit_write_html (
 	const gchar *content_type
 )
 {
+	// Switch to internal setting, that assure JS is enabled
+	webkit_web_view_set_settings (
+		WEBKIT_WEB_VIEW (webview),
+		liferea_webkit_impl->settings
+	);
+
 	// FIXME Avoid doing a copy ?
 	GBytes *string_bytes = g_bytes_new (string, length);
 	/* Note: we explicitely ignore the passed base URL
 	   because we don't need it as Webkit supports <div href="">
 	   and throws a security exception when accessing file://
 	   with a non-file:// base URL */
-	webkit_web_view_load_bytes (WEBKIT_WEB_VIEW (webview), string_bytes, content_type, "UTF-8", "liferea://");
+	webkit_web_view_load_bytes (
+		WEBKIT_WEB_VIEW (webview),
+		string_bytes,
+		content_type,
+		"UTF-8",
+		"liferea://"
+	);
 	g_bytes_unref (string_bytes);
 }
 
 static void
 liferea_webkit_set_font_size (GtkWidget *widget, gpointer user_data)
 {
-	gchar		*font;
-	guint		fontSize;
+	gchar	*font;
+	guint	fontSize;
 
 	if (!gtk_widget_get_realized (widget))
 		return;
 
 	font = webkit_get_font (&fontSize);
-
 	if (font) {
-		g_object_set (
-			liferea_webkit_impl->settings,
-			"default-font-family",
-			font,
-			NULL
-		);
-		g_object_set (
-			liferea_webkit_impl->settings,
-			"default-font-size",
-			normalize_font_size (fontSize, widget),
-			NULL
-		);
+		g_object_set (liferea_webkit_impl->settings,        "default-font-family", font, NULL);
+		g_object_set (liferea_webkit_impl->settings_extern, "default-font-family", font, NULL);
+
+		fontSize = normalize_font_size (fontSize, widget);
+		g_object_set (liferea_webkit_impl->settings,        "default-font-size", fontSize, NULL);
+		g_object_set (liferea_webkit_impl->settings_extern, "default-font-size", fontSize, NULL);
+
 		g_free (font);
 	}
-	g_object_set (
-		liferea_webkit_impl->settings,
-		"minimum-font-size",
-		normalize_font_size (7, widget),
-		NULL
-	);
+
+	fontSize = normalize_font_size (7, widget);
+	g_object_set (liferea_webkit_impl->settings,        "minimum-font-size", fontSize, NULL);
+	g_object_set (liferea_webkit_impl->settings_extern, "minimum-font-size", fontSize, NULL);
 }
 
 static void
@@ -506,6 +514,7 @@ liferea_webkit_screen_changed (GtkWidget *widget, GdkScreen *previous_screen, gp
 {
 	liferea_webkit_set_font_size (widget, user_data);
 }
+
 /**
  * Initializes WebKit
  *
@@ -514,11 +523,11 @@ liferea_webkit_screen_changed (GtkWidget *widget, GdkScreen *previous_screen, gp
 static GtkWidget *
 liferea_webkit_new (LifereaHtmlView *htmlview)
 {
-	WebKitWebView 		*view;
+	WebKitWebView 	*view;
 
 	view = WEBKIT_WEB_VIEW (liferea_web_view_new ());
+
 	webkit_web_view_set_settings (view, liferea_webkit_impl->settings);
-	webkit_settings_set_user_agent_with_application_details (liferea_webkit_impl->settings, "Liferea", VERSION);
 
 	g_signal_connect_object (
 		liferea_webkit_impl,
@@ -551,10 +560,16 @@ liferea_webkit_launch_url (GtkWidget *webview, const gchar *url)
 	// https://bugs.webkit.org/show_bug.cgi?id=24195
 	gchar *http_url;
 	if (!strstr (url, "://")) {
-		http_url = g_strdup_printf ("http://%s", url);
+		http_url = g_strdup_printf ("https://%s", url);
 	} else {
 		http_url = g_strdup (url);
 	}
+
+	// Switch to extern settings (that might allow JS, depending on preferences
+	webkit_web_view_set_settings (
+		WEBKIT_WEB_VIEW (webview),
+		liferea_webkit_impl->settings_extern
+	);
 
 	webkit_web_view_load_uri (
 		WEBKIT_WEB_VIEW (webview),

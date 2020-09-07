@@ -511,6 +511,20 @@ xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace
 	return xmlGetNsProp (node, BAD_CAST name, BAD_CAST namespace);
 }
 
+static void
+liferea_xml_errorSAXFunc (void * ctx, const char * msg,...)
+{
+	va_list valist;
+	gchar *parser_error = NULL;
+
+	va_start(valist,msg);
+	parser_error = g_strdup_vprintf (msg, valist);
+	va_end(valist);
+	debug1 (DEBUG_PARSING, "SAX parser error : %s", parser_error);
+	g_free (parser_error);
+}
+
+
 xmlDocPtr
 xml_parse (gchar *data, size_t length, errorCtxtPtr errCtx)
 {
@@ -521,6 +535,7 @@ xml_parse (gchar *data, size_t length, errorCtxtPtr errCtx)
 
 	ctxt = xmlNewParserCtxt ();
 	ctxt->sax->getEntity = xml_process_entities;
+	ctxt->sax->error = liferea_xml_errorSAXFunc;
 	
 	if (errCtx)
 		xmlSetGenericErrorFunc (errCtx, (xmlGenericErrorFunc)xml_buffer_parse_error);

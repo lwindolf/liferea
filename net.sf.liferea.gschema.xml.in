@@ -30,7 +30,7 @@
     <key name="default-view-mode" type="i">
       <default>0</default>
       <summary>The default view mode for feed list nodes.</summary>
-      <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane, 2=combined view 2-pane</description>
+      <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane</description>
     </key>
     <key name="default-update-interval" type="i">
       <default>0</default>
@@ -38,7 +38,7 @@
       <description>This value specifies how often Liferea tries to update feeds. The value is given in minutes. When setting the interval always consider the traffic it produces. Setting a value less than 15min almost never makes sense.</description>
     </key>
     <key name="disable-javascript" type="b">
-      <default>false</default>
+      <default>true</default>
       <summary>Allows to disable Javascript.</summary>
       <description>Allows to disable Javascript.</description>
     </key>

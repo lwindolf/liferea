@@ -1,7 +1,7 @@
 /*
  * @file itemview.c  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,7 +146,6 @@ itemview_clear (void)
 {
 	if (itemview->itemListView)
 		item_list_view_clear (itemview->itemListView);
-	htmlview_clear ();
 	enclosure_list_view_hide (itemview->enclosureView);
 	itemview->hasEnclosures = FALSE;
 	itemview->needsHTMLViewUpdate = TRUE;
@@ -161,7 +160,6 @@ itemview_set_mode (itemViewMode mode)
 	if (itemview->mode != mode) {
 		/* FIXME: Not being able to call itemview_clear() here is awful! */
 		itemview->mode = mode;
-		htmlview_clear ();	/* drop HTML rendering cache */
 	}
 }
 
@@ -173,11 +171,7 @@ itemview_set_displayed_node (nodePtr node)
 
 	itemview->node = node;
 
-	/* 1. Reset view state */
 	itemview_clear ();
-
-	/* 2. And prepare HTML view */
-	htmlview_set_displayed_node (node);
 }
 
 void
@@ -188,34 +182,18 @@ itemview_add_item (itemPtr item)
 	if (itemview->itemListView)
 		/* add item in 3 pane mode */
 		item_list_view_add_item (itemview->itemListView, item);
-	else
-		/* force HTML update in 2 pane mode */
-		itemview->needsHTMLViewUpdate = TRUE;
-
-	htmlview_add_item (item);
 }
 
 void
 itemview_remove_item (itemPtr item)
 {
-	if (itemview->itemListView) {
-		/* remove item in 3 pane mode */
-		if (item_list_view_contains_id (itemview->itemListView, item->id))
-			item_list_view_remove_item (itemview->itemListView, item);
-	}
-	else
-		/* force HTML update in 2 pane mode */
-		if (htmlview_contains_id (item->id))
-			itemview->needsHTMLViewUpdate = TRUE;
-
-	htmlview_remove_item (item);
+	if (item_list_view_contains_id (itemview->itemListView, item->id))
+		item_list_view_remove_item (itemview->itemListView, item);
 }
 
 void
 itemview_select_item (itemPtr item)
 {
-	/* Enforce single item mode as we currently know no other way
-	   to select a single item... */
 	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
 	itemview->needsHTMLViewUpdate = TRUE;
@@ -223,7 +201,6 @@ itemview_select_item (itemPtr item)
 
 	if (itemview->itemListView)
 		item_list_view_select (itemview->itemListView, item);
-	htmlview_select_item (item);
 
 	if (item)
 		enclosure_list_view_load (itemview->enclosureView, item);
@@ -261,11 +238,6 @@ itemview_update_item (itemPtr item)
 
 	/* Bail out if no HTML update necessary */
 	switch (itemview->mode) {
-		case ITEMVIEW_ALL_ITEMS:
-			/* No HTML update needed if 2 pane mode and item not in item set */
-			if (!htmlview_contains_id (item->id))
-				return;
-			break;
 		case ITEMVIEW_SINGLE_ITEM:
 			/* No HTML update needed if 3 pane mode and item not displayed */
 			if (item->id != itemlist_get_selected_id ())
@@ -278,7 +250,6 @@ itemview_update_item (itemPtr item)
 	}
 
 	itemview->needsHTMLViewUpdate = TRUE;
-	htmlview_update_item (item);
 }
 
 void
@@ -289,7 +260,6 @@ itemview_update_all_items (void)
 		item_list_view_update_all_items (itemview->itemListView);
 
 	itemview->needsHTMLViewUpdate = TRUE;
-	htmlview_update_all_items ();
 }
 
 void
@@ -363,7 +333,7 @@ itemview_find_unread_item (gulong startId)
 		result = item_list_view_find_unread_item (itemview->itemListView, 0);
 
 	/* Return NULL if not found, or only the selected item is unread */
-	if (result && result->id == startId) 
+	if (result && result->id == startId)
 		return NULL;
 
 	return result;
@@ -419,9 +389,7 @@ itemview_set_layout (nodeViewType newMode)
 
 	if (!itemview->htmlview) {
 		debug0 (DEBUG_GUI, "Creating HTML widget");
-		htmlview_init ();
 		itemview->htmlview = liferea_htmlview_new (FALSE);
-		liferea_htmlview_set_headline_view (itemview->htmlview);
 		g_signal_connect (itemview->htmlview, "statusbar-changed",
 		                  G_CALLBACK (on_important_status_message), NULL);
 
@@ -434,6 +402,9 @@ itemview_set_layout (nodeViewType newMode)
 	debug1 (DEBUG_GUI, "Setting item list layout mode: %d", newMode);
 
 	switch (newMode) {
+		case NODE_VIEW_MODE_COMBINED:
+			// Not supported anymore, fall through to NORMAL
+
 		case NODE_VIEW_MODE_NORMAL:
 			htmlWidgetName = "normalViewHtml";
 			ilWidgetName = "normalViewItems";
@@ -443,11 +414,6 @@ itemview_set_layout (nodeViewType newMode)
 			htmlWidgetName = "wideViewHtml";
 			ilWidgetName = "wideViewItems";
 			encViewVBoxName = "wideViewVBox";
-			break;
-		case NODE_VIEW_MODE_COMBINED:
-			htmlWidgetName = "combinedViewHtml";
-			ilWidgetName = NULL;
-			encViewVBoxName = NULL;
 			break;
 		default:
 			g_warning("fatal: illegal viewing mode!");
@@ -532,10 +498,10 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 }
 
 void
-itemview_do_zoom (gboolean in)
+itemview_do_zoom (gint zoom)
 {
 	if (itemview->htmlview == NULL)
 		return;
 
-	liferea_htmlview_do_zoom (itemview->htmlview, in);
+	liferea_htmlview_do_zoom (itemview->htmlview, zoom);
 }

@@ -568,7 +568,7 @@ feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
 			/* Load items of new selected node. */
 			SELECTED = node;
 			if (SELECTED) {
-				itemlist_set_view_mode (node_get_view_mode (SELECTED));
+				liferea_shell_set_view_mode (node_get_view_mode (SELECTED));
 				itemlist_load (SELECTED);
 			} else {
 				itemview_clear ();
@@ -664,7 +664,7 @@ feedlist_create (gpointer flv)
 {
 	FeedList *fl = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
 
-    g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), fl);
+	g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), fl);
 
 	return fl;
 }
