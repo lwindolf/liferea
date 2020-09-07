@@ -358,6 +358,7 @@ rss_init_feed_handler (void)
 		ns_rss_ns_uri_table = g_hash_table_new (g_str_hash, g_str_equal);
 
 		/* register name space handlers */
+  		rss_add_ns_handler (ns_dc_get_handler ());
   		rss_add_ns_handler (ns_slash_get_handler ());
 		rss_add_ns_handler (ns_content_get_handler ());
 		rss_add_ns_handler (ns_syn_get_handler ());
