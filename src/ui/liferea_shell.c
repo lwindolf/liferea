@@ -532,16 +532,17 @@ liferea_shell_set_important_status_bar (const char *format, ...)
 	g_idle_add ((GSourceFunc)liferea_shell_set_status_bar_important_cb, (gpointer)text);
 }
 
+/* For zoom in : zoom = 1, for zoom out : zoom= -1, for reset : zoom = 0 */
 static void
-liferea_shell_do_zoom (gboolean in)
+liferea_shell_do_zoom (gint zoom)
 {
 	/* We must apply the zoom either to the item view
 	   or to an open tab, depending on the browser tabs
 	   GtkNotebook page that is active... */
 	if (!browser_tabs_get_active_htmlview ())
-		itemview_do_zoom (in);
+		itemview_do_zoom (zoom);
 	else
-		browser_tabs_do_zoom (in);
+		browser_tabs_do_zoom (zoom);
 }
 
 static gboolean
@@ -659,23 +660,6 @@ on_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
 					return TRUE;
 				}
 				break;
-		}
-
-		/* some <Ctrl> hotkeys that overrule the HTML view */
-		if ((event->state & GDK_CONTROL_MASK) == GDK_CONTROL_MASK) {
-			switch (event->keyval) {
-				case GDK_KEY_KP_Add:
-				case GDK_KEY_equal:
-				case GDK_KEY_plus:
-					liferea_shell_do_zoom (TRUE);
-					return TRUE;
-					break;
-				case GDK_KEY_KP_Subtract:
-				case GDK_KEY_minus:
-					liferea_shell_do_zoom (FALSE);
-					return TRUE;
-					break;
-			}
 		}
 
 		/* prevent usage of navigation keys in entries */
@@ -799,15 +783,21 @@ on_menu_fullscreen_activate (GSimpleAction *action, GVariant *parameter, gpointe
 }
 
 static void
-on_menu_zoomin_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_action_zoomin_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	liferea_shell_do_zoom (TRUE);
+	liferea_shell_do_zoom (1);
 }
 
 static void
-on_menu_zoomout_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_action_zoomout_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	liferea_shell_do_zoom (FALSE);
+	liferea_shell_do_zoom (-1);
+}
+
+static void
+on_action_zoomreset_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	liferea_shell_do_zoom (0);
 }
 
 static void
@@ -922,8 +912,9 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"prev-read-item", on_prev_read_item_activate, NULL, NULL, NULL},
 	{"next-read-item", on_next_read_item_activate, NULL, NULL, NULL},
 	{"next-unread-item", on_next_unread_item_activate, NULL, NULL, NULL},
-	{"zoom-in", on_menu_zoomin_selected, NULL, NULL, NULL},
-	{"zoom-out", on_menu_zoomout_selected, NULL, NULL, NULL},
+	{"zoom-in", on_action_zoomin_activate, NULL, NULL, NULL},
+	{"zoom-out", on_action_zoomout_activate, NULL, NULL, NULL},
+	{"zoom-reset", on_action_zoomreset_activate, NULL, NULL, NULL},
 	{"show-update-monitor", on_menu_show_update_monitor, NULL, NULL, NULL},
 	{"show-preferences", on_prefbtn_clicked, NULL, NULL, NULL},
 	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
@@ -1157,8 +1148,9 @@ static const gchar * liferea_accels_prev_read_item[] = {"<Control><Shift>n", NUL
 static const gchar * liferea_accels_toggle_item_read_status[] = {"<Control>m", NULL};
 static const gchar * liferea_accels_toggle_item_flag[] = {"<Control>t", NULL};
 static const gchar * liferea_accels_fullscreen[] = {"F11", NULL};
-static const gchar * liferea_accels_zoom_in[] = {"<Control>plus", NULL};
+static const gchar * liferea_accels_zoom_in[] = {"<Control>plus", "<Control>equal",NULL};
 static const gchar * liferea_accels_zoom_out[] = {"<Control>minus", NULL};
+static const gchar * liferea_accels_zoom_reset[] = {"<Control>0", NULL};
 static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
 static const gchar * liferea_accels_show_help_contents[] = {"F1", NULL};
 static const gchar * liferea_accels_open_selected_item_enclosure[] = {"<Control>o", NULL};
@@ -1228,6 +1220,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_accels_for_action (app, "app.fullscreen", liferea_accels_fullscreen);
 	gtk_application_set_accels_for_action (app, "app.zoom-in", liferea_accels_zoom_in);
 	gtk_application_set_accels_for_action (app, "app.zoom-out", liferea_accels_zoom_out);
+	gtk_application_set_accels_for_action (app, "app.zoom-reset", liferea_accels_zoom_reset);
 	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
 	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help_contents);
 	gtk_application_set_accels_for_action (app, "app.open-selected-item-enclosure", liferea_accels_open_selected_item_enclosure);

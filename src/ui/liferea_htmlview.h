@@ -156,12 +156,12 @@ void liferea_htmlview_scroll (LifereaHtmlView *htmlview);
 /**
  * liferea_htmlview_do_zoom:
  * @htmlview:	the html view
- * @in:		TRUE if zoom is to be increased
+ * @zoom:	1 for zoom in, -1 for zoom out, 0 for reset
  *
  * To be called when HTML view needs to change the text size
  * of the rendering widget implementation.
  */
-void liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in);
+void liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom);
 
 G_END_DECLS
 

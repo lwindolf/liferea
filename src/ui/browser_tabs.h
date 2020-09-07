@@ -71,11 +71,11 @@ LifereaHtmlView * browser_tabs_get_active_htmlview (void);
 
 /**
  * browser_tabs_do_zoom:
- * @in:	TRUE if zooming in, FALSE for zooming out
+ * @zoom:	1 for zoom in, -1 for zoom out, 0 for reset
  *
  * Requests the tab to change zoom level.
  */
-void browser_tabs_do_zoom (gboolean in);
+void browser_tabs_do_zoom (gint zoom);
 
 G_END_DECLS
 
