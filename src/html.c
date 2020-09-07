@@ -219,12 +219,15 @@ GSList *
 html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
 {
 	GSList		*iter, *links = NULL;
-	gchar		*baseUri;
+	gchar		*baseUri = NULL;
 	xmlDocPtr	doc;
 	xmlNodePtr	node, root;
 
 	// If possible we want to use XML instead of tag soup
 	doc = xhtml_parse ((gchar *)data, (size_t)strlen(data));
+	if (!doc)
+		return NULL;
+
 	root = xmlDocGetRootElement (doc);
 
 	// Base URL resolving
