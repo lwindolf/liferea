@@ -90,6 +90,8 @@ void liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url);
 
 void liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *title);
 
+void liferea_htmlview_progress_changed (LifereaHtmlView *htmlview, gdouble progress);
+
 void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location);
 
 /**

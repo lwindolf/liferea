@@ -607,6 +607,14 @@ liferea_webkit_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, 
 }
 
 static void
+liferea_web_view_progress_changed (GObject *webview, GParamSpec *pspec, gpointer user_data)
+{
+	LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (webview), "htmlview");
+
+	liferea_htmlview_progress_changed (htmlview, webkit_web_view_get_estimated_load_progress (WEBKIT_WEB_VIEW (webview)));
+}
+
+static void
 liferea_web_view_init(LifereaWebView *self)
 {
 	self->dbus_connection = NULL;
@@ -628,6 +636,12 @@ liferea_web_view_init(LifereaWebView *self)
 		self,
 		"notify::title",
 		G_CALLBACK (liferea_web_view_title_changed),
+		NULL
+	);
+	g_signal_connect (
+		self,
+		"notify::estimated-load-progress",
+		G_CALLBACK (liferea_web_view_progress_changed),
 		NULL
 	);
 	g_signal_connect (

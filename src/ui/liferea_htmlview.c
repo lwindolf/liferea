@@ -395,6 +395,13 @@ liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *title)
 }
 
 void
+liferea_htmlview_progress_changed (LifereaHtmlView *htmlview, gdouble progress)
+{
+	double bar_progress = (progress == 1.0)?0.0:progress;
+	gtk_entry_set_progress_fraction (GTK_ENTRY (htmlview->urlentry), bar_progress);
+}
+
+void
 liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location)
 {
 	if (!g_str_has_prefix (location, "liferea")) {
