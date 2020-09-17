@@ -258,6 +258,7 @@ html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
 	}
 
 	g_free (baseUri);
+	xmlFreeDoc (doc);
 
 	return links;
 }

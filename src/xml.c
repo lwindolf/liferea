@@ -148,8 +148,8 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 					xmlAddChildList (divNode, copiedNodes);
 				}
 				xmlFreeDoc (oldDoc);
-				xmlFree (escapedhtml);
 			}
+			xmlFree (escapedhtml);
 		}
 	} else if (xhtmlMode == 1 || xhtmlMode == 2) { /* Read multiple XHTML tags and embed in div tag */
 		xmlNodePtr copiedNodes = xmlDocCopyNodeList (newDoc, xml->xmlChildrenNode);

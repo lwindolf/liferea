@@ -236,14 +236,15 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 		article = xhtml_strip_dhtml (article);
 	if (article) {
 		// Enable AMP images by replacing <amg-img> by <img>
-		gchar *tmp = g_strjoinv("<img", g_strsplit(article, "<amp-img", 0));
+		gchar **tmp_split = g_strsplit(article, "<amp-img", 0);
+		gchar *tmp = g_strjoinv("<img", tmp_split);
+		g_strfreev (tmp_split);
 		g_free (article);
 		article = tmp;
 
 		metadata_list_set (&(item->metadata), "richContent", article);
 		db_item_update (item);
 		itemlist_update_item (item);
-		item_unload (item);
 		g_free (article);
 	} else {
 		// If there is no HTML5 article try to fetch AMP source if there is one
@@ -262,6 +263,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 			g_free (ampurl);
 		}
 	}
+	item_unload (item);
 }
 
 /**
