@@ -150,6 +150,20 @@ liferea_webkit_enable_plugins_cb (GSettings *gsettings,
 	);
 }
 
+static void
+liferea_webkit_enable_itp_cb (GSettings *gsettings,
+				  gchar *key,
+				  gpointer user_data)
+{
+	g_return_if_fail (key != NULL);
+
+#if WEBKIT_CHECK_VERSION (2, 30, 0)
+	webkit_website_data_manager_set_itp_enabled (
+	    webkit_web_context_get_website_data_manager (webkit_web_context_get_default()),
+	    g_settings_get_boolean (gsettings, key));
+#endif
+}
+
 /* Font size math from Epiphany embed/ephy-embed-prefs.c to get font size in
  * pixels according to actual screen dpi. */
 static gdouble
@@ -380,11 +394,13 @@ liferea_webkit_impl_download_started (WebKitWebContext	*context,
 static void
 liferea_webkit_impl_init (LifereaWebKitImpl *self)
 {
-	gboolean	disable_javascript, enable_plugins;
+	gboolean	disable_javascript, enable_plugins, enable_itp;
 	WebKitSecurityManager *security_manager;
+	WebKitWebsiteDataManager *website_data_manager;
 	self->dbus_connections = NULL;
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
+	website_data_manager = webkit_web_context_get_website_data_manager (webkit_web_context_get_default ());
 	webkit_security_manager_register_uri_scheme_as_local (security_manager, "liferea");
 
 	/* Note: we manage 2 webkit settings here, one for headline display
@@ -417,6 +433,17 @@ liferea_webkit_impl_init (LifereaWebKitImpl *self)
 		self->settings_extern
 	);
 
+	conf_signal_connect (
+		"changed::" ENABLE_ITP,
+		G_CALLBACK (liferea_webkit_enable_itp_cb),
+		website_data_manager
+	);
+
+	conf_get_bool_value (ENABLE_ITP, &enable_itp);
+
+#if WEBKIT_CHECK_VERSION (2, 30, 0)
+	webkit_website_data_manager_set_itp_enabled (website_data_manager, enable_itp);
+#endif
 	/* Webkit web extensions */
 	g_signal_connect (
 		webkit_web_context_get_default (),
