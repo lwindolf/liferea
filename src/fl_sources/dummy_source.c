@@ -1,12 +1,12 @@
 /**
  * @file dummy_source.c  dummy feed list source
- * 
+ *
  * Copyright (C) 2006-2014 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,7 +27,7 @@ static gchar * dummy_source_get_feedlist(nodePtr node) { return NULL; }
 static void dummy_source_noop (nodePtr node) { }
 
 static void dummy_source_import(nodePtr node) {
- 
+
 	node->icon = (gpointer)icon_get (ICON_UNAVAILABLE);
 }
 
@@ -37,7 +37,7 @@ static void dummy_source_deinit(void) { }
 
 /* feed list provider plugin definition */
 
-static struct nodeSourceType nst = {
+static nodeSourceType nst = {
 	.id			= NODE_SOURCE_TYPE_DUMMY_ID,
 	.name			= "Dummy Feed List Source",
 	.source_type_init	= dummy_source_init,

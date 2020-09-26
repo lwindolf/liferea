@@ -455,7 +455,7 @@ ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 extern struct subscriptionType ttrssSourceFeedSubscriptionType;
 extern struct subscriptionType ttrssSourceSubscriptionType;
 
-static struct nodeSourceType nst = {
+static nodeSourceType nst = {
 	.id                  = "fl_ttrss",
 	.name                = N_("Tiny Tiny RSS"),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |

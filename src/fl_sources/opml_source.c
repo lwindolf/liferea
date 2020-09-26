@@ -314,7 +314,7 @@ static void opml_source_deinit(void) { }
 
 /* node source type definition */
 
-static struct nodeSourceType nst = {
+static nodeSourceType nst = {
 	.id                  = "fl_opml",
 	.name                = N_("Planet, BlogRoll, OPML"),
 	.sourceSubscriptionType = &opmlSubscriptionType,

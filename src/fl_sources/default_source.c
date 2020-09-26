@@ -1,13 +1,13 @@
 /**
  * @file default_source.c  default static feed list source
- * 
+ *
  * Copyright (C) 2005-2014 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -44,7 +44,7 @@ default_source_source_get_feedlist (nodePtr node)
 }
 
 static void
-default_source_import (nodePtr node) 
+default_source_import (nodePtr node)
 {
 	gchar		*filename, *backupFilename;
 	gchar		*content;
@@ -56,7 +56,7 @@ default_source_import (nodePtr node)
 
 	filename = default_source_source_get_feedlist (node);
 	backupFilename = g_strdup_printf("%s.backup", filename);
-	
+
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		if (!import_OPML_feedlist (filename, node, FALSE, TRUE))
 			g_error ("Fatal: Feed list import failed! You might want to try to restore\n"
@@ -85,7 +85,7 @@ default_source_import (nodePtr node)
 			gchar *filename = common_get_localized_filename (PACKAGE_DATA_DIR "/" PACKAGE "/opml/feedlist_%s.opml");
 			if (!filename)
 				g_error ("Fatal: No migration possible and no default feedlist found!");
-	
+
 			if (!import_OPML_feedlist (filename, node, FALSE, TRUE))
 				g_error ("Fatal: Feed list import failed!");
 			g_free (filename);
@@ -98,7 +98,7 @@ default_source_import (nodePtr node)
 
 	g_free (filename);
 	g_free (backupFilename);
-	
+
 	feedlistImport = FALSE;
 
 	debug_exit ("default_source_source_import");
@@ -108,12 +108,12 @@ static void
 default_source_export (nodePtr node)
 {
 	gchar	*filename;
-	
+
 	if (feedlistImport)
 		return;
 
 	debug_enter ("default_source_source_export");
-	
+
 	g_assert (node->source->root == feedlist_get_root ());
 
 	filename = default_source_source_get_feedlist (node);
@@ -125,7 +125,7 @@ default_source_export (nodePtr node)
 
 static void
 default_source_auto_update (nodePtr node)
-{	
+{
 	node_foreach_child (node, node_auto_update_subscription);
 }
 
@@ -133,14 +133,14 @@ static nodePtr
 default_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 {
 	/* For the local feed list source subscriptions are always
-	   feed subscriptions implemented by the feed node and 
+	   feed subscriptions implemented by the feed node and
 	   subscription type... */
 	nodePtr child = node_new (feed_get_node_type ());
 	node_set_title (child, _("New Subscription"));
 	node_set_data (child, feed_new ());
 	node_set_subscription (child, subscription);	/* feed subscription type is implicit */
 	feedlist_node_added (child);
-	
+
 	subscription_update (subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 	return child;
 }
@@ -148,12 +148,12 @@ default_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 static nodePtr
 default_source_add_folder (nodePtr node, const gchar *title)
 {
-	/* For the local feed list source folders are always 
+	/* For the local feed list source folders are always
 	   real folders implemented by the folder node type... */
 	nodePtr child = node_new (folder_get_node_type());
 	node_set_title (child, title);
 	feedlist_node_added (child);
-	
+
 	return child;
 }
 
@@ -169,7 +169,7 @@ static void default_source_deinit (void) { }
 
 /* node source type definition */
 
-static struct nodeSourceType nst = {
+static nodeSourceType nst = {
 	.id			= "fl_default",
 	.name			= "Static Feed List",
 	.capabilities		= NODE_SOURCE_CAPABILITY_IS_ROOT |

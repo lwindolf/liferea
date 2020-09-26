@@ -306,7 +306,7 @@ extern struct subscriptionType theOldReaderSourceOpmlSubscriptionType;
 
 #define BASE_URL "https://theoldreader.com/reader/api/0/"
 
-static struct nodeSourceType nst = {
+static nodeSourceType nst = {
 	.id                  = "fl_theoldreader",
 	.name                = N_("TheOldReader"),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |

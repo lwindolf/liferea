@@ -308,7 +308,7 @@ extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 
 #define BASE_URL "http://www.reedah.com/reader/api/0/"
 
-static struct nodeSourceType nst = {
+static nodeSourceType nst = {
 	.id                  = "fl_reedah",
 	.name                = N_("Reedah"),
 	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |

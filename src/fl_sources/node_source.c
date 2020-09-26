@@ -1,7 +1,7 @@
 /*
  * @file node_source.c  generic node source provider implementation
  *
- * Copyright (C) 2005-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -252,6 +252,12 @@ node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
 
 		subscription->type = node->source->type->sourceSubscriptionType;
 	}
+}
+
+nodeSourceTypePtr
+node_source_type_new (void)
+{
+	return g_new0 (nodeSourceType, 1);
 }
 
 void
