@@ -108,4 +108,16 @@ void node_source_plugin_convert_to_local (nodePtr node);
  */
 void node_source_plugins_register (void);
 
+/**
+ * node_source_plugin_subscribe:
+ * @typeId:    node source type id
+ * @username:  username for authentication
+ * @password:  password for authentication
+ * @serverUrl: node source subscription URL
+ *
+ * To be called by node source provider plugins on user input
+ * of all subscription details
+ */
+void node_source_plugin_subscribe (const gchar *typeId, const gchar *username, const gchar *password, const gchar *serverUrl);
+
 #endif

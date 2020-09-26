@@ -25,6 +25,8 @@
 
 #include "item.h"
 #include "node.h"
+#include "subscription.h"
+#include "update.h"
 
 G_BEGIN_DECLS
 
@@ -63,7 +65,19 @@ struct _LifereaNodeSourceActivatableInterface
 
 	// FIXME: source subscription interface
 
-	// FIXME: feed subscription interface
+	/* === Subscription type interface (see subscription_type.h!)*/
+
+	/*
+	 * MANDATORY preparation callback for an update type.
+	 */
+	gboolean (*prepare_update_request)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, struct updateRequest * request);
+
+	/*
+	 * MANDATORY subscription type specific update result processing callback.
+	 */
+	void (*process_update_result)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
+
+	/* === Feed list node handling interface (see node_source.h!) */
 
 	/*
 	 * This callback is used to create an instance
@@ -71,7 +85,8 @@ struct _LifereaNodeSourceActivatableInterface
 	 * the parent source node_request_add_*() implementation.
 	 * MANDATORY for all sources except the root source.
 	 */
-	void 		(*source_new)(void);
+	void 		(*new)(LifereaNodeSourceActivatable *activatable, const gchar *typeId);
+
 	/*
 	 * This callback is used to delete an instance
 	 * of the implemented source type. It is to be called

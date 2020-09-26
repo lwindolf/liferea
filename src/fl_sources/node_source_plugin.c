@@ -20,6 +20,10 @@
 
 #include "fl_sources/node_source_plugin.h"
 
+#include "db.h"
+#include "debug.h"
+#include "feedlist.h"
+#include "metadata.h"
 #include "node.h"
 #include "plugins_engine.h"
 #include "subscription.h"
@@ -60,68 +64,156 @@ node_source_plugins_register (void)
 	peas_extension_set_foreach (extensions, on_extension_added, NULL);
 }
 
-/*void
-liferea_auth_info_store (gpointer user_data)
+void
+node_source_plugin_subscribe (const gchar *typeId, const gchar *serverUrl, const gchar* username, const gchar *password)
 {
-	peas_extension_set_foreach (liferea_auth_get_extension_set (),
-	liferea_auth_info_store_foreach, user_data);
-}*/
+	debug4 (DEBUG_UPDATE, "Subscribing by plugin: id=%s url=%s user=%s password=%s\n", typeId, serverUrl, username, password);
 
+	nodePtr node = node_source_new (typeId, "");
+g_assert(node->subscription);
+	metadata_list_set (&node->subscription->metadata, "node-source-subscription-url", serverUrl);
+
+	subscription_set_auth_info (node->subscription, username, password);
+
+	feedlist_node_added (node);
+	node_source_update (node);
+
+	db_node_update (node);	/* because of metadate_list_set() above */
+}
+
+typedef struct findData {
+	const gchar *typeId;
+	LifereaNodeSourceActivatable *activatable;
+} plugin;
+
+static void
+node_source_plugin_foreach_find_by_id (
+	PeasExtensionSet *extensions,
+	PeasPluginInfo   *info,
+	PeasExtension    *exten,
+	gpointer         userdata
+) {
+	LifereaNodeSourceActivatable *activatable = LIFEREA_NODE_SOURCE_ACTIVATABLE (exten);
+	LifereaNodeSourceActivatableInterface *iface;
+	plugin *fd = (plugin *)userdata;
+
+	g_return_if_fail (LIFEREA_IS_NODE_SOURCE_ACTIVATABLE (activatable));
+
+	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->get_id && g_str_equal (fd->typeId, iface->get_id (activatable)))
+		fd->activatable = activatable;
+}
+
+LifereaNodeSourceActivatable *
+node_source_plugin_by_id (const gchar *typeId)
+{
+	struct findData fd;
+	fd.typeId = typeId;
+	fd.activatable = NULL;
+
+	peas_extension_set_foreach (extensions, node_source_plugin_foreach_find_by_id, &fd);
+
+	return fd.activatable;
+}
 
 void
 node_source_plugin_new (const gchar *typeId)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (typeId);
+	LifereaNodeSourceActivatableInterface *iface;
 
+	if (!activatable) {
+		g_warning("Failed to create node source, implementing plugin could not be resolved!");
+		return;
+	}
+
+	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->new)
+		iface->new (activatable, typeId);
 }
 
 void
 node_source_plugin_delete (nodePtr node)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+
+	if (iface->delete)
+		iface->delete (activatable, node);
 }
 
 void
 node_source_plugin_free (nodePtr node)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->free)
+		iface->free (activatable, node);
 }
 
 void
 node_source_plugin_import (nodePtr node)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->import)
+		iface->import (activatable, node);
 }
 
 void
 node_source_plugin_export (nodePtr node)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->export)
+		iface->export (activatable, node);
 }
 
 gchar *
 node_source_plugin_get_feedlist (nodePtr node)
 {
-}
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->get_feedlist)
+		return iface->get_feedlist (activatable, node);
 
-void
-node_source_plugin_update (nodePtr node)
-{
+	return NULL;
 }
 
 void
 node_source_plugin_auto_update (nodePtr node)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->auto_update)
+		iface->auto_update (activatable, node);
 }
 
 nodePtr
 node_source_plugin_add_subscription (nodePtr node, struct subscription *subscription)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->add_subscription)
+		iface->add_subscription (activatable, node, subscription);
 }
 
 void
 node_source_plugin_remove_node (nodePtr node, nodePtr child)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->remove_node)
+		iface->remove_node (activatable, node, child);
 }
 
 nodePtr
 node_source_plugin_add_folder (nodePtr node, const gchar *title)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->add_folder)
+		iface->add_folder (activatable, node, title);
 }
 
 void

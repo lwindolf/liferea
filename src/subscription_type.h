@@ -1,13 +1,13 @@
 /*
  * @file subscription_type.h  subscription type interface
- * 
- * Copyright (C) 2008 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2008-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,15 +26,13 @@
 
 /*
  * Liferea supports different types of subscriptions that differ
- * in their updating behaviour and update state.
+ * in their updating behaviour and update state. The default type
+ * is implemented in feed.c while node sources usually implement
+ * there own.
  */
 
 /* subscription type interface */
 typedef struct subscriptionType {
-
-	/* Note: the default implementation of this interface is
-	   provided by feed.c */
-
 	/*
 	 * Preparation callback for a update type. Allows a specific
 	 * subscription type implementation to make changes to the
@@ -51,7 +49,7 @@ typedef struct subscriptionType {
 	 * @returns FALSE if the request is to be aborted
 	 */
 	gboolean (*prepare_update_request)(subscriptionPtr subscription, struct updateRequest * request);
-	
+
 	/*
 	 * Subscription type specific update result processing callback.
 	 *

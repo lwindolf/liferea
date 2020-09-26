@@ -35,39 +35,36 @@ class NextCloudNewsPlugin(GObject.Object, Liferea.NodeSourceActivatable):
 
     object = GObject.property(type=GObject.Object)
 
-    def do_activate(self):
-        print("NextCloud on")
-
-    def do_deactivate(self):
-        print("NextCloud off")
-
     def do_get_id(self):
-        print("id=nextcloud")
-        return "nextcloud"
+        """Return unique id for the node source type we implement"""
+        return "fl_nextcloud"
 
     def do_get_name(self):
+        """Provide human readable name for "New Source" dialog"""
         return "NextCloud News"
 
-    def do_new(self):
+    def do_new(self, typeId):
         """Present server/auth configure dialog"""
-        print("new")
-
-        GMARGIN = 6
         builder = self.builder = Gtk.Builder()
         builder.add_from_file(UI_FILE_PATH)
         handlers = {
-            "okbutton1_activated_cb": self.on_subscribe,
-            "cancelbutton1_activated_cb": self.on_cancel
+            "okbutton1_activate_cb": self.on_subscribe,
+            "cancelbutton1_activate_cb": self.on_cancel
         }
         builder.connect_signals(handlers)
 
     def on_subscribe(self, widget, *data):
-        print("subscribe")
+        Liferea.nodeSource.plugin_subscribe(
+            self.do_get_id(),
+            self.builder.get_object("serverUrlEntry").get_text(),
+            self.builder.get_object("userEntry").get_text(),
+            self.builder.get_object("passwordEntry").get_text()
+        )
+        self.builder.get_object("nextcloud_subscribe").destroy()
 
     def on_cancel(self, widget, *data):
-        print("cancel subscribe")
+        self.builder.get_object("nextcloud_subscribe").destroy()
 
-    # FIXME
     def do_get_capabilities(self):
         return (Liferea.nodeSourceCapability.DYNAMIC_CREATION |
                 Liferea.nodeSourceCapability.CAN_LOGIN |

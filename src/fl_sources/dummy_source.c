@@ -25,7 +25,7 @@
 
 static gchar * dummy_source_get_feedlist (nodePtr node) { return NULL; }
 
-static void dummy_source_new (void) { }
+static void dummy_source_new (const gchar *typeId) { }
 
 static void dummy_source_noop (nodePtr node) { }
 
