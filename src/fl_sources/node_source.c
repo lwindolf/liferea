@@ -185,9 +185,21 @@ node_source_set_feed_subscription_type (nodePtr folder, subscriptionTypePtr type
 }
 
 static void
+node_source_set_type (nodePtr node, const gchar *typeId)
+{
+	node->source = g_new0 (struct nodeSource, 1);
+	node->source->root = node;
+	node->source->type = node_source_type_find (typeId, 0);
+	node->source->loginState = NODE_SOURCE_STATE_NONE;
+	node->source->actionQueue = g_queue_new ();
+
+	if (!node->source->type)
+		g_error("Unknown node source type '%s'", typeId);
+}
+
+static void
 node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 {
-	nodeSourceTypePtr	type;
 	xmlChar			*typeStr = NULL;
 
 	debug_enter ("node_source_import");
@@ -199,31 +211,25 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 	if (typeStr) {
 		debug2 (DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
 
-		node->available = FALSE;
-
-		/* scan for matching node source and create new instance */
-		type = node_source_type_find (typeStr, 0);
-
-		if (!type) {
+		/* scan for matching node source type implementation */
+		if (!node_source_type_find (typeStr, 0)) {
 			/* Source type is not available for some reason, but
 			   we need a representation to keep the node source
 			   in the feed list. So we load a dummy source type
 			   instead and save the real source id in the
 			   unused node's data field */
-			type = node_source_type_find (NODE_SOURCE_TYPE_DUMMY_ID, 0);
-			g_assert (NULL != type);
 			node->data = g_strdup (typeStr);
+			typeStr = NODE_SOURCE_TYPE_DUMMY_ID;
 		}
 
 		node->available = TRUE;
-		node->source = NULL;
-		node_source_new (node, type, NULL);
+		node_source_set_type (node, typeStr);
 		node_set_subscription (node, subscription_import (xml, trusted));
 
-		type->source_import (node);
+		node->source->type->source_import (node);
 
 		/* Set subscription type for all child nodes imported */
-		node_source_set_feed_subscription_type (node, type->feedSubscriptionType);
+		node_source_set_feed_subscription_type (node, node->source->type->feedSubscriptionType);
 
 		if (!strcmp (typeStr, "fl_bloglines")) {
 			g_print ("Removing obsolete Bloglines subscription.");
@@ -256,20 +262,15 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 	debug_exit("node_source_export");
 }
 
-void
-node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
+nodePtr
+node_source_new (const gchar *typeId, const gchar *url)
 {
+	nodePtr node;
 	subscriptionPtr	subscription;
 
-	g_assert (NULL == node->source);
-
-	node->source = g_new0 (struct nodeSource, 1);
-	node->source->root = node;
-	node->source->type = type;
-	node->source->loginState = NODE_SOURCE_STATE_NONE;
-	node->source->actionQueue = g_queue_new ();
-
-	node_set_title (node, type->name);
+	node = node_new (node_source_get_node_type ());
+	node_source_set_type (node, typeId);
+	node_set_title (node, node->source->type->name);
 
 	if (url) {
 		subscription = subscription_new (url, NULL, NULL);
@@ -344,7 +345,7 @@ on_node_source_type_response (GtkDialog *dialog, gint response_id, gpointer user
 		if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 			gtk_tree_model_get (model, &iter, 1, &type, -1);
 			if (type)
-				type->source_new ();
+				type->source_new (type->id);
 		}
 	}
 
