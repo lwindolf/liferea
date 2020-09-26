@@ -332,8 +332,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 	if (response_id == GTK_RESPONSE_OK) {
 		nodePtr		node;
 
-		node = node_new (node_source_get_node_type ());
-		node_source_new (node, ttrss_source_get_type (), "");
+		node = node_source_new ("fl_ttrss", "");
 
 		/* This is a bit ugly: we need to prevent the tt-rss base
 		   URL from being lost by unwanted permanent redirects on
@@ -356,7 +355,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 }
 
 static void
-ui_ttrss_source_get_account_info (void)
+ui_ttrss_source_get_account_info (const gchar *typeId)
 {
 	GtkWidget	*dialog;
 

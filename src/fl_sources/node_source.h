@@ -116,7 +116,7 @@ typedef struct nodeSourceProvider {
 	 * the parent source node_request_add_*() implementation.
 	 * MANDATORY for all sources except the root source.
 	 */
-	void 		(*source_new)(void);
+	void 		(*source_new)(const gchar *typeId);
 
 	/*
 	 * This callback is used to delete an instance
@@ -255,10 +255,9 @@ nodePtr node_source_root_from_node (nodePtr node);
 nodePtr node_source_setup_root (void);
 
 /**
- * node_source_new: (skip)
- * @node:	a newly created node
- * @type:	the node source type
- * @url:	subscription URL
+ * node_source_new:
+ * @typeId:	the node source type id
+ * @url:	subscription URL (optional)
  *
  * Creates a new source and assigns it to the given new node.
  * To be used to prepare a source node before adding it to the
@@ -266,7 +265,7 @@ nodePtr node_source_setup_root (void);
  * subscription type and setting up the subscription if url != NULL.
  * The caller needs set additional auth info for the subscription.
  */
-void node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url);
+nodePtr node_source_new (const gchar *typeId, const gchar *url);
 
 /**
  * node_source_type_new:

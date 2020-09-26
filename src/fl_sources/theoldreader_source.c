@@ -238,8 +238,7 @@ on_theoldreader_source_selected (GtkDialog *dialog,
 	nodePtr		node;
 
 	if (response_id == GTK_RESPONSE_OK) {
-		node = node_new (node_source_get_node_type ());
-		node_source_new (node, theoldreader_source_get_type (), "http://theoldreader.com/reader");
+		node = node_source_new ("fl_theoldreader", "http://theoldreader.com/reader");
 
 		subscription_set_auth_info (node->subscription,
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
@@ -254,7 +253,7 @@ on_theoldreader_source_selected (GtkDialog *dialog,
 }
 
 static void
-ui_theoldreader_source_get_account_info (void)
+ui_theoldreader_source_get_account_info (const gchar *id)
 {
 	GtkWidget	*dialog;
 

@@ -1,0 +1,12 @@
+[Plugin]
+Module=nextcloudnews
+Loader=python3
+Icon=security-medium
+IAge=2
+Name=NextCloud News Support
+Description=Allows Liferea to subscribe to a NextCloud account
+Authors=Lars Windolf <lars.windolf@gmx.de>
+Copyright=Copyright © 2020 Lars Windolf
+Website=https://lzone.de/liferea/
+Help=https://lzone.de/liferea/
+

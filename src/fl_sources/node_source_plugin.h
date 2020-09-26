@@ -32,7 +32,7 @@
 /**
  * node_source_plugin_new: (skip)
  */
-void node_source_plugin_new (void);
+void node_source_plugin_new (const gchar *typeId);
 
 /**
  * node_source_plugin_delete: (skip)
@@ -100,20 +100,6 @@ void node_source_plugin_item_set_flag (nodePtr node, itemPtr item, gboolean newS
 void node_source_plugin_convert_to_local (nodePtr node);
 
 /* end of node source interface reimplementation */
-
-/**
- * node_source_plugin_new:
- * @node:	a newly created node
- * @type:	the node source string
- * @url:	subscription URL
- *
- * Creates a new source and assigns it to the given new node.
- * To be used to prepare a source node before adding it to the
- * feed list. This method takes care of setting the proper source
- * subscription type and setting up the subscription if url != NULL.
- * The caller needs set additional auth info for the subscription.
- */
-void node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url);
 
 /**
  * node_source_plugins_register: (skip)

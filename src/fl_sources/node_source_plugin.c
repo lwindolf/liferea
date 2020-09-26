@@ -69,8 +69,9 @@ liferea_auth_info_store (gpointer user_data)
 
 
 void
-node_source_plugin_new (void)
+node_source_plugin_new (const gchar *typeId)
 {
+
 }
 
 void
