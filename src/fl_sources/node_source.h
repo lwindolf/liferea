@@ -157,7 +157,7 @@ typedef struct nodeSourceProvider {
 
 	/*
 	 * Frees all data of the given node source instance. To be called
-	 * during node_free() for a source node.
+	 * during node_free() for a source node. MANDATORY
 	 */
 	void		(*free) (nodePtr node);
 

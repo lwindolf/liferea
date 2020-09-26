@@ -1,7 +1,7 @@
 /**
  * @file dummy_source.c  dummy feed list source
  *
- * Copyright (C) 2006-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,13 +20,16 @@
 
 #include "fl_sources/dummy_source.h"
 
+#include "node.h"
 #include "ui/icons.h"
 
-static gchar * dummy_source_get_feedlist(nodePtr node) { return NULL; }
+static gchar * dummy_source_get_feedlist (nodePtr node) { return NULL; }
+
+static void dummy_source_new (void) { }
 
 static void dummy_source_noop (nodePtr node) { }
 
-static void dummy_source_import(nodePtr node) {
+static void dummy_source_import (nodePtr node) {
 
 	node->icon = (gpointer)icon_get (ICON_UNAVAILABLE);
 }
@@ -42,6 +45,8 @@ static nodeSourceType nst = {
 	.name			= "Dummy Feed List Source",
 	.source_type_init	= dummy_source_init,
 	.source_type_deinit	= dummy_source_deinit,
+	.source_new             = dummy_source_new,
+	.source_delete          = dummy_source_noop,
 	.source_import		= dummy_source_import,
 	.source_export		= dummy_source_noop,
 	.source_get_feedlist	= dummy_source_get_feedlist,
