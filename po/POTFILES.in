@@ -150,12 +150,14 @@ src/fl_sources/default_source.c
 src/fl_sources/default_source.h
 src/fl_sources/dummy_source.c
 src/fl_sources/dummy_source.h
-src/fl_sources/google_source.c
-src/fl_sources/google_source.h
 src/fl_sources/opml_source.c
 src/fl_sources/opml_source.h
 src/fl_sources/node_source.c
 src/fl_sources/node_source.h
+src/fl_sources/node_source_activatable.c
+src/fl_sources/node_source_activatable.h
+src/fl_sources/node_source_plugin.c
+src/fl_sources/node_source_plugin.h
 src/fl_sources/reedah_source.c
 src/fl_sources/reedah_source.h
 src/fl_sources/reedah_source_feed.c

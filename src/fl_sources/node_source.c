@@ -40,7 +40,6 @@
 #include "ui/feed_list_view.h"
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
-#include "fl_sources/google_source.h"
 #include "fl_sources/node_source_activatable.h"
 #include "fl_sources/node_source_plugin.h"
 #include "fl_sources/opml_source.h"
@@ -79,13 +78,24 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 gboolean
 node_source_type_register (nodeSourceTypePtr type)
 {
-	debug1 (DEBUG_PARSING, "Registering node source type %s", type->name);
+	debug1 (DEBUG_PARSING, "Registering node source type '%s'\n", type->name);
 
-	/* allow the plugin to initialize */
-	type->source_type_init ();
+	/* Check for mandatory methods */
+	if (!(type->source_new && type->source_delete) &&
+	    !(type->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT)) {
+		g_warning ("Cannot register node source type '%s' because of missing implementations [new, delete]", type->id);
+	      	return FALSE;
+	}
+
+	if (!(type->source_import &&
+	      type->source_export &&
+	      type->source_get_feedlist)) {
+	      	g_warning ("Cannot register node source type '%s' because of missing implementations [import, export, get_feedlist]", type->id);
+	      	return FALSE;
+	}
 
 	/* Check if Google reader clones provide all API methods */
-	if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API) {
+	if (type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API) {
 		g_assert (type->api.unread_count);
 		g_assert (type->api.subscription_list);
 		g_assert (type->api.add_subscription);
@@ -100,6 +110,9 @@ node_source_type_register (nodeSourceTypePtr type)
 		g_assert (type->api.edit_tag_ar_tag_post);
 		g_assert (type->api.token);
 	}
+
+	/* allow the plugin to initialize */
+	type->source_type_init ();
 
 	nodeSourceTypes = g_slist_append (nodeSourceTypes, type);
 
@@ -133,7 +146,6 @@ node_source_setup_root (void)
 	node_source_type_register (default_source_get_type ());
 	node_source_type_register (dummy_source_get_type ());
 	node_source_type_register (opml_source_get_type ());
-	node_source_type_register (google_source_get_type ());
 	node_source_type_register (reedah_source_get_type ());
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());

@@ -159,7 +159,10 @@ liferea_node_source_activatable_activate (LifereaNodeSourceActivatable * activat
 	nst->remove_node         = node_source_plugin_remove_node;
 	nst->convert_to_local    = node_source_plugin_convert_to_local;
 
-	node_source_type_register(nst);
+	if (!node_source_type_register (nst)) {
+		g_warning ("Failed to register feed list plugin '%s'!", iface->get_name?iface->get_name (activatable):"unknown");
+		return;
+	}
 }
 
 void
