@@ -109,6 +109,7 @@ Liferea_3_0_gir_FILES = \
 	ui/media_player.c ui/media_player.h \
 	ui/media_player_activatable.c ui/media_player_activatable.h \
 	fl_sources/node_source.c fl_sources/node_source.h \
+	fl_sources/node_source_plugin.c fl_sources/node_source_plugin.h \
 	fl_sources/node_source_activatable.c fl_sources/node_source_activatable.h
 Liferea_3_0_gir_INCLUDES = Gtk-3.0 libxml2-2.0
 if HAVE_INTROSPECTION

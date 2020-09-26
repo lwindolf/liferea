@@ -26,15 +26,13 @@
 
 /*
  * Liferea supports different types of subscriptions that differ
- * in their updating behaviour and update state.
+ * in their updating behaviour and update state. The default type
+ * is implemented in feed.c while node sources usually implement
+ * there own.
  */
 
 /* subscription type interface */
 typedef struct subscriptionType {
-
-	/* Note: the default implementation of this interface is
-	   provided by feed.c */
-
 	/*
 	 * Preparation callback for a update type. Allows a specific
 	 * subscription type implementation to make changes to the

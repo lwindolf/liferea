@@ -2,7 +2,7 @@
  * @file metadata.c  handling of typed item and feed meta data
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2015 Rich Coe <rcoe@wi.rr.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -118,6 +118,9 @@ metadata_init (void)
 	metadata_type_register ("mediastarRatingavg", 	METADATA_TYPE_TEXT);
 	metadata_type_register ("mediastarRatingmax", 	METADATA_TYPE_TEXT);
 	metadata_type_register ("mediaviews", 		METADATA_TYPE_TEXT);
+
+	/* for node source type plugins */
+	metadata_type_register ("node-source-subscription-url", METADATA_TYPE_URL);
 
 	return;
 }

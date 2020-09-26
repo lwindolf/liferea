@@ -2,7 +2,7 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.0"/>
-  <object class="GtkDialog" id="ttrss_source">
+  <object class="GtkDialog" id="nextcloud_subscribe">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Add NextCloud Account</property>
@@ -28,6 +28,7 @@
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="cancelbutton1_activate_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -43,6 +44,7 @@
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
+                <signal name="clicked" handler="okbutton1_activate_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -181,7 +183,7 @@
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">&lt;b&gt;Important&lt;/b&gt;: You need to have the NextCloud 
+                <property name="label" translatable="yes">&lt;b&gt;Important&lt;/b&gt;: You need to have the NextCloud
 app "News" installed!</property>
                 <property name="use_markup">True</property>
               </object>
