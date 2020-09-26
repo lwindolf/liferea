@@ -1,7 +1,7 @@
 /*
  * @file node_source.h  generic node source interface
  *
- * Copyright (C) 2005-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "node_type.h"
 #include "subscription_type.h"
 #include "fl_sources/google_reader_api.h"
+#include "fl_sources/node_source_activatable.h"
 
 /* Liferea allows to have different sources in the feed list. These
    sources are called "node sources" henceforth. Node sources can
@@ -91,8 +92,9 @@ typedef enum {
  */
 #define NODE_SOURCE_MAX_AUTH_FAILURES		3
 
-/* feed list node source type */
-typedef struct nodeSourceType {
+/* feed list node source provider */
+typedef struct nodeSourceProvider {
+
 	const gchar	*id;		/*<< a unique feed list source type identifier */
 	const gchar	*name;		/*<< a descriptive source name (for preferences and menus) */
 	gulong		capabilities;	/*<< bitmask of feed list source capabilities */
@@ -212,8 +214,9 @@ typedef struct nodeSourceType {
 	 * This is an OPTIONAL method.
 	 */
 	void		(*convert_to_local) (nodePtr node);
+} nodeSourceType;
 
-} *nodeSourceTypePtr;
+typedef struct nodeSourceProvider * nodeSourceTypePtr;
 
 /* feed list source instance */
 typedef struct nodeSource {
@@ -253,9 +256,9 @@ nodePtr node_source_setup_root (void);
 
 /**
  * node_source_new: (skip)
- * @node:			a newly created node
- * @nodeSourceType:     	the node source type
- * @url:			subscription URL
+ * @node:	a newly created node
+ * @type:	the node source type
+ * @url:	subscription URL
  *
  * Creates a new source and assigns it to the given new node.
  * To be used to prepare a source node before adding it to the
@@ -263,7 +266,16 @@ nodePtr node_source_setup_root (void);
  * subscription type and setting up the subscription if url != NULL.
  * The caller needs set additional auth info for the subscription.
  */
-void node_source_new (nodePtr node, nodeSourceTypePtr nodeSourceType, const gchar *url);
+void node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url);
+
+/**
+ * node_source_type_new:
+ *
+ * Creates a new nodeSourceType to be free'd with g_free
+ *
+ * Returns: (transfer full): a newly allocated nodeSourceType
+ */
+struct nodeSourceProvider * node_source_type_new (void);
 
 /**
  * node_source_set_state: (skip)
@@ -395,10 +407,8 @@ void node_source_convert_to_local (nodePtr node);
  * @type:		the type to register
  *
  * Registers a new node source type. Needs to be called before feed list import!
- * To be used only via NodeSourceTypeActivatable
  */
-gboolean node_source_type_register (nodeSourceTypePtr type);
-
+gboolean node_source_type_register (struct nodeSourceProvider *type);
 
 /* implementation of the node type interface */
 

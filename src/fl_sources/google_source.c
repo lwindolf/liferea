@@ -1,6 +1,6 @@
 /**
  * @file google_source.c  Google reader feed list source support
- * 
+ *
  * Copyright (C) 2007-2013 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
@@ -9,7 +9,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -44,17 +44,17 @@
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
 
-/** create a google source with given node as root */ 
+/** create a google source with given node as root */
 static GoogleSourcePtr
-google_source_new (nodePtr node) 
+google_source_new (nodePtr node)
 {
 	GoogleSourcePtr source = g_new0 (struct GoogleSource, 1) ;
-	
+
 	return source;
 }
 
 static void
-google_source_free (GoogleSourcePtr gsource) 
+google_source_free (GoogleSourcePtr gsource)
 {
 	update_job_cancel_by_owner (gsource);
 	g_free (gsource);
@@ -80,7 +80,7 @@ static void
 google_source_import (nodePtr node)
 {
 	opml_source_import (node);
-	
+
 	if (!node->data)
 		node->data = (gpointer) google_source_new (node);
 }
@@ -106,7 +106,7 @@ google_source_convert_to_local (nodePtr node)
 
 /* node source type definition */
 
-static struct nodeSourceType nst = {
+static nodeSourceType nst = {
 	.id                  = "fl_google",
 	.name                = N_("Google Reader"),
 	.capabilities        = NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
@@ -121,7 +121,7 @@ static struct nodeSourceType nst = {
 	.free                = google_source_cleanup,
 	.item_set_flag       = NULL,
 	.item_mark_read      = NULL,
-	.add_folder          = NULL, 
+	.add_folder          = NULL,
 	.add_subscription    = NULL,
 	.remove_node         = NULL,
 	.convert_to_local    = google_source_convert_to_local

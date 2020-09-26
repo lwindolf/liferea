@@ -1,6 +1,6 @@
 /**
  * @file theoldreader_source.c  TheOldReader feed list source support
- * 
+ *
  * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
@@ -9,7 +9,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -45,26 +45,26 @@
 /** default TheOldReader subscription list update interval = once a day */
 #define THEOLDREADER_SOURCE_UPDATE_INTERVAL 60*60*24
 
-/** create a source with given node as root */ 
+/** create a source with given node as root */
 static TheOldReaderSourcePtr
-theoldreader_source_new (nodePtr node) 
+theoldreader_source_new (nodePtr node)
 {
 	TheOldReaderSourcePtr source = g_new0 (struct TheOldReaderSource, 1) ;
-	source->root = node; 
+	source->root = node;
 	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	source->folderToCategory = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
-	
+
 	return source;
 }
 
 static void
-theoldreader_source_free (TheOldReaderSourcePtr source) 
+theoldreader_source_free (TheOldReaderSourcePtr source)
 {
 	if (!source)
 		return;
 
 	update_job_cancel_by_owner (source);
-	
+
 	g_hash_table_unref (source->lastTimestampMap);
 	g_hash_table_destroy (source->folderToCategory);
 	g_free (source);
@@ -76,14 +76,14 @@ theoldreader_source_login_cb (const struct updateResult * const result, gpointer
 	nodePtr			node = (nodePtr) userdata;
 	gchar			*tmp = NULL;
 	subscriptionPtr 	subscription = node->subscription;
-		
+
 	debug1 (DEBUG_UPDATE, "TheOldReader login processing... %s", result->data);
-		
+
 	if (result->data && result->httpstatus == 200)
 		tmp = strstr (result->data, "Auth=");
-		
+
 	if (tmp) {
-		gchar *ttmp = tmp; 
+		gchar *ttmp = tmp;
 		tmp = strchr (tmp, '\n');
 		if (tmp)
 			*tmp = '\0';
@@ -103,23 +103,23 @@ theoldreader_source_login_cb (const struct updateResult * const result, gpointer
 		g_free (subscription->updateError);
 		subscription->updateError = g_strdup (_("Login failed!"));
 		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
-		
+
 		auth_dialog_new (subscription, flags);
 	}
 }
 
 /**
- * Perform a login to TheOldReader, if the login completes the 
- * TheOldReaderSource will have a valid Auth token and will have loginStatus to 
+ * Perform a login to TheOldReader, if the login completes the
+ * TheOldReaderSource will have a valid Auth token and will have loginStatus to
  * NODE_SOURCE_LOGIN_ACTIVE.
  */
 void
-theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags) 
-{ 
+theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
+{
 	gchar			*username, *password;
 	updateRequestPtr	request;
 	subscriptionPtr		subscription = source->root->subscription;
-	
+
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session
 		 * doesn't expire. */
@@ -136,7 +136,7 @@ theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
 
 	request->postdata = g_strdup_printf (THEOLDREADER_READER_LOGIN_POST, username, password);
 	request->options = update_options_copy (subscription->updateOptions);
-	
+
 	g_free (username);
 	g_free (password);
 
@@ -174,7 +174,7 @@ static void
 theoldreader_source_import (nodePtr node)
 {
 	opml_source_import (node);
-	
+
 	node->subscription->updateInterval = -1;
 	node->subscription->type = node->source->type->sourceSubscriptionType;
 	if (!node->data)
@@ -182,7 +182,7 @@ theoldreader_source_import (nodePtr node)
 }
 
 static nodePtr
-theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription) 
+theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 {
 	nodePtr			parent;
 	gchar			*categoryId = NULL;
@@ -202,19 +202,19 @@ theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription
 	// FIXME: leaking subscription?
 
 	// FIXME: somehow the async subscribing doesn't cause the feed list to update
-	
+
 	return NULL;
 }
 
 static void
-theoldreader_source_remove_node (nodePtr node, nodePtr child) 
-{ 
-	gchar           	*url; 
+theoldreader_source_remove_node (nodePtr node, nodePtr child)
+{
+	gchar           	*url;
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) node->data;
-	
-	if (child == node) { 
+
+	if (child == node) {
 		feedlist_node_removed (child);
-		return; 
+		return;
 	}
 
 	url = g_strdup (child->subscription->source);
@@ -222,9 +222,9 @@ theoldreader_source_remove_node (nodePtr node, nodePtr child)
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
-	if (!feedlist_find_node (source->root, NODE_BY_URL, url)) 
+	if (!feedlist_find_node (source->root, NODE_BY_URL, url))
 		google_reader_api_edit_remove_subscription (node->source, url);
-	
+
 	g_free (url);
 }
 
@@ -233,7 +233,7 @@ theoldreader_source_remove_node (nodePtr node, nodePtr child)
 static void
 on_theoldreader_source_selected (GtkDialog *dialog,
                            gint response_id,
-                           gpointer user_data) 
+                           gpointer user_data)
 {
 	nodePtr		node;
 
@@ -257,11 +257,11 @@ static void
 ui_theoldreader_source_get_account_info (void)
 {
 	GtkWidget	*dialog;
-	
+
 	dialog = liferea_dialog_new ("theoldreader_source");
-	
+
 	g_signal_connect (G_OBJECT (dialog), "response",
-			  G_CALLBACK (on_theoldreader_source_selected), 
+			  G_CALLBACK (on_theoldreader_source_selected),
 			  NULL);
 }
 
@@ -273,7 +273,7 @@ theoldreader_source_cleanup (nodePtr node)
 	node->data = NULL;
 }
 
-static void 
+static void
 theoldreader_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 {
 	google_reader_api_edit_mark_starred (node->source, item->sourceId, node->subscription->source, newStatus);
@@ -305,10 +305,10 @@ extern struct subscriptionType theOldReaderSourceOpmlSubscriptionType;
 
 #define BASE_URL "https://theoldreader.com/reader/api/0/"
 
-static struct nodeSourceType nst = {
+static nodeSourceType nst = {
 	.id                  = "fl_theoldreader",
 	.name                = N_("TheOldReader"),
-	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION | 
+	.capabilities        = NODE_SOURCE_CAPABILITY_DYNAMIC_CREATION |
 	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
@@ -343,7 +343,7 @@ static struct nodeSourceType nst = {
 	.free                = theoldreader_source_cleanup,
 	.item_set_flag       = theoldreader_source_item_set_flag,
 	.item_mark_read      = theoldreader_source_item_mark_read,
-	.add_folder          = NULL, 
+	.add_folder          = NULL,
 	.add_subscription    = theoldreader_source_add_subscription,
 	.remove_node         = theoldreader_source_remove_node,
 	.convert_to_local    = theoldreader_source_convert_to_local
