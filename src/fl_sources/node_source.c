@@ -41,14 +41,14 @@
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
 #include "fl_sources/google_source.h"
+#include "fl_sources/node_source_activatable.h"
+#include "fl_sources/node_source_plugin.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/reedah_source.h"
 #include "fl_sources/theoldreader_source.h"
 #include "fl_sources/ttrss_source.h"
-#include "fl_sources/node_source_activatable.h"
 
 static GSList		*nodeSourceTypes = NULL;
-static PeasExtensionSet	*extensions = NULL;
 
 nodePtr
 node_source_root_from_node (nodePtr node)
@@ -106,6 +106,21 @@ node_source_type_register (nodeSourceTypePtr type)
 	return TRUE;
 }
 
+void
+node_source_type_unregister (const gchar *id)
+{
+	GSList *iter = nodeSourceTypes;
+
+	while (iter) {
+		nodeSourceTypePtr nst = (nodeSourceTypePtr)iter->data;
+		if (g_str_equal (id, nst->id)) {
+			nodeSourceTypes = g_slist_remove (nodeSourceTypes, iter);
+			return;
+		}
+		iter = g_slist_next (iter);
+	}
+}
+
 nodePtr
 node_source_setup_root (void)
 {
@@ -123,9 +138,7 @@ node_source_setup_root (void)
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());
 
-	extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
-		                             LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, NULL);
-	liferea_plugins_engine_set_default_signals (extensions, NULL);
+	node_source_plugins_register ();
 
 	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
 	if (!type)
