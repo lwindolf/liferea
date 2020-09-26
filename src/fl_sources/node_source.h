@@ -111,18 +111,18 @@ typedef struct nodeSourceProvider {
 	void 		(*source_type_deinit)(void);
 
 	/*
-	 * This OPTIONAL callback is used to create an instance
+	 * This callback is used to create an instance
 	 * of the implemented source type. It is to be called by
 	 * the parent source node_request_add_*() implementation.
-	 * Mandatory for all sources except the root source.
+	 * MANDATORY for all sources except the root source.
 	 */
 	void 		(*source_new)(void);
 
 	/*
-	 * This OPTIONAL callback is used to delete an instance
+	 * This callback is used to delete an instance
 	 * of the implemented source type. It is to be called
 	 * by the parent source node_remove() implementation.
-	 * Mandatory for all sources except the root provider source.
+	 * MANDATORY for all sources except the root provider source.
 	 */
 	void 		(*source_delete)(nodePtr node);
 
@@ -409,6 +409,14 @@ void node_source_convert_to_local (nodePtr node);
  * Registers a new node source type. Needs to be called before feed list import!
  */
 gboolean node_source_type_register (struct nodeSourceProvider *type);
+
+/**
+* node_source_type_unregister: (skip)
+* @id:		the type id to unregister
+*
+* Unregisters a node source type. Needs to be called during plugin deactivation!
+*/
+void node_source_type_unregister (const gchar *id);
 
 /* implementation of the node type interface */
 

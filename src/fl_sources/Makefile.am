@@ -6,10 +6,11 @@ AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-I$(top_srcdir)/src \
 	$(PACKAGE_CFLAGS)
-	
+
 noinst_LIBRARIES = libliflsources.a
 libliflsources_a_SOURCES = node_source.c node_source.h \
                            node_source_activatable.c node_source_activatable.h \
+                           node_source_plugin.c node_source_plugin.h \
                            default_source.c default_source.h \
                            dummy_source.c dummy_source.h \
                            google_reader_api_edit.c google_reader_api_edit.h \
@@ -25,6 +26,6 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
 			   theoldreader_source_feed_list.c theoldreader_source_feed_list.h \
 			   ttrss_source.c ttrss_source.h  \
 			   ttrss_source_feed.c \
-			   ttrss_source_feed_list.c ttrss_source_feed_list.h 
+			   ttrss_source_feed_list.c ttrss_source_feed_list.h
 
 libliflsources_a_CFLAGS = $(PACKAGE_FLAGS)

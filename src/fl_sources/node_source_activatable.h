@@ -44,20 +44,39 @@ struct _LifereaNodeSourceActivatableInterface
 	void (*activate) (LifereaNodeSourceActivatable *activatable);
 	void (*deactivate) (LifereaNodeSourceActivatable *activatable);
 
+	/*
+	 * Must return a human readable name identifying the node source
+	 * type in a GUI dialog
+	 */
+	const gchar *	(*get_name) (LifereaNodeSourceActivatable *activatable);
 
-	// FIXME: get_name()
-	// FIXME: get_id()
-	// FIXME: get_capabilities()
+	/*
+	 * Must return a unique id identifying the node source type
+	 * implemented by the plugin
+	 */
+	const gchar *	(*get_id) (LifereaNodeSourceActivatable *activatable);
+
+	/*
+	 * Must return a node source capabilities bitmask
+	 */
+	guint		(*get_capabilities) (LifereaNodeSourceActivatable *activatable);
 
 	// FIXME: source subscription interface
 
 	// FIXME: feed subscription interface
 
 	/*
-	 * This OPTIONAL callback is used to delete an instance
+	 * This callback is used to create an instance
+	 * of the implemented source type. It is to be called by
+	 * the parent source node_request_add_*() implementation.
+	 * MANDATORY for all sources except the root source.
+	 */
+	void 		(*source_new)(void);
+	/*
+	 * This callback is used to delete an instance
 	 * of the implemented source type. It is to be called
 	 * by the parent source node_remove() implementation.
-	 * Mandatory for all sources except the root provider source.
+	 * MANDATORY for all sources except the root provider source.
 	 */
 	void 		(*delete)(LifereaNodeSourceActivatable *activatable, nodePtr node);
 
@@ -153,103 +172,9 @@ struct _LifereaNodeSourceActivatableInterface
 
 GType liferea_node_source_activatable_get_type (void) G_GNUC_CONST;
 
-void liferea_node_source_activatable_activate (LifereaNodeSourceActivatable *activatable);
+void liferea_node_source_activatable_activate (LifereaNodeSourceActivatable * activatable);
 
-void liferea_node_source_activatable_deactivate (LifereaNodeSourceActivatable *activatable);
-
-/**
- * liferea_node_source_activatable_update:
- * @activatable:	the node source
- * @node:		the node source root node
- *
- * Force the source to update its subscription list and
- * the child subscriptions themselves.
- */
-void liferea_node_source_activatable_update (LifereaNodeSourceActivatable *activatable, nodePtr node);
-
-/**
- * liferea_node_source_activatable_auto_update:
- * @activatable:	the node source
- * @node:		the node source root node
- *
- * Request the source to update its subscription list and
- * the child subscriptions if necessary according to the
- * update interval of the source.
- */
-void liferea_node_source_activatable_auto_update (LifereaNodeSourceActivatable *activatable, nodePtr node);
-
-/**
- * liferea_node_source_activatable_add_subscription:
- * @activatable:	the node source
- * @node:		the node source root node
- * @subscription:	the new subscription
- *
- * Called when a new subscription has been added to the node source.
- */
-void liferea_node_source_activatable_add_subscription (LifereaNodeSourceActivatable *activatable, nodePtr node, struct subscription *subscription);
-
-/**
- * liferea_node_source_activatable_remove_node:
- * @activatable:	the node source
- * @node:		the node source root node
- * @child:		the child node to remove
- *
- * Called when an existing subscription is to be removed from a node source.
- */
-void liferea_node_source_activatable_remove_node (LifereaNodeSourceActivatable *activatable, nodePtr node, nodePtr child);
-
-/**
- * liferea_node_source_activatable_add_folder:
- * @activatable:	the node source
- * @node:		the node source root node
- * @title:      	the folder title
- *
- * Called when a new folder is to be added to a node source feed list.
- */
-void liferea_node_source_activatable_add_folder (LifereaNodeSourceActivatable *activatable, nodePtr node, const gchar *title);
-
-/**
- * liferea_node_source_activatable_update_folder:
- * @activatable:	the node source
- * @node:		any node
- * @folder:     	the target folder
- *
- * Called to update a nodes folder. If current folder != given folder
- * the node will be reparented.
- */
-void liferea_node_source_activatable_update_folder (LifereaNodeSourceActivatable *activatable, nodePtr node, nodePtr folder);
-
-/**
- * liferea_node_source_activatable_item_mark_read:
- * @activatable:	the node source
- * @node:		the node source root node
- * @item:		the affected item
- * @newState:   	the new item read state
- *
- * Called when the read state of an item changes.
- */
-void liferea_node_source_activatable_item_mark_read (LifereaNodeSourceActivatable *activatable, nodePtr node, itemPtr item, gboolean newState);
-
-/**
- * liferea_node_source_activatable_set_item_flag:
- * @activatable:	the node source
- * @node:		the node source root node
- * @item:		the affected item
- * @newState:   	the new item flag state
- *
- * Called when the flag state of an item changes.
- */
-void liferea_node_source_activatable_item_set_flag (LifereaNodeSourceActivatable *activatable, nodePtr node, itemPtr item, gboolean newState);
-
-/**
- * liferea_node_source_activatable_convert_to_local:
- * @activatable:	the node source
- * @node:		the node source root node
- *
- * Converts all subscriptions to default source subscriptions.
- */
-void liferea_node_source_activatable_convert_to_local (LifereaNodeSourceActivatable *activatable, nodePtr node);
-
+void liferea_node_source_activatable_deactivate (LifereaNodeSourceActivatable * activatable);
 
 G_END_DECLS
 
