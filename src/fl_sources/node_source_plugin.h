@@ -106,7 +106,7 @@ void node_source_plugin_convert_to_local (nodePtr node);
 /**
  * node_source_plugin_feed_subscription_prepare_update_request: (skip)
  */
-gboolean node_source_plugin_feed_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request);
+gboolean node_source_plugin_feed_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request);
 
 /**
  * node_source_plugin_feed_subscription_process_update_result: (skip)
@@ -118,7 +118,7 @@ void node_source_plugin_feed_subscription_process_update_result (subscriptionPtr
 /**
    * node_source_plugin_source_subscription_prepare_update_request: (skip)
    */
-gboolean node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request);
+gboolean node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request);
 /**
    * node_source_plugin_source_subscription_process_update_result: (skip)
    */

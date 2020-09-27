@@ -78,7 +78,7 @@ struct _LifereaNodeSourceActivatableInterface
 	/*
 	 * MANDATORY source subscription update preparation callback.
 	 */
-	gboolean	(*feedlist_update_prepare)(LifereaNodeSourceActivatable *activatable, struct subscription * subscription, struct updateRequest * request);
+	gboolean	(*feedlist_update_prepare)(LifereaNodeSourceActivatable *activatable, struct subscription * subscription, UpdateRequest * request);
 
 	/*
 	 * MANDATORY source subscription type specific update result processing callback.

@@ -227,7 +227,7 @@ node_source_plugin_convert_to_local (nodePtr node)
 }
 
 gboolean
-node_source_plugin_feed_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+node_source_plugin_feed_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
@@ -249,7 +249,7 @@ node_source_plugin_feed_subscription_process_update_result (subscriptionPtr subs
 }
 
 gboolean
-node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
