@@ -98,7 +98,9 @@ Liferea_3_0_gir_FILES = \
 	node.h node.c \
 	node_view.h \
 	social.c social.h \
+	subscription.h \
 	subscription_type.h \
+	update.h \
 	ui/browser_tabs.c ui/browser_tabs.h \
 	ui/icons.c ui/icons.h \
 	ui/itemview.c ui/itemview.h \

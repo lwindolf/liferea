@@ -22,6 +22,7 @@
 
 #include "fl_sources/node_source.h"
 #include "fl_sources/node_source_plugin.h"
+#include "fl_sources/opml_source.h"
 
 /**
  * SECTION:node_source_activatable
@@ -42,85 +43,6 @@ void
 liferea_node_source_activatable_default_init (LifereaNodeSourceActivatableInterface *iface)
 {
 	/* No properties yet */
-}
-
-void liferea_node_source_activatable_auto_update (nodePtr node)
-{
-	LifereaNodeSourceActivatable *activatable = node->data;
-	LifereaNodeSourceActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_NODE_SOURCE_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->auto_update)
-		iface->auto_update (activatable, node);
-}
-
-void liferea_node_source_activatable_add_subscription (LifereaNodeSourceActivatable *activatable, nodePtr node, struct subscription *subscription)
-{
-	LifereaNodeSourceActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_NODE_SOURCE_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->add_subscription)
-		iface->add_subscription (activatable, node, subscription);
-}
-
-void liferea_node_source_activatable_remove_node (LifereaNodeSourceActivatable *activatable, nodePtr node, nodePtr child)
-{
-	LifereaNodeSourceActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_NODE_SOURCE_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-
-	if (iface->remove_node)
-		iface->remove_node (activatable, node, child);
-}
-
-void liferea_node_source_activatable_add_folder (LifereaNodeSourceActivatable *activatable, nodePtr node, const gchar *title)
-{
-	LifereaNodeSourceActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_NODE_SOURCE_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->add_folder)
-		iface->add_folder (activatable, node, title);
-}
-
-void liferea_node_source_activatable_item_mark_read (LifereaNodeSourceActivatable *activatable, nodePtr node, itemPtr item, gboolean newState)
-{
-	LifereaNodeSourceActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_NODE_SOURCE_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->item_mark_read)
-		iface->item_mark_read (activatable, node, item, newState);
-}
-
-void liferea_node_source_activatable_item_set_flag (LifereaNodeSourceActivatable *activatable, nodePtr node, itemPtr item, gboolean newState)
-{
-	LifereaNodeSourceActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_NODE_SOURCE_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->item_set_flag)
-		iface->item_set_flag (activatable, node, item, newState);
-}
-
-void liferea_node_source_activatable_convert_to_local (LifereaNodeSourceActivatable *activatable, nodePtr node)
-{
-	LifereaNodeSourceActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_NODE_SOURCE_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->convert_to_local)
-		iface->convert_to_local (activatable, node);
 }
 
 struct subscriptionType nodeSourcePluginFeedSubscriptionType = {
@@ -160,8 +82,8 @@ liferea_node_source_activatable_activate (LifereaNodeSourceActivatable * activat
 	nst->source_new          = node_source_plugin_new;
 	nst->source_delete       = node_source_plugin_delete;
 	nst->source_import       = node_source_plugin_import;
-	nst->source_export       = node_source_plugin_export;
-	nst->source_get_feedlist = node_source_plugin_get_feedlist;
+	nst->source_export       = opml_source_export;
+	nst->source_get_feedlist = opml_source_get_feedlist;
 
 	nst->source_auto_update  = node_source_plugin_auto_update;
 	nst->free                = node_source_plugin_free;

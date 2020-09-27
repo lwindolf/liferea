@@ -68,22 +68,22 @@ struct _LifereaNodeSourceActivatableInterface
 	/*
 	 * MANDATORY feed subscription preparation callback.
 	 */
-	gboolean	(*feed_subscription_prepare_update_request)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, struct updateRequest * request);
+	gboolean	(*feed_subscription_prepare_update_request)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, updateRequestPtr request);
 
 	/*
 	 * MANDATORY feed subscription type specific update result processing callback.
 	 */
-	void		(*feed_subscription_process_update_result)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
+	void		(*feed_subscription_process_update_result)(LifereaNodeSourceActivatable *activatable, struct subscription * subscription, const struct updateResult * const result, updateFlags flags);
 
 	/*
 	 * MANDATORY source subscription update preparation callback.
 	 */
-	gboolean	(*source_subscription_prepare_update_request)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, struct updateRequest * request);
+	gboolean	(*feedlist_update_prepare)(LifereaNodeSourceActivatable *activatable, struct subscription * subscription, struct updateRequest * request);
 
 	/*
 	 * MANDATORY source subscription type specific update result processing callback.
 	 */
-	void		(*source_subscription_process_update_result)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
+	void		(*feedlist_update_cb)(LifereaNodeSourceActivatable *activatable, struct subscription * subscription, const struct updateResult * const result, updateFlags flags);
 
 	/* === Feed list node handling interface (see node_source.h!) */
 
@@ -102,35 +102,6 @@ struct _LifereaNodeSourceActivatableInterface
 	 * MANDATORY for all sources except the root provider source.
 	 */
 	void 		(*delete)(LifereaNodeSourceActivatable *activatable, nodePtr node);
-
-	/*
-	 * This MANDATORY method is called when the source is to
-	 * create the feed list subtree attached to the source root
-	 * node.
-	 */
-	void 		(*import)(LifereaNodeSourceActivatable *activatable, nodePtr node);
-
-	/*
-	 * This MANDATORY method is called when the source is to
-	 * save it's feed list subtree (if necessary at all). This
-	 * is not a request to save the data of the attached nodes!
-	 */
-	void 		(*export)(LifereaNodeSourceActivatable *activatable, nodePtr node);
-
-	/*
-	 * This MANDATORY method is called to get an OPML representation
-	 * of the feedlist of the given node source. Returns a newly
-	 * allocated filename string that is to be freed by the
-	 * caller.
-	 */
-	gchar *		(*get_feedlist)(LifereaNodeSourceActivatable *activatable, nodePtr node);
-
-	/*
-	 * This MANDATARY method is called to request the source to update
-	 * its subscriptions list and the child subscriptions according
-	 * the its update interval.
-	 */
-	void		(*auto_update)(LifereaNodeSourceActivatable *activatable, nodePtr node);
 
 	/*
 	 * Frees all data of the given node source instance. To be called
