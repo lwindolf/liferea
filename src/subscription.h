@@ -1,12 +1,12 @@
-/**
+/*
  * @file subscription.h  common subscription handling interface
- * 
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,55 +19,53 @@
  */
 #ifndef _SUBSCRIPTION_H
 #define _SUBSCRIPTION_H
- 
+
 #include <glib.h>
 #include <libxml/parser.h>
 #include "node.h"
 #include "update.h"
 
-/** Caching property constants */
 enum cache_limit {
-	/* Values > 0 are used to specify certain limits */
 	CACHE_DISABLE = 0,
 	CACHE_DEFAULT = -1,
 	CACHE_UNLIMITED = -2,
 };
 
-/** Flags used in the request structure */
 enum feed_request_flags {
-	FEED_REQ_RESET_TITLE		= (1<<0),	/**< Feed's title should be reset to default upon update */
-	FEED_REQ_PRIORITY_HIGH		= (1<<3),	/**< set to signal that this is an important user triggered request */
+	FEED_REQ_RESET_TITLE		= (1<<0),	/*<< Feed's title should be reset to default upon update */
+	FEED_REQ_PRIORITY_HIGH		= (1<<3),	/*<< set to signal that this is an important user triggered request */
 };
- 
-/** Common structure to hold all information about a single subscription. */
+
 typedef struct subscription {
-	nodePtr		node;			/**< the feed list node the subscription is attached to */
-	struct subscriptionType *type;		/**< the subscription type */
-	
-	gchar		*source;		/**< current source, can be changed by redirects */
-	gchar		*origSource;		/**< the source given when creating the subscription */
-	updateOptionsPtr updateOptions;		/**< update options for the feed source */
-	struct updateJob *updateJob;		/**< update request structure used when downloading the subscribed source */
-	
-	gint		updateInterval;		/**< user defined update interval in minutes */	
-	guint		defaultInterval;	/**< optional update interval as specified by the feed in minutes */
-	
-	GSList		*metadata;		/**< metadata list assigned to this subscription */
-	
-	gchar		*updateError;		/**< textual description of processing errors */
-	gchar		*httpError;		/**< textual description of HTTP protocol errors */
-	gint		httpErrorCode;		/**< last HTTP error code */
-	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) */
-	
-	gboolean	activeAuth;		/**< TRUE if authentication in progress */
+	nodePtr		node;			/*<< the feed list node the subscription is attached to */
+	struct subscriptionType *type;		/*<< the subscription type */
 
-	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
+	gchar		*source;		/*<< current source, can be changed by redirects */
+	gchar		*origSource;		/*<< the source given when creating the subscription */
+	updateOptionsPtr updateOptions;		/*<< update options for the feed source */
+	struct updateJob *updateJob;		/*<< update request structure used when downloading the subscribed source */
 
-	gchar		*filtercmd;		/**< feed filter command */
-	gchar		*filterError;		/**< textual description of filter errors */
+	gint		updateInterval;		/*<< user defined update interval in minutes */
+	guint		defaultInterval;	/*<< optional update interval as specified by the feed in minutes */
+
+	GSList		*metadata;		/*<< metadata list assigned to this subscription */
+
+	gchar		*updateError;		/*<< textual description of processing errors */
+	gchar		*httpError;		/*<< textual description of HTTP protocol errors */
+	gint		httpErrorCode;		/*<< last HTTP error code */
+	updateStatePtr	updateState;		/*<< update states (etag, last modified, cookies, last polling times...) */
+
+	gboolean	activeAuth;		/*<< TRUE if authentication in progress */
+
+	gboolean	discontinued;		/*<< flag to avoid updating after HTTP 410 */
+
+	gchar		*filtercmd;		/*<< feed filter command */
+	gchar		*filterError;		/*<< textual description of filter errors */
 } *subscriptionPtr;
 
 /**
+ * subscription_new: (skip)
+ *
  * Create a new subscription structure.
  *
  * @param source	the subscription source URL (or NULL)
@@ -79,6 +77,8 @@ typedef struct subscription {
 subscriptionPtr subscription_new (const gchar *source, const gchar *filter, updateOptionsPtr options);
 
 /**
+ * subscription_import: (skip)
+ *
  * Imports a subscription from the given XML document.
  *
  * @param xml		xml node
@@ -89,6 +89,8 @@ subscriptionPtr subscription_new (const gchar *source, const gchar *filter, upda
 subscriptionPtr subscription_import (xmlNodePtr xml, gboolean trusted);
 
 /**
+ * subscription_export: (skip)
+ *
  * Exports the given subscription to the given XML document.
  *
  * @param subscription	the subscription
@@ -98,6 +100,8 @@ subscriptionPtr subscription_import (xmlNodePtr xml, gboolean trusted);
 void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trusted);
 
 /**
+ * subscription_to_xml: (skip)
+ *
  * Serialization helper function for rendering purposes.
  *
  * @param node		the subscription to serialize
@@ -106,7 +110,9 @@ void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean
 void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
 
 /**
- * Triggers updating a subscription. Will download the 
+ * subscription_update:
+ *
+ * Triggers updating a subscription. Will download the
  * the document indicated by the source URL of the subscription.
  * Will call the node type specific update callback to process
  * the downloaded data.
@@ -117,6 +123,8 @@ void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
 void subscription_update (subscriptionPtr subscription, guint flags);
 
 /**
+ * subscription_auto_update:
+ *
  * Called when auto updating. Checks whether the subscription
  * needs to be updated (according to it's update interval) and
  * if necessary calls subscription_update().
@@ -126,6 +134,8 @@ void subscription_update (subscriptionPtr subscription, guint flags);
 void subscription_auto_update (subscriptionPtr subscription);
 
 /**
+ * subscription_cancel_update: (skip)
+ *
  * Cancels a currently running subscription update. This is to
  * be called when removing subscriptions or retriggering the update
  * upon user request.
@@ -135,6 +145,8 @@ void subscription_auto_update (subscriptionPtr subscription);
 void subscription_cancel_update (subscriptionPtr subscription);
 
 /**
+ * subscription_get_update_interval:
+ *
  * Get the update interval setting of a given subscription
  *
  * @param subscription	the subscription
@@ -144,6 +156,8 @@ void subscription_cancel_update (subscriptionPtr subscription);
 gint subscription_get_update_interval(subscriptionPtr subscription);
 
 /**
+ * subscription_set_update_interval:
+ *
  * Set the update interval setting for the given subscription
  *
  * @param subscription	the subscription
@@ -152,6 +166,8 @@ gint subscription_get_update_interval(subscriptionPtr subscription);
 void subscription_set_update_interval(subscriptionPtr subscription, gint interval);
 
 /**
+ * subscription_get_default_update_interval:
+ *
  * Get the default update interval setting of a given subscription
  *
  * @param subscription	the subscription
@@ -161,6 +177,8 @@ void subscription_set_update_interval(subscriptionPtr subscription, gint interva
 guint subscription_get_default_update_interval(subscriptionPtr subscription);
 
 /**
+ * subscription_set_default_update_interval:
+ *
  * Set the default update interval setting for the given subscription
  *
  * @param subscription	the subscription
@@ -169,15 +187,26 @@ guint subscription_get_default_update_interval(subscriptionPtr subscription);
 void subscription_set_default_update_interval(subscriptionPtr subscription, guint interval);
 
 /**
+ * subscription_reset_update_counter: (skip)
+ *
  * Reset the update counter for the given subscription.
  *
  * @param subscription	the subscription
  */
 void subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now);
 
+/**
+ * subscription_update_favicon: (skip)
+ *
+ * Tries to download a new favion for this subscription
+ *
+ * @param subscription	the subscription
+ */
 void subscription_update_favicon (subscriptionPtr subscription);
 
 /**
+ * subscription_get_source:
+ *
  * Get the source URL of a given subscription
  *
  * @param subscription	the subscription
@@ -187,6 +216,8 @@ void subscription_update_favicon (subscriptionPtr subscription);
 const gchar * subscription_get_source(subscriptionPtr subscription);
 
 /**
+ * subscription_set_source:
+ *
  * Set a new source URL for the given subscription
  *
  * @param subscription	the subscription
@@ -195,6 +226,8 @@ const gchar * subscription_get_source(subscriptionPtr subscription);
 void subscription_set_source(subscriptionPtr subscription, const gchar *source);
 
 /**
+ * subscription_get_homepage:
+ *
  * Returns the homepage URL of the given subscription.
  *
  * @param subscription	the subscription
@@ -204,6 +237,8 @@ void subscription_set_source(subscriptionPtr subscription, const gchar *source);
 const gchar * subscription_get_homepage(subscriptionPtr subscription);
 
 /**
+ * subscription_set_homepage:
+ *
  * Set the homepage URL of the given subscription. If the passed
  * URL is a relative one it will be expanded using the
  * given base URL.
@@ -214,6 +249,8 @@ const gchar * subscription_get_homepage(subscriptionPtr subscription);
 void subscription_set_homepage(subscriptionPtr subscription, const gchar *url);
 
 /**
+ * subscription_get_filter: (skip)
+ *
  * Get the configured filter command for a given subscription
  *
  * @param subscription	the subscription
@@ -223,6 +260,8 @@ void subscription_set_homepage(subscriptionPtr subscription, const gchar *url);
 const gchar * subscription_get_filter(subscriptionPtr subscription);
 
 /**
+ * subscription_set_filter: (skip)
+ *
  * Set a new filter command for a given subscription
  *
  * @param subscription	the subscription
@@ -231,8 +270,10 @@ const gchar * subscription_get_filter(subscriptionPtr subscription);
 void subscription_set_filter(subscriptionPtr subscription, const gchar * filter);
 
 /**
+ * subscription_set_auth_info: (skip)
+ *
  * Set authentication information for a given subscription
- * 
+ *
  * @param subscription	the subscription
  * @param username	the user name
  * @param password	the password
@@ -240,10 +281,12 @@ void subscription_set_filter(subscriptionPtr subscription, const gchar * filter)
 void subscription_set_auth_info (subscriptionPtr subscription, const gchar *username, const gchar *password);
 
 /**
+ * subscription_free: (skip)
+ *
  * Frees the given subscription structure.
  *
  * @param subscription	the subscription
- */ 
+ */
 void subscription_free(subscriptionPtr subscription);
 
 #endif

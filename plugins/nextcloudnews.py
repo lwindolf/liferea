@@ -43,6 +43,14 @@ class NextCloudNewsPlugin(GObject.Object, Liferea.NodeSourceActivatable):
         """Provide human readable name for "New Source" dialog"""
         return "NextCloud News"
 
+    def do_feedlist_update_prepare(self, subscription, request):
+        print("source prepare request")
+        serverUrl = subscription.node.metadata.get("node-source-subscription-url")
+        request.set_source ("{}/index.php/apps/news/api/v1-2/feeds" % (serverUrl));
+
+    def do_feedlist_update_cb(self, subscription, result, flags):
+        print("source update result")
+
     def do_new(self, typeId):
         """Present server/auth configure dialog"""
         builder = self.builder = Gtk.Builder()
@@ -52,6 +60,9 @@ class NextCloudNewsPlugin(GObject.Object, Liferea.NodeSourceActivatable):
             "cancelbutton1_activate_cb": self.on_cancel
         }
         builder.connect_signals(handlers)
+
+    def do_delete(self, node):
+        print("delete")
 
     def on_subscribe(self, widget, *data):
         Liferea.nodeSource.plugin_subscribe(

@@ -28,6 +28,7 @@
 #include "plugins_engine.h"
 #include "subscription.h"
 #include "fl_sources/node_source_activatable.h"
+#include "fl_sources/opml_source.h"
 
 #include <libpeas/peas-activatable.h>
 #include <libpeas/peas-extension-set.h>
@@ -157,47 +158,18 @@ node_source_plugin_free (nodePtr node)
 void
 node_source_plugin_import (nodePtr node)
 {
-	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
-	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->import)
-		iface->import (activatable, node);
-	else
-		g_warning ("No 'import' method implemented by plugin for '%s'!", node->source->type->id);
-}
+	// All plugins load feed list from disk
+	opml_source_import (node);
 
-void
-node_source_plugin_export (nodePtr node)
-{
-	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
-	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->export)
-		iface->export (activatable, node);
-	else
-		g_warning ("No 'export' method implemented by plugin for '%s'!", node->source->type->id);
-}
-
-gchar *
-node_source_plugin_get_feedlist (nodePtr node)
-{
-	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
-	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->get_feedlist)
-		return iface->get_feedlist (activatable, node);
-	else
-		g_warning ("No 'get_feedlist' method implemented by plugin for '%s'!", node->source->type->id);
-
-	return NULL;
+	node->subscription->updateInterval = -1;
+	node->subscription->type = node->source->type->sourceSubscriptionType;
 }
 
 void
 node_source_plugin_auto_update (nodePtr node)
 {
-	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
-	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->auto_update)
-		iface->auto_update (activatable, node);
-	else
-		g_warning ("No 'auto_update' method implemented by plugin for '%s'!", node->source->type->id);
+	// For simplicity we enforce a subscription update here
+	subscription_update (node->subscription, 0);
 }
 
 nodePtr
@@ -281,10 +253,11 @@ node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr s
 {
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->source_subscription_prepare_update_request)
-		iface->source_subscription_prepare_update_request (activatable, subscription, request);
+	g_assert(NULL != subscription);
+	if (iface->feedlist_update_prepare)
+		iface->feedlist_update_prepare (activatable, subscription, request);
 	else
-		g_warning ("No 'source_subscription_prepare_update_request' method implemented by plugin for '%s'!", subscription->node->source->type->id);
+		g_warning ("No 'feedlist_update_prepare' method implemented by plugin for '%s'!", subscription->node->source->type->id);
 }
 
 void
@@ -292,9 +265,9 @@ node_source_plugin_source_subscription_process_update_result (subscriptionPtr su
 {
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->source_subscription_process_update_result)
-		iface->source_subscription_process_update_result (activatable, subscription, result, flags);
+	if (iface->feedlist_update_cb)
+		iface->feedlist_update_cb (activatable, subscription, result, flags);
 	else
-		g_warning ("No 'feed_subscription_process_update_result' method implemented by plugin for '%s'!", subscription->node->source->type->id);
+		g_warning ("No 'feedlist_update_cb' method implemented by plugin for '%s'!", subscription->node->source->type->id);
 }
 
