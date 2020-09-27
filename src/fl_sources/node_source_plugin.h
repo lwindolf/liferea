@@ -29,6 +29,8 @@
    node_source_*() methods. For simplicity the documentation is
    not copied */
 
+/* ======================== node source adapter ============================= */
+
 /**
  * node_source_plugin_new: (skip)
  */
@@ -99,7 +101,30 @@ void node_source_plugin_item_set_flag (nodePtr node, itemPtr item, gboolean newS
  */
 void node_source_plugin_convert_to_local (nodePtr node);
 
-/* end of node source interface reimplementation */
+/* ==================== feed subscription type adapter ====================== */
+
+/**
+ * node_source_plugin_feed_subscription_prepare_update_request: (skip)
+ */
+gboolean node_source_plugin_feed_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request);
+
+/**
+ * node_source_plugin_feed_subscription_process_update_result: (skip)
+ */
+void node_source_plugin_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags);
+
+/* ==================== source subscription type adapter ==================== */
+
+/**
+   * node_source_plugin_source_subscription_prepare_update_request: (skip)
+   */
+gboolean node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request);
+/**
+   * node_source_plugin_source_subscription_process_update_result: (skip)
+   */
+void node_source_plugin_source_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags);
+
+/* ======================== helper methods ================================== */
 
 /**
  * node_source_plugins_register: (skip)

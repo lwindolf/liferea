@@ -123,6 +123,16 @@ void liferea_node_source_activatable_convert_to_local (LifereaNodeSourceActivata
 		iface->convert_to_local (activatable, node);
 }
 
+struct subscriptionType nodeSourcePluginFeedSubscriptionType = {
+	node_source_plugin_feed_subscription_prepare_update_request,
+	node_source_plugin_feed_subscription_process_update_result
+};
+
+struct subscriptionType nodeSourcePluginSourceSubscriptionType = {
+	node_source_plugin_source_subscription_prepare_update_request,
+	node_source_plugin_source_subscription_process_update_result
+};
+
 void
 liferea_node_source_activatable_activate (LifereaNodeSourceActivatable * activatable)
 {
@@ -139,6 +149,9 @@ liferea_node_source_activatable_activate (LifereaNodeSourceActivatable * activat
 	nst->id = g_strdup (iface->get_id (activatable));
 	nst->name = g_strdup (iface->get_name (activatable));
 	nst->capabilities = iface->get_capabilities (activatable);
+
+	nst->sourceSubscriptionType = &nodeSourcePluginSourceSubscriptionType;
+	nst->feedSubscriptionType   = &nodeSourcePluginFeedSubscriptionType;
 
 	// Initialization happens through libpeas...
 	nst->source_type_init = liferea_node_source_activatable_init_dummy;

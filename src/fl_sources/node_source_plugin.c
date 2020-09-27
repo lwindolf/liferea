@@ -70,7 +70,6 @@ node_source_plugin_subscribe (const gchar *typeId, const gchar *serverUrl, const
 	debug4 (DEBUG_UPDATE, "Subscribing by plugin: id=%s url=%s user=%s password=%s\n", typeId, serverUrl, username, password);
 
 	nodePtr node = node_source_new (typeId, "");
-g_assert(node->subscription);
 	metadata_list_set (&node->subscription->metadata, "node-source-subscription-url", serverUrl);
 
 	subscription_set_auth_info (node->subscription, username, password);
@@ -130,6 +129,8 @@ node_source_plugin_new (const gchar *typeId)
 	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
 	if (iface->new)
 		iface->new (activatable, typeId);
+	else
+		g_warning ("No 'new' method implemented by plugin for '%s'!", typeId);
 }
 
 void
@@ -140,6 +141,8 @@ node_source_plugin_delete (nodePtr node)
 
 	if (iface->delete)
 		iface->delete (activatable, node);
+	else
+		g_warning ("No 'delete' method implemented by plugin for '%s'!", node->source->type->id);
 }
 
 void
@@ -158,6 +161,8 @@ node_source_plugin_import (nodePtr node)
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
 	if (iface->import)
 		iface->import (activatable, node);
+	else
+		g_warning ("No 'import' method implemented by plugin for '%s'!", node->source->type->id);
 }
 
 void
@@ -167,6 +172,8 @@ node_source_plugin_export (nodePtr node)
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
 	if (iface->export)
 		iface->export (activatable, node);
+	else
+		g_warning ("No 'export' method implemented by plugin for '%s'!", node->source->type->id);
 }
 
 gchar *
@@ -176,6 +183,8 @@ node_source_plugin_get_feedlist (nodePtr node)
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
 	if (iface->get_feedlist)
 		return iface->get_feedlist (activatable, node);
+	else
+		g_warning ("No 'get_feedlist' method implemented by plugin for '%s'!", node->source->type->id);
 
 	return NULL;
 }
@@ -187,6 +196,8 @@ node_source_plugin_auto_update (nodePtr node)
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
 	if (iface->auto_update)
 		iface->auto_update (activatable, node);
+	else
+		g_warning ("No 'auto_update' method implemented by plugin for '%s'!", node->source->type->id);
 }
 
 nodePtr
@@ -219,14 +230,71 @@ node_source_plugin_add_folder (nodePtr node, const gchar *title)
 void
 node_source_plugin_item_mark_read (nodePtr node, itemPtr item, gboolean newState)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->item_mark_read)
+		iface->item_mark_read (activatable, node, item, newState);
 }
 
 void
 node_source_plugin_item_set_flag (nodePtr node, itemPtr item, gboolean newState)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->item_mark_read)
+		iface->item_set_flag (activatable, node, item, newState);
 }
 
 void
 node_source_plugin_convert_to_local (nodePtr node)
 {
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->convert_to_local)
+		iface->convert_to_local (activatable, node);
 }
+
+gboolean
+node_source_plugin_feed_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+{
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->feed_subscription_prepare_update_request)
+		iface->feed_subscription_prepare_update_request (activatable, subscription, request);
+	else
+		g_warning ("No 'feed_subscription_prepare_update_request' method implemented by plugin for '%s'!", subscription->node->source->type->id);
+}
+
+void
+node_source_plugin_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+{
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->feed_subscription_process_update_result)
+		iface->feed_subscription_process_update_result (activatable, subscription, result, flags);
+	else
+		g_warning ("No 'feed_subscription_process_update_result' method implemented by plugin for '%s'!", subscription->node->source->type->id);
+}
+
+gboolean
+node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+{
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->source_subscription_prepare_update_request)
+		iface->source_subscription_prepare_update_request (activatable, subscription, request);
+	else
+		g_warning ("No 'source_subscription_prepare_update_request' method implemented by plugin for '%s'!", subscription->node->source->type->id);
+}
+
+void
+node_source_plugin_source_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+{
+	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
+	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->source_subscription_process_update_result)
+		iface->source_subscription_process_update_result (activatable, subscription, result, flags);
+	else
+		g_warning ("No 'feed_subscription_process_update_result' method implemented by plugin for '%s'!", subscription->node->source->type->id);
+}
+
