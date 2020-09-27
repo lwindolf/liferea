@@ -173,6 +173,8 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 
 	/* clean up... */
 	commentFeed->updateJob = NULL;
+	update_state_free (commentFeed->updateState);
+	commentFeed->updateState = update_state_copy (result->updateState);
 
 	/* rerender item with new comments */
 	itemview_update_item (item);
@@ -227,7 +229,6 @@ comments_refresh (itemPtr item)
 			NULL	// FIXME: use copy of parent subscription options
 		);
 
-		commentFeed->updateState = request->updateState;
 		commentFeed->updateJob = update_execute_request (commentFeed, request, comments_process_update_result, commentFeed, FEED_REQ_PRIORITY_HIGH);
 
 		/* Item view refresh to change link from "Update" to "Updating..." */

@@ -131,6 +131,16 @@ typedef struct updateJob {
 	gint			state;		/**< State of the job (enum request_state) */
 } *updateJobPtr;
 
+/**
+ * Create new update state
+ */
+updateStatePtr update_state_new (void);
+
+/**
+ * Copy update state
+ */
+updateStatePtr update_state_copy (updateStatePtr state);
+
 glong update_state_get_lastmodified (updateStatePtr state);
 void update_state_set_lastmodified (updateStatePtr state, glong lastmodified);
 

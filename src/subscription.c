@@ -57,7 +57,7 @@ subscription_new (const gchar *source,
 	if (!subscription->updateOptions)
 		subscription->updateOptions = g_new0 (struct updateOptions, 1);
 
-	subscription->updateState = g_new0 (struct updateState, 1);
+	subscription->updateState = update_state_new ();
 	subscription->updateInterval = -1;
 	subscription->defaultInterval = -1;
 

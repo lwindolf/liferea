@@ -60,7 +60,7 @@ static guint numberOfActiveJobs = 0;
 
 /* update state interface */
 
-static updateStatePtr
+updateStatePtr
 update_state_new (void)
 {
 	return g_new0 (struct updateState, 1);
@@ -123,7 +123,7 @@ update_state_set_cookies (updateStatePtr state, const gchar *cookies)
 		state->cookies = g_strdup (cookies);
 }
 
-static updateStatePtr
+updateStatePtr
 update_state_copy (updateStatePtr state)
 {
 	updateStatePtr newState;
