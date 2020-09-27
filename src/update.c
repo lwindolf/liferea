@@ -230,7 +230,7 @@ update_request_set_source(UpdateRequest *request, const gchar* source)
 }
 
 void
-update_request_set_auth_value (updateRequestPtr request, const gchar* authValue)
+update_request_set_auth_value (UpdateRequest *request, const gchar* authValue)
 {
 	g_free (request->authValue);
 	request->authValue = g_strdup (authValue);
