@@ -40,7 +40,7 @@
 #include "fl_sources/theoldreader_source.h"
 
 static void
-theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
+theoldreader_source_check_node_for_removal (Node *node, gpointer user_data)
 {
 	JsonArray	*array = (JsonArray *)user_data;
 	GList		*iter, *elements;
@@ -71,9 +71,9 @@ theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
 }
 
 static void
-theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id, nodePtr folder)
+theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id, Node *folder)
 {
-	nodePtr	node;
+	Node *	node;
 
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 	if (!node) {
@@ -109,7 +109,7 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 /* JSON subscription list processing implementation */
 
 static void
-theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+theoldreader_subscription_cb (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
 {
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) subscription->node->data;
 
@@ -141,7 +141,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 			/* Add all new nodes we find */
 			while (iter) {
 				JsonNode *categories, *node = (JsonNode *)iter->data;
-				nodePtr folder = NULL;
+				Node *folder = NULL;
 
 				/* Check for categories, if there use first one as folder */
 				categories = json_get_node (node, "categories");
@@ -197,15 +197,15 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 }
 
 static void
-theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+theoldreader_source_opml_subscription_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
 {
 	theoldreader_subscription_cb (subscription, result, flags);
 }
 
 static gboolean
-theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
+theoldreader_source_opml_subscription_prepare_update_request (Subscription * subscription, UpdateRequest *request)
 {
-	nodePtr node = subscription->node;
+	Node *node = subscription->node;
 
 	g_assert(node->source);
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {

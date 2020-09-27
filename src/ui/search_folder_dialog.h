@@ -40,7 +40,7 @@ G_DECLARE_FINAL_TYPE (SearchFolderDialog, search_folder_dialog, SEARCH_FOLDER, D
  *
  * Returns: (transfer none): a new dialog
  */
-SearchFolderDialog * search_folder_dialog_new (nodePtr node);
+SearchFolderDialog * search_folder_dialog_new (Node *node);
 
 G_END_DECLS
 

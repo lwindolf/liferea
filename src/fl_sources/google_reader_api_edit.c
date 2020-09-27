@@ -140,7 +140,7 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 {
 	GoogleReaderActionCtxtPtr	editCtxt = (GoogleReaderActionCtxtPtr) userdata;
 	GoogleReaderActionPtr		action = editCtxt->action;
-	nodePtr				node = node_from_id (editCtxt->nodeId);
+	Node *				node = node_from_id (editCtxt->nodeId);
 	gboolean			failed = FALSE;
 
 	google_reader_api_action_context_free (editCtxt);
@@ -289,7 +289,7 @@ google_reader_api_edit_tag (GoogleReaderActionPtr action, UpdateRequest *request
 static void
 google_reader_api_edit_token_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	nodePtr		node;
+	Node *		node;
 	const gchar*	token;
 	GoogleReaderActionPtr          action;
 	UpdateRequest	*request;
@@ -450,7 +450,7 @@ google_reader_api_edit_add_subscription_complete (nodeSourcePtr source, GoogleRe
 	 */
 	GSList* cur = source->root->children ;
 	for(; cur; cur = g_slist_next (cur))  {
-		nodePtr node = (nodePtr) cur->data;
+		Node *node = (Node *) cur->data;
 		if (node->subscription) {
 			if (g_str_equal (node->subscription->source, action->feedUrl)) {
 				subscription_set_source (node->subscription, "");
@@ -524,7 +524,7 @@ google_reader_api_edit_remove_callback (nodeSourcePtr source, GoogleReaderAction
 		 */
 		GSList* cur = source->root->children ;
 		for(; cur; cur = g_slist_next (cur))  {
-			nodePtr node = (nodePtr) cur->data ;
+			Node *node = (Node *) cur->data ;
 			if (g_str_equal (node->subscription->source, action->feedUrl)) {
 				feedlist_node_removed (node);
 				return;

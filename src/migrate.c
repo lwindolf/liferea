@@ -70,7 +70,7 @@ migrate_copy_dir (const gchar *from,
 }
 
 static void
-migrate_from_14plus (const gchar *oldBaseDir, nodePtr node)
+migrate_from_14plus (const gchar *oldBaseDir, Node *node)
 {
 	GFile *sourceDbFile, *targetDbFile;
 	gchar *newConfigDir, *newCacheDir, *newDataDir, *oldCacheDir, *filename;
@@ -114,7 +114,7 @@ migrate_from_14plus (const gchar *oldBaseDir, nodePtr node)
 }
 
 void
-migration_execute (migrationMode mode, nodePtr node)
+migration_execute (migrationMode mode, Node *node)
 {
 	switch (mode) {
 		case MIGRATION_FROM_14:

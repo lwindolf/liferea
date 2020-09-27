@@ -38,7 +38,7 @@
 #include "xml.h"
 
 void
-reedah_source_migrate_node (nodePtr node)
+reedah_source_migrate_node (Node *node)
 {
 	/* scan the node for bad ID's, if so, brutally remove the node */
 	itemSetPtr itemset = node_get_itemset (node);
@@ -98,7 +98,7 @@ reedah_item_callback (JsonNode *node, itemPtr item)
 }
 
 static void
-reedah_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+reedah_feed_subscription_process_update_result (Subscription * subscription, const struct updateResult* const result, updateFlags flags)
 {
 	if (result->data && result->httpstatus == 200) {
 		GList		*items = NULL;
@@ -159,7 +159,7 @@ reedah_feed_subscription_process_update_result (subscriptionPtr subscription, co
 }
 
 static gboolean
-reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
+reedah_feed_subscription_prepare_update_request (Subscription * subscription,
                                                  UpdateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing Reedah feed subscription for update\n");

@@ -29,7 +29,7 @@
 struct _AuthDialog {
 	GObject parentInstance;
 
-	subscriptionPtr subscription;
+	Subscription * subscription;
 
 	GtkWidget *dialog;
 	GtkWidget *username;
@@ -78,7 +78,7 @@ on_authdialog_response (GtkDialog *dialog,
 
 static void
 auth_dialog_load (AuthDialog *ad,
-                  subscriptionPtr subscription,
+                  Subscription * subscription,
                   gint flags)
 {
 	gchar			*promptStr;
@@ -134,7 +134,7 @@ auth_dialog_init (AuthDialog *ad)
 
 
 AuthDialog *
-auth_dialog_new (subscriptionPtr subscription, gint flags)
+auth_dialog_new (Subscription * subscription, gint flags)
 {
 	AuthDialog *ad;
 

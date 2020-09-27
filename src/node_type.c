@@ -51,7 +51,7 @@ node_type_register (nodeTypePtr nodeType)
 }
 
 const gchar *
-node_type_to_str (nodePtr node)
+node_type_to_str (Node *node)
 {
 	/* To distinguish different feed formats (Atom, RSS...) we do
 	   return different type identifiers for feed subscriptions... */
@@ -60,7 +60,7 @@ node_type_to_str (nodePtr node)
 		return feed_type_fhp_to_str (((feedPtr)(node->data))->fhp);
 	}
 	
-	return NODE_TYPE (node)->id;
+	return node->type->id;
 }
 
 nodeTypePtr

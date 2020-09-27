@@ -47,8 +47,8 @@ struct _FeedList {
 
 	guint		newCount;		/*<< overall new item count */
 
-	nodePtr		rootNode;		/*<< the feed list root node */
-	nodePtr		selectedNode;	/*<< matches the node selected in the feed list tree view, which
+	Node *		rootNode;		/*<< the feed list root node */
+	Node *		selectedNode;	/*<< matches the node selected in the feed list tree view, which
 				                     is not necessarily the displayed one (e.g. folders without recursive
 				                     display enabled) */
 
@@ -74,7 +74,7 @@ FeedList *feedlist = NULL;	// singleton
 G_DEFINE_TYPE (FeedList, feedlist, G_TYPE_OBJECT);
 
 static void
-feedlist_free_node (nodePtr node)
+feedlist_free_node (Node *node)
 {
 	if (node->children)
 		node_foreach_child (node, feedlist_free_node);
@@ -168,7 +168,7 @@ on_network_status_changed (gpointer instance, gboolean online, gpointer data)
 
 /* This method is used to initialize the node states in the feed list */
 static void
-feedlist_init_node (nodePtr node)
+feedlist_init_node (Node *node)
 {
 	if (node->expanded)
 		feed_list_view_set_expansion (node, TRUE);
@@ -234,19 +234,19 @@ feedlist_init (FeedList *fl)
 
 static void feedlist_unselect(void);
 
-nodePtr
+Node *
 feedlist_get_root (void)
 {
 	return ROOTNODE;
 }
 
-nodePtr
+Node *
 feedlist_get_selected (void)
 {
 	return SELECTED;
 }
 
-static nodePtr
+static Node *
 feedlist_get_parent_node (void)
 {
 
@@ -264,8 +264,8 @@ feedlist_get_parent_node (void)
 	return ROOTNODE;
 }
 
-nodePtr
-feedlist_find_node (nodePtr parent, feedListFindType type, const gchar *str)
+Node *
+feedlist_find_node (Node *parent, feedListFindType type, const gchar *str)
 {
 	GSList	*iter;
 
@@ -274,7 +274,7 @@ feedlist_find_node (nodePtr parent, feedListFindType type, const gchar *str)
 	iter = parent->children;
 	while (iter) {
 		gboolean found = FALSE;
-		nodePtr result, node = (nodePtr)iter->data;
+		Node *result, *node = (Node *)iter->data;
 
 		/* Check child node */
 		switch (type) {
@@ -310,15 +310,15 @@ feedlist_find_node (nodePtr parent, feedListFindType type, const gchar *str)
 gboolean
 feedlist_is_writable (void)
 {
-	nodePtr node;
+	Node *node;
 
 	node = feedlist_get_parent_node ();
 
-	return (0 != (NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS));
+	return (0 != (node->source->root->type->capabilities & NODE_CAPABILITY_ADD_CHILDS));
 }
 
 static void
-feedlist_update_node_counters (nodePtr node)
+feedlist_update_node_counters (Node *node)
 {
 	node_update_counters (node);	/* update with parent propagation */
 
@@ -329,7 +329,7 @@ feedlist_update_node_counters (nodePtr node)
 }
 
 void
-feedlist_mark_all_read (nodePtr node)
+feedlist_mark_all_read (Node *node)
 {
 	if (!node)
 		return;
@@ -379,13 +379,13 @@ feedlist_reset_new_item_count (void)
 void
 feedlist_add_folder (const gchar *title)
 {
-	nodePtr		parent;
+	Node *		parent;
 
 	g_assert (NULL != title);
 
 	parent = feedlist_get_parent_node ();
 
-	if(0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+	if(0 == (parent->source->root->type->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return;
 
 	node_source_add_folder (parent->source->root, title);
@@ -394,13 +394,13 @@ feedlist_add_folder (const gchar *title)
 void
 feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
 {
-	nodePtr		parent;
+	Node *		parent;
 
 	g_assert (NULL != source);
 
 	parent = feedlist_get_parent_node ();
 
-	if (0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS)) {
+	if (0 == (parent->source->root->type->capabilities & NODE_CAPABILITY_ADD_CHILDS)) {
 		g_warning ("feedlist_add_subscription: this should never happen!");
 		return;
 	}
@@ -411,7 +411,7 @@ feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptio
 void
 feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
 {
-	nodePtr duplicateNode = NULL;
+	Node *duplicateNode = NULL;
 
 	duplicateNode = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
 	if (!duplicateNode) {
@@ -422,7 +422,7 @@ feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filt
 }
 
 void
-feedlist_node_imported (nodePtr node)
+feedlist_node_imported (Node *node)
 {
 	feed_list_view_add_node (node);
 
@@ -430,7 +430,7 @@ feedlist_node_imported (nodePtr node)
 }
 
 void
-feedlist_node_added (nodePtr node)
+feedlist_node_added (Node *node)
 {
 	gint	position = -1;
 
@@ -455,7 +455,7 @@ feedlist_node_added (nodePtr node)
 }
 
 void
-feedlist_remove_node (nodePtr node)
+feedlist_remove_node (Node *node)
 {
 	if (node->source->root != node)
 		node_source_remove_node (node->source->root, node);
@@ -464,7 +464,7 @@ feedlist_remove_node (nodePtr node)
 }
 
 void
-feedlist_node_removed (nodePtr node)
+feedlist_node_removed (Node *node)
 {
 	if (node == SELECTED)
 		feedlist_unselect ();
@@ -487,7 +487,7 @@ feedlist_node_removed (nodePtr node)
    has at least one unread item or is selected, if yes it
    is added to the list ref passed as user_data */
 static void
-feedlist_collect_unread (nodePtr node, gpointer user_data)
+feedlist_collect_unread (Node *node, gpointer user_data)
 {
 	GSList	**list = (GSList **)user_data;
 
@@ -503,11 +503,11 @@ feedlist_collect_unread (nodePtr node, gpointer user_data)
 	*list = g_slist_append (*list, g_strdup (node->id));
 }
 
-nodePtr
-feedlist_find_unread_feed (nodePtr folder)
+Node *
+feedlist_find_unread_feed (Node *folder)
 {
 	GSList	*list = NULL;
-	nodePtr	result = NULL;
+	Node *	result = NULL;
 
 	feedlist_foreach_data (feedlist_collect_unread, &list);
 
@@ -551,7 +551,7 @@ feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
 {
 	debug_enter ("feedlist_selection_changed");
 
-	nodePtr node = node_from_id (nodeId);
+	Node *node = node_from_id (nodeId);
 	if (node) {
 		if (node != SELECTED) {
 			debug1 (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
@@ -631,7 +631,7 @@ feedlist_new_items (guint newCount)
 }
 
 void
-feedlist_node_was_updated (nodePtr node)
+feedlist_node_was_updated (Node *node)
 {
 	node_update_counters (node);
 	feedlist_schedule_save ();
@@ -648,7 +648,7 @@ feedlist_save (void)
 }
 
 void
-feedlist_reset_update_counters (nodePtr node)
+feedlist_reset_update_counters (Node *node)
 {
 	guint64 now;
 

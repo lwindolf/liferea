@@ -57,7 +57,7 @@ void itemview_clear (void);
  *
  * Prepares the view for displaying items of the given node.
  */
-void itemview_set_displayed_node (nodePtr node);
+void itemview_set_displayed_node (Node *node);
 
 /* item view display mode type */
 typedef enum {
@@ -142,7 +142,7 @@ void itemview_update_all_items (void);
  *
  * TODO: register for signal at feed merger instead
  */
-void itemview_update_node_info (struct node *node);
+void itemview_update_node_info (Node *node);
 
 /**
  * itemview_update: (skip)

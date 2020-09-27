@@ -31,6 +31,6 @@
  *
  * @returns an ItemLoader instance
  */
-ItemLoader * vfolder_loader_new (nodePtr vfolder);
+ItemLoader * vfolder_loader_new (Node *vfolder);
 
 #endif

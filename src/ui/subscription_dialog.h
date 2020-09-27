@@ -39,7 +39,7 @@ G_DECLARE_FINAL_TYPE (SubscriptionPropDialog, subscription_prop_dialog, SUBSCRIP
  *
  * Returns: (transfer none): a properties dialog
  */
-SubscriptionPropDialog *subscription_prop_dialog_new	(subscriptionPtr subscription);
+SubscriptionPropDialog *subscription_prop_dialog_new	(Subscription * subscription);
 
 #define NEW_SUBSCRIPTION_DIALOG_TYPE (new_subscription_dialog_get_type ())
 G_DECLARE_FINAL_TYPE (NewSubscriptionDialog, new_subscription_dialog, NEW_SUBSCRIPTION, DIALOG, GObject)

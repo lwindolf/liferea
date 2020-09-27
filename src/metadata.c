@@ -1,4 +1,4 @@
-/**
+/*
  * @file metadata.c  handling of typed item and feed meta data
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -29,15 +29,15 @@
 #include "xml.h"
 
 /* Metadata in Liferea are ordered lists of key/value list pairs. Both
-   feed list nodes and items can have a list of metadata assigned. Metadata
-   date values are always text values but maybe of different type depending
+   subscriptions and items have a list of metadata. Metadata values are
+   always strings values but maybe of different type depending
    on their usage type. */
 
-static GHashTable *metadataTypes = NULL;	/**< hash table with all registered meta data types */
+static GHashTable *metadataTypes = NULL;	/*<< hash table with all registered meta data types */
 
 struct pair {
-	gchar		*strid;		/** metadata type id */
-	GSList		*data;		/** list of metadata values */
+	gchar		*strid;		/*<< metadata type id */
+	GSList		*data;		/*<< list of metadata values */
 };
 
 /* register metadata types to check validity on adding */

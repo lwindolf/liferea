@@ -27,7 +27,7 @@
  * A nodeSource specific for Reedah
  */
 typedef struct ReedahSource {
-	nodePtr		root;		/**< the root node in the feed list */
+	Node *		root;		/**< the root node in the feed list */
 
 	/**
 	 * A map from a subscription source to a timestamp when it was last
@@ -76,7 +76,7 @@ nodeSourceTypePtr reedah_source_get_type (void);
  *
  * @returns a node (or NULL)
  */
-nodePtr reedah_source_get_node_from_source (ReedahSourcePtr gsource, const gchar* source);
+Node *reedah_source_get_node_from_source (ReedahSourcePtr gsource, const gchar* source);
 
 /**
  * Tries to update the entire source quickly, by updating only those feeds
@@ -96,7 +96,7 @@ gboolean reedah_source_quick_update_timeout (gpointer gsource);
  *
  * @param node The node to migrate (not the nodeSource!)
  */
-void reedah_source_migrate_node (nodePtr node);
+void reedah_source_migrate_node (Node *node);
 
 /**
  * Perform login for the given Google source.

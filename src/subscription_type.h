@@ -48,7 +48,7 @@ typedef struct subscriptionType {
 	 *
 	 * @returns FALSE if the request is to be aborted
 	 */
-	gboolean (*prepare_update_request)(subscriptionPtr subscription, UpdateRequest * request);
+	gboolean (*prepare_update_request)(Subscription * subscription, UpdateRequest * request);
 
 	/*
 	 * Subscription type specific update result processing callback.
@@ -57,10 +57,8 @@ typedef struct subscriptionType {
 	 * @param result	the update result
 	 * @param flags		the update flags
 	 */
-	void (*process_update_result)(subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
+	void (*process_update_result)(Subscription * subscription, const struct updateResult * const result, updateFlags flags);
 
 } *subscriptionTypePtr;
-
-#define SUBSCRIPTION_TYPE(subscription)	(subscription->type)
 
 #endif

@@ -135,7 +135,7 @@ rule_check_item_category (rulePtr rule, itemPtr item)
 static gboolean
 rule_check_feed_title (rulePtr rule, itemPtr item)
 {
-	nodePtr feedNode = node_from_id (item->parentNodeId);
+	Node *feedNode = node_from_id (item->parentNodeId);
 
 	if (!feedNode)
 		return FALSE;
@@ -146,7 +146,7 @@ rule_check_feed_title (rulePtr rule, itemPtr item)
 static gboolean
 rule_check_feed_source (rulePtr rule, itemPtr item)
 {
-	nodePtr feedNode = node_from_id (item->parentNodeId);
+	Node *feedNode = node_from_id (item->parentNodeId);
 	if (!feedNode)
 		return FALSE;
 
@@ -156,7 +156,7 @@ rule_check_feed_source (rulePtr rule, itemPtr item)
 static gboolean
 rule_check_parent_folder (rulePtr rule, itemPtr item)
 {
-	nodePtr node = node_from_id (item->parentNodeId);
+	Node *node = node_from_id (item->parentNodeId);
 	if (!node)
 		return FALSE;
 

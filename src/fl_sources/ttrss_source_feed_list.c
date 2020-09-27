@@ -39,7 +39,7 @@
 /* subscription list merging functions */
 
 static void
-ttrss_source_check_node_for_removal (nodePtr node, gpointer user_data)
+ttrss_source_check_node_for_removal (Node *node, gpointer user_data)
 {
 	JsonArray	*array = (JsonArray *)user_data;
 	GList		*iter, *elements;
@@ -70,9 +70,9 @@ ttrss_source_check_node_for_removal (nodePtr node, gpointer user_data)
 }
 
 static void
-ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *title, gint64 id, nodePtr folder)
+ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *title, gint64 id, Node *folder)
 {
-	nodePtr		node;
+	Node *		node;
 	gchar		*tmp;
 
 	/* check if node to be merged already exists */
@@ -115,7 +115,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 static void
 ttrss_source_subscription_list_cb (const struct updateResult * const result, gpointer user_data, guint32 flags)
 {
-	subscriptionPtr subscription = (subscriptionPtr) user_data;
+	Subscription * subscription = (Subscription *) user_data;
 	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
 
 	debug1 (DEBUG_UPDATE,"ttrss_subscription_cb(): %s", result->data);
@@ -207,7 +207,7 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 }
 
 static void
-ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr subscription)
+ttrss_source_update_subscription_list (ttrssSourcePtr source, Subscription * subscription)
 {
 	UpdateRequest	*request;
 	gchar		*source_uri;
@@ -228,7 +228,7 @@ ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr su
 }
 
 static void
-ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint parentId, JsonNode *items)
+ttrss_source_merge_categories (ttrssSourcePtr source, Node *parent, gint parentId, JsonNode *items)
 {
 	JsonArray	*array = json_node_get_array (items);
 	GList		*iter, *elements;
@@ -247,7 +247,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 
 				/* Process child categories */
 				if (type && g_str_equal (type, "category")) {
-					nodePtr folder;
+					Node *folder;
 					gchar *folderId = g_strdup_printf ("%d", id);
 
 					debug2 (DEBUG_UPDATE, "TinyTinyRSS category id=%ld name=%s", id, name);
@@ -276,7 +276,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 }
 
 static void
-ttrss_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+ttrss_subscription_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
 {
 	ttrssSourcePtr		source = (ttrssSourcePtr) subscription->node->data;
 
@@ -359,9 +359,9 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 }
 
 static gboolean
-ttrss_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
+ttrss_subscription_prepare_update_request (Subscription * subscription, UpdateRequest *request)
 {
-	nodePtr node = subscription->node;
+	Node *node = subscription->node;
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
 	gchar *source_uri;
 

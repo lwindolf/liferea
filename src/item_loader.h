@@ -74,7 +74,7 @@ typedef gboolean (*fetchCallbackPtr)(gpointer user_data, GSList **items);
  *
  * @returns the new ItemLoader instance
  */
-ItemLoader * item_loader_new (fetchCallbackPtr fetchCallback, nodePtr node, gpointer user_data);
+ItemLoader * item_loader_new (fetchCallbackPtr fetchCallback, Node *node, gpointer user_data);
 
 /**
  * Returns the node an item loader is loading items for.
@@ -83,7 +83,7 @@ ItemLoader * item_loader_new (fetchCallbackPtr fetchCallback, nodePtr node, gpoi
  *
  * @returns node
  */
-nodePtr item_loader_get_node (ItemLoader *il);
+Node *item_loader_get_node (ItemLoader *il);
 
 /**
  * Starts the item loader to load items with idle priority.

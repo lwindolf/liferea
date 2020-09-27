@@ -158,7 +158,7 @@ static gint count_slashes(const gchar *str) {
  * 6. --> downloading favicon from root of webserver of the RSS feed
  */
 GSList *
-favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
+favicon_get_urls (Subscription * subscription, const gchar *html_url)
 {
 	GSList		*urls = NULL;
 	gchar		*tmp, *tmp2;

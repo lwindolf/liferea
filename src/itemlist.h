@@ -2,7 +2,7 @@
  * @file itemlist.h  itemlist handling
  *
  * Copyright (C) 2004-2011 Lars Windolf <lars.windolf@gmx.de>
- *	      
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -42,14 +42,14 @@ typedef struct ItemListPrivate	ItemListPrivate;
 struct ItemList
 {
 	GObject		parent;
-	
+
 	/*< private >*/
 	ItemListPrivate	*priv;
 };
 
-struct ItemListClass 
+struct ItemListClass
 {
-	GObjectClass parent_class;	
+	GObjectClass parent_class;
 };
 
 GType itemlist_get_type (void);
@@ -70,7 +70,7 @@ ItemList * itemlist_create (void);
  *
  * Returns: (transfer none) (nullable): displayed node (or NULL)
  */
-struct node * itemlist_get_displayed_node (void);
+Node * itemlist_get_displayed_node (void);
 
 /**
  * itemlist_get_selected: (skip)
@@ -101,13 +101,13 @@ gulong itemlist_get_selected_id (void);
  */
 void itemlist_merge_itemset (itemSetPtr itemSet);
 
-/** 
+/**
  * itemlist_load: (skip)
  * @node: 	the node
  *
  * Loads the passed nodes items into the item list.
  */
-void itemlist_load (struct node *node);
+void itemlist_load (Node *node);
 
 /**
  * itemlist_unload: (skip)
@@ -184,15 +184,15 @@ void itemlist_remove_items (itemSetPtr itemSet, GList *items);
  * itemlist_remove_all_items: (skip)
  * @node:	the node whose item list is to be removed
  *
- * To be called whenever the user wants to remove 
+ * To be called whenever the user wants to remove
  * all items of a node. Item list selection will be
  * resetted. All items are removed immediately.
  */
-void itemlist_remove_all_items (struct node *node);
+void itemlist_remove_all_items (Node *node);
 
 /**
  * itemlist_selection_changed: (skip)
- * @item:	new selected item 
+ * @item:	new selected item
  *
  * Called from GUI when item list selection changes.
  */

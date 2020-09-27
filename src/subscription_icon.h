@@ -32,6 +32,6 @@
  * @subscription: the subscription
  */
 void
-subscription_icon_update (subscriptionPtr subscription);
+subscription_icon_update (Subscription * subscription);
 
 #endif

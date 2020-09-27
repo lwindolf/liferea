@@ -43,7 +43,7 @@
 
 /** Initialize a TinyTinyRSS source with given node as root */
 static ttrssSourcePtr
-ttrss_source_new (nodePtr node)
+ttrss_source_new (Node *node)
 {
 	ttrssSourcePtr source = g_new0 (struct ttrssSource, 1) ;
 	source->root = node;
@@ -84,7 +84,7 @@ static void
 ttrss_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
 	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
-	subscriptionPtr subscription = source->root->subscription;
+	Subscription * subscription = source->root->subscription;
 	JsonParser	*parser;
 
 	debug1 (DEBUG_UPDATE, "TinyTinyRSS login processing... >>>%s<<<", result->data);
@@ -142,7 +142,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 {
 	gchar			*username, *password, *source_uri;
 	UpdateRequest		*request;
-	subscriptionPtr		subscription = source->root->subscription;
+	Subscription *		subscription = source->root->subscription;
 
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session doesn't expire. */
@@ -182,7 +182,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 /* node source type implementation */
 
 static void
-ttrss_source_auto_update (nodePtr node)
+ttrss_source_auto_update (Node *node)
 {
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		node_source_update (node);
@@ -206,7 +206,7 @@ ttrss_source_init (void)
 static void ttrss_source_deinit (void) { }
 
 static void
-ttrss_source_import (nodePtr node)
+ttrss_source_import (Node *node)
 {
 	opml_source_import (node);
 
@@ -219,7 +219,7 @@ ttrss_source_import (nodePtr node)
 static void
 ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	subscriptionPtr subscription = (subscriptionPtr) userdata;
+	Subscription * subscription = (Subscription *) userdata;
 
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS subscribe result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
@@ -240,10 +240,10 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 	node_source_update (subscription->node->source->root);
 }
 
-static nodePtr
-ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
+static Node *
+ttrss_source_add_subscription (Node *root, Subscription * subscription)
 {
-	nodePtr			parent;
+	Node *			parent;
 	gchar			*username, *password;
 	ttrssSourcePtr		source = (ttrssSourcePtr)root->data;
 	UpdateRequest		*request;
@@ -285,7 +285,7 @@ ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
 static void
 ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	nodePtr node = (nodePtr) userdata;
+	Node *node = (Node *) userdata;
 
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS remove node result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
@@ -305,7 +305,7 @@ ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer 
 }
 
 static void
-ttrss_source_remove_node (nodePtr root, nodePtr node)
+ttrss_source_remove_node (Node *root, Node *node)
 {
 	ttrssSourcePtr	source = (ttrssSourcePtr)root->data;
 	UpdateRequest	*request;
@@ -348,7 +348,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
                            gpointer user_data)
 {
 	if (response_id == GTK_RESPONSE_OK) {
-		nodePtr		node;
+		Node *		node;
 
 		node = node_source_new ("fl_ttrss", "");
 
@@ -385,7 +385,7 @@ ui_ttrss_source_get_account_info (const gchar *typeId)
 }
 
 static void
-ttrss_source_cleanup (nodePtr node)
+ttrss_source_cleanup (Node *node)
 {
 	ttrssSourcePtr source = (ttrssSourcePtr) node->data;
 	ttrss_source_free (source);
@@ -401,9 +401,9 @@ ttrss_source_remote_update_cb (const struct updateResult * const result, gpointe
 /* FIXME: Only simple synchronous item change requests... Get async! */
 
 static void
-ttrss_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
+ttrss_source_item_set_flag (Node *node, itemPtr item, gboolean newStatus)
 {
-	nodePtr		root = node_source_root_from_node (node);
+	Node *		root = node_source_root_from_node (node);
 	ttrssSourcePtr	source = (ttrssSourcePtr)root->data;
 	UpdateRequest	*request;
 	gchar		*source_uri;
@@ -426,9 +426,9 @@ ttrss_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
 }
 
 static void
-ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
+ttrss_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 {
-	nodePtr		root = node_source_root_from_node (node);
+	Node *		root = node_source_root_from_node (node);
 	ttrssSourcePtr	source = (ttrssSourcePtr)root->data;
 	UpdateRequest	*request;
 	gchar		*source_uri;

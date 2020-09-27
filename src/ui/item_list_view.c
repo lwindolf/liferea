@@ -238,7 +238,7 @@ item_list_view_date_sort_func (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter 
 static gint
 item_list_view_favicon_sort_func (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data)
 {
-	nodePtr	node1, node2;
+	Node	*node1, *node2;
 
 	gtk_tree_model_get (model, a, IS_SOURCE, &node1, -1);
 	gtk_tree_model_get (model, b, IS_SOURCE, &node2, -1);
@@ -464,8 +464,8 @@ item_list_title_alignment (gchar *title)
 		return 1.;
 }
 
-static void 
-item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIter *iter, nodePtr node)
+static void
+item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIter *iter, Node *node)
 {
 	GtkTreeStore	*itemstore;
 	gchar		*title, *time_str;
@@ -921,7 +921,7 @@ static void
 item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstore, itemPtr item)
 {
 	gint		state = 0;
-	nodePtr		node;
+	Node *		node;
 	GtkTreeIter	iter;
 	gboolean	exists = FALSE;
 
@@ -1046,7 +1046,7 @@ on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer us
 void
 on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr		node;
+	Node *node;
 
 	node = feedlist_get_selected ();
 	// FIXME: use node type capability check

@@ -287,7 +287,7 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 			gulong id = GPOINTER_TO_UINT (iter->data);
 			itemPtr duplicate = item_load (id);
 			if (duplicate) {
-				nodePtr duplicateNode = node_from_id (duplicate->nodeId);
+				Node *duplicateNode = node_from_id (duplicate->nodeId);
 				if (duplicateNode && (item->id != duplicate->id))
 					xmlNewTextChild (duplicatesNode, NULL, BAD_CAST "duplicateNode",
 					                 BAD_CAST node_get_title (duplicateNode));
@@ -306,7 +306,7 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 
 	metadata_add_xml_nodes (item->metadata, itemNode);
 
-	nodePtr feedNode = node_from_id (item->parentNodeId);
+	Node *feedNode = node_from_id (item->parentNodeId);
 	if (feedNode) {
 		feedPtr feed = (feedPtr)feedNode->data;
 		if (feed) {

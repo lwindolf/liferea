@@ -71,7 +71,7 @@ liferea_auth_info_store_foreach (PeasExtensionSet *set,
                                  PeasExtension *exten,
                                  gpointer user_data)
 {
-	subscriptionPtr subscription = (subscriptionPtr)user_data;
+	Subscription * subscription = (Subscription *)user_data;
 
 	g_assert (subscription != NULL);
 	g_assert (subscription->node != NULL);
@@ -93,7 +93,7 @@ liferea_auth_info_store (gpointer user_data)
 void
 liferea_auth_info_from_store (const gchar *id, const gchar *username, const gchar *password)
 {
-	nodePtr	node = node_from_id (id);
+	Node *	node = node_from_id (id);
 
 	g_assert (NULL != node->subscription);
 

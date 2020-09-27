@@ -49,8 +49,8 @@
 
 static GSList		*nodeSourceTypes = NULL;
 
-nodePtr
-node_source_root_from_node (nodePtr node)
+Node *
+node_source_root_from_node (Node *node)
 {
 	while (node->parent->source == node->source)
 		node = node->parent;
@@ -134,10 +134,10 @@ node_source_type_unregister (const gchar *id)
 	}
 }
 
-nodePtr
+Node *
 node_source_setup_root (void)
 {
-	nodePtr	rootNode;
+	Node *	rootNode;
 	nodeSourceTypePtr type;
 
 	debug_enter ("node_source_setup_root");
@@ -169,12 +169,12 @@ node_source_setup_root (void)
 }
 
 static void
-node_source_set_feed_subscription_type (nodePtr folder, subscriptionTypePtr type)
+node_source_set_feed_subscription_type (Node *folder, subscriptionTypePtr type)
 {
 	GSList *iter;
 
 	for (iter = folder->children; iter; iter = g_slist_next(iter)) {
-		nodePtr node = (nodePtr) iter->data;
+		Node *node = (Node *) iter->data;
 
 		if (node->subscription)
 			node->subscription->type = type;
@@ -185,7 +185,7 @@ node_source_set_feed_subscription_type (nodePtr folder, subscriptionTypePtr type
 }
 
 static void
-node_source_set_type (nodePtr node, const gchar *typeId)
+node_source_set_type (Node *node, const gchar *typeId)
 {
 	node->source = g_new0 (struct nodeSource, 1);
 	node->source->root = node;
@@ -198,7 +198,7 @@ node_source_set_type (nodePtr node, const gchar *typeId)
 }
 
 static void
-node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
+node_source_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 {
 	xmlChar			*typeStr = NULL;
 
@@ -243,7 +243,7 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 }
 
 static void
-node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
+node_source_export (Node *node, xmlNodePtr xml, gboolean trusted)
 {
 	debug_enter ("node_source_export");
 
@@ -262,11 +262,11 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 	debug_exit("node_source_export");
 }
 
-nodePtr
+Node *
 node_source_new (const gchar *typeId, const gchar *url)
 {
-	nodePtr node;
-	subscriptionPtr	subscription;
+	Node *node;
+	Subscription *	subscription;
 
 	node = node_new (node_source_get_node_type ());
 	node_source_set_type (node, typeId);
@@ -290,7 +290,7 @@ node_source_type_new (void)
 }
 
 void
-node_source_set_state (nodePtr node, gint newState)
+node_source_set_state (Node *node, gint newState)
 {
 	debug3 (DEBUG_UPDATE, "node source '%s' now in state %d (was %d)", node->id, newState, node->source->loginState);
 
@@ -310,7 +310,7 @@ node_source_set_state (nodePtr node, gint newState)
 }
 
 void
-node_source_set_auth_token (nodePtr node, gchar *token)
+node_source_set_auth_token (Node *node, gchar *token)
 {
 	g_assert (!node->source->authToken);
 
@@ -414,7 +414,7 @@ feed_list_node_source_type_dialog (void)
 }
 
 void
-node_source_update (nodePtr node)
+node_source_update (Node *node)
 {
 	if (node->subscription) {
 		/* Reset NODE_SOURCE_STATE_NO_AUTH as this is a manual
@@ -434,13 +434,13 @@ node_source_update (nodePtr node)
 }
 
 void
-node_source_auto_update (nodePtr node)
+node_source_auto_update (Node *node)
 {
 	NODE_SOURCE_TYPE (node)->source_auto_update (node);
 }
 
 static gboolean
-node_source_is_logged_in (nodePtr node)
+node_source_is_logged_in (Node *node)
 {
 	if (FALSE == (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN))
 		return TRUE;
@@ -451,8 +451,8 @@ node_source_is_logged_in (nodePtr node)
 	return node->source->loginState == NODE_SOURCE_STATE_ACTIVE;
 }
 
-nodePtr
-node_source_add_subscription (nodePtr node, subscriptionPtr subscription)
+Node *
+node_source_add_subscription (Node *node, Subscription *subscription)
 {
 	if (!node_source_is_logged_in (node))
 		return NULL;
@@ -465,8 +465,8 @@ node_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 	return NULL;
 }
 
-nodePtr
-node_source_add_folder (nodePtr node, const gchar *title)
+Node *
+node_source_add_folder (Node *node, const gchar *title)
 {
 	if (!node_source_is_logged_in (node))
 		return NULL;
@@ -480,7 +480,7 @@ node_source_add_folder (nodePtr node, const gchar *title)
 }
 
 void
-node_source_update_folder (nodePtr node, nodePtr folder)
+node_source_update_folder (Node *node, Node *folder)
 {
 	if (!node_source_is_logged_in (node))
 		return;
@@ -494,10 +494,10 @@ node_source_update_folder (nodePtr node, nodePtr folder)
 	}
 }
 
-nodePtr
-node_source_find_or_create_folder (nodePtr parent, const gchar *id, const gchar *name)
+Node *
+node_source_find_or_create_folder (Node *parent, const gchar *id, const gchar *name)
 {
-	nodePtr		folder = NULL;
+	Node *		folder = NULL;
 	gchar		*folderNodeId;
 
 	if (!id)
@@ -518,7 +518,7 @@ node_source_find_or_create_folder (nodePtr parent, const gchar *id, const gchar 
 }
 
 void
-node_source_remove_node (nodePtr node, nodePtr child)
+node_source_remove_node (Node *node, Node *child)
 {
 	if (!node_source_is_logged_in (node))
 		return;
@@ -533,7 +533,7 @@ node_source_remove_node (nodePtr node, nodePtr child)
 }
 
 void
-node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState)
+node_source_item_mark_read (Node *node, itemPtr item, gboolean newState)
 {
 	/* Item read state changes are optional for node source
 	   implementations. If they are supported the implementation
@@ -547,7 +547,7 @@ node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState)
 }
 
 void
-node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState)
+node_source_item_set_flag (Node *node, itemPtr item, gboolean newState)
 {
 	/* Item flag state changes are optional for node source
 	   implementations. If they are supported the implementation
@@ -561,7 +561,7 @@ node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState)
 }
 
 static void
-node_source_convert_to_local_child_node (nodePtr node)
+node_source_convert_to_local_child_node (Node *node)
 {
 	/* Ensure to remove special subscription types and cancel updates
 	   Note: we expect that all feeds already have the subscription URL
@@ -579,11 +579,11 @@ node_source_convert_to_local_child_node (nodePtr node)
 	if (IS_FOLDER (node))
 		node_foreach_child (node, node_source_convert_to_local_child_node);
 
-	node->source = ((nodePtr)feedlist_get_root ())->source;
+	node->source = ((Node *)feedlist_get_root ())->source;
 }
 
 void
-node_source_convert_to_local (nodePtr node)
+node_source_convert_to_local (Node *node)
 {
 	g_assert (node == node->source->root);
 
@@ -600,7 +600,7 @@ node_source_convert_to_local (nodePtr node)
 	/* Perform conversion */
 
 	debug0 (DEBUG_UPDATE, "Converting root node to folder...");
-	node->source = ((nodePtr)feedlist_get_root ())->source;
+	node->source = ((Node *)feedlist_get_root ())->source;
 	node->type = folder_get_node_type ();
 	node->subscription = NULL;	/* leaking subscription is ok */
 	node->data = NULL;		/* leaking data is ok */
@@ -618,7 +618,7 @@ node_source_convert_to_local (nodePtr node)
 /* implementation of the node type interface */
 
 static void
-node_source_remove (nodePtr node)
+node_source_remove (Node *node)
 {
 	if (!node_source_is_logged_in (node))
 		return;
@@ -632,13 +632,13 @@ node_source_remove (nodePtr node)
 }
 
 static void
-node_source_save (nodePtr node)
+node_source_save (Node *node)
 {
 	node_foreach_child (node, node_save);
 }
 
 static void
-node_source_free (nodePtr node)
+node_source_free (Node *node)
 {
 	if (NULL != NODE_SOURCE_TYPE (node)->free)
 		NODE_SOURCE_TYPE (node)->free (node);

@@ -1,8 +1,8 @@
 /**
  * @file ui_update.c GUI update monitor
- * 
+ *
  * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -15,10 +15,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ui/ui_update.h" 
+#include "ui/ui_update.h"
 
 #include "common.h"
 #include "feedlist.h"
@@ -39,7 +39,7 @@ static GtkTreeStore *um2store = NULL;
 static GHashTable *um1hash = NULL;
 static GHashTable *um2hash = NULL;
 
-static void ui_update_remove_request(nodePtr node, GtkTreeStore *store, GHashTable *hash) {
+static void ui_update_remove_request(Node *node, GtkTreeStore *store, GHashTable *hash) {
 	GtkTreeIter	*iter;
 
 	iter = (GtkTreeIter *)g_hash_table_lookup(hash, node->id);
@@ -50,7 +50,7 @@ static void ui_update_remove_request(nodePtr node, GtkTreeStore *store, GHashTab
 	}
 }
 
-static void ui_update_merge_request(nodePtr node, GtkTreeStore *store, GHashTable *hash) {
+static void ui_update_merge_request(Node *node, GtkTreeStore *store, GHashTable *hash) {
 	GtkTreeIter	*iter;
         gchar           *title;
 
@@ -69,14 +69,14 @@ static void ui_update_merge_request(nodePtr node, GtkTreeStore *store, GHashTabl
 }
 
 static void
-ui_update_find_requests (nodePtr node) {
+ui_update_find_requests (Node *node) {
 
 	if (node->children)
 		node_foreach_child (node, ui_update_find_requests);
 
 	if (!node->subscription)
 		return;
-		
+
 	if (node->subscription->updateJob) {
 		if (REQUEST_STATE_PROCESSING == update_job_get_state (node->subscription->updateJob)) {
 			ui_update_merge_request (node, um1store, um1hash);
@@ -89,7 +89,7 @@ ui_update_find_requests (nodePtr node) {
 			return;
 		}
 	}
-			
+
 	ui_update_remove_request (node, um1store, um1hash);
 	ui_update_remove_request (node, um2store, um2hash);
 }
@@ -101,18 +101,18 @@ static gboolean ui_update_monitor_update(void *data) {
 		return TRUE;
 	} else {
 		return FALSE;
-	}	
+	}
 }
 
 static void
-ui_update_cancel (nodePtr node)
+ui_update_cancel (Node *node)
 {
 	if (node->children)
 		node_foreach_child (node, ui_update_cancel);
 
 	if (!node->subscription)
 		return;
-		
+
 	subscription_cancel_update (node->subscription);
 }
 
@@ -136,17 +136,17 @@ on_close_update_monitor_clicked(GtkButton *button, gpointer user_data)
 {
 	gtk_widget_destroy(umdialog);
 }
- 
+
 void
 on_menu_show_update_monitor(GSimpleAction *action, GVariant *parameter, gpointer user_data) {
-	GtkCellRenderer		*textRenderer, *iconRenderer;	
+	GtkCellRenderer		*textRenderer, *iconRenderer;
 	GtkTreeViewColumn 	*column;
 	GtkTreeView		*view;
 
 	if(!umdialog) {
 		umdialog = liferea_dialog_new ("update_monitor");
 		g_signal_connect (G_OBJECT (umdialog), "destroy", G_CALLBACK (on_update_monitor_destroyed_cb), NULL);
-		
+
 		/* Set up left store and view */
 		view = GTK_TREE_VIEW(liferea_dialog_lookup(umdialog, "left"));
 		um1store = gtk_tree_store_new(UM_LEN, G_TYPE_ICON, G_TYPE_STRING);
@@ -155,13 +155,13 @@ on_menu_show_update_monitor(GSimpleAction *action, GVariant *parameter, gpointer
 		textRenderer = gtk_cell_renderer_text_new();
 		iconRenderer = gtk_cell_renderer_pixbuf_new();
 		column = gtk_tree_view_column_new();
-	
+
 		gtk_tree_view_column_pack_start(column, iconRenderer, FALSE);
 		gtk_tree_view_column_pack_start(column, textRenderer, TRUE);
 		gtk_tree_view_column_add_attribute(column, iconRenderer, "gicon", UM_FAVICON);
 		gtk_tree_view_column_add_attribute(column, textRenderer, "markup", UM_REQUEST_TITLE);
 		gtk_tree_view_append_column(view, column);
-		
+
 		/* Set up right store and view */
 		view = GTK_TREE_VIEW(liferea_dialog_lookup(umdialog, "right"));
 		um2store = gtk_tree_store_new(UM_LEN, G_TYPE_ICON, G_TYPE_STRING);
@@ -170,18 +170,18 @@ on_menu_show_update_monitor(GSimpleAction *action, GVariant *parameter, gpointer
 		textRenderer = gtk_cell_renderer_text_new();
 		iconRenderer = gtk_cell_renderer_pixbuf_new();
 		column = gtk_tree_view_column_new();
-	
+
 		gtk_tree_view_column_pack_start(column, iconRenderer, FALSE);
 		gtk_tree_view_column_pack_start(column, textRenderer, TRUE);
 		gtk_tree_view_column_add_attribute(column, iconRenderer, "gicon", UM_FAVICON);
 		gtk_tree_view_column_add_attribute(column, textRenderer, "markup", UM_REQUEST_TITLE);
-		gtk_tree_view_append_column(view, column);		
-		
+		gtk_tree_view_append_column(view, column);
+
 		/* Fill in data */
 		um1hash = g_hash_table_new(g_str_hash, g_str_equal);
 		um2hash = g_hash_table_new(g_str_hash, g_str_equal);
 	 	(void)g_timeout_add_seconds(1, ui_update_monitor_update, NULL);
 	}
-	
+
 	gtk_window_present(GTK_WINDOW(umdialog));
 }

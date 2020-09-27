@@ -1,12 +1,12 @@
 /**
  * @file node_type.h  node type interface
- * 
- * Copyright (C) 2007-2012 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2007-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -44,7 +44,7 @@ enum {
 };
 
 /**
- * Liferea supports different types of nodes in the feed 
+ * Liferea supports different types of nodes in the feed
  * list. The type of a feed list node determines how the user
  * can interact with it.
  */
@@ -54,41 +54,39 @@ typedef struct nodeType {
 	gulong		capabilities;	/**< bitmask of node type capabilities */
 	const gchar	*id;		/**< type id (used for type attribute in OPML export) */
 	const GIcon	*icon;		/**< default icon for nodes of this type (if no favicon available) */
-	
-	/* For method documentation see the wrappers defined below! 
+
+	/* For method documentation see the wrappers defined below!
 	   All methods are mandatory for each node type. */
-	void    	(*import)		(nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted);
-	void    	(*export)		(nodePtr node, xmlNodePtr cur, gboolean trusted);
-	itemSetPtr	(*load)			(nodePtr node);
-	void 		(*save)			(nodePtr node);
-	void		(*update_counters)	(nodePtr node);
-	void		(*remove)		(nodePtr node);
-	gchar *		(*render)		(nodePtr node);
+	void    	(*import)		(Node *node, Node *parent, xmlNodePtr cur, gboolean trusted);
+	void    	(*export)		(Node *node, xmlNodePtr cur, gboolean trusted);
+	itemSetPtr	(*load)			(Node *node);
+	void 		(*save)			(Node *node);
+	void		(*update_counters)	(Node *node);
+	void		(*remove)		(Node *node);
+	gchar *		(*render)		(Node *node);
 	gboolean	(*request_add)		(void);
-	void		(*request_properties)	(nodePtr node);
-	
+	void		(*request_properties)	(Node *node);
+
 	/**
 	 * Called to allow node type to clean up it's specific data.
 	 * The node structure itself is destroyed after this call.
 	 *
 	 * @param node		the node
 	 */
-	void		(*free)			(nodePtr node);
+	void		(*free)			(Node *node);
 } *nodeTypePtr;
 
-#define NODE_TYPE(node)	(node->type)
-
-/** 
+/**
  * Maps node type to string. For feed nodes
  * it maps to the feed type string.
  *
- * @param node	the node 
+ * @param node	the node
  *
  * @returns type string (or NULL if unknown)
  */
-const gchar *node_type_to_str (nodePtr node);
+const gchar *node_type_to_str (Node *node);
 
-/** 
+/**
  * Maps node type string to type constant.
  *
  * @param type str	the node type as string
@@ -98,7 +96,7 @@ const gchar *node_type_to_str (nodePtr node);
 nodeTypePtr node_str_to_type (const gchar *str);
 
 /**
- * Interactive node adding (e.g. feed menu->new subscription), 
+ * Interactive node adding (e.g. feed menu->new subscription),
  * launches some dialog that upon success adds a feed of the
  * given type.
  *

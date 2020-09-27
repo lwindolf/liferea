@@ -184,14 +184,14 @@ guint   db_search_folder_get_item_count (const gchar *id);
  *
  * @param subscription	the subscription whose info to load
  */
-void db_subscription_load (subscriptionPtr subscription);
+void db_subscription_load (Subscription * subscription);
 
 /**
  * Updates (or inserts) the properties of the given subscription in the DB.
  *
  * @param subscription	the subscription
  */
-void db_subscription_update (subscriptionPtr subscription);
+void db_subscription_update (Subscription * subscription);
 
 /**
  * Removes the subscription with the given id from the DB
@@ -205,7 +205,7 @@ void db_subscription_remove (const gchar *id);
  *
  * @param node		the node
  */
-void db_node_update (nodePtr node);
+void db_node_update (Node *node);
 
 
 /**
@@ -214,6 +214,6 @@ void db_node_update (nodePtr node);
  * 
  * @param root		the root node
  */
-void db_node_cleanup (nodePtr root);
+void db_node_cleanup (Node *root);
 
 #endif

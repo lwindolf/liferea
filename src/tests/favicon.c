@@ -128,7 +128,7 @@ tc tc6 = {
 static void
 tc_favicon_get_urls (gconstpointer user_data)
 {
-	subscriptionPtr	s;
+	Subscription *	s;
 	tc		*t = (tc *)user_data;
 	GSList		*url, *results;
 	gchar		*tmp;

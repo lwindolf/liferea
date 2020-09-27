@@ -129,7 +129,7 @@ ui_popup_item_menu (itemPtr item, const GdkEvent *event)
 		submenu = g_menu_new ();
 
 		while (iter) {
-			nodePtr	node = (nodePtr)iter->data;
+			Node *	node = (Node *)iter->data;
 			g_menu_item_set_label (menu_item, node_get_title (node));
 			g_menu_item_set_action_and_target (menu_item, "item.copy-item-to-newsbin", "(umt)", i, TRUE, (guint64) item->id);
 			g_menu_append_item (submenu, menu_item);
@@ -209,33 +209,33 @@ ui_popup_enclosure_menu (enclosurePtr enclosure, const GdkEvent *event)
 static void
 ui_popup_rebuild_vfolder (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	vfolder_rebuild ((nodePtr)user_data);
+	vfolder_rebuild ((Node *)user_data);
 }
 
 static void
 ui_popup_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr node = (nodePtr) user_data;
+	Node *node = (Node *) user_data;
 
-	NODE_TYPE (node)->request_properties (node);
+	node->type->request_properties (node);
 }
 
 static void
 ui_popup_delete (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feed_list_view_remove ((nodePtr)user_data);
+	feed_list_view_remove ((Node *)user_data);
 }
 
 static void
 ui_popup_sort_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feed_list_view_sort_folder ((nodePtr)user_data);
+	feed_list_view_sort_folder ((Node *)user_data);
 }
 
 static void
 ui_popup_add_convert_to_local (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	node_source_convert_to_local ((nodePtr)user_data);
+	node_source_convert_to_local ((Node *)user_data);
 }
 
 /* Those actions work on the node passed as user_data parameter. */
@@ -254,7 +254,7 @@ static const GActionEntry ui_popup_node_gaction_entries[] = {
  * node type.
  */
 static void
-ui_popup_node_menu (nodePtr node, gboolean validSelection, const GdkEvent *event)
+ui_popup_node_menu (Node *node, gboolean validSelection, const GdkEvent *event)
 {
 	GtkWidget		*menu;
 	GMenu 			*menu_model, *section;
@@ -264,7 +264,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, const GdkEvent *event
 	if (node->parent) {
 		writeableFeedlist = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
 		isRoot = NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
-		addChildren = NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS;
+		addChildren = node->source->root->type->capabilities & NODE_CAPABILITY_ADD_CHILDS;
 	} else {
 		/* if we have no parent then we have the root node... */
 		writeableFeedlist = TRUE;
@@ -276,9 +276,9 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, const GdkEvent *event
 	section = g_menu_new ();
 
 	if (validSelection) {
-		if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE)
+		if (node->type->capabilities & NODE_CAPABILITY_UPDATE)
 			g_menu_append (section, _("_Update"), "node.node-update");
-		else if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
+		else if (node->type->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
 			g_menu_append (section, _("_Update Folder"), "node.node-update");
 	}
 
@@ -370,7 +370,7 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 	GtkTreePath	*path;
 	GtkTreeIter	iter;
 	gboolean	selected = TRUE;
-	nodePtr		node = NULL;
+	Node *		node = NULL;
 
 	treeview = liferea_shell_lookup ("feedlist");
 
@@ -429,7 +429,7 @@ on_mainfeedlist_popup_menu (GtkWidget *widget,
 	GtkTreeModel	*model;
 	GtkTreeIter	iter;
 	gboolean	selected = TRUE;
-	nodePtr		node = NULL;
+	Node *		node = NULL;
 
 	treeview = liferea_shell_lookup ("feedlist");
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));

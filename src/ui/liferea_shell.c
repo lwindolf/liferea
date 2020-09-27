@@ -823,7 +823,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	GtkTreeModel	*model;
 	GtkTreePath	*path;
 	GtkTreeIter	iter;
-	nodePtr		node;
+	Node *		node;
 	gint		tx, ty;
 
 	g_return_if_fail (gtk_selection_data_get_data (data) != NULL);

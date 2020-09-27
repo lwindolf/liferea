@@ -166,7 +166,7 @@ on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 void
 on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 {
-	nodePtr		displayedNode;
+	Node *		displayedNode;
 	gboolean	enabled;
 
 	displayedNode = itemlist_get_displayed_node ();

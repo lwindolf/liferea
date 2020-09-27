@@ -70,21 +70,21 @@ typedef struct ui_data {
 struct _SubscriptionPropDialog {
 	GObject	parentInstance;
 
-	subscriptionPtr subscription;	/** used only for "properties" dialog */
+	Subscription * subscription;	/** used only for "properties" dialog */
 	dialogData		ui_data;
 };
 
 struct _NewSubscriptionDialog {
 	GObject	parentInstance;
 
-	subscriptionPtr subscription;	/** used only for "properties" dialog */
+	Subscription * subscription;	/** used only for "properties" dialog */
 	dialogData		ui_data;
 };
 
 struct _SimpleSubscriptionDialog {
 	GObject	parentInstance;
 
-	subscriptionPtr subscription;	/** used only for "properties" dialog */
+	Subscription * subscription;	/** used only for "properties" dialog */
 	dialogData		ui_data;
 };
 
@@ -188,11 +188,11 @@ on_propdialog_response (GtkDialog *dialog,
 		gchar		*newSource;
 		const gchar	*newFilter;
 		gboolean	needsUpdate = FALSE;
-		subscriptionPtr	subscription = spd->subscription;
-		nodePtr		node = spd->subscription->node;
+		Subscription *	subscription = spd->subscription;
+		Node *		node = spd->subscription->node;
 		feedPtr		feed = (feedPtr)node->data;
 
-		if (SUBSCRIPTION_TYPE(subscription) == feed_get_subscription_type ()) {
+		if (subscription->type == feed_get_subscription_type ()) {
 			/* "General" */
 			node_set_title(node, gtk_entry_get_text(GTK_ENTRY(spd->ui_data.feedNameEntry)));
 
@@ -250,7 +250,7 @@ on_propdialog_response (GtkDialog *dialog,
 		else if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "feedCacheLimited"))))
 			feed->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "cacheItemLimit")));
 
-		if (SUBSCRIPTION_TYPE(subscription) == feed_get_subscription_type ()) {
+		if (subscription->type == feed_get_subscription_type ()) {
 			/* "Download" Options */
 			subscription->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "dontUseProxyCheck")));
 		}
@@ -377,13 +377,13 @@ on_feed_prop_update_radio (GtkToggleButton *button, gpointer user_data)
 
 static void
 subscription_prop_dialog_load (SubscriptionPropDialog *spd,
-                               subscriptionPtr subscription)
+                               Subscription * subscription)
 {
 	gint 		interval;
 	gint		default_update_interval;
 	gint		defaultInterval, spinSetInterval;
 	gchar 		*defaultIntervalStr;
-	nodePtr		node = subscription->node;
+	Node *		node = subscription->node;
 	feedPtr		feed = (feedPtr)node->data;
 
 	spd->subscription = subscription;
@@ -434,7 +434,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	g_free (defaultIntervalStr);
 
 	/* Source (only for feeds) */
-	if (SUBSCRIPTION_TYPE (subscription) == feed_get_subscription_type ()) {
+	if (subscription->type == feed_get_subscription_type ()) {
 		if (subscription_get_source (subscription)[0] == '|') {
 			gtk_entry_set_text (GTK_ENTRY (spd->ui_data.sourceEntry), &(subscription_get_source (subscription)[1]));
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (spd->ui_data.cmdRadio), TRUE);
@@ -507,7 +507,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "html5ExtractCheck")), feed->html5Extract);
 
 	/* Remove tabs we do not need... */
-	if (SUBSCRIPTION_TYPE (subscription) != feed_get_subscription_type ()) {
+	if (subscription->type != feed_get_subscription_type ()) {
 		/* Remove "General", "Source" and "Download" tab */
 		gtk_notebook_remove_page (GTK_NOTEBOOK (liferea_dialog_lookup (spd->ui_data.dialog, "subscriptionPropNotebook")), 0);
 		gtk_notebook_remove_page (GTK_NOTEBOOK (liferea_dialog_lookup (spd->ui_data.dialog, "subscriptionPropNotebook")), 0);
@@ -559,7 +559,7 @@ subscription_prop_dialog_init (SubscriptionPropDialog *spd)
 }
 
 SubscriptionPropDialog *
-subscription_prop_dialog_new (subscriptionPtr subscription)
+subscription_prop_dialog_new (Subscription * subscription)
 {
 	SubscriptionPropDialog *spd;
 

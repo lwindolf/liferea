@@ -40,7 +40,7 @@ G_DECLARE_FINAL_TYPE (AuthDialog, auth_dialog, AUTH, DIALOG, GObject)
  *
  * Returns: (transfer none): new dialog
  */
-AuthDialog * auth_dialog_new (subscriptionPtr subscription, gint flags);
+AuthDialog * auth_dialog_new (Subscription * subscription, gint flags);
 
 G_END_DECLS
 

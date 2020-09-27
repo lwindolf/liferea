@@ -38,13 +38,13 @@
 static gboolean feedlistImport = TRUE;
 
 static gchar *
-default_source_source_get_feedlist (nodePtr node)
+default_source_source_get_feedlist (Node *node)
 {
 	return common_create_config_filename ("feedlist.opml");
 }
 
 static void
-default_source_import (nodePtr node)
+default_source_import (Node *node)
 {
 	gchar		*filename, *backupFilename;
 	gchar		*content;
@@ -105,7 +105,7 @@ default_source_import (nodePtr node)
 }
 
 static void
-default_source_export (nodePtr node)
+default_source_export (Node *node)
 {
 	gchar	*filename;
 
@@ -124,18 +124,18 @@ default_source_export (nodePtr node)
 }
 
 static void
-default_source_auto_update (nodePtr node)
+default_source_auto_update (Node *node)
 {
 	node_foreach_child (node, node_auto_update_subscription);
 }
 
-static nodePtr
-default_source_add_subscription (nodePtr node, subscriptionPtr subscription)
+static Node *
+default_source_add_subscription (Node *node, Subscription * subscription)
 {
 	/* For the local feed list source subscriptions are always
 	   feed subscriptions implemented by the feed node and
 	   subscription type... */
-	nodePtr child = node_new (feed_get_node_type ());
+	Node *child = node_new (feed_get_node_type ());
 	node_set_title (child, _("New Subscription"));
 	node_set_data (child, feed_new ());
 	node_set_subscription (child, subscription);	/* feed subscription type is implicit */
@@ -145,12 +145,12 @@ default_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 	return child;
 }
 
-static nodePtr
-default_source_add_folder (nodePtr node, const gchar *title)
+static Node *
+default_source_add_folder (Node *node, const gchar *title)
 {
 	/* For the local feed list source folders are always
 	   real folders implemented by the folder node type... */
-	nodePtr child = node_new (folder_get_node_type());
+	Node *child = node_new (folder_get_node_type());
 	node_set_title (child, title);
 	feedlist_node_added (child);
 
@@ -158,7 +158,7 @@ default_source_add_folder (nodePtr node, const gchar *title)
 }
 
 static void
-default_source_remove_node (nodePtr node, nodePtr child)
+default_source_remove_node (Node *node, Node *child)
 {
 	/* The default source can always immediately serve remove requests. */
 	feedlist_node_removed (child);

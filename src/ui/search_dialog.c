@@ -127,7 +127,7 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 		rule_editor_save (sd->re, vfolder->itemset);
 		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->dialog, "anyRuleRadioBtn2")));
 
-		nodePtr node = vfolder->node;
+		Node *node = vfolder->node;
 		sd->vfolder = NULL;
 		feedlist_node_added (node);
 	}

@@ -38,7 +38,7 @@
    The folder node type does not implement the hierarchy of the feed list! */
 
 static void
-folder_merge_child_items (nodePtr node, gpointer user_data)
+folder_merge_child_items (Node *node, gpointer user_data)
 {
 	itemSetPtr	folderItemSet = (itemSetPtr)user_data;
 	itemSetPtr	nodeItemSet;
@@ -53,7 +53,7 @@ folder_merge_child_items (nodePtr node, gpointer user_data)
 }
 
 static itemSetPtr
-folder_load (nodePtr node)
+folder_load (Node *node)
 {
 	itemSetPtr	itemSet;
 
@@ -65,26 +65,26 @@ folder_load (nodePtr node)
 }
 
 static void
-folder_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
+folder_import (Node *node, Node *parent, xmlNodePtr cur, gboolean trusted)
 {
 	/* Folders have no special properties to be imported. */
 }
 
 static void
-folder_export (nodePtr node, xmlNodePtr cur, gboolean trusted)
+folder_export (Node *node, xmlNodePtr cur, gboolean trusted)
 {
 	/* Folders have no special properties to be exported. */
 }
 
 static void
-folder_save (nodePtr node)
+folder_save (Node *node)
 {
 	/* A folder has no own state but must give all childs the chance to save theirs */
 	node_foreach_child (node, node_save);
 }
 
 static void
-folder_add_child_update_counters (nodePtr node, gpointer user_data)
+folder_add_child_update_counters (Node *node, gpointer user_data)
 {
 	guint	*unreadCount = (guint *)user_data;
 
@@ -92,7 +92,7 @@ folder_add_child_update_counters (nodePtr node, gpointer user_data)
 }
 
 static void
-folder_update_counters (nodePtr node)
+folder_update_counters (Node *node)
 {
 	/* We never need a total item count for folders.
 	   Only the total unread count is interesting */
@@ -102,7 +102,7 @@ folder_update_counters (nodePtr node)
 }
 
 static void
-folder_remove (nodePtr node)
+folder_remove (Node *node)
 {
 	/* Ensure that there are no children anymore */
 	g_assert (!node->children);

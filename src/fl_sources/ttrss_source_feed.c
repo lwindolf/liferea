@@ -36,7 +36,7 @@
 #include "fl_sources/ttrss_source.h"
 
 static void
-ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+ttrss_feed_subscription_process_update_result (Subscription * subscription, const struct updateResult* const result, updateFlags flags)
 {
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
@@ -157,10 +157,10 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 }
 
 static gboolean
-ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
+ttrss_feed_subscription_prepare_update_request (Subscription * subscription,
                                                 UpdateRequest *request)
 {
-	nodePtr		root = node_source_root_from_node (subscription->node);
+	Node *		root = node_source_root_from_node (subscription->node);
 	ttrssSourcePtr	source = (ttrssSourcePtr) root->data;
 	const gchar	*feed_id;
 	gchar		*source_name;

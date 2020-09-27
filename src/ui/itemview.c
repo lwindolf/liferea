@@ -49,7 +49,7 @@ struct _ItemView {
 
 	gboolean	htmlOnly;		/*<< TRUE if HTML only mode */
 	guint		mode;			/*<< current item view mode */
-	nodePtr		node;			/*<< the node whose items are displayed */
+	Node *		node;			/*<< the node whose items are displayed */
 	gboolean	browsing;		/*<< TRUE if itemview is used as internal browser right now */
 	gboolean	needsHTMLViewUpdate;	/*<< flag to be set when HTML rendering is to be
 						     updated, used to delay HTML updates */
@@ -164,7 +164,7 @@ itemview_set_mode (itemViewMode mode)
 }
 
 void
-itemview_set_displayed_node (nodePtr node)
+itemview_set_displayed_node (Node *node)
 {
 	if (node == itemview->node)
 		return;
@@ -263,7 +263,7 @@ itemview_update_all_items (void)
 }
 
 void
-itemview_update_node_info (nodePtr node)
+itemview_update_node_info (Node *node)
 {
 	/* Bail if we do internal browsing, and no item is shown */
 	if (itemview->browsing)
@@ -289,7 +289,7 @@ itemview_update (void)
 		item_list_view_update (itemview->itemListView, itemview->hasEnclosures);
 
 	if (itemview->itemListView && itemview->node) {
-		item_list_view_enable_favicon_column (itemview->itemListView, NODE_TYPE (itemview->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
+		item_list_view_enable_favicon_column (itemview->itemListView, itemview->node->type->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
 		item_list_view_set_sort_column (itemview->itemListView, itemview->node->sortColumn, itemview->node->sortReversed);
 	}
 

@@ -79,7 +79,7 @@ feedPtr feed_new(void);
  * 
  * @returns a new XML document (if feedNode was NULL)
  */
-xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr xml);
+xmlDocPtr feed_to_xml(Node *node, xmlNodePtr xml);
 
 // FIXME: doesn't seem to belong here (looks like a subscription type method)
 /**
@@ -91,7 +91,7 @@ xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr xml);
  *
  * @returns max item count
  */
-guint feed_get_max_item_count(nodePtr node);
+guint feed_get_max_item_count(Node *node);
 
 // FIXME: doesn't seem to belong here (looks like a subscription method)
 /**
@@ -101,7 +101,7 @@ guint feed_get_max_item_count(nodePtr node);
  * @subscription: the subscription
  * @item: the item
  */
-void feed_enrich_item (subscriptionPtr subscription, itemPtr item);
+void feed_enrich_item (Subscription * subscription, itemPtr item);
 
 /**
  * Returns the subscription type implementation for simple feed nodes.

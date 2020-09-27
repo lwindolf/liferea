@@ -73,7 +73,7 @@ vfolder_loader_fetch_cb (gpointer user_data, GSList **resultItems)
 }
 
 ItemLoader *
-vfolder_loader_new (nodePtr node)
+vfolder_loader_new (Node *node)
 {
 	vfolderPtr vfolder = (vfolderPtr)node->data;
 

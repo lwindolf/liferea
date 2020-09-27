@@ -43,11 +43,11 @@ struct exportData {
 	xmlNodePtr	cur;
 };
 
-static void export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted);
+static void export_node_children (Node *node, xmlNodePtr cur, gboolean trusted);
 
 /* Used for exporting, this adds a folder or feed's node to the XML tree */
 static void
-export_append_node_tag (nodePtr node, gpointer userdata)
+export_append_node_tag (Node *node, gpointer userdata)
 {
 	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
 	gboolean	internal = ((struct exportData*)userdata)->trusted;
@@ -55,7 +55,7 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 	gchar		*tmp;
 
 	/* When exporting external OPML do not export every node type... */
-	if (!(internal || (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_EXPORT)))
+	if (!(internal || (node->type->capabilities & NODE_CAPABILITY_EXPORT)))
 		return;
 
 	childNode = xmlNewChild (cur, NULL, BAD_CAST"outline", NULL);
@@ -108,7 +108,7 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 	}
 
 	/* 2. add node type specific stuff */
-	NODE_TYPE (node)->export (node, childNode, internal);
+	node->type->export (node, childNode, internal);
 
 	/* 3. add children */
 	if (internal) {
@@ -123,7 +123,7 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 }
 
 static void
-export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted)
+export_node_children (Node *node, xmlNodePtr cur, gboolean trusted)
 {
 	struct exportData	params;
 
@@ -133,7 +133,7 @@ export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted)
 }
 
 gboolean
-export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
+export_OPML_feedlist (const gchar *filename, Node *node, gboolean trusted)
 {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;
@@ -201,11 +201,11 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 }
 
 static void
-import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
+import_parse_outline (xmlNodePtr cur, Node *parentNode, gboolean trusted)
 {
 	gchar		*title, *typeStr, *tmp, *sortStr;
 	xmlNodePtr	child;
-	nodePtr		node;
+	Node *		node;
 	nodeTypePtr	type = NULL;
 	gboolean	needsUpdate = FALSE;
 
@@ -346,7 +346,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	}
 
 	/* 6. do node type specific parsing */
-	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
+	node->type->import (node, parentNode, cur, trusted);
 
 	if (node->subscription) {
 		/* Handle OPML auth info (imported from subscription_import() */
@@ -374,7 +374,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 }
 
 static void
-import_parse_body (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
+import_parse_body (xmlNodePtr n, Node *parentNode, gboolean trusted)
 {
 	xmlNodePtr cur;
 
@@ -387,7 +387,7 @@ import_parse_body (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
 }
 
 static void
-import_parse_OPML (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
+import_parse_OPML (xmlNodePtr n, Node *parentNode, gboolean trusted)
 {
 	xmlNodePtr cur;
 
@@ -402,7 +402,7 @@ import_parse_OPML (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
 }
 
 gboolean
-import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showErrors, gboolean trusted)
+import_OPML_feedlist (const gchar *filename, Node *parentNode, gboolean showErrors, gboolean trusted)
 {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
@@ -465,7 +465,7 @@ static void
 on_import_activate_cb (const gchar *filename, gpointer user_data)
 {
 	if (filename) {
-		nodePtr node = node_new (folder_get_node_type ());
+		Node *node = node_new (folder_get_node_type ());
 		node_set_title (node, _("Imported feed list"));
 		feedlist_node_added (node);
 

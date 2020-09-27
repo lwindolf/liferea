@@ -62,7 +62,7 @@ struct ItemListPrivate
 {
 	GHashTable	*guids;			/*<< list of GUID to avoid having duplicates in currently loaded list */
 	itemSetPtr	filter;			/*<< currently active filter rules */
-	nodePtr		currentNode;		/*<< the node whose own or its child items are currently displayed */
+	Node *		currentNode;		/*<< the node whose own or its child items are currently displayed */
 	gulong		selectedId;		/*<< the currently selected (and displayed) item id */
 
 	nodeViewType	viewMode;		/*<< current viewing mode */
@@ -164,7 +164,7 @@ itemlist_set_selected (itemPtr item)
 	itemlist->priv->selectedId = item?item->id:0;
 }
 
-nodePtr
+Node *
 itemlist_get_displayed_node (void)
 {
 	return itemlist->priv->currentNode;
@@ -234,7 +234,7 @@ static gboolean
 itemlist_itemset_is_valid (itemSetPtr itemSet)
 {
 	gint	folder_display_mode;
-	nodePtr node;
+	Node *node;
 
 	node = node_from_id (itemSet->nodeId);
 
@@ -271,7 +271,7 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 }
 
 void
-itemlist_load (nodePtr node)
+itemlist_load (Node *node)
 {
 	itemSetPtr	itemSet;
 	gint		folder_display_mode;
@@ -375,7 +375,7 @@ itemlist_select_next_unread (void)
 
 	/* If none is found we continue searching in the feed list */
 	if (!result) {
-		nodePtr	node;
+		Node *	node;
 
 		/* scan feed list and find first feed with unread items */
 		node = feedlist_find_unread_feed (feedlist_get_root ());
@@ -505,7 +505,7 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 }
 
 void
-itemlist_remove_all_items (nodePtr node)
+itemlist_remove_all_items (Node *node)
 {
 	if (node == itemlist->priv->currentNode)
 		itemview_clear ();
@@ -558,7 +558,7 @@ itemlist_selection_changed (itemPtr item)
 		/* set read and unset update status when selecting */
 		if (item) {
 			gchar	*link = NULL;
-			nodePtr	node = node_from_id (item->nodeId);
+			Node *	node = node_from_id (item->nodeId);
 
 			item_set_read_state (item, TRUE);
 			itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
@@ -597,7 +597,7 @@ itemlist_get_view_mode (void)
 static void
 itemlist_set_view_mode (nodeViewType newMode)
 {
-	nodePtr		node;
+	Node *		node;
 	itemPtr		item;
 
 	itemlist->priv->viewMode = newMode;
@@ -674,7 +674,7 @@ static void
 itemlist_select_from_history (gboolean back)
 {
 	itemPtr item;
-	nodePtr node;
+	Node *node;
 
 	if (back)
 		item = item_history_get_previous ();
