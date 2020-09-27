@@ -187,6 +187,11 @@
       <summary>Enable plugins</summary>
       <description>This options determines if liferea should enable plugins.</description>
     </key>
+    <key name="enable-itp" type="b">
+      <default>true</default>
+      <summary>Enable intelligent tracking protection</summary>
+      <description>This options determines if liferea should enable WebKit's intelligent tracking protection.</description>
+    </key>
     <key name="browser-font" type="s">
       <default>''</default>
       <summary>User defined browser-font</summary>
