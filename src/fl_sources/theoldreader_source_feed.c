@@ -97,7 +97,7 @@ theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHas
 }
 
 static void
-theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
+theoldreader_source_item_retrieve_status (const xmlNodePtr entry, Subscription * subscription, GHashTable *cache)
 {
 	xmlNodePtr      xml;
 	nodePtr         node = subscription->node;
@@ -147,7 +147,7 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 }
 
 static void
-theoldreader_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+theoldreader_feed_subscription_process_update_result (Subscription * subscription, const struct updateResult* const result, updateFlags flags)
 {
 	gchar 	*id;
 
@@ -195,7 +195,7 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 }
 
 static gboolean
-theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription,
+theoldreader_feed_subscription_prepare_update_request (Subscription * subscription,
                                                        UpdateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");

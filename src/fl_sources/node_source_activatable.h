@@ -68,22 +68,22 @@ struct _LifereaNodeSourceActivatableInterface
 	/*
 	 * MANDATORY feed subscription preparation callback.
 	 */
-	gboolean	(*feed_subscription_prepare_update_request)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, UpdateRequest *request);
+	gboolean	(*feed_subscription_prepare_update_request)(LifereaNodeSourceActivatable *activatable, Subscription * subscription, UpdateRequest *request);
 
 	/*
 	 * MANDATORY feed subscription type specific update result processing callback.
 	 */
-	void		(*feed_subscription_process_update_result)(LifereaNodeSourceActivatable *activatable, struct subscription * subscription, const struct updateResult * const result, updateFlags flags);
+	void		(*feed_subscription_process_update_result)(LifereaNodeSourceActivatable *activatable, Subscription * subscription, const struct updateResult * const result, updateFlags flags);
 
 	/*
 	 * MANDATORY source subscription update preparation callback.
 	 */
-	gboolean	(*feedlist_update_prepare)(LifereaNodeSourceActivatable *activatable, struct subscription * subscription, UpdateRequest * request);
+	gboolean	(*feedlist_update_prepare)(LifereaNodeSourceActivatable *activatable, Subscription * subscription, UpdateRequest * request);
 
 	/*
 	 * MANDATORY source subscription type specific update result processing callback.
 	 */
-	void		(*feedlist_update_cb)(LifereaNodeSourceActivatable *activatable, struct subscription * subscription, const struct updateResult * const result, updateFlags flags);
+	void		(*feedlist_update_cb)(LifereaNodeSourceActivatable *activatable, Subscription * subscription, const struct updateResult * const result, updateFlags flags);
 
 	/* === Feed list node handling interface (see node_source.h!) */
 
@@ -147,7 +147,7 @@ struct _LifereaNodeSourceActivatableInterface
 	 * subscription which might be changed as necessary. Adding of the
 	 * node to the feed list has to happen asynchronously.
 	 */
-	void		(*add_subscription) (LifereaNodeSourceActivatable *activatable, nodePtr node, struct subscription *subscription);
+	void		(*add_subscription) (LifereaNodeSourceActivatable *activatable, nodePtr node, Subscription *subscription);
 
 	/*
 	 * Removes an existing node (subscription or folder) from the feed list

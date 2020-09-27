@@ -84,7 +84,7 @@ static void
 ttrss_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
 	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
-	subscriptionPtr subscription = source->root->subscription;
+	Subscription * subscription = source->root->subscription;
 	JsonParser	*parser;
 
 	debug1 (DEBUG_UPDATE, "TinyTinyRSS login processing... >>>%s<<<", result->data);
@@ -142,7 +142,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 {
 	gchar			*username, *password, *source_uri;
 	UpdateRequest		*request;
-	subscriptionPtr		subscription = source->root->subscription;
+	Subscription *		subscription = source->root->subscription;
 
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session doesn't expire. */
@@ -219,7 +219,7 @@ ttrss_source_import (nodePtr node)
 static void
 ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	subscriptionPtr subscription = (subscriptionPtr) userdata;
+	Subscription * subscription = (Subscription *) userdata;
 
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS subscribe result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
@@ -241,7 +241,7 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 }
 
 static nodePtr
-ttrss_source_add_subscription (nodePtr root, subscriptionPtr subscription)
+ttrss_source_add_subscription (nodePtr root, Subscription * subscription)
 {
 	nodePtr			parent;
 	gchar			*username, *password;

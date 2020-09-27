@@ -101,7 +101,7 @@ guint feed_get_max_item_count(nodePtr node);
  * @subscription: the subscription
  * @item: the item
  */
-void feed_enrich_item (subscriptionPtr subscription, itemPtr item);
+void feed_enrich_item (Subscription * subscription, itemPtr item);
 
 /**
  * Returns the subscription type implementation for simple feed nodes.

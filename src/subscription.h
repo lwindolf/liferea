@@ -21,6 +21,7 @@
 #define _SUBSCRIPTION_H
 
 #include <glib.h>
+#include <glib-object.h>
 #include <libxml/parser.h>
 #include "node.h"
 #include "update.h"
@@ -36,7 +37,13 @@ enum feed_request_flags {
 	FEED_REQ_PRIORITY_HIGH		= (1<<3),	/*<< set to signal that this is an important user triggered request */
 };
 
-typedef struct subscription {
+G_BEGIN_DECLS
+#define SUBSCRIPTION_TYPE (subscription_get_type ())
+GType subscription_get_type ();
+
+typedef struct _Subscription Subscription;
+
+struct _Subscription {
 	nodePtr		node;			/*<< the feed list node the subscription is attached to */
 	struct subscriptionType *type;		/*<< the subscription type */
 
@@ -61,10 +68,10 @@ typedef struct subscription {
 
 	gchar		*filtercmd;		/*<< feed filter command */
 	gchar		*filterError;		/*<< textual description of filter errors */
-} *subscriptionPtr;
+};
 
 /**
- * subscription_new: (skip)
+ * subscription_new: (constructor)
  *
  * Create a new subscription structure.
  *
@@ -72,9 +79,14 @@ typedef struct subscription {
  * @param filter	a post processing filter (or NULL)
  * @param options	update options (or NULL)
  *
- * @returns the new subscription
+ * Returns: (transfer full): the new subscription
  */
-subscriptionPtr subscription_new (const gchar *source, const gchar *filter, updateOptionsPtr options);
+Subscription * subscription_new (const gchar *source, const gchar *filter, updateOptionsPtr options);
+
+/**
+ * subscription_copy: (skip)
+ */
+Subscription * subscription_copy (Subscription *subscription);
 
 /**
  * subscription_import: (skip)
@@ -86,7 +98,7 @@ subscriptionPtr subscription_new (const gchar *source, const gchar *filter, upda
  *
  * @returns a new subscription
  */
-subscriptionPtr subscription_import (xmlNodePtr xml, gboolean trusted);
+Subscription * subscription_import (xmlNodePtr xml, gboolean trusted);
 
 /**
  * subscription_export: (skip)
@@ -97,7 +109,7 @@ subscriptionPtr subscription_import (xmlNodePtr xml, gboolean trusted);
  * @param xml		xml node
  * @param trusted	TRUE when exporting to internal XML document
  */
-void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trusted);
+void subscription_export (Subscription * subscription, xmlNodePtr xml, gboolean trusted);
 
 /**
  * subscription_to_xml: (skip)
@@ -107,7 +119,7 @@ void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean
  * @param node		the subscription to serialize
  * @param feedNode	XML node to add subscription attributes to
  */
-void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
+void subscription_to_xml (Subscription * subscription, xmlNodePtr xml);
 
 /**
  * subscription_update:
@@ -120,7 +132,7 @@ void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
  * @param subscription	the subscription
  * @param flags		update flags
  */
-void subscription_update (subscriptionPtr subscription, guint flags);
+void subscription_update (Subscription * subscription, guint flags);
 
 /**
  * subscription_auto_update:
@@ -131,7 +143,7 @@ void subscription_update (subscriptionPtr subscription, guint flags);
  *
  * @param subscription	the subscription
  */
-void subscription_auto_update (subscriptionPtr subscription);
+void subscription_auto_update (Subscription * subscription);
 
 /**
  * subscription_cancel_update: (skip)
@@ -142,7 +154,7 @@ void subscription_auto_update (subscriptionPtr subscription);
  *
  * @param subscription	the subscription
  */
-void subscription_cancel_update (subscriptionPtr subscription);
+void subscription_cancel_update (Subscription * subscription);
 
 /**
  * subscription_get_update_interval:
@@ -153,7 +165,7 @@ void subscription_cancel_update (subscriptionPtr subscription);
  *
  * @returns the currently configured update interval (in minutes)
  */
-gint subscription_get_update_interval(subscriptionPtr subscription);
+gint subscription_get_update_interval(Subscription * subscription);
 
 /**
  * subscription_set_update_interval:
@@ -163,7 +175,7 @@ gint subscription_get_update_interval(subscriptionPtr subscription);
  * @param subscription	the subscription
  * @param interval	the new update interval (in minutes)
  */
-void subscription_set_update_interval(subscriptionPtr subscription, gint interval);
+void subscription_set_update_interval(Subscription * subscription, gint interval);
 
 /**
  * subscription_get_default_update_interval:
@@ -174,7 +186,7 @@ void subscription_set_update_interval(subscriptionPtr subscription, gint interva
  *
  * @returns the default update interval (in minutes) or 0
  */
-guint subscription_get_default_update_interval(subscriptionPtr subscription);
+guint subscription_get_default_update_interval(Subscription * subscription);
 
 /**
  * subscription_set_default_update_interval:
@@ -184,7 +196,7 @@ guint subscription_get_default_update_interval(subscriptionPtr subscription);
  * @param subscription	the subscription
  * @param interval	the default update interval (in minutes)
  */
-void subscription_set_default_update_interval(subscriptionPtr subscription, guint interval);
+void subscription_set_default_update_interval(Subscription * subscription, guint interval);
 
 /**
  * subscription_reset_update_counter: (skip)
@@ -193,7 +205,7 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
  *
  * @param subscription	the subscription
  */
-void subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now);
+void subscription_reset_update_counter (Subscription * subscription, guint64 *now);
 
 /**
  * subscription_update_favicon: (skip)
@@ -202,7 +214,7 @@ void subscription_reset_update_counter (subscriptionPtr subscription, guint64 *n
  *
  * @param subscription	the subscription
  */
-void subscription_update_favicon (subscriptionPtr subscription);
+void subscription_update_favicon (Subscription * subscription);
 
 /**
  * subscription_get_source:
@@ -213,7 +225,7 @@ void subscription_update_favicon (subscriptionPtr subscription);
  *
  * @returns the source URL
  */
-const gchar * subscription_get_source(subscriptionPtr subscription);
+const gchar * subscription_get_source(Subscription * subscription);
 
 /**
  * subscription_set_source:
@@ -223,7 +235,7 @@ const gchar * subscription_get_source(subscriptionPtr subscription);
  * @param subscription	the subscription
  * @param source	the new source URL
  */
-void subscription_set_source(subscriptionPtr subscription, const gchar *source);
+void subscription_set_source(Subscription * subscription, const gchar *source);
 
 /**
  * subscription_get_homepage:
@@ -234,7 +246,7 @@ void subscription_set_source(subscriptionPtr subscription, const gchar *source);
  *
  * @returns the homepage URL or NULL
  */
-const gchar * subscription_get_homepage(subscriptionPtr subscription);
+const gchar * subscription_get_homepage(Subscription * subscription);
 
 /**
  * subscription_set_homepage:
@@ -246,7 +258,7 @@ const gchar * subscription_get_homepage(subscriptionPtr subscription);
  * @param subscription	the subscription
  * @param url		the new HTML URL
  */
-void subscription_set_homepage(subscriptionPtr subscription, const gchar *url);
+void subscription_set_homepage(Subscription * subscription, const gchar *url);
 
 /**
  * subscription_get_filter: (skip)
@@ -257,7 +269,7 @@ void subscription_set_homepage(subscriptionPtr subscription, const gchar *url);
  *
  * @returns the filter command
  */
-const gchar * subscription_get_filter(subscriptionPtr subscription);
+const gchar * subscription_get_filter(Subscription * subscription);
 
 /**
  * subscription_set_filter: (skip)
@@ -267,7 +279,7 @@ const gchar * subscription_get_filter(subscriptionPtr subscription);
  * @param subscription	the subscription
  * @param filter	the new filter command
  */
-void subscription_set_filter(subscriptionPtr subscription, const gchar * filter);
+void subscription_set_filter(Subscription * subscription, const gchar * filter);
 
 /**
  * subscription_set_auth_info: (skip)
@@ -278,7 +290,7 @@ void subscription_set_filter(subscriptionPtr subscription, const gchar * filter)
  * @param username	the user name
  * @param password	the password
  */
-void subscription_set_auth_info (subscriptionPtr subscription, const gchar *username, const gchar *password);
+void subscription_set_auth_info (Subscription * subscription, const gchar *username, const gchar *password);
 
 /**
  * subscription_free: (skip)
@@ -287,6 +299,8 @@ void subscription_set_auth_info (subscriptionPtr subscription, const gchar *user
  *
  * @param subscription	the subscription
  */
-void subscription_free(subscriptionPtr subscription);
+void subscription_free(Subscription * subscription);
+
+G_END_DECLS
 
 #endif

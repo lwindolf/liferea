@@ -159,7 +159,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 }
 
 void
-subscription_icon_update (subscriptionPtr subscription)
+subscription_icon_update (Subscription * subscription)
 {
 	iconDownloadCtxtPtr	ctxt;
 

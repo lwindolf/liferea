@@ -43,14 +43,14 @@
 
 #define ONE_MONTH_MICROSECONDS (guint64)(60*60*24*31) * (guint64)G_USEC_PER_SEC
 
-subscriptionPtr
+Subscription *
 subscription_new (const gchar *source,
                   const gchar *filter,
                   updateOptionsPtr options)
 {
-	subscriptionPtr	subscription;
+	Subscription *	subscription;
 
-	subscription = g_new0 (struct subscription, 1);
+	subscription = g_new0 (struct _Subscription, 1);
 	subscription->type = feed_get_subscription_type ();
 	subscription->updateOptions = options;
 
@@ -100,9 +100,56 @@ subscription_new (const gchar *source,
 	return subscription;
 }
 
+Subscription *
+subscription_copy (Subscription *subscription)
+{
+	Subscription *copy = g_new0 (struct _Subscription, 1);
+
+	copy->updateInterval = subscription->updateInterval;
+	copy->defaultInterval = subscription->defaultInterval;
+	copy->httpErrorCode = subscription->httpErrorCode;
+	copy->discontinued = subscription->discontinued;
+
+	if (subscription->updateError)
+		copy->updateError = g_strdup (subscription->updateError);
+	if (subscription->filterError)
+		copy->filterError = g_strdup (subscription->filterError);
+	if (subscription->httpError)
+		copy->httpError = g_strdup (subscription->httpError);
+	if (subscription->source)
+		copy->source = g_strdup (subscription->source);
+	if (subscription->origSource)
+		copy->origSource = g_strdup (subscription->origSource);
+	if (subscription->filtercmd)
+		copy->filtercmd = g_strdup (subscription->filtercmd);
+
+	copy->updateJob = NULL; 	// Never copy!
+
+	if (subscription->updateOptions)
+		copy->updateOptions = update_options_copy (subscription->updateOptions);
+	if (subscription->updateState)
+		copy->updateState = update_state_copy (subscription->updateState);
+	if (subscription->metadata)
+		copy->metadata = metadata_list_copy (subscription->metadata);
+
+	return copy;
+}
+
+GType
+subscription_get_type (void)
+{
+	static GType type = 0;
+
+	if (G_UNLIKELY (!type))
+		type = g_boxed_type_register_static ("Subscription",
+				(GBoxedCopyFunc) subscription_copy,
+				(GBoxedFreeFunc) subscription_free);
+	return type;
+}
+
 /* Checks whether updating a feed makes sense. */
 static gboolean
-subscription_can_be_updated (subscriptionPtr subscription)
+subscription_can_be_updated (Subscription * subscription)
 {
 	if (subscription->updateJob) {
 		liferea_shell_set_status_bar (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
@@ -122,7 +169,7 @@ subscription_can_be_updated (subscriptionPtr subscription)
 }
 
 void
-subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
+subscription_reset_update_counter (Subscription * subscription, guint64 *now)
 {
 	if (!subscription)
 		return;
@@ -140,7 +187,7 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
  * @param filterError	filter error string (or NULL)
  */
 static void
-subscription_update_error_status (subscriptionPtr subscription,
+subscription_update_error_status (Subscription * subscription,
                                   gint httpstatus,
                                   gint resultcode,
                                   gchar *filterError)
@@ -176,7 +223,7 @@ subscription_update_error_status (subscriptionPtr subscription,
 static void
 subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
 {
-	subscriptionPtr subscription = (subscriptionPtr)user_data;
+	Subscription * subscription = (Subscription *)user_data;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
 	guint64		now;
@@ -216,7 +263,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 
 	/* 2. call subscription type specific processing */
 	if (processing)
-		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
+		subscription->type->process_update_result (subscription, result, flags);
 
 	/* 3. call favicon updating after subscription processing
 	      to ensure we have valid baseUrl for feed nodes...
@@ -246,7 +293,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 }
 
 void
-subscription_update (subscriptionPtr subscription, guint flags)
+subscription_update (Subscription * subscription, guint flags)
 {
 	UpdateRequest	*request;
 	guint64			now;
@@ -274,7 +321,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
 
-		if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request))
+		if (subscription->type->prepare_update_request (subscription, request))
 			subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, subscription, flags);
 		else
 			g_object_unref (request);
@@ -282,7 +329,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 }
 
 void
-subscription_auto_update (subscriptionPtr subscription)
+subscription_auto_update (Subscription * subscription)
 {
 	gint		interval;
 	guint		flags = 0;
@@ -305,7 +352,7 @@ subscription_auto_update (subscriptionPtr subscription)
 }
 
 void
-subscription_cancel_update (subscriptionPtr subscription)
+subscription_cancel_update (Subscription * subscription)
 {
 	if (!subscription->updateJob)
 		return;
@@ -315,13 +362,13 @@ subscription_cancel_update (subscriptionPtr subscription)
 }
 
 gint
-subscription_get_update_interval (subscriptionPtr subscription)
+subscription_get_update_interval (Subscription * subscription)
 {
 	return subscription->updateInterval;
 }
 
 void
-subscription_set_update_interval (subscriptionPtr subscription, gint interval)
+subscription_set_update_interval (Subscription * subscription, gint interval)
 {
 	if (0 == interval) {
 		interval = -1;	/* This is evil, I know, but when this method
@@ -336,43 +383,43 @@ subscription_set_update_interval (subscriptionPtr subscription, gint interval)
 }
 
 guint
-subscription_get_default_update_interval (subscriptionPtr subscription)
+subscription_get_default_update_interval (Subscription * subscription)
 {
 	return subscription->defaultInterval;
 }
 
 void
-subscription_set_default_update_interval (subscriptionPtr subscription, guint interval)
+subscription_set_default_update_interval (Subscription * subscription, guint interval)
 {
 	subscription->defaultInterval = interval;
 }
 
 static const gchar *
-subscription_get_orig_source (subscriptionPtr subscription)
+subscription_get_orig_source (Subscription * subscription)
 {
 	return subscription->origSource;
 }
 
 const gchar *
-subscription_get_source (subscriptionPtr subscription)
+subscription_get_source (Subscription * subscription)
 {
 	return subscription->source;
 }
 
 const gchar *
-subscription_get_homepage (subscriptionPtr subscription)
+subscription_get_homepage (Subscription * subscription)
 {
 	return metadata_list_get (subscription->metadata, "homepage");
 }
 
 const gchar *
-subscription_get_filter (subscriptionPtr subscription)
+subscription_get_filter (Subscription * subscription)
 {
 	return subscription->filtercmd;
 }
 
 static void
-subscription_set_orig_source (subscriptionPtr subscription, const gchar *source)
+subscription_set_orig_source (Subscription * subscription, const gchar *source)
 {
 	g_free (subscription->origSource);
 	subscription->origSource = g_strchomp (g_strdup (source));
@@ -380,7 +427,7 @@ subscription_set_orig_source (subscriptionPtr subscription, const gchar *source)
 }
 
 void
-subscription_set_source (subscriptionPtr subscription, const gchar *source)
+subscription_set_source (Subscription * subscription, const gchar *source)
 {
 	g_free (subscription->source);
 	subscription->source = g_strchomp (g_strdup (source));
@@ -393,7 +440,7 @@ subscription_set_source (subscriptionPtr subscription, const gchar *source)
 }
 
 void
-subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl)
+subscription_set_homepage (Subscription * subscription, const gchar *newHtmlUrl)
 {
 	gchar 	*htmlUrl = NULL;
 
@@ -420,7 +467,7 @@ subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl
 }
 
 void
-subscription_set_filter (subscriptionPtr subscription, const gchar *filter)
+subscription_set_filter (Subscription * subscription, const gchar *filter)
 {
 	g_free (subscription->filtercmd);
 	subscription->filtercmd = g_strdup (filter);
@@ -428,7 +475,7 @@ subscription_set_filter (subscriptionPtr subscription, const gchar *filter)
 }
 
 void
-subscription_set_auth_info (subscriptionPtr subscription,
+subscription_set_auth_info (Subscription * subscription,
                             const gchar *username,
                             const gchar *password)
 {
@@ -443,10 +490,10 @@ subscription_set_auth_info (subscriptionPtr subscription,
 	liferea_auth_info_store (subscription);
 }
 
-subscriptionPtr
+Subscription *
 subscription_import (xmlNodePtr xml, gboolean trusted)
 {
-	subscriptionPtr	subscription;
+	Subscription *	subscription;
 	xmlChar		*source, *homepage, *filter, *intervalStr, *tmp;
 
 	subscription = subscription_new (NULL, NULL, NULL);
@@ -504,7 +551,7 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 }
 
 void
-subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trusted)
+subscription_export (Subscription * subscription, xmlNodePtr xml, gboolean trusted)
 {
 	gchar *interval = g_strdup_printf ("%d", subscription_get_update_interval (subscription));
 
@@ -536,7 +583,7 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 }
 
 void
-subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml)
+subscription_to_xml (Subscription * subscription, xmlNodePtr xml)
 {
 	gchar	*tmp;
 
@@ -567,7 +614,7 @@ subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml)
 }
 
 void
-subscription_free (subscriptionPtr subscription)
+subscription_free (Subscription * subscription)
 {
 	if (!subscription)
 		return;

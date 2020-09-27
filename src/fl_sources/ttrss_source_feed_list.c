@@ -115,7 +115,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 static void
 ttrss_source_subscription_list_cb (const struct updateResult * const result, gpointer user_data, guint32 flags)
 {
-	subscriptionPtr subscription = (subscriptionPtr) user_data;
+	Subscription * subscription = (Subscription *) user_data;
 	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
 
 	debug1 (DEBUG_UPDATE,"ttrss_subscription_cb(): %s", result->data);
@@ -207,7 +207,7 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 }
 
 static void
-ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr subscription)
+ttrss_source_update_subscription_list (ttrssSourcePtr source, Subscription * subscription)
 {
 	UpdateRequest	*request;
 	gchar		*source_uri;
@@ -276,7 +276,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 }
 
 static void
-ttrss_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+ttrss_subscription_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
 {
 	ttrssSourcePtr		source = (ttrssSourcePtr) subscription->node->data;
 
@@ -359,7 +359,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 }
 
 static gboolean
-ttrss_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
+ttrss_subscription_prepare_update_request (Subscription * subscription, UpdateRequest *request)
 {
 	nodePtr node = subscription->node;
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;

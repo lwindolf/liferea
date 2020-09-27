@@ -926,7 +926,7 @@ feed_list_view_remove (nodePtr node)
 static void
 feed_list_view_add_duplicate_url_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	subscriptionPtr tempSubscription = (subscriptionPtr) user_data;
+	Subscription * tempSubscription = (Subscription *) user_data;
 
 	if (GTK_RESPONSE_ACCEPT == response_id) {
 		feedlist_add_subscription (
@@ -943,7 +943,7 @@ feed_list_view_add_duplicate_url_cb (GtkDialog *dialog, gint response_id, gpoint
 }
 
 void
-feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription, nodePtr exNode)
+feed_list_view_add_duplicate_url_subscription (Subscription * tempSubscription, nodePtr exNode)
 {
 	GtkWidget	*dialog;
 	GtkWindow	*mainwindow;

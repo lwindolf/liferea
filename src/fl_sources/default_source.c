@@ -130,7 +130,7 @@ default_source_auto_update (nodePtr node)
 }
 
 static nodePtr
-default_source_add_subscription (nodePtr node, subscriptionPtr subscription)
+default_source_add_subscription (nodePtr node, Subscription * subscription)
 {
 	/* For the local feed list source subscriptions are always
 	   feed subscriptions implemented by the feed node and

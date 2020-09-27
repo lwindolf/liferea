@@ -74,7 +74,7 @@ void node_source_plugin_auto_update (nodePtr node);
 /**
  * node_source_plugin_add_subscription: (skip)
  */
-nodePtr node_source_plugin_add_subscription (nodePtr node, struct subscription *subscription);
+nodePtr node_source_plugin_add_subscription (nodePtr node, Subscription *subscription);
 
 /**
  * node_source_pluign_remove_node: (skip)
@@ -106,24 +106,24 @@ void node_source_plugin_convert_to_local (nodePtr node);
 /**
  * node_source_plugin_feed_subscription_prepare_update_request: (skip)
  */
-gboolean node_source_plugin_feed_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request);
+gboolean node_source_plugin_feed_subscription_prepare_update_request (Subscription * subscription, UpdateRequest *request);
 
 /**
  * node_source_plugin_feed_subscription_process_update_result: (skip)
  */
-void node_source_plugin_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags);
+void node_source_plugin_feed_subscription_process_update_result (Subscription * subscription, const struct updateResult* const result, updateFlags flags);
 
 /* ==================== source subscription type adapter ==================== */
 
 /**
  * node_source_plugin_source_subscription_prepare_update_request: (skip)
  */
-gboolean node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request);
+gboolean node_source_plugin_source_subscription_prepare_update_request (Subscription * subscription, UpdateRequest *request);
 
 /**
  * node_source_plugin_source_subscription_process_update_result: (skip)
  */
-void node_source_plugin_source_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags);
+void node_source_plugin_source_subscription_process_update_result (Subscription * subscription, const struct updateResult* const result, updateFlags flags);
 
 /* ======================== helper methods ================================== */
 

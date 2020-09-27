@@ -173,7 +173,7 @@ node_source_plugin_auto_update (nodePtr node)
 }
 
 nodePtr
-node_source_plugin_add_subscription (nodePtr node, struct subscription *subscription)
+node_source_plugin_add_subscription (nodePtr node, Subscription *subscription)
 {
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
@@ -227,7 +227,7 @@ node_source_plugin_convert_to_local (nodePtr node)
 }
 
 gboolean
-node_source_plugin_feed_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
+node_source_plugin_feed_subscription_prepare_update_request (Subscription * subscription, UpdateRequest *request)
 {
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
@@ -238,7 +238,7 @@ node_source_plugin_feed_subscription_prepare_update_request (subscriptionPtr sub
 }
 
 void
-node_source_plugin_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+node_source_plugin_feed_subscription_process_update_result (Subscription * subscription, const struct updateResult* const result, updateFlags flags)
 {
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
@@ -249,7 +249,7 @@ node_source_plugin_feed_subscription_process_update_result (subscriptionPtr subs
 }
 
 gboolean
-node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
+node_source_plugin_source_subscription_prepare_update_request (Subscription * subscription, UpdateRequest *request)
 {
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
@@ -261,7 +261,7 @@ node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr s
 }
 
 void
-node_source_plugin_source_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+node_source_plugin_source_subscription_process_update_result (Subscription * subscription, const struct updateResult* const result, updateFlags flags)
 {
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);

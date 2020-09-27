@@ -269,7 +269,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
  * Checks content of an items source and tries to crawl content
  */
 void
-feed_enrich_item (subscriptionPtr subscription, itemPtr item)
+feed_enrich_item (Subscription * subscription, itemPtr item)
 {
 	UpdateRequest *request;
 
@@ -299,7 +299,7 @@ feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 /* implementation of subscription type interface */
 
 static void
-feed_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+feed_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
 {
 	feedParserCtxtPtr	ctxt;
 	nodePtr			node = subscription->node;
@@ -365,7 +365,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 }
 
 static gboolean
-feed_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
+feed_prepare_update_request (Subscription * subscription, UpdateRequest *request)
 {
 	/* Nothing to do. Feeds require no subscription extra handling. */
 

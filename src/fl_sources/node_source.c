@@ -266,7 +266,7 @@ nodePtr
 node_source_new (const gchar *typeId, const gchar *url)
 {
 	nodePtr node;
-	subscriptionPtr	subscription;
+	Subscription *	subscription;
 
 	node = node_new (node_source_get_node_type ());
 	node_source_set_type (node, typeId);
@@ -452,7 +452,7 @@ node_source_is_logged_in (nodePtr node)
 }
 
 nodePtr
-node_source_add_subscription (nodePtr node, subscriptionPtr subscription)
+node_source_add_subscription (nodePtr node, Subscription *subscription)
 {
 	if (!node_source_is_logged_in (node))
 		return NULL;

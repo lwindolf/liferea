@@ -206,6 +206,8 @@ void update_init (void);
 void update_deinit (void);
 
 /**
+ * update_request_new: (skip)
+ *
  * Creates a new request structure.
  *
  * @oaram source	URI to download

@@ -75,7 +75,7 @@ theoldreader_source_login_cb (const struct updateResult * const result, gpointer
 {
 	nodePtr			node = (nodePtr) userdata;
 	gchar			*tmp = NULL;
-	subscriptionPtr 	subscription = node->subscription;
+	Subscription * 	subscription = node->subscription;
 
 	debug1 (DEBUG_UPDATE, "TheOldReader login processing... %s", result->data);
 
@@ -118,7 +118,7 @@ theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
 {
 	gchar			*username, *password;
 	UpdateRequest		*request;
-	subscriptionPtr		subscription = source->root->subscription;
+	Subscription *		subscription = source->root->subscription;
 
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session
@@ -183,7 +183,7 @@ theoldreader_source_import (nodePtr node)
 }
 
 static nodePtr
-theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription)
+theoldreader_source_add_subscription (nodePtr root, Subscription * subscription)
 {
 	nodePtr			parent;
 	gchar			*categoryId = NULL;

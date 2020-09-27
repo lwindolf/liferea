@@ -68,6 +68,6 @@ favicon_save_from_data (const struct updateResult * const result, const gchar *i
  * Returns: (transfer full): list of URL strings
  */
 GSList *
-favicon_get_urls (subscriptionPtr subscription, const gchar *html_url);
+favicon_get_urls (Subscription * subscription, const gchar *html_url);
 
 #endif

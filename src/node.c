@@ -112,7 +112,7 @@ node_set_data (nodePtr node, gpointer data)
 }
 
 void
-node_set_subscription (nodePtr node, subscriptionPtr subscription)
+node_set_subscription (nodePtr node, Subscription * subscription)
 {
 	g_assert (NULL == node->subscription);
 	g_assert (NULL != node->type);

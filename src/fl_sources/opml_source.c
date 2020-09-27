@@ -141,14 +141,14 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 /* OPML subscription type implementation */
 
 static gboolean
-opml_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
+opml_subscription_prepare_update_request (Subscription * subscription, UpdateRequest *request)
 {
 	/* Nothing to do here for simple OPML subscriptions */
 	return TRUE;
 }
 
 static void
-opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+opml_subscription_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
 {
 	nodePtr		node = subscription->node;
 	mergeCtxtPtr	mergeCtxt;

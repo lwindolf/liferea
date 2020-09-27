@@ -1488,19 +1488,19 @@ db_subscription_metadata_update_cb (const gchar *key,
 }
 
 static void
-db_subscription_metadata_update (subscriptionPtr subscription) 
+db_subscription_metadata_update (Subscription * subscription) 
 {
 	metadata_list_foreach (subscription->metadata, db_subscription_metadata_update_cb, subscription->node);
 }
 
 void
-db_subscription_load (subscriptionPtr subscription)
+db_subscription_load (Subscription * subscription)
 {
 	subscription->metadata = db_subscription_metadata_load (subscription->node->id);
 }
 
 void
-db_subscription_update (subscriptionPtr subscription)
+db_subscription_update (Subscription * subscription)
 {
 	sqlite3_stmt	*stmt;
 	gint		res;

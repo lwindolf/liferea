@@ -46,7 +46,7 @@ class NextCloudNewsPlugin(GObject.Object, Liferea.NodeSourceActivatable):
     def do_feedlist_update_prepare(self, subscription, request):
         print("source prepare request")
         serverUrl = subscription.node.metadata.get("node-source-subscription-url")
-        request.set_source ("{}/index.php/apps/news/api/v1-2/feeds" % (serverUrl));
+        request.set_source ("%s/index.php/apps/news/api/v1-2/feeds" % (serverUrl));
 
     def do_feedlist_update_cb(self, subscription, result, flags):
         print("source update result")

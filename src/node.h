@@ -1,13 +1,13 @@
 /*
  * @file node.h  hierarchic feed list node interface
- * 
+ *
  * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,8 +32,8 @@
 
    According to the node's type this interface propagates
    user interaction to the feed list node type implementation
-   and allows the implementation to change the nodes state. 
- 
+   and allows the implementation to change the nodes state.
+
    This interface is to hide the node type and node source type
    complexity for the GUI, scripting and updating functionality.
  */
@@ -41,7 +41,7 @@
 /* generic feed list node structure */
 typedef struct node {
 	gpointer		data;		/*<< node type specific data structure */
-	struct subscription	*subscription;	/*<< subscription attached to this node (or NULL) */
+	struct _Subscription	*subscription;	/*<< subscription attached to this node (or NULL) */
 	struct nodeType		*type;		/*<< node type implementation */
 	struct nodeSource	*source;	/*<< the feed list source handling this node */
 	gchar			*iconFile;	/*<< the path of the favicon file */
@@ -65,11 +65,11 @@ typedef struct node {
 	nodeViewType		viewMode;	/*<< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
 	nodeViewSortType	sortColumn;	/*<< Node specific item view sort attribute. */
 	gboolean		sortReversed;	/*<< Sort in the reverse order? */
-	
+
 	/* rendering behaviour of this node */
 	gboolean	loadItemLink;	/*<< if TRUE do automatically load the item link into the HTML pane */
-	
-	/* current state of this node */	
+
+	/* current state of this node */
 	gboolean	needsUpdate;	/*<< if TRUE: the item list has changed and the nodes feed list representation needs to be updated */
 	gboolean	needsRecount;	/*<< if TRUE: the number of unread/total items is currently unknown and needs recounting */
 
@@ -110,8 +110,8 @@ nodePtr node_from_id (const gchar *id);
  * @parent: (nullable):	the parent node (optional can be NULL)
  * @position:   	insert position (optional can be 0)
  *
- * Sets a nodes parent. If no parent node is given the 
- * parent node of the currently selected feed or the 
+ * Sets a nodes parent. If no parent node is given the
+ * parent node of the currently selected feed or the
  * selected folder will be used.
  *
  * To be used before calling feedlist_node_added()
@@ -123,9 +123,9 @@ void node_set_parent (nodePtr node, nodePtr parent, gint position);
  * @node:		the node
  * @new_parent: 	nodes new parent
  *
- * Set a node's new parent and update UI. If a node already has a parent, 
- * it will be removed from its parent children list. 
- */ 
+ * Set a node's new parent and update UI. If a node already has a parent,
+ * it will be removed from its parent children list.
+ */
 void node_reparent (nodePtr node, nodePtr new_parent);
 
 /**
@@ -152,7 +152,7 @@ void node_set_data(nodePtr node, gpointer data);
  *
  * Attaches the subscription to the given node.
  */
-void node_set_subscription (nodePtr node, struct subscription *subscription);
+void node_set_subscription (nodePtr node, struct _Subscription *subscription);
 
 /**
  * node_update_subscription: (skip)
@@ -194,7 +194,7 @@ void node_reset_update_counter (nodePtr node, guint64 *now);
  */
 gboolean node_is_ancestor(nodePtr node1, nodePtr node2);
 
-/** 
+/**
  * node_get_title: (skip)
  * @node:	the node
  *
@@ -291,7 +291,7 @@ gchar * node_new_id (void);
  */
 const gchar *node_get_id (nodePtr node);
 
-/** 
+/**
  * node_set_id: (skip)
  * @node:	the node
  * @id: 	the id string
@@ -300,7 +300,7 @@ const gchar *node_get_id (nodePtr node);
  */
 void node_set_id(nodePtr node, const gchar *id);
 
-/** 
+/**
  * node_free: (skip)
  * @node: the node to free
  *
@@ -460,7 +460,7 @@ void node_foreach_child_full(nodePtr ptr, gpointer func, gint params, gpointer u
  * @user_data:  specifies the second argument that func should be passed
  *
  * Helper function to call node methods for all
- * children of a given node. The given function may 
+ * children of a given node. The given function may
  * modify the children list.
  */
 #define node_foreach_child_data(node, func, user_data) node_foreach_child_full(node,func,1,user_data)

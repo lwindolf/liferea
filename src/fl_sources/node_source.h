@@ -199,7 +199,7 @@ typedef struct nodeSourceProvider {
 	 * The returned node will be automatically added to the feed list UI.
 	 * Initial update and state saving will be triggered automatically.
 	 */
-	nodePtr		(*add_subscription) (nodePtr node, struct subscription *subscription);
+	nodePtr		(*add_subscription) (nodePtr node, Subscription *subscription);
 
 	/*
 	 * Removes an existing node (subscription or folder) from the feed list
@@ -255,15 +255,18 @@ nodePtr node_source_root_from_node (nodePtr node);
 nodePtr node_source_setup_root (void);
 
 /**
- * node_source_new:
- * @typeId:	the node source type id
- * @url:	subscription URL (optional)
+ * node_source_new: (skip)
  *
  * Creates a new source and assigns it to the given new node.
  * To be used to prepare a source node before adding it to the
  * feed list. This method takes care of setting the proper source
  * subscription type and setting up the subscription if url != NULL.
  * The caller needs set additional auth info for the subscription.
+ *
+ * @typeId:	the node source type id
+ * @url:	subscription URL (optional)
+ *
+ * Returns: a newly created node
  */
 nodePtr node_source_new (const gchar *typeId, const gchar *url);
 
@@ -324,7 +327,7 @@ void node_source_auto_update (nodePtr node);
  *
  * Returns: a new node intialized with the new subscription
  */
-nodePtr node_source_add_subscription (nodePtr node, struct subscription *subscription);
+nodePtr node_source_add_subscription (nodePtr node, Subscription *subscription);
 
 /**
  * node_source_remove_node: (skip)

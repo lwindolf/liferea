@@ -75,7 +75,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 {
 	nodePtr		node = (nodePtr) userdata;
 	gchar		*tmp = NULL;
-	subscriptionPtr subscription = node->subscription;
+	Subscription * subscription = node->subscription;
 
 	debug1 (DEBUG_UPDATE, "Reedah login processing... %s", result->data);
 
@@ -117,7 +117,7 @@ reedah_source_login (ReedahSourcePtr source, guint32 flags)
 {
 	gchar			*username, *password;
 	UpdateRequest		*request;
-	subscriptionPtr		subscription = source->root->subscription;
+	Subscription *		subscription = source->root->subscription;
 
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session
@@ -197,7 +197,7 @@ reedah_source_import (nodePtr node)
 }
 
 static nodePtr
-reedah_source_add_subscription (nodePtr node, subscriptionPtr subscription)
+reedah_source_add_subscription (nodePtr node, Subscription * subscription)
 {
 	// FIXME: determine correct category from parent folder name
 	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source, NULL);
