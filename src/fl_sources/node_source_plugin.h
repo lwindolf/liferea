@@ -116,12 +116,13 @@ void node_source_plugin_feed_subscription_process_update_result (subscriptionPtr
 /* ==================== source subscription type adapter ==================== */
 
 /**
-   * node_source_plugin_source_subscription_prepare_update_request: (skip)
-   */
+ * node_source_plugin_source_subscription_prepare_update_request: (skip)
+ */
 gboolean node_source_plugin_source_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request);
+
 /**
-   * node_source_plugin_source_subscription_process_update_result: (skip)
-   */
+ * node_source_plugin_source_subscription_process_update_result: (skip)
+ */
 void node_source_plugin_source_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags);
 
 /* ======================== helper methods ================================== */

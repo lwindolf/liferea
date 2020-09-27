@@ -241,7 +241,7 @@ void update_request_set_auth_value (UpdateRequest *request, const gchar* authVal
 /**
  * update_result_new: (skip)
  *
- * Creates a new update result for the given update request.
+ * Creates a new update result.
  *
  * @returns update result (to be free'd using update_result_free())
  */
