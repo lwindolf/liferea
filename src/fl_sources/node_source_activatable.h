@@ -63,19 +63,27 @@ struct _LifereaNodeSourceActivatableInterface
 	 */
 	guint		(*get_capabilities) (LifereaNodeSourceActivatable *activatable);
 
-	// FIXME: source subscription interface
-
 	/* === Subscription type interface (see subscription_type.h!)*/
 
 	/*
-	 * MANDATORY preparation callback for an update type.
+	 * MANDATORY feed subscription preparation callback.
 	 */
-	gboolean (*prepare_update_request)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, struct updateRequest * request);
+	gboolean	(*feed_subscription_prepare_update_request)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, struct updateRequest * request);
 
 	/*
-	 * MANDATORY subscription type specific update result processing callback.
+	 * MANDATORY feed subscription type specific update result processing callback.
 	 */
-	void (*process_update_result)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
+	void		(*feed_subscription_process_update_result)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
+
+	/*
+	 * MANDATORY source subscription update preparation callback.
+	 */
+	gboolean	(*source_subscription_prepare_update_request)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, struct updateRequest * request);
+
+	/*
+	 * MANDATORY source subscription type specific update result processing callback.
+	 */
+	void		(*source_subscription_process_update_result)(LifereaNodeSourceActivatable *activatable, subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
 
 	/* === Feed list node handling interface (see node_source.h!) */
 

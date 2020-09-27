@@ -272,12 +272,15 @@ node_source_new (const gchar *typeId, const gchar *url)
 	node_source_set_type (node, typeId);
 	node_set_title (node, node->source->type->name);
 
-	if (url) {
+	if (url != NULL) {
 		subscription = subscription_new (url, NULL, NULL);
 		node_set_subscription (node, subscription);
 
 		subscription->type = node->source->type->sourceSubscriptionType;
+		g_assert(node->subscription != NULL);
 	}
+
+	return node;
 }
 
 nodeSourceTypePtr
