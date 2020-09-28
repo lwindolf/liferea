@@ -1,7 +1,7 @@
 /**
  * @file update.h  generic update request and state processing
  *
- * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -91,19 +91,19 @@ G_BEGIN_DECLS
 #define UPDATE_REQUEST_TYPE (update_request_get_type ())
 G_DECLARE_FINAL_TYPE (UpdateRequest, update_request, UPDATE, REQUEST, GObject)
 
-typedef struct _UpdateRequest {
+struct _UpdateRequest {
 	GObject		parent;
 
 	gchar 		*source;	/**< Location of the source. If it starts with
-		'|', it is a command. If it contains "://",
-		then it is parsed as a URL, otherwise it is a
-		filename. */
+					     '|', it is a command. If it contains "://",
+					     then it is parsed as a URL, otherwise it is a
+					     filename. */
 	gchar           *postdata;      /**< HTTP POST request data (NULL for non-POST requests) */
 	gchar           *authValue;     /**< Custom value for Authorization: header */
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
-} *updateRequestPtr;
+};
 
 /** structure to store results of the processing of an update request */
 typedef struct updateResult {
@@ -132,11 +132,14 @@ typedef struct updateJob {
 } *updateJobPtr;
 
 /**
- * Creates a new update state structure
- *
- * @return a new state structure (to be free'd using update_state_free())
+ * Create new update state
  */
 updateStatePtr update_state_new (void);
+
+/**
+ * Copy update state
+ */
+updateStatePtr update_state_copy (updateStatePtr state);
 
 glong update_state_get_lastmodified (updateStatePtr state);
 void update_state_set_lastmodified (updateStatePtr state, glong lastmodified);
@@ -151,16 +154,9 @@ const gchar * update_state_get_cookies (updateStatePtr state);
 void update_state_set_cookies (updateStatePtr state, const gchar *cookies);
 
 /**
- * Copies the given update state.
- *
- * @returns a new update state structure (to be free'd using update_state_free())
- */
-updateStatePtr update_state_copy (updateStatePtr state);
-
-/**
  * Frees the given update state.
  *
- * @param updateState	the update state
+ * @param updateState  the update state
  */
 void update_state_free (updateStatePtr updateState);
 
@@ -194,15 +190,22 @@ void update_deinit (void);
 /**
  * Creates a new request structure.
  *
+ * @oaram source	URI to download
+ * @param state		a previous update state of the requested URL (or NULL)
+ *                      will not be owned, but copied!
+ * @param options	update options to be used (or NULL)
+ *			will not be owned but copied!
+ *
  * @returns a new request GObject to be passed to update_execute_request()
  */
-UpdateRequest * update_request_new (void);
+UpdateRequest * update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr options);
 
 /**
- * Sets the source for an updateRequest
+ * Sets the source for an updateRequest. Only use this when the source
+ * is not known at update_request_new() calling time.
  *
  * @param request       the update request
- * @param source        the new source
+ * @param source        the new source URL
  */
 void update_request_set_source (UpdateRequest *request, const gchar* source);
 

@@ -57,7 +57,7 @@ subscription_new (const gchar *source,
 	if (!subscription->updateOptions)
 		subscription->updateOptions = g_new0 (struct updateOptions, 1);
 
-	subscription->updateState = g_new0 (struct updateState, 1);
+	subscription->updateState = update_state_new ();
 	subscription->updateInterval = -1;
 	subscription->defaultInterval = -1;
 
@@ -248,7 +248,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 void
 subscription_update (subscriptionPtr subscription, guint flags)
 {
-	updateRequestPtr		request;
+	UpdateRequest	*request;
 	guint64			now;
 
 	if (!subscription)
@@ -265,10 +265,12 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		now = g_get_real_time();
 		subscription_reset_update_counter (subscription, &now);
 
-		request = update_request_new ();
-		request->updateState = update_state_copy (subscription->updateState);
-		request->options = update_options_copy (subscription->updateOptions);
-		request->source = g_strdup (subscription_get_source (subscription));
+		request = update_request_new (
+			subscription_get_source (subscription),
+			subscription->updateState,
+			subscription->updateOptions
+		);
+
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
 

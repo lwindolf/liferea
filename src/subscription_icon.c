@@ -88,7 +88,7 @@ subscription_icon_download_data_cb (const struct updateResult * const result, gp
 	} else {
 		debug1 (DEBUG_UPDATE, "No data in download result for favicon %s!", ctxt->id);
 	}
-	
+
 	if (!success) {
 		subscription_icon_download_next (ctxt);
 	} else {
@@ -101,16 +101,18 @@ static void
 subscription_icon_download_html_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags)
 {
 	iconDownloadCtxtPtr ctxt = (iconDownloadCtxtPtr)user_data;
-	
+
 	if (result->size > 0 && result->data) {
 		gchar *iconUri = html_discover_favicon (result->data, result->source);
 		if (iconUri) {
-			updateRequestPtr request;
-			
+			UpdateRequest *request;
+
 			debug2 (DEBUG_UPDATE, "Found link for favicon %s: %s", ctxt->id, iconUri);
-			request = update_request_new ();
-			request->source = iconUri;
-			request->options = update_options_copy (ctxt->options);
+			request = update_request_new (
+				iconUri,
+				NULL,	// updateState
+				ctxt->options
+			);
 			update_execute_request (node_from_id (ctxt->id), request, subscription_icon_download_data_cb, ctxt, flags);
 
 			return;
@@ -126,19 +128,21 @@ static void
 subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 {
 	gchar			*url;
-	updateRequestPtr	request;
+	UpdateRequest		*request;
 	update_result_cb	callback;
 
 	debug_enter("subscription_icon_download_next");
-	
+
 	if (ctxt->urls) {
 		url = (gchar *)ctxt->urls->data;
 		ctxt->urls = g_slist_remove (ctxt->urls, url);
 		debug2 (DEBUG_UPDATE, "Icon '%s' trying URL: '%s'", ctxt->id, url);
 
-		request = update_request_new ();
-		request->source = url;
-		request->options = update_options_copy (ctxt->options);
+		request = update_request_new (
+			url,
+			NULL, 	// updateState
+			ctxt->options
+		);
 
 		if (strstr (url, "/favicon.ico"))
 			callback = subscription_icon_download_data_cb;
@@ -150,7 +154,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 		debug1 (DEBUG_UPDATE, "Icon '%s' could not be downloaded!", ctxt->id);
 		subscription_icon_download_ctxt_free (ctxt);
 	}
-	
+
 	debug_exit ("subscription_icon_download_next");
 }
 
@@ -160,7 +164,7 @@ subscription_icon_update (subscriptionPtr subscription)
 	iconDownloadCtxtPtr	ctxt;
 
 	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
-  subscription->updateState->lastFaviconPoll = g_get_real_time();
+ 	subscription->updateState->lastFaviconPoll = g_get_real_time();
 
 	ctxt = subscription_icon_download_ctxt_new ();
 	ctxt->id = g_strdup (subscription->node->id);

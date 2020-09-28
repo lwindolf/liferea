@@ -1,7 +1,7 @@
 /**
  * @file update.c  generic update request and state processing
  *
- * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -147,6 +147,29 @@ update_state_free (updateStatePtr updateState)
 	g_free (updateState);
 }
 
+/* update options */
+
+updateOptionsPtr
+update_options_copy (updateOptionsPtr options)
+{
+	updateOptionsPtr newOptions;
+	newOptions = g_new0 (struct updateOptions, 1);
+	newOptions->username = g_strdup (options->username);
+	newOptions->password = g_strdup (options->password);
+	newOptions->dontUseProxy = options->dontUseProxy;
+	return newOptions;
+}
+void
+update_options_free (updateOptionsPtr options)
+{
+	if (!options)
+		return;
+
+	g_free (options->username);
+	g_free (options->password);
+	g_free (options);
+}
+
 /* update request object */
 
 G_DEFINE_TYPE (UpdateRequest, update_request, G_TYPE_OBJECT);
@@ -162,6 +185,8 @@ update_request_finalize (GObject *obj)
 	g_free (request->postdata);
 	g_free (request->source);
 	g_free (request->filtercmd);
+
+	G_OBJECT_CLASS (update_request_parent_class)->finalize (obj);
 }
 
 static void
@@ -177,20 +202,35 @@ update_request_init (UpdateRequest *request)
 }
 
 UpdateRequest *
-update_request_new (void)
+update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr options)
 {
-	return UPDATE_REQUEST (g_object_new (UPDATE_REQUEST_TYPE, NULL));
+	UpdateRequest *request = UPDATE_REQUEST (g_object_new (UPDATE_REQUEST_TYPE, NULL));
+
+	request->source = g_strdup (source);
+
+	if (state)
+		request->updateState = update_state_copy (state);
+	else
+		request->updateState = update_state_new ();
+
+
+	if (options)
+		request->options = update_options_copy (options);
+	else
+		request->options = g_new0 (struct updateOptions, 1);
+
+	return request;
 }
 
 void
-update_request_set_source (updateRequestPtr request, const gchar* source)
+update_request_set_source(UpdateRequest *request, const gchar* source)
 {
 	g_free (request->source);
 	request->source = g_strdup (source);
 }
 
 void
-update_request_set_auth_value (updateRequestPtr request, const gchar* authValue)
+update_request_set_auth_value (UpdateRequest *request, const gchar* authValue)
 {
 	g_free (request->authValue);
 	request->authValue = g_strdup (authValue);
@@ -224,35 +264,11 @@ update_result_free (updateResultPtr result)
 	g_free (result);
 }
 
-updateOptionsPtr
-update_options_copy (updateOptionsPtr options)
-{
-	updateOptionsPtr newOptions;
-
-	newOptions = g_new0 (struct updateOptions, 1);
-	newOptions->username = g_strdup (options->username);
-	newOptions->password = g_strdup (options->password);
-	newOptions->dontUseProxy = options->dontUseProxy;
-
-	return newOptions;
-}
-
-void
-update_options_free (updateOptionsPtr options)
-{
-	if (!options)
-		return;
-
-	g_free (options->username);
-	g_free (options->password);
-	g_free (options);
-}
-
 /* update job handling */
 
 static updateJobPtr
 update_job_new (gpointer owner,
-                updateRequestPtr request,
+                UpdateRequest *request,
 		update_result_cb callback,
 		gpointer user_data,
 		updateFlags flags)
@@ -261,7 +277,7 @@ update_job_new (gpointer owner,
 
 	job = g_new0 (struct updateJob, 1);
 	job->owner = owner;
-	job->request = UPDATE_REQUEST (g_object_ref (request));
+	job->request = UPDATE_REQUEST (request);
 	job->result = update_result_new ();
 	job->callback = callback;
 	job->user_data = user_data;
@@ -555,7 +571,7 @@ update_dequeue_job (gpointer user_data)
 
 updateJobPtr
 update_execute_request (gpointer owner,
-                        updateRequestPtr request,
+                        UpdateRequest *request,
 			update_result_cb callback,
 			gpointer user_data,
 			updateFlags flags)
