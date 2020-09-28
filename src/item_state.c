@@ -30,7 +30,7 @@
 #include "fl_sources/node_source.h"
 
 static void
-item_state_set_recount_flag (nodePtr node)
+item_state_set_recount_flag (Node *node)
 {
 	node->needsRecount = TRUE;
 }
@@ -80,7 +80,7 @@ item_set_read_state (itemPtr item, gboolean newState)
 void
 item_read_state_changed (itemPtr item, gboolean newState)
 {
-	nodePtr node;
+	Node *node;
 
 	debug_start_measurement (DEBUG_GUI);
 
@@ -135,7 +135,7 @@ item_read_state_changed (itemPtr item, gboolean newState)
  * those recounts are executed and applied to the GUI.
  */
 void
-itemset_mark_read (nodePtr node)
+itemset_mark_read (Node *node)
 {
 	itemSetPtr	itemSet;
 
@@ -146,7 +146,7 @@ itemset_mark_read (nodePtr node)
 		itemPtr item = item_load (id);
 		if (item) {
 			if (!item->readStatus) {
-				nodePtr node = node_from_id (item->nodeId);
+				Node *node = node_from_id (item->nodeId);
 				if (node) {
 					item_state_set_recount_flag (node);
 					node_source_item_mark_read (node, item, TRUE);
@@ -158,7 +158,7 @@ itemset_mark_read (nodePtr node)
 				GSList *duplicate = duplicates;
 				while (duplicate) {
 					gchar *nodeId = (gchar *)duplicate->data;
-					nodePtr affectedNode = node_from_id (nodeId);
+					Node *affectedNode = node_from_id (nodeId);
 					if (affectedNode)
 						item_state_set_recount_flag (affectedNode);
 					g_free (nodeId);

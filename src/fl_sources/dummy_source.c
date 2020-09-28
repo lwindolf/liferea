@@ -23,13 +23,13 @@
 #include "node.h"
 #include "ui/icons.h"
 
-static gchar * dummy_source_get_feedlist (nodePtr node) { return NULL; }
+static gchar * dummy_source_get_feedlist (Node *node) { return NULL; }
 
 static void dummy_source_new (const gchar *typeId) { }
 
-static void dummy_source_noop (nodePtr node) { }
+static void dummy_source_noop (Node *node) { }
 
-static void dummy_source_import (nodePtr node) {
+static void dummy_source_import (Node *node) {
 
 	node->icon = (gpointer)icon_get (ICON_UNAVAILABLE);
 }

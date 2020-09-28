@@ -160,7 +160,7 @@ static gboolean
 ttrss_feed_subscription_prepare_update_request (Subscription * subscription,
                                                 UpdateRequest *request)
 {
-	nodePtr		root = node_source_root_from_node (subscription->node);
+	Node *		root = node_source_root_from_node (subscription->node);
 	ttrssSourcePtr	source = (ttrssSourcePtr) root->data;
 	const gchar	*feed_id;
 	gchar		*source_name;

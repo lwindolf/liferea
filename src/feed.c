@@ -55,7 +55,7 @@ feed_new (void)
 }
 
 static void
-feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
+feed_import (Node *node, Node *parent, xmlNodePtr xml, gboolean trusted)
 {
 	gchar		*cacheLimitStr, *title;
 	gchar		*tmp;
@@ -119,7 +119,7 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 }
 
 static void
-feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
+feed_export (Node *node, xmlNodePtr xml, gboolean trusted)
 {
 	feedPtr feed = (feedPtr) node->data;
 	gchar *cacheLimit = NULL;
@@ -157,7 +157,7 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 }
 
 static void
-feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
+feed_add_xml_attributes (Node *node, xmlNodePtr feedNode)
 {
 	feedPtr	feed = (feedPtr)node->data;
 	gchar	*tmp;
@@ -181,7 +181,7 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 }
 
 xmlDocPtr
-feed_to_xml (nodePtr node, xmlNodePtr feedNode)
+feed_to_xml (Node *node, xmlNodePtr feedNode)
 {
 	xmlDocPtr	doc = NULL;
 
@@ -196,7 +196,7 @@ feed_to_xml (nodePtr node, xmlNodePtr feedNode)
 }
 
 guint
-feed_get_max_item_count (nodePtr node)
+feed_get_max_item_count (Node *node)
 {
 	gint	default_max_items;
 	feedPtr	feed = (feedPtr)node->data;
@@ -302,7 +302,7 @@ static void
 feed_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
 {
 	feedParserCtxtPtr	ctxt;
-	nodePtr			node = subscription->node;
+	Node *			node = subscription->node;
 	feedPtr			feed = (feedPtr)node->data;
 
 	debug_enter ("feed_process_update_result");
@@ -375,26 +375,26 @@ feed_prepare_update_request (Subscription * subscription, UpdateRequest *request
 /* implementation of the node type interface */
 
 static itemSetPtr
-feed_load (nodePtr node)
+feed_load (Node *node)
 {
 	return db_itemset_load(node->id);
 }
 
 static void
-feed_save (nodePtr node)
+feed_save (Node *node)
 {
 	/* Nothing to do. Feeds do not have any UI states */
 }
 
 static void
-feed_update_counters (nodePtr node)
+feed_update_counters (Node *node)
 {
 	node->itemCount = db_itemset_get_item_count (node->id);
 	node->unreadCount = db_itemset_get_unread_count (node->id);
 }
 
 static void
-feed_remove (nodePtr node)
+feed_remove (Node *node)
 {
 	feed_list_view_remove_node (node);
 
@@ -403,7 +403,7 @@ feed_remove (nodePtr node)
 }
 
 static const gchar *
-feed_get_direction(nodePtr feed)
+feed_get_direction(Node *feed)
 {
 	if (node_get_title (feed))
 		return (common_get_text_direction (node_get_title (feed)));
@@ -412,7 +412,7 @@ feed_get_direction(nodePtr feed)
 }
 
 static gchar *
-feed_render (nodePtr node)
+feed_render (Node *node)
 {
 	gchar		*output = NULL;
 	xmlDocPtr	doc;
@@ -439,13 +439,13 @@ feed_add (void)
 }
 
 static void
-feed_properties (nodePtr node)
+feed_properties (Node *node)
 {
 	subscription_prop_dialog_new (node->subscription);
 }
 
 static void
-feed_free (nodePtr node)
+feed_free (Node *node)
 {
 	feedPtr	feed = (feedPtr)node->data;
 

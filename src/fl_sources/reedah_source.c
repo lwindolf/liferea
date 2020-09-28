@@ -49,7 +49,7 @@
 
 /** create a Reedah source with given node as root */
 static ReedahSourcePtr
-reedah_source_new (nodePtr node)
+reedah_source_new (Node *node)
 {
 	ReedahSourcePtr source = g_new0 (struct ReedahSource, 1) ;
 	source->root = node;
@@ -73,7 +73,7 @@ reedah_source_free (ReedahSourcePtr source)
 static void
 reedah_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	nodePtr		node = (nodePtr) userdata;
+	Node *		node = (Node *) userdata;
 	gchar		*tmp = NULL;
 	Subscription * subscription = node->subscription;
 
@@ -148,7 +148,7 @@ reedah_source_login (ReedahSourcePtr source, guint32 flags)
 /* node source type implementation */
 
 static void
-reedah_source_auto_update (nodePtr node)
+reedah_source_auto_update (Node *node)
 {
 	guint64	now;
 	ReedahSourcePtr source = (ReedahSourcePtr) node->data;
@@ -186,7 +186,7 @@ reedah_source_init (void)
 static void reedah_source_deinit (void) { }
 
 static void
-reedah_source_import (nodePtr node)
+reedah_source_import (Node *node)
 {
 	opml_source_import (node);
 
@@ -196,8 +196,8 @@ reedah_source_import (nodePtr node)
 		node->data = (gpointer) reedah_source_new (node);
 }
 
-static nodePtr
-reedah_source_add_subscription (nodePtr node, Subscription * subscription)
+static Node *
+reedah_source_add_subscription (Node *node, Subscription * subscription)
 {
 	// FIXME: determine correct category from parent folder name
 	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source, NULL);
@@ -210,7 +210,7 @@ reedah_source_add_subscription (nodePtr node, Subscription * subscription)
 }
 
 static void
-reedah_source_remove_node (nodePtr node, nodePtr child)
+reedah_source_remove_node (Node *node, Node *child)
 {
 	gchar           *url;
 	ReedahSourcePtr source = node->data;
@@ -238,7 +238,7 @@ on_reedah_source_selected (GtkDialog *dialog,
                            gint response_id,
                            gpointer user_data)
 {
-	nodePtr		node;
+	Node *		node;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_source_new ("fl_reedah", "http://www.reedah.com/reader");
@@ -268,7 +268,7 @@ ui_reedah_source_get_account_info (const gchar *typeId)
 }
 
 static void
-reedah_source_cleanup (nodePtr node)
+reedah_source_cleanup (Node *node)
 {
 	ReedahSourcePtr reader = (ReedahSourcePtr) node->data;
 	reedah_source_free(reader);
@@ -276,14 +276,14 @@ reedah_source_cleanup (nodePtr node)
 }
 
 static void
-reedah_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
+reedah_source_item_set_flag (Node *node, itemPtr item, gboolean newStatus)
 {
 	google_reader_api_edit_mark_starred (node->source, item->sourceId, node->subscription->source, newStatus);
 	item_flag_state_changed (item, newStatus);
 }
 
 static void
-reedah_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
+reedah_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 {
 	google_reader_api_edit_mark_read (node->source, item->sourceId, node->subscription->source, newStatus);
 	item_read_state_changed (item, newStatus);
@@ -295,7 +295,7 @@ reedah_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
  * @param node The node to migrate (not the nodeSource!)
  */
 static void
-reedah_source_convert_to_local (nodePtr node)
+reedah_source_convert_to_local (Node *node)
 {
 	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }

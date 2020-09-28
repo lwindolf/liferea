@@ -37,7 +37,7 @@
  *
  * @returns TRUE on success
  */
-gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean internal);
+gboolean export_OPML_feedlist(const gchar *filename, Node *node, gboolean internal);
 
 /**
  * Reads an OPML file and inserts it into the feedlist.
@@ -49,7 +49,7 @@ gboolean export_OPML_feedlist(const gchar *filename, nodePtr node, gboolean inte
  *
  * @returns TRUE on success
  */
-gboolean import_OPML_feedlist(const gchar *filename, nodePtr parentNode, gboolean showErrors, gboolean trusted);
+gboolean import_OPML_feedlist(const gchar *filename, Node *parentNode, gboolean showErrors, gboolean trusted);
 
 /**
  * Called when user requested dialog to import an OPML file.

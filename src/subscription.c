@@ -224,7 +224,7 @@ static void
 subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
 {
 	Subscription * subscription = (Subscription *)user_data;
-	nodePtr		node = subscription->node;
+	Node *		node = subscription->node;
 	gboolean	processing = FALSE;
 	guint64		now;
 	gint		next_update = 0;

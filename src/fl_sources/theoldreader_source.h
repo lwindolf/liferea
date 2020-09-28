@@ -27,7 +27,7 @@
  * A nodeSource specific for TheOldReader
  */
 typedef struct TheOldReaderSource {
-	nodePtr		root;		/**< the root node in the feed list */
+	Node *		root;		/**< the root node in the feed list */
 
 	/**
 	 * A map from a subscription source to a timestamp when it was last 
@@ -68,7 +68,7 @@ nodeSourceTypePtr theoldreader_source_get_type (void);
  *
  * @returns a node (or NULL)
  */
-nodePtr theoldreader_source_get_node_from_source (TheOldReaderSourcePtr gsource, const gchar* source);
+Node *theoldreader_source_get_node_from_source (TheOldReaderSourcePtr gsource, const gchar* source);
 
 /**
  * Migrate a google source child-node from a Liferea 1.4 style read-only
@@ -76,7 +76,7 @@ nodePtr theoldreader_source_get_node_from_source (TheOldReaderSourcePtr gsource,
  *
  * @param node The node to migrate (not the nodeSource!)
  */
-void theoldreader_source_migrate_node (nodePtr node);
+void theoldreader_source_migrate_node (Node *node);
 
 /**
  * Perform login for the given Google source.

@@ -55,7 +55,7 @@ htmlview_render_item (itemPtr item,
 {
 	renderParamPtr	params;
 	gchar		*output = NULL, *baseUrl = NULL;
-	nodePtr		node, selected;
+	Node *		node, selected;
 	xmlDocPtr 	doc;
 	xmlNodePtr 	xmlNode;
 	const gchar     *text_direction = NULL;
@@ -179,7 +179,7 @@ htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode)
 {
 	GSList		*iter;
 	GString		*output;
-	nodePtr		node = feedlist_get_selected ();
+	Node *		node = feedlist_get_selected ();
 	itemPtr		item = NULL;
 	gchar		*baseURL = NULL;
 	gchar		*content = NULL;

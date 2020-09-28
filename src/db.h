@@ -205,7 +205,7 @@ void db_subscription_remove (const gchar *id);
  *
  * @param node		the node
  */
-void db_node_update (nodePtr node);
+void db_node_update (Node *node);
 
 
 /**
@@ -214,6 +214,6 @@ void db_node_update (nodePtr node);
  * 
  * @param root		the root node
  */
-void db_node_cleanup (nodePtr root);
+void db_node_cleanup (Node *root);
 
 #endif

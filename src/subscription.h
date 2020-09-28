@@ -44,7 +44,7 @@ GType subscription_get_type ();
 typedef struct _Subscription Subscription;
 
 struct _Subscription {
-	nodePtr		node;			/*<< the feed list node the subscription is attached to */
+	Node 		*node;			/*<< the feed list node the subscription is attached to */
 	struct subscriptionType *type;		/*<< the subscription type */
 
 	gchar		*source;		/*<< current source, can be changed by redirects */

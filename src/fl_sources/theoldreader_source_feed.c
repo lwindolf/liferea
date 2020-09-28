@@ -38,7 +38,7 @@
 #include "item_state.h"
 
 void
-theoldreader_source_migrate_node (nodePtr node)
+theoldreader_source_migrate_node (Node *node)
 {
 	/* scan the node for bad ID's, if so, brutally remove the node */
 	itemSetPtr itemset = node_get_itemset (node);
@@ -60,7 +60,7 @@ theoldreader_source_migrate_node (nodePtr node)
 }
 
 static itemPtr
-theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache)
+theoldreader_source_load_item_from_sourceid (Node *node, gchar *sourceId, GHashTable *cache)
 {
 	gpointer    ret = g_hash_table_lookup (cache, sourceId);
 	itemSetPtr  itemset;
@@ -100,7 +100,7 @@ static void
 theoldreader_source_item_retrieve_status (const xmlNodePtr entry, Subscription * subscription, GHashTable *cache)
 {
 	xmlNodePtr      xml;
-	nodePtr         node = subscription->node;
+	Node *        node = subscription->node;
 	xmlChar         *id = NULL;
 	gboolean        read = FALSE;
 

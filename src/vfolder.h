@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 #ifndef _VFOLDER_H
 #define _VFOLDER_H
 
@@ -28,7 +28,7 @@
 
 /* The search folder implementation of Liferea is similar to the
    one in Evolution. Search folders are effectivly permanent searches.
-   
+
    As Liferea realizes filtered lists of items using rule based itemsets,
    search folders are effectively persistent rule based itemsets.
 
@@ -37,8 +37,8 @@
 
 /** search folder data structure */
 typedef struct vfolder {
-	struct node	*node;		/**< the feed list node of this search folder */
-	
+	struct _Node	*node;		/**< the feed list node of this search folder */
+
 	itemSetPtr	itemset;	/**< the itemset with the rules and matching items */
 
 	gboolean	reloading;	/**< if the search folder is in async reloading */
@@ -52,7 +52,7 @@ typedef struct vfolder {
  *
  * @returns a new search folder structure
  */
-vfolderPtr vfolder_new (struct node *node);
+vfolderPtr vfolder_new (struct _Node *node);
 
 /**
  * Method to unconditionally invoke an node callback for all search folders.
@@ -94,7 +94,7 @@ void vfolder_reset (vfolderPtr vfolder);
  *
  * @param vfolder	search folder to rebuild
  */
-void vfolder_rebuild (nodePtr node);
+void vfolder_rebuild (Node *node);
 
 /* implementation of the node type interface */
 

@@ -48,7 +48,7 @@ FeedList * feedlist_create (gpointer feedListView);
  *
  * Returns: (transfer none) (nullable): selected node (or NULL)
  */
-nodePtr feedlist_get_selected (void);
+Node *feedlist_get_selected (void);
 
 /**
  * feedlist_get_unread_item_count:
@@ -89,7 +89,7 @@ void feedlist_reset_new_item_count (void);
  * update for all affected nodes in the feed list.
  *
  */
-void feedlist_node_was_updated (nodePtr node);
+void feedlist_node_was_updated (Node *node);
 
 /**
  * feedlist_get_root: (skip)
@@ -98,7 +98,7 @@ void feedlist_node_was_updated (nodePtr node);
  *
  * Returns: (transfer none): the feed list root node
  */
-nodePtr feedlist_get_root (void);
+Node *feedlist_get_root (void);
 
 typedef enum {
 	NODE_BY_URL,
@@ -117,9 +117,9 @@ typedef enum {
  * Searches recursively from a given parent node or the root node.
  * Always returns just the first occurence in traversal order.
  *
- * Returns: (nullable) (transfer none): a nodePtr or NULL
+ * Returns: (nullable) (transfer none): a Node *or NULL
  */
-nodePtr feedlist_find_node (nodePtr parent, feedListFindType type, const gchar *str);
+Node *feedlist_find_node (Node *parent, feedListFindType type, const gchar *str);
 
 /**
  * feedlist_add_subscription: (skip)
@@ -167,7 +167,7 @@ void feedlist_add_folder (const gchar *title);
  * a parent node using node_set_parent().
  *
  */
-void feedlist_node_added (nodePtr node);
+void feedlist_node_added (Node *node);
 
 /**
  * feedlist_node_imported: (skip)
@@ -184,7 +184,7 @@ void feedlist_node_added (nodePtr node);
  * a parent node using node_set_parent().
  *
  */
-void feedlist_node_imported (nodePtr node);
+void feedlist_node_imported (Node *node);
 
 /**
  * feedlist_remove_node: (skip)
@@ -192,7 +192,7 @@ void feedlist_node_imported (nodePtr node);
  *
  * Removes the given node from the feed list.
  */
-void feedlist_remove_node (nodePtr node);
+void feedlist_remove_node (Node *node);
 
 /**
  * feedlist_node_removed: (skip)
@@ -204,7 +204,7 @@ void feedlist_remove_node (nodePtr node);
  * feed list view.
  *
  */
-void feedlist_node_removed (nodePtr node);
+void feedlist_node_removed (Node *node);
 
 /**
  * feedlist_schedule_save: (skip)
@@ -221,7 +221,7 @@ void feedlist_schedule_save (void);
  * Resets the update counter of all childs of the given node
  *
  */
-void feedlist_reset_update_counters (nodePtr node);
+void feedlist_reset_update_counters (Node *node);
 
 gboolean feedlist_is_writable (void);
 
@@ -233,7 +233,7 @@ gboolean feedlist_is_writable (void);
  * and updates the feed list afterwards.
  *
  */
-void feedlist_mark_all_read (nodePtr node);
+void feedlist_mark_all_read (Node *node);
 
 /* feed list iterating interface */
 
@@ -267,7 +267,7 @@ void feedlist_mark_all_read (nodePtr node);
  *
  * Returns: (nullable) (transfer none): a found node or NULL
  */
-nodePtr	feedlist_find_unread_feed (nodePtr folder);
+Node *	feedlist_find_unread_feed (Node *folder);
 
 /**
  * feedlist_new_items: (skip)

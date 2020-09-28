@@ -36,7 +36,7 @@
 static GSList		*vfolders = NULL;
 
 vfolderPtr
-vfolder_new (nodePtr node) 
+vfolder_new (Node *node) 
 {
 	vfolderPtr	vfolder;
 
@@ -108,7 +108,7 @@ vfolder_import_rules (xmlNodePtr cur,
 }
 
 static itemSetPtr
-vfolder_load (nodePtr node) 
+vfolder_load (Node *node) 
 {
 	return db_search_folder_load (node->id);
 }
@@ -159,8 +159,8 @@ vfolder_get_all_without_item_id (itemPtr item)
 }
 
 static void
-vfolder_import (nodePtr node,
-                nodePtr parent,
+vfolder_import (Node *node,
+                Node *parent,
                 xmlNodePtr cur,
                 gboolean trusted) 
 {
@@ -178,7 +178,7 @@ vfolder_import (nodePtr node,
 }
 
 static void
-vfolder_export (nodePtr node,
+vfolder_export (Node *node,
                 xmlNodePtr cur,
                 gboolean trusted)
 {
@@ -225,7 +225,7 @@ vfolder_reset (vfolderPtr vfolder)
 }
 
 void
-vfolder_rebuild (nodePtr node)
+vfolder_rebuild (Node *node)
 {
 	vfolderPtr	vfolder = (vfolderPtr)node->data;
 
@@ -234,7 +234,7 @@ vfolder_rebuild (nodePtr node)
 }
 
 static void
-vfolder_free (nodePtr node) 
+vfolder_free (Node *node) 
 {
 	vfolderPtr	vfolder = (vfolderPtr) node->data;
 
@@ -248,10 +248,10 @@ vfolder_free (nodePtr node)
 
 /* implementation of the node type interface */
 
-static void vfolder_save (nodePtr node) { }
+static void vfolder_save (Node *node) { }
 
 static void
-vfolder_update_counters (nodePtr node) 
+vfolder_update_counters (Node *node) 
 {
 	/* There is no unread handling for search folders for performance
 	 * reasons.So set everything to 0 here and don't bother with GUI
@@ -262,13 +262,13 @@ vfolder_update_counters (nodePtr node)
 }
 
 static void
-vfolder_remove (nodePtr node) 
+vfolder_remove (Node *node) 
 {
 	vfolder_reset (node->data);
 }
 
 static void
-vfolder_properties (nodePtr node)
+vfolder_properties (Node *node)
 {
 	search_folder_dialog_new (node);
 }
@@ -276,7 +276,7 @@ vfolder_properties (nodePtr node)
 static gboolean
 vfolder_add (void)
 {
-	nodePtr	node;
+	Node *	node;
 
 	node = node_new (vfolder_get_node_type ());
 	vfolder_new (node);

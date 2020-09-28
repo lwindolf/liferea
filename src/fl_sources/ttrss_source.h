@@ -29,7 +29,7 @@
  * A nodeSource specific for tt-rss
  */
 typedef struct ttrssSource {
-	nodePtr		root;			/**< the root node in the feed list */
+	Node *		root;			/**< the root node in the feed list */
 	gchar		*session_id;		/**< the current session id */
 	const gchar	*url;			/**< the API base URL */
 	gint		apiLevel;		/**< The API level reported by the instance (or 0) */

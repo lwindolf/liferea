@@ -47,7 +47,7 @@
 
 /** create a source with given node as root */
 static TheOldReaderSourcePtr
-theoldreader_source_new (nodePtr node)
+theoldreader_source_new (Node *node)
 {
 	TheOldReaderSourcePtr source = g_new0 (struct TheOldReaderSource, 1) ;
 	source->root = node;
@@ -73,7 +73,7 @@ theoldreader_source_free (TheOldReaderSourcePtr source)
 static void
 theoldreader_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	nodePtr			node = (nodePtr) userdata;
+	Node *			node = (Node *) userdata;
 	gchar			*tmp = NULL;
 	Subscription * 	subscription = node->subscription;
 
@@ -149,7 +149,7 @@ theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
 /* node source type implementation */
 
 static void
-theoldreader_source_auto_update (nodePtr node)
+theoldreader_source_auto_update (Node *node)
 {
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		node_source_update (node);
@@ -172,7 +172,7 @@ void theoldreader_source_init (void)
 static void theoldreader_source_deinit (void) { }
 
 static void
-theoldreader_source_import (nodePtr node)
+theoldreader_source_import (Node *node)
 {
 	opml_source_import (node);
 
@@ -182,10 +182,10 @@ theoldreader_source_import (nodePtr node)
 		node->data = (gpointer) theoldreader_source_new (node);
 }
 
-static nodePtr
-theoldreader_source_add_subscription (nodePtr root, Subscription * subscription)
+static Node *
+theoldreader_source_add_subscription (Node *root, Subscription * subscription)
 {
-	nodePtr			parent;
+	Node *			parent;
 	gchar			*categoryId = NULL;
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr)root->data;
 
@@ -208,7 +208,7 @@ theoldreader_source_add_subscription (nodePtr root, Subscription * subscription)
 }
 
 static void
-theoldreader_source_remove_node (nodePtr node, nodePtr child)
+theoldreader_source_remove_node (Node *node, Node *child)
 {
 	gchar           	*url;
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) node->data;
@@ -236,7 +236,7 @@ on_theoldreader_source_selected (GtkDialog *dialog,
                            gint response_id,
                            gpointer user_data)
 {
-	nodePtr		node;
+	Node *		node;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_source_new ("fl_theoldreader", "http://theoldreader.com/reader");
@@ -266,7 +266,7 @@ ui_theoldreader_source_get_account_info (const gchar *id)
 }
 
 static void
-theoldreader_source_cleanup (nodePtr node)
+theoldreader_source_cleanup (Node *node)
 {
 	TheOldReaderSourcePtr reader = (TheOldReaderSourcePtr) node->data;
 	theoldreader_source_free(reader);
@@ -274,14 +274,14 @@ theoldreader_source_cleanup (nodePtr node)
 }
 
 static void
-theoldreader_source_item_set_flag (nodePtr node, itemPtr item, gboolean newStatus)
+theoldreader_source_item_set_flag (Node *node, itemPtr item, gboolean newStatus)
 {
 	google_reader_api_edit_mark_starred (node->source, item->sourceId, node->subscription->source, newStatus);
 	item_flag_state_changed (item, newStatus);
 }
 
 static void
-theoldreader_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
+theoldreader_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 {
 	google_reader_api_edit_mark_read (node->source, item->sourceId, node->subscription->source, newStatus);
 	item_read_state_changed (item, newStatus);
@@ -293,7 +293,7 @@ theoldreader_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStat
  * @param node The node to migrate (not the nodeSource!)
  */
 static void
-theoldreader_source_convert_to_local (nodePtr node)
+theoldreader_source_convert_to_local (Node *node)
 {
 	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }

@@ -189,7 +189,7 @@ on_propdialog_response (GtkDialog *dialog,
 		const gchar	*newFilter;
 		gboolean	needsUpdate = FALSE;
 		Subscription *	subscription = spd->subscription;
-		nodePtr		node = spd->subscription->node;
+		Node *		node = spd->subscription->node;
 		feedPtr		feed = (feedPtr)node->data;
 
 		if (subscription->type == feed_get_subscription_type ()) {
@@ -383,7 +383,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gint		default_update_interval;
 	gint		defaultInterval, spinSetInterval;
 	gchar 		*defaultIntervalStr;
-	nodePtr		node = subscription->node;
+	Node *		node = subscription->node;
 	feedPtr		feed = (feedPtr)node->data;
 
 	spd->subscription = subscription;

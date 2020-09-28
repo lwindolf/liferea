@@ -54,7 +54,7 @@ itemset_foreach (itemSetPtr itemSet, itemActionFunc callback)
 static guint
 itemset_get_max_item_count (itemSetPtr itemSet)
 {
-	nodePtr node = node_from_id (itemSet->nodeId);
+	Node *node = node_from_id (itemSet->nodeId);
 
 	if (node && IS_FEED (node))
 		return feed_get_max_item_count (node);
@@ -203,7 +203,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 {
 	gboolean	allowStateChanges = FALSE;
 	gboolean	merge;
-	nodePtr		node;
+	Node *		node;
 
 	debug2 (DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title (item), itemSet->nodeId);
 
@@ -307,7 +307,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 {
 	GList	*iter, *droppedItems = NULL, *items = NULL;
 	guint	i, max, length, toBeDropped, newCount = 0, flagCount = 0;
-	nodePtr	node;
+	Node *	node;
 
 	debug_start_measurement (DEBUG_UPDATE);
 

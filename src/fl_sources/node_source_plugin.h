@@ -39,67 +39,67 @@ void node_source_plugin_new (const gchar *typeId);
 /**
  * node_source_plugin_delete: (skip)
  */
-void node_source_plugin_delete (nodePtr node);
+void node_source_plugin_delete (Node *node);
 
 /**
  * node_source_plugin_free: (skip)
  */
-void node_source_plugin_free (nodePtr node);
+void node_source_plugin_free (Node *node);
 
 /**
  * node_source_plugin_import: (skip)
  */
-void node_source_plugin_import (nodePtr node);
+void node_source_plugin_import (Node *node);
 
 /**
  * node_source_plugin_export: (skip)
  */
-void node_source_plugin_export (nodePtr node);
+void node_source_plugin_export (Node *node);
 
 /**
  * node_source_plugin_get_feedlist: (skip)
  */
-gchar * node_source_plugin_get_feedlist (nodePtr node);
+gchar * node_source_plugin_get_feedlist (Node *node);
 
 /**
  * node_source_plugin_update: (skip)
  */
-void node_source_plugin_update (nodePtr node);
+void node_source_plugin_update (Node *node);
 
 /**
  * node_source_plugin_auto_update: (skip)
  */
-void node_source_plugin_auto_update (nodePtr node);
+void node_source_plugin_auto_update (Node *node);
 
 /**
  * node_source_plugin_add_subscription: (skip)
  */
-nodePtr node_source_plugin_add_subscription (nodePtr node, Subscription *subscription);
+Node *node_source_plugin_add_subscription (Node *node, Subscription *subscription);
 
 /**
  * node_source_pluign_remove_node: (skip)
  */
-void node_source_plugin_remove_node (nodePtr node, nodePtr child);
+void node_source_plugin_remove_node (Node *node, Node *child);
 
 /**
  * node_source_plugin_add_folder: (skip)
  */
-nodePtr node_source_plugin_add_folder (nodePtr node, const gchar *title);
+Node *node_source_plugin_add_folder (Node *node, const gchar *title);
 
 /**
  * node_source_plugin_item_mark_read: (skip)
  */
-void node_source_plugin_item_mark_read (nodePtr node, itemPtr item, gboolean newState);
+void node_source_plugin_item_mark_read (Node *node, itemPtr item, gboolean newState);
 
 /**
  * node_source_plugin_set_item_flag: (skip)
  */
-void node_source_plugin_item_set_flag (nodePtr node, itemPtr item, gboolean newState);
+void node_source_plugin_item_set_flag (Node *node, itemPtr item, gboolean newState);
 
 /**
  * node_source_plugin_convert_to_local: (skip)
  */
-void node_source_plugin_convert_to_local (nodePtr node);
+void node_source_plugin_convert_to_local (Node *node);
 
 /* ==================== feed subscription type adapter ====================== */
 

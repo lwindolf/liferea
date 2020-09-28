@@ -124,21 +124,21 @@ typedef struct nodeSourceProvider {
 	 * by the parent source node_remove() implementation.
 	 * MANDATORY for all sources except the root provider source.
 	 */
-	void 		(*source_delete)(nodePtr node);
+	void 		(*source_delete)(Node *node);
 
 	/*
 	 * This MANDATORY method is called when the source is to
 	 * create the feed list subtree attached to the source root
 	 * node.
 	 */
-	void 		(*source_import)(nodePtr node);
+	void 		(*source_import)(Node *node);
 
 	/*
 	 * This MANDATORY method is called when the source is to
 	 * save it's feed list subtree (if necessary at all). This
 	 * is not a request to save the data of the attached nodes!
 	 */
-	void 		(*source_export)(nodePtr node);
+	void 		(*source_export)(Node *node);
 
 	/*
 	 * This MANDATORY method is called to get an OPML representation
@@ -146,20 +146,20 @@ typedef struct nodeSourceProvider {
 	 * allocated filename string that is to be freed by the
 	 * caller.
 	 */
-	gchar *		(*source_get_feedlist)(nodePtr node);
+	gchar *		(*source_get_feedlist)(Node *node);
 
 	/*
 	 * This MANDATARY method is called to request the source to update
 	 * its subscriptions list and the child subscriptions according
 	 * the its update interval.
 	 */
-	void		(*source_auto_update)(nodePtr node);
+	void		(*source_auto_update)(Node *node);
 
 	/*
 	 * Frees all data of the given node source instance. To be called
 	 * during node_free() for a source node. MANDATORY
 	 */
-	void		(*free) (nodePtr node);
+	void		(*free) (Node *node);
 
 	/*
 	 * Changes the flag state of an item.  This is to allow node source type
@@ -167,7 +167,7 @@ typedef struct nodeSourceProvider {
 	 *
 	 * This is an OPTIONAL method.
 	 */
-	void		(*item_set_flag) (nodePtr node, itemPtr item, gboolean newState);
+	void		(*item_set_flag) (Node *node, itemPtr item, gboolean newState);
 
 	/*
 	 * Mark an item as read. This is to allow node source type
@@ -175,7 +175,7 @@ typedef struct nodeSourceProvider {
 	 *
 	 * This is an OPTIONAL method.
 	 */
-	void            (*item_mark_read) (nodePtr node, itemPtr item, gboolean newState);
+	void            (*item_mark_read) (Node *node, itemPtr item, gboolean newState);
 
 	/*
 	 * Add a new folder to the feed list provided by node
@@ -183,7 +183,7 @@ typedef struct nodeSourceProvider {
 	 * NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST and
 	 * NODE_SOURCE_CAPABILITY_HIERARCHIC_FEEDLIST are set.
 	 */
-	nodePtr		(*add_folder) (nodePtr node, const gchar *title);
+	Node *		(*add_folder) (Node *node, const gchar *title);
 
 	/*
 	 * Add a new subscription to the feed list provided
@@ -199,21 +199,21 @@ typedef struct nodeSourceProvider {
 	 * The returned node will be automatically added to the feed list UI.
 	 * Initial update and state saving will be triggered automatically.
 	 */
-	nodePtr		(*add_subscription) (nodePtr node, Subscription *subscription);
+	Node *		(*add_subscription) (Node *node, Subscription *subscription);
 
 	/*
 	 * Removes an existing node (subscription or folder) from the feed list
 	 * provided by the node source. OPTIONAL method that must be
 	 * implemented when NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST is set.
 	 */
-	void		(*remove_node) (nodePtr node, nodePtr child);
+	void		(*remove_node) (Node *node, Node *child);
 
 	/*
 	 * Converts all subscriptions to default source subscriptions.
 	 *
 	 * This is an OPTIONAL method.
 	 */
-	void		(*convert_to_local) (nodePtr node);
+	void		(*convert_to_local) (Node *node);
 } nodeSourceType;
 
 typedef struct nodeSourceProvider * nodeSourceTypePtr;
@@ -221,7 +221,7 @@ typedef struct nodeSourceProvider * nodeSourceTypePtr;
 /* feed list source instance */
 typedef struct nodeSource {
 	nodeSourceTypePtr	type;		/*<< node source type of this source instance */
-	nodePtr			root;		/*<< insertion node of this node source instance */
+	Node *			root;		/*<< insertion node of this node source instance */
 	GQueue			*actionQueue;	/*<< queue for async actions */
 	gint			loginState;	/*<< The current login state */
 
@@ -242,7 +242,7 @@ typedef struct nodeSource {
  *
  * Returns: node source root node
  */
-nodePtr node_source_root_from_node (nodePtr node);
+Node *node_source_root_from_node (Node *node);
 
 /**
  * node_source_setup_root: (skip)
@@ -252,7 +252,7 @@ nodePtr node_source_root_from_node (nodePtr node);
  *
  * Returns: a newly created root node
  */
-nodePtr node_source_setup_root (void);
+Node *node_source_setup_root (void);
 
 /**
  * node_source_new: (skip)
@@ -268,7 +268,7 @@ nodePtr node_source_setup_root (void);
  *
  * Returns: a newly created node
  */
-nodePtr node_source_new (const gchar *typeId, const gchar *url);
+Node *node_source_new (const gchar *typeId, const gchar *url);
 
 /**
  * node_source_type_new:
@@ -286,7 +286,7 @@ struct nodeSourceProvider * node_source_type_new (void);
  *
  * Change state of the node source by node
  */
-void node_source_set_state (nodePtr node, gint newState);
+void node_source_set_state (Node *node, gint newState);
 
 /**
  * node_source_set_auth_token: (skip)
@@ -297,7 +297,7 @@ void node_source_set_state (nodePtr node, gint newState);
  *
  * FIXME: maybe drop this in favour of node metadata
  */
-void node_source_set_auth_token (nodePtr node, gchar *token);
+void node_source_set_auth_token (Node *node, gchar *token);
 
 /**
  * node_source_update: (skip)
@@ -306,7 +306,7 @@ void node_source_set_auth_token (nodePtr node, gchar *token);
  * Force the source to update its subscription list and
  * the child subscriptions themselves.
  */
-void node_source_update (nodePtr node);
+void node_source_update (Node *node);
 
 /**
  * node_source_auto_update: (skip)
@@ -316,7 +316,7 @@ void node_source_update (nodePtr node);
  * the child subscriptions if necessary according to the
  * update interval of the source.
  */
-void node_source_auto_update (nodePtr node);
+void node_source_auto_update (Node *node);
 
 /**
  * node_source_add_subscription: (skip)
@@ -327,7 +327,7 @@ void node_source_auto_update (nodePtr node);
  *
  * Returns: a new node intialized with the new subscription
  */
-nodePtr node_source_add_subscription (nodePtr node, Subscription *subscription);
+Node *node_source_add_subscription (Node *node, Subscription *subscription);
 
 /**
  * node_source_remove_node: (skip)
@@ -336,7 +336,7 @@ nodePtr node_source_add_subscription (nodePtr node, Subscription *subscription);
  *
  * Called when an existing subscription is to be removed from a node source.
  */
-void node_source_remove_node (nodePtr node, nodePtr child);
+void node_source_remove_node (Node *node, Node *child);
 
 /**
  * node_source_add_folder: (skip)
@@ -347,7 +347,7 @@ void node_source_remove_node (nodePtr node, nodePtr child);
  *
  * Returns: a new node representing the new folder
  */
-nodePtr node_source_add_folder (nodePtr node, const gchar *title);
+Node *node_source_add_folder (Node *node, const gchar *title);
 
 /**
  * node_source_update_folder: (skip)
@@ -357,7 +357,7 @@ nodePtr node_source_add_folder (nodePtr node, const gchar *title);
  * Called to update a nodes folder. If current folder != given folder
  * the node will be reparented.
  */
-void node_source_update_folder (nodePtr node, nodePtr folder);
+void node_source_update_folder (Node *node, Node *folder);
 
 /**
  * node_source_find_or_create_folder: (skip)
@@ -372,9 +372,9 @@ void node_source_update_folder (nodePtr node, nodePtr folder);
  * being merged into one (which the user can easily workaround by renaming
  * on the remote side).
  *
- * Returns: a valid nodePtr
+ * Returns: a valid Node *
  */
-nodePtr node_source_find_or_create_folder (nodePtr parent, const gchar *id, const gchar *label);
+Node *node_source_find_or_create_folder (Node *parent, const gchar *id, const gchar *label);
 
 /**
  * node_source_item_mark_read: (skip)
@@ -384,7 +384,7 @@ nodePtr node_source_find_or_create_folder (nodePtr parent, const gchar *id, cons
  *
  * Called when the read state of an item changes.
  */
-void node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState);
+void node_source_item_mark_read (Node *node, itemPtr item, gboolean newState);
 
 /**
  * node_source_set_item_flag: (skip)
@@ -394,7 +394,7 @@ void node_source_item_mark_read (nodePtr node, itemPtr item, gboolean newState);
  *
  * Called when the flag state of an item changes.
  */
-void node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState);
+void node_source_item_set_flag (Node *node, itemPtr item, gboolean newState);
 
 /**
  * node_source_convert_to_local: (skip)
@@ -402,7 +402,7 @@ void node_source_item_set_flag (nodePtr node, itemPtr item, gboolean newState);
  *
  * Converts all subscriptions to default source subscriptions.
  */
-void node_source_convert_to_local (nodePtr node);
+void node_source_convert_to_local (Node *node);
 
 /**
  * node_source_type_register: (skip)

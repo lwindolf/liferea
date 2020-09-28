@@ -47,7 +47,7 @@ enum {
  *
  * @node:	the node to select
  */
-void feed_list_view_select (nodePtr node);
+void feed_list_view_select (Node *node);
 
 /**
  * feed_list_view_create: (skip)
@@ -67,7 +67,7 @@ FeedListView * feed_list_view_create (GtkTreeView *treeview);
  *
  * @folder:	the folder
  */
-void feed_list_view_sort_folder (nodePtr folder);
+void feed_list_view_sort_folder (Node *folder);
 
 void on_menu_delete (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
@@ -106,7 +106,7 @@ void feed_list_view_update_iter (const gchar *nodeId, GtkTreeIter *iter);
  *
 s * @param node		the node to add
  */
-void feed_list_view_add_node (nodePtr node);
+void feed_list_view_add_node (Node *node);
 
 /**
  * Reload the UI feedlist by removing and readding each node
@@ -118,7 +118,7 @@ void feed_list_view_reload_feedlist (void);
  *
  * @param node	the node to free
  */
-void feed_list_view_remove_node (nodePtr node);
+void feed_list_view_remove_node (Node *node);
 
 /**
  * Adds an "empty" node to the given tree iter.
@@ -149,7 +149,7 @@ gboolean feed_list_view_is_expanded (const gchar *nodeId);
  * @param folder	the folder node
  * @param expanded	new expansion state
  */
-void feed_list_view_set_expansion (nodePtr folder, gboolean expanded);
+void feed_list_view_set_expansion (Node *folder, gboolean expanded);
 
 /**
  * Updates the tree view entry of the given node.
@@ -163,7 +163,7 @@ void feed_list_view_update_node (const gchar *nodeId);
  *
  * @param node		the node to rename
  */
-void feed_list_view_rename_node (nodePtr node);
+void feed_list_view_rename_node (Node *node);
 
 /**
  * Prompt the user for confirmation of a folder or feed, and
@@ -173,7 +173,7 @@ void feed_list_view_rename_node (nodePtr node);
  *
  * @param node		the node to remove
  */
-void feed_list_view_remove (nodePtr node);
+void feed_list_view_remove (Node *node);
 
 /**
  * Prompt the user for confirmation and forces adding the node,
@@ -182,6 +182,6 @@ void feed_list_view_remove (nodePtr node);
  * @param tempSubscription	the duplicate URL subscription
  * @param exNode			the existing node
  */
-void feed_list_view_add_duplicate_url_subscription (Subscription * tempSubscription, nodePtr exNode);
+void feed_list_view_add_duplicate_url_subscription (Subscription * tempSubscription, Node *exNode);
 
 #endif

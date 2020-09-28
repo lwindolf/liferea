@@ -78,7 +78,7 @@ struct _LifereaNodeSourceActivatableInterface
 	/*
 	 * MANDATORY source subscription update preparation callback.
 	 */
-	gboolean	(*feedlist_update_prepare)(LifereaNodeSourceActivatable *activatable, Subscription * subscription, UpdateRequest * request);
+	gboolean	(*feedlist_update_prepare)(LifereaNodeSourceActivatable *activatable, const gchar *serverUrl, Subscription * subscription, UpdateRequest * request);
 
 	/*
 	 * MANDATORY source subscription type specific update result processing callback.
@@ -101,13 +101,13 @@ struct _LifereaNodeSourceActivatableInterface
 	 * by the parent source node_remove() implementation.
 	 * MANDATORY for all sources except the root provider source.
 	 */
-	void 		(*delete)(LifereaNodeSourceActivatable *activatable, nodePtr node);
+	void 		(*delete)(LifereaNodeSourceActivatable *activatable, Node *node);
 
 	/*
 	 * Frees all data of the given node source instance. To be called
 	 * during node_free() for a source node.
 	 */
-	void		(*free) (LifereaNodeSourceActivatable *activatable, nodePtr node);
+	void		(*free) (LifereaNodeSourceActivatable *activatable, Node *node);
 
 	/*
 	 * Changes the flag state of an item.  This is to allow node source type
@@ -115,7 +115,7 @@ struct _LifereaNodeSourceActivatableInterface
 	 *
 	 * This is an OPTIONAL method.
 	 */
-	void		(*item_set_flag) (LifereaNodeSourceActivatable *activatable, nodePtr node, itemPtr item, gboolean newState);
+	void		(*item_set_flag) (LifereaNodeSourceActivatable *activatable, Node *node, itemPtr item, gboolean newState);
 
 	/*
 	 * Mark an item as read. This is to allow node source type
@@ -123,7 +123,7 @@ struct _LifereaNodeSourceActivatableInterface
 	 *
 	 * This is an OPTIONAL method.
 	 */
-	void            (*item_mark_read) (LifereaNodeSourceActivatable *activatable, nodePtr node, itemPtr item, gboolean newState);
+	void            (*item_mark_read) (LifereaNodeSourceActivatable *activatable, Node *node, itemPtr item, gboolean newState);
 
 	/*
 	 * Add a new folder to the feed list provided by node
@@ -133,7 +133,7 @@ struct _LifereaNodeSourceActivatableInterface
 	 *
 	 * Adding of the folder to the feed list has to happen asynchronously.
 	 */
-	void		(*add_folder) (LifereaNodeSourceActivatable *activatable, nodePtr node, const gchar *title);
+	void		(*add_folder) (LifereaNodeSourceActivatable *activatable, Node *node, const gchar *title);
 
 	/*
 	 * Add a new subscription to the feed list provided
@@ -147,21 +147,21 @@ struct _LifereaNodeSourceActivatableInterface
 	 * subscription which might be changed as necessary. Adding of the
 	 * node to the feed list has to happen asynchronously.
 	 */
-	void		(*add_subscription) (LifereaNodeSourceActivatable *activatable, nodePtr node, Subscription *subscription);
+	void		(*add_subscription) (LifereaNodeSourceActivatable *activatable, Node *node, Subscription *subscription);
 
 	/*
 	 * Removes an existing node (subscription or folder) from the feed list
 	 * provided by the node source. OPTIONAL method that must be
 	 * implemented when liferea_node_source_activatable_CAPABILITY_WRITABLE_FEEDLIST is set.
 	 */
-	void		(*remove_node) (LifereaNodeSourceActivatable *activatable, nodePtr node, nodePtr child);
+	void		(*remove_node) (LifereaNodeSourceActivatable *activatable, Node *node, Node *child);
 
 	/*
 	 * Converts all subscriptions to default source subscriptions.
 	 *
 	 * This is an OPTIONAL method.
 	 */
-	void		(*convert_to_local) (LifereaNodeSourceActivatable *activatable, nodePtr node);
+	void		(*convert_to_local) (LifereaNodeSourceActivatable *activatable, Node *node);
 };
 
 GType liferea_node_source_activatable_get_type (void) G_GNUC_CONST;

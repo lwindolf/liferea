@@ -97,7 +97,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 	feedParserCtxtPtr	ctxt;
 	commentFeedPtr		commentFeed = (commentFeedPtr)user_data;
 	itemPtr			item;
-	nodePtr			node;
+	Node *			node;
 
 	debug_enter ("comments_process_update_result");
 

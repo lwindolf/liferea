@@ -40,7 +40,7 @@
 #include "fl_sources/reedah_source.h"
 
 static void
-reedah_source_check_node_for_removal (nodePtr node, gpointer user_data)
+reedah_source_check_node_for_removal (Node *node, gpointer user_data)
 {
 	JsonArray	*array = (JsonArray *)user_data;
 	GList		*iter, *elements;
@@ -74,9 +74,9 @@ reedah_source_check_node_for_removal (nodePtr node, gpointer user_data)
 /* subscription list merging functions */
 
 static void
-reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar *title, const gchar *id, nodePtr folder)
+reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar *title, const gchar *id, Node *folder)
 {
-	nodePtr	node;
+	Node *	node;
 
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 	if (!node) {
@@ -140,7 +140,7 @@ reedah_subscription_opml_cb (Subscription * subscription, const struct updateRes
 			/* Add all new nodes we find */
 			while (iter) {
 				JsonNode *categories, *node = (JsonNode *)iter->data;
-				nodePtr folder = NULL;
+				Node *folder = NULL;
 
 				/* Check for categories, if there use first one as folder */
 				categories = json_get_node (node, "categories");
@@ -197,7 +197,7 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	ReedahSourcePtr gsource = (ReedahSourcePtr) userdata;
 	xmlNodePtr      xmlNode;
 	xmlChar         *id, *newestItemTimestamp;
-	nodePtr         node = NULL;
+	Node *        node = NULL;
 	const gchar     *oldNewestItemTimestamp;
 
 	xmlNode = xpath_find (match, "./string[@name='id']");
@@ -290,7 +290,7 @@ reedah_source_opml_subscription_process_update_result (Subscription * subscripti
 static gboolean
 reedah_source_opml_subscription_prepare_update_request (Subscription * subscription, UpdateRequest *request)
 {
-	nodePtr node = subscription->node;
+	Node *node = subscription->node;
 	ReedahSourcePtr	source = (ReedahSourcePtr)node->data;
 
 	g_assert(node->source);

@@ -38,7 +38,7 @@
 #include "xml.h"
 
 void
-reedah_source_migrate_node (nodePtr node)
+reedah_source_migrate_node (Node *node)
 {
 	/* scan the node for bad ID's, if so, brutally remove the node */
 	itemSetPtr itemset = node_get_itemset (node);

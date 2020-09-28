@@ -1,7 +1,7 @@
 /*
  * @file node.h  hierarchic feed list node interface
  *
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -22,6 +22,9 @@
 #ifndef _NODE_H
 #define _NODE_H
 
+#include <glib.h>
+#include <glib-object.h>
+
 #include "itemset.h"
 #include "node_view.h"
 
@@ -38,8 +41,14 @@
    complexity for the GUI, scripting and updating functionality.
  */
 
+G_BEGIN_DECLS
+#define NODE_TYPE (node_get_type ())
+GType node_get_type ();
+
+typedef struct _Node Node;
+
 /* generic feed list node structure */
-typedef struct node {
+struct _Node {
 	gpointer		data;		/*<< node type specific data structure */
 	struct _Subscription	*subscription;	/*<< subscription attached to this node (or NULL) */
 	struct nodeType		*type;		/*<< node type implementation */
@@ -47,7 +56,7 @@ typedef struct node {
 	gchar			*iconFile;	/*<< the path of the favicon file */
 
 	/* feed list state properties of this node */
-	struct node		*parent;	/*<< the parent node (or NULL if at root level) */
+	Node			*parent;	/*<< the parent node (or NULL if at root level) */
 	GSList			*children;	/*<< ordered list of node children */
 	gchar			*id;		/*<< unique node identifier string */
 
@@ -72,8 +81,7 @@ typedef struct node {
 	/* current state of this node */
 	gboolean	needsUpdate;	/*<< if TRUE: the item list has changed and the nodes feed list representation needs to be updated */
 	gboolean	needsRecount;	/*<< if TRUE: the number of unread/total items is currently unknown and needs recounting */
-
-} *nodePtr;
+};
 
 /**
  * node_new: (skip)
@@ -81,7 +89,16 @@ typedef struct node {
  *
  * Returns: (transfer full): the new node
  */
-nodePtr node_new (struct nodeType *type);
+Node * node_new (struct nodeType *type);
+
+/**
+ * node_copy:
+ *
+ * GBoxedType copy function
+ *
+ * Returns: (transfer full): new node
+ */
+Node * node_copy (Node *node);
 
 /**
  * node_is_used_id: (skip)
@@ -91,7 +108,7 @@ nodePtr node_new (struct nodeType *type);
  *
  * Returns: (transfer none) (nullable): the node with the given id (or NULL)
  */
-nodePtr node_is_used_id (const gchar *id);
+Node * node_is_used_id (const gchar *id);
 
 /**
  * node_from_id: (skip)
@@ -102,7 +119,7 @@ nodePtr node_is_used_id (const gchar *id);
  *
  * Returns: (transfer none) (nullable): the node with the given id (or NULL)
  */
-nodePtr node_from_id (const gchar *id);
+Node * node_from_id (const gchar *id);
 
 /**
  * node_set_parent: (skip)
@@ -116,7 +133,7 @@ nodePtr node_from_id (const gchar *id);
  *
  * To be used before calling feedlist_node_added()
  */
-void node_set_parent (nodePtr node, nodePtr parent, gint position);
+void node_set_parent (Node * node, Node * parent, gint position);
 
 /**
  * node_reparent: (skip)
@@ -126,7 +143,7 @@ void node_set_parent (nodePtr node, nodePtr parent, gint position);
  * Set a node's new parent and update UI. If a node already has a parent,
  * it will be removed from its parent children list.
  */
-void node_reparent (nodePtr node, nodePtr new_parent);
+void node_reparent (Node * node, Node * new_parent);
 
 /**
  * node_remove: (skip)
@@ -134,7 +151,7 @@ void node_reparent (nodePtr node, nodePtr new_parent);
  *
  * Removes all data associated with the given node.
  */
-void node_remove (nodePtr node);
+void node_remove (Node * node);
 
 /**
  * node_set_data: (skip)
@@ -143,7 +160,7 @@ void node_remove (nodePtr node);
  *
  * Attaches a data structure to the given node.
  */
-void node_set_data(nodePtr node, gpointer data);
+void node_set_data(Node * node, gpointer data);
 
 /**
  * node_set_subscription: (skip)
@@ -152,7 +169,7 @@ void node_set_data(nodePtr node, gpointer data);
  *
  * Attaches the subscription to the given node.
  */
-void node_set_subscription (nodePtr node, struct _Subscription *subscription);
+void node_set_subscription (Node * node, struct _Subscription *subscription);
 
 /**
  * node_update_subscription: (skip)
@@ -162,7 +179,7 @@ void node_set_subscription (nodePtr node, struct _Subscription *subscription);
  * Helper function to be used with node_foreach_child()
  * to mass-update subscriptions.
  */
-void node_update_subscription (nodePtr node, gpointer user_data);
+void node_update_subscription (Node * node, gpointer user_data);
 
 /**
  * node_auto_update_subscription: (skip)
@@ -171,7 +188,7 @@ void node_update_subscription (nodePtr node, gpointer user_data);
  * Helper function to be used with node_foreach_child()
  * to mass-auto-update subscriptions.
  */
-void node_auto_update_subscription (nodePtr node);
+void node_auto_update_subscription (Node * node);
 
 /**
  * node_reset_update_counter: (skip)
@@ -181,7 +198,7 @@ void node_auto_update_subscription (nodePtr node);
  * Helper function to be used with node_foreach_child()
  * to mass-auto-update subscriptions.
  */
-void node_reset_update_counter (nodePtr node, guint64 *now);
+void node_reset_update_counter (Node * node, guint64 *now);
 
 /**
  * node_is_ancestor: (skip)
@@ -192,7 +209,7 @@ void node_reset_update_counter (nodePtr node, guint64 *now);
  *
  * Returns: TRUE if node1 is ancestor of node2
  */
-gboolean node_is_ancestor(nodePtr node1, nodePtr node2);
+gboolean node_is_ancestor(Node * node1, Node * node2);
 
 /**
  * node_get_title: (skip)
@@ -202,7 +219,7 @@ gboolean node_is_ancestor(nodePtr node1, nodePtr node2);
  *
  * Returns: the title
  */
-const gchar * node_get_title(nodePtr node);
+const gchar * node_get_title(Node * node);
 
 /**
  * node_set_title: (skip)
@@ -211,7 +228,7 @@ const gchar * node_get_title(nodePtr node);
  *
  * Sets the node's title for the feed list.
  */
-void node_set_title(nodePtr node, const gchar *title);
+void node_set_title(Node * node, const gchar *title);
 
 /**
  * node_update_counters: (skip)
@@ -220,7 +237,7 @@ void node_set_title(nodePtr node, const gchar *title);
  * Update the number of items and unread items of a node from
  * the DB. This method ensures propagation to parent folders.
  */
-void node_update_counters(nodePtr node);
+void node_update_counters(Node * node);
 
 /**
  * node_mark_all_read: (skip)
@@ -228,7 +245,7 @@ void node_update_counters(nodePtr node);
  *
  * Recursively marks all items of the given node as read.
  */
-void node_mark_all_read(nodePtr node);
+void node_mark_all_read(Node * node);
 
 /**
  * node_set_icon: (skip)
@@ -237,7 +254,7 @@ void node_mark_all_read(nodePtr node);
  *
  * Assigns a new pixmaps as the favicon representing this node.
  */
-void node_set_icon(nodePtr node, gpointer icon);
+void node_set_icon(Node * node, gpointer icon);
 
 /**
  * node_get_icon: (skip)
@@ -249,7 +266,7 @@ void node_set_icon(nodePtr node, gpointer icon);
  *
  * Returns: (nullable): a pixmap or NULL
  */
-gpointer node_get_icon (nodePtr node);
+gpointer node_get_icon (Node * node);
 
 /**
  * node_get_large_icon: (skip)
@@ -259,7 +276,7 @@ gpointer node_get_icon (nodePtr node);
  *
  * Returns: (nullable): a pixmap or NULL
  */
-gpointer node_get_large_icon (nodePtr node);
+gpointer node_get_large_icon (Node * node);
 
 /**
  * node_get_favicon_file: (skip)
@@ -270,7 +287,7 @@ gpointer node_get_large_icon (nodePtr node);
  *
  * Returns: a file name
  */
-const gchar * node_get_favicon_file(nodePtr node);
+const gchar * node_get_favicon_file(Node * node);
 
 /**
  * node_new_id:
@@ -289,7 +306,7 @@ gchar * node_new_id (void);
  *
  * Returns: id string
  */
-const gchar *node_get_id (nodePtr node);
+const gchar *node_get_id (Node * node);
 
 /**
  * node_set_id: (skip)
@@ -298,7 +315,7 @@ const gchar *node_get_id (nodePtr node);
  *
  * Set the unique id string of the node.
  */
-void node_set_id(nodePtr node, const gchar *id);
+void node_set_id(Node * node, const gchar *id);
 
 /**
  * node_free: (skip)
@@ -306,7 +323,7 @@ void node_set_id(nodePtr node, const gchar *id);
  *
  * Frees a given node structure.
  */
-void node_free(nodePtr node);
+void node_free(Node * node);
 
 /**
  * node_default_render: (skip)
@@ -319,7 +336,7 @@ void node_free(nodePtr node);
  *
  * Returns: XHTML string
  */
-gchar * node_default_render(nodePtr node);
+gchar * node_default_render(Node * node);
 
 /**
  * node_save: (skip)
@@ -327,7 +344,7 @@ gchar * node_default_render(nodePtr node);
  *
  * Saves the given node to cache.
  */
-void node_save(nodePtr node);
+void node_save(Node * node);
 
 /**
  * node_get_itemset: (skip)
@@ -338,7 +355,7 @@ void node_save(nodePtr node);
  *
  * Returns: the item set
  */
-itemSetPtr node_get_itemset(nodePtr node);
+itemSetPtr node_get_itemset(Node * node);
 
 /**
  * node_render: (skip)
@@ -348,7 +365,7 @@ itemSetPtr node_get_itemset(nodePtr node);
  *
  * Returns: string with node rendered in HTML
  */
-gchar * node_render(nodePtr node);
+gchar * node_render(Node * node);
 
 /**
  * node_update_favicon: (skip)
@@ -356,7 +373,7 @@ gchar * node_render(nodePtr node);
  *
  * Called when updating favicons is requested.
  */
-void node_update_favicon (nodePtr node);
+void node_update_favicon (Node * node);
 
 /**
  * node_load_icon: (skip)
@@ -365,7 +382,7 @@ void node_update_favicon (nodePtr node);
  * Load node icon in memory. Should be called only once on startup
  * and when the node icon has changed.
  */
-void node_load_icon (nodePtr node);
+void node_load_icon (Node * node);
 
 /**
  * node_set_sort_column: (skip)
@@ -377,7 +394,7 @@ void node_load_icon (nodePtr node);
  *
  * Returns: TRUE if the passed settings were different from the previous ones
  */
-gboolean node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboolean reversed);
+gboolean node_set_sort_column (Node * node, nodeViewSortType sortColumn, gboolean reversed);
 
 /**
  * node_set_view_mode: (skip)
@@ -386,7 +403,7 @@ gboolean node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboole
  *
  * Change/Set the viewing mode of a given node.
  */
-void node_set_view_mode(nodePtr node, nodeViewType newMode);
+void node_set_view_mode(Node * node, nodeViewType newMode);
 
 /**
  * node_get_view_mode: (skip)
@@ -398,7 +415,7 @@ void node_set_view_mode(nodePtr node, nodeViewType newMode);
  *
  * Returns: viewing mode (NODE_VIEW_MODE_*)
  */
-nodeViewType node_get_view_mode(nodePtr node);
+nodeViewType node_get_view_mode(Node * node);
 
 /**
  * node_get_base_url: (skip)
@@ -409,7 +426,7 @@ nodeViewType node_get_view_mode(nodePtr node);
  *
  * Returns: base URL
  */
-const gchar * node_get_base_url(nodePtr node);
+const gchar * node_get_base_url(Node * node);
 
 /**
  * node_can_add_child_feed: (skip)
@@ -419,7 +436,7 @@ const gchar * node_get_base_url(nodePtr node);
  *
  * Returns: TRUE if a feed can be added
  */
-gboolean node_can_add_child_feed (nodePtr node);
+gboolean node_can_add_child_feed (Node * node);
 
 /**
  * node_can_add_child_folder: (skip)
@@ -429,18 +446,18 @@ gboolean node_can_add_child_feed (nodePtr node);
  *
  * Returns: TRUE if a folder can be added
  */
-gboolean node_can_add_child_folder (nodePtr node);
+gboolean node_can_add_child_folder (Node * node);
 
 /* child nodes iterating interface */
 
-typedef void 	(*nodeActionFunc)	(nodePtr node);
-typedef void 	(*nodeActionDataFunc)	(nodePtr node, gpointer user_data);
+typedef void 	(*nodeActionFunc)	(Node * node);
+typedef void 	(*nodeActionDataFunc)	(Node * node, gpointer user_data);
 
 /*
  * Do not call this method directly! Do use
  * node_foreach_child() or node_foreach_child_data()!
  */
-void node_foreach_child_full(nodePtr ptr, gpointer func, gint params, gpointer user_data);
+void node_foreach_child_full(Node * ptr, gpointer func, gint params, gpointer user_data);
 
 /**
  * node_foreach_child: (skip)
@@ -464,5 +481,7 @@ void node_foreach_child_full(nodePtr ptr, gpointer func, gint params, gpointer u
  * modify the children list.
  */
 #define node_foreach_child_data(node, func, user_data) node_foreach_child_full(node,func,1,user_data)
+
+G_END_DECLS
 
 #endif

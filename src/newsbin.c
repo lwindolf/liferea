@@ -43,7 +43,7 @@ newsbin_get_list (void)
 }
 
 static void
-newsbin_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
+newsbin_import (Node *node, Node *parent, xmlNodePtr cur, gboolean trusted)
 {
 	feed_get_node_type ()->import (node, parent, cur, trusted);
 
@@ -57,14 +57,14 @@ newsbin_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 }
 
 static void
-newsbin_remove (nodePtr node)
+newsbin_remove (Node *node)
 {
 	newsbin_list = g_slist_remove(newsbin_list, node);
 	feed_get_node_type()->remove(node);
 }
 
 static gchar *
-newsbin_render (nodePtr node)
+newsbin_render (Node *node)
 {
 	gchar		*output = NULL;
 	xmlDocPtr	doc;
@@ -95,7 +95,7 @@ ui_newsbin_add (void)
 void
 on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
 {
-	nodePtr		newsbin;
+	Node *		newsbin;
 
 	newsbin = node_new (newsbin_get_node_type ());
 	node_set_title (newsbin, (gchar *)gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (newnewsbindialog, "newsbinnameentry"))));
@@ -109,7 +109,7 @@ on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
 void
 on_action_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr		newsbin;
+	Node *		newsbin;
 	itemPtr		item = NULL, copy;
 	guint32 	newsbin_index;
 	guint64 	item_id;

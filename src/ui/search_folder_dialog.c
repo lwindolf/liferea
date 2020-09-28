@@ -33,7 +33,7 @@ struct _SearchFolderDialog {
 
 	RuleEditor	*re;		/**< dynamically created rule editing widget subset */
 	GtkWidget	*nameEntry;	/**< search folder title entry */
-	nodePtr		node;		/**< search folder feed list node */
+	Node *		node;		/**< search folder feed list node */
 	vfolderPtr	vfolder;	/**< the search folder */
 };
 
@@ -96,7 +96,7 @@ on_addrulebtn_clicked (GtkButton *button, gpointer user_data)
 
 /** Use to create new search folders and to edit existing ones */
 SearchFolderDialog *
-search_folder_dialog_new (nodePtr node)
+search_folder_dialog_new (Node *node)
 {
 	GtkWidget		*dialog;
 	SearchFolderDialog	*sfd;

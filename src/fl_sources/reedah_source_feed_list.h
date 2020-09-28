@@ -28,7 +28,7 @@
  *
  * @returns a node (or NULL)
  */
-nodePtr reedah_source_opml_get_node_by_source(ReedahSourcePtr gsource,
+Node *reedah_source_opml_get_node_by_source(ReedahSourcePtr gsource,
 					 const gchar *source);
 
 /**

@@ -1472,7 +1472,7 @@ db_subscription_metadata_update_cb (const gchar *key,
                                     gpointer user_data) 
 {
 	sqlite3_stmt	*stmt;
-	nodePtr		node = (nodePtr)user_data;
+	Node *		node = (Node *)user_data;
 	gint		res;
 
 	stmt = db_get_statement ("subscriptionMetadataUpdateStmt");
@@ -1553,7 +1553,7 @@ db_subscription_remove (const gchar *id)
 }
 
 void
-db_node_update (nodePtr node)
+db_node_update (Node *node)
 {
 	sqlite3_stmt	*stmt;
 	gint		res;
@@ -1581,7 +1581,7 @@ db_node_update (nodePtr node)
 }
 
 static gboolean
-db_node_find (nodePtr node, gpointer id)
+db_node_find (Node *node, gpointer id)
 {
 	GSList *iter;
 
@@ -1590,7 +1590,7 @@ db_node_find (nodePtr node, gpointer id)
 
 	iter = node->children;
 	while (iter) {
-		if (db_node_find ((nodePtr)iter->data, id))
+		if (db_node_find ((Node *)iter->data, id))
 			return TRUE;
 		iter = g_slist_next (iter);
 	}
@@ -1615,7 +1615,7 @@ db_node_remove (const gchar *id)
 }
 
 void
-db_node_cleanup (nodePtr root)
+db_node_cleanup (Node *root)
 {
 	sqlite3_stmt	*stmt;
 

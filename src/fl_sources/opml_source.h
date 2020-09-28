@@ -36,28 +36,28 @@
  *
  * @returns newly allocated filename 
  */
-gchar * opml_source_get_feedlist(nodePtr node);
+gchar * opml_source_get_feedlist(Node *node);
 
 /**
  * Imports an OPML source.
  *
  * @param node		the node of the OPML source
  */
-void opml_source_import(nodePtr node);
+void opml_source_import(Node *node);
 
 /**
  * Exports an OPML source.
  *
  * @param node		the node of the OPML source
  */
-void opml_source_export(nodePtr node);
+void opml_source_export(Node *node);
 
 /**
  * Removes a OPML source.
  *
  * @param node		the node of the OPML source
  */
-void opml_source_remove(nodePtr node);
+void opml_source_remove(Node *node);
 
 /**
  * Returns OPML source type implementation info.

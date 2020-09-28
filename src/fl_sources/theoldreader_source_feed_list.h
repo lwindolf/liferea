@@ -26,5 +26,5 @@
  *
  * @returns a node (or NULL)
  */
-nodePtr theoldreader_source_opml_get_node_by_source(TheOldReaderSourcePtr gsource,
+Node *theoldreader_source_opml_get_node_by_source(TheOldReaderSourcePtr gsource,
 					 const gchar *source);

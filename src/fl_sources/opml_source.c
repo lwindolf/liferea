@@ -40,8 +40,8 @@
 /* OPML subscription list helper functions */
 
 typedef struct mergeCtxt {
-	nodePtr		rootNode;	/**< root node of the OPML feed list source */
-	nodePtr		parent;		/**< currently processed feed list node */
+	Node *		rootNode;	/**< root node of the OPML feed list source */
+	Node *		parent;		/**< currently processed feed list node */
 	xmlNodePtr	xmlNode;	/**< currently processed XML node of old OPML doc */
 } *mergeCtxtPtr;
 
@@ -51,7 +51,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	mergeCtxtPtr	mergeCtxt = (mergeCtxtPtr)user_data;
 	xmlChar		*url, *title;
 	gchar		*expr;
-	nodePtr		node = NULL;
+	Node *		node = NULL;
 
 	url = xmlGetProp (match, "xmlUrl");
 	title = xmlGetProp (match, "title");
@@ -115,7 +115,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 }
 
 static void
-opml_source_check_for_removal (nodePtr node, gpointer user_data)
+opml_source_check_for_removal (Node *node, gpointer user_data)
 {
 	gchar		*expr = NULL;
 
@@ -150,7 +150,7 @@ opml_subscription_prepare_update_request (Subscription * subscription, UpdateReq
 static void
 opml_subscription_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
 {
-	nodePtr		node = subscription->node;
+	Node *		node = subscription->node;
 	mergeCtxtPtr	mergeCtxt;
 	xmlDocPtr	doc, oldDoc;
 	xmlNodePtr	root, title;
@@ -226,13 +226,13 @@ static struct subscriptionType opmlSubscriptionType = {
 static void ui_opml_source_get_source_url (const gchar *typeId);
 
 gchar *
-opml_source_get_feedlist (nodePtr node)
+opml_source_get_feedlist (Node *node)
 {
 	return common_create_cache_filename ("plugins", node->id, "opml");
 }
 
 void
-opml_source_import (nodePtr node)
+opml_source_import (Node *node)
 {
 	gchar	*filename;
 
@@ -260,7 +260,7 @@ opml_source_import (nodePtr node)
 }
 
 void
-opml_source_export (nodePtr node)
+opml_source_export (Node *node)
 {
 	gchar		*filename;
 
@@ -282,7 +282,7 @@ opml_source_export (nodePtr node)
 }
 
 void
-opml_source_remove (nodePtr node)
+opml_source_remove (Node *node)
 {
 	gchar		*filename;
 
@@ -297,7 +297,7 @@ opml_source_remove (nodePtr node)
 }
 
 static void
-opml_source_auto_update (nodePtr node)
+opml_source_auto_update (Node *node)
 {
 	guint64	now;
 
@@ -351,7 +351,7 @@ on_opml_source_selected (GtkDialog *dialog,
                          gint response_id,
                          gpointer user_data)
 {
-	nodePtr		node;
+	Node *		node;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_source_new ("fl_opml", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry"))));

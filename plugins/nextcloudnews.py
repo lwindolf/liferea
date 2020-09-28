@@ -43,9 +43,8 @@ class NextCloudNewsPlugin(GObject.Object, Liferea.NodeSourceActivatable):
         """Provide human readable name for "New Source" dialog"""
         return "NextCloud News"
 
-    def do_feedlist_update_prepare(self, subscription, request):
-        print("source prepare request")
-        serverUrl = subscription.node.metadata.get("node-source-subscription-url")
+    def do_feedlist_update_prepare(self, serverUrl, subscription, request):
+        print("source prepare request %s" % (serverUrl))
         request.set_source ("%s/index.php/apps/news/api/v1-2/feeds" % (serverUrl));
 
     def do_feedlist_update_cb(self, subscription, result, flags):
