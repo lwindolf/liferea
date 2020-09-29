@@ -92,7 +92,6 @@ doc/Makefile
 doc/html/Makefile
 xslt/Makefile
 man/Makefile
-man/pl/Makefile
 pixmaps/Makefile
 pixmaps/16x16/Makefile
 pixmaps/22x22/Makefile
