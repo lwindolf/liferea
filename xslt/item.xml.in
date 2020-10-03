@@ -301,8 +301,10 @@
     <!-- the real text content -->
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
+</div> <!-- end of content -->
 
   <!-- comment handling -->
+<div id='item_comments' class='item_comments'>
   <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed)">
      <p>
         <xsl:if test="count(comments/item) != 0">
@@ -334,8 +336,7 @@
         </xsl:apply-templates>
      </p>
   </xsl:if>
-
-</div> <!-- end of content -->
+</div> <!-- end of comments -->
 </div> <!-- end of base URL -->
 
 </xsl:template>
