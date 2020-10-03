@@ -232,9 +232,11 @@ node_source_plugin_feed_subscription_prepare_update_request (Subscription * subs
 	LifereaNodeSourceActivatable *activatable = node_source_plugin_by_id (subscription->node->source->type->id);
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
 	if (iface->feed_subscription_prepare_update_request)
-		iface->feed_subscription_prepare_update_request (activatable, subscription, request);
+		return iface->feed_subscription_prepare_update_request (activatable, subscription, request);
 	else
 		g_warning ("No 'feed_subscription_prepare_update_request' method implemented by plugin for '%s'!", subscription->node->source->type->id);
+
+	return FALSE;
 }
 
 void
@@ -255,9 +257,11 @@ node_source_plugin_source_subscription_prepare_update_request (Subscription * su
 	LifereaNodeSourceActivatableInterface *iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
 	g_assert(NULL != subscription);
 	if (iface->feedlist_update_prepare)
-		iface->feedlist_update_prepare (activatable, metadata_list_get (subscription->metadata, "node-source-subscription-url"), subscription, request);
+		return iface->feedlist_update_prepare (activatable, metadata_list_get (subscription->metadata, "node-source-subscription-url"), subscription, request);
 	else
 		g_warning ("No 'feedlist_update_prepare' method implemented by plugin for '%s'!", subscription->node->source->type->id);
+
+	return FALSE;
 }
 
 void
