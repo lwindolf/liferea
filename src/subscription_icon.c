@@ -70,7 +70,7 @@ subscription_icon_downloaded (const gchar *id)
 }
 
 static void
-subscription_icon_download_data_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+subscription_icon_download_data_cb (const UpdateResult * const result, gpointer user_data, updateFlags flags)
 {
 	iconDownloadCtxtPtr ctxt = (iconDownloadCtxtPtr)user_data;
 	gchar		*tmp;
@@ -98,7 +98,7 @@ subscription_icon_download_data_cb (const struct updateResult * const result, gp
 }
 
 static void
-subscription_icon_download_html_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+subscription_icon_download_html_cb (const UpdateResult * const result, gpointer user_data, updateFlags flags)
 {
 	iconDownloadCtxtPtr ctxt = (iconDownloadCtxtPtr)user_data;
 

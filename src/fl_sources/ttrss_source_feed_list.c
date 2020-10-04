@@ -113,7 +113,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 /* source subscription type implementation */
 
 static void
-ttrss_source_subscription_list_cb (const struct updateResult * const result, gpointer user_data, guint32 flags)
+ttrss_source_subscription_list_cb (const UpdateResult * const result, gpointer user_data, guint32 flags)
 {
 	Subscription * subscription = (Subscription *) user_data;
 	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
@@ -276,7 +276,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, Node *parent, gint parentI
 }
 
 static void
-ttrss_subscription_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
+ttrss_subscription_process_update_result (Subscription * subscription, const UpdateResult * const result, updateFlags flags)
 {
 	ttrssSourcePtr		source = (ttrssSourcePtr) subscription->node->data;
 

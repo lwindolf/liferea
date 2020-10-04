@@ -109,7 +109,7 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 /* JSON subscription list processing implementation */
 
 static void
-theoldreader_subscription_cb (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
+theoldreader_subscription_cb (Subscription * subscription, const UpdateResult * const result, updateFlags flags)
 {
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) subscription->node->data;
 
@@ -197,7 +197,7 @@ theoldreader_subscription_cb (Subscription * subscription, const struct updateRe
 }
 
 static void
-theoldreader_source_opml_subscription_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
+theoldreader_source_opml_subscription_process_update_result (Subscription * subscription, const UpdateResult * const result, updateFlags flags)
 {
 	theoldreader_subscription_cb (subscription, result, flags);
 }

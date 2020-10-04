@@ -68,22 +68,22 @@ struct _LifereaNodeSourceActivatableInterface
 	/*
 	 * MANDATORY feed subscription preparation callback.
 	 */
-	gboolean	(*feed_subscription_prepare_update_request)(LifereaNodeSourceActivatable *activatable, Subscription * subscription, UpdateRequest *request);
+	gboolean	(*feed_subscription_prepare_update_request) (LifereaNodeSourceActivatable *activatable, Subscription * subscription, UpdateRequest *request);
 
 	/*
 	 * MANDATORY feed subscription type specific update result processing callback.
 	 */
-	void		(*feed_subscription_process_update_result)(LifereaNodeSourceActivatable *activatable, Subscription * subscription, const struct updateResult * const result, updateFlags flags);
+	void		(*feed_subscription_process_update_result) (LifereaNodeSourceActivatable *activatable, Subscription * subscription, const UpdateResult * const result, updateFlags flags);
 
 	/*
 	 * MANDATORY source subscription update preparation callback.
 	 */
-	gboolean	(*feedlist_update_prepare)(LifereaNodeSourceActivatable *activatable, const gchar *serverUrl, Subscription * subscription, UpdateRequest * request);
+	gboolean	(*feedlist_update_prepare) (LifereaNodeSourceActivatable *activatable, const gchar *serverUrl, Subscription * subscription, UpdateRequest * request);
 
 	/*
 	 * MANDATORY source subscription type specific update result processing callback.
 	 */
-	void		(*feedlist_update_cb)(LifereaNodeSourceActivatable *activatable, Subscription * subscription, const struct updateResult * const result, updateFlags flags);
+	void		(*feedlist_update_cb) (LifereaNodeSourceActivatable *activatable, Subscription * subscription, const UpdateResult * const result, updateFlags flags);
 
 	/* === Feed list node handling interface (see node_source.h!) */
 
@@ -93,7 +93,7 @@ struct _LifereaNodeSourceActivatableInterface
 	 * the parent source node_request_add_*() implementation.
 	 * MANDATORY for all sources except the root source.
 	 */
-	void 		(*new)(LifereaNodeSourceActivatable *activatable, const gchar *typeId);
+	void 		(*new) (LifereaNodeSourceActivatable *activatable, const gchar *typeId);
 
 	/*
 	 * This callback is used to delete an instance
@@ -101,7 +101,7 @@ struct _LifereaNodeSourceActivatableInterface
 	 * by the parent source node_remove() implementation.
 	 * MANDATORY for all sources except the root provider source.
 	 */
-	void 		(*delete)(LifereaNodeSourceActivatable *activatable, Node *node);
+	void 		(*delete) (LifereaNodeSourceActivatable *activatable, Node *node);
 
 	/*
 	 * Frees all data of the given node source instance. To be called

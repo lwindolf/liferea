@@ -136,7 +136,7 @@ google_reader_api_action_context_free(GoogleReaderActionCtxtPtr ctxt)
 }
 
 static void
-google_reader_api_edit_action_complete (const struct updateResult* const result, gpointer userdata, updateFlags flags)
+google_reader_api_edit_action_complete (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	GoogleReaderActionCtxtPtr	editCtxt = (GoogleReaderActionCtxtPtr) userdata;
 	GoogleReaderActionPtr		action = editCtxt->action;
@@ -287,7 +287,7 @@ google_reader_api_edit_tag (GoogleReaderActionPtr action, UpdateRequest *request
 }
 
 static void
-google_reader_api_edit_token_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+google_reader_api_edit_token_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	Node *		node;
 	const gchar*	token;

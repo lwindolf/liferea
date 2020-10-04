@@ -81,7 +81,7 @@ ttrss_source_set_login_error (ttrssSourcePtr source, gchar *msg)
 }
 
 static void
-ttrss_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+ttrss_source_login_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
 	Subscription * subscription = source->root->subscription;
@@ -217,7 +217,7 @@ ttrss_source_import (Node *node)
 }
 
 static void
-ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+ttrss_source_subscribe_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	Subscription * subscription = (Subscription *) userdata;
 
@@ -283,7 +283,7 @@ ttrss_source_add_subscription (Node *root, Subscription * subscription)
 }
 
 static void
-ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+ttrss_source_remove_node_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	Node *node = (Node *) userdata;
 
@@ -393,7 +393,7 @@ ttrss_source_cleanup (Node *node)
 }
 
 static void
-ttrss_source_remote_update_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+ttrss_source_remote_update_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	debug2 (DEBUG_UPDATE, "TinyTinyRSS update result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 }

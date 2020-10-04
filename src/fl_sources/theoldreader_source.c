@@ -71,7 +71,7 @@ theoldreader_source_free (TheOldReaderSourcePtr source)
 }
 
 static void
-theoldreader_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+theoldreader_source_login_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	Node *			node = (Node *) userdata;
 	gchar			*tmp = NULL;

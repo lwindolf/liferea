@@ -92,7 +92,7 @@ favicon_pixbuf_size_prepared_cb (GdkPixbufLoader *loader, gint width, gint heigh
 }
 
 gboolean
-favicon_save_from_data (const struct updateResult * const result, const gchar *id)
+favicon_save_from_data (const UpdateResult * const result, const gchar *id)
 {
 	GdkPixbufLoader *loader = gdk_pixbuf_loader_new ();
 	GdkPixbuf	*pixbuf;

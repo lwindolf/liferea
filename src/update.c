@@ -185,6 +185,7 @@ update_request_finalize (GObject *obj)
 	g_free (request->postdata);
 	g_free (request->source);
 	g_free (request->filtercmd);
+	g_free (request->accept);
 
 	G_OBJECT_CLASS (update_request_parent_class)->finalize (obj);
 }
@@ -223,7 +224,7 @@ update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr 
 }
 
 void
-update_request_set_source(UpdateRequest *request, const gchar* source)
+update_request_set_source (UpdateRequest *request, const gchar* source)
 {
 	g_free (request->source);
 	request->source = g_strdup (source);
@@ -236,24 +237,21 @@ update_request_set_auth_value (UpdateRequest *request, const gchar* authValue)
 	request->authValue = g_strdup (authValue);
 }
 
-/* update result object */
-
-updateResultPtr
-update_result_new (void)
+void
+update_request_set_accept (UpdateRequest *request, const gchar* accept)
 {
-	updateResultPtr	result;
-
-	result = g_new0 (struct updateResult, 1);
-	result->updateState = update_state_new ();
-
-	return result;
+	g_free (request->accept);
+	request->accept = g_strdup (accept);
 }
 
-void
-update_result_free (updateResultPtr result)
+/* update result object */
+
+G_DEFINE_TYPE (UpdateResult, update_result, G_TYPE_OBJECT);
+
+static void
+update_result_finalize (GObject *obj)
 {
-	if (!result)
-		return;
+	UpdateResult *result = UPDATE_RESULT (obj);
 
 	update_state_free (result->updateState);
 
@@ -261,7 +259,48 @@ update_result_free (updateResultPtr result)
 	g_free (result->source);
 	g_free (result->contentType);
 	g_free (result->filterErrors);
-	g_free (result);
+
+	G_OBJECT_CLASS (update_result_parent_class)->finalize (obj);
+}
+
+static void
+update_result_class_init (UpdateResultClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	object_class->finalize = update_result_finalize;
+}
+
+static void
+update_result_init (UpdateResult *result)
+{
+}
+
+UpdateResult *
+update_result_new (void)
+{
+	UpdateResult *result = UPDATE_RESULT (g_object_new (UPDATE_RESULT_TYPE, NULL));
+
+	result->updateState = update_state_new ();
+
+	return result;
+}
+
+gchar *
+update_result_get_data (UpdateResult *result)
+{
+	return g_strdup (result->data);
+}
+
+size_t
+update_result_get_size (UpdateResult *result)
+{
+	return result->size;
+}
+
+int
+update_result_get_http_status (UpdateResult *result)
+{
+	return result->httpstatus;
 }
 
 /* update job handling */
@@ -302,7 +341,7 @@ update_job_free (updateJobPtr job)
 	jobs = g_slist_remove (jobs, job);
 
 	g_object_unref (job->request);
-	update_result_free (job->result);
+	g_object_unref (job->result);
 	g_free (job);
 }
 

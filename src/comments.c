@@ -92,7 +92,7 @@ comment_feed_from_id (const gchar *id)
 }
 
 static void
-comments_process_update_result (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+comments_process_update_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
 {
 	feedParserCtxtPtr	ctxt;
 	commentFeedPtr		commentFeed = (commentFeedPtr)user_data;

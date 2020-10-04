@@ -148,7 +148,7 @@ opml_subscription_prepare_update_request (Subscription * subscription, UpdateReq
 }
 
 static void
-opml_subscription_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
+opml_subscription_process_update_result (Subscription * subscription, const UpdateResult * const result, updateFlags flags)
 {
 	Node *		node = subscription->node;
 	mergeCtxtPtr	mergeCtxt;

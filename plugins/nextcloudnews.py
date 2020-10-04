@@ -45,6 +45,7 @@ class NextCloudNewsPlugin(GObject.Object, Liferea.NodeSourceActivatable):
 
     def do_feedlist_update_prepare(self, serverUrl, subscription, request):
         print("feedlist prepare request %s" % (serverUrl))
+        request.set_accept ("application/json")
         request.set_source ("%s/index.php/apps/news/api/v1-2/feeds" % (serverUrl));
 
         # Indicate successful request preparation
@@ -52,6 +53,7 @@ class NextCloudNewsPlugin(GObject.Object, Liferea.NodeSourceActivatable):
 
     def do_feedlist_update_cb(self, subscription, result, flags):
         print("feedlist update result")
+        print(result.get_data())
 
     def do_new(self, typeId):
         """Present server/auth configure dialog"""

@@ -219,7 +219,7 @@ feed_get_max_item_count (Node *node)
 // HTML5 Headline enrichment
 
 static void
-feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags) {
+feed_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags) {
 	itemPtr item;
 	gchar	*article;
 
@@ -291,7 +291,7 @@ feed_enrich_item (Subscription * subscription, itemPtr item)
 		NULL,	// updateState
 		subscription->updateOptions	// Pass options of parent feed (e.g. password, proxy...)
 	);
-
+	update_request_set_accept (request, "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), 0);
 }
 
@@ -299,7 +299,7 @@ feed_enrich_item (Subscription * subscription, itemPtr item)
 /* implementation of subscription type interface */
 
 static void
-feed_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
+feed_process_update_result (Subscription * subscription, const UpdateResult * const result, updateFlags flags)
 {
 	feedParserCtxtPtr	ctxt;
 	Node *			node = subscription->node;

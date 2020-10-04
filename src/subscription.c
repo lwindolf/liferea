@@ -221,7 +221,7 @@ subscription_update_error_status (Subscription * subscription,
 }
 
 static void
-subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
+subscription_process_update_result (const UpdateResult * const result, gpointer user_data, guint32 flags)
 {
 	Subscription * subscription = (Subscription *)user_data;
 	Node *		node = subscription->node;

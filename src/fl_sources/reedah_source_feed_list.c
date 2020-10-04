@@ -110,7 +110,7 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 /* OPML subscription type implementation */
 
 static void
-reedah_subscription_opml_cb (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
+reedah_subscription_opml_cb (Subscription * subscription, const UpdateResult * const result, updateFlags flags)
 {
 	ReedahSourcePtr	source = (ReedahSourcePtr) subscription->node->data;
 
@@ -238,7 +238,7 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 }
 
 static void
-reedah_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags)
+reedah_source_opml_quick_update_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	ReedahSourcePtr gsource = (ReedahSourcePtr) userdata;
 	xmlDocPtr       doc;
@@ -282,7 +282,7 @@ reedah_source_opml_quick_update(ReedahSourcePtr source)
 
 
 static void
-reedah_source_opml_subscription_process_update_result (Subscription * subscription, const struct updateResult * const result, updateFlags flags)
+reedah_source_opml_subscription_process_update_result (Subscription * subscription, const UpdateResult * const result, updateFlags flags)
 {
 	reedah_subscription_opml_cb (subscription, result, flags);
 }

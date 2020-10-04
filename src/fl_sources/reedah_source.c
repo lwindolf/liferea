@@ -71,7 +71,7 @@ reedah_source_free (ReedahSourcePtr source)
 }
 
 static void
-reedah_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+reedah_source_login_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	Node *		node = (Node *) userdata;
 	gchar		*tmp = NULL;

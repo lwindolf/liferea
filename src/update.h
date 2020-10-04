@@ -56,17 +56,6 @@ struct updateResult;
 
 typedef guint32 updateFlags;
 
-/*
- * Generic update result processing callback type.
- * This callback must not free the result structure. It will be
- * free'd by the download system after the callback returns.
- *
- * @param result	the update result
- * @param user_data	update processing callback data
- * @param flags		update processing flags
- */
-typedef void (*update_result_cb) (const struct updateResult * const result, gpointer user_data, updateFlags flags);
-
 /* defines update options to be passed to an update request */
 typedef struct updateOptions {
 	gchar		*username;	/*<< username for HTTP auth */
@@ -98,6 +87,7 @@ struct _UpdateRequest {
 					     '|', it is a command. If it contains "://",
 					     then it is parsed as a URL, otherwise it is a
 					     filename. */
+	gchar		*accept;	/**< Valid "Accept" header value (or NULL for automatic feed "Accept" header */
 	gchar           *postdata;      /*<< HTTP POST request data (NULL for non-POST requests) */
 	gchar           *authValue;     /*<< Custom value for Authorization: header */
 	updateOptionsPtr options;	/*<< Update options for the request */
@@ -105,8 +95,13 @@ struct _UpdateRequest {
 	updateStatePtr	updateState;	/*<< Update state of the requested object (etags, last modified...) */
 };
 
+#define UPDATE_RESULT_TYPE (update_result_get_type ())
+G_DECLARE_FINAL_TYPE (UpdateResult, update_result, UPDATE, RESULT, GObject)
+
 /* structure to store results of the processing of an update request */
-typedef struct updateResult {
+struct _UpdateResult {
+	GObject		parent;
+
 	gchar 		*source;	/*<< Location of the downloaded document, in case of redirects different from
 					     the one given along with the update request */
 
@@ -118,12 +113,23 @@ typedef struct updateResult {
 	gchar		*filterErrors;	/*<< Error messages from filter execution */
 
 	updateStatePtr	updateState;	/*<< New update state of the requested object (etags, last modified...) */
-} *updateResultPtr;
+};
+
+/*
+* Generic update result processing callback type.
+* This callback must not free the result structure. It will be
+* free'd by the download system after the callback returns.
+*
+* @param result	the update result
+* @param user_data	update processing callback data
+* @param flags		update processing flags
+*/
+typedef void (*update_result_cb) (const struct _UpdateResult * const result, gpointer user_data, updateFlags flags);
 
 /* structure describing an HTTP update job */
 typedef struct updateJob {
 	UpdateRequest		*request;
-	updateResultPtr		result;
+	UpdateResult *		result;
 	gpointer		owner;		/*<< owner of this job (used for matching when cancelling) */
 	update_result_cb	callback;	/*<< result processing callback */
 	gpointer		user_data;	/*<< result processing user data */
@@ -241,22 +247,35 @@ void update_request_set_source (UpdateRequest *request, const gchar* source);
 void update_request_set_auth_value (UpdateRequest *request, const gchar* authValue);
 
 /**
- * update_result_new: (skip)
+* update_request_set_accept:
+*
+* Sets a custom Accept header value.
+*
+* @param request        the update request
+* @param authValue      the accept header value
+*/
+void update_request_set_accept (UpdateRequest *request, const gchar* accept);
+
+/**
+ * update_result_new:
  *
  * Creates a new update result.
  *
- * @returns update result (to be free'd using update_result_free())
+ * @returns update result object
  */
-updateResultPtr update_result_new (void);
+UpdateResult * update_result_new (void);
 
 /**
- * update_result_free: (skip)
+ * update_result_get_data:
  *
- * Free's the given update result.
  *
- * @param result	the result
  */
-void update_result_free (updateResultPtr result);
+gchar * update_result_get_data (UpdateResult *result);
+
+size_t update_result_get_size (UpdateResult *result);
+
+int update_result_get_http_status (UpdateResult *result);
+
 
 /**
  * update_execute_request: (skip)

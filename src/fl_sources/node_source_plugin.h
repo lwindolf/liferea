@@ -111,7 +111,7 @@ gboolean node_source_plugin_feed_subscription_prepare_update_request (Subscripti
 /**
  * node_source_plugin_feed_subscription_process_update_result: (skip)
  */
-void node_source_plugin_feed_subscription_process_update_result (Subscription * subscription, const struct updateResult* const result, updateFlags flags);
+void node_source_plugin_feed_subscription_process_update_result (Subscription * subscription, const UpdateResult * const result, updateFlags flags);
 
 /* ==================== source subscription type adapter ==================== */
 
@@ -123,7 +123,7 @@ gboolean node_source_plugin_source_subscription_prepare_update_request (Subscrip
 /**
  * node_source_plugin_source_subscription_process_update_result: (skip)
  */
-void node_source_plugin_source_subscription_process_update_result (Subscription * subscription, const struct updateResult* const result, updateFlags flags);
+void node_source_plugin_source_subscription_process_update_result (Subscription * subscription, const UpdateResult * const result, updateFlags flags);
 
 /* ======================== helper methods ================================== */
 
