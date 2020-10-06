@@ -1,14 +1,14 @@
 # Indonesian translations for Liferea package.
 # Copyright (C) 2014 THE Liferea'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Liferea package.
-# Samsul Ma'arif <mail@samsul.web.id>, 2014, 2017
+# Samsul Ma'arif <mail@samsul.web.id>, 2014, 2017, 2020
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.10.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-28 12:24+0200\n"
-"PO-Revision-Date: 2020-10-07 02:14+0700\n"
+"PO-Revision-Date: 2020-10-07 02:26+0700\n"
 "Last-Translator: Samsul Maarif <mail@samsul.web.id>\n"
 "Language-Team: Indonesian\n"
 "Language: id\n"
