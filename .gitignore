@@ -24,12 +24,11 @@ configure
 depcomp
 install-sh
 libtool
-liferea.appdata.xml
-liferea.desktop
 ltmain.sh
 missing
 net.sf.liferea.gschema.valid
 net.sf.liferea.gschema.xml
+net.sourceforge.liferea.appdata.xml
 net.sourceforge.liferea.desktop
 net.sourceforge.liferea.service
 glade/*.ui~
