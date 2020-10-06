@@ -32,11 +32,11 @@
 	<!-- end of default block -->
 
     <outline text="Berita Indonesia">
-      <outline text="Serambi BlankOn Linux">
-        <outline text="Portal Pengembang BlankOn Linux" htmlUrl="http://serambi.blankonlinux.or.id/" xmlUrl="http://serambi.blankonlinux.or.id/rss20.xml" />
+      <outline text="Kabar Linux">
+        <outline text="Kabar Seputar Linux dan Open Source" htmlUrl="https://kabarlinux.id/" xmlUrl="https://kabarlinux.id/feed/" />
       </outline>
-      <outline text="Planet Ubuntu Indonesia">
-        <outline text="Portal Blog Pengguna Ubuntu Indonesia" htmlUrl="http://planet.ubuntu.or.id/" xmlUrl="http://planet.ubuntu.or.id/rss20.xml" />
+      <outline text="Situs linux.or.id">
+        <outline text="Portal Blog Pengguna Linux Indonesia" htmlUrl="https://www.linux.or.id/" xmlUrl="https://www.linux.or.id/feed/" />
       </outline>
     </outline>
 
