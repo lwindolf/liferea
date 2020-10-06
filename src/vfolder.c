@@ -253,9 +253,9 @@ static void vfolder_save (nodePtr node) { }
 static void
 vfolder_update_counters (nodePtr node) 
 {
-	/* There is no unread handling for search folders
-	   for performance reasons. So set everything to 0 
-	   here and don't bother with GUI updates... */
+	/* There is no unread handling for search folders for performance
+	 * reasons.So set everything to 0 here and don't bother with GUI
+	 * updates... */
 	node->needsUpdate = TRUE;
 	node->unreadCount = 0;
 	node->itemCount = db_search_folder_get_item_count (node->id);

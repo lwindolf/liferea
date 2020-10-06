@@ -28,10 +28,3 @@
  */
 nodePtr theoldreader_source_opml_get_node_by_source(TheOldReaderSourcePtr gsource,
 					 const gchar *source);
-
-/**
- * Perform a quick update of the TheOldReader source.
- *
- * @param gsource	the TheOldReader source
- */
-gboolean theoldreader_source_opml_quick_update (TheOldReaderSourcePtr gsource);

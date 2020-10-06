@@ -23,6 +23,7 @@
 
 #include <glib.h>
 #include <libsoup/soup.h>
+#include <math.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,12 +44,38 @@ static gchar	*proxyusername = NULL;
 static gchar	*proxypassword = NULL;
 static int	proxyport = 0;
 
+
+static void
+network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
+{
+	updateJobPtr	job = (updateJobPtr)user_data;
+	const gchar	*location = NULL;
+	SoupURI		*newuri;
+	
+	if (301 == msg->status_code || 308 == msg->status_code)
+	{
+		location = soup_message_headers_get_one (msg->response_headers, "Location");
+		newuri = soup_uri_new (location);
+
+		if (SOUP_URI_IS_VALID (newuri) && ! soup_uri_equal (newuri, soup_message_get_uri (msg))) {
+			debug2 (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"", soup_uri_to_string (soup_message_get_uri (msg), FALSE),
+							            soup_uri_to_string (newuri, FALSE));
+			job->result->returncode = msg->status_code;
+			job->result->source = soup_uri_to_string (newuri, FALSE);
+		}
+	}
+}
+
 static void
 network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_data)
 {
 	updateJobPtr	job = (updateJobPtr)user_data;
 	SoupDate	*last_modified;
 	const gchar	*tmp = NULL;
+	GHashTable	*params;
+	gboolean	revalidated = FALSE;
+	gint		maxage;
+	gint		age;
 
 	job->result->source = soup_uri_to_string (soup_message_get_uri(msg), FALSE);
 	if (SOUP_STATUS_IS_TRANSPORT_ERROR (msg->status_code)) {
@@ -56,8 +83,10 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 		job->result->httpstatus = 0;
 	} else {
 		job->result->httpstatus = msg->status_code;
-		job->result->returncode = 0;
 	}
+
+	/* keep some request headers for revalidated responses */
+	revalidated = (304 == job->result->httpstatus);
 
 	debug1 (DEBUG_NET, "download status code: %d", msg->status_code);
 	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
@@ -69,22 +98,56 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	job->result->contentType = g_strdup (soup_message_headers_get_content_type (msg->response_headers, NULL));
 
 	/* Update last-modified date */
-	tmp = soup_message_headers_get_one (msg->response_headers, "Last-Modified");
-	if (tmp) {
-		/* The string may be badly formatted, which will make
-		 * soup_date_new_from_string() return NULL */
-		last_modified = soup_date_new_from_string (tmp);
-		if (last_modified) {
-			job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
-			soup_date_free (last_modified);
+	if (revalidated) {
+		 job->result->updateState->lastModified = update_state_get_lastmodified (job->request->updateState);
+	} else {
+		tmp = soup_message_headers_get_one (msg->response_headers, "Last-Modified");
+		if (tmp) {
+			/* The string may be badly formatted, which will make
+			* soup_date_new_from_string() return NULL */
+			last_modified = soup_date_new_from_string (tmp);
+			if (last_modified) {
+				job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
+				soup_date_free (last_modified);
+			}
 		}
 	}
 
 	/* Update ETag value */
-	tmp = soup_message_headers_get_one (msg->response_headers, "ETag");
+	if (revalidated) {
+		job->result->updateState->etag = g_strdup (update_state_get_etag (job->request->updateState));
+	} else {
+		tmp = soup_message_headers_get_one (msg->response_headers, "ETag");
+		if (tmp) {
+			job->result->updateState->etag = g_strdup (tmp);
+		}
+	}
+
+	/* Update cache max-age  */
+	tmp = soup_message_headers_get_list (msg->response_headers, "Cache-Control");
 	if (tmp) {
-		job->result->updateState->etag = g_strdup(tmp);
-	}    
+		params = soup_header_parse_param_list (tmp);
+		if (params) {
+			tmp = g_hash_table_lookup (params, "max-age");
+			if (tmp) {
+				maxage = atoi (tmp);
+				if (0 < maxage) {
+					/* subtract Age from max-age */
+					tmp = soup_message_headers_get_one (msg->response_headers, "Age");
+					if (tmp) {
+						age = atoi (tmp);
+						if (0 < age) {
+							maxage = maxage - age;
+						}
+					}
+					if (0 < maxage) {
+						job->result->updateState->maxAgeMinutes = ceil ( (float) (maxage / 60));
+					}
+				}
+			}
+		}
+		soup_header_free_param_list (params);
+	}
 
 	update_process_finished_job (job);
 }
@@ -212,6 +275,10 @@ network_process_request (const updateJobPtr job)
 	if (do_not_track)
 		soup_message_headers_append (msg->request_headers, "DNT", "1");
 
+	/* Process permanent redirects (update feed location) */
+	soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, job);
+	soup_message_add_status_code_handler (msg, "got_body", 308, (GCallback) network_process_redirect_callback, job);
+
 	/* If the feed has "dont use a proxy" selected, use 'session2' which is non-proxy */
 	if (job->request->options && job->request->options->dontUseProxy)
 		soup_session_queue_message (session2, msg, network_process_callback, job);
@@ -280,18 +347,13 @@ network_init (void)
 	gchar		*filename;
 	SoupLogger	*logger;
 
-	/* Set an appropriate user agent */
-	if (g_getenv ("LANG")) {
-		/* e.g. "Liferea/1.10.0 (Linux; de_DE; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
-		useragent = g_strdup_printf ("Liferea/%s (%s; %s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, g_getenv ("LANG"), HOMEPAGE);
-	} else {
-		/* e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
-		useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
-	}
+	/* Set an appropriate user agent,
+	 * e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+	useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
 
-	/* Cookies */
-	filename = common_create_config_filename ("cookies.txt");
-	cookies = soup_cookie_jar_text_new (filename, FALSE);
+	/* Session cookies */
+	filename = common_create_config_filename ("session_cookies.txt");
+	cookies = soup_cookie_jar_text_new (filename, TRUE);
 	g_free (filename);
 
 	/* Initialize libsoup */

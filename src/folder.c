@@ -1,12 +1,12 @@
 /**
  * @file folder.c  sub folders for hierarchic node sources
- * 
- * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -26,15 +26,15 @@
 #include "itemset.h"
 #include "node.h"
 #include "vfolder.h"
+#include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/ui_folder.h"
-#include "ui/feed_list_node.h"
 
 /* Note: The folder node type implements the behaviour of a folder like
    node in the feed list. The two most important features are viewing the
-   unread items of all child feeds and displaying the aggregated unread count 
+   unread items of all child feeds and displaying the aggregated unread count
    of all child feeds.
-   
+
    The folder node type does not implement the hierarchy of the feed list! */
 
 static void
@@ -56,7 +56,7 @@ static itemSetPtr
 folder_load (nodePtr node)
 {
 	itemSetPtr	itemSet;
-	
+
 	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = node->id;
 
@@ -66,19 +66,19 @@ folder_load (nodePtr node)
 
 static void
 folder_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
-{	
-	/* Folders have no special properties to be imported. */	
+{
+	/* Folders have no special properties to be imported. */
 }
 
 static void
 folder_export (nodePtr node, xmlNodePtr cur, gboolean trusted)
-{	
+{
 	/* Folders have no special properties to be exported. */
 }
 
 static void
 folder_save (nodePtr node)
-{	
+{
 	/* A folder has no own state but must give all childs the chance to save theirs */
 	node_foreach_child (node, node_save);
 }
@@ -130,12 +130,12 @@ folder_get_node_type (void)
 		folder_remove,
 		node_default_render,
 		ui_folder_add,
-		feed_list_node_rename,
+		feed_list_view_rename_node,
 		NULL
 	};
 	fnti.icon = icon_get (ICON_FOLDER);
 
-	return &fnti; 
+	return &fnti;
 }
 
 nodeTypePtr
@@ -150,7 +150,7 @@ root_get_node_type (void)
 		NODE_CAPABILITY_REORDER |
 		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		NODE_CAPABILITY_UPDATE_CHILDS |
-		NODE_CAPABILITY_EXPORT,		
+		NODE_CAPABILITY_EXPORT,
 		"root",
 		NULL,		/* and no need for an icon */
 		folder_import,
@@ -161,9 +161,9 @@ root_get_node_type (void)
 		folder_remove,
 		node_default_render,
 		ui_folder_add,
-		feed_list_node_rename,
+		feed_list_view_rename_node,
 		NULL
 	};
 
-	return &rnti; 
+	return &rnti;
 }

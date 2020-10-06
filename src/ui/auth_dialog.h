@@ -1,7 +1,7 @@
 /**
  * @file auth_dialog.h  authentication support dialog
  *
- * Copyright (C) 2007-2010 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,39 +27,18 @@
 
 G_BEGIN_DECLS
 
-#define AUTH_DIALOG_TYPE		(auth_dialog_get_type ())
-#define AUTH_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), AUTH_DIALOG_TYPE, AuthDialog))
-#define AUTH_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), AUTH_DIALOG_TYPE, AuthDialogClass))
-#define IS_AUTH_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), AUTH_DIALOG_TYPE))
-#define IS_AUTH_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), AUTH_DIALOG_TYPE))
-
-typedef struct AuthDialog		AuthDialog;
-typedef struct AuthDialogClass		AuthDialogClass;
-typedef struct AuthDialogPrivate	AuthDialogPrivate;
-
-struct AuthDialog
-{
-	GObject		parent;
-	
-	/*< private >*/
-	AuthDialogPrivate	*priv;
-};
-
-struct AuthDialogClass 
-{
-	GObjectClass parent_class;
-};
-
-GType auth_dialog_get_type (void);
+#define AUTH_DIALOG_TYPE (auth_dialog_get_type ())
+G_DECLARE_FINAL_TYPE (AuthDialog, auth_dialog, AUTH, DIALOG, GObject)
 
 /**
+ * auth_dialog_new:
  * Create a new authentication dialog if there is not already one for
  * the given subscription.
  *
- * @param subscription	the subscription whose authentication info is needed
- * @param flags		the flags for the update request after authenticating
+ * @subscription:	the subscription whose authentication info is needed
+ * @flags:			the flags for the update request after authenticating
  *
- * @returns new dialog
+ * Returns: (transfer none): new dialog
  */
 AuthDialog * auth_dialog_new (subscriptionPtr subscription, gint flags);
 

@@ -20,6 +20,7 @@
 
 #include "liferea_web_view.h"
 
+#include "../debug.h"
 #include "browser.h"
 #include "common.h"
 #include "enclosure.h"
@@ -53,7 +54,7 @@ liferea_web_view_finalize(GObject *gobject)
 		g_object_remove_weak_pointer (G_OBJECT (self->dbus_connection), (gpointer *) &self->dbus_connection);
 	}
 
-	/* Chaining fianlize from parent class. */
+	/* Chaining finalize from parent class. */
 	G_OBJECT_CLASS(liferea_web_view_parent_class)->finalize(gobject);
 }
 
@@ -82,7 +83,7 @@ can_copy_callback (GObject *web_view, GAsyncResult *result, gpointer user_data)
 	}
 
 	action_group = LIFEREA_WEB_VIEW (web_view)->menu_action_group;
-	copy_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "CopySelection"));
+	copy_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "copy-selection"));
 	g_simple_action_set_enabled (copy_action, enabled);
 }
 
@@ -144,10 +145,11 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	GMenu 			*menu_model,*section;
 	gchar			*image_uri = NULL;
 	gchar			*link_uri = NULL;
+	gchar			*link_title = NULL;
 	gboolean 		link, image;
 
 	if (webkit_hit_test_result_context_is_link (hit_result))
-		g_object_get (hit_result, "link-uri", &link_uri, NULL);
+		g_object_get (hit_result, "link-uri", &link_uri, "link-title", &link_title, NULL);
 	if (webkit_hit_test_result_context_is_image (hit_result))
 		g_object_get (hit_result, "image-uri", &image_uri, NULL);
 	if (webkit_hit_test_result_context_is_media (hit_result))
@@ -169,90 +171,79 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	/* and now add all we want to see */
 	if (link) {
 		gchar *path;
+		GMenuItem *menu_item;
 
-		menu_add_item (section, _("Open Link In _Tab"), "liferea_web_view.OpenLinkInTab", link_uri);
-		menu_add_item (section, _("Open Link In Browser"), "liferea_web_view.OpenLinkInBrowser", link_uri);
-		menu_add_item (section, _("Open Link In External Browser"), "liferea_web_view.OpenLinkInExternalBrowser", link_uri);
+		menu_add_item (section, _("Open Link In _Tab"), "app.open-link-in-tab", link_uri);
+		menu_add_item (section, _("Open Link In Browser"), "app.open-link-in-browser", link_uri);
+		menu_add_item (section, _("Open Link In External Browser"), "app.open-link-in-external-browser", link_uri);
 
 		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 		g_object_unref (section);
 		section = g_menu_new ();
 
 		path = g_strdup_printf (_("_Bookmark Link at %s"), social_get_bookmark_site ());
-		menu_add_item (section, path, "liferea_web_view.SocialBookmarkLink", link_uri);
+		menu_item = g_menu_item_new (path, NULL);
+		g_menu_item_set_action_and_target (menu_item, "app.social-bookmark-link", "(ss)", link_uri, link_title?link_title:"");
+		g_menu_append_item (section, menu_item);
+		g_object_unref (menu_item);
 		g_free (path);
 
-		menu_add_item (section, _("_Copy Link Location"), "liferea_web_view.CopyLink", link_uri);
+		menu_add_item (section, _("_Copy Link Location"), "app.copy-link-to-clipboard", link_uri);
 	}
 	if (image) {
-		menu_add_item (section, _("_Copy Image Location"),  "liferea_web_view.CopyLink", image_uri);
+		menu_add_item (section, _("_View Image"),           "app.open-link-in-tab", image_uri);
+		menu_add_item (section, _("_Copy Image Location"),  "app.copy-link-to-clipboard", image_uri);
 	}
 	if (link) {
-		menu_add_item (section, _("S_ave Link As"), "liferea_web_view.SaveLink", link_uri);
+		menu_add_item (section, _("S_ave Link As"), "liferea_web_view.save-link", link_uri);
 	}
 	if (image) {
-		menu_add_item (section, _("S_ave Image As"), "liferea_web_view.SaveLink", image_uri);
+		menu_add_item (section, _("S_ave Image As"), "liferea_web_view.save-link", image_uri);
 	}
 	if (link) {
 		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 		g_object_unref (section);
 		section = g_menu_new ();
 
-		menu_add_item (section, _("_Subscribe..."), "liferea_web_view.SubscribeLink", link_uri);
+		menu_add_item (section, _("_Subscribe..."), "liferea_web_view.subscribe-link", link_uri);
 	}
 
 	if(!link && !image) {
-		g_menu_append (section, _("_Copy"), "liferea_web_view.CopySelection");
+		g_menu_append (section, _("_Copy"), "liferea_web_view.copy-selection");
 
 		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 		g_object_unref (section);
 		section = g_menu_new ();
 
-		g_menu_append (section, _("_Increase Text Size"), "liferea_web_view.ZoomIn");
-		g_menu_append (section, _("_Decrease Text Size"), "liferea_web_view.ZoomOut");
+		g_menu_append (section, _("_Increase Text Size"), "liferea_web_view.zoom-in");
+		g_menu_append (section, _("_Decrease Text Size"), "liferea_web_view.zoom-out");
 	}
 
 	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 	g_object_unref (section);
+	g_free (link_uri);
+	g_free (image_uri);
+	g_free (link_title);
+
+	if(debug_level & DEBUG_HTML) {
+		section = g_menu_new ();
+		g_menu_append (section, "Inspect", "liferea_web_view.web-inspector");
+		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+		g_object_unref (section);
+	}
 
 	menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
 	gtk_menu_attach_to_widget (GTK_MENU (menu), GTK_WIDGET (view), NULL);
-	gtk_menu_popup(GTK_MENU (menu), NULL,NULL,NULL,NULL, ((GdkEventButton *)event)->button, ((GdkEventButton*)event)->time);
+
+	gtk_menu_popup_at_pointer (GTK_MENU (menu), event);
 
 	return TRUE; // TRUE to ignore WebKit's menu as we make our own menu.
-}
-
-static void
-on_popup_open_link_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemview_launch_URL (g_variant_get_string (parameter, NULL), TRUE /* use internal browser */);
-}
-
-static void
-on_popup_open_link_external_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	browser_launch_URL_external (g_variant_get_string (parameter, NULL));
 }
 
 static void
 on_popup_copy_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	webkit_web_view_execute_editing_command (WEBKIT_WEB_VIEW (user_data), WEBKIT_EDITING_COMMAND_COPY);
-}
-
-static void
-on_popup_copy_link_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	GtkClipboard	*clipboard;
-	gchar		*link = (gchar *) common_uri_sanitize (BAD_CAST g_variant_get_string (parameter, NULL));
-
-	clipboard = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
-	gtk_clipboard_set_text (clipboard, link, -1);
-
-	clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-	gtk_clipboard_set_text (clipboard, link, -1);
-
-	g_free (link);
 }
 
 static void
@@ -282,31 +273,22 @@ on_popup_zoomout_activate (GSimpleAction *action, GVariant *parameter, gpointer 
 }
 
 static void
-on_popup_open_link_in_tab_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_popup_webinspector_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	browser_tabs_add_new (g_variant_get_string (parameter, NULL), g_variant_get_string (parameter, NULL), FALSE);
-}
+	WebKitSettings *settings = webkit_web_view_get_settings (WEBKIT_WEB_VIEW (user_data));
+	g_object_set (G_OBJECT(settings), "enable-developer-extras", TRUE, NULL);
 
-static void
-on_popup_social_bm_link_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	gchar *url = social_get_bookmark_url (g_variant_get_string (parameter, NULL), "");
-	(void)browser_tabs_add_new (url, url, TRUE);
-	g_free (url);
+	WebKitWebInspector *inspector = webkit_web_view_get_inspector (WEBKIT_WEB_VIEW (user_data));
+	webkit_web_inspector_show (WEBKIT_WEB_INSPECTOR(inspector));
 }
-
 
 static const GActionEntry liferea_web_view_gaction_entries[] = {
-        {"OpenLinkInTab", on_popup_open_link_in_tab_activate, "s", NULL, NULL},
-        {"OpenLinkInBrowser", on_popup_open_link_activate, "s", NULL, NULL},
-        {"OpenLinkInExternalBrowser", on_popup_open_link_external_activate, "s", NULL, NULL},
-        {"SocialBookmarkLink", on_popup_social_bm_link_activate, "s", NULL, NULL},
-        {"CopyLink", on_popup_copy_link_activate, "s", NULL, NULL},
-        {"SaveLink", on_popup_save_link_activate, "s", NULL, NULL},
-        {"SubscribeLink", on_popup_subscribe_link_activate, "s", NULL, NULL},
-        {"CopySelection", on_popup_copy_activate, NULL, NULL, NULL},
-        {"ZoomIn", on_popup_zoomin_activate, NULL, NULL, NULL},
-        {"ZoomOut", on_popup_zoomout_activate, NULL, NULL, NULL}
+	{"save-link", on_popup_save_link_activate, "s", NULL, NULL},
+	{"subscribe-link", on_popup_subscribe_link_activate, "s", NULL, NULL},
+	{"copy-selection", on_popup_copy_activate, NULL, NULL, NULL},
+	{"zoom-in", on_popup_zoomin_activate, NULL, NULL, NULL},
+	{"zoom-out", on_popup_zoomout_activate, NULL, NULL, NULL},
+	{"web-inspector", on_popup_webinspector_activate, NULL, NULL, NULL}
 };
 
 static void
@@ -625,6 +607,14 @@ liferea_webkit_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, 
 }
 
 static void
+liferea_web_view_progress_changed (GObject *webview, GParamSpec *pspec, gpointer user_data)
+{
+	LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (webview), "htmlview");
+
+	liferea_htmlview_progress_changed (htmlview, webkit_web_view_get_estimated_load_progress (WEBKIT_WEB_VIEW (webview)));
+}
+
+static void
 liferea_web_view_init(LifereaWebView *self)
 {
 	self->dbus_connection = NULL;
@@ -646,6 +636,12 @@ liferea_web_view_init(LifereaWebView *self)
 		self,
 		"notify::title",
 		G_CALLBACK (liferea_web_view_title_changed),
+		NULL
+	);
+	g_signal_connect (
+		self,
+		"notify::estimated-load-progress",
+		G_CALLBACK (liferea_web_view_progress_changed),
 		NULL
 	);
 	g_signal_connect (
@@ -704,7 +700,7 @@ scroll_pagedown_callback (GObject *source_object, GAsyncResult *res, gpointer us
 	g_variant_get (result, "(b)", &scrolled);
 
 	if (!scrolled) {
-		on_next_unread_item_activate (NULL, NULL);
+		on_next_unread_item_activate (NULL, NULL, NULL);
 	}
 }
 

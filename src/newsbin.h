@@ -33,7 +33,18 @@ GSList * newsbin_get_list(void);
 
 void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data);
 
-void on_popup_copy_to_newsbin(gpointer data);
+/**
+ * on_action_copy_to_newsbin: (skip)
+ * @action:	the action that emitted the signal
+ * @parameter:	a GVariant of type "(umt)", first value is the index of the
+ * 		newsbin in the list, second is optionnal item id. If no item id is
+ * 		given the selected item is used.
+ * @user_data:	unused
+ *
+ * Activate callback for the "copy-item-to-newsbin" action.
+ * Copy the selected item to the specified newsbin.
+ */
+void on_action_copy_to_newsbin(GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /* implementation of the node type interface */
 

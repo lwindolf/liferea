@@ -26,7 +26,6 @@ liferea_SOURCES = \
 	db.c db.h \
 	dbus.c dbus.h \
 	debug.c debug.h \
-	e-date.c e-date.h \
 	enclosure.c enclosure.h \
 	export.c export.h \
 	favicon.c favicon.h \
@@ -57,6 +56,7 @@ liferea_SOURCES = \
 	rule.c rule.h \
 	social.c social.h \
 	subscription.c subscription.h \
+	subscription_icon.c subscription_icon.h \
 	subscription_type.h \
 	update.c update.h \
 	main.c \
@@ -94,6 +94,7 @@ Liferea_3_0_gir_FILES = \
 	item.h \
 	itemlist.c itemlist.h \
 	itemset.c itemset.h \
+	liferea_application.h \
 	node.h node.c \
 	node_view.h \
 	social.c social.h \

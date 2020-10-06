@@ -1,7 +1,7 @@
 /*
  * @file browser_tabs.h  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2008 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #ifndef _BROWSER_TABS_H
@@ -28,39 +28,14 @@
 
 G_BEGIN_DECLS
 
-#define BROWSER_TABS_TYPE		(browser_tabs_get_type ())
-#define BROWSER_TABS(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BROWSER_TABS_TYPE, BrowserTabs))
-#define BROWSER_TABS_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BROWSER_TABS_TYPE, BrowserTabsClass))
-#define IS_BROWSER_TABS(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BROWSER_TABS_TYPE))
-#define IS_BROWSER_TABS_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BROWSER_TABS_TYPE))
-
-typedef struct BrowserTabs		BrowserTabs;
-typedef struct BrowserTabsClass		BrowserTabsClass;
-typedef struct BrowserTabsPrivate	BrowserTabsPrivate;
-
-extern BrowserTabs *browser_tabs;
-
-struct BrowserTabs
-{
-	GObject		parent;
-	
-	/*< private >*/
-	BrowserTabsPrivate	*priv;
-};
-
-struct BrowserTabsClass 
-{
-	GObjectClass parent_class;
-};
-
-GType browser_tabs_get_type (void);
+#define BROWSER_TABS_TYPE (browser_tabs_get_type ())
+G_DECLARE_FINAL_TYPE (BrowserTabs, browser_tabs, BROWSER, TABS, GObject)
 
 /**
  * browser_tabs_create: (skip)
  * @notebook:	GtkNotebook widget to use
  *
  * Returns: the singleton browser tabs instance.
- *
  */
 BrowserTabs * browser_tabs_create (GtkNotebook *notebook);
 
@@ -79,7 +54,7 @@ LifereaHtmlView * browser_tabs_add_new (const gchar *url, const gchar *title, gb
 /**
  * browser_tabs_show_headlines:
  *
- * makes the headline tab visible 
+ * makes the headline tab visible
  */
 void browser_tabs_show_headlines (void);
 
@@ -96,19 +71,11 @@ LifereaHtmlView * browser_tabs_get_active_htmlview (void);
 
 /**
  * browser_tabs_do_zoom:
- * @in:	TRUE if zooming in, FALSE for zooming out
+ * @zoom:	1 for zoom in, -1 for zoom out, 0 for reset
  *
  * Requests the tab to change zoom level.
  */
-void browser_tabs_do_zoom (gboolean in);
-
-/* All widget elements and state of a tab */
-typedef struct _tabInfo tabInfo;
-struct _tabInfo {
-	GtkWidget	*label;		/*<< the tab label */
-	GtkWidget	*widget;	/*<< the embedded child widget */
-	LifereaHtmlView	*htmlview;	/*<< the tabs HTML view widget */
-};
+void browser_tabs_do_zoom (gint zoom);
 
 G_END_DECLS
 

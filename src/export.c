@@ -36,7 +36,7 @@
 #include "node.h"
 #include "xml.h"
 #include "ui/ui_common.h"
-#include "ui/feed_list_node.h"
+#include "ui/feed_list_view.h"
 
 struct exportData {
 	gboolean	trusted; /**< Include all the extra Liferea-specific tags */
@@ -57,15 +57,15 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 	/* When exporting external OPML do not export every node type... */
 	if (!(internal || (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_EXPORT)))
 		return;
-	
+
 	childNode = xmlNewChild (cur, NULL, BAD_CAST"outline", NULL);
 
 	/* 1. write generic node attributes */
 	xmlNewProp (childNode, BAD_CAST"title", BAD_CAST node_get_title(node));
 	xmlNewProp (childNode, BAD_CAST"text", BAD_CAST node_get_title(node)); /* The OPML spec requires "text" */
 	xmlNewProp (childNode, BAD_CAST"description", BAD_CAST node_get_title(node));
-	
-	if (node_type_to_str (node)) 
+
+	if (node_type_to_str (node))
 		xmlNewProp (childNode, BAD_CAST"type", BAD_CAST node_type_to_str (node));
 
 	/* Don't add the following tags if we are exporting to other applications */
@@ -92,11 +92,11 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 
 		if (FALSE == node->sortReversed)
 			xmlNewProp (childNode, BAD_CAST"sortReversed", BAD_CAST"false");
-			
+
 		if (node->loadItemLink)
 			xmlNewProp (childNode, BAD_CAST"loadItemLink", BAD_CAST"true");
 
-		/* Do not export the default view mode setting to avoid making 
+		/* Do not export the default view mode setting to avoid making
 		   it permanent. Do not use node_get_view_mode () here to ensure
 		   that the comparison works as node_get_view_mode () returns
 		   the effective mode! */
@@ -106,18 +106,18 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 			g_free (tmp);
 		}
 	}
-	
+
 	/* 2. add node type specific stuff */
 	NODE_TYPE (node)->export (node, childNode, internal);
-	
+
 	/* 3. add children */
 	if (internal) {
-		if (feed_list_node_is_expanded (node->id))
+		if (feed_list_view_is_expanded (node->id))
 			xmlNewProp (childNode, BAD_CAST"expanded", BAD_CAST"true");
 		else
 			xmlNewProp (childNode, BAD_CAST"collapsed", BAD_CAST"true");
 	}
-	
+
 	if (IS_FOLDER (node))
 		export_node_children (node, childNode, internal);
 }
@@ -126,7 +126,7 @@ static void
 export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted)
 {
 	struct exportData	params;
-	
+
 	params.cur = cur;
 	params.trusted = trusted;
 	node_foreach_child_data (node, export_append_node_tag, &params);
@@ -142,31 +142,31 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 	int		old_umask = 0;
 
 	debug_enter ("export_OPML_feedlist");
-	
+
 	backupFilename = g_strdup_printf ("%s~", filename);
-	
+
 	doc = xmlNewDoc ("1.0");
-	if (doc) {	
+	if (doc) {
 		opmlNode = xmlNewDocNode (doc, NULL, BAD_CAST"opml", NULL);
 		if (opmlNode) {
 			xmlNewProp (opmlNode, BAD_CAST"version", BAD_CAST"1.0");
-			
+
 			/* create head */
 			cur = xmlNewChild (opmlNode, NULL, BAD_CAST"head", NULL);
 			if (cur)
 				xmlNewTextChild (cur, NULL, BAD_CAST"title", BAD_CAST"Liferea Feed List Export");
-			
+
 			/* create body with feed list */
 			cur = xmlNewChild (opmlNode, NULL, BAD_CAST"body", NULL);
 			if (cur)
 				export_node_children (node, cur, trusted);
-			
-			xmlDocSetRootElement (doc, opmlNode);		
+
+			xmlDocSetRootElement (doc, opmlNode);
 		} else {
 			g_warning ("could not create XML feed node for feed cache document!");
 			error = TRUE;
 		}
-		
+
 		if (!trusted)
 			old_umask = umask (022);	/* give read permissions for other, per-default we wouldn't give it... */
 
@@ -176,12 +176,12 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 			g_warning ("Could not export to OPML file!");
 			error = TRUE;
 		}
-		
+
 		if (!trusted)
 			umask (old_umask);
-			
+
 		xmlFreeDoc (doc);
-		
+
 		if (!error) {
 			// FIXME: Use g_rename() once we've reached Glib 2.6+
 			if (rename (backupFilename, filename) < 0) {
@@ -193,9 +193,9 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 		g_warning ("Could not create XML document!");
 		error = TRUE;
 	}
-	
+
 	g_free (backupFilename);
-	
+
 	debug_exit ("export_OPML_feedlist");
 	return !error;
 }
@@ -208,7 +208,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	nodePtr		node;
 	nodeTypePtr	type = NULL;
 	gboolean	needsUpdate = FALSE;
-	
+
 	debug_enter("import_parse_outline");
 
 	/* 1. determine node type */
@@ -216,8 +216,8 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	if (typeStr) {
 		type = node_str_to_type (typeStr);
 		xmlFree (typeStr);
-	} 
-	
+	}
+
 	/* if we didn't find a type attribute we use heuristics */
 	if (!type) {
 		/* check for a source URL */
@@ -226,7 +226,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 			tmp = xmlGetProp (cur, BAD_CAST"xmlurl");	/* AmphetaDesk */
 		if (!tmp)
 			tmp = xmlGetProp (cur, BAD_CAST"xmlURL");	/* LiveJournal */
-		
+
 		if (tmp) {
 			debug0 (DEBUG_CACHE, "-> URL found assuming type feed");
 			type = feed_get_node_type();
@@ -237,17 +237,17 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 			debug0 (DEBUG_CACHE, "-> must be a folder");
 		}
 	}
-	
+
 	g_assert (NULL != type);
 
 	/* Check if adding this type is allowed */
 	// FIXME: Prevent news bins outside root source
 	// FIXME: Prevent search folders outside root source
-	
-	/* 2. do general node parsing */	
+
+	/* 2. do general node parsing */
 	node = node_new (type);
 	node_set_parent (node, parentNode, -1);
-	
+
 	/* The id should only be used from feedlist.opml. Otherwise,
 	   it could cause corruption if the same id was imported
 	   multiple times. */
@@ -272,7 +272,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	} else {
 		needsUpdate = TRUE;
 	}
-	
+
 	/* title */
 	title = xmlGetProp (cur, BAD_CAST"title");
 	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
@@ -305,7 +305,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 			node->sortReversed = FALSE;
 		xmlFree (sortStr);
 	}
-	
+
 	/* auto item link loading flag */
 	tmp = xmlGetProp (cur, BAD_CAST"loadItemLink");
 	if (tmp) {
@@ -320,18 +320,18 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		node_set_view_mode (node, atoi (tmp));
 		xmlFree (tmp);
 	}
-	
-	/* expansion state */		
+
+	/* expansion state */
 	if (xmlHasProp (cur, BAD_CAST"expanded"))
 		node->expanded = TRUE;
 	else if (xmlHasProp (cur, BAD_CAST"collapsed"))
 		node->expanded = FALSE;
-	else 
+	else
 		node->expanded = TRUE;
-	
+
 	/* 3. Try to load the favicon (needs to be done before adding to the feed list) */
 	node_load_icon (node);
-			
+
 	/* 4. add to GUI parent */
 	feedlist_node_imported (node);
 
@@ -341,10 +341,10 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 		while (child) {
 			if (!xmlStrcmp (child->name, BAD_CAST"outline"))
 				import_parse_outline (child, node, trusted);
-			child = child->next;				
+			child = child->next;
 		}
 	}
-	
+
 	/* 6. do node type specific parsing */
 	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
 
@@ -377,7 +377,7 @@ static void
 import_parse_body (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
 {
 	xmlNodePtr cur;
-	
+
 	cur = n->xmlChildrenNode;
 	while (cur) {
 		if (!xmlStrcmp (cur->name, BAD_CAST"outline"))
@@ -390,7 +390,7 @@ static void
 import_parse_OPML (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
 {
 	xmlNodePtr cur;
-	
+
 	cur = n->xmlChildrenNode;
 	while (cur) {
 		/* we ignore the head */
@@ -398,7 +398,7 @@ import_parse_OPML (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
 			import_parse_body (cur, parentNode, trusted);
 		}
 		cur = cur->next;
-	}	
+	}
 }
 
 gboolean
@@ -407,9 +407,9 @@ import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showEr
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
 	gboolean	error = FALSE;
-	
+
 	debug1 (DEBUG_CACHE, "Importing OPML file: %s", filename);
-	
+
 	/* read the feed list */
 	doc = xmlParseFile (filename);
 	if (!doc) {
@@ -429,7 +429,7 @@ import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showEr
 		} else {
 			if (!trusted) {
 				/* set title only when importing as folder and not as OPML source */
-				xmlNodePtr title = xpath_find (cur, "/opml/head/title"); 
+				xmlNodePtr title = xpath_find (cur, "/opml/head/title");
 				if (title) {
 					xmlChar *titleStr = xmlNodeListGetString (title->doc, title->xmlChildrenNode, 1);
 					if (titleStr) {
@@ -438,7 +438,7 @@ import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showEr
 					}
 				}
 			}
-		
+
 			while (cur) {
 				if (!xmlIsBlankNode (cur)) {
 					if (!xmlStrcmp (cur->name, BAD_CAST"opml")) {
@@ -455,7 +455,7 @@ import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showEr
 		}
 		xmlFreeDoc (doc);
 	}
-	
+
 	return !error;
 }
 
@@ -463,12 +463,12 @@ import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showEr
 
 static void
 on_import_activate_cb (const gchar *filename, gpointer user_data)
-{	
+{
 	if (filename) {
 		nodePtr node = node_new (folder_get_node_type ());
 		node_set_title (node, _("Imported feed list"));
 		feedlist_node_added (node);
-		
+
 		if (!import_OPML_feedlist (filename, node, TRUE /* show errors */, FALSE /* not trusted */)) {
 			feedlist_remove_node (node);
 		}
@@ -487,7 +487,7 @@ on_export_activate_cb (const gchar *filename, gpointer user_data)
 	if (filename) {
 		if (!export_OPML_feedlist (filename, feedlist_get_root (), FALSE))
 			ui_show_error_box (_("Error while exporting feed list!"));
-		else 
+		else
 			ui_show_info_box (_("Feed List exported!"));
 	}
 }

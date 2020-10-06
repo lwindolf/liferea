@@ -2,27 +2,27 @@
  * @file liferea_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Library General Public License
  * along with this library; see the file COPYING.LIB.  If not, write to
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
- 
+
 #ifndef _LIFEREA_SHELL_H
 #define _LIFEREA_SHELL_H
- 
+
 #include <glib-object.h>
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -31,40 +31,16 @@
 
 /* possible main window states */
 enum mainwindowState {
-	MAINWINDOW_SHOWN,	/*<< main window is visible */
+	MAINWINDOW_SHOWN,		/*<< main window is visible */
 	MAINWINDOW_MAXIMIZED,	/*<< main window is visible and maximized */
 	MAINWINDOW_ICONIFIED,	/*<< main window is iconified */
-	MAINWINDOW_HIDDEN	/*<< main window is not visible at all */
+	MAINWINDOW_HIDDEN		/*<< main window is not visible at all */
 };
 
 G_BEGIN_DECLS
 
 #define LIFEREA_SHELL_TYPE		(liferea_shell_get_type ())
-#define LIFEREA_SHELL(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_SHELL_TYPE, LifereaShell))
-#define LIFEREA_SHELL_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), LIFEREA_SHELL_TYPE, LifereaShellClass))
-#define IS_LIFEREA_SHELL(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_SHELL_TYPE))
-#define IS_LIFEREA_SHELL_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_SHELL_TYPE))
-
-typedef struct LifereaShell		LifereaShell;
-typedef struct LifereaShellClass	LifereaShellClass;
-typedef struct LifereaShellPrivate	LifereaShellPrivate;
-
-extern LifereaShell *liferea_shell;
-
-struct LifereaShell
-{
-	GObject		parent;
-	
-	/*< private >*/
-	LifereaShellPrivate	*priv;
-};
-
-struct LifereaShellClass 
-{
-	GObjectClass parent_class;
-};
-
-GType liferea_shell_get_type	(void);
+G_DECLARE_FINAL_TYPE (LifereaShell, liferea_shell, LIFEREA, SHELL, GObject)
 
 /**
  * liferea_shell_lookup:
@@ -78,13 +54,22 @@ GType liferea_shell_get_type	(void);
 GtkWidget * liferea_shell_lookup (const gchar *name);
 
 /**
+ * liferea_shell_save_position
+ *
+ * Save the position of the Liferea main window.
+ */
+void
+liferea_shell_save_position (void);
+
+/**
  * liferea_shell_create: (skip)
  * @app:	                the GtkApplication to attach the main window to
  * @overrideWindowState:	optional parameter for window state (or NULL)
+ * @pluginsDisabled		1 if plugins are not to be loaded
  *
  * Set up the Liferea main window.
  */
-void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState);
+void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled);
 
 /**
  * liferea_shell_destroy: (skip)
@@ -101,10 +86,17 @@ void liferea_shell_destroy (void);
 void liferea_shell_present (void);
 
 /**
+ * liferea_shell_show_window:
+ *
+ * Show the main window.
+ */
+void liferea_shell_show_window (void);
+
+/**
  * liferea_shell_toggle_visibility:
  *
  * Toggles main window visibility.
- */ 
+ */
 void liferea_shell_toggle_visibility (void);
 
 /**
@@ -205,12 +197,12 @@ GtkWidget * liferea_shell_get_window (void);
  * liferea_shell_set_view_mode:
  * @newMode:	the new mode
  *
- * Update the mode selection in the menu
+ * Changes the view mode programmatically. Used to change the mode when
+ * selecting another feed. Convenience function to trigger the stateful action
+ * set-view-mode.
  */
 void liferea_shell_set_view_mode (nodeViewType newMode);
 
-void liferea_shutdown (void);
-
 G_END_DECLS
- 
+
 #endif

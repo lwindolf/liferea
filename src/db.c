@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  * 
- * Copyright (C) 2007-2012  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2020  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,9 +30,6 @@
 #include "itemset.h"
 #include "metadata.h"
 #include "vfolder.h"
-
-/* You can find a schema description used by this version of Liferea at:
-   https://lzone.de/wiki/doku.php?id=liferea:v1.8:db_schema */
 
 static sqlite3	*db = NULL;
 gboolean searchFolderRebuild = FALSE;
@@ -568,6 +565,10 @@ db_init (void)
 	db_exec ("DELETE FROM subscription_metadata WHERE node_id NOT IN "
           	 "(SELECT node_id FROM node);");
 
+	debug0 (DEBUG_DB, "Removing metadata without item...\n");
+	db_exec ("DELETE FROM metadata WHERE item_id NOT IN "
+		 "(SELECT item_id FROM items);");
+
 	debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 		
 	/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
@@ -778,8 +779,8 @@ db_item_metadata_load(itemPtr item)
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
 		const char *key, *value;
-		key = sqlite3_column_text(stmt, 0);
-		value = sqlite3_column_text(stmt, 1);
+		key = (const char *) sqlite3_column_text(stmt, 0);
+		value = (const char *) sqlite3_column_text(stmt, 1);
 		if (g_str_equal (key, "enclosure"))
 			item->hasEnclosure = TRUE;
 		metadata = db_metadata_list_append (metadata, key, value); 
@@ -833,22 +834,22 @@ db_load_item_from_columns (sqlite3_stmt *stmt)
 	item->popupStatus	= sqlite3_column_int (stmt, 3)?TRUE:FALSE;
 	item->flagStatus	= sqlite3_column_int (stmt, 4)?TRUE:FALSE;
 	item->validGuid		= sqlite3_column_int (stmt, 7)?TRUE:FALSE;
-	item->time		= sqlite3_column_int (stmt, 9);
-	item->commentFeedId	= g_strdup (sqlite3_column_text (stmt, 10));
+	item->time		= sqlite3_column_int64 (stmt, 9);
+	item->commentFeedId	= g_strdup ((const gchar *) sqlite3_column_text (stmt, 10));
 	item->isComment		= sqlite3_column_int (stmt, 11);
 	item->id		= sqlite3_column_int (stmt, 12);
 	item->parentItemId	= sqlite3_column_int (stmt, 13);
-	item->nodeId		= g_strdup (sqlite3_column_text (stmt, 14));
-	item->parentNodeId	= g_strdup (sqlite3_column_text (stmt, 15));
+	item->nodeId		= g_strdup ((const gchar *) sqlite3_column_text (stmt, 14));
+	item->parentNodeId	= g_strdup ((const gchar *) sqlite3_column_text (stmt, 15));
 
-	item->title		= g_strdup (sqlite3_column_text(stmt, 0));
-	item->sourceId		= g_strdup (sqlite3_column_text(stmt, 6));
+	item->title		= g_strdup ((const gchar *) sqlite3_column_text(stmt, 0));
+	item->sourceId		= g_strdup ((const gchar *) sqlite3_column_text(stmt, 6));
 	
-	tmp = sqlite3_column_text(stmt, 5);
+	tmp = (const gchar *) sqlite3_column_text(stmt, 5);
 	if (tmp)
 		item->source = g_strdup (tmp);
 		
-	tmp = sqlite3_column_text(stmt, 8);
+	tmp = (const gchar *) sqlite3_column_text(stmt, 8);
 	if (tmp)
 		item->description = g_strdup (tmp);
 	else
@@ -1032,7 +1033,7 @@ db_item_update (itemPtr item)
 	sqlite3_bind_text (stmt, 7,  item->sourceId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 8,  item->validGuid?1:0);
 	sqlite3_bind_text (stmt, 9,  item->description, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_int  (stmt, 10, item->time);
+	sqlite3_bind_int64  (stmt, 10, item->time);
 	sqlite3_bind_text (stmt, 11, item->commentFeedId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 12, item->isComment?1:0);
 	sqlite3_bind_int  (stmt, 13, item->id);
@@ -1146,7 +1147,7 @@ db_item_get_duplicate_nodes (const gchar *guid)
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) 
 	{
-		gchar *id = g_strdup( sqlite3_column_text (stmt, 0));
+		gchar *id = g_strdup((const gchar *) sqlite3_column_text (stmt, 0));
 		duplicates = g_slist_append (duplicates, id);
 	}
 
@@ -1459,8 +1460,8 @@ db_subscription_metadata_load (const gchar *id)
 		g_error ("db_subscription_metadata_load: sqlite bind failed (error code %d)!", res);
 
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
-		metadata = db_metadata_list_append (metadata, sqlite3_column_text(stmt, 0), 
-		                                           sqlite3_column_text(stmt, 1));
+		metadata = db_metadata_list_append (metadata, (const char *) sqlite3_column_text(stmt, 0), 
+		                                           (const char *) sqlite3_column_text(stmt, 1));
 	}
 
 	sqlite3_finalize (stmt);
@@ -1628,7 +1629,7 @@ db_node_cleanup (nodePtr root)
 	stmt = db_get_statement ("nodeIdListStmt");
 	while (sqlite3_step (stmt) == SQLITE_ROW) {
 		/* Drop node ids not in feed list anymore */
-		const gchar *id = sqlite3_column_text (stmt, 0);
+		const gchar *id = (const gchar *) sqlite3_column_text (stmt, 0);
 		if (id && !db_node_find (root, (gpointer)id)) {
 			db_subscription_remove (id);	/* in case it is a subscription */
 			db_node_remove (id);		/* in case it is a folder */

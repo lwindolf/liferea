@@ -22,10 +22,15 @@
       <summary>Selects which browser to use to open external links</summary>
       <description>Selects which browser to use to open external links. The choices include "default" and "manual".</description>
     </key>
+    <key name="confirm-mark-all-read" type="b">
+      <default>true</default>
+      <summary>Get a confirmation dialog when marking all read</summary>
+      <description>If TRUE Liferea will display a confirmation dialog before marking all items of the selected feed as read.</description>
+    </key>
     <key name="default-view-mode" type="i">
       <default>0</default>
       <summary>The default view mode for feed list nodes.</summary>
-      <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane, 2=combined view 2-pane</description>
+      <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane</description>
     </key>
     <key name="default-update-interval" type="i">
       <default>0</default>
@@ -33,7 +38,7 @@
       <description>This value specifies how often Liferea tries to update feeds. The value is given in minutes. When setting the interval always consider the traffic it produces. Setting a value less than 15min almost never makes sense.</description>
     </key>
     <key name="disable-javascript" type="b">
-      <default>false</default>
+      <default>true</default>
       <summary>Allows to disable Javascript.</summary>
       <description>Allows to disable Javascript.</description>
     </key>
@@ -42,20 +47,10 @@
       <summary>Disable displaying the toolbar in the Liferea main window</summary>
       <description>Disable displaying the toolbar in the Liferea main window.</description>
     </key>
-    <key name="enable-fetch-retries" type="b">
-      <default>true</default>
-      <summary>Try to refetch feeds after network errors?</summary>
-      <description>If set to true, and a network error is encountered while fetching a feed, Liferea will do a few more tries. This is useful in case of temporary loss of network/internet connection.</description>
-    </key>
     <key name="last-hpane-pos" type="i">
       <default>0</default>
       <summary>Height of the itemlist pane in the mainwindow</summary>
       <description>Height of the itemlist pane in the mainwindow. Use 0 to let GTK+ decide the height.</description>
-    </key>
-    <key name="last-itemlist-mode" type="b">
-      <default>false</default>
-      <summary>Enables condensed mode</summary>
-      <description>Set to true to make Liferea use condensed mode or false to make Liferea use the three pane mode.</description>
     </key>
     <key name="last-vpane-pos" type="i">
       <default>0</default>
@@ -102,20 +97,10 @@
       <summary>Node id of the last feed list selection</summary>
       <description>When shutting down Liferea saves the last selected node id here to be restored on startup.</description>
     </key>
-    <key name="last-item-selected" type="i">
-      <default>0</default>
-      <summary>Item id of the last item list selection</summary>
-      <description>When shutting down Liferea saves the last selected item id here to be restored on startup.</description>
-    </key>
     <key name="maxitemcount" type="i">
       <default>100</default>
       <summary>Determines the default number of items saved on each feed</summary>
       <description>This value is used to determine how many items are saved in each feed when Liferea exits. Note that marked items are always saved.</description>
-    </key>
-    <key name="show-popup-windows" type="b">
-      <default>false</default>
-      <summary>Display popup window advertising new items as they are downloaded</summary>
-      <description>Display popup window advertising new items as they are downloaded.</description>
     </key>
     <key name="startup-feed-action" type="i">
       <default>0</default>
@@ -126,31 +111,6 @@
       <default>''</default>
       <summary>Determines the style of the toolbar buttons</summary>
       <description>Determines the style of the toolbar buttons locally, overriding the GNOME settings. Valid values are "both", "both-horiz", "icons", and "text". If empty or not specified, the GNOME settings are used.</description>
-    </key>
-    <key name="trayicon" type="b">
-      <default>true</default>
-      <summary>Determines if the system tray icon is to be shown</summary>
-      <description>Determines if the system tray icon is to be shown</description>
-    </key>
-    <key name="trayicon-new-count" type="b">
-      <default>false</default>
-      <summary>Determines if the number of new items is shown in the system tray icon</summary>
-      <description>Determines if the number of new items is shown in the system tray icon</description>
-    </key>
-    <key name="dont-minimize-to-tray" type="b">
-      <default>false</default>
-      <summary>Determines if minimize to tray is not desired</summary>
-      <description>Determines if minimize to tray is not desired. This is relevant when the user clicks the close button or presses the window close hotkey of the window manager. If this option is disabled Liferea will just hide the window and keep running. If the option is enabled the application will terminate.</description>
-    </key>
-    <key name="update-thread-concurrency" type="i">
-      <default>3</default>
-      <summary>Number of update threads used in downloading</summary>
-      <description>Number of threads used to download feeds and web objects in Liferea. An additional thread is created that only services 'interactive' requests (for example when a user manually selects a feed to update).</description>
-    </key>
-    <key name="popup-placement" type="i">
-      <default>0</default>
-      <summary>Placement of the mini popup window</summary>
-      <description>The placement of the mini popup window that is opened to notify the user of new items. The popup window is positioned at one of the desktop borders (1 = upper left, 2 = upper right, 3 = lower right, 4 = lower left).</description>
     </key>
     <key name="folder-display-mode" type="i">
       <default>1</default>
@@ -167,10 +127,20 @@
       <summary>Filter feeds without unread items from feed list.</summary>
       <description>If this option is enabled the feed list will contain only feeds that have unread items.</description>
     </key>
+    <key name="download-custom-command" type="s">
+      <default>''</default>
+      <summary>Custom download command.</summary>
+      <description>A command used to download enclosures if download-use-custom-command is true. %s in the command will be replaced by the URL.</description>
+    </key>
     <key name="download-tool" type="i">
       <default>0</default>
       <summary>Which tool to download enclosures.</summary>
       <description>This options determines which download tool Liferea uses to download enclosures (0 = steadyflow, 1 = gwget, 2=kget).</description>
+    </key>
+    <key name="download-use-custom-command" type="b">
+      <default>false</default>
+      <summary>Whether to use the custom command or one of the predefined command.</summary>
+      <description>Set to true to use the command defined in download-custom-command, false to use the predefined command set in download-tool.</description>
     </key>
     <key name="proxy-detect-mode" type="i">
       <default>0</default>
@@ -207,11 +177,6 @@
       <summary>Social bookmark site</summary>
       <description>This option determines which social bookmark site use to save links.</description>
     </key>
-    <key name="start-in-tray" type="b">
-      <default>false</default>
-      <summary>Start in tray</summary>
-      <description>This option determines if liferea should start in tray mode.</description>
-    </key>
     <key name="last-wpane-pos" type="i">
       <default>0</default>
       <summary>Width of the itemlist pane in the mainwindow</summary>
@@ -222,24 +187,34 @@
       <summary>Enable plugins</summary>
       <description>This options determines if liferea should enable plugins.</description>
     </key>
+    <key name="enable-itp" type="b">
+      <default>true</default>
+      <summary>Enable intelligent tracking protection</summary>
+      <description>This options determines if liferea should enable WebKit's intelligent tracking protection.</description>
+    </key>
     <key name="browser-font" type="s">
       <default>''</default>
       <summary>User defined browser-font</summary>
       <description>This option defines which font should be used to render in the browser. If not specified system setting will be used.</description>
     </key>
     <key name="do-not-track" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>Send "Do Not Track" header</summary>
-      <description>Configures wether the "DNT" header is to be sent. If enabled sends "DNT" with value "1"</description>
+      <description>Configures wether the "DNT" header is to be sent. If enabled sends "DNT: 1", meaning Do Not Track.</description>
+    </key>
+    <key name="list-view-column-order" type="as">
+      <default>[ 'state', 'favicon', 'headline', 'enclosure', 'date' ]</default>
+      <summary>Item list view column order</summary>
+      <description>The column order in the item list view.</description>
     </key>
 
   </schema>
 
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="net.sf.liferea.plugins" path="/org/gnome/liferea/plugins/">
     <key name="active-plugins" type="as">
-      <default>['gnome-keyring','media-player', 'trayicon']</default>
+      <default>['gnome-keyring','media-player','trayicon','plugin-installer']</default>
       <summary>Active plugins</summary>
-      <description>List of active plugins. It contains the "Location" of the active plugins. See the .liferea-plugin file for obtaining the "Location" of a given plugin.</description>
+      <description>List of active plugins. It contains the "Module" names of the active plugins. See the .plugin file for obtaining the"Module" name of a given plugin.</description>
     </key>
   </schema>
 

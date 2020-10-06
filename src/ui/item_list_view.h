@@ -1,19 +1,19 @@
 /*
  * @file item_list_view.h  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- *	      
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Library General Public License
  * along with this library; see the file COPYING.LIB.  If not, write to
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -23,8 +23,6 @@
 #ifndef _ITEM_LIST_VIEW_H
 #define _ITEM_LIST_VIEW_H
 
-#include <glib-object.h>
-#include <glib.h>
 #include <gtk/gtk.h>
 
 #include "item.h"
@@ -36,30 +34,8 @@
 
 G_BEGIN_DECLS
 
-#define ITEM_LIST_VIEW_TYPE		(item_list_view_get_type ())
-#define ITEM_LIST_VIEW(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), ITEM_LIST_VIEW_TYPE, ItemListView))
-#define ITEM_LIST_VIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), ITEM_LIST_VIEW_TYPE, ItemListViewClass))
-#define IS_ITEM_LIST_VIEW(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), ITEM_LIST_VIEW_TYPE))
-#define IS_ITEM_LIST_VIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), ITEM_LIST_VIEW_TYPE))
-
-typedef struct ItemListView		ItemListView;
-typedef struct ItemListViewClass	ItemListViewClass;
-typedef struct ItemListViewPrivate	ItemListViewPrivate;
-
-struct ItemListView
-{
-	GObject		parent;
-	
-	/*< private >*/
-	ItemListViewPrivate	*priv;
-};
-
-struct ItemListViewClass 
-{
-	GObjectClass parent_class;	
-};
-
-GType item_list_view_get_type (void);
+#define ITEM_LIST_VIEW_TYPE (item_list_view_get_type ())
+G_DECLARE_FINAL_TYPE (ItemListView, item_list_view, ITEM_LIST, VIEW, GObject)
 
 /**
  * item_list_view_create: (skip)
@@ -74,11 +50,29 @@ ItemListView * item_list_view_create (gboolean wide);
 /**
  * item_list_view_get_widget:
  *
- * Returns the GtkTreeView used by the ItemListView instance.
+ * Returns the GtkWidget used by the ItemListView instance.
  *
- * Returns: (transfer none): a GtkTreeView
+ * Returns: (transfer none): a GtkWidget
  */
-GtkTreeView * item_list_view_get_widget (ItemListView *ilv);
+GtkWidget * item_list_view_get_widget (ItemListView *ilv);
+
+/**
+ * item_list_view_move_cursor:
+ * @ilv: 	the ItemListView
+ * @step:	move distance
+ *
+ * Moves the cursor in the item list step times.
+ * Negative value means moving backwards.
+ */
+void item_list_view_move_cursor (ItemListView *ilv, int step);
+
+/**
+ * item_list_view_move_cursor_to_first:
+ * @ilv: 	the ItemListView
+ *
+ * Moves the cursor to the first element.
+ */
+void item_list_view_move_cursor_to_first (ItemListView *ilv);
 
 /**
  * item_list_view_contains_id:
@@ -161,61 +155,56 @@ void item_list_view_update (ItemListView *ilv, gboolean hasEnclosures);
 
 /* menu callbacks */
 
-/*
+/**
+ * on_toggle_unread_status: (skip)
+ * @action: The activated action.
+ * @parameter: The item id as a GVariant of type "t", or NULL for the selected item.
+ * @user_data: unused
+ *
  * Toggles the unread status of the selected item. This is called from
  * a menu.
  */
-void on_toggle_unread_status (GtkMenuItem *menuitem, gpointer user_data);
+void on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
-/*
+/**
+ * on_toggle_item_flag: (skip)
+ * @action: The activated action.
+ * @parameter: The item id as a GVariant of type "t", or NULL for the selected item.
+ * @user_data: unused
+ *
  * Toggles the flag of the selected item. This is called from a menu.
  */
-void on_toggle_item_flag (GtkMenuItem *menuitem, gpointer user_data);
+void on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /*
  * Opens the selected item in a browser.
  */
-void on_popup_launch_item_selected (void);
+void on_action_launch_item_in_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /*
  * Opens the selected item in a browser.
  */
-void on_popup_launch_item_in_tab_selected (void);
+void on_action_launch_item_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /*
  * Opens the selected item in a browser.
  */
-void on_popup_launch_item_external_selected (void);
+void on_action_launch_item_in_external_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /*
- * Toggles the read status of right-clicked item.
- */
-void on_popup_toggle_read (void);
-
-/*
- * Toggles the flag of right-clicked item.
- */
-void on_popup_toggle_flag (void);
-
-/**
- * on_remove_items_activate: (skip)
- * @menuitem: The menuitem that was selected.
- * @user_data: Unused.
- *
  * Removes all items from the selected feed.
  */
-void on_remove_items_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
- * on_remove_item_activate: (skip)
- * @menuitem: The menuitem that was selected.
+ * on_action_remove_item: (skip)
+ * @action: The activated action.
+ * @parameter: The item id as a GVariant of type "t", or NULL for the selected item.
  * @user_data: Unused.
  *
  * Removes the selected item from the selected feed.
- */  
-void on_remove_item_activate (GtkMenuItem *menuitem, gpointer user_data);
-
-void on_popup_remove_selected (void);
+ */
+void on_action_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * item_list_view_find_unread_item: (skip)
@@ -231,13 +220,13 @@ itemPtr item_list_view_find_unread_item (ItemListView *ilv, gulong startId);
 
 /**
  * on_next_unread_item_activate: (skip)
- * @menuitem: The menuitem that was selected.
+ * @action: The action that was activated.
  * @user_data: Unused.
  *
  * Searches the displayed feed and then all feeds for an unread
  * item. If one it found, it is displayed.
  */
-void on_next_unread_item_activate (GtkMenuItem *menuitem, gpointer user_data);
+void on_next_unread_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 /**
  * item_list_view_update_item: (skip)
@@ -252,7 +241,7 @@ void item_list_view_update_item (ItemListView *ilv, itemPtr item);
  * item_list_view_update_all_items: (skip)
  * @ilv:	the ItemListView
  *
- * Update all items of the ItemListView. To be used after 
+ * Update all items of the ItemListView. To be used after
  * initial batch loading.
  */
 void item_list_view_update_all_items (ItemListView *ilv);
@@ -262,8 +251,13 @@ void item_list_view_update_all_items (ItemListView *ilv);
  *
  * Copies the selected items URL to the clipboard.
  */
-void on_popup_copy_URL_clipboard (void);
+void on_popup_copy_URL_clipboard (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
-void on_popup_social_bm_item_selected (void);
+/**
+ * on_popup_social_bm_item_selected: (skip)
+ *
+ * Bookmarks the selected item to social bookmark service.
+ */
+void on_popup_social_bm_item_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data);
 
 #endif

@@ -1,7 +1,7 @@
 /*
  * @file social.c  social networking integration
  * 
- * Copyright (C) 2006-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2017 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -101,29 +101,22 @@ social_init (void)
 {
 	gchar *tmp;
 	
-	social_register_bookmark_site ("Blinklist",	"http://www.blinklist.com/index.php?Action=Blink/addblink.php&Title=%s&Url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("blogmarks",	"http://blogmarks.net/my/new.php?mini=1&title=%s&url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("Buddymarks",	"http://buddymarks.com/add_bookmark.php?bookmark_title=%s&bookmark_url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("CiteUlike",	"http://www.citeulike.org/posturl?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("del.icio.us",	"http://del.icio.us/post?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("digg",		"http://digg.com/submit?phase=2&url=%s", FALSE, FALSE);
-	social_register_bookmark_site ("diigo",		"http://www.diigo.com/post?url=%s&title=%s&desc=", TRUE, FALSE);
-	social_register_bookmark_site ("Facebook",	"http://www.facebook.com/share.php?u=%s", FALSE, FALSE);
+	social_register_bookmark_site ("digg",		"https://digg.com/submit?phase=2&url=%s", FALSE, FALSE);
+	social_register_bookmark_site ("diigo",		"https://www.diigo.com/post?url=%s&title=%s&desc=", TRUE, FALSE);
+	social_register_bookmark_site ("Facebook",	"https://www.facebook.com/share.php?u=%s", FALSE, FALSE);
 	social_register_bookmark_site ("Google Bookmarks",	"https://www.google.com/bookmarks/mark?op=edit&output=&bkmk=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Google Plus",	"https://plus.google.com/share?url=%s", FALSE, FALSE);
-	social_register_bookmark_site ("identi.ca"	,"http://identi.ca//index.php?action=bookmarklet&status_textarea=%%E2%%80%%9C%s%%E2%%80%%9D%%20%%E2%%80%%94%%20%s", TRUE, TRUE);
-	social_register_bookmark_site ("Instapaper",	"https://www.instapaper.com/edit?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Lilisto",	"http://lister.lilisto.com/?t=%s&l=%s", TRUE, TRUE);
+	social_register_bookmark_site ("identi.ca",	"https://identi.ca/index.php?action=bookmarklet&status_textarea=%%E2%%80%%9C%s%%E2%%80%%9D%%20%%E2%%80%%94%%20%s", TRUE, TRUE);
+	social_register_bookmark_site ("Instapaper",	"https://www.instapaper.com/hello2?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title=%s&url=%s", TRUE, TRUE);
-	social_register_bookmark_site ("Linkroll",	"http://www.linkroll.com/index.php?action=insertLink&url=%s&title=%s", TRUE, FALSE);
+	social_register_bookmark_site ("Linkroll",	"https://www.linkroll.com/index.php?action=insertLink&url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("netvouz",	"http://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Newsvine",	"http://www.newsvine.com/_wine/save?u=%s&h=%s", TRUE, FALSE);
-	social_register_bookmark_site ("reddit",	"http://reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Slashdot",	"http://slashdot.org/slashdot-it.pl?op=basic&amp;url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Squidoo",	"http://www.squidoo.com/lensmaster/bookmark?%s", FALSE, FALSE);
-	social_register_bookmark_site ("StumbleUpon",	"http://www.stumbleupon.com/submit/?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Twitter",	"http://twitter.com/home?status=%s", FALSE, FALSE);
-	social_register_bookmark_site ("Yahoo My Web",	"http://myweb2.search.yahoo.com/myresults/bookmarklet?u=%s&t=%s", TRUE, FALSE);
+	social_register_bookmark_site ("Pocket",	"https://getpocket.com/save?url=%s&title=%s", TRUE, FALSE);
+	social_register_bookmark_site ("Reddit",	"https://www.reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
+	social_register_bookmark_site ("Twitter",	"https://twitter.com/intent/tweet?text=%s&url=%s", TRUE, TRUE);
 
 	conf_get_str_value (SOCIAL_BM_SITE, &tmp);
 	social_set_bookmark_site (tmp);

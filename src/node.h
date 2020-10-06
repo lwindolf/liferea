@@ -56,10 +56,10 @@ typedef struct node {
 	guint			popupCount;	/*<< number of items to be notified */
 	guint			newCount;	/*<< number of recently downloaded items */
 
-	gchar			*title;		/**< the label of the node in the feed list */
-	gpointer		icon;		/**< favicon GdkPixBuf (or NULL) */
-	gboolean		available;	/**< availability of this node (usually the last downloading state) */
-	gboolean		expanded;	/**< expansion state (for nodes with childs) */
+	gchar			*title;		/*<< the label of the node in the feed list */
+	gpointer		icon;		/*<< favicon GdkPixBuf (or NULL) */
+	gboolean		available;	/*<< availability of this node (usually the last downloading state) */
+	gboolean		expanded;	/*<< expansion state (for nodes with childs) */
 
 	/* item list state properties of this node */
 	nodeViewType		viewMode;	/*<< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
@@ -181,7 +181,7 @@ void node_auto_update_subscription (nodePtr node);
  * Helper function to be used with node_foreach_child()
  * to mass-auto-update subscriptions.
  */
-void node_reset_update_counter (nodePtr node, GTimeVal *now);
+void node_reset_update_counter (nodePtr node, guint64 *now);
 
 /**
  * node_is_ancestor: (skip)

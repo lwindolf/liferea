@@ -122,7 +122,7 @@ browser_launch_URL_external (const gchar *uri)
 		done = browser_execute (cmd, uri);
 		g_free (cmd);
 	} else {
-		done = gtk_show_uri (NULL, uri, 0, NULL);
+		done = gtk_show_uri_on_window (GTK_WINDOW (liferea_shell_get_window ()), uri, GDK_CURRENT_TIME, NULL);
 	}
 
 	return done;

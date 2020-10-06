@@ -1,7 +1,7 @@
 /**
  * @file update.h  generic update request and state processing
  *
- * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,22 +24,23 @@
 
 #include <time.h>
 #include <glib.h>
+#include <glib-object.h>
 
-/* Update requests do represent feed updates, favicon and enclosure 
+/* Update requests do represent feed updates, favicon and enclosure
    downloads. A request can be started synchronously or asynchronously.
    In the latter case it can be cancelled at any time. If the processing
-   of a update request is done the request callback will be triggered. 
-   
+   of a update request is done the request callback will be triggered.
+
    A request can have an update state assigned. This is to support
    the different bandwidth saving methods. For caching along feeds
-   there are XML (de)serialization functions for the update state. 
-   
+   there are XML (de)serialization functions for the update state.
+
    For proxy support and authentication an update request can have
    update options assigned.
-   
+
    Finally the request system has an on/offline state. When offline
-   no new network requests are accepted. Filesystem and internal 
-   requests are still processed. Currently running downloads are 
+   no new network requests are accepted. Filesystem and internal
+   requests are still processed. Currently running downloads are
    not terminated. */
 
 typedef enum {
@@ -76,44 +77,52 @@ typedef struct updateOptions {
 /** defines all state data an updatable object (e.g. a feed) needs */
 typedef struct updateState {
 	glong		lastModified;		/**< Last modified string as sent by the server */
-	GTimeVal	lastPoll;		/**< time at which the feed was last updated */
-	GTimeVal	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
-	gchar		*cookies;		/**< cookies to be used */	
+	guint64  	lastPoll;		/**< time at which the feed was last updated */
+	guint64 	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
+	gchar		*cookies;		/**< cookies to be used */
 	gchar		*etag;			/**< ETag sent by the server */
+	gint		maxAgeMinutes;		/**< default update interval, greatest value sourced from HTTP and XML */
+	gint		synFrequency;		/**< syn:updateFrequency */
+	gint		synPeriod;		/**< syn:updatePeriod */
+	gint		timeToLive;		/**< ttl */
 } *updateStatePtr;
 
-/** structure describing a HTTP update request */
-typedef struct updateRequest {
+G_BEGIN_DECLS
+#define UPDATE_REQUEST_TYPE (update_request_get_type ())
+G_DECLARE_FINAL_TYPE (UpdateRequest, update_request, UPDATE, REQUEST, GObject)
+
+struct _UpdateRequest {
+	GObject		parent;
+
 	gchar 		*source;	/**< Location of the source. If it starts with
 					     '|', it is a command. If it contains "://",
 					     then it is parsed as a URL, otherwise it is a
-					     filename. Eventually, everything should be a
-					     URL. Use file:// and exec:// */
+					     filename. */
 	gchar           *postdata;      /**< HTTP POST request data (NULL for non-POST requests) */
 	gchar           *authValue;     /**< Custom value for Authorization: header */
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
-} *updateRequestPtr;
+};
 
 /** structure to store results of the processing of an update request */
 typedef struct updateResult {
-	gchar 		*source;	/**< Location of the downloaded document, in case of redirects different from 
+	gchar 		*source;	/**< Location of the downloaded document, in case of redirects different from
 					     the one given along with the update request */
-	
+
 	int		returncode;	/**< Download status (0=success, otherwise error) */
 	int		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
 	gchar		*data;		/**< Downloaded data */
 	size_t		size;		/**< Size of downloaded data */
 	gchar		*contentType;	/**< Content type of received data */
 	gchar		*filterErrors;	/**< Error messages from filter execution */
-	
+
 	updateStatePtr	updateState;	/**< New update state of the requested object (etags, last modified...) */
 } *updateResultPtr;
 
 /** structure describing an HTTP update job */
 typedef struct updateJob {
-	updateRequestPtr	request;
+	UpdateRequest		*request;
 	updateResultPtr		result;
 	gpointer		owner;		/**< owner of this job (used for matching when cancelling) */
 	update_result_cb	callback;	/**< result processing callback */
@@ -123,11 +132,14 @@ typedef struct updateJob {
 } *updateJobPtr;
 
 /**
- * Creates a new update state structure 
- *
- * @return a new state structure (to be free'd using update_state_free())
+ * Create new update state
  */
 updateStatePtr update_state_new (void);
+
+/**
+ * Copy update state
+ */
+updateStatePtr update_state_copy (updateStatePtr state);
 
 glong update_state_get_lastmodified (updateStatePtr state);
 void update_state_set_lastmodified (updateStatePtr state, glong lastmodified);
@@ -135,20 +147,16 @@ void update_state_set_lastmodified (updateStatePtr state, glong lastmodified);
 const gchar * update_state_get_etag (updateStatePtr state);
 void update_state_set_etag (updateStatePtr state, const gchar *etag);
 
+gint update_state_get_cache_maxage (updateStatePtr state);
+void update_state_set_cache_maxage (updateStatePtr state, const gint maxage);
+
 const gchar * update_state_get_cookies (updateStatePtr state);
 void update_state_set_cookies (updateStatePtr state, const gchar *cookies);
 
 /**
- * Copies the given update state.
- *
- * @returns a new update state structure (to be free'd using update_state_free())
- */
-updateStatePtr update_state_copy (updateStatePtr state);
-
-/**
  * Frees the given update state.
  *
- * @param updateState	the update state
+ * @param updateState  the update state
  */
 void update_state_free (updateStatePtr updateState);
 
@@ -167,39 +175,39 @@ updateOptionsPtr update_options_copy (updateOptionsPtr options);
 void update_options_free (updateOptionsPtr options);
 
 /**
- * Initialises the download subsystem. 
+ * Initialises the download subsystem.
  *
  * Must be called before gtk_init() and after thread initialization
  * as threads are used and for proper network-manager initialization.
  */
-void update_init (void); 
+void update_init (void);
 
 /**
  * Stops all update processing and frees all used memory.
  */
 void update_deinit (void);
 
-/** 
+/**
  * Creates a new request structure.
  *
- * @returns a new request (to be passed and free'd by update_execute_request())
- */
-updateRequestPtr update_request_new (void);
-
-/**
- * Free's the given update request.
+ * @oaram source	URI to download
+ * @param state		a previous update state of the requested URL (or NULL)
+ *                      will not be owned, but copied!
+ * @param options	update options to be used (or NULL)
+ *			will not be owned but copied!
  *
- * @param request	the update request
+ * @returns a new request GObject to be passed to update_execute_request()
  */
-void update_request_free (updateRequestPtr request);
+UpdateRequest * update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr options);
 
 /**
- * Sets the source for an updateRequest
- * 
+ * Sets the source for an updateRequest. Only use this when the source
+ * is not known at update_request_new() calling time.
+ *
  * @param request       the update request
- * @param source        the new source
+ * @param source        the new source URL
  */
-void update_request_set_source(updateRequestPtr request, const gchar* source);
+void update_request_set_source (UpdateRequest *request, const gchar* source);
 
 /**
  * Sets a custom authorization header value.
@@ -207,12 +215,10 @@ void update_request_set_source(updateRequestPtr request, const gchar* source);
  * @param request        the update request
  * @param authValue      the authorization header value
  */
-void update_request_set_auth_value(updateRequestPtr request, const gchar* authValue);
+void update_request_set_auth_value (UpdateRequest *request, const gchar* authValue);
 
 /**
  * Creates a new update result for the given update request.
- *
- * @param request	the update request
  *
  * @returns update result (to be free'd using update_result_free())
  */
@@ -227,7 +233,7 @@ void update_result_free (updateResultPtr result);
 
 /**
  * Executes the given request. The request might be
- * delayed if other requests are pending. 
+ * delayed if other requests are pending.
  *
  * @param owner		request owner (allows cancelling, can be NULL)
  * @param request	the request to execute
@@ -238,7 +244,7 @@ void update_result_free (updateResultPtr result);
  * @returns the new update job
  */
 updateJobPtr update_execute_request (gpointer owner,
-                                     updateRequestPtr request,
+                                     UpdateRequest *request,
                                      update_result_cb callback,
                                      gpointer user_data,
                                      updateFlags flags);
@@ -266,5 +272,7 @@ void update_job_cancel_by_owner (gpointer owner);
  * @returns update job state (see enum request_state)
  */
 gint update_job_get_state (updateJobPtr job);
+
+G_END_DECLS
 
 #endif

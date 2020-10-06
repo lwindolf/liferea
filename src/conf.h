@@ -2,7 +2,7 @@
  * @file conf.h  Liferea configuration (GSettings access)
  *
  * Copyright (C) 2011 Mikel Olasagasti Uranga <mikel@olasagasti.info>
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -39,9 +39,12 @@
 #define DISABLE_JAVASCRIPT		"disable-javascript"
 #define SOCIAL_BM_SITE			"social-bm-site"
 #define ENABLE_PLUGINS			"enable-plugins"
+#define ENABLE_ITP			"enable-itp"
 
 /* enclosure handling */
+#define DOWNLOAD_CUSTOM_COMMAND 	"download-custom-command"
 #define DOWNLOAD_TOOL			"download-tool"
+#define DOWNLOAD_USE_CUSTOM_COMMAND	"download-use-custom-command"
 
 /* feed handling settings */
 #define DEFAULT_MAX_ITEMS		"maxitemcount"
@@ -54,6 +57,7 @@
 #define REDUCED_FEEDLIST		"reduced-feedlist"
 
 /* GUI settings and persistency values */
+#define CONFIRM_MARK_ALL_READ 		"confirm-mark-all-read"
 #define DISABLE_TOOLBAR			"disable-toolbar"
 #define TOOLBAR_STYLE			"toolbar-style"
 #define LAST_WINDOW_STATE		"last-window-state"
@@ -67,6 +71,7 @@
 #define LAST_WPANE_POS			"last-wpane-pos"
 #define LAST_ZOOMLEVEL			"last-zoomlevel"
 #define LAST_NODE_SELECTED		"last-node-selected"
+#define LIST_VIEW_COLUMN_ORDER		"list-view-column-order"
 
 /* networking settings */
 #define PROXY_DETECT_MODE		"proxy-detect-mode"
@@ -85,6 +90,7 @@ void	conf_deinit (void);
 
 #define conf_get_bool_value(key, value) conf_get_bool_value_from_schema (NULL, key, value)
 #define conf_get_str_value(key, value) conf_get_str_value_from_schema (NULL, key, value)
+#define conf_get_strv_value(key, value) conf_get_strv_value_from_schema (NULL, key, value)
 #define conf_get_int_value(key, value) conf_get_int_value_from_schema (NULL, key, value)
 
 /**
@@ -109,6 +115,18 @@ gboolean conf_get_bool_value_from_schema (GSettings *gsettings, const gchar *key
  * @returns TRUE if the configuration key was found
  */
 gboolean conf_get_str_value_from_schema (GSettings *gsettings,const gchar *key, gchar **value);
+
+/**
+ * Retrieves the value of the given string array configuration key.
+ * The string array has to be freed by the caller.
+ *
+ * @param gsettings	gsettings schema to use
+ * @param key	the configuration key
+ * @param value the value, if the function returned FALSE an empty string
+ *
+ * @returns TRUE if the configuration key was found
+ */
+gboolean conf_get_strv_value_from_schema (GSettings *gsettings,const gchar *key, gchar ***value);
 
 /**
  * Retrieves the value of the given integer configuration key.
@@ -137,6 +155,15 @@ void conf_set_bool_value (const gchar *key, gboolean value);
  * @param value	the new string value
  */
 void conf_set_str_value (const gchar *key, const gchar *value);
+
+/**
+ * Sets the value of the given string configuration key.
+ * The given value will not be free'd after setting it!
+ *
+ * @param key	the configuration key
+ * @param value	the new string value
+ */
+void conf_set_strv_value (const gchar *key, const gchar **value);
 
 /**
  * Sets the value of the given integer configuration key
@@ -172,4 +199,14 @@ gboolean conf_get_default_font_from_schema (const gchar *key, gchar **value);
  */
 void conf_signal_connect (const gchar *signal, GCallback cb, gpointer data);
 
+/**
+ * conf_bind:
+ * @key: the configuration key
+ * @object: a GObject
+ * @property: the object's property to bind
+ * @flags: binding flags
+ *
+ * This is a convenience function that calls g_settings_bind with Liferea settings.
+ */
+void conf_bind (const gchar *key, gpointer object, const gchar *property, GSettingsBindFlags flags);
 #endif

@@ -6,7 +6,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -28,23 +28,23 @@
 
 #include "ui/liferea_shell.h"
 
-#define LIFEREA_DIALOG_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), LIFEREA_DIALOG_TYPE, LifereaDialogPrivate))
+#define LIFEREA_DIALOG_GET_PRIVATE liferea_dialog_get_instance_private
 
 struct LifereaDialogPrivate {
 	GtkBuilder *xml;
-	
+
 	GtkWidget	*dialog;
 };
 
 static GObjectClass *parent_class = NULL;
 
-G_DEFINE_TYPE (LifereaDialog, liferea_dialog, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_CODE (LifereaDialog, liferea_dialog, G_TYPE_OBJECT, G_ADD_PRIVATE (LifereaDialog));
 
 static void
 liferea_dialog_finalize (GObject *object)
 {
 	LifereaDialog *ls = LIFEREA_DIALOG (object);
-	
+
 	g_object_unref (ls->priv->xml);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -64,8 +64,6 @@ liferea_dialog_class_init (LifereaDialogClass *klass)
 	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->finalize = liferea_dialog_finalize;
-
-	g_type_class_add_private (object_class, sizeof(LifereaDialogPrivate));
 }
 
 static void
@@ -78,26 +76,26 @@ GtkWidget *
 liferea_dialog_lookup (GtkWidget *widget, const gchar *name)
 {
 	LifereaDialog	*ld;
-	
+
 	if (!widget)
 		return NULL;
-		
+
 	ld = LIFEREA_DIALOG (g_object_get_data (G_OBJECT (widget), "LifereaDialog"));
-		
+
 	if (!IS_LIFEREA_DIALOG (ld)) {
 		g_warning ("Fatal: liferea_dialog_lookup() called with something that is not a Liferea dialog!");
 		return NULL;
 	}
-	
+
 	if (ld->priv->xml)
 		return GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
-		
+
 	return NULL;
 }
 
 
 GtkWidget *
-liferea_dialog_new (const gchar *name) 
+liferea_dialog_new (const gchar *name)
 {
 	LifereaDialog	*ld;
 	gchar 		*path;

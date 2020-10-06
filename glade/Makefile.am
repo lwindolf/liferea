@@ -4,9 +4,10 @@ gladedir = $(pkgdatadir)
 glade_DATA = about.ui \
 	auth.ui \
 	enclosure_handler.ui \
-	google_source.ui \
-	inoreader_source.ui \
+	liferea_menu.ui \
+	liferea_toolbar.ui \
 	mainwindow.ui \
+	mark_read_dialog.ui \
 	new_folder.ui \
 	new_newsbin.ui \
 	new_subscription.ui \

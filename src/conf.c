@@ -23,6 +23,7 @@
 #include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
+#include <webkit2/webkit2.h>
 
 #include "common.h"
 #include "conf.h"
@@ -164,13 +165,29 @@ conf_proxy_reset_settings_cb (GSettings *settings,
 	gint		proxyport;
 	gint		proxydetectmode;
 	gboolean	proxyuseauth;
+	GtkWidget 	*dialog = NULL;
 
 	proxyname = NULL;
 	proxyport = 0;
 	proxyusername = NULL;
 	proxypassword = NULL;
-
 	conf_get_int_value (PROXY_DETECT_MODE, &proxydetectmode);
+
+#if !WEBKIT_CHECK_VERSION (2, 15, 3)
+	if (proxydetectmode != PROXY_DETECT_MODE_AUTO)
+	{
+		dialog = gtk_message_dialog_new (NULL,
+			0,
+			GTK_MESSAGE_INFO,
+			GTK_BUTTONS_CLOSE,
+			_("Your version of WebKitGTK+ doesn't support changing the proxy settings from Liferea. The system's default proxy settings will be used."));
+		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
+		conf_set_int_value (PROXY_DETECT_MODE, PROXY_DETECT_MODE_AUTO);
+		return;
+	}
+#endif
 	switch (proxydetectmode) {
 		default:
 		case 0:
@@ -216,6 +233,13 @@ conf_set_str_value (const gchar *key, const gchar *value)
 {
 	g_assert (key != NULL);
 	g_settings_set_string (settings, key, value);
+}
+
+void
+conf_set_strv_value (const gchar *key, const gchar **value)
+{
+	g_assert (key != NULL);
+	g_settings_set_strv (settings, key, value);
 }
 
 void
@@ -266,6 +290,18 @@ conf_get_str_value_from_schema (GSettings *gsettings, const gchar *key, gchar **
 }
 
 gboolean
+conf_get_strv_value_from_schema (GSettings *gsettings, const gchar *key, gchar ***value)
+{
+	g_assert (key != NULL);
+	g_assert (value != NULL);
+
+	if (gsettings == NULL)
+		gsettings = settings;
+	*value = g_settings_get_strv (gsettings, key);
+	return (NULL != value);
+}
+
+gboolean
 conf_get_int_value_from_schema (GSettings *gsettings, const gchar *key, gint *value)
 {
 	g_assert (key != NULL);
@@ -292,4 +328,11 @@ void
 conf_signal_connect (const gchar *signal, GCallback cb, gpointer data)
 {
 	g_signal_connect (settings, signal, cb, data);
+}
+
+void
+conf_bind (const gchar *key, gpointer object, const gchar *property, GSettingsBindFlags flags)
+{
+	g_assert (settings);
+	g_settings_bind (settings, key, object, property, flags);
 }

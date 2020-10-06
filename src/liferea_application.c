@@ -1,10 +1,10 @@
 /**
  * @file main.c Liferea startup
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- *  
- * Some code like the command line handling was inspired by 
+ *
+ * Some code like the command line handling was inspired by
  *
  * Pan - A Newsreader for Gtk+
  * Copyright (C) 2002  Charles Kerr <charles@rebelbase.com>
@@ -46,18 +46,16 @@
 #include <girepository.h>
 
 struct _LifereaApplication {
-	GtkApplication parent;
-	gchar *initialStateOption;
-	LifereaDBus *dbus;
-	gulong debug_flags;
-};
-
-struct _LifereaApplicationClass {
-	GtkApplicationClass parent;
+	GtkApplication	parent;
+	gchar		*initialStateOption;
+	gint		pluginsDisabled;
+	LifereaDBus	*dbus;
+	gulong		debug_flags;
 };
 
 G_DEFINE_TYPE (LifereaApplication, liferea_application, GTK_TYPE_APPLICATION)
 
+static LifereaApplication *liferea_app = NULL;
 
 static void
 liferea_application_finalize (GObject *gobject)
@@ -79,15 +77,14 @@ on_app_open (GApplication *application,
              gchar        *hint,
              gpointer      user_data)
 {
-	GFile **uris = (GFile **)files;
-	GList		*list;
-	int i;
+	int			i;
+	GFile			**uris = (GFile **)files;
+	GtkApplication		*gtk_app = GTK_APPLICATION (application);
+	GList			*list = gtk_application_get_windows (gtk_app);
+	LifereaApplication	*app = LIFEREA_APPLICATION (application);
 
-	list = gtk_application_get_windows (GTK_APPLICATION (application));
-
-	if (!list) {
-		liferea_shell_create (GTK_APPLICATION (application), LIFEREA_APPLICATION (application)->initialStateOption);
-	}
+	if (!list)
+		liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
 
 	for (i=0;(i<n_files) && uris[i];i++) {
 		gchar *uri = g_file_get_uri (uris[i]);
@@ -107,20 +104,20 @@ on_app_open (GApplication *application,
 static void
 on_app_activate (GtkApplication *gtk_app, gpointer user_data)
 {
-	gchar *css_filename;
-	GFile *css_file;
-	GtkCssProvider *provider;
-	GError *error = NULL;
-
+	gchar		*css_filename;
+	GFile		*css_file;
+	GtkCssProvider	*provider;
+	GError		*error = NULL;
 	GList		*list;
 	LifereaApplication *app = LIFEREA_APPLICATION (gtk_app);
 
 	list = gtk_application_get_windows (gtk_app);
 
 	if (list) {
+		gtk_window_deiconify (GTK_WINDOW (list->data));
 		gtk_window_present (GTK_WINDOW (list->data));
 	} else {
-		liferea_shell_create (gtk_app, app->initialStateOption);
+		liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
 	}
 
 	css_filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "liferea.css", NULL);
@@ -282,6 +279,7 @@ liferea_application_init (LifereaApplication *self)
 		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &self->initialStateOption, N_("Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"), N_("STATE") },
 		{ "version", 'v', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, NULL, N_("Show version information and exit"), NULL },
 		{ "add-feed", 'a', 0, G_OPTION_ARG_STRING, NULL, N_("Add a new subscription"), N_("uri") },
+		{ "disable-plugins", 'p', 0, G_OPTION_FLAG_NONE, &self->pluginsDisabled, N_("Start with all plugins disabled"), NULL },
 		{ NULL, 0, 0, 0, NULL, NULL, NULL }
 	};
 
@@ -291,7 +289,7 @@ liferea_application_init (LifereaApplication *self)
 		{ "debug-conf", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages for the configuration handling"), NULL },
 		{ "debug-db", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the database handling"), NULL },
 		{ "debug-gui", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all GUI functions"), NULL },
-		{ "debug-html", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.cache/liferea/output.xhtml"), NULL },
+		{ "debug-html", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.cache/liferea/output.html"), NULL },
 		{ "debug-net", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all network activity"), NULL },
 		{ "debug-parsing", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all parsing functions"), NULL },
 		{ "debug-performance", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages when a function takes too long to process"), NULL },
@@ -322,11 +320,36 @@ liferea_application_init (LifereaApplication *self)
 	g_signal_connect (G_OBJECT (self), "handle-local-options", G_CALLBACK (on_handle_local_options), NULL);
 }
 
-LifereaApplication *
-liferea_application_new(void)
+static gboolean
+liferea_application_shutdown_source_func (gpointer userdata)
 {
-	return g_object_new (LIFEREA_TYPE_APPLICATION,
-		"flags", G_APPLICATION_HANDLES_OPEN,
-		"application-id", "net.sourceforge.liferea",
-		NULL);
+	g_application_quit (G_APPLICATION (liferea_app));
+	return FALSE;
+}
+
+void
+liferea_application_shutdown (void)
+{
+	g_idle_add (liferea_application_shutdown_source_func, NULL);
+}
+
+gint
+liferea_application_new (int argc, char *argv[])
+{
+	gint status;
+
+	g_assert (NULL == liferea_app);
+
+	liferea_app = g_object_new (LIFEREA_APPLICATION_TYPE,
+		                    "flags", G_APPLICATION_HANDLES_OPEN,
+		                    "application-id", "net.sourceforge.liferea",
+		                    NULL);
+
+	g_set_prgname ("liferea");
+	g_set_application_name (_("Liferea"));
+	gtk_window_set_default_icon_name ("liferea");	/* GTK theme support */
+	status = g_application_run (G_APPLICATION (liferea_app), argc, argv);
+	g_object_unref (liferea_app);
+
+	return status;
 }

@@ -2,7 +2,7 @@
  * @file preferences_dialog.h Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,40 +27,17 @@
 G_BEGIN_DECLS
 
 #define PREFERENCES_DIALOG_TYPE		(preferences_dialog_get_type ())
-#define PREFERENCES_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), PREFERENCES_DIALOG_TYPE, PreferencesDialog))
-#define PREFERENCES_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), PREFERENCES_DIALOG_TYPE, PreferencesDialogClass))
-#define IS_PREFERENCES_DIALOG(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), PREFERENCES_DIALOG_TYPE))
-#define IS_PREFERENCES_DIALOG_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), PREFERENCES_DIALOG_TYPE))
-
-typedef struct PreferencesDialog	PreferencesDialog;
-typedef struct PreferencesDialogClass	PreferencesDialogClass;
-typedef struct PreferencesDialogPrivate	PreferencesDialogPrivate;
-
-extern PreferencesDialog *preferences_dialog;
-
-struct PreferencesDialog
-{
-	GObject		parent;
-	
-	/*< private >*/
-	PreferencesDialogPrivate	*priv;
-};
-
-struct PreferencesDialogClass 
-{
-	GObjectClass parent_class;
-};
-
-GType preferences_dialog_get_type	(void);
+G_DECLARE_FINAL_TYPE (PreferencesDialog, preferences_dialog, PREFERENCES, DIALOG, GObject)
 
 /**
- * Returns a download tool definition.
+ * prefs_get_download_command:
  *
- * @return the download command definition
+ * Returns: (transfer full): The download command.
  */
-const gchar * prefs_get_download_command (void);
+gchar * prefs_get_download_command (void);
 
 /**
+ * preferences_dialog_open:
  * Show the preferences dialog.
  */
 void preferences_dialog_open (void);
@@ -68,7 +45,6 @@ void preferences_dialog_open (void);
 /* functions used in glade/prefs.ui */
 void on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data);
 void on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data);
-void on_trayiconoptionbtn_clicked (GtkButton *button, gpointer user_data);
 void on_popupwindowsoptionbtn_clicked (GtkButton *button, gpointer user_data);
 void on_startupactionbtn_toggled (GtkButton *button, gpointer user_data);
 void on_browsercmd_changed (GtkEditable *editable, gpointer user_data);
@@ -78,11 +54,10 @@ void on_enableplugins_toggled (GtkToggleButton *togglebutton, gpointer user_data
 void on_itemCountBtn_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
 void on_default_update_interval_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
 void on_useProxyAuth_toggled (GtkToggleButton *button, gpointer user_data);
+void on_enclosure_download_custom_command_changed (GtkEditable *entry, gpointer user_data);
+void on_enclosure_download_predefined_toggled (GtkToggleButton *button, gpointer user_data);
 void on_enc_action_change_btn_clicked (GtkButton *button, gpointer user_data);
 void on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data);
-void on_newcountintraybtn_clicked (GtkButton *button, gpointer user_data);
-void on_minimizetotraybtn_clicked (GtkButton *button, gpointer user_data);
-void on_startintraybtn_clicked (GtkButton *button, gpointer user_data);
 void on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data);
 
 G_END_DECLS

@@ -54,9 +54,9 @@ void icons_load (void);
 
 /**
  * icon_get:
- * Returns a GIcon for the requested item.
- *
  * @icon:	the icon
+ *
+ * Returns a GIcon for the requested item.
  *
  * Returns: (transfer none): GIcon
  */

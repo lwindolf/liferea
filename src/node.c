@@ -1,13 +1,13 @@
 /*
  * @file node.c  hierarchic feed list node handling
- * 
- * Copyright (C) 2003-2016 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,7 +18,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 #include <string.h>
 
 #include "common.h"
@@ -33,11 +33,12 @@
 #include "node.h"
 #include "node_view.h"
 #include "render.h"
+#include "subscription_icon.h"
 #include "update.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
+#include "ui/feed_list_view.h"
 #include "ui/liferea_shell.h"
-#include "ui/feed_list_node.h"
 
 static GHashTable *nodes = NULL;	/*<< node id -> node lookup table */
 
@@ -56,14 +57,14 @@ gchar *
 node_new_id (void)
 {
 	gchar *id;
-	
+
 	id = g_new0 (gchar, NODE_ID_LEN + 1);
 	do {
 		int i;
 		for (i = 0; i < NODE_ID_LEN; i++)
 			id[i] = (gchar)g_random_int_range ('a', 'z');
 	} while (NULL != node_is_used_id (id));
-	
+
 	return id;
 }
 
@@ -71,11 +72,11 @@ nodePtr
 node_from_id (const gchar *id)
 {
 	nodePtr node;
-	
+
 	node = node_is_used_id (id);
 	if (!node)
 		debug1 (DEBUG_GUI, "Fatal: no node with id \"%s\" found!", id);
-		
+
 	return node;
 }
 
@@ -84,7 +85,7 @@ node_new (nodeTypePtr type)
 {
 	nodePtr	node;
 	gchar	*id;
-	
+
 	g_assert (NULL != type);
 
 	node = g_new0 (struct node, 1);
@@ -97,7 +98,7 @@ node_new (nodeTypePtr type)
 	id = node_new_id ();
 	node_set_id (node, id);
 	g_free (id);
-	
+
 	return node;
 }
 
@@ -111,55 +112,55 @@ node_set_data (nodePtr node, gpointer data)
 }
 
 void
-node_set_subscription (nodePtr node, subscriptionPtr subscription) 
+node_set_subscription (nodePtr node, subscriptionPtr subscription)
 {
 	g_assert (NULL == node->subscription);
 	g_assert (NULL != node->type);
-		
+
 	node->subscription = subscription;
 	subscription->node = node;
-	
-	/* Besides the favicon age we have no persistent 
+
+	/* Besides the favicon age we have no persistent
 	   update state field, so everything else goes NULL */
 	if (node->iconFile && !strstr(node->iconFile, "default.png")) {
-		subscription->updateState->lastFaviconPoll.tv_sec = common_get_mod_time (node->iconFile);
-		debug2 (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll.tv_sec);
+		subscription->updateState->lastFaviconPoll = (guint64)(common_get_mod_time (node->iconFile)) * G_USEC_PER_SEC;
+		debug2 (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll / G_USEC_PER_SEC);
 	}
 }
 
 void
-node_update_subscription (nodePtr node, gpointer user_data) 
+node_update_subscription (nodePtr node, gpointer user_data)
 {
 	if (node->source->root == node) {
 		node_source_update (node);
 		return;
 	}
-	
+
 	if (node->subscription)
 		subscription_update (node->subscription, GPOINTER_TO_UINT (user_data));
-		
+
 	node_foreach_child_data (node, node_update_subscription, user_data);
 }
 
 void
-node_auto_update_subscription (nodePtr node) 
+node_auto_update_subscription (nodePtr node)
 {
 	if (node->source->root == node) {
 		node_source_auto_update (node);
 		return;
 	}
-	
+
 	if (node->subscription)
-		subscription_auto_update (node->subscription);	
-		
+		subscription_auto_update (node->subscription);
+
 	node_foreach_child (node, node_auto_update_subscription);
 }
 
 void
-node_reset_update_counter (nodePtr node, GTimeVal *now) 
+node_reset_update_counter (nodePtr node, guint64 *now)
 {
 	subscription_reset_update_counter (node->subscription, now);
-	
+
 	node_foreach_child_data (node, node_reset_update_counter, now);
 }
 
@@ -184,9 +185,9 @@ node_free (nodePtr node)
 		NODE_TYPE (node)->free (node);
 
 	g_assert (NULL == node->children);
-	
+
 	g_hash_table_remove (nodes, node->id);
-	
+
 	update_job_cancel_by_owner (node);
 
 	if (node->subscription)
@@ -208,7 +209,7 @@ node_calc_counters (nodePtr node)
 	   list sources) can determine their own unread
 	   count as the sum of all childs afterwards */
 	node_foreach_child (node, node_calc_counters);
-	
+
 	NODE_TYPE (node)->update_counters (node);
 }
 
@@ -219,16 +220,16 @@ node_update_parent_counters (nodePtr node)
 
 	if (!node)
 		return;
-		
+
 	old = node->unreadCount;
 
 	NODE_TYPE (node)->update_counters (node);
-	
+
 	if (old != node->unreadCount) {
-		feed_list_node_update (node->id);
+		feed_list_view_update_node (node->id);
 		feedlist_new_items (0);	/* add 0 new items, as 'new-items' signal updates unread items also */
 	}
-	
+
 	if (node->parent)
 		node_update_parent_counters (node->parent);
 }
@@ -241,11 +242,11 @@ node_update_counters (nodePtr node)
 
 	/* Update the node itself and its children */
 	node_calc_counters (node);
-	
+
 	if ((oldUnreadCount != node->unreadCount) ||
 	    (oldItemCount != node->itemCount))
-		feed_list_node_update (node->id);
-		
+		feed_list_view_update_node (node->id);
+
 	/* Update the unread count of the parent nodes,
 	   usually they just add all child unread counters */
 	if (!IS_VFOLDER (node))
@@ -257,9 +258,9 @@ node_update_favicon (nodePtr node)
 {
 	if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_FAVICON) {
 		debug1 (DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
-		subscription_update_favicon (node->subscription);
+		subscription_icon_update (node->subscription);
 	}
-	
+
 	/* Recursion */
 	if (node->children)
 		node_foreach_child (node, node_update_favicon);
@@ -282,7 +283,7 @@ node_mark_all_read (nodePtr node)
 		node->unreadCount = 0;
 		node->needsUpdate = TRUE;
 	}
-		
+
 	if (node->children)
 		node_foreach_child (node, node_mark_all_read);
 }
@@ -302,42 +303,42 @@ node_set_parent (nodePtr node, nodePtr parent, gint position)
 
 	parent->children = g_slist_insert (parent->children, node, position);
 	node->parent = parent;
-	
-	/* new nodes may be provided by another node source, if 
+
+	/* new nodes may be provided by another node source, if
 	   not they are handled by the parents node source */
 	if (!node->source)
 		node->source = parent->source;
 }
 
-void 
+void
 node_reparent (nodePtr node, nodePtr new_parent)
 {
 	nodePtr old_parent;
-	
+
 	g_assert (NULL != new_parent);
 	g_assert (NULL != node);
-	
+
 	debug2 (DEBUG_GUI, "Reparenting node '%s' to a parent '%s'", node_get_title(node), node_get_title(new_parent));
-	
+
 	old_parent = node->parent;
-	if (NULL != old_parent) 
+	if (NULL != old_parent)
 		old_parent->children = g_slist_remove (old_parent->children, node);
 
 	new_parent->children = g_slist_insert (new_parent->children, node, -1);
 	node->parent = new_parent;
-	
-	feed_list_node_remove_node (node);
-	feed_list_node_add (node);
+
+	feed_list_view_remove_node (node);
+	feed_list_view_add_node (node);
 }
 
 void
 node_remove (nodePtr node)
 {
 	/* using itemlist_remove_all_items() ensures correct unread
-	   and item counters for all parent folders and matching 
+	   and item counters for all parent folders and matching
 	   search folders */
 	itemlist_remove_all_items (node);
-	
+
 	NODE_TYPE (node)->remove (node);
 }
 
@@ -347,21 +348,21 @@ node_to_xml (nodePtr node)
 	xmlDocPtr	doc;
 	xmlNodePtr	rootNode;
 	gchar		*tmp;
-	
+
 	doc = xmlNewDoc("1.0");
 	rootNode = xmlNewDocNode(doc, NULL, "node", NULL);
 	xmlDocSetRootElement(doc, rootNode);
 
 	xmlNewTextChild(rootNode, NULL, "title", node_get_title(node));
-	
+
 	tmp = g_strdup_printf("%u", node->unreadCount);
 	xmlNewTextChild(rootNode, NULL, "unreadCount", tmp);
 	g_free(tmp);
-	
+
 	tmp = g_strdup_printf("%u", g_slist_length(node->children));
 	xmlNewTextChild(rootNode, NULL, "children", tmp);
 	g_free(tmp);
-	
+
 	return doc;
 }
 
@@ -372,9 +373,9 @@ node_default_render (nodePtr node)
 	xmlDocPtr	doc;
 
 	doc = node_to_xml (node);
-	result = render_xml (doc, NODE_TYPE(node)->id, NULL);	
+	result = render_xml (doc, NODE_TYPE(node)->id, NULL);
 	xmlFreeDoc (doc);
-		
+
 	return result;
 }
 
@@ -405,10 +406,12 @@ void
 node_load_icon (nodePtr node)
 {
 	/* Load pixbuf for all widget based rendering */
-	if (node->icon) 
+	if (node->icon)
 		g_object_unref (node->icon);
 
-	node->icon = favicon_load_from_cache (node->id, 32);
+	// FIXME: don't use constant size, but size corresponding to GTK icon
+	// size used in wide view
+	node->icon = favicon_load_from_cache (node->id, 128);
 	
 	/* Create filename for HTML rendering */
 	g_free (node->iconFile);
@@ -446,7 +449,7 @@ node_set_id (nodePtr node, const gchar *id)
 		g_free (node->id);
 	}
 	node->id = g_strdup (id);
-	
+
 	g_hash_table_insert (nodes, node->id, node);
 }
 
@@ -513,8 +516,12 @@ node_get_base_url(nodePtr node)
 {
 	const gchar 	*baseUrl = NULL;
 
-	if (node->subscription)
+	if (node->subscription) {
 		baseUrl = subscription_get_homepage (node->subscription);
+		if (!baseUrl)
+			baseUrl = subscription_get_source (node->subscription);
+	}
+
 
 	/* prevent feed scraping commands to end up as base URI */
 	if (!((baseUrl != NULL) &&
@@ -553,25 +560,24 @@ void
 node_foreach_child_full (nodePtr node, gpointer func, gint params, gpointer user_data)
 {
 	GSList		*children, *iter;
-	
+
 	g_assert (NULL != node);
 
 	/* We need to copy because func might modify the list */
 	iter = children = g_slist_copy (node->children);
 	while (iter) {
 		nodePtr childNode = (nodePtr)iter->data;
-		
+
 		/* Apply the method to the child */
 		if (0 == params)
 			((nodeActionFunc)func) (childNode);
-		else 
+		else
 			((nodeActionDataFunc)func) (childNode, user_data);
-			
+
 		/* Never descend! */
 
 		iter = g_slist_next (iter);
 	}
-	
+
 	g_slist_free (children);
 }
-

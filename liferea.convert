@@ -10,12 +10,9 @@ default-update-interval = /apps/liferea/default-update-interval
 disable-javascript = /apps/liferea/disable-javascript
 disable-toolbar = /apps/liferea/disable-toolbar
 
-enable-fetch-retries = /apps/liferea/enable-fetch-retries
-
 last-hpane-pos = /apps/liferea/last-hpane-pos
 last-vpane-pos = /apps/liferea/last-vpane-pos
 last-wpane-pos = /apps/liferea/last-wpane-pos
-last-itemlist-mode = /apps/liferea/last-itemlist-mode
 last-window-height = /apps/liferea/last-window-height
 last-window-maximized = /apps/liferea/last-window-maximized
 last-window-width = /apps/liferea/last-window-width
@@ -25,14 +22,8 @@ last-window-state = /apps/liferea/last-window-state
 last-zoomlevel = /apps/liferea/last-zoomlevel
 
 maxitemcount = /apps/liferea/maxitemcount
-show-popup-windows = /apps/liferea/show-popup-windows
 startup-feed-action = /apps/liferea/startup_feed_action
 toolbar-style = /apps/liferea/toolbar_style
-trayicon = /apps/liferea/trayicon
-trayicon-new-count = /apps/liferea/trayicon-new-count
-dont-minimize-to-tray = /apps/liferea/dont-minimize-to-tray
-update-thread-concurrency = /apps/liferea/update-thread-concurrency
-popup-placement = /apps/liferea/popup-placement
 folder-display-mode = /apps/liferea/folder-display-mode
 folder-display-hide-read = /apps/liferea/folder-display-hide-read
 reduced-feedlist = /apps/liferea/reduced-feedlist
@@ -46,7 +37,6 @@ proxy-authentication-user = /apps/liferea/proxy/authentication_user
 proxy-authentication-password = /apps/liferea/proxy/authentication_password
 
 social-bm-site = /apps/liferea/social-bm-site
-start-in-tray = /apps/liferea/start-in-tray
 enable-plugins = /apps/liferea/enable-plugins
 browser-font = /apps/liferea/browser-font
 

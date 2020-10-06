@@ -1,12 +1,12 @@
 /**
  * @file ttrss_source_feed.c  Tiny Tiny RSS feed subscription routines
- * 
+ *
  * Copyright (C) 2010-2013 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -50,7 +50,7 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 
 			/*
 			   We expect to get something like this
-			   
+
 			   [{"id":118,
 			     "unread":true,
 			     "marked":false,
@@ -67,12 +67,12 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 			     "updated":1287923814,
                            [...]
                          */
-                         
+
 			while (iter) {
 				JsonNode *node = (JsonNode *)iter->data;
 				itemPtr item = item_new ();
 				gchar *id;
-				const gchar *content; 
+				const gchar *content;
 				gchar *xhtml;
 
 				id = g_strdup_printf ("%" G_GINT64_FORMAT, json_get_int (node, "id"));
@@ -87,7 +87,7 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 				xmlFree (xhtml);
 
 				item->time = json_get_int (node, "updated");
-				
+
 				if (json_get_bool (node, "unread")) {
 					item->readStatus = FALSE;
 				} else {
@@ -116,7 +116,7 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 						    json_get_string (enc_node, "content_type")) {
 							gchar *encStr = enclosure_values_to_string (
 								json_get_string (enc_node, "content_url"),
-								json_get_string (enc_node, "content_type"), 
+								json_get_string (enc_node, "content_type"),
 								0 /* length unknown to TinyTiny RSS*/,
 								FALSE /* not yet downloaded */);
 							item->metadata = metadata_list_append (item->metadata, "enclosure", encStr);
@@ -127,9 +127,9 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 					}
 					g_list_free (alist);
 				}
-					
+
 				items = g_list_append (items, (gpointer)item);
-				
+
 				iter = g_list_next (iter);
 			}
 
@@ -157,8 +157,8 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 }
 
 static gboolean
-ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
-                                                 struct updateRequest *request)
+ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
+                                                UpdateRequest *request)
 {
 	nodePtr		root = node_source_root_from_node (subscription->node);
 	ttrssSourcePtr	source = (ttrssSourcePtr) root->data;
@@ -168,12 +168,12 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 
 	debug0 (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
 
-	g_assert(root->source); 
-	if (root->source->loginState == NODE_SOURCE_STATE_NONE) { 
+	g_assert(root->source);
+	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
 		subscription_update (root->subscription, 0);
 		return FALSE;
 	}
-	
+
 	feed_id = metadata_list_get (subscription->metadata, "ttrss-feed-id");
 	if (!feed_id) {
 		g_print ("Dropping TinyTinyRSS feed without id! (%s)", subscription->node->title);
@@ -181,7 +181,7 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		return FALSE;
 	}
 
-	/* We can always max out as TinyTinyRSS does limit results itself */	
+	/* We can always max out as TinyTinyRSS does limit results itself */
 	fetchCount = feed_get_max_item_count (subscription->node);
 
 	request->postdata = g_strdup_printf (TTRSS_JSON_HEADLINES, source->session_id, feed_id, fetchCount);
@@ -196,4 +196,3 @@ struct subscriptionType ttrssSourceFeedSubscriptionType = {
 	ttrss_feed_subscription_prepare_update_request,
 	ttrss_feed_subscription_process_update_result
 };
-

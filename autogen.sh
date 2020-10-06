@@ -23,4 +23,3 @@ intltoolize
 if test -z "$NOCONFIGURE"; then
 ./configure "$@"
 fi
-

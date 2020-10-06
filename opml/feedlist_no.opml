@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+<head>
+	<title>Liferea eksempelkanaler</title>
+</head>
+<body>
+	<outline text="Eksempelkanaler">
+		<outline text="Norge">
+			<outline title="Nyheter" text="Nyheter" description="Nyheter" type="folder">
+				<outline text="Aftenposten" htmlUrl="https://www.aftenposten.no/" xmlUrl="https://www.aftenposten.no/rss/" />
+				<outline text="NRK Nyheter" htmlUrl="https://www.nrk.no/" xmlUrl="https://www.nrk.no/toppsaker.rss" />
+				<outline text="Teknisk Ukeblad" htmlUrl="https://www.tu.no/" xmlUrl="https://www.tu.no/feeds/general.xml" />
+				<outline text="Forskning.no" htmlUrl="https://forskning.no/" xmlUrl="https://forskning.no/rss" />
+				<outline text="P3 Filmpolitiet" htmlUrl="http://p3.no/filmpolitiet/" xmlUrl="http://p3.no/filmpolitiet/feed/atom/" />
+				<outline text="Tek.no" htmlUrl="https://www.tek.no/" xmlUrl="https://www.tek.no/feeds/general.xml" />
+			</outline>
+		</outline>
+
+		<!-- lets keep this default English block in sync over all feed lists! -->
+		<outline text="Internasjonalt">
+			<outline text="Nyheter">
+					<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
+					<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="http://rss.slashdot.org/Slashdot/slashdot" />
+					<outline text="BBC" htmlUrl="http://www.bbc.com/news" xmlUrl="http://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
+					<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
+			</outline>
+			<outline text="Fri programvare">
+					<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
+					<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
+			</outline>
+			<outline text="Podkast og musikk">
+					<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/feed/atom/"/>
+					<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
+					<outline text="Gorilla vs. Bear" htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
+			</outline>
+			<outline text="Tegneserier">
+					<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
+			</outline>
+		</outline>
+		<!-- end of default block -->
+	</outline>
+
+	<!-- the following search folders should also be in sync for all feed lists -->
+	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->
+	<outline text="Ulest" title="Ulest" description="Ulest" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="Read status" rule="unread" value="" additive="true"/>
+	</outline>
+	<outline text="Viktig" title="Viktig" description="Viktig" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="Flag status" rule="flagged" value="" additive="true"/>
+	</outline>
+	<!-- end of search folder block -->
+
+  </body>
+</opml>

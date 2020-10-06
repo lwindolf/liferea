@@ -1,7 +1,7 @@
 /**
- * @file ns_photo.h photo/ph namespace support
+ * @file html5_feed.h  Parsing semantic annotated HTML5 webpages like feeds
  *
- * Copyright (C) 2003-2007 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _NS_PHOTO_H
-#define _NS_PHOTO_H
+#ifndef _HTML5_FEED_H
+#define _HTML5_FEED_H
 
-#include "metadata.h"
+#include "feed_parser.h"
 
-NsHandler *ns_photo_get_handler(void);
-NsHandler *ns_pb_get_handler(void);
+feedHandlerPtr	html5_init_feed_handler(void);
 
 #endif
