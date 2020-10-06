@@ -49,7 +49,7 @@ struct _Subscription {
 
 	gchar		*source;		/*<< current source, can be changed by redirects */
 	gchar		*origSource;		/*<< the source given when creating the subscription */
-	updateOptionsPtr updateOptions;		/*<< update options for the feed source */
+	struct _UpdateOptions *updateOptions;		/*<< update options for the feed source */
 	struct updateJob *updateJob;		/*<< update request structure used when downloading the subscribed source */
 
 	gint		updateInterval;		/*<< user defined update interval in minutes */
@@ -81,7 +81,7 @@ struct _Subscription {
  *
  * Returns: (transfer full): the new subscription
  */
-Subscription * subscription_new (const gchar *source, const gchar *filter, updateOptionsPtr options);
+Subscription * subscription_new (const gchar *source, const gchar *filter, struct _UpdateOptions *options);
 
 /**
  * subscription_copy: (skip)

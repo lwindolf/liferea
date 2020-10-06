@@ -44,7 +44,8 @@ class NextCloudNewsPlugin(GObject.Object, Liferea.NodeSourceActivatable):
         return "NextCloud News"
 
     def do_feedlist_update_prepare(self, serverUrl, subscription, request):
-        print("feedlist prepare request %s" % (serverUrl))
+        print("feedlist prepare request %s/index.php/apps/news/api/v1-2/feeds" % (serverUrl))
+        print(request.options.username)
         request.set_accept ("application/json")
         request.set_source ("%s/index.php/apps/news/api/v1-2/feeds" % (serverUrl));
 

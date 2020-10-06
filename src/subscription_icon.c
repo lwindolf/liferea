@@ -32,9 +32,9 @@
 #include "ui/feed_list_view.h"
 
 typedef struct iconDownloadCtxt {
-	gchar		        *id;		/**< icon cache id (=node id) */
-	GSList			*urls;		/**< ordered list of URLs to try */
-	updateOptionsPtr	options;	/**< download options */
+	gchar		*id;		/**< icon cache id (=node id) */
+	GSList		*urls;		/**< ordered list of URLs to try */
+	UpdateOptions	*options;	/**< download options */
 } *iconDownloadCtxtPtr;
 
 static iconDownloadCtxtPtr
@@ -55,7 +55,7 @@ subscription_icon_download_ctxt_free (iconDownloadCtxtPtr ctxt)
 		g_free (iter->data);
 
 	g_slist_free (ctxt->urls);
-	update_options_free (ctxt->options);
+	g_object_unref (ctxt->options);
 }
 
 static void subscription_icon_download_next (iconDownloadCtxtPtr ctxt);

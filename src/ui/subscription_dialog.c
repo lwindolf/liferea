@@ -596,7 +596,7 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 	if (response_id == GTK_RESPONSE_OK) {
 		gchar *source = NULL;
 		const gchar *filter = NULL;
-		updateOptionsPtr options;
+		UpdateOptions *options;
 
 		/* Source */
 		source = ui_subscription_dialog_decode_source (&(nsd->ui_data));
@@ -608,7 +608,7 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 			filter = NULL;
 		}
 
-		options = g_new0 (struct updateOptions, 1);
+		options = g_new0 (struct _UpdateOptions, 1);
 		options->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (nsd->ui_data.dialog, "dontUseProxyCheck")));
 
 		feedlist_add_subscription_check_duplicate (source, filter, options, FEED_REQ_PRIORITY_HIGH);

@@ -149,25 +149,36 @@ update_state_free (updateStatePtr updateState)
 
 /* update options */
 
-updateOptionsPtr
-update_options_copy (updateOptionsPtr options)
+UpdateOptions *
+update_options_copy (UpdateOptions *options)
 {
-	updateOptionsPtr newOptions;
-	newOptions = g_new0 (struct updateOptions, 1);
+	UpdateOptions *newOptions;
+	newOptions = g_new0 (struct _UpdateOptions, 1);
 	newOptions->username = g_strdup (options->username);
 	newOptions->password = g_strdup (options->password);
 	newOptions->dontUseProxy = options->dontUseProxy;
 	return newOptions;
 }
 void
-update_options_free (updateOptionsPtr options)
+update_options_free (UpdateOptions *options)
 {
 	if (!options)
 		return;
 
 	g_free (options->username);
 	g_free (options->password);
-	g_free (options);
+}
+
+GType
+update_options_get_type (void)
+{
+	static GType type = 0;
+
+	if (G_UNLIKELY (!type))
+		type = g_boxed_type_register_static ("UpdateOptions",
+			(GBoxedCopyFunc) update_options_copy,
+			(GBoxedFreeFunc) update_options_free);
+	return type;
 }
 
 /* update request object */
@@ -203,7 +214,7 @@ update_request_init (UpdateRequest *request)
 }
 
 UpdateRequest *
-update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr options)
+update_request_new (const gchar *source, updateStatePtr state, UpdateOptions *options)
 {
 	UpdateRequest *request = UPDATE_REQUEST (g_object_new (UPDATE_REQUEST_TYPE, NULL));
 
@@ -218,7 +229,7 @@ update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr 
 	if (options)
 		request->options = update_options_copy (options);
 	else
-		request->options = g_new0 (struct updateOptions, 1);
+		request->options = g_new0 (struct _UpdateOptions, 1);
 
 	return request;
 }

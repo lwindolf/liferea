@@ -62,8 +62,11 @@ liferea_node_source_activatable_activate (LifereaNodeSourceActivatable * activat
 	nodeSourceTypePtr nst;
 
 	g_return_if_fail (LIFEREA_IS_NODE_SOURCE_ACTIVATABLE (activatable));
-
 	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
+
+	if (!(iface->get_id && iface->get_name && iface->get_capabilities))
+		return;
+
 	if (iface->activate)
 		iface->activate (activatable);
 

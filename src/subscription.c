@@ -46,7 +46,7 @@
 Subscription *
 subscription_new (const gchar *source,
                   const gchar *filter,
-                  updateOptionsPtr options)
+                  UpdateOptions *options)
 {
 	Subscription *	subscription;
 
@@ -55,7 +55,7 @@ subscription_new (const gchar *source,
 	subscription->updateOptions = options;
 
 	if (!subscription->updateOptions)
-		subscription->updateOptions = g_new0 (struct updateOptions, 1);
+		subscription->updateOptions = g_new0 (struct _UpdateOptions, 1);
 
 	subscription->updateState = update_state_new ();
 	subscription->updateInterval = -1;
@@ -627,9 +627,11 @@ subscription_free (Subscription * subscription)
 	g_free (subscription->filtercmd);
 
 	update_job_cancel_by_owner (subscription);
-	update_options_free (subscription->updateOptions);
 	update_state_free (subscription->updateState);
 	metadata_list_free (subscription->metadata);
+
+	if (subscription->updateOptions)
+		g_object_unref (subscription->updateOptions);
 
 	g_free (subscription);
 }

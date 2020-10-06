@@ -260,7 +260,7 @@ node_source_plugin_source_subscription_prepare_update_request (Subscription * su
 		return iface->feedlist_update_prepare (activatable, metadata_list_get (subscription->metadata, "node-source-subscription-url"), subscription, request);
 	else
 		g_warning ("No 'feedlist_update_prepare' method implemented by plugin for '%s'!", subscription->node->source->type->id);
-
+g_print("subscription auth: %s\n", subscription->updateOptions->username);
 	return FALSE;
 }
 

@@ -130,7 +130,7 @@ Node *feedlist_find_node (Node *parent, feedListFindType type, const gchar *str)
  *
  * Adds a new subscription to the feed list.
  */
-void feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags);
+void feedlist_add_subscription (const gchar *source, const gchar *filter, UpdateOptions *options, gint flags);
 
 /**
  * feedlist_add_subscription_check_duplicate: (skip)
@@ -142,7 +142,7 @@ void feedlist_add_subscription (const gchar *source, const gchar *filter, update
  * Adds a new subscription to the feed list, if there are no subscriptions with
  * the same URL, or opens a confirmation dialog else.
  */
-void feedlist_add_subscription_check_duplicate (const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags);
+void feedlist_add_subscription_check_duplicate (const gchar *source, const gchar *filter, UpdateOptions *options, gint flags);
 
 /**
  * feedlist_add_folder:

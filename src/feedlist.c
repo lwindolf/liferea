@@ -392,7 +392,7 @@ feedlist_add_folder (const gchar *title)
 }
 
 void
-feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
+feedlist_add_subscription (const gchar *source, const gchar *filter, UpdateOptions *options, gint flags)
 {
 	Node *		parent;
 
@@ -409,7 +409,7 @@ feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptio
 }
 
 void
-feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
+feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filter, UpdateOptions *options, gint flags)
 {
 	Node *duplicateNode = NULL;
 

@@ -52,16 +52,22 @@ typedef enum {
 } request_state;
 
 struct updateJob;
-struct updateResult;
 
 typedef guint32 updateFlags;
 
+G_BEGIN_DECLS
+
+#define UPDATE_OPTIONS_TYPE (update_options_get_type ())
+GType update_options_get_type ();
+
+typedef struct _UpdateOptions UpdateOptions;
+
 /* defines update options to be passed to an update request */
-typedef struct updateOptions {
+struct _UpdateOptions {
 	gchar		*username;	/*<< username for HTTP auth */
 	gchar		*password;	/*<< password for HTTP auth */
 	gboolean	dontUseProxy;	/*<< no proxy flag */
-} *updateOptionsPtr;
+};
 
 /* defines all state data an updatable object (e.g. a feed) needs */
 typedef struct updateState {
@@ -76,7 +82,6 @@ typedef struct updateState {
 	gint		timeToLive;		/*<< ttl */
 } *updateStatePtr;
 
-G_BEGIN_DECLS
 #define UPDATE_REQUEST_TYPE (update_request_get_type ())
 G_DECLARE_FINAL_TYPE (UpdateRequest, update_request, UPDATE, REQUEST, GObject)
 
@@ -87,10 +92,10 @@ struct _UpdateRequest {
 					     '|', it is a command. If it contains "://",
 					     then it is parsed as a URL, otherwise it is a
 					     filename. */
-	gchar		*accept;	/**< Valid "Accept" header value (or NULL for automatic feed "Accept" header */
+	gchar		*accept;	/*<< Valid "Accept" header value (or NULL for automatic feed "Accept" header */
 	gchar           *postdata;      /*<< HTTP POST request data (NULL for non-POST requests) */
 	gchar           *authValue;     /*<< Custom value for Authorization: header */
-	updateOptionsPtr options;	/*<< Update options for the request */
+	UpdateOptions	*options;	/*<< Update options for the request */
 	gchar		*filtercmd;	/*<< Command will filter output of URL */
 	updateStatePtr	updateState;	/*<< Update state of the requested object (etags, last modified...) */
 };
@@ -178,21 +183,13 @@ void update_state_free (updateStatePtr updateState);
 
 /**
  * update_options_copy: (skip)
+ * options:	object to copy
  *
  * Copies the given update options.
  *
- * @returns a new update options structure (to be free'd using update_options_free())
+ * @returns a new update options object
  */
-updateOptionsPtr update_options_copy (updateOptionsPtr options);
-
-/**
- * update_options_free: (skip)
- *
- * Frees the given update options
- *
- * @param options	the update options
- */
-void update_options_free (updateOptionsPtr options);
+UpdateOptions * update_options_copy (UpdateOptions *options);
 
 /**
  * update_init: (skip)
@@ -224,7 +221,7 @@ void update_deinit (void);
  *
  * @returns a new request GObject to be passed to update_execute_request()
  */
-UpdateRequest * update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr options);
+UpdateRequest * update_request_new (const gchar *source, updateStatePtr state, UpdateOptions *options);
 
 /**
  * update_request_set_source:
