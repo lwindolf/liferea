@@ -17,7 +17,8 @@ EXTRA_DIST = \
 	feedlist_sk.opml \
 	feedlist_sv.opml \
 	feedlist_nl.opml \
-	feedlist_no.opml
+	feedlist_no.opml \
+	feedlist_fa.opml
 
 lifereadistopmldir = $(datadir)/liferea/opml
 lifereadistopml_DATA = $(EXTRA_DIST)

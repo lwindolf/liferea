@@ -565,6 +565,10 @@ db_init (void)
 	db_exec ("DELETE FROM subscription_metadata WHERE node_id NOT IN "
           	 "(SELECT node_id FROM node);");
 
+	debug0 (DEBUG_DB, "Removing metadata without item...\n");
+	db_exec ("DELETE FROM metadata WHERE item_id NOT IN "
+		 "(SELECT item_id FROM items);");
+
 	debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 		
 	/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */

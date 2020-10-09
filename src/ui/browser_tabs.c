@@ -384,7 +384,7 @@ browser_tabs_get_active_htmlview (void)
 }
 
 void
-browser_tabs_do_zoom (gboolean in)
+browser_tabs_do_zoom (gint zoom)
 {
-	liferea_htmlview_do_zoom (browser_tabs_get_active_htmlview (), in);
+	liferea_htmlview_do_zoom (browser_tabs_get_active_htmlview (), zoom);
 }

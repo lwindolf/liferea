@@ -411,13 +411,13 @@ feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptio
 void
 feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
 {
-	nodePtr duplicate_url_node = NULL;
+	nodePtr duplicateNode = NULL;
 
-	duplicate_url_node = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
-	if (duplicate_url_node == NULL) {
+	duplicateNode = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
+	if (!duplicateNode) {
 		feedlist_add_subscription (source, filter, options, FEED_REQ_PRIORITY_HIGH);
 	} else {
-        feed_list_view_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicate_url_node);
+		feed_list_view_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicateNode);
 	}
 }
 
@@ -568,7 +568,7 @@ feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
 			/* Load items of new selected node. */
 			SELECTED = node;
 			if (SELECTED) {
-				itemlist_set_view_mode (node_get_view_mode (SELECTED));
+				liferea_shell_set_view_mode (node_get_view_mode (SELECTED));
 				itemlist_load (SELECTED);
 			} else {
 				itemview_clear ();
@@ -664,7 +664,7 @@ feedlist_create (gpointer flv)
 {
 	FeedList *fl = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
 
-    g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), fl);
+	g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), fl);
 
 	return fl;
 }

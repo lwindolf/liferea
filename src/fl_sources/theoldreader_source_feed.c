@@ -1,13 +1,13 @@
 /**
  * @file theoldreader_source_feed.c  TheOldReader feed subscription routines
- * 
+ *
  * Copyright (C) 2008  Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2014  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -38,7 +38,7 @@
 #include "item_state.h"
 
 void
-theoldreader_source_migrate_node (nodePtr node) 
+theoldreader_source_migrate_node (nodePtr node)
 {
 	/* scan the node for bad ID's, if so, brutally remove the node */
 	itemSetPtr itemset = node_get_itemset (node);
@@ -50,7 +50,7 @@ theoldreader_source_migrate_node (nodePtr node)
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
 				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
-			} 
+			}
 		}
 		if (item) item_unload (item);
 	}
@@ -60,12 +60,12 @@ theoldreader_source_migrate_node (nodePtr node)
 }
 
 static itemPtr
-theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache) 
+theoldreader_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache)
 {
 	gpointer    ret = g_hash_table_lookup (cache, sourceId);
 	itemSetPtr  itemset;
 	int         num = g_hash_table_size (cache);
-	GList       *iter; 
+	GList       *iter;
 	itemPtr     item = NULL;
 
 	if (ret)
@@ -109,7 +109,7 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 
 	/* Note: at the moment TheOldReader doesn't exposed a "starred" label
 	   like Google Reader did. It also doesn't expose the like feature it
-	   implements. Therefore we cannot sync the flagged state with 
+	   implements. Therefore we cannot sync the flagged state with
 	   TheOldReader. */
 
 	for (xml = entry->children; xml; xml = xml->next) {
@@ -132,11 +132,11 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 		g_print ("Skipping item without id in theoldreader_source_item_retrieve_status()!");
 		return;
 	}
-	
+
 	itemPtr item = theoldreader_source_load_item_from_sourceid (node, id, cache);
 	if (item && item->sourceId) {
 		if (g_str_equal (item->sourceId, id) && !google_reader_api_edit_is_in_queue(node->source, id)) {
-			
+
 			if (item->readStatus != read)
 				item_read_state_changed (item, read);
 		}
@@ -169,40 +169,40 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 		return;
 
 	xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
-	if (doc) {		
+	if (doc) {
 		xmlNodePtr root = xmlDocGetRootElement (doc);
-		xmlNodePtr entry = root->children ; 
+		xmlNodePtr entry = root->children ;
 		GHashTable *cache = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-		while (entry) { 
+		while (entry) {
 			if (!g_str_equal (entry->name, "entry")) {
 				entry = entry->next;
 				continue; /* not an entry */
 			}
-			
+
 			theoldreader_source_item_retrieve_status (entry, subscription, cache);
 			entry = entry->next;
 		}
-		
+
 		g_hash_table_unref (cache);
 		xmlFreeDoc (doc);
-	} else { 
+	} else {
 		debug0 (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
 		g_print ("theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
 	}
-	
+
 	debug_end_measurement (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result");
 }
 
 static gboolean
-theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
-                                                       struct updateRequest *request)
+theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription,
+                                                       UpdateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");
-	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data; 
-	
-	g_assert (source); 
-	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) { 
+	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data;
+
+	g_assert (source);
+	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) {
 		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
 		return FALSE;
 	}
@@ -227,4 +227,3 @@ struct subscriptionType theOldReaderSourceFeedSubscriptionType = {
 	theoldreader_feed_subscription_prepare_update_request,
 	theoldreader_feed_subscription_process_update_result
 };
-

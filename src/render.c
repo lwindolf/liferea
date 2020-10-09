@@ -329,7 +329,6 @@ render_get_css (gboolean externalCss)
 	if (!css || styleUpdated) {
 		gchar	*defaultStyleSheetFile;
 		gchar	*userStyleSheetFile;
-		gchar	*adblockStyleSheetFile;
 		gchar	*tmp;
 
 		if (!themeColors)
@@ -361,16 +360,6 @@ render_get_css (gboolean externalCss)
 
 		g_free(userStyleSheetFile);
 
-		adblockStyleSheetFile = g_build_filename(PACKAGE_DATA_DIR, PACKAGE, "css", "adblock.css", NULL);
-
-		if (g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
-			g_string_append(css, tmp);
-			g_free(tmp);
-		}
-
-		g_free(adblockStyleSheetFile);
-
-		/* this should probably be in a separate function */
 		if (externalCss) {
 			/* dump CSS to cache file and create a <style> tag to use it */
 			gchar *filename = common_create_cache_filename (NULL, "style", "css");

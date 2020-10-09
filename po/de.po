@@ -501,10 +501,10 @@ msgstr "Gibt Debug-Meldungen aller GUI-Funktionen aus"
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Aktiviert HTML-Rendering-Debugging. Bei jedem Rendern wird das HTML nach ~/."
-"cache/liferea/output.xhtml geschrieben"
+"cache/liferea/output.html geschrieben"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"

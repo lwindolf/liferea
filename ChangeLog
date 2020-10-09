@@ -1,9 +1,34 @@
 To be released
 
+	Version 1.13.3
+
+	* Fixes XLST exception on mediarss feeds with description
+	  (Lars Windolf)
+
+	* Drop blogChannel namespace support
+	  (Lars Windolf)
+
+	* Support multi-feed discovery
+	  (Lars Windolf)
+
+	* Default to https:// instead of http:// when user doesn't
+	  provide protocol on subscribing feed
+	  (Lars Windolf)
+
+	* Drop CDF channel legacy support
+	  (Lars Windolf)
+
+	* Drop Atom 0.2/0.3 (aka Pie) legacy support
+	  (Lars Windolf)
+
+
+
+2020-08-29   Lars Windolf <lars.windolf@gmx.de>
+
 	Version 1.13.2
 
-	* #250 Update some dialog labels
-	  (GreenLunar)
+	* #846, #864, #735: Fix main menu/toolbar not being translated
+	  (reported by nesfla, Qik000, SingleMalt2104)
 
 	* #854: Adding new search folder options to match
 	  subscription source ULR and parent folder name.
@@ -11,6 +36,15 @@ To be released
 
 	* #851: Add accessibility check to code tests
 	  (Lars Windolf)
+
+	* #851: Fix accessibility annotations for several combo boxes.
+	  (Lars Windolf)
+
+	* #850: Fix embedded youtube video bug.
+	  (reported by sblondon)
+
+	* #765: Embed YouTube videos from MediaRSS feeds
+	  (Mikel Olasagasti)
 
  	* #749: Add Readability.js library (Apache 2.0 licensed)
 	  and auto-apply Readability.js to all headlines
@@ -28,14 +62,21 @@ To be released
 	  allows us to get rid of XSLT extra handling
 	  (Lars Windolf)
 
-	* #851: Fix accessibility annotations for several combo boxes.
-	  (Lars Windolf)
+	* #747: Font improvements
+	  (Azhar Mithani)
 
-	* #850: Fix embedded youtube video bug.
-    (reported by sblondon)
+	* #250 Update some dialog labels
+	  (GreenLunar)
+
+	* #803: Fix legacy links to mailing list and IRC in
+	  documentation.
+	  (reported by Bill Dietrich)
 
 	* Updated German translation
 	  (Lars Windolf)
+
+	* #861: Updated Spanish translation
+	  (vosian)
 
 
 2020-06-11   Lars Windolf <lars.windolf@gmx.de>
@@ -105,11 +146,9 @@ To be released
 	  (Leiaz)
 	* #680: Add xdg-email command to item list popup menu
 	  (poetsmeniet)
-
 	* Drop unused glade/google_source.ui
 	* #699: Refactoring of duplicate check handlingg
-	  (dymoks
-
+	  (dymoksc)
 	* #746: Fix accessibility fatals reported by gla11y
 	  (reported by Paul Gevers)
 	* Fixes #730: "Update all subscriptions at startup" overrides

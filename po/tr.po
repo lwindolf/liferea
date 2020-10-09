@@ -497,11 +497,11 @@ msgstr "Grafik arayüz işlevleri hakkındaki hata ayıklama iletilerini göster
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "HTML canlandırmasının hata ayıklamasını etkinleştirir. Liferea HTML "
 "çıktısını her canlandırdığında oluşturulan HTML'i ayrıca /.cache/liferea/"
-"output.xhtml içine yığar"
+"output.html içine yığar"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"
@@ -3188,7 +3188,7 @@ msgstr "Şimdi İndiriliyor"
 #~ "xhtml)"
 #~ msgstr ""
 #~ "  --debug-html     HTML hata ayıklamasını çalıştır (kaydedildiği yer ~/."
-#~ "liferea_1.2/output.xhtml)"
+#~ "liferea_1.2/output.html)"
 
 #~ msgid "  --debug-plugins  Print debugging messages when loading plugins"
 #~ msgstr ""

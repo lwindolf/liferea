@@ -193,14 +193,22 @@ void liferea_shell_set_important_status_bar (const char *format, ...);
  */
 GtkWidget * liferea_shell_get_window (void);
 
-void liferea_shutdown (void);
-
 /**
  * liferea_shell_rebuild_css:
  *
  * Invokes a rebuild of the WebView CSS.
  */
 void liferea_shell_rebuild_css (void);
+
+/**
+ * liferea_shell_set_view_mode:
+ * @newMode:	the new mode
+ *
+ * Changes the view mode programmatically. Used to change the mode when
+ * selecting another feed. Convenience function to trigger the stateful action
+ * set-view-mode.
+ */
+void liferea_shell_set_view_mode (nodeViewType newMode);
 
 G_END_DECLS
 

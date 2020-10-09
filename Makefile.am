@@ -17,8 +17,8 @@ net.sourceforge.liferea.service: Makefile
 		mv $@.tmp $@
 
 
-appdatadir = $(datadir)/appdata
-appdata_in_files = $(PACKAGE_TARNAME).appdata.xml.in
+appdatadir = $(datadir)/metainfo
+appdata_in_files = net.sourceforge.liferea.appdata.xml.in
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 
 @INTLTOOL_XML_RULE@
@@ -26,8 +26,7 @@ appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 cssdir = $(pkgdatadir)/css
 css_DATA = \
 	css/liferea.css \
-	css/user.css \
-	css/adblock.css
+	css/user.css
 
 jsdir = $(pkgdatadir)/js
 js_DATA = \

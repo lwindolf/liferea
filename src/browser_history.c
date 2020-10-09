@@ -1,7 +1,7 @@
 /**
  * @file browser_history.c  managing the internal browser history
  *
- * Copyright (C) 2012-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,14 +15,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #include "browser_history.h"
 
 browserHistory *
 browser_history_new (void)
-{	
+{
 	return g_new0 (browserHistory, 1);
 }
 
@@ -67,16 +67,9 @@ browser_history_back (browserHistory *history)
 	GList	*url = history->current;
 
 	url = g_list_previous (url);
+	history->current = url;
 
-	if (url) {
-		history->current = url;
-		return url->data;
-	} else {
-		/* This happens if we go back to the headline */
-		g_assert (history->headline);
-		browser_history_clear (history);
-		return NULL;
-	}
+	return url->data;
 }
 
 gboolean
@@ -88,7 +81,7 @@ browser_history_can_go_forward (browserHistory *history)
 gboolean
 browser_history_can_go_back (browserHistory *history)
 {
-	return (NULL != g_list_previous (history->current)) || history->headline;
+	return (NULL != g_list_previous (history->current));
 }
 
 void
@@ -118,5 +111,3 @@ browser_history_add_location (browserHistory *history, const gchar *url)
 	history->locations = g_list_append (history->locations, g_strdup (url));
 	history->current = g_list_last (history->locations);
 }
-
-

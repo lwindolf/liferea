@@ -172,7 +172,7 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 	}
 
 	/* case 2: */
-	if (html_url) {
+	if (html_url && g_strstr_len (html_url, -1, "://")) {
 		tmp = g_strstrip (g_strdup (html_url));
 		urls = g_slist_append (urls, tmp);
 		debug1 (DEBUG_UPDATE, "(2) adding favicon search URL: %s", tmp);
@@ -183,15 +183,16 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 	if (*source_url != '|') {
 		tmp = tmp2 = g_strstrip (g_strdup (source_url));
 
-		if (tmp[strlen (tmp) - 1] == '/')
+		if (strlen(tmp) && tmp[strlen (tmp) - 1] == '/')
 			tmp[strlen (tmp) - 1] = 0;	/* Strip trailing slash */
 
 		tmp = strrchr (tmp, '/');
 		if (tmp) {
 			*tmp = 0;
-			urls = g_slist_append (urls, tmp2);
+			urls = g_slist_append (urls, g_strdup (tmp2));
 			debug1 (DEBUG_UPDATE, "(3) adding favicon search URL: %s", tmp2);
 		}
+		g_free (tmp2);
 	}
 
 	/* case 4: */

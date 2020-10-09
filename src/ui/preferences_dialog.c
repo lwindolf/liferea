@@ -431,6 +431,12 @@ on_donottrackbtn_toggled (GtkToggleButton *button, gpointer user_data)
 	conf_set_bool_value (DO_NOT_TRACK, gtk_toggle_button_get_active (button));
 }
 
+void
+on_itpbtn_toggled (GtkToggleButton *button, gpointer user_data)
+{
+	conf_set_bool_value (ENABLE_ITP, gtk_toggle_button_get_active (button));
+}
+
 static void
 preferences_dialog_destroy_cb (GtkWidget *widget, PreferencesDialog *pd)
 {
@@ -673,6 +679,15 @@ preferences_dialog_init (PreferencesDialog *pd)
 	conf_get_bool_value (DO_NOT_TRACK, &bSetting);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 
+#if WEBKIT_CHECK_VERSION (2, 30, 0)
+	gtk_widget_destroy (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpInfoBar")));
+	widget = liferea_dialog_lookup (pd->dialog, "itpbtn");
+	conf_get_bool_value (ENABLE_ITP, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
+#else
+	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpbtn")), FALSE);
+	gtk_widget_show (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpInfoBar")));
+#endif
 	/* ================= panel 7 "Enclosures" ======================== */
 
 	/* menu for download tool */

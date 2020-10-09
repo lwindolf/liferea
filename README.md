@@ -1,5 +1,8 @@
 [![Build Status](https://travis-ci.org/lwindolf/liferea.svg?branch=master)](https://travis-ci.org/lwindolf/liferea) ![Coverity Scan Build Status](https://scan.coverity.com/projects/4287/badge.svg)
 
+[![Packages](https://repology.org/badge/latest-versions/liferea.svg)](https://repology.org/metapackage/liferea/versions)
+[![Packages](https://repology.org/badge/tiny-repos/liferea.svg)](https://repology.org/metapackage/liferea/versions)
+[![Dependency](https://img.shields.io/librariesio/github/lwindolf/liferea)](https://libraries.io/github/lwindolf/liferea)
 
 Introduction
 ------------

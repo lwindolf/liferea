@@ -227,11 +227,11 @@ void itemview_launch_URL (const gchar *url, gboolean internal);
 
 /**
  * itemview_do_zoom:
- * @in:	TRUE if zooming in, FALSE for zooming out
+ * @zoom:	1 for zoom in, -1 for zoom out, 0 for reset
  *
  * Requests the item view to change zoom level.
  */
-void itemview_do_zoom (gboolean in);
+void itemview_do_zoom (gint zoom);
 
 /**
  * itemview_style_update:

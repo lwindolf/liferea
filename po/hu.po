@@ -495,11 +495,11 @@ msgstr "Minden GUI függvény hibakeresési üzeneteinek kiírása"
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Engedélyezi a HTML megjelenítés hibakeresését. Amikor a Liferea HTML "
 "kimenetet jelenít meg, az előállított HTML-t kiírja a ~/.cache/liferea/"
-"output.xhtml fájlba."
+"output.html fájlba."
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"

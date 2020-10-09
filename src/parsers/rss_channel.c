@@ -1,9 +1,9 @@
 /**
  * @file rss_channel.c  some tolerant and generic RSS/RDF channel parsing
  *
- * Copyright (C) 2003-2019 Lars Windolf <lars.windolf@gmx.de>
- * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net> 
- * 
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -31,7 +31,6 @@
 #include "metadata.h"
 #include "ns_admin.h"
 #include "ns_ag.h"
-#include "ns_blogChannel.h"
 #include "ns_cC.h"
 #include "ns_content.h"
 #include "ns_dc.h"
@@ -63,16 +62,16 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar			*tmp, *tmp2, *tmp3;
 	NsHandler		*nsh;
 	parseChannelTagFunc	pf;
-	
+
 	g_assert(NULL != cur);
-			
+
 	cur = cur->xmlChildrenNode;
 	while(cur) {
 		if(cur->type != XML_ELEMENT_NODE || cur->name == NULL) {
 			cur = cur->next;
 			continue;
 		}
-		
+
 		/* check namespace of this tag */
 		if(cur->ns) {
 			if((cur->ns->href && (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
@@ -85,14 +84,14 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 			}
 		} /* explicitly no following else !!! */
-			
+
 		/* Check for metadata tags */
 		if(NULL != (tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name))) {
 			if(NULL != (tmp3 = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
 				ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, tmp2, tmp3);
 				g_free(tmp3);
 			}
-		}	
+		}
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1))) {
@@ -100,7 +99,7 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				ctxt->feed->time = date_parse_RFC822 (tmp);
 				g_free(tmp);
 			}
-		} 
+		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"ttl")) {
  			if(NULL != (tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE))) {
 				ctxt->subscription->updateState->timeToLive = atoi (tmp);
@@ -127,14 +126,14 @@ static void parseChannel(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				g_free (tmp);
 			}
 		}
-		
+
 		cur = cur->next;
 	}
 }
 
 static gchar* parseTextInput(xmlNodePtr cur) {
 	gchar	*buffer = NULL, *tiLink = NULL, *tiName = NULL, *tiDescription = NULL, *tiTitle = NULL;
-	
+
 	g_assert(NULL != cur);
 
 	cur = cur->xmlChildrenNode;
@@ -156,11 +155,11 @@ static gchar* parseTextInput(xmlNodePtr cur) {
 		}
 		cur = cur->next;
 	}
-	
+
 	/* some postprocessing */
 	tiTitle = unhtmlize(tiTitle);
 	tiDescription = unhtmlize(tiDescription);
-	
+
 	if(tiLink && tiName && tiDescription && tiTitle) {
 		buffer = g_strdup_printf("<p>%s%s%s%s%s%s%s%s</p>",
 		                         tiDescription,
@@ -181,9 +180,9 @@ static gchar* parseTextInput(xmlNodePtr cur) {
 
 static gchar* parseImage(xmlNodePtr cur) {
 	gchar	*tmp;
-	
+
 	g_assert(NULL != cur);
-	
+
 	cur = cur->xmlChildrenNode;
 	while (cur != NULL) {
 		if (cur->type == XML_ELEMENT_NODE) {
@@ -209,13 +208,13 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 	gchar		*tmp;
 	short 		rdf = 0;
 	int 		error = 0;
-	
+
 	ctxt->feed->time = time(NULL);
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss")) {
 		cur = cur->xmlChildrenNode;
 		rdf = 0;
-	} else if(!xmlStrcmp(cur->name, BAD_CAST"rdf") || 
+	} else if(!xmlStrcmp(cur->name, BAD_CAST"rdf") ||
 	          !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 		cur = cur->xmlChildrenNode;
 		rdf = 1;
@@ -227,11 +226,11 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 		error = 1;
 	}
 
-	if(!error) {	
+	if(!error) {
 		while(cur && xmlIsBlankNode(cur)) {
 			cur = cur->next;
 		}
-		
+
 		while(cur) {
 			if(!cur->name) {
 				g_warning("invalid XML: parser returns NULL value -> tag ignored!");
@@ -239,7 +238,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 				continue;
 			}
 
-			if((!xmlStrcmp(cur->name, BAD_CAST"channel")) || 
+			if((!xmlStrcmp(cur->name, BAD_CAST"channel")) ||
 			   (!xmlStrcmp(cur->name, BAD_CAST"Channel"))) {
 				parseChannel(ctxt, cur);
 				if(0 == rdf)
@@ -266,7 +265,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					metadata_list_set (&ctxt->subscription->metadata, "imageUrl", tmp);
 					g_free(tmp);
 				}
-				
+
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"textinput")) ||
 			          (!xmlStrcmp(cur->name, BAD_CAST"textInput"))) {
 				/* no matter if we parse Userland or Netscape, there should be
@@ -276,7 +275,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 					ctxt->subscription->metadata = metadata_list_append(ctxt->subscription->metadata, "textInput", tmp);
 					g_free(tmp);
 				}
-				
+
 			} else if((!xmlStrcmp(cur->name, BAD_CAST"items"))) { /* RSS 1.1 */
 				xmlNodePtr itemNode = cur->xmlChildrenNode;
 				while(itemNode) {
@@ -296,7 +295,7 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 						ctxt->item->time = ctxt->feed->time;
 					ctxt->items = g_list_append(ctxt->items, ctxt->item);
 				}
-				
+
 			}
 			cur = cur->next;
 		}
@@ -306,18 +305,18 @@ static void rss_parse(feedParserCtxtPtr ctxt, xmlNodePtr cur) {
 static gboolean rss_format_check(xmlDocPtr doc, xmlNodePtr cur) {
 
 	if(!xmlStrcmp(cur->name, BAD_CAST"rss") ||
-	   !xmlStrcmp(cur->name, BAD_CAST"rdf") || 
+	   !xmlStrcmp(cur->name, BAD_CAST"rdf") ||
 	   !xmlStrcmp(cur->name, BAD_CAST"RDF")) {
 		return TRUE;
 	}
-	
+
 	/* RSS 1.1 */
 	if((NULL != cur->ns) &&
 	   (NULL != cur->ns->href) &&
 	   !xmlStrcmp(cur->name, BAD_CAST"Channel") &&
 	   !xmlStrcmp(cur->ns->href, BAD_CAST"http://purl.org/net/rss1.1#"))
 	   	return TRUE;
-		
+
 	return FALSE;
 }
 
@@ -334,12 +333,12 @@ feedHandlerPtr
 rss_init_feed_handler (void)
 {
 	feedHandlerPtr	fhp;
-	
+
 	fhp = g_new0 (struct feedHandler, 1);
 
 	/* Note: the tag mapping definitions and namespace registration
 	   infos are shared with rss_item.c */
-	
+
 	if (!RssToMetadataMapping) {
 		RssToMetadataMapping = g_hash_table_new (g_str_hash, g_str_equal);
 		g_hash_table_insert (RssToMetadataMapping, "copyright", "copyright");
@@ -353,15 +352,14 @@ rss_init_feed_handler (void)
 		g_hash_table_insert (RssToMetadataMapping, "author", "author");
 		g_hash_table_insert (RssToMetadataMapping, "comments", "commentsUri");
 	}
-	
+
 	if (!rss_nstable) {
 		rss_nstable = g_hash_table_new (g_str_hash, g_str_equal);
 		ns_rss_ns_uri_table = g_hash_table_new (g_str_hash, g_str_equal);
 
-		/* register name space handlers */		
-		rss_add_ns_handler (ns_bC_get_handler ());
-		rss_add_ns_handler (ns_dc_get_handler ());
-  		rss_add_ns_handler (ns_slash_get_handler ());
+		/* register name space handlers */
+    rss_add_ns_handler (ns_dc_get_handler ());
+    rss_add_ns_handler (ns_slash_get_handler ());
 		rss_add_ns_handler (ns_content_get_handler ());
 		rss_add_ns_handler (ns_syn_get_handler ());
 		rss_add_ns_handler (ns_admin_get_handler ());
@@ -373,11 +371,11 @@ rss_init_feed_handler (void)
 		rss_add_ns_handler (ns_trackback_get_handler ());
 		rss_add_ns_handler (ns_georss_get_handler ());
 	}
-							
+
 	/* prepare feed handler structure */
 	fhp->typeStr = "rss";
 	fhp->feedParser	= rss_parse;
 	fhp->checkFormat = rss_format_check;
-	
+
 	return fhp;
 }

@@ -95,6 +95,36 @@ tc tc3 = {
 	}
 };
 
+// garbage test #1
+tc tc4 = {
+	"",
+	"",
+	NULL,
+	{
+		NULL		// all garbage tests are expected to return just NULL
+	}
+};
+
+// garbage test #2
+tc tc5 = {
+	"/",
+	"aslkslkslkj",
+	NULL,
+	{
+		NULL
+	}
+};
+
+// garbage test #3
+tc tc6 = {
+	"::::",
+	"//",
+	NULL,
+	{
+		NULL
+	}
+};
+
 static void
 tc_favicon_get_urls (gconstpointer user_data)
 {
@@ -107,7 +137,7 @@ tc_favicon_get_urls (gconstpointer user_data)
 
 	/* Prepare test subscription */
 	s = subscription_new (NULL, NULL, NULL);
-	s->source = t->feedSource;
+	s->source = g_strdup (t->feedSource);
 	metadata_list_set (&s->metadata, "icon", t->iconUrl);
 
 	/* Run */
@@ -116,13 +146,14 @@ tc_favicon_get_urls (gconstpointer user_data)
 	/* Compare URLs */
 	url = results;
 	while (t->results[i]) {
-		if (0 != g_strcmp0 (t->results[i], url->data))
+		if (!url->data || 0 != g_strcmp0 (t->results[i], url->data))
 			feedsEqual = FALSE;
 
 		url = g_slist_next (url);
 		i++;
 	}
 
+	// On fail provide readable comparison
 	if (g_slist_length (results) != i || !feedsEqual) {
 		g_print ("URL lists mismatch!\n");
 		g_print ("expected:\n");
@@ -137,6 +168,10 @@ tc_favicon_get_urls (gconstpointer user_data)
 
 	g_assert (g_slist_length (results) == i);
 	g_assert (feedsEqual);
+
+	// Cleanup so we can use memcheck
+	subscription_free (s);
+	g_slist_free_full (results, g_free);
 }
 
 int
@@ -147,6 +182,9 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/favicon/tc1", &tc1, &tc_favicon_get_urls);
 	g_test_add_data_func ("/favicon/tc2", &tc2, &tc_favicon_get_urls);
 	g_test_add_data_func ("/favicon/tc3", &tc3, &tc_favicon_get_urls);
+	g_test_add_data_func ("/favicon/tc4", &tc4, &tc_favicon_get_urls);
+	g_test_add_data_func ("/favicon/tc5", &tc5, &tc_favicon_get_urls);
+	g_test_add_data_func ("/favicon/tc6", &tc6, &tc_favicon_get_urls);
 
 	return g_test_run();
 }

@@ -90,6 +90,8 @@ void liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url);
 
 void liferea_htmlview_title_changed (LifereaHtmlView *htmlview, const gchar *title);
 
+void liferea_htmlview_progress_changed (LifereaHtmlView *htmlview, gdouble progress);
+
 void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location);
 
 /**
@@ -156,12 +158,12 @@ void liferea_htmlview_scroll (LifereaHtmlView *htmlview);
 /**
  * liferea_htmlview_do_zoom:
  * @htmlview:	the html view
- * @in:		TRUE if zoom is to be increased
+ * @zoom:	1 for zoom in, -1 for zoom out, 0 for reset
  *
  * To be called when HTML view needs to change the text size
  * of the rendering widget implementation.
  */
-void liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gboolean in);
+void liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom);
 
 /**
  * liferea_htmlview_update_style_element:

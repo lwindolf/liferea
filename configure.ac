@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.13.2],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.13.3],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -92,7 +92,6 @@ doc/Makefile
 doc/html/Makefile
 xslt/Makefile
 man/Makefile
-man/pl/Makefile
 pixmaps/Makefile
 pixmaps/16x16/Makefile
 pixmaps/22x22/Makefile

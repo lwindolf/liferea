@@ -501,7 +501,7 @@ msgstr ""
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 
 #: ../src/liferea_application.c:293
@@ -3247,7 +3247,7 @@ msgstr "<b>Zahružajecca zaraz</b>"
 #~ "xhtml)"
 #~ msgstr ""
 #~ "  --debug-html     Uklučy debugavańnie HTML (zapis u ~/.liferea_1.2/"
-#~ "output.xhtml)"
+#~ "output.html)"
 
 #~ msgid "  --debug-plugins  Print debugging messages when loading plugins"
 #~ msgstr ""

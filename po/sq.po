@@ -499,10 +499,10 @@ msgstr "Shtyp mesazhe diagnostikimi të krejt funksioneve GUI"
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Aktivizon diagnostikimin e vizatimit HTML. Sa herë që Liferea vizaton HTML, "
-"do ta hedhë HTML-në e krijuar edhe te ~/.cache/liferea/output.xhtml"
+"do ta hedhë HTML-në e krijuar edhe te ~/.cache/liferea/output.html"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"

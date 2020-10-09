@@ -236,32 +236,35 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 		article = xhtml_strip_dhtml (article);
 	if (article) {
 		// Enable AMP images by replacing <amg-img> by <img>
-		gchar *tmp = g_strjoinv("<img", g_strsplit(article, "<amp-img", 0));
+		gchar **tmp_split = g_strsplit(article, "<amp-img", 0);
+		gchar *tmp = g_strjoinv("<img", tmp_split);
+		g_strfreev (tmp_split);
 		g_free (article);
 		article = tmp;
 
 		metadata_list_set (&(item->metadata), "richContent", article);
 		db_item_update (item);
 		itemlist_update_item (item);
-		item_unload (item);
 		g_free (article);
 	} else {
 		// If there is no HTML5 article try to fetch AMP source if there is one
 		gchar *ampurl = html_get_amp_url (result->data);
 		if (ampurl) {
-			updateRequestPtr request;
+			UpdateRequest *request;
 
 			debug3 (DEBUG_PARSING, "Fetching AMP HTML %ld %s : %s", item->id, item->title, ampurl);
-			request = update_request_new ();
-			update_request_set_source (request, ampurl);
-			// Explicitely do not pass proxy/auth options to Google (AMP)!
-			request->options = g_new0 (struct updateOptions, 1);
-			// FIXME: how do we prevent an endless loop here?
+			request = update_request_new (
+				ampurl,
+				NULL, 	// No update state needed? How do we prevent an endless redirection loop?
+				NULL 	// Explicitely do not the feed's proxy/auth options to 3rd parties like Google (AMP)!
+			);
+
 			update_execute_request (NULL, request, feed_enrich_item_cb, item, 0);
 
 			g_free (ampurl);
 		}
 	}
+	item_unload (item);
 }
 
 /**
@@ -270,7 +273,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 void
 feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 {
-	updateRequestPtr request;
+	UpdateRequest *request;
 
 	if (!item->source) {
 		debug1 (DEBUG_PARSING, "Cannot HTML5-enrich item %s because it has no source!\n", item->title);
@@ -285,11 +288,11 @@ feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 
 	// Fetch item->link document and try to parse it as XHTML
 	debug3 (DEBUG_PARSING, "Fetching HTML5 %ld %s : %s", item->id, item->title, item->source);
-	request = update_request_new ();
-	update_request_set_source (request, item->source);
-
-	// Pass options of parent feed (e.g. password, proxy...)
-	request->options = update_options_copy (subscription->updateOptions);
+	request = update_request_new (
+		item->source,
+		NULL,	// updateState
+		subscription->updateOptions	// Pass options of parent feed (e.g. password, proxy...)
+	);
 
 	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), 0);
 }
@@ -331,14 +334,14 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		} else {
 			/* Feed found, process it */
 			itemSetPtr	itemSet;
-			gboolean	html5_enabled;
 
 			node->available = TRUE;
 
 			/* merge the resulting items into the node's item set */
 			itemSet = node_get_itemset (node);
 			node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
-			itemlist_merge_itemset (itemSet);
+			if (node->newCount)
+				itemlist_merge_itemset (itemSet);
 			itemset_free (itemSet);
 
 			/* restore user defined properties if necessary */
@@ -364,7 +367,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 }
 
 static gboolean
-feed_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+feed_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	/* Nothing to do. Feeds require no subscription extra handling. */
 

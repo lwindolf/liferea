@@ -13,15 +13,15 @@ msgstr ""
 "Project-Id-Version: Liferea 1.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-28 12:24+0200\n"
-"PO-Revision-Date: 2020-02-24 21:21+0100\n"
-"Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
+"PO-Revision-Date: 2020-10-08 20:19+0200\n"
+"Last-Translator: Yannicka\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -38,11 +38,11 @@ msgid ""
 msgstr ""
 "Liferea est l’abréviation de Linux Feed Reader. C’est un agrégateur de flux "
 "pour sites web. Il gère un certain nombre de formats de flux dont RSS/RDF, "
-"CDF et ATOM. D’autres lecteurs de flux existent mais soit ils ne sont pas "
+"CDF et Atom. D’autres lecteurs de flux existent mais soit ils ne sont pas "
 "disponibles pour Linux, soit ils nécessitent beaucoup de bibliothèques "
 "externes pour être installés. Liferea essaie de combler ce manque en créant "
 "un agrégateur de flux rapide, facile à utiliser et à installer pour GTK/"
-"Gnome."
+"GNOME."
 
 #: ../liferea.appdata.xml.in.h:3
 msgid "Distinguishing features:"
@@ -78,7 +78,7 @@ msgstr "Retrouvez des articles en utilisant des dossiers de recherche"
 
 #: ../liferea.appdata.xml.in.h:11
 msgid "Play Podcasts"
-msgstr "Lire les Podcast"
+msgstr "Lire les podcasts"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
@@ -100,7 +100,8 @@ msgstr "Lecteurs de nouvelles et de blogs"
 #: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
-"news;feed;aggregator;blog;podcast;nouvelle;actualité;agrégateur;rss;atom"
+"news;feed;aggregator;blog;podcast;syndication;rss;atom;nouvelle;actualité;"
+"agrégateur"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
@@ -219,11 +220,11 @@ msgstr "Carte"
 
 #: ../xslt/item.xml.in.h:12
 msgid "View count"
-msgstr ""
+msgstr "Nombre de vues"
 
 #: ../xslt/item.xml.in.h:13
 msgid "Rating"
-msgstr ""
+msgstr "Évaluation"
 
 #: ../xslt/item.xml.in.h:14
 msgid "Comments"
@@ -251,7 +252,7 @@ msgid ""
 "list context menu."
 msgstr ""
 "Ajoutez des éléments à cette boîte à nouvelles en sélectionnant « Copier "
-"dans la boîte à nouvelles » à partir du menu contextuel de la liste des "
+"dans la boîte à nouvelles » à partir du menu contextuel de la liste des "
 "éléments."
 
 #: ../xslt/vfolder.xml.in.h:1
@@ -266,7 +267,7 @@ msgstr "La commande du navigateur a échoué : %s"
 #: ../src/browser.c:101 ../src/ui/liferea_shell.c:1044
 #, c-format
 msgid "Starting: \"%s\""
-msgstr "Exécution de : « %s »"
+msgstr "Exécution de : « %s »"
 
 #. unauthorized
 #: ../src/comments.c:118
@@ -340,14 +341,14 @@ msgstr ""
 "\n"
 "%s\n"
 "\n"
-" Vérifiez s’il vous plaît que l’outil de téléchargement est bien installé et "
+" Veuillez vérifier que l’outil de téléchargement est bien installé et "
 "fonctionne correctement. Vous pouvez le changer dans l’onglet "
 "« Téléchargement » du menu Outils/Préférences."
 
 #: ../src/export.c:188
 #, c-format
 msgid "Error renaming %s to %s: %s\n"
-msgstr "Erreur lors du renommage de %s en %s : %s\n"
+msgstr "Erreur lors du renommage de %s en %s : %s\n"
 
 #: ../src/export.c:417 ../src/export.c:419
 #, c-format
@@ -512,10 +513,10 @@ msgstr "Affiche des messages de débogage des fonctions de l’interface"
 #: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.xhtml"
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "Active le débogage du rendu HTML. Chaque fois que Liferea affiche du HTML, "
-"il copiera aussi le HTML généré dans ~/.cache/liferea/output.xhtml"
+"il copiera aussi le HTML généré dans ~/.cache/liferea/output.html"
 
 #: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"
@@ -726,13 +727,12 @@ msgid "Feed title"
 msgstr "Le titre de l’élément"
 
 #: ../src/rule.c:206
-#, fuzzy
 msgid "Feed source"
 msgstr "Source du flux"
 
 #: ../src/rule.c:207
 msgid "Parent folder title"
-msgstr ""
+msgstr "Titre du dossier parent"
 
 #: ../src/subscription.c:108
 #, c-format
@@ -819,11 +819,11 @@ msgstr "Pièces jointes"
 #. The following literals are the enclosure list size units
 #: ../src/ui/enclosure_list_view.c:260
 msgid " Bytes"
-msgstr " Octets"
+msgstr " octets"
 
 #: ../src/ui/enclosure_list_view.c:263
 msgid "kB"
-msgstr "Ko"
+msgstr "ko"
 
 #: ../src/ui/enclosure_list_view.c:267
 msgid "MB"
@@ -889,7 +889,7 @@ msgstr "FAQ"
 #: ../src/ui/liferea_shell.c:1041
 #, fuzzy, c-format
 msgid "Email command failed: %s"
-msgstr "La commande du navigateur a échoué : %s"
+msgstr "Échec de la commande de courrier électronique : %s"
 
 #: ../src/ui/search_dialog.c:107
 msgid "Saved Search"
@@ -1026,7 +1026,7 @@ msgstr "Ouvrir dans le navigateur _externe"
 
 #: ../src/ui/popup_menu.c:115
 msgid "Email The Author"
-msgstr ""
+msgstr "Envoyer un courriel à l’auteur"
 
 #: ../src/ui/popup_menu.c:140
 msgid "Copy to News Bin"
@@ -1403,9 +1403,9 @@ msgid "Authentication"
 msgstr "Authentification"
 
 #: ../glade/auth.ui.h:3
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Enter the username and password for \"%s\" (%s)"
-msgstr "Entrer le nom d’utilisateur et le mot de passe pour « %s » (%s) :"
+msgstr "Entrer le nom d’utilisateur et le mot de passe pour « %s » (%s)"
 
 #: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
 msgid "User_name:"
@@ -1424,15 +1424,14 @@ msgid "Open an enclosure of type:"
 msgstr "Ouvrir une pièce jointe de type :"
 
 #: ../glade/enclosure_handler.ui.h:3
-#, fuzzy
 msgid ""
 "_What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The enclosures URL will be supplied as an "
 "argument for this command:"
 msgstr ""
 "Que doit faire Liferea avec cette pièce jointe ? Veuillez entrer ci-dessous "
-"la commande que vous voulez exécuter. Les fichiers téléchargés seront passés "
-"en argument de cette commande :"
+"la commande que vous voulez exécuter. Les URL des pièces jointes seront "
+"fournie comme argument pour cette commande :"
 
 #: ../glade/enclosure_handler.ui.h:4
 msgid "_Browse"
@@ -1548,9 +1547,8 @@ msgid "Source Selection"
 msgstr "Sélection de la source"
 
 #: ../glade/node_source.ui.h:2
-#, fuzzy
 msgid "_Select the source type you want to add..."
-msgstr "Sélectionnez le type de source que vous voulez ajouter…"
+msgstr "_Sélectionnez le type de source que vous voulez ajouter…"
 
 #: ../glade/opml_source.ui.h:1
 msgid "Add OPML/Planet"
@@ -1581,7 +1579,7 @@ msgstr "Gestion du cache des flux"
 
 #: ../glade/prefs.ui.h:3
 msgid "Default _number of items per feed to save:"
-msgstr "_Nombre d’éléments de flux à sauvegarder par défaut :"
+msgstr "_Nombre d’éléments de flux à sauvegarder par défaut :"
 
 #: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:27
 msgid "0"
@@ -1722,7 +1720,7 @@ msgstr "Demander confirmation pour marquer tous les éléments comme lus"
 
 #: ../glade/prefs.ui.h:39
 msgid "Desktop"
-msgstr ""
+msgstr "Bureau"
 
 #: ../glade/prefs.ui.h:40
 msgid "HTTP Proxy Server"
@@ -1998,9 +1996,8 @@ msgid "Advanced..."
 msgstr "Avancé…"
 
 #: ../glade/simple_subscription.ui.h:3
-#, fuzzy
 msgid "Feed _Source"
-msgstr "Source du flux"
+msgstr "_Source du flux"
 
 #: ../glade/simple_subscription.ui.h:4
 msgid ""
@@ -2040,7 +2037,7 @@ msgstr "Moniteur de mise à jour"
 
 #: ../glade/update_monitor.ui.h:2
 msgid "Stop All"
-msgstr ""
+msgstr "Tout arrêter"
 
 #: ../glade/update_monitor.ui.h:3
 msgid "_Pending Requests"
