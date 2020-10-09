@@ -883,7 +883,7 @@ msgstr "Email Kommando fehlgeschlagen: %s"
 msgid "Saved Search"
 msgstr "Suche Speichern"
 
-#: ../src/ui/auth_dialog.c:114
+#: ../src/ui/auth_dialog.c:114 ../glade/auth.ui.h:3
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Bitte Benutzername und Passwort für \"%s\" (%s) eingeben:"
@@ -1394,11 +1394,6 @@ msgstr "Liferea-Webseite"
 msgid "Authentication"
 msgstr "Authentifizierung"
 
-#: ../glade/auth.ui.h:3
-#, fuzzy, no-c-format
-msgid "Enter the username and password for \"%s\" (%s)"
-msgstr "Bitte Benutzername und Passwort für \"%s\" (%s) eingeben:"
-
 #: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
 msgid "User_name:"
 msgstr "_Benutzername:"
@@ -1705,8 +1700,8 @@ msgid "Ask for confirmation when marking all items as read"
 msgstr "Bestätigen wenn alle Schlagzeilen als gelesen markiert werden"
 
 #: ../glade/prefs.ui.h:39
-msgid "Desktop"
-msgstr ""
+msgid "GUI"
+msgstr "Oberfläche"
 
 #: ../glade/prefs.ui.h:40
 msgid "HTTP Proxy Server"
@@ -2029,12 +2024,6 @@ msgstr "_Warteschlange"
 #: ../glade/update_monitor.ui.h:4
 msgid "_Downloading Now"
 msgstr "_In Bearbeitung"
-
-#~ msgid "GUI"
-#~ msgstr "Oberfläche"
-
-#~ msgid "Cancel All"
-#~ msgstr "_Alle abbrechen"
 
 #~ msgid "Updating favicon for \"%s\""
 #~ msgstr "Aktualisiere Symbol für Abonnement \"%s\""
