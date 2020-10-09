@@ -1,15 +1,15 @@
 # Indonesian translations for Liferea package.
 # Copyright (C) 2014 THE Liferea'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Liferea package.
-# Samsul Ma'arif <mail@samsul.web.id>, 2014, 2017
+# Samsul Ma'arif <mail@samsul.web.id>, 2014, 2017, 2020
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.10.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-28 12:24+0200\n"
-"PO-Revision-Date: 2017-05-27 04:04+0700\n"
-"Last-Translator: Samsul Ma'arif <mail@samsul.web.id>\n"
+"PO-Revision-Date: 2020-10-07 02:26+0700\n"
+"Last-Translator: Samsul Maarif <mail@samsul.web.id>\n"
 "Language-Team: Indonesian\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
@@ -18,9 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 
 #: ../liferea.appdata.xml.in.h:1
-#, fuzzy
 msgid "RSS feed reader"
-msgstr "Pembaca Feed"
+msgstr "Pembaca RSS Feed"
 
 #: ../liferea.appdata.xml.in.h:2
 msgid ""
@@ -92,9 +91,8 @@ msgid "Read news feeds and blogs"
 msgstr "Baca feed berita dan blog"
 
 #: ../net.sourceforge.liferea.desktop.in.h:5
-#, fuzzy
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
-msgstr "news;feed;aggregator;blog;podcast;"
+msgstr "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 
 #: ../xslt/feed.xml.in.h:1
 msgid ""
@@ -203,19 +201,19 @@ msgstr "Pembuat"
 
 #: ../xslt/item.xml.in.h:10
 msgid "Coordinates"
-msgstr ""
+msgstr "Kordinat"
 
 #: ../xslt/item.xml.in.h:11
 msgid "Map"
-msgstr ""
+msgstr "Peta"
 
 #: ../xslt/item.xml.in.h:12
 msgid "View count"
-msgstr ""
+msgstr "Jumlah penayangan"
 
 #: ../xslt/item.xml.in.h:13
 msgid "Rating"
-msgstr ""
+msgstr "Peringkat"
 
 #: ../xslt/item.xml.in.h:14
 msgid "Comments"
@@ -274,6 +272,8 @@ msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
 msgstr ""
+"Versi WebKitGTK+ Anda tidak mendukung pengubahan pengaturan proxy dari "
+"Liferea. Pengaturan proxy bawaan akan digunakan."
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:133
@@ -345,7 +345,8 @@ msgstr ""
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr "Dokumen kosong! Dokumen OPML \"%s\" tidak boleh kosong ketika diimpor."
+msgstr ""
+"Dokumen kosong! Dokumen OPML \"%s\" tidak boleh kosong ketika diimpor."
 
 #: ../src/export.c:448 ../src/export.c:450
 #, c-format
@@ -467,7 +468,7 @@ msgstr "uri"
 
 #: ../src/liferea_application.c:282
 msgid "Start with all plugins disabled"
-msgstr ""
+msgstr "Mulai dengan semua pengaya dinonaktifkan"
 
 #: ../src/liferea_application.c:287
 msgid "Print debugging messages of all types"
@@ -700,13 +701,12 @@ msgid "Feed title"
 msgstr "Judul feed"
 
 #: ../src/rule.c:206
-#, fuzzy
 msgid "Feed source"
-msgstr "Sumber Feed"
+msgstr "Sumber feed"
 
 #: ../src/rule.c:207
 msgid "Parent folder title"
-msgstr ""
+msgstr "Judul folder atasnya"
 
 #: ../src/subscription.c:108
 #, c-format
@@ -861,9 +861,9 @@ msgid "FAQ"
 msgstr "FAQ"
 
 #: ../src/ui/liferea_shell.c:1041
-#, fuzzy, c-format
+#, c-format
 msgid "Email command failed: %s"
-msgstr "Perintah peramban gagal: %s"
+msgstr "Perintah surel gagal: %s"
 
 #: ../src/ui/search_dialog.c:107
 msgid "Saved Search"
@@ -892,19 +892,18 @@ msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea dalam mode luring. Pembaruan tidak memungkinkan."
 
 #: ../src/ui/feed_list_view.c:478
-#, fuzzy
 msgid "all feeds"
-msgstr "Cari Semua Feed"
+msgstr "semua feed"
 
 #: ../src/ui/feed_list_view.c:479
-#, fuzzy, c-format
+#, c-format
 msgid "Mark %s as read ?"
-msgstr "Tandai semua telah dibaca"
+msgstr "Tandai %s telah dibaca ?"
 
 #: ../src/ui/feed_list_view.c:483
-#, fuzzy, c-format
+#, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
-msgstr "Anda yakin hendak menghapus \"%s\"?"
+msgstr "Anda yakin hendak menandai semua item dalam %s telah dibaca ?"
 
 #: ../src/ui/feed_list_view.c:621
 msgid "(Empty)"
@@ -935,7 +934,7 @@ msgstr "Anda yakin hendak menghapus \"%s\"?"
 
 #: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
 msgid "_Delete"
-msgstr ""
+msgstr "_Hapus"
 
 #: ../src/ui/feed_list_view.c:914
 msgid "Deletion Confirmation"
@@ -947,15 +946,16 @@ msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
+"Apakah Anda yakin ingin menambahkan langganan baru dengan URL \"%s\"? "
+"Langganan lain dengan URL yang sama telah ada (\"%s\")."
 
 #: ../src/ui/feed_list_view.c:966
 msgid "_Add"
-msgstr ""
+msgstr "T_ambah"
 
 #: ../src/ui/feed_list_view.c:968
-#, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
-msgstr "Konfirmasi Penghapusan"
+msgstr "Konfirmasi Penambahan Langganan Ganda"
 
 #: ../src/ui/item_list_view.c:115
 msgid "This item has no link specified!"
@@ -967,7 +967,7 @@ msgstr "** Tidak ada judul ***"
 
 #: ../src/ui/item_list_view.c:486
 msgid " <span background='red' color='black'> important </span> "
-msgstr ""
+msgstr " <span background='red' color='black'> penting </span> "
 
 #: ../src/ui/item_list_view.c:865
 msgid "Headline"
@@ -1000,7 +1000,7 @@ msgstr "Buka di Peramban _Eksternal"
 
 #: ../src/ui/popup_menu.c:115
 msgid "Email The Author"
-msgstr ""
+msgstr "Surel ke Penulis"
 
 #: ../src/ui/popup_menu.c:140
 msgid "Copy to News Bin"
@@ -1305,9 +1305,8 @@ msgid "_Copy Link Location"
 msgstr "_Salin Tautan Lokasi"
 
 #: ../src/webkit/liferea_web_view.c:194
-#, fuzzy
 msgid "_View Image"
-msgstr "Simpan Gam_bar dengan Nama"
+msgstr "_Tampilkan Gambar"
 
 #: ../src/webkit/liferea_web_view.c:195
 msgid "_Copy Image Location"
@@ -1374,9 +1373,9 @@ msgid "Authentication"
 msgstr "Otentikasi"
 
 #: ../glade/auth.ui.h:3
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Enter the username and password for \"%s\" (%s)"
-msgstr "Masukkan nama pengguna dan kata sandi untuk \"%s\" (%s):"
+msgstr "Masukkan nama pengguna dan kata sandi untuk \"%s\" (%s)"
 
 #: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
 msgid "User_name:"
@@ -1395,13 +1394,12 @@ msgid "Open an enclosure of type:"
 msgstr "Buka lampiran bertipe:"
 
 #: ../glade/enclosure_handler.ui.h:3
-#, fuzzy
 msgid ""
 "_What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The enclosures URL will be supplied as an "
 "argument for this command:"
 msgstr ""
-"Apa yang harus Liferea lakukan dengan lampiran ini? Silahkan masukkan "
+"_Apa yang harus Liferea lakukan dengan lampiran ini? Silahkan masukkan "
 "perintah yang Anda inginkan untuk dieksekusi di bawah. URL lampiran akan "
 "disediakan sebagai argumen untuk perintah ini:"
 
@@ -1415,24 +1413,23 @@ msgstr "_Lakukan secara otomatis untuk lampiran semacam ini mulai sekarang."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
-msgstr ""
+msgstr "halaman 1"
 
 #: ../glade/mainwindow.ui.h:3
 msgid "page 2"
-msgstr ""
+msgstr "halaman 2"
 
 #: ../glade/mainwindow.ui.h:4
 msgid "page 3"
-msgstr ""
+msgstr "halaman 3"
 
 #: ../glade/mainwindow.ui.h:5 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "Pokok berita"
 
 #: ../glade/mark_read_dialog.ui.h:1
-#, fuzzy
 msgid "Mark all as read ?"
-msgstr "Tandai semua telah dibaca"
+msgstr "Tandai semua telah dibaca ?"
 
 #: ../glade/mark_read_dialog.ui.h:2
 msgid "Mark all as read"
@@ -1440,7 +1437,7 @@ msgstr "Tandai semua telah dibaca"
 
 #: ../glade/mark_read_dialog.ui.h:3
 msgid "Do not ask again"
-msgstr ""
+msgstr "Jangan tanya lagi"
 
 #: ../glade/new_folder.ui.h:1
 msgid "New Folder"
@@ -1517,9 +1514,8 @@ msgid "Source Selection"
 msgstr "Pilihan Sumber"
 
 #: ../glade/node_source.ui.h:2
-#, fuzzy
 msgid "_Select the source type you want to add..."
-msgstr "Pilih tipe sumber yang ingin Anda tambahkan..."
+msgstr "Pilih tipe _sumber yang ingin Anda tambahkan..."
 
 #: ../glade/opml_source.ui.h:1
 msgid "Add OPML/Planet"
@@ -1681,15 +1677,15 @@ msgstr "La_bel tombol toolbar:"
 
 #: ../glade/prefs.ui.h:37
 msgid "Other"
-msgstr ""
+msgstr "Lainnya"
 
 #: ../glade/prefs.ui.h:38
 msgid "Ask for confirmation when marking all items as read"
-msgstr ""
+msgstr "Minta konfirmasi ketika menandai semua item sebagai terbaca"
 
 #: ../glade/prefs.ui.h:39
 msgid "Desktop"
-msgstr ""
+msgstr "Destop"
 
 #: ../glade/prefs.ui.h:40
 msgid "HTTP Proxy Server"
@@ -1732,6 +1728,8 @@ msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
+"Versi WebKitGTK+ Anda lebih tua dari 2.15.3. Tidak mendukung pengaturan "
+"proxy per aplikasi. Pengaturan proxy bawaan akan digunakan."
 
 #: ../glade/prefs.ui.h:50
 msgid "Proxy"
@@ -1760,7 +1758,7 @@ msgstr "_Unduh menggunakan"
 #: ../glade/prefs.ui.h:57
 #, no-c-format
 msgid "custom-command %s"
-msgstr ""
+msgstr "perintah-khusus %s"
 
 #: ../glade/prefs.ui.h:58
 msgid "Opening Enclosures"
@@ -1775,18 +1773,16 @@ msgid "Subscription Properties"
 msgstr "Properti Langganan"
 
 #: ../glade/properties.ui.h:2
-#, fuzzy
 msgid "Feed _Name"
-msgstr "_Nama Feed:"
+msgstr "_Nama Feed"
 
 #: ../glade/properties.ui.h:3
-#, fuzzy
 msgid "Update _Interval"
-msgstr "Interval Pembaruan"
+msgstr "_Interval Pembaruan"
 
 #: ../glade/properties.ui.h:4
 msgid "_Use global default update interval."
-msgstr "Gunakan interval pembaruan bawaan global."
+msgstr "G_unakan interval pembaruan bawaan global."
 
 #: ../glade/properties.ui.h:5
 msgid "_Feed specific update interval of"
@@ -1869,7 +1865,7 @@ msgstr "Tandai inte_m terunduh telah dibaca."
 
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
-msgstr ""
+msgstr "Ekstrak konten lengkap dari HTML dan Google AMP"
 
 #: ../glade/properties.ui.h:39
 msgid "Advanced"
@@ -1961,9 +1957,8 @@ msgid "Advanced..."
 msgstr "Tingkat Mahir..."
 
 #: ../glade/simple_subscription.ui.h:3
-#, fuzzy
 msgid "Feed _Source"
-msgstr "Sumber Feed"
+msgstr "_Sumber Feed"
 
 #: ../glade/simple_subscription.ui.h:4
 msgid ""
@@ -2003,17 +1998,15 @@ msgstr "Monitor Pembaruan"
 
 #: ../glade/update_monitor.ui.h:2
 msgid "Stop All"
-msgstr ""
+msgstr "Hentikan Semua"
 
 #: ../glade/update_monitor.ui.h:3
-#, fuzzy
 msgid "_Pending Requests"
-msgstr "Batalkan Permintaan"
+msgstr "Batalkan _Permintaan"
 
 #: ../glade/update_monitor.ui.h:4
-#, fuzzy
 msgid "_Downloading Now"
-msgstr "Sedang Mengunduh"
+msgstr "Se_dang Mengunduh"
 
 #~ msgid "GUI"
 #~ msgstr "GUI"
