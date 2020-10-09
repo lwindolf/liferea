@@ -101,14 +101,11 @@ social_init (void)
 {
 	gchar *tmp;
 	
-	social_register_bookmark_site ("blogmarks",	"http://blogmarks.net/my/new.php?mini=1&title=%s&url=%s", TRUE, TRUE);
-	social_register_bookmark_site ("Buddymarks",	"http://buddymarks.com/add_bookmark.php?bookmark_title=%s&bookmark_url=%s", TRUE, TRUE);
-	social_register_bookmark_site ("CiteUlike",	"http://www.citeulike.org/posturl?url=%s&title=%s", TRUE, FALSE);
+	social_register_bookmark_site ("blogmarks",	"https://blogmarks.net/my/new.php?mini=1&title=%s&url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("digg",		"https://digg.com/submit?phase=2&url=%s", FALSE, FALSE);
 	social_register_bookmark_site ("diigo",		"https://www.diigo.com/post?url=%s&title=%s&desc=", TRUE, FALSE);
 	social_register_bookmark_site ("Facebook",	"https://www.facebook.com/share.php?u=%s", FALSE, FALSE);
 	social_register_bookmark_site ("Google Bookmarks",	"https://www.google.com/bookmarks/mark?op=edit&output=&bkmk=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Google Plus",	"https://plus.google.com/share?url=%s", FALSE, FALSE);
 	social_register_bookmark_site ("identi.ca",	"https://identi.ca/index.php?action=bookmarklet&status_textarea=%%E2%%80%%9C%s%%E2%%80%%9D%%20%%E2%%80%%94%%20%s", TRUE, TRUE);
 	social_register_bookmark_site ("Instapaper",	"https://www.instapaper.com/hello2?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title=%s&url=%s", TRUE, TRUE);
@@ -123,7 +120,7 @@ social_init (void)
 	g_free (tmp);
 	
 	if (!bookmarkSite)
-		social_set_bookmark_site ("del.icio.us");		/* set default if necessary */
+		social_set_bookmark_site ("Pocket");		/* set default if necessary */
 }
 
 void
