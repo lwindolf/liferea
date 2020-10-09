@@ -2,7 +2,7 @@
 
 # List of source files containing translatable strings.
 
-liferea.appdata.xml.in
+net.sourceforge.liferea.appdata.xml.in
 net.sourceforge.liferea.desktop.in
 xslt/feed.xml.in
 xslt/source.xml.in
@@ -136,8 +136,6 @@ src/parsers/ns_content.c
 src/parsers/ns_content.h
 src/parsers/ns_dc.c
 src/parsers/ns_dc.h
-src/parsers/ns_photo.c
-src/parsers/ns_photo.h
 src/parsers/ns_slash.c
 src/parsers/ns_slash.h
 src/parsers/ns_syn.c
