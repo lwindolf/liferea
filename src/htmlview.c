@@ -103,7 +103,7 @@ htmlview_render_item (itemPtr item,
 	return output;
 }
 
-void
+static void
 htmlview_start_output (GString *buffer,
                        const gchar *base,
 		       gboolean css)
@@ -160,7 +160,7 @@ htmlview_start_output (GString *buffer,
 	"\n</script>");
 }
 
-void
+static void
 htmlview_finish_output (GString *buffer, gchar *content)
 {
 	if (content) {
