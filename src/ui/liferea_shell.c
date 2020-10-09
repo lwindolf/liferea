@@ -1245,6 +1245,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect (G_OBJECT (shell->window), "delete_event", G_CALLBACK(on_close), NULL);
 	g_signal_connect (G_OBJECT (shell->window), "window_state_event", G_CALLBACK(on_window_state_event), shell);
 	g_signal_connect (G_OBJECT (shell->window), "key_press_event", G_CALLBACK(on_key_press_event), shell);
+	g_signal_connect (G_OBJECT (shell->window), "style-updated", G_CALLBACK(liferea_shell_rebuild_css), NULL);
 
 	/* 3.) setup status bar */
 
@@ -1259,7 +1260,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_widget_show_all (shell->statusbar_feedsinfo_evbox);
 	gtk_box_pack_start (GTK_BOX (shell->statusbar), shell->statusbar_feedsinfo_evbox, FALSE, FALSE, 5);
 	g_signal_connect (G_OBJECT (shell->statusbar_feedsinfo_evbox), "button_release_event", G_CALLBACK (on_next_unread_item_activate), NULL);
-	g_signal_connect (G_OBJECT (shell->statusbar), "style-updated", G_CALLBACK(liferea_shell_rebuild_css), NULL);
 
 	/* 4.) setup tabs */
 
