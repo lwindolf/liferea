@@ -49,4 +49,6 @@ void liferea_application_shutdown (void);
 
 G_END_DECLS
 
+void liferea_application_rebuild_css (void);
+
 #endif

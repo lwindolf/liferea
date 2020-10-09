@@ -237,3 +237,9 @@ htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode)
 	g_string_free (output, TRUE);
 	g_free (baseURL);
 }
+
+void
+htmlview_update_style_element (LifereaHtmlView *htmlview)
+{
+	liferea_htmlview_update_style_element (htmlview);
+};

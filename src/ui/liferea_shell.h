@@ -194,6 +194,13 @@ void liferea_shell_set_important_status_bar (const char *format, ...);
 GtkWidget * liferea_shell_get_window (void);
 
 /**
+ * liferea_shell_rebuild_css:
+ *
+ * Invokes a rebuild of the WebView CSS.
+ */
+void liferea_shell_rebuild_css (void);
+
+/**
  * liferea_shell_set_view_mode:
  * @newMode:	the new mode
  *

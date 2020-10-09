@@ -31,6 +31,7 @@
 #include <locale.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
 
 #include "conf.h"
 #include "common.h"
@@ -163,6 +164,7 @@ typedef struct themeColor {
 
 static GSList *themeColors = NULL;
 static gboolean darkTheme = FALSE;
+static gboolean styleUpdated = FALSE;
 
 /* Determining of theme colors, to be inserted in CSS */
 static themeColorPtr
@@ -213,10 +215,12 @@ render_init_theme_colors (GtkWidget *widget)
 	GdkRGBA		rgba;
 	gint		textAvg, bgAvg;
 
+	styleUpdated = TRUE;
+	themeColors = NULL;
+
 	style = gtk_widget_get_style (widget);
 	sctxt = gtk_widget_get_style_context (widget);
 
-	g_assert (NULL == themeColors);
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BG",    style->bg[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-LIGHT", style->light[GTK_STATE_NORMAL]));
@@ -322,13 +326,15 @@ render_is_dark_theme (void)
 const gchar *
 render_get_css (gboolean externalCss)
 {
-	if (!css) {
+	if (!css || styleUpdated) {
 		gchar	*defaultStyleSheetFile;
 		gchar	*userStyleSheetFile;
 		gchar	*tmp;
 
 		if (!themeColors)
 			return NULL;
+
+		styleUpdated = FALSE;
 
 		css = g_string_new(NULL);
 
@@ -362,9 +368,8 @@ render_get_css (gboolean externalCss)
 
 			g_string_free(css, TRUE);
 
-			css = g_string_new("<style type=\"text/css\"> @import url(file://");
-			g_string_append(css, filename);
-			g_string_append(css, "); </style> ");
+			css = g_string_new ("<link rel=\"stylesheet\" href=\"file://");
+			g_string_append_printf (css, "%s?%d\" />", filename, (int)time(NULL));
 
 			g_free(filename);
 		} else {

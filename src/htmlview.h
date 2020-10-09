@@ -33,4 +33,30 @@
  */
 void	htmlview_update (LifereaHtmlView *htmlview, itemViewMode mode);
 
+/** helper methods for HTML output */
+
+/**
+ * Function to add HTML source header to create a valid HTML source.
+ *
+ * @param buffer	buffer to add the HTML to
+ * @param base		base URL of HTML content
+ * @param css		TRUE if CSS definitions are to be added
+ * @param script	TRUE if item menu scripts are to be added
+ */
+void	htmlview_start_output (GString *buffer, const gchar *base, gboolean css, gboolean script);
+
+/**
+ * Function to add HTML source footer to create a valid HTML source.
+ *
+ * @param buffer	buffer to add the HTML to
+ */
+void	htmlview_finish_output (GString *buffer);
+
+/**
+ * Invokes an update of the href attribute in WebView's <link> tag
+ * 
+ * @param htmlview  current HTML view
+ */
+void    htmlview_update_style_element (LifereaHtmlView *htmlview);
+
 #endif

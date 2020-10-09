@@ -529,3 +529,9 @@ liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom)
 		liferea_htmlview_set_zoom (htmlview, 0.8 * liferea_htmlview_get_zoom (htmlview));
 
 }
+
+void
+liferea_htmlview_update_style_element (LifereaHtmlView *htmlview)
+{
+	(RENDERER (htmlview)->reloadStyle) (htmlview->renderWidget);
+}
