@@ -80,7 +80,7 @@
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="feedCacheHandlingLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Feed Cache Handling</property>
@@ -88,6 +88,9 @@
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
+                        <accessibility>
+                          <relation type="label-for" target="feedCacheGrid"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -127,6 +130,9 @@
                         <property name="top_attach">1</property>
                       </packing>
                     </child>
+                    <accessibility>
+                      <relation type="labelled-by" target="feedCacheHandlingLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -140,7 +146,7 @@
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="feedUpdateSettingsLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Feed Update Settings</property>
@@ -148,6 +154,9 @@
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
+                        <accessibility>
+                          <relation type="label-for" target="feedUpdateGrid"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -286,6 +295,9 @@
                     <child>
                       <placeholder/>
                     </child>
+                    <accessibility>
+                      <relation type="labelled-by" target="feedUpdateSettingsLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -312,12 +324,12 @@
                 <property name="orientation">vertical</property>
                 <property name="row_spacing">18</property>
                 <child>
-                  <object class="GtkGrid">
+                  <object class="GtkGrid" id="folderDisplayGrid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="row_spacing">6</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="folderDisplaySettingsLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Folder Display Settings</property>
@@ -325,6 +337,9 @@
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
+                        <accessibility>
+                          <relation type="label-for" target="folderDisplayGrid"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -365,6 +380,9 @@
                         <property name="top_attach">2</property>
                       </packing>
                     </child>
+                    <accessibility>
+                      <relation type="labelled-by" target="folderDisplaySettingsLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -372,12 +390,12 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkGrid">
+                  <object class="GtkGrid" id="feedIconsGrid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="row_spacing">6</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="feedIconsLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Feed Icons (Favicons)</property>
@@ -385,6 +403,9 @@
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
+                        <accessibility>
+                          <relation type="label-for" target="feedIconsGrid"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -405,6 +426,9 @@
                         <property name="top_attach">1</property>
                       </packing>
                     </child>
+                    <accessibility>
+                      <relation type="labelled-by" target="feedIconsLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -435,14 +459,14 @@
                 <property name="orientation">vertical</property>
                 <property name="row_spacing">18</property>
                 <child>
-                  <object class="GtkGrid">
+                  <object class="GtkGrid" id="readingHeadlinesGrid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="readingHeadlinesLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Reading Headlines</property>
@@ -450,6 +474,9 @@
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
+                        <accessibility>
+                          <relation type="label-for" target="readingHeadlinesGrid"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -519,6 +546,9 @@
                         <property name="top_attach">2</property>
                       </packing>
                     </child>
+                    <accessibility>
+                      <relation type="labelled-by" target="readingHeadlinesLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -526,14 +556,14 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkGrid">
+                  <object class="GtkGrid" id="webIntegrationGrid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="webIntegrationLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Web Integration</property>
@@ -541,6 +571,9 @@
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
+                        <accessibility>
+                          <relation type="label-for" target="webIntegrationGrid"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -573,6 +606,9 @@
                         <property name="top_attach">1</property>
                       </packing>
                     </child>
+                    <accessibility>
+                      <relation type="labelled-by" target="webIntegrationLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -603,13 +639,13 @@
                 <property name="orientation">vertical</property>
                 <property name="row_spacing">18</property>
                 <child>
-                  <object class="GtkGrid">
+                  <object class="GtkGrid" id="internalBrowserGrid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="row_spacing">6</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="internalBrowserLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Internal Browser Settings</property>
@@ -617,6 +653,9 @@
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
+                        <accessibility>
+                          <relation type="label-for" target="internalBrowserGrid"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -674,6 +713,9 @@
                         <property name="top_attach">3</property>
                       </packing>
                     </child>
+                    <accessibility>
+                      <relation type="labelled-by" target="internalBrowserLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -681,14 +723,14 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkGrid">
+                  <object class="GtkGrid" id="externalBrowserGrid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="externalBrowserLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">External Browser Settings</property>
@@ -696,6 +738,9 @@
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
+                        <accessibility>
+                          <relation type="label-for" target="externalBrowserGrid"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -739,6 +784,9 @@
                         <property name="can_focus">True</property>
                         <property name="activates_default">True</property>
                         <signal name="changed" handler="on_browsercmd_changed" swapped="no"/>
+                        <accessibility>
+                          <relation type="labelled-by" target="urlhintlabel"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -751,9 +799,10 @@
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">&lt;small&gt;(%s for URL)&lt;/small&gt;</property>
                         <property name="use_markup">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="mnemonic_widget">browsercmd</property>
                         <property name="xalign">0</property>
+                        <accessibility>
+                          <relation type="label-for" target="browsercmd"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">1</property>
@@ -773,6 +822,9 @@
                     <child>
                       <placeholder/>
                     </child>
+                    <accessibility>
+                      <relation type="labelled-by" target="externalBrowserLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -804,7 +856,7 @@
                 <property name="row_spacing">6</property>
                 <property name="column_spacing">12</property>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="toolbarSettingsLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Toolbar Settings</property>
@@ -869,7 +921,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="desktopOtherLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Other</property>
@@ -923,7 +975,7 @@
                 <property name="border_width">12</property>
                 <property name="row_spacing">6</property>
                 <child>
-                  <object class="GtkLabel">
+                  <object class="GtkLabel" id="proxyServerLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">HTTP Proxy Server</property>
@@ -1286,6 +1338,9 @@
                         <property name="label" translatable="yes">This enables the WebKit feature described &lt;a href="https://webkit.org/tracking-prevention/"&gt;here&lt;/a&gt;.</property>
                         <property name="use_markup">True</property>
                         <property name="wrap">True</property>
+                        <accessibility>
+                          <relation type="label-for" target="itpbtn"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1333,7 +1388,7 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <object class="GtkLabel">
+                          <object class="GtkLabel" id="itpVersionWarningLabel">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="label" translatable="yes">Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or higher.</property>
@@ -1386,13 +1441,13 @@
                 <property name="border_width">12</property>
                 <property name="row_spacing">18</property>
                 <child>
-                  <object class="GtkGrid">
+                  <object class="GtkGrid" id="downloadingEnclosuresGrid">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="row_spacing">6</property>
                     <property name="column_spacing">12</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkLabel" id="downloadingEnclosuresLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Downloading Enclosures</property>
@@ -1400,6 +1455,9 @@
                         <attributes>
                           <attribute name="weight" value="bold"/>
                         </attributes>
+                        <accessibility>
+                          <relation type="label-for" target="downloadingEnclosuresGrid"/>
+                        </accessibility>
                       </object>
                       <packing>
                         <property name="left_attach">0</property>
@@ -1511,6 +1569,9 @@
                         <property name="top_attach">2</property>
                       </packing>
                     </child>
+                    <accessibility>
+                      <relation type="labelled-by" target="downloadingEnclosuresLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
