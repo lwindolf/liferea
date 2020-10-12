@@ -912,45 +912,6 @@ db_item_load (gulong id)
 
 /* Item modification methods */
 
-static int
-db_item_set_id_cb (void *user_data,
-                   int count,
-		   char **values,
-		   char **columns) 
-{
-	itemPtr	item = (itemPtr)user_data;
-	
-	g_assert(NULL != values);
-
-	if(values[0]) {
-		/* the result in *values should be MAX(item_id),
-		   so adding one should give a unique new id */
-		item->id = 1 + atol(values[0]); 
-	} else {
-		/* empty table causes no result in values[0]... */
-		item->id = 1;
-	}
-	
-	debug2(DEBUG_DB, "new item id=%lu for \"%s\"", item->id, item->title);
-	return 0;
-}
-
-static void
-db_item_set_id (itemPtr item) 
-{
-	gchar	*sql, *err;
-	gint	res;
-	
-	g_assert (0 == item->id);
-	
-	sql = sqlite3_mprintf ("SELECT MAX(item_id) FROM items");
-	res = sqlite3_exec (db, sql, db_item_set_id_cb, item, &err);
-	if (SQLITE_OK != res) 
-		g_warning ("Select failed (%s) SQL: %s", err, sql);
-	sqlite3_free (sql);
-	sqlite3_free (err);
-}
-
 static void
 db_item_search_folders_update (itemPtr item)
 {
@@ -1016,12 +977,6 @@ db_item_update (itemPtr item)
 	
 	db_begin_transaction ();
 
-	if (!item->id) {
-		db_item_set_id (item);
-
-		debug1(DEBUG_DB, "insert into table \"items\": \"%s\"", item->title);	
-	}
-
 	/* Update the item... */
 	stmt = db_get_statement ("itemUpdateStmt");
 	sqlite3_bind_text (stmt, 1,  item->title, -1, SQLITE_TRANSIENT);
@@ -1036,7 +991,10 @@ db_item_update (itemPtr item)
 	sqlite3_bind_int64  (stmt, 10, item->time);
 	sqlite3_bind_text (stmt, 11, item->commentFeedId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 12, item->isComment?1:0);
-	sqlite3_bind_int  (stmt, 13, item->id);
+	if (item->id)
+		sqlite3_bind_int  (stmt, 13, item->id);
+	else
+		sqlite3_bind_null (stmt, 13);
 	sqlite3_bind_int  (stmt, 14, item->parentItemId);
 	sqlite3_bind_text (stmt, 15, item->nodeId, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 16, item->parentNodeId, -1, SQLITE_TRANSIENT);
@@ -1045,6 +1003,10 @@ db_item_update (itemPtr item)
 
 	if (SQLITE_DONE != res) 
 		g_warning ("item update failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+	if (!item->id && SQLITE_DONE == res) {
+		item->id = sqlite3_last_insert_rowid (db);
+		debug2(DEBUG_DB, "insert into table \"items\": \"%s\" id : %lu", item->title, item->id);
+	}
 
 	sqlite3_finalize (stmt);
 
