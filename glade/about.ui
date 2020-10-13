@@ -122,7 +122,7 @@ Pauli Virtanen
 Jorma Karvonen
 Guillaume Bernard
 </property>
-    <property name="logo_icon_name">liferea</property>
+    <property name="logo_icon_name">net.sourceforge.liferea</property>
     <property name="license_type">gpl-2-0</property>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox23">
