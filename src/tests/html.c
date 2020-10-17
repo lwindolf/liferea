@@ -99,6 +99,28 @@ gchar *tc_xml_atom2[] = {
 	NULL
 };
 
+/* HTML5 extraction test cases */
+
+gchar *tc_article[] = {
+	"<html><head></head><body><article><p>1</p></article></body></html>",
+	"http://example.com",
+	"<div xmlns=\"http://www.w3.org/1999/xhtml\" xml:base=\"http://example.com\"><p>1</p> </div>"
+};
+
+gchar *tc_article_missing[] = {
+	"<html><head></head><body><p>1</p></body></html>",
+	"http://example.com",
+	NULL
+};
+
+/* this test case is about empty tags "<x></x>" not being collapsed to "<x/>"
+   but to be output as "<x> </x>" instead */
+gchar *tc_article_empty_tags[] = {
+	"<html><head></head><body><article><p>1</p><div class='something' data-nr='555'></div></article></body></html>",
+	"https://example.com",
+	"<div xmlns=\"http://www.w3.org/1999/xhtml\" xml:base=\"https://example.com\"><p>1</p><div class=\"something\" data-nr=\"555\"> </div> </div>"
+};
+
 static void
 tc_auto_discover_link (gconstpointer user_data)
 {
@@ -117,6 +139,19 @@ tc_auto_discover_link (gconstpointer user_data)
 	} while(tc[i++]);
 }
 
+static void
+tc_get_article (gconstpointer user_data)
+{
+	gchar **tc = (gchar **)user_data;
+	gchar *result = html_get_article (tc[0], tc[1]);
+	if (!tc[2])
+		g_assert_null (result);
+	else
+		g_assert_cmpstr (tc[2], ==, result);
+
+	g_free (result);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -132,6 +167,10 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/html/auto_discover_link_garbage", &tc_garbage, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_xml_atom", &tc_xml_atom, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_xml_atom2", &tc_xml_atom2, &tc_auto_discover_link);
+
+	g_test_add_data_func ("/html/html5_extract_article", &tc_article, &tc_get_article);
+	g_test_add_data_func ("/html/html5_extract_article_missing", &tc_article_missing, &tc_get_article);
+	g_test_add_data_func ("/html/html5_extract_article_empty_tags", &tc_article_empty_tags, &tc_get_article);
 
 	return g_test_run();
 }

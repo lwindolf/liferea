@@ -2,7 +2,7 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS = html_auto favicon parse_date parse_xml
+TEST_PROGS = html_parse favicon parse_date parse_xml
 
 test: $(TEST_PROGS)
 	echo $(TEST_PROGS) |\
@@ -86,9 +86,9 @@ favicon_LDADD = \
 favicon_SOURCES = favicon.c
 favicon_CFLAGS = $(AM_CPPFLAGS)
 
-html_auto_SOURCES = html.c
-html_auto_CFLAGS = $(AM_CPPFLAGS)
-html_auto_LDADD = $(favicon_LDADD)
+html_parse_SOURCES = html.c
+html_parse_CFLAGS = $(AM_CPPFLAGS)
+html_parse_LDADD = $(favicon_LDADD)
 
 parse_date_SOURCES = parse_date.c
 parse_date_CFLAGS = $(AM_CPPFLAGS)

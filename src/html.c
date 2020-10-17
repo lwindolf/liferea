@@ -291,7 +291,7 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 	xmlNodePtr	node, root;
 	gchar		*result = NULL;
 
-	doc = xhtml_parse ((gchar *)data, (size_t)strlen(data));
+	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
 	if (!doc) {
 		debug1 (DEBUG_PARSING, "XHTML parsing error during HTML5 fetch of '%s'\n", baseUri);
 		return NULL;
