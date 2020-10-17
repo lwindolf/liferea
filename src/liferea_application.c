@@ -347,7 +347,7 @@ liferea_application_new (int argc, char *argv[])
 
 	g_set_prgname ("liferea");
 	g_set_application_name (_("Liferea"));
-	gtk_window_set_default_icon_name ("liferea");	/* GTK theme support */
+	gtk_window_set_default_icon_name ("net.sourceforge.liferea");	/* GTK theme support */
 	status = g_application_run (G_APPLICATION (liferea_app), argc, argv);
 	g_object_unref (liferea_app);
 
