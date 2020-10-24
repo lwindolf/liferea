@@ -47,11 +47,11 @@ jobs:
     #    uses a compiled language
 
     - run: |
-       sudo apt update -qq
-       sudo apt install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0-dev libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool
+       sudo apt-get update -qq
+       sudo apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0-dev libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool
        mkdir inst
        sh autogen.sh
-       ./configure --prefix=inst
+       ./configure --prefix=$(pwd)/inst
        make && make install
        cd src/tests && make test
 
