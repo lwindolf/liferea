@@ -1,6 +1,7 @@
 
 xslt_in_files = item.xml.in \
                 feed.xml.in \
+                html5-extract.xml.in \
                 source.xml.in \
                 folder.xml.in \
 		newsbin.xml.in \

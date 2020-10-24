@@ -42,18 +42,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+  <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+  <base href="{$baseUrl}"/>
 </head>
 <xsl:element name="body">
-
-<!-- base URL of the itemset -->
-<div class="item" href="{$baseUrl}">
 
 <xsl:for-each select="item">
   <xsl:call-template name="item"/>
 </xsl:for-each>
-
-</div> <!-- end of base URL div -->
 
 </xsl:element>
 </html>
@@ -64,8 +60,7 @@
 
 <xsl:template name="item">
 
-<!-- base URL of parent feed -->
-<div href="{/itemset/feed/feedSource}">
+<div class='item'>
 
 <!-- header table -->
 <table class="itemhead" cellspacing="0" cellpadding="0" dir="{$txtDirection}">
@@ -337,7 +332,7 @@
      </p>
   </xsl:if>
 </div> <!-- end of comments -->
-</div> <!-- end of base URL -->
+</div> <!-- end of item -->
 
 </xsl:template>
 
@@ -362,26 +357,6 @@
 </xsl:template>
 
 <!-- ==================================================================== -->
-
-<!--- substring after last occurance also from "XSLT Cookbook"... -->
-<xsl:template name="substring-after-last">
-  <xsl:param name="input" />
-  <xsl:param name="substr" />
-  <!-- Extract the string which comes after the first occurence -->
-  <xsl:variable name="temp" select="substring-after($input,$substr)"/>
-  <xsl:choose>
-    <!-- If it still contains the search string then recursively process -->
-    <xsl:when test="$substr and contains($temp,$substr)">
-      <xsl:call-template name="substring-after-last">
-        <xsl:with-param name="input"  select="$temp" />
-        <xsl:with-param name="substr" select="$substr" />
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="$temp" />
-    </xsl:otherwise>
-  </xsl:choose>
-</xsl:template>
 
 <!-- newline to br based in https://stackoverflow.com/questions/3309746/how-to-convert-newline-into-br-with-xslt -->
 <xsl:template name="add-newline">

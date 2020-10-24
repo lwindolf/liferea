@@ -2,12 +2,12 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS = html_parse favicon parse_date parse_xml
+TEST_PROGS = parse_html favicon parse_date parse_xml
 
 test: $(TEST_PROGS)
 	echo $(TEST_PROGS) |\
 	sed "s/^/.\//;s/ / \&\& .\//g" |\
-	xargs -I{} sh -c "{}" |\
+	xargs -I{} sh -c "{}"
 	./test_a11y.sh
 
 memcheck: $(TEST_PROGS)
@@ -86,9 +86,9 @@ favicon_LDADD = \
 favicon_SOURCES = favicon.c
 favicon_CFLAGS = $(AM_CPPFLAGS)
 
-html_parse_SOURCES = html.c
-html_parse_CFLAGS = $(AM_CPPFLAGS)
-html_parse_LDADD = $(favicon_LDADD)
+parse_html_SOURCES = parse_html.c
+parse_html_CFLAGS = $(AM_CPPFLAGS)
+parse_html_LDADD = $(favicon_LDADD)
 
 parse_date_SOURCES = parse_date.c
 parse_date_CFLAGS = $(AM_CPPFLAGS)

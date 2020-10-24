@@ -26,6 +26,7 @@
 #include "common.h"
 #include "debug.h"
 #include "html.h"
+#include "render.h"
 #include "xml.h"
 
 enum {
@@ -288,7 +289,7 @@ html_discover_favicon (const gchar * data, const gchar * baseUri)
 gchar *
 html_get_article (const gchar *data, const gchar *baseUri) {
 	xmlDocPtr	doc;
-	xmlNodePtr	node, root;
+	xmlNodePtr	root;
 	gchar		*result = NULL;
 
 	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
@@ -299,24 +300,18 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 
 	root = xmlDocGetRootElement (doc);
 	if (root) {
-		// Find HTML5 <article>, we only expect a single article...
-		node = xpath_find (root, "//article");
+		xmlDocPtr article = xhtml_extract_doc (root, 1, baseUri);
+		if (article) {
+			/* For debug output
+			xmlSaveCtxt *s;
+			s = xmlSaveToFd(0, NULL, 0);
+			xmlSaveDoc(s, article);
+			xmlSaveClose(s);
+			*/
 
-		// Fallback to microformat <div property='articleBody'>
-		if (!node)
-			node = xpath_find (root, "//div[@property='articleBody']");
-
-		// Fallback to <div id='content'> which is a quite common
-		if (!node)
-			node = xpath_find (root, "//div[@id='content']");
-
-		if (node) {
-			// No HTML stripping here, as we rely on Readability.js
-			result = xhtml_extract (node, 1, baseUri);
-		} else {
-			debug1 (DEBUG_PARSING, "No article found during HTML5 parsing of '%s'\n", baseUri);
+			result = render_xml (article, "html5-extract", NULL);
+			xmlFreeDoc (article);
 		}
-
 		xmlFreeDoc (doc);
 	}
 

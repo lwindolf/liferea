@@ -41,27 +41,15 @@ xmlDocPtr
 xhtml_parse (const gchar *html, gint len)
 {
 	xmlDocPtr	out = NULL;
-	gchar		*input, **split;
 
 	g_assert (html != NULL);
 	g_assert (len >= 0);
 
-	/* Preprocess input stream to avoid converting <x></x> to <x/>. While
-	   this is a correct XML conversion dumping/using the result a HTML5
-	   cause the browser to "fix" it to <x>whatever comes after</x>.
-
-	   We avoid this by forcing a whitespace as content */
-	split = g_strsplit (html, "></", -1);
-	input = g_strjoinv ("> </", split);
-	g_strfreev (split);
-
 	/* Note: NONET is not implemented so it will return an error
 	   because it doesn't know how to handle NONET. But, it might
 	   learn in the future. */
-	out = htmlReadMemory (input, len, NULL, "utf-8", HTML_PARSE_RECOVER | HTML_PARSE_NONET |
+	out = htmlReadMemory (html, len, NULL, "utf-8", HTML_PARSE_RECOVER | HTML_PARSE_NONET |
 	                      ((debug_level & DEBUG_HTML)?0:(HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING)));
-
-	g_free (input);
 
 	return out;
 }
@@ -92,12 +80,10 @@ xhtml_find_body (xmlDocPtr doc)
 	return node;
 }
 
-gchar *
-xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
+xmlDocPtr
+xhtml_extract_doc (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 {
-	xmlBufferPtr	buf;
 	xmlChar         *xml_base = NULL;
-	gchar		*result = NULL;
 	xmlNs		*ns;
 
 	/* Create the new document and add the div tag*/
@@ -169,6 +155,20 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 		xmlAddChildList (divNode, copiedNodes);
 	}
 
+	return newDoc;
+}
+
+gchar *
+xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
+{
+	xmlBufferPtr	buf;
+	xmlDocPtr	newDoc;
+	gchar		*result = NULL;
+
+	newDoc = xhtml_extract_doc (xml, xhtmlMode, defaultBase);
+	if (!newDoc)
+		return NULL;
+
 	buf = xmlBufferCreate ();
 	xmlNodeDump (buf, newDoc, xmlDocGetRootElement (newDoc), 0, 0 );
 
@@ -177,6 +177,7 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 
 	xmlBufferFree (buf);
 	xmlFreeDoc (newDoc);
+
 	return result;
 }
 
