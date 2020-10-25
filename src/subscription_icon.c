@@ -31,9 +31,12 @@
 #include "update.h"
 #include "ui/feed_list_view.h"
 
+#define ICON_DOWNLOAD_MAX_URLS	10
+
 typedef struct iconDownloadCtxt {
 	gchar		        *id;		/**< icon cache id (=node id) */
 	GSList			*urls;		/**< ordered list of URLs to try */
+	GSList			*doneUrls;	/**< list of URLs we did already try, used for lookup to avoid loops */
 	updateOptionsPtr	options;	/**< download options */
 } *iconDownloadCtxtPtr;
 
@@ -48,13 +51,14 @@ subscription_icon_download_ctxt_free (iconDownloadCtxtPtr ctxt)
 {
 	GSList  *iter;
 
-	if (!ctxt) return;
+	if (!ctxt)
+		return;
+
 	g_free (ctxt->id);
 
-	for (iter = ctxt->urls; iter; iter = g_slist_next (iter))
-		g_free (iter->data);
+	g_slist_free_full (ctxt->urls, g_free);
+	g_slist_free_full (ctxt->doneUrls, g_free);
 
-	g_slist_free (ctxt->urls);
 	update_options_free (ctxt->options);
 }
 
@@ -101,26 +105,33 @@ static void
 subscription_icon_download_html_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags)
 {
 	iconDownloadCtxtPtr ctxt = (iconDownloadCtxtPtr)user_data;
+	gboolean success = FALSE;
 
 	if (result->size > 0 && result->data) {
 		gchar *iconUri = html_discover_favicon (result->data, result->source);
 		if (iconUri) {
 			UpdateRequest *request;
 
-			debug2 (DEBUG_UPDATE, "Found link for favicon %s: %s", ctxt->id, iconUri);
-			request = update_request_new (
-				iconUri,
-				NULL,	// updateState
-				ctxt->options
-			);
-			update_execute_request (node_from_id (ctxt->id), request, subscription_icon_download_data_cb, ctxt, flags);
-
-			return;
+			if (g_slist_find_custom (ctxt->doneUrls, iconUri, g_str_equal)) {
+				debug2 (DEBUG_UPDATE, "Skipping already processed URL for icon %s: %s", ctxt->id, iconUri);
+			} else {
+				debug2 (DEBUG_UPDATE, "Found new URL for icon %s: %s", ctxt->id, iconUri);
+				request = update_request_new (
+					iconUri,
+					NULL,	// updateState
+					ctxt->options
+				);
+				update_execute_request (node_from_id (ctxt->id), request, subscription_icon_download_data_cb, ctxt, flags);
+				success = TRUE;
+			}
+			g_free (iconUri);
 		}
 	}
 
-	debug2 (DEBUG_UPDATE, "No links in HTML '%s' for icon '%s' found!", result->source, ctxt->id);
-	subscription_icon_download_next (ctxt);	/* no sucess, try next... */
+	if (!success) {
+		debug2 (DEBUG_UPDATE, "No links in HTML '%s' for icon '%s' found!", result->source, ctxt->id);
+		subscription_icon_download_next (ctxt);	/* no success, try next... */
+	}
 }
 
 /* Performs a download of the first URL in ctxt->urls */
@@ -131,11 +142,17 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 	UpdateRequest		*request;
 	update_result_cb	callback;
 
-	debug_enter("subscription_icon_download_next");
+	if (g_slist_length (ctxt->doneUrls) > ICON_DOWNLOAD_MAX_URLS) {
+		debug2 (DEBUG_UPDATE, "Stopping icon '%s' discovery after trying %d URLs.", ctxt->id, ICON_DOWNLOAD_MAX_URLS);
+		subscription_icon_download_ctxt_free (ctxt);
+		return;
+	}
 
 	if (ctxt->urls) {
 		url = (gchar *)ctxt->urls->data;
 		ctxt->urls = g_slist_remove (ctxt->urls, url);
+		ctxt->doneUrls = g_slist_append (ctxt->doneUrls, url);
+
 		debug2 (DEBUG_UPDATE, "Icon '%s' trying URL: '%s'", ctxt->id, url);
 
 		request = update_request_new (
@@ -151,11 +168,9 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 
 		update_execute_request (node_from_id (ctxt->id), request, callback, ctxt, FEED_REQ_PRIORITY_HIGH);
 	} else {
-		debug1 (DEBUG_UPDATE, "Icon '%s' could not be downloaded!", ctxt->id);
+		debug1 (DEBUG_UPDATE, "Icon '%s' discovery/download failed!", ctxt->id);
 		subscription_icon_download_ctxt_free (ctxt);
 	}
-
-	debug_exit ("subscription_icon_download_next");
 }
 
 void
@@ -163,7 +178,7 @@ subscription_icon_update (subscriptionPtr subscription)
 {
 	iconDownloadCtxtPtr	ctxt;
 
-	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
+	debug1 (DEBUG_UPDATE, "trying to download icon for \"%s\"", node_get_title (subscription->node));
  	subscription->updateState->lastFaviconPoll = g_get_real_time();
 
 	ctxt = subscription_icon_download_ctxt_new ();
