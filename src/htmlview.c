@@ -113,6 +113,7 @@ htmlview_start_output (GString *buffer,
 	g_string_append (buffer, "<html>\n");
 	g_string_append (buffer, "<head>\n<title>HTML View</title>");
 	g_string_append (buffer, "<script src='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "js" G_DIR_SEPARATOR_S "Readability.js'></script>");
+	// FIXME: consider adding CSP meta tag here as e.g. Firefox reader mode page does
 	g_string_append (buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
 
 	if (base)
@@ -128,11 +129,18 @@ htmlview_start_output (GString *buffer,
 		g_string_append (buffer, render_get_css (TRUE /* external CSS supported */));
 
 	g_string_append (buffer,  "<script language=\"javascript\" type=\"text/javascript\">"
-	"\nif (window.addEventListener) {"
-	"\n	var documentIsReady = function() {"
-        "\n       	try {"
-	"\n			window.removeEventListener('load', documentIsReady);"
+	"\nvar readerEnabled = true;"
 	"\n"
+	"\nfunction load() {"
+	"\n		window.removeEventListener('load', documentIsReady);"
+	"\n"
+	"\n		if(false == readerEnabled) {"
+	"\n			document.body.innerHTML = decodeURIComponent(content);"
+	"\n			var readerbtn = document.querySelector('.head_readerbtn');"
+	"\n			readerbtn.classList.add('inactive')"
+	"\n			return;"
+	"\n		}"
+	"\n       	try {"
 	"\n			// Add all content in shadow DOM and split decoration from content"
 	"\n			// only pass the content to Readability.js"
 	"\n			var documentClone = document.cloneNode(true);"
@@ -152,12 +160,19 @@ htmlview_start_output (GString *buffer,
 	"\n			document.getElementById('content').innerHTML=article.content"
 	"\n		} catch(e) {"
 	"\n			console.log('Reader mode failed ('+e+')');"
-	"\n			document.body.innerHTML = decodeURIComponent(content);"
+	"\n			readerEnabled = false;"
+	"\n			load()"
 	"\n		}"
+	"\n}"
+	"\nif (window.addEventListener) {"
+	"\n	var documentIsReady = function() {"
+	"\n             load();"
 	"\n	};"
 	"\n	window.addEventListener('load', function() { window.setTimeout(documentIsReady, 0); });"
 	"\n}"
 	"\n</script>");
+
+	// FIXME: pass reader mode default setting above instead of load(true)
 }
 
 static void

@@ -73,7 +73,7 @@ dd {
 	padding-left: 30px;
 }
 
-section, svg, div.content * img {
+section, div.content svg, div.content * img {
 	max-width: 100%;
 	box-sizing: border-box;
 	object-fit: scale-down;
@@ -125,23 +125,46 @@ table.itemhead, table.feedhead {
 	background-color: #GTK-COLOR-MID;
 }
 
-table.itemhead * td {
-	padding: 2px;
-	padding-top: 4px;
-}
-
 table.itemhead * a.itemhead {
 	text-decoration:none;
 	color:#GTK-COLOR-TEXT;
 	font-weight:bold;
 }
 
-td.headleft {
-	text-align:right;
+table.itemhead * td {
+	padding-top: 4px;
 }
 
-td.headright {
+td.head_favicon {
+	width: 20px;
+	padding-left: 10px;
+}
+
+td.head_title {
 	padding:2px 5px;
+	width: 100%;
+	vertical-align: middle;
+}
+
+td.head_readerbtn {
+	padding-right: 10px;
+	width: 20px;
+}
+
+td.head_readerbtn {
+	display: block;
+}
+
+td.head_readerbtn * svg g * {
+	fill: #GTK-COLOR-TEXT;
+}
+
+td.head_readerbtn * svg {
+	opacity: 0.8;
+}
+
+td.head_readerbtn.inactive * svg {
+	opacity: 0.5;
 }
 
 table.headmeta {
@@ -160,37 +183,6 @@ table.headmeta td {
 .hidden {
 	visibility:hidden;
 	display:none;
-}
-
-.itemmenu {
-	margin:0;
-	padding:0;
-}
-
-.itemmenu a {
-	text-decoration:none;
-	color:#GTK-COLOR-TEXT;
-}
-
-.itemmenu a:hover {
-
-}
-
-.itemmenu * span {
-	font-size:1em;
-	font-family:sans-serif;
-	padding:0;
-	margin:0;
-	position:relative;
-	top:-3px;
-}
-
-.itemmenu * img {
-	padding:0;
-	margin:0;
-	height:16px;
-	position:relative;
-	top:1px;
 }
 
 .author, .categories, .source {

@@ -1,3 +1,14 @@
+To be released
+
+	Version 1.13.4
+
+	* Prevent endless loop on favicon discovery
+	  (Lars Windolf)
+
+	* Add reader mode toggle in the item view
+	  (Lars Windolf)
+
+
 2020-10-09   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.3
