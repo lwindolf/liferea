@@ -138,6 +138,7 @@ table.itemhead * td {
 td.head_favicon {
 	width: 20px;
 	padding-left: 10px;
+	vertical-align: middle;
 }
 
 td.head_title {
@@ -149,6 +150,7 @@ td.head_title {
 td.head_readerbtn {
 	padding-right: 10px;
 	width: 20px;
+	vertical-align: middle;
 }
 
 td.head_readerbtn {

@@ -22,6 +22,7 @@
 #include <libxml/uri.h>
 
 #include "common.h"
+#include "conf.h"
 #include "debug.h"
 #include "feed.h"
 #include "feedlist.h"
@@ -108,6 +109,10 @@ htmlview_start_output (GString *buffer,
                        const gchar *base,
 		       gboolean css)
 {
+	gboolean readerMode = FALSE;
+
+	conf_get_bool_value (ENABLE_READER_MODE, &readerMode);
+
 	/* Prepare HTML boilderplate */
 	g_string_append (buffer, "<!DOCTYPE html>\n");
 	g_string_append (buffer, "<html>\n");
@@ -128,9 +133,9 @@ htmlview_start_output (GString *buffer,
 	if (css)
 		g_string_append (buffer, render_get_css (TRUE /* external CSS supported */));
 
-	g_string_append (buffer,  "<script language=\"javascript\" type=\"text/javascript\">"
-	"\nvar readerEnabled = true;"
-	"\n"
+	g_string_append (buffer,  "<script language=\"javascript\" type=\"text/javascript\">\nvar readerEnabled = ");
+	g_string_append (buffer, readerMode?"true":"false");
+	g_string_append (buffer, ";\n"
 	"\nfunction load() {"
 	"\n		window.removeEventListener('load', documentIsReady);"
 	"\n"
@@ -171,8 +176,6 @@ htmlview_start_output (GString *buffer,
 	"\n	window.addEventListener('load', function() { window.setTimeout(documentIsReady, 0); });"
 	"\n}"
 	"\n</script>");
-
-	// FIXME: pass reader mode default setting above instead of load(true)
 }
 
 static void

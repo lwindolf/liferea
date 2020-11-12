@@ -192,6 +192,11 @@
       <summary>Enable intelligent tracking protection</summary>
       <description>This options determines if liferea should enable WebKit's intelligent tracking protection.</description>
     </key>
+    <key name="enable-reader-mode" type="b">
+      <default>true</default>
+      <summary>Enable reader mode</summary>
+      <description>This options toggles reader mode usage in the item view. If enabled Readability.js will be used for filtering content.</description>
+    </key>
     <key name="browser-font" type="s">
       <default>''</default>
       <summary>User defined browser-font</summary>

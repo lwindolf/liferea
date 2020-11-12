@@ -426,6 +426,12 @@ on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
 }
 
 void
+on_readermodebtn_toggled (GtkToggleButton *button, gpointer user_data)
+{
+	conf_set_bool_value (ENABLE_READER_MODE, gtk_toggle_button_get_active (button));
+}
+
+void
 on_donottrackbtn_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	conf_set_bool_value (DO_NOT_TRACK, gtk_toggle_button_get_active (button));
@@ -674,6 +680,10 @@ preferences_dialog_init (PreferencesDialog *pd)
 #endif
 
 	/* ================= panel 6 "Privacy" ======================== */
+
+	widget = liferea_dialog_lookup (pd->dialog, "readermodebtn");
+	conf_get_bool_value (ENABLE_READER_MODE, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 
 	widget = liferea_dialog_lookup (pd->dialog, "donottrackbtn");
 	conf_get_bool_value (DO_NOT_TRACK, &bSetting);

@@ -40,6 +40,7 @@
 #define SOCIAL_BM_SITE			"social-bm-site"
 #define ENABLE_PLUGINS			"enable-plugins"
 #define ENABLE_ITP			"enable-itp"
+#define ENABLE_READER_MODE		"enable-reader-mode"
 
 /* enclosure handling */
 #define DOWNLOAD_CUSTOM_COMMAND 	"download-custom-command"
@@ -141,7 +142,7 @@ gboolean conf_get_int_value_from_schema (GSettings *gsettings, const gchar *key,
 
 /**
  * Sets the value of the given boolean configuration key.
- * 
+ *
  * @param key	the configuration key
  * @param value	the new boolean value
  */
