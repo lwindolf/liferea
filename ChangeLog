@@ -5,11 +5,16 @@ To be released
 	* Prevent endless loop on favicon discovery
 	  (Lars Windolf)
 
+	* Further favicon discovery improvements: now detects all types of
+	  Apple Touch Icons, MS Tile Images and Safari Mask Icons
+	  (Lars Windolf)
+
 	* Add reader mode toggle in the item view
 	  (Lars Windolf)
 
 	* #876 Add reader mode preference
 	  (Lars Windolf)
+
 
 
 2020-10-09   Lars Windolf <lars.windolf@gmx.de>

@@ -44,9 +44,10 @@ GSList * html_auto_discover_feed(const gchar* data, const gchar *baseUri);
  *
  * @data:	HTML source
  * @baseUri:	URI of the downloaded HTML used to resolve relative URIs
- * Returns: URL of the favicon, or NULL. Must be freed by caller.
+ *
+ * Returns: List of absolute URL for different favicon resolutions, or NULL. Must be fully freed by caller.
  */
-gchar * html_discover_favicon(const gchar* data, const gchar *baseUri);
+GSList * html_discover_favicon(const gchar* data, const gchar *baseUri);
 
 /**
  * html_get_article:

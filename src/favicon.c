@@ -84,6 +84,8 @@ static void
 favicon_pixbuf_size_prepared_cb (GdkPixbufLoader *loader, gint width, gint height, gpointer user_data)
 {
 	gint max_size = 256;
+
+	debug2 (DEBUG_UPDATE, "   - favicon size is %d:%d", width, height);
 	if (width > max_size || height > max_size) {
 		width = width < max_size ? width : max_size;
 		height = height < max_size ? height : max_size;
@@ -164,7 +166,7 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 	gchar		*tmp, *tmp2;
 	const gchar	*source_url = subscription->source;
 
-	/* case 1: the feed parser passed as an icon URL in the subscription metadata */
+	/* case 1: the feed parser passed us an icon URL in the subscription metadata */
 	if (metadata_list_get (subscription->metadata, "icon")) {
 		tmp = g_strstrip (g_strdup (metadata_list_get (subscription->metadata, "icon")));
 		urls = g_slist_append (urls, tmp);

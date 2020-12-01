@@ -108,31 +108,29 @@ subscription_icon_download_html_cb (const struct updateResult * const result, gp
 	gboolean success = FALSE;
 
 	if (result->size > 0 && result->data) {
-		gchar *iconUri = html_discover_favicon (result->data, result->source);
-		if (iconUri) {
-			UpdateRequest *request;
+		GSList *links = html_discover_favicon (result->data, result->source);
+		if (links) {
+			/* We have a definitive set of favicons now as reported
+			   by the website. Therefore we drop all guess work we
+			   have so far in favour of this list.
 
-			if (g_slist_find_custom (ctxt->doneUrls, iconUri, g_str_equal)) {
-				debug2 (DEBUG_UPDATE, "Skipping already processed URL for icon %s: %s", ctxt->id, iconUri);
-			} else {
-				debug2 (DEBUG_UPDATE, "Found new URL for icon %s: %s", ctxt->id, iconUri);
-				request = update_request_new (
-					iconUri,
-					NULL,	// updateState
-					ctxt->options
-				);
-				update_execute_request (node_from_id (ctxt->id), request, subscription_icon_download_data_cb, ctxt, flags);
-				success = TRUE;
-			}
-			g_free (iconUri);
+			   This is important as the first downloadable link wins.
+			   And we have "<url>/favicon.ico" quite early in the
+			   original list. Our new list however is sorted by
+			   icon size for highest quality first. */
+			g_slist_free (g_steal_pointer (&(ctxt->urls)));
+			ctxt->urls = links;
+			success = TRUE;
 		}
 	}
 
-	if (!success) {
+	if (!success)
 		debug2 (DEBUG_UPDATE, "No links in HTML '%s' for icon '%s' found!", result->source, ctxt->id);
-		subscription_icon_download_next (ctxt);	/* no success, try next... */
-	}
+
+	subscription_icon_download_next (ctxt);	/* continue favicon download */
 }
+
+static GRegex *image_extension_match = NULL;
 
 /* Performs a download of the first URL in ctxt->urls */
 static void
@@ -161,7 +159,10 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 			ctxt->options
 		);
 
-		if (strstr (url, "/favicon.ico"))
+		if (!image_extension_match)
+			image_extension_match = g_regex_new ("\\.(ico|png|gif|jpg|svg)$", G_REGEX_CASELESS, 0, NULL);
+
+		if (g_regex_match (image_extension_match, url, 0, NULL))
 			callback = subscription_icon_download_data_cb;
 		else
 			callback = subscription_icon_download_html_cb;

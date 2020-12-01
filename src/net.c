@@ -7,7 +7,7 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -51,7 +51,7 @@ network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 	updateJobPtr	job = (updateJobPtr)user_data;
 	const gchar	*location = NULL;
 	SoupURI		*newuri;
-	
+
 	if (301 == msg->status_code || 308 == msg->status_code)
 	{
 		location = soup_message_headers_get_one (msg->response_headers, "Location");
@@ -156,10 +156,10 @@ static SoupURI *
 network_get_proxy_uri (void)
 {
 	SoupURI *uri = NULL;
-	
+
 	if (!proxyname)
 		return uri;
-		
+
 	uri = soup_uri_new (NULL);
 	soup_uri_set_scheme (uri, SOUP_URI_SCHEME_HTTP);
 	soup_uri_set_host (uri, proxyname);
@@ -170,7 +170,7 @@ network_get_proxy_uri (void)
 	return uri;
 }
 
-/* Downloads a feed specified in the request structure, returns 
+/* Downloads a feed specified in the request structure, returns
    the downloaded data or NULL in the request structure.
    If the webserver reports a permanent redirection, the
    feed url will be modified and the old URL 'll be freed. The
@@ -245,7 +245,7 @@ network_process_request (const updateJobPtr job)
 	    job->request->options->username &&
 	    job->request->options->password) {
 		SoupURI *uri = soup_message_get_uri (msg);
-		
+
 		soup_uri_set_user (uri, job->request->options->username);
 		soup_uri_set_password (uri, job->request->options->password);
 	}
@@ -297,7 +297,7 @@ network_authenticate (
 	if (!retrying && msg->status_code == SOUP_STATUS_PROXY_UNAUTHORIZED) {
 		soup_auth_authenticate (auth, g_strdup (proxyusername), g_strdup (proxypassword));
 	}
-	
+
 	// FIXME: Handle HTTP 401 too
 }
 
@@ -390,7 +390,7 @@ network_init (void)
 	g_free (useragent);
 }
 
-void 
+void
 network_deinit (void)
 {
 	g_free (proxyname);
@@ -448,7 +448,7 @@ network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, g
 		network_set_soup_session_proxy (session, mode, host, port, user, password);
 
 	debug4 (DEBUG_NET, "proxy set to http://%s:%s@%s:%d", user, password, host, port);
-	
+
 	network_monitor_proxy_changed ();
 }
 
