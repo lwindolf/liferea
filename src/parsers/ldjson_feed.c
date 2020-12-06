@@ -238,7 +238,7 @@ ldjson_feed_parse_json (xmlNodePtr xml, gpointer userdata) {
 }
 
 /**
- * Parses given data as a HTML5 document
+ * Parses given data as a HTML document containing LD+JSON data
  *
  * @param ctxt		the feed parser context
  * @param cur		the root node of the XML document
@@ -254,7 +254,7 @@ ldjson_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 
 	ctxt->feed->time = time(NULL);
 
-	/* For HTML5 source the homepage is the source */
+	/* For homepage the HTML page itself is the default source */
 	subscription_set_homepage (ctxt->subscription, ctxt->subscription->source);
 
 	/* Set the default base to the feed's HTML URL if not set yet */
@@ -290,9 +290,7 @@ ldjson_feed_check_json_type (JsonNode *node, gpointer userdata)
 		/* Let us not count 'WebPage' here as it does not indicate items,
 		   but only subscription infos */
 		if (g_str_equal (type, "MusicEvent") ||
-		    g_str_equal (type, "Event") ||
-		    g_str_equal (type, "Recipe") ||
-		    g_str_equal (type, "Movie"))
+		    g_str_equal (type, "Event"))
 			(*entryCount)++;
 	}
 }
@@ -332,10 +330,10 @@ ldjson_feed_check (xmlDocPtr doc, xmlNodePtr root)
 {
 	gint		entryCount = 0;
 
-	/* A HTML5 LD+JSON website that we can parse like a feed must meet the
+	/* A HTML website with LD+JSON that we can parse like a feed must meet the
 	   following criteria
 
-		- XML readable XHTML/HTML5
+		- XML readable XHTML/HTML5/HTML
 		- multiple <script type="application/ld+json"> tags with JSON
 		  content indicating accepted types like 'MusicEvent'
 	 */
