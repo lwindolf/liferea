@@ -570,6 +570,7 @@ xmlDocPtr
 xml_parse_feed (feedParserCtxtPtr fpc)
 {
 	errorCtxtPtr	errors;
+	xmlDocPtr	doc = NULL;
 
 	g_assert (NULL != fpc->data);
 	g_assert (NULL != fpc->feed);
@@ -586,8 +587,8 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 	errors = g_new0 (struct errorCtxt, 1);
 	errors->msg = fpc->feed->parseErrors;
 
-	fpc->doc = xml_parse (fpc->data, (size_t)fpc->dataLength, errors);
-	if (!fpc->doc) {
+	doc = xml_parse (fpc->data, (size_t)fpc->dataLength, errors);
+	if (!doc) {
 		debug1 (DEBUG_PARSING, "xml_parse_feed(): could not parse feed \"%s\"!", fpc->subscription->node->title);
 		g_string_prepend (fpc->feed->parseErrors, _("XML Parser: Could not parse document:\n"));
 		g_string_append (fpc->feed->parseErrors, "\n");
@@ -596,7 +597,7 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 	fpc->feed->valid = !(errors->errorCount > 0);
 	g_free (errors);
 
-	return fpc->doc;
+	return doc;
 }
 
 void

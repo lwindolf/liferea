@@ -91,9 +91,6 @@ metadata_init (void)
 	metadata_type_register ("source",		METADATA_TYPE_URL);
 	metadata_type_register ("coverage",		METADATA_TYPE_HTML);
 
-	/* types for photo blogs */
-	metadata_type_register ("photo", 		METADATA_TYPE_URL);
-
 	/* types for slash */
 	metadata_type_register ("slash",		METADATA_TYPE_HTML);
 

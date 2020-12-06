@@ -107,7 +107,7 @@ html5_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 	short 		rdf = 0;
 	int 		error = 0;
 	xmlNodePtr	cur;
-	xmlChar		*baseURL = xmlNodeGetBase (ctxt->doc, root);
+	xmlChar		*baseURL = xmlNodeGetBase (root->doc, root);
 
 	ctxt->feed->time = time(NULL);
 
@@ -116,7 +116,7 @@ html5_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 
 	/* Set the default base to the feed's HTML URL if not set yet */
 	if (baseURL == NULL)
-		xmlNodeSetBase (xmlDocGetRootElement (ctxt->doc), (xmlChar *)ctxt->subscription->source);
+		xmlNodeSetBase (root, (xmlChar *)ctxt->subscription->source);
 
 	if (cur = xpath_find (root, "/html/head/title")) {
 		ctxt->title = unxmlize (xhtml_extract (cur, 0, NULL));
@@ -179,6 +179,7 @@ html5_init_feed_handler (void)
 	fhp->typeStr = "html5";
 	fhp->feedParser	= html5_feed_parse;
 	fhp->checkFormat = html5_feed_check;
+	fhp->html = TRUE;
 
 	return fhp;
 }

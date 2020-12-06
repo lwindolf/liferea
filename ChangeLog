@@ -15,6 +15,9 @@ To be released
 	* #876 Add reader mode preference
 	  (Lars Windolf)
 
+	* Implement support for subscribing to LD+Json metadata
+	  listings e.g. concert or theater event listings
+	  (Lars Windolf)
 
 
 2020-10-09   Lars Windolf <lars.windolf@gmx.de>
