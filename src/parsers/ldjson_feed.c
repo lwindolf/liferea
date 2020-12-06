@@ -93,7 +93,7 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 	"endDate": "2021-06-12",
 	"previousStartDate": "2020-06-17T16:00:00Z",
 	"url": "https://example.com",
-	"description": "detailed descroütopm",
+	"description": "detailed description",
 	"offers": {
 	   "url": "https://example.com/abc",
 	   "availabilityStarts": "2019-07-05T10:00:00Z",
@@ -180,7 +180,7 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 	// FIXME: extract 'performers'
 	// FIXME: extract offer
 
-	if (ctxt->item->sourceId && ctxt->item->title && ctxt->item->description)
+	if (ctxt->item->sourceId && ctxt->item->title)
 		ctxt->items = g_list_append (ctxt->items, ctxt->item);
 	else
 		item_unload (ctxt->item);
