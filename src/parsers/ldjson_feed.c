@@ -78,7 +78,7 @@ static void
 ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 {
 	const gchar *tmp;
-	const gchar *eventStatus;
+	const gchar *eventStatus, *type;
 
 	ctxt->item = item_new ();
 
@@ -120,6 +120,7 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 
 	/* eventStatus is a schema.org enum e.g. "https://schema.org/EventCancelled"
 	   let's strip the prefix and use the enum name as is */
+	type = json_get_string (node, "@type");
 	eventStatus = json_get_string (node, "eventStatus");
 	if (eventStatus && eventStatus == g_strstr_len (eventStatus, -1, "https://schema.org/Event"))
 		eventStatus += 24;
@@ -152,7 +153,7 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 		gchar *title;
 
 		if (eventStatus && !g_str_equal (eventStatus, "Scheduled"))
-			title = g_strdup_printf("%s (%s)", tmp, eventStatus?eventStatus:"");
+			title = g_strdup_printf("%s %s (%s)", g_str_equal(type, "MusicEvent")?"🎹":"🎪", tmp, eventStatus?eventStatus:"");
 		else
 			title = g_strdup (tmp);
 
