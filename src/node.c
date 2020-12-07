@@ -122,7 +122,7 @@ node_set_subscription (nodePtr node, subscriptionPtr subscription)
 
 	/* Besides the favicon age we have no persistent
 	   update state field, so everything else goes NULL */
-	if (node->iconFile && !strstr(node->iconFile, "default.png")) {
+	if (node->iconFile && !strstr(node->iconFile, "default.svg")) {
 		subscription->updateState->lastFaviconPoll = (guint64)(common_get_mod_time (node->iconFile)) * G_USEC_PER_SEC;
 		debug2 (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll / G_USEC_PER_SEC);
 	}
@@ -412,14 +412,14 @@ node_load_icon (nodePtr node)
 	// FIXME: don't use constant size, but size corresponding to GTK icon
 	// size used in wide view
 	node->icon = favicon_load_from_cache (node->id, 128);
-	
+
 	/* Create filename for HTML rendering */
 	g_free (node->iconFile);
 
 	if (node->icon)
 		node->iconFile = common_create_cache_filename ("favicons", node->id, "png");
 	else
-		node->iconFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "pixmaps", "default.png", NULL);
+		node->iconFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "pixmaps", "default.svg", NULL);
 }
 
 /* determines the nodes favicon or default icon */
