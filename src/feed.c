@@ -178,6 +178,10 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 
 	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
 		xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
+
+	tmp = g_strdup_printf("%d", feed->error);
+	xmlNewTextChild(feedNode, NULL, "error", tmp);
+	g_free(tmp);
 }
 
 xmlDocPtr

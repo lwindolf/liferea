@@ -1,13 +1,13 @@
 /**
  * @file feed.h  common feed handling interface
- * 
+ *
  * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -38,10 +38,20 @@
  *
  * 3.) A "feed" is a way of updating a subscription.
  *
- * The feed.h interface provides default methods for 2.) and 3.) that 
- * are used per-default but might be overwritten by node source, node 
+ * The feed.h interface provides default methods for 2.) and 3.) that
+ * are used per-default but might be overwritten by node source, node
  * type or subscription type specific implementations.
  */
+
+/** Feed fetching error types */
+typedef enum feedFetchError {
+	FEED_FETCH_ERROR_NONE     = 0,
+	FEED_FETCH_ERROR_AUTH     = 1 << 0,
+	FEED_FETCH_ERROR_NET      = 1 << 1,
+	FEED_FETCH_ERROR_DISCOVER = 1 << 2,
+	FEED_FETCH_ERROR_XML      = 1 << 3,
+	FEED_FETCH_ERROR_EXTRACT  = 1 << 4
+} feedFetchError;
 
 /** Common structure to hold all information about a single feed. */
 typedef struct feed {
@@ -49,10 +59,11 @@ typedef struct feed {
 
 	/* feed cache state properties */
 	gint		cacheLimit;		/**< Amount of cache to save: See the cache_limit enum */
-	
+
 	/* feed parsing state */
 	gboolean	valid;			/**< FALSE if there was an error in xml_parse_feed() */
-	GString		*parseErrors;		/**< textual description of parsing errors */
+	feedFetchError	error;			/**< Feed fetch error code (used for user-facing UI to differentiate feed processing phases) */
+	GString		*parseErrors;		/**< Detailed textual description of parsing errors (e.g. library error handler output) */
 	gint64		time;			/**< Feeds modified date */
 
 	/* feed specific behaviour settings */
@@ -76,7 +87,7 @@ feedPtr feed_new(void);
  * @param feedNode	XML node to add feed attributes to,
  *                      or NULL if a new XML document is to
  *                      be created
- * 
+ *
  * @returns a new XML document (if feedNode was NULL)
  */
 xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr xml);
@@ -84,7 +95,7 @@ xmlDocPtr feed_to_xml(nodePtr node, xmlNodePtr xml);
 // FIXME: doesn't seem to belong here (looks like a subscription type method)
 /**
  * Returns the feed-specific maximum cache size.
- * If none is set it returns the global default 
+ * If none is set it returns the global default
  * setting.
  *
  * @param node	the feed node

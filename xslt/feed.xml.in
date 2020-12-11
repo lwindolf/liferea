@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (feed description view)
  *
- * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,69 +38,6 @@
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 </head>
 <body>
-
-<!-- error header tables -->
-<xsl:if test="parseError or filterError or updateError or httpError or feedDiscontinued = '1'">
-<div id='errors' dir="{$appDirection}">
-
-<xsl:if test="feedDiscontinued = '1'">
-  <div id='updateError'>
-     <_span>This feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines.</_span>
-  </div>
-</xsl:if>
-
-<xsl:if test="updateError">
-  <div id='updateError'>
-    <xsl:value-of select="updateError"/>
-  </div>
-</xsl:if>
-
-<xsl:if test="httpError">
-  <div id='httpError'>
-    <_span>The last update of this subscription failed!<br/><b>HTTP error code <xsl:value-of select="httpErrorCode"/>: <xsl:value-of select="httpError"/></b></_span>
-  </div>
-</xsl:if>
-
-<xsl:if test="parseError">
-  <div id='parseError'>
-    <_span>There were errors while parsing this feed!</_span>
-
-    <span id="pdl" class="detaillink">
-      (<span class="showmore" onclick="javascript:document.getElementById('pd').style.visibility='visible';document.getElementById('pd').style.display='block';document.getElementById('pdl').style.visibility='hidden';document.getElementById('pdl').style.display='none';">
-        <_span>Parser Error Details</_span>
-      </span>)
-    </span>
-
-    <span class="details" id='pd'>
-      <b><_span>Details</_span></b><br />
-      <xsl:value-of select="parseError" disable-output-escaping='yes'/>
-      <script language="javascript" type="text/javascript">document.getElementById('pdl').style.visibility='visible';document.getElementById('pdl').style.display='inline';</script>
-
-       <br /><_span>You may want to contact the author/webmaster of the feed about this!</_span>
-    </span>
-  </div>
-</xsl:if>
-
-<xsl:if test="filterError">
-  <div id='filterError'>
-    <_span>There were errors while filtering this feed!</_span>
-
-    <span id="fdl" class="detaillink">
-      (<span class="showmore" onclick="javascript:document.getElementById('fd').style.visibility='visible';document.getElementById('fd').style.display='block';document.getElementById('fdl').style.visibility='hidden';document.getElementById('fdl').style.display='none';">
-        <_span>Filter Error Details</_span>
-      </span>)
-    </span>
-
-    <span class="details" id='fd'>
-      <b><_span>Details</_span></b><br />
-      <xsl:value-of select="filterError" disable-output-escaping='yes'/>
-      <script language="javascript" type="text/javascript">document.getElementById('fdl').style.visibility='visible';document.getElementById('fdl').style.display='inline';</script>
-    </span>
-  </div>
-</xsl:if>
-
-</div>
-</xsl:if>
 
 <!-- header table -->
 <table class="feedhead" cellspacing="0" dir="{$appDirection}">
@@ -157,6 +94,76 @@
 </xsl:if>
 </table> <!-- end of header metadata -->
 
+<!-- error header tables -->
+<xsl:if test="/feed/error > 0">
+  <div id="errors" dir="{$appDirection}">
+
+    <_span>There were problems when fetching this feed!</_span>
+    <ul>
+      <li>
+        <xsl:call-template name="parseStatus">
+          <xsl:with-param name="parsePhase" select="1"/>
+        </xsl:call-template>
+        <_span>Authentication</_span>
+      </li>
+      <li>
+        <xsl:call-template name="parseStatus">
+          <xsl:with-param name="parsePhase" select="2"/>
+        </xsl:call-template>
+        <_span>Download</_span>
+      </li>
+      <li>
+        <xsl:call-template name="parseStatus">
+          <xsl:with-param name="parsePhase" select="4"/>
+        </xsl:call-template>
+        <_span>Feed Discovery</_span>
+      </li>
+      <li>
+        <xsl:call-template name="parseStatus">
+          <xsl:with-param name="parsePhase" select="8"/>
+        </xsl:call-template>
+        <_span>Parsing</_span>
+      </li>
+      <li>
+        <xsl:call-template name="parseStatus">
+          <xsl:with-param name="parsePhase" select="16"/>
+        </xsl:call-template>
+        <_span>Extracting Content</_span>
+      </li>
+    </ul>
+
+    <span id="pdl" class="detaillink">
+      (<span class="showmore" onclick="javascript:document.getElementById('pd').style.visibility='visible';document.getElementById('pd').style.display='block';document.getElementById('pdl').style.visibility='hidden';document.getElementById('pdl').style.display='none';">
+        <_span>Error Details</_span>
+      </span>)
+    </span>
+
+    <!-- FIXME: provide parse phase specific solution hint! -->
+
+    <span class="details" id='pd'>
+      <b><_span>Details</_span></b><br />
+
+      <xsl:if test="parseError">
+        <xsl:value-of select="parseError" disable-output-escaping='yes'/>
+        <br /><_span>You may want to contact the author/webmaster of the feed about this!</_span>
+      </xsl:if>
+
+      <xsl:if test="filterError">
+        <xsl:value-of select="filterError" disable-output-escaping='yes'/>
+      </xsl:if>
+
+      <xsl:if test="updateError">
+        <xsl:value-of select="updateError" disable-output-escaping='yes'/>
+      </xsl:if>
+    </span>
+
+    <xsl:if test="feedDiscontinued = '1'">
+      <_span>The webserver indicates this feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines.</_span>
+    </xsl:if>
+
+  </div>
+</xsl:if>
+
 <div class='feed content' dir="{$txtDirection}">
 
 <xsl:if test="attributes/attribute[ @name = 'imageUrl' ]">
@@ -172,6 +179,16 @@
 
 </body>
 </html>
+</xsl:template>
+
+<xsl:template name="parseStatus">
+  <!-- match logic of feedFetchError enum (src/feed.h) -->
+  <xsl:param name="parsePhase"/>
+  <xsl:variable name="errorCode" select="/feed/error"/>
+  <xsl:if test="$errorCode = 0 or $errorCode > $parsePhase">✅</xsl:if>
+  <xsl:if test="$errorCode = $parsePhase">⛔</xsl:if>
+  <xsl:if test="$parsePhase > $errorCode">⬜</xsl:if>
+  <xsl:text> </xsl:text>
 </xsl:template>
 
 <xsl:template name="strippwd">
