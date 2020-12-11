@@ -90,7 +90,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     def do_activate(self):
         self.staticon = Gtk.StatusIcon ()
         # FIXME: Support a scalable image!
-        self.read_pix = Liferea.icon_create_from_file ("available.png")
+        self.read_pix = Liferea.icon_create_from_file ("emblem-web.svg")
         self.unread_pix = Liferea.icon_create_from_file ("unread.png")
 
         self.staticon.set_from_pixbuf(Liferea.icon_create_from_file("unread.png"))

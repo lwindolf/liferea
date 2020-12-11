@@ -1,20 +1,21 @@
 The authorship or origin of the included images:
 
 default.png	taken from feedicons.com (Matt Brett http://feedicons.com)
-folder_empty.png derived from default.png (Lars Windolf <lars.windolf@gmx.de>)
 
-empty.png,	modified GNOME stock icons (Lars Windolf <lars.windolf@gmx.de>)
-vfolder.png	
-
-directory.png,	copy of GNOME stock icons
-attachment.png,
-unread.png
+vfolder.png,	modified GNOME stock icons (GPLv2, Lars Windolf <lars.windolf@gmx.de>)
+directory.png,	copy of GNOME stock icons (GPLv2)
+mail-attachment.png
 
 liferea.png	(news-reader-48.png) Jakub Steiner <jimmac@ximian.com>
 fl_opml.png	OPML icon (Chris Pirillo <chris@lockergnome.com>)
 
 newsbin.png	created for Liferea, Lars Windolf <lars.windolf@gmx.de>
 
+emblem-important.png    copy of GNOME Tango theme icon by Jakub Steiner (GPLv2)
+emblem-web.svg		copy of GNOME Tango theme icon by Jakub Steiner (GPLv2)
+
 16x16/liferea.png, 22x22/liferea.png, 24x24/liferea.png, 32x32/liferea.png, 
 48x48/liferea.png and scalable/liferea.svg: Jeff Fortin <nekohayo@gmail.com>,
 creative commons share-alike license (http://creativecommons.org/licenses/by-sa/3.0/)
+
+unread.png	identical with 16x16/liferea.png (see above)

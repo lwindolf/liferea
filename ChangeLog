@@ -19,6 +19,11 @@ To be released
 	  listings e.g. concert or theater event listings
 	  (Lars Windolf)
 
+	* Provide the default icon for feeds with no favicon as SVG
+	  for nicer rendering in wide view. Drop some unused icons.
+	  Replace tray icon with scalable version.
+	  (Lars Windolf)
+
 
 2020-10-09   Lars Windolf <lars.windolf@gmx.de>
 
