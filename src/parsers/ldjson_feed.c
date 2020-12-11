@@ -131,9 +131,9 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 		// schema.org says startDate should be ISO8601, but RFC822
 		// is seen to often. So fuzzy match date format.
 		if (strstr (tmp, " "))
-			ctxt->item->time = date_parse_RFC822 (g_strdup (tmp));
+			ctxt->item->time = date_parse_RFC822 (tmp);
 		else
-			ctxt->item->time = date_parse_ISO8601 (g_strdup (tmp));
+			ctxt->item->time = date_parse_ISO8601 (tmp);
 	} else {
 		// or default to current feed timestamp
 		ctxt->item->time = ctxt->feed->time;
