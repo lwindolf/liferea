@@ -1,12 +1,12 @@
 /**
  * @file feed_parser.h  parsing of different feed formats
- * 
+ *
  * Copyright (C) 2008 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -39,7 +39,6 @@ typedef struct feedParserCtxt {
 	gchar		*data;		/**< data buffer to parse */
 	gsize		dataLength;	/**< length of the data buffer */
 
-	xmlDocPtr	doc;		/**< the parsed data buffer */
 	gboolean	failed;		/**< TRUE if parsing failed because feed type could not be detected */
 } *feedParserCtxtPtr;
 
@@ -64,9 +63,10 @@ typedef gboolean (*checkFormatFunc)	(xmlDocPtr doc, xmlNodePtr cur);
 
 /** feed handler interface */
 typedef struct feedHandler {
-	const gchar	*typeStr;	/**< string representation of the feed type */
-	feedParserFunc	feedParser;	/**< feed type parse function */
-	checkFormatFunc	checkFormat;	/**< Parser for the feed type*/
+	const gchar	*typeStr;		/**< string representation of the feed type */
+	feedParserFunc	feedParser;		/**< feed type parse function */
+	checkFormatFunc	checkFormat;		/**< Parser for the feed type*/
+	gboolean	html;			/**< TRUE if this is a HTML parser (as opposed tp XML feeds) */
 } *feedHandlerPtr;
 
 /**
@@ -104,11 +104,11 @@ const gchar *feed_type_fhp_to_str (feedHandlerPtr fhp);
 
 /**
  * General feed source parsing function. Parses the passed feed source
- * and tries to determine the source type. 
+ * and tries to determine the source type.
  *
  * @param ctxt		feed parsing context
  *
- * @returns FALSE if auto discovery is indicated, 
+ * @returns FALSE if auto discovery is indicated,
  *          TRUE if feed type was recognized
  */
 gboolean feed_parse (feedParserCtxtPtr ctxt);

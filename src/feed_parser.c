@@ -27,6 +27,7 @@
 #include "xml.h"
 #include "parsers/atom10.h"
 #include "parsers/html5_feed.h"
+#include "parsers/ldjson_feed.h"
 #include "parsers/rss_channel.h"
 
 static GSList *feedHandlers = NULL;	/**< list of available parser implementations */
@@ -43,9 +44,11 @@ feed_parsers_get_list (void)
 		return feedHandlers;
 
 	feedHandlers = g_slist_append (feedHandlers, rss_init_feed_handler ());
-	feedHandlers = g_slist_append (feedHandlers, atom10_init_feed_handler ());  /* Must be before pie */
+	feedHandlers = g_slist_append (feedHandlers, atom10_init_feed_handler ());
 
-	// Do not register HTML5 feed parser here, as it is a HTML and not a feed parser
+	/* Order is important ! */
+	feedHandlers = g_slist_append (feedHandlers, ldjson_init_feed_handler ());
+	feedHandlers = g_slist_append (feedHandlers, html5_init_feed_handler ());
 
 	return feedHandlers;
 }
@@ -143,13 +146,12 @@ static void
 feed_parser_ctxt_cleanup (feedParserCtxtPtr ctxt)
 {
 	/* free old temp. parsing data, don't free right after parsing because
-	it can be used until the last feed request is finished, move me
-	to the place where the last request in list otherRequests is
-	finished :-) */
+	   it can be used until the last feed request is finished */
 	g_hash_table_destroy (ctxt->tmpdata);
 	ctxt->tmpdata = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
 
 	/* we always drop old metadata */
+	// FIXME: this is bad, doesn't belong here at all
 	metadata_list_free (ctxt->subscription->metadata);
 
 	ctxt->subscription->metadata = NULL;
@@ -170,8 +172,10 @@ feed_parser_ctxt_cleanup (feedParserCtxtPtr ctxt)
 gboolean
 feed_parse (feedParserCtxtPtr ctxt)
 {
-	xmlNodePtr	cur;
+	xmlNodePtr	xmlNode = NULL, htmlNode = NULL;
+	xmlDocPtr	xmlDoc, htmlDoc;
 	gboolean	success = FALSE;
+	gboolean	htmlParsing = FALSE;
 
 	debug_enter ("feed_parse");
 
@@ -184,94 +188,81 @@ feed_parse (feedParserCtxtPtr ctxt)
 	else
 		ctxt->feed->parseErrors = g_string_new (NULL);
 
-	/* 1.) try to parse downloaded data as XML and try to read a feed format */
+	/* Prepare two documents, one parse as XML and one as XHTML.
+	   Depending on the feed parser being an HTML parser the one
+	   or the other is used. */
+
+	/* 1.) try to parse downloaded data as XML */
 	do {
-		if (NULL == xml_parse_feed (ctxt)) {
-			g_string_append_printf (ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), subscription_get_source (ctxt->subscription));
+		if (NULL == (xmlDoc = xml_parse_feed (ctxt))) {
+			//g_string_append_printf (ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), subscription_get_source (ctxt->subscription));
 			break;
 		}
 
-		if (NULL == (cur = xmlDocGetRootElement(ctxt->doc))) {
-			g_string_append(ctxt->feed->parseErrors, _("Empty document!"));
+		if (NULL == (xmlNode = xmlDocGetRootElement (xmlDoc))) {
+			g_string_append (ctxt->feed->parseErrors, _("Empty document!"));
 			break;
 		}
 
-		while (cur && xmlIsBlankNode(cur)) {
-			cur = cur->next;
+		while (xmlNode && xmlIsBlankNode (xmlNode)) {
+			xmlNode = xmlNode->next;
 		}
 
-		if (!cur)
-			break;
-
-		if (!cur->name) {
-			g_string_append(ctxt->feed->parseErrors, _("Invalid XML!"));
+		if (!xmlNode->name) {
+			g_string_append (ctxt->feed->parseErrors, _("Invalid XML!"));
 			break;
 		}
+	} while (0);
 
-		/* determine the syndication format and start parser */
-		GSList *handlerIter = feed_parsers_get_list ();
-		while(handlerIter) {
-			feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
-			if(handler && handler->checkFormat && (*(handler->checkFormat))(ctxt->doc, cur)) {
-				ctxt->feed->fhp = handler;
-				feed_parser_ctxt_cleanup (ctxt);
-				(*(handler->feedParser)) (ctxt, cur);
-				break;
-			}
-			handlerIter = handlerIter->next;
+	/* 2.) Prepare data as XHTML */
+	do {
+		if (NULL == (htmlDoc = xhtml_parse (ctxt->data, ctxt->dataLength)))
+			break;
+
+		if (NULL == (htmlNode = xmlDocGetRootElement (htmlDoc))) {
+			//g_string_append (ctxt->feed->parseErrors, _("Empty document!"));
+			break;
 		}
-	} while(0);
+	} while (0);
 
+	/* determine the syndication format and start parser with either XML or XHTML doc */
+	GSList *handlerIter = feed_parsers_get_list ();
+	while (handlerIter) {
+		feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
+		xmlNodePtr node = handler->html?htmlNode:xmlNode;
 
-	if (ctxt->doc) {
-		xmlFreeDoc(ctxt->doc);
-		ctxt->doc = NULL;
+		if (node && handler && handler->checkFormat && (*(handler->checkFormat))(node->doc, node)) {
+			ctxt->feed->fhp = handler;
+			feed_parser_ctxt_cleanup (ctxt);
+			(*(handler->feedParser)) (ctxt, handler->html?htmlNode:xmlNode);
+			break;
+		}
+		handlerIter = handlerIter->next;
 	}
 
 	/* 2.) None of the feed formats did work, chance is high that we are
-           working on a HTML documents. Let's look for feed links inside it! */
+	       working on a HTML documents. Let's look for feed links inside it! */
 	if (ctxt->failed)
 		feed_parser_auto_discover (ctxt);
 
-	/* 3.) alternatively try to parse the HTML document we are on as HTML5 feed */
-	if (ctxt->failed) {
-		do {
-			if (ctxt->doc = xhtml_parse (ctxt->data, ctxt->dataLength))
-				g_string_truncate (ctxt->feed->parseErrors, 0);
-			else
-				break;
-
-			if (NULL == (cur = xmlDocGetRootElement (ctxt->doc))) {
-				g_string_append(ctxt->feed->parseErrors, _("Empty document!"));
-				break;
-			}
-
-			ctxt->feed->fhp = html5_init_feed_handler ();
-			if ((*(ctxt->feed->fhp->checkFormat)) (ctxt->doc, cur)) {
-					feed_parser_ctxt_cleanup (ctxt);
-					(*(ctxt->feed->fhp->feedParser)) (ctxt, cur);
-			}
-		} while(0);
-	}
-
-	if (ctxt->doc) {
-		xmlFreeDoc(ctxt->doc);
-		ctxt->doc = NULL;
-	}
+	if (htmlDoc)
+		xmlFreeDoc (htmlDoc);
+	if (xmlDoc)
+		xmlFreeDoc (xmlDoc);
 
 	/* 4.) We give up and inform the user */
 	if (ctxt->failed) {
 		/* test if we have a HTML page */
-		if((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
-		    strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML "))) {
-			debug0(DEBUG_UPDATE, "HTML document detected!");
+		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
+		     strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML "))) {
+			debug0 (DEBUG_UPDATE, "HTML document detected!");
 			g_string_append (ctxt->feed->parseErrors, _("Source points to HTML document."));
 		} else {
-			debug0(DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
+			debug0 (DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
 			g_string_append (ctxt->feed->parseErrors, _("Could not determine the feed type."));
 		}
 	} else {
-		debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str(ctxt->feed->fhp));
+		debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
 		success = TRUE;
 	}
 

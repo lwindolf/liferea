@@ -1,5 +1,5 @@
 /**
- * @file rss_item.c  RSS/RDF item parsing 
+ * @file rss_item.c  RSS/RDF item parsing
  *
  * Copyright (C) 2003-2010 Lars Windolf <lars.windolf@gmx.de>
  *
@@ -43,12 +43,12 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 	gchar			*tmp, *tmp2, *tmp3;
 	NsHandler		*nsh;
 	parseItemTagFunc	pf;
-	
+
 	g_assert(NULL != cur);
 
 	ctxt->item = item_new ();
 	ctxt->item->tmpdata = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
-	
+
 	/* try to get an item about id */
 	tmp = xml_get_attribute (cur, "about");
 	if (tmp) {
@@ -56,14 +56,14 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		item_set_source (ctxt->item, tmp);
 		g_free (tmp);
 	}
-	
+
 	cur = cur->xmlChildrenNode;
 	while (cur) {
 		if (cur->type != XML_ELEMENT_NODE || !cur->name) {
 			cur = cur->next;
 			continue;
 		}
-		
+
 		/* check namespace of this tag */
 		if (cur->ns) {
 			if((cur->ns->href && (nsh = (NsHandler *)g_hash_table_lookup(ns_rss_ns_uri_table, (gpointer)cur->ns->href))) ||
@@ -77,11 +77,11 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 				/*g_print("unsupported namespace \"%s\"\n", cur->ns->prefix);*/
 			}
 		} /* explicitly no following else!!! */
-		
+
 		/* check for metadata tags */
 		tmp2 = g_hash_table_lookup(RssToMetadataMapping, cur->name);
 		if (tmp2) {
-			tmp3 = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE);
+			tmp3 = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE);
 			if (tmp3) {
 				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, tmp2, tmp3);
 				g_free(tmp3);
@@ -89,25 +89,25 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		}
 		/* check for specific tags */
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
- 			tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
+ 			tmp = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 			if (tmp) {
 				ctxt->item->time = date_parse_RFC822 (tmp);
 				g_free(tmp);
 			}
-		} 
+		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"enclosure")) {
 			/* RSS 0.93 allows multiple enclosures */
 			tmp = xml_get_attribute (cur, "url");
 			if (tmp) {
 				const gchar *feedURL = subscription_get_homepage (ctxt->subscription);
-				
+
 				gchar *type = xml_get_attribute (cur, "type");
 				gchar *lengthStr = xml_get_attribute (cur, "length");
 				gchar *enclStr = NULL;
 				gssize length = 0;
 				if (lengthStr)
 					length = atol (lengthStr);
-				
+
 				if((strstr(tmp, "://") == NULL) && feedURL && (feedURL[0] != '|') &&
 				   (strstr(feedURL, "://") != NULL)) {
 					/* add base URL if necessary and possible */
@@ -115,7 +115,7 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 					 g_free(tmp);
 					 tmp = tmp2;
 				}
-		
+
 				enclStr = enclosure_values_to_string (tmp, type, length, FALSE);
 				ctxt->item->metadata = metadata_list_append(ctxt->item->metadata, "enclosure", enclStr);
 				ctxt->item->hasEnclosure = TRUE;
@@ -125,10 +125,10 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 				g_free (type);
 				g_free (lengthStr);
 			}
-		} 
+		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"guid")) {
 			if(!item_get_id(ctxt->item)) {
-				tmp = (gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, 1);
+				tmp = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 				if (tmp) {
 					if (strlen (tmp) > 0) {
 						item_set_id(ctxt->item, tmp);
@@ -144,14 +144,14 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"title")) {
- 			tmp = unhtmlize((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE));
+ 			tmp = unhtmlize((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if (tmp) {
 				item_set_title(ctxt->item, tmp);
 				g_free(tmp);
 			}
 		}
 		else if(!xmlStrcmp(cur->name, BAD_CAST"link")) {
- 			tmp = unhtmlize((gchar *)xmlNodeListGetString(ctxt->doc, cur->xmlChildrenNode, TRUE));
+ 			tmp = unhtmlize((gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, TRUE));
 			if (tmp) {
 				item_set_source(ctxt->item, tmp);
 				g_free(tmp);
@@ -172,13 +172,13 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 				metadata_list_set (&(ctxt->item->metadata), "realSourceUrl", g_strchomp (tmp));
 				g_free (tmp);
 			}
-			tmp = unhtmlize ((gchar *)xmlNodeListGetString (ctxt->doc, cur->xmlChildrenNode, 1));
+			tmp = unhtmlize ((gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1));
 			if (tmp) {
 				metadata_list_set (&(ctxt->item->metadata), "realSourceTitle", g_strchomp (tmp));
 				g_free(tmp);
 			}
 		}
-		
+
 		cur = cur->next;
 	}
 
@@ -186,6 +186,6 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 
 	g_hash_table_destroy(ctxt->item->tmpdata);
 	ctxt->item->tmpdata = NULL;
-	
+
 	return ctxt->item;
 }

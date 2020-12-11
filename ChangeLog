@@ -15,6 +15,10 @@ To be released
 	* #876 Add reader mode preference
 	  (Lars Windolf)
 
+	* Implement support for subscribing to LD+Json metadata
+	  listings e.g. concert or theater event listings
+	  (Lars Windolf)
+
 	* Provide the default icon for feeds with no favicon as SVG
 	  for nicer rendering in wide view. Drop some unused icons.
 	  Replace tray icon with scalable version.

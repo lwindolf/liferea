@@ -13,6 +13,7 @@ libliparsers_a_CFLAGS = $(PACKAGE_FLAGS)
 libliparsers_a_SOURCES = \
 	atom10.c atom10.h \
 	html5_feed.c html5_feed.h \
+	ldjson_feed.c ldjson_feed.h \
 	ns_admin.c ns_admin.h \
 	ns_ag.c ns_ag.h \
 	ns_cC.c ns_cC.h \
@@ -26,4 +27,4 @@ libliparsers_a_SOURCES = \
 	ns_trackback.c ns_trackback.h \
 	ns_wfw.c ns_wfw.h \
 	rss_channel.c rss_channel.h \
-	rss_item.c rss_item.h 
+	rss_item.c rss_item.h
