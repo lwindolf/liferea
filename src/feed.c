@@ -313,7 +313,9 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 	debug_enter ("feed_process_update_result");
 
-	if (result->data) {
+	if (result->httpstatus >= 400) {
+		feed->error = FEED_FETCH_ERROR_NET;
+	} else if (result->data) {
 		/* parse the new downloaded feed into feed and itemSet */
 		ctxt = feed_create_parser_ctxt ();
 		ctxt->feed = feed;
@@ -352,15 +354,18 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 			if (flags > 0)
 				db_subscription_update (subscription);
-
-			liferea_shell_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
 		}
 
 		feed_free_parser_ctxt (ctxt);
 	} else {
-		node->available = FALSE;
+		feed->error = FEED_FETCH_ERROR_XML;
+	}
 
+	if (FEED_FETCH_ERROR_NONE != feed->error) {
+		node->available = FALSE;
 		liferea_shell_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
+	} else {
+		liferea_shell_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
 	}
 
 	feed_list_view_update_node (node->id);

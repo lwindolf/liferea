@@ -195,11 +195,12 @@ feed_parse (feedParserCtxtPtr ctxt)
 	/* 1.) try to parse downloaded data as XML */
 	do {
 		if (NULL == (xmlDoc = xml_parse_feed (ctxt))) {
-			//g_string_append_printf (ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), subscription_get_source (ctxt->subscription));
+			ctxt->feed->error = FEED_FETCH_ERROR_XML;
 			break;
 		}
 
 		if (NULL == (xmlNode = xmlDocGetRootElement (xmlDoc))) {
+			ctxt->feed->error = FEED_FETCH_ERROR_XML;
 			g_string_append (ctxt->feed->parseErrors, _("Empty document!"));
 			break;
 		}
@@ -259,6 +260,9 @@ feed_parse (feedParserCtxtPtr ctxt)
 
 	/* 4.) We give up and inform the user */
 	if (!success && !autoDiscovery) {
+		ctxt->feed->error = FEED_FETCH_ERROR_DISCOVER;
+		// FIXME: revise this
+
 		/* test if we have a HTML page */
 		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
 		     strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML "))) {
@@ -278,6 +282,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 			   succeed. Still our auto-discovery was successful. */
 		}
 		success = TRUE;
+		ctxt->feed->error = FEED_FETCH_ERROR_NONE;
 	}
 
 	debug_exit ("feed_parse");
