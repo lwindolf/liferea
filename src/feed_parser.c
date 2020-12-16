@@ -93,7 +93,7 @@ feed_create_parser_ctxt (void)
 
 void
 feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
-{https://www.groupe-ldlc.com/communiques-de-presse/
+{
 	if (ctxt) {
 		/* Don't free the itemset! */
 		g_hash_table_destroy (ctxt->tmpdata);
