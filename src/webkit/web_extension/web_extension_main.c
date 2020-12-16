@@ -1,7 +1,7 @@
 /**
  * @file web_extension_main.c  Control WebKit2 via DBUS from Liferea
  *
- * Copyright (C) 2016 Leiaz <leiaz@free.fr>
+ * Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
