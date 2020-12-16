@@ -574,6 +574,7 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 
 	g_assert (NULL != fpc->data);
 	g_assert (NULL != fpc->feed);
+	g_assert (NULL != fpc->feed->parseErrors);
 
 	fpc->feed->valid = FALSE;
 
