@@ -207,6 +207,9 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             return
 
         icon_size = self.staticon.props.size
+        if 0 == icon_size:
+            return
+
         if pix.props.height != icon_size:
             pix = pix.scale_simple(icon_size, icon_size,
                 GdkPixbuf.InterpType.HYPER)

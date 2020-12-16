@@ -24,6 +24,9 @@ To be released
 	  Replace tray icon with scalable version.
 	  (Lars Windolf)
 
+	* Fixes CRITICAL on trayicon plugin init
+	  (Lars Windolf)
+
 
 2020-10-09   Lars Windolf <lars.windolf@gmx.de>
 
