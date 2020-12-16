@@ -88,16 +88,16 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     shell = GObject.property(type=Liferea.Shell)
 
     def do_activate(self):
-        self.staticon = Gtk.StatusIcon ()
+        self.read_pix = Liferea.icon_create_from_file("emblem-web.svg")
         # FIXME: Support a scalable image!
-        self.read_pix = Liferea.icon_create_from_file ("emblem-web.svg")
-        self.unread_pix = Liferea.icon_create_from_file ("unread.png")
+        self.unread_pix = Liferea.icon_create_from_file("unread.png")
 
-        self.staticon.set_from_pixbuf(Liferea.icon_create_from_file("unread.png"))
+        self.staticon = Gtk.StatusIcon ()
         self.staticon.connect("activate", self.trayicon_click)
         self.staticon.connect("popup_menu", self.trayicon_popup)
         self.staticon.connect("size-changed", self.trayicon_size_changed)
         self.staticon.set_visible(True)
+        self.trayicon_set_pixbuf(self.read_pix)
 
         self.menu = Gtk.Menu()
         menuitem_toggle = Gtk.MenuItem("Show / Hide")
@@ -202,6 +202,18 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     def trayicon_popup(self, widget, button, time, data = None):
         self.menu.popup(None, None, self.staticon.position_menu, self.staticon, 3, time)
 
+    def trayicon_set_pixbuf(self, pix):
+        if None == pix:
+            return
+
+        icon_size = self.staticon.props.size
+        if pix.props.height != icon_size:
+            pix = pix.scale_simple(icon_size, icon_size,
+                GdkPixbuf.InterpType.HYPER)
+
+        if self.staticon.props.pixbuf != pix:
+            self.staticon.props.pixbuf = pix
+
     def show_new_count(self, new_count):
         """display new count on status icon"""
         pix_size = self.staticon.props.size
@@ -225,16 +237,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         else:
             pix = self.read_pix
 
-        if None == pix:
-            return
-
-        icon_size = self.staticon.props.size
-        if pix.props.height < icon_size:
-            pix = pix.scale_simple(icon_size, icon_size,
-                    GdkPixbuf.InterpType.HYPER)
-
-        if  self.staticon.props.pixbuf != pix:
-            self.staticon.props.pixbuf = pix
+        self.trayicon_set_pixbuf(pix)
 
     def trayicon_size_changed(self, widget, size):
         self.feedlist_new_items_cb()
