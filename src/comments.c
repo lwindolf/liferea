@@ -132,9 +132,8 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 		node_set_subscription (node, ctxt->subscription);
 		ctxt->data = result->data;
 		ctxt->dataLength = result->size;
-		feed_parse (ctxt);
 
-		if (ctxt->failed) {
+		if (!feed_parse (ctxt)) {
 			debug0 (DEBUG_UPDATE, "parsing comment feed failed!");
 		} else {
 			itemSetPtr	comments;

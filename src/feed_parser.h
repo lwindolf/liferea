@@ -27,19 +27,17 @@
 
 /** Holds all information used on feed parsing time */
 typedef struct feedParserCtxt {
-	subscriptionPtr	subscription;	/**< the subscription the feed belongs to (optional) */
-	feedPtr		feed;		/**< the feed structure to fill */
-	GList		*items;		/**< the list of new items */
-	struct item	*item;		/**< the item currently parsed (or NULL) */
+	subscriptionPtr	subscription;		/**< the subscription the feed belongs to (optional) */
+	feedPtr		feed;			/**< the feed structure to fill */
+	GList		*items;			/**< the list of new items */
+	struct item	*item;			/**< the item currently parsed (or NULL) */
 
-	GHashTable	*tmpdata;	/**< tmp data hash used during stateful parsing */
+	GHashTable	*tmpdata;		/**< tmp data hash used during stateful parsing */
 
-	gchar		*title;		/**< resulting feed/channel title */
+	gchar		*title;			/**< resulting feed/channel title */
 
-	gchar		*data;		/**< data buffer to parse */
-	gsize		dataLength;	/**< length of the data buffer */
-
-	gboolean	failed;		/**< TRUE if parsing failed because feed type could not be detected */
+	gchar		*data;			/**< data buffer to parse */
+	gsize		dataLength;		/**< length of the data buffer */
 } *feedParserCtxtPtr;
 
 

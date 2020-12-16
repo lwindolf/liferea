@@ -318,17 +318,15 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		ctxt->subscription = subscription;
 
 		/* try to parse the feed */
-		feed_parse (ctxt);
-
-		if (ctxt->failed) {
+		if (!feed_parse (ctxt)) {
 			/* No feed found, display an error */
 			node->available = FALSE;
 
 			g_string_prepend (feed->parseErrors, _("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
 			                                       "XML Parser Output:<br /><div class='xmlparseroutput'>"));
 			g_string_append (feed->parseErrors, "</div>");
-		} else if (!ctxt->failed && !ctxt->feed->fhp) {
-			/* There's a feed but no Handler. This means autodiscovery
+		} else if (!ctxt->feed->fhp) {
+			/* There's a feed but no handler. This means autodiscovery
 			 * found a feed, but we still need to download it.
 			 * An update should be in progress that will process it */
 		} else {
