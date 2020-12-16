@@ -27,6 +27,9 @@ To be released
 	* Fixes CRITICAL on trayicon plugin init
 	  (Lars Windolf)
 
+	* Fixes #908, #332: Search folder are not case-insensitive as documented
+	  (reported by Heinz Peter Hippenstiel and Jeff Fortin)
+
 
 2020-10-09   Lars Windolf <lars.windolf@gmx.de>
 

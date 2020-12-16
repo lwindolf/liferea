@@ -1,7 +1,7 @@
 /**
  * @file rule_editor.c  rule editing dialog functionality
  *
- * Copyright (C) 2008-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -85,11 +85,7 @@ rule_editor_destroy_param_widget (GtkWidget *widget, gpointer data)
 static void
 on_rulevalue_changed (GtkEditable *editable, gpointer user_data)
 {
-	rulePtr	rule = (rulePtr)user_data;
-
-	if (rule->value)
-		g_free (rule->value);
-	rule->value = g_strdup (gtk_editable_get_chars (editable,0,-1));
+	rule_set_value ((rulePtr)user_data, gtk_editable_get_chars (editable, 0, -1));
 }
 
 /* callback for rule additive option menu */
