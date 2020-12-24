@@ -30,6 +30,8 @@
 #include "parsers/ldjson_feed.h"
 #include "parsers/rss_channel.h"
 
+#define AUTO_DISCOVERY_MAX_REDIRECTS	5
+
 static GSList *feedHandlers = NULL;	/**< list of available parser implementations */
 
 struct feed_type {
@@ -106,7 +108,7 @@ feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
  * this source instead into the given feed parsing context. It also
  * replaces the HTTP URI with the found feed source.
  *
- * Mutates ctxt->failed and ctxt->feed->parseErrors
+ * Mutates ctxt->feed->parseErrors
  */
 static gboolean
 feed_parser_auto_discover (feedParserCtxtPtr ctxt)
@@ -119,7 +121,7 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 	else
 		ctxt->feed->parseErrors = g_string_new(NULL);
 
-	debug1 (DEBUG_UPDATE, "Starting feed auto discovery (%s)", subscription_get_source (ctxt->subscription));
+	debug2 (DEBUG_UPDATE, "Starting feed auto discovery (%s) redirects=%d", subscription_get_source (ctxt->subscription), ctxt->subscription->autoDiscoveryTries);
 
 	links = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription));
 	if (links)
@@ -128,7 +130,6 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 	/* FIXME: we only need the !g_str_equal as a workaround after a 404 */
 	if (source && !g_str_equal (source, subscription_get_source (ctxt->subscription))) {
 		debug1 (DEBUG_UPDATE, "Discovered link: %s", source);
-		ctxt->failed = FALSE;
 		subscription_set_source (ctxt->subscription, source);
 
 		/* The feed that was processed wasn't the correct one, we need to redownload it.
@@ -136,10 +137,13 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 		subscription_cancel_update (ctxt->subscription);
 		subscription_update (ctxt->subscription, FEED_REQ_RESET_TITLE);
 		g_free (source);
-	} else {
-		debug0 (DEBUG_UPDATE, "No feed link found!");
-		g_string_append (ctxt->feed->parseErrors, _("The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."));
+
+		return TRUE;
 	}
+
+	debug0 (DEBUG_UPDATE, "No feed link found!");
+	g_string_append (ctxt->feed->parseErrors, _("The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."));
+	return FALSE;
 }
 
 static void
@@ -155,7 +159,6 @@ feed_parser_ctxt_cleanup (feedParserCtxtPtr ctxt)
 	metadata_list_free (ctxt->subscription->metadata);
 
 	ctxt->subscription->metadata = NULL;
-	ctxt->failed = FALSE;
 }
 
 /**
@@ -174,14 +177,11 @@ feed_parse (feedParserCtxtPtr ctxt)
 {
 	xmlNodePtr	xmlNode = NULL, htmlNode = NULL;
 	xmlDocPtr	xmlDoc, htmlDoc;
-	gboolean	success = FALSE;
-	gboolean	htmlParsing = FALSE;
+	gboolean	autoDiscovery = FALSE, success = FALSE;
 
 	debug_enter ("feed_parse");
 
 	g_assert (NULL == ctxt->items);
-
-	ctxt->failed = TRUE;	/* reset on success ... */
 
 	if (ctxt->feed->parseErrors)
 		g_string_truncate (ctxt->feed->parseErrors, 0);
@@ -235,15 +235,22 @@ feed_parse (feedParserCtxtPtr ctxt)
 			ctxt->feed->fhp = handler;
 			feed_parser_ctxt_cleanup (ctxt);
 			(*(handler->feedParser)) (ctxt, handler->html?htmlNode:xmlNode);
+			success = TRUE;
 			break;
 		}
 		handlerIter = handlerIter->next;
 	}
 
-	/* 2.) None of the feed formats did work, chance is high that we are
+	/* 3.) None of the feed formats did work, chance is high that we are
 	       working on a HTML documents. Let's look for feed links inside it! */
-	if (ctxt->failed)
-		feed_parser_auto_discover (ctxt);
+	if (!success) {
+		ctxt->subscription->autoDiscoveryTries++;
+		if (ctxt->subscription->autoDiscoveryTries > AUTO_DISCOVERY_MAX_REDIRECTS) {
+			debug2 (DEBUG_UPDATE, "Stopping feed auto discovery (%s) after too many redirects (limit is %d)", subscription_get_source (ctxt->subscription), AUTO_DISCOVERY_MAX_REDIRECTS);
+		} else {
+			autoDiscovery = feed_parser_auto_discover (ctxt);
+		}
+	}
 
 	if (htmlDoc)
 		xmlFreeDoc (htmlDoc);
@@ -251,7 +258,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 		xmlFreeDoc (xmlDoc);
 
 	/* 4.) We give up and inform the user */
-	if (ctxt->failed) {
+	if (!success && !autoDiscovery) {
 		/* test if we have a HTML page */
 		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
 		     strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML "))) {
@@ -262,7 +269,14 @@ feed_parse (feedParserCtxtPtr ctxt)
 			g_string_append (ctxt->feed->parseErrors, _("Could not determine the feed type."));
 		}
 	} else {
-		debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
+		if (ctxt->feed->fhp) {
+			debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
+			ctxt->subscription->autoDiscoveryTries = 0;
+		} else {
+			/* Auto discovery found a link that is being processed
+			   asynchronously, for now we do not know wether it will
+			   succeed. Still our auto-discovery was successful. */
+		}
 		success = TRUE;
 	}
 
