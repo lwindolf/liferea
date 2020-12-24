@@ -63,7 +63,7 @@ rule_new (const gchar *ruleId,
 			rulePtr rule = (rulePtr) g_new0 (struct rule, 1);
 			rule->ruleInfo = ruleInfo;
 			rule->additive = additive;
-			rule->value = common_strreplace (g_strdup (value), "'", "");
+			rule_set_value (rule, value);
 			return rule;
 		}
 
@@ -73,10 +73,41 @@ rule_new (const gchar *ruleId,
 }
 
 void
+rule_set_value (rulePtr rule, const gchar *value)
+{
+	if (rule->value)
+		g_free (rule->value);
+	if (rule->valueCaseFolded)
+		g_free (rule->valueCaseFolded);
+
+	rule->value = common_strreplace (g_strdup (value), "'", "");
+	rule->valueCaseFolded = g_utf8_casefold (rule->value, -1);
+}
+
+void
 rule_free (rulePtr rule)
 {
 	g_free (rule->value);
+	g_free (rule->valueCaseFolded);
 	g_free (rule);
+}
+
+/* case insensitive strcmp helper function
+
+   To avoid half of the g_utf8_casefold we expect the 2nd value to be already
+   case folded!
+ */
+static const gchar *
+rule_strcasecmp (const gchar *a, const gchar *bCaseFold)
+{
+	gchar		*aCaseFold;
+	const gchar	*result;
+
+	aCaseFold = g_utf8_casefold (a, -1);
+	result = g_strstr_len (aCaseFold, -1, bCaseFold);
+	g_free (aCaseFold);
+
+	return result;
 }
 
 /* rule conditions */
@@ -84,13 +115,13 @@ rule_free (rulePtr rule)
 static gboolean
 rule_check_item_title (rulePtr rule, itemPtr item)
 {
-	return (item->title && g_strstr_len (item->title, -1, rule->value));
+	return (item->title && rule_strcasecmp (item->title, rule->valueCaseFolded));
 }
 
 static gboolean
 rule_check_item_description (rulePtr rule, itemPtr item)
 {
-	return (item->description && g_strstr_len (item->description, -1, rule->value));
+	return (item->description && rule_strcasecmp (item->description, rule->valueCaseFolded));
 }
 
 static gboolean
@@ -140,7 +171,7 @@ rule_check_feed_title (rulePtr rule, itemPtr item)
 	if (!feedNode)
 		return FALSE;
 
-	return (feedNode->title && g_strstr_len (feedNode->title, -1, rule->value));
+	return (feedNode->title && rule_strcasecmp (feedNode->title, rule->valueCaseFolded));
 }
 
 static gboolean
@@ -150,7 +181,7 @@ rule_check_feed_source (rulePtr rule, itemPtr item)
 	if (!feedNode)
 		return FALSE;
 
-	return (feedNode->subscription && g_strstr_len (feedNode->subscription->source, -1, rule->value));
+	return (feedNode->subscription && rule_strcasecmp (feedNode->subscription->source, rule->valueCaseFolded));
 }
 
 static gboolean
@@ -162,7 +193,7 @@ rule_check_parent_folder (rulePtr rule, itemPtr item)
 
 	node = node->parent;
 
-	return (node && g_strstr_len (node->title, -1, rule->value));
+	return (node && rule_strcasecmp (node->title, rule->valueCaseFolded));
 }
 
 /* rule initialization */
