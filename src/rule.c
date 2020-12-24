@@ -97,7 +97,7 @@ rule_free (rulePtr rule)
    To avoid half of the g_utf8_casefold we expect the 2nd value to be already
    case folded!
  */
-const gchar *
+static const gchar *
 rule_strcasecmp (const gchar *a, const gchar *bCaseFold)
 {
 	gchar		*aCaseFold;
