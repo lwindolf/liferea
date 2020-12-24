@@ -178,7 +178,6 @@ feed_parse (feedParserCtxtPtr ctxt)
 	xmlNodePtr	xmlNode = NULL, htmlNode = NULL;
 	xmlDocPtr	xmlDoc, htmlDoc;
 	gboolean	autoDiscovery = FALSE, success = FALSE;
-	gboolean	htmlParsing = FALSE;
 
 	debug_enter ("feed_parse");
 
