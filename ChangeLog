@@ -1,12 +1,19 @@
-To be released
+2020-12-24   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.4
 
 	* Prevent endless loop on favicon discovery
 	  (Lars Windolf)
 
+	* #903: Prevent endless loop in feed autodiscovery
+	  (reported by Leiaz)
+
+	* #912: Allow mutiple feed in same libnotify notification
+	  (Tasos Sahanidis)
+
 	* Further favicon discovery improvements: now detects all types of
 	  Apple Touch Icons, MS Tile Images and Safari Mask Icons
+	  Fixes #440
 	  (Lars Windolf)
 
 	* Add reader mode toggle in the item view
@@ -27,8 +34,20 @@ To be released
 	* Fixes CRITICAL on trayicon plugin init
 	  (Lars Windolf)
 
+	* Fixes #884: Content of wrong feed is shown
+	  (Leiaz, reported by Michael F. Schönitzer)
+
+	* Fixes #900: Flatpak needs icon named after appid
+	  (Mikel Olasagasti)
+
 	* Fixes #908, #332: Search folder are not case-insensitive as documented
 	  (reported by Heinz Peter Hippenstiel and Jeff Fortin)
+
+	* Fixes #899: Truncated articles (on 'Extrat full content')
+	  (reported by Leiaz)
+
+	* #902: Updated Polish translation
+	  (sunwire)
 
 
 2020-10-09   Lars Windolf <lars.windolf@gmx.de>
