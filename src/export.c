@@ -23,8 +23,8 @@
 
 #include <errno.h>
 #include <glib.h>
+#include <glib/gstdio.h>
 #include <libxml/tree.h>
-#include <sys/stat.h>
 
 #include "auth.h"
 #include "common.h"
@@ -183,8 +183,7 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 		xmlFreeDoc (doc);
 
 		if (!error) {
-			// FIXME: Use g_rename() once we've reached Glib 2.6+
-			if (rename (backupFilename, filename) < 0) {
+			if (g_rename (backupFilename, filename) < 0) {
 				g_warning (_("Error renaming %s to %s: %s\n"), backupFilename, filename, g_strerror (errno));
 				error = TRUE;
 			}
