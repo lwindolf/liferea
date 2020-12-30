@@ -348,21 +348,14 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	/* 6. do node type specific parsing */
 	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
 
-	if (node->subscription) {
-		/* Handle OPML auth info (imported from subscription_import() */
-		if(node->subscription->updateOptions->username) {
-			/* Write to password store (for migration) */
-			liferea_auth_info_store (node->subscription);
-		} else {
-			/* If no auth options in OPML try to import them from the key store */
-			liferea_auth_info_query (node->id);
-		}
+	if (node->subscription)
+		liferea_auth_info_query (node->id);
 
-		/* 7. update immediately if necessary */
-		if (needsUpdate) {
-			debug1 (DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
-			subscription_update (node->subscription, 0);
-		}
+	/* 7. update immediately if necessary */
+	// FIXME: this should not be done here!!!
+	if (node->subscription && needsUpdate) {
+		debug1 (DEBUG_CACHE, "seems to be an import, setting new id: %s and doing first download...", node_get_id(node));
+		subscription_update (node->subscription, 0);
 	}
 
 	/* 8. Always update the node info in the DB to ensure a proper
