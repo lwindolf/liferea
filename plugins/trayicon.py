@@ -19,6 +19,7 @@
 # Boston, MA 02111-1307, USA.
 #
 
+import gettext
 import gi
 gi.require_version('Peas', '1.0')
 gi.require_version('PeasGtk', '1.0')
@@ -28,6 +29,14 @@ from gi.repository import Gdk, GdkPixbuf
 import cairo
 import pathlib
 from collections import namedtuple
+
+_ = lambda x: x
+try:
+    t = gettext.translation("liferea")
+except FileNotFoundError:
+    pass
+else:
+    _ = t.gettext
 
 # Cairo text extents
 Extents = namedtuple("Extents", [
@@ -100,9 +109,9 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.trayicon_set_pixbuf(self.read_pix)
 
         self.menu = Gtk.Menu()
-        menuitem_toggle = Gtk.MenuItem("Show / Hide")
-        menuitem_close_behavior = Gtk.CheckMenuItem("Minimize to tray on close")
-        menuitem_quit = Gtk.MenuItem("Quit")
+        menuitem_toggle = Gtk.MenuItem(_("Show / Hide"))
+        menuitem_close_behavior = Gtk.CheckMenuItem(_("Minimize to tray on close"))
+        menuitem_quit = Gtk.MenuItem(_("Quit"))
 
         self.config_path = self.get_config_path()
         self.min_enabled = self.get_config()
