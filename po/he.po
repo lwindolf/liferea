@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-28 12:24+0200\n"
+"POT-Creation-Date: 2020-12-31 18:23+0100\n"
 "PO-Revision-Date: 2012-12-23 18:24+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -20,12 +20,12 @@ msgstr ""
 "X-Language: he\n"
 "X-Source-Language: en\n"
 
-#: ../liferea.appdata.xml.in.h:1
+#: ../net.sourceforge.liferea.appdata.xml.in.h:1
 #, fuzzy
 msgid "RSS feed reader"
 msgstr "קורא ערוצים"
 
-#: ../liferea.appdata.xml.in.h:2
+#: ../net.sourceforge.liferea.appdata.xml.in.h:2
 msgid ""
 "Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
 "for online news feeds. It supports a number of different feed formats "
@@ -41,39 +41,39 @@ msgstr ""
 "מנסה לגשר על פער זה על ידי יצירת מאגד חדשות עבור GTK/GNOME מהיר, קל לשימוש, "
 "קל להתקנה."
 
-#: ../liferea.appdata.xml.in.h:3
+#: ../net.sourceforge.liferea.appdata.xml.in.h:3
 msgid "Distinguishing features:"
 msgstr "תכונות מיוחדות:"
 
-#: ../liferea.appdata.xml.in.h:4
+#: ../net.sourceforge.liferea.appdata.xml.in.h:4
 msgid "Read articles when offline"
 msgstr "קריאת מאמרים במצב לא־מקוון"
 
-#: ../liferea.appdata.xml.in.h:5
+#: ../net.sourceforge.liferea.appdata.xml.in.h:5
 msgid "Synchronizes with TheOldReader"
 msgstr "סנכרון בעזרת TheOldReader"
 
-#: ../liferea.appdata.xml.in.h:6
+#: ../net.sourceforge.liferea.appdata.xml.in.h:6
 msgid "Synchronizes with TinyTinyRSS"
 msgstr "סנכרון בעזרת TinyTinyRSS"
 
-#: ../liferea.appdata.xml.in.h:7
+#: ../net.sourceforge.liferea.appdata.xml.in.h:7
 msgid "Synchronizes with InoReader"
 msgstr "סנכרון בעזרת InoReader"
 
-#: ../liferea.appdata.xml.in.h:8
+#: ../net.sourceforge.liferea.appdata.xml.in.h:8
 msgid "Synchronizes with Reedah"
 msgstr "סנכרון בעזרת Reedah"
 
-#: ../liferea.appdata.xml.in.h:9
+#: ../net.sourceforge.liferea.appdata.xml.in.h:9
 msgid "Permanently save headlines in news bins"
 msgstr "אחסון כותרות באופן קבוע בתוך סלי איסוף"
 
-#: ../liferea.appdata.xml.in.h:10
+#: ../net.sourceforge.liferea.appdata.xml.in.h:10
 msgid "Match items using search folders"
 msgstr "התאמת פריטים באמצעות תיקיות חיפוש"
 
-#: ../liferea.appdata.xml.in.h:11
+#: ../net.sourceforge.liferea.appdata.xml.in.h:11
 msgid "Play Podcasts"
 msgstr "ניגון פודקסטים"
 
@@ -279,7 +279,7 @@ msgstr "<p dir=\"rtl\">תיקיית חיפוש:</p>"
 msgid "Browser command failed: %s"
 msgstr "פקודת דפדפן נכשלה: ‭%s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1044
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "מפעיל כעת את: \"%s\""
@@ -355,60 +355,60 @@ msgstr ""
 "בכרטיסייה 'הורדה' בתוך כלים/העדפות."
 
 # בשינוי השם של
-#: ../src/export.c:188
+#: ../src/export.c:187
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "שגיאה בשינוי השם %s אל %s\n"
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:409 ../src/export.c:411
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "שגיאת XML במהלך קריאת קובץ OPML! לא ניתן לייבא את \"%s\"!"
 
-#: ../src/export.c:425 ../src/export.c:427
+#: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "מסמך ריק! מסמך OPML ‏\"%s\" לא אמור להיות ריק במהלך ייבוא."
 
-#: ../src/export.c:448 ../src/export.c:450
+#: ../src/export.c:440 ../src/export.c:442
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "‏\"%s\" אינו מסמך OPML תקין. Liferea לא מסוגל לייבא קובץ זה!"
 
-#: ../src/export.c:469
+#: ../src/export.c:461
 msgid "Imported feed list"
 msgstr "רשימת ערוצים מיובאת"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import Feed List"
 msgstr "ייבוא רשימת ערוצים"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import"
 msgstr "יב_א"
 
-#: ../src/export.c:481 ../src/export.c:498 ../src/fl_sources/opml_source.c:379
+#: ../src/export.c:473 ../src/export.c:490 ../src/fl_sources/opml_source.c:379
 msgid "OPML Files"
 msgstr "קבצי OPML"
 
-#: ../src/export.c:489
+#: ../src/export.c:481
 msgid "Error while exporting feed list!"
 msgstr "אירעה שגיאה במהלך ייצוא רשימת ערוצים!"
 
-#: ../src/export.c:491
+#: ../src/export.c:483
 msgid "Feed List exported!"
 msgstr "ייצוא רשימת ערוצים הסתיים בהצלחה!"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export Feed List"
 msgstr "ייצוא רשימת ערוצים"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export"
 msgstr "יצ_א"
 
-#: ../src/feed.c:324
+#: ../src/feed.c:325
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -419,18 +419,18 @@ msgstr ""
 "style='direction:rtl' class='xmlparseoutput'>"
 
 # <שם_הזנה> עודכנה...
-#: ../src/feed.c:351
+#: ../src/feed.c:352
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "‏\"%s\" עודכן..."
 
-#: ../src/feed.c:358
+#: ../src/feed.c:359
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "‏\"%s\" אינו זמין"
 
 # דף מרשתת
-#: ../src/feed_parser.c:142
+#: ../src/feed_parser.c:145
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -439,30 +439,25 @@ msgstr ""
 "כתובת URL אליה ברצונך להירשם מצביעה על דף אינטרנט ולא זוהו ערוצים בתוכו "
 "באמצעות הגילוי האוטומטי. ייתכן שדף אינטרנט זה לא תומך בגילוי ערוצים אוטומטי."
 
-#: ../src/feed_parser.c:194
-#, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "שגיאת XML במהלך קריאת ערוץ! לא ניתן לטעון את הערוץ \"%s\"!"
-
-#: ../src/feed_parser.c:199 ../src/feed_parser.c:248
+#: ../src/feed_parser.c:203
 msgid "Empty document!"
 msgstr "מסמך ריק!"
 
 # האם XML זה זכר או נקבה?
-#: ../src/feed_parser.c:211
+#: ../src/feed_parser.c:212
 msgid "Invalid XML!"
 msgstr "‏XML לא תקין!"
 
-#: ../src/feed_parser.c:271
+#: ../src/feed_parser.c:266
 msgid "Source points to HTML document."
 msgstr "המקור מצביע למסמך HTML."
 
-#: ../src/feed_parser.c:274
+#: ../src/feed_parser.c:269
 msgid "Could not determine the feed type."
 msgstr "לא ניתן לקבוע את טיפוס הערוץ."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:393
+#: ../src/itemlist.c:390
 msgid "There are no unread items"
 msgstr "אין פריטים שלא נקראו"
 
@@ -668,86 +663,86 @@ msgstr "אירעה שגיאת תקשורת לא מוכרת!"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:198
+#: ../src/rule.c:229
 msgid "Item"
 msgstr "פריט"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does contain"
 msgstr "מכיל"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does not contain"
 msgstr "לא מכיל"
 
-#: ../src/rule.c:199
+#: ../src/rule.c:230
 msgid "Item title"
 msgstr "כותר פריט"
 
-#: ../src/rule.c:200
+#: ../src/rule.c:231
 msgid "Item body"
 msgstr "גוף פריט"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "Read status"
 msgstr "מצב קריאה"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is unread"
 msgstr "לא נקרא"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is read"
 msgstr "נקרא"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "Flag status"
 msgstr "מצב דגל"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is flagged"
 msgstr "מסומן"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is unflagged"
 msgstr "לא מסומן"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "Podcast"
 msgstr "פודקסט"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "included"
 msgstr "כלול"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "not included"
 msgstr "לא לכלול"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "Category"
 msgstr "קטגוריה"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is set"
 msgstr "מוגדרת בתור"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is not set"
 msgstr "לא מוגדרת בתור"
 
-#: ../src/rule.c:205
+#: ../src/rule.c:236
 msgid "Feed title"
 msgstr "כותר ערוץ"
 
-#: ../src/rule.c:206
+#: ../src/rule.c:237
 #, fuzzy
 msgid "Feed source"
 msgstr "מקור ערוץ"
 
-#: ../src/rule.c:207
+#: ../src/rule.c:238
 msgid "Parent folder title"
 msgstr ""
 
@@ -789,28 +784,28 @@ msgstr "‏\"%s\" לא השתנה מאז עדכון אחרון"
 msgid "Updating \"%s\""
 msgstr "מעדכן כעת את \"%s\""
 
-#: ../src/update.c:297
+#: ../src/update.c:327
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "שגיאה בפתיחת הקובץ הזמני %s לשימוש בסינון!"
 
-#: ../src/update.c:320
+#: ../src/update.c:350
 #, c-format
 msgid "%s exited with status %d"
 msgstr "<div style=\"direction:rtl\">&lrm;%s סיים עם סטטוס %d</div>"
 
-#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:442
+#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "שגיאה: לא ניתן לפתוח צינור \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:466
+#: ../src/update.c:496
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "שגיאה: לא ניתן לפתוח את הקובץ \"%s\""
 
-#: ../src/update.c:472
+#: ../src/update.c:502
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "שגיאה: הקובץ \"%s\" לא קיים"
@@ -819,11 +814,11 @@ msgstr "שגיאה: הקובץ \"%s\" לא קיים"
 msgid "New Search Folder"
 msgstr "תיקיית חיפוש חדשה"
 
-#: ../src/xml.c:410
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[היו שגיאות נוספות. הפלט קוצץ!]"
 
-#: ../src/xml.c:563
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "מפענח XML: לא ניתן לפענח את המסמך:\n"
 
@@ -875,34 +870,34 @@ msgstr "סיומת קובץ .%s"
 msgid "Couldn't find pixmap file: %s"
 msgstr "לא היה ניתן למצוא קובץ מפת סיביות: ‏%s"
 
-#: ../src/ui/liferea_shell.c:396
+#: ../src/ui/liferea_shell.c:409
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "(%d חדש) "
 msgstr[1] "(%d חדשים) "
 
-#: ../src/ui/liferea_shell.c:401
+#: ../src/ui/liferea_shell.c:414
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d לא נקרא%s "
 msgstr[1] "%d לא נקראו%s "
 
-#: ../src/ui/liferea_shell.c:758
+#: ../src/ui/liferea_shell.c:755
 msgid "Help Topics"
 msgstr "נושאי עזרה"
 
 # הפנייה מהירה
-#: ../src/ui/liferea_shell.c:764
+#: ../src/ui/liferea_shell.c:761
 msgid "Quick Reference"
 msgstr "תיעוד מהיר"
 
-#: ../src/ui/liferea_shell.c:770
+#: ../src/ui/liferea_shell.c:767
 msgid "FAQ"
 msgstr "שו״ת"
 
-#: ../src/ui/liferea_shell.c:1041
+#: ../src/ui/liferea_shell.c:1045
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "פקודת דפדפן נכשלה: ‭%s"
@@ -1030,15 +1025,15 @@ msgstr "עליך לבחור ערוץ כדי למחוק את הפריטים של�
 msgid "No item has been selected"
 msgstr "לא נבחר אף פריט"
 
-#: ../src/ui/popup_menu.c:102
+#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "פתח בתוך _כרטיסייה"
 
-#: ../src/ui/popup_menu.c:106
+#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_פתח בתוך דפדפן"
 
-#: ../src/ui/popup_menu.c:110
+#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "פתח בתוך דפדפן _חיצוני"
 
@@ -1059,11 +1054,11 @@ msgstr "_סמן באתר %s"
 msgid "Copy Item _Location"
 msgstr "העתק _מיקום פריט"
 
-#: ../src/ui/popup_menu.c:163
+#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "החלף מצב _נקרא"
 
-#: ../src/ui/popup_menu.c:167
+#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "החלף מצב _סימון"
 
@@ -1083,7 +1078,7 @@ msgstr "שמור בשם..."
 msgid "Copy Link Location"
 msgstr "העתק כתובת קישור"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_עדכן"
 
@@ -1095,11 +1090,11 @@ msgstr "_עדכן תיקייה"
 msgid "New _Subscription..."
 msgstr "_הרשמה חדשה..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "_תיקייה חדשה..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "ת_יקיית חיפוש חדשה..."
 
@@ -1107,7 +1102,7 @@ msgstr "ת_יקיית חיפוש חדשה..."
 msgid "New S_ource..."
 msgstr "מ_קור חדש..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "_סל איסוף חדש..."
 
@@ -1127,7 +1122,7 @@ msgstr "_סמן הכל ככאלה שנקראו"
 msgid "_Rebuild"
 msgstr "_הרכב מחדש"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "מ_אפיינים"
 
@@ -1187,23 +1182,19 @@ msgstr "תצוגה רגילה"
 msgid "Wide View"
 msgstr "תצוגה רחבה"
 
-#: ../src/ui/preferences_dialog.c:112
-msgid "Combined View"
-msgstr "תצוגה משולבת"
-
-#: ../src/ui/preferences_dialog.c:467
+#: ../src/ui/preferences_dialog.c:478
 msgid "Default Browser"
 msgstr "דפדפן ברירת מחדל"
 
-#: ../src/ui/preferences_dialog.c:469
+#: ../src/ui/preferences_dialog.c:480
 msgid "Manual"
 msgstr "ידני"
 
-#: ../src/ui/preferences_dialog.c:716
+#: ../src/ui/preferences_dialog.c:740
 msgid "Type"
 msgstr "טיפוס"
 
-#: ../src/ui/preferences_dialog.c:719
+#: ../src/ui/preferences_dialog.c:743
 msgid "Program"
 msgstr "תוכנית"
 
@@ -1227,7 +1218,7 @@ msgstr "לערוץ זה לא הוגדרה תדירות עדכון."
 msgid "Untitled"
 msgstr "ללא כותרת"
 
-#: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
+#: ../src/parsers/atom10.c:239
 msgid "Website"
 msgstr "אתר אינטרנט"
 
@@ -1283,7 +1274,7 @@ msgstr "ההרשמה '%s' הומרה בהצלחה לערוצים מקומיים!
 msgid "Login failed!"
 msgstr "התחברות נכשלה!"
 
-#: ../src/fl_sources/reedah_source.c:312
+#: ../src/fl_sources/reedah_source.c:313
 msgid "Reedah"
 msgstr "‏Reedah"
 
@@ -1291,28 +1282,28 @@ msgstr "‏Reedah"
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של Reedah!"
 
-#: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr "‏TinyTinyRSS: ‏HTTP API של לא נגיש!"
 
-#: ../src/fl_sources/ttrss_source.c:231
+#: ../src/fl_sources/ttrss_source.c:234
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr "‏TinyTinyRSS הרשמה לערוץ נכשלה! בדוק אם באמת העברת URL ערוץ!"
 
-#: ../src/fl_sources/ttrss_source.c:290
+#: ../src/fl_sources/ttrss_source.c:300
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr "‏TinyTinyRSS: ביטול הרשמת ערוץ נכשל!"
 
-#: ../src/fl_sources/ttrss_source.c:307
+#: ../src/fl_sources/ttrss_source.c:318
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr "גרסת TinyTinyRSS זו לא תומכת בהסרת ערוצים. שדרג לגרסא %s או חדשה יותר!"
 
-#: ../src/fl_sources/ttrss_source.c:427
+#: ../src/fl_sources/ttrss_source.c:460
 msgid "Tiny Tiny RSS"
 msgstr "‏Tiny Tiny RSS"
 
@@ -1320,7 +1311,7 @@ msgstr "‏Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של TinyTinyRSS!"
 
-#: ../src/fl_sources/theoldreader_source.c:310
+#: ../src/fl_sources/theoldreader_source.c:311
 msgid "TheOldReader"
 msgstr "‏TheOldReader"
 
@@ -1380,25 +1371,209 @@ msgstr "ה_גדל גודל טקסט"
 msgid "_Decrease Text Size"
 msgstr "ה_קטן גודל טקסט"
 
-#: ../plugins/headerbar.py:63
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
 msgid "Previous Item"
 msgstr "פריט קודם"
 
-#: ../plugins/headerbar.py:69
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
 msgid "Next Item"
 msgstr "פריט הבא"
 
-#: ../plugins/headerbar.py:77
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
 msgid "_Next Unread Item"
 msgstr "_פריט הבא שלא נקרא"
 
-#: ../plugins/headerbar.py:85
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
 msgid "_Mark Items Read"
 msgstr "_סמן פריטים ככאלה שנקראו"
 
-#: ../plugins/headerbar.py:104
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
 msgid "Search All Feeds..."
 msgstr "חפש בכל הערוצים..."
+
+#: ../plugins/libnotify.py:42
+#, fuzzy
+msgid "Feed Updates"
+msgstr "עדכון ערוץ"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "תוספים"
+
+#: ../plugins/plugin-installer.py:69
+#, fuzzy
+msgid "Plugin Installer"
+msgstr "תוספים"
+
+#: ../plugins/plugin-installer.py:83
+#, fuzzy
+msgid "Activate Plugins"
+msgstr "תוספים"
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_הורד באמצעות"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "מתקדם"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+# הגדרות התראה
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "הגדרת התראות"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
+msgid ""
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "לא ניתן ליצור מדור מטמון עבור \"%s\"!"
+
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+# הרשומה נמחקת כעת
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "מוחק הרשמה"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
+msgid ""
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
+msgstr ""
+
+#: ../plugins/trayicon.py:112
+#, fuzzy
+msgid "Show / Hide"
+msgstr "הצג פרטים"
+
+#: ../plugins/trayicon.py:113
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:114
+#, fuzzy
+msgid "Quit"
+msgstr "י_ציאה"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1457,6 +1632,145 @@ msgstr "_עיון"
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_ביצוע פעולה זו אוטומטית עבור כל הצירופים שכמו צירוף זה מעתה והלאה."
 
+# _מינויים
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_הרשמות"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "_עדכן הכל"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "סמן הכל בתור _נקראו"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_הרשמה חדשה..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "_מקור חדש..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "י_בא רשימת ערוצים..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "יצ_א רשימת ערוצים..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "י_ציאה"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "ע_רוץ"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "הסר את _כל הפריטים"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "הס_ר"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_פריט"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "הס_ר"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_תצוגה"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_מסך מלא"
+
+#: ../glade/liferea_menu.ui.h:30
+msgid "Zoom _In"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:31
+msgid "Zoom _Out"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+#, fuzzy
+msgid "_Normal size"
+msgstr "תצוגה _רגילה"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Normal View"
+msgstr "תצוגה _רגילה"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Wide View"
+msgstr "תצוגה ר_חבה"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "רשימת ערוצים מ_צומצמת"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_כלים"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_עקוב אחר עדכונים"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_העדפות"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_חיפוש"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_עזרה"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_תכנים"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_עזרה מהירה"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_שו״ת"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_אודות"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "הוספת הרשמה לרשימת הערוצים."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr "סימון כל הפריטים שנבחרו או את כל הערוצים בתיקייה שנבחרה ככאלה שנקראו."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "עדכון כל ההרשמות."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "הצג דו שיח חיפוש."
+
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
 msgstr ""
@@ -1465,11 +1779,7 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4
-msgid "page 3"
-msgstr ""
-
-#: ../glade/mainwindow.ui.h:5 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "כותרות"
 
@@ -1692,8 +2002,8 @@ msgid "Open links in Liferea's _window."
 msgstr "פתח קישורים ב_חלון של Liferea."
 
 #: ../glade/prefs.ui.h:26
-msgid "_Disable Javascript."
-msgstr "_נטרל Javascript."
+msgid "_Never run external Javascript."
+msgstr ""
 
 #: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
@@ -1796,31 +2106,58 @@ msgid "Privacy Settings"
 msgstr "הגדרות פרטיות"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked"
+#, fuzzy
+msgid "Tell sites that I do _not want to be tracked."
 msgstr "אמור לאתרים כי אני _לא רוצה להיות נתון למעקב"
 
 #: ../glade/prefs.ui.h:53
+msgid "_Intelligent Tracking Prevention. "
+msgstr ""
+
+#: ../glade/prefs.ui.h:54
+msgid ""
+"This enables the WebKit feature described <a href=\"https://webkit.org/"
+"tracking-prevention/\">here</a>."
+msgstr ""
+
+#: ../glade/prefs.ui.h:55
+msgid ""
+"Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
+"higher."
+msgstr ""
+
+#: ../glade/prefs.ui.h:56
+msgid "Use _Reader mode."
+msgstr ""
+
+#: ../glade/prefs.ui.h:57
+msgid ""
+"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
+"a> all non-content elements (like scripts, fonts, tracking)"
+msgstr ""
+
+#: ../glade/prefs.ui.h:58
 msgid "Privacy"
 msgstr "פרטיות"
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:59
 msgid "Downloading Enclosures"
 msgstr "הורדת צירופים"
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:60
 msgid "_Download using"
 msgstr "_הורד באמצעות"
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:63
 msgid "Opening Enclosures"
 msgstr "פתיחת צירופים"
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:64
 msgid "Enclosures"
 msgstr "צירופים"
 
@@ -1924,10 +2261,6 @@ msgstr "_סמן פריטים שנטענו ככאלה שנקראו."
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr ""
-
-#: ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "מתקדם"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
@@ -2067,6 +2400,15 @@ msgstr "בקשות ממתינות"
 msgid "_Downloading Now"
 msgstr "ערוצים שנטענים כעת"
 
+#~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
+#~ msgstr "שגיאת XML במהלך קריאת ערוץ! לא ניתן לטעון את הערוץ \"%s\"!"
+
+#~ msgid "Combined View"
+#~ msgstr "תצוגה משולבת"
+
+#~ msgid "_Disable Javascript."
+#~ msgstr "_נטרל Javascript."
+
 # מ.מ.ג.
 #~ msgid "GUI"
 #~ msgstr "ממשק"
@@ -2079,53 +2421,19 @@ msgstr "ערוצים שנטענים כעת"
 #~ msgid "Updating favicon for \"%s\""
 #~ msgstr "מעדכן כעת סמל עבור \"%s\""
 
-# _מינויים
-#~ msgid "_Subscriptions"
-#~ msgstr "_הרשמות"
-
-#~ msgid "Update _All"
-#~ msgstr "_עדכן הכל"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "עדכון כל ההרשמות."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "סמן הכל בתור _נקראו"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "סימון כל פריט בכל הרשמה ככזה שנקרא."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "י_בא רשימת ערוצים..."
 
 # מייבא רשימת הזנות מסוג OPML.
 # מייבא רשימת הזנות OPML.
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "ייבוא רשימת ערוצים בתסדיר OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "יצ_א רשימת ערוצים..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "ייצוא רשימת הערוצים בפורמט OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "י_ציאה"
-
-#~ msgid "_Feed"
-#~ msgstr "ע_רוץ"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "הסר את _כל הפריטים"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "הסר את כל הפריטים בערוץ שנבחר כעת."
-
-#~ msgid "_Item"
-#~ msgstr "_פריט"
-
-#~ msgid "_View"
-#~ msgstr "_תצוגה"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "הגדל את הטקסט בתצוגת הפריטים."
@@ -2133,62 +2441,26 @@ msgstr "ערוצים שנטענים כעת"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "הקטן את הטקסט בתצוגת הפריטים."
 
-#~ msgid "_Tools"
-#~ msgstr "_כלים"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_עקוב אחר עדכונים"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "הצג רשימה של כל הערוצים שמצויים כעת בתוך תור העדכון"
-
-#~ msgid "_Preferences"
-#~ msgstr "_העדפות"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "ערוך ההעדפות."
 
-#~ msgid "S_earch"
-#~ msgstr "_חיפוש"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "הצג דו שיח חיפוש."
-
-#~ msgid "_Help"
-#~ msgstr "_עזרה"
-
-#~ msgid "_Contents"
-#~ msgstr "_תכנים"
-
 #~ msgid "View help for this application."
 #~ msgstr "עיון במסכי עזרה עבור יישום זה."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_עזרה מהירה"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "צפייה בכל רשימת הקיצורים של Liferea."
 
-#~ msgid "_FAQ"
-#~ msgstr "_שו״ת"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "צפייה בשאלות הנפוצות עבור יישום זה."
-
-#~ msgid "_About"
-#~ msgstr "_אודות"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "הצג דו שיח אודות."
 
-#~ msgid "_Normal View"
-#~ msgstr "תצוגה _רגילה"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "הגדר צורת תצוגה בדומה ליישום דוא״ל."
-
-#~ msgid "_Wide View"
-#~ msgstr "תצוגה ר_חבה"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "הגדר צורת תצוגה לשלושה לוחות אנכיים."
@@ -2199,26 +2471,14 @@ msgstr "ערוצים שנטענים כעת"
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "הגדר צורת תצוגה לשני לוחות."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "רשימת ערוצים מ_צומצמת"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "הסתר ערוצים שבהם אין פריטים שלא נקראו."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_הרשמה חדשה..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "הוספת הרשמה לרשימת הערוצים."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "הוספת תיקייה לרשימת הערוצים."
 
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "הוספת תיקיית חיפוש חדשה לרשימת הערוצים."
-
-#~ msgid "New _Source..."
-#~ msgstr "_מקור חדש..."
 
 # הוספת מקור רשימת הזנות חדש.
 #~ msgid "Adds a new feed list source."
@@ -2229,11 +2489,6 @@ msgstr "ערוצים שנטענים כעת"
 #~ msgstr "הוספת סל איסוף חדש."
 
 #~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "סימון כל הפריטים שנבחרו או את כל הערוצים בתיקייה שנבחרה ככאלה שנקראו."
-
-#~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
 #~ "folder."
 #~ msgstr "עדכון ההרשמה הנבחרת או את כל ההרשמות של התיקייה שנבחרה."
@@ -2241,9 +2496,6 @@ msgstr "ערוצים שנטענים כעת"
 # תכונות
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "פתיחת דו שיח המאפיינים עבור ההרשמה הנבחרת."
-
-#~ msgid "_Remove"
-#~ msgstr "הס_ר"
 
 #~ msgid "Removes the selected subscription."
 #~ msgstr "הסרת ההרשמה הנבחרת."
@@ -2253,9 +2505,6 @@ msgstr "ערוצים שנטענים כעת"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "החלפת מצב הסימון של הפריט שנבחר."
-
-#~ msgid "R_emove"
-#~ msgstr "הס_ר"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "הסרת הפריט שנבחר."
@@ -2268,9 +2517,6 @@ msgstr "ערוצים שנטענים כעת"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "שיגור הקישור של הפריט בתוך הדפדפן החיצוני שהוגדר."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_מסך מלא"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "דפדף במסך מלא"
@@ -2308,9 +2554,6 @@ msgstr "ערוצים שנטענים כעת"
 
 #~ msgid "View Headlines"
 #~ msgstr "הצג כותרות"
-
-#~ msgid "Plugins"
-#~ msgstr "תוספים"
 
 #~ msgid "Feed Name"
 #~ msgstr "שם ערוץ"
@@ -2507,12 +2750,6 @@ msgstr "ערוצים שנטענים כעת"
 #~ msgstr[0] "קיים עדכון <b>%d</b> עבור <b>%s</b>"
 #~ msgstr[1] "קיימים <b>%d</b> עדכונים עבור <b>%s</b>"
 
-#~ msgid "Feed Update"
-#~ msgstr "עדכון ערוץ"
-
-#~ msgid "Show details"
-#~ msgstr "הצג פרטים"
-
 #~ msgid "_Enforce popup notification for this subscription."
 #~ msgstr "ה_חל התראה קופצת עבור הרשמה זו."
 
@@ -2525,10 +2762,6 @@ msgstr "ערוצים שנטענים כעת"
 #~ msgstr ""
 #~ "Copyright (c) 2003-2012\n"
 #~ "The Liferea Team\n"
-
-# הגדרות התראה
-#~ msgid "Notification Settings"
-#~ msgstr "הגדרת התראות"
 
 #~ msgid "Show a _popup window with new headlines."
 #~ msgstr "_הצג חלון קופץ עם כותרות חדשות."

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-28 12:24+0200\n"
+"POT-Creation-Date: 2020-12-31 18:23+0100\n"
 "PO-Revision-Date: 2005-12-11 13:22+0800\n"
 "Last-Translator: Jim Huang <jserv@kaffe.org>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -18,12 +18,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=0;\n"
 
-#: ../liferea.appdata.xml.in.h:1
+#: ../net.sourceforge.liferea.appdata.xml.in.h:1
 #, fuzzy
 msgid "RSS feed reader"
 msgstr "饋流快取"
 
-#: ../liferea.appdata.xml.in.h:2
+#: ../net.sourceforge.liferea.appdata.xml.in.h:2
 msgid ""
 "Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
 "for online news feeds. It supports a number of different feed formats "
@@ -33,44 +33,44 @@ msgid ""
 "a fast, easy to use, easy to install news aggregator for GTK/GNOME."
 msgstr ""
 
-#: ../liferea.appdata.xml.in.h:3
+#: ../net.sourceforge.liferea.appdata.xml.in.h:3
 msgid "Distinguishing features:"
 msgstr ""
 
-#: ../liferea.appdata.xml.in.h:4
+#: ../net.sourceforge.liferea.appdata.xml.in.h:4
 #, fuzzy
 msgid "Read articles when offline"
 msgstr "Lifeare 現為離線模式"
 
-#: ../liferea.appdata.xml.in.h:5
+#: ../net.sourceforge.liferea.appdata.xml.in.h:5
 #, fuzzy
 msgid "Synchronizes with TheOldReader"
 msgstr "<span weight=\"bold\">饋流名稱</span>"
 
-#: ../liferea.appdata.xml.in.h:6
+#: ../net.sourceforge.liferea.appdata.xml.in.h:6
 #, fuzzy
 msgid "Synchronizes with TinyTinyRSS"
 msgstr "<span weight=\"bold\">饋流名稱</span>"
 
-#: ../liferea.appdata.xml.in.h:7
+#: ../net.sourceforge.liferea.appdata.xml.in.h:7
 #, fuzzy
 msgid "Synchronizes with InoReader"
 msgstr "<span weight=\"bold\">饋流名稱</span>"
 
-#: ../liferea.appdata.xml.in.h:8
+#: ../net.sourceforge.liferea.appdata.xml.in.h:8
 #, fuzzy
 msgid "Synchronizes with Reedah"
 msgstr "<span weight=\"bold\">饋流名稱</span>"
 
-#: ../liferea.appdata.xml.in.h:9
+#: ../net.sourceforge.liferea.appdata.xml.in.h:9
 msgid "Permanently save headlines in news bins"
 msgstr ""
 
-#: ../liferea.appdata.xml.in.h:10
+#: ../net.sourceforge.liferea.appdata.xml.in.h:10
 msgid "Match items using search folders"
 msgstr ""
 
-#: ../liferea.appdata.xml.in.h:11
+#: ../net.sourceforge.liferea.appdata.xml.in.h:11
 msgid "Play Podcasts"
 msgstr ""
 
@@ -266,7 +266,7 @@ msgstr "新目錄"
 msgid "Browser command failed: %s"
 msgstr "瀏覽器指令失敗: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1044
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "啟動: \"%s\""
@@ -335,61 +335,61 @@ msgid ""
 "correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/export.c:188
+#: ../src/export.c:187
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "無法將 %s 更名為 %s\n"
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:409 ../src/export.c:411
 #, fuzzy, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "讀入快取檔案 \"%s\" 時發生 XML 錯誤 ! 無法讀入快取檔案!"
 
-#: ../src/export.c:425 ../src/export.c:427
+#: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "空白文件! OPML \"%s\" 檔案不應是空白檔案。"
 
-#: ../src/export.c:448 ../src/export.c:450
+#: ../src/export.c:440 ../src/export.c:442
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" 不是有效的 OPML 檔案! 無法匯入!"
 
-#: ../src/export.c:469
+#: ../src/export.c:461
 msgid "Imported feed list"
 msgstr "匯入饋流列表"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import Feed List"
 msgstr "匯入饋流列表"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import"
 msgstr "匯入"
 
-#: ../src/export.c:481 ../src/export.c:498 ../src/fl_sources/opml_source.c:379
+#: ../src/export.c:473 ../src/export.c:490 ../src/fl_sources/opml_source.c:379
 #, fuzzy
 msgid "OPML Files"
 msgstr "選擇檔案"
 
-#: ../src/export.c:489
+#: ../src/export.c:481
 msgid "Error while exporting feed list!"
 msgstr "在匯出饋流列表時錯誤!"
 
-#: ../src/export.c:491
+#: ../src/export.c:483
 msgid "Feed List exported!"
 msgstr "饋流列表已匯出!"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export Feed List"
 msgstr "匯出饋流列表"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export"
 msgstr "匯出"
 
-#: ../src/feed.c:324
+#: ../src/feed.c:325
 #, fuzzy
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
@@ -397,49 +397,44 @@ msgid ""
 "p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 msgstr "<p>無法偵測此饋流類型! 請確認網址指向已支援的正確餽流來源!</p>%s"
 
-#: ../src/feed.c:351
+#: ../src/feed.c:352
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" 更新中"
 
-#: ../src/feed.c:358
+#: ../src/feed.c:359
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" 不可用!"
 
-#: ../src/feed_parser.c:142
+#: ../src/feed_parser.c:145
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
 "support feed auto discovery."
 msgstr ""
 
-#: ../src/feed_parser.c:194
-#, fuzzy, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "<p>讀入饋流時出現 XML 錯誤! 饋流 \"%s\" 無法載入!</p>"
-
-#: ../src/feed_parser.c:199 ../src/feed_parser.c:248
+#: ../src/feed_parser.c:203
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p>空文件!</p>"
 
-#: ../src/feed_parser.c:211
+#: ../src/feed_parser.c:212
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p>無效 XML!</p>"
 
-#: ../src/feed_parser.c:271
+#: ../src/feed_parser.c:266
 msgid "Source points to HTML document."
 msgstr ""
 
-#: ../src/feed_parser.c:274
+#: ../src/feed_parser.c:269
 #, fuzzy
 msgid "Could not determine the feed type."
 msgstr "<p>無法找到 RDF 標頭!</p>"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:393
+#: ../src/itemlist.c:390
 #, fuzzy
 msgid "There are no unread items"
 msgstr "沒有未讀項目 "
@@ -639,90 +634,90 @@ msgstr "(未知的網路錯誤)"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:198
+#: ../src/rule.c:229
 msgid "Item"
 msgstr "項目"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does contain"
 msgstr "包含"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does not contain"
 msgstr "不包含"
 
-#: ../src/rule.c:199
+#: ../src/rule.c:230
 msgid "Item title"
 msgstr "項目標題"
 
-#: ../src/rule.c:200
+#: ../src/rule.c:231
 msgid "Item body"
 msgstr "項目內容"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "Read status"
 msgstr "閱讀狀態"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is unread"
 msgstr "未讀"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is read"
 msgstr "已讀"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "Flag status"
 msgstr "標籤狀態"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is flagged"
 msgstr "以標籤"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is unflagged"
 msgstr "未標籤"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "Podcast"
 msgstr ""
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 #, fuzzy
 msgid "included"
 msgstr "包含圖片"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 #, fuzzy
 msgid "not included"
 msgstr "包含圖片"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 #, fuzzy
 msgid "Category"
 msgstr "分類"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 #, fuzzy
 msgid "is set"
 msgstr "已讀"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is not set"
 msgstr ""
 
-#: ../src/rule.c:205
+#: ../src/rule.c:236
 msgid "Feed title"
 msgstr "饋流標題"
 
-#: ../src/rule.c:206
+#: ../src/rule.c:237
 #, fuzzy
 msgid "Feed source"
 msgstr "饋流來源"
 
-#: ../src/rule.c:207
+#: ../src/rule.c:238
 msgid "Parent folder title"
 msgstr ""
 
@@ -763,28 +758,28 @@ msgstr "\"%s\" 自從最後更新後沒有改變。"
 msgid "Updating \"%s\""
 msgstr "更新: \"%s\""
 
-#: ../src/update.c:297
+#: ../src/update.c:327
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "當開始暫存檔 %s 以處理過濾時，發生錯誤!"
 
-#: ../src/update.c:320
+#: ../src/update.c:350
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s 終止，錯誤代碼： %d"
 
-#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:442
+#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "錯誤: 無法開啟管道 \"%s\"!"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:466
+#: ../src/update.c:496
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "錯誤: 無法開啟檔案 \"%s\"!"
 
-#: ../src/update.c:472
+#: ../src/update.c:502
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "錯誤: 無此檔案 \"%s\"!"
@@ -794,12 +789,12 @@ msgstr "錯誤: 無此檔案 \"%s\"!"
 msgid "New Search Folder"
 msgstr "新目錄"
 
-#: ../src/xml.c:410
+#: ../src/xml.c:424
 #, fuzzy
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[解析器的錯誤訊息已截去！]"
 
-#: ../src/xml.c:563
+#: ../src/xml.c:594
 #, fuzzy
 msgid "XML Parser: Could not parse document:\n"
 msgstr ""
@@ -869,33 +864,33 @@ msgstr "無法找到圖檔: %s"
 # msgid_plural "%d new items!"
 # msgstr[0] "%d 個新項目"
 # msgstr[1] "%d 個新項目"
-#: ../src/ui/liferea_shell.c:396
+#: ../src/ui/liferea_shell.c:409
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d 個新項目"
 msgstr[1] "%d 個新項目"
 
-#: ../src/ui/liferea_shell.c:401
+#: ../src/ui/liferea_shell.c:414
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "未讀"
 msgstr[1] "未讀"
 
-#: ../src/ui/liferea_shell.c:758
+#: ../src/ui/liferea_shell.c:755
 msgid "Help Topics"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:764
+#: ../src/ui/liferea_shell.c:761
 msgid "Quick Reference"
 msgstr "快速參考"
 
-#: ../src/ui/liferea_shell.c:770
+#: ../src/ui/liferea_shell.c:767
 msgid "FAQ"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:1041
+#: ../src/ui/liferea_shell.c:1045
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "瀏覽器指令失敗: %s"
@@ -1024,16 +1019,16 @@ msgstr "您必須先選擇一個饋流才能刪除!"
 msgid "No item has been selected"
 msgstr "未選擇項目!"
 
-#: ../src/ui/popup_menu.c:102
+#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:106
+#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "載入瀏覽器(_L)"
 
-#: ../src/ui/popup_menu.c:110
+#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">外部瀏覽器設定</span>"
@@ -1056,11 +1051,11 @@ msgstr ""
 msgid "Copy Item _Location"
 msgstr "/複製連結位址(_C)"
 
-#: ../src/ui/popup_menu.c:163
+#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "切換閱讀狀態(_R)"
 
-#: ../src/ui/popup_menu.c:167
+#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "切換項目旗標(_F)"
 
@@ -1084,7 +1079,7 @@ msgstr "/另存新檔為..."
 msgid "Copy Link Location"
 msgstr "/複製連結位址(_C)"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 #, fuzzy
 msgid "_Update"
 msgstr "/更新(U)"
@@ -1099,11 +1094,11 @@ msgstr "/更新目錄(_U)"
 msgid "New _Subscription..."
 msgstr "新增訂閱(_N)..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "新目錄(_F)..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 #, fuzzy
 msgid "New S_earch Folder..."
 msgstr "新目錄(_F)..."
@@ -1113,7 +1108,7 @@ msgstr "新目錄(_F)..."
 msgid "New S_ource..."
 msgstr "/新增(_N)/新增目錄(_O)"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "/新增(_N)/新增目錄(_O)"
@@ -1137,7 +1132,7 @@ msgstr "/全部標示為已讀(_M)"
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 #, fuzzy
 msgid "_Properties"
 msgstr "屬性(_P)..."
@@ -1202,25 +1197,20 @@ msgstr "本地檔案(_L)"
 msgid "Wide View"
 msgstr "檢視項目(_V)"
 
-#: ../src/ui/preferences_dialog.c:112
-#, fuzzy
-msgid "Combined View"
-msgstr "啟動摘要模式(_C)"
-
-#: ../src/ui/preferences_dialog.c:467
+#: ../src/ui/preferences_dialog.c:478
 #, fuzzy
 msgid "Default Browser"
 msgstr "瀏覽器"
 
-#: ../src/ui/preferences_dialog.c:469
+#: ../src/ui/preferences_dialog.c:480
 msgid "Manual"
 msgstr "手動"
 
-#: ../src/ui/preferences_dialog.c:716
+#: ../src/ui/preferences_dialog.c:740
 msgid "Type"
 msgstr "型態"
 
-#: ../src/ui/preferences_dialog.c:719
+#: ../src/ui/preferences_dialog.c:743
 msgid "Program"
 msgstr "程式"
 
@@ -1244,7 +1234,7 @@ msgstr "此饋流未指定預設更新頻率"
 msgid "Untitled"
 msgstr "未命名"
 
-#: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
+#: ../src/parsers/atom10.c:239
 msgid "Website"
 msgstr ""
 
@@ -1302,7 +1292,7 @@ msgstr ""
 msgid "Login failed!"
 msgstr ""
 
-#: ../src/fl_sources/reedah_source.c:312
+#: ../src/fl_sources/reedah_source.c:313
 msgid "Reedah"
 msgstr ""
 
@@ -1310,28 +1300,28 @@ msgstr ""
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:231
+#: ../src/fl_sources/ttrss_source.c:234
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:290
+#: ../src/fl_sources/ttrss_source.c:300
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:307
+#: ../src/fl_sources/ttrss_source.c:318
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:427
+#: ../src/fl_sources/ttrss_source.c:460
 msgid "Tiny Tiny RSS"
 msgstr ""
 
@@ -1339,7 +1329,7 @@ msgstr ""
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 
-#: ../src/fl_sources/theoldreader_source.c:310
+#: ../src/fl_sources/theoldreader_source.c:311
 #, fuzzy
 msgid "TheOldReader"
 msgstr "饋流快取"
@@ -1405,28 +1395,209 @@ msgstr "放大字型(_I)"
 msgid "_Decrease Text Size"
 msgstr "縮小字型(D)"
 
-#: ../plugins/headerbar.py:63
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
 msgid "Previous Item"
 msgstr ""
 
-#: ../plugins/headerbar.py:69
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
 #, fuzzy
 msgid "Next Item"
 msgstr "下筆未讀項目(_N)"
 
-#: ../plugins/headerbar.py:77
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
 msgid "_Next Unread Item"
 msgstr "下筆未讀項目(_N)"
 
-#: ../plugins/headerbar.py:85
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
 #, fuzzy
 msgid "_Mark Items Read"
 msgstr "全部標示為已讀"
 
-#: ../plugins/headerbar.py:104
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
 #, fuzzy
 msgid "Search All Feeds..."
 msgstr "搜尋所有饋流"
+
+#: ../plugins/libnotify.py:42
+#, fuzzy
+msgid "Feed Updates"
+msgstr "饋流快取"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:69
+msgid "Plugin Installer"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:83
+msgid "Activate Plugins"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "下載方式：(_D)"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "<span weight=\"bold\">程式狀態通知區</span>"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
+msgid ""
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "無法建立快取目錄 %s !"
+
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "刪除項目中"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
+#, fuzzy
+msgid ""
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
+msgstr "<i>請重新啟動 Liferea 以使變更生效。</i>"
+
+#: ../plugins/trayicon.py:112
+#, fuzzy
+msgid "Show / Hide"
+msgstr "顯示細節"
+
+#: ../plugins/trayicon.py:113
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:114
+#, fuzzy
+msgid "Quit"
+msgstr "/離開(_Q)"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1484,6 +1655,161 @@ msgstr "瀏覽器(_B):"
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "從現在開始自動替檔案作同樣的處理(_D)"
 
+#: ../glade/liferea_menu.ui.h:1
+#, fuzzy
+msgid "_Subscriptions"
+msgstr "新增訂閱"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "更新全部(_A)"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "全部標示為已讀(_R)"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "新增訂閱(_N)..."
+
+#: ../glade/liferea_menu.ui.h:7
+#, fuzzy
+msgid "New _Source..."
+msgstr "/新增(_N)/新增目錄(_O)"
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "匯入饋流列表(_I)..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "匯出饋流列表(_E)..."
+
+#: ../glade/liferea_menu.ui.h:11
+#, fuzzy
+msgid "_Quit"
+msgstr "/離開(_Q)"
+
+#: ../glade/liferea_menu.ui.h:12
+#, fuzzy
+msgid "_Feed"
+msgstr "饋流(_F)"
+
+#: ../glade/liferea_menu.ui.h:15
+#, fuzzy
+msgid "Remove _All Items"
+msgstr "移除所有項目(_A)"
+
+#: ../glade/liferea_menu.ui.h:16
+#, fuzzy
+msgid "_Remove"
+msgstr "移除所有項目(_A)"
+
+#: ../glade/liferea_menu.ui.h:18
+#, fuzzy
+msgid "_Item"
+msgstr "項目(_I)"
+
+#: ../glade/liferea_menu.ui.h:24
+#, fuzzy
+msgid "R_emove"
+msgstr "/移除項目(_E)"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "檢視項目(_V)"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:30
+msgid "Zoom _In"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:31
+msgid "Zoom _Out"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+#, fuzzy
+msgid "_Normal size"
+msgstr "本地檔案(_L)"
+
+#: ../glade/liferea_menu.ui.h:33
+#, fuzzy
+msgid "_Normal View"
+msgstr "本地檔案(_L)"
+
+#: ../glade/liferea_menu.ui.h:34
+#, fuzzy
+msgid "_Wide View"
+msgstr "檢視項目(_V)"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:37
+#, fuzzy
+msgid "_Update Monitor"
+msgstr "/更新目錄(_U)"
+
+#: ../glade/liferea_menu.ui.h:38
+#, fuzzy
+msgid "_Preferences"
+msgstr "偏好設定"
+
+#: ../glade/liferea_menu.ui.h:39
+#, fuzzy
+msgid "S_earch"
+msgstr "搜尋"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "求助(_H)"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "內容(_C)"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "快速參考(_Q)"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "關於(_A)"
+
+#: ../glade/liferea_toolbar.ui.h:2
+#, fuzzy
+msgid "Adds a subscription to the feed list."
+msgstr "新增訂閱到餽流列表"
+
+#: ../glade/liferea_toolbar.ui.h:4
+#, fuzzy
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr "標示所有選擇的項目或目錄下所有的項目為已讀。"
+
+#: ../glade/liferea_toolbar.ui.h:9
+#, fuzzy
+msgid "Updates all subscriptions."
+msgstr "新增訂閱"
+
+#: ../glade/liferea_toolbar.ui.h:11
+#, fuzzy
+msgid "Show the search dialog."
+msgstr "顯示或隱藏搜尋視窗"
+
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
 msgstr ""
@@ -1492,11 +1818,7 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4
-msgid "page 3"
-msgstr ""
-
-#: ../glade/mainwindow.ui.h:5 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "標題"
 
@@ -1715,8 +2037,8 @@ msgid "Open links in Liferea's _window."
 msgstr "在 Liferea 的視窗開啟連結(_W)"
 
 #: ../glade/prefs.ui.h:26
-msgid "_Disable Javascript."
-msgstr "停止使用 Javascript (_D)"
+msgid "_Never run external Javascript."
+msgstr ""
 
 #: ../glade/prefs.ui.h:27
 #, fuzzy
@@ -1825,33 +2147,59 @@ msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">饋流顯示設定</span>"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked"
+msgid "Tell sites that I do _not want to be tracked."
 msgstr ""
 
 #: ../glade/prefs.ui.h:53
-msgid "Privacy"
+msgid "_Intelligent Tracking Prevention. "
 msgstr ""
 
 #: ../glade/prefs.ui.h:54
+msgid ""
+"This enables the WebKit feature described <a href=\"https://webkit.org/"
+"tracking-prevention/\">here</a>."
+msgstr ""
+
+#: ../glade/prefs.ui.h:55
+msgid ""
+"Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
+"higher."
+msgstr ""
+
+#: ../glade/prefs.ui.h:56
+msgid "Use _Reader mode."
+msgstr ""
+
+#: ../glade/prefs.ui.h:57
+msgid ""
+"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
+"a> all non-content elements (like scripts, fonts, tracking)"
+msgstr ""
+
+#: ../glade/prefs.ui.h:58
+msgid "Privacy"
+msgstr ""
+
+#: ../glade/prefs.ui.h:59
 #, fuzzy
 msgid "Downloading Enclosures"
 msgstr "附件下載中"
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:60
 msgid "_Download using"
 msgstr "下載方式：(_D)"
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:63
 #, fuzzy
 msgid "Opening Enclosures"
 msgstr "/開啟附件..."
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:64
 msgid "Enclosures"
 msgstr "附件"
 
@@ -1955,10 +2303,6 @@ msgstr "全部標示為已讀(_M)"
 
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
-msgstr ""
-
-#: ../glade/properties.ui.h:39
-msgid "Advanced"
 msgstr ""
 
 #: ../glade/reedah_source.ui.h:1
@@ -2104,6 +2448,17 @@ msgstr ""
 msgid "_Downloading Now"
 msgstr "附件下載中"
 
+#, fuzzy
+#~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
+#~ msgstr "<p>讀入饋流時出現 XML 錯誤! 饋流 \"%s\" 無法載入!</p>"
+
+#, fuzzy
+#~ msgid "Combined View"
+#~ msgstr "啟動摘要模式(_C)"
+
+#~ msgid "_Disable Javascript."
+#~ msgstr "停止使用 Javascript (_D)"
+
 #~ msgid "GUI"
 #~ msgstr "圖形使用者介面"
 
@@ -2115,57 +2470,18 @@ msgstr "附件下載中"
 #~ msgid "Updating favicon for \"%s\""
 #~ msgstr "更新饋流 \"%s\" 的圖示"
 
-#, fuzzy
-#~ msgid "_Subscriptions"
-#~ msgstr "新增訂閱"
-
-#~ msgid "Update _All"
-#~ msgstr "更新全部(_A)"
-
-#, fuzzy
-#~ msgid "Updates all subscriptions."
-#~ msgstr "新增訂閱"
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "全部標示為已讀(_R)"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "標示每個訂閱的所有項目為已讀"
 
-#~ msgid "_Import Feed List..."
-#~ msgstr "匯入饋流列表(_I)..."
-
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "匯入 OPML 格式饋流列表"
-
-#~ msgid "_Export Feed List..."
-#~ msgstr "匯出饋流列表(_E)..."
 
 #, fuzzy
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "匯出 OPML 格式饋流列表"
 
-#, fuzzy
-#~ msgid "_Quit"
-#~ msgstr "/離開(_Q)"
-
-#, fuzzy
-#~ msgid "_Feed"
-#~ msgstr "饋流(_F)"
-
-#, fuzzy
-#~ msgid "Remove _All Items"
-#~ msgstr "移除所有項目(_A)"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "移除現選擇饋流的所有項目。"
-
-#, fuzzy
-#~ msgid "_Item"
-#~ msgstr "項目(_I)"
-
-#~ msgid "_View"
-#~ msgstr "檢視項目(_V)"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "放大項目顯示視窗字型大小"
@@ -2174,33 +2490,8 @@ msgstr "附件下載中"
 #~ msgstr "縮小項目顯示視窗字型大小"
 
 #, fuzzy
-#~ msgid "_Update Monitor"
-#~ msgstr "/更新目錄(_U)"
-
-#, fuzzy
-#~ msgid "_Preferences"
-#~ msgstr "偏好設定"
-
-#, fuzzy
 #~ msgid "Edit Preferences."
 #~ msgstr "編輯偏好設定。"
-
-#, fuzzy
-#~ msgid "S_earch"
-#~ msgstr "搜尋"
-
-#, fuzzy
-#~ msgid "Show the search dialog."
-#~ msgstr "顯示或隱藏搜尋視窗"
-
-#~ msgid "_Help"
-#~ msgstr "求助(_H)"
-
-#~ msgid "_Contents"
-#~ msgstr "內容(_C)"
-
-#~ msgid "_Quick Reference"
-#~ msgstr "快速參考(_Q)"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "檢視所有捷徑的列表"
@@ -2208,19 +2499,8 @@ msgstr "附件下載中"
 #~ msgid "View the FAQ for this application."
 #~ msgstr "檢視本應用程式的 FAQ 文件"
 
-#~ msgid "_About"
-#~ msgstr "關於(_A)"
-
 #~ msgid "Shows an about dialog."
 #~ msgstr "顯示關於對話視窗"
-
-#, fuzzy
-#~ msgid "_Normal View"
-#~ msgstr "本地檔案(_L)"
-
-#, fuzzy
-#~ msgid "_Wide View"
-#~ msgstr "檢視項目(_V)"
 
 #, fuzzy
 #~ msgid "_Combined View"
@@ -2229,13 +2509,6 @@ msgstr "附件下載中"
 #, fuzzy
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "沒有未讀項目 "
-
-#~ msgid "_New Subscription..."
-#~ msgstr "新增訂閱(_N)..."
-
-#, fuzzy
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "新增訂閱到餽流列表"
 
 #, fuzzy
 #~ msgid "Adds a folder to the feed list."
@@ -2246,21 +2519,12 @@ msgstr "附件下載中"
 #~ msgstr "新增目錄到餽流列表中。"
 
 #, fuzzy
-#~ msgid "New _Source..."
-#~ msgstr "/新增(_N)/新增目錄(_O)"
-
-#, fuzzy
 #~ msgid "Adds a new feed list source."
 #~ msgstr "新增目錄到餽流列表中。"
 
 #, fuzzy
 #~ msgid "Adds a new news bin."
 #~ msgstr "新增訂閱"
-
-#, fuzzy
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr "標示所有選擇的項目或目錄下所有的項目為已讀。"
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2270,10 +2534,6 @@ msgstr "附件下載中"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "開啟選擇訂閱的屬性設定視窗"
 
-#, fuzzy
-#~ msgid "_Remove"
-#~ msgstr "移除所有項目(_A)"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "移除選擇的訂閱項目。"
 
@@ -2282,10 +2542,6 @@ msgstr "附件下載中"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "切換選擇項目的狀態。"
-
-#, fuzzy
-#~ msgid "R_emove"
-#~ msgstr "/移除項目(_E)"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "移除選擇的項目。"
@@ -2503,20 +2759,8 @@ msgstr "附件下載中"
 #~ msgstr "此項目沒有連結!"
 
 #, fuzzy
-#~ msgid "Feed Update"
-#~ msgstr "饋流快取"
-
-#, fuzzy
-#~ msgid "Show details"
-#~ msgstr "顯示細節"
-
-#, fuzzy
 #~ msgid "_Enforce popup notification for this subscription."
 #~ msgstr "開啟選擇訂閱的屬性設定視窗"
-
-#, fuzzy
-#~ msgid "Notification Settings"
-#~ msgstr "<span weight=\"bold\">程式狀態通知區</span>"
 
 #~ msgid "Show a _popup window with new headlines."
 #~ msgstr "以跳出視窗顯示新標題"
@@ -2806,9 +3050,6 @@ msgstr "附件下載中"
 #~ "manpage for the format codes"
 #~ msgstr ""
 #~ "給專家使用者: 指定一個特定的時間格式，請參考 strftime 手冊中的格式碼"
-
-#~ msgid "<i>Please restart Liferea for changes to take effect.</i>"
-#~ msgstr "<i>請重新啟動 Liferea 以使變更生效。</i>"
 
 #~ msgid "Lower Right"
 #~ msgstr "右下方"

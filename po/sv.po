@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.11.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-28 12:24+0200\n"
+"POT-Creation-Date: 2020-12-31 18:23+0100\n"
 "PO-Revision-Date: 2017-05-03 16:56+0200\n"
 "Last-Translator: Jonatan Nyberg <jonatan@autistici.org>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -20,12 +20,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: ../liferea.appdata.xml.in.h:1
+#: ../net.sourceforge.liferea.appdata.xml.in.h:1
 #, fuzzy
 msgid "RSS feed reader"
 msgstr "Nyhetsläsare"
 
-#: ../liferea.appdata.xml.in.h:2
+#: ../net.sourceforge.liferea.appdata.xml.in.h:2
 msgid ""
 "Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
 "for online news feeds. It supports a number of different feed formats "
@@ -41,39 +41,39 @@ msgstr ""
 "bibliotek för installation. Liferea försöker att fylla detta tomrum genom "
 "att skapa en snabb, lättanvänd, lätt installerbar nyhetsläsare för GTK/GNOME."
 
-#: ../liferea.appdata.xml.in.h:3
+#: ../net.sourceforge.liferea.appdata.xml.in.h:3
 msgid "Distinguishing features:"
 msgstr "Utmärkande funktioner:"
 
-#: ../liferea.appdata.xml.in.h:4
+#: ../net.sourceforge.liferea.appdata.xml.in.h:4
 msgid "Read articles when offline"
 msgstr "Läs artiklar i frånkopplat läge"
 
-#: ../liferea.appdata.xml.in.h:5
+#: ../net.sourceforge.liferea.appdata.xml.in.h:5
 msgid "Synchronizes with TheOldReader"
 msgstr "Synkroniserar med TheOldReader"
 
-#: ../liferea.appdata.xml.in.h:6
+#: ../net.sourceforge.liferea.appdata.xml.in.h:6
 msgid "Synchronizes with TinyTinyRSS"
 msgstr "Synkroniserar med TinyTinyRSS"
 
-#: ../liferea.appdata.xml.in.h:7
+#: ../net.sourceforge.liferea.appdata.xml.in.h:7
 msgid "Synchronizes with InoReader"
 msgstr "Synkroniserar med InoReader"
 
-#: ../liferea.appdata.xml.in.h:8
+#: ../net.sourceforge.liferea.appdata.xml.in.h:8
 msgid "Synchronizes with Reedah"
 msgstr "Synkroniserar med Reedah"
 
-#: ../liferea.appdata.xml.in.h:9
+#: ../net.sourceforge.liferea.appdata.xml.in.h:9
 msgid "Permanently save headlines in news bins"
 msgstr "Spara permanent rubriker i nyhetslådor"
 
-#: ../liferea.appdata.xml.in.h:10
+#: ../net.sourceforge.liferea.appdata.xml.in.h:10
 msgid "Match items using search folders"
 msgstr "Matcha artiklar med hjälp av sökmappar"
 
-#: ../liferea.appdata.xml.in.h:11
+#: ../net.sourceforge.liferea.appdata.xml.in.h:11
 msgid "Play Podcasts"
 msgstr "Spela poddsändningar"
 
@@ -260,7 +260,7 @@ msgstr "Sökmapp:"
 msgid "Browser command failed: %s"
 msgstr "Webbläsarkommandot misslyckades: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1044
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Startar: \"%s\""
@@ -337,63 +337,63 @@ msgstr ""
 "och fungerar korrekt! Du kan ändra det i 'Bilagor'-fliken i Verktyg/"
 "Inställningar."
 
-#: ../src/export.c:188
+#: ../src/export.c:187
 #, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "Fel vid namnbyte från %s till %s: %s\n"
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:409 ../src/export.c:411
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "XML-fel under läsning av OPML-filen! Kunde inte importera \"%s\"!"
 
-#: ../src/export.c:425 ../src/export.c:427
+#: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Tomt dokument! OPML-dokumentet \"%s\" får inte vara tomma vid importering."
 
-#: ../src/export.c:448 ../src/export.c:450
+#: ../src/export.c:440 ../src/export.c:442
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" är inte ett giltigt OPML-dokument! Liferea kan inte importera denna "
 "fil!"
 
-#: ../src/export.c:469
+#: ../src/export.c:461
 msgid "Imported feed list"
 msgstr "Importerad flödeslista"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import Feed List"
 msgstr "Importera flödeslista"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import"
 msgstr "Importera"
 
-#: ../src/export.c:481 ../src/export.c:498 ../src/fl_sources/opml_source.c:379
+#: ../src/export.c:473 ../src/export.c:490 ../src/fl_sources/opml_source.c:379
 msgid "OPML Files"
 msgstr "OPML-filer"
 
-#: ../src/export.c:489
+#: ../src/export.c:481
 msgid "Error while exporting feed list!"
 msgstr "Fel under export av flödeslista!"
 
-#: ../src/export.c:491
+#: ../src/export.c:483
 msgid "Feed List exported!"
 msgstr "Flödeslistan exporterad!"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export Feed List"
 msgstr "Exportera flödeslista"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export"
 msgstr "Exportera"
 
-#: ../src/feed.c:324
+#: ../src/feed.c:325
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -403,17 +403,17 @@ msgstr ""
 "på en resurs som tillhandahålls i ett av de synkroniseringsformat som stöds!"
 "</p>Utdata från XML-tolkare:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:351
+#: ../src/feed.c:352
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "\"%s\" har uppdaterats..."
 
-#: ../src/feed.c:358
+#: ../src/feed.c:359
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "\"%s\" är inte tillgänglig"
 
-#: ../src/feed_parser.c:142
+#: ../src/feed_parser.c:145
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -423,29 +423,24 @@ msgstr ""
 "och den automatiska igenkänningen hittade inga flöden på denna sida. "
 "Webbplatsen kanske inte har stöd för automatisk igenkänning av flöden."
 
-#: ../src/feed_parser.c:194
-#, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "XML-fel vid läsning av flöde! Flödet \"%s\" kunde inte läsas in!"
-
-#: ../src/feed_parser.c:199 ../src/feed_parser.c:248
+#: ../src/feed_parser.c:203
 msgid "Empty document!"
 msgstr "Tomt dokument!"
 
-#: ../src/feed_parser.c:211
+#: ../src/feed_parser.c:212
 msgid "Invalid XML!"
 msgstr "Ogiltig XML!"
 
-#: ../src/feed_parser.c:271
+#: ../src/feed_parser.c:266
 msgid "Source points to HTML document."
 msgstr "Källa pekar till HTML-dokument."
 
-#: ../src/feed_parser.c:274
+#: ../src/feed_parser.c:269
 msgid "Could not determine the feed type."
 msgstr "Kunde inte fastställa flödestypen."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:393
+#: ../src/itemlist.c:390
 msgid "There are no unread items"
 msgstr "Det finns inga olästa artiklar"
 
@@ -638,86 +633,86 @@ msgstr "Ett okänt nätverksfel inträffade!"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:198
+#: ../src/rule.c:229
 msgid "Item"
 msgstr "Artikel"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does contain"
 msgstr "innehåller"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does not contain"
 msgstr "innehåller inte"
 
-#: ../src/rule.c:199
+#: ../src/rule.c:230
 msgid "Item title"
 msgstr "Artikelrubrik"
 
-#: ../src/rule.c:200
+#: ../src/rule.c:231
 msgid "Item body"
 msgstr "Artikelinnehåll"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "Read status"
 msgstr "Lässtatus"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is unread"
 msgstr "är oläst"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is read"
 msgstr "är läst"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "Flag status"
 msgstr "Flaggstatus"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is flagged"
 msgstr "är flaggad"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is unflagged"
 msgstr "är inte flaggad"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "Podcast"
 msgstr "Poddsändning"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "included"
 msgstr "inkluderad"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "not included"
 msgstr "inte inkluderad"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "Category"
 msgstr "Kategori"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is set"
 msgstr "är inställd"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is not set"
 msgstr "är inte inställd"
 
-#: ../src/rule.c:205
+#: ../src/rule.c:236
 msgid "Feed title"
 msgstr "Flödesnamn"
 
-#: ../src/rule.c:206
+#: ../src/rule.c:237
 #, fuzzy
 msgid "Feed source"
 msgstr "Plats"
 
-#: ../src/rule.c:207
+#: ../src/rule.c:238
 msgid "Parent folder title"
 msgstr ""
 
@@ -762,28 +757,28 @@ msgstr "\"%s\" har inte ändrats sedan senaste uppdateringen"
 msgid "Updating \"%s\""
 msgstr "Uppdaterar \"%s\""
 
-#: ../src/update.c:297
+#: ../src/update.c:327
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Fel vid öppning av temporärfilen %s för filtrering!"
 
-#: ../src/update.c:320
+#: ../src/update.c:350
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s avslutades med status %d"
 
-#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:442
+#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Fel: Kunde inte öppna röret \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:466
+#: ../src/update.c:496
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Fel: Kunde inte öppna filen \"%s\""
 
-#: ../src/update.c:472
+#: ../src/update.c:502
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Fel: Filen \"%s\" finns inte"
@@ -792,11 +787,11 @@ msgstr "Fel: Filen \"%s\" finns inte"
 msgid "New Search Folder"
 msgstr "Ny sökmapp"
 
-#: ../src/xml.c:410
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Det fanns ytterligare fel. Utmatningen har kortats ned!]"
 
-#: ../src/xml.c:563
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML-tolkare: Kunde inte tolka dokumentet:\n"
 
@@ -848,33 +843,33 @@ msgstr "Filändelse .%s"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Kunde inte hitta bildfilen: %s"
 
-#: ../src/ui/liferea_shell.c:396
+#: ../src/ui/liferea_shell.c:409
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d ny)"
 msgstr[1] " (%d nya)"
 
-#: ../src/ui/liferea_shell.c:401
+#: ../src/ui/liferea_shell.c:414
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d oläst%s"
 msgstr[1] "%d olästa%s"
 
-#: ../src/ui/liferea_shell.c:758
+#: ../src/ui/liferea_shell.c:755
 msgid "Help Topics"
 msgstr "Hjälpämnen"
 
-#: ../src/ui/liferea_shell.c:764
+#: ../src/ui/liferea_shell.c:761
 msgid "Quick Reference"
 msgstr "Snabbreferens"
 
-#: ../src/ui/liferea_shell.c:770
+#: ../src/ui/liferea_shell.c:767
 msgid "FAQ"
 msgstr "Vanliga frågor och svar"
 
-#: ../src/ui/liferea_shell.c:1041
+#: ../src/ui/liferea_shell.c:1045
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Webbläsarkommandot misslyckades: %s"
@@ -1000,15 +995,15 @@ msgstr "Du måste välja ett flöde för att ta bort dess artiklar!"
 msgid "No item has been selected"
 msgstr "Ingen artikel har valts"
 
-#: ../src/ui/popup_menu.c:102
+#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Öppna i _Flik"
 
-#: ../src/ui/popup_menu.c:106
+#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "_Öppna i webbläsare"
 
-#: ../src/ui/popup_menu.c:110
+#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Öppna i _extern webbläsare"
 
@@ -1029,11 +1024,11 @@ msgstr "_Bokmärk på %s"
 msgid "Copy Item _Location"
 msgstr "Kopiera artike_lplats"
 
-#: ../src/ui/popup_menu.c:163
+#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Växla _lässtatus"
 
-#: ../src/ui/popup_menu.c:167
+#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Växla artikel_flagga"
 
@@ -1053,7 +1048,7 @@ msgstr "Spara som..."
 msgid "Copy Link Location"
 msgstr "Kopiera länkadress"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Uppdatera"
 
@@ -1065,11 +1060,11 @@ msgstr "_Uppdatera mapp"
 msgid "New _Subscription..."
 msgstr "Ny p_renumeration..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Ny _mapp..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Ny sö_kmapp..."
 
@@ -1077,7 +1072,7 @@ msgstr "Ny sö_kmapp..."
 msgid "New S_ource..."
 msgstr "Ny _källa..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Ny _nyhetskorg..."
 
@@ -1097,7 +1092,7 @@ msgstr "_Märk alla som lästa"
 msgid "_Rebuild"
 msgstr "Bygg _om"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Egenskaper"
 
@@ -1157,23 +1152,19 @@ msgstr "Normal vy"
 msgid "Wide View"
 msgstr "Bred vy"
 
-#: ../src/ui/preferences_dialog.c:112
-msgid "Combined View"
-msgstr "Kombinerad vy"
-
-#: ../src/ui/preferences_dialog.c:467
+#: ../src/ui/preferences_dialog.c:478
 msgid "Default Browser"
 msgstr "Standardwebbläsare"
 
-#: ../src/ui/preferences_dialog.c:469
+#: ../src/ui/preferences_dialog.c:480
 msgid "Manual"
 msgstr "Manuell"
 
-#: ../src/ui/preferences_dialog.c:716
+#: ../src/ui/preferences_dialog.c:740
 msgid "Type"
 msgstr "Typ"
 
-#: ../src/ui/preferences_dialog.c:719
+#: ../src/ui/preferences_dialog.c:743
 msgid "Program"
 msgstr "Program"
 
@@ -1198,7 +1189,7 @@ msgstr "Detta flöde anger inget standardintervall för uppdatering."
 msgid "Untitled"
 msgstr "Namnlös"
 
-#: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
+#: ../src/parsers/atom10.c:239
 msgid "Website"
 msgstr "Webbplats"
 
@@ -1254,7 +1245,7 @@ msgstr "'%s'-prenumerationen konverterades framgångsrikt till lokala flöden!"
 msgid "Login failed!"
 msgstr "Inloggning misslyckades!"
 
-#: ../src/fl_sources/reedah_source.c:312
+#: ../src/fl_sources/reedah_source.c:313
 msgid "Reedah"
 msgstr "Reedah"
 
@@ -1262,11 +1253,11 @@ msgstr "Reedah"
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "Kunde inte tolka JSON returnerad av Reedah-API:et!"
 
-#: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr "TinyTinyRSS HTTP-API inte nåbart!"
 
-#: ../src/fl_sources/ttrss_source.c:231
+#: ../src/fl_sources/ttrss_source.c:234
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
@@ -1274,11 +1265,11 @@ msgstr ""
 "Misslyckades att säga upp prenumeration av TinyTinyRSS-flöde! Kontrollera om "
 "du verkligen skickade en flödeswebbadress!"
 
-#: ../src/fl_sources/ttrss_source.c:290
+#: ../src/fl_sources/ttrss_source.c:300
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr "Misslyckades att säga upp prenumeration av TinyTinyRSS-flöde!"
 
-#: ../src/fl_sources/ttrss_source.c:307
+#: ../src/fl_sources/ttrss_source.c:318
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
@@ -1287,7 +1278,7 @@ msgstr ""
 "Denna version av TinyTinyRSS stödjer inte att ta bort flöden. Uppgradera "
 "till version %s eller senare!"
 
-#: ../src/fl_sources/ttrss_source.c:427
+#: ../src/fl_sources/ttrss_source.c:460
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -1295,7 +1286,7 @@ msgstr "Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Kunde inte tolka JSON returnerad av TinyTinyRSS-API:et!"
 
-#: ../src/fl_sources/theoldreader_source.c:310
+#: ../src/fl_sources/theoldreader_source.c:311
 msgid "TheOldReader"
 msgstr "TheOldReader"
 
@@ -1353,25 +1344,206 @@ msgstr "_Större textstorlek"
 msgid "_Decrease Text Size"
 msgstr "_Mindre textstorlek"
 
-#: ../plugins/headerbar.py:63
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
 msgid "Previous Item"
 msgstr "Föregående artikel"
 
-#: ../plugins/headerbar.py:69
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
 msgid "Next Item"
 msgstr "Nästa artikel"
 
-#: ../plugins/headerbar.py:77
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
 msgid "_Next Unread Item"
 msgstr "_Nästa olästa artikel"
 
-#: ../plugins/headerbar.py:85
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
 msgid "_Mark Items Read"
 msgstr "_Märk artiklar som lästa"
 
-#: ../plugins/headerbar.py:104
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
 msgid "Search All Feeds..."
 msgstr "Sök i alla flöden..."
+
+#: ../plugins/libnotify.py:42
+#, fuzzy
+msgid "Feed Updates"
+msgstr "Inställningar för flödesuppdatering"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "Insticksmoduler"
+
+#: ../plugins/plugin-installer.py:69
+#, fuzzy
+msgid "Plugin Installer"
+msgstr "Insticksmoduler"
+
+#: ../plugins/plugin-installer.py:83
+#, fuzzy
+msgid "Activate Plugins"
+msgstr "Insticksmoduler"
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_Hämta med"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "Avancerat"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "_Adress"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
+msgid ""
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "Kan inte skapa cachekatalogen \"%s\"!"
+
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "Tar bort post"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
+msgid ""
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
+msgstr ""
+
+#: ../plugins/trayicon.py:112
+msgid "Show / Hide"
+msgstr ""
+
+#: ../plugins/trayicon.py:113
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:114
+#, fuzzy
+msgid "Quit"
+msgstr "A_vsluta"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1429,6 +1601,146 @@ msgstr "_Bläddra"
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Gör detta automatiskt för bilagor som denna från och med nu."
 
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Prenumerationer"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Uppdatera _alla"
+
+#: ../glade/liferea_menu.ui.h:3
+#, fuzzy
+msgid "Mark All As _Read"
+msgstr "_Märk alla som lästa"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "_Ny prenumeration..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Ny _källa..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Importera flödeslista..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Exportera flödeslista..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "A_vsluta"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_Flöde"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Ta bort _alla artiklar"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "_Ta bort"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_Artikel"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Ta _bort"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_Visa"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_Helskärm"
+
+#: ../glade/liferea_menu.ui.h:30
+msgid "Zoom _In"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:31
+msgid "Zoom _Out"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+#, fuzzy
+msgid "_Normal size"
+msgstr "_Normal vy"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Normal View"
+msgstr "_Normal vy"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Wide View"
+msgstr "_Bred vy"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_Minskad flödeslista"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Verktyg"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_Uppdateringsövervakare"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "_Inställningar"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "S_ök"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Hjälp"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Innehåll"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Snabbreferens"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_Vanliga frågor och svar"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Om"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Lägger till en prenumeration till flödeslistan."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Märker alla artiklar i den valda flödeslistnoden / i artikellistan som lästa."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Uppdaterar alla prenumerationer."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Visa sökrutan."
+
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
 msgstr ""
@@ -1437,11 +1749,7 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4
-msgid "page 3"
-msgstr ""
-
-#: ../glade/mainwindow.ui.h:5 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "Rubriker"
 
@@ -1655,8 +1963,8 @@ msgid "Open links in Liferea's _window."
 msgstr "Öppna länkar i Liferea-_fönstret."
 
 #: ../glade/prefs.ui.h:26
-msgid "_Disable Javascript."
-msgstr "_Inaktivera Javascript."
+msgid "_Never run external Javascript."
+msgstr ""
 
 #: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
@@ -1758,31 +2066,58 @@ msgid "Privacy Settings"
 msgstr "Integritetsinställningar"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked"
+#, fuzzy
+msgid "Tell sites that I do _not want to be tracked."
 msgstr "Informera webbplatser om att jag i_nte vill spåras"
 
 #: ../glade/prefs.ui.h:53
+msgid "_Intelligent Tracking Prevention. "
+msgstr ""
+
+#: ../glade/prefs.ui.h:54
+msgid ""
+"This enables the WebKit feature described <a href=\"https://webkit.org/"
+"tracking-prevention/\">here</a>."
+msgstr ""
+
+#: ../glade/prefs.ui.h:55
+msgid ""
+"Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
+"higher."
+msgstr ""
+
+#: ../glade/prefs.ui.h:56
+msgid "Use _Reader mode."
+msgstr ""
+
+#: ../glade/prefs.ui.h:57
+msgid ""
+"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
+"a> all non-content elements (like scripts, fonts, tracking)"
+msgstr ""
+
+#: ../glade/prefs.ui.h:58
 msgid "Privacy"
 msgstr "Integritet"
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:59
 msgid "Downloading Enclosures"
 msgstr "Hämtar bilagor"
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:60
 msgid "_Download using"
 msgstr "_Hämta med"
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:63
 msgid "Opening Enclosures"
 msgstr "Öppnar bilagor"
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:64
 msgid "Enclosures"
 msgstr "Bilagor"
 
@@ -1886,10 +2221,6 @@ msgstr "_Märk hämtade artiklar som lästa."
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr "Extrahera hela innehållet från HTML5 och Google AMP"
-
-#: ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "Avancerat"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
@@ -2031,6 +2362,15 @@ msgstr "Väntande förfrågningar"
 msgid "_Downloading Now"
 msgstr "Hämtar nu"
 
+#~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
+#~ msgstr "XML-fel vid läsning av flöde! Flödet \"%s\" kunde inte läsas in!"
+
+#~ msgid "Combined View"
+#~ msgstr "Kombinerad vy"
+
+#~ msgid "_Disable Javascript."
+#~ msgstr "_Inaktivera Javascript."
+
 #~ msgid "GUI"
 #~ msgstr "Grafiskt användargränssnitt"
 
@@ -2040,47 +2380,17 @@ msgstr "Hämtar nu"
 #~ msgid "Updating favicon for \"%s\""
 #~ msgstr "Uppdaterar flödesikonen för \"%s\""
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Prenumerationer"
-
-#~ msgid "Update _All"
-#~ msgstr "Uppdatera _alla"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Uppdaterar alla prenumerationer."
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Märk alla artiklar i alla prenumerationer som lästa."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Importera flödeslista..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Importerar en OPML-flödeslista."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Exportera flödeslista..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Exporterar flödeslistan som OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "A_vsluta"
-
-#~ msgid "_Feed"
-#~ msgstr "_Flöde"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Ta bort _alla artiklar"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Tar bort alla artiklar i det för närvarande valda flödet."
-
-#~ msgid "_Item"
-#~ msgstr "_Artikel"
-
-#~ msgid "_View"
-#~ msgstr "_Visa"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Ökar textstorleken i artikelvyn."
@@ -2088,62 +2398,26 @@ msgstr "Hämtar nu"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Minskar textstorleken i artikelvyn."
 
-#~ msgid "_Tools"
-#~ msgstr "_Verktyg"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_Uppdateringsövervakare"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "Visa en lista över alla flöden som finns i uppdateringskön"
-
-#~ msgid "_Preferences"
-#~ msgstr "_Inställningar"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "Redigera inställningar."
 
-#~ msgid "S_earch"
-#~ msgstr "S_ök"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Visa sökrutan."
-
-#~ msgid "_Help"
-#~ msgstr "_Hjälp"
-
-#~ msgid "_Contents"
-#~ msgstr "_Innehåll"
-
 #~ msgid "View help for this application."
 #~ msgstr "Visa hjälp för detta program."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "_Snabbreferens"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Visa en lista över alla genvägar i Liferea."
 
-#~ msgid "_FAQ"
-#~ msgstr "_Vanliga frågor och svar"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "Visa de vanligast ställda frågorna och svaren."
-
-#~ msgid "_About"
-#~ msgstr "_Om"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "Visar en \"Om\"-dialog."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Normal vy"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Ställ in vyläge till e-postklientläget."
-
-#~ msgid "_Wide View"
-#~ msgstr "_Bred vy"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Ställ in vyläge till att använda tre vertikala paneler."
@@ -2154,17 +2428,8 @@ msgstr "Hämtar nu"
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Ställ in vyläge till tvåpanelsläget."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_Minskad flödeslista"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Dölj flöden med inga olästa artiklar."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "_Ny prenumeration..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Lägger till en prenumeration till flödeslistan."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Lägger till en mapp till flödeslistan."
@@ -2172,20 +2437,11 @@ msgstr "Hämtar nu"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Lägger till en ny sökmapp till flödeslistan."
 
-#~ msgid "New _Source..."
-#~ msgstr "Ny _källa..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Lägger till en ny flödeslistkälla."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Lägger till en ny nyhetskorg."
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Märker alla artiklar i den valda flödeslistnoden / i artikellistan som "
-#~ "lästa."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2197,9 +2453,6 @@ msgstr "Hämtar nu"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Öppnar egenskapsdialogen för den valda prenumerationen."
 
-#~ msgid "_Remove"
-#~ msgstr "_Ta bort"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Tar bort den valda prenumerationen."
 
@@ -2208,9 +2461,6 @@ msgstr "Hämtar nu"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Växlar flaggstatus för den valda artikeln."
-
-#~ msgid "R_emove"
-#~ msgstr "Ta _bort"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Tar bort den valda artikeln."
@@ -2223,9 +2473,6 @@ msgstr "Hämtar nu"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "Öppnar artikelns länk i den konfigurerade externa webbläsaren."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_Helskärm"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Läs i helskärm"
@@ -2263,9 +2510,6 @@ msgstr "Hämtar nu"
 
 #~ msgid "View Headlines"
 #~ msgstr "Visa rubriker"
-
-#~ msgid "Plugins"
-#~ msgstr "Insticksmoduler"
 
 #~ msgid "Feed Name"
 #~ msgstr "Flödesnamn"

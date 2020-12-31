@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-28 12:24+0200\n"
+"POT-Creation-Date: 2020-12-31 18:23+0100\n"
 "PO-Revision-Date: 2017-02-14 22:34+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -19,12 +19,12 @@ msgstr ""
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Lokalize 1.5\n"
 
-#: ../liferea.appdata.xml.in.h:1
+#: ../net.sourceforge.liferea.appdata.xml.in.h:1
 #, fuzzy
 msgid "RSS feed reader"
 msgstr "Програма для читання подач"
 
-#: ../liferea.appdata.xml.in.h:2
+#: ../net.sourceforge.liferea.appdata.xml.in.h:2
 msgid ""
 "Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
 "for online news feeds. It supports a number of different feed formats "
@@ -41,39 +41,39 @@ msgstr ""
 "спробою заповнити цю прогалину створенням швидкої, простої у користуванні та "
 "простої у встановленні програми для читання новин із використанням GTK/GNOME."
 
-#: ../liferea.appdata.xml.in.h:3
+#: ../net.sourceforge.liferea.appdata.xml.in.h:3
 msgid "Distinguishing features:"
 msgstr "Визначні особливості:"
 
-#: ../liferea.appdata.xml.in.h:4
+#: ../net.sourceforge.liferea.appdata.xml.in.h:4
 msgid "Read articles when offline"
 msgstr "Читання статей у автономному режимі."
 
-#: ../liferea.appdata.xml.in.h:5
+#: ../net.sourceforge.liferea.appdata.xml.in.h:5
 msgid "Synchronizes with TheOldReader"
 msgstr "Синхронізація з TheOldReader."
 
-#: ../liferea.appdata.xml.in.h:6
+#: ../net.sourceforge.liferea.appdata.xml.in.h:6
 msgid "Synchronizes with TinyTinyRSS"
 msgstr "Синхронізація з TinyTinyRSS."
 
-#: ../liferea.appdata.xml.in.h:7
+#: ../net.sourceforge.liferea.appdata.xml.in.h:7
 msgid "Synchronizes with InoReader"
 msgstr "Синхронізація з InoReader."
 
-#: ../liferea.appdata.xml.in.h:8
+#: ../net.sourceforge.liferea.appdata.xml.in.h:8
 msgid "Synchronizes with Reedah"
 msgstr "Синхронізація з Reedah."
 
-#: ../liferea.appdata.xml.in.h:9
+#: ../net.sourceforge.liferea.appdata.xml.in.h:9
 msgid "Permanently save headlines in news bins"
 msgstr "Зберігання заголовків записів новин."
 
-#: ../liferea.appdata.xml.in.h:10
+#: ../net.sourceforge.liferea.appdata.xml.in.h:10
 msgid "Match items using search folders"
 msgstr "Встановлення відповідності записів з використанням тек пошуку."
 
-#: ../liferea.appdata.xml.in.h:11
+#: ../net.sourceforge.liferea.appdata.xml.in.h:11
 msgid "Play Podcasts"
 msgstr "Відтворення трансляцій."
 
@@ -262,7 +262,7 @@ msgstr "Тека пошуку:"
 msgid "Browser command failed: %s"
 msgstr "Помилка команди переглядача: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1044
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Початок: «%s»"
@@ -340,18 +340,18 @@ msgstr ""
 "програми можна за допомогою вкладки «Отримання» у вікні «Інструменти → "
 "Параметри»."
 
-#: ../src/export.c:188
+#: ../src/export.c:187
 #, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "Помилка під час спроби перейменування %s на %s: %s\n"
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:409 ../src/export.c:411
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
 "Помилка у XML під час спроби читання файла OPML. Не вдалося імпортувати «%s»."
 
-#: ../src/export.c:425 ../src/export.c:427
+#: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -359,45 +359,45 @@ msgstr ""
 "Порожній документ. Документ OPML «%s» не повинен бути порожнім під час "
 "імпортування."
 
-#: ../src/export.c:448 ../src/export.c:450
+#: ../src/export.c:440 ../src/export.c:442
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "«%s» не є коректним документом OPML. Liferea не здатна імпортувати цей файл."
 
-#: ../src/export.c:469
+#: ../src/export.c:461
 msgid "Imported feed list"
 msgstr "Список імпортованих подач"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import Feed List"
 msgstr "Імпортувати список подач"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import"
 msgstr "Імпортувати"
 
-#: ../src/export.c:481 ../src/export.c:498 ../src/fl_sources/opml_source.c:379
+#: ../src/export.c:473 ../src/export.c:490 ../src/fl_sources/opml_source.c:379
 msgid "OPML Files"
 msgstr "Файли OPML"
 
-#: ../src/export.c:489
+#: ../src/export.c:481
 msgid "Error while exporting feed list!"
 msgstr "Помилка під час спроби експортування списку подач."
 
-#: ../src/export.c:491
+#: ../src/export.c:483
 msgid "Feed List exported!"
 msgstr "Список подач експортовано."
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export Feed List"
 msgstr "Експортувати список подач"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export"
 msgstr "Експортувати"
 
-#: ../src/feed.c:324
+#: ../src/feed.c:325
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -408,17 +408,17 @@ msgstr ""
 "</p>Виведені інструментом обробки XML дані:<br /><div "
 "class='xmlparseroutput'>"
 
-#: ../src/feed.c:351
+#: ../src/feed.c:352
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "«%s» оновлено…"
 
-#: ../src/feed.c:358
+#: ../src/feed.c:359
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "«%s» недоступна"
 
-#: ../src/feed_parser.c:142
+#: ../src/feed_parser.c:145
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -429,31 +429,24 @@ msgstr ""
 "сторінці жодної подачі. Можливо, на цій веб-сторінці не передбачено "
 "автоматичного виявлення подач."
 
-#: ../src/feed_parser.c:194
-#, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr ""
-"Під час читання подачі було виявлено помилку у XML. Не вдалося завантажити "
-"подачу «%s»."
-
-#: ../src/feed_parser.c:199 ../src/feed_parser.c:248
+#: ../src/feed_parser.c:203
 msgid "Empty document!"
 msgstr "Порожній документ"
 
-#: ../src/feed_parser.c:211
+#: ../src/feed_parser.c:212
 msgid "Invalid XML!"
 msgstr "Некоректний код XML"
 
-#: ../src/feed_parser.c:271
+#: ../src/feed_parser.c:266
 msgid "Source points to HTML document."
 msgstr "Джерелом є документ HTML."
 
-#: ../src/feed_parser.c:274
+#: ../src/feed_parser.c:269
 msgid "Could not determine the feed type."
 msgstr "Не вдалося визначити тип подачі."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:393
+#: ../src/itemlist.c:390
 msgid "There are no unread items"
 msgstr "Немає непрочитаних пунктів"
 
@@ -645,86 +638,86 @@ msgstr "Сталася невідома помилка роботи у мере�
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:198
+#: ../src/rule.c:229
 msgid "Item"
 msgstr "Елемент"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does contain"
 msgstr "містить"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does not contain"
 msgstr "не містить"
 
-#: ../src/rule.c:199
+#: ../src/rule.c:230
 msgid "Item title"
 msgstr "Заголовок пункту"
 
-#: ../src/rule.c:200
+#: ../src/rule.c:231
 msgid "Item body"
 msgstr "Текст пункту"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "Read status"
 msgstr "Стан прочитання"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is unread"
 msgstr "не прочитано"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is read"
 msgstr "прочитано"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "Flag status"
 msgstr "Стан позначення"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is flagged"
 msgstr "позначено"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is unflagged"
 msgstr "не позначено"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "Podcast"
 msgstr "Трансляція"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "included"
 msgstr "включено"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "not included"
 msgstr "не включено"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "Category"
 msgstr "Категорія"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is set"
 msgstr "встановлено"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is not set"
 msgstr "не встановлено"
 
-#: ../src/rule.c:205
+#: ../src/rule.c:236
 msgid "Feed title"
 msgstr "Заголовок подачі"
 
-#: ../src/rule.c:206
+#: ../src/rule.c:237
 #, fuzzy
 msgid "Feed source"
 msgstr "Джерело подачі"
 
-#: ../src/rule.c:207
+#: ../src/rule.c:238
 msgid "Parent folder title"
 msgstr ""
 
@@ -771,30 +764,30 @@ msgstr "«%s» не змінювалася з часу останнього он
 msgid "Updating \"%s\""
 msgstr "Оновлення «%s»"
 
-#: ../src/update.c:297
+#: ../src/update.c:327
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr ""
 "Помилка під час спроби відкриття файла тимчасових даних %s, який "
 "використовується для фільтрування."
 
-#: ../src/update.c:320
+#: ../src/update.c:350
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s завершила роботу з повідомленням про стан %d"
 
-#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:442
+#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Помилка: не вдалося відкрити канал «%s»"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:466
+#: ../src/update.c:496
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Помилка: не вдалося відкрити файл «%s»"
 
-#: ../src/update.c:472
+#: ../src/update.c:502
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Помилка: файла «%s» не існує"
@@ -803,11 +796,11 @@ msgstr "Помилка: файла «%s» не існує"
 msgid "New Search Folder"
 msgstr "Нова тека пошуку"
 
-#: ../src/xml.c:410
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Були і інші помилки. Дані про них обрізано.]"
 
-#: ../src/xml.c:563
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Обробка XML: не вдалося обробити документ:\n"
 
@@ -861,7 +854,7 @@ msgstr "Файли з суфіксом .%s"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Не вдалося знайти файл зображення: %s"
 
-#: ../src/ui/liferea_shell.c:396
+#: ../src/ui/liferea_shell.c:409
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -870,7 +863,7 @@ msgstr[1] " (%d нові)"
 msgstr[2] " (%d нових)"
 msgstr[3] " (%d нова)"
 
-#: ../src/ui/liferea_shell.c:401
+#: ../src/ui/liferea_shell.c:414
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -879,19 +872,19 @@ msgstr[1] "%d непрочитані%s"
 msgstr[2] "%d непрочитаних%s"
 msgstr[3] "%d непрочитана%s"
 
-#: ../src/ui/liferea_shell.c:758
+#: ../src/ui/liferea_shell.c:755
 msgid "Help Topics"
 msgstr "Розділи довідки"
 
-#: ../src/ui/liferea_shell.c:764
+#: ../src/ui/liferea_shell.c:761
 msgid "Quick Reference"
 msgstr "Швидке ознайомлення"
 
-#: ../src/ui/liferea_shell.c:770
+#: ../src/ui/liferea_shell.c:767
 msgid "FAQ"
 msgstr "Поширені питання"
 
-#: ../src/ui/liferea_shell.c:1041
+#: ../src/ui/liferea_shell.c:1045
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Помилка команди переглядача: %s"
@@ -1017,15 +1010,15 @@ msgstr "Для вилучення пунктів подачі слід вказ�
 msgid "No item has been selected"
 msgstr "Не позначено жодного пункту"
 
-#: ../src/ui/popup_menu.c:102
+#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Відкрити у в_кладці"
 
-#: ../src/ui/popup_menu.c:106
+#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "Ві_дкрити у переглядачі"
 
-#: ../src/ui/popup_menu.c:110
+#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Відкрити у _зовнішньому переглядачі"
 
@@ -1046,11 +1039,11 @@ msgstr "С_творити закладку для %s"
 msgid "Copy Item _Location"
 msgstr "Копіювати _адресу пункту"
 
-#: ../src/ui/popup_menu.c:163
+#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Перемкнути стан п_рочитання"
 
-#: ../src/ui/popup_menu.c:167
+#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Перемкнути п_рапорець пункту"
 
@@ -1070,7 +1063,7 @@ msgstr "Зберегти як…"
 msgid "Copy Link Location"
 msgstr "Скопіювати адресу посилання"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Оновити"
 
@@ -1082,11 +1075,11 @@ msgstr "_Оновити теку"
 msgid "New _Subscription..."
 msgstr "Нова п_ідписка…"
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "С_творити теку…"
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Створити т_еку пошуку…"
 
@@ -1094,7 +1087,7 @@ msgstr "Створити т_еку пошуку…"
 msgid "New S_ource..."
 msgstr "Нове д_жерело…"
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Ст_ворити кошик новин…"
 
@@ -1114,7 +1107,7 @@ msgstr "Поз_начити всі як прочитані"
 msgid "_Rebuild"
 msgstr "П_еребудувати"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Властивості"
 
@@ -1174,23 +1167,19 @@ msgstr "Звичайний перегляд"
 msgid "Wide View"
 msgstr "Широкий режим"
 
-#: ../src/ui/preferences_dialog.c:112
-msgid "Combined View"
-msgstr "Комбінований перегляд"
-
-#: ../src/ui/preferences_dialog.c:467
+#: ../src/ui/preferences_dialog.c:478
 msgid "Default Browser"
 msgstr "Типовий переглядач"
 
-#: ../src/ui/preferences_dialog.c:469
+#: ../src/ui/preferences_dialog.c:480
 msgid "Manual"
 msgstr "Вручну"
 
-#: ../src/ui/preferences_dialog.c:716
+#: ../src/ui/preferences_dialog.c:740
 msgid "Type"
 msgstr "Тип"
 
-#: ../src/ui/preferences_dialog.c:719
+#: ../src/ui/preferences_dialog.c:743
 msgid "Program"
 msgstr "Програма"
 
@@ -1220,7 +1209,7 @@ msgstr "У цій подачі не вказано ніякого типовог
 msgid "Untitled"
 msgstr "Без назви"
 
-#: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
+#: ../src/parsers/atom10.c:239
 msgid "Website"
 msgstr "Сайт"
 
@@ -1276,7 +1265,7 @@ msgstr "Ппідписні дані «%s» успішно перетворено
 msgid "Login failed!"
 msgstr "Невдала спроба увійти!"
 
-#: ../src/fl_sources/reedah_source.c:312
+#: ../src/fl_sources/reedah_source.c:313
 msgid "Reedah"
 msgstr "Reedah"
 
@@ -1285,11 +1274,11 @@ msgid "Could not parse JSON returned by Reedah API!"
 msgstr ""
 "Не вдалося обробити код JSON, повернутий програмним інтерфейсом Reedah!"
 
-#: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr "Програмний інтерфейс HTTP TinyTinyRSS недоступний!"
 
-#: ../src/fl_sources/ttrss_source.c:231
+#: ../src/fl_sources/ttrss_source.c:234
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
@@ -1297,11 +1286,11 @@ msgstr ""
 "Спроба підписатися на TinyTinyRSS завершилася невдало! Перевірте, чи "
 "передали ви адресу подачі!"
 
-#: ../src/fl_sources/ttrss_source.c:290
+#: ../src/fl_sources/ttrss_source.c:300
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr "Не вдалося відписатися від подачі TinyTinyRSS!"
 
-#: ../src/fl_sources/ttrss_source.c:307
+#: ../src/fl_sources/ttrss_source.c:318
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
@@ -1310,7 +1299,7 @@ msgstr ""
 "У цій версії TinyTinyRSS не передбачено підтримки вилучення подач. Оновіть "
 "програму до версії %s або новішої!"
 
-#: ../src/fl_sources/ttrss_source.c:427
+#: ../src/fl_sources/ttrss_source.c:460
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -1319,7 +1308,7 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 "Не вдалося обробити код JSON, повернутий програмним інтерфейсом TinyTinyRSS!"
 
-#: ../src/fl_sources/theoldreader_source.c:310
+#: ../src/fl_sources/theoldreader_source.c:311
 msgid "TheOldReader"
 msgstr "TheOldReader"
 
@@ -1377,25 +1366,207 @@ msgstr "З_більшити розмір символів"
 msgid "_Decrease Text Size"
 msgstr "З_меншити розмір символів"
 
-#: ../plugins/headerbar.py:63
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
 msgid "Previous Item"
 msgstr "Попередній пункт"
 
-#: ../plugins/headerbar.py:69
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
 msgid "Next Item"
 msgstr "Наступний пункт"
 
-#: ../plugins/headerbar.py:77
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
 msgid "_Next Unread Item"
 msgstr "_Наступний непрочитаний пункт"
 
-#: ../plugins/headerbar.py:85
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
 msgid "_Mark Items Read"
 msgstr "П_означити пункти як прочитані"
 
-#: ../plugins/headerbar.py:104
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
 msgid "Search All Feeds..."
 msgstr "Шукати у всіх подачах…"
+
+#: ../plugins/libnotify.py:42
+#, fuzzy
+msgid "Feed Updates"
+msgstr "Оновлення подач"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "Додатки"
+
+#: ../plugins/plugin-installer.py:69
+#, fuzzy
+msgid "Plugin Installer"
+msgstr "Додатки"
+
+#: ../plugins/plugin-installer.py:83
+#, fuzzy
+msgid "Activate Plugins"
+msgstr "Додатки"
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_Отримувати за допомогою"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "Додатково"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "Параметри сповіщення"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
+msgid ""
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "Не вдалося створити каталог кешування «%s»!"
+
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "Вилучення запису"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
+msgid ""
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
+msgstr ""
+
+#: ../plugins/trayicon.py:112
+#, fuzzy
+msgid "Show / Hide"
+msgstr "Показати подробиці"
+
+#: ../plugins/trayicon.py:113
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:114
+#, fuzzy
+msgid "Quit"
+msgstr "Ви_йти"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1454,6 +1625,146 @@ msgid "_Do this automatically for enclosures like this from now on."
 msgstr ""
 "Ви_конувати вказану дію автоматично для всіх вкладено, подібних до цього"
 
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "_Підписки"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "Оновити _всі"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "Позначити всі _як прочитані"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "О_формити підписку…"
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "Створити д_жерело…"
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "_Імпортувати список подач…"
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_Експортувати список подач…"
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "Ви_йти"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "П_одача"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "Вилу_чити всі пункти"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "В_илучити"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "П_ункт"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "Ви_лучити"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "П_ерегляд"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "На весь _екран"
+
+#: ../glade/liferea_menu.ui.h:30
+msgid "Zoom _In"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:31
+msgid "Zoom _Out"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+#, fuzzy
+msgid "_Normal size"
+msgstr "_Звичайний перегляд"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Normal View"
+msgstr "_Звичайний перегляд"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Wide View"
+msgstr "_Широкий режим"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "Ст_ислий список подач"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "_Інструменти"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "С_постереження за оновленням"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "П_араметри"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "По_шук"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_Довідка"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "_Зміст"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "_Швидке ознайомлення"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "_ЧаП"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_Про програму"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "Додати до списку подач новий запис подачі."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr ""
+"Позначити всі пункти позначеного вузла у списку подач або у списку пунктів "
+"як прочитані."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "Оновити всі підписки."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "Показати діалогове вікно пошуку."
+
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
 msgstr ""
@@ -1462,11 +1773,7 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4
-msgid "page 3"
-msgstr ""
-
-#: ../glade/mainwindow.ui.h:5 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "Заголовки"
 
@@ -1681,8 +1988,8 @@ msgid "Open links in Liferea's _window."
 msgstr "Відкривати поси_лання у вікні Liferea"
 
 #: ../glade/prefs.ui.h:26
-msgid "_Disable Javascript."
-msgstr "Ви_мкнути Javascript"
+msgid "_Never run external Javascript."
+msgstr ""
 
 #: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
@@ -1784,31 +2091,58 @@ msgid "Privacy Settings"
 msgstr "Параметри конфіденційності"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked"
+#, fuzzy
+msgid "Tell sites that I do _not want to be tracked."
 msgstr "Повідомляти сайтам, що с_теження є небажаним"
 
 #: ../glade/prefs.ui.h:53
+msgid "_Intelligent Tracking Prevention. "
+msgstr ""
+
+#: ../glade/prefs.ui.h:54
+msgid ""
+"This enables the WebKit feature described <a href=\"https://webkit.org/"
+"tracking-prevention/\">here</a>."
+msgstr ""
+
+#: ../glade/prefs.ui.h:55
+msgid ""
+"Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
+"higher."
+msgstr ""
+
+#: ../glade/prefs.ui.h:56
+msgid "Use _Reader mode."
+msgstr ""
+
+#: ../glade/prefs.ui.h:57
+msgid ""
+"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
+"a> all non-content elements (like scripts, fonts, tracking)"
+msgstr ""
+
+#: ../glade/prefs.ui.h:58
 msgid "Privacy"
 msgstr "Конфіденційність"
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:59
 msgid "Downloading Enclosures"
 msgstr "Отримання вкладень"
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:60
 msgid "_Download using"
 msgstr "_Отримувати за допомогою"
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:63
 msgid "Opening Enclosures"
 msgstr "Відкриття вкладень"
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:64
 msgid "Enclosures"
 msgstr "Вкладення"
 
@@ -1914,10 +2248,6 @@ msgstr "Позна_чати звантажені пункти як прочит�
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr ""
-
-#: ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "Додатково"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
@@ -2058,6 +2388,17 @@ msgstr "Запити у черзі"
 msgid "_Downloading Now"
 msgstr "Отримання"
 
+#~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
+#~ msgstr ""
+#~ "Під час читання подачі було виявлено помилку у XML. Не вдалося "
+#~ "завантажити подачу «%s»."
+
+#~ msgid "Combined View"
+#~ msgstr "Комбінований перегляд"
+
+#~ msgid "_Disable Javascript."
+#~ msgstr "Ви_мкнути Javascript"
+
 #~ msgid "GUI"
 #~ msgstr "Інтерфейс"
 
@@ -2067,50 +2408,17 @@ msgstr "Отримання"
 #~ msgid "Updating favicon for \"%s\""
 #~ msgstr "Оновлення піктограми «%s»"
 
-#~ msgid "_Subscriptions"
-#~ msgstr "_Підписки"
-
-#~ msgid "Update _All"
-#~ msgstr "Оновити _всі"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "Оновити всі підписки."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "Позначити всі _як прочитані"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "Позначити всі пункти у всіх підписках як прочитані."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "_Імпортувати список подач…"
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "Імпортувати список подач у форматі OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_Експортувати список подач…"
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "Експортувати список подач у форматі OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "Ви_йти"
-
-#~ msgid "_Feed"
-#~ msgstr "П_одача"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "Вилу_чити всі пункти"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "Вилучити всі пункти з поточної позначеної подачі."
-
-#~ msgid "_Item"
-#~ msgstr "П_ункт"
-
-#~ msgid "_View"
-#~ msgstr "П_ерегляд"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "Збільшити розмір символів на панелі перегляду."
@@ -2118,64 +2426,28 @@ msgstr "Отримання"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "Зменшити розмір символів на панелі перегляду."
 
-#~ msgid "_Tools"
-#~ msgstr "_Інструменти"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "С_постереження за оновленням"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr ""
 #~ "Показати список всіх пунктів подач, які перебувають у черзі оновлення"
 
-#~ msgid "_Preferences"
-#~ msgstr "П_араметри"
-
 #~ msgid "Edit Preferences."
 #~ msgstr "Змінити параметри роботи програми."
-
-#~ msgid "S_earch"
-#~ msgstr "По_шук"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "Показати діалогове вікно пошуку."
-
-#~ msgid "_Help"
-#~ msgstr "_Довідка"
-
-#~ msgid "_Contents"
-#~ msgstr "_Зміст"
 
 #~ msgid "View help for this application."
 #~ msgstr "Показати довідку до цієї програми."
 
-#~ msgid "_Quick Reference"
-#~ msgstr "_Швидке ознайомлення"
-
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "Показати список всіх клавіатурних скорочень Liferea."
-
-#~ msgid "_FAQ"
-#~ msgstr "_ЧаП"
 
 #~ msgid "View the FAQ for this application."
 #~ msgstr ""
 #~ "Показати список поширених питань щодо програми та відповідей на них."
 
-#~ msgid "_About"
-#~ msgstr "_Про програму"
-
 #~ msgid "Shows an about dialog."
 #~ msgstr "Показати діалогове вікно даними щодо програми."
 
-#~ msgid "_Normal View"
-#~ msgstr "_Звичайний перегляд"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "Перемкнути програму у режим перегляду клієнта електронної пошти."
-
-#~ msgid "_Wide View"
-#~ msgstr "_Широкий режим"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "Перемкнути програму у режим показу трьох вертикальних панелей."
@@ -2186,17 +2458,8 @@ msgstr "Отримання"
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "Перемкнути програму у режим перегляду з двома панелями."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "Ст_ислий список подач"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "Приховати подачі, у яких немає непрочитаних пунктів."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "О_формити підписку…"
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "Додати до списку подач новий запис подачі."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "Додати до списку подач нову теку."
@@ -2204,20 +2467,11 @@ msgstr "Отримання"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "Додати до списку подач новий запис теки пошуку."
 
-#~ msgid "New _Source..."
-#~ msgstr "Створити д_жерело…"
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "Додати нове джерело списку подач."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "Додати новий кошик новин."
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr ""
-#~ "Позначити всі пункти позначеного вузла у списку подач або у списку "
-#~ "пунктів як прочитані."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2227,9 +2481,6 @@ msgstr "Отримання"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "Відкрити діалогове вікно параметрів позначеного пункту підписки."
 
-#~ msgid "_Remove"
-#~ msgstr "В_илучити"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "Вилучити позначений пункт підписки."
 
@@ -2238,9 +2489,6 @@ msgstr "Отримання"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "Перемкнути прапорець стану позначеного пункту."
-
-#~ msgid "R_emove"
-#~ msgstr "Ви_лучити"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "Вилучити позначений пункт."
@@ -2255,9 +2503,6 @@ msgstr "Отримання"
 #~ msgstr ""
 #~ "Відкрити посилання пункту у вказаній вами зовнішній програмі для "
 #~ "перегляду інтернету."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "На весь _екран"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "Перегляд у повноекранному режимі"
@@ -2296,9 +2541,6 @@ msgstr "Отримання"
 
 #~ msgid "View Headlines"
 #~ msgstr "Перегляд заголовків"
-
-#~ msgid "Plugins"
-#~ msgstr "Додатки"
 
 #~ msgid "Feed Name"
 #~ msgstr "Назва подачі"
@@ -2504,20 +2746,11 @@ msgstr "Отримання"
 #~ msgstr[2] "У <b>%s</b> виявлено <b>%d</b> оновлень"
 #~ msgstr[3] "У <b>%s</b> виявлено <b>%d</b> оновлення"
 
-#~ msgid "Feed Update"
-#~ msgstr "Оновлення подач"
-
-#~ msgid "Show details"
-#~ msgstr "Показати подробиці"
-
 #~ msgid "_Enforce popup notification for this subscription."
 #~ msgstr "_Завжди сповіщати контекстними вікнами про цю подачу"
 
 #~ msgid "_Never do popup notification for this subscription."
 #~ msgstr "_Ніколи не сповіщати контекстними вікнами про цю подачу"
-
-#~ msgid "Notification Settings"
-#~ msgstr "Параметри сповіщення"
 
 #~ msgid "Show a _popup window with new headlines."
 #~ msgstr "Показувати _контекстне вікно з новими заголовками"

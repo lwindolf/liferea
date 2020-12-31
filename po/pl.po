@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.13.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-27 18:08+0100\n"
+"POT-Creation-Date: 2020-12-31 18:23+0100\n"
 "PO-Revision-Date: 2020-12-27 18:08+0100\n"
 "Last-Translator: Paweł Marciniak <sunwire+translate@gmail.com>\n"
 "Language-Team: \n"
@@ -347,58 +347,58 @@ msgstr ""
 "pobierania! Wymagane ustawienia można znaleźć na karcie „Pobieranie”, w "
 "oknie preferencji programu."
 
-#: ../src/export.c:188
+#: ../src/export.c:187
 #, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "Błąd zmieniania nazwy z %s na %s: %s\n"
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:409 ../src/export.c:411
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "Błąd XML czytania pliku OPML! Nie można zaimportować pliku „%s”!"
 
-#: ../src/export.c:425 ../src/export.c:427
+#: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "Pusty dokument! Importowany dokument OPML „%s” nie może być pusty."
 
-#: ../src/export.c:448 ../src/export.c:450
+#: ../src/export.c:440 ../src/export.c:442
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "Plik „%s” nie jest prawidłowym dokumentem OPML! Nie można zaimportować tego "
 "pliku!"
 
-#: ../src/export.c:469
+#: ../src/export.c:461
 msgid "Imported feed list"
 msgstr "Lista zaimportowanych subskrypcji"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import Feed List"
 msgstr "Importuj listę subskrypcji"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import"
 msgstr "Zaimportuj"
 
-#: ../src/export.c:481 ../src/export.c:498 ../src/fl_sources/opml_source.c:379
+#: ../src/export.c:473 ../src/export.c:490 ../src/fl_sources/opml_source.c:379
 msgid "OPML Files"
 msgstr "Pliki OPML"
 
-#: ../src/export.c:489
+#: ../src/export.c:481
 msgid "Error while exporting feed list!"
 msgstr "Błąd eksportowania listy subskrypcji!"
 
-#: ../src/export.c:491
+#: ../src/export.c:483
 msgid "Feed List exported!"
 msgstr "Wyeksportowano listę subskrypcji!"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export Feed List"
 msgstr "Eksportuj listę subskrypcji"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export"
 msgstr "Wyeksportuj"
 
@@ -1388,6 +1388,11 @@ msgstr "_Oznacz jako przeczytane"
 msgid "Search All Feeds..."
 msgstr "Wyszukaj..."
 
+#: ../plugins/libnotify.py:42
+#, fuzzy
+msgid "Feed Updates"
+msgstr "Uaktualnianie"
+
 #: ../plugins/plugin-installer.py:54
 msgid "Plugins"
 msgstr "Wtyczki"
@@ -1542,6 +1547,19 @@ msgstr ""
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr "Wtyczka została usunięta. Proszę zrestartować Liferea"
+
+#: ../plugins/trayicon.py:112
+msgid "Show / Hide"
+msgstr ""
+
+#: ../plugins/trayicon.py:113
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:114
+#, fuzzy
+msgid "Quit"
+msgstr "Za_kończ"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -2357,6 +2375,5 @@ msgstr "Oczekujące żądania"
 msgid "_Downloading Now"
 msgstr "Pobieram"
 
-#, c-format
 #~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 #~ msgstr "Błąd XML czytania kanału! Nie można wczytać zawartości kanału „%s”!"

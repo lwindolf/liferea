@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea_trunk_ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-28 12:24+0200\n"
+"POT-Creation-Date: 2020-12-31 18:23+0100\n"
 "PO-Revision-Date: 2014-10-11 19:28+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -19,12 +19,12 @@ msgstr ""
 "X-Generator: Virtaal 1.0.0-beta1\n"
 "X-Project-Style: gnome\n"
 
-#: ../liferea.appdata.xml.in.h:1
+#: ../net.sourceforge.liferea.appdata.xml.in.h:1
 #, fuzzy
 msgid "RSS feed reader"
 msgstr "قارئ تلقيمات"
 
-#: ../liferea.appdata.xml.in.h:2
+#: ../net.sourceforge.liferea.appdata.xml.in.h:2
 msgid ""
 "Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
 "for online news feeds. It supports a number of different feed formats "
@@ -38,39 +38,39 @@ msgstr ""
 "على لينكس أو تتطلب الكثير من المكتبات الإضافية. يحاول لايفريا سد هذه الهوّة "
 "بتوفير مجمّع أخبار سهل الاستخدام و التثبيت لجنوم."
 
-#: ../liferea.appdata.xml.in.h:3
+#: ../net.sourceforge.liferea.appdata.xml.in.h:3
 msgid "Distinguishing features:"
 msgstr "الخصائص المميزة:"
 
-#: ../liferea.appdata.xml.in.h:4
+#: ../net.sourceforge.liferea.appdata.xml.in.h:4
 msgid "Read articles when offline"
 msgstr "قراءة المقالات دون اتصال"
 
-#: ../liferea.appdata.xml.in.h:5
+#: ../net.sourceforge.liferea.appdata.xml.in.h:5
 msgid "Synchronizes with TheOldReader"
 msgstr "المزامنة مع قارئ TheOldReader"
 
-#: ../liferea.appdata.xml.in.h:6
+#: ../net.sourceforge.liferea.appdata.xml.in.h:6
 msgid "Synchronizes with TinyTinyRSS"
 msgstr "المزامنة مع TinyTinyRSS"
 
-#: ../liferea.appdata.xml.in.h:7
+#: ../net.sourceforge.liferea.appdata.xml.in.h:7
 msgid "Synchronizes with InoReader"
 msgstr "المزامنة مع قارئ InoReader"
 
-#: ../liferea.appdata.xml.in.h:8
+#: ../net.sourceforge.liferea.appdata.xml.in.h:8
 msgid "Synchronizes with Reedah"
 msgstr "المزامنة مع قارئ Reedah"
 
-#: ../liferea.appdata.xml.in.h:9
+#: ../net.sourceforge.liferea.appdata.xml.in.h:9
 msgid "Permanently save headlines in news bins"
 msgstr "حفظ عناوين الأخبار بشكل دائم في سلة الأخبار"
 
-#: ../liferea.appdata.xml.in.h:10
+#: ../net.sourceforge.liferea.appdata.xml.in.h:10
 msgid "Match items using search folders"
 msgstr "تجميع العناصر باستخدام مجلدات البحث"
 
-#: ../liferea.appdata.xml.in.h:11
+#: ../net.sourceforge.liferea.appdata.xml.in.h:11
 msgid "Play Podcasts"
 msgstr "تشغيل التدوين صوتي"
 
@@ -256,7 +256,7 @@ msgstr "مجلّد بحث:"
 msgid "Browser command failed: %s"
 msgstr "فشل أمر المتصفح: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1044
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "يبدأ: \"%s\""
@@ -327,60 +327,60 @@ msgid ""
 msgstr ""
 "لم تضبط أداة للتنزيلات، يمكنك ضبطها من لسان 'التنزيل' في أدوات ← التفضيلات."
 
-#: ../src/export.c:188
+#: ../src/export.c:187
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "خطأ أثناء إعادة تسمية %s إلى %s\n"
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:409 ../src/export.c:411
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "خطأ XML أثناء قراءة ملف OPML! تعذّر استيراد \"%s\"!"
 
-#: ../src/export.c:425 ../src/export.c:427
+#: ../src/export.c:417 ../src/export.c:419
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "مستند فارغ! يجب ألا يكون مستند OPML \"%s\" فارغا أثناء التصدير."
 
-#: ../src/export.c:448 ../src/export.c:450
+#: ../src/export.c:440 ../src/export.c:442
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "‏\"%s\" ليس مستند OPML صالحاً! لا يستطيع لايفريا استيراد هذا الملف!"
 
-#: ../src/export.c:469
+#: ../src/export.c:461
 msgid "Imported feed list"
 msgstr "قائمة التلقيمات المستوردة"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import Feed List"
 msgstr "استورد قائمة التلقيمات"
 
-#: ../src/export.c:481
+#: ../src/export.c:473
 msgid "Import"
 msgstr "استورد"
 
-#: ../src/export.c:481 ../src/export.c:498 ../src/fl_sources/opml_source.c:379
+#: ../src/export.c:473 ../src/export.c:490 ../src/fl_sources/opml_source.c:379
 msgid "OPML Files"
 msgstr "ملفات OPML"
 
-#: ../src/export.c:489
+#: ../src/export.c:481
 msgid "Error while exporting feed list!"
 msgstr "خطأ أثناء تصدير قائمة التلقيمات!"
 
-#: ../src/export.c:491
+#: ../src/export.c:483
 msgid "Feed List exported!"
 msgstr "صُدّرت قائمة التلقيمات!"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export Feed List"
 msgstr "صدّر قائمة التلقيمات"
 
-#: ../src/export.c:498
+#: ../src/export.c:490
 msgid "Export"
 msgstr "صدّر"
 
-#: ../src/feed.c:324
+#: ../src/feed.c:325
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -390,17 +390,17 @@ msgstr ""
 "مورِد متوفّر بأحد تنسيقات تجميع الأخبار المدعومة!</p>خرْج محلّل XML:<br /><div "
 "class='xmlparseroutput'>"
 
-#: ../src/feed.c:351
+#: ../src/feed.c:352
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "حُدِّث \"%s\"..."
 
-#: ../src/feed.c:358
+#: ../src/feed.c:359
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "‏\"%s\" ليس متوفّرا"
 
-#: ../src/feed_parser.c:142
+#: ../src/feed_parser.c:145
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -410,29 +410,24 @@ msgstr ""
 "التلقائي أية تلقيمات في هذه الصفحة. ربما لا تدعم هذه الصفحة الاكتشاف "
 "التلقائي للتلقيمات."
 
-#: ../src/feed_parser.c:194
-#, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "خطأ XML أثناء قراءة التلقيمة! لا يمكن تحميل التلقيمة \"%s\"!"
-
-#: ../src/feed_parser.c:199 ../src/feed_parser.c:248
+#: ../src/feed_parser.c:203
 msgid "Empty document!"
 msgstr "مستند فارغ!"
 
-#: ../src/feed_parser.c:211
+#: ../src/feed_parser.c:212
 msgid "Invalid XML!"
 msgstr "‏XML غير صحيح!"
 
-#: ../src/feed_parser.c:271
+#: ../src/feed_parser.c:266
 msgid "Source points to HTML document."
 msgstr "يشير المصدر إلى مستند HTML."
 
-#: ../src/feed_parser.c:274
+#: ../src/feed_parser.c:269
 msgid "Could not determine the feed type."
 msgstr "تعذّر تحديد نوع التلقيمة."
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:393
+#: ../src/itemlist.c:390
 msgid "There are no unread items"
 msgstr "لا توجد عناصر غير مقروءة"
 
@@ -615,86 +610,86 @@ msgstr "حدث خطأ شبكي مجهول."
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:198
+#: ../src/rule.c:229
 msgid "Item"
 msgstr "عنصر"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does contain"
 msgstr "يحتوي"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does not contain"
 msgstr "لا يحتوي"
 
-#: ../src/rule.c:199
+#: ../src/rule.c:230
 msgid "Item title"
 msgstr "عنوان العنصر"
 
-#: ../src/rule.c:200
+#: ../src/rule.c:231
 msgid "Item body"
 msgstr "متن العنصر"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "Read status"
 msgstr "حالة القراءة"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is unread"
 msgstr "غير مقروء"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is read"
 msgstr "مقروء"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "Flag status"
 msgstr "حالة الشارة"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is flagged"
 msgstr "مؤشّر"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is unflagged"
 msgstr "غير مؤشّر"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "Podcast"
 msgstr "تدوين صوتي"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "included"
 msgstr "مُدْرج"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "not included"
 msgstr "غير مُدْرج"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "Category"
 msgstr "الفئة"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is set"
 msgstr "ضُبِطَ"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is not set"
 msgstr "لم يضبط"
 
-#: ../src/rule.c:205
+#: ../src/rule.c:236
 msgid "Feed title"
 msgstr "عنوان التلقيمة"
 
-#: ../src/rule.c:206
+#: ../src/rule.c:237
 #, fuzzy
 msgid "Feed source"
 msgstr "مصدر التلقيمة"
 
-#: ../src/rule.c:207
+#: ../src/rule.c:238
 msgid "Parent folder title"
 msgstr ""
 
@@ -736,28 +731,28 @@ msgstr "لم يتغيّر \"%s\" منذ آخر تحديث"
 msgid "Updating \"%s\""
 msgstr "يجري تحديث \"%s\""
 
-#: ../src/update.c:297
+#: ../src/update.c:327
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "خطأ أثناء فتح الملف المؤقّت %s لاستخدامه في الترشيح!"
 
-#: ../src/update.c:320
+#: ../src/update.c:350
 #, c-format
 msgid "%s exited with status %d"
 msgstr "خرج %s بالحالة %d"
 
-#: ../src/update.c:326 ../src/update.c:327 ../src/update.c:442
+#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "خطأ: تعذّر فتح الأنبوب \"%s\""
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:466
+#: ../src/update.c:496
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "خطأ: تعذّر فتح الملف \"%s\""
 
-#: ../src/update.c:472
+#: ../src/update.c:502
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "خطأ: ليس ثمّة ملف \"%s\""
@@ -766,11 +761,11 @@ msgstr "خطأ: ليس ثمّة ملف \"%s\""
 msgid "New Search Folder"
 msgstr "مجلّد بحث جديد"
 
-#: ../src/xml.c:410
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[كان هناك المزيد من الأخطاء. بُتِر الخرْج]"
 
-#: ../src/xml.c:563
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "محلّل XML: لا يمكن تحليل المستند:\n"
 
@@ -826,7 +821,7 @@ msgstr "امتداد الملف .%s"
 msgid "Couldn't find pixmap file: %s"
 msgstr "تعذّر العثور على ملف الصورة: %s"
 
-#: ../src/ui/liferea_shell.c:396
+#: ../src/ui/liferea_shell.c:409
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -837,7 +832,7 @@ msgstr[3] " (%d جديدة)"
 msgstr[4] " (%d جديدا)"
 msgstr[5] " (%d جديد)"
 
-#: ../src/ui/liferea_shell.c:401
+#: ../src/ui/liferea_shell.c:414
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -848,19 +843,19 @@ msgstr[3] "%d غير مقروءة%s"
 msgstr[4] "%d غير مقروء%s"
 msgstr[5] "%d غير مقروء%s"
 
-#: ../src/ui/liferea_shell.c:758
+#: ../src/ui/liferea_shell.c:755
 msgid "Help Topics"
 msgstr "مواضيع المساعدة"
 
-#: ../src/ui/liferea_shell.c:764
+#: ../src/ui/liferea_shell.c:761
 msgid "Quick Reference"
 msgstr "مرجع سريع"
 
-#: ../src/ui/liferea_shell.c:770
+#: ../src/ui/liferea_shell.c:767
 msgid "FAQ"
 msgstr "أسئلة شائعة"
 
-#: ../src/ui/liferea_shell.c:1041
+#: ../src/ui/liferea_shell.c:1045
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "فشل أمر المتصفح: %s"
@@ -987,15 +982,15 @@ msgstr "يجب أن تختار تلقيمة لحذف عناصرها!"
 msgid "No item has been selected"
 msgstr "لم تختر أية عناصر"
 
-#: ../src/ui/popup_menu.c:102
+#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "افتح _لسان"
 
-#: ../src/ui/popup_menu.c:106
+#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "ا_فتح في المتصفح"
 
-#: ../src/ui/popup_menu.c:110
+#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "افتح في متصفح _خارجي"
 
@@ -1016,11 +1011,11 @@ msgstr "_علّم في %s"
 msgid "Copy Item _Location"
 msgstr "انسخ م_كان العنصر"
 
-#: ../src/ui/popup_menu.c:163
+#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "بدّل حالة ال_قراءة"
 
-#: ../src/ui/popup_menu.c:167
+#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "بدّل _شارة العنصر"
 
@@ -1040,7 +1035,7 @@ msgstr "احفظ ك‍..."
 msgid "Copy Link Location"
 msgstr "انسخ موقع الوصلة"
 
-#: ../src/ui/popup_menu.c:280
+#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_حدّث"
 
@@ -1052,11 +1047,11 @@ msgstr "_حدّث المجلّد"
 msgid "New _Subscription..."
 msgstr "اشتراك _جديد..."
 
-#: ../src/ui/popup_menu.c:295
+#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "_مجلّد جديد..."
 
-#: ../src/ui/popup_menu.c:298
+#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "مجلّد _بحث جديد..."
 
@@ -1064,7 +1059,7 @@ msgstr "مجلّد _بحث جديد..."
 msgid "New S_ource..."
 msgstr "م_صدر جديد..."
 
-#: ../src/ui/popup_menu.c:300
+#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "_سلّة أخبار جديدة..."
 
@@ -1084,7 +1079,7 @@ msgstr "_علّم الكل مقروء"
 msgid "_Rebuild"
 msgstr "أعد الب_ناء"
 
-#: ../src/ui/popup_menu.c:336
+#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "ال_خصائص"
 
@@ -1144,23 +1139,19 @@ msgstr "المنظور العادي"
 msgid "Wide View"
 msgstr "المنظور العريض"
 
-#: ../src/ui/preferences_dialog.c:112
-msgid "Combined View"
-msgstr "المنظور المركّب"
-
-#: ../src/ui/preferences_dialog.c:467
+#: ../src/ui/preferences_dialog.c:478
 msgid "Default Browser"
 msgstr "المتصفح المبدئي"
 
-#: ../src/ui/preferences_dialog.c:469
+#: ../src/ui/preferences_dialog.c:480
 msgid "Manual"
 msgstr "يدوي"
 
-#: ../src/ui/preferences_dialog.c:716
+#: ../src/ui/preferences_dialog.c:740
 msgid "Type"
 msgstr "النوع"
 
-#: ../src/ui/preferences_dialog.c:719
+#: ../src/ui/preferences_dialog.c:743
 msgid "Program"
 msgstr "البرنامج"
 
@@ -1188,7 +1179,7 @@ msgstr "لا تُحدِّد هذه التلقيمة فترة تحديث افتر
 msgid "Untitled"
 msgstr "بدون عنوان"
 
-#: ../src/parsers/atom10.c:241 ../src/parsers/pie_feed.c:141
+#: ../src/parsers/atom10.c:239
 msgid "Website"
 msgstr "الموقع"
 
@@ -1242,7 +1233,7 @@ msgstr "حُوِّلَ اشتراك '%s' بنجاح إلى تلقيمات محل
 msgid "Login failed!"
 msgstr "فشل الولوج!"
 
-#: ../src/fl_sources/reedah_source.c:312
+#: ../src/fl_sources/reedah_source.c:313
 msgid "Reedah"
 msgstr "قارئ Reedah"
 
@@ -1250,22 +1241,22 @@ msgstr "قارئ Reedah"
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "تعذر تحليل البيانات المجلوبة من واجهة Reedah البرمجية!"
 
-#: ../src/fl_sources/ttrss_source.c:224 ../src/fl_sources/ttrss_source.c:283
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr "تعذر الوصول إلى واجهة TinyTinyRSS البرمجية عبر HTTP!"
 
-#: ../src/fl_sources/ttrss_source.c:231
+#: ../src/fl_sources/ttrss_source.c:234
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr ""
 "فشل الاشتراك في تلقيمة TinyTinyRSS! تأكد من أنك أعطيت مسار التلقيمة فعلًا."
 
-#: ../src/fl_sources/ttrss_source.c:290
+#: ../src/fl_sources/ttrss_source.c:300
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr "فشل إلغاء الاشتراك في تلقيمة TinyTinyRSS!"
 
-#: ../src/fl_sources/ttrss_source.c:307
+#: ../src/fl_sources/ttrss_source.c:318
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
@@ -1274,7 +1265,7 @@ msgstr ""
 "لا تدعم إصدارة TinyTinyRSS هذه إزالة التلقيمات. من فضلك رقِّ إلى الإصدارة %s "
 "أو أحدث."
 
-#: ../src/fl_sources/ttrss_source.c:427
+#: ../src/fl_sources/ttrss_source.c:460
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -1282,7 +1273,7 @@ msgstr "Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "تعذر تحليل البيانات المجلوبة من واجهة TinyTinyRSS البرمجية!"
 
-#: ../src/fl_sources/theoldreader_source.c:310
+#: ../src/fl_sources/theoldreader_source.c:311
 msgid "TheOldReader"
 msgstr "قارئ TheOldReader"
 
@@ -1342,25 +1333,207 @@ msgstr "زِ_د حجم النص"
 msgid "_Decrease Text Size"
 msgstr "_قلل حجم النص"
 
-#: ../plugins/headerbar.py:63
+#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
 msgid "Previous Item"
 msgstr "العنصر السابق"
 
-#: ../plugins/headerbar.py:69
+#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
 msgid "Next Item"
 msgstr "العنصر التالي"
 
-#: ../plugins/headerbar.py:77
+#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
 msgid "_Next Unread Item"
 msgstr "العنصر غير المقروء ال_تالي"
 
-#: ../plugins/headerbar.py:85
+#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
 msgid "_Mark Items Read"
 msgstr "_علّم العناصر مقروءة"
 
-#: ../plugins/headerbar.py:104
+#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
 msgid "Search All Feeds..."
 msgstr "ابحث في كل التلقيمات..."
+
+#: ../plugins/libnotify.py:42
+#, fuzzy
+msgid "Feed Updates"
+msgstr "تحديث التلقيمة"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "الملحقات"
+
+#: ../plugins/plugin-installer.py:69
+#, fuzzy
+msgid "Plugin Installer"
+msgstr "الملحقات"
+
+#: ../plugins/plugin-installer.py:83
+#, fuzzy
+msgid "Activate Plugins"
+msgstr "الملحقات"
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_نزّل باستخدام"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "متقدّم"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "إعدادات التنبيه"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
+msgid ""
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "تعذّر إنشاء مجلّد المخبئية \"%s\"!"
+
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "يجريِ حذف الخانة"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
+msgid ""
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
+msgstr ""
+
+#: ../plugins/trayicon.py:112
+#, fuzzy
+msgid "Show / Hide"
+msgstr "اعرض التفاصيل"
+
+#: ../plugins/trayicon.py:113
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:114
+#, fuzzy
+msgid "Quit"
+msgstr "ا_خرج"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1419,6 +1592,144 @@ msgstr "_تصفّح"
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "ا_فعل هذا تلقائيا مع المغلّفات مثل هذا من الآن فصاعداَ."
 
+#: ../glade/liferea_menu.ui.h:1
+msgid "_Subscriptions"
+msgstr "الا_شتراكات"
+
+#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+msgid "Update _All"
+msgstr "حدّث ال_كل"
+
+#: ../glade/liferea_menu.ui.h:3
+msgid "Mark All As _Read"
+msgstr "علّم الكل _مقروء"
+
+#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+msgid "_New Subscription..."
+msgstr "اشتراك _جديد..."
+
+#: ../glade/liferea_menu.ui.h:7
+msgid "New _Source..."
+msgstr "م_صدر جديد..."
+
+#: ../glade/liferea_menu.ui.h:9
+msgid "_Import Feed List..."
+msgstr "ا_ستورد قائمة التلقيمات..."
+
+#: ../glade/liferea_menu.ui.h:10
+msgid "_Export Feed List..."
+msgstr "_صدّر قائمة التلقيمات..."
+
+#: ../glade/liferea_menu.ui.h:11
+msgid "_Quit"
+msgstr "ا_خرج"
+
+#: ../glade/liferea_menu.ui.h:12
+msgid "_Feed"
+msgstr "_تلقيم"
+
+#: ../glade/liferea_menu.ui.h:15
+msgid "Remove _All Items"
+msgstr "احذف _كل العناصر"
+
+#: ../glade/liferea_menu.ui.h:16
+msgid "_Remove"
+msgstr "ا_حذف"
+
+#: ../glade/liferea_menu.ui.h:18
+msgid "_Item"
+msgstr "_عنصر"
+
+#: ../glade/liferea_menu.ui.h:24
+msgid "R_emove"
+msgstr "أ_زل"
+
+#: ../glade/liferea_menu.ui.h:28
+msgid "_View"
+msgstr "_عرض"
+
+#: ../glade/liferea_menu.ui.h:29
+msgid "_Fullscreen"
+msgstr "_ملء الشاشة"
+
+#: ../glade/liferea_menu.ui.h:30
+msgid "Zoom _In"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:31
+msgid "Zoom _Out"
+msgstr ""
+
+#: ../glade/liferea_menu.ui.h:32
+#, fuzzy
+msgid "_Normal size"
+msgstr "المنظور ال_عادي"
+
+#: ../glade/liferea_menu.ui.h:33
+msgid "_Normal View"
+msgstr "المنظور ال_عادي"
+
+#: ../glade/liferea_menu.ui.h:34
+msgid "_Wide View"
+msgstr "منظور _عريض"
+
+#: ../glade/liferea_menu.ui.h:35
+msgid "_Reduced Feed List"
+msgstr "_ضُم قائمة التلقيمات"
+
+#: ../glade/liferea_menu.ui.h:36
+msgid "_Tools"
+msgstr "أ_دوات"
+
+#: ../glade/liferea_menu.ui.h:37
+msgid "_Update Monitor"
+msgstr "_مراقب التحديثات"
+
+#: ../glade/liferea_menu.ui.h:38
+msgid "_Preferences"
+msgstr "ال_تفضيلات"
+
+#: ../glade/liferea_menu.ui.h:39
+msgid "S_earch"
+msgstr "_بحث"
+
+#: ../glade/liferea_menu.ui.h:41
+msgid "_Help"
+msgstr "_مساعدة"
+
+#: ../glade/liferea_menu.ui.h:42
+msgid "_Contents"
+msgstr "الم_حتويات"
+
+#: ../glade/liferea_menu.ui.h:43
+msgid "_Quick Reference"
+msgstr "مرجع _سريع"
+
+#: ../glade/liferea_menu.ui.h:44
+msgid "_FAQ"
+msgstr "أ_سئلة شائعة"
+
+#: ../glade/liferea_menu.ui.h:45
+msgid "_About"
+msgstr "_عن"
+
+#: ../glade/liferea_toolbar.ui.h:2
+msgid "Adds a subscription to the feed list."
+msgstr "أضِف اشتراك إلى قائمة التلقيمات."
+
+#: ../glade/liferea_toolbar.ui.h:4
+msgid ""
+"Marks all items of the selected feed list node / in the item list as read."
+msgstr "علّم كل عناصر الاشتراك المحدد مقروءة."
+
+#: ../glade/liferea_toolbar.ui.h:9
+msgid "Updates all subscriptions."
+msgstr "حدّث كل الاشتراكات."
+
+#: ../glade/liferea_toolbar.ui.h:11
+msgid "Show the search dialog."
+msgstr "اعرض حوار البحث."
+
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
 msgstr ""
@@ -1427,11 +1738,7 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4
-msgid "page 3"
-msgstr ""
-
-#: ../glade/mainwindow.ui.h:5 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:23
 msgid "Headlines"
 msgstr "رؤوس العناوين"
 
@@ -1641,8 +1948,8 @@ msgid "Open links in Liferea's _window."
 msgstr "افتح الوصلات في _نافذة لايفريا."
 
 #: ../glade/prefs.ui.h:26
-msgid "_Disable Javascript."
-msgstr "_عطّل جافاسكريبت."
+msgid "_Never run external Javascript."
+msgstr ""
 
 #: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
@@ -1745,31 +2052,57 @@ msgid "Privacy Settings"
 msgstr "إعدادات عرض المجلّد"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked"
+msgid "Tell sites that I do _not want to be tracked."
 msgstr ""
 
 #: ../glade/prefs.ui.h:53
-msgid "Privacy"
+msgid "_Intelligent Tracking Prevention. "
 msgstr ""
 
 #: ../glade/prefs.ui.h:54
+msgid ""
+"This enables the WebKit feature described <a href=\"https://webkit.org/"
+"tracking-prevention/\">here</a>."
+msgstr ""
+
+#: ../glade/prefs.ui.h:55
+msgid ""
+"Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
+"higher."
+msgstr ""
+
+#: ../glade/prefs.ui.h:56
+msgid "Use _Reader mode."
+msgstr ""
+
+#: ../glade/prefs.ui.h:57
+msgid ""
+"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
+"a> all non-content elements (like scripts, fonts, tracking)"
+msgstr ""
+
+#: ../glade/prefs.ui.h:58
+msgid "Privacy"
+msgstr ""
+
+#: ../glade/prefs.ui.h:59
 msgid "Downloading Enclosures"
 msgstr "تنزيل المغلّفات"
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:60
 msgid "_Download using"
 msgstr "_نزّل باستخدام"
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:63
 msgid "Opening Enclosures"
 msgstr "فتح المغلّفات"
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:64
 msgid "Enclosures"
 msgstr "المغلّفات"
 
@@ -1871,10 +2204,6 @@ msgstr "_علّم العناصر المنزّلة مقروءة."
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr ""
-
-#: ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "متقدّم"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
@@ -2014,6 +2343,15 @@ msgstr "الطلبات المنتظرة"
 msgid "_Downloading Now"
 msgstr "يُنزّل الآن"
 
+#~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
+#~ msgstr "خطأ XML أثناء قراءة التلقيمة! لا يمكن تحميل التلقيمة \"%s\"!"
+
+#~ msgid "Combined View"
+#~ msgstr "المنظور المركّب"
+
+#~ msgid "_Disable Javascript."
+#~ msgstr "_عطّل جافاسكريبت."
+
 #~ msgid "GUI"
 #~ msgstr "الواجهة"
 
@@ -2024,50 +2362,17 @@ msgstr "يُنزّل الآن"
 #~ msgid "Updating favicon for \"%s\""
 #~ msgstr "يجري تحديث أيقونة \"%s\""
 
-#~ msgid "_Subscriptions"
-#~ msgstr "الا_شتراكات"
-
-#~ msgid "Update _All"
-#~ msgstr "حدّث ال_كل"
-
-#~ msgid "Updates all subscriptions."
-#~ msgstr "حدّث كل الاشتراكات."
-
-#~ msgid "Mark All As _Read"
-#~ msgstr "علّم الكل _مقروء"
-
 #~ msgid "Marks read every item of every subscription."
 #~ msgstr "علّم كل عنصر في كل اشتراك مقروء."
-
-#~ msgid "_Import Feed List..."
-#~ msgstr "ا_ستورد قائمة التلقيمات..."
 
 #~ msgid "Imports an OPML feed list."
 #~ msgstr "استورد قائمة تلقيمات OPML."
 
-#~ msgid "_Export Feed List..."
-#~ msgstr "_صدّر قائمة التلقيمات..."
-
 #~ msgid "Exports the feed list as OPML."
 #~ msgstr "يصدّر قائمة التلقيمات كـ OPML."
 
-#~ msgid "_Quit"
-#~ msgstr "ا_خرج"
-
-#~ msgid "_Feed"
-#~ msgstr "_تلقيم"
-
-#~ msgid "Remove _All Items"
-#~ msgstr "احذف _كل العناصر"
-
 #~ msgid "Removes all items of the currently selected feed."
 #~ msgstr "يحذف كل عناصر التلقيمات المُحددة حالياً."
-
-#~ msgid "_Item"
-#~ msgstr "_عنصر"
-
-#~ msgid "_View"
-#~ msgstr "_عرض"
 
 #~ msgid "Increases the text size of the item view."
 #~ msgstr "يزيد حجم النص عند عرض العنصر."
@@ -2075,62 +2380,26 @@ msgstr "يُنزّل الآن"
 #~ msgid "Decreases the text size of the item view."
 #~ msgstr "يقلل حجم النص عند عرض العنصر."
 
-#~ msgid "_Tools"
-#~ msgstr "أ_دوات"
-
-#~ msgid "_Update Monitor"
-#~ msgstr "_مراقب التحديثات"
-
 #~ msgid "Show a list of all feeds currently in the update queue"
 #~ msgstr "اعرض قائمة بكل التلقيمات الموجودة حاليا في طابور التحديث"
-
-#~ msgid "_Preferences"
-#~ msgstr "ال_تفضيلات"
 
 #~ msgid "Edit Preferences."
 #~ msgstr "حرّر التفضيلات."
 
-#~ msgid "S_earch"
-#~ msgstr "_بحث"
-
-#~ msgid "Show the search dialog."
-#~ msgstr "اعرض حوار البحث."
-
-#~ msgid "_Help"
-#~ msgstr "_مساعدة"
-
-#~ msgid "_Contents"
-#~ msgstr "الم_حتويات"
-
 #~ msgid "View help for this application."
 #~ msgstr "اعرض مساعدة هذا التطبيق."
-
-#~ msgid "_Quick Reference"
-#~ msgstr "مرجع _سريع"
 
 #~ msgid "View a list of all Liferea shortcuts."
 #~ msgstr "اعرض قائمة بكل اختصارات لايفريا."
 
-#~ msgid "_FAQ"
-#~ msgstr "أ_سئلة شائعة"
-
 #~ msgid "View the FAQ for this application."
 #~ msgstr "اعرض الأسئلة الشائعة عن التطبيق."
-
-#~ msgid "_About"
-#~ msgstr "_عن"
 
 #~ msgid "Shows an about dialog."
 #~ msgstr "اعرض حوار عن."
 
-#~ msgid "_Normal View"
-#~ msgstr "المنظور ال_عادي"
-
 #~ msgid "Set view mode to mail client mode."
 #~ msgstr "اضبط نمط العرض كنمط عميل البريد."
-
-#~ msgid "_Wide View"
-#~ msgstr "منظور _عريض"
 
 #~ msgid "Set view mode to use three vertical panes."
 #~ msgstr "اضبط نمط العرض ليستخدم ثلاث ألواح رأسيّة."
@@ -2141,17 +2410,8 @@ msgstr "يُنزّل الآن"
 #~ msgid "Set view mode to two pane mode."
 #~ msgstr "اضبط نمط العرض إلى نمط اللوحين."
 
-#~ msgid "_Reduced Feed List"
-#~ msgstr "_ضُم قائمة التلقيمات"
-
 #~ msgid "Hide feeds with no unread items."
 #~ msgstr "أخفِ التلقيمات التي لا تحتوي عناصر غير مقروءة."
-
-#~ msgid "_New Subscription..."
-#~ msgstr "اشتراك _جديد..."
-
-#~ msgid "Adds a subscription to the feed list."
-#~ msgstr "أضِف اشتراك إلى قائمة التلقيمات."
 
 #~ msgid "Adds a folder to the feed list."
 #~ msgstr "أضِف مجلّد إلى قائمة التلقيمات."
@@ -2159,18 +2419,11 @@ msgstr "يُنزّل الآن"
 #~ msgid "Adds a new search folder to the feed list."
 #~ msgstr "أضِف مجلّد بحث جديد إلى قائمة التلقيمات."
 
-#~ msgid "New _Source..."
-#~ msgstr "م_صدر جديد..."
-
 #~ msgid "Adds a new feed list source."
 #~ msgstr "أضِف مصدر قائمة تلقيمات جديد."
 
 #~ msgid "Adds a new news bin."
 #~ msgstr "أضِف سلّة أخبار جديدة."
-
-#~ msgid ""
-#~ "Marks all items of the selected feed list node / in the item list as read."
-#~ msgstr "علّم كل عناصر الاشتراك المحدد مقروءة."
 
 #~ msgid ""
 #~ "Updates the selected subscription or all subscriptions of the selected "
@@ -2180,9 +2433,6 @@ msgstr "يُنزّل الآن"
 #~ msgid "Opens the property dialog for the selected subscription."
 #~ msgstr "يفتح حوار خصائص الاشتراك المحدد."
 
-#~ msgid "_Remove"
-#~ msgstr "ا_حذف"
-
 #~ msgid "Removes the selected subscription."
 #~ msgstr "يحذف الاشتراك المحدد."
 
@@ -2191,9 +2441,6 @@ msgstr "يُنزّل الآن"
 
 #~ msgid "Toggles the flag status of the selected item."
 #~ msgstr "تبدّل حالة شارة العنصر المحدد."
-
-#~ msgid "R_emove"
-#~ msgstr "أ_زل"
 
 #~ msgid "Removes the selected item."
 #~ msgstr "يحذف العنصر المحدد."
@@ -2206,9 +2453,6 @@ msgstr "يُنزّل الآن"
 
 #~ msgid "Launches the item's link in the configured external browser."
 #~ msgstr "يفتح وصله العنصر في المتصفّح الخارجي المعدّ."
-
-#~ msgid "_Fullscreen"
-#~ msgstr "_ملء الشاشة"
 
 #~ msgid "Browse at full screen"
 #~ msgstr "تصفح مع ملء الشاشة"
@@ -2246,9 +2490,6 @@ msgstr "يُنزّل الآن"
 
 #~ msgid "View Headlines"
 #~ msgstr "اعرض العناوين الرئيسية"
-
-#~ msgid "Plugins"
-#~ msgstr "الملحقات"
 
 #~ msgid "Feed Name"
 #~ msgstr "اسم التلقيمة"
@@ -2479,20 +2720,11 @@ msgstr "يُنزّل الآن"
 #~ msgstr[4] "يوجد <b>%2$d</b> تحديثا في <b>%1$s</b>"
 #~ msgstr[5] "يوجد <b>%2$d</b> تحديث في <b>%1$s</b>"
 
-#~ msgid "Feed Update"
-#~ msgstr "تحديث التلقيمة"
-
-#~ msgid "Show details"
-#~ msgstr "اعرض التفاصيل"
-
 #~ msgid "_Enforce popup notification for this subscription."
 #~ msgstr "ا_فرض إشعار قافز لهذا الاشتراك."
 
 #~ msgid "_Never do popup notification for this subscription."
 #~ msgstr "_لا تعرض إشعار قافز لهذا الاشتراك، أبدا."
-
-#~ msgid "Notification Settings"
-#~ msgstr "إعدادات التنبيه"
 
 #~ msgid "Show a _popup window with new headlines."
 #~ msgstr "اعرض نافذة _منبثقة مع العناوين الرئيسية الجديدة."
