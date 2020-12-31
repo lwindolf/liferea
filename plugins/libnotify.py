@@ -19,18 +19,27 @@
 # the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 #
-
+import gettext
 import gi
 gi.require_version('Notify', '0.7')
 from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Notify
 import time
+
+_ = lambda x: x
+try:
+    t = gettext.translation("liferea")
+except FileNotFoundError:
+    pass
+else:
+    _ = t.gettext
+
 
 class LibnotifyPlugin (GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = 'LibnotifyPlugin'
 
     object = GObject.property (type=GObject.Object)
     shell = GObject.property (type=Liferea.Shell)
-    notification_title = "Feed Updates"
+    notification_title = _("Feed Updates")
     notification_body = ""
     notification_icon = "liferea"
 
