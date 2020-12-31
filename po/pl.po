@@ -1389,9 +1389,8 @@ msgid "Search All Feeds..."
 msgstr "Wyszukaj..."
 
 #: ../plugins/libnotify.py:42
-#, fuzzy
 msgid "Feed Updates"
-msgstr "Uaktualnianie"
+msgstr "Aktualizacje kanału"
 
 #: ../plugins/plugin-installer.py:54
 msgid "Plugins"
@@ -1447,101 +1446,100 @@ msgstr "Odinsta_uj"
 msgid ""
 "Missing package manager '%s'. Cannot check nor install necessary "
 "dependencies!"
-msgstr ""
+msgstr "Brakuje managera pakietów '%s'. Nie mogę sprawdzić ani zainstalować brakujących zależności"
 
 #: ../plugins/plugin-installer.py:261
 #, python-format
 msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr ""
+msgstr "Brakuje pakietu '%s'. Czy chcesz go zainstalować? (Uruchomi '%s')"
 
 #: ../plugins/plugin-installer.py:268
 #, python-format
 msgid ""
 "Package installation failed (%s)! Check console output for further problem "
 "details!"
-msgstr ""
+msgstr "Instlacja pakietu (%s) nie powiodła się! Sprawdź wyjście konsoli pod kątem dalszych problemów"
 
 #: ../plugins/plugin-installer.py:271
 #, python-format
 msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
+msgstr "Nie udało się sprawdzić zależności wtyczki (%s)!"
 
 #: ../plugins/plugin-installer.py:285
 #, python-format
 msgid "Copying %s to %s"
-msgstr ""
+msgstr "Kopiuję z %s do %s"
 
 #: ../plugins/plugin-installer.py:288
 #, python-format
 msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
+msgstr "Nie udało się skopiować katalogu wtyczki (%s)!"
 
 #: ../plugins/plugin-installer.py:297
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
+msgstr "Nie udało się skopiować pliku .py wtyczki (%s)!"
 
 #: ../plugins/plugin-installer.py:307
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
+msgstr "Nie udało się skopiować pliku .plugin wtyczki (%s)!"
 
 #: ../plugins/plugin-installer.py:318
-#, fuzzy, python-format
 msgid "Creating schema directory %s"
-msgstr "Nie można utworzyć katalogu pamięci podręcznej „%s”!"
+msgstr "Tworzę katalog schematu %s"
 
 #: ../plugins/plugin-installer.py:320
 #, python-format
 msgid "Installing schema %s"
-msgstr ""
+msgstr "Instaluję plik schematu %s"
 
 #: ../plugins/plugin-installer.py:324
 msgid "Compiling schemas..."
-msgstr ""
+msgstr "Kompiluje schemat"
 
 #: ../plugins/plugin-installer.py:329
 #, python-format
 msgid "Failed to install schema files (%s)!"
-msgstr ""
+msgstr "Nie udało się zainstalować pliki schematu (%s)!"
 
 #: ../plugins/plugin-installer.py:339
 #, python-format
 msgid "Failed to enable plugin (%s)!"
-msgstr ""
+msgstr "Nie udało się włączyć wtyczki (%s)!"
 
 #: ../plugins/plugin-installer.py:345
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr ""
+msgstr "Wtyczka '%s' jest teraz zainstalowana. Upewnij się, aby ponownie uruchomić Liferea!"
 
 #: ../plugins/plugin-installer.py:359
 #, python-format
 msgid "Failed to disable plugin (%s)!"
-msgstr ""
+msgstr "Nie udało się wyłączyć wtyczki (%s)!"
 
 # WTF?
 #: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
 #, python-format
 msgid "Deleting '%s'"
-msgstr ""
+msgstr "Usuwam '%s'"
 
 #: ../plugins/plugin-installer.py:369
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
+msgstr "Nie udało się usunąć katalogu '%s' (%s)!"
 
 #: ../plugins/plugin-installer.py:379
 msgid "Failed to remove .py file!"
-msgstr ""
+msgstr "Nie udało się usunąć pliku .py!"
 
 #: ../plugins/plugin-installer.py:389
 msgid "Failed to remove .plugin file!"
-msgstr ""
+msgstr "Nie udało się usunąć pliku .plugin!"
 
 #: ../plugins/plugin-installer.py:398
 msgid "Sorry! Plugin removal failed!."
-msgstr ""
+msgstr "Przepraszam! Usunięcie wtyczni nie powiodło się!"
 
 #: ../plugins/plugin-installer.py:400
 msgid ""
@@ -1550,16 +1548,15 @@ msgstr "Wtyczka została usunięta. Proszę zrestartować Liferea"
 
 #: ../plugins/trayicon.py:112
 msgid "Show / Hide"
-msgstr ""
+msgstr "Pokaż / ukryj"
 
 #: ../plugins/trayicon.py:113
 msgid "Minimize to tray on close"
-msgstr ""
+msgstr "Po zamknięciu zminimalizuj do obszaru powiadamiania"
 
 #: ../plugins/trayicon.py:114
-#, fuzzy
 msgid "Quit"
-msgstr "Za_kończ"
+msgstr "Zakończ"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -2080,7 +2077,6 @@ msgid "Privacy Settings"
 msgstr "Ustawienia prywatności"
 
 #: ../glade/prefs.ui.h:52
-#, fuzzy
 msgid "Tell sites that I do _not want to be tracked."
 msgstr "Poinformuj witryny, że _nie chcę być śledzony"
 
