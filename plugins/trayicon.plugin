@@ -11,6 +11,7 @@ Description=Display a small system tray icon to hide/unhide Liferea.
 Description[de]=Zeigt ein kleines Tray Icon an mit dem Liferea schnell angezeigt und wieder versteckt werden kann
 Description[it]=Mostra una piccola icona nel vassoio di sistema per visualizzare o nascondere l'applicazione.
 Description[he]=הצג סמל מגש מערכת קטן כדי להסתיר או להציג את Liferea
+Description[pl]=Wyświetl małą ikonę na pasku powiadamiania, aby ukryć/odkryć Liferea.
 Authors=Lars Windolf <lars.windolf@gmx.de>
 Copyright=Copyright © 2013 Lars Windolf
 Website=https://lzone.de/liferea/

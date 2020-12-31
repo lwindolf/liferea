@@ -11,6 +11,7 @@ Description=Display popups informing about new updates.
 Description[de]=Zeigt Popup-Benachrichtigungen an wenn Abonnements aktualisiert werden
 Description[he]=הצג התראות המיידעות על עדכונים חדשים
 Description[it]=Mostra dei popup che informano sui nuovi aggiornamenti.
+Description[pl]=Wyświetl powiadomienie informujące o nowych aktualizacjach.
 Authors=Lars Windolf <lars.windolf@gmx.de>
 Copyright=Copyright © 2013 Lars Windolf
 Website=https://lzone.de/liferea/
