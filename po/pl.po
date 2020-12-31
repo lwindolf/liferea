@@ -9,11 +9,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 1.13.3\n"
+"Project-Id-Version: liferea 1.13.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-15 13:00+0200\n"
-"PO-Revision-Date: 2020-10-15 13:26+0200\n"
+"POT-Creation-Date: 2020-12-27 18:08+0100\n"
+"PO-Revision-Date: 2020-12-27 18:08+0100\n"
 "Last-Translator: Paweł Marciniak <sunwire+translate@gmail.com>\n"
+"Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,6 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : ((n%10>=2 && n%10<=4 && (n"
 "%100<10 || n%100>=20)) ? 1 : 2));\n"
 "X-Generator: Poedit 2.4.1\n"
-"Language-Team: \n"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -402,7 +402,7 @@ msgstr "Eksportuj listę subskrypcji"
 msgid "Export"
 msgstr "Wyeksportuj"
 
-#: ../src/feed.c:327
+#: ../src/feed.c:325
 msgid ""
 "<p>Could not detect the type of this feed! Please check if the source really "
 "points to a resource provided in one of the supported syndication formats!</"
@@ -412,17 +412,17 @@ msgstr ""
 "wskazuje na zasób będący w jednym z obsługiwanych formatów subskrypcji!</"
 "p>Wydruk z parsera XML:<br /><div class='xmlparseroutput'>"
 
-#: ../src/feed.c:354
+#: ../src/feed.c:352
 #, c-format
 msgid "\"%s\" updated..."
 msgstr "Uaktualniono „%s”..."
 
-#: ../src/feed.c:361
+#: ../src/feed.c:359
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "„%s” nie jest dostępne"
 
-#: ../src/feed_parser.c:138
+#: ../src/feed_parser.c:145
 msgid ""
 "The URL you want Liferea to subscribe to points to a webpage and the auto "
 "discovery found no feeds on this page. Maybe this webpage just does not "
@@ -432,24 +432,19 @@ msgstr ""
 "wykryć na niej żadnego kanału subskrypcji. Możliwe, że ta witryna nie "
 "obsługuje automatycznego wykrywania subskrypcji."
 
-#: ../src/feed_parser.c:190
-#, c-format
-msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-msgstr "Błąd XML czytania kanału! Nie można wczytać zawartości kanału „%s”!"
-
-#: ../src/feed_parser.c:195 ../src/feed_parser.c:245
+#: ../src/feed_parser.c:203
 msgid "Empty document!"
 msgstr "Pusty dokument!"
 
-#: ../src/feed_parser.c:207
+#: ../src/feed_parser.c:212
 msgid "Invalid XML!"
 msgstr "Nieprawidłowy XML!"
 
-#: ../src/feed_parser.c:268
+#: ../src/feed_parser.c:266
 msgid "Source points to HTML document."
 msgstr "Adres źródłowy wskazuje na dokument HTML."
 
-#: ../src/feed_parser.c:271
+#: ../src/feed_parser.c:269
 msgid "Could not determine the feed type."
 msgstr "Nie można określić typu subskrypcji."
 
@@ -648,85 +643,85 @@ msgstr "Wystąpił nieznany błąd sieciowy!"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:198
+#: ../src/rule.c:229
 msgid "Item"
 msgstr "Nagłówek"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does contain"
 msgstr "zawiera"
 
-#: ../src/rule.c:198 ../src/rule.c:199 ../src/rule.c:200 ../src/rule.c:205
-#: ../src/rule.c:206 ../src/rule.c:207
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
 msgid "does not contain"
 msgstr "nie zawiera"
 
-#: ../src/rule.c:199
+#: ../src/rule.c:230
 msgid "Item title"
 msgstr "Tytuł nagłówka"
 
-#: ../src/rule.c:200
+#: ../src/rule.c:231
 msgid "Item body"
 msgstr "Treść nagłówka"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "Read status"
 msgstr "Stan przeczytania"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is unread"
 msgstr "nieprzeczytany"
 
-#: ../src/rule.c:201
+#: ../src/rule.c:232
 msgid "is read"
 msgstr "przeczytany"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "Flag status"
 msgstr "Stan wyróżnienia"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is flagged"
 msgstr "wyróżniony"
 
-#: ../src/rule.c:202
+#: ../src/rule.c:233
 msgid "is unflagged"
 msgstr "niewyróżniony"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "included"
 msgstr "dołączony"
 
-#: ../src/rule.c:203
+#: ../src/rule.c:234
 msgid "not included"
 msgstr "nie dołączony"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "Category"
 msgstr "Kategoria"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is set"
 msgstr "ustalona"
 
-#: ../src/rule.c:204
+#: ../src/rule.c:235
 msgid "is not set"
 msgstr "nieustalona"
 
-#: ../src/rule.c:205
+#: ../src/rule.c:236
 msgid "Feed title"
 msgstr "Nazwa kanału"
 
-#: ../src/rule.c:206
+#: ../src/rule.c:237
 msgid "Feed source"
 msgstr "Źródło subskrypcji"
 
-#: ../src/rule.c:207
+#: ../src/rule.c:238
 msgid "Parent folder title"
 msgstr "Tytuł folderu nadrzędnego"
 
@@ -804,11 +799,11 @@ msgstr "Błąd: nie ma takiego pliku „%s”"
 msgid "New Search Folder"
 msgstr "Nowy katalog wyników"
 
-#: ../src/xml.c:410
+#: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Wystąpiło więcej błędów. Komunikat został skrócony!]"
 
-#: ../src/xml.c:578
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Parser XML: nie można przetworzyć dokumentu:\n"
 
@@ -1174,19 +1169,19 @@ msgstr "Zwykły"
 msgid "Wide View"
 msgstr "Szeroki"
 
-#: ../src/ui/preferences_dialog.c:472
+#: ../src/ui/preferences_dialog.c:478
 msgid "Default Browser"
 msgstr "Domyślna przeglądarka"
 
-#: ../src/ui/preferences_dialog.c:474
+#: ../src/ui/preferences_dialog.c:480
 msgid "Manual"
 msgstr "Własne polecenie"
 
-#: ../src/ui/preferences_dialog.c:730
+#: ../src/ui/preferences_dialog.c:740
 msgid "Type"
 msgstr "Typ"
 
-#: ../src/ui/preferences_dialog.c:733
+#: ../src/ui/preferences_dialog.c:743
 msgid "Program"
 msgstr "Program"
 
@@ -1392,6 +1387,161 @@ msgstr "_Oznacz jako przeczytane"
 #: ../glade/liferea_toolbar.ui.h:10
 msgid "Search All Feeds..."
 msgstr "Wyszukaj..."
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "Wtyczki"
+
+#: ../plugins/plugin-installer.py:69
+msgid "Plugin Installer"
+msgstr "Instalator wtyczek"
+
+#: ../plugins/plugin-installer.py:83
+msgid "Activate Plugins"
+msgstr "Aktywuj wtyczki"
+
+#: ../plugins/plugin-installer.py:84
+msgid "Download Plugins"
+msgstr "Pobierz wtyczki"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr "Wszystkie"
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "Zaawansowane"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr "Menu"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Notifications"
+msgstr "Powiadomienia"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr "Filtruj po kategorii"
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr "_Instaluj"
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr "Odinsta_uj"
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
+msgid ""
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "Nie można utworzyć katalogu pamięci podręcznej „%s”!"
+
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+# WTF?
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, python-format
+msgid "Deleting '%s'"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
+msgid ""
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
+msgstr "Wtyczka została usunięta. Proszę zrestartować Liferea"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1912,7 +2062,8 @@ msgid "Privacy Settings"
 msgstr "Ustawienia prywatności"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked"
+#, fuzzy
+msgid "Tell sites that I do _not want to be tracked."
 msgstr "Poinformuj witryny, że _nie chcę być śledzony"
 
 #: ../glade/prefs.ui.h:53
@@ -1936,27 +2087,37 @@ msgstr ""
 "wersji 2.30 lub nowszej."
 
 #: ../glade/prefs.ui.h:56
+msgid "Use _Reader mode."
+msgstr ""
+
+#: ../glade/prefs.ui.h:57
+msgid ""
+"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
+"a> all non-content elements (like scripts, fonts, tracking)"
+msgstr ""
+
+#: ../glade/prefs.ui.h:58
 msgid "Privacy"
 msgstr "Prywatność"
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:59
 msgid "Downloading Enclosures"
 msgstr "Pobieranie"
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:60
 msgid "_Download using"
 msgstr "Po_bieranie za pomocą programu:"
 
-#: ../glade/prefs.ui.h:60
+#: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
 msgstr "polecenie niestandardowe %s"
 
-#: ../glade/prefs.ui.h:61
+#: ../glade/prefs.ui.h:63
 msgid "Opening Enclosures"
 msgstr "Otwieranie"
 
-#: ../glade/prefs.ui.h:62
+#: ../glade/prefs.ui.h:64
 msgid "Enclosures"
 msgstr "Załączniki"
 
@@ -2058,10 +2219,6 @@ msgstr "O_znaczanie pobranych nagłówków jako przeczytane."
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr "Wyodrębnij pełną treść z HTML5 i Google AMP"
-
-#: ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "Zaawansowane"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
@@ -2199,3 +2356,7 @@ msgstr "Oczekujące żądania"
 #: ../glade/update_monitor.ui.h:4
 msgid "_Downloading Now"
 msgstr "Pobieram"
+
+#, c-format
+#~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
+#~ msgstr "Błąd XML czytania kanału! Nie można wczytać zawartości kanału „%s”!"

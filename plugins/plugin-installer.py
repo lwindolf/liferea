@@ -25,6 +25,16 @@ gi.require_version('Gtk', '3.0')
 
 from gi.repository import GObject, Liferea, Gtk, Gio, PeasGtk
 
+import gettext
+
+_ = lambda x: x
+try:
+    t = gettext.translation("liferea")
+except FileNotFoundError:
+    pass
+else:
+    _ = t.gettext
+
 class AppActivatable(GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = "PluginBrowserAppActivatable"
 
@@ -41,7 +51,7 @@ class AppActivatable(GObject.Object, Liferea.ShellActivatable):
         self._app.add_action (action)
 
         toolsmenu = self.shell.get_property("builder").get_object ("tools_menu")
-        toolsmenu.append ('Plugins', 'app.InstallPlugins')
+        toolsmenu.append (_('Plugins'), 'app.InstallPlugins')
 
     def do_deactivate(self):
         self._browser = None
@@ -56,7 +66,7 @@ class PluginBrowser(Gtk.Window):
     SCHEMA_ID = "net.sf.liferea.plugins"
 
     def __init__(self):
-        Gtk.Window.__init__(self, title="Plugin Installer")
+        Gtk.Window.__init__(self, title=_("Plugin Installer"))
 
         # FIXME: using safe XDG paths would be better
         self.target_dir = os.path.expanduser("~/.local/share/liferea/plugins/")
@@ -70,8 +80,8 @@ class PluginBrowser(Gtk.Window):
         self._grid.set_row_homogeneous(True)
 
         self._notebook = Gtk.Notebook()
-        self._notebook.append_page(PeasGtk.PluginManager(None), Gtk.Label("Activate Plugins"))
-        self._notebook.append_page(self._grid, Gtk.Label("Download Plugins"))
+        self._notebook.append_page(PeasGtk.PluginManager(None), Gtk.Label(_("Activate Plugins")))
+        self._notebook.append_page(self._grid, Gtk.Label(_("Download Plugins")))
 
         self.add(self._notebook)
 
@@ -89,7 +99,7 @@ class PluginBrowser(Gtk.Window):
 
                 self._liststore.append((installed, ref[name]['icon'], name, ref[name]['category'], ('<b>%s</b>\n%s') % (name, ref[name]['description'])))
             except:
-                print("Bad fields for plugin entry %s" % name)
+                print(_("Bad fields for plugin entry %s") % name)
 
         self.current_filter_category = None
         self.category_filter = self._liststore.filter_new()
@@ -112,7 +122,7 @@ class PluginBrowser(Gtk.Window):
             column.set_sort_column_id(i)
 
         self._categories = Gtk.ListStore(str)
-        for category in ["All", "Advanced", "Menu", "Notifications"]:
+        for category in [_("All"), _("Advanced"), _("Menu"), _("Notifications")]:
             self._categories.append([category])
 
         self._catcombo = Gtk.ComboBox.new_with_model(self._categories)
@@ -120,18 +130,18 @@ class PluginBrowser(Gtk.Window):
         self._catcombo.pack_start(renderer_text, True)
         self._catcombo.add_attribute(renderer_text, "text", 0)
         self._catcombo.connect("changed", self.on_catcombo_changed)
-        self._catlabel = Gtk.Label("Filter by category")
+        self._catlabel = Gtk.Label(_("Filter by category"))
         self._catcombo.set_active(0)
 
         # Setting up the layout, putting the treeview in a scrollwindow, and the buttons in a row
         self.scrollable_treelist = Gtk.ScrolledWindow()
         self.scrollable_treelist.set_vexpand(True)
 
-        self._installButton = Gtk.Button.new_with_mnemonic("_Install")
+        self._installButton = Gtk.Button.new_with_mnemonic(_("_Install"))
         self._installButton.connect("clicked", self.install)
         self._installButton.set_sensitive(False)
 
-        self._uninstallButton = Gtk.Button.new_with_mnemonic("_Uninstall")
+        self._uninstallButton = Gtk.Button.new_with_mnemonic(_("_Uninstall"))
         self._uninstallButton.connect("clicked", self.uninstall)
         self._uninstallButton.set_sensitive(False)
 
@@ -161,10 +171,9 @@ class PluginBrowser(Gtk.Window):
             return model[iter][3] == self.current_filter_category
 
     def on_catcombo_changed(self, combo):
-        tree_iter = combo.get_active_iter()
-        if tree_iter != None:
-            model = combo.get_model()
-            self.current_filter_category = model[tree_iter][0]
+        active_row_id = combo.get_active()
+        if active_row_id != -1:
+            self.current_filter_category = ("All", "Advanced", "Menu", "Notifications")[active_row_id]
         else:
             self.current_filter_category = None
         self.category_filter.refilter()
@@ -233,7 +242,7 @@ class PluginBrowser(Gtk.Window):
                 pkg_mgr_missing = 0
 
             if pkg_mgr_missing != 0:
-                self.show_message("Missing package manager '%s'. Cannot check nor install necessary dependencies!" % plugin_info['deps']['pkgmgr']['name'], True)
+                self.show_message(_("Missing package manager '%s'. Cannot check nor install necessary dependencies!") % plugin_info['deps']['pkgmgr']['name'], True)
                 return False
 
             try:
@@ -249,17 +258,17 @@ class PluginBrowser(Gtk.Window):
                     if p.returncode != 0:
                         cmd = plugin_info['deps']['pkgmgr']['installPkg'][:]
                         cmd.append(pkg)
-                        response = self.show_message("Missing package '%s'. Do you want to install it? (Will run '%s')" % (pkg, ' '.join(cmd)), False, Gtk.ButtonsType.OK_CANCEL)
+                        response = self.show_message(_("Missing package '%s'. Do you want to install it? (Will run '%s')") % (pkg, ' '.join(cmd)), False, Gtk.ButtonsType.OK_CANCEL)
                         if Gtk.ResponseType.OK != response:
                             return False
 
                         p = subprocess.Popen(cmd)
                         p.wait()
                         if p.returncode != 0:
-                            self.show_message("Package installation failed (%s)! Check console output for further problem details!" % sys.exc_info()[0], True)
+                            self.show_message(_("Package installation failed (%s)! Check console output for further problem details!") % sys.exc_info()[0], True)
                             return False
             except:
-                self.show_message("Failed to check plugin dependencies (%s)!" % sys.exc_info()[0], True)
+                self.show_message(_("Failed to check plugin dependencies (%s)!") % sys.exc_info()[0], True)
                 return False
 
         # Git checkout
@@ -273,10 +282,10 @@ class PluginBrowser(Gtk.Window):
         try:
             src_dir = '%s/%s' % (DIR_NAME, plugin_info['module'])
             if os.path.isdir(src_dir):
-                print("Copying %s to %s" % (src_dir, self.target_dir))
+                print(_("Copying %s to %s") % (src_dir, self.target_dir))
                 shutil.copytree(src_dir, "%s/%s" % (self.target_dir, plugin_info['module']))
         except:
-            self.show_message("Failed to copy plugin directory (%s)!" % sys.exc_info()[0], True)
+            self.show_message(_("Failed to copy plugin directory (%s)!") % sys.exc_info()[0], True)
             return False
 
         # FIXME: support other plugin languages besides Python
@@ -285,7 +294,7 @@ class PluginBrowser(Gtk.Window):
             if os.path.isfile(src_file):
                 shutil.copy(src_file, self.target_dir)
         except:
-            self.show_message("Failed to copy plugin .py file (%s)!" % sys.exc_info()[0], True)
+            self.show_message(_("Failed to copy plugin .py file (%s)!") % sys.exc_info()[0], True)
             return False
 
         # Copy .plugin file if it is not inside the plugin source itself
@@ -295,7 +304,7 @@ class PluginBrowser(Gtk.Window):
             if not os.path.isfile(src_file):
                 shutil.copy('%s/%s.plugin' % (DIR_NAME, plugin_info['module']), self.target_dir)
         except:
-            self.show_message("Failed to copy .plugin file (%s)!" % sys.exc_info()[0], True)
+            self.show_message(_("Failed to copy .plugin file (%s)!") % sys.exc_info()[0], True)
             return False
 
         # Optional: find and install schemata
@@ -306,18 +315,18 @@ class PluginBrowser(Gtk.Window):
             for schema_file in glob.iglob('%s/**/*.gschema.xml' % (DIR_NAME), recursive = True):
                 schema_found = True
                 if not os.path.isdir(self.schema_dir):
-                    print('Creating schema directory %s' % self.schema_dir)
+                    print(_('Creating schema directory %s') % self.schema_dir)
                     os.makedirs(self.schema_dir)
-                print('Installing schema %s' % schema_file)
+                print(_('Installing schema %s') % schema_file)
                 shutil.copy(schema_file,self.schema_dir)
 
             if schema_found:
-                print('Compiling schemas...')
+                print(_('Compiling schemas...'))
                 p = subprocess.Popen(["glib-compile-schemas", self.schema_dir])
                 p.wait()
 	        	# FIXME: error checking
         except:
-            self.show_message("Failed to install schema files (%s)!" % sys.exc_info()[0], True)
+            self.show_message(_("Failed to install schema files (%s)!") % sys.exc_info()[0], True)
             return False
 
         # Enable plugin (for next restart)
@@ -327,13 +336,13 @@ class PluginBrowser(Gtk.Window):
             current_plugins.append(plugin_info['module'])
             settings.set_strv('active-plugins', current_plugins)
         except:
-            self.show_message("Failed to enable plugin (%s)!" % sys.exc_info()[0], True)
+            self.show_message(_("Failed to enable plugin (%s)!") % sys.exc_info()[0], True)
             return False
 
         # Cleanup
         shutil.rmtree(DIR_NAME)
 
-        self.show_message("Plugin '%s' is now installed. Ensure to restart Liferea!" % plugin_info['module'])
+        self.show_message(_("Plugin '%s' is now installed. Ensure to restart Liferea!") % plugin_info['module'])
         return True
 
     def uninstall_plugin(self, plugin_info):
@@ -347,17 +356,17 @@ class PluginBrowser(Gtk.Window):
             current_plugins.remove(plugin_info['module'])
             settings.set_strv('active-plugins', current_plugins)
         except:
-            print("Failed to disable plugin (%s)!" % sys.exc_info()[0])
+            print(_("Failed to disable plugin (%s)!") % sys.exc_info()[0])
             error = True
 
         # Drop plugin dir (for directory plugins)
         src_dir = '%s/%s' % (self.target_dir, plugin_info['module'])
         try:
             if os.path.isdir(src_dir):
-                print("Deleting '%s'" % src_dir)
+                print(_("Deleting '%s'") % src_dir)
                 shutil.rmtree(src_dir)
         except:
-            print("Failed to remove directory '%s' (%s)!" % (src_dir, sys.exc_info()[0]))
+            print(_("Failed to remove directory '%s' (%s)!") % (src_dir, sys.exc_info()[0]))
             error = True
 
         # Drop plugin source file (for single file plugins)
@@ -367,17 +376,17 @@ class PluginBrowser(Gtk.Window):
                 print("Deleting '%s'" % src_file)
                 os.remove(src_file)
         except:
-            print("Failed to remove .py file!")
+            print(_("Failed to remove .py file!"))
             error = True
 
         # Drop plugin file
         src_file = '%s/%s/%s.plugin' % (self.target_dir, plugin_info['module'], plugin_info['module'])
         try:
             if os.path.isfile(src_file):
-                print("Deleting '%s'" % src_file)
+                print(_("Deleting '%s'") % src_file)
                 os.remove(src_file)
         except:
-            print("Failed to remove .plugin file!")
+            print(_("Failed to remove .plugin file!"))
             error = True
 
         # FIXME: Drop plugin schema files
@@ -386,6 +395,6 @@ class PluginBrowser(Gtk.Window):
         # arbitrary names...
 
         if error:
-            self.show_message("Sorry! Plugin removal failed!.", True)
+            self.show_message(_("Sorry! Plugin removal failed!."), True)
         else:
-            self.show_message("Plugin was removed. Please restart Liferea once for it to take full effect!.", False)
+            self.show_message(_("Plugin was removed. Please restart Liferea once for it to take full effect!."), False)
