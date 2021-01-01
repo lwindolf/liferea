@@ -721,6 +721,9 @@ db_init (void)
 	db_new_statement ("searchFolderCountStmt",
 	                  "SELECT count(item_id) FROM search_folder_items WHERE node_id = ?;");
 
+	db_new_statement ("searchFolderUnreadCountStmt",
+	                  "SELECT count(items.item_id) FROM search_folder_items JOIN items ON search_folder_items.item_id = items.item_id WHERE search_folder_items.node_id = ? and items.read = 0;");
+
 	db_new_statement ("nodeIdListStmt",
 	                  "SELECT node_id FROM node;");
 
@@ -1401,6 +1404,31 @@ db_search_folder_get_item_count (const gchar *id)
 		count = sqlite3_column_int (stmt, 0);
 	else
 		g_warning("item read counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
+
+	sqlite3_finalize (stmt);
+
+	debug_end_measurement (DEBUG_DB, "counting unread items");
+
+	return count;
+}
+
+guint
+db_search_folder_get_unread_count (const gchar *id)
+{
+	sqlite3_stmt	*stmt;
+	gint		res;
+	guint		count = 0;
+
+	debug_start_measurement (DEBUG_DB);
+
+	stmt = db_get_statement ("searchFolderUnreadCountStmt");
+	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
+	res = sqlite3_step (stmt);
+
+	if (SQLITE_ROW == res)
+		count = sqlite3_column_int (stmt, 0);
+	else
+		g_warning("item unread counting failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 
 	sqlite3_finalize (stmt);
 

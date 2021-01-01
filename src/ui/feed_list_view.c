@@ -825,8 +825,8 @@ feed_list_view_update_node (const gchar *nodeId)
 			break;
 	}
 
-	/* Extra message for search folder rebuilds */
 	if (IS_VFOLDER (node) && node->data) {
+		/* Extra message for search folder rebuilds */
 		if (((vfolderPtr)node->data)->reloading) {
 			gchar *tmp = label;
 			label = g_strdup_printf (_("%s\n<i>Rebuilding</i>"), label);

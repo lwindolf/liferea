@@ -1,3 +1,15 @@
+To be released
+
+	Version 1.13.5
+
+	* #907: Add new search folder property that allows hiding read items
+	  (Lars Windolf, suggested by Jeff Fortin)
+
+	* Now always shows the unread count of a search folder (instead of the
+	  item count) in the feed list
+	  (Lars Windolf)
+
+
 2020-12-24   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.4

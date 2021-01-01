@@ -1,7 +1,7 @@
 /*
  * @file itemlist.c  item list handling
  *
- * Copyright (C) 2004-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -197,13 +197,18 @@ itemlist_check_for_deferred_action (void)
 	}
 }
 
-// FIXME: is this an item set method?
+// FIXME: is this an itemset method?
 static gboolean
 itemlist_filter_check_item (itemPtr item)
 {
-	/* use search folder rule list in case of a search folder */
 	if (itemlist->priv->currentNode && IS_VFOLDER (itemlist->priv->currentNode)) {
 		vfolderPtr vfolder = (vfolderPtr)itemlist->priv->currentNode->data;
+
+		/* Use hide read for search folders */
+		if (vfolder->unreadOnly && item->readStatus)
+			return FALSE;
+
+		/* Use search folder rule list in case of a search folder */
 		return itemset_check_item (vfolder->itemset, item);
 	}
 

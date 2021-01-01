@@ -70,6 +70,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		node_set_title (sfd->node, gtk_entry_get_text (GTK_ENTRY (sfd->nameEntry)));
 		rule_editor_save (sfd->re, sfd->vfolder->itemset);
 		sfd->vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn")));
+		sfd->vfolder->unreadOnly = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "hideReadItemsBtn")));
 
 		/* update search folder */
 		itemview_clear ();
@@ -115,6 +116,7 @@ search_folder_dialog_new (nodePtr node)
 
 	/* Set up rule match type */
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, sfd->vfolder->itemset->anyMatch?"anyRuleRadioBtn":"allRuleRadioBtn")), TRUE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "hideReadItemsBtn")), sfd->vfolder->unreadOnly);
 
 	/* Set up rule list vbox */
 	gtk_container_add (GTK_CONTAINER (liferea_dialog_lookup (dialog, "ruleview_vfolder_dialog")), rule_editor_get_widget (sfd->re));

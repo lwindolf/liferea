@@ -122,7 +122,7 @@ struct _ItemListView {
 
 	GtkTreeView	*treeview;
 	GtkWidget 	*ilscrolledwindow;	/*<< The complete ItemListView widget */
-	GSList      *item_ids;		/*<< list of all currently known item ids */
+	GSList		*item_ids;		/*<< list of all currently known item ids */
 
 	gboolean	batch_mode;		/*<< TRUE if we are in batch adding mode */
 	GtkTreeStore	*batch_itemstore;	/*<< GtkTreeStore prepared unattached and to be set on update() */
@@ -464,7 +464,7 @@ item_list_title_alignment (gchar *title)
 		return 1.;
 }
 
-static void 
+static void
 item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIter *iter, nodePtr node)
 {
 	GtkTreeStore	*itemstore;
@@ -932,8 +932,7 @@ item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstor
         if (!ilv->batch_mode)
             exists = item_list_view_id_to_iter (ilv, item->id, &iter);
 
-	if (!exists)
-	{
+	if (!exists) {
 		gtk_tree_store_prepend (itemstore, &iter, NULL);
 		ilv->item_ids = g_slist_prepend (ilv->item_ids, GUINT_TO_POINTER (item->id));
 	}
