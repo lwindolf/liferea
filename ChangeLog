@@ -9,6 +9,9 @@ To be released
 	  item count) in the feed list
 	  (Lars Windolf)
 
+	* Fixes #192: wrong button order of media player in RTL locales
+	  (patch by GreenLunar)
+
 
 2020-12-24   Lars Windolf <lars.windolf@gmx.de>
 

@@ -208,6 +208,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
            self.prevButton = Gtk.Button.new()
            self.prevButton.add(image)
            self.prevButton.connect("clicked", self.prev)
+           self.prevButton.set_direction(Gtk.TextDirection.LTR)
            Gtk.Box.pack_start(vbox, self.prevButton, False, False, 0)
 
            self.playButtonImage = Gtk.Image()
@@ -215,6 +216,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
            self.playButton = Gtk.Button.new()
            self.playButton.add(self.playButtonImage)
            self.playButton.connect("clicked", self.playToggled)
+           self.playButton.set_direction(Gtk.TextDirection.LTR)
            Gtk.Box.pack_start(vbox, self.playButton, False, False, 0)
 
            image = Gtk.Image()
@@ -222,6 +224,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
            self.nextButton = Gtk.Button.new()
            self.nextButton.add(image)
            self.nextButton.connect("clicked", self.next)
+           self.nextButton.set_direction(Gtk.TextDirection.LTR)
            Gtk.Box.pack_start(vbox, self.nextButton, False, False, 0)
 
            self.slider = Gtk.Scale(orientation = Gtk.Orientation.HORIZONTAL)
@@ -233,7 +236,7 @@ class MediaPlayerPlugin(GObject.Object, Liferea.MediaPlayerActivatable):
                                self.on_slider_button_press)
            self.slider.connect("button-release-event",
                                self.on_slider_button_release)
-
+           self.slider.set_direction(Gtk.TextDirection.LTR)
            Gtk.Box.pack_start(vbox, self.slider, True, True, 0)
 
            self.label = Gtk.Label()
