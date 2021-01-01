@@ -20,17 +20,14 @@
 # the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
 #
-
+import gettext
 import gi
-
 gi.require_version('Gtk', '3.0')
-
-from gi.repository import GObject, Gio, Gtk, Gdk, PeasGtk, Liferea
+from gi.repository import GObject, Gio, Gtk, Liferea
 
 # Initialize translations for tooltips
 # Fallback to English if gettext module can't find the translations
 # (That's possible if they are installed in a nontraditional dir)
-import gettext
 _ = lambda x: x
 try:
     t = gettext.translation("liferea")
@@ -39,16 +36,16 @@ except FileNotFoundError:
 else:
     _ = t.gettext
 
-class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
+class HeaderBarPlugin(GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = "HeaderBarPlugin"
-
-    object = GObject.property (type=GObject.Object)
-    shell = GObject.property (type=Liferea.Shell)
+    hb = None
+    object = GObject.property(type=GObject.Object)
+    shell = GObject.property(type=Liferea.Shell)
 
     def __init__(self):
         GObject.Object.__init__(self)
 
-    def do_activate (self):
+    def do_activate(self):
         self.hb = Gtk.HeaderBar()
         self.hb.props.show_close_button = True
         self.hb.set_title("Liferea")
@@ -109,7 +106,7 @@ class HeaderBarPlugin (GObject.Object, Liferea.ShellActivatable):
         self.shell.lookup("maintoolbar").set_visible(False)
         self.hb.show_all()
 
-    def do_deactivate (self):
+    def do_deactivate(self):
         self.shell.lookup("mainwindow").set_titlebar(None)
         self.shell.lookup("mainwindow").set_show_menubar(True)
         self.shell.lookup("maintoolbar").set_visible(True)
