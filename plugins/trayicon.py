@@ -20,15 +20,13 @@
 #
 
 import gettext
-import gi
-gi.require_version('Peas', '1.0')
-gi.require_version('PeasGtk', '1.0')
-gi.require_version('Liferea', '3.0')
-from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea
-from gi.repository import Gdk, GdkPixbuf
-import cairo
 import pathlib
 from collections import namedtuple
+import cairo
+import gi
+gi.require_version('Liferea', '3.0')
+from gi.repository import GObject, Gtk, Liferea
+from gi.repository import Gdk, GdkPixbuf
 
 _ = lambda x: x
 try:
@@ -90,11 +88,35 @@ def pixbuf_text(width, height, text, font_size=16, bg_pix=None):
     pixbuf= Gdk.pixbuf_get_from_surface(surface, 0, 0, width, height)
     return pixbuf
 
+
+def get_config_path():
+    """Return data file path"""
+    data_dir = pathlib.Path.joinpath(
+        pathlib.Path.home(),
+        ".config/liferea/plugins/trayicon"
+    )
+    if not data_dir.exists():
+        data_dir.mkdir(0o700, True, True)
+
+    config_path = data_dir / "trayicon.conf"
+    return config_path
+
+
 class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = 'TrayiconPlugin'
 
     object = GObject.property(type=GObject.Object)
     shell = GObject.property(type=Liferea.Shell)
+    config_path = None
+    read_pix = None
+    unread_pix = None
+    staticon = None
+    menu = None
+    min_enabled = None
+    window = None
+    delete_signal_id = None
+    feedlist_new_items_cb_id = None
+    feedlist = None
 
     def do_activate(self):
         self.read_pix = Liferea.icon_create_from_file("emblem-web.svg")
@@ -113,7 +135,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         menuitem_close_behavior = Gtk.CheckMenuItem(_("Minimize to tray on close"))
         menuitem_quit = Gtk.MenuItem(_("Quit"))
 
-        self.config_path = self.get_config_path()
+        self.config_path = get_config_path()
         self.min_enabled = self.get_config()
 
         if self.min_enabled == "True":
@@ -154,18 +176,6 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             self.shell.save_position()
             self.window.hide()
 
-    def get_config_path(self):
-        """Return data file path"""
-        data_dir = pathlib.Path.joinpath(
-            pathlib.Path.home(),
-            ".config/liferea/plugins/trayicon"
-        )
-        if not data_dir.exists():
-            data_dir.mkdir(0o700, True, True)
-
-        config_path = data_dir / "trayicon.conf"
-        return config_path
-
     def get_config(self):
         """Load configuration file"""
         try:
@@ -191,9 +201,9 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.shell.save_position()
         if self.min_enabled == "True":
             self.window.hide()
-            return True
         else:
             Liferea.Application.shutdown()
+        return True
 
     def trayicon_close_behavior(self, widget, data = None):
         if widget.get_active():
@@ -212,11 +222,11 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.menu.popup(None, None, self.staticon.position_menu, self.staticon, 3, time)
 
     def trayicon_set_pixbuf(self, pix):
-        if None == pix:
+        if pix is None:
             return
 
         icon_size = self.staticon.props.size
-        if 0 == icon_size:
+        if icon_size == 0:
             return
 
         if pix.props.height != icon_size:
