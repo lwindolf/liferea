@@ -11,6 +11,7 @@ Description=Allow Liferea to use libsecret as password store
 Description[de]=Erlaubt Liferea Passwörter mit libsecret zu speichern
 Description[he]=אפשר ליישום Liferea להשתמש בתוכנה libsecret כמחסן סיסמאות
 Description[it]=Consente all'applicazione di usare come archivio delle password il portachiavi di libsecret.
+Description[pl]=Pozwala Liferea na używanie libsecret jako magazynu haseł.
 Authors=Lars Windolf <lars.windolf@gmx.de>;Bastian Germann <bastiangermann@fishpost.de>
 Copyright=Copyright © 2012 Lars Windolf
 Website=https://lzone.de/liferea/

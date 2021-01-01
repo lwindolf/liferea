@@ -9,5 +9,6 @@ Name[it]=Non letti in grassetto
 Description=Bold text for subscriptions with unread items in the feedlist
 Description[de]=Abonnements mit ungelesenen Schlagzeilen werden mit fetter Schrift dargestellt
 Description[it]=Testo in grassetto per gli abbonamenti con articoli non letti nell'elenco dei notiziari
+Description[pl]=Pogrubiony tekst dla subskrypcji z nieprzeczytanymi elementami na liście kanałów.
 Authors=Yanko Kaneti
 Copyright=Copyright © 2017 Yanko Kaneti
