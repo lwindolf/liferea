@@ -1,7 +1,7 @@
 /**
  * @file feed_parser.c  parsing of different feed formats
  *
- * Copyright (C) 2008-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,17 +82,22 @@ feed_type_str_to_fhp (const gchar *str)
 }
 
 feedParserCtxtPtr
-feed_create_parser_ctxt (void)
+feed_parser_ctxt_new (subscriptionPtr subscription, const gchar *data, gsize size)
 {
 	feedParserCtxtPtr ctxt;
 
 	ctxt = g_new0 (struct feedParserCtxt, 1);
+	ctxt->subscription = subscription;
+	ctxt->feed = (feedPtr)subscription->node->data;
+	ctxt->data = data;
+	ctxt->dataLength = size;
 	ctxt->tmpdata = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+
 	return ctxt;
 }
 
 void
-feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
+feed_parser_ctxt_free (feedParserCtxtPtr ctxt)
 {
 	if (ctxt) {
 		/* Don't free the itemset! */
@@ -195,12 +200,12 @@ feed_parse (feedParserCtxtPtr ctxt)
 	/* 1.) try to parse downloaded data as XML */
 	do {
 		if (NULL == (xmlDoc = xml_parse_feed (ctxt))) {
-			ctxt->feed->error = FEED_FETCH_ERROR_XML;
+			ctxt->subscription->error = FETCH_ERROR_XML;
 			break;
 		}
 
 		if (NULL == (xmlNode = xmlDocGetRootElement (xmlDoc))) {
-			ctxt->feed->error = FEED_FETCH_ERROR_XML;
+			ctxt->subscription->error = FETCH_ERROR_XML;
 			g_string_append (ctxt->feed->parseErrors, _("Empty document!"));
 			break;
 		}
@@ -260,7 +265,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 
 	/* 4.) We give up and inform the user */
 	if (!success && !autoDiscovery) {
-		ctxt->feed->error = FEED_FETCH_ERROR_DISCOVER;
+		ctxt->subscription->error = FETCH_ERROR_DISCOVER;
 		// FIXME: revise this
 
 		/* test if we have a HTML page */
@@ -282,7 +287,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 			   succeed. Still our auto-discovery was successful. */
 		}
 		success = TRUE;
-		ctxt->feed->error = FEED_FETCH_ERROR_NONE;
+		ctxt->subscription->error = FETCH_ERROR_NONE;
 	}
 
 	debug_exit ("feed_parse");

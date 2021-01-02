@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  *
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -179,7 +179,7 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
 		xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
 
-	tmp = g_strdup_printf("%d", feed->error);
+	tmp = g_strdup_printf("%d", node->subscription->error);
 	xmlNewTextChild(feedNode, NULL, "error", tmp);
 	g_free(tmp);
 }
@@ -301,7 +301,6 @@ feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), 0);
 }
 
-
 /* implementation of subscription type interface */
 
 static void
@@ -313,15 +312,10 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 	debug_enter ("feed_process_update_result");
 
-	if (result->httpstatus >= 400) {
-		feed->error = FEED_FETCH_ERROR_NET;
-	} else if (result->data) {
-		/* parse the new downloaded feed into feed and itemSet */
-		ctxt = feed_create_parser_ctxt ();
-		ctxt->feed = feed;
-		ctxt->data = result->data;
-		ctxt->dataLength = result->size;
-		ctxt->subscription = subscription;
+	if (result->httpstatus >= 400 || !result->data) {
+		subscription->error = FETCH_ERROR_NET;
+	} else {
+		ctxt = feed_parser_ctxt_new (subscription, result->data, result->size);
 
 		/* try to parse the feed */
 		if (!feed_parse (ctxt)) {
@@ -356,12 +350,10 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 				db_subscription_update (subscription);
 		}
 
-		feed_free_parser_ctxt (ctxt);
-	} else {
-		feed->error = FEED_FETCH_ERROR_XML;
+		feed_parser_ctxt_free (ctxt);
 	}
 
-	if (FEED_FETCH_ERROR_NONE != feed->error) {
+	if (FETCH_ERROR_NONE != subscription->error) {
 		node->available = FALSE;
 		liferea_shell_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
 	} else {

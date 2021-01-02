@@ -1,7 +1,7 @@
 /**
  * @file feed.h  common feed handling interface
  *
- * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -31,27 +31,17 @@
 /*
  * The feed concept in Liferea comprises several standalone concepts:
  *
- * 1.) A "feed" is an XML document to be parsed
+ * 1.) A "feed" is an XML/XML-like document to be parsed
  *     (-> see feed_parser.h)
  *
- * 2.) A "feed" is a node in the feed list.
+ * 2.) A "feed" is a node type that is visible in the feed list.
  *
- * 3.) A "feed" is a way of updating a subscription.
+ * 3.) A "feed" is a subscription type: a way of updating.
  *
  * The feed.h interface provides default methods for 2.) and 3.) that
  * are used per-default but might be overwritten by node source, node
  * type or subscription type specific implementations.
  */
-
-/** Feed fetching error types */
-typedef enum feedFetchError {
-	FEED_FETCH_ERROR_NONE     = 0,
-	FEED_FETCH_ERROR_AUTH     = 1 << 0,
-	FEED_FETCH_ERROR_NET      = 1 << 1,
-	FEED_FETCH_ERROR_DISCOVER = 1 << 2,
-	FEED_FETCH_ERROR_XML      = 1 << 3,
-	FEED_FETCH_ERROR_EXTRACT  = 1 << 4
-} feedFetchError;
 
 /** Common structure to hold all information about a single feed. */
 typedef struct feed {
@@ -62,7 +52,6 @@ typedef struct feed {
 
 	/* feed parsing state */
 	gboolean	valid;			/**< FALSE if there was an error in xml_parse_feed() */
-	feedFetchError	error;			/**< Feed fetch error code (used for user-facing UI to differentiate feed processing phases) */
 	GString		*parseErrors;		/**< Detailed textual description of parsing errors (e.g. library error handler output) */
 	gint64		time;			/**< Feeds modified date */
 

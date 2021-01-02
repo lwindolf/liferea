@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  *
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,6 +147,8 @@ subscription_update_error_status (subscriptionPtr subscription,
 {
 	gboolean	errorFound = FALSE;
 
+
+// FIXME: rewrite to provide subscription->error based phase sensitive info
 	if (subscription->filterError)
 		g_free (subscription->filterError);
 	if (subscription->httpError)
@@ -197,9 +199,11 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	}
 
 	if (401 == result->httpstatus) { /* unauthorized */
+		subscription->error = FETCH_ERROR_AUTH;
 		auth_dialog_new (subscription, flags);
 	} else if (410 == result->httpstatus) { /* gone */
 		subscription->discontinued = TRUE;
+		subscription->error = FETCH_ERROR_NET;
 		node->available = TRUE;
 		liferea_shell_set_status_bar (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
 	} else if (304 == result->httpstatus) {
@@ -208,7 +212,6 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	} else {
 		processing = TRUE;
 	}
-
 
 	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
 
