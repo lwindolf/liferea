@@ -162,9 +162,8 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 	g_free (commentFeed->error);
 	commentFeed->error = NULL;
 
-	if ((result->httpstatus < 200) || (result->httpstatus >= 400)) {
-		commentFeed->error = g_strdup (network_strerror (result->returncode, result->httpstatus));
-	}
+	if ((result->httpstatus < 200) || (result->httpstatus >= 400))
+		commentFeed->error = g_strdup (network_strerror (result->httpstatus));
 
 	/* clean up... */
 	commentFeed->updateJob = NULL;

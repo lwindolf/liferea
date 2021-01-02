@@ -4,7 +4,7 @@
 /**
  * Rendering stylesheet for Liferea (feed description view)
  *
- * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -124,42 +124,46 @@
         </xsl:call-template>
         <_span>Parsing</_span>
       </li>
-      <li>
-        <xsl:call-template name="parseStatus">
-          <xsl:with-param name="parsePhase" select="16"/>
-        </xsl:call-template>
-        <_span>Extracting Content</_span>
-      </li>
     </ul>
-
-    <span id="pdl" class="detaillink">
-      (<span class="showmore" onclick="javascript:document.getElementById('pd').style.visibility='visible';document.getElementById('pd').style.display='block';document.getElementById('pdl').style.visibility='hidden';document.getElementById('pdl').style.display='none';">
-        <_span>Error Details</_span>
-      </span>)
-    </span>
 
     <!-- FIXME: provide parse phase specific solution hint! -->
 
-    <span class="details" id='pd'>
+    <span class="details">
       <b><_span>Details</_span></b><br />
 
-      <xsl:if test="parseError">
-        <xsl:value-of select="parseError" disable-output-escaping='yes'/>
-        <br /><_span>You may want to contact the author/webmaster of the feed about this!</_span>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="/feed/error = 1">
+          <_span>Authentication failed. Please check the credentials and try again!</_span>
+        </xsl:when>
 
-      <xsl:if test="filterError">
-        <xsl:value-of select="filterError" disable-output-escaping='yes'/>
-      </xsl:if>
+        <xsl:when test="/feed/error = 2">
+          <xsl:if test="httpError">
+            HTTP <xsl:value-of select="httpErrorCode"/>: <xsl:value-of select="httpError" disable-output-escaping='yes'/>
+          </xsl:if>
 
-      <xsl:if test="updateError">
-        <xsl:value-of select="updateError" disable-output-escaping='yes'/>
-      </xsl:if>
+          <xsl:if test="updateError">
+            <br /><_span>There was an error when downloading the feed source:</_span>
+            <xsl:value-of select="updateError" disable-output-escaping='yes'/>
+          </xsl:if>
+
+          <xsl:if test="filterError">
+            <br /><_span>There was an error when running the feed filter command:</_span>
+            <xsl:value-of select="filterError" disable-output-escaping='yes'/>
+          </xsl:if>
+        </xsl:when>
+
+        <xsl:when test="/feed/error = 4">
+          <br/><_span>The URL does not point to a feed or a webpage with a link to a feed!</_span>
+        </xsl:when>
+
+        <xsl:when test="/feed/error = 8">
+          <xsl:if test="parseError">
+            <xsl:value-of select="parseError" disable-output-escaping='yes'/>
+            <br /><_span>You may want to contact the author/webmaster of the feed about this!</_span>
+          </xsl:if>
+        </xsl:when>
+      </xsl:choose>
     </span>
-
-    <xsl:if test="feedDiscontinued = '1'">
-      <_span>The webserver indicates this feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines.</_span>
-    </xsl:if>
 
   </div>
 </xsl:if>

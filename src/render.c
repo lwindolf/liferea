@@ -406,7 +406,10 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	}
 
 	/* for debugging use: xsltSaveResultToFile(stdout, resDoc, xslt); */
-
+	xmlChar *buffer;
+	gint buffersize;
+	xmlDocDumpFormatMemory(doc, &buffer, &buffersize, 1);
+	printf("%s", (char *) buffer);
 	/* save results into return string */
 	buf = xmlAllocOutputBuffer (NULL);
 	if (-1 == xsltSaveResultTo(buf, resDoc, xslt))

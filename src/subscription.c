@@ -136,19 +136,13 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
  *
  * @param subscription	the subscription
  * @param httpstatus	the new HTTP status code
- * @param resultcode	the update result code
  * @param filterError	filter error string (or NULL)
  */
 static void
 subscription_update_error_status (subscriptionPtr subscription,
                                   gint httpstatus,
-                                  gint resultcode,
                                   gchar *filterError)
 {
-	gboolean	errorFound = FALSE;
-
-
-// FIXME: rewrite to provide subscription->error based phase sensitive info
 	if (subscription->filterError)
 		g_free (subscription->filterError);
 	if (subscription->httpError)
@@ -161,18 +155,20 @@ subscription_update_error_status (subscriptionPtr subscription,
 	subscription->httpError = NULL;
 	subscription->httpErrorCode = httpstatus;
 
+	/* Note: the httpstatus we get here is a libsoup status code
+	   which is either a HTTP status code or a libsoup status.
+	   https://developer.gnome.org/libsoup/unstable/libsoup-2.4-soup-status.html
+
+	   Therefore we know if it is between 200 an 399 all is fine.
+
+	   Otherwise we build a message according to the libsoup doc
+	 */
+
 	if (((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
 	    (NULL == subscription->filterError))
 		return;
 
-	if ((200 != httpstatus) || (resultcode != 0)) {
-		subscription->httpError = g_strdup (network_strerror (resultcode, httpstatus));
-		errorFound = TRUE;
-	}
-
-	/* if none of the above error descriptions matched... */
-	if (!errorFound)
-		subscription->updateError = g_strdup (_("There was a problem while reading this subscription. Please check the URL and console output."));
+	subscription->httpError = g_strdup (network_strerror (httpstatus));
 }
 
 static void
@@ -181,21 +177,14 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
-	guint64		now;
-	gint		next_update = 0;
-	gint		update_time_sources = 0;
-	gint		maxage = -1;
-	gint		syn_update = -1;
-	gint		ttl = subscription->updateState->timeToLive = -1;
 
 	/* 1. preprocessing */
 
 	g_assert (subscription->updateJob);
 	/* update the subscription URL on permanent redirects */
-	if ((301 == result->returncode || 308 == result->returncode) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
+	if ((301 == result->httpstatus || 308 == result->httpstatus) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
 		debug2 (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
 		subscription_set_source (subscription, result->source);
-		liferea_shell_set_status_bar (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
 	}
 
 	if (401 == result->httpstatus) { /* unauthorized */
@@ -204,7 +193,6 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	} else if (410 == result->httpstatus) { /* gone */
 		subscription->discontinued = TRUE;
 		subscription->error = FETCH_ERROR_NET;
-		node->available = TRUE;
 		liferea_shell_set_status_bar (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
 	} else if (304 == result->httpstatus) {
 		node->available = TRUE;
@@ -213,7 +201,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		processing = TRUE;
 	}
 
-	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
+	subscription_update_error_status (subscription, result->httpstatus, result->filterErrors);
 
 	subscription->updateJob = NULL;
 
@@ -221,12 +209,11 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (processing)
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 
-	/* 3. call favicon updating after subscription processing
+	/* 3. call favicon updating only after subscription processing
 	      to ensure we have valid baseUrl for feed nodes...
 
 	      check creation date and update favicon if older than one month */
-	now = g_get_real_time();
-	if (now > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
+	if (g_get_real_time() > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
 		subscription_icon_update (subscription);
 
 	/* 4. generic postprocessing */
@@ -235,7 +222,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
 	subscription->updateState->lastPoll = g_get_real_time();
 
-	// FIXME: use new-items signal in itemview class
+	// FIXME: use signal here
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
 
@@ -243,6 +230,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	db_node_update (subscription->node);
 
 	if (processing && subscription->node->newCount > 0) {
+		// FIXME: use new-items signal in itemview class
 		feedlist_new_items (node->newCount);
 		feedlist_node_was_updated (node);
 	}

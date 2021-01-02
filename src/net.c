@@ -1,7 +1,7 @@
 /**
  * @file net.c  HTTP network access using libsoup
  *
- * Copyright (C) 2007-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -60,7 +60,7 @@ network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 		if (SOUP_URI_IS_VALID (newuri) && ! soup_uri_equal (newuri, soup_message_get_uri (msg))) {
 			debug2 (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"", soup_uri_to_string (soup_message_get_uri (msg), FALSE),
 							            soup_uri_to_string (newuri, FALSE));
-			job->result->returncode = msg->status_code;
+			job->result->httpstatus = msg->status_code;
 			job->result->source = soup_uri_to_string (newuri, FALSE);
 		}
 	}
@@ -78,12 +78,7 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	gint		age;
 
 	job->result->source = soup_uri_to_string (soup_message_get_uri(msg), FALSE);
-	if (SOUP_STATUS_IS_TRANSPORT_ERROR (msg->status_code)) {
-		job->result->returncode = msg->status_code;
-		job->result->httpstatus = 0;
-	} else {
-		job->result->httpstatus = msg->status_code;
-	}
+	job->result->httpstatus = msg->status_code;
 
 	/* keep some request headers for revalidated responses */
 	revalidated = (304 == job->result->httpstatus);
@@ -453,10 +448,9 @@ network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, g
 }
 
 const char *
-network_strerror (gint netstatus, gint httpstatus)
+network_strerror (gint status)
 {
 	const gchar *tmp = NULL;
-	int status = netstatus?netstatus:httpstatus;
 
 	switch (status) {
 		/* Some libsoup transport errors */
@@ -480,7 +474,7 @@ network_strerror (gint netstatus, gint httpstatus)
 		case SOUP_STATUS_NOT_ACCEPTABLE:	tmp = _("Not Acceptable"); break;
 		case SOUP_STATUS_PROXY_UNAUTHORIZED:	tmp = _("Proxy authentication required"); break;
 		case SOUP_STATUS_REQUEST_TIMEOUT:	tmp = _("Request timed out"); break;
-		case SOUP_STATUS_GONE:			tmp = _("Gone. Resource doesn't exist. Please unsubscribe!"); break;
+		case SOUP_STATUS_GONE:			tmp = _("The webserver indicates this feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."); break;
 	}
 
 	if (!tmp) {

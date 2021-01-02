@@ -259,20 +259,9 @@ div.xmlparseroutput {
 	background:#GTK-COLOR-LIGHT;
 }
 
-span.details, span.detaillink {
-	visibility:hidden;
-	display:none;
-}
-
 span.details {
 	padding:5px;
 	margin:15px;
-}
-
-span.showmore {
-	text-decoration:underline;
-	color:blue;
-	cursor:pointer;
 }
 
 del {
@@ -284,12 +273,6 @@ ins {
 }
 
 /* namespace specific styles */
-div.blogchanneltitle {
-	padding-left:10px;
-	padding-right:10px;
-	background-color:#GTK-COLOR-DARK;
-	color:#GTK-COLOR-TEXT;
-}
 
 .slash {
 	background:#60A080;
