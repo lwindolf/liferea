@@ -266,17 +266,6 @@ feed_parse (feedParserCtxtPtr ctxt)
 	/* 4.) We give up and inform the user */
 	if (!success && !autoDiscovery) {
 		ctxt->subscription->error = FETCH_ERROR_DISCOVER;
-		// FIXME: revise this
-
-		/* test if we have a HTML page */
-		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
-		     strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML "))) {
-			debug0 (DEBUG_UPDATE, "HTML document detected!");
-			g_string_append (ctxt->feed->parseErrors, _("Source points to HTML document."));
-		} else {
-			debug0 (DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
-			g_string_append (ctxt->feed->parseErrors, _("Could not determine the feed type."));
-		}
 	} else {
 		if (ctxt->feed->fhp) {
 			debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
