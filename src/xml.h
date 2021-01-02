@@ -181,10 +181,7 @@ typedef struct errorCtxt {
 } *errorCtxtPtr;
 
 /**
- * Common function to create a XML DOM object from a given XML buffer.
- *
- * The function returns a XML document pointer or NULL
- * if the document could not be read.
+ * Common function to create a XML DOM object from a given string
  *
  * @param data		XML document buffer
  * @param length	length of buffer
@@ -192,7 +189,7 @@ typedef struct errorCtxt {
  *
  * @return XML document
  */
-xmlDocPtr xml_parse (gchar *data, size_t length, errorCtxtPtr errors);
+xmlDocPtr xml_parse (const gchar *data, size_t length, errorCtxtPtr errors);
 
 /**
  * Common function to create a XML DOM object from a given

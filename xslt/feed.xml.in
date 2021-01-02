@@ -151,7 +151,7 @@
 
           <xsl:if test="filterError">
             <br /><_span>There was an error when running the feed filter command:</_span>
-            <xsl:value-of select="filterError" disable-output-escaping='yes'/>
+            <pre class="xmlparseroutput"><xsl:value-of select="filterError" disable-output-escaping='yes'/></pre>
           </xsl:if>
         </xsl:when>
 

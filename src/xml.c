@@ -526,7 +526,7 @@ xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace
 }
 
 xmlDocPtr
-xml_parse (gchar *data, size_t length, errorCtxtPtr errCtx)
+xml_parse (const gchar *data, size_t length, errorCtxtPtr errCtx)
 {
 	xmlParserCtxtPtr	ctxt;
 	xmlDocPtr		doc;

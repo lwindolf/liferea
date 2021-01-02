@@ -151,7 +151,7 @@ subscription_update_error_status (subscriptionPtr subscription,
 		g_free (subscription->updateError);
 
 	subscription->filterError = g_strdup (filterError);
-	subscription->updateError = NULL;
+	subscription->updateError = NULL;	// FIXME: this might not be very useful!
 	subscription->httpError = NULL;
 	subscription->httpErrorCode = httpstatus;
 
@@ -164,11 +164,8 @@ subscription_update_error_status (subscriptionPtr subscription,
 	   Otherwise we build a message according to the libsoup doc
 	 */
 
-	if (((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
-	    (NULL == subscription->filterError))
-		return;
-
-	subscription->httpError = g_strdup (network_strerror (httpstatus));
+	if (!((httpstatus >= 200) && (httpstatus < 400)))
+		subscription->httpError = g_strdup (network_strerror (httpstatus));
 }
 
 static void
@@ -187,6 +184,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		subscription_set_source (subscription, result->source);
 	}
 
+	/* consider everything that prevents processing the data we got */
 	if (401 == result->httpstatus) { /* unauthorized */
 		subscription->error = FETCH_ERROR_AUTH;
 		auth_dialog_new (subscription, flags);
@@ -197,6 +195,8 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	} else if (304 == result->httpstatus) {
 		node->available = TRUE;
 		liferea_shell_set_status_bar (_("\"%s\" has not changed since last update"), node_get_title(node));
+	} else if (result->filterErrors) {
+		subscription->error = FETCH_ERROR_NET;
 	} else {
 		processing = TRUE;
 	}
