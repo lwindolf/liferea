@@ -45,8 +45,8 @@ typedef enum fetchError {
 	FETCH_ERROR_AUTH     = 1 << 0,
 	FETCH_ERROR_NET      = 1 << 1,
 	FETCH_ERROR_DISCOVER = 1 << 2,
-	FETCH_ERROR_XML      = 1 << 3,
-	FETCH_ERROR_EXTRACT  = 1 << 4
+	FETCH_ERROR_XML      = 1 << 3
+	/* when adding stuff here, extend xstl/feed.xml.in also! */
 } fetchError;
 
 /** Common structure to hold all information about a single subscription. */
