@@ -156,7 +156,7 @@
         </xsl:when>
 
         <xsl:when test="/feed/error = 4">
-          <br/><_span>The URL does not point to a feed or a webpage with a link to a feed!</_span>
+          <br/><_span>The source does not point to a feed or a webpage with a link to a feed!</_span>
         </xsl:when>
 
         <xsl:when test="/feed/error = 8">
