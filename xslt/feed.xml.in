@@ -138,7 +138,10 @@
 
         <xsl:when test="/feed/error = 2">
           <xsl:if test="httpError">
-            HTTP <xsl:value-of select="httpErrorCode"/>: <xsl:value-of select="httpError" disable-output-escaping='yes'/>
+            <xsl:if test="httpErrorCode >= 100">
+              HTTP <xsl:value-of select="httpErrorCode"/>:
+            </xsl:if>
+            <xsl:value-of select="httpError" disable-output-escaping='yes'/>
           </xsl:if>
 
           <xsl:if test="updateError">
