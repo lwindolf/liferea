@@ -415,13 +415,13 @@ xml_buffer_parse_error (void *ctxt, const gchar * msg, ...)
 			g_free (newmsg);
 			newmsg = tmp;
 
-			g_string_append_printf(errors->msg, "<pre>%s</pre>\n", newmsg);
+			g_string_append_printf(errors->msg, "%s\n", newmsg);
 		}
 		g_free(newmsg);
 	}
 
 	if (MAX_PARSE_ERROR_LINES == errors->errorCount)
-		g_string_append_printf (errors->msg, "<br />%s", _("[There were more errors. Output was truncated!]"));
+		g_string_append (errors->msg, _("[There were more errors. Output was truncated!]"));
 }
 
 static xmlDocPtr entities = NULL;
@@ -525,20 +525,6 @@ xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace
 	return xmlGetNsProp (node, BAD_CAST name, BAD_CAST namespace);
 }
 
-static void
-liferea_xml_errorSAXFunc (void * ctx, const char * msg,...)
-{
-	va_list valist;
-	gchar *parser_error = NULL;
-
-	va_start(valist,msg);
-	parser_error = g_strdup_vprintf (msg, valist);
-	va_end(valist);
-	debug1 (DEBUG_PARSING, "SAX parser error : %s", parser_error);
-	g_free (parser_error);
-}
-
-
 xmlDocPtr
 xml_parse (gchar *data, size_t length, errorCtxtPtr errCtx)
 {
@@ -549,7 +535,6 @@ xml_parse (gchar *data, size_t length, errorCtxtPtr errCtx)
 
 	ctxt = xmlNewParserCtxt ();
 	ctxt->sax->getEntity = xml_process_entities;
-	ctxt->sax->error = liferea_xml_errorSAXFunc;
 
 	if (errCtx)
 		xmlSetGenericErrorFunc (errCtx, (xmlGenericErrorFunc)xml_buffer_parse_error);

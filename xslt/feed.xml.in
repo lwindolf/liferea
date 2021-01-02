@@ -161,8 +161,8 @@
 
         <xsl:when test="/feed/error = 8">
           <xsl:if test="parseError">
-            <xsl:value-of select="parseError" disable-output-escaping='yes'/>
-            <br /><_span>You may want to contact the author/webmaster of the feed about this!</_span>
+            <pre class="xmlparseroutput"><xsl:value-of select="parseError" disable-output-escaping='yes'/></pre>
+            <p><_span>You may want to contact the author/webmaster of the feed about this!</_span></p>
           </xsl:if>
         </xsl:when>
       </xsl:choose>

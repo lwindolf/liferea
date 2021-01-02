@@ -112,19 +112,12 @@ feed_parser_ctxt_free (feedParserCtxtPtr ctxt)
  * tries to download it. If it finds a valid feed source it parses
  * this source instead into the given feed parsing context. It also
  * replaces the HTTP URI with the found feed source.
- *
- * Mutates ctxt->feed->parseErrors
  */
 static gboolean
 feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 {
 	gchar	*source = NULL;
 	GSList	*links;
-
-	if (ctxt->feed->parseErrors)
-		g_string_truncate (ctxt->feed->parseErrors, 0);
-	else
-		ctxt->feed->parseErrors = g_string_new(NULL);
 
 	debug2 (DEBUG_UPDATE, "Starting feed auto discovery (%s) redirects=%d", subscription_get_source (ctxt->subscription), ctxt->subscription->autoDiscoveryTries);
 
@@ -147,7 +140,6 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 	}
 
 	debug0 (DEBUG_UPDATE, "No feed link found!");
-	g_string_append (ctxt->feed->parseErrors, _("The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."));
 	return FALSE;
 }
 
@@ -263,9 +255,12 @@ feed_parse (feedParserCtxtPtr ctxt)
 	if (xmlDoc)
 		xmlFreeDoc (xmlDoc);
 
-	/* 4.) We give up and inform the user */
+	/* 4.) Update subscription error status */
 	if (!success && !autoDiscovery) {
-		ctxt->subscription->error = FETCH_ERROR_DISCOVER;
+		/* Fuzzy test for HTML document */
+		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
+		     strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML ")))
+			ctxt->subscription->error = FETCH_ERROR_DISCOVER;
 	} else {
 		if (ctxt->feed->fhp) {
 			debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
