@@ -185,7 +185,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	}
 
 	/* consider everything that prevents processing the data we got */
-	if (result->httpstatus >= 400) {
+	if (result->httpstatus >= 400 || !result->data) {
 		/* Default */
 		subscription->error = FETCH_ERROR_NET;
 		node->available = FALSE;
