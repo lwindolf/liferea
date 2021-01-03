@@ -333,7 +333,7 @@ google_reader_api_edit_token_cb (const struct updateResult * const result, gpoin
 		google_reader_api_add_label (action, request, token);
 
 	debug1 (DEBUG_UPDATE, "google_reader_api: postdata [%s]", request->postdata);
-	update_execute_request (node->source, request, google_reader_api_edit_action_complete, google_reader_api_action_context_new(node->source, action), 0);
+	update_execute_request (node->source, request, google_reader_api_edit_action_complete, google_reader_api_action_context_new(node->source, action), FEED_REQ_NO_FEED);
 
 	action = g_queue_pop_head (node->source->actionQueue);
 }
@@ -361,7 +361,7 @@ google_reader_api_edit_process (nodeSourcePtr source)
 	update_request_set_auth_value(request, source->authToken);
 
 	update_execute_request (source, request, google_reader_api_edit_token_cb,
-	                        g_strdup(source->root->id), 0);
+	                        g_strdup(source->root->id), FEED_REQ_NO_FEED);
 }
 
 static void
