@@ -18,6 +18,7 @@ along with this library; see the file COPYING.LIB.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
 """
+import pathlib
 import gettext
 from gi.repository import GObject, Gtk, Liferea, PeasGtk
 
@@ -30,8 +31,15 @@ except FileNotFoundError:
 else:
     _ = t.gettext
 
+file_config = 'opacity.conf'
 
-class GetFocusPlugin (GObject.Object, Liferea.ShellActivatable):
+
+def get_path():
+    return pathlib.Path.joinpath(pathlib.Path.home(),
+                                 ".config/liferea/plugins/getfocus")
+
+
+class GetFocusPlugin(GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = 'GetFocusPlugin'
 
     shell = GObject.property(type=Liferea.Shell)
@@ -40,13 +48,16 @@ class GetFocusPlugin (GObject.Object, Liferea.ShellActivatable):
     enter_event = None
     leave_event = None
 
-    def do_activate (self):
+    def do_activate(self):
         self.feedlist = self.shell.lookup('feedlist')
+        self.read_opacity_from_file()
         self.set_opacity_leave(self.feedlist, None)
-        self.leave_event = self.feedlist.connect('leave-notify-event', self.set_opacity_leave)
-        self.enter_event = self.feedlist.connect('enter-notify-event', self.set_opacity_enter)
+        self.leave_event = self.feedlist.connect('leave-notify-event',
+                                                 self.set_opacity_leave)
+        self.enter_event = self.feedlist.connect('enter-notify-event',
+                                                 self.set_opacity_enter)
 
-    def do_deactivate (self):
+    def do_deactivate(self):
         self.feedlist.disconnect(self.enter_event)
         self.feedlist.disconnect(self.leave_event)
         self.set_opacity_enter(self.feedlist, None)
@@ -58,22 +69,29 @@ class GetFocusPlugin (GObject.Object, Liferea.ShellActivatable):
     def set_opacity_leave(self, widget, event):
         widget.set_property('opacity', self.opacity)
 
+    def read_opacity_from_file(self):
+        path = get_path()
+        file_path = path / file_config
+        if file_path.exists():
+            self.opacity = float(file_path.read_text())
+
 
 class GetFocusConfigure(GObject.Object, PeasGtk.Configurable):
     __gtype_name__ = 'GetFocusConfigure'
 
-    opacity = 0.3
+    opacity = None
     feedlist = None
     opacity_scale = None
 
     def do_create_configure_widget(self):
         """ Setup configuration widget """
         margin = 6
-        grid = Gtk.Grid(column_spacing=10)
 
         shell = Liferea.Shell
         self.feedlist = shell.lookup('feedlist')
+        self.opacity = self.feedlist.get_property('opacity')
 
+        grid = Gtk.Grid(column_spacing=10)
         label = Gtk.Label(_("Opacity:"))
         label.props.tooltip_text = _("Opacity")
         label.props.xalign = 0
@@ -82,29 +100,32 @@ class GetFocusConfigure(GObject.Object, PeasGtk.Configurable):
         grid.attach(label, 0, 0, 1, 1)
 
         adj = Gtk.Adjustment(self.opacity, 0, 1.0, 0.1, 0.2, 0)
-        self.opacity_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL, adjustment=adj)
+        self.opacity_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
+                                       adjustment=adj)
         self.opacity_scale.props.margin = 10
-        self.opacity_scale.add_mark(0, Gtk.PositionType.BOTTOM, 'Min')
+        self.opacity_scale.add_mark(0, Gtk.PositionType.BOTTOM, _('Min'))
         self.opacity_scale.add_mark(0.2, Gtk.PositionType.BOTTOM, None)
         self.opacity_scale.add_mark(0.4, Gtk.PositionType.BOTTOM, None)
         self.opacity_scale.add_mark(0.6, Gtk.PositionType.BOTTOM, None)
         self.opacity_scale.add_mark(0.8, Gtk.PositionType.BOTTOM, None)
-        self.opacity_scale.add_mark(1.0, Gtk.PositionType.BOTTOM, 'Max')
+        self.opacity_scale.add_mark(1.0, Gtk.PositionType.BOTTOM, _('Max'))
         self.opacity_scale.set_hexpand(True)
-        self.opacity_scale.set_size_request(300, 10) #width, height
+        self.opacity_scale.set_size_request(300, 10)  #width, height
         self.opacity_scale.connect("value-changed", self.scale_moved)
         grid.attach(self.opacity_scale, 1, 0, 1, 1)
 
         save_button = Gtk.Button(_('Save'))
         save_button.set_valign(Gtk.Align.CENTER)
-        save_button.connect("clicked", self.save_opacity)
-        save_button.set_sensitive(False) #!!! delete when the configuration save function is done !!!
+        save_button.connect("clicked", self.save_opacity_to_file)
         grid.attach(save_button, 2, 0, 1, 1)
         return grid
 
     def scale_moved(self, event):
-        self.feedlist.set_property('opacity', self.opacity_scale.get_value())
+        self.opacity = self.opacity_scale.get_value()
+        self.feedlist.set_property('opacity', self.opacity)
 
-    def save_opacity(self, widget):
-        """ Not implemented yet """
-        pass
+    def save_opacity_to_file(self, widget):
+        path = get_path()
+        path.mkdir(0o700, True, True)
+        file_path = path / file_config
+        file_path.write_text(str(self.opacity))
