@@ -167,7 +167,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 		else
 			callback = subscription_icon_download_html_cb;
 
-		update_execute_request (node_from_id (ctxt->id), request, callback, ctxt, FEED_REQ_PRIORITY_HIGH);
+		update_execute_request (node_from_id (ctxt->id), request, callback, ctxt, FEED_REQ_PRIORITY_HIGH | FEED_REQ_NO_FEED);
 	} else {
 		debug1 (DEBUG_UPDATE, "Icon '%s' discovery/download failed!", ctxt->id);
 		subscription_icon_download_ctxt_free (ctxt);

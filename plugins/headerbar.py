@@ -36,6 +36,13 @@ except FileNotFoundError:
 else:
     _ = t.gettext
 
+
+#function borrowed from https://gist.github.com/thorsummoner/230bed5bbd3380bd5949
+def bind_accelerator(accelerators, widget, accelerator, signal='clicked'):
+    key, mod = Gtk.accelerator_parse(accelerator)
+    widget.add_accelerator(signal, accelerators, key, mod, Gtk.AccelFlags.VISIBLE)
+
+
 class HeaderBarPlugin(GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = "HeaderBarPlugin"
     hb = None
@@ -91,6 +98,11 @@ class HeaderBarPlugin(GObject.Object, Liferea.ShellActivatable):
         builder = self.shell.get_property("builder")
         button.set_menu_model(builder.get_object("menubar"))
         button.add(image)
+        #Bind the F10 key to the hamburger menu button
+        window = self.shell.get_window()
+        accelerators = Gtk.AccelGroup()
+        window.add_accel_group(accelerators)
+        bind_accelerator(accelerators, button, 'F10')
         self.hb.pack_end(button)
 
         button = Gtk.Button()

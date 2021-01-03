@@ -12,6 +12,11 @@ To be released
 	* Fixes #192: wrong button order of media player in RTL locales
 	  (patch by GreenLunar)
 
+	* Fixes #343: Usability of update infos in status bar. Now a total
+	  count is displayed on mass-updates and a per-feed info on single
+	  feed updates
+	  (Lars Windolf)
+
 
 2020-12-24   Lars Windolf <lars.windolf@gmx.de>
 
