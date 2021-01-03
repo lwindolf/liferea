@@ -104,25 +104,25 @@
         <xsl:call-template name="parseStatus">
           <xsl:with-param name="parsePhase" select="1"/>
         </xsl:call-template>
-        <_span>Authentication</_span>
+        <_span>1. Authentication</_span>
       </li>
       <li>
         <xsl:call-template name="parseStatus">
           <xsl:with-param name="parsePhase" select="2"/>
         </xsl:call-template>
-        <_span>Download</_span>
+        <_span>2. Download</_span>
       </li>
       <li>
         <xsl:call-template name="parseStatus">
           <xsl:with-param name="parsePhase" select="4"/>
         </xsl:call-template>
-        <_span>Feed Discovery</_span>
+        <_span>3. Feed Discovery</_span>
       </li>
       <li>
         <xsl:call-template name="parseStatus">
           <xsl:with-param name="parsePhase" select="8"/>
         </xsl:call-template>
-        <_span>Parsing</_span>
+        <_span>4. Parsing</_span>
       </li>
     </ul>
 
