@@ -185,17 +185,25 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	}
 
 	/* consider everything that prevents processing the data we got */
-	if (401 == result->httpstatus) { /* unauthorized */
-		subscription->error = FETCH_ERROR_AUTH;
-		auth_dialog_new (subscription, flags);
-	} else if (410 == result->httpstatus) { /* gone */
-		subscription->discontinued = TRUE;
+	if (result->httpstatus >= 400) {
+		/* Default */
 		subscription->error = FETCH_ERROR_NET;
-		liferea_shell_set_status_bar (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
+		node->available = FALSE;
+
+		/* Special handling */
+		if (401 == result->httpstatus) { /* unauthorized */
+			subscription->error = FETCH_ERROR_AUTH;
+			auth_dialog_new (subscription, flags);
+		}
+		if (410 == result->httpstatus) { /* gone */
+			subscription->discontinued = TRUE;
+			liferea_shell_set_status_bar (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
+		}
 	} else if (304 == result->httpstatus) {
 		node->available = TRUE;
 		liferea_shell_set_status_bar (_("\"%s\" has not changed since last update"), node_get_title(node));
 	} else if (result->filterErrors) {
+		node->available = FALSE;
 		subscription->error = FETCH_ERROR_NET;
 	} else {
 		processing = TRUE;
@@ -229,10 +237,12 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);
 
+	feedlist_node_was_updated (node);
+	feed_list_view_update_node (node->id);	// FIXME: This should be dropped once the "node-updated" signal is consumed
+
 	if (processing && subscription->node->newCount > 0) {
 		// FIXME: use new-items signal in itemview class
 		feedlist_new_items (node->newCount);
-		feedlist_node_was_updated (node);
 	}
 }
 

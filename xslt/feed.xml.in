@@ -98,7 +98,7 @@
 <xsl:if test="/feed/error > 0">
   <div id="errors" dir="{$appDirection}">
 
-    <_span>There were problems when fetching this feed!</_span>
+    <_span>There was a problem when fetching this subscription!</_span>
     <ul>
       <li>
         <xsl:call-template name="parseStatus">
@@ -126,42 +126,47 @@
       </li>
     </ul>
 
-    <!-- FIXME: provide parse phase specific solution hint! -->
-
     <span class="details">
-      <b><_span>Details</_span></b><br />
+      <b><_span>Details:</_span></b>
 
       <xsl:choose>
         <xsl:when test="/feed/error = 1">
-          <_span>Authentication failed. Please check the credentials and try again!</_span>
+          <p><_span>Authentication failed. Please check the credentials and try again!</_span></p>
         </xsl:when>
 
         <xsl:when test="/feed/error = 2">
           <xsl:if test="httpError">
-            <xsl:if test="httpErrorCode >= 100">
-              HTTP <xsl:value-of select="httpErrorCode"/>:
-            </xsl:if>
-            <xsl:value-of select="httpError" disable-output-escaping='yes'/>
+            <p>
+              <xsl:if test="httpErrorCode >= 100">
+                HTTP <xsl:value-of select="httpErrorCode"/>:
+              </xsl:if>
+              <xsl:value-of select="httpError" disable-output-escaping='yes'/>
+            </p>
           </xsl:if>
 
           <xsl:if test="updateError">
-            <br /><_span>There was an error when downloading the feed source:</_span>
-            <xsl:value-of select="updateError" disable-output-escaping='yes'/>
+            <p>
+              <_span>There was an error when downloading the feed source:</_span>
+              <pre class="errorOutput"><xsl:value-of select="updateError" disable-output-escaping='yes'/></pre>
+            </p>
           </xsl:if>
 
           <xsl:if test="filterError">
-            <br /><_span>There was an error when running the feed filter command:</_span>
-            <pre class="xmlparseroutput"><xsl:value-of select="filterError" disable-output-escaping='yes'/></pre>
+            <p>
+              <_span>There was an error when running the feed filter command:</_span>
+              <pre class="errorOutput"><xsl:value-of select="filterError" disable-output-escaping='yes'/></pre>
+            </p>
           </xsl:if>
         </xsl:when>
 
         <xsl:when test="/feed/error = 4">
-          <br/><_span>The source does not point to a feed or a webpage with a link to a feed!</_span>
+          <p><_span>The source does not point directly to a feed or a webpage with a link to a feed!</_span></p>
         </xsl:when>
 
         <xsl:when test="/feed/error = 8">
+          <p><_span>Sorry, the feed could not be parsed!</_span></p>
           <xsl:if test="parseError">
-            <pre class="xmlparseroutput"><xsl:value-of select="parseError" disable-output-escaping='yes'/></pre>
+            <pre class="errorOutput"><xsl:value-of select="parseError" disable-output-escaping='yes'/></pre>
             <p><_span>You may want to contact the author/webmaster of the feed about this!</_span></p>
           </xsl:if>
         </xsl:when>

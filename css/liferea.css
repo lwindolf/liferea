@@ -231,37 +231,33 @@ a.favicon img {
 	padding:0;
 }
 
-/* style for the HTTP error box at the beginning
+/* style for the feed fetch error box at the beginning
    of the feed description and for item comment feeds */
-#errors, #commentFeedError {
-	width:100%;
+#errors {
 	border:0;
 	border-bottom:1px solid black;
-	margin:0;
+	margin:12px 24px;
+	padding:12px;
 	background:#ffa;
 	color:black;
+	border:1px solid #GTK-COLOR-DARK;
 }
 
-#commentFeedError {
-	border:1px solid black;
+#errors ul {
+	list-style-type: none;
+	padding-inline-start: 15px;
 }
 
-#parseError, #filterError, #updateError {
-	padding:2px;
-	padding-left:5px;
-	padding-right:5px;
+#errors * li {
+	padding:1px;
 }
 
-.xmlparseroutput {
-	margin:10px 0px 10px 15px;
+pre.errorOutput {
+	margin:10px 15px;
 	padding:5px;
 	border:2px solid #GTK-COLOR-DARK;
 	background:#GTK-COLOR-LIGHT;
-}
-
-span.details {
-	padding:5px;
-	margin:15px;
+	overflow:auto;
 }
 
 del {

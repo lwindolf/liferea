@@ -84,14 +84,10 @@
 // div.comment_body { }
 // div.comment_title { }
 
-/* Styles for the HTTP error box at the beginning
+/* Styles for the feed fetch error box at the beginning
    of the feed description and for item comment feeds */
-// #errors, #commentFeedError { }
-// #parseError, #filterError, #updateError { }
-// .xmlparseroutput { }
-// span.details, span.detaillink { }
-// span.details { }
-// span.showmore { }
+// #errors { }
+// pre.errorOutput { }
 
 /* namespace specific styles */
 
