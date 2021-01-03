@@ -185,15 +185,18 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	gint		maxage = -1;
 	gint		syn_update = -1;
 	gint		ttl = subscription->updateState->timeToLive = -1;
+	guint		count, maxcount;
+	gchar		*statusbar;
 
 	/* 1. preprocessing */
+	statusbar = g_strdup ("");
 
 	g_assert (subscription->updateJob);
 	/* update the subscription URL on permanent redirects */
 	if ((301 == result->returncode || 308 == result->returncode) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
 		debug2 (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
 		subscription_set_source (subscription, result->source);
-		liferea_shell_set_status_bar (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
+		statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
 	}
 
 	if (401 == result->httpstatus) { /* unauthorized */
@@ -201,14 +204,21 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	} else if (410 == result->httpstatus) { /* gone */
 		subscription->discontinued = TRUE;
 		node->available = TRUE;
-		liferea_shell_set_status_bar (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
+		statusbar = g_strdup_printf (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
 	} else if (304 == result->httpstatus) {
 		node->available = TRUE;
-		liferea_shell_set_status_bar (_("\"%s\" has not changed since last update"), node_get_title(node));
+		statusbar = g_strdup_printf (_("\"%s\" has not changed since last update"), node_get_title(node));
 	} else {
 		processing = TRUE;
 	}
 
+	/* Clear status bar if we are last update in progress */
+	update_jobs_get_count (&count, &maxcount);
+	if (1 >= count)
+		liferea_shell_set_status_bar (statusbar);
+	else
+		liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), count, maxcount);
+	g_free (statusbar);
 
 	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
 
@@ -249,7 +259,8 @@ void
 subscription_update (subscriptionPtr subscription, guint flags)
 {
 	UpdateRequest	*request;
-	guint64			now;
+	guint64		now;
+	guint		count, maxcount;
 
 	if (!subscription)
 		return;
@@ -260,8 +271,6 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
 
 	if (subscription_can_be_updated (subscription)) {
-		liferea_shell_set_status_bar (_("Updating \"%s\""), node_get_title (subscription->node));
-
 		now = g_get_real_time();
 		subscription_reset_update_counter (subscription, &now);
 
@@ -278,6 +287,12 @@ subscription_update (subscriptionPtr subscription, guint flags)
 			subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, subscription, flags);
 		else
 			g_object_unref (request);
+
+		update_jobs_get_count (&count, &maxcount);
+		if (count > 1)
+			liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), count, maxcount);
+		else
+			liferea_shell_set_status_bar (_("Updating '%s'..."), node_get_title (subscription->node));
 	}
 }
 

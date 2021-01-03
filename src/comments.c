@@ -228,7 +228,7 @@ comments_refresh (itemPtr item)
 			NULL	// FIXME: use copy of parent subscription options
 		);
 
-		commentFeed->updateJob = update_execute_request (commentFeed, request, comments_process_update_result, commentFeed, FEED_REQ_PRIORITY_HIGH);
+		commentFeed->updateJob = update_execute_request (commentFeed, request, comments_process_update_result, commentFeed, FEED_REQ_PRIORITY_HIGH | FEED_REQ_NO_FEED);
 
 		/* Item view refresh to change link from "Update" to "Updating..." */
 		itemview_update_item (item);

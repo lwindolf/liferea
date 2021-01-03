@@ -273,6 +273,16 @@ void update_job_cancel_by_owner (gpointer owner);
  */
 gint update_job_get_state (updateJobPtr job);
 
+/**
+* update_jobs_get_count:
+*
+* Query current count and max count of subscriptions in update queue
+*
+* @count:	gint ref to pass back nr of subscriptions in update
+* @maxcount:	gint ref to pass back max nr of subscriptions in update
+*/
+void update_jobs_get_count (guint *count, guint *maxcount);
+
 G_END_DECLS
 
 #endif

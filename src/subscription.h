@@ -37,6 +37,7 @@ enum cache_limit {
 enum feed_request_flags {
 	FEED_REQ_RESET_TITLE		= (1<<0),	/**< Feed's title should be reset to default upon update */
 	FEED_REQ_PRIORITY_HIGH		= (1<<3),	/**< set to signal that this is an important user triggered request */
+	FEED_REQ_NO_FEED                = (1<<4)	/**< Requesting something not a feed (just for statistics) */
 };
 
 /** Common structure to hold all information about a single subscription. */

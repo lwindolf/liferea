@@ -224,7 +224,7 @@ ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr su
 
 	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
 
-	subscription->updateJob = update_execute_request (subscription, request, ttrss_source_subscription_list_cb, subscription, 0);
+	subscription->updateJob = update_execute_request (subscription, request, ttrss_source_subscription_list_cb, subscription, FEED_REQ_NO_FEED);
 }
 
 static void

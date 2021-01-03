@@ -143,7 +143,7 @@ theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
 
 	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
 
-	update_execute_request (source, request, theoldreader_source_login_cb, source->root, flags);
+	update_execute_request (source, request, theoldreader_source_login_cb, source->root, flags | FEED_REQ_NO_FEED);
 }
 
 /* node source type implementation */

@@ -1,7 +1,7 @@
 /**
  * @file update.c  generic update request and state processing
  *
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -294,6 +294,31 @@ update_job_get_state (updateJobPtr job)
 }
 
 static void
+update_job_show_count_foreach_func (gpointer data, gpointer user_data)
+{
+	updateJobPtr	job = (updateJobPtr)data;
+	guint		*count = (guint *)user_data;
+
+	// Count all subscription jobs (ignore HTML5 and favicon requests)
+	if (!(job->flags & FEED_REQ_NO_FEED))
+		(*count)++;
+}
+
+static guint maxcount = 0;
+
+void
+update_jobs_get_count (guint *count, guint *max)
+{
+	*count = 0;
+	g_slist_foreach (jobs, update_job_show_count_foreach_func, count);
+
+	if (*count > maxcount)
+		maxcount = *count;
+
+	*max = maxcount;
+}
+
+static void
 update_job_free (updateJobPtr job)
 {
 	if (!job)
@@ -577,6 +602,7 @@ update_execute_request (gpointer owner,
 			updateFlags flags)
 {
 	updateJobPtr job;
+	gint count;
 
 	g_assert (request->options != NULL);
 	g_assert (request->source != NULL);

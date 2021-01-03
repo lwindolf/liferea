@@ -259,7 +259,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 				NULL 	// Explicitely do not the feed's proxy/auth options to 3rd parties like Google (AMP)!
 			);
 
-			update_execute_request (NULL, request, feed_enrich_item_cb, item, 0);
+			update_execute_request (NULL, request, feed_enrich_item_cb, item, FEED_REQ_NO_FEED);
 
 			g_free (ampurl);
 		}
@@ -294,7 +294,7 @@ feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 		subscription->updateOptions	// Pass options of parent feed (e.g. password, proxy...)
 	);
 
-	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), 0);
+	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), FEED_REQ_NO_FEED);
 }
 
 
@@ -306,6 +306,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 	feedParserCtxtPtr	ctxt;
 	nodePtr			node = subscription->node;
 	feedPtr			feed = (feedPtr)node->data;
+	guint			count;
 
 	debug_enter ("feed_process_update_result");
 
@@ -348,15 +349,11 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 			if (flags > 0)
 				db_subscription_update (subscription);
-
-			liferea_shell_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
 		}
 
 		feed_free_parser_ctxt (ctxt);
 	} else {
 		node->available = FALSE;
-
-		liferea_shell_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
 	}
 
 	feed_list_view_update_node (node->id);
