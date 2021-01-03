@@ -1435,11 +1435,11 @@ msgstr "Filtruj po kategorii"
 
 #: ../plugins/plugin-installer.py:140
 msgid "_Install"
-msgstr "_Instaluj"
+msgstr "Za_instaluj"
 
 #: ../plugins/plugin-installer.py:144
 msgid "_Uninstall"
-msgstr "Odinsta_uj"
+msgstr "Odinstal_uj"
 
 #: ../plugins/plugin-installer.py:245
 #, python-format
