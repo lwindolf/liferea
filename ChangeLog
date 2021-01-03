@@ -9,6 +9,9 @@ To be released
 	  item count) in the feed list
 	  (Lars Windolf)
 
+	* Now search folders are automatically rebuild when rules are changed
+	  (Lars Windolf)
+
 	* Fixes #192: wrong button order of media player in RTL locales
 	  (patch by GreenLunar)
 

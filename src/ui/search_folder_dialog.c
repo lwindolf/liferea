@@ -82,6 +82,9 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 			feedlist_node_added (sfd->node);
 
 		feed_list_view_update_node (sfd->node->id);
+
+		/* rebuild the search folder */
+		vfolder_rebuild (sfd->node);
 	}
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
