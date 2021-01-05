@@ -185,7 +185,7 @@ metadata_list_append (GSList *metadata, const gchar *strid, const gchar *data)
 			if (!strchr(data, '<') && !(strchr (data, '>')) && !(strchr (data, '&'))) {
 				checked_data = g_strdup (data);
 			} else {
-				checked_data = common_uri_escape (data);
+				checked_data = (gchar *)common_uri_escape ((xmlChar *)data);
 			}
 
 			/* finally strip whitespace */
@@ -334,14 +334,14 @@ metadata_add_xml_nodes (GSList *metadata, xmlNodePtr parentNode)
 {
 	GSList *list = metadata;
 	xmlNodePtr attribute;
-	xmlNodePtr metadataNode = xmlNewChild (parentNode, NULL, "attributes", NULL);
+	xmlNodePtr metadataNode = xmlNewChild (parentNode, NULL, BAD_CAST"attributes", NULL);
 
 	while (list) {
 		struct pair *p = (struct pair*)list->data;
 		GSList *list2 = p->data;
 		while (list2) {
-			attribute = xmlNewTextChild (metadataNode, NULL, "attribute", list2->data);
-			xmlNewProp (attribute, "name", p->strid);
+			attribute = xmlNewTextChild (metadataNode, NULL, BAD_CAST"attribute", (xmlChar *)list2->data);
+			xmlNewProp (attribute, BAD_CAST"name", (xmlChar *)p->strid);
 			list2 = list2->next;
 		}
 		list = list->next;
