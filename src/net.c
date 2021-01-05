@@ -152,24 +152,6 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	update_process_finished_job (job);
 }
 
-static SoupURI *
-network_get_proxy_uri (void)
-{
-	SoupURI *uri = NULL;
-
-	if (!proxyname)
-		return uri;
-
-	uri = soup_uri_new (NULL);
-	soup_uri_set_scheme (uri, SOUP_URI_SCHEME_HTTP);
-	soup_uri_set_host (uri, proxyname);
-	soup_uri_set_port (uri, proxyport);
-	soup_uri_set_user (uri, proxyusername);
-	soup_uri_set_password (uri, proxypassword);
-
-	return uri;
-}
-
 /* Downloads a feed specified in the request structure, returns
    the downloaded data or NULL in the request structure.
    If the webserver reports a permanent redirection, the

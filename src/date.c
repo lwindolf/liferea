@@ -1,9 +1,9 @@
 /**
  * @file date.c date formatting routines
- * 
+ *
  * Copyright (C) 2008-2011  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
- * 
+ *
  * The date formatting was reused from the Evolution code base
  *
  *    Author: Chris Lahey <clahey@ximian.com
@@ -113,7 +113,7 @@ date_format_nice (gint64 date)
 	GDateTime *then, *now, *yesterday;
 	gchar *temp, *buf;
 	gboolean done = FALSE;
-	
+
 	then = g_date_time_new_from_unix_local (date);
 	now = g_date_time_new_now_local ();
 
@@ -182,7 +182,7 @@ date_format (gint64 date, const gchar *date_format)
 {
 	gchar		*result;
 	GDateTime 	*date_tm;
-	
+
 	if (date == 0) {
 		return g_strdup ("");
 	}
@@ -204,13 +204,12 @@ gint64
 date_parse_ISO8601 (const gchar *date)
 {
 	GDateTime 	*datetime = NULL;
-	gboolean 	result;
 	guint64 	year, month, day;
 	gint64 		t = 0;
 	gchar		*pos, *next, *ascii_date = NULL;
-	
+
 	g_assert (date != NULL);
-	
+
 	/* we expect at least something like "2003-08-07T15:28:19" and
 	   don't require the second fractions and the timezone info
 
@@ -255,7 +254,7 @@ date_parse_ISO8601 (const gchar *date)
 		t = g_date_time_to_unix (datetime);
 		g_date_time_unref (datetime);
 	}
-	
+
 parsing_failed:
 	if (!t)
 		debug0 (DEBUG_PARSING, "Invalid ISO8601 date format! Ignoring <dc:date> information!");
@@ -354,7 +353,7 @@ date_parse_rfc822_tz (char *token)
 			if (!strncmp (inptr, tz_offsets[t].name, strlen (tz_offsets[t].name)))
 				return g_time_zone_new (tz_offsets[t].offset);
 	}
-	
+
 	return g_time_zone_new_utc ();
 }
 
@@ -381,12 +380,12 @@ date_parse_RFC822 (const gchar *date)
 	gint64		t = 0;
 	gchar		*pos, *next, *ascii_date = NULL;
 
-	/* we expect at least something like "03 Dec 12 01:38:34" 
+	/* we expect at least something like "03 Dec 12 01:38:34"
 	   and don't require a day of week or the timezone
 
 	   the most specific format we expect:  "Fri, 03 Dec 12 01:38:34 CET"
 	 */
-	
+
 	/* skip day of week */
 	pos = g_utf8_strchr(date, -1, ',');
 	if (pos)
