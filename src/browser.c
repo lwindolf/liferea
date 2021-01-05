@@ -46,7 +46,7 @@ browser_get_manual_command (void)
 		conf_get_str_value (BROWSER_COMMAND, &cmd);
 	}
 	g_free (libname);
-		
+
 	return cmd;
 }
 
@@ -57,13 +57,13 @@ browser_execute (const gchar *cmd, const gchar *uri)
 	gchar 		*safeUri, *tmp, **argv, **iter;
 	gint 		argc;
 	gboolean	done = FALSE;
-  
+
 	g_assert (cmd != NULL);
 	g_assert (uri != NULL);
 
-	safeUri = common_uri_sanitize (uri);
+	safeUri = (gchar *)common_uri_sanitize ((xmlChar *)uri);
 
-	/* If we run using a Mozilla like "-remote openURL()" mechanism we 
+	/* If we run using a Mozilla like "-remote openURL()" mechanism we
 	   need to escape commata, but not in other cases (see SF #2901447) */
 	if (strstr(cmd, "openURL("))
 		safeUri = common_strreplace (safeUri, ",", "%2C");
@@ -73,7 +73,7 @@ browser_execute (const gchar *cmd, const gchar *uri)
 		tmp = g_strdup (cmd);
 	else
 		tmp = g_strdup_printf ("%s %%s", cmd);
-  
+
 	/* Parse and substitute the %s in the command */
 	g_shell_parse_argv (tmp, &argc, &argv, &error);
 	g_free (tmp);
@@ -83,7 +83,7 @@ browser_execute (const gchar *cmd, const gchar *uri)
 		g_error_free (error);
 		return FALSE;
 	}
-  
+
 	if (argv) {
 		for (iter = argv; *iter != NULL; iter++)
 			*iter = common_strreplace (*iter, "%s", safeUri);
@@ -92,7 +92,7 @@ browser_execute (const gchar *cmd, const gchar *uri)
 	tmp = g_strjoinv (" ", argv);
 	debug1 (DEBUG_GUI, "Running the browser-remote %s command", tmp);
 	g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
-  
+
 	if (error && (0 != error->code)) {
 		debug2 (DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
 		liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
@@ -101,7 +101,7 @@ browser_execute (const gchar *cmd, const gchar *uri)
 		liferea_shell_set_status_bar (_("Starting: \"%s\""), tmp);
 		done = TRUE;
 	}
-  
+
 	g_free (safeUri);
 	g_free (tmp);
 	g_strfreev (argv);
@@ -113,10 +113,10 @@ gboolean
 browser_launch_URL_external (const gchar *uri)
 {
 	gchar		*cmd = NULL;
-	gboolean	done = FALSE;	
-	
+	gboolean	done = FALSE;
+
 	g_assert (uri != NULL);
-	
+
 	cmd = browser_get_manual_command ();
 	if (cmd) {
 		done = browser_execute (cmd, uri);

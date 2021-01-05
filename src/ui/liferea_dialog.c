@@ -99,7 +99,6 @@ liferea_dialog_new (const gchar *name)
 {
 	LifereaDialog	*ld;
 	gchar 		*path;
-	GError          *error = NULL;
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
 	path = g_strdup_printf ("%s%s.ui", PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S, name);

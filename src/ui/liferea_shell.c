@@ -848,7 +848,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 
 	if ((gtk_selection_data_get_length (data) >= 0) && (gtk_selection_data_get_format (data) == 8)) {
 		/* extra handling to accept multiple drops */
-		freeme = tmp1 = g_strdup (gtk_selection_data_get_data (data));
+		freeme = tmp1 = g_strdup ((gchar *) gtk_selection_data_get_data (data));
 		while ((tmp2 = strsep (&tmp1, "\n\r"))) {
 			if (strlen (tmp2)) {
 				/* if the drop is over a node, select it so that feedlist_add_subscription()
