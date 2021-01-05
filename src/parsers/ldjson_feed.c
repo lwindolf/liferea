@@ -1,7 +1,7 @@
 /**
  * @file ldjson_feed.c  Parsing LD+JSON snippets in HTML5 webpages like feeds
  *
- * Copyright (C) 2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2020-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,14 +63,14 @@ ldjson_feed_parse_json_website (JsonNode *node, feedParserCtxtPtr ctxt)
 	    }
 	*/
 
-	if (tmp = json_get_string (node, "name"))
+	if ((tmp = json_get_string (node, "name")))
 		node_set_title (ctxt->subscription->node, tmp);
 
-	if (tmp = json_get_string (node, "url"))
+	if ((tmp = json_get_string (node, "url")))
 		subscription_set_homepage (ctxt->subscription, tmp);
 
-	if (logo = json_get_node (node, "logo"))
-		if (tmp = json_get_string (logo, "url"))
+	if ((logo = json_get_node (node, "logo")))
+		if ((tmp = json_get_string (logo, "url")))
 			metadata_list_set (&ctxt->subscription->metadata, "imageUrl", tmp);
 }
 
@@ -127,7 +127,7 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 	else
 		eventStatus = NULL;
 
-	if (tmp = json_get_string (node, "startDate")) {
+	if ((tmp = json_get_string (node, "startDate"))) {
 		// schema.org says startDate should be ISO8601, but RFC822
 		// is seen to often. So fuzzy match date format.
 		if (strstr (tmp, " "))
@@ -139,17 +139,17 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 		ctxt->item->time = ctxt->feed->time;
 	}
 
-	if (tmp = json_get_string (node, "url")) {
-		gchar *link = common_build_url (tmp, ctxt->subscription->source);
-		item_set_source (ctxt->item, link);
-		g_free (link);
+	if ((tmp = json_get_string (node, "url"))) {
+		xmlChar *link = common_build_url (tmp, ctxt->subscription->source);
+		item_set_source (ctxt->item, (const gchar *)link);
+		xmlFree (link);
 
 		// we use the link as id, as on websites link point to unique
 		// content in 99% of the cases
 		ctxt->item->sourceId = g_strdup (tmp);
 	}
 
-	if (tmp = json_get_string (node, "name")) {
+	if ((tmp = json_get_string (node, "name"))) {
 		gchar *title;
 
 		if (eventStatus && !g_str_equal (eventStatus, "Scheduled"))
@@ -161,7 +161,7 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 		g_free (title);
 	}
 
-	if (tmp = json_get_string (node, "description")) {
+	if ((tmp = json_get_string (node, "description"))) {
 		GString *description = g_string_new (NULL);
 		const gchar *image = json_get_string (node, "image");
 
@@ -212,11 +212,10 @@ ldjson_feed_parse_json (xmlNodePtr xml, gpointer userdata) {
 	feedParserCtxtPtr	ctxt = (feedParserCtxtPtr)userdata;
 	JsonParser		*json = json_parser_new ();
 	JsonNode		*node;
-	const char		*type;
 
-	gchar *data = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
+	xmlChar *data = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
 	if (data) {
-		json_parser_load_from_data (json, data, -1, NULL);
+		json_parser_load_from_data (json, (gchar *)data, -1, NULL);
 		node = json_parser_get_root (json);
 		if (node) {
 			/* Loop over array objects or directly use object as is */
@@ -235,7 +234,7 @@ ldjson_feed_parse_json (xmlNodePtr xml, gpointer userdata) {
 
 		g_object_unref (json);
 	}
-	g_free (data);
+	xmlFree (data);
 }
 
 /**
@@ -248,8 +247,6 @@ static void
 ldjson_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 {
 	gchar		*tmp;
-	short 		rdf = 0;
-	int 		error = 0;
 	xmlNodePtr	cur;
 	xmlChar		*baseURL = xmlNodeGetBase (root->doc, root);
 
@@ -262,11 +259,11 @@ ldjson_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 	if (baseURL == NULL)
 		xmlNodeSetBase (root, (xmlChar *)ctxt->subscription->source);
 
-	if (cur = xpath_find (root, "/html/head/title")) {
+	if ((cur = xpath_find (root, "/html/head/title"))) {
 		ctxt->title = unxmlize (xhtml_extract (cur, 0, NULL));
 	}
 
-	if (cur = xpath_find (root, "/html/head/meta[@name = 'description']")) {
+	if ((cur = xpath_find (root, "/html/head/meta[@name = 'description']"))) {
 		tmp = xhtml_extract (cur, 0, NULL);
 		if (tmp) {
 			metadata_list_set (&ctxt->subscription->metadata, "description", tmp);
@@ -299,13 +296,13 @@ ldjson_feed_check_json_type (JsonNode *node, gpointer userdata)
 static void
 ldjson_feed_check_json (xmlNodePtr xml, gpointer userdata)
 {
-	gchar 		*data;
+	xmlChar		*data;
 	JsonParser	*json = json_parser_new ();
 	JsonNode	*node;
 
 	data = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
 	if (data) {
-		json_parser_load_from_data (json, data, -1, NULL);
+		json_parser_load_from_data (json, (gchar *)data, -1, NULL);
 		node = json_parser_get_root (json);
 		if (node) {
 			/* Loop over array objects or directly use object as is */
@@ -323,7 +320,7 @@ ldjson_feed_check_json (xmlNodePtr xml, gpointer userdata)
 		}
 		g_object_unref (json);
 	}
-	g_free (data);
+	xmlFree (data);
 }
 
 static gboolean
