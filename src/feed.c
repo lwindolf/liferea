@@ -1,7 +1,7 @@
 /**
  * @file feed.c  feed node and subscription type
  *
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -178,6 +178,10 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 
 	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
 		xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
+
+	tmp = g_strdup_printf("%d", node->subscription->error);
+	xmlNewTextChild(feedNode, NULL, "error", tmp);
+	g_free(tmp);
 }
 
 xmlDocPtr
@@ -297,7 +301,6 @@ feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), FEED_REQ_NO_FEED);
 }
 
-
 /* implementation of subscription type interface */
 
 static void
@@ -310,53 +313,48 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 
 	debug_enter ("feed_process_update_result");
 
-	if (result->data) {
-		/* parse the new downloaded feed into feed and itemSet */
-		ctxt = feed_create_parser_ctxt ();
-		ctxt->feed = feed;
-		ctxt->data = result->data;
-		ctxt->dataLength = result->size;
-		ctxt->subscription = subscription;
+	ctxt = feed_parser_ctxt_new (subscription, result->data, result->size);
 
-		/* try to parse the feed */
-		if (!feed_parse (ctxt)) {
-			/* No feed found, display an error */
-			node->available = FALSE;
-
-			g_string_prepend (feed->parseErrors, _("<p>Could not detect the type of this feed! Please check if the source really points to a resource provided in one of the supported syndication formats!</p>"
-			                                       "XML Parser Output:<br /><div class='xmlparseroutput'>"));
-			g_string_append (feed->parseErrors, "</div>");
-		} else if (!ctxt->feed->fhp) {
-			/* There's a feed but no handler. This means autodiscovery
-			 * found a feed, but we still need to download it.
-			 * An update should be in progress that will process it */
-		} else {
-			/* Feed found, process it */
-			itemSetPtr	itemSet;
-
-			node->available = TRUE;
-
-			/* merge the resulting items into the node's item set */
-			itemSet = node_get_itemset (node);
-			node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
-			if (node->newCount)
-				itemlist_merge_itemset (itemSet);
-			itemset_free (itemSet);
-
-			/* restore user defined properties if necessary */
-			if ((flags & FEED_REQ_RESET_TITLE) && ctxt->title)
-				node_set_title (node, ctxt->title);
-
-			if (flags > 0)
-				db_subscription_update (subscription);
-		}
-
-		feed_free_parser_ctxt (ctxt);
-	} else {
+  /* try to parse the feed */
+	if (!feed_parse (ctxt)) {
+		/* No feed found, display an error */
 		node->available = FALSE;
+
+	} else if (!ctxt->feed->fhp) {
+		/* There's a feed but no handler. This means autodiscovery
+		 * found a feed, but we still need to download it.
+		 * An update should be in progress that will process it */
+	} else {
+		/* Feed found, process it */
+		itemSetPtr	itemSet;
+
+		node->available = TRUE;
+
+		/* merge the resulting items into the node's item set */
+		itemSet = node_get_itemset (node);
+		node->newCount = itemset_merge_items (itemSet, ctxt->items, ctxt->feed->valid, ctxt->feed->markAsRead);
+		if (node->newCount)
+			itemlist_merge_itemset (itemSet);
+		itemset_free (itemSet);
+
+		/* restore user defined properties if necessary */
+		if ((flags & FEED_REQ_RESET_TITLE) && ctxt->title)
+			node_set_title (node, ctxt->title);
+
+		// FIXME: this duplicates the db_subscription_update() in subscription.c
+		if (flags > 0)
+			db_subscription_update (subscription);
 	}
 
-	feed_list_view_update_node (node->id);
+	feed_parser_ctxt_free (ctxt);
+
+	// FIXME: this should not be here, but in subscription.c
+	if (FETCH_ERROR_NONE != subscription->error) {
+		node->available = FALSE;
+		liferea_shell_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
+	} else {
+		liferea_shell_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
+	}
 
 	debug_exit ("feed_process_update_result");
 }

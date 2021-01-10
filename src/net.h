@@ -1,7 +1,7 @@
 /**
  * @file net.h  HTTP network access interface
  *
- * Copyright (C) 2007-2009 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -101,11 +101,10 @@ void network_process_request (const updateJobPtr job);
 /**
  * Returns explanation string for the given network error code.
  *
- * @param netstatus	network error status
- * @param httpstatus	HTTP status code
+ * @param status	libsoup status code
  *
  * @returns explanation string
  */
-const char * network_strerror (gint netstatus, gint httpstatus);
+const char * network_strerror (gint status);
 
 #endif

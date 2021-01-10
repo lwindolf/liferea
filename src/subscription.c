@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  *
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -136,17 +136,13 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
  *
  * @param subscription	the subscription
  * @param httpstatus	the new HTTP status code
- * @param resultcode	the update result code
  * @param filterError	filter error string (or NULL)
  */
 static void
 subscription_update_error_status (subscriptionPtr subscription,
                                   gint httpstatus,
-                                  gint resultcode,
                                   gchar *filterError)
 {
-	gboolean	errorFound = FALSE;
-
 	if (subscription->filterError)
 		g_free (subscription->filterError);
 	if (subscription->httpError)
@@ -155,22 +151,21 @@ subscription_update_error_status (subscriptionPtr subscription,
 		g_free (subscription->updateError);
 
 	subscription->filterError = g_strdup (filterError);
-	subscription->updateError = NULL;
+	subscription->updateError = NULL;	// FIXME: this might not be very useful!
 	subscription->httpError = NULL;
 	subscription->httpErrorCode = httpstatus;
 
-	if (((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
-	    (NULL == subscription->filterError))
-		return;
+	/* Note: the httpstatus we get here is a libsoup status code
+	   which is either a HTTP status code or a libsoup status.
+	   https://developer.gnome.org/libsoup/unstable/libsoup-2.4-soup-status.html
 
-	if ((200 != httpstatus) || (resultcode != 0)) {
-		subscription->httpError = g_strdup (network_strerror (resultcode, httpstatus));
-		errorFound = TRUE;
-	}
+	   Therefore we know if it is between 200 an 399 all is fine.
 
-	/* if none of the above error descriptions matched... */
-	if (!errorFound)
-		subscription->updateError = g_strdup (_("There was a problem while reading this subscription. Please check the URL and console output."));
+	   Otherwise we build a message according to the libsoup doc
+	 */
+
+	if (!((httpstatus >= 200) && (httpstatus < 400)))
+		subscription->httpError = g_strdup (network_strerror (httpstatus));
 }
 
 static void
@@ -179,12 +174,6 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
-	guint64		now;
-	gint		next_update = 0;
-	gint		update_time_sources = 0;
-	gint		maxage = -1;
-	gint		syn_update = -1;
-	gint		ttl = subscription->updateState->timeToLive = -1;
 	guint		count, maxcount;
 	gchar		*statusbar;
 
@@ -193,21 +182,33 @@ subscription_process_update_result (const struct updateResult * const result, gp
 
 	g_assert (subscription->updateJob);
 	/* update the subscription URL on permanent redirects */
-	if ((301 == result->returncode || 308 == result->returncode) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
+	if ((301 == result->httpstatus || 308 == result->httpstatus) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
 		debug2 (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
 		subscription_set_source (subscription, result->source);
-		statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
-	}
+    statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
+  }
 
-	if (401 == result->httpstatus) { /* unauthorized */
-		auth_dialog_new (subscription, flags);
-	} else if (410 == result->httpstatus) { /* gone */
-		subscription->discontinued = TRUE;
-		node->available = TRUE;
-		statusbar = g_strdup_printf (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
+	/* consider everything that prevents processing the data we got */
+	if (result->httpstatus >= 400 || !result->data) {
+		/* Default */
+		subscription->error = FETCH_ERROR_NET;
+		node->available = FALSE;
+
+		/* Special handling */
+		if (401 == result->httpstatus) { /* unauthorized */
+			subscription->error = FETCH_ERROR_AUTH;
+			auth_dialog_new (subscription, flags);
+		}
+		if (410 == result->httpstatus) { /* gone */
+			subscription->discontinued = TRUE;
+			statusbar = g_strdup_printf (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
+		}
 	} else if (304 == result->httpstatus) {
 		node->available = TRUE;
 		statusbar = g_strdup_printf (_("\"%s\" has not changed since last update"), node_get_title(node));
+	} else if (result->filterErrors) {
+		node->available = FALSE;
+		subscription->error = FETCH_ERROR_NET;
 	} else {
 		processing = TRUE;
 	}
@@ -220,7 +221,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 		liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
 	g_free (statusbar);
 
-	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
+	subscription_update_error_status (subscription, result->httpstatus, result->filterErrors);
 
 	subscription->updateJob = NULL;
 
@@ -228,12 +229,11 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (processing)
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 
-	/* 3. call favicon updating after subscription processing
+	/* 3. call favicon updating only after subscription processing
 	      to ensure we have valid baseUrl for feed nodes...
 
 	      check creation date and update favicon if older than one month */
-	now = g_get_real_time();
-	if (now > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
+	if (g_get_real_time() > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
 		subscription_icon_update (subscription);
 
 	/* 4. generic postprocessing */
@@ -242,16 +242,19 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
 	subscription->updateState->lastPoll = g_get_real_time();
 
-	// FIXME: use new-items signal in itemview class
+	// FIXME: use signal here
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
 
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);
 
+	feedlist_node_was_updated (node);
+	feed_list_view_update_node (node->id);	// FIXME: This should be dropped once the "node-updated" signal is consumed
+
 	if (processing && subscription->node->newCount > 0) {
+		// FIXME: use new-items signal in itemview class
 		feedlist_new_items (node->newCount);
-		feedlist_node_was_updated (node);
 	}
 }
 

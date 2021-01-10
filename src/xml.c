@@ -415,13 +415,13 @@ xml_buffer_parse_error (void *ctxt, const gchar * msg, ...)
 			g_free (newmsg);
 			newmsg = tmp;
 
-			g_string_append_printf(errors->msg, "<pre>%s</pre>\n", newmsg);
+			g_string_append_printf(errors->msg, "%s\n", newmsg);
 		}
 		g_free(newmsg);
 	}
 
 	if (MAX_PARSE_ERROR_LINES == errors->errorCount)
-		g_string_append_printf (errors->msg, "<br />%s", _("[There were more errors. Output was truncated!]"));
+		g_string_append (errors->msg, _("[There were more errors. Output was truncated!]"));
 }
 
 static xmlDocPtr entities = NULL;
@@ -530,7 +530,6 @@ liferea_xml_errorSAXFunc (void * ctx, const char * msg,...)
 {
 	va_list valist;
 	gchar *parser_error = NULL;
-
 	va_start(valist,msg);
 	parser_error = g_strdup_vprintf (msg, valist);
 	va_end(valist);
@@ -538,9 +537,8 @@ liferea_xml_errorSAXFunc (void * ctx, const char * msg,...)
 	g_free (parser_error);
 }
 
-
 xmlDocPtr
-xml_parse (gchar *data, size_t length, errorCtxtPtr errCtx)
+xml_parse (const gchar *data, size_t length, errorCtxtPtr errCtx)
 {
 	xmlParserCtxtPtr	ctxt;
 	xmlDocPtr		doc;

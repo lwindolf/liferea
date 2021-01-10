@@ -1,7 +1,7 @@
 /**
  * @file feed_parser.c  parsing of different feed formats
  *
- * Copyright (C) 2008-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,17 +82,22 @@ feed_type_str_to_fhp (const gchar *str)
 }
 
 feedParserCtxtPtr
-feed_create_parser_ctxt (void)
+feed_parser_ctxt_new (subscriptionPtr subscription, const gchar *data, gsize size)
 {
 	feedParserCtxtPtr ctxt;
 
 	ctxt = g_new0 (struct feedParserCtxt, 1);
+	ctxt->subscription = subscription;
+	ctxt->feed = (feedPtr)subscription->node->data;
+	ctxt->data = data;
+	ctxt->dataLength = size;
 	ctxt->tmpdata = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+
 	return ctxt;
 }
 
 void
-feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
+feed_parser_ctxt_free (feedParserCtxtPtr ctxt)
 {
 	if (ctxt) {
 		/* Don't free the itemset! */
@@ -107,19 +112,12 @@ feed_free_parser_ctxt (feedParserCtxtPtr ctxt)
  * tries to download it. If it finds a valid feed source it parses
  * this source instead into the given feed parsing context. It also
  * replaces the HTTP URI with the found feed source.
- *
- * Mutates ctxt->feed->parseErrors
  */
 static gboolean
 feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 {
 	gchar	*source = NULL;
 	GSList	*links;
-
-	if (ctxt->feed->parseErrors)
-		g_string_truncate (ctxt->feed->parseErrors, 0);
-	else
-		ctxt->feed->parseErrors = g_string_new(NULL);
 
 	debug2 (DEBUG_UPDATE, "Starting feed auto discovery (%s) redirects=%d", subscription_get_source (ctxt->subscription), ctxt->subscription->autoDiscoveryTries);
 
@@ -142,7 +140,6 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 	}
 
 	debug0 (DEBUG_UPDATE, "No feed link found!");
-	g_string_append (ctxt->feed->parseErrors, _("The URL you want Liferea to subscribe to points to a webpage and the auto discovery found no feeds on this page. Maybe this webpage just does not support feed auto discovery."));
 	return FALSE;
 }
 
@@ -195,11 +192,12 @@ feed_parse (feedParserCtxtPtr ctxt)
 	/* 1.) try to parse downloaded data as XML */
 	do {
 		if (NULL == (xmlDoc = xml_parse_feed (ctxt))) {
-			//g_string_append_printf (ctxt->feed->parseErrors, _("XML error while reading feed! Feed \"%s\" could not be loaded!"), subscription_get_source (ctxt->subscription));
+			ctxt->subscription->error = FETCH_ERROR_XML;
 			break;
 		}
 
 		if (NULL == (xmlNode = xmlDocGetRootElement (xmlDoc))) {
+			ctxt->subscription->error = FETCH_ERROR_XML;
 			g_string_append (ctxt->feed->parseErrors, _("Empty document!"));
 			break;
 		}
@@ -257,17 +255,12 @@ feed_parse (feedParserCtxtPtr ctxt)
 	if (xmlDoc)
 		xmlFreeDoc (xmlDoc);
 
-	/* 4.) We give up and inform the user */
+	/* 4.) Update subscription error status */
 	if (!success && !autoDiscovery) {
-		/* test if we have a HTML page */
+		/* Fuzzy test for HTML document */
 		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
-		     strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML "))) {
-			debug0 (DEBUG_UPDATE, "HTML document detected!");
-			g_string_append (ctxt->feed->parseErrors, _("Source points to HTML document."));
-		} else {
-			debug0 (DEBUG_UPDATE, "neither a known feed type nor a HTML document!");
-			g_string_append (ctxt->feed->parseErrors, _("Could not determine the feed type."));
-		}
+		     strstr (ctxt->data, "<html ") || strstr (ctxt->data, "<HTML ")))
+			ctxt->subscription->error = FETCH_ERROR_DISCOVER;
 	} else {
 		if (ctxt->feed->fhp) {
 			debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
@@ -278,6 +271,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 			   succeed. Still our auto-discovery was successful. */
 		}
 		success = TRUE;
+		ctxt->subscription->error = FETCH_ERROR_NONE;
 	}
 
 	debug_exit ("feed_parse");

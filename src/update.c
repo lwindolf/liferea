@@ -28,8 +28,6 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 
-#include <libpeas/peas-extension-set.h>
-
 #include <unistd.h>
 #include <stdio.h>
 #if !defined (G_OS_WIN32) || defined (HAVE_SYS_WAIT_H)
@@ -333,7 +331,7 @@ update_job_free (updateJobPtr job)
 
 /* filter idea (and some of the code) was taken from Snownews */
 static gchar *
-update_exec_filter_cmd (gchar *cmd, gchar *data, gchar **errorOutput, size_t *size)
+update_exec_filter_cmd (updateJobPtr job)
 {
 	int		fd, status;
 	gchar		*command;
@@ -341,47 +339,48 @@ update_exec_filter_cmd (gchar *cmd, gchar *data, gchar **errorOutput, size_t *si
 	char		*tmpfilename;
 	char		*out = NULL;
 	FILE		*file, *p;
+	size_t		size = 0;
 
-	*errorOutput = NULL;
 	tmpfilename = g_build_filename (tmpdir, "liferea-XXXXXX", NULL);
 
-	fd = g_mkstemp(tmpfilename);
+	fd = g_mkstemp (tmpfilename);
 
-	if(fd == -1) {
-		debug1(DEBUG_UPDATE, "Error opening temp file %s to use for filtering!", tmpfilename);
-		*errorOutput = g_strdup_printf(_("Error opening temp file %s to use for filtering!"), tmpfilename);
-		g_free(tmpfilename);
+	if (fd == -1) {
+		debug1 (DEBUG_UPDATE, "Error opening temp file %s to use for filtering!", tmpfilename);
+		job->result->filterErrors = g_strdup_printf (_("Error opening temp file %s to use for filtering!"), tmpfilename);
+		g_free (tmpfilename);
 		return NULL;
 	}
 
-	file = fdopen(fd, "w");
-	fwrite(data, strlen(data), 1, file);
-	fclose(file);
+	file = fdopen (fd, "w");
+	fwrite (job->result->data, strlen (job->result->data), 1, file);
+	fclose (file);
 
-	*size = 0;
-	command = g_strdup_printf("%s < %s", cmd, tmpfilename);
-	p = popen(command, "r");
-	g_free(command);
-	if(NULL != p) {
-		while(!feof(p) && !ferror(p)) {
+	command = g_strdup_printf("%s < %s", job->request->filtercmd, tmpfilename);
+	p = popen (command, "r");
+	if (NULL != p) {
+		while (!feof (p) && !ferror (p)) {
 			size_t len;
-			out = g_realloc(out, *size+1025);
-			len = fread(&out[*size], 1, 1024, p);
-			if(len > 0)
-				*size += len;
+			out = g_realloc (out, size + 1025);
+			len = fread (&out[size], 1, 1024, p);
+			if (len > 0)
+				size += len;
 		}
-		status = pclose(p);
-		if(!(WIFEXITED(status) && WEXITSTATUS(status) == 0)) {
-			*errorOutput = g_strdup_printf(_("%s exited with status %d"),
-			                              cmd, WEXITSTATUS(status));
-			*size = 0;
+		status = pclose (p);
+		if (!(WIFEXITED (status) && WEXITSTATUS (status) == 0)) {
+			debug2 (DEBUG_UPDATE, "%s exited with status %d!", command, WEXITSTATUS(status));
+			job->result->filterErrors = g_strdup_printf (_("%s exited with status %d"), command, WEXITSTATUS(status));
+			size = 0;
 		}
-		out[*size] = '\0';
+		if (out)
+			out[size] = '\0';
 	} else {
-		g_warning(_("Error: Could not open pipe \"%s\""), command);
-		*errorOutput = g_strdup_printf(_("Error: Could not open pipe \"%s\""), command);
+		g_warning (_("Error: Could not open pipe \"%s\""), command);
+		job->result->filterErrors = g_strdup_printf (_("Error: Could not open pipe \"%s\""), command);
 	}
+
 	/* Clean up. */
+	g_free (command);
 	unlink (tmpfilename);
 	g_free (tmpfilename);
 	return out;
@@ -448,23 +447,20 @@ static void
 update_apply_filter (updateJobPtr job)
 {
 	gchar	*filterResult;
-	size_t	len = 0;
 
 	g_assert (NULL == job->result->filterErrors);
 
 	/* we allow two types of filters: XSLT stylesheets and arbitrary commands */
 	if ((strlen (job->request->filtercmd) > 4) &&
-	    (0 == strcmp (".xsl", job->request->filtercmd + strlen (job->request->filtercmd) - 4))) {
+	    (0 == strcmp (".xsl", job->request->filtercmd + strlen (job->request->filtercmd) - 4)))
 		filterResult = update_apply_xslt (job);
-		len = strlen (filterResult);
-	} else {
-		filterResult = update_exec_filter_cmd (job->request->filtercmd, job->result->data, &(job->result->filterErrors), &len);
-	}
+	else
+		filterResult = update_exec_filter_cmd (job);
 
 	if (filterResult) {
 		g_free (job->result->data);
 		job->result->data = filterResult;
-		job->result->size = len;
+		job->result->size = strlen(filterResult);
 	}
 }
 

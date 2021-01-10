@@ -110,7 +110,6 @@ typedef struct updateResult {
 	gchar 		*source;	/**< Location of the downloaded document, in case of redirects different from
 					     the one given along with the update request */
 
-	int		returncode;	/**< Download status (0=success, otherwise error) */
 	int		httpstatus;	/**< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
 	gchar		*data;		/**< Downloaded data */
 	size_t		size;		/**< Size of downloaded data */

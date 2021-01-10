@@ -1,7 +1,7 @@
 /**
  * @file feed_parser.h  parsing of different feed formats
  *
- * Copyright (C) 2008 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,10 +36,9 @@ typedef struct feedParserCtxt {
 
 	gchar		*title;			/**< resulting feed/channel title */
 
-	gchar		*data;			/**< data buffer to parse */
+	const gchar	*data;			/**< data buffer to parse */
 	gsize		dataLength;		/**< length of the data buffer */
 } *feedParserCtxtPtr;
-
 
 /**
  * Function type which parses the given feed data.
@@ -70,9 +69,13 @@ typedef struct feedHandler {
 /**
  * Creates a new feed parsing context.
  *
+ * @subscription the feed's subscription
+ * @data         the feed data to parse
+ * @size         size of feed data
+ *
  * @returns a new feed parsing context
  */
-feedParserCtxtPtr feed_create_parser_ctxt (void);
+feedParserCtxtPtr feed_parser_ctxt_new (subscriptionPtr subscription, const gchar *data, gsize size);
 
 /**
  * Frees the given parser context. Note: it does
@@ -80,7 +83,7 @@ feedParserCtxtPtr feed_create_parser_ctxt (void);
  *
  * @param ctxt		the feed parsing context
  */
-void feed_free_parser_ctxt (feedParserCtxtPtr ctxt);
+void feed_parser_ctxt_free (feedParserCtxtPtr ctxt);
 
 /**
  * Lookup a feed type string from the feed type id.

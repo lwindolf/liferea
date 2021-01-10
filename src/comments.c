@@ -125,13 +125,9 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 
 		/* parse the new downloaded feed into fake node, subscription and feed */
 		node = node_new (feed_get_node_type ());
-		ctxt = feed_create_parser_ctxt ();
-		ctxt->subscription = subscription_new (result->source, NULL, NULL);
-		ctxt->feed = feed_new ();
-		node_set_data (node, ctxt->feed);
-		node_set_subscription (node, ctxt->subscription);
-		ctxt->data = result->data;
-		ctxt->dataLength = result->size;
+		node_set_data (node, feed_new ());
+		node_set_subscription (node, subscription_new (result->source, NULL, NULL));
+		ctxt = feed_parser_ctxt_new (node->subscription, result->data, result->size);
 
 		if (!feed_parse (ctxt)) {
 			debug0 (DEBUG_UPDATE, "parsing comment feed failed!");
@@ -159,16 +155,15 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 		}
 
 		node_free (ctxt->subscription->node);
-		feed_free_parser_ctxt (ctxt);
+		feed_parser_ctxt_free (ctxt);
 	}
 
 	/* update error message */
 	g_free (commentFeed->error);
 	commentFeed->error = NULL;
 
-	if ((result->httpstatus < 200) || (result->httpstatus >= 400)) {
-		commentFeed->error = g_strdup (network_strerror (result->returncode, result->httpstatus));
-	}
+	if ((result->httpstatus < 200) || (result->httpstatus >= 400))
+		commentFeed->error = g_strdup (network_strerror (result->httpstatus));
 
 	/* clean up... */
 	commentFeed->updateJob = NULL;

@@ -1,7 +1,7 @@
 /**
  * @file subscription.h  common subscription handling interface
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,6 +40,16 @@ enum feed_request_flags {
 	FEED_REQ_NO_FEED                = (1<<4)	/**< Requesting something not a feed (just for statistics) */
 };
 
+/** Subscription fetching error types */
+typedef enum fetchError {
+	FETCH_ERROR_NONE     = 0,
+	FETCH_ERROR_AUTH     = 1 << 0,
+	FETCH_ERROR_NET      = 1 << 1,
+	FETCH_ERROR_DISCOVER = 1 << 2,
+	FETCH_ERROR_XML      = 1 << 3
+	/* when adding stuff here, extend xstl/feed.xml.in also! */
+} fetchError;
+
 /** Common structure to hold all information about a single subscription. */
 typedef struct subscription {
 	nodePtr		node;			/**< the feed list node the subscription is attached to */
@@ -55,6 +65,7 @@ typedef struct subscription {
 
 	GSList		*metadata;		/**< metadata list assigned to this subscription */
 
+	fetchError	error;			/**< Fetch error code (used for user-facing UI to differentiate subscription update processing phases) */
 	gchar		*updateError;		/**< textual description of processing errors */
 	gchar		*httpError;		/**< textual description of HTTP protocol errors */
 	gint		httpErrorCode;		/**< last HTTP error code */
