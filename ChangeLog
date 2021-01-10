@@ -1,4 +1,4 @@
-To be released
+2021-01-10   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.5
 
@@ -12,12 +12,34 @@ To be released
 	* Now search folders are automatically rebuild when rules are changed
 	  (Lars Windolf)
 
+	* Adds a new simple focus plugin that adds transparency on the feed list
+	  when it is not focussed.
+	  (sunwire)
+
+	* Add F10 hotkey to headerbar plugin to allow triggering the hamburger menu
+	  (sunwire)
+
+	* Update Flatpak AppData with release dates
+	  (Mikel Olasagasti)
+
+	* Make several plugins support gettext
+	  (sunwire)
+
 	* Fixes #192: wrong button order of media player in RTL locales
 	  (patch by GreenLunar)
 
 	* Fixes #343: Usability of update infos in status bar. Now a total
 	  count is displayed on mass-updates and a per-feed info on single
 	  feed updates
+	  (Lars Windolf)
+
+	* Fixes #809: Usability of feed fetching errors.
+	  (Lars Windolf)
+
+	* Updated Polish translation
+	  (sunwire)
+
+	* Updated German translation
 	  (Lars Windolf)
 
 
