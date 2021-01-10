@@ -553,22 +553,6 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
         item_list_view_update_item_internal (ilv, item, &iter, NULL);
 }
 
-static void
-item_list_view_update_item_foreach (gpointer key,
-                                    gpointer value,
-                                    gpointer user_data)
-{
-	itemPtr 	item;
-
-	item = item_load (GPOINTER_TO_UINT (key) /* id */);
-	if (!item)
-		return;
-
-	item_list_view_update_item (ITEM_LIST_VIEW (user_data), item);
-
-	item_unload (item);
-}
-
 void
 item_list_view_update_all_items (ItemListView *ilv)
 {
@@ -920,7 +904,6 @@ item_list_view_create (gboolean wide)
 static void
 item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstore, itemPtr item)
 {
-	gint		state = 0;
 	nodePtr		node;
 	GtkTreeIter	iter;
 	gboolean	exists = FALSE;

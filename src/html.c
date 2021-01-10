@@ -271,7 +271,6 @@ html_discover_favicon (const gchar * data, const gchar * defaultBaseUri)
 {
 	xmlDocPtr	doc;
 	xmlNodePtr	node, root;
-	gchar		*tmp;
 	GSList		*results = NULL, *iter;
 	gchar		*baseUri = NULL;
 

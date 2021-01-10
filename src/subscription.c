@@ -218,7 +218,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (1 >= count)
 		liferea_shell_set_status_bar (statusbar);
 	else
-		liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), count, maxcount);
+		liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
 	g_free (statusbar);
 
 	subscription_update_error_status (subscription, result->httpstatus, result->filterErrors);
@@ -293,7 +293,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 
 		update_jobs_get_count (&count, &maxcount);
 		if (count > 1)
-			liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), count, maxcount);
+			liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
 		else
 			liferea_shell_set_status_bar (_("Updating '%s'..."), node_get_title (subscription->node));
 	}

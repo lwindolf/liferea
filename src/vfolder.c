@@ -96,9 +96,9 @@ vfolder_import_rules (xmlNodePtr cur,
 					debug2 (DEBUG_CACHE, "loading rule \"%s\" \"%s\"", ruleId, value);
 
 					if (additive && !xmlStrcmp (additive, BAD_CAST"true"))
-						itemset_add_rule (vfolder->itemset, ruleId, value, TRUE);
+						itemset_add_rule (vfolder->itemset, (gchar *)ruleId, (gchar *)value, TRUE);
 					else
-						itemset_add_rule (vfolder->itemset, ruleId, value, FALSE);
+						itemset_add_rule (vfolder->itemset, (gchar *)ruleId, (gchar *)value, FALSE);
 				} else {
 					g_warning ("ignoring invalid rule entry for vfolder \"%s\"...\n", node_get_title (vfolder->node));
 				}

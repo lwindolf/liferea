@@ -47,7 +47,7 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 	ctxt->item = item_new ();
 
 	// Get article time
-	if (cur = xpath_find (itemNode, ".//time/@datetime")) {
+	if ((cur = xpath_find (itemNode, ".//time/@datetime"))) {
 		tmp = xhtml_extract (cur, 0, NULL);
 		if (tmp) {
 			ctxt->item->time = date_parse_RFC822 (tmp);
@@ -60,12 +60,12 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 		ctxt->item->time = ctxt->feed->time;
 
 	// get link
-	if (cur = xpath_find (itemNode, ".//a/@href")) {
+	if ((cur = xpath_find (itemNode, ".//a/@href"))) {
 		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp) {
-			gchar *link = common_build_url (tmp, ctxt->subscription->source);
-			item_set_source (ctxt->item, link);
-			g_free (link);
+			xmlChar *link = common_build_url (tmp, ctxt->subscription->source);
+			item_set_source (ctxt->item, (gchar *)link);
+			xmlFree (link);
 
 			// we use the link as id, as on websites link point to unique
 			// content in 99% of the cases
@@ -74,11 +74,11 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 	}
 
 	// extract title
-	if (cur = xpath_find (itemNode, ".//h1"))
+	if ((cur = xpath_find (itemNode, ".//h1")))
 		html5_feed_parse_article_title (cur, ctxt);
-	else if (cur = xpath_find (itemNode, ".//h2"))
+	else if ((cur = xpath_find (itemNode, ".//h2")))
 		html5_feed_parse_article_title (cur, ctxt);
-	else if (cur = xpath_find (itemNode, ".//h3"))
+	else if ((cur = xpath_find (itemNode, ".//h3")))
 		html5_feed_parse_article_title (cur, ctxt);
 
 	// Extract the actual article
@@ -104,8 +104,6 @@ static void
 html5_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 {
 	gchar		*tmp;
-	short 		rdf = 0;
-	int 		error = 0;
 	xmlNodePtr	cur;
 	xmlChar		*baseURL = xmlNodeGetBase (root->doc, root);
 
@@ -118,11 +116,11 @@ html5_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 	if (baseURL == NULL)
 		xmlNodeSetBase (root, (xmlChar *)ctxt->subscription->source);
 
-	if (cur = xpath_find (root, "/html/head/title")) {
+	if ((cur = xpath_find (root, "/html/head/title"))) {
 		ctxt->title = unxmlize (xhtml_extract (cur, 0, NULL));
 	}
 
-	if (cur = xpath_find (root, "/html/head/meta[@name = 'description']")) {
+	if ((cur = xpath_find (root, "/html/head/meta[@name = 'description']"))) {
 		tmp = xhtml_extract (cur, 0, NULL);
 		if (tmp) {
 			metadata_list_set (&ctxt->subscription->metadata, "description", tmp);
