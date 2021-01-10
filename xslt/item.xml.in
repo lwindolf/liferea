@@ -317,10 +317,11 @@
 </tbody>
 </table> <!-- end of header metadata -->
 
-<div id='content' class='content'>
+<div dir="{$txtDirection}">
+<div class='content' id='content'>
 
   <!-- the item's content -->
-  <p dir="{$txtDirection}">
+  <p>
     <!-- optional gravatar -->
     <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
       <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
@@ -381,6 +382,7 @@
      </p>
   </xsl:if>
 </div> <!-- end of comments -->
+</div> <!-- end of txtdirection div -->
 </div> <!-- end of item -->
 
 </xsl:template>
