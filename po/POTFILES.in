@@ -175,6 +175,7 @@ src/webkit/webkit.c
 src/webkit/liferea_web_view.c
 src/webkit/web_extension/liferea_web_extension.c
 src/webkit/web_extension/web_extension_main.c
+plugins/getfocus.py
 plugins/headerbar.py
 plugins/libnotify.py
 plugins/plugin-installer.py
