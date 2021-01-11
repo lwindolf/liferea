@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.10.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-31 18:23+0100\n"
+"POT-Creation-Date: 2021-01-11 14:43+0100\n"
 "PO-Revision-Date: 2020-10-07 02:26+0700\n"
 "Last-Translator: Samsul Maarif <mail@samsul.web.id>\n"
 "Language-Team: Indonesian\n"
@@ -16,1517 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=ASCII\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:1
-msgid "RSS feed reader"
-msgstr "Pembaca RSS Feed"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:2
-msgid ""
-"Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
-"for online news feeds. It supports a number of different feed formats "
-"including RSS/RDF, CDF and Atom. There are many other news readers "
-"available, but these others are not available for Linux or require many "
-"extra libraries to be installed. Liferea tries to fill this gap by creating "
-"a fast, easy to use, easy to install news aggregator for GTK/GNOME."
-msgstr ""
-"Liferea ialah akronim untuk Linux Feed Reader. Agregator berita untuk feed "
-"berita online. Mendukung berbagai format feed yang berbeda termasuk RSS/RDF, "
-"CDF dan Atom. Ada banyak pembaca berita yang tersedia, namun tidak tersedia "
-"untuk Linux atau memerlukan pustaka ekstra untuk diinstal. Liferea mencoba "
-"untuk memenuhinya dengan membuat agregator untuk GTK/GNOME yang cepat, mudah "
-"digunakan, mudah diinstall."
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:3
-msgid "Distinguishing features:"
-msgstr "Fitur istimewa:"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:4
-msgid "Read articles when offline"
-msgstr "Baca artikel ketika luring"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:5
-msgid "Synchronizes with TheOldReader"
-msgstr "Sinkronisasi dengan TheOldReader"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:6
-msgid "Synchronizes with TinyTinyRSS"
-msgstr "Sinkronisasi dengan TinyTinyRSS"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:7
-msgid "Synchronizes with InoReader"
-msgstr "Sinkronisasi dengan InoReader"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:8
-msgid "Synchronizes with Reedah"
-msgstr "Sinkronisasi dengan Reedah"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:9
-msgid "Permanently save headlines in news bins"
-msgstr "Simpan headline di news bin"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:10
-msgid "Match items using search folders"
-msgstr "Item yang sesuai menggunakan pencarian folder"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:11
-msgid "Play Podcasts"
-msgstr "Mainkan Podcast"
-
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
-#: ../glade/mainwindow.ui.h:1
-msgid "Liferea"
-msgstr "Liferea"
-
-#: ../net.sourceforge.liferea.desktop.in.h:2
-msgid "Feed Reader"
-msgstr "Pembaca Feed"
-
-#: ../net.sourceforge.liferea.desktop.in.h:3
-msgid "Liferea Feed Reader"
-msgstr "Pembaca Feed Liferea"
-
-#: ../net.sourceforge.liferea.desktop.in.h:4
-msgid "Read news feeds and blogs"
-msgstr "Baca feed berita dan blog"
-
-#: ../net.sourceforge.liferea.desktop.in.h:5
-msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
-msgstr "news;feed;aggregator;blog;podcast;syndication;rss;atom"
-
-#: ../xslt/feed.xml.in.h:1
-msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
-msgstr ""
-"Feed ini dihentikan. Tidak lagi tersedia. Liferea tidak akan memerbaruinya "
-"lagi namun Anda masih dapat mengakses cache berita utama."
-
-#: ../xslt/feed.xml.in.h:2
-msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr ""
-"Pembaruan terakhir langganan ini gagal! <br/><b>HTTP error code <xsl:value-"
-"of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-
-#: ../xslt/feed.xml.in.h:3
-msgid "There were errors while parsing this feed!"
-msgstr "Ada kesalahan ketika mengurai feed ini!"
-
-#: ../xslt/feed.xml.in.h:4
-msgid "Parser Error Details"
-msgstr "Rincian Kesalahan Pengurai"
-
-#: ../xslt/feed.xml.in.h:5
-msgid "Details"
-msgstr "Rincian"
-
-#: ../xslt/feed.xml.in.h:6
-msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr "Mungkin Anda ingin menghubungi penulis/webmaster tentang feed ini!"
-
-#: ../xslt/feed.xml.in.h:7
-msgid "There were errors while filtering this feed!"
-msgstr "Ada kesalahan ketika menyaring feed ini!"
-
-#: ../xslt/feed.xml.in.h:8
-msgid "Filter Error Details"
-msgstr "Rincian Kesalahan Filter"
-
-#: ../xslt/feed.xml.in.h:9
-msgid "Feed:"
-msgstr "Feed:"
-
-#: ../xslt/feed.xml.in.h:10 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Sumber:"
-
-#: ../xslt/feed.xml.in.h:11
-msgid "Publisher"
-msgstr "Penerbit"
-
-#: ../xslt/feed.xml.in.h:12
-msgid "Copyright"
-msgstr "Hak Cipta"
-
-#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
-msgid "children with"
-msgstr "children with"
-
-#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "belum dibaca"
-
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Folder:"
-
-#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:21
-msgid "Source"
-msgstr "Sumber"
-
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Feed"
-
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Berada di"
-
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Penulis"
-
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Dibagikan oleh"
-
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "Melalui"
-
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Terkait"
-
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Juga diposkan di"
-
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Pembuat"
-
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
-msgstr "Kordinat"
-
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
-msgstr "Peta"
-
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
-msgstr "Jumlah penayangan"
-
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
-msgstr "Peringkat"
-
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Komentar"
-
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "Memerbarui..."
-
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Bagian"
-
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Departemen"
-
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "Bin Berita:"
-
-#: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Tambahkan item ke bin berita dengan memilih \"Salin ke Bin Berita\" dari "
-"menu konteks daftar item."
-
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Cari Folder:"
-
-#: ../src/browser.c:81 ../src/browser.c:98
-#, c-format
-msgid "Browser command failed: %s"
-msgstr "Perintah peramban gagal: %s"
-
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
-#, c-format
-msgid "Starting: \"%s\""
-msgstr "Memulai: \"%s\""
-
-#. unauthorized
-#: ../src/comments.c:118
-msgid "Authorization Error"
-msgstr "Kesalahan Otorisasi"
-
-#: ../src/common.c:66
-#, c-format
-msgid "Cannot create cache directory \"%s\"!"
-msgstr "Tidak dapat membuat direktori cache \"%s\""
-
-#: ../src/conf.c:183
-msgid ""
-"Your version of WebKitGTK+ doesn't support changing the proxy settings from "
-"Liferea. The system's default proxy settings will be used."
-msgstr ""
-"Versi WebKitGTK+ Anda tidak mendukung pengubahan pengaturan proxy dari "
-"Liferea. Pengaturan proxy bawaan akan digunakan."
-
-#. translation hint: date format for today, reorder format codes as necessary
-#: ../src/date.c:133
-msgid "Today %l:%M %p"
-msgstr "Hari ini %l:%M %p"
-
-#. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/date.c:142
-msgid "Yesterday %l:%M %p"
-msgstr "Kemarin %l:%M %p"
-
-#. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/date.c:154
-msgid "%a %l:%M %p"
-msgstr "%a %l:%M %p"
-
-#. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/date.c:162
-msgid "%b %d %l:%M %p"
-msgstr "%d %b %l:%M %p"
-
-#. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/date.c:165
-msgid "%b %d %Y"
-msgstr "%d %b %Y"
-
-#: ../src/enclosure.c:201
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "\"%s\" bukan enklosure jenis file konfigurasi yang benar!"
-
-#: ../src/enclosure.c:292
-msgid ""
-"You have not configured a download tool yet! Please do so in the "
-"'Enclosures' tab in Tools/Preferences."
-msgstr ""
-"Anda belum mengonfigurasi alat unduh! Silahkan lakukan di tab 'Lampiran' di "
-"Alat/Preferensi."
-
-#: ../src/enclosure.c:311
-#, c-format
-msgid ""
-"Command failed: \n"
-"\n"
-"%s\n"
-"\n"
-" Please check whether the configured download tool is installed and working "
-"correctly! You can change it in the 'Download' tab in Tools/Preferences."
-msgstr ""
-"Perintah gagal: \n"
-"\n"
-"%s\n"
-"\n"
-" Silakan periksa apakah konfigurasi alat unduh terpasang dan berjalan dengan "
-"baik! Anda dapat mengubahnyya di tab 'Unduh' di Alat/Preferesi."
-
-#: ../src/export.c:187
-#, c-format
-msgid "Error renaming %s to %s: %s\n"
-msgstr "Kesalahan mengganti nama %s ke %s: %s\n"
-
-#: ../src/export.c:409 ../src/export.c:411
-#, c-format
-msgid "XML error while reading OPML file! Could not import \"%s\"!"
-msgstr ""
-"Kesalahan XML ketika membaca berkas OPML! Tidak dapat mengimpor \"%s\"!"
-
-#: ../src/export.c:417 ../src/export.c:419
-#, c-format
-msgid ""
-"Empty document! OPML document \"%s\" should not be empty when importing."
-msgstr "Dokumen kosong! Dokumen OPML \"%s\" tidak boleh kosong ketika diimpor."
-
-#: ../src/export.c:440 ../src/export.c:442
-#, c-format
-msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
-msgstr ""
-"\"%s\" bukan dokumen OPML yang benar! Liferea tidak dapat mengimpor berkas "
-"ini!"
-
-#: ../src/export.c:461
-msgid "Imported feed list"
-msgstr "Daftar feed yang diimpor"
-
-#: ../src/export.c:473
-msgid "Import Feed List"
-msgstr "Impor Daftar Feed"
-
-#: ../src/export.c:473
-msgid "Import"
-msgstr "Impor"
-
-#: ../src/export.c:473 ../src/export.c:490 ../src/fl_sources/opml_source.c:379
-msgid "OPML Files"
-msgstr "Berkas OPML"
-
-#: ../src/export.c:481
-msgid "Error while exporting feed list!"
-msgstr "Kesalahan ketika mengekspor daftar feed!"
-
-#: ../src/export.c:483
-msgid "Feed List exported!"
-msgstr "Daftar Feed diekspor!"
-
-#: ../src/export.c:490
-msgid "Export Feed List"
-msgstr "Ekspor Daftar Feed"
-
-#: ../src/export.c:490
-msgid "Export"
-msgstr "Ekspor"
-
-#: ../src/feed.c:325
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr ""
-"<p>Tidak dapat mendeteksi tipe feed ini! Silahkan perika sumber apakah benar-"
-"benar mengarah ke sumber daya yang tersedia di salah satu format sindikasi "
-"didukung!</p>Keluaran Pengurai XML:<br /><div class='xmlparseroutput'>"
-
-#: ../src/feed.c:352
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" diperbarui..."
-
-#: ../src/feed.c:359
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" tidak tersedia"
-
-#: ../src/feed_parser.c:145
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
-"URL yang ingin Anda lanngankan ke Liferea mengarah ke sebuah laman web dan "
-"pencarian otomatis tidak menemukan feed di halaman ini. Mungkin laman web "
-"ini tidak mendukung pencarian feed otomatis."
-
-#: ../src/feed_parser.c:203
-msgid "Empty document!"
-msgstr "Dokumen kosong!"
-
-#: ../src/feed_parser.c:212
-msgid "Invalid XML!"
-msgstr "XML tidak cocok!"
-
-#: ../src/feed_parser.c:266
-msgid "Source points to HTML document."
-msgstr "Sumber mengarah ke dokumen HTML."
-
-#: ../src/feed_parser.c:269
-msgid "Could not determine the feed type."
-msgstr "Tidak dapat menentukan tipe feed."
-
-#. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:390
-msgid "There are no unread items"
-msgstr "Tidak ada item yang belum dibaca"
-
-#: ../src/liferea_application.c:279
-msgid ""
-"Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
-msgstr ""
-"Mulai Liferea dengan jendela utamanya di STATE. STATE mungkin `shown`, atau "
-"`hidden`"
-
-#: ../src/liferea_application.c:279
-msgid "STATE"
-msgstr "STATE"
-
-#: ../src/liferea_application.c:280
-msgid "Show version information and exit"
-msgstr "Tampilkan informasi versi dan keluar"
-
-#: ../src/liferea_application.c:281
-msgid "Add a new subscription"
-msgstr "Tambahkan langganan baru"
-
-#: ../src/liferea_application.c:281
-msgid "uri"
-msgstr "uri"
-
-#: ../src/liferea_application.c:282
-msgid "Start with all plugins disabled"
-msgstr "Mulai dengan semua pengaya dinonaktifkan"
-
-#: ../src/liferea_application.c:287
-msgid "Print debugging messages of all types"
-msgstr "Cetak pesan debut semua tipe"
-
-#: ../src/liferea_application.c:288
-msgid "Print debugging messages for the cache handling"
-msgstr "Cetak pesan debug untuk menangani cache"
-
-#: ../src/liferea_application.c:289
-msgid "Print debugging messages for the configuration handling"
-msgstr "Cetak pesan debug untuk menangani konfigurasi"
-
-#: ../src/liferea_application.c:290
-msgid "Print debugging messages of the database handling"
-msgstr "Cetak pesan debug untuk mengangani basisdata"
-
-#: ../src/liferea_application.c:291
-msgid "Print debugging messages of all GUI functions"
-msgstr "Cetak pesan debut untuk semua fungsi GUI"
-
-#: ../src/liferea_application.c:292
-msgid ""
-"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
-"will also dump the generated HTML into ~/.cache/liferea/output.html"
-msgstr ""
-"Aktifkan debug HTML render. Setiap Liferea merender keluaran HTML akan "
-"melimpahkan HTML yang digenerate ke ~/.cache/liferea/output.html"
-
-#: ../src/liferea_application.c:293
-msgid "Print debugging messages of all network activity"
-msgstr "Cetak pesan debug untuk semua aktifitas jaringan"
-
-#: ../src/liferea_application.c:294
-msgid "Print debugging messages of all parsing functions"
-msgstr "Cetak pesan debug untuk mengurai semua fungsi"
-
-#: ../src/liferea_application.c:295
-msgid "Print debugging messages when a function takes too long to process"
-msgstr "Cetak pesan debug ketika fungsi sangat lama diproses"
-
-#: ../src/liferea_application.c:296
-msgid "Print debugging messages when entering/leaving functions"
-msgstr "Cetak pesan debug ketika memasuki/keluar dari fungsi"
-
-#: ../src/liferea_application.c:297
-msgid "Print debugging messages of the feed update processing"
-msgstr "Cetak pesan debug dari proses pembaruan feed"
-
-#: ../src/liferea_application.c:298
-msgid "Print debugging messages of the search folder matching"
-msgstr "Cetak pesan debug untuk pencarian folder yang cocok"
-
-#: ../src/liferea_application.c:299
-msgid "Print verbose debugging messages"
-msgstr "Cetak secara verbose pesan debug"
-
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
-msgid "Print debugging messages for the given topic"
-msgstr "Cetak pesan debug untuk topik yang diberikan"
-
-#. Some libsoup transport errors
-#: ../src/net.c:463
-msgid "The update request was cancelled"
-msgstr "Permintaan pembaruan dibatalkan"
-
-#: ../src/net.c:464
-msgid "Unable to resolve destination host name"
-msgstr "Tidak dapat menemukan tujuan nama host"
-
-#: ../src/net.c:465
-msgid "Unable to resolve proxy host name"
-msgstr "Tidak dapat menemukan nama host proxy"
-
-#: ../src/net.c:466
-msgid "Unable to connect to remote host"
-msgstr "Tidak dapat terhubung ke remote host"
-
-#: ../src/net.c:467
-msgid "Unable to connect to proxy"
-msgstr "Tidak dapat terhubung ke proxy"
-
-#: ../src/net.c:468
-msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
-msgstr ""
-"Terjadi kesalahan jaringan, atau yang lain menutp koneksi yang tidak "
-"diharapkan"
-
-#. http 3xx redirection
-#: ../src/net.c:471
-msgid "The resource moved permanently to a new location"
-msgstr "Sumberdaya dipindah ke lokasi baru secara permanen"
-
-#. http 4xx client error
-#: ../src/net.c:474
-msgid ""
-"You are unauthorized to download this feed. Please update your username and "
-"password in the feed properties dialog box"
-msgstr ""
-"Anda tidak berhak mengunduh feed ini. Silahkan perbarui nama pengguna dan "
-"sandi lewat Anda di kotak dialog properti feed"
-
-#: ../src/net.c:476
-msgid "Payment required"
-msgstr "Pembayaran diperlukan"
-
-#: ../src/net.c:477
-msgid "You're not allowed to access this resource"
-msgstr "Anda tidak diperbolehkan mengakses sumber daya ini"
-
-#: ../src/net.c:478
-msgid "Resource Not Found"
-msgstr "Sumber Daya Tidak Ditemukan"
-
-#: ../src/net.c:479
-msgid "Method Not Allowed"
-msgstr "Metode Tidak Diperbolehkan"
-
-#: ../src/net.c:480
-msgid "Not Acceptable"
-msgstr "Tidak Dapat Diterima"
-
-#: ../src/net.c:481
-msgid "Proxy authentication required"
-msgstr "Otentikasi proxy diperlukan"
-
-#: ../src/net.c:482
-msgid "Request timed out"
-msgstr "Permintaan terlalu lama"
-
-#: ../src/net.c:483
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Telah pergi. Sumberdaya tidak ada. Silahkan unsubscribe!"
-
-#: ../src/net.c:488
-msgid "There was an internal error in the update process"
-msgstr "Ada kesalahan internal pada proses update"
-
-#: ../src/net.c:490
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "Feed tidak tersedia: Server meminta redireksi yang tak didukung!"
-
-#: ../src/net.c:492
-msgid "Client Error"
-msgstr "Kesalahan Klien"
-
-#: ../src/net.c:494
-msgid "Server Error"
-msgstr "Kesalahan Server"
-
-#: ../src/net.c:496
-msgid "An unknown networking error happened!"
-msgstr "Terjadi kesalahan jaringan yang tidak diketahui!"
-
-#. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
-#. ========================================================================================================================================================================================
-#: ../src/rule.c:229
-msgid "Item"
-msgstr "Item"
-
-#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
-#: ../src/rule.c:237 ../src/rule.c:238
-msgid "does contain"
-msgstr "berisi"
-
-#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
-#: ../src/rule.c:237 ../src/rule.c:238
-msgid "does not contain"
-msgstr "tidak berisi"
-
-#: ../src/rule.c:230
-msgid "Item title"
-msgstr "Judul item"
-
-#: ../src/rule.c:231
-msgid "Item body"
-msgstr "Tubuh item"
-
-#: ../src/rule.c:232
-msgid "Read status"
-msgstr "Baca status"
-
-#: ../src/rule.c:232
-msgid "is unread"
-msgstr "belum dibaca"
-
-#: ../src/rule.c:232
-msgid "is read"
-msgstr "dibaca"
-
-#: ../src/rule.c:233
-msgid "Flag status"
-msgstr "Bendera status"
-
-#: ../src/rule.c:233
-msgid "is flagged"
-msgstr "diberi bendera"
-
-#: ../src/rule.c:233
-msgid "is unflagged"
-msgstr "tidak berbendera"
-
-#: ../src/rule.c:234
-msgid "Podcast"
-msgstr "Podcast"
-
-#: ../src/rule.c:234
-msgid "included"
-msgstr "disertakan"
-
-#: ../src/rule.c:234
-msgid "not included"
-msgstr "tidak disertakan"
-
-#: ../src/rule.c:235
-msgid "Category"
-msgstr "Kategori"
-
-#: ../src/rule.c:235
-msgid "is set"
-msgstr "diatur"
-
-#: ../src/rule.c:235
-msgid "is not set"
-msgstr "tidak diatur"
-
-#: ../src/rule.c:236
-msgid "Feed title"
-msgstr "Judul feed"
-
-#: ../src/rule.c:237
-msgid "Feed source"
-msgstr "Sumber feed"
-
-#: ../src/rule.c:238
-msgid "Parent folder title"
-msgstr "Judul folder atasnya"
-
-#: ../src/subscription.c:108
-#, c-format
-msgid "Subscription \"%s\" is already being updated!"
-msgstr "Langganan \"%s\" sedang diperbarui!"
-
-#: ../src/subscription.c:113
-#, c-format
-msgid ""
-"The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr ""
-"Langganan \"%s\" tidak dilanjutkan. Liferea tidak akan memerbaruinya lagi!"
-
-#: ../src/subscription.c:173
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Ada masalah ketika membaca langganan. Silahkan periksa URL dan keluaran "
-"konsol."
-
-#: ../src/subscription.c:196
-#, c-format
-msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "URL dari \"%s\" telah berubah secara permanen dan telah diperbarui"
-
-#: ../src/subscription.c:204
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" tidak dilanjutkan. Liferea tidak akan memerbaruinya lagi!"
-
-#: ../src/subscription.c:207
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" tidak berubah sejak pembaruan terakhir"
-
-#: ../src/subscription.c:263
-#, c-format
-msgid "Updating \"%s\""
-msgstr "Memerbarui \"%s\""
-
-#: ../src/update.c:327
-#, c-format
-msgid "Error opening temp file %s to use for filtering!"
-msgstr "Error membuka berkas temp %s untuk penyaringan!"
-
-#: ../src/update.c:350
-#, c-format
-msgid "%s exited with status %d"
-msgstr "%s keluar dengan status %d"
-
-#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
-#, c-format
-msgid "Error: Could not open pipe \"%s\""
-msgstr "Kesalahan: Tidak dapat membuka pipa \"%s\""
-
-#. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:496
-#, c-format
-msgid "Error: Could not open file \"%s\""
-msgstr "Kesalahan: Tidak dapat membuka berkas \"%s\""
-
-#: ../src/update.c:502
-#, c-format
-msgid "Error: There is no file \"%s\""
-msgstr "Kesalahan: Tidak ada berkas \"%s\""
-
-#: ../src/vfolder.c:54
-msgid "New Search Folder"
-msgstr "Pencarian Folder Baru"
-
-#: ../src/xml.c:424
-msgid "[There were more errors. Output was truncated!]"
-msgstr "[Ada error baru. Keluaran telah dipotong!]"
-
-#: ../src/xml.c:594
-msgid "XML Parser: Could not parse document:\n"
-msgstr "Pengurai XML: Tidak dapat mengurai dokumen:\n"
-
-#: ../src/ui/enclosure_list_view.c:168
-msgid "Attachments"
-msgstr "Lampiran"
-
-#. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:260
-msgid " Bytes"
-msgstr " Bytes"
-
-#: ../src/ui/enclosure_list_view.c:263
-msgid "kB"
-msgstr "kB"
-
-#: ../src/ui/enclosure_list_view.c:267
-msgid "MB"
-msgstr "MB"
-
-#: ../src/ui/enclosure_list_view.c:271
-msgid "GB"
-msgstr "GB"
-
-#: ../src/ui/enclosure_list_view.c:275
-#, c-format
-msgid "%d%s"
-msgstr "%d%s"
-
-#. update list title
-#: ../src/ui/enclosure_list_view.c:313
-#, c-format
-msgid "%d attachment"
-msgid_plural "%d attachments"
-msgstr[0] "%d lampiran"
-msgstr[1] "%d lampiran"
-
-#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:355
-msgid "Choose File"
-msgstr "Pilih Berkas"
-
-#: ../src/ui/enclosure_list_view.c:463
-#, c-format
-msgid "File Extension .%s"
-msgstr "Ekstensi Berkas .%s"
-
-#: ../src/ui/icons.c:54
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "Tidak dapat menemukan berkas pixmap: %s"
-
-#: ../src/ui/liferea_shell.c:409
-#, c-format
-msgid " (%d new)"
-msgid_plural " (%d new)"
-msgstr[0] " (%d baru)"
-msgstr[1] " (%d baru)"
-
-#: ../src/ui/liferea_shell.c:414
-#, c-format
-msgid "%d unread%s"
-msgid_plural "%d unread%s"
-msgstr[0] "%d belum dibaca%s"
-msgstr[1] "%d belum dibaca%s"
-
-#: ../src/ui/liferea_shell.c:755
-msgid "Help Topics"
-msgstr "Topik Bantuan"
-
-#: ../src/ui/liferea_shell.c:761
-msgid "Quick Reference"
-msgstr "Referensi Cepat"
-
-#: ../src/ui/liferea_shell.c:767
-msgid "FAQ"
-msgstr "FAQ"
-
-#: ../src/ui/liferea_shell.c:1045
-#, c-format
-msgid "Email command failed: %s"
-msgstr "Perintah surel gagal: %s"
-
-#: ../src/ui/search_dialog.c:107
-msgid "Saved Search"
-msgstr "Pencarian Tersimpan"
-
-#: ../src/ui/auth_dialog.c:114
-#, c-format
-msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "Masukkan nama pengguna dan kata sandi untuk \"%s\" (%s):"
-
-#: ../src/ui/auth_dialog.c:116
-msgid "Unknown source"
-msgstr "Sumber tidak diketahui"
-
-#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_view.c:911
-#: ../src/ui/feed_list_view.c:965
-msgid "_Cancel"
-msgstr "Ba_talkan"
-
-#: ../src/ui/ui_common.c:211
-msgid "All Files"
-msgstr "Semua Berkas"
-
-#: ../src/ui/feed_list_view.c:432
-msgid "Liferea is in offline mode. No update possible."
-msgstr "Liferea dalam mode luring. Pembaruan tidak memungkinkan."
-
-#: ../src/ui/feed_list_view.c:478
-msgid "all feeds"
-msgstr "semua feed"
-
-#: ../src/ui/feed_list_view.c:479
-#, c-format
-msgid "Mark %s as read ?"
-msgstr "Tandai %s telah dibaca ?"
-
-#: ../src/ui/feed_list_view.c:483
-#, c-format
-msgid "Are you sure you want to mark all items in %s as read ?"
-msgstr "Anda yakin hendak menandai semua item dalam %s telah dibaca ?"
-
-#: ../src/ui/feed_list_view.c:621
-msgid "(Empty)"
-msgstr "(Kosong)"
-
-#: ../src/ui/feed_list_view.c:832
-#, c-format
-msgid ""
-"%s\n"
-"<i>Rebuilding</i>"
-msgstr ""
-"%s\n"
-"<i>Membangun ulang</i>"
-
-#: ../src/ui/feed_list_view.c:901
-msgid "Deleting entry"
-msgstr "Menghapus Entri"
-
-#: ../src/ui/feed_list_view.c:902
-#, c-format
-msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "Anda yakin ingin menghapus \"%s\" dan isinya?"
-
-#: ../src/ui/feed_list_view.c:902
-#, c-format
-msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "Anda yakin hendak menghapus \"%s\"?"
-
-#: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
-msgid "_Delete"
-msgstr "_Hapus"
-
-#: ../src/ui/feed_list_view.c:914
-msgid "Deletion Confirmation"
-msgstr "Konfirmasi Penghapusan"
-
-#: ../src/ui/feed_list_view.c:953
-#, c-format
-msgid ""
-"Are you sure that you want to add a new subscription with URL \"%s\"? "
-"Another subscription with the same URL already exists (\"%s\")."
-msgstr ""
-"Apakah Anda yakin ingin menambahkan langganan baru dengan URL \"%s\"? "
-"Langganan lain dengan URL yang sama telah ada (\"%s\")."
-
-#: ../src/ui/feed_list_view.c:966
-msgid "_Add"
-msgstr "T_ambah"
-
-#: ../src/ui/feed_list_view.c:968
-msgid "Adding Duplicate Subscription Confirmation"
-msgstr "Konfirmasi Penambahan Langganan Ganda"
-
-#: ../src/ui/item_list_view.c:115
-msgid "This item has no link specified!"
-msgstr "Item ini tidak memiliki tautan khusus!"
-
-#: ../src/ui/item_list_view.c:482
-msgid "*** No title ***"
-msgstr "** Tidak ada judul ***"
-
-#: ../src/ui/item_list_view.c:486
-msgid " <span background='red' color='black'> important </span> "
-msgstr " <span background='red' color='black'> penting </span> "
-
-#: ../src/ui/item_list_view.c:865
-msgid "Headline"
-msgstr "Pokok Berita"
-
-#: ../src/ui/item_list_view.c:887
-msgid "Date"
-msgstr "Tanggal"
-
-#: ../src/ui/item_list_view.c:1056
-msgid "You must select a feed to delete its items!"
-msgstr "Anda harus memilih feed yang akan dihapus itemnya!"
-
-#: ../src/ui/item_list_view.c:1072 ../src/ui/item_list_view.c:1150
-#: ../src/ui/item_list_view.c:1165
-msgid "No item has been selected"
-msgstr "Tidak ada item terpilih"
-
-#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
-msgid "Open In _Tab"
-msgstr "Buka di _Tab"
-
-#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
-msgid "_Open In Browser"
-msgstr "_Buka di Peramban"
-
-#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
-msgid "Open In _External Browser"
-msgstr "Buka di Peramban _Eksternal"
-
-#: ../src/ui/popup_menu.c:115
-msgid "Email The Author"
-msgstr "Surel ke Penulis"
-
-#: ../src/ui/popup_menu.c:140
-msgid "Copy to News Bin"
-msgstr "Salin ke Berita Bin"
-
-#: ../src/ui/popup_menu.c:148
-#, c-format
-msgid "_Bookmark at %s"
-msgstr "_Markah pada %s"
-
-#: ../src/ui/popup_menu.c:154
-msgid "Copy Item _Location"
-msgstr "Salin _Lokasi Item"
-
-#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
-msgid "Toggle _Read Status"
-msgstr "Toggle Status _Baca"
-
-#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
-msgid "Toggle Item _Flag"
-msgstr "Toggle _Bendera Item"
-
-#: ../src/ui/popup_menu.c:171
-msgid "R_emove Item"
-msgstr "Hapus It_em"
-
-#: ../src/ui/popup_menu.c:200
-msgid "Open Enclosure..."
-msgstr "Buka Lampiran..."
-
-#: ../src/ui/popup_menu.c:201
-msgid "Save As..."
-msgstr "Simpan dengan Nama..."
-
-#: ../src/ui/popup_menu.c:202
-msgid "Copy Link Location"
-msgstr "Salin Lokasi Tautan"
-
-#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
-msgid "_Update"
-msgstr "_Perbarui"
-
-#: ../src/ui/popup_menu.c:282
-msgid "_Update Folder"
-msgstr "_Perbarui Folder"
-
-#: ../src/ui/popup_menu.c:292
-msgid "New _Subscription..."
-msgstr "_Langganan Baru..."
-
-#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
-msgid "New _Folder..."
-msgstr "_Folder Baru..."
-
-#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
-msgid "New S_earch Folder..."
-msgstr "Folder P_encarian Baru..."
-
-#: ../src/ui/popup_menu.c:299
-msgid "New S_ource..."
-msgstr "Sumber Ba_ru..."
-
-#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
-msgid "New _News Bin..."
-msgstr "Berita _Bin Baru..."
-
-#: ../src/ui/popup_menu.c:303
-msgid "_New"
-msgstr "_Baru"
-
-#: ../src/ui/popup_menu.c:312
-msgid "Sort Feeds"
-msgstr "Feed Pendek"
-
-#: ../src/ui/popup_menu.c:320
-msgid "_Mark All As Read"
-msgstr "Tandai Semua Telah _Dibaca"
-
-#: ../src/ui/popup_menu.c:327
-msgid "_Rebuild"
-msgstr "Ban_gun Ulang"
-
-#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
-msgid "_Properties"
-msgstr "_Properti"
-
-#: ../src/ui/popup_menu.c:343
-msgid "Convert To Local Subscriptions..."
-msgstr "Konversi Ke Langganan Lokal..."
-
-#: ../src/ui/preferences_dialog.c:84
-msgid "GNOME default"
-msgstr "Bawaan GNOME"
-
-#: ../src/ui/preferences_dialog.c:85
-msgid "Text below icons"
-msgstr "Teks di bawah ikon"
-
-#: ../src/ui/preferences_dialog.c:86
-msgid "Text beside icons"
-msgstr "Teks di samping ikon"
-
-#: ../src/ui/preferences_dialog.c:87
-msgid "Icons only"
-msgstr "Hanya ikon"
-
-#: ../src/ui/preferences_dialog.c:88
-msgid "Text only"
-msgstr "Hanya teks"
-
-#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:43
-msgid "minutes"
-msgstr "menit"
-
-#: ../src/ui/preferences_dialog.c:97 ../src/ui/subscription_dialog.c:44
-msgid "hours"
-msgstr "jam"
-
-#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:45
-msgid "days"
-msgstr "hari"
-
-#: ../src/ui/preferences_dialog.c:103
-msgid "Space"
-msgstr "Spasi"
-
-#: ../src/ui/preferences_dialog.c:104
-msgid "<Ctrl> Space"
-msgstr "<Ctrl> Spasi"
-
-#: ../src/ui/preferences_dialog.c:105
-msgid "<Alt> Space"
-msgstr "<Alt> Spasi"
-
-#: ../src/ui/preferences_dialog.c:110
-msgid "Normal View"
-msgstr "Tampilan Normal"
-
-#: ../src/ui/preferences_dialog.c:111
-msgid "Wide View"
-msgstr "Tampilan Luas"
-
-#: ../src/ui/preferences_dialog.c:478
-msgid "Default Browser"
-msgstr "Peramban Bawaan"
-
-#: ../src/ui/preferences_dialog.c:480
-msgid "Manual"
-msgstr "Manual"
-
-#: ../src/ui/preferences_dialog.c:740
-msgid "Type"
-msgstr "Tipe"
-
-#: ../src/ui/preferences_dialog.c:743
-msgid "Program"
-msgstr "Program"
-
-#: ../src/ui/subscription_dialog.c:355 ../src/fl_sources/opml_source.c:379
-msgid "_Open"
-msgstr "_Buka"
-
-#: ../src/ui/subscription_dialog.c:427
-#, c-format
-msgid "The provider of this feed suggests an update interval of %d minute."
-msgid_plural ""
-"The provider of this feed suggests an update interval of %d minutes."
-msgstr[0] "Penyedia feed ini menyarankan interval pembaruan %d menit."
-msgstr[1] "Penyedia feed ini menyarankan interval pembaruan %d menit."
-
-#: ../src/ui/subscription_dialog.c:431
-msgid "This feed specifies no default update interval."
-msgstr "Feed ini tidak ditentukan interval pembaruannya."
-
-#: ../src/ui/browser_tabs.c:262
-msgid "Untitled"
-msgstr "Tak berjudul"
-
-#: ../src/parsers/atom10.c:239
-msgid "Website"
-msgstr "Situs web"
-
-#: ../src/parsers/ns_ag.c:70
-msgid "%b %d %H:%M"
-msgstr "%d %b %H:%M"
-
-#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
-msgid "New Subscription"
-msgstr "Langganan Baru"
-
-#: ../src/fl_sources/google_source.c:111
-msgid "Google Reader"
-msgstr "Google Reader"
-
-#: ../src/fl_sources/opml_source.c:319
-msgid "Planet, BlogRoll, OPML"
-msgstr "Planet, BlogRoll, OPML"
-
-#: ../src/fl_sources/opml_source.c:379
-msgid "Choose OPML File"
-msgstr "Pilih Berkas OPML"
-
-#: ../src/fl_sources/opml_source.h:28
-msgid "New OPML Subscription"
-msgstr "Langganan OPML Baru"
-
-#: ../src/fl_sources/node_source.c:334
-msgid "No feed list source types found!"
-msgstr "Tidak ada tipe daftar feed sumber yang ditemukan!"
-
-#: ../src/fl_sources/node_source.c:363
-msgid "Source Type"
-msgstr "Tipe Sumber"
-
-#: ../src/fl_sources/node_source.c:414
-#, c-format
-msgid "Login for '%s' has not yet completed! Please wait until login is done."
-msgstr ""
-"Masuk untuk '%s' belum selesai! Silakan tunggu higga proses masuk selesai"
-
-#. FIXME: something is not perfect, because if you immediately
-#. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:580
-#, c-format
-msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr "Langganan '%s' telah berhasil dikonversi ke feed lokal!"
-
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-msgid "Login failed!"
-msgstr "Gagal masuk!"
-
-#: ../src/fl_sources/reedah_source.c:313
-msgid "Reedah"
-msgstr "Reedah"
-
-#: ../src/fl_sources/reedah_source_feed.c:154
-msgid "Could not parse JSON returned by Reedah API!"
-msgstr "Tidak dapat mengurai JSON yang dihasilkan oleh API Reedah!"
-
-#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
-msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr "HTTP API milik TinyTinyRSS tidak dapat dijangkau!"
-
-#: ../src/fl_sources/ttrss_source.c:234
-msgid ""
-"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
-"URL!"
-msgstr ""
-"Gagal berlangganan feed ke TinyTinyRSS! Periksa apakah Anda telah "
-"menyelesaikan URL feed!"
-
-#: ../src/fl_sources/ttrss_source.c:300
-msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr "Gagal berhenti berlangganan feed TinyTinyRSS!"
-
-#: ../src/fl_sources/ttrss_source.c:318
-#, c-format
-msgid ""
-"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
-"%s or later!"
-msgstr ""
-"Versi TinyTinyRSS ini tidak mendukung penghapusan feed. Perbarui ke versi %s "
-"atau lebih baru!"
-
-#: ../src/fl_sources/ttrss_source.c:460
-msgid "Tiny Tiny RSS"
-msgstr "Tiny Tiny RSS"
-
-#: ../src/fl_sources/ttrss_source_feed.c:150
-msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr "Tidak dapat mengurai JSON yang dihasilkan oleh API TinyTinyRSS!"
-
-#: ../src/fl_sources/theoldreader_source.c:311
-msgid "TheOldReader"
-msgstr "TheOldReader"
-
-#: ../src/webkit/liferea_web_view.c:176
-msgid "Open Link In _Tab"
-msgstr "Buka Tautan di _Tab"
-
-#: ../src/webkit/liferea_web_view.c:177
-msgid "Open Link In Browser"
-msgstr "Buka Tautan di Peramban"
-
-#: ../src/webkit/liferea_web_view.c:178
-msgid "Open Link In External Browser"
-msgstr "Buka Tautan di Peramban Eksternal"
-
-#: ../src/webkit/liferea_web_view.c:184
-#, c-format
-msgid "_Bookmark Link at %s"
-msgstr "_Markah Tautan pada %s"
-
-#: ../src/webkit/liferea_web_view.c:191
-msgid "_Copy Link Location"
-msgstr "_Salin Tautan Lokasi"
-
-#: ../src/webkit/liferea_web_view.c:194
-msgid "_View Image"
-msgstr "_Tampilkan Gambar"
-
-#: ../src/webkit/liferea_web_view.c:195
-msgid "_Copy Image Location"
-msgstr "Salin Lokasi _Gambar"
-
-#: ../src/webkit/liferea_web_view.c:198
-msgid "S_ave Link As"
-msgstr "Simpan T_autan dengan Nama"
-
-#: ../src/webkit/liferea_web_view.c:201
-msgid "S_ave Image As"
-msgstr "Simpan Gam_bar dengan Nama"
-
-#: ../src/webkit/liferea_web_view.c:208
-msgid "_Subscribe..."
-msgstr "_Langgan..."
-
-#: ../src/webkit/liferea_web_view.c:212
-msgid "_Copy"
-msgstr "_Salin"
-
-#: ../src/webkit/liferea_web_view.c:218
-msgid "_Increase Text Size"
-msgstr "_Perbesar Ukuran Teks"
-
-#: ../src/webkit/liferea_web_view.c:219
-msgid "_Decrease Text Size"
-msgstr "_Kecilkan Ukuran Teks"
-
-#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
-#: ../glade/liferea_toolbar.ui.h:5
-msgid "Previous Item"
-msgstr "Item Sebelumnya"
-
-#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
-#: ../glade/liferea_toolbar.ui.h:6
-msgid "Next Item"
-msgstr "Item Selanjutnya"
-
-#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
-#: ../glade/liferea_toolbar.ui.h:7
-msgid "_Next Unread Item"
-msgstr "Item _Belum Dibaca Selanjutnya"
-
-#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
-#: ../glade/liferea_toolbar.ui.h:3
-msgid "_Mark Items Read"
-msgstr "_Tandai Item Dibaca"
-
-#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
-#: ../glade/liferea_toolbar.ui.h:10
-msgid "Search All Feeds..."
-msgstr "Cari Semua Feed..."
-
-#: ../plugins/libnotify.py:42
-#, fuzzy
-msgid "Feed Updates"
-msgstr "Pembaruan Feed"
-
-#: ../plugins/plugin-installer.py:54
-msgid "Plugins"
-msgstr "Pengaya"
-
-#: ../plugins/plugin-installer.py:69
-#, fuzzy
-msgid "Plugin Installer"
-msgstr "Pengaya"
-
-#: ../plugins/plugin-installer.py:83
-#, fuzzy
-msgid "Activate Plugins"
-msgstr "Pengaya"
-
-#: ../plugins/plugin-installer.py:84
-#, fuzzy
-msgid "Download Plugins"
-msgstr "_Unduh menggunakan"
-
-#: ../plugins/plugin-installer.py:102
-#, python-format
-msgid "Bad fields for plugin entry %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-msgid "All"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "Tingkat Lanjut"
-
-#: ../plugins/plugin-installer.py:125
-msgid "Menu"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-#, fuzzy
-msgid "Notifications"
-msgstr "Pengaturan Notifikasi"
-
-#: ../plugins/plugin-installer.py:133
-msgid "Filter by category"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:140
-msgid "_Install"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:144
-msgid "_Uninstall"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:245
-#, python-format
-msgid ""
-"Missing package manager '%s'. Cannot check nor install necessary "
-"dependencies!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:261
-#, python-format
-msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:268
-#, python-format
-msgid ""
-"Package installation failed (%s)! Check console output for further problem "
-"details!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:271
-#, python-format
-msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:285
-#, python-format
-msgid "Copying %s to %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:288
-#, python-format
-msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:297
-#, python-format
-msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:307
-#, python-format
-msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:318
-#, fuzzy, python-format
-msgid "Creating schema directory %s"
-msgstr "Tidak dapat membuat direktori cache \"%s\""
-
-#: ../plugins/plugin-installer.py:320
-#, python-format
-msgid "Installing schema %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:324
-msgid "Compiling schemas..."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:329
-#, python-format
-msgid "Failed to install schema files (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:339
-#, python-format
-msgid "Failed to enable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:345
-#, python-format
-msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:359
-#, python-format
-msgid "Failed to disable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
-#, fuzzy, python-format
-msgid "Deleting '%s'"
-msgstr "Menghapus Entri"
-
-#: ../plugins/plugin-installer.py:369
-#, python-format
-msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:379
-msgid "Failed to remove .py file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:389
-msgid "Failed to remove .plugin file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:398
-msgid "Sorry! Plugin removal failed!."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:400
-msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
-msgstr ""
-
-#: ../plugins/trayicon.py:112
-#, fuzzy
-msgid "Show / Hide"
-msgstr "Tampilkan rincian"
-
-#: ../plugins/trayicon.py:113
-msgid "Minimize to tray on close"
-msgstr ""
-
-#: ../plugins/trayicon.py:114
-#, fuzzy
-msgid "Quit"
-msgstr "_Keluar"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -1599,9 +88,21 @@ msgstr "Tandai Semua Sudah Di_baca"
 msgid "_New Subscription..."
 msgstr "_Langganan Baru..."
 
+#: ../glade/liferea_menu.ui.h:5 ../src/ui/popup_menu.c:295
+msgid "New _Folder..."
+msgstr "_Folder Baru..."
+
+#: ../glade/liferea_menu.ui.h:6 ../src/ui/popup_menu.c:298
+msgid "New S_earch Folder..."
+msgstr "Folder P_encarian Baru..."
+
 #: ../glade/liferea_menu.ui.h:7
 msgid "New _Source..."
 msgstr "_Sumber Baru..."
+
+#: ../glade/liferea_menu.ui.h:8 ../src/ui/popup_menu.c:300
+msgid "New _News Bin..."
+msgstr "Berita _Bin Baru..."
 
 #: ../glade/liferea_menu.ui.h:9
 msgid "_Import Feed List..."
@@ -1619,6 +120,15 @@ msgstr "_Keluar"
 msgid "_Feed"
 msgstr "_Feed"
 
+#: ../glade/liferea_menu.ui.h:13 ../src/ui/popup_menu.c:280
+msgid "_Update"
+msgstr "_Perbarui"
+
+#: ../glade/liferea_menu.ui.h:14 ../glade/liferea_toolbar.ui.h:3
+#: ../plugins/headerbar.py:89
+msgid "_Mark Items Read"
+msgstr "_Tandai Item Dibaca"
+
 #: ../glade/liferea_menu.ui.h:15
 msgid "Remove _All Items"
 msgstr "Hapus _Semua Item"
@@ -1627,13 +137,52 @@ msgstr "Hapus _Semua Item"
 msgid "_Remove"
 msgstr "_Hapus"
 
+#: ../glade/liferea_menu.ui.h:17 ../src/ui/popup_menu.c:336
+msgid "_Properties"
+msgstr "_Properti"
+
 #: ../glade/liferea_menu.ui.h:18
 msgid "_Item"
 msgstr "_Item"
 
+#: ../glade/liferea_menu.ui.h:19 ../glade/liferea_toolbar.ui.h:7
+#: ../plugins/headerbar.py:81
+msgid "_Next Unread Item"
+msgstr "Item _Belum Dibaca Selanjutnya"
+
+#: ../glade/liferea_menu.ui.h:20 ../glade/liferea_toolbar.ui.h:5
+#: ../plugins/headerbar.py:67
+msgid "Previous Item"
+msgstr "Item Sebelumnya"
+
+#: ../glade/liferea_menu.ui.h:21 ../glade/liferea_toolbar.ui.h:6
+#: ../plugins/headerbar.py:73
+msgid "Next Item"
+msgstr "Item Selanjutnya"
+
+#: ../glade/liferea_menu.ui.h:22 ../src/ui/popup_menu.c:163
+msgid "Toggle _Read Status"
+msgstr "Toggle Status _Baca"
+
+#: ../glade/liferea_menu.ui.h:23 ../src/ui/popup_menu.c:167
+msgid "Toggle Item _Flag"
+msgstr "Toggle _Bendera Item"
+
 #: ../glade/liferea_menu.ui.h:24
 msgid "R_emove"
 msgstr "Ha_pus"
+
+#: ../glade/liferea_menu.ui.h:25 ../src/ui/popup_menu.c:102
+msgid "Open In _Tab"
+msgstr "Buka di _Tab"
+
+#: ../glade/liferea_menu.ui.h:26 ../src/ui/popup_menu.c:106
+msgid "_Open In Browser"
+msgstr "_Buka di Peramban"
+
+#: ../glade/liferea_menu.ui.h:27 ../src/ui/popup_menu.c:110
+msgid "Open In _External Browser"
+msgstr "Buka di Peramban _Eksternal"
 
 #: ../glade/liferea_menu.ui.h:28
 msgid "_View"
@@ -1684,6 +233,11 @@ msgstr "_Preferensi"
 msgid "S_earch"
 msgstr "_Cari"
 
+#: ../glade/liferea_menu.ui.h:40 ../glade/liferea_toolbar.ui.h:10
+#: ../plugins/headerbar.py:113
+msgid "Search All Feeds..."
+msgstr "Cari Semua Feed..."
+
 #: ../glade/liferea_menu.ui.h:41
 msgid "_Help"
 msgstr "_Bantuan"
@@ -1722,6 +276,11 @@ msgstr "Perbarui semua langganan."
 #: ../glade/liferea_toolbar.ui.h:11
 msgid "Show the search dialog."
 msgstr "Tampilkan dialog pencarian."
+
+#: ../glade/mainwindow.ui.h:1 ../net.sourceforge.liferea.desktop.in.h:1
+#: ../src/liferea_application.c:349
+msgid "Liferea"
+msgstr "Liferea"
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1762,6 +321,11 @@ msgstr "Buat Berita Bin"
 #: ../glade/new_newsbin.ui.h:2
 msgid "_News Bin Name:"
 msgstr "_Nama Berita Bin:"
+
+#: ../glade/new_subscription.ui.h:1 ../glade/simple_subscription.ui.h:1
+#: ../src/fl_sources/default_source.c:139
+msgid "New Subscription"
+msgstr "Langganan Baru"
 
 #: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
@@ -2144,6 +708,10 @@ msgstr ""
 "Liferea dapat menggunakan pengaya penyaring untuk mengakses feed dan "
 "direktori dalam format yang tidak didukung."
 
+#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+msgid "Source"
+msgstr "Sumber"
+
 #: ../glade/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
@@ -2202,6 +770,10 @@ msgstr "Tandai inte_m terunduh telah dibaca."
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr "Ekstrak konten lengkap dari HTML dan Google AMP"
 
+#: ../glade/properties.ui.h:39 ../plugins/plugin-installer.py:125
+msgid "Advanced"
+msgstr "Tingkat Lanjut"
+
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
 msgstr "Tambahkan Akun Reedah"
@@ -2227,6 +799,26 @@ msgstr "Ganti Nama"
 msgid "_New Name:"
 msgstr "_Nama Baru:"
 
+#: ../glade/search.ui.h:1
+msgid "Advanced Search"
+msgstr "Pencarian Lanjutan"
+
+#: ../glade/search.ui.h:2
+msgid "_Search Folder..."
+msgstr "_Folder Pencarian..."
+
+#: ../glade/search.ui.h:3
+msgid "Find Items that meet the following criteria"
+msgstr "Temukan Item yang sesuai dengan kriteria berikut"
+
+#: ../glade/search.ui.h:4 ../glade/search_folder.ui.h:7
+msgid "A_ny Rule Matches"
+msgstr "Beberapa Peratura_n Cocok"
+
+#: ../glade/search.ui.h:5 ../glade/search_folder.ui.h:8
+msgid "_All Rules Must Match"
+msgstr "Semu_a Peraturan Harus Cocok"
+
 #: ../glade/search_folder.ui.h:1
 msgid "Search Folder Properties"
 msgstr "Properti Pencarian Folder"
@@ -2235,25 +827,28 @@ msgstr "Properti Pencarian Folder"
 msgid "Search _Name:"
 msgstr "Cari _Nama:"
 
-#: ../glade/search_folder.ui.h:3 ../glade/search.ui.h:3
-msgid "Find Items that meet the following criteria"
-msgstr "Temukan Item yang sesuai dengan kriteria berikut"
+#: ../glade/search_folder.ui.h:3
+#, fuzzy
+msgid "Search Rules"
+msgstr "Cari Semua Feed"
 
-#: ../glade/search_folder.ui.h:4 ../glade/search.ui.h:4
-msgid "A_ny Rule Matches"
+#: ../glade/search_folder.ui.h:4
+msgid "Rules"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:5
+msgid "All rules for this search folder"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:6
+#, fuzzy
+msgid "Rule Matching"
 msgstr "Beberapa Peratura_n Cocok"
 
-#: ../glade/search_folder.ui.h:5 ../glade/search.ui.h:5
-msgid "_All Rules Must Match"
-msgstr "Semu_a Peraturan Harus Cocok"
-
-#: ../glade/search.ui.h:1
-msgid "Advanced Search"
-msgstr "Pencarian Lanjutan"
-
-#: ../glade/search.ui.h:2
-msgid "_Search Folder..."
-msgstr "_Folder Pencarian..."
+#: ../glade/search_folder.ui.h:9
+#, fuzzy
+msgid "Hide read items"
+msgstr "Sembun_yikan item terbaca."
 
 #: ../glade/simple_search.ui.h:1
 msgid "Search All Feeds"
@@ -2338,6 +933,1498 @@ msgstr "Batalkan _Permintaan"
 #: ../glade/update_monitor.ui.h:4
 msgid "_Downloading Now"
 msgstr "Se_dang Mengunduh"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:1
+msgid "RSS feed reader"
+msgstr "Pembaca RSS Feed"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:2
+msgid ""
+"Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
+"for online news feeds. It supports a number of different feed formats "
+"including RSS/RDF, CDF and Atom. There are many other news readers "
+"available, but these others are not available for Linux or require many "
+"extra libraries to be installed. Liferea tries to fill this gap by creating "
+"a fast, easy to use, easy to install news aggregator for GTK/GNOME."
+msgstr ""
+"Liferea ialah akronim untuk Linux Feed Reader. Agregator berita untuk feed "
+"berita online. Mendukung berbagai format feed yang berbeda termasuk RSS/RDF, "
+"CDF dan Atom. Ada banyak pembaca berita yang tersedia, namun tidak tersedia "
+"untuk Linux atau memerlukan pustaka ekstra untuk diinstal. Liferea mencoba "
+"untuk memenuhinya dengan membuat agregator untuk GTK/GNOME yang cepat, mudah "
+"digunakan, mudah diinstall."
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:3
+msgid "Distinguishing features:"
+msgstr "Fitur istimewa:"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:4
+msgid "Read articles when offline"
+msgstr "Baca artikel ketika luring"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:5
+msgid "Synchronizes with TheOldReader"
+msgstr "Sinkronisasi dengan TheOldReader"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:6
+msgid "Synchronizes with TinyTinyRSS"
+msgstr "Sinkronisasi dengan TinyTinyRSS"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:7
+msgid "Synchronizes with InoReader"
+msgstr "Sinkronisasi dengan InoReader"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:8
+msgid "Synchronizes with Reedah"
+msgstr "Sinkronisasi dengan Reedah"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:9
+msgid "Permanently save headlines in news bins"
+msgstr "Simpan headline di news bin"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:10
+msgid "Match items using search folders"
+msgstr "Item yang sesuai menggunakan pencarian folder"
+
+#: ../net.sourceforge.liferea.appdata.xml.in.h:11
+msgid "Play Podcasts"
+msgstr "Mainkan Podcast"
+
+#: ../net.sourceforge.liferea.desktop.in.h:2
+msgid "Feed Reader"
+msgstr "Pembaca Feed"
+
+#: ../net.sourceforge.liferea.desktop.in.h:3
+msgid "Liferea Feed Reader"
+msgstr "Pembaca Feed Liferea"
+
+#: ../net.sourceforge.liferea.desktop.in.h:4
+msgid "Read news feeds and blogs"
+msgstr "Baca feed berita dan blog"
+
+#: ../net.sourceforge.liferea.desktop.in.h:5
+msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
+msgstr "news;feed;aggregator;blog;podcast;syndication;rss;atom"
+
+#: ../plugins/getfocus.py:95
+msgid "Opacity:"
+msgstr ""
+
+#: ../plugins/getfocus.py:96
+msgid "Opacity"
+msgstr ""
+
+#: ../plugins/getfocus.py:106
+msgid "Min"
+msgstr ""
+
+#: ../plugins/getfocus.py:111
+#, fuzzy
+msgid "Max"
+msgstr "Peta"
+
+#: ../plugins/getfocus.py:117
+msgid "Save"
+msgstr ""
+
+#: ../plugins/libnotify.py:43
+#, fuzzy
+msgid "Feed Updates"
+msgstr "Pembaruan Feed"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "Pengaya"
+
+#: ../plugins/plugin-installer.py:69
+#, fuzzy
+msgid "Plugin Installer"
+msgstr "Pengaya"
+
+#: ../plugins/plugin-installer.py:83
+#, fuzzy
+msgid "Activate Plugins"
+msgstr "Pengaya"
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_Unduh menggunakan"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "Pengaturan Notifikasi"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
+msgid ""
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "Tidak dapat membuat direktori cache \"%s\""
+
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "Menghapus Entri"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
+msgid ""
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
+msgstr ""
+
+#: ../plugins/trayicon.py:134
+#, fuzzy
+msgid "Show / Hide"
+msgstr "Tampilkan rincian"
+
+#: ../plugins/trayicon.py:135
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:136
+#, fuzzy
+msgid "Quit"
+msgstr "_Keluar"
+
+#: ../src/browser.c:81 ../src/browser.c:98
+#, c-format
+msgid "Browser command failed: %s"
+msgstr "Perintah peramban gagal: %s"
+
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "Memulai: \"%s\""
+
+#. unauthorized
+#: ../src/comments.c:118
+msgid "Authorization Error"
+msgstr "Kesalahan Otorisasi"
+
+#: ../src/common.c:66
+#, c-format
+msgid "Cannot create cache directory \"%s\"!"
+msgstr "Tidak dapat membuat direktori cache \"%s\""
+
+#: ../src/conf.c:183
+msgid ""
+"Your version of WebKitGTK+ doesn't support changing the proxy settings from "
+"Liferea. The system's default proxy settings will be used."
+msgstr ""
+"Versi WebKitGTK+ Anda tidak mendukung pengubahan pengaturan proxy dari "
+"Liferea. Pengaturan proxy bawaan akan digunakan."
+
+#. translation hint: date format for today, reorder format codes as necessary
+#: ../src/date.c:133
+msgid "Today %l:%M %p"
+msgstr "Hari ini %l:%M %p"
+
+#. translation hint: date format for yesterday, reorder format codes as necessary
+#: ../src/date.c:142
+msgid "Yesterday %l:%M %p"
+msgstr "Kemarin %l:%M %p"
+
+#. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
+#: ../src/date.c:154
+msgid "%a %l:%M %p"
+msgstr "%a %l:%M %p"
+
+#. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
+#: ../src/date.c:162
+msgid "%b %d %l:%M %p"
+msgstr "%d %b %l:%M %p"
+
+#. translation hint: date format for dates from the last years, reorder format codes as necessary
+#: ../src/date.c:165
+msgid "%b %d %Y"
+msgstr "%d %b %Y"
+
+#: ../src/enclosure.c:201
+#, c-format
+msgid "\"%s\" is not a valid enclosure type config file!"
+msgstr "\"%s\" bukan enklosure jenis file konfigurasi yang benar!"
+
+#: ../src/enclosure.c:292
+msgid ""
+"You have not configured a download tool yet! Please do so in the "
+"'Enclosures' tab in Tools/Preferences."
+msgstr ""
+"Anda belum mengonfigurasi alat unduh! Silahkan lakukan di tab 'Lampiran' di "
+"Alat/Preferensi."
+
+#: ../src/enclosure.c:311
+#, c-format
+msgid ""
+"Command failed: \n"
+"\n"
+"%s\n"
+"\n"
+" Please check whether the configured download tool is installed and working "
+"correctly! You can change it in the 'Download' tab in Tools/Preferences."
+msgstr ""
+"Perintah gagal: \n"
+"\n"
+"%s\n"
+"\n"
+" Silakan periksa apakah konfigurasi alat unduh terpasang dan berjalan dengan "
+"baik! Anda dapat mengubahnyya di tab 'Unduh' di Alat/Preferesi."
+
+#: ../src/export.c:187
+#, c-format
+msgid "Error renaming %s to %s: %s\n"
+msgstr "Kesalahan mengganti nama %s ke %s: %s\n"
+
+#: ../src/export.c:409 ../src/export.c:411
+#, c-format
+msgid "XML error while reading OPML file! Could not import \"%s\"!"
+msgstr ""
+"Kesalahan XML ketika membaca berkas OPML! Tidak dapat mengimpor \"%s\"!"
+
+#: ../src/export.c:417 ../src/export.c:419
+#, c-format
+msgid ""
+"Empty document! OPML document \"%s\" should not be empty when importing."
+msgstr "Dokumen kosong! Dokumen OPML \"%s\" tidak boleh kosong ketika diimpor."
+
+#: ../src/export.c:440 ../src/export.c:442
+#, c-format
+msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
+msgstr ""
+"\"%s\" bukan dokumen OPML yang benar! Liferea tidak dapat mengimpor berkas "
+"ini!"
+
+#: ../src/export.c:461
+msgid "Imported feed list"
+msgstr "Daftar feed yang diimpor"
+
+#: ../src/export.c:473
+msgid "Import Feed List"
+msgstr "Impor Daftar Feed"
+
+#: ../src/export.c:473
+msgid "Import"
+msgstr "Impor"
+
+#: ../src/export.c:473 ../src/export.c:490 ../src/fl_sources/opml_source.c:379
+msgid "OPML Files"
+msgstr "Berkas OPML"
+
+#: ../src/export.c:481
+msgid "Error while exporting feed list!"
+msgstr "Kesalahan ketika mengekspor daftar feed!"
+
+#: ../src/export.c:483
+msgid "Feed List exported!"
+msgstr "Daftar Feed diekspor!"
+
+#: ../src/export.c:490
+msgid "Export Feed List"
+msgstr "Ekspor Daftar Feed"
+
+#: ../src/export.c:490
+msgid "Export"
+msgstr "Ekspor"
+
+#: ../src/feed.c:354
+#, c-format
+msgid "\"%s\" is not available"
+msgstr "\"%s\" tidak tersedia"
+
+#: ../src/feed.c:356
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "\"%s\" diperbarui..."
+
+#: ../src/feed_parser.c:201
+msgid "Empty document!"
+msgstr "Dokumen kosong!"
+
+#: ../src/feed_parser.c:210
+msgid "Invalid XML!"
+msgstr "XML tidak cocok!"
+
+#: ../src/fl_sources/google_source.c:111
+msgid "Google Reader"
+msgstr "Google Reader"
+
+#: ../src/fl_sources/node_source.c:334
+msgid "No feed list source types found!"
+msgstr "Tidak ada tipe daftar feed sumber yang ditemukan!"
+
+#: ../src/fl_sources/node_source.c:363
+msgid "Source Type"
+msgstr "Tipe Sumber"
+
+#: ../src/fl_sources/node_source.c:414
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr ""
+"Masuk untuk '%s' belum selesai! Silakan tunggu higga proses masuk selesai"
+
+#. FIXME: something is not perfect, because if you immediately
+#. remove the subscription tree afterwards there is a double free
+#: ../src/fl_sources/node_source.c:580
+#, c-format
+msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr "Langganan '%s' telah berhasil dikonversi ke feed lokal!"
+
+#: ../src/fl_sources/opml_source.c:319
+msgid "Planet, BlogRoll, OPML"
+msgstr "Planet, BlogRoll, OPML"
+
+#: ../src/fl_sources/opml_source.c:379
+msgid "Choose OPML File"
+msgstr "Pilih Berkas OPML"
+
+#: ../src/fl_sources/opml_source.c:379 ../src/ui/subscription_dialog.c:355
+msgid "_Open"
+msgstr "_Buka"
+
+#: ../src/fl_sources/opml_source.h:28
+msgid "New OPML Subscription"
+msgstr "Langganan OPML Baru"
+
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+msgid "Login failed!"
+msgstr "Gagal masuk!"
+
+#: ../src/fl_sources/reedah_source.c:313
+msgid "Reedah"
+msgstr "Reedah"
+
+#: ../src/fl_sources/reedah_source_feed.c:154
+msgid "Could not parse JSON returned by Reedah API!"
+msgstr "Tidak dapat mengurai JSON yang dihasilkan oleh API Reedah!"
+
+#: ../src/fl_sources/theoldreader_source.c:311
+msgid "TheOldReader"
+msgstr "TheOldReader"
+
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr "HTTP API milik TinyTinyRSS tidak dapat dijangkau!"
+
+#: ../src/fl_sources/ttrss_source.c:234
+msgid ""
+"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
+"URL!"
+msgstr ""
+"Gagal berlangganan feed ke TinyTinyRSS! Periksa apakah Anda telah "
+"menyelesaikan URL feed!"
+
+#: ../src/fl_sources/ttrss_source.c:300
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr "Gagal berhenti berlangganan feed TinyTinyRSS!"
+
+#: ../src/fl_sources/ttrss_source.c:318
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
+"%s or later!"
+msgstr ""
+"Versi TinyTinyRSS ini tidak mendukung penghapusan feed. Perbarui ke versi %s "
+"atau lebih baru!"
+
+#: ../src/fl_sources/ttrss_source.c:460
+msgid "Tiny Tiny RSS"
+msgstr "Tiny Tiny RSS"
+
+#: ../src/fl_sources/ttrss_source_feed.c:150
+msgid "Could not parse JSON returned by TinyTinyRSS API!"
+msgstr "Tidak dapat mengurai JSON yang dihasilkan oleh API TinyTinyRSS!"
+
+#. if we don't find a feed with unread items do nothing
+#: ../src/itemlist.c:395
+msgid "There are no unread items"
+msgstr "Tidak ada item yang belum dibaca"
+
+#: ../src/liferea_application.c:279
+msgid ""
+"Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
+msgstr ""
+"Mulai Liferea dengan jendela utamanya di STATE. STATE mungkin `shown`, atau "
+"`hidden`"
+
+#: ../src/liferea_application.c:279
+msgid "STATE"
+msgstr "STATE"
+
+#: ../src/liferea_application.c:280
+msgid "Show version information and exit"
+msgstr "Tampilkan informasi versi dan keluar"
+
+#: ../src/liferea_application.c:281
+msgid "Add a new subscription"
+msgstr "Tambahkan langganan baru"
+
+#: ../src/liferea_application.c:281
+msgid "uri"
+msgstr "uri"
+
+#: ../src/liferea_application.c:282
+msgid "Start with all plugins disabled"
+msgstr "Mulai dengan semua pengaya dinonaktifkan"
+
+#: ../src/liferea_application.c:287
+msgid "Print debugging messages of all types"
+msgstr "Cetak pesan debut semua tipe"
+
+#: ../src/liferea_application.c:288
+msgid "Print debugging messages for the cache handling"
+msgstr "Cetak pesan debug untuk menangani cache"
+
+#: ../src/liferea_application.c:289
+msgid "Print debugging messages for the configuration handling"
+msgstr "Cetak pesan debug untuk menangani konfigurasi"
+
+#: ../src/liferea_application.c:290
+msgid "Print debugging messages of the database handling"
+msgstr "Cetak pesan debug untuk mengangani basisdata"
+
+#: ../src/liferea_application.c:291
+msgid "Print debugging messages of all GUI functions"
+msgstr "Cetak pesan debut untuk semua fungsi GUI"
+
+#: ../src/liferea_application.c:292
+msgid ""
+"Enables HTML rendering debugging. Each time Liferea renders HTML output it "
+"will also dump the generated HTML into ~/.cache/liferea/output.html"
+msgstr ""
+"Aktifkan debug HTML render. Setiap Liferea merender keluaran HTML akan "
+"melimpahkan HTML yang digenerate ke ~/.cache/liferea/output.html"
+
+#: ../src/liferea_application.c:293
+msgid "Print debugging messages of all network activity"
+msgstr "Cetak pesan debug untuk semua aktifitas jaringan"
+
+#: ../src/liferea_application.c:294
+msgid "Print debugging messages of all parsing functions"
+msgstr "Cetak pesan debug untuk mengurai semua fungsi"
+
+#: ../src/liferea_application.c:295
+msgid "Print debugging messages when a function takes too long to process"
+msgstr "Cetak pesan debug ketika fungsi sangat lama diproses"
+
+#: ../src/liferea_application.c:296
+msgid "Print debugging messages when entering/leaving functions"
+msgstr "Cetak pesan debug ketika memasuki/keluar dari fungsi"
+
+#: ../src/liferea_application.c:297
+msgid "Print debugging messages of the feed update processing"
+msgstr "Cetak pesan debug dari proses pembaruan feed"
+
+#: ../src/liferea_application.c:298
+msgid "Print debugging messages of the search folder matching"
+msgstr "Cetak pesan debug untuk pencarian folder yang cocok"
+
+#: ../src/liferea_application.c:299
+msgid "Print verbose debugging messages"
+msgstr "Cetak secara verbose pesan debug"
+
+#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+msgid "Print debugging messages for the given topic"
+msgstr "Cetak pesan debug untuk topik yang diberikan"
+
+#. Some libsoup transport errors
+#: ../src/net.c:439
+msgid "The update request was cancelled"
+msgstr "Permintaan pembaruan dibatalkan"
+
+#: ../src/net.c:440
+msgid "Unable to resolve destination host name"
+msgstr "Tidak dapat menemukan tujuan nama host"
+
+#: ../src/net.c:441
+msgid "Unable to resolve proxy host name"
+msgstr "Tidak dapat menemukan nama host proxy"
+
+#: ../src/net.c:442
+msgid "Unable to connect to remote host"
+msgstr "Tidak dapat terhubung ke remote host"
+
+#: ../src/net.c:443
+msgid "Unable to connect to proxy"
+msgstr "Tidak dapat terhubung ke proxy"
+
+#: ../src/net.c:444
+msgid ""
+"A network error occurred, or the other end closed the connection unexpectedly"
+msgstr ""
+"Terjadi kesalahan jaringan, atau yang lain menutp koneksi yang tidak "
+"diharapkan"
+
+#. http 3xx redirection
+#: ../src/net.c:447
+msgid "The resource moved permanently to a new location"
+msgstr "Sumberdaya dipindah ke lokasi baru secara permanen"
+
+#. http 4xx client error
+#: ../src/net.c:450
+msgid ""
+"You are unauthorized to download this feed. Please update your username and "
+"password in the feed properties dialog box"
+msgstr ""
+"Anda tidak berhak mengunduh feed ini. Silahkan perbarui nama pengguna dan "
+"sandi lewat Anda di kotak dialog properti feed"
+
+#: ../src/net.c:452
+msgid "Payment required"
+msgstr "Pembayaran diperlukan"
+
+#: ../src/net.c:453
+msgid "You're not allowed to access this resource"
+msgstr "Anda tidak diperbolehkan mengakses sumber daya ini"
+
+#: ../src/net.c:454
+msgid "Resource Not Found"
+msgstr "Sumber Daya Tidak Ditemukan"
+
+#: ../src/net.c:455
+msgid "Method Not Allowed"
+msgstr "Metode Tidak Diperbolehkan"
+
+#: ../src/net.c:456
+msgid "Not Acceptable"
+msgstr "Tidak Dapat Diterima"
+
+#: ../src/net.c:457
+msgid "Proxy authentication required"
+msgstr "Otentikasi proxy diperlukan"
+
+#: ../src/net.c:458
+msgid "Request timed out"
+msgstr "Permintaan terlalu lama"
+
+#: ../src/net.c:459
+#, fuzzy
+msgid ""
+"The webserver indicates this feed is discontinued. It's no longer available. "
+"Liferea won't update it anymore but you can still access the cached "
+"headlines."
+msgstr ""
+"Feed ini dihentikan. Tidak lagi tersedia. Liferea tidak akan memerbaruinya "
+"lagi namun Anda masih dapat mengakses cache berita utama."
+
+#: ../src/net.c:464
+msgid "There was an internal error in the update process"
+msgstr "Ada kesalahan internal pada proses update"
+
+#: ../src/net.c:466
+msgid "Feed not available: Server requested unsupported redirection!"
+msgstr "Feed tidak tersedia: Server meminta redireksi yang tak didukung!"
+
+#: ../src/net.c:468
+msgid "Client Error"
+msgstr "Kesalahan Klien"
+
+#: ../src/net.c:470
+msgid "Server Error"
+msgstr "Kesalahan Server"
+
+#: ../src/net.c:472
+msgid "An unknown networking error happened!"
+msgstr "Terjadi kesalahan jaringan yang tidak diketahui!"
+
+#: ../src/parsers/atom10.c:239
+msgid "Website"
+msgstr "Situs web"
+
+#: ../src/parsers/ns_ag.c:70
+msgid "%b %d %H:%M"
+msgstr "%d %b %H:%M"
+
+#. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
+#. ========================================================================================================================================================================================
+#: ../src/rule.c:229
+msgid "Item"
+msgstr "Item"
+
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
+msgid "does contain"
+msgstr "berisi"
+
+#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
+#: ../src/rule.c:237 ../src/rule.c:238
+msgid "does not contain"
+msgstr "tidak berisi"
+
+#: ../src/rule.c:230
+msgid "Item title"
+msgstr "Judul item"
+
+#: ../src/rule.c:231
+msgid "Item body"
+msgstr "Tubuh item"
+
+#: ../src/rule.c:232
+msgid "Read status"
+msgstr "Baca status"
+
+#: ../src/rule.c:232
+msgid "is unread"
+msgstr "belum dibaca"
+
+#: ../src/rule.c:232
+msgid "is read"
+msgstr "dibaca"
+
+#: ../src/rule.c:233
+msgid "Flag status"
+msgstr "Bendera status"
+
+#: ../src/rule.c:233
+msgid "is flagged"
+msgstr "diberi bendera"
+
+#: ../src/rule.c:233
+msgid "is unflagged"
+msgstr "tidak berbendera"
+
+#: ../src/rule.c:234
+msgid "Podcast"
+msgstr "Podcast"
+
+#: ../src/rule.c:234
+msgid "included"
+msgstr "disertakan"
+
+#: ../src/rule.c:234
+msgid "not included"
+msgstr "tidak disertakan"
+
+#: ../src/rule.c:235
+msgid "Category"
+msgstr "Kategori"
+
+#: ../src/rule.c:235
+msgid "is set"
+msgstr "diatur"
+
+#: ../src/rule.c:235
+msgid "is not set"
+msgstr "tidak diatur"
+
+#: ../src/rule.c:236
+msgid "Feed title"
+msgstr "Judul feed"
+
+#: ../src/rule.c:237
+msgid "Feed source"
+msgstr "Sumber feed"
+
+#: ../src/rule.c:238
+msgid "Parent folder title"
+msgstr "Judul folder atasnya"
+
+#: ../src/subscription.c:108
+#, c-format
+msgid "Subscription \"%s\" is already being updated!"
+msgstr "Langganan \"%s\" sedang diperbarui!"
+
+#: ../src/subscription.c:113
+#, c-format
+msgid ""
+"The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
+msgstr ""
+"Langganan \"%s\" tidak dilanjutkan. Liferea tidak akan memerbaruinya lagi!"
+
+#: ../src/subscription.c:188
+#, c-format
+msgid "The URL of \"%s\" has changed permanently and was updated"
+msgstr "URL dari \"%s\" telah berubah secara permanen dan telah diperbarui"
+
+#: ../src/subscription.c:204
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" tidak dilanjutkan. Liferea tidak akan memerbaruinya lagi!"
+
+#: ../src/subscription.c:208
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\" tidak berubah sejak pembaruan terakhir"
+
+#: ../src/subscription.c:221 ../src/subscription.c:296
+#, fuzzy, c-format
+msgid "Updating (%d / %d) ..."
+msgstr "Memerbarui..."
+
+#: ../src/subscription.c:298
+#, fuzzy, c-format
+msgid "Updating '%s'..."
+msgstr "Memerbarui..."
+
+#: ../src/ui/auth_dialog.c:114
+#, c-format
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "Masukkan nama pengguna dan kata sandi untuk \"%s\" (%s):"
+
+#: ../src/ui/auth_dialog.c:116
+msgid "Unknown source"
+msgstr "Sumber tidak diketahui"
+
+#: ../src/ui/browser_tabs.c:262
+msgid "Untitled"
+msgstr "Tak berjudul"
+
+#: ../src/ui/enclosure_list_view.c:168
+msgid "Attachments"
+msgstr "Lampiran"
+
+#. The following literals are the enclosure list size units
+#: ../src/ui/enclosure_list_view.c:260
+msgid " Bytes"
+msgstr " Bytes"
+
+#: ../src/ui/enclosure_list_view.c:263
+msgid "kB"
+msgstr "kB"
+
+#: ../src/ui/enclosure_list_view.c:267
+msgid "MB"
+msgstr "MB"
+
+#: ../src/ui/enclosure_list_view.c:271
+msgid "GB"
+msgstr "GB"
+
+#: ../src/ui/enclosure_list_view.c:275
+#, c-format
+msgid "%d%s"
+msgstr "%d%s"
+
+#. update list title
+#: ../src/ui/enclosure_list_view.c:313
+#, c-format
+msgid "%d attachment"
+msgid_plural "%d attachments"
+msgstr[0] "%d lampiran"
+msgstr[1] "%d lampiran"
+
+#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:355
+msgid "Choose File"
+msgstr "Pilih Berkas"
+
+#: ../src/ui/enclosure_list_view.c:463
+#, c-format
+msgid "File Extension .%s"
+msgstr "Ekstensi Berkas .%s"
+
+#: ../src/ui/feed_list_view.c:432
+msgid "Liferea is in offline mode. No update possible."
+msgstr "Liferea dalam mode luring. Pembaruan tidak memungkinkan."
+
+#: ../src/ui/feed_list_view.c:478
+msgid "all feeds"
+msgstr "semua feed"
+
+#: ../src/ui/feed_list_view.c:479
+#, c-format
+msgid "Mark %s as read ?"
+msgstr "Tandai %s telah dibaca ?"
+
+#: ../src/ui/feed_list_view.c:483
+#, c-format
+msgid "Are you sure you want to mark all items in %s as read ?"
+msgstr "Anda yakin hendak menandai semua item dalam %s telah dibaca ?"
+
+#: ../src/ui/feed_list_view.c:621
+msgid "(Empty)"
+msgstr "(Kosong)"
+
+#: ../src/ui/feed_list_view.c:832
+#, c-format
+msgid ""
+"%s\n"
+"<i>Rebuilding</i>"
+msgstr ""
+"%s\n"
+"<i>Membangun ulang</i>"
+
+#: ../src/ui/feed_list_view.c:901
+msgid "Deleting entry"
+msgstr "Menghapus Entri"
+
+#: ../src/ui/feed_list_view.c:902
+#, c-format
+msgid "Are you sure that you want to delete \"%s\" and its contents?"
+msgstr "Anda yakin ingin menghapus \"%s\" dan isinya?"
+
+#: ../src/ui/feed_list_view.c:902
+#, c-format
+msgid "Are you sure that you want to delete \"%s\"?"
+msgstr "Anda yakin hendak menghapus \"%s\"?"
+
+#: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
+#: ../src/ui/ui_common.c:168
+msgid "_Cancel"
+msgstr "Ba_talkan"
+
+#: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
+msgid "_Delete"
+msgstr "_Hapus"
+
+#: ../src/ui/feed_list_view.c:914
+msgid "Deletion Confirmation"
+msgstr "Konfirmasi Penghapusan"
+
+#: ../src/ui/feed_list_view.c:953
+#, c-format
+msgid ""
+"Are you sure that you want to add a new subscription with URL \"%s\"? "
+"Another subscription with the same URL already exists (\"%s\")."
+msgstr ""
+"Apakah Anda yakin ingin menambahkan langganan baru dengan URL \"%s\"? "
+"Langganan lain dengan URL yang sama telah ada (\"%s\")."
+
+#: ../src/ui/feed_list_view.c:966
+msgid "_Add"
+msgstr "T_ambah"
+
+#: ../src/ui/feed_list_view.c:968
+msgid "Adding Duplicate Subscription Confirmation"
+msgstr "Konfirmasi Penambahan Langganan Ganda"
+
+#: ../src/ui/icons.c:54
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Tidak dapat menemukan berkas pixmap: %s"
+
+#: ../src/ui/item_list_view.c:115
+msgid "This item has no link specified!"
+msgstr "Item ini tidak memiliki tautan khusus!"
+
+#: ../src/ui/item_list_view.c:482
+msgid "*** No title ***"
+msgstr "** Tidak ada judul ***"
+
+#: ../src/ui/item_list_view.c:486
+msgid " <span background='red' color='black'> important </span> "
+msgstr " <span background='red' color='black'> penting </span> "
+
+#: ../src/ui/item_list_view.c:849
+msgid "Headline"
+msgstr "Pokok Berita"
+
+#: ../src/ui/item_list_view.c:871
+msgid "Date"
+msgstr "Tanggal"
+
+#: ../src/ui/item_list_view.c:1038
+msgid "You must select a feed to delete its items!"
+msgstr "Anda harus memilih feed yang akan dihapus itemnya!"
+
+#: ../src/ui/item_list_view.c:1054 ../src/ui/item_list_view.c:1132
+#: ../src/ui/item_list_view.c:1147
+msgid "No item has been selected"
+msgstr "Tidak ada item terpilih"
+
+#: ../src/ui/liferea_shell.c:409
+#, c-format
+msgid " (%d new)"
+msgid_plural " (%d new)"
+msgstr[0] " (%d baru)"
+msgstr[1] " (%d baru)"
+
+#: ../src/ui/liferea_shell.c:414
+#, c-format
+msgid "%d unread%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%d belum dibaca%s"
+msgstr[1] "%d belum dibaca%s"
+
+#: ../src/ui/liferea_shell.c:755
+msgid "Help Topics"
+msgstr "Topik Bantuan"
+
+#: ../src/ui/liferea_shell.c:761
+msgid "Quick Reference"
+msgstr "Referensi Cepat"
+
+#: ../src/ui/liferea_shell.c:767
+msgid "FAQ"
+msgstr "FAQ"
+
+#: ../src/ui/liferea_shell.c:1045
+#, c-format
+msgid "Email command failed: %s"
+msgstr "Perintah surel gagal: %s"
+
+#: ../src/ui/popup_menu.c:115
+msgid "Email The Author"
+msgstr "Surel ke Penulis"
+
+#: ../src/ui/popup_menu.c:140
+msgid "Copy to News Bin"
+msgstr "Salin ke Berita Bin"
+
+#: ../src/ui/popup_menu.c:148
+#, c-format
+msgid "_Bookmark at %s"
+msgstr "_Markah pada %s"
+
+#: ../src/ui/popup_menu.c:154
+msgid "Copy Item _Location"
+msgstr "Salin _Lokasi Item"
+
+#: ../src/ui/popup_menu.c:171
+msgid "R_emove Item"
+msgstr "Hapus It_em"
+
+#: ../src/ui/popup_menu.c:200
+msgid "Open Enclosure..."
+msgstr "Buka Lampiran..."
+
+#: ../src/ui/popup_menu.c:201
+msgid "Save As..."
+msgstr "Simpan dengan Nama..."
+
+#: ../src/ui/popup_menu.c:202
+msgid "Copy Link Location"
+msgstr "Salin Lokasi Tautan"
+
+#: ../src/ui/popup_menu.c:282
+msgid "_Update Folder"
+msgstr "_Perbarui Folder"
+
+#: ../src/ui/popup_menu.c:292
+msgid "New _Subscription..."
+msgstr "_Langganan Baru..."
+
+#: ../src/ui/popup_menu.c:299
+msgid "New S_ource..."
+msgstr "Sumber Ba_ru..."
+
+#: ../src/ui/popup_menu.c:303
+msgid "_New"
+msgstr "_Baru"
+
+#: ../src/ui/popup_menu.c:312
+msgid "Sort Feeds"
+msgstr "Feed Pendek"
+
+#: ../src/ui/popup_menu.c:320
+msgid "_Mark All As Read"
+msgstr "Tandai Semua Telah _Dibaca"
+
+#: ../src/ui/popup_menu.c:327
+msgid "_Rebuild"
+msgstr "Ban_gun Ulang"
+
+#: ../src/ui/popup_menu.c:343
+msgid "Convert To Local Subscriptions..."
+msgstr "Konversi Ke Langganan Lokal..."
+
+#: ../src/ui/preferences_dialog.c:84
+msgid "GNOME default"
+msgstr "Bawaan GNOME"
+
+#: ../src/ui/preferences_dialog.c:85
+msgid "Text below icons"
+msgstr "Teks di bawah ikon"
+
+#: ../src/ui/preferences_dialog.c:86
+msgid "Text beside icons"
+msgstr "Teks di samping ikon"
+
+#: ../src/ui/preferences_dialog.c:87
+msgid "Icons only"
+msgstr "Hanya ikon"
+
+#: ../src/ui/preferences_dialog.c:88
+msgid "Text only"
+msgstr "Hanya teks"
+
+#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:43
+msgid "minutes"
+msgstr "menit"
+
+#: ../src/ui/preferences_dialog.c:97 ../src/ui/subscription_dialog.c:44
+msgid "hours"
+msgstr "jam"
+
+#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:45
+msgid "days"
+msgstr "hari"
+
+#: ../src/ui/preferences_dialog.c:103
+msgid "Space"
+msgstr "Spasi"
+
+#: ../src/ui/preferences_dialog.c:104
+msgid "<Ctrl> Space"
+msgstr "<Ctrl> Spasi"
+
+#: ../src/ui/preferences_dialog.c:105
+msgid "<Alt> Space"
+msgstr "<Alt> Spasi"
+
+#: ../src/ui/preferences_dialog.c:110
+msgid "Normal View"
+msgstr "Tampilan Normal"
+
+#: ../src/ui/preferences_dialog.c:111
+msgid "Wide View"
+msgstr "Tampilan Luas"
+
+#: ../src/ui/preferences_dialog.c:478
+msgid "Default Browser"
+msgstr "Peramban Bawaan"
+
+#: ../src/ui/preferences_dialog.c:480
+msgid "Manual"
+msgstr "Manual"
+
+#: ../src/ui/preferences_dialog.c:740
+msgid "Type"
+msgstr "Tipe"
+
+#: ../src/ui/preferences_dialog.c:743
+msgid "Program"
+msgstr "Program"
+
+#: ../src/ui/search_dialog.c:107
+msgid "Saved Search"
+msgstr "Pencarian Tersimpan"
+
+#: ../src/ui/subscription_dialog.c:427
+#, c-format
+msgid "The provider of this feed suggests an update interval of %d minute."
+msgid_plural ""
+"The provider of this feed suggests an update interval of %d minutes."
+msgstr[0] "Penyedia feed ini menyarankan interval pembaruan %d menit."
+msgstr[1] "Penyedia feed ini menyarankan interval pembaruan %d menit."
+
+#: ../src/ui/subscription_dialog.c:431
+msgid "This feed specifies no default update interval."
+msgstr "Feed ini tidak ditentukan interval pembaruannya."
+
+#: ../src/ui/ui_common.c:211
+msgid "All Files"
+msgstr "Semua Berkas"
+
+#: ../src/update.c:350
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr "Error membuka berkas temp %s untuk penyaringan!"
+
+#: ../src/update.c:372
+#, c-format
+msgid "%s exited with status %d"
+msgstr "%s keluar dengan status %d"
+
+#: ../src/update.c:378 ../src/update.c:379 ../src/update.c:493
+#, c-format
+msgid "Error: Could not open pipe \"%s\""
+msgstr "Kesalahan: Tidak dapat membuka pipa \"%s\""
+
+#. FIXME: maybe setting request->returncode would be better
+#: ../src/update.c:517
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "Kesalahan: Tidak dapat membuka berkas \"%s\""
+
+#: ../src/update.c:523
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "Kesalahan: Tidak ada berkas \"%s\""
+
+#: ../src/vfolder.c:54
+msgid "New Search Folder"
+msgstr "Pencarian Folder Baru"
+
+#: ../src/webkit/liferea_web_view.c:176
+msgid "Open Link In _Tab"
+msgstr "Buka Tautan di _Tab"
+
+#: ../src/webkit/liferea_web_view.c:177
+msgid "Open Link In Browser"
+msgstr "Buka Tautan di Peramban"
+
+#: ../src/webkit/liferea_web_view.c:178
+msgid "Open Link In External Browser"
+msgstr "Buka Tautan di Peramban Eksternal"
+
+#: ../src/webkit/liferea_web_view.c:184
+#, c-format
+msgid "_Bookmark Link at %s"
+msgstr "_Markah Tautan pada %s"
+
+#: ../src/webkit/liferea_web_view.c:191
+msgid "_Copy Link Location"
+msgstr "_Salin Tautan Lokasi"
+
+#: ../src/webkit/liferea_web_view.c:194
+msgid "_View Image"
+msgstr "_Tampilkan Gambar"
+
+#: ../src/webkit/liferea_web_view.c:195
+msgid "_Copy Image Location"
+msgstr "Salin Lokasi _Gambar"
+
+#: ../src/webkit/liferea_web_view.c:198
+msgid "S_ave Link As"
+msgstr "Simpan T_autan dengan Nama"
+
+#: ../src/webkit/liferea_web_view.c:201
+msgid "S_ave Image As"
+msgstr "Simpan Gam_bar dengan Nama"
+
+#: ../src/webkit/liferea_web_view.c:208
+msgid "_Subscribe..."
+msgstr "_Langgan..."
+
+#: ../src/webkit/liferea_web_view.c:212
+msgid "_Copy"
+msgstr "_Salin"
+
+#: ../src/webkit/liferea_web_view.c:218
+msgid "_Increase Text Size"
+msgstr "_Perbesar Ukuran Teks"
+
+#: ../src/webkit/liferea_web_view.c:219
+msgid "_Decrease Text Size"
+msgstr "_Kecilkan Ukuran Teks"
+
+#: ../src/xml.c:424
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[Ada error baru. Keluaran telah dipotong!]"
+
+#: ../src/xml.c:592
+msgid "XML Parser: Could not parse document:\n"
+msgstr "Pengurai XML: Tidak dapat mengurai dokumen:\n"
+
+#: ../xslt/feed.xml.in.h:1
+msgid "Feed:"
+msgstr "Feed:"
+
+#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
+msgid "Source:"
+msgstr "Sumber:"
+
+#: ../xslt/feed.xml.in.h:3
+msgid "Publisher"
+msgstr "Penerbit"
+
+#: ../xslt/feed.xml.in.h:4
+msgid "Copyright"
+msgstr "Hak Cipta"
+
+#: ../xslt/feed.xml.in.h:5
+#, fuzzy
+msgid "There was a problem when fetching this subscription!"
+msgstr ""
+"Ada masalah ketika membaca langganan. Silahkan periksa URL dan keluaran "
+"konsol."
+
+#: ../xslt/feed.xml.in.h:6
+#, fuzzy
+msgid "1. Authentication"
+msgstr "Otentikasi"
+
+#: ../xslt/feed.xml.in.h:7
+#, fuzzy
+msgid "2. Download"
+msgstr "Unduh"
+
+#: ../xslt/feed.xml.in.h:8
+msgid "3. Feed Discovery"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:9
+msgid "4. Parsing"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:10
+#, fuzzy
+msgid "Details:"
+msgstr "Rincian"
+
+#: ../xslt/feed.xml.in.h:11
+msgid "Authentication failed. Please check the credentials and try again!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:12
+#, fuzzy
+msgid "There was an error when downloading the feed source:"
+msgstr "Ada kesalahan ketika mengurai feed ini!"
+
+#: ../xslt/feed.xml.in.h:13
+#, fuzzy
+msgid "There was an error when running the feed filter command:"
+msgstr "Ada kesalahan ketika mengurai feed ini!"
+
+#: ../xslt/feed.xml.in.h:14
+msgid ""
+"The source does not point directly to a feed or a webpage with a link to a "
+"feed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:15
+msgid "Sorry, the feed could not be parsed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:16
+msgid "You may want to contact the author/webmaster of the feed about this!"
+msgstr "Mungkin Anda ingin menghubungi penulis/webmaster tentang feed ini!"
+
+#: ../xslt/folder.xml.in.h:1
+msgid "Folder:"
+msgstr "Folder:"
+
+#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
+msgid "children with"
+msgstr "children with"
+
+#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+msgid "unread headlines"
+msgstr "belum dibaca"
+
+#: ../xslt/item.xml.in.h:2
+msgid "Feed"
+msgstr "Feed"
+
+#: ../xslt/item.xml.in.h:3
+msgid "Filed under"
+msgstr "Berada di"
+
+#: ../xslt/item.xml.in.h:4
+msgid "Author"
+msgstr "Penulis"
+
+#: ../xslt/item.xml.in.h:5
+msgid "Shared by"
+msgstr "Dibagikan oleh"
+
+#: ../xslt/item.xml.in.h:6
+msgid "Via"
+msgstr "Melalui"
+
+#: ../xslt/item.xml.in.h:7
+msgid "Related"
+msgstr "Terkait"
+
+#: ../xslt/item.xml.in.h:8
+msgid "Also posted in"
+msgstr "Juga diposkan di"
+
+#: ../xslt/item.xml.in.h:9
+msgid "Creator"
+msgstr "Pembuat"
+
+#: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr "Kordinat"
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr "Peta"
+
+#: ../xslt/item.xml.in.h:12
+msgid "View count"
+msgstr "Jumlah penayangan"
+
+#: ../xslt/item.xml.in.h:13
+msgid "Rating"
+msgstr "Peringkat"
+
+#: ../xslt/item.xml.in.h:14
+msgid "Comments"
+msgstr "Komentar"
+
+#: ../xslt/item.xml.in.h:15
+msgid "Updating..."
+msgstr "Memerbarui..."
+
+#: ../xslt/item.xml.in.h:16
+msgid "Section"
+msgstr "Bagian"
+
+#: ../xslt/item.xml.in.h:17
+msgid "Department"
+msgstr "Departemen"
+
+#: ../xslt/newsbin.xml.in.h:1
+msgid "News Bin:"
+msgstr "Bin Berita:"
+
+#: ../xslt/newsbin.xml.in.h:2
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+"Tambahkan item ke bin berita dengan memilih \"Salin ke Bin Berita\" dari "
+"menu konteks daftar item."
+
+#: ../xslt/vfolder.xml.in.h:1
+msgid "Search Folder:"
+msgstr "Cari Folder:"
+
+#~ msgid ""
+#~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
+#~ "></b>"
+#~ msgstr ""
+#~ "Pembaruan terakhir langganan ini gagal! <br/><b>HTTP error code <xsl:"
+#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
+#~ "></b>"
+
+#~ msgid "Parser Error Details"
+#~ msgstr "Rincian Kesalahan Pengurai"
+
+#~ msgid "There were errors while filtering this feed!"
+#~ msgstr "Ada kesalahan ketika menyaring feed ini!"
+
+#~ msgid "Filter Error Details"
+#~ msgstr "Rincian Kesalahan Filter"
+
+#~ msgid ""
+#~ "<p>Could not detect the type of this feed! Please check if the source "
+#~ "really points to a resource provided in one of the supported syndication "
+#~ "formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+#~ msgstr ""
+#~ "<p>Tidak dapat mendeteksi tipe feed ini! Silahkan perika sumber apakah "
+#~ "benar-benar mengarah ke sumber daya yang tersedia di salah satu format "
+#~ "sindikasi didukung!</p>Keluaran Pengurai XML:<br /><div "
+#~ "class='xmlparseroutput'>"
+
+#~ msgid ""
+#~ "The URL you want Liferea to subscribe to points to a webpage and the auto "
+#~ "discovery found no feeds on this page. Maybe this webpage just does not "
+#~ "support feed auto discovery."
+#~ msgstr ""
+#~ "URL yang ingin Anda lanngankan ke Liferea mengarah ke sebuah laman web "
+#~ "dan pencarian otomatis tidak menemukan feed di halaman ini. Mungkin laman "
+#~ "web ini tidak mendukung pencarian feed otomatis."
+
+#~ msgid "Source points to HTML document."
+#~ msgstr "Sumber mengarah ke dokumen HTML."
+
+#~ msgid "Could not determine the feed type."
+#~ msgstr "Tidak dapat menentukan tipe feed."
+
+#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+#~ msgstr "Telah pergi. Sumberdaya tidak ada. Silahkan unsubscribe!"
+
+#, c-format
+#~ msgid "Updating \"%s\""
+#~ msgstr "Memerbarui \"%s\""
 
 #~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 #~ msgstr "Kesalahan XML ketika membaca feed! Feed \"%s\" tidak dapat dimuat!"
