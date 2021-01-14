@@ -53,6 +53,7 @@ jobs:
        sh autogen.sh
        ./configure --prefix=$(pwd)/inst
        make && make install
+       make -C po check
        cd src/tests && make test
 
     - name: Perform CodeQL Analysis
