@@ -249,12 +249,12 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);
 
-	feedlist_node_was_updated (node);
 	feed_list_view_update_node (node->id);	// FIXME: This should be dropped once the "node-updated" signal is consumed
 
 	if (processing && subscription->node->newCount > 0) {
 		// FIXME: use new-items signal in itemview class
 		feedlist_new_items (node->newCount);
+		feedlist_node_was_updated (node);
 	}
 }
 
