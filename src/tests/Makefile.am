@@ -65,14 +65,12 @@ favicon_LDADD = \
 	../newsbin.o \
 	../node.o \
 	../node_type.o \
-	../node_view.h \
 	../plugins_engine.o \
 	../render.o \
 	../rule.o \
 	../social.o \
 	../subscription.o \
 	../subscription_icon.o \
-	../subscription_type.h \
 	../update.o \
 	../vfolder.o \
 	../vfolder_loader.o \
@@ -82,6 +80,11 @@ favicon_LDADD = \
 	$(WEBKIT_LIBS) \
 	$(INTROSPECTION_LIBS) \
 	-lm
+
+clean-local: clean-local-check
+.PHONY: clean-local-check
+clean-local-check:
+	-rm *.Po
 
 favicon_SOURCES = favicon.c
 favicon_CFLAGS = $(AM_CPPFLAGS)

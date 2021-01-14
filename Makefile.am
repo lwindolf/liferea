@@ -77,14 +77,14 @@ EXTRA_DIST = \
 
 DISTCLEANFILES = \
 	liferea.desktop \
+	net.sourceforge.liferea.service \
 	intltool-extract \
 	intltool-merge \
-	intltool-update \
-	$(gsettings_SCHEMAS)
+	intltool-update
 
 CLEANFILES = \
 	$(gsettings_SCHEMAS) \
-	$(appdata_DATA) 
+	$(appdata_DATA)
 
 po/liferea.pot:
 	cd po && $(MAKE) liferea.pot
