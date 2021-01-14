@@ -52,8 +52,8 @@ jobs:
        mkdir inst
        sh autogen.sh
        ./configure --prefix=$(pwd)/inst
-       make && make install
        make -C po check
+       make && make install
        cd src/tests && make test
 
     - name: Perform CodeQL Analysis
