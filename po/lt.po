@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.6.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-31 18:23+0100\n"
+"POT-Creation-Date: 2021-01-14 17:09+0100\n"
 "PO-Revision-Date: 2011-08-22 15:08+0300\n"
 "Last-Translator: Mindaugas Baranauskas <embar@users.berlios.de>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -92,158 +92,226 @@ msgstr ""
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:1
+#: ../plugins/getfocus.py:95
+msgid "Opacity:"
+msgstr ""
+
+#: ../plugins/getfocus.py:96
+msgid "Opacity"
+msgstr ""
+
+#: ../plugins/getfocus.py:106
+msgid "Min"
+msgstr ""
+
+#: ../plugins/getfocus.py:111
+msgid "Max"
+msgstr ""
+
+#: ../plugins/getfocus.py:117
+msgid "Save"
+msgstr ""
+
+#: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr ""
+
+#: ../plugins/headerbar.py:73 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+#, fuzzy
+msgid "Next Item"
+msgstr "_Tolesnis neskaitytas"
+
+#: ../plugins/headerbar.py:81 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Tolesnis neskaitytas"
+
+#: ../plugins/headerbar.py:89 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "Žymėti _skaitytu"
+
+#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Ieškoti visuose naujienų kanaluose..."
+
+#: ../plugins/libnotify.py:43
+#, fuzzy
+msgid "Feed Updates"
+msgstr "Naujienų kanalų atnaujinimas"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:69
+msgid "Plugin Installer"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:83
+msgid "Activate Plugins"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_Parsiųsti naudojant"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "Sudėtingiau"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "<span weight=\"bold\">Informavimo nuostatos</span>"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
 msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
 msgstr ""
-"Šis naujienų kanalas sustabdė savo veiklą. Jis nebeprieinamas. „Liferea“ "
-"nebegali jo atnaujinti, tačiau tebegalite pasiekti jau įkeltuosius "
-"straipsnius."
 
-#: ../xslt/feed.xml.in.h:2
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
 msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr ""
-"Nepavyko atnaujinti atnaujinti naujienų kanalo informacijos!<br/><b>HTTP "
-"klaidos kodas <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
-"\"httpError\"/></b>"
-
-#: ../xslt/feed.xml.in.h:3
-msgid "There were errors while parsing this feed!"
-msgstr "Analizuojant kanalą įvyko klaidų!"
-
-#: ../xslt/feed.xml.in.h:4
-msgid "Parser Error Details"
-msgstr "Analizavimo klaida išsamiau"
-
-#: ../xslt/feed.xml.in.h:5
-msgid "Details"
-msgstr "Išsamiau"
-
-#: ../xslt/feed.xml.in.h:6
-msgid "You may want to contact the author/webmaster of the feed about this!"
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:7
-msgid "There were errors while filtering this feed!"
-msgstr "Filtruojant kanalą įvyko klaidų!"
-
-#: ../xslt/feed.xml.in.h:8
-msgid "Filter Error Details"
-msgstr "Filtro klaida išsamiau"
-
-#: ../xslt/feed.xml.in.h:9
-msgid "Feed:"
-msgstr "Naujienų kanalas:"
-
-#: ../xslt/feed.xml.in.h:10 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Šaltinis:"
-
-#: ../xslt/feed.xml.in.h:11
-msgid "Publisher"
-msgstr "Paskelbė"
-
-#: ../xslt/feed.xml.in.h:12
-msgid "Copyright"
-msgstr "Autorinės teisės"
-
-#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
-msgid "children with"
-msgstr "vaikas su"
-
-#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "neskaitytos antraštės"
-
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Aplankas:"
-
-#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:21
-msgid "Source"
-msgstr "Šaltinis"
-
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Naujienų kanalas"
-
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Etiketės:"
-
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Autorius"
-
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Pasidalino"
-
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "per"
-
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Susiję"
-
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Taip pat paskelbė"
-
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Sukūrė"
-
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Komentarai"
-
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "Atnaujinama..."
-
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Sekcija"
-
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Padalinys"
-
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
 msgstr ""
 
-#: ../xslt/newsbin.xml.in.h:2
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "Nepavyksta sukurti podėlio katalogo „%s“!"
+
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "Įrašo šalinimas"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
 msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
 
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Paieškos aplankas:"
+#: ../plugins/trayicon.py:134
+#, fuzzy
+msgid "Show / Hide"
+msgstr "Rodyti išsamiau"
+
+#: ../plugins/trayicon.py:135
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:136
+#, fuzzy
+msgid "Quit"
+msgstr "_Baigti"
 
 #: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
@@ -374,48 +442,118 @@ msgstr "Eksportuoti naujienų kanalų sąrašą"
 msgid "Export"
 msgstr "Eksportuoti"
 
-#: ../src/feed.c:325
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr ""
-
-#: ../src/feed.c:352
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "„%s“ atnaujintas..."
-
-#: ../src/feed.c:359
+#: ../src/feed.c:354
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "„%s“ neprieinamas"
 
-#: ../src/feed_parser.c:145
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
+#: ../src/feed.c:356
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "„%s“ atnaujintas..."
 
-#: ../src/feed_parser.c:203
+#: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Tuščias dokumentas!"
 
-#: ../src/feed_parser.c:212
+#: ../src/feed_parser.c:210
 msgid "Invalid XML!"
 msgstr "Netinkamas XML!"
 
-#: ../src/feed_parser.c:266
-msgid "Source points to HTML document."
-msgstr "Šaltinis nurodo HTML dokumentą."
+#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
+#: ../glade/simple_subscription.ui.h:1
+msgid "New Subscription"
+msgstr "Nauja prenumerata"
 
-#: ../src/feed_parser.c:269
-msgid "Could not determine the feed type."
-msgstr "Nepavyksta apibrėžti naujienų kanalo tipo."
+#: ../src/fl_sources/google_source.c:111
+msgid "Google Reader"
+msgstr ""
+
+#: ../src/fl_sources/node_source.c:334
+msgid "No feed list source types found!"
+msgstr ""
+
+#: ../src/fl_sources/node_source.c:363
+msgid "Source Type"
+msgstr "Šaltinio tipas"
+
+#: ../src/fl_sources/node_source.c:414
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr ""
+
+#. FIXME: something is not perfect, because if you immediately
+#. remove the subscription tree afterwards there is a double free
+#: ../src/fl_sources/node_source.c:580
+#, c-format
+msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.c:319
+msgid "Planet, BlogRoll, OPML"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.c:379
+msgid "Choose OPML File"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.c:379 ../src/ui/subscription_dialog.c:355
+msgid "_Open"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.h:28
+msgid "New OPML Subscription"
+msgstr "Nauja OPML prenumerata"
+
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+msgid "Login failed!"
+msgstr ""
+
+#: ../src/fl_sources/reedah_source.c:313
+msgid "Reedah"
+msgstr ""
+
+#: ../src/fl_sources/reedah_source_feed.c:154
+msgid "Could not parse JSON returned by Reedah API!"
+msgstr ""
+
+#: ../src/fl_sources/theoldreader_source.c:311
+#, fuzzy
+msgid "TheOldReader"
+msgstr "Naujienų kanalų skaitytuvė"
+
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:234
+msgid ""
+"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
+"URL!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:300
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:318
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
+"%s or later!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:460
+msgid "Tiny Tiny RSS"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source_feed.c:150
+msgid "Could not parse JSON returned by TinyTinyRSS API!"
+msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:390
+#: ../src/itemlist.c:395
 #, fuzzy
 msgid "There are no unread items"
 msgstr "Nėra nėra neskaitytų straipsnių "
@@ -507,38 +645,38 @@ msgid "Print debugging messages for the given topic"
 msgstr "Rodyti nurodytos temos derinimo pranešimus"
 
 #. Some libsoup transport errors
-#: ../src/net.c:463
+#: ../src/net.c:439
 msgid "The update request was cancelled"
 msgstr "Atšaukta atnaujinimo užklausa"
 
-#: ../src/net.c:464
+#: ../src/net.c:440
 msgid "Unable to resolve destination host name"
 msgstr "Nepavyksta nustatyti paskirties serverio vardo"
 
-#: ../src/net.c:465
+#: ../src/net.c:441
 msgid "Unable to resolve proxy host name"
 msgstr "Nepavyksta nustatyti įgaliotojo serverio vardo"
 
-#: ../src/net.c:466
+#: ../src/net.c:442
 msgid "Unable to connect to remote host"
 msgstr "Nepavyksta prisijungti prie nuotolinio serverio"
 
-#: ../src/net.c:467
+#: ../src/net.c:443
 msgid "Unable to connect to proxy"
 msgstr "Nepavyksta prisijungti prie įgaliotojo serverio"
 
-#: ../src/net.c:468
+#: ../src/net.c:444
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:471
+#: ../src/net.c:447
 msgid "The resource moved permanently to a new location"
 msgstr "Išteklius negrįžtamai persikėlė į naują vietą"
 
 #. http 4xx client error
-#: ../src/net.c:474
+#: ../src/net.c:450
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -546,57 +684,72 @@ msgstr ""
 "Šio naujienų kanalo parsiuntimui nenustatėte savo tapatybės. Naujienų kanalo "
 "savybių dialoge atnaujinkite savo naudotojo vardą ir slaptažodį."
 
-#: ../src/net.c:476
+#: ../src/net.c:452
 msgid "Payment required"
 msgstr "Reikia sumokėti"
 
-#: ../src/net.c:477
+#: ../src/net.c:453
 msgid "You're not allowed to access this resource"
 msgstr "Jums neleidžiama prieiti prie šio šaltinio"
 
-#: ../src/net.c:478
+#: ../src/net.c:454
 msgid "Resource Not Found"
 msgstr "Išteklius nerastas"
 
-#: ../src/net.c:479
+#: ../src/net.c:455
 msgid "Method Not Allowed"
 msgstr "Metodas neleidžiamas"
 
-#: ../src/net.c:480
+#: ../src/net.c:456
 msgid "Not Acceptable"
 msgstr "Nepriimtina"
 
-#: ../src/net.c:481
+#: ../src/net.c:457
 msgid "Proxy authentication required"
 msgstr "Reikia nurodyti tapatybę jungiantis prie įgaliotojo serverio"
 
-#: ../src/net.c:482
+#: ../src/net.c:458
 msgid "Request timed out"
 msgstr "Baigėsi užklausos laikas"
 
-#: ../src/net.c:483
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Ištekliaus nebėra. Nutraukite prenumeratą!"
+#: ../src/net.c:459
+#, fuzzy
+msgid ""
+"The webserver indicates this feed is discontinued. It's no longer available. "
+"Liferea won't update it anymore but you can still access the cached "
+"headlines."
+msgstr ""
+"Šis naujienų kanalas sustabdė savo veiklą. Jis nebeprieinamas. „Liferea“ "
+"nebegali jo atnaujinti, tačiau tebegalite pasiekti jau įkeltuosius "
+"straipsnius."
 
-#: ../src/net.c:488
+#: ../src/net.c:464
 msgid "There was an internal error in the update process"
 msgstr "Atnaujinimo proceso vidinė klaida"
 
-#: ../src/net.c:490
+#: ../src/net.c:466
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 
-#: ../src/net.c:492
+#: ../src/net.c:468
 msgid "Client Error"
 msgstr "Kliento klaida"
 
-#: ../src/net.c:494
+#: ../src/net.c:470
 msgid "Server Error"
 msgstr "Serverio klaida"
 
-#: ../src/net.c:496
+#: ../src/net.c:472
 msgid "An unknown networking error happened!"
 msgstr "Įvyko nežinoma tinklo klaida!"
+
+#: ../src/parsers/atom10.c:239
+msgid "Website"
+msgstr ""
+
+#: ../src/parsers/ns_ag.c:70
+msgid "%b %d %H:%M"
+msgstr ""
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
@@ -694,14 +847,7 @@ msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "„%s“ prenumerata nebegalima. „Liferea“ jos nebeatnaujins!"
 
-#: ../src/subscription.c:173
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Klaida skaitant prenumeratą. Patikrinkite URL ir žiūrėkite išvestį konsolėje."
-
-#: ../src/subscription.c:196
+#: ../src/subscription.c:188
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "„%s“ URL negrįžtamai pasikeitė ir buvo atnaujintas"
@@ -711,53 +857,33 @@ msgstr "„%s“ URL negrįžtamai pasikeitė ir buvo atnaujintas"
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "„%s“ nutraukė veiklą.  „Liferea“ nebegalės atnaujinti!"
 
-#: ../src/subscription.c:207
+#: ../src/subscription.c:208
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "„%s“ pasikeitė po paskutinio atnaujinimo"
 
-#: ../src/subscription.c:263
-#, c-format
-msgid "Updating \"%s\""
-msgstr "Atnaujinama: „%s“"
+#: ../src/subscription.c:221 ../src/subscription.c:296
+#, fuzzy, c-format
+msgid "Updating (%d / %d) ..."
+msgstr "Atnaujinama..."
 
-#: ../src/update.c:327
+#: ../src/subscription.c:298
+#, fuzzy, c-format
+msgid "Updating '%s'..."
+msgstr "Atnaujinama..."
+
+#: ../src/ui/auth_dialog.c:114
 #, c-format
-msgid "Error opening temp file %s to use for filtering!"
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "Įveskite „%s“ (%s) naudotojo vardą ir slaptažodį:"
+
+#: ../src/ui/auth_dialog.c:116
+msgid "Unknown source"
+msgstr "Nežinomas šaltinis"
+
+#: ../src/ui/browser_tabs.c:262
+msgid "Untitled"
 msgstr ""
-
-#: ../src/update.c:350
-#, c-format
-msgid "%s exited with status %d"
-msgstr "%s baigimo kodas %d"
-
-#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
-#, c-format
-msgid "Error: Could not open pipe \"%s\""
-msgstr "Klaida: nepavyksta atverti kanalo „%s“"
-
-#. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:496
-#, c-format
-msgid "Error: Could not open file \"%s\""
-msgstr "Klaida: nepavyksta atverti rinkmenos „%s“"
-
-#: ../src/update.c:502
-#, c-format
-msgid "Error: There is no file \"%s\""
-msgstr "Klaida: nėra „%s“ rinkmenos"
-
-#: ../src/vfolder.c:54
-msgid "New Search Folder"
-msgstr "Naujas paieškos aplankas"
-
-#: ../src/xml.c:424
-msgid "[There were more errors. Output was truncated!]"
-msgstr "[Buvo ir daugiau klaidų. Išvestis sutrumpinta!]"
-
-#: ../src/xml.c:594
-msgid "XML Parser: Could not parse document:\n"
-msgstr "XML analizavimas: nepavyksta išanalizuoti dokumento:\n"
 
 #: ../src/ui/enclosure_list_view.c:168
 msgid "Attachments"
@@ -803,69 +929,6 @@ msgstr "Rinkmenos pasirinkimas"
 msgid "File Extension .%s"
 msgstr "<b>Rinkmenos prievardis .%s</b>"
 
-#: ../src/ui/icons.c:54
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr ""
-
-#: ../src/ui/liferea_shell.c:409
-#, c-format
-msgid " (%d new)"
-msgid_plural " (%d new)"
-msgstr[0] " (%d naujas)"
-msgstr[1] " (%d nauji)"
-msgstr[2] " (%d naujų)"
-
-#: ../src/ui/liferea_shell.c:414
-#, c-format
-msgid "%d unread%s"
-msgid_plural "%d unread%s"
-msgstr[0] "%d neskaitytas%s"
-msgstr[1] "%d neskaityti%s"
-msgstr[2] "%d neskaitytų%s"
-
-#: ../src/ui/liferea_shell.c:755
-msgid "Help Topics"
-msgstr "Žinyno temos"
-
-#: ../src/ui/liferea_shell.c:761
-msgid "Quick Reference"
-msgstr "Trumpa informacija"
-
-#: ../src/ui/liferea_shell.c:767
-msgid "FAQ"
-msgstr "D. U. K."
-
-#: ../src/ui/liferea_shell.c:1045
-#, fuzzy, c-format
-msgid "Email command failed: %s"
-msgstr "Nepavyko įvykdyti naršyklės komandos: %s"
-
-#: ../src/ui/search_dialog.c:107
-#, fuzzy
-msgid "Saved Search"
-msgstr "Sudėtingesnė paieška"
-
-#: ../src/ui/auth_dialog.c:114
-#, c-format
-msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "Įveskite „%s“ (%s) naudotojo vardą ir slaptažodį:"
-
-#: ../src/ui/auth_dialog.c:116
-msgid "Unknown source"
-msgstr "Nežinomas šaltinis"
-
-#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_view.c:911
-#: ../src/ui/feed_list_view.c:965
-#, fuzzy
-msgid "_Cancel"
-msgstr "_Atšaukti visus"
-
-#: ../src/ui/ui_common.c:211
-#, fuzzy
-msgid "All Files"
-msgstr "_Vietinė rinkmena"
-
 #: ../src/ui/feed_list_view.c:432
 msgid "Liferea is in offline mode. No update possible."
 msgstr "„Liferea“ veikia neprisijungusia veiksena. Atnaujinti negalima."
@@ -910,6 +973,12 @@ msgstr "Tikrai pašalinti „%s“ ir visą jo turinį?"
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Tikrai pašalinti „%s“?"
 
+#: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
+#: ../src/ui/ui_common.c:168
+#, fuzzy
+msgid "_Cancel"
+msgstr "_Atšaukti visus"
+
 #: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
 msgid "_Delete"
 msgstr "_Šalinti"
@@ -934,6 +1003,11 @@ msgstr ""
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Šalinimo patvirtinimas"
 
+#: ../src/ui/icons.c:54
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr ""
+
 #: ../src/ui/item_list_view.c:115
 msgid "This item has no link specified!"
 msgstr "Šis straipsnis be nuorodos!"
@@ -946,22 +1020,55 @@ msgstr "*** Be pavadinimo ***"
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:865
+#: ../src/ui/item_list_view.c:849
 msgid "Headline"
 msgstr "Antraštė"
 
-#: ../src/ui/item_list_view.c:887
+#: ../src/ui/item_list_view.c:871
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/item_list_view.c:1056
+#: ../src/ui/item_list_view.c:1038
 msgid "You must select a feed to delete its items!"
 msgstr "Nurodykite naujienų kanalą, kurio straipsnius norite pašalinti!"
 
-#: ../src/ui/item_list_view.c:1072 ../src/ui/item_list_view.c:1150
-#: ../src/ui/item_list_view.c:1165
+#: ../src/ui/item_list_view.c:1054 ../src/ui/item_list_view.c:1132
+#: ../src/ui/item_list_view.c:1147
 msgid "No item has been selected"
 msgstr "Nepažymėtas nei vienas straipsnis"
+
+#: ../src/ui/liferea_shell.c:409
+#, c-format
+msgid " (%d new)"
+msgid_plural " (%d new)"
+msgstr[0] " (%d naujas)"
+msgstr[1] " (%d nauji)"
+msgstr[2] " (%d naujų)"
+
+#: ../src/ui/liferea_shell.c:414
+#, c-format
+msgid "%d unread%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%d neskaitytas%s"
+msgstr[1] "%d neskaityti%s"
+msgstr[2] "%d neskaitytų%s"
+
+#: ../src/ui/liferea_shell.c:755
+msgid "Help Topics"
+msgstr "Žinyno temos"
+
+#: ../src/ui/liferea_shell.c:761
+msgid "Quick Reference"
+msgstr "Trumpa informacija"
+
+#: ../src/ui/liferea_shell.c:767
+msgid "FAQ"
+msgstr "D. U. K."
+
+#: ../src/ui/liferea_shell.c:1045
+#, fuzzy, c-format
+msgid "Email command failed: %s"
+msgstr "Nepavyko įvykdyti naršyklės komandos: %s"
 
 #: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
@@ -1144,9 +1251,10 @@ msgstr "Tipas"
 msgid "Program"
 msgstr "Programa"
 
-#: ../src/ui/subscription_dialog.c:355 ../src/fl_sources/opml_source.c:379
-msgid "_Open"
-msgstr ""
+#: ../src/ui/search_dialog.c:107
+#, fuzzy
+msgid "Saved Search"
+msgstr "Sudėtingesnė paieška"
 
 #: ../src/ui/subscription_dialog.c:427
 #, c-format
@@ -1161,105 +1269,40 @@ msgstr[2] "Prenumeratos teikėjas siūlo %d min atnaujinimo intervalą."
 msgid "This feed specifies no default update interval."
 msgstr "Šis naujienų kanalas neturi numatytojo atnaujinimo intervalo."
 
-#: ../src/ui/browser_tabs.c:262
-msgid "Untitled"
-msgstr ""
-
-#: ../src/parsers/atom10.c:239
-msgid "Website"
-msgstr ""
-
-#: ../src/parsers/ns_ag.c:70
-msgid "%b %d %H:%M"
-msgstr ""
-
-#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
-msgid "New Subscription"
-msgstr "Nauja prenumerata"
-
-#: ../src/fl_sources/google_source.c:111
-msgid "Google Reader"
-msgstr ""
-
-#: ../src/fl_sources/opml_source.c:319
-msgid "Planet, BlogRoll, OPML"
-msgstr ""
-
-#: ../src/fl_sources/opml_source.c:379
-msgid "Choose OPML File"
-msgstr ""
-
-#: ../src/fl_sources/opml_source.h:28
-msgid "New OPML Subscription"
-msgstr "Nauja OPML prenumerata"
-
-#: ../src/fl_sources/node_source.c:334
-msgid "No feed list source types found!"
-msgstr ""
-
-#: ../src/fl_sources/node_source.c:363
-msgid "Source Type"
-msgstr "Šaltinio tipas"
-
-#: ../src/fl_sources/node_source.c:414
-#, c-format
-msgid "Login for '%s' has not yet completed! Please wait until login is done."
-msgstr ""
-
-#. FIXME: something is not perfect, because if you immediately
-#. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:580
-#, c-format
-msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr ""
-
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-msgid "Login failed!"
-msgstr ""
-
-#: ../src/fl_sources/reedah_source.c:313
-msgid "Reedah"
-msgstr ""
-
-#: ../src/fl_sources/reedah_source_feed.c:154
-msgid "Could not parse JSON returned by Reedah API!"
-msgstr ""
-
-#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
-msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr ""
-
-#: ../src/fl_sources/ttrss_source.c:234
-msgid ""
-"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
-"URL!"
-msgstr ""
-
-#: ../src/fl_sources/ttrss_source.c:300
-msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr ""
-
-#: ../src/fl_sources/ttrss_source.c:318
-#, c-format
-msgid ""
-"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
-"%s or later!"
-msgstr ""
-
-#: ../src/fl_sources/ttrss_source.c:460
-msgid "Tiny Tiny RSS"
-msgstr ""
-
-#: ../src/fl_sources/ttrss_source_feed.c:150
-msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr ""
-
-#: ../src/fl_sources/theoldreader_source.c:311
+#: ../src/ui/ui_common.c:211
 #, fuzzy
-msgid "TheOldReader"
-msgstr "Naujienų kanalų skaitytuvė"
+msgid "All Files"
+msgstr "_Vietinė rinkmena"
+
+#: ../src/update.c:350
+#, c-format
+msgid "Error opening temp file %s to use for filtering!"
+msgstr ""
+
+#: ../src/update.c:372
+#, c-format
+msgid "%s exited with status %d"
+msgstr "%s baigimo kodas %d"
+
+#: ../src/update.c:378 ../src/update.c:379 ../src/update.c:493
+#, c-format
+msgid "Error: Could not open pipe \"%s\""
+msgstr "Klaida: nepavyksta atverti kanalo „%s“"
+
+#. FIXME: maybe setting request->returncode would be better
+#: ../src/update.c:517
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "Klaida: nepavyksta atverti rinkmenos „%s“"
+
+#: ../src/update.c:523
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "Klaida: nėra „%s“ rinkmenos"
+
+#: ../src/vfolder.c:54
+msgid "New Search Folder"
+msgstr "Naujas paieškos aplankas"
 
 #: ../src/webkit/liferea_web_view.c:176
 #, fuzzy
@@ -1320,206 +1363,13 @@ msgstr "Pa_didinti teksto dydį"
 msgid "_Decrease Text Size"
 msgstr "Su_mažinti teksto dydį"
 
-#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
-#: ../glade/liferea_toolbar.ui.h:5
-msgid "Previous Item"
-msgstr ""
+#: ../src/xml.c:424
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[Buvo ir daugiau klaidų. Išvestis sutrumpinta!]"
 
-#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
-#: ../glade/liferea_toolbar.ui.h:6
-#, fuzzy
-msgid "Next Item"
-msgstr "_Tolesnis neskaitytas"
-
-#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
-#: ../glade/liferea_toolbar.ui.h:7
-msgid "_Next Unread Item"
-msgstr "_Tolesnis neskaitytas"
-
-#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
-#: ../glade/liferea_toolbar.ui.h:3
-msgid "_Mark Items Read"
-msgstr "Žymėti _skaitytu"
-
-#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
-#: ../glade/liferea_toolbar.ui.h:10
-msgid "Search All Feeds..."
-msgstr "Ieškoti visuose naujienų kanaluose..."
-
-#: ../plugins/libnotify.py:42
-#, fuzzy
-msgid "Feed Updates"
-msgstr "Naujienų kanalų atnaujinimas"
-
-#: ../plugins/plugin-installer.py:54
-msgid "Plugins"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:69
-msgid "Plugin Installer"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:83
-msgid "Activate Plugins"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:84
-#, fuzzy
-msgid "Download Plugins"
-msgstr "_Parsiųsti naudojant"
-
-#: ../plugins/plugin-installer.py:102
-#, python-format
-msgid "Bad fields for plugin entry %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-msgid "All"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "Sudėtingiau"
-
-#: ../plugins/plugin-installer.py:125
-msgid "Menu"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-#, fuzzy
-msgid "Notifications"
-msgstr "<span weight=\"bold\">Informavimo nuostatos</span>"
-
-#: ../plugins/plugin-installer.py:133
-msgid "Filter by category"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:140
-msgid "_Install"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:144
-msgid "_Uninstall"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:245
-#, python-format
-msgid ""
-"Missing package manager '%s'. Cannot check nor install necessary "
-"dependencies!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:261
-#, python-format
-msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:268
-#, python-format
-msgid ""
-"Package installation failed (%s)! Check console output for further problem "
-"details!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:271
-#, python-format
-msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:285
-#, python-format
-msgid "Copying %s to %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:288
-#, python-format
-msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:297
-#, python-format
-msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:307
-#, python-format
-msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:318
-#, fuzzy, python-format
-msgid "Creating schema directory %s"
-msgstr "Nepavyksta sukurti podėlio katalogo „%s“!"
-
-#: ../plugins/plugin-installer.py:320
-#, python-format
-msgid "Installing schema %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:324
-msgid "Compiling schemas..."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:329
-#, python-format
-msgid "Failed to install schema files (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:339
-#, python-format
-msgid "Failed to enable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:345
-#, python-format
-msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:359
-#, python-format
-msgid "Failed to disable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
-#, fuzzy, python-format
-msgid "Deleting '%s'"
-msgstr "Įrašo šalinimas"
-
-#: ../plugins/plugin-installer.py:369
-#, python-format
-msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:379
-msgid "Failed to remove .py file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:389
-msgid "Failed to remove .plugin file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:398
-msgid "Sorry! Plugin removal failed!."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:400
-msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
-msgstr ""
-
-#: ../plugins/trayicon.py:112
-#, fuzzy
-msgid "Show / Hide"
-msgstr "Rodyti išsamiau"
-
-#: ../plugins/trayicon.py:113
-msgid "Minimize to tray on close"
-msgstr ""
-
-#: ../plugins/trayicon.py:114
-#, fuzzy
-msgid "Quit"
-msgstr "_Baigti"
+#: ../src/xml.c:592
+msgid "XML Parser: Could not parse document:\n"
+msgstr "XML analizavimas: nepavyksta išanalizuoti dokumento:\n"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -2140,6 +1990,10 @@ msgid ""
 "directories in non-supported formats."
 msgstr ""
 
+#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+msgid "Source"
+msgstr "Šaltinis"
+
 #: ../glade/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
@@ -2227,18 +2081,36 @@ msgstr "Paieškos aplanko savybės"
 msgid "Search _Name:"
 msgstr "_Paieškos pavadinimas:"
 
-#: ../glade/search_folder.ui.h:3 ../glade/search.ui.h:3
+#: ../glade/search_folder.ui.h:3
 #, fuzzy
-msgid "Find Items that meet the following criteria"
-msgstr "<b>Ieškoti straipsnių pagal nurodytus kriterijus</b>"
+msgid "Search Rules"
+msgstr "%d radinys"
 
-#: ../glade/search_folder.ui.h:4 ../glade/search.ui.h:4
+#: ../glade/search_folder.ui.h:4
+msgid "Rules"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:5
+msgid "All rules for this search folder"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:6
+#, fuzzy
+msgid "Rule Matching"
+msgstr "Atitinka _bent vieną taisyklę"
+
+#: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
 msgstr "Atitinka _bent vieną taisyklę"
 
-#: ../glade/search_folder.ui.h:5 ../glade/search.ui.h:5
+#: ../glade/search_folder.ui.h:8 ../glade/search.ui.h:5
 msgid "_All Rules Must Match"
 msgstr "Atitinka _visas taisykles"
+
+#: ../glade/search_folder.ui.h:9
+#, fuzzy
+msgid "Hide read items"
+msgstr "_Slėpti perskaitytus straipsnius."
 
 #: ../glade/search.ui.h:1
 msgid "Advanced Search"
@@ -2247,6 +2119,11 @@ msgstr "Sudėtingesnė paieška"
 #: ../glade/search.ui.h:2
 msgid "_Search Folder..."
 msgstr "_Kurti paieškos aplanką..."
+
+#: ../glade/search.ui.h:3
+#, fuzzy
+msgid "Find Items that meet the following criteria"
+msgstr "<b>Ieškoti straipsnių pagal nurodytus kriterijus</b>"
 
 #: ../glade/simple_search.ui.h:1
 msgid "Search All Feeds"
@@ -2329,6 +2206,200 @@ msgstr "<b>Laukiančios užklausos</b>"
 #, fuzzy
 msgid "_Downloading Now"
 msgstr "<b>Šiuo metu parsiunčiama</b>"
+
+#: ../xslt/feed.xml.in.h:1
+msgid "Feed:"
+msgstr "Naujienų kanalas:"
+
+#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
+msgid "Source:"
+msgstr "Šaltinis:"
+
+#: ../xslt/feed.xml.in.h:3
+msgid "Publisher"
+msgstr "Paskelbė"
+
+#: ../xslt/feed.xml.in.h:4
+msgid "Copyright"
+msgstr "Autorinės teisės"
+
+#: ../xslt/feed.xml.in.h:5
+#, fuzzy
+msgid "There was a problem when fetching this subscription!"
+msgstr ""
+"Klaida skaitant prenumeratą. Patikrinkite URL ir žiūrėkite išvestį konsolėje."
+
+#: ../xslt/feed.xml.in.h:6
+#, fuzzy
+msgid "1. Authentication"
+msgstr "Tapatybės nustatymas"
+
+#: ../xslt/feed.xml.in.h:7
+#, fuzzy
+msgid "2. Download"
+msgstr "Parsiuntimas"
+
+#: ../xslt/feed.xml.in.h:8
+msgid "3. Feed Discovery"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:9
+msgid "4. Parsing"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:10
+#, fuzzy
+msgid "Details:"
+msgstr "Išsamiau"
+
+#: ../xslt/feed.xml.in.h:11
+msgid "Authentication failed. Please check the credentials and try again!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:12
+#, fuzzy
+msgid "There was an error when downloading the feed source:"
+msgstr "Analizuojant kanalą įvyko klaidų!"
+
+#: ../xslt/feed.xml.in.h:13
+#, fuzzy
+msgid "There was an error when running the feed filter command:"
+msgstr "Analizuojant kanalą įvyko klaidų!"
+
+#: ../xslt/feed.xml.in.h:14
+msgid ""
+"The source does not point directly to a feed or a webpage with a link to a "
+"feed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:15
+msgid "Sorry, the feed could not be parsed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:16
+msgid "You may want to contact the author/webmaster of the feed about this!"
+msgstr ""
+
+#: ../xslt/folder.xml.in.h:1
+msgid "Folder:"
+msgstr "Aplankas:"
+
+#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
+msgid "children with"
+msgstr "vaikas su"
+
+#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+msgid "unread headlines"
+msgstr "neskaitytos antraštės"
+
+#: ../xslt/item.xml.in.h:2
+msgid "Feed"
+msgstr "Naujienų kanalas"
+
+#: ../xslt/item.xml.in.h:3
+msgid "Filed under"
+msgstr "Etiketės:"
+
+#: ../xslt/item.xml.in.h:4
+msgid "Author"
+msgstr "Autorius"
+
+#: ../xslt/item.xml.in.h:5
+msgid "Shared by"
+msgstr "Pasidalino"
+
+#: ../xslt/item.xml.in.h:6
+msgid "Via"
+msgstr "per"
+
+#: ../xslt/item.xml.in.h:7
+msgid "Related"
+msgstr "Susiję"
+
+#: ../xslt/item.xml.in.h:8
+msgid "Also posted in"
+msgstr "Taip pat paskelbė"
+
+#: ../xslt/item.xml.in.h:9
+msgid "Creator"
+msgstr "Sukūrė"
+
+#: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:12
+msgid "View count"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:13
+msgid "Rating"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:14
+msgid "Comments"
+msgstr "Komentarai"
+
+#: ../xslt/item.xml.in.h:15
+msgid "Updating..."
+msgstr "Atnaujinama..."
+
+#: ../xslt/item.xml.in.h:16
+msgid "Section"
+msgstr "Sekcija"
+
+#: ../xslt/item.xml.in.h:17
+msgid "Department"
+msgstr "Padalinys"
+
+#: ../xslt/newsbin.xml.in.h:1
+msgid "News Bin:"
+msgstr ""
+
+#: ../xslt/newsbin.xml.in.h:2
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+
+#: ../xslt/vfolder.xml.in.h:1
+msgid "Search Folder:"
+msgstr "Paieškos aplankas:"
+
+#~ msgid ""
+#~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
+#~ "></b>"
+#~ msgstr ""
+#~ "Nepavyko atnaujinti atnaujinti naujienų kanalo informacijos!<br/><b>HTTP "
+#~ "klaidos kodas <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+#~ "select=\"httpError\"/></b>"
+
+#~ msgid "Parser Error Details"
+#~ msgstr "Analizavimo klaida išsamiau"
+
+#~ msgid "There were errors while filtering this feed!"
+#~ msgstr "Filtruojant kanalą įvyko klaidų!"
+
+#~ msgid "Filter Error Details"
+#~ msgstr "Filtro klaida išsamiau"
+
+#~ msgid "Source points to HTML document."
+#~ msgstr "Šaltinis nurodo HTML dokumentą."
+
+#~ msgid "Could not determine the feed type."
+#~ msgstr "Nepavyksta apibrėžti naujienų kanalo tipo."
+
+#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+#~ msgstr "Ištekliaus nebėra. Nutraukite prenumeratą!"
+
+#~ msgid "Updating \"%s\""
+#~ msgstr "Atnaujinama: „%s“"
 
 #~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 #~ msgstr ""
@@ -2739,12 +2810,6 @@ msgstr "<b>Šiuo metu parsiunčiama</b>"
 #~ msgstr[0] "%d „%s“ radinys"
 #~ msgstr[1] "%d „%s“ radiniai"
 #~ msgstr[2] "%d „%s“ radinių"
-
-#~ msgid "%d Search Result"
-#~ msgid_plural "%d Search Results"
-#~ msgstr[0] "%d radinys"
-#~ msgstr[1] "%d radiniai"
-#~ msgstr[2] "%d radinių"
 
 #~ msgid "You have to select a feed entry"
 #~ msgstr "Turite pasirinkti naujienų kanalo įrašą"

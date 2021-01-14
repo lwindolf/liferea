@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.8.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-31 18:23+0100\n"
+"POT-Creation-Date: 2021-01-14 17:09+0100\n"
 "PO-Revision-Date: 2012-12-23 18:24+0200\n"
 "Last-Translator: Isratine Citizen <genghiskhan@gmx.ca>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -99,180 +99,229 @@ msgstr "קרא ערוצי חדשות ובלוגים"
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr "חדשות;ערוץ;הזנה;פיד;מאגד;בלוג;פודקסט;"
 
-#: ../xslt/feed.xml.in.h:1
+#: ../plugins/getfocus.py:95
+msgid "Opacity:"
+msgstr ""
+
+#: ../plugins/getfocus.py:96
+msgid "Opacity"
+msgstr ""
+
+#: ../plugins/getfocus.py:106
+msgid "Min"
+msgstr ""
+
+#: ../plugins/getfocus.py:111
+msgid "Max"
+msgstr ""
+
+#: ../plugins/getfocus.py:117
+msgid "Save"
+msgstr ""
+
+#: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "פריט קודם"
+
+#: ../plugins/headerbar.py:73 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "פריט הבא"
+
+#: ../plugins/headerbar.py:81 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_פריט הבא שלא נקרא"
+
+#: ../plugins/headerbar.py:89 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_סמן פריטים ככאלה שנקראו"
+
+#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "חפש בכל הערוצים..."
+
+#: ../plugins/libnotify.py:43
+#, fuzzy
+msgid "Feed Updates"
+msgstr "עדכון ערוץ"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "תוספים"
+
+#: ../plugins/plugin-installer.py:69
+#, fuzzy
+msgid "Plugin Installer"
+msgstr "תוספים"
+
+#: ../plugins/plugin-installer.py:83
+#, fuzzy
+msgid "Activate Plugins"
+msgstr "תוספים"
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_הורד באמצעות"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "מתקדם"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+# הגדרות התראה
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "הגדרת התראות"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
 msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
 msgstr ""
-"ערוץ זה הופסק, ואינו זמין יותר. Liferea לא יעדכן את ערוץ זה בעתיד, אולם "
-"עדיין יש באפשרותך לגשת לכותרות המוטמנות."
 
-#: ../xslt/feed.xml.in.h:2
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
 msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr ""
-"<div style=\"direction:rtl\">העדכון האחרון של הרשמה זו נכשל!<br/><b>HTTP "
-"error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
-"\"httpError\"/></b></div>"
-
-# <div style=\"direction:rtl\">
-# </div>
-#: ../xslt/feed.xml.in.h:3
-msgid "There were errors while parsing this feed!"
-msgstr "<p dir=\"rtl\">אירעו שגיאות במהלך פענוח ערוץ זה!</p>"
-
-#: ../xslt/feed.xml.in.h:4
-msgid "Parser Error Details"
-msgstr "פרטי שגיאת מפענח"
-
-#: ../xslt/feed.xml.in.h:5
-msgid "Details"
-msgstr "<p dir=\"rtl\">פרטים</p>"
-
-#: ../xslt/feed.xml.in.h:6
-msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr ""
-"<p dir=\"rtl\">אפשרי כי ברצונך ליצור קשר עם מחבר/מנהל הערוץ אודות זאת!</p>"
-
-#: ../xslt/feed.xml.in.h:7
-msgid "There were errors while filtering this feed!"
-msgstr "<p dir=\"rtl\">אירעו שגיאות במהלך סינון ערוץ זה!</p>"
-
-#: ../xslt/feed.xml.in.h:8
-msgid "Filter Error Details"
-msgstr "פרטי שגיאת מסנן"
-
-# הזנה:
-#: ../xslt/feed.xml.in.h:9
-msgid "Feed:"
-msgstr "ערוץ:"
-
-#: ../xslt/feed.xml.in.h:10 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "מקור:"
-
-#: ../xslt/feed.xml.in.h:11
-msgid "Publisher"
-msgstr "<p dir=\"rtl\">מוציא לאור</p>"
-
-#: ../xslt/feed.xml.in.h:12
-msgid "Copyright"
-msgstr "זכויות יוצרים"
-
-# <div style=\"direction:rtl\">ערוצים עם</div>
-# RTL HTML MARKUP IS NEEDED
-# ערוצי משנה עם
-# > האם יש לך רעיון מוצלח יותר עבור children או child?
-# > אני חשבתי בכוון של child/parent process (תהליך צאצא/הורה)
-# > מהי דעתך בעניין?
-# כיוון שהמילה child/children מופיעה בדיוק פעמיים, ניתן לארגן פתרון אד הוק:
-# בבחירת תיקייה, _הצג את כל הפריטים של כל הערוצים שבתוכה (או - שתחתיה).
-# ופשוט "X ערוצים עם Y הודעות שלא נקראו". בהנחה שהמשתמש מבין מההקשר
-# שהכוונה לערוצים בתוך תיקייה מסוימת.
-#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
-msgid "children with"
-msgstr "ערוצים עם"
-
-# <div style=\"direction:rtl\">כותרות שלא נקראו</div>
-#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "כותרות שלא נקראו"
-
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "<div style=\\\"direction:rtl\\\">תיקייה:</div>"
-
-#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:21
-msgid "Source"
-msgstr "מקור"
-
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "ערוץ"
-
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "תויק תחת"
-
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "מחבר"
-
-# משותף
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "מומלץ על ידי"
-
-# באמצעות
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "דרך"
-
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "קשורים"
-
-# פורסם גם אצל
-# בנוסף פורסם אצל
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "פורסם גם בערוץ"
-
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "יוצר"
-
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
 msgstr ""
 
-# RLO workaround until RTL problem will be solved
-# <p dir=\"rtl\">תגובות</p>
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "תגובות‮"
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
 
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "מעדכן כעת…"
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
 
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "פלג"
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "לא ניתן ליצור מדור מטמון עבור \"%s\"!"
 
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "אגף"
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
 
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "סל איסוף:"
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
 
-#: ../xslt/newsbin.xml.in.h:2
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+# הרשומה נמחקת כעת
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "מוחק הרשמה"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
 msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
-"<p dir=\"rtl\">כדי להוסיף פריטים לתוך סל איסוף זה, יש לבחור \"העתק לתוך סל "
-"איסוף\" מתוך תפריט ההקשר של רשימת הפריטים.</p>"
 
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "<p dir=\"rtl\">תיקיית חיפוש:</p>"
+#: ../plugins/trayicon.py:134
+#, fuzzy
+msgid "Show / Hide"
+msgstr "הצג פרטים"
+
+#: ../plugins/trayicon.py:135
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:136
+#, fuzzy
+msgid "Quit"
+msgstr "י_ציאה"
 
 #: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
@@ -408,56 +457,121 @@ msgstr "ייצוא רשימת ערוצים"
 msgid "Export"
 msgstr "יצ_א"
 
-#: ../src/feed.c:325
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr ""
-"<p dir=\"rtl\">לא ניתן לזהות את טיפוס הערוץ! אנא בדוק כי המקור אכן מצביע "
-"לאחד הפורמטים הנתמכים.</p><p dir=\"rtl\">תוצאת פענוח XML:</p><br /><div "
-"style='direction:rtl' class='xmlparseoutput'>"
-
-# <שם_הזנה> עודכנה...
-#: ../src/feed.c:352
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "‏\"%s\" עודכן..."
-
-#: ../src/feed.c:359
+#: ../src/feed.c:354
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "‏\"%s\" אינו זמין"
 
-# דף מרשתת
-#: ../src/feed_parser.c:145
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
-"כתובת URL אליה ברצונך להירשם מצביעה על דף אינטרנט ולא זוהו ערוצים בתוכו "
-"באמצעות הגילוי האוטומטי. ייתכן שדף אינטרנט זה לא תומך בגילוי ערוצים אוטומטי."
+# <שם_הזנה> עודכנה...
+#: ../src/feed.c:356
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "‏\"%s\" עודכן..."
 
-#: ../src/feed_parser.c:203
+#: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "מסמך ריק!"
 
 # האם XML זה זכר או נקבה?
-#: ../src/feed_parser.c:212
+#: ../src/feed_parser.c:210
 msgid "Invalid XML!"
 msgstr "‏XML לא תקין!"
 
-#: ../src/feed_parser.c:266
-msgid "Source points to HTML document."
-msgstr "המקור מצביע למסמך HTML."
+#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
+#: ../glade/simple_subscription.ui.h:1
+msgid "New Subscription"
+msgstr "הרשמה חדשה"
 
-#: ../src/feed_parser.c:269
-msgid "Could not determine the feed type."
-msgstr "לא ניתן לקבוע את טיפוס הערוץ."
+#: ../src/fl_sources/google_source.c:111
+msgid "Google Reader"
+msgstr "‏Google Reader"
+
+# הקובץ OPML הינו אוסף של הזנות/ערוצים
+# לא נמצאו מקורות לרשימת הערוצים!
+#: ../src/fl_sources/node_source.c:334
+msgid "No feed list source types found!"
+msgstr "לא נמצאו טיפוסים של מקור רשימת ערוץ!"
+
+#: ../src/fl_sources/node_source.c:363
+msgid "Source Type"
+msgstr "טיפוס מקור"
+
+#: ../src/fl_sources/node_source.c:414
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr "כניסה של '%s' עדיין לא הושלמה! אנא המתן עד לסיום הכניסה."
+
+#. FIXME: something is not perfect, because if you immediately
+#. remove the subscription tree afterwards there is a double free
+#: ../src/fl_sources/node_source.c:580
+#, c-format
+msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr "ההרשמה '%s' הומרה בהצלחה לערוצים מקומיים!"
+
+#: ../src/fl_sources/opml_source.c:319
+msgid "Planet, BlogRoll, OPML"
+msgstr "‏Planet, BlogRoll, OPML"
+
+#: ../src/fl_sources/opml_source.c:379
+msgid "Choose OPML File"
+msgstr "בחירת קובץ ‫‫OPML"
+
+#: ../src/fl_sources/opml_source.c:379 ../src/ui/subscription_dialog.c:355
+msgid "_Open"
+msgstr "_פתח"
+
+#: ../src/fl_sources/opml_source.h:28
+msgid "New OPML Subscription"
+msgstr "הרשמת OPML חדשה"
+
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+msgid "Login failed!"
+msgstr "התחברות נכשלה!"
+
+#: ../src/fl_sources/reedah_source.c:313
+msgid "Reedah"
+msgstr "‏Reedah"
+
+#: ../src/fl_sources/reedah_source_feed.c:154
+msgid "Could not parse JSON returned by Reedah API!"
+msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של Reedah!"
+
+#: ../src/fl_sources/theoldreader_source.c:311
+msgid "TheOldReader"
+msgstr "‏TheOldReader"
+
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr "‏TinyTinyRSS: ‏HTTP API של לא נגיש!"
+
+#: ../src/fl_sources/ttrss_source.c:234
+msgid ""
+"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
+"URL!"
+msgstr "‏TinyTinyRSS הרשמה לערוץ נכשלה! בדוק אם באמת העברת URL ערוץ!"
+
+#: ../src/fl_sources/ttrss_source.c:300
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr "‏TinyTinyRSS: ביטול הרשמת ערוץ נכשל!"
+
+#: ../src/fl_sources/ttrss_source.c:318
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
+"%s or later!"
+msgstr "גרסת TinyTinyRSS זו לא תומכת בהסרת ערוצים. שדרג לגרסא %s או חדשה יותר!"
+
+#: ../src/fl_sources/ttrss_source.c:460
+msgid "Tiny Tiny RSS"
+msgstr "‏Tiny Tiny RSS"
+
+#: ../src/fl_sources/ttrss_source_feed.c:150
+msgid "Could not parse JSON returned by TinyTinyRSS API!"
+msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של TinyTinyRSS!"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:390
+#: ../src/itemlist.c:395
 msgid "There are no unread items"
 msgstr "אין פריטים שלא נקראו"
 
@@ -567,39 +681,39 @@ msgid "Print debugging messages for the given topic"
 msgstr "ןותנה אשונה רובע גאביד תועדוה ספדה"
 
 #. Some libsoup transport errors
-#: ../src/net.c:463
+#: ../src/net.c:439
 msgid "The update request was cancelled"
 msgstr "בקשת העדכון בוטלה"
 
-#: ../src/net.c:464
+#: ../src/net.c:440
 msgid "Unable to resolve destination host name"
 msgstr "לא ניתן לפענח שם מחשב יעד"
 
-#: ../src/net.c:465
+#: ../src/net.c:441
 msgid "Unable to resolve proxy host name"
 msgstr "לא ניתן לפענח שם מחשב פרוקסי"
 
-#: ../src/net.c:466
+#: ../src/net.c:442
 msgid "Unable to connect to remote host"
 msgstr "לא ניתן להתחבר למארח מרוחק"
 
-#: ../src/net.c:467
+#: ../src/net.c:443
 msgid "Unable to connect to proxy"
 msgstr "לא ניתן להתחבר לפרוקסי"
 
-#: ../src/net.c:468
+#: ../src/net.c:444
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr "אירעה שגיאת תקשורת, או שהקצה המרוחק ניתק את הקשר באופן בלתי צפוי"
 
 # באופן קבוע
 #. http 3xx redirection
-#: ../src/net.c:471
+#: ../src/net.c:447
 msgid "The resource moved permanently to a new location"
 msgstr "המשאב הועבר לצמיתות למיקום חדש"
 
 #. http 4xx client error
-#: ../src/net.c:474
+#: ../src/net.c:450
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -607,59 +721,73 @@ msgstr ""
 "אינך מורשה לטעון את ערוץ זה. אנא עדכן את שם המשתמש והסיסמה שלך בתוך תיבת דו "
 "שיח של מאפייני ערוץ"
 
-#: ../src/net.c:476
+#: ../src/net.c:452
 msgid "Payment required"
 msgstr "נדרש תשלום"
 
 # אין באפשרות לגשת אל משאב זה
 # לא מותר לך לגשת אל משאב זה
-#: ../src/net.c:477
+#: ../src/net.c:453
 msgid "You're not allowed to access this resource"
 msgstr "אינך מורשה לגשת אל משאב זה"
 
-#: ../src/net.c:478
+#: ../src/net.c:454
 msgid "Resource Not Found"
 msgstr "משאב לא נמצא"
 
-#: ../src/net.c:479
+#: ../src/net.c:455
 msgid "Method Not Allowed"
 msgstr "שיטה לא מורשית"
 
-#: ../src/net.c:480
+#: ../src/net.c:456
 msgid "Not Acceptable"
 msgstr "לא קביל"
 
-#: ../src/net.c:481
+#: ../src/net.c:457
 msgid "Proxy authentication required"
 msgstr "נדרשת הזדהות אל מול פרוקסי"
 
-#: ../src/net.c:482
+#: ../src/net.c:458
 msgid "Request timed out"
 msgstr "תם הזמן שהוקצב לבקשה"
 
-#: ../src/net.c:483
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "הערוץ לא קיים. אנא בטל את ההרשמה!"
+#: ../src/net.c:459
+#, fuzzy
+msgid ""
+"The webserver indicates this feed is discontinued. It's no longer available. "
+"Liferea won't update it anymore but you can still access the cached "
+"headlines."
+msgstr ""
+"ערוץ זה הופסק, ואינו זמין יותר. Liferea לא יעדכן את ערוץ זה בעתיד, אולם "
+"עדיין יש באפשרותך לגשת לכותרות המוטמנות."
 
-#: ../src/net.c:488
+#: ../src/net.c:464
 msgid "There was an internal error in the update process"
 msgstr "אירעה שגיאה פנימית בתהליך העדכון"
 
-#: ../src/net.c:490
+#: ../src/net.c:466
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "ערוץ לא זמין: השרת ביקש הפנייה שאינה נתמכת!"
 
-#: ../src/net.c:492
+#: ../src/net.c:468
 msgid "Client Error"
 msgstr "שגיאת לקוח"
 
-#: ../src/net.c:494
+#: ../src/net.c:470
 msgid "Server Error"
 msgstr "שגיאת שרת"
 
-#: ../src/net.c:496
+#: ../src/net.c:472
 msgid "An unknown networking error happened!"
 msgstr "אירעה שגיאת תקשורת לא מוכרת!"
+
+#: ../src/parsers/atom10.c:239
+msgid "Website"
+msgstr "אתר אינטרנט"
+
+#: ../src/parsers/ns_ag.c:70
+msgid "%b %d %H:%M"
+msgstr "%b %d %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
@@ -757,14 +885,7 @@ msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "ההרשמה \"%s\" הופסקה. Liferea לא יעדכן אותה יותר!"
 
-# RTL HTML MARKUP IS NEEDED
-#: ../src/subscription.c:173
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr "אירעה בעיה במהלך קריאת הרשמה זו. אנא בדוק כתובת URL ופלט מסוף."
-
-#: ../src/subscription.c:196
+#: ../src/subscription.c:188
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "כתובת URL של \"%s\" הוחלפה לצמיתות ועודכנה"
@@ -774,53 +895,34 @@ msgstr "כתובת URL של \"%s\" הוחלפה לצמיתות ועודכנה"
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "‏\"%s\" הופסק. Liferea לא יעדכן אותו יותר!"
 
-#: ../src/subscription.c:207
+#: ../src/subscription.c:208
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "‏\"%s\" לא השתנה מאז עדכון אחרון"
 
-#: ../src/subscription.c:263
+#: ../src/subscription.c:221 ../src/subscription.c:296
+#, fuzzy, c-format
+msgid "Updating (%d / %d) ..."
+msgstr "מעדכן כעת…"
+
+#: ../src/subscription.c:298
+#, fuzzy, c-format
+msgid "Updating '%s'..."
+msgstr "מעדכן כעת…"
+
+#: ../src/ui/auth_dialog.c:114
 #, c-format
-msgid "Updating \"%s\""
-msgstr "מעדכן כעת את \"%s\""
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "הזן שם משתמש וסיסמה עבור \"%s\" ‏(%s):"
 
-#: ../src/update.c:327
-#, c-format
-msgid "Error opening temp file %s to use for filtering!"
-msgstr "שגיאה בפתיחת הקובץ הזמני %s לשימוש בסינון!"
+# מוכר
+#: ../src/ui/auth_dialog.c:116
+msgid "Unknown source"
+msgstr "מקור לא ידוע"
 
-#: ../src/update.c:350
-#, c-format
-msgid "%s exited with status %d"
-msgstr "<div style=\"direction:rtl\">&lrm;%s סיים עם סטטוס %d</div>"
-
-#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
-#, c-format
-msgid "Error: Could not open pipe \"%s\""
-msgstr "שגיאה: לא ניתן לפתוח צינור \"%s\""
-
-#. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:496
-#, c-format
-msgid "Error: Could not open file \"%s\""
-msgstr "שגיאה: לא ניתן לפתוח את הקובץ \"%s\""
-
-#: ../src/update.c:502
-#, c-format
-msgid "Error: There is no file \"%s\""
-msgstr "שגיאה: הקובץ \"%s\" לא קיים"
-
-#: ../src/vfolder.c:54
-msgid "New Search Folder"
-msgstr "תיקיית חיפוש חדשה"
-
-#: ../src/xml.c:424
-msgid "[There were more errors. Output was truncated!]"
-msgstr "[היו שגיאות נוספות. הפלט קוצץ!]"
-
-#: ../src/xml.c:594
-msgid "XML Parser: Could not parse document:\n"
-msgstr "מפענח XML: לא ניתן לפענח את המסמך:\n"
+#: ../src/ui/browser_tabs.c:262
+msgid "Untitled"
+msgstr "ללא כותרת"
 
 #: ../src/ui/enclosure_list_view.c:168
 msgid "Attachments"
@@ -864,66 +966,6 @@ msgstr "בחר קובץ"
 #, c-format
 msgid "File Extension .%s"
 msgstr "סיומת קובץ .%s"
-
-#: ../src/ui/icons.c:54
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "לא היה ניתן למצוא קובץ מפת סיביות: ‏%s"
-
-#: ../src/ui/liferea_shell.c:409
-#, c-format
-msgid " (%d new)"
-msgid_plural " (%d new)"
-msgstr[0] "(%d חדש) "
-msgstr[1] "(%d חדשים) "
-
-#: ../src/ui/liferea_shell.c:414
-#, c-format
-msgid "%d unread%s"
-msgid_plural "%d unread%s"
-msgstr[0] "%d לא נקרא%s "
-msgstr[1] "%d לא נקראו%s "
-
-#: ../src/ui/liferea_shell.c:755
-msgid "Help Topics"
-msgstr "נושאי עזרה"
-
-# הפנייה מהירה
-#: ../src/ui/liferea_shell.c:761
-msgid "Quick Reference"
-msgstr "תיעוד מהיר"
-
-#: ../src/ui/liferea_shell.c:767
-msgid "FAQ"
-msgstr "שו״ת"
-
-#: ../src/ui/liferea_shell.c:1045
-#, fuzzy, c-format
-msgid "Email command failed: %s"
-msgstr "פקודת דפדפן נכשלה: ‭%s"
-
-#: ../src/ui/search_dialog.c:107
-msgid "Saved Search"
-msgstr "חיפוש שמור"
-
-#: ../src/ui/auth_dialog.c:114
-#, c-format
-msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "הזן שם משתמש וסיסמה עבור \"%s\" ‏(%s):"
-
-# מוכר
-#: ../src/ui/auth_dialog.c:116
-msgid "Unknown source"
-msgstr "מקור לא ידוע"
-
-#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_view.c:911
-#: ../src/ui/feed_list_view.c:965
-msgid "_Cancel"
-msgstr "_ביטול"
-
-#: ../src/ui/ui_common.c:211
-msgid "All Files"
-msgstr "כל הקבצים"
 
 #: ../src/ui/feed_list_view.c:432
 msgid "Liferea is in offline mode. No update possible."
@@ -972,6 +1014,11 @@ msgstr "האם אתה בטוח כי ברצונך למחוק את \"%s\" ואת �
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "האם אתה בטוח כי ברצונך למחוק את \"%s\"?"
 
+#: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
+#: ../src/ui/ui_common.c:168
+msgid "_Cancel"
+msgstr "_ביטול"
+
 #: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
 msgid "_Delete"
 msgstr "_מחק"
@@ -996,6 +1043,11 @@ msgstr ""
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "אימות מחיקה"
 
+#: ../src/ui/icons.c:54
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "לא היה ניתן למצוא קובץ מפת סיביות: ‏%s"
+
 #: ../src/ui/item_list_view.c:115
 msgid "This item has no link specified!"
 msgstr "לפריט זה לא צוין קישור!"
@@ -1008,22 +1060,54 @@ msgstr "*** בלי כותרת ***"
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:865
+#: ../src/ui/item_list_view.c:849
 msgid "Headline"
 msgstr "כותרת"
 
-#: ../src/ui/item_list_view.c:887
+#: ../src/ui/item_list_view.c:871
 msgid "Date"
 msgstr "תאריך"
 
-#: ../src/ui/item_list_view.c:1056
+#: ../src/ui/item_list_view.c:1038
 msgid "You must select a feed to delete its items!"
 msgstr "עליך לבחור ערוץ כדי למחוק את הפריטים שלו!"
 
-#: ../src/ui/item_list_view.c:1072 ../src/ui/item_list_view.c:1150
-#: ../src/ui/item_list_view.c:1165
+#: ../src/ui/item_list_view.c:1054 ../src/ui/item_list_view.c:1132
+#: ../src/ui/item_list_view.c:1147
 msgid "No item has been selected"
 msgstr "לא נבחר אף פריט"
+
+#: ../src/ui/liferea_shell.c:409
+#, c-format
+msgid " (%d new)"
+msgid_plural " (%d new)"
+msgstr[0] "(%d חדש) "
+msgstr[1] "(%d חדשים) "
+
+#: ../src/ui/liferea_shell.c:414
+#, c-format
+msgid "%d unread%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%d לא נקרא%s "
+msgstr[1] "%d לא נקראו%s "
+
+#: ../src/ui/liferea_shell.c:755
+msgid "Help Topics"
+msgstr "נושאי עזרה"
+
+# הפנייה מהירה
+#: ../src/ui/liferea_shell.c:761
+msgid "Quick Reference"
+msgstr "תיעוד מהיר"
+
+#: ../src/ui/liferea_shell.c:767
+msgid "FAQ"
+msgstr "שו״ת"
+
+#: ../src/ui/liferea_shell.c:1045
+#, fuzzy, c-format
+msgid "Email command failed: %s"
+msgstr "פקודת דפדפן נכשלה: ‭%s"
 
 #: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
@@ -1198,9 +1282,9 @@ msgstr "טיפוס"
 msgid "Program"
 msgstr "תוכנית"
 
-#: ../src/ui/subscription_dialog.c:355 ../src/fl_sources/opml_source.c:379
-msgid "_Open"
-msgstr "_פתח"
+#: ../src/ui/search_dialog.c:107
+msgid "Saved Search"
+msgstr "חיפוש שמור"
 
 #: ../src/ui/subscription_dialog.c:427
 #, c-format
@@ -1214,106 +1298,39 @@ msgstr[1] "הספק של ערוץ זה ממליץ על תדירות עדכון �
 msgid "This feed specifies no default update interval."
 msgstr "לערוץ זה לא הוגדרה תדירות עדכון."
 
-#: ../src/ui/browser_tabs.c:262
-msgid "Untitled"
-msgstr "ללא כותרת"
+#: ../src/ui/ui_common.c:211
+msgid "All Files"
+msgstr "כל הקבצים"
 
-#: ../src/parsers/atom10.c:239
-msgid "Website"
-msgstr "אתר אינטרנט"
-
-#: ../src/parsers/ns_ag.c:70
-msgid "%b %d %H:%M"
-msgstr "%b %d %H:%M"
-
-#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
-msgid "New Subscription"
-msgstr "הרשמה חדשה"
-
-#: ../src/fl_sources/google_source.c:111
-msgid "Google Reader"
-msgstr "‏Google Reader"
-
-#: ../src/fl_sources/opml_source.c:319
-msgid "Planet, BlogRoll, OPML"
-msgstr "‏Planet, BlogRoll, OPML"
-
-#: ../src/fl_sources/opml_source.c:379
-msgid "Choose OPML File"
-msgstr "בחירת קובץ ‫‫OPML"
-
-#: ../src/fl_sources/opml_source.h:28
-msgid "New OPML Subscription"
-msgstr "הרשמת OPML חדשה"
-
-# הקובץ OPML הינו אוסף של הזנות/ערוצים
-# לא נמצאו מקורות לרשימת הערוצים!
-#: ../src/fl_sources/node_source.c:334
-msgid "No feed list source types found!"
-msgstr "לא נמצאו טיפוסים של מקור רשימת ערוץ!"
-
-#: ../src/fl_sources/node_source.c:363
-msgid "Source Type"
-msgstr "טיפוס מקור"
-
-#: ../src/fl_sources/node_source.c:414
+#: ../src/update.c:350
 #, c-format
-msgid "Login for '%s' has not yet completed! Please wait until login is done."
-msgstr "כניסה של '%s' עדיין לא הושלמה! אנא המתן עד לסיום הכניסה."
+msgid "Error opening temp file %s to use for filtering!"
+msgstr "שגיאה בפתיחת הקובץ הזמני %s לשימוש בסינון!"
 
-#. FIXME: something is not perfect, because if you immediately
-#. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:580
+#: ../src/update.c:372
 #, c-format
-msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr "ההרשמה '%s' הומרה בהצלחה לערוצים מקומיים!"
+msgid "%s exited with status %d"
+msgstr "<div style=\"direction:rtl\">&lrm;%s סיים עם סטטוס %d</div>"
 
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-msgid "Login failed!"
-msgstr "התחברות נכשלה!"
-
-#: ../src/fl_sources/reedah_source.c:313
-msgid "Reedah"
-msgstr "‏Reedah"
-
-#: ../src/fl_sources/reedah_source_feed.c:154
-msgid "Could not parse JSON returned by Reedah API!"
-msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של Reedah!"
-
-#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
-msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr "‏TinyTinyRSS: ‏HTTP API של לא נגיש!"
-
-#: ../src/fl_sources/ttrss_source.c:234
-msgid ""
-"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
-"URL!"
-msgstr "‏TinyTinyRSS הרשמה לערוץ נכשלה! בדוק אם באמת העברת URL ערוץ!"
-
-#: ../src/fl_sources/ttrss_source.c:300
-msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr "‏TinyTinyRSS: ביטול הרשמת ערוץ נכשל!"
-
-#: ../src/fl_sources/ttrss_source.c:318
+#: ../src/update.c:378 ../src/update.c:379 ../src/update.c:493
 #, c-format
-msgid ""
-"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
-"%s or later!"
-msgstr "גרסת TinyTinyRSS זו לא תומכת בהסרת ערוצים. שדרג לגרסא %s או חדשה יותר!"
+msgid "Error: Could not open pipe \"%s\""
+msgstr "שגיאה: לא ניתן לפתוח צינור \"%s\""
 
-#: ../src/fl_sources/ttrss_source.c:460
-msgid "Tiny Tiny RSS"
-msgstr "‏Tiny Tiny RSS"
+#. FIXME: maybe setting request->returncode would be better
+#: ../src/update.c:517
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "שגיאה: לא ניתן לפתוח את הקובץ \"%s\""
 
-#: ../src/fl_sources/ttrss_source_feed.c:150
-msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr "לא ניתן לפענח JSON שהוחזר על ידי API של TinyTinyRSS!"
+#: ../src/update.c:523
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "שגיאה: הקובץ \"%s\" לא קיים"
 
-#: ../src/fl_sources/theoldreader_source.c:311
-msgid "TheOldReader"
-msgstr "‏TheOldReader"
+#: ../src/vfolder.c:54
+msgid "New Search Folder"
+msgstr "תיקיית חיפוש חדשה"
 
 #: ../src/webkit/liferea_web_view.c:176
 msgid "Open Link In _Tab"
@@ -1371,209 +1388,13 @@ msgstr "ה_גדל גודל טקסט"
 msgid "_Decrease Text Size"
 msgstr "ה_קטן גודל טקסט"
 
-#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
-#: ../glade/liferea_toolbar.ui.h:5
-msgid "Previous Item"
-msgstr "פריט קודם"
+#: ../src/xml.c:424
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[היו שגיאות נוספות. הפלט קוצץ!]"
 
-#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
-#: ../glade/liferea_toolbar.ui.h:6
-msgid "Next Item"
-msgstr "פריט הבא"
-
-#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
-#: ../glade/liferea_toolbar.ui.h:7
-msgid "_Next Unread Item"
-msgstr "_פריט הבא שלא נקרא"
-
-#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
-#: ../glade/liferea_toolbar.ui.h:3
-msgid "_Mark Items Read"
-msgstr "_סמן פריטים ככאלה שנקראו"
-
-#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
-#: ../glade/liferea_toolbar.ui.h:10
-msgid "Search All Feeds..."
-msgstr "חפש בכל הערוצים..."
-
-#: ../plugins/libnotify.py:42
-#, fuzzy
-msgid "Feed Updates"
-msgstr "עדכון ערוץ"
-
-#: ../plugins/plugin-installer.py:54
-msgid "Plugins"
-msgstr "תוספים"
-
-#: ../plugins/plugin-installer.py:69
-#, fuzzy
-msgid "Plugin Installer"
-msgstr "תוספים"
-
-#: ../plugins/plugin-installer.py:83
-#, fuzzy
-msgid "Activate Plugins"
-msgstr "תוספים"
-
-#: ../plugins/plugin-installer.py:84
-#, fuzzy
-msgid "Download Plugins"
-msgstr "_הורד באמצעות"
-
-#: ../plugins/plugin-installer.py:102
-#, python-format
-msgid "Bad fields for plugin entry %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-msgid "All"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "מתקדם"
-
-#: ../plugins/plugin-installer.py:125
-msgid "Menu"
-msgstr ""
-
-# הגדרות התראה
-#: ../plugins/plugin-installer.py:125
-#, fuzzy
-msgid "Notifications"
-msgstr "הגדרת התראות"
-
-#: ../plugins/plugin-installer.py:133
-msgid "Filter by category"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:140
-msgid "_Install"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:144
-msgid "_Uninstall"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:245
-#, python-format
-msgid ""
-"Missing package manager '%s'. Cannot check nor install necessary "
-"dependencies!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:261
-#, python-format
-msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:268
-#, python-format
-msgid ""
-"Package installation failed (%s)! Check console output for further problem "
-"details!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:271
-#, python-format
-msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:285
-#, python-format
-msgid "Copying %s to %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:288
-#, python-format
-msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:297
-#, python-format
-msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:307
-#, python-format
-msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:318
-#, fuzzy, python-format
-msgid "Creating schema directory %s"
-msgstr "לא ניתן ליצור מדור מטמון עבור \"%s\"!"
-
-#: ../plugins/plugin-installer.py:320
-#, python-format
-msgid "Installing schema %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:324
-msgid "Compiling schemas..."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:329
-#, python-format
-msgid "Failed to install schema files (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:339
-#, python-format
-msgid "Failed to enable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:345
-#, python-format
-msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:359
-#, python-format
-msgid "Failed to disable plugin (%s)!"
-msgstr ""
-
-# הרשומה נמחקת כעת
-#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
-#, fuzzy, python-format
-msgid "Deleting '%s'"
-msgstr "מוחק הרשמה"
-
-#: ../plugins/plugin-installer.py:369
-#, python-format
-msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:379
-msgid "Failed to remove .py file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:389
-msgid "Failed to remove .plugin file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:398
-msgid "Sorry! Plugin removal failed!."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:400
-msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
-msgstr ""
-
-#: ../plugins/trayicon.py:112
-#, fuzzy
-msgid "Show / Hide"
-msgstr "הצג פרטים"
-
-#: ../plugins/trayicon.py:113
-msgid "Minimize to tray on close"
-msgstr ""
-
-#: ../plugins/trayicon.py:114
-#, fuzzy
-msgid "Quit"
-msgstr "י_ציאה"
+#: ../src/xml.c:592
+msgid "XML Parser: Could not parse document:\n"
+msgstr "מפענח XML: לא ניתן לפענח את המסמך:\n"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -2205,6 +2026,10 @@ msgstr ""
 "‏Liferea מסוגל לעבוד עם תסריטי סינון חיצוניים על מנת לגשת לערוצים ולתיקיות "
 "בפורמטים שלא נתמכים."
 
+#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+msgid "Source"
+msgstr "מקור"
+
 #: ../glade/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
@@ -2295,17 +2120,36 @@ msgstr "מאפייני תיקיית חיפוש"
 msgid "Search _Name:"
 msgstr "_שם חיפוש:"
 
-#: ../glade/search_folder.ui.h:3 ../glade/search.ui.h:3
-msgid "Find Items that meet the following criteria"
-msgstr "מצא פריטים אשר עומדים בקריטריונים המנויים להלן"
+#: ../glade/search_folder.ui.h:3
+#, fuzzy
+msgid "Search Rules"
+msgstr "חיפוש בכל הערוצים"
 
-#: ../glade/search_folder.ui.h:4 ../glade/search.ui.h:4
+#: ../glade/search_folder.ui.h:4
+msgid "Rules"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:5
+msgid "All rules for this search folder"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:6
+#, fuzzy
+msgid "Rule Matching"
+msgstr "_כל כלל מתאים"
+
+#: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
 msgstr "_כל כלל מתאים"
 
-#: ../glade/search_folder.ui.h:5 ../glade/search.ui.h:5
+#: ../glade/search_folder.ui.h:8 ../glade/search.ui.h:5
 msgid "_All Rules Must Match"
 msgstr "_על כל הכללים להתאים"
+
+#: ../glade/search_folder.ui.h:9
+#, fuzzy
+msgid "Hide read items"
+msgstr "_הסתר פריטים שנקראו."
 
 # מתקדם
 #: ../glade/search.ui.h:1
@@ -2315,6 +2159,10 @@ msgstr "חיפוש מורחב"
 #: ../glade/search.ui.h:2
 msgid "_Search Folder..."
 msgstr "_תיקיית חיפוש..."
+
+#: ../glade/search.ui.h:3
+msgid "Find Items that meet the following criteria"
+msgstr "מצא פריטים אשר עומדים בקריטריונים המנויים להלן"
 
 #: ../glade/simple_search.ui.h:1
 msgid "Search All Feeds"
@@ -2399,6 +2247,245 @@ msgstr "בקשות ממתינות"
 #, fuzzy
 msgid "_Downloading Now"
 msgstr "ערוצים שנטענים כעת"
+
+# הזנה:
+#: ../xslt/feed.xml.in.h:1
+msgid "Feed:"
+msgstr "ערוץ:"
+
+#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
+msgid "Source:"
+msgstr "מקור:"
+
+#: ../xslt/feed.xml.in.h:3
+msgid "Publisher"
+msgstr "<p dir=\"rtl\">מוציא לאור</p>"
+
+#: ../xslt/feed.xml.in.h:4
+msgid "Copyright"
+msgstr "זכויות יוצרים"
+
+# RTL HTML MARKUP IS NEEDED
+#: ../xslt/feed.xml.in.h:5
+#, fuzzy
+msgid "There was a problem when fetching this subscription!"
+msgstr "אירעה בעיה במהלך קריאת הרשמה זו. אנא בדוק כתובת URL ופלט מסוף."
+
+#: ../xslt/feed.xml.in.h:6
+#, fuzzy
+msgid "1. Authentication"
+msgstr "אימות"
+
+# טעינת פריטים
+#: ../xslt/feed.xml.in.h:7
+#, fuzzy
+msgid "2. Download"
+msgstr "טעינה"
+
+#: ../xslt/feed.xml.in.h:8
+msgid "3. Feed Discovery"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:9
+msgid "4. Parsing"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:10
+#, fuzzy
+msgid "Details:"
+msgstr "<p dir=\"rtl\">פרטים</p>"
+
+#: ../xslt/feed.xml.in.h:11
+msgid "Authentication failed. Please check the credentials and try again!"
+msgstr ""
+
+# <div style=\"direction:rtl\">
+# </div>
+#: ../xslt/feed.xml.in.h:12
+#, fuzzy
+msgid "There was an error when downloading the feed source:"
+msgstr "<p dir=\"rtl\">אירעו שגיאות במהלך פענוח ערוץ זה!</p>"
+
+# <div style=\"direction:rtl\">
+# </div>
+#: ../xslt/feed.xml.in.h:13
+#, fuzzy
+msgid "There was an error when running the feed filter command:"
+msgstr "<p dir=\"rtl\">אירעו שגיאות במהלך פענוח ערוץ זה!</p>"
+
+#: ../xslt/feed.xml.in.h:14
+msgid ""
+"The source does not point directly to a feed or a webpage with a link to a "
+"feed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:15
+msgid "Sorry, the feed could not be parsed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:16
+msgid "You may want to contact the author/webmaster of the feed about this!"
+msgstr ""
+"<p dir=\"rtl\">אפשרי כי ברצונך ליצור קשר עם מחבר/מנהל הערוץ אודות זאת!</p>"
+
+#: ../xslt/folder.xml.in.h:1
+msgid "Folder:"
+msgstr "<div style=\\\"direction:rtl\\\">תיקייה:</div>"
+
+# <div style=\"direction:rtl\">ערוצים עם</div>
+# RTL HTML MARKUP IS NEEDED
+# ערוצי משנה עם
+# > האם יש לך רעיון מוצלח יותר עבור children או child?
+# > אני חשבתי בכוון של child/parent process (תהליך צאצא/הורה)
+# > מהי דעתך בעניין?
+# כיוון שהמילה child/children מופיעה בדיוק פעמיים, ניתן לארגן פתרון אד הוק:
+# בבחירת תיקייה, _הצג את כל הפריטים של כל הערוצים שבתוכה (או - שתחתיה).
+# ופשוט "X ערוצים עם Y הודעות שלא נקראו". בהנחה שהמשתמש מבין מההקשר
+# שהכוונה לערוצים בתוך תיקייה מסוימת.
+#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
+msgid "children with"
+msgstr "ערוצים עם"
+
+# <div style=\"direction:rtl\">כותרות שלא נקראו</div>
+#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+msgid "unread headlines"
+msgstr "כותרות שלא נקראו"
+
+#: ../xslt/item.xml.in.h:2
+msgid "Feed"
+msgstr "ערוץ"
+
+#: ../xslt/item.xml.in.h:3
+msgid "Filed under"
+msgstr "תויק תחת"
+
+#: ../xslt/item.xml.in.h:4
+msgid "Author"
+msgstr "מחבר"
+
+# משותף
+#: ../xslt/item.xml.in.h:5
+msgid "Shared by"
+msgstr "מומלץ על ידי"
+
+# באמצעות
+#: ../xslt/item.xml.in.h:6
+msgid "Via"
+msgstr "דרך"
+
+#: ../xslt/item.xml.in.h:7
+msgid "Related"
+msgstr "קשורים"
+
+# פורסם גם אצל
+# בנוסף פורסם אצל
+#: ../xslt/item.xml.in.h:8
+msgid "Also posted in"
+msgstr "פורסם גם בערוץ"
+
+#: ../xslt/item.xml.in.h:9
+msgid "Creator"
+msgstr "יוצר"
+
+#: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:12
+msgid "View count"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:13
+msgid "Rating"
+msgstr ""
+
+# RLO workaround until RTL problem will be solved
+# <p dir=\"rtl\">תגובות</p>
+#: ../xslt/item.xml.in.h:14
+msgid "Comments"
+msgstr "תגובות‮"
+
+#: ../xslt/item.xml.in.h:15
+msgid "Updating..."
+msgstr "מעדכן כעת…"
+
+#: ../xslt/item.xml.in.h:16
+msgid "Section"
+msgstr "פלג"
+
+#: ../xslt/item.xml.in.h:17
+msgid "Department"
+msgstr "אגף"
+
+#: ../xslt/newsbin.xml.in.h:1
+msgid "News Bin:"
+msgstr "סל איסוף:"
+
+#: ../xslt/newsbin.xml.in.h:2
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+"<p dir=\"rtl\">כדי להוסיף פריטים לתוך סל איסוף זה, יש לבחור \"העתק לתוך סל "
+"איסוף\" מתוך תפריט ההקשר של רשימת הפריטים.</p>"
+
+#: ../xslt/vfolder.xml.in.h:1
+msgid "Search Folder:"
+msgstr "<p dir=\"rtl\">תיקיית חיפוש:</p>"
+
+#~ msgid ""
+#~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
+#~ "></b>"
+#~ msgstr ""
+#~ "<div style=\"direction:rtl\">העדכון האחרון של הרשמה זו נכשל!<br/><b>HTTP "
+#~ "error code <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
+#~ "\"httpError\"/></b></div>"
+
+#~ msgid "Parser Error Details"
+#~ msgstr "פרטי שגיאת מפענח"
+
+#~ msgid "There were errors while filtering this feed!"
+#~ msgstr "<p dir=\"rtl\">אירעו שגיאות במהלך סינון ערוץ זה!</p>"
+
+#~ msgid "Filter Error Details"
+#~ msgstr "פרטי שגיאת מסנן"
+
+#~ msgid ""
+#~ "<p>Could not detect the type of this feed! Please check if the source "
+#~ "really points to a resource provided in one of the supported syndication "
+#~ "formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+#~ msgstr ""
+#~ "<p dir=\"rtl\">לא ניתן לזהות את טיפוס הערוץ! אנא בדוק כי המקור אכן מצביע "
+#~ "לאחד הפורמטים הנתמכים.</p><p dir=\"rtl\">תוצאת פענוח XML:</p><br /><div "
+#~ "style='direction:rtl' class='xmlparseoutput'>"
+
+# דף מרשתת
+#~ msgid ""
+#~ "The URL you want Liferea to subscribe to points to a webpage and the auto "
+#~ "discovery found no feeds on this page. Maybe this webpage just does not "
+#~ "support feed auto discovery."
+#~ msgstr ""
+#~ "כתובת URL אליה ברצונך להירשם מצביעה על דף אינטרנט ולא זוהו ערוצים בתוכו "
+#~ "באמצעות הגילוי האוטומטי. ייתכן שדף אינטרנט זה לא תומך בגילוי ערוצים "
+#~ "אוטומטי."
+
+#~ msgid "Source points to HTML document."
+#~ msgstr "המקור מצביע למסמך HTML."
+
+#~ msgid "Could not determine the feed type."
+#~ msgstr "לא ניתן לקבוע את טיפוס הערוץ."
+
+#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+#~ msgstr "הערוץ לא קיים. אנא בטל את ההרשמה!"
+
+#~ msgid "Updating \"%s\""
+#~ msgstr "מעדכן כעת את \"%s\""
 
 #~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 #~ msgstr "שגיאת XML במהלך קריאת ערוץ! לא ניתן לטעון את הערוץ \"%s\"!"

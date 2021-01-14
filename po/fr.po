@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-31 18:23+0100\n"
+"POT-Creation-Date: 2021-01-14 17:09+0100\n"
 "PO-Revision-Date: 2020-10-08 20:19+0200\n"
 "Last-Translator: Yannicka\n"
 "Language-Team: français <>\n"
@@ -103,161 +103,227 @@ msgstr ""
 "news;feed;aggregator;blog;podcast;syndication;rss;atom;nouvelle;actualité;"
 "agrégateur"
 
-#: ../xslt/feed.xml.in.h:1
-msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
+#: ../plugins/getfocus.py:95
+msgid "Opacity:"
 msgstr ""
-"Ce flux a cessé d’exister. Il n’est plus disponible. Liferea ne le mettra "
-"plus à jour, mais vous pouvez toujours accéder aux titres situés dans le "
-"cache."
 
-#: ../xslt/feed.xml.in.h:2
-msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+#: ../plugins/getfocus.py:96
+msgid "Opacity"
 msgstr ""
-"La dernière mise à jour de cet abonnement a échoué !<br/><b>Code d’erreur "
-"HTTP <xsl:value-of select=\"httpErrorCode\"/> : <xsl:value-of select="
-"\"httpError\"/></b>"
 
-#: ../xslt/feed.xml.in.h:3
-msgid "There were errors while parsing this feed!"
-msgstr "Des erreurs sont survenues pendant l’analyse syntaxique de ce flux !"
+#: ../plugins/getfocus.py:106
+msgid "Min"
+msgstr ""
 
-#: ../xslt/feed.xml.in.h:4
-msgid "Parser Error Details"
-msgstr "Détail des erreurs d’analyse syntaxique"
-
-#: ../xslt/feed.xml.in.h:5
-msgid "Details"
-msgstr "Détails"
-
-#: ../xslt/feed.xml.in.h:6
-msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr "Vous pouvez contacter l’auteur ou le webmestre du flux à ce sujet !"
-
-#: ../xslt/feed.xml.in.h:7
-msgid "There were errors while filtering this feed!"
-msgstr "Des erreurs sont survenues pendant le filtrage de ce flux !"
-
-#: ../xslt/feed.xml.in.h:8
-msgid "Filter Error Details"
-msgstr "Détail des erreurs de filtrage"
-
-#: ../xslt/feed.xml.in.h:9
-msgid "Feed:"
-msgstr "Flux :"
-
-#: ../xslt/feed.xml.in.h:10 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Source :"
-
-#: ../xslt/feed.xml.in.h:11
-msgid "Publisher"
-msgstr "Éditeur"
-
-#: ../xslt/feed.xml.in.h:12
-msgid "Copyright"
-msgstr "Copyright"
-
-#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
-msgid "children with"
-msgstr "enfants avec"
-
-#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "titres non lus"
-
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Dossier :"
-
-#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:21
-msgid "Source"
-msgstr "Source"
-
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Flux"
-
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Classé sous"
-
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Auteur"
-
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Partagé par"
-
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "Via"
-
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Lié"
-
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Aussi posté dans"
-
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Créateur"
-
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
-msgstr "Coordonnées"
-
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
+#: ../plugins/getfocus.py:111
+#, fuzzy
+msgid "Max"
 msgstr "Carte"
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
-msgstr "Nombre de vues"
-
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
-msgstr "Évaluation"
-
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Commentaires"
-
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "Mise à jour…"
-
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Section"
-
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Département"
-
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "Boîte à nouvelles :"
-
-#: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
+#: ../plugins/getfocus.py:117
+msgid "Save"
 msgstr ""
-"Ajoutez des éléments à cette boîte à nouvelles en sélectionnant « Copier "
-"dans la boîte à nouvelles » à partir du menu contextuel de la liste des "
-"éléments."
 
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Dossier de recherche :"
+#: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Élément précédent"
+
+#: ../plugins/headerbar.py:73 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Élément suivant"
+
+#: ../plugins/headerbar.py:81 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "Élément _non lu suivant"
+
+#: ../plugins/headerbar.py:89 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Marquer les éléments comme lus"
+
+#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Chercher dans tous les flux…"
+
+#: ../plugins/libnotify.py:43
+#, fuzzy
+msgid "Feed Updates"
+msgstr "Paramètres de mise à jour des flux"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "Greffons"
+
+#: ../plugins/plugin-installer.py:69
+#, fuzzy
+msgid "Plugin Installer"
+msgstr "Greffons"
+
+#: ../plugins/plugin-installer.py:83
+#, fuzzy
+msgid "Activate Plugins"
+msgstr "Greffons"
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_Télécharger en utilisant"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "Avancé"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "_Adresse"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
+msgid ""
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
+msgid ""
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "Impossible de créer le répertoire cache « %s » !"
+
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "Suppression de l’entrée"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
+msgid ""
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
+msgstr ""
+
+#: ../plugins/trayicon.py:134
+msgid "Show / Hide"
+msgstr ""
+
+#: ../plugins/trayicon.py:135
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:136
+#, fuzzy
+msgid "Quit"
+msgstr "_Quitter"
 
 #: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
@@ -404,55 +470,124 @@ msgstr "Exporter la liste des flux"
 msgid "Export"
 msgstr "Exporter"
 
-#: ../src/feed.c:325
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr ""
-"<p>Impossible de détecter le type de ce flux ! Veuillez vérifier que la "
-"source pointe vraiment vers une ressource fournie dans un des formats "
-"supportés !</p>Sortie de l’analyseur syntaxique XML :<br /><div "
-"class='xmlparseroutput'>"
-
-#: ../src/feed.c:352
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "« %s » mis à jour…"
-
-#: ../src/feed.c:359
+#: ../src/feed.c:354
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "« %s » n’est pas disponible"
 
-#: ../src/feed_parser.c:145
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
-"L’URL à laquelle vous voulez vous abonner pointe vers une page web et aucun "
-"flux n’a été découvert sur cette page. Cette page web ne supporte peut-être "
-"pas la découverte automatique de flux."
+#: ../src/feed.c:356
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "« %s » mis à jour…"
 
-#: ../src/feed_parser.c:203
+#: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Document vide !"
 
-#: ../src/feed_parser.c:212
+#: ../src/feed_parser.c:210
 msgid "Invalid XML!"
 msgstr "XML non valide !"
 
-#: ../src/feed_parser.c:266
-msgid "Source points to HTML document."
-msgstr "La source pointe vers un document HTML."
+#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
+#: ../glade/simple_subscription.ui.h:1
+msgid "New Subscription"
+msgstr "Nouvel abonnement"
 
-#: ../src/feed_parser.c:269
-msgid "Could not determine the feed type."
-msgstr "Impossible de déterminer le type de flux."
+#: ../src/fl_sources/google_source.c:111
+msgid "Google Reader"
+msgstr "Google Reader"
+
+#: ../src/fl_sources/node_source.c:334
+msgid "No feed list source types found!"
+msgstr "Impossible de trouver un type de source de liste de flux !"
+
+#: ../src/fl_sources/node_source.c:363
+msgid "Source Type"
+msgstr "Type de source"
+
+#: ../src/fl_sources/node_source.c:414
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr ""
+"La connexion pour « %s » n’est pas terminée. Veuillez attendre la fin de la "
+"connexion."
+
+#. FIXME: something is not perfect, because if you immediately
+#. remove the subscription tree afterwards there is a double free
+#: ../src/fl_sources/node_source.c:580
+#, c-format
+msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr ""
+"L’abonnement au flux « %s » a été correctement converti en flux local !"
+
+#: ../src/fl_sources/opml_source.c:319
+msgid "Planet, BlogRoll, OPML"
+msgstr "Planet, BlogRoll, OPML"
+
+#: ../src/fl_sources/opml_source.c:379
+msgid "Choose OPML File"
+msgstr "Choisir un fichier OPML"
+
+#: ../src/fl_sources/opml_source.c:379 ../src/ui/subscription_dialog.c:355
+msgid "_Open"
+msgstr "_Ouvrir"
+
+#: ../src/fl_sources/opml_source.h:28
+msgid "New OPML Subscription"
+msgstr "Nouvel abonnement OPML"
+
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+msgid "Login failed!"
+msgstr "La connexion a échoué !"
+
+#: ../src/fl_sources/reedah_source.c:313
+msgid "Reedah"
+msgstr "Reedah"
+
+#: ../src/fl_sources/reedah_source_feed.c:154
+msgid "Could not parse JSON returned by Reedah API!"
+msgstr "Impossible d’analyser le JSON envoyé par l’API Reedah !"
+
+#: ../src/fl_sources/theoldreader_source.c:311
+msgid "TheOldReader"
+msgstr "TheOldReader"
+
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr "L’API HTTP de TinyTinyRSS n’est pas accessible !"
+
+#: ../src/fl_sources/ttrss_source.c:234
+msgid ""
+"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
+"URL!"
+msgstr ""
+"L’abonnement à ce flux TinyTinyRSS a échoué ! Vérifiez que vous avez bien "
+"renseigné une URL de flux !"
+
+#: ../src/fl_sources/ttrss_source.c:300
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr "Le désabonnement de ce flux TinyTinyRSS a échoué !"
+
+#: ../src/fl_sources/ttrss_source.c:318
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
+"%s or later!"
+msgstr ""
+"Cette version de TinyTinyRSS ne permet pas de supprimer de flux. Mettez à "
+"vous vers la version %s ou supérieure !"
+
+#: ../src/fl_sources/ttrss_source.c:460
+msgid "Tiny Tiny RSS"
+msgstr "Tiny Tiny RSS"
+
+#: ../src/fl_sources/ttrss_source_feed.c:150
+msgid "Could not parse JSON returned by TinyTinyRSS API!"
+msgstr "Impossible d’analyser le JSON envoyé par l’API TinyTinyRSS !"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:390
+#: ../src/itemlist.c:395
 msgid "There are no unread items"
 msgstr "Il n’y a aucun élément non lu"
 
@@ -548,27 +683,27 @@ msgid "Print debugging messages for the given topic"
 msgstr "Affiche des messages de débogage pour le sujet donné"
 
 #. Some libsoup transport errors
-#: ../src/net.c:463
+#: ../src/net.c:439
 msgid "The update request was cancelled"
 msgstr "La demande de mise à jour a été annulée"
 
-#: ../src/net.c:464
+#: ../src/net.c:440
 msgid "Unable to resolve destination host name"
 msgstr "Impossible de résoudre le nom de la machine de destination"
 
-#: ../src/net.c:465
+#: ../src/net.c:441
 msgid "Unable to resolve proxy host name"
 msgstr "Impossible de résoudre le nom de la machine serveur mandataire"
 
-#: ../src/net.c:466
+#: ../src/net.c:442
 msgid "Unable to connect to remote host"
 msgstr "Impossible de se connecter à la machine distante"
 
-#: ../src/net.c:467
+#: ../src/net.c:443
 msgid "Unable to connect to proxy"
 msgstr "Impossible de se connecter au serveur mandataire"
 
-#: ../src/net.c:468
+#: ../src/net.c:444
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
@@ -576,12 +711,12 @@ msgstr ""
 "la connexion"
 
 #. http 3xx redirection
-#: ../src/net.c:471
+#: ../src/net.c:447
 msgid "The resource moved permanently to a new location"
 msgstr "La ressource a été déplacée à un autre endroit de manière permanente"
 
 #. http 4xx client error
-#: ../src/net.c:474
+#: ../src/net.c:450
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -590,59 +725,74 @@ msgstr ""
 "nom d’utilisateur et votre mot de passe dans la boîte de dialogue des "
 "propriétés du flux"
 
-#: ../src/net.c:476
+#: ../src/net.c:452
 msgid "Payment required"
 msgstr "Paiement nécessaire"
 
-#: ../src/net.c:477
+#: ../src/net.c:453
 msgid "You're not allowed to access this resource"
 msgstr "Vous n’êtes pas autorisé à accéder à cette ressource"
 
-#: ../src/net.c:478
+#: ../src/net.c:454
 msgid "Resource Not Found"
 msgstr "Ressource introuvable"
 
-#: ../src/net.c:479
+#: ../src/net.c:455
 msgid "Method Not Allowed"
 msgstr "Méthode interdite"
 
-#: ../src/net.c:480
+#: ../src/net.c:456
 msgid "Not Acceptable"
 msgstr "Non acceptable"
 
-#: ../src/net.c:481
+#: ../src/net.c:457
 msgid "Proxy authentication required"
 msgstr "Authentification par serveur mandataire exigée"
 
-#: ../src/net.c:482
+#: ../src/net.c:458
 msgid "Request timed out"
 msgstr "Délai de la requête expiré"
 
-#: ../src/net.c:483
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "La ressource n’existe pas. Veuillez vous désabonner !"
+#: ../src/net.c:459
+#, fuzzy
+msgid ""
+"The webserver indicates this feed is discontinued. It's no longer available. "
+"Liferea won't update it anymore but you can still access the cached "
+"headlines."
+msgstr ""
+"Ce flux a cessé d’exister. Il n’est plus disponible. Liferea ne le mettra "
+"plus à jour, mais vous pouvez toujours accéder aux titres situés dans le "
+"cache."
 
-#: ../src/net.c:488
+#: ../src/net.c:464
 msgid "There was an internal error in the update process"
 msgstr "Il y a eu une erreur interne lors du traitement de la mise à jour"
 
-#: ../src/net.c:490
+#: ../src/net.c:466
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Flux indisponible : le serveur a demandé une redirection qui n’est pas prise "
 "en charge !"
 
-#: ../src/net.c:492
+#: ../src/net.c:468
 msgid "Client Error"
 msgstr "Erreur du client"
 
-#: ../src/net.c:494
+#: ../src/net.c:470
 msgid "Server Error"
 msgstr "Erreur du serveur"
 
-#: ../src/net.c:496
+#: ../src/net.c:472
 msgid "An unknown networking error happened!"
 msgstr "Une erreur réseau inconnue s’est produite !"
+
+#: ../src/parsers/atom10.c:239
+msgid "Website"
+msgstr "Site web"
+
+#: ../src/parsers/ns_ag.c:70
+msgid "%b %d %H:%M"
+msgstr "%d %b %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
@@ -740,15 +890,7 @@ msgid ""
 msgstr ""
 "L’abonnement à « %s » a cessé d’exister. Liferea ne le mettra plus à jour !"
 
-#: ../src/subscription.c:173
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
-"vérifier l’URL et la sortie sur la console."
-
-#: ../src/subscription.c:196
+#: ../src/subscription.c:188
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "L’URL de « %s » a changé définitivement et a été mise à jour"
@@ -758,53 +900,33 @@ msgstr "L’URL de « %s » a changé définitivement et a été mise à jour"
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "« %s » a cessé d’exister. Liferea ne le mettra plus à jour !"
 
-#: ../src/subscription.c:207
+#: ../src/subscription.c:208
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "« %s » n’a pas changé depuis la dernière mise à jour"
 
-#: ../src/subscription.c:263
+#: ../src/subscription.c:221 ../src/subscription.c:296
+#, fuzzy, c-format
+msgid "Updating (%d / %d) ..."
+msgstr "Mise à jour…"
+
+#: ../src/subscription.c:298
+#, fuzzy, c-format
+msgid "Updating '%s'..."
+msgstr "Mise à jour…"
+
+#: ../src/ui/auth_dialog.c:114
 #, c-format
-msgid "Updating \"%s\""
-msgstr "Mise à jour de « %s »"
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "Entrer le nom d’utilisateur et le mot de passe pour « %s » (%s) :"
 
-#: ../src/update.c:327
-#, c-format
-msgid "Error opening temp file %s to use for filtering!"
-msgstr "Erreur en ouvrant le fichier temporaire %s pour le filtrage !"
+#: ../src/ui/auth_dialog.c:116
+msgid "Unknown source"
+msgstr "Source inconnue"
 
-#: ../src/update.c:350
-#, c-format
-msgid "%s exited with status %d"
-msgstr "%s s’est terminé avec le code de retour %d"
-
-#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
-#, c-format
-msgid "Error: Could not open pipe \"%s\""
-msgstr "Erreur : impossible d’ouvrir le tube « %s »"
-
-#. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:496
-#, c-format
-msgid "Error: Could not open file \"%s\""
-msgstr "Erreur : impossible d’ouvrir le fichier « %s »"
-
-#: ../src/update.c:502
-#, c-format
-msgid "Error: There is no file \"%s\""
-msgstr "Erreur : il n’y a pas de fichier « %s »"
-
-#: ../src/vfolder.c:54
-msgid "New Search Folder"
-msgstr "Nouveau dossier de recherche"
-
-#: ../src/xml.c:424
-msgid "[There were more errors. Output was truncated!]"
-msgstr "[Il y avait d’autres erreurs. La sortie a été tronquée !]"
-
-#: ../src/xml.c:594
-msgid "XML Parser: Could not parse document:\n"
-msgstr "Analyseur syntaxique XML : impossible d’analyser le document :\n"
+#: ../src/ui/browser_tabs.c:262
+msgid "Untitled"
+msgstr "Sans titre"
 
 #: ../src/ui/enclosure_list_view.c:168
 msgid "Attachments"
@@ -848,64 +970,6 @@ msgstr "Choisir un fichier"
 #, c-format
 msgid "File Extension .%s"
 msgstr "Extension de fichier .%s"
-
-#: ../src/ui/icons.c:54
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "Fichier pixmap %s introuvable"
-
-#: ../src/ui/liferea_shell.c:409
-#, c-format
-msgid " (%d new)"
-msgid_plural " (%d new)"
-msgstr[0] " (%d nouveau)"
-msgstr[1] " (%d nouveaux)"
-
-#: ../src/ui/liferea_shell.c:414
-#, c-format
-msgid "%d unread%s"
-msgid_plural "%d unread%s"
-msgstr[0] "%d non lu%s"
-msgstr[1] "%d non lus%s"
-
-#: ../src/ui/liferea_shell.c:755
-msgid "Help Topics"
-msgstr "Sommaire de l’aide"
-
-#: ../src/ui/liferea_shell.c:761
-msgid "Quick Reference"
-msgstr "Référence rapide"
-
-#: ../src/ui/liferea_shell.c:767
-msgid "FAQ"
-msgstr "FAQ"
-
-#: ../src/ui/liferea_shell.c:1045
-#, fuzzy, c-format
-msgid "Email command failed: %s"
-msgstr "Échec de la commande de courrier électronique : %s"
-
-#: ../src/ui/search_dialog.c:107
-msgid "Saved Search"
-msgstr "Recherche enregistrée"
-
-#: ../src/ui/auth_dialog.c:114
-#, c-format
-msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "Entrer le nom d’utilisateur et le mot de passe pour « %s » (%s) :"
-
-#: ../src/ui/auth_dialog.c:116
-msgid "Unknown source"
-msgstr "Source inconnue"
-
-#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_view.c:911
-#: ../src/ui/feed_list_view.c:965
-msgid "_Cancel"
-msgstr "_Annuler"
-
-#: ../src/ui/ui_common.c:211
-msgid "All Files"
-msgstr "Tous les fichiers"
 
 #: ../src/ui/feed_list_view.c:432
 msgid "Liferea is in offline mode. No update possible."
@@ -952,6 +1016,11 @@ msgstr "Êtes-vous sûr de vouloir supprimer « %s » et son contenu ?"
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Êtes-vous sûr de vouloir supprimer « %s » ?"
 
+#: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
+#: ../src/ui/ui_common.c:168
+msgid "_Cancel"
+msgstr "_Annuler"
+
 #: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
 msgid "_Delete"
 msgstr "_Supprimer"
@@ -977,6 +1046,11 @@ msgstr "_Ajouter"
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Confirmation d’ajout pour un abonnement en double"
 
+#: ../src/ui/icons.c:54
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Fichier pixmap %s introuvable"
+
 #: ../src/ui/item_list_view.c:115
 msgid "This item has no link specified!"
 msgstr "Aucun lien n’est spécifié pour cet élément !"
@@ -989,22 +1063,53 @@ msgstr "*** Pas de titre ***"
 msgid " <span background='red' color='black'> important </span> "
 msgstr " <span background='red' color='black'> important </span> "
 
-#: ../src/ui/item_list_view.c:865
+#: ../src/ui/item_list_view.c:849
 msgid "Headline"
 msgstr "Titre"
 
-#: ../src/ui/item_list_view.c:887
+#: ../src/ui/item_list_view.c:871
 msgid "Date"
 msgstr "Date"
 
-#: ../src/ui/item_list_view.c:1056
+#: ../src/ui/item_list_view.c:1038
 msgid "You must select a feed to delete its items!"
 msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 
-#: ../src/ui/item_list_view.c:1072 ../src/ui/item_list_view.c:1150
-#: ../src/ui/item_list_view.c:1165
+#: ../src/ui/item_list_view.c:1054 ../src/ui/item_list_view.c:1132
+#: ../src/ui/item_list_view.c:1147
 msgid "No item has been selected"
 msgstr "Aucun élément n’a été sélectionné"
+
+#: ../src/ui/liferea_shell.c:409
+#, c-format
+msgid " (%d new)"
+msgid_plural " (%d new)"
+msgstr[0] " (%d nouveau)"
+msgstr[1] " (%d nouveaux)"
+
+#: ../src/ui/liferea_shell.c:414
+#, c-format
+msgid "%d unread%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%d non lu%s"
+msgstr[1] "%d non lus%s"
+
+#: ../src/ui/liferea_shell.c:755
+msgid "Help Topics"
+msgstr "Sommaire de l’aide"
+
+#: ../src/ui/liferea_shell.c:761
+msgid "Quick Reference"
+msgstr "Référence rapide"
+
+#: ../src/ui/liferea_shell.c:767
+msgid "FAQ"
+msgstr "FAQ"
+
+#: ../src/ui/liferea_shell.c:1045
+#, fuzzy, c-format
+msgid "Email command failed: %s"
+msgstr "Échec de la commande de courrier électronique : %s"
 
 #: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
@@ -1179,9 +1284,9 @@ msgstr "Type"
 msgid "Program"
 msgstr "Programme"
 
-#: ../src/ui/subscription_dialog.c:355 ../src/fl_sources/opml_source.c:379
-msgid "_Open"
-msgstr "_Ouvrir"
+#: ../src/ui/search_dialog.c:107
+msgid "Saved Search"
+msgstr "Recherche enregistrée"
 
 #: ../src/ui/subscription_dialog.c:427
 #, c-format
@@ -1197,111 +1302,39 @@ msgstr[1] ""
 msgid "This feed specifies no default update interval."
 msgstr "Ce flux ne spécifie aucun intervalle de mise à jour."
 
-#: ../src/ui/browser_tabs.c:262
-msgid "Untitled"
-msgstr "Sans titre"
+#: ../src/ui/ui_common.c:211
+msgid "All Files"
+msgstr "Tous les fichiers"
 
-#: ../src/parsers/atom10.c:239
-msgid "Website"
-msgstr "Site web"
-
-#: ../src/parsers/ns_ag.c:70
-msgid "%b %d %H:%M"
-msgstr "%d %b %H:%M"
-
-#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
-msgid "New Subscription"
-msgstr "Nouvel abonnement"
-
-#: ../src/fl_sources/google_source.c:111
-msgid "Google Reader"
-msgstr "Google Reader"
-
-#: ../src/fl_sources/opml_source.c:319
-msgid "Planet, BlogRoll, OPML"
-msgstr "Planet, BlogRoll, OPML"
-
-#: ../src/fl_sources/opml_source.c:379
-msgid "Choose OPML File"
-msgstr "Choisir un fichier OPML"
-
-#: ../src/fl_sources/opml_source.h:28
-msgid "New OPML Subscription"
-msgstr "Nouvel abonnement OPML"
-
-#: ../src/fl_sources/node_source.c:334
-msgid "No feed list source types found!"
-msgstr "Impossible de trouver un type de source de liste de flux !"
-
-#: ../src/fl_sources/node_source.c:363
-msgid "Source Type"
-msgstr "Type de source"
-
-#: ../src/fl_sources/node_source.c:414
+#: ../src/update.c:350
 #, c-format
-msgid "Login for '%s' has not yet completed! Please wait until login is done."
-msgstr ""
-"La connexion pour « %s » n’est pas terminée. Veuillez attendre la fin de la "
-"connexion."
+msgid "Error opening temp file %s to use for filtering!"
+msgstr "Erreur en ouvrant le fichier temporaire %s pour le filtrage !"
 
-#. FIXME: something is not perfect, because if you immediately
-#. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:580
+#: ../src/update.c:372
 #, c-format
-msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr ""
-"L’abonnement au flux « %s » a été correctement converti en flux local !"
+msgid "%s exited with status %d"
+msgstr "%s s’est terminé avec le code de retour %d"
 
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-msgid "Login failed!"
-msgstr "La connexion a échoué !"
-
-#: ../src/fl_sources/reedah_source.c:313
-msgid "Reedah"
-msgstr "Reedah"
-
-#: ../src/fl_sources/reedah_source_feed.c:154
-msgid "Could not parse JSON returned by Reedah API!"
-msgstr "Impossible d’analyser le JSON envoyé par l’API Reedah !"
-
-#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
-msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr "L’API HTTP de TinyTinyRSS n’est pas accessible !"
-
-#: ../src/fl_sources/ttrss_source.c:234
-msgid ""
-"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
-"URL!"
-msgstr ""
-"L’abonnement à ce flux TinyTinyRSS a échoué ! Vérifiez que vous avez bien "
-"renseigné une URL de flux !"
-
-#: ../src/fl_sources/ttrss_source.c:300
-msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr "Le désabonnement de ce flux TinyTinyRSS a échoué !"
-
-#: ../src/fl_sources/ttrss_source.c:318
+#: ../src/update.c:378 ../src/update.c:379 ../src/update.c:493
 #, c-format
-msgid ""
-"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
-"%s or later!"
-msgstr ""
-"Cette version de TinyTinyRSS ne permet pas de supprimer de flux. Mettez à "
-"vous vers la version %s ou supérieure !"
+msgid "Error: Could not open pipe \"%s\""
+msgstr "Erreur : impossible d’ouvrir le tube « %s »"
 
-#: ../src/fl_sources/ttrss_source.c:460
-msgid "Tiny Tiny RSS"
-msgstr "Tiny Tiny RSS"
+#. FIXME: maybe setting request->returncode would be better
+#: ../src/update.c:517
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "Erreur : impossible d’ouvrir le fichier « %s »"
 
-#: ../src/fl_sources/ttrss_source_feed.c:150
-msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr "Impossible d’analyser le JSON envoyé par l’API TinyTinyRSS !"
+#: ../src/update.c:523
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "Erreur : il n’y a pas de fichier « %s »"
 
-#: ../src/fl_sources/theoldreader_source.c:311
-msgid "TheOldReader"
-msgstr "TheOldReader"
+#: ../src/vfolder.c:54
+msgid "New Search Folder"
+msgstr "Nouveau dossier de recherche"
 
 #: ../src/webkit/liferea_web_view.c:176
 msgid "Open Link In _Tab"
@@ -1356,206 +1389,13 @@ msgstr "_Augmenter la taille du texte"
 msgid "_Decrease Text Size"
 msgstr "_Réduire la taille du texte"
 
-#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
-#: ../glade/liferea_toolbar.ui.h:5
-msgid "Previous Item"
-msgstr "Élément précédent"
+#: ../src/xml.c:424
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[Il y avait d’autres erreurs. La sortie a été tronquée !]"
 
-#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
-#: ../glade/liferea_toolbar.ui.h:6
-msgid "Next Item"
-msgstr "Élément suivant"
-
-#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
-#: ../glade/liferea_toolbar.ui.h:7
-msgid "_Next Unread Item"
-msgstr "Élément _non lu suivant"
-
-#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
-#: ../glade/liferea_toolbar.ui.h:3
-msgid "_Mark Items Read"
-msgstr "_Marquer les éléments comme lus"
-
-#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
-#: ../glade/liferea_toolbar.ui.h:10
-msgid "Search All Feeds..."
-msgstr "Chercher dans tous les flux…"
-
-#: ../plugins/libnotify.py:42
-#, fuzzy
-msgid "Feed Updates"
-msgstr "Paramètres de mise à jour des flux"
-
-#: ../plugins/plugin-installer.py:54
-msgid "Plugins"
-msgstr "Greffons"
-
-#: ../plugins/plugin-installer.py:69
-#, fuzzy
-msgid "Plugin Installer"
-msgstr "Greffons"
-
-#: ../plugins/plugin-installer.py:83
-#, fuzzy
-msgid "Activate Plugins"
-msgstr "Greffons"
-
-#: ../plugins/plugin-installer.py:84
-#, fuzzy
-msgid "Download Plugins"
-msgstr "_Télécharger en utilisant"
-
-#: ../plugins/plugin-installer.py:102
-#, python-format
-msgid "Bad fields for plugin entry %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-msgid "All"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "Avancé"
-
-#: ../plugins/plugin-installer.py:125
-msgid "Menu"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-#, fuzzy
-msgid "Notifications"
-msgstr "_Adresse"
-
-#: ../plugins/plugin-installer.py:133
-msgid "Filter by category"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:140
-msgid "_Install"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:144
-msgid "_Uninstall"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:245
-#, python-format
-msgid ""
-"Missing package manager '%s'. Cannot check nor install necessary "
-"dependencies!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:261
-#, python-format
-msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:268
-#, python-format
-msgid ""
-"Package installation failed (%s)! Check console output for further problem "
-"details!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:271
-#, python-format
-msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:285
-#, python-format
-msgid "Copying %s to %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:288
-#, python-format
-msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:297
-#, python-format
-msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:307
-#, python-format
-msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:318
-#, fuzzy, python-format
-msgid "Creating schema directory %s"
-msgstr "Impossible de créer le répertoire cache « %s » !"
-
-#: ../plugins/plugin-installer.py:320
-#, python-format
-msgid "Installing schema %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:324
-msgid "Compiling schemas..."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:329
-#, python-format
-msgid "Failed to install schema files (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:339
-#, python-format
-msgid "Failed to enable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:345
-#, python-format
-msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:359
-#, python-format
-msgid "Failed to disable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
-#, fuzzy, python-format
-msgid "Deleting '%s'"
-msgstr "Suppression de l’entrée"
-
-#: ../plugins/plugin-installer.py:369
-#, python-format
-msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:379
-msgid "Failed to remove .py file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:389
-msgid "Failed to remove .plugin file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:398
-msgid "Sorry! Plugin removal failed!."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:400
-msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
-msgstr ""
-
-#: ../plugins/trayicon.py:112
-msgid "Show / Hide"
-msgstr ""
-
-#: ../plugins/trayicon.py:113
-msgid "Minimize to tray on close"
-msgstr ""
-
-#: ../plugins/trayicon.py:114
-#, fuzzy
-msgid "Quit"
-msgstr "_Quitter"
+#: ../src/xml.c:592
+msgid "XML Parser: Could not parse document:\n"
+msgstr "Analyseur syntaxique XML : impossible d’analyser le document :\n"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -2181,6 +2021,10 @@ msgstr ""
 "Liferea peut utiliser des filtres de conversion externes pour accéder aux "
 "flux et aux répertoires qui sont dans des formats non pris en charge."
 
+#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+msgid "Source"
+msgstr "Source"
+
 #: ../glade/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
@@ -2273,17 +2117,36 @@ msgstr "Propriétés du dossier de recherche"
 msgid "Search _Name:"
 msgstr "Nom de la _recherche :"
 
-#: ../glade/search_folder.ui.h:3 ../glade/search.ui.h:3
-msgid "Find Items that meet the following criteria"
-msgstr "Rechercher les éléments satisfaisant les critères suivants"
+#: ../glade/search_folder.ui.h:3
+#, fuzzy
+msgid "Search Rules"
+msgstr "Rechercher dans tous les flux"
 
-#: ../glade/search_folder.ui.h:4 ../glade/search.ui.h:4
+#: ../glade/search_folder.ui.h:4
+msgid "Rules"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:5
+msgid "All rules for this search folder"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:6
+#, fuzzy
+msgid "Rule Matching"
+msgstr "N’_importe quelle règle s’applique"
+
+#: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
 msgstr "N’_importe quelle règle s’applique"
 
-#: ../glade/search_folder.ui.h:5 ../glade/search.ui.h:5
+#: ../glade/search_folder.ui.h:8 ../glade/search.ui.h:5
 msgid "_All Rules Must Match"
 msgstr "_Toutes les règles doivent s’appliquer"
+
+#: ../glade/search_folder.ui.h:9
+#, fuzzy
+msgid "Hide read items"
+msgstr "_Cacher les éléments lus."
 
 #: ../glade/search.ui.h:1
 msgid "Advanced Search"
@@ -2292,6 +2155,10 @@ msgstr "Recherche avancée"
 #: ../glade/search.ui.h:2
 msgid "_Search Folder..."
 msgstr "_Dossier de recherche…"
+
+#: ../glade/search.ui.h:3
+msgid "Find Items that meet the following criteria"
+msgstr "Rechercher les éléments satisfaisant les critères suivants"
 
 #: ../glade/simple_search.ui.h:1
 msgid "Search All Feeds"
@@ -2376,6 +2243,223 @@ msgstr "Demandes en _attente"
 #: ../glade/update_monitor.ui.h:4
 msgid "_Downloading Now"
 msgstr "En cours de _téléchargement"
+
+#: ../xslt/feed.xml.in.h:1
+msgid "Feed:"
+msgstr "Flux :"
+
+#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
+msgid "Source:"
+msgstr "Source :"
+
+#: ../xslt/feed.xml.in.h:3
+msgid "Publisher"
+msgstr "Éditeur"
+
+#: ../xslt/feed.xml.in.h:4
+msgid "Copyright"
+msgstr "Copyright"
+
+#: ../xslt/feed.xml.in.h:5
+#, fuzzy
+msgid "There was a problem when fetching this subscription!"
+msgstr ""
+"Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
+"vérifier l’URL et la sortie sur la console."
+
+#: ../xslt/feed.xml.in.h:6
+#, fuzzy
+msgid "1. Authentication"
+msgstr "Authentification"
+
+#: ../xslt/feed.xml.in.h:7
+#, fuzzy
+msgid "2. Download"
+msgstr "Téléchargement"
+
+#: ../xslt/feed.xml.in.h:8
+msgid "3. Feed Discovery"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:9
+msgid "4. Parsing"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:10
+#, fuzzy
+msgid "Details:"
+msgstr "Détails"
+
+#: ../xslt/feed.xml.in.h:11
+msgid "Authentication failed. Please check the credentials and try again!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:12
+#, fuzzy
+msgid "There was an error when downloading the feed source:"
+msgstr "Des erreurs sont survenues pendant l’analyse syntaxique de ce flux !"
+
+#: ../xslt/feed.xml.in.h:13
+#, fuzzy
+msgid "There was an error when running the feed filter command:"
+msgstr "Des erreurs sont survenues pendant l’analyse syntaxique de ce flux !"
+
+#: ../xslt/feed.xml.in.h:14
+msgid ""
+"The source does not point directly to a feed or a webpage with a link to a "
+"feed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:15
+msgid "Sorry, the feed could not be parsed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:16
+msgid "You may want to contact the author/webmaster of the feed about this!"
+msgstr "Vous pouvez contacter l’auteur ou le webmestre du flux à ce sujet !"
+
+#: ../xslt/folder.xml.in.h:1
+msgid "Folder:"
+msgstr "Dossier :"
+
+#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
+msgid "children with"
+msgstr "enfants avec"
+
+#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+msgid "unread headlines"
+msgstr "titres non lus"
+
+#: ../xslt/item.xml.in.h:2
+msgid "Feed"
+msgstr "Flux"
+
+#: ../xslt/item.xml.in.h:3
+msgid "Filed under"
+msgstr "Classé sous"
+
+#: ../xslt/item.xml.in.h:4
+msgid "Author"
+msgstr "Auteur"
+
+#: ../xslt/item.xml.in.h:5
+msgid "Shared by"
+msgstr "Partagé par"
+
+#: ../xslt/item.xml.in.h:6
+msgid "Via"
+msgstr "Via"
+
+#: ../xslt/item.xml.in.h:7
+msgid "Related"
+msgstr "Lié"
+
+#: ../xslt/item.xml.in.h:8
+msgid "Also posted in"
+msgstr "Aussi posté dans"
+
+#: ../xslt/item.xml.in.h:9
+msgid "Creator"
+msgstr "Créateur"
+
+#: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr "Coordonnées"
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr "Carte"
+
+#: ../xslt/item.xml.in.h:12
+msgid "View count"
+msgstr "Nombre de vues"
+
+#: ../xslt/item.xml.in.h:13
+msgid "Rating"
+msgstr "Évaluation"
+
+#: ../xslt/item.xml.in.h:14
+msgid "Comments"
+msgstr "Commentaires"
+
+#: ../xslt/item.xml.in.h:15
+msgid "Updating..."
+msgstr "Mise à jour…"
+
+#: ../xslt/item.xml.in.h:16
+msgid "Section"
+msgstr "Section"
+
+#: ../xslt/item.xml.in.h:17
+msgid "Department"
+msgstr "Département"
+
+#: ../xslt/newsbin.xml.in.h:1
+msgid "News Bin:"
+msgstr "Boîte à nouvelles :"
+
+#: ../xslt/newsbin.xml.in.h:2
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+"Ajoutez des éléments à cette boîte à nouvelles en sélectionnant « Copier "
+"dans la boîte à nouvelles » à partir du menu contextuel de la liste des "
+"éléments."
+
+#: ../xslt/vfolder.xml.in.h:1
+msgid "Search Folder:"
+msgstr "Dossier de recherche :"
+
+#~ msgid ""
+#~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
+#~ "></b>"
+#~ msgstr ""
+#~ "La dernière mise à jour de cet abonnement a échoué !<br/><b>Code d’erreur "
+#~ "HTTP <xsl:value-of select=\"httpErrorCode\"/> : <xsl:value-of select="
+#~ "\"httpError\"/></b>"
+
+#~ msgid "Parser Error Details"
+#~ msgstr "Détail des erreurs d’analyse syntaxique"
+
+#~ msgid "There were errors while filtering this feed!"
+#~ msgstr "Des erreurs sont survenues pendant le filtrage de ce flux !"
+
+#~ msgid "Filter Error Details"
+#~ msgstr "Détail des erreurs de filtrage"
+
+#~ msgid ""
+#~ "<p>Could not detect the type of this feed! Please check if the source "
+#~ "really points to a resource provided in one of the supported syndication "
+#~ "formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+#~ msgstr ""
+#~ "<p>Impossible de détecter le type de ce flux ! Veuillez vérifier que la "
+#~ "source pointe vraiment vers une ressource fournie dans un des formats "
+#~ "supportés !</p>Sortie de l’analyseur syntaxique XML :<br /><div "
+#~ "class='xmlparseroutput'>"
+
+#~ msgid ""
+#~ "The URL you want Liferea to subscribe to points to a webpage and the auto "
+#~ "discovery found no feeds on this page. Maybe this webpage just does not "
+#~ "support feed auto discovery."
+#~ msgstr ""
+#~ "L’URL à laquelle vous voulez vous abonner pointe vers une page web et "
+#~ "aucun flux n’a été découvert sur cette page. Cette page web ne supporte "
+#~ "peut-être pas la découverte automatique de flux."
+
+#~ msgid "Source points to HTML document."
+#~ msgstr "La source pointe vers un document HTML."
+
+#~ msgid "Could not determine the feed type."
+#~ msgstr "Impossible de déterminer le type de flux."
+
+#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+#~ msgstr "La ressource n’existe pas. Veuillez vous désabonner !"
+
+#~ msgid "Updating \"%s\""
+#~ msgstr "Mise à jour de « %s »"
 
 #~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 #~ msgstr ""

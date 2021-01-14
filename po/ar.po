@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea_trunk_ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-31 18:23+0100\n"
+"POT-Creation-Date: 2021-01-14 17:09+0100\n"
 "PO-Revision-Date: 2014-10-11 19:28+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -98,158 +98,227 @@ msgstr "اقرأ تلقيمات الأخبار و المدونات"
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr "أخبار;تلقيمات;مدونة;تدوين;"
 
-#: ../xslt/feed.xml.in.h:1
+#: ../plugins/getfocus.py:95
+msgid "Opacity:"
+msgstr ""
+
+#: ../plugins/getfocus.py:96
+msgid "Opacity"
+msgstr ""
+
+#: ../plugins/getfocus.py:106
+msgid "Min"
+msgstr ""
+
+#: ../plugins/getfocus.py:111
+msgid "Max"
+msgstr ""
+
+#: ../plugins/getfocus.py:117
+msgid "Save"
+msgstr ""
+
+#: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "العنصر السابق"
+
+#: ../plugins/headerbar.py:73 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "العنصر التالي"
+
+#: ../plugins/headerbar.py:81 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "العنصر غير المقروء ال_تالي"
+
+#: ../plugins/headerbar.py:89 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_علّم العناصر مقروءة"
+
+#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "ابحث في كل التلقيمات..."
+
+#: ../plugins/libnotify.py:43
+#, fuzzy
+msgid "Feed Updates"
+msgstr "تحديث التلقيمة"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "الملحقات"
+
+#: ../plugins/plugin-installer.py:69
+#, fuzzy
+msgid "Plugin Installer"
+msgstr "الملحقات"
+
+#: ../plugins/plugin-installer.py:83
+#, fuzzy
+msgid "Activate Plugins"
+msgstr "الملحقات"
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_نزّل باستخدام"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "متقدّم"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "إعدادات التنبيه"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
 msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
 msgstr ""
-"توقّفت هذه التلقيمة. لم تعد متوفّرة. لن يستطيع لايفريا التحديث بعد الآن لكن "
-"يظل بإمكانك الوصول إلى العناوين الرئيسية المخبّأة."
 
-#: ../xslt/feed.xml.in.h:2
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
 msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr ""
-"فشل التحديث الأخير لهذا الاشتراك!<br/><b>رمز خطأ HTTP<xsl:value-of select="
-"\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-
-#: ../xslt/feed.xml.in.h:3
-msgid "There were errors while parsing this feed!"
-msgstr "كانت هناك أخطاء أثناء تحليل هذه التلقيمة!"
-
-#: ../xslt/feed.xml.in.h:4
-msgid "Parser Error Details"
-msgstr "تفاصيل خطأ المحلِّل"
-
-#: ../xslt/feed.xml.in.h:5
-msgid "Details"
-msgstr "التفاصيل"
-
-#: ../xslt/feed.xml.in.h:6
-msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr "قد ترغب في التواصل من مع مؤلف\\مسئول التلقيمة عن هذا."
-
-#: ../xslt/feed.xml.in.h:7
-msgid "There were errors while filtering this feed!"
-msgstr "كانت هناك أخطاء أثناء ترشيح هذه التلقيمة!"
-
-#: ../xslt/feed.xml.in.h:8
-msgid "Filter Error Details"
-msgstr "تفاصيل خطأ المرشَّح"
-
-#: ../xslt/feed.xml.in.h:9
-msgid "Feed:"
-msgstr "تلقيمة:"
-
-#: ../xslt/feed.xml.in.h:10 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "المصدر:"
-
-#: ../xslt/feed.xml.in.h:11
-msgid "Publisher"
-msgstr "الناشر"
-
-#: ../xslt/feed.xml.in.h:12
-msgid "Copyright"
-msgstr "حقوق النشر"
-
-#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
-msgid "children with"
-msgstr "أبناء مع"
-
-#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "رؤوس العناوين لم تقرأ"
-
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "مجلّد:"
-
-#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:21
-msgid "Source"
-msgstr "المصدر"
-
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "تلقيمة"
-
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "وُضِع تحت"
-
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "المؤلّف"
-
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "شارَكهُ"
-
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "عبر"
-
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "متعلق"
-
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "منشورة أيضا في"
-
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "المنشيء"
-
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "التعليقات"
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
 
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "يجري تحديث..."
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
 
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "القسم"
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "تعذّر إنشاء مجلّد المخبئية \"%s\"!"
 
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "المصلحة"
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
 
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "سلّة أخبار:"
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
 
-#: ../xslt/newsbin.xml.in.h:2
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "يجريِ حذف الخانة"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
 msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
-"أضِف عناصر لسلّة الأخبار هذه باختيار \"انسخ لسلّة الأخبار\" من قائمة سياق لائحة "
-"العناصر."
 
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "مجلّد بحث:"
+#: ../plugins/trayicon.py:134
+#, fuzzy
+msgid "Show / Hide"
+msgstr "اعرض التفاصيل"
+
+#: ../plugins/trayicon.py:135
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:136
+#, fuzzy
+msgid "Quit"
+msgstr "ا_خرج"
 
 #: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
@@ -380,54 +449,120 @@ msgstr "صدّر قائمة التلقيمات"
 msgid "Export"
 msgstr "صدّر"
 
-#: ../src/feed.c:325
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr ""
-"<p>لم أستطع تحديد نوع هذه التلقيمة! رجاء تأكّد من أن المصدر يشير فعلا إلى "
-"مورِد متوفّر بأحد تنسيقات تجميع الأخبار المدعومة!</p>خرْج محلّل XML:<br /><div "
-"class='xmlparseroutput'>"
-
-#: ../src/feed.c:352
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "حُدِّث \"%s\"..."
-
-#: ../src/feed.c:359
+#: ../src/feed.c:354
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "‏\"%s\" ليس متوفّرا"
 
-#: ../src/feed_parser.c:145
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
-"العنوان الذي تريد أن يشترك به لايفريا يشير لصفحة وِب ولم يجد الاكتشاف "
-"التلقائي أية تلقيمات في هذه الصفحة. ربما لا تدعم هذه الصفحة الاكتشاف "
-"التلقائي للتلقيمات."
+#: ../src/feed.c:356
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "حُدِّث \"%s\"..."
 
-#: ../src/feed_parser.c:203
+#: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "مستند فارغ!"
 
-#: ../src/feed_parser.c:212
+#: ../src/feed_parser.c:210
 msgid "Invalid XML!"
 msgstr "‏XML غير صحيح!"
 
-#: ../src/feed_parser.c:266
-msgid "Source points to HTML document."
-msgstr "يشير المصدر إلى مستند HTML."
+#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
+#: ../glade/simple_subscription.ui.h:1
+msgid "New Subscription"
+msgstr "اشتراك جديد"
 
-#: ../src/feed_parser.c:269
-msgid "Could not determine the feed type."
-msgstr "تعذّر تحديد نوع التلقيمة."
+#: ../src/fl_sources/google_source.c:111
+msgid "Google Reader"
+msgstr "قارئ جوجل"
+
+#: ../src/fl_sources/node_source.c:334
+msgid "No feed list source types found!"
+msgstr "لم يُعثر على أنواع مصادر قائمة التلقيمات!"
+
+#: ../src/fl_sources/node_source.c:363
+msgid "Source Type"
+msgstr "نوع المصدر"
+
+#: ../src/fl_sources/node_source.c:414
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr "لم يكتمل الولوج إلى '%s'، من فضلك انتظر اكتماله."
+
+#. FIXME: something is not perfect, because if you immediately
+#. remove the subscription tree afterwards there is a double free
+#: ../src/fl_sources/node_source.c:580
+#, c-format
+msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr "حُوِّلَ اشتراك '%s' بنجاح إلى تلقيمات محلية."
+
+#: ../src/fl_sources/opml_source.c:319
+msgid "Planet, BlogRoll, OPML"
+msgstr "Planet, BlogRoll, OPML"
+
+#: ../src/fl_sources/opml_source.c:379
+msgid "Choose OPML File"
+msgstr "اختر ملف OPML"
+
+#: ../src/fl_sources/opml_source.c:379 ../src/ui/subscription_dialog.c:355
+msgid "_Open"
+msgstr "ا_فتح"
+
+#: ../src/fl_sources/opml_source.h:28
+msgid "New OPML Subscription"
+msgstr "اشتراك OPML جديد"
+
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+msgid "Login failed!"
+msgstr "فشل الولوج!"
+
+#: ../src/fl_sources/reedah_source.c:313
+msgid "Reedah"
+msgstr "قارئ Reedah"
+
+#: ../src/fl_sources/reedah_source_feed.c:154
+msgid "Could not parse JSON returned by Reedah API!"
+msgstr "تعذر تحليل البيانات المجلوبة من واجهة Reedah البرمجية!"
+
+#: ../src/fl_sources/theoldreader_source.c:311
+msgid "TheOldReader"
+msgstr "قارئ TheOldReader"
+
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr "تعذر الوصول إلى واجهة TinyTinyRSS البرمجية عبر HTTP!"
+
+#: ../src/fl_sources/ttrss_source.c:234
+msgid ""
+"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
+"URL!"
+msgstr ""
+"فشل الاشتراك في تلقيمة TinyTinyRSS! تأكد من أنك أعطيت مسار التلقيمة فعلًا."
+
+#: ../src/fl_sources/ttrss_source.c:300
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr "فشل إلغاء الاشتراك في تلقيمة TinyTinyRSS!"
+
+#: ../src/fl_sources/ttrss_source.c:318
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
+"%s or later!"
+msgstr ""
+"لا تدعم إصدارة TinyTinyRSS هذه إزالة التلقيمات. من فضلك رقِّ إلى الإصدارة %s "
+"أو أحدث."
+
+#: ../src/fl_sources/ttrss_source.c:460
+msgid "Tiny Tiny RSS"
+msgstr "Tiny Tiny RSS"
+
+#: ../src/fl_sources/ttrss_source_feed.c:150
+msgid "Could not parse JSON returned by TinyTinyRSS API!"
+msgstr "تعذر تحليل البيانات المجلوبة من واجهة TinyTinyRSS البرمجية!"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:390
+#: ../src/itemlist.c:395
 msgid "There are no unread items"
 msgstr "لا توجد عناصر غير مقروءة"
 
@@ -517,38 +652,38 @@ msgid "Print debugging messages for the given topic"
 msgstr ""
 
 #. Some libsoup transport errors
-#: ../src/net.c:463
+#: ../src/net.c:439
 msgid "The update request was cancelled"
 msgstr "أُلغي طلب التحديث"
 
-#: ../src/net.c:464
+#: ../src/net.c:440
 msgid "Unable to resolve destination host name"
 msgstr "تعذّر الوصول إلى المستضيف المقصود"
 
-#: ../src/net.c:465
+#: ../src/net.c:441
 msgid "Unable to resolve proxy host name"
 msgstr "تعذّر الوصول إلى الوسيط"
 
-#: ../src/net.c:466
+#: ../src/net.c:442
 msgid "Unable to connect to remote host"
 msgstr "تعذّر الاتصال بالمستضيف البعيد"
 
-#: ../src/net.c:467
+#: ../src/net.c:443
 msgid "Unable to connect to proxy"
 msgstr "تعذّر الاتصال بالوسيط"
 
-#: ../src/net.c:468
+#: ../src/net.c:444
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr "حدث خطأ شبكي، أو أن الطرف الآخر أنهى الاتصال فجأة"
 
 #. http 3xx redirection
-#: ../src/net.c:471
+#: ../src/net.c:447
 msgid "The resource moved permanently to a new location"
 msgstr "انتقل المورد إلى مكان جديد بشكل دائم"
 
 #. http 4xx client error
-#: ../src/net.c:474
+#: ../src/net.c:450
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -556,57 +691,71 @@ msgstr ""
 "غير مرخّص لك بتنزيل هذه التلقيمة. رجاء حدّث اسم مستخدمك وكلمة سرّك في صندوق "
 "حوار خصائص التلقيمة"
 
-#: ../src/net.c:476
+#: ../src/net.c:452
 msgid "Payment required"
 msgstr "الدّفع مطلوب"
 
-#: ../src/net.c:477
+#: ../src/net.c:453
 msgid "You're not allowed to access this resource"
 msgstr "غير مسموح لك بالوصول إلى هذا المورد"
 
-#: ../src/net.c:478
+#: ../src/net.c:454
 msgid "Resource Not Found"
 msgstr "المورِد غير موجود"
 
-#: ../src/net.c:479
+#: ../src/net.c:455
 msgid "Method Not Allowed"
 msgstr "الطريقة غير مسموحة"
 
-#: ../src/net.c:480
+#: ../src/net.c:456
 msgid "Not Acceptable"
 msgstr "غير مقبول"
 
-#: ../src/net.c:481
+#: ../src/net.c:457
 msgid "Proxy authentication required"
 msgstr "استيثاق الوسيط مطلوب"
 
-#: ../src/net.c:482
+#: ../src/net.c:458
 msgid "Request timed out"
 msgstr "انتهت مهلة الطلب"
 
-#: ../src/net.c:483
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "ذهب. المورِد غير موجود. رجاء اشترك!"
+#: ../src/net.c:459
+#, fuzzy
+msgid ""
+"The webserver indicates this feed is discontinued. It's no longer available. "
+"Liferea won't update it anymore but you can still access the cached "
+"headlines."
+msgstr ""
+"توقّفت هذه التلقيمة. لم تعد متوفّرة. لن يستطيع لايفريا التحديث بعد الآن لكن "
+"يظل بإمكانك الوصول إلى العناوين الرئيسية المخبّأة."
 
-#: ../src/net.c:488
+#: ../src/net.c:464
 msgid "There was an internal error in the update process"
 msgstr "حدث خطأ داخلي أثناء عملية التحديث"
 
-#: ../src/net.c:490
+#: ../src/net.c:466
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "التلقيم غير متوفّر: طلب الخادم إعادة توجيه غير مدعوم!"
 
-#: ../src/net.c:492
+#: ../src/net.c:468
 msgid "Client Error"
 msgstr "خطأ عميل"
 
-#: ../src/net.c:494
+#: ../src/net.c:470
 msgid "Server Error"
 msgstr "خطأ خادوم"
 
-#: ../src/net.c:496
+#: ../src/net.c:472
 msgid "An unknown networking error happened!"
 msgstr "حدث خطأ شبكي مجهول."
+
+#: ../src/parsers/atom10.c:239
+msgid "Website"
+msgstr "الموقع"
+
+#: ../src/parsers/ns_ag.c:70
+msgid "%b %d %H:%M"
+msgstr "%b %d %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
@@ -704,14 +853,7 @@ msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
 msgstr "أُوقِف الاشتراك \"%s\". لن يقوم لايفريا بالتحديث بعد الآن!"
 
-#: ../src/subscription.c:173
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"كانت هناك مشكلة أثناء قراءة هذا الاشتراك. رجاء تحقق من العنوان وخرْج الطرفية."
-
-#: ../src/subscription.c:196
+#: ../src/subscription.c:188
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "تغير عنوان \"%s\" بشكل دائم وتم تحديثه"
@@ -721,53 +863,33 @@ msgstr "تغير عنوان \"%s\" بشكل دائم وتم تحديثه"
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "توقّف \"%s\". لن يحدّثه لايفريا بعد الآن!"
 
-#: ../src/subscription.c:207
+#: ../src/subscription.c:208
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "لم يتغيّر \"%s\" منذ آخر تحديث"
 
-#: ../src/subscription.c:263
+#: ../src/subscription.c:221 ../src/subscription.c:296
+#, fuzzy, c-format
+msgid "Updating (%d / %d) ..."
+msgstr "يجري تحديث..."
+
+#: ../src/subscription.c:298
+#, fuzzy, c-format
+msgid "Updating '%s'..."
+msgstr "يجري تحديث..."
+
+#: ../src/ui/auth_dialog.c:114
 #, c-format
-msgid "Updating \"%s\""
-msgstr "يجري تحديث \"%s\""
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "أدخل اسم المستخدم وكلمة السر لـ \"%s\" (%s):"
 
-#: ../src/update.c:327
-#, c-format
-msgid "Error opening temp file %s to use for filtering!"
-msgstr "خطأ أثناء فتح الملف المؤقّت %s لاستخدامه في الترشيح!"
+#: ../src/ui/auth_dialog.c:116
+msgid "Unknown source"
+msgstr "مصدر مجهول"
 
-#: ../src/update.c:350
-#, c-format
-msgid "%s exited with status %d"
-msgstr "خرج %s بالحالة %d"
-
-#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
-#, c-format
-msgid "Error: Could not open pipe \"%s\""
-msgstr "خطأ: تعذّر فتح الأنبوب \"%s\""
-
-#. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:496
-#, c-format
-msgid "Error: Could not open file \"%s\""
-msgstr "خطأ: تعذّر فتح الملف \"%s\""
-
-#: ../src/update.c:502
-#, c-format
-msgid "Error: There is no file \"%s\""
-msgstr "خطأ: ليس ثمّة ملف \"%s\""
-
-#: ../src/vfolder.c:54
-msgid "New Search Folder"
-msgstr "مجلّد بحث جديد"
-
-#: ../src/xml.c:424
-msgid "[There were more errors. Output was truncated!]"
-msgstr "[كان هناك المزيد من الأخطاء. بُتِر الخرْج]"
-
-#: ../src/xml.c:594
-msgid "XML Parser: Could not parse document:\n"
-msgstr "محلّل XML: لا يمكن تحليل المستند:\n"
+#: ../src/ui/browser_tabs.c:262
+msgid "Untitled"
+msgstr "بدون عنوان"
 
 #: ../src/ui/enclosure_list_view.c:168
 msgid "Attachments"
@@ -816,73 +938,6 @@ msgstr "اختر ملفا"
 msgid "File Extension .%s"
 msgstr "امتداد الملف .%s"
 
-#: ../src/ui/icons.c:54
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "تعذّر العثور على ملف الصورة: %s"
-
-#: ../src/ui/liferea_shell.c:409
-#, c-format
-msgid " (%d new)"
-msgid_plural " (%d new)"
-msgstr[0] " (لا جديد)"
-msgstr[1] " (واحد جديد)"
-msgstr[2] " (اثنان جديدان)"
-msgstr[3] " (%d جديدة)"
-msgstr[4] " (%d جديدا)"
-msgstr[5] " (%d جديد)"
-
-#: ../src/ui/liferea_shell.c:414
-#, c-format
-msgid "%d unread%s"
-msgid_plural "%d unread%s"
-msgstr[0] "%.0sلا غير مقروء%s"
-msgstr[1] "%.0sواحد غير مقروء%s"
-msgstr[2] "%.0sاثنان غير مقروءان%s"
-msgstr[3] "%d غير مقروءة%s"
-msgstr[4] "%d غير مقروء%s"
-msgstr[5] "%d غير مقروء%s"
-
-#: ../src/ui/liferea_shell.c:755
-msgid "Help Topics"
-msgstr "مواضيع المساعدة"
-
-#: ../src/ui/liferea_shell.c:761
-msgid "Quick Reference"
-msgstr "مرجع سريع"
-
-#: ../src/ui/liferea_shell.c:767
-msgid "FAQ"
-msgstr "أسئلة شائعة"
-
-#: ../src/ui/liferea_shell.c:1045
-#, fuzzy, c-format
-msgid "Email command failed: %s"
-msgstr "فشل أمر المتصفح: %s"
-
-#: ../src/ui/search_dialog.c:107
-#, fuzzy
-msgid "Saved Search"
-msgstr "بحث متقدّم"
-
-#: ../src/ui/auth_dialog.c:114
-#, c-format
-msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "أدخل اسم المستخدم وكلمة السر لـ \"%s\" (%s):"
-
-#: ../src/ui/auth_dialog.c:116
-msgid "Unknown source"
-msgstr "مصدر مجهول"
-
-#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_view.c:911
-#: ../src/ui/feed_list_view.c:965
-msgid "_Cancel"
-msgstr "أ_لغِ"
-
-#: ../src/ui/ui_common.c:211
-msgid "All Files"
-msgstr "كل الملفات"
-
 #: ../src/ui/feed_list_view.c:432
 msgid "Liferea is in offline mode. No update possible."
 msgstr "لايفريا في وضع دون اتصال. لا يمكن التحديث."
@@ -929,6 +984,11 @@ msgstr "أواثق من رغبتك في حذف \"%s\" ومحتوياته؟"
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "أواثق من رغبتك في حذف \"%s\"؟"
 
+#: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
+#: ../src/ui/ui_common.c:168
+msgid "_Cancel"
+msgstr "أ_لغِ"
+
 #: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
 msgid "_Delete"
 msgstr "ا_حذف"
@@ -953,6 +1013,11 @@ msgstr ""
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "تأكيد الحذف"
 
+#: ../src/ui/icons.c:54
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "تعذّر العثور على ملف الصورة: %s"
+
 #: ../src/ui/item_list_view.c:115
 msgid "This item has no link specified!"
 msgstr "لا وصلة محددة لهذا العنصر!"
@@ -965,22 +1030,61 @@ msgstr "*** بلا عنوان ***"
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:865
+#: ../src/ui/item_list_view.c:849
 msgid "Headline"
 msgstr "عنوان رئيسي"
 
-#: ../src/ui/item_list_view.c:887
+#: ../src/ui/item_list_view.c:871
 msgid "Date"
 msgstr "التاريخ"
 
-#: ../src/ui/item_list_view.c:1056
+#: ../src/ui/item_list_view.c:1038
 msgid "You must select a feed to delete its items!"
 msgstr "يجب أن تختار تلقيمة لحذف عناصرها!"
 
-#: ../src/ui/item_list_view.c:1072 ../src/ui/item_list_view.c:1150
-#: ../src/ui/item_list_view.c:1165
+#: ../src/ui/item_list_view.c:1054 ../src/ui/item_list_view.c:1132
+#: ../src/ui/item_list_view.c:1147
 msgid "No item has been selected"
 msgstr "لم تختر أية عناصر"
+
+#: ../src/ui/liferea_shell.c:409
+#, c-format
+msgid " (%d new)"
+msgid_plural " (%d new)"
+msgstr[0] " (لا جديد)"
+msgstr[1] " (واحد جديد)"
+msgstr[2] " (اثنان جديدان)"
+msgstr[3] " (%d جديدة)"
+msgstr[4] " (%d جديدا)"
+msgstr[5] " (%d جديد)"
+
+#: ../src/ui/liferea_shell.c:414
+#, c-format
+msgid "%d unread%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%.0sلا غير مقروء%s"
+msgstr[1] "%.0sواحد غير مقروء%s"
+msgstr[2] "%.0sاثنان غير مقروءان%s"
+msgstr[3] "%d غير مقروءة%s"
+msgstr[4] "%d غير مقروء%s"
+msgstr[5] "%d غير مقروء%s"
+
+#: ../src/ui/liferea_shell.c:755
+msgid "Help Topics"
+msgstr "مواضيع المساعدة"
+
+#: ../src/ui/liferea_shell.c:761
+msgid "Quick Reference"
+msgstr "مرجع سريع"
+
+#: ../src/ui/liferea_shell.c:767
+msgid "FAQ"
+msgstr "أسئلة شائعة"
+
+#: ../src/ui/liferea_shell.c:1045
+#, fuzzy, c-format
+msgid "Email command failed: %s"
+msgstr "فشل أمر المتصفح: %s"
 
 #: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
@@ -1155,9 +1259,10 @@ msgstr "النوع"
 msgid "Program"
 msgstr "البرنامج"
 
-#: ../src/ui/subscription_dialog.c:355 ../src/fl_sources/opml_source.c:379
-msgid "_Open"
-msgstr "ا_فتح"
+#: ../src/ui/search_dialog.c:107
+#, fuzzy
+msgid "Saved Search"
+msgstr "بحث متقدّم"
 
 #: ../src/ui/subscription_dialog.c:427
 #, c-format
@@ -1175,107 +1280,39 @@ msgstr[5] "مزوّد هذه التلقيمة يقترح فترة تحديث %d 
 msgid "This feed specifies no default update interval."
 msgstr "لا تُحدِّد هذه التلقيمة فترة تحديث افتراضيّة."
 
-#: ../src/ui/browser_tabs.c:262
-msgid "Untitled"
-msgstr "بدون عنوان"
+#: ../src/ui/ui_common.c:211
+msgid "All Files"
+msgstr "كل الملفات"
 
-#: ../src/parsers/atom10.c:239
-msgid "Website"
-msgstr "الموقع"
-
-#: ../src/parsers/ns_ag.c:70
-msgid "%b %d %H:%M"
-msgstr "%b %d %H:%M"
-
-#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
-msgid "New Subscription"
-msgstr "اشتراك جديد"
-
-#: ../src/fl_sources/google_source.c:111
-msgid "Google Reader"
-msgstr "قارئ جوجل"
-
-#: ../src/fl_sources/opml_source.c:319
-msgid "Planet, BlogRoll, OPML"
-msgstr "Planet, BlogRoll, OPML"
-
-#: ../src/fl_sources/opml_source.c:379
-msgid "Choose OPML File"
-msgstr "اختر ملف OPML"
-
-#: ../src/fl_sources/opml_source.h:28
-msgid "New OPML Subscription"
-msgstr "اشتراك OPML جديد"
-
-#: ../src/fl_sources/node_source.c:334
-msgid "No feed list source types found!"
-msgstr "لم يُعثر على أنواع مصادر قائمة التلقيمات!"
-
-#: ../src/fl_sources/node_source.c:363
-msgid "Source Type"
-msgstr "نوع المصدر"
-
-#: ../src/fl_sources/node_source.c:414
+#: ../src/update.c:350
 #, c-format
-msgid "Login for '%s' has not yet completed! Please wait until login is done."
-msgstr "لم يكتمل الولوج إلى '%s'، من فضلك انتظر اكتماله."
+msgid "Error opening temp file %s to use for filtering!"
+msgstr "خطأ أثناء فتح الملف المؤقّت %s لاستخدامه في الترشيح!"
 
-#. FIXME: something is not perfect, because if you immediately
-#. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:580
+#: ../src/update.c:372
 #, c-format
-msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr "حُوِّلَ اشتراك '%s' بنجاح إلى تلقيمات محلية."
+msgid "%s exited with status %d"
+msgstr "خرج %s بالحالة %d"
 
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-msgid "Login failed!"
-msgstr "فشل الولوج!"
-
-#: ../src/fl_sources/reedah_source.c:313
-msgid "Reedah"
-msgstr "قارئ Reedah"
-
-#: ../src/fl_sources/reedah_source_feed.c:154
-msgid "Could not parse JSON returned by Reedah API!"
-msgstr "تعذر تحليل البيانات المجلوبة من واجهة Reedah البرمجية!"
-
-#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
-msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr "تعذر الوصول إلى واجهة TinyTinyRSS البرمجية عبر HTTP!"
-
-#: ../src/fl_sources/ttrss_source.c:234
-msgid ""
-"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
-"URL!"
-msgstr ""
-"فشل الاشتراك في تلقيمة TinyTinyRSS! تأكد من أنك أعطيت مسار التلقيمة فعلًا."
-
-#: ../src/fl_sources/ttrss_source.c:300
-msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr "فشل إلغاء الاشتراك في تلقيمة TinyTinyRSS!"
-
-#: ../src/fl_sources/ttrss_source.c:318
+#: ../src/update.c:378 ../src/update.c:379 ../src/update.c:493
 #, c-format
-msgid ""
-"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
-"%s or later!"
-msgstr ""
-"لا تدعم إصدارة TinyTinyRSS هذه إزالة التلقيمات. من فضلك رقِّ إلى الإصدارة %s "
-"أو أحدث."
+msgid "Error: Could not open pipe \"%s\""
+msgstr "خطأ: تعذّر فتح الأنبوب \"%s\""
 
-#: ../src/fl_sources/ttrss_source.c:460
-msgid "Tiny Tiny RSS"
-msgstr "Tiny Tiny RSS"
+#. FIXME: maybe setting request->returncode would be better
+#: ../src/update.c:517
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "خطأ: تعذّر فتح الملف \"%s\""
 
-#: ../src/fl_sources/ttrss_source_feed.c:150
-msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr "تعذر تحليل البيانات المجلوبة من واجهة TinyTinyRSS البرمجية!"
+#: ../src/update.c:523
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "خطأ: ليس ثمّة ملف \"%s\""
 
-#: ../src/fl_sources/theoldreader_source.c:311
-msgid "TheOldReader"
-msgstr "قارئ TheOldReader"
+#: ../src/vfolder.c:54
+msgid "New Search Folder"
+msgstr "مجلّد بحث جديد"
 
 #: ../src/webkit/liferea_web_view.c:176
 msgid "Open Link In _Tab"
@@ -1333,207 +1370,13 @@ msgstr "زِ_د حجم النص"
 msgid "_Decrease Text Size"
 msgstr "_قلل حجم النص"
 
-#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
-#: ../glade/liferea_toolbar.ui.h:5
-msgid "Previous Item"
-msgstr "العنصر السابق"
+#: ../src/xml.c:424
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[كان هناك المزيد من الأخطاء. بُتِر الخرْج]"
 
-#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
-#: ../glade/liferea_toolbar.ui.h:6
-msgid "Next Item"
-msgstr "العنصر التالي"
-
-#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
-#: ../glade/liferea_toolbar.ui.h:7
-msgid "_Next Unread Item"
-msgstr "العنصر غير المقروء ال_تالي"
-
-#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
-#: ../glade/liferea_toolbar.ui.h:3
-msgid "_Mark Items Read"
-msgstr "_علّم العناصر مقروءة"
-
-#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
-#: ../glade/liferea_toolbar.ui.h:10
-msgid "Search All Feeds..."
-msgstr "ابحث في كل التلقيمات..."
-
-#: ../plugins/libnotify.py:42
-#, fuzzy
-msgid "Feed Updates"
-msgstr "تحديث التلقيمة"
-
-#: ../plugins/plugin-installer.py:54
-msgid "Plugins"
-msgstr "الملحقات"
-
-#: ../plugins/plugin-installer.py:69
-#, fuzzy
-msgid "Plugin Installer"
-msgstr "الملحقات"
-
-#: ../plugins/plugin-installer.py:83
-#, fuzzy
-msgid "Activate Plugins"
-msgstr "الملحقات"
-
-#: ../plugins/plugin-installer.py:84
-#, fuzzy
-msgid "Download Plugins"
-msgstr "_نزّل باستخدام"
-
-#: ../plugins/plugin-installer.py:102
-#, python-format
-msgid "Bad fields for plugin entry %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-msgid "All"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "متقدّم"
-
-#: ../plugins/plugin-installer.py:125
-msgid "Menu"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-#, fuzzy
-msgid "Notifications"
-msgstr "إعدادات التنبيه"
-
-#: ../plugins/plugin-installer.py:133
-msgid "Filter by category"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:140
-msgid "_Install"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:144
-msgid "_Uninstall"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:245
-#, python-format
-msgid ""
-"Missing package manager '%s'. Cannot check nor install necessary "
-"dependencies!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:261
-#, python-format
-msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:268
-#, python-format
-msgid ""
-"Package installation failed (%s)! Check console output for further problem "
-"details!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:271
-#, python-format
-msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:285
-#, python-format
-msgid "Copying %s to %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:288
-#, python-format
-msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:297
-#, python-format
-msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:307
-#, python-format
-msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:318
-#, fuzzy, python-format
-msgid "Creating schema directory %s"
-msgstr "تعذّر إنشاء مجلّد المخبئية \"%s\"!"
-
-#: ../plugins/plugin-installer.py:320
-#, python-format
-msgid "Installing schema %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:324
-msgid "Compiling schemas..."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:329
-#, python-format
-msgid "Failed to install schema files (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:339
-#, python-format
-msgid "Failed to enable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:345
-#, python-format
-msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:359
-#, python-format
-msgid "Failed to disable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
-#, fuzzy, python-format
-msgid "Deleting '%s'"
-msgstr "يجريِ حذف الخانة"
-
-#: ../plugins/plugin-installer.py:369
-#, python-format
-msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:379
-msgid "Failed to remove .py file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:389
-msgid "Failed to remove .plugin file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:398
-msgid "Sorry! Plugin removal failed!."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:400
-msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
-msgstr ""
-
-#: ../plugins/trayicon.py:112
-#, fuzzy
-msgid "Show / Hide"
-msgstr "اعرض التفاصيل"
-
-#: ../plugins/trayicon.py:113
-msgid "Minimize to tray on close"
-msgstr ""
-
-#: ../plugins/trayicon.py:114
-#, fuzzy
-msgid "Quit"
-msgstr "ا_خرج"
+#: ../src/xml.c:592
+msgid "XML Parser: Could not parse document:\n"
+msgstr "محلّل XML: لا يمكن تحليل المستند:\n"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -2149,6 +1992,10 @@ msgstr ""
 "يستطيع لايفريا استخدام ملحق مرشِّح خارجي للنفاذ إلى أدلّة التلقيمات ذات "
 "التنسيقات غير المدعومة."
 
+#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+msgid "Source"
+msgstr "المصدر"
+
 #: ../glade/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
@@ -2238,17 +2085,36 @@ msgstr "خصائص مجلّد البحث"
 msgid "Search _Name:"
 msgstr "ا_سم البحث:"
 
-#: ../glade/search_folder.ui.h:3 ../glade/search.ui.h:3
-msgid "Find Items that meet the following criteria"
-msgstr "ابحث عن العناصر التي تُطابق هذه المعايير"
+#: ../glade/search_folder.ui.h:3
+#, fuzzy
+msgid "Search Rules"
+msgstr "لا نتائج للبحث"
 
-#: ../glade/search_folder.ui.h:4 ../glade/search.ui.h:4
+#: ../glade/search_folder.ui.h:4
+msgid "Rules"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:5
+msgid "All rules for this search folder"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:6
+#, fuzzy
+msgid "Rule Matching"
+msgstr "أي _قاعدة تطابق"
+
+#: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
 msgstr "أي _قاعدة تطابق"
 
-#: ../glade/search_folder.ui.h:5 ../glade/search.ui.h:5
+#: ../glade/search_folder.ui.h:8 ../glade/search.ui.h:5
 msgid "_All Rules Must Match"
 msgstr "_كل القواعد يجب أن تطابق"
+
+#: ../glade/search_folder.ui.h:9
+#, fuzzy
+msgid "Hide read items"
+msgstr "أ_خفِ العناصر المقروءة."
 
 #: ../glade/search.ui.h:1
 msgid "Advanced Search"
@@ -2257,6 +2123,10 @@ msgstr "بحث متقدّم"
 #: ../glade/search.ui.h:2
 msgid "_Search Folder..."
 msgstr "ا_بحث في المجلّد..."
+
+#: ../glade/search.ui.h:3
+msgid "Find Items that meet the following criteria"
+msgstr "ابحث عن العناصر التي تُطابق هذه المعايير"
 
 #: ../glade/simple_search.ui.h:1
 msgid "Search All Feeds"
@@ -2342,6 +2212,219 @@ msgstr "الطلبات المنتظرة"
 #, fuzzy
 msgid "_Downloading Now"
 msgstr "يُنزّل الآن"
+
+#: ../xslt/feed.xml.in.h:1
+msgid "Feed:"
+msgstr "تلقيمة:"
+
+#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
+msgid "Source:"
+msgstr "المصدر:"
+
+#: ../xslt/feed.xml.in.h:3
+msgid "Publisher"
+msgstr "الناشر"
+
+#: ../xslt/feed.xml.in.h:4
+msgid "Copyright"
+msgstr "حقوق النشر"
+
+#: ../xslt/feed.xml.in.h:5
+#, fuzzy
+msgid "There was a problem when fetching this subscription!"
+msgstr ""
+"كانت هناك مشكلة أثناء قراءة هذا الاشتراك. رجاء تحقق من العنوان وخرْج الطرفية."
+
+#: ../xslt/feed.xml.in.h:6
+#, fuzzy
+msgid "1. Authentication"
+msgstr "الاستيثاق"
+
+#: ../xslt/feed.xml.in.h:7
+#, fuzzy
+msgid "2. Download"
+msgstr "تنزيل"
+
+#: ../xslt/feed.xml.in.h:8
+msgid "3. Feed Discovery"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:9
+msgid "4. Parsing"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:10
+#, fuzzy
+msgid "Details:"
+msgstr "التفاصيل"
+
+#: ../xslt/feed.xml.in.h:11
+msgid "Authentication failed. Please check the credentials and try again!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:12
+#, fuzzy
+msgid "There was an error when downloading the feed source:"
+msgstr "كانت هناك أخطاء أثناء تحليل هذه التلقيمة!"
+
+#: ../xslt/feed.xml.in.h:13
+#, fuzzy
+msgid "There was an error when running the feed filter command:"
+msgstr "كانت هناك أخطاء أثناء تحليل هذه التلقيمة!"
+
+#: ../xslt/feed.xml.in.h:14
+msgid ""
+"The source does not point directly to a feed or a webpage with a link to a "
+"feed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:15
+msgid "Sorry, the feed could not be parsed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:16
+msgid "You may want to contact the author/webmaster of the feed about this!"
+msgstr "قد ترغب في التواصل من مع مؤلف\\مسئول التلقيمة عن هذا."
+
+#: ../xslt/folder.xml.in.h:1
+msgid "Folder:"
+msgstr "مجلّد:"
+
+#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
+msgid "children with"
+msgstr "أبناء مع"
+
+#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+msgid "unread headlines"
+msgstr "رؤوس العناوين لم تقرأ"
+
+#: ../xslt/item.xml.in.h:2
+msgid "Feed"
+msgstr "تلقيمة"
+
+#: ../xslt/item.xml.in.h:3
+msgid "Filed under"
+msgstr "وُضِع تحت"
+
+#: ../xslt/item.xml.in.h:4
+msgid "Author"
+msgstr "المؤلّف"
+
+#: ../xslt/item.xml.in.h:5
+msgid "Shared by"
+msgstr "شارَكهُ"
+
+#: ../xslt/item.xml.in.h:6
+msgid "Via"
+msgstr "عبر"
+
+#: ../xslt/item.xml.in.h:7
+msgid "Related"
+msgstr "متعلق"
+
+#: ../xslt/item.xml.in.h:8
+msgid "Also posted in"
+msgstr "منشورة أيضا في"
+
+#: ../xslt/item.xml.in.h:9
+msgid "Creator"
+msgstr "المنشيء"
+
+#: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:12
+msgid "View count"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:13
+msgid "Rating"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:14
+msgid "Comments"
+msgstr "التعليقات"
+
+#: ../xslt/item.xml.in.h:15
+msgid "Updating..."
+msgstr "يجري تحديث..."
+
+#: ../xslt/item.xml.in.h:16
+msgid "Section"
+msgstr "القسم"
+
+#: ../xslt/item.xml.in.h:17
+msgid "Department"
+msgstr "المصلحة"
+
+#: ../xslt/newsbin.xml.in.h:1
+msgid "News Bin:"
+msgstr "سلّة أخبار:"
+
+#: ../xslt/newsbin.xml.in.h:2
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+"أضِف عناصر لسلّة الأخبار هذه باختيار \"انسخ لسلّة الأخبار\" من قائمة سياق لائحة "
+"العناصر."
+
+#: ../xslt/vfolder.xml.in.h:1
+msgid "Search Folder:"
+msgstr "مجلّد بحث:"
+
+#~ msgid ""
+#~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
+#~ "></b>"
+#~ msgstr ""
+#~ "فشل التحديث الأخير لهذا الاشتراك!<br/><b>رمز خطأ HTTP<xsl:value-of select="
+#~ "\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
+
+#~ msgid "Parser Error Details"
+#~ msgstr "تفاصيل خطأ المحلِّل"
+
+#~ msgid "There were errors while filtering this feed!"
+#~ msgstr "كانت هناك أخطاء أثناء ترشيح هذه التلقيمة!"
+
+#~ msgid "Filter Error Details"
+#~ msgstr "تفاصيل خطأ المرشَّح"
+
+#~ msgid ""
+#~ "<p>Could not detect the type of this feed! Please check if the source "
+#~ "really points to a resource provided in one of the supported syndication "
+#~ "formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+#~ msgstr ""
+#~ "<p>لم أستطع تحديد نوع هذه التلقيمة! رجاء تأكّد من أن المصدر يشير فعلا إلى "
+#~ "مورِد متوفّر بأحد تنسيقات تجميع الأخبار المدعومة!</p>خرْج محلّل XML:<br /"
+#~ "><div class='xmlparseroutput'>"
+
+#~ msgid ""
+#~ "The URL you want Liferea to subscribe to points to a webpage and the auto "
+#~ "discovery found no feeds on this page. Maybe this webpage just does not "
+#~ "support feed auto discovery."
+#~ msgstr ""
+#~ "العنوان الذي تريد أن يشترك به لايفريا يشير لصفحة وِب ولم يجد الاكتشاف "
+#~ "التلقائي أية تلقيمات في هذه الصفحة. ربما لا تدعم هذه الصفحة الاكتشاف "
+#~ "التلقائي للتلقيمات."
+
+#~ msgid "Source points to HTML document."
+#~ msgstr "يشير المصدر إلى مستند HTML."
+
+#~ msgid "Could not determine the feed type."
+#~ msgstr "تعذّر تحديد نوع التلقيمة."
+
+#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+#~ msgstr "ذهب. المورِد غير موجود. رجاء اشترك!"
+
+#~ msgid "Updating \"%s\""
+#~ msgstr "يجري تحديث \"%s\""
 
 #~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 #~ msgstr "خطأ XML أثناء قراءة التلقيمة! لا يمكن تحميل التلقيمة \"%s\"!"
@@ -2869,15 +2952,6 @@ msgstr "يُنزّل الآن"
 #~ msgstr[3] "%d نتائج بحث عن \"%s\""
 #~ msgstr[4] "%d نتيجة بحث عن \"%s\""
 #~ msgstr[5] "%d نتيجة بحث عن \"%s\""
-
-#~ msgid "%d Search Result"
-#~ msgid_plural "%d Search Results"
-#~ msgstr[0] "لا نتائج للبحث"
-#~ msgstr[1] "نتيجة بحث واحدة"
-#~ msgstr[2] "نتيجتي بحث"
-#~ msgstr[3] "%d نتائج بحث"
-#~ msgstr[4] "%d نتيجة بحث"
-#~ msgstr[5] "%d نتيجة بحث"
 
 #~ msgid ""
 #~ "The item list now contains all items matching the specified search "

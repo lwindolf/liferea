@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-31 18:23+0100\n"
+"POT-Creation-Date: 2021-01-14 17:09+0100\n"
 "PO-Revision-Date: 2013-06-15 20:36+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -113,163 +113,227 @@ msgstr "Læs nyheds- og blogkilder"
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:1
+#: ../plugins/getfocus.py:95
+msgid "Opacity:"
+msgstr ""
+
+#: ../plugins/getfocus.py:96
+msgid "Opacity"
+msgstr ""
+
+#: ../plugins/getfocus.py:106
+msgid "Min"
+msgstr ""
+
+#: ../plugins/getfocus.py:111
+msgid "Max"
+msgstr ""
+
+#: ../plugins/getfocus.py:117
+msgid "Save"
+msgstr ""
+
+#: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
+#: ../glade/liferea_toolbar.ui.h:5
+msgid "Previous Item"
+msgstr "Forrige punkt"
+
+#: ../plugins/headerbar.py:73 ../glade/liferea_menu.ui.h:21
+#: ../glade/liferea_toolbar.ui.h:6
+msgid "Next Item"
+msgstr "Næste punkt"
+
+#: ../plugins/headerbar.py:81 ../glade/liferea_menu.ui.h:19
+#: ../glade/liferea_toolbar.ui.h:7
+msgid "_Next Unread Item"
+msgstr "_Næste ulæste punkt"
+
+#: ../plugins/headerbar.py:89 ../glade/liferea_menu.ui.h:14
+#: ../glade/liferea_toolbar.ui.h:3
+msgid "_Mark Items Read"
+msgstr "_Marker punkter som læst"
+
+#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:40
+#: ../glade/liferea_toolbar.ui.h:10
+msgid "Search All Feeds..."
+msgstr "Søg i alle nyhedskilder ..."
+
+#: ../plugins/libnotify.py:43
+#, fuzzy
+msgid "Feed Updates"
+msgstr "Nyhedskildeopdatering"
+
+#: ../plugins/plugin-installer.py:54
+msgid "Plugins"
+msgstr "Udvidelsesmodul"
+
+#: ../plugins/plugin-installer.py:69
+#, fuzzy
+msgid "Plugin Installer"
+msgstr "Udvidelsesmodul"
+
+#: ../plugins/plugin-installer.py:83
+#, fuzzy
+msgid "Activate Plugins"
+msgstr "Udvidelsesmodul"
+
+#: ../plugins/plugin-installer.py:84
+#, fuzzy
+msgid "Download Plugins"
+msgstr "_Hent med brug af"
+
+#: ../plugins/plugin-installer.py:102
+#, python-format
+msgid "Bad fields for plugin entry %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+msgid "All"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+msgid "Advanced"
+msgstr "Avanceret"
+
+#: ../plugins/plugin-installer.py:125
+msgid "Menu"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:125
+#, fuzzy
+msgid "Notifications"
+msgstr "Påmindelsesopsætning"
+
+#: ../plugins/plugin-installer.py:133
+msgid "Filter by category"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:140
+msgid "_Install"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:144
+msgid "_Uninstall"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:245
+#, python-format
 msgid ""
-"This feed is discontinued. It's no longer available. Liferea won't update it "
-"anymore but you can still access the cached headlines."
+"Missing package manager '%s'. Cannot check nor install necessary "
+"dependencies!"
 msgstr ""
-"Denne nyhedskilde er afbrudt. Den er ikke længere tilgængelig. Liferea vil "
-"ikke længere opdatere den, men du kan stadig tilgå de gemte overskrifter."
 
-#: ../xslt/feed.xml.in.h:2
+#: ../plugins/plugin-installer.py:261
+#, python-format
+msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:268
+#, python-format
 msgid ""
-"The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-"value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/></b>"
-msgstr ""
-"Den sidste opdatering af dette abonnement mislykkedes!<br/><b>HTTP-fejlkode "
-"<xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
-"></b>"
-
-#: ../xslt/feed.xml.in.h:3
-msgid "There were errors while parsing this feed!"
-msgstr "Der opstod en fejl under fortolkning af denne nyhedskilde!"
-
-#: ../xslt/feed.xml.in.h:4
-msgid "Parser Error Details"
-msgstr "Fejldetaljer for fortolker"
-
-#: ../xslt/feed.xml.in.h:5
-msgid "Details"
-msgstr "Detaljer"
-
-#: ../xslt/feed.xml.in.h:6
-msgid "You may want to contact the author/webmaster of the feed about this!"
-msgstr ""
-"Du bør måske kontakte forfatteren/webmasteren for nyhedskilden om dette!"
-
-#: ../xslt/feed.xml.in.h:7
-msgid "There were errors while filtering this feed!"
-msgstr "Der opstod en fejl under filtrering af denne nyhedskilde!"
-
-#: ../xslt/feed.xml.in.h:8
-msgid "Filter Error Details"
-msgstr "Filtrer fejldetaljer"
-
-#: ../xslt/feed.xml.in.h:9
-msgid "Feed:"
-msgstr "Nyhedskilde:"
-
-#: ../xslt/feed.xml.in.h:10 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Kilde:"
-
-#: ../xslt/feed.xml.in.h:11
-msgid "Publisher"
-msgstr "Udgiver"
-
-#: ../xslt/feed.xml.in.h:12
-msgid "Copyright"
-msgstr "Ophavsret"
-
-# er det ikke 'underkilder'?
-# underbeskeder
-#: ../xslt/source.xml.in.h:2 ../xslt/folder.xml.in.h:2
-msgid "children with"
-msgstr "underkilder med"
-
-#: ../xslt/source.xml.in.h:3 ../xslt/folder.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "ulæste overskrifter"
-
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Mappe:"
-
-#: ../xslt/item.xml.in.h:1 ../glade/properties.ui.h:21
-msgid "Source"
-msgstr "Kilde"
-
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Nyhedskilde"
-
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Arkiveret under"
-
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Forfatter"
-
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Delt af"
-
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "Via"
-
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Forbundne"
-
-# tror 'sendt til' eller 'poste(re)t i'
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Også sendt til"
-
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Forfatter"
-
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
+"Package installation failed (%s)! Check console output for further problem "
+"details!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
+#: ../plugins/plugin-installer.py:271
+#, python-format
+msgid "Failed to check plugin dependencies (%s)!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
+#: ../plugins/plugin-installer.py:285
+#, python-format
+msgid "Copying %s to %s"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
+#: ../plugins/plugin-installer.py:288
+#, python-format
+msgid "Failed to copy plugin directory (%s)!"
 msgstr ""
 
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Bemærkninger"
+#: ../plugins/plugin-installer.py:297
+#, python-format
+msgid "Failed to copy plugin .py file (%s)!"
+msgstr ""
 
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "Opdaterer ..."
+#: ../plugins/plugin-installer.py:307
+#, python-format
+msgid "Failed to copy .plugin file (%s)!"
+msgstr ""
 
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Afsnit"
+#: ../plugins/plugin-installer.py:318
+#, fuzzy, python-format
+msgid "Creating schema directory %s"
+msgstr "Kan ikke oprette mellemlagermappe »%s«!"
 
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Afdeling"
+#: ../plugins/plugin-installer.py:320
+#, python-format
+msgid "Installing schema %s"
+msgstr ""
 
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "Nyhedsbakke:"
+#: ../plugins/plugin-installer.py:324
+msgid "Compiling schemas..."
+msgstr ""
 
-#: ../xslt/newsbin.xml.in.h:2
+#: ../plugins/plugin-installer.py:329
+#, python-format
+msgid "Failed to install schema files (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:339
+#, python-format
+msgid "Failed to enable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:345
+#, python-format
+msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:359
+#, python-format
+msgid "Failed to disable plugin (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#, fuzzy, python-format
+msgid "Deleting '%s'"
+msgstr "Sletter post"
+
+#: ../plugins/plugin-installer.py:369
+#, python-format
+msgid "Failed to remove directory '%s' (%s)!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:379
+msgid "Failed to remove .py file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:389
+msgid "Failed to remove .plugin file!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:398
+msgid "Sorry! Plugin removal failed!."
+msgstr ""
+
+#: ../plugins/plugin-installer.py:400
 msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
+"Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
-"Tilføj punkter til denne nyhedsbakke ved at vælge »Kopier til nyhedsbakke« "
-"fra kontekstmenuen til punktlisten."
 
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Søgemappe:"
+#: ../plugins/trayicon.py:134
+#, fuzzy
+msgid "Show / Hide"
+msgstr "Vis detaljer"
+
+#: ../plugins/trayicon.py:135
+msgid "Minimize to tray on close"
+msgstr ""
+
+#: ../plugins/trayicon.py:136
+#, fuzzy
+msgid "Quit"
+msgstr "_Afslut"
 
 #: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
@@ -416,56 +480,121 @@ msgstr "Eksporter nyhedskildeliste"
 msgid "Export"
 msgstr "Eksporter"
 
-#: ../src/feed.c:325
-msgid ""
-"<p>Could not detect the type of this feed! Please check if the source really "
-"points to a resource provided in one of the supported syndication formats!</"
-"p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-msgstr ""
-"<p>Kunne ikke detektere denne type nyhedskilde! Tjek venligst om kilden "
-"virkelig peger på en kilde tilbudt i en af de understøttede "
-"syndikationformater!</p>XML-fortolkeruddata:<br /><div "
-"class='xmlparseroutput'>"
-
-#: ../src/feed.c:352
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "»%s« opdateret ..."
-
-#: ../src/feed.c:359
+#: ../src/feed.c:354
 #, c-format
 msgid "\"%s\" is not available"
 msgstr "»%s« er ikke tilgængelig"
 
-#: ../src/feed_parser.c:145
-msgid ""
-"The URL you want Liferea to subscribe to points to a webpage and the auto "
-"discovery found no feeds on this page. Maybe this webpage just does not "
-"support feed auto discovery."
-msgstr ""
-"URL'en du ønsker, at Liferea skal abonnere på peger på en internetside, og "
-"den automatiske registrering fandt ingen nyhedskilder på denne side. Måske "
-"understøtter denne internetside ikke automatisk registrering af nyhedskilder."
+#: ../src/feed.c:356
+#, c-format
+msgid "\"%s\" updated..."
+msgstr "»%s« opdateret ..."
 
-#: ../src/feed_parser.c:203
+#: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Tomt dokument!"
 
-#: ../src/feed_parser.c:212
+#: ../src/feed_parser.c:210
 msgid "Invalid XML!"
 msgstr "Ugyldig XML!"
 
-#: ../src/feed_parser.c:266
-msgid "Source points to HTML document."
-msgstr "Kildepunkter til HTML-dokument."
+#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
+#: ../glade/simple_subscription.ui.h:1
+msgid "New Subscription"
+msgstr "Nyt abonnement"
 
-# nyhedskildetype (for langt!)
-#: ../src/feed_parser.c:269
-msgid "Could not determine the feed type."
-msgstr "Kunne ikke afgøre nyhedstypen."
+#: ../src/fl_sources/google_source.c:111
+msgid "Google Reader"
+msgstr "Google Reader"
+
+#: ../src/fl_sources/node_source.c:334
+msgid "No feed list source types found!"
+msgstr "Ingen kildetyper fundet for nyhedskildeliste!"
+
+#: ../src/fl_sources/node_source.c:363
+msgid "Source Type"
+msgstr "Kildetype"
+
+#: ../src/fl_sources/node_source.c:414
+#, c-format
+msgid "Login for '%s' has not yet completed! Please wait until login is done."
+msgstr ""
+
+#. FIXME: something is not perfect, because if you immediately
+#. remove the subscription tree afterwards there is a double free
+#: ../src/fl_sources/node_source.c:580
+#, c-format
+msgid "The '%s' subscription was successfully converted to local feeds!"
+msgstr "Abonnementet »%s« blev med succes konverteret til lokale nyhedskilder!"
+
+#: ../src/fl_sources/opml_source.c:319
+msgid "Planet, BlogRoll, OPML"
+msgstr "Planet, BlogRoll, OPML"
+
+#: ../src/fl_sources/opml_source.c:379
+msgid "Choose OPML File"
+msgstr "Vælg OPML-fil"
+
+#: ../src/fl_sources/opml_source.c:379 ../src/ui/subscription_dialog.c:355
+msgid "_Open"
+msgstr ""
+
+#: ../src/fl_sources/opml_source.h:28
+msgid "New OPML Subscription"
+msgstr "Nyt OPML-abonnement"
+
+#: ../src/fl_sources/reedah_source.c:103
+#: ../src/fl_sources/theoldreader_source.c:104
+#, fuzzy
+msgid "Login failed!"
+msgstr "Kunne ikke logge ind på Google Reader!"
+
+#: ../src/fl_sources/reedah_source.c:313
+msgid "Reedah"
+msgstr ""
+
+#: ../src/fl_sources/reedah_source_feed.c:154
+#, fuzzy
+msgid "Could not parse JSON returned by Reedah API!"
+msgstr "Kunne ikke fortolke JSON returneret af tt-rss API!"
+
+#: ../src/fl_sources/theoldreader_source.c:311
+#, fuzzy
+msgid "TheOldReader"
+msgstr "Nyhedslæser"
+
+#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
+msgid "TinyTinyRSS HTTP API not reachable!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:234
+msgid ""
+"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
+"URL!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:300
+msgid "TinyTinyRSS unsubscribing feed failed!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:318
+#, c-format
+msgid ""
+"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
+"%s or later!"
+msgstr ""
+
+#: ../src/fl_sources/ttrss_source.c:460
+msgid "Tiny Tiny RSS"
+msgstr "Tiny Tiny RSS"
+
+#: ../src/fl_sources/ttrss_source_feed.c:150
+#, fuzzy
+msgid "Could not parse JSON returned by TinyTinyRSS API!"
+msgstr "Kunne ikke fortolke JSON returneret af tt-rss API!"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:390
+#: ../src/itemlist.c:395
 msgid "There are no unread items"
 msgstr "Der er ingen ulæste punkter"
 
@@ -558,39 +687,39 @@ msgid "Print debugging messages for the given topic"
 msgstr "Vis fejlsøgningsbeskeder for det angivne emne"
 
 #. Some libsoup transport errors
-#: ../src/net.c:463
+#: ../src/net.c:439
 msgid "The update request was cancelled"
 msgstr "Opdateringsforespørgslen blev afbrudt"
 
-#: ../src/net.c:464
+#: ../src/net.c:440
 msgid "Unable to resolve destination host name"
 msgstr "Kunne ikke afgøre destinationens værtsnavn"
 
-#: ../src/net.c:465
+#: ../src/net.c:441
 msgid "Unable to resolve proxy host name"
 msgstr "Kunne ikke afgøre værtsnavn for proxy"
 
-#: ../src/net.c:466
+#: ../src/net.c:442
 msgid "Unable to connect to remote host"
 msgstr "Kunne ikke forbinde til ekstern vært"
 
-#: ../src/net.c:467
+#: ../src/net.c:443
 msgid "Unable to connect to proxy"
 msgstr "Kunne ikke forbinde til proxy"
 
-#: ../src/net.c:468
+#: ../src/net.c:444
 msgid ""
 "A network error occurred, or the other end closed the connection unexpectedly"
 msgstr ""
 "Der opstod en netværksfejl, eller den anden ende lukkede uventet forbindelsen"
 
 #. http 3xx redirection
-#: ../src/net.c:471
+#: ../src/net.c:447
 msgid "The resource moved permanently to a new location"
 msgstr "Ressourcen flyttede permanent til en ny placering"
 
 #. http 4xx client error
-#: ../src/net.c:474
+#: ../src/net.c:450
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -598,60 +727,75 @@ msgstr ""
 "Du har ikke tilladelse til at hente denne nyhedskilde. Opdater venligst dit "
 "brugernavn og adgangskode i dialogboksen for nyhedskildeegenskaber"
 
-#: ../src/net.c:476
+#: ../src/net.c:452
 msgid "Payment required"
 msgstr "Betaling krævet"
 
-#: ../src/net.c:477
+#: ../src/net.c:453
 msgid "You're not allowed to access this resource"
 msgstr "Du har ikke adgang til denne ressource"
 
-#: ../src/net.c:478
+#: ../src/net.c:454
 msgid "Resource Not Found"
 msgstr "Ressource blev ikke fundet"
 
-#: ../src/net.c:479
+#: ../src/net.c:455
 msgid "Method Not Allowed"
 msgstr "Metode ikke tilladt"
 
-#: ../src/net.c:480
+#: ../src/net.c:456
 msgid "Not Acceptable"
 msgstr "Ikke acceptabel"
 
-#: ../src/net.c:481
+#: ../src/net.c:457
 msgid "Proxy authentication required"
 msgstr "Proxygodkendelse krævet"
 
 # Forespørgsel fik tidsudløb
-#: ../src/net.c:482
+#: ../src/net.c:458
 msgid "Request timed out"
 msgstr "Forespørgselstiden udløb"
 
-#: ../src/net.c:483
-msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-msgstr "Forsvundet. Ressource findes ikke. Fjern venligst abonnement!"
+#: ../src/net.c:459
+#, fuzzy
+msgid ""
+"The webserver indicates this feed is discontinued. It's no longer available. "
+"Liferea won't update it anymore but you can still access the cached "
+"headlines."
+msgstr ""
+"Denne nyhedskilde er afbrudt. Den er ikke længere tilgængelig. Liferea vil "
+"ikke længere opdatere den, men du kan stadig tilgå de gemte overskrifter."
 
-#: ../src/net.c:488
+#: ../src/net.c:464
 msgid "There was an internal error in the update process"
 msgstr "Der opstod en intern fejl under opdateringsprocessen"
 
-#: ../src/net.c:490
+#: ../src/net.c:466
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Nyhedskilde er ikke tilgængelig: Server anmodede om videresendelse, hvilket  "
 "ikke er understøttet!"
 
-#: ../src/net.c:492
+#: ../src/net.c:468
 msgid "Client Error"
 msgstr "Klientfejl"
 
-#: ../src/net.c:494
+#: ../src/net.c:470
 msgid "Server Error"
 msgstr "Serverfejl"
 
-#: ../src/net.c:496
+#: ../src/net.c:472
 msgid "An unknown networking error happened!"
 msgstr "Der opstod en ukendt netværksfejl!"
+
+#: ../src/parsers/atom10.c:239
+msgid "Website"
+msgstr "Internetside"
+
+# Aug 04 12:03
+#: ../src/parsers/ns_ag.c:70
+msgid "%b %d %H:%M"
+msgstr "%d. %b %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
@@ -754,15 +898,7 @@ msgstr ""
 "Abonnementet »%s« blev afbrudt. Liferea vil ikke længere opdatere "
 "abonnementet!"
 
-#: ../src/subscription.c:173
-msgid ""
-"There was a problem while reading this subscription. Please check the URL "
-"and console output."
-msgstr ""
-"Der opstod et problem under læsning af dette abonnement. Tjek venligst "
-"URL'en og konsoluddata."
-
-#: ../src/subscription.c:196
+#: ../src/subscription.c:188
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL'en for »%s« har ændret sig permanent og blev opdateret"
@@ -772,54 +908,33 @@ msgstr "URL'en for »%s« har ændret sig permanent og blev opdateret"
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr "»%s« er afbrudt. Liferea vil ikke længere opdatere den!"
 
-#: ../src/subscription.c:207
+#: ../src/subscription.c:208
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "»%s« har ikke ændret sig siden sidste opdatering"
 
-#: ../src/subscription.c:263
+#: ../src/subscription.c:221 ../src/subscription.c:296
+#, fuzzy, c-format
+msgid "Updating (%d / %d) ..."
+msgstr "Opdaterer ..."
+
+#: ../src/subscription.c:298
+#, fuzzy, c-format
+msgid "Updating '%s'..."
+msgstr "Opdaterer ..."
+
+#: ../src/ui/auth_dialog.c:114
 #, c-format
-msgid "Updating \"%s\""
-msgstr "Opdaterer »%s«"
+msgid "Enter the username and password for \"%s\" (%s):"
+msgstr "Indtast brugernavnet og adgangskoden for »%s« (%s):"
 
-#: ../src/update.c:327
-#, c-format
-msgid "Error opening temp file %s to use for filtering!"
-msgstr "Fejl ved åbning af midlertidig fil %s til brug for filtrering!"
+#: ../src/ui/auth_dialog.c:116
+msgid "Unknown source"
+msgstr "Ukendt kilde"
 
-#: ../src/update.c:350
-#, c-format
-msgid "%s exited with status %d"
-msgstr "%s afsluttede med status %d"
-
-#: ../src/update.c:356 ../src/update.c:357 ../src/update.c:472
-#, c-format
-msgid "Error: Could not open pipe \"%s\""
-msgstr "Fejl: Kunne ikke åbne datakanal »%s«"
-
-#. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:496
-#, c-format
-msgid "Error: Could not open file \"%s\""
-msgstr "Fejl: Kunne ikke åbne fil »%s«"
-
-#: ../src/update.c:502
-#, c-format
-msgid "Error: There is no file \"%s\""
-msgstr "Fejl: Der er ingen fil »%s«"
-
-#: ../src/vfolder.c:54
-msgid "New Search Folder"
-msgstr "Ny søgemappe"
-
-# evt. Udskriften blev
-#: ../src/xml.c:424
-msgid "[There were more errors. Output was truncated!]"
-msgstr "[Der var flere fejl. Udskrift blev afkortet!]"
-
-#: ../src/xml.c:594
-msgid "XML Parser: Could not parse document:\n"
-msgstr "XML-fortolker: Kunne ikke fortolke dokument:\n"
+#: ../src/ui/browser_tabs.c:262
+msgid "Untitled"
+msgstr "Uden titel"
 
 #: ../src/ui/enclosure_list_view.c:168
 msgid "Attachments"
@@ -863,66 +978,6 @@ msgstr "Vælg fil"
 #, c-format
 msgid "File Extension .%s"
 msgstr "Filendelse .%s"
-
-#: ../src/ui/icons.c:54
-#, c-format
-msgid "Couldn't find pixmap file: %s"
-msgstr "Kunne ikke finde pixmap-fil: %s"
-
-#: ../src/ui/liferea_shell.c:409
-#, c-format
-msgid " (%d new)"
-msgid_plural " (%d new)"
-msgstr[0] " (%d ny)"
-msgstr[1] " (%d nye)"
-
-#: ../src/ui/liferea_shell.c:414
-#, c-format
-msgid "%d unread%s"
-msgid_plural "%d unread%s"
-msgstr[0] "%d ulæst%s"
-msgstr[1] "%d ulæste%s"
-
-#: ../src/ui/liferea_shell.c:755
-msgid "Help Topics"
-msgstr "Hjælpeemner"
-
-#: ../src/ui/liferea_shell.c:761
-msgid "Quick Reference"
-msgstr "Hurtig hjælp"
-
-#: ../src/ui/liferea_shell.c:767
-msgid "FAQ"
-msgstr "OSS"
-
-#: ../src/ui/liferea_shell.c:1045
-#, fuzzy, c-format
-msgid "Email command failed: %s"
-msgstr "Browserkommando mislykkedes: %s"
-
-#: ../src/ui/search_dialog.c:107
-#, fuzzy
-msgid "Saved Search"
-msgstr "Avanceret søgning"
-
-#: ../src/ui/auth_dialog.c:114
-#, c-format
-msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "Indtast brugernavnet og adgangskoden for »%s« (%s):"
-
-#: ../src/ui/auth_dialog.c:116
-msgid "Unknown source"
-msgstr "Ukendt kilde"
-
-#: ../src/ui/ui_common.c:168 ../src/ui/feed_list_view.c:911
-#: ../src/ui/feed_list_view.c:965
-#, fuzzy
-msgid "_Cancel"
-msgstr "Afbryd _alle"
-
-#: ../src/ui/ui_common.c:211
-msgid "All Files"
-msgstr "Alle filer"
 
 #: ../src/ui/feed_list_view.c:432
 msgid "Liferea is in offline mode. No update possible."
@@ -970,6 +1025,12 @@ msgstr "Er du sikker på, at du ønsker at slette »%s« og dens indhold?"
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Er du sikker på, at du ønsker at slette »%s«?"
 
+#: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
+#: ../src/ui/ui_common.c:168
+#, fuzzy
+msgid "_Cancel"
+msgstr "Afbryd _alle"
+
 #: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
 msgid "_Delete"
 msgstr ""
@@ -994,6 +1055,11 @@ msgstr ""
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Sletningsbekræftelse"
 
+#: ../src/ui/icons.c:54
+#, c-format
+msgid "Couldn't find pixmap file: %s"
+msgstr "Kunne ikke finde pixmap-fil: %s"
+
 #: ../src/ui/item_list_view.c:115
 msgid "This item has no link specified!"
 msgstr "Dette punkt har ingen adresse angivet!"
@@ -1006,22 +1072,53 @@ msgstr "*** Ingen titel ***"
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:865
+#: ../src/ui/item_list_view.c:849
 msgid "Headline"
 msgstr "Overskrift"
 
-#: ../src/ui/item_list_view.c:887
+#: ../src/ui/item_list_view.c:871
 msgid "Date"
 msgstr "Dato"
 
-#: ../src/ui/item_list_view.c:1056
+#: ../src/ui/item_list_view.c:1038
 msgid "You must select a feed to delete its items!"
 msgstr "Du skal vælge en nyhedskilde for at slette dens punkter!"
 
-#: ../src/ui/item_list_view.c:1072 ../src/ui/item_list_view.c:1150
-#: ../src/ui/item_list_view.c:1165
+#: ../src/ui/item_list_view.c:1054 ../src/ui/item_list_view.c:1132
+#: ../src/ui/item_list_view.c:1147
 msgid "No item has been selected"
 msgstr "Intet punkt er blevet valgt"
+
+#: ../src/ui/liferea_shell.c:409
+#, c-format
+msgid " (%d new)"
+msgid_plural " (%d new)"
+msgstr[0] " (%d ny)"
+msgstr[1] " (%d nye)"
+
+#: ../src/ui/liferea_shell.c:414
+#, c-format
+msgid "%d unread%s"
+msgid_plural "%d unread%s"
+msgstr[0] "%d ulæst%s"
+msgstr[1] "%d ulæste%s"
+
+#: ../src/ui/liferea_shell.c:755
+msgid "Help Topics"
+msgstr "Hjælpeemner"
+
+#: ../src/ui/liferea_shell.c:761
+msgid "Quick Reference"
+msgstr "Hurtig hjælp"
+
+#: ../src/ui/liferea_shell.c:767
+msgid "FAQ"
+msgstr "OSS"
+
+#: ../src/ui/liferea_shell.c:1045
+#, fuzzy, c-format
+msgid "Email command failed: %s"
+msgstr "Browserkommando mislykkedes: %s"
 
 #: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
@@ -1198,9 +1295,10 @@ msgstr "Type"
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/subscription_dialog.c:355 ../src/fl_sources/opml_source.c:379
-msgid "_Open"
-msgstr ""
+#: ../src/ui/search_dialog.c:107
+#, fuzzy
+msgid "Saved Search"
+msgstr "Avanceret søgning"
 
 #: ../src/ui/subscription_dialog.c:427
 #, c-format
@@ -1218,109 +1316,39 @@ msgstr[1] ""
 msgid "This feed specifies no default update interval."
 msgstr "Denne nyhedskilde angiver ingen standard for opdateringsinterval."
 
-#: ../src/ui/browser_tabs.c:262
-msgid "Untitled"
-msgstr "Uden titel"
+#: ../src/ui/ui_common.c:211
+msgid "All Files"
+msgstr "Alle filer"
 
-#: ../src/parsers/atom10.c:239
-msgid "Website"
-msgstr "Internetside"
-
-# Aug 04 12:03
-#: ../src/parsers/ns_ag.c:70
-msgid "%b %d %H:%M"
-msgstr "%d. %b %H:%M"
-
-#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
-msgid "New Subscription"
-msgstr "Nyt abonnement"
-
-#: ../src/fl_sources/google_source.c:111
-msgid "Google Reader"
-msgstr "Google Reader"
-
-#: ../src/fl_sources/opml_source.c:319
-msgid "Planet, BlogRoll, OPML"
-msgstr "Planet, BlogRoll, OPML"
-
-#: ../src/fl_sources/opml_source.c:379
-msgid "Choose OPML File"
-msgstr "Vælg OPML-fil"
-
-#: ../src/fl_sources/opml_source.h:28
-msgid "New OPML Subscription"
-msgstr "Nyt OPML-abonnement"
-
-#: ../src/fl_sources/node_source.c:334
-msgid "No feed list source types found!"
-msgstr "Ingen kildetyper fundet for nyhedskildeliste!"
-
-#: ../src/fl_sources/node_source.c:363
-msgid "Source Type"
-msgstr "Kildetype"
-
-#: ../src/fl_sources/node_source.c:414
+#: ../src/update.c:350
 #, c-format
-msgid "Login for '%s' has not yet completed! Please wait until login is done."
-msgstr ""
+msgid "Error opening temp file %s to use for filtering!"
+msgstr "Fejl ved åbning af midlertidig fil %s til brug for filtrering!"
 
-#. FIXME: something is not perfect, because if you immediately
-#. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:580
+#: ../src/update.c:372
 #, c-format
-msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr "Abonnementet »%s« blev med succes konverteret til lokale nyhedskilder!"
+msgid "%s exited with status %d"
+msgstr "%s afsluttede med status %d"
 
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-#, fuzzy
-msgid "Login failed!"
-msgstr "Kunne ikke logge ind på Google Reader!"
-
-#: ../src/fl_sources/reedah_source.c:313
-msgid "Reedah"
-msgstr ""
-
-#: ../src/fl_sources/reedah_source_feed.c:154
-#, fuzzy
-msgid "Could not parse JSON returned by Reedah API!"
-msgstr "Kunne ikke fortolke JSON returneret af tt-rss API!"
-
-#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
-msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr ""
-
-#: ../src/fl_sources/ttrss_source.c:234
-msgid ""
-"TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
-"URL!"
-msgstr ""
-
-#: ../src/fl_sources/ttrss_source.c:300
-msgid "TinyTinyRSS unsubscribing feed failed!"
-msgstr ""
-
-#: ../src/fl_sources/ttrss_source.c:318
+#: ../src/update.c:378 ../src/update.c:379 ../src/update.c:493
 #, c-format
-msgid ""
-"This TinyTinyRSS version does not support removing feeds. Upgrade to version "
-"%s or later!"
-msgstr ""
+msgid "Error: Could not open pipe \"%s\""
+msgstr "Fejl: Kunne ikke åbne datakanal »%s«"
 
-#: ../src/fl_sources/ttrss_source.c:460
-msgid "Tiny Tiny RSS"
-msgstr "Tiny Tiny RSS"
+#. FIXME: maybe setting request->returncode would be better
+#: ../src/update.c:517
+#, c-format
+msgid "Error: Could not open file \"%s\""
+msgstr "Fejl: Kunne ikke åbne fil »%s«"
 
-#: ../src/fl_sources/ttrss_source_feed.c:150
-#, fuzzy
-msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr "Kunne ikke fortolke JSON returneret af tt-rss API!"
+#: ../src/update.c:523
+#, c-format
+msgid "Error: There is no file \"%s\""
+msgstr "Fejl: Der er ingen fil »%s«"
 
-#: ../src/fl_sources/theoldreader_source.c:311
-#, fuzzy
-msgid "TheOldReader"
-msgstr "Nyhedslæser"
+#: ../src/vfolder.c:54
+msgid "New Search Folder"
+msgstr "Ny søgemappe"
 
 #: ../src/webkit/liferea_web_view.c:176
 msgid "Open Link In _Tab"
@@ -1378,207 +1406,14 @@ msgstr "_Øg tekststørrelse"
 msgid "_Decrease Text Size"
 msgstr "_Formindsk tekststørrelse"
 
-#: ../plugins/headerbar.py:63 ../glade/liferea_menu.ui.h:20
-#: ../glade/liferea_toolbar.ui.h:5
-msgid "Previous Item"
-msgstr "Forrige punkt"
+# evt. Udskriften blev
+#: ../src/xml.c:424
+msgid "[There were more errors. Output was truncated!]"
+msgstr "[Der var flere fejl. Udskrift blev afkortet!]"
 
-#: ../plugins/headerbar.py:69 ../glade/liferea_menu.ui.h:21
-#: ../glade/liferea_toolbar.ui.h:6
-msgid "Next Item"
-msgstr "Næste punkt"
-
-#: ../plugins/headerbar.py:77 ../glade/liferea_menu.ui.h:19
-#: ../glade/liferea_toolbar.ui.h:7
-msgid "_Next Unread Item"
-msgstr "_Næste ulæste punkt"
-
-#: ../plugins/headerbar.py:85 ../glade/liferea_menu.ui.h:14
-#: ../glade/liferea_toolbar.ui.h:3
-msgid "_Mark Items Read"
-msgstr "_Marker punkter som læst"
-
-#: ../plugins/headerbar.py:104 ../glade/liferea_menu.ui.h:40
-#: ../glade/liferea_toolbar.ui.h:10
-msgid "Search All Feeds..."
-msgstr "Søg i alle nyhedskilder ..."
-
-#: ../plugins/libnotify.py:42
-#, fuzzy
-msgid "Feed Updates"
-msgstr "Nyhedskildeopdatering"
-
-#: ../plugins/plugin-installer.py:54
-msgid "Plugins"
-msgstr "Udvidelsesmodul"
-
-#: ../plugins/plugin-installer.py:69
-#, fuzzy
-msgid "Plugin Installer"
-msgstr "Udvidelsesmodul"
-
-#: ../plugins/plugin-installer.py:83
-#, fuzzy
-msgid "Activate Plugins"
-msgstr "Udvidelsesmodul"
-
-#: ../plugins/plugin-installer.py:84
-#, fuzzy
-msgid "Download Plugins"
-msgstr "_Hent med brug af"
-
-#: ../plugins/plugin-installer.py:102
-#, python-format
-msgid "Bad fields for plugin entry %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-msgid "All"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
-msgid "Advanced"
-msgstr "Avanceret"
-
-#: ../plugins/plugin-installer.py:125
-msgid "Menu"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:125
-#, fuzzy
-msgid "Notifications"
-msgstr "Påmindelsesopsætning"
-
-#: ../plugins/plugin-installer.py:133
-msgid "Filter by category"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:140
-msgid "_Install"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:144
-msgid "_Uninstall"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:245
-#, python-format
-msgid ""
-"Missing package manager '%s'. Cannot check nor install necessary "
-"dependencies!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:261
-#, python-format
-msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:268
-#, python-format
-msgid ""
-"Package installation failed (%s)! Check console output for further problem "
-"details!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:271
-#, python-format
-msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:285
-#, python-format
-msgid "Copying %s to %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:288
-#, python-format
-msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:297
-#, python-format
-msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:307
-#, python-format
-msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:318
-#, fuzzy, python-format
-msgid "Creating schema directory %s"
-msgstr "Kan ikke oprette mellemlagermappe »%s«!"
-
-#: ../plugins/plugin-installer.py:320
-#, python-format
-msgid "Installing schema %s"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:324
-msgid "Compiling schemas..."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:329
-#, python-format
-msgid "Failed to install schema files (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:339
-#, python-format
-msgid "Failed to enable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:345
-#, python-format
-msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:359
-#, python-format
-msgid "Failed to disable plugin (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
-#, fuzzy, python-format
-msgid "Deleting '%s'"
-msgstr "Sletter post"
-
-#: ../plugins/plugin-installer.py:369
-#, python-format
-msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:379
-msgid "Failed to remove .py file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:389
-msgid "Failed to remove .plugin file!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:398
-msgid "Sorry! Plugin removal failed!."
-msgstr ""
-
-#: ../plugins/plugin-installer.py:400
-msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
-msgstr ""
-
-#: ../plugins/trayicon.py:112
-#, fuzzy
-msgid "Show / Hide"
-msgstr "Vis detaljer"
-
-#: ../plugins/trayicon.py:113
-msgid "Minimize to tray on close"
-msgstr ""
-
-#: ../plugins/trayicon.py:114
-#, fuzzy
-msgid "Quit"
-msgstr "_Afslut"
+#: ../src/xml.c:592
+msgid "XML Parser: Could not parse document:\n"
+msgstr "XML-fortolker: Kunne ikke fortolke dokument:\n"
 
 #: ../glade/about.ui.h:1
 msgid "About"
@@ -2211,6 +2046,10 @@ msgstr ""
 "og mappe i ikkeunderstøttede formater. Se dokumentationen for yderligere "
 "information."
 
+#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+msgid "Source"
+msgstr "Kilde"
+
 #: ../glade/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
@@ -2304,9 +2143,18 @@ msgstr "Egenskaber for søgemappe"
 msgid "Search _Name:"
 msgstr "Søge_navn:"
 
-#: ../glade/search_folder.ui.h:3 ../glade/search.ui.h:3
-msgid "Find Items that meet the following criteria"
-msgstr "Find punkter som opfylder de følgende kriterier"
+#: ../glade/search_folder.ui.h:3
+#, fuzzy
+msgid "Search Rules"
+msgstr "Søg i alle nyhedskilder"
+
+#: ../glade/search_folder.ui.h:4
+msgid "Rules"
+msgstr ""
+
+#: ../glade/search_folder.ui.h:5
+msgid "All rules for this search folder"
+msgstr ""
 
 # hvad er dette?
 # Hvis det er ligesom i postprogrammet alpine: her angiver man regler
@@ -2319,13 +2167,34 @@ msgstr "Find punkter som opfylder de følgende kriterier"
 # (eller være 'opfyldt').  Det er i modsætning til at de allesammen skal
 # være opfyldt for at en post bliver fundet.
 # Så jeg foreslår: _Mindst én regel opfyldt
-#: ../glade/search_folder.ui.h:4 ../glade/search.ui.h:4
+#: ../glade/search_folder.ui.h:6
+#, fuzzy
+msgid "Rule Matching"
+msgstr "_Mindst én regel opfyldt"
+
+# hvad er dette?
+# Hvis det er ligesom i postprogrammet alpine: her angiver man regler
+# for hvordan forskellige typer beskeder (el. nyheder i dette tilfælde)
+# kategoriseres, f.eks. om den kommer fra dansk@dansk-gruppen.dk.  Så
+# kan man gøre ting med disse regler, f.eks. få alle beskeder der
+# opfylder en given regel farvet blå.  Man kan også bruge dem som
+# søgefiltre - så her er det nok noget med en søgning, hvor man søger på
+# flere regler ad gangen, og enhver af disse regler skal så matche
+# (eller være 'opfyldt').  Det er i modsætning til at de allesammen skal
+# være opfyldt for at en post bliver fundet.
+# Så jeg foreslår: _Mindst én regel opfyldt
+#: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
 msgstr "_Mindst én regel opfyldt"
 
-#: ../glade/search_folder.ui.h:5 ../glade/search.ui.h:5
+#: ../glade/search_folder.ui.h:8 ../glade/search.ui.h:5
 msgid "_All Rules Must Match"
 msgstr "_Alle regler skal være opfyldt"
+
+#: ../glade/search_folder.ui.h:9
+#, fuzzy
+msgid "Hide read items"
+msgstr "_Skjul læste punkter."
 
 #: ../glade/search.ui.h:1
 msgid "Advanced Search"
@@ -2335,6 +2204,10 @@ msgstr "Avanceret søgning"
 #: ../glade/search.ui.h:2
 msgid "_Search Folder..."
 msgstr "_Søg i mappe ..."
+
+#: ../glade/search.ui.h:3
+msgid "Find Items that meet the following criteria"
+msgstr "Find punkter som opfylder de følgende kriterier"
 
 #: ../glade/simple_search.ui.h:1
 msgid "Search All Feeds"
@@ -2425,6 +2298,228 @@ msgstr "Afventende anmodninger"
 #, fuzzy
 msgid "_Downloading Now"
 msgstr "Henter nu"
+
+#: ../xslt/feed.xml.in.h:1
+msgid "Feed:"
+msgstr "Nyhedskilde:"
+
+#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
+msgid "Source:"
+msgstr "Kilde:"
+
+#: ../xslt/feed.xml.in.h:3
+msgid "Publisher"
+msgstr "Udgiver"
+
+#: ../xslt/feed.xml.in.h:4
+msgid "Copyright"
+msgstr "Ophavsret"
+
+#: ../xslt/feed.xml.in.h:5
+#, fuzzy
+msgid "There was a problem when fetching this subscription!"
+msgstr ""
+"Der opstod et problem under læsning af dette abonnement. Tjek venligst "
+"URL'en og konsoluddata."
+
+#: ../xslt/feed.xml.in.h:6
+#, fuzzy
+msgid "1. Authentication"
+msgstr "Godkendelse"
+
+#: ../xslt/feed.xml.in.h:7
+#, fuzzy
+msgid "2. Download"
+msgstr "Hent"
+
+#: ../xslt/feed.xml.in.h:8
+msgid "3. Feed Discovery"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:9
+msgid "4. Parsing"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:10
+#, fuzzy
+msgid "Details:"
+msgstr "Detaljer"
+
+#: ../xslt/feed.xml.in.h:11
+msgid "Authentication failed. Please check the credentials and try again!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:12
+#, fuzzy
+msgid "There was an error when downloading the feed source:"
+msgstr "Der opstod en fejl under fortolkning af denne nyhedskilde!"
+
+#: ../xslt/feed.xml.in.h:13
+#, fuzzy
+msgid "There was an error when running the feed filter command:"
+msgstr "Der opstod en fejl under fortolkning af denne nyhedskilde!"
+
+#: ../xslt/feed.xml.in.h:14
+msgid ""
+"The source does not point directly to a feed or a webpage with a link to a "
+"feed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:15
+msgid "Sorry, the feed could not be parsed!"
+msgstr ""
+
+#: ../xslt/feed.xml.in.h:16
+msgid "You may want to contact the author/webmaster of the feed about this!"
+msgstr ""
+"Du bør måske kontakte forfatteren/webmasteren for nyhedskilden om dette!"
+
+#: ../xslt/folder.xml.in.h:1
+msgid "Folder:"
+msgstr "Mappe:"
+
+# er det ikke 'underkilder'?
+# underbeskeder
+#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
+msgid "children with"
+msgstr "underkilder med"
+
+#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
+#: ../xslt/vfolder.xml.in.h:2
+msgid "unread headlines"
+msgstr "ulæste overskrifter"
+
+#: ../xslt/item.xml.in.h:2
+msgid "Feed"
+msgstr "Nyhedskilde"
+
+#: ../xslt/item.xml.in.h:3
+msgid "Filed under"
+msgstr "Arkiveret under"
+
+#: ../xslt/item.xml.in.h:4
+msgid "Author"
+msgstr "Forfatter"
+
+#: ../xslt/item.xml.in.h:5
+msgid "Shared by"
+msgstr "Delt af"
+
+#: ../xslt/item.xml.in.h:6
+msgid "Via"
+msgstr "Via"
+
+#: ../xslt/item.xml.in.h:7
+msgid "Related"
+msgstr "Forbundne"
+
+# tror 'sendt til' eller 'poste(re)t i'
+#: ../xslt/item.xml.in.h:8
+msgid "Also posted in"
+msgstr "Også sendt til"
+
+#: ../xslt/item.xml.in.h:9
+msgid "Creator"
+msgstr "Forfatter"
+
+#: ../xslt/item.xml.in.h:10
+msgid "Coordinates"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:11
+msgid "Map"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:12
+msgid "View count"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:13
+msgid "Rating"
+msgstr ""
+
+#: ../xslt/item.xml.in.h:14
+msgid "Comments"
+msgstr "Bemærkninger"
+
+#: ../xslt/item.xml.in.h:15
+msgid "Updating..."
+msgstr "Opdaterer ..."
+
+#: ../xslt/item.xml.in.h:16
+msgid "Section"
+msgstr "Afsnit"
+
+#: ../xslt/item.xml.in.h:17
+msgid "Department"
+msgstr "Afdeling"
+
+#: ../xslt/newsbin.xml.in.h:1
+msgid "News Bin:"
+msgstr "Nyhedsbakke:"
+
+#: ../xslt/newsbin.xml.in.h:2
+msgid ""
+"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
+"list context menu."
+msgstr ""
+"Tilføj punkter til denne nyhedsbakke ved at vælge »Kopier til nyhedsbakke« "
+"fra kontekstmenuen til punktlisten."
+
+#: ../xslt/vfolder.xml.in.h:1
+msgid "Search Folder:"
+msgstr "Søgemappe:"
+
+#~ msgid ""
+#~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
+#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
+#~ "></b>"
+#~ msgstr ""
+#~ "Den sidste opdatering af dette abonnement mislykkedes!<br/><b>HTTP-"
+#~ "fejlkode <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
+#~ "\"httpError\"/></b>"
+
+#~ msgid "Parser Error Details"
+#~ msgstr "Fejldetaljer for fortolker"
+
+#~ msgid "There were errors while filtering this feed!"
+#~ msgstr "Der opstod en fejl under filtrering af denne nyhedskilde!"
+
+#~ msgid "Filter Error Details"
+#~ msgstr "Filtrer fejldetaljer"
+
+#~ msgid ""
+#~ "<p>Could not detect the type of this feed! Please check if the source "
+#~ "really points to a resource provided in one of the supported syndication "
+#~ "formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
+#~ msgstr ""
+#~ "<p>Kunne ikke detektere denne type nyhedskilde! Tjek venligst om kilden "
+#~ "virkelig peger på en kilde tilbudt i en af de understøttede "
+#~ "syndikationformater!</p>XML-fortolkeruddata:<br /><div "
+#~ "class='xmlparseroutput'>"
+
+#~ msgid ""
+#~ "The URL you want Liferea to subscribe to points to a webpage and the auto "
+#~ "discovery found no feeds on this page. Maybe this webpage just does not "
+#~ "support feed auto discovery."
+#~ msgstr ""
+#~ "URL'en du ønsker, at Liferea skal abonnere på peger på en internetside, "
+#~ "og den automatiske registrering fandt ingen nyhedskilder på denne side. "
+#~ "Måske understøtter denne internetside ikke automatisk registrering af "
+#~ "nyhedskilder."
+
+#~ msgid "Source points to HTML document."
+#~ msgstr "Kildepunkter til HTML-dokument."
+
+# nyhedskildetype (for langt!)
+#~ msgid "Could not determine the feed type."
+#~ msgstr "Kunne ikke afgøre nyhedstypen."
+
+#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
+#~ msgstr "Forsvundet. Ressource findes ikke. Fjern venligst abonnement!"
+
+#~ msgid "Updating \"%s\""
+#~ msgstr "Opdaterer »%s«"
 
 #~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 #~ msgstr ""
