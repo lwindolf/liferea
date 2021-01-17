@@ -6,22 +6,22 @@
 # Stéphane Jourdan <stephane.jourdan@itris.fr>, 2003.
 # Antoine Reversat <areversat@tuxfamily.org>, 2004.
 # Vincent Lefèvre <vincent@vinc17.net>, 2004-2011.
-# Guillaume Bernard <associations@guillaume-bernard.fr>, 2017-2020
+# Guillaume Bernard <associations@guillaume-bernard.fr>, 2017-2021
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-01-14 17:09+0100\n"
-"PO-Revision-Date: 2020-10-08 20:19+0200\n"
-"Last-Translator: Yannicka\n"
+"PO-Revision-Date: 2021-01-17 11:05+0100\n"
+"Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -105,24 +105,23 @@ msgstr ""
 
 #: ../plugins/getfocus.py:95
 msgid "Opacity:"
-msgstr ""
+msgstr "Opacité :"
 
 #: ../plugins/getfocus.py:96
 msgid "Opacity"
-msgstr ""
+msgstr "Opacité"
 
 #: ../plugins/getfocus.py:106
 msgid "Min"
-msgstr ""
+msgstr "Min."
 
 #: ../plugins/getfocus.py:111
-#, fuzzy
 msgid "Max"
-msgstr "Carte"
+msgstr "Max."
 
 #: ../plugins/getfocus.py:117
 msgid "Save"
-msgstr ""
+msgstr "Enregistrer"
 
 #: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
 #: ../glade/liferea_toolbar.ui.h:5
@@ -150,7 +149,6 @@ msgid "Search All Feeds..."
 msgstr "Chercher dans tous les flux…"
 
 #: ../plugins/libnotify.py:43
-#, fuzzy
 msgid "Feed Updates"
 msgstr "Paramètres de mise à jour des flux"
 
@@ -159,28 +157,26 @@ msgid "Plugins"
 msgstr "Greffons"
 
 #: ../plugins/plugin-installer.py:69
-#, fuzzy
 msgid "Plugin Installer"
-msgstr "Greffons"
+msgstr "Installeur de greffon"
 
 #: ../plugins/plugin-installer.py:83
-#, fuzzy
 msgid "Activate Plugins"
-msgstr "Greffons"
+msgstr "Activer des greffons"
 
 #: ../plugins/plugin-installer.py:84
-#, fuzzy
 msgid "Download Plugins"
-msgstr "_Télécharger en utilisant"
+msgstr "Télécharger des greffons"
 
+# Se référer à la source pour comprendre le fonctionnement. Recherche des clefs dans un dictionnaire pour configuration. Message affiché lors de KeyError et autres.
 #: ../plugins/plugin-installer.py:102
 #, python-format
 msgid "Bad fields for plugin entry %s"
-msgstr ""
+msgstr "Mauvais champs spécifiés pour le plugin %s"
 
 #: ../plugins/plugin-installer.py:125
 msgid "All"
-msgstr ""
+msgstr "Tous"
 
 #: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
 msgid "Advanced"
@@ -188,24 +184,23 @@ msgstr "Avancé"
 
 #: ../plugins/plugin-installer.py:125
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #: ../plugins/plugin-installer.py:125
-#, fuzzy
 msgid "Notifications"
-msgstr "_Adresse"
+msgstr "Notifications"
 
 #: ../plugins/plugin-installer.py:133
 msgid "Filter by category"
-msgstr ""
+msgstr "Filtrer par catégorie"
 
 #: ../plugins/plugin-installer.py:140
 msgid "_Install"
-msgstr ""
+msgstr "_Installer"
 
 #: ../plugins/plugin-installer.py:144
 msgid "_Uninstall"
-msgstr ""
+msgstr "_Désinstaller"
 
 #: ../plugins/plugin-installer.py:245
 #, python-format
@@ -213,11 +208,14 @@ msgid ""
 "Missing package manager '%s'. Cannot check nor install necessary "
 "dependencies!"
 msgstr ""
+"Il manque le gestionnaire de paquets « %s ». Impossible de vérifier ou "
+"d’installer les dépendances nécessaires."
 
 #: ../plugins/plugin-installer.py:261
 #, python-format
 msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
 msgstr ""
+"Il manque le paquet « %s ». Voulez-vous l’installer ? (Exécutera « %s »)"
 
 #: ../plugins/plugin-installer.py:268
 #, python-format
@@ -225,105 +223,110 @@ msgid ""
 "Package installation failed (%s)! Check console output for further problem "
 "details!"
 msgstr ""
+"Impossible d’installer le paquet (%s). Vérifiez la sortie de la console pour "
+"davantage d’informations sur ce problème."
 
 #: ../plugins/plugin-installer.py:271
 #, python-format
 msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
+msgstr "Impossible de vérifier les dépendances du greffon (%s)."
 
 #: ../plugins/plugin-installer.py:285
 #, python-format
 msgid "Copying %s to %s"
-msgstr ""
+msgstr "Copie %s vers %s"
 
 #: ../plugins/plugin-installer.py:288
 #, python-format
 msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
+msgstr "Impossible de copier le répertoire du plugin (%s)."
 
 #: ../plugins/plugin-installer.py:297
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
+msgstr "Impossible de copier le fichier .py (%s)."
 
 #: ../plugins/plugin-installer.py:307
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
+msgstr "Impossible de copier le fichier .plugin (%s)."
 
 #: ../plugins/plugin-installer.py:318
-#, fuzzy, python-format
+#, python-format
 msgid "Creating schema directory %s"
-msgstr "Impossible de créer le répertoire cache « %s » !"
+msgstr "Impossible de créer le répertoire schéma « %s »."
 
 #: ../plugins/plugin-installer.py:320
 #, python-format
 msgid "Installing schema %s"
-msgstr ""
+msgstr "Installation du schéma %s"
 
 #: ../plugins/plugin-installer.py:324
 msgid "Compiling schemas..."
-msgstr ""
+msgstr "Compilation des shémas…"
 
 #: ../plugins/plugin-installer.py:329
 #, python-format
 msgid "Failed to install schema files (%s)!"
-msgstr ""
+msgstr "Impossible d’installer les fichiers schémas (%s)."
 
 #: ../plugins/plugin-installer.py:339
 #, python-format
 msgid "Failed to enable plugin (%s)!"
-msgstr ""
+msgstr "Impossible d’activer le greffon (%s)."
 
 #: ../plugins/plugin-installer.py:345
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
 msgstr ""
+"Le greffon %s est désormais installé. Redémarrez Liferea pour que les "
+"changements soient pris en compte."
 
 #: ../plugins/plugin-installer.py:359
 #, python-format
 msgid "Failed to disable plugin (%s)!"
-msgstr ""
+msgstr "Impossible de désactiver le greffon (%s)."
 
 #: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
-#, fuzzy, python-format
+#, python-format
 msgid "Deleting '%s'"
-msgstr "Suppression de l’entrée"
+msgstr "Suppression de « %s »"
 
 #: ../plugins/plugin-installer.py:369
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
+msgstr "Impossible de supprimer le répertoire « %s » (%s)."
 
 #: ../plugins/plugin-installer.py:379
 msgid "Failed to remove .py file!"
-msgstr ""
+msgstr "Impossible de supprimer le fichier .py."
 
 #: ../plugins/plugin-installer.py:389
 msgid "Failed to remove .plugin file!"
-msgstr ""
+msgstr "Impossible de supprimer le fichier .plugin."
 
 #: ../plugins/plugin-installer.py:398
 msgid "Sorry! Plugin removal failed!."
-msgstr ""
+msgstr "La suppression du greffon a échoué."
 
 #: ../plugins/plugin-installer.py:400
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
+"Le greffon a été supprimé. Redémarrez Liferea pour que les changements "
+"soient pris en compte."
 
 #: ../plugins/trayicon.py:134
 msgid "Show / Hide"
-msgstr ""
+msgstr "Afficher ou masquer"
 
 #: ../plugins/trayicon.py:135
 msgid "Minimize to tray on close"
-msgstr ""
+msgstr "Minimiser à la fermeture"
 
 #: ../plugins/trayicon.py:136
-#, fuzzy
 msgid "Quit"
-msgstr "_Quitter"
+msgstr "Quitter"
 
 #: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
@@ -754,15 +757,14 @@ msgid "Request timed out"
 msgstr "Délai de la requête expiré"
 
 #: ../src/net.c:459
-#, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
 "headlines."
 msgstr ""
-"Ce flux a cessé d’exister. Il n’est plus disponible. Liferea ne le mettra "
-"plus à jour, mais vous pouvez toujours accéder aux titres situés dans le "
-"cache."
+"Le serveur indique que ce flux a cessé d’exister. Il n’est plus disponible. "
+"Liferea ne le mettra plus à jour, mais vous pouvez toujours accéder aux "
+"titres situés dans le cache."
 
 #: ../src/net.c:464
 msgid "There was an internal error in the update process"
@@ -906,14 +908,14 @@ msgid "\"%s\" has not changed since last update"
 msgstr "« %s » n’a pas changé depuis la dernière mise à jour"
 
 #: ../src/subscription.c:221 ../src/subscription.c:296
-#, fuzzy, c-format
+#, c-format
 msgid "Updating (%d / %d) ..."
-msgstr "Mise à jour…"
+msgstr "Mise à jour (%d/%d)…"
 
 #: ../src/subscription.c:298
-#, fuzzy, c-format
+#, c-format
 msgid "Updating '%s'..."
-msgstr "Mise à jour…"
+msgstr "Mise à jour de « %s »…"
 
 #: ../src/ui/auth_dialog.c:114
 #, c-format
@@ -1107,7 +1109,7 @@ msgid "FAQ"
 msgstr "FAQ"
 
 #: ../src/ui/liferea_shell.c:1045
-#, fuzzy, c-format
+#, c-format
 msgid "Email command failed: %s"
 msgstr "Échec de la commande de courrier électronique : %s"
 
@@ -1442,7 +1444,7 @@ msgid ""
 msgstr ""
 "Que doit faire Liferea avec cette pièce jointe ? Veuillez entrer ci-dessous "
 "la commande que vous voulez exécuter. Les URL des pièces jointes seront "
-"fournie comme argument pour cette commande :"
+"fournies comme arguments pour cette commande :"
 
 #: ../glade/enclosure_handler.ui.h:4
 msgid "_Browse"
@@ -1516,16 +1518,15 @@ msgstr "_Plein écran"
 
 #: ../glade/liferea_menu.ui.h:30
 msgid "Zoom _In"
-msgstr ""
+msgstr "Zoom _avant"
 
 #: ../glade/liferea_menu.ui.h:31
 msgid "Zoom _Out"
-msgstr ""
+msgstr "Zoom a_rrière"
 
 #: ../glade/liferea_menu.ui.h:32
-#, fuzzy
 msgid "_Normal size"
-msgstr "Vue _normale"
+msgstr "Taille _normale"
 
 #: ../glade/liferea_menu.ui.h:33
 msgid "_Normal View"
@@ -1726,7 +1727,7 @@ msgstr "Gestion du cache des flux"
 
 #: ../glade/prefs.ui.h:3
 msgid "Default _number of items per feed to save:"
-msgstr "_Nombre d’éléments de flux à sauvegarder par défaut :"
+msgstr "_Nombre d’éléments de flux à sauvegarder par défaut :"
 
 #: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:27
 msgid "0"
@@ -1818,7 +1819,7 @@ msgstr "Ouvrir les liens dans la fenêtre de _Liferea."
 
 #: ../glade/prefs.ui.h:26
 msgid "_Never run external Javascript."
-msgstr ""
+msgstr "Ne _jamais exécuter du code Javascript externe."
 
 #: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
@@ -1923,35 +1924,43 @@ msgid "Privacy Settings"
 msgstr "Paramètres de confidentialité"
 
 #: ../glade/prefs.ui.h:52
-#, fuzzy
 msgid "Tell sites that I do _not want to be tracked."
-msgstr "Indiquer aux sites que je _ne veux pas être pisté"
+msgstr "Indiquer aux sites que je _ne veux pas être pisté."
 
+# Harmonisation avec la traduction GNOME + WebKitGtk
 #: ../glade/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
-msgstr ""
+msgstr "Prévention Intelligente du Pistage"
 
 #: ../glade/prefs.ui.h:54
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
+"Active la fonctionnalité WebKit décrite <a href=\"https://webkit.org/"
+"tracking-prevention/\">ici</a>."
 
+# Harmonisation avec la traduction GNOME + WebKitGtk
 #: ../glade/prefs.ui.h:55
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
+"Prévention Intelligente du Pistage est disponible seulement pour les "
+"versions de WebKitGtk+ égales ou supérieures à 2.30."
 
 #: ../glade/prefs.ui.h:56
 msgid "Use _Reader mode."
-msgstr ""
+msgstr "Utiliser le mode de _lecture"
 
 #: ../glade/prefs.ui.h:57
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
+"Active la <a href=\"https://github.com/mozilla/readability\">suppression</a> "
+"de tous les éléments ne relevant pas du contenu (tels les scripts, les "
+"polices ou éléments de pistage)"
 
 #: ../glade/prefs.ui.h:58
 msgid "Privacy"
@@ -2118,22 +2127,20 @@ msgid "Search _Name:"
 msgstr "Nom de la _recherche :"
 
 #: ../glade/search_folder.ui.h:3
-#, fuzzy
 msgid "Search Rules"
-msgstr "Rechercher dans tous les flux"
+msgstr "Règles de recherche"
 
 #: ../glade/search_folder.ui.h:4
 msgid "Rules"
-msgstr ""
+msgstr "Règles"
 
 #: ../glade/search_folder.ui.h:5
 msgid "All rules for this search folder"
-msgstr ""
+msgstr "Toutes les règles de ce dossier de recherche"
 
 #: ../glade/search_folder.ui.h:6
-#, fuzzy
 msgid "Rule Matching"
-msgstr "N’_importe quelle règle s’applique"
+msgstr "Règles de correspondance"
 
 #: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
@@ -2144,9 +2151,8 @@ msgid "_All Rules Must Match"
 msgstr "_Toutes les règles doivent s’appliquer"
 
 #: ../glade/search_folder.ui.h:9
-#, fuzzy
 msgid "Hide read items"
-msgstr "_Cacher les éléments lus."
+msgstr "Cacher les éléments lus."
 
 #: ../glade/search.ui.h:1
 msgid "Advanced Search"
@@ -2261,58 +2267,55 @@ msgid "Copyright"
 msgstr "Copyright"
 
 #: ../xslt/feed.xml.in.h:5
-#, fuzzy
 msgid "There was a problem when fetching this subscription!"
-msgstr ""
-"Un problème est survenu pendant la lecture de cet abonnement. Veuillez "
-"vérifier l’URL et la sortie sur la console."
+msgstr "Un problème est survenu pendant la lecture de cet abonnement."
 
 #: ../xslt/feed.xml.in.h:6
-#, fuzzy
 msgid "1. Authentication"
-msgstr "Authentification"
+msgstr "1. Authentification"
 
 #: ../xslt/feed.xml.in.h:7
-#, fuzzy
 msgid "2. Download"
-msgstr "Téléchargement"
+msgstr "2. Téléchargement"
 
 #: ../xslt/feed.xml.in.h:8
 msgid "3. Feed Discovery"
-msgstr ""
+msgstr "3. Découverte de flux"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "4. Parsing"
-msgstr ""
+msgstr "4. Analyse"
 
 #: ../xslt/feed.xml.in.h:10
-#, fuzzy
 msgid "Details:"
-msgstr "Détails"
+msgstr "Détails :"
 
 #: ../xslt/feed.xml.in.h:11
 msgid "Authentication failed. Please check the credentials and try again!"
-msgstr ""
+msgstr "L’authentification a échoué. Vérifiez les identifiants et réessayez."
 
 #: ../xslt/feed.xml.in.h:12
-#, fuzzy
 msgid "There was an error when downloading the feed source:"
-msgstr "Des erreurs sont survenues pendant l’analyse syntaxique de ce flux !"
+msgstr ""
+"Une erreur est survenue durant le téléchargement de la source du flux :"
 
 #: ../xslt/feed.xml.in.h:13
-#, fuzzy
 msgid "There was an error when running the feed filter command:"
-msgstr "Des erreurs sont survenues pendant l’analyse syntaxique de ce flux !"
+msgstr ""
+"Une erreur est survenue durant l’exécution de la commande de filtrage du "
+"flux :"
 
 #: ../xslt/feed.xml.in.h:14
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
 msgstr ""
+"La source ne pointe pas directement vers un flux ou une page web avec un "
+"lien vers un flux."
 
 #: ../xslt/feed.xml.in.h:15
 msgid "Sorry, the feed could not be parsed!"
-msgstr ""
+msgstr "Impossible d’analyser le flux."
 
 #: ../xslt/feed.xml.in.h:16
 msgid "You may want to contact the author/webmaster of the feed about this!"
