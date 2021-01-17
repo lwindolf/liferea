@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-08-28 17:33+0200\n"
-"PO-Revision-Date: 2020-02-24 21:21+0100\n"
+"PO-Revision-Date: 2021-01-17 10:23+0100\n"
 "Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: ../liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -1447,9 +1447,8 @@ msgid "Update _All"
 msgstr "Tout mettre à _jour"
 
 #: ../glade/liferea_menu.ui.h:3
-#, fuzzy
 msgid "Mark All As _Read"
-msgstr "Tout _marquer comme lu"
+msgstr "Marquer le tout comme _lu"
 
 #: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
 msgid "_New Subscription..."
