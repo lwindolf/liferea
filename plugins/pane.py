@@ -40,33 +40,42 @@ class PaneWorkaroundPlugin(GObject.Object, Liferea.ShellActivatable):
 
     shell = GObject.property(type=Liferea.Shell)
     normal_pane = None
-    position = 199
+    wide_pane = None
+    pos_normal = 199
+    pos_wide = 561
     delay = 0.2
 
     def threaded_set_position(self):
         sleep(self.delay)
-        self.normal_pane.set_position(self.position)
+        self.normal_pane.set_position(self.pos_normal)
+        self.wide_pane.set_position(self.pos_wide)
 
     def do_activate(self):
         self.normal_pane = self.shell.lookup('normalViewPane')
+        self.wide_pane = self.shell.lookup('wideViewPane')
         self.read_position_from_file()
         thread = Thread(target = self.threaded_set_position, args = ())
         thread.start()
 
     def do_deactivate(self):
         self.normal_pane = self.shell.lookup('normalViewPane')
-        current_position = self.normal_pane.get_position()
-        if current_position != self.position:
-            self.save_position_to_file(current_position)
+        self.wide_pane = self.shell.lookup('wideViewPane')
+        cur_pos_normal = self.normal_pane.get_position()
+        cur_pos_wide = self.wide_pane.get_position()
+        if cur_pos_normal != self.pos_normal or cur_pos_wide != self.pos_wide:
+            self.save_position_to_file(cur_pos_normal, cur_pos_wide)
 
     def read_position_from_file(self):
         path = get_path()
         file_path = path / FILE_CONFIG
         if file_path.exists():
-            self.position = int(file_path.read_text())
+            data = file_path.read_text()
+            data = data.split(' ')
+            self.pos_normal = int(data[0])
+            self.pos_wide = int(data[1])
 
-    def save_position_to_file(self, position):
+    def save_position_to_file(self, normal, wide):
         path = get_path()
         path.mkdir(0o700, True, True)
         file_path = path / FILE_CONFIG
-        file_path.write_text(str(position))
+        file_path.write_text(f'{normal} {wide}')
