@@ -31,7 +31,7 @@ except FileNotFoundError:
 else:
     _ = t.gettext
 
-file_config = 'pane.conf'
+FILE_CONFIG = 'pane.conf'
 
 
 def get_path():
@@ -44,10 +44,11 @@ class PaneWorkaroundPlugin(GObject.Object, Liferea.ShellActivatable):
 
     shell = GObject.property(type=Liferea.Shell)
     normal_pane = None
-    position = 150
+    position = 199
+    delay = 0.2
 
     def threaded_set_position(self):
-        sleep(0.2)
+        sleep(self.delay)
         self.normal_pane.set_position(self.position)
 
     def do_activate(self):
@@ -58,17 +59,18 @@ class PaneWorkaroundPlugin(GObject.Object, Liferea.ShellActivatable):
 
     def do_deactivate(self):
         self.normal_pane = self.shell.lookup('normalViewPane')
-        self.position = self.normal_pane.get_position()
-        self.save_position_to_file()
+        current_position = self.normal_pane.get_position()
+        if current_position != self.position:
+            self.save_position_to_file(current_position)
 
     def read_position_from_file(self):
         path = get_path()
-        file_path = path / file_config
+        file_path = path / FILE_CONFIG
         if file_path.exists():
             self.position = int(file_path.read_text())
 
-    def save_position_to_file(self):
+    def save_position_to_file(self, position):
         path = get_path()
         path.mkdir(0o700, True, True)
-        file_path = path / file_config
-        file_path.write_text(str(self.position))
+        file_path = path / FILE_CONFIG
+        file_path.write_text(str(position))
