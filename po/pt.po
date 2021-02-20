@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-14 17:09+0100\n"
+"POT-Creation-Date: 2021-02-20 20:04+0100\n"
 "PO-Revision-Date: 2009-06-04 01:08+0000\n"
 "Last-Translator: António Lima <amrlima@gmail.com>\n"
 "Language-Team: Portuguese <liferea-devel@lists.sourceforge.net>\n"
@@ -96,23 +96,23 @@ msgstr ""
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
-#: ../plugins/getfocus.py:95
+#: ../plugins/getfocus.py:93
 msgid "Opacity:"
 msgstr ""
 
-#: ../plugins/getfocus.py:96
+#: ../plugins/getfocus.py:94
 msgid "Opacity"
 msgstr ""
 
-#: ../plugins/getfocus.py:106
+#: ../plugins/getfocus.py:104
 msgid "Min"
 msgstr ""
 
-#: ../plugins/getfocus.py:111
+#: ../plugins/getfocus.py:109
 msgid "Max"
 msgstr ""
 
-#: ../plugins/getfocus.py:117
+#: ../plugins/getfocus.py:115
 msgid "Save"
 msgstr ""
 
@@ -222,83 +222,87 @@ msgstr ""
 msgid "Failed to check plugin dependencies (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:285
+#: ../plugins/plugin-installer.py:280
+msgid "Command \"git\" not found, please install it!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:289
 #, python-format
 msgid "Copying %s to %s"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:288
+#: ../plugins/plugin-installer.py:292
 #, python-format
 msgid "Failed to copy plugin directory (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:297
+#: ../plugins/plugin-installer.py:301
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:307
+#: ../plugins/plugin-installer.py:311
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:318
+#: ../plugins/plugin-installer.py:322
 #, fuzzy, python-format
 msgid "Creating schema directory %s"
 msgstr "Não foi possível criar o directório de cache \"%s\"!"
 
-#: ../plugins/plugin-installer.py:320
+#: ../plugins/plugin-installer.py:324
 #, python-format
 msgid "Installing schema %s"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:324
+#: ../plugins/plugin-installer.py:328
 msgid "Compiling schemas..."
 msgstr ""
 
-#: ../plugins/plugin-installer.py:329
+#: ../plugins/plugin-installer.py:333
 #, python-format
 msgid "Failed to install schema files (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:339
+#: ../plugins/plugin-installer.py:343
 #, python-format
 msgid "Failed to enable plugin (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:345
+#: ../plugins/plugin-installer.py:349
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:359
+#: ../plugins/plugin-installer.py:363
 #, python-format
 msgid "Failed to disable plugin (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#: ../plugins/plugin-installer.py:370 ../plugins/plugin-installer.py:390
 #, fuzzy, python-format
 msgid "Deleting '%s'"
 msgstr "A apagar entrada"
 
-#: ../plugins/plugin-installer.py:369
+#: ../plugins/plugin-installer.py:373
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:379
+#: ../plugins/plugin-installer.py:383
 msgid "Failed to remove .py file!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:389
+#: ../plugins/plugin-installer.py:393
 msgid "Failed to remove .plugin file!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:398
+#: ../plugins/plugin-installer.py:402
 msgid "Sorry! Plugin removal failed!."
 msgstr ""
 
-#: ../plugins/plugin-installer.py:400
+#: ../plugins/plugin-installer.py:404
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""

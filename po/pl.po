@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.13.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-14 17:09+0100\n"
-"PO-Revision-Date: 2020-12-27 18:08+0100\n"
+"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"PO-Revision-Date: 2021-02-20 20:10+0100\n"
 "Last-Translator: Paweł Marciniak <sunwire+translate@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : ((n%10>=2 && n%10<=4 && (n"
 "%100<10 || n%100>=20)) ? 1 : 2));\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -100,24 +100,24 @@ msgstr "Odczytuje zawartość kanałów wiadomości i blogów"
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
-#: ../plugins/getfocus.py:95
+#: ../plugins/getfocus.py:93
 msgid "Opacity:"
 msgstr ""
 
-#: ../plugins/getfocus.py:96
+#: ../plugins/getfocus.py:94
 msgid "Opacity"
 msgstr ""
 
-#: ../plugins/getfocus.py:106
+#: ../plugins/getfocus.py:104
 msgid "Min"
 msgstr ""
 
-#: ../plugins/getfocus.py:111
+#: ../plugins/getfocus.py:109
 #, fuzzy
 msgid "Max"
 msgstr "Mapa"
 
-#: ../plugins/getfocus.py:117
+#: ../plugins/getfocus.py:115
 msgid "Save"
 msgstr ""
 
@@ -230,86 +230,90 @@ msgstr ""
 msgid "Failed to check plugin dependencies (%s)!"
 msgstr "Nie udało się sprawdzić zależności wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:285
+#: ../plugins/plugin-installer.py:280
+msgid "Command \"git\" not found, please install it!"
+msgstr "Polecenie \"git\" nie znalezione, proszę je zainstalować!"
+
+#: ../plugins/plugin-installer.py:289
 #, python-format
 msgid "Copying %s to %s"
 msgstr "Kopiuję z %s do %s"
 
-#: ../plugins/plugin-installer.py:288
+#: ../plugins/plugin-installer.py:292
 #, python-format
 msgid "Failed to copy plugin directory (%s)!"
 msgstr "Nie udało się skopiować katalogu wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:297
+#: ../plugins/plugin-installer.py:301
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
 msgstr "Nie udało się skopiować pliku .py wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:307
+#: ../plugins/plugin-installer.py:311
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
 msgstr "Nie udało się skopiować pliku .plugin wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:318
+#: ../plugins/plugin-installer.py:322
 #, python-format
 msgid "Creating schema directory %s"
 msgstr "Tworzę katalog schematu %s"
 
-#: ../plugins/plugin-installer.py:320
+#: ../plugins/plugin-installer.py:324
 #, python-format
 msgid "Installing schema %s"
 msgstr "Instaluję plik schematu %s"
 
-#: ../plugins/plugin-installer.py:324
+#: ../plugins/plugin-installer.py:328
 msgid "Compiling schemas..."
 msgstr "Kompiluje schemat"
 
-#: ../plugins/plugin-installer.py:329
+#: ../plugins/plugin-installer.py:333
 #, python-format
 msgid "Failed to install schema files (%s)!"
 msgstr "Nie udało się zainstalować pliki schematu (%s)!"
 
-#: ../plugins/plugin-installer.py:339
+#: ../plugins/plugin-installer.py:343
 #, python-format
 msgid "Failed to enable plugin (%s)!"
 msgstr "Nie udało się włączyć wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:345
+#: ../plugins/plugin-installer.py:349
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
 msgstr ""
 "Wtyczka '%s' jest teraz zainstalowana. Upewnij się, aby ponownie uruchomić "
 "Liferea!"
 
-#: ../plugins/plugin-installer.py:359
+#: ../plugins/plugin-installer.py:363
 #, python-format
 msgid "Failed to disable plugin (%s)!"
 msgstr "Nie udało się wyłączyć wtyczki (%s)!"
 
 # WTF?
-#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#: ../plugins/plugin-installer.py:370 ../plugins/plugin-installer.py:390
 #, python-format
 msgid "Deleting '%s'"
 msgstr "Usuwam '%s'"
 
-#: ../plugins/plugin-installer.py:369
+#: ../plugins/plugin-installer.py:373
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
 msgstr "Nie udało się usunąć katalogu '%s' (%s)!"
 
-#: ../plugins/plugin-installer.py:379
+#: ../plugins/plugin-installer.py:383
 msgid "Failed to remove .py file!"
 msgstr "Nie udało się usunąć pliku .py!"
 
-#: ../plugins/plugin-installer.py:389
+#: ../plugins/plugin-installer.py:393
 msgid "Failed to remove .plugin file!"
 msgstr "Nie udało się usunąć pliku .plugin!"
 
-#: ../plugins/plugin-installer.py:398
+#: ../plugins/plugin-installer.py:402
 msgid "Sorry! Plugin removal failed!."
 msgstr "Przepraszam! Usunięcie wtyczni nie powiodło się!"
 
-#: ../plugins/plugin-installer.py:400
+#: ../plugins/plugin-installer.py:404
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr "Wtyczka została usunięta. Proszę zrestartować Liferea"
