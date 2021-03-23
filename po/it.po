@@ -1,26 +1,26 @@
 # Italian translation of Liferea.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Liferea package.
-# Gianvito Cavasoli <gianvito@gmx.it>, 2009, 2010, 2013, 2017.
+# Gianvito Cavasoli <gianvito@gmx.it>, 2009-2021.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 1.7.x\n"
+"Project-Id-Version: liferea 1.13.x\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-20 20:04+0100\n"
-"PO-Revision-Date: 2017-12-09 15:17+0100\n"
+"PO-Revision-Date: 2021-03-23 13:00+0100\n"
 "Last-Translator: Gianvito Cavasoli <gianvito@gmx.it>\n"
-"Language-Team: Italiano <gnome-it-list@gnome.org>\n"
-"Language: \n"
+"Language-Team: Italian <gnome-it-list@gnome.org>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.7\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Gtranslator 3.38.0\n"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
-msgstr "Lettore notiziari"
+msgstr "Lettore notiziari RSS"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:2
 msgid ""
@@ -94,28 +94,27 @@ msgstr "Leggi notizie e blog"
 
 #: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
-msgstr "notizie;notiziario;feed;aggregatore;blog;podcast;rss;atom"
+msgstr "notizie;notiziario;feed;aggregatore;blog;podcast;rss;atom;syndication"
 
 #: ../plugins/getfocus.py:93
 msgid "Opacity:"
-msgstr ""
+msgstr "Opacità:"
 
 #: ../plugins/getfocus.py:94
 msgid "Opacity"
-msgstr ""
+msgstr "Opacità"
 
 #: ../plugins/getfocus.py:104
 msgid "Min"
-msgstr ""
+msgstr "Minima"
 
 #: ../plugins/getfocus.py:109
-#, fuzzy
 msgid "Max"
-msgstr "Mappa"
+msgstr "Massima"
 
 #: ../plugins/getfocus.py:115
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
 #: ../glade/liferea_toolbar.ui.h:5
@@ -140,40 +139,36 @@ msgstr "Se_gna articoli come letti"
 #: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:40
 #: ../glade/liferea_toolbar.ui.h:10
 msgid "Search All Feeds..."
-msgstr "Cerca in tutti i notiziari..."
+msgstr "Cerca in tutti i notiziari…"
 
 #: ../plugins/libnotify.py:43
-#, fuzzy
 msgid "Feed Updates"
-msgstr "Impostazioni aggiornamento del notiziario"
+msgstr "Aggiornamento notiziari"
 
 #: ../plugins/plugin-installer.py:54
 msgid "Plugins"
 msgstr "Plugin"
 
 #: ../plugins/plugin-installer.py:69
-#, fuzzy
 msgid "Plugin Installer"
-msgstr "Plugin"
+msgstr "Installatore plugin"
 
 #: ../plugins/plugin-installer.py:83
-#, fuzzy
 msgid "Activate Plugins"
-msgstr "Plugin"
+msgstr "Plugin attivabili"
 
 #: ../plugins/plugin-installer.py:84
-#, fuzzy
 msgid "Download Plugins"
-msgstr "Scari_care usando"
+msgstr "Plugin scaricabili"
 
 #: ../plugins/plugin-installer.py:102
 #, python-format
 msgid "Bad fields for plugin entry %s"
-msgstr ""
+msgstr "Campo errato per la del plugin %s"
 
 #: ../plugins/plugin-installer.py:125
 msgid "All"
-msgstr ""
+msgstr "Tutti"
 
 #: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
 msgid "Advanced"
@@ -181,24 +176,23 @@ msgstr "Avanzato"
 
 #: ../plugins/plugin-installer.py:125
 msgid "Menu"
-msgstr ""
+msgstr "Menù"
 
 #: ../plugins/plugin-installer.py:125
-#, fuzzy
 msgid "Notifications"
-msgstr "Pos_izione"
+msgstr "Notifiche"
 
 #: ../plugins/plugin-installer.py:133
 msgid "Filter by category"
-msgstr ""
+msgstr "Filtra per categoria"
 
 #: ../plugins/plugin-installer.py:140
 msgid "_Install"
-msgstr ""
+msgstr "_Installa"
 
 #: ../plugins/plugin-installer.py:144
 msgid "_Uninstall"
-msgstr ""
+msgstr "_Disinstalla"
 
 #: ../plugins/plugin-installer.py:245
 #, python-format
@@ -206,11 +200,13 @@ msgid ""
 "Missing package manager '%s'. Cannot check nor install necessary "
 "dependencies!"
 msgstr ""
+"Gestore di pacchetti «%s» mancante. Impossibile controllare o installare le "
+"dipendenze necessarie."
 
 #: ../plugins/plugin-installer.py:261
 #, python-format
 msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr ""
+msgstr "Pacchetto «%s» mancante. Installarlo? (verrà eseguito «%s»)"
 
 #: ../plugins/plugin-installer.py:268
 #, python-format
@@ -218,109 +214,111 @@ msgid ""
 "Package installation failed (%s)! Check console output for further problem "
 "details!"
 msgstr ""
+"Installazione del pacchetto non riuscita (%s). Controllare l'output della "
+"console per ulteriori dettagli del problema."
 
 #: ../plugins/plugin-installer.py:271
 #, python-format
 msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
+msgstr "Controllo delle dipendenze del pacchetto non riuscito (%s)."
 
 #: ../plugins/plugin-installer.py:280
 msgid "Command \"git\" not found, please install it!"
-msgstr ""
+msgstr "Il comando «git» non è stato trovato, installarlo."
 
 #: ../plugins/plugin-installer.py:289
 #, python-format
 msgid "Copying %s to %s"
-msgstr ""
+msgstr "Copia di %s in %s"
 
 #: ../plugins/plugin-installer.py:292
 #, python-format
 msgid "Failed to copy plugin directory (%s)!"
-msgstr ""
+msgstr "Copia della directory del plugin non riuscita (%s)."
 
 #: ../plugins/plugin-installer.py:301
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
-msgstr ""
+msgstr "Copia del file .py del plugin non riuscita (%s)."
 
 #: ../plugins/plugin-installer.py:311
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
-msgstr ""
+msgstr "Copia del file .plugin non riuscita (%s)."
 
 #: ../plugins/plugin-installer.py:322
-#, fuzzy, python-format
+#, python-format
 msgid "Creating schema directory %s"
-msgstr "Impossibile creare la directory di cache «%s»."
+msgstr "Creazione directory dello schema %s"
 
 #: ../plugins/plugin-installer.py:324
 #, python-format
 msgid "Installing schema %s"
-msgstr ""
+msgstr "Installazione schema %s"
 
 #: ../plugins/plugin-installer.py:328
 msgid "Compiling schemas..."
-msgstr ""
+msgstr "Compilazione schema…"
 
 #: ../plugins/plugin-installer.py:333
 #, python-format
 msgid "Failed to install schema files (%s)!"
-msgstr ""
+msgstr "Installazione file di schema non riuscita (%s)."
 
 #: ../plugins/plugin-installer.py:343
 #, python-format
 msgid "Failed to enable plugin (%s)!"
-msgstr ""
+msgstr "Attivazione plugin non riuscita (%s)."
 
 #: ../plugins/plugin-installer.py:349
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr ""
+msgstr "Il plugin «%s» è installato. Riavviare l'applicazione."
 
 #: ../plugins/plugin-installer.py:363
 #, python-format
 msgid "Failed to disable plugin (%s)!"
-msgstr ""
+msgstr "Disattivazione plugin non riuscta (%s)."
 
 #: ../plugins/plugin-installer.py:370 ../plugins/plugin-installer.py:390
-#, fuzzy, python-format
+#, python-format
 msgid "Deleting '%s'"
-msgstr "Eliminazione voce"
+msgstr "Eliminazione «%s»"
 
 #: ../plugins/plugin-installer.py:373
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
-msgstr ""
+msgstr "Rimozione directory «%s» non riuscita (%s)."
 
 #: ../plugins/plugin-installer.py:383
 msgid "Failed to remove .py file!"
-msgstr ""
+msgstr "Rimozione file .py non riuscita."
 
 #: ../plugins/plugin-installer.py:393
 msgid "Failed to remove .plugin file!"
-msgstr ""
+msgstr "Rimozione file .plugin non riuscita."
 
 #: ../plugins/plugin-installer.py:402
 msgid "Sorry! Plugin removal failed!."
-msgstr ""
+msgstr "Rimozione del plugin non riuscita."
 
 #: ../plugins/plugin-installer.py:404
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
+"Il plugin è stato rimosso. Riavviare l'applicazione affinché abbia effetto."
 
 #: ../plugins/trayicon.py:134
 msgid "Show / Hide"
-msgstr ""
+msgstr "Mostra / Nascondi"
 
 #: ../plugins/trayicon.py:135
 msgid "Minimize to tray on close"
-msgstr ""
+msgstr "Minimizzare nel vassoio alla chiusura"
 
 #: ../plugins/trayicon.py:136
-#, fuzzy
 msgid "Quit"
-msgstr "_Esci"
+msgstr "Esci"
 
 #: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
@@ -347,9 +345,9 @@ msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
 msgstr ""
-"La versione corrente di WebKitGTK+ non supporta il cambiamento delle "
-"impostazioni del proxy da parte di Liferea. Verranno usate per il proxy le "
-"impostazioni predefinite di sistema."
+"La versione attuale di WebKitGTK+ non supporta il cambiamento delle "
+"impostazioni del proxy da parte dell'applicazione. Verranno usate per il "
+"proxy le impostazioni predefinite di sistema."
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:133
@@ -472,7 +470,7 @@ msgstr "«%s» non è disponibile"
 #: ../src/feed.c:356
 #, c-format
 msgid "\"%s\" updated..."
-msgstr "«%s» aggiornato..."
+msgstr "«%s» aggiornato…"
 
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
@@ -746,14 +744,14 @@ msgid "Request timed out"
 msgstr "Richiesta scaduta"
 
 #: ../src/net.c:459
-#, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
 "headlines."
 msgstr ""
-"Questo notiziario è abbandonato. Non è più disponibile. Non verrà più "
-"aggiornato ma si potrà ancora accedere alle testate nella cache."
+"Il server web indica che questo notiziario è stato interrotto e non è più "
+"disponibile. L'applicazione non lo aggiornerà più ma si potrà comunque "
+"accedere alle testate della cache."
 
 #: ../src/net.c:464
 msgid "There was an internal error in the update process"
@@ -862,13 +860,12 @@ msgid "Feed title"
 msgstr "Titolo del notiziario"
 
 #: ../src/rule.c:237
-#, fuzzy
 msgid "Feed source"
 msgstr "Fonte notiziario"
 
 #: ../src/rule.c:238
 msgid "Parent folder title"
-msgstr ""
+msgstr "Titolo della cartella parente"
 
 #: ../src/subscription.c:108
 #, c-format
@@ -897,14 +894,14 @@ msgid "\"%s\" has not changed since last update"
 msgstr "«%s» non è cambiato dall'ultimo aggiornamento"
 
 #: ../src/subscription.c:221 ../src/subscription.c:296
-#, fuzzy, c-format
+#, c-format
 msgid "Updating (%d / %d) ..."
-msgstr "Aggiornamento..."
+msgstr "Aggiornamento (%d / %d)…"
 
 #: ../src/subscription.c:298
-#, fuzzy, c-format
+#, c-format
 msgid "Updating '%s'..."
-msgstr "Aggiornamento..."
+msgstr "Aggiornamento di «%s»…"
 
 #: ../src/ui/auth_dialog.c:114
 #, c-format
@@ -1145,11 +1142,11 @@ msgstr "Rimuo_vi articolo"
 
 #: ../src/ui/popup_menu.c:200
 msgid "Open Enclosure..."
-msgstr "Apri allegato..."
+msgstr "Apri allegato…"
 
 #: ../src/ui/popup_menu.c:201
 msgid "Save As..."
-msgstr "Salva come..."
+msgstr "Salva come…"
 
 #: ../src/ui/popup_menu.c:202
 msgid "Copy Link Location"
@@ -1165,23 +1162,23 @@ msgstr "A_ggiorna cartella"
 
 #: ../src/ui/popup_menu.c:292
 msgid "New _Subscription..."
-msgstr "Nuovo _abbonamento..."
+msgstr "Nuovo _abbonamento…"
 
 #: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
-msgstr "Nuova _cartella..."
+msgstr "Nuova _cartella…"
 
 #: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
-msgstr "Nuova cartella ric_erca..."
+msgstr "Nuova cartella ric_erca…"
 
 #: ../src/ui/popup_menu.c:299
 msgid "New S_ource..."
-msgstr "Nuova fo_nte..."
+msgstr "Nuova fo_nte…"
 
 #: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
-msgstr "Nuovo archivio no_tizie..."
+msgstr "Nuovo archivio no_tizie…"
 
 #: ../src/ui/popup_menu.c:303
 msgid "_New"
@@ -1205,7 +1202,7 @@ msgstr "Pr_oprietà"
 
 #: ../src/ui/popup_menu.c:343
 msgid "Convert To Local Subscriptions..."
-msgstr "Converti ad abbonamenti locali..."
+msgstr "Converti ad abbonamenti locali…"
 
 #: ../src/ui/preferences_dialog.c:84
 msgid "GNOME default"
@@ -1370,7 +1367,7 @@ msgstr "S_alva immagine come"
 
 #: ../src/webkit/liferea_web_view.c:208
 msgid "_Subscribe..."
-msgstr "_Abbonati..."
+msgstr "_Abbonati…"
 
 #: ../src/webkit/liferea_web_view.c:212
 msgid "_Copy"
@@ -1409,9 +1406,9 @@ msgid "Authentication"
 msgstr "Autenticazione"
 
 #: ../glade/auth.ui.h:3
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "Enter the username and password for \"%s\" (%s)"
-msgstr "Immettere il nome utente e la password per «%s» (%s):"
+msgstr "Immettere il nome utente e la password per «%s» (%s)"
 
 #: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
 msgid "User_name:"
@@ -1430,15 +1427,14 @@ msgid "Open an enclosure of type:"
 msgstr "Aprire un allegato di tipo:"
 
 #: ../glade/enclosure_handler.ui.h:3
-#, fuzzy
 msgid ""
 "_What should Liferea do with this enclosure? Please enter the command you "
 "want to be executed below. The enclosures URL will be supplied as an "
 "argument for this command:"
 msgstr ""
-"Cosa fare con questo allegato? Immettere qui sotto il comando che si vuole "
-"eseguire. Gli URL degli allegati saranno forniti come argomento per questo "
-"comando:"
+"_Cosa de fare l'applicazione con questo allegato? Immettere qui sotto il "
+"comando che si vuole eseguire. Gli URL degli allegati saranno forniti come "
+"argomento per questo comando:"
 
 #: ../glade/enclosure_handler.ui.h:4
 msgid "_Browse"
@@ -1459,25 +1455,24 @@ msgid "Update _All"
 msgstr "Aggiorna _tutto"
 
 #: ../glade/liferea_menu.ui.h:3
-#, fuzzy
 msgid "Mark All As _Read"
-msgstr "Se_gna tutto come letto"
+msgstr "Segna tutto come _letto"
 
 #: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
 msgid "_New Subscription..."
-msgstr "Nu_ovo abbonamento..."
+msgstr "Nu_ovo abbonamento…"
 
 #: ../glade/liferea_menu.ui.h:7
 msgid "New _Source..."
-msgstr "Nuova fo_nte..."
+msgstr "Nuova fo_nte…"
 
 #: ../glade/liferea_menu.ui.h:9
 msgid "_Import Feed List..."
-msgstr "Im_porta elenco notiziari..."
+msgstr "Im_porta elenco notiziari…"
 
 #: ../glade/liferea_menu.ui.h:10
 msgid "_Export Feed List..."
-msgstr "Espo_rta elenco notiziari..."
+msgstr "Espo_rta elenco notiziari…"
 
 #: ../glade/liferea_menu.ui.h:11
 msgid "_Quit"
@@ -1513,16 +1508,15 @@ msgstr "_Schermo intero"
 
 #: ../glade/liferea_menu.ui.h:30
 msgid "Zoom _In"
-msgstr ""
+msgstr "Aumenta _ingrandimento"
 
 #: ../glade/liferea_menu.ui.h:31
 msgid "Zoom _Out"
-msgstr ""
+msgstr "Diminuisci in_grandimento"
 
 #: ../glade/liferea_menu.ui.h:32
-#, fuzzy
 msgid "_Normal size"
-msgstr "Visualizzazione norma_le"
+msgstr "Dimensione _normale"
 
 #: ../glade/liferea_menu.ui.h:33
 msgid "_Normal View"
@@ -1653,7 +1647,7 @@ msgstr "File loca_le"
 
 #: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:16
 msgid "Select File..."
-msgstr "Seleziona file..."
+msgstr "Seleziona file…"
 
 #: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:17
 msgid "_Source:"
@@ -1690,9 +1684,8 @@ msgid "Source Selection"
 msgstr "Selezione della fonte"
 
 #: ../glade/node_source.ui.h:2
-#, fuzzy
 msgid "_Select the source type you want to add..."
-msgstr "Selezionare il tipo di fonte che si desidera aggiungere..."
+msgstr "_Selezionare il tipo di fonte che si desidera aggiungere…"
 
 #: ../glade/opml_source.ui.h:1
 msgid "Add OPML/Planet"
@@ -1814,7 +1807,7 @@ msgstr "Aprire collegamenti nella _finestra."
 
 #: ../glade/prefs.ui.h:26
 msgid "_Never run external Javascript."
-msgstr ""
+msgstr "_Non eseguire Javascript esterni."
 
 #: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
@@ -1847,11 +1840,11 @@ msgstr "Impostazioni barra degli strumenti"
 
 #: ../glade/prefs.ui.h:35
 msgid "_Hide toolbar."
-msgstr "Nascon_dere la barra degli strumenti."
+msgstr "_Nascondere la barra degli strumenti."
 
 #: ../glade/prefs.ui.h:36
 msgid "Toolbar _button labels:"
-msgstr "Etichette _pulsanti della barra degli strumenti:"
+msgstr "Etichette dei _pulsanti della barra degli strumenti:"
 
 #: ../glade/prefs.ui.h:37
 msgid "Other"
@@ -1863,7 +1856,7 @@ msgstr "Chiedi conferma prima di segnare tutti gli elementi come letti"
 
 #: ../glade/prefs.ui.h:39
 msgid "Desktop"
-msgstr ""
+msgstr "Desktop"
 
 #: ../glade/prefs.ui.h:40
 msgid "HTTP Proxy Server"
@@ -1906,9 +1899,10 @@ msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
-"La versione corrente di WebKitGTK+ non supporta il cambiamento delle "
-"impostazioni del proxy da parte delle app. Verranno usate per il proxy le "
-"impostazioni predefinite di sistema."
+"La versione attuale di WebKitGTK+ è più vecchia della versione 2.15.3 e non "
+"supporta il cambiamento delle impostazioni del proxy da parte delle "
+"applicazioni. Verranno usate per il proxy le impostazioni predefinite di "
+"sistema."
 
 #: ../glade/prefs.ui.h:50
 msgid "Proxy"
@@ -1919,35 +1913,41 @@ msgid "Privacy Settings"
 msgstr "Impostazioni privacy"
 
 #: ../glade/prefs.ui.h:52
-#, fuzzy
 msgid "Tell sites that I do _not want to be tracked."
-msgstr "Indicare ai siti di _non voler essere tracciati"
+msgstr "Indicare ai siti di _non voler essere tracciati."
 
 #: ../glade/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
-msgstr ""
+msgstr "Prevenzione _intelligente del tracciamento."
 
 #: ../glade/prefs.ui.h:54
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
+"Questa opzione abiliterà la funzione descritta <a href=\"https://webkit.org/"
+"tracking-prevention/\">qui</a>."
 
 #: ../glade/prefs.ui.h:55
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
+"La prevenzione intelligente del tracciamento è disponibile soltanto dalla "
+"versione 2.30 di WebKitGtk+ in poi."
 
 #: ../glade/prefs.ui.h:56
 msgid "Use _Reader mode."
-msgstr ""
+msgstr "Usare la modalità lettu_ra."
 
 #: ../glade/prefs.ui.h:57
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
+"Questa opzione attiverà <a href=\"https://github.com/mozilla/readability"
+"\">l'asportazione</a> degli elementi non necessari per il contenuto (come "
+"script, caratteri, tracciatura)"
 
 #: ../glade/prefs.ui.h:58
 msgid "Privacy"
@@ -1964,7 +1964,7 @@ msgstr "Scari_care usando"
 #: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
-msgstr "comando-personalizzato %s"
+msgstr "comando personalizzato %s"
 
 #: ../glade/prefs.ui.h:63
 msgid "Opening Enclosures"
@@ -1979,14 +1979,12 @@ msgid "Subscription Properties"
 msgstr "Proprietà dell'abbonamento"
 
 #: ../glade/properties.ui.h:2
-#, fuzzy
 msgid "Feed _Name"
-msgstr "_Nome notiziario:"
+msgstr "_Nome notiziario"
 
 #: ../glade/properties.ui.h:3
-#, fuzzy
 msgid "Update _Interval"
-msgstr "Intervallo di aggiornamento"
+msgstr "_Intervallo di aggiornamento"
 
 #: ../glade/properties.ui.h:4
 msgid "_Use global default update interval."
@@ -2115,22 +2113,20 @@ msgid "Search _Name:"
 msgstr "_Nome della ricerca:"
 
 #: ../glade/search_folder.ui.h:3
-#, fuzzy
 msgid "Search Rules"
-msgstr "Cerca in tutti i notiziari"
+msgstr "Regole di ricerca"
 
 #: ../glade/search_folder.ui.h:4
 msgid "Rules"
-msgstr ""
+msgstr "Regole"
 
 #: ../glade/search_folder.ui.h:5
 msgid "All rules for this search folder"
-msgstr ""
+msgstr "Tutte le regole per questa cartella di ricerca"
 
 #: ../glade/search_folder.ui.h:6
-#, fuzzy
 msgid "Rule Matching"
-msgstr "_Qualsiasi regola corrispondente"
+msgstr "Regola corrispondente"
 
 #: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
@@ -2141,9 +2137,8 @@ msgid "_All Rules Must Match"
 msgstr "_Tutte le regole devono corrispondere"
 
 #: ../glade/search_folder.ui.h:9
-#, fuzzy
 msgid "Hide read items"
-msgstr "Nas_condere gli articoli letti."
+msgstr "Nascondi gli articoli letti"
 
 #: ../glade/search.ui.h:1
 msgid "Advanced Search"
@@ -2151,7 +2146,7 @@ msgstr "Ricerca avanzata"
 
 #: ../glade/search.ui.h:2
 msgid "_Search Folder..."
-msgstr "Cartella ri_cerca..."
+msgstr "Cartella ri_cerca…"
 
 #: ../glade/search.ui.h:3
 msgid "Find Items that meet the following criteria"
@@ -2163,7 +2158,7 @@ msgstr "Cerca in tutti i notiziari"
 
 #: ../glade/simple_search.ui.h:2
 msgid "_Advanced..."
-msgstr "Avan_zato..."
+msgstr "Avan_zato…"
 
 #: ../glade/simple_search.ui.h:3
 msgid ""
@@ -2187,12 +2182,11 @@ msgstr ""
 
 #: ../glade/simple_subscription.ui.h:2
 msgid "Advanced..."
-msgstr "Avanzato..."
+msgstr "Avanzato…"
 
 #: ../glade/simple_subscription.ui.h:3
-#, fuzzy
 msgid "Feed _Source"
-msgstr "Fonte notiziario"
+msgstr "_Fonte notiziario"
 
 #: ../glade/simple_subscription.ui.h:4
 msgid ""
@@ -2232,17 +2226,15 @@ msgstr "Controllo aggiornamenti"
 
 #: ../glade/update_monitor.ui.h:2
 msgid "Stop All"
-msgstr ""
+msgstr "Interrompi tutto"
 
 #: ../glade/update_monitor.ui.h:3
-#, fuzzy
 msgid "_Pending Requests"
-msgstr "Richieste in attesa"
+msgstr "Richieste in _attesa"
 
 #: ../glade/update_monitor.ui.h:4
-#, fuzzy
 msgid "_Downloading Now"
-msgstr "Scaricamento in corso"
+msgstr "_Scaricamento in corso"
 
 #: ../xslt/feed.xml.in.h:1
 msgid "Feed:"
@@ -2261,58 +2253,55 @@ msgid "Copyright"
 msgstr "Copyright"
 
 #: ../xslt/feed.xml.in.h:5
-#, fuzzy
 msgid "There was a problem when fetching this subscription!"
-msgstr ""
-"Si è verificato un problema durante la lettura di questo abbonamento. "
-"Controllare l'URL e l'output della console."
+msgstr "Si è verificato un problema durante il recupero di questo abbonamento."
 
 #: ../xslt/feed.xml.in.h:6
-#, fuzzy
 msgid "1. Authentication"
-msgstr "Autenticazione"
+msgstr "1. Autenticazione"
 
 #: ../xslt/feed.xml.in.h:7
-#, fuzzy
 msgid "2. Download"
-msgstr "Scaricamento"
+msgstr "2. Scaricamento"
 
 #: ../xslt/feed.xml.in.h:8
 msgid "3. Feed Discovery"
-msgstr ""
+msgstr "3 Ricerca notiziario"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "4. Parsing"
-msgstr ""
+msgstr "4. Analisi"
 
 #: ../xslt/feed.xml.in.h:10
-#, fuzzy
 msgid "Details:"
-msgstr "Dettagli"
+msgstr "Dettagli:"
 
 #: ../xslt/feed.xml.in.h:11
 msgid "Authentication failed. Please check the credentials and try again!"
-msgstr ""
+msgstr "Autenticazione non riuscita. Verificare le credenziali e riprovare."
 
 #: ../xslt/feed.xml.in.h:12
-#, fuzzy
 msgid "There was an error when downloading the feed source:"
-msgstr "Sono occorsi errori durante l'analisi di questo notiziario."
+msgstr ""
+"Si è verificato un errore durante lo scaricamento della fonte del notiziario:"
 
 #: ../xslt/feed.xml.in.h:13
-#, fuzzy
 msgid "There was an error when running the feed filter command:"
-msgstr "Sono occorsi errori durante l'analisi di questo notiziario."
+msgstr ""
+"Si è verificato un errore durante l'esecuzione del comando del filtro del "
+"notiziario:"
 
 #: ../xslt/feed.xml.in.h:14
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
 msgstr ""
+"La fonte non punta direttamente a un notiziario oppure a una pagina web con "
+"un collegamento a un notiziario."
 
 #: ../xslt/feed.xml.in.h:15
 msgid "Sorry, the feed could not be parsed!"
-msgstr ""
+msgstr "Il notiziario non può essere analizzato."
 
 #: ../xslt/feed.xml.in.h:16
 msgid "You may want to contact the author/webmaster of the feed about this!"
@@ -2373,11 +2362,11 @@ msgstr "Mappa"
 
 #: ../xslt/item.xml.in.h:12
 msgid "View count"
-msgstr ""
+msgstr "Visualizza conteggio"
 
 #: ../xslt/item.xml.in.h:13
 msgid "Rating"
-msgstr ""
+msgstr "Valutazione"
 
 #: ../xslt/item.xml.in.h:14
 msgid "Comments"
@@ -2385,7 +2374,7 @@ msgstr "Commenti"
 
 #: ../xslt/item.xml.in.h:15
 msgid "Updating..."
-msgstr "Aggiornamento..."
+msgstr "Aggiornamento…"
 
 #: ../xslt/item.xml.in.h:16
 msgid "Section"
@@ -2410,225 +2399,3 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Cartella ricerca:"
-
-#~ msgid ""
-#~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
-#~ "value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError\"/"
-#~ "></b>"
-#~ msgstr ""
-#~ "L'ultimo aggiornamento di questo abbonamento non è riuscito.<br/"
-#~ "><b>Codice di errore HTTP: <xsl:value-of select=\"httpErrorCode\"/>: <xsl:"
-#~ "value-of select=\"httpError\"/></b>"
-
-#~ msgid "Parser Error Details"
-#~ msgstr "Dettagli errori dell'analizzatore"
-
-#~ msgid "There were errors while filtering this feed!"
-#~ msgstr ""
-#~ "Si sono verificati degli errori durante il filtraggio di questo "
-#~ "notiziario."
-
-#~ msgid "Filter Error Details"
-#~ msgstr "Dettagli errori del filtro"
-
-#~ msgid ""
-#~ "<p>Could not detect the type of this feed! Please check if the source "
-#~ "really points to a resource provided in one of the supported syndication "
-#~ "formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
-#~ msgstr ""
-#~ "<p>Impossibile individuare il tipo di questo notiziario. Verificare che "
-#~ "la fonte punti davvero ad una risorsa fornita in uno dei formati "
-#~ "supportati.</p>Output analizzatore XML:<br /><div class='xmlparseroutput'>"
-
-#~ msgid ""
-#~ "The URL you want Liferea to subscribe to points to a webpage and the auto "
-#~ "discovery found no feeds on this page. Maybe this webpage just does not "
-#~ "support feed auto discovery."
-#~ msgstr ""
-#~ "L'URL a cui si vuole abbonarsi punta ad una pagina web in cui il "
-#~ "rilevamento automatico non ha trovato alcun notiziario. Probabilmente la "
-#~ "pagina web non supporta il rilevamento automatico di notiziari."
-
-#~ msgid "Source points to HTML document."
-#~ msgstr "La fonte punta a un documento HTML."
-
-#~ msgid "Could not determine the feed type."
-#~ msgstr "Impossibile determinare il tipo di notiziario."
-
-#~ msgid "Gone. Resource doesn't exist. Please unsubscribe!"
-#~ msgstr "Risorsa non esistente. Rimuovere l'abbonamento."
-
-#~ msgid "Updating \"%s\""
-#~ msgstr "Aggiornamento di «%s»"
-
-#~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
-#~ msgstr ""
-#~ "Errore XML durante la lettura del notiziario. Impossibile caricare il "
-#~ "notiziario «%s»."
-
-#~ msgid "Combined View"
-#~ msgstr "Visualizzazione combinata"
-
-#~ msgid "page 3"
-#~ msgstr "pagina 3"
-
-#~ msgid "_Disable Javascript."
-#~ msgstr "Disa_bilitare Javascript."
-
-#~ msgid "GUI"
-#~ msgstr "Interfaccia grafica"
-
-#~ msgid "Cancel All"
-#~ msgstr "Annulla tutto"
-
-#~ msgid "Updating favicon for \"%s\""
-#~ msgstr "Aggiornamento favicon per «%s»"
-
-#~ msgid "Add Google Reader Account"
-#~ msgstr "Aggiungi account Google Reader"
-
-#~ msgid "Please enter your Google Reader account settings."
-#~ msgstr "Inserire le impostazioni dell'account Google Reader"
-
-#~ msgid "View Headlines"
-#~ msgstr "Visualizza testate"
-
-#~ msgid "Feed Name"
-#~ msgstr "Nome notiziario"
-
-#~ msgid "Marks read every item of every subscription."
-#~ msgstr "Segna come letto tutti gli articoli e tutti gli abbonamenti."
-
-#~ msgid "Imports an OPML feed list."
-#~ msgstr "Importa un elenco notiziari OPML."
-
-#~ msgid "Exports the feed list as OPML."
-#~ msgstr "Esporta l'elenco notiziari come OPML."
-
-#~ msgid "Removes all items of the currently selected feed."
-#~ msgstr "Rimuove tutti gli articoli del notiziario attualmente selezionato."
-
-#~ msgid "Increases the text size of the item view."
-#~ msgstr "Aumenta la dimensione del testo nella visualizzazione dell'articolo"
-
-#~ msgid "Decreases the text size of the item view."
-#~ msgstr ""
-#~ "Diminuisce la dimensione del testo nella visualizzazione dell'articolo."
-
-#~ msgid "Show a list of all feeds currently in the update queue"
-#~ msgstr ""
-#~ "Mostra un elenco di tutti gli attuali notiziari nella coda d'aggiornamento"
-
-#~ msgid "Edit Preferences."
-#~ msgstr "Modifica le preferenze."
-
-#~ msgid "View help for this application."
-#~ msgstr "Visualizza la guida per questa applicazione."
-
-#~ msgid "View a list of all Liferea shortcuts."
-#~ msgstr "Visualizza un elenco di tutte le scorciatoie da tastiera."
-
-#~ msgid "View the FAQ for this application."
-#~ msgstr "Visualizza le domande frequenti per questa applicazione."
-
-#~ msgid "Shows an about dialog."
-#~ msgstr "Mostra un dialogo di informazioni."
-
-#~ msgid "Set view mode to mail client mode."
-#~ msgstr "Imposta la modalità di visualizzazione come un client di posta."
-
-#~ msgid "Set view mode to use three vertical panes."
-#~ msgstr ""
-#~ "Imposta la modalità di visualizzazione per usare tre riquadri verticali."
-
-#~ msgid "_Combined View"
-#~ msgstr "Visualizzazione com_binata"
-
-#~ msgid "Set view mode to two pane mode."
-#~ msgstr "Imposta la modalità di visualizzazione in due riquadri."
-
-#~ msgid "Hide feeds with no unread items."
-#~ msgstr "Nasconde i notiziari con nessun articolo non letto."
-
-#~ msgid "Adds a folder to the feed list."
-#~ msgstr "Aggiunge una cartella all'elenco dei notiziari."
-
-#~ msgid "Adds a new search folder to the feed list."
-#~ msgstr "Aggiunge una nuova cartella di ricerca all'elenco dei notiziari."
-
-#~ msgid "Adds a new feed list source."
-#~ msgstr "Aggiunge una nuova fonte dell'elenco dei notiziari."
-
-#~ msgid "Adds a new news bin."
-#~ msgstr "Aggiunge un nuovo archivio delle notizie."
-
-#~ msgid ""
-#~ "Updates the selected subscription or all subscriptions of the selected "
-#~ "folder."
-#~ msgstr ""
-#~ "Aggiorna gli abbonamenti selezionati o tutti gli abbonamenti di una "
-#~ "cartella selezionata."
-
-#~ msgid "Opens the property dialog for the selected subscription."
-#~ msgstr "Apre il dialogo della proprietà dell'abbonamento selezionato."
-
-#~ msgid "Removes the selected subscription."
-#~ msgstr "Rimuove l'abbonamento selezionato."
-
-#~ msgid "Toggles the read status of the selected item."
-#~ msgstr "Commuta lo stato di letto dell'articolo selezionato."
-
-#~ msgid "Toggles the flag status of the selected item."
-#~ msgstr "Commuta lo stato del contrassegno dell'articolo selezionato."
-
-#~ msgid "Removes the selected item."
-#~ msgstr "Rimuove l'articolo selezionato."
-
-#~ msgid "Launches the item's link in a new Liferea browser tab."
-#~ msgstr ""
-#~ "Lancia i collegamenti degli articoli in una nuova scheda del browser "
-#~ "interno."
-
-#~ msgid "Launches the item's link in the Liferea item pane."
-#~ msgstr "Lancia i collegamenti degli articoli nel riquadro degli articoli"
-
-#~ msgid "Launches the item's link in the configured external browser."
-#~ msgstr ""
-#~ "Lancia i collegamenti degli articoli nel browser esterno configurato."
-
-#~ msgid "Browse at full screen"
-#~ msgstr "Esplora a schermo intero"
-
-#~ msgid "_Work Offline"
-#~ msgstr "_Lavora fuori rete"
-
-#~ msgid "_Update All"
-#~ msgstr "Ag_giorna tutto"
-
-#~ msgid "_Show Liferea"
-#~ msgstr "Mo_stra finestra"
-
-#~ msgid "InoReader"
-#~ msgstr "InoReader"
-
-#~ msgid ""
-#~ "Note: <i>The username and password will be saved to your Liferea feedlist "
-#~ "file without using encryption.</i>"
-#~ msgstr ""
-#~ "Nota: <i>il nome utente e la password verranno salvati nell'elenco dei "
-#~ "notiziari senza usare alcuna cifratura.</i>"
-
-#~ msgid "Add InoReader Account"
-#~ msgstr "Aggiungi account InoReader"
-
-#~ msgid "Please enter your InoReader account settings."
-#~ msgstr "Inserire le impostazioni dell'account InoReader"
-
-#~ msgid "normal view"
-#~ msgstr "visualizzazione normale"
-
-#~ msgid "wide view"
-#~ msgstr "visualizzazione ampia"
-
-#~ msgid "combined view"
-#~ msgstr "visualizzazione combinata"
