@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-14 17:09+0100\n"
+"POT-Creation-Date: 2021-02-20 20:04+0100\n"
 "PO-Revision-Date: 2020-12-31 18:40+0100\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
@@ -99,24 +99,24 @@ msgstr "News-Feeds und Blogs lesen"
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr "Nachrichten;News;Feed;Abonnement;Aggregator;Blog;Podcast;RSS;Atom"
 
-#: ../plugins/getfocus.py:95
+#: ../plugins/getfocus.py:93
 msgid "Opacity:"
 msgstr ""
 
-#: ../plugins/getfocus.py:96
+#: ../plugins/getfocus.py:94
 msgid "Opacity"
 msgstr ""
 
-#: ../plugins/getfocus.py:106
+#: ../plugins/getfocus.py:104
 msgid "Min"
 msgstr ""
 
-#: ../plugins/getfocus.py:111
+#: ../plugins/getfocus.py:109
 #, fuzzy
 msgid "Max"
 msgstr "Karte"
 
-#: ../plugins/getfocus.py:117
+#: ../plugins/getfocus.py:115
 msgid "Save"
 msgstr ""
 
@@ -228,83 +228,87 @@ msgstr ""
 msgid "Failed to check plugin dependencies (%s)!"
 msgstr "Analyse der Plugin-Abhängigkeiten schlug fehl (%s)!"
 
-#: ../plugins/plugin-installer.py:285
+#: ../plugins/plugin-installer.py:280
+msgid "Command \"git\" not found, please install it!"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:289
 #, python-format
 msgid "Copying %s to %s"
 msgstr "Kopiere %s nach %s"
 
-#: ../plugins/plugin-installer.py:288
+#: ../plugins/plugin-installer.py:292
 #, python-format
 msgid "Failed to copy plugin directory (%s)!"
 msgstr "Kopieren des Plugin-Verzeichnisses ist fehlgeschlagen (%s)!"
 
-#: ../plugins/plugin-installer.py:297
+#: ../plugins/plugin-installer.py:301
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
 msgstr "Kopieren der Plugin .py Datei (%s) fehlgeschlagen!"
 
-#: ../plugins/plugin-installer.py:307
+#: ../plugins/plugin-installer.py:311
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
 msgstr "Kopieren der Plugin .plugin Datei (%s) fehlgeschlagen!"
 
-#: ../plugins/plugin-installer.py:318
+#: ../plugins/plugin-installer.py:322
 #, python-format
 msgid "Creating schema directory %s"
 msgstr "Erzeuge Schema-Verzeichnis %s"
 
-#: ../plugins/plugin-installer.py:320
+#: ../plugins/plugin-installer.py:324
 #, python-format
 msgid "Installing schema %s"
 msgstr "Installiere Schema %s"
 
-#: ../plugins/plugin-installer.py:324
+#: ../plugins/plugin-installer.py:328
 msgid "Compiling schemas..."
 msgstr "Kompiliere Schema..."
 
-#: ../plugins/plugin-installer.py:329
+#: ../plugins/plugin-installer.py:333
 #, python-format
 msgid "Failed to install schema files (%s)!"
 msgstr "Installation der Schema Dateien fehlgeschlagen (%s)!"
 
-#: ../plugins/plugin-installer.py:339
+#: ../plugins/plugin-installer.py:343
 #, python-format
 msgid "Failed to enable plugin (%s)!"
 msgstr "Aktivieren des Plugins (%s) schlug fehl!"
 
-#: ../plugins/plugin-installer.py:345
+#: ../plugins/plugin-installer.py:349
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
 msgstr "Plugin '%s' ist nun installiert. Bitte Liferea neustarten!"
 
-#: ../plugins/plugin-installer.py:359
+#: ../plugins/plugin-installer.py:363
 #, python-format
 msgid "Failed to disable plugin (%s)!"
 msgstr "Deaktivieren des Plugins ist fehlgeschlagen (%s)!"
 
-#: ../plugins/plugin-installer.py:366 ../plugins/plugin-installer.py:386
+#: ../plugins/plugin-installer.py:370 ../plugins/plugin-installer.py:390
 #, python-format
 msgid "Deleting '%s'"
 msgstr "Lösche '%s'"
 
-#: ../plugins/plugin-installer.py:369
+#: ../plugins/plugin-installer.py:373
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
 msgstr "Löschen des Verzeichnisses '%s' schlug fehl (%s)!"
 
-#: ../plugins/plugin-installer.py:379
+#: ../plugins/plugin-installer.py:383
 msgid "Failed to remove .py file!"
 msgstr "Löschen der .py  Datei schlug fehl!"
 
-#: ../plugins/plugin-installer.py:389
+#: ../plugins/plugin-installer.py:393
 msgid "Failed to remove .plugin file!"
 msgstr "Löschen der .plugin Datei schlug fehl!"
 
-#: ../plugins/plugin-installer.py:398
+#: ../plugins/plugin-installer.py:402
 msgid "Sorry! Plugin removal failed!."
 msgstr "Die Entfernung des Plugins schlug fehl!"
 
-#: ../plugins/plugin-installer.py:400
+#: ../plugins/plugin-installer.py:404
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr "Plugin wurde entfernt! Bitte Liferea neustarten!"

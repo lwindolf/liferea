@@ -197,18 +197,18 @@ to identify leaks and send in the output.
 How to Get Support
 ------------------
 
-## When using distribution packages
+### When using distribution packages
 
 Do not post bug reports in the Liferea bug tracker, use the bug reporting
 system of your distribution instead. We (upstream) cannot fix distribution
 packages!
 
-## Before raising an issue
+### Before raising an issue
 
 Install the latest stable release and check if the problem is solved already.
 Please do not ask for help for older releases!
 
-## Issue Tracker
+### Issue Tracker
 
 Once you verified the latest stable release still has the problem
 please raise an issue in the GitHub bug tracker

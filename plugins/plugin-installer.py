@@ -272,9 +272,13 @@ class PluginBrowser(Gtk.Window):
                 return False
 
         # Git checkout
-        p = subprocess.Popen(["git", "clone", "https://github.com/%s" % plugin_info['source'], "."])
-        p.wait()
-        # FIXME: error checking
+        try:
+            p = subprocess.Popen(["git", "clone", "https://github.com/%s" % plugin_info['source'], "."])
+            p.wait()
+            # FIXME: error checking
+        except FileNotFoundError:
+            self.show_message(_("Command \"git\" not found, please install it!"), True)
+            return False
 
         # Now copy the plugin source, there are 2 variants:
         # - either there is a subdir named after the module   <module>/
