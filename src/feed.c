@@ -349,12 +349,8 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 	feed_parser_ctxt_free (ctxt);
 
 	// FIXME: this should not be here, but in subscription.c
-	if (FETCH_ERROR_NONE != subscription->error) {
+	if (FETCH_ERROR_NONE != subscription->error)
 		node->available = FALSE;
-		liferea_shell_set_status_bar (_("\"%s\" is not available"), node_get_title (node));
-	} else {
-		liferea_shell_set_status_bar (_("\"%s\" updated..."), node_get_title (node));
-	}
 
 	debug_exit ("feed_process_update_result");
 }
