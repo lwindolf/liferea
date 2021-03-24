@@ -143,6 +143,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 {
 	GtkWidget 		*menu;
 	GMenu 			*menu_model,*section;
+	GMenuItem		*menu_item = NULL;
 	gchar			*image_uri = NULL;
 	gchar			*link_uri = NULL;
 	gchar			*link_title = NULL;
@@ -171,7 +172,6 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	/* and now add all we want to see */
 	if (link) {
 		gchar *path;
-		GMenuItem *menu_item;
 
 		menu_add_item (section, _("Open Link In _Tab"), "app.open-link-in-tab", link_uri);
 		menu_add_item (section, _("Open Link In Browser"), "app.open-link-in-browser", link_uri);
@@ -218,6 +218,12 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 		g_menu_append (section, _("_Increase Text Size"), "liferea_web_view.zoom-in");
 		g_menu_append (section, _("_Decrease Text Size"), "liferea_web_view.zoom-out");
 	}
+
+	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
+	g_object_unref (section);
+	section = g_menu_new ();
+
+	g_menu_append (section, _("_Reader Mode"), "liferea_web_view.toggle-reader-mode");
 
 	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 	g_object_unref (section);
@@ -282,13 +288,30 @@ on_popup_webinspector_activate (GSimpleAction *action, GVariant *parameter, gpoi
 	webkit_web_inspector_show (WEBKIT_WEB_INSPECTOR(inspector));
 }
 
+static void
+on_popup_toggle_reader_mode_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	gboolean reader = g_variant_get_boolean (parameter);
+	gchar *cmd = g_strdup_printf ("readerEnabled=%s; load();\n", g_variant_print (parameter, FALSE));
+
+	webkit_web_view_run_javascript (WEBKIT_WEB_VIEW (user_data),
+	                                cmd,
+	                                NULL,
+	                                NULL,
+	                                NULL);
+	g_simple_action_set_state (action, g_variant_new_boolean (reader));
+
+	g_free (cmd);
+}
+
 static const GActionEntry liferea_web_view_gaction_entries[] = {
 	{"save-link", on_popup_save_link_activate, "s", NULL, NULL},
 	{"subscribe-link", on_popup_subscribe_link_activate, "s", NULL, NULL},
 	{"copy-selection", on_popup_copy_activate, NULL, NULL, NULL},
 	{"zoom-in", on_popup_zoomin_activate, NULL, NULL, NULL},
 	{"zoom-out", on_popup_zoomout_activate, NULL, NULL, NULL},
-	{"web-inspector", on_popup_webinspector_activate, NULL, NULL, NULL}
+	{"web-inspector", on_popup_webinspector_activate, NULL, NULL, NULL},
+	{"toggle-reader-mode", NULL, NULL, "true", on_popup_toggle_reader_mode_activate}
 };
 
 static void

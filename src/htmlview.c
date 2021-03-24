@@ -141,8 +141,6 @@ htmlview_start_output (GString *buffer,
 	"\n"
 	"\n		if(false == readerEnabled) {"
 	"\n			document.body.innerHTML = decodeURIComponent(content);"
-	"\n			var readerbtn = document.querySelector('.head_readerbtn');"
-	"\n			readerbtn.classList.add('inactive')"
 	"\n			return;"
 	"\n		}"
 	"\n       	try {"

@@ -99,9 +99,11 @@ void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *
  * @htmlview:		the HTML view to use
  * @url:		URL to launch
  *
- * Launches the specified URL in the external browser or handles
- * a special URL by triggering HTML generation. Otherwise returns
- * FALSE to indicate the HTML widget should launch the link.
+ * Launches the specified URL either in external browser either by passing
+ * plain data to Readability.js or by unfiltered rendering. Alternativly it
+ * handles a special URL by triggering HTML generation.
+ *
+ * Returns FALSE to indicate the HTML widget should launch the link.
  *
  * To enforce a launching behaviour do use
  *
