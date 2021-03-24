@@ -1,3 +1,10 @@
+To be released
+
+	* Change reader mode toggle from item view icon to toggle entry in
+	  item view context menu.
+	  (Lars Windolf)
+
+
 2021-01-10   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.5
