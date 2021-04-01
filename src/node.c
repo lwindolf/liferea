@@ -349,19 +349,19 @@ node_to_xml (nodePtr node)
 	xmlNodePtr	rootNode;
 	gchar		*tmp;
 
-	doc = xmlNewDoc("1.0");
-	rootNode = xmlNewDocNode(doc, NULL, "node", NULL);
-	xmlDocSetRootElement(doc, rootNode);
+	doc = xmlNewDoc (BAD_CAST"1.0");
+	rootNode = xmlNewDocNode (doc, NULL, BAD_CAST"node", NULL);
+	xmlDocSetRootElement (doc, rootNode);
 
-	xmlNewTextChild(rootNode, NULL, "title", node_get_title(node));
+	xmlNewTextChild (rootNode, NULL, BAD_CAST"title", BAD_CAST node_get_title (node));
 
-	tmp = g_strdup_printf("%u", node->unreadCount);
-	xmlNewTextChild(rootNode, NULL, "unreadCount", tmp);
-	g_free(tmp);
+	tmp = g_strdup_printf ("%u", node->unreadCount);
+	xmlNewTextChild (rootNode, NULL, BAD_CAST"unreadCount", BAD_CAST tmp);
+	g_free (tmp);
 
-	tmp = g_strdup_printf("%u", g_slist_length(node->children));
-	xmlNewTextChild(rootNode, NULL, "children", tmp);
-	g_free(tmp);
+	tmp = g_strdup_printf ("%u", g_slist_length (node->children));
+	xmlNewTextChild (rootNode, NULL, BAD_CAST"children", BAD_CAST tmp);
+	g_free (tmp);
 
 	return doc;
 }
