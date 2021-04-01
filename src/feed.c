@@ -164,8 +164,13 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 	xmlNewTextChild (feedNode, NULL, BAD_CAST"feedId", BAD_CAST node_get_id (node));
 	xmlNewTextChild (feedNode, NULL, BAD_CAST"feedTitle", BAD_CAST node_get_title (node));
 
-	if (node->subscription)
+	if (node->subscription) {
 		subscription_to_xml (node->subscription, feedNode);
+
+		tmp = g_strdup_printf("%d", node->subscription->error);
+		xmlNewTextChild(feedNode, NULL, BAD_CAST"error", BAD_CAST tmp);
+		g_free(tmp);
+	}
 
 	tmp = g_strdup_printf("%d", node->available?1:0);
 	xmlNewTextChild(feedNode, NULL, BAD_CAST"feedStatus", BAD_CAST tmp);
@@ -177,10 +182,6 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 
 	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
 		xmlNewTextChild(feedNode, NULL, BAD_CAST"parseError", BAD_CAST feed->parseErrors->str);
-
-	tmp = g_strdup_printf("%d", node->subscription->error);
-	xmlNewTextChild(feedNode, NULL, BAD_CAST"error", BAD_CAST tmp);
-	g_free(tmp);
 }
 
 xmlDocPtr
