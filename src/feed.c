@@ -57,24 +57,23 @@ feed_new (void)
 static void
 feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 {
-	gchar		*cacheLimitStr, *title;
-	gchar		*tmp;
+	xmlChar		*cacheLimitStr, *title,	*tmp;
 	feedPtr		feed = NULL;
 
 	xmlChar	*typeStr = xmlGetProp (xml, BAD_CAST"type");
 
 	feed = feed_new ();
-	feed->fhp = feed_type_str_to_fhp (typeStr);
+	feed->fhp = feed_type_str_to_fhp ((gchar *)typeStr);
 
 	node_set_data (node, feed);
 	node_set_subscription (node, subscription_import (xml, trusted));
 
 	/* Set the feed cache limit */
 	cacheLimitStr = xmlGetProp (xml, BAD_CAST "cacheLimit");
-	if (cacheLimitStr && !xmlStrcmp (cacheLimitStr, "unlimited"))
+	if (cacheLimitStr && !xmlStrcmp (cacheLimitStr, BAD_CAST"unlimited"))
 		feed->cacheLimit = CACHE_UNLIMITED;
 	else
-		feed->cacheLimit = common_parse_long (cacheLimitStr, CACHE_DEFAULT);
+		feed->cacheLimit = common_parse_long ((gchar *)cacheLimitStr, CACHE_DEFAULT);
 	xmlFree (cacheLimitStr);
 
 	/* enclosure auto download flag */
@@ -106,7 +105,7 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 		title = xmlGetProp (xml, BAD_CAST"text");
 	}
 
-	node_set_title (node, title);
+	node_set_title (node, (gchar *)title);
 	xmlFree (title);
 
 	if (node->subscription)
@@ -162,25 +161,25 @@ feed_add_xml_attributes (nodePtr node, xmlNodePtr feedNode)
 	feedPtr	feed = (feedPtr)node->data;
 	gchar	*tmp;
 
-	xmlNewTextChild (feedNode, NULL, "feedId", node_get_id (node));
-	xmlNewTextChild (feedNode, NULL, "feedTitle", node_get_title (node));
+	xmlNewTextChild (feedNode, NULL, BAD_CAST"feedId", BAD_CAST node_get_id (node));
+	xmlNewTextChild (feedNode, NULL, BAD_CAST"feedTitle", BAD_CAST node_get_title (node));
 
 	if (node->subscription)
 		subscription_to_xml (node->subscription, feedNode);
 
 	tmp = g_strdup_printf("%d", node->available?1:0);
-	xmlNewTextChild(feedNode, NULL, "feedStatus", tmp);
+	xmlNewTextChild(feedNode, NULL, BAD_CAST"feedStatus", BAD_CAST tmp);
 	g_free(tmp);
 
 	tmp = g_strdup_printf("file://%s", node_get_favicon_file (node));
-	xmlNewTextChild(feedNode, NULL, "favicon", tmp);
+	xmlNewTextChild(feedNode, NULL, BAD_CAST"favicon", BAD_CAST tmp);
 	g_free(tmp);
 
 	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
-		xmlNewTextChild(feedNode, NULL, "parseError", feed->parseErrors->str);
+		xmlNewTextChild(feedNode, NULL, BAD_CAST"parseError", BAD_CAST feed->parseErrors->str);
 
 	tmp = g_strdup_printf("%d", node->subscription->error);
-	xmlNewTextChild(feedNode, NULL, "error", tmp);
+	xmlNewTextChild(feedNode, NULL, BAD_CAST"error", BAD_CAST tmp);
 	g_free(tmp);
 }
 
@@ -190,8 +189,8 @@ feed_to_xml (nodePtr node, xmlNodePtr feedNode)
 	xmlDocPtr	doc = NULL;
 
 	if (!feedNode) {
-		doc = xmlNewDoc ("1.0");
-		feedNode = xmlNewDocNode (doc, NULL, "feed", NULL);
+		doc = xmlNewDoc (BAD_CAST"1.0");
+		feedNode = xmlNewDocNode (doc, NULL, BAD_CAST"feed", NULL);
 		xmlDocSetRootElement (doc, feedNode);
 	}
 	feed_add_xml_attributes (node, feedNode);
@@ -308,14 +307,12 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 {
 	feedParserCtxtPtr	ctxt;
 	nodePtr			node = subscription->node;
-	feedPtr			feed = (feedPtr)node->data;
-	guint			count;
 
 	debug_enter ("feed_process_update_result");
 
 	ctxt = feed_parser_ctxt_new (subscription, result->data, result->size);
 
-  /* try to parse the feed */
+	/* try to parse the feed */
 	if (!feed_parse (ctxt)) {
 		/* No feed found, display an error */
 		node->available = FALSE;
