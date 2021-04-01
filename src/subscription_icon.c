@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  Downloading suitable subscription icons
  *
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,8 +49,6 @@ subscription_icon_download_ctxt_new ()
 static void
 subscription_icon_download_ctxt_free (iconDownloadCtxtPtr ctxt)
 {
-	GSList  *iter;
-
 	if (!ctxt)
 		return;
 
@@ -77,7 +75,6 @@ static void
 subscription_icon_download_data_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags)
 {
 	iconDownloadCtxtPtr ctxt = (iconDownloadCtxtPtr)user_data;
-	gchar		*tmp;
 	gboolean	success = FALSE;
 
 	debug4 (DEBUG_UPDATE, "icon download processing (%s, %d bytes, content type %s) for favicon %s", result->source, result->size, result->contentType, ctxt->id);
