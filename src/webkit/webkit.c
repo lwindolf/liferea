@@ -392,12 +392,29 @@ liferea_webkit_impl_download_started (WebKitWebContext	*context,
 }
 
 static void
+liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer user_data)
+{
+	const gchar *uri = webkit_uri_scheme_request_get_uri (request);
+	GInputStream *stream;
+	gssize length;
+	gchar *contents;
+
+	contents = g_strdup_printf ("Placeholder handler for liferea scheme. URI requested : %s", uri);
+	length = (gssize) strlen (contents);
+	stream = g_memory_input_stream_new_from_data (contents, length, g_free);
+	webkit_uri_scheme_request_finish (request, stream, length, "text/plain");
+	g_object_unref (stream);
+}
+
+static void
 liferea_webkit_impl_init (LifereaWebKitImpl *self)
 {
 	gboolean	disable_javascript, enable_plugins, enable_itp;
 	WebKitSecurityManager *security_manager;
 	WebKitWebsiteDataManager *website_data_manager;
 	self->dbus_connections = NULL;
+	webkit_web_context_register_uri_scheme (webkit_web_context_get_default(), "liferea",
+		(WebKitURISchemeRequestCallback) liferea_webkit_handle_liferea_scheme,NULL,NULL);
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
 	website_data_manager = webkit_web_context_get_website_data_manager (webkit_web_context_get_default ());
