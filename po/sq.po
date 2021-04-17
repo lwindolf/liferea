@@ -462,7 +462,7 @@ msgstr "Kërkesa për përditësim u anulua"
 
 #: ../src/net.c:346
 msgid "Unable to resolve destination host name"
-msgstr "S’arrihet të ftillohet emër strehe vendmbërrijte"
+msgstr "S’arrihet të ftillohet emër strehe vendmbërritje"
 
 #: ../src/net.c:347
 msgid "Unable to resolve proxy host name"
