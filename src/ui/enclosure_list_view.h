@@ -1,7 +1,7 @@
 /**
  * @file enclosure-list-view.h enclosures list view
  *
- * Copyright (C) 2005-2008 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,71 +28,67 @@ G_BEGIN_DECLS
 #include "item.h"
 #include "enclosure.h"		// FIXME: should not be necessary
 
-#define ENCLOSURE_LIST_VIEW_TYPE		(enclosure_list_view_get_type ())
-#define ENCLOSURE_LIST_VIEW(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), ENCLOSURE_LIST_VIEW_TYPE, EnclosureListView))
-#define ENCLOSURE_LIST_VIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), ENCLOSURE_LIST_VIEW_TYPE, EnclosureListViewClass))
-#define IS_ENCLOSURE_LIST_VIEW(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), ENCLOSURE_LIST_VIEW_TYPE))
-#define IS_ENCLOSURE_LIST_VIEW_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), ENCLOSURE_LIST_VIEW_TYPE))
-
-typedef struct EnclosureListView		EnclosureListView;
-typedef struct EnclosureListViewClass	EnclosureListViewClass;
-typedef struct EnclosureListViewPrivate	EnclosureListViewPrivate;
-
-struct EnclosureListView
-{
-	GObject		parent;
-	
-	/*< private >*/
-	EnclosureListViewPrivate	*priv;
-};
-
-struct EnclosureListViewClass 
-{
-	GObjectClass parent_class;
-};
-
-GType enclosure_list_view_get_type	(void);
+#define ENCLOSURE_LIST_VIEW_TYPE (enclosure_list_view_get_type ())
+G_DECLARE_FINAL_TYPE (EnclosureListView, enclosure_list_view, ENCLOSURE_LIST, VIEW, GObject)
 
 /**
+ * enclosure_list_view_new:
  * Sets up a new enclosure list view.
  *
- * @returns a new enclosure list view
+ * Returns: (transfer none): a new enclosure list view
  */
 EnclosureListView * enclosure_list_view_new (void);
 
 /**
+ * enclosure_list_view_get_widget: (skip)
+ *
  * Returns the rendering widget for a HTML view. Only
  * to be used by ui_mainwindow.c for widget reparenting.
- *
- * @param elv	the enclosure list view
- *
- * @returns the rendering widget
  */
 GtkWidget * enclosure_list_view_get_widget (EnclosureListView *elv);
 
 /**
+ * enclosure_list_view_load:
  * Loads the enclosure list of the given item into the
  * given enclosure list view widget.
  *
- * @param elv	the enclosure list view
- * @param item	the item
+ * @elv:	the enclosure list view
+ * @item:	the item
  */
 void enclosure_list_view_load (EnclosureListView *elv, itemPtr item);
 
 /**
  * enclosure_list_view_select:
+ * @elv:		the enclosure list view
+ * @position:	the position to select
  *
  * Select the nth enclosure in the enclosure list.
- *
- * @elv:	the enclosure list view
- * @position:	the position to select
  */
 void enclosure_list_view_select (EnclosureListView *elv, guint position);
 
 /**
+ * enclosure_list_view_select_next:
+ * @elv:	the enclosure list view
+ *
+ * Select the next enclosure in the list, or the first if none was
+ * selected or the end of the list was reached.
+ */
+void enclosure_list_view_select_next (EnclosureListView *elv);
+
+
+/**
+ * enclosure_list_view_open_next:
+ * @elv: the enclosure list view
+ *
+ * Select the next enclosure in the list and open it.
+ */
+void enclosure_list_view_open_next (EnclosureListView *elv);
+
+/**
+ * enclosure_list_view_hide:
  * Hides the enclosure list view.
  *
- * @param elv	the enclosure list view
+ * @elv:	the enclosure list view
  */
 void enclosure_list_view_hide (EnclosureListView *elv);
 
@@ -107,4 +103,4 @@ void ui_enclosure_change_type (encTypePtr type);
 
 G_END_DECLS
 
-#endif /* _UI_ENCLOSURE_H */
+#endif

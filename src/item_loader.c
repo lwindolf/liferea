@@ -1,7 +1,7 @@
 /**
  * @file item_loader.c   Asynchronously loading items
  *
- * Copyright (C) 2011 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2011-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 #include "item_loader.h"
 
-#define ITEM_LOADER_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), ITEM_LOADER_TYPE, ItemLoaderPrivate))
+#define ITEM_LOADER_GET_PRIVATE item_loader_get_instance_private
 
 struct ItemLoaderPrivate {
 	fetchCallbackPtr	fetchCallback;		/**< the function to call after each item fetch */
@@ -41,15 +41,17 @@ static guint item_loader_signals[LAST_SIGNAL] = { 0 };
 
 static GObjectClass *parent_class = NULL;
 
-G_DEFINE_TYPE (ItemLoader, item_loader, G_TYPE_OBJECT);
+G_DEFINE_TYPE_WITH_CODE (ItemLoader, item_loader, G_TYPE_OBJECT, G_ADD_PRIVATE (ItemLoader));
 
 static void
 item_loader_finalize (GObject *object)
 {
 	ItemLoader *il = ITEM_LOADER (object);
 
-	if (il->priv->idleId)
+	if (il->priv->idleId) {
 		g_source_remove (il->priv->idleId);
+		il->priv->idleId = 0;
+	}
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -63,11 +65,11 @@ item_loader_class_init (ItemLoaderClass *klass)
 
 	object_class->finalize = item_loader_finalize;
 
-	item_loader_signals[ITEM_BATCH_FETCHED] = 
+	item_loader_signals[ITEM_BATCH_FETCHED] =
 		g_signal_new ("item-batch-fetched",
 		G_OBJECT_CLASS_TYPE (object_class),
 		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
-		0, 
+		0,
 		NULL,
 		NULL,
 		g_cclosure_marshal_VOID__POINTER,
@@ -75,18 +77,16 @@ item_loader_class_init (ItemLoaderClass *klass)
 		1,
 		G_TYPE_POINTER);
 
-	item_loader_signals[FINISHED] = 
+	item_loader_signals[FINISHED] =
 		g_signal_new ("finished",
 		G_OBJECT_CLASS_TYPE (object_class),
 		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
-		0, 
+		0,
 		NULL,
 		NULL,
 		g_cclosure_marshal_VOID__VOID,
 		G_TYPE_NONE,
 		0);
-
-	g_type_class_add_private (object_class, sizeof(ItemLoaderPrivate));
 }
 
 static void
@@ -111,14 +111,16 @@ item_loader_fetch (gpointer user_data)
 	result = (*il->priv->fetchCallback)(il->priv->fetchCallbackData, &resultItems);
 	if (result)
 		g_signal_emit_by_name (il, "item-batch-fetched", resultItems);
-	else
+	else {
+		il->priv->idleId = 0;
 		g_signal_emit_by_name (il, "finished");
+	}
 
 	return result;
 }
 
 void
-item_loader_start (ItemLoader *il) 
+item_loader_start (ItemLoader *il)
 {
 	il->priv->idleId = g_idle_add (item_loader_fetch, il);
 }

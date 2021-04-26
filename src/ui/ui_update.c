@@ -1,7 +1,7 @@
 /**
  * @file ui_update.c GUI update monitor
  * 
- * Copyright (C) 2006-2008 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,16 +52,20 @@ static void ui_update_remove_request(nodePtr node, GtkTreeStore *store, GHashTab
 
 static void ui_update_merge_request(nodePtr node, GtkTreeStore *store, GHashTable *hash) {
 	GtkTreeIter	*iter;
+        gchar           *title;
 
 	if(NULL != (iter = (GtkTreeIter *)g_hash_table_lookup(hash, (gpointer)node->id)))
 		return;
 
 	iter = g_new0(GtkTreeIter, 1);
 	gtk_tree_store_append(store, iter, NULL);
-	gtk_tree_store_set(store, iter, UM_REQUEST_TITLE, node_get_title(node), 
+        title = g_markup_escape_text (node_get_title (node), -1);
+	gtk_tree_store_set(store, iter, UM_REQUEST_TITLE, title,
 	                                UM_FAVICON, node_get_icon(node),
 	                                -1);
 	g_hash_table_insert(hash, (gpointer)node->id, (gpointer)iter);
+
+        g_free (title);
 }
 
 static void
@@ -133,18 +137,19 @@ on_close_update_monitor_clicked(GtkButton *button, gpointer user_data)
 	gtk_widget_destroy(umdialog);
 }
  
-void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
+void
+on_menu_show_update_monitor(GSimpleAction *action, GVariant *parameter, gpointer user_data) {
 	GtkCellRenderer		*textRenderer, *iconRenderer;	
 	GtkTreeViewColumn 	*column;
 	GtkTreeView		*view;
 
 	if(!umdialog) {
-		umdialog = liferea_dialog_new (NULL, "updatedialog");
+		umdialog = liferea_dialog_new ("update_monitor");
 		g_signal_connect (G_OBJECT (umdialog), "destroy", G_CALLBACK (on_update_monitor_destroyed_cb), NULL);
 		
 		/* Set up left store and view */
 		view = GTK_TREE_VIEW(liferea_dialog_lookup(umdialog, "left"));
-		um1store = gtk_tree_store_new(UM_LEN, GDK_TYPE_PIXBUF, G_TYPE_STRING);
+		um1store = gtk_tree_store_new(UM_LEN, G_TYPE_ICON, G_TYPE_STRING);
 		gtk_tree_view_set_model(view, GTK_TREE_MODEL(um1store));
 
 		textRenderer = gtk_cell_renderer_text_new();
@@ -153,13 +158,13 @@ void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
 	
 		gtk_tree_view_column_pack_start(column, iconRenderer, FALSE);
 		gtk_tree_view_column_pack_start(column, textRenderer, TRUE);
-		gtk_tree_view_column_add_attribute(column, iconRenderer, "pixbuf", UM_FAVICON);
+		gtk_tree_view_column_add_attribute(column, iconRenderer, "gicon", UM_FAVICON);
 		gtk_tree_view_column_add_attribute(column, textRenderer, "markup", UM_REQUEST_TITLE);
 		gtk_tree_view_append_column(view, column);
 		
 		/* Set up right store and view */
 		view = GTK_TREE_VIEW(liferea_dialog_lookup(umdialog, "right"));
-		um2store = gtk_tree_store_new(UM_LEN, GDK_TYPE_PIXBUF, G_TYPE_STRING);
+		um2store = gtk_tree_store_new(UM_LEN, G_TYPE_ICON, G_TYPE_STRING);
 		gtk_tree_view_set_model(view, GTK_TREE_MODEL(um2store));
 
 		textRenderer = gtk_cell_renderer_text_new();
@@ -168,7 +173,7 @@ void on_menu_show_update_monitor(GtkWidget *widget, gpointer user_data) {
 	
 		gtk_tree_view_column_pack_start(column, iconRenderer, FALSE);
 		gtk_tree_view_column_pack_start(column, textRenderer, TRUE);
-		gtk_tree_view_column_add_attribute(column, iconRenderer, "pixbuf", UM_FAVICON);
+		gtk_tree_view_column_add_attribute(column, iconRenderer, "gicon", UM_FAVICON);
 		gtk_tree_view_column_add_attribute(column, textRenderer, "markup", UM_REQUEST_TITLE);
 		gtk_tree_view_append_column(view, column);		
 		

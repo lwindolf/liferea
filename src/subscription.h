@@ -1,12 +1,12 @@
 /**
  * @file subscription.h  common subscription handling interface
- * 
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,7 +19,7 @@
  */
 #ifndef _SUBSCRIPTION_H
 #define _SUBSCRIPTION_H
- 
+
 #include <glib.h>
 #include <libxml/parser.h>
 #include "node.h"
@@ -37,28 +37,42 @@ enum cache_limit {
 enum feed_request_flags {
 	FEED_REQ_RESET_TITLE		= (1<<0),	/**< Feed's title should be reset to default upon update */
 	FEED_REQ_PRIORITY_HIGH		= (1<<3),	/**< set to signal that this is an important user triggered request */
+	FEED_REQ_NO_FEED                = (1<<4)	/**< Requesting something not a feed (just for statistics) */
 };
- 
+
+/** Subscription fetching error types */
+typedef enum fetchError {
+	FETCH_ERROR_NONE     = 0,
+	FETCH_ERROR_AUTH     = 1 << 0,
+	FETCH_ERROR_NET      = 1 << 1,
+	FETCH_ERROR_DISCOVER = 1 << 2,
+	FETCH_ERROR_XML      = 1 << 3
+	/* when adding stuff here, extend xstl/feed.xml.in also! */
+} fetchError;
+
 /** Common structure to hold all information about a single subscription. */
 typedef struct subscription {
 	nodePtr		node;			/**< the feed list node the subscription is attached to */
 	struct subscriptionType *type;		/**< the subscription type */
-	
+
 	gchar		*source;		/**< current source, can be changed by redirects */
 	gchar		*origSource;		/**< the source given when creating the subscription */
 	updateOptionsPtr updateOptions;		/**< update options for the feed source */
 	struct updateJob *updateJob;		/**< update request structure used when downloading the subscribed source */
-	
-	gint		updateInterval;		/**< user defined update interval in minutes */	
+
+	gint		updateInterval;		/**< user defined update interval in minutes */
 	guint		defaultInterval;	/**< optional update interval as specified by the feed in minutes */
-	
+
 	GSList		*metadata;		/**< metadata list assigned to this subscription */
-	
+
+	fetchError	error;			/**< Fetch error code (used for user-facing UI to differentiate subscription update processing phases) */
 	gchar		*updateError;		/**< textual description of processing errors */
 	gchar		*httpError;		/**< textual description of HTTP protocol errors */
 	gint		httpErrorCode;		/**< last HTTP error code */
 	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) */
-	
+
+	guint		autoDiscoveryTries;	/**< counter to break auto discovery redirect circles */
+
 	gboolean	activeAuth;		/**< TRUE if authentication in progress */
 
 	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
@@ -106,7 +120,7 @@ void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean
 void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
 
 /**
- * Triggers updating a subscription. Will download the 
+ * Triggers updating a subscription. Will download the
  * the document indicated by the source URL of the subscription.
  * Will call the node type specific update callback to process
  * the downloaded data.
@@ -173,7 +187,7 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
  *
  * @param subscription	the subscription
  */
-void subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now);
+void subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now);
 
 void subscription_update_favicon (subscriptionPtr subscription);
 
@@ -232,7 +246,7 @@ void subscription_set_filter(subscriptionPtr subscription, const gchar * filter)
 
 /**
  * Set authentication information for a given subscription
- * 
+ *
  * @param subscription	the subscription
  * @param username	the user name
  * @param password	the password
@@ -243,7 +257,7 @@ void subscription_set_auth_info (subscriptionPtr subscription, const gchar *user
  * Frees the given subscription structure.
  *
  * @param subscription	the subscription
- */ 
+ */
 void subscription_free(subscriptionPtr subscription);
 
 #endif

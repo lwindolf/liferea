@@ -1,15 +1,12 @@
 [encoding: UTF-8]
-
 # List of source files containing translatable strings.
-
-liferea.appdata.xml.in
-liferea.desktop.in
-xslt/feed.xml.in
-xslt/source.xml.in
-xslt/folder.xml.in
-xslt/item.xml.in
-xslt/newsbin.xml.in
-xslt/vfolder.xml.in
+net.sourceforge.liferea.appdata.xml.in
+net.sourceforge.liferea.desktop.in
+plugins/getfocus.py
+plugins/headerbar.py
+plugins/libnotify.py
+plugins/plugin-installer.py
+plugins/trayicon.py
 src/browser.c
 src/browser_history.c
 src/comments.c
@@ -31,10 +28,35 @@ src/favicon.c
 src/favicon.h
 src/feed.c
 src/feed.h
-src/feed_parser.c
-src/feed_parser.h
 src/feedlist.c
 src/feedlist.h
+src/feed_parser.c
+src/feed_parser.h
+src/fl_sources/default_source.c
+src/fl_sources/default_source.h
+src/fl_sources/dummy_source.c
+src/fl_sources/dummy_source.h
+src/fl_sources/google_source.c
+src/fl_sources/google_source.h
+src/fl_sources/node_source.c
+src/fl_sources/node_source.h
+src/fl_sources/opml_source.c
+src/fl_sources/opml_source.h
+src/fl_sources/reedah_source.c
+src/fl_sources/reedah_source_feed.c
+src/fl_sources/reedah_source_feed_list.c
+src/fl_sources/reedah_source_feed_list.h
+src/fl_sources/reedah_source.h
+src/fl_sources/theoldreader_source.c
+src/fl_sources/theoldreader_source_feed.c
+src/fl_sources/theoldreader_source_feed_list.c
+src/fl_sources/theoldreader_source_feed_list.h
+src/fl_sources/theoldreader_source.h
+src/fl_sources/ttrss_source.c
+src/fl_sources/ttrss_source_feed.c
+src/fl_sources/ttrss_source_feed_list.c
+src/fl_sources/ttrss_source_feed_list.h
+src/fl_sources/ttrss_source.h
 src/folder.c
 src/folder.h
 src/html.c
@@ -45,12 +67,13 @@ src/item.c
 src/item.h
 src/item_history.c
 src/item_history.h
-src/item_loader.c
-src/item_loader.h
 src/itemlist.c
 src/itemlist.h
+src/item_loader.c
+src/item_loader.h
 src/itemset.c
 src/itemset.h
+src/liferea_application.c
 src/main.c
 src/metadata.c
 src/metadata.h
@@ -61,6 +84,30 @@ src/node.c
 src/node.h
 src/node_type.c
 src/node_type.h
+src/parsers/atom10.c
+src/parsers/atom10.h
+src/parsers/html5_feed.c
+src/parsers/html5_feed.h
+src/parsers/ldjson_feed.c
+src/parsers/ldjson_feed.h
+src/parsers/ns_admin.c
+src/parsers/ns_admin.h
+src/parsers/ns_ag.c
+src/parsers/ns_ag.h
+src/parsers/ns_cC.c
+src/parsers/ns_cC.h
+src/parsers/ns_content.c
+src/parsers/ns_content.h
+src/parsers/ns_dc.c
+src/parsers/ns_dc.h
+src/parsers/ns_slash.c
+src/parsers/ns_slash.h
+src/parsers/ns_syn.c
+src/parsers/ns_syn.h
+src/parsers/rss_channel.c
+src/parsers/rss_channel.h
+src/parsers/rss_item.c
+src/parsers/rss_item.h
 src/render.c
 src/render.h
 src/rule.c
@@ -69,129 +116,88 @@ src/social.c
 src/social.h
 src/subscription.c
 src/subscription.h
+src/subscription_icon.c
+src/subscription_icon.h
 src/subscription_type.h
+src/ui/auth_dialog.c
+src/ui/auth_dialog.h
+src/ui/browser_tabs.c
+src/ui/browser_tabs.h
+src/ui/enclosure_list_view.c
+src/ui/enclosure_list_view.h
+src/ui/feed_list_view.c
+src/ui/feed_list_view.h
+src/ui/icons.c
+src/ui/icons.h
+src/ui/item_list_view.c
+src/ui/item_list_view.h
+src/ui/itemview.c
+src/ui/itemview.h
+src/ui/liferea_dialog.c
+src/ui/liferea_dialog.h
+src/ui/liferea_htmlview.c
+src/ui/liferea_htmlview.h
+src/ui/liferea_shell.c
+src/ui/liferea_shell.c
+src/ui/liferea_shell.h
+src/ui/liferea_shell.h
+src/ui/popup_menu.c
+src/ui/popup_menu.h
+src/ui/preferences_dialog.c
+src/ui/preferences_dialog.h
+src/ui/rule_editor.c
+src/ui/rule_editor.h
+src/ui/search_dialog.c
+src/ui/search_dialog.h
+src/ui/search_folder_dialog.c
+src/ui/search_folder_dialog.h
+src/ui/subscription_dialog.c
+src/ui/subscription_dialog.h
+src/ui/ui_common.c
+src/ui/ui_dnd.c
+src/ui/ui_dnd.h
+src/ui/ui_folder.c
+src/ui/ui_folder.h
+src/ui/ui_update.c
+src/ui/ui_update.h
 src/update.c
 src/update.h
 src/vfolder.c
 src/vfolder.h
 src/vfolder_loader.c
 src/vfolder_loader.h
+src/webkit/liferea_web_view.c
+src/webkit/web_extension/liferea_web_extension.c
+src/webkit/web_extension/web_extension_main.c
+src/webkit/webkit.c
 src/xml.c
 src/xml.h
-src/ui/enclosure_list_view.c
-src/ui/enclosure_list_view.h
-src/ui/icons.c
-src/ui/icons.h
-src/ui/itemview.c
-src/ui/itemview.h
-src/ui/liferea_shell.c
-src/ui/liferea_shell.h
-src/ui/rule_editor.c
-src/ui/rule_editor.h
-src/ui/search_dialog.c
-src/ui/search_dialog.h
-src/ui/search_folder_dialog.h
-src/ui/search_folder_dialog.c
-src/ui/auth_dialog.c
-src/ui/auth_dialog.h
-src/ui/liferea_dialog.c
-src/ui/liferea_dialog.h
-src/ui/ui_common.c
-src/ui/ui_dnd.c
-src/ui/ui_dnd.h
-src/ui/feed_list_view.c
-src/ui/feed_list_view.h
-src/ui/ui_folder.c
-src/ui/ui_folder.h
-src/ui/liferea_htmlview.c
-src/ui/liferea_htmlview.h
-src/ui/item_list_view.c
-src/ui/item_list_view.h
-src/ui/liferea_shell.c
-src/ui/liferea_shell.h
-src/ui/popup_menu.c
-src/ui/popup_menu.h
-src/ui/preferences_dialog.c
-src/ui/preferences_dialog.h
-src/ui/feed_list_node.c
-src/ui/feed_list_node.h
-src/ui/subscription_dialog.c
-src/ui/subscription_dialog.h
-src/ui/browser_tabs.c
-src/ui/browser_tabs.h
-src/ui/ui_update.c
-src/ui/ui_update.h
-src/parsers/atom10.c
-src/parsers/atom10.h
-src/parsers/cdf_channel.c
-src/parsers/cdf_channel.h
-src/parsers/cdf_item.c
-src/parsers/cdf_item.h
-src/parsers/ns_admin.c
-src/parsers/ns_admin.h
-src/parsers/ns_ag.c
-src/parsers/ns_ag.h
-src/parsers/ns_blogChannel.c
-src/parsers/ns_blogChannel.h
-src/parsers/ns_cC.c
-src/parsers/ns_cC.h
-src/parsers/ns_content.c
-src/parsers/ns_content.h
-src/parsers/ns_dc.c
-src/parsers/ns_dc.h
-src/parsers/ns_photo.c
-src/parsers/ns_photo.h
-src/parsers/ns_slash.c
-src/parsers/ns_slash.h
-src/parsers/ns_syn.c
-src/parsers/ns_syn.h
-src/parsers/pie_entry.c
-src/parsers/pie_entry.h
-src/parsers/pie_feed.c
-src/parsers/pie_feed.h
-src/parsers/rss_channel.c
-src/parsers/rss_channel.h
-src/parsers/rss_item.c
-src/parsers/rss_item.h
-src/fl_sources/aol_source.c
-src/fl_sources/default_source.c
-src/fl_sources/default_source.h
-src/fl_sources/dummy_source.c
-src/fl_sources/dummy_source.h
-src/fl_sources/inoreader_source.c
-src/fl_sources/inoreader_source.h
-src/fl_sources/google_source.c
-src/fl_sources/google_source.h
-src/fl_sources/opml_source.c
-src/fl_sources/opml_source.h
-src/fl_sources/node_source.c
-src/fl_sources/node_source.h
-src/fl_sources/reedah_source.c
-src/fl_sources/reedah_source.h
-src/fl_sources/reedah_source_feed.c
-src/fl_sources/reedah_source_feed_list.c
-src/fl_sources/reedah_source_feed_list.h
-src/fl_sources/ttrss_source.c
-src/fl_sources/ttrss_source.h
-src/fl_sources/ttrss_source_feed.c
-src/fl_sources/ttrss_source_feed_list.c
-src/fl_sources/ttrss_source_feed_list.h
-src/fl_sources/theoldreader_source.c
-src/fl_sources/theoldreader_source.h
-src/fl_sources/theoldreader_source_feed.c
-src/fl_sources/theoldreader_source_feed_list.c
-src/fl_sources/theoldreader_source_feed_list.h
-src/webkit/webkit.c
+[type: gettext/glade]glade/about.ui
 [type: gettext/glade]glade/auth.ui
-[type: gettext/glade]glade/google_source.ui
-[type: gettext/glade]glade/inoreader_source.ui
-[type: gettext/glade]glade/liferea.ui
+[type: gettext/glade]glade/enclosure_handler.ui
+[type: gettext/glade]glade/liferea_menu.ui
+[type: gettext/glade]glade/liferea_toolbar.ui
+[type: gettext/glade]glade/mainwindow.ui
+[type: gettext/glade]glade/mark_read_dialog.ui
+[type: gettext/glade]glade/new_folder.ui
+[type: gettext/glade]glade/new_newsbin.ui
 [type: gettext/glade]glade/new_subscription.ui
 [type: gettext/glade]glade/node_source.ui
 [type: gettext/glade]glade/opml_source.ui
 [type: gettext/glade]glade/prefs.ui
+[type: gettext/glade]glade/properties.ui
 [type: gettext/glade]glade/reedah_source.ui
+[type: gettext/glade]glade/rename_node.ui
 [type: gettext/glade]glade/search_folder.ui
+[type: gettext/glade]glade/search.ui
+[type: gettext/glade]glade/simple_search.ui
 [type: gettext/glade]glade/simple_subscription.ui
-[type: gettext/glade]glade/ttrss_source.ui
 [type: gettext/glade]glade/theoldreader_source.ui
+[type: gettext/glade]glade/ttrss_source.ui
+[type: gettext/glade]glade/update_monitor.ui
+xslt/feed.xml.in
+xslt/folder.xml.in
+xslt/item.xml.in
+xslt/newsbin.xml.in
+xslt/source.xml.in
+xslt/vfolder.xml.in

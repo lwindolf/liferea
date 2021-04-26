@@ -1,7 +1,7 @@
 /**
  * @file vfolder.c  search folder node type
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
 static GSList		*vfolders = NULL;
 
 vfolderPtr
-vfolder_new (nodePtr node) 
+vfolder_new (nodePtr node)
 {
 	vfolderPtr	vfolder;
 
@@ -55,7 +55,7 @@ vfolder_new (nodePtr node)
 	node_set_data (node, (gpointer) vfolder);
 
 	debug_exit ("vfolder_new");
-	
+
 	return vfolder;
 }
 
@@ -63,17 +63,23 @@ static void
 vfolder_import_rules (xmlNodePtr cur,
                       vfolderPtr vfolder)
 {
-	xmlChar		*matchType, *type, *ruleId, *value, *additive;
-	
-	matchType = xmlGetProp (cur, BAD_CAST"matchType");
-	if (matchType) {
+	xmlChar		*tmp, *type, *ruleId, *value, *additive;
+
+	tmp = xmlGetProp (cur, BAD_CAST"matchType");
+	if (tmp)
 		/* currently we only OR or AND the rules,
 		   "any" is the value for OR'ing, "all" for AND'ing */
-		vfolder->itemset->anyMatch = (0 != xmlStrcmp (matchType, BAD_CAST"all"));
-	} else {
+		vfolder->itemset->anyMatch = (0 != xmlStrcmp (tmp, BAD_CAST"all"));
+	else
 		vfolder->itemset->anyMatch = TRUE;
-	}
-	xmlFree (matchType);
+	xmlFree (tmp);
+
+	tmp = xmlGetProp (cur, BAD_CAST"unreadOnly");
+	if (tmp)
+		vfolder->unreadOnly = (0 == xmlStrcmp (tmp, BAD_CAST"true"));
+	else
+		vfolder->unreadOnly = FALSE;
+	xmlFree (tmp);
 
 	/* process any children */
 	cur = cur->xmlChildrenNode;
@@ -86,17 +92,17 @@ vfolder_import_rules (xmlNodePtr cur,
 				value = xmlGetProp (cur, BAD_CAST"value");
 				additive = xmlGetProp (cur, BAD_CAST"additive");
 
-				if (ruleId && value) {			
+				if (ruleId && value) {
 					debug2 (DEBUG_CACHE, "loading rule \"%s\" \"%s\"", ruleId, value);
 
 					if (additive && !xmlStrcmp (additive, BAD_CAST"true"))
-						itemset_add_rule (vfolder->itemset, ruleId, value, TRUE);
+						itemset_add_rule (vfolder->itemset, (gchar *)ruleId, (gchar *)value, TRUE);
 					else
-						itemset_add_rule (vfolder->itemset, ruleId, value, FALSE);
+						itemset_add_rule (vfolder->itemset, (gchar *)ruleId, (gchar *)value, FALSE);
 				} else {
 					g_warning ("ignoring invalid rule entry for vfolder \"%s\"...\n", node_get_title (vfolder->node));
 				}
-				
+
 				xmlFree (ruleId);
 				xmlFree (value);
 				xmlFree (additive);
@@ -108,7 +114,7 @@ vfolder_import_rules (xmlNodePtr cur,
 }
 
 static itemSetPtr
-vfolder_load (nodePtr node) 
+vfolder_load (nodePtr node)
 {
 	return db_search_folder_load (node->id);
 }
@@ -117,13 +123,13 @@ void
 vfolder_foreach (nodeActionFunc func)
 {
 	GSList	*iter = vfolders;
-	
+
 	g_assert (NULL != func);
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
 		(*func)(vfolder->node);
-		iter = g_slist_next (iter);		
-	}	
+		iter = g_slist_next (iter);
+	}
 }
 
 GSList *
@@ -131,7 +137,7 @@ vfolder_get_all_with_item_id (itemPtr item)
 {
 	GSList	*result = NULL;
 	GSList	*iter = vfolders;
-	
+
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
 		if (itemset_check_item (vfolder->itemset, item))
@@ -147,7 +153,7 @@ vfolder_get_all_without_item_id (itemPtr item)
 {
 	GSList	*result = NULL;
 	GSList	*iter = vfolders;
-	
+
 	while (iter) {
 		vfolderPtr vfolder = (vfolderPtr)iter->data;
 		if (!itemset_check_item (vfolder->itemset, item))
@@ -162,7 +168,7 @@ static void
 vfolder_import (nodePtr node,
                 nodePtr parent,
                 xmlNodePtr cur,
-                gboolean trusted) 
+                gboolean trusted)
 {
 	vfolderPtr vfolder;
 
@@ -170,11 +176,10 @@ vfolder_import (nodePtr node,
 
 	vfolder = vfolder_new (node);
 
-	/* We use the itemset only to keep itemset rules, not to 
+	/* We use the itemset only to keep itemset rules, not to
 	   have the items in memory! Maybe the itemset<->filtering
 	   dependency is not a good idea... */
-	vfolder->itemset = g_new0 (struct itemSet, 1);
-	
+
 	vfolder_import_rules (cur, vfolder);
 }
 
@@ -189,10 +194,11 @@ vfolder_export (nodePtr node,
 	GSList		*iter;
 
 	debug_enter ("vfolder_export");
-	
+
 	g_assert (TRUE == trusted);
-	
+
 	xmlNewProp (cur, BAD_CAST"matchType", BAD_CAST (vfolder->itemset->anyMatch?"any":"all"));
+	xmlNewProp (cur, BAD_CAST"unreadOnly", BAD_CAST (vfolder->unreadOnly?"true":"false"));
 
 	iter = vfolder->itemset->rules;
 	while (iter) {
@@ -209,7 +215,7 @@ vfolder_export (nodePtr node,
 
 		iter = g_slist_next (iter);
 	}
-	
+
 	debug1 (DEBUG_CACHE, "adding vfolder: title=%s", node_get_title (node));
 
 	debug_exit ("vfolder_export");
@@ -235,15 +241,15 @@ vfolder_rebuild (nodePtr node)
 }
 
 static void
-vfolder_free (nodePtr node) 
+vfolder_free (nodePtr node)
 {
 	vfolderPtr	vfolder = (vfolderPtr) node->data;
 
 	debug_enter ("vfolder_free");
-	
+
 	vfolders = g_slist_remove (vfolders, vfolder);
 	itemset_free (vfolder->itemset);
-		
+
 	debug_exit ("vfolder_free");
 }
 
@@ -252,18 +258,15 @@ vfolder_free (nodePtr node)
 static void vfolder_save (nodePtr node) { }
 
 static void
-vfolder_update_counters (nodePtr node) 
+vfolder_update_counters (nodePtr node)
 {
-	/* There is no unread handling for search folders
-	   for performance reasons. So set everything to 0 
-	   here and don't bother with GUI updates... */
 	node->needsUpdate = TRUE;
-	node->unreadCount = 0;
+	node->unreadCount = db_search_folder_get_unread_count (node->id);
 	node->itemCount = db_search_folder_get_item_count (node->id);
 }
 
 static void
-vfolder_remove (nodePtr node) 
+vfolder_remove (nodePtr node)
 {
 	vfolder_reset (node->data);
 }
@@ -282,16 +285,16 @@ vfolder_add (void)
 	node = node_new (vfolder_get_node_type ());
 	vfolder_new (node);
 	vfolder_properties (node);
-	
+
 	return TRUE;
 }
 
 nodeTypePtr
 vfolder_get_node_type (void)
-{ 
+{
 	static struct nodeType nti = {
 		NODE_CAPABILITY_SHOW_ITEM_FAVICONS |
-		NODE_CAPABILITY_SHOW_ITEM_COUNT,
+		NODE_CAPABILITY_SHOW_UNREAD_COUNT,
 		"vfolder",
 		NULL,
 		vfolder_import,
@@ -307,5 +310,5 @@ vfolder_get_node_type (void)
 	};
 	nti.icon = icon_get (ICON_VFOLDER);
 
-	return &nti; 
+	return &nti;
 }

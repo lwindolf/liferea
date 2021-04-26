@@ -2,7 +2,18 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS = html_auto parse_date
+TEST_PROGS = parse_html favicon parse_date parse_xml
+
+test: $(TEST_PROGS)
+	echo $(TEST_PROGS) |\
+	sed "s/^/.\//;s/ / \&\& .\//g" |\
+	xargs -I{} sh -c "{}"
+	./test_a11y.sh
+
+memcheck: $(TEST_PROGS)
+	./memcheck.sh $(TEST_PROGS)
+
+.PHONY: test
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -10,22 +21,82 @@ AM_CPPFLAGS = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DBIN_DIR=\""$(bindir)"\" \
 	-I$(top_srcdir)/src \
+	-I$(top_srcdir) \
 	$(PACKAGE_CFLAGS) \
 	$(INTROSPECTION_CFLAGS)
 
-progs_ldadd =	../parsers/libliparsers.a \
-		../fl_sources/libliflsources.a \
-		../ui/libliui.a \
-		../webkit/libwebkit.a \
-		$(PACKAGE_LIBS) \
-		$(INTLLIBS) \
-		$(WEBKIT_LIBS) \
-		$(INTROSPECTION_LIBS)
+favicon_LDADD = \
+	../parsers/libliparsers.a \
+	../fl_sources/libliflsources.a \
+	../ui/libliui.a \
+	../webkit/libwebkit.a \
+	../auth.o \
+	../auth_activatable.o \
+	../browser.o \
+	../browser_history.o \
+	../comments.o \
+	../common.o \
+	../conf.o \
+	../date.o \
+	../db.o \
+	../dbus.o \
+	../debug.o \
+	../enclosure.o \
+	../export.o \
+	../favicon.o \
+	../feed.o \
+	../feed_parser.o \
+	../feedlist.o \
+	../folder.o \
+	../html.o \
+	../htmlview.o \
+	../item.o \
+	../item_history.o \
+	../item_loader.o \
+	../item_state.o \
+	../itemset.o \
+	../itemlist.o \
+	../json.o \
+	../liferea_application.o \
+	../metadata.o \
+	../migrate.o \
+	../net.o \
+	../net_monitor.o \
+	../newsbin.o \
+	../node.o \
+	../node_type.o \
+	../plugins_engine.o \
+	../render.o \
+	../rule.o \
+	../social.o \
+	../subscription.o \
+	../subscription_icon.o \
+	../update.o \
+	../vfolder.o \
+	../vfolder_loader.o \
+	../xml.o \
+	$(PACKAGE_LIBS) \
+	$(INTLLIBS) \
+	$(WEBKIT_LIBS) \
+	$(INTROSPECTION_LIBS) \
+	-lm
 
-html_auto_SOURCES = html.c
-html_auto_LDADD = $(progs_ldadd) ../html.o ../common.o ../debug.o ../xml.o
+clean-local: clean-local-check
+.PHONY: clean-local-check
+clean-local-check:
+	-rm *.Po
+
+favicon_SOURCES = favicon.c
+favicon_CFLAGS = $(AM_CPPFLAGS)
+
+parse_html_SOURCES = parse_html.c
+parse_html_CFLAGS = $(AM_CPPFLAGS)
+parse_html_LDADD = $(favicon_LDADD)
 
 parse_date_SOURCES = parse_date.c
-parse_date_LDADD = $(progs_ldadd) ../date.o ../common.o ../debug.o ../e-date.o
+parse_date_CFLAGS = $(AM_CPPFLAGS)
+parse_date_LDADD = $(favicon_LDADD)
 
-
+parse_xml_SOURCES = parse_xml.c
+parse_xml_CFLAGS = $(AM_CPPFLAGS)
+parse_xml_LDADD = $(favicon_LDADD)

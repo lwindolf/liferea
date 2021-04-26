@@ -2,31 +2,31 @@
    This is a template file which you can use to redefine the Liferea
    CSS definitions use to render items. Below you find empty class
    definitions including comments describing what they are used for.
-  
+
    Before you start customizing...
 
    Reloading:
    ==========
 
-   For performance reasons Liferea will read this CSS file only 
+   For performance reasons Liferea will read this CSS file only
    on startup. So when you modify it please restart Liferea for
    changes to take effect.
 
-  
-   About Font Definitions: 
+
+   About Font Definitions:
    =======================
- 
+
    You should avoid setting absolute font sizes. This allows Liferea
    to follow the GNOME font and font size. Use relative definitions
    instead (e.g. "1.2em" or "0.8em").
 
-   
+
    Color Definitions:
    ==================
-   
+
    Try to reuse GTK theme colors. Liferea uses the following definitions
    and will be replace them on the fly:
-   
+
        GTK-COLOR-FG
        GTK-COLOR-BG
        GTK-COLOR-LIGHT
@@ -43,7 +43,7 @@
 
    If the definitions below do not help you, run Liferea with
    the parameter "--debug-html". Then Liferea will dump HTML
-   into 
+   into
 
           ~/.cache/liferea/output.xhtml
 
@@ -58,23 +58,16 @@
 /* Feed display rendering header table (with title, categories...) */
 // table.feedhead { }
 
-/* Left <td> of feed/item table display containing favicon */
-// td.headleft { }
+/* 1st <td> of feed/item table display containing favicon */
+// td.head_favicon { }
 // a.favicon { }
 // a.favicon img { }
 
-/* Right <td> of feed/item table display containing title */
-// td.headright { }
+/* 2nd <td> of feed/item table display containing title */
+// td.head_title { }
 
 /* Metadata display table (inside header table) */
 // table.headmeta { }
-
-/* 2 pane mode: Item menu definitions */
-// .itemmenu { }
-// .itemmenu a { }
-// .itemmenu a:hover { }
-// .itemmenu * span { }
-// .itemmenu * img { }
 
 /* Header table fields to different item metadata */
 // .author, .categories, .source { }
@@ -88,18 +81,12 @@
 // div.comment_body { }
 // div.comment_title { }
 
-/* Styles for the HTTP error box at the beginning
+/* Styles for the feed fetch error box at the beginning
    of the feed description and for item comment feeds */
-// #errors, #commentFeedError { }
-// #parseError, #filterError, #updateError { }
-// div.xmlparseroutput { }
-// span.details, span.detaillink { }
-// span.details { }
-// span.showmore { }
+// #errors { }
+// pre.errorOutput { }
 
 /* namespace specific styles */
-// div.blogchanneltitle { }
-// div.photoheader { }
 
 /* Gravatar embedding */
 // img.gravatar { }
@@ -111,5 +98,4 @@
 // .slash { }
 // .slashSection, .slashDepartment { }
 // .slashValue { }
-
 

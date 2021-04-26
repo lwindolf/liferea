@@ -1,7 +1,7 @@
-/**
+/*
  * @file browser_tabs.h  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2008 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
 #ifndef _BROWSER_TABS_H
@@ -28,71 +28,54 @@
 
 G_BEGIN_DECLS
 
-#define BROWSER_TABS_TYPE		(browser_tabs_get_type ())
-#define BROWSER_TABS(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BROWSER_TABS_TYPE, BrowserTabs))
-#define BROWSER_TABS_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BROWSER_TABS_TYPE, BrowserTabsClass))
-#define IS_BROWSER_TABS(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BROWSER_TABS_TYPE))
-#define IS_BROWSER_TABS_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BROWSER_TABS_TYPE))
-
-typedef struct BrowserTabs		BrowserTabs;
-typedef struct BrowserTabsClass		BrowserTabsClass;
-typedef struct BrowserTabsPrivate	BrowserTabsPrivate;
-
-extern BrowserTabs *browser_tabs;
-
-struct BrowserTabs
-{
-	GObject		parent;
-	
-	/*< private >*/
-	BrowserTabsPrivate	*priv;
-};
-
-struct BrowserTabsClass 
-{
-	GObjectClass parent_class;
-};
-
-GType browser_tabs_get_type (void);
+#define BROWSER_TABS_TYPE (browser_tabs_get_type ())
+G_DECLARE_FINAL_TYPE (BrowserTabs, browser_tabs, BROWSER, TABS, GObject)
 
 /**
- * Returns the singleton browser tabs instance.
+ * browser_tabs_create: (skip)
+ * @notebook:	GtkNotebook widget to use
  *
- * @param notebook	GtkNotebook widget to use
+ * Returns: the singleton browser tabs instance.
  */
 BrowserTabs * browser_tabs_create (GtkNotebook *notebook);
 
 /**
+ * browser_tabs_add_new:
+ * @url:	URL to be loaded in new tab (can be NULL to do nothing)
+ * @title:	title of the tab to be created
+ * @activate:   Should the new tab be put in the foreground?
+ *
  * Adds a new tab with the specified URL and title.
  *
- * @param url	URL to be loaded in new tab (can be NULL to do nothing)
- * @param title	title of the tab to be created
- * @param activate Should the new tab be put in the foreground?
- *
- * @returns the newly created HTML view
+ * Returns: the newly created HTML view
  */
 LifereaHtmlView * browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate);
 
 /**
- * makes the headline tab visible 
+ * browser_tabs_show_headlines:
+ *
+ * makes the headline tab visible
  */
 void browser_tabs_show_headlines (void);
 
 /**
+ * browser_tabs_get_active_htmlview:
+ *
  * Used to determine which HTML view (a tab or the headlines view)
  * is currently visible and can be used to display HTML that
  * is to be loaded
  *
- * @returns HTML view widget
+ * Returns: (transfer none) (nullable): HTML view widget
  */
 LifereaHtmlView * browser_tabs_get_active_htmlview (void);
 
 /**
- * Requests the tab to change zoom level.
+ * browser_tabs_do_zoom:
+ * @zoom:	1 for zoom in, -1 for zoom out, 0 for reset
  *
- * @param in	TRUE if zooming in, FALSE for zooming out
+ * Requests the tab to change zoom level.
  */
-void browser_tabs_do_zoom (gboolean in);
+void browser_tabs_do_zoom (gint zoom);
 
 G_END_DECLS
 

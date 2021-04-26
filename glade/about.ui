@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.20.0 -->
+<interface>
+  <requires lib="gtk+" version="3.14"/>
+  <object class="GtkAboutDialog" id="about">
+    <property name="can_focus">False</property>
+    <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">About</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
+    <property name="program_name">Liferea</property>
+    <property name="comments" translatable="yes">Liferea is a news aggregator for GTK+</property>
+    <property name="website">https://lzone.de/liferea/</property>
+    <property name="website_label" translatable="yes">Liferea Homepage</property>
+    <property name="authors">
+Developers:
+
+Lars Windolf
+Nathan Conrad
+Arnold Noronha
+Adrian Bunk
+Emilio Pozuelo Monfort
+Laetitia Berthelot
+
+Contributors: Code, Patches, Debugging
+
+James Doherty
+Jeremy Messenger
+John McKnight
+Tomasz Maka
+Karl Soderstrom
+Christophe Barbe
+Juho Snellman
+Roshan Revankar
+Johannes Schlueter
+Niklas Morberg
+Pierre Phaneuf
+ahmed el-helw
+James Bowes
+Marc Deslauriers
+Amit D. Chaudhary
+Christoph Hohmann
+Raphael Slinckx
+Bjorn Monnens
+Thomas de Grenier de Latour
+Aristotle Pagaltzis
+Norman Jonas
+Sebastian Droege
+Daniel Gryniewicz
+Remi Cardona
+Frederic Peters
+Don Malcolm
+Ed Catmur
+Chris Pirillo
+Eric Anderson
+Daniel Gryniewicz
+Ori Avtalion
+Stephan Maka
+Alexander Sack
+Gustavo Chain
+Lars Strojny
+Jon Forsberg
+Mathie Leplatre
+Mikel Olasagasti
+Maia Kozheva
+Peter Oliver
+Sergey Snitsaruk
+and many more...</property>
+    <property name="documenters">Lars Windolf</property>
+    <property name="translator_credits">Bart Kreska
+Wojciech Myrda
+Piotr Sokół
+Dario Conigliaro
+Emanuele Grande
+Gianvito Cavasoli
+Fernando Ike de Oliveira
+Og Maciel
+Leon Nardella
+Khaled Hosny
+Sargate Kanogan
+Rodrigo Gallardo
+Takeshi AIHANA
+Takeshi Hamasaki
+Vincent Lefèvre
+Daniel Nylander
+Mehmet Atif Ergun
+Eren Türkay
+Ihar Hrachyshka
+António Lima
+Bruno Miguel
+Martin Picek
+Justin Forest
+Oleg Maloglovets
+Sergey Rudchenko
+Leonid Selivanov
+Máté Őry
+Gabor Kelemen
+Pavol Klačanský
+Evgenia Petoumenou
+Besnik Bleta
+Christian Dywan
+Robin Stocker
+Paul Seyfert
+Gil Forcada
+Iñaki Larrañaga Murgoitio
+Mikel Olasagasti Uranga
+Adi Roiban
+Erwin Poeze
+Anxo Outeiral
+Aron Xu
+Joe Hansen
+Marquinos
+Iñigo Varela
+Yaron Sheffer
+Yuri Chornoivan
+Rūdolfs Mazurs
+Rihards Priedītis
+Mindaugas Baranauskas
+Trần Ngọc Quân
+Pauli Virtanen
+Jorma Karvonen
+Guillaume Bernard
+</property>
+    <property name="logo_icon_name">net.sourceforge.liferea</property>
+    <property name="license_type">gpl-2-0</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox23">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area23">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="events">GDK_POINTER_MOTION_MASK | GDK_POINTER_MOTION_HINT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
+</interface>

@@ -35,11 +35,6 @@ typedef struct TheOldReaderSource {
 	 */
 	GHashTable      *lastTimestampMap; 
 
-	/**
-	 * A timestamp when the last Quick update took place.
-	 */
-	GTimeVal        lastQuickUpdate;
-
 	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to TTRSS category id */
 } *TheOldReaderSourcePtr;
 
@@ -60,9 +55,6 @@ typedef struct TheOldReaderSource {
 #define THEOLDREADER_READER_LOGIN_URL "https://theoldreader.com/accounts/ClientLogin" 
 #define THEOLDREADER_READER_LOGIN_POST "service=reader&Email=%s&Passwd=%s&source=liferea&continue=http://theoldreader.com"
 
-/** Interval (in seconds) for doing a Quick Update: 10min */
-#define THEOLDREADER_SOURCE_QUICK_UPDATE_INTERVAL 600
-
 /**
  * @returns TheOldReader source type implementation info.
  */
@@ -77,18 +69,6 @@ nodeSourceTypePtr theoldreader_source_get_type (void);
  * @returns a node (or NULL)
  */
 nodePtr theoldreader_source_get_node_from_source (TheOldReaderSourcePtr gsource, const gchar* source);
-
-/**
- * Tries to update the entire source quickly, by updating only those feeds
- * which are known to be updated. Suitable for g_timeout_add. This is an 
- * internal function.
- *
- * @param data A pointer to a node id of the source. This pointer will
- *             be g_free'd if the update fails.
- *
- * @returns FALSE on update failure
- */
-gboolean theoldreader_source_quick_update_timeout (gpointer gsource);
 
 /**
  * Migrate a google source child-node from a Liferea 1.4 style read-only

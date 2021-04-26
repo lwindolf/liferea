@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.sourceforge.liferea.desktop</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>GPL-2.0+</project_license>
+  <name>Liferea</name>
+  <_summary>RSS feed reader</_summary>
+  <description>
+    <_p>Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator for
+	online news feeds. It supports a number of different feed formats including 
+	RSS/RDF, CDF and Atom. There are many other news readers available, but these 
+	others are not available for Linux or require many extra libraries to be 
+	installed. Liferea tries to fill this gap by creating a fast, easy to use, 
+	easy to install news aggregator for GTK/GNOME.
+    </_p>
+    <_p>Distinguishing features:</_p>
+    <ul>
+     <_li>Read articles when offline</_li>
+     <_li>Synchronizes with TheOldReader</_li>
+     <_li>Synchronizes with TinyTinyRSS</_li>
+     <_li>Synchronizes with InoReader</_li>
+     <_li>Synchronizes with Reedah</_li>
+     <_li>Permanently save headlines in news bins</_li>
+     <_li>Match items using search folders</_li>
+     <_li>Play Podcasts</_li>
+    </ul>
+  </description>
+  <screenshots>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot1.png</image></screenshot>
+    <screenshot type="default"><image width="833" height="656">https://lzone.de/liferea/screenshots/screenshot2.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot3.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot4.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot5.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot6.png</image></screenshot>
+    <screenshot type="default"><image width="642" height="438">https://lzone.de/liferea/screenshots/screenshot7.png</image></screenshot>
+    <screenshot type="default"><image width="834" height="657">https://lzone.de/liferea/screenshots/screenshot8.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot9.png</image></screenshot>
+  </screenshots>
+  <url type="homepage">https://lzone.de/liferea/</url>
+  <update_contact>liferea-devel@lists.sf.net</update_contact>
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+    <content_attribute id="violence-desecration">none</content_attribute>
+    <content_attribute id="violence-slavery">none</content_attribute>
+    <content_attribute id="violence-worship">none</content_attribute>
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+    <content_attribute id="money-gambling">none</content_attribute>
+  </content_rating>
+  <releases>
+    <release version="1.13.5"  date="2021-01-10" />
+    <release version="1.13.4"  date="2020-12-24" />
+    <release version="1.13.3"  date="2020-10-09" />
+    <release version="1.13.2"  date="2020-08-28" />
+  </releases>
+</component>

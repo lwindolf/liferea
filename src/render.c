@@ -1,12 +1,12 @@
 /**
  * @file render.c  generic GTK theme and XSLT rendering handling
- * 
- * Copyright (C) 2006-2013 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -29,7 +29,9 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 #include <locale.h>
+#include <math.h>
 #include <string.h>
+#include <time.h>
 
 #include "conf.h"
 #include "common.h"
@@ -43,14 +45,14 @@
 /* Liferea provides special screens and the item and the feed displays
    using self-generated HTML. To separate code and layout and to easily
    localize the layout it is provided by automake XSL stylesheet templates.
-   
+
    Using automake translations are merged into those XSL stylesheets. On
    startup Liferea loads those expanded XSL stylesheets. During startup
    Liferea initially reduces the contained translations to the currently
    used ones by stripping all others from the XSL stylesheet using the
    localization stylesheet (xslt/i18n-filter.xslt). The resulting XSLT
-   instance is kept in memory and used to render each items and feeds. 
-   
+   instance is kept in memory and used to render each items and feeds.
+
    The following code uses a hash table to maintain stylesheet instance
    and performs CSS adaptions to the current GTK theme. */
 
@@ -147,7 +149,7 @@ render_load_stylesheet (const gchar *xsltName)
 	xsltFreeStylesheet (i18n_filter);
 
 	g_hash_table_insert (stylesheets, g_strdup (xsltName), xslt);
-	
+
 	return xslt;
 }
 
@@ -162,6 +164,7 @@ typedef struct themeColor {
 
 static GSList *themeColors = NULL;
 static gboolean darkTheme = FALSE;
+static gboolean styleUpdated = FALSE;
 
 /* Determining of theme colors, to be inserted in CSS */
 static themeColorPtr
@@ -195,16 +198,29 @@ render_get_rgb_distance (GdkColor *c1, GdkColor *c2)
 	       ) / 1000;
 }
 
+static void
+rgba_to_color (GdkColor *color, GdkRGBA *rgba)
+{
+	color->red   = lrint (rgba->red   * 65535);
+	color->green = lrint (rgba->green * 65535);
+	color->blue  = lrint (rgba->blue  * 65535);
+}
+
 void
 render_init_theme_colors (GtkWidget *widget)
 {
 	GtkStyle	*style;
-	GdkColor	*color;
+	GtkStyleContext	*sctxt;
+	GdkColor	color;
+	GdkRGBA		rgba;
 	gint		textAvg, bgAvg;
 
-	style = gtk_widget_get_style (widget);
+	styleUpdated = TRUE;
+	themeColors = NULL;
 
-	g_assert (NULL == themeColors);
+	style = gtk_widget_get_style (widget);
+	sctxt = gtk_widget_get_style_context (widget);
+
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BG",    style->bg[GTK_STATE_NORMAL]));
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-LIGHT", style->light[GTK_STATE_NORMAL]));
@@ -223,23 +239,15 @@ render_init_theme_colors (GtkWidget *widget)
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-TEXT", style->fg[GTK_STATE_NORMAL]));
 	}
 
-	color = NULL;
-	gtk_widget_style_get (widget, "link-color", &color, NULL);
-	if (color) {
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-NORMAL-LINK", *color));
-		debug0 (DEBUG_HTML, "successfully set the color for links");
-		gdk_color_free (color);
-	}
+	gtk_style_context_get_color (sctxt, GTK_STATE_FLAG_LINK, &rgba);
+	rgba_to_color (&color, &rgba);
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-NORMAL-LINK", color));
 
-	color = NULL;
-	gtk_widget_style_get (widget, "visited-link-color", &color, NULL);
-	if (color) {
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color("GTK-COLOR-VISITED-LINK", *color));
-		debug0 (DEBUG_HTML, "successfully set the color for visited links");
-		gdk_color_free (color);
-	}
+	gtk_style_context_get_color (sctxt, GTK_STATE_FLAG_VISITED, &rgba);
+	rgba_to_color (&color, &rgba);
+	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-VISITED-LINK", color));
 
-	/* As there doesn't seem to be a safe way to determine wether we have a 
+	/* As there doesn't seem to be a safe way to determine wether we have a
 	   dark GTK theme, let's guess it from the foreground vs. background
 	   color average */
 
@@ -254,7 +262,7 @@ render_init_theme_colors (GtkWidget *widget)
 	if (textAvg > bgAvg) {
 		debug0 (DEBUG_HTML, "Dark GTK theme detected.");
 		darkTheme = TRUE;
-	} 
+	}
 
 	if (darkTheme) {
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->text[GTK_STATE_NORMAL]));
@@ -277,13 +285,13 @@ static gchar *
 render_set_theme_colors (gchar *css)
 {
 	GSList	*iter = themeColors;
-	
+
 	while (iter) {
 		themeColorPtr tc = (themeColorPtr)iter->data;
 		css = common_strreplace (css, tc->name, tc->value);
 		iter = g_slist_next (iter);
 	}
-	
+
 	return css;
 }
 
@@ -291,7 +299,7 @@ const gchar *
 render_get_theme_color (const gchar *name)
 {
 	GSList	*iter;
-	
+
 	if (!themeColors)
 		return NULL;
 
@@ -318,14 +326,15 @@ render_is_dark_theme (void)
 const gchar *
 render_get_css (gboolean externalCss)
 {
-	if (!css) {
+	if (!css || styleUpdated) {
 		gchar	*defaultStyleSheetFile;
 		gchar	*userStyleSheetFile;
-		gchar	*adblockStyleSheetFile;
 		gchar	*tmp;
 
 		if (!themeColors)
 			return NULL;
+
+		styleUpdated = FALSE;
 
 		css = g_string_new(NULL);
 
@@ -351,15 +360,6 @@ render_get_css (gboolean externalCss)
 
 		g_free(userStyleSheetFile);
 
-		adblockStyleSheetFile = g_build_filename(PACKAGE_DATA_DIR, PACKAGE, "css", "adblock.css", NULL);
-
-		if (g_file_get_contents(adblockStyleSheetFile, &tmp, NULL, NULL)) {
-			g_string_append(css, tmp);
-			g_free(tmp);
-		}
-
-		g_free(adblockStyleSheetFile);
-
 		if (externalCss) {
 			/* dump CSS to cache file and create a <style> tag to use it */
 			gchar *filename = common_create_cache_filename (NULL, "style", "css");
@@ -368,9 +368,8 @@ render_get_css (gboolean externalCss)
 
 			g_string_free(css, TRUE);
 
-			css = g_string_new("<style type=\"text/css\"> @import url(file://");
-			g_string_append(css, filename);
-			g_string_append(css, "); </style> ");
+			css = g_string_new ("<link rel=\"stylesheet\" href=\"file://");
+			g_string_append_printf (css, "%s?%d\" />", filename, (int)time(NULL));
 
 			g_free(filename);
 		} else {
@@ -390,7 +389,7 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	xmlDocPtr		resDoc;
 	xsltStylesheetPtr	xslt;
 	xmlOutputBufferPtr	buf;
-	
+
 	xslt = render_load_stylesheet(xsltName);
 	if (!xslt)
 		return NULL;
@@ -398,20 +397,32 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	if (!paramSet)
 		paramSet = render_parameter_new ();
 	render_parameter_add (paramSet, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
+	render_parameter_add (paramSet, "jsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "js" G_DIR_SEPARATOR_S "'");
 
 	resDoc = xsltApplyStylesheet (xslt, doc, (const gchar **)paramSet->params);
 	if (!resDoc) {
 		g_warning ("fatal: applying rendering stylesheet (%s) failed!", xsltName);
 		return NULL;
 	}
-	
-	/* for debugging use: xsltSaveResultToFile(stdout, resDoc, xslt); */
-	
+
+	/*
+	   for XLST input debugging use:
+
+		xmlChar *buffer;
+		gint buffersize;
+		xmlDocDumpFormatMemory(doc, &buffer, &buffersize, 1);
+		printf("%s", (char *) buffer);
+
+           for XSLT output debugging use:
+
+           	xsltSaveResultToFile(stdout, resDoc, xslt);
+         */
+
 	/* save results into return string */
 	buf = xmlAllocOutputBuffer (NULL);
 	if (-1 == xsltSaveResultTo(buf, resDoc, xslt))
 		g_warning ("fatal: retrieving result of rendering stylesheet failed (%s)!", xsltName);
-		
+
 #ifdef LIBXML2_NEW_BUFFER
 	if (xmlOutputBufferGetSize (buf) > 0)
 		output = xmlCharStrdup (xmlOutputBufferGetContent (buf));
@@ -423,10 +434,10 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	xmlOutputBufferClose (buf);
 	xmlFreeDoc (resDoc);
 	render_parameter_free (paramSet);
-	
+
 	if (output) {
 		gchar *tmp;
-		
+
 		/* Return only the body contents */
 		tmp = strstr (output, "<body");
 		if (tmp) {
@@ -457,10 +468,10 @@ render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...)
 {
 	gchar	*new, *value, *name;
 	va_list args;
-	
+
 	g_assert (NULL != fmt);
 	g_assert (NULL != paramSet);
-	
+
 	va_start (args, fmt);
 	new = g_strdup_vprintf (fmt, args);
 	va_end (args);
@@ -470,7 +481,7 @@ render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...)
 	g_assert (NULL != value);
 	*value = 0;
 	value++;
-	
+
 	paramSet->len += 2;
 	paramSet->params = (gchar **)g_realloc (paramSet->params, (paramSet->len + 1)*sizeof(gchar *));
 	paramSet->params[paramSet->len] = NULL;

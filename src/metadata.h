@@ -2,7 +2,7 @@
  * @file metadata.h  handling of typed item and feed metadata
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2008 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ typedef void	(*parseItemTagFunc)	(feedParserCtxtPtr ctxt, xmlNodePtr cur);
 typedef struct NsHandler {
 	const gchar		*prefix;		/**< namespace prefix */
 	registerNsFunc		registerNs;
-	
+
 	parseItemTagFunc	parseItemTag;		/**< item tag parsing method */
 	parseChannelTagFunc	parseChannelTag;	/**< channel tag parsing method */
 } NsHandler;
@@ -50,7 +50,8 @@ typedef struct NsHandler {
 enum {
 	METADATA_TYPE_TEXT = 1,	/**< metadata can be any character data and needs escaping */
 	METADATA_TYPE_URL = 2,	/**< metadata is an URL and guaranteed to be valid for use in XML */
-	METADATA_TYPE_HTML = 3	/**< metadata is XHTML content and valid to be embedded in XML */
+	METADATA_TYPE_HTML = 3,	/**< metadata is XHTML content and valid to be embedded in output with Readability.js */
+	METADATA_TYPE_HTML5 = 4	/**< metadata is trusted HTML5 content and can be embedded in output with Readability.js */
 };
 
 /**
@@ -71,8 +72,8 @@ void metadata_type_register (const gchar *name, gint);
  */
 gboolean metadata_is_type_registered (const gchar *strid);
 
-/** 
- * Appends a value to the value list of a specific metadata type 
+/**
+ * Appends a value to the value list of a specific metadata type
  * Don't mix this function with metadata_list_set() !
  *
  * @param metadata	the metadata list
@@ -83,7 +84,7 @@ gboolean metadata_is_type_registered (const gchar *strid);
  */
 GSList * metadata_list_append(GSList *metadata, const gchar *strid, const gchar *data);
 
-/** 
+/**
  * Sets (and overwrites if necessary) the value of a specific metadata type.
  * Don't mix this function with metadata_list_append() !
  *
@@ -104,8 +105,8 @@ void metadata_list_set(GSList **metadata, const gchar *strid, const gchar *data)
  */
 const gchar * metadata_list_get(GSList *metadata, const gchar *strid);
 
-/** 
- * Definition of metadata foreach function 
+/**
+ * Definition of metadata foreach function
  *
  * @param key		metadata type id
  * @param value		metadata value
@@ -133,7 +134,7 @@ void metadata_list_foreach(GSList *metadata, metadataForeachFunc func, gpointer 
  */
 GSList * metadata_list_get_values(GSList *metadata, const gchar *strid);
 
-/** 
+/**
  * Creates a copy of a given metadata list.
  *
  * @param metadata	the metadata list

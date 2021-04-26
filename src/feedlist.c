@@ -1,9 +1,9 @@
-/**
+/*
  * @file feedlist.c  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2019 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- *	      
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -37,40 +37,39 @@
 #include "ui/feed_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
-#include "ui/feed_list_node.h"
+#include "ui/feed_list_view.h"
 #include "fl_sources/node_source.h"
 
 static void feedlist_save	(void);
 
-#define FEEDLIST_GET_PRIVATE(object)(G_TYPE_INSTANCE_GET_PRIVATE ((object), FEEDLIST_TYPE, FeedListPrivate))
+struct _FeedList {
+	GObject		parentInstance;
 
-struct FeedListPrivate {
-	guint		newCount;	/**< overall new item count */
+	guint		newCount;		/*<< overall new item count */
 
-	nodePtr		rootNode;	/**< the feed list root node */
-	nodePtr		selectedNode;	/**< matches the node selected in the feed list tree view, which
-					     is not necessarily the displayed one (e.g. folders without recursive
-					     display enabled) */
+	nodePtr		rootNode;		/*<< the feed list root node */
+	nodePtr		selectedNode;	/*<< matches the node selected in the feed list tree view, which
+				                     is not necessarily the displayed one (e.g. folders without recursive
+				                     display enabled) */
 
-	guint		saveTimer;	/**< timer id for delayed feed list saving */
-	guint		autoUpdateTimer; /**< timer id for auto update */
+	guint		saveTimer;		/*<< timer id for delayed feed list saving */
+	guint		autoUpdateTimer; /*<< timer id for auto update */
 
-	gboolean	loading;	/**< prevents the feed list being saved before it is completely loaded */
+	gboolean	loading;		/*<< prevents the feed list being saved before it is completely loaded */
 };
 
 enum {
-	NEW_ITEMS,		/**< node has new items after update */
-	NODE_UPDATED,		/**< node display info (title, unread count) has changed */
+	NEW_ITEMS,		/*<< node has new items after update */
+	NODE_UPDATED,	/*<< node display info (title, unread count) has changed */
 	LAST_SIGNAL
 };
 
-#define ROOTNODE feedlist->priv->rootNode
-#define SELECTED feedlist->priv->selectedNode
+#define ROOTNODE feedlist->rootNode
+#define SELECTED feedlist->selectedNode
 
 static guint feedlist_signals[LAST_SIGNAL] = { 0 };
 
-static GObjectClass *parent_class = NULL;
-FeedList *feedlist = NULL;
+FeedList *feedlist = NULL;	// singleton
 
 G_DEFINE_TYPE (FeedList, feedlist, G_TYPE_OBJECT);
 
@@ -79,28 +78,32 @@ feedlist_free_node (nodePtr node)
 {
 	if (node->children)
 		node_foreach_child (node, feedlist_free_node);
-	
+
 	node->parent->children = g_slist_remove (node->parent->children, node);
-	node_free (node); 
+	node_free (node);
 }
 
 static void
 feedlist_finalize (GObject *object)
 {
 	/* Stop all timer based activity */
-	if (feedlist->priv->autoUpdateTimer)
-		g_source_remove (feedlist->priv->autoUpdateTimer);
-	if (feedlist->priv->saveTimer)
-		g_source_remove (feedlist->priv->saveTimer);
+	if (feedlist->autoUpdateTimer) {
+		g_source_remove (feedlist->autoUpdateTimer);
+		feedlist->autoUpdateTimer = 0;
+	}
+	if (feedlist->saveTimer) {
+		g_source_remove (feedlist->saveTimer);
+		feedlist->saveTimer = 0;
+	}
 
 	/* Enforce synchronous save upon exit */
-	feedlist_save ();		
+	feedlist_save ();
 
 	/* Save last selection for next start */
-	if (feedlist->priv->selectedNode)
-		conf_set_str_value (LAST_NODE_SELECTED, feedlist->priv->selectedNode->id);
+	if (feedlist->selectedNode)
+		conf_set_str_value (LAST_NODE_SELECTED, feedlist->selectedNode->id);
 
-	
+
 	/* And destroy everything */
 	feedlist_foreach (feedlist_free_node);
 	node_free (ROOTNODE);
@@ -108,8 +111,6 @@ feedlist_finalize (GObject *object)
 
 	/* This might also be a good place to get for some other cleanup */
 	comments_deinit ();
-
-	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -117,15 +118,13 @@ feedlist_class_init (FeedListClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-	parent_class = g_type_class_peek_parent (klass);
-
 	object_class->finalize = feedlist_finalize;
 
-	feedlist_signals[NEW_ITEMS] = 
-		g_signal_new ("new-items", 
+	feedlist_signals[NEW_ITEMS] =
+		g_signal_new ("new-items",
 		G_OBJECT_CLASS_TYPE (object_class),
 		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
-		0, 
+		0,
 		NULL,
 		NULL,
 		g_cclosure_marshal_VOID__POINTER,
@@ -133,19 +132,17 @@ feedlist_class_init (FeedListClass *klass)
 		1,
 		G_TYPE_POINTER);
 
-	feedlist_signals[NODE_UPDATED] = 
-		g_signal_new ("node-updated", 
+	feedlist_signals[NODE_UPDATED] =
+		g_signal_new ("node-updated",
 		G_OBJECT_CLASS_TYPE (object_class),
 		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
-		0, 
+		0,
 		NULL,
 		NULL,
 		g_cclosure_marshal_VOID__STRING,
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
-
-	g_type_class_add_private (object_class, sizeof(FeedListPrivate));
 }
 
 static gboolean
@@ -157,7 +154,7 @@ feedlist_auto_update (void *data)
 		node_auto_update_subscription (ROOTNODE);
 	else
 		debug0 (DEBUG_UPDATE, "no update processing because we are offline!");
-	
+
 	debug_exit ("feedlist_auto_update");
 
 	return TRUE;
@@ -171,17 +168,17 @@ on_network_status_changed (gpointer instance, gboolean online, gpointer data)
 
 /* This method is used to initialize the node states in the feed list */
 static void
-feedlist_init_node (nodePtr node) 
+feedlist_init_node (nodePtr node)
 {
 	if (node->expanded)
-		feed_list_node_set_expansion (node, TRUE);
-	
+		feed_list_view_set_expansion (node, TRUE);
+
 	if (node->subscription)
 		db_subscription_load (node->subscription);
-		
+
 	node_update_counters (node);
-	feed_list_node_update (node->id);	/* Necessary to initially set folder unread counters */
-	
+	feed_list_view_update_node (node->id);	/* Necessary to initially set folder unread counters */
+
 	node_foreach_child (node, feedlist_init_node);
 }
 
@@ -191,14 +188,12 @@ feedlist_init (FeedList *fl)
 	gint	startup_feed_action;
 
 	debug_enter ("feedlist_init");
-	
+
 	/* 1. Prepare globally accessible singleton */
 	g_assert (NULL == feedlist);
 	feedlist = fl;
-	
-	feedlist->priv = FEEDLIST_GET_PRIVATE (fl);
-	feedlist->priv->loading = TRUE;
-	
+	feedlist->loading = TRUE;
+
 	/* 2. Set up a root node and import the feed list source structure. */
 	debug0 (DEBUG_CACHE, "Setting up root node");
 	ROOTNODE = node_source_setup_root ();
@@ -213,8 +208,8 @@ feedlist_init (FeedList *fl)
 	if (0 == startup_feed_action) {
 		/* Update all feeds */
 		if (network_monitor_is_online ()) {
-			debug0 (DEBUG_UPDATE, "initial update: updating all feeds");		
-			node_update_subscription (feedlist_get_root (), GUINT_TO_POINTER (0));
+			debug0 (DEBUG_UPDATE, "initial update: updating all feeds");
+			node_auto_update_subscription (feedlist_get_root ());
 		} else {
 			debug0 (DEBUG_UPDATE, "initial update: prevented because we are offline");
 		}
@@ -227,14 +222,14 @@ feedlist_init (FeedList *fl)
 	db_node_cleanup (feedlist_get_root ());
 
 	/* 6. Start automatic updating */
-	feedlist->priv->autoUpdateTimer = g_timeout_add_seconds (10, feedlist_auto_update, NULL);
+	feedlist->autoUpdateTimer = g_timeout_add_seconds (10, feedlist_auto_update, NULL);
 	g_signal_connect (network_monitor_get (), "online-status-changed", G_CALLBACK (on_network_status_changed), NULL);
 
 	/* 7. Finally save the new feed list state */
-	feedlist->priv->loading = FALSE;
+	feedlist->loading = FALSE;
 	feedlist_schedule_save ();
-	
-	debug_exit ("feedlist_init");	
+
+	debug_exit ("feedlist_init");
 }
 
 static void feedlist_unselect(void);
@@ -253,17 +248,17 @@ feedlist_get_selected (void)
 
 static nodePtr
 feedlist_get_parent_node (void)
-{ 
+{
 
 	g_assert (NULL != ROOTNODE);
 
 	if (!SELECTED)
 		return ROOTNODE;
-	
+
 	if (IS_FOLDER (SELECTED))
 		return SELECTED;
-	
-	if (SELECTED->parent) 
+
+	if (SELECTED->parent)
 		return SELECTED->parent;
 
 	return ROOTNODE;
@@ -316,9 +311,9 @@ gboolean
 feedlist_is_writable (void)
 {
 	nodePtr node;
-	
+
 	node = feedlist_get_parent_node ();
-	
+
 	return (0 != (NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS));
 }
 
@@ -328,7 +323,7 @@ feedlist_update_node_counters (nodePtr node)
 	node_update_counters (node);	/* update with parent propagation */
 
 	if (node->needsUpdate)
-		feed_list_node_update (node->id);
+		feed_list_view_update_node (node->id);
 	if (node->children)
 		node_foreach_child (node, feedlist_update_node_counters);
 }
@@ -343,10 +338,11 @@ feedlist_mark_all_read (nodePtr node)
 
 	if (node != ROOTNODE)
 		node_mark_all_read (node);
-	else 
+	else
 		node_foreach_child (ROOTNODE, node_mark_all_read);
-		
+
 	feedlist_foreach (feedlist_update_node_counters);
+	itemview_select_item (NULL);
 	itemview_update_all_items ();
 	itemview_update ();
 }
@@ -358,7 +354,7 @@ feedlist_get_unread_item_count (void)
 {
 	if (!feedlist)
 		return 0;
-		
+
 	return (ROOTNODE->unreadCount > 0)?ROOTNODE->unreadCount:0;
 }
 
@@ -367,15 +363,15 @@ feedlist_get_new_item_count (void)
 {
 	if (!feedlist)
 		return 0;
-		
-	return (feedlist->priv->newCount > 0)?feedlist->priv->newCount:0;
+
+	return (feedlist->newCount > 0)?feedlist->newCount:0;
 }
 
 void
 feedlist_reset_new_item_count (void)
 {
-	if (feedlist->priv->newCount)
-		feedlist->priv->newCount = 0;
+	if (feedlist->newCount)
+		feedlist->newCount = 0;
 
 	feedlist_new_items (0);
 }
@@ -384,13 +380,13 @@ void
 feedlist_add_folder (const gchar *title)
 {
 	nodePtr		parent;
-	
+
 	g_assert (NULL != title);
 
 	parent = feedlist_get_parent_node ();
 
 	if(0 == (NODE_TYPE (parent->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
-		return;	
+		return;
 
 	node_source_add_folder (parent->source->root, title);
 }
@@ -413,9 +409,22 @@ feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptio
 }
 
 void
+feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags)
+{
+	nodePtr duplicateNode = NULL;
+
+	duplicateNode = feedlist_find_node (feedlist_get_root (), NODE_BY_URL, source);
+	if (!duplicateNode) {
+		feedlist_add_subscription (source, filter, options, FEED_REQ_PRIORITY_HIGH);
+	} else {
+		feed_list_view_add_duplicate_url_subscription (subscription_new (source, filter, options), duplicateNode);
+	}
+}
+
+void
 feedlist_node_imported (nodePtr node)
 {
-	feed_list_node_add (node);	
+	feed_list_view_add_node (node);
 
 	feedlist_schedule_save ();
 }
@@ -424,9 +433,9 @@ void
 feedlist_node_added (nodePtr node)
 {
 	gint	position = -1;
-	
+
 	g_assert (NULL == node->parent);
-	
+
 	if (SELECTED && !IS_FOLDER (SELECTED)) {
 		position = g_slist_index (SELECTED->parent->children, SELECTED);
 		if (position > -1)
@@ -434,14 +443,14 @@ feedlist_node_added (nodePtr node)
 	}
 
 	node_set_parent (node, feedlist_get_parent_node (), position);
-	
+
 	if (node->subscription)
 		db_subscription_update (node->subscription);
-	
+
 	db_node_update (node);
 
 	feedlist_node_imported (node);
-	
+
 	feed_list_view_select (node);
 }
 
@@ -459,96 +468,66 @@ feedlist_node_removed (nodePtr node)
 {
 	if (node == SELECTED)
 		feedlist_unselect ();
-		
+
 	/* First remove all children */
 	node_foreach_child (node, feedlist_node_removed);
 
 	node_remove (node);
 
-	feed_list_node_remove_node (node);
+	feed_list_view_remove_node (node);
 
 	node->parent->children = g_slist_remove (node->parent->children, node);
 
 	node_free (node);
-	
+
 	feedlist_schedule_save ();
 }
 
-/* next unread scanning */
-
-enum scanStateType {
-  UNREAD_SCAN_INIT,            /* selected not yet passed */
-  UNREAD_SCAN_FOUND_SELECTED,  /* selected passed */
-  UNREAD_SCAN_SECOND_PASS      /* no unread items after selected feed */
-};
-
-static enum scanStateType scanState = UNREAD_SCAN_INIT;
-
-/* This method tries to find a feed with unread items 
-   in two passes. In the first pass it tries to find one
-   after the currently selected feed (including the
-   selected feed). If there are no such feeds the 
-   search is restarted for all feeds. */
-static nodePtr
-feedlist_unread_scan (nodePtr folder)
+/* Checks if the given node is a subscription node and
+   has at least one unread item or is selected, if yes it
+   is added to the list ref passed as user_data */
+static void
+feedlist_collect_unread (nodePtr node, gpointer user_data)
 {
-	nodePtr		childNode;
-	GSList		*selectedIter = NULL;
+	GSList	**list = (GSList **)user_data;
 
-	if (SELECTED)
-		selectedIter = g_slist_find(SELECTED->parent->children, SELECTED);
-	else
-		scanState = UNREAD_SCAN_SECOND_PASS;
-
-	GSList *iter = folder->children;
-	while (iter) {
-		nodePtr node = iter->data;
-
-		if (node == SELECTED)
-			scanState = UNREAD_SCAN_FOUND_SELECTED;
-
-		/* feed match if beyond the selected feed or in second pass... */
-		if ((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0) &&
-		    (NULL == node->children) && !IS_VFOLDER(node)) {
-		       return node;
-		}
-
-		/* folder traversal if we are searching the selected feed
-		   which might be a descendant of the folder and if we
-		   are beyond the selected feed and the folder contains
-		   feeds with unread items... */
-		if (node->children &&
-		    (((scanState != UNREAD_SCAN_INIT) && (node->unreadCount > 0)) ||
-		     (selectedIter && (node_is_ancestor (node, SELECTED))))) {
-			childNode = feedlist_unread_scan (node);
-			if (childNode)
-				return childNode;
-		}
-
-		iter = g_slist_next (iter);
+	if (node->children) {
+		node_foreach_child_data (node, feedlist_collect_unread, user_data);
+		return;
 	}
+	if (!node->subscription)
+		return;
+	if (!node->unreadCount && !g_str_equal (node->id, SELECTED->id))
+		return;
 
-	/* When we come here we didn't find anything from the selected
-	   feed down to the end of the feed list. */
-	if (folder == ROOTNODE) {
-		if (0 == ROOTNODE->unreadCount) {
-			/* this may mean there is nothing more to find */
-		} else {
-			/* or that there are unread items above the selected feed */
-			g_assert (scanState != UNREAD_SCAN_SECOND_PASS);
-			scanState = UNREAD_SCAN_SECOND_PASS;
-			return feedlist_unread_scan (ROOTNODE);
-		}
-	}
-
-	return NULL;
+	*list = g_slist_append (*list, g_strdup (node->id));
 }
 
 nodePtr
 feedlist_find_unread_feed (nodePtr folder)
 {
-	scanState = UNREAD_SCAN_INIT;
-	return feedlist_unread_scan (folder);
+	GSList	*list = NULL;
+	nodePtr	result = NULL;
+
+	feedlist_foreach_data (feedlist_collect_unread, &list);
+
+	if (list) {
+		// Pass 1: try after selected node in list
+		if (SELECTED) {
+			GSList *s = g_slist_find_custom (list, SELECTED->id, (GCompareFunc)g_strcmp0);
+			if (s)
+				s = g_slist_next (s);
+			if (s)
+				result = node_from_id (s->data);
+		}
+
+		// Pass 2: just return first node in list
+		if (!result)
+			result = node_from_id (list->data);
+
+		g_slist_free_full (list, g_free);
+	}
+	return result;
 }
 
 /* selection handling */
@@ -560,38 +539,45 @@ feedlist_unselect (void)
 
 	itemview_set_displayed_node (NULL);
 	itemview_update ();
-		
+
 	itemlist_unload (FALSE /* mark all read */);
 	feed_list_view_select (NULL);
 	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
 	liferea_shell_update_allitems_actions (FALSE, FALSE);
 }
 
-void
-feedlist_selection_changed (nodePtr node)
+static void
+feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
 {
 	debug_enter ("feedlist_selection_changed");
 
-	debug1 (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
-	if (node != SELECTED) {
+	nodePtr node = node_from_id (nodeId);
+	if (node) {
+		if (node != SELECTED) {
+			debug1 (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
 
-		/* When the user selects a feed in the feed list we
-		   assume that he got notified of the new items or
-		   isn't interested in the event anymore... */
-		if (0 != feedlist->priv->newCount)
-			feedlist_reset_new_item_count ();
+			/* When the user selects a feed in the feed list we
+			   assume that he got notified of the new items or
+			   isn't interested in the event anymore... */
+			if (0 != feedlist->newCount)
+				feedlist_reset_new_item_count ();
 
-		/* Unload visible items. */
-		itemlist_unload (TRUE);
-	
-		/* Load items of new selected node. */
-		SELECTED = node;
-		if (SELECTED) {
-			itemlist_set_view_mode (node_get_view_mode (SELECTED));		
-			itemlist_load (SELECTED);
+			/* Unload visible items. */
+			itemlist_unload (TRUE);
+
+			/* Load items of new selected node. */
+			SELECTED = node;
+			if (SELECTED) {
+				liferea_shell_set_view_mode (node_get_view_mode (SELECTED));
+				itemlist_load (SELECTED);
+			} else {
+				itemview_clear ();
+			}
 		} else {
-			itemview_clear ();
+			debug1 (DEBUG_GUI, "selected node stayed: %s", node?node_get_title (node):"none");
 		}
+	} else {
+		debug1 (DEBUG_GUI, "failed to resolve node id: %s", nodeId);
 	}
 
 	debug_exit ("feedlist_selection_changed");
@@ -600,31 +586,31 @@ feedlist_selection_changed (nodePtr node)
 static gboolean
 feedlist_schedule_save_cb (gpointer user_data)
 {
-	/* step 1: request each node to save its state, that is 
+	/* step 1: request each node to save its state, that is
 	   mostly needed for nodes that are node sources */
 	feedlist_foreach (node_save);
 
 	/* step 2: request saving for the root node and thereby
 	   forcing the default source to write an OPML file */
 	NODE_SOURCE_TYPE (ROOTNODE)->source_export (ROOTNODE);
-	
-	feedlist->priv->saveTimer = 0;
-	
+
+	feedlist->saveTimer = 0;
+
 	return FALSE;
 }
 
 void
 feedlist_schedule_save (void)
 {
-	if (feedlist->priv->loading || feedlist->priv->saveTimer)
+	if (feedlist->loading || feedlist->saveTimer)
 		return;
-		
+
 	debug0 (DEBUG_CONF, "Scheduling feedlist save");
 
 	/* By waiting here 5s and checking feedlist_save_time
-	   we hope to catch bulks of feed list changes and save 
+	   we hope to catch bulks of feed list changes and save
 	   less often */
-	feedlist->priv->saveTimer = g_timeout_add_seconds (5, feedlist_schedule_save_cb, NULL);
+	feedlist->saveTimer = g_timeout_add_seconds (5, feedlist_schedule_save_cb, NULL);
 }
 
 /* Handling updates */
@@ -632,16 +618,16 @@ feedlist_schedule_save (void)
 void
 feedlist_new_items (guint newCount)
 {
-	feedlist->priv->newCount += newCount;
-	
+	feedlist->newCount += newCount;
+
 	/* On subsequent feed updates with cache drops
 	   more new items can be reported than effectively
 	   were merged. The simplest way to catch this case
 	   is by checking for new count > unread count here. */
-	if (feedlist->priv->newCount > ROOTNODE->unreadCount)
-		feedlist->priv->newCount = ROOTNODE->unreadCount;
+	if (feedlist->newCount > ROOTNODE->unreadCount)
+		feedlist->newCount = ROOTNODE->unreadCount;
 
-	g_signal_emit_by_name (feedlist, "new-items", feedlist->priv->newCount);
+	g_signal_emit_by_name (feedlist, "new-items", feedlist->newCount);
 }
 
 void
@@ -662,19 +648,23 @@ feedlist_save (void)
 }
 
 void
-feedlist_reset_update_counters (nodePtr node) 
+feedlist_reset_update_counters (nodePtr node)
 {
-	GTimeVal now;
-	
+	guint64 now;
+
 	if (!node)
-		node = feedlist_get_root ();	
-	
-	g_get_current_time (&now);
+		node = feedlist_get_root ();
+
+	now = g_get_real_time();
 	node_foreach_child_data (node, node_reset_update_counter, &now);
 }
 
 FeedList *
-feedlist_create (void)
+feedlist_create (gpointer flv)
 {
-	return FEEDLIST (g_object_new (FEEDLIST_TYPE, NULL));
+	FeedList *fl = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
+
+	g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), fl);
+
+	return fl;
 }

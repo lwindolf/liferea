@@ -1,8 +1,8 @@
 /**
  * @file favicon.h Liferea favicon handling
- * 
+ *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2015-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,57 +23,51 @@
 #define _FAVICON_H
 
 #include <glib.h>
-#include <gtk/gtk.h>
+#include <gdk/gdk.h>
 
 #include "subscription.h"
-#include "update.h"
 
 /**
+ * favicon_load_from_cache: (skip)
  * Tries to load a given favicon from cache.
  *
- * @param id		the favicon id
- * @param size		width / height in pixel
+ * @id:			the node id
+ * @size:		width / height in pixel
  *
- * @returns a pixmap (or NULL)
+ * Returns: (transfer null): a pixmap (or NULL)
  */
 GdkPixbuf * favicon_load_from_cache (const gchar *id, guint size);
 
 /**
+ * favicon_remove_from_cache:
  * Removes a given favicon from the favicon cache.
  *
- * @param id		the favicon id
+ * @id:		the node id
  */
-void favicon_remove_from_cache(const gchar *id);
+void favicon_remove_from_cache (const gchar *id);
 
 /**
- * Checks whether a given favicon needs to be updated 
+ * favicon_save_from_data:
  *
- * @param id		the favicon id
- * @param updateState	update state info of the favicon
- * @param now		current time
+ * @result:		update result
+ * @id:			the node id
+ *
+ * Returns: TRUE on success
  */
-gboolean favicon_update_needed (const gchar *id, updateStatePtr updateState, GTimeVal *now);
+gboolean
+favicon_save_from_data (const struct updateResult * const result, const gchar *id);
 
 /**
- * Favicon download callback. Called after the download
- * has finished (both on success and failure).
+ * favicon_get_urls: (skip)
+ * Returns a list of URLs that are download/discovery targets for favicons
+ * and favicon links.
  *
- * @param user_data	user data for the callback
- */
-typedef void (*faviconUpdatedCb)(gpointer user_data);
-
-/**
- * Tries to download a favicon from and relative to a given
- * feed source URL and an optional feed HTML URL. Can be used
- * for non-feed related favicon download too.
+ * @subscription:	the subscription
+ * @html_url:		a base URL for all HTML links
  *
- * @param subscription	subscription whose icon is going to be updated
- * @param html_url	URL of a website where a favicon could be found (optional)
- * @param source_url	URL (usually the feed source) where a favicon can be found (mandatory)
- * @param options	download options 
- * @param callback	callback to triggered on success
- * @param user_data	user data to be passed to callback
+ * Returns: (transfer full): list of URL strings
  */
-void favicon_download (subscriptionPtr subscription, const gchar *html_url, const gchar *source_url, const updateOptionsPtr options, faviconUpdatedCb callback, gpointer user_data);
+GSList *
+favicon_get_urls (subscriptionPtr subscription, const gchar *html_url);
 
 #endif

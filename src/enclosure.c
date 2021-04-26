@@ -1,4 +1,4 @@
-/**
+/*
  * @file enclosure.c enclosures/podcast support
  *
  * Copyright (C) 2007-2012 Lars Windolf <lars.windolf@gmx.de>
@@ -19,7 +19,6 @@
  */
 
 #include <string.h>
-#include <sys/wait.h>
 
 #include "common.h"
 #include "conf.h"
@@ -28,6 +27,10 @@
 #include "xml.h"
 #include "ui/preferences_dialog.h"	// FIXME: remove this!
 #include "ui/ui_common.h"
+
+#if !defined (G_OS_WIN32) || defined (HAVE_SYS_WAIT_H)
+#include <sys/wait.h>
+#endif
 
 /*
    Liferea manages a MIME type configuration to allow
@@ -78,9 +81,10 @@ enclosure_from_string (const gchar *str)
 		return enclosure;
 	}
 	
-	fields = g_regex_split_simple ("^enc:([01]?):([^:]+):(\\d+):(.*)", str, 0, 0);
+	fields = g_regex_split_simple ("^enc:([01]?):([^:]*):(\\d+):(.*)", str, 0, 0);
 	if (6 > g_strv_length (fields)) {
 		debug2 (DEBUG_PARSING, "Dropping incorrectly encoded enclosure: >>>%s<<< (nr of fields=%d)\n", str, g_strv_length (fields));
+		enclosure_free (enclosure);
 		return NULL;
 	}
 	
@@ -105,8 +109,8 @@ enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gb
 	if (size < 0)
 		size = 0;
 		
-	safeUrl = common_uri_escape (url);
-	result = g_strdup_printf ("enc:%s:%s:%" G_GSSIZE_FORMAT ":%s", downloaded?"1":"0", mime, size, safeUrl);
+	safeUrl = (gchar *) common_uri_escape (BAD_CAST url);
+	result = g_strdup_printf ("enc:%s:%s:%" G_GSSIZE_FORMAT ":%s", downloaded?"1":"0", mime?mime:"", size, safeUrl);
 	g_free (safeUrl);
 	
 	return result;
@@ -127,10 +131,10 @@ enclosure_get_url (const gchar *str)
 	enclosurePtr enclosure = enclosure_from_string(str);
 	gchar *url = NULL;
 
-	if (enclosure)
+	if (enclosure) {
 		url = g_strdup (enclosure->url);
-
-	enclosure_free (enclosure);
+		enclosure_free (enclosure);
+	}
 
 	return url;
 }
@@ -138,13 +142,13 @@ enclosure_get_url (const gchar *str)
 gchar *
 enclosure_get_mime (const gchar *str)
 {
-	enclosurePtr enclosure = enclosure_from_string(str);
-	gchar *mime = NULL;
+	enclosurePtr	enclosure = enclosure_from_string (str);
+	gchar		*mime = NULL;
 
-	if (enclosure)
-		mime = g_strdup (enclosure->url);
-
-	enclosure_free (enclosure);
+	if (enclosure) {
+		mime = g_strdup (enclosure->mime);
+		enclosure_free (enclosure);
+	}
 
 	return mime;
 }
@@ -184,9 +188,9 @@ enclosure_mime_types_load (void)
 							while (cur) {
 								if ((!xmlStrcmp (cur->name, BAD_CAST"type"))) {
 									etp = g_new0 (struct encType, 1);
-									etp->mime = xmlGetProp (cur, BAD_CAST"mime");
-									etp->extension = xmlGetProp (cur, BAD_CAST"extension");
-									etp->cmd = xmlGetProp (cur, BAD_CAST"cmd");
+									etp->mime = (gchar *) xmlGetProp (cur, BAD_CAST"mime");
+									etp->extension = (gchar *) xmlGetProp (cur, BAD_CAST"extension");
+									etp->cmd = (gchar *) xmlGetProp (cur, BAD_CAST"cmd");
 									etp->permanent = TRUE;
 									types = g_slist_append (types, etp);
 								}
@@ -215,18 +219,18 @@ enclosure_mime_types_save (void)
 	GSList		*iter;
 	gchar		*filename;
 
-	doc = xmlNewDoc ("1.0");	
+	doc = xmlNewDoc (BAD_CAST "1.0");
 	root = xmlNewDocNode (doc, NULL, BAD_CAST"types", NULL);
 	
 	iter = types;
 	while (iter) {
 		etp = (encTypePtr)iter->data;
 		cur = xmlNewChild (root, NULL, BAD_CAST"type", NULL);
-		xmlNewProp (cur, BAD_CAST"cmd", etp->cmd);
+		xmlNewProp (cur, BAD_CAST"cmd", BAD_CAST etp->cmd);
 		if (etp->mime)
-			xmlNewProp (cur, BAD_CAST"mime", etp->mime);
+			xmlNewProp (cur, BAD_CAST"mime", BAD_CAST etp->mime);
 		if (etp->extension)
-			xmlNewProp (cur, BAD_CAST"extension", etp->extension);
+			xmlNewProp (cur, BAD_CAST"extension", BAD_CAST etp->extension);
 		iter = g_slist_next (iter);
 	}
 	
@@ -240,7 +244,7 @@ enclosure_mime_types_save (void)
 	xmlFreeDoc (doc);
 }
 
-const GSList const *
+const GSList *
 enclosure_mime_types_get (void)
 {
 	if (!typesLoaded)
@@ -282,15 +286,16 @@ enclosure_download (encTypePtr type, const gchar *url, gboolean interactive)
 		debug2 (DEBUG_UPDATE, "passing URL %s to command %s...", urlQ, type->cmd);
 		cmd = g_strdup_printf ("%s %s", type->cmd, urlQ);
 	} else {
-		const gchar *toolCmd = prefs_get_download_command ();
+		gchar *toolCmd = prefs_get_download_command ();
 		if(!toolCmd) {
 			if (interactive)
-				ui_show_error_box (_("You have not configured a download tool yet! Please do so in the 'Download' tab in Tools/Preferences."));
+				ui_show_error_box (_("You have not configured a download tool yet! Please do so in the 'Enclosures' tab in Tools/Preferences."));
 			return;
 		}
 
 		debug2 (DEBUG_UPDATE, "downloading URL %s with %s...", urlQ, toolCmd);
 		cmd = g_strdup_printf (toolCmd, urlQ);
+		g_free (toolCmd);
 	}
 
 	g_free (urlQ);

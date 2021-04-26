@@ -39,6 +39,10 @@
 #include "common.h"
 #include "debug.h"
 
+#if defined (G_OS_WIN32) && !defined (HAVE_GMTIME_R)
+#define gmtime_r(t,o) gmtime_s (o,t)
+#endif
+
 static gboolean pathsChecked = FALSE;
 
 long

@@ -124,12 +124,6 @@ default_source_export (nodePtr node)
 }
 
 static void
-default_source_update (nodePtr node)
-{	
-	node_foreach_child_data (node, node_update_subscription, GUINT_TO_POINTER (0));
-}
-
-static void
 default_source_auto_update (nodePtr node)
 {	
 	node_foreach_child (node, node_auto_update_subscription);

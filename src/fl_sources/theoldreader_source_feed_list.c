@@ -1,12 +1,12 @@
 /**
  * @file theoldreader_source_feed_list.c  TheOldReader feed list handling
- * 
- * Copyright (C) 2013-2014  Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2013-2018  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,6 +33,7 @@
 #include "metadata.h"
 #include "node.h"
 #include "subscription.h"
+#include "subscription_icon.h"
 #include "xml.h"
 
 #include "fl_sources/opml_source.h"
@@ -64,9 +65,9 @@ theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
 		}
 		g_list_free (elements);
 
-		if (!found)			
+		if (!found)
 			feedlist_node_removed (node);
-	}				
+	}
 }
 
 static void
@@ -80,25 +81,25 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
-		
+
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = source->root->source->type->feedSubscriptionType;
-	
+
 		/* Save TheOldReader feed id which we need to fetch items... */
 		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);
 
 		db_subscription_update (node->subscription);
-	
+
 		node_set_parent (node, folder?folder:source->root, -1);
 		feedlist_node_imported (node);
-		
+
 		/**
 		 * @todo mark the ones as read immediately after this is done
 		 * the feed as retrieved by this has the read and unread
 		 * status inherently.
 		 */
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-		subscription_update_favicon (node->subscription);
+		subscription_icon_update (node->subscription);
 
 	} else {
 		node_source_update_folder (node, folder);
@@ -115,7 +116,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 	debug1 (DEBUG_UPDATE,"theoldreader_subscription_cb(): %s", result->data);
 
 	subscription->updateJob = NULL;
-	
+
 	// FIXME: the following code is very similar to ttrss!
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
@@ -123,7 +124,6 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "subscriptions"));
 			GList		*iter, *elements, *citer, *celements;
-			GSList		*siter;
 
 			/* We expect something like this:
 
@@ -132,10 +132,10 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
                              "categories":[{"id":"user/-/label/myfolder","label":"myfolder"}],
                              "sortid":"51d49b79d1716c7b18000025",
                              "firstitemmsec":"1371403150181",
-                             "url":"http://lzone.de/rss.xml",
-                             "htmlUrl":"http://lzone.de",
+                             "url":"https://lzone.de/rss.xml",
+                             "htmlUrl":"https://lzone.de",
                              "iconUrl":"http://s.yeoldereader.com/system/uploads/feed/picture/5152/884a/4dce/57aa/7e00/icon_0a6a.ico"},
-                           ... 
+                           ...
 			*/
 			elements = iter = json_array_get_elements (array);
 			/* Add all new nodes we find */
@@ -162,10 +162,10 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 					}
 					g_list_free (celements);
 				}
-				
+
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "url")) {
-					theoldreader_source_merge_feed (source, 
+					theoldreader_source_merge_feed (source,
 					                                json_get_string (node, "url"),
 					                                json_get_string (node, "title"),
 					                                json_get_string (node, "id"),
@@ -177,13 +177,13 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 
 			/* Remove old nodes we cannot find anymore */
 			node_foreach_child_data (source->root, theoldreader_source_check_node_for_removal, array);
-			
+
 			/* Save new subscription tree to OPML cache file */
 			opml_source_export (subscription->node);
 
-			subscription->node->available = TRUE;			
+			subscription->node->available = TRUE;
 		} else {
-			g_warning ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
@@ -203,10 +203,10 @@ theoldreader_source_opml_subscription_process_update_result (subscriptionPtr sub
 }
 
 static gboolean
-theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	nodePtr node = subscription->node;
-	
+
 	g_assert(node->source);
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		debug0 (DEBUG_UPDATE, "TheOldReaderSource: login");
@@ -214,10 +214,10 @@ theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr su
 		return FALSE;
 	}
 	debug1 (DEBUG_UPDATE, "updating TheOldReader subscription (node id %s)", node->id);
-	
+
 	update_request_set_source (request, node->source->type->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);
-	
+
 	return TRUE;
 }
 

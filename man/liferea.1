@@ -1,4 +1,4 @@
-.TH LIFEREA "1" "Jul 26, 2013"
+.TH LIFEREA "1" "Dec 26, 2015"
 .SH NAME
 Liferea \- GTK desktop news aggregator
 
@@ -8,24 +8,27 @@ Liferea \- GTK desktop news aggregator
 
 .SH DESCRIPTION
 \fBLiferea\fP (Linux Feed Reader) is an aggregator for online
-news feeds.  It can be used to maintain a list of subscribed feeds, 
+news feeds.  It can be used to maintain a list of subscribed feeds,
 browse and search through their items and displays their contents.
-Additionally Liferea allows one to sync subscriptions and read 
-headlines with online accounts of Google Reader and TinyTinyRSS.
+Additionally Liferea allows one to sync subscriptions and read
+headlines with online accounts of TinyTinyRSS and TheOldReader.
 .SH OPTIONS
 Liferea options:
 .TP
-.B \-\-version
+.B \-v, \-\-version
 Print version information and exit
 .TP
-.B \-\-help
+.B \-h, \-\-help
 Display a option overview and exit
 .TP
 .B \-a, \-\-add\-feed=\fIURI\fR
 Add a new subscription URI which can be a feed or website URL
 .TP
 .B \-w, \-\-mainwindow\-state=\fISTATE\fR
-Start Liferea with its mainwindow in STATE: shown, iconified, hidden
+Start Liferea with its mainwindow in STATE: shown, hidden
+.TP
+.B \-p, \-\-disable\-plugins
+Start with all plugins disabled
 .TP
 .B \-\-debug\-all
 Print debugging messages of all types
@@ -36,13 +39,16 @@ Print debugging messages for the cache handling
 .B \-\-debug\-conf
 Print debugging messages of the configuration handling
 .TP
+.B \-\-debug\-db
+Print debugging messages of the configuration handling
+.TP
 .B \-\-debug\-gui
 Print debugging messages of all GUI functions
 .TP
 .B \-\-debug\-html
 Enables HTML rendering debugging. Each time Liferea
 renders HTML output it will also dump the generated
-HTML into $XDG_CACHE_DIR/liferea/output.xhtml.
+HTML into $XDG_CACHE_DIR/liferea/output.html.
 .TP
 .B \-\-debug\-parsing
 Print debugging messages of all parsing functions
@@ -56,6 +62,9 @@ Print debugging messages when entering/leaving functions
 .B \-\-debug\-update
 Print debugging messages of the feed update processing
 .TP
+.B \-\-debug\-vfolder
+Print debugging messages of the search folder matching
+.TP
 .B \-\-debug\-verbose
 Print verbose debugging messages
 
@@ -67,7 +76,7 @@ pass a valid feed URL as parameter and the feed will be added to the
 feed list. You can also pass non-feed URLs to use feed auto discovery.
 Example:
 
-liferea-add-feed "http://www.newsforge.com/newsforge.rss"
+liferea-add-feed "https://www.newsforge.com/newsforge.rss"
 
 Please note that Liferea needs to be running for \fBliferea-add-feed\fP
 to work.
@@ -83,12 +92,17 @@ $http_proxy should be set to a URI specifying the desired proxy, for example
 .SH FILES
 .TP
 $XDG_CONFIG_DIR/liferea/feedlist.opml
-Contains the current list of subscriptions 
+Contains the current list of subscriptions
 .TP
 $XDG_CONFIG_DIR/liferea/liferea.css
 Stylesheet that can be used to override default HTML style
 .TP
 $XDG_DATA_DIR/liferea/liferea.db
 Sqlite3 database with all subscriptions and headlines
+.TP
+$XDG_DATA_DIR/liferea/plugins/
+User-installed plugins are stored here. You can either manually
+put plugins here or use the plugin installer in Liferea.
+
 .SH AUTHOR
 This manual page was written by Lars Windolf <lars.windolf@gmx.de>.

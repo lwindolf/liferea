@@ -1,4 +1,4 @@
-/**
+/*
  * @file itemset.h  interface to handle sets of items
  * 
  * Copyright (C) 2005-2012 Lars Windolf <lars.windolf@gmx.de>
@@ -25,18 +25,18 @@
 #include "item.h"
 #include "rule.h"
 
-/**
+/*
  * The itemset interface processes item list actions
  * based on the item set type specified by the node
  * the item set belongs to.
  */
 
 typedef struct itemSet {
-	GSList		*rules;		/**< list of rules each item matches */
-	gboolean	anyMatch;	/**< TRUE means only one of the rules must match for item inclusion */
+	GSList		*rules;		/*<< list of rules each item matches */
+	gboolean	anyMatch;	/*<< TRUE means only one of the rules must match for item inclusion */
 	
-	GList		*ids;		/**< the list of item ids */
-	gchar		*nodeId;	/**< the feed list node id this item set belongs to */
+	GList		*ids;		/*<< the list of item ids */
+	gchar		*nodeId;	/*<< the feed list node id this item set belongs to */
 } *itemSetPtr;
 
 /* item set iterating interface */
@@ -44,52 +44,57 @@ typedef struct itemSet {
 typedef void 	(*itemActionFunc)	(itemPtr item);
 
 /**
- * Calls the given callback for each of the items in the item set.
+ * itemset_foreach: (skip)
+ * @itemSet:	the item set
+ * @callback:	the callback
  *
- * @param itemSet	the item set
- * @param callback	the callback
+ * Calls the given callback for each of the items in the item set.
  */
 void itemset_foreach (itemSetPtr itemSet, itemActionFunc callback);
 
 /**
+ * itemset_merge_items: (skip)
+ * @itemSet:		the item set to merge into
+ * @items:		a list of items to merge
+ * @allowUpdates:	TRUE if older items may be replaced
+ * @markAsRead:		TRUE if all new items should be marked as read
+ *
  * Merges the given item set into the item set of
  * the given node. Used for node updating.
  *
- * @param itemSet	the item set to merge into
- * @param items		a list of items to merge
- * @param allowUpdates	TRUE if older items may be replaced
- * @param markAsRead	TRUE if all new items should be marked as read
- *
- * @returns the number of new merged items
+ * Returns: the number of new merged items
  */
 guint itemset_merge_items(itemSetPtr itemSet, GList *items, gboolean allowUpdates, gboolean markAsRead);
 
 /**
+ * itemset_check_item: (skip)
+ * @itemSet:	the itemSet
+ * @item:	the item
+ *
  * Checks if the given item matches the rules of the given item set.
  *
- * @param itemSet	the itemSet
- * @param item		the item
- *
- * @returns TRUE if the item matches the rules of the item set
+ * Returns: TRUE if the item matches the rules of the item set
  */
 gboolean itemset_check_item (itemSetPtr itemSet, itemPtr item);
 
 /**
+ * itemset_add_rule: (skip)
+ * @itemSet:	the item set
+ * @ruleId:	id string for this rule type
+ * @value:	argument string for this rule
+ * @additive:	indicates positive or negative logic
+ *
  * Method that creates and adds a rule to an item set. To be used
  * on loading time, when creating searches or when editing
  * search folder properties.
- *
- * @param itemSet	the item set
- * @param ruleId	id string for this rule type
- * @param value		argument string for this rule
- * @param additive	indicates positive or negative logic
  */
 void itemset_add_rule (itemSetPtr itemSet, const gchar *ruleId, const gchar *value, gboolean additive);
 
 /**
- * Frees the given item set and all items it contains.
+ * itemset_free: (skip)
+ * @itemSet:	the item set to free
  *
- * @param itemSet	the item set to free
+ * Frees the given item set and all items it contains.
  */
 void itemset_free(itemSetPtr itemSet);
 

@@ -1,21 +1,22 @@
-![build status git master](https://travis-ci.org/lwindolf/liferea.svg?branch=master)
+[![Build Status](https://travis-ci.org/lwindolf/liferea.svg?branch=master)](https://travis-ci.org/lwindolf/liferea) ![Coverity Scan Build Status](https://scan.coverity.com/projects/4287/badge.svg)
 
+[![Packages](https://repology.org/badge/latest-versions/liferea.svg)](https://repology.org/metapackage/liferea/versions)
+[![Packages](https://repology.org/badge/tiny-repos/liferea.svg)](https://repology.org/metapackage/liferea/versions)
+[![Dependency](https://img.shields.io/librariesio/github/lwindolf/liferea)](https://libraries.io/github/lwindolf/liferea)
 
 Introduction
 ------------
 
-Liferea is a desktop feed reader/news aggregator that brings together all of the content from your favorite subscriptions into a simple interface that makes it easy to organize and browse feeds. Its GUI is similar to a desktop mail/newsclient, with an embedded graphical browser.
+Liferea is a desktop feed reader/news aggregator that brings together all of the content from your favorite subscriptions into a simple interface that makes it easy to organize and browse feeds. Its GUI is similar to a desktop mail/news client, with an embedded web browser.
 
-![screenshot](http://lzone.de/liferea/screenshots/screenshot3.png)
+![screenshot](https://lzone.de/liferea/screenshots/screenshot3.png)
 
 
 
 Installation from Package
 -------------------------
 
-We do not provide packages, but others do. Detailed instructions on how to 
-get Liferea packages installed on the different distributions can 
-be found at http://lzone.de/liferea/install.htm
+For distro specific package installation check out https://lzone.de/liferea/install.htm
 
 
 
@@ -23,47 +24,28 @@ Building Liferea Yourself
 ------------------------
 
 This section describes how to compile Liferea yourself. If you have
-any problems compiling the packages or from GIT don't hesitate to
-contact us in IRC (see Support section) to help you with it!
+any problems compiling the source file an issue at Github and we will
+help you asap.
 
 
-_Dependencies_
+###### _Mandatory Dependencies_
 
-Liferea 1.11+ is to be built against GTK+ 3. If you need to build
-for GTK+ 2 please use the most recent 1.8 release.
+   libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0-dev
+   libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool
 
-The compilation and runtime dependencies are:
-
-Mandatory:
-
-   gtk3 libxml2 libxslt sqlite3 libwebkit3 libjson-glib libgirepository1.0 libpeas gsettings-desktop-schemas
-
-Optional:
-
-- For the keyring support
-  - Python >= 2
-- For the media player plugin
-  - Python >= 2
-  - GStreamer 0.10+ library and codecs
    
-Ensure that you have installed the libraries and their headers.
-If you use distribution packages then you usually need to install
-a package named like the library and one with a suffix "-dev" or
-"-devel". You need both to compile Liferea.
-
-
-_Compiling from Tarball_
+###### _Compiling from Tarball_
 
 Download a tarball from https://github.com/lwindolf/liferea/releases
 and extract and compile with
 
-    tar jxvf liferea-1.11.0.tar.bz2 
+    tar jxvf liferea-1.13.3.tar.bz2 
     ./configure
     make
-    make install
+    sudo make install
 
 
-_Compiling from Git_
+###### _Compiling from Git_
 
 Check out the code:
 
@@ -73,23 +55,27 @@ Then build it with:
 
     ./autogen.sh
     make
-    make install
+    sudo make install
+
+If you compile with a --prefix directory which does not match $XDG_DATA_DIRS
+you will get a runtime error about the schema not being found. To workaround
+set $XDG_DATA_DIRS before starting Liferea. For example:
+
+    my_dir=$HOME/tmp/liferea
+    ./autogen.sh --prefix=$my_dir
+    make
+    sudo make install
+    env XDG_DATA_DIRS="$my_dir/share:$XDG_DATA_DIRS" $my_dir/bin/liferea
 
 
 Contributing
 ------------
 
-This section describes how you can contribute to Liferea. We currently
-try to provide additional help on contributing via OpenHatch.org which
-provides help and easy tasks to start contributing.
-
-	http://openhatch.org/+projects/Liferea
-
 As the project is hosted at Github pull requests and tickets via Github
 are the best way to contribute to Liferea.
 
 
-_Translating_
+###### _Translating_
 
 Before starting to translate you need a translation editor. We suggest
 to use poedit or gtranslator. Please edit the translation using such a 
@@ -100,7 +86,7 @@ Please do not send translation patches. Those are a lot of work to merge
 and the bandwidth saving is not that huge!
 
 
-_New Translations_
+###### _New Translations_
 
 To create a new translation you must load the translation template, which you
 can find in the release tarball as "po/liferea.pot", into the translation 
@@ -108,7 +94,7 @@ editor. After editing it save it under a new name (usually your locales name
 with the extension ".po").
 
 
-_Updating Translations_
+###### _Updating Translations_
 
 When updating an existing translation please ensure to respect earlier 
 translators work. If the latest translation is only a few months old please
@@ -116,7 +102,7 @@ contact the latest translator first asking him to review your changes especially
 if you change already translated literals.
 
 
-_Localizing Feed Lists_
+###### _Localizing Feed Lists_
 
 When Liferea starts for the first time it installs a localized feed list
 if available. If this is not the case for your locale you might want to provide
@@ -130,25 +116,21 @@ If you want to provide/update a localized feed list please follow these rules:
 + Provide good and short feed titles
 + Provide HTML URLs for each feed.
 
-Once finished post the result OPML file in the mailing list or the SF patch
-tracker.
+###### _Creating Plugins_
 
-
-_Creating Plugins_
-
-Liferea 1.10+ support GObject Introspection based plugins using libpeas. The
+Liferea supports GObject Introspection based plugins using libpeas. The
 Liferea distribution comes with a set of Python plugin e.g. the media player,
-GNOME keyring support, a tray icon plugin and maybe others.
+libsecret support, a tray icon plugin and maybe others.
 
 
-Why We Use Plugins?
+###### Why We Use Plugins?
 
 The idea behind plugins is to extend Liferea without changing compile time
 requirements. With the plugin only activating if all its bindings are available
 Liferea uses plugins to automatically enable features where possible.
 
 
-How Plugins Interact With Liferea
+###### How Plugins Interact With Liferea
 
 You can develop plugins for your private use or contribute them upstream.
 In any case it makes sense to start by cloning one of the existing plugins
@@ -170,7 +152,7 @@ if you contribute your plugin upstream it will be updated to match renamed
 functionality.
 
 
-Testing Plugins
+###### Testing Plugins
 
 To test your new plugin you can use ~/.local/share/liferea/plugins. Create 
 the directory and put the plugin script and the .plugin file there and restart
@@ -181,17 +163,17 @@ permanently disable the plugin. Each time this happens you need to reenable
 the plugin from within the plugin tab in the preferences dialog!
 
 
-_How to Help With Testing_
+###### _How to Help With Testing_
 
-*Bug Reports*
+###### *Bug Reports*
 
 If you want to help with testing grab the latest tarball or follow GIT master
 and write bug reports for any functional problem you experience. If you have
-time help with bug triaging the SF tracker. Check if you see any of the open
-bugs on your setup.
+time help with bug triaging. Check if you see any of the open bugs that are
+not yet confirmed.
 
 
-*Debugging Crashes*
+###### *Debugging Crashes*
 
 In case of crashes create gdb backtraces and post them in the bug tracker. To
 create a backtrace start Liferea using "gdb liferea". At the gdb prompt type
@@ -203,7 +185,7 @@ situation will only point to the assertion line, which doesn't help much. In cas
 of an assertion simply post a bug report with the assertion message.
 
 
-*Debugging Memory Leaks*
+###### *Debugging Memory Leaks*
 
 If you see memory leakage please take the time to do a run 
 
@@ -212,54 +194,22 @@ If you see memory leakage please take the time to do a run
 to identify leaks and send in the output.
 
 
-Browser Integration
--------------------
-
-Liferea allows subscribing directly from Firefox 2.0+ and Epiphany. 
-
-_Ephiphany_
-
-Epiphany provides a standard plugin that allows adding subscription directly 
-to Liferea. Ensure you have installed the Epiphany plugins (often a separate
-package in the distribution) and enabled the plugin in the Epiphany settings.
-
-_Firefox 2.0+_
-
-If you want to subscribe from within Firefox 2.0 you can configure Firefox 2.0 
-to add subscriptions to Liferea directly. To do so click the feed icon in the 
-location  entry. Firefox will then present a menu where you can configure a 
-manual command instead of the Live Bookmarks to add subscriptions. Liferea 
-supplies a script named "liferea-add-feed" that you can tell Firefox to use.
-
-If this doesn't work for you please try to run "liferea-add-feed" from the
-command line and look for error messages. Often DBUS problems cause the script
-to fail.
-
-
 How to Get Support
 ------------------
 
-When using distribution packages:
+### When using distribution packages
 
-   Do not post bug reports in the Liferea bug tracker, use the bug reporting
-   system of your distribution instead. We (upstream) cannot fix distribution
-   packages!
+Do not post bug reports in the Liferea bug tracker, use the bug reporting
+system of your distribution instead. We (upstream) cannot fix distribution
+packages!
 
-Before getting support for stable releases: 
+### Before raising an issue
 
-   Install the latest stable release and check if the problem is solved already. 
-   Please do not ask for help for older releases!
+Install the latest stable release and check if the problem is solved already.
+Please do not ask for help for older releases!
 
-Now there are three major support channels:
+### Issue Tracker
 
-+ The IRC channel "#liferea" on freenode.org. If you have easy to solve problems 
-  and simple questions feel free to ask the people hanging around there.
-    
-+ The mailing list (https://lists.sourceforge.net/lists/listinfo/liferea-devel).
-  Good for posting compilation problems and starting longer discussions.
-    
-+ The GitHub bug tracker (https://github.com/lwindolf/liferea/issues) where you
-  can post bug reports for all problems you find. Ensure to look for any
-  existing reports on your problem!
-
-Hopefully we can help with your problem.
+Once you verified the latest stable release still has the problem
+please raise an issue in the GitHub bug tracker
+(https://github.com/lwindolf/liferea/issues).

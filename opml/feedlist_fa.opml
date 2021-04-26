@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<opml version="1.0">
+<head>
+	<title>لیست خوراک پیشفرض Liferea</title>
+</head>
+<body>
+	<outline text="خوراک‌های نمونه">
+		<outline text="فارسی">
+			<outline text="علمی">
+				<outline text="بیگ بنگ" htmlUrl="https://bigbangpage.com" xmlUrl="hhttps://bigbangpage.com/?feed=rss2" />
+			</outline>
+		</outline>
+		
+		<!-- lets keep this default English block in sync over all feed lists! -->
+		<outline text="International">		
+			<outline text="News">
+				<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
+				<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="http://rss.slashdot.org/Slashdot/slashdot" />
+				<outline text="BBC" htmlUrl="http://www.bbc.com/news" xmlUrl="http://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
+				<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
+			</outline>
+			<outline text="Open Source">		
+				<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
+				<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
+			</outline>
+			<outline text="Podcasts &amp; Music">		
+				<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/feed/atom/"/>
+				<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
+				<outline text="Gorilla vs. Bear" htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
+			</outline>
+			<outline text="Comics">
+				<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
+			</outline>
+		</outline>
+		<!-- end of default block -->
+	</outline>
+	<!-- end of default block -->
+
+	<!-- the following search folders should also be in sync for all feed lists -->
+	<!-- Do only translate the @text attributes in all of the following <outline> tags! -->
+	<outline text="خوانده‌نشده" title="خوانده‌نشده" description="خوانده‌نشده" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="وضعیت خواندن" rule="unread" value="" additive="true"/>
+	</outline>
+	<outline text="مهم" title="Important" description="Important" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="وضعیت پرچم" rule="flagged" value="" additive="true"/>
+	</outline>
+	<!-- end of search folder block -->
+</body>
+</opml>

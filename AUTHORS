@@ -10,6 +10,7 @@ Nathan J. Conrad <t98502@users.sourceforge.net>
 Arnold Noronha <arnstein87@users.sf.net> 
 Emilio Pozuelo Monfort <pochu27@gmail.com>
 Adrian Bunk <bunk@stusta.de>
+Laetitia Berthelot <leiaz@mailbox.org>
 
 
 Code Contributors
@@ -74,12 +75,16 @@ Peter Oliver						Google Reader Label Support
 Sergey Snitsaruk <narren96c@gmail.com>			Google Reader Label Support 
 Sebastian Keller <sebastian-keller@gmx.de>		Gedit-like tab close buttons
 Simon Kågedal Reimer <skagedal@gmail.com>		Seekable GStreamer media player
+Daneil Aleksandersen 					Partial RFC3229 support saving bandwidth
+                                                        Security fixes, network improvements
 
 
 Maintainer Credits
 ==================
 
-Luis Rodrigo Gallardo Cruz <rodrigo@nul-unu.com>	Debian
+David Michael Smith <sidicas2@gmail.com>		Debian
+Emilio Pozuelo Monfort <pochu@debian.org>		Debian
+Paul Gevers <elbrus@debian.org>				Debian
 Emilio Pozuelo Monfort <pochu27@gmail.com>		Ubuntu
 Phillip Compton	<pcompton@proteinmedia.com>		Fedora
 Dag Wieers <dag@wieers.com>				Fedora
@@ -102,8 +107,11 @@ Spanish			Sargate Kanogan <sargate@gmail.com>
 Spanish			Rodrigo Gallardo <rodrigo@nul-unu.com>
 Japanese		Takeshi AIHANA <takeshi.aihana@gmail.com>
 Japanese		Takeshi Hamasaki <hmatrjp@users.sourceforge.jp>
+Japanese                IWAI, Masaharu <iwaim.sub@gmail.com>
 French			Vincent Lefèvre <vincent@vinc17.org>
+French			Guillaume Bernard <contact@guillaume-bernard.fr>
 Swedish			Daniel Nylander <po@danielnylander.se>
+Swedish			Andreas Ronnquist <gusnan.mailinglists@openmailbox.org>
 Turkish			Mehmet Atif Ergun <mehmetaergun@gmail.com>
 Turkish			Eren Türkay <turkay.eren@gmail.com>
 Belorusian Latin	Ihar Hrachyshka <booxter@users.sf.net>
@@ -121,6 +129,7 @@ Greek			Evgenia Petoumenou <epetoumenou@gmail.com>
 Albanian		Besnik Bleta <besnik@programeshqip.org>
 German			Christian Dywan <christian@twotoasts.de>
 German			Robin Stocker <robin@nibor.org>
+German			Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>
 Catalan			Gil Forcada <gilforcada@guifi.net>
 Basque			Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>
 Basque			Mikel Olasagasti Uranga <mikel@olasagasti.info>
@@ -139,6 +148,7 @@ Lithuanian		Mindaugas Baranauskas <embar@users.berlios.de>
 Vietnamese		Trần Ngọc Quân <vnwildman@gmail.com>
 Finnish			Pauli Virtanen <pauli.virtanen@hut.fi>
 Finnish			Jorma Karvonen <karvonen.jorma@gmail.com>
+Indonesian		Samsul Ma'arif <mail@samsul.web.id>
 
 
 Code included from other projects

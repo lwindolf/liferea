@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.11.3],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.13.5],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -29,17 +29,17 @@ PKG_PROG_PKG_CONFIG()
 ################################################################################
 # Mandatory library dependencies
 
-pkg_modules="	gtk+-3.0 >= 3.4.0
-		glib-2.0 >= 2.28.0
-		gio-2.0 >= 2.26.0
+pkg_modules="	gtk+-3.0 >= 3.22.0
+		glib-2.0 >= 2.50.0
+		gio-2.0 >= 2.50.0
 		pango >= 1.4.0 
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
 		sqlite3 >= 3.7.0
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
-		libsoup-2.4 >= 2.28.2
-		webkitgtk-3.0
+		libsoup-2.4 >= 2.42
+		webkit2gtk-4.0
 		json-glib-1.0
 		gobject-introspection-1.0
 		gsettings-desktop-schemas
@@ -52,6 +52,12 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
+
+PKG_CHECK_MODULES([WEB_EXTENSION], [
+                  webkit2gtk-web-extension-4.0
+                  ])
+AC_SUBST([WEB_EXTENSION_CFLAGS])
+AC_SUBST([WEB_EXTENSION_LIBS])
 
 uname=`uname`
 AC_DEFINE_UNQUOTED(OS, $uname, [defines a OS version string, used for OS specific code])
@@ -77,6 +83,7 @@ Makefile
 net.sf.liferea.gschema.xml
 src/Makefile
 src/webkit/Makefile
+src/webkit/web_extension/Makefile
 src/parsers/Makefile
 src/fl_sources/Makefile
 src/ui/Makefile
@@ -85,7 +92,6 @@ doc/Makefile
 doc/html/Makefile
 xslt/Makefile
 man/Makefile
-man/pl/Makefile
 pixmaps/Makefile
 pixmaps/16x16/Makefile
 pixmaps/22x22/Makefile

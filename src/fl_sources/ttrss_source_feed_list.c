@@ -1,12 +1,12 @@
 /**
  * @file ttrss_source_feed_list.c  tt-rss feed list handling routines.
- * 
- * Copyright (C) 2010-2014  Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2010-2018  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -32,6 +32,7 @@
 #include "metadata.h"
 #include "node.h"
 #include "subscription.h"
+#include "subscription_icon.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/ttrss_source.h"
 
@@ -63,9 +64,9 @@ ttrss_source_check_node_for_removal (nodePtr node, gpointer user_data)
 		}
 		g_list_free (elements);
 
-		if (!found)			
+		if (!found)
 			feedlist_node_removed (node);
-	}				
+	}
 }
 
 static void
@@ -76,32 +77,32 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 
 	/* check if node to be merged already exists */
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
-	
+
 	if (!node) {
 		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
-		
+
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = source->root->source->type->feedSubscriptionType;
-	
+
 		/* Save tt-rss feed id which we need to fetch items... */
 		tmp = g_strdup_printf ("%" G_GINT64_FORMAT, id);
 		metadata_list_set (&node->subscription->metadata, "ttrss-feed-id", tmp);
 		g_free (tmp);
-	
+
 		node_set_parent (node, folder?folder:source->root, -1);
 		feedlist_node_imported (node);
-		
+
 		/**
 		 * @todo mark the ones as read immediately after this is done
 		 * the feed as retrieved by this has the read and unread
 		 * status inherently.
 		 */
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
-		subscription_update_favicon (node->subscription);
-	
+		subscription_icon_update (node->subscription);
+
 		/* Important: we must not loose the feed id! */
 		db_subscription_update (node->subscription);
 	} else {
@@ -120,7 +121,7 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 	debug1 (DEBUG_UPDATE,"ttrss_subscription_cb(): %s", result->data);
 
 	subscription->updateJob = NULL;
-	
+
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
 
@@ -128,28 +129,28 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 			JsonNode	*content = json_get_node (json_parser_get_root (parser), "content");
 			JsonArray	*array;
 			GList		*iter, *elements;
-		
+
 			/* We expect something like this:
-			
-			[ {"feed_url":"http://feeds.arstechnica.com/arstechnica/everything", 
-			   "title":"Ars Technica", 
-			   "id":6, 
-			   "unread":20, 
-			   "has_icon":true, 
-			   "cat_id":0, 
-			   "last_updated":1287853210}, 
-			  {"feed_url":"http://rss.slashdot.org/Slashdot/slashdot", 
-			   "title":"Slashdot", 
-			   "id":5, 
-			   "unread":33, 
-			   "has_icon":true, 
-			   "cat_id":0, 
-			   "last_updated":1287853206}, 
+
+			[ {"feed_url":"http://feeds.arstechnica.com/arstechnica/everything",
+			   "title":"Ars Technica",
+			   "id":6,
+			   "unread":20,
+			   "has_icon":true,
+			   "cat_id":0,
+			   "last_updated":1287853210},
+			  {"feed_url":"http://rss.slashdot.org/Slashdot/slashdot",
+			   "title":"Slashdot",
+			   "id":5,
+			   "unread":33,
+			   "has_icon":true,
+			   "cat_id":0,
+			   "last_updated":1287853206},
 			   [...]
-			   
+
 
 			   Or an error message that could look like this:
-	
+
 			      {"seq":null,"status":1,"content":{"error":"NOT_LOGGED_IN"}}
 
 			   */
@@ -171,10 +172,10 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 				gint cat_id = json_get_int (node, "cat_id");
 				if (cat_id > 0)
 					category = g_strdup_printf ("%d", cat_id);
-				
+
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "feed_url")) {
-					ttrss_source_merge_feed (source, 
+					ttrss_source_merge_feed (source,
 					                         json_get_string (node, "feed_url"),
 					                         json_get_string (node, "title"),
 					                         json_get_int (node, "id"),
@@ -186,13 +187,13 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 
 			/* Remove old nodes we cannot find anymore */
 			node_foreach_child_data (source->root, ttrss_source_check_node_for_removal, array);
-			
+
 			/* Save new subscription tree to OPML cache file */
 			opml_source_export (subscription->node);
 
-			subscription->node->available = TRUE;			
+			subscription->node->available = TRUE;
 		} else {
-			g_warning ("Invalid JSON returned on TinyTinyRSSS request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on TinyTinyRSSS request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
@@ -202,25 +203,28 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 	}
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
-		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));	
+		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
 static void
 ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr subscription)
 {
-	updateRequestPtr	request;
-	gchar			*source_uri;
-
-	request = update_request_new ();
-	request->updateState = update_state_copy (subscription->updateState);
-	request->options = update_options_copy (subscription->updateOptions);
+	UpdateRequest	*request;
+	gchar		*source_uri;
 
 	source_uri = g_strdup_printf (TTRSS_URL, source->url);
-	update_request_set_source (request, source_uri);
+
+	request = update_request_new (
+		source_uri,
+		subscription->updateState,
+		subscription->updateOptions
+	);
+
 	g_free (source_uri);
+
 	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
 
-	subscription->updateJob = update_execute_request (subscription, request, ttrss_source_subscription_list_cb, subscription, 0);
+	subscription->updateJob = update_execute_request (subscription, request, ttrss_source_subscription_list_cb, subscription, FEED_REQ_NO_FEED);
 }
 
 static void
@@ -238,7 +242,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 			const gchar *type = json_get_string (node, "type");
 			const gchar *name = json_get_string (node, "name");
 
-			/* ignore everything without a name or bare_id */	
+			/* ignore everything without a name or bare_id */
 			if (name) {
 
 				/* Process child categories */
@@ -259,7 +263,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 						ttrss_source_merge_categories (source, folder, id, json_get_node (node, "items"));
 					}
 				/* Process child feeds */
-				} else {	
+				} else {
 					debug3 (DEBUG_UPDATE, "TinyTinyRSS feed=%s folder=%d (%ld)", name, parentId, id);
 					g_hash_table_insert (source->categories, GINT_TO_POINTER (id), GINT_TO_POINTER (parentId));
 				}
@@ -284,7 +288,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 		if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
 			JsonNode	*content = json_get_node (json_parser_get_root (parser), "content");
 			JsonNode	*categories, *items;
-	
+
 			/* We expect something like this:
 
 				{"categories":{"identifier":"id","label":"name","items":[
@@ -314,7 +318,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 			     - traverse all categories > #1
 			     - remember category ids in source->categories hash
 
-			   As we need to perform a subscription list anyway we can ignore all feed infos
+			   As we need to perform a subscription list update anyway we can ignore all feed infos
 			*/
 
 			if (!content) {
@@ -344,7 +348,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 			/* And trigger the actual feed fetching */
 			ttrss_source_update_subscription_list (source, subscription);
 		} else {
-			g_warning ("Invalid JSON returned on TinyTinyRSS request! >>>%s<<<", result->data);
+			g_print ("Invalid JSON returned on TinyTinyRSS request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
@@ -355,7 +359,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 }
 
 static gboolean
-ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct updateRequest *request)
+ttrss_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	nodePtr node = subscription->node;
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
@@ -376,7 +380,7 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, struct 
 	   installation is not self-updating to run a remote update for
 	   each feed before fetching it's items */
 
-	source_uri = g_strdup_printf (TTRSS_URL, source->url);	
+	source_uri = g_strdup_printf (TTRSS_URL, source->url);
 	update_request_set_source (request, source_uri);
 	g_free (source_uri);
 	request->postdata = g_strdup_printf (TTRSS_JSON_CATEGORIES_LIST, source->session_id);

@@ -1,12 +1,12 @@
 /**
  * @file subscription.c  common subscription handling
- * 
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,6 +20,7 @@
 
 #include "subscription.h"
 
+#include <math.h>
 #include <string.h>
 
 #include "auth.h"
@@ -27,18 +28,20 @@
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
-#include "favicon.h"
 #include "feedlist.h"
 #include "metadata.h"
 #include "net.h"
+#include "subscription_icon.h"
 #include "ui/auth_dialog.h"
+#include "ui/feed_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
-#include "ui/feed_list_node.h"
 
 /* The allowed feed protocol prefixes (see http://25hoursaday.com/draft-obasanjo-feed-URI-scheme-02.html) */
 #define FEED_PROTOCOL_PREFIX "feed://"
 #define FEED_PROTOCOL_PREFIX2 "feed:"
+
+#define ONE_MONTH_MICROSECONDS (guint64)(60*60*24*31) * (guint64)G_USEC_PER_SEC
 
 subscriptionPtr
 subscription_new (const gchar *source,
@@ -46,23 +49,23 @@ subscription_new (const gchar *source,
                   updateOptionsPtr options)
 {
 	subscriptionPtr	subscription;
-	
+
 	subscription = g_new0 (struct subscription, 1);
 	subscription->type = feed_get_subscription_type ();
 	subscription->updateOptions = options;
-	
+
 	if (!subscription->updateOptions)
 		subscription->updateOptions = g_new0 (struct updateOptions, 1);
-		
-	subscription->updateState = g_new0 (struct updateState, 1);	
+
+	subscription->updateState = update_state_new ();
 	subscription->updateInterval = -1;
 	subscription->defaultInterval = -1;
-	
+
 	if (source) {
 		gboolean feedPrefix = FALSE;
 		gchar *uri = g_strdup (source);
 		g_strstrip (uri);	/* strip confusing whitespaces */
-		
+
 		/* strip feed protocol prefix variant 1 */
 		if (uri == strstr (uri, FEED_PROTOCOL_PREFIX)) {
 			gchar *tmp = uri;
@@ -78,22 +81,22 @@ subscription_new (const gchar *source,
 			g_free (tmp);
 			feedPrefix = TRUE;
 		}
-			
-		/* ensure protocol prefix (but only for feed:[//] URIs to avoid 
+
+		/* ensure protocol prefix (but only for feed:[//] URIs to avoid
 		   breaking local file and command line subscriptions) */
 		if (feedPrefix && !strstr (uri, "://")) {
 			gchar *tmp = uri;
 			uri = g_strdup_printf ("http://%s", uri);
 			g_free (tmp);
 		}
-			
+
 		subscription_set_source (subscription, uri);
 		g_free (uri);
 	}
-	
+
 	if (filter)
 		subscription_set_filter (subscription, filter);
-	
+
 	return subscription;
 }
 
@@ -105,7 +108,7 @@ subscription_can_be_updated (subscriptionPtr subscription)
 		liferea_shell_set_status_bar (_("Subscription \"%s\" is already being updated!"), node_get_title (subscription->node));
 		return FALSE;
 	}
-	
+
 	if (subscription->discontinued) {
 		liferea_shell_set_status_bar (_("The subscription \"%s\" was discontinued. Liferea won't update it anymore!"), node_get_title (subscription->node));
 		return FALSE;
@@ -116,39 +119,16 @@ subscription_can_be_updated (subscriptionPtr subscription)
 		return FALSE;
 	}
 	return TRUE;
-}	
+}
 
 void
-subscription_reset_update_counter (subscriptionPtr subscription, GTimeVal *now) 
+subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 {
 	if (!subscription)
 		return;
-		
-	subscription->updateState->lastPoll.tv_sec = now->tv_sec;
-	debug1 (DEBUG_UPDATE, "Resetting last poll counter to %ld.", subscription->updateState->lastPoll.tv_sec);
-}
 
-static void
-subscription_favicon_downloaded (gpointer user_data)
-{
-	nodePtr	node = (nodePtr)user_data;
-
-	node_load_icon (node);
-	feed_list_node_update (node->id);
-}
-
-void
-subscription_update_favicon (subscriptionPtr subscription)
-{
-	debug1 (DEBUG_UPDATE, "trying to download favicon.ico for \"%s\"", node_get_title (subscription->node));
-	liferea_shell_set_status_bar (_("Updating favicon for \"%s\""), node_get_title (subscription->node));
-	g_get_current_time (&subscription->updateState->lastFaviconPoll);
-	favicon_download (subscription,
-	                  node_get_base_url (subscription->node),
-			  subscription_get_source (subscription),
-			  subscription->updateOptions,		// FIXME: correct?
-	                  subscription_favicon_downloaded, 
-			  (gpointer)subscription->node);
+	subscription->updateState->lastPoll = *now;
+	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
 }
 
 /**
@@ -156,17 +136,13 @@ subscription_update_favicon (subscriptionPtr subscription)
  *
  * @param subscription	the subscription
  * @param httpstatus	the new HTTP status code
- * @param resultcode	the update result code
  * @param filterError	filter error string (or NULL)
  */
 static void
 subscription_update_error_status (subscriptionPtr subscription,
                                   gint httpstatus,
-                                  gint resultcode,
                                   gchar *filterError)
 {
-	gboolean	errorFound = FALSE;
-
 	if (subscription->filterError)
 		g_free (subscription->filterError);
 	if (subscription->httpError)
@@ -175,22 +151,21 @@ subscription_update_error_status (subscriptionPtr subscription,
 		g_free (subscription->updateError);
 
 	subscription->filterError = g_strdup (filterError);
-	subscription->updateError = NULL;
+	subscription->updateError = NULL;	// FIXME: this might not be very useful!
 	subscription->httpError = NULL;
 	subscription->httpErrorCode = httpstatus;
 
-	if (((httpstatus >= 200) && (httpstatus < 400)) && /* HTTP codes starting with 2 and 3 mean no error */
-	    (NULL == subscription->filterError))
-		return;
+	/* Note: the httpstatus we get here is a libsoup status code
+	   which is either a HTTP status code or a libsoup status.
+	   https://developer.gnome.org/libsoup/unstable/libsoup-2.4-soup-status.html
 
-	if ((200 != httpstatus) || (resultcode != 0)) {
-		subscription->httpError = g_strdup (network_strerror (resultcode, httpstatus));
-		errorFound = TRUE;
-	}
+	   Therefore we know if it is between 200 an 399 all is fine.
 
-	/* if none of the above error descriptions matched... */
-	if (!errorFound)
-		subscription->updateError = g_strdup (_("There was a problem while reading this subscription. Please check the URL and console output."));
+	   Otherwise we build a message according to the libsoup doc
+	 */
+
+	if (!((httpstatus >= 200) && (httpstatus < 400)))
+		subscription->httpError = g_strdup (network_strerror (httpstatus));
 }
 
 static void
@@ -199,32 +174,54 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 	nodePtr		node = subscription->node;
 	gboolean	processing = FALSE;
-	GTimeVal	now;
+	guint		count, maxcount;
+	gchar		*statusbar;
 
 	/* 1. preprocessing */
+	statusbar = g_strdup ("");
 
 	g_assert (subscription->updateJob);
 	/* update the subscription URL on permanent redirects */
-	if ((301 == result->httpstatus) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
-		debug2 (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated with \"%s\"", node_get_title(node), result->source);
+	if ((301 == result->httpstatus || 308 == result->httpstatus) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
+		debug2 (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
 		subscription_set_source (subscription, result->source);
-		liferea_shell_set_status_bar (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
-	}
+    statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
+  }
 
-	if (401 == result->httpstatus) { /* unauthorized */
-		auth_dialog_new (subscription, flags);
-	} else if (410 == result->httpstatus) { /* gone */
-		subscription->discontinued = TRUE;
-		node->available = TRUE;
-		liferea_shell_set_status_bar (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
+	/* consider everything that prevents processing the data we got */
+	if (result->httpstatus >= 400 || !result->data) {
+		/* Default */
+		subscription->error = FETCH_ERROR_NET;
+		node->available = FALSE;
+
+		/* Special handling */
+		if (401 == result->httpstatus) { /* unauthorized */
+			subscription->error = FETCH_ERROR_AUTH;
+			auth_dialog_new (subscription, flags);
+		}
+		if (410 == result->httpstatus) { /* gone */
+			subscription->discontinued = TRUE;
+			statusbar = g_strdup_printf (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
+		}
 	} else if (304 == result->httpstatus) {
 		node->available = TRUE;
-		liferea_shell_set_status_bar (_("\"%s\" has not changed since last update"), node_get_title(node));
+		statusbar = g_strdup_printf (_("\"%s\" has not changed since last update"), node_get_title(node));
+	} else if (result->filterErrors) {
+		node->available = FALSE;
+		subscription->error = FETCH_ERROR_NET;
 	} else {
 		processing = TRUE;
 	}
 
-	subscription_update_error_status (subscription, result->httpstatus, result->returncode, result->filterErrors);
+	/* Clear status bar if we are last update in progress */
+	update_jobs_get_count (&count, &maxcount);
+	if (1 >= count)
+		liferea_shell_set_status_bar (statusbar);
+	else
+		liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
+	g_free (statusbar);
+
+	subscription_update_error_status (subscription, result->httpstatus, result->filterErrors);
 
 	subscription->updateJob = NULL;
 
@@ -232,26 +229,30 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	if (processing)
 		SUBSCRIPTION_TYPE (subscription)->process_update_result (subscription, result, flags);
 
-	/* 3. call favicon updating after subscription processing
-	      to ensure we have valid baseUrl for feed nodes... */
-	g_get_current_time (&now);
-	if (favicon_update_needed (subscription->node->id, subscription->updateState, &now))
-		subscription_update_favicon (subscription);
-	
+	/* 3. call favicon updating only after subscription processing
+	      to ensure we have valid baseUrl for feed nodes...
+
+	      check creation date and update favicon if older than one month */
+	if (g_get_real_time() > (subscription->updateState->lastFaviconPoll + ONE_MONTH_MICROSECONDS))
+		subscription_icon_update (subscription);
+
 	/* 4. generic postprocessing */
 	update_state_set_lastmodified (subscription->updateState, update_state_get_lastmodified (result->updateState));
 	update_state_set_cookies (subscription->updateState, update_state_get_cookies (result->updateState));
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
-	g_get_current_time (&subscription->updateState->lastPoll);
+	subscription->updateState->lastPoll = g_get_real_time();
 
-	// FIXME: use new-items signal in itemview class        
+	// FIXME: use signal here
 	itemview_update_node_info (subscription->node);
 	itemview_update ();
 
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);
 
-	if (subscription->node->newCount > 0) {
+	feed_list_view_update_node (node->id);	// FIXME: This should be dropped once the "node-updated" signal is consumed
+
+	if (processing && subscription->node->newCount > 0) {
+		// FIXME: use new-items signal in itemview class
 		feedlist_new_items (node->newCount);
 		feedlist_node_was_updated (node);
 	}
@@ -260,34 +261,41 @@ subscription_process_update_result (const struct updateResult * const result, gp
 void
 subscription_update (subscriptionPtr subscription, guint flags)
 {
-	updateRequestPtr		request;
-	GTimeVal			now;
-	
+	UpdateRequest	*request;
+	guint64		now;
+	guint		count, maxcount;
+
 	if (!subscription)
 		return;
-		
+
 	if (subscription->updateJob)
 		return;
-	
-	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
-	 
-	if (subscription_can_be_updated (subscription)) {
-		liferea_shell_set_status_bar (_("Updating \"%s\""), node_get_title (subscription->node));
 
-		g_get_current_time (&now);
+	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
+
+	if (subscription_can_be_updated (subscription)) {
+		now = g_get_real_time();
 		subscription_reset_update_counter (subscription, &now);
 
-		request = update_request_new ();
-		request->updateState = update_state_copy (subscription->updateState);
-		request->options = update_options_copy (subscription->updateOptions);
-		request->source = g_strdup (subscription_get_source (subscription));
+		request = update_request_new (
+			subscription_get_source (subscription),
+			subscription->updateState,
+			subscription->updateOptions
+		);
+
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
 
 		if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request))
 			subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, subscription, flags);
 		else
-			update_request_free (request);
+			g_object_unref (request);
+
+		update_jobs_get_count (&count, &maxcount);
+		if (count > 1)
+			liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
+		else
+			liferea_shell_set_status_bar (_("Updating '%s'..."), node_get_title (subscription->node));
 	}
 }
 
@@ -296,21 +304,21 @@ subscription_auto_update (subscriptionPtr subscription)
 {
 	gint		interval;
 	guint		flags = 0;
-	GTimeVal	now;
-	
+	guint64	now;
+
 	if (!subscription)
 		return;
 
 	interval = subscription_get_update_interval (subscription);
 	if (-1 == interval)
 		conf_get_int_value (DEFAULT_UPDATE_INTERVAL, &interval);
-			
+
 	if (-2 >= interval || 0 == interval)
 		return;		/* don't update this subscription */
-		
-	g_get_current_time (&now);
-	
-	if (subscription->updateState->lastPoll.tv_sec + interval*60 <= now.tv_sec)
+
+	now = g_get_real_time();
+
+	if (subscription->updateState->lastPoll + (guint64)interval * (guint64)(60 * G_USEC_PER_SEC) <= now)
 		subscription_update (subscription, flags);
 }
 
@@ -332,7 +340,7 @@ subscription_get_update_interval (subscriptionPtr subscription)
 
 void
 subscription_set_update_interval (subscriptionPtr subscription, gint interval)
-{	
+{
 	if (0 == interval) {
 		interval = -1;	/* This is evil, I know, but when this method
 				   is called to set the update interval to 0
@@ -360,7 +368,7 @@ subscription_set_default_update_interval (subscriptionPtr subscription, guint in
 static const gchar *
 subscription_get_orig_source (subscriptionPtr subscription)
 {
-	return subscription->origSource; 
+	return subscription->origSource;
 }
 
 const gchar *
@@ -406,7 +414,7 @@ void
 subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl)
 {
 	gchar 	*htmlUrl = NULL;
-	
+
 	if (newHtmlUrl) {
 		if (strstr (newHtmlUrl, "://")) {
 			/* absolute URI can be used directly */
@@ -414,7 +422,7 @@ subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl
 		} else {
 			/* relative URI part needs to be expanded */
 			gchar *tmp, *source;
-			
+
 			source = g_strdup (subscription_get_source (subscription));
 			tmp = strrchr (source, '/');
 			if (tmp)
@@ -423,7 +431,7 @@ subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl
 			htmlUrl = common_build_url (newHtmlUrl, source);
 			g_free (source);
 		}
-		
+
 		metadata_list_set (&subscription->metadata, "homepage", htmlUrl);
 		g_free (htmlUrl);
 	}
@@ -443,7 +451,7 @@ subscription_set_auth_info (subscriptionPtr subscription,
                             const gchar *password)
 {
 	g_assert (NULL != subscription->updateOptions);
-		
+
 	g_free (subscription->updateOptions->username);
 	g_free (subscription->updateOptions->password);
 
@@ -460,11 +468,11 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 	xmlChar		*source, *homepage, *filter, *intervalStr, *tmp;
 
 	subscription = subscription_new (NULL, NULL, NULL);
-	
+
 	source = xmlGetProp (xml, BAD_CAST "xmlUrl");
 	if (!source)
 		source = xmlGetProp (xml, BAD_CAST "xmlurl");	/* e.g. for AmphetaDesk */
-		
+
 	if (source) {
 		if (!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
@@ -473,7 +481,7 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 			xmlFree (source);
 			source = tmp;
 		}
-	
+
 		subscription_set_source (subscription, source);
 		xmlFree (source);
 
@@ -494,22 +502,22 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 			subscription_set_filter (subscription, filter);
 			xmlFree (filter);
 		}
-		
+
 		intervalStr = xmlGetProp (xml, BAD_CAST "updateInterval");
 		subscription_set_update_interval (subscription, common_parse_long (intervalStr, -1));
 		xmlFree (intervalStr);
-	
+
 		/* no proxy flag */
 		tmp = xmlGetProp (xml, BAD_CAST "dontUseProxy");
 		if (tmp && !xmlStrcmp (tmp, BAD_CAST "true"))
 			subscription->updateOptions->dontUseProxy = TRUE;
 		xmlFree (tmp);
-	
+
 		/* authentication options */
 		subscription->updateOptions->username = xmlGetProp (xml, BAD_CAST "username");
 		subscription->updateOptions->password = xmlGetProp (xml, BAD_CAST "password");
 	}
-	
+
 	return subscription;
 }
 
@@ -524,16 +532,16 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST subscription_get_homepage (subscription));
 	else
 		xmlNewProp (xml, BAD_CAST"htmlUrl", BAD_CAST "");
-	
+
 	if (subscription_get_filter (subscription))
 		xmlNewProp (xml, BAD_CAST"filtercmd", BAD_CAST subscription_get_filter (subscription));
-		
+
 	if(trusted) {
 		xmlNewProp (xml, BAD_CAST"updateInterval", BAD_CAST interval);
 
 		if (subscription->updateOptions->dontUseProxy)
 			xmlNewProp (xml, BAD_CAST"dontUseProxy", BAD_CAST"true");
-		
+
 		if (!liferea_auth_has_active_store ()) {
 			if (subscription->updateOptions->username)
 				xmlNewProp (xml, BAD_CAST"username", subscription->updateOptions->username);
@@ -541,7 +549,7 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 				xmlNewProp (xml, BAD_CAST"password", subscription->updateOptions->password);
 		}
 	}
-	
+
 	g_free (interval);
 }
 
@@ -549,7 +557,7 @@ void
 subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml)
 {
 	gchar	*tmp;
-	
+
 	xmlNewTextChild (xml, NULL, "feedSource", subscription_get_source (subscription));
 	xmlNewTextChild (xml, NULL, "feedOrigSource", subscription_get_orig_source (subscription));
 
@@ -581,18 +589,18 @@ subscription_free (subscriptionPtr subscription)
 {
 	if (!subscription)
 		return;
-		
+
 	g_free (subscription->updateError);
 	g_free (subscription->filterError);
 	g_free (subscription->httpError);
 	g_free (subscription->source);
 	g_free (subscription->origSource);
 	g_free (subscription->filtercmd);
-	
+
 	update_job_cancel_by_owner (subscription);
 	update_options_free (subscription->updateOptions);
 	update_state_free (subscription->updateState);
 	metadata_list_free (subscription->metadata);
-	
+
 	g_free (subscription);
 }

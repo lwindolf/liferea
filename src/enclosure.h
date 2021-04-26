@@ -21,56 +21,55 @@
 #ifndef _ENCLOSURE_H
 #define _ENCLOSURE_H
 
-/** structure describing the preferences for a MIME type or file extension */
+#include <glib.h>
+
+/* structure describing the preferences for a MIME type or file extension */
 typedef struct encType {
-	gchar		*mime;		/**< either mime or extension is set */
+	gchar		*mime;		/*<< either mime or extension is set */
 	gchar		*extension;
-	gchar		*cmd;		/**< the command to launch the enclosure type */
-	gboolean	permanent;	/**< if TRUE definition is deleted after opening and 
+	gchar		*cmd;		/*<< the command to launch the enclosure type */
+	gboolean	permanent;	/*<< if TRUE definition is deleted after opening and
 					     not added to the permanent list of type configs */
 } *encTypePtr;
 
-/** structure describing an enclosure and its states */
+/* structure describing an enclosure and its states */
 typedef struct enclosure {
-	gchar		*url;		/**< enclosure download URI (absolute path) */
-	gchar		*mime;		/**< enclosure MIME type (optional, can be NULL) */
-	gssize		size;		/**< enclosure size (optional, can be 0, but also -1) */
-	gboolean	downloaded;	/**< flag indicating we have downloaded the enclosure */
+	gchar		*url;		/*<< enclosure download URI (absolute path) */
+	gchar		*mime;		/*<< enclosure MIME type (optional, can be NULL) */
+	gssize		size;		/*<< enclosure size (optional, can be 0, but also -1) */
+	gboolean	downloaded;	/*<< flag indicating we have downloaded the enclosure */
 } *enclosurePtr;
 
 /**
  * enclosure_from_string: (skip)
+ * @str:	the enclosure description
  *
  * Parses enclosure description.
  *
- * @param str		the enclosure description
- *
- * @returns new enclosure structure (to be free'd using enclosure_free)
+ * Returns: (transfer full): new enclosure structure (to be free'd using enclosure_free)
  */
 enclosurePtr enclosure_from_string (const gchar *str);
 
 /**
  * enclosure_values_to_string:
+ * @url:		the enclosure URL
+ * @mime:		the MIME type (optional, can be NULL)
+ * @size:	  	the enclosure size (optional, can be 0, and also -1)
+ * @downloaded:	downloading state (TRUE=downloaded)
  *
  * Serialize enclosure infos to string.
  *
- * @param url		the enclosure URL
- * @param mime		the MIME type (optional, can be NULL)
- * @param size  	the enclosure size (optional, can be 0, and also -1)
- * @param downloaded	downloading state (TRUE=downloaded)
- *
- * @returns new string (to be free'd using g_free)
+ * Returns: (transfer full): new string (to be free'd using g_free)
  */
 gchar * enclosure_values_to_string (const gchar *url, const gchar *mime, gssize size, gboolean downloaded);
 
 /**
- * enclosure_to_string:
+ * enclosure_to_string: (skip)
+ * @enclosure:		the enclosure
  *
  * Serialize enclosure to string.
  *
- * @param enclosure	the enclosure
- *
- * @returns new string (to be free'd using g_free)
+ * Returns: (transfer full): new string (to be free'd using g_free)
  */
 gchar * enclosure_to_string (const enclosurePtr enclosure);
 
@@ -80,7 +79,7 @@ gchar * enclosure_to_string (const enclosurePtr enclosure);
  *
  * Get URL from enclosure string
  *
- * Return value: (transfer full): URL string, free after use
+ * Returns: (transfer full): URL string, free after use
  */
 gchar * enclosure_get_url (const gchar *str);
 
@@ -90,16 +89,15 @@ gchar * enclosure_get_url (const gchar *str);
  *
  * Get MIME type from enclosure string
  *
- * Return value: (transfer full): MIME type string, free after use
+ * Returns: (transfer full): MIME type string, free after use
  */
 gchar * enclosure_get_mime (const gchar *str);
 
 /**
- * enclosure_free:
+ * enclosure_free: (skip)
+ * @enclosure:	the enclosure
  *
  * Free all memory associated with the enclosure.
- *
- * @oparam enclosure	the enclosure
  */
 void enclosure_free (enclosurePtr enclosure);
 
@@ -108,38 +106,36 @@ void enclosure_free (enclosurePtr enclosure);
  *
  * Returns all configured enclosure types.
  *
- * @returns list of encType structures
+ * Returns: (transfer none): list of encType structures
  */
-const GSList const * enclosure_mime_types_get (void);
+const GSList * enclosure_mime_types_get (void);
 
 /**
- * enclosure_mime_type_add:
+ * enclosure_mime_type_add: (skip)
+ * @type:	the new definition
  *
  * Adds a new MIME type handling definition.
- *
- * @param type	the new definition
  */
 void enclosure_mime_type_add (encTypePtr type);
 
 /**
- * enclosure_mime_type_remove:
+ * enclosure_mime_type_remove: (skip)
+ * @type:	the definition to remove
  *
  * Removes an existing MIME type handling definition.
  * The definition will be free'd by this function.
- *
- * @param type	the definition to remove
  */
 void enclosure_mime_type_remove (encTypePtr type);
 
 /**
- * enclosure_mime_types_save:
+ * enclosure_mime_types_save: (skip)
  *
  * Save all MIME type definitions.
  */
 void enclosure_mime_types_save (void);
 
 /**
- * enclosure_download:
+ * enclosure_download: (skip)
  * @type:		ULL or pointer to type structure
  * @url:		valid HTTP URL
  * @interactive:	TRUE if triggered by user interaction

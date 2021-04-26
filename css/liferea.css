@@ -1,7 +1,7 @@
 /**
  * @file liferea.css  Liferea rendering stylesheet
  *
- * Copyright (C) 2004-2010 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004 delusional <delusional@dx13.co.uk>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,21 +19,21 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/* 
+/*
 
-   Font Definitions: 
+   Font Definitions:
    =================
 
    No style definition should set absolute font sizes,
    font families or line heigth and spacing. This is to allow a GNOME
-   preference controlled default font size. 
-   
+   preference controlled default font size.
+
    Color Definitions:
    ==================
-   
-   To allow using GTK theme colors the following key words 
+
+   To allow using GTK theme colors the following key words
    will be replaced with the corresponding GTK theme color values:
-   
+
    GTK-COLOR-FG
    GTK-COLOR-BG
    GTK-COLOR-LIGHT
@@ -53,9 +53,9 @@ body {
 }
 
 blockquote {
-        border-left: 2px solid #GTK-COLOR-DARK;
+        border-left: 3px solid #GTK-COLOR-DARK;
         background: #GTK-COLOR-BG;
-        padding: 5px;
+        padding: 6px;
         font-style: italic;
         margin: 5px 20px;
 	clear:both;
@@ -73,11 +73,30 @@ dd {
 	padding-left: 30px;
 }
 
-div.content * img, video {
+section, div.content svg, div.content * img {
+	max-width: 100%;
+	box-sizing: border-box;
+	object-fit: scale-down;
+}
+
+figure, iframe {
+	max-width: 100%;
+	box-sizing: border-box;
+
+	/* Note: object-fit would be best practice here, but it fails
+	   on embedded Youtube videos (pushing the embed iframe far
+	   to the right with the controls being not in the place
+	   visually shown) */
+}
+
+div.content * img {
 	border:0;
 	margin:2px;
-	max-width:100%;
-	height:auto;
+}
+
+div.content img.thumbnail {
+	border:0;
+	margin-right:12px;
 }
 
 img.gravatar {
@@ -97,7 +116,7 @@ table.itemhead, table.feedhead {
 	margin:0;
 	width:100%;
 	border:0;
-	border-bottom: 1px solid #GTK-COLOR-DARK;
+	border-bottom: 2px solid #GTK-COLOR-DARK;
 	clear:both;
 	color:#GTK-COLOR-TEXT;
 }
@@ -106,23 +125,26 @@ table.itemhead, table.feedhead {
 	background-color: #GTK-COLOR-MID;
 }
 
-table.itemhead * td {
-	padding: 2px;
-	padding-top: 4px;
-}
-
 table.itemhead * a.itemhead {
 	text-decoration:none;
 	color:#GTK-COLOR-TEXT;
 	font-weight:bold;
 }
 
-td.headleft {
-	text-align:right;
+table.itemhead * td {
+	padding-top: 4px;
 }
 
-td.headright {
+td.head_favicon {
+	width: 20px;
+	padding-left: 10px;
+	vertical-align: middle;
+}
+
+td.head_title {
 	padding:2px 5px;
+	width: 100%;
+	vertical-align: middle;
 }
 
 table.headmeta {
@@ -135,43 +157,12 @@ table.headmeta {
 
 table.headmeta td {
 	padding:1px 6px 1px 12px;
-	font-size:0.8em;
+	font-size:0.9em;
 }
 
 .hidden {
 	visibility:hidden;
 	display:none;
-}
-
-.itemmenu {
-	margin:0;
-	padding:0;
-}
-
-.itemmenu a {
-	text-decoration:none;
-	color:#GTK-COLOR-TEXT;
-}
-
-.itemmenu a:hover {
-
-}
-
-.itemmenu * span {
-	font-size:1em;
-	font-family:sans-serif;
-	padding:0;
-	margin:0;
-	position:relative; 
-	top:-3px;
-}
-
-.itemmenu * img {
-	padding:0;
-	margin:0;
-	height:16px;
-	position:relative; 
-	top:1px;
 }
 
 .author, .categories, .source {
@@ -186,7 +177,7 @@ table.headmeta td {
 	padding-right:5px;
 }
 
-div.content {
+div.content, div.item_comments {
 	padding:0px 6px 0px 12px;
 }
 
@@ -218,87 +209,33 @@ a.favicon img {
 	padding:0;
 }
 
-/* styles to realize shading of new items in condensed mode */
-.itemshaded { background:#ffe; color:black; padding:1px; margin:0; }
-
-.itemunshaded { padding:1px; margin:0; }
-
-.summaryshaded, .summaryunshaded { 
-	padding:0px 6px; 
-	margin:0;
-}
-
-.summaryshaded a {
-	display:block;
-	background:#ffe;
-	color:black;
-	text-decoration:none;
-	padding:1px 0px;
-	font-weight:bold;
-}
-
-.summaryunshaded a {
-	display:block;
-	color:#GTK-COLOR-TEXT;
-	text-decoration:none;
-	padding:1px 0px;
-}
-
-.summarytime {
-	padding-right:15px;
-	white-space:nowrap;
-	color:#999;
-}
-
-hr.summary {
-	border:0;
-	padding:0;
-	margin:2px;
-	border-bottom:1px dashed #ddd;
-}
-
-/* style for the HTTP error box at the beginning
+/* style for the feed fetch error box at the beginning
    of the feed description and for item comment feeds */
-#errors, #commentFeedError {
-	width:100%;
+#errors {
 	border:0;
 	border-bottom:1px solid black;
-	margin:0;
+	margin:12px 24px;
+	padding:12px;
 	background:#ffa;
 	color:black;
+	border:1px solid #GTK-COLOR-DARK;
 }
 
-#commentFeedError {
-	border:1px solid black;
+#errors ul {
+	list-style-type: none;
+	padding-inline-start: 15px;
 }
 
-#parseError, #filterError, #updateError {
-	padding:2px;
-	padding-left:5px;
-	padding-right:5px;
+#errors * li {
+	padding:1px;
 }
 
-div.xmlparseroutput {
-	margin:10px 0px 10px 15px;
+pre.errorOutput {
+	margin:10px 15px;
 	padding:5px;
 	border:2px solid #GTK-COLOR-DARK;
 	background:#GTK-COLOR-LIGHT;
-}
-
-span.details, span.detaillink {
-	visibility:hidden;
-	display:none;
-}
-
-span.details {
-	padding:5px;
-	margin:15px;
-}
-
-span.showmore {
-	text-decoration:underline;
-	color:blue;
-	cursor:pointer;
+	overflow:auto;
 }
 
 del {
@@ -310,12 +247,6 @@ ins {
 }
 
 /* namespace specific styles */
-div.blogchanneltitle {
-	padding-left:10px;
-	padding-right:10px;
-	background-color:#GTK-COLOR-DARK;
-	color:#GTK-COLOR-TEXT;
-}
 
 .slash {
 	background:#60A080;
@@ -341,5 +272,3 @@ div.photoheader {
 	background-color:#GTK-COLOR-DARK;
 	color:#GTK-COLOR-TEXT;
 }
-
-

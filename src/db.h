@@ -1,7 +1,7 @@
 /**
- * @file db.h sqlite backend 
- * 
- * Copyright (C) 2007-2011  Lars Windolf <lars.windolf@gmx.de>
+ * @file db.h sqlite backend
+ *
+ * Copyright (C) 2007-2020  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -84,14 +84,14 @@ guint   db_itemset_get_item_count (const gchar *id);
 
 /**
  * Returns a batch of items starting with the given
- * offset and no more than the given limit. 
- * 
+ * offset and no more than the given limit.
+ *
  * To be used for batched item loading (search folder loaders)
  *
  * @param itemSet       an itemset to add the items to
  * @param offset        the current offset
  * @param limit         maximum number of items to fetch
- * 
+ *
  * @returns FALSE if no more items to fetch
  */
 gboolean        db_itemset_get (itemSetPtr itemSet, gulong offset, guint limit);
@@ -129,7 +129,7 @@ void	db_item_remove(gulong id);
 void    db_item_state_update (itemPtr item);
 
 /**
- * Returns a list of item ids with the given GUID. 
+ * Returns a list of item ids with the given GUID.
  *
  * @param guid	the item GUID
  *
@@ -138,7 +138,7 @@ void    db_item_state_update (itemPtr item);
 GSList * db_item_get_duplicates(const gchar *guid);
 
 /**
- * Returns a list of node ids containing an item with the given GUID. 
+ * Returns a list of node ids containing an item with the given GUID.
  *
  * @param guid	the item GUID
  *
@@ -180,6 +180,15 @@ void    db_search_folder_add_items (const gchar *id, GSList *items);
 guint   db_search_folder_get_item_count (const gchar *id);
 
 /**
+ * Returns the number of items for the given search folder.
+ *
+ * @param id	the node id
+ *
+ * @returns the number of items
+ */
+guint   db_search_folder_get_unread_count (const gchar *id);
+
+/**
  * Load the metadata and update state of the given subscription.
  *
  * @param subscription	the subscription whose info to load
@@ -211,7 +220,7 @@ void db_node_update (nodePtr node);
 /**
  * Clean old nodes from the DB by comparing all DB nodes
  * against the OPML feed list.
- * 
+ *
  * @param root		the root node
  */
 void db_node_cleanup (nodePtr root);

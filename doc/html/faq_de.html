@@ -26,7 +26,7 @@
 <!-- navigation header end -->
 
 <p>
-Hinweis: Diese FAQ ist auch <a href="http://lzone.de/liferea/faq.htm">
+Hinweis: Diese FAQ ist auch <a href="https://lzone.de/liferea/faq.htm">
 online verfügbar</a>.
 </p>
 
@@ -38,13 +38,13 @@ Warum funktioniert Flash nicht (mehr)?</dt>
 <a class="faq-a">A:</a> Automatische Flash-Unterstützung ging leider mit Liferea 1.10,
 welches erstmal GTK3 nutzt, kaputt wenn es mit einer WebkitGTK3-Version älter als 2.0
 verwendet wird. Eine detaillierte Erklärung 
-<a href="http://lzone.de/How%20to%20Get%20Flash%20Working%20with%20WebkitGTK3">findet sich hier</a> (Englisch).
+<a href="https://lzone.de/How%20to%20Get%20Flash%20Working%20with%20WebkitGTK3">findet sich hier</a> (Englisch).
 <br/><br/>
 Es gibt die folgenden Workarounds:
 <br/><br/>
 <ol>
 	<li>WebkitGTK3 auf 2.0 oder neuer aktualisieren</li>
-	<li>nspluginwrapper und das 32bit Flash-Plugin installieren (<a href="http://lzone.de/How%20to%20Get%20Flash%20Working%20with%20WebkitGTK3">Anleitung</a>, Englisch)</li>
+	<li>nspluginwrapper und das 32bit Flash-Plugin installieren (<a href="https://lzone.de/How%20to%20Get%20Flash%20Working%20with%20WebkitGTK3">Anleitung</a>, Englisch)</li>
 </ol>
 </dd>
 
@@ -53,7 +53,7 @@ Es gibt die folgenden Workarounds:
 A: Der einfachste Weg ist es das neueste Binär- oder Quellpaket von der
 <a href="https://github.com/lwindolf/liferea/releases">GitHub Projekt Homepage</a> herunterzuladen.
 Noch besser ist es aber Liferea-Pakete der eigenen Linux-Distribution zu verwenden. Eine Liste der Distributionen mit eigene Liferea-Paketen 
-gibt es <a href="http://lzone.de/liferea/install.htm">hier</a>.
+gibt es <a href="https://lzone.de/liferea/install.htm">hier</a>.
 
 </dd>
 
@@ -68,7 +68,8 @@ In diesem Falle muß Gwget auf eine neuere Version aktualisiert werden.</dd>
 
 <dt>Q: Ich will Cookies!</dt>
 <dd>A: 
-Liferea unterstützt Cookies wenn diese in Form einer Textdatei unter ~/.config/liferea/cookies.txt vorliegen. Diese Datei sollte dem Netscape Cookie Format entsprechen. Der leichteste Weg eine solche zu erstellen ist die Cookies erzeugenden Seite mit einer Mozilla-Installation zu besuchen und dann die Cookie-Datei aus dem Mozilla-Profil in das Liferea-Verzeichnis zu kopieren.
+Liferea unterstützt nur Session Cookies beim Abruf von Feeds. Diese werden
+in ~/.config/liferea/session_cookies.txt gespeichert.
 </dd>
 
 <dt>Q: Ich mag die HTML/CSS Styles von Liferea nicht!

@@ -4,12 +4,13 @@
 /**
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
- * Copyright (C) 2006-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2009-2019 Mikel Olasagasti Uranga <mikel@olasagasti.info>
+ * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,7 +21,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
---> 
+-->
 
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
                 xmlns="http://www.w3.org/1999/xhtml">
@@ -29,10 +30,11 @@
 
 <!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
 <xsl:param name="pixmapsDir"/>
-<xsl:param name="baseUrl"/>
-<xsl:param name="summary"/>	<!-- 1=summary rendering, 0=normal rendering -->
+<!-- the local Javascript lib directory (e.g. /usr/share/liferea/js/) -->
+<xsl:param name="jsDir"/>
+
+<xsl:param name="baseUrl"/> <!-- item specific content base URL -->
 <xsl:param name="showFeedName"/>
-<xsl:param name="single"/>	<!-- 1=single item rendering, 0=2 pane mode -->
 <xsl:param name="txtDirection"/>	<!-- text direction, either "ltr" or "rtl" -->
 <xsl:param name="appDirection"/>	<!-- text direction, either "ltr" or "rtl" -->
 
@@ -40,29 +42,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+  <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+  <base href="{$baseUrl}"/>
 </head>
-<xsl:element name="body">  
-<!-- GeoRSS OpenStreet map rendering needs this -->
-<xsl:if test="item/attributes/attribute[ @name = 'point' ]">
-   <xsl:attribute name="onload">load()</xsl:attribute>
-</xsl:if>
-
-<!-- base URL of the itemset -->
-<div href="{$baseUrl}">
+<xsl:element name="body">
 
 <xsl:for-each select="item">
-  <xsl:choose>
-    <xsl:when test="$summary = '1'">
-      <xsl:call-template name="item_summary"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:call-template name="item"/>
-    </xsl:otherwise>
-  </xsl:choose>
+  <xsl:call-template name="item"/>
 </xsl:for-each>
-
-</div> <!-- end of base URL div -->
 
 </xsl:element>
 </html>
@@ -71,31 +58,17 @@
 
 <!-- ==================================================================== -->
 
-<!---single item detailed mode rendering -->
 <xsl:template name="item">
 
-<!-- base URL of parent feed -->
-<div href="{/itemset/feed/feedSource}">
-
-<!-- the item -->
-
-<xsl:variable name="onMouseOver">
-   <xsl:text disable-output-escaping='yes'>doShow('</xsl:text>
-   <xsl:value-of select="sourceId"/>-<xsl:value-of select="nr"/>
-   <xsl:text disable-output-escaping='yes'>');</xsl:text>
-</xsl:variable>
-
-<!-- entering header starts delayed show of the item menu -->
-<!-- leaving header stops show counter -->
-<div onmouseover="{$onMouseOver}" onmouseout="stopShow();">
+<div class='item'>
 
 <!-- header table -->
 <table class="itemhead" cellspacing="0" cellpadding="0" dir="{$txtDirection}">
-
+<tbody>
 <tr>
-  <td valign="middle" class="headleft">
+  <td valign="middle" class="head_favicon">
     <!-- Feed link as favicon -->
-    
+
     <xsl:variable name="favicon">
       <xsl:choose>
         <xsl:when test="not(sourceFavicon)">
@@ -104,41 +77,42 @@
         <xsl:otherwise>
           <xsl:value-of select="sourceFavicon"/>
         </xsl:otherwise>
-      </xsl:choose>   
+      </xsl:choose>
     </xsl:variable>
-    
+
     <a class="favicon" href="{/itemset/feed/attributes/attribute[ @name = 'homepage' ]}">
       <img src="{$favicon}"/>
     </a>
   </td>
-  <td width="100%" valign="middle" class="headright">
+  <td class="head_title">
     <!-- Item title as link -->
     <a class="itemhead" href="{source}">
       <xsl:value-of select="title"/>
-      <!-- the title added above might be empty, in this 
+      <!-- the title added above might be empty, in this
            case we add the date of the post -->
       <xsl:if test="title = ''">
-         <xsl:value-of select="timestr"/> 
+         <xsl:value-of select="timestr"/>
       </xsl:if>
     </a>
   </td>
 </tr>
+</tbody>
 </table>
 
 <!-- header metadata (author + categories + date + source feed) -->
 <table class='headmeta' cellspacing="0" cellpadding="0" dir="{$appDirection}">
-
+<tbody>
 <xsl:if test="attributes/attribute[ @name = 'slash' ]">
 <tr>
- <td valign="top" class='slash'> 
+ <td valign="top" class='slash'>
    <xsl:apply-templates select="attributes/attribute[ @name = 'slash']"/>
  </td>
-</tr> 
+</tr>
 </xsl:if>
 
 <xsl:if test="attributes/attribute[ @name = 'realSourceUrl' ]">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Source</_span>
      <b><span class='source'>
        <a href="{attributes/attribute[ @name = 'realSourceUrl' ]}">
@@ -149,11 +123,10 @@
 </tr>
 </xsl:if>
 
-<!-- In summary mode we are potential presenting multiple feeds
-     and we should display the source feed title for the item. -->
-<xsl:if test="$summary = '1' or $showFeedName = '1'">
+<!-- When presenting multiple feeds we display the source feed title for the item. -->
+<xsl:if test="$showFeedName = '1'">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Feed</_span>
      <b><span class='source'>
        <a href="{/itemset/feed/attributes/attribute[ @name = 'homepage' ]}">
@@ -187,7 +160,7 @@
      </span></b>
    </td>
  </tr>
-</xsl:if>  
+</xsl:if>
 
 <xsl:if test="attributes/attribute[ @name = 'sharedby' ]">
  <tr>
@@ -198,12 +171,12 @@
      </span></b>
    </td>
  </tr>
-</xsl:if>  
+</xsl:if>
 
 <!-- Indicate Atom "via" and "related" links -->
 <xsl:for-each select="attributes/attribute[ @name = 'via' ]">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Via</_span>
      <b><span class='source'>
        <a href="{.}">
@@ -215,7 +188,7 @@
 </xsl:for-each>
 <xsl:for-each select="attributes/attribute[ @name = 'related' ]">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Related</_span>
      <b><span class='source'>
        <a href="{.}">
@@ -229,7 +202,7 @@
 <!-- Indicate all duplicates -->
 <xsl:for-each select="duplicates/duplicateNode">
 <tr>
- <td valign="top" class='source'> 
+ <td valign="top" class='source'>
      <_span>Also posted in</_span>
      <b><span class='source'>
          <xsl:value-of select="."/>
@@ -247,85 +220,102 @@
      </span></b>
    </td>
  </tr>
-</xsl:if>  
+</xsl:if>
 
+<xsl:if test="attributes/attribute[ @name = 'point' ]">
+ <xsl:variable name="lat" select="substring-before(attributes/attribute[ @name = 'point' ],' ')"/>
+ <xsl:variable name="lng" select="substring-after(attributes/attribute[ @name = 'point' ],' ')"/>
+ <tr>
+   <td valign="top" class='point'>
+     <_span>Coordinates</_span>
+     <b><span class='point'><xsl:value-of select="$lat"/>, <xsl:value-of select="$lng"/></span></b>
+   </td>
+ </tr>
+  <tr>
+   <td valign="top" class='point'>
+     <_span>Map</_span>
+     <b><span class='point'>
+     <a href="https://www.openstreetmap.org/?mlat={$lat}&amp;mlon={$lng}#map=12/{$lat}/{$lng}">OpenStreeMap</a>
+     </span></b>
+   </td>
+ </tr>
+</xsl:if>
+
+<xsl:if test="attributes/attribute[ @name = 'mediaviews' ]">
+ <tr>
+   <td valign="top" class='mediaviews'>
+     <_span>View count </_span>
+     <b><span class='mediaviews'>
+       <xsl:value-of select="attributes/attribute[ @name = 'mediaviews' ]"/>
+     </span></b>
+   </td>
+ </tr>
+</xsl:if>
+
+<xsl:if test="(attributes/attribute[ @name = 'mediastarRatingmax' ]) and (attributes/attribute[ @name = 'mediastarRatingavg' ])">
+ <tr>
+   <td valign="top" class='mediastarRating'>
+     <_span>Rating </_span>
+     <b><span class='mediastarRating'>
+       <xsl:value-of select="attributes/attribute[ @name = 'mediastarRatingavg' ]"/> / <xsl:value-of select="attributes/attribute[ @name = 'mediastarRatingmax' ]" />
+       <xsl:if test="attributes/attribute[ @name = 'mediastarRatingcount' ]">
+         (<xsl:value-of select="attributes/attribute[ @name = 'mediastarRatingcount' ]" /> votes)
+       </xsl:if>
+     </span></b>
+   </td>
+ </tr>
+</xsl:if>
+
+</tbody>
 </table> <!-- end of header metadata -->
 
-<xsl:variable name="shading">
-  <xsl:if test="$single = '0' and readStatus = '0'">itemshaded</xsl:if>
-  <xsl:if test="$single = '0' and readStatus != '0'">itemunshaded</xsl:if>
-</xsl:variable>
-
-<div id="shading" class="{$shading}">
-<div class='content'>
-  <!-- insertion div for GeoRSS coordinates, adding an OpenStreet map -->
-  <xsl:if test="attributes/attribute[ @name = 'point' ]">
-  	<p id="mapdiv" style="width:400px;height:200px;float:right; border: 1px solid #000;"></p>
-  </xsl:if>
-  
-  <!-- extra item content handling for GeoRSS coordinates, adding an OpenStreet map -->
-  <xsl:if test="attributes/attribute[ @name = 'point' ]">  
-	  <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-	  <script type="text/javascript">
-		  <![CDATA[var lat=]]><xsl:value-of select="substring-before(attributes/attribute[ @name = 'point' ],' ')"/><![CDATA[
-		  var lon=]]><xsl:value-of select="substring-after(attributes/attribute[ @name = 'point' ],' ')"/>
-		  var zoom=9
-
-		  var map;
-        	  function load() {
-			map = new OpenLayers.Map("mapdiv");
-			map.addLayer(new OpenLayers.Layer.OSM());
-			var lonLat = new OpenLayers.LonLat(lon,lat)
-			.transform(
-				new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-				map.getProjectionObject() // to Spherical Mercator Projection
-			);
-			var markers = new OpenLayers.Layer.Markers("Markers");
-			map.addLayer(markers);
-			markers.addMarker(new OpenLayers.Marker(lonLat));
-			map.setCenter (lonLat, zoom);
-        	  }
-	  </script>
-  </xsl:if>
+<div dir="{$txtDirection}">
+<div class='content' id='content'>
 
   <!-- the item's content -->
-  <p dir="{$txtDirection}">
+  <p>
     <!-- optional gravatar -->
     <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
-       <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
+      <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
     </xsl:if>
-    
+    <!-- optional MediaRSS thumbnail -->
+    <xsl:if test="attributes/attribute[ @name = 'mediathumbnail' ]">
+      <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
+    </xsl:if>
+    <!-- optional MediaRSS YouTube links-->
+    <xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>
+    <xsl:if test="contains($url,'https://www.youtube.com/watch?v=')">
+      <xsl:variable name="youtubeid" select="substring-after($url,'https://www.youtube.com/watch?v=')"/>
+      <p><iframe width="640" height="480" src="https://www.youtube.com/embed/{$youtubeid}" frameborder="0" allowfullscreen="1"></iframe></p>
+    </xsl:if>
+    <!-- optional MediaRSS description -->
+    <xsl:if test="attributes/attribute[ @name = 'mediadescription' ]">
+      <xsl:call-template name="add-newline">
+        <xsl:with-param name="input"  select="attributes/attribute[ @name = 'mediadescription' ]"/>
+       </xsl:call-template>
+    </xsl:if>
+
     <!-- the real text content -->
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
-  
-  <!-- photo namespace handling -->
-  <xsl:if test="attributes/attribute[ @name = 'photo' ]">
-     <xsl:element name="img">
-        <xsl:attribute name="src">
-	   <xsl:call-template name="substring-after-last">
-	     <xsl:with-param name="input"  select="attributes/attribute[ @name = 'photo' ]" />
-	     <xsl:with-param name="substr" select="','" />
-	   </xsl:call-template>
-        </xsl:attribute>
-     </xsl:element>
-  </xsl:if>
-  
+</div> <!-- end of content -->
+
   <!-- comment handling -->
-  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed) and $single = 1"> 
-     <p>     
+<div id='item_comments' class='item_comments'>
+  <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed)">
+     <p>
         <xsl:if test="count(comments/item) != 0">
 	   <b><_span>Comments</_span></b>
 	</xsl:if>
-  
+
      <!-- Display "comment feed updating" hint -->
         <xsl:if test="comments/updateState = 'updating'">
            (<span>
 	      <_span>Updating...</_span>
 	    </span>)
-	</xsl:if>     
+	</xsl:if>
      </p>
-     
+
      <!-- Display error box if necessary -->
      <xsl:if test="comments/updateError">
         <p>
@@ -336,44 +326,16 @@
 	   </div>
 	</p>
      </xsl:if>
-     
-     <p>     
+
+     <p>
         <xsl:apply-templates select="comments/item">
            <xsl:sort select="time"/>
         </xsl:apply-templates>
-     </p>    
+     </p>
   </xsl:if>
-</div>
-</div> <!-- end of base URL div -->
-
-</div> <!-- item -->
-</div> <!-- shading -->
-
-<!-- extra item content handling for GeoRSS coordinates, adding an OpenStreet map -->
-<xsl:if test="attributes/attribute[ @name = 'point' ]">  
-	<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-	<script type="text/javascript">
-		  <![CDATA[var lat=]]><xsl:value-of select="substring-before(attributes/attribute[ @name = 'point' ],' ')"/><![CDATA[
-		  var lon=]]><xsl:value-of select="substring-after(attributes/attribute[ @name = 'point' ],' ')"/>
-		  var zoom=9
-
-
-		  var map;
-        	  function load() {
-			map = new OpenLayers.Map("mapdiv");
-			map.addLayer(new OpenLayers.Layer.OSM());
-			var lonLat = new OpenLayers.LonLat(lon,lat)
-			.transform(
-				new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-				map.getProjectionObject() // to Spherical Mercator Projection
-			);
-			var markers = new OpenLayers.Layer.Markers("Markers");
-			map.addLayer(markers);
-			markers.addMarker(new OpenLayers.Marker(lonLat));
-			map.setCenter (lonLat, zoom);
-        	  }
-	</script>
-</xsl:if>
+</div> <!-- end of comments -->
+</div> <!-- end of txtdirection div -->
+</div> <!-- end of item -->
 
 </xsl:template>
 
@@ -399,66 +361,22 @@
 
 <!-- ==================================================================== -->
 
-<!--- single item summary mode rendering -->
-<xsl:template name="item_summary">
+<!-- newline to br based in https://stackoverflow.com/questions/3309746/how-to-convert-newline-into-br-with-xslt -->
+<xsl:template name="add-newline">
+  <xsl:param name="input" />
 
-<xsl:variable name="summaryShading">
-   <xsl:choose>
-      <xsl:when test="readStatus = '0'">summaryshaded</xsl:when>
-      <xsl:otherwise>summaryunshaded</xsl:otherwise>
-   </xsl:choose>
-</xsl:variable>
-    
-<div class="{$summaryShading}">
-  <table cellspacing="0" cellpadding="0" width="100%">
-  <tr>
-    <td class="summarytime" valign="top">
-      <xsl:value-of select="timestr"/>
-    </td>
-    <td width="100%">
-      <!-- Item title as link -->
-      <a href="{source}">
-        <xsl:value-of select="title"/>
-      </a>
-
-      <!-- summary mode means most of the items have no description,
-           but lets output them for those who have one... -->
-      <xsl:if test="description">
-        <br/><br/>
-        <xsl:value-of select="description" disable-output-escaping='yes'/>
-      </xsl:if>
-
-    </td>
-  </tr>
-  </table>
-    
-  <hr class='summary'/>
-
-</div>
-</xsl:template>
-
-<!-- ==================================================================== -->
-
-<!--- substring after last occurance also from "XSLT Cookbook"... -->
-<xsl:template name="substring-after-last">
-    <xsl:param name="input" />
-    <xsl:param name="substr" />
-    
-    <!-- Extract the string which comes after the first occurence -->
-    <xsl:variable name="temp" select="substring-after($input,$substr)"/>
-    
-    <xsl:choose>
-      <!-- If it still contains the search string then recursively process -->
-      <xsl:when test="$substr and contains($temp,$substr)">
-        <xsl:call-template name="substring-after-last">
-          <xsl:with-param name="input"  select="$temp" />
-          <xsl:with-param name="substr" select="$substr" />
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$temp" />
-      </xsl:otherwise>
-    </xsl:choose>
+  <xsl:choose>
+    <xsl:when test="not(contains($input, '&#xA;'))">
+      <xsl:copy-of select="$input"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="substring-before($input, '&#xA;')" disable-output-escaping='yes'/>
+      <br />
+      <xsl:call-template name="add-newline">
+        <xsl:with-param name="input" select="substring-after($input, '&#xA;')"/>
+      </xsl:call-template>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>

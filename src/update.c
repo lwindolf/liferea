@@ -1,7 +1,7 @@
 /**
  * @file update.c  generic update request and state processing
  *
- * Copyright (C) 2003-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -28,11 +28,11 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 
-#include <libpeas/peas-extension-set.h>
-
 #include <unistd.h>
 #include <stdio.h>
+#if !defined (G_OS_WIN32) || defined (HAVE_SYS_WAIT_H)
 #include <sys/wait.h>
+#endif
 #include <string.h>
 
 #include "auth_activatable.h"
@@ -42,6 +42,11 @@
 #include "plugins_engine.h"
 #include "xml.h"
 #include "ui/liferea_shell.h"
+
+#if defined (G_OS_WIN32) && !defined (WIFEXITED) && !defined (WEXITSTATUS)
+#define WIFEXITED(x) (x != 0)
+#define WEXITSTATUS(x) (x)
+#endif
 
 /** global update job list, used for lookups when cancelling */
 static GSList	*jobs = NULL;
@@ -86,6 +91,21 @@ update_state_set_etag (updateStatePtr state, const gchar *etag)
 		state->etag = g_strdup(etag);
 }
 
+void
+update_state_set_cache_maxage (updateStatePtr state, const gint maxage)
+{
+	if (0 < maxage)
+		state->maxAgeMinutes = maxage;
+	else
+		state->maxAgeMinutes = -1;
+}
+
+gint
+update_state_get_cache_maxage (updateStatePtr state)
+{
+	return state->maxAgeMinutes;
+}
+
 const gchar *
 update_state_get_cookies (updateStatePtr state)
 {
@@ -105,12 +125,12 @@ updateStatePtr
 update_state_copy (updateStatePtr state)
 {
 	updateStatePtr newState;
-	
+
 	newState = update_state_new ();
 	update_state_set_lastmodified (newState, update_state_get_lastmodified (state));
 	update_state_set_cookies (newState, update_state_get_cookies (state));
 	update_state_set_etag (newState, update_state_get_etag (state));
-	
+
 	return newState;
 }
 
@@ -125,51 +145,105 @@ update_state_free (updateStatePtr updateState)
 	g_free (updateState);
 }
 
-/* update request processing */
+/* update options */
 
-updateRequestPtr
-update_request_new (void)
+updateOptionsPtr
+update_options_copy (updateOptionsPtr options)
 {
-	return g_new0 (struct updateRequest, 1);
+	updateOptionsPtr newOptions;
+	newOptions = g_new0 (struct updateOptions, 1);
+	newOptions->username = g_strdup (options->username);
+	newOptions->password = g_strdup (options->password);
+	newOptions->dontUseProxy = options->dontUseProxy;
+	return newOptions;
+}
+void
+update_options_free (updateOptionsPtr options)
+{
+	if (!options)
+		return;
+
+	g_free (options->username);
+	g_free (options->password);
+	g_free (options);
 }
 
-void
-update_request_free (updateRequestPtr request)
+/* update request object */
+
+G_DEFINE_TYPE (UpdateRequest, update_request, G_TYPE_OBJECT);
+
+static void
+update_request_finalize (GObject *obj)
 {
-	if (!request)
-		return;
-	
+	UpdateRequest *request = UPDATE_REQUEST (obj);
+
 	update_state_free (request->updateState);
 	update_options_free (request->options);
 
 	g_free (request->postdata);
 	g_free (request->source);
 	g_free (request->filtercmd);
-	g_free (request);
+
+	G_OBJECT_CLASS (update_request_parent_class)->finalize (obj);
+}
+
+static void
+update_request_class_init (UpdateRequestClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	object_class->finalize = update_request_finalize;
+}
+
+static void
+update_request_init (UpdateRequest *request)
+{
+}
+
+UpdateRequest *
+update_request_new (const gchar *source, updateStatePtr state, updateOptionsPtr options)
+{
+	UpdateRequest *request = UPDATE_REQUEST (g_object_new (UPDATE_REQUEST_TYPE, NULL));
+
+	request->source = g_strdup (source);
+
+	if (state)
+		request->updateState = update_state_copy (state);
+	else
+		request->updateState = update_state_new ();
+
+
+	if (options)
+		request->options = update_options_copy (options);
+	else
+		request->options = g_new0 (struct updateOptions, 1);
+
+	return request;
 }
 
 void
-update_request_set_source(updateRequestPtr request, const gchar* source) 
+update_request_set_source(UpdateRequest *request, const gchar* source)
 {
 	g_free (request->source);
-	request->source = g_strdup(source) ;
+	request->source = g_strdup (source);
 }
 
 void
-update_request_set_auth_value(updateRequestPtr request, const gchar* authValue)
+update_request_set_auth_value (UpdateRequest *request, const gchar* authValue)
 {
-	g_free(request->authValue);
-	request->authValue = g_strdup(authValue);
+	g_free (request->authValue);
+	request->authValue = g_strdup (authValue);
 }
+
+/* update result object */
 
 updateResultPtr
 update_result_new (void)
 {
 	updateResultPtr	result;
-	
+
 	result = g_new0 (struct updateResult, 1);
 	result->updateState = update_state_new ();
-	
+
 	return result;
 }
 
@@ -178,7 +252,7 @@ update_result_free (updateResultPtr result)
 {
 	if (!result)
 		return;
-		
+
 	update_state_free (result->updateState);
 
 	g_free (result->data);
@@ -188,50 +262,26 @@ update_result_free (updateResultPtr result)
 	g_free (result);
 }
 
-updateOptionsPtr
-update_options_copy (updateOptionsPtr options)
-{
-	updateOptionsPtr newOptions;
-	
-	newOptions = g_new0 (struct updateOptions, 1);
-	newOptions->username = g_strdup (options->username);
-	newOptions->password = g_strdup (options->password);
-	newOptions->dontUseProxy = options->dontUseProxy;
-	
-	return newOptions;
-}
-
-void
-update_options_free (updateOptionsPtr options)
-{
-	if (!options)
-		return;
-		
-	g_free (options->username);
-	g_free (options->password);
-	g_free (options);
-}
-
 /* update job handling */
 
 static updateJobPtr
 update_job_new (gpointer owner,
-                updateRequestPtr request,
+                UpdateRequest *request,
 		update_result_cb callback,
 		gpointer user_data,
 		updateFlags flags)
 {
 	updateJobPtr	job;
-	
+
 	job = g_new0 (struct updateJob, 1);
 	job->owner = owner;
-	job->request = request;
+	job->request = UPDATE_REQUEST (request);
 	job->result = update_result_new ();
 	job->callback = callback;
 	job->user_data = user_data;
-	job->flags = flags;	
+	job->flags = flags;
 	job->state = REQUEST_STATE_INITIALIZED;
-	
+
 	return job;
 }
 
@@ -242,21 +292,46 @@ update_job_get_state (updateJobPtr job)
 }
 
 static void
+update_job_show_count_foreach_func (gpointer data, gpointer user_data)
+{
+	updateJobPtr	job = (updateJobPtr)data;
+	guint		*count = (guint *)user_data;
+
+	// Count all subscription jobs (ignore HTML5 and favicon requests)
+	if (!(job->flags & FEED_REQ_NO_FEED))
+		(*count)++;
+}
+
+static guint maxcount = 0;
+
+void
+update_jobs_get_count (guint *count, guint *max)
+{
+	*count = 0;
+	g_slist_foreach (jobs, update_job_show_count_foreach_func, count);
+
+	if (*count > maxcount)
+		maxcount = *count;
+
+	*max = maxcount;
+}
+
+static void
 update_job_free (updateJobPtr job)
 {
 	if (!job)
 		return;
-		
+
 	jobs = g_slist_remove (jobs, job);
-	
-	update_request_free (job->request);
+
+	g_object_unref (job->request);
 	update_result_free (job->result);
 	g_free (job);
 }
 
 /* filter idea (and some of the code) was taken from Snownews */
 static gchar *
-update_exec_filter_cmd (gchar *cmd, gchar *data, gchar **errorOutput, size_t *size)
+update_exec_filter_cmd (updateJobPtr job)
 {
 	int		fd, status;
 	gchar		*command;
@@ -264,47 +339,48 @@ update_exec_filter_cmd (gchar *cmd, gchar *data, gchar **errorOutput, size_t *si
 	char		*tmpfilename;
 	char		*out = NULL;
 	FILE		*file, *p;
-	
-	*errorOutput = NULL;
-	tmpfilename = g_build_filename (tmpdir, "liferea-XXXXXX", NULL);
-	
-	fd = g_mkstemp(tmpfilename);
-	
-	if(fd == -1) {
-		debug1(DEBUG_UPDATE, "Error opening temp file %s to use for filtering!", tmpfilename);
-		*errorOutput = g_strdup_printf(_("Error opening temp file %s to use for filtering!"), tmpfilename);
-		g_free(tmpfilename);
-		return NULL;
-	}	
-		
-	file = fdopen(fd, "w");
-	fwrite(data, strlen(data), 1, file);
-	fclose(file);
+	size_t		size = 0;
 
-	*size = 0;
-	command = g_strdup_printf("%s < %s", cmd, tmpfilename);
-	p = popen(command, "r");
-	g_free(command);
-	if(NULL != p) {
-		while(!feof(p) && !ferror(p)) {
-			size_t len;
-			out = g_realloc(out, *size+1025);
-			len = fread(&out[*size], 1, 1024, p);
-			if(len > 0)
-				*size += len;
-		}
-		status = pclose(p);
-		if(!(WIFEXITED(status) && WEXITSTATUS(status) == 0)) {
-			*errorOutput = g_strdup_printf(_("%s exited with status %d"),
-			                              cmd, WEXITSTATUS(status));
-			*size = 0;
-		}
-		out[*size] = '\0';
-	} else {
-		g_warning(_("Error: Could not open pipe \"%s\""), command);
-		*errorOutput = g_strdup_printf(_("Error: Could not open pipe \"%s\""), command);
+	tmpfilename = g_build_filename (tmpdir, "liferea-XXXXXX", NULL);
+
+	fd = g_mkstemp (tmpfilename);
+
+	if (fd == -1) {
+		debug1 (DEBUG_UPDATE, "Error opening temp file %s to use for filtering!", tmpfilename);
+		job->result->filterErrors = g_strdup_printf (_("Error opening temp file %s to use for filtering!"), tmpfilename);
+		g_free (tmpfilename);
+		return NULL;
 	}
+
+	file = fdopen (fd, "w");
+	fwrite (job->result->data, strlen (job->result->data), 1, file);
+	fclose (file);
+
+	command = g_strdup_printf("%s < %s", job->request->filtercmd, tmpfilename);
+	p = popen (command, "r");
+	if (NULL != p) {
+		while (!feof (p) && !ferror (p)) {
+			size_t len;
+			out = g_realloc (out, size + 1025);
+			len = fread (&out[size], 1, 1024, p);
+			if (len > 0)
+				size += len;
+		}
+		status = pclose (p);
+		if (!(WIFEXITED (status) && WEXITSTATUS (status) == 0)) {
+			debug2 (DEBUG_UPDATE, "%s exited with status %d!", command, WEXITSTATUS(status));
+			job->result->filterErrors = g_strdup_printf (_("%s exited with status %d"), command, WEXITSTATUS(status));
+			size = 0;
+		}
+		if (out)
+			out[size] = '\0';
+	} else {
+		g_warning (_("Error: Could not open pipe \"%s\""), command);
+		job->result->filterErrors = g_strdup_printf (_("Error: Could not open pipe \"%s\""), command);
+	}
+
 	/* Clean up. */
+	g_free (command);
 	unlink (tmpfilename);
 	g_free (tmpfilename);
 	return out;
@@ -319,7 +395,7 @@ update_apply_xslt (updateJobPtr job)
 	gchar			*output = NULL;
 
 	g_assert (NULL != job->result);
-	
+
 	do {
 		srcDoc = xml_parse (job->result->data, job->result->size, NULL);
 		if (!srcDoc) {
@@ -345,7 +421,7 @@ update_apply_xslt (updateJobPtr job)
 			g_warning ("fatal: retrieving result of filter stylesheet failed (%s)!", job->request->filtercmd);
 			break;
 		}
-		
+
 #ifdef LIBXML2_NEW_BUFFER
 		if (xmlOutputBufferGetSize (buf) > 0)
 			output = xmlCharStrdup (xmlOutputBufferGetContent (buf));
@@ -353,7 +429,7 @@ update_apply_xslt (updateJobPtr job)
 		if (xmlBufferLength (buf->buffer) > 0)
 			output = xmlCharStrdup (xmlBufferContent (buf->buffer));
 #endif
- 
+
 		xmlOutputBufferClose (buf);
 	} while (FALSE);
 
@@ -363,7 +439,7 @@ update_apply_xslt (updateJobPtr job)
 		xmlFreeDoc (resDoc);
 	if (xslt)
 		xsltFreeStylesheet (xslt);
-	
+
 	return output;
 }
 
@@ -371,23 +447,20 @@ static void
 update_apply_filter (updateJobPtr job)
 {
 	gchar	*filterResult;
-	size_t	len = 0;
 
 	g_assert (NULL == job->result->filterErrors);
 
 	/* we allow two types of filters: XSLT stylesheets and arbitrary commands */
 	if ((strlen (job->request->filtercmd) > 4) &&
-	    (0 == strcmp (".xsl", job->request->filtercmd + strlen (job->request->filtercmd) - 4))) {
+	    (0 == strcmp (".xsl", job->request->filtercmd + strlen (job->request->filtercmd) - 4)))
 		filterResult = update_apply_xslt (job);
-		len = strlen (filterResult);
-	} else {
-		filterResult = update_exec_filter_cmd (job->request->filtercmd, job->result->data, &(job->result->filterErrors), &len);
-	}
+	else
+		filterResult = update_exec_filter_cmd (job);
 
 	if (filterResult) {
 		g_free (job->result->data);
 		job->result->data = filterResult;
-		job->result->size = len;
+		job->result->size = strlen(filterResult);
 	}
 }
 
@@ -397,11 +470,9 @@ update_exec_cmd (updateJobPtr job)
 	FILE	*f;
 	int	status;
 	size_t	len;
-	
-	job->result = update_result_new ();
-		
+
 	/* if the first char is a | we have a pipe else a file */
-	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", (job->request->source) + 1);	
+	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", (job->request->source) + 1);
 	f = popen ((job->request->source) + 1, "r");
 	if (f) {
 		while (!feof (f) && !ferror (f)) {
@@ -413,7 +484,7 @@ update_exec_cmd (updateJobPtr job)
 		status = pclose (f);
 		if (WIFEXITED (status) && WEXITSTATUS (status) == 0)
 			job->result->httpstatus = 200;
-		else 
+		else
 			job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 
 		if (job->result->data)
@@ -422,7 +493,7 @@ update_exec_cmd (updateJobPtr job)
 		liferea_shell_set_status_bar (_("Error: Could not open pipe \"%s\""), (job->request->source) + 1);
 		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
-	
+
 	update_process_finished_job (job);
 }
 
@@ -431,9 +502,7 @@ update_load_file (updateJobPtr job)
 {
 	gchar *filename = job->request->source;
 	gchar *anchor;
-	
-	job->result = update_result_new ();
-	
+
 	if (!strncmp (filename, "file://",7))
 		filename += 7;
 
@@ -454,7 +523,7 @@ update_load_file (updateJobPtr job)
 		liferea_shell_set_status_bar (_("Error: There is no file \"%s\""), filename);
 		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
-	
+
 	update_process_finished_job (job);
 }
 
@@ -465,20 +534,20 @@ update_job_run (updateJobPtr job)
 	   methods which then do anything they want with the job and
 	   pass the processed job to update_process_finished_job()
 	   for result dequeuing */
-	
+
 	/* everything starting with '|' is a local command */
 	if (*(job->request->source) == '|') {
 		debug1 (DEBUG_UPDATE, "Recognized local command: %s", job->request->source);
 		update_exec_cmd (job);
 		return;
 	}
-	
+
 	/* if it has a protocol "://" prefix, but not "file://" it is an URI */
 	if (strstr (job->request->source, "://") && strncmp (job->request->source, "file://", 7)) {
 		network_process_request (job);
 		return;
 	}
-	
+
 	/* otherwise it must be a local file... */
 	{
 		debug1 (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
@@ -491,13 +560,13 @@ static gboolean
 update_dequeue_job (gpointer user_data)
 {
 	updateJobPtr job;
-	
+
 	if (!pendingJobs)
 		return FALSE;	/* we must be in shutdown */
-		
-	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS) 
+
+	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS)
 		return FALSE;	/* we'll be called again when a job finishes */
-	
+
 
 	job = (updateJobPtr)g_async_queue_try_pop(pendingHighPrioJobs);
 
@@ -517,23 +586,25 @@ update_dequeue_job (gpointer user_data)
 	} else {
 		update_job_run (job);
 	}
-		
-	return TRUE; /* since I got a job now, there may be more in the queue */
+
+	return FALSE;
 }
 
 updateJobPtr
-update_execute_request (gpointer owner, 
-                        updateRequestPtr request, 
-			update_result_cb callback, 
-			gpointer user_data, 
+update_execute_request (gpointer owner,
+                        UpdateRequest *request,
+			update_result_cb callback,
+			gpointer user_data,
 			updateFlags flags)
 {
 	updateJobPtr job;
-	
+	gint count;
+
 	g_assert (request->options != NULL);
-	
+	g_assert (request->source != NULL);
+
 	job = update_job_new (owner, request, callback, user_data, flags);
-	job->state = REQUEST_STATE_PENDING;	
+	job->state = REQUEST_STATE_PENDING;
 	jobs = g_slist_append (jobs, job);
 
 	if (flags & FEED_REQ_PRIORITY_HIGH) {
@@ -563,35 +634,55 @@ static gboolean
 update_process_result_idle_cb (gpointer user_data)
 {
 	updateJobPtr job = (updateJobPtr)user_data;
-	
+
 	if (job->callback)
 		(job->callback) (job->result, job->user_data, job->flags);
 
 	update_job_free (job);
-		
+
 	return FALSE;
+}
+
+static void
+update_apply_filter_async(GTask *task, gpointer src, gpointer tdata, GCancellable *ccan)
+{
+    updateJobPtr job = tdata;
+    update_apply_filter(job);
+    g_task_return_int(task, 0);
+}
+
+static void
+update_apply_filter_finish(GObject *src, GAsyncResult *result, gpointer user_data)
+{
+    updateJobPtr job = user_data;
+    g_idle_add(update_process_result_idle_cb, job);
 }
 
 void
 update_process_finished_job (updateJobPtr job)
 {
 	job->state = REQUEST_STATE_DEQUEUE;
-	
+
 	g_assert(numberOfActiveJobs > 0);
 	numberOfActiveJobs--;
 	g_idle_add (update_dequeue_job, NULL);
 
 	/* Handling abandoned requests (e.g. after feed deletion) */
-	if (job->callback == NULL) {	
+	if (job->callback == NULL) {
 		debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
 		update_job_free (job);
 		return;
-	} 
+	}
 
 	/* Finally execute the postfilter */
-	if (job->result->data && job->request->filtercmd) 
-		update_apply_filter (job);
-		
+	if (job->result->data && job->request->filtercmd) {
+                GTask *task = g_task_new(NULL, NULL, update_apply_filter_finish, job);
+                g_task_set_task_data(task, job, NULL);
+                g_task_run_in_thread(task, update_apply_filter_async);
+                g_object_unref(task);
+                return;
+        }
+
 	g_idle_add (update_process_result_idle_cb, job);
 }
 
@@ -617,7 +708,7 @@ update_deinit (void)
 
 	g_async_queue_unref (pendingJobs);
 	g_async_queue_unref (pendingHighPrioJobs);
-	
+
 	g_slist_free (jobs);
 	jobs = NULL;
 }

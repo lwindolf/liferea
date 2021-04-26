@@ -10,17 +10,11 @@ AM_CPPFLAGS = \
 noinst_LIBRARIES = libliflsources.a
 libliflsources_a_SOURCES = node_source.c node_source.h \
                            node_source_activatable.c node_source_activatable.h \
-                           aol_source.c aol_source.h \
-			   aol_source_feed.c \
-			   aol_source_opml.c aol_source_opml.h \
                            default_source.c default_source.h \
                            dummy_source.c dummy_source.h \
                            google_reader_api_edit.c google_reader_api_edit.h \
                            google_reader_api.h \
                            google_source.c google_source.h \
-                           inoreader_source.c inoreader_source.h \
-			   inoreader_source_feed.c \
-			   inoreader_source_feed_list.c inoreader_source_feed_list.h \
                            json_api_mapper.c json_api_mapper.h \
                            opml_source.c opml_source.h \
                            reedah_source.c reedah_source.h \
