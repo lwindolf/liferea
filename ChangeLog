@@ -1,7 +1,50 @@
-To be released
+2021-05-07   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.13.6
+
 
 	* Change reader mode toggle from item view icon to toggle entry in
 	  item view context menu.
+	  (Lars Windolf)
+
+	* #343: UX redesign of the update message in the status bar. Now shows a
+	  update counter of the feeds being in update.
+	  (Lars Windolf)
+
+	* #964: Added pane position fix plugin providing a workaround for pane position
+	  issues when using the headerbar
+	  (sunwire)
+
+	* #983: Use GtkFileChooserNative to allow selecting local files when
+	  run in sandbox.
+	  (Leiaz)
+
+	* Fixes #780: Improve date formatting when in locale en_GB
+	  (sunwire)
+
+	* Fixes #944: Broken RTL text direction in feed content view
+	  (Lars Windolf)
+
+	* Fixes #949: Regression in notification plugin that caused it to show
+	  non-new items 
+	  (Lars Windolf)
+
+	* Fixes #963: Checking for git command in plugin installer -> warn user
+	  (sunwire)
+
+	* Fixes #973: Broken CSS in Webkit2Gtk >= 2.32
+	  (Leiaz)
+
+	* Updated Albanian translation
+	  (Besnik Bleta)
+
+	* Updated French translation
+	  (guilieb)
+
+	* Updated Italian translation
+	  (Janvitus)
+
+	* Updated German translation
 	  (Lars Windolf)
 
 
