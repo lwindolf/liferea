@@ -39,6 +39,8 @@ plugindir = $(pkglibdir)/plugins
 plugin_DATA = \
 	plugins/bold-unread.py \
 	plugins/bold-unread.plugin \
+	plugins/getfocus.py \
+	plugins/getfocus.plugin \
 	plugins/gnome-keyring.py \
 	plugins/gnome-keyring.plugin \
 	plugins/headerbar.py \
@@ -47,12 +49,12 @@ plugin_DATA = \
 	plugins/libnotify.plugin \
 	plugins/media-player.py \
 	plugins/media-player.plugin \
+	plugins/pane.py \
+	plugins/pane.plugin \
 	plugins/plugin-installer.py \
 	plugins/plugin-installer.plugin \
 	plugins/trayicon.py \
-	plugins/trayicon.plugin \
-	plugins/getfocus.py \
-	plugins/getfocus.plugin
+	plugins/trayicon.plugin
 
 gsettings_SCHEMAS = net.sf.liferea.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
