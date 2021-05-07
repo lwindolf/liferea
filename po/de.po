@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-02-20 20:04+0100\n"
-"PO-Revision-Date: 2020-12-31 18:40+0100\n"
+"PO-Revision-Date: 2021-05-07 22:46+0200\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -109,16 +109,15 @@ msgstr ""
 
 #: ../plugins/getfocus.py:104
 msgid "Min"
-msgstr ""
+msgstr "Min"
 
 #: ../plugins/getfocus.py:109
-#, fuzzy
 msgid "Max"
-msgstr "Karte"
+msgstr "Max"
 
 #: ../plugins/getfocus.py:115
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
 #: ../glade/liferea_toolbar.ui.h:5
@@ -745,7 +744,6 @@ msgid "Request timed out"
 msgstr "Antwortzeit überschritten"
 
 #: ../src/net.c:459
-#, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -1808,7 +1806,7 @@ msgstr "Öffne Links im Liferea-_Fenster."
 
 #: ../glade/prefs.ui.h:26
 msgid "_Never run external Javascript."
-msgstr "_Nie Javascript in Webseiten ausführen"
+msgstr "_Nie Javascript in Webseiten ausführen."
 
 #: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
@@ -1938,14 +1936,14 @@ msgstr ""
 
 #: ../glade/prefs.ui.h:56
 msgid "Use _Reader mode."
-msgstr "_Reader mode benutzen"
+msgstr "_Reader mode benutzen."
 
 #: ../glade/prefs.ui.h:57
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
-" <a href=\"https://github.com/mozilla/readability\">Entfernt</a> alle "
+"<a href=\"https://github.com/mozilla/readability\">Entfernt</a> alle "
 "Schlagzeilen-Elemente die kein Inhalt sind (wie Skripte, Fonts, Tracking)"
 
 #: ../glade/prefs.ui.h:58
@@ -2110,20 +2108,18 @@ msgid "Search _Name:"
 msgstr "_Name der Suche:"
 
 #: ../glade/search_folder.ui.h:3
-#, fuzzy
 msgid "Search Rules"
-msgstr "Alle Abonnements durchsuchen"
+msgstr "Suchregeln"
 
 #: ../glade/search_folder.ui.h:4
 msgid "Rules"
-msgstr ""
+msgstr "Regeln"
 
 #: ../glade/search_folder.ui.h:5
 msgid "All rules for this search folder"
-msgstr ""
+msgstr "Alle Regeln des Suchordners"
 
 #: ../glade/search_folder.ui.h:6
-#, fuzzy
 msgid "Rule Matching"
 msgstr "Ei_ne Regel trifft zu"
 
@@ -2136,9 +2132,8 @@ msgid "_All Rules Must Match"
 msgstr "_Alle Regeln treffen zu"
 
 #: ../glade/search_folder.ui.h:9
-#, fuzzy
 msgid "Hide read items"
-msgstr "_Gelesene Schlagzeilen verbergen."
+msgstr "_Gelesene Schlagzeilen verbergen"
 
 #: ../glade/search.ui.h:1
 msgid "Advanced Search"
@@ -2253,58 +2248,54 @@ msgid "Copyright"
 msgstr "Copyright"
 
 #: ../xslt/feed.xml.in.h:5
-#, fuzzy
 msgid "There was a problem when fetching this subscription!"
 msgstr ""
 "Es trat ein Fehler beim Einlesen des Abonnements auf. Bitte überprüfen Sie "
-"die Adresse und die Ausgabe auf der Konsole."
+"die Adresse und die Ausgabe auf der Konsole!"
 
 #: ../xslt/feed.xml.in.h:6
-#, fuzzy
 msgid "1. Authentication"
-msgstr "Authentifizierung"
+msgstr "1. Authentifizierung"
 
 #: ../xslt/feed.xml.in.h:7
-#, fuzzy
 msgid "2. Download"
-msgstr "Download"
+msgstr "2. Download"
 
 #: ../xslt/feed.xml.in.h:8
 msgid "3. Feed Discovery"
-msgstr ""
+msgstr "3. Feed Erkennung"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "4. Parsing"
-msgstr ""
+msgstr "4. Parsen"
 
 #: ../xslt/feed.xml.in.h:10
-#, fuzzy
 msgid "Details:"
-msgstr "Details"
+msgstr "Details:"
 
 #: ../xslt/feed.xml.in.h:11
 msgid "Authentication failed. Please check the credentials and try again!"
-msgstr ""
+msgstr "Authentifizierung fehlgeschlagen! Bitte Kennwort prüfen!"
 
 #: ../xslt/feed.xml.in.h:12
-#, fuzzy
 msgid "There was an error when downloading the feed source:"
-msgstr "Es traten Fehler beim Parsen des Feeds auf!"
+msgstr "Es traten Fehler beim Herunterladen des Abonnements auf:"
 
 #: ../xslt/feed.xml.in.h:13
-#, fuzzy
 msgid "There was an error when running the feed filter command:"
-msgstr "Es traten Fehler beim Parsen des Feeds auf!"
+msgstr "Es traten Fehler beim Ausführen des Filters auf:"
 
 #: ../xslt/feed.xml.in.h:14
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
 msgstr ""
+"Die Quelle scheint nicht auf einen Feed oder eine Webseite mit einem Link zu "
+"einem Feed zu zeigen!"
 
 #: ../xslt/feed.xml.in.h:15
 msgid "Sorry, the feed could not be parsed!"
-msgstr ""
+msgstr "Leider konnte die Quelle nicht geparsed werden!"
 
 #: ../xslt/feed.xml.in.h:16
 msgid "You may want to contact the author/webmaster of the feed about this!"
