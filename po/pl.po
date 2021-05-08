@@ -9,10 +9,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 1.13.4\n"
+"Project-Id-Version: liferea 1.13.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
-"PO-Revision-Date: 2021-02-20 20:10+0100\n"
+"POT-Creation-Date: 2021-05-08 20:46+0200\n"
+"PO-Revision-Date: 2021-05-08 21:26+0200\n"
 "Last-Translator: Paweł Marciniak <sunwire+translate@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : ((n%10>=2 && n%10<=4 && (n"
 "%100<10 || n%100>=20)) ? 1 : 2));\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.4.3\n"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -102,24 +102,23 @@ msgstr ""
 
 #: ../plugins/getfocus.py:93
 msgid "Opacity:"
-msgstr ""
+msgstr "Nieprzeźroczystość:"
 
 #: ../plugins/getfocus.py:94
 msgid "Opacity"
-msgstr ""
+msgstr "Nieprzeźroczystość"
 
 #: ../plugins/getfocus.py:104
 msgid "Min"
-msgstr ""
+msgstr "Min."
 
 #: ../plugins/getfocus.py:109
-#, fuzzy
 msgid "Max"
-msgstr "Mapa"
+msgstr "Maks."
 
 #: ../plugins/getfocus.py:115
 msgid "Save"
-msgstr ""
+msgstr "Zapisz"
 
 #: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
 #: ../glade/liferea_toolbar.ui.h:5
@@ -172,7 +171,7 @@ msgstr "Pobierz wtyczki"
 #: ../plugins/plugin-installer.py:102
 #, python-format
 msgid "Bad fields for plugin entry %s"
-msgstr ""
+msgstr "Złe pola opisu wtyczki %s"
 
 #: ../plugins/plugin-installer.py:125
 msgid "All"
@@ -209,7 +208,7 @@ msgid ""
 "dependencies!"
 msgstr ""
 "Brakuje managera pakietów '%s'. Nie mogę sprawdzić ani zainstalować "
-"brakujących zależności"
+"brakujących zależności!"
 
 #: ../plugins/plugin-installer.py:261
 #, python-format
@@ -222,8 +221,8 @@ msgid ""
 "Package installation failed (%s)! Check console output for further problem "
 "details!"
 msgstr ""
-"Instlacja pakietu (%s) nie powiodła się! Sprawdź wyjście konsoli pod kątem "
-"dalszych problemów"
+"Instalacja pakietu (%s) nie powiodła się! Sprawdź wyjście konsoli pod kątem "
+"dalszych problemów!"
 
 #: ../plugins/plugin-installer.py:271
 #, python-format
@@ -266,7 +265,7 @@ msgstr "Instaluję plik schematu %s"
 
 #: ../plugins/plugin-installer.py:328
 msgid "Compiling schemas..."
-msgstr "Kompiluje schemat"
+msgstr "Kompiluje schematy..."
 
 #: ../plugins/plugin-installer.py:333
 #, python-format
@@ -311,12 +310,12 @@ msgstr "Nie udało się usunąć pliku .plugin!"
 
 #: ../plugins/plugin-installer.py:402
 msgid "Sorry! Plugin removal failed!."
-msgstr "Przepraszam! Usunięcie wtyczni nie powiodło się!"
+msgstr "Przepraszam! Usunięcie wtyczki nie powiodło się!"
 
 #: ../plugins/plugin-installer.py:404
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
-msgstr "Wtyczka została usunięta. Proszę zrestartować Liferea"
+msgstr "Wtyczka została usunięta. Proszę zrestartować Liferea!"
 
 #: ../plugins/trayicon.py:134
 msgid "Show / Hide"
@@ -474,16 +473,6 @@ msgstr "Eksportuj listę subskrypcji"
 #: ../src/export.c:490
 msgid "Export"
 msgstr "Wyeksportuj"
-
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "„%s” nie jest dostępne"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "Uaktualniono „%s”..."
 
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
@@ -759,7 +748,6 @@ msgid "Request timed out"
 msgstr "Upłynął limit czasu żądania"
 
 #: ../src/net.c:459
-#, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -914,14 +902,14 @@ msgstr ""
 "Zawartość kanału „%s” nie zmieniła się od czasu ostatniego uaktualniania"
 
 #: ../src/subscription.c:221 ../src/subscription.c:296
-#, fuzzy, c-format
+#, c-format
 msgid "Updating (%d / %d) ..."
-msgstr "Uaktualnianie..."
+msgstr "Uaktualnianie (%d/%d) ..."
 
 #: ../src/subscription.c:298
-#, fuzzy, c-format
+#, c-format
 msgid "Updating '%s'..."
-msgstr "Uaktualnianie..."
+msgstr "Uaktualnianie '%s'..."
 
 #: ../src/ui/auth_dialog.c:114
 #, c-format
@@ -992,7 +980,7 @@ msgstr "wszystkie kanały"
 #: ../src/ui/feed_list_view.c:479
 #, c-format
 msgid "Mark %s as read ?"
-msgstr "Oznacz %s jako przeczytane"
+msgstr "Oznaczyć %s jako przeczytane?"
 
 #: ../src/ui/feed_list_view.c:483
 #, c-format
@@ -1028,7 +1016,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Usunąć „%s”?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 msgid "_Cancel"
 msgstr "Anuluj"
 
@@ -1095,9 +1082,9 @@ msgstr "Nie zanzaczono żadnego nagłówka"
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
-msgstr[0] "(%d nowa)"
-msgstr[1] "(%d nowe)"
-msgstr[2] "(%d nowych)"
+msgstr[0] " (%d nowa)"
+msgstr[1] " (%d nowe)"
+msgstr[2] " (%d nowych)"
 
 #: ../src/ui/liferea_shell.c:414
 #, c-format
@@ -1223,7 +1210,7 @@ msgstr "_Wczytaj ponownie"
 
 #: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
-msgstr "_Właściwości..."
+msgstr "_Właściwości"
 
 #: ../src/ui/popup_menu.c:343
 msgid "Convert To Local Subscriptions..."
@@ -1314,7 +1301,7 @@ msgstr[2] "Zalecana częstość uaktualniania kanału wynosi %d minut."
 msgid "This feed specifies no default update interval."
 msgstr "Kanał nie posiada domyślnej częstości uaktualniania."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 msgid "All Files"
 msgstr "Wszystkie pliki"
 
@@ -1379,7 +1366,7 @@ msgstr "_Skopiuj adres obrazu"
 
 #: ../src/webkit/liferea_web_view.c:198
 msgid "S_ave Link As"
-msgstr "_Zapisz odnośnik jako..."
+msgstr "_Zapisz odnośnik jako"
 
 #: ../src/webkit/liferea_web_view.c:201
 msgid "S_ave Image As"
@@ -1400,6 +1387,10 @@ msgstr "Z_większ rozmiar tekstu"
 #: ../src/webkit/liferea_web_view.c:219
 msgid "_Decrease Text Size"
 msgstr "Z_mniejsz rozmiar tekstu"
+
+#: ../src/webkit/liferea_web_view.c:226
+msgid "_Reader Mode"
+msgstr "T_ryb czytnika"
 
 #: ../src/xml.c:424
 msgid "[There were more errors. Output was truncated!]"
@@ -1461,7 +1452,7 @@ msgstr "Prze_glądaj"
 
 #: ../glade/enclosure_handler.ui.h:5
 msgid "_Do this automatically for enclosures like this from now on."
-msgstr "_Wykonywanie tej czynności automatycznie dla tego typu plików"
+msgstr "_Wykonywanie tej czynności automatycznie dla tego typu plików."
 
 #: ../glade/liferea_menu.ui.h:1
 msgid "_Subscriptions"
@@ -1587,7 +1578,7 @@ msgstr "_O programie"
 
 #: ../glade/liferea_toolbar.ui.h:2
 msgid "Adds a subscription to the feed list."
-msgstr "Dodaje do listy kanałów nową subskrypcję"
+msgstr "Dodaje do listy kanałów nową subskrypcję."
 
 #: ../glade/liferea_toolbar.ui.h:4
 msgid ""
@@ -1598,11 +1589,11 @@ msgstr ""
 
 #: ../glade/liferea_toolbar.ui.h:9
 msgid "Updates all subscriptions."
-msgstr "Uaktualnia wszystkie subskrypcje"
+msgstr "Uaktualnia wszystkie subskrypcje."
 
 #: ../glade/liferea_toolbar.ui.h:11
 msgid "Show the search dialog."
-msgstr "Wyświetla okno wyszukiwania"
+msgstr "Wyświetla okno wyszukiwania."
 
 #: ../glade/mainwindow.ui.h:2
 msgid "page 1"
@@ -1718,11 +1709,11 @@ msgstr ""
 
 #: ../glade/opml_source.ui.h:3
 msgid "_Location"
-msgstr "_Położenie:"
+msgstr "_Położenie"
 
 #: ../glade/opml_source.ui.h:4
 msgid "_Select File"
-msgstr "_Wskaż plik..."
+msgstr "_Wskaż plik"
 
 #: ../glade/prefs.ui.h:1
 msgid "Liferea Preferences"
@@ -1755,7 +1746,7 @@ msgstr ""
 
 #: ../glade/prefs.ui.h:8
 msgid "_Update all subscriptions at startup."
-msgstr "_Uaktualnianie wszystkich subskrypcji podczas uruchamiania"
+msgstr "_Uaktualnianie wszystkich subskrypcji podczas uruchamiania."
 
 #: ../glade/prefs.ui.h:9
 msgid "Default Feed Refresh _Interval:"
@@ -1775,11 +1766,11 @@ msgstr "Wyświetlanie"
 
 #: ../glade/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
-msgstr "_Wyświetlanie wszystkich nagłówków subskrypcji zaznaczonego katalogu"
+msgstr "_Wyświetlanie wszystkich nagłówków subskrypcji zaznaczonego katalogu."
 
 #: ../glade/prefs.ui.h:14
 msgid "_Hide read items."
-msgstr "_Ukrywanie przeczytanych nagłówków"
+msgstr "_Ukrywanie przeczytanych nagłówków."
 
 #: ../glade/prefs.ui.h:15
 msgid "Feed Icons (Favicons)"
@@ -1811,7 +1802,7 @@ msgstr "Integracja z usługami sieciowymi"
 
 #: ../glade/prefs.ui.h:22
 msgid "_Post Bookmarks to"
-msgstr "_Publikowanie odnośników:"
+msgstr "_Publikowanie odnośników na"
 
 #: ../glade/prefs.ui.h:24
 msgid "Internal Browser Settings"
@@ -1819,7 +1810,7 @@ msgstr "Wbudowana przeglądarka"
 
 #: ../glade/prefs.ui.h:25
 msgid "Open links in Liferea's _window."
-msgstr "Otwieranie odnośników w _oknie programu"
+msgstr "Otwieranie odnośników w _oknie programu."
 
 #: ../glade/prefs.ui.h:26
 msgid "_Never run external Javascript."
@@ -1827,7 +1818,7 @@ msgstr "Nigdy nie uruchamiaj zewnętrznego JavaScript."
 
 #: ../glade/prefs.ui.h:27
 msgid "_Enable browser plugins."
-msgstr "_Włączenie wtyczek"
+msgstr "_Włączenie wtyczek przeglądarki."
 
 #: ../glade/prefs.ui.h:28
 msgid "External Browser Settings"
@@ -1856,7 +1847,7 @@ msgstr "Pasek narzędziowy"
 
 #: ../glade/prefs.ui.h:35
 msgid "_Hide toolbar."
-msgstr "_Ukrywanie"
+msgstr "_Ukryj pasek narzędziowy."
 
 #: ../glade/prefs.ui.h:36
 msgid "Toolbar _button labels:"
@@ -1929,7 +1920,7 @@ msgstr "Ustawienia prywatności"
 
 #: ../glade/prefs.ui.h:52
 msgid "Tell sites that I do _not want to be tracked."
-msgstr "Poinformuj witryny, że _nie chcę być śledzony"
+msgstr "Poinformuj witryny, że _nie chcę być śledzony."
 
 #: ../glade/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
@@ -1953,13 +1944,15 @@ msgstr ""
 
 #: ../glade/prefs.ui.h:56
 msgid "Use _Reader mode."
-msgstr ""
+msgstr "Użyj t_ryb czytnika."
 
 #: ../glade/prefs.ui.h:57
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
+"To umożliwia <a href=\"https://github.com/mozilla/readability\">usunięcie</"
+"a> wszystkie elementów nie zawierające treści (jak skrypty, fonty, śledzenie)"
 
 #: ../glade/prefs.ui.h:58
 msgid "Privacy"
@@ -1971,7 +1964,7 @@ msgstr "Pobieranie"
 
 #: ../glade/prefs.ui.h:60
 msgid "_Download using"
-msgstr "Po_bieranie za pomocą programu:"
+msgstr "Po_bieranie za pomocą programu"
 
 #: ../glade/prefs.ui.h:62
 #, no-c-format
@@ -2000,15 +1993,15 @@ msgstr "Częstość uaktualniania"
 
 #: ../glade/properties.ui.h:4
 msgid "_Use global default update interval."
-msgstr "_Używanie domyślnych wartości globalnych"
+msgstr "_Używanie domyślnych wartości globalnych."
 
 #: ../glade/properties.ui.h:5
 msgid "_Feed specific update interval of"
-msgstr "_Określenie indywidualnej częstości uaktualniania:"
+msgstr "_Określenie indywidualnej częstości uaktualniania"
 
 #: ../glade/properties.ui.h:7
 msgid "_Don't update this feed automatically."
-msgstr "_Pomijanie automatycznego uaktualniania"
+msgstr "_Pomijanie automatycznego uaktualniania."
 
 #: ../glade/properties.ui.h:9
 #, no-c-format
@@ -2070,12 +2063,12 @@ msgstr "Pobieranie"
 
 #: ../glade/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
-msgstr "_Automatyczne pobieranie załączników"
+msgstr "_Automatyczne pobieranie załączników."
 
 #: ../glade/properties.ui.h:35
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
-"Automatyczne _otwieranie zaznaczonych nagłówków w przeglądarce internetowej"
+"Automatyczne _otwieranie zaznaczonych nagłówków w przeglądarce internetowej."
 
 #: ../glade/properties.ui.h:36
 msgid "Ignore _comment feeds for this subscription."
@@ -2124,22 +2117,20 @@ msgstr "_Nazwa wyszukiwania:"
 
 # Skrócone (toolbar)
 #: ../glade/search_folder.ui.h:3
-#, fuzzy
 msgid "Search Rules"
-msgstr "Wyszukiwanie"
+msgstr "Zasady wyszukiwania"
 
 #: ../glade/search_folder.ui.h:4
 msgid "Rules"
-msgstr ""
+msgstr "Zasady"
 
 #: ../glade/search_folder.ui.h:5
 msgid "All rules for this search folder"
-msgstr ""
+msgstr "Wszystkie zasady dla tego folderu wyszukiwania"
 
 #: ../glade/search_folder.ui.h:6
-#, fuzzy
 msgid "Rule Matching"
-msgstr "Dopasowanie j_akiejkolwiek reguły"
+msgstr "Dopasowywanie reguł"
 
 #: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
@@ -2150,9 +2141,8 @@ msgid "_All Rules Must Match"
 msgstr "Dopasowanie _wszystkich reguł"
 
 #: ../glade/search_folder.ui.h:9
-#, fuzzy
 msgid "Hide read items"
-msgstr "_Ukrywanie przeczytanych nagłówków"
+msgstr "Ukryj przeczytane"
 
 #: ../glade/search.ui.h:1
 msgid "Advanced Search"
@@ -2267,58 +2257,52 @@ msgid "Copyright"
 msgstr "Copyright"
 
 #: ../xslt/feed.xml.in.h:5
-#, fuzzy
 msgid "There was a problem when fetching this subscription!"
-msgstr ""
-"Wystąpił problem podczas czytania subskrypcji. Proszę sprawdzić poprawność "
-"adresu URL oraz komunikaty błędów."
+msgstr "Wystąpił problem podczas pobierania tej subskrypcji!"
 
 #: ../xslt/feed.xml.in.h:6
-#, fuzzy
 msgid "1. Authentication"
-msgstr "Uwierzytelnianie"
+msgstr "1. Uwierzytelnianie"
 
 #: ../xslt/feed.xml.in.h:7
-#, fuzzy
 msgid "2. Download"
-msgstr "Pobieranie"
+msgstr "2. Pobieranie"
 
 #: ../xslt/feed.xml.in.h:8
 msgid "3. Feed Discovery"
-msgstr ""
+msgstr "3. Wykrywanie subskrypcji"
 
 #: ../xslt/feed.xml.in.h:9
 msgid "4. Parsing"
-msgstr ""
+msgstr "4. Przetwarzanie"
 
 #: ../xslt/feed.xml.in.h:10
-#, fuzzy
 msgid "Details:"
-msgstr "Szczegóły"
+msgstr "Szczegóły:"
 
 #: ../xslt/feed.xml.in.h:11
 msgid "Authentication failed. Please check the credentials and try again!"
-msgstr ""
+msgstr "Uwierzytelnianie nie powiodło się. Sprawdź  i spróbuj ponownie!"
 
 #: ../xslt/feed.xml.in.h:12
-#, fuzzy
 msgid "There was an error when downloading the feed source:"
-msgstr "Wystąpiły błędy podczas przetwarzania bieżącej subskrypcji!"
+msgstr "Wystąpiły błędy podczas pobierania źródła subskrypcji:"
 
 #: ../xslt/feed.xml.in.h:13
-#, fuzzy
 msgid "There was an error when running the feed filter command:"
-msgstr "Wystąpiły błędy podczas przetwarzania bieżącej subskrypcji!"
+msgstr "Wystąpił błąd podczas przetwarzania polecenia filtrującego wiadomości:"
 
 #: ../xslt/feed.xml.in.h:14
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
 msgstr ""
+"Źródło nie wskazuje bezpośrednio na subskrypcje lub stronę internetową z "
+"linkiem do subskrypcji!"
 
 #: ../xslt/feed.xml.in.h:15
 msgid "Sorry, the feed could not be parsed!"
-msgstr ""
+msgstr "Przepraszam, subskrypcja nie mogła być przetworzona!"
 
 #: ../xslt/feed.xml.in.h:16
 msgid "You may want to contact the author/webmaster of the feed about this!"
@@ -2418,6 +2402,14 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Katalog wyników:"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "„%s” nie jest dostępne"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "Uaktualniono „%s”..."
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
