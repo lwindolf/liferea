@@ -480,7 +480,7 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 	}
 
 	if(htmlview->forceInternalBrowsing || browse_inside_application) {
-		return FALSE;
+		liferea_htmlview_launch_URL_internal (htmlview, url);
 	} else {
 		(void)browser_launch_URL_external (url);
 	}
