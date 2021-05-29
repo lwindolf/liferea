@@ -1,3 +1,21 @@
+To be released
+
+	Version 1.13.7
+
+	* #981: Left-clicking an external link in the headline view caused the
+	  Javascript disabled setting to be ignored.
+	  (Lars Windolf)
+
+	* Fixes #993: Duplicate registration of libsoup content decoder
+	  (Yanko Kaneti)
+
+	* Updated documentation for preference dialog
+	  (Lars Windolf)
+
+	* Updated Polish translation
+	  (sunwire)
+
+
 2021-05-07   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.6

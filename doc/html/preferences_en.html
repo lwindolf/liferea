@@ -1,7 +1,7 @@
 <html>
 <head>
 	<title>Changing Preferences</title>
-	
+
 	<link rel="stylesheet" type="text/css" href="reference.css">
 </head>
 <body>
@@ -26,155 +26,143 @@
 	<h4>Feed Preferences</h4>
 
 	<p align="center">
-	<img src="help_prefs_feeds_1.6.0.png">
+	<img src="help_prefs_feeds_1.14.0.png">
 	</p>
 	<ul>
-	
+
 	<li>
-	<b>Feed Cache Handling:</b> Here you can set the default number 
+	<b>Feed Cache Handling:</b> Here you can set the default number
 	of items to be saved for each subscription. Note that this setting
 	can be overwritten for each subscription by setting the item cache
 	size in the subscriptions properties.
 	</li>
-	
+
 	<li>
 	<b>Feed Update Settings:</b> Here you can set the default refresh
-	interval for all subscriptions. Note that this setting can be 
-	overwritten for each subscription by setting the refresh interval 
+	interval for all subscriptions. Note that this setting can be
+	overwritten for each subscription by setting the refresh interval
 	in the subscriptions properties.<br>
-	The "At startup" option button allows you to control the update behaviour 
-	after startup. You have three possibilities:
-	<ul>
-	<li>Update out-dated feeds.</li>
-	<li>Force update all feeds.</li>
-	<li>No feed update at all.</li>
-	</ul>
+	<p>
+	The "Update all subscription at startup" check box allows you to
+	control the update behaviour right after startup.
+	</p>
 	</li>
-	
+
 	</ul>
-	
+
 	<h4>Folder Preferences</h4>
 
 	<p align="center">
-	<img src="help_prefs_folders_1.6.0.png">
+	<img src="help_prefs_folders_1.14.0.png">
 	</p>
-		
+
 	<ul>
 	<li>
-	<b>Folder Display Settings:</b> With these checkbox you can control
+	<p>
+	<b>Folder Display Settings:</b> With these check boxes you can control
 	what Liferea loads into the item list when you click a folder.
-	The default behaviour is not to load any items at all. If
-	you enable the first option all items of all child subscriptions of the
-	selected folder are loaded into the item list. When you enable "Hide read
-	items" then only unread items will be loaded.
-	<br/><br/>
-	Usually you will want to
-	enable both options as this allows to quickly read through all unread
+	The default behaviour is to load all unread items and to hide all items
+	you've already read.
+	</p>
+	<p>
+	Usually you will want to enable both options as this allows to quickly read through all unread
 	items of a set of feeds.
+	</p>
 	</li>
-	
+
 	<li>
 	<b>Feed Icons (Favicons):</b> This button allows you to trigger
 	an update of all favicons of all subscriptions.
-	</li>	
+	</li>
 	</ul>
-	
+
 	<h4>Headline Preferences</h4>
 
 	<p align="center">
-	<img src="help_prefs_headlines_1.6.0.png">
+	<img src="help_prefs_headlines_1.14.0.png">
 	</p>
-	
+
 	<ul>
 	<li>
 	<b>Reading Headlines:</b> Here you can set the hotkey for skimming
 	through all unread headlines.
 	</li>
-	
+
+	<li>
+	<b>Default View Mode</b> Select your favourite viewing mode here.
+	</li>
+
 	<li>
 	<b>Web Integration:</b> Here you can configure your favourite
 	social bookmarking website. This setting is used when you invoke
 	"Post Bookmark" from the item context menu or the HTML view.
 	</li>
 	</ul>
-	
+
 	<a name="browser">
 	<h4>Browser Preferences</h4>
 
 	<p align="center">
-	<img src="help_prefs_browser_1.6.0.png">
+	<img src="help_prefs_browser_1.14.0.png">
 	</p>
-	
+
 	<ul>
 	<li>
-	<b>Internal Browser Settings:</b> Here you can configure two
+	<b>Internal Browser Settings:</b> Here you can configure three
 	things. First you can specify whether
-	or not Liferea should open clicked links in the configured 
+	or not Liferea should open clicked links in the configured
 	external browser or in the internal browser. The second option
-	allows you to switch off Javascript.
+	allows you to switch off Javascript. The third option allows you
+	to enable browser plugins.
 	</li>
 
 	<li>
-	<b>External Browser Settings:</b> When you click links in then 
-	item HTML view Liferea launches the a browser command you can
+	<b>External Browser Settings:</b> When you click links in a
+	article you read Liferea launches a browser command you can
 	define with this preferences. The first option button is to
 	select your favourite browser or "Manual" for a user defined
 	browser command. With the second option button you specify
 	how the link is opened inside the previously selected browser.<br>
 	<br>
-	Only when selecting "Manual" as browser you can enter a 
+	Only when selecting "Manual" as browser you can enter a
 	browser command in the command entry. When entering a command
 	don't forget to include a <i>"%s"</i> within the command which
-	will be replaced with the URL that was clicked. Please keep in 
-	mind to double quote the place holder to avoid shell problems 
+	will be replaced with the URL that was clicked. Please keep in
+	mind to double quote the place holder to avoid shell problems
 	with the hash character (#) when launching the browser.
 	</li>
 	</ul>
 
-	<h4>GUI Preferences</h4>
+	<h4>Desktop Preferences</h4>
 
 	<p align="center">
-	<img src="help_prefs_gui_1.6.0.png">
+	<img src="help_prefs_desktop_1.14.0.png">
 	</p>
 
 	<ul>
 	<li>
-	<b>Notification Settings:</b> 
-	The first option allows you to enable a notification popup
-	window which present a list of the titles of new headlines
-	of updated subscriptions.	
-	<br/><br/>
-	Enable the second checkbox if you 
-	want to use the notification area feature. This feature is also 
-	known as system tray icon. The program will add a icon to the active 
-	notification area application (as provided for GNOME and KDE) which 
-	will change when new items arrive and 'll be reset as soon the program 
-	is used again. The icon can be used to show the program window if 
-	currently hidden or hide the program window if it is visible.
-	<br/><br/>
-	There are two additional option which can be used to modify the
-	tray icon behaviour as there is no common default behaviour among
-	applications using tray icons.
-	</li>
-	
-	<li>
-	<b>Menu Settings:</b> Here you can select whether you want to
+	<b>Toolbar Settings:</b> Here you can select whether you want to
 	display both menu bar and tool bar or only one of them. Additionally
 	can influence the toolbar button detail.
-	</li>	
+	</li>
+
+	<li>
+	<b>Other:</b> Here you can choose wether you want to have a safety
+	confirmation when marking all items read.
+	</li>
 	</ul>
-	
+
 	<h4>Proxy Preferences</h4>
 
 	<p align="center">
-	<img src="help_prefs_proxy_1.6.0.png">
+	<img src="help_prefs_proxy_1.14.0.png">
 	</p>
-	
+
 	<ul>
 	<li>
 	<b>HTTP Proxy Server:</b> Here you can specify how Liferea
 	should determine the proxy configuration. The suggested default
-	configuration is to figure it out automatically from the 
+	configuration is to figure it out automatically from the
 	environment variables and the GNOME configuration.
 	<br />
 	<br />
@@ -183,14 +171,15 @@
 	option.
 	<br />
 	<br />
-	There is currently no SOCKS support.
+	There is currently no direct SOCKS support. For a SOCKS proxy use
+	"Auto Detect" and configure your global desktop (GNOME, KDE...) to use SOCKS!
 	</li>
 	</ul>
 
 	<h4>Enclosures Preferences</h4>
 
 	<p align="center">
-	<img src="help_prefs_enclosures_1.6.0.png">
+	<img src="help_prefs_enclosures_1.14.0.png">
 	</p>
 
 	<p>
@@ -211,15 +200,16 @@
 	you have installed the configured download tool and that it is
 	working correctly when you run it on the command line.
 	</li>
+
 	<li>
 	<b>Opening Enclosures:</b> Using the "Properties" and "Delete" button
 	you can edit the list of known enclosures types. Typically you only
 	want to do this if you want to remove or change program associations.
 	You don't need to create this definitions manually because Liferea
-	will create a new one and ask you which program to use when you 
+	will create a new one and ask you which program to use when you
 	open or save a type of enclosures.
 	</ul>
-	
+
 	<!-- navigation footer start -->
 	<hr />
 	<table width="100%">
