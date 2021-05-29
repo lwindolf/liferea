@@ -9,6 +9,12 @@ To be released
 	* Fixes #993: Duplicate registration of libsoup content decoder
 	  (Yanko Kaneti)
 
+	* Fixes #950: Multiple license issues:
+	  - several header files with LGPLv2+ license -> fixed to GPLv2+
+	  - several plugins with outdated LGPLv2+ -> updated to LGPLv3+
+	  - missing LGPL license file COPYING.LIB -> added
+	  (reported by Paul Gevers)
+
 	* Updated documentation for preference dialog
 	  (Lars Windolf)
 
@@ -44,7 +50,7 @@ To be released
 	  (Lars Windolf)
 
 	* Fixes #949: Regression in notification plugin that caused it to show
-	  non-new items 
+	  non-new items
 	  (Lars Windolf)
 
 	* Fixes #963: Checking for git command in plugin installer -> warn user
