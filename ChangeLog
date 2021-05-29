@@ -9,6 +9,9 @@ To be released
 	* Fixes #993: Duplicate registration of libsoup content decoder
 	  (Yanko Kaneti)
 
+	* Fixes #952: Number of unread items is 2 times the correct number
+	  (reported by GaryGate15)
+
 	* Fixes #950: Multiple license issues:
 	  - several header files with LGPLv2+ license -> fixed to GPLv2+
 	  - several plugins with outdated LGPLv2+ -> updated to LGPLv3+
