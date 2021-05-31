@@ -1424,7 +1424,7 @@ void
 liferea_shell_rebuild_css (void)
 {
 	render_init_theme_colors (GTK_WIDGET (shell->window));
-	render_get_css(TRUE);
+	render_get_css();
 	itemview_style_update ();
 }
 

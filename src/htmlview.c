@@ -1,7 +1,7 @@
 /**
  * @file htmlview.c  item view interface for HTML rendering
  *
- * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -131,7 +131,7 @@ htmlview_start_output (GString *buffer,
 	}
 
 	if (css)
-		g_string_append (buffer, render_get_css (TRUE /* external CSS supported */));
+		g_string_append (buffer, render_get_css ());
 
 	g_string_append (buffer,  "<script language=\"javascript\" type=\"text/javascript\">\nvar readerEnabled = ");
 	g_string_append (buffer, readerMode?"true":"false");

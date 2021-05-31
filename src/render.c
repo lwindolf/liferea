@@ -1,7 +1,7 @@
 /**
  * @file render.c  generic GTK theme and XSLT rendering handling
  *
- * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -324,7 +324,7 @@ render_is_dark_theme (void)
 }
 
 const gchar *
-render_get_css (gboolean externalCss)
+render_get_css (void)
 {
 	if (!css || styleUpdated) {
 		gchar	*defaultStyleSheetFile;
@@ -360,23 +360,17 @@ render_get_css (gboolean externalCss)
 
 		g_free(userStyleSheetFile);
 
-		if (externalCss) {
-			/* dump CSS to cache file and create a <style> tag to use it */
-			gchar *filename = common_create_cache_filename (NULL, "style", "css");
-			if (!g_file_set_contents(filename, css->str, -1, NULL))
-				g_warning("Cannot write temporary CSS file \"%s\"!", filename);
+		/* dump CSS to cache file and create a <style> tag to use it */
+		gchar *filename = common_create_cache_filename (NULL, "style", "css");
+		if (!g_file_set_contents(filename, css->str, -1, NULL))
+			g_warning("Cannot write temporary CSS file \"%s\"!", filename);
 
-			g_string_free(css, TRUE);
+		g_string_free(css, TRUE);
 
-			css = g_string_new ("<link rel=\"stylesheet\" href=\"file://");
-			g_string_append_printf (css, "%s?%d\" />", filename, (int)time(NULL));
+		css = g_string_new ("<link rel=\"stylesheet\" href=\"file://");
+		g_string_append_printf (css, "%s?%d\" />", filename, (int)time(NULL));
 
-			g_free(filename);
-		} else {
-			/* keep the CSS in memory to serve it as a part of each HTML output */
-			g_string_prepend(css, "<style type=\"text/css\">\n<![CDATA[\n");
-			g_string_append(css, "\n]]>\n</style>\n");
-		}
+		g_free(filename);
 	}
 
 	return css->str;
