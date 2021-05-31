@@ -119,7 +119,7 @@ render_load_stylesheet (const gchar *xsltName)
 	/* or load and translate it... */
 
 	/* 1. load localization stylesheet */
-	i18n_filter = xsltParseStylesheetFile (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "xslt" G_DIR_SEPARATOR_S "i18n-filter.xslt");
+	i18n_filter = xsltParseStylesheetFile ((const xmlChar *)PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "xslt" G_DIR_SEPARATOR_S "i18n-filter.xslt");
 	if (!i18n_filter) {
 		g_warning ("fatal: could not load localization stylesheet!");
 		return NULL;
@@ -419,10 +419,10 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 
 #ifdef LIBXML2_NEW_BUFFER
 	if (xmlOutputBufferGetSize (buf) > 0)
-		output = xmlCharStrdup (xmlOutputBufferGetContent (buf));
+		output = (gchar *)xmlCharStrdup ((const char *)xmlOutputBufferGetContent (buf));
 #else
 	if (xmlBufferLength (buf->buffer) > 0)
-		output = xmlCharStrdup (xmlBufferContent(buf->buffer));
+		output = (gchar *)xmlCharStrdup ((const char *)xmlBufferContent(buf->buffer));
 #endif
 
 	xmlOutputBufferClose (buf);
