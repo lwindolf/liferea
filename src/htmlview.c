@@ -136,6 +136,10 @@ htmlview_start_output (GString *buffer,
 	g_string_append (buffer,  "<script language=\"javascript\" type=\"text/javascript\">\nvar readerEnabled = ");
 	g_string_append (buffer, readerMode?"true":"false");
 	g_string_append (buffer, ";\n"
+	"\nfunction updateStyle() {"
+	"\n	var link = document.getElementById('styles');"
+	"\n	link.setAttribute('href', link.getAttribute('href').replace(/\\?.*/, '') + '?'+(new Date().getTime() / 1000));"
+	"\n}"
 	"\nfunction load() {"
 	"\n		window.removeEventListener('load', documentIsReady);"
 	"\n"

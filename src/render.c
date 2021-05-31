@@ -367,7 +367,7 @@ render_get_css (void)
 
 		g_string_free(css, TRUE);
 
-		css = g_string_new ("<link rel=\"stylesheet\" href=\"file://");
+		css = g_string_new ("<link id=\"styles\" rel=\"stylesheet\" href=\"file://");
 		g_string_append_printf (css, "%s?%d\" />", filename, (int)time(NULL));
 
 		g_free(filename);
