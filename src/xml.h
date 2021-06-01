@@ -122,6 +122,15 @@ gchar * xhtml_strip_dhtml (const gchar *html);
 gchar * xhtml_strip_unsupported_tags (const gchar *html);
 
 /**
+ * Removes self closing tags (on one line) from HTML so that it renders correctly in the browser.
+ *
+ * @param html	some HTML content
+ *
+ * @return newly allocated stripped HTML string
+ */
+gchar * xhtml_expand_self_closing_tag (const gchar *html);
+
+/**
  * Checks the given string for XHTML well formedness.
  *
  * @returns TRUE if the string is well formed XHTML
