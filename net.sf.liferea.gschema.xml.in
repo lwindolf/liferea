@@ -32,6 +32,11 @@
       <summary>The default view mode for feed list nodes.</summary>
       <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane</description>
     </key>
+    <key name="defer-delete-mode" type="b">
+      <default>false</default>
+      <summary>Defer deleting items from the Search Folder.</summary>
+      <description>If this option is enabled, defer deleting read items from UI until the folder is switched.</description>
+    </key>
     <key name="default-update-interval" type="i">
       <default>0</default>
       <summary>Default interval for fetching feeds.</summary>
