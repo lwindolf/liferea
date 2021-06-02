@@ -548,7 +548,7 @@
                     </child>
                     <child>
                        <object class="GtkCheckButton" id="fixed-date-format">
-                         <property name="label" translatable="yes">_Used fixed with date format.</property>
+                         <property name="label" translatable="yes">_Use fixed width date format.</property>
                          <property name="visible">True</property>
                          <property name="can_focus">True</property>
                          <property name="receives_default">False</property>
