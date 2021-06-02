@@ -546,6 +546,23 @@
                         <property name="top_attach">2</property>
                       </packing>
                     </child>
+                    <child>
+                       <object class="GtkCheckButton" id="fixed-date-format">
+                         <property name="label" translatable="yes">_Used fixed with date format.</property>
+                         <property name="visible">True</property>
+                         <property name="can_focus">True</property>
+                         <property name="receives_default">False</property>
+                         <property name="halign">start</property>
+                         <property name="margin_start">12</property>
+                         <property name="use_underline">True</property>
+                         <property name="draw_indicator">True</property>
+                         <signal name="toggled" handler="on_fixeddatefmt_toggled" swapped="no"/>
+                       </object>
+                       <packing>
+                         <property name="left_attach">0</property>
+                         <property name="top_attach">4</property>
+                       </packing>
+                    </child>
                     <accessibility>
                       <relation type="labelled-by" target="readingHeadlinesLabel"/>
                     </accessibility>

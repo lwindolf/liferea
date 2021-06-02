@@ -46,7 +46,12 @@ item_new (void)
 itemPtr
 item_load (gulong id)
 {
-	return db_item_load (id);
+        itemPtr item;
+	item =  db_item_load (id);
+        if (NULL != item) {
+                item->timestr = date_format (item->time, NULL);
+        }
+        return item;
 }
 
 itemPtr
@@ -64,6 +69,7 @@ item_copy (itemPtr item)
 	copy->popupStatus = FALSE;
 	copy->flagStatus = item->flagStatus;
 	copy->time = item->time;
+	copy->timestr = g_strdup( item->timestr );
 	copy->validGuid = item->validGuid;
 	copy->hasEnclosure = item->hasEnclosure;
 
@@ -209,6 +215,7 @@ item_unload (itemPtr item)
 	g_free (item->commentFeedId);
 	g_free (item->nodeId);
 	g_free (item->parentNodeId);
+	g_free (item->timestr);
 
 	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
 	metadata_list_free (item->metadata);

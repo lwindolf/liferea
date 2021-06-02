@@ -37,6 +37,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "conf.h"
 #include "debug.h"
 
 /* date formatting methods */
@@ -182,15 +183,32 @@ date_format (gint64 date, const gchar *date_format)
 {
 	gchar		*result;
 	GDateTime 	*date_tm;
+        gboolean        fixeddatefmt;
 
 	if (date == 0) {
 		return g_strdup ("");
 	}
 
+        conf_get_bool_value (FIXED_DATE_FORMAT, &fixeddatefmt);
+
 	if (date_format) {
 		date_tm = g_date_time_new_from_unix_local (date);
 		result = e_utf8_strftime_fix_am_pm (date_format, date_tm);
 		g_date_time_unref (date_tm);
+	} else if (fixeddatefmt) {
+                GDateTime *then, *now;
+                gchar *buf;
+                then = g_date_time_new_from_unix_local (date);
+                now = g_date_time_new_now_local ();
+                if ((date == 0) || (then == NULL)) {
+                        return g_strdup ("");
+                }
+		if (g_date_time_get_year (then) == g_date_time_get_year (now)) {
+			buf = e_utf8_strftime_fix_am_pm (_("%m/%d %H:%M"), then);
+		} else {
+			buf = e_utf8_strftime_fix_am_pm (_("%Y/%m/%d"), then);
+		}
+                result = g_strstrip (buf);
 	} else {
 		result = date_format_nice (date);
 	}
