@@ -78,7 +78,7 @@ conf_ensure_migrated (const gchar *name)
 /* called once on startup */
 void
 conf_init (void)
-{	
+{
 	/* ensure we migrated from gconf to gsettings */
 	conf_ensure_migrated (LIFEREA_SCHEMA_NAME);
 
@@ -165,7 +165,6 @@ conf_proxy_reset_settings_cb (GSettings *settings,
 	gint		proxyport;
 	gint		proxydetectmode;
 	gboolean	proxyuseauth;
-	GtkWidget 	*dialog = NULL;
 
 	proxyname = NULL;
 	proxyport = 0;
@@ -176,7 +175,7 @@ conf_proxy_reset_settings_cb (GSettings *settings,
 #if !WEBKIT_CHECK_VERSION (2, 15, 3)
 	if (proxydetectmode != PROXY_DETECT_MODE_AUTO)
 	{
-		dialog = gtk_message_dialog_new (NULL,
+		GtkWidget *dialog = gtk_message_dialog_new (NULL,
 			0,
 			GTK_MESSAGE_INFO,
 			GTK_BUTTONS_CLOSE,
