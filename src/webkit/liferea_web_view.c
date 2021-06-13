@@ -2,6 +2,7 @@
  * @file liferea_web_view.c  Webkit2 widget for Liferea
  *
  * Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
+ * Copyright (C) 2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -291,17 +292,12 @@ on_popup_webinspector_activate (GSimpleAction *action, GVariant *parameter, gpoi
 static void
 on_popup_toggle_reader_mode_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
+	WebKitWebView *webview = WEBKIT_WEB_VIEW (user_data);
 	gboolean reader = g_variant_get_boolean (parameter);
-	gchar *cmd = g_strdup_printf ("readerEnabled=%s; load();\n", g_variant_print (parameter, FALSE));
 
-	webkit_web_view_run_javascript (WEBKIT_WEB_VIEW (user_data),
-	                                cmd,
-	                                NULL,
-	                                NULL,
-	                                NULL);
+g_warning("Change reader mode");
+	liferea_htmlview_set_reader_mode (g_object_get_data (G_OBJECT (webview), "htmlview"), reader);
 	g_simple_action_set_state (action, g_variant_new_boolean (reader));
-
-	g_free (cmd);
 }
 
 static const GActionEntry liferea_web_view_gaction_entries[] = {
@@ -606,7 +602,7 @@ liferea_web_view_create_web_view (WebKitWebView *view, WebKitNavigationAction *a
 }
 
 static void
-liferea_webkit_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, gpointer user_data)
+liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, gpointer user_data)
 {
 	LifereaHtmlView	*htmlview;
 	gboolean isFullscreen;
@@ -623,6 +619,10 @@ liferea_webkit_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, 
 		case WEBKIT_LOAD_COMMITTED:
 			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
 			liferea_htmlview_location_changed (htmlview, webkit_web_view_get_uri (view));
+			break;
+		case WEBKIT_LOAD_FINISHED:
+			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+			liferea_htmlview_load_finished (htmlview, webkit_web_view_get_uri (view));
 			break;
 		default:
 			break;
@@ -700,7 +700,7 @@ liferea_web_view_init(LifereaWebView *self)
 	g_signal_connect (
 		self,
 		"load-changed",
-		G_CALLBACK (liferea_webkit_load_status_changed),
+		G_CALLBACK (liferea_web_view_load_status_changed),
 		NULL
 	);
 }

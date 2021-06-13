@@ -1,7 +1,7 @@
 /**
  * @file item.c item handling
  *
- * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,7 +29,9 @@
 #include "date.h"
 #include "db.h"
 #include "debug.h"
+#include "feedlist.h"
 #include "metadata.h"
+#include "render.h"
 #include "xml.h"
 
 itemPtr
@@ -289,8 +291,7 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 			if (duplicate) {
 				nodePtr duplicateNode = node_from_id (duplicate->nodeId);
 				if (duplicateNode && (item->id != duplicate->id))
-					xmlNewTextChild (duplicatesNode, NULL, BAD_CAST "duplicateNode",
-					                 BAD_CAST node_get_title (duplicateNode));
+					xmlNewTextChild (duplicatesNode, NULL, BAD_CAST "duplicateNode", BAD_CAST node_get_title (duplicateNode));
 				item_unload (duplicate);
 			}
 			iter = g_slist_next (iter);
@@ -318,4 +319,65 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 			}
 		}
 	}
+}
+
+static const gchar *
+item_get_text_direction (itemPtr item)
+{
+	if (item_get_title (item))
+		return (common_get_text_direction (item_get_title (item)));
+	if (item_get_description (item))
+		return (common_get_text_direction (item_get_description (item)));
+
+	/* what can we do? */
+	return ("ltr");
+}
+
+gchar *
+item_render (itemPtr item, guint viewMode)
+{
+	renderParamPtr	params;
+	gchar		*output = NULL, *baseUrl = NULL;
+	nodePtr		node;
+	xmlDocPtr 	doc;
+	xmlNodePtr 	xmlNode;
+
+	debug_enter ("item_render");
+
+	/* don't use node from htmlView_priv as this would be
+	wrong for folders and other merged item sets */
+	node = node_from_id (item->nodeId);
+
+	/* do the XML serialization */
+	doc = xmlNewDoc (BAD_CAST "1.0");
+	xmlNode = xmlNewDocNode (doc, NULL, BAD_CAST "itemset", NULL);
+	xmlDocSetRootElement (doc, xmlNode);
+
+	item_to_xml(item, xmlDocGetRootElement (doc));
+
+	if (IS_FEED (node)) {
+		xmlNodePtr feed;
+		feed = xmlNewChild (xmlDocGetRootElement (doc), NULL, BAD_CAST "feed", NULL);
+		feed_to_xml (node, feed);
+	}
+
+	/* do the XSLT rendering */
+	params = render_parameter_new ();
+
+	if (NULL != node_get_base_url (node)) {
+		baseUrl = (gchar *) common_uri_escape ( BAD_CAST node_get_base_url (node));
+		render_parameter_add (params, "baseUrl='%s'", baseUrl);
+	}
+	render_parameter_add (params, "showFeedName='%d'", (node != feedlist_get_selected ())?1:0);
+	render_parameter_add (params, "txtDirection='%s'", item_get_text_direction (item));
+	render_parameter_add (params, "appDirection='%s'", common_get_app_direction ());
+	output = render_xml (doc, "item", params);
+
+	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */
+	xmlFreeDoc (doc);
+	g_free (baseUrl);
+
+	debug_exit ("item_render");
+
+	return output;
 }

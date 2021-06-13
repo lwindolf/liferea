@@ -1,7 +1,7 @@
 /*
  * @file liferea_htmlview.h  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ void	liferea_htmlview_clear (LifereaHtmlView *htmlview);
 
 /**
  * liferea_htmlview_write: (skip)
- * @htmlview:	The htmlview widget to be set
+ * @htmlview:		the htmlview widget to be set
  * @string:		HTML source
  * @base:		base url for resolving relative links
  *
@@ -94,24 +94,26 @@ void liferea_htmlview_progress_changed (LifereaHtmlView *htmlview, gdouble progr
 
 void liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *location);
 
+void liferea_htmlview_load_finished (LifereaHtmlView *htmlview, const gchar *location);
+
 /**
  * liferea_htmlview_handle_URL: (skip)
  * @htmlview:		the HTML view to use
  * @url:		URL to launch
  *
- * Launches the specified URL either in external browser either by passing
+ * Launches the specified URL either in external browser or by passing
  * plain data to Readability.js or by unfiltered rendering. Alternativly it
  * handles a special URL by triggering HTML generation.
  *
- * Returns FALSE to indicate the HTML widget should launch the link.
+ * Returns FALSE to indicate the HTML widget should launch the link itself.
  *
  * To enforce a launching behaviour do use
  *
- *    liferea_htmlview_launch_URL_internal(htmlview, url)
+ *    liferea_htmlview_launch_URL_internal (htmlview, url)
  *
  * or
  *
- *    browser_launch_URL_external(url)
+ *    browser_launch_URL_external (url)
  *
  * instead of this method.
  *
@@ -149,6 +151,26 @@ void liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat zoom);
 gfloat liferea_htmlview_get_zoom (LifereaHtmlView *htmlview);
 
 /**
+ * liferea_htmlview_set_reader_mode:
+ * @htmlview:	htmlview to change
+ * @readerMode:	new mode
+ *
+ * Allows to temporarily change the reader mode of the htmlview, will be
+ * reset when navigating to another URL
+ */
+void liferea_htmlview_set_reader_mode (LifereaHtmlView *htmlview, gboolean readerMode);
+
+/**
+ * liferea_htmlview_get_reader_mode:
+ * @htmlview:	htmlview to get mode of
+ *
+ * Allows to query the currently active reader mode setting
+ *
+ * Returns: TRUE if reader mode is on
+ */
+gboolean liferea_htmlview_get_reader_mode (LifereaHtmlView *htmlview);
+
+/**
  * liferea_htmlview_scroll:
  * @htmlview:	htmlview to scroll
  *
@@ -168,6 +190,17 @@ void liferea_htmlview_scroll (LifereaHtmlView *htmlview);
 void liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom);
 
 /**
+ * liferea_htmlview_update:
+ *
+ * Renders all added items to the given HTML view. To be called
+ * after one or more calls of htmlview_(add|remove|update)_item.
+ *
+ * @param htmlview	HTML view to render to
+ * @param mode		item view mode (see type itemViewMode)
+ */
+void liferea_htmlview_update (LifereaHtmlView *htmlview, guint mode);
+
+/**
  * liferea_htmlview_update_style_element:
  * @htmlview:	the html view
  *
@@ -182,6 +215,7 @@ typedef struct htmlviewImpl {
 	void 		(*init)			(void);
 	GtkWidget*	(*create)		(LifereaHtmlView *htmlview);
 	void		(*write)		(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType);
+	void		(*run_js)		(GtkWidget *widget, gchar *js);
 	void		(*launch)		(GtkWidget *widget, const gchar *url);
 	gfloat		(*zoomLevelGet)		(GtkWidget *widget);
 	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);

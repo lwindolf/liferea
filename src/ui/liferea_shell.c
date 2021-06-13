@@ -37,7 +37,6 @@
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
-#include "htmlview.h"
 #include "item_history.h"
 #include "itemlist.h"
 #include "liferea_application.h"

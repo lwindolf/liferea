@@ -131,7 +131,6 @@ tc_favicon_get_urls (gconstpointer user_data)
 	subscriptionPtr	s;
 	tc		*t = (tc *)user_data;
 	GSList		*url, *results;
-	gchar		*tmp;
 	gint		i = 0;
 	gboolean	feedsEqual = TRUE;
 

@@ -49,7 +49,6 @@ favicon_LDADD = \
 	../feedlist.o \
 	../folder.o \
 	../html.o \
-	../htmlview.o \
 	../item.o \
 	../item_history.o \
 	../item_loader.o \

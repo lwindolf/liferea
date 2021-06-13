@@ -25,7 +25,6 @@
 #include "common.h"
 #include "feed.h"
 #include "feedlist.h"
-#include "htmlview.h"
 #include "itemlist.h"
 #include "node.h"
 #include "node_view.h"
