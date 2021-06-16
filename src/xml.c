@@ -243,7 +243,6 @@ typedef struct regex {
 
 static GSList *dhtml_strippers = NULL;
 static GSList *unsupported_tag_strippers = NULL;
-static GSList *expand_tag_regex = NULL;
 
 static void
 xhtml_regex_add (GSList **regex, const gchar *pattern, const gchar *replace)
@@ -271,7 +270,7 @@ xhtml_regex (const gchar *html, GSList *strippers)
 		GError *err = NULL;
 		regexPtr expr = (regexPtr) iter->data;
 		gchar *tmp = result;
-		result = g_regex_replace (expr->expr, tmp, -1, 0, expr->replace, 0, &err);
+		result = g_regex_replace_literal (expr->expr, tmp, -1, 0, expr->replace, 0, &err);
 		if (err) {
 			g_warning ("xhtml_strip: %s\n", err->message);
 			g_error_free (err);
@@ -290,7 +289,10 @@ xhtml_strip_dhtml (const gchar *html)
 	if (!dhtml_strippers) {
 		xhtml_regex_add (&dhtml_strippers, "\\s+onload='[^']+'", "");
 		xhtml_regex_add (&dhtml_strippers, "\\s+onload=\"[^\"]+\"", "");
-		xhtml_regex_add (&dhtml_strippers, "<\\s*meta\\s*>.*</\\s*meta\\s*>", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*meta[^>]*>.*</\\s*meta\\s*>", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*script[^>]*>.*</\\s*script\\s*>", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*iframe[^>]*>.*</\\s*iframe\\s*>", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*(meta|script|iframe)[^>]*/>", "");
 	}
 
 	return xhtml_regex (html, dhtml_strippers);
@@ -300,21 +302,12 @@ gchar *
 xhtml_strip_unsupported_tags (const gchar *html)
 {
 	if (!unsupported_tag_strippers) {
-		xhtml_regex_add(&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>", "");
-		xhtml_regex_add(&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>", "");
+		// Drops tags but not their content
+		xhtml_regex_add (&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>", "");
+		xhtml_regex_add (&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>", "");
 	}
 
 	return xhtml_regex (html, unsupported_tag_strippers);
-}
-
-gchar *
-xhtml_expand_self_closing_tag (const gchar *html)
-{
-        if (!expand_tag_regex) {
-		xhtml_regex_add (&expand_tag_regex, "(<\\s*script[^>]*\\s*)/>", "\\1> </script>");
-		xhtml_regex_add (&expand_tag_regex, "(<\\s*iframe[^>]*\\s*)/>", "\\1> </iframe>");
-        }
-	return xhtml_regex (html, expand_tag_regex);
 }
 
 typedef struct {
