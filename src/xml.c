@@ -236,35 +236,42 @@ xhtml_is_well_formed (const gchar *data)
 	return result;
 }
 
+typedef struct regex {
+    GRegex *expr;
+    const gchar *replace;
+} *regexPtr;
+
 static GSList *dhtml_strippers = NULL;
 static GSList *unsupported_tag_strippers = NULL;
+static GSList *expand_tag_regex = NULL;
 
 static void
-xhtml_stripper_add (GSList **strippers, const gchar *pattern)
+xhtml_regex_add (GSList **regex, const gchar *pattern, const gchar *replace)
 {
 	GError *err = NULL;
-	GRegex *expr;
+        regexPtr expr = g_new0 (struct regex, 1);
 
-	expr = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
+	expr->expr = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
+        expr->replace = replace;
 	if (err) {
 		g_warning ("xhtml_strip_setup: %s\n", err->message);
 		g_error_free (err);
 		return;
 	}
-	*strippers = g_slist_append (*strippers, expr);
+	*regex = g_slist_append (*regex, expr);
 }
 
 static gchar *
-xhtml_strip (const gchar *html, GSList *strippers)
+xhtml_regex (const gchar *html, GSList *strippers)
 {
 	gchar *result = g_strdup (html);
 	GSList *iter = strippers;
 
 	while (iter) {
 		GError *err = NULL;
-		GRegex *expr = (GRegex *)iter->data;
+		regexPtr expr = (regexPtr) iter->data;
 		gchar *tmp = result;
-		result = g_regex_replace (expr, tmp, -1, 0, "", 0, &err);
+		result = g_regex_replace (expr->expr, tmp, -1, 0, expr->replace, 0, &err);
 		if (err) {
 			g_warning ("xhtml_strip: %s\n", err->message);
 			g_error_free (err);
@@ -281,25 +288,33 @@ gchar *
 xhtml_strip_dhtml (const gchar *html)
 {
 	if (!dhtml_strippers) {
-		xhtml_stripper_add (&dhtml_strippers, "\\s+onload='[^']+'");
-		xhtml_stripper_add (&dhtml_strippers, "\\s+onload=\"[^\"]+\"");
-		xhtml_stripper_add (&dhtml_strippers, "<\\s*script\\s*>.*</\\s*script\\s*>");
-		xhtml_stripper_add (&dhtml_strippers, "<\\s*meta\\s*>.*</\\s*meta\\s*>");
-		xhtml_stripper_add (&dhtml_strippers, "<\\s*iframe[^>]*\\s*>.*</\\s*iframe\\s*>");
+		xhtml_regex_add (&dhtml_strippers, "\\s+onload='[^']+'", "");
+		xhtml_regex_add (&dhtml_strippers, "\\s+onload=\"[^\"]+\"", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*meta\\s*>.*</\\s*meta\\s*>", "");
 	}
 
-	return xhtml_strip (html, dhtml_strippers);
+	return xhtml_regex (html, dhtml_strippers);
 }
 
 gchar *
 xhtml_strip_unsupported_tags (const gchar *html)
 {
 	if (!unsupported_tag_strippers) {
-		xhtml_stripper_add(&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>");
-		xhtml_stripper_add(&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>");
+		xhtml_regex_add(&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>", "");
+		xhtml_regex_add(&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>", "");
 	}
 
-	return xhtml_strip(html, unsupported_tag_strippers);
+	return xhtml_regex (html, unsupported_tag_strippers);
+}
+
+gchar *
+xhtml_expand_self_closing_tag (const gchar *html)
+{
+        if (!expand_tag_regex) {
+		xhtml_regex_add (&expand_tag_regex, "(<\\s*script[^>]*\\s*)/>", "\\1> </script>");
+		xhtml_regex_add (&expand_tag_regex, "(<\\s*iframe[^>]*\\s*)/>", "\\1> </iframe>");
+        }
+	return xhtml_regex (html, expand_tag_regex);
 }
 
 typedef struct {
