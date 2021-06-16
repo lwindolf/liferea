@@ -71,7 +71,7 @@ static const gchar * enclosure_download_commands[] = {
 	"kget %s",
 	"uget-gtk %s",
 	"transmission-gtk %s",
-	"aria2 %s"
+	"aria2c %s"
 };
 
 /** order must match enclosure_download_commands[] */
