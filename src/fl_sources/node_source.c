@@ -177,7 +177,7 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		node->available = FALSE;
 
 		/* scan for matching node source and create new instance */
-		type = node_source_type_find (typeStr, 0);
+		type = node_source_type_find ((const gchar *)typeStr, 0);
 
 		if (!type) {
 			/* Source type is not available for some reason, but
@@ -187,7 +187,7 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 			   unused node's data field */
 			type = node_source_type_find (NODE_SOURCE_TYPE_DUMMY_ID, 0);
 			g_assert (NULL != type);
-			node->data = g_strdup (typeStr);
+			node->data = g_strdup ((gchar *)typeStr);
 		}
 
 		node->available = TRUE;
@@ -200,7 +200,7 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		/* Set subscription type for all child nodes imported */
 		node_source_set_feed_subscription_type (node, type->feedSubscriptionType);
 
-		if (!strcmp (typeStr, "fl_bloglines")) {
+		if (!strcmp ((gchar *)typeStr, "fl_bloglines")) {
 			g_print ("Removing obsolete Bloglines subscription.");
 			feedlist_node_removed (node);
 		}

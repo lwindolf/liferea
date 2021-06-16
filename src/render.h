@@ -1,12 +1,12 @@
 /**
  * @file render.h  generic GTK theme and XSLT rendering handling
- * 
- * Copyright (C) 2006-2013 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -57,14 +57,12 @@ void render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...);
 
 /**
  * Returns CSS definitions for inclusion in XHTML output.
- *
- * @param externalCss	TRUE if CSS can be served as file reference
  */
-const gchar * render_get_css (gboolean externalCss);
+const gchar * render_get_css (void);
 
 /**
  * Returns the CSS value of a given GTK theme color name e.g. "GTK-COLOR-MID".
- * Might return NULL as long as the LifereaShell which is used for fetching 
+ * Might return NULL as long as the LifereaShell which is used for fetching
  * styles is not yet available.
  *
  * @param name		the GTK theme color name
@@ -73,7 +71,7 @@ const gchar * render_get_css (gboolean externalCss);
  */
 const gchar * render_get_theme_color (const gchar *name);
 
-/** 
+/**
  * Needs to be called once before render_get_theme_color () or render_get_css ()
  * can be used. Must be called only after the LifereaShell is created because
  * it is used to fetch the GTK theme.

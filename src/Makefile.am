@@ -34,13 +34,13 @@ liferea_SOURCES = \
 	feedlist.c feedlist.h \
 	folder.c folder.h \
 	html.c html.h \
-	htmlview.c htmlview.h \
 	item.c item.h \
 	item_history.c item_history.h \
 	item_loader.c item_loader.h \
 	item_state.c item_state.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
+	js.c js.h \
 	json.c json.h \
 	liferea_application.c liferea_application.h \
 	metadata.c metadata.h \
@@ -73,6 +73,15 @@ liferea_LDADD =	parsers/libliparsers.a \
 		$(WEBKIT_LIBS) \
 		$(INTROSPECTION_LIBS) \
 		-lm
+
+js.h: $(top_srcdir)/js/gresource.xml $(main_dep)
+	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+
+js.c: $(top_srcdir)/js/gresource.xml $(main_dep)
+	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+
+js.o: js.c js.h
+main.o: js.h
 
 EXTRA_DIST = $(srcdir)/liferea-add-feed.in
 DISTCLEANFILES = $(srcdir)/liferea-add-feed
@@ -119,6 +128,7 @@ typelibdir = $(libdir)/liferea/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES = \
+	$(srcdir)/js.c $(srcdir)/js.h \
 	$(gir_DATA)	\
 	$(typelib_DATA)
 endif

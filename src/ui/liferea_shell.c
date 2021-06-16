@@ -37,7 +37,6 @@
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
-#include "htmlview.h"
 #include "item_history.h"
 #include "itemlist.h"
 #include "liferea_application.h"
@@ -1424,7 +1423,7 @@ void
 liferea_shell_rebuild_css (void)
 {
 	render_init_theme_colors (GTK_WIDGET (shell->window));
-	render_get_css(TRUE);
+	render_get_css();
 	itemview_style_update ();
 }
 

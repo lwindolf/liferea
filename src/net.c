@@ -338,13 +338,11 @@ network_init (void)
 						 SOUP_SESSION_TIMEOUT, 120,
 						 SOUP_SESSION_IDLE_TIMEOUT, 30,
 						 SOUP_SESSION_ADD_FEATURE, cookies,
-	                                         SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
 						 NULL);
 	session2 = soup_session_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
 						  SOUP_SESSION_TIMEOUT, 120,
 						  SOUP_SESSION_IDLE_TIMEOUT, 30,
 						  SOUP_SESSION_ADD_FEATURE, cookies,
-	                                          SOUP_SESSION_ADD_FEATURE_BY_TYPE, SOUP_TYPE_CONTENT_DECODER,
 						  SOUP_SESSION_PROXY_URI, NULL,
 						  SOUP_SESSION_PROXY_RESOLVER, NULL,
 						  NULL);

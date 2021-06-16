@@ -88,7 +88,8 @@ folder_add_child_update_counters (nodePtr node, gpointer user_data)
 {
 	guint	*unreadCount = (guint *)user_data;
 
-	*unreadCount += node->unreadCount;
+	if (!IS_VFOLDER (node))
+		*unreadCount += node->unreadCount;
 }
 
 static void

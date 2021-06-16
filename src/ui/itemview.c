@@ -1,7 +1,7 @@
 /*
  * @file itemview.c  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 #include "conf.h"
 #include "debug.h"
 #include "folder.h"
-#include "htmlview.h"
 #include "item_history.h"
 #include "itemlist.h"
 #include "itemview.h"
@@ -295,7 +294,7 @@ itemview_update (void)
 
 	if (itemview->needsHTMLViewUpdate) {
 		itemview->needsHTMLViewUpdate = FALSE;
-		htmlview_update (itemview->htmlview, itemview->mode);
+		liferea_htmlview_update (itemview->htmlview, itemview->mode);
 	}
 
 	if (itemview->node)

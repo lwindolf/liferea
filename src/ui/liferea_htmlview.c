@@ -1,7 +1,7 @@
 /*
  * @file liferea_htmlview.c  Liferea embedded HTML rendering
  *
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -36,12 +36,13 @@
 #include "enclosure.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "itemlist.h"
 #include "net_monitor.h"
 #include "social.h"
 #include "render.h"
-#include "htmlview.h"
 #include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
+#include "ui/itemview.h"
 
 /* The LifereaHtmlView is a complex widget used to present both internally
    rendered content as well as serving as a browser widget. It automatically
@@ -60,16 +61,19 @@ struct _LifereaHtmlView {
 	GObject	parent_instance;
 
 	GtkWidget	*renderWidget;		/*<< The HTML widget (e.g. Webkit widget) */
-	GtkWidget	*container;			/*<< Outer container including render widget and toolbar */
-	GtkWidget	*toolbar;			/*<< The navigation toolbar */
+	GtkWidget	*container;		/*<< Outer container including render widget and toolbar */
+	GtkWidget	*toolbar;		/*<< The navigation toolbar */
 
-	GtkWidget	*forward;			/*<< The forward button */
-	GtkWidget	*back;				/*<< The back button */
-	GtkWidget	*urlentry;			/*<< The URL entry widget */
+	GtkWidget	*forward;		/*<< The forward button */
+	GtkWidget	*back;			/*<< The back button */
+	GtkWidget	*urlentry;		/*<< The URL entry widget */
 	browserHistory	*history;		/*<< The browser history */
 
-	gboolean	internal;			/*<< TRUE if internal view presenting generated HTML with special links */
+	gboolean	internal;		/*<< TRUE if internal view presenting generated HTML with special links */
 	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
+	gboolean	readerMode;		/*<< TRUE if Readability.js is to be used */
+
+	gchar 		*content;		/*<< current HTML content (excluding decorations, content passed to Readability.js) */
 
 	htmlviewImplPtr impl;			/*<< Browser widget support implementation */
 };
@@ -144,6 +148,7 @@ liferea_htmlview_finalize (GObject *object)
 
 	browser_history_free (htmlview->history);
 	g_clear_object (&htmlview->container);
+	g_free (htmlview->content);
 
 	g_signal_handlers_disconnect_by_data (network_monitor_get (), object);
 }
@@ -226,7 +231,9 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 {
 	GtkWidget *widget, *image;
 
+	htmlview->content = NULL;
 	htmlview->internal = FALSE;
+	htmlview->readerMode = FALSE;
 	htmlview->impl = htmlview_get_impl ();
 	htmlview->renderWidget = RENDERER (htmlview)->create (htmlview);
 	htmlview->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
@@ -300,6 +307,8 @@ liferea_htmlview_new (gboolean forceInternalBrowsing)
 
 	htmlview = LIFEREA_HTMLVIEW (g_object_new (LIFEREA_HTMLVIEW_TYPE, NULL));
 	htmlview->forceInternalBrowsing = forceInternalBrowsing;
+
+	conf_get_bool_value (ENABLE_READER_MODE, &(htmlview->readerMode));
 
 	liferea_htmlview_clear (htmlview);
 
@@ -423,6 +432,37 @@ liferea_htmlview_location_changed (LifereaHtmlView *htmlview, const gchar *locat
 	g_signal_emit_by_name (htmlview, "location-changed", location);
 }
 
+void
+liferea_htmlview_load_finished (LifereaHtmlView *htmlview, const gchar *location)
+{
+	/*
+	    Add Readability.js handling
+	    - for external content: if user chose so
+	    - for internal content: always (Readability is enable on demand here)
+	 */
+	if (htmlview->readerMode || (location == strstr (location, "liferea://"))) {
+		g_autoptr(GBytes) b1,b2;
+
+		// Return Readability.js and Liferea specific loader code
+		b1 = g_resources_lookup_data ("/org/gnome/liferea/readability/Readability.js", 0, NULL);
+		b2 = g_resources_lookup_data ("/org/gnome/liferea/htmlview.js", 0, NULL);
+
+		g_assert(b1 != NULL);
+		g_assert(b2 != NULL);
+
+		// FIXME: pass actual content here too, instead of on render_item()!
+		// this safe us from the trouble to have JS enabled earlier!
+
+		debug1 (DEBUG_GUI, "Enabling reader mode for '%s'", location);
+		(RENDERER (htmlview)->run_js) (htmlview->renderWidget,
+		                               g_strdup_printf ("%s\n%s\nloadContent(%s, '%s');\n",
+		                                                (gchar *)g_bytes_get_data (b1, NULL),
+		                                                (gchar *)g_bytes_get_data (b2, NULL),
+		                                                (htmlview->readerMode?"true":"false"),
+		                                                htmlview->content));
+	}
+}
+
 gboolean
 liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 {
@@ -480,7 +520,7 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 	}
 
 	if(htmlview->forceInternalBrowsing || browse_inside_application) {
-		return FALSE;
+		liferea_htmlview_launch_URL_internal (htmlview, url);
 	} else {
 		(void)browser_launch_URL_external (url);
 	}
@@ -491,6 +531,8 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 void
 liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *url)
 {
+	/* Reset any intermediate reader mode change via htmlview context menu */
+	conf_get_bool_value (ENABLE_READER_MODE, &(htmlview->readerMode));
 
 	gtk_widget_set_sensitive (htmlview->forward, browser_history_can_go_forward (htmlview->history));
 	gtk_widget_set_sensitive (htmlview->back,    browser_history_can_go_back (htmlview->history));
@@ -513,6 +555,21 @@ liferea_htmlview_get_zoom (LifereaHtmlView *htmlview)
 }
 
 void
+liferea_htmlview_set_reader_mode (LifereaHtmlView *htmlview, gboolean readerMode)
+{
+	htmlview->readerMode = readerMode;
+
+	/* reload current content to make it effective */
+	// FIXME
+}
+
+gboolean
+liferea_htmlview_get_reader_mode (LifereaHtmlView *htmlview)
+{
+	return htmlview->readerMode;
+}
+
+void
 liferea_htmlview_scroll (LifereaHtmlView *htmlview)
 {
 	(RENDERER (htmlview)->scrollPagedown) (htmlview->renderWidget);
@@ -528,6 +585,104 @@ liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom)
 	else
 		liferea_htmlview_set_zoom (htmlview, 0.8 * liferea_htmlview_get_zoom (htmlview));
 
+}
+
+static void
+liferea_htmlview_start_output (GString *buffer,
+                               const gchar *base,
+                               gboolean css)
+{
+	/* Prepare HTML boilderplate */
+	g_string_append (buffer, "<!DOCTYPE html>\n");
+	g_string_append (buffer, "<html>\n");
+	g_string_append (buffer, "<head>\n<title>HTML View</title>");
+
+	// FIXME: consider adding CSP meta tag here as e.g. Firefox reader mode page does
+	g_string_append (buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+
+	if (base) {
+		gchar *escBase = g_markup_escape_text (base, -1);
+		g_string_append (buffer, "<base href=\"");
+		g_string_append (buffer, escBase);
+		g_string_append (buffer, "\" />\n");
+		g_free (escBase);
+	}
+
+	if (css)
+		g_string_append (buffer, render_get_css ());
+
+	g_string_append (buffer, "</head><body>Loading...</body></html>");
+}
+
+void
+liferea_htmlview_update (LifereaHtmlView *htmlview, guint mode)
+{
+	GString		*output;
+	nodePtr		node = NULL;
+	itemPtr		item = NULL;
+	gchar		*baseURL = NULL;
+	gchar		*content = NULL;
+
+	/* determine base URL */
+	switch (mode) {
+		case ITEMVIEW_SINGLE_ITEM:
+			item = itemlist_get_selected ();
+			if(item) {
+				baseURL = (gchar *)node_get_base_url (node_from_id (item->nodeId));
+				item_unload (item);
+			}
+			break;
+		case ITEMVIEW_NODE_INFO:
+			node = feedlist_get_selected ();
+			if (!node)
+				return;
+			baseURL = (gchar *) node_get_base_url (node);
+			break;
+	}
+
+	if (baseURL)
+		baseURL = g_markup_escape_text (baseURL, -1);
+
+	output = g_string_new (NULL);
+	liferea_htmlview_start_output (output, baseURL, TRUE);
+
+
+	/* HTML view updating means checking which items
+	need to be updated, render them and then
+	concatenate everything from cache and output it */
+	switch (mode) {
+		case ITEMVIEW_SINGLE_ITEM:
+			item = itemlist_get_selected ();
+			if (item) {
+				content = item_render (item, mode);
+				item_unload (item);
+			}
+			break;
+		case ITEMVIEW_NODE_INFO:
+			if (node)
+				content = node_render (node);
+			break;
+		default:
+			g_warning ("HTML view: invalid viewing mode!!!");
+			break;
+	}
+
+	g_free (htmlview->content);
+	htmlview->content = NULL;
+
+	if (content) {
+		/* URI escape our content for safe transfer to Readability.js
+		   URI escaping is needed for UTF-8 conservation and for JS stringification */
+		htmlview->content = g_uri_escape_string (content, NULL, TRUE);
+		g_free (content);
+	} else {
+		htmlview->content = g_uri_escape_string ("", NULL, TRUE);
+	}
+
+	debug1 (DEBUG_HTML, "writing %d bytes to HTML view", strlen (output->str));
+	liferea_htmlview_write (htmlview, output->str, baseURL);
+	g_string_free (output, TRUE);
+	g_free (baseURL);
 }
 
 void

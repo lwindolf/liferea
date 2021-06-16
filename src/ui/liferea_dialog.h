@@ -3,26 +3,25 @@
  *
  * Copyright (C) 2007-2016  Lars Windolf <lars.windolf@gmx.de>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
- * 
- * You should have received a copy of the GNU Library General Public License
- * along with this library; see the file COPYING.LIB.  If not, write to
- * the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
+
 #ifndef _UI_DIALOG_H
 #define _UI_DIALOG_H
 
-#include <gtk/gtk.h> 
+#include <gtk/gtk.h>
 #include <glib-object.h>
 #include <glib.h>
 
@@ -41,12 +40,12 @@ typedef struct LifereaDialogPrivate	LifereaDialogPrivate;
 struct LifereaDialog
 {
 	GObject		parent;
-	
+
 	/*< private >*/
 	LifereaDialogPrivate	*priv;
 };
 
-struct LifereaDialogClass 
+struct LifereaDialogClass
 {
 	GObjectClass parent_class;
 };
@@ -73,5 +72,5 @@ GtkWidget * liferea_dialog_new (const gchar *name);
 GtkWidget * liferea_dialog_lookup (GtkWidget *widget, const gchar *name);
 
 G_END_DECLS
- 
+
 #endif

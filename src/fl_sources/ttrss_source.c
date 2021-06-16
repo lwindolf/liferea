@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.c  Tiny Tiny RSS feed list source support
  *
- * Copyright (C) 2010-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -450,6 +450,17 @@ ttrss_source_item_mark_read (nodePtr node, itemPtr item, gboolean newStatus)
 	item_read_state_changed (item, newStatus);
 }
 
+/**
+* Convert all subscriptions of a google source to local feeds
+*
+* @param node The node to migrate (not the nodeSource!)
+*/
+static void
+ttrss_source_convert_to_local (nodePtr node)
+{
+	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
+}
+
 /* node source type definition */
 
 extern struct subscriptionType ttrssSourceFeedSubscriptionType;
@@ -462,7 +473,8 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
-	                       NODE_SOURCE_CAPABILITY_ADD_FEED,
+	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
+	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
 	.feedSubscriptionType = &ttrssSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &ttrssSourceSubscriptionType,
 	.source_type_init    = ttrss_source_init,
@@ -479,7 +491,7 @@ static struct nodeSourceType nst = {
 	.add_folder          = NULL,	/* not supported by current tt-rss JSON API (v1.8) */
 	.add_subscription    = ttrss_source_add_subscription,
 	.remove_node         = ttrss_source_remove_node,
-	.convert_to_local    = NULL	/* FIXME: implement me to allow data migration from tt-rss! */
+	.convert_to_local    = ttrss_source_convert_to_local
 };
 
 nodeSourceTypePtr

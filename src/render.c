@@ -1,7 +1,7 @@
 /**
  * @file render.c  generic GTK theme and XSLT rendering handling
  *
- * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,7 +119,7 @@ render_load_stylesheet (const gchar *xsltName)
 	/* or load and translate it... */
 
 	/* 1. load localization stylesheet */
-	i18n_filter = xsltParseStylesheetFile (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "xslt" G_DIR_SEPARATOR_S "i18n-filter.xslt");
+	i18n_filter = xsltParseStylesheetFile ((const xmlChar *)PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "xslt" G_DIR_SEPARATOR_S "i18n-filter.xslt");
 	if (!i18n_filter) {
 		g_warning ("fatal: could not load localization stylesheet!");
 		return NULL;
@@ -324,7 +324,7 @@ render_is_dark_theme (void)
 }
 
 const gchar *
-render_get_css (gboolean externalCss)
+render_get_css (void)
 {
 	if (!css || styleUpdated) {
 		gchar	*defaultStyleSheetFile;
@@ -360,23 +360,17 @@ render_get_css (gboolean externalCss)
 
 		g_free(userStyleSheetFile);
 
-		if (externalCss) {
-			/* dump CSS to cache file and create a <style> tag to use it */
-			gchar *filename = common_create_cache_filename (NULL, "style", "css");
-			if (!g_file_set_contents(filename, css->str, -1, NULL))
-				g_warning("Cannot write temporary CSS file \"%s\"!", filename);
+		/* dump CSS to cache file and create a <style> tag to use it */
+		gchar *filename = common_create_cache_filename (NULL, "style", "css");
+		if (!g_file_set_contents(filename, css->str, -1, NULL))
+			g_warning("Cannot write temporary CSS file \"%s\"!", filename);
 
-			g_string_free(css, TRUE);
+		g_string_free(css, TRUE);
 
-			css = g_string_new ("<link rel=\"stylesheet\" href=\"file://");
-			g_string_append_printf (css, "%s?%d\" />", filename, (int)time(NULL));
+		css = g_string_new ("<link id=\"styles\" rel=\"stylesheet\" href=\"file://");
+		g_string_append_printf (css, "%s?%d\" />", filename, (int)time(NULL));
 
-			g_free(filename);
-		} else {
-			/* keep the CSS in memory to serve it as a part of each HTML output */
-			g_string_prepend(css, "<style type=\"text/css\">\n<![CDATA[\n");
-			g_string_append(css, "\n]]>\n</style>\n");
-		}
+		g_free(filename);
 	}
 
 	return css->str;
@@ -397,7 +391,6 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 	if (!paramSet)
 		paramSet = render_parameter_new ();
 	render_parameter_add (paramSet, "pixmapsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps" G_DIR_SEPARATOR_S "'");
-	render_parameter_add (paramSet, "jsDir='file://" PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "js" G_DIR_SEPARATOR_S "'");
 
 	resDoc = xsltApplyStylesheet (xslt, doc, (const gchar **)paramSet->params);
 	if (!resDoc) {
@@ -425,10 +418,10 @@ render_xml (xmlDocPtr doc, const gchar *xsltName, renderParamPtr paramSet)
 
 #ifdef LIBXML2_NEW_BUFFER
 	if (xmlOutputBufferGetSize (buf) > 0)
-		output = xmlCharStrdup (xmlOutputBufferGetContent (buf));
+		output = (gchar *)xmlCharStrdup ((const char *)xmlOutputBufferGetContent (buf));
 #else
 	if (xmlBufferLength (buf->buffer) > 0)
-		output = xmlCharStrdup (xmlBufferContent(buf->buffer));
+		output = (gchar *)xmlCharStrdup ((const char *)xmlBufferContent(buf->buffer));
 #endif
 
 	xmlOutputBufferClose (buf);
