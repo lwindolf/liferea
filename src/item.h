@@ -1,13 +1,13 @@
 /*
  * @file item.h item handling
- * 
+ *
  * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,10 +25,10 @@
 #include <glib.h>
 
 /* Currently Liferea knows only a single type of items used
-   for the itemset types feed, folder and search folder. So each 
+   for the itemset types feed, folder and search folder. So each
    feed list type provider must provide it's data using the
    item interface. */
- 
+
 /* ------------------------------------------------------------ */
 /* item interface						*/
 /* ------------------------------------------------------------ */
@@ -54,14 +54,14 @@ typedef struct item {
 	gchar		*sourceId;		/*<< "Unique" syndication item identifier, for example <guid> in RSS */
 	gboolean	validGuid;		/*<< TRUE if id of this item is a GUID and can be used for duplicate detection */
 	gchar		*description;		/*<< XHTML string containing the item's description */
-	
+
 	GSList		*metadata;		/*<< Metadata of this item */
 	GHashTable	*tmpdata;		/*<< Temporary data hash used during stateful parsing */
 	gint64		time;			/*<< Last modified date of the headline */
         gchar           *timestr;               /*<< Last modifed date as a string */
 
 	gchar		*commentFeedId;		/*<< Id of the comment feed of this item (or NULL if there is no comment feed) */
-	
+
 	/* comment item properties */
 	gulong		parentItemId;		/*<< Id of the parent item the item belongs to(or 0 if no comment item) */
 	gboolean	isComment;		/*<< TRUE if item is from a comment feed */
@@ -190,12 +190,23 @@ void		item_set_id(itemPtr item, const gchar * id);
 
 /**
  * item_to_xml: (skip)
- * @item:		the item to save to cache
+ * @item:		the item to serialize
  * @parentNode:	the xmlNodePtr to add to
  *
- * Adds an XML node to the given feed item list node. 
+ * Adds an XML node to the given item.
  *
  */
 void item_to_xml (itemPtr item, gpointer parentNode);
+
+/**
+ * item_render: (skip)
+ * @item:		the item to serialize
+ * @viewMode:		the item view mode
+ *
+ * Uses item_xml() and adds additional feed info to the item info for rendering
+ *
+ * Returns XML string (to be free'd using g_free())
+ */
+gchar * item_render (itemPtr item, guint viewMode);
 
 #endif

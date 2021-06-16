@@ -2,6 +2,9 @@ To be released
 
 	Version 1.13.7
 
+	* Allow converting TinyTinyRSS subscriptions to local subscriptions
+	  (Lars Windolf)
+
 	* #981: Left-clicking an external link in the headline view caused the
 	  Javascript disabled setting to be ignored.
 	  (Lars Windolf)
