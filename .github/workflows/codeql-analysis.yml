@@ -38,7 +38,7 @@ jobs:
 
     - run: |
        sudo apt-get update -qq
-       sudo apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0-dev libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool
+       sudo apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0-dev libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool valgrind
        mkdir inst
 
     - run: |
@@ -48,6 +48,7 @@ jobs:
     - run: make -C po check
     - run: make && make install
     - run: cd src/tests && make test
+    - run: cd src/tests && ./memcheck.sh parse_xml parse_date
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1

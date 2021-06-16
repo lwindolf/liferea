@@ -110,7 +110,7 @@ tc_xpath_find (gconstpointer user_data)
 	root = xmlDocGetRootElement (doc);
 	g_assert_false (!root);
 
-	g_assert_true ((xpath_find (root, g_strdup (tc->xpath_expression)) != NULL) == tc->result);
+	g_assert_true ((xpath_find (root, tc->xpath_expression) != NULL) == tc->result);
 
 	xmlFreeDoc (doc);
 }
@@ -121,23 +121,19 @@ tc_strip (gconstpointer user_data)
 	tcStripperPtr	tc = (tcStripperPtr)user_data;
 	xmlDocPtr	doc;
 	xmlNodePtr	root;
-	gchar		*stripped, *stripped2;
+	gchar		*stripped;
 
 	stripped = xhtml_strip_dhtml ((const gchar *)tc->xml_string);
 	g_assert_true (stripped != NULL);
 
-	stripped2 = xhtml_strip_unsupported_tags (stripped);
-	g_assert_true (stripped2 != NULL);
-
-	doc = xhtml_parse (stripped2, (size_t)strlen (stripped2));
+	doc = xhtml_parse (stripped, (size_t)strlen (stripped));
 	g_free (stripped);
-	g_free (stripped2);
 
 	g_assert_false (!doc);
 	root = xmlDocGetRootElement (doc);
 	g_assert_false (!root);
 
-	g_assert_true (xpath_find (root, g_strdup (tc->xpath_expression)) == NULL);
+	g_assert_true (xpath_find (root, tc->xpath_expression) == NULL);
 
 	xmlFreeDoc (doc);
 }
@@ -145,6 +141,10 @@ tc_strip (gconstpointer user_data)
 int
 main (int argc, char *argv[])
 {
+	gint result;
+
+	xml_init ();
+
 	g_test_init (&argc, &argv, NULL);
 
 	for (int i = 0; tc_xpath[i]->xml_string != NULL; i++) {
@@ -154,5 +154,9 @@ main (int argc, char *argv[])
 		g_test_add_data_func (tc_strippers[i]->name, &tc_strippers[i], &tc_strip);
 	}
 
-	return g_test_run();
+	result = g_test_run();
+
+	xml_deinit ();
+
+	return result;
 }

@@ -242,7 +242,6 @@ typedef struct regex {
 } *regexPtr;
 
 static GSList *dhtml_strippers = NULL;
-static GSList *unsupported_tag_strippers = NULL;
 
 static void
 xhtml_regex_add (GSList **regex, const gchar *pattern, const gchar *replace)
@@ -287,27 +286,22 @@ gchar *
 xhtml_strip_dhtml (const gchar *html)
 {
 	if (!dhtml_strippers) {
+		// Drop attribute
 		xhtml_regex_add (&dhtml_strippers, "\\s+onload='[^']+'", "");
 		xhtml_regex_add (&dhtml_strippers, "\\s+onload=\"[^\"]+\"", "");
+
+		// Drop tags including content
 		xhtml_regex_add (&dhtml_strippers, "<\\s*meta[^>]*>.*</\\s*meta\\s*>", "");
 		xhtml_regex_add (&dhtml_strippers, "<\\s*script[^>]*>.*</\\s*script\\s*>", "");
 		xhtml_regex_add (&dhtml_strippers, "<\\s*iframe[^>]*>.*</\\s*iframe\\s*>", "");
 		xhtml_regex_add (&dhtml_strippers, "<\\s*(meta|script|iframe)[^>]*/>", "");
+
+		// Drops tags but not their content
+		xhtml_regex_add (&dhtml_strippers, "<\\s*/?wbr[^>]*/?\\s*>", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*/?body[^>]*/?\\s*>", "");
 	}
 
 	return xhtml_regex (html, dhtml_strippers);
-}
-
-gchar *
-xhtml_strip_unsupported_tags (const gchar *html)
-{
-	if (!unsupported_tag_strippers) {
-		// Drops tags but not their content
-		xhtml_regex_add (&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>", "");
-		xhtml_regex_add (&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>", "");
-	}
-
-	return xhtml_regex (html, unsupported_tag_strippers);
 }
 
 typedef struct {
@@ -615,4 +609,17 @@ xml_init (void)
 	xmlMemSetup (g_free, g_malloc, g_realloc, g_strdup);
 	/* has to be called for multithreaded programs */
 	xmlInitParser ();
+}
+
+void
+xml_deinit (void)
+{
+	GSList *iter = dhtml_strippers;
+
+	while (iter) {
+		g_regex_unref ((((regexPtr)iter->data))->expr);
+		iter = g_slist_next (iter);
+	}
+	g_slist_free_full (dhtml_strippers, g_free);
+	dhtml_strippers = NULL;
 }
