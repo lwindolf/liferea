@@ -65,7 +65,7 @@ xhtml_find_body (xmlDocPtr doc)
 	if (!xpathCtxt)
 		goto error;
 
-	xpathObj = xmlXPathEvalExpression ("/html/body", xpathCtxt);
+	xpathObj = xmlXPathEvalExpression (BAD_CAST "/html/body", xpathCtxt);
 	if (!xpathObj)
 		goto error;
 	if (!xpathObj->nodesetval->nodeMax)
@@ -99,15 +99,15 @@ xhtml_extract_doc (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 		xmlFree (xml_base);
 	}
 	else if (defaultBase)
-		xmlNodeSetBase (divNode, defaultBase);
+		xmlNodeSetBase (divNode, BAD_CAST defaultBase);
 
 	if (xhtmlMode == 0) { /* Read escaped HTML and convert to XHTML, placing in a div tag */
 		xmlDocPtr oldDoc;
 		xmlNodePtr copiedNodes = NULL;
-		xmlChar *escapedhtml;
+		gchar *escapedhtml;
 
 		/* Parse the HTML into oldDoc*/
-		escapedhtml = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
+		escapedhtml = (gchar *)xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
 		if (escapedhtml) {
 			escapedhtml = g_strstrip (escapedhtml);	/* stripping whitespaces to make empty string detection easier */
 			if (*escapedhtml) {			/* never process empty content, xmlDocCopy() doesn't like it... */
@@ -148,7 +148,7 @@ xhtml_extract_doc (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 				}
 				xmlFreeDoc (oldDoc);
 			}
-			xmlFree (escapedhtml);
+			g_free (escapedhtml);
 		}
 	} else if (xhtmlMode == 1 || xhtmlMode == 2) { /* Read multiple XHTML tags and embed in div tag */
 		xmlNodePtr copiedNodes = xmlDocCopyNodeList (newDoc, xml->xmlChildrenNode);
@@ -173,7 +173,7 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 	xmlNodeDump (buf, newDoc, xmlDocGetRootElement (newDoc), 0, 0 );
 
 	if (xmlBufferLength(buf) > 0)
-		result = xmlCharStrdup (xmlBufferContent (buf));
+		result = (gchar *)xmlCharStrdup ((gchar *)xmlBufferContent (buf));
 
 	xmlBufferFree (buf);
 	xmlFreeDoc (newDoc);
@@ -202,7 +202,7 @@ xhtml_extract_from_string (const gchar *html, const gchar *defaultBase)
 	if (body != NULL)
 		result = xhtml_extract (body, 1, defaultBase);
 	else
-		result = xmlCharStrdup ("<div></div>");
+		result = g_strdup ("<div></div>");
 
 	xmlFreeDoc (doc);
 	return result;
@@ -445,20 +445,20 @@ xml_process_entities (void *ctxt, const xmlChar *name)
 		if(!entities) {
 			/* loading HTML entities from external DTD file */
 			entities = xmlNewDoc (BAD_CAST "1.0");
-			xmlCreateIntSubset (entities, BAD_CAST "HTML entities", NULL, PACKAGE_DATA_DIR "/" PACKAGE "/dtd/html.ent");
+			xmlCreateIntSubset (entities, BAD_CAST "HTML entities", NULL, BAD_CAST PACKAGE_DATA_DIR "/" PACKAGE "/dtd/html.ent");
 			entities->extSubset = xmlParseDTD (entities->intSubset->ExternalID, entities->intSubset->SystemID);
 		}
 
 		if (NULL != (found = xmlGetDocEntity (entities, name))) {
 			/* returning as faked predefined entity... */
 			tmp = xmlStrdup (found->content);
-			tmp = unhtmlize (tmp);	/* arghh ... slow... */
+			tmp = BAD_CAST unhtmlize ((gchar *)tmp);	/* arghh ... slow... */
 			entity = g_new0 (xmlEntity, 1);
 			entity->type = XML_ENTITY_DECL;
 			entity->name = name;
 			entity->orig = NULL;
 			entity->content = tmp;
-			entity->length = g_utf8_strlen (tmp, -1);
+			entity->length = g_utf8_strlen ((gchar *)tmp, -1);
 			entity->etype = XML_INTERNAL_PREDEFINED_ENTITY;
 		}
 	}
@@ -479,7 +479,7 @@ xpath_find (xmlNodePtr node, const gchar *expr)
 
 		if (NULL != (xpathCtxt = xmlXPathNewContext (node->doc))) {
 			xpathCtxt->node = node;
-			xpathObj = xmlXPathEval (expr, xpathCtxt);
+			xpathObj = xmlXPathEval (BAD_CAST expr, xpathCtxt);
 		}
 
 		if (xpathObj && !xmlXPathNodeSetIsEmpty (xpathObj->nodesetval))
@@ -503,7 +503,7 @@ xpath_foreach_match (xmlNodePtr node, const gchar *expr, xpathMatchFunc func, gp
 
 		if (NULL != (xpathCtxt = xmlXPathNewContext (node->doc))) {
 			xpathCtxt->node = node;
-			xpathObj = xmlXPathEval (expr, xpathCtxt);
+			xpathObj = xmlXPathEval (BAD_CAST expr, xpathCtxt);
 		}
 
 		if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
@@ -524,13 +524,13 @@ xpath_foreach_match (xmlNodePtr node, const gchar *expr, xpathMatchFunc func, gp
 gchar *
 xml_get_attribute (xmlNodePtr node, const gchar *name)
 {
-	return xmlGetProp (node, BAD_CAST name);
+	return (gchar *)xmlGetProp (node, BAD_CAST name);
 }
 
 gchar *
 xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace)
 {
-	return xmlGetNsProp (node, BAD_CAST name, BAD_CAST namespace);
+	return (gchar *)xmlGetNsProp (node, BAD_CAST name, BAD_CAST namespace);
 }
 
 static void
