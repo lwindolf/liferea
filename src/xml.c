@@ -288,11 +288,9 @@ gchar *
 xhtml_strip_dhtml (const gchar *html)
 {
 	if (!dhtml_strippers) {
-		xhtml_regex_add (&dhtml_strippers, "\\s+onload='[^']+'", g_strdup(""));
-		xhtml_regex_add (&dhtml_strippers, "\\s+onload=\"[^\"]+\"", g_strdup(""));
-		// xhtml_regex_add (&dhtml_strippers, "<\\s*script\\s*>.*</\\s*script\\s*>", g_strdup(""));
-		xhtml_regex_add (&dhtml_strippers, "<\\s*meta\\s*>.*</\\s*meta\\s*>", g_strdup(""));
-		// xhtml_regex_add (&dhtml_strippers, "<\\s*iframe[^>]*\\s*>.*</\\s*iframe\\s*>", g_strdup(""));
+		xhtml_regex_add (&dhtml_strippers, "\\s+onload='[^']+'", "");
+		xhtml_regex_add (&dhtml_strippers, "\\s+onload=\"[^\"]+\"", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*meta\\s*>.*</\\s*meta\\s*>", "");
 	}
 
 	return xhtml_regex (html, dhtml_strippers);
@@ -302,8 +300,8 @@ gchar *
 xhtml_strip_unsupported_tags (const gchar *html)
 {
 	if (!unsupported_tag_strippers) {
-		xhtml_regex_add(&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>", g_strdup(""));
-		xhtml_regex_add(&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>", g_strdup(""));
+		xhtml_regex_add(&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>", "");
+		xhtml_regex_add(&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>", "");
 	}
 
 	return xhtml_regex (html, unsupported_tag_strippers);
@@ -313,8 +311,8 @@ gchar *
 xhtml_expand_self_closing_tag (const gchar *html)
 {
         if (!expand_tag_regex) {
-		xhtml_regex_add (&expand_tag_regex, "(<\\s*script[^>]*\\s*)/>", g_strdup("\\1> </script>"));
-		xhtml_regex_add (&expand_tag_regex, "(<\\s*iframe[^>]*\\s*)/>", g_strdup("\\1> </iframe>"));
+		xhtml_regex_add (&expand_tag_regex, "(<\\s*script[^>]*\\s*)/>", "\\1> </script>");
+		xhtml_regex_add (&expand_tag_regex, "(<\\s*iframe[^>]*\\s*)/>", "\\1> </iframe>");
         }
 	return xhtml_regex (html, expand_tag_regex);
 }
