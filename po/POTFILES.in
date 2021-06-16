@@ -61,8 +61,6 @@ src/folder.c
 src/folder.h
 src/html.c
 src/html.h
-src/htmlview.c
-src/htmlview.h
 src/item.c
 src/item.h
 src/item_history.c
