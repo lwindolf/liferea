@@ -373,6 +373,16 @@ on_enclosure_download_predefined_toggled (GtkToggleButton *button, gpointer user
 	conf_set_bool_value (DOWNLOAD_USE_CUSTOM_COMMAND, !is_active);
 }
 
+void
+on_fixeddatefmt_toggled (GtkToggleButton *togglebutton, gpointer user_data)
+{
+        gboolean        enabled;
+
+        enabled = gtk_toggle_button_get_active (togglebutton);
+        conf_set_bool_value (FIXED_DATE_FORMAT, enabled);
+}
+
+
 static void
 on_enclosure_download_tool_changed (gpointer user_data)
 {
@@ -540,6 +550,10 @@ preferences_dialog_init (PreferencesDialog *pd)
 	                            default_view_mode_options,
 	                            G_CALLBACK (on_default_view_mode_changed),
 	                            iSetting);
+
+        conf_get_bool_value (FIXED_DATE_FORMAT, &bSetting);
+        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "fixed-date-format")), bSetting?TRUE:FALSE);
+
 
 	/* Setup social bookmarking list */
 	i = 0;

@@ -34,6 +34,8 @@
 
 #define DEFAULT_VIEW_MODE		"default-view-mode"
 
+#define FIXED_DATE_FORMAT               "fixed-date-format"
+
 #define DEFAULT_FONT			"document-font-name"
 #define USER_FONT			"browser-font"
 #define DISABLE_JAVASCRIPT		"disable-javascript"

@@ -471,13 +471,19 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIte
 	gchar		*title, *time_str;
 	const GIcon	*state_icon;
 	gint		state = 0;
+        gboolean        fixeddatefmt;
 
 	if (item->flagStatus)
 		state += 2;
 	if (!item->readStatus)
 		state += 1;
 
-	time_str = (0 != item->time) ? date_format ((time_t)item->time, NULL) : g_strdup ("");
+        conf_get_bool_value (FIXED_DATE_FORMAT, &fixeddatefmt);
+
+        if (fixeddatefmt)
+                time_str = item->timestr;
+        else 
+                time_str = (0 != item->time) ? date_format ((time_t)item->time, NULL) : g_strdup ("");
 
 	title = item->title && strlen (item->title) ? item->title : _("*** No title ***");
 	title = g_strstrip (g_markup_escape_text (title, -1));
@@ -538,7 +544,8 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIte
                             -1);
         }
 
-	g_free (time_str);
+        if (!fixeddatefmt)
+                g_free (time_str);
 	g_free (title);
 }
 
