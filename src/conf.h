@@ -33,6 +33,7 @@
 #define BROWSER_COMMAND			"browser"
 
 #define DEFAULT_VIEW_MODE		"default-view-mode"
+#define DEFER_DELETE_MODE               "defer-delete-mode"
 
 #define DEFAULT_FONT			"document-font-name"
 #define USER_FONT			"browser-font"
