@@ -34,6 +34,11 @@
 void xml_init (void);
 
 /**
+ * Deinit XML parsing
+ */
+void xml_deinit (void);
+
+/**
  * Retrieves the text content of an HTML chunk. All entities
  * will be replaced. All HTML tags are stripped. The passed
  * string will be freed.
@@ -110,16 +115,6 @@ gchar * xhtml_extract (xmlNodePtr cur, gint xhtmlMode, const gchar *defaultBase)
  * @return newly allocated stripped HTML string
  */
 gchar * xhtml_strip_dhtml (const gchar *html);
-
-/**
- * Strips HTML tags we cannot or do not want to render, which
- * would mess up HTML rendering.
- *
- * @param html	some HTML content
- *
- * @return newly allocated stripped HTML string
- */
-gchar * xhtml_strip_unsupported_tags (const gchar *html);
 
 /**
  * Removes self closing tags (on one line) from HTML so that it renders correctly in the browser.

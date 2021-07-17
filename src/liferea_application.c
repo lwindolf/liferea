@@ -188,6 +188,7 @@ on_app_shutdown (GApplication *app, gpointer user_data)
 	db_deinit ();
 	social_free ();
 	conf_deinit ();
+	xml_deinit ();
 
 	debug_exit ("liferea_shutdown");
 }

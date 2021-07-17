@@ -23,31 +23,76 @@
 #include "xml.h"
 
 typedef struct tcXPath {
+	gchar	*name;
 	gchar	*xml_string;
 	gchar	*xpath_expression;
 	gboolean result;
 } *tcXPathPtr;
 
-struct tcXPath tc_xpath[][3] = {
+struct tcXPath tc_xpath[][4] = {
 	{
+		"/parse_xml/xpath_find_empty_doc",
 		"<?xml version = \"1.0\"?>\n<nothing/>",
 		"/html/body",
 		TRUE		// counter-intuitive, but a body is automatically added by libxml2!
 	},
 	{
+		"/parse_xml/xpath_find_empty_doc2",
 		"<?xml version = \"1.0\"?>\n<html><body/></html>",
 		"/html/body",
 		TRUE
 	},
 	{
+		"/parse_xml/xpath_find_real_doc",
 		"<!DOCTYPE html>\n<html lang=\"de\"	data-responsive>\n<head><title>Title</title>\n<body>jssj</body></html>",
 		"/html/body",
 		TRUE
 	},
 	{
+		"/parse_xml/xpath_find_atom_feed",
 		"<html><head><link rel=\"alternate\" type=\"application/atom+xml\" title=\"Aktuelle News von heise online\" href=\"https://www.heise.de/rss/heise-atom.xml\"></head></html>",
 		"/html/head/link[@rel='alternate' and @type='application/atom+xml']/@href",
 		TRUE
+	},
+	NULL
+};
+
+typedef struct tcStripper {
+	gchar	*name;
+	gchar	*xml_string;
+	gchar	*xpath_expression;	// expression that must not be found
+} *tcStripperPtr;
+
+struct tcStripper tc_strippers[][3] = {
+	{
+		"/xhtml_strip/onload",
+		"<div onload='alert(\"Hallo\");'></div>< div onload=\"alert('Hallo');\"></div>",
+		"//div/@onload"
+	},
+	{
+		"/xhtml_strip/meta",
+		"<head><meta http-equiv='Refresh' content='5' /></head>",
+		"//meta"
+	},
+	{
+		"/xhtml_strip/wbr",
+		"<div><wbr/></div>",
+		"//wbr"
+	},
+	{
+		"/xhtml_strip/extra_body",
+		"<div><body>abc</body></div>",
+		"//div/body"
+	},
+	{
+		"/xhtml_strip/script",
+		"<div><script type='text/javascript'>Some script\n</ script><script src='somewhere'/><script>alert('Hallo');</script></div>",
+		"//script"
+	},
+	{
+		"/xhtml_strip/iframe",
+		"<div><iframe>Some iframe\n</iframe><iframe/><iframe>another iframe</iframe></div>",
+		"//iframe"
 	},
 	NULL
 };
@@ -65,17 +110,53 @@ tc_xpath_find (gconstpointer user_data)
 	root = xmlDocGetRootElement (doc);
 	g_assert_false (!root);
 
-	g_assert_true ((xpath_find (root, g_strdup (tc->xpath_expression)) != NULL) == tc->result);
+	g_assert_true ((xpath_find (root, tc->xpath_expression) != NULL) == tc->result);
+
+	xmlFreeDoc (doc);
+}
+
+static void
+tc_strip (gconstpointer user_data)
+{
+	tcStripperPtr	tc = (tcStripperPtr)user_data;
+	xmlDocPtr	doc;
+	xmlNodePtr	root;
+	gchar		*stripped;
+
+	stripped = xhtml_strip_dhtml ((const gchar *)tc->xml_string);
+	g_assert_true (stripped != NULL);
+
+	doc = xhtml_parse (stripped, (size_t)strlen (stripped));
+	g_free (stripped);
+
+	g_assert_false (!doc);
+	root = xmlDocGetRootElement (doc);
+	g_assert_false (!root);
+
+	g_assert_true (xpath_find (root, tc->xpath_expression) == NULL);
+
+	xmlFreeDoc (doc);
 }
 
 int
 main (int argc, char *argv[])
 {
+	gint result;
+
+	xml_init ();
+
 	g_test_init (&argc, &argv, NULL);
 
 	for (int i = 0; tc_xpath[i]->xml_string != NULL; i++) {
-		g_test_add_data_func (g_strdup_printf ("/parse_xml/%d", i), &tc_xpath[i], &tc_xpath_find);
+		g_test_add_data_func (tc_xpath[i]->name, &tc_xpath[i], &tc_xpath_find);
+	}
+	for (int i = 0; tc_strippers[i]->xml_string != NULL; i++) {
+		g_test_add_data_func (tc_strippers[i]->name, &tc_strippers[i], &tc_strip);
 	}
 
-	return g_test_run();
+	result = g_test_run();
+
+	xml_deinit ();
+
+	return result;
 }
