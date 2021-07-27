@@ -333,7 +333,7 @@ static struct {
 /** date_parse_rfc822_tz:
  * @token: String representing the timezone.
  *
- * Returns: (transfer full): a GTimeZone to be freed by g_time_zone_unref
+ * Returns: (transfer full): a GTimeZone to be freed by g_time_zone_unref or NULL on error
  */
 static GTimeZone *
 date_parse_rfc822_tz (char *token)
@@ -342,7 +342,7 @@ date_parse_rfc822_tz (char *token)
 	int num_timezones = sizeof (tz_offsets) / sizeof ((tz_offsets)[0]);
 
 	if (*inptr == '+' || *inptr == '-') {
-		return g_time_zone_new (inptr);
+		return g_time_zone_new_identifier (inptr);
 	} else {
 		int t;
 
@@ -351,10 +351,10 @@ date_parse_rfc822_tz (char *token)
 
 		for (t = 0; t < num_timezones; t++)
 			if (!strncmp (inptr, tz_offsets[t].name, strlen (tz_offsets[t].name)))
-				return g_time_zone_new (tz_offsets[t].offset);
+				return g_time_zone_new_identifier (tz_offsets[t].offset);
 	}
 
-	return g_time_zone_new_utc ();
+	return NULL;
 }
 
 static const gchar * rfc822_months[] = { "Jan", "Feb", "Mar", "Apr", "May",
