@@ -403,7 +403,7 @@ db_init (void)
 				sqlite3_reset (stmt);
 
 					while (sqlite3_step (stmt) == SQLITE_ROW) {
-						const gchar *viewName = sqlite3_column_text (stmt, 0) + strlen("view_");
+						const gchar *viewName = (gchar *)sqlite3_column_text (stmt, 0) + strlen("view_");
 						gchar *copySql = g_strdup_printf("INSERT INTO search_folder_items (node_id, item_id) SELECT '%s',item_id FROM view_%s;", viewName, viewName);
 
 						db_exec (copySql);

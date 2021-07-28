@@ -203,8 +203,8 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	xmlNode = xpath_find (match, "./string[@name='id']");
 	id = xmlNodeGetContent (xmlNode);
 
-	if (g_str_has_prefix (id, "feed/"))
-		node = feedlist_find_node (gsource->root, NODE_BY_URL, id + strlen ("feed/"));
+	if (g_str_has_prefix ((gchar *)id, "feed/"))
+		node = feedlist_find_node (gsource->root, NODE_BY_URL, (gchar *)(id + strlen ("feed/")));
 	else {
 		xmlFree (id);
 		return;
@@ -228,7 +228,7 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 		       id, oldNewestItemTimestamp, newestItemTimestamp);
 		g_hash_table_insert (gsource->lastTimestampMap,
 				    g_strdup (node->subscription->source),
-				    g_strdup (newestItemTimestamp));
+				    g_strdup ((gchar *)newestItemTimestamp));
 
 		subscription_update (node->subscription, 0);
 	}

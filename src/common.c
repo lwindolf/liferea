@@ -137,21 +137,21 @@ common_uri_escape (const xmlChar *url)
 		
 	/* xmlURIEscape returns NULL if spaces are in the URL, 
 	   so we need to replace them first (see SF #2965158) */
-	tmp = common_strreplace (g_strdup (url), " ", "%20");
+	tmp = (xmlChar *)common_strreplace (g_strdup ((gchar *)url), " ", "%20");
 	result = xmlURIEscape (tmp);
 	g_free (tmp);
 	
 	/* workaround if escaping somehow fails... */
 	if (!result)
-		result = g_strdup (url);
+		result = (xmlChar *)g_strdup ((gchar *)url);
 
-	return result;	
+	return result;
 }
 
 xmlChar *
 common_uri_unescape (const xmlChar *url)
 {
-	return xmlURIUnescapeString (url, -1, NULL);
+	return (xmlChar *)xmlURIUnescapeString ((char *)url, -1, NULL);
 }
 
 xmlChar *
@@ -175,10 +175,10 @@ common_build_url (const gchar *url, const gchar *baseURL)
 {
 	xmlChar	*escapedURL, *absURL, *escapedBaseURL;
 
-	escapedURL = common_uri_escape (url);
+	escapedURL = common_uri_escape ((xmlChar *)url);
 
 	if (baseURL) {
-		escapedBaseURL = common_uri_escape (baseURL);	
+		escapedBaseURL = common_uri_escape ((xmlChar *)baseURL);
 		absURL = xmlBuildURI (escapedURL, escapedBaseURL);
 		if (absURL)
 			xmlFree (escapedURL);
