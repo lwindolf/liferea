@@ -28,6 +28,7 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include <pango/pango-types.h>
+#include <fribidi.h>
 
 #include <sys/stat.h>
 #include <errno.h>
@@ -194,6 +195,44 @@ common_build_url (const gchar *url, const gchar *baseURL)
 }
 
 /*
+ * Replacement for pango_find_base_dir
+ * Based on code from pango_unichar_direction and pango_find_base_dir
+ */
+PangoDirection
+common_find_base_dir (const gchar *text, gint length)
+{
+	FriBidiCharType fbd_ch_type;
+	PangoDirection dir = PANGO_DIRECTION_NEUTRAL;
+	const gchar *p;
+	gunichar ch;
+
+	G_STATIC_ASSERT (sizeof (FriBidiChar) == sizeof (gunichar));
+
+	g_return_val_if_fail (text != NULL || length == 0, PANGO_DIRECTION_NEUTRAL);
+
+	p = text;
+	while ((length < 0 || p < text + length) && *p)
+	{
+		ch = g_utf8_get_char (p);
+
+		fbd_ch_type = fribidi_get_bidi_type (ch);
+		if (!FRIBIDI_IS_STRONG (fbd_ch_type))
+			dir = PANGO_DIRECTION_NEUTRAL;
+		else
+			if (FRIBIDI_IS_RTL (fbd_ch_type))
+				dir = PANGO_DIRECTION_RTL;
+			else
+				dir = PANGO_DIRECTION_LTR;
+
+		if (dir != PANGO_DIRECTION_NEUTRAL)
+			break;
+
+		p = g_utf8_next_char (p);
+    }
+	return dir;
+}
+
+/*
  * Returns a string that can be used for the HTML "dir" attribute.
  * Direction is taken from a string, regardless of any language tags.
  */
@@ -203,7 +242,7 @@ common_get_text_direction (const gchar *text)
 	PangoDirection pango_direction = PANGO_DIRECTION_NEUTRAL;
 	
 	if (text)
-		pango_direction = pango_find_base_dir (text, -1);
+		pango_direction = common_find_base_dir (text, -1);
 
 	if (pango_direction == PANGO_DIRECTION_RTL)
 		return ("rtl");
