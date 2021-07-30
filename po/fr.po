@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2021-01-17 11:05+0100\n"
 "Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
 "Language-Team: français <>\n"
@@ -80,7 +80,7 @@ msgstr "Retrouvez des articles en utilisant des dossiers de recherche"
 msgid "Play Podcasts"
 msgstr "Lire les podcasts"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -148,7 +148,7 @@ msgstr "_Marquer les éléments comme lus"
 msgid "Search All Feeds..."
 msgstr "Chercher dans tous les flux…"
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 msgid "Feed Updates"
 msgstr "Paramètres de mise à jour des flux"
 
@@ -320,15 +320,15 @@ msgstr ""
 "Le greffon a été supprimé. Redémarrez Liferea pour que les changements "
 "soient pris en compte."
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 msgid "Show / Hide"
 msgstr "Afficher ou masquer"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr "Minimiser à la fermeture"
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 msgid "Quit"
 msgstr "Quitter"
 
@@ -337,7 +337,7 @@ msgstr "Quitter"
 msgid "Browser command failed: %s"
 msgstr "La commande du navigateur a échoué : %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Exécution de : « %s »"
@@ -352,7 +352,7 @@ msgstr "Erreur d’autorisation"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Impossible de créer le répertoire cache « %s » !"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -477,16 +477,6 @@ msgstr "Exporter la liste des flux"
 msgid "Export"
 msgstr "Exporter"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "« %s » n’est pas disponible"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "« %s » mis à jour…"
-
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Document vide !"
@@ -585,7 +575,7 @@ msgstr ""
 "Cette version de TinyTinyRSS ne permet pas de supprimer de flux. Mettez à "
 "vous vers la version %s ou supérieure !"
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -598,7 +588,7 @@ msgstr "Impossible d’analyser le JSON envoyé par l’API TinyTinyRSS !"
 msgid "There are no unread items"
 msgstr "Il n’y a aucun élément non lu"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
@@ -606,47 +596,47 @@ msgstr ""
 "« shown » (fenêtre visible), « iconified » (fenêtre iconisée) ou "
 "« hidden » (fenêtre cachée)"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr "ÉTAT"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 msgid "Show version information and exit"
 msgstr "Affiche des informations sur la version et quitte"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "Add a new subscription"
 msgstr "Ajoute un nouvel abonnement"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr "Démarrer avec l’ensemble des greffons désactivés"
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages of all types"
 msgstr "Affiche des messages de débogage de tout type"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the cache handling"
 msgstr "Affiche des messages de débogage pour la gestion du cache"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the configuration handling"
 msgstr "Affiche des messages de débogage pour la gestion de la configuration"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of the database handling"
 msgstr "Affiche des messages de débogage de la gestion de la base de données"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all GUI functions"
 msgstr "Affiche des messages de débogage des fonctions de l’interface"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -654,76 +644,75 @@ msgstr ""
 "Active le débogage du rendu HTML. Chaque fois que Liferea affiche du HTML, "
 "il copiera aussi le HTML généré dans ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all network activity"
 msgstr "Affiche des messages de débogage de toute l’activité réseau"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all parsing functions"
 msgstr "Affiche des messages de débogage des fonctions d’analyse syntaxique"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Affiche des messages de débogage quand une fonction prend trop de temps"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 "Affiche des messages de débogage à l’entrée et à la sortie de fonctions"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "Affiche des messages de débogage du traitement de la mise à jour des flux"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the search folder matching"
 msgstr "Affiche des messages de débogage pour le dossier de recherche"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 msgid "Print verbose debugging messages"
 msgstr "Affiche des messages de débogage verbeux"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 msgid "Print debugging messages for the given topic"
 msgstr "Affiche des messages de débogage pour le sujet donné"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr "La demande de mise à jour a été annulée"
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr "Impossible de résoudre le nom de la machine de destination"
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr "Impossible de résoudre le nom de la machine serveur mandataire"
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 msgid "Unable to connect to remote host"
 msgstr "Impossible de se connecter à la machine distante"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr "Impossible de se connecter au serveur mandataire"
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
-"Une erreur réseau s’est produite ou la machine distante a brusquement fermé "
-"la connexion"
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr "La ressource a été déplacée à un autre endroit de manière permanente"
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -732,35 +721,35 @@ msgstr ""
 "nom d’utilisateur et votre mot de passe dans la boîte de dialogue des "
 "propriétés du flux"
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 msgid "Payment required"
 msgstr "Paiement nécessaire"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr "Vous n’êtes pas autorisé à accéder à cette ressource"
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Ressource introuvable"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Méthode interdite"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Non acceptable"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 msgid "Proxy authentication required"
 msgstr "Authentification par serveur mandataire exigée"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 msgid "Request timed out"
 msgstr "Délai de la requête expiré"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -770,25 +759,25 @@ msgstr ""
 "Liferea ne le mettra plus à jour, mais vous pouvez toujours accéder aux "
 "titres situés dans le cache."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr "Il y a eu une erreur interne lors du traitement de la mise à jour"
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Flux indisponible : le serveur a demandé une redirection qui n’est pas prise "
 "en charge !"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Erreur du client"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Erreur du serveur"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 msgid "An unknown networking error happened!"
 msgstr "Une erreur réseau inconnue s’est produite !"
 
@@ -1023,7 +1012,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Êtes-vous sûr de vouloir supprimer « %s » ?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 msgid "_Cancel"
 msgstr "_Annuler"
 
@@ -1086,33 +1074,33 @@ msgstr "Vous devez sélectionner un flux pour effacer ses éléments !"
 msgid "No item has been selected"
 msgstr "Aucun élément n’a été sélectionné"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d nouveau)"
 msgstr[1] " (%d nouveaux)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d non lu%s"
 msgstr[1] "%d non lus%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Sommaire de l’aide"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Référence rapide"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, c-format
 msgid "Email command failed: %s"
 msgstr "Échec de la commande de courrier électronique : %s"
@@ -1290,7 +1278,7 @@ msgstr "Type"
 msgid "Program"
 msgstr "Programme"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
 msgstr "Recherche enregistrée"
 
@@ -1308,7 +1296,7 @@ msgstr[1] ""
 msgid "This feed specifies no default update interval."
 msgstr "Ce flux ne spécifie aucun intervalle de mise à jour."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 msgid "All Files"
 msgstr "Tous les fichiers"
 
@@ -1342,64 +1330,69 @@ msgstr "Erreur : il n’y a pas de fichier « %s »"
 msgid "New Search Folder"
 msgstr "Nouveau dossier de recherche"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 msgid "Open Link In _Tab"
 msgstr "Ouvrir le lien dans un _onglet"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 msgid "Open Link In Browser"
 msgstr "Ouvrir le lien dans le navigateur"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 msgid "Open Link In External Browser"
 msgstr "Ouvrir le lien dans le navigateur externe"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_Publier le lien vers le signet sur %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 msgid "_Copy Link Location"
 msgstr "_Copier l’adresse du lien"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 msgid "_View Image"
 msgstr "Visionner l’image"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 msgid "_Copy Image Location"
 msgstr "_Copier l’adresse de l’image"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 msgid "S_ave Link As"
 msgstr "Enregistrer le lien sous"
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr "Enregistrer l’image sous"
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 msgid "_Subscribe..."
 msgstr "S’_abonner…"
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr "_Copier"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "_Augmenter la taille du texte"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "_Réduire la taille du texte"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+#, fuzzy
+msgid "_Reader Mode"
+msgstr "Utiliser le mode de _lecture"
+
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Il y avait d’autres erreurs. La sortie a été tronquée !]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Analyseur syntaxique XML : impossible d’analyser le document :\n"
 
@@ -2418,6 +2411,21 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Dossier de recherche :"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "« %s » n’est pas disponible"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "« %s » mis à jour…"
+
+#~ msgid ""
+#~ "A network error occurred, or the other end closed the connection "
+#~ "unexpectedly"
+#~ msgstr ""
+#~ "Une erreur réseau s’est produite ou la machine distante a brusquement "
+#~ "fermé la connexion"
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
