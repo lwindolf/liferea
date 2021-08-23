@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2008-12-30 22:50+0200\n"
 "Last-Translator: Jennie Petoumenou <epetoumenou@gmail.com>\n"
 "Language-Team:  <team@gnome.gr>\n"
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podcast"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -144,7 +144,7 @@ msgstr "_Σημείωση ως αναγνωσμένου"
 msgid "Search All Feeds..."
 msgstr "Αναζήτηση στις ροές"
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Ενημέρωση ροής"
@@ -309,16 +309,16 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 #, fuzzy
 msgid "Show / Hide"
 msgstr "Εμφάνιση λεπτομερειών"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 #, fuzzy
 msgid "Quit"
 msgstr "Έ_ξοδος"
@@ -328,7 +328,7 @@ msgstr "Έ_ξοδος"
 msgid "Browser command failed: %s"
 msgstr "Απέτυχε η εντολή περιηγητή: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Εκκίνηση: \"%s\""
@@ -343,7 +343,7 @@ msgstr "Σφάλμα εξουσιοδότησης"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Αδύνατη η δημιουργία του καταλόγου μνήμης \"%s\"!"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -458,16 +458,6 @@ msgstr "Εξαγωγή λίστας ροών"
 msgid "Export"
 msgstr "Εξαγωγή"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "Η ροή \"%s\" δεν είναι διαθέσιμη"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "Ενημερώθηκε η ροή \"%s\"..."
-
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Κενό αρχείο!"
@@ -561,7 +551,7 @@ msgid ""
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr ""
 
@@ -575,7 +565,7 @@ msgstr ""
 msgid "There are no unread items"
 msgstr "Δεν υπάρχουν μη αναγνωσμένα άρθρα"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -583,101 +573,101 @@ msgstr ""
 "                   Η ΚΑΤΑΣΤΑΣΗ μπορεί να είναι `shown' (εμφάνιση), "
 "`iconified' (εικονίδιο) ή `hidden' (απόκρυψη)"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr ""
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version        Εμφάνιση πληροφοριών έκδοσης και έξοδος."
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Νέα συνδρομή"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr ""
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all network activity"
 msgstr ""
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all parsing functions"
 msgstr ""
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "  --debug-<topic> Εμφάνιση των μηνυμάτων της αποσφαλμάτωσης για συγκεκριμένο "
 "θέμα"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 msgid "Print verbose debugging messages"
 msgstr ""
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr ""
@@ -685,39 +675,40 @@ msgstr ""
 "θέμα"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Σφάλμα κατά τη σύνδεση στον απομακρυσμένο υπολογιστή"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -726,38 +717,38 @@ msgstr ""
 "Δεν είστε εξουσιοδοτημένοι για να λάβετε αυτήν τη ροή. Παρακαλώ, ελέγξτε το "
 "όνομα χρήστη και το συνθηματικό σας στο διάλογο προτιμήσεων της ροής."
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 #, fuzzy
 msgid "Payment required"
 msgstr "Απαιτείται πληρωμή"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Δε βρέθηκαν οι πόροι"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Μη επιτρεπτή μέθοδος"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Μη αποδεκτό"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Απαιτείται πιστοποίηση διαμεσολαβητή"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 #, fuzzy
 msgid "Request timed out"
 msgstr "Λήξη χρονικού ορίου αίτησης"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -768,24 +759,24 @@ msgstr ""
 "Liferea θα πάψει να την ενημερώνει, αλλά θα συνεχίσετε να έχετε πρόσβαση "
 "στους αποθηκευμένους τίτλους."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Μη διαθέσιμη συνδρομή: Ο εξυπηρετητής ζήτησε μη υποστηριζόμενη ανακατεύθυνση!"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Σφάλμα πελάτη"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Σφάλμα εξυπηρετητή"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(άγνωστο σφάλμα σύνδεσης)"
@@ -1027,7 +1018,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Σίγουρα θέλετε να διαγράψετε το %s?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 #, fuzzy
 msgid "_Cancel"
 msgstr "Ακύρωση ό_λων"
@@ -1092,33 +1082,33 @@ msgstr "Πρέπει πρώτα να επιλέξετε ροή για να δι�
 msgid "No item has been selected"
 msgstr "Δεν επιλέχθηκε άρθρο"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d νέο)"
 msgstr[1] " (%d νέα)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d μη αναγνωσμένο%s"
 msgstr[1] "%d μη αναγνωσμένα%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Θέματα Βοήθειας"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Σύντομος οδηγός"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "Συχνές ερωτήσεις"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Απέτυχε η εντολή περιηγητή: %s"
@@ -1315,7 +1305,7 @@ msgstr "Τύπος"
 msgid "Program"
 msgstr "Πρόγραμμα"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 #, fuzzy
 msgid "Saved Search"
 msgstr "Για προχωρημένους"
@@ -1332,7 +1322,7 @@ msgstr[1] "Ο πάροχος αυτής της ροής προτείνει συ�
 msgid "This feed specifies no default update interval."
 msgstr "Αυτή η ροή δεν προτείνει συγκεκριμένη συχνότητα ενημέρωσης."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 #, fuzzy
 msgid "All Files"
 msgstr "_Τοπικό αρχείο"
@@ -1369,72 +1359,76 @@ msgstr "Σφάλμα: Δεν υπάρχει το αρχείο \"%s\""
 msgid "New Search Folder"
 msgstr "Νέος φάκελος αναζήτησης"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 #, fuzzy
 msgid "Open Link In _Tab"
 msgstr "/Άνοιγμα συνδεσμού σε νέα _καρτέλα"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "/Ανοιγμα συνδέσμου στον _περιηγητή"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "/Ανοιγμα συνδέσμου στον _περιηγητή"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, fuzzy, c-format
 msgid "_Bookmark Link at %s"
 msgstr "/_Δημιουργία σελιδοδείκτη στο %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Αντιγραφή τοποθεσίας συνδέσμου"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 #, fuzzy
 msgid "_View Image"
 msgstr "_Προβολή"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "/_Αντιγραφή τοποθεσίας συνδέσμου"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "/_Αποθήκευση ως..."
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Συνδρομή..."
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "_Αύξηση μεγέθους γραμματοσειράς"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "_Μείωση μεγέθους γραμματοσειράς"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+msgid "_Reader Mode"
+msgstr ""
+
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Εμφανίστηκαν και άλλα σφάλματα, τα οποία παραλείπονται!]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Ανάλυση XML: Αδύνατη η ανάλυση του αρχείου:\n"
 
@@ -2488,6 +2482,14 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Φάκελος αναζήτησης:"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "Η ροή \"%s\" δεν είναι διαθέσιμη"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "Ενημερώθηκε η ροή \"%s\"..."
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"
