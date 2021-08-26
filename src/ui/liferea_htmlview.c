@@ -588,10 +588,6 @@ liferea_htmlview_update (LifereaHtmlView *htmlview, guint mode)
 	output = g_string_new (NULL);
 	liferea_htmlview_start_output (output, baseURL, TRUE);
 
-
-	/* HTML view updating means checking which items
-	need to be updated, render them and then
-	concatenate everything from cache and output it */
 	switch (mode) {
 		case ITEMVIEW_SINGLE_ITEM:
 			item = itemlist_get_selected ();
