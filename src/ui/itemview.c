@@ -373,7 +373,8 @@ itemview_init (ItemView *iv)
 static void
 on_important_status_message (gpointer obj, gchar *url)
 {
-	liferea_shell_set_important_status_bar ("%s", url);
+	if (strstr (url, "liferea://") != url)
+		liferea_shell_set_important_status_bar ("%s", url);
 }
 
 void
