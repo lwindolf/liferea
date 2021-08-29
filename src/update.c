@@ -282,6 +282,9 @@ update_job_new (gpointer owner,
 	job->flags = flags;
 	job->state = REQUEST_STATE_INITIALIZED;
 
+	job->cmd.fd = -1;
+	job->cmd.pid = 0;
+
 	return job;
 }
 
@@ -326,6 +329,23 @@ update_job_free (updateJobPtr job)
 
 	g_object_unref (job->request);
 	update_result_free (job->result);
+
+	if (job->cmd.fd >= 0) {
+		debug1 (DEBUG_UPDATE, "Found an open cmd.fd %d when freeing!", job->cmd.fd);
+		close (job->cmd.fd);
+	}
+	if (job->cmd.timeout_id > 0) {
+		g_source_remove (job->cmd.timeout_id);
+	}
+	if (job->cmd.io_watch_id > 0) {
+		g_source_remove (job->cmd.io_watch_id);
+	}
+	if (job->cmd.child_watch_id > 0) {
+		g_source_remove (job->cmd.child_watch_id);
+	}
+	if (job->cmd.stdout_ch) {
+		g_io_channel_unref (job->cmd.stdout_ch);
+	}
 	g_free (job);
 }
 
@@ -465,36 +485,137 @@ update_apply_filter (updateJobPtr job)
 }
 
 static void
-update_exec_cmd (updateJobPtr job)
+update_exec_cmd_cb_child_watch (GPid pid, gint status, gpointer user_data)
 {
-	FILE	*f;
-	int	status;
-	size_t	len;
+	updateJobPtr	job = (updateJobPtr) user_data;
+	debug1 (DEBUG_UPDATE, "Child process %d terminated", job->cmd.pid);
 
-	/* if the first char is a | we have a pipe else a file */
-	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", (job->request->source) + 1);
-	f = popen ((job->request->source) + 1, "r");
-	if (f) {
-		while (!feof (f) && !ferror (f)) {
-			job->result->data = g_realloc (job->result->data, job->result->size + 1025);
-			len = fread (&job->result->data[job->result->size], 1, 1024, f);
-			if (len > 0)
-				job->result->size += len;
-		}
-		status = pclose (f);
-		if (WIFEXITED (status) && WEXITSTATUS (status) == 0)
-			job->result->httpstatus = 200;
-		else
-			job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
-
-		if (job->result->data)
-			job->result->data[job->result->size] = '\0';
+	job->cmd.pid = 0;
+	if (WIFEXITED (status) && WEXITSTATUS (status) == 0) {
+		job->result->httpstatus = 200;
 	} else {
-		liferea_shell_set_status_bar (_("Error: Could not open pipe \"%s\""), (job->request->source) + 1);
-		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
+		job->result->httpstatus = 404;  /* FIXME: maybe setting request->returncode would be better */
 	}
 
+	job->cmd.child_watch_id = 0;	/* Caller will remove source. */
+	if (job->cmd.timeout_id > 0) {
+		g_source_remove (job->cmd.timeout_id);
+		job->cmd.timeout_id = 0;
+	}
+	if (job->cmd.io_watch_id > 0) {
+		g_source_remove (job->cmd.io_watch_id);
+		job->cmd.io_watch_id = 0;
+	}
 	update_process_finished_job (job);
+}
+
+
+static gboolean
+update_exec_cmd_cb_out_watch (GIOChannel *source, GIOCondition condition, gpointer user_data)
+{
+	updateJobPtr	job = (updateJobPtr) user_data;
+	GError		*err = NULL;
+	gboolean	ret = TRUE;	/* Do not remove event source yet. */
+	GIOStatus	st;
+	gsize		nread;
+
+	if (condition == G_IO_HUP) {
+		debug1 (DEBUG_UPDATE, "Pipe closed, child process %d is terminating", job->cmd.pid);
+		ret = FALSE;
+
+	} else if (condition == G_IO_IN) {
+		while (TRUE) {
+			job->result->data = g_realloc (job->result->data, job->result->size + 1025);
+
+			nread = 0;
+			st = g_io_channel_read_chars (source,
+				job->result->data + job->result->size,
+				1024, &nread, &err);
+			job->result->size += nread;
+			job->result->data[job->result->size] = 0;
+
+			if (err) {
+				debug2 (DEBUG_UPDATE, "Error %d when reading from child %d", err->code, job->cmd.pid);
+				g_error_free (err);
+				err = NULL;
+				ret = FALSE;	/* remove event */
+			}
+
+			if (nread == 0) {
+				/* Finished reading */
+				break;
+			} else if (st == G_IO_STATUS_AGAIN) {
+				/* just try again */
+			} else if (st == G_IO_STATUS_EOF) {
+				/* Pipe closed */
+				ret = FALSE;
+				break;
+			} else if (st == G_IO_STATUS_ERROR) {
+				debug1 (DEBUG_UPDATE, "Got a G_IO_STATUS_ERROR from child %d", job->cmd.pid);
+				ret = FALSE;
+				break;
+			}
+		}
+
+	} else {
+		debug2 (DEBUG_UPDATE, "Unexpected condition %d for child process %d", condition, job->cmd.pid);
+		ret = FALSE;
+	}
+
+	if (ret == FALSE) {
+		close (job->cmd.fd);
+		job->cmd.fd = -1;
+		job->cmd.io_watch_id = 0;	/* Caller will remove source. */
+	}
+
+	return ret;
+}
+
+
+static gboolean
+update_exec_cmd_cb_timeout (gpointer user_data)
+{
+	updateJobPtr	job = (updateJobPtr) user_data;
+	debug1 (DEBUG_UPDATE, "Child process %d timed out, killing.", job->cmd.pid);
+
+	/* Kill child. Result will still be processed by update_exec_cmd_cb_child_watch */
+	kill((pid_t) job->cmd.pid, SIGKILL);
+	job->cmd.timeout_id = 0;
+	return FALSE;	/* Remove timeout source */
+}
+
+
+static void
+update_exec_cmd (updateJobPtr job)
+{
+	gboolean	ret;
+	gchar		*cmd = (job->request->source) + 1;
+
+	/* Previous versions ran through popen() and a lot of users may be depending
+	 * on this behavior, so we run through a shell and keep compatibility. */
+	gchar		*cmd_args[] = { "/bin/sh", "-c", cmd, NULL };
+
+	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", cmd);
+	ret = g_spawn_async_with_pipes (NULL, cmd_args, NULL,
+		G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_STDERR_TO_DEV_NULL,
+		NULL, NULL, &job->cmd.pid, NULL,
+		&job->cmd.fd, NULL, NULL);
+
+	if (!ret) {
+		debug0 (DEBUG_UPDATE, "g_spawn_async_with_pipes failed");
+		liferea_shell_set_status_bar (_("Error: Could not open pipe \"%s\""), cmd);
+		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
+		return;
+	}
+
+	debug1 (DEBUG_UPDATE, "New child process launched with pid %d", job->cmd.pid);
+
+	job->cmd.child_watch_id = g_child_watch_add (job->cmd.pid, (GChildWatchFunc) update_exec_cmd_cb_child_watch, job);
+	job->cmd.stdout_ch = g_io_channel_unix_new (job->cmd.fd);
+	job->cmd.io_watch_id = g_io_add_watch (job->cmd.stdout_ch, G_IO_IN | G_IO_HUP, (GIOFunc) update_exec_cmd_cb_out_watch, job);
+
+	/* FIXME: timeout should be configurable */
+	job->cmd.timeout_id = g_timeout_add (30000, (GSourceFunc) update_exec_cmd_cb_timeout, job);
 }
 
 static void
