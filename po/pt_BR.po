@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-30 12:36+0200\n"
-"PO-Revision-Date: 2021-06-04 16:12-0300\n"
+"PO-Revision-Date: 2021-08-30 00:45-0300\n"
 "Last-Translator: Fúlvio Alves <fga.fulvio@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-translation@lists.sourceforge."
 "net>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:1
@@ -693,6 +693,9 @@ msgid ""
 "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
 "algorithm. Check your operating system settings."
 msgstr ""
+"A negociação SSL/TLS falhou. Possível desatualização ou incompatibilidade do "
+"algoritmo de criptografia. Verifique as configurações do seu sistema "
+"operacional."
 
 #. http 3xx redirection
 #: ../src/net.c:445
@@ -1376,9 +1379,8 @@ msgid "_Decrease Text Size"
 msgstr "_Diminuir Tamanho do Texto"
 
 #: ../src/webkit/liferea_web_view.c:227
-#, fuzzy
 msgid "_Reader Mode"
-msgstr "Usar modo _Leitura"
+msgstr "Modo Leitu_ra"
 
 #: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
@@ -1913,7 +1915,7 @@ msgstr "Dizer aos sites que _não quero ser rastreado."
 
 #: ../glade/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
-msgstr "Prevenção de Rastreamento _Inteligente"
+msgstr "Prevenção de Rastreamento _Inteligente. "
 
 #: ../glade/prefs.ui.h:54
 msgid ""
@@ -1933,7 +1935,7 @@ msgstr ""
 
 #: ../glade/prefs.ui.h:56
 msgid "Use _Reader mode."
-msgstr "Usar modo _Leitura"
+msgstr "Usar modo _Leitura."
 
 #: ../glade/prefs.ui.h:57
 msgid ""
