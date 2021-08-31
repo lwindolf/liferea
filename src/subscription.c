@@ -428,7 +428,7 @@ subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl
 			if (tmp)
 				*(tmp+1) = '\0';
 
-			htmlUrl = common_build_url (newHtmlUrl, source);
+			htmlUrl = (gchar *)common_build_url (newHtmlUrl, source);
 			g_free (source);
 		}
 
@@ -477,34 +477,34 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		if (!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
 			   is safe? */
-			tmp = g_strdup_printf ("unsafe command: %s", source);
+			tmp = (xmlChar *)g_strdup_printf ("unsafe command: %s", source);
 			xmlFree (source);
 			source = tmp;
 		}
 
-		subscription_set_source (subscription, source);
+		subscription_set_source (subscription, (gchar *)source);
 		xmlFree (source);
 
 		homepage = xmlGetProp (xml, BAD_CAST "htmlUrl");
-		if (homepage && xmlStrcmp (homepage, ""))
-			subscription_set_homepage (subscription, homepage);
+		if (homepage && xmlStrcmp (homepage, BAD_CAST ""))
+			subscription_set_homepage (subscription, (gchar *)homepage);
 		xmlFree (homepage);
 
 		if ((filter = xmlGetProp (xml, BAD_CAST "filtercmd"))) {
 			if (!trusted) {
 				/* FIXME: Display warning dialog asking if the command
 				   is safe? */
-				tmp = g_strdup_printf ("unsafe command: %s", filter);
+				tmp = (xmlChar *)g_strdup_printf ("unsafe command: %s", filter);
 				xmlFree (filter);
 				filter = tmp;
 			}
 
-			subscription_set_filter (subscription, filter);
+			subscription_set_filter (subscription, (gchar *)filter);
 			xmlFree (filter);
 		}
 
 		intervalStr = xmlGetProp (xml, BAD_CAST "updateInterval");
-		subscription_set_update_interval (subscription, common_parse_long (intervalStr, -1));
+		subscription_set_update_interval (subscription, common_parse_long ((gchar *)intervalStr, -1));
 		xmlFree (intervalStr);
 
 		/* no proxy flag */
@@ -514,8 +514,8 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		xmlFree (tmp);
 
 		/* authentication options */
-		subscription->updateOptions->username = xmlGetProp (xml, BAD_CAST "username");
-		subscription->updateOptions->password = xmlGetProp (xml, BAD_CAST "password");
+		subscription->updateOptions->username = (gchar *)xmlGetProp (xml, BAD_CAST "username");
+		subscription->updateOptions->password = (gchar *)xmlGetProp (xml, BAD_CAST "password");
 	}
 
 	return subscription;
@@ -544,9 +544,9 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 
 		if (!liferea_auth_has_active_store ()) {
 			if (subscription->updateOptions->username)
-				xmlNewProp (xml, BAD_CAST"username", subscription->updateOptions->username);
+				xmlNewProp (xml, BAD_CAST"username", (xmlChar *)subscription->updateOptions->username);
 			if (subscription->updateOptions->password)
-				xmlNewProp (xml, BAD_CAST"password", subscription->updateOptions->password);
+				xmlNewProp (xml, BAD_CAST"password", (xmlChar *)subscription->updateOptions->password);
 		}
 	}
 
@@ -558,28 +558,28 @@ subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml)
 {
 	gchar	*tmp;
 
-	xmlNewTextChild (xml, NULL, "feedSource", subscription_get_source (subscription));
-	xmlNewTextChild (xml, NULL, "feedOrigSource", subscription_get_orig_source (subscription));
+	xmlNewTextChild (xml, NULL, BAD_CAST "feedSource", (xmlChar *)subscription_get_source (subscription));
+	xmlNewTextChild (xml, NULL, BAD_CAST "feedOrigSource", (xmlChar *)subscription_get_orig_source (subscription));
 
 	tmp = g_strdup_printf ("%d", subscription_get_default_update_interval (subscription));
-	xmlNewTextChild (xml, NULL, "feedUpdateInterval", tmp);
+	xmlNewTextChild (xml, NULL, BAD_CAST "feedUpdateInterval", (xmlChar *)tmp);
 	g_free (tmp);
 
 	tmp = g_strdup_printf ("%d", subscription->discontinued?1:0);
-	xmlNewTextChild (xml, NULL, "feedDiscontinued", tmp);
+	xmlNewTextChild (xml, NULL, BAD_CAST "feedDiscontinued", (xmlChar *)tmp);
 	g_free (tmp);
 
 	if (subscription->updateError)
-		xmlNewTextChild (xml, NULL, "updateError", subscription->updateError);
+		xmlNewTextChild (xml, NULL, BAD_CAST "updateError", (xmlChar *)subscription->updateError);
 	if (subscription->httpError) {
-		xmlNewTextChild (xml, NULL, "httpError", subscription->httpError);
+		xmlNewTextChild (xml, NULL, BAD_CAST "httpError", (xmlChar *)subscription->httpError);
 
 		tmp = g_strdup_printf ("%d", subscription->httpErrorCode);
-		xmlNewTextChild (xml, NULL, "httpErrorCode", tmp);
+		xmlNewTextChild (xml, NULL, BAD_CAST "httpErrorCode", (xmlChar *)tmp);
 		g_free (tmp);
 	}
 	if (subscription->filterError)
-		xmlNewTextChild (xml, NULL, "filterError", subscription->filterError);
+		xmlNewTextChild (xml, NULL, BAD_CAST "filterError", (xmlChar *)subscription->filterError);
 
 	metadata_add_xml_nodes (subscription->metadata, xml);
 }

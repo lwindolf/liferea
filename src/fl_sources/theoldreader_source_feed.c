@@ -117,7 +117,7 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 			id = xmlNodeGetContent (xml);
 
 		if (g_str_equal (xml->name, "category")) {
-			xmlChar* label = xmlGetProp (xml, "label");
+			xmlChar* label = xmlGetProp (xml, BAD_CAST"label");
 			if (!label)
 				continue;
 
@@ -133,9 +133,9 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 		return;
 	}
 
-	itemPtr item = theoldreader_source_load_item_from_sourceid (node, id, cache);
+	itemPtr item = theoldreader_source_load_item_from_sourceid (node, (gchar *)id, cache);
 	if (item && item->sourceId) {
-		if (g_str_equal (item->sourceId, id) && !google_reader_api_edit_is_in_queue(node->source, id)) {
+		if (g_str_equal (item->sourceId, id) && !google_reader_api_edit_is_in_queue(node->source, (gchar *)id)) {
 
 			if (item->readStatus != read)
 				item_read_state_changed (item, read);

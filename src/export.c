@@ -145,7 +145,7 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 
 	backupFilename = g_strdup_printf ("%s~", filename);
 
-	doc = xmlNewDoc ("1.0");
+	doc = xmlNewDoc (BAD_CAST"1.0");
 	if (doc) {
 		opmlNode = xmlNewDocNode (doc, NULL, BAD_CAST"opml", NULL);
 		if (opmlNode) {
@@ -211,7 +211,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	debug_enter("import_parse_outline");
 
 	/* 1. determine node type */
-	typeStr = xmlGetProp (cur, BAD_CAST"type");
+	typeStr = (gchar *)xmlGetProp (cur, BAD_CAST"type");
 	if (typeStr) {
 		type = node_str_to_type (typeStr);
 		xmlFree (typeStr);
@@ -220,11 +220,11 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	/* if we didn't find a type attribute we use heuristics */
 	if (!type) {
 		/* check for a source URL */
-		tmp = xmlGetProp (cur, BAD_CAST"xmlUrl");
+		tmp = (gchar *)xmlGetProp (cur, BAD_CAST"xmlUrl");
 		if (!tmp)
-			tmp = xmlGetProp (cur, BAD_CAST"xmlurl");	/* AmphetaDesk */
+			tmp = (gchar *)xmlGetProp (cur, BAD_CAST"xmlurl");	/* AmphetaDesk */
 		if (!tmp)
-			tmp = xmlGetProp (cur, BAD_CAST"xmlURL");	/* LiveJournal */
+			tmp = (gchar *)xmlGetProp (cur, BAD_CAST"xmlURL");	/* LiveJournal */
 
 		if (tmp) {
 			debug0 (DEBUG_CACHE, "-> URL found assuming type feed");
@@ -252,7 +252,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	   multiple times. */
 	if (trusted) {
 		gchar *id = NULL;
-		id = xmlGetProp (cur, BAD_CAST"id");
+		id = (gchar *)xmlGetProp (cur, BAD_CAST"id");
 
 		/* If, for some reason, the OPML has been corrupted
 		   and there are two copies asking for a certain ID
@@ -273,11 +273,11 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	}
 
 	/* title */
-	title = xmlGetProp (cur, BAD_CAST"title");
-	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
+	title = (gchar *)xmlGetProp (cur, BAD_CAST"title");
+	if (!title || !xmlStrcmp ((xmlChar *)title, BAD_CAST"")) {
 		if (title)
 			xmlFree (title);
-		title = xmlGetProp (cur, BAD_CAST"text");
+		title = (gchar *)xmlGetProp (cur, BAD_CAST"text");
 	}
 
 	if (title) {
@@ -286,35 +286,35 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	}
 
 	/* sorting order */
-	sortStr = xmlGetProp (cur, BAD_CAST"sortColumn");
+	sortStr = (gchar *)xmlGetProp (cur, BAD_CAST"sortColumn");
 	if (sortStr) {
-		if (!xmlStrcmp (sortStr, "title"))
+		if (!xmlStrcmp ((xmlChar *)sortStr, BAD_CAST"title"))
 			node->sortColumn = NODE_VIEW_SORT_BY_TITLE;
-		else if (!xmlStrcmp (sortStr, "parent"))
+		else if (!xmlStrcmp ((xmlChar *)sortStr, BAD_CAST"parent"))
 			node->sortColumn = NODE_VIEW_SORT_BY_PARENT;
-		else if (!xmlStrcmp (sortStr, "state"))
+		else if (!xmlStrcmp ((xmlChar *)sortStr, BAD_CAST"state"))
 			node->sortColumn = NODE_VIEW_SORT_BY_STATE;
 		else
 			node->sortColumn = NODE_VIEW_SORT_BY_TIME;
 		xmlFree (sortStr);
 	}
-	sortStr = xmlGetProp (cur, BAD_CAST"sortReversed");
+	sortStr = (gchar *)xmlGetProp (cur, BAD_CAST"sortReversed");
 	if (sortStr) {
-		if(!xmlStrcmp (sortStr, BAD_CAST"false"))
+		if(!xmlStrcmp ((xmlChar *)sortStr, BAD_CAST"false"))
 			node->sortReversed = FALSE;
 		xmlFree (sortStr);
 	}
 
 	/* auto item link loading flag */
-	tmp = xmlGetProp (cur, BAD_CAST"loadItemLink");
+	tmp = (gchar *)xmlGetProp (cur, BAD_CAST"loadItemLink");
 	if (tmp) {
-		if (!xmlStrcmp (tmp, BAD_CAST"true"))
+		if (!xmlStrcmp ((xmlChar *)tmp, BAD_CAST"true"))
 		node->loadItemLink = TRUE;
 		xmlFree (tmp);
 	}
 
 	/* viewing mode */
-	tmp = xmlGetProp (cur, BAD_CAST"viewMode");
+	tmp = (gchar *)xmlGetProp (cur, BAD_CAST"viewMode");
 	if (tmp) {
 		node_set_view_mode (node, atoi (tmp));
 		xmlFree (tmp);
@@ -425,7 +425,7 @@ import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showEr
 				if (title) {
 					xmlChar *titleStr = xmlNodeListGetString (title->doc, title->xmlChildrenNode, 1);
 					if (titleStr) {
-						node_set_title (parentNode, titleStr);
+						node_set_title (parentNode, (gchar *)titleStr);
 						xmlFree (titleStr);
 					}
 				}
