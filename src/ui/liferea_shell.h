@@ -22,6 +22,8 @@
 #ifndef _LIFEREA_SHELL_H
 #define _LIFEREA_SHELL_H
 
+#define _DEFAULT_SOURCE
+#include <string.h>
 #include <glib-object.h>
 #include <glib.h>
 #include <gtk/gtk.h>

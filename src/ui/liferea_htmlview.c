@@ -424,7 +424,7 @@ liferea_htmlview_load_finished (LifereaHtmlView *htmlview, const gchar *location
 	    - for internal content: always (Readability is enable on demand here)
 	 */
 	if (htmlview->readerMode || (location == strstr (location, "liferea://"))) {
-		g_autoptr(GBytes) b1,b2;
+		g_autoptr(GBytes) b1 = NULL, b2 = NULL;
 
 		// Return Readability.js and Liferea specific loader code
 		b1 = g_resources_lookup_data ("/org/gnome/liferea/readability/Readability.js", 0, NULL);

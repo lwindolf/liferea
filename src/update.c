@@ -598,7 +598,6 @@ update_execute_request (gpointer owner,
 			updateFlags flags)
 {
 	updateJobPtr job;
-	gint count;
 
 	g_assert (request->options != NULL);
 	g_assert (request->source != NULL);
