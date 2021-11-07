@@ -28,9 +28,20 @@ html_doc_de =	about_de.html \
 		onlineservices_de.html \
 		faq_de.html
 
-html_doc_it =   reference_it.html\
-		topics_it.html\
-		faq_it.html
+html_doc_de =	about_it.html \
+		concepts_it.html \
+		folders_it.html \
+		headlines_it.html \
+		preferences_it.html \
+		reference_it.html \
+		searching_it.html \
+		subscriptions_it.html \
+		topics_it.html \
+		updating_it.html \
+		enclosures_it.html \
+		newsbin_it.html \
+		onlineservices_it.html \
+		faq_de.html
 
 html_doc_pictures_en =	help_feed_default.png \
 			help_feed_error.png \
@@ -57,6 +68,7 @@ html_doc_pictures_en =	help_feed_default.png \
 
 EXTRA_DIST =	$(html_doc_en) \
 		$(html_doc_de) \
+		$(html_doc_it) \
 		$(html_doc_pictures_en) \
 		reference.css
 
@@ -68,4 +80,3 @@ htmldoc_DATA =	$(html_doc_en) \
 		reference.css
 
 htmldocdir = $(datadir)/liferea/doc/html
-
