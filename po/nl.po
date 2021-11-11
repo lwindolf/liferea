@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2013-06-14 08:11+0100\n"
 "Last-Translator: Erwin Poeze <erwin.poeze@gmail.com>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podcast"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -143,7 +143,7 @@ msgstr "Als gelezen _markeren"
 msgid "Search All Feeds..."
 msgstr "Alle feeds doorzoeken..."
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Feed bijwerken"
@@ -311,16 +311,16 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr "<i>Herstart Liferea om de veranderingen te activeren.</i>"
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 #, fuzzy
 msgid "Show / Hide"
 msgstr "Details tonen"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 #, fuzzy
 msgid "Quit"
 msgstr "_Afsluiten"
@@ -330,7 +330,7 @@ msgstr "_Afsluiten"
 msgid "Browser command failed: %s"
 msgstr "Browseropdracht is mislukt: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Openen: \"%s\""
@@ -345,7 +345,7 @@ msgstr "Aanmeldfout"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Buffergeheugenmap \"%s\" kan niet worden aangemaakt!"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -464,16 +464,6 @@ msgstr "Feedlijst exporteren"
 msgid "Export"
 msgstr "Exporteren"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" is niet beschikbaar"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" is bijgewerkt..."
-
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Leeg document!"
@@ -568,7 +558,7 @@ msgid ""
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -582,7 +572,7 @@ msgstr "JSON afkomstig van tt-rss API kan niet worden ontleed."
 msgid "There are no unread items"
 msgstr "Er zijn geen ongelezen items "
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -590,47 +580,47 @@ msgstr ""
 "Liferea starten met het hoofdvenster in STATUS. STATUS kan `shown', "
 "`iconified' of `hidden' zijn"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr "STATUS"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 msgid "Show version information and exit"
 msgstr "Versieinformatie tonen en stoppen"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "Add a new subscription"
 msgstr "Nieuw abonnement toevoegen"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages of all types"
 msgstr "Alle soorten foutmeldingen tonen"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the cache handling"
 msgstr "Foutmeldingen over het gebruik van buffergeheugen tonen"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the configuration handling"
 msgstr "Foutmeldingen over de configuratieafhandeling tonen"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of the database handling"
 msgstr "Foutmeldingen over de databaseafhandeling tonen"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all GUI functions"
 msgstr "Foutmeldingen over alle GUI-functies tonen"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -638,73 +628,72 @@ msgstr ""
 "Foutopsporing HTML-opmaak inschakelen. Iedere keer dat Liferea HTML-uitvoer "
 "opmaakt, zal het deze ook wegschrijven naar ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all network activity"
 msgstr "Foutmeldingen over alle netwerkactiviteiten tonen"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all parsing functions"
 msgstr "Foutmeldingen over alle inleesfuncties tonen"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "Foutmeldingen tonen als een functie er te lang over doet"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Foutmeldingen over het starten en stoppen van functies tonen"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the feed update processing"
 msgstr "Foutmeldingen over het bijwerken van feeds tonen"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the search folder matching"
 msgstr "Foutmeldingen over overeenkomsten van de zoekmap tonen"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 msgid "Print verbose debugging messages"
 msgstr "Uitgebreide foutmeldingen tonen"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 msgid "Print debugging messages for the given topic"
 msgstr "Foutmeldingen over het opgegeven onderwerp tonen"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr "Het verzoek tot bijwerken is geannuleerd"
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr "Kan hostnaam van bestemming niet bepalen"
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr "Kan hostnaam van proxy niet bepalen"
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 msgid "Unable to connect to remote host"
 msgstr "Verbinding met remote host is mislukt"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr "Kan niet met proxy verbinden"
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
-"Er is een netwerkfout opgetreden of de andere kant heeft de verbinding "
-"plotseling verbroken"
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr "De bron is permanent naar een nieuwe locatie verplaatst"
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -712,35 +701,35 @@ msgstr ""
 "U heeft geen toestemming om deze feed te downloaden. Voer de juiste "
 "gebruikersnaam en het wachtwoord in bij het eigenschappenvenster van de feed"
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 msgid "Payment required"
 msgstr "Betaling vereist"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr "U heeft geen toegang tot deze bron"
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Bron niet gevonden"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Niet-toegestane methode"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Niet aanvaardbaar"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 msgid "Proxy authentication required"
 msgstr "Aanmelding bij proxy vereist"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 msgid "Request timed out"
 msgstr "Wachttijd verzoek overschreden"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -750,24 +739,24 @@ msgstr ""
 "Deze feed is gestopt en niet langer beschikbaar. Liferea zal hem niet meer "
 "bijwerken, maar de opgeslagen koppen zijn nog wel te bekijken."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr "Er is een interne fout opgetreden tijdens het bijwerken"
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Feed niet bereikbaar: niet-ondersteunde omleiding aangevraagd door server!"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Clientfout"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Serverfout"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 msgid "An unknown networking error happened!"
 msgstr "Een onbekende netwerkfout!"
 
@@ -1003,7 +992,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Weet u zeker dat u \"%s\" wilt verwijderen?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 #, fuzzy
 msgid "_Cancel"
 msgstr "_Alles annuleren"
@@ -1066,33 +1054,33 @@ msgstr "Selecteer een feed om zijn items te verwijderen!"
 msgid "No item has been selected"
 msgstr "Er is geen item geselecteerd"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d nieuw)"
 msgstr[1] " (%d nieuwe)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d ongelezen%s"
 msgstr[1] "%d ongelezen%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Hulponderwerpen"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Sneltoetsen"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "Vaak gestelde vragen"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Browseropdracht is mislukt: %s"
@@ -1270,7 +1258,7 @@ msgstr "Soort"
 msgid "Program"
 msgstr "Programma"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 #, fuzzy
 msgid "Saved Search"
 msgstr "Uitgebreid zoeken"
@@ -1289,7 +1277,7 @@ msgstr[1] ""
 msgid "This feed specifies no default update interval."
 msgstr "Deze feed specificeert geen standaardbijwerkinterval."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 msgid "All Files"
 msgstr "Alle bestanden"
 
@@ -1325,67 +1313,71 @@ msgstr "Fout: bestand \"%s\" bestaat niet"
 msgid "New Search Folder"
 msgstr "Nieuwe zoekmap"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 msgid "Open Link In _Tab"
 msgstr "Koppeling in _tabblad openen"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "Koppeling in browser _openen"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "Koppeling in externe browser _openen"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Blad_wijzer koppeling toevoegen als %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 msgid "_Copy Link Location"
 msgstr "Koppeling _kopiëren"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 #, fuzzy
 msgid "_View Image"
 msgstr "Afbeelding _opslaan als"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 msgid "_Copy Image Location"
 msgstr "Afbeeldingslocatie _kopiëren"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 msgid "S_ave Link As"
 msgstr "Koppeling _opslaan als"
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr "Afbeelding _opslaan als"
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 msgid "_Subscribe..."
 msgstr "_Abonneren..."
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "Tekst ver_groten"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "Tekst ver_kleinen"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+msgid "_Reader Mode"
+msgstr ""
+
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Er zijn meer fouten. Uitvoer is afgekapt!]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "xml-parser: kan document niet ontleden:\n"
 
@@ -2403,6 +2395,21 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Zoeken in map:"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "\"%s\" is niet beschikbaar"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "\"%s\" is bijgewerkt..."
+
+#~ msgid ""
+#~ "A network error occurred, or the other end closed the connection "
+#~ "unexpectedly"
+#~ msgstr ""
+#~ "Er is een netwerkfout opgetreden of de andere kant heeft de verbinding "
+#~ "plotseling verbroken"
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"

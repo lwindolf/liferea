@@ -30,6 +30,7 @@ css_DATA = \
 
 jsdir = $(pkgdatadir)/js
 js_DATA = \
+	js/gresource.xml \
 	js/htmlview.js \
 	js/Readability.js
 

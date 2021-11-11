@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea git-master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2017-02-18 15:18+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <gnome-vi-list@gnome.org>\n"
@@ -76,7 +76,7 @@ msgstr "Khớp các mục tin sử dụng các thư mục tìm kiếm"
 msgid "Play Podcasts"
 msgstr "Chơi Podcast"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -144,7 +144,7 @@ msgstr "Đánh dấ_u các mục là đã đọc"
 msgid "Search All Feeds..."
 msgstr "Tìm trong tất cả các Feed…"
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Cập nhật feed"
@@ -311,16 +311,16 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 #, fuzzy
 msgid "Show / Hide"
 msgstr "Hiển thị chi tiết"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 #, fuzzy
 msgid "Quit"
 msgstr "T_hoát"
@@ -330,7 +330,7 @@ msgstr "T_hoát"
 msgid "Browser command failed: %s"
 msgstr "Lệnh duyệt gặp lỗi: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Đang khởi chạy: \"%s\""
@@ -345,7 +345,7 @@ msgstr "Lỗi xác thực"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Không thể tạo thư mục nhớ đệm \"%s\"!"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -464,16 +464,6 @@ msgstr "Xuất ra danh sách feed"
 msgid "Export"
 msgstr "Xuất"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\"  không sẵn sàng"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" đã được cập nhật…"
-
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Tài liệu rỗng!"
@@ -572,7 +562,7 @@ msgstr ""
 "Phiên bản TinyTinyRSS này không hỗ trợ xóa bỏ các feed. Hãy nâng cấp lên "
 "phiên bản %s hay mới hơn!"
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -585,54 +575,54 @@ msgstr "Không thể phân tích cú pháp của JSON được trả về từ A
 msgid "There are no unread items"
 msgstr "Không có mục tin nào chưa đọc cả"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "Khởi động Liferea với cửa sổ chính trong trạng thái STATE. STATE có thể là "
 "“shown” hoặc “hidden”"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr "TRẠNG-THÁI"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 msgid "Show version information and exit"
 msgstr "hiển thị thông tin phiên bản rồi thoát"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "Add a new subscription"
 msgstr "Thêm một địa chỉ đặt xem dài hạn"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages of all types"
 msgstr "Hiển thị ra thông tin để gỡ lỗi cho tất cả các kiểu"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the cache handling"
 msgstr "Hiển thị ra thông tin để gỡ lỗi cho bộ tiếp hợp bộ nhớ tạm"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the configuration handling"
 msgstr "Hiển thị ra thông tin để gỡ lỗi cho bộ tiếp hợp cấu hình"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of the database handling"
 msgstr "Hiển thị ra thông tin để gỡ lỗi cho bộ tiếp hợp cơ sở dữ liệu"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all GUI functions"
 msgstr "Hiển thị ra thông tin để gỡ lỗi cho tất cả các hàm GUI"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -640,74 +630,74 @@ msgstr ""
 "Cho phép gỡ lỗi biểu diễn HTML. Mỗi khi Liferea biểu diễn kết xuất HTML nó "
 "cũng đồng thời đổ đống trang HTML đã tạo vào ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all network activity"
 msgstr ""
 "Hiển thị ra thông tin để gỡ lỗi cho tất cả các kết nối mạng đang hoạt động"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all parsing functions"
 msgstr "Hiển thị ra thông tin để gỡ lỗi cho tất cả các hàm phân tích cú pháp"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Hiển thị ra thông tin để gỡ lỗi khi một hàm xử lý mất quá nhiều thời gian"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Hiển thị ra thông tin để gỡ lỗi khi vào/rời_khỏi hàm"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the feed update processing"
 msgstr "Hiển thị ra thông tin để gỡ lỗi cho tiến trình cập nhật feed"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the search folder matching"
 msgstr "Hiển thị ra thông tin để gỡ lỗi cho thư mục tìm kiếm hợp"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 msgid "Print verbose debugging messages"
 msgstr "Hiển thị thông tin gỡ lỗi chi tiết"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 msgid "Print debugging messages for the given topic"
 msgstr "Hiển thị ra thông tin để gỡ lỗi cho chủ đề đã chỉ ra"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr "Yêu cầu cập nhật đã bị hủy bỏ"
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr "Không thể phân giải tên máy của máy phục vụ đích"
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr "Không thể phân giải tên máy chủ ủy thác"
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 msgid "Unable to connect to remote host"
 msgstr "Không thể kết nối đến máy chủ"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr "Không thể kết nối đến máy chủ ủy thác"
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
-"Mạng xảy ra lỗi, hoặc là một chương trình khác đã đóng kết nối đột xuất"
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr "Nguồn tài nguyên đã thực sự được thay đổi sang vị trí mới"
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -715,35 +705,35 @@ msgstr ""
 "Bạn không đủ thẩm quyền để tải về feed này. Hãy cập nhật tài khoản và mật "
 "khẩu trong hộp thoại thuộc tính của feed"
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 msgid "Payment required"
 msgstr "Yêu cầu phải trả tiền"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr "Bạn không được phép truy cập vào tài nguyên này"
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Không tìm thấy tài nguyên"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Phương thức không được phép"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Không được chấp nhận"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 msgid "Proxy authentication required"
 msgstr "Máy chủ ủy thác proxy yêu cầu xác thực"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 msgid "Request timed out"
 msgstr "Kết nối bị lỗi quá thời gian"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -754,24 +744,24 @@ msgstr ""
 "không thể cập nhật thêm nữa nhưng bạn vẫn có thể truy cập các đề mục đã được "
 "nhớ tạm."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr "Có một lỗi nội bộ trong quá trình cập nhật"
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Feed không sẵn sàng: Máy chủ được yêu cầu đã không hỗ trợ chuyển hướng!"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Lỗi máy khách"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Lỗi máy phục vụ"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 msgid "An unknown networking error happened!"
 msgstr "Một lỗi mạng không rõ đã xảy ra!"
 
@@ -1009,7 +999,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Bạn có chắc muốn xóa bỏ\"%s\" không?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 msgid "_Cancel"
 msgstr "T_hôi"
 
@@ -1071,31 +1060,31 @@ msgstr "Bạn phải chọn một feed để mà xóa bỏ các mục tin của 
 msgid "No item has been selected"
 msgstr "Không có mục nào được chọn"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d mới)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d chưa đọc%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Trợ Giúp Theo Chủ Đề"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Tham khảo nhanh"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Lệnh duyệt gặp lỗi: %s"
@@ -1273,7 +1262,7 @@ msgstr "Kiểu"
 msgid "Program"
 msgstr "Chương trình"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
 msgstr "Tìm kiếm đã lưu"
 
@@ -1288,7 +1277,7 @@ msgstr[0] "Nơi cung cấp feed này đã gợi ý nhịp cập nhật là mỗi
 msgid "This feed specifies no default update interval."
 msgstr "Feed này ghi rõ không có nhịp cập nhật mặc định"
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 msgid "All Files"
 msgstr "Mọi kiểu tập tin"
 
@@ -1322,65 +1311,69 @@ msgstr "Lỗi: Không có tập tin \"%s\""
 msgid "New Search Folder"
 msgstr "Thêm thư mục tìm kiếm"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 msgid "Open Link In _Tab"
 msgstr "Mở liên kết trong _Tab"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 msgid "Open Link In Browser"
 msgstr "Mở liên kết trong trình duyệt"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 msgid "Open Link In External Browser"
 msgstr "Mở liên kết trong trình duyệt ngoài"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Đánh dấu liên kết ở %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 msgid "_Copy Link Location"
 msgstr "Sao chép địa chỉ liên kết"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 #, fuzzy
 msgid "_View Image"
 msgstr "Ghi lại ảnh với tên"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 msgid "_Copy Image Location"
 msgstr "Sao chép địa chỉ của ảnh"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 msgid "S_ave Link As"
 msgstr "Ghi lại Link với tên"
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr "Ghi lại ảnh với tên"
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 msgid "_Subscribe..."
 msgstr "Đặt _dài hạn…"
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr "_Sao chép"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "Tăn_g kích thước chữ"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "Giả_m kích thước chữ"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+msgid "_Reader Mode"
+msgstr ""
+
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Ở đây có nhiều lỗi. Kết xuất đã bị cắt cụt!]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML Parser: Không thể phân tích tài liệu:\n"
 
@@ -2398,6 +2391,20 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Thư mục tìm kiếm:"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "\"%s\"  không sẵn sàng"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "\"%s\" đã được cập nhật…"
+
+#~ msgid ""
+#~ "A network error occurred, or the other end closed the connection "
+#~ "unexpectedly"
+#~ msgstr ""
+#~ "Mạng xảy ra lỗi, hoặc là một chương trình khác đã đóng kết nối đột xuất"
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"

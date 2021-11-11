@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2004-10-24 02:34+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -75,7 +75,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr ""
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 #, fuzzy
 msgid "Liferea"
@@ -147,7 +147,7 @@ msgstr "_Обележи како прочитано"
 msgid "Search All Feeds..."
 msgstr "Барај во сите вести."
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Кеш за вести"
@@ -312,15 +312,15 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 msgid "Show / Hide"
 msgstr ""
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 #, fuzzy
 msgid "Quit"
 msgstr "/_Излез"
@@ -330,7 +330,7 @@ msgstr "/_Излез"
 msgid "Browser command failed: %s"
 msgstr "команда за прелистувач е науспешна: \"%s\""
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Отворам: \"%s\""
@@ -346,7 +346,7 @@ msgstr "Автентикација"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Не може да се креира папката за кеш %s!"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -457,16 +457,6 @@ msgstr "Извези листа на вести"
 msgid "Export"
 msgstr "Извези"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" е недостапно!"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" ажурирано..."
-
 #: ../src/feed_parser.c:201
 #, fuzzy
 msgid "Empty document!"
@@ -564,7 +554,7 @@ msgid ""
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr ""
 
@@ -578,140 +568,141 @@ msgstr ""
 msgid "There are no unread items"
 msgstr "Сите вести се прочитани!"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr ""
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version        Покажи ја верзијата на Лајфри"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Нова претплата"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr ""
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr "  --debug-all      Print debugging messages of all types"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr "  --debug-cache    Print debugging messages for the cache handling"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr ""
 "  --debug-conf     Print debugging messages of the configuration handling"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr "  --debug-cache    Print debugging messages for the cache handling"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 #, fuzzy
 msgid "Print debugging messages of all GUI functions"
 msgstr "  --debug-gui      Print debugging messages of all GUI functions"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 #, fuzzy
 msgid "Print debugging messages of all network activity"
 msgstr "  --debug-all      Print debugging messages of all types"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 #, fuzzy
 msgid "Print debugging messages of all parsing functions"
 msgstr "  --debug-parsing  Print debugging messages of all parsing functions"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 #, fuzzy
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace    Print debugging messages when entering/leaving functions"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Print debugging messages of the feed update processing"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "  --debug-cache    Print debugging messages for the cache handling"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 #, fuzzy
 msgid "Print verbose debugging messages"
 msgstr "  --debug-verbose  Print verbose debugging messages"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr "  --debug-cache    Print debugging messages for the cache handling"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Грешка во поврзувањето со адресата"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -720,38 +711,38 @@ msgstr ""
 "Немате дозвола за преземање на овие вести. Ве молам ажурирајте го Вашето "
 "корисничко име и лозинка во прозорецот за својства на веста."
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 #, fuzzy
 msgid "Payment required"
 msgstr "Потребна е уплата"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Нема ресурси"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Методот не е дозволен"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Не е прифатливо"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Потребна е Proxy автентикација"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 #, fuzzy
 msgid "Request timed out"
 msgstr "Барањето истече"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -761,24 +752,24 @@ msgstr ""
 "Овие вести веќе нема да се ажурираат, но се уште можете да ги гледате "
 "кешираните наслови."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Вестите се недостапни: Серверот сигнализираше неподдржано пренасочување!"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Клиентска грешка"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Грешка на опслужувачот"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(unknown error class)"
@@ -1020,7 +1011,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Дали сте сигурни дека саката да избришете \"%s\"?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 #, fuzzy
 msgid "_Cancel"
 msgstr "_Ажурирај ги сите"
@@ -1086,7 +1076,7 @@ msgstr "Мора да одбереш вест за бришење на став�
 msgid "No item has been selected"
 msgstr "Нема означени ставки!"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1094,7 +1084,7 @@ msgstr[0] "%d нов предмет!"
 msgstr[1] "%d нови предмети!"
 msgstr[2] "%d нови предмети!"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1102,20 +1092,20 @@ msgstr[0] "е непрочитано"
 msgstr[1] "е непрочитано"
 msgstr[2] "е непрочитано"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 #, fuzzy
 msgid "Quick Reference"
 msgstr "Уреди ги параметрите."
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "команда за прелистувач е науспешна: \"%s\""
@@ -1314,7 +1304,7 @@ msgstr "вид"
 msgid "Program"
 msgstr "_Апликација"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 #, fuzzy
 msgid "Saved Search"
 msgstr "Пребарување со Feedster"
@@ -1332,7 +1322,7 @@ msgstr[2] "Опслужувачот на овие вести сугерира в
 msgid "This feed specifies no default update interval."
 msgstr "Овие вести немаат информација за време на ажурирање."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 #, fuzzy
 msgid "All Files"
 msgstr "_Датотека"
@@ -1368,72 +1358,76 @@ msgstr "Грешка: Не постои датотеката \"%s\"!"
 msgid "New Search Folder"
 msgstr "Нова папка"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 #, fuzzy
 msgid "Open Link In _Tab"
 msgstr "/_Отвори во прелистувач"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "/_Отвори во прелистувач"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "/_Отвори во прелистувач"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Копирај ја локацијата на врската"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 #, fuzzy
 msgid "_View Image"
 msgstr "_Поглед"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "/_Копирај ја локацијата на врската"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 msgid "S_ave Link As"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Претплати се..."
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "_Зголеми го текстот"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "_Намали го текстот"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+msgid "_Reader Mode"
+msgstr ""
+
+#: ../src/xml.c:426
 #, fuzzy
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Грешката од излезот на парсерот е скратена!]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 #, fuzzy
 msgid "XML Parser: Could not parse document:\n"
 msgstr ""
@@ -2514,6 +2508,14 @@ msgstr ""
 #, fuzzy
 msgid "Search Folder:"
 msgstr "Барај за"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "\"%s\" е недостапно!"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "\"%s\" ажурирано..."
 
 #, fuzzy
 #~ msgid ""

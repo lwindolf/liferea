@@ -86,7 +86,12 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	debug1 (DEBUG_NET, "download status code: %d", msg->status_code);
 	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
 
+#ifdef HAVE_G_MEMDUP2
+	job->result->data = g_memdup2 (msg->response_body->data, msg->response_body->length+1);
+#else
 	job->result->data = g_memdup (msg->response_body->data, msg->response_body->length+1);
+#endif
+
 	job->result->size = (size_t)msg->response_body->length;
 	debug1 (DEBUG_NET, "%d bytes downloaded", job->result->size);
 
@@ -439,7 +444,7 @@ network_strerror (gint status)
 		case SOUP_STATUS_CANT_RESOLVE_PROXY:	tmp = _("Unable to resolve proxy host name"); break;
 		case SOUP_STATUS_CANT_CONNECT:		tmp = _("Unable to connect to remote host"); break;
 		case SOUP_STATUS_CANT_CONNECT_PROXY:	tmp = _("Unable to connect to proxy"); break;
-		case SOUP_STATUS_SSL_FAILED:		tmp = _("A network error occurred, or the other end closed the connection unexpectedly"); break;
+		case SOUP_STATUS_SSL_FAILED:		tmp = _("SSL/TLS negotiation failed. Possible outdated or unsupported encryption algorithm. Check your operating system settings."); break;
 
 		/* http 3xx redirection */
 		case SOUP_STATUS_MOVED_PERMANENTLY:	tmp = _("The resource moved permanently to a new location"); break;

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.10.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2020-10-07 02:26+0700\n"
 "Last-Translator: Samsul Maarif <mail@samsul.web.id>\n"
 "Language-Team: Indonesian\n"
@@ -73,7 +73,7 @@ msgstr "Item yang sesuai menggunakan pencarian folder"
 msgid "Play Podcasts"
 msgstr "Mainkan Podcast"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -140,7 +140,7 @@ msgstr "_Tandai Item Dibaca"
 msgid "Search All Feeds..."
 msgstr "Cari Semua Feed..."
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Pembaruan Feed"
@@ -307,16 +307,16 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 #, fuzzy
 msgid "Show / Hide"
 msgstr "Tampilkan rincian"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 #, fuzzy
 msgid "Quit"
 msgstr "_Keluar"
@@ -326,7 +326,7 @@ msgstr "_Keluar"
 msgid "Browser command failed: %s"
 msgstr "Perintah peramban gagal: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Memulai: \"%s\""
@@ -341,7 +341,7 @@ msgstr "Kesalahan Otorisasi"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Tidak dapat membuat direktori cache \"%s\""
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -460,16 +460,6 @@ msgstr "Ekspor Daftar Feed"
 msgid "Export"
 msgstr "Ekspor"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" tidak tersedia"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" diperbarui..."
-
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Dokumen kosong!"
@@ -566,7 +556,7 @@ msgstr ""
 "Versi TinyTinyRSS ini tidak mendukung penghapusan feed. Perbarui ke versi %s "
 "atau lebih baru!"
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -579,54 +569,54 @@ msgstr "Tidak dapat mengurai JSON yang dihasilkan oleh API TinyTinyRSS!"
 msgid "There are no unread items"
 msgstr "Tidak ada item yang belum dibaca"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "Mulai Liferea dengan jendela utamanya di STATE. STATE mungkin `shown`, atau "
 "`hidden`"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr "STATE"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 msgid "Show version information and exit"
 msgstr "Tampilkan informasi versi dan keluar"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "Add a new subscription"
 msgstr "Tambahkan langganan baru"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr "Mulai dengan semua pengaya dinonaktifkan"
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages of all types"
 msgstr "Cetak pesan debut semua tipe"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the cache handling"
 msgstr "Cetak pesan debug untuk menangani cache"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the configuration handling"
 msgstr "Cetak pesan debug untuk menangani konfigurasi"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of the database handling"
 msgstr "Cetak pesan debug untuk mengangani basisdata"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all GUI functions"
 msgstr "Cetak pesan debut untuk semua fungsi GUI"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -634,73 +624,72 @@ msgstr ""
 "Aktifkan debug HTML render. Setiap Liferea merender keluaran HTML akan "
 "melimpahkan HTML yang digenerate ke ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all network activity"
 msgstr "Cetak pesan debug untuk semua aktifitas jaringan"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all parsing functions"
 msgstr "Cetak pesan debug untuk mengurai semua fungsi"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "Cetak pesan debug ketika fungsi sangat lama diproses"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Cetak pesan debug ketika memasuki/keluar dari fungsi"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the feed update processing"
 msgstr "Cetak pesan debug dari proses pembaruan feed"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the search folder matching"
 msgstr "Cetak pesan debug untuk pencarian folder yang cocok"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 msgid "Print verbose debugging messages"
 msgstr "Cetak secara verbose pesan debug"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 msgid "Print debugging messages for the given topic"
 msgstr "Cetak pesan debug untuk topik yang diberikan"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr "Permintaan pembaruan dibatalkan"
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr "Tidak dapat menemukan tujuan nama host"
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr "Tidak dapat menemukan nama host proxy"
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 msgid "Unable to connect to remote host"
 msgstr "Tidak dapat terhubung ke remote host"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr "Tidak dapat terhubung ke proxy"
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
-"Terjadi kesalahan jaringan, atau yang lain menutp koneksi yang tidak "
-"diharapkan"
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr "Sumberdaya dipindah ke lokasi baru secara permanen"
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -708,35 +697,35 @@ msgstr ""
 "Anda tidak berhak mengunduh feed ini. Silahkan perbarui nama pengguna dan "
 "sandi lewat Anda di kotak dialog properti feed"
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 msgid "Payment required"
 msgstr "Pembayaran diperlukan"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr "Anda tidak diperbolehkan mengakses sumber daya ini"
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Sumber Daya Tidak Ditemukan"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Metode Tidak Diperbolehkan"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Tidak Dapat Diterima"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 msgid "Proxy authentication required"
 msgstr "Otentikasi proxy diperlukan"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 msgid "Request timed out"
 msgstr "Permintaan terlalu lama"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -746,23 +735,23 @@ msgstr ""
 "Feed ini dihentikan. Tidak lagi tersedia. Liferea tidak akan memerbaruinya "
 "lagi namun Anda masih dapat mengakses cache berita utama."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr "Ada kesalahan internal pada proses update"
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Feed tidak tersedia: Server meminta redireksi yang tak didukung!"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Kesalahan Klien"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Kesalahan Server"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 msgid "An unknown networking error happened!"
 msgstr "Terjadi kesalahan jaringan yang tidak diketahui!"
 
@@ -997,7 +986,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Anda yakin hendak menghapus \"%s\"?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 msgid "_Cancel"
 msgstr "Ba_talkan"
 
@@ -1060,33 +1048,33 @@ msgstr "Anda harus memilih feed yang akan dihapus itemnya!"
 msgid "No item has been selected"
 msgstr "Tidak ada item terpilih"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d baru)"
 msgstr[1] " (%d baru)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d belum dibaca%s"
 msgstr[1] "%d belum dibaca%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Topik Bantuan"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Referensi Cepat"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, c-format
 msgid "Email command failed: %s"
 msgstr "Perintah surel gagal: %s"
@@ -1264,7 +1252,7 @@ msgstr "Tipe"
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
 msgstr "Pencarian Tersimpan"
 
@@ -1280,7 +1268,7 @@ msgstr[1] "Penyedia feed ini menyarankan interval pembaruan %d menit."
 msgid "This feed specifies no default update interval."
 msgstr "Feed ini tidak ditentukan interval pembaruannya."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 msgid "All Files"
 msgstr "Semua Berkas"
 
@@ -1314,64 +1302,68 @@ msgstr "Kesalahan: Tidak ada berkas \"%s\""
 msgid "New Search Folder"
 msgstr "Pencarian Folder Baru"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 msgid "Open Link In _Tab"
 msgstr "Buka Tautan di _Tab"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 msgid "Open Link In Browser"
 msgstr "Buka Tautan di Peramban"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 msgid "Open Link In External Browser"
 msgstr "Buka Tautan di Peramban Eksternal"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_Markah Tautan pada %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 msgid "_Copy Link Location"
 msgstr "_Salin Tautan Lokasi"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 msgid "_View Image"
 msgstr "_Tampilkan Gambar"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 msgid "_Copy Image Location"
 msgstr "Salin Lokasi _Gambar"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 msgid "S_ave Link As"
 msgstr "Simpan T_autan dengan Nama"
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr "Simpan Gam_bar dengan Nama"
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 msgid "_Subscribe..."
 msgstr "_Langgan..."
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr "_Salin"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "_Perbesar Ukuran Teks"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "_Kecilkan Ukuran Teks"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+msgid "_Reader Mode"
+msgstr ""
+
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Ada error baru. Keluaran telah dipotong!]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Pengurai XML: Tidak dapat mengurai dokumen:\n"
 
@@ -2379,6 +2371,21 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Cari Folder:"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "\"%s\" tidak tersedia"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "\"%s\" diperbarui..."
+
+#~ msgid ""
+#~ "A network error occurred, or the other end closed the connection "
+#~ "unexpectedly"
+#~ msgstr ""
+#~ "Terjadi kesalahan jaringan, atau yang lain menutp koneksi yang tidak "
+#~ "diharapkan"
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"

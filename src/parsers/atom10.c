@@ -22,6 +22,7 @@
 #include "atom10.h"
 
 #include <string.h>
+#include <strings.h>
 
 #include "common.h"
 #include "date.h"

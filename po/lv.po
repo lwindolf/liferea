@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2014-04-20 20:59+0300\n"
 "Last-Translator: Rihards Prieditis <rprieditis@gmail.com>\n"
 "Language-Team: Latvian <translation-team-lv@lists.sourceforge.net>\n"
@@ -81,7 +81,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podraide"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -147,7 +147,7 @@ msgstr "Atzī_mēt kā lasītus"
 msgid "Search All Feeds..."
 msgstr "Meklēt visās plūsmās..."
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Plūsmu atjaunināšana"
@@ -314,16 +314,16 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 #, fuzzy
 msgid "Show / Hide"
 msgstr "Rādīt sīkāku informāciju"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 #, fuzzy
 msgid "Quit"
 msgstr "_Iziet"
@@ -333,7 +333,7 @@ msgstr "_Iziet"
 msgid "Browser command failed: %s"
 msgstr "Pārlūka komanda cieta neveiksmi — %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Palaiž: “%s”"
@@ -348,7 +348,7 @@ msgstr "Pilnvarošanas kļūda"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nevar izveidot kešatmiņas mapi “%s”!"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -463,16 +463,6 @@ msgstr "Eksportēt plūsmu sarakstu"
 msgid "Export"
 msgstr "Eksportēt"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "“%s” nav pieejams"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "“%s” ir atjaunināts..."
-
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Tukšs dokuments!"
@@ -567,7 +557,7 @@ msgid ""
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -581,7 +571,7 @@ msgstr "Nevarēja parsēt JSON, atgriezta tt-rss API!"
 msgid "There are no unread items"
 msgstr "Nav nelasītu vienumu "
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -589,47 +579,47 @@ msgstr ""
 "Palaist Liferea ar tā galveno logu stāvoklī STATE. STATE var būt “shown”, "
 "“iconified” vai “hidden”"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr "STATE"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 msgid "Show version information and exit"
 msgstr "Parādīt informāciju par versiju un iziet"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "Add a new subscription"
 msgstr "Pievienot jaunu abonementu"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages of all types"
 msgstr "Izdrukāt atkļūdošanas ziņojumus visiem tipiem"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the cache handling"
 msgstr "Izdrukāt atkļūdošanas ziņojumus kešatmiņas apstrādāšanai"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the configuration handling"
 msgstr "Izdrukāt atkļūdošanas ziņojumus konfigurācijas apstrādāšanai"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of the database handling"
 msgstr "Izdrukāt atkļūdošanas ziņojumus datubāzes apstrādāšanai"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all GUI functions"
 msgstr "Izdrukāt atkļūdošanas ziņojumus visām GUI funkcijām"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -637,71 +627,72 @@ msgstr ""
 "Aktivē HTML renderēšanas atkļūdošanu. Katru reizi, kad Liferea renderē HTML "
 "izvadu, tas novieto HTML datnē ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all network activity"
 msgstr "Izdrukāt atkļūdošanas ziņojumus visām tīkla aktivitātēm"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all parsing functions"
 msgstr "Izdrukāt atkļūdošanas ziņojumus visām parsēšanas funkcijām"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "Izdrukāt atkļūdošanas ziņojumus, kad funkcija aizņem pārāk daudz laika"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Izdrukāt atkļūdošanas ziņojumus, kad ieiet/pamet funkcijas"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the feed update processing"
 msgstr "Izdrukāt atkļūdošanas ziņojumus par plūsmu atjaunināšanas apstrādi"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the search folder matching"
 msgstr "Izdrukāt atkļūdošanas ziņojumus atbilstošām meklēšanas mapēm"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 msgid "Print verbose debugging messages"
 msgstr "Izdrukāt detalizētus atkļūdošanas ziņojumus"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 msgid "Print debugging messages for the given topic"
 msgstr "Izdrukāt atkļūdošanas ziņojumus dotajam tematam"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr "Atjaunināšanas pieprasījums tika atcelts"
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr "Neizdevās sameklēt mērķa datora nosaukumu"
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr "Neizdevās sameklēt starpniekservera nosaukumu"
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 msgid "Unable to connect to remote host"
 msgstr "Neizdevās savienoties ar attālināto datoru"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr "Neizdevās savienoties ar starpniekserveri"
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
-msgstr "Radās tīkla kļūda, vai arī otrā puse negaidīti aizvēra savienojumu"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
+msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr "Resurss ir pastāvīgi pārvietos uz citu vietu"
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -709,35 +700,35 @@ msgstr ""
 "Jūs neesat pilnvarots lejupielādēt šo plūsmu. Lūdzu, norādiet savu lietotāja "
 "vārdu un paroli plūsmas īpašību dialoglodziņā"
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 msgid "Payment required"
 msgstr "Nepieciešama apmaksa"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr "Jums nav atļaujas piekļūt šim resursam"
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Resurss nav atrasts"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Metode nav atļauta"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Nav pieņemams"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 msgid "Proxy authentication required"
 msgstr "Nepieciešama starpniekservera autentifikācija"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 msgid "Request timed out"
 msgstr "Laiks iztecējis"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -747,23 +738,23 @@ msgstr ""
 "Šī plūsma ir pārtraukta un vairs nav pieejama. Liferea to vairs "
 "neatjauninās, bet jūs vēl aizvien varat piekļūt saglabātajiem virsrakstiem."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr "Atjauninot radās iekšēja kļūda"
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Plūsma nav pieejama — serveris pieprasīja neatbalstītu pāradresēšanu!"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Klienta kļūda"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Servera kļūda"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 msgid "An unknown networking error happened!"
 msgstr "Radās nezināma tīkla kļūda!"
 
@@ -1000,7 +991,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Vai tiešām vēlaties dzēst “%s”?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 #, fuzzy
 msgid "_Cancel"
 msgstr "_Atcelt visu"
@@ -1063,7 +1053,7 @@ msgstr "Jums jāizvēlas plūsma, lai dzēstu tās vienumus!"
 msgid "No item has been selected"
 msgstr "Nav izvēlētu vienumu"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1071,7 +1061,7 @@ msgstr[0] " (%d jauns)"
 msgstr[1] " (%d jauni)"
 msgstr[2] " (%d jaunu)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1079,19 +1069,19 @@ msgstr[0] "%d nelasīta%s"
 msgstr[1] "%d nelasītas%s"
 msgstr[2] "%d nelasītu%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Palīdzības tēmas"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Ātrā rokasgrāmata"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "BUJ"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Pārlūka komanda cieta neveiksmi — %s"
@@ -1269,7 +1259,7 @@ msgstr "Veids"
 msgid "Program"
 msgstr "Programma"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 #, fuzzy
 msgid "Saved Search"
 msgstr "Paplašinātā meklēšana"
@@ -1287,7 +1277,7 @@ msgstr[2] "Šīs plūsmas piegādātājs iesaka atjaunināšanas intervālu %d m
 msgid "This feed specifies no default update interval."
 msgstr "Plūsma nenorāda noklusēto atjaunināšanas intervālu."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 msgid "All Files"
 msgstr "Visas datnes"
 
@@ -1321,67 +1311,71 @@ msgstr "Kļūda — nav datnes “%s”"
 msgid "New Search Folder"
 msgstr "Jauna meklēšanas mape"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 msgid "Open Link In _Tab"
 msgstr "Atvērt sai_ti cilnē"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "Atvērt saiti pār_lūkā"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "Atvērt saiti ārējā pār_lūkā"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Ie_grāmatot saiti %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 msgid "_Copy Link Location"
 msgstr "_Kopēt saites adresi"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 #, fuzzy
 msgid "_View Image"
 msgstr "S_aglabāt attēlu kā"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 msgid "_Copy Image Location"
 msgstr "_Kopēt attēla adresi"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 msgid "S_ave Link As"
 msgstr "S_aglabāt saiti kā"
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr "S_aglabāt attēlu kā"
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 msgid "_Subscribe..."
 msgstr "_Abonēt..."
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "Pal_ielināt teksta izmēru"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "_Samazināt teksta izmēru"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+msgid "_Reader Mode"
+msgstr ""
+
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Bija vairākas kļūdas. Izvade ir saīsināta!]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML parsētājs — neizdevās analizēt dokumentu:\n"
 
@@ -2400,6 +2394,19 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Meklēšanas mape:"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "“%s” nav pieejams"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "“%s” ir atjaunināts..."
+
+#~ msgid ""
+#~ "A network error occurred, or the other end closed the connection "
+#~ "unexpectedly"
+#~ msgstr "Radās tīkla kļūda, vai arī otrā puse negaidīti aizvēra savienojumu"
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"

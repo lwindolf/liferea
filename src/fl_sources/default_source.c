@@ -63,7 +63,7 @@ default_source_import (nodePtr node)
 			         "the feed list file %s from the backup in %s", filename, backupFilename);
 
 		/* upon successful import create a backup copy of the feed list */
-		if (g_file_get_contents (filename, &content, &length, NULL)) {
+		if (g_file_get_contents (filename, &content, (gsize *)&length, NULL)) {
 			g_file_set_contents (backupFilename, content, length, NULL);
 			g_free (content);
 		}

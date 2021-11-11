@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.0-rc6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2009-10-06 19:11+0200\n"
 "Last-Translator: Adi Roiban <adi@roiban.ro>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podcast"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -141,7 +141,7 @@ msgstr "_Marchează elementele ca citite"
 msgid "Search All Feeds..."
 msgstr "Căută toate fluxurile..."
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Actualizare flux"
@@ -307,16 +307,16 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr "<i>Restartați Liferea ca schimbările să aibă efect.</i>"
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 #, fuzzy
 msgid "Show / Hide"
 msgstr "Arată detalii"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 #, fuzzy
 msgid "Quit"
 msgstr "_Ieșire"
@@ -326,7 +326,7 @@ msgstr "_Ieșire"
 msgid "Browser command failed: %s"
 msgstr "Comanda de navigare a eșuat: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Se pornește: \"%s\""
@@ -341,7 +341,7 @@ msgstr "Eroare autorizare"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nu s-a putut creat dosar cache „%s”!"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -450,16 +450,6 @@ msgstr "Exportă listă flux"
 msgid "Export"
 msgstr "Exportă"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "„%s” nu este disponibil"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "„%s” actualizat..."
-
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Document gol!"
@@ -553,7 +543,7 @@ msgid ""
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr ""
 
@@ -567,7 +557,7 @@ msgstr ""
 msgid "There are no unread items"
 msgstr "Nu există elemente necitite "
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -575,50 +565,50 @@ msgstr ""
 "Pornește Liferea cu fereastră principală în STAREA. STAREA poate să fie "
 "„shown”, „iconified” sau „hidden”"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr "STARE"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 msgid "Show version information and exit"
 msgstr "Arată informația despre versiune și ieși"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Înscriere nouă"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr ""
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages of all types"
 msgstr "Afișează mesaje de notificare de toate tipurile"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the cache handling"
 msgstr "Afișează mesaje de depanare pentru gestionarea cacheului"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "Afișează mesaje de depanare pentru gestionarea configurației"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of the database handling"
 msgstr "Afișează mesaje de depanare pentru gestionarea bazei de date"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "Afișează mesaje de depanare pentru toate funcțiile interfeței cu utilizator"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -626,77 +616,76 @@ msgstr ""
 "Activează depanarea randării HTMLL. De fiecare dată când Liferea randează "
 "HTML va copia HTML-ul generat în ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all network activity"
 msgstr "Afișează mesaje de depanare pentru toată activitatea de rețea"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all parsing functions"
 msgstr "Afișează mesaje de depanare pentru toate funcțiile de analizare"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Afișează mesaje de depanare atunci când procesarea unei funcții durează prea "
 "mult"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Afișează mesaje de depanare la intrarea și ieșirea din funcții"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "Afișează mesaje de depanare pentru procesul de actualizare a fluxurilor"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "Afișează mesaje de depanare pentru gestionarea cacheului"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 msgid "Print verbose debugging messages"
 msgstr "Afișează mesaje de depanare detaliate"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 msgid "Print debugging messages for the given topic"
 msgstr "Afișează mesaje de depanare pentru subiectul specificat"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr "Cererea de actualizare a fost anulată"
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr "Nu s-a putut rezolva numele destinație"
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr "Nu s-a putut rezolva numele proxyului"
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 msgid "Unable to connect to remote host"
 msgstr "Nu s-a putut conecta la calculatorul la distanță"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr "Nu s-a putut conecta la proxy"
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
-"S-a produs o eroare de rețea, sau cealaltă parte a conexiunii a fost închisă "
-"neașteptat"
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr "Resursa a fost mutată permanent la o nouă locație"
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -704,35 +693,35 @@ msgstr ""
 "Nu aveți permisiunea de a descărca acest flux. Actualizați numele de "
 "utilizator și parola din dialogul de proprietăți a fluxului."
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 msgid "Payment required"
 msgstr "Necesită plată"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr "Nu aveți permisiunea de a accesa această resursă"
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Nu au fost găsite resursele"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Metoda nu este acceptată"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Nu este acceptabil"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 msgid "Proxy authentication required"
 msgstr "Autentificare proxy necesară"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 msgid "Request timed out"
 msgstr "Cererea a expirat"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -742,24 +731,24 @@ msgstr ""
 "Fluxul a fost întrerupt. Nu mai este disponibil. Liferea nu îl va mai "
 "actualiza dar puteți accesa titlurile din cache."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr "S-a produs o eroare internă în procesul de actualizare"
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Fluxul nu este disponibil: Redirecționare nesuportată cerută de server!"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Eroare la client"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Eroare la server"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 msgid "An unknown networking error happened!"
 msgstr "S-a produs o eroare necunoscută de rețea!"
 
@@ -994,7 +983,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Doriți să ștergeți %s?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 #, fuzzy
 msgid "_Cancel"
 msgstr "_Anulează tot"
@@ -1057,7 +1045,7 @@ msgstr "Trebuie să alegeți un flux pentru ai șterge elementele!"
 msgid "No item has been selected"
 msgstr "Nu a fost selectat nici un element"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1065,7 +1053,7 @@ msgstr[0] " (%d nou)"
 msgstr[1] " (%d noi)"
 msgstr[2] " (%d noi)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1073,19 +1061,19 @@ msgstr[0] "%d necitit%s"
 msgstr[1] "%d necitite%s"
 msgstr[2] "%d necitite%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Sumar pentru ajutor"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Referință rapidă"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "Întrebări frecvente"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Comanda de navigare a eșuat: %s"
@@ -1271,7 +1259,7 @@ msgstr "Tip"
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 #, fuzzy
 msgid "Saved Search"
 msgstr "Căutare avansată"
@@ -1292,7 +1280,7 @@ msgstr[2] ""
 msgid "This feed specifies no default update interval."
 msgstr "Acest flux nu are nici un interval implicit de actualizare."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 #, fuzzy
 msgid "All Files"
 msgstr "Fișier _local"
@@ -1328,70 +1316,74 @@ msgstr "Eroare: Nu este nici un fișier „%s”"
 msgid "New Search Folder"
 msgstr "Dosar nou de căutare"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 #, fuzzy
 msgid "Open Link In _Tab"
 msgstr "Deschide legătură în _tab"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "Deschide _legătură în navigator"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "Deschide _legătură în navigator"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_Memorează legătura la %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 msgid "_Copy Link Location"
 msgstr "_Copiază locația legăturii"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 #, fuzzy
 msgid "_View Image"
 msgstr "_Vizualizare"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "_Copiază locația legăturii"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "Salvează ca..."
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 msgid "_Subscribe..."
 msgstr "_Abonare..."
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "Crește măr_imea textului"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "Sca_de mărimea textului"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+msgid "_Reader Mode"
+msgstr ""
+
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Au existat mai multe erori. Ieșirea a fost trunchiată!]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Analizator XML: Nu s-a putut analiza documentul:\n"
 
@@ -2431,6 +2423,21 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Dosare căutare:"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "„%s” nu este disponibil"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "„%s” actualizat..."
+
+#~ msgid ""
+#~ "A network error occurred, or the other end closed the connection "
+#~ "unexpectedly"
+#~ msgstr ""
+#~ "S-a produs o eroare de rețea, sau cealaltă parte a conexiunii a fost "
+#~ "închisă neașteptat"
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"

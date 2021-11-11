@@ -369,32 +369,15 @@ liferea_htmlview_clear (LifereaHtmlView *htmlview)
 	liferea_htmlview_write (htmlview, "<html><body></body></html>", NULL);
 }
 
-static gboolean
-liferea_htmlview_is_special_url (const gchar *url)
-{
-	/* match against all special protocols, simple
-	   convention: all have to start with "liferea-" */
-	if (url == strstr (url, "liferea-"))
-		return TRUE;
-
-	return FALSE;
-}
-
 struct internalUriType {
 	const gchar	*suffix;
 	void		(*func)(itemPtr item);
 };
 
-static struct internalUriType internalUriTypes[] = {
-	{ "refresh-comments",	comments_refresh },
-	{ NULL,			NULL }
-};
-
 void
 liferea_htmlview_on_url (LifereaHtmlView *htmlview, const gchar *url)
 {
-	if (!liferea_htmlview_is_special_url (url))
-		g_signal_emit_by_name (htmlview, "statusbar-changed", url);
+	g_signal_emit_by_name (htmlview, "statusbar-changed", url);
 }
 
 void
@@ -441,7 +424,7 @@ liferea_htmlview_load_finished (LifereaHtmlView *htmlview, const gchar *location
 	    - for internal content: always (Readability is enable on demand here)
 	 */
 	if (htmlview->readerMode || (location == strstr (location, "liferea://"))) {
-		g_autoptr(GBytes) b1,b2;
+		g_autoptr(GBytes) b1 = NULL, b2 = NULL;
 
 		// Return Readability.js and Liferea specific loader code
 		b1 = g_resources_lookup_data ("/org/gnome/liferea/readability/Readability.js", 0, NULL);
@@ -466,7 +449,6 @@ liferea_htmlview_load_finished (LifereaHtmlView *htmlview, const gchar *location
 gboolean
 liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 {
-	struct internalUriType	*uriType;
 	gboolean browse_inside_application;
 
 	g_return_val_if_fail (htmlview, TRUE);
@@ -478,46 +460,6 @@ liferea_htmlview_handle_URL (LifereaHtmlView *htmlview, const gchar *url)
 	        browse_inside_application?"true":"false",
 	        htmlview->forceInternalBrowsing?"true":"false",
 		htmlview->internal?"true":"false");
-
-	/* first catch all links with special URLs... */
-	if (liferea_htmlview_is_special_url (url)) {
-		if (htmlview->internal) {
-
-			/* it is a generic item list URI type */
-			uriType = internalUriTypes;
-			while (uriType->suffix) {
-				if (!strncmp (url + strlen ("liferea-"), uriType->suffix, strlen (uriType->suffix))) {
-					gchar *nodeid, *itemnr;
-					nodeid = strstr (url, "://");
-					if (nodeid) {
-						nodeid += 3;
-						itemnr = strchr (nodeid, '-');
-						if (itemnr) {
-							itemPtr item;
-
-							*itemnr = 0;
-							itemnr++;
-
-							item = item_load (atol (itemnr));
-							if (item) {
-								(*uriType->func) (item);
-								item_unload (item);
-							} else {
-								g_warning ("Fatal: no item with id (node=%s, item=%s) found!!!", nodeid, itemnr);
-							}
-
-							return TRUE;
-						}
-					}
-				}
-				uriType++;
-			}
-			g_warning ("Internal error: unhandled protocol in URL \"%s\"!", url);
-		} else {
-			g_warning ("Security: Prevented external HTML document to use internal link scheme (%s)!", url);
-		}
-		return TRUE;
-	}
 
 	if(htmlview->forceInternalBrowsing || browse_inside_application) {
 		liferea_htmlview_launch_URL_internal (htmlview, url);

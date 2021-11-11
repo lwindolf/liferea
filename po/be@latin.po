@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2007-08-19 13:26+0300\n"
 "Last-Translator:  <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin\n"
@@ -75,7 +75,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podcast"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -143,7 +143,7 @@ msgstr "/_Zaznač jak pračytanaje"
 msgid "Search All Feeds..."
 msgstr "Šukaj va ŭsich kanałach..."
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Aktualizacyja kanału"
@@ -309,16 +309,16 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr "<i>Kali łaska, uruchom znoŭ Liferea, kab zadziejničać źmieny.</i>"
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 #, fuzzy
 msgid "Show / Hide"
 msgstr "Pakažy padrabiaznaści"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 #, fuzzy
 msgid "Quit"
 msgstr "_Vyjdzi"
@@ -328,7 +328,7 @@ msgstr "_Vyjdzi"
 msgid "Browser command failed: %s"
 msgstr "Pamyłka zahadu hartača: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Startujecca: \"%s\""
@@ -343,7 +343,7 @@ msgstr "Pamyłka aŭtaryzacyi"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Niemahčyma stvaryć kataloh padručnaj pamiaci \"%s\"!"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -454,16 +454,6 @@ msgstr "Ekspartuj śpis kanałaŭ"
 msgid "Export"
 msgstr "Ekspartuj"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "\"%s\" niedastupny"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "\"%s\" aktualizavany..."
-
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Pusty dakument!"
@@ -557,7 +547,7 @@ msgid ""
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr ""
 
@@ -571,154 +561,155 @@ msgstr ""
 msgid "There are no unread items"
 msgstr "Nia niečytanych elementaŭ "
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr "                   STAN moža być `shown', `iconified' albo `hidden'"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr ""
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version        Pakažy źviestki ab versii i vyjdzi"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Novaja padpiska"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr ""
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr "  --debug-all      Pakazvaj debugavyja paviedamleńni ŭsich typaŭ"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr ""
 "  --debug-conf     Pakazvaj debugavyja paviedamleńni dla pracy z "
 "kanfihuracyjaj"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr ""
 "  --debug-conf     Pakazvaj debugavyja paviedamleńni dla pracy z "
 "kanfihuracyjaj"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr ""
 "  --debug-conf     Pakazvaj debugavyja paviedamleńni dla pracy z "
 "kanfihuracyjaj"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 #, fuzzy
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "  --debug-gui      Pakazvaj debugavyja paviedamleńni dla ŭsich funkcyj GUI"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 #, fuzzy
 msgid "Print debugging messages of all network activity"
 msgstr ""
 "  --debug-net      Pakazvaj debugavyja paviedamleńni dla dostupu da sietki"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 #, fuzzy
 msgid "Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  Pakazvaj debugavyja paviedamleńni dla ŭsich funkcyj "
 "razboru"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 #, fuzzy
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 "  --debug-trace   Pakazvaj debugavyja paviedamleńni dla dunkcyj uvachodu/"
 "vychadu"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Pakazvaj debugavyja paviedamleńni dla aktualizacyj kanałaŭ"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "  --debug-conf     Pakazvaj debugavyja paviedamleńni dla pracy z "
 "kanfihuracyjaj"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 #, fuzzy
 msgid "Print verbose debugging messages"
 msgstr "  --debug-verbose  Pakazvaj padrabiaznyja debugavyja paviedamleńni"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr ""
 "  --debug-<tema>  Pakazvaj debugavyja paviedamleńni dla peŭnaj temypamiaćciu"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Pamyłka spałučeńnia z addalenym kamputaram"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -727,38 +718,38 @@ msgstr ""
 "Tabie nie dazvolena čytać hety kanał. Kali łaska, aktualizuj nazvu "
 "karystalnika j parol u dyjalohavym aknie ŭłaścivaściaŭ kanału."
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 #, fuzzy
 msgid "Payment required"
 msgstr "Patrabujecca apłata"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Resurs nia znojdzieny"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Metad nie dazvoleny"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Nie pryjmalna"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Patrabujecca aŭtaryzacyja dla proxy"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 #, fuzzy
 msgid "Request timed out"
 msgstr "Skončyŭsia termin čakańnia zapytu"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -768,23 +759,23 @@ msgstr ""
 "Hety kanał skončyŭ pracu. Ciapier jon niedastupny. Liferea nia budzie jaho "
 "aktualizoŭvać, ale ty možaš čytać zahałoŭki z padručnaj pamiaci."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr "Kanał niedastupny: Server vymahaje niepadtrymanaje pieranakiravańnie!"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Pamyłka klijenta"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Pamyłka servera"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(adbyłasia nieviadomaja sietkavaja pamyłka)"
@@ -1024,7 +1015,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ty ŭpeŭnieny, što chočaš vydalić \"%s\"?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 #, fuzzy
 msgid "_Cancel"
 msgstr "Anuluj _usie"
@@ -1088,7 +1078,7 @@ msgstr "Ty pavinny abrać kanał, dla jakoha vydalić elementy!"
 msgid "No item has been selected"
 msgstr "Elementy nie zaznačanyja"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1096,7 +1086,7 @@ msgstr[0] " (%d novy)"
 msgstr[1] " (%d novyja)"
 msgstr[2] " (%d novych)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1104,19 +1094,19 @@ msgstr[0] "%d niepračytany%s"
 msgstr[1] "%d niepračytanyja%s"
 msgstr[2] "%d niepračytanych%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Temy dapamohi"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Chutki ahlad"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "Pytańni j adkazy"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Pamyłka zahadu hartača: %s"
@@ -1313,7 +1303,7 @@ msgstr "Typ"
 msgid "Program"
 msgstr "Prahrama"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 #, fuzzy
 msgid "Saved Search"
 msgstr "Admysłovaje"
@@ -1331,7 +1321,7 @@ msgstr[2] "Vydaviec hetaha kanału raić intervał aktualizacyi ŭ %d chvilin."
 msgid "This feed specifies no default update interval."
 msgstr "Dla hetaha kanału nie akreśleny zmoŭčany intervał aktualizacyi."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 #, fuzzy
 msgid "All Files"
 msgstr "_Lakalny fajł"
@@ -1366,72 +1356,76 @@ msgstr "Pamyłka: Fajł \"%s\" nie isnuje"
 msgid "New Search Folder"
 msgstr "Novy kataloh pošuku"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 #, fuzzy
 msgid "Open Link In _Tab"
 msgstr "/Adčyni spasyłku ŭ _kartcy"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "/_Adčyni spasyłku ŭ hartačy"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "/_Adčyni spasyłku ŭ hartačy"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, fuzzy, c-format
 msgid "_Bookmark Link at %s"
 msgstr "/_Zrabi zakładku dla spasyłki na %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Skapijuj adras spasyłki"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 #, fuzzy
 msgid "_View Image"
 msgstr "_Vyhlad"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "/_Skapijuj adras spasyłki"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "/Zapišy jak..."
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Padpišysia..."
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "Pa_vialič pamier tekstu"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "Pa_mienš pamier tekstu"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+msgid "_Reader Mode"
+msgstr ""
+
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Byli jašče pamyłki. Vyjście abatnutaje!]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Raźbiralnik XML: Niemahčyma razabrać dakument:\n"
 
@@ -2481,6 +2475,14 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Kataloh pošuku:"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "\"%s\" niedastupny"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "\"%s\" aktualizavany..."
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"

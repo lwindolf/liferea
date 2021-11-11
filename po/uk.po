@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-20 20:04+0100\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
 "PO-Revision-Date: 2017-02-14 22:34+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <translation-team-uk@lists.sourceforge.net>\n"
@@ -77,7 +77,7 @@ msgstr "Встановлення відповідності записів з в
 msgid "Play Podcasts"
 msgstr "Відтворення трансляцій."
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -147,7 +147,7 @@ msgstr "П_означити пункти як прочитані"
 msgid "Search All Feeds..."
 msgstr "Шукати у всіх подачах…"
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Оновлення подач"
@@ -314,16 +314,16 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 #, fuzzy
 msgid "Show / Hide"
 msgstr "Показати подробиці"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 #, fuzzy
 msgid "Quit"
 msgstr "Ви_йти"
@@ -333,7 +333,7 @@ msgstr "Ви_йти"
 msgid "Browser command failed: %s"
 msgstr "Помилка команди переглядача: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Початок: «%s»"
@@ -348,7 +348,7 @@ msgstr "Помилка розпізнавання"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Не вдалося створити каталог кешування «%s»!"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -468,16 +468,6 @@ msgstr "Експортувати список подач"
 msgid "Export"
 msgstr "Експортувати"
 
-#: ../src/feed.c:354
-#, c-format
-msgid "\"%s\" is not available"
-msgstr "«%s» недоступна"
-
-#: ../src/feed.c:356
-#, c-format
-msgid "\"%s\" updated..."
-msgstr "«%s» оновлено…"
-
 #: ../src/feed_parser.c:201
 msgid "Empty document!"
 msgstr "Порожній документ"
@@ -576,7 +566,7 @@ msgstr ""
 "У цій версії TinyTinyRSS не передбачено підтримки вилучення подач. Оновіть "
 "програму до версії %s або новішої!"
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -590,54 +580,54 @@ msgstr ""
 msgid "There are no unread items"
 msgstr "Немає непрочитаних пунктів"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "Запустити Liferea з головним вікном у режимі СТАН. СТАН може приймати "
 "значення «shown» (показ) або «hidden» (приховування)."
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr "СТАН"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 msgid "Show version information and exit"
 msgstr "Показати інформацію про версію і завершити роботу"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "Add a new subscription"
 msgstr "Додати нову підписку"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr "адреса"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages of all types"
 msgstr "Виводити діагностичні повідомлення всіх типів"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the cache handling"
 msgstr "Виводити діагностичні повідомлення щодо обробки кешу"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the configuration handling"
 msgstr "Виводити діагностичні повідомлення щодо обробки налаштувань"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of the database handling"
 msgstr "Виводити діагностичні повідомлення щодо обробки бази даних"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all GUI functions"
 msgstr "Виводити діагностичні повідомлення щодо функцій інтерфейсу"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -646,75 +636,74 @@ msgstr ""
 "Liferea програма створюватиме дамп HTML за адресою ~/.cache/liferea/output."
 "xhtml"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all network activity"
 msgstr "Виводити діагностичні повідомлення для всіх дій, пов’язаних з мережею"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all parsing functions"
 msgstr "Виводити діагностичні повідомлення щодо функцій обробки"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Виводити діагностичні повідомлення, якщо обробка у функції триває занадто "
 "довго"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Виводити діагностичні повідомлення під час входу-виходу з функцій"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the feed update processing"
 msgstr "Виводити діагностичні повідомлення обробки оновлення подач"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the search folder matching"
 msgstr "Виводити діагностичні повідомлення щодо пошуку відповідних тек"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 msgid "Print verbose debugging messages"
 msgstr "Виводити докладні діагностичні повідомлення"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 msgid "Print debugging messages for the given topic"
 msgstr "Виводити діагностичні повідомлення з вказаною темою"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr "Запит щодо оновлення було скасовано"
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr "Не вдалося визначити назву вузла призначення"
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr "Не вдалося визначити назву вузла проксі-сервера"
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 msgid "Unable to connect to remote host"
 msgstr "Не вдалося з’єднатися з віддаленим вузлом"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr "Не вдалося встановити з’єднання з проксі-сервером"
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
-"Сталася помилка роботи з мережею або з’єднання було несподівано розірвано з "
-"боку джерела даних"
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr "Ресурс даних було остаточно пересунуто на нове місце"
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -722,35 +711,35 @@ msgstr ""
 "Ви не маєте прав доступу для звантаження цієї подачі. Будь ласка, оновіть "
 "дані щодо імені користувача і пароля у діалоговому вікні властивостей подачі."
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 msgid "Payment required"
 msgstr "Потрібна сплата"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr "У вас немає прав доступу до цього ресурсу"
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Ресурс не знайдено"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Заборонений метод"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Дані не прийнято"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 msgid "Proxy authentication required"
 msgstr "Потрібно пройти розпізнавання на проксі-сервері"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 msgid "Request timed out"
 msgstr "Тайм-аут запиту"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -760,25 +749,25 @@ msgstr ""
 "Супровід цієї подачі припинено. Тепер вона є недоступною. Liferea більше не "
 "оновлюватиме подачі, але ви зможете читати кешовані заголовки подачі."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr "Під час оновлення сталася внутрішня помилка"
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Подача недоступна: сервером надіслано запит на непідтримуваний тип "
 "переспрямування."
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Помилка клієнта"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Помилка сервера"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 msgid "An unknown networking error happened!"
 msgstr "Сталася невідома помилка роботи у мережі."
 
@@ -1019,7 +1008,6 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ви справді бажаєте вилучити «%s»?"
 
 #: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
-#: ../src/ui/ui_common.c:168
 msgid "_Cancel"
 msgstr "_Скасувати"
 
@@ -1081,7 +1069,7 @@ msgstr "Для вилучення пунктів подачі слід вказ�
 msgid "No item has been selected"
 msgstr "Не позначено жодного пункту"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1090,7 +1078,7 @@ msgstr[1] " (%d нові)"
 msgstr[2] " (%d нових)"
 msgstr[3] " (%d нова)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1099,19 +1087,19 @@ msgstr[1] "%d непрочитані%s"
 msgstr[2] "%d непрочитаних%s"
 msgstr[3] "%d непрочитана%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Розділи довідки"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Швидке ознайомлення"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "Поширені питання"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Помилка команди переглядача: %s"
@@ -1289,7 +1277,7 @@ msgstr "Тип"
 msgid "Program"
 msgstr "Програма"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
 msgstr "Збережений пошук"
 
@@ -1311,7 +1299,7 @@ msgstr[3] ""
 msgid "This feed specifies no default update interval."
 msgstr "У цій подачі не вказано ніякого типового проміжку між оновленнями."
 
-#: ../src/ui/ui_common.c:211
+#: ../src/ui/ui_common.c:206
 msgid "All Files"
 msgstr "Всі файли"
 
@@ -1347,65 +1335,69 @@ msgstr "Помилка: файла «%s» не існує"
 msgid "New Search Folder"
 msgstr "Нова тека пошуку"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 msgid "Open Link In _Tab"
 msgstr "Відкрити посилання у в_кладці"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 msgid "Open Link In Browser"
 msgstr "Відкрити посилання у переглядачі"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 msgid "Open Link In External Browser"
 msgstr "Відкрити посилання в зовнішньому переглядачі"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "С_творити закладку для посилання на %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 msgid "_Copy Link Location"
 msgstr "_Копіювати посилання"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 #, fuzzy
 msgid "_View Image"
 msgstr "З_берегти зображення як"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 msgid "_Copy Image Location"
 msgstr "_Копіювати адресу зображення"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 msgid "S_ave Link As"
 msgstr "З_берегти посилання як"
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr "З_берегти зображення як"
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 msgid "_Subscribe..."
 msgstr "_Підписатися…"
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr "_Копіювати"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "З_більшити розмір символів"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "З_меншити розмір символів"
 
-#: ../src/xml.c:424
+#: ../src/webkit/liferea_web_view.c:227
+msgid "_Reader Mode"
+msgstr ""
+
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Були і інші помилки. Дані про них обрізано.]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Обробка XML: не вдалося обробити документ:\n"
 
@@ -2425,6 +2417,21 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Тека пошуку:"
+
+#, c-format
+#~ msgid "\"%s\" is not available"
+#~ msgstr "«%s» недоступна"
+
+#, c-format
+#~ msgid "\"%s\" updated..."
+#~ msgstr "«%s» оновлено…"
+
+#~ msgid ""
+#~ "A network error occurred, or the other end closed the connection "
+#~ "unexpectedly"
+#~ msgstr ""
+#~ "Сталася помилка роботи з мережею або з’єднання було несподівано розірвано "
+#~ "з боку джерела даних"
 
 #~ msgid ""
 #~ "The last update of this subscription failed!<br/><b>HTTP error code <xsl:"

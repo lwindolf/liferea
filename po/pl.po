@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.13.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-08 20:46+0200\n"
-"PO-Revision-Date: 2021-05-08 21:26+0200\n"
+"POT-Creation-Date: 2021-07-30 12:36+0200\n"
+"PO-Revision-Date: 2021-07-30 12:38+0200\n"
 "Last-Translator: Paweł Marciniak <sunwire+translate@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : ((n%10>=2 && n%10<=4 && (n"
 "%100<10 || n%100>=20)) ? 1 : 2));\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.0\n"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -79,7 +79,7 @@ msgstr "Dopasuj elementy za pomocą folderów wyszukiwania"
 msgid "Play Podcasts"
 msgstr "Odtwarzaj Podkasty"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -148,7 +148,7 @@ msgstr "_Oznacz jako przeczytane"
 msgid "Search All Feeds..."
 msgstr "Wyszukaj..."
 
-#: ../plugins/libnotify.py:43
+#: ../plugins/libnotify.py:42
 msgid "Feed Updates"
 msgstr "Aktualizacje kanału"
 
@@ -317,15 +317,15 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr "Wtyczka została usunięta. Proszę zrestartować Liferea!"
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:132
 msgid "Show / Hide"
 msgstr "Pokaż / ukryj"
 
-#: ../plugins/trayicon.py:135
+#: ../plugins/trayicon.py:133
 msgid "Minimize to tray on close"
 msgstr "Po zamknięciu zminimalizuj do obszaru powiadamiania"
 
-#: ../plugins/trayicon.py:136
+#: ../plugins/trayicon.py:134
 msgid "Quit"
 msgstr "Zakończ"
 
@@ -334,7 +334,7 @@ msgstr "Zakończ"
 msgid "Browser command failed: %s"
 msgstr "Nie udało się wykonać polecenia przeglądarki: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1048
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Uruchamianie: „%s”"
@@ -349,7 +349,7 @@ msgstr "Błąd uwierzytelniania"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nie można utworzyć katalogu pamięci podręcznej „%s”!"
 
-#: ../src/conf.c:183
+#: ../src/conf.c:182
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -571,7 +571,7 @@ msgstr ""
 "Ta wersja TinyTinyRSS nie obsługuje usuwania kanałów. Uaktualnij do wersji "
 "%s lub nowszej!"
 
-#: ../src/fl_sources/ttrss_source.c:460
+#: ../src/fl_sources/ttrss_source.c:471
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -584,54 +584,54 @@ msgstr "Nie można przeanalizować kodu JSON zwróconego przez TinyTinyRSS API!"
 msgid "There are no unread items"
 msgstr "Brak nieprzeczytanych nagłówków"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "Uruchom program ustalając STAN jego okna. Parametr STAN może przybierać "
 "wartość „shown”, „iconified” lub „hidden”."
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr "STAN"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:281
 msgid "Show version information and exit"
 msgstr "Wypisuje informacje o wersji i kończy działanie"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "Add a new subscription"
 msgstr "Dodaje nową subskrypcję"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr "Uruchom z zablokowanymi wszystkimi wtyczkami"
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages of all types"
 msgstr "Wypisuje wszystkie komunikaty diagnozowania błędów"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the cache handling"
 msgstr "Wypisuje komunikaty diagnozowania błędów pamięci podręcznej"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages for the configuration handling"
 msgstr "Wypisuje komunikaty diagnozowania błędów konfiguracji"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of the database handling"
 msgstr "Wypisuje komunikaty diagnozowania błędów bazy danych"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:292
 msgid "Print debugging messages of all GUI functions"
 msgstr "Wypisuje komunikaty diagnozowania błędów interfejsu graficznego"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -640,114 +640,115 @@ msgstr ""
 "renderuje kod HTML, wygenerowany kod zastanie również zapisany do pliku ~/."
 "cache/liferea/output.html"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all network activity"
 msgstr "Wypisuje komunikaty diagnozowania błędów połączeń sieciowych"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages of all parsing functions"
 msgstr "Wypisuje komunikaty diagnozowania błędów funkcji przetwarzania"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Wypisuje komunikaty diagnozowania błędów, jeśli funkcja przetwarzana jest "
 "zbyt długo"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 "Wypisuje komunikaty diagnozowania błędów podczas uruchamiania/kończenia "
 "działania funkcji"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the feed update processing"
 msgstr "Wypisuje komunikaty diagnozowania błędów uaktualniania kanałów"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:299
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "Wypisuje komunikaty diagnozowania błędów dopasowywania katalogów wyników"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:300
 msgid "Print verbose debugging messages"
 msgstr "Wypisuje dodatkowe komunikaty diagnozowania błędów"
 
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
 msgid "Print debugging messages for the given topic"
 msgstr "Wypisuje informacje diagnozowania błędów na dany temat"
 
 #. Some libsoup transport errors
-#: ../src/net.c:439
+#: ../src/net.c:437
 msgid "The update request was cancelled"
 msgstr "Anulowano żądanie uaktualnienia"
 
-#: ../src/net.c:440
+#: ../src/net.c:438
 msgid "Unable to resolve destination host name"
 msgstr "Nie można określić nazwy komputera docelowego"
 
-#: ../src/net.c:441
+#: ../src/net.c:439
 msgid "Unable to resolve proxy host name"
 msgstr "Nie można określić nazwy komputera pośrednika"
 
-#: ../src/net.c:442
+#: ../src/net.c:440
 msgid "Unable to connect to remote host"
 msgstr "Nie można nawiązać połączenia ze zdalnym komputerem"
 
-#: ../src/net.c:443
+#: ../src/net.c:441
 msgid "Unable to connect to proxy"
 msgstr "Nie można nawiązać połączenia z pośrednikiem"
 
-#: ../src/net.c:444
+#: ../src/net.c:442
 msgid ""
-"A network error occurred, or the other end closed the connection unexpectedly"
+"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+"algorithm. Check your operating system settings."
 msgstr ""
-"Wystąpił błąd sieci lub z innego powodu połączenie zostało niespodziewanie "
-"przerwane"
+"Negocjacja SSL/TLS nie powiodła się. Możliwy nieaktualny lub nieobsługiwany "
+"algorytm szyfrowania. Sprawdź ustawienia systemu operacyjnego."
 
 #. http 3xx redirection
-#: ../src/net.c:447
+#: ../src/net.c:445
 msgid "The resource moved permanently to a new location"
 msgstr "Zasób został przeniesiony w inne położenie"
 
 #. http 4xx client error
-#: ../src/net.c:450
+#: ../src/net.c:448
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
 msgstr ""
 "Nie uwierzytelniono dostępu do tego kanału. Proszę uaktualnić nazwę "
-"użytkownika i hasło w oknie ustawień kanału."
+"użytkownika i hasło w oknie ustawień kanału"
 
-#: ../src/net.c:452
+#: ../src/net.c:450
 msgid "Payment required"
 msgstr "Wymagane uiszczenie opłaty"
 
-#: ../src/net.c:453
+#: ../src/net.c:451
 msgid "You're not allowed to access this resource"
 msgstr "Brak dostępu do tego zasobu"
 
-#: ../src/net.c:454
+#: ../src/net.c:452
 msgid "Resource Not Found"
 msgstr "Zasób nie odnaleziony"
 
-#: ../src/net.c:455
+#: ../src/net.c:453
 msgid "Method Not Allowed"
 msgstr "Niedozwolona metoda"
 
-#: ../src/net.c:456
+#: ../src/net.c:454
 msgid "Not Acceptable"
 msgstr "Nieakceptowalne"
 
-#: ../src/net.c:457
+#: ../src/net.c:455
 msgid "Proxy authentication required"
 msgstr "Wymagane uwierzytelnienie pośrednika sieciowego (proxy)"
 
-#: ../src/net.c:458
+#: ../src/net.c:456
 msgid "Request timed out"
 msgstr "Upłynął limit czasu żądania"
 
-#: ../src/net.c:459
+#: ../src/net.c:457
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -757,24 +758,24 @@ msgstr ""
 "nie będzie go uaktualniać, ale dostęp do pobranych nagłówków pozostanie "
 "zachowany."
 
-#: ../src/net.c:464
+#: ../src/net.c:462
 msgid "There was an internal error in the update process"
 msgstr "Wystąpił wewnętrzny błąd podczas uaktalniania"
 
-#: ../src/net.c:466
+#: ../src/net.c:464
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Subskrypcja niedostępna: serwer zażądał nieobsługiwanego przekierowania!"
 
-#: ../src/net.c:468
+#: ../src/net.c:466
 msgid "Client Error"
 msgstr "Błąd klienta"
 
-#: ../src/net.c:470
+#: ../src/net.c:468
 msgid "Server Error"
 msgstr "Błąd serwera"
 
-#: ../src/net.c:472
+#: ../src/net.c:470
 msgid "An unknown networking error happened!"
 msgstr "Wystąpił nieznany błąd sieciowy!"
 
@@ -1078,7 +1079,7 @@ msgstr "Należy zaznaczyć kanał, aby usunąć jego nagłówki!"
 msgid "No item has been selected"
 msgstr "Nie zanzaczono żadnego nagłówka"
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:408
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1086,7 +1087,7 @@ msgstr[0] " (%d nowa)"
 msgstr[1] " (%d nowe)"
 msgstr[2] " (%d nowych)"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:413
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1094,19 +1095,19 @@ msgstr[0] "%d nieprzeczytana%s"
 msgstr[1] "%d nieprzeczytane%s"
 msgstr[2] "%d nieprzeczytanych%s"
 
-#: ../src/ui/liferea_shell.c:755
+#: ../src/ui/liferea_shell.c:754
 msgid "Help Topics"
 msgstr "Tematy pomocy"
 
-#: ../src/ui/liferea_shell.c:761
+#: ../src/ui/liferea_shell.c:760
 msgid "Quick Reference"
 msgstr "Streszczenie"
 
-#: ../src/ui/liferea_shell.c:767
+#: ../src/ui/liferea_shell.c:766
 msgid "FAQ"
 msgstr "Najczęściej zadawane pytania"
 
-#: ../src/ui/liferea_shell.c:1045
+#: ../src/ui/liferea_shell.c:1044
 #, c-format
 msgid "Email command failed: %s"
 msgstr "Polecenie e-mail nie powiodło się: %s"
@@ -1284,7 +1285,7 @@ msgstr "Typ"
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/search_dialog.c:107
+#: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
 msgstr "Zapisane wyszukiwania"
 
@@ -1335,68 +1336,68 @@ msgstr "Błąd: nie ma takiego pliku „%s”"
 msgid "New Search Folder"
 msgstr "Nowy katalog wyników"
 
-#: ../src/webkit/liferea_web_view.c:176
+#: ../src/webkit/liferea_web_view.c:177
 msgid "Open Link In _Tab"
 msgstr "Otwórz odnośnik w _karcie"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:178
 msgid "Open Link In Browser"
 msgstr "_Otwórz odnośnik"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:179
 msgid "Open Link In External Browser"
 msgstr "_Otwórz odnośnik w przeglądarce"
 
-#: ../src/webkit/liferea_web_view.c:184
+#: ../src/webkit/liferea_web_view.c:185
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_Opublikuj odnośnik na %s"
 
-#: ../src/webkit/liferea_web_view.c:191
+#: ../src/webkit/liferea_web_view.c:192
 msgid "_Copy Link Location"
 msgstr "_Skopiuj adres odnośnika"
 
-#: ../src/webkit/liferea_web_view.c:194
+#: ../src/webkit/liferea_web_view.c:195
 msgid "_View Image"
 msgstr "Zobacz obraz"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:196
 msgid "_Copy Image Location"
 msgstr "_Skopiuj adres obrazu"
 
-#: ../src/webkit/liferea_web_view.c:198
+#: ../src/webkit/liferea_web_view.c:199
 msgid "S_ave Link As"
 msgstr "_Zapisz odnośnik jako"
 
-#: ../src/webkit/liferea_web_view.c:201
+#: ../src/webkit/liferea_web_view.c:202
 msgid "S_ave Image As"
 msgstr "Z_apisz obraz jako"
 
-#: ../src/webkit/liferea_web_view.c:208
+#: ../src/webkit/liferea_web_view.c:209
 msgid "_Subscribe..."
 msgstr "_Subskrybuj..."
 
-#: ../src/webkit/liferea_web_view.c:212
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Copy"
 msgstr "Kopiuj"
 
-#: ../src/webkit/liferea_web_view.c:218
+#: ../src/webkit/liferea_web_view.c:219
 msgid "_Increase Text Size"
 msgstr "Z_większ rozmiar tekstu"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:220
 msgid "_Decrease Text Size"
 msgstr "Z_mniejsz rozmiar tekstu"
 
-#: ../src/webkit/liferea_web_view.c:226
+#: ../src/webkit/liferea_web_view.c:227
 msgid "_Reader Mode"
 msgstr "T_ryb czytnika"
 
-#: ../src/xml.c:424
+#: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Wystąpiło więcej błędów. Komunikat został skrócony!]"
 
-#: ../src/xml.c:592
+#: ../src/xml.c:594
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Parser XML: nie można przetworzyć dokumentu:\n"
 
@@ -2402,6 +2403,13 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Katalog wyników:"
+
+#~ msgid ""
+#~ "A network error occurred, or the other end closed the connection "
+#~ "unexpectedly"
+#~ msgstr ""
+#~ "Wystąpił błąd sieci lub z innego powodu połączenie zostało "
+#~ "niespodziewanie przerwane"
 
 #, c-format
 #~ msgid "\"%s\" is not available"
