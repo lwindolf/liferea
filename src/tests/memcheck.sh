@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Simple wrapper to valgrind/memcheck the test cases
 
@@ -9,7 +9,7 @@ error=0
 if command -v valgrind >/dev/null; then
 	for tool in $@; do
 		details=$(
-			valgrind -q --leak-check=full -suppressions=<(cat <<-EOT
+			valgrind -q --leak-check=full --suppressions=<(cat <<-EOT
 			  {
 			     selinuxfs_exists
 			     Memcheck:Leak
