@@ -119,13 +119,12 @@ msgstr ""
 #: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
 #: ../glade/liferea_toolbar.ui.h:5
 msgid "Previous Item"
-msgstr ""
+msgstr "前一项"
 
 #: ../plugins/headerbar.py:73 ../glade/liferea_menu.ui.h:21
 #: ../glade/liferea_toolbar.ui.h:6
-#, fuzzy
 msgid "Next Item"
-msgstr "下一个未读条目(_N)"
+msgstr "后一项"
 
 #: ../plugins/headerbar.py:81 ../glade/liferea_menu.ui.h:19
 #: ../glade/liferea_toolbar.ui.h:7
@@ -149,15 +148,15 @@ msgstr "Feed 更新"
 
 #: ../plugins/plugin-installer.py:54
 msgid "Plugins"
-msgstr ""
+msgstr "插件"
 
 #: ../plugins/plugin-installer.py:69
 msgid "Plugin Installer"
-msgstr ""
+msgstr "插件安装"
 
 #: ../plugins/plugin-installer.py:83
 msgid "Activate Plugins"
-msgstr ""
+msgstr "激活插件"
 
 #: ../plugins/plugin-installer.py:84
 #, fuzzy
@@ -1075,17 +1074,15 @@ msgstr "浏览器命令失败：%s"
 
 #: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
-msgstr ""
+msgstr "在新标签中打开(_T)"
 
 #: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
-#, fuzzy
 msgid "_Open In Browser"
-msgstr "在浏览器中打开(_L)"
+msgstr "在浏览器中打开(_O)"
 
 #: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
-#, fuzzy
 msgid "Open In _External Browser"
-msgstr "<span weight=\"bold\">外部浏览器设置</span>"
+msgstr "在外部浏览器中打开(_E)"
 
 #: ../src/ui/popup_menu.c:115
 msgid "Email The Author"
