@@ -152,7 +152,7 @@ msgstr "插件"
 
 #: ../plugins/plugin-installer.py:69
 msgid "Plugin Installer"
-msgstr "插件安装"
+msgstr "插件安装器"
 
 #: ../plugins/plugin-installer.py:83
 msgid "Activate Plugins"
@@ -170,7 +170,7 @@ msgstr ""
 
 #: ../plugins/plugin-installer.py:125
 msgid "All"
-msgstr ""
+msgstr "全部"
 
 #: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
 msgid "Advanced"
@@ -178,7 +178,7 @@ msgstr "高级"
 
 #: ../plugins/plugin-installer.py:125
 msgid "Menu"
-msgstr ""
+msgstr "菜单"
 
 #: ../plugins/plugin-installer.py:125
 #, fuzzy
@@ -191,11 +191,11 @@ msgstr ""
 
 #: ../plugins/plugin-installer.py:140
 msgid "_Install"
-msgstr ""
+msgstr "安装"
 
 #: ../plugins/plugin-installer.py:144
 msgid "_Uninstall"
-msgstr ""
+msgstr "卸载"
 
 #: ../plugins/plugin-installer.py:245
 #, python-format
@@ -219,7 +219,7 @@ msgstr ""
 #: ../plugins/plugin-installer.py:271
 #, python-format
 msgid "Failed to check plugin dependencies (%s)!"
-msgstr ""
+msgstr "检查插件依赖失败(%s)"
 
 #: ../plugins/plugin-installer.py:280
 msgid "Command \"git\" not found, please install it!"
