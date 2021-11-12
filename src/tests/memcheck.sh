@@ -9,7 +9,7 @@ error=0
 if command -v valgrind >/dev/null; then
 	for tool in $@; do
 		details=$(
-			valgrind -q --leak-check=full --error-markers=begin,end "./$tool" 2>&1#
+			valgrind -q --leak-check=full --error-markers=begin,end "./$tool" 2>&1
 		)
 		output=$(
 			echo "$details" |\
@@ -25,7 +25,7 @@ if command -v valgrind >/dev/null; then
 			if [ "$GITHUB_ACTION" != "" ]; then
 				echo "::group:: $tool details"
 				echo "$details"
-				echo "::endgroup:"
+				echo "::endgroup::"
 			fi
 		fi
 	done
