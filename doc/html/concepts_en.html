@@ -1,46 +1,47 @@
 <html>
 <head>
 	<title>Basic Concepts</title>
-	
+
 	<link rel="stylesheet" type="text/css" href="reference.css">
 </head>
 <body>
 
-	<!-- navigation header start -->
-	<table width="100%">
+	<header>
+		<nav>
+	<table class="fullwidth">
 	   <tr>
-	      <!-- back --><td width="50px"><a rel="prev" href="about_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><b>Basic Concepts</b></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a rel="next" href="subscriptions_en.html">Next</a></td>
+	      <td width="50px"><a rel="prev" href="about_en.html">Prev</a></td>
+	      <td class="bottomcenter ptitle">Basic Concepts</td>
+	      <td width="50px;" style="text-align:right;"><a rel="next" href="subscriptions_en.html">Next</a></td>
 	   </tr>
 	</table>
-	<hr />
-	<!-- navigation header end -->
+		</nav>
+	</header>
 
-	<!-- content start --> 
+	<!-- content start -->
 	<p>
 	This section tries to clarify some of the technical jargon used
 	along with feed readers.
 	</p>
-	
+
 	<h3>What does "online/offline desktop" news aggregator mean?</h3>
 	<p>
 	Feed readers or news aggregators can be realised as web applications
 	or as desktop applications. The place of execution (your computer
 	vs. some webserver) implies certain advantages and disadvantages.
 	</p>
-	
+
 	<p>
-	A <b>desktop news aggregator</b> runs on your own PC and stores 
+	A <b>desktop news aggregator</b> runs on your own PC and stores
 	aggregated feeds locally. It accesses each news feed and downloads
-	its newest headlines periodically. Note that not all desktop news 
-	aggregators can work offline. Some desktop aggregators retrieve 
+	its newest headlines periodically. Note that not all desktop news
+	aggregators can work offline. Some desktop aggregators retrieve
 	feeds each time you access them instead of caching them for later
 	use. Liferea as an <b>offline capable</b> desktop aggregator caches
-	feeds and is suitable for use with portable devices (laptops, hand 
+	feeds and is suitable for use with portable devices (laptops, hand
 	helds...) that do not have a permanent internet connection.
 	</p>
-	
+
 	<ul>
 	    <li><b>Disadvantages:</b>
 	         <ul>
@@ -60,16 +61,16 @@
 	    </li>
 	</ul>
 
-	
+
 	<p>
 	A <b>online news aggregator</b> (for example <a href="http://theoldreader.com/reader">TheOldReader</a>)
 	is run on a remote webserver which you can access from everywhere
 	as long as you have network access. When you log in to the online
 	news aggregator it usually doesn't need to fetch the most recent
-	headlines of you feed subscriptions because it implements feed 
+	headlines of you feed subscriptions because it implements feed
 	caching	to save bandwidth.
 	</p>
-	
+
 	<ul>
 	    <li><b>Disadvantages:</b>
 	         <ul>
@@ -88,39 +89,39 @@
 		 </ul>
 	    </li>
 	</ul>
-	
+
 	<h3>What is a Feed?</h3>
 	<p>
 	For a news aggregator a <i>news feed</i> is a distinct information source. A
 	news aggregator usually retrieves <i>news headlines</i> from many news feed <i>subscriptions</i>.
-	The term "news feed" is not very precise as feeds can also provide weblog 
+	The term "news feed" is not very precise as feeds can also provide weblog
 	postings, podcasts and practically every type of content. The same goes for the
 	term "news headlines": often "article" or "post" would be a
 	better description. Nonetheless the prefix "news" is usually used with the terms
 	"feed", "headline" and "aggregator".
 	</p>
-	
+
 	<h3>What is a Subscription?</h3>
 	<p>
-	When you add a new feed then you have to specify the source of the 
+	When you add a new feed then you have to specify the source of the
 	feed, so that the news aggregator can initially retrieve it. The feed source
 	is usually a HTTP URL. This URL with optional authentication and proxy
 	settings is a "subscription" managed by Liferea.
-	</p>	
-	
+	</p>
+
 	<h3>What is the Feed List?</h3>
 	<p>
 	To manage and easily navigate your subscriptions Liferea provides you with
 	a hierarchic tree of your subscriptions. Similar to email clients the "feed
-	list" is located in the left pane. You can organize your subscription 
+	list" is located in the left pane. You can organize your subscription
 	after topics in different folders.
 	</p>
-	
+
 	<h3>What is a Headline?</h3>
 	<p>
 	When a news aggregator updates a news feed it downloads the source document
 	from the source URL of the feed subscription. This source document provides
-	a set of the most recent headlines which then need to be merged against the 
+	a set of the most recent headlines which then need to be merged against the
 	current feed cache of the aggregator because the set of headlines provided
 	by the feed source changes over time.
 	</p>
@@ -128,7 +129,7 @@
 	Headlines as provided by the feed source are the smallest information
 	unit handled by aggregators.
 	</p>
-	
+
 	<h3>What is the Item List?</h3>
 	<p>
 	In Liferea headlines are also called <i>items</i> and are presented
@@ -136,19 +137,20 @@
 	the item list is often presented in the upper right pane in the news
 	aggregator interface.
 	</p>
-	
-	<!-- content end --> 
 
-	<!-- navigation footer start -->
-	<hr />
-	<table width="100%">
+	<!-- content end -->
+
+
+	<footer>
+		<nav>
+	<table class="fullwidth">
 	   <tr>
-	      <!-- back --><td width="50px"><a rel="prev" href="about_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><a href="topics_en.html">Contents</a></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a rel="next" href="subscriptions_en.html">Next</a></td>
+	      <td width="50px"><a rel="prev" href="about_en.html">Prev</a></td>
+	      <td class="bottomcenter"><a href="topics_en.html">Contents</a></td>
+	      <td width="50px;" style="text-align:right;"><a rel="next" href="subscriptions_en.html">Next</a></td>
 	   </tr>
 	</table>
-	<!-- navigation footer end -->
+			</nav>
+		</footer>
 </body>
 </html>
-

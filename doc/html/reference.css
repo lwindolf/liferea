@@ -1,12 +1,49 @@
+header {
+	border-bottom: 2px dotted;
+	margin: 1em;
+}
+
+footer {
+	border-top: 2px dotted;
+	margin: 1em;
+}
+
+nav a {
+	cursor: pointer;
+	text-decoration: none;
+}
+
+nav ul li {
+	margin: 0.3em;
+}
+
+nav a:hover,
+nav a:focus {
+	text-decoration: underline;
+}
+
 table.reftable {
-	border:1px solid black;
-	border-collapse:collapse;
+	border: 1px solid black;
+	border-collapse: collapse;
 }
 
 table.reftable tr td {
-	border:1px solid black;
+	border: 1px solid black;
+}
+
+td.bottomcenter {
+	text-align: center;
+}
+
+td.ptitle {
+	font-weight: bold;
+	font-size: larger;
 }
 
 dt {
 	 font-weight: bold;
+}
+
+.fullwidth {
+	width: 100%;
 }
