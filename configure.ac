@@ -48,10 +48,13 @@ pkg_modules="	gtk+-3.0 >= 3.22.0
 
 ################################################################################
 
+
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 
+AC_CHECK_LIB(glib-2.0, g_memdup2, [PACKAGE_CFLAGS="$PACKAGE_CFLAGS -DHAVE_G_MEMDUP2"])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
+
 
 PKG_CHECK_MODULES([WEB_EXTENSION], [
                   webkit2gtk-web-extension-4.0
