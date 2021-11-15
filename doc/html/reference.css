@@ -51,6 +51,14 @@ td.right {
 	text-align: right;
 }
 
+nav td {
+  padding: 8px;
+}
+
+nav td a {
+  padding: initial;
+}
+
 nav td a:hover {
 	background-color: whitesmoke;
 }
