@@ -6,11 +6,22 @@ footer {
 	border-top: 2px dotted;
 }
 
-nav a {
+header nav td,
+footer nav td {
+	padding: 8px;
+	width: 7em;
+	user-select: none;
+}
+
+header nav td a,
+footer nav td a {
 	display: block;
 	white-space: nowrap;
-	padding: 0.5em;
 	cursor: pointer;
+	padding: initial;	
+}
+
+nav a {
 	text-decoration: none;
 }
 
@@ -19,7 +30,9 @@ nav a:focus {
 	text-decoration: underline;
 }
 
-nav ul li {
+nav li a {
+	display: block;
+	padding: 0.5em;
 	margin: 0.3em;
 }
 
@@ -32,41 +45,19 @@ table.reftable tr td {
 	border: 1px solid black;
 }
 
-td.topcenter,
-td.bottomcenter {
-	text-align: center;
-}
-
 td.ptitle h1 {
 	font-weight: bold;
 	font-size: larger;
 	margin: auto;
 }
 
-td.left {
-	text-align: left;
-}
-
-td.right {
-	text-align: right;
-}
-
-nav td {
-  padding: 8px;
-}
-
-nav td a {
-  padding: initial;
-}
-
-nav td a:hover {
-	background-color: whitesmoke;
-}
-
 dt {
-	 font-weight: bold;
+	font-weight: bold;
 }
 
-.fullwidth {
-	width: 100%;
-}
+/* General-purpose */
+
+.left {text-align: left;}
+.right {text-align: right;}
+.center {text-align: center;}
+.fullwidth {width: 100%;}
