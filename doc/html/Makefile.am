@@ -28,7 +28,7 @@ html_doc_de =	about_de.html \
 		onlineservices_de.html \
 		faq_de.html
 
-html_doc_de =	about_it.html \
+html_doc_it =	about_it.html \
 		concepts_it.html \
 		folders_it.html \
 		headlines_it.html \
@@ -41,7 +41,7 @@ html_doc_de =	about_it.html \
 		enclosures_it.html \
 		newsbin_it.html \
 		onlineservices_it.html \
-		faq_de.html
+		faq_it.html
 
 html_doc_pictures_en =	help_feed_default.png \
 			help_feed_error.png \
