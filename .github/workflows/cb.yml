@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: "Build Check"
 
 on:
   push:
@@ -22,22 +22,6 @@ jobs:
         # a pull request then we can checkout the head.
         fetch-depth: 2
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: cpp
-      # Override language selection by uncommenting this and choosing your languages
-      # with:
-      #   languages: go, javascript, csharp, python, cpp, java
-
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
-
-    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
-
     - run: |
        sudo apt-get update -qq
        sudo apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0-dev libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool valgrind
@@ -51,6 +35,3 @@ jobs:
     - run: make && make install
     - run: cd src/tests && make test
     - run: cd src/tests && ./memcheck.sh parse_xml parse_date
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
