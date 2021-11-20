@@ -3,6 +3,7 @@
  *
  * Copyright (C) 2007-2021 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
+ * Copyright (C) 2021 Lorenzo L. Ancora <admin@lorenzoancora.info>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,7 @@
 #include <libsoup/soup.h>
 #include <math.h>
 #include <string.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -324,9 +326,25 @@ network_init (void)
 	gchar		*filename;
 	SoupLogger	*logger;
 
-	/* Set an appropriate user agent,
-	 * e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
-	useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
+	gchar const *sysua = g_getenv("LIFEREA_UA");
+	if(sysua == NULL) {
+		bool anonua = g_getenv("LIFEREA_UA_ANONYMOUS") != NULL;
+		if(anonua == false) {
+			/* Set an appropriate user agent,
+			 * e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+			useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
+		} else {
+			/* Set an anonymized, randomic user agent,
+			 * e.g. "Liferea/0.28.0 (https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+			useragent = g_strdup_printf ("Liferea/%.2f.0 (%s) AppleWebKit (KHTML, like Gecko)", g_random_double(), HOMEPAGE);
+		}
+	} else {
+		/* Set an arbitrary user agent from the environment variable LIFEREA_UA */
+		useragent = g_strdup (sysua);
+	}
+	sysua = NULL;
+	g_assert_nonnull(useragent);
+	debug1 (DEBUG_NET, "HTTP/S user-agent set to \"%s\"", useragent);
 
 	/* Session cookies */
 	filename = common_create_config_filename ("session_cookies.txt");
@@ -475,4 +493,3 @@ network_strerror (gint status)
 
 	return tmp;
 }
-
