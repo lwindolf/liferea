@@ -66,8 +66,8 @@ console.log(content);
 
 			// Show the results
 			var article = new Readability(documentClone).parse();
-			document.getElementById('content').innerHTML = article.content
-
+			if (article)
+				document.getElementById('content').innerHTML = article.content
 
 			if(document.location.href !== 'liferea://') {
 				// Kill all foreign styles
