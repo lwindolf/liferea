@@ -501,8 +501,7 @@ liferea_htmlview_set_reader_mode (LifereaHtmlView *htmlview, gboolean readerMode
 {
 	htmlview->readerMode = readerMode;
 
-	/* reload current content to make it effective */
-	// FIXME
+	(RENDERER (htmlview)->reload) (htmlview->renderWidget);
 }
 
 gboolean

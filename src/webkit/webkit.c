@@ -739,6 +739,15 @@ liferea_webkit_set_style (GtkWidget *webview)
 	webkit_user_style_sheet_unref (stylesheet);
 }
 
+/**
+ * Reload the current contents of webview
+ */
+static void
+liferea_webkit_reload (GtkWidget *webview)
+{
+	webkit_web_view_reload (webview);
+}
+
 static struct
 htmlviewImpl webkitImpl = {
 	.init		= liferea_webkit_init,
@@ -753,7 +762,8 @@ htmlviewImpl webkitImpl = {
 	.scrollPagedown	= liferea_webkit_scroll_pagedown,
 	.setProxy	= liferea_webkit_set_proxy,
 	.setOffLine	= NULL, // FIXME: blocked on https://bugs.webkit.org/show_bug.cgi?id=18893
-	.setStylesheet	= liferea_webkit_set_style
+	.setStylesheet	= liferea_webkit_set_style,
+	.reload		= liferea_webkit_reload
 };
 
 DECLARE_HTMLVIEW_IMPL (webkitImpl);

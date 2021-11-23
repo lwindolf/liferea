@@ -225,6 +225,7 @@ typedef struct htmlviewImpl {
 	void		(*scrollPagedown)	(GtkWidget *widget);
 	void		(*setOffLine)		(gboolean offline);
 	void		(*setStylesheet)	(GtkWidget *widget);
+	void		(*reload)		(GtkWidget *widget);
 } *htmlviewImplPtr;
 
 /**
