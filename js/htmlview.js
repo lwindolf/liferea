@@ -22,7 +22,6 @@
  * loadContent() will be run on each internal / Readability.js rendering
  */
 function loadContent(readerEnabled, content) {
-console.log(content);
 	if (false == readerEnabled) {
 	     	if (document.location.href === 'liferea://') {
 			console.log('[liferea] reader mode is off');
