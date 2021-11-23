@@ -19,15 +19,6 @@
  */
 
 /**
- * updateStyle() will be called on GTK theme change events to reload
- * the regenerated CSS file
- */
-function updateStyle() {
-	var link = document.getElementById('styles');
-	link.setAttribute('href', link.getAttribute('href').replace(/\\?.*/, '') + '?'+(new Date().getTime() / 1000));
-}
-
-/**
  * loadContent() will be run on each internal / Readability.js rendering
  */
 function loadContent(readerEnabled, content) {
@@ -80,12 +71,6 @@ console.log(content);
 					s.parentNode.removeChild(s);
 				}
 
-				// Add our style
-				var link = document.createElement('link');
-				link.setAttribute('href', get_liferea_static_path('liferea.css'));
-				link.setAttribute('rel', 'stylesheet');
-				link.setAttribute('type', 'text/css');
-				document.head.appendChild(link);
 				// FIXME: Add our header
 			}
 		} catch(e) {

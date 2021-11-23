@@ -550,9 +550,6 @@ liferea_htmlview_start_output (GString *buffer,
 		g_free (escBase);
 	}
 
-	if (css)
-		g_string_append (buffer, render_get_css ());
-
 	g_string_append (buffer, "</head><body>Loading...</body></html>");
 }
 
@@ -628,7 +625,7 @@ liferea_htmlview_update (LifereaHtmlView *htmlview, guint mode)
 }
 
 void
-liferea_htmlview_update_style_element (LifereaHtmlView *htmlview)
+liferea_htmlview_update_stylesheet (LifereaHtmlView *htmlview)
 {
-	(RENDERER (htmlview)->reloadStyle) (htmlview->renderWidget);
+	(RENDERER (htmlview)->setStylesheet) (htmlview->renderWidget);
 }
