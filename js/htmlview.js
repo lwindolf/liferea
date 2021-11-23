@@ -38,14 +38,16 @@ function loadContent(readerEnabled, content) {
 			// When we are internally browsing than we need basic
 			// structure to insert Reader mode content
 			if(document.location.href !== 'liferea://') {
+				content = document.documentElement.innerHTML;
 				document.body.innerHTML = '<div id=\"content\"></div>';
 			} else {
 				// Add all content in shadow DOM and split decoration from content
 				// only pass the content to Readability.js
-				documentClone.body.innerHTML = decodeURIComponent(content);
+				content = decodeURIComponent(content);
+				documentClone.body.innerHTML = content;
 				documentClone.getElementById('content').innerHTML = '';
 				document.body.innerHTML = documentClone.body.innerHTML;
-				documentClone.body.innerHTML = decodeURIComponent(content);
+				documentClone.body.innerHTML = content;
 				documentClone.body.innerHTML = documentClone.getElementById('content').innerHTML;
 			}
 
@@ -74,7 +76,7 @@ function loadContent(readerEnabled, content) {
 			}
 		} catch(e) {
 			console.log('[liferea] reader mode failed: '+e);
-			loadContent(false);
+			document.documentElement.innerHTML = content;
 		}
 	}
 }
