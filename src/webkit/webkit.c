@@ -745,6 +745,8 @@ liferea_webkit_set_style (GtkWidget *webview)
 static void
 liferea_webkit_reload (GtkWidget *webview)
 {
+	liferea_webkit_default_settings (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)));
+
 	webkit_web_view_reload (webview);
 }
 
