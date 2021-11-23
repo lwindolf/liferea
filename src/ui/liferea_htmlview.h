@@ -210,33 +210,4 @@ void liferea_htmlview_update_stylesheet (LifereaHtmlView *htmlview);
 
 G_END_DECLS
 
-/* interface for HTML rendering support implementation */
-typedef struct htmlviewImpl {
-	void 		(*init)			(void);
-	GtkWidget*	(*create)		(LifereaHtmlView *htmlview);
-	void		(*write)		(GtkWidget *widget, const gchar *string, guint length, const gchar *base, const gchar *contentType);
-	void		(*run_js)		(GtkWidget *widget, gchar *js);
-	void		(*launch)		(GtkWidget *widget, const gchar *url);
-	gfloat		(*zoomLevelGet)		(GtkWidget *widget);
-	void		(*zoomLevelSet)		(GtkWidget *widget, gfloat zoom);
-	gboolean	(*hasSelection)		(GtkWidget *widget);
-	void		(*copySelection)	(GtkWidget *widget);
-	void		(*setProxy)		(ProxyDetectMode mode, const gchar *hostname, guint port, const gchar *username, const gchar *password);
-	void		(*scrollPagedown)	(GtkWidget *widget);
-	void		(*setOffLine)		(gboolean offline);
-	void		(*setStylesheet)	(GtkWidget *widget);
-	void		(*reload)		(GtkWidget *widget);
-} *htmlviewImplPtr;
-
-/**
- * htmlview_get_impl: (skip)
- */
-extern htmlviewImplPtr htmlview_get_impl(void);
-
-/* Use this macro to declare a html rendering support implementation. */
-#define DECLARE_HTMLVIEW_IMPL(impl) \
-        htmlviewImplPtr htmlview_get_impl(void) { \
-                return &impl; \
-        }
-
 #endif

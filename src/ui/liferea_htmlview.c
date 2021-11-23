@@ -43,6 +43,7 @@
 #include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
+#include "webkit/webkit.h"
 
 /* The LifereaHtmlView is a complex widget used to present both internally
    rendered content as well as serving as a browser widget. It automatically
@@ -53,9 +54,6 @@
    to trigger functionality inside Liferea. To avoid websites hijacking this we
    keep a flag to support the link schema only on liferea_htmlview_write()
  */
-
-
-#define RENDERER(htmlview)	(htmlview->impl)
 
 struct _LifereaHtmlView {
 	GObject	parent_instance;
@@ -74,8 +72,6 @@ struct _LifereaHtmlView {
 	gboolean	readerMode;		/*<< TRUE if Readability.js is to be used */
 
 	gchar 		*content;		/*<< current HTML content (excluding decorations, content passed to Readability.js) */
-
-	htmlviewImplPtr impl;			/*<< Browser widget support implementation */
 };
 
 enum {
@@ -222,8 +218,6 @@ liferea_htmlview_class_init (LifereaHtmlViewClass *klass)
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
-
-	htmlview_get_impl ()->init ();
 }
 
 static void
@@ -234,8 +228,7 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 	htmlview->content = NULL;
 	htmlview->internal = FALSE;
 	htmlview->readerMode = FALSE;
-	htmlview->impl = htmlview_get_impl ();
-	htmlview->renderWidget = RENDERER (htmlview)->create (htmlview);
+	htmlview->renderWidget = liferea_webkit_new (htmlview);
 	htmlview->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
 	g_object_ref_sink (htmlview->container);
 	htmlview->history = browser_history_new ();
@@ -273,31 +266,21 @@ liferea_htmlview_init (LifereaHtmlView *htmlview)
 }
 
 static void
-liferea_htmlview_set_online (LifereaHtmlView *htmlview, gboolean online)
-{
-	if (RENDERER (htmlview)->setOffLine)
-		(RENDERER (htmlview)->setOffLine) (!online);
-}
-
-static void
 liferea_htmlview_online_status_changed (NetworkMonitor *nm, gboolean online, gpointer userdata)
 {
-	LifereaHtmlView *htmlview = LIFEREA_HTMLVIEW (userdata);
-
-	liferea_htmlview_set_online (htmlview, online);
+	// FIXME: not yet supported
 }
 
 static void
 liferea_htmlview_proxy_changed (NetworkMonitor *nm, gpointer userdata)
 {
-	LifereaHtmlView *htmlview = LIFEREA_HTMLVIEW (userdata);
-
-	if (RENDERER (htmlview)->setProxy)
-		(RENDERER (htmlview)->setProxy) (network_get_proxy_detect_mode (),
-						 network_get_proxy_host (),
-						 network_get_proxy_port (),
-						 network_get_proxy_username (),
-						 network_get_proxy_password ());
+	liferea_webkit_set_proxy (
+		network_get_proxy_detect_mode (),
+		network_get_proxy_host (),
+		network_get_proxy_port (),
+		network_get_proxy_username (),
+		network_get_proxy_password ()
+	);
 }
 
 LifereaHtmlView *
@@ -354,9 +337,9 @@ liferea_htmlview_write (LifereaHtmlView *htmlview, const gchar *string, const gc
 
 	if (!g_utf8_validate (string, -1, NULL)) {
 		/* It is really a bug if we get invalid encoded UTF-8 here!!! */
-		(RENDERER (htmlview)->write) (htmlview->renderWidget, errMsg, strlen (errMsg), baseURL, "text/plain");
+		liferea_webkit_write_html (htmlview->renderWidget, errMsg, strlen (errMsg), baseURL, "text/plain");
 	} else {
-		(RENDERER (htmlview)->write) (htmlview->renderWidget, string, strlen (string), baseURL, "text/html");
+		liferea_webkit_write_html (htmlview->renderWidget, string, strlen (string), baseURL, "text/html");
 	}
 
 	/* We hide the toolbar as it should only be shown when loading external content */
@@ -437,12 +420,14 @@ liferea_htmlview_load_finished (LifereaHtmlView *htmlview, const gchar *location
 		// this safe us from the trouble to have JS enabled earlier!
 
 		debug1 (DEBUG_GUI, "Enabling reader mode for '%s'", location);
-		(RENDERER (htmlview)->run_js) (htmlview->renderWidget,
-		                               g_strdup_printf ("%s\n%s\nloadContent(%s, '%s');\n",
-		                                                (gchar *)g_bytes_get_data (b1, NULL),
-		                                                (gchar *)g_bytes_get_data (b2, NULL),
-		                                                (htmlview->readerMode?"true":"false"),
-		                                                htmlview->content));
+		liferea_webkit_run_js (
+			htmlview->renderWidget,
+			g_strdup_printf ("%s\n%s\nloadContent(%s, '%s');\n",
+		        (gchar *)g_bytes_get_data (b1, NULL),
+			(gchar *)g_bytes_get_data (b2, NULL),
+			(htmlview->readerMode?"true":"false"),
+			htmlview->content)
+		);
 	}
 }
 
@@ -481,19 +466,19 @@ liferea_htmlview_launch_URL_internal (LifereaHtmlView *htmlview, const gchar *ur
 
 	gtk_entry_set_text (GTK_ENTRY (htmlview->urlentry), url);
 
-	(RENDERER (htmlview)->launch) (htmlview->renderWidget, url);
+	liferea_webkit_launch_url (htmlview->renderWidget, url);
 }
 
 void
 liferea_htmlview_set_zoom (LifereaHtmlView *htmlview, gfloat diff)
 {
-	(RENDERER (htmlview)->zoomLevelSet) (htmlview->renderWidget, diff);
+	liferea_webkit_change_zoom_level (htmlview->renderWidget, diff);
 }
 
 gfloat
 liferea_htmlview_get_zoom (LifereaHtmlView *htmlview)
 {
-	return (RENDERER (htmlview)->zoomLevelGet) (htmlview->renderWidget);
+	return liferea_webkit_get_zoom_level (htmlview->renderWidget);
 }
 
 void
@@ -513,7 +498,7 @@ liferea_htmlview_get_reader_mode (LifereaHtmlView *htmlview)
 void
 liferea_htmlview_scroll (LifereaHtmlView *htmlview)
 {
-	(RENDERER (htmlview)->scrollPagedown) (htmlview->renderWidget);
+	liferea_webkit_scroll_pagedown (htmlview->renderWidget);
 }
 
 void
@@ -621,5 +606,5 @@ liferea_htmlview_update (LifereaHtmlView *htmlview, guint mode)
 void
 liferea_htmlview_update_stylesheet (LifereaHtmlView *htmlview)
 {
-	(RENDERER (htmlview)->setStylesheet) (htmlview->renderWidget);
+	liferea_webkit_reload_style (htmlview->renderWidget);
 }
