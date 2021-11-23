@@ -530,8 +530,7 @@ liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom)
 
 static void
 liferea_htmlview_start_output (GString *buffer,
-                               const gchar *base,
-                               gboolean css)
+                               const gchar *base)
 {
 	/* Prepare HTML boilderplate */
 	g_string_append (buffer, "<!DOCTYPE html>\n");
@@ -582,7 +581,7 @@ liferea_htmlview_update (LifereaHtmlView *htmlview, guint mode)
 		baseURL = g_markup_escape_text (baseURL, -1);
 
 	output = g_string_new (NULL);
-	liferea_htmlview_start_output (output, baseURL, TRUE);
+	liferea_htmlview_start_output (output, baseURL);
 
 
 	/* HTML view updating means checking which items
