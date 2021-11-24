@@ -1,4 +1,4 @@
-.TH LIFEREA "1" "Dec 26, 2015"
+.TH LIFEREA "1" "Nov 24, 2021"
 .SH NAME
 Liferea \- GTK desktop news aggregator
 
@@ -16,60 +16,64 @@ headlines with online accounts of TinyTinyRSS and TheOldReader.
 Liferea options:
 .TP
 .B \-v, \-\-version
-Print version information and exit
+Print version information and exit.
 .TP
 .B \-h, \-\-help
-Display a option overview and exit
+Display a option overview and exit.
 .TP
 .B \-a, \-\-add\-feed=\fIURI\fR
-Add a new subscription URI which can be a feed or website URL
+Add a new subscription URI which can be a feed or website URL.
 .TP
 .B \-w, \-\-mainwindow\-state=\fISTATE\fR
-Start Liferea with its mainwindow in STATE: shown, hidden
+Start Liferea with its mainwindow in STATE: shown, hidden.
 .TP
 .B \-p, \-\-disable\-plugins
-Start with all plugins disabled
+Start with all plugins disabled.
 .TP
 .B \-\-debug\-all
-Print debugging messages of all types
+Print debugging messages of all types.
 .TP
 .B \-\-debug\-cache
-Print debugging messages for the cache handling
+Print debugging messages for the cache handling.
 .TP
 .B \-\-debug\-conf
-Print debugging messages of the configuration handling
+Print debugging messages of the configuration handling.
 .TP
 .B \-\-debug\-db
-Print debugging messages of the configuration handling
+Print debugging messages of the configuration handling.
 .TP
 .B \-\-debug\-gui
-Print debugging messages of all GUI functions
+Print debugging messages of all GUI functions.
 .TP
 .B \-\-debug\-html
 Enables HTML rendering debugging. Each time Liferea
 renders HTML output it will also dump the generated
 HTML into $XDG_CACHE_DIR/liferea/output.html.
 .TP
+.B \-\-debug\-net
+Print debugging messages of all network activities and display the
+HTTP/S User-Agent string.
+.TP
 .B \-\-debug\-parsing
-Print debugging messages of all parsing functions
+Print debugging messages of all parsing functions.
 .TP
 .B \-\-debug\-performance
-Print debugging messages when a function takes too long to process
+Print debugging messages when a function takes too long to process.
 .TP
 .B \-\-debug\-trace
-Print debugging messages when entering/leaving functions
+Print debugging messages when entering/leaving functions.
 .TP
 .B \-\-debug\-update
-Print debugging messages of the feed update processing
+Print debugging messages of the feed update processing.
 .TP
 .B \-\-debug\-vfolder
-Print debugging messages of the search folder matching
+Print debugging messages of the search folder matching.
 .TP
 .B \-\-debug\-verbose
-Print verbose debugging messages
+Print verbose debugging messages.
 
 .SH DBUS INTERFACE
-To allow integration with other programs \fBLiferea\fP profives a DBUS
+To allow integration with other programs \fBLiferea\fP provides a DBUS
 interface for automatic creation of new subscriptions. The script
 \fBliferea-add-feed\fP is a convenient way to use this interface. Just
 pass a valid feed URL as parameter and the feed will be added to the
@@ -84,21 +88,44 @@ to work.
 .SH ENVIRONMENT
 .TP
 .B http_proxy
-If a proxy is not specified in the Liferea preferences (which uses the proxy
-settings provided by dconf), then Liferea will use the proxy specified in $http_proxy.
+If a proxy is not specified in the \fBLiferea\fP preferences (which uses the proxy
+settings provided by dconf), then \fBLiferea\fP will use the proxy specified in $http_proxy.
 $http_proxy should be set to a URI specifying the desired proxy, for example
 .RB \(oqhttp://proxy.example.com:3128/\(cq.
+.TP
+.B LIFEREA_UA_ANONYMOUS
+If defined, randomizes and anonymizes the default HTTP/S User-Agent string.
+.RB
+.TP
+.B LIFEREA_UA
+If defined, its value replaces the default HTTP/S User-Agent string.
+.RB
+.LP
+LIFEREA_UA has always precedence over LIFEREA_UA_ANONYMOUS, so the latter can
+be safely defined in global shell initialization files.
+
+.SH EXAMPLES
+.TP
+$ LIFEREA_UA_ANONYMOUS=1 liferea --debug-net
+Will alter each outgoing HTTP/S request to randomize \fBLiferea\fP's version and
+hide the operative system in use.
+In addition, prints the HTTP/S User-Agent and all outgoing network requests.
+.RB
+.TP
+$ LIFEREA_UA="Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" liferea
+Will alter each outgoing HTTP/S request to pose as Firefox on Linux.
+.RB
 
 .SH FILES
 .TP
 $XDG_CONFIG_DIR/liferea/feedlist.opml
-Contains the current list of subscriptions
+Contains the current list of subscriptions.
 .TP
 $XDG_CONFIG_DIR/liferea/liferea.css
-Stylesheet that can be used to override default HTML style
+Stylesheet that can be used to override default HTML style.
 .TP
 $XDG_DATA_DIR/liferea/liferea.db
-Sqlite3 database with all subscriptions and headlines
+SQLite3 database with all subscriptions and headlines.
 .TP
 $XDG_DATA_DIR/liferea/plugins/
 User-installed plugins are stored here. You can either manually
@@ -106,3 +133,5 @@ put plugins here or use the plugin installer in Liferea.
 
 .SH AUTHOR
 This manual page was written by Lars Windolf <lars.windolf@gmx.de>.
+
+Updated on Nov 24, 2021 by Lorenzo L. Ancora <admin@lorenzoancora.info>.
