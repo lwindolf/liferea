@@ -1,5 +1,5 @@
-EXTRA_DIST = liferea.1\
-             it/liferea.1
+dist_man1_MANS = liferea.man
 
-man_MANS = liferea.1\
-	   it/liferea.1
+install-data-local:
+	@echo Italian; \
+ 	/usr/bin/install --verbose -D --mode=644 "it/liferea.man" "$(mandir)/it/man1/liferea.1"
