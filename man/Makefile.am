@@ -1,3 +1,5 @@
-EXTRA_DIST = liferea.1
+EXTRA_DIST = liferea.1\
+             it/liferea.1
 
-man_MANS = liferea.1
+man_MANS = liferea.1\
+	   it/liferea.1

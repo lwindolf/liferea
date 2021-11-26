@@ -1,0 +1,171 @@
+.TH LIFEREA "1" "Nov 26, 2021"
+.SH NOME
+Liferea \- aggregatore di notiziari GTK per il desktop
+
+.SH SINOSSI
+.B liferea
+.RI [\fIOPZIONI\fR]
+
+.SH DESCRIZIONE
+\fBLiferea\fP (Linux Feed Reader) è un aggregatore per i notiziari online.
+Può essere utilizzato per mantenere una lista di notiziari a cui sei abbonato,
+sfogliare e ricercare i loro oggetti e mostrarne i contenuti.
+In aggiunta Liferea ti permette di sincronizzare gli abbonamenti e leggere
+i titoli tramite gli account online di TinyTinyRSS e TheOldReader.
+.SH OPZIONI
+Opzioni di Liferea:
+.TP
+.B \-v, \-\-version
+Mostra le informazioni sulla versione ed esce.
+.TP
+.B \-h, \-\-help
+Mostra un riepilogo delle opzioni ed esce.
+.TP
+.B \-a, \-\-add\-feed=\fIURI\fR
+Aggiunge l'URI di un nuovo abbonamento che può essere l'URL di un notiziario o
+di un sito web.
+.TP
+.B \-w, \-\-mainwindow\-state=\fISTATE\fR
+Avvia Liferea con la sua finestra principale nello STATO: visibile, nascosta.
+.TP
+.B \-p, \-\-disable\-plugins
+Avvia Liferea con tutti i plugin disabilitati.
+.TP
+.B \-\-debug\-all
+Mostra i messaggi di debug di tutti i tipi.
+.TP
+.B \-\-debug\-cache
+Mostra i messaggi di debug per la gestione della memoria.
+.TP
+.B \-\-debug\-conf
+Mostra i messaggi di debug per la gestione della configurazione (generica).
+.TP
+.B \-\-debug\-db
+Mostra i messaggi di debug per la gestione della configurazione (base di dati).
+.TP
+.B \-\-debug\-gui
+Mostra i messaggi di debug di tutte le funzioni della GUI.
+.TP
+.B \-\-debug\-html
+Abilita il debugging del rendering HTML. Ogni volta che Liferea
+renderizza l'output HTML, farà anche il dump dell'HTML generato
+all'interno di $XDG_CACHE_DIR/liferea/output.html.
+.TP
+.B \-\-debug\-net
+Mostra i messaggi di debug di tutte le attività di rete e mostra la stringa
+dell'User-Agent HTTP/S.
+.TP
+.B \-\-debug\-parsing
+Mostra i messaggi di debug di tutte le funzioni del parser.
+.TP
+.B \-\-debug\-performance
+Mostra dei messaggi di debug quando una funzione impiega troppo tempo.
+.TP
+.B \-\-debug\-trace
+Mostra i messaggi di debug all'entrata/uscita nelle/dalle funzioni.
+.TP
+.B \-\-debug\-update
+Mostra i messaggi di debug del processo di aggiornamento del notiziario.
+.TP
+.B \-\-debug\-vfolder
+Mostra i messaggi di debug sulle cartelle di ricerca.
+.TP
+.B \-\-debug\-verbose
+Mostra messaggi di debug verbosi.
+
+.SH INTERFACCIA DBUS
+Per consentire l'integrazione con altri programmi \fBLiferea\fP fornisce
+un'interfaccia DBUS per la creazione automatica di nuovi abbonamenti. Lo script
+\fBliferea-add-feed\fP è un modo conveniente per utilizzarla. Ti basta
+passare l'URL ben formato di un notiziario come parametro ed il notiziario
+sarà aggiunto all'elenco dei notiziari. Puoi anche passare altri tipi di URL
+per usare l'individuazione automatica dei notiziari.
+Vedi la sezione ESEMPI.
+
+.SH AMBIENTE
+.TP
+.B http_proxy (per connessioni HTTP)
+.RE
+.B https_proxy (per connessioni HTTPS)
+.RS
+Se sono definite ed un proxy non è specificato nelle preferenze di \fBLiferea\fP
+(il quale usa le impostazioni del proxy fornite da dconf), il loro valore sarà
+usato come URI del proxy. Entrambe vengono usate da molti strumenti CLI, quindi
+assicurati di esportarle in una sotto-shell dedicata.
+.RE
+.TP
+.B LIFEREA_UA_ANONYMOUS
+Se definita, randomizza e anonimizza la stringa User-Agent HTTP/S predefinita.
+.RB
+.TP
+.B LIFEREA_UA
+Se definita, il suo valore sostituisce la stringa User-Agent HTTP/S predefinita.
+.RB
+.LP
+LIFEREA_UA ha sempre precedenza su LIFEREA_UA_ANONYMOUS, affinché quest'ultimo
+possa essere definito in sicurezza nei file globali di inizializzazione
+della shell.
+
+.SH EXAMPLES
+.TP
+.nf
+$ http_proxy="http://proxy.example.com:3128" liferea
+.fi
+.RE
+.nf
+$ http_proxy="http://username:password@proxy.example.com:3128" liferea
+.fi
+.RS
+Cambierà ogni richiesta in uscita per usare proxy.example.com sulla porta 3128
+come proxy. Se la risoluzione DNS non funziona, può essere invece usato un
+indirizzo IP.
+.RE
+.TP
+.nf
+$ LIFEREA_UA_ANONYMOUS=1 liferea --debug-net
+.fi
+Cambierà ogni richiesta HTTP/S in uscita per randomizzare la versione di
+\fBLiferea\fP e nascondere il sistema operativo in uso.
+In aggiunta, mostra l'User-Agent HTTP/S e tutte le richieste in uscita.
+.RB
+.TP
+.nf
+$ LIFEREA_UA="Mozilla/5.0 (X11; Linux x86_64; rv:10.0) Gecko/20100101 Firefox/10.0" liferea
+.fi
+Cambierà ogni richiesta HTTP/S in uscita per fingersi Firefox su Linux.
+.RB
+.TP
+.nf
+$ liferea-add-feed "feed:https://www.example.com/feed.rss"
+.fi
+.RE
+.nf
+$ liferea --add-feed "https://www.example.com/feed.rss"
+.fi
+.RS
+Abbonati a "example.com/feed.rss". Ricordati di fornire l'URL valido e
+correttamente sottoposto ad escaping di un notiziario. Nota che \fBLiferea\fP
+ha bisogno di essere in esecuzione affinché \fBliferea-add-feed\fP funzioni.
+.RB
+
+.SH FILES
+.TP
+$XDG_CONFIG_DIR/liferea/feedlist.opml
+Contiene la lista degli abbonamenti attuali.
+.TP
+$XDG_CONFIG_DIR/liferea/liferea.css
+Foglio di stile che può essere usato per sovrascrivere lo stile HTML
+predefinito.
+.TP
+$XDG_DATA_DIR/liferea/liferea.db
+Base di dati SQLite3 con tutti gli abbonamenti ed i titoli.
+.TP
+$XDG_DATA_DIR/liferea/plugins/
+I plugin installati dall'utente vengono conservati qui. Puoi inserire i plugin
+qui manualmente o usare l'Installatore Plugin all'interno di Liferea.
+
+.SH AUTORE
+Questa pagina di manuale è stata scritta da Lars Windolf <lars.windolf@gmx.de>.
+
+Aggiornata e tradotta dall'inglese il 26 nov. 2021 da Lorenzo L. Ancora
+<admin@lorenzoancora.info>.
