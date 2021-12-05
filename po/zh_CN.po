@@ -186,7 +186,7 @@ msgstr "按类目过滤"
 
 #: ../plugins/plugin-installer.py:140
 msgid "_Install"
-msgstr "安装("
+msgstr "安装(_I)"
 
 #: ../plugins/plugin-installer.py:144
 msgid "_Uninstall"
