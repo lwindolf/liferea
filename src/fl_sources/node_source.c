@@ -228,6 +228,8 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 
 	subscription_export (node->subscription, xml, trusted);
 
+	NODE_SOURCE_TYPE (node)->source_export (node);
+
 	debug_exit("node_source_export");
 }
 
