@@ -21,17 +21,12 @@
 #ifndef _NEWSBIN_H
 #define _NEWSBIN_H
 
-#include <gtk/gtk.h>
 #include "node_type.h"
 
 /**
  * Returns a list of the names of all news bins
  */
 GSList * newsbin_get_list(void);
-
-/* UI callbacks */
-
-void on_newnewsbinbtn_clicked(GtkButton *button, gpointer user_data);
 
 /**
  * on_action_copy_to_newsbin: (skip)
