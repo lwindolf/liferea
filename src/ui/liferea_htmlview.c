@@ -501,8 +501,7 @@ liferea_htmlview_set_reader_mode (LifereaHtmlView *htmlview, gboolean readerMode
 {
 	htmlview->readerMode = readerMode;
 
-	/* reload current content to make it effective */
-	// FIXME
+	(RENDERER (htmlview)->reload) (htmlview->renderWidget);
 }
 
 gboolean
@@ -531,8 +530,7 @@ liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom)
 
 static void
 liferea_htmlview_start_output (GString *buffer,
-                               const gchar *base,
-                               gboolean css)
+                               const gchar *base)
 {
 	/* Prepare HTML boilderplate */
 	g_string_append (buffer, "<!DOCTYPE html>\n");
@@ -549,9 +547,6 @@ liferea_htmlview_start_output (GString *buffer,
 		g_string_append (buffer, "\" />\n");
 		g_free (escBase);
 	}
-
-	if (css)
-		g_string_append (buffer, render_get_css ());
 
 	g_string_append (buffer, "</head><body>Loading...</body></html>");
 }
@@ -586,7 +581,7 @@ liferea_htmlview_update (LifereaHtmlView *htmlview, guint mode)
 		baseURL = g_markup_escape_text (baseURL, -1);
 
 	output = g_string_new (NULL);
-	liferea_htmlview_start_output (output, baseURL, TRUE);
+	liferea_htmlview_start_output (output, baseURL);
 
 	switch (mode) {
 		case ITEMVIEW_SINGLE_ITEM:
@@ -624,7 +619,7 @@ liferea_htmlview_update (LifereaHtmlView *htmlview, guint mode)
 }
 
 void
-liferea_htmlview_update_style_element (LifereaHtmlView *htmlview)
+liferea_htmlview_update_stylesheet (LifereaHtmlView *htmlview)
 {
-	(RENDERER (htmlview)->reloadStyle) (htmlview->renderWidget);
+	(RENDERER (htmlview)->setStylesheet) (htmlview->renderWidget);
 }

@@ -30,6 +30,7 @@
 #include "conf.h"
 #include "common.h"
 #include "enclosure.h" /* Only for enclosure_download */
+#include "render.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_htmlview.h"
 
@@ -717,12 +718,36 @@ liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, c
 }
 
 /**
- * Execute JS Function in WebView to reload the stylesheet
+ * Load liferea.css via user style sheet
  */
 static void
-liferea_webkit_reload_style (GtkWidget *webview)
+liferea_webkit_set_style (GtkWidget *webview)
 {
-    webkit_web_view_run_javascript (WEBKIT_WEB_VIEW (webview), "updateStyle();", NULL, NULL, NULL);
+	if (render_get_css () == NULL)
+		return;
+
+	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
+
+	webkit_user_content_manager_remove_all_style_sheets (manager);
+
+	WebKitUserStyleSheet *stylesheet = webkit_user_style_sheet_new (render_get_css(),
+		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
+		WEBKIT_USER_STYLE_LEVEL_USER,
+		NULL,
+		NULL);
+	webkit_user_content_manager_add_style_sheet (manager, stylesheet);
+	webkit_user_style_sheet_unref (stylesheet);
+}
+
+/**
+ * Reload the current contents of webview
+ */
+static void
+liferea_webkit_reload (GtkWidget *webview)
+{
+	liferea_webkit_default_settings (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)));
+
+	webkit_web_view_reload (webview);
 }
 
 static struct
@@ -739,7 +764,8 @@ htmlviewImpl webkitImpl = {
 	.scrollPagedown	= liferea_webkit_scroll_pagedown,
 	.setProxy	= liferea_webkit_set_proxy,
 	.setOffLine	= NULL, // FIXME: blocked on https://bugs.webkit.org/show_bug.cgi?id=18893
-	.reloadStyle	= liferea_webkit_reload_style
+	.setStylesheet	= liferea_webkit_set_style,
+	.reload		= liferea_webkit_reload
 };
 
 DECLARE_HTMLVIEW_IMPL (webkitImpl);

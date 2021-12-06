@@ -622,6 +622,14 @@ liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event
 			break;
 		case WEBKIT_LOAD_FINISHED:
 			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
+
+			GActionGroup 	*action_group;
+			action_group = LIFEREA_WEB_VIEW (view)->menu_action_group;
+			GSimpleAction *reader_action;
+			reader_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "toggle-reader-mode"));
+			gboolean reader = liferea_htmlview_get_reader_mode(htmlview);
+			g_simple_action_set_state (reader_action, g_variant_new_boolean (reader));
+
 			liferea_htmlview_load_finished (htmlview, webkit_web_view_get_uri (view));
 			break;
 		default:
@@ -653,7 +661,6 @@ liferea_web_view_init(LifereaWebView *self)
 	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
 	g_action_map_add_action_entries (G_ACTION_MAP(self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
 	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", self->menu_action_group);
-
 
 	g_signal_connect (
 		self,

@@ -201,12 +201,12 @@ void liferea_htmlview_do_zoom (LifereaHtmlView *htmlview, gint zoom);
 void liferea_htmlview_update (LifereaHtmlView *htmlview, guint mode);
 
 /**
- * liferea_htmlview_update_style_element:
+ * liferea_htmlview_update_stylesheet:
  * @htmlview:	the html view
  *
- * Update the href attribute of the WebView's <link> tag
+ * Update the user stylesheet of the WebView
  */
-void liferea_htmlview_update_style_element (LifereaHtmlView *htmlview);
+void liferea_htmlview_update_stylesheet (LifereaHtmlView *htmlview);
 
 G_END_DECLS
 
@@ -224,7 +224,8 @@ typedef struct htmlviewImpl {
 	void		(*setProxy)		(ProxyDetectMode mode, const gchar *hostname, guint port, const gchar *username, const gchar *password);
 	void		(*scrollPagedown)	(GtkWidget *widget);
 	void		(*setOffLine)		(gboolean offline);
-	void		(*reloadStyle)		(GtkWidget *widget);
+	void		(*setStylesheet)	(GtkWidget *widget);
+	void		(*reload)		(GtkWidget *widget);
 } *htmlviewImplPtr;
 
 /**

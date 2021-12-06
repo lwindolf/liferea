@@ -509,5 +509,5 @@ itemview_do_zoom (gint zoom)
 void
 itemview_style_update (void)
 {
-	liferea_htmlview_update_style_element (itemview->htmlview);
+	liferea_htmlview_update_stylesheet (itemview->htmlview);
 }

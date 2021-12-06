@@ -19,19 +19,9 @@
  */
 
 /**
- * updateStyle() will be called on GTK theme change events to reload
- * the regenerated CSS file
- */
-function updateStyle() {
-	var link = document.getElementById('styles');
-	link.setAttribute('href', link.getAttribute('href').replace(/\\?.*/, '') + '?'+(new Date().getTime() / 1000));
-}
-
-/**
  * loadContent() will be run on each internal / Readability.js rendering
  */
 function loadContent(readerEnabled, content) {
-console.log(content);
 	if (false == readerEnabled) {
 	     	if (document.location.href === 'liferea://') {
 			console.log('[liferea] reader mode is off');
@@ -48,14 +38,16 @@ console.log(content);
 			// When we are internally browsing than we need basic
 			// structure to insert Reader mode content
 			if(document.location.href !== 'liferea://') {
+				content = document.documentElement.innerHTML;
 				document.body.innerHTML = '<div id=\"content\"></div>';
 			} else {
 				// Add all content in shadow DOM and split decoration from content
 				// only pass the content to Readability.js
-				documentClone.body.innerHTML = decodeURIComponent(content);
+				content = decodeURIComponent(content);
+				documentClone.body.innerHTML = content;
 				documentClone.getElementById('content').innerHTML = '';
 				document.body.innerHTML = documentClone.body.innerHTML;
-				documentClone.body.innerHTML = decodeURIComponent(content);
+				documentClone.body.innerHTML = content;
 				documentClone.body.innerHTML = documentClone.getElementById('content').innerHTML;
 			}
 
@@ -66,8 +58,8 @@ console.log(content);
 
 			// Show the results
 			var article = new Readability(documentClone).parse();
-			document.getElementById('content').innerHTML = article.content
-
+			if (article)
+				document.getElementById('content').innerHTML = article.content
 
 			if(document.location.href !== 'liferea://') {
 				// Kill all foreign styles
@@ -80,17 +72,11 @@ console.log(content);
 					s.parentNode.removeChild(s);
 				}
 
-				// Add our style
-				var link = document.createElement('link');
-				link.setAttribute('href', get_liferea_static_path('liferea.css'));
-				link.setAttribute('rel', 'stylesheet');
-				link.setAttribute('type', 'text/css');
-				document.head.appendChild(link);
 				// FIXME: Add our header
 			}
 		} catch(e) {
 			console.log('[liferea] reader mode failed: '+e);
-			loadContent(false);
+			document.documentElement.innerHTML = content;
 		}
 	}
 }

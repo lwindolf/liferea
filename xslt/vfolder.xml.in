@@ -48,7 +48,7 @@
 </tr>
 </table>
 
-<div class='content'>
+<div class='content' id='content'>
   <p>
    <b><xsl:value-of select="unreadCount"/></b>
    <_span>unread headlines</_span> 
