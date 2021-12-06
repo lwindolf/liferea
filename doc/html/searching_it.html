@@ -1,6 +1,6 @@
 <html lang="it">
 <head>
-	<title>Searching</title>
+	<title>Cercare le Notizie</title>
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" type="text/css" href="reference.css">
@@ -11,45 +11,50 @@
 	<table width="100%">
 	   <tr>
 	      <!-- back --><td width="50px"><a rel="prev" href="preferences_it.html">Precedente</a></td>
-	      <!-- home --><td style="text-align:center;"><b>Searching and Search Folders</b></td>
+	      <!-- home --><td style="text-align:center;"><b>Cercare le Notizie e Cartelle di Ricerca</b></td>
 	      <!-- next --><td width="50px;" style="text-align:right;"><a rel="next" href="enclosures_it.html">Successiva</a></td>
 	   </tr>
 	</table>
 	<hr />
 	<!-- navigation header end -->
 
-	<h4>Searching for Feed Content</h4>
+	<h4>Cercare nei Notiziari</h4>
 
 	<p>
-	Liferea supports a simple case sensitive text searching in the item
-	content and titles of all your subscriptions.
+	Liferea supporta la ricerca semplice insensibile alle maiuscole nei contenuti
+	dell'oggetto e nei titoli di tutti i tuoi abbonamenti.
 	</p>
 	<p>
-	To open the search
-	dialog click the search button in the toolbar.
-	Enter the string you want to search for and click the "Search" button.
-	Any items containing the string either in their title or their content
-	should appear in the resulting item list. Also the item content view
-	will give you a message about the number of matches.
+	Per aprire le finestra di ricerca clicca il pulsante di ricerca nella barra
+	degli strumenti.
+	Inserisci la stringa di testo che vuoi trovare e clicca il pulsante "Trova".
+	Qualsiasi oggetto contenente la stringa nel titolo o nel contenuto
+	dovrebbe apparire nella lista di oggetti risultante. Inoltre la
+	vista del contenuto dell'oggetto ti mostrerà il numero di corrispondenze.
 	</p>
+
+	<!-- Nota del traduttore: l'originale afferma che si tratta di "case sensitive
+	text searching", ma nella pratica è l'opposto. Le maiuscole non contano. -->
 
 	<p align="center">
 	<img src="help_search_1.6.0.png">
 	</p>
 
-	<h4>Permanent Searches with Search Folders</h4>
+	<h4>Ricerche Permanenti con le Cartelle di Ricerca</h4>
 
 	<p>
-	If you want to have permanent searches (e.g. all items containing
-	the term "XML") you can create a search folder which will be added to
-	your feed list and contains all items matching this search rule.
-	To do so enter your search term into the search box and click
-	the search button. After the results appear click the "Search Folder"
-	button to create a search folder from the search results. Now a search
-	folder should appear in your feed list. If you want you can edit the
-	search folders title or change its rules by opening the properties
-	dialog either from the "Subscriptions" menu or the contextual
-	menu in the feed list.
+	Se desideri avere ricerche permanenti (es. tutti gli oggetti che contengono
+	il termine "XML") puoi creare una cartella di ricerca che sarà aggiunta al
+	tuo elenco dei notiziari e contiene tutti gli oggetti che corrispondono a
+	una certa regola di ricerca.
+	Per farlo inserisci il tuo termine nella casella di ricerca e clicca
+	il pulsante trova. Dopo che i risultati sono apparsi, clicca il pulsante
+	"Cartella di Ricerca" per creare una cartella di ricerca a partire dai
+	risultati della ricerca. A questo punto una cartella di ricerca dovrebbe
+	apparire nel tuo elenco dei notiziari. Se lo desideri puoi cambiare il
+	titolo delle cartelle di ricerca o le loro regole di ricerca aprendo
+	la finestra delle proprità dal menu "Notiziario" o dal menu contestuale nella
+	lista degli abbonamenti.
 	<!-- FIXME add search folder icon -->
 	</p>
 
@@ -58,101 +63,105 @@
 	</p>
 
 	<p>
-	The following table is a list of all possible search folder rules
-	and their specific meaning.
+	La tabella seguente è una lista di tutte le possibili regole di ricerca e
+	dei loro specifici significati.
 	</p>
 
 	<table border="1" cellpadding="3" style="border:1px solid black;border-collapse:collapse">
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#bfb" width="50%">
-	<b>Item does contain</b>
+	<b>Articolo contiene</b>
 	</td><td>
-	<b>Adds</b> each item whose title or content matches the given case insensitive string to the search folder.
+	<b>Aggiunge</b> alla cartella di ricerca ogni oggetto il cui titolo o contenuto corrisponde alla stringa insensibile alle maiuscole data.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#fbb">
-	<b>Item does not contain</b>
+	<b>Articolo non contiene</b>
 	</td><td>
-	<b>Removes</b> each item whose title or content matches the given case insensitive string from the search folder.
+	<b>Rimuove</b> dalla cartella di ricerca ogni oggetto il cui titolo o contenuto corrisponde alla stringa insensibile alle maiuscole data.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#bfb">
-	<b>Item title does contain</b>
+	<b>Titolo dell'articolo contiene</b>
 	</td><td>
-	<b>Adds</b> each item whose item title matches the given case insensitive string to the search folder.
+	<b>Aggiunge</b> alla cartella di ricerca ogni oggetto il cui titolo corrisponde alla stringa insensibile alle maiuscole data.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#fbb">
-	<b>Item title does not contain</b>
+	<b>Titolo dell'articolo non contiene</b>
 	</td><td>
-	<b>Removes</b> each item whose item title matches the given case insensitive string from the search folder.
+	<b>Rimuove</b> dalla cartella di ricerca ogni oggetto il cui titolo corrisponde alla stringa insensibile alle maiuscole data.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#bfb">
-	<b>Item body does contain</b>
+	<b>Corpo dell'articolo contiene</b>
 	</td><td>
-	<b>Adds</b> each item whose item content matches the given case insensitive string to the search folder.
+	<b>Aggiunge</b> alla cartella di ricerca ogni oggetto il cui contenuto corrisponde alla stringa insensibile alle maiuscole data.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#fbb">
-	<b>Item body does not contain</b>
+	<b>Corpo dell'articolo non contiene</b>
 	</td><td>
-	<b>Removes</b> each item whose item body matches the given case insensitive string from the search folder.
+	<b>Rimuove</b> dalla cartella di ricerca ogni oggetto il cui contenuto corrisponde alla stringa insensibile alle maiuscole data.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#bfb">
-	<b>Feed title does contain</b>
+	<b>Titolo del notiziario contiene</b>
 	</td><td>
-	<b>Adds</b> each item whose parent feed's title matches the given case insensitive string to the search folder.
+	<b>Aggiunge</b> alla cartella di ricerca ogni oggetto il cui titolo del notiziario padre corrisponde alla stringa insensibile alle maiuscole data.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#fbb">
-	<b>Feed title does not contain</b>
+	<b>Titolo del notiziario non contiene</b>
 	</td><td>
-	<b>Removes</b> each item whose parent feed's title matches the given case insensitive string from the search folder.
+	<b>Rimuove</b> dalla cartella di ricerca ogni oggetto il cui titolo del notiziario padre corrisponde alla stringa insensibile alle maiuscole data.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#bfb">
-	<b>Read status is unread</b>
+	<b>Stato di lettura è non letto</b>
 	</td><td>
-	<b>Adds</b> each unread item to the search folder.
+	<b>Aggiunge</b> ogni oggetto non letto alla cartella di ricerca.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#fbb">
-	<b>Read status is read</b>
+	<b>Stato di lettura è letto</b>
 	</td><td>
-	<b>Removes</b> each unread item from the search folder.
+	<b>Rimuove</b> ogni oggetto non letto dalla cartella di ricerca.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#bfb">
-	<b>Flag status is flagged</b>
+	<b>Stato del contrassegno è contrassegnato</b>
 	</td><td>
-	<b>Adds</b> each flagged item to the search folder.
+	<b>Aggiunge</b> ogni oggetto contrassegnato alla cartella di ricerca.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#fbb">
-	<b>Flag status is unflagged</b>
+	<b>Stato del contrassegno è non contrassegnato</b>
 	</td><td>
-	<b>Removes</b> each flagged item from the search folder.
+	<b>Aggiunge</b> ogni oggetto privo di contrassegno alla cartella di ricerca.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#bfb">
-	<b>Podcast included</b>
+	<b>Podcast incluso</b>
 	</td><td>
-	<b>Adds</b> all items that contain an enclosure to the search folder.
+	<b>Aggiunge</b> alla cartella di ricerca tutti gli oggetti che contengono un allegato.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#fbb">
-	<b>Podcast not included</b>
+	<b>Podcast non incluso</b>
 	</td><td>
-	<b>Removes</b> all items that do not contain an enclosure from the search folder.
+	<b>Rimuove</b> dalla cartella di ricerca tutti gli oggetti che contengono un allegato.
 	</td></tr>
 	</table>
 
+	<!-- Nota del traduttore: la tabella originale è incompleta e tale
+	     incompletezza è stata mantenuta nella traduzione, perché le opzioni
+			 mancanti sono molto intuitive. -->
+
 	<p>
-	Please note that the order of the rules does not matter. An additive
-	rule after a removal rule that does match an item that is to be removed
-	because of to the removal rule will not add this item!
+	Nota che l'ordine delle regole è irrilevante. Una regola di aggiunta
+	posta dopo una regola di rimozione che non corrisponde ad un oggetto da
+	rimuovere a causa della regola di rimozione non aggiungerà tale oggetto!
 	</p>
 
 	<!-- navigation footer start -->
