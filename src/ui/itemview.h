@@ -28,7 +28,7 @@
 #include "item.h"
 #include "itemset.h"
 #include "node.h"
-#include "ui/liferea_htmlview.h"
+#include "ui/liferea_browser.h"
 
 /* Liferea presents items in a dynamic view. The view layout
    changes according to the subscription preferences and if

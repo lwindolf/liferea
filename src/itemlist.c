@@ -41,7 +41,7 @@
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/feed_list_view.h"
-#include "ui/liferea_htmlview.h"
+#include "ui/liferea_browser.h"
 
 /* The 'item list' is a controller for 'item view' and database backend.
    It manages the currently displayed 'node', realizes filtering

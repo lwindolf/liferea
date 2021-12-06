@@ -33,7 +33,7 @@
 #include "enclosure.h" /* Only for enclosure_download */
 #include "render.h"
 #include "ui/browser_tabs.h"
-#include "ui/liferea_htmlview.h"
+#include "ui/liferea_browser.h"
 
 #include "web_extension/liferea_web_extension_names.h"
 #include "liferea_web_view.h"
@@ -529,13 +529,15 @@ static LifereaWebKit *liferea_webkit = NULL;
  * Create new WebkitWebView object and connect signals to a LifereaHtmlview
  */
 GtkWidget *
-liferea_webkit_new (LifereaHtmlView *htmlview)
+liferea_webkit_new (LifereaBrowser *htmlview)
 {
 	WebKitWebView 	*view;
 	WebKitSettings	*settings;
 
-	if (!liferea_webkit)	
-		liferea_webkit_init (g_object_new (LIFEREA_TYPE_WEBKIT, NULL));
+	if (!liferea_webkit) {
+		liferea_webkit = g_object_new (LIFEREA_TYPE_WEBKIT, NULL);
+		liferea_webkit_init (liferea_webkit);
+	}
 
 	view = WEBKIT_WEB_VIEW (liferea_web_view_new ());
 
@@ -550,7 +552,7 @@ liferea_webkit_new (LifereaHtmlView *htmlview)
 		view,
 		G_CONNECT_AFTER);
 
-	/** Pass LifereaHtmlView into the WebKitWebView object */
+	/** Pass LifereaBrowser into the WebKitWebView object */
 	g_object_set_data (
 		G_OBJECT (view),
 		"htmlview",

@@ -112,7 +112,7 @@ Liferea_3_0_gir_FILES = \
 	ui/icons.c ui/icons.h \
 	ui/itemview.c ui/itemview.h \
 	ui/item_list_view.c ui/item_list_view.h \
-	ui/liferea_htmlview.c ui/liferea_htmlview.h \
+	ui/liferea_browser.c ui/liferea_browser.h \
 	ui/liferea_shell.c ui/liferea_shell.h \
 	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h \
 	ui/media_player.c ui/media_player.h \

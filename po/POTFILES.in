@@ -133,10 +133,10 @@ src/ui/item_list_view.c
 src/ui/item_list_view.h
 src/ui/itemview.c
 src/ui/itemview.h
+src/ui/liferea_browser.c
+src/ui/liferea_browser.h
 src/ui/liferea_dialog.c
 src/ui/liferea_dialog.h
-src/ui/liferea_htmlview.c
-src/ui/liferea_htmlview.h
 src/ui/liferea_shell.c
 src/ui/liferea_shell.c
 src/ui/liferea_shell.h
@@ -167,9 +167,11 @@ src/vfolder.h
 src/vfolder_loader.c
 src/vfolder_loader.h
 src/webkit/liferea_web_view.c
+src/webkit/liferea_web_view.h
 src/webkit/web_extension/liferea_web_extension.c
 src/webkit/web_extension/web_extension_main.c
 src/webkit/webkit.c
+src/webkit/webkit.h
 src/xml.c
 src/xml.h
 [type: gettext/glade]glade/about.ui

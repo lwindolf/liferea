@@ -23,7 +23,7 @@
 
 #include <webkit2/webkit2.h>
 
-#include "ui/liferea_htmlview.h"
+#include "ui/liferea_browser.h"
 
 #define LIFEREA_TYPE_WEBKIT liferea_webkit_get_type ()
 
@@ -45,11 +45,11 @@ typedef struct _LifereaWebKitClass {
 
 /**
  * liferea_webkit_new:
- * @htmlview: 	LifereaHtmlView to connect
+ * @htmlview: 	LifereaBrowser to connect
  *
- * Create new WebkitWebView object and connect signals to a LifereaHtmlView
+ * Create new WebkitWebView object and connect signals to a LifereaBrowser
  */
-GtkWidget *liferea_webkit_new (LifereaHtmlView *htmlview);
+GtkWidget *liferea_webkit_new (LifereaBrowser *htmlview);
 
 /**
  * liferea_webkit_launch_url:
