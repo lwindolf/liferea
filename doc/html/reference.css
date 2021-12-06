@@ -1,12 +1,63 @@
+header {
+	border-bottom: 2px dotted;
+}
+
+footer {
+	border-top: 2px dotted;
+}
+
+header nav td,
+footer nav td {
+	padding: 8px;
+	width: 7em;
+	user-select: none;
+}
+
+header nav td a,
+footer nav td a {
+	display: block;
+	white-space: nowrap;
+	cursor: pointer;
+	padding: initial;	
+}
+
+nav a {
+	text-decoration: none;
+}
+
+nav a:hover,
+nav a:focus {
+	text-decoration: underline;
+}
+
+nav li a {
+	display: block;
+	padding: 0.5em;
+	margin: 0.3em;
+}
+
 table.reftable {
-	border:1px solid black;
-	border-collapse:collapse;
+	border: 1px solid black;
+	border-collapse: collapse;
 }
 
 table.reftable tr td {
-	border:1px solid black;
+	border: 1px solid black;
+}
+
+td.ptitle h1 {
+	font-weight: bold;
+	font-size: larger;
+	margin: auto;
 }
 
 dt {
-	 font-weight: bold;
+	font-weight: bold;
 }
+
+/* General-purpose */
+
+.left {text-align: left;}
+.right {text-align: right;}
+.center {text-align: center;}
+.fullwidth {width: 100%;}
