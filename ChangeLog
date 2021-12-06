@@ -1,16 +1,55 @@
-To be released
+2021-12-06   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.7
 
 	* Allow converting TinyTinyRSS subscriptions to local subscriptions
 	  (Lars Windolf)
+	  
+	* #1045: Further integration of Reader mode with internal browser
+	  (Matthew Moran)
+  
+	* #1044: Support for user-agent string customization and anonymization
+	  (Lorenzo Ancora)
+	    
+	* #1037: Fix deprecation of g_time_zone_new
+	  (sunwire)
+	
+	* #1027: Add option to show news bins in reduced feed list
+	  (Alexandre Erwin Ittner)
+	  
+	* #1023: Execute feed pipe/filter commands asynchronously
+	  (Alexandre Erwin Ittner)
+	
+	* #1018: Fix deprecation of pango_find_base_dir
+	  (sunwire)
 
-	* #981: Left-clicking an external link in the headline view caused the
+	* #1017: Fix deprecation of g_memdup
+	  (sunwire)
+	  
+	* #1016: Type casting to silence compiler warnings
+	  (sunwire)
+
+	* #1014: Fixes some compiler warnings
+	  (sunwire)
+	
+	* #947: Rework of Reader mode feature toggling: toggle is now a context
+	  menu toggle of the HTML view context menu.
+
+	* Fixes #1013: Certificate problems with some URLs
+	  (sunwire)
+	  
+	* Fixes 1005: aria2 download manager triggered by wrong command
+	  (zorlaski)
+	  
+	* Fixes #981: Left-clicking an external link in the headline view caused the
 	  Javascript disabled setting to be ignored.
 	  (Lars Windolf)
 
 	* Fixes #993: Duplicate registration of libsoup content decoder
 	  (Yanko Kaneti)
+	  
+	* Fixes #955: Blog post truncated after a YouTube embed
+	  (reported by Jeff Fortin, fix by Rich Coe)
 
 	* Fixes #952: Number of unread items is 2 times the correct number
 	  (reported by GaryGate15)
@@ -21,11 +60,36 @@ To be released
 	  - missing LGPL license file COPYING.LIB -> added
 	  (reported by Paul Gevers)
 
+	* #1040: Updated all documentation for WCAG and HTML5 semantics
+	  improves accessibility for screen readers
+	  (Lorenzo Ancora)
+
+	* #1049: Update and extend man page
+	  (Lorenzo Ancora)
+
+	* #477: Updated documentation for enclosure download
+	  (Lars Windolf)
+
 	* Updated documentation for preference dialog
 	  (Lars Windolf)
+	  
+	* Added Italian documentation translation
+	  (Lorenzo Ancora)
+
+	* Updated Brazilian Portuguese translation
+	  (Fúlvio Alves)
+	  
+	* Updated Czech translation
+	  (RadimNo)
+	  
+	* Updated Hungarian translation
+	  (Balázs Úr)
 
 	* Updated Polish translation
 	  (sunwire)
+	  
+	* Updated Simplified Chinese translation
+	  (Sefler Zhou)
 
 
 2021-05-07   Lars Windolf <lars.windolf@gmx.de>
