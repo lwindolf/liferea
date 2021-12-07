@@ -1356,17 +1356,6 @@ liferea_shell_destroy (void)
 	g_object_unref (shell);
 }
 
-void
-liferea_shell_present (void)
-{
-	GtkWidget *mainwindow = GTK_WIDGET (shell->window);
-
-	if ((gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) || !gtk_widget_get_visible (mainwindow))
-		liferea_shell_restore_position ();
-
-	gtk_window_present (shell->window);
-}
-
 static gboolean
 liferea_shell_window_is_on_other_desktop(GdkWindow *gdkwindow)
 {
