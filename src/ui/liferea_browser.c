@@ -413,7 +413,7 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 
 		// Return Readability.js and Liferea specific loader code
 		b1 = g_resources_lookup_data ("/org/gnome/liferea/readability/Readability.js", 0, NULL);
-		b2 = g_resources_lookup_data ("/org/gnome/liferea/browser.js", 0, NULL);
+		b2 = g_resources_lookup_data ("/org/gnome/liferea/htmlview.js", 0, NULL);
 
 		g_assert(b1 != NULL);
 		g_assert(b2 != NULL);
