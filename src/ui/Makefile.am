@@ -19,7 +19,7 @@ libliui_a_SOURCES = \
 	item_list_view.c item_list_view.h \
 	itemview.c itemview.h \
 	liferea_dialog.c liferea_dialog.h \
-	liferea_htmlview.c liferea_htmlview.h \
+	liferea_browser.c liferea_browser.h \
 	liferea_shell.c liferea_shell.h \
 	liferea_shell_activatable.c liferea_shell_activatable.h \
 	media_player.c media_player.h \

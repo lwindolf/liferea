@@ -34,7 +34,7 @@ typedef struct _tabInfo tabInfo;
 struct _tabInfo {
 	GtkWidget	*label;		/*<< the tab label */
 	GtkWidget	*widget;	/*<< the embedded child widget */
-	LifereaHtmlView	*htmlview;	/*<< the tabs HTML view widget */
+	LifereaBrowser	*htmlview;	/*<< the tabs HTML view widget */
 };
 
 /**
@@ -316,7 +316,7 @@ on_htmlview_status_message (gpointer obj, gchar *url)
 
 /* single tab creation */
 
-LifereaHtmlView *
+LifereaBrowser *
 browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 {
 	GtkWidget 	*close_button, *labelBox;
@@ -324,8 +324,8 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	int		i;
 
 	tab = g_new0 (tabInfo, 1);
-	tab->htmlview = liferea_htmlview_new (TRUE /* internal browsing */);
-	tab->widget = liferea_htmlview_get_widget (tab->htmlview);
+	tab->htmlview = liferea_browser_new (TRUE /* internal browsing */);
+	tab->widget = liferea_browser_get_widget (tab->htmlview);
 	tabs->list = g_slist_append (tabs->list, tab);
 
 	g_object_set_data (G_OBJECT (tab->widget), "tabInfo", tab);
@@ -358,7 +358,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 		gtk_notebook_set_current_page (tabs->notebook, i);
 
 	if (url)
-		liferea_htmlview_launch_URL_internal (tab->htmlview, (gchar *)url);
+		liferea_browser_launch_URL_internal (tab->htmlview, (gchar *)url);
 
 	return tab->htmlview;
 }
@@ -369,7 +369,7 @@ browser_tabs_show_headlines (void)
 	gtk_notebook_set_current_page (tabs->notebook, gtk_notebook_page_num (tabs->notebook, tabs->headlines));
 }
 
-LifereaHtmlView *
+LifereaBrowser *
 browser_tabs_get_active_htmlview (void)
 {
 	tabInfo		*tab;
@@ -386,5 +386,5 @@ browser_tabs_get_active_htmlview (void)
 void
 browser_tabs_do_zoom (gint zoom)
 {
-	liferea_htmlview_do_zoom (browser_tabs_get_active_htmlview (), zoom);
+	liferea_browser_do_zoom (browser_tabs_get_active_htmlview (), zoom);
 }

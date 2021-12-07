@@ -24,7 +24,7 @@
 
 #include <gtk/gtk.h>
 
-#include "liferea_htmlview.h"
+#include "liferea_browser.h"
 
 G_BEGIN_DECLS
 
@@ -49,7 +49,7 @@ BrowserTabs * browser_tabs_create (GtkNotebook *notebook);
  *
  * Returns: the newly created HTML view
  */
-LifereaHtmlView * browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate);
+LifereaBrowser * browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate);
 
 /**
  * browser_tabs_show_headlines:
@@ -67,7 +67,7 @@ void browser_tabs_show_headlines (void);
  *
  * Returns: (transfer none) (nullable): HTML view widget
  */
-LifereaHtmlView * browser_tabs_get_active_htmlview (void);
+LifereaBrowser * browser_tabs_get_active_htmlview (void);
 
 /**
  * browser_tabs_do_zoom:

@@ -28,7 +28,7 @@
 #include "feedlist.h"
 #include "social.h"
 #include "ui/browser_tabs.h"
-#include "ui/liferea_htmlview.h"
+#include "ui/liferea_browser.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
 #include "web_extension/liferea_web_extension_names.h"
@@ -100,7 +100,7 @@ liferea_web_view_update_actions_sensitivity (LifereaWebView *self)
 }
 
 /*
- * Copied from liferea_htmlview.c Perhaps could go in common.h ?
+ * Copied from liferea_browser.c Perhaps could go in common.h ?
  */
 static gboolean
 liferea_web_view_is_special_url (const gchar *url)
@@ -268,15 +268,15 @@ on_popup_subscribe_link_activate (GSimpleAction *action, GVariant *parameter, gp
 static void
 on_popup_zoomin_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (user_data), "htmlview");
-	liferea_htmlview_do_zoom (htmlview, TRUE);
+	LifereaBrowser *htmlview = g_object_get_data (G_OBJECT (user_data), "htmlview");
+	liferea_browser_do_zoom (htmlview, TRUE);
 }
 
 static void
 on_popup_zoomout_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (user_data), "htmlview");
-	liferea_htmlview_do_zoom (htmlview, FALSE);
+	LifereaBrowser *htmlview = g_object_get_data (G_OBJECT (user_data), "htmlview");
+	liferea_browser_do_zoom (htmlview, FALSE);
 }
 
 static void
@@ -296,7 +296,7 @@ on_popup_toggle_reader_mode_activate (GSimpleAction *action, GVariant *parameter
 	gboolean reader = g_variant_get_boolean (parameter);
 
 g_warning("Change reader mode");
-	liferea_htmlview_set_reader_mode (g_object_get_data (G_OBJECT (webview), "htmlview"), reader);
+	liferea_browser_set_reader_mode (g_object_get_data (G_OBJECT (webview), "htmlview"), reader);
 	g_simple_action_set_state (action, g_variant_new_boolean (reader));
 }
 
@@ -313,13 +313,13 @@ static const GActionEntry liferea_web_view_gaction_entries[] = {
 static void
 liferea_web_view_title_changed (WebKitWebView *view, GParamSpec *pspec, gpointer user_data)
 {
-	LifereaHtmlView	*htmlview;
+	LifereaBrowser	*htmlview;
 	gchar *title;
 
 	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
 	g_object_get (view, "title", &title, NULL);
 
-	liferea_htmlview_title_changed (htmlview, title);
+	liferea_browser_title_changed (htmlview, title);
 	g_free (title);
 }
 
@@ -334,7 +334,7 @@ liferea_web_view_on_mouse_target_changed (WebKitWebView 	*view,
 					  guint                	modifiers,
 					  gpointer             	user_data)
 {
-	LifereaHtmlView	*htmlview;
+	LifereaBrowser	*htmlview;
 	gchar *selected_url;
 
 	htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
@@ -350,7 +350,7 @@ liferea_web_view_on_mouse_target_changed (WebKitWebView 	*view,
 	}
 
 	/* overwrite or clear last status line text */
-	liferea_htmlview_on_url (htmlview, selected_url);
+	liferea_browser_on_url (htmlview, selected_url);
 
 	g_object_set_data (G_OBJECT (view), "selected_url", selected_url);
 }
@@ -504,7 +504,7 @@ liferea_web_view_link_clicked ( WebKitWebView 		*view,
 		return TRUE;
 	}
 
-	url_handled = liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
+	url_handled = liferea_browser_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
 
 	if (url_handled)
 		webkit_policy_decision_ignore (policy_decision);
@@ -532,7 +532,7 @@ liferea_web_view_new_window_requested (	WebKitWebView *view,
 	if (webkit_navigation_action_get_mouse_button (navigation_action) == 2) {
 		/* middle-click, let's open the link in a new tab */
 		browser_tabs_add_new (uri, uri, FALSE);
-	} else if (liferea_htmlview_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri)) {
+	} else if (liferea_browser_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri)) {
 		/* The link is to be opened externally, let's do nothing here */
 	} else {
 		/* If the link is not to be opened in a new tab, nor externally,
@@ -584,15 +584,15 @@ liferea_web_view_decide_policy (WebKitWebView *view,
 static WebKitWebView*
 liferea_web_view_create_web_view (WebKitWebView *view, WebKitNavigationAction *action, gpointer user_data)
 {
-	LifereaHtmlView *htmlview;
+	LifereaBrowser *htmlview;
 	GtkWidget	*container;
 	GtkWidget	*htmlwidget;
 	GList 		*children;
 
 	htmlview = browser_tabs_add_new (NULL, NULL, TRUE);
-	container = liferea_htmlview_get_widget (htmlview);
+	container = liferea_browser_get_widget (htmlview);
 
-	/* Ugly lookup of the webview. LifereaHtmlView uses a GtkBox
+	/* Ugly lookup of the webview. LifereaBrowser uses a GtkBox
 	   with first a URL bar (sometimes invisble) and the HTML renderer
 	   as 2nd child */
 	children = gtk_container_get_children (GTK_CONTAINER (container));
@@ -604,7 +604,7 @@ liferea_web_view_create_web_view (WebKitWebView *view, WebKitNavigationAction *a
 static void
 liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, gpointer user_data)
 {
-	LifereaHtmlView	*htmlview;
+	LifereaBrowser	*htmlview;
 	gboolean isFullscreen;
 
 	switch (event) {
@@ -618,7 +618,7 @@ liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event
 			break;
 		case WEBKIT_LOAD_COMMITTED:
 			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
-			liferea_htmlview_location_changed (htmlview, webkit_web_view_get_uri (view));
+			liferea_browser_location_changed (htmlview, webkit_web_view_get_uri (view));
 			break;
 		case WEBKIT_LOAD_FINISHED:
 			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
@@ -627,10 +627,10 @@ liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event
 			action_group = LIFEREA_WEB_VIEW (view)->menu_action_group;
 			GSimpleAction *reader_action;
 			reader_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "toggle-reader-mode"));
-			gboolean reader = liferea_htmlview_get_reader_mode(htmlview);
+			gboolean reader = liferea_browser_get_reader_mode (htmlview);
 			g_simple_action_set_state (reader_action, g_variant_new_boolean (reader));
 
-			liferea_htmlview_load_finished (htmlview, webkit_web_view_get_uri (view));
+			liferea_browser_load_finished (htmlview, webkit_web_view_get_uri (view));
 			break;
 		default:
 			break;
@@ -640,9 +640,9 @@ liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event
 static void
 liferea_web_view_progress_changed (GObject *webview, GParamSpec *pspec, gpointer user_data)
 {
-	LifereaHtmlView *htmlview = g_object_get_data (G_OBJECT (webview), "htmlview");
+	LifereaBrowser *htmlview = g_object_get_data (G_OBJECT (webview), "htmlview");
 
-	liferea_htmlview_progress_changed (htmlview, webkit_web_view_get_estimated_load_progress (WEBKIT_WEB_VIEW (webview)));
+	liferea_browser_progress_changed (htmlview, webkit_web_view_get_estimated_load_progress (WEBKIT_WEB_VIEW (webview)));
 }
 
 static void
