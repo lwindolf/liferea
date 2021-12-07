@@ -79,13 +79,6 @@ void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState
 void liferea_shell_destroy (void);
 
 /**
- * liferea_shell_present:
- *
- * Presents the main window if it is hidden.
- */
-void liferea_shell_present (void);
-
-/**
  * liferea_shell_show_window:
  *
  * Show the main window.

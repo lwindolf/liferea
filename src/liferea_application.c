@@ -114,8 +114,7 @@ on_app_activate (GtkApplication *gtk_app, gpointer user_data)
 	list = gtk_application_get_windows (gtk_app);
 
 	if (list) {
-		gtk_window_deiconify (GTK_WINDOW (list->data));
-		gtk_window_present (GTK_WINDOW (list->data));
+		liferea_shell_show_window ();
 	} else {
 		liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
 	}
