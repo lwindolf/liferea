@@ -28,7 +28,7 @@
 #include <libxml/parser.h>
 #include <glib.h>
 #include <string.h>
-#include <pango/pango-direction.h>
+#include <pango/pango-bidi-type.h>
 
 /*
  * Standard gettext macros
