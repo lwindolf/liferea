@@ -40,7 +40,6 @@
 #include "itemset.h"
 #include "render.h"
 #include "xml.h"
-#include "ui/liferea_browser.h"
 
 /* Liferea provides special screens and the item and the feed displays
    using self-generated HTML. To separate code and layout and to easily
