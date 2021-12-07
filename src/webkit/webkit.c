@@ -670,7 +670,7 @@ liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, c
 /**
  * Load liferea.css via user style sheet
  */
-static void
+void
 liferea_webkit_reload_style (GtkWidget *webview)
 {
 	if (render_get_css () == NULL)
@@ -692,10 +692,10 @@ liferea_webkit_reload_style (GtkWidget *webview)
 /**
  * Reload the current contents of webview
  */
-static void
+void
 liferea_webkit_reload (GtkWidget *webview)
 {
 	liferea_webkit_default_settings (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)));
 
-	webkit_web_view_reload (webview);
+	webkit_web_view_reload (WEBKIT_WEB_VIEW (webview));
 }

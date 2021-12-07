@@ -487,8 +487,7 @@ void
 liferea_browser_set_reader_mode (LifereaBrowser *browser, gboolean readerMode)
 {
 	browser->readerMode = readerMode;
-
-	(RENDERER (htmlview)->reload) (htmlview->renderWidget);
+	liferea_webkit_reload (browser->renderWidget);
 }
 
 gboolean

@@ -109,6 +109,14 @@ void liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint po
 void liferea_webkit_reload_style (GtkWidget *webview);
 
 /**
+ * liferea_webkit_reload:
+ * @webview:	the WebkitWebView
+ *
+ * Reload the current contents of webview
+ */
+void liferea_webkit_reload (GtkWidget *webview);
+
+/**
  * liferea_webkit_write_html:
  * @webview:		the WebkitWebView
  * @string:		the HTML string
