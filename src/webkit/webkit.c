@@ -534,10 +534,8 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 	WebKitWebView 	*view;
 	WebKitSettings	*settings;
 
-	if (!liferea_webkit) {
+	if (!liferea_webkit)
 		liferea_webkit = g_object_new (LIFEREA_TYPE_WEBKIT, NULL);
-		liferea_webkit_init (liferea_webkit);
-	}
 
 	view = WEBKIT_WEB_VIEW (liferea_web_view_new ());
 
