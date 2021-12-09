@@ -1,3 +1,8 @@
+h1 {
+	font-size: larger;
+	margin: initial;
+}
+
 table.reftable {
 	border: 1px solid black;
 	border-collapse: collapse;
@@ -37,5 +42,11 @@ footer nav a,
 nav li,
 nav li a {
 	padding: 3px;
-	margin: 3px
+	margin: 3px;
+	user-select: none;
+}
+
+main {
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
 }
