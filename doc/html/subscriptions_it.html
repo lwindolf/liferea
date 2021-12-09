@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="it">
 <head>
-	<title>Managing Subscriptions</title>
+	<title>Gestire gli Abbonamenti</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="reference.css" >
 </head>
@@ -13,266 +13,279 @@
 	<table width="100%">
 	   <tr>
 	      <!-- back --><td width="50px"><a rel="prev" href="concepts_it.html">Precedente</a></td>
-	      <!-- home --><td style="text-align:center;"><b>Managing Subscriptions</b></td>
+	      <!-- home --><td style="text-align:center;"><b>Gestire gli Abbonamenti</b></td>
 	      <!-- next --><td width="50px;" style="text-align:right;"><a rel="next" href="headlines_it.html">Successiva</a></td>
 	   </tr>
 	</table>
 	<hr />
 	<!-- navigation header end -->
 
-	<!-- content start --> 
+	<!-- content start -->
 	<p>
-	This section documents all user interactions necessary to create and maintain subscription.
+	Questa sezione documenta tutte le interazioni dell'utente necessarie a creare e mantenere gli abbonamenti.
 	</p>
-	
-	<h3>Things Liferea Can Subscribe To</h3>
+
+	<h3>Cose Alle Quali Liferea Può Abbonarsi</h3>
 	<p>
-	As a news aggregator Liferea allows you to subscribe to different
-	syndication sources. The most common use case is to subscribe to
-	single feeds. But Liferea also supports subscribing a source that provides
-	a collection of feeds. So you can subscribe to:
-	
+	In quanto aggregatore di notiziari Liferea ti permette di abbonarti a
+	differenti sorgenti di notizie. Il caso d'uso più comune è di abbonarsi
+	a notiziari singoli. Ma Liferea supporta anche abbonamenti a fonti che offrono
+	una collezione di notiziari. Quanti puoi abbonarti a:
+
 	<ul>
-		<li>a single feed</li>
-		<li>any OPML source (a planet feed list, a blog roll...)</li>
-		<li>a TheOldReader online account</li>
-		<li>a TinyTinyRSS online account</a></li>
+		<li>un notiziario singolo</li>
+		<li>una fonte OPML (un elenco planet di notiziari, un blogroll...)</li>
+		<li>un account online su TheOldReader</li>
+		<li>un account online su TinyTinyRSS</a></li>
 	</ul>
-	
-	<h3>Subscribing to a Feed</h3>
+
+	<h3>Abbonarsi a un Notiziario</h3>
 	<p>
-	To create a new feed subscription select "New Feed" from the feed 
-	list's contextual menu or the "Subscriptions" menu. A dialog to create a 
-	new subscription will appear.
-	</p>	
+	Per creare un nuovo abbonamento ad un notiziario seleziona "Nuovo Abbonamento"
+	dal menu contestuale dell'elenco notiziari o dal menu "Notiziario".
+  Apparirà una finestra per creare un nuovo abbonamento.
+	</p>
 
 	<p align="center">
 	<img src="help_subscribe_1.6.0.png">
 	</p>
-	
-	<p>
-	For example, to subscribe to Slashdot's news feed enter
-	"<i><a href="http://slashdot.org/index.rss">http://slashdot.org/index.rss</a></i>"
-	into the text box and click "OK".
-	</p>
-	
-	<h3>Creating Special Feed Subscriptions</h3>
 
 	<p>
-	Liferea supports obtaining feeds from a variety of different sources 
-	including Internet URLs, the output of a locally run command, and by 
-	directly reading from a	file. Most often, it is desired to subscribe 
-	using an URL as described in the previous paragraph. For special 
-	subscription you must select "Advanced" to open the following more
-	complex subscription dialog:</p>
-	
+	Ad esempio, per abbonarti al notiziario di Slashdot inserisci
+	"<i><a href="http://slashdot.org/index.rss">http://slashdot.org/index.rss</a></i>"
+	nella casella di testo e clicca su "OK".
+	</p>
+
+	<h3>Creare Abbonamenti Speciali ai Notiziari</h3>
+
+	<p>
+	Liferea supporta l'ottenimento di notiziari da fonti differenti
+	inclusi URLs di Internet, l'output di un comando locale, e la
+	lettura diretta da un file. Spesso, si desidera abbonarsi a un notiziario
+	usando un URL come descritto nel paragrafo precedente. Per l'abbonamento
+	speciale devi selezionare "Avanzato&hellip;" per aprire la seguente finestra
+	per gli abbonamenti complessi:</p>
+
 	<p align="center">
 	<img src="help_subscribe_adv_1.6.0.png">
 	</p>
-	
-	<p>
-	After selecting the desired source type, enter the source URL, command
-	name, or filename into the "Source" textbox. </p>
-	
-	<p>When a command or local file is selected, the command or file
-	can be selected using a file navigation box by clicking "Select
-	File...".</p>
-	
-	<p>Sometimes, the data in a feed is in a format that is
-	unknown to Liferea. If this is the case, a conversion filter
-	can be used to convert the data into a useable format. Many
-	filters can be downloaded from <a
-	href="https://kiza.eu/software/snownews/snowscripts/">the
-	Snownews and Liferea script repository</a>.</p>
-
-	<p>To use conversion filters, the "Use conversion filter" option needs
-	to be activated in the subscription dialog box. The filter is
-	specified by either typing the path of the filter script into the
-	"Convert using" textbox or selecting the filter after clicking the
-	"Select File..." button. The filters are simple programs that read
-	the non-supported feed format using stdin and output the valid
-	feed to stdout. Conversion filters are often written using
-	perl. </p>
-	
-	<h3>Changing Subscription Properties</h3>
 
 	<p>
-	The feed properties dialog is used to configure additional feed
-	properties and can be activated in the "Subscriptions" menu or from feed 
-	context menu. After successfully creating a new subscription you 
-	usually don't need to change the feed properties.
+	Dopo aver selezionato il tipo di fonte desiderata, inserisci l'URL sorgente,
+	il nome del comando, o il nome del file nella casella di testo "Fonte". </p>
+
+	<p>Quando viene selezionato un comando o un file locale, il comando o il file
+	possono essere scelti usando una finestra di navigazione cliccando "Seleziona
+	File&hellip;".</p>
+
+	<p>Talvolta, la data in un notiziario è in un formato che
+	Liferea non conosce. Se questo è il caso, può essere utilizzato un
+	filtro di conversione per convertirla in un formato adatto. Molti
+	filtri possono essere scaricati dall'<a
+	href="https://kiza.eu/software/snownews/snowscripts/">
+	archivio di script di Snownews e Liferea</a>.</p>
+
+	<p>Per usare i filtri di conversione, l'opzione "Usare filtro di conversione"
+	dev'essere attivata nella finestra degli abbonamenti. Lo script filtro viene
+	specificato scrivendone il percorso nella casella di testo
+	"Convertire usando" o selezionandolo dopo aver cliccato il pulsante
+	"Seleziona file&hellip;". I filtri sono semplici programmi che leggono
+	il formato di notiziario non supportato usando stdin e producono un notiziario
+	valido usando stdout. I filtri di conversione vengono spesso codificati
+  usando Perl.</p>
+
+	<h3>Cambiare le Proprietà di un Abbonamento</h3>
+
+	<p>
+	La finestra delle proprietà del notiziario viene utilizzata per configurare
+	le proprietà aggiuntive del notiziario e può essere attivata nel menu
+  "Notiziario" o dal menu contestuale del notiziario. Dopo aver creato con
+	successo un nuovo abbonamento non avrai in genere bisogno di alterarne le
+  proprietà.
 	</p>
 	<p>
-	Only if you want to change the HTTP authentication, the caching behaviour
-	or other feed specific options then you need to use the feed properties
-	dialog.
+	Avrai bisogno di utilizzare questa finestra solo quando vorrai modificare
+  l'autenticazione HTTP, la gestione della memoria o altre opzioni specifiche
+  del notiziario.
 	</p>
-	
-	<p>
-	The dialog groups the feed properties into five sets: "General",
-	"Source", "Archive", "Download" and "Advanced":</p>
 
-	<h4>General Properties</h4>
+	<p>
+	La finestra raggruppa le proprietà del notiziario in cinque insiemi:
+  "Generale", "Fonte", "Archivio", "Scaricamento" e "Avanzato":</p>
+
+	<h4>Generale</h4>
 
 	<p align="center">
 	<img src="help_feed_prop_general_1.6.0.png"/>
 	</p>
-	
-	<p>The "General" pane allows you to set feed title and update
-	interval. The feed name is the feed's name shown in the feed
-	list. Multiple feeds can have the same name.</p>
-	
-	<a name="updateInterval">
-	<div id="updateInterval"><p>The feed update interval controls how often Liferea attempts to
-		update a feed. Typically, the feed update interval can be left at
-		its default. We recommend to use the global update interval
-		preference which you can find in the preference dialog because it
-		allows one to change the update interval of all feed
-		simultaneously.</p>
-	  
-	  <p>Sometimes a feed provides a feed specific update interval.
-		If this is the case Liferea automatically activates the user
-		defined update interval setting and enters the feed specific
-		update interval. This is only done during the initial feed
-		subscription. You should never need to change such a setting.</p>
 
-		<p>The update interval can be set using the following options:</p>
+	<p>Il pannello "Generale" ti permette di scegliere il titolo del notiziario
+  e l'intervallo di aggiornamento. Il nome del notiziario è quello mostrato
+	nell'elenco. Più notiziari possono avere lo stesso nome.</p>
+
+	<a name="updateInterval">
+	<div id="updateInterval"><p>L'intervallo di aggiornamento del notiziario
+    determina quando spesso Liferea cercherà di aggiornare il notiziario.
+    Tipicamente, l'intervallo di aggiornamento del notiziario può essere
+    lasciato al suo valore predefinito. Raccomandiamo di utilizzare
+		la preferenza globale che puoi trovare nella finestra delle preferenze
+		perché ti consente di modificare l'intervallo di aggiornamento di tutti
+    i notiziari in contemporanea.</p>
+
+	  <p>Talvolta un notiziario fornisce un proprio intervallo di aggiornamento.
+		Se questo è il caso Liferea attiva automaticamente l'impostazione per
+    specificare un intervallo di aggiornamento personalizzato e la popola
+    con questo valore. Questo viene fatto solo durante la creazione iniziale
+    dell'abbonamento al notiziario. Non dovresti mai aver bisogno di cambiare
+    questa impostazione.</p>
+
+		<p>L'intervallo di aggiornamento può essere settato su:</p>
 		<dl>
-		  <dt>Use global default update interval</dt>
-		  <dd>This preference is used for all feeds that have
-			the update interval setting to follow the global default update
-			interval setting.</dd>
-		  
-		  <dt>Feed specific update interval</dt><dd>There might be situations where you want to specify
-			a update interval which might be more or less frequent than
-			the global update interval. Then you should select the user
-			defined interval option and enter the interval value you want.
-			<em>When specifying an update interval, you should consider the
-			  web traffic you will cause with an inappropriate update
-			  interval. Don't update more often than the feed's content is
-			  updated.</em></dd>
-	
-		  <dt>Don't update this feed automatically</dt><dd>This option
-			allows you to prevent updating the feed. You can use this option
-			for feeds you always want to have only updated manually.</dd>
+		  <dt>Usare l'intervallo di aggiornamento globale predefinito.</dt>
+		  <dd>Questa impostazione viene utilizzata da tutti i notiziari che
+			rispettano l'intervallo di aggiornamento globale.</dd>
+
+		  <dt>Intervallo specifico di aggiornamento del notiziario</dt>
+      <dd>Ci potrebbero essere situazioni in cui desideri
+			un intervallo aggiornamento più o meno frequente di quello predefinito.
+      In tal caso dovresti selezionare questa opzione e specificarlo.
+			<em>Quando specifichi un intervallo di aggiornamento, dovresti considerare
+			  il traffico web che causerai con un intervallo di aggiornamento non
+        appropriato. Non aggiornare più frequentemente di quanto i contenuti
+        siano in genere pubblicati.</em></dd>
+
+		  <dt>Non aggiornare automaticamente questo notiziario.</dt>
+      <dd>Questa opzione ti consente di prevenire l'aggiornamento del
+      notiziario. Puoi usare questa opzione per i notiziari che vuoi
+      aggiornare solo manualmente ogni volta.</dd>
 	  </dl>
 	</div>
-	<h4>Source Properties</h4>
+
+	<h4>Fonte</h4>
 
 	<p align="center">
 	<img src="help_feed_prop_source_1.6.0.png"/>
 	</p>
-	
-	<p>The "Source" pane contains the same fields that the advanced
-	subscription dialog provides. You can use these	settings to change 
-	the feed source (e.g. after a feed's URL has changed).</p>
 
-	<h4>Archive Properties</h4>
+	<p>Il pannello "Fonte" contiene gli stessi campi contenuti nella finestra
+  per l'abbonamento avanzato. Puoi utilizzare queste impostazioni per cambiare
+  la fonte del notiziario (es. dopo che l'URL di un notiziario è variato).</p>
+
+	<h4>Archivio</h4>
 
 	<p align="center">
 	<img src="help_feed_prop_cache_1.6.0.png"/>
 	</p>
-	
-	<p>The third pane, "Archive", controls how many items of
-	a feed are kept when Liferea saves a feed to disk.
-	Similar to the update interval settings there is a 
-	corresponding global preference which sets a default cache
-	size for all feeds. You should use the feed specific cache
-	settings only to implement exceptions from the global
-	default cache size.</p>
-	
+
+	<p>Il terzo pannello, "Archivio", controlla quanti oggetti di
+	un notiziario sono mantenuti quando Liferea lo salva su disco.
+	In modo simile all'intervallo di aggiornamento v'è una preferenza
+	globale corrispondente che imposta la dimensione della memoria per
+  tutti i notiziari. Dovresti utilizzare questo pannello solo per
+  implementare eccezioni alla politica di memorizzazione globale.</p>
+
 	<dl>
-	  <dt>Default Cache Settings</dt><dd>Makes the feed use the default cache settings, which are stored in the main Liferea
-		preferences.</dd>
-	  <dt>Disable Cache</dt> <dd> Disable the feed's items from ever being saved.</dd>
-	  <dt>Unlimited cache</dt> <dd> Save all items ever downloaded. </dd>
-	  <dt>Number of items to save</dt> <dd>Limits the cache size to a fixed number.</dd>
+	  <dt>Impostazioni di caching predefinite</dt>
+    <dd>Fa sì che il notiziario erediti le impostazioni predefinite, che sono
+    conservate nelle preferenze di Liferea.</dd>
+	  <dt>Disabilita la cache</dt>
+    <dd>Impedisce che gli oggetti del notiziario vengano salvati.</dd>
+	  <dt>Cache illimitata</dt>
+    <dd>Salva sempre tutti gli oggetti scaricati.</dd>
+	  <dt>Numero di articoli da salvare</dt>
+    <dd>Limita la grandezza della memoria a un numero fisso.</dd>
 	</dl>
 
 	<p>
-	<strong>Note:</strong> Flagged items are always saved, regardless
-	of the cache settings.  So if you have found an important headline
-	and want to prevent it from being dropped from the cache just flag
-	this headline.
+	<strong>Nota:</strong> Gli oggetti marchiati saranno sempre conservati,
+	a prescindere dalle impostazioni di memorizzazione.  Quindi se hai trovato un
+	titolo importante e vuoi evitare che venga scartato dalla memoria lo puoi
+  marchiare.
 	</p>
-	
-	<h4>Download Properties</h4>
-	
+
+	<h4>Scaricamento</h4>
+
 	<p align="center">
 	<img src="help_feed_prop_downl_1.6.0.png"/>
 	</p>
-	
+
 	<p>
-	This tab allows you to disable the use of the global proxy setting and
-	to enable HTTP authentication when downloading the feed. Enable the checkbox 
-	and enter appropriate user and password values to use password-protected feeds. 
-	Usually you won't need to use these settings because you will be asked username 
-	and password when subscribing to the feed that requires	authentication.
+	Questa scheda ti permette di disabilitare l'uso delle impostazioni globali
+  del proxy e di abilitare l'autenticazione HTTP durante lo scaricamento del
+  notiziario. Abilita la casella di controllo ed inserisci i valori appropriati
+  per nome utente e password per poter utilizzare i notiziari protetti da
+  password.
+	In genere non avrai bisogno di utilizzare queste impostazioni perché
+	il nome utente e la password ti verranno richiesti durante l'abbonamento
+  al notiziario che richiede l'autenticazione.
 	</p>
-	
-	<h4>Advanced Properties</h4>
-	
+
+	<h4>Avanzato</h4>
+
 	<p align="center">
 	<img src="help_feed_prop_adv_1.6.0.png"/>
 	</p>
 
 	<p>
-	This panel provides different special options to control how Liferea
-	handles the subscription. These options are:
+	Questo pannello fornisce certe opzioni speciali per controllare come Liferea
+  gestisce l'abbonamento. Queste opzioni sono:
 	</p>
-	
+
 	<dl>
-		<dt>Automatically download all enclosures of this feed.</dt>
-		<dd>This might be useful for podcasts or torrent feeds. If
-		you enable the option Liferea downloads attached <a href="enclosures_en.html">enclosures</a>.
+		<dt>Scaricare automaticamente tutti gli allegati di questo notiziario.</dt>
+		<dd>Questo può essere utile per podcast o notiziari sui torrent. Se abiliti
+    l'opzione Liferea scarica gli <a href="enclosures_it.html">allegati</a>.
 		</dd>
-	
-		<dt>Auto-load item link in configured browser when selecting articles.</dt>
-		<dd>Per-default Liferea shows the item description in the HTML view pane.
-		When this check box is enabled it will automatically load the item link
-		when the item selection changes.
+
+		<dt>Caricare automaticamente il collegamento dell'articolo nel browser
+    configurato quando sono selezionati gli articoli.</dt>
+		<dd>Di default Liferea mostra la descrizione dell'oggetto nel pannello di
+    visualizzazione HTML.
+		Quando questa casella di controllo è abilitata esso caricherà
+    il link dell'oggetto automaticamente quando l'oggetto selezionato cambia.
 		</dd>
-		
-		<dt>Ignore comment feeds for this subscription.</dt>
-		<dd>Sometimes there are feeds with broken or useless
-		comment feeds. This option allows to ignore those.</dd>
-		
-		<dt>Enforce popup notification for this subscription.</dt>
-		<dd>If the global notification preference is disabled you
-		can enabled this option to generate notifications for only
-		this feed.</dd>
-		
-		<dt>Never do popup notification for this subscription.</dt>
-		<dd>If the global notification preference is enabled you
-		can use this option to prevent notifications for this feed.
-		This might be useful for high-traffic feeds.</dd>
-		
-		<dt>Mark downloaded items as read.</dt>
-		<dd>Normally new items have the status "unread". Sometimes
-		you might want to use this option for new items of a special
-		feed not to show up as "unread" so you don't have to mark
-		them "read" manually.</dd>
+
+		<dt>Ignorare i commenti del notiziario per questo abbonamento.</dt>
+		<dd>Talvolta ci sono notiziari con commenti corrotti o inutili.
+    Questa opzione ti consente di ignorarli.</dd>
+
+		<dt>Forza la notifica popup per questo articolo.</dt>
+		<dd>Se la preferenza di notifica globale è disabilitata puoi
+		abilitare quest'opzione per generare notifiche solo per questo
+    notiziario.</dd>
+
+		<dt>Non mostrare mai notifiche popup per questo articolo.</dt>
+		<dd>Se la preferenza di notifica globale è abilitata puoi
+		usare quest'opzione per per prevenire notifiche da questo notiziario.
+		Ciò potrebbe essere utile per i notiziari aggiornati frequentemente.</dd>
+
+		<dt>Segnare articoli scaricati come letti.</dt>
+		<dd>Di norma i nuovi oggetti hanno lo stato "non letto". Certe volte
+		potresti voler utilizzare questo settaggio per far si che i nuovi oggetti
+    di un notiziario speciale non appaiano come "non letti" così non li dovrai
+		segnare manualmente come "letti".</dd>
 	</dl>
-	
-	<h3>Subscribing to OPML Sources and Online Services</h3>
+
+	<h3>Abbonarsi a Fonti OPML e Servizi Online</h3>
 	<p>
-	To subscribe to OPML feed lists or a online service account
-	select "New Source" from the context menu of the feed list or from the
-	"Subscriptions" menu. From the following dialog select the source type
-	you like to create.
+	Per abbonarti agli elenchi di notiziari OPML o ad account di servizi online
+	seleziona "Nuova Fonte" dal menu contestuale dell'elenco degli abbonamenti o
+	dal menu "Notiziari". Dalla finestra che appare seleziona il tipo di fonte
+  che desideri creare.
 	</p>
-	
-	<h4>OPML Sources</h3>
+
+	<h4>Fonti OPML</h3>
 	<p>
-	If you have selected "Planet/BlogRoll/OPML" you need to supply the source
-	URL of the OPML document. If necessary provide authentication information.
-	After doing so a new OPML source node will be inserted in the feed list 
-	and after downloading the OPML document for the first time new 
-	subscriptions as described by the OPML source will be created. If the
-	OPML feed list changes over time old subscriptions are automatically
-	dropped and new ones are added.
+	Se hai selezionato "Planet, BlogRoll, OPML" hai bisogno di fornire
+	l'URL del documento OPML. Se serve inserisci le informazioni di
+  autenticazione.
+	Dopo averlo fatto un nuovo nodo sorgente OPML sarà inserito nell'elenco dei
+	notiziari e, dopo aver scaricato il documento OPML per la prima volta, i nuovi
+	abbonamenti descritti dalla fonte OPML verranno creati. Se l'elenco di
+	notiziari OPML cambia nel tempo i vecchi abbonamenti vengono scartati
+	e ne vengono aggiunti di nuovi.
 	</p>
-	
+
 	<!-- navigation footer start -->
 	<hr />
 	<table width="100%">
