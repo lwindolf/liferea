@@ -453,7 +453,7 @@ item_list_title_alignment (gchar *title)
 
 	/* debug5 (DEBUG_HTML, "title ***%s*** first bytes %02hhx%02hhx%02hhx pango %d",
 		title, title[0], title[1], title[2], pango_find_base_dir (title, -1)); */
-	int txt_direction = pango_find_base_dir (title, -1);
+	int txt_direction = common_find_base_dir (title, -1);
   	int app_direction = gtk_widget_get_default_direction ();
 	if ((txt_direction == PANGO_DIRECTION_LTR &&
 	     app_direction == GTK_TEXT_DIR_LTR) ||

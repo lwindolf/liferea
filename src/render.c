@@ -40,7 +40,6 @@
 #include "itemset.h"
 #include "render.h"
 #include "xml.h"
-#include "ui/liferea_htmlview.h"
 
 /* Liferea provides special screens and the item and the feed displays
    using self-generated HTML. To separate code and layout and to easily
@@ -359,18 +358,6 @@ render_get_css (void)
 		}
 
 		g_free(userStyleSheetFile);
-
-		/* dump CSS to cache file and create a <style> tag to use it */
-		gchar *filename = common_create_cache_filename (NULL, "style", "css");
-		if (!g_file_set_contents(filename, css->str, -1, NULL))
-			g_warning("Cannot write temporary CSS file \"%s\"!", filename);
-
-		g_string_free(css, TRUE);
-
-		css = g_string_new ("<link id=\"styles\" rel=\"stylesheet\" href=\"file://");
-		g_string_append_printf (css, "%s?%d\" />", filename, (int)time(NULL));
-
-		g_free(filename);
 	}
 
 	return css->str;

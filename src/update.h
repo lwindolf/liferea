@@ -119,6 +119,17 @@ typedef struct updateResult {
 	updateStatePtr	updateState;	/**< New update state of the requested object (etags, last modified...) */
 } *updateResultPtr;
 
+/** structure to store state fo running command feeds */
+typedef struct updateCommandState {
+	GPid		pid;		/**< child PID */
+	guint		timeout_id;	/**< glib event source id for the timeout event */
+	guint		io_watch_id;	/**< glib event source id for stdout */
+	guint		child_watch_id;	/**< glib event source id for child termination */
+	gint		fd;		/**< fd for child stdout */
+	GIOChannel	*stdout_ch;	/**< child stdout as a channel */
+} updateCommandState;
+
+
 /** structure describing an HTTP update job */
 typedef struct updateJob {
 	UpdateRequest		*request;
@@ -128,6 +139,7 @@ typedef struct updateJob {
 	gpointer		user_data;	/**< result processing user data */
 	updateFlags		flags;		/**< request and result processing flags */
 	gint			state;		/**< State of the job (enum request_state) */
+	updateCommandState	cmd;		/**< values for command feeds */
 } *updateJobPtr;
 
 /**

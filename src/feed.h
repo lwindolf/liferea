@@ -60,6 +60,7 @@ typedef struct feed {
 	gboolean	ignoreComments;		/**< if TRUE ignore comment feeds for this feed */
 	gboolean	markAsRead;		/**< if TRUE downloaded items are automatically marked as read */
 	gboolean	html5Extract;		/**< if TRUE try to fetch extra content via HTML5 / Google AMP */
+	gboolean	alwaysShowInReduced;	/**< for newsbins only, if TRUE always show when using reduced feed list */
 } *feedPtr;
 
 /**

@@ -198,6 +198,9 @@ feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, 
 	if (!node)
 		return FALSE;
 
+	if (IS_NEWSBIN(node) && node->data && ((feedPtr)node->data)->alwaysShowInReduced)
+		return TRUE;
+
 	if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
 		return FALSE;
 

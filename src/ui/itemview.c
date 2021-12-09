@@ -33,7 +33,7 @@
 #include "ui/enclosure_list_view.h"
 #include "ui/liferea_shell.h"
 #include "ui/item_list_view.h"
-#include "ui/liferea_htmlview.h"
+#include "ui/liferea_browser.h"
 
 /* The item view is the layer that switches item list presentations:
    a HTML single item or list and GtkTreeView list presentation.
@@ -60,7 +60,7 @@ struct _ItemView {
 	ItemListView	*itemListView;		/*<< widget instance used to present items in list mode */
 
 	EnclosureListView	*enclosureView;	/*<< Enclosure list widget */
-	LifereaHtmlView		*htmlview;	/*<< HTML rendering widget instance used to render single items and summaries mode */
+	LifereaBrowser		*htmlview;	/*<< HTML rendering widget instance used to render single items and summaries mode */
 
 	gfloat			zoom;		/*<< HTML rendering widget zoom level */
 };
@@ -82,7 +82,7 @@ itemview_finalize (GObject *object)
 
 	if (itemview->htmlview) {
 		/* save zoom preferences */
-		conf_set_int_value (LAST_ZOOMLEVEL, (gint)(100.* liferea_htmlview_get_zoom (itemview->htmlview)));
+		conf_set_int_value (LAST_ZOOMLEVEL, (gint)(100.* liferea_browser_get_zoom (itemview->htmlview)));
 
 		g_object_unref (itemview->htmlview);
 	}
@@ -134,9 +134,9 @@ itemview_class_init (ItemViewClass *klass)
 					PROP_HTML_VIEW,
 					g_param_spec_object (
 						"html-view",
-						"LifereaHtmlView",
-						"LifereaHtmlView object",
-						LIFEREA_HTMLVIEW_TYPE,
+						"LifereaBrowser",
+						"LifereaBrowser object",
+						LIFEREA_BROWSER_TYPE,
 						G_PARAM_READABLE));
 }
 
@@ -294,7 +294,7 @@ itemview_update (void)
 
 	if (itemview->needsHTMLViewUpdate) {
 		itemview->needsHTMLViewUpdate = FALSE;
-		liferea_htmlview_update (itemview->htmlview, itemview->mode);
+		liferea_browser_update (itemview->htmlview, itemview->mode);
 	}
 
 	if (itemview->node)
@@ -304,7 +304,7 @@ itemview_update (void)
 void
 itemview_display_info (const gchar *html)
 {
-	liferea_htmlview_write (itemview->htmlview, html, NULL);
+	liferea_browser_write (itemview->htmlview, html, NULL);
 }
 
 /* next unread selection logic */
@@ -341,7 +341,7 @@ itemview_find_unread_item (gulong startId)
 void
 itemview_scroll (void)
 {
-	liferea_htmlview_scroll (itemview->htmlview);
+	liferea_browser_scroll (itemview->htmlview);
 }
 
 void
@@ -389,14 +389,14 @@ itemview_set_layout (nodeViewType newMode)
 
 	if (!itemview->htmlview) {
 		debug0 (DEBUG_GUI, "Creating HTML widget");
-		itemview->htmlview = liferea_htmlview_new (FALSE);
+		itemview->htmlview = liferea_browser_new (FALSE);
 		g_signal_connect (itemview->htmlview, "statusbar-changed",
 		                  G_CALLBACK (on_important_status_message), NULL);
 
 		/* Set initial zoom */
-		liferea_htmlview_set_zoom (itemview->htmlview, itemview->zoom/100.);
+		liferea_browser_set_zoom (itemview->htmlview, itemview->zoom/100.);
 	} else {
-		liferea_htmlview_clear (itemview->htmlview);
+		liferea_browser_clear (itemview->htmlview);
 	}
 
 	debug1 (DEBUG_GUI, "Setting item list layout mode: %d", newMode);
@@ -424,10 +424,10 @@ itemview_set_layout (nodeViewType newMode)
 	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
 	g_assert (htmlWidgetName);
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
-	previous_parent = gtk_widget_get_parent (liferea_htmlview_get_widget (itemview->htmlview));
+	previous_parent = gtk_widget_get_parent (liferea_browser_get_widget (itemview->htmlview));
 	if (previous_parent)
-		gtk_container_remove (GTK_CONTAINER (previous_parent), liferea_htmlview_get_widget (itemview->htmlview));
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (htmlWidgetName)), liferea_htmlview_get_widget (itemview->htmlview));
+		gtk_container_remove (GTK_CONTAINER (previous_parent), liferea_browser_get_widget (itemview->htmlview));
+	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (htmlWidgetName)), liferea_browser_get_widget (itemview->htmlview));
 
 	/* Recreate the item list view */
 	if (itemview->itemListView) {
@@ -486,15 +486,15 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 
 	if (forceInternal) {
 		itemview->browsing = TRUE;
-		liferea_htmlview_launch_URL_internal (itemview->htmlview, url);
+		liferea_browser_launch_URL_internal (itemview->htmlview, url);
 		return;
 	}
 
 	/* Otherwise let the HTML view figure out if we want to browse internally. */
-	internal = liferea_htmlview_handle_URL (itemview->htmlview, url);
+	internal = liferea_browser_handle_URL (itemview->htmlview, url);
 
 	if (!internal)
-		liferea_htmlview_launch_URL_internal (itemview->htmlview, url);
+		liferea_browser_launch_URL_internal (itemview->htmlview, url);
 }
 
 void
@@ -503,11 +503,11 @@ itemview_do_zoom (gint zoom)
 	if (itemview->htmlview == NULL)
 		return;
 
-	liferea_htmlview_do_zoom (itemview->htmlview, zoom);
+	liferea_browser_do_zoom (itemview->htmlview, zoom);
 }
 
 void
 itemview_style_update (void)
 {
-	liferea_htmlview_update_style_element (itemview->htmlview);
+	liferea_browser_update_style_element (itemview->htmlview);
 }

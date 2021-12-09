@@ -72,7 +72,7 @@ liferea_dbus_set_online (LifereaDBus *self, gboolean online, GError **err)
 static gboolean
 liferea_dbus_subscribe (LifereaDBus *self, const gchar *url, GError **err)
 {
-	liferea_shell_present ();
+	liferea_shell_show_window ();
 	feedlist_add_subscription (url, NULL, NULL, 0);
 	return TRUE;
 }

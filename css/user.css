@@ -73,6 +73,12 @@
 // .author, .categories, .source { }
 // .date { }
 
+/* Image resizing to fit HTML view */
+// section, div.content svg, div.content * img { }
+
+/* Resizing for video embeds */
+// figure, iframe { }
+
 /* Item/feed description */
 // div.content { }
 

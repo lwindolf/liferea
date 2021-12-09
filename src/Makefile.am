@@ -74,10 +74,10 @@ liferea_LDADD =	parsers/libliparsers.a \
 		$(INTROSPECTION_LIBS) \
 		-lm
 
-js.h: $(top_srcdir)/js/gresource.xml $(main_dep)
+js.h: $(top_srcdir)/js/gresource.xml $(top_srcdir)/js/htmlview.js $(top_srcdir)/js/Readability.js $(main_dep)
 	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
 
-js.c: $(top_srcdir)/js/gresource.xml $(main_dep)
+js.c: $(top_srcdir)/js/gresource.xml $(top_srcdir)/js/htmlview.js $(top_srcdir)/js/Readability.js $(main_dep)
 	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
 
 js.o: js.c js.h
@@ -112,7 +112,7 @@ Liferea_3_0_gir_FILES = \
 	ui/icons.c ui/icons.h \
 	ui/itemview.c ui/itemview.h \
 	ui/item_list_view.c ui/item_list_view.h \
-	ui/liferea_htmlview.c ui/liferea_htmlview.h \
+	ui/liferea_browser.c ui/liferea_browser.h \
 	ui/liferea_shell.c ui/liferea_shell.h \
 	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h \
 	ui/media_player.c ui/media_player.h \

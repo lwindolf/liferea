@@ -75,8 +75,7 @@ dd {
 
 section, div.content svg, div.content * img {
 	max-width: 100%;
-	box-sizing: border-box;
-	object-fit: scale-down;
+	height: auto !important;
 }
 
 figure, iframe {
