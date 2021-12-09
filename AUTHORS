@@ -77,7 +77,7 @@ Sebastian Keller <sebastian-keller@gmx.de>		Gedit-like tab close buttons
 Simon Kågedal Reimer <skagedal@gmail.com>		Seekable GStreamer media player
 Daneil Aleksandersen 					Partial RFC3229 support saving bandwidth
                                                         Security fixes, network improvements
-
+Lorenzo L. Ancora <admin@lorenzoancora.info>    Support for anonymous/random HTTP/S UA string
 
 Maintainer Credits
 ==================
