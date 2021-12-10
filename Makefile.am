@@ -32,6 +32,7 @@ jsdir = $(pkgdatadir)/js
 js_DATA = \
 	js/gresource.xml \
 	js/htmlview.js \
+	js/Readability-readerable.js \
 	js/Readability.js
 
 dtddir = $(pkgdatadir)/dtd

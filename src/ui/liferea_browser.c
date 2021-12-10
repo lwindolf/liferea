@@ -409,14 +409,16 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 	    - for internal content: always (Readability is enable on demand here)
 	 */
 	if (browser->readerMode || (location == strstr (location, "liferea://"))) {
-		g_autoptr(GBytes) b1 = NULL, b2 = NULL;
+		g_autoptr(GBytes) b1 = NULL, b2 = NULL, b3 = NULL;
 
 		// Return Readability.js and Liferea specific loader code
-		b1 = g_resources_lookup_data ("/org/gnome/liferea/readability/Readability.js", 0, NULL);
-		b2 = g_resources_lookup_data ("/org/gnome/liferea/htmlview.js", 0, NULL);
+		b1 = g_resources_lookup_data ("/org/gnome/liferea/readability/Readability-readerable.js", 0, NULL);
+		b2 = g_resources_lookup_data ("/org/gnome/liferea/readability/Readability.js", 0, NULL);
+		b3 = g_resources_lookup_data ("/org/gnome/liferea/htmlview.js", 0, NULL);
 
 		g_assert(b1 != NULL);
 		g_assert(b2 != NULL);
+		g_assert(b3 != NULL);
 
 		// FIXME: pass actual content here too, instead of on render_item()!
 		// this safe us from the trouble to have JS enabled earlier!
@@ -424,9 +426,10 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 		debug1 (DEBUG_GUI, "Enabling reader mode for '%s'", location);
 		liferea_webkit_run_js (
 			browser->renderWidget,
-			g_strdup_printf ("%s\n%s\nloadContent(%s, '%s');\n",
+			g_strdup_printf ("%s\n%s\n%s\nloadContent(%s, '%s');\n",
 		        (gchar *)g_bytes_get_data (b1, NULL),
 			(gchar *)g_bytes_get_data (b2, NULL),
+			(gchar *)g_bytes_get_data (b3, NULL),
 			(browser->readerMode?"true":"false"),
 			browser->content)
 		);

@@ -23,7 +23,7 @@
  */
 function loadContent(readerEnabled, content) {
 	if (false == readerEnabled) {
-	     	if (document.location.href === 'liferea://') {
+		if (document.location.href === 'liferea://') {
 			console.log('[liferea] reader mode is off');
 			document.body.innerHTML = decodeURIComponent(content);
 		} else {
@@ -32,7 +32,7 @@ function loadContent(readerEnabled, content) {
 	}
 	if (true == readerEnabled) {
 		try {
-	     	        console.log('[liferea] enabling reader mode...');
+			console.log('[liferea] enabling reader mode...');
 			var documentClone = document.cloneNode(true);
 
 			// When we are internally browsing than we need basic
@@ -51,15 +51,15 @@ function loadContent(readerEnabled, content) {
 				documentClone.body.innerHTML = documentClone.getElementById('content').innerHTML;
 			}
 
-			// Drop Readability.js created <header>
-			var header = documentClone.getElementsByTagName('header');
-			if(header.length > 0)
-				header[0].parentNode.removeChild(header[0]);
+			if (!isProbablyReaderable(documentClone)) {
+				document.documentElement.innerHTML = content;
+				return;
+			}
 
 			// Show the results
 			var article = new Readability(documentClone).parse();
 			if (article)
-				document.getElementById('content').innerHTML = article.content
+				document.getElementById('content').innerHTML = article.content;
 
 			if(document.location.href !== 'liferea://') {
 				// Kill all foreign styles
