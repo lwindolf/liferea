@@ -628,10 +628,16 @@ liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, c
 
 	switch (mode) {
 		case PROXY_DETECT_MODE_AUTO:
-			webkit_web_context_set_network_proxy_settings (webkit_web_context_get_default (), WEBKIT_NETWORK_PROXY_MODE_DEFAULT, NULL);
+			webkit_website_data_manager_set_network_proxy_settings
+			    (webkit_web_context_get_website_data_manager (webkit_web_context_get_default ()),
+			     WEBKIT_NETWORK_PROXY_MODE_DEFAULT,
+			     NULL);
 			break;
 		case PROXY_DETECT_MODE_NONE:
-			webkit_web_context_set_network_proxy_settings (webkit_web_context_get_default (), WEBKIT_NETWORK_PROXY_MODE_NO_PROXY, NULL);
+			webkit_website_data_manager_set_network_proxy_settings
+			    (webkit_web_context_get_website_data_manager (webkit_web_context_get_default ()),
+			     WEBKIT_NETWORK_PROXY_MODE_NO_PROXY,
+			     NULL);
 			break;
 		case PROXY_DETECT_MODE_MANUAL:
 			/* Construct user:password part of the URI if specified. */
@@ -664,7 +670,10 @@ liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, c
 			g_free (host_port);
 			proxy_settings = webkit_network_proxy_settings_new (proxy_uri, NULL);
 			g_free (proxy_uri);
-			webkit_web_context_set_network_proxy_settings (webkit_web_context_get_default (), WEBKIT_NETWORK_PROXY_MODE_CUSTOM, proxy_settings);
+			webkit_website_data_manager_set_network_proxy_settings
+			    (webkit_web_context_get_website_data_manager (webkit_web_context_get_default ()),
+			     WEBKIT_NETWORK_PROXY_MODE_CUSTOM,
+			     proxy_settings);
 			webkit_network_proxy_settings_free (proxy_settings);
 			break;
 	}
