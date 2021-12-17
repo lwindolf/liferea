@@ -326,6 +326,9 @@ liferea_browser_write (LifereaBrowser *browser, const gchar *string, const gchar
 	if (!browser)
 		return;
 
+	/* Reset any intermediate reader mode change via browser context menu */
+	conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
+
 	browser->internal = TRUE;	/* enables special links */
 
 	if (baseURL == NULL)
