@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Concetti di Base</title>
+  <meta charset="utf-8">
+
+	<link rel="stylesheet" type="text/css" href="reference.css">
+</head>
+<body>
+
+	<header>
+  <nav>
+	<table class="fullwidth">
+	   <tr>
+	      <td class="back left"><a rel="prev" href="about_it.html">Precedente</a></td>
+	      <td class="home center"><h1>Concetti di Base</h1></td>
+	      <td class="next right"><a rel="next" href="subscriptions_it.html">Successiva</a></td>
+	   </tr>
+	</table>
+	
+	</nav>
+  </header>
+
+	<main>
+	<p>
+	Questa sezione cerca di chiarire parte del gergo tecnico usato
+	nei lettori di news.
+	</p>
+
+	<h3>Cosa significa aggregatore di news "desktop online/offline"?</h3>
+	<p>
+	I lettori o aggregatori di news possono essere realizzati come applicazioni
+	web o desktop. Il luogo di esecuzione (il tuo computer
+	piuttosto che qualche server web) porta certi vantaggi e svantaggi.
+	</p>
+
+	<p>
+	Un <b>aggregatore di news desktop</b> viene eseguito sul tuo PC e conserva
+	localmente i notiziari aggregati. Esso accede ad ogni notiziario e scarica
+	periodicamente i suoi titoli più recenti. Nota che non tutti gli aggregatori
+	di news desktop possono funzionare offline. Alcuni aggregatori di news desktop
+	scaricano i notiziari ogni volta che li usi invece che conservarli per l'uso
+	successivo. Liferea in quanto aggregatore desktop <b>che supporta
+	l'offline</b> conserva i notiziari ed è adatto all'uso con i dispositivi
+	portatili (laptops, handhelds...) che non hanno una connessione internet
+	permanente.
+	</p>
+
+	<ul>
+	    <li><b>Svantaggi:</b>
+	         <ul>
+		     <li>Nessuna sincronizzazione dello stato implicita quando utilizzato da macchine client diverse</li>
+		     <li>Maggiore utilizzo della larghezza di banda rispetto agli aggregatori online</li>
+		     <li>Necessità di essere installato su ogni computer client</li>
+		     <li>Dipende dal Sistema Operativo</li>
+		 </ul>
+	    </li>
+	    <li><b>Vantaggi:</b>
+	         <ul>
+		     <li>I contenuti del notiziario vengono memorizzati sul tuo computer (sicuro).</li>
+		     <li>I contenuti del notiziario memorizzati sono ricercabili localmente con altri strumenti (es. <a href="http://beagle-project.org/Main_Page">Beagle</a>)</li>
+		     <li>Il tuo elenco dei notiziari non è accessibile a terze parti.</li>
+		     <li>Ogni accesso al notiziario viene effettuato in privato.</li>
+		 </ul>
+	    </li>
+	</ul>
+
+
+	<p>
+	Un <b>aggregatore di news online</b> (per esempio <a href="http://theoldreader.com/reader">TheOldReader</a>)
+	viene eseguito in un server web remoto cui puoi accedere da ogni dove
+	fintanto che hai accesso alla rete. Quando accedi all'aggregatore
+	di news online esso in genere non necessita di scaricare le versioni più
+	recenti dei titoli dei tuoi abbonamenti alle news perché implementa la
+	memorizzazione dei notiziari per salvare banda di rete.
+	</p>
+
+	<ul>
+	    <li><b>Svantaggi:</b>
+	         <ul>
+		     <li>Ti affidi a un fornitore di terze parti per il servizio di aggregazione di notizie.</li>
+		     <li>Spesso devi pagare per le funzionalità premium.</li>
+		     <li>Nessuna possibilità di migliorare/modificare/aggiustare l'applicazione online.</li>
+		     <li>Hai bisogno di un browser web per accedervi.</li>
+		 </ul>
+	    </li>
+	    <li><b>Vantaggi:</b>
+	         <ul>
+		     <li>Ottieni lo stesso elenco di notiziari e gli stessi stati dei notiziari, indipendentemente da dove accedi.</li>
+		     <li>Praticamente nessun utilizzo di banda se non per l'accesso all'interfaccia web.</li>
+		     <li>Sistemi comunitari di classificazione dei titoli per classificare i contenuti.</li>
+		     <li>Condivisione dei titoli con la comunità (o utenti specifici).</li>
+		 </ul>
+	    </li>
+	</ul>
+
+	<h3>Cos'è un Notiziario?</h3>
+	<p>
+	Per un aggregatore di notizie un <i>notiziario</i> è una fonte di informazione distinta. Un
+	aggregatore di notizie in genere scarica i <i>titoli delle notizie</i> da molti <i>abbonamenti</i> ai notiziari.
+	Il termine "notiziario" non è molto preciso perché le fonti possono anche fornire post di
+	weblog, podcasts e praticamente ogni tipo di contenuto. Lo stesso vale per il
+	termine "titolo del notiziario": spesso "articolo" o "post" sarebbe una
+	descrizione migliore. Tuttavia il termine "notizia" è generalmente usato assieme ai termini
+	"fonte", "titolo" e "aggregatore".
+	</p>
+
+	<h3>Cos'è un Abbonamento?</h3>
+	<p>
+	Quando aggiungi un notiziario devi specificare la fonte del
+	notiziario, affinché l'aggregatore di notizie possa scaricarlo per la prima volta.
+	La fonte è in genere un URL HTTP. Questo URL con impostazioni opzionali di autenticazione e proxy
+	è un "abbonamento" gestito da Liferea.
+	</p>
+
+	<h3>Cos'è L'elenco dei Notiziari?</h3>
+	<p>
+	Per gestire e sfogliare facilmente i tuoi abbonamenti Liferea ti offre un
+	albero gerarchico dei tuoi abbonamenti. In modo simile ai client email,
+	l' "elenco dei notiziari" si trova nel pannello di sinistra. Puoi organizzare gli abbonamenti
+	secondo argomenti in differenti cartelle.
+	</p>
+
+	<h3>Cos'è un Titolo?</h3>
+	<p>
+	Quando un aggregatore di news aggiorna un notiziario scarica il documento
+	sorgente dall'URL della fonte del notiziario. Questo documento sorgente dà
+	un insieme dei titoli più recenti che poi dovrà essere integrato nella
+	memoria dei notiziari dell'aggregatore perché l'insieme dei titoli forniti
+	dal documento fonte cambia nel tempo.
+	</p>
+	<p>
+	I titoli forniti dalla fonte del notiziario sono l'unità di informazione
+	minima gestita dagli aggregatori.
+	</p>
+
+	<h3>Cos'è la Lista degli Oggetti?</h3>
+	<p>
+	In Liferea i notiziari sono chiamati anche <i>oggetti</i> e vengono presentati
+	nella così detta <i>lista degli oggetti</i>. Seguendo il paradigma dei client email
+	la lista degli oggetti è spesso presentata nel pannello in alto a destra
+	nell'interfaccia dell'aggregatore di notizie.
+	</p>
+
+	</main>
+
+	<footer>
+  <nav>
+	
+	<table class="fullwidth">
+	   <tr>
+	      <td class="back left"><a rel="prev" href="about_it.html">Precedente</a></td>
+	      <td class="home center"><a href="topics_it.html">Indice</a></td>
+	      <td class="next right"><a rel="next" href="subscriptions_it.html">Successiva</a></td>
+	   </tr>
+	</table>
+	</nav>
+  </footer>
+</body>
+</html>
