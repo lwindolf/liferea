@@ -40,7 +40,8 @@ enum {
 	NODE_CAPABILITY_UPDATE			= (1<<10),	/**< node type always has a subscription and can be updated */
 	NODE_CAPABILITY_UPDATE_CHILDS		= (1<<11),	/**< childs of this node type can be updated */
 	NODE_CAPABILITY_UPDATE_FAVICON		= (1<<12),	/**< this node allows downloading a favicon */
-	NODE_CAPABILITY_EXPORT			= (1<<13)	/**< nodes of this type can be exported safely to OPML */
+	NODE_CAPABILITY_EXPORT			= (1<<13),	/**< nodes of this type can be exported safely to OPML */
+	NODE_CAPABILITY_EXPORT_ITEMS		= (1<<14)	/**< contents of this node can be exported as a RSS2 */
 };
 
 /**

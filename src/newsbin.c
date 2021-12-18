@@ -214,7 +214,8 @@ newsbin_get_node_type (void)
 		nodeType = g_new0 (struct nodeType, 1);
 		nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS |
 		                                  NODE_CAPABILITY_SHOW_UNREAD_COUNT |
-		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT;
+		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT |
+		                                  NODE_CAPABILITY_EXPORT_ITEMS;
 		nodeType->id			= "newsbin";
 		nodeType->icon			= icon_get (ICON_NEWSBIN);
 		nodeType->load			= feed_get_node_type()->load;

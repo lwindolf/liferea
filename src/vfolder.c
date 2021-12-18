@@ -294,7 +294,8 @@ vfolder_get_node_type (void)
 {
 	static struct nodeType nti = {
 		NODE_CAPABILITY_SHOW_ITEM_FAVICONS |
-		NODE_CAPABILITY_SHOW_UNREAD_COUNT,
+		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+		NODE_CAPABILITY_EXPORT_ITEMS,
 		"vfolder",
 		NULL,
 		vfolder_import,

@@ -20,6 +20,8 @@
  */
 
 #include <string.h>
+#include <errno.h>
+#include <libxml/xmlwriter.h>
 
 #include "common.h"
 #include "conf.h"
@@ -30,12 +32,14 @@
 #include "itemlist.h"
 #include "itemset.h"
 #include "item_state.h"
+#include "metadata.h"
 #include "node.h"
 #include "node_view.h"
 #include "render.h"
 #include "subscription_icon.h"
 #include "update.h"
 #include "vfolder.h"
+#include "date.h"
 #include "fl_sources/node_source.h"
 #include "ui/feed_list_view.h"
 #include "ui/liferea_shell.h"
@@ -553,6 +557,126 @@ node_can_add_child_folder (nodePtr node)
 
 	return (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ADD_FOLDER);
 }
+
+
+static void
+save_item_to_file_metadata_callback (const gchar *key, const gchar *value, guint index, gpointer user_data)
+{
+	xmlTextWriterPtr writer = (xmlTextWriterPtr) user_data;
+	if (value == NULL) {
+		return;	/* No value, nothing to do anyway. */
+	}
+
+	if (g_strcmp0(key, "commentsUri") == 0) {
+		xmlTextWriterWriteElement (writer, BAD_CAST "comments", value);
+	}
+	else if (g_strcmp0(key, "category") == 0) {
+		xmlTextWriterWriteElement (writer, BAD_CAST "category", value);
+	}
+}
+
+static void
+save_item_to_file_callback (itemPtr item, gpointer userdata)
+{
+	xmlTextWriterPtr writer = (xmlTextWriterPtr) userdata;
+	xmlTextWriterStartElement (writer, BAD_CAST "item");
+
+	if (item->title) {
+		xmlTextWriterWriteElement (writer, BAD_CAST "title", item->title);
+	}
+
+	gchar *link = item_make_link (item);
+	if (link) {
+		xmlTextWriterWriteElement (writer, BAD_CAST "link", link);
+		g_free (link);
+	}
+
+	if (item->sourceId && item->validGuid) {
+		xmlTextWriterWriteElement (writer, BAD_CAST "guid", item->sourceId);
+	}
+
+	if (item->time > 0) {
+		gchar *datestr = date_format_rfc822_en_gmt (item->time);
+		if (datestr) {
+			xmlTextWriterWriteElement (writer, BAD_CAST "pubDate", datestr);
+			g_free (datestr);
+		}
+	}
+
+	const gchar *author = item_get_author (item);
+	if (author) {
+		xmlTextWriterWriteElement (writer, BAD_CAST "author", author);
+	}
+
+	if (item->metadata) {
+		metadata_list_foreach(item->metadata,
+		                      save_item_to_file_metadata_callback,
+		                      (gpointer) writer);
+
+	}
+
+	if (item->description) {
+		xmlTextWriterWriteElement (writer, BAD_CAST "description", item->description);
+	}
+
+	xmlTextWriterEndElement (writer);	/* </item> */
+}
+
+
+void
+node_save_items_to_file (nodePtr node, const gchar *filename, GError **error)
+{
+	itemSetPtr items;
+
+	xmlTextWriterPtr writer = xmlNewTextWriterFilename (filename, 0);
+	if (writer == NULL) {
+		int errno_tmp = errno;
+		if (error) {
+			g_set_error (error,
+			             G_IO_ERROR,
+			             G_IO_ERROR_FAILED,
+			             _("Failed to create feed file: %s"),
+			             g_strerror (errno_tmp));
+		}
+		return;
+	}
+
+	xmlTextWriterStartDocument (writer, NULL, "UTF-8", NULL);
+	xmlTextWriterStartElement (writer, BAD_CAST "rss");
+	xmlTextWriterWriteAttribute (writer, BAD_CAST "version", BAD_CAST "2.0");
+	xmlTextWriterStartElement (writer, BAD_CAST "channel");
+
+	xmlTextWriterWriteElement (writer, BAD_CAST "title", node_get_title(node));
+	const gchar *baseurl = node_get_base_url (node);
+	if (baseurl) {
+		xmlTextWriterWriteElement (writer, BAD_CAST "link", baseurl);
+	}
+
+	/* RSS 2.0 spec requires a description */
+	xmlTextWriterWriteElement (writer, BAD_CAST "description", BAD_CAST
+		_("Feed file exported from Liferea"));
+	xmlTextWriterWriteElement (writer, BAD_CAST "generator", BAD_CAST "Liferea");
+
+	items = node_get_itemset (node);
+	itemset_foreach (items, save_item_to_file_callback, (gpointer) writer);
+	itemset_free (items);
+
+	xmlTextWriterEndElement (writer);	/* </channel> */
+	xmlTextWriterEndElement (writer);	/* </rss> */
+
+	if (xmlTextWriterEndDocument (writer) == -1) {
+		if (error) {
+			g_set_error (error,
+			             G_IO_ERROR,
+			             G_IO_ERROR_FAILED,
+			             _("Error while saving feed file"));
+		}
+	}
+
+	xmlFreeTextWriter (writer);
+	xmlCleanupParser ();
+}
+
 
 /* node children iterating interface */
 
