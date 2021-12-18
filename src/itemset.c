@@ -36,14 +36,14 @@
 #include "fl_sources/node_source.h"
 
 void
-itemset_foreach (itemSetPtr itemSet, itemActionFunc callback)
+itemset_foreach (itemSetPtr itemSet, itemActionFunc callback, gpointer userdata)
 {
 	GList	*iter = itemSet->ids;
 
 	while(iter) {
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item) {
-			(*callback) (item);
+			(*callback) (item, userdata);
 			item_unload (item);
 		}
 		iter = g_list_next (iter);
