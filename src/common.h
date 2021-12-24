@@ -27,6 +27,9 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <glib.h>
+#ifndef _DEFAULT_SOURCE
+#define _DEFAULT_SOURCE
+#endif
 #include <string.h>
 #include <pango/pango-bidi-type.h>
 
