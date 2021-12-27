@@ -192,8 +192,7 @@ void liferea_browser_do_zoom (LifereaBrowser *browser, gint zoom);
 /**
  * liferea_browser_update:
  *
- * Renders all added items to the given HTML view. To be called
- * after one or more calls of browser_(add|remove|update)_item.
+ * Renders item or node info into the given HTML view.
  *
  * @param browser	HTML view to render to
  * @param mode		item view mode (see type itemViewMode)
