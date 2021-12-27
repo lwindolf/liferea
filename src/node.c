@@ -616,7 +616,9 @@ save_item_to_file_callback (itemPtr item, gpointer userdata)
 	}
 
 	if (item->description) {
-		xmlTextWriterWriteElement (writer, BAD_CAST "description", item->description);
+		xmlTextWriterStartElement (writer, BAD_CAST "description");
+		xmlTextWriterWriteCDATA (writer, item->description);
+		xmlTextWriterEndElement (writer);	/* </description> */
 	}
 
 	xmlTextWriterEndElement (writer);	/* </item> */
