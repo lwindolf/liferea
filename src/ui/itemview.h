@@ -155,15 +155,6 @@ void itemview_update_node_info (struct node *node);
 void itemview_update (void);
 
 /**
- * itemview_display_info:
- * @html:	HTML to present
- *
- * Sets an info display in the item view HTML widget.
- * Used for special functionality like search result info.
- */
-void itemview_display_info (const gchar *html);
-
-/**
  * itemview_find_unread_item: (skip)
  * @startId:	the item id to start at (or NULL for starting at the top)
  *
@@ -235,7 +226,7 @@ void itemview_do_zoom (gint zoom);
 
 /**
  * itemview_style_update:
- * 
+ *
  * Invokes a change of the href attribute in WebView's <link> tag
  */
 void itemview_style_update (void);

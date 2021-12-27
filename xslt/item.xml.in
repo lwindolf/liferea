@@ -30,8 +30,6 @@
 
 <!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
 <xsl:param name="pixmapsDir"/>
-<!-- the local Javascript lib directory (e.g. /usr/share/liferea/js/) -->
-<xsl:param name="jsDir"/>
 
 <xsl:param name="baseUrl"/> <!-- item specific content base URL -->
 <xsl:param name="showFeedName"/>
