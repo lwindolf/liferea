@@ -482,19 +482,15 @@ itemview_create (GtkWidget *window)
 void
 itemview_launch_URL (const gchar *url, gboolean forceInternal)
 {
-	gboolean internal;
-
 	if (forceInternal) {
-		itemview->browsing = TRUE;
 		liferea_browser_launch_URL_internal (itemview->htmlview, url);
+	} else if (liferea_browser_handle_URL (itemview->htmlview, url)) {
+		/* URL was launched externally. */
 		return;
 	}
 
-	/* Otherwise let the HTML view figure out if we want to browse internally. */
-	internal = liferea_browser_handle_URL (itemview->htmlview, url);
-
-	if (!internal)
-		liferea_browser_launch_URL_internal (itemview->htmlview, url);
+	itemview->needsHTMLViewUpdate = FALSE;
+	itemview->browsing = TRUE;
 }
 
 void

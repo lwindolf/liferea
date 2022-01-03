@@ -504,12 +504,11 @@ liferea_web_view_link_clicked ( WebKitWebView 		*view,
 		return TRUE;
 	}
 
-	url_handled = liferea_browser_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
+	(void)liferea_browser_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
 
-	if (url_handled)
-		webkit_policy_decision_ignore (policy_decision);
+	webkit_policy_decision_ignore (policy_decision);
 
-	return url_handled;
+	return TRUE;
 }
 
 /**
@@ -532,13 +531,8 @@ liferea_web_view_new_window_requested (	WebKitWebView *view,
 	if (webkit_navigation_action_get_mouse_button (navigation_action) == 2) {
 		/* middle-click, let's open the link in a new tab */
 		browser_tabs_add_new (uri, uri, FALSE);
-	} else if (liferea_browser_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri)) {
-		/* The link is to be opened externally, let's do nothing here */
 	} else {
-		/* If the link is not to be opened in a new tab, nor externally,
-		 * it was likely a normal click on a target="_blank" link.
-		 * Let's open it in the current view to not disturb users */
-		webkit_web_view_load_uri (view, uri);
+		(void)liferea_browser_handle_URL (g_object_get_data (G_OBJECT (view), "htmlview"), uri);
 	}
 
 	/* We handled the request ourselves */
