@@ -258,6 +258,10 @@ itemview_update_all_items (void)
 	if (itemview->itemListView)
 		item_list_view_update_all_items (itemview->itemListView);
 
+	/* Bail if we do internal browsing, and no item is shown */
+	if (itemview->browsing)
+		return;
+
 	itemview->needsHTMLViewUpdate = TRUE;
 }
 

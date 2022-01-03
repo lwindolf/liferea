@@ -342,7 +342,6 @@ feedlist_mark_all_read (nodePtr node)
 		node_foreach_child (ROOTNODE, node_mark_all_read);
 
 	feedlist_foreach (feedlist_update_node_counters);
-	itemview_select_item (NULL);
 	itemview_update_all_items ();
 	itemview_update ();
 }
