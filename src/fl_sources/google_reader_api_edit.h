@@ -71,8 +71,10 @@ void google_reader_api_edit_add_subscription (nodeSourcePtr gsource, const gchar
  * 
  * @param gsource The nodeSource structure
  * @param feedUrl the feed to remove
+ * @param get_stream_id_for_node a function that returns the streamId of the
+ *                               given node
  */
-void google_reader_api_edit_remove_subscription (nodeSourcePtr gsource, const gchar* feedUrl);
+void google_reader_api_edit_remove_subscription (nodeSourcePtr gsource, const gchar* feedUrl, gchar* (*get_stream_id_for_node) (nodePtr node));
 
 /**
  * Add a category for a subscription

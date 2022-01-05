@@ -44,6 +44,10 @@ typedef struct GoogleReaderAction {
 	/**
 	 * A MANDATORY feed url to containing the item, or the url of the
 	 * subscription to edit.
+	 *
+	 * Note: google_reader_api_edit_remove_subscription sets feedUrl to the
+	 * streamId of the item, e.g. feed/<url> in the case of Reedah or
+	 * feed/<objectId> in the case of TheOldReader.
 	 */
 	gchar* feedUrl;
 
@@ -65,6 +69,11 @@ typedef struct GoogleReaderAction {
 	 * A callback function on completion of the edit.
 	 */
 	void (*callback) (nodeSourcePtr source, struct GoogleReaderAction* edit, gboolean success);
+
+	/**
+	 * Get the streamId for the given node.
+	 */
+	gchar* (*get_stream_id_for_node) (nodePtr node);
 
 	/**
 	 * The type of this GoogleReaderAction.
@@ -525,7 +534,8 @@ google_reader_api_edit_remove_callback (nodeSourcePtr source, GoogleReaderAction
 		GSList* cur = source->root->children ;
 		for(; cur; cur = g_slist_next (cur))  {
 			nodePtr node = (nodePtr) cur->data ;
-			if (g_str_equal (node->subscription->source, action->feedUrl)) {
+			g_autofree gchar *stream_id = action->get_stream_id_for_node (node);
+			if (g_strcmp0 (stream_id, action->feedUrl) == 0) {
 				feedlist_node_removed (node);
 				return;
 			}
@@ -535,11 +545,12 @@ google_reader_api_edit_remove_callback (nodeSourcePtr source, GoogleReaderAction
 }
 
 void
-google_reader_api_edit_remove_subscription (nodeSourcePtr source, const gchar* feedUrl)
+google_reader_api_edit_remove_subscription (nodeSourcePtr source, const gchar* feedUrl, gchar* (*get_stream_id_for_node) (nodePtr node))
 {
 	GoogleReaderActionPtr action = google_reader_api_action_new (EDIT_ACTION_REMOVE_SUBSCRIPTION);
 	action->feedUrl = g_strdup (feedUrl);
 	action->callback = google_reader_api_edit_remove_callback;
+	action->get_stream_id_for_node = get_stream_id_for_node;
 	google_reader_api_edit_push (source, action, TRUE);
 }
 

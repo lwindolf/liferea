@@ -207,26 +207,37 @@ theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription
 	return NULL;
 }
 
+static gchar *
+theoldreader_source_get_stream_id_for_node (nodePtr node)
+{
+	if (!node->subscription)
+		return NULL;
+
+	return g_strdup (metadata_list_get (node->subscription->metadata, "theoldreader-feed-id"));
+}
+
 static void
 theoldreader_source_remove_node (nodePtr node, nodePtr child)
 {
-	gchar           	*url;
-	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) node->data;
+	g_autofree gchar	*id = NULL;
 
 	if (child == node) {
 		feedlist_node_removed (child);
 		return;
 	}
 
-	url = g_strdup (child->subscription->source);
+	if (IS_FOLDER (child))
+		return;
+
+	id = theoldreader_source_get_stream_id_for_node (child);
+	if (!id) {
+		g_print ("Cannot remove node on remote side as theoldreader-feed-id is unknown!\n");
+		return;
+	}
 
 	feedlist_node_removed (child);
 
-	/* propagate the removal only if there aren't other copies */
-	if (!feedlist_find_node (source->root, NODE_BY_URL, url))
-		google_reader_api_edit_remove_subscription (node->source, url);
-
-	g_free (url);
+	google_reader_api_edit_remove_subscription (node->source, id, theoldreader_source_get_stream_id_for_node);
 }
 
 /* GUI callbacks */
@@ -324,7 +335,7 @@ static struct nodeSourceType nst = {
 	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
 	.api.add_subscription_post	= "s=feed%%2F%s&ac=subscribe&T=%s",
 	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
-	.api.remove_subscription_post	= "s=feed%%2F%s&ac=unsubscribe&T=%s",
+	.api.remove_subscription_post	= "s=%s&ac=unsubscribe&T=%s",
 	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
 	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
