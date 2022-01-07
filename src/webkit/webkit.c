@@ -665,20 +665,27 @@ liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, c
 #endif
 }
 
+static gchar *lastCss = NULL;
+
 /**
  * Load liferea.css via user style sheet
  */
 void
 liferea_webkit_reload_style (GtkWidget *webview)
 {
-	if (render_get_css () == NULL)
+	gchar *css = render_get_css ();
+
+	if (css == NULL || g_strcmp0 (css, lastCss) == 0)
 		return;
+
+	g_free (lastCss);
+	lastCss = css;
 
 	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
 
 	webkit_user_content_manager_remove_all_style_sheets (manager);
 
-	WebKitUserStyleSheet *stylesheet = webkit_user_style_sheet_new (render_get_css(),
+	WebKitUserStyleSheet *stylesheet = webkit_user_style_sheet_new (css,
 		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
 		WEBKIT_USER_STYLE_LEVEL_USER,
 		NULL,

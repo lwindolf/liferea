@@ -58,7 +58,7 @@ void render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...);
 /**
  * Returns CSS definitions for inclusion in XHTML output.
  */
-const gchar * render_get_css (void);
+gchar * render_get_css (void);
 
 /**
  * Returns the CSS value of a given GTK theme color name e.g. "GTK-COLOR-MID".

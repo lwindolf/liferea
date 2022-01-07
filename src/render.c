@@ -322,7 +322,7 @@ render_is_dark_theme (void)
 	return darkTheme;
 }
 
-const gchar *
+gchar *
 render_get_css (void)
 {
 	if (!css || styleUpdated) {
@@ -334,6 +334,9 @@ render_get_css (void)
 			return NULL;
 
 		styleUpdated = FALSE;
+
+		if (css)
+			g_string_free(css, FALSE);
 
 		css = g_string_new(NULL);
 
