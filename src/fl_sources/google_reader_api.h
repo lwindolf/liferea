@@ -42,8 +42,9 @@ typedef struct googleReaderApi {
 	const char	*edit_tag_add_post;
 	const char	*edit_tag_ar_tag_post;
 	const char	*edit_tag_remove_post;
-	const char	*edit_add_label;
+	const char	*edit_label;
 	const char	*edit_add_label_post;
+	const char	*edit_remove_label_post;
 	const char	*token;
 	/* when extending this list add assertions in node_source_type_register! */
 } googleReaderApi;

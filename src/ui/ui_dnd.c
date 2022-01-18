@@ -230,6 +230,9 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			db_node_update (node);
 			node_update_counters (newParent);
 
+			if (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_REPARENT_NODE)
+				NODE_SOURCE_TYPE (node)->reparent_node(node, oldParent, newParent);
+
 			feedlist_schedule_save ();
 		}
 	}

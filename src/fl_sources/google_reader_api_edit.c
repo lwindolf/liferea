@@ -44,6 +44,10 @@ typedef struct GoogleReaderAction {
 	/**
 	 * A MANDATORY feed url to containing the item, or the url of the
 	 * subscription to edit.
+	 *
+	 * Note: google_reader_api_edit_remove_subscription sets feedUrl to the
+	 * streamId of the item, e.g. feed/<url> in the case of Reedah or
+	 * feed/<objectId> in the case of TheOldReader.
 	 */
 	gchar* feedUrl;
 
@@ -65,6 +69,11 @@ typedef struct GoogleReaderAction {
 	 * A callback function on completion of the edit.
 	 */
 	void (*callback) (nodeSourcePtr source, struct GoogleReaderAction* edit, gboolean success);
+
+	/**
+	 * Get the streamId for the given node.
+	 */
+	gchar* (*get_stream_id_for_node) (nodePtr node);
 
 	/**
 	 * The type of this GoogleReaderAction.
@@ -90,7 +99,8 @@ enum {
 	EDIT_ACTION_MARK_UNSTARRED,
 	EDIT_ACTION_ADD_SUBSCRIPTION,
 	EDIT_ACTION_REMOVE_SUBSCRIPTION,
-	EDIT_ACTION_ADD_LABEL
+	EDIT_ACTION_ADD_LABEL,
+	EDIT_ACTION_REMOVE_LABEL
 };
 
 typedef struct GoogleReaderAction* editPtr;
@@ -216,12 +226,16 @@ google_reader_api_remove_subscription (GoogleReaderActionPtr action, UpdateReque
 }
 
 static void
-google_reader_api_add_label (GoogleReaderActionPtr action, UpdateRequest *request, const gchar* token)
+google_reader_api_edit_label (GoogleReaderActionPtr action, UpdateRequest *request, const gchar* token)
 {
-	update_request_set_source (request, action->source->type->api.edit_add_label);
+	update_request_set_source (request, action->source->type->api.edit_label);
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	gchar *a_escaped = g_uri_escape_string (action->label, NULL, TRUE);
-	request->postdata = g_strdup_printf (action->source->type->api.edit_add_label_post, s_escaped, a_escaped, token);
+	if (action->actionType == EDIT_ACTION_ADD_LABEL) {
+		request->postdata = g_strdup_printf (action->source->type->api.edit_add_label_post, s_escaped, a_escaped, token);
+	} else {
+		request->postdata = g_strdup_printf (action->source->type->api.edit_remove_label_post, s_escaped, a_escaped, token);
+	}
 	g_free (a_escaped);
 	g_free (s_escaped);
 }
@@ -329,8 +343,9 @@ google_reader_api_edit_token_cb (const struct updateResult * const result, gpoin
 		google_reader_api_add_subscription (action, request, token);
 	else if (action->actionType == EDIT_ACTION_REMOVE_SUBSCRIPTION)
 		google_reader_api_remove_subscription (action, request, token);
-	else if (action->actionType == EDIT_ACTION_ADD_LABEL)
-		google_reader_api_add_label (action, request, token);
+	else if (action->actionType == EDIT_ACTION_ADD_LABEL ||
+		 action->actionType == EDIT_ACTION_REMOVE_LABEL)
+		google_reader_api_edit_label (action, request, token);
 
 	debug1 (DEBUG_UPDATE, "google_reader_api: postdata [%s]", request->postdata);
 	update_execute_request (node->source, request, google_reader_api_edit_action_complete, google_reader_api_action_context_new(node->source, action), FEED_REQ_NO_FEED);
@@ -525,7 +540,8 @@ google_reader_api_edit_remove_callback (nodeSourcePtr source, GoogleReaderAction
 		GSList* cur = source->root->children ;
 		for(; cur; cur = g_slist_next (cur))  {
 			nodePtr node = (nodePtr) cur->data ;
-			if (g_str_equal (node->subscription->source, action->feedUrl)) {
+			g_autofree gchar *stream_id = action->get_stream_id_for_node (node);
+			if (g_strcmp0 (stream_id, action->feedUrl) == 0) {
 				feedlist_node_removed (node);
 				return;
 			}
@@ -535,11 +551,30 @@ google_reader_api_edit_remove_callback (nodeSourcePtr source, GoogleReaderAction
 }
 
 void
-google_reader_api_edit_remove_subscription (nodeSourcePtr source, const gchar* feedUrl)
+google_reader_api_edit_remove_subscription (nodeSourcePtr source, const gchar* feedUrl, gchar* (*get_stream_id_for_node) (nodePtr node))
 {
 	GoogleReaderActionPtr action = google_reader_api_action_new (EDIT_ACTION_REMOVE_SUBSCRIPTION);
 	action->feedUrl = g_strdup (feedUrl);
 	action->callback = google_reader_api_edit_remove_callback;
+	action->get_stream_id_for_node = get_stream_id_for_node;
+	google_reader_api_edit_push (source, action, TRUE);
+}
+
+void
+google_reader_api_edit_add_label (nodeSourcePtr source, const gchar* feedUrl, const gchar* label)
+{
+	GoogleReaderActionPtr action = google_reader_api_action_new (EDIT_ACTION_ADD_LABEL);
+	action->feedUrl = g_strdup (feedUrl);
+	action->label = g_strdup (label);
+	google_reader_api_edit_push (source, action, TRUE);
+}
+
+void
+google_reader_api_edit_remove_label (nodeSourcePtr source, const gchar* feedUrl, const gchar* label)
+{
+	GoogleReaderActionPtr action = google_reader_api_action_new (EDIT_ACTION_REMOVE_LABEL);
+	action->feedUrl = g_strdup (feedUrl);
+	action->label = g_strdup (label);
 	google_reader_api_edit_push (source, action, TRUE);
 }
 

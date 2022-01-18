@@ -102,6 +102,7 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 		subscription_icon_update (node->subscription);
 
 	} else {
+		node_set_title (node, title);
 		node_source_update_folder (node, folder);
 	}
 }

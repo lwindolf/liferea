@@ -207,26 +207,37 @@ theoldreader_source_add_subscription (nodePtr root, subscriptionPtr subscription
 	return NULL;
 }
 
+static gchar *
+theoldreader_source_get_stream_id_for_node (nodePtr node)
+{
+	if (!node->subscription)
+		return NULL;
+
+	return g_strdup (metadata_list_get (node->subscription->metadata, "theoldreader-feed-id"));
+}
+
 static void
 theoldreader_source_remove_node (nodePtr node, nodePtr child)
 {
-	gchar           	*url;
-	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) node->data;
+	g_autofree gchar	*id = NULL;
 
 	if (child == node) {
 		feedlist_node_removed (child);
 		return;
 	}
 
-	url = g_strdup (child->subscription->source);
+	if (IS_FOLDER (child))
+		return;
+
+	id = theoldreader_source_get_stream_id_for_node (child);
+	if (!id) {
+		g_print ("Cannot remove node on remote side as theoldreader-feed-id is unknown!\n");
+		return;
+	}
 
 	feedlist_node_removed (child);
 
-	/* propagate the removal only if there aren't other copies */
-	if (!feedlist_find_node (source->root, NODE_BY_URL, url))
-		google_reader_api_edit_remove_subscription (node->source, url);
-
-	g_free (url);
+	google_reader_api_edit_remove_subscription (node->source, id, theoldreader_source_get_stream_id_for_node);
 }
 
 /* GUI callbacks */
@@ -299,6 +310,31 @@ theoldreader_source_convert_to_local (nodePtr node)
 	node_source_set_state (node, NODE_SOURCE_STATE_MIGRATE);
 }
 
+static void
+theoldreader_source_reparent_node (nodePtr node, nodePtr oldParent, nodePtr newParent)
+{
+	gchar			*categoryId = NULL;
+	g_autofree gchar	*id = NULL;
+	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) node->source->root->data;
+
+	if (oldParent == newParent)
+		return;
+
+	id = theoldreader_source_get_stream_id_for_node (node);
+	if (!id) {
+		g_print ("Cannot sync parent on remote side as theoldreader-feed-id is unknown!\n");
+		return;
+	}
+
+	if (newParent == node->source->root) {
+		categoryId = g_hash_table_lookup (source->folderToCategory, oldParent->id);
+		google_reader_api_edit_remove_label (node->source, id, categoryId);
+	} else {
+		categoryId = g_hash_table_lookup (source->folderToCategory, newParent->id);
+		google_reader_api_edit_add_label (node->source, id, categoryId);
+	}
+}
+
 /* node source type definition */
 
 extern struct subscriptionType theOldReaderSourceFeedSubscriptionType;
@@ -313,10 +349,10 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_CAN_LOGIN |
 	                       NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST |
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
-	                       NODE_SOURCE_CAPABILITY_ADD_FOLDER |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
-	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
+	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API |
+	                       NODE_SOURCE_CAPABILITY_REPARENT_NODE,
 	.api.json			= TRUE,
 	.api.subscription_list		= BASE_URL "subscription/list?output=json",
 	.api.unread_count		= BASE_URL "unread-count?all=true&client=liferea",
@@ -324,13 +360,14 @@ static struct nodeSourceType nst = {
 	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
 	.api.add_subscription_post	= "s=feed%%2F%s&ac=subscribe&T=%s",
 	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
-	.api.remove_subscription_post	= "s=feed%%2F%s&ac=unsubscribe&T=%s",
+	.api.remove_subscription_post	= "s=%s&ac=unsubscribe&T=%s",
 	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
 	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_ar_tag_post	= "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true",
-	.api.edit_add_label		= BASE_URL "subscription/edit?client=liferea",
+	.api.edit_label			= BASE_URL "subscription/edit?client=liferea",
 	.api.edit_add_label_post	= "s=%s&a=%s&ac=edit&T=%s",
+	.api.edit_remove_label_post	= "s=%s&r=%s&ac=edit&T=%s",
 	.feedSubscriptionType = &theOldReaderSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &theOldReaderSourceOpmlSubscriptionType,
 	.source_type_init    = theoldreader_source_init,
@@ -347,7 +384,8 @@ static struct nodeSourceType nst = {
 	.add_folder          = NULL,
 	.add_subscription    = theoldreader_source_add_subscription,
 	.remove_node         = theoldreader_source_remove_node,
-	.convert_to_local    = theoldreader_source_convert_to_local
+	.convert_to_local    = theoldreader_source_convert_to_local,
+	.reparent_node       = theoldreader_source_reparent_node
 };
 
 nodeSourceTypePtr

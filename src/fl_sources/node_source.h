@@ -60,7 +60,8 @@ typedef enum {
 	NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC		= (1<<6),	/*<< the item state can and should be sync'ed with remote */
 	NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL		= (1<<7),	/*<< node sources of this type can be converted to internal subscription lists */
 	NODE_SOURCE_CAPABILITY_GOOGLE_READER_API	= (1<<8),	/*<< node sources of this type are Google Reader clones */
-	NODE_SOURCE_CAPABILITY_CAN_LOGIN		= (1<<9)	/*<< node source needs login (means loginState member is to be used) */
+	NODE_SOURCE_CAPABILITY_CAN_LOGIN		= (1<<9),	/*<< node source needs login (means loginState member is to be used) */
+	NODE_SOURCE_CAPABILITY_REPARENT_NODE		= (1<<10)	/*<< change of node parent can be synced with the source */
 } nodeSourceCapability;
 
 /* Node source state model */
@@ -212,6 +213,14 @@ typedef struct nodeSourceType {
 	 * This is an OPTIONAL method.
 	 */
 	void		(*convert_to_local) (nodePtr node);
+
+	/*
+	 * Syncs local change of node parent with the node source.
+	 *
+	 * This is an OPTIONAL method, but must be implemented when
+	 * NODE_SOURCE_CAPABILITY_REPARENT_NODE is set.
+	 */
+	void		(*reparent_node) (nodePtr node, nodePtr oldParent, nodePtr newParent);
 
 } *nodeSourceTypePtr;
 

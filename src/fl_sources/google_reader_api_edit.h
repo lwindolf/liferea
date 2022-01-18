@@ -71,16 +71,28 @@ void google_reader_api_edit_add_subscription (nodeSourcePtr gsource, const gchar
  * 
  * @param gsource The nodeSource structure
  * @param feedUrl the feed to remove
+ * @param get_stream_id_for_node a function that returns the streamId of the
+ *                               given node
  */
-void google_reader_api_edit_remove_subscription (nodeSourcePtr gsource, const gchar* feedUrl);
+void google_reader_api_edit_remove_subscription (nodeSourcePtr gsource, const gchar* feedUrl, gchar* (*get_stream_id_for_node) (nodePtr node));
 
 /**
  * Add a category for a subscription
  * 
  * @param gsource The nodeSource structure
  * @param feedUrl the feed to set the category
+ * @param label the label to add
  */
 void google_reader_api_edit_add_label (nodeSourcePtr gsource, const gchar* feedUrl, const gchar *label);
+
+/**
+ * Remove a category for a subscription
+ *
+ * @param gsource The nodeSource structure
+ * @param feedUrl the feed to set the category
+ * @param label the label to remove
+ */
+void google_reader_api_edit_remove_label (nodeSourcePtr gsource, const gchar* feedUrl, const gchar *label);
 
 /**
  * See if an item with give guid is being modified 

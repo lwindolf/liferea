@@ -209,10 +209,19 @@ reedah_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 	return NULL;
 }
 
+static gchar *
+reedah_source_get_stream_id_for_node (nodePtr node)
+{
+	if (!node->subscription)
+		return NULL;
+
+	return g_strdup_printf ("feed/%s", node->subscription->source);
+}
+
 static void
 reedah_source_remove_node (nodePtr node, nodePtr child)
 {
-	gchar           *url;
+	g_autofree gchar *url = NULL, *streamId = NULL;
 	ReedahSourcePtr source = node->data;
 
 	if (child == node) {
@@ -221,12 +230,13 @@ reedah_source_remove_node (nodePtr node, nodePtr child)
 	}
 
 	url = g_strdup (child->subscription->source);
+	streamId = reedah_source_get_stream_id_for_node (child);
 
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
 	if (!feedlist_find_node (source->root, NODE_BY_URL, url))
-		google_reader_api_edit_remove_subscription (node->source, url);
+		google_reader_api_edit_remove_subscription (node->source, streamId, reedah_source_get_stream_id_for_node);
 
 	g_free (source);
 }
@@ -324,13 +334,14 @@ static struct nodeSourceType nst = {
 	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
 	.api.add_subscription_post	= "s=feed%%2F%s&i=null&ac=subscribe&T=%s",
 	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
-	.api.remove_subscription_post	= "s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",
+	.api.remove_subscription_post	= "s=%s&i=null&ac=unsubscribe&T=%s",
 	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
 	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
 	.api.edit_tag_ar_tag_post	= "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true",
-	.api.edit_add_label		= BASE_URL "edit?client=liferea",
-	.api.edit_add_label_post	= "s=%s%%2F%s&a=%s&ac=edit&T=%s&async=true",
+	.api.edit_label			= BASE_URL "subscription/edit?client=liferea",
+	.api.edit_add_label_post	= "s=%s&a=%s&ac=edit&T=%s&async=true",
+	.api.edit_remove_label_post	= "s=%s&r=%s&ac=edit&T=%s&async=true",
 	.feedSubscriptionType = &reedahSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &reedahSourceOpmlSubscriptionType,
 	.source_type_init    = reedah_source_init,
