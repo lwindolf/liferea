@@ -535,11 +535,6 @@ itemlist_update_item (itemPtr item)
 		itemlist_unhide_item (item);
 	}
 
-	/* FIXME: this is tricky. It's possible that the item is
-	 * selected, but the itemview contains a webpage. In
-	 * that case, we don't want to reload the item.
-	 * So how to know whether the itemview contains the item?
-	 */
 	itemview_update_item (item);
 }
 

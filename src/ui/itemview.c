@@ -258,6 +258,10 @@ itemview_update_all_items (void)
 	if (itemview->itemListView)
 		item_list_view_update_all_items (itemview->itemListView);
 
+	/* Bail if we do internal browsing, and no item is shown */
+	if (itemview->browsing)
+		return;
+
 	itemview->needsHTMLViewUpdate = TRUE;
 }
 
@@ -482,19 +486,15 @@ itemview_create (GtkWidget *window)
 void
 itemview_launch_URL (const gchar *url, gboolean forceInternal)
 {
-	gboolean internal;
-
 	if (forceInternal) {
-		itemview->browsing = TRUE;
 		liferea_browser_launch_URL_internal (itemview->htmlview, url);
+	} else if (liferea_browser_handle_URL (itemview->htmlview, url)) {
+		/* URL was launched externally. */
 		return;
 	}
 
-	/* Otherwise let the HTML view figure out if we want to browse internally. */
-	internal = liferea_browser_handle_URL (itemview->htmlview, url);
-
-	if (!internal)
-		liferea_browser_launch_URL_internal (itemview->htmlview, url);
+	itemview->needsHTMLViewUpdate = FALSE;
+	itemview->browsing = TRUE;
 }
 
 void

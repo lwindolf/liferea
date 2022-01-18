@@ -456,6 +456,7 @@ liferea_browser_handle_URL (LifereaBrowser *browser, const gchar *url)
 
 	if(browser->forceInternalBrowsing || browse_inside_application) {
 		liferea_browser_launch_URL_internal (browser, url);
+		return FALSE;
 	} else {
 		(void)browser_launch_URL_external (url);
 	}
