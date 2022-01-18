@@ -557,7 +557,7 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 		htmlview
 	);
 
-	g_signal_connect (G_OBJECT (view), "screen_changed", G_CALLBACK (liferea_webkit_screen_changed), NULL);
+	g_signal_connect (G_OBJECT (view), "screen_changed", G_CALLBACK (liferea_webkit_screen_changed), settings);
 	g_signal_connect (G_OBJECT (view), "realize", G_CALLBACK (liferea_webkit_set_font_size), settings);
 
 	gtk_widget_show (GTK_WIDGET (view));
