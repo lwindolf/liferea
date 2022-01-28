@@ -1,7 +1,7 @@
 """
 GetFocus! Liferea plugin
 
-Copyright (C) 2021 Paweł Marciniak <sunwire+liferea@gmail.com
+Copyright (C) 2021-2022 Paweł Marciniak <sunwire+liferea@gmail.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +16,8 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-import pathlib
+import os
+from pathlib import Path
 import gettext
 from gi.repository import GObject, Gtk, Liferea, PeasGtk
 
@@ -29,12 +30,15 @@ except FileNotFoundError:
 else:
     _ = t.gettext
 
-file_config = 'opacity.conf'
+FILE_CONFIG = 'opacity.conf'
 
 
 def get_path():
-    return pathlib.Path.joinpath(pathlib.Path.home(),
-                                 ".config/liferea/plugins/getfocus")
+    config_path = "liferea/plugins/getfocus"
+    config_home = os.getenv('XDG_CONFIG_HOME')
+    if config_home:
+        return Path.joinpath(Path(config_home), config_path)
+    return Path.joinpath(Path.home(), ".config", config_path)
 
 
 class GetFocusPlugin(GObject.Object, Liferea.ShellActivatable):
@@ -69,7 +73,7 @@ class GetFocusPlugin(GObject.Object, Liferea.ShellActivatable):
 
     def read_opacity_from_file(self):
         path = get_path()
-        file_path = path / file_config
+        file_path = path / FILE_CONFIG
         if file_path.exists():
             self.opacity = float(file_path.read_text())
 
@@ -125,5 +129,5 @@ class GetFocusConfigure(GObject.Object, PeasGtk.Configurable):
     def save_opacity_to_file(self, widget):
         path = get_path()
         path.mkdir(0o700, True, True)
-        file_path = path / file_config
+        file_path = path / FILE_CONFIG
         file_path.write_text(str(self.opacity))
