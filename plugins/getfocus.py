@@ -35,10 +35,8 @@ FILE_CONFIG = 'opacity.conf'
 
 def get_path():
     config_path = "liferea/plugins/getfocus"
-    config_home = os.getenv('XDG_CONFIG_HOME')
-    if config_home:
-        return Path.joinpath(Path(config_home), config_path)
-    return Path.joinpath(Path.home(), ".config", config_path)
+    config_home = os.getenv('XDG_CONFIG_HOME',Path.joinpath(Path.home(), ".config"))
+    return Path.joinpath(Path(config_home), config_path)
 
 
 class GetFocusPlugin(GObject.Object, Liferea.ShellActivatable):
