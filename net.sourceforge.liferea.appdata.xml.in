@@ -26,14 +26,14 @@
     </ul>
   </description>
   <screenshots>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot2.png</image></screenshot>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot3.png</image></screenshot>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot4.png</image></screenshot>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot5.png</image></screenshot>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot6.png</image></screenshot>
-    <screenshot type="default"><image width="793" height="464">https://lzone.de/liferea/screenshots/screenshot7.png</image></screenshot>
-    <screenshot type="default"><image width="926" height="504">https://lzone.de/liferea/screenshots/screenshot8.png</image></screenshot>
-    <screenshot type="default"><image width="800" height="450">https://lzone.de/liferea/screenshots/screenshot9.png</image></screenshot>
+    <screenshot type="default"><image width="833" height="656">https://lzone.de/liferea/screenshots/screenshot2.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot3.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot4.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot5.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot6.png</image></screenshot>
+    <screenshot type="default"><image width="642" height="438">https://lzone.de/liferea/screenshots/screenshot7.png</image></screenshot>
+    <screenshot type="default"><image width="834" height="657">https://lzone.de/liferea/screenshots/screenshot8.png</image></screenshot>
+    <screenshot type="default"><image width="837" height="657">https://lzone.de/liferea/screenshots/screenshot9.png</image></screenshot>
   </screenshots>
   <url type="homepage">https://lzone.de/liferea/</url>
   <update_contact>liferea-devel@lists.sf.net</update_contact>
@@ -67,6 +67,7 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release version="1.13.7"  date="2021-12-07" />
     <release version="1.13.6"  date="2021-05-07" />
     <release version="1.13.5"  date="2021-01-10" />
     <release version="1.13.4"  date="2020-12-24" />
