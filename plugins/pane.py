@@ -12,7 +12,8 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-import pathlib
+import os
+from pathlib import Path
 import gettext
 from threading import Thread
 from time import sleep
@@ -31,8 +32,9 @@ FILE_CONFIG = 'pane.conf'
 
 
 def get_path():
-    return pathlib.Path.joinpath(pathlib.Path.home(),
-                                 ".config/liferea/plugins/pane")
+    config_path = "liferea/plugins/pane"
+    config_home = os.getenv('XDG_CONFIG_HOME',Path.joinpath(Path.home(), ".config"))
+    return Path.joinpath(Path(config_home), config_path)
 
 
 class PaneWorkaroundPlugin(GObject.Object, Liferea.ShellActivatable):
