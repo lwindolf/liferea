@@ -434,7 +434,7 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 			(gchar *)g_bytes_get_data (b2, NULL),
 			(gchar *)g_bytes_get_data (b3, NULL),
 			(browser->readerMode?"true":"false"),
-			browser->content)
+			browser->content != NULL ? browser->content : "")
 		);
 	}
 }

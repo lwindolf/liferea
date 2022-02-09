@@ -578,12 +578,16 @@ liferea_web_view_decide_policy (WebKitWebView *view,
 static WebKitWebView*
 liferea_web_view_create_web_view (WebKitWebView *view, WebKitNavigationAction *action, gpointer user_data)
 {
-	LifereaBrowser *htmlview;
-	GtkWidget	*container;
-	GtkWidget	*htmlwidget;
-	GList 		*children;
+	LifereaBrowser 		*htmlview;
+	GtkWidget		*container;
+	GtkWidget		*htmlwidget;
+	GList 			*children;
+	WebKitURIRequest	*request;
+	const gchar 		*uri;
 
-	htmlview = browser_tabs_add_new (NULL, NULL, TRUE);
+	request = webkit_navigation_action_get_request (action);
+	uri = webkit_uri_request_get_uri (request);
+	htmlview = browser_tabs_add_new (g_strcmp0(uri, "") != 0 ? uri : NULL, NULL, TRUE);
 	container = liferea_browser_get_widget (htmlview);
 
 	/* Ugly lookup of the webview. LifereaBrowser uses a GtkBox
