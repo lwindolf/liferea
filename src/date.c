@@ -472,3 +472,26 @@ parsing_failed:
 	g_free (ascii_date);
 	return t;
 }
+
+
+static const gchar * rfc822_weekdays[] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+
+gchar *
+date_format_rfc822_en_gmt (gint64 datetime)
+{
+	struct tm dt;
+	gmtime_r (&datetime, &dt);
+
+	if (dt.tm_wday < 0 || dt.tm_wday > 6) {
+		return NULL;	/* Invalid date from gmtime_r. Should *never* happen. */
+	}
+
+	if (dt.tm_mon < 0 || dt.tm_mon > 11) {
+		return NULL;	/* Invalid date from gmtime_r. Should *never* happen. */
+	}
+
+	return g_strdup_printf ("%s, %02d %s %d %02d:%02d:%02d GMT",
+		rfc822_weekdays[dt.tm_wday],
+		dt.tm_mday, rfc822_months[dt.tm_mon], dt.tm_year + 1900,
+		dt.tm_hour, dt.tm_min, dt.tm_sec);
+}

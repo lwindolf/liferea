@@ -232,6 +232,12 @@ itemlist_merge_item (itemPtr item)
 	itemview_add_item (item);
 }
 
+static void
+itemlist_merge_item_callback (itemPtr item, gpointer _unused)
+{
+	itemlist_merge_item (item);
+}
+
 /* Helper method checking if the passed item set is relevant
    for the currently item list content. */
 static gboolean
@@ -266,7 +272,7 @@ itemlist_merge_itemset (itemSetPtr itemSet)
 
 	if (itemlist_itemset_is_valid (itemSet)) {
 		debug_start_measurement (DEBUG_GUI);
-		itemset_foreach (itemSet, itemlist_merge_item);
+		itemset_foreach (itemSet, itemlist_merge_item_callback, NULL);
 		itemview_update ();
 		debug_end_measurement (DEBUG_GUI, "itemlist merge");
 	}

@@ -431,6 +431,17 @@ gboolean node_can_add_child_feed (nodePtr node);
  */
 gboolean node_can_add_child_folder (nodePtr node);
 
+/**
+ * node_save_items_to_file: (skip)
+ * @node:	the node
+ * @filename:	the destination file name
+ * @error:	(nullable): a GError that will receive error information on failure
+ *
+ * Exports all items in this node as a RSS2 feed.
+ */
+void node_save_items_to_file(nodePtr node, const gchar *filename, GError **error);
+
+
 /* child nodes iterating interface */
 
 typedef void 	(*nodeActionFunc)	(nodePtr node);
