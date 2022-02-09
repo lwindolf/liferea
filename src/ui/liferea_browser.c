@@ -612,7 +612,7 @@ liferea_browser_update (LifereaBrowser *browser, guint mode)
 }
 
 void
-liferea_browser_update_style_element (LifereaBrowser *browser)
+liferea_browser_update_stylesheet (LifereaBrowser *browser)
 {
 	liferea_webkit_reload_style (browser->renderWidget);
 }

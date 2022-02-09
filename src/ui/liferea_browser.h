@@ -200,12 +200,12 @@ void liferea_browser_do_zoom (LifereaBrowser *browser, gint zoom);
 void liferea_browser_update (LifereaBrowser *browser, guint mode);
 
 /**
- * liferea_browser_update_style_element:
+ * liferea_browser_update_stylesheet:
  * @browser:	the html view
  *
  * Update the user stylesheet of the WebView
  */
-void liferea_browser_update_style_element (LifereaBrowser *browser);
+void liferea_browser_update_stylesheet (LifereaBrowser *browser);
 
 G_END_DECLS
 
