@@ -482,7 +482,6 @@ liferea_web_view_link_clicked ( WebKitWebView 		*view,
 	WebKitNavigationAction 		*navigation_action;
 	WebKitURIRequest		*request;
 	WebKitNavigationType		reason;
-	gboolean			url_handled;
 
 	g_return_val_if_fail (WEBKIT_IS_WEB_VIEW (view), FALSE);
 	g_return_val_if_fail (WEBKIT_IS_POLICY_DECISION (policy_decision), FALSE);

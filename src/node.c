@@ -568,10 +568,10 @@ save_item_to_file_metadata_callback (const gchar *key, const gchar *value, guint
 	}
 
 	if (g_strcmp0(key, "commentsUri") == 0) {
-		xmlTextWriterWriteElement (writer, BAD_CAST "comments", value);
+		xmlTextWriterWriteElement (writer, BAD_CAST "comments", BAD_CAST value);
 	}
 	else if (g_strcmp0(key, "category") == 0) {
-		xmlTextWriterWriteElement (writer, BAD_CAST "category", value);
+		xmlTextWriterWriteElement (writer, BAD_CAST "category", BAD_CAST value);
 	}
 }
 
@@ -582,30 +582,30 @@ save_item_to_file_callback (itemPtr item, gpointer userdata)
 	xmlTextWriterStartElement (writer, BAD_CAST "item");
 
 	if (item->title) {
-		xmlTextWriterWriteElement (writer, BAD_CAST "title", item->title);
+		xmlTextWriterWriteElement (writer, BAD_CAST "title", BAD_CAST item->title);
 	}
 
 	gchar *link = item_make_link (item);
 	if (link) {
-		xmlTextWriterWriteElement (writer, BAD_CAST "link", link);
+		xmlTextWriterWriteElement (writer, BAD_CAST "link", BAD_CAST link);
 		g_free (link);
 	}
 
 	if (item->sourceId && item->validGuid) {
-		xmlTextWriterWriteElement (writer, BAD_CAST "guid", item->sourceId);
+		xmlTextWriterWriteElement (writer, BAD_CAST "guid", BAD_CAST item->sourceId);
 	}
 
 	if (item->time > 0) {
 		gchar *datestr = date_format_rfc822_en_gmt (item->time);
 		if (datestr) {
-			xmlTextWriterWriteElement (writer, BAD_CAST "pubDate", datestr);
+			xmlTextWriterWriteElement (writer, BAD_CAST "pubDate", BAD_CAST datestr);
 			g_free (datestr);
 		}
 	}
 
 	const gchar *author = item_get_author (item);
 	if (author) {
-		xmlTextWriterWriteElement (writer, BAD_CAST "author", author);
+		xmlTextWriterWriteElement (writer, BAD_CAST "author", BAD_CAST author);
 	}
 
 	if (item->metadata) {
@@ -617,7 +617,7 @@ save_item_to_file_callback (itemPtr item, gpointer userdata)
 
 	if (item->description) {
 		xmlTextWriterStartElement (writer, BAD_CAST "description");
-		xmlTextWriterWriteCDATA (writer, item->description);
+		xmlTextWriterWriteCDATA (writer, BAD_CAST item->description);
 		xmlTextWriterEndElement (writer);	/* </description> */
 	}
 
@@ -648,10 +648,10 @@ node_save_items_to_file (nodePtr node, const gchar *filename, GError **error)
 	xmlTextWriterWriteAttribute (writer, BAD_CAST "version", BAD_CAST "2.0");
 	xmlTextWriterStartElement (writer, BAD_CAST "channel");
 
-	xmlTextWriterWriteElement (writer, BAD_CAST "title", node_get_title(node));
+	xmlTextWriterWriteElement (writer, BAD_CAST "title", BAD_CAST node_get_title(node));
 	const gchar *baseurl = node_get_base_url (node);
 	if (baseurl) {
-		xmlTextWriterWriteElement (writer, BAD_CAST "link", baseurl);
+		xmlTextWriterWriteElement (writer, BAD_CAST "link", BAD_CAST baseurl);
 	}
 
 	/* RSS 2.0 spec requires a description */
