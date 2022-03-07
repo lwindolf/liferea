@@ -496,7 +496,7 @@ feedlist_collect_unread (nodePtr node, gpointer user_data)
 	}
 	if (!node->subscription)
 		return;
-	if (!node->unreadCount && !g_str_equal (node->id, SELECTED->id))
+	if (!node->unreadCount && SELECTED && !g_str_equal (node->id, SELECTED->id))
 		return;
 
 	*list = g_slist_append (*list, g_strdup (node->id));

@@ -385,13 +385,14 @@ feed_list_view_select (nodePtr node)
 	GtkTreeModel *model = gtk_tree_view_get_model (flv->treeview);
 
 	if (model && node && node != feedlist_get_root ()) {
-		GtkTreePath *path;
+		GtkTreePath *path = NULL;
 
 		/* in filtered mode we need to convert the iterator */
 		if (flv->feedlist_reduced_unread) {
 			GtkTreeIter iter;
-			gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (flv->filter), &iter, feed_list_view_to_iter (node->id));
-			path = gtk_tree_model_get_path (model, &iter);
+			gboolean valid = gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (flv->filter), &iter, feed_list_view_to_iter (node->id));
+			if (valid)
+				path = gtk_tree_model_get_path (model, &iter);
 		} else {
 			path = gtk_tree_model_get_path (model, feed_list_view_to_iter (node->id));
 		}
