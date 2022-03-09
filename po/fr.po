@@ -233,7 +233,7 @@ msgstr "Impossible de vérifier les dépendances du greffon (%s)."
 
 #: ../plugins/plugin-installer.py:280
 msgid "Command \"git\" not found, please install it!"
-msgstr ""
+msgstr "Commande « git » non trouvée, veuillez l'installer."
 
 #: ../plugins/plugin-installer.py:289
 #, python-format
