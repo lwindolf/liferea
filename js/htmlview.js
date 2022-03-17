@@ -36,10 +36,6 @@ function loadContent(readerEnabled, content) {
 			var contentDiv = document.getElementById('content');
 			var documentClone = document.cloneNode(true);
 
-			console.log("content="+decodeURIComponent(content).substring(0,100));
-			console.log("contentDiv="+contentDiv);
-			console.log("href=>>>"+document.location.href+"<<<");
-			
 			// When we are internally browsing than we need basic
 			// structure to insert Reader mode content
 			if(contentDiv !== null) {

@@ -363,7 +363,7 @@ html_get_body (const gchar *data, const gchar *baseUri) {
 		debug1 (DEBUG_PARSING, "XHTML parsing error on '%s'\n", baseUri);
 		return NULL;
 	}
-	g_print("html_get_body\n");
+
 	root = xmlDocGetRootElement (doc);
 	if (root) {
 		xmlDocPtr body = xhtml_extract_doc (root, 1, baseUri);
