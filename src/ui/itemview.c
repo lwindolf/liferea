@@ -305,12 +305,6 @@ itemview_update (void)
 		liferea_shell_update_allitems_actions (0 != itemview->node->itemCount, (0 != itemview->node->unreadCount) || IS_VFOLDER (itemview->node));
 }
 
-void
-itemview_display_info (const gchar *html)
-{
-	liferea_browser_write (itemview->htmlview, html, NULL);
-}
-
 /* next unread selection logic */
 
 itemPtr

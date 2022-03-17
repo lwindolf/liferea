@@ -334,12 +334,6 @@ liferea_browser_write (LifereaBrowser *browser, const gchar *string, const gchar
 	if (baseURL == NULL)
 		baseURL = "file:///";
 
-	if (debug_level & DEBUG_HTML) {
-		gchar *filename = common_create_cache_filename (NULL, "output", "html");
-		g_file_set_contents (filename, string, -1, NULL);
-		g_free (filename);
-	}
-
 	if (!g_utf8_validate (string, -1, NULL)) {
 		/* It is really a bug if we get invalid encoded UTF-8 here!!! */
 		liferea_webkit_write_html (browser->renderWidget, errMsg, strlen (errMsg), baseURL, "text/plain");
@@ -591,6 +585,12 @@ liferea_browser_update (LifereaBrowser *browser, guint mode)
 		default:
 			g_warning ("HTML view: invalid viewing mode!!!");
 			break;
+	}
+
+	if (debug_level & DEBUG_HTML) {
+		gchar *filename = common_create_cache_filename (NULL, "output", "html");
+		g_file_set_contents (filename, content, -1, NULL);
+		g_free (filename);
 	}
 
 	g_free (browser->content);
