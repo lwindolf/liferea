@@ -2,7 +2,7 @@
 
 <!--
 /**
- * HTML5 extraction stylesheet for Liferea
+ * HTML extraction stylesheet for Liferea
  *
  * Copyright (C) 2020-2021 Lars Windolf <lars.windolf@gmx.de>
  *
@@ -39,14 +39,8 @@
 
 <xsl:template name='copy'>
 	<xsl:choose>
-		<!-- identity copy nodes only for the following extraction locations:
-
-			1.) "//article" for HTML5
-			2.) "//div[@property='articleBody']" for microformats
-			3.) "//div[@id='content']" for just guessing CMS main div
-
-		-->
-		<xsl:when test="ancestor::article | ancestor::div[@property='articleBody'] | ancestor::div[@id='content']">
+		<!-- extract HTML <body> contents as XHTML that can be used for HTML5 --> 
+		<xsl:when test="ancestor::body">
 			<xsl:copy>
 				<xsl:apply-templates select="node()|@*"/>
 				<!-- Fill empty tags with a space to ensure we can

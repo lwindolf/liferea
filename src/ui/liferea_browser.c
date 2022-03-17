@@ -36,10 +36,12 @@
 #include "enclosure.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "html.h"
 #include "itemlist.h"
 #include "net_monitor.h"
 #include "social.h"
 #include "render.h"
+#include "update.h"
 #include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
@@ -439,6 +441,71 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 	}
 }
 
+/* Asynchronously download website for loading into Readability.js */
+static void
+liferea_browser_load_reader_content_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+{
+	LifereaBrowser *browser = LIFEREA_BROWSER (userdata);
+	gchar *html;
+	
+	if (!result->data) {
+		browser->content = g_uri_escape_string (_("Content download failed!"), NULL, TRUE);
+	} else {
+		// HTML5 content extraction
+		html = html_get_article (result->data, result->source);
+		
+		// HTML fallback
+		if (!html)
+			html = html_get_body (result->data, result->source);
+		
+		if (html) {
+			browser->content = g_uri_escape_string (html, NULL, TRUE);
+			g_free (html);
+		} else {
+			browser->content = g_uri_escape_string(_("Content extraction failed!"), NULL, TRUE);
+		}
+	}
+		
+	// FIXME: error handling
+	liferea_webkit_run_js (browser->renderWidget,
+	                       g_strdup_printf ("loadContent(true, '<body>%s</body>');\n",
+	                                        browser->content));
+}
+
+static void
+liferea_browser_load_reader_content (LifereaBrowser *browser, const gchar *url)
+{
+	UpdateRequest	*request;
+	
+	/* Drop pending render loading requests */
+	update_job_cancel_by_owner (browser);
+	
+	request = update_request_new (
+		url,
+		NULL, 	// No update state needed? How do we prevent an endless redirection loop?
+		NULL 	// no auth needed/supported here
+	);
+	update_execute_request (browser, request, liferea_browser_load_reader_content_cb, browser, FEED_REQ_NO_FEED);
+}
+
+/* Render layout for presenting an external website in reader mode */
+static gchar *
+liferea_browser_render_reader (const gchar *url)
+{
+	xmlDocPtr	doc;
+	xmlNodePtr	rootNode;
+	gchar		*result;
+	
+	doc = xmlNewDoc (BAD_CAST"1.0");
+	rootNode = xmlNewDocNode (doc, NULL, BAD_CAST"website", NULL);
+	xmlDocSetRootElement (doc, rootNode);
+	xmlNewTextChild (rootNode, NULL, BAD_CAST"source", BAD_CAST url);
+	result = render_xml (doc, "reader", NULL);
+	xmlFreeDoc (doc);
+	
+	return result;
+}
+
 gboolean
 liferea_browser_handle_URL (LifereaBrowser *browser, const gchar *url)
 {
@@ -469,12 +536,17 @@ liferea_browser_launch_URL_internal (LifereaBrowser *browser, const gchar *url)
 	/* Reset any intermediate reader mode change via browser context menu */
 	conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
 
-	gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
-	gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
+	if (browser->readerMode) {
+		liferea_browser_write (browser, liferea_browser_render_reader (url), NULL);
+		liferea_browser_load_reader_content (browser, url);
+	} else {
+		gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
+		gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
 
-	gtk_entry_set_text (GTK_ENTRY (browser->urlentry), url);
+		gtk_entry_set_text (GTK_ENTRY (browser->urlentry), url);
 
-	liferea_webkit_launch_url (browser->renderWidget, url);
+		liferea_webkit_launch_url (browser->renderWidget, url);
+	}
 }
 
 void

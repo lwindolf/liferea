@@ -32,19 +32,39 @@ function loadContent(readerEnabled, content) {
 	}
 	if (true == readerEnabled) {
 		try {
-			console.log('[liferea] enabling reader mode...');
+			console.log('[liferea] reader mode is on');
+			var contentDiv = document.getElementById('content');
 			var documentClone = document.cloneNode(true);
 
+			console.log("content="+decodeURIComponent(content).substring(0,100));
+			console.log("contentDiv="+contentDiv);
+			console.log("href=>>>"+document.location.href+"<<<");
+			
 			// When we are internally browsing than we need basic
 			// structure to insert Reader mode content
-			if(document.location.href !== 'liferea://') {
-				content = document.documentElement.innerHTML;
+			if(contentDiv !== null) {
+				console.log('[liferea] adding <div id="content"> for website content');
 				document.body.innerHTML = '<div id=\"content\"></div>';
-			} else {
+			}
+			
+			// Decide where we get the content from
+			if(document.location.href === 'liferea://') {
 				// Add all content in shadow DOM and split decoration from content
 				// only pass the content to Readability.js
+				console.log('[liferea] load content passed by variable');
 				content = decodeURIComponent(content);
-				documentClone.body.innerHTML = content;
+			} else {
+				console.log('[liferea] using content from original document');
+				content = document.documentElement.innerHTML;
+			}
+
+			// Add content to clone doc as input for Readability.js
+			documentClone.body.innerHTML = content;
+			
+			// When we run with internal URI schema we get layout AND content
+			// from variable and split it, apply layout to document
+			// and copy content to documentClone 
+			if(document.location.href === 'liferea://' && documentClone.getElementById('content') != null) {
 				documentClone.getElementById('content').innerHTML = '';
 				document.body.innerHTML = documentClone.body.innerHTML;
 				documentClone.body.innerHTML = content;
@@ -52,6 +72,9 @@ function loadContent(readerEnabled, content) {
 			}
 
 			if (!isProbablyReaderable(documentClone)) {
+				console.log('[liferea] reader mode not possible! fallback to unfiltered content');
+				// FIXME: distinguish for reader mode on headlines and reader mode on websites
+				// for latter bring up error and link to full website
 				document.documentElement.innerHTML = content;
 				return;
 			}

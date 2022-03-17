@@ -1,11 +1,13 @@
 
 xslt_in_files = item.xml.in \
                 feed.xml.in \
-                html5-extract.xml.in \
-                source.xml.in \
                 folder.xml.in \
-		newsbin.xml.in \
-		vfolder.xml.in 
+                html-extract.xml.in \
+                html5-extract.xml.in \
+                reader.xml.in \
+                source.xml.in \
+                newsbin.xml.in \
+                vfolder.xml.in
 
 xslt_files = $(xslt_in_files:.xml.in=.xml) i18n-filter.xslt
 xsltdir = $(pkgdatadir)/xslt

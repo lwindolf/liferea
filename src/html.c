@@ -328,7 +328,7 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 
 	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
 	if (!doc) {
-		debug1 (DEBUG_PARSING, "XHTML parsing error during HTML5 fetch of '%s'\n", baseUri);
+		debug1 (DEBUG_PARSING, "XHTML parsing error on '%s'\n", baseUri);
 		return NULL;
 	}
 
@@ -349,6 +349,30 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 		xmlFreeDoc (doc);
 	}
 
+	return result;
+}
+
+gchar *
+html_get_body (const gchar *data, const gchar *baseUri) {
+	xmlDocPtr	doc;
+	xmlNodePtr	root;
+	gchar		*result = NULL;
+
+	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
+	if (!doc) {
+		debug1 (DEBUG_PARSING, "XHTML parsing error on '%s'\n", baseUri);
+		return NULL;
+	}
+	g_print("html_get_body\n");
+	root = xmlDocGetRootElement (doc);
+	if (root) {
+		xmlDocPtr body = xhtml_extract_doc (root, 1, baseUri);
+		if (body) {
+			result = render_xml (body, "html-extract", NULL);
+			xmlFreeDoc (body);
+		}
+		xmlFreeDoc (doc);
+	}
 	return result;
 }
 
