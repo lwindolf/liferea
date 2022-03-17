@@ -20,6 +20,13 @@
 
 /**
  * loadContent() will be run on each internal / Readability.js rendering
+ *
+ * This method can be called multiple times for a single rendering, so it
+ * needs to be idempotent on what is done. Primary use case for this is
+ * when in internal browser + reader mode we first render layout with parameter
+ * content being empty, while asynchronously downloading content. Once the
+ * download finishes loadContent() is called again with the actual content
+ * which is then inserted in the layout.
  */
 function loadContent(readerEnabled, content) {
 	if (false == readerEnabled) {
