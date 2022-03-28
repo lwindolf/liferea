@@ -47,7 +47,7 @@ function loadContent(readerEnabled, content) {
 			// structure to insert Reader mode content
 			if(contentDiv !== null) {
 				console.log('[liferea] adding <div id="content"> for website content');
-				document.body.innerHTML = '<div id=\"content\"></div>';
+				document.body.innerHTML += '<div id=\"content\"></div>';
 			}
 			
 			// Decide where we get the content from
@@ -97,8 +97,6 @@ function loadContent(readerEnabled, content) {
 				for (var s of styles) {
 					s.parentNode.removeChild(s);
 				}
-
-				// FIXME: Add our header
 			}
 		} catch(e) {
 			console.log('[liferea] reader mode failed: '+e);
