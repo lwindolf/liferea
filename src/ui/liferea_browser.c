@@ -83,6 +83,7 @@ struct _LifereaBrowser {
 
 	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
 	gboolean	readerMode;		/*<< TRUE if Readability.js is to be used */
+	gint		viewMode;		/*<< current view mode for internal viewing */
 
 	gchar		*url;			/*<< the URL of the content rendered right now */
 	gchar 		*content;		/*<< current HTML content (excluding decorations, content passed to Readability.js) */
@@ -338,6 +339,7 @@ liferea_browser_write (LifereaBrowser *browser, const gchar *string, const gchar
 	if (!browser)
 		return;
 
+	// FIXME: this should not be always the case, this prevents toggling reader mode
 	/* Reset any intermediate reader mode change via browser context menu */
 	conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
 
@@ -404,6 +406,8 @@ liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location
 
 		/* We show the toolbar as it should be visible when loading external content */
 		gtk_widget_show_all (browser->toolbar);
+	} else {
+		gtk_widget_hide (browser->toolbar);
 	}
 
 	g_signal_emit_by_name (browser, "location-changed", location);
@@ -431,7 +435,7 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 
 		// FIXME: pass actual content here too, instead of on render_item()!
 		// this saves us from the trouble to have JS enabled earlier!
-
+g_print("load_fin reader mode %d\n", browser->readerMode);
 		debug1 (DEBUG_GUI, "Enabling reader mode for '%s'", location);
 		liferea_webkit_run_js (
 			browser->renderWidget,
@@ -524,12 +528,6 @@ liferea_browser_handle_URL (LifereaBrowser *browser, const gchar *url)
 	        browse_inside_application?"true":"false",
 	        browser->forceInternalBrowsing?"true":"false");
 
-	/* Save URL here as the Webkit location does not always reflect the URL.
-	   For reader mode it is just liferea:// which doesn't help us to set 
-	   the URL bar */
-	g_free (browser->url);
-	browser->url = g_strdup (url);
-
 	if(browser->forceInternalBrowsing || browse_inside_application) {
 		liferea_browser_launch_URL_internal (browser, url);
 	} else {
@@ -542,8 +540,16 @@ liferea_browser_handle_URL (LifereaBrowser *browser, const gchar *url)
 void
 liferea_browser_launch_URL_internal (LifereaBrowser *browser, const gchar *url)
 {
-	/* Reset any intermediate reader mode change via browser context menu */
-	conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
+	/* For new URLs: reset any intermediate reader mode change via browser context menu */
+	if (!browser->url || !g_str_equal (url, browser->url)) {
+		conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
+
+		/* Save URL here as the Webkit location does not always reflect the URL.
+		   For reader mode it is just liferea:// which doesn't help us to set 
+		   the URL bar */
+		g_free (browser->url);
+		browser->url = g_strdup (url);
+	}
 
 	if (browser->readerMode) {
 		liferea_browser_write (browser, liferea_browser_render_reader (url), NULL);
@@ -574,7 +580,20 @@ void
 liferea_browser_set_reader_mode (LifereaBrowser *browser, gboolean readerMode)
 {
 	browser->readerMode = readerMode;
-	liferea_webkit_reload (browser->renderWidget);
+	g_print("set reader mode %d\n", browser->readerMode);
+	/* Toggling reader mode can happen in different situations
+           for which we need to trigger different re-renderings:
+
+		What is shown           How to re-render it
+		-------------------------------------------
+		item/node view          liferea_browser_update
+		local help files 	liferea_browser_handle_URL_internal
+		internet URL     	liferea_browser_handle_URL_internal
+        */
+	if (browser->url)
+		liferea_browser_launch_URL_internal (browser, browser->url);
+	else
+		liferea_browser_update (browser, browser->viewMode);
 }
 
 gboolean
@@ -674,7 +693,10 @@ liferea_browser_update (LifereaBrowser *browser, guint mode)
 	}
 
 	g_free (browser->content);
+	g_free (browser->url);
 	browser->content = NULL;
+	browser->url = NULL;
+	browser->viewMode = mode;
 
 	if (content) {
 		/* URI escape our content for safe transfer to Readability.js
