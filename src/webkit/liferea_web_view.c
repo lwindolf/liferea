@@ -2,7 +2,7 @@
  * @file liferea_web_view.c  Webkit2 widget for Liferea
  *
  * Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,20 +99,6 @@ liferea_web_view_update_actions_sensitivity (LifereaWebView *self)
                 NULL);
 }
 
-/*
- * Copied from liferea_browser.c Perhaps could go in common.h ?
- */
-static gboolean
-liferea_web_view_is_special_url (const gchar *url)
-{
-	/* match against all special protocols, simple
-	   convention: all have to start with "liferea-" */
-	if (url == strstr (url, "liferea-"))
-		return TRUE;
-
-	return FALSE;
-}
-
 static void
 menu_add_item (GMenu *menu, const gchar *label, const gchar *action, const gchar *parameter)
 {
@@ -162,7 +148,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	image = (image_uri != NULL);
 
 	/* do not expose internal links */
-	if (link_uri && liferea_web_view_is_special_url (link_uri) && !g_str_has_prefix (link_uri, "javascript:") && !g_str_has_prefix (link_uri, "data:"))
+	if (link_uri && !g_str_has_prefix (link_uri, "javascript:") && !g_str_has_prefix (link_uri, "data:"))
 		link = FALSE;
 
 	liferea_web_view_update_actions_sensitivity (LIFEREA_WEB_VIEW (view));
@@ -295,7 +281,6 @@ on_popup_toggle_reader_mode_activate (GSimpleAction *action, GVariant *parameter
 	WebKitWebView *webview = WEBKIT_WEB_VIEW (user_data);
 	gboolean reader = g_variant_get_boolean (parameter);
 
-g_warning("Change reader mode");
 	liferea_browser_set_reader_mode (g_object_get_data (G_OBJECT (webview), "htmlview"), reader);
 	g_simple_action_set_state (action, g_variant_new_boolean (reader));
 }
@@ -659,7 +644,7 @@ liferea_web_view_init(LifereaWebView *self)
 
 	/* Context menu actions */
 	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP(self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
+	g_action_map_add_action_entries (G_ACTION_MAP (self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
 	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", self->menu_action_group);
 
 	g_signal_connect (
