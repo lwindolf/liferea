@@ -2,7 +2,7 @@
  * @file html.h HTML parsing
  *
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2017-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2017-2021 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,14 +52,26 @@ GSList * html_discover_favicon(const gchar* data, const gchar *baseUri);
 /**
  * html_get_article:
  *
- * Parse HTML as XML to check wether it contains an HTML5 article.
+ * Parse HTML as XHTML to extract containing HTML5 article.
  *
  * @data:	the HTML to check
  * @baseUri:	URI of the downloaded HTML used to resolve relative URIs
  *
- * Returns: XHTML fragment representing the article or NULL
+ * Returns: XHTML fragment representing the <article> or NULL
  */
 gchar * html_get_article(const gchar *data, const gchar *baseUri);
+
+/**
+* html_get_body:
+*
+* Parse HTML as XHTML to extract containing HTML body.
+*
+* @data:	the HTML to check
+* @baseUri:	URI of the downloaded HTML used to resolve relative URIs
+*
+* Returns: XHTML fragment representing the <body> or NULL
+*/
+gchar * html_get_body(const gchar *data, const gchar *baseUri);
 
 /**
  * html_get_amp_url:

@@ -2,7 +2,7 @@
  * @file liferea_web_view.c  Webkit2 widget for Liferea
  *
  * Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,20 +99,6 @@ liferea_web_view_update_actions_sensitivity (LifereaWebView *self)
                 NULL);
 }
 
-/*
- * Copied from liferea_browser.c Perhaps could go in common.h ?
- */
-static gboolean
-liferea_web_view_is_special_url (const gchar *url)
-{
-	/* match against all special protocols, simple
-	   convention: all have to start with "liferea-" */
-	if (url == strstr (url, "liferea-"))
-		return TRUE;
-
-	return FALSE;
-}
-
 static void
 menu_add_item (GMenu *menu, const gchar *label, const gchar *action, const gchar *parameter)
 {
@@ -162,7 +148,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	image = (image_uri != NULL);
 
 	/* do not expose internal links */
-	if (link_uri && liferea_web_view_is_special_url (link_uri) && !g_str_has_prefix (link_uri, "javascript:") && !g_str_has_prefix (link_uri, "data:"))
+	if (link_uri && !g_str_has_prefix (link_uri, "javascript:") && !g_str_has_prefix (link_uri, "data:"))
 		link = FALSE;
 
 	liferea_web_view_update_actions_sensitivity (LIFEREA_WEB_VIEW (view));
@@ -290,12 +276,11 @@ on_popup_webinspector_activate (GSimpleAction *action, GVariant *parameter, gpoi
 }
 
 static void
-on_popup_toggle_reader_mode_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_popup_toggle_reader_mode_change_state (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	WebKitWebView *webview = WEBKIT_WEB_VIEW (user_data);
 	gboolean reader = g_variant_get_boolean (parameter);
 
-g_warning("Change reader mode");
 	liferea_browser_set_reader_mode (g_object_get_data (G_OBJECT (webview), "htmlview"), reader);
 	g_simple_action_set_state (action, g_variant_new_boolean (reader));
 }
@@ -307,7 +292,7 @@ static const GActionEntry liferea_web_view_gaction_entries[] = {
 	{"zoom-in", on_popup_zoomin_activate, NULL, NULL, NULL},
 	{"zoom-out", on_popup_zoomout_activate, NULL, NULL, NULL},
 	{"web-inspector", on_popup_webinspector_activate, NULL, NULL, NULL},
-	{"toggle-reader-mode", NULL, NULL, "true", on_popup_toggle_reader_mode_activate}
+	{"toggle-reader-mode", NULL, NULL, "true", on_popup_toggle_reader_mode_change_state}
 };
 
 static void
@@ -601,32 +586,32 @@ liferea_web_view_create_web_view (WebKitWebView *view, WebKitNavigationAction *a
 static void
 liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, gpointer user_data)
 {
-	LifereaBrowser	*htmlview;
-	gboolean isFullscreen;
+	LifereaBrowser	*htmlview = g_object_get_data (G_OBJECT (view), "htmlview");;
+	gboolean	isFullscreen;
 
 	switch (event) {
 		case WEBKIT_LOAD_STARTED:
-			// Hack to force webview exit from fullscreen mode on new page
-			isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
-						G_OBJECT(view), "fullscreen_on"));
-			if (isFullscreen == TRUE) {
-				webkit_web_view_run_javascript (view, "document.webkitExitFullscreen();", NULL, NULL, NULL);
+			{
+				// Once load starts we can update the reader toggle
+				GActionGroup *action_group;
+				action_group = LIFEREA_WEB_VIEW (view)->menu_action_group;
+				GSimpleAction *reader_action;
+				reader_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "toggle-reader-mode"));
+				gboolean reader = liferea_browser_get_reader_mode (htmlview);
+				g_simple_action_set_state (reader_action, g_variant_new_boolean (reader));
+
+				// Hack to force webview exit from fullscreen mode on new page
+				isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
+							G_OBJECT(view), "fullscreen_on"));
+				if (isFullscreen == TRUE) {
+					webkit_web_view_run_javascript (view, "document.webkitExitFullscreen();", NULL, NULL, NULL);
+				}
+				break;
 			}
-			break;
 		case WEBKIT_LOAD_COMMITTED:
-			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
 			liferea_browser_location_changed (htmlview, webkit_web_view_get_uri (view));
 			break;
 		case WEBKIT_LOAD_FINISHED:
-			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
-
-			GActionGroup 	*action_group;
-			action_group = LIFEREA_WEB_VIEW (view)->menu_action_group;
-			GSimpleAction *reader_action;
-			reader_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "toggle-reader-mode"));
-			gboolean reader = liferea_browser_get_reader_mode (htmlview);
-			g_simple_action_set_state (reader_action, g_variant_new_boolean (reader));
-
 			liferea_browser_load_finished (htmlview, webkit_web_view_get_uri (view));
 			break;
 		default:
@@ -656,7 +641,7 @@ liferea_web_view_init(LifereaWebView *self)
 
 	/* Context menu actions */
 	self->menu_action_group = G_ACTION_GROUP (g_simple_action_group_new ());
-	g_action_map_add_action_entries (G_ACTION_MAP(self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
+	g_action_map_add_action_entries (G_ACTION_MAP (self->menu_action_group), liferea_web_view_gaction_entries, G_N_ELEMENTS (liferea_web_view_gaction_entries), self);
 	gtk_widget_insert_action_group (GTK_WIDGET (self), "liferea_web_view", self->menu_action_group);
 
 	g_signal_connect (

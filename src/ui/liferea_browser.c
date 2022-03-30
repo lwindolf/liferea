@@ -1,7 +1,7 @@
 /*
  * @file liferea_browser.c  Liferea embedded browser
  *
- * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -36,10 +36,12 @@
 #include "enclosure.h"
 #include "feed.h"
 #include "feedlist.h"
+#include "html.h"
 #include "itemlist.h"
 #include "net_monitor.h"
 #include "social.h"
 #include "render.h"
+#include "update.h"
 #include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
@@ -50,11 +52,21 @@
    switches on a toolbar for history and URL navigation when browsing
    external content.
 
-   When serving internal content it reacts to different internal link schemata
-   to trigger functionality inside Liferea. To avoid websites hijacking this we
-   keep a flag to support the link schema only on liferea_browser_write()
-   
-   Also offers support for Reader mode (Readability.js)
+   The widget also manages "reader mode" be it on by default or ad-hoc 
+   requested by the user. To do so it ad-hoc injects Readability.js into the
+   rendering. For increased performance and security external content is pre-fetched
+   and passed directly to Readability.js (thus eliminating all 3rd party 
+   script execution).
+
+   This causes quite some complexity outlined in below table
+
+   Use Case           Intern Rendering    Reader Mode    Pre-Download       URL bar
+   --------------------------------------------------------------------------------
+   item/node view     yes                 yes            yes (feed-cache)   off
+   item/node view     yes                 no             yes (feed-cache)   off
+   local help files   no                  no             no                 on
+   internet URL       no                  no             no                 on
+   internet URL       yes                 yes            yes                on
  */
 
 struct _LifereaBrowser {
@@ -69,10 +81,11 @@ struct _LifereaBrowser {
 	GtkWidget	*urlentry;		/*<< The URL entry widget */
 	browserHistory	*history;		/*<< The browser history */
 
-	gboolean	internal;		/*<< TRUE if internal view presenting generated HTML with special links */
 	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
 	gboolean	readerMode;		/*<< TRUE if Readability.js is to be used */
+	gint		viewMode;		/*<< current view mode for internal viewing */
 
+	gchar		*url;			/*<< the URL of the content rendered right now */
 	gchar 		*content;		/*<< current HTML content (excluding decorations, content passed to Readability.js) */
 };
 
@@ -228,7 +241,7 @@ liferea_browser_init (LifereaBrowser *browser)
 	GtkWidget *widget, *image;
 
 	browser->content = NULL;
-	browser->internal = FALSE;
+	browser->url = NULL;
 	browser->readerMode = FALSE;
 	browser->renderWidget = liferea_webkit_new (browser);
 	browser->container = gtk_box_new (GTK_ORIENTATION_VERTICAL, 6);
@@ -326,11 +339,6 @@ liferea_browser_write (LifereaBrowser *browser, const gchar *string, const gchar
 	if (!browser)
 		return;
 
-	/* Reset any intermediate reader mode change via browser context menu */
-	conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
-
-	browser->internal = TRUE;	/* enables special links */
-
 	if (baseURL == NULL)
 		baseURL = "file:///";
 
@@ -378,20 +386,18 @@ liferea_browser_progress_changed (LifereaBrowser *browser, gdouble progress)
 void
 liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location)
 {
-	if (!g_str_has_prefix (location, "liferea")) {
-		/* A URI different from the locally generated html base url is being loaded. */
-		browser->internal = FALSE;
-	}
-	if (!browser->internal) {
-		browser_history_add_location (browser->history, location);
+	if (browser->url && !g_str_has_prefix (browser->url, "liferea://")) {
+		browser_history_add_location (browser->history, browser->url);
 
 		gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
 		gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
 
-		gtk_entry_set_text (GTK_ENTRY (browser->urlentry), location);
+		gtk_entry_set_text (GTK_ENTRY (browser->urlentry), browser->url);
 
 		/* We show the toolbar as it should be visible when loading external content */
 		gtk_widget_show_all (browser->toolbar);
+	} else {
+		gtk_widget_hide (browser->toolbar);
 	}
 
 	g_signal_emit_by_name (browser, "location-changed", location);
@@ -418,8 +424,7 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 		g_assert(b3 != NULL);
 
 		// FIXME: pass actual content here too, instead of on render_item()!
-		// this safe us from the trouble to have JS enabled earlier!
-
+		// this saves us from the trouble to have JS enabled earlier!
 		debug1 (DEBUG_GUI, "Enabling reader mode for '%s'", location);
 		liferea_webkit_run_js (
 			browser->renderWidget,
@@ -433,6 +438,71 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 	}
 }
 
+/* Asynchronously download website for loading into Readability.js */
+static void
+liferea_browser_load_reader_content_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+{
+	LifereaBrowser *browser = LIFEREA_BROWSER (userdata);
+	gchar *html;
+	
+	if (!result->data) {
+		browser->content = g_uri_escape_string (_("Content download failed!"), NULL, TRUE);
+	} else {
+		// HTML5 content extraction
+		html = html_get_article (result->data, result->source);
+		
+		// HTML fallback
+		if (!html)
+			html = html_get_body (result->data, result->source);
+		
+		if (html) {
+			browser->content = g_uri_escape_string (html, NULL, TRUE);
+			g_free (html);
+		} else {
+			browser->content = g_uri_escape_string(_("Content extraction failed!"), NULL, TRUE);
+		}
+	}
+		
+	// FIXME: error handling
+	liferea_webkit_run_js (browser->renderWidget,
+	                       g_strdup_printf ("loadContent(true, '<body>%s</body>');\n",
+	                                        browser->content));
+}
+
+static void
+liferea_browser_load_reader_content (LifereaBrowser *browser, const gchar *url)
+{
+	UpdateRequest	*request;
+	
+	/* Drop pending render loading requests */
+	update_job_cancel_by_owner (browser);
+	
+	request = update_request_new (
+		url,
+		NULL, 	// No update state needed? How do we prevent an endless redirection loop?
+		NULL 	// no auth needed/supported here
+	);
+	update_execute_request (browser, request, liferea_browser_load_reader_content_cb, browser, FEED_REQ_NO_FEED);
+}
+
+/* Render layout for presenting an external website in reader mode */
+static gchar *
+liferea_browser_render_reader (const gchar *url)
+{
+	xmlDocPtr	doc;
+	xmlNodePtr	rootNode;
+	gchar		*result;
+	
+	doc = xmlNewDoc (BAD_CAST"1.0");
+	rootNode = xmlNewDocNode (doc, NULL, BAD_CAST"website", NULL);
+	xmlDocSetRootElement (doc, rootNode);
+	xmlNewTextChild (rootNode, NULL, BAD_CAST"source", BAD_CAST url);
+	result = render_xml (doc, "reader", NULL);
+	xmlFreeDoc (doc);
+	
+	return result;
+}
+
 gboolean
 liferea_browser_handle_URL (LifereaBrowser *browser, const gchar *url)
 {
@@ -443,10 +513,9 @@ liferea_browser_handle_URL (LifereaBrowser *browser, const gchar *url)
 
 	conf_get_bool_value (BROWSE_INSIDE_APPLICATION, &browse_inside_application);
 
-	debug3 (DEBUG_GUI, "handle URL: %s %s %s",
+	debug2 (DEBUG_GUI, "handle URL: %s %s %s",
 	        browse_inside_application?"true":"false",
-	        browser->forceInternalBrowsing?"true":"false",
-		browser->internal?"true":"false");
+	        browser->forceInternalBrowsing?"true":"false");
 
 	if(browser->forceInternalBrowsing || browse_inside_application) {
 		liferea_browser_launch_URL_internal (browser, url);
@@ -461,15 +530,28 @@ liferea_browser_handle_URL (LifereaBrowser *browser, const gchar *url)
 void
 liferea_browser_launch_URL_internal (LifereaBrowser *browser, const gchar *url)
 {
-	/* Reset any intermediate reader mode change via browser context menu */
-	conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
+	/* For new URLs: reset any intermediate reader mode change via browser context menu */
+	if (!browser->url || !g_str_equal (url, browser->url)) {
+		conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
 
-	gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
-	gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
+		/* Save URL here as the Webkit location does not always reflect the URL.
+		   For reader mode it is just liferea:// which doesn't help us to set 
+		   the URL bar */
+		g_free (browser->url);
+		browser->url = g_strdup (url);
+	}
 
-	gtk_entry_set_text (GTK_ENTRY (browser->urlentry), url);
+	if (browser->readerMode) {
+		liferea_browser_write (browser, liferea_browser_render_reader (url), NULL);
+		liferea_browser_load_reader_content (browser, url);
+	} else {
+		gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
+		gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
 
-	liferea_webkit_launch_url (browser->renderWidget, url);
+		gtk_entry_set_text (GTK_ENTRY (browser->urlentry), url);
+
+		liferea_webkit_launch_url (browser->renderWidget, url);
+	}
 }
 
 void
@@ -482,19 +564,6 @@ gfloat
 liferea_browser_get_zoom (LifereaBrowser *browser)
 {
 	return liferea_webkit_get_zoom_level (browser->renderWidget);
-}
-
-void
-liferea_browser_set_reader_mode (LifereaBrowser *browser, gboolean readerMode)
-{
-	browser->readerMode = readerMode;
-	liferea_webkit_reload (browser->renderWidget);
-}
-
-gboolean
-liferea_browser_get_reader_mode (LifereaBrowser *browser)
-{
-	return browser->readerMode;
 }
 
 void
@@ -535,11 +604,12 @@ liferea_browser_start_output (GString *buffer,
 		g_free (escBase);
 	}
 
-	g_string_append (buffer, "</head><body>Loading...</body></html>");
+	g_string_append (buffer, "</head><body></body></html>");
 }
 
-void
-liferea_browser_update (LifereaBrowser *browser, guint mode)
+/* renders headlines & node info */
+static void
+liferea_browser_refresh (LifereaBrowser *browser, guint mode)
 {
 	GString		*output;
 	nodePtr		node = NULL;
@@ -594,7 +664,10 @@ liferea_browser_update (LifereaBrowser *browser, guint mode)
 	}
 
 	g_free (browser->content);
+	g_free (browser->url);
 	browser->content = NULL;
+	browser->url = NULL;
+	browser->viewMode = mode;
 
 	if (content) {
 		/* URI escape our content for safe transfer to Readability.js
@@ -605,10 +678,45 @@ liferea_browser_update (LifereaBrowser *browser, guint mode)
 		browser->content = g_uri_escape_string ("", NULL, TRUE);
 	}
 
-	debug1 (DEBUG_HTML, "writing %d bytes to HTML view", strlen (output->str));
 	liferea_browser_write (browser, output->str, baseURL);
 	g_string_free (output, TRUE);
 	g_free (baseURL);
+}
+
+/* reset reader state and load new item/node */
+void
+liferea_browser_update (LifereaBrowser *browser, guint mode)
+{
+	/* Reset any intermediate reader mode change via browser context menu */
+	conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
+
+	liferea_browser_refresh (browser, mode);
+}
+
+void
+liferea_browser_set_reader_mode (LifereaBrowser *browser, gboolean readerMode)
+{
+	browser->readerMode = readerMode;
+
+	/* Toggling reader mode can happen in different situations
+	   for which we need to trigger different re-renderings:
+
+		What is shown           How to re-render it
+		-------------------------------------------
+		item/node view          liferea_browser_refresh
+		local help files 	liferea_browser_handle_URL_internal
+		internet URL     	liferea_browser_handle_URL_internal
+	*/
+	if (browser->url)
+		liferea_browser_launch_URL_internal (browser, browser->url);
+	else
+		liferea_browser_refresh (browser, browser->viewMode);
+}
+
+gboolean
+liferea_browser_get_reader_mode (LifereaBrowser *browser)
+{
+	return browser->readerMode;
 }
 
 void
