@@ -609,7 +609,7 @@ liferea_browser_start_output (GString *buffer,
 		g_free (escBase);
 	}
 
-	g_string_append (buffer, "</head><body>Loading...</body></html>");
+	g_string_append (buffer, "</head><body></body></html>");
 }
 
 /* renders headlines & node info */
