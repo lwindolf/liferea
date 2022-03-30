@@ -49,6 +49,7 @@ typedef struct item {
 	gboolean	updateStatus;		/*<< TRUE if the item content was updated */
 	gboolean 	flagStatus;		/*<< TRUE if the item has been flagged */
 	gboolean	hasEnclosure;		/*<< TRUE if this item has at least one enclosure */
+        gboolean        isHidden;               /**< TRUE if this item has been 'hidden' in search folder */
 	gchar		*title;			/*<< Title */
 	gchar		*source;		/*<< URL to the post online */
 	gchar		*sourceId;		/*<< "Unique" syndication item identifier, for example <guid> in RSS */

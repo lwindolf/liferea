@@ -471,6 +471,7 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIte
 	gchar		*title, *time_str;
 	const GIcon	*state_icon;
 	gint		state = 0;
+        int fontWeight = PANGO_WEIGHT_BOLD;
 
 	if (item->flagStatus)
 		state += 2;
@@ -503,6 +504,9 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIte
 	             !item->readStatus ? icon_get (ICON_UNREAD) :
 		     NULL;
 
+        if (item->readStatus)
+                fontWeight = item->isHidden ? PANGO_WEIGHT_ULTRALIGHT : PANGO_WEIGHT_NORMAL;
+
 	if (ilv->batch_mode)
 		itemstore = ilv->batch_itemstore;
 	else
@@ -519,7 +523,7 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIte
                             IS_ENCICON, item->hasEnclosure?icon_get (ICON_ENCLOSURE):NULL,
                             IS_ENCLOSURE, item->hasEnclosure,
 		            IS_STATE, state,
-	                    ITEMSTORE_WEIGHT, item->readStatus ? PANGO_WEIGHT_NORMAL : PANGO_WEIGHT_BOLD,
+	                    ITEMSTORE_WEIGHT, fontWeight,
 			    -1);
         } else {
                 gtk_tree_store_set (itemstore, iter,
@@ -534,7 +538,7 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIte
                             IS_ENCLOSURE, item->hasEnclosure,
                             IS_SOURCE, node,
                             IS_STATE, state,
-	                    ITEMSTORE_WEIGHT, item->readStatus ? PANGO_WEIGHT_NORMAL : PANGO_WEIGHT_BOLD,
+	                    ITEMSTORE_WEIGHT, fontWeight,
                             -1);
         }
 

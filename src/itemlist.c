@@ -175,15 +175,22 @@ itemlist_check_for_deferred_action (void)
 {
 	gulong	id = itemlist->priv->selectedId;
 	itemPtr	item;
+	gboolean  defer_remove;
 
 	if (id) {
 		itemlist_set_selected (NULL);
+                conf_get_bool_value (DEFER_DELETE_MODE, &defer_remove);
 
 		/* check for removals caused by itemlist filter rule */
 		if (itemlist->priv->deferredFilter) {
 			itemlist->priv->deferredFilter = FALSE;
 			item = item_load (id);
-			itemview_remove_item (item);
+                        item->isHidden = TRUE;
+                        if (defer_remove) {
+                                itemview_update_item (item);
+                        } else {
+                                itemview_remove_item (item);
+                        }
 			feed_list_view_update_node (item->nodeId);
 		}
 
@@ -445,6 +452,7 @@ static void
 itemlist_unhide_item (itemPtr item)
 {
 	itemlist->priv->deferredFilter = FALSE;
+        item->isHidden = FALSE;
 }
 
 /* functions to remove items on remove requests */
