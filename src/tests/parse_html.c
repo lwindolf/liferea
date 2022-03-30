@@ -99,6 +99,22 @@ gchar *tc_xml_atom2[] = {
 	NULL
 };
 
+// HTML5 and relative Atom link present at same time (see Github #1033, we expect Atom to win)
+gchar *tc_xml_atom3[] = {
+	"<!DOCTYPE html>"
+	"<html lang=\"en\">"
+	"<head>"
+	"<meta charset=\"UTF-8\" />"
+	"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />"
+	"<title>About - Site</title>"
+	"<link href=\"&#x2F;atom.xml\" rel=\"alternate\" type=\"application/atom+xml\" />"
+	"</head>"
+	"<body></body></html>",
+	"/",
+	"/atom.xml",
+	NULL
+};
+
 /* HTML5 extraction test cases */
 
 gchar *tc_article[] = {
@@ -198,6 +214,7 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/html/auto_discover_link_garbage", &tc_garbage, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_xml_atom", &tc_xml_atom, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_xml_atom2", &tc_xml_atom2, &tc_auto_discover_link);
+	g_test_add_data_func ("/html/auto_discover_link_xml_atom3", &tc_xml_atom3, &tc_auto_discover_link);
 
 	g_test_add_data_func ("/html/html5_extract_article", &tc_article, &tc_get_article);
 	g_test_add_data_func ("/html/html5_extract_article_micro_format", &tc_article_micro_format, &tc_get_article);
