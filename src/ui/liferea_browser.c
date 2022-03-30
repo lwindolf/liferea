@@ -339,10 +339,6 @@ liferea_browser_write (LifereaBrowser *browser, const gchar *string, const gchar
 	if (!browser)
 		return;
 
-	// FIXME: this should not be always the case, this prevents toggling reader mode
-	/* Reset any intermediate reader mode change via browser context menu */
-	conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
-
 	if (baseURL == NULL)
 		baseURL = "file:///";
 
@@ -435,7 +431,6 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 
 		// FIXME: pass actual content here too, instead of on render_item()!
 		// this saves us from the trouble to have JS enabled earlier!
-g_print("load_fin reader mode %d\n", browser->readerMode);
 		debug1 (DEBUG_GUI, "Enabling reader mode for '%s'", location);
 		liferea_webkit_run_js (
 			browser->renderWidget,
@@ -577,32 +572,6 @@ liferea_browser_get_zoom (LifereaBrowser *browser)
 }
 
 void
-liferea_browser_set_reader_mode (LifereaBrowser *browser, gboolean readerMode)
-{
-	browser->readerMode = readerMode;
-	g_print("set reader mode %d\n", browser->readerMode);
-	/* Toggling reader mode can happen in different situations
-           for which we need to trigger different re-renderings:
-
-		What is shown           How to re-render it
-		-------------------------------------------
-		item/node view          liferea_browser_update
-		local help files 	liferea_browser_handle_URL_internal
-		internet URL     	liferea_browser_handle_URL_internal
-        */
-	if (browser->url)
-		liferea_browser_launch_URL_internal (browser, browser->url);
-	else
-		liferea_browser_update (browser, browser->viewMode);
-}
-
-gboolean
-liferea_browser_get_reader_mode (LifereaBrowser *browser)
-{
-	return browser->readerMode;
-}
-
-void
 liferea_browser_scroll (LifereaBrowser *browser)
 {
 	liferea_webkit_scroll_pagedown (browser->renderWidget);
@@ -643,8 +612,9 @@ liferea_browser_start_output (GString *buffer,
 	g_string_append (buffer, "</head><body>Loading...</body></html>");
 }
 
-void
-liferea_browser_update (LifereaBrowser *browser, guint mode)
+/* renders headlines & node info */
+static void
+liferea_browser_refresh (LifereaBrowser *browser, guint mode)
 {
 	GString		*output;
 	nodePtr		node = NULL;
@@ -707,10 +677,45 @@ liferea_browser_update (LifereaBrowser *browser, guint mode)
 		browser->content = g_uri_escape_string ("", NULL, TRUE);
 	}
 
-	debug1 (DEBUG_HTML, "writing %d bytes to HTML view", strlen (output->str));
 	liferea_browser_write (browser, output->str, baseURL);
 	g_string_free (output, TRUE);
 	g_free (baseURL);
+}
+
+/* reset reader state and load new item/node */
+void
+liferea_browser_update (LifereaBrowser *browser, guint mode)
+{
+	/* Reset any intermediate reader mode change via browser context menu */
+	conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
+
+	liferea_browser_refresh (browser, mode);
+}
+
+void
+liferea_browser_set_reader_mode (LifereaBrowser *browser, gboolean readerMode)
+{
+	browser->readerMode = readerMode;
+
+	/* Toggling reader mode can happen in different situations
+	   for which we need to trigger different re-renderings:
+
+		What is shown           How to re-render it
+		-------------------------------------------
+		item/node view          liferea_browser_refresh
+		local help files 	liferea_browser_handle_URL_internal
+		internet URL     	liferea_browser_handle_URL_internal
+	*/
+	if (browser->url)
+		liferea_browser_launch_URL_internal (browser, browser->url);
+	else
+		liferea_browser_refresh (browser, browser->viewMode);
+}
+
+gboolean
+liferea_browser_get_reader_mode (LifereaBrowser *browser)
+{
+	return browser->readerMode;
 }
 
 void

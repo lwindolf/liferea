@@ -589,32 +589,32 @@ liferea_web_view_create_web_view (WebKitWebView *view, WebKitNavigationAction *a
 static void
 liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event, gpointer user_data)
 {
-	LifereaBrowser	*htmlview;
-	gboolean isFullscreen;
+	LifereaBrowser	*htmlview = g_object_get_data (G_OBJECT (view), "htmlview");;
+	gboolean	isFullscreen;
 
 	switch (event) {
 		case WEBKIT_LOAD_STARTED:
-			// Hack to force webview exit from fullscreen mode on new page
-			isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
-						G_OBJECT(view), "fullscreen_on"));
-			if (isFullscreen == TRUE) {
-				webkit_web_view_run_javascript (view, "document.webkitExitFullscreen();", NULL, NULL, NULL);
+			{
+				// Once load starts we can update the reader toggle
+				GActionGroup *action_group;
+				action_group = LIFEREA_WEB_VIEW (view)->menu_action_group;
+				GSimpleAction *reader_action;
+				reader_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "toggle-reader-mode"));
+				gboolean reader = liferea_browser_get_reader_mode (htmlview);
+				g_simple_action_set_state (reader_action, g_variant_new_boolean (reader));
+
+				// Hack to force webview exit from fullscreen mode on new page
+				isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
+							G_OBJECT(view), "fullscreen_on"));
+				if (isFullscreen == TRUE) {
+					webkit_web_view_run_javascript (view, "document.webkitExitFullscreen();", NULL, NULL, NULL);
+				}
+				break;
 			}
-			break;
 		case WEBKIT_LOAD_COMMITTED:
-			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
 			liferea_browser_location_changed (htmlview, webkit_web_view_get_uri (view));
 			break;
 		case WEBKIT_LOAD_FINISHED:
-			htmlview = g_object_get_data (G_OBJECT (view), "htmlview");
-
-			GActionGroup 	*action_group;
-			action_group = LIFEREA_WEB_VIEW (view)->menu_action_group;
-			GSimpleAction *reader_action;
-			reader_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "toggle-reader-mode"));
-			gboolean reader = liferea_browser_get_reader_mode (htmlview);
-			g_simple_action_set_state (reader_action, g_variant_new_boolean (reader));
-
 			liferea_browser_load_finished (htmlview, webkit_web_view_get_uri (view));
 			break;
 		default:
