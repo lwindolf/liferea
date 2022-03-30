@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-30 12:36+0200\n"
+"POT-Creation-Date: 2022-03-30 23:48+0200\n"
 "PO-Revision-Date: 2013-06-15 20:36+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -92,7 +92,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podcast"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -113,23 +113,23 @@ msgstr "Læs nyheds- og blogkilder"
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
-#: ../plugins/getfocus.py:93
+#: ../plugins/getfocus.py:95
 msgid "Opacity:"
 msgstr ""
 
-#: ../plugins/getfocus.py:94
+#: ../plugins/getfocus.py:96
 msgid "Opacity"
 msgstr ""
 
-#: ../plugins/getfocus.py:104
+#: ../plugins/getfocus.py:106
 msgid "Min"
 msgstr ""
 
-#: ../plugins/getfocus.py:109
+#: ../plugins/getfocus.py:111
 msgid "Max"
 msgstr ""
 
-#: ../plugins/getfocus.py:115
+#: ../plugins/getfocus.py:117
 msgid "Save"
 msgstr ""
 
@@ -163,164 +163,164 @@ msgstr "Søg i alle nyhedskilder ..."
 msgid "Feed Updates"
 msgstr "Nyhedskildeopdatering"
 
-#: ../plugins/plugin-installer.py:54
+#: ../plugins/plugin-installer.py:55
 msgid "Plugins"
 msgstr "Udvidelsesmodul"
 
-#: ../plugins/plugin-installer.py:69
+#: ../plugins/plugin-installer.py:72
 #, fuzzy
 msgid "Plugin Installer"
 msgstr "Udvidelsesmodul"
 
-#: ../plugins/plugin-installer.py:83
+#: ../plugins/plugin-installer.py:86
 #, fuzzy
 msgid "Activate Plugins"
 msgstr "Udvidelsesmodul"
 
-#: ../plugins/plugin-installer.py:84
+#: ../plugins/plugin-installer.py:87
 #, fuzzy
 msgid "Download Plugins"
 msgstr "_Hent med brug af"
 
-#: ../plugins/plugin-installer.py:102
+#: ../plugins/plugin-installer.py:105
 #, python-format
 msgid "Bad fields for plugin entry %s"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:125
+#: ../plugins/plugin-installer.py:128
 msgid "All"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+#: ../plugins/plugin-installer.py:128 ../glade/properties.ui.h:39
 msgid "Advanced"
 msgstr "Avanceret"
 
-#: ../plugins/plugin-installer.py:125
+#: ../plugins/plugin-installer.py:128
 msgid "Menu"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:125
+#: ../plugins/plugin-installer.py:128
 #, fuzzy
 msgid "Notifications"
 msgstr "Påmindelsesopsætning"
 
-#: ../plugins/plugin-installer.py:133
+#: ../plugins/plugin-installer.py:136
 msgid "Filter by category"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:140
+#: ../plugins/plugin-installer.py:143
 msgid "_Install"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:144
+#: ../plugins/plugin-installer.py:147
 msgid "_Uninstall"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:245
+#: ../plugins/plugin-installer.py:248
 #, python-format
 msgid ""
 "Missing package manager '%s'. Cannot check nor install necessary "
 "dependencies!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:261
+#: ../plugins/plugin-installer.py:264
 #, python-format
 msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:268
+#: ../plugins/plugin-installer.py:271
 #, python-format
 msgid ""
 "Package installation failed (%s)! Check console output for further problem "
 "details!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:271
+#: ../plugins/plugin-installer.py:274
 #, python-format
 msgid "Failed to check plugin dependencies (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:280
+#: ../plugins/plugin-installer.py:283
 msgid "Command \"git\" not found, please install it!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:289
-#, python-format
-msgid "Copying %s to %s"
 msgstr ""
 
 #: ../plugins/plugin-installer.py:292
 #, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:295
+#, python-format
 msgid "Failed to copy plugin directory (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:301
+#: ../plugins/plugin-installer.py:304
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:311
+#: ../plugins/plugin-installer.py:314
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:322
+#: ../plugins/plugin-installer.py:325
 #, fuzzy, python-format
 msgid "Creating schema directory %s"
 msgstr "Kan ikke oprette mellemlagermappe »%s«!"
 
-#: ../plugins/plugin-installer.py:324
+#: ../plugins/plugin-installer.py:327
 #, python-format
 msgid "Installing schema %s"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:328
+#: ../plugins/plugin-installer.py:331
 msgid "Compiling schemas..."
 msgstr ""
 
-#: ../plugins/plugin-installer.py:333
+#: ../plugins/plugin-installer.py:336
 #, python-format
 msgid "Failed to install schema files (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:343
+#: ../plugins/plugin-installer.py:346
 #, python-format
 msgid "Failed to enable plugin (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:349
+#: ../plugins/plugin-installer.py:352
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:363
+#: ../plugins/plugin-installer.py:366
 #, python-format
 msgid "Failed to disable plugin (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:370 ../plugins/plugin-installer.py:390
+#: ../plugins/plugin-installer.py:373 ../plugins/plugin-installer.py:393
 #, fuzzy, python-format
 msgid "Deleting '%s'"
 msgstr "Sletter post"
 
-#: ../plugins/plugin-installer.py:373
+#: ../plugins/plugin-installer.py:376
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:383
+#: ../plugins/plugin-installer.py:386
 msgid "Failed to remove .py file!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:393
+#: ../plugins/plugin-installer.py:396
 msgid "Failed to remove .plugin file!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:402
+#: ../plugins/plugin-installer.py:405
 msgid "Sorry! Plugin removal failed!."
 msgstr ""
 
-#: ../plugins/plugin-installer.py:404
+#: ../plugins/plugin-installer.py:407
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
@@ -354,7 +354,7 @@ msgstr "Starter: »%s«"
 msgid "Authorization Error"
 msgstr "Godkendelsesfejl"
 
-#: ../src/common.c:66
+#: ../src/common.c:68
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Kan ikke oprette mellemlagermappe »%s«!"
@@ -501,22 +501,22 @@ msgstr "Nyt abonnement"
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/node_source.c:334
+#: ../src/fl_sources/node_source.c:337
 msgid "No feed list source types found!"
 msgstr "Ingen kildetyper fundet for nyhedskildeliste!"
 
-#: ../src/fl_sources/node_source.c:363
+#: ../src/fl_sources/node_source.c:366
 msgid "Source Type"
 msgstr "Kildetype"
 
-#: ../src/fl_sources/node_source.c:414
+#: ../src/fl_sources/node_source.c:417
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:580
+#: ../src/fl_sources/node_source.c:583
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "Abonnementet »%s« blev med succes konverteret til lokale nyhedskilder!"
@@ -543,7 +543,7 @@ msgstr "Nyt OPML-abonnement"
 msgid "Login failed!"
 msgstr "Kunne ikke logge ind på Google Reader!"
 
-#: ../src/fl_sources/reedah_source.c:313
+#: ../src/fl_sources/reedah_source.c:323
 msgid "Reedah"
 msgstr ""
 
@@ -552,7 +552,7 @@ msgstr ""
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "Kunne ikke fortolke JSON returneret af tt-rss API!"
 
-#: ../src/fl_sources/theoldreader_source.c:311
+#: ../src/fl_sources/theoldreader_source.c:347
 #, fuzzy
 msgid "TheOldReader"
 msgstr "Nyhedslæser"
@@ -588,11 +588,11 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Kunne ikke fortolke JSON returneret af tt-rss API!"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:395
+#: ../src/itemlist.c:407
 msgid "There are no unread items"
 msgstr "Der er ingen ulæste punkter"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:279
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -600,47 +600,47 @@ msgstr ""
 "Start Liferea med sit hovedvindue i TILSTAND. TILSTAND kan være "
 "»shown« (vist), »iconified« (som ikon) eller »hidden« (skjult)"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:279
 msgid "STATE"
 msgstr "TILSTAND"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:280
 msgid "Show version information and exit"
 msgstr "Vis versionsinformation og afslut"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:281
 msgid "Add a new subscription"
 msgstr "Tilføj et nyt abonnement"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:281
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:282
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:287
 msgid "Print debugging messages of all types"
 msgstr "Udskriv fejlsøgningsbeskeder af alle typer"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages for the cache handling"
 msgstr "Udskriv fejlsøgningsbeskeder for håndtering af mellemlager"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the configuration handling"
 msgstr "Udskriv fejlsøgningsbeskeder for konfigurationshåndteringen"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages of the database handling"
 msgstr "Udskriv fejlsøgningsbeskeder på databasehåndteringen"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of all GUI functions"
 msgstr "Udskriv fejlsøgningsbeskeder på alle GUI-funktioner"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -648,72 +648,72 @@ msgstr ""
 "Aktiverer HTML-optegningsfejlsøgning. Hver gang Liferea optegner HTML-uddata "
 "vil Liferea også skrive den oprettede HTML i ~/.cache/liferea/output.html"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"
 msgstr "Vis fejlsøgningsbeskeder for al netværksaktivitet"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all parsing functions"
 msgstr "Vis fejlsøgningsbeskeder for alle fortolkningsfunktioner"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "Vis fejlsøgningsbeskeder når en funktion tager for lang tid"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "Vis fejlsøgningsbeskeder når funktioner startes/forlades"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages of the feed update processing"
 msgstr "Vis fejlsøgningsbeskeder for opdateringsprocessen til nyhedskilden"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the search folder matching"
 msgstr "Udskriv fejlsøgningsbeskeder for håndtering af mellemlager"
 
-#: ../src/liferea_application.c:300
+#: ../src/liferea_application.c:299
 msgid "Print verbose debugging messages"
 msgstr "Vis uddybende fejlsøgningsbeskeder"
 
-#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
+#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
 msgid "Print debugging messages for the given topic"
 msgstr "Vis fejlsøgningsbeskeder for det angivne emne"
 
 #. Some libsoup transport errors
-#: ../src/net.c:437
+#: ../src/net.c:460
 msgid "The update request was cancelled"
 msgstr "Opdateringsforespørgslen blev afbrudt"
 
-#: ../src/net.c:438
+#: ../src/net.c:461
 msgid "Unable to resolve destination host name"
 msgstr "Kunne ikke afgøre destinationens værtsnavn"
 
-#: ../src/net.c:439
+#: ../src/net.c:462
 msgid "Unable to resolve proxy host name"
 msgstr "Kunne ikke afgøre værtsnavn for proxy"
 
-#: ../src/net.c:440
+#: ../src/net.c:463
 msgid "Unable to connect to remote host"
 msgstr "Kunne ikke forbinde til ekstern vært"
 
-#: ../src/net.c:441
+#: ../src/net.c:464
 msgid "Unable to connect to proxy"
 msgstr "Kunne ikke forbinde til proxy"
 
-#: ../src/net.c:442
+#: ../src/net.c:465
 msgid ""
 "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
 "algorithm. Check your operating system settings."
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:445
+#: ../src/net.c:468
 msgid "The resource moved permanently to a new location"
 msgstr "Ressourcen flyttede permanent til en ny placering"
 
 #. http 4xx client error
-#: ../src/net.c:448
+#: ../src/net.c:471
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -721,36 +721,36 @@ msgstr ""
 "Du har ikke tilladelse til at hente denne nyhedskilde. Opdater venligst dit "
 "brugernavn og adgangskode i dialogboksen for nyhedskildeegenskaber"
 
-#: ../src/net.c:450
+#: ../src/net.c:473
 msgid "Payment required"
 msgstr "Betaling krævet"
 
-#: ../src/net.c:451
+#: ../src/net.c:474
 msgid "You're not allowed to access this resource"
 msgstr "Du har ikke adgang til denne ressource"
 
-#: ../src/net.c:452
+#: ../src/net.c:475
 msgid "Resource Not Found"
 msgstr "Ressource blev ikke fundet"
 
-#: ../src/net.c:453
+#: ../src/net.c:476
 msgid "Method Not Allowed"
 msgstr "Metode ikke tilladt"
 
-#: ../src/net.c:454
+#: ../src/net.c:477
 msgid "Not Acceptable"
 msgstr "Ikke acceptabel"
 
-#: ../src/net.c:455
+#: ../src/net.c:478
 msgid "Proxy authentication required"
 msgstr "Proxygodkendelse krævet"
 
 # Forespørgsel fik tidsudløb
-#: ../src/net.c:456
+#: ../src/net.c:479
 msgid "Request timed out"
 msgstr "Forespørgselstiden udløb"
 
-#: ../src/net.c:457
+#: ../src/net.c:480
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -760,29 +760,53 @@ msgstr ""
 "Denne nyhedskilde er afbrudt. Den er ikke længere tilgængelig. Liferea vil "
 "ikke længere opdatere den, men du kan stadig tilgå de gemte overskrifter."
 
-#: ../src/net.c:462
+#: ../src/net.c:485
 msgid "There was an internal error in the update process"
 msgstr "Der opstod en intern fejl under opdateringsprocessen"
 
-#: ../src/net.c:464
+#: ../src/net.c:487
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Nyhedskilde er ikke tilgængelig: Server anmodede om videresendelse, hvilket  "
 "ikke er understøttet!"
 
-#: ../src/net.c:466
+#: ../src/net.c:489
 msgid "Client Error"
 msgstr "Klientfejl"
 
-#: ../src/net.c:468
+#: ../src/net.c:491
 msgid "Server Error"
 msgstr "Serverfejl"
 
-#: ../src/net.c:470
+#: ../src/net.c:493
 msgid "An unknown networking error happened!"
 msgstr "Der opstod en ukendt netværksfejl!"
 
-#: ../src/parsers/atom10.c:239
+#: ../src/newsbin.c:136
+#, fuzzy
+msgid "News Bin Properties"
+msgstr "Abonnementegenskaber"
+
+#: ../src/newsbin.c:140 ../glade/new_newsbin.ui.h:1
+msgid "Create News Bin"
+msgstr "Opret nyhedsbakke"
+
+#: ../src/node.c:640
+#, c-format
+msgid "Failed to create feed file: %s"
+msgstr ""
+
+#: ../src/node.c:659
+#, fuzzy
+msgid "Feed file exported from Liferea"
+msgstr "Nyhedskildeliste eksporteret!"
+
+#: ../src/node.c:674
+#, fuzzy, c-format
+msgid "Error while saving feed file"
+msgstr "Fejl under eksport af nyhedskildeliste!"
+
+#: ../src/parsers/atom10.c:240
 msgid "Website"
 msgstr "Internetside"
 
@@ -926,7 +950,7 @@ msgstr "Indtast brugernavnet og adgangskoden for »%s« (%s):"
 msgid "Unknown source"
 msgstr "Ukendt kilde"
 
-#: ../src/ui/browser_tabs.c:262
+#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:282
 msgid "Untitled"
 msgstr "Uden titel"
 
@@ -973,30 +997,30 @@ msgstr "Vælg fil"
 msgid "File Extension .%s"
 msgstr "Filendelse .%s"
 
-#: ../src/ui/feed_list_view.c:432
+#: ../src/ui/feed_list_view.c:436
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea er i frakoblet tilstand. Ingen opdatering mulig."
 
-#: ../src/ui/feed_list_view.c:478
+#: ../src/ui/feed_list_view.c:482
 #, fuzzy
 msgid "all feeds"
 msgstr "Søg i alle nyhedskilder"
 
-#: ../src/ui/feed_list_view.c:479
+#: ../src/ui/feed_list_view.c:483
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Marker alle som læst"
 
-#: ../src/ui/feed_list_view.c:483
+#: ../src/ui/feed_list_view.c:487
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Er du sikker på, at du ønsker at slette »%s«?"
 
-#: ../src/ui/feed_list_view.c:621
+#: ../src/ui/feed_list_view.c:625
 msgid "(Empty)"
 msgstr "(Tom)"
 
-#: ../src/ui/feed_list_view.c:832
+#: ../src/ui/feed_list_view.c:836
 #, c-format
 msgid ""
 "%s\n"
@@ -1005,45 +1029,46 @@ msgstr ""
 "%s\n"
 "<i>Genbygger</i>"
 
-#: ../src/ui/feed_list_view.c:901
+#: ../src/ui/feed_list_view.c:905
 msgid "Deleting entry"
 msgstr "Sletter post"
 
-#: ../src/ui/feed_list_view.c:902
+#: ../src/ui/feed_list_view.c:906
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Er du sikker på, at du ønsker at slette »%s« og dens indhold?"
 
-#: ../src/ui/feed_list_view.c:902
+#: ../src/ui/feed_list_view.c:906
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Er du sikker på, at du ønsker at slette »%s«?"
 
-#: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
+#: ../src/ui/feed_list_view.c:915 ../src/ui/feed_list_view.c:969
+#: ../src/ui/popup_menu.c:260
 #, fuzzy
 msgid "_Cancel"
 msgstr "Afbryd _alle"
 
-#: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
+#: ../src/ui/feed_list_view.c:916 ../src/ui/popup_menu.c:411
 msgid "_Delete"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:914
+#: ../src/ui/feed_list_view.c:918
 msgid "Deletion Confirmation"
 msgstr "Sletningsbekræftelse"
 
-#: ../src/ui/feed_list_view.c:953
+#: ../src/ui/feed_list_view.c:957
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:966
+#: ../src/ui/feed_list_view.c:970
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:968
+#: ../src/ui/feed_list_view.c:972
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Sletningsbekræftelse"
@@ -1057,30 +1082,38 @@ msgstr "Kunne ikke finde pixmap-fil: %s"
 msgid "This item has no link specified!"
 msgstr "Dette punkt har ingen adresse angivet!"
 
-#: ../src/ui/item_list_view.c:482
+#: ../src/ui/item_list_view.c:483
 msgid "*** No title ***"
 msgstr "*** Ingen titel ***"
 
-#: ../src/ui/item_list_view.c:486
+#: ../src/ui/item_list_view.c:487
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:849
+#: ../src/ui/item_list_view.c:853
 msgid "Headline"
 msgstr "Overskrift"
 
-#: ../src/ui/item_list_view.c:871
+#: ../src/ui/item_list_view.c:875
 msgid "Date"
 msgstr "Dato"
 
-#: ../src/ui/item_list_view.c:1038
+#: ../src/ui/item_list_view.c:1042
 msgid "You must select a feed to delete its items!"
 msgstr "Du skal vælge en nyhedskilde for at slette dens punkter!"
 
-#: ../src/ui/item_list_view.c:1054 ../src/ui/item_list_view.c:1132
-#: ../src/ui/item_list_view.c:1147
+#: ../src/ui/item_list_view.c:1058 ../src/ui/item_list_view.c:1136
+#: ../src/ui/item_list_view.c:1151
 msgid "No item has been selected"
 msgstr "Intet punkt er blevet valgt"
+
+#: ../src/ui/liferea_browser.c:449
+msgid "Content download failed!"
+msgstr ""
+
+#: ../src/ui/liferea_browser.c:462
+msgid "Content extraction failed!"
+msgstr ""
 
 #: ../src/ui/liferea_shell.c:408
 #, c-format
@@ -1166,55 +1199,76 @@ msgstr "Gem som ..."
 msgid "Copy Link Location"
 msgstr "Kopier adresseplacering"
 
-#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
+#: ../src/ui/popup_menu.c:257
+msgid "Save items to file"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:262
+msgid "_Save"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:271
+msgid "RSS 2.0 files"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:277
+#, fuzzy
+msgid "All files"
+msgstr "Alle filer"
+
+#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Opdater"
 
-#: ../src/ui/popup_menu.c:282
+#: ../src/ui/popup_menu.c:355
 msgid "_Update Folder"
 msgstr "_Opdater mappe"
 
-#: ../src/ui/popup_menu.c:292
+#: ../src/ui/popup_menu.c:365
 msgid "New _Subscription..."
 msgstr "Nyt _abonnement ..."
 
-#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
+#: ../src/ui/popup_menu.c:368 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Ny _mappe ..."
 
-#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
+#: ../src/ui/popup_menu.c:371 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Ny _søgemappe ..."
 
-#: ../src/ui/popup_menu.c:299
+#: ../src/ui/popup_menu.c:372
 msgid "New S_ource..."
 msgstr "Ny _kilde ..."
 
-#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
+#: ../src/ui/popup_menu.c:373 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Ny _nyhedsbakke ..."
 
-#: ../src/ui/popup_menu.c:303
+#: ../src/ui/popup_menu.c:376
 msgid "_New"
 msgstr "_Ny"
 
-#: ../src/ui/popup_menu.c:312
+#: ../src/ui/popup_menu.c:385
 msgid "Sort Feeds"
 msgstr "Sorter nyhedskilder"
 
-#: ../src/ui/popup_menu.c:320
+#: ../src/ui/popup_menu.c:393
 msgid "_Mark All As Read"
 msgstr "_Marker alle som læst"
 
-#: ../src/ui/popup_menu.c:327
+#: ../src/ui/popup_menu.c:395
+msgid "_Export Items To File"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:403
 msgid "_Rebuild"
 msgstr "_Genbyg"
 
-#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
+#: ../src/ui/popup_menu.c:412 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Egenskaber"
 
-#: ../src/ui/popup_menu.c:343
+#: ../src/ui/popup_menu.c:419
 msgid "Convert To Local Subscriptions..."
 msgstr "Konverter til lokale abonnementer ..."
 
@@ -1270,21 +1324,21 @@ msgstr "Normal visning"
 msgid "Wide View"
 msgstr "Bred visning"
 
-#: ../src/ui/preferences_dialog.c:478
+#: ../src/ui/preferences_dialog.c:487
 msgid "Default Browser"
 msgstr "Standardbrowser"
 
 # måske 'Manuel' (som i manuel browser) afhænger måske af type
-#: ../src/ui/preferences_dialog.c:480
+#: ../src/ui/preferences_dialog.c:489
 msgid "Manual"
 msgstr "Manuel"
 
 # tast?
-#: ../src/ui/preferences_dialog.c:740
+#: ../src/ui/preferences_dialog.c:752
 msgid "Type"
 msgstr "Type"
 
-#: ../src/ui/preferences_dialog.c:743
+#: ../src/ui/preferences_dialog.c:755
 msgid "Program"
 msgstr "Program"
 
@@ -1313,28 +1367,28 @@ msgstr "Denne nyhedskilde angiver ingen standard for opdateringsinterval."
 msgid "All Files"
 msgstr "Alle filer"
 
-#: ../src/update.c:350
+#: ../src/update.c:370
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Fejl ved åbning af midlertidig fil %s til brug for filtrering!"
 
-#: ../src/update.c:372
+#: ../src/update.c:392
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s afsluttede med status %d"
 
-#: ../src/update.c:378 ../src/update.c:379 ../src/update.c:493
+#: ../src/update.c:398 ../src/update.c:399 ../src/update.c:606
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Fejl: Kunne ikke åbne datakanal »%s«"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:517
+#: ../src/update.c:638
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Fejl: Kunne ikke åbne fil »%s«"
 
-#: ../src/update.c:523
+#: ../src/update.c:644
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Fejl: Der er ingen fil »%s«"
@@ -1343,63 +1397,63 @@ msgstr "Fejl: Der er ingen fil »%s«"
 msgid "New Search Folder"
 msgstr "Ny søgemappe"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:163
 msgid "Open Link In _Tab"
 msgstr "Åbn adresse i _faneblad"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:164
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "_Åbn adresse i browser"
 
-#: ../src/webkit/liferea_web_view.c:179
+#: ../src/webkit/liferea_web_view.c:165
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "_Åbn adresse i ekstern browser"
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:171
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_Bogmærk adresse på %s"
 
-#: ../src/webkit/liferea_web_view.c:192
+#: ../src/webkit/liferea_web_view.c:178
 msgid "_Copy Link Location"
 msgstr "_Kopier adresseplacering"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:181
 #, fuzzy
 msgid "_View Image"
 msgstr "_Gem billede som"
 
-#: ../src/webkit/liferea_web_view.c:196
+#: ../src/webkit/liferea_web_view.c:182
 msgid "_Copy Image Location"
 msgstr "_Kopier billedplacering"
 
-#: ../src/webkit/liferea_web_view.c:199
+#: ../src/webkit/liferea_web_view.c:185
 msgid "S_ave Link As"
 msgstr "_Gem adresse som"
 
-#: ../src/webkit/liferea_web_view.c:202
+#: ../src/webkit/liferea_web_view.c:188
 msgid "S_ave Image As"
 msgstr "_Gem billede som"
 
-#: ../src/webkit/liferea_web_view.c:209
+#: ../src/webkit/liferea_web_view.c:195
 msgid "_Subscribe..."
 msgstr "_Abonner ..."
 
-#: ../src/webkit/liferea_web_view.c:213
+#: ../src/webkit/liferea_web_view.c:199
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:205
 msgid "_Increase Text Size"
 msgstr "_Øg tekststørrelse"
 
-#: ../src/webkit/liferea_web_view.c:220
+#: ../src/webkit/liferea_web_view.c:206
 msgid "_Decrease Text Size"
 msgstr "_Formindsk tekststørrelse"
 
-#: ../src/webkit/liferea_web_view.c:227
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Reader Mode"
 msgstr ""
 
@@ -1616,7 +1670,7 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:24
 msgid "Headlines"
 msgstr "Overskrifter"
 
@@ -1641,13 +1695,14 @@ msgstr "Ny mappe"
 msgid "_Folder name:"
 msgstr "_Mappenavn:"
 
-#: ../glade/new_newsbin.ui.h:1
-msgid "Create News Bin"
-msgstr "Opret nyhedsbakke"
-
 #: ../glade/new_newsbin.ui.h:2
 msgid "_News Bin Name:"
 msgstr "_Nyhedsbakkenavn:"
+
+#: ../glade/new_newsbin.ui.h:3
+#, fuzzy
+msgid "_Always show in Reduced Feed List"
+msgstr "_Reduceret nyhedskildeliste"
 
 #: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
@@ -1818,178 +1873,182 @@ msgid "_Default View Mode:"
 msgstr "_Normal visningstilstand:"
 
 #: ../glade/prefs.ui.h:21
+msgid "_Defer removing read items from folders and search folders."
+msgstr ""
+
+#: ../glade/prefs.ui.h:22
 msgid "Web Integration"
 msgstr "Internetintegrering"
 
-#: ../glade/prefs.ui.h:22
+#: ../glade/prefs.ui.h:23
 msgid "_Post Bookmarks to"
 msgstr "_Send bogmærker til"
 
-#: ../glade/prefs.ui.h:24
+#: ../glade/prefs.ui.h:25
 msgid "Internal Browser Settings"
 msgstr "Intern browseropsætning"
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:26
 msgid "Open links in Liferea's _window."
 msgstr "Åbn adresser i Lifereas _vindue."
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:27
 msgid "_Never run external Javascript."
 msgstr ""
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:28
 msgid "_Enable browser plugins."
 msgstr "_Aktiver browserudvidelsesmoduler."
 
-#: ../glade/prefs.ui.h:28
+#: ../glade/prefs.ui.h:29
 msgid "External Browser Settings"
 msgstr "Ekstern browseropsætning"
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:30
 msgid "_Browser:"
 msgstr "_Browser:"
 
 # måske 'Manuel' (som i manuel browser) afhænger måske af type
-#: ../glade/prefs.ui.h:30
+#: ../glade/prefs.ui.h:31
 msgid "_Manual:"
 msgstr "_Manuel:"
 
-#: ../glade/prefs.ui.h:32
+#: ../glade/prefs.ui.h:33
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr "<small>(%s for adresse)</small>"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:34
 msgid "Browser"
 msgstr "Browser"
 
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:35
 msgid "Toolbar Settings"
 msgstr "Værktøjsbjælkeopsætning"
 
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:36
 msgid "_Hide toolbar."
 msgstr "_Skjul værktøjsbjælke."
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:37
 msgid "Toolbar _button labels:"
 msgstr "Etiketter for _værktøjsbjælkeknap:"
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:38
 msgid "Other"
 msgstr ""
 
-#: ../glade/prefs.ui.h:38
+#: ../glade/prefs.ui.h:39
 msgid "Ask for confirmation when marking all items as read"
 msgstr ""
 
-#: ../glade/prefs.ui.h:39
+#: ../glade/prefs.ui.h:40
 msgid "Desktop"
 msgstr ""
 
-#: ../glade/prefs.ui.h:40
+#: ../glade/prefs.ui.h:41
 msgid "HTTP Proxy Server"
 msgstr "Server for HTTP-proxy"
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:42
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Autodetekter (GNOME eller miljø)"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:43
 msgid "_No Proxy"
 msgstr "_Ingen proxy"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:44
 msgid "_Manual Setting:"
 msgstr "_Manuel indstilling:"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Host:"
 msgstr "Proxy_vært:"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:46
 msgid "Proxy _Port:"
 msgstr "Proxy_port:"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:47
 msgid "Use Proxy Au_thentication"
 msgstr "Brug proxy_godkendelse"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:48
 msgid "Proxy _Username:"
 msgstr "Proxy_brugernavn:"
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:49
 msgid "Proxy Pass_word:"
 msgstr "Proxy_adgangskode:"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:50
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:51
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:52
 #, fuzzy
 msgid "Privacy Settings"
 msgstr "Opsætning af mappevisning"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:53
 msgid "Tell sites that I do _not want to be tracked."
 msgstr ""
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:54
 msgid "_Intelligent Tracking Prevention. "
 msgstr ""
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:55
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:56
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:57
 msgid "Use _Reader mode."
 msgstr ""
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:58
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:60
 msgid "Downloading Enclosures"
 msgstr "Henter pakker"
 
-#: ../glade/prefs.ui.h:60
+#: ../glade/prefs.ui.h:61
 msgid "_Download using"
 msgstr "_Hent med brug af"
 
-#: ../glade/prefs.ui.h:62
+#: ../glade/prefs.ui.h:63
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:63
+#: ../glade/prefs.ui.h:64
 msgid "Opening Enclosures"
 msgstr "Åbner pakker"
 
-#: ../glade/prefs.ui.h:64
+#: ../glade/prefs.ui.h:65
 msgid "Enclosures"
 msgstr "Pakker"
 

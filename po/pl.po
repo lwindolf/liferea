@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.13.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-30 12:36+0200\n"
+"POT-Creation-Date: 2022-03-30 23:48+0200\n"
 "PO-Revision-Date: 2021-07-30 12:38+0200\n"
 "Last-Translator: Paweł Marciniak <sunwire+translate@gmail.com>\n"
 "Language-Team: \n"
@@ -79,7 +79,7 @@ msgstr "Dopasuj elementy za pomocą folderów wyszukiwania"
 msgid "Play Podcasts"
 msgstr "Odtwarzaj Podkasty"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -100,23 +100,23 @@ msgstr "Odczytuje zawartość kanałów wiadomości i blogów"
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
-#: ../plugins/getfocus.py:93
+#: ../plugins/getfocus.py:95
 msgid "Opacity:"
 msgstr "Nieprzeźroczystość:"
 
-#: ../plugins/getfocus.py:94
+#: ../plugins/getfocus.py:96
 msgid "Opacity"
 msgstr "Nieprzeźroczystość"
 
-#: ../plugins/getfocus.py:104
+#: ../plugins/getfocus.py:106
 msgid "Min"
 msgstr "Min."
 
-#: ../plugins/getfocus.py:109
+#: ../plugins/getfocus.py:111
 msgid "Max"
 msgstr "Maks."
 
-#: ../plugins/getfocus.py:115
+#: ../plugins/getfocus.py:117
 msgid "Save"
 msgstr "Zapisz"
 
@@ -152,56 +152,56 @@ msgstr "Wyszukaj..."
 msgid "Feed Updates"
 msgstr "Aktualizacje kanału"
 
-#: ../plugins/plugin-installer.py:54
+#: ../plugins/plugin-installer.py:55
 msgid "Plugins"
 msgstr "Wtyczki"
 
-#: ../plugins/plugin-installer.py:69
+#: ../plugins/plugin-installer.py:72
 msgid "Plugin Installer"
 msgstr "Instalator wtyczek"
 
-#: ../plugins/plugin-installer.py:83
+#: ../plugins/plugin-installer.py:86
 msgid "Activate Plugins"
 msgstr "Aktywuj wtyczki"
 
-#: ../plugins/plugin-installer.py:84
+#: ../plugins/plugin-installer.py:87
 msgid "Download Plugins"
 msgstr "Pobierz wtyczki"
 
-#: ../plugins/plugin-installer.py:102
+#: ../plugins/plugin-installer.py:105
 #, python-format
 msgid "Bad fields for plugin entry %s"
 msgstr "Złe pola opisu wtyczki %s"
 
-#: ../plugins/plugin-installer.py:125
+#: ../plugins/plugin-installer.py:128
 msgid "All"
 msgstr "Wszystkie"
 
-#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+#: ../plugins/plugin-installer.py:128 ../glade/properties.ui.h:39
 msgid "Advanced"
 msgstr "Zaawansowane"
 
-#: ../plugins/plugin-installer.py:125
+#: ../plugins/plugin-installer.py:128
 msgid "Menu"
 msgstr "Menu"
 
-#: ../plugins/plugin-installer.py:125
+#: ../plugins/plugin-installer.py:128
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: ../plugins/plugin-installer.py:133
+#: ../plugins/plugin-installer.py:136
 msgid "Filter by category"
 msgstr "Filtruj po kategorii"
 
-#: ../plugins/plugin-installer.py:140
+#: ../plugins/plugin-installer.py:143
 msgid "_Install"
 msgstr "Za_instaluj"
 
-#: ../plugins/plugin-installer.py:144
+#: ../plugins/plugin-installer.py:147
 msgid "_Uninstall"
 msgstr "Odinstal_uj"
 
-#: ../plugins/plugin-installer.py:245
+#: ../plugins/plugin-installer.py:248
 #, python-format
 msgid ""
 "Missing package manager '%s'. Cannot check nor install necessary "
@@ -210,12 +210,12 @@ msgstr ""
 "Brakuje managera pakietów '%s'. Nie mogę sprawdzić ani zainstalować "
 "brakujących zależności!"
 
-#: ../plugins/plugin-installer.py:261
+#: ../plugins/plugin-installer.py:264
 #, python-format
 msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
 msgstr "Brakuje pakietu '%s'. Czy chcesz go zainstalować? (Uruchomi '%s')"
 
-#: ../plugins/plugin-installer.py:268
+#: ../plugins/plugin-installer.py:271
 #, python-format
 msgid ""
 "Package installation failed (%s)! Check console output for further problem "
@@ -224,95 +224,95 @@ msgstr ""
 "Instalacja pakietu (%s) nie powiodła się! Sprawdź wyjście konsoli pod kątem "
 "dalszych problemów!"
 
-#: ../plugins/plugin-installer.py:271
+#: ../plugins/plugin-installer.py:274
 #, python-format
 msgid "Failed to check plugin dependencies (%s)!"
 msgstr "Nie udało się sprawdzić zależności wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:280
+#: ../plugins/plugin-installer.py:283
 msgid "Command \"git\" not found, please install it!"
 msgstr "Polecenie \"git\" nie znalezione, proszę je zainstalować!"
 
-#: ../plugins/plugin-installer.py:289
+#: ../plugins/plugin-installer.py:292
 #, python-format
 msgid "Copying %s to %s"
 msgstr "Kopiuję z %s do %s"
 
-#: ../plugins/plugin-installer.py:292
+#: ../plugins/plugin-installer.py:295
 #, python-format
 msgid "Failed to copy plugin directory (%s)!"
 msgstr "Nie udało się skopiować katalogu wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:301
+#: ../plugins/plugin-installer.py:304
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
 msgstr "Nie udało się skopiować pliku .py wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:311
+#: ../plugins/plugin-installer.py:314
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
 msgstr "Nie udało się skopiować pliku .plugin wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:322
+#: ../plugins/plugin-installer.py:325
 #, python-format
 msgid "Creating schema directory %s"
 msgstr "Tworzę katalog schematu %s"
 
-#: ../plugins/plugin-installer.py:324
+#: ../plugins/plugin-installer.py:327
 #, python-format
 msgid "Installing schema %s"
 msgstr "Instaluję plik schematu %s"
 
-#: ../plugins/plugin-installer.py:328
+#: ../plugins/plugin-installer.py:331
 msgid "Compiling schemas..."
 msgstr "Kompiluje schematy..."
 
-#: ../plugins/plugin-installer.py:333
+#: ../plugins/plugin-installer.py:336
 #, python-format
 msgid "Failed to install schema files (%s)!"
 msgstr "Nie udało się zainstalować pliki schematu (%s)!"
 
-#: ../plugins/plugin-installer.py:343
+#: ../plugins/plugin-installer.py:346
 #, python-format
 msgid "Failed to enable plugin (%s)!"
 msgstr "Nie udało się włączyć wtyczki (%s)!"
 
-#: ../plugins/plugin-installer.py:349
+#: ../plugins/plugin-installer.py:352
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
 msgstr ""
 "Wtyczka '%s' jest teraz zainstalowana. Upewnij się, aby ponownie uruchomić "
 "Liferea!"
 
-#: ../plugins/plugin-installer.py:363
+#: ../plugins/plugin-installer.py:366
 #, python-format
 msgid "Failed to disable plugin (%s)!"
 msgstr "Nie udało się wyłączyć wtyczki (%s)!"
 
 # WTF?
-#: ../plugins/plugin-installer.py:370 ../plugins/plugin-installer.py:390
+#: ../plugins/plugin-installer.py:373 ../plugins/plugin-installer.py:393
 #, python-format
 msgid "Deleting '%s'"
 msgstr "Usuwam '%s'"
 
-#: ../plugins/plugin-installer.py:373
+#: ../plugins/plugin-installer.py:376
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
 msgstr "Nie udało się usunąć katalogu '%s' (%s)!"
 
-#: ../plugins/plugin-installer.py:383
+#: ../plugins/plugin-installer.py:386
 msgid "Failed to remove .py file!"
 msgstr "Nie udało się usunąć pliku .py!"
 
-#: ../plugins/plugin-installer.py:393
+#: ../plugins/plugin-installer.py:396
 msgid "Failed to remove .plugin file!"
 msgstr "Nie udało się usunąć pliku .plugin!"
 
-#: ../plugins/plugin-installer.py:402
+#: ../plugins/plugin-installer.py:405
 msgid "Sorry! Plugin removal failed!."
 msgstr "Przepraszam! Usunięcie wtyczki nie powiodło się!"
 
-#: ../plugins/plugin-installer.py:404
+#: ../plugins/plugin-installer.py:407
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr "Wtyczka została usunięta. Proszę zrestartować Liferea!"
@@ -344,7 +344,7 @@ msgstr "Uruchamianie: „%s”"
 msgid "Authorization Error"
 msgstr "Błąd uwierzytelniania"
 
-#: ../src/common.c:66
+#: ../src/common.c:68
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nie można utworzyć katalogu pamięci podręcznej „%s”!"
@@ -491,15 +491,15 @@ msgstr "Nowa subskrypcja"
 msgid "Google Reader"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/node_source.c:334
+#: ../src/fl_sources/node_source.c:337
 msgid "No feed list source types found!"
 msgstr "Nie znaleziono typu źródła subskrypcji!"
 
-#: ../src/fl_sources/node_source.c:363
+#: ../src/fl_sources/node_source.c:366
 msgid "Source Type"
 msgstr "Rodzaj źródła"
 
-#: ../src/fl_sources/node_source.c:414
+#: ../src/fl_sources/node_source.c:417
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
@@ -508,7 +508,7 @@ msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:580
+#: ../src/fl_sources/node_source.c:583
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "Subskrypcja %s została pomyślnie przekonwertowana do lokalnego kanału!"
@@ -534,7 +534,7 @@ msgstr "Nowa subskrypcja OPML"
 msgid "Login failed!"
 msgstr "Logowanie nie powiodło się!"
 
-#: ../src/fl_sources/reedah_source.c:313
+#: ../src/fl_sources/reedah_source.c:323
 msgid "Reedah"
 msgstr "Reedah"
 
@@ -542,7 +542,7 @@ msgstr "Reedah"
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "Nie można przeanalizować kodu JSON zwróconego przez Reedah API!"
 
-#: ../src/fl_sources/theoldreader_source.c:311
+#: ../src/fl_sources/theoldreader_source.c:347
 msgid "TheOldReader"
 msgstr "TheOldReader"
 
@@ -580,58 +580,58 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Nie można przeanalizować kodu JSON zwróconego przez TinyTinyRSS API!"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:395
+#: ../src/itemlist.c:407
 msgid "There are no unread items"
 msgstr "Brak nieprzeczytanych nagłówków"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:279
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "Uruchom program ustalając STAN jego okna. Parametr STAN może przybierać "
 "wartość „shown”, „iconified” lub „hidden”."
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:279
 msgid "STATE"
 msgstr "STAN"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:280
 msgid "Show version information and exit"
 msgstr "Wypisuje informacje o wersji i kończy działanie"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:281
 msgid "Add a new subscription"
 msgstr "Dodaje nową subskrypcję"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:281
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:282
 msgid "Start with all plugins disabled"
 msgstr "Uruchom z zablokowanymi wszystkimi wtyczkami"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:287
 msgid "Print debugging messages of all types"
 msgstr "Wypisuje wszystkie komunikaty diagnozowania błędów"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages for the cache handling"
 msgstr "Wypisuje komunikaty diagnozowania błędów pamięci podręcznej"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the configuration handling"
 msgstr "Wypisuje komunikaty diagnozowania błędów konfiguracji"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages of the database handling"
 msgstr "Wypisuje komunikaty diagnozowania błędów bazy danych"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of all GUI functions"
 msgstr "Wypisuje komunikaty diagnozowania błędów interfejsu graficznego"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -640,65 +640,65 @@ msgstr ""
 "renderuje kod HTML, wygenerowany kod zastanie również zapisany do pliku ~/."
 "cache/liferea/output.html"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"
 msgstr "Wypisuje komunikaty diagnozowania błędów połączeń sieciowych"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all parsing functions"
 msgstr "Wypisuje komunikaty diagnozowania błędów funkcji przetwarzania"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages when a function takes too long to process"
 msgstr ""
 "Wypisuje komunikaty diagnozowania błędów, jeśli funkcja przetwarzana jest "
 "zbyt długo"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when entering/leaving functions"
 msgstr ""
 "Wypisuje komunikaty diagnozowania błędów podczas uruchamiania/kończenia "
 "działania funkcji"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages of the feed update processing"
 msgstr "Wypisuje komunikaty diagnozowania błędów uaktualniania kanałów"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "Wypisuje komunikaty diagnozowania błędów dopasowywania katalogów wyników"
 
-#: ../src/liferea_application.c:300
+#: ../src/liferea_application.c:299
 msgid "Print verbose debugging messages"
 msgstr "Wypisuje dodatkowe komunikaty diagnozowania błędów"
 
-#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
+#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
 msgid "Print debugging messages for the given topic"
 msgstr "Wypisuje informacje diagnozowania błędów na dany temat"
 
 #. Some libsoup transport errors
-#: ../src/net.c:437
+#: ../src/net.c:460
 msgid "The update request was cancelled"
 msgstr "Anulowano żądanie uaktualnienia"
 
-#: ../src/net.c:438
+#: ../src/net.c:461
 msgid "Unable to resolve destination host name"
 msgstr "Nie można określić nazwy komputera docelowego"
 
-#: ../src/net.c:439
+#: ../src/net.c:462
 msgid "Unable to resolve proxy host name"
 msgstr "Nie można określić nazwy komputera pośrednika"
 
-#: ../src/net.c:440
+#: ../src/net.c:463
 msgid "Unable to connect to remote host"
 msgstr "Nie można nawiązać połączenia ze zdalnym komputerem"
 
-#: ../src/net.c:441
+#: ../src/net.c:464
 msgid "Unable to connect to proxy"
 msgstr "Nie można nawiązać połączenia z pośrednikiem"
 
-#: ../src/net.c:442
+#: ../src/net.c:465
 msgid ""
 "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
 "algorithm. Check your operating system settings."
@@ -707,12 +707,12 @@ msgstr ""
 "algorytm szyfrowania. Sprawdź ustawienia systemu operacyjnego."
 
 #. http 3xx redirection
-#: ../src/net.c:445
+#: ../src/net.c:468
 msgid "The resource moved permanently to a new location"
 msgstr "Zasób został przeniesiony w inne położenie"
 
 #. http 4xx client error
-#: ../src/net.c:448
+#: ../src/net.c:471
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -720,35 +720,35 @@ msgstr ""
 "Nie uwierzytelniono dostępu do tego kanału. Proszę uaktualnić nazwę "
 "użytkownika i hasło w oknie ustawień kanału"
 
-#: ../src/net.c:450
+#: ../src/net.c:473
 msgid "Payment required"
 msgstr "Wymagane uiszczenie opłaty"
 
-#: ../src/net.c:451
+#: ../src/net.c:474
 msgid "You're not allowed to access this resource"
 msgstr "Brak dostępu do tego zasobu"
 
-#: ../src/net.c:452
+#: ../src/net.c:475
 msgid "Resource Not Found"
 msgstr "Zasób nie odnaleziony"
 
-#: ../src/net.c:453
+#: ../src/net.c:476
 msgid "Method Not Allowed"
 msgstr "Niedozwolona metoda"
 
-#: ../src/net.c:454
+#: ../src/net.c:477
 msgid "Not Acceptable"
 msgstr "Nieakceptowalne"
 
-#: ../src/net.c:455
+#: ../src/net.c:478
 msgid "Proxy authentication required"
 msgstr "Wymagane uwierzytelnienie pośrednika sieciowego (proxy)"
 
-#: ../src/net.c:456
+#: ../src/net.c:479
 msgid "Request timed out"
 msgstr "Upłynął limit czasu żądania"
 
-#: ../src/net.c:457
+#: ../src/net.c:480
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -758,28 +758,52 @@ msgstr ""
 "nie będzie go uaktualniać, ale dostęp do pobranych nagłówków pozostanie "
 "zachowany."
 
-#: ../src/net.c:462
+#: ../src/net.c:485
 msgid "There was an internal error in the update process"
 msgstr "Wystąpił wewnętrzny błąd podczas uaktalniania"
 
-#: ../src/net.c:464
+#: ../src/net.c:487
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Subskrypcja niedostępna: serwer zażądał nieobsługiwanego przekierowania!"
 
-#: ../src/net.c:466
+#: ../src/net.c:489
 msgid "Client Error"
 msgstr "Błąd klienta"
 
-#: ../src/net.c:468
+#: ../src/net.c:491
 msgid "Server Error"
 msgstr "Błąd serwera"
 
-#: ../src/net.c:470
+#: ../src/net.c:493
 msgid "An unknown networking error happened!"
 msgstr "Wystąpił nieznany błąd sieciowy!"
 
-#: ../src/parsers/atom10.c:239
+#: ../src/newsbin.c:136
+#, fuzzy
+msgid "News Bin Properties"
+msgstr "Właściwości subskrypcji"
+
+#: ../src/newsbin.c:140 ../glade/new_newsbin.ui.h:1
+msgid "Create News Bin"
+msgstr "Tworzenie nowego kosza"
+
+#: ../src/node.c:640
+#, fuzzy, c-format
+msgid "Failed to create feed file: %s"
+msgstr "Nie udało się usunąć pliku .py!"
+
+#: ../src/node.c:659
+#, fuzzy
+msgid "Feed file exported from Liferea"
+msgstr "Wyeksportowano listę subskrypcji!"
+
+#: ../src/node.c:674
+#, fuzzy, c-format
+msgid "Error while saving feed file"
+msgstr "Błąd eksportowania listy subskrypcji!"
+
+#: ../src/parsers/atom10.c:240
 msgid "Website"
 msgstr "Witryna internetowa"
 
@@ -921,7 +945,7 @@ msgstr "Proszę wprowadzić nazwę użytkownika i hasło dla „%s” (%s):"
 msgid "Unknown source"
 msgstr "Nieznany zasób"
 
-#: ../src/ui/browser_tabs.c:262
+#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:282
 msgid "Untitled"
 msgstr "Nieograniczony"
 
@@ -969,30 +993,30 @@ msgstr "Wybór pliku"
 msgid "File Extension .%s"
 msgstr "Rozszerzenie pliku .%s"
 
-#: ../src/ui/feed_list_view.c:432
+#: ../src/ui/feed_list_view.c:436
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Program działa w trybie rozłączonym. Uaktualnienia nie są możliwe."
 
 # Skrócone (toolbar)
-#: ../src/ui/feed_list_view.c:478
+#: ../src/ui/feed_list_view.c:482
 msgid "all feeds"
 msgstr "wszystkie kanały"
 
-#: ../src/ui/feed_list_view.c:479
+#: ../src/ui/feed_list_view.c:483
 #, c-format
 msgid "Mark %s as read ?"
 msgstr "Oznaczyć %s jako przeczytane?"
 
-#: ../src/ui/feed_list_view.c:483
+#: ../src/ui/feed_list_view.c:487
 #, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Czy na pewno chcesz oznaczyć wszystkie elementy w %s jako przeczytane?"
 
-#: ../src/ui/feed_list_view.c:621
+#: ../src/ui/feed_list_view.c:625
 msgid "(Empty)"
 msgstr "(Pusty)"
 
-#: ../src/ui/feed_list_view.c:832
+#: ../src/ui/feed_list_view.c:836
 #, c-format
 msgid ""
 "%s\n"
@@ -1002,33 +1026,34 @@ msgstr ""
 "<i>Ponowne wczytywanie zawartości</i>"
 
 # WTF?
-#: ../src/ui/feed_list_view.c:901
+#: ../src/ui/feed_list_view.c:905
 msgid "Deleting entry"
 msgstr "Usuwanie nagłówka"
 
-#: ../src/ui/feed_list_view.c:902
+#: ../src/ui/feed_list_view.c:906
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Usunąć „%s” wraz z całą zawartością?"
 
-#: ../src/ui/feed_list_view.c:902
+#: ../src/ui/feed_list_view.c:906
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Usunąć „%s”?"
 
-#: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
+#: ../src/ui/feed_list_view.c:915 ../src/ui/feed_list_view.c:969
+#: ../src/ui/popup_menu.c:260
 msgid "_Cancel"
 msgstr "Anuluj"
 
-#: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
+#: ../src/ui/feed_list_view.c:916 ../src/ui/popup_menu.c:411
 msgid "_Delete"
 msgstr "Usuń"
 
-#: ../src/ui/feed_list_view.c:914
+#: ../src/ui/feed_list_view.c:918
 msgid "Deletion Confirmation"
 msgstr "Potwierdzenie usuwania"
 
-#: ../src/ui/feed_list_view.c:953
+#: ../src/ui/feed_list_view.c:957
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
@@ -1037,11 +1062,11 @@ msgstr ""
 "Czy na pewno chcesz dodać nową subskrypcję z adresem URL „%s”? Istnieje już "
 "inna subskrypcja z tym samym adresem URL („%s”)."
 
-#: ../src/ui/feed_list_view.c:966
+#: ../src/ui/feed_list_view.c:970
 msgid "_Add"
 msgstr "Dod_aj"
 
-#: ../src/ui/feed_list_view.c:968
+#: ../src/ui/feed_list_view.c:972
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Potwierdzenie dodania zduplikowanej subskrypcji"
 
@@ -1054,30 +1079,38 @@ msgstr "Nie można odnaleźć pliku pixmapy: %s"
 msgid "This item has no link specified!"
 msgstr "Ten nagłówek nie posiada przypisanego odnośnika!"
 
-#: ../src/ui/item_list_view.c:482
+#: ../src/ui/item_list_view.c:483
 msgid "*** No title ***"
 msgstr "*** Bez tytułu ***"
 
-#: ../src/ui/item_list_view.c:486
+#: ../src/ui/item_list_view.c:487
 msgid " <span background='red' color='black'> important </span> "
 msgstr " <span background='red' color='black'> ważne </span> "
 
-#: ../src/ui/item_list_view.c:849
+#: ../src/ui/item_list_view.c:853
 msgid "Headline"
 msgstr "Nagłówek"
 
-#: ../src/ui/item_list_view.c:871
+#: ../src/ui/item_list_view.c:875
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/item_list_view.c:1038
+#: ../src/ui/item_list_view.c:1042
 msgid "You must select a feed to delete its items!"
 msgstr "Należy zaznaczyć kanał, aby usunąć jego nagłówki!"
 
-#: ../src/ui/item_list_view.c:1054 ../src/ui/item_list_view.c:1132
-#: ../src/ui/item_list_view.c:1147
+#: ../src/ui/item_list_view.c:1058 ../src/ui/item_list_view.c:1136
+#: ../src/ui/item_list_view.c:1151
 msgid "No item has been selected"
 msgstr "Nie zanzaczono żadnego nagłówka"
+
+#: ../src/ui/liferea_browser.c:449
+msgid "Content download failed!"
+msgstr ""
+
+#: ../src/ui/liferea_browser.c:462
+msgid "Content extraction failed!"
+msgstr ""
 
 #: ../src/ui/liferea_shell.c:408
 #, c-format
@@ -1165,55 +1198,77 @@ msgstr "Zapisz jako..."
 msgid "Copy Link Location"
 msgstr "Skopiuj adres odnośnika"
 
-#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
+#: ../src/ui/popup_menu.c:257
+msgid "Save items to file"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:262
+#, fuzzy
+msgid "_Save"
+msgstr "Zapisz"
+
+#: ../src/ui/popup_menu.c:271
+msgid "RSS 2.0 files"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:277
+#, fuzzy
+msgid "All files"
+msgstr "Wszystkie pliki"
+
+#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Uaktualnij"
 
-#: ../src/ui/popup_menu.c:282
+#: ../src/ui/popup_menu.c:355
 msgid "_Update Folder"
 msgstr "_Uaktualnij katalog"
 
-#: ../src/ui/popup_menu.c:292
+#: ../src/ui/popup_menu.c:365
 msgid "New _Subscription..."
 msgstr "Nowa _subskrypcja..."
 
-#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
+#: ../src/ui/popup_menu.c:368 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Nowy _katalog..."
 
-#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
+#: ../src/ui/popup_menu.c:371 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Nowy katalog _wyników..."
 
-#: ../src/ui/popup_menu.c:299
+#: ../src/ui/popup_menu.c:372
 msgid "New S_ource..."
 msgstr "Nowy _zasób..."
 
-#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
+#: ../src/ui/popup_menu.c:373 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Nowy _kosz..."
 
-#: ../src/ui/popup_menu.c:303
+#: ../src/ui/popup_menu.c:376
 msgid "_New"
 msgstr "_Nowy"
 
-#: ../src/ui/popup_menu.c:312
+#: ../src/ui/popup_menu.c:385
 msgid "Sort Feeds"
 msgstr "Posortuj kanały"
 
-#: ../src/ui/popup_menu.c:320
+#: ../src/ui/popup_menu.c:393
 msgid "_Mark All As Read"
 msgstr "_Oznacz wszystkie jako przeczytane"
 
-#: ../src/ui/popup_menu.c:327
+#: ../src/ui/popup_menu.c:395
+msgid "_Export Items To File"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:403
 msgid "_Rebuild"
 msgstr "_Wczytaj ponownie"
 
-#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
+#: ../src/ui/popup_menu.c:412 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Właściwości"
 
-#: ../src/ui/popup_menu.c:343
+#: ../src/ui/popup_menu.c:419
 msgid "Convert To Local Subscriptions..."
 msgstr "Konwertuj na subskrypcje lokalne ..."
 
@@ -1269,19 +1324,19 @@ msgstr "Zwykły"
 msgid "Wide View"
 msgstr "Szeroki"
 
-#: ../src/ui/preferences_dialog.c:478
+#: ../src/ui/preferences_dialog.c:487
 msgid "Default Browser"
 msgstr "Domyślna przeglądarka"
 
-#: ../src/ui/preferences_dialog.c:480
+#: ../src/ui/preferences_dialog.c:489
 msgid "Manual"
 msgstr "Własne polecenie"
 
-#: ../src/ui/preferences_dialog.c:740
+#: ../src/ui/preferences_dialog.c:752
 msgid "Type"
 msgstr "Typ"
 
-#: ../src/ui/preferences_dialog.c:743
+#: ../src/ui/preferences_dialog.c:755
 msgid "Program"
 msgstr "Program"
 
@@ -1306,28 +1361,28 @@ msgstr "Kanał nie posiada domyślnej częstości uaktualniania."
 msgid "All Files"
 msgstr "Wszystkie pliki"
 
-#: ../src/update.c:350
+#: ../src/update.c:370
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Błąd otwierania pliku tymczasowego %s, wymaganego do filtrowania!"
 
-#: ../src/update.c:372
+#: ../src/update.c:392
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s zakończył ze stanem %d"
 
-#: ../src/update.c:378 ../src/update.c:379 ../src/update.c:493
+#: ../src/update.c:398 ../src/update.c:399 ../src/update.c:606
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Błąd: nie można otworzyć potoku „%s”"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:517
+#: ../src/update.c:638
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Błąd: nie można otworzyć pliku „%s”"
 
-#: ../src/update.c:523
+#: ../src/update.c:644
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Błąd: nie ma takiego pliku „%s”"
@@ -1336,60 +1391,60 @@ msgstr "Błąd: nie ma takiego pliku „%s”"
 msgid "New Search Folder"
 msgstr "Nowy katalog wyników"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:163
 msgid "Open Link In _Tab"
 msgstr "Otwórz odnośnik w _karcie"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:164
 msgid "Open Link In Browser"
 msgstr "_Otwórz odnośnik"
 
-#: ../src/webkit/liferea_web_view.c:179
+#: ../src/webkit/liferea_web_view.c:165
 msgid "Open Link In External Browser"
 msgstr "_Otwórz odnośnik w przeglądarce"
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:171
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "_Opublikuj odnośnik na %s"
 
-#: ../src/webkit/liferea_web_view.c:192
+#: ../src/webkit/liferea_web_view.c:178
 msgid "_Copy Link Location"
 msgstr "_Skopiuj adres odnośnika"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:181
 msgid "_View Image"
 msgstr "Zobacz obraz"
 
-#: ../src/webkit/liferea_web_view.c:196
+#: ../src/webkit/liferea_web_view.c:182
 msgid "_Copy Image Location"
 msgstr "_Skopiuj adres obrazu"
 
-#: ../src/webkit/liferea_web_view.c:199
+#: ../src/webkit/liferea_web_view.c:185
 msgid "S_ave Link As"
 msgstr "_Zapisz odnośnik jako"
 
-#: ../src/webkit/liferea_web_view.c:202
+#: ../src/webkit/liferea_web_view.c:188
 msgid "S_ave Image As"
 msgstr "Z_apisz obraz jako"
 
-#: ../src/webkit/liferea_web_view.c:209
+#: ../src/webkit/liferea_web_view.c:195
 msgid "_Subscribe..."
 msgstr "_Subskrybuj..."
 
-#: ../src/webkit/liferea_web_view.c:213
+#: ../src/webkit/liferea_web_view.c:199
 msgid "_Copy"
 msgstr "Kopiuj"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:205
 msgid "_Increase Text Size"
 msgstr "Z_większ rozmiar tekstu"
 
-#: ../src/webkit/liferea_web_view.c:220
+#: ../src/webkit/liferea_web_view.c:206
 msgid "_Decrease Text Size"
 msgstr "Z_mniejsz rozmiar tekstu"
 
-#: ../src/webkit/liferea_web_view.c:227
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Reader Mode"
 msgstr "T_ryb czytnika"
 
@@ -1604,7 +1659,7 @@ msgstr "strona 1"
 msgid "page 2"
 msgstr "strona 2"
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:24
 msgid "Headlines"
 msgstr "Nagłówki"
 
@@ -1628,13 +1683,14 @@ msgstr "Nowy katalog"
 msgid "_Folder name:"
 msgstr "Na_zwa katalogu:"
 
-#: ../glade/new_newsbin.ui.h:1
-msgid "Create News Bin"
-msgstr "Tworzenie nowego kosza"
-
 #: ../glade/new_newsbin.ui.h:2
 msgid "_News Bin Name:"
 msgstr "_Nazwa kosza:"
+
+#: ../glade/new_newsbin.ui.h:3
+#, fuzzy
+msgid "_Always show in Reduced Feed List"
+msgstr "_Skrócona lista subskrypcji"
 
 #: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
@@ -1798,112 +1854,116 @@ msgid "_Default View Mode:"
 msgstr "_Domyślny widok:"
 
 #: ../glade/prefs.ui.h:21
+msgid "_Defer removing read items from folders and search folders."
+msgstr ""
+
+#: ../glade/prefs.ui.h:22
 msgid "Web Integration"
 msgstr "Integracja z usługami sieciowymi"
 
-#: ../glade/prefs.ui.h:22
+#: ../glade/prefs.ui.h:23
 msgid "_Post Bookmarks to"
 msgstr "_Publikowanie odnośników na"
 
-#: ../glade/prefs.ui.h:24
+#: ../glade/prefs.ui.h:25
 msgid "Internal Browser Settings"
 msgstr "Wbudowana przeglądarka"
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:26
 msgid "Open links in Liferea's _window."
 msgstr "Otwieranie odnośników w _oknie programu."
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:27
 msgid "_Never run external Javascript."
 msgstr "Nigdy nie uruchamiaj zewnętrznego JavaScript."
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:28
 msgid "_Enable browser plugins."
 msgstr "_Włączenie wtyczek przeglądarki."
 
-#: ../glade/prefs.ui.h:28
+#: ../glade/prefs.ui.h:29
 msgid "External Browser Settings"
 msgstr "Zewnętrzna przeglądarka"
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:30
 msgid "_Browser:"
 msgstr "_Przeglądarka:"
 
-#: ../glade/prefs.ui.h:30
+#: ../glade/prefs.ui.h:31
 msgid "_Manual:"
 msgstr "_Własne polecenie:"
 
-#: ../glade/prefs.ui.h:32
+#: ../glade/prefs.ui.h:33
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr "<small>(parametr %s zostanie zastąpiony adresem URL)</small>"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:34
 msgid "Browser"
 msgstr "Przeglądarka"
 
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:35
 msgid "Toolbar Settings"
 msgstr "Pasek narzędziowy"
 
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:36
 msgid "_Hide toolbar."
 msgstr "_Ukryj pasek narzędziowy."
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:37
 msgid "Toolbar _button labels:"
 msgstr "Etykiety p_rzycisków:"
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:38
 msgid "Other"
 msgstr "Inne"
 
-#: ../glade/prefs.ui.h:38
+#: ../glade/prefs.ui.h:39
 msgid "Ask for confirmation when marking all items as read"
 msgstr ""
 "Pytaj o potwierdzenie przy oznaczaniu wszystkich pozycji jako przeczytane"
 
-#: ../glade/prefs.ui.h:39
+#: ../glade/prefs.ui.h:40
 msgid "Desktop"
 msgstr "Pulpit"
 
-#: ../glade/prefs.ui.h:40
+#: ../glade/prefs.ui.h:41
 msgid "HTTP Proxy Server"
 msgstr "Serwer pośrednika sieciowego"
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:42
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Automatyczne wykrywanie (GNOME)"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:43
 msgid "_No Proxy"
 msgstr "_Brak"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:44
 msgid "_Manual Setting:"
 msgstr "_Ręczne ustawienia:"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Host:"
 msgstr "_Pośrednik:"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:46
 msgid "Proxy _Port:"
 msgstr "_Port:"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:47
 msgid "Use Proxy Au_thentication"
 msgstr "_Uwierzytelnianie pośrednika"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:48
 msgid "Proxy _Username:"
 msgstr "_Nazwa użytkownika:"
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:49
 msgid "Proxy Pass_word:"
 msgstr "_Hasło:"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:50
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
@@ -1911,23 +1971,23 @@ msgstr ""
 "Twoja wersja WebKitGTK + jest starsza niż 2.15.3. Nie obsługuje ustawień "
 "proxy dla aplikacji. Zostaną użyte domyślne ustawienia serwera proxy."
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:51
 msgid "Proxy"
 msgstr "Pośrednik"
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:52
 msgid "Privacy Settings"
 msgstr "Ustawienia prywatności"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:53
 msgid "Tell sites that I do _not want to be tracked."
 msgstr "Poinformuj witryny, że _nie chcę być śledzony."
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:54
 msgid "_Intelligent Tracking Prevention. "
 msgstr "_Inteligentne zapobieganie śledzeniu."
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:55
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
@@ -1935,7 +1995,7 @@ msgstr ""
 "To włącza funkcję WebKit opisaną <a href=\"https://webkit.org/tracking-"
 "prevention/\">tutaj</a>."
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:56
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
@@ -1943,11 +2003,11 @@ msgstr ""
 "Inteligentne zapobieganie śledzeniu jest dostępne tylko dla WebKitGtk+ w "
 "wersji 2.30 lub nowszej."
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:57
 msgid "Use _Reader mode."
 msgstr "Użyj t_ryb czytnika."
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:58
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
@@ -1955,28 +2015,28 @@ msgstr ""
 "To umożliwia <a href=\"https://github.com/mozilla/readability\">usunięcie</"
 "a> wszystkie elementów nie zawierające treści (jak skrypty, fonty, śledzenie)"
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr "Prywatność"
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:60
 msgid "Downloading Enclosures"
 msgstr "Pobieranie"
 
-#: ../glade/prefs.ui.h:60
+#: ../glade/prefs.ui.h:61
 msgid "_Download using"
 msgstr "Po_bieranie za pomocą programu"
 
-#: ../glade/prefs.ui.h:62
+#: ../glade/prefs.ui.h:63
 #, no-c-format
 msgid "custom-command %s"
 msgstr "polecenie niestandardowe %s"
 
-#: ../glade/prefs.ui.h:63
+#: ../glade/prefs.ui.h:64
 msgid "Opening Enclosures"
 msgstr "Otwieranie"
 
-#: ../glade/prefs.ui.h:64
+#: ../glade/prefs.ui.h:65
 msgid "Enclosures"
 msgstr "Załączniki"
 

@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea-1.12-rc2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-30 12:36+0200\n"
+"POT-Creation-Date: 2022-03-30 23:48+0200\n"
 "PO-Revision-Date: 2017-02-15 16:56+0900\n"
 "Last-Translator: IWAI, Masaharu <iwaim.sub@gmail.com>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
@@ -76,7 +76,7 @@ msgstr ""
 msgid "Play Podcasts"
 msgstr "Podcastを演奏する"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:350
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
@@ -97,23 +97,23 @@ msgstr ""
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
 
-#: ../plugins/getfocus.py:93
+#: ../plugins/getfocus.py:95
 msgid "Opacity:"
 msgstr ""
 
-#: ../plugins/getfocus.py:94
+#: ../plugins/getfocus.py:96
 msgid "Opacity"
 msgstr ""
 
-#: ../plugins/getfocus.py:104
+#: ../plugins/getfocus.py:106
 msgid "Min"
 msgstr ""
 
-#: ../plugins/getfocus.py:109
+#: ../plugins/getfocus.py:111
 msgid "Max"
 msgstr ""
 
-#: ../plugins/getfocus.py:115
+#: ../plugins/getfocus.py:117
 msgid "Save"
 msgstr ""
 
@@ -147,164 +147,164 @@ msgstr "全ての配信元から検索..."
 msgid "Feed Updates"
 msgstr "配信元の更新"
 
-#: ../plugins/plugin-installer.py:54
+#: ../plugins/plugin-installer.py:55
 msgid "Plugins"
 msgstr "プラグイン"
 
-#: ../plugins/plugin-installer.py:69
+#: ../plugins/plugin-installer.py:72
 #, fuzzy
 msgid "Plugin Installer"
 msgstr "プラグイン"
 
-#: ../plugins/plugin-installer.py:83
+#: ../plugins/plugin-installer.py:86
 #, fuzzy
 msgid "Activate Plugins"
 msgstr "プラグイン"
 
-#: ../plugins/plugin-installer.py:84
+#: ../plugins/plugin-installer.py:87
 #, fuzzy
 msgid "Download Plugins"
 msgstr "使用するコマンド(_D):"
 
-#: ../plugins/plugin-installer.py:102
+#: ../plugins/plugin-installer.py:105
 #, python-format
 msgid "Bad fields for plugin entry %s"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:125
+#: ../plugins/plugin-installer.py:128
 msgid "All"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:125 ../glade/properties.ui.h:39
+#: ../plugins/plugin-installer.py:128 ../glade/properties.ui.h:39
 msgid "Advanced"
 msgstr "拡張"
 
-#: ../plugins/plugin-installer.py:125
+#: ../plugins/plugin-installer.py:128
 msgid "Menu"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:125
+#: ../plugins/plugin-installer.py:128
 #, fuzzy
 msgid "Notifications"
 msgstr "通知の設定"
 
-#: ../plugins/plugin-installer.py:133
+#: ../plugins/plugin-installer.py:136
 msgid "Filter by category"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:140
+#: ../plugins/plugin-installer.py:143
 msgid "_Install"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:144
+#: ../plugins/plugin-installer.py:147
 msgid "_Uninstall"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:245
+#: ../plugins/plugin-installer.py:248
 #, python-format
 msgid ""
 "Missing package manager '%s'. Cannot check nor install necessary "
 "dependencies!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:261
+#: ../plugins/plugin-installer.py:264
 #, python-format
 msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:268
+#: ../plugins/plugin-installer.py:271
 #, python-format
 msgid ""
 "Package installation failed (%s)! Check console output for further problem "
 "details!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:271
+#: ../plugins/plugin-installer.py:274
 #, python-format
 msgid "Failed to check plugin dependencies (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:280
+#: ../plugins/plugin-installer.py:283
 msgid "Command \"git\" not found, please install it!"
-msgstr ""
-
-#: ../plugins/plugin-installer.py:289
-#, python-format
-msgid "Copying %s to %s"
 msgstr ""
 
 #: ../plugins/plugin-installer.py:292
 #, python-format
+msgid "Copying %s to %s"
+msgstr ""
+
+#: ../plugins/plugin-installer.py:295
+#, python-format
 msgid "Failed to copy plugin directory (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:301
+#: ../plugins/plugin-installer.py:304
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:311
+#: ../plugins/plugin-installer.py:314
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:322
+#: ../plugins/plugin-installer.py:325
 #, fuzzy, python-format
 msgid "Creating schema directory %s"
 msgstr "キャッシュ・フォルダ \"%s\" を生成できません！"
 
-#: ../plugins/plugin-installer.py:324
+#: ../plugins/plugin-installer.py:327
 #, python-format
 msgid "Installing schema %s"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:328
+#: ../plugins/plugin-installer.py:331
 msgid "Compiling schemas..."
 msgstr ""
 
-#: ../plugins/plugin-installer.py:333
+#: ../plugins/plugin-installer.py:336
 #, python-format
 msgid "Failed to install schema files (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:343
+#: ../plugins/plugin-installer.py:346
 #, python-format
 msgid "Failed to enable plugin (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:349
+#: ../plugins/plugin-installer.py:352
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:363
+#: ../plugins/plugin-installer.py:366
 #, python-format
 msgid "Failed to disable plugin (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:370 ../plugins/plugin-installer.py:390
+#: ../plugins/plugin-installer.py:373 ../plugins/plugin-installer.py:393
 #, fuzzy, python-format
 msgid "Deleting '%s'"
 msgstr "エントリの削除"
 
-#: ../plugins/plugin-installer.py:373
+#: ../plugins/plugin-installer.py:376
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:383
+#: ../plugins/plugin-installer.py:386
 msgid "Failed to remove .py file!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:393
+#: ../plugins/plugin-installer.py:396
 msgid "Failed to remove .plugin file!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:402
+#: ../plugins/plugin-installer.py:405
 msgid "Sorry! Plugin removal failed!."
 msgstr ""
 
-#: ../plugins/plugin-installer.py:404
+#: ../plugins/plugin-installer.py:407
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
 msgstr ""
@@ -338,7 +338,7 @@ msgstr "起動中: \"%s\""
 msgid "Authorization Error"
 msgstr "認証エラー"
 
-#: ../src/common.c:66
+#: ../src/common.c:68
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "キャッシュ・フォルダ \"%s\" を生成できません！"
@@ -473,22 +473,22 @@ msgstr "新しい購読"
 msgid "Google Reader"
 msgstr "Google リーダ"
 
-#: ../src/fl_sources/node_source.c:334
+#: ../src/fl_sources/node_source.c:337
 msgid "No feed list source types found!"
 msgstr "配信元一覧のソースの種類が見つかりませんでした！"
 
-#: ../src/fl_sources/node_source.c:363
+#: ../src/fl_sources/node_source.c:366
 msgid "Source Type"
 msgstr "ソースの種類"
 
-#: ../src/fl_sources/node_source.c:414
+#: ../src/fl_sources/node_source.c:417
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:580
+#: ../src/fl_sources/node_source.c:583
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr ""
@@ -514,7 +514,7 @@ msgstr "新しい OPML の購読"
 msgid "Login failed!"
 msgstr "ログインに失敗しました！"
 
-#: ../src/fl_sources/reedah_source.c:313
+#: ../src/fl_sources/reedah_source.c:323
 msgid "Reedah"
 msgstr ""
 
@@ -522,7 +522,7 @@ msgstr ""
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "Reedah API が返した JSON を解析できませんでした！"
 
-#: ../src/fl_sources/theoldreader_source.c:311
+#: ../src/fl_sources/theoldreader_source.c:347
 msgid "TheOldReader"
 msgstr "TheOldReader"
 
@@ -556,11 +556,11 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Tiny Tiny RSS API が返した JSON を解析できませんでした！"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:395
+#: ../src/itemlist.c:407
 msgid "There are no unread items"
 msgstr "未読のトピックはありません"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:279
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
@@ -568,47 +568,47 @@ msgstr ""
 "指定した状態でメイン・ウィンドウを表示する (STATE: 'shown', "
 "'iconified','hidden')"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:279
 msgid "STATE"
 msgstr "STATE"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:280
 msgid "Show version information and exit"
 msgstr "バージョン情報を表示して終了する"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:281
 msgid "Add a new subscription"
 msgstr "新しい配信元を追加する"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:281
 msgid "uri"
 msgstr "uri"
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:282
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:287
 msgid "Print debugging messages of all types"
 msgstr "全ての種類のデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages for the cache handling"
 msgstr "キャッシュの操作に関するデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:289
 msgid "Print debugging messages for the configuration handling"
 msgstr "設定の処理に関するデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:290
 msgid "Print debugging messages of the database handling"
 msgstr "データベースの操作に関するデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:291
 msgid "Print debugging messages of all GUI functions"
 msgstr "GUI を扱う関数のデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:292
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -616,72 +616,72 @@ msgstr ""
 "HTML 描画機能のデバッグを有効にする (HTML 出力を行う度にその内容を ~/.cache/"
 "liferea/output.html にも書き込む)"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:293
 msgid "Print debugging messages of all network activity"
 msgstr "ネットワーク機能に関するデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:294
 msgid "Print debugging messages of all parsing functions"
 msgstr "全ての解析機能に関するデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:295
 msgid "Print debugging messages when a function takes too long to process"
 msgstr "任意の機能に時間がかかった時のデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:296
 msgid "Print debugging messages when entering/leaving functions"
 msgstr "関数の出入りに関するデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:297
 msgid "Print debugging messages of the feed update processing"
 msgstr "配信元の更新処理に関するデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:299
+#: ../src/liferea_application.c:298
 msgid "Print debugging messages of the search folder matching"
 msgstr "検索フォルダの処理に関するデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:300
+#: ../src/liferea_application.c:299
 msgid "Print verbose debugging messages"
 msgstr "詳細なデバッグ情報を出力する"
 
-#: ../src/liferea_application.c:305 ../src/liferea_application.c:306
+#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
 msgid "Print debugging messages for the given topic"
 msgstr "指定したトピックに関するデバッグ情報を出力する"
 
 #. Some libsoup transport errors
-#: ../src/net.c:437
+#: ../src/net.c:460
 msgid "The update request was cancelled"
 msgstr "更新要求をキャンセルしました"
 
-#: ../src/net.c:438
+#: ../src/net.c:461
 msgid "Unable to resolve destination host name"
 msgstr "ホスト名を解決できません"
 
-#: ../src/net.c:439
+#: ../src/net.c:462
 msgid "Unable to resolve proxy host name"
 msgstr "プロキシのホスト名を解決できません"
 
-#: ../src/net.c:440
+#: ../src/net.c:463
 msgid "Unable to connect to remote host"
 msgstr "リモートのホストに接続できません"
 
-#: ../src/net.c:441
+#: ../src/net.c:464
 msgid "Unable to connect to proxy"
 msgstr "プロキシに接続できません"
 
-#: ../src/net.c:442
+#: ../src/net.c:465
 msgid ""
 "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
 "algorithm. Check your operating system settings."
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:445
+#: ../src/net.c:468
 msgid "The resource moved permanently to a new location"
 msgstr "リソースの移動が完了しました"
 
 #. http 4xx client error
-#: ../src/net.c:448
+#: ../src/net.c:471
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -689,35 +689,35 @@ msgstr ""
 "この配信元をダウンロードするために必要な認証を実施していません。配信元のプロ"
 "パティ・ダイアログでユーザ名とパスワードを更新して下さい。"
 
-#: ../src/net.c:450
+#: ../src/net.c:473
 msgid "Payment required"
 msgstr "課金請求がありました"
 
-#: ../src/net.c:451
+#: ../src/net.c:474
 msgid "You're not allowed to access this resource"
 msgstr "このリソースにアクセスする権限がありません"
 
-#: ../src/net.c:452
+#: ../src/net.c:475
 msgid "Resource Not Found"
 msgstr "リソースが見つかりませんでした"
 
-#: ../src/net.c:453
+#: ../src/net.c:476
 msgid "Method Not Allowed"
 msgstr "メソッドを実行できません"
 
-#: ../src/net.c:454
+#: ../src/net.c:477
 msgid "Not Acceptable"
 msgstr "アクセスできません"
 
-#: ../src/net.c:455
+#: ../src/net.c:478
 msgid "Proxy authentication required"
 msgstr "プロキシによる認証が必要です"
 
-#: ../src/net.c:456
+#: ../src/net.c:479
 msgid "Request timed out"
 msgstr "要求がタイムアウトしました"
 
-#: ../src/net.c:457
+#: ../src/net.c:480
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -727,28 +727,52 @@ msgstr ""
 "この配信元は停止しているので、利用できません。今後 Liferea が更新することはあ"
 "りませんが、キャッシュに保存したヘッドラインにアクセスすることは可能です。"
 
-#: ../src/net.c:462
+#: ../src/net.c:485
 msgid "There was an internal error in the update process"
 msgstr "プロセスを更新する際に内部エラーが発生しました"
 
-#: ../src/net.c:464
+#: ../src/net.c:487
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "配信元を利用できません: サーバがサポートしないリダイレクションを要求しました"
 
-#: ../src/net.c:466
+#: ../src/net.c:489
 msgid "Client Error"
 msgstr "クライアントのエラー"
 
-#: ../src/net.c:468
+#: ../src/net.c:491
 msgid "Server Error"
 msgstr "サーバのエラー"
 
-#: ../src/net.c:470
+#: ../src/net.c:493
 msgid "An unknown networking error happened!"
 msgstr "原因不明のネットワーク・エラーが発生しました"
 
-#: ../src/parsers/atom10.c:239
+#: ../src/newsbin.c:136
+#, fuzzy
+msgid "News Bin Properties"
+msgstr "購読先のプロパティ"
+
+#: ../src/newsbin.c:140 ../glade/new_newsbin.ui.h:1
+msgid "Create News Bin"
+msgstr "NewsBin の作成"
+
+#: ../src/node.c:640
+#, c-format
+msgid "Failed to create feed file: %s"
+msgstr ""
+
+#: ../src/node.c:659
+#, fuzzy
+msgid "Feed file exported from Liferea"
+msgstr "配信元一覧をエキスポートしました！"
+
+#: ../src/node.c:674
+#, fuzzy, c-format
+msgid "Error while saving feed file"
+msgstr "配信元一覧のエキスポート時にエラーが発生しました！"
+
+#: ../src/parsers/atom10.c:240
 msgid "Website"
 msgstr "ウェブサイト"
 
@@ -889,7 +913,7 @@ msgstr "\"%s\" (%s) のユーザ名とパスワードを入力して下さい:"
 msgid "Unknown source"
 msgstr "配信元ソースが不明です"
 
-#: ../src/ui/browser_tabs.c:262
+#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:282
 msgid "Untitled"
 msgstr "タイトルなし"
 
@@ -935,74 +959,75 @@ msgstr "ファイルの選択"
 msgid "File Extension .%s"
 msgstr "拡張子 .%s"
 
-#: ../src/ui/feed_list_view.c:432
+#: ../src/ui/feed_list_view.c:436
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea はオフライン・モードです (更新はできません)"
 
-#: ../src/ui/feed_list_view.c:478
+#: ../src/ui/feed_list_view.c:482
 #, fuzzy
 msgid "all feeds"
 msgstr "全ての配信元から検索"
 
-#: ../src/ui/feed_list_view.c:479
+#: ../src/ui/feed_list_view.c:483
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "全て既読にする"
 
-#: ../src/ui/feed_list_view.c:483
+#: ../src/ui/feed_list_view.c:487
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "本当に \"%s\" を削除してもよろしいですか？"
 
-#: ../src/ui/feed_list_view.c:621
+#: ../src/ui/feed_list_view.c:625
 msgid "(Empty)"
 msgstr "(空)"
 
-#: ../src/ui/feed_list_view.c:832
+#: ../src/ui/feed_list_view.c:836
 #, c-format
 msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:901
+#: ../src/ui/feed_list_view.c:905
 msgid "Deleting entry"
 msgstr "エントリの削除"
 
-#: ../src/ui/feed_list_view.c:902
+#: ../src/ui/feed_list_view.c:906
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "本当に \"%s\" とその内容を削除してもよろしいですか？"
 
-#: ../src/ui/feed_list_view.c:902
+#: ../src/ui/feed_list_view.c:906
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "本当に \"%s\" を削除してもよろしいですか？"
 
-#: ../src/ui/feed_list_view.c:911 ../src/ui/feed_list_view.c:965
+#: ../src/ui/feed_list_view.c:915 ../src/ui/feed_list_view.c:969
+#: ../src/ui/popup_menu.c:260
 msgid "_Cancel"
 msgstr "キャンセル(_A)"
 
-#: ../src/ui/feed_list_view.c:912 ../src/ui/popup_menu.c:335
+#: ../src/ui/feed_list_view.c:916 ../src/ui/popup_menu.c:411
 msgid "_Delete"
 msgstr "削除(_D):"
 
-#: ../src/ui/feed_list_view.c:914
+#: ../src/ui/feed_list_view.c:918
 msgid "Deletion Confirmation"
 msgstr "削除の確認"
 
-#: ../src/ui/feed_list_view.c:953
+#: ../src/ui/feed_list_view.c:957
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:966
+#: ../src/ui/feed_list_view.c:970
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:968
+#: ../src/ui/feed_list_view.c:972
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "削除の確認"
@@ -1016,30 +1041,39 @@ msgstr "Pixmap ファイルが見つかりませんでした: %s"
 msgid "This item has no link specified!"
 msgstr "このトピックにはリンクが割り当てられていません！"
 
-#: ../src/ui/item_list_view.c:482
+#: ../src/ui/item_list_view.c:483
 msgid "*** No title ***"
 msgstr "*** タイトルなし ***"
 
-#: ../src/ui/item_list_view.c:486
+#: ../src/ui/item_list_view.c:487
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:849
+#: ../src/ui/item_list_view.c:853
 msgid "Headline"
 msgstr "ヘッドライン"
 
-#: ../src/ui/item_list_view.c:871
+#: ../src/ui/item_list_view.c:875
 msgid "Date"
 msgstr "日付"
 
-#: ../src/ui/item_list_view.c:1038
+#: ../src/ui/item_list_view.c:1042
 msgid "You must select a feed to delete its items!"
 msgstr "トピックを削除する配信元を選択して下さい！"
 
-#: ../src/ui/item_list_view.c:1054 ../src/ui/item_list_view.c:1132
-#: ../src/ui/item_list_view.c:1147
+#: ../src/ui/item_list_view.c:1058 ../src/ui/item_list_view.c:1136
+#: ../src/ui/item_list_view.c:1151
 msgid "No item has been selected"
 msgstr "トピックが選択されていません"
+
+#: ../src/ui/liferea_browser.c:449
+#, fuzzy
+msgid "Content download failed!"
+msgstr "ダウンロード・フォルダの選択"
+
+#: ../src/ui/liferea_browser.c:462
+msgid "Content extraction failed!"
+msgstr ""
 
 #: ../src/ui/liferea_shell.c:408
 #, c-format
@@ -1123,55 +1157,76 @@ msgstr "別名で保存..."
 msgid "Copy Link Location"
 msgstr "リンク先のアドレスのコピー"
 
-#: ../src/ui/popup_menu.c:280 ../glade/liferea_menu.ui.h:13
+#: ../src/ui/popup_menu.c:257
+msgid "Save items to file"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:262
+msgid "_Save"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:271
+msgid "RSS 2.0 files"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:277
+#, fuzzy
+msgid "All files"
+msgstr "全てのファイル"
+
+#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "更新(_U)"
 
-#: ../src/ui/popup_menu.c:282
+#: ../src/ui/popup_menu.c:355
 msgid "_Update Folder"
 msgstr "フォルダの更新(_U)"
 
-#: ../src/ui/popup_menu.c:292
+#: ../src/ui/popup_menu.c:365
 msgid "New _Subscription..."
 msgstr "新しい購読(_S)..."
 
-#: ../src/ui/popup_menu.c:295 ../glade/liferea_menu.ui.h:5
+#: ../src/ui/popup_menu.c:368 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "新しいフォルダ(_F)..."
 
-#: ../src/ui/popup_menu.c:298 ../glade/liferea_menu.ui.h:6
+#: ../src/ui/popup_menu.c:371 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "新しい検索フォルダ(_E)..."
 
-#: ../src/ui/popup_menu.c:299
+#: ../src/ui/popup_menu.c:372
 msgid "New S_ource..."
 msgstr "新しい場所(_O)..."
 
-#: ../src/ui/popup_menu.c:300 ../glade/liferea_menu.ui.h:8
+#: ../src/ui/popup_menu.c:373 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "新しい NewsBin(_N)..."
 
-#: ../src/ui/popup_menu.c:303
+#: ../src/ui/popup_menu.c:376
 msgid "_New"
 msgstr "新規(_N)"
 
-#: ../src/ui/popup_menu.c:312
+#: ../src/ui/popup_menu.c:385
 msgid "Sort Feeds"
 msgstr "配信元の並べ替え"
 
-#: ../src/ui/popup_menu.c:320
+#: ../src/ui/popup_menu.c:393
 msgid "_Mark All As Read"
 msgstr "全て既読にする(_M)"
 
-#: ../src/ui/popup_menu.c:327
+#: ../src/ui/popup_menu.c:395
+msgid "_Export Items To File"
+msgstr ""
+
+#: ../src/ui/popup_menu.c:403
 msgid "_Rebuild"
 msgstr "再構築(_R)"
 
-#: ../src/ui/popup_menu.c:336 ../glade/liferea_menu.ui.h:17
+#: ../src/ui/popup_menu.c:412 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "プロパティ(_P)"
 
-#: ../src/ui/popup_menu.c:343
+#: ../src/ui/popup_menu.c:419
 msgid "Convert To Local Subscriptions..."
 msgstr ""
 
@@ -1227,19 +1282,19 @@ msgstr "通常の表示"
 msgid "Wide View"
 msgstr "ワイド表示"
 
-#: ../src/ui/preferences_dialog.c:478
+#: ../src/ui/preferences_dialog.c:487
 msgid "Default Browser"
 msgstr "デフォルト・ブラウザ"
 
-#: ../src/ui/preferences_dialog.c:480
+#: ../src/ui/preferences_dialog.c:489
 msgid "Manual"
 msgstr "手動"
 
-#: ../src/ui/preferences_dialog.c:740
+#: ../src/ui/preferences_dialog.c:752
 msgid "Type"
 msgstr "種類"
 
-#: ../src/ui/preferences_dialog.c:743
+#: ../src/ui/preferences_dialog.c:755
 msgid "Program"
 msgstr "プログラム"
 
@@ -1263,29 +1318,29 @@ msgstr "この配信元ではデフォルトの更新間隔を設定してませ
 msgid "All Files"
 msgstr "全てのファイル"
 
-#: ../src/update.c:350
+#: ../src/update.c:370
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr ""
 "フィルターに使用する作業ファイル \"%s\" を開く際にエラーが発生しました！"
 
-#: ../src/update.c:372
+#: ../src/update.c:392
 #, c-format
 msgid "%s exited with status %d"
 msgstr "ステータス %2$d のトピック %1$s"
 
-#: ../src/update.c:378 ../src/update.c:379 ../src/update.c:493
+#: ../src/update.c:398 ../src/update.c:399 ../src/update.c:606
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "エラー: パイプ \"%s\" を開けませんでした"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:517
+#: ../src/update.c:638
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "エラー: ファイル \"%s\" を開けませんでした"
 
-#: ../src/update.c:523
+#: ../src/update.c:644
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "エラー: ファイル \"%s\" がありません"
@@ -1294,61 +1349,61 @@ msgstr "エラー: ファイル \"%s\" がありません"
 msgid "New Search Folder"
 msgstr "新しい検索フォルダ"
 
-#: ../src/webkit/liferea_web_view.c:177
+#: ../src/webkit/liferea_web_view.c:163
 msgid "Open Link In _Tab"
 msgstr "タブの中に開く(_T)"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:164
 msgid "Open Link In Browser"
 msgstr "ブラウザで開く"
 
-#: ../src/webkit/liferea_web_view.c:179
+#: ../src/webkit/liferea_web_view.c:165
 msgid "Open Link In External Browser"
 msgstr "外部ブラウザで開く"
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:171
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "%s のブックマークに追加(_B)"
 
-#: ../src/webkit/liferea_web_view.c:192
+#: ../src/webkit/liferea_web_view.c:178
 msgid "_Copy Link Location"
 msgstr "リンク先のコピー(_C)"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:181
 #, fuzzy
 msgid "_View Image"
 msgstr "画像を別名で保存(_A)"
 
-#: ../src/webkit/liferea_web_view.c:196
+#: ../src/webkit/liferea_web_view.c:182
 msgid "_Copy Image Location"
 msgstr "画像のリンク先のコピー(_C)"
 
-#: ../src/webkit/liferea_web_view.c:199
+#: ../src/webkit/liferea_web_view.c:185
 msgid "S_ave Link As"
 msgstr "リンクを別名で保存(_A)"
 
-#: ../src/webkit/liferea_web_view.c:202
+#: ../src/webkit/liferea_web_view.c:188
 msgid "S_ave Image As"
 msgstr "画像を別名で保存(_A)"
 
-#: ../src/webkit/liferea_web_view.c:209
+#: ../src/webkit/liferea_web_view.c:195
 msgid "_Subscribe..."
 msgstr "購読する(_S)..."
 
-#: ../src/webkit/liferea_web_view.c:213
+#: ../src/webkit/liferea_web_view.c:199
 msgid "_Copy"
 msgstr "コピー(_C):"
 
-#: ../src/webkit/liferea_web_view.c:219
+#: ../src/webkit/liferea_web_view.c:205
 msgid "_Increase Text Size"
 msgstr "文字を大きくする(_I)"
 
-#: ../src/webkit/liferea_web_view.c:220
+#: ../src/webkit/liferea_web_view.c:206
 msgid "_Decrease Text Size"
 msgstr "文字を小さくする(_D)"
 
-#: ../src/webkit/liferea_web_view.c:227
+#: ../src/webkit/liferea_web_view.c:213
 msgid "_Reader Mode"
 msgstr ""
 
@@ -1563,7 +1618,7 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:23
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:24
 msgid "Headlines"
 msgstr "ヘッドライン"
 
@@ -1588,13 +1643,14 @@ msgstr "新しいフォルダ"
 msgid "_Folder name:"
 msgstr "フォルダ名(_F):"
 
-#: ../glade/new_newsbin.ui.h:1
-msgid "Create News Bin"
-msgstr "NewsBin の作成"
-
 #: ../glade/new_newsbin.ui.h:2
 msgid "_News Bin Name:"
 msgstr "NewsBin の名前(_N):"
+
+#: ../glade/new_newsbin.ui.h:3
+#, fuzzy
+msgid "_Always show in Reduced Feed List"
+msgstr "既読の配信一覧を隠す(_R)"
 
 #: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
@@ -1759,176 +1815,180 @@ msgid "_Default View Mode:"
 msgstr "デフォルトの表示モード(_D):"
 
 #: ../glade/prefs.ui.h:21
+msgid "_Defer removing read items from folders and search folders."
+msgstr ""
+
+#: ../glade/prefs.ui.h:22
 msgid "Web Integration"
 msgstr "ウェブ・サービスとの統合"
 
-#: ../glade/prefs.ui.h:22
+#: ../glade/prefs.ui.h:23
 msgid "_Post Bookmarks to"
 msgstr "ブックマークの保存先(_P):"
 
-#: ../glade/prefs.ui.h:24
+#: ../glade/prefs.ui.h:25
 msgid "Internal Browser Settings"
 msgstr "内部ブラウザの設定"
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:26
 msgid "Open links in Liferea's _window."
 msgstr "リンクを Liferea のウィンドウ内で開く(_W)"
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:27
 msgid "_Never run external Javascript."
 msgstr ""
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:28
 msgid "_Enable browser plugins."
 msgstr "ブラウザのプラグインを使う(_E)"
 
-#: ../glade/prefs.ui.h:28
+#: ../glade/prefs.ui.h:29
 msgid "External Browser Settings"
 msgstr "外部ブラウザの設定"
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:30
 msgid "_Browser:"
 msgstr "ブラウザ(_B):"
 
-#: ../glade/prefs.ui.h:30
+#: ../glade/prefs.ui.h:31
 msgid "_Manual:"
 msgstr "手動(_M):"
 
-#: ../glade/prefs.ui.h:32
+#: ../glade/prefs.ui.h:33
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr "<small>(%s には URL が入ります)</small>"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:34
 msgid "Browser"
 msgstr "ブラウザ"
 
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:35
 msgid "Toolbar Settings"
 msgstr "ツールバーの設定"
 
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:36
 msgid "_Hide toolbar."
 msgstr "ツールバーを隠す(_H)"
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:37
 msgid "Toolbar _button labels:"
 msgstr "ツールバーのスタイル:"
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:38
 msgid "Other"
 msgstr ""
 
-#: ../glade/prefs.ui.h:38
+#: ../glade/prefs.ui.h:39
 msgid "Ask for confirmation when marking all items as read"
 msgstr ""
 
-#: ../glade/prefs.ui.h:39
+#: ../glade/prefs.ui.h:40
 msgid "Desktop"
 msgstr ""
 
-#: ../glade/prefs.ui.h:40
+#: ../glade/prefs.ui.h:41
 msgid "HTTP Proxy Server"
 msgstr "HTTP プロキシのサーバ"
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:42
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "自動検出する(_A)"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:43
 msgid "_No Proxy"
 msgstr "プロキシなし(_N)"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:44
 msgid "_Manual Setting:"
 msgstr "マニュアルで設定を行う(_M):"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Host:"
 msgstr "プロキシのホスト(_H):"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:46
 msgid "Proxy _Port:"
 msgstr "プロキシのポート番号(_P):"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:47
 msgid "Use Proxy Au_thentication"
 msgstr "プロキシの認証機能を使う(_U)"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:48
 msgid "Proxy _Username:"
 msgstr "ユーザ名(_U):"
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:49
 msgid "Proxy Pass_word:"
 msgstr "パスワード(_W):"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:50
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:51
 msgid "Proxy"
 msgstr "プロキシ"
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:52
 msgid "Privacy Settings"
 msgstr "プライバシーの設定"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:53
 msgid "Tell sites that I do _not want to be tracked."
 msgstr ""
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:54
 msgid "_Intelligent Tracking Prevention. "
 msgstr ""
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:55
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:56
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:57
 msgid "Use _Reader mode."
 msgstr ""
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:58
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr "プライバシー"
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:60
 msgid "Downloading Enclosures"
 msgstr "エンクロージャのダウンロード"
 
-#: ../glade/prefs.ui.h:60
+#: ../glade/prefs.ui.h:61
 msgid "_Download using"
 msgstr "使用するコマンド(_D):"
 
-#: ../glade/prefs.ui.h:62
+#: ../glade/prefs.ui.h:63
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:63
+#: ../glade/prefs.ui.h:64
 msgid "Opening Enclosures"
 msgstr "エンクロージャの開き方"
 
-#: ../glade/prefs.ui.h:64
+#: ../glade/prefs.ui.h:65
 msgid "Enclosures"
 msgstr "エンクロージャ"
 
@@ -2839,9 +2899,6 @@ msgstr "検索するフォルダ:"
 
 #~ msgid "Copy Item _URL to Clipboard"
 #~ msgstr "URL をクリップボードへコピーする(_U)"
-
-#~ msgid "Choose download directory"
-#~ msgstr "ダウンロード・フォルダの選択"
 
 #~ msgid "Liferea Sync %s@%s"
 #~ msgstr "Liferea 同期 %s@%s"

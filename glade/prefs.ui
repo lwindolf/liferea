@@ -548,7 +548,7 @@
                     </child>
                     <child>
                       <object class="GtkCheckButton" id="deferdeletebtn">
-                        <property name="label" translatable="yes">_Defer removing read items from Search Folder.</property>
+                        <property name="label" translatable="yes">_Defer removing read items from folders and search folders.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
