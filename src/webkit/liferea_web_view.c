@@ -276,7 +276,7 @@ on_popup_webinspector_activate (GSimpleAction *action, GVariant *parameter, gpoi
 }
 
 static void
-on_popup_toggle_reader_mode_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_popup_toggle_reader_mode_change_state (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	WebKitWebView *webview = WEBKIT_WEB_VIEW (user_data);
 	gboolean reader = g_variant_get_boolean (parameter);
@@ -292,7 +292,7 @@ static const GActionEntry liferea_web_view_gaction_entries[] = {
 	{"zoom-in", on_popup_zoomin_activate, NULL, NULL, NULL},
 	{"zoom-out", on_popup_zoomout_activate, NULL, NULL, NULL},
 	{"web-inspector", on_popup_webinspector_activate, NULL, NULL, NULL},
-	{"toggle-reader-mode", NULL, NULL, "true", on_popup_toggle_reader_mode_activate}
+	{"toggle-reader-mode", NULL, NULL, "true", on_popup_toggle_reader_mode_change_state}
 };
 
 static void
