@@ -48,6 +48,7 @@ function loadContent(readerEnabled, content) {
 			if(contentDiv !== null) {
 				console.log('[liferea] adding <div id="content"> for website content');
 				document.body.innerHTML += '<div id=\"content\"></div>';
+				contentDiv = document.getElementById('content');
 			}
 			
 			// Decide where we get the content from
@@ -78,7 +79,7 @@ function loadContent(readerEnabled, content) {
 				console.log('[liferea] reader mode not possible! fallback to unfiltered content');
 				// FIXME: distinguish for reader mode on headlines and reader mode on websites
 				// for latter bring up error and link to full website
-				document.documentElement.innerHTML = content;
+				contentDiv.innerHTML = content;
 				return;
 			}
 
