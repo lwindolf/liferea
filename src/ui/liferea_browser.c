@@ -446,7 +446,7 @@ liferea_browser_load_reader_content_cb (const struct updateResult * const result
 	gchar *html;
 	
 	if (!result->data) {
-		browser->content = g_uri_escape_string (_("Content download failed!"), NULL, TRUE);
+		browser->content = g_uri_escape_string (_("Content download failed! Try disabling reader mode."), NULL, TRUE);
 	} else {
 		// HTML5 content extraction
 		html = html_get_article (result->data, result->source);
@@ -459,7 +459,7 @@ liferea_browser_load_reader_content_cb (const struct updateResult * const result
 			browser->content = g_uri_escape_string (html, NULL, TRUE);
 			g_free (html);
 		} else {
-			browser->content = g_uri_escape_string(_("Content extraction failed!"), NULL, TRUE);
+			browser->content = g_uri_escape_string(_("Content extraction failed! Try disabling reader mode."), NULL, TRUE);
 		}
 	}
 		
