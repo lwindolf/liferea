@@ -1,3 +1,70 @@
+2022-04-05   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.13.8
+
+	* #1103: New hot key Ctrl-D for 'Open in External Browser' 
+	  (David Yang)
+
+	* #1101: Reader mode for internal browser: is now applied on prefetched HTML
+	  document instead of applying after normal rendering. Which means it
+	  is more secure and much faster. (Lars Windolf)
+
+	* #1097: Reader mode for internal browser: shows now standard decorations
+	  like in headline view. (Lars Windolf)
+
+	* #1095: New feature: Export items to feed file
+	  (Alexandre Erwin Ittner)
+	
+	* #1078, #1081, #1082: Make several plugins XDG path aware
+	  (Paweł Marciniak)
+
+	* #1071: Various fixes and feature enhancements for TheOldReader sources
+	  Sync titles, sync folder changes, fix removal consistency
+	  (Matthew Horan)
+
+	* #1061: Faster and safer generation of localized filenames
+	  (Lorenzo Ancora)
+
+	* #1052: Allow building with libpango < 1.43.0 (Ubuntu 18.04)
+	  (Alexandre Erwin Ittner)
+
+	* #778: New preference: deferred removal of read items from folders and
+	  search folders. (Rich Coe)
+
+	* Fixes #1094: Fix Next Unread Item crash when no feed selected
+	  (Matthew Horan)
+
+	* Fixes #1092: --debug-html seems broken
+	  (Matthew Horan)
+
+	* Fixes #1073: Memory leak in stylesheet reloading
+	  (Matthew Horan)
+	
+	* Fixes #1069: Don't update HTML view when browsing internally
+	  (Matthew Horan)
+	
+	* Fixes #1064: Fix strsep implicit declaration warning
+	  (Paweł Marciniak)
+	
+	* Fixes #1058: Italian manpage installation
+	  (Paweł Marciniak)
+
+	* Fixes #1053: Use liferea_shell_show_window() when activating
+	  This shold fix an issue where position is not restored on XOrg when
+	  Liferea is trigger from Cinnamon launcher (instead of tray)
+	  (Matthew Horan)
+	
+	* Fixes #1066: Browse to requested URI on JS window creation (this
+	  prevents loading empty tabs on weird JS links some sites/feeds have)
+	  (Matthew Horan)
+
+	* #1095: Updated of French translation
+	  (sblondon)
+
+	* #1043: Added Italian documentation translation
+	  (Lorenzo Ancora)
+
+
 2021-12-06   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.7
@@ -12,7 +79,7 @@
 	  (Lorenzo Ancora)
 	    
 	* #1037: Fix deprecation of g_time_zone_new
-	  (sunwire)
+	  (Paweł Marciniak)
 	
 	* #1027: Add option to show news bins in reduced feed list
 	  (Alexandre Erwin Ittner)
@@ -21,22 +88,22 @@
 	  (Alexandre Erwin Ittner)
 	
 	* #1018: Fix deprecation of pango_find_base_dir
-	  (sunwire)
+	  (Paweł Marciniak)
 
 	* #1017: Fix deprecation of g_memdup
-	  (sunwire)
+	  (Paweł Marciniak)
 	  
 	* #1016: Type casting to silence compiler warnings
-	  (sunwire)
+	  (Paweł Marciniak)
 
 	* #1014: Fixes some compiler warnings
-	  (sunwire)
+	  (Paweł Marciniak)
 	
 	* #947: Rework of Reader mode feature toggling: toggle is now a context
 	  menu toggle of the HTML view context menu.
 
 	* Fixes #1013: Certificate problems with some URLs
-	  (sunwire)
+	  (Paweł Marciniak)
 	  
 	* Fixes 1005: aria2 download manager triggered by wrong command
 	  (zorlaski)
@@ -86,7 +153,7 @@
 	  (Balázs Úr)
 
 	* Updated Polish translation
-	  (sunwire)
+	  (Paweł Marciniak)
 	  
 	* Updated Simplified Chinese translation
 	  (Sefler Zhou)
@@ -107,14 +174,14 @@
 
 	* #964: Added pane position fix plugin providing a workaround for pane position
 	  issues when using the headerbar
-	  (sunwire)
+	  (Paweł Marciniak)
 
 	* #983: Use GtkFileChooserNative to allow selecting local files when
 	  run in sandbox.
 	  (Leiaz)
 
 	* Fixes #780: Improve date formatting when in locale en_GB
-	  (sunwire)
+	  (Paweł Marciniak)
 
 	* Fixes #944: Broken RTL text direction in feed content view
 	  (Lars Windolf)
@@ -124,7 +191,7 @@
 	  (Lars Windolf)
 
 	* Fixes #963: Checking for git command in plugin installer -> warn user
-	  (sunwire)
+	  (Paweł Marciniak)
 
 	* Fixes #973: Broken CSS in Webkit2Gtk >= 2.32
 	  (Leiaz)
@@ -158,16 +225,16 @@
 
 	* Adds a new simple focus plugin that adds transparency on the feed list
 	  when it is not focussed.
-	  (sunwire)
+	  (Paweł Marciniak)
 
 	* Add F10 hotkey to headerbar plugin to allow triggering the hamburger menu
-	  (sunwire)
+	  (Paweł Marciniak)
 
 	* Update Flatpak AppData with release dates
 	  (Mikel Olasagasti)
 
 	* Make several plugins support gettext
-	  (sunwire)
+	  (Paweł Marciniak)
 
 	* Fixes #192: wrong button order of media player in RTL locales
 	  (patch by GreenLunar)
@@ -181,7 +248,7 @@
 	  (Lars Windolf)
 
 	* Updated Polish translation
-	  (sunwire)
+	  (Paweł Marciniak)
 
 	* Updated German translation
 	  (Lars Windolf)
@@ -236,7 +303,7 @@
 	  (reported by Leiaz)
 
 	* #902: Updated Polish translation
-	  (sunwire)
+	  (Paweł Marciniak)
 
 
 2020-10-09   Lars Windolf <lars.windolf@gmx.de>
