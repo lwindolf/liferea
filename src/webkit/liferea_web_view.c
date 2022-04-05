@@ -148,7 +148,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	image = (image_uri != NULL);
 
 	/* do not expose internal links */
-	if (link_uri && !g_str_has_prefix (link_uri, "javascript:") && !g_str_has_prefix (link_uri, "data:"))
+	if (!link_uri || g_str_has_prefix (link_uri, "javascript:") || g_str_has_prefix (link_uri, "data:"))
 		link = FALSE;
 
 	liferea_web_view_update_actions_sensitivity (LIFEREA_WEB_VIEW (view));
