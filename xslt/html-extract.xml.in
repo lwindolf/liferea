@@ -24,8 +24,8 @@
 
 <!-- Note: when testing this XSLT stylesheet with xsltproc please note
      that you have to replace the XPath expressions with the proper
-     namespace prefix. E.g. "ancestor::html:article" instead of
-     "ancestor::article". -->
+     namespace prefix. E.g. "ancestor::html:body" instead of
+     "ancestor::body". -->
 
 <xsl:stylesheet
 	version="1.0"
