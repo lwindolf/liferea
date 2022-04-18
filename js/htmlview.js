@@ -1,7 +1,7 @@
 /*
  * @file htmlview.c  htmlview reader mode switching and CSS handling
  *
- * Copyright (C) 2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,8 +27,12 @@
  * content being empty, while asynchronously downloading content. Once the
  * download finishes loadContent() is called again with the actual content
  * which is then inserted in the layout.
+ *
+ * @returns: false if loading with reader failed (true otherwise)
  */
 function loadContent(readerEnabled, content) {
+	var internalBrowsing = false;
+
 	if (false == readerEnabled) {
 		if (document.location.href === 'liferea://') {
 			console.log('[liferea] reader mode is off');
@@ -40,15 +44,14 @@ function loadContent(readerEnabled, content) {
 	if (true == readerEnabled) {
 		try {
 			console.log('[liferea] reader mode is on');
-			var contentDiv = document.getElementById('content');
 			var documentClone = document.cloneNode(true);
 
 			// When we are internally browsing than we need basic
 			// structure to insert Reader mode content
-			if(contentDiv !== null) {
+			if(document.getElementById('content') !== null) {
+				internalBrowsing = true;
 				console.log('[liferea] adding <div id="content"> for website content');
 				document.body.innerHTML += '<div id=\"content\"></div>';
-				contentDiv = document.getElementById('content');
 			}
 			
 			// Decide where we get the content from
@@ -77,10 +80,11 @@ function loadContent(readerEnabled, content) {
 
 			if (!isProbablyReaderable(documentClone)) {
 				console.log('[liferea] reader mode not possible! fallback to unfiltered content');
-				// FIXME: distinguish for reader mode on headlines and reader mode on websites
-				// for latter bring up error and link to full website
-				contentDiv.innerHTML = content;
-				return;
+				if(internalBrowsing)
+					document.getElementById('content').innerHTML = "Reader mode not possible. Loading URL unfiltered...";	// FIXME: provide good error info
+				else
+					document.documentElement.innerHTML = content;
+				return false;
 			}
 
 			// Show the results
@@ -101,7 +105,15 @@ function loadContent(readerEnabled, content) {
 			}
 		} catch(e) {
 			console.log('[liferea] reader mode failed: '+e);
-			document.documentElement.innerHTML = content;
+			if(!internalBrowsing) {
+				// Force load original document at top level to get rid of all decoration
+				document.documentElement.innerHTML = content;
+			} else {
+				document.getElementById('content').innerHTML = "Reader mode failed. Loading URL unfiltered...";
+				return false;
+			}
 		}
 	}
+
+	return true;
 }

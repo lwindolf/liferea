@@ -403,6 +403,40 @@ liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location
 	g_signal_emit_by_name (browser, "location-changed", location);
 }
 
+/*
+ * Loading callback to check wether a loading error happened. If yes and reader was
+ * on try loading without reader mode.
+ */
+static void
+liferea_browser_load_finished_cb (GObject *object, GAsyncResult *result, gpointer user_data)
+{
+	WebKitJavascriptResult *js_result;
+	JSCValue               *value;
+	GError                 *error = NULL;
+
+	js_result = webkit_web_view_run_javascript_finish (WEBKIT_WEB_VIEW (object), result, &error);
+	if (!js_result) {
+		debug1 (DEBUG_HTML, "Error running javascript: %s", error->message);
+		g_error_free (error);
+		return;
+	}
+
+	value = webkit_javascript_result_get_js_value (js_result);
+	if (jsc_value_is_boolean (value)) {
+		LifereaBrowser *browser = LIFEREA_BROWSER (user_data);
+		gboolean result = jsc_value_to_boolean (value);
+
+		if (!result && browser->readerMode && browser->url) {
+			debug0 (DEBUG_HTML, "loadContent() reader mode fail -> reloading without reader");
+			browser->readerMode = FALSE;
+			liferea_browser_launch_URL_internal (browser, browser->url);
+		}
+	} else {
+		g_warning ("Error running javascript: unexpected return value");
+	}
+	webkit_javascript_result_unref (js_result);
+}
+
 void
 liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 {
@@ -433,7 +467,8 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 			(gchar *)g_bytes_get_data (b2, NULL),
 			(gchar *)g_bytes_get_data (b3, NULL),
 			(browser->readerMode?"true":"false"),
-			browser->content != NULL ? browser->content : "")
+			browser->content != NULL ? browser->content : ""),
+			liferea_browser_load_finished_cb
 		);
 	}
 }
@@ -466,7 +501,8 @@ liferea_browser_load_reader_content_cb (const struct updateResult * const result
 	// FIXME: error handling
 	liferea_webkit_run_js (browser->renderWidget,
 	                       g_strdup_printf ("loadContent(true, '<body>%s</body>');\n",
-	                                        browser->content));
+	                                        browser->content),
+	                       liferea_browser_load_finished_cb);
 }
 
 static void
