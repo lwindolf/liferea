@@ -88,7 +88,9 @@ function loadContent(readerEnabled, content) {
 			}
 
 			// Show the results
-			var article = new Readability(documentClone).parse();
+			var article = new Readability(documentClone, {
+				charThreshold: 25
+			}).parse();
 			if (article)
 				document.getElementById('content').innerHTML = article.content;
 
