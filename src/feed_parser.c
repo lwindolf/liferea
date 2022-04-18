@@ -174,6 +174,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 {
 	xmlNodePtr	xmlNode = NULL, htmlNode = NULL;
 	xmlDocPtr	xmlDoc, htmlDoc;
+	GSList		*handlerIter;
 	gboolean	autoDiscovery = FALSE, success = FALSE;
 
 	debug_enter ("feed_parse");
@@ -212,7 +213,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 		}
 	} while (0);
 
-	/* 2.) Prepare data as XHTML */
+	/* 2.) also prepare data as XHTML */
 	do {
 		if (NULL == (htmlDoc = xhtml_parse (ctxt->data, ctxt->dataLength)))
 			break;
@@ -223,24 +224,23 @@ feed_parse (feedParserCtxtPtr ctxt)
 		}
 	} while (0);
 
-	/* determine the syndication format and start parser with either XML or XHTML doc */
-	GSList *handlerIter = feed_parsers_get_list ();
+	/* 3.) try all XML parsers (this are all syndication format parsers) */
+	handlerIter = feed_parsers_get_list ();
 	while (handlerIter) {
 		feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
-		xmlNodePtr node = handler->html?htmlNode:xmlNode;
 
-		if (node && handler && handler->checkFormat && (*(handler->checkFormat))(node->doc, node)) {
+		if (xmlNode && handler && handler->checkFormat && !handler->html && (*(handler->checkFormat))(xmlDoc, xmlNode)) {
 			ctxt->feed->fhp = handler;
 			feed_parser_ctxt_cleanup (ctxt);
-			(*(handler->feedParser)) (ctxt, handler->html?htmlNode:xmlNode);
+			(*(handler->feedParser)) (ctxt, xmlNode);
 			success = TRUE;
 			break;
 		}
 		handlerIter = handlerIter->next;
 	}
 
-	/* 3.) None of the feed formats did work, chance is high that we are
-	       working on a HTML documents. Let's look for feed links inside it! */
+	/* 4.) None of the feed formats did work, chance is high that we are
+	       working on an HTML document. Let's look for feed links inside it! */
 	if (!success) {
 		ctxt->subscription->autoDiscoveryTries++;
 		if (ctxt->subscription->autoDiscoveryTries > AUTO_DISCOVERY_MAX_REDIRECTS) {
@@ -250,12 +250,28 @@ feed_parse (feedParserCtxtPtr ctxt)
 		}
 	}
 
+	/* 5.) try all HTML parsers (these are all HTML based content extractors), note how those MUST
+	       be run after auto-discovery to not take precedence over not-yet discovered feed links */
+	handlerIter = feed_parsers_get_list ();
+	while (handlerIter) {
+		feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
+
+		if (htmlNode && handler && handler->checkFormat && handler->html && (*(handler->checkFormat))(htmlDoc, htmlNode)) {
+			ctxt->feed->fhp = handler;
+			feed_parser_ctxt_cleanup (ctxt);
+			(*(handler->feedParser)) (ctxt, htmlNode);
+			success = TRUE;
+			break;
+		}
+		handlerIter = handlerIter->next;
+	}
+
 	if (htmlDoc)
 		xmlFreeDoc (htmlDoc);
 	if (xmlDoc)
 		xmlFreeDoc (xmlDoc);
 
-	/* 4.) Update subscription error status */
+	/* 6.) Update subscription error status */
 	if (!success && !autoDiscovery) {
 		/* Fuzzy test for HTML document */
 		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
