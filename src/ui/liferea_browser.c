@@ -457,8 +457,6 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 		g_assert(b2 != NULL);
 		g_assert(b3 != NULL);
 
-		// FIXME: pass actual content here too, instead of on render_item()!
-		// this saves us from the trouble to have JS enabled earlier!
 		debug1 (DEBUG_GUI, "Enabling reader mode for '%s'", location);
 		liferea_webkit_run_js (
 			browser->renderWidget,
@@ -498,7 +496,6 @@ liferea_browser_load_reader_content_cb (const struct updateResult * const result
 		}
 	}
 		
-	// FIXME: error handling
 	liferea_webkit_run_js (browser->renderWidget,
 	                       g_strdup_printf ("loadContent(true, '<body>%s</body>');\n",
 	                                        browser->content),
