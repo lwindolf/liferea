@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-03-30 23:48+0200\n"
-"PO-Revision-Date: 2022-03-30 23:55+0200\n"
+"PO-Revision-Date: 2022-04-21 20:56+0200\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: ../net.sourceforge.liferea.appdata.xml.in.h:1
 msgid "RSS feed reader"
@@ -2169,7 +2169,7 @@ msgstr "Alle Regeln des Suchordners"
 
 #: ../glade/search_folder.ui.h:6
 msgid "Rule Matching"
-msgstr "Ei_ne Regel trifft zu"
+msgstr "Regelanwendung"
 
 #: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
 msgid "A_ny Rule Matches"
@@ -2463,8 +2463,8 @@ msgstr "Suchordner:"
 #~ "></b>"
 #~ msgstr ""
 #~ "Das letzte Aktualisieren dieses Abonnements schlug fehl!<br/><b>HTTP-"
-#~ "Fehlercode <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
-#~ "\"httpError\"/></b>"
+#~ "Fehlercode <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+#~ "select=\"httpError\"/></b>"
 
 #~ msgid "Parser Error Details"
 #~ msgstr "Detaillierte Parser-Fehler"
