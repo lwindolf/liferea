@@ -53,7 +53,7 @@ function loadContent(readerEnabled, content) {
 				console.log('[liferea] adding <div id="content"> for website content');
 				document.body.innerHTML += '<div id=\"content\"></div>';
 			}
-			
+
 			// Decide where we get the content from
 			if(document.location.href === 'liferea://') {
 				// Add all content in shadow DOM and split decoration from content
@@ -67,10 +67,10 @@ function loadContent(readerEnabled, content) {
 
 			// Add content to clone doc as input for Readability.js
 			documentClone.body.innerHTML = content;
-			
+
 			// When we run with internal URI schema we get layout AND content
 			// from variable and split it, apply layout to document
-			// and copy content to documentClone 
+			// and copy content to documentClone
 			if(document.location.href === 'liferea://' && documentClone.getElementById('content') != null) {
 				documentClone.getElementById('content').innerHTML = '';
 				document.body.innerHTML = documentClone.body.innerHTML;
@@ -78,32 +78,37 @@ function loadContent(readerEnabled, content) {
 				documentClone.body.innerHTML = documentClone.getElementById('content').innerHTML;
 			}
 
-			if (!isProbablyReaderable(documentClone)) {
-				console.log('[liferea] reader mode not possible! fallback to unfiltered content');
+			try {
+				if (!isProbablyReaderable(documentClone))
+					throw "notreaderable";
+
+				// Show the results
+				var article = new Readability(documentClone, {
+					charThreshold: 25
+				}).parse();
+
+				if (!article)
+					throw "noarticle";
+
+				document.getElementById('content').innerHTML = article.content;
+
+			} catch(e) {
+				console.log('[liferea] reader mode not possible ('+e+')! fallback to unfiltered content');
 				if(internalBrowsing)
 					document.getElementById('content').innerHTML = "Reader mode not possible. Loading URL unfiltered...";	// FIXME: provide good error info
 				else
-					document.documentElement.innerHTML = content;
+					document.body.innerHTML = content;
 				return false;
 			}
 
-			// Show the results
-			var article = new Readability(documentClone, {
-				charThreshold: 25
-			}).parse();
-			if (article)
-				document.getElementById('content').innerHTML = article.content;
-
-			if(document.location.href !== 'liferea://') {
-				// Kill all foreign styles
-				var links = document.querySelectorAll('link');
-				for (var l of links) {
-					l.parentNode.removeChild(l);
-				}
-				var styles = document.querySelectorAll('style');
-				for (var s of styles) {
-					s.parentNode.removeChild(s);
-				}
+			// Kill all foreign styles
+			var links = document.querySelectorAll('link');
+			for (var l of links) {
+				l.parentNode.removeChild(l);
+			}
+			var styles = document.querySelectorAll('style');
+			for (var s of styles) {
+				s.parentNode.removeChild(s);
 			}
 		} catch(e) {
 			console.log('[liferea] reader mode failed: '+e);
