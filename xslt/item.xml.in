@@ -276,9 +276,11 @@
     <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
       <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
     </xsl:if>
-    <!-- optional MediaRSS thumbnail -->
-    <xsl:if test="attributes/attribute[ @name = 'mediathumbnail' ]">
-      <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
+    <!-- add optional MediaRSS thumbnail (only if no image is in content, as it is often duplicated, e.g. on HTML5 fetch) -->
+    <xsl:if test="not(contains(description,'&lt;img') or contains(description,'&lt;IMG'))">
+      <xsl:if test="attributes/attribute[ @name = 'mediathumbnail' ]">
+        <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
+      </xsl:if>
     </xsl:if>
     <!-- optional MediaRSS YouTube links-->
     <xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>
