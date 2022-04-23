@@ -103,28 +103,26 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 		   	continue;
 		}
 
-		/* just for the case there are no ids: compare titles and HTML descriptions */
 		equal = TRUE;
 
-		if (((item_get_title (oldItem) != NULL) && (item_get_title (newItem) != NULL)) &&
-		     (0 != strcmp (item_get_title (oldItem), item_get_title (newItem)))) {
-	    		equal = FALSE;
-			reason |= 1;
-		}
+		if (!item_get_id (oldItem)) {
+			/* just for the case there are no ids: compare titles and HTML descriptions */
+			if (((item_get_title (oldItem) != NULL) && (item_get_title (newItem) != NULL)) &&
+			     (0 != strcmp (item_get_title (oldItem), item_get_title (newItem)))) {
+		    		equal = FALSE;
+				reason |= 1;
+			}
 
-		if (((item_get_description (oldItem) != NULL) && (item_get_description (newItem) != NULL)) &&
-		     (0 != strcmp (item_get_description(oldItem), item_get_description (newItem)))) {
-	    		equal = FALSE;
-			reason |= 2;
-		}
-
-		/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
-		if (item_get_id (oldItem)) {
+			if (((item_get_description (oldItem) != NULL) && (item_get_description (newItem) != NULL)) &&
+			     (0 != strcmp (item_get_description(oldItem), item_get_description (newItem)))) {
+		    		equal = FALSE;
+				reason |= 2;
+			}
+		} else {
+			/* best case: they both have ids (position important: id check is useless without knowing if the items are different!) */
 			if (0 == strcmp (item_get_id (oldItem), item_get_id (newItem))) {
-				found = TRUE;
-
 				if (allowStateChanges) {
-					/* found corresponding item, check if they are REALLY equal (eg, read status may have changed) */
+					/* found corresponding item, check if they are REALLY equal (e.g. read status may have changed) */
 					if(oldItem->readStatus != newItem->readStatus) {
 						equal = FALSE;
 						reason |= 4;
@@ -134,6 +132,8 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 						reason |= 8;
 					}
 				}
+
+				found = TRUE;
 				break;
 			} else {
 				/* different ids, but the content might be still equal (e.g. empty)
