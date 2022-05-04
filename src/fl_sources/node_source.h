@@ -1,7 +1,7 @@
 /*
  * @file node_source.h  generic node source interface
  *
- * Copyright (C) 2005-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,7 +97,6 @@ typedef struct nodeSourceType {
 	const gchar	*id;		/*<< a unique feed list source type identifier */
 	const gchar	*name;		/*<< a descriptive source name (for preferences and menus) */
 	gulong		capabilities;	/*<< bitmask of feed list source capabilities */
-	googleReaderApi	api;		/*<< OPTIONAL endpoint definitions for Google Reader like JSON API */
 
 	/* The subscription type for all child nodes that are subscriptions */
 	subscriptionTypePtr	feedSubscriptionType;
@@ -233,6 +232,8 @@ typedef struct nodeSource {
 
 	gchar			*authToken;	/*<< The authorization token */
 	gint			authFailures;	/*<< Number of authentication failures */
+	
+	googleReaderApi		api;		/*<< OPTIONAL endpoint definitions for Google Reader like JSON API, to be set during source_new() */
 } *nodeSourcePtr;
 
 /* Use this to cast the node source type from a node structure. */

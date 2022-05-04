@@ -38,6 +38,8 @@ src/fl_sources/dummy_source.c
 src/fl_sources/dummy_source.h
 src/fl_sources/google_source.c
 src/fl_sources/google_source.h
+src/fl_sources/google_source_opml.c
+src/fl_sources/google_source_opml.h
 src/fl_sources/node_source.c
 src/fl_sources/node_source.h
 src/fl_sources/opml_source.c
@@ -177,6 +179,7 @@ src/xml.h
 [type: gettext/glade]glade/about.ui
 [type: gettext/glade]glade/auth.ui
 [type: gettext/glade]glade/enclosure_handler.ui
+[type: gettext/glade]glade/google_source.ui
 [type: gettext/glade]glade/liferea_menu.ui
 [type: gettext/glade]glade/liferea_toolbar.ui
 [type: gettext/glade]glade/mainwindow.ui

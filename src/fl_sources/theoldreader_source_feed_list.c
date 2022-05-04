@@ -216,7 +216,7 @@ theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr su
 	}
 	debug1 (DEBUG_UPDATE, "updating TheOldReader subscription (node id %s)", node->id);
 
-	update_request_set_source (request, node->source->type->api.subscription_list);
+	update_request_set_source (request, node->source->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);
 
 	return TRUE;

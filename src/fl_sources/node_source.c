@@ -84,24 +84,6 @@ node_source_type_register (nodeSourceTypePtr type)
 	/* allow the plugin to initialize */
 	type->source_type_init ();
 
-	/* Check if Google reader clones provide all API methods */
-	if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API) {
-		g_assert (type->api.unread_count);
-		g_assert (type->api.subscription_list);
-		g_assert (type->api.add_subscription);
-		g_assert (type->api.add_subscription_post);
-		g_assert (type->api.remove_subscription);
-		g_assert (type->api.remove_subscription_post);
-		g_assert (type->api.edit_label);
-		g_assert (type->api.edit_add_label_post);
-		g_assert (type->api.edit_remove_label_post);
-		g_assert (type->api.edit_tag);
-		g_assert (type->api.edit_tag_add_post);
-		g_assert (type->api.edit_tag_remove_post);
-		g_assert (type->api.edit_tag_ar_tag_post);
-		g_assert (type->api.token);
-	}
-
 	nodeSourceTypes = g_slist_append (nodeSourceTypes, type);
 
 	return TRUE;
@@ -204,6 +186,24 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		if (!strcmp ((gchar *)typeStr, "fl_bloglines")) {
 			g_print ("Removing obsolete Bloglines subscription.");
 			feedlist_node_removed (node);
+		}
+		
+		/* Check if Google reader clones provide all API methods */
+		if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API) {
+			g_assert (node->source->api.unread_count);
+			g_assert (node->source->api.subscription_list);
+			g_assert (node->source->api.add_subscription);
+			g_assert (node->source->api.add_subscription_post);
+			g_assert (node->source->api.remove_subscription);
+			g_assert (node->source->api.remove_subscription_post);
+			g_assert (node->source->api.edit_label);
+			g_assert (node->source->api.edit_add_label_post);
+			g_assert (node->source->api.edit_remove_label_post);
+			g_assert (node->source->api.edit_tag);
+			g_assert (node->source->api.edit_tag_add_post);
+			g_assert (node->source->api.edit_tag_remove_post);
+			g_assert (node->source->api.edit_tag_ar_tag_post);
+			g_assert (node->source->api.token);
 		}
 	} else {
 		g_print ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));

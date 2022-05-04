@@ -1,7 +1,7 @@
 /**
  * @file google_reader_api.h  Interface for implementing the Google Reader API
  * 
- * Copyright (C) 2014-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2014-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,23 +29,25 @@
 #define GOOGLE_READER_TAG_STARRED              "user/-/state/com.google/starred"
 
 typedef struct googleReaderApi {
-	gboolean	json;	/**< Returns mostly JSON */
-
+	gboolean	json;	/**< Returns mostly JSON (i.e. TheOldReader) */
+	
 	/** Endpoint definitions */
-	const char	*unread_count;
-	const char	*subscription_list;
-	const char	*add_subscription;
-	const char	*add_subscription_post;
-	const char	*remove_subscription;
-	const char	*remove_subscription_post;
-	const char	*edit_tag;
-	const char	*edit_tag_add_post;
-	const char	*edit_tag_ar_tag_post;
-	const char	*edit_tag_remove_post;
-	const char	*edit_label;
-	const char	*edit_add_label_post;
-	const char	*edit_remove_label_post;
-	const char	*token;
+	const gchar	*login;			/**< for now optional */
+	const gchar	*login_post;		/**< for now optional */
+	const gchar	*unread_count;
+	const gchar	*subscription_list;
+	const gchar	*add_subscription;
+	const gchar	*add_subscription_post;
+	const gchar	*remove_subscription;
+	const gchar	*remove_subscription_post;
+	const gchar	*edit_tag;
+	const gchar	*edit_tag_add_post;
+	const gchar	*edit_tag_ar_tag_post;
+	const gchar	*edit_tag_remove_post;
+	const gchar	*edit_label;
+	const gchar	*edit_add_label_post;
+	const gchar	*edit_remove_label_post;
+	const gchar	*token;
 	/* when extending this list add assertions in node_source_type_register! */
 } googleReaderApi;
 

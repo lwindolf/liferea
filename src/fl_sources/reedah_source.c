@@ -185,6 +185,8 @@ reedah_source_init (void)
 
 static void reedah_source_deinit (void) { }
 
+#define BASE_URL "http://www.reedah.com/reader/api/0/"
+
 static void
 reedah_source_import (nodePtr node)
 {
@@ -194,6 +196,21 @@ reedah_source_import (nodePtr node)
 	node->subscription->type = node->source->type->sourceSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) reedah_source_new (node);
+
+	node->source->api.subscription_list		= g_strdup_printf ("%s/subscription/list", BASE_URL);
+	node->source->api.unread_count			= g_strdup_printf ("%s/unread-count?all=true&client=liferea", BASE_URL);
+	node->source->api.token				= g_strdup_printf ("%s/token", BASE_URL);
+	node->source->api.add_subscription		= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
+	node->source->api.add_subscription_post		= g_strdup ("s=feed%%2F%s&i=null&ac=subscribe&T=%s");
+	node->source->api.remove_subscription		= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
+	node->source->api.remove_subscription_post	= g_strdup ("s=%s&i=null&ac=unsubscribe&T=%s");
+	node->source->api.edit_tag			= g_strdup_printf ("%s/edit-tag?client=liferea", BASE_URL);
+	node->source->api.edit_tag_add_post		= g_strdup ("i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true");
+	node->source->api.edit_tag_remove_post		= g_strdup ("i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true");
+	node->source->api.edit_tag_ar_tag_post		= g_strdup ("i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true");
+	node->source->api.edit_label			= g_strdup_printf("%s/subscription/edit?client=liferea", BASE_URL);
+	node->source->api.edit_add_label_post		= g_strdup ("s=%s&a=%s&ac=edit&T=%s&async=true");
+	node->source->api.edit_remove_label_post	= g_strdup ("s=%s&r=%s&ac=edit&T=%s&async=true");
 }
 
 static nodePtr
@@ -316,8 +333,6 @@ reedah_source_convert_to_local (nodePtr node)
 extern struct subscriptionType reedahSourceFeedSubscriptionType;
 extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 
-#define BASE_URL "http://www.reedah.com/reader/api/0/"
-
 static struct nodeSourceType nst = {
 	.id                  = "fl_reedah",
 	.name                = N_("Reedah"),
@@ -328,20 +343,6 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
 	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
-	.api.subscription_list		= BASE_URL "subscription/list",
-	.api.unread_count		= BASE_URL "unread-count?all=true&client=liferea",
-	.api.token			= BASE_URL "token",
-	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
-	.api.add_subscription_post	= "s=feed%%2F%s&i=null&ac=subscribe&T=%s",
-	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
-	.api.remove_subscription_post	= "s=%s&i=null&ac=unsubscribe&T=%s",
-	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
-	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
-	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
-	.api.edit_tag_ar_tag_post	= "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true",
-	.api.edit_label			= BASE_URL "subscription/edit?client=liferea",
-	.api.edit_add_label_post	= "s=%s&a=%s&ac=edit&T=%s&async=true",
-	.api.edit_remove_label_post	= "s=%s&r=%s&ac=edit&T=%s&async=true",
 	.feedSubscriptionType = &reedahSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &reedahSourceOpmlSubscriptionType,
 	.source_type_init    = reedah_source_init,
