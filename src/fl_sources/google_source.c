@@ -57,148 +57,6 @@ google_source_new (nodePtr node)
 	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	source->folderToCategory = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	
-	return source;
-}
-
-static void
-google_source_free (GoogleSourcePtr gsource) 
-{
-	if (!gsource)
-		return;
-
-	update_job_cancel_by_owner (gsource);
-	
-	g_queue_free (gsource->actionQueue) ;
-	g_hash_table_unref (gsource->lastTimestampMap);
-	g_hash_table_destroy (gsource->folderToCategory);
-	g_free (gsource);
-}
-
-static void
-google_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
-{
-	nodePtr		node = (nodePtr) userdata;
-	gchar		*tmp = NULL;
-	subscriptionPtr subscription = node->subscription;
-		
-	debug1 (DEBUG_UPDATE, "google login processing... %s", result->data);
-	
-	if (result->data && result->httpstatus == 200)
-		tmp = strstr (result->data, "Auth=");
-		
-	if (tmp) {
-		gchar *ttmp = tmp; 
-		tmp = strchr (tmp, '\n');
-		if (tmp)
-			*tmp = '\0';
-		node_source_set_auth_token (node, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
-
-		/* now that we are authenticated trigger updating to start data retrieval */
-		if (!(flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN))
-			subscription_update (subscription, flags);
-
-		/* process any edits waiting in queue */
-		google_reader_api_edit_process (node->source);
-
-	} else {
-		debug0 (DEBUG_UPDATE, "google reader login failed! no Auth token found in result!");
-		subscription->node->available = FALSE;
-
-		g_free (subscription->updateError);
-		subscription->updateError = g_strdup (_("Login failed!"));
-		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
-		
-		auth_dialog_new (subscription, flags);
-	}
-}
-
-/**
- * Perform a login to Google Reader, if the login completes the 
- * GoogleSource will have a valid Auth token and will have loginStatus to 
- * GOOGLE_SOURCE_LOGIN_ACTIVE.
- */
-void
-google_source_login (GoogleSourcePtr source, guint32 flags) 
-{ 
-	gchar			*username, *password;
-	UpdateRequest		*request;
-	subscriptionPtr		subscription = source->root->subscription;
-	
-	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
-		/* this should not happen, as of now, we assume the session
-		 * doesn't expire. */
-		debug1 (DEBUG_UPDATE, "Logging in while login state is %d\n", source->root->source->loginState);
-	}
-
-	request = update_request_new (
-		source->root->source->api.login,
-		subscription->updateState,
-		NULL	// auth is done via POST below!
-	);
-
-	/* escape user and password as both are passed using an URI */
-	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
-	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
-
-	request->postdata = g_strdup_printf (source->root->source->api.login_post, username, password);
-	request->options = update_options_copy (subscription->updateOptions);
-	
-	g_free (username);
-	g_free (password);
-	
-	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
-
-	update_execute_request (source, request, google_source_login_cb, source->root, flags | FEED_REQ_NO_FEED);
-}
-
-/* node source type implementation */
-
-static void
-google_source_auto_update (nodePtr node)
-{
-	guint64	now;
-	GoogleSourcePtr source = (GoogleSourcePtr) node->data;
-
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		node_source_update (node);
-		return;
-	}
-
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE)
-		return; /* the update will start automatically anyway */
-
-	now = g_get_real_time();
-	
-	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll + GOOGLE_SOURCE_UPDATE_INTERVAL <= now) {
-		subscription_update (node->subscription, 0);
-		source->lastQuickUpdate = g_get_real_time();
-	}
-	else if (source->lastQuickUpdate + GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL <= now) {
-		google_source_opml_quick_update (source);
-		google_reader_api_edit_process (node->source);
-		source->lastQuickUpdate = g_get_real_time();
-	}
-}
-
-static void
-google_source_init (void)
-{
-	metadata_type_register ("GoogleBroadcastOrigFeed", METADATA_TYPE_URL);
-	metadata_type_register ("sharedby", METADATA_TYPE_TEXT);
-}
-
-static void google_source_deinit (void) { }
-
-static void
-google_source_import (nodePtr node)
-{
-	opml_source_import (node);
-	
-	node->subscription->type = &googleSourceOpmlSubscriptionType;
-	if (!node->data)
-		node->data = (gpointer) google_source_new (node);
-
 	/**
 	 * Google Source API URL's
 	 * In each of the following, the _URL indicates the URL to use, and _POST
@@ -283,6 +141,148 @@ google_source_import (nodePtr node)
 	node->source->api.edit_label			= g_strdup_printf("%s/reader/api/0/subscription/edit?client=liferea", node->subscription->source);
 	node->source->api.edit_add_label_post		= g_strdup ("s=%s&a=%s&ac=edit&T=%s&async=true");
 	node->source->api.edit_remove_label_post	= g_strdup ("s=%s&r=%s&ac=edit&T=%s&async=true");
+
+	return source;
+}
+
+static void
+google_source_free (GoogleSourcePtr gsource) 
+{
+	if (!gsource)
+		return;
+
+	update_job_cancel_by_owner (gsource);
+	
+	g_queue_free (gsource->actionQueue) ;
+	g_hash_table_unref (gsource->lastTimestampMap);
+	g_hash_table_destroy (gsource->folderToCategory);
+	g_free (gsource);
+}
+
+static void
+google_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+{
+	nodePtr		node = (nodePtr) userdata;
+	gchar		*tmp = NULL;
+	subscriptionPtr subscription = node->subscription;
+		
+	debug1 (DEBUG_UPDATE, "google login processing... %s", result->data);
+	
+	if (result->data && result->httpstatus == 200)
+		tmp = strstr (result->data, "Auth=");
+		
+	if (tmp) {
+		gchar *ttmp = tmp; 
+		tmp = strchr (tmp, '\n');
+		if (tmp)
+			*tmp = '\0';
+		node_source_set_auth_token (node, g_strdup_printf ("GoogleLogin auth=%s", ttmp + 5));
+
+		/* now that we are authenticated trigger updating to start data retrieval */
+		if (!(flags & GOOGLE_SOURCE_UPDATE_ONLY_LOGIN))
+			subscription_update (subscription, flags);
+
+		/* process any edits waiting in queue */
+		google_reader_api_edit_process (node->source);
+
+	} else {
+		debug0 (DEBUG_UPDATE, "google reader login failed! no Auth token found in result!");
+		subscription->node->available = FALSE;
+
+		g_free (subscription->updateError);
+		subscription->updateError = g_strdup (_("Login failed!"));
+		node_source_set_state (node, NODE_SOURCE_STATE_NO_AUTH);
+		
+		auth_dialog_new (subscription, flags);
+	}
+}
+
+/**
+ * Perform a login to Google Reader, if the login completes the 
+ * GoogleSource will have a valid Auth token and will have loginStatus to 
+ * GOOGLE_SOURCE_LOGIN_ACTIVE.
+ */
+void
+google_source_login (GoogleSourcePtr source, guint32 flags) 
+{ 
+	gchar			*username, *password;
+	UpdateRequest		*request;
+	subscriptionPtr		subscription = source->root->subscription;
+	
+	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
+		/* this should not happen, as of now, we assume the session
+		 * doesn't expire. */
+		debug1 (DEBUG_UPDATE, "Logging in while login state is %d\n", source->root->source->loginState);
+	}
+g_print("Login via API %s\n", source->root->source->api.login);
+	request = update_request_new (
+		source->root->source->api.login,
+		subscription->updateState,
+		NULL	// auth is done via POST below!
+	);
+
+	/* escape user and password as both are passed using an URI */
+	username = g_uri_escape_string (subscription->updateOptions->username, NULL, TRUE);
+	password = g_uri_escape_string (subscription->updateOptions->password, NULL, TRUE);
+
+	request->postdata = g_strdup_printf (source->root->source->api.login_post, username, password);
+	request->options = update_options_copy (subscription->updateOptions);
+	
+	g_free (username);
+	g_free (password);
+	
+	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
+
+	update_execute_request (source, request, google_source_login_cb, source->root, flags | FEED_REQ_NO_FEED);
+}
+
+/* node source type implementation */
+
+static void
+google_source_auto_update (nodePtr node)
+{
+	guint64	now;
+	GoogleSourcePtr source = (GoogleSourcePtr) node->data;
+
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
+		node_source_update (node);
+		return;
+	}
+
+	if (node->source->loginState == NODE_SOURCE_STATE_NONE)
+		return; /* the update will start automatically anyway */
+
+	now = g_get_real_time();
+	
+	/* do daily updates for the feed list and feed updates according to the default interval */
+	if (node->subscription->updateState->lastPoll + GOOGLE_SOURCE_UPDATE_INTERVAL <= now) {
+		subscription_update (node->subscription, 0);
+		source->lastQuickUpdate = g_get_real_time();
+	}
+	else if (source->lastQuickUpdate + GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL <= now) {
+		google_source_opml_quick_update (source);
+		google_reader_api_edit_process (node->source);
+		source->lastQuickUpdate = g_get_real_time();
+	}
+}
+
+static void
+google_source_init (void)
+{
+	metadata_type_register ("GoogleBroadcastOrigFeed", METADATA_TYPE_URL);
+	metadata_type_register ("sharedby", METADATA_TYPE_TEXT);
+}
+
+static void google_source_deinit (void) { }
+
+static void
+google_source_import (nodePtr node)
+{
+	opml_source_import (node);
+	
+	node->subscription->type = &googleSourceOpmlSubscriptionType;
+	if (!node->data)
+		node->data = (gpointer) google_source_new (node);
 }
 
 static void
@@ -367,9 +367,9 @@ on_google_source_selected (GtkDialog *dialog,
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new (node_source_get_node_type ());
-		node_set_title (node, gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "nameEntry"))));
 		node_source_new (node, google_source_get_type (), gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "serverEntry"))));
-
+		node_set_title (node, gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "nameEntry"))));
+		
 		subscription_set_auth_info (node->subscription,
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));

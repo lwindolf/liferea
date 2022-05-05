@@ -29,26 +29,43 @@
 #define GOOGLE_READER_TAG_STARRED              "user/-/state/com.google/starred"
 
 typedef struct googleReaderApi {
+	// FIXME: this flag should probably removed if we focus on only supporting JSON 
 	gboolean	json;	/**< Returns mostly JSON (i.e. TheOldReader) */
 	
 	/** Endpoint definitions */
-	const gchar	*login;			/**< for now optional */
-	const gchar	*login_post;		/**< for now optional */
-	const gchar	*unread_count;
-	const gchar	*subscription_list;
-	const gchar	*add_subscription;
-	const gchar	*add_subscription_post;
-	const gchar	*remove_subscription;
-	const gchar	*remove_subscription_post;
-	const gchar	*edit_tag;
-	const gchar	*edit_tag_add_post;
-	const gchar	*edit_tag_ar_tag_post;
-	const gchar	*edit_tag_remove_post;
-	const gchar	*edit_label;
-	const gchar	*edit_add_label_post;
-	const gchar	*edit_remove_label_post;
-	const gchar	*token;
+	gchar	*login;			/**< for now optional */
+	gchar	*login_post;		/**< for now optional */
+	gchar	*unread_count;
+	gchar	*subscription_list;
+	gchar	*add_subscription;
+	gchar	*add_subscription_post;
+	gchar	*remove_subscription;
+	gchar	*remove_subscription_post;
+	gchar	*edit_tag;
+	gchar	*edit_tag_add_post;
+	gchar	*edit_tag_ar_tag_post;
+	gchar	*edit_tag_remove_post;
+	gchar	*edit_label;
+	gchar	*edit_add_label_post;
+	gchar	*edit_remove_label_post;
+	gchar	*token;
 	/* when extending this list add assertions in node_source_type_register! */
 } googleReaderApi;
+
+/**
+ * google_reader_api_check:
+ * Check if Google reader clones provide all API methods
+ *
+ * @param: api		API endpoint definition
+ */
+void google_reader_api_check (googleReaderApi *api);
+
+/**
+ * google_reader_api_free:
+ * Free API endpoint strings (not the reference!)
+ *
+ * @param: api		API endpoint definition
+ */
+void google_reader_api_free (googleReaderApi *api);
 
 #endif

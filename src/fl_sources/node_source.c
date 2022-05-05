@@ -1,7 +1,7 @@
 /*
  * @file node_source.c  generic node source provider implementation
  *
- * Copyright (C) 2005-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
 #include "fl_sources/google_source.h"
+#include "fl_sources/google_reader_api.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/reedah_source.h"
 #include "fl_sources/theoldreader_source.h"
@@ -188,23 +189,8 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 			feedlist_node_removed (node);
 		}
 		
-		/* Check if Google reader clones provide all API methods */
-		if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API) {
-			g_assert (node->source->api.unread_count);
-			g_assert (node->source->api.subscription_list);
-			g_assert (node->source->api.add_subscription);
-			g_assert (node->source->api.add_subscription_post);
-			g_assert (node->source->api.remove_subscription);
-			g_assert (node->source->api.remove_subscription_post);
-			g_assert (node->source->api.edit_label);
-			g_assert (node->source->api.edit_add_label_post);
-			g_assert (node->source->api.edit_remove_label_post);
-			g_assert (node->source->api.edit_tag);
-			g_assert (node->source->api.edit_tag_add_post);
-			g_assert (node->source->api.edit_tag_remove_post);
-			g_assert (node->source->api.edit_tag_ar_tag_post);
-			g_assert (node->source->api.token);
-		}
+		if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API)
+			google_reader_api_check (&(node->source->api));
 	} else {
 		g_print ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
 	}
@@ -246,8 +232,6 @@ node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
 	node->source->type = type;
 	node->source->loginState = NODE_SOURCE_STATE_NONE;
 	node->source->actionQueue = g_queue_new ();
-
-	node_set_title (node, type->name);
 
 	if (url) {
 		subscription = subscription_new (url, NULL, NULL);
@@ -610,6 +594,8 @@ node_source_free (nodePtr node)
 {
 	if (NULL != NODE_SOURCE_TYPE (node)->free)
 		NODE_SOURCE_TYPE (node)->free (node);
+
+	google_reader_api_free (&(node->source->api));
 
 	g_free (node->source->authToken);
 	g_free (node->source);

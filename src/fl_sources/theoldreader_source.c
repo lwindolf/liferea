@@ -45,6 +45,8 @@
 /** default TheOldReader subscription list update interval = once a day */
 #define THEOLDREADER_SOURCE_UPDATE_INTERVAL 60*60*24
 
+#define BASE_URL "https://theoldreader.com/reader/api/0/"
+
 /** create a source with given node as root */
 static TheOldReaderSourcePtr
 theoldreader_source_new (nodePtr node)
@@ -53,6 +55,22 @@ theoldreader_source_new (nodePtr node)
 	source->root = node;
 	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	source->folderToCategory = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+	node->source->api.json				= TRUE,
+	node->source->api.subscription_list		= g_strdup_printf ("%s/subscription/list?output=json", BASE_URL);
+	node->source->api.unread_count			= g_strdup_printf ("%s/unread-count?all=true&client=liferea", BASE_URL);
+	node->source->api.token				= g_strdup_printf ("%s/token", BASE_URL);
+	node->source->api.add_subscription		= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
+	node->source->api.add_subscription_post		= g_strdup ("s=feed%%2F%s&ac=subscribe&T=%s");
+	node->source->api.remove_subscription		= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
+	node->source->api.remove_subscription_post	= g_strdup ("s=%s&ac=unsubscribe&T=%s");
+	node->source->api.edit_tag			= g_strdup_printf ("%s/edit-tag?client=liferea", BASE_URL);
+	node->source->api.edit_tag_add_post		= g_strdup ("i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true");
+	node->source->api.edit_tag_remove_post		= g_strdup ("i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true");
+	node->source->api.edit_tag_ar_tag_post		= g_strdup ("i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true");
+	node->source->api.edit_label			= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
+	node->source->api.edit_add_label_post		= g_strdup ("s=%s&a=%s&ac=edit&T=%s");
+	node->source->api.edit_remove_label_post	= g_strdup ("s=%s&r=%s&ac=edit&T=%s");
 
 	return source;
 }
@@ -171,8 +189,6 @@ void theoldreader_source_init (void)
 
 static void theoldreader_source_deinit (void) { }
 
-#define BASE_URL "https://theoldreader.com/reader/api/0/"
-
 static void
 theoldreader_source_import (nodePtr node)
 {
@@ -182,22 +198,6 @@ theoldreader_source_import (nodePtr node)
 	node->subscription->type = node->source->type->sourceSubscriptionType;
 	if (!node->data)
 		node->data = (gpointer) theoldreader_source_new (node);
-		
-	node->source->api.json				= TRUE,
-	node->source->api.subscription_list		= g_strdup_printf ("%s/subscription/list?output=json", BASE_URL);
-	node->source->api.unread_count			= g_strdup_printf ("%s/unread-count?all=true&client=liferea", BASE_URL);
-	node->source->api.token				= g_strdup_printf ("%s/token", BASE_URL);
-	node->source->api.add_subscription		= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
-	node->source->api.add_subscription_post		= g_strdup ("s=feed%%2F%s&ac=subscribe&T=%s");
-	node->source->api.remove_subscription		= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
-	node->source->api.remove_subscription_post	= g_strdup ("s=%s&ac=unsubscribe&T=%s");
-	node->source->api.edit_tag			= g_strdup_printf ("%s/edit-tag?client=liferea", BASE_URL);
-	node->source->api.edit_tag_add_post		= g_strdup ("i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true");
-	node->source->api.edit_tag_remove_post		= g_strdup ("i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true");
-	node->source->api.edit_tag_ar_tag_post		= g_strdup ("i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true");
-	node->source->api.edit_label			= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
-	node->source->api.edit_add_label_post		= g_strdup ("s=%s&a=%s&ac=edit&T=%s");
-	node->source->api.edit_remove_label_post	= g_strdup ("s=%s&r=%s&ac=edit&T=%s");
 }
 
 static nodePtr
@@ -270,6 +270,7 @@ on_theoldreader_source_selected (GtkDialog *dialog,
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new (node_source_get_node_type ());
 		node_source_new (node, theoldreader_source_get_type (), "http://theoldreader.com/reader");
+		node_set_title (node, node->source->type->name);
 
 		subscription_set_auth_info (node->subscription,
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
