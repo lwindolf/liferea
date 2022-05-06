@@ -38,6 +38,14 @@ void network_init (void);
  */
 void network_deinit (void);
 
+/**
+ * network_get_special_user_agent:
+ * Get effective user agent. Considers special user settings from environment.
+ *
+ * @returns: user agent string (to be free'd by caller)
+ */
+gchar * network_get_user_agent (void);
+
 typedef enum {
 	PROXY_DETECT_MODE_AUTO = 0, 	/* Use system settings */
 	PROXY_DETECT_MODE_NONE,		/* No Proxy */

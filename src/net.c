@@ -323,6 +323,33 @@ network_set_soup_session_proxy (SoupSession *session, ProxyDetectMode mode, cons
 	}
 }
 
+gchar *
+network_get_user_agent (void)
+{
+	gchar *useragent = NULL;
+	gchar const *sysua = g_getenv("LIFEREA_UA");
+	
+	if(sysua == NULL) {
+		bool anonua = g_getenv("LIFEREA_UA_ANONYMOUS") != NULL;
+		if(anonua) {
+			/* Set an anonymized, randomic user agent,
+			 * e.g. "Liferea/0.28.0 (Android; Mobile; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+			useragent = g_strdup_printf ("Liferea/%.2f.0 (Android; Mobile; %s) AppleWebKit (KHTML, like Gecko)", g_random_double(), HOMEPAGE);
+		} else {
+			/* Set an exact user agent,
+			 * e.g. "Liferea/1.10.0 (Android 12; Mobile; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+			useragent = g_strdup_printf ("Liferea/%s (Android 12; Mobile; %s) AppleWebKit (KHTML, like Gecko)", VERSION, HOMEPAGE);
+		}
+	} else {
+		/* Set an arbitrary user agent from the environment variable LIFEREA_UA */
+		useragent = g_strdup (sysua);
+	}
+
+	g_assert_nonnull (useragent);
+	
+	return useragent;
+}
+
 void
 network_init (void)
 {
@@ -331,25 +358,8 @@ network_init (void)
 	gchar		*filename;
 	SoupLogger	*logger;
 
-	gchar const *sysua = g_getenv("LIFEREA_UA");
-	if(sysua == NULL) {
-		bool anonua = g_getenv("LIFEREA_UA_ANONYMOUS") != NULL;
-		if(anonua == false) {
-			/* Set an appropriate user agent,
-			 * e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
-			useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
-		} else {
-			/* Set an anonymized, randomic user agent,
-			 * e.g. "Liferea/0.28.0 (https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
-			useragent = g_strdup_printf ("Liferea/%.2f.0 (%s) AppleWebKit (KHTML, like Gecko)", g_random_double(), HOMEPAGE);
-		}
-	} else {
-		/* Set an arbitrary user agent from the environment variable LIFEREA_UA */
-		useragent = g_strdup (sysua);
-	}
-	sysua = NULL;
-	g_assert_nonnull(useragent);
-	debug1 (DEBUG_NET, "HTTP/S user-agent set to \"%s\"", useragent);
+	useragent = network_get_user_agent ();
+	debug1 (DEBUG_NET, "user-agent set to \"%s\"", useragent);
 
 	/* Session cookies */
 	filename = common_create_config_filename ("session_cookies.txt");

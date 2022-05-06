@@ -4,6 +4,13 @@ To be released
 
 	* Update to Readability.js 0.41 (better image and table handling)
 	  (Lars Windolf)
+	  
+	* Changes to UserAgent handling: same UA is now used for both feed fetching
+	  and internal browsing. User agent now indicates Android+Mobile per default
+	  instead of suggesting a Linux desktop to better adapt to the smaller 
+	  (in comparison to browsers) rendering pane. Additionally special env
+	  vars LIFEREA_UA and LIFEREA_UA_ANONYMOUS now also affect the internal
+	  browsing.
 
 
 2022-04-05   Lars Windolf <lars.windolf@gmx.de>

@@ -31,6 +31,7 @@
 #include "conf.h"
 #include "common.h"
 #include "enclosure.h" /* Only for enclosure_download */
+#include "net.h"
 #include "render.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
@@ -501,6 +502,7 @@ liferea_webkit_screen_changed (GtkWidget *widget, GdkScreen *previous_screen, gp
 static void
 liferea_webkit_default_settings (WebKitSettings *settings)
 {
+	gchar		*user_agent;
 	gboolean	disable_javascript, enable_plugins;
 
 	conf_get_bool_value (DISABLE_JAVASCRIPT, &disable_javascript);
@@ -509,7 +511,10 @@ liferea_webkit_default_settings (WebKitSettings *settings)
 	conf_get_bool_value (ENABLE_PLUGINS, &enable_plugins);
 	g_object_set (settings, "enable-plugins", enable_plugins, NULL);
 
-	webkit_settings_set_user_agent_with_application_details (settings, "Liferea", VERSION);
+	user_agent = network_get_user_agent ();
+g_print("UA=%s\n", user_agent);
+	webkit_settings_set_user_agent (settings, user_agent);
+	g_free (user_agent);
 
 	conf_signal_connect (
 		"changed::" DISABLE_JAVASCRIPT,
