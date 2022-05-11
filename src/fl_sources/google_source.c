@@ -291,22 +291,14 @@ google_source_remove (nodePtr node)
 static nodePtr
 google_source_add_subscription (nodePtr node, subscriptionPtr subscription) 
 { 
-	debug_enter ("google_source_add_subscription");
-	nodePtr child = node_new (feed_get_node_type ());
+	// FIXME: determine correct category from parent folder name
+	google_reader_api_edit_add_subscription (node->source, subscription->source, NULL);
 
-	debug0 (DEBUG_UPDATE, "GoogleSource: Adding a new subscription"); 
-	node_set_data (child, feed_new ());
+	// FIXME: leaking subscription?
 
-	node_set_subscription (child, subscription);
-	child->subscription->type = &googleSourceFeedSubscriptionType;
+	// FIXME: somehow the async subscribing doesn't cause the feed list to update
 	
-	node_set_title (child, _("New Subscription"));
-
-	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source, NULL);
-	
-	debug_exit ("google_source_add_subscription");
-	
-	return child;
+	return NULL;
 }
 
 static gchar *

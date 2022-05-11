@@ -217,7 +217,7 @@ static nodePtr
 reedah_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 {
 	// FIXME: determine correct category from parent folder name
-	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source, NULL);
+	google_reader_api_edit_add_subscription (node->source, subscription->source, NULL);
 
 	// FIXME: leaking subscription?
 
