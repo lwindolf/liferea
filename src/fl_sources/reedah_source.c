@@ -252,8 +252,6 @@ reedah_source_remove_node (nodePtr node, nodePtr child)
 	/* propagate the removal only if there aren't other copies */
 	if (!feedlist_find_node (source->root, NODE_BY_URL, url))
 		google_reader_api_edit_remove_subscription (node->source, streamId, reedah_source_get_stream_id_for_node);
-
-	g_free (source);
 }
 
 /* GUI callbacks */

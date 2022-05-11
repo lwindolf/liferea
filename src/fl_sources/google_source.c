@@ -313,6 +313,8 @@ google_source_remove_node (nodePtr node, nodePtr child)
 { 
 	g_autofree gchar *url = NULL, *streamId = NULL;
 	GoogleSourcePtr source = node->data;
+	
+	// FIXME: Check for login?
 
 	if (child == node) {
 		feedlist_node_removed (child);
@@ -327,8 +329,6 @@ google_source_remove_node (nodePtr node, nodePtr child)
 	/* propagate the removal only if there aren't other copies */
 	if (!feedlist_find_node (source->root, NODE_BY_URL, url))
 		google_reader_api_edit_remove_subscription (node->source, streamId, google_source_get_stream_id_for_node);
-
-	g_free (source);
 }
 
 /* GUI callbacks */
