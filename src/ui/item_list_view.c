@@ -824,10 +824,10 @@ item_list_view_create (gboolean wide)
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_SHADOW_IN);
 
 	ilv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
+	gtk_tree_view_set_show_expanders (ilv->treeview, FALSE);
 	if (wide) {
 		gtk_tree_view_set_fixed_height_mode (ilv->treeview, FALSE);
 		gtk_tree_view_set_grid_lines (ilv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
-		gtk_tree_view_set_show_expanders (ilv->treeview, FALSE);
 	}
 	gtk_container_add (GTK_CONTAINER (ilv->ilscrolledwindow), GTK_WIDGET (ilv->treeview));
 	gtk_widget_show (GTK_WIDGET (ilv->treeview));
