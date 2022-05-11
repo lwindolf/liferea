@@ -294,9 +294,7 @@ google_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 	// FIXME: determine correct category from parent folder name
 	google_reader_api_edit_add_subscription (node->source, subscription->source, NULL);
 
-	// FIXME: leaking subscription?
-
-	// FIXME: somehow the async subscribing doesn't cause the feed list to update
+	subscription_free (subscription);
 	
 	return NULL;
 }
