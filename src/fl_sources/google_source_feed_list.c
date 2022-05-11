@@ -1,5 +1,5 @@
 /**
- * @file google_source_opml.c  Google reader OPML handling routines.
+ * @file google_source_feed_list.c  Google reader feed list handling routines.
  * 
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
@@ -22,10 +22,9 @@
  */
 
 
-#include "google_source_opml.h"
+#include "google_source_feed_list.h"
 
 #include <glib.h>
-#include <libxml/xpath.h>
 #include <string.h>
 
 #include "common.h"
@@ -38,7 +37,6 @@
 #include "node.h"
 #include "subscription.h"
 #include "subscription_icon.h"
-#include "xml.h"
 
 #include "fl_sources/opml_source.h"
 #include "fl_sources/google_source.h"
@@ -48,16 +46,16 @@
  * Find a node by the source id.
  */
 nodePtr
-google_source_opml_get_node_by_source (GoogleSourcePtr gsource, const gchar *source) 
+google_source_feed_list_get_node_by_source (GoogleSourcePtr gsource, const gchar *source) 
 {
-	return google_source_opml_get_subnode_by_node (gsource->root, source);
+	return google_source_feed_list_get_subnode_by_node (gsource->root, source);
 }
 
 /**
  * Recursively find a node by the source id.
  */
 nodePtr
-google_source_opml_get_subnode_by_node (nodePtr node, const gchar *source) 
+google_source_feed_list_get_subnode_by_node (nodePtr node, const gchar *source) 
 {
 	nodePtr subnode;
 	nodePtr subsubnode;
@@ -69,7 +67,7 @@ google_source_opml_get_subnode_by_node (nodePtr node, const gchar *source)
 			return subnode;
 		else if (subnode->type->capabilities
 			 & NODE_CAPABILITY_SUBFOLDERS) {
-			subsubnode = google_source_opml_get_subnode_by_node(subnode, source);
+			subsubnode = google_source_feed_list_get_subnode_by_node(subnode, source);
 			if (subnode != NULL)
 				return subsubnode;
 		}
@@ -147,7 +145,7 @@ google_source_merge_feed (GoogleSourcePtr source, const gchar *url, const gchar 
 	}
 }
 
-/* OPML subscription type implementation */
+/* subscription type implementation */
 
 static void
 google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
@@ -239,108 +237,14 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 
 }
 
-/** functions for an efficient updating mechanism */
-
 static void
-google_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata) 
-{
-	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
-	xmlNodePtr      xmlNode;
-	xmlChar         *id, *newestItemTimestamp;
-	nodePtr         node = NULL; 
-	const gchar     *oldNewestItemTimestamp;
-
-	xmlNode = xpath_find (match, "./string[@name='id']");
-	id = xmlNodeGetContent (xmlNode); 
-
-	if (g_str_has_prefix ((gchar *)id, "feed/"))
-		node = google_source_opml_get_node_by_source (gsource, (gchar *)id + strlen ("feed/"));
-	else if (g_str_has_suffix ((gchar *)id, "broadcast-friends")) 
-		node = google_source_opml_get_node_by_source (gsource, (gchar *)id);
-	else {
-		xmlFree (id);
-		return;
-	}
-
-	if (node == NULL) {
-		xmlFree (id);
-		return;
-	}
-
-	xmlNode = xpath_find (match, "./number[@name='newestItemTimestampUsec']");
-	newestItemTimestamp = xmlNodeGetContent (xmlNode);
-
-	oldNewestItemTimestamp = g_hash_table_lookup (gsource->lastTimestampMap, node->subscription->source);
-
-	if (!oldNewestItemTimestamp ||
-	    (newestItemTimestamp && 
-	     !g_str_equal (newestItemTimestamp, oldNewestItemTimestamp))) { 
-		debug3(DEBUG_UPDATE, "GoogleSource: auto-updating %s "
-		       "[oldtimestamp%s, timestamp %s]", 
-		       id, oldNewestItemTimestamp, newestItemTimestamp);
-		g_hash_table_insert (gsource->lastTimestampMap,
-				    g_strdup (node->subscription->source), 
-				    g_strdup ((gchar *)newestItemTimestamp));
-				    
-		subscription_update (node->subscription, 0);
-	}
-
-	xmlFree (newestItemTimestamp);
-	xmlFree (id);
-}
-
-static void
-google_source_opml_quick_update_cb (const struct updateResult* const result, gpointer userdata, updateFlags flags) 
-{
-	GoogleSourcePtr gsource = (GoogleSourcePtr) userdata;
-	xmlDocPtr       doc;
-
-	if (!result->data) { 
-		/* what do I do? */
-		debug0 (DEBUG_UPDATE, "GoogleSource: Unable to get unread counts, this update is aborted.");
-		return;
-	}
-	doc = xml_parse (result->data, result->size, NULL);
-	if (!doc) {
-		debug0 (DEBUG_UPDATE, "GoogleSource: The XML failed to parse, maybe the session has expired. (FIXME)");
-		return;
-	}
-
-	xpath_foreach_match (xmlDocGetRootElement (doc),
-			    "/object/list[@name='unreadcounts']/object", 
-			    google_source_opml_quick_update_helper, gsource);
-	
-	xmlFreeDoc (doc);
-}
-
-gboolean
-google_source_opml_quick_update(GoogleSourcePtr source) 
-{
-	subscriptionPtr subscription = source->root->subscription;
-
-	UpdateRequest *request = update_request_new (
-		source->root->source->api.unread_count,
-		subscription->updateState,
-		subscription->updateOptions
-	);
-	
-	update_request_set_auth_value(request, source->root->source->authToken);
-
-	update_execute_request (source, request, google_source_opml_quick_update_cb,
-				source, 0);
-
-	return TRUE;
-}
-
-
-static void
-google_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+google_source_feed_list_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	google_subscription_opml_cb (subscription, result, flags);
 }
 
 static gboolean
-google_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
+google_source_feed_list_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	nodePtr node = subscription->node;
 	GoogleSourcePtr	source = (GoogleSourcePtr)node->data;
@@ -362,7 +266,7 @@ google_source_opml_subscription_prepare_update_request (subscriptionPtr subscrip
 /* OPML subscription type definition */
 
 struct subscriptionType googleSourceOpmlSubscriptionType = {
-	google_source_opml_subscription_prepare_update_request,
-	google_source_opml_subscription_process_update_result
+	google_source_feed_list_subscription_prepare_update_request,
+	google_source_feed_list_subscription_process_update_result
 };
 

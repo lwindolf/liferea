@@ -16,7 +16,7 @@ libliflsources_a_SOURCES = node_source.c node_source.h \
                            google_reader_api.c google_reader_api.h \
                            google_source.c google_source.h \
                            google_source_feed.c \
-                           google_source_opml.c google_source_opml.h \
+                           google_source_feed_list.c google_source_feed_list.h \
                            json_api_mapper.c json_api_mapper.h \
                            opml_source.c opml_source.h \
                            reedah_source.c reedah_source.h \

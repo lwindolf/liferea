@@ -42,7 +42,7 @@
 #include "fl_sources/node_source.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/google_reader_api_edit.h"
-#include "fl_sources/google_source_opml.h"
+#include "fl_sources/google_source_feed_list.h"
 
 /** default Google reader subscription list update interval = once a day */
 #define GOOGLE_SOURCE_UPDATE_INTERVAL 60*60*24
@@ -54,7 +54,6 @@ google_source_new (nodePtr node)
 	GoogleSourcePtr source = g_new0 (struct GoogleSource, 1) ;
 	source->root = node; 
 	source->actionQueue = g_queue_new (); 
-	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	source->folderToCategory = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 	
 	/**
@@ -154,7 +153,6 @@ google_source_free (GoogleSourcePtr gsource)
 	update_job_cancel_by_owner (gsource);
 	
 	g_queue_free (gsource->actionQueue) ;
-	g_hash_table_unref (gsource->lastTimestampMap);
 	g_hash_table_destroy (gsource->folderToCategory);
 	g_free (gsource);
 }
@@ -214,7 +212,7 @@ google_source_login (GoogleSourcePtr source, guint32 flags)
 		 * doesn't expire. */
 		debug1 (DEBUG_UPDATE, "Logging in while login state is %d\n", source->root->source->loginState);
 	}
-g_print("Login via API %s\n", source->root->source->api.login);
+
 	request = update_request_new (
 		source->root->source->api.login,
 		subscription->updateState,
@@ -241,29 +239,16 @@ g_print("Login via API %s\n", source->root->source->api.login);
 static void
 google_source_auto_update (nodePtr node)
 {
-	guint64	now;
-	GoogleSourcePtr source = (GoogleSourcePtr) node->data;
-
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		node_source_update (node);
 		return;
 	}
 
-	if (node->source->loginState == NODE_SOURCE_STATE_NONE)
+	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
 		return; /* the update will start automatically anyway */
 
-	now = g_get_real_time();
-	
-	/* do daily updates for the feed list and feed updates according to the default interval */
-	if (node->subscription->updateState->lastPoll + GOOGLE_SOURCE_UPDATE_INTERVAL <= now) {
-		subscription_update (node->subscription, 0);
-		source->lastQuickUpdate = g_get_real_time();
-	}
-	else if (source->lastQuickUpdate + GOOGLE_SOURCE_QUICK_UPDATE_INTERVAL <= now) {
-		google_source_opml_quick_update (source);
-		google_reader_api_edit_process (node->source);
-		source->lastQuickUpdate = g_get_real_time();
-	}
+	debug0 (DEBUG_UPDATE, "google_source_auto_update()");
+	subscription_auto_update (node->subscription);
 }
 
 static void

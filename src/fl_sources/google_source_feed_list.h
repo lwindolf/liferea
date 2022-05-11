@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2009 Adrian Bunk  <bunk@users.sourceforge.net>
+ * Copyright (C) 2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +17,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef _GOOGLE_SOURCE_FEED_LIST_H
+#define _GOOGLE_SOURCE_FEED_LIST_H
+
 #include "fl_sources/google_source.h"
 
 /**
@@ -26,7 +30,7 @@
  *
  * @returns a node (or NULL)
  */
-nodePtr google_source_opml_get_node_by_source(GoogleSourcePtr gsource,
+nodePtr google_source_feed_list_get_node_by_source(GoogleSourcePtr gsource,
 					 const gchar *source);
 
 /**
@@ -37,12 +41,6 @@ nodePtr google_source_opml_get_node_by_source(GoogleSourcePtr gsource,
  *
  * @returns a node (or NULL)
  */
-nodePtr google_source_opml_get_subnode_by_node(nodePtr node, const gchar *source);
+nodePtr google_source_feed_list_get_subnode_by_node(nodePtr node, const gchar *source);
 
-/**
- * Perform a quick update of the Google Reader source.
- *
- * @param gsource	the Google Reader source
- */
-gboolean google_source_opml_quick_update (GoogleSourcePtr gsource);
-
+#endif

@@ -29,17 +29,6 @@
 typedef struct GoogleSource {
 	nodePtr		root;		/**< the root node in the feed list */
 	GQueue		*actionQueue;
-
-	/**
-	 * A map from a subscription source to a timestamp when it was last 
-	 * updated (provided by Google).
-	 */
-	GHashTable      *lastTimestampMap; 
-
-	/**
-	 * A timestamp when the last Quick update took place.
-	 */
-	guint64        lastQuickUpdate;
 	
 	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to Google Reader category id */
 } *GoogleSourcePtr;
@@ -103,18 +92,6 @@ extern struct subscriptionType googleSourceOpmlSubscriptionType;
  * @returns a node (or NULL)
  */
 nodePtr google_source_get_node_from_source (GoogleSourcePtr gsource, const gchar* source);
-
-/**
- * Tries to update the entire source quickly, by updating only those feeds
- * which are known to be updated. Suitable for g_timeout_add. This is an 
- * internal function.
- *
- * @param data A pointer to a node id of the source. This pointer will
- *             be g_free'd if the update fails.
- *
- * @returns FALSE on update failure
- */
-gboolean google_source_quick_update_timeout (gpointer gsource);
 
 /**
  * Migrate a google source child-node from a Liferea 1.4 style read-only
