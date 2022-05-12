@@ -38,15 +38,34 @@
             omit-xml-declaration="yes" />
 
 <xsl:template name='copy'>
+	<!-- identity copy nodes only for the following extraction locations:
+
+		1.) "//article" for HTML5
+		2.) "//main" for HTML5 when there is no "//article"
+		3a.) "//div[@property='articleBody']" for microformats
+		3b.) "//div[@id='content']" for just guessing CMS main div
+
+	-->
+	<xsl:variable name="mode">
+		<xsl:choose>
+			<xsl:when test="//article">1</xsl:when>
+			<xsl:when test="//main">2</xsl:when>
+			<xsl:otherwise>3</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+
 	<xsl:choose>
-		<!-- identity copy nodes only for the following extraction locations:
-
-			1.) "//article" for HTML5
-			2.) "//div[@property='articleBody']" for microformats
-			3.) "//div[@id='content']" for just guessing CMS main div
-
-		-->
-		<xsl:when test="ancestor::article | ancestor::div[@property='articleBody'] | ancestor::div[@id='content']">
+		<xsl:when test="$mode != '2' and ancestor::article | ancestor::div[@property='articleBody'] | ancestor::div[@id='content']">
+			<xsl:copy>
+				<xsl:apply-templates select="node()|@*"/>
+				<!-- Fill empty tags with a space to ensure we can
+				     output to HTML5 and get no self-closing tags -->
+				<xsl:if test="not(*) and not(text())">
+					<xsl:text> </xsl:text>
+				</xsl:if>
+			</xsl:copy>
+		</xsl:when>
+		<xsl:when test="$mode = '2' and ancestor::main">
 			<xsl:copy>
 				<xsl:apply-templates select="node()|@*"/>
 				<!-- Fill empty tags with a space to ensure we can
@@ -61,6 +80,7 @@
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
+
 
 <xsl:template match="node()|@*">
 	<xsl:call-template name='copy'/>

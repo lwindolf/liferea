@@ -12,6 +12,9 @@ To be released
 	  vars LIFEREA_UA and LIFEREA_UA_ANONYMOUS now also affect the internal
 	  browsing.
 
+	* Improve HTML5 extraction: extract <main> if it exists and no article
+	  was found.
+
 
 2022-04-05   Lars Windolf <lars.windolf@gmx.de>
 

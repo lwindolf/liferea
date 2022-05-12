@@ -122,6 +122,16 @@ gchar *tc_article[] = {
 	"<p>1</p>\n"
 };
 
+gchar *tc_article_main[] = {
+	"<html lang='fr'><script>blabla</script><style>body { background:red }</style><body><main><p>1</p></main></body></html>",
+	"<p>1</p>\n"
+};
+
+gchar *tc_article_main2[] = {
+	"<html lang='fr'><script>blabla</script><style>body { background:red }</style><body><main><article><p>1</p></article></main></body></html>",
+	"<p>1</p>\n"
+};
+
 gchar *tc_article_micro_format[] = {
 	"<html><head></head><body><div property='articleBody'><p>1</p></div></body></html>",
 	"<p>1</p>\n"
@@ -217,6 +227,8 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/html/auto_discover_link_xml_atom3", &tc_xml_atom3, &tc_auto_discover_link);
 
 	g_test_add_data_func ("/html/html5_extract_article", &tc_article, &tc_get_article);
+	g_test_add_data_func ("/html/html5_extract_article_main", &tc_article_main, &tc_get_article);
+	g_test_add_data_func ("/html/html5_extract_article_main2", &tc_article_main2, &tc_get_article);
 	g_test_add_data_func ("/html/html5_extract_article_micro_format", &tc_article_micro_format, &tc_get_article);
 	g_test_add_data_func ("/html/html5_extract_article_cms_content_id", &tc_article_cms_content_id, &tc_get_article);
 	g_test_add_data_func ("/html/html5_extract_article_missing", &tc_article_missing, &tc_get_article);
