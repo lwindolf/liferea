@@ -31,6 +31,7 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "item_state.h"
+#include "metadata.h"
 #include "node.h"
 #include "node_type.h"
 #include "plugins_engine.h"
@@ -97,6 +98,9 @@ node_source_setup_root (void)
 	nodeSourceTypePtr type;
 
 	debug_enter ("node_source_setup_root");
+	
+	/* register a generic type for storing feed-id strings of remote services */
+	metadata_type_register ("feed-id", METADATA_TYPE_TEXT);
 
 	/* we need to register all source types once before doing anything... */
 	node_source_type_register (default_source_get_type ());
