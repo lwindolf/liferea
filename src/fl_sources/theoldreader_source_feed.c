@@ -188,7 +188,7 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 		xmlFreeDoc (doc);
 	} else {
 		debug0 (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
-		g_print ("theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
+		subscription->node->available = FALSE;
 	}
 
 	debug_end_measurement (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result");
