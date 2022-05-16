@@ -96,6 +96,7 @@ google_source_new (nodePtr node)
 	 */
 	node->source->api.remove_subscription		= g_strdup_printf ("%s/reader/api/0/subscription/edit?client=liferea", node->subscription->source);
 	node->source->api.remove_subscription_post	= g_strdup ("s=%s&i=null&ac=unsubscribe&T=%s");
+
 	node->source->api.edit_tag			= g_strdup_printf ("%s/reader/api/0/edit-tag?client=liferea", node->subscription->source);
 
 	/**
@@ -251,13 +252,7 @@ google_source_auto_update (nodePtr node)
 	subscription_auto_update (node->subscription);
 }
 
-static void
-google_source_init (void)
-{
-	metadata_type_register ("GoogleBroadcastOrigFeed", METADATA_TYPE_URL);
-	metadata_type_register ("sharedby", METADATA_TYPE_TEXT);
-}
-
+static void google_source_init (void) { }
 static void google_source_deinit (void) { }
 
 static void
@@ -305,14 +300,14 @@ google_source_get_stream_id_for_node (nodePtr node)
 	if (!node->subscription)
 		return NULL;
 
-	return g_strdup_printf ("feed/%s", node->subscription->source);
+	return g_strdup (metadata_list_get (node->subscription->metadata, "feed-id"));
 }
 
 static void
 google_source_remove_node (nodePtr node, nodePtr child) 
 { 
-	g_autofree gchar *url = NULL, *streamId = NULL;
-	GoogleSourcePtr source = node->data;
+	g_autofree gchar	*url = NULL, *streamId = NULL;
+	GoogleSourcePtr		source = node->data;
 	
 	// FIXME: Check for login?
 
@@ -412,6 +407,7 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ADD_FEED |
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL,
+	.feedSubscriptionType	= &googleSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &googleSourceOpmlSubscriptionType,
 	.source_type_init    = google_source_init,
 	.source_type_deinit  = google_source_deinit,
@@ -433,7 +429,5 @@ static struct nodeSourceType nst = {
 nodeSourceTypePtr
 google_source_get_type (void)
 {
-	nst.feedSubscriptionType = feed_get_subscription_type ();
-
 	return &nst;
 }
