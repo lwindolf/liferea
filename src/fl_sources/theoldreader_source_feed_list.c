@@ -81,23 +81,13 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
-
+		node_set_parent (node, folder?folder:source->root, -1);
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = source->root->source->type->feedSubscriptionType;
-
-		/* Save TheOldReader feed id which we need to fetch items... */
 		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);
 
-		db_subscription_update (node->subscription);
-
-		node_set_parent (node, folder?folder:source->root, -1);
 		feedlist_node_imported (node);
 
-		/**
-		 * @todo mark the ones as read immediately after this is done
-		 * the feed as retrieved by this has the read and unread
-		 * status inherently.
-		 */
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 		subscription_icon_update (node->subscription);
 
