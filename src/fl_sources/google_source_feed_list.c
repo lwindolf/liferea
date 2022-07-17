@@ -91,11 +91,16 @@ google_source_check_node_for_removal (nodePtr node, gpointer user_data)
 
 		node_foreach_child_data (node, google_source_check_node_for_removal, user_data);
 	} else {
+		const gchar *feedId = metadata_list_get (node->subscription->metadata, "feed-id");
+		if (!feedId)
+			return;
+		
 		elements = iter = json_array_get_elements (array);
 		while (iter) {
 			JsonNode *json_node = (JsonNode *)iter->data;
-			if (g_str_equal (node->subscription->source, json_get_string (json_node, "url"))) {
-				debug1 (DEBUG_UPDATE, "node: %s", node->subscription->source);
+			if (g_str_equal (node->subscription->source, json_get_string (json_node, "url")) &&
+			    g_str_equal (feedId, json_get_string(json_node, "id"))) {
+				debug2 (DEBUG_UPDATE, "check for removal node: %s (%s)", feedId, node->subscription->source);
 				found = TRUE;
 				break;
 			}
@@ -115,27 +120,17 @@ google_source_merge_feed (GoogleSourcePtr source, const gchar *url, const gchar 
 
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 	if (!node) {
-		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
+		debug3 (DEBUG_UPDATE, "adding %s (id=%s, url=%s)", title, id, url);
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
-
+		node_set_parent (node, folder?folder:source->root, -1);
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = source->root->source->type->feedSubscriptionType;
+		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "feed-id", id);
 
-		/* Save TheOldReader feed id which we need to fetch items... */
-		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);
-
-		db_subscription_update (node->subscription);
-
-		node_set_parent (node, folder?folder:source->root, -1);
 		feedlist_node_imported (node);
 
-		/**
-		 * @todo mark the ones as read immediately after this is done
-		 * the feed as retrieved by this has the read and unread
-		 * status inherently.
-		 */
 		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
 		subscription_icon_update (node->subscription);
 
@@ -148,11 +143,11 @@ google_source_merge_feed (GoogleSourcePtr source, const gchar *url, const gchar 
 /* subscription type implementation */
 
 static void
-google_subscription_opml_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+google_source_feed_list_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
 	GoogleSourcePtr	source = (GoogleSourcePtr) subscription->node->data;
 
-	debug1 (DEBUG_UPDATE,"google_subscription_opml_cb(): %s", result->data);
+	debug1 (DEBUG_UPDATE,"google_source_feed_list_subscription_process_update_result(): %s", result->data);
 
 	subscription->updateJob = NULL;
 
@@ -222,25 +217,18 @@ google_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 
 			subscription->node->available = TRUE;
 		} else {
-			g_print ("Invalid JSON returned on Google Reader API request! >>>%s<<<", result->data);
+			subscription->node->available = FALSE;
+			debug1 (DEBUG_UPDATE, "Invalid JSON returned on Google Reader API request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "google_subscription_opml_cb(): ERROR: failed to get subscription list!");
+		debug0 (DEBUG_UPDATE, "google_source_feed_list_subscription_process_update_result(): ERROR: failed to get subscription list!");
 	}
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
-
-
-}
-
-static void
-google_source_feed_list_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
-{
-	google_subscription_opml_cb (subscription, result, flags);
 }
 
 static gboolean

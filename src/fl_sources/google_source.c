@@ -368,8 +368,8 @@ static void
 google_source_cleanup (nodePtr node)
 {
 	GoogleSourcePtr reader = (GoogleSourcePtr) node->data;
-	google_source_free(reader);
-	node->data = NULL ;
+	google_source_free (reader);
+	node->data = NULL;
 }
 
 static void 

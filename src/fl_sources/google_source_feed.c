@@ -21,12 +21,9 @@
 
 #include <glib.h>
 #include <string.h>
-#include <libxml/xpath.h>
-#include <libxml/xpathInternals.h>
 
 #include "common.h"
 #include "debug.h"
-#include "xml.h"
 
 #include "feedlist.h"
 #include "subscription.h"
@@ -34,30 +31,11 @@
 #include "metadata.h"
 #include "db.h"
 #include "item_state.h"
+#include "itemlist.h"
+#include "json.h"
+#include "json_api_mapper.h"
 #include "fl_sources/google_source.h"
 #include "fl_sources/google_reader_api_edit.h"
-
-/**
- * This is identical to xpath_foreach_match, except that it takes the context
- * as parameter.
- */
-static void
-google_source_xpath_foreach_match (const gchar* expr, xmlXPathContextPtr xpathCtxt, xpathMatchFunc func, gpointer user_data) 
-{
-	xmlXPathObjectPtr xpathObj = NULL;
-	xpathObj = xmlXPathEval ((xmlChar*)expr, xpathCtxt);
-	
-	if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
-		int	i;
-		for (i = 0; i < xpathObj->nodesetval->nodeNr; i++) {
-			(*func) (xpathObj->nodesetval->nodeTab[i], user_data);
-			xpathObj->nodesetval->nodeTab[i] = NULL ;
-		}
-	}
-	
-	if (xpathObj)
-		xmlXPathFreeObject (xpathObj);
-}
 
 void
 google_source_migrate_node(nodePtr node) 
@@ -81,257 +59,234 @@ google_source_migrate_node(nodePtr node)
 }
 
 static void
-google_source_xml_unlink_node (xmlNodePtr node, gpointer data) 
+google_source_feed_item_callback (JsonNode *node, itemPtr item)
 {
-	xmlUnlinkNode (node);
-	xmlFreeNode (node);
-}
+	JsonNode	*canonical, *categories;
+	GList		*elements, *iter;
 
-static void
-google_source_set_orig_source(const xmlNodePtr node, gpointer userdata)
-{
-	itemPtr		item = (itemPtr) userdata ;
-	gchar		*value = (gchar *) xmlNodeGetContent (node);
-	const gchar	*prefix1 = "tag:google.com,2005:reader/feed/";
-	const gchar	*prefix2 = "tag:google.com,2005:reader/user/";
-
-	debug1(DEBUG_UPDATE, "GoogleSource: Got %s as id while updating", value);
-
-	if (g_str_has_prefix (value, prefix1) || g_str_has_prefix (value, prefix2)) {
-		metadata_list_set (&item->metadata, "GoogleBroadcastOrigFeed", value + strlen (prefix1));
-	}
-	xmlFree (value);
-}
-
-static void
-google_source_set_shared_by (xmlNodePtr node, gpointer userdata) 
-{
-	itemPtr     item    = (itemPtr) userdata;
-	xmlChar     *value  = xmlNodeGetContent (node);
-	xmlChar     *apos   = BAD_CAST strrchr ((gchar *)value, '\'');
-	gchar       *name;
-
-	if (!apos) return;
-	name = g_strndup ((gchar *)value, apos-value);
-
-	metadata_list_set (&item->metadata, "sharedby", name);
-	
-	g_free (name);
-	xmlFree (value);
-}
-
-static void
-google_source_fix_broadcast_item (xmlNodePtr entry, itemPtr item) 
-{
-	xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (entry->doc) ;
-	xmlXPathRegisterNs (xpathCtxt, BAD_CAST "atom", BAD_CAST "http://www.w3.org/2005/Atom");
-	xpathCtxt->node = entry;
-	
-	google_source_xpath_foreach_match ("./atom:source/atom:id", xpathCtxt, google_source_set_orig_source, item);
-	
-	/* who is sharing this? */
-	google_source_xpath_foreach_match ("./atom:link[@rel='via']/@title", xpathCtxt, google_source_set_shared_by, item);
-
-	db_item_update (item);
-	/* free up xpath related data */
-	if (xpathCtxt) xmlXPathFreeContext (xpathCtxt);
-}
-
-static itemPtr
-google_source_load_item_from_sourceid (nodePtr node, gchar *sourceId, GHashTable *cache) 
-{
-	gpointer    ret = g_hash_table_lookup (cache, sourceId);
-	itemSetPtr  itemset;
-	int         num = g_hash_table_size (cache);
-	GList       *iter; 
-	itemPtr     item = NULL;
-
-	if (ret) return item_load (GPOINTER_TO_UINT (ret));
-
-	/* skip the top 'num' entries */
-	itemset = node_get_itemset (node);
-	iter = itemset->ids;
-	while (num--) iter = g_list_next (iter);
-
-	for (; iter; iter = g_list_next (iter)) {
-		item = item_load (GPOINTER_TO_UINT (iter->data));
-		if (item && item->sourceId) {
-			/* save to cache */
-			g_hash_table_insert (cache, g_strdup(item->sourceId), (gpointer) item->id);
-			if (g_str_equal (item->sourceId, sourceId)) {
-				itemset_free (itemset);
-				return item;
+	/* Determine link: path is "canonical[0]/@href" */
+	canonical = json_get_node (node, "canonical");
+	if (canonical && JSON_NODE_TYPE (canonical) == JSON_NODE_ARRAY) {
+		iter = elements = json_array_get_elements (json_node_get_array (canonical));
+		while (iter) {
+			const gchar *href = json_get_string ((JsonNode *)iter->data, "href");
+			if (href) {
+				item_set_source (item, href);
+				break;
 			}
+			iter = g_list_next (iter);
 		}
-		item_unload (item);
+
+		g_list_free (elements);
 	}
 
-	g_warning ("Could not find item for %s!", sourceId);
-	itemset_free (itemset);
-	return NULL;
-}
-
-static void
-google_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPtr subscription, GHashTable *cache)
-{
-	xmlNodePtr      xml;
-	nodePtr         node = subscription->node;
-	xmlChar         *id;
-	gboolean        read = FALSE;
-	gboolean        starred = FALSE;
-
-	xml = entry->children;
-	g_assert (xml);
-	g_assert (g_str_equal (xml->name, "id"));
-
-	id = xmlNodeGetContent (xml);
-
-	for (xml = entry->children; xml; xml = xml->next) {
-		if (g_str_equal (xml->name, "category")) {
-			xmlChar* label = xmlGetProp (xml, BAD_CAST "label");
-			if (!label)
-				continue;
-
-			if (g_str_equal ((gchar *)label, "read"))
-				read = TRUE;
-			else if (g_str_equal ((gchar *)label, "starred")) 
-				starred = TRUE;
-
-			xmlFree (label);
-		}
-	}
-	
-	itemPtr item = google_source_load_item_from_sourceid (node, (gchar *)id, cache);
-	if (item && item->sourceId) {
-		if (g_str_equal (item->sourceId, (gchar *)id) && 
-		    !google_reader_api_edit_is_in_queue(node->source, (gchar *)id)) {
-			
-			if (item->readStatus != read)
-				item_read_state_changed (item, read);
-			if (item->flagStatus != starred) 
-				item_flag_state_changed (item, starred);
-			
-			if (g_str_equal (subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
-				google_source_fix_broadcast_item (entry, item);
-		}
-	}
-	if (item) item_unload (item) ;
-	xmlFree (id);
-}
-
-static void
-google_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
-{
-	
-	debug_start_measurement (DEBUG_UPDATE);
-
-	if (result->data && result->httpstatus == 200) { 
-		updateResultPtr resultCopy;
-
-		/* FIXME: The following is a very dirty hack to edit the feed's
-		   XML before processing it */
-		resultCopy = update_result_new () ;
-		resultCopy->source = g_strdup (result->source); 
-		resultCopy->httpstatus = result->httpstatus;
-		resultCopy->contentType = g_strdup (result->contentType);
-		g_free (resultCopy->updateState);
-		resultCopy->updateState = update_state_copy (result->updateState);
-		
-		/* update the XML by removing 'read', 'reading-list' etc. as labels. */
-		xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
-		xmlXPathContextPtr xpathCtxt = xmlXPathNewContext (doc) ;
-		xmlXPathRegisterNs (xpathCtxt, BAD_CAST "atom", BAD_CAST "http://www.w3.org/2005/Atom");
-		google_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:category[@scheme='http://www.google.com/reader/']", xpathCtxt, google_source_xml_unlink_node, NULL);
-
-
-		/* delete the via link for broadcast subscription */
-		if (g_str_equal (subscription->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) 
-			google_source_xpath_foreach_match ("/atom:feed/atom:entry/atom:link[@rel='via']/@href", xpathCtxt, google_source_xml_unlink_node, NULL);
-		
-		xmlXPathFreeContext (xpathCtxt);
-		
-		/* good now we have removed the read and unread labels. */
-		
-		xmlChar    *newXml; 
-		int        newXmlSize ;
-		
-		xmlDocDumpMemory (doc, &newXml, &newXmlSize);
-		
-		resultCopy->data = g_strndup ((gchar*) newXml, newXmlSize);
-		resultCopy->size = newXmlSize;
-		
-		xmlFree (newXml);
-		xmlFreeDoc (doc);
-		
-		feed_get_subscription_type ()->process_update_result (subscription, resultCopy, flags);
-		update_result_free (resultCopy);
-	} else { 
-		feed_get_subscription_type ()->process_update_result (subscription, result, flags);
-		return ; 
-	}
-	
-	/* FIXME: The following workaround ensure that the code below,
-	   that uses UI callbacks item_*_state_changed(), does not 
-	   reset the newCount of the feed list (see SF #2666478)
-	   by getting the newCount first and setting it again later. */
-	//guint newCount = feedlist_get_new_item_count ();
-
-	xmlDocPtr doc = xml_parse (result->data, result->size, NULL);
-	if (doc) {		
-		xmlNodePtr root = xmlDocGetRootElement (doc);
-		xmlNodePtr entry = root->children ; 
-		GHashTable *cache = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-
-		while (entry) { 
-			if (!g_str_equal (entry->name, "entry")) {
-				entry = entry->next;
-				continue; /* not an entry */
+	/* Determine read state: check for category with ".*state/com.google/read" */
+	categories = json_get_node (node, "categories");
+	if (categories && JSON_NODE_TYPE (categories) == JSON_NODE_ARRAY) {
+		iter = elements = json_array_get_elements (json_node_get_array (canonical));
+		while (iter) {
+			const gchar *category = json_node_get_string ((JsonNode *)iter->data);
+			if (category) {
+				item->readStatus = (strstr (category, "state\\/com.google\\/read") != NULL);
+				break;
 			}
-			
-			google_source_item_retrieve_status (entry, subscription, cache);
-			entry = entry->next;
+			iter = g_list_next (iter);
+		}
+
+		g_list_free (elements);
+	}
+}
+
+static void
+google_source_feed_subscription_process_update_result (const struct updateResult* const result, gpointer user_data, updateFlags flags)
+{
+	subscriptionPtr	subscription = (subscriptionPtr)user_data;
+	
+	if (result->data && result->httpstatus == 200) {
+		GList		*items = NULL;
+		jsonApiMapping	mapping;
+
+		/*
+		   We expect to get something like this
+
+		   [{"crawlTimeMsec":"1375821312282",
+		     "id"::"tag:google.com,reader:2005\/item\/4ee371db36f84de2",
+		     "categories":["user\/15724899091976567759\/state\/com.google\/reading-list",
+		     "user\/15724899091976567759\/state\/com.google\/fresh"],
+		     "title":"Firefox 23 Arrives With New Logo, Mixed Content Blocker, and Network Monitor",
+		     "published":1375813680,
+		     "updated":1375821312,
+		     "alternate":[{"href":"http://rss.slashdot.org/~r/Slashdot/slashdot/~3/Q4450FchLQo/story01.htm","type":"text/html"}],
+		     "canonical":[{"href":"http://slashdot.feedsportal.com/c/35028/f/647410/s/2fa2b59c/sc[...]", "type":"text/html"}],
+		     "summary":{"direction":"ltr","content":"An anonymous reader writes [...]"},
+		     "author":"Soulskill",
+		     "origin":{"streamId":"feed/http://rss.slashdot.org/Slashdot/slashdot","title":"Slashdot",
+		     "htmlurl":"http://slashdot.org/"
+		    },
+
+                   [...]
+                 */
+		
+		/* Note: The link and read status cannot be mapped as there might be multiple ones
+ 		   so the callback helper function extracts the first from the array */
+		mapping.id		= "id";
+		mapping.title		= "title";
+		mapping.link		= NULL;
+		mapping.description	= "summary/content";
+		mapping.read		= NULL;
+		mapping.updated		= "updated";
+		mapping.author		= "author";
+		mapping.flag		= "marked";
+
+		mapping.xhtml		= TRUE;
+		mapping.negateRead	= TRUE;
+
+		items = json_api_get_items (result->data, "items", &mapping, &google_source_feed_item_callback);
+
+		/* merge against feed cache */
+		if (items) {
+			itemSetPtr itemSet = node_get_itemset (subscription->node);
+			debug3 (DEBUG_UPDATE, "merging %d items into node %s (%s)\n", g_list_length(itemSet->ids), subscription->node->id, subscription->node->title);
+			subscription->node->newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
+			itemlist_merge_itemset (itemSet);
+			itemset_free (itemSet);
+		} else {
+			debug3 (DEBUG_UPDATE, "result empty %s (%s): %s\n", subscription->node->id, subscription->node->title, result->data);
+		}
+		subscription->node->available = TRUE;
+	} else {
+		subscription->node->available = FALSE;
+		g_string_append (((feedPtr)subscription->node->data)->parseErrors, _("Could not parse JSON returned by Google Reader API!"));
+	}
+}
+
+static void
+google_source_feed_subscription_process_ids_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+{
+	JsonParser	*parser;
+	
+	if (!(result->data && result->httpstatus == 200)) {
+		subscription->node->available = FALSE;
+		return;
+	}
+	
+	/*
+	   We expect to get something like this
+	   
+	  {
+	  "itemRefs": [
+	    {
+	      "id": "62d3f48c511dbe78de004829",
+	      "directStreamIds": [],
+	      "timestampUsec": "1658057859783000"
+	    },
+	    {
+	      "id": "62d3f48c511dbe78de00482a",
+	      "directStreamIds": [],
+	      "timestampUsec": "1658057858783000"
+	    },
+	    {
+	      "id": "62d3f48c511dbe78de00482b",
+	      "directStreamIds": [],
+	      "timestampUsec": "1658057857783000"
+	    },
+	*/
+	
+	parser = json_parser_new ();
+	if (json_parser_load_from_data (parser, result->data, -1, NULL)) {
+		JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "itemRefs"));
+		GList		*elements = json_array_get_elements (array);
+		GList		*iter = elements;
+		GString		*query = g_string_new("");
+		
+		g_string_append_printf (query, "output=json&mediaRss=true&T=%s", 
+		                        node_source_root_from_node (subscription->node)->source->authToken + strlen("GoogleLogin auth="));
+
+		while (iter) {
+			JsonNode *node = (JsonNode *)iter->data;
+			const gchar *id = json_get_string (node, "id");
+
+			if (id)
+				g_string_append_printf (query, "&i=%s", id);
+				
+			iter = g_list_next (iter);
 		}
 		
-		g_hash_table_unref (cache);
-		xmlFreeDoc (doc);
-	} else { 
-		debug0 (DEBUG_UPDATE, "google_feed_subscription_process_update_result(): Couldn't parse XML!");
-		subscription->node->available = FALSE;		
-	}
+		debug3 (DEBUG_UPDATE, "got %d ids for %s (%s)\n", g_list_length(elements), subscription->node->id, subscription->node->title);
+		
+		/* Only if we got some ids */
+		if (elements) {
+			g_autofree gchar 	*url;
+			UpdateRequest		*request;
+					
+			url = g_strdup_printf ("%s/reader/api/0/stream/items/contents",
+			                       node_source_root_from_node (subscription->node)->subscription->source);                       
+		
+			request = update_request_new (
+				url,
+				subscription->updateState,
+				subscription->updateOptions
+			);
+			request->postdata = query->str;			
+			(void) update_execute_request (node_source_root_from_node (subscription->node)->subscription,
+			                               request,
+			                               google_source_feed_subscription_process_update_result,
+       			                               subscription,
+       			                               flags);
+		}
 
-	// FIXME: part 2 of the newCount workaround
-	//feedlist_update_new_item_count (newCount);
-	
-	debug_end_measurement (DEBUG_UPDATE, "time taken to update statuses");
+		g_list_free (elements);
+		g_string_free (query, FALSE);
+	} else {
+		subscription->node->available = FALSE;
+	}
+	g_object_unref (parser);
 }
 
 static gboolean
-google_feed_subscription_prepare_update_request (subscriptionPtr subscription, 
-                                                 UpdateRequest *request)
+google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscription, 
+                                                     UpdateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update\n");
+	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update");
 	GoogleSourcePtr source = (GoogleSourcePtr) node_source_root_from_node (subscription->node)->data; 
 	
 	g_assert(source); 
 	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) {
-		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0) ;
+		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0);
+		return FALSE;
+	}
+	
+	if (!metadata_list_get (subscription->metadata, "feed-id")) {
+		debug2 (DEBUG_UPDATE, "Skipping Google Reader API feed '%s' (%s) without id!", subscription->source, subscription->node->id);
 		return FALSE;
 	}
 
-	if (!g_str_equal (request->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) { 
-		gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
-		gchar* newUrl = g_strdup_printf ("http://www.google.com/reader/atom/feed/%s", source_escaped);
-		update_request_set_source (request, newUrl);
-		g_free (newUrl);
-		g_free (source_escaped);
+	if (!g_str_equal (request->source, GOOGLE_READER_BROADCAST_FRIENDS_URL)) {
+		g_autofree gchar* sourceEscaped = g_uri_escape_string (metadata_list_get (subscription->metadata, "feed-id"), NULL, TRUE);
+		g_autofree gchar* url;
+		
+		/* Note: we have to do a /stream/items/ids here as several Google Reader
+		   clone implementations (e.g. Miniflux) do not implement /stream/contents.
+		   
+		   Also /stream/items/contents needs to be done via POST as some implementations
+		   do not provide a GET endpoint (e.g. Miniflux) */
+		                       
+		// FIXME: move to API fields!
+		// FIXME: do not use hard-coded 50
+		// FIXME: consider passing nt=<epoch> (latest fetch timestamp)
+		url = g_strdup_printf ("%s/reader/api/0/stream/items/ids?s=%s&client=liferea&n=50&output=json&merge=true",
+		                       node_source_root_from_node (subscription->node)->subscription->source,
+		                       sourceEscaped);                       
+
+		update_request_set_source (request, url);
+		update_request_set_auth_value (request, source->root->source->authToken);
 	}
-	update_request_set_auth_value (request, source->root->source->authToken);
 	return TRUE;
 }
 
 struct subscriptionType googleSourceFeedSubscriptionType = {
-	google_feed_subscription_prepare_update_request,
-	google_feed_subscription_process_update_result
+	google_source_feed_subscription_prepare_ids_request,
+	google_source_feed_subscription_process_ids_result
 };
 
 
