@@ -1,5 +1,5 @@
 /**
- * @file theoldreader_source_feed.c  TheOldReader feed subscription routines
+ * @file reedah_source_feed.c  Reedah feed subscription routines
  *
  * Copyright (C) 2013-2014  Lars Windolf <lars.windolf@gmx.de>
  *
@@ -176,10 +176,9 @@ reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 		return FALSE;
 	}
 
-	debug0 (DEBUG_UPDATE, "Setting cookies for a Reedah subscription");
 	gchar* source_escaped = g_uri_escape_string(metadata_list_get (subscription->metadata, "reedah-feed-id"), NULL, TRUE);
 	// FIXME: move to .h
-	// FIXME: do not use 30
+	// FIXME: do not use hard-coded 30
 	gchar* newUrl = g_strdup_printf ("http://www.reedah.com/reader/api/0/stream/contents/%s?client=liferea&n=30", source_escaped);
 	update_request_set_source (request, newUrl);
 	g_free (newUrl);
