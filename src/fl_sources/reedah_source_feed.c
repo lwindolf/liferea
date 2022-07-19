@@ -1,7 +1,7 @@
 /**
  * @file reedah_source_feed.c  Reedah feed subscription routines
  *
- * Copyright (C) 2013-2014  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2013-2022  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ reedah_item_callback (JsonNode *node, itemPtr item)
 	/* Determine read state: check for category with ".*state/com.google/read" */
 	categories = json_get_node (node, "categories");
 	if (categories && JSON_NODE_TYPE (categories) == JSON_NODE_ARRAY) {
-		iter = elements = json_array_get_elements (json_node_get_array (canonical));
+		iter = elements = json_array_get_elements (json_node_get_array (categories));
 		while (iter) {
 			const gchar *category = json_node_get_string ((JsonNode *)iter->data);
 			if (category) {

@@ -59,7 +59,7 @@ google_source_migrate_node(nodePtr node)
 }
 
 static void
-google_source_feed_item_callback (JsonNode *node, itemPtr item)
+google_source_feed_item_cb (JsonNode *node, itemPtr item)
 {
 	JsonNode	*canonical, *categories;
 	GList		*elements, *iter;
@@ -83,10 +83,11 @@ google_source_feed_item_callback (JsonNode *node, itemPtr item)
 	/* Determine read state: check for category with ".*state/com.google/read" */
 	categories = json_get_node (node, "categories");
 	if (categories && JSON_NODE_TYPE (categories) == JSON_NODE_ARRAY) {
-		iter = elements = json_array_get_elements (json_node_get_array (canonical));
+		iter = elements = json_array_get_elements (json_node_get_array (categories));
 		while (iter) {
 			const gchar *category = json_node_get_string ((JsonNode *)iter->data);
 			if (category) {
+			g_print("category: %s\n", category);
 				item->readStatus = (strstr (category, "state\\/com.google\\/read") != NULL);
 				break;
 			}
@@ -112,7 +113,7 @@ google_source_feed_subscription_process_update_result (const struct updateResult
 		   [{"crawlTimeMsec":"1375821312282",
 		     "id"::"tag:google.com,reader:2005\/item\/4ee371db36f84de2",
 		     "categories":["user\/15724899091976567759\/state\/com.google\/reading-list",
-		     "user\/15724899091976567759\/state\/com.google\/fresh"],
+		                   "user\/15724899091976567759\/state\/com.google\/fresh"],
 		     "title":"Firefox 23 Arrives With New Logo, Mixed Content Blocker, and Network Monitor",
 		     "published":1375813680,
 		     "updated":1375821312,
@@ -133,7 +134,7 @@ google_source_feed_subscription_process_update_result (const struct updateResult
 		mapping.title		= "title";
 		mapping.link		= NULL;
 		mapping.description	= "summary/content";
-		mapping.read		= NULL;
+		mapping.read		= "read";
 		mapping.updated		= "updated";
 		mapping.author		= "author";
 		mapping.flag		= "marked";
@@ -141,7 +142,7 @@ google_source_feed_subscription_process_update_result (const struct updateResult
 		mapping.xhtml		= TRUE;
 		mapping.negateRead	= TRUE;
 
-		items = json_api_get_items (result->data, "items", &mapping, &google_source_feed_item_callback);
+		items = json_api_get_items (result->data, "items", &mapping, &google_source_feed_item_cb);
 
 		/* merge against feed cache */
 		if (items) {
