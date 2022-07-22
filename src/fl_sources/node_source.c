@@ -111,6 +111,13 @@ node_source_setup_root (void)
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());
 
+	/* register all source types that are google like */
+	type = g_new0 (struct nodeSourceType, 1);
+	memcpy (type, google_source_get_type (), sizeof(struct nodeSourceType));
+	type->name = N_("Miniflux");
+	type->id = "fl_miniflux";
+	node_source_type_register (type);
+
 	extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
 		                             LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, NULL);
 	liferea_plugins_engine_set_default_signals (extensions, NULL);
