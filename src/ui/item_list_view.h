@@ -1,7 +1,7 @@
 /*
  * @file item_list_view.h  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -145,12 +145,11 @@ void item_list_view_clear (ItemListView *ilv);
 /**
  * item_list_view_update: (skip)
  * @ilv:	        the ItemListView
- * @hasEnclosures:	TRUE if at least one item has an enclosure
  *
  * Update the ItemListView with the newly added items. To be called
  * after doing a batch of item_list_view_add_item() calls.
  */
-void item_list_view_update (ItemListView *ilv, gboolean hasEnclosures);
+void item_list_view_update (ItemListView *ilv);
 
 /* menu callbacks */
 

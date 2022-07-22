@@ -15,6 +15,10 @@ To be released
 	* Improve HTML5 extraction: extract <main> if it exists and no article
 	  was found.
 
+	* Hide unused expander space in item list. This saves horizontal
+	  space.
+	* Drop enclosure icon from item list. This saves horizontal space.
+
 
 2022-04-05   Lars Windolf <lars.windolf@gmx.de>
 

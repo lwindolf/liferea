@@ -1,7 +1,7 @@
 /*
  * @file itemview.c  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,6 @@ struct _ItemView {
 	gboolean	browsing;		/*<< TRUE if itemview is used as internal browser right now */
 	gboolean	needsHTMLViewUpdate;	/*<< flag to be set when HTML rendering is to be
 						     updated, used to delay HTML updates */
-	gboolean	hasEnclosures;		/*<< TRUE if at least one item of the current itemset has an enclosure */
 
 	nodeViewType	viewMode;		/*<< current viewing mode */
 	guint		currentLayoutMode;	/*<< layout mode (3 pane, 2 pane, wide view) */
@@ -146,7 +145,6 @@ itemview_clear (void)
 	if (itemview->itemListView)
 		item_list_view_clear (itemview->itemListView);
 	enclosure_list_view_hide (itemview->enclosureView);
-	itemview->hasEnclosures = FALSE;
 	itemview->needsHTMLViewUpdate = TRUE;
 	itemview->browsing = FALSE;
 }
@@ -176,8 +174,6 @@ itemview_set_displayed_node (nodePtr node)
 void
 itemview_add_item (itemPtr item)
 {
-	itemview->hasEnclosures |= item->hasEnclosure;
-
 	if (itemview->itemListView)
 		/* add item in 3 pane mode */
 		item_list_view_add_item (itemview->itemListView, item);
@@ -289,7 +285,7 @@ void
 itemview_update (void)
 {
 	if (itemview->itemListView)
-		item_list_view_update (itemview->itemListView, itemview->hasEnclosures);
+		item_list_view_update (itemview->itemListView);
 
 	if (itemview->itemListView && itemview->node) {
 		item_list_view_enable_favicon_column (itemview->itemListView, NODE_TYPE (itemview->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
