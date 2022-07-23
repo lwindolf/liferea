@@ -165,7 +165,7 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 		if (result->data == NULL) {
 			failed = TRUE;
 		} else {
-			if (node->source->type->api.json) {
+			if (node->source->api.json) {
 				JsonParser *parser = json_parser_new ();
 
 				if (!json_parser_load_from_data (parser, result->data, -1, NULL)) {
@@ -209,32 +209,32 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 static void
 google_reader_api_add_subscription (GoogleReaderActionPtr action, UpdateRequest *request, const gchar* token)
 {
-	update_request_set_source (request, action->source->type->api.add_subscription);
+	update_request_set_source (request, action->source->api.add_subscription);
 	gchar *s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
-	request->postdata = g_strdup_printf (action->source->type->api.add_subscription_post, s_escaped, token);
+	request->postdata = g_strdup_printf (action->source->api.add_subscription_post, s_escaped, token);
 	g_free (s_escaped);
 }
 
 static void
 google_reader_api_remove_subscription (GoogleReaderActionPtr action, UpdateRequest *request, const gchar* token)
 {
-	update_request_set_source (request, action->source->type->api.remove_subscription);
+	update_request_set_source (request, action->source->api.remove_subscription);
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	g_assert (!request->postdata);
-	request->postdata = g_strdup_printf (action->source->type->api.remove_subscription_post, s_escaped, token);
+	request->postdata = g_strdup_printf (action->source->api.remove_subscription_post, s_escaped, token);
 	g_free (s_escaped);
 }
 
 static void
 google_reader_api_edit_label (GoogleReaderActionPtr action, UpdateRequest *request, const gchar* token)
 {
-	update_request_set_source (request, action->source->type->api.edit_label);
+	update_request_set_source (request, action->source->api.edit_label);
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	gchar *a_escaped = g_uri_escape_string (action->label, NULL, TRUE);
 	if (action->actionType == EDIT_ACTION_ADD_LABEL) {
-		request->postdata = g_strdup_printf (action->source->type->api.edit_add_label_post, s_escaped, a_escaped, token);
+		request->postdata = g_strdup_printf (action->source->api.edit_add_label_post, s_escaped, a_escaped, token);
 	} else {
-		request->postdata = g_strdup_printf (action->source->type->api.edit_remove_label_post, s_escaped, a_escaped, token);
+		request->postdata = g_strdup_printf (action->source->api.edit_remove_label_post, s_escaped, a_escaped, token);
 	}
 	g_free (a_escaped);
 	g_free (s_escaped);
@@ -243,7 +243,7 @@ google_reader_api_edit_label (GoogleReaderActionPtr action, UpdateRequest *reque
 static void
 google_reader_api_edit_tag (GoogleReaderActionPtr action, UpdateRequest *request, const gchar *token)
 {
-	update_request_set_source (request, action->source->type->api.edit_tag);
+	update_request_set_source (request, action->source->api.edit_tag);
 
 	const gchar* prefix = "feed";
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
@@ -269,25 +269,25 @@ google_reader_api_edit_tag (GoogleReaderActionPtr action, UpdateRequest *request
 	if (action->actionType == EDIT_ACTION_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_KEPT_UNREAD, NULL, TRUE);
 		gchar *r_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_ar_tag_post, i_escaped, prefix, s_escaped, a_escaped, r_escaped, token);
+		postdata = g_strdup_printf (action->source->api.edit_tag_ar_tag_post, i_escaped, prefix, s_escaped, a_escaped, r_escaped, token);
 		g_free (r_escaped);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_READ) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_add_post, i_escaped, prefix, s_escaped, a_escaped, token);
+		postdata = g_strdup_printf (action->source->api.edit_tag_add_post, i_escaped, prefix, s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_add_post, i_escaped, prefix, s_escaped, a_escaped, token);
+		postdata = g_strdup_printf (action->source->api.edit_tag_add_post, i_escaped, prefix, s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_STARRED) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_STARRED, NULL, TRUE) ;
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_add_post, i_escaped, prefix,
+		postdata = g_strdup_printf (action->source->api.edit_tag_add_post, i_escaped, prefix,
 			s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_UNSTARRED) {
 		gchar* r_escaped = g_uri_escape_string(GOOGLE_READER_TAG_STARRED, NULL, TRUE);
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_remove_post, i_escaped, prefix,
+		postdata = g_strdup_printf (action->source->api.edit_tag_remove_post, i_escaped, prefix,
 			s_escaped, r_escaped, token);
 	}
 
@@ -369,7 +369,7 @@ google_reader_api_edit_process (nodeSourcePtr source)
  	* google_reader_api_edit_token_cb
 	 */
 	request = update_request_new (
-		source->type->api.token,
+		source->api.token,
 		source->root->subscription->updateState,
 		source->root->subscription->updateOptions
 	);

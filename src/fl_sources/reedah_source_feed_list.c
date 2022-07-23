@@ -267,7 +267,7 @@ reedah_source_opml_quick_update(ReedahSourcePtr source)
 	subscriptionPtr subscription = source->root->subscription;
 
 	UpdateRequest *request = update_request_new (
-		source->root->source->type->api.unread_count,
+		source->root->source->api.unread_count,
 		subscription->updateState,
 		subscription->updateOptions
 	);
@@ -296,12 +296,12 @@ reedah_source_opml_subscription_prepare_update_request (subscriptionPtr subscrip
 	g_assert(node->source);
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
 		debug0(DEBUG_UPDATE, "ReedahSource: login");
-		reedah_source_login (source, 0) ;
+		reedah_source_login (source, 0);
 		return FALSE;
 	}
 	debug1 (DEBUG_UPDATE, "updating Reedah subscription (node id %s)", node->id);
 
-	update_request_set_source (request, node->source->type->api.subscription_list);
+	update_request_set_source (request, node->source->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);
 
 	return TRUE;

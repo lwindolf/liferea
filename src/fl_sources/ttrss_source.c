@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.c  Tiny Tiny RSS feed list source support
  *
- * Copyright (C) 2010-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -352,6 +352,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 
 		node = node_new (node_source_get_node_type ());
 		node_source_new (node, ttrss_source_get_type (), "");
+		node_set_title (node, node->source->type->name);
 
 		/* This is a bit ugly: we need to prevent the tt-rss base
 		   URL from being lost by unwanted permanent redirects on

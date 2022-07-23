@@ -1,7 +1,7 @@
 /**
  * @file google_reader_api.h  Interface for implementing the Google Reader API
  * 
- * Copyright (C) 2014-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2014-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,24 +29,43 @@
 #define GOOGLE_READER_TAG_STARRED              "user/-/state/com.google/starred"
 
 typedef struct googleReaderApi {
-	gboolean	json;	/**< Returns mostly JSON */
-
+	// FIXME: this flag should probably removed if we focus on only supporting JSON 
+	gboolean	json;	/**< Returns mostly JSON (i.e. TheOldReader) */
+	
 	/** Endpoint definitions */
-	const char	*unread_count;
-	const char	*subscription_list;
-	const char	*add_subscription;
-	const char	*add_subscription_post;
-	const char	*remove_subscription;
-	const char	*remove_subscription_post;
-	const char	*edit_tag;
-	const char	*edit_tag_add_post;
-	const char	*edit_tag_ar_tag_post;
-	const char	*edit_tag_remove_post;
-	const char	*edit_label;
-	const char	*edit_add_label_post;
-	const char	*edit_remove_label_post;
-	const char	*token;
+	gchar	*login;			/**< for now optional */
+	gchar	*login_post;		/**< for now optional */
+	gchar	*unread_count;
+	gchar	*subscription_list;
+	gchar	*add_subscription;
+	gchar	*add_subscription_post;
+	gchar	*remove_subscription;
+	gchar	*remove_subscription_post;
+	gchar	*edit_tag;
+	gchar	*edit_tag_add_post;
+	gchar	*edit_tag_ar_tag_post;
+	gchar	*edit_tag_remove_post;
+	gchar	*edit_label;
+	gchar	*edit_add_label_post;
+	gchar	*edit_remove_label_post;
+	gchar	*token;
 	/* when extending this list add assertions in node_source_type_register! */
 } googleReaderApi;
+
+/**
+ * google_reader_api_check:
+ * Check if Google reader clones provide all API methods
+ *
+ * @param: api		API endpoint definition
+ */
+void google_reader_api_check (googleReaderApi *api);
+
+/**
+ * google_reader_api_free:
+ * Free API endpoint strings (not the reference!)
+ *
+ * @param: api		API endpoint definition
+ */
+void google_reader_api_free (googleReaderApi *api);
 
 #endif

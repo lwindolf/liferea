@@ -1,12 +1,15 @@
 /**
- * @file theoldreader_source_feed_list.c  TheOldReader feed list handling
- *
- * Copyright (C) 2013-2018  Lars Windolf <lars.windolf@gmx.de>
+ * @file google_source_feed_list.c  Google reader feed list handling routines.
+ * 
+ * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
+ * Copyright (C) 2011 Peter Oliver
+ * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
+ * Copyright (C) 2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * (at your option) any later version. 
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,7 +22,7 @@
  */
 
 
-#include "theoldreader_source_feed_list.h"
+#include "google_source_feed_list.h"
 
 #include <glib.h>
 #include <string.h>
@@ -34,13 +37,48 @@
 #include "node.h"
 #include "subscription.h"
 #include "subscription_icon.h"
-#include "xml.h"
 
 #include "fl_sources/opml_source.h"
-#include "fl_sources/theoldreader_source.h"
+#include "fl_sources/google_source.h"
+#include "fl_sources/google_reader_api_edit.h"
+
+/**
+ * Find a node by the source id.
+ */
+nodePtr
+google_source_feed_list_get_node_by_source (GoogleSourcePtr gsource, const gchar *source) 
+{
+	return google_source_feed_list_get_subnode_by_node (gsource->root, source);
+}
+
+/**
+ * Recursively find a node by the source id.
+ */
+nodePtr
+google_source_feed_list_get_subnode_by_node (nodePtr node, const gchar *source) 
+{
+	nodePtr subnode;
+	nodePtr subsubnode;
+	GSList  *iter = node->children;
+	for (; iter; iter = g_slist_next (iter)) {
+		subnode = (nodePtr)iter->data;
+		if (subnode->subscription
+		    && g_str_equal (subnode->subscription->source, source))
+			return subnode;
+		else if (subnode->type->capabilities
+			 & NODE_CAPABILITY_SUBFOLDERS) {
+			subsubnode = google_source_feed_list_get_subnode_by_node(subnode, source);
+			if (subnode != NULL)
+				return subsubnode;
+		}
+	}
+	return NULL;
+}
+
+/* subscription list merging functions */
 
 static void
-theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
+google_source_check_node_for_removal (nodePtr node, gpointer user_data)
 {
 	JsonArray	*array = (JsonArray *)user_data;
 	GList		*iter, *elements;
@@ -51,13 +89,18 @@ theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
 		if (!node->children)
 			feedlist_node_removed (node);
 
-		node_foreach_child_data (node, theoldreader_source_check_node_for_removal, user_data);
+		node_foreach_child_data (node, google_source_check_node_for_removal, user_data);
 	} else {
+		const gchar *feedId = metadata_list_get (node->subscription->metadata, "feed-id");
+		if (!feedId)
+			return;
+		
 		elements = iter = json_array_get_elements (array);
 		while (iter) {
 			JsonNode *json_node = (JsonNode *)iter->data;
-			if (g_str_equal (node->subscription->source, json_get_string (json_node, "url"))) {
-				debug1 (DEBUG_UPDATE, "node: %s", node->subscription->source);
+			if (g_str_equal (node->subscription->source, json_get_string (json_node, "url")) &&
+			    g_str_equal (feedId, json_get_string(json_node, "id"))) {
+				debug2 (DEBUG_UPDATE, "check for removal node: %s (%s)", feedId, node->subscription->source);
 				found = TRUE;
 				break;
 			}
@@ -71,20 +114,20 @@ theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
 }
 
 static void
-theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, const gchar *title, const gchar *id, nodePtr folder)
+google_source_merge_feed (GoogleSourcePtr source, const gchar *url, const gchar *title, const gchar *id, nodePtr folder)
 {
 	nodePtr	node;
 
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 	if (!node) {
-		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
+		debug3 (DEBUG_UPDATE, "adding %s (id=%s, url=%s)", title, id, url);
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
 		node_set_parent (node, folder?folder:source->root, -1);
 		node_set_subscription (node, subscription_new (url, NULL, NULL));
 		node->subscription->type = source->root->source->type->feedSubscriptionType;
-		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "theoldreader-feed-id", id);
+		node->subscription->metadata = metadata_list_append (node->subscription->metadata, "feed-id", id);
 
 		feedlist_node_imported (node);
 
@@ -97,14 +140,14 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 	}
 }
 
-/* JSON subscription list processing implementation */
+/* subscription type implementation */
 
 static void
-theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+google_source_feed_list_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
 {
-	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) subscription->node->data;
+	GoogleSourcePtr	source = (GoogleSourcePtr) subscription->node->data;
 
-	debug1 (DEBUG_UPDATE,"theoldreader_subscription_cb(): %s", result->data);
+	debug1 (DEBUG_UPDATE,"google_source_feed_list_subscription_process_update_result(): %s", result->data);
 
 	subscription->updateJob = NULL;
 
@@ -156,65 +199,62 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 
 				/* ignore everything without a feed url */
 				if (json_get_string (node, "url")) {
-					theoldreader_source_merge_feed (source,
-					                                json_get_string (node, "url"),
-					                                json_get_string (node, "title"),
-					                                json_get_string (node, "id"),
-									folder);
+					google_source_merge_feed (source,
+					                          json_get_string (node, "url"),
+					                          json_get_string (node, "title"),
+					                          json_get_string (node, "id"),
+					                          folder);
 				}
 				iter = g_list_next (iter);
 			}
 			g_list_free (elements);
 
 			/* Remove old nodes we cannot find anymore */
-			node_foreach_child_data (source->root, theoldreader_source_check_node_for_removal, array);
+			node_foreach_child_data (source->root, google_source_check_node_for_removal, array);
 
 			/* Save new subscription tree to OPML cache file */
 			opml_source_export (subscription->node);
 
 			subscription->node->available = TRUE;
 		} else {
-			g_print ("Invalid JSON returned on TheOldReader request! >>>%s<<<", result->data);
+			subscription->node->available = FALSE;
+			debug1 (DEBUG_UPDATE, "Invalid JSON returned on Google Reader API request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "theoldreader_subscription_cb(): ERROR: failed to get subscription list!");
+		debug0 (DEBUG_UPDATE, "google_source_feed_list_subscription_process_update_result(): ERROR: failed to get subscription list!");
 	}
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
 		node_foreach_child_data (subscription->node, node_update_subscription, GUINT_TO_POINTER (0));
 }
 
-static void
-theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
-{
-	theoldreader_subscription_cb (subscription, result, flags);
-}
-
 static gboolean
-theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
+google_source_feed_list_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRequest *request)
 {
 	nodePtr node = subscription->node;
-
-	g_assert(node->source);
+	GoogleSourcePtr	source = (GoogleSourcePtr)node->data;
+	
+	g_assert(source);
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		debug0 (DEBUG_UPDATE, "TheOldReaderSource: login");
-		theoldreader_source_login (node->data, 0);
+		debug0 (DEBUG_UPDATE, "GoogleSource: login");
+		google_source_login (source, 0);
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating TheOldReader subscription (node id %s)", node->id);
-
-	update_request_set_source (request, node->source->api.subscription_list);
+	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", node->id);
+	
+	update_request_set_source (request, source->root->source->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);
-
+	
 	return TRUE;
 }
 
 /* OPML subscription type definition */
 
-struct subscriptionType theOldReaderSourceOpmlSubscriptionType = {
-	theoldreader_source_opml_subscription_prepare_update_request,
-	theoldreader_source_opml_subscription_process_update_result
+struct subscriptionType googleSourceOpmlSubscriptionType = {
+	google_source_feed_list_subscription_prepare_update_request,
+	google_source_feed_list_subscription_process_update_result
 };
+

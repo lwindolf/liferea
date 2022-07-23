@@ -35,7 +35,7 @@ typedef struct TheOldReaderSource {
 	 */
 	GHashTable      *lastTimestampMap; 
 
-	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to TTRSS category id */
+	GHashTable	*folderToCategory;	/**< Lookup hash for folder node id to TheOldReader category id */
 } *TheOldReaderSourcePtr;
 
 /**

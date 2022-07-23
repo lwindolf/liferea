@@ -585,6 +585,9 @@ feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
 static gboolean
 feedlist_schedule_save_cb (gpointer user_data)
 {
+	if (!feedlist || !ROOTNODE)
+		return FALSE;
+
 	/* step 1: request each node to save its state, that is
 	   mostly needed for nodes that are node sources */
 	feedlist_foreach (node_save);

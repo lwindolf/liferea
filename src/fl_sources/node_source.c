@@ -1,7 +1,7 @@
 /*
  * @file node_source.c  generic node source provider implementation
  *
- * Copyright (C) 2005-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include "feedlist.h"
 #include "folder.h"
 #include "item_state.h"
+#include "metadata.h"
 #include "node.h"
 #include "node_type.h"
 #include "plugins_engine.h"
@@ -41,6 +42,7 @@
 #include "fl_sources/default_source.h"
 #include "fl_sources/dummy_source.h"
 #include "fl_sources/google_source.h"
+#include "fl_sources/google_reader_api.h"
 #include "fl_sources/opml_source.h"
 #include "fl_sources/reedah_source.h"
 #include "fl_sources/theoldreader_source.h"
@@ -84,24 +86,6 @@ node_source_type_register (nodeSourceTypePtr type)
 	/* allow the plugin to initialize */
 	type->source_type_init ();
 
-	/* Check if Google reader clones provide all API methods */
-	if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API) {
-		g_assert (type->api.unread_count);
-		g_assert (type->api.subscription_list);
-		g_assert (type->api.add_subscription);
-		g_assert (type->api.add_subscription_post);
-		g_assert (type->api.remove_subscription);
-		g_assert (type->api.remove_subscription_post);
-		g_assert (type->api.edit_label);
-		g_assert (type->api.edit_add_label_post);
-		g_assert (type->api.edit_remove_label_post);
-		g_assert (type->api.edit_tag);
-		g_assert (type->api.edit_tag_add_post);
-		g_assert (type->api.edit_tag_remove_post);
-		g_assert (type->api.edit_tag_ar_tag_post);
-		g_assert (type->api.token);
-	}
-
 	nodeSourceTypes = g_slist_append (nodeSourceTypes, type);
 
 	return TRUE;
@@ -114,6 +98,9 @@ node_source_setup_root (void)
 	nodeSourceTypePtr type;
 
 	debug_enter ("node_source_setup_root");
+	
+	/* register a generic type for storing feed-id strings of remote services */
+	metadata_type_register ("feed-id", METADATA_TYPE_TEXT);
 
 	/* we need to register all source types once before doing anything... */
 	node_source_type_register (default_source_get_type ());
@@ -123,6 +110,13 @@ node_source_setup_root (void)
 	node_source_type_register (reedah_source_get_type ());
 	node_source_type_register (ttrss_source_get_type ());
 	node_source_type_register (theoldreader_source_get_type ());
+
+	/* register all source types that are google like */
+	type = g_new0 (struct nodeSourceType, 1);
+	memcpy (type, google_source_get_type (), sizeof(struct nodeSourceType));
+	type->name = N_("Miniflux");
+	type->id = "fl_miniflux";
+	node_source_type_register (type);
 
 	extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
 		                             LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, NULL);
@@ -205,6 +199,9 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 			g_print ("Removing obsolete Bloglines subscription.");
 			feedlist_node_removed (node);
 		}
+		
+		if(type->capabilities & NODE_SOURCE_CAPABILITY_GOOGLE_READER_API)
+			google_reader_api_check (&(node->source->api));
 	} else {
 		g_print ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
 	}
@@ -246,8 +243,6 @@ node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
 	node->source->type = type;
 	node->source->loginState = NODE_SOURCE_STATE_NONE;
 	node->source->actionQueue = g_queue_new ();
-
-	node_set_title (node, type->name);
 
 	if (url) {
 		subscription = subscription_new (url, NULL, NULL);
@@ -610,6 +605,8 @@ node_source_free (nodePtr node)
 {
 	if (NULL != NODE_SOURCE_TYPE (node)->free)
 		NODE_SOURCE_TYPE (node)->free (node);
+
+	google_reader_api_free (&(node->source->api));
 
 	g_free (node->source->authToken);
 	g_free (node->source);

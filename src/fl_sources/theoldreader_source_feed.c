@@ -2,7 +2,7 @@
  * @file theoldreader_source_feed.c  TheOldReader feed subscription routines
  *
  * Copyright (C) 2008  Arnold Noronha <arnstein87@gmail.com>
- * Copyright (C) 2014  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2014-2022  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -188,7 +188,7 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 		xmlFreeDoc (doc);
 	} else {
 		debug0 (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
-		g_print ("theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
+		subscription->node->available = FALSE;
 	}
 
 	debug_end_measurement (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result");
@@ -212,12 +212,9 @@ theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscript
 		return FALSE;
 	}
 
-	debug1 (DEBUG_UPDATE, "Setting cookies for a TheOldReader subscription '%s'", subscription->source);
-	gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
-	gchar* newUrl = g_strdup_printf ("http://theoldreader.com/reader/atom/%s", metadata_list_get (subscription->metadata, "theoldreader-feed-id"));
-	update_request_set_source (request, newUrl);
-	g_free (newUrl);
-	g_free (source_escaped);
+	gchar* url = g_strdup_printf ("http://theoldreader.com/reader/atom/%s", metadata_list_get (subscription->metadata, "theoldreader-feed-id"));
+	update_request_set_source (request, url);
+	g_free (url);
 
 	update_request_set_auth_value (request, subscription->node->source->authToken);
 	return TRUE;
