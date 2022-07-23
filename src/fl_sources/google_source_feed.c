@@ -87,7 +87,6 @@ google_source_feed_item_cb (JsonNode *node, itemPtr item)
 		while (iter) {
 			const gchar *category = json_node_get_string ((JsonNode *)iter->data);
 			if (category) {
-			g_print("category: %s\n", category);
 				item->readStatus = (strstr (category, "state\\/com.google\\/read") != NULL);
 				break;
 			}
