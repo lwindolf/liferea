@@ -512,7 +512,6 @@ liferea_webkit_default_settings (WebKitSettings *settings)
 	g_object_set (settings, "enable-plugins", enable_plugins, NULL);
 
 	user_agent = network_get_user_agent ();
-g_print("UA=%s\n", user_agent);
 	webkit_settings_set_user_agent (settings, user_agent);
 	g_free (user_agent);
 
