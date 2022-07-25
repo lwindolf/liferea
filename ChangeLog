@@ -1,4 +1,4 @@
-To be released
+2022-07-25   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.9
 
@@ -15,9 +15,29 @@ To be released
 	* Improve HTML5 extraction: extract <main> if it exists and no article
 	  was found.
 
-	* Hide unused expander space in item list. This saves horizontal
-	  space.
+	* #1117: Hide unused expander space in item list. This saves horizontal
+	  space. (Sefler Zhou)
+
 	* Drop enclosure icon from item list. This saves horizontal space.
+	  (Lars Windolf)
+
+	* #515, #962, #1113 adds generic Google Reader API support
+	  (this enables access to FeedHQ, FreshRSS, Miniflux...)
+
+	* #1108, #113: Improve performance by different check order in itemset
+	  merging (suggested by mozbugbox)
+
+	* Fixes #1033: Subscribing defaulted to HTML5 feeds even when real
+	  feeds do exist. (reported by Hanno Braun)
+
+	* Fixes #1111: wrong base URI in reader mode
+	  (Lars Windolf)
+	
+	* Fixes #1112: Image duplication caused by feeds providing an image
+	  link which is also in the item description as additional metadata.
+	  (Lars Windolf)
+
+	* Update of Dutch translation (Gert-dev)
 
 
 2022-04-05   Lars Windolf <lars.windolf@gmx.de>
