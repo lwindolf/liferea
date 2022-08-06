@@ -594,7 +594,7 @@ get_exec_timeout_ms(void)
 			return 1000*i;
 		}
 	}
-	return 30000; /* Default timeout */
+	return 60000; /* Default timeout */
 }
 
 static void
