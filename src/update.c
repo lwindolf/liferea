@@ -584,6 +584,18 @@ update_exec_cmd_cb_timeout (gpointer user_data)
 	return FALSE;	/* Remove timeout source */
 }
 
+static int
+get_exec_timeout_ms(void)
+{
+	const gchar	*val;
+	int	i;
+	if ((val = g_getenv("LIFEREA_FEED_CMD_TIMEOUT")) != NULL) {
+		if ((i = atoi(val)) > 0) {
+			return 1000*i;
+		}
+	}
+	return 30000; /* Default timeout */
+}
 
 static void
 update_exec_cmd (updateJobPtr job)
@@ -614,8 +626,7 @@ update_exec_cmd (updateJobPtr job)
 	job->cmd.stdout_ch = g_io_channel_unix_new (job->cmd.fd);
 	job->cmd.io_watch_id = g_io_add_watch (job->cmd.stdout_ch, G_IO_IN | G_IO_HUP, (GIOFunc) update_exec_cmd_cb_out_watch, job);
 
-	/* FIXME: timeout should be configurable */
-	job->cmd.timeout_id = g_timeout_add (30000, (GSourceFunc) update_exec_cmd_cb_timeout, job);
+	job->cmd.timeout_id = g_timeout_add (get_exec_timeout_ms(), (GSourceFunc) update_exec_cmd_cb_timeout, job);
 }
 
 static void

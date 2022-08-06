@@ -94,6 +94,13 @@ usato come URI del proxy. Entrambe vengono usate da molti strumenti CLI, quindi
 assicurati di esportarle in una sotto-shell dedicata.
 .RE
 .TP
+.B LIFEREA_FEED_CMD_TIMEOUT
+.RS
+Se definita, sovrascrive il timeout predefinito per i comandi di generazione
+di feeds con il numero di secondi dato in questa variabile. Deve essere un
+valore intero maggiore di zero; valori non validi verranno ignorati.
+.RE
+.TP
 .B LIFEREA_UA_ANONYMOUS
 Se definita, randomizza e anonimizza la stringa User-Agent HTTP/S predefinita.
 .RB
