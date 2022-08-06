@@ -493,8 +493,9 @@ update_exec_cmd_cb_child_watch (GPid pid, gint status, gpointer user_data)
 	job->cmd.pid = 0;
 	if (WIFEXITED (status) && WEXITSTATUS (status) == 0) {
 		job->result->httpstatus = 200;
-	} else {
-		job->result->httpstatus = 404;  /* FIXME: maybe setting request->returncode would be better */
+	} else if (job->result->httpstatus == 0) {
+		/* If there is no more specific error code. */
+		job->result->httpstatus = 500;  /* Internal server error. */
 	}
 
 	job->cmd.child_watch_id = 0;	/* Caller will remove source. */
@@ -581,6 +582,7 @@ update_exec_cmd_cb_timeout (gpointer user_data)
 	/* Kill child. Result will still be processed by update_exec_cmd_cb_child_watch */
 	kill((pid_t) job->cmd.pid, SIGKILL);
 	job->cmd.timeout_id = 0;
+	job->result->httpstatus = 504;	/* Gateway timeout */
 	return FALSE;	/* Remove timeout source */
 }
 
@@ -607,6 +609,7 @@ update_exec_cmd (updateJobPtr job)
 	 * on this behavior, so we run through a shell and keep compatibility. */
 	gchar		*cmd_args[] = { "/bin/sh", "-c", cmd, NULL };
 
+	job->result->httpstatus = 0;
 	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", cmd);
 	ret = g_spawn_async_with_pipes (NULL, cmd_args, NULL,
 		G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_STDERR_TO_DEV_NULL,
@@ -616,7 +619,7 @@ update_exec_cmd (updateJobPtr job)
 	if (!ret) {
 		debug0 (DEBUG_UPDATE, "g_spawn_async_with_pipes failed");
 		liferea_shell_set_status_bar (_("Error: Could not open pipe \"%s\""), cmd);
-		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
+		job->result->httpstatus = 404; /* Not found */
 		return;
 	}
 
