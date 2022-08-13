@@ -25,6 +25,7 @@
 #include "common.h"
 #include "debug.h"
 #include "metadata.h"
+#include "enclosure.h"
 
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
@@ -148,6 +149,39 @@ rule_check_item_has_enc (rulePtr rule, itemPtr item)
 	return item->hasEnclosure;
 }
 
+static void
+rule_check_item_has_podcast_metadata_cb ( const gchar *key, const gchar *value,
+	guint index, gpointer user_data )
+{
+	gboolean *found = (gboolean *) user_data;
+	if (*found) {
+		return;	/* Already found, nothing else to do. */
+	}
+	if (g_strcmp0(key, "enclosure") != 0) {
+		return;
+	}
+	enclosurePtr encl = enclosure_from_string (value);
+	if (encl->mime && g_str_has_prefix (encl->mime, "audio/")) {
+		*found = TRUE;
+	}
+	enclosure_free (encl);
+}
+
+static gboolean
+rule_check_item_has_podcast (rulePtr rule, itemPtr item)
+{
+	if (!item->hasEnclosure) {
+		return FALSE;	/* Optimization. */
+	}
+
+	gboolean found = FALSE;
+	metadata_list_foreach(item->metadata,
+		rule_check_item_has_podcast_metadata_cb,
+		&found);
+	return found;
+}
+
+
 static gboolean
 rule_check_item_category (rulePtr rule, itemPtr item)
 {
@@ -231,7 +265,8 @@ rule_init (void)
 	rule_info_add (rule_check_item_description,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),			_("does contain"),	_("does not contain"),	TRUE);
 	rule_info_add (rule_check_item_is_unread,	"unread",			_("Read status"),		_("is unread"),		_("is read"),		FALSE);
 	rule_info_add (rule_check_item_is_flagged,	"flagged",			_("Flag status"),		_("is flagged"),	_("is unflagged"),	FALSE);
-	rule_info_add (rule_check_item_has_enc,		"enclosure",			_("Podcast"),			_("included"),		_("not included"),	FALSE);
+	rule_info_add (rule_check_item_has_enc,		"enclosure",			_("Enclosure"),			_("included"),		_("not included"),	FALSE);
+	rule_info_add (rule_check_item_has_podcast,	"podcast",			_("Podcast"),			_("included"),		_("not included"),	FALSE);
 	rule_info_add (rule_check_item_category,	"category",			_("Category"),			_("is set"),		_("is not set"),	TRUE);
 	rule_info_add (rule_check_feed_title,		FEED_TITLE_MATCH_RULE_ID,	_("Feed title"),		_("does contain"),	_("does not contain"),	TRUE);
 	rule_info_add (rule_check_feed_source,		FEED_SOURCE_MATCH_RULE_ID,	_("Feed source"),		_("does contain"),	_("does not contain"),	TRUE);
