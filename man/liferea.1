@@ -92,6 +92,13 @@ URIs. Both are used by many common CLI tools, so make sure to export them in a
 dedicated subshell.
 .RE
 .TP
+.B LIFEREA_FEED_CMD_TIMEOUT
+.RS
+If defined, overrides the default timeout for feed generating commands with
+the number of seconds given in this variable. It must be an integer value
+greater than zero; invalid values will be ignored.
+.RE
+.TP
 .B LIFEREA_UA_ANONYMOUS
 If defined, randomizes and anonymizes the default HTTP/S User-Agent string.
 .RB

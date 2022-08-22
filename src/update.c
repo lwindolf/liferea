@@ -493,8 +493,9 @@ update_exec_cmd_cb_child_watch (GPid pid, gint status, gpointer user_data)
 	job->cmd.pid = 0;
 	if (WIFEXITED (status) && WEXITSTATUS (status) == 0) {
 		job->result->httpstatus = 200;
-	} else {
-		job->result->httpstatus = 404;  /* FIXME: maybe setting request->returncode would be better */
+	} else if (job->result->httpstatus == 0) {
+		/* If there is no more specific error code. */
+		job->result->httpstatus = 500;  /* Internal server error. */
 	}
 
 	job->cmd.child_watch_id = 0;	/* Caller will remove source. */
@@ -581,9 +582,22 @@ update_exec_cmd_cb_timeout (gpointer user_data)
 	/* Kill child. Result will still be processed by update_exec_cmd_cb_child_watch */
 	kill((pid_t) job->cmd.pid, SIGKILL);
 	job->cmd.timeout_id = 0;
+	job->result->httpstatus = 504;	/* Gateway timeout */
 	return FALSE;	/* Remove timeout source */
 }
 
+static int
+get_exec_timeout_ms(void)
+{
+	const gchar	*val;
+	int	i;
+	if ((val = g_getenv("LIFEREA_FEED_CMD_TIMEOUT")) != NULL) {
+		if ((i = atoi(val)) > 0) {
+			return 1000*i;
+		}
+	}
+	return 60000; /* Default timeout */
+}
 
 static void
 update_exec_cmd (updateJobPtr job)
@@ -595,6 +609,7 @@ update_exec_cmd (updateJobPtr job)
 	 * on this behavior, so we run through a shell and keep compatibility. */
 	gchar		*cmd_args[] = { "/bin/sh", "-c", cmd, NULL };
 
+	job->result->httpstatus = 0;
 	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", cmd);
 	ret = g_spawn_async_with_pipes (NULL, cmd_args, NULL,
 		G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_STDERR_TO_DEV_NULL,
@@ -604,7 +619,7 @@ update_exec_cmd (updateJobPtr job)
 	if (!ret) {
 		debug0 (DEBUG_UPDATE, "g_spawn_async_with_pipes failed");
 		liferea_shell_set_status_bar (_("Error: Could not open pipe \"%s\""), cmd);
-		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
+		job->result->httpstatus = 404; /* Not found */
 		return;
 	}
 
@@ -614,8 +629,7 @@ update_exec_cmd (updateJobPtr job)
 	job->cmd.stdout_ch = g_io_channel_unix_new (job->cmd.fd);
 	job->cmd.io_watch_id = g_io_add_watch (job->cmd.stdout_ch, G_IO_IN | G_IO_HUP, (GIOFunc) update_exec_cmd_cb_out_watch, job);
 
-	/* FIXME: timeout should be configurable */
-	job->cmd.timeout_id = g_timeout_add (30000, (GSourceFunc) update_exec_cmd_cb_timeout, job);
+	job->cmd.timeout_id = g_timeout_add (get_exec_timeout_ms(), (GSourceFunc) update_exec_cmd_cb_timeout, job);
 }
 
 static void

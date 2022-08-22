@@ -488,6 +488,14 @@ network_strerror (gint status)
 		case SOUP_STATUS_PROXY_UNAUTHORIZED:	tmp = _("Proxy authentication required"); break;
 		case SOUP_STATUS_REQUEST_TIMEOUT:	tmp = _("Request timed out"); break;
 		case SOUP_STATUS_GONE:			tmp = _("The webserver indicates this feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."); break;
+
+		/* http 5xx server errors */
+		case SOUP_STATUS_INTERNAL_SERVER_ERROR:	tmp = _("Internal Server Error"); break;
+		case SOUP_STATUS_NOT_IMPLEMENTED:	tmp = _("Not Implemented"); break;
+		case SOUP_STATUS_BAD_GATEWAY:		tmp = _("Bad Gateway"); break;
+		case SOUP_STATUS_SERVICE_UNAVAILABLE:	tmp = _("Service Unavailable"); break;
+		case SOUP_STATUS_GATEWAY_TIMEOUT:	tmp = _("Gateway Timeout"); break;
+		case SOUP_STATUS_HTTP_VERSION_NOT_SUPPORTED: tmp = _("HTTP Version Not Supported"); break;
 	}
 
 	if (!tmp) {
