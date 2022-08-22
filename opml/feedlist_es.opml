@@ -4,30 +4,29 @@
     <title>Fuentes por defecto</title>
   </head>
   <body>
-     <outline text="Fuentes de ejemplo (castellano)">
+     <outline text="Fuentes de ejemplo (español)">
       <outline text="OSS">
-        <outline text="Hispalinux" htmlUrl="http://www.hispalinux.es/" xmlUrl="http://www.hispalinux.es/node/feed" />
-	<outline text="Barrapunto" htmlUrl="http://barrapunto.com/" xmlUrl="http://backends.barrapunto.com/barrapunto.rss" />
-	<outline text="BulmaLUG" htmlUrl="http://bulma.net/" xmlUrl="http://bulma.net/xml.php" />
+	   <outline text="Alcance Libre" htmlUrl="https://www.alcancelibre.org/" xmlUrl="https://www.alcancelibre.org/noticias.atom" />
+	   <outline text="Genbeta" htmlUrl="https://www.genbeta.com/" xmlUrl="https://www.genbeta.com/index.rss" />
+	   <outline text="Hispalinux" htmlUrl="https://hispalinux.es/" xmlUrl="https://hispalinux.es/node/feed" />
+	   <outline text="Tuxteno" htmlUrl="https://www.tuxteno.com/" xmlUrl="https://www.tuxteno.com/podcast.xml" />
       </outline>	
     </outline>
 
 	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="Fuentes de ejemplo (inglés)">
 		<outline text="News">
-			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
-			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="http://rss.slashdot.org/Slashdot/slashdot" />
-			<outline text="BBC" htmlUrl="http://www.bbc.com/news" xmlUrl="http://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
-			<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
+			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
+			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdot" />
+			<outline text="BBC" htmlUrl="https://www.bbc.com/news" xmlUrl="https://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
+			<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feed"/>
 		</outline>
 		<outline text="Open Source">		<!-- translate this title for localized feed list -->
-			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
-			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
+			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://feeds.feedburner.com/LifereaBlog" />
+			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="https://planet.gnome.org/atom.xml" />	
 		</outline>
 		<outline text="Podcasts &amp; Music">		<!-- translate this title for localized feed list -->
-			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/feed/atom/"/>
-			<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
-			<outline text="Gorilla vs. Bear" htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
+			<outline text="EscapePod" htmlUrl="https://escapepod.org" xmlUrl="https://escapepod.org/feed/podcast/"/>
 		</outline>
 		<outline text="Comics">
 			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
