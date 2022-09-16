@@ -68,6 +68,9 @@
                 <property name="label" translatable="yes">Please enter the details of the new Google Reader API compatible subscription.</property>
                 <property name="wrap">True</property>
                 <property name="xalign">0</property>
+                <accessibility>
+                  <relation type="label-for" target="google_source"/>
+                </accessibility>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -87,6 +90,9 @@
                   <object class="GtkEntry" id="nameEntry">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="nameLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -95,12 +101,15 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label3">
+                  <object class="GtkLabel" id="passwordLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="label" translatable="yes">_Password</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <accessibility>
+                      <relation type="label-for" target="passwordEntry"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="top-attach">3</property>
@@ -110,12 +119,15 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label2">
+                  <object class="GtkLabel" id="userLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="label" translatable="yes">_Username (Email)</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <accessibility>
+                      <relation type="label-for" target="userEntry"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="top-attach">2</property>
@@ -125,12 +137,15 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label4">
+                  <object class="GtkLabel" id="serverLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="label" translatable="yes">_Server</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <accessibility>
+                      <relation type="label-for" target="serverEntry"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="top-attach">1</property>
@@ -140,12 +155,15 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="label5">
+                  <object class="GtkLabel" id="nameLabel">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="label" translatable="yes">_Name</property>
                     <property name="use-underline">True</property>
                     <property name="xalign">0</property>
+                    <accessibility>
+                      <relation type="label-for" target="nameEntry"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="x-options">GTK_FILL</property>
@@ -157,6 +175,9 @@
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="visibility">False</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="passwordLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -170,6 +191,9 @@
                   <object class="GtkEntry" id="userEntry">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="userLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -183,6 +207,9 @@
                   <object class="GtkEntry" id="serverEntry">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
+                    <accessibility>
+                      <relation type="labelled-by" target="serverLabel"/>
+                    </accessibility>
                   </object>
                   <packing>
                     <property name="left-attach">1</property>
@@ -212,5 +239,8 @@
       <action-widget response="-6">cancelbutton1</action-widget>
       <action-widget response="-5">okbutton1</action-widget>
     </action-widgets>
+    <accessibility>
+      <relation type="labelled-by" target="label1"/>
+    </accessibility>
   </object>
 </interface>
