@@ -161,10 +161,12 @@ rule_check_item_has_podcast_metadata_cb ( const gchar *key, const gchar *value,
 		return;
 	}
 	enclosurePtr encl = enclosure_from_string (value);
-	if (encl->mime && g_str_has_prefix (encl->mime, "audio/")) {
-		*found = TRUE;
+	if (encl != NULL) {
+		if (encl->mime && g_str_has_prefix (encl->mime, "audio/")) {
+			*found = TRUE;
+		}
+		enclosure_free (encl);
 	}
-	enclosure_free (encl);
 }
 
 static gboolean
