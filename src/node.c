@@ -33,6 +33,7 @@
 #include "itemset.h"
 #include "item_state.h"
 #include "metadata.h"
+#include "enclosure.h"
 #include "node.h"
 #include "node_view.h"
 #include "render.h"
@@ -572,6 +573,29 @@ save_item_to_file_metadata_callback (const gchar *key, const gchar *value, guint
 	}
 	else if (g_strcmp0(key, "category") == 0) {
 		xmlTextWriterWriteElement (writer, BAD_CAST "category", BAD_CAST value);
+	}
+	else if (g_strcmp0(key, "enclosure") == 0) {
+		enclosurePtr encl = enclosure_from_string (value);
+		if (encl != NULL) {
+			/* There is no reason to save an enclosure with no URL. */
+			if (encl->url) {
+				xmlTextWriterStartElement(writer, BAD_CAST "enclosure");
+				xmlTextWriterWriteAttribute(writer, BAD_CAST "url", BAD_CAST encl->url);
+
+				/* Spec says both size and type are required but not all feeds respect this. */
+				if (encl->mime) {
+					xmlTextWriterWriteAttribute(writer, BAD_CAST "type", BAD_CAST encl->mime);
+				}
+				if (encl->size > 0) {
+					gchar buf[32];
+					g_snprintf(buf, sizeof(buf), "%ld", encl->size);
+					buf[sizeof(buf)-1] = '\0';
+					xmlTextWriterWriteAttribute(writer, BAD_CAST "length", BAD_CAST buf);
+				}
+				xmlTextWriterEndElement (writer);
+			}
+			enclosure_free (encl);
+		}
 	}
 }
 
