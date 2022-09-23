@@ -128,7 +128,7 @@ html5_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 		}
 	}
 
-	if(!xpath_foreach_match (root, "/html/body//article", html5_feed_parse_article, ctxt)) {
+	if (!xpath_foreach_match (root, "/html/body//article", html5_feed_parse_article, ctxt)) {
 		g_string_append(ctxt->feed->parseErrors, "<p>Could not find HTML5 tags!</p>");
 		return;
 	}
