@@ -497,7 +497,8 @@ liferea_browser_load_reader_content_cb (const struct updateResult * const result
 	}
 		
 	liferea_webkit_run_js (browser->renderWidget,
-	                       g_strdup_printf ("loadContent(true, '<body>%s</body>');\n",
+	                       g_strdup_printf ("setBase('%s');loadContent(true, '<body>%s</body>');\n",
+	                                        result->source,
 	                                        browser->content),
 	                       liferea_browser_load_finished_cb);
 }

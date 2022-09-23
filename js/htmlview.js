@@ -18,6 +18,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+function setBase(uri) {
+	var base = document.createElement ("base");
+	base.setAttribute ("href", uri);
+	document.head.appendChild (base);
+}
+
 /**
  * loadContent() will be run on each internal / Readability.js rendering
  *
