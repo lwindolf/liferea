@@ -1066,11 +1066,13 @@ static const GActionEntry liferea_shell_link_gaction_entries[] = {
 };
 
 static gboolean
-liferea_shell_restore_panes (gpointer user_data)
+liferea_shell_restore_layout (gpointer user_data)
 {
 	GdkWindow	*gdk_window;
 	GtkAllocation	allocation;
 	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
+
+	liferea_shell_restore_position ();
 
 	/* This only works after the window has been restored, so we do it last. */
 	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
@@ -1121,7 +1123,6 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	   shown by clicking on notification icon or when theme
 	   colors are fetched. */
 	gtk_widget_realize (GTK_WIDGET (shell->window));
-	liferea_shell_restore_position ();
 
 	/* Apply horrible window state parameter logic:
 	   -> overrideWindowState provides optional command line flags passed by
@@ -1161,9 +1162,10 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 			"resize", TRUE, NULL);
 	}
 	
-	/* need to run asynchronous otherwise pane widget allocation is reported
-	   wrong, maybe it is running to early as we realize only above */
-	g_idle_add (liferea_shell_restore_panes, NULL);
+	/* Need to run asynchronous otherwise pane widget allocation is reported
+	   wrong, maybe it is running to early as we realize only above. Also
+	   only like this window position restore works properly. */
+	g_idle_add (liferea_shell_restore_layout, NULL);
 }
 
 static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};
