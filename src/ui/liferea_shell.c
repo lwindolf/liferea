@@ -2,7 +2,7 @@
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -245,12 +245,12 @@ liferea_shell_restore_position (void)
 		if (x >= work_area.width)
 			x = work_area.width - 100;
 		else if (x + w < 0)
-			x  = 100;
+			x = 100;
 
 		if (y >= work_area.height)
 			y = work_area.height - 100;
 		else if (y + w < 0)
-			y  = 100;
+			y = 100;
 
 		debug4 (DEBUG_GUI, "Restoring to size %dx%d position %d:%d", w, h, x, y);
 
@@ -277,7 +277,7 @@ liferea_shell_save_position (void)
 	gboolean		last_window_maximized;
 	GdkWindow 		*gdk_window;
 	GdkMonitor 		*monitor;
-	GdkRectangle	work_area;
+	GdkRectangle		work_area;
 
 	/* save pane proportions */
 	pane = liferea_shell_lookup ("leftpane");
@@ -1065,13 +1065,51 @@ static const GActionEntry liferea_shell_link_gaction_entries[] = {
 	{"email-the-author", email_the_author, "t", NULL, NULL}
 };
 
+static gboolean
+liferea_shell_restore_panes (gpointer user_data)
+{
+	GdkWindow	*gdk_window;
+	GtkAllocation	allocation;
+	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
+
+	/* This only works after the window has been restored, so we do it last. */
+	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
+	conf_get_int_value (LAST_HPANE_POS, &last_hpane_pos);
+	conf_get_int_value (LAST_WPANE_POS, &last_wpane_pos);
+	
+	/* Sanity check pane sizes for too large values */
+	/* a) set leftpane to 1/3rd of window size if too large */
+	gdk_window = gtk_widget_get_window (GTK_WIDGET (shell->window));
+	if (gdk_window_get_width (gdk_window) * 95 / 100 <= last_vpane_pos || 0 == last_vpane_pos)
+		last_vpane_pos = gdk_window_get_width (gdk_window) / 3;
+	
+	/* b) set normalViewPane to 50% container height if too large */
+	gtk_widget_get_allocation (GTK_WIDGET (liferea_shell_lookup ("normalViewPane")), &allocation);
+	g_print ("Restor height =%d, pane=%d\n", allocation.height, last_hpane_pos);
+	if ((allocation.height * 95 / 100 <= last_hpane_pos) || 0 == last_hpane_pos)
+		last_hpane_pos = allocation.height / 2;
+	
+	/* c) set wideViewPane to 50% container width if too large */
+	gtk_widget_get_allocation (GTK_WIDGET (liferea_shell_lookup ("normalViewPane")), &allocation);
+	g_print ("Restor width =%d, pane=%d\n", allocation.width, last_wpane_pos);
+	if ((allocation.width * 95 / 100 <= last_wpane_pos) || 0 == last_wpane_pos)
+		last_wpane_pos = allocation.width / 2;
+
+	debug3 (DEBUG_GUI, "Restoring pane proportions (left:%d normal:%d wide:%d)", last_vpane_pos, last_hpane_pos, last_wpane_pos);
+
+	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
+	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
+	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
+	
+	return FALSE;
+}
+
 static void
 liferea_shell_restore_state (const gchar *overrideWindowState)
 {
-	gchar		*toolbar_style;
-	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
-	gint		resultState;
 	gboolean 	last_window_maximized;
+	gchar		*toolbar_style;
+	gint		resultState;
 
 	debug0 (DEBUG_GUI, "Setting toolbar style");
 
@@ -1116,20 +1154,7 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 			debug0 (DEBUG_GUI, "Restoring window state 'shown'");
 			gtk_widget_show (GTK_WIDGET (shell->window));
 	}
-
-	/* This only works after the window has been restored, so we do it last. */
-	debug0 (DEBUG_GUI, "Loading pane proportions");
-
-	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
-	if (last_vpane_pos)
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
-	conf_get_int_value (LAST_HPANE_POS, &last_hpane_pos);
-	if (last_hpane_pos)
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
-	conf_get_int_value (LAST_WPANE_POS, &last_wpane_pos);
-	if (last_wpane_pos)
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
-
+	
 	conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
 	if (!last_window_maximized) {
 		gtk_container_child_set (GTK_CONTAINER (liferea_shell_lookup ("normalViewPane")), liferea_shell_lookup ("normalViewItems"),
@@ -1137,6 +1162,10 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 		gtk_container_child_set (GTK_CONTAINER (liferea_shell_lookup ("wideViewPane")), liferea_shell_lookup ("wideViewItems"),
 			"resize", TRUE, NULL);
 	}
+	
+	/* need to run asynchronous otherwise pane widget allocation is reported
+	   wrong, maybe it is running to early as we realize only above */
+	g_idle_add (liferea_shell_restore_panes, NULL);
 }
 
 static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};

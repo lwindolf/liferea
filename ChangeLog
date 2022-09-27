@@ -1,3 +1,13 @@
+To be released
+
+	Version 1.14-RC1
+
+	* Fixes #901, #1123: resize view panes to sensible positions
+	  when they were at min or max position on last shutdown. Makes
+	  left pane 30% window width and item list pane 50% height/width
+	  when pane position is 0 or 95% of height/width.
+
+
 2022-07-25   Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.13.9
