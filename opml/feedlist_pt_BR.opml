@@ -1,42 +1,62 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <opml version="1.0">
 <head>
-    <title>Lista de Fontes de Notícias</title>
+	<title>Lista de Fontes de Notícias</title>
 </head>
 <body>
-    <outline text="Exemplos de Canais de Notícias">
-        <outline text="Notícias">
-            <outline title="Planeta Gnu/Linux Brasil" text="Planeta Gnu/Linux Brasil" description="Planeta Gnu/Linux Brasil" type="pie" htmlUrl="http://planeta.gnulinuxbrasil.org/" xmlUrl="http://planeta.gnulinuxbrasil.org/atom.xml" />
-            <outline title="BR-Linux.org - Linux levado a sério desde 1996" text="BR-Linux.org - Linux levado a sério desde 1996" description="BR-Linux.org - Linux levado a sério desde 1996" type="rss" htmlUrl="http://br-linux.org/linux" xmlUrl="http://br-linux.org/linux/node/feed" />
-        </outline>
-        <!-- lets keep this English block in sync over all feed lists! -->
-        <outline text="internacional">
-		<outline text="News">		<!-- translate this title for localized feed list -->
-			<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
-			<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="http://rss.slashdot.org/Slashdot/slashdot" />
-			<outline text="BBC" htmlUrl="http://www.bbc.com/news" xmlUrl="http://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
-			<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
+	<outline text="Exemplos de Canais de Notícias">
+		<outline text="Notícias">
+			<outline title="Revista Veja" htmlUrl="https://veja.abril.com.br" xmlUrl="https://veja.abril.com.br/feed/" />
+			<outline title="G1" htmlUrl="https://g1.globo.com/" xmlUrl="https://g1.globo.com/rss/g1/" />
+			<outline title="Jornal da USP" htmlUrl="https://jornal.usp.br" xmlUrl="https://jornal.usp.br/feed/" />
+			<outline title="Agência Brasil - EBC" htmlUrl="https://agenciabrasil.ebc.com.br/" xmlUrl="https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml" />
+			<outline title="DW Brasil" htmlUrl="https://www.dw.com/brazil/" xmlUrl="https://rss.dw.com/rdf/rss-br-all" />
+			<outline title="BBC Brasil" htmlUrl="https://www.bbc.com/portuguese" xmlUrl="https://www.bbc.co.uk/portuguese/index.xml" />
 		</outline>
-		<outline text="Open Source">		<!-- translate this title for localized feed list -->
-			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
-			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
+		<outline text="Podcasts &amp; vídeos">
+			<outline title="TV Cultura" htmlUrl="https://www.youtube.com/c/TVCultura" xmlUrl="https://www.youtube.com/feeds/videos.xml?channel_id=UCjOJvvYe6tyEHY21OD33h8A" />
+			<outline title="Segurança Legal" htmlUrl="https://www.segurancalegal.com/" xmlUrl="https://www.segurancalegal.com/feed/podcast/" />
 		</outline>
-		<outline text="Podcasts &amp; Music">		<!-- translate this title for localized feed list -->
-			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/feed/atom/"/>
-			<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
-			<outline text="Gorilla vs. Bear" htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
-		</outline>
-		<outline text="Comics">
-			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
-		</outline>
-        </outline>
 
-        <outline text="Não Lidos" title="Não Lidos" description="Notícias ainda não lidas" type="vfolder" htmlUrl="" xmlUrl="vfolder">
-            <outline type="rule" text="Status de leitura" rule="unread" value="" additive="true"/>
-        </outline>
-        <outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder">
-            <outline type="rule" text="Sinalizador de status" rule="flagged" value="" additive="true"/>
-        </outline>
-    </outline>
+		<!-- lets keep this default English block in sync over all feed lists! -->
+		<outline text="Internacional">		<!-- translate this title for localized feed list -->
+			<outline text="Notícias">
+				<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
+				<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdotMain" />
+				<outline text="BBC" htmlUrl="https://www.bbc.com/news" xmlUrl="https://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
+				<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feed"/>
+			</outline>
+			<outline text="Conhecimento">
+				<outline text="Aeon" htmlUrl="https://aeon.co/" xmlUrl="https://aeon.co/feed.rss"/>
+				<outline text="Quanta Magazine" htmlUrl="https://api.quantamagazine.org/" xmlUrl="https://api.quantamagazine.org/feed/"/>
+			</outline>
+			<outline text="Software Livre">		<!-- translate this title for localized feed list -->
+				<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://feeds.feedburner.com/LifereaBlog" />
+				<outline text="Planet GNOME" htmlUrl="https://planet.gnome.org/" xmlUrl="https://planet.gnome.org/atom.xml" />
+			</outline>
+			<outline text="Podcasts">	<!-- translate this title for localized feed list -->
+				<outline text="EscapePod" htmlUrl="https://escapepod.org" xmlUrl="https://escapepod.org/feed/atom/"/>
+			</outline>
+			<outline text="Música">		<!-- translate this title for localized feed list -->
+				<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
+				<outline text="Gorilla vs. Bear"   htmlUrl="https://www.gorillavsbear.net" xmlUrl="https://www.gorillavsbear.net/category/mp3/feed/"/>
+				<outline text="KEXP"               htmlUrl="https://kexp.org/" xmlUrl="http://feeds.kexp.org/kexp/songoftheday"/>
+				<outline text="Fluxblog"           htmlUrl="http://fluxblog.org" xmlUrl="http://www.fluxblog.org/"/>
+			</outline>
+			<outline text="Quadrinhos">
+				<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>
+			</outline>
+		</outline>
+		<!-- end of default block -->
+
+	</outline>
+
+	<outline text="Não Lidos" title="Não Lidos" description="Notícias ainda não lidas" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="Status de leitura" rule="unread" value="" additive="true"/>
+	</outline>
+	<outline text="Importante" title="Importante" description="Importante" type="vfolder" htmlUrl="" xmlUrl="vfolder">
+		<outline type="rule" text="Sinalizador de status" rule="flagged" value="" additive="true"/>
+	</outline>
+
   </body>
 </opml>
