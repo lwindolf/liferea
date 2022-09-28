@@ -42,7 +42,9 @@
 G_DEFINE_TYPE (LifereaWebKit, liferea_webkit, G_TYPE_OBJECT)
 
 // singleton
-LifereaWebKit *webkit = NULL;
+static LifereaWebKit *liferea_webkit = NULL;
+static WebKitUserStyleSheet *user_stylesheet = NULL;
+static gchar *lastCss = NULL;
 
 enum {
 	PAGE_CREATED_SIGNAL,
@@ -436,6 +438,11 @@ liferea_webkit_write_html (
 	const gchar *content_type
 )
 {
+	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
+
+	if (user_stylesheet)
+		webkit_user_content_manager_add_style_sheet (manager, user_stylesheet);
+
 	// FIXME Avoid doing a copy ?
 	GBytes *string_bytes = g_bytes_new (string, length);
 	/* Note: we explicitely ignore the passed base URL
@@ -526,8 +533,6 @@ liferea_webkit_default_settings (WebKitSettings *settings)
 		settings
 	);
 }
-
-static LifereaWebKit *liferea_webkit = NULL;
 
 /**
  * Create new WebkitWebView object and connect signals to a LifereaHtmlview
@@ -674,8 +679,6 @@ liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, c
 #endif
 }
 
-static gchar *lastCss = NULL;
-
 /**
  * Load liferea.css via user style sheet
  */
@@ -694,13 +697,15 @@ liferea_webkit_reload_style (GtkWidget *webview)
 
 	webkit_user_content_manager_remove_all_style_sheets (manager);
 
-	WebKitUserStyleSheet *stylesheet = webkit_user_style_sheet_new (css,
+	if (user_stylesheet)
+		webkit_user_style_sheet_unref (user_stylesheet);
+
+	user_stylesheet = webkit_user_style_sheet_new (css,
 		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
 		WEBKIT_USER_STYLE_LEVEL_USER,
 		NULL,
 		NULL);
-	webkit_user_content_manager_add_style_sheet (manager, stylesheet);
-	webkit_user_style_sheet_unref (stylesheet);
+	webkit_user_content_manager_add_style_sheet (manager, user_stylesheet);
 }
 
 /**
