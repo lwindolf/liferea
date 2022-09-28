@@ -1,7 +1,7 @@
 /**
  * @file render.c  generic GTK theme and XSLT rendering handling
  *
- * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -163,7 +163,6 @@ typedef struct themeColor {
 
 static GSList *themeColors = NULL;
 static gboolean darkTheme = FALSE;
-static gboolean styleUpdated = FALSE;
 
 /* Determining of theme colors, to be inserted in CSS */
 static themeColorPtr
@@ -182,6 +181,13 @@ render_calculate_theme_color (const gchar *name, GdkColor themeColor)
 	debug2 (DEBUG_HTML, "theme color \"%s\" is %s", tc->name, tc->value);
 
 	return tc;
+}
+
+static void
+render_theme_color_free (themeColorPtr tc)
+{
+	g_free (tc->value);
+	g_free (tc);
 }
 
 static gint
@@ -214,8 +220,15 @@ render_init_theme_colors (GtkWidget *widget)
 	GdkRGBA		rgba;
 	gint		textAvg, bgAvg;
 
-	styleUpdated = TRUE;
-	themeColors = NULL;
+	/* Clear cached previous stylesheet */
+	if (css) {
+		g_string_free (css, FALSE);
+		css = NULL;
+	}
+	if (themeColors) {
+		g_slist_free_full (themeColors, (GDestroyNotify)render_theme_color_free);
+		themeColors = NULL;
+	}
 
 	style = gtk_widget_get_style (widget);
 	sctxt = gtk_widget_get_style_context (widget);
@@ -247,6 +260,8 @@ render_init_theme_colors (GtkWidget *widget)
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-VISITED-LINK", color));
 
 	if (conf_get_dark_theme()) {
+		debug0 (DEBUG_HTML, "Dark GTK theme detected.");
+
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->text[GTK_STATE_NORMAL]));
 		/* Try nice foreground with 'fg' color (note: distance 50 is enough because it should be non-intrusive) */
 		if (render_get_rgb_distance (&style->text[GTK_STATE_NORMAL], &style->fg[GTK_STATE_NORMAL]) > 50)
@@ -254,6 +269,8 @@ render_init_theme_colors (GtkWidget *widget)
 		else
 			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
 	} else {
+		debug0 (DEBUG_HTML, "Light GTK theme detected.");
+
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
 		/* Try nice foreground with 'dark' color (note: distance 50 is enough because it should be non-intrusive) */
 		if (render_get_rgb_distance (&style->dark[GTK_STATE_NORMAL], &style->bg[GTK_STATE_NORMAL]) > 50)
@@ -299,18 +316,13 @@ render_get_theme_color (const gchar *name)
 gchar *
 render_get_css (void)
 {
-	if (!css || styleUpdated) {
+	if (!css) {
 		gchar	*defaultStyleSheetFile;
 		gchar	*userStyleSheetFile;
 		gchar	*tmp;
 
 		if (!themeColors)
 			return NULL;
-
-		styleUpdated = FALSE;
-
-		if (css)
-			g_string_free(css, FALSE);
 
 		css = g_string_new(NULL);
 
