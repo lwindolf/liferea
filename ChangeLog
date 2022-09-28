@@ -2,6 +2,9 @@ To be released
 
 	Version 1.14-RC1
 
+	* Liferea now supports gtk-application-prefer-dark-theme based
+	  dark mode switching.
+
 	* Fixes #901, #1123: resize view panes to sensible positions
 	  when they were at min or max position on last shutdown. Makes
 	  left pane 30% window width and item list pane 50% height/width
