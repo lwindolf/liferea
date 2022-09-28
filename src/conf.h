@@ -185,12 +185,18 @@ gchar * conf_get_toolbar_style (void);
 /**
  * Get the current system default font from desktop schema
  *
- * @param key	the configuration key
  * @param value the value, if the function returned FALSE it's always 0
  *
  * @returns TRUE if the configuration key was found
 */
-gboolean conf_get_default_font_from_schema (const gchar *key, gchar **value);
+gboolean conf_get_default_font (gchar **value);
+
+/**
+ * Find out wether a dark theme preference is active right now.
+ *
+ * @returns TRUE if a dark theme preference is active
+ */
+gboolean conf_get_dark_theme (void);
 
 /**
  * Connect to a signal in the default GSettings object

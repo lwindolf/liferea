@@ -193,7 +193,7 @@ webkit_get_font (guint *size)
 			g_free (font);
 			font = NULL;
 		}
-		conf_get_default_font_from_schema (DEFAULT_FONT, &font);
+		conf_get_default_font (&font);
 	}
 
 	if (font) {

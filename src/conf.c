@@ -2,7 +2,7 @@
  * @file conf.c Liferea configuration (GSettings access)
  *
  * Copyright (C) 2011 Mikel Olasagasti Uranga <mikel@olasagasti.info>
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004,2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -29,20 +29,18 @@
 #include "conf.h"
 #include "debug.h"
 #include "net.h"
-#include "update.h"
+#include "render.h"
 #include "ui/liferea_shell.h"
 
 #define MAX_GCONF_PATHLEN	256
 
 #define LIFEREA_SCHEMA_NAME		"net.sf.liferea"
 #define DESKTOP_SCHEMA_NAME		"org.gnome.desktop.interface"
+#define FDO_SCHEMA_NAME			"org.freedesktop.appearance"
 
 static GSettings *settings;
 static GSettings *desktop_settings;
-
-/* Function prototypes */
-static void conf_proxy_reset_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
-static void conf_toolbar_style_settings_cb(GSettings *settings, guint cnxn_id, gchar *key, gpointer user_data);
+static GSettings *fdo_settings;
 
 static void
 conf_ensure_migrated (const gchar *name)
@@ -75,75 +73,32 @@ conf_ensure_migrated (const gchar *name)
 						NULL, NULL, NULL, NULL);
 }
 
-/* called once on startup */
-void
-conf_init (void)
+gboolean
+conf_get_dark_theme (void)
 {
-	/* ensure we migrated from gconf to gsettings */
-	conf_ensure_migrated (LIFEREA_SCHEMA_NAME);
+	gboolean dark = FALSE;
+	
+	if (fdo_settings) {
+		gint scheme;
 
-	/* initialize GSettings client */
-	settings = g_settings_new (LIFEREA_SCHEMA_NAME);
-	desktop_settings = g_settings_new(DESKTOP_SCHEMA_NAME);
+		conf_get_int_value_from_schema (fdo_settings, "color-scheme", &scheme);
+		debug1 (DEBUG_CONF, "FDO reports color-schema code '%d'", scheme);
+		if (1 == scheme)
+			dark = FALSE;
+		if (0 == scheme && 2 == scheme)
+			dark = TRUE;
+	} else {
+		gchar *scheme = NULL;
 
-	/* register for dark mode */
-	g_object_set (gtk_settings_get_default(),
-	             "gtk-application-prefer-dark-theme", TRUE,
-	             NULL);
+		conf_get_str_value_from_schema (desktop_settings, "color-scheme", &scheme);
+		if (scheme) {
+			debug1 (DEBUG_CONF, "GNOME reports color-schema '%s'", scheme);
+			dark = g_str_equal (scheme, "prefer-dark");
+		}
+	}
 
-	g_signal_connect (
-		desktop_settings,
-		"changed::" TOOLBAR_STYLE,
-		G_CALLBACK (conf_toolbar_style_settings_cb),
-		NULL
-	);
-
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_DETECT_MODE,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_HOST,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_PORT,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_USEAUTH,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_USER,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_PASSWD,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-
-	/* Load settings into static buffers */
-	conf_proxy_reset_settings_cb (NULL, 0, NULL, NULL);
-}
-
-void
-conf_deinit (void)
-{
-	g_object_unref (settings);
-	g_object_unref (desktop_settings);
+	debug1 (DEBUG_CONF, "Determined dark theme mode to be %d", dark);
+	return dark;
 }
 
 static void
@@ -214,9 +169,10 @@ conf_proxy_reset_settings_cb (GSettings *settings,
 			}
 			break;
 	}
-	debug4 (DEBUG_CONF, "Manual proxy settings are now %s:%d %s:%s", proxyname != NULL ? proxyname : "NULL", proxyport,
-		  proxyusername != NULL ? proxyusername : "NULL",
-		  proxypassword != NULL ? proxypassword : "NULL");
+	debug4 (DEBUG_CONF, "Manual proxy settings are now %s:%d %s:%s",
+	                    proxyname != NULL ? proxyname : "NULL", proxyport,
+	                    proxyusername != NULL ? proxyusername : "NULL",
+	                    proxypassword != NULL ? proxypassword : "NULL");
 
 	network_set_proxy (proxydetectmode, proxyname, proxyport, proxyusername, proxypassword);
 }
@@ -262,9 +218,9 @@ conf_get_toolbar_style(void)
 	conf_get_str_value (TOOLBAR_STYLE, &style);
 
 	/* check if we don't override the toolbar style */
-	if (strcmp(style, "") == 0) {
+	if (strcmp (style, "") == 0) {
 		g_free (style);
-		conf_get_str_value_from_schema (desktop_settings,"toolbar-style", &style);
+		conf_get_str_value_from_schema (desktop_settings, "toolbar-style", &style);
 	}
 	return style;
 }
@@ -318,13 +274,12 @@ conf_get_int_value_from_schema (GSettings *gsettings, const gchar *key, gint *va
 }
 
 gboolean
-conf_get_default_font_from_schema (const gchar *key, gchar **value)
+conf_get_default_font (gchar **value)
 {
-	g_assert (key != NULL);
 	g_assert (value != NULL);
 
 	if (desktop_settings)
-		*value = g_strdup (g_settings_get_string (desktop_settings, key));
+		*value = g_strdup (g_settings_get_string (desktop_settings, DEFAULT_FONT));
 	return (NULL != value);
 }
 
@@ -340,3 +295,77 @@ conf_bind (const gchar *key, gpointer object, const gchar *property, GSettingsBi
 	g_assert (settings);
 	g_settings_bind (settings, key, object, property, flags);
 }
+
+/* called once on startup */
+void
+conf_init (void)
+{
+	GSettingsSchemaSource *source;
+
+	/* ensure we migrated from gconf to gsettings */
+	conf_ensure_migrated (LIFEREA_SCHEMA_NAME);
+
+	/* initialize GSettings client */
+	settings = g_settings_new (LIFEREA_SCHEMA_NAME);
+	desktop_settings = g_settings_new (DESKTOP_SCHEMA_NAME);
+
+	/* provide freedesktop.org settings for non-GNOME desktops */
+	source = g_settings_schema_source_get_default ();
+	if (g_settings_schema_source_lookup (source, FDO_SCHEMA_NAME, TRUE))
+		fdo_settings = g_settings_new (FDO_SCHEMA_NAME);
+
+	g_signal_connect (
+		desktop_settings,
+		"changed::" TOOLBAR_STYLE,
+		G_CALLBACK (conf_toolbar_style_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_DETECT_MODE,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_HOST,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_PORT,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_USEAUTH,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_USER,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+	g_signal_connect (
+		settings,
+		"changed::" PROXY_PASSWD,
+		G_CALLBACK (conf_proxy_reset_settings_cb),
+		NULL
+	);
+
+	/* Load settings into static buffers */
+	conf_proxy_reset_settings_cb (NULL, 0, NULL, NULL);
+}
+
+void
+conf_deinit (void)
+{
+	g_object_unref (settings);
+	g_object_unref (desktop_settings);
+	g_object_unref (fdo_settings);
+}
+

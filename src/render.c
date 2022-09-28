@@ -246,24 +246,7 @@ render_init_theme_colors (GtkWidget *widget)
 	rgba_to_color (&color, &rgba);
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-VISITED-LINK", color));
 
-	/* As there doesn't seem to be a safe way to determine wether we have a
-	   dark GTK theme, let's guess it from the foreground vs. background
-	   color average */
-
-	textAvg = style->text[GTK_STATE_NORMAL].red / 256 +
-	        style->text[GTK_STATE_NORMAL].green / 256 +
-	        style->text[GTK_STATE_NORMAL].blue / 256;
-
-	bgAvg = style->bg[GTK_STATE_NORMAL].red / 256 +
-	        style->bg[GTK_STATE_NORMAL].green / 256 +
-	        style->bg[GTK_STATE_NORMAL].blue / 256;
-
-	if (textAvg > bgAvg) {
-		debug0 (DEBUG_HTML, "Dark GTK theme detected.");
-		darkTheme = TRUE;
-	}
-
-	if (darkTheme) {
+	if (conf_get_dark_theme()) {
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->text[GTK_STATE_NORMAL]));
 		/* Try nice foreground with 'fg' color (note: distance 50 is enough because it should be non-intrusive) */
 		if (render_get_rgb_distance (&style->text[GTK_STATE_NORMAL], &style->fg[GTK_STATE_NORMAL]) > 50)
@@ -311,15 +294,6 @@ render_get_theme_color (const gchar *name)
 	}
 
 	return NULL;
-}
-
-gboolean
-render_is_dark_theme (void)
-{
-	if (!themeColors)
-		return FALSE;
-
-	return darkTheme;
 }
 
 gchar *

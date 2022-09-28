@@ -80,11 +80,5 @@ const gchar * render_get_theme_color (const gchar *name);
  */
 void render_init_theme_colors (GtkWidget *widget);
 
-/**
- * To be used to query if a dark GTK theme was detected
- *
- * @returns TRUE if dark theme detected
- */
-gboolean render_is_dark_theme (void);
 
 #endif
