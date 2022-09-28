@@ -571,6 +571,11 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 void
 liferea_webkit_launch_url (GtkWidget *webview, const gchar *url)
 {
+	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
+
+	// Remove previous stylesheets (necessary for browsing without new tab)
+	webkit_user_content_manager_remove_all_style_sheets (manager);
+
 	// FIXME: hack to make URIs like "gnome.org" work
 	// https://bugs.webkit.org/show_bug.cgi?id=24195
 	gchar *http_url;
