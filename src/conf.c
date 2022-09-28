@@ -86,6 +86,11 @@ conf_init (void)
 	settings = g_settings_new (LIFEREA_SCHEMA_NAME);
 	desktop_settings = g_settings_new(DESKTOP_SCHEMA_NAME);
 
+	/* register for dark mode */
+	g_object_set (gtk_settings_get_default(),
+	             "gtk-application-prefer-dark-theme", TRUE,
+	             NULL);
+
 	g_signal_connect (
 		desktop_settings,
 		"changed::" TOOLBAR_STYLE,
