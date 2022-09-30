@@ -282,19 +282,20 @@
         <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
       </xsl:if>
     </xsl:if>
+    <!-- optional MediaRSS description -->
+    <xsl:if test="attributes/attribute[ @name = 'mediadescription' ]">
+      <p>
+        <xsl:call-template name="add-newline">
+          <xsl:with-param name="input"  select="attributes/attribute[ @name = 'mediadescription' ]/text()"/>
+        </xsl:call-template>
+      </p>
+    </xsl:if>
     <!-- optional MediaRSS YouTube links-->
     <xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>
     <xsl:if test="contains($url,'https://www.youtube.com/watch?v=')">
       <xsl:variable name="youtubeid" select="substring-after($url,'https://www.youtube.com/watch?v=')"/>
-      <p><iframe width="640" height="480" src="https://www.youtube.com/embed/{$youtubeid}" frameborder="0" allowfullscreen="1"></iframe></p>
+      <p><iframe width="640" height="480" src="https://www.youtube.com/embed/{$youtubeid}?enablejsapi=1" frameborder="0" allowfullscreen="1"></iframe></p>
     </xsl:if>
-    <!-- optional MediaRSS description -->
-    <xsl:if test="attributes/attribute[ @name = 'mediadescription' ]">
-      <xsl:call-template name="add-newline">
-        <xsl:with-param name="input"  select="attributes/attribute[ @name = 'mediadescription' ]"/>
-       </xsl:call-template>
-    </xsl:if>
-
     <!-- the real text content -->
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
