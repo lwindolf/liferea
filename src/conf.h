@@ -95,6 +95,17 @@ void	conf_deinit (void);
 #define conf_get_strv_value(key, value) conf_get_strv_value_from_schema (NULL, key, value)
 #define conf_get_int_value(key, value) conf_get_int_value_from_schema (NULL, key, value)
 
+
+/**
+ * Returns true if the key is defined in the schema for the given gsettings.
+ *
+ * @param gsettings	gsettings schema to use
+ * @param key	the configuration key
+ *
+ * @returns TRUE if the configuration key is defined
+ */
+gboolean conf_schema_has_key (GSettings *gsettings, const gchar *key);
+
 /**
  * Retrieves the value of the given boolean configuration key.
  *

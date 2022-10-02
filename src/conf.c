@@ -227,6 +227,23 @@ conf_get_toolbar_style(void)
 }
 
 gboolean
+conf_schema_has_key (GSettings *gsettings, const gchar *key)
+{
+	g_assert (gsettings != NULL);
+	g_assert (key != NULL);
+
+	GSettingsSchema *schema = NULL;
+	gboolean has_key = FALSE;
+
+	g_object_get (gsettings, "settings-schema", &schema, NULL);
+	if (schema) {
+		has_key = g_settings_schema_has_key (schema, key);
+		g_settings_schema_unref (schema);
+	}
+	return has_key;
+}
+
+gboolean
 conf_get_bool_value_from_schema (GSettings *gsettings, const gchar *key, gboolean *value)
 {
 	g_assert (key != NULL);
