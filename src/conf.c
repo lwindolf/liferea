@@ -81,20 +81,24 @@ conf_get_dark_theme (void)
 	if (fdo_settings) {
 		gint scheme;
 
-		conf_get_int_value_from_schema (fdo_settings, "color-scheme", &scheme);
-		debug1 (DEBUG_CONF, "FDO reports color-schema code '%d'", scheme);
-		if (1 == scheme)
-			dark = FALSE;
-		if (0 == scheme || 2 == scheme)
-			dark = TRUE;
+		if (conf_schema_has_key (fdo_settings, "color-scheme")) {
+			conf_get_int_value_from_schema (fdo_settings, "color-scheme", &scheme);
+			debug1 (DEBUG_CONF, "FDO reports color-schema code '%d'", scheme);
+			if (1 == scheme)
+				dark = FALSE;
+			if (0 == scheme || 2 == scheme)
+				dark = TRUE;
+		}
 	} else {
 		gchar *scheme = NULL;
 
-		conf_get_str_value_from_schema (desktop_settings, "color-scheme", &scheme);
-		if (scheme) {
-			debug1 (DEBUG_CONF, "GNOME reports color-schema '%s'", scheme);
-			dark = g_str_equal (scheme, "prefer-dark");
-			g_free (scheme);
+		if (conf_schema_has_key (desktop_settings, "color-scheme")) {
+			conf_get_str_value_from_schema (desktop_settings, "color-scheme", &scheme);
+			if (scheme) {
+				debug1 (DEBUG_CONF, "GNOME reports color-schema '%s'", scheme);
+				dark = g_str_equal (scheme, "prefer-dark");
+				g_free (scheme);
+			}
 		}
 	}
 
