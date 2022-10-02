@@ -85,7 +85,7 @@ conf_get_dark_theme (void)
 		debug1 (DEBUG_CONF, "FDO reports color-schema code '%d'", scheme);
 		if (1 == scheme)
 			dark = FALSE;
-		if (0 == scheme && 2 == scheme)
+		if (0 == scheme || 2 == scheme)
 			dark = TRUE;
 	} else {
 		gchar *scheme = NULL;
