@@ -94,6 +94,7 @@ conf_get_dark_theme (void)
 		if (scheme) {
 			debug1 (DEBUG_CONF, "GNOME reports color-schema '%s'", scheme);
 			dark = g_str_equal (scheme, "prefer-dark");
+			g_free (scheme);
 		}
 	}
 
