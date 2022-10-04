@@ -81,19 +81,24 @@ conf_get_dark_theme (void)
 	if (fdo_settings) {
 		gint scheme;
 
-		conf_get_int_value_from_schema (fdo_settings, "color-scheme", &scheme);
-		debug1 (DEBUG_CONF, "FDO reports color-schema code '%d'", scheme);
-		if (1 == scheme)
-			dark = FALSE;
-		if (0 == scheme && 2 == scheme)
-			dark = TRUE;
+		if (conf_schema_has_key (fdo_settings, "color-scheme")) {
+			conf_get_int_value_from_schema (fdo_settings, "color-scheme", &scheme);
+			debug1 (DEBUG_CONF, "FDO reports color-schema code '%d'", scheme);
+			if (1 == scheme)
+				dark = FALSE;
+			if (0 == scheme || 2 == scheme)
+				dark = TRUE;
+		}
 	} else {
 		gchar *scheme = NULL;
 
-		conf_get_str_value_from_schema (desktop_settings, "color-scheme", &scheme);
-		if (scheme) {
-			debug1 (DEBUG_CONF, "GNOME reports color-schema '%s'", scheme);
-			dark = g_str_equal (scheme, "prefer-dark");
+		if (conf_schema_has_key (desktop_settings, "color-scheme")) {
+			conf_get_str_value_from_schema (desktop_settings, "color-scheme", &scheme);
+			if (scheme) {
+				debug1 (DEBUG_CONF, "GNOME reports color-schema '%s'", scheme);
+				dark = g_str_equal (scheme, "prefer-dark");
+				g_free (scheme);
+			}
 		}
 	}
 
@@ -223,6 +228,23 @@ conf_get_toolbar_style(void)
 		conf_get_str_value_from_schema (desktop_settings, "toolbar-style", &style);
 	}
 	return style;
+}
+
+gboolean
+conf_schema_has_key (GSettings *gsettings, const gchar *key)
+{
+	g_assert (gsettings != NULL);
+	g_assert (key != NULL);
+
+	GSettingsSchema *schema = NULL;
+	gboolean has_key = FALSE;
+
+	g_object_get (gsettings, "settings-schema", &schema, NULL);
+	if (schema) {
+		has_key = g_settings_schema_has_key (schema, key);
+		g_settings_schema_unref (schema);
+	}
+	return has_key;
 }
 
 gboolean
