@@ -172,7 +172,7 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 
 		xmlSetDocCompressMode (doc, 0);
 
-		if (-1 == xmlSaveFormatFile (backupFilename, doc, TRUE)) {
+		if (-1 == xmlSaveFormatFileEnc (backupFilename, doc, "utf-8", TRUE)) {
 			g_warning ("Could not export to OPML file!");
 			error = TRUE;
 		}
