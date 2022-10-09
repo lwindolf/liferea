@@ -149,40 +149,25 @@ rule_check_item_has_enc (rulePtr rule, itemPtr item)
 	return item->hasEnclosure;
 }
 
-static void
-rule_check_item_has_podcast_metadata_cb ( const gchar *key, const gchar *value,
-	guint index, gpointer user_data )
-{
-	gboolean *found = (gboolean *) user_data;
-	if (*found) {
-		return;	/* Already found, nothing else to do. */
-	}
-	if (g_strcmp0(key, "enclosure") != 0) {
-		return;
-	}
-	enclosurePtr encl = enclosure_from_string (value);
-	if (encl != NULL) {
-		if (encl->mime && g_str_has_prefix (encl->mime, "audio/")) {
-			*found = TRUE;
-		}
-		enclosure_free (encl);
-	}
-}
-
 static gboolean
 rule_check_item_has_podcast (rulePtr rule, itemPtr item)
 {
-	if (!item->hasEnclosure) {
-		return FALSE;	/* Optimization. */
-	}
-
+	GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
 	gboolean found = FALSE;
-	metadata_list_foreach(item->metadata,
-		rule_check_item_has_podcast_metadata_cb,
-		&found);
+	enclosurePtr encl;
+
+	while (iter && !found) {
+		enclosurePtr encl = enclosure_from_string ((gchar *)iter->data);
+		if (encl != NULL) {
+			if (encl->mime && g_str_has_prefix (encl->mime, "audio/")) {
+				found = TRUE;
+			}
+			enclosure_free (encl);
+		}
+		iter = g_slist_next (iter);
+	}
 	return found;
 }
-
 
 static gboolean
 rule_check_item_category (rulePtr rule, itemPtr item)
