@@ -30,6 +30,7 @@
 #define ITEM_MATCH_RULE_ID		"exact"
 #define ITEM_TITLE_MATCH_RULE_ID	"exact_title"
 #define ITEM_DESC_MATCH_RULE_ID		"exact_desc"
+#define ITEM_AUTHOR_MATCH_RULE_ID	"exact_author"
 #define FEED_TITLE_MATCH_RULE_ID	"feed_title"
 #define FEED_SOURCE_MATCH_RULE_ID	"feed_source"
 #define PARENT_FOLDER_MATCH_RULE_ID	"parent_folder"
@@ -185,6 +186,30 @@ rule_check_item_category (rulePtr rule, itemPtr item)
 }
 
 static gboolean
+rule_check_item_author (rulePtr rule, itemPtr item)
+{
+	GSList	*iter;
+
+	iter = metadata_list_get_values (item->metadata, "author");
+	while (iter) {
+		if (rule_strcasecmp ((gchar *)iter->data, rule->valueCaseFolded)) {
+			return TRUE;
+		}
+		iter = g_slist_next (iter);
+	}
+
+	iter = metadata_list_get_values (item->metadata, "creator");
+	while (iter) {
+		if (rule_strcasecmp ((gchar *)iter->data, rule->valueCaseFolded)) {
+			return TRUE;
+		}
+		iter = g_slist_next (iter);
+	}
+	return FALSE;
+}
+
+
+static gboolean
 rule_check_feed_title (rulePtr rule, itemPtr item)
 {
 	nodePtr feedNode = node_from_id (item->parentNodeId);
@@ -250,6 +275,7 @@ rule_init (void)
 	rule_info_add (rule_check_item_all,		ITEM_MATCH_RULE_ID,		_("Item"),			_("does contain"),	_("does not contain"),	TRUE);
 	rule_info_add (rule_check_item_title,		ITEM_TITLE_MATCH_RULE_ID,	_("Item title"),		_("does contain"),	_("does not contain"),	TRUE);
 	rule_info_add (rule_check_item_description,	ITEM_DESC_MATCH_RULE_ID,	_("Item body"),			_("does contain"),	_("does not contain"),	TRUE);
+	rule_info_add (rule_check_item_author,		ITEM_AUTHOR_MATCH_RULE_ID,	_("Item author"),		_("does contain"),	_("does not contain"),	TRUE);
 	rule_info_add (rule_check_item_is_unread,	"unread",			_("Read status"),		_("is unread"),		_("is read"),		FALSE);
 	rule_info_add (rule_check_item_is_flagged,	"flagged",			_("Flag status"),		_("is flagged"),	_("is unflagged"),	FALSE);
 	rule_info_add (rule_check_item_has_enc,		"enclosure",			_("Enclosure"),			_("included"),		_("not included"),	FALSE);
