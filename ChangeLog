@@ -1,17 +1,52 @@
-To be released
+2022-10-10  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.14-RC1
 
 	* Liferea now supports gtk-application-prefer-dark-theme based
 	  dark mode switching.
+	  (Lars Windolf, Alexander Erwin Ittner)
+
+	* #1148: Add search rule to find items from a given author.
+	  (Alexander Erwin Ittner)
+
+	* #1147: Exported OPML feed lists are now UTF-8 encoded for better readability.
+	  (Alexander Erwin Ittner)
+
+	* #1145: Render <media:description> field for Youtube feeds
+	  (Lars Windolf)
+
+	* #1143: Updated default feed sources (HTTP->HTTPS)
+	  (Alexander Erwin Ittner)
+
+	* #1133: Added new "podcast" search folder rule.
+	  (Alexander Erwin Ittner)
+
+	* #1139: Also add enclosures when saving items to file.
+	  (Alexander Erwin Ittner)
+
+	* Fixes #1132: Improved timeout error handling in feed commands
+	  (Alexander Erwin Ittner)
+
+	* Fixes #1129: Accessibility errors in .ui files
+	  (reported by Paul Gevers)
+
+	* Fixes #1126: Some images broken in reader mode
+	  (reported by Saijin-Naib)
 
 	* Fixes #901, #1123: resize view panes to sensible positions
 	  when they were at min or max position on last shutdown. Makes
 	  left pane 30% window width and item list pane 50% height/width
 	  when pane position is 0 or 95% of height/width. (Lars Windolf)
 
+	* Fixes #992: HTML with self-closing tags not rendering properly.
+	  (Rich Coe)
+
 	* Fixes #644, #901, #909: restoring window size/position with header
 	  bar plugin active. (Lars Windolf)
+
+	* #1137: Updated French translation (Guillaume Bernard)
+
+	* #1134, #1135: Updated Spanish example feeds (Joel Barrios)
 
 
 2022-07-25   Lars Windolf <lars.windolf@gmx.de>
