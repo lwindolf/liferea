@@ -1,7 +1,7 @@
 /**
  * @file html5_feed.c  Parsing semantic annotated HTML5 webpages like feeds
  *
- * Copyright (C) 2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2020-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 	if ((cur = xpath_find (itemNode, ".//time/@datetime"))) {
 		tmp = xhtml_extract (cur, 0, NULL);
 		if (tmp) {
-			ctxt->item->time = date_parse_RFC822 (tmp);
+			item_set_time (ctxt->item, date_parse_RFC822 (tmp));
 			g_free(tmp);
 		}
 	}

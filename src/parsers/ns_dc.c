@@ -1,7 +1,7 @@
 /**
  * @file ns_dc.c Dublin Core support for RSS and Atom
  *
- * Copyright (C) 2003-2010 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -145,8 +145,7 @@ parse_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur, gboolean isFeedTag)
 		/* special handling for the ISO 8601 date item tags */
 		if (!xmlStrcmp (BAD_CAST "date", cur->name)) {
  			if (NULL != (date = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1))) {
-				i = date_parse_ISO8601 (date);
-				ctxt->item->time = i;
+				item_set_time (ctxt->item, date_parse_ISO8601 (date));
 				g_free (date);
 			}
 			return;

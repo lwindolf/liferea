@@ -91,7 +91,7 @@ parseRSSItem (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		else if(!xmlStrcmp(cur->name, BAD_CAST"pubDate")) {
  			tmp = (gchar *)xmlNodeListGetString(cur->doc, cur->xmlChildrenNode, 1);
 			if (tmp) {
-				ctxt->item->time = date_parse_RFC822 (tmp);
+				item_set_time (ctxt->item, date_parse_RFC822 (tmp));
 				g_free(tmp);
 			}
 		}

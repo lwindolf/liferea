@@ -166,7 +166,11 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 				oldItem->description = newItem->description;
 				newItem->description = NULL;
 
-				oldItem->time = newItem->time;
+				/* Do not overwrite time when no valid time was provided by feed
+				   Otherwise we'd get an unintended newer timestamp here (see Github #1100) */
+				if (newItem->validTime)
+					oldItem->time = newItem->time;
+
 				oldItem->updateStatus = TRUE;
 				// FIXME: this does not remove metadata from DB
 				metadata_list_free (oldItem->metadata);

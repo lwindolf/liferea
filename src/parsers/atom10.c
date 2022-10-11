@@ -2,7 +2,7 @@
  * @file atom10.c  Atom 1.0 Parser
  *
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -420,7 +420,7 @@ atom10_parse_entry_published (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct ato
 
 	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (datestr) {
-		ctxt->item->time = date_parse_ISO8601 (datestr);
+		item_set_time (ctxt->item, date_parse_ISO8601 (datestr));
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "pubDate", datestr);
 		g_free (datestr);
 	}
@@ -473,7 +473,7 @@ atom10_parse_entry_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom1
 	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	/* if pubDate is already set, don't overwrite it */
 	if (datestr && !metadata_list_get(ctxt->item->metadata, "pubDate")) {
-		ctxt->item->time = date_parse_ISO8601 (datestr);
+		item_set_time (ctxt->item, date_parse_ISO8601 (datestr));
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "contentUpdateDate", datestr);
 	}
 

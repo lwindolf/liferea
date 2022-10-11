@@ -66,6 +66,7 @@ item_copy (itemPtr item)
 	copy->popupStatus = FALSE;
 	copy->flagStatus = item->flagStatus;
 	copy->time = item->time;
+	copy->validTime = item->validTime;
 	copy->validGuid = item->validGuid;
 	copy->hasEnclosure = item->hasEnclosure;
 
@@ -122,6 +123,14 @@ item_set_id (itemPtr item, const gchar * id)
 {
 	g_free (item->sourceId);
 	item->sourceId = g_strdup (id);
+}
+
+void
+item_set_time (itemPtr item, gint64 time)
+{
+	item->time = time;
+	if (item->time > 0)
+		item->validTime = TRUE;
 }
 
 const gchar *	item_get_id(itemPtr item) { return item->sourceId; }

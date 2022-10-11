@@ -1,7 +1,7 @@
 /*
  * @file item.h item handling
  *
- * Copyright (C) 2003-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -54,6 +54,7 @@ typedef struct item {
 	gchar		*source;		/*<< URL to the post online */
 	gchar		*sourceId;		/*<< "Unique" syndication item identifier, for example <guid> in RSS */
 	gboolean	validGuid;		/*<< TRUE if id of this item is a GUID and can be used for duplicate detection */
+	gboolean	validTime;		/*<< TRUE if time of this item is valid (from feed and not just timestamp of download) */
 	gchar		*description;		/*<< XHTML string containing the item's description */
 
 	GSList		*metadata;		/*<< Metadata of this item */
@@ -168,8 +169,14 @@ gchar *	item_make_link(itemPtr item);
  */
 const gchar * item_get_author	(itemPtr item);
 
-/* Sets the item title */
-void		item_set_title(itemPtr item, const gchar * title);
+/**
+ * item_set_title: (skip)
+ * @item:		the item
+ * @title:		the title
+ *
+ * Sets the item title
+ */
+void item_set_title(itemPtr item, const gchar * title);
 
 /**
  * item_set_description: (skip)
@@ -179,14 +186,36 @@ void		item_set_title(itemPtr item, const gchar * title);
  * Sets the item description. If called more than once it
  * will merge the new description against the old one deciding
  * on the best to keep.
- *
  */
 void item_set_description (itemPtr item, const gchar *description);
 
-/* Sets the item source */
-void		item_set_source(itemPtr item, const gchar * source);
-/* Sets the item id */
-void		item_set_id(itemPtr item, const gchar * id);
+/**
+ * item_set_source: (skip)
+ * @item:		the item
+ * @source:		the source
+ *
+ * Sets the item source 
+ */
+void item_set_source(itemPtr item, const gchar * source);
+
+/**
+ * item_set_id: (skip)
+ * @item:		the item
+ * @id:			the id
+ *
+ * Sets the item id 
+ */
+void item_set_id (itemPtr item, const gchar * id);
+
+/**
+ * item_set_time: (skip)
+ * @item:		the item
+ * @time:		the time
+ *
+ * Sets the item time. Always use this when a valid date was 
+ * supplied for the item!
+ */
+void item_set_time (itemPtr item, gint64 time);
 
 /**
  * item_to_xml: (skip)

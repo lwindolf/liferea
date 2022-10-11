@@ -1,7 +1,7 @@
 /**
  * @file ldjson_feed.c  Parsing LD+JSON snippets in HTML5 webpages like feeds
  *
- * Copyright (C) 2020-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2020-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -131,9 +131,9 @@ ldjson_feed_parse_json_event (JsonNode *node, feedParserCtxtPtr ctxt)
 		// schema.org says startDate should be ISO8601, but RFC822
 		// is seen to often. So fuzzy match date format.
 		if (strstr (tmp, " "))
-			ctxt->item->time = date_parse_RFC822 (tmp);
+			item_set_time (ctxt->item, date_parse_RFC822 (tmp));
 		else
-			ctxt->item->time = date_parse_ISO8601 (tmp);
+			item_set_time (ctxt->item, date_parse_ISO8601 (tmp));
 	} else {
 		// or default to current feed timestamp
 		ctxt->item->time = ctxt->feed->time;
