@@ -1,5 +1,4 @@
 name: "Build Check"
-
 on:
   push:
     branches: [master, ]
@@ -32,6 +31,7 @@ jobs:
        ./configure --prefix=$(pwd)/inst
 
     - run: make -C po check
-    - run: make && sudo make install
+    - run: make && make install
+    - run: ls -l /usr/share/glib-2.0/schemas /usr/local/share/glib-2.0/schemas
     - run: cd src/tests && make test
     - run: cd src/tests && ./memcheck.sh parse_xml parse_date
