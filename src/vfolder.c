@@ -226,6 +226,11 @@ vfolder_reset (vfolderPtr vfolder)
 {
 	itemlist_unload (FALSE);
 
+	if (vfolder->loader) {
+		g_object_unref (vfolder->loader);
+		vfolder->loader = NULL;
+	}
+
 	g_list_free (vfolder->itemset->ids);
 	vfolder->itemset->ids = NULL;
 	db_search_folder_reset (vfolder->node->id);
@@ -237,7 +242,8 @@ vfolder_rebuild (nodePtr node)
 	vfolderPtr	vfolder = (vfolderPtr)node->data;
 
 	vfolder_reset (vfolder);
-	itemlist_add_search_result (vfolder_loader_new (node));
+	vfolder->loader = vfolder_loader_new (node);
+	itemlist_add_search_result (vfolder->loader);
 }
 
 static void
@@ -246,6 +252,11 @@ vfolder_free (nodePtr node)
 	vfolderPtr	vfolder = (vfolderPtr) node->data;
 
 	debug_enter ("vfolder_free");
+
+	if (vfolder->loader) {
+		g_object_unref (vfolder->loader);
+		vfolder->loader = NULL;
+	}
 
 	vfolders = g_slist_remove (vfolders, vfolder);
 	itemset_free (vfolder->itemset);
