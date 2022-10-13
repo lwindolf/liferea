@@ -32,6 +32,6 @@ jobs:
        ./configure --prefix=$(pwd)/inst
 
     - run: make -C po check
-    - run: make && make install
+    - run: make && sudo make install
     - run: cd src/tests && make test
     - run: cd src/tests && ./memcheck.sh parse_xml parse_date
