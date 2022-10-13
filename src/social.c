@@ -110,7 +110,7 @@ social_init (void)
 	social_register_bookmark_site ("Instapaper",	"https://www.instapaper.com/hello2?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title=%s&url=%s", TRUE, TRUE);
 	social_register_bookmark_site ("Linkroll",	"https://www.linkroll.com/index.php?action=insertLink&url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("netvouz",	"http://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
+	social_register_bookmark_site ("netvouz",	"https://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Pocket",	"https://getpocket.com/save?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Reddit",	"https://www.reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
 	social_register_bookmark_site ("Twitter",	"https://twitter.com/intent/tweet?text=%s&url=%s", TRUE, TRUE);
