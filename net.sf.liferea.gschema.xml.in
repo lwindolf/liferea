@@ -13,7 +13,7 @@
       <description>Selects which key to use to pagedown or go to the next unread item. Set to 0 to use space, 1 to use ctrl-space, or 2 to use alt-space.</description>
     </key>
     <key name="browser" type="s">
-      <default>'mozilla %s'</default>
+      <default>'firefox %s'</default>
       <summary>Selects the browser command to use when browser_module is set to manual</summary>
       <description>Selects the browser command to use when browser_module is set to manual.</description>
     </key>
