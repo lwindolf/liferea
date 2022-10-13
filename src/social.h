@@ -58,12 +58,12 @@ void social_set_bookmark_site (const gchar *name);
  * social_register_bookmark_site:
  * @name:		descriptive name
  * @url:		valid HTTP GET URL with one or two %s format codes
- * @title:		TRUE if site accepts titles (URL must have two %s format codes!)
- * @titleFirst: 	TRUE if title is first format code (title must be TRUE)
  *
- * Add a new site to the social bookmarking site list.
+ * Add a new site to the social bookmarking site list. Note that
+ * the URL needs to have at least one '{url}' placeholder and optionally
+ * a '{title}' placeholder.
  */
-void social_register_bookmark_site (const gchar *name, const gchar *url, gboolean title, gboolean titleFirst);
+void social_register_bookmark_site (const gchar *name, const gchar *url);
 
 /**
  * social_get_bookmark_url:

@@ -28,22 +28,25 @@
 GSList *bookmarkSites = NULL;
 
 /* the currently configured bookmarking site */
-static socialSitePtr bookmarkSite = NULL;
+socialSitePtr bookmarkSite = NULL;
 
 void
-social_register_bookmark_site (const gchar *name, const gchar *url, gboolean title, gboolean titleFirst)
+social_register_bookmark_site (const gchar *name, const gchar *url)
 {
 	socialSitePtr newSite;
 
 	g_assert (name);
 	g_assert (url);	
-	newSite = g_new0 (struct socialSite, 1);
-	newSite->name = g_strdup (name);
-	newSite->url = g_strdup (url);
-	newSite->title = title;
-	newSite->titleFirst = titleFirst;
 
-	bookmarkSites = g_slist_append (bookmarkSites, newSite);
+	if (strstr (url, "{url}")) {
+		newSite = g_new0 (struct socialSite, 1);
+		newSite->name = g_strdup (name);
+		newSite->url = g_strdup (url);
+
+		bookmarkSites = g_slist_append (bookmarkSites, newSite);
+	} else {
+		debug1 (DEBUG_GUI, "Missing {url} placeholder in social bookmarking URL for '%s'!", name);
+	}
 }
 
 void
@@ -69,21 +72,27 @@ social_get_bookmark_site (void) { return bookmarkSite->name; }
 gchar *
 social_get_bookmark_url (const gchar *link, const gchar *title)
 { 
-	gchar	*url;
+	gchar	*result;
+	gchar	**tmp;
 
 	g_assert (bookmarkSite);
 	g_assert (link);
 	g_assert (title);
-	if (title) {
-		if (bookmarkSite->titleFirst) 
-			url = g_strdup_printf (bookmarkSite->url, title, link);
-		else
-			url = g_strdup_printf (bookmarkSite->url, link, title);
-	} else {
-		url = g_strdup_printf (bookmarkSite->url, link);
-	}
+
+	// '{url}' placeholder is guaranteed to be there
+	tmp = g_strsplit (bookmarkSite->url, "{url}", 2);
+	result = g_strjoin ("", tmp[0], link, tmp[1], NULL);
+	g_strfreev (tmp);
+
+	// '{title}' placeholder is optionally replaced
+	if (strstr (result, "{title}")) {
+		tmp = g_strsplit (result, "{title}", 2);
+		g_free (result);
+		result = g_strjoin ("", tmp[0], title, tmp[1], NULL);
+		g_strfreev (tmp);
+	} 
 	
-	return url;
+	return result;
 }
 
 void
@@ -101,26 +110,26 @@ social_init (void)
 {
 	gchar *tmp;
 	
-	social_register_bookmark_site ("blogmarks",	"https://blogmarks.net/my/new.php?mini=1&title=%s&url=%s", TRUE, TRUE);
-	social_register_bookmark_site ("digg",		"https://digg.com/submit?phase=2&url=%s", FALSE, FALSE);
-	social_register_bookmark_site ("diigo",		"https://www.diigo.com/post?url=%s&title=%s&desc=", TRUE, FALSE);
-	social_register_bookmark_site ("Facebook",	"https://www.facebook.com/share.php?u=%s", FALSE, FALSE);
-	social_register_bookmark_site ("Google Bookmarks",	"https://www.google.com/bookmarks/mark?op=edit&output=&bkmk=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("identi.ca",	"https://identi.ca/index.php?action=bookmarklet&status_textarea=%%E2%%80%%9C%s%%E2%%80%%9D%%20%%E2%%80%%94%%20%s", TRUE, TRUE);
-	social_register_bookmark_site ("Instapaper",	"https://www.instapaper.com/hello2?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title=%s&url=%s", TRUE, TRUE);
-	social_register_bookmark_site ("Linkroll",	"https://www.linkroll.com/index.php?action=insertLink&url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("netvouz",	"https://netvouz.com/action/submitBookmark?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Pocket",	"https://getpocket.com/save?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Reddit",	"https://www.reddit.com/submit?url=%s&title=%s", TRUE, FALSE);
-	social_register_bookmark_site ("Twitter",	"https://twitter.com/intent/tweet?text=%s&url=%s", TRUE, TRUE);
+	social_register_bookmark_site ("blogmarks",	"https://blogmarks.net/my/new.php?mini=1&title={title}&url={url}");
+	social_register_bookmark_site ("digg",		"https://digg.com/submit?phase=2&url={url}");
+	social_register_bookmark_site ("diigo",		"https://www.diigo.com/post?url={url}&title={title}&desc=");
+	social_register_bookmark_site ("Facebook",	"https://www.facebook.com/share.php?u={url}");
+	social_register_bookmark_site ("Google Bookmarks",	"https://www.google.com/bookmarks/mark?op=edit&output=&bkmk={url}&title={title}");
+	social_register_bookmark_site ("identi.ca",	"https://identi.ca/index.php?action=bookmarklet&status_textarea=%%E2%%80%%9C{title}%%E2%%80%%9D%%20%%E2%%80%%94%%20{url}");
+	social_register_bookmark_site ("Instapaper",	"https://www.instapaper.com/hello2?url={url}&title={title}");
+	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title={title}&url={url}");
+	social_register_bookmark_site ("Linkroll",	"https://www.linkroll.com/index.php?action=insertLink&url={url}&title={title}");
+	social_register_bookmark_site ("netvouz",	"https://netvouz.com/action/submitBookmark?url={url}&title={title}");
+	social_register_bookmark_site ("Pocket",	"https://getpocket.com/save?url={url}&title={title}");
+	social_register_bookmark_site ("Reddit",	"https://www.reddit.com/submit?url={url}&title={title}");
+	social_register_bookmark_site ("Twitter",	"https://twitter.com/intent/tweet?text={title}&url={url}");
 
 	conf_get_str_value (SOCIAL_BM_SITE, &tmp);
 	social_set_bookmark_site (tmp);
 	g_free (tmp);
 	
 	if (!bookmarkSite)
-		social_set_bookmark_site ("Pocket");		/* set default if necessary */
+		bookmarkSites->data;	// use first in list
 }
 
 void
