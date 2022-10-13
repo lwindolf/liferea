@@ -73,7 +73,7 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 		}
 	}
 
-	// extract title
+	// extract title from most relevant header tag
 	if ((cur = xpath_find (itemNode, ".//h1")))
 		html5_feed_parse_article_title (cur, ctxt);
 	else if ((cur = xpath_find (itemNode, ".//h2")))
@@ -143,11 +143,9 @@ html5_feed_check_article (xmlNodePtr cur, gpointer userdata)
 {
 	gint *articleCount = (gint *)userdata;
 
-	if (xpath_find (cur, ".//h1") ||
-	    xpath_find (cur, ".//h2") ||
-	    xpath_find (cur, ".//h3") ||
-	    xpath_find (cur, ".//h4") ||
-	    xpath_find (cur, ".//h5"))
+	/* We consider <h1>...<h5> tags inside an article as indication
+	   for extract worthy content */
+	if (xpath_find (cur, ".//h1 | .//h2 | .//h3 | .//h4 | .//h5"))
 		(*articleCount)++;
 }
 
