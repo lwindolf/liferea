@@ -80,6 +80,10 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 		html5_feed_parse_article_title (cur, ctxt);
 	else if ((cur = xpath_find (itemNode, ".//h3")))
 		html5_feed_parse_article_title (cur, ctxt);
+	else if ((cur = xpath_find (itemNode, ".//h4")))
+		html5_feed_parse_article_title (cur, ctxt);
+	else if ((cur = xpath_find (itemNode, ".//h5")))
+		html5_feed_parse_article_title (cur, ctxt);
 
 	// Extract the actual article
 	tmp = xhtml_extract (itemNode, 1, NULL);
@@ -141,7 +145,9 @@ html5_feed_check_article (xmlNodePtr cur, gpointer userdata)
 
 	if (xpath_find (cur, ".//h1") ||
 	    xpath_find (cur, ".//h2") ||
-	    xpath_find (cur, ".//h3"))
+	    xpath_find (cur, ".//h3") ||
+	    xpath_find (cur, ".//h4") ||
+	    xpath_find (cur, ".//h5"))
 		(*articleCount)++;
 }
 
