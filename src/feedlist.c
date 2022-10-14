@@ -336,6 +336,9 @@ feedlist_mark_all_read (nodePtr node)
 
 	feedlist_reset_new_item_count ();
 
+	if (IS_VFOLDER (node))
+		itemview_select_item (NULL);
+
 	if (node != ROOTNODE)
 		node_mark_all_read (node);
 	else
