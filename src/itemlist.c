@@ -292,7 +292,7 @@ itemlist_load (nodePtr node)
 {
 	itemSetPtr	itemSet;
 	gint		folder_display_mode;
-	gboolean	folder_display_hide_read;
+	gboolean	display_hide_read = FALSE;
 
 	debug_enter ("itemlist_load");
 
@@ -307,7 +307,7 @@ itemlist_load (nodePtr node)
 	   no folder viewing is configured. If folder viewing is enabled
 	   set up a "unread items only" rule depending on the prefences. */
 
-	/* for folders and other heirarchic nodes do filtering */
+	/* for folders and other heirarchic nodes do preference based filtering */
 	if (IS_FOLDER (node) || node->children) {
 		liferea_shell_update_allitems_actions (FALSE, 0 != node->unreadCount);
 
@@ -315,15 +315,20 @@ itemlist_load (nodePtr node)
 		if (!folder_display_mode)
 			return;
 
-		conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &folder_display_hide_read);
-		if (folder_display_hide_read) {
-			itemlist->priv->filter = g_new0(struct itemSet, 1);
-			itemlist->priv->filter->anyMatch = TRUE;
-			itemset_add_rule (itemlist->priv->filter, "unread", "", TRUE);
-		}
-	} else {
-		liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
+		conf_get_bool_value (FOLDER_DISPLAY_HIDE_READ, &display_hide_read);
 	}
+
+	/* for search folders do properties based filtering */
+	if (IS_VFOLDER (node))
+		display_hide_read = ((vfolderPtr)node)->unreadOnly;
+
+	if (display_hide_read) {
+		itemlist->priv->filter = g_new0(struct itemSet, 1);
+		itemlist->priv->filter->anyMatch = TRUE;
+		itemset_add_rule (itemlist->priv->filter, "unread", "", TRUE);
+	}
+
+	liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
 
 	itemlist->priv->loading++;
 	itemlist->priv->viewMode = node_get_view_mode (node);
