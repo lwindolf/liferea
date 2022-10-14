@@ -284,7 +284,7 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 
 		if (!xmlHasNsProp (cur, BAD_CAST"rel", NULL) || !relation || g_str_equal (relation, BAD_CAST"alternate")) {
 			alternate = g_strdup (url);
-		} else if (g_str_equal (relation, "self")) {
+		} else if (g_str_equal (relation, "self") && g_str_equal (type, "text/html")) {
 			alternate = g_strdup (url);
 		} else if (g_str_equal (relation, "replies")) {
 			if (!type || g_str_equal (type, BAD_CAST"application/atom+xml")) {
