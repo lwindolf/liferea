@@ -40,6 +40,9 @@ dtd_DATA = dtd/html.ent
 
 plugindir = $(pkglibdir)/plugins
 plugin_DATA = \
+	plugins/add-bookmark-site.py \
+	plugins/add-bookmark-site.plugin \
+	plugins/add-bookmark-site.ui \
 	plugins/bold-unread.py \
 	plugins/bold-unread.plugin \
 	plugins/getfocus.py \

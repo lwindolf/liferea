@@ -66,6 +66,15 @@ void social_set_bookmark_site (const gchar *name);
 void social_register_bookmark_site (const gchar *name, const gchar *url);
 
 /**
+ * social_unregister_bookmark_site:
+ * @name:		descriptive name
+ *
+ * Removes a site from the social bookmarking site list. Does nothing
+ * if the given name is not in the list
+ */
+void social_unregister_bookmark_site (const gchar *name);
+
+/**
  * social_get_bookmark_url:
  * @link:		the link to encode (mandatory)
  * @title:		the title to encode (mandatory)

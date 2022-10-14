@@ -30,13 +30,44 @@ GSList *bookmarkSites = NULL;
 /* the currently configured bookmarking site */
 socialSitePtr bookmarkSite = NULL;
 
+static socialSitePtr
+social_find_bookmark_site (const gchar *name)
+{
+	GSList	*iter = bookmarkSites;
+
+	while (iter) {
+		bookmarkSite = iter->data;
+		if (g_str_equal (bookmarkSite->name, name))
+			return bookmarkSite;
+
+		iter = g_slist_next (iter);
+	}
+
+	return NULL;
+}
+
+void
+social_unregister_bookmark_site (const gchar *name)
+{
+	socialSitePtr site;
+
+	site = social_find_bookmark_site (name);
+	if (!site)
+		return;
+
+	bookmarkSites = g_slist_remove (bookmarkSites, site);
+	g_free (site->name);
+	g_free (site->url);
+	g_free (site);
+}
+
 void
 social_register_bookmark_site (const gchar *name, const gchar *url)
 {
 	socialSitePtr newSite;
 
 	g_assert (name);
-	g_assert (url);	
+	g_assert (url);
 
 	if (strstr (url, "{url}")) {
 		newSite = g_new0 (struct socialSite, 1);
@@ -52,18 +83,13 @@ social_register_bookmark_site (const gchar *name, const gchar *url)
 void
 social_set_bookmark_site (const gchar *name)
 {
-	GSList	*iter = bookmarkSites;
-	
-	while (iter) {
-		bookmarkSite = iter->data;
-		if (g_str_equal (bookmarkSite->name, name)) {
-			conf_set_str_value (SOCIAL_BM_SITE, name);
-			return;
-		}
-		iter = g_slist_next (iter);
-	}
-	
-	debug1 (DEBUG_GUI, "Unknown social bookmarking site \"%s\"!", name);
+	socialSitePtr site;
+
+	site = social_find_bookmark_site (name);
+	if (site)
+		conf_set_str_value (SOCIAL_BM_SITE, name);
+	else
+		debug1 (DEBUG_GUI, "Unknown social bookmarking site \"%s\"!", name);
 }
 
 const gchar *
