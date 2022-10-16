@@ -34,8 +34,8 @@
     </key>
     <key name="defer-delete-mode" type="b">
       <default>false</default>
-      <summary>Defer deleting items from the Search Folder.</summary>
-      <description>If this option is enabled, defer deleting read items from UI until the folder is switched.</description>
+      <summary>Defer hiding read items from search folders.</summary>
+      <description>If this option is enabled, defer hiding read items until the search folder is switched.</description>
     </key>
     <key name="default-update-interval" type="i">
       <default>0</default>

@@ -585,9 +585,6 @@ feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
 				itemlist_load (SELECTED);
 			else
 				itemview_clear ();
-
-			g_signal_emit_by_name (feedlist, "node-selected", node);
-
 		} else {
 			debug1 (DEBUG_GUI, "selected node stayed: %s", node?node_get_title (node):"none");
 		}

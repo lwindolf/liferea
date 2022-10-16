@@ -1,7 +1,7 @@
 /*
  * @file itemlist.c  item list handling
  *
- * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,6 @@ struct ItemListPrivate
 	itemPtr		invalidSelection;	/*<< if set then the next selection might need to do an unselect first */
 
 	gboolean 	deferredRemove;		/*<< TRUE if selected item needs to be removed from cache on unselecting */
-	gboolean 	deferredFilter;		/*<< TRUE if selected item needs to be filtered on unselecting */
 };
 
 enum {
@@ -188,41 +187,6 @@ itemlist_get_displayed_node (void)
 	return itemlist->priv->currentNode;
 }
 
-/* called when unselecting the item or unloading the item list */
-static void
-itemlist_check_for_deferred_action (void)
-{
-	gulong	id = itemlist->priv->selectedId;
-	itemPtr	item;
-	gboolean  defer_remove;
-
-	if (id) {
-		itemlist_set_selected (NULL);
-                conf_get_bool_value (DEFER_DELETE_MODE, &defer_remove);
-
-		/* check for removals caused by itemlist filter rule */
-		if (itemlist->priv->deferredFilter) {
-			itemlist->priv->deferredFilter = FALSE;
-			item = item_load (id);
-                        item->isHidden = TRUE;
-                        if (defer_remove) {
-                                itemview_update_item (item);
-                        } else {
-                                itemview_remove_item (item);
-                        }
-			feed_list_view_update_node (item->nodeId);
-		}
-
-		/* check for removals caused by vfolder rules */
-		if (itemlist->priv->deferredRemove) {
-			itemlist->priv->deferredRemove = FALSE;
-			item = item_load (id);
-			itemlist_remove_item (item);
-		}
-	}
-}
-
-// FIXME: is this an itemset method?
 static gboolean
 itemlist_filter_check_item (itemPtr item)
 {
@@ -243,6 +207,40 @@ itemlist_filter_check_item (itemPtr item)
 
 	/* otherwise keep the item */
 	return TRUE;
+}
+
+/* called when unselecting the item or unloading the item list */
+static void
+itemlist_check_for_deferred_action (void)
+{
+	itemPtr item;
+
+	if (!itemlist_get_selected_id ())
+		return;
+
+	item = itemlist_get_selected ();
+	itemlist_set_selected (NULL);
+
+	/* check for item hiding caused by itemlist filter rule (i.e. folder hide read items) */
+	if (!itemlist_filter_check_item (item)) {
+		gboolean keep_for_search_folder;
+		conf_get_bool_value (DEFER_DELETE_MODE, &keep_for_search_folder);
+		if (keep_for_search_folder) {
+			item->isHidden = TRUE;
+			itemview_update_item (item);
+		} else {
+			itemview_remove_item (item);
+		}
+		feed_list_view_update_node (item->nodeId);
+	}
+
+	/* check for item unloading caused by search folder rules (i.e. unread items only) */
+	if (itemlist->priv->deferredRemove) {
+		itemlist->priv->deferredRemove = FALSE;
+		itemlist_remove_item (item);
+	}
+
+	item_unload (item);
 }
 
 static void
@@ -459,18 +457,16 @@ itemlist_hide_item (itemPtr item)
 		itemview_remove_item (item);
 		feed_list_view_update_node (item->nodeId);
 	} else {
-		itemlist->priv->deferredFilter = TRUE;
 		/* update the item to show new state that forces
 		   later removal */
 		itemview_update_item (item);
 	}
 }
 
-/* function to cancel deferred removal of selected item */
+/* function to cancel deferred filtering of selected item */
 static void
 itemlist_unhide_item (itemPtr item)
 {
-	itemlist->priv->deferredFilter = FALSE;
         item->isHidden = FALSE;
 }
 
@@ -482,7 +478,6 @@ itemlist_remove_item (itemPtr item)
 {
 	if (itemlist->priv->selectedId == item->id) {
 		itemlist_set_selected (NULL);
-		itemlist->priv->deferredFilter = FALSE;
 		itemlist->priv->deferredRemove = FALSE;
 	}
 
