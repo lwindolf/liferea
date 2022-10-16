@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.c  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *
@@ -128,12 +128,6 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 				debug0 (DEBUG_GUI, "A selected null node has no parent. This should not happen.");
 				return;
 			}
-			liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
-		} else {
-			gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
-			liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
-			                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
-			liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
 		}
 
 		/* 1.) update feed list and item list states */
@@ -371,8 +365,6 @@ feed_list_view_create (GtkTreeView *treeview)
 		feed_list_view_reduce_mode_changed ();	/* before menu setup for reduced mode check box to be correct */
 
 	ui_dnd_setup_feedlist (flv->feedstore);
-	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
-	liferea_shell_update_allitems_actions (FALSE, FALSE);
 
 	debug_exit ("feed_list_view_create");
 

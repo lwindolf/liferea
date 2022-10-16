@@ -72,6 +72,13 @@ struct ItemListPrivate
 	gboolean 	deferredFilter;		/*<< TRUE if selected item needs to be filtered on unselecting */
 };
 
+enum {
+	ITEM_UPDATED,	/*<< state of a currently visible item has changed */
+	LAST_SIGNAL
+};
+
+static guint itemlist_signals[LAST_SIGNAL] = { 0 };
+
 static GObjectClass *parent_class = NULL;
 static ItemList *itemlist = NULL;
 
@@ -141,6 +148,18 @@ itemlist_class_init (ItemListClass *klass)
 	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->finalize = itemlist_finalize;
+
+	itemlist_signals[ITEM_UPDATED] =
+		g_signal_new ("item-updated",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
 }
 
 /* member wrappers */
@@ -309,8 +328,6 @@ itemlist_load (nodePtr node)
 
 	/* for folders and other heirarchic nodes do preference based filtering */
 	if (IS_FOLDER (node) || node->children) {
-		liferea_shell_update_allitems_actions (FALSE, 0 != node->unreadCount);
-
 		conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
 		if (!folder_display_mode)
 			return;
@@ -327,8 +344,6 @@ itemlist_load (nodePtr node)
 		itemlist->priv->filter->anyMatch = TRUE;
 		itemset_add_rule (itemlist->priv->filter, "unread", "", TRUE);
 	}
-
-	liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
 
 	itemlist->priv->loading++;
 	itemlist->priv->viewMode = node_get_view_mode (node);
@@ -425,14 +440,13 @@ void
 itemlist_toggle_flag (itemPtr item)
 {
 	item_set_flag_state (item, !(item->flagStatus));
-	/* No itemview_update() to avoid disturbing HTML scroll state and media content */
 }
 
 void
 itemlist_toggle_read_status (itemPtr item)
 {
 	item_set_read_state (item, !(item->readStatus));
-	/* No itemview_update() to avoid disturbing HTML scroll state and media content */
+	g_signal_emit_by_name (itemlist, "item-updated", item->nodeId);
 }
 
 /* function to remove items due to item list filtering */
@@ -484,6 +498,7 @@ itemlist_remove_item (itemPtr item)
 	node_update_counters (node_from_id (item->nodeId));
 
 	item_unload (item);
+	g_signal_emit_by_name (itemlist, "item-updated", item->nodeId);
 }
 
 /* soft possibly delayed item remove */
@@ -525,6 +540,7 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 	itemview_update ();
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node_from_id (itemSet->nodeId));
+	g_signal_emit_by_name (itemlist, "item-updated", itemSet->nodeId);
 }
 
 void
@@ -542,6 +558,7 @@ itemlist_remove_all_items (nodePtr node)
 
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node);
+	g_signal_emit_by_name (itemlist, "item-updated", node->id);
 }
 
 void

@@ -46,7 +46,6 @@
 struct _ItemView {
 	GObject	parent_instance;
 
-	gboolean	htmlOnly;		/*<< TRUE if HTML only mode */
 	guint		mode;			/*<< current item view mode */
 	nodePtr		node;			/*<< the node whose items are displayed */
 	gboolean	browsing;		/*<< TRUE if itemview is used as internal browser right now */
@@ -296,9 +295,6 @@ itemview_update (void)
 		itemview->needsHTMLViewUpdate = FALSE;
 		liferea_browser_update (itemview->htmlview, itemview->mode);
 	}
-
-	if (itemview->node)
-		liferea_shell_update_allitems_actions (0 != itemview->node->itemCount, (0 != itemview->node->unreadCount) || IS_VFOLDER (itemview->node));
 }
 
 /* next unread selection logic */

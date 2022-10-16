@@ -46,6 +46,7 @@
 #include "render.h"
 #include "social.h"
 #include "vfolder.h"
+#include "fl_sources/node_source.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
@@ -358,13 +359,13 @@ liferea_shell_update_toolbar (void)
 		gtk_widget_show (shell->toolbar);
 }
 
-void
+static void
 liferea_shell_update_update_menu (gboolean enabled)
 {
 	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->feedActions), "update-selected")), enabled);
 }
 
-void
+static void
 liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean readWrite)
 {
 	ui_common_simple_action_group_set_enabled (shell->addActions, add);
@@ -378,7 +379,7 @@ liferea_shell_update_item_menu (gboolean enabled)
 	ui_common_simple_action_group_set_enabled (shell->itemActions, enabled);
 }
 
-void
+static void
 liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead)
 {
 	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->generalActions), "remove-selected-feed-items")), isNotEmpty);
@@ -419,10 +420,40 @@ liferea_shell_update_unread_stats (gpointer user_data)
 	g_free (msg);
 }
 
+static void
+liferea_shell_update_node_actions (gpointer obj, gchar *unusedNodeId, gpointer data)
+{
+	/* We need to use the selected node here, as for search folders
+	   if we'd rely on the parent node of the changed item we would
+	   enable the wrong menu options */
+	nodePtr	node = feedlist_get_selected ();
+
+	if (!node) {
+		liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
+		liferea_shell_update_allitems_actions (FALSE, FALSE);
+		liferea_shell_update_update_menu (FALSE);
+		return;
+	}
+
+	// Doesn't really fit here, but nonetheless correct for this signal
+	liferea_shell_set_view_mode (node_get_view_mode (node));
+
+	gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
+	liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
+	liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
+	                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
+
+	// Needs to be last as liferea_shell_update_update_menu() default enables actions
+	if (IS_FEED (node))
+		liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
+	else
+		liferea_shell_update_allitems_actions (FALSE, 0 != node->unreadCount);
+}
+
 /*
-   Do to the unsuitable GtkStatusBar stack handling which doesn't
+   Due to the unsuitable GtkStatusBar stack handling, which doesn't
    allow to keep messages on top of the stack for some time without
-   overwriting them with newly arriving messages we need some extra
+   overwriting them with newly arriving messages, we need some extra
    handling here.
 
    Liferea knows two types of status messages:
@@ -1311,7 +1342,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	debug0 (DEBUG_GUI, "Initialising menus");
 
-	/* On start, no item or feed is selected, so Item menu should be insensitive: */
+	/* On start, no item or feed is selected, so menus should be insensitive */
 	liferea_shell_update_item_menu (FALSE);
 
 	/* necessary to prevent selection signals when filling the feed list
@@ -1346,6 +1377,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->feedlist = feedlist_create (feedListView);
 	g_signal_connect (shell->feedlist, "new-items",
 	                  G_CALLBACK (liferea_shell_update_unread_stats), shell->feedlist);
+	g_signal_connect (shell->feedlist, "items-updated",
+	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
+	g_signal_connect (shell->itemlist, "item-updated",
+	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
+	g_signal_connect (feedListView, "selection-changed",
+	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
 
 	itemview_style_update ();
 

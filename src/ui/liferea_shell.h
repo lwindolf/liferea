@@ -2,7 +2,7 @@
  * @file liferea_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -119,18 +119,6 @@ void liferea_shell_update_toolbar (void);
 void liferea_shell_update_history_actions (void);
 
 /**
- * liferea_shell_update_feed_menu: (skip)
- * @add:                TRUE if subscribing is to be enabled
- * @enabled:    	TRUE if feed actions are to be enabled
- * @readWrite:  	TRUE if feed list modifying actions are enabled
- *
- * Update the sensitivity of options affecting single feeds.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean readWrite);
-
-/**
  * liferea_shell_update_item_menu: (skip)
  * @enabled:	TRUE if item actions are to be enabled
  *
@@ -139,27 +127,6 @@ void liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean re
  * TODO: use signal instead
  */
 void liferea_shell_update_item_menu (gboolean enabled);
-
-/**
- * liferea_shell_update_allitems_actions: (skip)
- * @isNotEmpty: 	TRUE if there is a non-empty item set active
- * @isRead:     	TRUE if there are no unread items in the item set
- *
- * Update the sensitivity of options affecting item sets.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead);
-
-/**
- * liferea_shell_update_update_menu: (skip)
- * @enabled:	TRUE if menu options are to be enabled
- *
- * Set the sensitivity of items in the update menu.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_update_menu (gboolean enabled);
 
 /**
  * liferea_shell_set_status_bar:
