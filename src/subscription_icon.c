@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  Downloading suitable subscription icons
  *
- * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -181,9 +181,19 @@ subscription_icon_update (subscriptionPtr subscription)
 
 	ctxt = subscription_icon_download_ctxt_new ();
 	ctxt->id = g_strdup (subscription->node->id);
-	ctxt->options = update_options_copy (subscription->updateOptions);
 	ctxt->urls = favicon_get_urls (subscription,
 	                               node_get_base_url (subscription->node));
+
+	/* Do not copy update options as it is too dangerous (especially
+	   for online backends as for example TinyTinyRSS where we do not
+	   want to send the TinyTinyRSS credentials to the original website
+	   when fetching the favicon, see Github #678)!
+
+	   For simplicity we do not support fetching favicons with Basic Auth
+
+	   We just pass the proxy flag below. */
+	ctxt->options = g_new0 (struct updateOptions, 1);
+	ctxt->options->dontUseProxy = subscription->updateOptions->dontUseProxy;
 
 	subscription_icon_download_next (ctxt);
 }
