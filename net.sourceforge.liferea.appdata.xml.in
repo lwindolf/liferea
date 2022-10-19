@@ -105,6 +105,81 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release date="TODO" version="1.14.0">
+      <description>
+        <p>This is the first release of the new stable release line 1.14.
+           Many thanks to all the contributors and package maintainers that made this possible!
+        </p>
+        <p>Fixing hidden panes
+           Many Liferea users did suffer from invisible pane (e.g. a minimized feed list
+           or HTML view) upon startup. With certain desktop environments / themes making
+           the pane grips invisible it is hard to grip the correct pixel to restore a pane.
+
+           Now Liferea will never allow the panes to be smaller than 5% in height or width
+           regarding to there orientation. If a pane is smaller than 5% height/width it will be
+           set to 30% width or 50% height on startup.
+
+           The intention here is that panes are never invisible after startup.
+        </p>
+        <p>Last minute features
+
+           Liferea now supports the new GTK dark theme logic, where in the preferences
+           you define wether you "prefer" dark mode or light mode.
+
+           New search folder rule to match podcasts
+
+           New search folder rule to match headline authors
+
+           Support for media:description field of Youtube feeds
+        </p>
+        <p>Changes</p>
+        <ul>
+          <li>Liferea now supports gtk-application-prefer-dark-theme based dark mode switching. (Lars Windolf, Alexander Erwin Ittner)</li>
+          <li>#1148: Add search rule to find items from a given author (Alexander Erwin Ittner)</li>
+          <li>#1147: Exported OPML feed lists are now UTF-8 encoded for better readability (Alexander Erwin Ittner)</li>
+          <li>#1145: Render media:description field for Youtube feeds (Lars Windolf)</li>
+          <li>#1143: Updated default feed sources (HTTP->HTTPS) (Alexander Erwin Ittner)</li>
+          <li>#1133: Added new "podcast" search folder rule. (Alexander Erwin Ittner)</li>
+          <li>#1139: Also add enclosures when saving items to file. (Alexander Erwin Ittner)</li>
+          <li>Fixes #1132: Improved timeout error handling in feed commands (Alexander Erwin Ittner)</li>
+          <li>Fixes #1129: Accessibility errors in .ui files (reported by Paul Gevers)</li>
+          <li>Fixes #1126: Some images broken in reader mode (reported by Saijin-Naib)</li>
+          <li>Fixes #901, #1123: resize view panes to sensible positions when they were at min or max position on last shutdown.Makes left pane 30% window width and item list pane 50% height/width when pane position is 0 or 95% of height/width (Lars Windolf)</li>
+          <li>Fixes #992: HTML with self-closing tags not rendering properly (Rich Coe)</li>
+          <li>Fixes #644, #901, #909: Restoring window size/position with header bar plugin active (Lars Windolf)</li>
+          <li>#1137: Updated French translation (Guillaume Bernard)</li>
+          <li>#1134, #1135: Updated Spanish example feeds (Joel Barrios)</li>
+          <li>Fixes #1100: Dates are overwritten on every update for feeds that do not provide date information (Lars Windolf)</li>
+          <li>Update pt-BR translation (Alexandre Erwin Ittner)</li>
+          <li>Fixes #501: Fixes segfault when deleting a search folder that is rebuilding (Lars Windolf)</li>
+          <li>Fixes #1152: Reduces height of the status bar to save vertical space (Lars Windolf)</li>
+          <li>Added new plugin 'add-bookmark-site' that allows to configure a custom bookmarking site (Lars Windolf)</li>
+          <li>Fixes #723: LiveJournal feeds parsing can make the headline link a link to an XML document. Liferea now checks for the line MIME type (Lars Windolf)</li>
+          <li>Fixes #720: Mark all as read doesn't clear Unread folder if one entry is selected (Lars Windolf)</li>
+          <li>Fixes #1154: Search folder property "Hide read items" has wrong initial state when opening dialog (Lars Windolf)</li>
+          <li>Fixes #1155: Toolbar/menu actions disabling wrong for search folders/folders (Lars Windolf)</li>
+          <li>Fixes #923: Reading folders with unread filtering active often has remnant read items hanging in the list (Lars Windolf)</li>
+          <li>Fixes #768: Potential privacy issue while using TinyTinyRSS and updating favicons (Lars Windolf)</li>
+          <li>Fixes #1130: Fix format string (Lars Windolf)</li>
+          <li>Fixes #1160: add-bookmark-site plugin should follow XDG dirs (Lars Windolf)</li>
+          <li>Fixes #1162: missing gettext wrap (Lars Windolf)</li>
+          <li>Update pl-PO translation (Paweł Marcinia)</li>
+          <li>Update Russian translations (mbrav)</li>
+          <li>Fix notification icon in libnotify plugin (Tasos Sahanidis)</li>
+          <li>Update for sq translation (Besnik Bleta)</li>
+          <li>Update CN translation (David Yang)</li>
+          <li>Update of Italian translation (Gianvito Cavasoli)</li>
+          <li>Fixes #1182: Periodic crash when navigating between items (Lars Windolf)</li>
+          <li>Load custom user stylesheet for all URLs (Matthew Horan)</li>
+          <li>Fixes #1174: Missing dates for some feeds (Lars Windolf)</li>
+          <li>Update liferea_webkit_set_proxy to use non-deprecated functions (Matthew Horan)</li>
+          <li>Update Spanish translation for Liferea (Cristian Martínez)</li>
+          <li>Fixes #1121: Wait for network to become fully available (Lars Windolf)</li>
+          <li>Solves plugin manager not opening with no internet (Lars Windolf)</li>
+          <li>Update of German translation (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2022-07-26" version="1.13.9">
       <description>
         <p>This will be the last unstable release before the first 1.14 release candidate. It contains
