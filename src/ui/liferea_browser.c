@@ -547,7 +547,7 @@ liferea_browser_handle_URL (LifereaBrowser *browser, const gchar *url)
 
 	conf_get_bool_value (BROWSE_INSIDE_APPLICATION, &browse_inside_application);
 
-	debug2 (DEBUG_GUI, "handle URL: %s %s %s",
+	debug2 (DEBUG_GUI, "handle URL: %s %s",
 	        browse_inside_application?"true":"false",
 	        browser->forceInternalBrowsing?"true":"false");
 
