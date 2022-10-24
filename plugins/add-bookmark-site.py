@@ -22,6 +22,7 @@
 #
 
 import os
+from pathlib import Path
 import gi
 
 gi.require_version('Gtk', '3.0')
@@ -32,8 +33,9 @@ from gi.repository import GObject, Gtk, PeasGtk, Liferea
 UI_FILE_PATH = os.path.join(os.path.dirname(__file__), "add-bookmark-site.ui")
 
 """ get some good config file name """
-config_dir = os.path.expandvars(
-        "$HOME/.config/liferea/plugins/add-bookmark-site")
+config_path = "liferea/plugins/add-bookmark-site"
+config_dir = os.getenv('XDG_CONFIG_HOME', Path.joinpath(Path.home(), ".config"))
+config_dir = Path.joinpath(Path(config_dir), config_path)
 config_fname = os.path.join(config_dir, "add-bookmark-site.ini")
 
 
