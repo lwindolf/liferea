@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-11 23:29+0000\n"
+"POT-Creation-Date: 2022-10-24 22:37+0200\n"
 "PO-Revision-Date: 2022-10-11 21:15-0300\n"
 "Last-Translator: Fúlvio Alves <fga.fulvio@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-translation@lists.sourceforge."
@@ -274,7 +274,7 @@ msgstr "Sair"
 msgid "Browser command failed: %s"
 msgstr "Falha ao iniciar o navegador: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1078
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Iniciando: \"%s\""
@@ -523,7 +523,7 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Não foi possível analisar o JSON retornado pela API TinyTinyRSS!"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:407
+#: ../src/itemlist.c:425
 msgid "There are no unread items"
 msgstr "Não há itens não lidos"
 
@@ -964,29 +964,29 @@ msgstr "Escolher Arquivo"
 msgid "File Extension .%s"
 msgstr "Extensão de Arquivo .%s"
 
-#: ../src/ui/feed_list_view.c:436
+#: ../src/ui/feed_list_view.c:428
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea está em modo offline. Não é possível atualizar."
 
-#: ../src/ui/feed_list_view.c:482
+#: ../src/ui/feed_list_view.c:474
 msgid "all feeds"
 msgstr "todas as fontes de notícias"
 
-#: ../src/ui/feed_list_view.c:483
+#: ../src/ui/feed_list_view.c:475
 #, c-format
 msgid "Mark %s as read ?"
 msgstr "Marcar %s como lido?"
 
-#: ../src/ui/feed_list_view.c:487
+#: ../src/ui/feed_list_view.c:479
 #, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Tem certeza de que deseja marcar todos os itens em %s como lidos?"
 
-#: ../src/ui/feed_list_view.c:625
+#: ../src/ui/feed_list_view.c:617
 msgid "(Empty)"
 msgstr "(Vazio)"
 
-#: ../src/ui/feed_list_view.c:836
+#: ../src/ui/feed_list_view.c:828
 #, c-format
 msgid ""
 "%s\n"
@@ -995,34 +995,34 @@ msgstr ""
 "%s\n"
 "<i>Recriando</i>"
 
-#: ../src/ui/feed_list_view.c:905
+#: ../src/ui/feed_list_view.c:897
 msgid "Deleting entry"
 msgstr "Apagando entrada"
 
-#: ../src/ui/feed_list_view.c:906
+#: ../src/ui/feed_list_view.c:898
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Você realmente deseja excluir \"%s\" e seu conteúdo?"
 
-#: ../src/ui/feed_list_view.c:906
+#: ../src/ui/feed_list_view.c:898
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Você realmente deseja excluir \"%s\"?"
 
-#: ../src/ui/feed_list_view.c:915 ../src/ui/feed_list_view.c:969
+#: ../src/ui/feed_list_view.c:907 ../src/ui/feed_list_view.c:961
 #: ../src/ui/popup_menu.c:260
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: ../src/ui/feed_list_view.c:916 ../src/ui/popup_menu.c:411
+#: ../src/ui/feed_list_view.c:908 ../src/ui/popup_menu.c:411
 msgid "_Delete"
 msgstr "_Excluir"
 
-#: ../src/ui/feed_list_view.c:918
+#: ../src/ui/feed_list_view.c:910
 msgid "Deletion Confirmation"
 msgstr "Confirmar Exclusão"
 
-#: ../src/ui/feed_list_view.c:957
+#: ../src/ui/feed_list_view.c:949
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
@@ -1031,11 +1031,11 @@ msgstr ""
 "Tem certeza de que deseja adicionar uma nova assinatura com o URL \"%s\"? Já "
 "existe outra assinatura com o mesmo URL (\"%s\")."
 
-#: ../src/ui/feed_list_view.c:970
+#: ../src/ui/feed_list_view.c:962
 msgid "_Add"
 msgstr "_Adicionar"
 
-#: ../src/ui/feed_list_view.c:972
+#: ../src/ui/feed_list_view.c:964
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Adicionando Confirmação de Assinatura Duplicada"
 
@@ -1081,33 +1081,33 @@ msgstr "Download do conteúdo falhou! Tente desativar o modo de leitura."
 msgid "Content extraction failed! Try disabling reader mode."
 msgstr "Extração do conteúdo falhou! Tente desativar o modo de leitura."
 
-#: ../src/ui/liferea_shell.c:408
+#: ../src/ui/liferea_shell.c:409
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d novo)"
 msgstr[1] " (%d novos)"
 
-#: ../src/ui/liferea_shell.c:413
+#: ../src/ui/liferea_shell.c:414
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d não lido%s"
 msgstr[1] "%d não lidos%s"
 
-#: ../src/ui/liferea_shell.c:754
+#: ../src/ui/liferea_shell.c:785
 msgid "Help Topics"
 msgstr "Tópicos de Ajuda"
 
-#: ../src/ui/liferea_shell.c:760
+#: ../src/ui/liferea_shell.c:791
 msgid "Quick Reference"
 msgstr "Referência Rápida"
 
-#: ../src/ui/liferea_shell.c:766
+#: ../src/ui/liferea_shell.c:797
 msgid "FAQ"
 msgstr "FAQ"
 
-#: ../src/ui/liferea_shell.c:1044
+#: ../src/ui/liferea_shell.c:1075
 #, c-format
 msgid "Email command failed: %s"
 msgstr "O comando de email falhou %s"
@@ -1655,7 +1655,7 @@ msgstr "página 1"
 msgid "page 2"
 msgstr "página 2"
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:24
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:25
 msgid "Headlines"
 msgstr "Manchetes"
 
@@ -1857,111 +1857,108 @@ msgid "_Defer removing read items from folders and search folders."
 msgstr "A_diar a remoção de itens lidos de pastas e pastas de pesquisa."
 
 #: ../glade/prefs.ui.h:22
+#, fuzzy
+msgid "Ask for confirmation when marking all items as read."
+msgstr "Pedir confirmação ao marcar todos os itens como lidos"
+
+#: ../glade/prefs.ui.h:23
 msgid "Web Integration"
 msgstr "Integração Web"
 
-#: ../glade/prefs.ui.h:23
+#: ../glade/prefs.ui.h:24
 msgid "_Post Bookmarks to"
 msgstr "_Publicar Favoritos em"
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:26
 msgid "Internal Browser Settings"
 msgstr "Configurações do Navegador Interno"
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:27
 msgid "Open links in Liferea's _window."
 msgstr "Abrir links na _janela do Liferea."
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:28
 msgid "_Never run external Javascript."
 msgstr "_Nunca executar Javascript externo."
 
-#: ../glade/prefs.ui.h:28
+#: ../glade/prefs.ui.h:29
 msgid "_Enable browser plugins."
 msgstr "_Habilitar plug-ins do navegador."
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:30
 msgid "External Browser Settings"
 msgstr "Configurações do Navegador Externo"
 
-#: ../glade/prefs.ui.h:30
+#: ../glade/prefs.ui.h:31
 msgid "_Browser:"
 msgstr "_Navegador:"
 
-#: ../glade/prefs.ui.h:31
+#: ../glade/prefs.ui.h:32
 msgid "_Manual:"
 msgstr "_Manual:"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:34
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr "<small>(%s para URL)</small>"
 
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:35
 msgid "Browser"
 msgstr "Navegador"
 
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:36
 msgid "Toolbar Settings"
 msgstr "Configurações da barra de ferramentas"
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:37
 msgid "_Hide toolbar."
 msgstr "_Ocultar a barra de ferramentas."
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:38
 msgid "Toolbar _button labels:"
 msgstr "Rótulos dos _botões da barra de ferramentas:"
 
-#: ../glade/prefs.ui.h:38
-msgid "Other"
-msgstr "Outro"
-
 #: ../glade/prefs.ui.h:39
-msgid "Ask for confirmation when marking all items as read"
-msgstr "Pedir confirmação ao marcar todos os itens como lidos"
-
-#: ../glade/prefs.ui.h:40
 msgid "Desktop"
 msgstr "Área de trabalho"
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:40
 msgid "HTTP Proxy Server"
 msgstr "Servidor Proxy HTTP"
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:41
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "Detectar _Automaticamente (GNOME ou ambiente)"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:42
 msgid "_No Proxy"
 msgstr "S_em Proxy"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:43
 msgid "_Manual Setting:"
 msgstr "Configuração _Manual:"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:44
 msgid "Proxy _Host:"
 msgstr "_Servidor Proxy:"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Port:"
 msgstr "_Porta do Proxy:"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:46
 msgid "Use Proxy Au_thentication"
 msgstr "Usar Au_tenticação de Proxy"
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:47
 msgid "Proxy _Username:"
 msgstr "_Usuário Proxy:"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:48
 msgid "Proxy Pass_word:"
 msgstr "Se_nha do Proxy:"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:49
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
@@ -1970,23 +1967,23 @@ msgstr ""
 "configurações de proxy de aplicativo. As configurações de proxy padrão do "
 "sistema serão usadas."
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:50
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:51
 msgid "Privacy Settings"
 msgstr "Configurações de Privacidade"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:52
 msgid "Tell sites that I do _not want to be tracked."
 msgstr "Dizer aos sites que _não quero ser rastreado."
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
 msgstr "Prevenção de Rastreamento _Inteligente. "
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:54
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
@@ -1994,19 +1991,19 @@ msgstr ""
 "Isso ativa o recurso WebKit descrito <a href=\"https://webkit.org/tracking-"
 "prevention/\">aqui</a>."
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:55
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
-"A prevenção de rastreamento inteligente está disponível apenas com WebKitGtk"
-"+ 2.30 ou superior."
+"A prevenção de rastreamento inteligente está disponível apenas com "
+"WebKitGtk+ 2.30 ou superior."
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:56
 msgid "Use _Reader mode."
 msgstr "Usar modo _Leitura."
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:57
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
@@ -2014,28 +2011,28 @@ msgstr ""
 "Isso permite <a href=\"https://github.com/mozilla/readability\">remover</a> "
 "todos os elementos sem conteúdo (como scripts, fontes, rastreamento)"
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:58
 msgid "Privacy"
 msgstr "Privacidade"
 
-#: ../glade/prefs.ui.h:60
+#: ../glade/prefs.ui.h:59
 msgid "Downloading Enclosures"
 msgstr "Baixar Componentes"
 
-#: ../glade/prefs.ui.h:61
+#: ../glade/prefs.ui.h:60
 msgid "_Download using"
 msgstr "_Download usando"
 
-#: ../glade/prefs.ui.h:63
+#: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
 msgstr "custom-command %s"
 
-#: ../glade/prefs.ui.h:64
+#: ../glade/prefs.ui.h:63
 msgid "Opening Enclosures"
 msgstr "Abrir Componente"
 
-#: ../glade/prefs.ui.h:65
+#: ../glade/prefs.ui.h:64
 msgid "Enclosures"
 msgstr "Componentes"
 
@@ -2453,6 +2450,9 @@ msgstr ""
 msgid "Search Folder:"
 msgstr "Pasta de Pesquisa:"
 
+#~ msgid "Other"
+#~ msgstr "Outro"
+
 #~ msgid "RSS feed reader"
 #~ msgstr "Leitor de fontes de notícias"
 
@@ -2519,8 +2519,8 @@ msgstr "Pasta de Pesquisa:"
 #~ "></b>"
 #~ msgstr ""
 #~ "A última atualização desta assinatura falhou!<br/><b>Código de erro HTTP "
-#~ "<xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select=\"httpError"
-#~ "\"/></b>"
+#~ "<xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+#~ "select=\"httpError\"/></b>"
 
 #~ msgid "Parser Error Details"
 #~ msgstr "Detalhes de Erro do Analisador"
