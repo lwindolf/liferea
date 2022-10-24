@@ -1,3 +1,45 @@
+2022-10-24  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.14-RC2
+
+	* #1152: Reduces height of the status bar to save vertical space.
+	  (Lars Windolf)
+
+	* #1070: Added new plugin 'add-bookmark-site' that allows to configure
+	  a custom bookmarking site.
+	  (Lars Windolf)
+
+	* Fixes #1155: Toolbar/menu actions disabling wrong for search
+	  folders/folders
+	  (Lars Windolf)
+
+	* Fixes #1154: Search folder property "Hide read items" has wrong
+	  initial state when opening dialog
+	  (Lars Windolf)
+
+	* Fixes #1100: Dates are overwritten on every update for feeds
+	  that do not provide date information.
+	  (Lars Windolf)
+
+	* Fixes #923: Reading folders with unread filtering active often
+	  has remnant read items
+	  (Lars Windolf)
+
+	* Fixes #723: LiveJournal feeds parsing can make the headline link
+	  a link to an XML document. Liferea now checks for the line MIME type.
+	  (Lars Windolf)
+
+	* Fixes #720: Mark all as read doesn't clear Unread folder if one
+	  entry is selected
+	  (Lars Windolf)
+
+	* Fixes #501: Fixes segfault when deleting a search folder that 
+	  is rebuilding
+	  (Lars Windolf)
+
+	* Updated pr-BR translation (Alexandre Erwin Ittner)
+
+
 2022-10-10  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.14-RC1
