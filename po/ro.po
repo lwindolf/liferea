@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.0-rc6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-30 23:48+0200\n"
+"POT-Creation-Date: 2022-10-24 22:37+0200\n"
 "PO-Revision-Date: 2009-10-06 19:11+0200\n"
 "Last-Translator: Adi Roiban <adi@roiban.ro>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -16,63 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1 ? 0: (((n % 100 > 19) || ((n % 100 "
 "== 0) && (n != 0))) ? 2: 1));\n"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:1
-#, fuzzy
-msgid "RSS feed reader"
-msgstr "Cititor fluxuri"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:2
-msgid ""
-"Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
-"for online news feeds. It supports a number of different feed formats "
-"including RSS/RDF, CDF and Atom. There are many other news readers "
-"available, but these others are not available for Linux or require many "
-"extra libraries to be installed. Liferea tries to fill this gap by creating "
-"a fast, easy to use, easy to install news aggregator for GTK/GNOME."
-msgstr ""
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:3
-msgid "Distinguishing features:"
-msgstr ""
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:4
-#, fuzzy
-msgid "Read articles when offline"
-msgstr "Liferea este conectat"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:5
-#, fuzzy
-msgid "Synchronizes with TheOldReader"
-msgstr "<span weight=\"bold\">Sincronizat cu calculatoare din apropiere</span>"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:6
-#, fuzzy
-msgid "Synchronizes with TinyTinyRSS"
-msgstr "<span weight=\"bold\">Sincronizat cu calculatoare din apropiere</span>"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:7
-#, fuzzy
-msgid "Synchronizes with InoReader"
-msgstr "<span weight=\"bold\">Sincronizat cu calculatoare din apropiere</span>"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:8
-#, fuzzy
-msgid "Synchronizes with Reedah"
-msgstr "<span weight=\"bold\">Sincronizat cu calculatoare din apropiere</span>"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:9
-msgid "Permanently save headlines in news bins"
-msgstr ""
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:10
-msgid "Match items using search folders"
-msgstr ""
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:11
-#, fuzzy
-msgid "Play Podcasts"
-msgstr "Podcast"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
@@ -326,7 +269,7 @@ msgstr "_Ieșire"
 msgid "Browser command failed: %s"
 msgstr "Comanda de navigare a eșuat: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1078
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Se pornește: \"%s\""
@@ -341,7 +284,7 @@ msgstr "Eroare autorizare"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nu s-a putut creat dosar cache „%s”!"
 
-#: ../src/conf.c:182
+#: ../src/conf.c:147
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -450,11 +393,11 @@ msgstr "Exportă listă flux"
 msgid "Export"
 msgstr "Exportă"
 
-#: ../src/feed_parser.c:201
+#: ../src/feed_parser.c:202
 msgid "Empty document!"
 msgstr "Document gol!"
 
-#: ../src/feed_parser.c:210
+#: ../src/feed_parser.c:211
 msgid "Invalid XML!"
 msgstr "XML nevalid!"
 
@@ -463,26 +406,41 @@ msgstr "XML nevalid!"
 msgid "New Subscription"
 msgstr "Abonament nou"
 
-#: ../src/fl_sources/google_source.c:111
-msgid "Google Reader"
+#: ../src/fl_sources/google_source.c:192 ../src/fl_sources/reedah_source.c:120
+#: ../src/fl_sources/theoldreader_source.c:122
+#, fuzzy
+msgid "Login failed!"
+msgstr "Autentificare Google Reader eșuată!"
+
+#: ../src/fl_sources/google_source.c:404
+#, fuzzy
+msgid "Google Reader API"
 msgstr "Google Reader"
 
-#: ../src/fl_sources/node_source.c:337
+#: ../src/fl_sources/google_source_feed.c:159
+msgid "Could not parse JSON returned by Google Reader API!"
+msgstr ""
+
+#: ../src/fl_sources/node_source.c:117
+msgid "Miniflux"
+msgstr ""
+
+#: ../src/fl_sources/node_source.c:332
 msgid "No feed list source types found!"
 msgstr "Nu s-a găsit tipul listei de fluxuri!"
 
-#: ../src/fl_sources/node_source.c:366
+#: ../src/fl_sources/node_source.c:361
 msgid "Source Type"
 msgstr "Tip sursă"
 
-#: ../src/fl_sources/node_source.c:417
+#: ../src/fl_sources/node_source.c:412
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:583
+#: ../src/fl_sources/node_source.c:578
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr ""
@@ -503,13 +461,7 @@ msgstr ""
 msgid "New OPML Subscription"
 msgstr "Abonament OPML nou"
 
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-#, fuzzy
-msgid "Login failed!"
-msgstr "Autentificare Google Reader eșuată!"
-
-#: ../src/fl_sources/reedah_source.c:323
+#: ../src/fl_sources/reedah_source.c:335
 msgid "Reedah"
 msgstr ""
 
@@ -517,7 +469,7 @@ msgstr ""
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr ""
 
-#: ../src/fl_sources/theoldreader_source.c:347
+#: ../src/fl_sources/theoldreader_source.c:364
 #, fuzzy
 msgid "TheOldReader"
 msgstr "Cititor fluxuri"
@@ -543,7 +495,7 @@ msgid ""
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:471
+#: ../src/fl_sources/ttrss_source.c:472
 msgid "Tiny Tiny RSS"
 msgstr ""
 
@@ -552,7 +504,7 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:407
+#: ../src/itemlist.c:425
 #, fuzzy
 msgid "There are no unread items"
 msgstr "Nu există elemente necitite "
@@ -653,39 +605,39 @@ msgid "Print debugging messages for the given topic"
 msgstr "Afișează mesaje de depanare pentru subiectul specificat"
 
 #. Some libsoup transport errors
-#: ../src/net.c:460
+#: ../src/net.c:470
 msgid "The update request was cancelled"
 msgstr "Cererea de actualizare a fost anulată"
 
-#: ../src/net.c:461
+#: ../src/net.c:471
 msgid "Unable to resolve destination host name"
 msgstr "Nu s-a putut rezolva numele destinație"
 
-#: ../src/net.c:462
+#: ../src/net.c:472
 msgid "Unable to resolve proxy host name"
 msgstr "Nu s-a putut rezolva numele proxyului"
 
-#: ../src/net.c:463
+#: ../src/net.c:473
 msgid "Unable to connect to remote host"
 msgstr "Nu s-a putut conecta la calculatorul la distanță"
 
-#: ../src/net.c:464
+#: ../src/net.c:474
 msgid "Unable to connect to proxy"
 msgstr "Nu s-a putut conecta la proxy"
 
-#: ../src/net.c:465
+#: ../src/net.c:475
 msgid ""
 "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
 "algorithm. Check your operating system settings."
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:468
+#: ../src/net.c:478
 msgid "The resource moved permanently to a new location"
 msgstr "Resursa a fost mutată permanent la o nouă locație"
 
 #. http 4xx client error
-#: ../src/net.c:471
+#: ../src/net.c:481
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -693,35 +645,35 @@ msgstr ""
 "Nu aveți permisiunea de a descărca acest flux. Actualizați numele de "
 "utilizator și parola din dialogul de proprietăți a fluxului."
 
-#: ../src/net.c:473
+#: ../src/net.c:483
 msgid "Payment required"
 msgstr "Necesită plată"
 
-#: ../src/net.c:474
+#: ../src/net.c:484
 msgid "You're not allowed to access this resource"
 msgstr "Nu aveți permisiunea de a accesa această resursă"
 
-#: ../src/net.c:475
+#: ../src/net.c:485
 msgid "Resource Not Found"
 msgstr "Nu au fost găsite resursele"
 
-#: ../src/net.c:476
+#: ../src/net.c:486
 msgid "Method Not Allowed"
 msgstr "Metoda nu este acceptată"
 
-#: ../src/net.c:477
+#: ../src/net.c:487
 msgid "Not Acceptable"
 msgstr "Nu este acceptabil"
 
-#: ../src/net.c:478
+#: ../src/net.c:488
 msgid "Proxy authentication required"
 msgstr "Autentificare proxy necesară"
 
-#: ../src/net.c:479
+#: ../src/net.c:489
 msgid "Request timed out"
 msgstr "Cererea a expirat"
 
-#: ../src/net.c:480
+#: ../src/net.c:490
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -731,24 +683,51 @@ msgstr ""
 "Fluxul a fost întrerupt. Nu mai este disponibil. Liferea nu îl va mai "
 "actualiza dar puteți accesa titlurile din cache."
 
-#: ../src/net.c:485
+#. http 5xx server errors
+#: ../src/net.c:493
+#, fuzzy
+msgid "Internal Server Error"
+msgstr "Eroare la server"
+
+#: ../src/net.c:494
+msgid "Not Implemented"
+msgstr ""
+
+#: ../src/net.c:495
+msgid "Bad Gateway"
+msgstr ""
+
+#: ../src/net.c:496
+#, fuzzy
+msgid "Service Unavailable"
+msgstr "Nume _serviciu"
+
+#: ../src/net.c:497
+msgid "Gateway Timeout"
+msgstr ""
+
+#: ../src/net.c:498
+msgid "HTTP Version Not Supported"
+msgstr ""
+
+#: ../src/net.c:503
 msgid "There was an internal error in the update process"
 msgstr "S-a produs o eroare internă în procesul de actualizare"
 
-#: ../src/net.c:487
+#: ../src/net.c:505
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Fluxul nu este disponibil: Redirecționare nesuportată cerută de server!"
 
-#: ../src/net.c:489
+#: ../src/net.c:507
 msgid "Client Error"
 msgstr "Eroare la client"
 
-#: ../src/net.c:491
+#: ../src/net.c:509
 msgid "Server Error"
 msgstr "Eroare la server"
 
-#: ../src/net.c:493
+#: ../src/net.c:511
 msgid "An unknown networking error happened!"
 msgstr "S-a produs o eroare necunoscută de rețea!"
 
@@ -761,17 +740,17 @@ msgstr "Proprietăți abonamente"
 msgid "Create News Bin"
 msgstr "Crează colecție știri"
 
-#: ../src/node.c:640
+#: ../src/node.c:664
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr ""
 
-#: ../src/node.c:659
+#: ../src/node.c:683
 #, fuzzy
 msgid "Feed file exported from Liferea"
 msgstr "Lista de flux a fost exportată!"
 
-#: ../src/node.c:674
+#: ../src/node.c:698
 #, fuzzy, c-format
 msgid "Error while saving feed file"
 msgstr "Eroare la exportarea listei de fluxuri!"
@@ -786,86 +765,96 @@ msgstr "%b %d %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:229
+#: ../src/rule.c:275
 msgid "Item"
 msgstr "Element"
 
-#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
-#: ../src/rule.c:237 ../src/rule.c:238
+#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
+#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
 msgid "does contain"
 msgstr "conține"
 
-#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
-#: ../src/rule.c:237 ../src/rule.c:238
+#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
+#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
 msgid "does not contain"
 msgstr "nu conține"
 
-#: ../src/rule.c:230
+#: ../src/rule.c:276
 msgid "Item title"
 msgstr "Titlu element"
 
-#: ../src/rule.c:231
+#: ../src/rule.c:277
 msgid "Item body"
 msgstr "Corp element"
 
-#: ../src/rule.c:232
+#: ../src/rule.c:278
+#, fuzzy
+msgid "Item author"
+msgstr "Corp element"
+
+#: ../src/rule.c:279
 msgid "Read status"
 msgstr "Starea de citit"
 
-#: ../src/rule.c:232
+#: ../src/rule.c:279
 msgid "is unread"
 msgstr "este necitit"
 
-#: ../src/rule.c:232
+#: ../src/rule.c:279
 msgid "is read"
 msgstr "este citit"
 
-#: ../src/rule.c:233
+#: ../src/rule.c:280
 msgid "Flag status"
 msgstr "Stare fanion"
 
-#: ../src/rule.c:233
+#: ../src/rule.c:280
 msgid "is flagged"
 msgstr "este marcat"
 
-#: ../src/rule.c:233
+#: ../src/rule.c:280
 msgid "is unflagged"
 msgstr "este nemarcat"
 
-#: ../src/rule.c:234
-msgid "Podcast"
-msgstr "Podcast"
+#: ../src/rule.c:281
+#, fuzzy
+msgid "Enclosure"
+msgstr "Atașamente"
 
-#: ../src/rule.c:234
+#: ../src/rule.c:281 ../src/rule.c:282
 msgid "included"
 msgstr "inclus"
 
-#: ../src/rule.c:234
+#: ../src/rule.c:281 ../src/rule.c:282
 msgid "not included"
 msgstr "neinclus"
 
-#: ../src/rule.c:235
+#: ../src/rule.c:282
+msgid "Podcast"
+msgstr "Podcast"
+
+#: ../src/rule.c:283
 msgid "Category"
 msgstr "Categorie"
 
-#: ../src/rule.c:235
+#: ../src/rule.c:283
 msgid "is set"
 msgstr "este definit"
 
-#: ../src/rule.c:235
+#: ../src/rule.c:283
 msgid "is not set"
 msgstr "nu este definit"
 
-#: ../src/rule.c:236
+#: ../src/rule.c:284
 msgid "Feed title"
 msgstr "Titlu flux"
 
-#: ../src/rule.c:237
+#: ../src/rule.c:285
 #, fuzzy
 msgid "Feed source"
 msgstr "Sursa feedului"
 
-#: ../src/rule.c:238
+#: ../src/rule.c:286
 msgid "Parent folder title"
 msgstr ""
 
@@ -962,76 +951,76 @@ msgstr "Alegere fișier"
 msgid "File Extension .%s"
 msgstr "<b>Extensie fișier .%s</b>"
 
-#: ../src/ui/feed_list_view.c:436
+#: ../src/ui/feed_list_view.c:428
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea este în modul deconectat. Nu se pot face actualizări."
 
-#: ../src/ui/feed_list_view.c:482
+#: ../src/ui/feed_list_view.c:474
 #, fuzzy
 msgid "all feeds"
 msgstr "Caută în toate feedurile."
 
-#: ../src/ui/feed_list_view.c:483
+#: ../src/ui/feed_list_view.c:475
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Marchează toate ca citite"
 
-#: ../src/ui/feed_list_view.c:487
+#: ../src/ui/feed_list_view.c:479
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Doriți să ștergeți %s?"
 
-#: ../src/ui/feed_list_view.c:625
+#: ../src/ui/feed_list_view.c:617
 msgid "(Empty)"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:836
+#: ../src/ui/feed_list_view.c:828
 #, c-format
 msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:905
+#: ../src/ui/feed_list_view.c:897
 msgid "Deleting entry"
 msgstr "Se șterge intrarea"
 
-#: ../src/ui/feed_list_view.c:906
+#: ../src/ui/feed_list_view.c:898
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Doriți să ștergeți %s și conținutul lui?"
 
-#: ../src/ui/feed_list_view.c:906
+#: ../src/ui/feed_list_view.c:898
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Doriți să ștergeți %s?"
 
-#: ../src/ui/feed_list_view.c:915 ../src/ui/feed_list_view.c:969
+#: ../src/ui/feed_list_view.c:907 ../src/ui/feed_list_view.c:961
 #: ../src/ui/popup_menu.c:260
 #, fuzzy
 msgid "_Cancel"
 msgstr "_Anulează tot"
 
-#: ../src/ui/feed_list_view.c:916 ../src/ui/popup_menu.c:411
+#: ../src/ui/feed_list_view.c:908 ../src/ui/popup_menu.c:411
 msgid "_Delete"
 msgstr "Șt_erge"
 
-#: ../src/ui/feed_list_view.c:918
+#: ../src/ui/feed_list_view.c:910
 msgid "Deletion Confirmation"
 msgstr "Confirmare ștergere"
 
-#: ../src/ui/feed_list_view.c:957
+#: ../src/ui/feed_list_view.c:949
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:970
+#: ../src/ui/feed_list_view.c:962
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:972
+#: ../src/ui/feed_list_view.c:964
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Confirmare ștergere"
@@ -1041,45 +1030,45 @@ msgstr "Confirmare ștergere"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Nu s-a putut găsi fișierul imagine: %s"
 
-#: ../src/ui/item_list_view.c:115
+#: ../src/ui/item_list_view.c:113
 msgid "This item has no link specified!"
 msgstr "Acest element nu are specificată o legătură!"
 
-#: ../src/ui/item_list_view.c:483
+#: ../src/ui/item_list_view.c:479
 msgid "*** No title ***"
 msgstr "*** Fără titlu ***"
 
-#: ../src/ui/item_list_view.c:487
+#: ../src/ui/item_list_view.c:483
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:853
+#: ../src/ui/item_list_view.c:842
 msgid "Headline"
 msgstr "Titlul"
 
-#: ../src/ui/item_list_view.c:875
+#: ../src/ui/item_list_view.c:860
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/item_list_view.c:1042
+#: ../src/ui/item_list_view.c:1029
 msgid "You must select a feed to delete its items!"
 msgstr "Trebuie să alegeți un flux pentru ai șterge elementele!"
 
-#: ../src/ui/item_list_view.c:1058 ../src/ui/item_list_view.c:1136
-#: ../src/ui/item_list_view.c:1151
+#: ../src/ui/item_list_view.c:1045 ../src/ui/item_list_view.c:1123
+#: ../src/ui/item_list_view.c:1138
 msgid "No item has been selected"
 msgstr "Nu a fost selectat nici un element"
 
-#: ../src/ui/liferea_browser.c:449
+#: ../src/ui/liferea_browser.c:482
 #, fuzzy
-msgid "Content download failed!"
+msgid "Content download failed! Try disabling reader mode."
 msgstr "Alegeți dosarul pentru descărcare"
 
-#: ../src/ui/liferea_browser.c:462
-msgid "Content extraction failed!"
+#: ../src/ui/liferea_browser.c:495
+msgid "Content extraction failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:408
+#: ../src/ui/liferea_shell.c:409
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1087,7 +1076,7 @@ msgstr[0] " (%d nou)"
 msgstr[1] " (%d noi)"
 msgstr[2] " (%d noi)"
 
-#: ../src/ui/liferea_shell.c:413
+#: ../src/ui/liferea_shell.c:414
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1095,19 +1084,19 @@ msgstr[0] "%d necitit%s"
 msgstr[1] "%d necitite%s"
 msgstr[2] "%d necitite%s"
 
-#: ../src/ui/liferea_shell.c:754
+#: ../src/ui/liferea_shell.c:785
 msgid "Help Topics"
 msgstr "Sumar pentru ajutor"
 
-#: ../src/ui/liferea_shell.c:760
+#: ../src/ui/liferea_shell.c:791
 msgid "Quick Reference"
 msgstr "Referință rapidă"
 
-#: ../src/ui/liferea_shell.c:766
+#: ../src/ui/liferea_shell.c:797
 msgid "FAQ"
 msgstr "Întrebări frecvente"
 
-#: ../src/ui/liferea_shell.c:1044
+#: ../src/ui/liferea_shell.c:1075
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Comanda de navigare a eșuat: %s"
@@ -1351,18 +1340,18 @@ msgstr ""
 msgid "%s exited with status %d"
 msgstr "%s a ieșit în starea %d"
 
-#: ../src/update.c:398 ../src/update.c:399 ../src/update.c:606
+#: ../src/update.c:398 ../src/update.c:399 ../src/update.c:621
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Eroare: Nu s-a putut face legătura „%s”"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:638
+#: ../src/update.c:652
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Eroare: Nu s-a putut deschide fișierul „%s”!"
 
-#: ../src/update.c:644
+#: ../src/update.c:658
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Eroare: Nu este nici un fișier „%s”"
@@ -1499,6 +1488,37 @@ msgstr "_Navighează"
 #: ../glade/enclosure_handler.ui.h:5
 msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_De acum încolo fă asta automat pentru atașamente de acest timp."
+
+#: ../glade/google_source.ui.h:1
+#, fuzzy
+msgid "Add Google Reader API Account"
+msgstr "Adaugă cont Google Reader"
+
+#: ../glade/google_source.ui.h:2
+msgid ""
+"Please enter the details of the new Google Reader API compatible "
+"subscription."
+msgstr ""
+
+#: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
+#: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
+msgid "_Password"
+msgstr "_Parolă"
+
+#: ../glade/google_source.ui.h:4 ../glade/reedah_source.ui.h:4
+#: ../glade/theoldreader_source.ui.h:4
+msgid "_Username (Email)"
+msgstr "N_ume utilizator (email)"
+
+#: ../glade/google_source.ui.h:5
+#, fuzzy
+msgid "_Server"
+msgstr "Eroare la server"
+
+#: ../glade/google_source.ui.h:6
+#, fuzzy
+msgid "_Name"
+msgstr "Nume"
 
 #: ../glade/liferea_menu.ui.h:1
 msgid "_Subscriptions"
@@ -1648,7 +1668,7 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:24
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:25
 msgid "Headlines"
 msgstr "Titluri"
 
@@ -1857,184 +1877,180 @@ msgid "_Defer removing read items from folders and search folders."
 msgstr ""
 
 #: ../glade/prefs.ui.h:22
+msgid "Ask for confirmation when marking all items as read."
+msgstr ""
+
+#: ../glade/prefs.ui.h:23
 #, fuzzy
 msgid "Web Integration"
 msgstr "Orientare"
 
-#: ../glade/prefs.ui.h:23
+#: ../glade/prefs.ui.h:24
 msgid "_Post Bookmarks to"
 msgstr "_Pune semne de carte la"
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:26
 #, fuzzy
 msgid "Internal Browser Settings"
 msgstr "<span weight=\"bold\">Preferințele navigatorului intern</span>"
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:27
 msgid "Open links in Liferea's _window."
 msgstr "Deschide legăturile în _fereastra din Liferea"
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:28
 msgid "_Never run external Javascript."
 msgstr ""
 
-#: ../glade/prefs.ui.h:28
+#: ../glade/prefs.ui.h:29
 msgid "_Enable browser plugins."
 msgstr "Activ_ează modulele navigatorului."
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:30
 #, fuzzy
 msgid "External Browser Settings"
 msgstr "<span weight=\"bold\">Preferințe navigatorului extern</span>"
 
-#: ../glade/prefs.ui.h:30
+#: ../glade/prefs.ui.h:31
 msgid "_Browser:"
 msgstr "_Navigator:"
 
-#: ../glade/prefs.ui.h:31
+#: ../glade/prefs.ui.h:32
 #, fuzzy
 msgid "_Manual:"
 msgstr "Manual"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:34
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr ""
 
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:35
 msgid "Browser"
 msgstr "Navigator"
 
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:36
 #, fuzzy
 msgid "Toolbar Settings"
 msgstr "Etichete _butoane bară de unelte:"
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:37
 msgid "_Hide toolbar."
 msgstr "_Ascunde bara de instrumente."
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:38
 msgid "Toolbar _button labels:"
 msgstr "Etichete _butoane bară de unelte:"
 
-#: ../glade/prefs.ui.h:38
-msgid "Other"
-msgstr ""
-
 #: ../glade/prefs.ui.h:39
-msgid "Ask for confirmation when marking all items as read"
-msgstr ""
-
-#: ../glade/prefs.ui.h:40
 msgid "Desktop"
 msgstr ""
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:40
 msgid "HTTP Proxy Server"
 msgstr ""
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:41
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Auto detectare (GNOME sau mediu de lucru)"
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:42
 msgid "_No Proxy"
 msgstr "Fără _proxy"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:43
 msgid "_Manual Setting:"
 msgstr "Configurări _manuale:"
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:44
 msgid "Proxy _Host:"
 msgstr "_Gazdă proxy:"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Port:"
 msgstr "_Port proxy:"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:46
 msgid "Use Proxy Au_thentication"
 msgstr "Folosește au_tentificare proxy"
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:47
 msgid "Proxy _Username:"
 msgstr "N_ume utilizator proxy:"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:48
 msgid "Proxy Pass_word:"
 msgstr "Parolă pro_xy:"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:49
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:50
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:51
 #, fuzzy
 msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">Preferințe afișare dosar</span>"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:52
 msgid "Tell sites that I do _not want to be tracked."
 msgstr ""
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
 msgstr ""
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:54
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:55
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:56
 msgid "Use _Reader mode."
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:57
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:58
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:60
+#: ../glade/prefs.ui.h:59
 #, fuzzy
 msgid "Downloading Enclosures"
 msgstr "Descărcare atașament"
 
-#: ../glade/prefs.ui.h:61
+#: ../glade/prefs.ui.h:60
 msgid "_Download using"
 msgstr "_Descarcă folosind"
 
-#: ../glade/prefs.ui.h:63
+#: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:64
+#: ../glade/prefs.ui.h:63
 #, fuzzy
 msgid "Opening Enclosures"
 msgstr "Deschide atașament..."
 
-#: ../glade/prefs.ui.h:65
+#: ../glade/prefs.ui.h:64
 msgid "Enclosures"
 msgstr "Atașamente"
 
@@ -2155,15 +2171,6 @@ msgstr "Adaugă cont Google Reader"
 #, fuzzy
 msgid "Please enter your Reedah account settings."
 msgstr "Introduceți configurările contului Google Reader."
-
-#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
-#: ../glade/ttrss_source.ui.h:4
-msgid "_Password"
-msgstr "_Parolă"
-
-#: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
-msgid "_Username (Email)"
-msgstr "N_ume utilizator (email)"
 
 #: ../glade/rename_node.ui.h:1
 msgid "Rename"
@@ -2484,6 +2491,38 @@ msgstr ""
 msgid "Search Folder:"
 msgstr "Dosare căutare:"
 
+#, fuzzy
+#~ msgid "RSS feed reader"
+#~ msgstr "Cititor fluxuri"
+
+#, fuzzy
+#~ msgid "Read articles when offline"
+#~ msgstr "Liferea este conectat"
+
+#, fuzzy
+#~ msgid "Synchronizes with TheOldReader"
+#~ msgstr ""
+#~ "<span weight=\"bold\">Sincronizat cu calculatoare din apropiere</span>"
+
+#, fuzzy
+#~ msgid "Synchronizes with TinyTinyRSS"
+#~ msgstr ""
+#~ "<span weight=\"bold\">Sincronizat cu calculatoare din apropiere</span>"
+
+#, fuzzy
+#~ msgid "Synchronizes with InoReader"
+#~ msgstr ""
+#~ "<span weight=\"bold\">Sincronizat cu calculatoare din apropiere</span>"
+
+#, fuzzy
+#~ msgid "Synchronizes with Reedah"
+#~ msgstr ""
+#~ "<span weight=\"bold\">Sincronizat cu calculatoare din apropiere</span>"
+
+#, fuzzy
+#~ msgid "Play Podcasts"
+#~ msgstr "Podcast"
+
 #, c-format
 #~ msgid "\"%s\" is not available"
 #~ msgstr "„%s” nu este disponibil"
@@ -2505,8 +2544,8 @@ msgstr "Dosare căutare:"
 #~ "></b>"
 #~ msgstr ""
 #~ "Ultima actualizare a acestui abonament a eșuat!<br/><b>Codul de eroare "
-#~ "HTTP <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of select="
-#~ "\"httpError\"/></b>"
+#~ "HTTP <xsl:value-of select=\"httpErrorCode\"/>: <xsl:value-of "
+#~ "select=\"httpError\"/></b>"
 
 #~ msgid "Parser Error Details"
 #~ msgstr "Detalii eroare analizare"
@@ -2686,9 +2725,6 @@ msgstr "Dosare căutare:"
 #~ msgstr ""
 #~ "Notă:<i>Numele de utilizator și parola vor fi salvate în lista de fluxuri "
 #~ "fără a se folosi vreo metodă de criptare.</i>"
-
-#~ msgid "Add Google Reader Account"
-#~ msgstr "Adaugă cont Google Reader"
 
 #~ msgid "Please enter your Google Reader account settings."
 #~ msgstr "Introduceți configurările contului Google Reader."
@@ -2983,9 +3019,6 @@ msgstr "Dosare căutare:"
 
 #~ msgid "_Enable Local LAN Synchronization"
 #~ msgstr "Activ_ează sincronizarea în rețeaua locală"
-
-#~ msgid "_Service Name"
-#~ msgstr "Nume _serviciu"
 
 #~ msgid "Sync"
 #~ msgstr "Sincronizare"
@@ -3340,13 +3373,13 @@ msgstr "Dosare căutare:"
 #~ msgstr "Format ISO8601 invalid! Informațiile <dc:date> se ignoră!\n"
 
 #~ msgid ""
-#~ "<p>Could not determine the feed type. Please check that it is <a href="
-#~ "\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://liferea."
-#~ "sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
+#~ "<p>Could not determine the feed type. Please check that it is <a "
+#~ "href=\"http://feedvalidator.org\">valid</a> and in a <a href=\"http://"
+#~ "liferea.sourceforge.net/supported_formats.htm\">supported format</a>.</p>"
 #~ msgstr ""
-#~ "<p>Nu s-a putut determina tipul feedul. Verificați dacă este <a href="
-#~ "\"http://feedvalidator.org\">valid</a> și este <a href=\"http://liferea."
-#~ "sourceforge.net/index.php#supported_formats\">printre formatele "
+#~ "<p>Nu s-a putut determina tipul feedul. Verificați dacă este <a "
+#~ "href=\"http://feedvalidator.org\">valid</a> și este <a href=\"http://"
+#~ "liferea.sourceforge.net/index.php#supported_formats\">printre formatele "
 #~ "suportate</a>.</p>"
 
 #~ msgid ""
@@ -3475,9 +3508,6 @@ msgstr "Dosare căutare:"
 #~ "Copyright (c) 2003-2005 \n"
 #~ "Lars Lindner <lars.lindner@gmx.net> and \n"
 #~ "Nathan J. Conrad <t98502@users.sourceforge.net>\n"
-
-#~ msgid "Name"
-#~ msgstr "Nume"
 
 #~ msgid ""
 #~ "Note: Items are added to the vfolder if at least one additive rule\n"

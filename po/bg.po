@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea Bulgarian translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-30 23:48+0200\n"
+"POT-Creation-Date: 2022-10-24 22:37+0200\n"
 "PO-Revision-Date: 2006-03-17 12:10+0200\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -17,62 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:1
-#, fuzzy
-msgid "RSS feed reader"
-msgstr "Временни файлове на емисията"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:2
-msgid ""
-"Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
-"for online news feeds. It supports a number of different feed formats "
-"including RSS/RDF, CDF and Atom. There are many other news readers "
-"available, but these others are not available for Linux or require many "
-"extra libraries to be installed. Liferea tries to fill this gap by creating "
-"a fast, easy to use, easy to install news aggregator for GTK/GNOME."
-msgstr ""
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:3
-msgid "Distinguishing features:"
-msgstr ""
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:4
-#, fuzzy
-msgid "Read articles when offline"
-msgstr "Liferea е в режим „изключен“"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:5
-#, fuzzy
-msgid "Synchronizes with TheOldReader"
-msgstr "<span weight=\"bold\">Име на емисията</span>"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:6
-#, fuzzy
-msgid "Synchronizes with TinyTinyRSS"
-msgstr "<span weight=\"bold\">Име на емисията</span>"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:7
-#, fuzzy
-msgid "Synchronizes with InoReader"
-msgstr "<span weight=\"bold\">Име на емисията</span>"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:8
-#, fuzzy
-msgid "Synchronizes with Reedah"
-msgstr "<span weight=\"bold\">Име на емисията</span>"
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:9
-msgid "Permanently save headlines in news bins"
-msgstr ""
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:10
-msgid "Match items using search folders"
-msgstr ""
-
-#: ../net.sourceforge.liferea.appdata.xml.in.h:11
-msgid "Play Podcasts"
-msgstr ""
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
@@ -333,7 +277,7 @@ msgstr "_Спиране на програмата"
 msgid "Browser command failed: %s"
 msgstr "Командата за стартиране на браузъра е неуспешна: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1047
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1078
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Стартиране: „%s“"
@@ -349,7 +293,7 @@ msgstr "Идентифициране"
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Не може да създаде директорията за временните файлове „%s“!"
 
-#: ../src/conf.c:182
+#: ../src/conf.c:147
 msgid ""
 "Your version of WebKitGTK+ doesn't support changing the proxy settings from "
 "Liferea. The system's default proxy settings will be used."
@@ -459,12 +403,12 @@ msgstr "Изнасяне на списък с емисиите"
 msgid "Export"
 msgstr "Изнасяне"
 
-#: ../src/feed_parser.c:201
+#: ../src/feed_parser.c:202
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p>Празен документ!</p>"
 
-#: ../src/feed_parser.c:210
+#: ../src/feed_parser.c:211
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p>Невалиден XML!</p>"
@@ -474,28 +418,41 @@ msgstr "<p>Невалиден XML!</p>"
 msgid "New Subscription"
 msgstr "Нова емисия"
 
-#: ../src/fl_sources/google_source.c:111
+#: ../src/fl_sources/google_source.c:192 ../src/fl_sources/reedah_source.c:120
+#: ../src/fl_sources/theoldreader_source.c:122
+msgid "Login failed!"
+msgstr ""
+
+#: ../src/fl_sources/google_source.c:404
 #, fuzzy
-msgid "Google Reader"
+msgid "Google Reader API"
 msgstr "Временни файлове на емисията"
 
-#: ../src/fl_sources/node_source.c:337
+#: ../src/fl_sources/google_source_feed.c:159
+msgid "Could not parse JSON returned by Google Reader API!"
+msgstr ""
+
+#: ../src/fl_sources/node_source.c:117
+msgid "Miniflux"
+msgstr ""
+
+#: ../src/fl_sources/node_source.c:332
 msgid "No feed list source types found!"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:366
+#: ../src/fl_sources/node_source.c:361
 #, fuzzy
 msgid "Source Type"
 msgstr "Вид на източника:"
 
-#: ../src/fl_sources/node_source.c:417
+#: ../src/fl_sources/node_source.c:412
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:583
+#: ../src/fl_sources/node_source.c:578
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr ""
@@ -518,12 +475,7 @@ msgstr ""
 msgid "New OPML Subscription"
 msgstr "Нова емисия"
 
-#: ../src/fl_sources/reedah_source.c:103
-#: ../src/fl_sources/theoldreader_source.c:104
-msgid "Login failed!"
-msgstr ""
-
-#: ../src/fl_sources/reedah_source.c:323
+#: ../src/fl_sources/reedah_source.c:335
 msgid "Reedah"
 msgstr ""
 
@@ -531,7 +483,7 @@ msgstr ""
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr ""
 
-#: ../src/fl_sources/theoldreader_source.c:347
+#: ../src/fl_sources/theoldreader_source.c:364
 #, fuzzy
 msgid "TheOldReader"
 msgstr "Временни файлове на емисията"
@@ -557,7 +509,7 @@ msgid ""
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:471
+#: ../src/fl_sources/ttrss_source.c:472
 msgid "Tiny Tiny RSS"
 msgstr ""
 
@@ -566,7 +518,7 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:407
+#: ../src/itemlist.c:425
 #, fuzzy
 msgid "There are no unread items"
 msgstr "Няма непрочетени записи "
@@ -692,40 +644,40 @@ msgstr ""
 "обработката на кеша"
 
 #. Some libsoup transport errors
-#: ../src/net.c:460
+#: ../src/net.c:470
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:461
+#: ../src/net.c:471
 msgid "Unable to resolve destination host name"
 msgstr ""
 
-#: ../src/net.c:462
+#: ../src/net.c:472
 msgid "Unable to resolve proxy host name"
 msgstr ""
 
-#: ../src/net.c:463
+#: ../src/net.c:473
 #, fuzzy
 msgid "Unable to connect to remote host"
 msgstr "Грешка при свързването с отдалечения адрес"
 
-#: ../src/net.c:464
+#: ../src/net.c:474
 msgid "Unable to connect to proxy"
 msgstr ""
 
-#: ../src/net.c:465
+#: ../src/net.c:475
 msgid ""
 "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
 "algorithm. Check your operating system settings."
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:468
+#: ../src/net.c:478
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:471
+#: ../src/net.c:481
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -734,38 +686,38 @@ msgstr ""
 "Нямате право да изтеглите тази емисия. Актуализирайте вашето име и парола в "
 "настройките на емисията."
 
-#: ../src/net.c:473
+#: ../src/net.c:483
 #, fuzzy
 msgid "Payment required"
 msgstr "Изисква се заплащане"
 
-#: ../src/net.c:474
+#: ../src/net.c:484
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:475
+#: ../src/net.c:485
 msgid "Resource Not Found"
 msgstr "Ресурсът не е намерен"
 
-#: ../src/net.c:476
+#: ../src/net.c:486
 msgid "Method Not Allowed"
 msgstr "Непозволен метод"
 
-#: ../src/net.c:477
+#: ../src/net.c:487
 msgid "Not Acceptable"
 msgstr "Неприемлив"
 
-#: ../src/net.c:478
+#: ../src/net.c:488
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Нужна е идентификация в сървъра-посредник"
 
-#: ../src/net.c:479
+#: ../src/net.c:489
 #, fuzzy
 msgid "Request timed out"
 msgstr "Заявката изтече"
 
-#: ../src/net.c:480
+#: ../src/net.c:490
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -775,25 +727,52 @@ msgstr ""
 "Тази емисия не е продължена. Вече не е налична. Liferea няма да я "
 "актуализира, но все още можете да преглеждате старите заглавия от кеша."
 
-#: ../src/net.c:485
+#. http 5xx server errors
+#: ../src/net.c:493
+#, fuzzy
+msgid "Internal Server Error"
+msgstr "Грешка в сървъра"
+
+#: ../src/net.c:494
+msgid "Not Implemented"
+msgstr ""
+
+#: ../src/net.c:495
+msgid "Bad Gateway"
+msgstr ""
+
+#: ../src/net.c:496
+#, fuzzy
+msgid "Service Unavailable"
+msgstr "„%s“ не е достъпна"
+
+#: ../src/net.c:497
+msgid "Gateway Timeout"
+msgstr ""
+
+#: ../src/net.c:498
+msgid "HTTP Version Not Supported"
+msgstr ""
+
+#: ../src/net.c:503
 msgid "There was an internal error in the update process"
 msgstr ""
 
-#: ../src/net.c:487
+#: ../src/net.c:505
 msgid "Feed not available: Server requested unsupported redirection!"
 msgstr ""
 "Емисията не е на разположение: Сървърът докладва за неподдържано "
 "пренасочване!"
 
-#: ../src/net.c:489
+#: ../src/net.c:507
 msgid "Client Error"
 msgstr "Грешка в клиента"
 
-#: ../src/net.c:491
+#: ../src/net.c:509
 msgid "Server Error"
 msgstr "Грешка в сървъра"
 
-#: ../src/net.c:493
+#: ../src/net.c:511
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(непозната мрежова грешка)"
@@ -807,17 +786,17 @@ msgstr "Настройки на емисията"
 msgid "Create News Bin"
 msgstr ""
 
-#: ../src/node.c:640
+#: ../src/node.c:664
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr ""
 
-#: ../src/node.c:659
+#: ../src/node.c:683
 #, fuzzy
 msgid "Feed file exported from Liferea"
 msgstr "Списъкът с емисии е изнесен успешно!"
 
-#: ../src/node.c:674
+#: ../src/node.c:698
 #, fuzzy, c-format
 msgid "Error while saving feed file"
 msgstr "Грешка при изнасянето на списъкът с емисии!"
@@ -832,90 +811,100 @@ msgstr ""
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:229
+#: ../src/rule.c:275
 msgid "Item"
 msgstr "Запис"
 
-#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
-#: ../src/rule.c:237 ../src/rule.c:238
+#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
+#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
 msgid "does contain"
 msgstr "съдържа"
 
-#: ../src/rule.c:229 ../src/rule.c:230 ../src/rule.c:231 ../src/rule.c:236
-#: ../src/rule.c:237 ../src/rule.c:238
+#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
+#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
 msgid "does not contain"
 msgstr "не съдържа"
 
-#: ../src/rule.c:230
+#: ../src/rule.c:276
 msgid "Item title"
 msgstr "Заглавие на записа"
 
-#: ../src/rule.c:231
+#: ../src/rule.c:277
 msgid "Item body"
 msgstr "Тяло на записа"
 
-#: ../src/rule.c:232
+#: ../src/rule.c:278
+#, fuzzy
+msgid "Item author"
+msgstr "Тяло на записа"
+
+#: ../src/rule.c:279
 msgid "Read status"
 msgstr "Поставяне на статус на прочетен"
 
-#: ../src/rule.c:232
+#: ../src/rule.c:279
 msgid "is unread"
 msgstr "е непрочетен"
 
-#: ../src/rule.c:232
+#: ../src/rule.c:279
 msgid "is read"
 msgstr "е прочетен"
 
-#: ../src/rule.c:233
+#: ../src/rule.c:280
 msgid "Flag status"
 msgstr "Състояние на флаг"
 
-#: ../src/rule.c:233
+#: ../src/rule.c:280
 msgid "is flagged"
 msgstr "е с флаг"
 
-#: ../src/rule.c:233
+#: ../src/rule.c:280
 msgid "is unflagged"
 msgstr "е без флаг"
 
-#: ../src/rule.c:234
-msgid "Podcast"
-msgstr ""
+#: ../src/rule.c:281
+#, fuzzy
+msgid "Enclosure"
+msgstr "Приложения"
 
-#: ../src/rule.c:234
+#: ../src/rule.c:281 ../src/rule.c:282
 #, fuzzy
 msgid "included"
 msgstr "включена фотография"
 
-#: ../src/rule.c:234
+#: ../src/rule.c:281 ../src/rule.c:282
 #, fuzzy
 msgid "not included"
 msgstr "включена фотография"
 
-#: ../src/rule.c:235
+#: ../src/rule.c:282
+msgid "Podcast"
+msgstr ""
+
+#: ../src/rule.c:283
 #, fuzzy
 msgid "Category"
 msgstr "категория"
 
-#: ../src/rule.c:235
+#: ../src/rule.c:283
 #, fuzzy
 msgid "is set"
 msgstr "е прочетен"
 
-#: ../src/rule.c:235
+#: ../src/rule.c:283
 msgid "is not set"
 msgstr ""
 
-#: ../src/rule.c:236
+#: ../src/rule.c:284
 msgid "Feed title"
 msgstr "Заглавие на емисията"
 
-#: ../src/rule.c:237
+#: ../src/rule.c:285
 #, fuzzy
 msgid "Feed source"
 msgstr "Източник на емисията"
 
-#: ../src/rule.c:238
+#: ../src/rule.c:286
 msgid "Parent folder title"
 msgstr ""
 
@@ -1012,77 +1001,77 @@ msgstr "Избор на файл"
 msgid "File Extension .%s"
 msgstr "<b>Файлово разширение .%s</b>"
 
-#: ../src/ui/feed_list_view.c:436
+#: ../src/ui/feed_list_view.c:428
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea е в режим „изключен“. Не е възможно да актуализирате емисиите."
 
-#: ../src/ui/feed_list_view.c:482
+#: ../src/ui/feed_list_view.c:474
 #, fuzzy
 msgid "all feeds"
 msgstr "Търсене във всички емисии."
 
-#: ../src/ui/feed_list_view.c:483
+#: ../src/ui/feed_list_view.c:475
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Отбелязване на всички като _прочетени"
 
-#: ../src/ui/feed_list_view.c:487
+#: ../src/ui/feed_list_view.c:479
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Сигурни ли сте, че искате да изтриете „%s“?"
 
-#: ../src/ui/feed_list_view.c:625
+#: ../src/ui/feed_list_view.c:617
 msgid "(Empty)"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:836
+#: ../src/ui/feed_list_view.c:828
 #, c-format
 msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:905
+#: ../src/ui/feed_list_view.c:897
 msgid "Deleting entry"
 msgstr "Изтриване на запис"
 
-#: ../src/ui/feed_list_view.c:906
+#: ../src/ui/feed_list_view.c:898
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Сигурни ли сте, че искате да изтриете „%s“ и всички негови записи?"
 
-#: ../src/ui/feed_list_view.c:906
+#: ../src/ui/feed_list_view.c:898
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Сигурни ли сте, че искате да изтриете „%s“?"
 
-#: ../src/ui/feed_list_view.c:915 ../src/ui/feed_list_view.c:969
+#: ../src/ui/feed_list_view.c:907 ../src/ui/feed_list_view.c:961
 #: ../src/ui/popup_menu.c:260
 #, fuzzy
 msgid "_Cancel"
 msgstr "Актуализиране на _всички"
 
-#: ../src/ui/feed_list_view.c:916 ../src/ui/popup_menu.c:411
+#: ../src/ui/feed_list_view.c:908 ../src/ui/popup_menu.c:411
 #, fuzzy
 msgid "_Delete"
 msgstr "/_Изтриване"
 
-#: ../src/ui/feed_list_view.c:918
+#: ../src/ui/feed_list_view.c:910
 msgid "Deletion Confirmation"
 msgstr "Потвърждаване на изтриването"
 
-#: ../src/ui/feed_list_view.c:957
+#: ../src/ui/feed_list_view.c:949
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:970
+#: ../src/ui/feed_list_view.c:962
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:972
+#: ../src/ui/feed_list_view.c:964
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Потвърждаване на изтриването"
@@ -1092,72 +1081,72 @@ msgstr "Потвърждаване на изтриването"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Файлът с картата с пиксели %s не може да бъде открит."
 
-#: ../src/ui/item_list_view.c:115
+#: ../src/ui/item_list_view.c:113
 msgid "This item has no link specified!"
 msgstr "Този запис няма не съдържа връзка!"
 
-#: ../src/ui/item_list_view.c:483
+#: ../src/ui/item_list_view.c:479
 #, fuzzy
 msgid "*** No title ***"
 msgstr "[Без заглавие]"
 
-#: ../src/ui/item_list_view.c:487
+#: ../src/ui/item_list_view.c:483
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:853
+#: ../src/ui/item_list_view.c:842
 msgid "Headline"
 msgstr "Заглавие"
 
-#: ../src/ui/item_list_view.c:875
+#: ../src/ui/item_list_view.c:860
 msgid "Date"
 msgstr "Дата"
 
-#: ../src/ui/item_list_view.c:1042
+#: ../src/ui/item_list_view.c:1029
 msgid "You must select a feed to delete its items!"
 msgstr "Трябва да изберете емисия, за да изтриете нейните записи!"
 
-#: ../src/ui/item_list_view.c:1058 ../src/ui/item_list_view.c:1136
-#: ../src/ui/item_list_view.c:1151
+#: ../src/ui/item_list_view.c:1045 ../src/ui/item_list_view.c:1123
+#: ../src/ui/item_list_view.c:1138
 msgid "No item has been selected"
 msgstr "Няма избран запис"
 
-#: ../src/ui/liferea_browser.c:449
+#: ../src/ui/liferea_browser.c:482
 #, fuzzy
-msgid "Content download failed!"
+msgid "Content download failed! Try disabling reader mode."
 msgstr "Избор на папка за запазване на изтеглянията"
 
-#: ../src/ui/liferea_browser.c:462
-msgid "Content extraction failed!"
+#: ../src/ui/liferea_browser.c:495
+msgid "Content extraction failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:408
+#: ../src/ui/liferea_shell.c:409
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d нов запис"
 msgstr[1] "%d нови записа"
 
-#: ../src/ui/liferea_shell.c:413
+#: ../src/ui/liferea_shell.c:414
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "е непрочетен"
 msgstr[1] "е непрочетен"
 
-#: ../src/ui/liferea_shell.c:754
+#: ../src/ui/liferea_shell.c:785
 msgid "Help Topics"
 msgstr "Раздели в помощта"
 
-#: ../src/ui/liferea_shell.c:760
+#: ../src/ui/liferea_shell.c:791
 msgid "Quick Reference"
 msgstr "Бърз справочник"
 
-#: ../src/ui/liferea_shell.c:766
+#: ../src/ui/liferea_shell.c:797
 msgid "FAQ"
 msgstr "Често задавани въпроси"
 
-#: ../src/ui/liferea_shell.c:1044
+#: ../src/ui/liferea_shell.c:1075
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Командата за стартиране на браузъра е неуспешна: %s"
@@ -1414,18 +1403,18 @@ msgstr "Грешка при отваряне на временния файл %s
 msgid "%s exited with status %d"
 msgstr "%s приключи работа със статус %d"
 
-#: ../src/update.c:398 ../src/update.c:399 ../src/update.c:606
+#: ../src/update.c:398 ../src/update.c:399 ../src/update.c:621
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Грешка: Тръбата „%s“ не може да бъде отворена"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:638
+#: ../src/update.c:652
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Грешка: Файлът „%s“ не може да бъде отворен"
 
-#: ../src/update.c:644
+#: ../src/update.c:658
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Грешка: Файлът „%s“ не съществува"
@@ -1573,6 +1562,38 @@ msgid "_Do this automatically for enclosures like this from now on."
 msgstr ""
 "_Действието да се извършва автоматично за файловете подобни на този от сега "
 "нататък."
+
+#: ../glade/google_source.ui.h:1
+#, fuzzy
+msgid "Add Google Reader API Account"
+msgstr "Временни файлове на емисията"
+
+#: ../glade/google_source.ui.h:2
+msgid ""
+"Please enter the details of the new Google Reader API compatible "
+"subscription."
+msgstr ""
+
+#: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
+#: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
+#, fuzzy
+msgid "_Password"
+msgstr "_Парола:"
+
+#: ../glade/google_source.ui.h:4 ../glade/reedah_source.ui.h:4
+#: ../glade/theoldreader_source.ui.h:4
+msgid "_Username (Email)"
+msgstr ""
+
+#: ../glade/google_source.ui.h:5
+#, fuzzy
+msgid "_Server"
+msgstr "Грешка в сървъра"
+
+#: ../glade/google_source.ui.h:6
+#, fuzzy
+msgid "_Name"
+msgstr "_Име на емисията:"
 
 #: ../glade/liferea_menu.ui.h:1
 #, fuzzy
@@ -1734,7 +1755,7 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:24
+#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:25
 msgid "Headlines"
 msgstr "Заглавия"
 
@@ -1944,187 +1965,183 @@ msgid "_Defer removing read items from folders and search folders."
 msgstr ""
 
 #: ../glade/prefs.ui.h:22
+msgid "Ask for confirmation when marking all items as read."
+msgstr ""
+
+#: ../glade/prefs.ui.h:23
 #, fuzzy
 msgid "Web Integration"
 msgstr "Ориентация"
 
-#: ../glade/prefs.ui.h:23
+#: ../glade/prefs.ui.h:24
 msgid "_Post Bookmarks to"
 msgstr ""
 
-#: ../glade/prefs.ui.h:25
+#: ../glade/prefs.ui.h:26
 #, fuzzy
 msgid "Internal Browser Settings"
 msgstr "<span weight=\"bold\">Вътрешен браузър</span>"
 
-#: ../glade/prefs.ui.h:26
+#: ../glade/prefs.ui.h:27
 msgid "Open links in Liferea's _window."
 msgstr "Отваряне на връзките в _Liferea."
 
-#: ../glade/prefs.ui.h:27
+#: ../glade/prefs.ui.h:28
 msgid "_Never run external Javascript."
 msgstr ""
 
-#: ../glade/prefs.ui.h:28
+#: ../glade/prefs.ui.h:29
 #, fuzzy
 msgid "_Enable browser plugins."
 msgstr "<span weight=\"bold\">Външен браузър</span>"
 
-#: ../glade/prefs.ui.h:29
+#: ../glade/prefs.ui.h:30
 #, fuzzy
 msgid "External Browser Settings"
 msgstr "<span weight=\"bold\">Външен браузър</span>"
 
-#: ../glade/prefs.ui.h:30
+#: ../glade/prefs.ui.h:31
 msgid "_Browser:"
 msgstr "_Браузър:"
 
-#: ../glade/prefs.ui.h:31
+#: ../glade/prefs.ui.h:32
 #, fuzzy
 msgid "_Manual:"
 msgstr "Ръчно зададено"
 
-#: ../glade/prefs.ui.h:33
+#: ../glade/prefs.ui.h:34
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr ""
 
-#: ../glade/prefs.ui.h:34
+#: ../glade/prefs.ui.h:35
 msgid "Browser"
 msgstr "Браузър"
 
-#: ../glade/prefs.ui.h:35
+#: ../glade/prefs.ui.h:36
 #, fuzzy
 msgid "Toolbar Settings"
 msgstr "<span weight=\"bold\">Изобразяване на папките</span>"
 
-#: ../glade/prefs.ui.h:36
+#: ../glade/prefs.ui.h:37
 msgid "_Hide toolbar."
 msgstr ""
 
-#: ../glade/prefs.ui.h:37
+#: ../glade/prefs.ui.h:38
 msgid "Toolbar _button labels:"
 msgstr ""
 
-#: ../glade/prefs.ui.h:38
-msgid "Other"
-msgstr ""
-
 #: ../glade/prefs.ui.h:39
-msgid "Ask for confirmation when marking all items as read"
-msgstr ""
-
-#: ../glade/prefs.ui.h:40
 msgid "Desktop"
 msgstr ""
 
-#: ../glade/prefs.ui.h:41
+#: ../glade/prefs.ui.h:40
 msgid "HTTP Proxy Server"
 msgstr ""
 
-#: ../glade/prefs.ui.h:42
+#: ../glade/prefs.ui.h:41
 msgid "_Auto Detect (GNOME or environment)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:43
+#: ../glade/prefs.ui.h:42
 #, fuzzy
 msgid "_No Proxy"
 msgstr "Сървър-посредник"
 
-#: ../glade/prefs.ui.h:44
+#: ../glade/prefs.ui.h:43
 msgid "_Manual Setting:"
 msgstr ""
 
-#: ../glade/prefs.ui.h:45
+#: ../glade/prefs.ui.h:44
 msgid "Proxy _Host:"
 msgstr "_Адрес:"
 
-#: ../glade/prefs.ui.h:46
+#: ../glade/prefs.ui.h:45
 msgid "Proxy _Port:"
 msgstr "_Порт:"
 
-#: ../glade/prefs.ui.h:47
+#: ../glade/prefs.ui.h:46
 #, fuzzy
 msgid "Use Proxy Au_thentication"
 msgstr "Използване на _идентификация"
 
-#: ../glade/prefs.ui.h:48
+#: ../glade/prefs.ui.h:47
 msgid "Proxy _Username:"
 msgstr "Потребителско _име:"
 
-#: ../glade/prefs.ui.h:49
+#: ../glade/prefs.ui.h:48
 msgid "Proxy Pass_word:"
 msgstr "_Парола:"
 
-#: ../glade/prefs.ui.h:50
+#: ../glade/prefs.ui.h:49
 msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
 
-#: ../glade/prefs.ui.h:51
+#: ../glade/prefs.ui.h:50
 msgid "Proxy"
 msgstr "Сървър-посредник"
 
-#: ../glade/prefs.ui.h:52
+#: ../glade/prefs.ui.h:51
 #, fuzzy
 msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">Изобразяване на папките</span>"
 
-#: ../glade/prefs.ui.h:53
+#: ../glade/prefs.ui.h:52
 msgid "Tell sites that I do _not want to be tracked."
 msgstr ""
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
 msgstr ""
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:54
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:55
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:56
 msgid "Use _Reader mode."
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:57
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:58
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:60
+#: ../glade/prefs.ui.h:59
 #, fuzzy
 msgid "Downloading Enclosures"
 msgstr "Изтегля се приложения"
 
-#: ../glade/prefs.ui.h:61
+#: ../glade/prefs.ui.h:60
 msgid "_Download using"
 msgstr "_Чрез програмата"
 
-#: ../glade/prefs.ui.h:63
+#: ../glade/prefs.ui.h:62
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:64
+#: ../glade/prefs.ui.h:63
 #, fuzzy
 msgid "Opening Enclosures"
 msgstr "/Отваряне на приложение..."
 
-#: ../glade/prefs.ui.h:65
+#: ../glade/prefs.ui.h:64
 msgid "Enclosures"
 msgstr "Приложения"
 
@@ -2246,16 +2263,6 @@ msgstr ""
 
 #: ../glade/reedah_source.ui.h:2
 msgid "Please enter your Reedah account settings."
-msgstr ""
-
-#: ../glade/reedah_source.ui.h:3 ../glade/theoldreader_source.ui.h:3
-#: ../glade/ttrss_source.ui.h:4
-#, fuzzy
-msgid "_Password"
-msgstr "_Парола:"
-
-#: ../glade/reedah_source.ui.h:4 ../glade/theoldreader_source.ui.h:4
-msgid "_Username (Email)"
 msgstr ""
 
 #: ../glade/rename_node.ui.h:1
@@ -2585,9 +2592,29 @@ msgstr ""
 msgid "Search Folder:"
 msgstr "Нова папка"
 
-#, c-format
-#~ msgid "\"%s\" is not available"
-#~ msgstr "„%s“ не е достъпна"
+#, fuzzy
+#~ msgid "RSS feed reader"
+#~ msgstr "Временни файлове на емисията"
+
+#, fuzzy
+#~ msgid "Read articles when offline"
+#~ msgstr "Liferea е в режим „изключен“"
+
+#, fuzzy
+#~ msgid "Synchronizes with TheOldReader"
+#~ msgstr "<span weight=\"bold\">Име на емисията</span>"
+
+#, fuzzy
+#~ msgid "Synchronizes with TinyTinyRSS"
+#~ msgstr "<span weight=\"bold\">Име на емисията</span>"
+
+#, fuzzy
+#~ msgid "Synchronizes with InoReader"
+#~ msgstr "<span weight=\"bold\">Име на емисията</span>"
+
+#, fuzzy
+#~ msgid "Synchronizes with Reedah"
+#~ msgstr "<span weight=\"bold\">Име на емисията</span>"
 
 #, c-format
 #~ msgid "\"%s\" updated..."
@@ -3494,11 +3521,11 @@ msgstr "Нова папка"
 #, fuzzy
 #~ msgid ""
 #~ "<div style=\"padding:8px\"><div style=\"background-color:#eee;padding:5px;"
-#~ "border:solid 1px #aaa\"><table border=\"0\" cellpadding=\"5px"
-#~ "\"><tr><td><img src=\""
+#~ "border:solid 1px #aaa\"><table border=\"0\" "
+#~ "cellpadding=\"5px\"><tr><td><img src=\""
 #~ msgstr ""
-#~ "<div style=\"background-color:#eee;padding:5px;border:solid 1px #aaa"
-#~ "\"><table border=\"0\" cellpadding=\"5px\"><tr><td><img src=\""
+#~ "<div style=\"background-color:#eee;padding:5px;border:solid 1px "
+#~ "#aaa\"><table border=\"0\" cellpadding=\"5px\"><tr><td><img src=\""
 
 #~ msgid "pixmaps"
 #~ msgstr "карти с пиксели"
@@ -3791,10 +3818,10 @@ msgstr "Нова папка"
 #~ "Датата не е във формат ISO8601! Игнориране на информацията <dc:date>!\n"
 
 #~ msgid ""
-#~ "<p>Could not determine the feed type. Please check that it is a <a href="
-#~ "\"http://feedvalidator.org\">valid</a> type and listed in the <a href="
-#~ "\"https://lzone.de/liferea/supported_formats.htm\">supported formats</a>."
-#~ "</p>"
+#~ "<p>Could not determine the feed type. Please check that it is a <a "
+#~ "href=\"http://feedvalidator.org\">valid</a> type and listed in the <a "
+#~ "href=\"https://lzone.de/liferea/supported_formats.htm\">supported "
+#~ "formats</a>.</p>"
 #~ msgstr ""
 #~ "<p>Типът на емисията не може да бъде определен. Проверете дали той е <a "
 #~ "href=\"http://feedvalidator.org\">валиден</a> и <a href=\"http://liferea."
