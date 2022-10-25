@@ -162,7 +162,6 @@ typedef struct themeColor {
 } *themeColorPtr;
 
 static GSList *themeColors = NULL;
-static gboolean darkTheme = FALSE;
 
 /* Determining of theme colors, to be inserted in CSS */
 static themeColorPtr
@@ -218,7 +217,6 @@ render_init_theme_colors (GtkWidget *widget)
 	GtkStyleContext	*sctxt;
 	GdkColor	color;
 	GdkRGBA		rgba;
-	gint		textAvg, bgAvg;
 
 	/* Clear cached previous stylesheet */
 	if (css) {
