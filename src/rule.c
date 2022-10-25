@@ -155,7 +155,6 @@ rule_check_item_has_podcast (rulePtr rule, itemPtr item)
 {
 	GSList *iter = metadata_list_get_values (item->metadata, "enclosure");
 	gboolean found = FALSE;
-	enclosurePtr encl;
 
 	while (iter && !found) {
 		enclosurePtr encl = enclosure_from_string ((gchar *)iter->data);
