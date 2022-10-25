@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-24 22:37+0200\n"
+"POT-Creation-Date: 2022-10-26 01:24+0200\n"
 "PO-Revision-Date: 2013-06-15 20:36+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -801,101 +801,101 @@ msgstr "%d. %b %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:275
+#: ../src/rule.c:274
 msgid "Item"
 msgstr "Punkt"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does contain"
 msgstr "indeholder"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does not contain"
 msgstr "indeholder ikke"
 
-#: ../src/rule.c:276
+#: ../src/rule.c:275
 msgid "Item title"
 msgstr "Punkttitel"
 
 # måske 'tekst for punktet', 'punktets tekst'
 # punkttekst lyder lidt som en slags skrifttype
-#: ../src/rule.c:277
+#: ../src/rule.c:276
 msgid "Item body"
 msgstr "Punktets tekst"
 
 # måske 'tekst for punktet', 'punktets tekst'
 # punkttekst lyder lidt som en slags skrifttype
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 #, fuzzy
 msgid "Item author"
 msgstr "Punktets tekst"
 
 # evt. Læsestatus
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "Read status"
 msgstr "Status for læst"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is unread"
 msgstr "er ulæst"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is read"
 msgstr "er læst"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "Flag status"
 msgstr "Flagstatus"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is flagged"
 msgstr "er sat"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is unflagged"
 msgstr "er ikke sat"
 
-#: ../src/rule.c:281
+#: ../src/rule.c:280
 #, fuzzy
 msgid "Enclosure"
 msgstr "Pakker"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "included"
 msgstr "inkluderet"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "not included"
 msgstr "ikke inkluderet"
 
-#: ../src/rule.c:282
+#: ../src/rule.c:281
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "Category"
 msgstr "Kategori"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is set"
 msgstr "er angivet"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is not set"
 msgstr "er ikke angivet"
 
-#: ../src/rule.c:284
+#: ../src/rule.c:283
 msgid "Feed title"
 msgstr "Titel for nyhedskilde"
 
-#: ../src/rule.c:285
+#: ../src/rule.c:284
 #, fuzzy
 msgid "Feed source"
 msgstr "Nyhedskilde"
 
-#: ../src/rule.c:286
+#: ../src/rule.c:285
 msgid "Parent folder title"
 msgstr ""
 
@@ -1337,6 +1337,11 @@ msgstr "Type"
 #: ../src/ui/preferences_dialog.c:755
 msgid "Program"
 msgstr "Program"
+
+#: ../src/ui/rule_editor.c:257
+#, fuzzy
+msgid "Remove"
+msgstr "_Fjern"
 
 #: ../src/ui/search_dialog.c:106
 #, fuzzy

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea_trunk_ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-24 22:37+0200\n"
+"POT-Creation-Date: 2022-10-26 01:24+0200\n"
 "PO-Revision-Date: 2014-10-11 19:28+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -760,96 +760,96 @@ msgstr "%b %d %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:275
+#: ../src/rule.c:274
 msgid "Item"
 msgstr "عنصر"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does contain"
 msgstr "يحتوي"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does not contain"
 msgstr "لا يحتوي"
 
-#: ../src/rule.c:276
+#: ../src/rule.c:275
 msgid "Item title"
 msgstr "عنوان العنصر"
 
-#: ../src/rule.c:277
+#: ../src/rule.c:276
 msgid "Item body"
 msgstr "متن العنصر"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 #, fuzzy
 msgid "Item author"
 msgstr "متن العنصر"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "Read status"
 msgstr "حالة القراءة"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is unread"
 msgstr "غير مقروء"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is read"
 msgstr "مقروء"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "Flag status"
 msgstr "حالة الشارة"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is flagged"
 msgstr "مؤشّر"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is unflagged"
 msgstr "غير مؤشّر"
 
-#: ../src/rule.c:281
+#: ../src/rule.c:280
 #, fuzzy
 msgid "Enclosure"
 msgstr "المغلّفات"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "included"
 msgstr "مُدْرج"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "not included"
 msgstr "غير مُدْرج"
 
-#: ../src/rule.c:282
+#: ../src/rule.c:281
 msgid "Podcast"
 msgstr "تدوين صوتي"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "Category"
 msgstr "الفئة"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is set"
 msgstr "ضُبِطَ"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is not set"
 msgstr "لم يضبط"
 
-#: ../src/rule.c:284
+#: ../src/rule.c:283
 msgid "Feed title"
 msgstr "عنوان التلقيمة"
 
-#: ../src/rule.c:285
+#: ../src/rule.c:284
 #, fuzzy
 msgid "Feed source"
 msgstr "مصدر التلقيمة"
 
-#: ../src/rule.c:286
+#: ../src/rule.c:285
 msgid "Parent folder title"
 msgstr ""
 
@@ -1299,6 +1299,11 @@ msgstr "النوع"
 #: ../src/ui/preferences_dialog.c:755
 msgid "Program"
 msgstr "البرنامج"
+
+#: ../src/ui/rule_editor.c:257
+#, fuzzy
+msgid "Remove"
+msgstr "ا_حذف"
 
 #: ../src/ui/search_dialog.c:106
 #, fuzzy

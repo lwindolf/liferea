@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-24 22:37+0200\n"
+"POT-Creation-Date: 2022-10-26 01:24+0200\n"
 "PO-Revision-Date: 2017-12-09 21:00+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: Finnish <lokalisointi-lista@googlegroups.com>\n"
@@ -790,96 +790,96 @@ msgstr "%d. %b %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:275
+#: ../src/rule.c:274
 msgid "Item"
 msgstr "Otsikko"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does contain"
 msgstr "sisältää"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does not contain"
 msgstr "ei sisällä"
 
-#: ../src/rule.c:276
+#: ../src/rule.c:275
 msgid "Item title"
 msgstr "Otsikon nimi"
 
-#: ../src/rule.c:277
+#: ../src/rule.c:276
 msgid "Item body"
 msgstr "Otsikon sisältö"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 #, fuzzy
 msgid "Item author"
 msgstr "Otsikon sisältö"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "Read status"
 msgstr "Lukemistila"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is unread"
 msgstr "lukematon"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is read"
 msgstr "luettu"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "Flag status"
 msgstr "Merkintätila"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is flagged"
 msgstr "merkitty"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is unflagged"
 msgstr "merkitsemätön"
 
-#: ../src/rule.c:281
+#: ../src/rule.c:280
 #, fuzzy
 msgid "Enclosure"
 msgstr "Liitetiedostot"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "included"
 msgstr "sisältää"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "not included"
 msgstr "ei sisällä"
 
-#: ../src/rule.c:282
+#: ../src/rule.c:281
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "Category"
 msgstr "Luokka"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is set"
 msgstr "asetettu"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is not set"
 msgstr "ei ole asetettu"
 
-#: ../src/rule.c:284
+#: ../src/rule.c:283
 msgid "Feed title"
 msgstr "Syötteen nimi"
 
-#: ../src/rule.c:285
+#: ../src/rule.c:284
 #, fuzzy
 msgid "Feed source"
 msgstr "Syötteen lähde"
 
-#: ../src/rule.c:286
+#: ../src/rule.c:285
 msgid "Parent folder title"
 msgstr ""
 
@@ -1318,6 +1318,11 @@ msgstr "Tyyppi"
 #: ../src/ui/preferences_dialog.c:755
 msgid "Program"
 msgstr "Ohjelma"
+
+#: ../src/ui/rule_editor.c:257
+#, fuzzy
+msgid "Remove"
+msgstr "Po_ista"
 
 #: ../src/ui/search_dialog.c:106
 msgid "Saved Search"

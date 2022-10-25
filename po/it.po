@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.13.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-24 22:37+0200\n"
+"POT-Creation-Date: 2022-10-26 01:24+0200\n"
 "PO-Revision-Date: 2021-11-06 10:14+0100\n"
 "Last-Translator: Lorenzo L. Ancora <admin@lorenzoancora.info>\n"
 "Language-Team: Italian <gnome-it-list@gnome.org>\n"
@@ -780,95 +780,95 @@ msgstr "%d %b %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:275
+#: ../src/rule.c:274
 msgid "Item"
 msgstr "Articolo"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does contain"
 msgstr "contiene"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does not contain"
 msgstr "non contiene"
 
-#: ../src/rule.c:276
+#: ../src/rule.c:275
 msgid "Item title"
 msgstr "Titolo dell'articolo"
 
-#: ../src/rule.c:277
+#: ../src/rule.c:276
 msgid "Item body"
 msgstr "Corpo dell'articolo"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 #, fuzzy
 msgid "Item author"
 msgstr "Corpo dell'articolo"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "Read status"
 msgstr "Stato di lettura"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is unread"
 msgstr "è non letto"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is read"
 msgstr "è letto"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "Flag status"
 msgstr "Stato del contrassegno"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is flagged"
 msgstr "è contrassegnato"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is unflagged"
 msgstr "è non contrassegnato"
 
-#: ../src/rule.c:281
+#: ../src/rule.c:280
 #, fuzzy
 msgid "Enclosure"
 msgstr "Allegati"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "included"
 msgstr "incluso"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "not included"
 msgstr "non incluso"
 
-#: ../src/rule.c:282
+#: ../src/rule.c:281
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "Category"
 msgstr "Categoria"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is set"
 msgstr "è impostata"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is not set"
 msgstr "non è impostata"
 
-#: ../src/rule.c:284
+#: ../src/rule.c:283
 msgid "Feed title"
 msgstr "Titolo del notiziario"
 
-#: ../src/rule.c:285
+#: ../src/rule.c:284
 msgid "Feed source"
 msgstr "Fonte del notiziario"
 
-#: ../src/rule.c:286
+#: ../src/rule.c:285
 msgid "Parent folder title"
 msgstr "Titolo della cartella genitore"
 
@@ -1307,6 +1307,11 @@ msgstr "Tipo"
 #: ../src/ui/preferences_dialog.c:755
 msgid "Program"
 msgstr "Programma"
+
+#: ../src/ui/rule_editor.c:257
+#, fuzzy
+msgid "Remove"
+msgstr "Rimuo_vi"
 
 #: ../src/ui/search_dialog.c:106
 msgid "Saved Search"

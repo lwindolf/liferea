@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr_new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-24 22:37+0200\n"
+"POT-Creation-Date: 2022-10-26 01:24+0200\n"
 "PO-Revision-Date: 2018-03-16 14:35+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
@@ -776,96 +776,96 @@ msgstr "%d %b %H:%M"
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:275
+#: ../src/rule.c:274
 msgid "Item"
 msgstr "Öge"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does contain"
 msgstr "içeriyor"
 
-#: ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277 ../src/rule.c:278
-#: ../src/rule.c:284 ../src/rule.c:285 ../src/rule.c:286
+#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
+#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
 msgid "does not contain"
 msgstr "içermiyor"
 
-#: ../src/rule.c:276
+#: ../src/rule.c:275
 msgid "Item title"
 msgstr "Öge başlığı"
 
-#: ../src/rule.c:277
+#: ../src/rule.c:276
 msgid "Item body"
 msgstr "Öge gövdesi"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 #, fuzzy
 msgid "Item author"
 msgstr "Öge gövdesi"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "Read status"
 msgstr "Okunma durumu"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is unread"
 msgstr "okunmamış"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is read"
 msgstr "okunmuş"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "Flag status"
 msgstr "İm durumu"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is flagged"
 msgstr "imli"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "is unflagged"
 msgstr "imsiz"
 
-#: ../src/rule.c:281
+#: ../src/rule.c:280
 #, fuzzy
 msgid "Enclosure"
 msgstr "Ekler"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "included"
 msgstr "ekli"
 
-#: ../src/rule.c:281 ../src/rule.c:282
+#: ../src/rule.c:280 ../src/rule.c:281
 msgid "not included"
 msgstr "ekli değil"
 
-#: ../src/rule.c:282
+#: ../src/rule.c:281
 msgid "Podcast"
 msgstr "Podcast"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "Category"
 msgstr "Kategori"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is set"
 msgstr "olan"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "is not set"
 msgstr "olmayan"
 
-#: ../src/rule.c:284
+#: ../src/rule.c:283
 msgid "Feed title"
 msgstr "Besleme başlığı"
 
-#: ../src/rule.c:285
+#: ../src/rule.c:284
 #, fuzzy
 msgid "Feed source"
 msgstr "Besleme Kaynağı"
 
-#: ../src/rule.c:286
+#: ../src/rule.c:285
 msgid "Parent folder title"
 msgstr ""
 
@@ -1300,6 +1300,11 @@ msgstr "Tür"
 #: ../src/ui/preferences_dialog.c:755
 msgid "Program"
 msgstr "Program"
+
+#: ../src/ui/rule_editor.c:257
+#, fuzzy
+msgid "Remove"
+msgstr "Kaldı_r"
 
 #: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
