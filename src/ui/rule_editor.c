@@ -22,6 +22,7 @@
 #include "ui/rule_editor.h"
 #include "ui/ui_common.h"
 
+#include "common.h"
 #include "rule.h"
 
 /*
