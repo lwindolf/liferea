@@ -253,7 +253,7 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 	changeRequest->hbox = hbox;
 	changeRequest->paramHBox = hbox2;
 	changeRequest->editor = re;
-	widget = gtk_button_new_with_label ("Remove");
+	widget = gtk_button_new_with_label (_("Remove"));
 	gtk_box_pack_end (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
 	g_signal_connect (G_OBJECT (widget), "clicked", G_CALLBACK (on_ruleremove_clicked), changeRequest);
 
