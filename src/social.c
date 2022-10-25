@@ -155,7 +155,7 @@ social_init (void)
 	g_free (tmp);
 	
 	if (!bookmarkSite)
-		bookmarkSites->data;	// use first in list
+		bookmarkSite = bookmarkSites->data;	// use first in list
 }
 
 void
