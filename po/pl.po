@@ -9,10 +9,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: liferea 1.13.6\n"
+"Project-Id-Version: liferea 1.14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-24 22:37+0200\n"
-"PO-Revision-Date: 2021-07-30 12:38+0200\n"
+"PO-Revision-Date: 2022-10-25 07:34+0200\n"
 "Last-Translator: Paweł Marciniak <sunwire+translate@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : ((n%10>=2 && n%10<=4 && "
 "(n%100<10 || n%100>=20)) ? 1 : 2));\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
@@ -42,7 +42,7 @@ msgstr "Odczytuje zawartość kanałów wiadomości i blogów"
 
 #: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
-msgstr ""
+msgstr "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 
 #: ../plugins/getfocus.py:95
 msgid "Opacity:"
@@ -437,18 +437,16 @@ msgid "Login failed!"
 msgstr "Logowanie nie powiodło się!"
 
 #: ../src/fl_sources/google_source.c:404
-#, fuzzy
 msgid "Google Reader API"
-msgstr "Google Reader"
+msgstr "Google Reader API"
 
 #: ../src/fl_sources/google_source_feed.c:159
-#, fuzzy
 msgid "Could not parse JSON returned by Google Reader API!"
-msgstr "Nie można przeanalizować kodu JSON zwróconego przez Reedah API!"
+msgstr "Nie można przeanalizować kodu JSON zwróconego przez Google Reader API!"
 
 #: ../src/fl_sources/node_source.c:117
 msgid "Miniflux"
-msgstr ""
+msgstr "Miniflux"
 
 #: ../src/fl_sources/node_source.c:332
 msgid "No feed list source types found!"
@@ -714,30 +712,28 @@ msgstr ""
 
 #. http 5xx server errors
 #: ../src/net.c:493
-#, fuzzy
 msgid "Internal Server Error"
-msgstr "Błąd serwera"
+msgstr "Wewnętrzny błąd serwera"
 
 #: ../src/net.c:494
 msgid "Not Implemented"
-msgstr ""
+msgstr "Nie zaimplementowane"
 
 #: ../src/net.c:495
 msgid "Bad Gateway"
-msgstr ""
+msgstr "Zła brama sieciowa"
 
 #: ../src/net.c:496
-#, fuzzy
 msgid "Service Unavailable"
-msgstr "„%s” nie jest dostępne"
+msgstr "Usługa nie dostępna"
 
 #: ../src/net.c:497
 msgid "Gateway Timeout"
-msgstr ""
+msgstr "Upłynął czas bramy sieciowej"
 
 #: ../src/net.c:498
 msgid "HTTP Version Not Supported"
-msgstr ""
+msgstr "Niewspierana wersja HTTP"
 
 #: ../src/net.c:503
 msgid "There was an internal error in the update process"
@@ -761,28 +757,26 @@ msgid "An unknown networking error happened!"
 msgstr "Wystąpił nieznany błąd sieciowy!"
 
 #: ../src/newsbin.c:136
-#, fuzzy
 msgid "News Bin Properties"
-msgstr "Właściwości subskrypcji"
+msgstr "Właściwości kosza"
 
 #: ../src/newsbin.c:140 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Tworzenie nowego kosza"
 
 #: ../src/node.c:664
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create feed file: %s"
-msgstr "Nie udało się usunąć pliku .py!"
+msgstr "Nie udało się utworzyć pliku: %s"
 
 #: ../src/node.c:683
-#, fuzzy
 msgid "Feed file exported from Liferea"
-msgstr "Wyeksportowano listę subskrypcji!"
+msgstr "Wyeksportowano listę subskrypcji"
 
 #: ../src/node.c:698
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving feed file"
-msgstr "Błąd eksportowania listy subskrypcji!"
+msgstr "Wystąpił błąd w trakcie zapisu listy subskrypcji"
 
 #: ../src/parsers/atom10.c:240
 msgid "Website"
@@ -817,9 +811,8 @@ msgid "Item body"
 msgstr "Treść nagłówka"
 
 #: ../src/rule.c:278
-#, fuzzy
 msgid "Item author"
-msgstr "Treść nagłówka"
+msgstr "Autor nagłówka"
 
 #: ../src/rule.c:279
 msgid "Read status"
@@ -846,9 +839,8 @@ msgid "is unflagged"
 msgstr "niewyróżniony"
 
 #: ../src/rule.c:281
-#, fuzzy
 msgid "Enclosure"
-msgstr "Załączniki"
+msgstr "Załącznik"
 
 #: ../src/rule.c:281 ../src/rule.c:282
 msgid "included"
@@ -1097,11 +1089,12 @@ msgstr "Nie zanzaczono żadnego nagłówka"
 
 #: ../src/ui/liferea_browser.c:482
 msgid "Content download failed! Try disabling reader mode."
-msgstr ""
+msgstr "Pobieranie zawartości nie udało się! Spróbuj zablokować tryb czytnika."
 
 #: ../src/ui/liferea_browser.c:495
 msgid "Content extraction failed! Try disabling reader mode."
 msgstr ""
+"Wyodrębnianie zawartości nie udało się! Spróbuj zablokować tryb czytnika."
 
 #: ../src/ui/liferea_shell.c:409
 #, c-format
@@ -1191,19 +1184,17 @@ msgstr "Skopiuj adres odnośnika"
 
 #: ../src/ui/popup_menu.c:257
 msgid "Save items to file"
-msgstr ""
+msgstr "Zapisz do pliku"
 
 #: ../src/ui/popup_menu.c:262
-#, fuzzy
 msgid "_Save"
-msgstr "Zapisz"
+msgstr "_Zapisz"
 
 #: ../src/ui/popup_menu.c:271
 msgid "RSS 2.0 files"
-msgstr ""
+msgstr "Pliki RSS 2.0"
 
 #: ../src/ui/popup_menu.c:277
-#, fuzzy
 msgid "All files"
 msgstr "Wszystkie pliki"
 
@@ -1249,7 +1240,7 @@ msgstr "_Oznacz wszystkie jako przeczytane"
 
 #: ../src/ui/popup_menu.c:395
 msgid "_Export Items To File"
-msgstr ""
+msgstr "Wy_eksportuj do pliku"
 
 #: ../src/ui/popup_menu.c:403
 msgid "_Rebuild"
@@ -1502,15 +1493,15 @@ msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Wykonywanie tej czynności automatycznie dla tego typu plików."
 
 #: ../glade/google_source.ui.h:1
-#, fuzzy
 msgid "Add Google Reader API Account"
-msgstr "Dodaj konto TheOldReader"
+msgstr "Dodaj konto obsługujące Google Reader API"
 
 #: ../glade/google_source.ui.h:2
 msgid ""
 "Please enter the details of the new Google Reader API compatible "
 "subscription."
 msgstr ""
+"Proszę podać szczegóły nowej subskrypcji obsługującej Google Reader API."
 
 #: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
 #: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
@@ -1523,12 +1514,10 @@ msgid "_Username (Email)"
 msgstr "_Nazwa użytkownika (adres e-mail)"
 
 #: ../glade/google_source.ui.h:5
-#, fuzzy
 msgid "_Server"
-msgstr "Adres URL _serwera"
+msgstr "_Serwer"
 
 #: ../glade/google_source.ui.h:6
-#, fuzzy
 msgid "_Name"
 msgstr "_Nazwa kanału"
 
@@ -1710,9 +1699,8 @@ msgid "_News Bin Name:"
 msgstr "_Nazwa kosza:"
 
 #: ../glade/new_newsbin.ui.h:3
-#, fuzzy
 msgid "_Always show in Reduced Feed List"
-msgstr "_Skrócona lista subskrypcji"
+msgstr "Z_awsze pokazuje w skróconej liście subskrypcji"
 
 #: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
@@ -1877,13 +1865,12 @@ msgstr "_Domyślny widok:"
 
 #: ../glade/prefs.ui.h:21
 msgid "_Defer removing read items from folders and search folders."
-msgstr ""
+msgstr "Opóźnij usuwanie przeczytanych artykułów z folderów."
 
 #: ../glade/prefs.ui.h:22
-#, fuzzy
 msgid "Ask for confirmation when marking all items as read."
 msgstr ""
-"Pytaj o potwierdzenie przy oznaczaniu wszystkich pozycji jako przeczytane"
+"Pytaj o potwierdzenie przy oznaczaniu wszystkich pozycji jako przeczytane."
 
 #: ../glade/prefs.ui.h:23
 msgid "Web Integration"
@@ -2004,7 +1991,7 @@ msgstr "Poinformuj witryny, że _nie chcę być śledzony."
 
 #: ../glade/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
-msgstr "_Inteligentne zapobieganie śledzeniu."
+msgstr "_Inteligentne zapobieganie śledzeniu. "
 
 #: ../glade/prefs.ui.h:54
 msgid ""
