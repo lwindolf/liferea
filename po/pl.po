@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: liferea 1.14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-26 01:24+0200\n"
-"PO-Revision-Date: 2022-10-25 07:34+0200\n"
+"PO-Revision-Date: 2022-10-26 06:54+0200\n"
 "Last-Translator: Paweł Marciniak <sunwire+translate@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -1323,9 +1323,8 @@ msgid "Program"
 msgstr "Program"
 
 #: ../src/ui/rule_editor.c:257
-#, fuzzy
 msgid "Remove"
-msgstr "_Usuń"
+msgstr "Usuń"
 
 #: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
