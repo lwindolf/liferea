@@ -41,7 +41,7 @@ class LibnotifyPlugin(GObject.Object, Liferea.ShellActivatable):
     notification = None
     notification_title = _("Feed Updates")
     notification_body = ""
-    notification_icon = "liferea"
+    notification_icon = "net.sourceforge.liferea"
     timestamp = None
     _handler_id = None
 
