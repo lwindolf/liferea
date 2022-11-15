@@ -1306,9 +1306,8 @@ msgid "Program"
 msgstr "Programa"
 
 #: ../src/ui/rule_editor.c:257
-#, fuzzy
 msgid "Remove"
-msgstr "_Remover"
+msgstr "Remover"
 
 #: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
@@ -1862,9 +1861,8 @@ msgid "_Defer removing read items from folders and search folders."
 msgstr "A_diar a remoção de itens lidos de pastas e pastas de pesquisa."
 
 #: ../glade/prefs.ui.h:22
-#, fuzzy
 msgid "Ask for confirmation when marking all items as read."
-msgstr "Pedir confirmação ao marcar todos os itens como lidos"
+msgstr "Pedir confirmação ao marcar todos os itens como lidos."
 
 #: ../glade/prefs.ui.h:23
 msgid "Web Integration"
