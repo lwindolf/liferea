@@ -56,7 +56,7 @@ class LibnotifyPlugin(GObject.Object, Liferea.ShellActivatable):
         self.shell.props.feed_list.disconnect(self._handler_id)
 
     def on_node_updated(self, widget, node_title):
-        new_timestamp = time.time()
+        new_timestamp = time.monotonic()
 
         # Only make a new notification every 10 seconds
         if new_timestamp > self.timestamp + 10:
