@@ -154,6 +154,7 @@ render_load_stylesheet (const gchar *xsltName)
 
 /** cached CSS definitions */
 static GString	*css = NULL;
+static GString	*userCss = NULL;
 
 /** widget background theme colors as 8bit HTML RGB code */
 typedef struct themeColor {
@@ -222,6 +223,10 @@ render_init_theme_colors (GtkWidget *widget)
 	if (css) {
 		g_string_free (css, FALSE);
 		css = NULL;
+	}
+	if (userCss) {
+		g_string_free (userCss, FALSE);
+		userCss = NULL;
 	}
 	if (themeColors) {
 		g_slist_free_full (themeColors, (GDestroyNotify)render_theme_color_free);
@@ -312,7 +317,7 @@ render_get_theme_color (const gchar *name)
 }
 
 gchar *
-render_get_css (void)
+render_get_default_css (void)
 {
 	if (!css) {
 		gchar	*defaultStyleSheetFile;
@@ -335,19 +340,36 @@ render_get_css (void)
 		}
 
 		g_free(defaultStyleSheetFile);
+	}
+
+	return css->str;
+}
+
+gchar *
+render_get_user_css (void)
+{
+	if (!userCss) {
+		gchar	*defaultStyleSheetFile;
+		gchar	*userStyleSheetFile;
+		gchar	*tmp;
+
+		if (!themeColors)
+			return NULL;
+
+		userCss = g_string_new(NULL);
 
 		userStyleSheetFile = common_create_config_filename ("liferea.css");
 
 		if (g_file_get_contents(userStyleSheetFile, &tmp, NULL, NULL)) {
 			tmp = render_set_theme_colors(tmp);
-			g_string_append(css, tmp);
+			g_string_append(userCss, tmp);
 			g_free(tmp);
 		}
 
 		g_free(userStyleSheetFile);
 	}
 
-	return css->str;
+	return userCss->str;
 }
 
 gchar *
