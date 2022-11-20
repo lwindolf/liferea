@@ -43,8 +43,8 @@ G_DEFINE_TYPE (LifereaWebKit, liferea_webkit, G_TYPE_OBJECT)
 
 // singleton
 static LifereaWebKit *liferea_webkit = NULL;
+static WebKitUserStyleSheet *default_stylesheet = NULL;
 static WebKitUserStyleSheet *user_stylesheet = NULL;
-static gchar *lastCss = NULL;
 
 enum {
 	PAGE_CREATED_SIGNAL,
@@ -438,11 +438,6 @@ liferea_webkit_write_html (
 	const gchar *content_type
 )
 {
-	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
-
-	if (user_stylesheet)
-		webkit_user_content_manager_add_style_sheet (manager, user_stylesheet);
-
 	// FIXME Avoid doing a copy ?
 	GBytes *string_bytes = g_bytes_new (string, length);
 	/* Note: we explicitely ignore the passed base URL
@@ -578,9 +573,6 @@ liferea_webkit_launch_url (GtkWidget *webview, const gchar *url)
 {
 	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
 
-	// Remove previous stylesheets (necessary for browsing without new tab)
-	webkit_user_content_manager_remove_all_style_sheets (manager);
-
 	// FIXME: hack to make URIs like "gnome.org" work
 	// https://bugs.webkit.org/show_bug.cgi?id=24195
 	gchar *http_url;
@@ -685,21 +677,28 @@ liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, c
 void
 liferea_webkit_reload_style (GtkWidget *webview)
 {
-	gchar *css = render_get_css ();
-
-	if (css == NULL || g_strcmp0 (css, lastCss) == 0)
-		return;
-
-	g_free (lastCss);
-	lastCss = css;
-
 	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
 
 	webkit_user_content_manager_remove_all_style_sheets (manager);
 
+	if (default_stylesheet)
+		webkit_user_style_sheet_unref (default_stylesheet);
+
+	gchar *css = render_get_default_css ();
+	// default stylesheet should only apply to HTML written to the view,
+	// not when browsing
+	const gchar *deny[] = { "http://*/*", "https://*/*",  NULL };
+	default_stylesheet = webkit_user_style_sheet_new (css,
+		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
+		WEBKIT_USER_STYLE_LEVEL_USER,
+		NULL,
+		deny);
+	webkit_user_content_manager_add_style_sheet (manager, default_stylesheet);
+
 	if (user_stylesheet)
 		webkit_user_style_sheet_unref (user_stylesheet);
 
+	css = render_get_user_css ();
 	user_stylesheet = webkit_user_style_sheet_new (css,
 		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
 		WEBKIT_USER_STYLE_LEVEL_USER,
