@@ -1370,8 +1370,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->feedlistViewWidget), TRUE);
 
-	/* 10.) After main window is realized get theme colors and set up feed
-		list and load WebView stylesheet */
+	/* 10.) After main window is realized get theme colors and set up feed list */
+	// FIXME: this should not be necessary, but style-updated does not
+	// always fire before we get here
 	render_init_theme_colors (GTK_WIDGET (shell->window));
 
 	shell->feedlist = feedlist_create (feedListView);
@@ -1383,8 +1384,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
 	g_signal_connect (feedListView, "selection-changed",
 	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
-
-	itemview_style_update ();
 
 	/* 11.) Restore latest selection */
 
