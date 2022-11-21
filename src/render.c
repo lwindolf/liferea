@@ -302,8 +302,7 @@ render_get_theme_color (const gchar *name)
 {
 	GSList	*iter;
 
-	if (!themeColors)
-		return NULL;
+	g_return_val_if_fail (themeColors != NULL, NULL);
 
 	iter = themeColors;
 	while (iter) {
@@ -324,8 +323,7 @@ render_get_default_css (void)
 		gchar	*userStyleSheetFile;
 		gchar	*tmp;
 
-		if (!themeColors)
-			return NULL;
+		g_return_val_if_fail (themeColors != NULL, NULL);
 
 		css = g_string_new(NULL);
 
@@ -353,8 +351,7 @@ render_get_user_css (void)
 		gchar	*userStyleSheetFile;
 		gchar	*tmp;
 
-		if (!themeColors)
-			return NULL;
+		g_return_val_if_fail (themeColors != NULL, NULL);
 
 		userCss = g_string_new(NULL);
 
