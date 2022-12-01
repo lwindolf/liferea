@@ -1,13 +1,13 @@
 # Albanian Translation of liferea.pot
 # Copyright (C) 2009,2012
 # This file is distributed under the same license as the Liferea package.
-# Besnik Bleta <besnik@programeshqip.org>, 2009, 2012, 2015, 2021.
+# Besnik Bleta <besnik@programeshqip.org>, 2009, 2012, 2015, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-26 01:24+0200\n"
-"PO-Revision-Date: 2021-04-26 18:35+0300\n"
+"PO-Revision-Date: 2022-12-01 21:06+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
 "Language: sq\n"
@@ -423,14 +423,12 @@ msgid "Login failed!"
 msgstr "Hyrja dështoi!"
 
 #: ../src/fl_sources/google_source.c:404
-#, fuzzy
 msgid "Google Reader API"
-msgstr "Google Reader"
+msgstr "Google Reader API"
 
 #: ../src/fl_sources/google_source_feed.c:159
-#, fuzzy
 msgid "Could not parse JSON returned by Google Reader API!"
-msgstr "S’përtypi dot JSON-in e kthyer nga API Reedah!"
+msgstr "S’përtypi dot JSON-in e kthyer nga Google Reader API!"
 
 #: ../src/fl_sources/node_source.c:117
 msgid "Miniflux"
@@ -639,6 +637,9 @@ msgid ""
 "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
 "algorithm. Check your operating system settings."
 msgstr ""
+"Tratativa SSL/TLS dështoi. Ka gjasa të bëhet fjalë për algoritëm të "
+"vjetruar, ose të pambuluar fshehtëzimi. Shihni rregullimet e sistemit tuaj "
+"operativ."
 
 #. http 3xx redirection
 #: ../src/net.c:478
@@ -695,30 +696,28 @@ msgstr ""
 
 #. http 5xx server errors
 #: ../src/net.c:493
-#, fuzzy
 msgid "Internal Server Error"
-msgstr "Gabim Shërbyesi"
+msgstr "Gabim i Brendshëm Shërbyesi"
 
 #: ../src/net.c:494
 msgid "Not Implemented"
-msgstr ""
+msgstr "E pasendërtuar"
 
 #: ../src/net.c:495
 msgid "Bad Gateway"
-msgstr ""
+msgstr "Kanal i Gabuar"
 
 #: ../src/net.c:496
-#, fuzzy
 msgid "Service Unavailable"
-msgstr "\"%s\" nuk është e passhme"
+msgstr "Shërbim Jo i Passhëm"
 
 #: ../src/net.c:497
 msgid "Gateway Timeout"
-msgstr ""
+msgstr "Mbarim Kohe Kanali"
 
 #: ../src/net.c:498
 msgid "HTTP Version Not Supported"
-msgstr ""
+msgstr "Nuk Mbulohet Version HTTP"
 
 #: ../src/net.c:503
 msgid "There was an internal error in the update process"
@@ -741,28 +740,26 @@ msgid "An unknown networking error happened!"
 msgstr "Ndodhi një gabim i panjohur rrjeti!"
 
 #: ../src/newsbin.c:136
-#, fuzzy
 msgid "News Bin Properties"
-msgstr "Veti Pajtimi"
+msgstr "Veti Koshi Lajmesh"
 
 #: ../src/newsbin.c:140 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Krijoni Kosh Lajmesh"
 
 #: ../src/node.c:664
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to create feed file: %s"
-msgstr "S’u arrit të hiqej kartelë .py!"
+msgstr "S’u arrit të krijohej kartelë prurjeje: %s"
 
 #: ../src/node.c:683
-#, fuzzy
 msgid "Feed file exported from Liferea"
-msgstr "Lista e Prurjeve u eksportua!"
+msgstr "Kartelë prurjesh eksportuar nga Liferea"
 
 #: ../src/node.c:698
-#, fuzzy, c-format
+#, c-format
 msgid "Error while saving feed file"
-msgstr "Gabim gjatë eksportimit të listës së prurjeve!"
+msgstr "Gabim teksa ruhej kartelë prurjesh"
 
 #: ../src/parsers/atom10.c:240
 msgid "Website"
@@ -797,9 +794,8 @@ msgid "Item body"
 msgstr "Lënda e zërit"
 
 #: ../src/rule.c:277
-#, fuzzy
 msgid "Item author"
-msgstr "Lënda e zërit"
+msgstr "Autor zëri"
 
 #: ../src/rule.c:278
 msgid "Read status"
@@ -826,9 +822,8 @@ msgid "is unflagged"
 msgstr "është pa shenjë"
 
 #: ../src/rule.c:280
-#, fuzzy
 msgid "Enclosure"
-msgstr "Paketime"
+msgstr ""
 
 #: ../src/rule.c:280 ../src/rule.c:281
 msgid "included"
@@ -1070,11 +1065,11 @@ msgstr "S’është përzgjedhur zë"
 
 #: ../src/ui/liferea_browser.c:482
 msgid "Content download failed! Try disabling reader mode."
-msgstr ""
+msgstr "Shkarkimi i lëndës dështoi! Provoni të çaktivizoni mënyrën Lexues."
 
 #: ../src/ui/liferea_browser.c:495
 msgid "Content extraction failed! Try disabling reader mode."
-msgstr ""
+msgstr "Përftimi i lëndës dështoi! Provoni të çaktivizoni mënyrën Lexues."
 
 #: ../src/ui/liferea_shell.c:409
 #, c-format
@@ -1162,21 +1157,19 @@ msgstr "_Kopjo Vendndodhje Lidhjeje"
 
 #: ../src/ui/popup_menu.c:257
 msgid "Save items to file"
-msgstr ""
+msgstr "Ruaji zërat në kartelë"
 
 #: ../src/ui/popup_menu.c:262
-#, fuzzy
 msgid "_Save"
-msgstr "Ruaje"
+msgstr "_Ruaje"
 
 #: ../src/ui/popup_menu.c:271
 msgid "RSS 2.0 files"
-msgstr ""
+msgstr "Kartela RSS 2.0"
 
 #: ../src/ui/popup_menu.c:277
-#, fuzzy
 msgid "All files"
-msgstr "Krejt Kartelat"
+msgstr "Krejt kartelat"
 
 #: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
@@ -1220,7 +1213,7 @@ msgstr "_Vëru Shenjë Krejt Si të Lexuara"
 
 #: ../src/ui/popup_menu.c:395
 msgid "_Export Items To File"
-msgstr ""
+msgstr "_Eksportoji Zërat Te Kartelë"
 
 #: ../src/ui/popup_menu.c:403
 msgid "_Rebuild"
@@ -1303,9 +1296,8 @@ msgid "Program"
 msgstr "Program"
 
 #: ../src/ui/rule_editor.c:257
-#, fuzzy
 msgid "Remove"
-msgstr "_Hiqe"
+msgstr "Hiqe"
 
 #: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
@@ -1416,9 +1408,8 @@ msgid "_Decrease Text Size"
 msgstr "_Zvogëlo Madhësi Teksti"
 
 #: ../src/webkit/liferea_web_view.c:213
-#, fuzzy
 msgid "_Reader Mode"
-msgstr "Përdor mënyrën _Lexues."
+msgstr "Mënyra _Lexues"
 
 #: ../src/xml.c:426
 msgid "[There were more errors. Output was truncated!]"
@@ -1484,15 +1475,16 @@ msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Tani e tutje, bëje këtë vetvetiu për paketime si kjo."
 
 #: ../glade/google_source.ui.h:1
-#, fuzzy
 msgid "Add Google Reader API Account"
-msgstr "Shtoni Llogari TheOldReader"
+msgstr "Shtoni Llogari Google Reader API"
 
 #: ../glade/google_source.ui.h:2
 msgid ""
 "Please enter the details of the new Google Reader API compatible "
 "subscription."
 msgstr ""
+"Ju lutemi, jepni hollësitë e pajtimit të ri të pajtueshëm për Google Reader "
+"API."
 
 #: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
 #: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
@@ -1505,14 +1497,12 @@ msgid "_Username (Email)"
 msgstr "_Emër përdoruesi (Email)"
 
 #: ../glade/google_source.ui.h:5
-#, fuzzy
 msgid "_Server"
-msgstr "URL _Shërbyesi"
+msgstr "_Shërbyes"
 
 #: ../glade/google_source.ui.h:6
-#, fuzzy
 msgid "_Name"
-msgstr "_Emër Prurjeje"
+msgstr "_Emër"
 
 #: ../glade/liferea_menu.ui.h:1
 msgid "_Subscriptions"
@@ -1690,9 +1680,8 @@ msgid "_News Bin Name:"
 msgstr "_Emër Koshi Lajmesh:"
 
 #: ../glade/new_newsbin.ui.h:3
-#, fuzzy
 msgid "_Always show in Reduced Feed List"
-msgstr "Listë Prurjesh e _Mpakur"
+msgstr "Shfaqe _përherë bë Listë Prurjesh të Mpakur"
 
 #: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
@@ -1860,11 +1849,12 @@ msgstr "Mënyra _Parazgjedhje për Parje:"
 #: ../glade/prefs.ui.h:21
 msgid "_Defer removing read items from folders and search folders."
 msgstr ""
+"_Shtyje për më vonë heqjen prej dosjesh dhe dosjesh kërkimi e zërave të "
+"lexuar."
 
 #: ../glade/prefs.ui.h:22
-#, fuzzy
 msgid "Ask for confirmation when marking all items as read."
-msgstr "Kërko ripohim, kur u vihet shenjë si të lexuara krejt prurjeve"
+msgstr "Kërko ripohim, kur u vihet shenjë si të lexuara krejt zërave."
 
 #: ../glade/prefs.ui.h:23
 msgid "Web Integration"
