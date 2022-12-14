@@ -160,11 +160,11 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 		return; /* probably got deleted before this callback */
 	}
 
-	// FIXME: suboptimal check as some results are text, some XML, some JSON...
-	if (!g_str_equal (result->data, "OK")) {
-		if (result->data == NULL) {
-			failed = TRUE;
-		} else {
+	if (result->data == NULL) {
+		failed = TRUE;
+	} else {
+		// FIXME: suboptimal check as some results are text, some XML, some JSON...
+		if (!g_str_equal (result->data, "OK")) {
 			if (node->source->api.json) {
 				JsonParser *parser = json_parser_new ();
 
