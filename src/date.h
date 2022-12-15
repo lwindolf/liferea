@@ -67,7 +67,9 @@ gint64 date_parse_RFC822 (const gchar *date);
  *
  * @returns (transfer full) (nullable): a newly allocated string or NULL for internal errors.
  */
-
 gchar * date_format_rfc822_en_gmt (gint64 datetime);
+
+void date_init (void);
+void date_deinit (void);
 
 #endif

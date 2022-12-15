@@ -1,7 +1,7 @@
 /**
  * @file date.c date formatting routines
  *
- * Copyright (C) 2008-2011  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2022  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * The date formatting was reused from the Evolution code base
@@ -40,6 +40,8 @@
 #include "debug.h"
 
 /* date formatting methods */
+
+static GTimeZone *utc = NULL;
 
 /**
  * Originally from Evolution e-util.c
@@ -217,7 +219,7 @@ date_parse_ISO8601 (const gchar *date)
 	 */
 
 	/* full specified variant */
-	datetime = g_date_time_new_from_iso8601 (date, NULL);
+	datetime = g_date_time_new_from_iso8601 (date, utc);
 	if (datetime) {
 		t = g_date_time_to_unix (datetime);
 		g_date_time_unref (datetime);
@@ -494,4 +496,17 @@ date_format_rfc822_en_gmt (gint64 datetime)
 		rfc822_weekdays[dt.tm_wday],
 		dt.tm_mday, rfc822_months[dt.tm_mon], dt.tm_year + 1900,
 		dt.tm_hour, dt.tm_min, dt.tm_sec);
+}
+
+void
+date_init (void)
+{
+	utc = g_time_zone_new_utc ();
+}
+
+void
+date_deinit (void)
+{
+	g_time_zone_unref (utc);
+	utc = NULL;
 }

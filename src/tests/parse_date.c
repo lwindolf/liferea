@@ -1,7 +1,7 @@
 /**
  * @file parse_date.c  Test cases for date conversion
  * 
- * Copyright (C) 2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2014-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ struct tc tc_iso8601_day	= { "2014-11-05", 1415145600 };
 struct tc tc_iso8601_hours	= { "2014-11-05T19+0100", 1415214000 };
 struct tc tc_iso8601_Z		= { "2014-11-04T10:15:16Z", 1415096116 };
 struct tc tc_iso8601_wrong	= { "2014-22-22T31", 0 };
+struct tc tc_iso8601_notz	= { "2022-12-14T22:02:55", 1671055375 };
 
 static void
 tc_parse_rfc822 (gconstpointer user_data)
@@ -63,7 +64,11 @@ tc_parse_iso8601 (gconstpointer user_data)
 int
 main (int argc, char *argv[])
 {
+	int result;
+
 	g_test_init (&argc, &argv, NULL);
+
+	date_init ();
 
 	g_test_add_data_func ("/parse_date/rfc822/empty",	&tc_empty,		&tc_parse_rfc822);
 	g_test_add_data_func ("/parse_date/rfc822/nonsense",	&tc_nonsense,		&tc_parse_rfc822);
@@ -83,7 +88,12 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/parse_date/iso8601/day",	&tc_iso8601_day,	&tc_parse_iso8601);
 //	g_test_add_data_func ("/parse_date/iso8601/hours",	&tc_iso8601_hours,	&tc_parse_iso8601);
 	g_test_add_data_func ("/parse_date/iso8601/Z",		&tc_iso8601_Z,		&tc_parse_iso8601);
-//	g_test_add_data_func ("/parse_date/iso8601/wrong",	&tc_iso8601_wrong,	&tc_parse_iso8601);
+	g_test_add_data_func ("/parse_date/iso8601/wrong",	&tc_iso8601_wrong,	&tc_parse_iso8601);
+	g_test_add_data_func ("/parse_date/iso8601/notz",	&tc_iso8601_notz,	&tc_parse_iso8601);
 
-	return g_test_run();
+	result = g_test_run();
+
+	date_deinit ();
+
+	return result;
 }
