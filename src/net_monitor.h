@@ -1,7 +1,7 @@
-/**
- * @file network_monitor.c  network status monitor
+/*
+ * @file net_monitor.h  network status monitor
  *
- * Copyright (C) 2009 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2009-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,6 +51,8 @@ GType network_monitor_get_type (void);
 #define NETWORK_MONITOR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), NETWORK_MONITOR_TYPE, NetworkMonitorClass))
 
 /**
+ * network_monitor_get: (skip)
+ * 
  * Returns the network monitor object. Creates it if
  * necessary first.
  *
@@ -59,6 +61,8 @@ GType network_monitor_get_type (void);
 NetworkMonitor* network_monitor_get (void);
 
 /**
+ * network_monitor_set_online:
+ * 
  * Sets the online status according to mode.
  *
  * @param mode	TRUE for online, FALSE for offline
@@ -66,6 +70,8 @@ NetworkMonitor* network_monitor_get (void);
 void network_monitor_set_online (gboolean mode);
 
 /**
+ * network_monitor_is_online:
+ * 
  * Queries the online status.
  *
  * @return TRUE if online
@@ -73,6 +79,8 @@ void network_monitor_set_online (gboolean mode);
 gboolean network_monitor_is_online (void);
 
 /**
+ * network_monitor_proxy_changed: (skip)
+ * 
  * Called by networking when proxy was changed.
  */
 void network_monitor_proxy_changed (void);
