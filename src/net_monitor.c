@@ -1,5 +1,5 @@
-/**
- * @file network_monitor.c  network status monitor
+/*
+ * @file net_monitor.c  network status monitor
  *
  * Copyright (C) 2009-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2010 Emilio Pozuelo Monfort <pochu27@gmail.com>

@@ -160,11 +160,16 @@ class PluginBrowser(Gtk.Window):
 
     def fetch_list(self):
         """Fetch list from github project repo and parse JSON"""
-        list_url = "https://raw.githubusercontent.com/lwindolf/liferea/master/plugins/plugin-list.json"
-        data = None
-        req = urllib.request.Request(list_url)
-        resp = urllib.request.urlopen(req).read()
-        return json.loads(resp.decode('utf-8'))
+
+        if True == Liferea.NetworkMonitor.is_online():
+            print("ONLINE!!!!!!!!!!!!!!!!")
+            list_url = "https://raw.githubusercontent.com/lwindolf/liferea/master/plugins/plugin-list.json"
+            data = None
+            req = urllib.request.Request(list_url)
+            resp = urllib.request.urlopen(req).read()
+            return json.loads(resp.decode('utf-8'))
+        else:
+            return {'plugins': []}
 
     def category_filter_func(self, model, iter, data):
         """Tests if the category in the row is the one in the filter"""
