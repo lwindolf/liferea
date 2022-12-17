@@ -1,3 +1,41 @@
+2022-12-17  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.14-RC3
+
+	* Patch #1184: Solving Webkit proxy method deprecations
+	  (Matthew Horan)
+
+	* Fixes #1182: Periodic crash when navigating items (TheOldReader)
+	  (reported by Matthew Horan)
+
+	* Fixes #1176: Custom liferea.css no longer working
+	  (Matthew Horan)
+
+	* Fixes #1174: Missing date for some feeds
+	  (reported by jfbauer432)
+
+	* Fixes #1170: broken notification icon in libnotify plugin
+	  (Tasos Sahanidis)
+	
+	* Fixes #1162: a sting impossible to translation
+	  (Paweł Marciniak)
+
+	* Fixes #1124: Formation vanishes after a few seconds
+	  (reported by Michael F. Schönitzer)
+
+	* Fixes #1121: Wait for network to be fully available before updating
+	  (reported by Jeff Fortin)
+
+	* Update of Albanian trasnlation (Besnik Bleta)
+	* Update of Brazilian-Portugese translation (Alexandre Erwin Ittner)
+	* Update of Chinese translation (David Yang)
+	* Update of German translation (Lars Windolf)
+	* Update of Polish translation (Paweł Marciniak)
+	* Update of Russian trasnlation (mbrav)
+	* Update of Spanish translation (Christian Martinez)
+
+
+
 2022-10-24  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.14-RC2
