@@ -217,7 +217,11 @@
       <summary>Item list view column order</summary>
       <description>The column order in the item list view.</description>
     </key>
-
+    <key name="intranet-connectivity" type="b">
+      <default>false</default>
+      <summary>Accept that there is not internet available.</summary>
+      <description>Enable this if you are in an intranet with no internet connectivity. Otherwise updates won't work.</description>
+    </key>
   </schema>
 
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="net.sf.liferea.plugins" path="/org/gnome/liferea/plugins/">
