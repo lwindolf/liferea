@@ -1,7 +1,7 @@
 /**
  * @file network_monitor.c  network status monitor
  *
- * Copyright (C) 2009-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2009-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2010 Emilio Pozuelo Monfort <pochu27@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -23,6 +23,7 @@
 
 #include <gio/gio.h>
 
+#include "conf.h"
 #include "debug.h"
 #include "net.h"
 
@@ -99,8 +100,14 @@ network_monitor_class_init (NetworkMonitorClass *klass)
 
 static gboolean is_nm_connected (guint state)
 {
-	if (state == 60 || /* NM_STATE_CONNECTED_SITE */
-		state == 70)   /* NM_STATE_CONNECTED_GLOBAL */
+	gboolean intranet;
+
+	conf_get_bool_value (INTRANET_CONNECTIVITY, &intranet);
+
+	/* We support both intranet without internet connectivity
+	   and normal internet use cases (see Github #1121). */
+	if ((state == 60 && intranet) || /* NM_STATE_CONNECTED_SITE (intranet use case)*/
+		 state == 70)                /* NM_STATE_CONNECTED_GLOBAL (default) */
 		return TRUE;
 	return FALSE;
 }

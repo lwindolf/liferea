@@ -83,6 +83,7 @@
 #define PROXY_USER			"proxy-authentication-user"
 #define PROXY_PASSWD			"proxy-authentication-password"
 #define DO_NOT_TRACK			"do-not-track"
+#define INTRANET_CONNECTIVITY		"intranet-connectivity"
 
 /* initializing methods */
 void	conf_init (void);
