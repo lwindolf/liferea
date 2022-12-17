@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-26 01:24+0200\n"
-"PO-Revision-Date: 2022-04-21 20:56+0200\n"
+"PO-Revision-Date: 2022-12-17 21:57+0100\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
@@ -44,11 +44,11 @@ msgstr "Nachrichten;News;Feed;Abonnement;Aggregator;Blog;Podcast;RSS;Atom"
 
 #: ../plugins/getfocus.py:95
 msgid "Opacity:"
-msgstr ""
+msgstr "Opazität:"
 
 #: ../plugins/getfocus.py:96
 msgid "Opacity"
-msgstr ""
+msgstr "Opazität"
 
 #: ../plugins/getfocus.py:106
 msgid "Min"
@@ -172,7 +172,7 @@ msgstr "Analyse der Plugin-Abhängigkeiten schlug fehl (%s)!"
 
 #: ../plugins/plugin-installer.py:283
 msgid "Command \"git\" not found, please install it!"
-msgstr ""
+msgstr "\"git\" Kommando nicht gefunden! Bitte \"git\" installieren."
 
 #: ../plugins/plugin-installer.py:292
 #, python-format
@@ -426,18 +426,16 @@ msgid "Login failed!"
 msgstr "Login fehlgeschlagen!"
 
 #: ../src/fl_sources/google_source.c:404
-#, fuzzy
 msgid "Google Reader API"
-msgstr "Google Reader"
+msgstr "Google Reader API"
 
 #: ../src/fl_sources/google_source_feed.c:159
-#, fuzzy
 msgid "Could not parse JSON returned by Google Reader API!"
-msgstr "Could not parse JSON returned by Reedah API!"
+msgstr "Could not parse JSON returned by Google Reader API!"
 
 #: ../src/fl_sources/node_source.c:117
 msgid "Miniflux"
-msgstr ""
+msgstr "Miniflux"
 
 #: ../src/fl_sources/node_source.c:332
 msgid "No feed list source types found!"
@@ -641,6 +639,9 @@ msgid ""
 "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
 "algorithm. Check your operating system settings."
 msgstr ""
+"SSL/TLS Verbindung gescheiter. Möglicherweise wird ein veralteter oder nicht-"
+"unterstützter Verschlüsselungsalgorithmus genutzt. Bitte prüfen Sie die "
+"Einstellungen des Betriebssystems."
 
 #. http 3xx redirection
 #: ../src/net.c:478
@@ -697,30 +698,28 @@ msgstr ""
 
 #. http 5xx server errors
 #: ../src/net.c:493
-#, fuzzy
 msgid "Internal Server Error"
-msgstr "Server-Fehler"
+msgstr "Interner Server-Fehler"
 
 #: ../src/net.c:494
 msgid "Not Implemented"
-msgstr ""
+msgstr "Nicht implementier"
 
 #: ../src/net.c:495
 msgid "Bad Gateway"
 msgstr ""
 
 #: ../src/net.c:496
-#, fuzzy
 msgid "Service Unavailable"
-msgstr "\"%s\" ist nicht verfügbar"
+msgstr "Service nicht verfügbar"
 
 #: ../src/net.c:497
 msgid "Gateway Timeout"
-msgstr ""
+msgstr "Gateway Timeout"
 
 #: ../src/net.c:498
 msgid "HTTP Version Not Supported"
-msgstr ""
+msgstr "HTTP Version wird nicht unterstützt"
 
 #: ../src/net.c:503
 msgid "There was an internal error in the update process"
@@ -799,9 +798,8 @@ msgid "Item body"
 msgstr "Text der Schlagzeile"
 
 #: ../src/rule.c:277
-#, fuzzy
 msgid "Item author"
-msgstr "Text der Schlagzeile"
+msgstr "Autor der Schlagzeile"
 
 #: ../src/rule.c:278
 msgid "Read status"
@@ -828,9 +826,8 @@ msgid "is unflagged"
 msgstr "ist nicht gesetzt"
 
 #: ../src/rule.c:280
-#, fuzzy
 msgid "Enclosure"
-msgstr "Anhänge"
+msgstr "Anhang"
 
 #: ../src/rule.c:280 ../src/rule.c:281
 msgid "included"
@@ -1075,14 +1072,16 @@ msgid "No item has been selected"
 msgstr "Es wurde keine Schlagzeile ausgewählt"
 
 #: ../src/ui/liferea_browser.c:482
-#, fuzzy
 msgid "Content download failed! Try disabling reader mode."
-msgstr "Herunterladen fehlgeschlagen!"
+msgstr ""
+"Download des Inhaltes fehlgeschlagen. Versuchen Sie den \"Reader Modus\" "
+"auszuschalten."
 
 #: ../src/ui/liferea_browser.c:495
-#, fuzzy
 msgid "Content extraction failed! Try disabling reader mode."
-msgstr "Inhaltsanreicherung fehlgeschlagen!"
+msgstr ""
+"Inhaltsanreicherung fehlgeschlagen! Versuchen Sie den \"Reader Modus\" "
+"auszuschalten."
 
 #: ../src/ui/liferea_shell.c:409
 #, c-format
@@ -1309,9 +1308,8 @@ msgid "Program"
 msgstr "Programm"
 
 #: ../src/ui/rule_editor.c:257
-#, fuzzy
 msgid "Remove"
-msgstr "_Löschen"
+msgstr "Löschen"
 
 #: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
@@ -1487,15 +1485,15 @@ msgid "_Do this automatically for enclosures like this from now on."
 msgstr "_Tue dies von nun an automatisch für Dateien dieses Typs."
 
 #: ../glade/google_source.ui.h:1
-#, fuzzy
 msgid "Add Google Reader API Account"
-msgstr "Neues Google-Reader-Konto"
+msgstr "Neues Google-Reader-API Konto"
 
 #: ../glade/google_source.ui.h:2
 msgid ""
 "Please enter the details of the new Google Reader API compatible "
 "subscription."
 msgstr ""
+"Bitte konfiguieren Sie hier die das Google-Reader-API-kompatible Konto."
 
 #: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
 #: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
@@ -1508,14 +1506,12 @@ msgid "_Username (Email)"
 msgstr "_Benutzername (Email)"
 
 #: ../glade/google_source.ui.h:5
-#, fuzzy
 msgid "_Server"
-msgstr "Server-URL"
+msgstr "_Server"
 
 #: ../glade/google_source.ui.h:6
-#, fuzzy
 msgid "_Name"
-msgstr "Abonnement-_Name"
+msgstr "_Name"
 
 #: ../glade/liferea_menu.ui.h:1
 msgid "_Subscriptions"
@@ -1865,9 +1861,8 @@ msgstr ""
 "Verzögertes Entfernen gelesener Schlagzeilen aus Ordnern und Suchordnern."
 
 #: ../glade/prefs.ui.h:22
-#, fuzzy
 msgid "Ask for confirmation when marking all items as read."
-msgstr "Bestätigen wenn alle Schlagzeilen als gelesen markiert werden"
+msgstr "Bestätigen wenn alle Schlagzeilen als gelesen markiert werden."
 
 #: ../glade/prefs.ui.h:23
 msgid "Web Integration"
