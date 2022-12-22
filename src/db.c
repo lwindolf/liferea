@@ -511,7 +511,7 @@ db_init (void)
         	 "   title		STRING,"
 		 "   type		INTEGER,"
 		 "   expanded           INTEGER,"
-		 "   view_mode		INTEGER,"
+		 "   view_mode		INTEGER,"	// now unused
 		 "   sort_column	INTEGER,"
 		 "   sort_reversed	INTEGER,"
 		 "   PRIMARY KEY (node_id)"
@@ -707,7 +707,7 @@ db_init (void)
 	                  "REPLACE INTO subscription_metadata (node_id,nr,key,value) VALUES (?,?,?,?)");
 
 	db_new_statement ("nodeUpdateStmt",
-	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,?,?,?)");
+	                  "REPLACE INTO node (node_id,parent_id,title,type,expanded,view_mode,sort_column,sort_reversed) VALUES (?,?,?,?,?,0,?,?)");
 
 	db_new_statement ("itemUpdateSearchFoldersStmt",
 	                  "REPLACE INTO search_folder_items (node_id, parent_node_id, item_id) VALUES (?,?,?)");
@@ -1561,9 +1561,8 @@ db_node_update (nodePtr node)
 	sqlite3_bind_text (stmt, 3, node->title, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 4, node_type_to_str (node), -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 5, node->expanded?1:0);
-	sqlite3_bind_int  (stmt, 6, node->viewMode);
-	sqlite3_bind_int  (stmt, 7, node->sortColumn);
-	sqlite3_bind_int  (stmt, 8, node->sortReversed?1:0);
+	sqlite3_bind_int  (stmt, 6, node->sortColumn);
+	sqlite3_bind_int  (stmt, 7, node->sortReversed?1:0);
 
 	res = sqlite3_step (stmt);
 	if (SQLITE_DONE != res)
