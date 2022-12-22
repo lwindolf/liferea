@@ -1,7 +1,7 @@
 /*
  * @file node.h  hierarchic feed list node interface
  * 
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -62,7 +62,6 @@ typedef struct node {
 	gboolean		expanded;	/*<< expansion state (for nodes with childs) */
 
 	/* item list state properties of this node */
-	nodeViewType		viewMode;	/*<< Viewing mode for this node (one of NODE_VIEW_MODE_*) */
 	nodeViewSortType	sortColumn;	/*<< Node specific item view sort attribute. */
 	gboolean		sortReversed;	/*<< Sort in the reverse order? */
 	
@@ -378,27 +377,6 @@ void node_load_icon (nodePtr node);
  * Returns: TRUE if the passed settings were different from the previous ones
  */
 gboolean node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboolean reversed);
-
-/**
- * node_set_view_mode: (skip)
- * @node:		the node
- * @newMode:    	viewing mode (NODE_VIEW_MODE_*)
- *
- * Change/Set the viewing mode of a given node.
- */
-void node_set_view_mode(nodePtr node, nodeViewType newMode);
-
-/**
- * node_get_view_mode: (skip)
- * @node: 	the node
- *
- * Query the effective viewing mode setting of a given mode.
- * When node viewing mode is set to default it will return the
- * configured default.
- *
- * Returns: viewing mode (NODE_VIEW_MODE_*)
- */
-nodeViewType node_get_view_mode(nodePtr node);
 
 /**
  * node_get_base_url: (skip)

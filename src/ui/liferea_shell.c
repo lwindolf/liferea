@@ -435,9 +435,6 @@ liferea_shell_update_node_actions (gpointer obj, gchar *unusedNodeId, gpointer d
 		return;
 	}
 
-	// Doesn't really fit here, but nonetheless correct for this signal
-	liferea_shell_set_view_mode (node_get_view_mode (node));
-
 	gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
 	liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
 	liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
@@ -953,9 +950,6 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"show-help-faq", on_faq_activate, NULL, NULL, NULL},
 	{"show-about", on_about_activate, NULL, NULL, NULL},
 
-	/* For mysterious reasons, the radio menu magic seem to only works with a
-	 * parameter/state of type string. */
-	{"set-view-mode", NULL, "s", "@s 'normal'", on_view_activate},
 	/* Parameter type must be NULL for toggle. */
 	{"fullscreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
 	{"reduced-feed-list", NULL, NULL, "@b false", on_feedlist_reduced_activate},
@@ -1221,6 +1215,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	GMenuModel		*menubar_model;
 	gboolean		toggle;
 	gchar			*id;
+	gint			mode;
 	FeedListView	*feedListView;
 
 	debug_enter ("liferea_shell_create");
@@ -1385,7 +1380,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect (feedListView, "selection-changed",
 	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
 
-	/* 11.) Restore latest selection */
+	/* 11.) Restore latest layout and selection */
+	conf_get_int_value (DEFAULT_VIEW_MODE, &mode);
+	itemview_set_layout (mode);
 
 	// FIXME: Move to feed list code
 	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {
@@ -1484,23 +1481,3 @@ liferea_shell_rebuild_css (void)
 	itemview_style_update ();
 }
 
-void
-liferea_shell_set_view_mode (nodeViewType newMode)
-{
-	GAction       *action;
-
-	action = g_action_map_lookup_action (G_ACTION_MAP(shell->generalActions), "set-view-mode");
-
-	switch (newMode)
-	{
-	  case NODE_VIEW_MODE_NORMAL:
-	  case NODE_VIEW_MODE_DEFAULT:
-	  case NODE_VIEW_MODE_COMBINED:
-	    /* Combined is removed, default to normal */
-		g_action_change_state (action, g_variant_new_string("normal"));
-		break;
-	  case NODE_VIEW_MODE_WIDE:
-		g_action_change_state (action, g_variant_new_string("wide"));
-		break;
-	}
-}

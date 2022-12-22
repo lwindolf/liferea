@@ -320,6 +320,8 @@ liferea_browser_new (gboolean forceInternalBrowsing)
 	debug0 (DEBUG_NET, "Setting initial HTML widget proxy...");
 	liferea_browser_proxy_changed (network_monitor_get (), browser);
 
+	liferea_browser_update_stylesheet (browser);
+
 	return browser;
 }
 

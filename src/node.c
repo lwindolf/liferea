@@ -1,7 +1,7 @@
 /*
  * @file node.c  hierarchic feed list node handling
  *
- * Copyright (C) 2003-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -95,7 +95,6 @@ node_new (nodeTypePtr type)
 
 	node = g_new0 (struct node, 1);
 	node->type = type;
-	node->viewMode = NODE_VIEW_MODE_DEFAULT;
 	node->sortColumn = NODE_VIEW_SORT_BY_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = TRUE;
@@ -475,45 +474,6 @@ node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboolean revers
 	node->sortReversed = reversed;
 
 	return TRUE;
-}
-
-void
-node_set_view_mode (nodePtr node, nodeViewType viewMode)
-{
-	gint	defaultViewMode;
-
-	/* To allow users to select a default viewing mode for the layout
-	   we need to store only exceptions from this mode, which is why
-	   we compare the mode to be set with the default and if it's equal
-	   we just set NODE_VIEW_MODE_DEFAULT.
-
-	   This allows to not OPML export the viewMode attribute for nodes
-	   the are in default viewing mode, which then allows to follow
-	   a switch in the preference to a new default viewing mode.
-
-	   This of course also means that the we use some state on each
-	   changing of the view mode preference.
-        */
-
-	conf_get_int_value (DEFAULT_VIEW_MODE, &defaultViewMode);
-
-	if (viewMode != (nodeViewType)defaultViewMode)
-		node->viewMode = viewMode;
-	else
-		node->viewMode = NODE_VIEW_MODE_DEFAULT;
-}
-
-nodeViewType
-node_get_view_mode (nodePtr node)
-{
-	gint	defaultViewMode;
-
-	conf_get_int_value (DEFAULT_VIEW_MODE, &defaultViewMode);
-
-	if (NODE_VIEW_MODE_DEFAULT == node->viewMode)
-		return defaultViewMode;
-	else
-		return node->viewMode;
 }
 
 const gchar *

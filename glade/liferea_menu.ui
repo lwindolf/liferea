@@ -153,18 +153,6 @@
        </section>
       <section>
         <item>
-          <attribute name="action">app.set-view-mode</attribute>
-          <attribute name="label" translatable="yes">_Normal View</attribute>
-          <attribute name="target">normal</attribute>
-        </item>
-        <item>
-          <attribute name="action">app.set-view-mode</attribute>
-          <attribute name="label" translatable="yes">_Wide View</attribute>
-          <attribute name="target">wide</attribute>
-        </item>
-      </section>
-      <section>
-        <item>
           <attribute name="action">app.reduced-feed-list</attribute>
           <attribute name="label" translatable="yes">_Reduced Feed List</attribute>
         </item>

@@ -360,7 +360,10 @@ on_skim_key_changed (gpointer user_data)
 static void
 on_default_view_mode_changed (gpointer user_data)
 {
-	conf_set_int_value (DEFAULT_VIEW_MODE, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
+	gint 	mode = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data));
+	
+	conf_set_int_value (DEFAULT_VIEW_MODE, mode);
+	itemview_set_layout (mode);
 }
 
 void
