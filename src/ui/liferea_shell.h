@@ -160,16 +160,6 @@ GtkWidget * liferea_shell_get_window (void);
  */
 void liferea_shell_rebuild_css (void);
 
-/**
- * liferea_shell_set_view_mode:
- * @newMode:	the new mode
- *
- * Changes the view mode programmatically. Used to change the mode when
- * selecting another feed. Convenience function to trigger the stateful action
- * set-view-mode.
- */
-void liferea_shell_set_view_mode (nodeViewType newMode);
-
 G_END_DECLS
 
 #endif

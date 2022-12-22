@@ -64,7 +64,6 @@ struct ItemListPrivate
 	nodePtr		currentNode;		/*<< the node whose own or its child items are currently displayed */
 	gulong		selectedId;		/*<< the currently selected (and displayed) item id */
 
-	nodeViewType	viewMode;		/*<< current viewing mode */
 	guint 		loading;		/*<< if >0 prevents selection effects when loading the item list */
 	itemPtr		invalidSelection;	/*<< if set then the next selection might need to do an unselect first */
 
@@ -324,7 +323,7 @@ itemlist_load (nodePtr node)
 	   no folder viewing is configured. If folder viewing is enabled
 	   set up a "unread items only" rule depending on the prefences. */
 
-	/* for folders and other heirarchic nodes do preference based filtering */
+	/* for folders and other hierarchic nodes do preference based filtering */
 	if (IS_FOLDER (node) || node->children) {
 		conf_get_int_value (FOLDER_DISPLAY_MODE, &folder_display_mode);
 		if (!folder_display_mode)
@@ -344,8 +343,6 @@ itemlist_load (nodePtr node)
 	}
 
 	itemlist->priv->loading++;
-	itemlist->priv->viewMode = node_get_view_mode (node);
-	itemview_set_layout (itemlist->priv->viewMode);
 
 	/* Set the new displayed node... */
 	itemlist->priv->currentNode = node;
@@ -371,13 +368,6 @@ itemlist_unload (gboolean markRead)
 
 	if (itemlist->priv->currentNode) {
 		itemview_set_displayed_node (NULL);
-
-		/* 1. Postprocessing for previously selected node, this is necessary
-		   to realize reliable read marking when using condensed mode. It's
-		   important to do this only when the selection really changed. */
-		if (markRead && (2 == node_get_view_mode (itemlist->priv->currentNode)))
-			feedlist_mark_all_read (itemlist->priv->currentNode);
-
 		itemlist_check_for_deferred_action ();
 	}
 
@@ -394,14 +384,6 @@ itemlist_select_next_unread (void)
 {
 	itemPtr	result = NULL;
 
-	/* If we are in combined mode we have to mark everything
-	   read or else we would never jump to the next feed,
-	   because no item will be selected and marked read... */
-	if (itemlist->priv->currentNode) {
-		if (NODE_VIEW_MODE_COMBINED == node_get_view_mode (itemlist->priv->currentNode))
-			node_mark_all_read (itemlist->priv->currentNode);
-	}
-
 	itemlist->priv->loading++;	/* prevent unwanted selections */
 
 	/* before scanning the feed list, we test if there is a unread
@@ -417,9 +399,7 @@ itemlist_select_next_unread (void)
 		if (node) {
 			/* load found feed */
 			feed_list_view_select (node);
-
-			if (NODE_VIEW_MODE_COMBINED != node_get_view_mode (node))
-				result = itemview_find_unread_item (0);	/* find first unread item */
+			result = itemview_find_unread_item (0);	/* find first unread item */
 		} else {
 			/* if we don't find a feed with unread items do nothing */
 			liferea_shell_set_status_bar (_("There are no unread items"));
@@ -616,90 +596,6 @@ itemlist_selection_changed (itemPtr item)
 	debug_exit ("itemlist_selection_changed");
 }
 
-/* viewing mode callbacks */
-
-guint
-itemlist_get_view_mode (void)
-{
-	return itemlist->priv->viewMode;
-}
-
-static void
-itemlist_set_view_mode (nodeViewType newMode)
-{
-	nodePtr		node;
-	itemPtr		item;
-
-	itemlist->priv->viewMode = newMode;
-
-	node = itemlist_get_displayed_node ();
-	item = itemlist_get_selected ();
-
-	if (node) {
-		itemlist_unload (FALSE);
-
-		node_set_view_mode (node, itemlist->priv->viewMode);
-		itemview_set_layout (itemlist->priv->viewMode);
-		itemlist_load (node);
-
-		/* If there was an item selected, select it again since
-		 * itemlist_unload() unselects it.
-		 */
-		if (item && itemlist->priv->viewMode != NODE_VIEW_MODE_COMBINED)
-			itemview_select_item (item);
-	}
-
-	if (item)
-		item_unload (item);
-}
-
-void
-on_view_activate (GSimpleAction *action, GVariant *value, gpointer user_data)
-{
-	const gchar *s_val = g_variant_get_string (value, NULL);
-	GVariant *cur_state = g_action_get_state (G_ACTION(action));
-	const gchar *s_cur_state = g_variant_get_string (cur_state,NULL);
-	/* If requested state is the same as current state, leave without doing
-	 * anything. */
-	if (!g_strcmp0 (s_val,s_cur_state)) {
-		g_variant_unref (cur_state);
-		return;
-	}
-	g_variant_unref (cur_state);
-
-	nodeViewType val = 0;
-	if (!g_strcmp0 ("normal",s_val))
-	{
-		val = NODE_VIEW_MODE_NORMAL;
-	}
-	if (!g_strcmp0 ("wide",s_val))
-	{
-		val = NODE_VIEW_MODE_WIDE;
-	}
-	if (!g_strcmp0 ("combined",s_val))
-	{
-		/* Combined is removed : default to normal */
-		val = NODE_VIEW_MODE_NORMAL;
-	}
-	itemlist_set_view_mode (val);
-
-	/* Getting the actual value to reflect current state even if for some
-	 * reason, other functions couldn't make the requested change.
-	 * May be overkill. */
-	val = itemlist_get_view_mode ();
-	switch (val)
-	{
-	  case NODE_VIEW_MODE_NORMAL:
-	  case NODE_VIEW_MODE_DEFAULT:
-	  case NODE_VIEW_MODE_COMBINED:
-		g_simple_action_set_state (action, g_variant_new_string("normal"));
-		break;
-	  case NODE_VIEW_MODE_WIDE:
-		g_simple_action_set_state (action, g_variant_new_string("wide"));
-		break;
-	}
-}
-
 static void
 itemlist_select_from_history (gboolean back)
 {
@@ -720,9 +616,6 @@ itemlist_select_from_history (gboolean back)
 
 	if (node != feedlist_get_selected ())
 		feed_list_view_select (node);
-
-	if (NODE_VIEW_MODE_COMBINED == itemlist_get_view_mode ())
-		itemlist_set_view_mode (NODE_VIEW_MODE_NORMAL);
 
 	itemview_select_item (item);
 	item_unload (item);
@@ -777,16 +670,7 @@ itemlist_add_loader (ItemLoader *loader)
 void
 itemlist_add_search_result (ItemLoader *loader)
 {
-	nodeViewType viewMode;
-
-	/* Ensure that we are in a useful viewing mode (3 paned) */
-	itemlist_unload (FALSE);
-
-	viewMode = itemlist_get_view_mode ();
-	if ((NODE_VIEW_MODE_NORMAL != viewMode) &&
-	    (NODE_VIEW_MODE_WIDE != viewMode))
-		itemview_set_layout (NODE_VIEW_MODE_NORMAL);
-
+	itemlist_unload (FALSE /* mark read */);
 	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
 	/* Set current node to search result dummy node so that

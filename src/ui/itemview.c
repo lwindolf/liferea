@@ -372,11 +372,22 @@ itemview_set_layout (nodeViewType newMode)
 {
 	GtkWidget 	*previous_parent = NULL;
 	const gchar	*htmlWidgetName, *ilWidgetName, *encViewVBoxName;
+	nodePtr		node;
+	itemPtr		item;
 
 	if (newMode == itemview->currentLayoutMode)
 		return;
+
 	itemview->currentLayoutMode = newMode;
 
+	node = itemlist_get_displayed_node ();
+	item = itemlist_get_selected ();
+
+	/* Drop items */
+	if (node)
+		itemlist_unload (FALSE);
+
+	/* Prepare widgets for layout */
 	if (!itemview->htmlview) {
 		debug0 (DEBUG_GUI, "Creating HTML widget");
 		itemview->htmlview = liferea_browser_new (FALSE);
@@ -446,6 +457,26 @@ itemview_set_layout (nodeViewType newMode)
 				  NULL, GTK_POS_BOTTOM, 1,1);
 		gtk_widget_show_all (liferea_shell_lookup (encViewVBoxName));
 	}
+
+	/* Load previously selected node and/or item into new widgets */
+	if (node) {
+		itemlist_load (node);
+
+		/* If there was an item selected, select it again since
+		 * itemlist_unload() unselects it.
+		 */
+		if (item)
+			itemview_select_item (item);
+	}
+
+	if (item)
+		item_unload (item);
+}
+
+guint
+itemview_get_layout (void)
+{
+	return itemview->currentLayoutMode;
 }
 
 ItemView *
@@ -462,9 +493,7 @@ itemview_create (GtkWidget *window)
 		conf_set_int_value (LAST_ZOOMLEVEL, zoom);
 	}
 	itemview->zoom = zoom;
-
-	/* 2. Set initial layout (because no node selected yet) */
-	itemview_set_layout (NODE_VIEW_MODE_WIDE);
+	itemview->currentLayoutMode = 1000;	// something invalid
 
 	return itemview;
 }
@@ -486,14 +515,13 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 void
 itemview_do_zoom (gint zoom)
 {
-	if (itemview->htmlview == NULL)
-		return;
-
-	liferea_browser_do_zoom (itemview->htmlview, zoom);
+	if (itemview->htmlview)
+		liferea_browser_do_zoom (itemview->htmlview, zoom);
 }
 
 void
 itemview_style_update (void)
 {
-	liferea_browser_update_stylesheet (itemview->htmlview);
+	if (itemview->htmlview)
+		liferea_browser_update_stylesheet (itemview->htmlview);
 }

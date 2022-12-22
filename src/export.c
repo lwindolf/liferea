@@ -2,7 +2,7 @@
  * @file export.c  OPML feed list import & export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,16 +95,6 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 
 		if (node->loadItemLink)
 			xmlNewProp (childNode, BAD_CAST"loadItemLink", BAD_CAST"true");
-
-		/* Do not export the default view mode setting to avoid making
-		   it permanent. Do not use node_get_view_mode () here to ensure
-		   that the comparison works as node_get_view_mode () returns
-		   the effective mode! */
-		if (NODE_VIEW_MODE_DEFAULT != node->viewMode) {
-			tmp = g_strdup_printf ("%u", node_get_view_mode(node));
-			xmlNewProp (childNode, BAD_CAST"viewMode", BAD_CAST tmp);
-			g_free (tmp);
-		}
 	}
 
 	/* 2. add node type specific stuff */
@@ -310,13 +300,6 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	if (tmp) {
 		if (!xmlStrcmp ((xmlChar *)tmp, BAD_CAST"true"))
 		node->loadItemLink = TRUE;
-		xmlFree (tmp);
-	}
-
-	/* viewing mode */
-	tmp = (gchar *)xmlGetProp (cur, BAD_CAST"viewMode");
-	if (tmp) {
-		node_set_view_mode (node, atoi (tmp));
 		xmlFree (tmp);
 	}
 

@@ -1,7 +1,7 @@
 /*
  * @file itemview.h  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -195,6 +195,15 @@ void itemview_move_cursor_to_first (void);
  * Switches the layout for the given viewing mode.
  */
 void itemview_set_layout (nodeViewType newMode);
+
+/**
+ * itemview_get_layout:
+ *
+ * Returns the viewing mode property of the currently displayed item set.
+ *
+ * Returns: viewing mode (0 = normal, 1 = wide, 2 = auto)
+ */
+guint itemview_get_layout (void);
 
 /**
  * itemview_create: (skip)
