@@ -52,7 +52,6 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
 	gboolean	internal = ((struct exportData*)userdata)->trusted;
 	xmlNodePtr	childNode;
-	gchar		*tmp;
 
 	/* When exporting external OPML do not export every node type... */
 	if (!(internal || (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_EXPORT)))
