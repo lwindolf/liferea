@@ -218,6 +218,7 @@ on_propdialog_response (GtkDialog *dialog,
 			/* if URL has changed... */
 			if (strcmp(newSource, subscription_get_source(subscription))) {
 				subscription_set_source(subscription, newSource);
+				subscription_set_discontinued (subscription, FALSE);
 				needsUpdate = TRUE;
 			}
 			g_free(newSource);
