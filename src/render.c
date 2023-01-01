@@ -320,7 +320,6 @@ render_get_default_css (void)
 {
 	if (!css) {
 		gchar	*defaultStyleSheetFile;
-		gchar	*userStyleSheetFile;
 		gchar	*tmp;
 
 		g_return_val_if_fail (themeColors != NULL, NULL);
@@ -347,7 +346,6 @@ gchar *
 render_get_user_css (void)
 {
 	if (!userCss) {
-		gchar	*defaultStyleSheetFile;
 		gchar	*userStyleSheetFile;
 		gchar	*tmp;
 
