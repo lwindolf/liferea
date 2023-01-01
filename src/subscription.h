@@ -1,7 +1,7 @@
 /**
  * @file subscription.h  common subscription handling interface
  *
- * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -190,6 +190,16 @@ void subscription_set_default_update_interval(subscriptionPtr subscription, guin
 void subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now);
 
 void subscription_update_favicon (subscriptionPtr subscription);
+
+/**
+ * subscription_set_discontinued:
+ * 
+ * Change discontinued state of subscription.
+ * 
+ * @param subscription	the subscription
+ * @param newState 	the new state
+ */
+void subscription_set_discontinued (subscriptionPtr subscription, gboolean newState);
 
 /**
  * Get the source URL of a given subscription
