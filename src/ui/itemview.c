@@ -53,7 +53,8 @@ struct _ItemView {
 						     updated, used to delay HTML updates */
 
 	nodeViewType	viewMode;		/*<< current viewing mode */
-	guint		currentLayoutMode;	/*<< layout mode (3 pane, 2 pane, wide view) */
+	gboolean	autoLayout;		/*<< TRUE if automatic layout switching is active */
+	guint		currentLayoutMode;	/*<< effective layout mode (email or wide) */
 
 	ItemListView	*itemListView;		/*<< widget instance used to present items in list mode */
 
@@ -374,11 +375,23 @@ itemview_set_layout (nodeViewType newMode)
 	const gchar	*htmlWidgetName, *ilWidgetName, *encViewVBoxName;
 	nodePtr		node;
 	itemPtr		item;
+	nodeViewType	effectiveMode = newMode;
 
-	if (newMode == itemview->currentLayoutMode)
+	if (NODE_VIEW_MODE_AUTO == newMode) {
+		gint	w, h, f;
+
+		f = gtk_widget_get_allocated_width (liferea_shell_lookup ("feedlist"));
+		gtk_window_get_size (GTK_WINDOW (liferea_shell_get_window ()), &w, &h);
+
+		/* we switch layout if window width - feed list width > window heigt */
+		effectiveMode = (w - f > h)?NODE_VIEW_MODE_WIDE:NODE_VIEW_MODE_NORMAL;
+	}
+
+	if (effectiveMode == itemview->currentLayoutMode)
 		return;
 
-	itemview->currentLayoutMode = newMode;
+	itemview->autoLayout = (NODE_VIEW_MODE_AUTO == newMode);
+	itemview->currentLayoutMode = effectiveMode;
 
 	node = itemlist_get_displayed_node ();
 	item = itemlist_get_selected ();
@@ -400,12 +413,9 @@ itemview_set_layout (nodeViewType newMode)
 		liferea_browser_clear (itemview->htmlview);
 	}
 
-	debug1 (DEBUG_GUI, "Setting item list layout mode: %d", newMode);
+	debug2 (DEBUG_GUI, "Setting item list layout mode: %d (auto=%d)", effectiveMode, itemview->autoLayout);
 
-	switch (newMode) {
-		case NODE_VIEW_MODE_COMBINED:
-			// Not supported anymore, fall through to NORMAL
-
+	switch (effectiveMode) {
 		case NODE_VIEW_MODE_NORMAL:
 			htmlWidgetName = "normalViewHtml";
 			ilWidgetName = "normalViewItems";
@@ -424,7 +434,7 @@ itemview_set_layout (nodeViewType newMode)
 
 	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
 	g_assert (htmlWidgetName);
-	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), newMode);
+	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), effectiveMode);
 	previous_parent = gtk_widget_get_parent (liferea_browser_get_widget (itemview->htmlview));
 	if (previous_parent)
 		gtk_container_remove (GTK_CONTAINER (previous_parent), liferea_browser_get_widget (itemview->htmlview));
@@ -439,7 +449,7 @@ itemview_set_layout (nodeViewType newMode)
 	}
 
 	if (ilWidgetName) {
-		itemview->itemListView = item_list_view_create (newMode == NODE_VIEW_MODE_WIDE);
+		itemview->itemListView = item_list_view_create (effectiveMode == NODE_VIEW_MODE_WIDE);
 		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (ilWidgetName)), item_list_view_get_widget (itemview->itemListView));
 	}
 
@@ -476,6 +486,9 @@ itemview_set_layout (nodeViewType newMode)
 guint
 itemview_get_layout (void)
 {
+	if (itemview->autoLayout)
+		return NODE_VIEW_MODE_AUTO;
+
 	return itemview->currentLayoutMode;
 }
 
