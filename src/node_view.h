@@ -1,7 +1,7 @@
 /*
  * @file node_view.h  node view modes
  *
- * Copyright (C) 2009-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2009-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,7 @@
 typedef enum {
 	NODE_VIEW_MODE_NORMAL	= 0,
 	NODE_VIEW_MODE_WIDE	= 1,
-	NODE_VIEW_MODE_COMBINED	= 2,
-	NODE_VIEW_MODE_DEFAULT,
+	NODE_VIEW_MODE_AUTO	= 2
 } nodeViewType;
 
 typedef enum {

@@ -2,7 +2,7 @@
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,6 +73,7 @@ struct _LifereaShell {
 	GtkStatusbar	*statusbar;		/*<< main window status bar */
 	gboolean	statusbarLocked;	/*<< flag locking important message on status bar */
 	guint		statusbarLockTimer;	/*<< timer id for status bar lock reset timer */
+	guint		resizeTimer;		/*<< timer id for resize callback */
 
 	GtkWidget	*statusbar_feedsinfo;
 	GtkWidget	*statusbar_feedsinfo_evbox;
@@ -604,6 +605,30 @@ on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
 	liferea_application_shutdown ();
 	return TRUE;
+}
+
+static gboolean
+on_window_resize_cb (gpointer user_data)
+{
+	shell->resizeTimer = 0;
+
+	/* If we are in auto layout mode we ask the itemview to calculate it again */
+	if (NODE_VIEW_MODE_AUTO == itemview_get_layout ())
+		itemview_set_layout (NODE_VIEW_MODE_AUTO);
+
+	return FALSE;
+}
+
+static gboolean
+on_configure_event (GtkWidget *window, GdkEvent *event, gpointer user_data)
+{
+	LifereaShell *shell = LIFEREA_SHELL (user_data);
+
+	if (shell->resizeTimer)
+		g_source_remove (shell->resizeTimer);
+	shell->resizeTimer = g_timeout_add (250, on_window_resize_cb, shell);
+
+	return FALSE;
 }
 
 static gboolean
@@ -1305,6 +1330,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	g_signal_connect (G_OBJECT (shell->window), "delete_event", G_CALLBACK(on_close), NULL);
 	g_signal_connect (G_OBJECT (shell->window), "window_state_event", G_CALLBACK(on_window_state_event), shell);
+	g_signal_connect (G_OBJECT (shell->window), "configure_event", G_CALLBACK(on_configure_event), shell);
 	g_signal_connect (G_OBJECT (shell->window), "key_press_event", G_CALLBACK(on_key_press_event), shell);
 	g_signal_connect (G_OBJECT (shell->window), "style-updated", G_CALLBACK(liferea_shell_rebuild_css), NULL);
 

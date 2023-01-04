@@ -2,7 +2,7 @@
  * @file preferences_dialog.c Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2023 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -109,6 +109,7 @@ static const gchar * browser_skim_key_options[] = {
 static const gchar * default_view_mode_options[] = {
 	N_("Normal View"),
 	N_("Wide View"),
+	N_("Automatic"),
 	NULL
 };
 
