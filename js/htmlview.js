@@ -1,7 +1,7 @@
 /*
  * @file htmlview.c  htmlview reader mode switching and CSS handling
  *
- * Copyright (C) 2021-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -129,4 +129,12 @@ function loadContent(readerEnabled, content) {
 	}
 
 	return true;
+}
+
+function youtube_embed(id) {
+	var container = document.getElementById(id);
+	// FIXME: autoplay does not work!
+	container.innerHTML = '<iframe width="640" height="480" src="https://www.youtube.com/embed/'+id+'?autoplay=1" frameborder="0" allowfullscreen="1" allow="autoplay; allowfullscreen"></iframe>';
+
+	return false;
 }
