@@ -1,7 +1,7 @@
 /*
  * @file itemlist.h  itemlist handling
  *
- * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2023 Lars Windolf <lars.windolf@gmx.de>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,12 +111,10 @@ void itemlist_load (struct node *node);
 
 /**
  * itemlist_unload: (skip)
- * @markRead:	if TRUE all items are marked as read
- *
- * Clears the item list. Unsets the currently
- * displayed item set. Optionally marks every item read.
+  *
+ * Clears the item list.
  */
-void itemlist_unload (gboolean markRead);
+void itemlist_unload (void);
 
 /**
  * on_prev_read_item_activate: (skip)

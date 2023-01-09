@@ -176,7 +176,7 @@ on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 	conf_set_bool_value (FOLDER_DISPLAY_HIDE_READ, enabled);
 
 	if (displayedNode && IS_FOLDER (displayedNode)) {
-		itemlist_unload (FALSE);
+		itemlist_unload ();
 		itemlist_load (displayedNode);
 
 		/* Note: For simplicity when toggling this preference we
