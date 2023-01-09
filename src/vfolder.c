@@ -224,7 +224,7 @@ vfolder_export (nodePtr node,
 void
 vfolder_reset (vfolderPtr vfolder)
 {
-	itemlist_unload (FALSE);
+	itemlist_unload ();
 
 	if (vfolder->loader) {
 		g_object_unref (vfolder->loader);

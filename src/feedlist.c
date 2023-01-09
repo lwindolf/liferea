@@ -556,7 +556,7 @@ feedlist_unselect (void)
 	itemview_set_displayed_node (NULL);
 	itemview_update ();
 
-	itemlist_unload (FALSE /* mark all read */);
+	itemlist_unload ();
 	feed_list_view_select (NULL);
 }
 
@@ -577,7 +577,7 @@ feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
 				feedlist_reset_new_item_count ();
 
 			/* Unload visible items. */
-			itemlist_unload (TRUE);
+			itemlist_unload ();
 
 			/* Load items of new selected node. */
 			SELECTED = node;
