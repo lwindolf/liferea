@@ -354,7 +354,6 @@ itemview_init (ItemView *iv)
 {
 	debug_enter("itemview_init");
 
-	/* 0. Prepare globally accessible singleton */
 	g_assert (NULL == itemview);
 	itemview = iv;
 
@@ -398,7 +397,7 @@ itemview_set_layout (nodeViewType newMode)
 
 	/* Drop items */
 	if (node)
-		itemlist_unload (FALSE);
+		itemlist_unload ();
 
 	/* Prepare widgets for layout */
 	if (!itemview->htmlview) {

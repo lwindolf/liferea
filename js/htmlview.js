@@ -133,7 +133,6 @@ function loadContent(readerEnabled, content) {
 
 function youtube_embed(id) {
 	var container = document.getElementById(id);
-	// FIXME: autoplay does not work!
 	container.innerHTML = '<iframe width="640" height="480" src="https://www.youtube.com/embed/'+id+'?autoplay=1" frameborder="0" allowfullscreen="1" allow="autoplay; allowfullscreen"></iframe>';
 
 	return false;

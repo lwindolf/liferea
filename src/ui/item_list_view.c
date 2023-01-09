@@ -1055,7 +1055,7 @@ item_list_view_select (ItemListView *ilv, itemPtr item)
 
 	selection = gtk_tree_view_get_selection (treeview);
 
-	if (item && item_list_view_id_to_iter(ilv, item->id, &iter)){
+	if (item && item_list_view_id_to_iter (ilv, item->id, &iter)) {
 		GtkTreePath	*path = NULL;
 
 		path = gtk_tree_model_get_path (gtk_tree_view_get_model (treeview), &iter);

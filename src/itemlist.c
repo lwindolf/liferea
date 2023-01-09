@@ -1,7 +1,7 @@
 /*
  * @file itemlist.c  item list handling
  *
- * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -361,7 +361,7 @@ itemlist_load (nodePtr node)
 }
 
 void
-itemlist_unload (gboolean markRead)
+itemlist_unload (void)
 {
 	/* Always clear to ensure clearing on search */
 	itemview_clear ();
@@ -670,7 +670,7 @@ itemlist_add_loader (ItemLoader *loader)
 void
 itemlist_add_search_result (ItemLoader *loader)
 {
-	itemlist_unload (FALSE /* mark read */);
+	itemlist_unload ();
 	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
 	/* Set current node to search result dummy node so that
