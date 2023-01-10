@@ -117,7 +117,7 @@
               <li>New 'Reader mode' preference that allows stripping all web content</li>
               <li>Implement support for Webkits Intelligent Tracking Protection</li>
               <li>New progress bar when loading websites</li>
-              <li>Youtube videos from media:video can be embedded now with a click on the video preview picture./li>
+              <li>Youtube videos from media:video can be embedded now with a click on the video preview picture.</li>
               <li>Changes to UserAgent handling: same UA is now used for both feed fetching
               and internal browsing. User agent now indicates Android+Mobile per default
               instead of suggesting a Linux desktop to better adapt to the smaller
@@ -172,12 +172,11 @@
               <li>New search folder property that allows hiding read items</li>
               <li>Now search folders are automatically rebuild when rules are changed</li>
             </ul>
-          <li>
+          </li>
           <li>Plugins
             <ul>
               <li>Added new plugin 'add-bookmark-site' that allows to configure a custom bookmarking site.</li>
-              <li>Added new plugin 'getfocus' that adds transparency on the feed list</li>
-              when it is not focussed.</li>
+              <li>Added new plugin 'getfocus' that adds transparency on the feed list when it is not focussed.</li>
               <li>Trayicon plugin has now a configuration option to change the behaviour when closing Liferea.</li>
               <li>Trayicon plugin has now an option to disable minimizing to tray</li>
             </ul>
@@ -189,7 +188,7 @@
               <li>New hot key Ctrl-0 to reset zoom</li>
               <li>New hot key Ctrl-O to open enclosures</li>
             </ul>
-          <li>
+          </li>
         </ul>
 
         <p>Important bugfixes</p>
