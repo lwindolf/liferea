@@ -17,7 +17,7 @@
 	* Fixes #1170: broken notification icon in libnotify plugin
 	  (Tasos Sahanidis)
 	
-	* Fixes #1162: a sting impossible to translation
+	* Fixes #1162: a string impossible to translation
 	  (Paweł Marciniak)
 
 	* Fixes #1124: Formation vanishes after a few seconds
