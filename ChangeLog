@@ -1,44 +1,8 @@
-2022-12-17  Lars Windolf <lars.windolf@gmx.de>
+2023-01-10  Lars Windolf <lars.windolf@gmx.de>
 
-	Version 1.14-RC3
+	Version 1.14.0
 
-	* Patch #1184: Solving Webkit proxy method deprecations
-	  (Matthew Horan)
-
-	* Fixes #1182: Periodic crash when navigating items (TheOldReader)
-	  (reported by Matthew Horan)
-
-	* Fixes #1176: Custom liferea.css no longer working
-	  (Matthew Horan)
-
-	* Fixes #1174: Missing date for some feeds
-	  (reported by jfbauer432)
-
-	* Fixes #1170: broken notification icon in libnotify plugin
-	  (Tasos Sahanidis)
-	
-	* Fixes #1162: a string impossible to translation
-	  (Paweł Marciniak)
-
-	* Fixes #1124: Formation vanishes after a few seconds
-	  (reported by Michael F. Schönitzer)
-
-	* Fixes #1121: Wait for network to be fully available before updating
-	  (reported by Jeff Fortin)
-
-	* Update of Albanian trasnlation (Besnik Bleta)
-	* Update of Brazilian-Portugese translation (Alexandre Erwin Ittner)
-	* Update of Chinese translation (David Yang)
-	* Update of German translation (Lars Windolf)
-	* Update of Polish translation (Paweł Marciniak)
-	* Update of Russian trasnlation (mbrav)
-	* Update of Spanish translation (Christian Martinez)
-
-
-
-2022-10-24  Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.14-RC2
+	New features/changes:
 
 	* #1152: Reduces height of the status bar to save vertical space.
 	  (Lars Windolf)
@@ -46,41 +10,6 @@
 	* #1070: Added new plugin 'add-bookmark-site' that allows to configure
 	  a custom bookmarking site.
 	  (Lars Windolf)
-
-	* Fixes #1155: Toolbar/menu actions disabling wrong for search
-	  folders/folders
-	  (Lars Windolf)
-
-	* Fixes #1154: Search folder property "Hide read items" has wrong
-	  initial state when opening dialog
-	  (Lars Windolf)
-
-	* Fixes #1100: Dates are overwritten on every update for feeds
-	  that do not provide date information.
-	  (Lars Windolf)
-
-	* Fixes #923: Reading folders with unread filtering active often
-	  has remnant read items
-	  (Lars Windolf)
-
-	* Fixes #723: LiveJournal feeds parsing can make the headline link
-	  a link to an XML document. Liferea now checks for the line MIME type.
-	  (Lars Windolf)
-
-	* Fixes #720: Mark all as read doesn't clear Unread folder if one
-	  entry is selected
-	  (Lars Windolf)
-
-	* Fixes #501: Fixes segfault when deleting a search folder that 
-	  is rebuilding
-	  (Lars Windolf)
-
-	* Updated pr-BR translation (Alexandre Erwin Ittner)
-
-
-2022-10-10  Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.14-RC1
 
 	* Liferea now supports gtk-application-prefer-dark-theme based
 	  dark mode switching.
@@ -104,38 +33,9 @@
 	* #1139: Also add enclosures when saving items to file.
 	  (Alexander Erwin Ittner)
 
-	* Fixes #1132: Improved timeout error handling in feed commands
-	  (Alexander Erwin Ittner)
+	* Patch #1184: Solving Webkit proxy method deprecations
+	  (Matthew Horan)
 
-	* Fixes #1129: Accessibility errors in .ui files
-	  (reported by Paul Gevers)
-
-	* Fixes #1126: Some images broken in reader mode
-	  (reported by Saijin-Naib)
-
-	* Fixes #901, #1123: resize view panes to sensible positions
-	  when they were at min or max position on last shutdown. Makes
-	  left pane 30% window width and item list pane 50% height/width
-	  when pane position is 0 or 95% of height/width. (Lars Windolf)
-
-	* Fixes #992: HTML with self-closing tags not rendering properly.
-	  (Rich Coe)
-
-	* Fixes #644, #901, #909: restoring window size/position with header
-	  bar plugin active. (Lars Windolf)
-
-	* #1137: Updated French translation (Guillaume Bernard)
-
-	* #1134, #1135: Updated Spanish example feeds (Joel Barrios)
-
-
-2022-07-25   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.9
-
-	* Update to Readability.js 0.41 (better image and table handling)
-	  (Lars Windolf)
-	  
 	* Changes to UserAgent handling: same UA is now used for both feed fetching
 	  and internal browsing. User agent now indicates Android+Mobile per default
 	  instead of suggesting a Linux desktop to better adapt to the smaller 
@@ -158,32 +58,8 @@
 	* #1108, #113: Improve performance by different check order in itemset
 	  merging (suggested by mozbugbox)
 
-	* Fixes #1033: Subscribing defaulted to HTML5 feeds even when real
-	  feeds do exist. (reported by Hanno Braun)
-
-	* Fixes #1111: wrong base URI in reader mode
-	  (Lars Windolf)
-	
-	* Fixes #1112: Image duplication caused by feeds providing an image
-	  link which is also in the item description as additional metadata.
-	  (Lars Windolf)
-
-	* Update of Dutch translation (Gert-dev)
-
-
-2022-04-05   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.8
-
 	* #1103: New hot key Ctrl-D for 'Open in External Browser' 
 	  (David Yang)
-
-	* #1101: Reader mode for internal browser: is now applied on prefetched HTML
-	  document instead of applying after normal rendering. Which means it
-	  is more secure and much faster. (Lars Windolf)
-
-	* #1097: Reader mode for internal browser: shows now standard decorations
-	  like in headline view. (Lars Windolf)
 
 	* #1095: New feature: Export items to feed file
 	  (Alexandre Erwin Ittner)
@@ -203,44 +79,6 @@
 
 	* #778: New preference: deferred removal of read items from folders and
 	  search folders. (Rich Coe)
-
-	* Fixes #1094: Fix Next Unread Item crash when no feed selected
-	  (Matthew Horan)
-
-	* Fixes #1092: --debug-html seems broken
-	  (Matthew Horan)
-
-	* Fixes #1073: Memory leak in stylesheet reloading
-	  (Matthew Horan)
-	
-	* Fixes #1069: Don't update HTML view when browsing internally
-	  (Matthew Horan)
-	
-	* Fixes #1064: Fix strsep implicit declaration warning
-	  (Paweł Marciniak)
-	
-	* Fixes #1058: Italian manpage installation
-	  (Paweł Marciniak)
-
-	* Fixes #1053: Use liferea_shell_show_window() when activating
-	  This shold fix an issue where position is not restored on XOrg when
-	  Liferea is trigger from Cinnamon launcher (instead of tray)
-	  (Matthew Horan)
-	
-	* Fixes #1066: Browse to requested URI on JS window creation (this
-	  prevents loading empty tabs on weird JS links some sites/feeds have)
-	  (Matthew Horan)
-
-	* #1095: Updated of French translation
-	  (sblondon)
-
-	* #1043: Added Italian documentation translation
-	  (Lorenzo Ancora)
-
-
-2021-12-06   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.7
 
 	* Allow converting TinyTinyRSS subscriptions to local subscriptions
 	  (Lars Windolf)
@@ -271,9 +109,304 @@
 
 	* #1014: Fixes some compiler warnings
 	  (Paweł Marciniak)
+
+	* #343: UX redesign of the update message in the status bar. Now shows a
+	  update counter of the feeds being in update.
+	  (Lars Windolf)
+
+	* #964: Added pane position fix plugin providing a workaround for pane position
+	  issues when using the headerbar
+	  (Paweł Marciniak)
+
+	* #983: Use GtkFileChooserNative to allow selecting local files when
+	  run in sandbox.
+	  (Leiaz)
+
+	* #907: Add new search folder property that allows hiding read items
+	  (Lars Windolf, suggested by Jeff Fortin)
+
+	* Now always shows the unread count of a search folder (instead of the
+	  item count) in the feed list
+	  (Lars Windolf)
+
+	* Now search folders are automatically rebuild when rules are changed
+	  (Lars Windolf)
+
+	* Adds a new simple focus plugin that adds transparency on the feed list
+	  when it is not focussed.
+	  (Paweł Marciniak)
+
+	* Add F10 hotkey to headerbar plugin to allow triggering the hamburger menu
+	  (Paweł Marciniak)
+
+	* Update Flatpak AppData with release dates
+	  (Mikel Olasagasti)
+
+	* Make several plugins support gettext
+	  (Paweł Marciniak)
+
+	* Prevent endless loop on favicon discovery
+	  (Lars Windolf)
+
+	* #903: Prevent endless loop in feed autodiscovery
+	  (reported by Leiaz)
+
+	* #912: Allow mutiple feed in same libnotify notification
+	  (Tasos Sahanidis)
+
+	* Further favicon discovery improvements: now detects all types of
+	  Apple Touch Icons, MS Tile Images and Safari Mask Icons
+	  Fixes #440
+	  (Lars Windolf)
+
+	* Add reader mode context menu toggle in the item view
+	  (Lars Windolf)
+
+	* #876 Add reader mode preference
+	  (Lars Windolf)
+
+	* Implement support for subscribing to LD+Json metadata
+	  listings e.g. concert or theater event listings
+	  (Lars Windolf)
+
+	* Provide the default icon for feeds with no favicon as SVG
+	  for nicer rendering in wide view. Drop some unused icons.
+	  Replace tray icon with scalable version.
+	  (Lars Windolf)
+
+	* #893: Update of bookmarking sites
+	  (Mikel Olasagasti)
+
+	* #888: Changes required for Flathub
+	  (Mikel Olasagasti)
+
+	* #882: Implement support for Webkits Intelligent Tracking Protection
+	  (Leiaz)
+
+	* #875: Add <Ctrl>-0 hotkey to reset zoom
+	  (Leiaz)
+
+	* #874: Add debug printing of SAX parser errors
+	  (Leiaz)
+
+	* #846: Remove deprecated usage of gdk_screen_*
+	  (ghost)
+
+	* #844: Update metainfo path (appdata target directory)
+	  (Yuri Konotopov)
+
+	* #776: CSS color update on theme change without restart
+	  (sillyslux)
+
+	* #846, #864, #735: Fix main menu/toolbar not being translated
+	  (reported by nesfla, Qik000, SingleMalt2104)
+
+	* #854: Adding new search folder options to match
+	  subscription source ULR and parent folder name.
+	  (suggested by muhlinux)
+
+	* #851: Add accessibility check to code tests
+	  (Lars Windolf)
+
+	* #765: Embed YouTube videos from MediaRSS feeds
+	  (Mikel Olasagasti)
+
+ 	* #749: Add Readability.js library (Apache 2.0 licensed)
+	  and auto-apply Readability.js to all headlines
+	  (Lars Windolf)
+
+	* Drop unused glade/google_source.ui
+	  (Lars Windolf)
+
+	* #747: Font improvements
+	  (Azhar Mithani)
+
+	* #250 Update some dialog labels
+	  (GreenLunar)
+
+	* #837: Removing GTimeVal references
+	  (Tom Perez)
+
+	* #827: Respect global update refresh interval for TheOldReader
+	  (Matthew Horan)
+
+	* #826: Fix save/restore position issues with tray icon
+	  (Matthew Horan)
+
+	* #822: Improve performance of item list loading
+	  (Rich Coe)
+
+	* #815: Add support for subscribing to HTML5 websites
+	  without RSS/Atom feeds by extracting article
+	  titles,links and descriptions
+	  (Lars Windolf)
+
+	* #816: Increase size of stored favicons to 128x128px
+	  to improve icon quality in 3-pane wide view. Also add
+	  favicon URL discovery tests.
+
+	* #800: Expose remove-item action for plugins
+	  (mozbugbox)
+
+	* #752: Trayicon plugin has now a configuration option
+	  to change the behaviour when closing Liferea.
+	  (BurnhamG)
+
+	* #764: Add MediaRSS support (e.g. Youtube feeds) to display
+	  descriptions and thumbnails
+	  (Mikel Olasagasti)
+
+	* #773: Add WebKit Inspector menu option to HTML view when
+	  run with --debug-html (by sillyslux)
+
+	* #714: Replaces deprecated gtk_menu_popup
+	  (Leiaz)
+
+	* #705: New hotkey Ctrl-O to open enclosures
+	  (Leiaz)
+
+	* #680: Add xdg-email command to item list popup menu
+	  (poetsmeniet)
+
+	* #699: Refactoring of duplicate check handlingg
+	  (dymoksc)
+
+
+	Deprecations:
+
+	* Drop blogChannel namespace support
+	  (Lars Windolf)
+
+	* Support multi-feed discovery
+	  (Lars Windolf)
+
+	* Default to https:// instead of http:// when user doesn't
+	  provide protocol on subscribing feed
+	  (Lars Windolf)
+
+	* Drop CDF channel legacy support
+	  (Lars Windolf)
+
+	* Drop Atom 0.2/0.3 (aka Pie) legacy support
+	  (Lars Windolf)
+
+	* Drop support of combined view mode, this is necessary
+	  to add rich content support which relies on DOM
+	  transformation and Readability.js
+	  (Lars Windolf)
+
+	* Drop ns_photo support, as it is rarely used and
+	  allows us to get rid of XSLT extra handling
+	  (Lars Windolf)
+
+
+	Bugfixes:
+
+	* Fixes #1182: Periodic crash when navigating items (TheOldReader)
+	  (reported by Matthew Horan)
+
+	* Fixes #1176: Custom liferea.css no longer working
+	  (Matthew Horan)
+
+	* Fixes #1174: Missing date for some feeds
+	  (reported by jfbauer432)
+
+	* Fixes #1170: broken notification icon in libnotify plugin
+	  (Tasos Sahanidis)
 	
-	* #947: Rework of Reader mode feature toggling: toggle is now a context
-	  menu toggle of the HTML view context menu.
+	* Fixes #1162: a string impossible to translation
+	  (Paweł Marciniak)
+
+	* Fixes #1124: Formation vanishes after a few seconds
+	  (reported by Michael F. Schönitzer)
+
+	* Fixes #1121: Wait for network to be fully available before updating
+	  (reported by Jeff Fortin)
+
+	* Fixes #1155: Toolbar/menu actions disabling wrong for search
+	  folders/folders
+	  (Lars Windolf)
+
+	* Fixes #1154: Search folder property "Hide read items" has wrong
+	  initial state when opening dialog
+	  (Lars Windolf)
+
+	* Fixes #1100: Dates are overwritten on every update for feeds
+	  that do not provide date information.
+	  (Lars Windolf)
+
+	* Fixes #923: Reading folders with unread filtering active often
+	  has remnant read items
+	  (Lars Windolf)
+
+	* Fixes #723: LiveJournal feeds parsing can make the headline link
+	  a link to an XML document. Liferea now checks for the line MIME type.
+	  (Lars Windolf)
+
+	* Fixes #720: Mark all as read doesn't clear Unread folder if one
+	  entry is selected
+	  (Lars Windolf)
+
+	* Fixes #501: Fixes segfault when deleting a search folder that 
+	  is rebuilding
+	  (Lars Windolf)
+
+	* Fixes #1132: Improved timeout error handling in feed commands
+	  (Alexander Erwin Ittner)
+
+	* Fixes #1129: Accessibility errors in .ui files
+	  (reported by Paul Gevers)
+
+	* Fixes #1126: Some images broken in reader mode
+	  (reported by Saijin-Naib)
+
+	* Fixes #901, #1123: resize view panes to sensible positions
+	  when they were at min or max position on last shutdown. Makes
+	  left pane 30% window width and item list pane 50% height/width
+	  when pane position is 0 or 95% of height/width. (Lars Windolf)
+
+	* Fixes #992: HTML with self-closing tags not rendering properly.
+	  (Rich Coe)
+
+	* Fixes #644, #901, #909: restoring window size/position with header
+	  bar plugin active. (Lars Windolf)
+
+	* Fixes #1033: Subscribing defaulted to HTML5 feeds even when real
+	  feeds do exist. (reported by Hanno Braun)
+
+	* Fixes #1111: wrong base URI in reader mode
+	  (Lars Windolf)
+	
+	* Fixes #1112: Image duplication caused by feeds providing an image
+	  link which is also in the item description as additional metadata.
+	  (Lars Windolf)
+
+	* Fixes #1094: Fix Next Unread Item crash when no feed selected
+	  (Matthew Horan)
+
+	* Fixes #1092: --debug-html seems broken
+	  (Matthew Horan)
+
+	* Fixes #1073: Memory leak in stylesheet reloading
+	  (Matthew Horan)
+	
+	* Fixes #1069: Don't update HTML view when browsing internally
+	  (Matthew Horan)
+	
+	* Fixes #1064: Fix strsep implicit declaration warning
+	  (Paweł Marciniak)
+	
+	* Fixes #1058: Italian manpage installation
+	  (Paweł Marciniak)
+
+	* Fixes #1053: Use liferea_shell_show_window() when activating
+	  This shold fix an issue where position is not restored on XOrg when
+	  Liferea is trigger from Cinnamon launcher (instead of tray)
+	  (Matthew Horan)
+	
+	* Fixes #1066: Browse to requested URI on JS window creation (this
+	  prevents loading empty tabs on weird JS links some sites/feeds have)
+	  (Matthew Horan)
 
 	* Fixes #1013: Certificate problems with some URLs
 	  (Paweł Marciniak)
@@ -300,59 +433,6 @@
 	  - missing LGPL license file COPYING.LIB -> added
 	  (reported by Paul Gevers)
 
-	* #1040: Updated all documentation for WCAG and HTML5 semantics
-	  improves accessibility for screen readers
-	  (Lorenzo Ancora)
-
-	* #1049: Update and extend man page
-	  (Lorenzo Ancora)
-
-	* #477: Updated documentation for enclosure download
-	  (Lars Windolf)
-
-	* Updated documentation for preference dialog
-	  (Lars Windolf)
-	  
-	* Added Italian documentation translation
-	  (Lorenzo Ancora)
-
-	* Updated Brazilian Portuguese translation
-	  (Fúlvio Alves)
-	  
-	* Updated Czech translation
-	  (RadimNo)
-	  
-	* Updated Hungarian translation
-	  (Balázs Úr)
-
-	* Updated Polish translation
-	  (Paweł Marciniak)
-	  
-	* Updated Simplified Chinese translation
-	  (Sefler Zhou)
-
-
-2021-05-07   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.6
-
-
-	* Change reader mode toggle from item view icon to toggle entry in
-	  item view context menu.
-	  (Lars Windolf)
-
-	* #343: UX redesign of the update message in the status bar. Now shows a
-	  update counter of the feeds being in update.
-	  (Lars Windolf)
-
-	* #964: Added pane position fix plugin providing a workaround for pane position
-	  issues when using the headerbar
-	  (Paweł Marciniak)
-
-	* #983: Use GtkFileChooserNative to allow selecting local files when
-	  run in sandbox.
-	  (Leiaz)
-
 	* Fixes #780: Improve date formatting when in locale en_GB
 	  (Paweł Marciniak)
 
@@ -369,46 +449,6 @@
 	* Fixes #973: Broken CSS in Webkit2Gtk >= 2.32
 	  (Leiaz)
 
-	* Updated Albanian translation
-	  (Besnik Bleta)
-
-	* Updated French translation
-	  (guilieb)
-
-	* Updated Italian translation
-	  (Janvitus)
-
-	* Updated German translation
-	  (Lars Windolf)
-
-
-2021-01-10   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.5
-
-	* #907: Add new search folder property that allows hiding read items
-	  (Lars Windolf, suggested by Jeff Fortin)
-
-	* Now always shows the unread count of a search folder (instead of the
-	  item count) in the feed list
-	  (Lars Windolf)
-
-	* Now search folders are automatically rebuild when rules are changed
-	  (Lars Windolf)
-
-	* Adds a new simple focus plugin that adds transparency on the feed list
-	  when it is not focussed.
-	  (Paweł Marciniak)
-
-	* Add F10 hotkey to headerbar plugin to allow triggering the hamburger menu
-	  (Paweł Marciniak)
-
-	* Update Flatpak AppData with release dates
-	  (Mikel Olasagasti)
-
-	* Make several plugins support gettext
-	  (Paweł Marciniak)
-
 	* Fixes #192: wrong button order of media player in RTL locales
 	  (patch by GreenLunar)
 
@@ -418,46 +458,6 @@
 	  (Lars Windolf)
 
 	* Fixes #809: Usability of feed fetching errors.
-	  (Lars Windolf)
-
-	* Updated Polish translation
-	  (Paweł Marciniak)
-
-	* Updated German translation
-	  (Lars Windolf)
-
-
-2020-12-24   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.4
-
-	* Prevent endless loop on favicon discovery
-	  (Lars Windolf)
-
-	* #903: Prevent endless loop in feed autodiscovery
-	  (reported by Leiaz)
-
-	* #912: Allow mutiple feed in same libnotify notification
-	  (Tasos Sahanidis)
-
-	* Further favicon discovery improvements: now detects all types of
-	  Apple Touch Icons, MS Tile Images and Safari Mask Icons
-	  Fixes #440
-	  (Lars Windolf)
-
-	* Add reader mode toggle in the item view
-	  (Lars Windolf)
-
-	* #876 Add reader mode preference
-	  (Lars Windolf)
-
-	* Implement support for subscribing to LD+Json metadata
-	  listings e.g. concert or theater event listings
-	  (Lars Windolf)
-
-	* Provide the default icon for feeds with no favicon as SVG
-	  for nicer rendering in wide view. Drop some unused icons.
-	  Replace tray icon with scalable version.
 	  (Lars Windolf)
 
 	* Fixes CRITICAL on trayicon plugin init
@@ -474,38 +474,6 @@
 
 	* Fixes #899: Truncated articles (on 'Extrat full content')
 	  (reported by Leiaz)
-
-	* #902: Updated Polish translation
-	  (Paweł Marciniak)
-
-
-2020-10-09   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.3
-
-	* #893: Update of bookmarking sites
-	  (Mikel Olasagasti)
-
-	* #888: Changes required for Flathub
-	  (Mikel Olasagasti)
-
-	* #882: Implement support for Webkits Intelligent Tracking Protection
-	  (Leiaz)
-
-	* #875: Add <Ctrl>-0 hotkey to reset zoom
-	  (Leiaz)
-
-	* #874: Add debug printing of SAX parser errors
-	  (Leiaz)
-
-	* #846: Remove deprecated usage of gdk_screen_*
-	  (ghost)
-
-	* #844: Update metainfo path (appdata target directory)
-	  (Yuri Konotopov)
-
-	* #776: CSS color update on theme change without restart
-	  (sillyslux)
 
 	* Fixes #883: Feed with comments: last comment replaces all content
 	  (Leiaz)
@@ -525,125 +493,20 @@
 	* Fixes XLST exception on mediarss feeds with description
 	  (Lars Windolf)
 
-	* Drop blogChannel namespace support
+	* Fixes #851: accessibility annotations for several combo boxes.
 	  (Lars Windolf)
 
-	* Support multi-feed discovery
-	  (Lars Windolf)
-
-	* Default to https:// instead of http:// when user doesn't
-	  provide protocol on subscribing feed
-	  (Lars Windolf)
-
-	* Drop CDF channel legacy support
-	  (Lars Windolf)
-
-	* Drop Atom 0.2/0.3 (aka Pie) legacy support
-	  (Lars Windolf)
-
-	* #893: Added Persion default feed list
-	  (Kevin Scruff)
-
-	* #890: Update of Indionesian translation
-	  (Samsul Ma'arif)
-
-	* #890: Update of French translation
-	  (Yannick A.)
-
-
-2020-08-29   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.2
-
-	* #846, #864, #735: Fix main menu/toolbar not being translated
-	  (reported by nesfla, Qik000, SingleMalt2104)
-
-	* #854: Adding new search folder options to match
-	  subscription source ULR and parent folder name.
-	  (suggested by muhlinux)
-
-	* #851: Add accessibility check to code tests
-	  (Lars Windolf)
-
-	* #851: Fix accessibility annotations for several combo boxes.
-	  (Lars Windolf)
-
-	* #850: Fix embedded youtube video bug.
+	* Fixes #850: embedded youtube video bug.
 	  (reported by sblondon)
 
-	* #765: Embed YouTube videos from MediaRSS feeds
-	  (Mikel Olasagasti)
-
- 	* #749: Add Readability.js library (Apache 2.0 licensed)
-	  and auto-apply Readability.js to all headlines
-	  (Lars Windolf)
-
-	* Drop unused glade/google_source.ui
-	  (Lars Windolf)
-
-	* Drop support of combined view mode, this is necessary
-	  to add rich content support which relies on DOM
-	  transformation and Readability.js
-	  (Lars Windolf)
-
-	* Drop ns_photo support, as it is rarely used and
-	  allows us to get rid of XSLT extra handling
-	  (Lars Windolf)
-
-	* #747: Font improvements
-	  (Azhar Mithani)
-
-	* #250 Update some dialog labels
-	  (GreenLunar)
-
-	* #803: Fix legacy links to mailing list and IRC in
-	  documentation.
+	* Fixes #803: legacy links to mailing list and IRC in documentation.
 	  (reported by Bill Dietrich)
-
-	* Updated German translation
-	  (Lars Windolf)
-
-	* #861: Updated Spanish translation
-	  (vosian)
-
-
-2020-06-11   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.1
 
 	* Fixes #840: OPML source subfolders not working
 	  (fixed by Tomáš Janoušek)
 
-	* #837: Removing GTimeVal references
-	  (Tom Perez)
-
-	* #827: Respect global update refresh interval for TheOldReader
-	  (Matthew Horan)
-
-	* #826: Fix save/restore position issues with tray icon
-	  (Matthew Horan)
-
-	* #822: Improve performance of item list loading
-	  (Rich Coe)
-
 	* Fixes #821: Skip current item when finding next unread item
 	  (Tom Perez)
-
-	* #815: Add support for subscribing to HTML5 websites
-	  without RSS/Atom feeds by extracting article
-	  titles,links and descriptions
-	  (Lars Windolf)
-
-	* #816: Increase size of stored favicons to 128x128px
-	  to improve icon quality in 3-pane wide view. Also add
-	  favicon URL discovery tests.
-
-	* Fixes #821: Skip current selected unread item on
-	  'next unread item'
-	  (Tom Perez)
-
-	* #800: Expose remove-item action for plugins
-	  (mozbugbox)
 
 	* Fixes #799: plugins/headerbar.py translations not active
 	  (reported by Paul Gevers)
@@ -651,46 +514,87 @@
 	* Fixes #783: Update IS_STATE when update item in itemlistview
 	  (mozbugbox)
 
-	* #752: Trayicon plugin has now a configuration option
-	  to change the behaviour when closing Liferea.
-	  (BurnhamG)
-
 	* Fixes #693: Add trayicon plugin option to disable minimizing to tray
 	  (BurnhamG)
 
-
-2020-03-04   Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.13.0
-
-	* #764: Add MediaRSS support (e.g. Youtube feeds) to display
-	  descriptions and thumbnails
-	  (Mikel Olasagasti)
-	* #773: Add WebKit Inspector menu option to HTML view when
-	  run with --debug-html (by sillyslux)
-	* #714: Replaces deprecated gtk_menu_popup
-	  (Leiaz)
-	* #705: New hotkey Ctrl-O to open enclosures
-	  (Leiaz)
-	* #680: Add xdg-email command to item list popup menu
-	  (poetsmeniet)
-	* Drop unused glade/google_source.ui
-	* #699: Refactoring of duplicate check handlingg
-	  (dymoksc)
-	* #746: Fix accessibility fatals reported by gla11y
+	* Fixes #746: accessibility fatals reported by gla11y
 	  (reported by Paul Gevers)
+
 	* Fixes #730: "Update all subscriptions at startup" overrides
 	  "Don't update this feed automatically"
 	  (Dymtro Kyrychuk, reported by Paul Wise)
+
 	* Fixes #639: Right clicking on article no longer selects it
 	  (Leiaz, reported by Bruce Guenter)
 
-	* #737: Update of Italian translation
-	  (madmurphy)
-	* #745: URL fix for French example feeds
+	* Fixes #745: URL fix for French example feeds
 	  (sblondon)
 
-	* Update inline docs on headline view modes
+
+	Translations:
+
+	* Updated Albanian trasnlation (Besnik Bleta)
+	* Updated Brazilian-Portugese translation (Alexandre Erwin Ittner, Fúlvio Alves)
+	* Updated Czech translation (RadimNo)
+	* Updated Chinese translation (David Yang)
+	* Updated Simplified Chinese translation (Sefler Zhou)
+	* Updated Dutch translation (Gert-dev)
+	* Updated French translation (Guillaume Bernard, sblondon, guilieb, Yannik A.)
+	* Updated German translation (Lars Windolf)
+	* Updated Hungarian translation (Balázs Úr)
+	* Updated Indionesian translation (Samsul Ma'arif)
+	* Updated Italian translation (Janvitus, madmurphy)
+	* Updated Polish translation (Paweł Marciniak)
+	* Updated Russian trasnlation (mbrav)
+	* Updated Spanish translation (Christian Martinez, vosian)
+
+	* #893: Added Persion default feed list (Kevin Scruff)
+	* #1134, #1135: Updated Spanish example feeds (Joel Barrios)
+
+
+	Documentation:
+
+	* #1043: Added Italian documentation translation (Lorenzo Ancora)
+	* #1040: Updated all documentation for WCAG and HTML5 semantics
+	  improves accessibility for screen readers
+	  (Lorenzo Ancora)
+	* #1049: Update and extend man page
+	  (Lorenzo Ancora)
+
+
+2020-08-28  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12.9
+
+	* #850: Fix embedded youtube video bug.
+          (reported by sblondon)
+
+	* Fixes #846, #864: Translations not applied to application
+	  menu bar and tool bar.
+	  (Skif-off)
+
+
+2020-06-11  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12.8
+
+	* Fixes #840: OPML source subfolders not working
+	  (fixed by Tomáš Janoušek)
+
+	* Update of French translation
+
+
+2019-08-03   Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.12.7
+
+	* #734: Fixes crash when selecting empty nodes
+	  (Leiaz)
+	* Fixes #727: Out-dated documentation on Firefox live bookmarks
+	  (reported by blueray453)
+	* Fixes headline large images/videos or images with margins
+	  causing horizontal scrolling in headline view
+	  (Lars Windolf)
 
 
 2019-12-04   Lars Windolf <lars.windolf@gmx.de>
