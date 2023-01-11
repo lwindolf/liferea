@@ -201,8 +201,6 @@
            Now Liferea will never allow the panes to be smaller than 5% in height or width
            regarding to there orientation. If a pane is smaller than 5% height/width it will be
            set to 30% width or 50% height on startup.
-
-           The intention here is that panes are never invisible after startup.
         </li>
         <li>
           Wait for network to be fully available before updating: sometimes when real internet
