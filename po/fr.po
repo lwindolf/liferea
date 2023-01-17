@@ -13,15 +13,15 @@ msgstr ""
 "Project-Id-Version: Liferea 1.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-26 01:24+0200\n"
-"PO-Revision-Date: 2022-09-16 10:26+0200\n"
-"Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
+"PO-Revision-Date: 2023-01-13 12:16+0100\n"
+"Last-Translator: Irénée Thirion <irenee.thirion@e.email>\n"
 "Language-Team: français <>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
 #: ../glade/mainwindow.ui.h:1
@@ -439,18 +439,17 @@ msgid "Login failed!"
 msgstr "La connexion a échoué !"
 
 #: ../src/fl_sources/google_source.c:404
-#, fuzzy
 msgid "Google Reader API"
-msgstr "Google Reader"
+msgstr "API Google Reader"
 
 #: ../src/fl_sources/google_source_feed.c:159
-#, fuzzy
 msgid "Could not parse JSON returned by Google Reader API!"
-msgstr "Impossible d’analyser le JSON envoyé par l’API Reedah !"
+msgstr ""
+"Impossible d’analyser le fichier JSON retourné par l’API Google Reader !"
 
 #: ../src/fl_sources/node_source.c:117
 msgid "Miniflux"
-msgstr ""
+msgstr "Miniflux"
 
 #: ../src/fl_sources/node_source.c:332
 msgid "No feed list source types found!"
@@ -717,30 +716,28 @@ msgstr ""
 
 #. http 5xx server errors
 #: ../src/net.c:493
-#, fuzzy
 msgid "Internal Server Error"
-msgstr "Erreur du serveur"
+msgstr "Erreur interne du serveur"
 
 #: ../src/net.c:494
 msgid "Not Implemented"
-msgstr ""
+msgstr "Non implémenté"
 
 #: ../src/net.c:495
 msgid "Bad Gateway"
-msgstr ""
+msgstr "Mauvaise passerelle"
 
 #: ../src/net.c:496
-#, fuzzy
 msgid "Service Unavailable"
-msgstr "« %s » n’est pas disponible"
+msgstr "Service indisponible"
 
 #: ../src/net.c:497
 msgid "Gateway Timeout"
-msgstr ""
+msgstr "Délai d’attente de la passerelle écoulé"
 
 #: ../src/net.c:498
 msgid "HTTP Version Not Supported"
-msgstr ""
+msgstr "Version HTTP non prise en charge"
 
 #: ../src/net.c:503
 msgid "There was an internal error in the update process"
@@ -819,9 +816,8 @@ msgid "Item body"
 msgstr "Le corps de l’élément"
 
 #: ../src/rule.c:277
-#, fuzzy
 msgid "Item author"
-msgstr "Le corps de l’élément"
+msgstr "L’auteur de l’élément"
 
 #: ../src/rule.c:278
 msgid "Read status"
@@ -1091,14 +1087,14 @@ msgid "No item has been selected"
 msgstr "Aucun élément n’a été sélectionné"
 
 #: ../src/ui/liferea_browser.c:482
-#, fuzzy
 msgid "Content download failed! Try disabling reader mode."
-msgstr "Impossible de télécharger le contenu."
+msgstr ""
+"Impossible de télécharger le contenu. Essayez de désactiver le mode lecture."
 
 #: ../src/ui/liferea_browser.c:495
-#, fuzzy
 msgid "Content extraction failed! Try disabling reader mode."
-msgstr "Impossible d’extraire le contenu."
+msgstr ""
+"Impossible d’extraire le contenu. Essayez de désactiver le mode lecture."
 
 #: ../src/ui/liferea_shell.c:409
 #, c-format
@@ -1325,9 +1321,8 @@ msgid "Program"
 msgstr "Programme"
 
 #: ../src/ui/rule_editor.c:257
-#, fuzzy
 msgid "Remove"
-msgstr "_Supprimer"
+msgstr "Supprimer"
 
 #: ../src/ui/search_dialog.c:106
 msgid "Saved Search"
@@ -1504,15 +1499,16 @@ msgstr ""
 "de maintenant."
 
 #: ../glade/google_source.ui.h:1
-#, fuzzy
 msgid "Add Google Reader API Account"
-msgstr "Ajouter un compte Google Reader"
+msgstr "Ajouter un compte API Google Reader"
 
 #: ../glade/google_source.ui.h:2
 msgid ""
 "Please enter the details of the new Google Reader API compatible "
 "subscription."
 msgstr ""
+"Veuillez saisir les détails du nouvel abonnement compatible avec l’API "
+"Google Reader."
 
 #: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
 #: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
@@ -1525,14 +1521,12 @@ msgid "_Username (Email)"
 msgstr "Nom d’_utilisateur (e-mail)"
 
 #: ../glade/google_source.ui.h:5
-#, fuzzy
 msgid "_Server"
-msgstr "URL du _serveur"
+msgstr "_Serveur"
 
 #: ../glade/google_source.ui.h:6
-#, fuzzy
 msgid "_Name"
-msgstr "_Nom du flux"
+msgstr "_Nom"
 
 #: ../glade/liferea_menu.ui.h:1
 msgid "_Subscriptions"
@@ -1886,9 +1880,8 @@ msgstr ""
 "recherche."
 
 #: ../glade/prefs.ui.h:22
-#, fuzzy
 msgid "Ask for confirmation when marking all items as read."
-msgstr "Demander confirmation pour marquer tous les éléments comme lus"
+msgstr "Demander confirmation pour marquer tous les éléments comme lus."
 
 #: ../glade/prefs.ui.h:23
 msgid "Web Integration"
