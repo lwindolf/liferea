@@ -237,9 +237,9 @@ itemlist_check_for_deferred_action (void)
 	if (itemlist->priv->deferredRemove) {
 		itemlist->priv->deferredRemove = FALSE;
 		itemlist_remove_item (item);
+	} else {
+		item_unload (item);
 	}
-
-	item_unload (item);
 }
 
 static void
@@ -499,16 +499,8 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
-
-		if (itemlist->priv->selectedId != item->id) {
-			/* don't call itemlist_remove_item() here, because it's to slow */
-			itemview_remove_item (item);
-			db_item_remove (item->id);
-		} else {
-			/* go the normal and selection-safe way to avoid disturbing the user */
-			itemlist_request_remove_item (item);
-		}
-		item_unload (item);
+		itemlist_request_remove_item (item);
+		db_item_remove (item->id);
 		iter = g_list_next (iter);
 	}
 
@@ -590,7 +582,7 @@ itemlist_selection_changed (itemPtr item)
 	}
 
 	if (item)
-		item_unload (item);
+		g_object_unref (item);
 
 	debug_end_measurement (DEBUG_GUI, "itemlist selection");
 	debug_exit ("itemlist_selection_changed");
