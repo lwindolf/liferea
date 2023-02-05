@@ -51,7 +51,7 @@ struct _FeedListView {
 
 	GHashTable		*flIterHash;				/**< hash table used for fast node id <-> tree iter lookup */
 
-	gboolean		feedlist_reduced_unread;	/**< TRUE when feed list is in reduced mode (no folders, only unread feeds) */
+	enum feedlistViewMode	view_mode;
 };
 
 enum {
@@ -94,6 +94,42 @@ static void
 feed_list_view_init (FeedListView *f)
 {
 }
+
+
+enum feedlistViewMode
+feed_list_view_mode_string_to_value (const gchar *str_mode)
+{
+	/* TODO: Load these values from Gsettings Schema. */
+	if (!g_strcmp0 ("normal", str_mode)) {
+		return FEEDLIST_VIEW_MODE_NORMAL;
+	}
+	if (!g_strcmp0 ("reduced", str_mode)) {
+		return FEEDLIST_VIEW_MODE_REDUCED;
+	}
+	if (!g_strcmp0 ("flat", str_mode)) {
+		return FEEDLIST_VIEW_MODE_FLAT;
+	}
+
+	/* Unknown or invalid mode, assume normal. */
+	return FEEDLIST_VIEW_MODE_NORMAL;
+}
+
+const gchar *
+feed_list_view_mode_value_to_string (enum feedlistViewMode mode)
+{
+	/* TODO: Load these values from Gsettings Schema. */
+	switch (mode) {
+	case FEEDLIST_VIEW_MODE_NORMAL:
+		return "normal";
+	case FEEDLIST_VIEW_MODE_REDUCED:
+		return "reduced";
+	case FEEDLIST_VIEW_MODE_FLAT:
+		return "flat";
+	}
+	/* Unknown or invalid mode, assume normal. */
+	return "normal";
+}
+
 
 static void
 feed_list_view_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
@@ -185,18 +221,24 @@ feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, 
 	gint			count;
 	nodePtr			node;
 
-	if (!flv->feedlist_reduced_unread)
+	if (flv->view_mode == FEEDLIST_VIEW_MODE_NORMAL) {
 		return TRUE;
+	}
+
+	/* From here, assume mode is REDUCED or FLAT */
 
 	gtk_tree_model_get (model, iter, FS_PTR, &node, FS_UNREAD, &count, -1);
-	if (!node)
+	if (!node) {
 		return FALSE;
+	}
 
-	if (IS_NEWSBIN(node) && node->data && ((feedPtr)node->data)->alwaysShowInReduced)
+	if (IS_NEWSBIN(node) && node->data && ((feedPtr)node->data)->alwaysShowInReduced) {
 		return TRUE;
+	}
 
-	if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
+	if (IS_FOLDER (node) || IS_NODE_SOURCE (node)) {
 		return FALSE;
+	}
 
 	if (IS_VFOLDER (node))
 		return TRUE;
@@ -207,10 +249,11 @@ feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, 
 	if (feedlist_get_selected () == node)
 		return TRUE;
 
-	if (count > 0)
-		return TRUE;
+	if (flv->view_mode == FEEDLIST_VIEW_MODE_REDUCED && count == 0) {
+		return FALSE;
+	}
 
-	return FALSE;
+	return TRUE;
 }
 
 static void
@@ -232,9 +275,9 @@ feed_list_view_restore_folder_expansion (nodePtr node)
 }
 
 static void
-feed_list_view_reduce_mode_changed (void)
+feed_list_view_mode_changed (void)
 {
-	if (flv->feedlist_reduced_unread) {
+	if (flv->view_mode != FEEDLIST_VIEW_MODE_NORMAL) {
 		gtk_tree_view_set_reorderable (flv->treeview, FALSE);
 		gtk_tree_view_set_model (flv->treeview, GTK_TREE_MODEL (flv->filter));
 		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (flv->filter));
@@ -248,11 +291,11 @@ feed_list_view_reduce_mode_changed (void)
 }
 
 static void
-feed_list_view_set_reduce_mode (gboolean newReduceMode)
+feed_list_view_set_view_mode (enum feedlistViewMode mode)
 {
-	flv->feedlist_reduced_unread = newReduceMode;
-	conf_set_bool_value (REDUCED_FEEDLIST, flv->feedlist_reduced_unread);
-	feed_list_view_reduce_mode_changed ();
+	flv->view_mode = mode;
+	conf_set_enum_value (FEEDLIST_VIEW_MODE, flv->view_mode);
+	feed_list_view_mode_changed ();
 	feed_list_view_reload_feedlist ();
 }
 
@@ -285,7 +328,7 @@ feed_list_view_sort_folder (nodePtr folder)
 	feed_list_view_reload_feedlist ();
 	/* Reduce mode didn't actually change but we need to set the
 	 * correct model according to the setting in the same way : */
-	feed_list_view_reduce_mode_changed ();
+	feed_list_view_mode_changed ();
 	feedlist_foreach (feed_list_view_restore_folder_expansion);
 	feedlist_schedule_save ();
 }
@@ -359,9 +402,9 @@ feed_list_view_create (GtkTreeView *treeview)
 	                  G_CALLBACK (feed_list_view_selection_changed_cb),
                 	  flv);
 
-	conf_get_bool_value (REDUCED_FEEDLIST, &flv->feedlist_reduced_unread);
-	if (flv->feedlist_reduced_unread)
-		feed_list_view_reduce_mode_changed ();	/* before menu setup for reduced mode check box to be correct */
+	conf_get_enum_value (FEEDLIST_VIEW_MODE, (gint *) &flv->view_mode);
+	if (flv->view_mode != FEEDLIST_VIEW_MODE_NORMAL)
+		feed_list_view_mode_changed ();	/* before menu setup for reduced mode check box to be correct */
 
 	ui_dnd_setup_feedlist (flv->feedstore);
 
@@ -378,7 +421,7 @@ feed_list_view_select (nodePtr node)
 		GtkTreePath *path = NULL;
 
 		/* in filtered mode we need to convert the iterator */
-		if (flv->feedlist_reduced_unread) {
+		if (flv->view_mode != FEEDLIST_VIEW_MODE_NORMAL) {
 			GtkTreeIter iter;
 			gboolean valid = gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (flv->filter), &iter, feed_list_view_to_iter (node->id));
 			if (valid)
@@ -519,13 +562,20 @@ on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer 
 }
 
 void
-on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+on_feedlist_view_mode_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	GVariant *state = g_action_get_state (G_ACTION (action));
-	gboolean val = !g_variant_get_boolean (state);
-	feed_list_view_set_reduce_mode (val);
-	g_simple_action_set_state (action, g_variant_new_boolean (val));
-	g_object_unref (state);
+	const gchar *str_new_mode = g_variant_get_string (parameter, NULL);
+	enum feedlistViewMode new_mode = feed_list_view_mode_string_to_value (str_new_mode);
+
+	GVariant *tmp = g_action_get_state (G_ACTION(action));
+	const gchar *str_cur_mode = g_variant_get_string (tmp, NULL);
+	enum feedlistViewMode cur_mode = feed_list_view_mode_string_to_value (str_cur_mode);
+	g_variant_unref (tmp);
+
+	if (new_mode != cur_mode) {
+		feed_list_view_set_view_mode (new_mode);
+		g_simple_action_set_state (action, g_variant_new_string (str_new_mode));
+	}
 }
 
 // Handling feed list nodes
@@ -569,7 +619,7 @@ feed_list_view_is_expanded (const gchar *nodeId)
 	GtkTreeIter	*iter;
 	gboolean 	expanded = FALSE;
 
-	if (flv->feedlist_reduced_unread)
+	if (flv->view_mode != FEEDLIST_VIEW_MODE_NORMAL)
 		return FALSE;
 
 	iter = feed_list_view_to_iter (nodeId);
@@ -588,7 +638,7 @@ feed_list_view_set_expansion (nodePtr folder, gboolean expanded)
 	GtkTreeIter		*iter;
 	GtkTreePath		*path;
 
-	if (flv->feedlist_reduced_unread)
+	if (flv->view_mode != FEEDLIST_VIEW_MODE_NORMAL)
 		return;
 
 	iter = feed_list_view_to_iter (folder->id);
@@ -691,14 +741,14 @@ feed_list_view_add_node (nodePtr node)
 	iter = g_new0 (GtkTreeIter, 1);
 
 	/* if reduced feedlist, show flat treeview */
-	if (flv->feedlist_reduced_unread)
+	if (flv->view_mode != FEEDLIST_VIEW_MODE_NORMAL)
 		parentIter = NULL;
 	else if (node->parent != feedlist_get_root ())
 		parentIter = feed_list_view_to_iter (node->parent->id);
 
 	position = g_slist_index (node->parent->children, node);
 
-	if (flv->feedlist_reduced_unread || position < 0)
+	if ((flv->view_mode != FEEDLIST_VIEW_MODE_NORMAL) || position < 0)
 		gtk_tree_store_append (flv->feedstore, iter, parentIter);
 	else
 		gtk_tree_store_insert (flv->feedstore, iter, parentIter, position);

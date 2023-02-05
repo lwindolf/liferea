@@ -56,7 +56,7 @@
 /* folder handling settings */
 #define FOLDER_DISPLAY_MODE		"folder-display-mode"
 #define FOLDER_DISPLAY_HIDE_READ	"folder-display-hide-read"
-#define REDUCED_FEEDLIST		"reduced-feedlist"
+#define FEEDLIST_VIEW_MODE		"feedlist-view-mode"
 
 /* GUI settings and persistency values */
 #define CONFIRM_MARK_ALL_READ 		"confirm-mark-all-read"
