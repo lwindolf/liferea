@@ -93,6 +93,8 @@ void on_new_newsbin_activate (GSimpleAction *menuitem, GVariant *parameter, gpoi
 void on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
 
 void on_feedlist_view_mode_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void on_titlefilter_entry_changed (GtkEditable *self, gpointer user_data);
+
 
 /**
  * Determines the tree iter of a given node.

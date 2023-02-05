@@ -48,6 +48,8 @@ struct _FeedListView {
 	GtkTreeView		*treeview;
 	GtkTreeModel	*filter;
 	GtkTreeStore	*feedstore;
+	GtkSearchEntry	*titlefilter;
+	gchar		*casefolded_title_str;
 
 	GHashTable		*flIterHash;				/**< hash table used for fast node id <-> tree iter lookup */
 
@@ -68,6 +70,7 @@ G_DEFINE_TYPE (FeedListView, feed_list_view, G_TYPE_OBJECT);
 static void
 feed_list_view_finalize (GObject *object)
 {
+	g_free (((FeedListView*)object)->casefolded_title_str);
 }
 
 static void
@@ -232,6 +235,15 @@ feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, 
 		return FALSE;
 	}
 
+	if (flv->titlefilter && node->title && flv->casefolded_title_str) {
+		gchar *text = g_utf8_casefold (node->title, -1);
+		const gboolean found = strstr (text, flv->casefolded_title_str) ? TRUE : FALSE;
+		g_free (text);
+		if (!found) {
+			return FALSE;
+		}
+	}
+
 	if (IS_NEWSBIN(node) && node->data && ((feedPtr)node->data)->alwaysShowInReduced) {
 		return TRUE;
 	}
@@ -281,10 +293,12 @@ feed_list_view_mode_changed (void)
 		gtk_tree_view_set_reorderable (flv->treeview, FALSE);
 		gtk_tree_view_set_model (flv->treeview, GTK_TREE_MODEL (flv->filter));
 		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (flv->filter));
+		gtk_widget_show (GTK_WIDGET (flv->titlefilter));
 	} else {
 		gtk_tree_view_set_reorderable (flv->treeview, TRUE);
 		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (flv->filter));
 		gtk_tree_view_set_model (flv->treeview, GTK_TREE_MODEL (flv->feedstore));
+		gtk_widget_hide (GTK_WIDGET (flv->titlefilter));
 
 		feedlist_foreach (feed_list_view_restore_folder_expansion);
 	}
@@ -347,6 +361,8 @@ feed_list_view_create (GtkTreeView *treeview)
 	flv = FEED_LIST_VIEW (g_object_new (FEED_LIST_VIEW_TYPE, NULL));
 
 	flv->treeview = treeview;
+	flv->casefolded_title_str = NULL;
+	flv->titlefilter = GTK_SEARCH_ENTRY (liferea_shell_lookup ("titleFilter"));
 	flv->feedstore = gtk_tree_store_new (FS_LEN,
 	                                     G_TYPE_STRING,
    	                                     G_TYPE_ICON,
@@ -401,6 +417,7 @@ feed_list_view_create (GtkTreeView *treeview)
 	g_signal_connect (G_OBJECT (select), "changed",
 	                  G_CALLBACK (feed_list_view_selection_changed_cb),
                 	  flv);
+	g_signal_connect (GTK_SEARCH_ENTRY (flv->titlefilter), "search-changed", G_CALLBACK (on_titlefilter_entry_changed), flv);
 
 	conf_get_enum_value (FEEDLIST_VIEW_MODE, (gint *) &flv->view_mode);
 	if (flv->view_mode != FEEDLIST_VIEW_MODE_NORMAL)
@@ -577,6 +594,18 @@ on_feedlist_view_mode_activate (GSimpleAction *action, GVariant *parameter, gpoi
 		g_simple_action_set_state (action, g_variant_new_string (str_new_mode));
 	}
 }
+
+void
+on_titlefilter_entry_changed (GtkEditable *self, gpointer user_data)
+{
+	if (flv->view_mode == FEEDLIST_VIEW_MODE_REDUCED
+	|| flv->view_mode == FEEDLIST_VIEW_MODE_FLAT) {
+		g_free(flv->casefolded_title_str);
+		flv->casefolded_title_str = g_utf8_casefold (gtk_entry_get_text (GTK_ENTRY (flv->titlefilter)), -1);
+		gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (flv->filter));
+	}
+}
+
 
 // Handling feed list nodes
 
