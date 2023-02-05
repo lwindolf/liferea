@@ -215,6 +215,13 @@ conf_set_int_value (const gchar *key, gint value)
 	g_settings_set_int (settings, key, value);
 }
 
+void
+conf_set_enum_value (const gchar *key, gint value)
+{
+	g_assert (key != NULL);
+	g_settings_set_enum (settings, key, value);
+}
+
 gchar *
 conf_get_toolbar_style(void)
 {
@@ -294,6 +301,19 @@ conf_get_int_value_from_schema (GSettings *gsettings, const gchar *key, gint *va
 	*value = g_settings_get_int (gsettings,key);
 	return (NULL != value);
 }
+
+gboolean
+conf_get_enum_value_from_schema (GSettings *gsettings, const gchar *key, gint *value)
+{
+	g_assert (key != NULL);
+	g_assert (value != NULL);
+
+	if (gsettings == NULL)
+		gsettings = settings;
+	*value = g_settings_get_enum (gsettings,key);
+	return (NULL != value);
+}
+
 
 gboolean
 conf_get_default_font (gchar **value)

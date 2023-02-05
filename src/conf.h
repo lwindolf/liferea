@@ -95,6 +95,7 @@ void	conf_deinit (void);
 #define conf_get_str_value(key, value) conf_get_str_value_from_schema (NULL, key, value)
 #define conf_get_strv_value(key, value) conf_get_strv_value_from_schema (NULL, key, value)
 #define conf_get_int_value(key, value) conf_get_int_value_from_schema (NULL, key, value)
+#define conf_get_enum_value(key, value) conf_get_enum_value_from_schema (NULL, key, value)
 
 
 /**
@@ -154,6 +155,17 @@ gboolean conf_get_strv_value_from_schema (GSettings *gsettings,const gchar *key,
 gboolean conf_get_int_value_from_schema (GSettings *gsettings, const gchar *key, gint *value);
 
 /**
+ * Retrieves the value of the given enum configuration key.
+ *
+ * @param gsettings	gsettings schema to use
+ * @param key	the configuration key
+ * @param value the value, if the function returned FALSE it's always 0
+ *
+ * @returns TRUE if the configuration key was found
+ */
+gboolean conf_get_enum_value_from_schema (GSettings *gsettings, const gchar *key, gint *value);
+
+/**
  * Sets the value of the given boolean configuration key.
  *
  * @param key	the configuration key
@@ -186,6 +198,15 @@ void conf_set_strv_value (const gchar *key, const gchar **value);
  * @param value	the new integer value
  */
 void conf_set_int_value (const gchar *key, gint value);
+
+/**
+ * Sets the value of the given enum configuration key
+ *
+ * @param key	the configuration key
+ * @param value	the new enum (as integer) value
+ */
+void conf_set_enum_value (const gchar *key, gint value);
+
 
 /**
  * Returns the current toolbar configuration.
