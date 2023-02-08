@@ -1387,7 +1387,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	liferea_shell_update_toolbar ();
 	liferea_shell_update_history_actions ();
 	liferea_shell_setup_URL_receiver ();
-	liferea_shell_restore_state (overrideWindowState);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->feedlistViewWidget), TRUE);
 
@@ -1407,6 +1406,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
 
 	/* 11.) Restore latest layout and selection */
+	liferea_shell_restore_state (overrideWindowState);
 	conf_get_int_value (DEFAULT_VIEW_MODE, &mode);
 	itemview_set_layout (mode);
 
