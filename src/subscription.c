@@ -282,6 +282,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 			subscription->updateState,
 			subscription->updateOptions
 		);
+		update_request_allow_commands (request, TRUE);
 
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
