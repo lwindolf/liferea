@@ -263,7 +263,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 				NULL 	// Explicitely do not the feed's proxy/auth options to 3rd parties like Google (AMP)!
 			);
 
-			update_execute_request (NULL, request, feed_enrich_item_cb, item, FEED_REQ_NO_FEED);
+			update_execute_request (NULL, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), FEED_REQ_NO_FEED);
 
 			g_free (ampurl);
 		}
