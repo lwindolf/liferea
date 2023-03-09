@@ -50,8 +50,9 @@ src/Liferea-3.0.gir
 src/Liferea-3.0.typelib
 src/tests/favicon
 src/tests/html_auto
-src/tests/parse_html
 src/tests/parse_date
+src/tests/parse_html
+src/tests/parse_rss
 src/tests/parse_xml
 src/tests/social
 xslt/*.xml

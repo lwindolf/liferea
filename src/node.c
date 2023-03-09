@@ -43,6 +43,7 @@
 #include "date.h"
 #include "fl_sources/node_source.h"
 #include "ui/feed_list_view.h"
+#include "ui/icons.h"
 #include "ui/liferea_shell.h"
 
 static GHashTable *nodes = NULL;	/*<< node id -> node lookup table */
@@ -431,7 +432,7 @@ gpointer
 node_get_icon (nodePtr node)
 {
 	if (!node->icon)
-		return (gpointer) NODE_TYPE(node)->icon;
+		return (gpointer) icon_get (NODE_TYPE(node)->icon);
 
 	return node->icon;
 }

@@ -1,7 +1,7 @@
 /*
  * @file node_source.c  generic node source provider implementation
  *
- * Copyright (C) 2005-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -622,7 +622,7 @@ node_source_get_node_type (void)
 		/* derive the node source node type from the folder node type */
 		nodeType = (nodeTypePtr) g_new0 (struct nodeType, 1);
 		nodeType->id			= "source";
-		nodeType->icon			= icon_get (ICON_DEFAULT);
+		nodeType->icon			= ICON_DEFAULT;
 		nodeType->capabilities		= NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 						  NODE_CAPABILITY_SHOW_ITEM_FAVICONS |
 						  NODE_CAPABILITY_UPDATE_CHILDS |

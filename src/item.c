@@ -140,7 +140,9 @@ void
 item_set_source (LifereaItem *item, const gchar * source)
 {
 	g_free (item->source);
-	if (source)
+
+	/* We expect only relative URIs starting with '/' or absolute URIs starting with 'http://' or 'https://' */
+	if (source && ('/' == source[0] || 'h' == source[0]))
 		item->source = g_strstrip (g_strdup (source));
 	else
 		item->source = NULL;

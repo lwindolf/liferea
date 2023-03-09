@@ -138,7 +138,9 @@ common_uri_escape (const xmlChar *url)
 	g_assert (NULL != url);
 
 	/* xmlURIEscape returns NULL if spaces are in the URL,
-	   so we need to replace them first (see SF #2965158) */
+	   so we need to replace them first (see SF #2965158).
+	   TODO: perhaps replace xmlURIEscape with g_uri_escape_string ?
+	 */
 	tmp = (xmlChar *)common_strreplace (g_strdup ((gchar *)url), " ", "%20");
 	result = xmlURIEscape (tmp);
 	g_free (tmp);

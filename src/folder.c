@@ -119,7 +119,7 @@ folder_get_node_type (void)
 		NODE_CAPABILITY_UPDATE_CHILDS |
 		NODE_CAPABILITY_EXPORT,
 		"folder",
-		NULL,
+		ICON_FOLDER,
 		folder_import,
 		folder_export,
 		folder_load,
@@ -131,7 +131,6 @@ folder_get_node_type (void)
 		feed_list_view_rename_node,
 		NULL
 	};
-	fnti.icon = icon_get (ICON_FOLDER);
 
 	return &fnti;
 }
@@ -150,7 +149,7 @@ root_get_node_type (void)
 		NODE_CAPABILITY_UPDATE_CHILDS |
 		NODE_CAPABILITY_EXPORT,
 		"root",
-		NULL,		/* and no need for an icon */
+		0,		/* and no need for an icon */
 		folder_import,
 		folder_export,
 		folder_load,

@@ -308,7 +308,7 @@ vfolder_get_node_type (void)
 		NODE_CAPABILITY_SHOW_UNREAD_COUNT |
 		NODE_CAPABILITY_EXPORT_ITEMS,
 		"vfolder",
-		NULL,
+		ICON_VFOLDER,
 		vfolder_import,
 		vfolder_export,
 		vfolder_load,
@@ -320,7 +320,6 @@ vfolder_get_node_type (void)
 		vfolder_properties,
 		vfolder_free
 	};
-	nti.icon = icon_get (ICON_VFOLDER);
 
 	return &nti;
 }

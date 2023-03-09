@@ -217,7 +217,7 @@ newsbin_get_node_type (void)
 		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT |
 		                                  NODE_CAPABILITY_EXPORT_ITEMS;
 		nodeType->id			= "newsbin";
-		nodeType->icon			= icon_get (ICON_NEWSBIN);
+		nodeType->icon			= ICON_NEWSBIN;
 		nodeType->load			= feed_get_node_type()->load;
 		nodeType->import		= newsbin_import;
 		nodeType->export		= newsbin_export;

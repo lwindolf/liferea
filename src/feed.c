@@ -460,7 +460,7 @@ feed_get_node_type (void)
 		NODE_CAPABILITY_EXPORT |
 		NODE_CAPABILITY_EXPORT_ITEMS,
 		"feed",		/* not used, feed format ids are used instead */
-		NULL,
+		ICON_DEFAULT,
 		feed_import,
 		feed_export,
 		feed_load,
@@ -472,7 +472,6 @@ feed_get_node_type (void)
 		feed_properties,
 		feed_free
 	};
-	nti.icon = icon_get (ICON_DEFAULT);
 
 	return &nti;
 }

@@ -2,7 +2,7 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS = parse_html favicon parse_date parse_xml social
+TEST_PROGS = parse_html favicon parse_date parse_rss parse_xml social
 
 test: $(TEST_PROGS)
 	echo $(TEST_PROGS) |\
@@ -92,6 +92,9 @@ parse_html_LDADD = $(favicon_LDADD)
 
 parse_date_CFLAGS = $(AM_CPPFLAGS)
 parse_date_LDADD = $(favicon_LDADD)
+
+parse_rss_CFLAGS = $(AM_CPPFLAGS)
+parse_rss_LDADD = $(favicon_LDADD)
 
 parse_xml_CFLAGS = $(AM_CPPFLAGS)
 parse_xml_LDADD = $(favicon_LDADD)
