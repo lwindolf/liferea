@@ -2,7 +2,7 @@
  * @file html.c  HTML parsing
  * 
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -213,10 +213,17 @@ html_auto_discover_feed (const gchar* data, const gchar *baseUri)
 	debug1 (DEBUG_UPDATE, "search result: %s", res?res:"none found");
 
 	if (res) {
-		/* turn relative URIs into absolute URIs */
-		tmp = res;
-		res = common_build_url (res, baseU);
-		g_free (tmp);
+		/* We expect only relative URIs starting with '/' or absolute URIs starting with 'http://' or 'https://' */
+		if ('h' == res[0] || '/' == res[0]) {
+			/* turn relative URIs into absolute URIs */
+			tmp = res;
+			res = common_build_url (res, baseU);
+			g_free (tmp);
+		} else {
+			debug1 (DEBUG_UPDATE, "html_auto_discover_feed: discarding invalid URL %s", res);
+			g_free (res);
+			res = NULL;
+		}
 	}
 
 	return res;
