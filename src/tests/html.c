@@ -52,6 +52,13 @@ gchar *tc_broken_tag[] = {
 	NULL
 };
 
+// Injection via "|"" command must not result in command subscription
+gchar *tc_xml_rce[] = {
+	"<html><head><link rel=\"alternate\" type=\"application/rss+xml\" href=\"|date &gt;/tmp/bad-feed-discovery.txt\"></html>",
+	NULL,
+	NULL
+};
+
 static void
 tc_auto_discover_link (gconstpointer user_data)
 {
@@ -72,6 +79,7 @@ main (int argc, char *argv[])
 	g_test_add_data_func ("/html/auto_discover_link_rdf", &tc_rdf, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_atom", &tc_atom, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_broken_tag", &tc_broken_tag, &tc_auto_discover_link);
+	g_test_add_data_func ("/html/auto_discover_link_xml_rce", &tc_xml_rce, &tc_auto_discover_link);
 
 	return g_test_run();
 }
