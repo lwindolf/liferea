@@ -98,6 +98,7 @@ typedef struct updateRequest {
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
+	gboolean	allowCommands;	/**< Allow this requests to run commands */
 } *updateRequestPtr;
 
 /** structure to store results of the processing of an update request */
@@ -224,6 +225,21 @@ void update_request_set_auth_value(updateRequestPtr request, const gchar* authVa
  * @returns update result (to be free'd using update_result_free())
  */
 updateResultPtr update_result_new (void);
+
+/**
+ * Allows *this* request to run local commands.
+ *
+ * At first it may look this flag should be in updateOptions, but we can
+ * take a safer path: feed commands are restricted to a few use cases while
+ * options are propagated to downstream requests (feed enrichment, comments,
+ * etc.), so it is a good idea to prevent these from running commands in the
+ * local system via tricky URLs without needing to validate these options
+ * everywhere (which is error-prone).
+ *
+ * @param request      the update request
+ * @param can_run      TRUE if the request can run commands, FALSE otherwise.
+ */
+void update_request_allow_commands (updateRequestPtr request, gboolean allowCommands);
 
 /**
  * Free's the given update result.

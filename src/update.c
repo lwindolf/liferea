@@ -184,6 +184,12 @@ update_request_set_auth_value(updateRequestPtr request, const gchar* authValue)
 	request->authValue = g_strdup(authValue);
 }
 
+void
+update_request_allow_commands (updateRequestPtr request, gboolean allowCommands)
+{
+	request->allowCommands = allowCommands;
+}
+
 updateResultPtr
 update_result_new (void)
 {
@@ -490,8 +496,14 @@ update_job_run (updateJobPtr job)
 	
 	/* everything starting with '|' is a local command */
 	if (*(job->request->source) == '|') {
-		debug1 (DEBUG_UPDATE, "Recognized local command: %s", job->request->source);
-		update_exec_cmd (job);
+		if (job->request->allowCommands) {
+			debug1 (DEBUG_UPDATE, "Recognized local command: %s", job->request->source);
+			update_exec_cmd (job);
+		} else {
+			debug1 (DEBUG_UPDATE, "Refusing to run local command from unexpected source: %s", job->request->source);
+			job->result->httpstatus = 403;  /* Forbidden. */
+			update_process_finished_job (job);
+		}
 		return;
 	}
 	

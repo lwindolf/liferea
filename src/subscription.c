@@ -321,6 +321,8 @@ subscription_update (subscriptionPtr subscription, guint flags)
 		request->updateState = update_state_copy (subscription->updateState);
 		request->options = update_options_copy (subscription->updateOptions);
 		request->source = g_strdup (subscription_get_source (subscription));
+		update_request_allow_commands (request, TRUE);
+		
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
 
