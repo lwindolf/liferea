@@ -105,6 +105,16 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release date="2023-03-13" version="1.14.1">
+      <description>
+        <p>CVE-2023-1350 Remote code execution on feed enrichment</p>
+        <ul>Changes
+          <li>Fixes CVE-2023-1350: RCE vulnerability on feed enrichment (Alexander Erwin Ittner)</li>
+          <li>Fixes #1200: Crash on double free (mozbugbox)</li>
+          <li>Improve #1192 be reordering widget creation order (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-01-10" version="1.14.0">
       <description>
         <p>Features introduced with 1.14:</p>
@@ -128,11 +138,11 @@
           </li>
           <li>GUI
             <ul>
-              <li>New view mode 'Automatic' which switches between 'Normal' and 'Wide' mode based 
+              <li>New view mode 'Automatic' which switches between 'Normal' and 'Wide' mode based
               on the window proportions.</li>
               <li>Liferea now supports the new GTK dark theme logic, where in the GTK/GNOME preferences
               you define wether you "prefer" dark mode or light mode</li>
-              <li>Favicon discovery improvements: now detects all types of Apple Touch Icons, MS Tile 
+              <li>Favicon discovery improvements: now detects all types of Apple Touch Icons, MS Tile
               Images and Safari Mask Icons</li>
               <li>Increase size of stored favicons to 128x128px to improve icon quality in 3-pane wide view.</li>
               <li>Make several plugins support gettext</li>
