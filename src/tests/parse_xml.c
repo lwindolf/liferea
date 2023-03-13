@@ -29,7 +29,7 @@ typedef struct tcXPath {
 	gboolean result;
 } *tcXPathPtr;
 
-struct tcXPath tc_xpath[][4] = {
+struct tcXPath tc_xpath[] = {
 	{
 		"/parse_xml/xpath_find_empty_doc",
 		"<?xml version = \"1.0\"?>\n<nothing/>",
@@ -63,11 +63,11 @@ typedef struct tcStripper {
 	gchar	*xpath_expression;	// expression that must not be found
 } *tcStripperPtr;
 
-struct tcStripper tc_strippers[][3] = {
+struct tcStripper tc_strippers[] = {
 	{
-		"/xhtml_strip/onload",
-		"<div onload='alert(\"Hallo\");'></div>< div onload=\"alert('Hallo');\"></div>",
-		"//div/@onload"
+		.name = "/xhtml_strip/onload",
+		.xml_string = "<div onload='alert(\"Hallo\");'></div>< div onload=\"alert('Hallo');\"></div>",
+		.xpath_expression = "//div/@onload"
 	},
 	{
 		"/xhtml_strip/meta",
@@ -147,11 +147,11 @@ main (int argc, char *argv[])
 
 	g_test_init (&argc, &argv, NULL);
 
-	for (int i = 0; tc_xpath[i]->xml_string != NULL; i++) {
-		g_test_add_data_func (tc_xpath[i]->name, &tc_xpath[i], &tc_xpath_find);
+	for (int i = 0; tc_xpath[i].name != NULL; i++) {
+		g_test_add_data_func (tc_xpath[i].name, &tc_xpath[i], &tc_xpath_find);
 	}
-	for (int i = 0; tc_strippers[i]->xml_string != NULL; i++) {
-		g_test_add_data_func (tc_strippers[i]->name, &tc_strippers[i], &tc_strip);
+	for (int i = 0; tc_strippers[i].name != NULL; i++) {
+		g_test_add_data_func (tc_strippers[i].name, &tc_strippers[i], &tc_strip);
 	}
 
 	result = g_test_run();
