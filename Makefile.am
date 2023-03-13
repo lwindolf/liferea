@@ -96,3 +96,6 @@ CLEANFILES = \
 
 po/liferea.pot:
 	cd po && $(MAKE) liferea.pot
+
+test:
+	cd src/tests && make test
