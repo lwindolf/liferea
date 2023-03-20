@@ -351,17 +351,17 @@ render_get_user_css (void)
 
 		g_return_val_if_fail (themeColors != NULL, NULL);
 
-		userCss = g_string_new(NULL);
+		userCss = g_string_new (NULL);
 
 		userStyleSheetFile = common_create_config_filename ("liferea.css");
 
-		if (g_file_get_contents(userStyleSheetFile, &tmp, NULL, NULL)) {
-			tmp = render_set_theme_colors(tmp);
-			g_string_append(userCss, tmp);
-			g_free(tmp);
+		if (g_file_get_contents (userStyleSheetFile, &tmp, NULL, NULL)) {
+			tmp = render_set_theme_colors (tmp);
+			g_string_append (userCss, tmp);
+			g_free (tmp);
 		}
 
-		g_free(userStyleSheetFile);
+		g_free (userStyleSheetFile);
 	}
 
 	return userCss->str;
