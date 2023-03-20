@@ -499,8 +499,14 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
-		itemlist_request_remove_item (item);
-		db_item_remove (item->id);
+		if (itemlist->priv->selectedId != item->id) {
+			itemview_remove_item(item);
+			db_item_remove(item->id);
+		} else {
+			itemlist_request_remove_item(item);
+		}
+		g_object_unref (item);
+
 		iter = g_list_next (iter);
 	}
 
