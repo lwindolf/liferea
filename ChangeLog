@@ -1,3 +1,14 @@
+2023-03-20  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.14.2
+
+	* Fixes #1212: 1.14.1 crash when refreshing feeds.
+	  (mozbugbox, reported by Froggy232)
+
+	* Fixes a memory leak when reloading CSS
+	  (Lars Windolf)
+	
+
 2023-03-12  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.14.1
