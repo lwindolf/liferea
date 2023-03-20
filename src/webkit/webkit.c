@@ -712,6 +712,7 @@ liferea_webkit_reload_style (GtkWidget *webview)
 		NULL,
 		NULL);
 	webkit_user_content_manager_add_style_sheet (manager, user_stylesheet);
+	g_free (css);
 }
 
 /**
