@@ -2,7 +2,7 @@
 
 	Version 1.14.3
 
-	* Fixes #1213: crash in conf_get_bool_value_from_schema
+	* Fixes #1214: crash in conf_get_bool_value_from_schema
 	  (mozbugbox, reported by Mikel Olasagasti)
 
 	* Fixes #1215: failed to build in launchpad PPA due to 
