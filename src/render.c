@@ -1,7 +1,7 @@
 /**
  * @file render.c  generic GTK theme and XSLT rendering handling
  *
- * Copyright (C) 2006-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,9 +41,13 @@
 #include "render.h"
 #include "xml.h"
 
-/* Liferea provides special screens and the item and the feed displays
-   using self-generated HTML. To separate code and layout and to easily
-   localize the layout it is provided by automake XSL stylesheet templates.
+/* Liferea renders items and feed info using self-generated HTML in a WebkitGTK
+   widget. While this provides rendering flexibility it also requires us to do
+   CSS color theming to match the GTK theme and localization of HTML rendered
+   UI literals.
+   
+   To separate code and layout and to easily localize the layout it is 
+   provided in the form of automake XSL stylesheet templates.
 
    Using automake translations are merged into those XSL stylesheets. On
    startup Liferea loads those expanded XSL stylesheets. During startup
@@ -56,7 +60,6 @@
    and performs CSS adaptions to the current GTK theme. */
 
 static renderParamPtr	langParams = NULL;	/* the current locale settings (for localization stylesheet) */
-
 static GHashTable	*stylesheets = NULL;	/* XSLT stylesheet cache */
 
 static void
@@ -64,39 +67,6 @@ render_parameter_free (renderParamPtr paramSet)
 {
 	g_strfreev (paramSet->params);
 	g_free (paramSet);
-}
-
-static void
-render_init (void)
-{
-	gchar   	**shortlang = NULL;	/* e.g. "de" */
-	gchar		**lang = NULL;		/* e.g. "de_AT" */
-	gchar		*filename;
-
-	if (langParams)
-		render_parameter_free (langParams);
-
-	/* Install default stylesheet if it does not yet exist */
-	filename = common_create_config_filename ("liferea.css");
-	if (!g_file_test (filename, G_FILE_TEST_EXISTS))
-		common_copy_file (PACKAGE_DATA_DIR "/" PACKAGE "/css/user.css", filename);
-	g_free(filename);
-
-	/* Prepare localization parameters */
-	debug1 (DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
-	lang = g_strsplit (setlocale (LC_MESSAGES, NULL), "@", 0);
-	shortlang = g_strsplit (setlocale (LC_MESSAGES, NULL), "_", 0);
-
-	langParams = render_parameter_new ();
-	render_parameter_add (langParams, "lang='%s'", lang[0]);
-	render_parameter_add (langParams, "shortlang='%s'", shortlang[0]);
-	debug2 (DEBUG_HTML, "XSLT localisation: lang='%s' shortlang='%s'", lang[0], shortlang[0]);
-
-	g_strfreev (shortlang);
-	g_strfreev (lang);
-
-	if (!stylesheets)
-		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 }
 
 static xsltStylesheetPtr
@@ -107,8 +77,26 @@ render_load_stylesheet (const gchar *xsltName)
 	xmlDocPtr		xsltDoc, resDoc;
 	gchar			*filename;
 
+	if (!langParams) {
+		/* Prepare localization parameters */
+		gchar   **shortlang = NULL;	/* e.g. "de" */
+		gchar	**lang = NULL;		/* e.g. "de_AT" */
+
+		debug1 (DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
+		lang = g_strsplit (setlocale (LC_MESSAGES, NULL), "@", 0);
+		shortlang = g_strsplit (setlocale (LC_MESSAGES, NULL), "_", 0);
+
+		langParams = render_parameter_new ();
+		render_parameter_add (langParams, "lang='%s'", lang[0]);
+		render_parameter_add (langParams, "shortlang='%s'", shortlang[0]);
+		debug2 (DEBUG_HTML, "XSLT localisation: lang='%s' shortlang='%s'", lang[0], shortlang[0]);
+
+		g_strfreev (shortlang);
+		g_strfreev (lang);
+	}
+
 	if (!stylesheets)
-		render_init ();
+		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
 	/* try to serve the stylesheet from the cache */
 	xslt = (xsltStylesheetPtr)g_hash_table_lookup (stylesheets, xsltName);

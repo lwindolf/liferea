@@ -1,7 +1,7 @@
 /**
  * @file common.c common routines for Liferea
  *
- * Copyright (C) 2003-2013  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2023  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
  * Copyright (C) 2022       Lorenzo L. Ancora <admin@lorenzoancora.info>
@@ -74,6 +74,7 @@ common_check_dir (gchar *path)
 static void
 common_init_paths (void)
 {
+	gchar *filename;
 	gchar *lifereaCachePath  = g_build_filename (g_get_user_cache_dir(), "liferea", NULL);
 
 	common_check_dir (g_strdup (lifereaCachePath));
@@ -83,6 +84,12 @@ common_init_paths (void)
 
 	common_check_dir (g_build_filename (g_get_user_config_dir(), "liferea", NULL));
 	common_check_dir (g_build_filename (g_get_user_data_dir(), "liferea", NULL));
+
+	/* Install default stylesheet if it does not yet exist */
+	filename = common_create_config_filename ("liferea.css");
+	if (!g_file_test (filename, G_FILE_TEST_EXISTS))
+		common_copy_file (PACKAGE_DATA_DIR "/" PACKAGE "/css/user.css", filename);
+	g_free(filename);
 
 	/* ensure reasonable default umask */
 	umask (077);
