@@ -32,9 +32,7 @@
 			<outline text="EscapePod" htmlUrl="https://escapepod.org" xmlUrl="https://escapepod.org/feed/atom/"/>
 		</outline>
 		<outline text="Blog di musica">
-			<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
 			<outline text="Gorilla vs. Bear"   htmlUrl="https://www.gorillavsbear.net" xmlUrl="https://www.gorillavsbear.net/category/mp3/feed/"/>
-			<outline text="KEXP"               htmlUrl="http://kexp.org" xmlUrl="http://feeds.kexp.org/kexp/songoftheday"/>
 			<outline text="Fluxblog"           htmlUrl="http://fluxblog.org" xmlUrl="http://www.fluxblog.org/feed/"/>
 		</outline>
 		<outline text="Fumetti">
