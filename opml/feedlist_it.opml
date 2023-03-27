@@ -7,11 +7,10 @@
         <outline text="Notiziari d'esempio">
                 <outline text="Notizie dall'Italia">
                         <outline text="Corriere.it" htmlUrl="http://www.corriere.it/" xmlUrl="http://www.corriere.it/rss/homepage.xml" />
-                        <outline text="Fedora Online" htmlUrl="https://www.fedoraonline.it/" xmlUrl="https://www.fedoraonline.it/taxonomy/term/5/feed" />
                         <outline text="Lo spazio bianco" htmlUrl="https://www.lospaziobianco.it/" xmlUrl="https://www.lospaziobianco.it/feed/" />
                         <outline text="Onda Cinema" htmlUrl="http://www.ondacinema.it/" xmlUrl="http://www.ondacinema.it/feed" />
                         <outline text="Onda Rock" htmlUrl="http://www.ondarock.it/" xmlUrl="http://www.ondarock.it/feed.php" />
-                        <outline text="Planet Debianizzati" htmlUrl="http://www.debianizzati.org/" xmlUrl="http://www.debianizzati.org/planet/rss.xml" />
+                        <outline text="Planet Debianizzati" htmlUrl="http://www.debianizzati.org/" xmlUrl="http://www.debianizzati.org/feed/" />
                         <outline text="Planet Ubuntu-it" htmlUrl="https://planet.ubuntu-it.org/" xmlUrl="https://planet.ubuntu-it.org/rss20.xml" />
                         <outline text="Punto Informatico" htmlUrl="http://punto-informatico.it/" xmlUrl="http://punto-informatico.it/fader/pixml2.xml" />
                         <outline text="Repubblica.it" htmlUrl="http://www.repubblica.it/" xmlUrl="http://www.repubblica.it/rss/homepage/rss2.0.xml" />
