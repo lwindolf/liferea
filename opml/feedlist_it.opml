@@ -6,16 +6,15 @@
 <body>
         <outline text="Notiziari d'esempio">
                 <outline text="Notizie dall'Italia">
-                        <outline text="Corriere.it" htmlUrl="http://www.corriere.it/" xmlUrl="http://www.corriere.it/rss/homepage.xml" />
-                        <outline text="Fedora Online" htmlUrl="https://www.fedoraonline.it/" xmlUrl="https://www.fedoraonline.it/taxonomy/term/5/feed" />
+                        <outline text="Corriere.it" htmlUrl="https://www.corriere.it/" xmlUrl="https://www.corriere.it/rss/homepage.xml" />
                         <outline text="Lo spazio bianco" htmlUrl="https://www.lospaziobianco.it/" xmlUrl="https://www.lospaziobianco.it/feed/" />
-                        <outline text="Onda Cinema" htmlUrl="http://www.ondacinema.it/" xmlUrl="http://www.ondacinema.it/feed" />
-                        <outline text="Onda Rock" htmlUrl="http://www.ondarock.it/" xmlUrl="http://www.ondarock.it/feed.php" />
-                        <outline text="Planet Debianizzati" htmlUrl="http://www.debianizzati.org/" xmlUrl="http://www.debianizzati.org/planet/rss.xml" />
+                        <outline text="Onda Cinema" htmlUrl="https://www.ondacinema.it/" xmlUrl="https://www.ondacinema.it/feed" />
+                        <outline text="Onda Rock" htmlUrl="https://www.ondarock.it/" xmlUrl="https://www.ondarock.it/feed.php" />
+                        <outline text="Planet Debianizzati" htmlUrl="https://www.debianizzati.org/" xmlUrl="https://www.debianizzati.org/feed/" />
                         <outline text="Planet Ubuntu-it" htmlUrl="https://planet.ubuntu-it.org/" xmlUrl="https://planet.ubuntu-it.org/rss20.xml" />
-                        <outline text="Punto Informatico" htmlUrl="http://punto-informatico.it/" xmlUrl="http://punto-informatico.it/fader/pixml2.xml" />
-                        <outline text="Repubblica.it" htmlUrl="http://www.repubblica.it/" xmlUrl="http://www.repubblica.it/rss/homepage/rss2.0.xml" />
-                        <outline text="Tuttobici News" htmlUrl="http://www.tuttobiciweb.it/" xmlUrl="http://www.tuttobiciweb.it/rss.php" />
+                        <outline text="Punto Informatico" htmlUrl="https://punto-informatico.it/" xmlUrl="https://punto-informatico.it/fader/pixml2.xml" />
+                        <outline text="Repubblica.it" htmlUrl="https://www.repubblica.it/" xmlUrl="https://www.repubblica.it/rss/homepage/rss2.0.xml" />
+                        <outline text="Tuttobici News" htmlUrl="https://www.tuttobiciweb.it/" xmlUrl="https://www.tuttobiciweb.it/rss.php" />
 	        </outline>
 	<!-- lets keep this default English block in sync over all feed lists! -->
 	<outline text="Notizie internazionali">
@@ -33,9 +32,7 @@
 			<outline text="EscapePod" htmlUrl="https://escapepod.org" xmlUrl="https://escapepod.org/feed/atom/"/>
 		</outline>
 		<outline text="Blog di musica">
-			<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
 			<outline text="Gorilla vs. Bear"   htmlUrl="https://www.gorillavsbear.net" xmlUrl="https://www.gorillavsbear.net/category/mp3/feed/"/>
-			<outline text="KEXP"               htmlUrl="http://kexp.org" xmlUrl="http://feeds.kexp.org/kexp/songoftheday"/>
 			<outline text="Fluxblog"           htmlUrl="http://fluxblog.org" xmlUrl="http://www.fluxblog.org/feed/"/>
 		</outline>
 		<outline text="Fumetti">
