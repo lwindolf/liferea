@@ -85,6 +85,8 @@ common_init_paths (void)
 	common_check_dir (g_build_filename (g_get_user_config_dir(), "liferea", NULL));
 	common_check_dir (g_build_filename (g_get_user_data_dir(), "liferea", NULL));
 
+	pathsChecked = TRUE;
+
 	/* Install default stylesheet if it does not yet exist */
 	filename = common_create_config_filename ("liferea.css");
 	if (!g_file_test (filename, G_FILE_TEST_EXISTS))
@@ -95,8 +97,6 @@ common_init_paths (void)
 	umask (077);
 
 	g_free (lifereaCachePath);
-
-	pathsChecked = TRUE;
 }
 
 gchar *
