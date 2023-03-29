@@ -1319,21 +1319,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	gtk_widget_show_all(GTK_WIDGET(shell->toolbar));
 
-	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_press_event",
-	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
-
-	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_release_event",
-	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
-
-	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "scroll_event",
-	                  G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
-
-	g_signal_connect (G_OBJECT (shell->window), "delete_event", G_CALLBACK(on_close), NULL);
-	g_signal_connect (G_OBJECT (shell->window), "window_state_event", G_CALLBACK(on_window_state_event), shell);
-	g_signal_connect (G_OBJECT (shell->window), "configure_event", G_CALLBACK(on_configure_event), shell);
-	g_signal_connect (G_OBJECT (shell->window), "key_press_event", G_CALLBACK(on_key_press_event), shell);
-	g_signal_connect (G_OBJECT (shell->window), "style-updated", G_CALLBACK(liferea_shell_rebuild_css), NULL);
-
 	/* 3.) setup status bar */
 
 	debug0 (DEBUG_GUI, "Setting up status bar");
@@ -1383,7 +1368,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
         icons_load ();
 
 	/* 9.) update and restore all menu elements */
-
 	liferea_shell_update_toolbar ();
 	liferea_shell_update_history_actions ();
 	liferea_shell_setup_URL_receiver ();
@@ -1392,19 +1376,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->feedlistViewWidget), TRUE);
 
 	/* 10.) After main window is realized get theme colors and set up feed list */
-	// FIXME: this should not be necessary, but style-updated does not
-	// always fire before we get here
 	render_init_theme_colors (GTK_WIDGET (shell->window));
 
 	shell->feedlist = feedlist_create (feedListView);
-	g_signal_connect (shell->feedlist, "new-items",
-	                  G_CALLBACK (liferea_shell_update_unread_stats), shell->feedlist);
-	g_signal_connect (shell->feedlist, "items-updated",
-	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
-	g_signal_connect (shell->itemlist, "item-updated",
-	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
-	g_signal_connect (feedListView, "selection-changed",
-	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
 
 	/* 11.) Restore latest layout and selection */
 	conf_get_int_value (DEFAULT_VIEW_MODE, &mode);
@@ -1423,6 +1397,31 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 		liferea_plugins_engine_set_default_signals (shell->extensions, shell);
 	}
+
+	/* 13. Setup shell window signals, only after all widgets are ready */
+	g_signal_connect (shell->feedlist, "new-items",
+	                  G_CALLBACK (liferea_shell_update_unread_stats), shell->feedlist);
+	g_signal_connect (shell->feedlist, "items-updated",
+	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
+	g_signal_connect (shell->itemlist, "item-updated",
+	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
+	g_signal_connect (feedListView, "selection-changed",
+	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
+
+	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_press_event",
+	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
+
+	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_release_event",
+	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
+
+	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "scroll_event",
+	                  G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
+
+	g_signal_connect (G_OBJECT (shell->window), "delete_event", G_CALLBACK(on_close), NULL);
+	g_signal_connect (G_OBJECT (shell->window), "window_state_event", G_CALLBACK(on_window_state_event), shell);
+	g_signal_connect (G_OBJECT (shell->window), "configure_event", G_CALLBACK(on_configure_event), shell);
+	g_signal_connect (G_OBJECT (shell->window), "key_press_event", G_CALLBACK(on_key_press_event), shell);
+	g_signal_connect (G_OBJECT (shell->window), "style-updated", G_CALLBACK(liferea_shell_rebuild_css), NULL);
 
 	/* 14. Rebuild search folders if needed */
 	if (searchFolderRebuild)
