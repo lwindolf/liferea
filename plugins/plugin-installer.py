@@ -162,7 +162,6 @@ class PluginBrowser(Gtk.Window):
         """Fetch list from github project repo and parse JSON"""
 
         if True == Liferea.NetworkMonitor.is_online():
-            print("ONLINE!!!!!!!!!!!!!!!!")
             list_url = "https://raw.githubusercontent.com/lwindolf/liferea/master/plugins/plugin-list.json"
             data = None
             req = urllib.request.Request(list_url)
