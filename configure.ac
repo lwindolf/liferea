@@ -59,7 +59,7 @@ AC_SUBST(PACKAGE_LIBS)
 
 
 PKG_CHECK_MODULES([WEB_EXTENSION], [
-                  webkit2gtk-web-extension-4.0
+                  webkit2gtk-web-extension-4.1
                   ])
 AC_SUBST([WEB_EXTENSION_CFLAGS])
 AC_SUBST([WEB_EXTENSION_LIBS])
