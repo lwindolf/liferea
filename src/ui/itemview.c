@@ -400,17 +400,8 @@ itemview_set_layout (nodeViewType newMode)
 		itemlist_unload ();
 
 	/* Prepare widgets for layout */
-	if (!itemview->htmlview) {
-		debug0 (DEBUG_GUI, "Creating HTML widget");
-		itemview->htmlview = liferea_browser_new (FALSE);
-		g_signal_connect (itemview->htmlview, "statusbar-changed",
-		                  G_CALLBACK (on_important_status_message), NULL);
-
-		/* Set initial zoom */
-		liferea_browser_set_zoom (itemview->htmlview, itemview->zoom/100.);
-	} else {
-		liferea_browser_clear (itemview->htmlview);
-	}
+	g_assert (itemview->htmlview);
+	liferea_browser_clear (itemview->htmlview);
 
 	debug2 (DEBUG_GUI, "Setting item list layout mode: %d (auto=%d)", effectiveMode, itemview->autoLayout);
 
@@ -506,6 +497,14 @@ itemview_create (GtkWidget *window)
 	}
 	itemview->zoom = zoom;
 	itemview->currentLayoutMode = 1000;	// something invalid
+
+	debug0 (DEBUG_GUI, "Creating HTML widget");
+	itemview->htmlview = liferea_browser_new (FALSE);
+	g_signal_connect (itemview->htmlview, "statusbar-changed",
+	                  G_CALLBACK (on_important_status_message), NULL);
+
+	/* Set initial zoom */
+	liferea_browser_set_zoom (itemview->htmlview, itemview->zoom/100.);
 
 	return itemview;
 }
