@@ -303,7 +303,7 @@ render_get_theme_color (const gchar *name)
 	return NULL;
 }
 
-gchar *
+const gchar *
 render_get_default_css (void)
 {
 	if (!css) {
@@ -330,7 +330,7 @@ render_get_default_css (void)
 	return css->str;
 }
 
-gchar *
+const gchar *
 render_get_user_css (void)
 {
 	if (!userCss) {
