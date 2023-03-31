@@ -652,7 +652,7 @@ liferea_webkit_reload_style (GtkWidget *webview)
 	if (default_stylesheet)
 		webkit_user_style_sheet_unref (default_stylesheet);
 
-	gchar *css = render_get_default_css ();
+	const gchar *css = render_get_default_css ();
 	// default stylesheet should only apply to HTML written to the view,
 	// not when browsing
 	const gchar *deny[] = { "http://*/*", "https://*/*",  NULL };
@@ -673,7 +673,6 @@ liferea_webkit_reload_style (GtkWidget *webview)
 		NULL,
 		NULL);
 	webkit_user_content_manager_add_style_sheet (manager, user_stylesheet);
-	g_free (css);
 }
 
 /**
