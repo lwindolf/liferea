@@ -1,3 +1,17 @@
+2023-03-31  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.14.4
+
+	* Fixes #1217, #1224: Endless recursion in 1.14.3
+	  (reported by uduecoder, mokraemer)
+
+	* Additional fixes for #1214: crash in conf_get_bool_value_from_schema
+	  (reported by Mikel Olasagasti)
+
+	* Fixes a g_object_unref warning on shutdown
+	* Drops a debug output in the plugin installer
+
+
 2023-03-23  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.14.3
