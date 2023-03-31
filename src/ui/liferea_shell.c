@@ -1390,15 +1390,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 		g_free (id);
 	}
 
-	/* 12. Setup shell plugins */
-	if(0 == pluginsDisabled) {
-		shell->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
-				                     LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
-
-		liferea_plugins_engine_set_default_signals (shell->extensions, shell);
-	}
-
-	/* 13. Setup shell window signals, only after all widgets are ready */
+	/* 12. Setup shell window signals, only after all widgets are ready */
 	g_signal_connect (shell->feedlist, "new-items",
 	                  G_CALLBACK (liferea_shell_update_unread_stats), shell->feedlist);
 	g_signal_connect (shell->feedlist, "items-updated",
@@ -1421,6 +1413,14 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect (G_OBJECT (shell->window), "window_state_event", G_CALLBACK(on_window_state_event), shell);
 	g_signal_connect (G_OBJECT (shell->window), "configure_event", G_CALLBACK(on_configure_event), shell);
 	g_signal_connect (G_OBJECT (shell->window), "key_press_event", G_CALLBACK(on_key_press_event), shell);
+
+	/* 13. Setup shell plugins */
+	if(0 == pluginsDisabled) {
+		shell->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
+				                     LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
+
+		liferea_plugins_engine_set_default_signals (shell->extensions, shell);
+	}
 
 	/* 14. Rebuild search folders if needed */
 	if (searchFolderRebuild)
