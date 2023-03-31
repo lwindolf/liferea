@@ -338,6 +338,7 @@ conf_deinit (void)
 {
 	g_object_unref (settings);
 	g_object_unref (desktop_settings);
-	g_object_unref (fdo_settings);
+	if (fdo_settings)
+		g_object_unref (fdo_settings);
 }
 
