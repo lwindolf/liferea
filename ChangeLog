@@ -26,6 +26,9 @@ To be released
 	* Improve #1192 be reordering widget creation order
 	  (Lars Windolf)
 
+	* Fixes a g_object_unref warning on shutdown
+	* Drops a debug output in the plugin installer
+
 
 2023-01-10  Lars Windolf <lars.windolf@gmx.de>
 
