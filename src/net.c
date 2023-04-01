@@ -52,9 +52,9 @@ network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 	SoupStatus	status = soup_message_get_status (msg);
 
 	if (SOUP_STATUS_MOVED_PERMANENTLY == status || SOUP_STATUS_PERMANENT_REDIRECT == status) {
-		if (g_uri_is_valid (location, SOUP_HTTP_URI_FLAGS | G_URI_FLAGS_PARSE_RELAXED, NULL)) {
+		if (g_uri_is_valid (location, G_URI_FLAGS_PARSE_RELAXED, NULL)) {
 			location = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Location");
-			newuri = g_uri_parse (location, SOUP_HTTP_URI_FLAGS | G_URI_FLAGS_PARSE_RELAXED, NULL);
+			newuri = g_uri_parse (location, G_URI_FLAGS_PARSE_RELAXED, NULL);
 
 			if (!soup_uri_equal (newuri, soup_message_get_uri (msg))) {
 				job->result->httpstatus = status;
@@ -67,28 +67,31 @@ network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 }
 
 static void
-network_process_callback (GInputStream *stream, SoupMessage *msg, updateJobPtr job)
+network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 {
-	g_autoptr(GBytes)	body = NULL;
+	SoupSession		*session = SOUP_SESSION (obj);
+	SoupMessage		*msg;
+	updateJobPtr		job = (updateJobPtr)user_data;
 	GDateTime		*last_modified;
 	const gchar		*tmp = NULL;
 	GHashTable		*params;
 	gboolean		revalidated = FALSE;
 	gint			maxage;
 	gint			age;
+	g_autoptr(GBytes)	body;
+
+	msg = soup_session_get_async_result_message (session, res);
+	body = soup_session_send_and_read_finish (session, res, NULL);	// FIXME: handle errors!
 
 	job->result->source = g_uri_to_string_partial (soup_message_get_uri (msg), 0);
 	job->result->httpstatus = soup_message_get_status (msg);
+	job->result->data = g_memdup2 (g_bytes_get_data (body, &job->result->size), g_bytes_get_size (body));
 
 	/* keep some request headers for revalidated responses */
 	revalidated = (304 == job->result->httpstatus);
 
 	debug1 (DEBUG_NET, "download status code: %d", job->result->httpstatus);
 	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
-
-	body = g_input_stream_read_bytes (stream, G_MAXSSIZE, cancellable, NULL);
-	job->result->data = g_memdup2 (g_bytes_get_data (body, &job->result->size), g_bytes_get_size (body));
-
 	debug1 (DEBUG_NET, "%d bytes downloaded", job->result->size);
 
 	job->result->contentType = g_strdup (soup_message_headers_get_content_type (soup_message_get_response_headers (msg), NULL));
@@ -104,7 +107,7 @@ network_process_callback (GInputStream *stream, SoupMessage *msg, updateJobPtr j
 			last_modified = soup_date_time_new_from_http_string (tmp);
 			if (last_modified) {
 				job->result->updateState->lastModified = g_date_time_to_unix (last_modified);
-				g_free (last_modified);
+				g_date_time_unref (last_modified);
 			}
 		}
 	}
@@ -146,7 +149,7 @@ network_process_callback (GInputStream *stream, SoupMessage *msg, updateJobPtr j
 	}
 
 	update_process_finished_job (job);
-	g_object_unref (stream);
+	g_bytes_unref (body);
 }
 
 /* Downloads a URL specified in the request structure, returns
@@ -159,30 +162,46 @@ network_process_callback (GInputStream *stream, SoupMessage *msg, updateJobPtr j
 void
 network_process_request (const updateJobPtr job)
 {
-	GInputStream		*stream;
 	g_autoptr(SoupMessage)	msg = NULL;
 	SoupMessageHeaders	*request_headers;
 	g_autoptr(GUri)		sourceUri;
 	gboolean		do_not_track = FALSE;
+	g_autofree gchar	*scheme = NULL, *user = NULL, *password = NULL, *auth_params = NULL, *host = NULL, *path = NULL, *query = NULL, *fragment = NULL;
+	gint			port;
 
 	g_assert (NULL != job->request);
 	debug1 (DEBUG_NET, "downloading %s", job->request->source);
 	if (job->request->postdata && (debug_level & DEBUG_VERBOSE) && (debug_level & DEBUG_NET))
 		debug1 (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
 
+	g_uri_split_with_user (job->request->source,
+	                       G_URI_FLAGS_ENCODED,
+			       &scheme,
+			       &user,
+			       &password,
+			       &auth_params,
+			       &host,
+			       &port,
+			       &path,
+			       &query,
+			       &fragment,
+			       NULL);
+
 	/* Prepare the SoupMessage */
 	sourceUri = g_uri_build_with_user (
 		SOUP_HTTP_URI_FLAGS | G_URI_FLAGS_PARSE_RELAXED,
-		g_uri_peek_scheme (job->request->source),
+		scheme,
+		// FIXME: allow passing user/password from above?
 		(!job->request->authValue && job->request->options && job->request->options->username)?job->request->options->username:NULL,
 		(!job->request->authValue && job->request->options && job->request->options->password)?job->request->options->password:NULL,
-		NULL,	/* auth_params */
-		NULL,	/* host */
-		-1,	/* port */
-		job->request->source,
-		NULL,	/* query */
-		NULL	/* fragment */
+		auth_params,
+		host,
+		port,
+		path,
+		query,
+		fragment
 	);
+
 	if (sourceUri)
 		msg = soup_message_new_from_uri (job->request->postdata?"POST":"GET", sourceUri);
 	if (!msg) {
@@ -263,12 +282,9 @@ network_process_request (const updateJobPtr job)
 
 	/* If the feed has "dont use a proxy" selected, use 'session2' which is non-proxy */
 	if (job->request->options && job->request->options->dontUseProxy)
-		stream = soup_session_send (session2, msg, cancellable, NULL);
+		soup_session_send_and_read_async (session2, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
 	else
-		stream = soup_session_send (session, msg, cancellable, NULL);
-
-	if (stream)
-		network_process_callback (stream, msg, job);
+		soup_session_send_and_read_async (session, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
 }
 
 static void
