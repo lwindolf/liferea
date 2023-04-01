@@ -87,12 +87,7 @@ network_process_callback (GInputStream *stream, SoupMessage *msg, updateJobPtr j
 	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
 
 	body = g_input_stream_read_bytes (stream, G_MAXSSIZE, cancellable, NULL);
-
-#ifdef HAVE_G_MEMDUP2
 	job->result->data = g_memdup2 (g_bytes_get_data (body, &job->result->size), g_bytes_get_size (body));
-#else
-	job->result->data = g_memdup (g_bytes_get_data (body, &job->result->size), g_bytes_get_size (body));
-#endif
 
 	debug1 (DEBUG_NET, "%d bytes downloaded", job->result->size);
 
