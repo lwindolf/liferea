@@ -101,8 +101,8 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 
 	debug_enter ("comments_process_update_result");
 
-	item = item_load (commentFeed->itemId);
-	g_return_if_fail (item != NULL);
+	if(!(item = item_load (commentFeed->itemId)))
+		return;		/* item was deleted since */
 
 	/* note this is to update the feed URL on permanent redirects */
 	if (result->source && !g_strcmp0 (result->source, metadata_list_get (item->metadata, "commentFeedUri"))) {
