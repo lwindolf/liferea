@@ -151,6 +151,7 @@ network_process_callback (GInputStream *stream, SoupMessage *msg, updateJobPtr j
 	}
 
 	update_process_finished_job (job);
+	g_object_unref (stream);
 }
 
 /* Downloads a URL specified in the request structure, returns
@@ -163,7 +164,7 @@ network_process_callback (GInputStream *stream, SoupMessage *msg, updateJobPtr j
 void
 network_process_request (const updateJobPtr job)
 {
-	g_autoptr(GInputStream)	stream;
+	GInputStream		*stream;
 	g_autoptr(SoupMessage)	msg = NULL;
 	SoupMessageHeaders	*request_headers;
 	g_autoptr(GUri)		sourceUri;
