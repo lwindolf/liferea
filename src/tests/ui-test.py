@@ -4,6 +4,7 @@
 # https://salsa.debian.org/ci-team/autopkgtest-help/-/issues/6
 
 # Copyright (c) 2021 Johannes Schauer Marin Rodrigues <josch@mister-muffin.de>
+# Copyright (c) 2023 Paul Gevers <elbrus@debian.org>
 
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
