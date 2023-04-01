@@ -226,7 +226,7 @@
 
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="net.sf.liferea.plugins" path="/org/gnome/liferea/plugins/">
     <key name="active-plugins" type="as">
-      <default>['gnome-keyring','media-player','trayicon','plugin-installer','pane']</default>
+      <default>['gnome-keyring','media-player','plugin-installer','pane']</default>
       <summary>Active plugins</summary>
       <description>List of active plugins. It contains the "Module" names of the active plugins. See the .plugin file for obtaining the"Module" name of a given plugin.</description>
     </key>
