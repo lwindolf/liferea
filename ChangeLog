@@ -8,7 +8,6 @@ To be released
 	* Fixes #1215: failed to build in launchpad PPA due to 
 	  auto_test permission issue (reported by PandaJim)
 
-
 	* Fixes #1212: 1.14.1 crash when refreshing feeds.
 	  (mozbugbox, reported by Froggy232)
 
