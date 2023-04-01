@@ -105,6 +105,35 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release date="2023-03-31" version="1.14.4">
+      <description>
+        <p>1.14 is not as stable yet as intended and is suffering from startup race conditions. This bugfix release tries to further eliminate those issues</p>
+        <ul>Changes
+         <li>Fixes #1217, #1224: Endless recursion in 1.14.3 (reported by uduecoder, mokraemer)</li>
+         <li>Additional fixes for #1214: crash in conf_get_bool_value_from_schema (reported by Mikel Olasagasti)</li>
+         <li>Fixes a g_object_unref warning on shutdown</li>
+         <li>Drops a debug output in the plugin installer</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2023-03-24" version="1.14.3">
+      <description>
+        <p>This is another 1.14 bugfix release to address a crash affecting some users and a build issue when running tests</p>
+        <ul>Changes
+          <li>Fixes #1214: crash in conf_get_bool_value_from_schema (mozbugbox, reported by Mikel Olasagasti)</li>
+          <li>Fixes #1215: failed to build in launchpad PPA due to auto_test permission issue (reported by PandaJim)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2023-03-21" version="1.14.2">
+      <description>
+        <p>This is a stability fix for 1.14.1</p>
+        <ul>Changes
+          <li>Fixes #1212: 1.14.1 crash when refreshing feeds (mozbugbox)</li>
+          <li>Fixes a memory leak when reloading CSS (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-03-13" version="1.14.1">
       <description>
         <p>CVE-2023-1350 Remote code execution on feed enrichment</p>
