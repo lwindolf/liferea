@@ -2,16 +2,15 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS = parse_html favicon parse_date parse_rss parse_xml social
+TEST_PROGS     = parse_html favicon parse_date parse_rss parse_xml social
+MEMCHECK_PROGS = favicon parse_date social
 
 test: $(TEST_PROGS)
 	echo $(TEST_PROGS) |\
 	sed "s/^/.\//;s/ / \&\& .\//g" |\
 	xargs -I{} sh -c "{}"
 	./test_a11y.sh
-
-memcheck: $(TEST_PROGS)
-	./memcheck.sh $(TEST_PROGS)
+	./memcheck.sh $(MEMCHECK_PROGS)
 
 .PHONY: test
 

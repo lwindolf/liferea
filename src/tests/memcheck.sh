@@ -44,6 +44,8 @@ EOT
 				echo "$details"
 				echo "::endgroup::"
 			fi
+		else
+			echo "memcheck '$tool' OK"
 		fi
 	done
 else
