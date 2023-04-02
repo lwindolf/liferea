@@ -190,10 +190,12 @@ static void
 tc_auto_discover_link (gconstpointer user_data)
 {
 	gchar **tc = (gchar **)user_data;
+	g_autofree gchar *tmp;
 	GSList *result;
 	guint	i = 2;
 
-	result = html_auto_discover_feed (g_strdup (tc[0]), tc[1]);
+	tmp = g_strdup (tc[0]);
+	result = html_auto_discover_feed (tmp, tc[1]);
 	do {
 		if (!tc[i]) {
 			g_assert_null (result);

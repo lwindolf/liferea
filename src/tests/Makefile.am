@@ -3,7 +3,7 @@
 noinst_PROGRAMS = $(TEST_PROGS)
 
 TEST_PROGS     = parse_html favicon parse_date parse_rss parse_xml social
-MEMCHECK_PROGS = favicon parse_date social
+MEMCHECK_PROGS = parse_html favicon parse_date social
 
 test: $(TEST_PROGS)
 	echo $(TEST_PROGS) |\
