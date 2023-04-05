@@ -549,7 +549,7 @@ save_item_to_file_metadata_callback (const gchar *key, const gchar *value, guint
 				}
 				if (encl->size > 0) {
 					gchar buf[32];
-					g_snprintf(buf, sizeof(buf), "%ld", encl->size);
+					g_snprintf(buf, sizeof(buf), "%" G_GSIZE_FORMAT, encl->size);
 					buf[sizeof(buf)-1] = '\0';
 					xmlTextWriterWriteAttribute(writer, BAD_CAST "length", BAD_CAST buf);
 				}

@@ -482,7 +482,9 @@ gchar *
 date_format_rfc822_en_gmt (gint64 datetime)
 {
 	struct tm dt;
-	gmtime_r (&datetime, &dt);
+	time_t    t = (time_t)datetime;
+
+	gmtime_r (&t, &dt);
 
 	if (dt.tm_wday < 0 || dt.tm_wday > 6) {
 		return NULL;	/* Invalid date from gmtime_r. Should *never* happen. */
