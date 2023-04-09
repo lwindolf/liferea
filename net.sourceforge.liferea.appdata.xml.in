@@ -105,6 +105,16 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release date="2023-04-09" version="1.14.5">
+      <description>
+        <p>Stability release for 1.14 branch</p>
+        <ul>Changes
+         <li>Fixes #1127: corrupted double-linked list (reported by Paul Gevers)</li>
+         <li>Fixes #1229: assertion when deleting feeds too quickly (reported by Tasos Sahanidis)</li>
+         <li>Fixes #1223: format and cast errors (reported by Paul Gevers)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-03-31" version="1.14.4">
       <description>
         <p>1.14 is not as stable yet as intended and is suffering from startup race conditions. This bugfix release tries to further eliminate those issues</p>
