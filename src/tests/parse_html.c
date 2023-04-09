@@ -204,6 +204,8 @@ tc_auto_discover_link (gconstpointer user_data)
 			result = g_slist_next (result);
 		}
 	} while(tc[i++]);
+
+	g_slist_free_full (result, g_free);
 }
 
 static void
