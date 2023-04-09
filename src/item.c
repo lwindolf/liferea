@@ -36,6 +36,8 @@
 
 G_DEFINE_TYPE (LifereaItem, liferea_item, G_TYPE_OBJECT);
 
+static GObjectClass *parent_class = NULL;
+
 static void
 liferea_item_finalize (GObject *object)
 {
@@ -51,12 +53,16 @@ liferea_item_finalize (GObject *object)
 
 	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
 	metadata_list_free (item->metadata);
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 liferea_item_class_init (LifereaItemClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->finalize = liferea_item_finalize;
 }
