@@ -1,6 +1,17 @@
+2023-04-09  Lars Windolf <lars.windolf@gmx.de>
+
 	Version 1.14.5
 
 	* Dropping tray icon plugin from list of per-default activated plugins
+
+	* Fixes #1127: corrupted double-linked list
+	  (reported by Paul Gevers)
+
+	* Fixes #1229: assertion when deleting feeds too quickly
+	  (reported by Tasos Sahanidis)
+
+	* Fixing format and cast errors (#1223)
+	  (reported by Paul Gevers)
 
 
 2023-03-31  Lars Windolf <lars.windolf@gmx.de>
