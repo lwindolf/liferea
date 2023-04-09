@@ -109,6 +109,7 @@ tc_parse_feed (gconstpointer user_data)
 		iter = g_list_next (iter);
 	}	
 
+	g_list_free_full (ctxt->items, g_object_unref);
 	feed_parser_ctxt_free (ctxt);
 	node_free (node);
 }
