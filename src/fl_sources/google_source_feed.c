@@ -164,6 +164,7 @@ static void
 google_source_feed_subscription_process_ids_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
 	JsonParser	*parser;
+	nodePtr		root = node_source_root_from_node (subscription->node);
 	
 	if (!(result->data && result->httpstatus == 200)) {
 		subscription->node->available = FALSE;
@@ -200,7 +201,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 		GString		*query = g_string_new("");
 		
 		g_string_append_printf (query, "output=json&mediaRss=true&T=%s", 
-		                        node_source_root_from_node (subscription->node)->source->authToken + strlen("GoogleLogin auth="));
+		                        root->source->authToken + strlen("GoogleLogin auth="));
 
 		while (iter) {
 			JsonNode *node = (JsonNode *)iter->data;
@@ -218,17 +219,20 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 		if (elements) {
 			g_autofree gchar 	*url;
 			UpdateRequest		*request;
-					
-			url = g_strdup_printf ("%s/reader/api/0/stream/items/contents",
-			                       node_source_root_from_node (subscription->node)->subscription->source);                       
+
+			url = g_strdup_printf ("%s/reader/api/0/stream/items/contents", root->subscription->source);
 		
 			request = update_request_new (
 				url,
 				subscription->updateState,
 				subscription->updateOptions
 			);
-			request->postdata = query->str;			
-			(void) update_execute_request (node_source_root_from_node (subscription->node)->subscription,
+			request->postdata = query->str;
+
+			// Redundant to the token already passed in postdata, but FreshRSS fails without it
+			update_request_set_auth_value (request, root->source->authToken);
+
+			(void) update_execute_request (root->subscription,
 			                               request,
 			                               google_source_feed_subscription_process_update_result,
        			                               subscription,
@@ -248,11 +252,10 @@ google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscriptio
                                                      UpdateRequest *request)
 {
 	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update");
-	GoogleSourcePtr source = (GoogleSourcePtr) node_source_root_from_node (subscription->node)->data; 
-	
-	g_assert(source); 
-	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) {
-		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0);
+	nodePtr root = node_source_root_from_node (subscription->node);
+
+	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
+		subscription_update (root->subscription, 0);
 		return FALSE;
 	}
 	
@@ -275,11 +278,11 @@ google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscriptio
 		// FIXME: do not use hard-coded 50
 		// FIXME: consider passing nt=<epoch> (latest fetch timestamp)
 		url = g_strdup_printf ("%s/reader/api/0/stream/items/ids?s=%s&client=liferea&n=50&output=json&merge=true",
-		                       node_source_root_from_node (subscription->node)->subscription->source,
+		                       root->subscription->source,
 		                       sourceEscaped);                       
 
 		update_request_set_source (request, url);
-		update_request_set_auth_value (request, source->root->source->authToken);
+		update_request_set_auth_value (request, root->source->authToken);
 	}
 	return TRUE;
 }
