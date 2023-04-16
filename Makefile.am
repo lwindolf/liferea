@@ -55,8 +55,6 @@ plugin_DATA = \
 	plugins/libnotify.plugin \
 	plugins/media-player.py \
 	plugins/media-player.plugin \
-	plugins/pane.py \
-	plugins/pane.plugin \
 	plugins/plugin-installer.py \
 	plugins/plugin-installer.plugin \
 	plugins/trayicon.py \
