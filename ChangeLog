@@ -1,4 +1,4 @@
-To be released
+2023-04-16  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.15.0
 
@@ -13,6 +13,9 @@ To be released
 
 	* Fixes #1212: 1.14.1 crash when refreshing feeds.
 	  (mozbugbox, reported by Froggy232)
+	  
+	* Fixes #1198: FreshRSS logging in correctly but can't get posts
+	  (reported by Roger Gonzalez)
 
 	* Fixes a memory leak when reloading CSS
 	  (Lars Windolf)
@@ -25,9 +28,15 @@ To be released
 
 	* Improve #1192 be reordering widget creation order
 	  (Lars Windolf)
+	  
+	* Improvements to the libnotify plugin
+	  (Tasos Sahanidis)
 
 	* Fixes a g_object_unref warning on shutdown
 	* Drops a debug output in the plugin installer
+	* Drop webkit inspector from installable plugins in favour of --debug-html
+	* Drop pane plugin from default plugins 
+	* Drop pane plugin (old workaround for pane issues)
 
 
 2023-01-10  Lars Windolf <lars.windolf@gmx.de>
