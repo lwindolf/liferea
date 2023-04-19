@@ -105,6 +105,59 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release date="2023-08-30" version="1.15.2">
+      <description>
+        <p>This is a bugfix release. It provides an important stability fix regarding feed parsing. Kudos to Rich Coe for debugging and fixing the issue!</p>
+        <ul>Changes
+          <li>Fixes #1291: Feed parsing is broken (Rich Coe)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2023-08-14" version="1.15.1">
+      <description>
+        <p>This is a new feature release. It introduces the long awaited switch to libsoup3 and libwebkit2gtk-4.1.
+        Thanks to many testers helping testing the latest code from git some errors were ironed out already. Still there is an issue remaining where feed updates are getting stuck when updating while DNS resolution/Wifi/network... fails. Please comment if you also experience this issue! Also noteworthy is a simplification of the debug handling which removes three CLI parameters --debug-performance, --debug-trace and --debug-verbose</p>
+        <ul>Changes
+         <li>Update to libsoup3 and libwebkit2gtk-4.1 (Lars Windolf)</li>
+         <li>Fixes #1285: HTTP 304 incorrectly caused error state (Rich Coe)</li>
+         <li>Fixes #1272: Crash on moving feed into new folder (Lars Windolf)</li>
+         <li>Fixes #1262: Plugin installer: duplicate punctuation (Christian Stadelmann)</li>
+         <li>Fixes #1250: Incorrect item_id when downloading AMP URLs (Alexandre Erwin Ittner)</li>
+         <li>Fixes #1248: Can't maximize for reading feeds (Lars Windolf)</li>
+         <li>Fixes #1242: Dropping not-functioning Pocket bookmark URL (Lars Windolf)</li>
+         <li>Fixes #1241: Dropping not-functioning identi.ca bookmark URL (Lars Windolf)</li>
+         <li>Fixes #1240: TypeError on add-bookmark-site preferences (Lucidiot)</li>
+         <li>Many fixes for static code analysis warnings (Lars Windolf)</li>
+         <li>Simplified debug handling. Drop --debug-performance --debug-trace and --debug-verbose CLI parameters</li>
+         <li>Removed stale Deutsche Welle Brasil feed from pt-BR default feed list (Alexandre Erwin Ittner)</li>
+         <li>Updated appdata description and summary (bbhtt)</li>
+         <li>Add Russian user documentation (slichtzzz)</li>
+         <li>Updated Czech translation (Amerey)</li>
+         <li>Updated Brazilian Portugese translation (Fúlvio Alves)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2023-04-17" version="1.15.0">
+      <description>
+        <p>This is the first release of the new unstable line 1.15. The current idea is to release a bit
+        faster than every two years. So not so much features will be introduced before 1.16</p>
+        <ul>Changes
+         <li>Fixes #1214: crash in conf_get_bool_value_from_schema (mozbugbox, reported by Mikel Olasagasti)</li>
+         <li>Fixes #1215: failed to build in launchpad PPA due to auto_test permission issue (reported by PandaJim)</li>
+         <li>Fixes #1212: 1.14.1 crash when refreshing feeds. (mozbugbox, reported by Froggy232)</li>
+         <li>Fixes #1198: FreshRSS logging in correctly but can't get posts (reported by Roger Gonzalez)</li>
+         <li>Fixes a memory leak when reloading CSS (Lars Windolf)</li>
+         <li>Fixes CVE-2023-1350: RCE vulnerability on feed enrichment (patch by Alexander Erwin Ittner)</li>
+         <li>Fixes #1200: Crash on double free (mozbugbox)</li>
+         <li>Improve #1192 be reordering widget creation order (Lars Windolf)</li>
+         <li>Improvements to the libnotify plugin (Tasos Sahanidis)</li>
+         <li>Fixes a g_object_unref warning on shutdown</li>
+         <li>Drops a debug output in the plugin installer</li>
+         <li>Drop webkit inspector from installable plugins in favour of --debug-html</li>
+         <li>Drop pane plugin from default plugins</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-03-24" version="1.14.3">
       <description>
         <p>This is another 1.14 bugfix release to address a crash affecting some users and a build issue when running tests</p>
