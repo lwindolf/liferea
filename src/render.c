@@ -209,11 +209,11 @@ render_init_theme_colors (GtkWidget *widget)
 
 	/* Clear cached previous stylesheet */
 	if (css) {
-		g_string_free (css, FALSE);
+		g_string_free (css, TRUE);
 		css = NULL;
 	}
 	if (userCss) {
-		g_string_free (userCss, FALSE);
+		g_string_free (userCss, TRUE);
 		userCss = NULL;
 	}
 	if (themeColors) {

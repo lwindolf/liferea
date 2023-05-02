@@ -198,7 +198,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 		JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "itemRefs"));
 		GList		*elements = json_array_get_elements (array);
 		GList		*iter = elements;
-		GString		*query = g_string_new("");
+		GString		*query = g_string_new ("");
 		
 		g_string_append_printf (query, "output=json&mediaRss=true&T=%s", 
 		                        root->source->authToken + strlen("GoogleLogin auth="));
@@ -227,7 +227,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 				subscription->updateState,
 				subscription->updateOptions
 			);
-			request->postdata = query->str;
+			request->postdata = g_strdup (query->str);
 
 			// Redundant to the token already passed in postdata, but FreshRSS fails without it
 			update_request_set_auth_value (request, root->source->authToken);
@@ -240,7 +240,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 		}
 
 		g_list_free (elements);
-		g_string_free (query, FALSE);
+		g_string_free (query, TRUE);
 	} else {
 		subscription->node->available = FALSE;
 	}

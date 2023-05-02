@@ -379,35 +379,37 @@ update_exec_filter_cmd (updateJobPtr job)
 		return NULL;
 	}
 
-	file = fdopen (fd, "w");
-	fwrite (job->result->data, strlen (job->result->data), 1, file);
-	fclose (file);
+	if((file = fdopen (fd, "w"))) {
+		fwrite (job->result->data, strlen (job->result->data), 1, file);
+		fclose (file);
 
-	command = g_strdup_printf("%s < %s", job->request->filtercmd, tmpfilename);
-	p = popen (command, "r");
-	if (NULL != p) {
-		while (!feof (p) && !ferror (p)) {
-			size_t len;
-			out = g_realloc (out, size + 1025);
-			len = fread (&out[size], 1, 1024, p);
-			if (len > 0)
-				size += len;
+		command = g_strdup_printf("%s < %s", job->request->filtercmd, tmpfilename);
+		p = popen (command, "r");
+		if (NULL != p) {
+			while (!feof (p) && !ferror (p)) {
+				size_t len;
+				out = g_realloc (out, size + 1025);
+				len = fread (&out[size], 1, 1024, p);
+				if (len > 0)
+					size += len;
+			}
+			status = pclose (p);
+			if (!(WIFEXITED (status) && WEXITSTATUS (status) == 0)) {
+				debug2 (DEBUG_UPDATE, "%s exited with status %d!", command, WEXITSTATUS(status));
+				job->result->filterErrors = g_strdup_printf (_("%s exited with status %d"), command, WEXITSTATUS(status));
+				size = 0;
+			}
+			if (out)
+				out[size] = '\0';
+		} else {
+			job->result->filterErrors = g_strdup_printf (_("Error: Could not open pipe \"%s\""), command);
 		}
-		status = pclose (p);
-		if (!(WIFEXITED (status) && WEXITSTATUS (status) == 0)) {
-			debug2 (DEBUG_UPDATE, "%s exited with status %d!", command, WEXITSTATUS(status));
-			job->result->filterErrors = g_strdup_printf (_("%s exited with status %d"), command, WEXITSTATUS(status));
-			size = 0;
-		}
-		if (out)
-			out[size] = '\0';
+		g_free (command);
 	} else {
-		g_warning (_("Error: Could not open pipe \"%s\""), command);
-		job->result->filterErrors = g_strdup_printf (_("Error: Could not open pipe \"%s\""), command);
+		job->result->filterErrors = g_strdup (_("Error: Could not write temporary file!"));
 	}
 
 	/* Clean up. */
-	g_free (command);
 	unlink (tmpfilename);
 	g_free (tmpfilename);
 	return out;
