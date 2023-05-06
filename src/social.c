@@ -1,7 +1,7 @@
 /*
  * @file social.c  social networking integration
  * 
- * Copyright (C) 2006-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -141,7 +141,6 @@ social_init (void)
 	social_register_bookmark_site ("diigo",		"https://www.diigo.com/post?url={url}&title={title}&desc=");
 	social_register_bookmark_site ("Facebook",	"https://www.facebook.com/share.php?u={url}");
 	social_register_bookmark_site ("Google Bookmarks",	"https://www.google.com/bookmarks/mark?op=edit&output=&bkmk={url}&title={title}");
-	social_register_bookmark_site ("identi.ca",	"https://identi.ca/index.php?action=bookmarklet&status_textarea=%%E2%%80%%9C{title}%%E2%%80%%9D%%20%%E2%%80%%94%%20{url}");
 	social_register_bookmark_site ("Instapaper",	"https://www.instapaper.com/hello2?url={url}&title={title}");
 	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title={title}&url={url}");
 	social_register_bookmark_site ("Linkroll",	"https://www.linkroll.com/index.php?action=insertLink&url={url}&title={title}");
