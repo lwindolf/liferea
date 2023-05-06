@@ -145,7 +145,6 @@ social_init (void)
 	social_register_bookmark_site ("Linkagogo",	"http://www.linkagogo.com/go/AddNoPopup?title={title}&url={url}");
 	social_register_bookmark_site ("Linkroll",	"https://www.linkroll.com/index.php?action=insertLink&url={url}&title={title}");
 	social_register_bookmark_site ("netvouz",	"https://netvouz.com/action/submitBookmark?url={url}&title={title}");
-	social_register_bookmark_site ("Pocket",	"https://getpocket.com/save?url={url}&title={title}");
 	social_register_bookmark_site ("Reddit",	"https://www.reddit.com/submit?url={url}&title={title}");
 	social_register_bookmark_site ("Twitter",	"https://twitter.com/intent/tweet?text={title}&url={url}");
 
