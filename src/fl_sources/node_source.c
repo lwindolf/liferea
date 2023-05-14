@@ -81,7 +81,7 @@ node_source_type_find (const gchar *typeStr, guint capabilities)
 gboolean
 node_source_type_register (nodeSourceTypePtr type)
 {
-	debug1 (DEBUG_PARSING, "Registering node source type %s", type->name);
+	debug (DEBUG_PARSING, "Registering node source type %s", type->name);
 
 	/* allow the plugin to initialize */
 	type->source_type_init ();
@@ -97,7 +97,6 @@ node_source_setup_root (void)
 	nodePtr	rootNode;
 	nodeSourceTypePtr type;
 
-	debug_enter ("node_source_setup_root");
 	
 	/* register a generic type for storing feed-id strings of remote services */
 	metadata_type_register ("feed-id", METADATA_TYPE_TEXT);
@@ -133,7 +132,6 @@ node_source_setup_root (void)
 	rootNode->source->type = type;
 	type->source_import (rootNode);
 
-	debug_exit ("node_source_setup_root");
 
 	return rootNode;
 }
@@ -160,14 +158,13 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 	nodeSourceTypePtr	type;
 	xmlChar			*typeStr = NULL;
 
-	debug_enter ("node_source_import");
 
 	typeStr = xmlGetProp (xml, BAD_CAST"sourceType");
 	if (!typeStr)
 		typeStr = xmlGetProp (xml, BAD_CAST"pluginType"); /* for migration only */
 
 	if (typeStr) {
-		debug2 (DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
+		debug (DEBUG_CACHE, "creating node source instance (type=%s,id=%s)", typeStr, node->id);
 
 		node->available = FALSE;
 
@@ -206,15 +203,13 @@ node_source_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trust
 		g_print ("No source type given for node \"%s\". Ignoring it.", node_get_title (node));
 	}
 
-	debug_exit ("node_source_import");
 }
 
 static void
 node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 {
-	debug_enter ("node_source_export");
 
-	debug2 (DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE (node)->id);
+	debug (DEBUG_CACHE, "node source export for node %s, id=%s", node->title, NODE_SOURCE_TYPE (node)->id);
 
 	/* If the node source type was loaded using the dummy node source
 	   type we need to restore the original node source type id from
@@ -228,7 +223,6 @@ node_source_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 
 	NODE_SOURCE_TYPE (node)->source_export (node);
 
-	debug_exit("node_source_export");
 }
 
 void
@@ -255,7 +249,7 @@ node_source_new (nodePtr node, nodeSourceTypePtr type, const gchar *url)
 void
 node_source_set_state (nodePtr node, gint newState)
 {
-	debug3 (DEBUG_UPDATE, "node source '%s' now in state %d (was %d)", node->id, newState, node->source->loginState);
+	debug (DEBUG_UPDATE, "node source '%s' now in state %d (was %d)", node->id, newState, node->source->loginState);
 
 	/* State transition actions below... */
 	if (newState == NODE_SOURCE_STATE_ACTIVE)
@@ -277,7 +271,7 @@ node_source_set_auth_token (nodePtr node, gchar *token)
 {
 	g_assert (!node->source->authToken);
 
-	debug2 (DEBUG_UPDATE, "node source \"%s\" Auth token found: %s", node->id, token);
+	debug (DEBUG_UPDATE, "node source \"%s\" Auth token found: %s", node->id, token);
 	node->source->authToken = token;
 
 	node_source_set_state (node, NODE_SOURCE_STATE_ACTIVE);
@@ -452,7 +446,7 @@ node_source_update_folder (nodePtr node, nodePtr folder)
 		folder = node->source->root;
 
 	if (node->parent != folder) {
-		debug2 (DEBUG_UPDATE, "Moving node \"%s\" to folder \"%s\"", node->title, folder->title);
+		debug (DEBUG_UPDATE, "Moving node \"%s\" to folder \"%s\"", node->title, folder->title);
 		node_reparent (node, folder);
 	}
 }
@@ -534,7 +528,7 @@ node_source_convert_to_local_child_node (nodePtr node)
 		update_job_cancel_by_owner ((gpointer)node);
 		update_job_cancel_by_owner ((gpointer)node->subscription);
 
-		debug2 (DEBUG_UPDATE, "Converting feed: %s = %s\n", node->title, node->subscription->source);
+		debug (DEBUG_UPDATE, "Converting feed: %s = %s", node->title, node->subscription->source);
 
 		node->subscription->type = feed_get_subscription_type ();
 	}
@@ -562,7 +556,7 @@ node_source_convert_to_local (nodePtr node)
 
 	/* Perform conversion */
 
-	debug0 (DEBUG_UPDATE, "Converting root node to folder...");
+	debug (DEBUG_UPDATE, "Converting root node to folder...");
 	node->source = ((nodePtr)feedlist_get_root ())->source;
 	node->type = folder_get_node_type ();
 	node->subscription = NULL;	/* leaking subscription is ok */

@@ -56,7 +56,7 @@ ttrss_source_check_node_for_removal (nodePtr node, gpointer user_data)
 		while (iter) {
 			JsonNode *json_node = (JsonNode *)iter->data;
 			if (g_str_equal (node->subscription->source, json_get_string (json_node, "feed_url"))) {
-				debug1 (DEBUG_UPDATE, "node: %s", node->subscription->source);
+				debug (DEBUG_UPDATE, "node: %s", node->subscription->source);
 				found = TRUE;
 				break;
 			}
@@ -79,7 +79,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 
 	if (!node) {
-		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
+		debug (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
@@ -118,7 +118,7 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 	subscriptionPtr subscription = (subscriptionPtr) user_data;
 	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
 
-	debug1 (DEBUG_UPDATE,"ttrss_subscription_cb(): %s", result->data);
+	debug (DEBUG_UPDATE,"ttrss_subscription_cb(): %s", result->data);
 
 	subscription->updateJob = NULL;
 
@@ -156,7 +156,7 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 			   */
 
 			if (!content || (JSON_NODE_TYPE (content) != JSON_NODE_ARRAY)) {
-				debug0 (DEBUG_UPDATE, "ttrss_subscription_cb(): Failed to get subscription list!");
+				debug (DEBUG_UPDATE, "ttrss_subscription_cb(): Failed to get subscription list!");
 				subscription->node->available = FALSE;
 				return;
 			}
@@ -199,7 +199,7 @@ ttrss_source_subscription_list_cb (const struct updateResult * const result, gpo
 		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "ttrss_subscription_cb(): ERROR: failed to get TinyTinyRSS subscription list!");
+		debug (DEBUG_UPDATE, "ttrss_subscription_cb(): ERROR: failed to get TinyTinyRSS subscription list!");
 	}
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
@@ -250,7 +250,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 					nodePtr folder;
 					gchar *folderId = g_strdup_printf ("%d", id);
 
-					debug2 (DEBUG_UPDATE, "TinyTinyRSS category id=%ld name=%s", id, name);
+					debug (DEBUG_UPDATE, "TinyTinyRSS category id=%ld name=%s", id, name);
 					folder = node_source_find_or_create_folder (parent, folderId, name);
 					g_free (folderId);
 
@@ -264,7 +264,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, nodePtr parent, gint paren
 					}
 				/* Process child feeds */
 				} else {
-					debug3 (DEBUG_UPDATE, "TinyTinyRSS feed=%s folder=%d (%ld)", name, parentId, id);
+					debug (DEBUG_UPDATE, "TinyTinyRSS feed=%s folder=%d (%ld)", name, parentId, id);
 					g_hash_table_insert (source->categories, GINT_TO_POINTER (id), GINT_TO_POINTER (parentId));
 				}
 			}
@@ -280,7 +280,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 {
 	ttrssSourcePtr		source = (ttrssSourcePtr) subscription->node->data;
 
-	debug1 (DEBUG_UPDATE, "ttrss_subscription_process_update_result: %s", result->data);
+	debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result: %s", result->data);
 
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();
@@ -322,21 +322,21 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 			*/
 
 			if (!content) {
-				debug0 (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get subscription list!");
+				debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get subscription list!");
 				subscription->node->available = FALSE;
 				return;
 			}
 
 			categories = json_get_node (content, "categories");
 			if (!categories) {
-				debug0 (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get categories list: no 'categories' element found!");
+				debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get categories list: no 'categories' element found!");
 				subscription->node->available = FALSE;
 				return;
 			}
 
 			items = json_get_node (categories, "items");
 			if (!items || (JSON_NODE_TYPE (items) != JSON_NODE_ARRAY)) {
-				debug0 (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get categories list: no 'categories' element found!");
+				debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get categories list: no 'categories' element found!");
 				subscription->node->available = FALSE;
 				return;
 			}
@@ -354,7 +354,7 @@ ttrss_subscription_process_update_result (subscriptionPtr subscription, const st
 		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get categories list!");
+		debug (DEBUG_UPDATE, "ttrss_subscription_process_update_result(): Failed to get categories list!");
 	}
 }
 
@@ -365,15 +365,15 @@ ttrss_subscription_prepare_update_request (subscriptionPtr subscription, UpdateR
 	ttrssSourcePtr	source = (ttrssSourcePtr) subscription->node->data;
 	gchar *source_uri;
 
-	debug0 (DEBUG_UPDATE, "ttrss_subscription_prepare_update_request");
+	debug (DEBUG_UPDATE, "ttrss_subscription_prepare_update_request");
 
 	g_assert (node->source);
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		debug0 (DEBUG_UPDATE, "TinyTinyRSS login");
+		debug (DEBUG_UPDATE, "TinyTinyRSS login");
 		ttrss_source_login (source, 0);
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "TinyTinyRSS updating subscription (node id %s)", node->id);
+	debug (DEBUG_UPDATE, "TinyTinyRSS updating subscription (node id %s)", node->id);
 
 	/* Updating the TinyTinyRSS subscription means updating the list
 	   of categories and the list of feeds in 2 requests and if the

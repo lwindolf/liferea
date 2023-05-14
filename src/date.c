@@ -259,7 +259,7 @@ date_parse_ISO8601 (const gchar *date)
 
 parsing_failed:
 	if (!t)
-		debug0 (DEBUG_PARSING, "Invalid ISO8601 date format!");
+		debug (DEBUG_PARSING, "Invalid ISO8601 date format!");
 	g_free (ascii_date);
 	return t;
 }
@@ -470,7 +470,7 @@ date_parse_RFC822 (const gchar *date)
 
 parsing_failed:
 	if (!t)
-		debug0 (DEBUG_PARSING, "Invalid RFC822 date!");
+		debug (DEBUG_PARSING, "Invalid RFC822 date!");
 	g_free (ascii_date);
 	return t;
 }

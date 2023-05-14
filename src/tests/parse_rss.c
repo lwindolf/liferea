@@ -122,7 +122,7 @@ main (int argc, char *argv[])
 	g_test_init (&argc, &argv, NULL);
 
 	if (argv[1] && g_str_equal (argv[1], "--debug"))
-		set_debug_level (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
+		debug_set_flags (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
 
 	xml_init ();
 

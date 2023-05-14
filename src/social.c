@@ -76,7 +76,7 @@ social_register_bookmark_site (const gchar *name, const gchar *url)
 
 		bookmarkSites = g_slist_append (bookmarkSites, newSite);
 	} else {
-		debug1 (DEBUG_GUI, "Missing {url} placeholder in social bookmarking URL for '%s'!", name);
+		debug (DEBUG_GUI, "Missing {url} placeholder in social bookmarking URL for '%s'!", name);
 	}
 }
 
@@ -89,7 +89,7 @@ social_set_bookmark_site (const gchar *name)
 	if (site)
 		conf_set_str_value (SOCIAL_BM_SITE, name);
 	else
-		debug1 (DEBUG_GUI, "Unknown social bookmarking site \"%s\"!", name);
+		debug (DEBUG_GUI, "Unknown social bookmarking site \"%s\"!", name);
 }
 
 const gchar *

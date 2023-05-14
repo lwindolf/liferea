@@ -160,14 +160,12 @@ feedlist_class_init (FeedListClass *klass)
 static gboolean
 feedlist_auto_update (void *data)
 {
-	debug_enter ("feedlist_auto_update");
 
 	if (network_monitor_is_online ())
 		node_auto_update_subscription (ROOTNODE);
 	else
-		debug0 (DEBUG_UPDATE, "no update processing because we are offline!");
+		debug (DEBUG_UPDATE, "no update processing because we are offline!");
 
-	debug_exit ("feedlist_auto_update");
 
 	return TRUE;
 }
@@ -199,7 +197,6 @@ feedlist_init (FeedList *fl)
 {
 	gint	startup_feed_action;
 
-	debug_enter ("feedlist_init");
 
 	/* 1. Prepare globally accessible singleton */
 	g_assert (NULL == feedlist);
@@ -207,26 +204,26 @@ feedlist_init (FeedList *fl)
 	feedlist->loading = TRUE;
 
 	/* 2. Set up a root node and import the feed list source structure. */
-	debug0 (DEBUG_CACHE, "Setting up root node");
+	debug (DEBUG_CACHE, "Setting up root node");
 	ROOTNODE = node_source_setup_root ();
 
 	/* 3. Ensure folder expansion and unread count*/
-	debug0 (DEBUG_CACHE, "Initializing node state");
+	debug (DEBUG_CACHE, "Initializing node state");
 	feedlist_foreach (feedlist_init_node);
 
 	/* 4. Check if feeds do need updating. */
-	debug0 (DEBUG_UPDATE, "Performing initial feed update");
+	debug (DEBUG_UPDATE, "Performing initial feed update");
 	conf_get_int_value (STARTUP_FEED_ACTION, &startup_feed_action);
 	if (0 == startup_feed_action) {
 		/* Update all feeds */
 		if (network_monitor_is_online ()) {
-			debug0 (DEBUG_UPDATE, "initial update: updating all feeds");
+			debug (DEBUG_UPDATE, "initial update: updating all feeds");
 			node_auto_update_subscription (feedlist_get_root ());
 		} else {
-			debug0 (DEBUG_UPDATE, "initial update: prevented because we are offline");
+			debug (DEBUG_UPDATE, "initial update: prevented because we are offline");
 		}
 	} else {
-		debug0 (DEBUG_UPDATE, "initial update: resetting feed counter");
+		debug (DEBUG_UPDATE, "initial update: resetting feed counter");
 		feedlist_reset_update_counters (NULL);
 	}
 
@@ -241,7 +238,6 @@ feedlist_init (FeedList *fl)
 	feedlist->loading = FALSE;
 	feedlist_schedule_save ();
 
-	debug_exit ("feedlist_init");
 }
 
 static void feedlist_unselect(void);
@@ -563,12 +559,11 @@ feedlist_unselect (void)
 static void
 feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
 {
-	debug_enter ("feedlist_selection_changed");
 
 	nodePtr node = node_from_id (nodeId);
 	if (node) {
 		if (node != SELECTED) {
-			debug1 (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
+			debug (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
 
 			/* When the user selects a feed in the feed list we
 			   assume that he got notified of the new items or
@@ -586,13 +581,12 @@ feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
 			else
 				itemview_clear ();
 		} else {
-			debug1 (DEBUG_GUI, "selected node stayed: %s", node?node_get_title (node):"none");
+			debug (DEBUG_GUI, "selected node stayed: %s", node?node_get_title (node):"none");
 		}
 	} else {
-		debug1 (DEBUG_GUI, "failed to resolve node id: %s", nodeId);
+		debug (DEBUG_GUI, "failed to resolve node id: %s", nodeId);
 	}
 
-	debug_exit ("feedlist_selection_changed");
 }
 
 static gboolean
@@ -620,7 +614,7 @@ feedlist_schedule_save (void)
 	if (feedlist->loading || feedlist->saveTimer)
 		return;
 
-	debug0 (DEBUG_CONF, "Scheduling feedlist save");
+	debug (DEBUG_CONF, "Scheduling feedlist save");
 
 	/* By waiting here 5s and checking feedlist_save_time
 	   we hope to catch bulks of feed list changes and save
@@ -658,7 +652,7 @@ feedlist_node_was_updated (nodePtr node)
 static void
 feedlist_save (void)
 {
-	debug0 (DEBUG_CONF, "Forced feed list save");
+	debug (DEBUG_CONF, "Forced feed list save");
 	feedlist_schedule_save_cb (NULL);
 }
 

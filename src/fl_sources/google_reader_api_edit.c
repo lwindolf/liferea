@@ -169,12 +169,12 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 				JsonParser *parser = json_parser_new ();
 
 				if (!json_parser_load_from_data (parser, result->data, -1, NULL)) {
-					debug0 (DEBUG_UPDATE, "Failed to parse JSON update");
+					debug (DEBUG_UPDATE, "Failed to parse JSON update");
 					failed = TRUE;
 				} else {
 					const gchar *error = json_get_string (json_parser_get_root (parser), "error");
 					if (error) {
-						debug1 (DEBUG_UPDATE, "Request failed with error '%s'", error);
+						debug (DEBUG_UPDATE, "Request failed with error '%s'", error);
 						failed = TRUE;
 					}
 				}
@@ -195,7 +195,7 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 	google_reader_api_action_free (action);
 
 	if (failed) {
-		debug1 (DEBUG_UPDATE, "The edit action failed with result: %s\n", result->data);
+		debug (DEBUG_UPDATE, "The edit action failed with result: %s", result->data);
 		return; /** @todo start a timer for next processing */
 	}
 
@@ -347,7 +347,7 @@ google_reader_api_edit_token_cb (const struct updateResult * const result, gpoin
 		 action->actionType == EDIT_ACTION_REMOVE_LABEL)
 		google_reader_api_edit_label (action, request, token);
 
-	debug1 (DEBUG_UPDATE, "google_reader_api: postdata [%s]", request->postdata);
+	debug (DEBUG_UPDATE, "google_reader_api: postdata [%s]", request->postdata);
 	update_execute_request (node->source, request, google_reader_api_edit_action_complete, google_reader_api_action_context_new(node->source, action), FEED_REQ_NO_FEED);
 
 	action = g_queue_pop_head (node->source->actionQueue);
@@ -408,7 +408,7 @@ static void
 update_read_state_callback (nodeSourcePtr source, GoogleReaderActionPtr action, gboolean success)
 {
 	if (!success)
-		debug0 (DEBUG_UPDATE, "Failed to change item state!");
+		debug (DEBUG_UPDATE, "Failed to change item state!");
 }
 
 void
@@ -439,7 +439,7 @@ static void
 update_starred_state_callback(nodeSourcePtr source, GoogleReaderActionPtr action, gboolean success)
 {
 	if (!success)
-		debug0 (DEBUG_UPDATE, "Failed to change item state!");
+		debug (DEBUG_UPDATE, "Failed to change item state!");
 }
 
 void
@@ -494,11 +494,11 @@ google_reader_api_edit_add_subscription_cb (nodeSourcePtr source, GoogleReaderAc
 			JsonParser *parser = json_parser_new ();
 
 			if (!json_parser_load_from_data (parser, action->response, -1, NULL)) {
-				debug0 (DEBUG_UPDATE, "Failed to parse JSON response");
+				debug (DEBUG_UPDATE, "Failed to parse JSON response");
 			} else {
 				id = json_get_string (json_parser_get_root (parser), "streamId");
 				if (!id)
-					debug0 (DEBUG_UPDATE, "ERROR: Found no 'streamId' in response. Cannot set folder label!");
+					debug (DEBUG_UPDATE, "ERROR: Found no 'streamId' in response. Cannot set folder label!");
 			}
 
 			if (id) {
@@ -513,7 +513,7 @@ google_reader_api_edit_add_subscription_cb (nodeSourcePtr source, GoogleReaderAc
 			google_reader_api_edit_add_subscription_complete (source, action);
 		}
 	} else {
-		debug0 (DEBUG_UPDATE, "Failed to subscribe");
+		debug (DEBUG_UPDATE, "Failed to subscribe");
 		// FIXME: real error handling (dialog...)
 	}
 }
@@ -547,7 +547,7 @@ google_reader_api_edit_remove_callback (nodeSourcePtr source, GoogleReaderAction
 			}
 		}
 	} else
-		debug0 (DEBUG_UPDATE, "Failed to remove subscription");
+		debug (DEBUG_UPDATE, "Failed to remove subscription");
 }
 
 void

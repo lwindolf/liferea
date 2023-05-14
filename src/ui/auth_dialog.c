@@ -139,7 +139,7 @@ auth_dialog_new (subscriptionPtr subscription, gint flags)
 	AuthDialog *ad;
 
 	if (subscription->activeAuth) {
-		debug0 (DEBUG_UPDATE, "Missing/wrong authentication. Skipping, as a dialog is already active.");
+		debug (DEBUG_UPDATE, "Missing/wrong authentication. Skipping, as a dialog is already active.");
 		return NULL;
 	}
 

@@ -40,7 +40,6 @@ vfolder_new (nodePtr node)
 {
 	vfolderPtr	vfolder;
 
-	debug_enter ("vfolder_new");
 
 	vfolder = g_new0 (struct vfolder, 1);
 	vfolder->itemset = g_new0 (struct itemSet, 1);
@@ -54,7 +53,6 @@ vfolder_new (nodePtr node)
 		node_set_title (node, _("New Search Folder"));	/* set default title */
 	node_set_data (node, (gpointer) vfolder);
 
-	debug_exit ("vfolder_new");
 
 	return vfolder;
 }
@@ -93,7 +91,7 @@ vfolder_import_rules (xmlNodePtr cur,
 				additive = xmlGetProp (cur, BAD_CAST"additive");
 
 				if (ruleId && value) {
-					debug2 (DEBUG_CACHE, "loading rule \"%s\" \"%s\"", ruleId, value);
+					debug (DEBUG_CACHE, "loading rule \"%s\" \"%s\"", ruleId, value);
 
 					if (additive && !xmlStrcmp (additive, BAD_CAST"true"))
 						itemset_add_rule (vfolder->itemset, (gchar *)ruleId, (gchar *)value, TRUE);
@@ -172,7 +170,7 @@ vfolder_import (nodePtr node,
 {
 	vfolderPtr vfolder;
 
-	debug1 (DEBUG_CACHE, "import vfolder: title=%s", node_get_title (node));
+	debug (DEBUG_CACHE, "import vfolder: title=%s", node_get_title (node));
 
 	vfolder = vfolder_new (node);
 
@@ -193,7 +191,6 @@ vfolder_export (nodePtr node,
 	rulePtr		rule;
 	GSList		*iter;
 
-	debug_enter ("vfolder_export");
 
 	g_assert (TRUE == trusted);
 
@@ -216,9 +213,8 @@ vfolder_export (nodePtr node,
 		iter = g_slist_next (iter);
 	}
 
-	debug1 (DEBUG_CACHE, "adding vfolder: title=%s", node_get_title (node));
+	debug (DEBUG_CACHE, "adding vfolder: title=%s", node_get_title (node));
 
-	debug_exit ("vfolder_export");
 }
 
 void
@@ -251,7 +247,6 @@ vfolder_free (nodePtr node)
 {
 	vfolderPtr	vfolder = (vfolderPtr) node->data;
 
-	debug_enter ("vfolder_free");
 
 	if (vfolder->loader) {
 		g_object_unref (vfolder->loader);
@@ -261,7 +256,6 @@ vfolder_free (nodePtr node)
 	vfolders = g_slist_remove (vfolders, vfolder);
 	itemset_free (vfolder->itemset);
 
-	debug_exit ("vfolder_free");
 }
 
 /* implementation of the node type interface */

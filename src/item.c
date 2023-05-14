@@ -229,7 +229,7 @@ item_make_link (LifereaItem *item)
 
 		link = (gchar *) common_build_url (src, base);
 		if (!link) {
-			debug0 (DEBUG_PARSING, "Feed contains relative link and invalid base URL");
+			debug (DEBUG_PARSING, "Feed contains relative link and invalid base URL");
 			return NULL;
 		}
 	}
@@ -367,7 +367,6 @@ item_render (LifereaItem *item, guint viewMode)
 	xmlDocPtr 	doc;
 	xmlNodePtr 	xmlNode;
 
-	debug_enter ("item_render");
 
 	/* don't use node from htmlView_priv as this would be
 	wrong for folders and other merged item sets */
@@ -402,7 +401,6 @@ item_render (LifereaItem *item, guint viewMode)
 	xmlFreeDoc (doc);
 	g_free (baseUrl);
 
-	debug_exit ("item_render");
 
 	return output;
 }

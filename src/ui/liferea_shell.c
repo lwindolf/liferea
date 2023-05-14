@@ -236,7 +236,7 @@ liferea_shell_restore_position (void)
 	conf_get_int_value (LAST_WINDOW_WIDTH, &w);
 	conf_get_int_value (LAST_WINDOW_HEIGHT, &h);
 
-	debug4 (DEBUG_GUI, "Retrieved saved setting: size %dx%d position %d:%d", w, h, x, y);
+	debug (DEBUG_GUI, "Retrieved saved setting: size %dx%d position %d:%d", w, h, x, y);
 
 	/* Restore position only if the width and height were saved */
 	if (w != 0 && h != 0) {
@@ -254,7 +254,7 @@ liferea_shell_restore_position (void)
 		else if (y + w < 0)
 			y = 100;
 
-		debug4 (DEBUG_GUI, "Restoring to size %dx%d position %d:%d", w, h, x, y);
+		debug (DEBUG_GUI, "Restoring to size %dx%d position %d:%d", w, h, x, y);
 
 		gtk_window_move (GTK_WINDOW (shell->window), x, y);
 
@@ -321,7 +321,7 @@ liferea_shell_save_position (void)
 	    y > work_area.height)
 		return;
 
-	debug4 (DEBUG_GUI, "Saving window size and position: %dx%d %d:%d", w, h, x, y);
+	debug (DEBUG_GUI, "Saving window size and position: %dx%d %d:%d", w, h, x, y);
 
 	/* save window position */
 	conf_set_int_value (LAST_WINDOW_X, x);
@@ -1090,7 +1090,7 @@ email_the_author(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 		g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
 
 		if (error && (0 != error->code)) {
-			debug2 (DEBUG_GUI, "Email command failed: %s : %s", argv[0], error->message);
+			debug (DEBUG_GUI, "Email command failed: %s : %s", argv[0], error->message);
 			liferea_shell_set_important_status_bar (_("Email command failed: %s"), error->message);
 			g_error_free (error);
 		} else {
@@ -1145,7 +1145,7 @@ liferea_shell_restore_layout (gpointer user_data)
 	if ((allocation.width * 95 / 100 <= last_wpane_pos) || 0 == last_wpane_pos)
 		last_wpane_pos = allocation.width / 2;
 
-	debug3 (DEBUG_GUI, "Restoring pane proportions (left:%d normal:%d wide:%d)", last_vpane_pos, last_hpane_pos, last_wpane_pos);
+	debug (DEBUG_GUI, "Restoring pane proportions (left:%d normal:%d wide:%d)", last_vpane_pos, last_hpane_pos, last_wpane_pos);
 
 	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
 	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
@@ -1161,13 +1161,13 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	gchar		*toolbar_style;
 	gint		resultState;
 
-	debug0 (DEBUG_GUI, "Setting toolbar style");
+	debug (DEBUG_GUI, "Setting toolbar style");
 
 	toolbar_style = conf_get_toolbar_style ();
 	liferea_shell_set_toolbar_style (toolbar_style);
 	g_free (toolbar_style);
 
-	debug0 (DEBUG_GUI, "Restoring window position");
+	debug (DEBUG_GUI, "Restoring window position");
 	/* Realize needed so that the window structure can be
 	   accessed... otherwise we get a GTK warning when window is
 	   shown by clicking on notification icon or when theme
@@ -1183,7 +1183,7 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	/* Initialize with last saved state */
 	conf_get_int_value (LAST_WINDOW_STATE, &resultState);
 
-	debug2 (DEBUG_GUI, "Previous window state indicators: dconf=%d, CLI switch=%s", resultState, overrideWindowState);
+	debug (DEBUG_GUI, "Previous window state indicators: dconf=%d, CLI switch=%s", resultState, overrideWindowState);
 
 	/* Override with command line options */
 	if (!g_strcmp0 (overrideWindowState, "hidden"))
@@ -1194,13 +1194,13 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	/* And set the window to the resulting state */
 	switch (resultState) {
 		case MAINWINDOW_HIDDEN:
-			debug0 (DEBUG_GUI, "Restoring window state 'hidden (to tray)'");
+			debug (DEBUG_GUI, "Restoring window state 'hidden (to tray)'");
 			gtk_widget_hide (GTK_WIDGET (shell->window));
 			break;
 		case MAINWINDOW_SHOWN:
 		default:
 			/* Safe default is always to show window */
-			debug0 (DEBUG_GUI, "Restoring window state 'shown'");
+			debug (DEBUG_GUI, "Restoring window state 'shown'");
 			gtk_widget_show (GTK_WIDGET (shell->window));
 	}
 	
@@ -1243,7 +1243,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gint			mode;
 	FeedListView	*feedListView;
 
-	debug_enter ("liferea_shell_create");
 
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
 
@@ -1276,7 +1275,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 1.) menu creation */
 
-	debug0 (DEBUG_GUI, "Setting up menus");
+	debug (DEBUG_GUI, "Setting up menus");
 
 	shell->itemlist = itemlist_create ();
 
@@ -1313,7 +1312,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 2.) setup containers */
 
-	debug0 (DEBUG_GUI, "Setting up widget containers");
+	debug (DEBUG_GUI, "Setting up widget containers");
 
 	gtk_grid_attach_next_to (GTK_GRID (liferea_shell_lookup ("vbox1")), shell->toolbar, NULL, GTK_POS_TOP, 1,1);
 
@@ -1323,7 +1322,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 3.) setup status bar */
 
-	debug0 (DEBUG_GUI, "Setting up status bar");
+	debug (DEBUG_GUI, "Setting up status bar");
 
 	shell->statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
 	shell->statusbarLocked = FALSE;
@@ -1337,18 +1336,18 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 4.) setup tabs */
 
-	debug0 (DEBUG_GUI, "Setting up tabbed browsing");
+	debug (DEBUG_GUI, "Setting up tabbed browsing");
 	shell->tabs = browser_tabs_create (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
 
 	/* 5.) setup feed list */
 
-	debug0 (DEBUG_GUI, "Setting up feed list");
+	debug (DEBUG_GUI, "Setting up feed list");
 	shell->feedlistViewWidget = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 	feedListView = feed_list_view_create (shell->feedlistViewWidget);
 
 	/* 6.) setup menu sensivity */
 
-	debug0 (DEBUG_GUI, "Initialising menus");
+	debug (DEBUG_GUI, "Initialising menus");
 
 	/* On start, no item or feed is selected, so menus should be insensitive */
 	liferea_shell_update_item_menu (FALSE);
@@ -1359,13 +1358,13 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 7.) setup item view */
 
-	debug0 (DEBUG_GUI, "Setting up item view");
+	debug (DEBUG_GUI, "Setting up item view");
 
 	shell->itemview = itemview_create (GTK_WIDGET (shell->window));
 
         /* 8.) load icons as required */
 
-        debug0 (DEBUG_GUI, "Loading icons");
+        debug (DEBUG_GUI, "Loading icons");
 
         icons_load ();
 
@@ -1426,7 +1425,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	if (searchFolderRebuild)
 		vfolder_foreach (vfolder_rebuild);
 
-	debug_exit ("liferea_shell_create");
 }
 
 void

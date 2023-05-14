@@ -82,7 +82,6 @@ item_read_state_changed (itemPtr item, gboolean newState)
 {
 	nodePtr node;
 
-	debug_start_measurement (DEBUG_GUI);
 
 	/* 1. set values in memory */	
 	item->readStatus = newState;
@@ -123,7 +122,6 @@ item_read_state_changed (itemPtr item, gboolean newState)
 		g_slist_free (duplicates);
 	}
 
-	debug_end_measurement (DEBUG_GUI, "set read status");
 }
 
 /**
@@ -152,7 +150,6 @@ itemset_mark_read (nodePtr node)
 					node_source_item_mark_read (node, item, TRUE);
 				}
 
-				debug_start_measurement (DEBUG_GUI);
 
 				GSList *duplicates = db_item_get_duplicate_nodes (item->sourceId);
 				GSList *duplicate = duplicates;
@@ -166,7 +163,6 @@ itemset_mark_read (nodePtr node)
 				}
 				g_slist_free(duplicates);
 
-				debug_end_measurement (DEBUG_GUI, "mark read of duplicates");
 			}
 			item_unload (item);
 		}

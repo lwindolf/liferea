@@ -505,7 +505,7 @@ on_popup_open_enclosure (gpointer callback_data)
 	/* strip GET parameters from typestr */
 	g_strdelimit (typestr, "?", 0);
 
-	debug2 (DEBUG_CACHE, "url:%s, mime:%s", enclosure->url, enclosure->mime);
+	debug (DEBUG_CACHE, "url:%s, mime:%s", enclosure->url, enclosure->mime);
 
 	/* 2.) Search for type configuration based on MIME or file extension... */
 	iter = (GSList *)enclosure_mime_types_get ();

@@ -227,7 +227,7 @@ main (int argc, char *argv[])
 	g_test_init (&argc, &argv, NULL);
 
 	if (argv[1] && g_str_equal (argv[1], "--debug"))
-		set_debug_level (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
+		debug_set_flags (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
 
 	g_test_add_data_func ("/html/auto_discover_link_xml", &tc_xml, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_xml_base_url", &tc_xml_base_url, &tc_auto_discover_link);

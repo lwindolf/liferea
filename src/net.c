@@ -60,7 +60,7 @@ network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 		newuri = soup_uri_new (location);
 
 		if (SOUP_URI_IS_VALID (newuri) && ! soup_uri_equal (newuri, soup_message_get_uri (msg))) {
-			debug2 (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"", soup_uri_to_string (soup_message_get_uri (msg), FALSE),
+			debug (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"", soup_uri_to_string (soup_message_get_uri (msg), FALSE),
 							            soup_uri_to_string (newuri, FALSE));
 			job->result->httpstatus = msg->status_code;
 			job->result->source = soup_uri_to_string (newuri, FALSE);
@@ -85,8 +85,8 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	/* keep some request headers for revalidated responses */
 	revalidated = (304 == job->result->httpstatus);
 
-	debug1 (DEBUG_NET, "download status code: %d", msg->status_code);
-	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
+	debug (DEBUG_NET, "download status code: %d", msg->status_code);
+	debug (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
 
 #ifdef HAVE_G_MEMDUP2
 	job->result->data = g_memdup2 (msg->response_body->data, msg->response_body->length+1);
@@ -95,7 +95,7 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 #endif
 
 	job->result->size = (size_t)msg->response_body->length;
-	debug1 (DEBUG_NET, "%d bytes downloaded", job->result->size);
+	debug (DEBUG_NET, "%d bytes downloaded", job->result->size);
 
 	job->result->contentType = g_strdup (soup_message_headers_get_content_type (msg->response_headers, NULL));
 
@@ -169,9 +169,9 @@ network_process_request (const updateJobPtr job)
 	gboolean	do_not_track = FALSE;
 
 	g_assert (NULL != job->request);
-	debug1 (DEBUG_NET, "downloading %s", job->request->source);
-	if (job->request->postdata && (debug_level & DEBUG_VERBOSE) && (debug_level & DEBUG_NET))
-		debug1 (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
+	debug (DEBUG_NET, "downloading %s", job->request->source);
+	if (job->request->postdata && (debug_get_flags () & DEBUG_NET))
+		debug (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
 
 	/* Prepare the SoupMessage */
 	msg = soup_message_new (job->request->postdata ? SOUP_METHOD_POST : SOUP_METHOD_GET,
@@ -359,7 +359,7 @@ network_init (void)
 	SoupLogger	*logger;
 
 	useragent = network_get_user_agent ();
-	debug1 (DEBUG_NET, "user-agent set to \"%s\"", useragent);
+	debug (DEBUG_NET, "user-agent set to \"%s\"", useragent);
 
 	/* Session cookies */
 	filename = common_create_config_filename ("session_cookies.txt");
@@ -390,7 +390,7 @@ network_init (void)
 	g_signal_connect (session, "authenticate", G_CALLBACK (network_authenticate), NULL);
 
 	/* Soup debugging */
-	if (debug_level & DEBUG_NET) {
+	if (debug_get_flags () & DEBUG_NET) {
 		logger = soup_logger_new (SOUP_LOGGER_LOG_HEADERS, -1);
 		soup_session_add_feature (session, SOUP_SESSION_FEATURE (logger));
 	}
@@ -455,7 +455,7 @@ network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, g
 	if (session)
 		network_set_soup_session_proxy (session, mode, host, port, user, password);
 
-	debug4 (DEBUG_NET, "proxy set to http://%s:%s@%s:%d", user, password, host, port);
+	debug (DEBUG_NET, "proxy set to http://%s:%s@%s:%d", user, password, host, port);
 
 	network_monitor_proxy_changed ();
 }

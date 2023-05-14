@@ -79,7 +79,7 @@ browser_execute (const gchar *cmd, const gchar *uri)
 	g_free (tmp);
 	if (error && (0 != error->code)) {
 		liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
-		debug2 (DEBUG_GUI, "Browser command is invalid: %s : %s", tmp, error->message);
+		debug (DEBUG_GUI, "Browser command is invalid: %s : %s", tmp, error->message);
 		g_error_free (error);
 		return FALSE;
 	}
@@ -90,11 +90,11 @@ browser_execute (const gchar *cmd, const gchar *uri)
 	}
 
 	tmp = g_strjoinv (" ", argv);
-	debug1 (DEBUG_GUI, "Running the browser-remote %s command", tmp);
+	debug (DEBUG_GUI, "Running the browser-remote %s command", tmp);
 	g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
 
 	if (error && (0 != error->code)) {
-		debug2 (DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
+		debug (DEBUG_GUI, "Browser command failed: %s : %s", tmp, error->message);
 		liferea_shell_set_important_status_bar (_("Browser command failed: %s"), error->message);
 		g_error_free (error);
 	} else {

@@ -47,7 +47,7 @@ google_source_migrate_node(nodePtr node)
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
+				debug (DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
 			} 
 		}
@@ -146,12 +146,12 @@ google_source_feed_subscription_process_update_result (const struct updateResult
 		/* merge against feed cache */
 		if (items) {
 			itemSetPtr itemSet = node_get_itemset (subscription->node);
-			debug3 (DEBUG_UPDATE, "merging %d items into node %s (%s)\n", g_list_length(itemSet->ids), subscription->node->id, subscription->node->title);
+			debug (DEBUG_UPDATE, "merging %d items into node %s (%s)", g_list_length(itemSet->ids), subscription->node->id, subscription->node->title);
 			subscription->node->newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
 			itemlist_merge_itemset (itemSet);
 			itemset_free (itemSet);
 		} else {
-			debug3 (DEBUG_UPDATE, "result empty %s (%s): %s\n", subscription->node->id, subscription->node->title, result->data);
+			debug (DEBUG_UPDATE, "result empty %s (%s): %s", subscription->node->id, subscription->node->title, result->data);
 		}
 		subscription->node->available = TRUE;
 	} else {
@@ -213,7 +213,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 			iter = g_list_next (iter);
 		}
 		
-		debug3 (DEBUG_UPDATE, "got %d ids for %s (%s)\n", g_list_length(elements), subscription->node->id, subscription->node->title);
+		debug (DEBUG_UPDATE, "got %d ids for %s (%s)", g_list_length(elements), subscription->node->id, subscription->node->title);
 		
 		/* Only if we got some ids */
 		if (elements) {
@@ -251,7 +251,7 @@ static gboolean
 google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscription, 
                                                      UpdateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update");
+	debug (DEBUG_UPDATE, "preparing google reader feed subscription for update");
 	nodePtr root = node_source_root_from_node (subscription->node);
 
 	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
@@ -260,7 +260,7 @@ google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscriptio
 	}
 	
 	if (!metadata_list_get (subscription->metadata, "feed-id")) {
-		debug2 (DEBUG_UPDATE, "Skipping Google Reader API feed '%s' (%s) without id!", subscription->source, subscription->node->id);
+		debug (DEBUG_UPDATE, "Skipping Google Reader API feed '%s' (%s) without id!", subscription->source, subscription->node->id);
 		return FALSE;
 	}
 

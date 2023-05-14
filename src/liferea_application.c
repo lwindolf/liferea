@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea startup
  *
- * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2023 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Some code like the command line handling was inspired by
@@ -149,7 +149,7 @@ on_app_startup (GApplication *gapp, gpointer user_data)
 {
 	LifereaApplication *app = LIFEREA_APPLICATION (gapp);
 
-	set_debug_level (app->debug_flags);
+	debug_set_flags (app->debug_flags);
 
 	/* Configuration necessary for network options, so it
 	   has to be initialized before update_init() */
@@ -174,7 +174,6 @@ on_app_shutdown (GApplication *app, gpointer user_data)
 {
 	GList *list;
 
-	debug_enter ("liferea_shutdown");
 
 	/* order is important ! */
 	update_deinit ();
@@ -192,7 +191,6 @@ on_app_shutdown (GApplication *app, gpointer user_data)
 	xml_deinit ();
 	date_deinit ();
 
-	debug_exit ("liferea_shutdown");
 }
 
 static void
@@ -210,7 +208,7 @@ debug_entries_parse_callback (const gchar *option_name,
 	gulong *debug_flags = data;
 
 	if (g_str_equal (option_name, "--debug-all")) {
-		*debug_flags = 0xffff - DEBUG_VERBOSE - DEBUG_TRACE;
+		*debug_flags = 0xffff;
 	} else if (g_str_equal (option_name, "--debug-cache")) {
 		*debug_flags |= DEBUG_CACHE;
 	} else if (g_str_equal (option_name, "--debug-conf")) {
@@ -225,16 +223,10 @@ debug_entries_parse_callback (const gchar *option_name,
 		*debug_flags |= DEBUG_NET;
 	} else if (g_str_equal (option_name, "--debug-parsing")) {
 		*debug_flags |= DEBUG_PARSING;
-	} else if (g_str_equal (option_name, "--debug-performance")) {
-		*debug_flags |= DEBUG_PERF;
-	} else if (g_str_equal (option_name, "--debug-trace")) {
-		*debug_flags |= DEBUG_TRACE;
 	} else if (g_str_equal (option_name, "--debug-update")) {
 		*debug_flags |= DEBUG_UPDATE;
 	} else if (g_str_equal (option_name, "--debug-vfolder")) {
 		*debug_flags |= DEBUG_VFOLDER;
-	} else if (g_str_equal (option_name, "--debug-verbose")) {
-		*debug_flags |= DEBUG_VERBOSE;
 	} else {
 		return FALSE;
 	}
@@ -282,7 +274,7 @@ liferea_application_init (LifereaApplication *self)
 		{ "mainwindow-state", 'w', 0, G_OPTION_ARG_STRING, &self->initialStateOption, N_("Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"), N_("STATE") },
 		{ "version", 'v', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, NULL, N_("Show version information and exit"), NULL },
 		{ "add-feed", 'a', 0, G_OPTION_ARG_STRING, NULL, N_("Add a new subscription"), N_("uri") },
-		{ "disable-plugins", 'p', 0, G_OPTION_FLAG_NONE, &self->pluginsDisabled, N_("Start with all plugins disabled"), NULL },
+		{ "disable-plugins", 'p', G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE, &self->pluginsDisabled, N_("Start with all plugins disabled"), NULL },
 		{ NULL, 0, 0, 0, NULL, NULL, NULL }
 	};
 
@@ -295,11 +287,8 @@ liferea_application_init (LifereaApplication *self)
 		{ "debug-html", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Enables HTML rendering debugging. Each time Liferea renders HTML output it will also dump the generated HTML into ~/.cache/liferea/output.html"), NULL },
 		{ "debug-net", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all network activity"), NULL },
 		{ "debug-parsing", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of all parsing functions"), NULL },
-		{ "debug-performance", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages when a function takes too long to process"), NULL },
-		{ "debug-trace", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages when entering/leaving functions"), NULL },
 		{ "debug-update", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the feed update processing"), NULL },
 		{ "debug-vfolder", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print debugging messages of the search folder matching"), NULL },
-		{ "debug-verbose", 0, G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK, debug_entries_parse_callback, N_("Print verbose debugging messages"), NULL },
 		{ NULL, 0, 0, 0, NULL, NULL, NULL }
 	};
 

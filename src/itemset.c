@@ -85,7 +85,7 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 	guint		reason = 0;
 
 	/* determine if we should add it... */
-	debug3 (DEBUG_CACHE, "check new item for merging: \"%s\", %i, %i", item_get_title (newItem), allowUpdates, allowStateChanges);
+	debug (DEBUG_CACHE, "check new item for merging: \"%s\", %i, %i", item_get_title (newItem), allowUpdates, allowStateChanges);
 
 	/* compare to every existing item in this feed */
 	found = FALSE;
@@ -152,7 +152,7 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 	}
 
 	if (!found) {
-		debug0 (DEBUG_CACHE, "-> item is to be added");
+		debug (DEBUG_CACHE, "-> item is to be added");
 	} else {
 		/* if the item was found but has other contents -> update contents */
 		if (!equal) {
@@ -190,12 +190,12 @@ itemset_generic_merge_check (GList *items, itemPtr newItem, gint maxChecks, gboo
 				}
 
 				db_item_update (oldItem);
-				debug1 (DEBUG_CACHE, "-> item already existing and was updated, reason %x", reason);
+				debug (DEBUG_CACHE, "-> item already existing and was updated, reason %x", reason);
 			} else {
-				debug0 (DEBUG_CACHE, "-> item updates not merged because of parser errors");
+				debug (DEBUG_CACHE, "-> item updates not merged because of parser errors");
 			}
 		} else {
-			debug0 (DEBUG_CACHE, "-> item already exists");
+			debug (DEBUG_CACHE, "-> item already exists");
 		}
 	}
 
@@ -209,7 +209,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 	gboolean	merge;
 	nodePtr		node;
 
-	debug2 (DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title (item), itemSet->nodeId);
+	debug (DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title (item), itemSet->nodeId);
 
 	g_assert (itemSet->nodeId);
 	node = node_from_id (itemSet->nodeId);
@@ -237,7 +237,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 		if (node && IS_FEED (node) && ((feedPtr)node->data)->html5Extract)
 			feed_enrich_item (node->subscription, item);
 
-		debug3 (DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title (item), item->id, itemSet);
+		debug (DEBUG_UPDATE, "-> added \"%s\" (id=%d) to item set %p...", item_get_title (item), item->id, itemSet);
 
 		/* step 4: duplicate detection, mark read if it is a duplicate */
 		if (item->validGuid) {
@@ -245,7 +245,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 
 			duplicates = iter = db_item_get_duplicates (item->sourceId);
 			while (iter) {
-				debug1 (DEBUG_UPDATE, "-> duplicate guid exists: #%lu", GPOINTER_TO_UINT (iter->data));
+				debug (DEBUG_UPDATE, "-> duplicate guid exists: #%lu", GPOINTER_TO_UINT (iter->data));
 				iter = g_slist_next (iter);
 			}
 
@@ -263,7 +263,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 			while (iter) {
 				enclosurePtr enc = enclosure_from_string (iter->data);
 				if (enc) {
-					debug1 (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
+					debug (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
 					enclosure_download (NULL, enc->url, FALSE /* non interactive */);
 					enclosure_free (enc);
 				}
@@ -271,7 +271,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 			}
 		}
 	} else {
-		debug2 (DEBUG_UPDATE, "-> not adding \"%s\" to node id \"%s\"...", item_get_title (item), itemSet->nodeId);
+		debug (DEBUG_UPDATE, "-> not adding \"%s\" to node id \"%s\"...", item_get_title (item), itemSet->nodeId);
 		item_unload (item);
 	}
 
@@ -315,9 +315,8 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	guint	i, max, length, toBeDropped, newCount = 0, flagCount = 0;
 	nodePtr	node;
 
-	debug_start_measurement (DEBUG_UPDATE);
 
-	debug2 (DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
+	debug (DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
 
 	/* 1. Preparation: determine effective maximum cache size
 
@@ -339,10 +338,10 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 		}
 		iter = g_list_next (iter);
 	}
-	debug1(DEBUG_UPDATE, "current cache size: %d", g_list_length(itemSet->ids));
-	debug1(DEBUG_UPDATE, "current cache limit: %d", max);
-	debug1(DEBUG_UPDATE, "downloaded feed size: %d", g_list_length(list));
-	debug1(DEBUG_UPDATE, "flag count: %d", flagCount);
+	debug (DEBUG_UPDATE, "current cache size: %d", g_list_length(itemSet->ids));
+	debug (DEBUG_UPDATE, "current cache limit: %d", max);
+	debug (DEBUG_UPDATE, "downloaded feed size: %d", g_list_length(list));
+	debug (DEBUG_UPDATE, "flag count: %d", flagCount);
 
 	/* Case #1: Avoid having too many flagged items. We count the
 	   flagged items and check if they are fewer than
@@ -357,7 +356,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	   remove any items for large feeds. */
 	if ((length < max) && (max < length + flagCount)) {
 		max = flagCount + length;
-		debug2 (DEBUG_UPDATE, "too many flagged items -> increasing cache limit to %u (node id=%s)", max, itemSet->nodeId);
+		debug (DEBUG_UPDATE, "too many flagged items -> increasing cache limit to %u (node id=%s)", max, itemSet->nodeId);
 	}
 
 	/* 2. Avoid cache wrapping (if feed size > cache size)
@@ -367,7 +366,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	   to be dropped and added again on subsequent
 	   merges with the same feed content */
 	if (length > max) {
-		debug2 (DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", length, max);
+		debug (DEBUG_UPDATE, "item list too long (%u, max=%u) for merging!", length, max);
 
 		/* reach max element */
 		for(i = 0, iter = list; (i < max) && iter; ++i)
@@ -376,7 +375,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 		/* and remove all following elements */
 		while (iter) {
 			itemPtr item = (itemPtr) iter->data;
-			debug2 (DEBUG_UPDATE, "ignoring item nr %u (%s)...", ++i, item_get_title (item));
+			debug (DEBUG_UPDATE, "ignoring item nr %u (%s)...", ++i, item_get_title (item));
 			item_unload (item);
 			iter = g_list_next (iter);
 			list = g_list_remove (list, item);
@@ -411,7 +410,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	if (node && (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC))
 		node_update_counters (node);
 
-	debug1(DEBUG_UPDATE, "added %d new items", newCount);
+	debug (DEBUG_UPDATE, "added %d new items", newCount);
 
 	/* 4. Apply cache limit for effective item set size
 	      and unload older items as necessary. In this step
@@ -423,13 +422,13 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 	else
 		toBeDropped = 0;
 
-	debug3 (DEBUG_UPDATE, "%u new items, cache limit is %u -> dropping %u items", newCount, max, toBeDropped);
+	debug (DEBUG_UPDATE, "%u new items, cache limit is %u -> dropping %u items", newCount, max, toBeDropped);
 	items = g_list_sort (items, itemset_sort_by_date);
 	iter = g_list_last (items);
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
 		if (toBeDropped > 0 && !item->flagStatus) {
-			debug2 (DEBUG_UPDATE, "dropping item nr %u (%s)....", item->id, item_get_title (item));
+			debug (DEBUG_UPDATE, "dropping item nr %u (%s)....", item->id, item_get_title (item));
 			droppedItems = g_list_append (droppedItems, item);
 			/* no unloading here, it's done in itemlist_remove_items() */
 			toBeDropped--;
@@ -446,11 +445,10 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 
 	/* 5. Sanity check to detect merging bugs */
 	if (g_list_length (items) > itemset_get_max_item_count (itemSet) + flagCount)
-		debug0 (DEBUG_CACHE, "Fatal: Item merging bug! Resulting item list is too long! Cache limit does not work. This is a severe program bug!");
+		debug (DEBUG_CACHE, "Fatal: Item merging bug! Resulting item list is too long! Cache limit does not work. This is a severe program bug!");
 
 	g_list_free (items);
 
-	debug_end_measurement (DEBUG_UPDATE, "merge itemset");
 
 	return newCount;
 }

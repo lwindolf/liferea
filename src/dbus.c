@@ -159,7 +159,6 @@ on_bus_acquired (GDBusConnection *connection,
 {
 	guint id;
 
-	debug_enter ("on_bus_acquired");
 
 	/* parse introspection data */
 	introspection_data = g_dbus_node_info_new_for_xml (introspection_xml,
@@ -175,7 +174,6 @@ on_bus_acquired (GDBusConnection *connection,
 
 	g_assert (id > 0);
 
-	debug_exit ("on_bus_acquired");
 }
 
 static void
@@ -183,7 +181,7 @@ on_name_acquired (GDBusConnection *connection,
 		  const gchar     *name,
 		  gpointer         user_data)
 {
-	debug1 (DEBUG_GUI, "Acquired the name %s on the session bus\n", name);
+	debug (DEBUG_GUI, "Acquired the name %s on the session bus", name);
 }
 
 static void
@@ -191,7 +189,7 @@ on_name_lost (GDBusConnection *connection,
 	      const gchar     *name,
 	      gpointer         user_data)
 {
-	debug1 (DEBUG_GUI, "Lost the name %s on the session bus\n", name);
+	debug (DEBUG_GUI, "Lost the name %s on the session bus", name);
 }
 
 static void liferea_dbus_init(LifereaDBus *obj) { }
@@ -219,7 +217,6 @@ liferea_dbus_new (void)
 {
 	LifereaDBus *obj = NULL;
 
-	debug_enter ("liferea_dbus_new");
 
 	obj = (LifereaDBus*)g_object_new(LIFEREA_DBUS_TYPE, NULL);
 
@@ -232,7 +229,6 @@ liferea_dbus_new (void)
 					NULL,
 					NULL);
 
-	debug_exit ("liferea_dbus_new");
 
 	return obj;
 }

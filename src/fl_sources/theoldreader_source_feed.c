@@ -48,7 +48,7 @@ theoldreader_source_migrate_node (nodePtr node)
 		if (item && item->sourceId) {
 			// FIXME: does this work?
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
+				debug (DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
 			}
 		}
@@ -151,7 +151,6 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 {
 	gchar 	*id;
 
-	debug_start_measurement (DEBUG_UPDATE);
 
 	/* Save old subscription metadata which contains "theoldreader-feed-id"
 	   which is mission critical and the feed parser currently drops all
@@ -187,18 +186,17 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 		g_hash_table_unref (cache);
 		xmlFreeDoc (doc);
 	} else {
-		debug0 (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
+		debug (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
 		subscription->node->available = FALSE;
 	}
 
-	debug_end_measurement (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result");
 }
 
 static gboolean
 theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                        UpdateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");
+	debug (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");
 	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data;
 
 	g_assert (source);

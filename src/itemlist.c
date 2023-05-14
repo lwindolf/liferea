@@ -283,7 +283,7 @@ itemlist_itemset_is_valid (itemSetPtr itemSet)
 	if (IS_FOLDER (itemlist->priv->currentNode) && !folder_display_mode)
 		return FALSE; /* Bail out if it is a folder without the recursive display preference set */
 
-	debug1 (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
+	debug (DEBUG_GUI, "reloading item list with node \"%s\"", node_get_title (node));
 
 	return TRUE;
 }
@@ -291,16 +291,12 @@ itemlist_itemset_is_valid (itemSetPtr itemSet)
 void
 itemlist_merge_itemset (itemSetPtr itemSet)
 {
-	debug_enter ("itemlist_merge_itemset");
 
 	if (itemlist_itemset_is_valid (itemSet)) {
-		debug_start_measurement (DEBUG_GUI);
 		itemset_foreach (itemSet, itemlist_merge_item_callback, NULL);
 		itemview_update ();
-		debug_end_measurement (DEBUG_GUI, "itemlist merge");
 	}
 
-	debug_exit ("itemlist_merge_itemset");
 }
 
 void
@@ -310,11 +306,10 @@ itemlist_load (nodePtr node)
 	gint		folder_display_mode;
 	gboolean	display_hide_read = FALSE;
 
-	debug_enter ("itemlist_load");
 
 	g_return_if_fail (NULL != node);
 
-	debug1 (DEBUG_GUI, "loading item list with node \"%s\"", node_get_title (node));
+	debug (DEBUG_GUI, "loading item list with node \"%s\"", node_get_title (node));
 
 	g_assert (!itemlist->priv->guids);
 	g_assert (!itemlist->priv->filter);
@@ -357,7 +352,6 @@ itemlist_load (nodePtr node)
 
 	itemlist->priv->loading--;
 
-	debug_exit("itemlist_load");
 }
 
 void
@@ -551,15 +545,13 @@ itemlist_update_item (itemPtr item)
 void
 itemlist_selection_changed (itemPtr item)
 {
-	debug_enter ("itemlist_selection_changed");
-	debug_start_measurement (DEBUG_GUI);
 
 	if (0 == itemlist->priv->loading)	{
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action ();
 
-		debug1 (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
+		debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
 
 		itemlist_set_selected (item);
 
@@ -590,8 +582,6 @@ itemlist_selection_changed (itemPtr item)
 	if (item)
 		g_object_unref (item);
 
-	debug_end_measurement (DEBUG_GUI, "itemlist selection");
-	debug_exit ("itemlist_selection_changed");
 }
 
 static void
@@ -641,7 +631,7 @@ itemlist_item_batch_fetched_cb (ItemLoader *il, GSList *items, gpointer user_dat
 	if (item_loader_get_node (il) != itemlist->priv->currentNode)
 		return;	/* Bail on loader not matching selection */
 
-	debug0 (DEBUG_CACHE, "itemlist_item_batch_fetched_cb()");
+	debug (DEBUG_CACHE, "itemlist_item_batch_fetched_cb()");
 
 	iter = items;
 	while (iter) {

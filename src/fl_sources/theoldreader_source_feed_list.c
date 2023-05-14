@@ -57,7 +57,7 @@ theoldreader_source_check_node_for_removal (nodePtr node, gpointer user_data)
 		while (iter) {
 			JsonNode *json_node = (JsonNode *)iter->data;
 			if (g_str_equal (node->subscription->source, json_get_string (json_node, "url"))) {
-				debug1 (DEBUG_UPDATE, "node: %s", node->subscription->source);
+				debug (DEBUG_UPDATE, "node: %s", node->subscription->source);
 				found = TRUE;
 				break;
 			}
@@ -77,7 +77,7 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 	if (!node) {
-		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
+		debug (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
@@ -104,7 +104,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 {
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) subscription->node->data;
 
-	debug1 (DEBUG_UPDATE,"theoldreader_subscription_cb(): %s", result->data);
+	debug (DEBUG_UPDATE,"theoldreader_subscription_cb(): %s", result->data);
 
 	subscription->updateJob = NULL;
 
@@ -180,7 +180,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "theoldreader_subscription_cb(): ERROR: failed to get subscription list!");
+		debug (DEBUG_UPDATE, "theoldreader_subscription_cb(): ERROR: failed to get subscription list!");
 	}
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
@@ -200,11 +200,11 @@ theoldreader_source_opml_subscription_prepare_update_request (subscriptionPtr su
 
 	g_assert(node->source);
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		debug0 (DEBUG_UPDATE, "TheOldReaderSource: login");
+		debug (DEBUG_UPDATE, "TheOldReaderSource: login");
 		theoldreader_source_login (node->data, 0);
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating TheOldReader subscription (node id %s)", node->id);
+	debug (DEBUG_UPDATE, "updating TheOldReader subscription (node id %s)", node->id);
 
 	update_request_set_source (request, node->source->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);

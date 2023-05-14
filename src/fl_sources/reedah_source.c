@@ -94,7 +94,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 	gchar		*tmp = NULL;
 	subscriptionPtr subscription = node->subscription;
 
-	debug1 (DEBUG_UPDATE, "Reedah login processing... %s", result->data);
+	debug (DEBUG_UPDATE, "Reedah login processing... %s", result->data);
 
 	if (result->data && result->httpstatus == 200)
 		tmp = strstr (result->data, "Auth=");
@@ -114,7 +114,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 		google_reader_api_edit_process (node->source);
 
 	} else {
-		debug0 (DEBUG_UPDATE, "Reedah login failed! no Auth token found in result!");
+		debug (DEBUG_UPDATE, "Reedah login failed! no Auth token found in result!");
 
 		g_free (subscription->updateError);
 		subscription->updateError = g_strdup (_("Login failed!"));
@@ -139,7 +139,7 @@ reedah_source_login (ReedahSourcePtr source, guint32 flags)
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session
 		 * doesn't expire. */
-		debug1 (DEBUG_UPDATE, "Logging in while login state is %d\n", source->root->source->loginState);
+		debug (DEBUG_UPDATE, "Logging in while login state is %d", source->root->source->loginState);
 	}
 
 	request = update_request_new (
@@ -178,7 +178,7 @@ reedah_source_auto_update (nodePtr node)
 	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
 		return; /* the update will start automatically anyway */
 
-	debug0 (DEBUG_UPDATE, "reedah_source_auto_update()");
+	debug (DEBUG_UPDATE, "reedah_source_auto_update()");
 
 	now = g_get_real_time();
 
