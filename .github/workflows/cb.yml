@@ -12,7 +12,8 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-22.04
+    container:
+      image: 'ubuntu:23.04'
 
     steps:
     - name: Checkout repository
