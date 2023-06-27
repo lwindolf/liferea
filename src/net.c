@@ -59,8 +59,8 @@ network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 			if (!soup_uri_equal (newuri, soup_message_get_uri (msg))) {
 				job->result->httpstatus = status;
 				job->result->source = g_uri_to_string_partial (newuri, 0);
-				debug2 (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"",
-				        job->request->source, job->result->source);
+				debug (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"",
+				       job->request->source, job->result->source);
 			}
 		}
 	}
@@ -90,9 +90,9 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 	/* keep some request headers for revalidated responses */
 	revalidated = (304 == job->result->httpstatus);
 
-	debug1 (DEBUG_NET, "download status code: %d", job->result->httpstatus);
-	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
-	debug1 (DEBUG_NET, "%d bytes downloaded", job->result->size);
+	debug (DEBUG_NET, "download status code: %d", job->result->httpstatus);
+	debug (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
+	debug (DEBUG_NET, "%d bytes downloaded", job->result->size);
 
 	job->result->contentType = g_strdup (soup_message_headers_get_content_type (soup_message_get_response_headers (msg), NULL));
 
@@ -294,11 +294,11 @@ network_set_soup_session_proxy (SoupSession *session, ProxyDetectMode mode)
 		case PROXY_DETECT_MODE_MANUAL:
 			/* Manual mode is not supported anymore, so we fall through to AUTO */
 		case PROXY_DETECT_MODE_AUTO:
-			debug0 (DEBUG_CONF, "proxy auto detect is configured");
+			debug (DEBUG_CONF, "proxy auto detect is configured");
 			soup_session_set_proxy_resolver (session, g_object_ref (g_proxy_resolver_get_default ()));
 			break;
 		case PROXY_DETECT_MODE_NONE:
-			debug0 (DEBUG_CONF, "proxy is disabled by user");
+			debug (DEBUG_CONF, "proxy is disabled by user");
 			soup_session_set_proxy_resolver (session, NULL);
 			break;
 	}
@@ -380,7 +380,7 @@ network_init (void)
 	network_set_soup_session_proxy (session, network_get_proxy_detect_mode());
 
 	/* Soup debugging */
-	if (debug_level & DEBUG_NET) {
+	if (debug_get_flags() & DEBUG_NET) {
 		logger = soup_logger_new (SOUP_LOGGER_LOG_HEADERS);
 		soup_session_add_feature (session, SOUP_SESSION_FEATURE (logger));
 	}
