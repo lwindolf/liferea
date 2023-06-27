@@ -12,7 +12,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-23
+    runs-on: ubuntu-latest
     container:    
       image: 'ubuntu:23.04'
 
