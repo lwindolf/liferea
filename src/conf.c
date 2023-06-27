@@ -126,60 +126,10 @@ conf_proxy_reset_settings_cb (GSettings *settings,
                               gchar *key,
                               gpointer user_data)
 {
-	gchar		*proxyname, *proxyusername, *proxypassword;
-	gint		proxyport;
-	gint		proxydetectmode;
-	gboolean	proxyuseauth;
+	gint	mode;
 
-	proxyname = NULL;
-	proxyport = 0;
-	proxyusername = NULL;
-	proxypassword = NULL;
-	conf_get_int_value (PROXY_DETECT_MODE, &proxydetectmode);
-
-#if !WEBKIT_CHECK_VERSION (2, 15, 3)
-	if (proxydetectmode != PROXY_DETECT_MODE_AUTO)
-	{
-		GtkWidget *dialog = gtk_message_dialog_new (NULL,
-			0,
-			GTK_MESSAGE_INFO,
-			GTK_BUTTONS_CLOSE,
-			_("Your version of WebKitGTK+ doesn't support changing the proxy settings from Liferea. The system's default proxy settings will be used."));
-		gtk_dialog_run (GTK_DIALOG (dialog));
-		gtk_widget_destroy (dialog);
-
-		conf_set_int_value (PROXY_DETECT_MODE, PROXY_DETECT_MODE_AUTO);
-		return;
-	}
-#endif
-	switch (proxydetectmode) {
-		default:
-		case 0:
-			debug (DEBUG_CONF, "proxy auto detect is configured");
-			/* nothing to do, all done by libproxy inside libsoup */
-			break;
-		case 1:
-			debug (DEBUG_CONF, "proxy is disabled by user");
-			/* nothing to do */
-			break;
-		case 2:
-			debug (DEBUG_CONF, "manual proxy is configured");
-
-			conf_get_str_value (PROXY_HOST, &proxyname);
-			conf_get_int_value (PROXY_PORT, &proxyport);
-			conf_get_bool_value (PROXY_USEAUTH, &proxyuseauth);
-			if (proxyuseauth) {
-				conf_get_str_value (PROXY_USER, &proxyusername);
-				conf_get_str_value (PROXY_PASSWD, &proxypassword);
-			}
-			break;
-	}
-	debug (DEBUG_CONF, "Manual proxy settings are now %s:%d %s:%s",
-	                    proxyname != NULL ? proxyname : "NULL", proxyport,
-	                    proxyusername != NULL ? proxyusername : "NULL",
-	                    proxypassword != NULL ? proxypassword : "NULL");
-
-	network_set_proxy (proxydetectmode, proxyname, proxyport, proxyusername, proxypassword);
+	conf_get_int_value (PROXY_DETECT_MODE, &mode);
+	network_set_proxy (mode);
 }
 
 /*----------------------------------------------------------------------*/

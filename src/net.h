@@ -54,16 +54,11 @@ typedef enum {
 
 /**
  * Configures the network client to use the given proxy
- * settings. If the host name is NULL then no proxy will
- * be used.
+ * settings.
  *
- * @param mode		indicate whether to use the system setting, no proxy or the following parameters.
- * @param host		the new proxy host
- * @param port		the new proxy port
- * @param user		the new proxy username or NULL
- * @param password	the new proxy password or NULL
+ * @param mode		indicate whether to use the system setting or no proxy
  */
-void network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, gchar *password);
+void network_set_proxy (ProxyDetectMode mode);
 
 /**
  * Returns the proxy detect mode.

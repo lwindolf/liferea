@@ -98,7 +98,7 @@ void liferea_webkit_scroll_pagedown (GtkWidget *webview);
 /**
  * liferea_webkit_set_proxy: (skip)
  */
-void liferea_webkit_set_proxy (ProxyDetectMode mode, const gchar *host, guint port, const gchar *user, const gchar *pwd);
+void liferea_webkit_set_proxy (ProxyDetectMode mode);
 
 /**
  * liferea_webkit_reload_style:

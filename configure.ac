@@ -30,7 +30,7 @@ PKG_PROG_PKG_CONFIG()
 # Mandatory library dependencies
 
 pkg_modules="	gtk+-3.0 >= 3.22.0
-		glib-2.0 >= 2.50.0
+		glib-2.0 >= 2.68.0
 		gio-2.0 >= 2.50.0
 		pango >= 1.4.0 
 		libxml-2.0 >= 2.6.27
@@ -38,8 +38,8 @@ pkg_modules="	gtk+-3.0 >= 3.22.0
 		sqlite3 >= 3.7.0
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
-		libsoup-2.4 >= 2.42
-		webkit2gtk-4.0
+		libsoup-3.0 >= 3.2
+		webkit2gtk-4.1
 		json-glib-1.0
 		gobject-introspection-1.0
 		gsettings-desktop-schemas
@@ -59,7 +59,7 @@ AC_SUBST(PACKAGE_LIBS)
 
 
 PKG_CHECK_MODULES([WEB_EXTENSION], [
-                  webkit2gtk-web-extension-4.0
+                  webkit2gtk-web-extension-4.1
                   ])
 AC_SUBST([WEB_EXTENSION_CFLAGS])
 AC_SUBST([WEB_EXTENSION_LIBS])

@@ -289,13 +289,7 @@ liferea_browser_online_status_changed (NetworkMonitor *nm, gboolean online, gpoi
 static void
 liferea_browser_proxy_changed (NetworkMonitor *nm, gpointer userdata)
 {
-	liferea_webkit_set_proxy (
-		network_get_proxy_detect_mode (),
-		network_get_proxy_host (),
-		network_get_proxy_port (),
-		network_get_proxy_username (),
-		network_get_proxy_password ()
-	);
+	liferea_webkit_set_proxy (network_get_proxy_detect_mode ());
 }
 
 LifereaBrowser *
