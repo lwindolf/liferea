@@ -83,7 +83,7 @@ conf_get_dark_theme (void)
 
 		if (conf_schema_has_key (fdo_settings, "color-scheme")) {
 			conf_get_int_value_from_schema (fdo_settings, "color-scheme", &scheme);
-			debug1 (DEBUG_CONF, "FDO reports color-schema code '%d'", scheme);
+			debug (DEBUG_CONF, "FDO reports color-schema code '%d'", scheme);
 			if (1 == scheme)
 				dark = FALSE;
 			if (0 == scheme || 2 == scheme)
@@ -95,14 +95,14 @@ conf_get_dark_theme (void)
 		if (conf_schema_has_key (desktop_settings, "color-scheme")) {
 			conf_get_str_value_from_schema (desktop_settings, "color-scheme", &scheme);
 			if (scheme) {
-				debug1 (DEBUG_CONF, "GNOME reports color-schema '%s'", scheme);
+				debug (DEBUG_CONF, "GNOME reports color-schema '%s'", scheme);
 				dark = g_str_equal (scheme, "prefer-dark");
 				g_free (scheme);
 			}
 		}
 	}
 
-	debug1 (DEBUG_CONF, "Determined dark theme mode to be %d", dark);
+	debug (DEBUG_CONF, "Determined dark theme mode to be %d", dark);
 	return dark;
 }
 
@@ -161,7 +161,7 @@ void
 conf_set_int_value (const gchar *key, gint value)
 {
 	g_assert (key != NULL);
-	debug2 (DEBUG_CONF, "Setting %s to %d", key, value);
+	debug (DEBUG_CONF, "Setting %s to %d", key, value);
 	g_settings_set_int (settings, key, value);
 }
 

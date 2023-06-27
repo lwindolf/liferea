@@ -81,7 +81,7 @@ node_from_id (const gchar *id)
 
 	node = node_is_used_id (id);
 	if (!node)
-		debug1 (DEBUG_GUI, "Fatal: no node with id \"%s\" found!", id);
+		debug (DEBUG_GUI, "Fatal: no node with id \"%s\" found!", id);
 
 	return node;
 }
@@ -129,7 +129,7 @@ node_set_subscription (nodePtr node, subscriptionPtr subscription)
 	   update state field, so everything else goes NULL */
 	if (node->iconFile && !strstr(node->iconFile, "default.svg")) {
 		subscription->updateState->lastFaviconPoll = (guint64)(common_get_mod_time (node->iconFile)) * G_USEC_PER_SEC;
-		debug2 (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll / G_USEC_PER_SEC);
+		debug (DEBUG_UPDATE, "Setting last favicon poll time for %s to %lu", node->id, subscription->updateState->lastFaviconPoll / G_USEC_PER_SEC);
 	}
 }
 
@@ -262,7 +262,7 @@ void
 node_update_favicon (nodePtr node)
 {
 	if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_FAVICON) {
-		debug1 (DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
+		debug (DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
 		subscription_icon_update (node->subscription);
 	}
 
@@ -323,7 +323,7 @@ node_reparent (nodePtr node, nodePtr new_parent)
 	g_assert (NULL != new_parent);
 	g_assert (NULL != node);
 
-	debug2 (DEBUG_GUI, "Reparenting node '%s' to a parent '%s'", node_get_title(node), node_get_title(new_parent));
+	debug (DEBUG_GUI, "Reparenting node '%s' to a parent '%s'", node_get_title(node), node_get_title(new_parent));
 
 	old_parent = node->parent;
 	if (NULL != old_parent)

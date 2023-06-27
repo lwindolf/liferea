@@ -128,7 +128,7 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 		return;
 
 	subscription->updateState->lastPoll = *now;
-	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
+	debug (DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
 }
 
 /**
@@ -183,7 +183,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	g_assert (subscription->updateJob);
 	/* update the subscription URL on permanent redirects */
 	if ((301 == result->httpstatus || 308 == result->httpstatus) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
-		debug2 (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
+		debug (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
 		subscription_set_source (subscription, result->source);
     statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
   }
@@ -271,7 +271,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	if (subscription->updateJob)
 		return;
 
-	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
+	debug (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
 
 	if (subscription_can_be_updated (subscription)) {
 		now = g_get_real_time();

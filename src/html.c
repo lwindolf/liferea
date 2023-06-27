@@ -59,7 +59,7 @@ html_get_attrib (const gchar* str, gchar *attrib_name) {
 	size_t		len = 0;
 	gchar		quote;
 
-	/*debug1(DEBUG_PARSING, "fetching href %s", str); */
+	/*debug (DEBUG_PARSING, "fetching href %s", str); */
 	tmp = common_strcasestr (str, attrib_name);
 	if (!tmp)
 		return NULL;
@@ -242,7 +242,7 @@ html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
 	if (!baseUri)
 		baseUri = g_strdup (defaultBaseUri);
 
-	debug0 (DEBUG_UPDATE, "searching through link tags");
+	debug (DEBUG_UPDATE, "searching through link tags");
 	xpath_foreach_match (root, XPATH_LINK_RSS_ALTERNATE, html_auto_discover_collect_links, (gpointer)&links);
 	if (!links) {
 		gchar *tmp = search_links_dirty (data, LINK_RSS_ALTERNATE);
@@ -257,10 +257,10 @@ html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
 
 		/* We expect only relative URIs starting with '/' or absolute URIs starting with 'http://' or 'https://' */
 		if ('h' == tmp[0] || '/' == tmp[0]) {
-			debug1 (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
+			debug (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
 			valid_links = g_slist_append (valid_links, tmp);
 		} else {
-			debug1 (DEBUG_UPDATE, "html_auto_discover_feed: discarding invalid URL %s", tmp ? tmp : "NULL");
+			debug (DEBUG_UPDATE, "html_auto_discover_feed: discarding invalid URL %s", tmp ? tmp : "NULL");
 			g_free (tmp);
 		}
 
@@ -297,7 +297,7 @@ html_discover_favicon (const gchar * data, const gchar * defaultBaseUri)
 	if (!baseUri)
 		baseUri = g_strdup (defaultBaseUri);
 
-	debug0 (DEBUG_UPDATE, "searching through link tags");
+	debug (DEBUG_UPDATE, "searching through link tags");
 
 	/* First try icons with guaranteed sizes */
 	xpath_foreach_match (root, XPATH_LINK_LARGE_ICON,       html_auto_discover_collect_links, (gpointer)&results);
@@ -319,7 +319,7 @@ html_discover_favicon (const gchar * data, const gchar * defaultBaseUri)
 		gchar *tmp = iter->data;
 		iter->data = common_build_url (tmp, baseUri);
 		g_free (tmp);
-		debug1 (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
+		debug (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
 		iter = g_slist_next (iter);
 	}
 	g_free (baseUri);
@@ -336,7 +336,7 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 
 	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
 	if (!doc) {
-		debug1 (DEBUG_PARSING, "XHTML parsing error on '%s'\n", baseUri);
+		debug (DEBUG_PARSING, "XHTML parsing error on '%s'", baseUri);
 		return NULL;
 	}
 
@@ -368,7 +368,7 @@ html_get_body (const gchar *data, const gchar *baseUri) {
 
 	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
 	if (!doc) {
-		debug1 (DEBUG_PARSING, "XHTML parsing error on '%s'\n", baseUri);
+		debug (DEBUG_PARSING, "XHTML parsing error on '%s'", baseUri);
 		return NULL;
 	}
 

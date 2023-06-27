@@ -47,7 +47,7 @@ reedah_source_migrate_node (nodePtr node)
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
+				debug (DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
 			}
 		}
@@ -162,7 +162,7 @@ static gboolean
 reedah_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                  UpdateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "preparing Reedah feed subscription for update\n");
+	debug (DEBUG_UPDATE, "preparing Reedah feed subscription for update");
 	ReedahSourcePtr source = (ReedahSourcePtr) node_source_root_from_node (subscription->node)->data;
 
 	g_assert(source);

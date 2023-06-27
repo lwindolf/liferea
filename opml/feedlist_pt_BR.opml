@@ -10,7 +10,6 @@
 			<outline title="G1" htmlUrl="https://g1.globo.com/" xmlUrl="https://g1.globo.com/rss/g1/" />
 			<outline title="Jornal da USP" htmlUrl="https://jornal.usp.br" xmlUrl="https://jornal.usp.br/feed/" />
 			<outline title="Agência Brasil - EBC" htmlUrl="https://agenciabrasil.ebc.com.br/" xmlUrl="https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml" />
-			<outline title="DW Brasil" htmlUrl="https://www.dw.com/brazil/" xmlUrl="https://rss.dw.com/rdf/rss-br-all" />
 			<outline title="BBC Brasil" htmlUrl="https://www.bbc.com/portuguese" xmlUrl="https://www.bbc.co.uk/portuguese/index.xml" />
 		</outline>
 		<outline text="Podcasts &amp; vídeos">

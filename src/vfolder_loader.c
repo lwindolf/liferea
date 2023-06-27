@@ -56,7 +56,7 @@ vfolder_loader_fetch_cb (gpointer user_data, GSList **resultItems)
 			iter = g_list_next (iter);
 		}
 	} else {
-		debug1 (DEBUG_CACHE, "search folder '%s' reload complete", vfolder->node->title);
+		debug (DEBUG_CACHE, "search folder '%s' reload complete", vfolder->node->title);
 		vfolder->reloading = FALSE;
 	}
 
@@ -78,11 +78,11 @@ vfolder_loader_new (nodePtr node)
 	vfolderPtr vfolder = (vfolderPtr)node->data;
 
 	if(vfolder->reloading) {
-		debug1 (DEBUG_CACHE, "search folder '%s' still reloading", node->title);
+		debug (DEBUG_CACHE, "search folder '%s' still reloading", node->title);
 		return NULL;
 	}
 
-	debug1 (DEBUG_CACHE, "search folder '%s' reload started", node->title);
+	debug (DEBUG_CACHE, "search folder '%s' reload started", node->title);
 	vfolder_reset (vfolder);
 	vfolder->reloading = TRUE;
 	vfolder->loadOffset = 0;

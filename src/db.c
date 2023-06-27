@@ -88,10 +88,10 @@ db_exec (const gchar *sql)
 	gchar	*err;
 	gint	res;
 
-	debug1 (DEBUG_DB, "executing SQL: %s", sql);
+	debug (DEBUG_DB, "executing SQL: %s", sql);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (1 >= res) {
-		debug2 (DEBUG_DB, " -> result: %d (%s)", res, err?err:"success");
+		debug (DEBUG_DB, " -> result: %d (%s)", res, err?err:"success");
 	} else {
 		g_warning ("Unexpected status on SQL execution: %d (%s)", res, err?err:"success");
 	}
@@ -123,7 +123,7 @@ db_set_schema_version (gint schemaVersion)
 
 	sql = sqlite3_mprintf ("REPLACE INTO info (name, value) VALUES ('schemaVersion',%d);", schemaVersion);
 	if (SQLITE_OK != sqlite3_exec (db, sql, NULL, NULL, &err))
-		debug1 (DEBUG_DB, "setting schema version failed: %s", err);
+		debug (DEBUG_DB, "setting schema version failed: %s", err);
 	sqlite3_free (sql);
 	sqlite3_free (err);
 }
@@ -215,13 +215,11 @@ db_vacuum (void)
 
 	float fragmentation = (100 * (float)freelist_count/page_count);
 	if (fragmentation > VACUUM_ON_FRAGMENTATION_RATIO) {
-		debug2 (DEBUG_DB, "Performing VACUUM as freelist count/page count ratio %2.2f > %d",
+		debug (DEBUG_DB, "Performing VACUUM as freelist count/page count ratio %2.2f > %d",
 		                  fragmentation, VACUUM_ON_FRAGMENTATION_RATIO);
-		debug_start_measurement (DEBUG_DB);
 		db_exec ("VACUUM;");
-		debug_end_measurement (DEBUG_DB, "VACUUM");
 	} else {
-		debug2 (DEBUG_DB, "No VACUUM as freelist count/page count ratio %2.2f <= %d",
+		debug (DEBUG_DB, "No VACUUM as freelist count/page count ratio %2.2f <= %d",
 		                  fragmentation, VACUUM_ON_FRAGMENTATION_RATIO);
 	}
 }
@@ -233,7 +231,7 @@ db_open (void)
 	gint	res;
 
 	filename = common_create_data_filename ("liferea.db");
-	debug1 (DEBUG_DB, "Opening DB file %s...", filename);
+	debug (DEBUG_DB, "Opening DB file %s...", filename);
 	res = sqlite3_open_v2 (filename, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
 	if (SQLITE_OK != res)
 		g_error ("Data base file %s could not be opened (error code %d: %s)...", filename, res, sqlite3_errmsg (db));
@@ -254,12 +252,11 @@ db_init (void)
 {
 	gint		res;
 
-	debug_enter ("db_init");
 
 	db_open ();
 
 	/* create info table/check versioning info */
-	debug1 (DEBUG_DB, "current DB schema version: %d", db_get_schema_version ());
+	debug (DEBUG_DB, "current DB schema version: %d", db_get_schema_version ());
 
 	if (-1 == db_get_schema_version ()) {
 		/* no schema version available -> first installation without tables... */
@@ -276,7 +273,7 @@ db_init (void)
 			g_error ("This version of Liferea doesn't support migrating from such an old DB file!");
 
 		if (db_get_schema_version () == 5 || db_get_schema_version () == 6) {
-			debug0 (DEBUG_DB, "dropping triggers in preparation of database migration");
+			debug (DEBUG_DB, "dropping triggers in preparation of database migration");
 			db_exec ("BEGIN; "
 			         "DROP TRIGGER item_removal; "
 				 "DROP TRIGGER item_insert; "
@@ -285,7 +282,7 @@ db_init (void)
 
 		if (db_get_schema_version () == 5) {
 			/* 1.4.9 -> 1.4.10 adding parent_item_id to itemset relation */
-			debug0 (DEBUG_DB, "migrating from schema version 5 to 6 (this drops all comments)");
+			debug (DEBUG_DB, "migrating from schema version 5 to 6 (this drops all comments)");
 			db_exec ("BEGIN; "
 			         "DELETE FROM itemsets WHERE comment = 1; "
 				 "DELETE FROM items WHERE comment = 1; "
@@ -308,7 +305,7 @@ db_init (void)
 
 		if (db_get_schema_version () == 6) {
 			/* 1.4.15 -> 1.4.16 adding parent_node_id to itemset relation */
-			debug0 (DEBUG_DB, "migrating from schema version 6 to 7 (this drops all comments)");
+			debug (DEBUG_DB, "migrating from schema version 6 to 7 (this drops all comments)");
 			db_exec ("BEGIN; "
 			         "DELETE FROM itemsets WHERE comment = 1; "
 				 "DELETE FROM items WHERE comment = 1; "
@@ -393,12 +390,12 @@ db_init (void)
 			         "REPLACE INTO info (name, value) VALUES ('schemaVersion',9); "
 			         "END;" );
 
-			debug0 (DEBUG_DB, "Removing all views.");
+			debug (DEBUG_DB, "Removing all views.");
 			sql = sqlite3_mprintf("SELECT name FROM sqlite_master WHERE type='view';");
 			res = sqlite3_prepare_v2 (db, sql, -1, &stmt, NULL);
 			sqlite3_free (sql);
 			if (SQLITE_OK != res) {
-				debug1 (DEBUG_DB, "Could not determine views (error=%d)", res);
+				debug (DEBUG_DB, "Could not determine views (error=%d)", res);
 			} else {
 				sqlite3_reset (stmt);
 
@@ -442,7 +439,6 @@ db_init (void)
 
 	/* Schema creation */
 
-	debug_start_measurement (DEBUG_DB);
 	db_begin_transaction ();
 
 	/* 1. Create tables if they do not exist yet */
@@ -525,7 +521,6 @@ db_init (void)
 		 ");");
 
 	db_end_transaction ();
-	debug_end_measurement (DEBUG_DB, "table setup");
 
 	/* 2. Removing old triggers */
 	db_exec ("DROP TRIGGER item_insert;");
@@ -537,11 +532,11 @@ db_init (void)
 
 	/* Note: do not check on subscriptions here, as non-subscription node
 	   types (e.g. news bin) do contain items too. */
-	debug0 (DEBUG_DB, "Checking for items without a feed list node...\n");
+	debug (DEBUG_DB, "Checking for items without a feed list node...");
 	db_exec ("DELETE FROM items WHERE comment = 0 AND node_id NOT IN "
         	 "(SELECT node_id FROM node);");
 
-        debug0 (DEBUG_DB, "Checking for comments without parent item...\n");
+        debug (DEBUG_DB, "Checking for comments without parent item...");
 	db_exec ("BEGIN; "
 	         "   CREATE TEMP TABLE tmp_id ( id );"
 	         "   INSERT INTO tmp_id SELECT item_id FROM items WHERE comment = 1 AND parent_item_id NOT IN (SELECT item_id FROM items WHERE comment = 0);"
@@ -550,26 +545,26 @@ db_init (void)
 	         "   DROP TABLE tmp_id;"
 		 "END;");
 
-	debug0 (DEBUG_DB, "Checking for search folder items without a feed list node...\n");
+	debug (DEBUG_DB, "Checking for search folder items without a feed list node...");
 	db_exec ("DELETE FROM search_folder_items WHERE parent_node_id NOT IN "
         	 "(SELECT node_id FROM node);");
 
-	debug0 (DEBUG_DB, "Checking for search folder items without a search folder...\n");
+	debug (DEBUG_DB, "Checking for search folder items without a search folder...");
 	db_exec ("DELETE FROM search_folder_items WHERE node_id NOT IN "
         	 "(SELECT node_id FROM node);");
 
-	debug0 (DEBUG_DB, "Checking for search folder with comments...\n");
+	debug (DEBUG_DB, "Checking for search folder with comments...");
 	db_exec ("DELETE FROM search_folder_items WHERE comment = 1;");
 
-	debug0 (DEBUG_DB, "Checking for subscription metadata without node...\n");
+	debug (DEBUG_DB, "Checking for subscription metadata without node...");
 	db_exec ("DELETE FROM subscription_metadata WHERE node_id NOT IN "
           	 "(SELECT node_id FROM node);");
 
-	debug0 (DEBUG_DB, "Removing metadata without item...\n");
+	debug (DEBUG_DB, "Removing metadata without item...");
 	db_exec ("DELETE FROM metadata WHERE item_id NOT IN "
 		 "(SELECT item_id FROM items);");
 
-	debug0 (DEBUG_DB, "DB cleanup finished. Continuing startup.");
+	debug (DEBUG_DB, "DB cleanup finished. Continuing startup.");
 
 	/* 4. Creating triggers (after cleanup so it is not slowed down by triggers) */
 
@@ -732,14 +727,12 @@ db_init (void)
 
 	g_assert (sqlite3_get_autocommit (db));
 
-	debug_exit ("db_init");
 }
 
 void
 db_deinit (void)
 {
 
-	debug_enter ("db_deinit");
 
 	if (FALSE == sqlite3_get_autocommit (db))
 		g_warning ("Fatal: DB not in auto-commit mode. This is a bug. Data may be lost!");
@@ -754,7 +747,6 @@ db_deinit (void)
 
 	db = NULL;
 
-	debug_exit ("db_deinit");
 }
 
 static GSList *
@@ -763,7 +755,7 @@ db_metadata_list_append (GSList *metadata, const char *key, const char *value)
 	if (metadata_is_type_registered (key))
 		metadata = metadata_list_append (metadata, key, value);
 	else
-		debug1 (DEBUG_DB, "Trying to load unregistered metadata type %s from DB.", key);
+		debug (DEBUG_DB, "Trying to load unregistered metadata type %s from DB.", key);
 
 	return metadata;
 }
@@ -869,7 +861,7 @@ db_itemset_load (const gchar *id)
 	sqlite3_stmt	*stmt;
 	itemSetPtr 	itemSet;
 
-	debug1 (DEBUG_DB, "loading itemset for node \"%s\"", id);
+	debug (DEBUG_DB, "loading itemset for node \"%s\"", id);
 	itemSet = g_new0 (struct itemSet, 1);
 	itemSet->nodeId = (gchar *)id;
 
@@ -882,7 +874,7 @@ db_itemset_load (const gchar *id)
 
 	sqlite3_finalize (stmt);
 
-	debug0 (DEBUG_DB, "loading of itemset finished");
+	debug (DEBUG_DB, "loading of itemset finished");
 
 	return itemSet;
 }
@@ -893,8 +885,7 @@ db_item_load (gulong id)
 	sqlite3_stmt	*stmt;
 	itemPtr 	item = NULL;
 
-	debug1 (DEBUG_DB, "loading item %lu", id);
-	debug_start_measurement (DEBUG_DB);
+	debug (DEBUG_DB, "loading item %lu", id);
 
 	stmt = db_get_statement ("itemLoadStmt");
 	sqlite3_bind_int (stmt, 1, id);
@@ -903,12 +894,11 @@ db_item_load (gulong id)
 		item = db_load_item_from_columns (stmt);
 		(void) sqlite3_step (stmt);
 	} else {
-		debug1 (DEBUG_DB, "Could not load item with id %lu!", id);
+		debug (DEBUG_DB, "Could not load item with id %lu!", id);
 	}
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "item load");
 
 	return item;
 }
@@ -975,8 +965,7 @@ db_item_update (itemPtr item)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug2 (DEBUG_DB, "update of item \"%s\" (id=%lu)", item->title, item->id);
-	debug_start_measurement (DEBUG_DB);
+	debug (DEBUG_DB, "update of item \"%s\" (id=%lu)", item->title, item->id);
 
 	db_begin_transaction ();
 
@@ -1008,7 +997,7 @@ db_item_update (itemPtr item)
 		g_warning ("item update failed (error code=%d, %s)", res, sqlite3_errmsg (db));
 	if (!item->id && SQLITE_DONE == res) {
 		item->id = sqlite3_last_insert_rowid (db);
-		debug2(DEBUG_DB, "insert into table \"items\": \"%s\" id : %lu", item->title, item->id);
+		debug (DEBUG_DB, "insert into table \"items\": \"%s\" id : %lu", item->title, item->id);
 	}
 
 	sqlite3_finalize (stmt);
@@ -1018,7 +1007,6 @@ db_item_update (itemPtr item)
 
 	db_end_transaction ();
 
-	debug_end_measurement (DEBUG_DB, "item update");
 }
 
 void
@@ -1033,7 +1021,6 @@ db_item_state_update (itemPtr item)
 
 	db_item_search_folders_update (item);
 
-	debug_start_measurement (DEBUG_DB);
 
 	stmt = db_get_statement ("itemStateUpdateStmt");
 	sqlite3_bind_int (stmt, 1, item->readStatus?1:0);
@@ -1046,7 +1033,6 @@ db_item_state_update (itemPtr item)
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "item state update");
 
 }
 
@@ -1056,7 +1042,7 @@ db_item_remove (gulong id)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug1 (DEBUG_DB, "removing item with id %lu", id);
+	debug (DEBUG_DB, "removing item with id %lu", id);
 
 	stmt = db_get_statement ("itemsetRemoveStmt");
 	sqlite3_bind_int (stmt, 1, id);
@@ -1076,7 +1062,6 @@ db_item_get_duplicates (const gchar *guid)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug_start_measurement (DEBUG_DB);
 
 	stmt = db_get_statement ("duplicatesFindStmt");
 	res = sqlite3_bind_text (stmt, 1, guid, -1, SQLITE_TRANSIENT);
@@ -1091,7 +1076,6 @@ db_item_get_duplicates (const gchar *guid)
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "searching for duplicates");
 
 	return duplicates;
 }
@@ -1103,7 +1087,6 @@ db_item_get_duplicate_nodes (const gchar *guid)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug_start_measurement (DEBUG_DB);
 
 	stmt = db_get_statement ("duplicateNodesFindStmt");
 	res = sqlite3_bind_text (stmt, 1, guid, -1, SQLITE_TRANSIENT);
@@ -1118,7 +1101,6 @@ db_item_get_duplicate_nodes (const gchar *guid)
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "searching for duplicates");
 
 	return duplicates;
 }
@@ -1129,7 +1111,7 @@ db_itemset_remove_all (const gchar *id)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug1(DEBUG_DB, "removing all items for item set with %s", id);
+	debug (DEBUG_DB, "removing all items for item set with %s", id);
 
 	stmt = db_get_statement ("itemsetRemoveAllStmt");
 	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -1149,7 +1131,7 @@ db_itemset_mark_all_popup (const gchar *id)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug1 (DEBUG_DB, "marking all items popup for item set with %s", id);
+	debug (DEBUG_DB, "marking all items popup for item set with %s", id);
 
 	stmt = db_get_statement ("itemsetMarkAllPopupStmt");
 	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -1168,7 +1150,7 @@ db_itemset_get (itemSetPtr itemSet, gulong offset, guint limit)
 	sqlite3_stmt	*stmt;
 	gboolean	success = FALSE;
 
-	debug2 (DEBUG_DB, "loading %d items offset %lu", limit, offset);
+	debug (DEBUG_DB, "loading %d items offset %lu", limit, offset);
 
 	stmt = db_get_statement ("itemsetLoadOffsetStmt");
 	sqlite3_bind_int (stmt, 1, limit);
@@ -1193,7 +1175,6 @@ db_itemset_get_unread_count (const gchar *id)
 	gint		res;
 	guint		count = 0;
 
-	debug_start_measurement (DEBUG_DB);
 
 	stmt = db_get_statement ("itemsetReadCountStmt");
 	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -1206,7 +1187,6 @@ db_itemset_get_unread_count (const gchar *id)
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "counting unread items");
 
 	return count;
 }
@@ -1218,7 +1198,6 @@ db_itemset_get_item_count (const gchar *id)
 	gint		res;
 	guint		count = 0;
 
-	debug_start_measurement (DEBUG_DB);
 
 	stmt = db_get_statement ("itemsetItemCountStmt");
 	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -1231,7 +1210,6 @@ db_itemset_get_item_count (const gchar *id)
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "counting items");
 
 	return count;
 }
@@ -1247,7 +1225,7 @@ db_view_remove_triggers (const gchar *id)
 	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_insert_before;", id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res)
-		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+		debug (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
 	sqlite3_free (sql);
 	sqlite3_free (err);
 
@@ -1255,7 +1233,7 @@ db_view_remove_triggers (const gchar *id)
 	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_insert_after;", id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res)
-		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+		debug (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
 	sqlite3_free (sql);
 	sqlite3_free (err);
 
@@ -1263,7 +1241,7 @@ db_view_remove_triggers (const gchar *id)
 	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_delete;", id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res)
-		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+		debug (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
 	sqlite3_free (sql);
 	sqlite3_free (err);
 
@@ -1271,7 +1249,7 @@ db_view_remove_triggers (const gchar *id)
 	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_update_before;", id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res)
-		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+		debug (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
 	sqlite3_free (sql);
 	sqlite3_free (err);
 
@@ -1279,7 +1257,7 @@ db_view_remove_triggers (const gchar *id)
 	sql = sqlite3_mprintf ("DROP TRIGGER view_%s_update_after;", id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
 	if (SQLITE_OK != res)
-		debug2 (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
+		debug (DEBUG_DB, "Dropping trigger failed (%s) SQL: %s", err, sql);
 	sqlite3_free (sql);
 	sqlite3_free (err);
 }
@@ -1291,7 +1269,7 @@ db_view_remove (const gchar *id)
 	gchar	*sql, *err;
 	gint	res;
 
-	debug1 (DEBUG_DB, "Dropping view \"%s\"", id);
+	debug (DEBUG_DB, "Dropping view \"%s\"", id);
 
 	db_view_remove_triggers (id);
 
@@ -1315,7 +1293,7 @@ db_search_folder_load (const gchar *id)
 	sqlite3_stmt	*stmt;
 	itemSetPtr 	itemSet;
 
-	debug1 (DEBUG_DB, "loading search folder node \"%s\"", id);
+	debug (DEBUG_DB, "loading search folder node \"%s\"", id);
 
 	stmt = db_get_statement ("searchFolderLoadStmt");
 	res = sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -1331,7 +1309,7 @@ db_search_folder_load (const gchar *id)
 
 	sqlite3_finalize (stmt);
 
-	debug1 (DEBUG_DB, "loading search folder finished (%d items)", g_list_length (itemSet->ids));
+	debug (DEBUG_DB, "loading search folder finished (%d items)", g_list_length (itemSet->ids));
 
 	return itemSet;
 }
@@ -1342,7 +1320,7 @@ db_search_folder_reset (const gchar *id)
 	gchar	*sql, *err;
 	gint	res;
 
-	debug1 (DEBUG_DB, "resetting search folder node \"%s\"", id);
+	debug (DEBUG_DB, "resetting search folder node \"%s\"", id);
 
 	sql = sqlite3_mprintf ("DELETE FROM search_folder_items WHERE node_id = '%s';", id);
 	res = sqlite3_exec (db, sql, NULL, NULL, &err);
@@ -1352,7 +1330,7 @@ db_search_folder_reset (const gchar *id)
 	sqlite3_free (sql);
 	sqlite3_free (err);
 
-	debug0 (DEBUG_DB, "removing search folder finished");
+	debug (DEBUG_DB, "removing search folder finished");
 }
 
 void
@@ -1362,7 +1340,7 @@ db_search_folder_add_items (const gchar *id, GSList *items)
 	GSList		*iter;
 	gint	res;
 
-	debug2 (DEBUG_DB, "add %d items to search folder node \"%s\"", g_slist_length (items), id);
+	debug (DEBUG_DB, "add %d items to search folder node \"%s\"", g_slist_length (items), id);
 
 	stmt = db_get_statement ("itemUpdateSearchFoldersStmt");
 
@@ -1384,7 +1362,7 @@ db_search_folder_add_items (const gchar *id, GSList *items)
 
 	sqlite3_finalize (stmt);
 
-	debug0 (DEBUG_DB, "adding items to search folder finished");
+	debug (DEBUG_DB, "adding items to search folder finished");
 }
 
 guint
@@ -1394,7 +1372,6 @@ db_search_folder_get_item_count (const gchar *id)
 	gint		res;
 	guint		count = 0;
 
-	debug_start_measurement (DEBUG_DB);
 
 	stmt = db_get_statement ("searchFolderCountStmt");
 	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -1407,7 +1384,6 @@ db_search_folder_get_item_count (const gchar *id)
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "counting unread items");
 
 	return count;
 }
@@ -1419,7 +1395,6 @@ db_search_folder_get_unread_count (const gchar *id)
 	gint		res;
 	guint		count = 0;
 
-	debug_start_measurement (DEBUG_DB);
 
 	stmt = db_get_statement ("searchFolderUnreadCountStmt");
 	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -1432,7 +1407,6 @@ db_search_folder_get_unread_count (const gchar *id)
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "counting unread items");
 
 	return count;
 }
@@ -1499,8 +1473,7 @@ db_subscription_update (subscriptionPtr subscription)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug1 (DEBUG_DB, "updating subscription info %s", subscription->node->id);
-	debug_start_measurement (DEBUG_DB);
+	debug (DEBUG_DB, "updating subscription info %s", subscription->node->id);
 
 	stmt = db_get_statement ("subscriptionUpdateStmt");
 	sqlite3_bind_text (stmt, 1, subscription->node->id, -1, SQLITE_TRANSIENT);
@@ -1522,7 +1495,6 @@ db_subscription_update (subscriptionPtr subscription)
 
 	db_subscription_metadata_update (subscription);
 
-	debug_end_measurement (DEBUG_DB, "subscription update");
 }
 
 void
@@ -1531,8 +1503,7 @@ db_subscription_remove (const gchar *id)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug1 (DEBUG_DB, "removing subscription %s", id);
-	debug_start_measurement (DEBUG_DB);
+	debug (DEBUG_DB, "removing subscription %s", id);
 
 	stmt = db_get_statement ("subscriptionRemoveStmt");
 	sqlite3_bind_text (stmt, 1, id, -1, SQLITE_TRANSIENT);
@@ -1543,7 +1514,6 @@ db_subscription_remove (const gchar *id)
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "subscription remove");
 }
 
 void
@@ -1552,8 +1522,7 @@ db_node_update (nodePtr node)
 	sqlite3_stmt	*stmt;
 	gint		res;
 
-	debug1 (DEBUG_DB, "updating node info %s", node->id);
-	debug_start_measurement (DEBUG_DB);
+	debug (DEBUG_DB, "updating node info %s", node->id);
 
 	stmt = db_get_statement ("nodeUpdateStmt");
 	sqlite3_bind_text (stmt, 1, node->id, -1, SQLITE_TRANSIENT);
@@ -1570,7 +1539,6 @@ db_node_update (nodePtr node)
 
 	sqlite3_finalize (stmt);
 
-	debug_end_measurement (DEBUG_DB, "node update");
 }
 
 static gboolean
@@ -1612,7 +1580,7 @@ db_node_cleanup (nodePtr root)
 {
 	sqlite3_stmt	*stmt;
 
-	debug0 (DEBUG_DB, "Cleaning node ids...");
+	debug (DEBUG_DB, "Cleaning node ids...");
 
 	/* Fetch all node ids */
 	stmt = db_get_statement ("nodeIdListStmt");

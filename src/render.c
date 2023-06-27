@@ -82,14 +82,14 @@ render_load_stylesheet (const gchar *xsltName)
 		gchar   **shortlang = NULL;	/* e.g. "de" */
 		gchar	**lang = NULL;		/* e.g. "de_AT" */
 
-		debug1 (DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
+		debug (DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
 		lang = g_strsplit (setlocale (LC_MESSAGES, NULL), "@", 0);
 		shortlang = g_strsplit (setlocale (LC_MESSAGES, NULL), "_", 0);
 
 		langParams = render_parameter_new ();
 		render_parameter_add (langParams, "lang='%s'", lang[0]);
 		render_parameter_add (langParams, "shortlang='%s'", shortlang[0]);
-		debug2 (DEBUG_HTML, "XSLT localisation: lang='%s' shortlang='%s'", lang[0], shortlang[0]);
+		debug (DEBUG_HTML, "XSLT localisation: lang='%s' shortlang='%s'", lang[0], shortlang[0]);
 
 		g_strfreev (shortlang);
 		g_strfreev (lang);
@@ -166,7 +166,7 @@ render_calculate_theme_color (const gchar *name, GdkColor themeColor)
 	tc = g_new0 (struct themeColor, 1);
 	tc->name = name;
 	tc->value = g_strdup_printf ("%.2X%.2X%.2X", r, g, b);
-	debug2 (DEBUG_HTML, "theme color \"%s\" is %s", tc->name, tc->value);
+	debug (DEBUG_HTML, "theme color \"%s\" is %s", tc->name, tc->value);
 
 	return tc;
 }
@@ -209,11 +209,11 @@ render_init_theme_colors (GtkWidget *widget)
 
 	/* Clear cached previous stylesheet */
 	if (css) {
-		g_string_free (css, FALSE);
+		g_string_free (css, TRUE);
 		css = NULL;
 	}
 	if (userCss) {
-		g_string_free (userCss, FALSE);
+		g_string_free (userCss, TRUE);
 		userCss = NULL;
 	}
 	if (themeColors) {
@@ -251,7 +251,7 @@ render_init_theme_colors (GtkWidget *widget)
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-VISITED-LINK", color));
 
 	if (conf_get_dark_theme()) {
-		debug0 (DEBUG_HTML, "Dark GTK theme detected.");
+		debug (DEBUG_HTML, "Dark GTK theme detected.");
 
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->text[GTK_STATE_NORMAL]));
 		/* Try nice foreground with 'fg' color (note: distance 50 is enough because it should be non-intrusive) */
@@ -260,7 +260,7 @@ render_init_theme_colors (GtkWidget *widget)
 		else
 			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
 	} else {
-		debug0 (DEBUG_HTML, "Light GTK theme detected.");
+		debug (DEBUG_HTML, "Light GTK theme detected.");
 
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
 		/* Try nice foreground with 'dark' color (note: distance 50 is enough because it should be non-intrusive) */

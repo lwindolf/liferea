@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea Bulgarian translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-26 01:24+0200\n"
+"POT-Creation-Date: 2023-05-14 23:03+0200\n"
 "PO-Revision-Date: 2006-03-17 12:10+0200\n"
 "Last-Translator: Vladimir Petkov <vpetkov@i-space.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:349
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:341
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Събирач на RSS емисии (Liferea)"
@@ -83,13 +83,13 @@ msgstr "_Следващ непрочетен запис"
 msgid "_Mark Items Read"
 msgstr "Избиране като прочетен"
 
-#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:40
+#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:38
 #: ../glade/liferea_toolbar.ui.h:10
 #, fuzzy
 msgid "Search All Feeds..."
 msgstr "Търсене във всички емисии"
 
-#: ../plugins/libnotify.py:42
+#: ../plugins/libnotify.py:41
 #, fuzzy
 msgid "Feed Updates"
 msgstr "Временни файлове на емисията"
@@ -148,111 +148,111 @@ msgstr ""
 msgid "_Uninstall"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:248
+#: ../plugins/plugin-installer.py:252
 #, python-format
 msgid ""
 "Missing package manager '%s'. Cannot check nor install necessary "
 "dependencies!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:264
+#: ../plugins/plugin-installer.py:268
 #, python-format
 msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:271
+#: ../plugins/plugin-installer.py:275
 #, python-format
 msgid ""
 "Package installation failed (%s)! Check console output for further problem "
 "details!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:274
+#: ../plugins/plugin-installer.py:278
 #, python-format
 msgid "Failed to check plugin dependencies (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:283
+#: ../plugins/plugin-installer.py:287
 msgid "Command \"git\" not found, please install it!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:292
+#: ../plugins/plugin-installer.py:296
 #, python-format
 msgid "Copying %s to %s"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:295
+#: ../plugins/plugin-installer.py:299
 #, python-format
 msgid "Failed to copy plugin directory (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:304
+#: ../plugins/plugin-installer.py:308
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:314
+#: ../plugins/plugin-installer.py:318
 #, python-format
 msgid "Failed to copy .plugin file (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:325
+#: ../plugins/plugin-installer.py:329
 #, fuzzy, python-format
 msgid "Creating schema directory %s"
 msgstr "Не може да създаде директорията за временните файлове „%s“!"
 
-#: ../plugins/plugin-installer.py:327
+#: ../plugins/plugin-installer.py:331
 #, python-format
 msgid "Installing schema %s"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:331
+#: ../plugins/plugin-installer.py:335
 msgid "Compiling schemas..."
 msgstr ""
 
-#: ../plugins/plugin-installer.py:336
+#: ../plugins/plugin-installer.py:340
 #, python-format
 msgid "Failed to install schema files (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:346
+#: ../plugins/plugin-installer.py:350
 #, python-format
 msgid "Failed to enable plugin (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:352
+#: ../plugins/plugin-installer.py:356
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:366
+#: ../plugins/plugin-installer.py:370
 #, python-format
 msgid "Failed to disable plugin (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:373 ../plugins/plugin-installer.py:393
+#: ../plugins/plugin-installer.py:377 ../plugins/plugin-installer.py:397
 #, fuzzy, python-format
 msgid "Deleting '%s'"
 msgstr "Изтриване на запис"
 
-#: ../plugins/plugin-installer.py:376
+#: ../plugins/plugin-installer.py:380
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:386
+#: ../plugins/plugin-installer.py:390
 msgid "Failed to remove .py file!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:396
+#: ../plugins/plugin-installer.py:400
 msgid "Failed to remove .plugin file!"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:405
+#: ../plugins/plugin-installer.py:409
 msgid "Sorry! Plugin removal failed!."
 msgstr ""
 
-#: ../plugins/plugin-installer.py:407
+#: ../plugins/plugin-installer.py:411
 #, fuzzy
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!."
@@ -277,13 +277,13 @@ msgstr "_Спиране на програмата"
 msgid "Browser command failed: %s"
 msgstr "Командата за стартиране на браузъра е неуспешна: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1078
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1097
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Стартиране: „%s“"
 
 #. unauthorized
-#: ../src/comments.c:118
+#: ../src/comments.c:117
 #, fuzzy
 msgid "Authorization Error"
 msgstr "Идентифициране"
@@ -300,27 +300,27 @@ msgid ""
 msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
-#: ../src/date.c:133
+#: ../src/date.c:135
 msgid "Today %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for yesterday, reorder format codes as necessary
-#: ../src/date.c:142
+#: ../src/date.c:144
 msgid "Yesterday %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than 2 days but not older than a week, reorder format codes as necessary
-#: ../src/date.c:154
+#: ../src/date.c:156
 msgid "%a %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates older than a week but from this year, reorder format codes as necessary
-#: ../src/date.c:162
+#: ../src/date.c:164
 msgid "%b %d %l:%M %p"
 msgstr ""
 
 #. translation hint: date format for dates from the last years, reorder format codes as necessary
-#: ../src/date.c:165
+#: ../src/date.c:167
 msgid "%b %d %Y"
 msgstr ""
 
@@ -346,74 +346,74 @@ msgid ""
 "correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/export.c:187
+#: ../src/export.c:175
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "Грешка при преименуването на %s в %s\n"
 
-#: ../src/export.c:409 ../src/export.c:411
+#: ../src/export.c:387 ../src/export.c:389
 #, fuzzy, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
 "Грешка в XML по време на четенето на временния файл! „%s“ не може да бъде "
 "внесен!"
 
-#: ../src/export.c:417 ../src/export.c:419
+#: ../src/export.c:395 ../src/export.c:397
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Празен документ! OPML документа „%s“ не трябва да е празен при внасяне."
 
-#: ../src/export.c:440 ../src/export.c:442
+#: ../src/export.c:418 ../src/export.c:420
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "„%s“ не е валиден OPML документ! Liferea не може да внесе този файл!"
 
-#: ../src/export.c:461
+#: ../src/export.c:439
 msgid "Imported feed list"
 msgstr "Списък с внесените емисии"
 
-#: ../src/export.c:473
+#: ../src/export.c:451
 msgid "Import Feed List"
 msgstr "Вмъкване на списък с емисии"
 
-#: ../src/export.c:473
+#: ../src/export.c:451
 msgid "Import"
 msgstr "Внасяне"
 
-#: ../src/export.c:473 ../src/export.c:490 ../src/fl_sources/opml_source.c:379
+#: ../src/export.c:451 ../src/export.c:468 ../src/fl_sources/opml_source.c:375
 #, fuzzy
 msgid "OPML Files"
 msgstr "Избор на файл"
 
-#: ../src/export.c:481
+#: ../src/export.c:459
 msgid "Error while exporting feed list!"
 msgstr "Грешка при изнасянето на списъкът с емисии!"
 
-#: ../src/export.c:483
+#: ../src/export.c:461
 msgid "Feed List exported!"
 msgstr "Списъкът с емисии е изнесен успешно!"
 
-#: ../src/export.c:490
+#: ../src/export.c:468
 msgid "Export Feed List"
 msgstr "Изнасяне на списък с емисиите"
 
-#: ../src/export.c:490
+#: ../src/export.c:468
 msgid "Export"
 msgstr "Изнасяне"
 
-#: ../src/feed_parser.c:202
+#: ../src/feed_parser.c:201
 #, fuzzy
 msgid "Empty document!"
 msgstr "<p>Празен документ!</p>"
 
-#: ../src/feed_parser.c:211
+#: ../src/feed_parser.c:210
 #, fuzzy
 msgid "Invalid XML!"
 msgstr "<p>Невалиден XML!</p>"
 
-#: ../src/fl_sources/default_source.c:139 ../glade/new_subscription.ui.h:1
+#: ../src/fl_sources/default_source.c:135 ../glade/new_subscription.ui.h:1
 #: ../glade/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Нова емисия"
@@ -432,41 +432,41 @@ msgstr "Временни файлове на емисията"
 msgid "Could not parse JSON returned by Google Reader API!"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:117
+#: ../src/fl_sources/node_source.c:116
 msgid "Miniflux"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:332
+#: ../src/fl_sources/node_source.c:326
 msgid "No feed list source types found!"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:361
+#: ../src/fl_sources/node_source.c:355
 #, fuzzy
 msgid "Source Type"
 msgstr "Вид на източника:"
 
-#: ../src/fl_sources/node_source.c:412
+#: ../src/fl_sources/node_source.c:406
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:578
+#: ../src/fl_sources/node_source.c:572
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:319
+#: ../src/fl_sources/opml_source.c:315
 msgid "Planet, BlogRoll, OPML"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:379
+#: ../src/fl_sources/opml_source.c:375
 #, fuzzy
 msgid "Choose OPML File"
 msgstr "Избор на файл"
 
-#: ../src/fl_sources/opml_source.c:379 ../src/ui/subscription_dialog.c:355
+#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:356
 msgid "_Open"
 msgstr ""
 
@@ -518,125 +518,108 @@ msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:425
+#: ../src/itemlist.c:399
 #, fuzzy
 msgid "There are no unread items"
 msgstr "Няма непрочетени записи "
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:274
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "                   СЪСТОЯНИЕ-то може да е „shown“, „iconified“ или „hidden“"
 
-#: ../src/liferea_application.c:279
+#: ../src/liferea_application.c:274
 msgid "STATE"
 msgstr ""
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:275
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version         Изписване на информация за версията и напускане"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:276
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Нова емисия"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:276
 msgid "uri"
 msgstr ""
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:277
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr ""
 "  --debug-all      Отпечатване на всички съобщения за откриване на грешки"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:283
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr ""
 "  --debug-cache    Отпечатване на съобщенията за откриване на грешки при "
 "обработката на кеша"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:284
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr ""
 "  --debug-conf     Отпечатване на съобщенията за откриване на грешки при "
 "обработката на настройките"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:285
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr ""
 "  --debug-cache    Отпечатване на съобщенията за откриване на грешки при "
 "обработката на кеша"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:286
 #, fuzzy
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "  --debug-gui      Отпечатване на съобщенията за откриване на грешки във "
 "всички функции за графичния интерфейс"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:287
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:288
 #, fuzzy
 msgid "Print debugging messages of all network activity"
 msgstr ""
 "  --debug-all      Отпечатване на всички съобщения за откриване на грешки"
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:289
 #, fuzzy
 msgid "Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  Отпечатване на съобщенията за откриване на грешки във "
 "всички функции за синтактичен анализ"
 
-#: ../src/liferea_application.c:295
-msgid "Print debugging messages when a function takes too long to process"
-msgstr ""
-
-#: ../src/liferea_application.c:296
-#, fuzzy
-msgid "Print debugging messages when entering/leaving functions"
-msgstr ""
-"  --debug-trace    Отпечатване на съобщенията за откриване на грешки при "
-"влизане и излизане от функции"
-
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:290
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Отпечатване на съобщенията за откриване на грешки при "
 "обработката на обновяването на емисиите"
 
-#: ../src/liferea_application.c:298
+#: ../src/liferea_application.c:291
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "  --debug-cache    Отпечатване на съобщенията за откриване на грешки при "
 "обработката на кеша"
 
-#: ../src/liferea_application.c:299
-#, fuzzy
-msgid "Print verbose debugging messages"
-msgstr ""
-"  --debug-verbose  Отпечатване на подробни съобщения за откриване на грешки"
-
-#: ../src/liferea_application.c:304 ../src/liferea_application.c:305
+#: ../src/liferea_application.c:296 ../src/liferea_application.c:297
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr ""
@@ -786,17 +769,17 @@ msgstr "Настройки на емисията"
 msgid "Create News Bin"
 msgstr ""
 
-#: ../src/node.c:664
+#: ../src/node.c:625
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr ""
 
-#: ../src/node.c:683
+#: ../src/node.c:644
 #, fuzzy
 msgid "Feed file exported from Liferea"
 msgstr "Списъкът с емисии е изнесен успешно!"
 
-#: ../src/node.c:698
+#: ../src/node.c:659
 #, fuzzy, c-format
 msgid "Error while saving feed file"
 msgstr "Грешка при изнасянето на списъкът с емисии!"
@@ -811,100 +794,100 @@ msgstr ""
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:274
+#: ../src/rule.c:273
 msgid "Item"
 msgstr "Запис"
 
-#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
-#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
+#: ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276
+#: ../src/rule.c:282 ../src/rule.c:283 ../src/rule.c:284
 msgid "does contain"
 msgstr "съдържа"
 
-#: ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276 ../src/rule.c:277
-#: ../src/rule.c:283 ../src/rule.c:284 ../src/rule.c:285
+#: ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276
+#: ../src/rule.c:282 ../src/rule.c:283 ../src/rule.c:284
 msgid "does not contain"
 msgstr "не съдържа"
 
-#: ../src/rule.c:275
+#: ../src/rule.c:274
 msgid "Item title"
 msgstr "Заглавие на записа"
 
-#: ../src/rule.c:276
+#: ../src/rule.c:275
 msgid "Item body"
 msgstr "Тяло на записа"
 
-#: ../src/rule.c:277
+#: ../src/rule.c:276
 #, fuzzy
 msgid "Item author"
 msgstr "Тяло на записа"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 msgid "Read status"
 msgstr "Поставяне на статус на прочетен"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 msgid "is unread"
 msgstr "е непрочетен"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 msgid "is read"
 msgstr "е прочетен"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "Flag status"
 msgstr "Състояние на флаг"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is flagged"
 msgstr "е с флаг"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 msgid "is unflagged"
 msgstr "е без флаг"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 #, fuzzy
 msgid "Enclosure"
 msgstr "Приложения"
 
-#: ../src/rule.c:280 ../src/rule.c:281
+#: ../src/rule.c:279 ../src/rule.c:280
 #, fuzzy
 msgid "included"
 msgstr "включена фотография"
 
-#: ../src/rule.c:280 ../src/rule.c:281
+#: ../src/rule.c:279 ../src/rule.c:280
 #, fuzzy
 msgid "not included"
 msgstr "включена фотография"
 
-#: ../src/rule.c:281
+#: ../src/rule.c:280
 msgid "Podcast"
 msgstr ""
 
-#: ../src/rule.c:282
+#: ../src/rule.c:281
 #, fuzzy
 msgid "Category"
 msgstr "категория"
 
-#: ../src/rule.c:282
+#: ../src/rule.c:281
 #, fuzzy
 msgid "is set"
 msgstr "е прочетен"
 
-#: ../src/rule.c:282
+#: ../src/rule.c:281
 msgid "is not set"
 msgstr ""
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 msgid "Feed title"
 msgstr "Заглавие на емисията"
 
-#: ../src/rule.c:284
+#: ../src/rule.c:283
 #, fuzzy
 msgid "Feed source"
 msgstr "Източник на емисията"
 
-#: ../src/rule.c:285
+#: ../src/rule.c:284
 msgid "Parent folder title"
 msgstr ""
 
@@ -934,12 +917,12 @@ msgstr "„%s“ не е продължен. Liferea няма да го осъв
 msgid "\"%s\" has not changed since last update"
 msgstr "„%s“ не се промени след последното осъвременяване"
 
-#: ../src/subscription.c:221 ../src/subscription.c:296
+#: ../src/subscription.c:221 ../src/subscription.c:297
 #, fuzzy, c-format
 msgid "Updating (%d / %d) ..."
 msgstr "Актуализиране на „%s“"
 
-#: ../src/subscription.c:298
+#: ../src/subscription.c:299
 #, fuzzy, c-format
 msgid "Updating '%s'..."
 msgstr "Актуализиране на „%s“"
@@ -992,7 +975,7 @@ msgid_plural "%d attachments"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:355
+#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:356
 msgid "Choose File"
 msgstr "Избор на файл"
 
@@ -1001,77 +984,77 @@ msgstr "Избор на файл"
 msgid "File Extension .%s"
 msgstr "<b>Файлово разширение .%s</b>"
 
-#: ../src/ui/feed_list_view.c:428
+#: ../src/ui/feed_list_view.c:426
 msgid "Liferea is in offline mode. No update possible."
 msgstr "Liferea е в режим „изключен“. Не е възможно да актуализирате емисиите."
 
-#: ../src/ui/feed_list_view.c:474
+#: ../src/ui/feed_list_view.c:472
 #, fuzzy
 msgid "all feeds"
 msgstr "Търсене във всички емисии."
 
-#: ../src/ui/feed_list_view.c:475
+#: ../src/ui/feed_list_view.c:473
 #, fuzzy, c-format
 msgid "Mark %s as read ?"
 msgstr "Отбелязване на всички като _прочетени"
 
-#: ../src/ui/feed_list_view.c:479
+#: ../src/ui/feed_list_view.c:477
 #, fuzzy, c-format
 msgid "Are you sure you want to mark all items in %s as read ?"
 msgstr "Сигурни ли сте, че искате да изтриете „%s“?"
 
-#: ../src/ui/feed_list_view.c:617
+#: ../src/ui/feed_list_view.c:615
 msgid "(Empty)"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:828
+#: ../src/ui/feed_list_view.c:826
 #, c-format
 msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:897
+#: ../src/ui/feed_list_view.c:895
 msgid "Deleting entry"
 msgstr "Изтриване на запис"
 
-#: ../src/ui/feed_list_view.c:898
+#: ../src/ui/feed_list_view.c:896
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Сигурни ли сте, че искате да изтриете „%s“ и всички негови записи?"
 
-#: ../src/ui/feed_list_view.c:898
+#: ../src/ui/feed_list_view.c:896
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Сигурни ли сте, че искате да изтриете „%s“?"
 
-#: ../src/ui/feed_list_view.c:907 ../src/ui/feed_list_view.c:961
+#: ../src/ui/feed_list_view.c:905 ../src/ui/feed_list_view.c:959
 #: ../src/ui/popup_menu.c:260
 #, fuzzy
 msgid "_Cancel"
 msgstr "Актуализиране на _всички"
 
-#: ../src/ui/feed_list_view.c:908 ../src/ui/popup_menu.c:411
+#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:411
 #, fuzzy
 msgid "_Delete"
 msgstr "/_Изтриване"
 
-#: ../src/ui/feed_list_view.c:910
+#: ../src/ui/feed_list_view.c:908
 msgid "Deletion Confirmation"
 msgstr "Потвърждаване на изтриването"
 
-#: ../src/ui/feed_list_view.c:949
+#: ../src/ui/feed_list_view.c:947
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:962
+#: ../src/ui/feed_list_view.c:960
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:964
+#: ../src/ui/feed_list_view.c:962
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Потвърждаване на изтриването"
@@ -1111,42 +1094,42 @@ msgstr "Трябва да изберете емисия, за да изтрие�
 msgid "No item has been selected"
 msgstr "Няма избран запис"
 
-#: ../src/ui/liferea_browser.c:482
+#: ../src/ui/liferea_browser.c:484
 #, fuzzy
 msgid "Content download failed! Try disabling reader mode."
 msgstr "Избор на папка за запазване на изтеглянията"
 
-#: ../src/ui/liferea_browser.c:495
+#: ../src/ui/liferea_browser.c:497
 msgid "Content extraction failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:409
+#: ../src/ui/liferea_shell.c:410
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d нов запис"
 msgstr[1] "%d нови записа"
 
-#: ../src/ui/liferea_shell.c:414
+#: ../src/ui/liferea_shell.c:415
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "е непрочетен"
 msgstr[1] "е непрочетен"
 
-#: ../src/ui/liferea_shell.c:785
+#: ../src/ui/liferea_shell.c:807
 msgid "Help Topics"
 msgstr "Раздели в помощта"
 
-#: ../src/ui/liferea_shell.c:791
+#: ../src/ui/liferea_shell.c:813
 msgid "Quick Reference"
 msgstr "Бърз справочник"
 
-#: ../src/ui/liferea_shell.c:797
+#: ../src/ui/liferea_shell.c:819
 msgid "FAQ"
 msgstr "Често задавани въпроси"
 
-#: ../src/ui/liferea_shell.c:1075
+#: ../src/ui/liferea_shell.c:1094
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Командата за стартиране на браузъра е неуспешна: %s"
@@ -1350,20 +1333,24 @@ msgstr "Локален _файл"
 msgid "Wide View"
 msgstr "_Изглед"
 
-#: ../src/ui/preferences_dialog.c:487
+#: ../src/ui/preferences_dialog.c:112
+msgid "Automatic"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.c:491
 #, fuzzy
 msgid "Default Browser"
 msgstr "Браузър"
 
-#: ../src/ui/preferences_dialog.c:489
+#: ../src/ui/preferences_dialog.c:493
 msgid "Manual"
 msgstr "Ръчно зададено"
 
-#: ../src/ui/preferences_dialog.c:752
+#: ../src/ui/preferences_dialog.c:756
 msgid "Type"
 msgstr "Тип"
 
-#: ../src/ui/preferences_dialog.c:755
+#: ../src/ui/preferences_dialog.c:759
 msgid "Program"
 msgstr "Програма"
 
@@ -1377,7 +1364,7 @@ msgstr "Премахване на _всички"
 msgid "Saved Search"
 msgstr "Търсене с Feedster"
 
-#: ../src/ui/subscription_dialog.c:427
+#: ../src/ui/subscription_dialog.c:428
 #, fuzzy, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1389,7 +1376,7 @@ msgstr[1] ""
 "Доставчикът на този източник предлага да поставите период за осъвременяване "
 "от %d минути."
 
-#: ../src/ui/subscription_dialog.c:431
+#: ../src/ui/subscription_dialog.c:432
 msgid "This feed specifies no default update interval."
 msgstr "Този източник няма подразбиращ се интервал за осъвременяване"
 
@@ -1398,33 +1385,38 @@ msgstr "Този източник няма подразбиращ се инте�
 msgid "All Files"
 msgstr "Локален _файл"
 
-#: ../src/update.c:370
+#: ../src/update.c:377
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "Грешка при отваряне на временния файл %s за филтриране!"
 
-#: ../src/update.c:392
+#: ../src/update.c:399
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s приключи работа със статус %d"
 
-#: ../src/update.c:398 ../src/update.c:399 ../src/update.c:621
+#: ../src/update.c:405 ../src/update.c:630
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "Грешка: Тръбата „%s“ не може да бъде отворена"
 
+#: ../src/update.c:409
+#, fuzzy
+msgid "Error: Could not write temporary file!"
+msgstr "Грешка: Файлът „%s“ не може да бъде отворен"
+
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:652
+#: ../src/update.c:661
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "Грешка: Файлът „%s“ не може да бъде отворен"
 
-#: ../src/update.c:658
+#: ../src/update.c:667
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "Грешка: Файлът „%s“ не съществува"
 
-#: ../src/vfolder.c:54
+#: ../src/vfolder.c:53
 #, fuzzy
 msgid "New Search Folder"
 msgstr "Нова папка"
@@ -1681,54 +1673,44 @@ msgid "_Normal size"
 msgstr "Локален _файл"
 
 #: ../glade/liferea_menu.ui.h:33
-#, fuzzy
-msgid "_Normal View"
-msgstr "Локален _файл"
-
-#: ../glade/liferea_menu.ui.h:34
-#, fuzzy
-msgid "_Wide View"
-msgstr "_Изглед"
-
-#: ../glade/liferea_menu.ui.h:35
 msgid "_Reduced Feed List"
 msgstr ""
 
-#: ../glade/liferea_menu.ui.h:36
+#: ../glade/liferea_menu.ui.h:34
 msgid "_Tools"
 msgstr ""
 
-#: ../glade/liferea_menu.ui.h:37
+#: ../glade/liferea_menu.ui.h:35
 #, fuzzy
 msgid "_Update Monitor"
 msgstr "/_Актуализиране на папка"
 
-#: ../glade/liferea_menu.ui.h:38
+#: ../glade/liferea_menu.ui.h:36
 msgid "_Preferences"
 msgstr "_Настройки"
 
-#: ../glade/liferea_menu.ui.h:39
+#: ../glade/liferea_menu.ui.h:37
 #, fuzzy
 msgid "S_earch"
 msgstr "Търсене"
 
-#: ../glade/liferea_menu.ui.h:41
+#: ../glade/liferea_menu.ui.h:39
 msgid "_Help"
 msgstr "_Помощ"
 
-#: ../glade/liferea_menu.ui.h:42
+#: ../glade/liferea_menu.ui.h:40
 msgid "_Contents"
 msgstr "_Ръководство"
 
-#: ../glade/liferea_menu.ui.h:43
+#: ../glade/liferea_menu.ui.h:41
 msgid "_Quick Reference"
 msgstr "_Бърз справочник"
 
-#: ../glade/liferea_menu.ui.h:44
+#: ../glade/liferea_menu.ui.h:42
 msgid "_FAQ"
 msgstr "_Често задавани въпроси"
 
-#: ../glade/liferea_menu.ui.h:45
+#: ../glade/liferea_menu.ui.h:43
 msgid "_About"
 msgstr "_Относно програмата"
 
@@ -2596,6 +2578,26 @@ msgstr ""
 #, fuzzy
 msgid "Search Folder:"
 msgstr "Нова папка"
+
+#, fuzzy
+#~ msgid "Print debugging messages when entering/leaving functions"
+#~ msgstr ""
+#~ "  --debug-trace    Отпечатване на съобщенията за откриване на грешки при "
+#~ "влизане и излизане от функции"
+
+#, fuzzy
+#~ msgid "Print verbose debugging messages"
+#~ msgstr ""
+#~ "  --debug-verbose  Отпечатване на подробни съобщения за откриване на "
+#~ "грешки"
+
+#, fuzzy
+#~ msgid "_Normal View"
+#~ msgstr "Локален _файл"
+
+#, fuzzy
+#~ msgid "_Wide View"
+#~ msgstr "_Изглед"
 
 #, fuzzy
 #~ msgid "RSS feed reader"

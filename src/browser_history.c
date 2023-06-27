@@ -58,7 +58,7 @@ browser_history_forward (browserHistory *history)
 	url = g_list_next (url);
 	history->current = url;
 
-	return url->data;
+	return url?url->data:NULL;
 }
 
 gchar *
@@ -69,7 +69,7 @@ browser_history_back (browserHistory *history)
 	url = g_list_previous (url);
 	history->current = url;
 
-	return url->data;
+	return url?url->data:NULL;
 }
 
 gboolean

@@ -50,7 +50,6 @@ default_source_import (nodePtr node)
 	gchar		*content;
 	gssize		length;
 
-	debug_enter ("default_source_source_import");
 
 	g_assert (TRUE == feedlistImport);
 
@@ -101,7 +100,6 @@ default_source_import (nodePtr node)
 	
 	feedlistImport = FALSE;
 
-	debug_exit ("default_source_source_import");
 }
 
 static void
@@ -112,7 +110,6 @@ default_source_export (nodePtr node)
 	if (feedlistImport)
 		return;
 
-	debug_enter ("default_source_source_export");
 	
 	g_assert (node->source->root == feedlist_get_root ());
 
@@ -120,7 +117,6 @@ default_source_export (nodePtr node)
 	export_OPML_feedlist (filename, node->source->root, TRUE);
 	g_free (filename);
 
-	debug_exit ("default_source_source_export");
 }
 
 static void

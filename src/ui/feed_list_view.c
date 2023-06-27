@@ -115,7 +115,7 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 	 	gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
 
-		debug1 (DEBUG_GUI, "feed list selection changed to \"%s\"", node?node_get_title (node):"Empty node");
+		debug (DEBUG_GUI, "feed list selection changed to \"%s\"", node?node_get_title (node):"Empty node");
 
 		if (!node) {
 			/* The selected iter is an "empty" node added to an empty folder. We get the parent's node
@@ -125,7 +125,7 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 			if (gtk_tree_model_iter_parent (model, &parent, &iter))
 				gtk_tree_model_get (model, &parent, FS_PTR, &node, -1);
 			else {
-				debug0 (DEBUG_GUI, "A selected null node has no parent. This should not happen.");
+				debug (DEBUG_GUI, "A selected null node has no parent. This should not happen.");
 				return;
 			}
 		}
@@ -298,7 +298,6 @@ feed_list_view_create (GtkTreeView *treeview)
 	GtkTreeViewColumn 	*column, *column2;
 	GtkTreeSelection	*select;
 
-	debug_enter ("feed_list_view_create");
 
 	/* Set up store */
 	g_assert (NULL == flv);
@@ -366,7 +365,6 @@ feed_list_view_create (GtkTreeView *treeview)
 
 	ui_dnd_setup_feedlist (flv->feedstore);
 
-	debug_exit ("feed_list_view_create");
 
 	return flv;
 }
@@ -651,7 +649,7 @@ feed_list_view_check_if_folder_is_empty (const gchar *nodeId)
 	GtkTreeIter	*iter;
 	int		count;
 
-	debug1 (DEBUG_GUI, "folder empty check for node id \"%s\"", nodeId);
+	debug (DEBUG_GUI, "folder empty check for node id \"%s\"", nodeId);
 
 	/* this function does two things:
 
@@ -684,7 +682,7 @@ feed_list_view_add_node (nodePtr node)
 	gint		position;
 	GtkTreeIter	*iter, *parentIter = NULL;
 
-	debug2 (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != node->parent)?node_get_title(node->parent):"feed list root");
+	debug (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != node->parent)?node_get_title(node->parent):"feed list root");
 
 	g_assert (NULL != node->parent);
 	g_assert (NULL == feed_list_view_to_iter (node->id));
@@ -795,7 +793,7 @@ feed_list_view_update_node (const gchar *nodeId)
 		fg = render_get_theme_color ("FEEDLIST_UNREAD_FG");
 		if (fg && bg) {
 			countColor = g_strdup_printf ("foreground='#%s' background='#%s'", fg, bg);
-			debug1 (DEBUG_HTML, "Feed list unread CSS: %s\n", countColor);
+			debug (DEBUG_HTML, "Feed list unread CSS: %s", countColor);
 		}
 	}
 

@@ -53,7 +53,7 @@ network_monitor_finalize (GObject *object)
 {
 	NetworkMonitor *self = NETWORK_MONITOR (object);
 
-	debug0 (DEBUG_NET, "network manager: unregistering network state change callback");
+	debug (DEBUG_NET, "network manager: unregistering network state change callback");
 
 	if (self->priv->conn && self->priv->subscription_id) {
 		g_dbus_connection_signal_unsubscribe (self->priv->conn,
@@ -127,10 +127,10 @@ on_network_state_changed_cb (GDBusConnection *connection,
 	g_variant_get (parameters, "(u)", &state);
 
 	if (online && !is_nm_connected (state)) {
-		debug0 (DEBUG_NET, "network manager: no network connection -> going offline");
+		debug (DEBUG_NET, "network manager: no network connection -> going offline");
 		network_monitor_set_online (FALSE);
 	} else if (!online && is_nm_connected (state)) {
-		debug0 (DEBUG_NET, "network manager: active connection -> going online");
+		debug (DEBUG_NET, "network manager: active connection -> going online");
 		network_monitor_set_online (TRUE);
 	}
 }
@@ -140,7 +140,7 @@ network_monitor_set_online (gboolean mode)
 {
 	if (network_monitor->priv->online != mode) {
 		network_monitor->priv->online = mode;
-		debug1 (DEBUG_NET, "Changing online mode to %s", mode?"online":"offline");
+		debug (DEBUG_NET, "Changing online mode to %s", mode?"online":"offline");
 		g_signal_emit (network_monitor, network_monitor_signals[ONLINE_STATUS_CHANGED], 0, mode);
 	}
 }
@@ -171,14 +171,14 @@ on_bus_get_cb (GObject *source_object, GAsyncResult *result, gpointer user_data)
 
 	self->priv->conn = g_bus_get_finish (result, &error);
 	if (!self->priv->conn) {
-		debug1 (DEBUG_NET, "Could not connect to system bus: %s", error->message);
+		debug (DEBUG_NET, "Could not connect to system bus: %s", error->message);
 		g_error_free (error);
 		return;
 	}
 
 	g_dbus_connection_set_exit_on_close (self->priv->conn, FALSE);
 
-	debug0 (DEBUG_NET, "network manager: connecting to StateChanged signal");
+	debug (DEBUG_NET, "network manager: connecting to StateChanged signal");
 	self->priv->subscription_id = g_dbus_connection_signal_subscribe (self->priv->conn,
 									  "org.freedesktop.NetworkManager",
 									  "org.freedesktop.NetworkManager",
@@ -190,7 +190,7 @@ on_bus_get_cb (GObject *source_object, GAsyncResult *result, gpointer user_data)
 									  self,
 									  NULL);
 
-	debug1 (DEBUG_NET, "network manager: connected to StateChanged signal: %s",
+	debug (DEBUG_NET, "network manager: connected to StateChanged signal: %s",
 		self->priv->subscription_id ? "yes" : "no");
 }
 

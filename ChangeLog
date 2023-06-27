@@ -1,6 +1,9 @@
-2023-03-23  Lars Windolf <lars.windolf@gmx.de>
+2023-04-16  Lars Windolf <lars.windolf@gmx.de>
 
-	Version 1.14.3
+	Version 1.15.0
+
+	* Fixes #1217, #1224: Endless recursion in 1.14.3
+	  (reported by uduecoder, mokraemer)
 
 	* Fixes #1214: crash in conf_get_bool_value_from_schema
 	  (mozbugbox, reported by Mikel Olasagasti)
@@ -8,22 +11,14 @@
 	* Fixes #1215: failed to build in launchpad PPA due to 
 	  auto_test permission issue (reported by PandaJim)
 
-
-
-2023-03-20  Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.14.2
-
 	* Fixes #1212: 1.14.1 crash when refreshing feeds.
 	  (mozbugbox, reported by Froggy232)
+	  
+	* Fixes #1198: FreshRSS logging in correctly but can't get posts
+	  (reported by Roger Gonzalez)
 
 	* Fixes a memory leak when reloading CSS
 	  (Lars Windolf)
-	
-
-2023-03-12  Lars Windolf <lars.windolf@gmx.de>
-
-	Version 1.14.1
 
 	* Fixes CVE-2023-1350: RCE vulnerability on feed enrichment
 	  (patch by Alexander Erwin Ittner)
@@ -33,6 +28,15 @@
 
 	* Improve #1192 be reordering widget creation order
 	  (Lars Windolf)
+	  
+	* Improvements to the libnotify plugin
+	  (Tasos Sahanidis)
+
+	* Fixes a g_object_unref warning on shutdown
+	* Drops a debug output in the plugin installer
+	* Drop webkit inspector from installable plugins in favour of --debug-html
+	* Drop pane plugin from default plugins 
+	* Drop pane plugin (old workaround for pane issues)
 
 
 2023-01-10  Lars Windolf <lars.windolf@gmx.de>

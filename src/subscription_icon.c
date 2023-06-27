@@ -77,7 +77,7 @@ subscription_icon_download_data_cb (const struct updateResult * const result, gp
 	iconDownloadCtxtPtr ctxt = (iconDownloadCtxtPtr)user_data;
 	gboolean	success = FALSE;
 
-	debug4 (DEBUG_UPDATE, "icon download processing (%s, %d bytes, content type %s) for favicon %s", result->source, result->size, result->contentType, ctxt->id);
+	debug (DEBUG_UPDATE, "icon download processing (%s, %d bytes, content type %s) for favicon %s", result->source, result->size, result->contentType, ctxt->id);
 
 	if (result->data &&
 	    result->size > 0 &&
@@ -87,7 +87,7 @@ subscription_icon_download_data_cb (const struct updateResult * const result, gp
 		success = favicon_save_from_data (result, ctxt->id);
 
 	} else {
-		debug1 (DEBUG_UPDATE, "No data in download result for favicon %s!", ctxt->id);
+		debug (DEBUG_UPDATE, "No data in download result for favicon %s!", ctxt->id);
 	}
 
 	if (!success) {
@@ -122,7 +122,7 @@ subscription_icon_download_html_cb (const struct updateResult * const result, gp
 	}
 
 	if (!success)
-		debug2 (DEBUG_UPDATE, "No links in HTML '%s' for icon '%s' found!", result->source, ctxt->id);
+		debug (DEBUG_UPDATE, "No links in HTML '%s' for icon '%s' found!", result->source, ctxt->id);
 
 	subscription_icon_download_next (ctxt);	/* continue favicon download */
 }
@@ -138,7 +138,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 	update_result_cb	callback;
 
 	if (g_slist_length (ctxt->doneUrls) > ICON_DOWNLOAD_MAX_URLS) {
-		debug2 (DEBUG_UPDATE, "Stopping icon '%s' discovery after trying %d URLs.", ctxt->id, ICON_DOWNLOAD_MAX_URLS);
+		debug (DEBUG_UPDATE, "Stopping icon '%s' discovery after trying %d URLs.", ctxt->id, ICON_DOWNLOAD_MAX_URLS);
 		subscription_icon_download_ctxt_free (ctxt);
 		return;
 	}
@@ -148,7 +148,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 		ctxt->urls = g_slist_remove (ctxt->urls, url);
 		ctxt->doneUrls = g_slist_append (ctxt->doneUrls, url);
 
-		debug2 (DEBUG_UPDATE, "Icon '%s' trying URL: '%s'", ctxt->id, url);
+		debug (DEBUG_UPDATE, "Icon '%s' trying URL: '%s'", ctxt->id, url);
 
 		request = update_request_new (
 			url,
@@ -166,7 +166,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 
 		update_execute_request (node_from_id (ctxt->id), request, callback, ctxt, FEED_REQ_PRIORITY_HIGH | FEED_REQ_NO_FEED);
 	} else {
-		debug1 (DEBUG_UPDATE, "Icon '%s' discovery/download failed!", ctxt->id);
+		debug (DEBUG_UPDATE, "Icon '%s' discovery/download failed!", ctxt->id);
 		subscription_icon_download_ctxt_free (ctxt);
 	}
 }
@@ -176,7 +176,7 @@ subscription_icon_update (subscriptionPtr subscription)
 {
 	iconDownloadCtxtPtr	ctxt;
 
-	debug1 (DEBUG_UPDATE, "trying to download icon for \"%s\"", node_get_title (subscription->node));
+	debug (DEBUG_UPDATE, "trying to download icon for \"%s\"", node_get_title (subscription->node));
  	subscription->updateState->lastFaviconPoll = g_get_real_time();
 
 	ctxt = subscription_icon_download_ctxt_new ();

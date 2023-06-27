@@ -218,7 +218,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	g_free (image_uri);
 	g_free (link_title);
 
-	if(debug_level & DEBUG_HTML) {
+	if(debug_get_flags () & DEBUG_HTML) {
 		section = g_menu_new ();
 		g_menu_append (section, "Inspect", "liferea_web_view.web-inspector");
 		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));

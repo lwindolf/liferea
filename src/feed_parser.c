@@ -119,7 +119,7 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 	gchar	*source = NULL;
 	GSList	*links;
 
-	debug2 (DEBUG_UPDATE, "Starting feed auto discovery (%s) redirects=%d", subscription_get_source (ctxt->subscription), ctxt->subscription->autoDiscoveryTries);
+	debug (DEBUG_UPDATE, "Starting feed auto discovery (%s) redirects=%d", subscription_get_source (ctxt->subscription), ctxt->subscription->autoDiscoveryTries);
 
 	links = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription));
 	if (links)
@@ -127,7 +127,7 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 
 	/* FIXME: we only need the !g_str_equal as a workaround after a 404 */
 	if (source && !g_str_equal (source, subscription_get_source (ctxt->subscription))) {
-		debug1 (DEBUG_UPDATE, "Discovered link: %s", source);
+		debug (DEBUG_UPDATE, "Discovered link: %s", source);
 		subscription_set_source (ctxt->subscription, source);
 
 		/* The feed that was processed wasn't the correct one, we need to redownload it.
@@ -139,7 +139,7 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 		return TRUE;
 	}
 
-	debug0 (DEBUG_UPDATE, "No feed link found!");
+	debug (DEBUG_UPDATE, "No feed link found!");
 	return FALSE;
 }
 
@@ -177,7 +177,6 @@ feed_parse (feedParserCtxtPtr ctxt)
 	GSList		*handlerIter;
 	gboolean	autoDiscovery = FALSE, success = FALSE;
 
-	debug_enter ("feed_parse");
 
 	g_assert (NULL == ctxt->items);
 
@@ -244,7 +243,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 	if (!success) {
 		ctxt->subscription->autoDiscoveryTries++;
 		if (ctxt->subscription->autoDiscoveryTries > AUTO_DISCOVERY_MAX_REDIRECTS) {
-			debug2 (DEBUG_UPDATE, "Stopping feed auto discovery (%s) after too many redirects (limit is %d)", subscription_get_source (ctxt->subscription), AUTO_DISCOVERY_MAX_REDIRECTS);
+			debug (DEBUG_UPDATE, "Stopping feed auto discovery (%s) after too many redirects (limit is %d)", subscription_get_source (ctxt->subscription), AUTO_DISCOVERY_MAX_REDIRECTS);
 		} else {
 			autoDiscovery = feed_parser_auto_discover (ctxt);
 		}
@@ -279,7 +278,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 			ctxt->subscription->error = FETCH_ERROR_DISCOVER;
 	} else {
 		if (ctxt->feed->fhp) {
-			debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
+			debug (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
 			ctxt->subscription->autoDiscoveryTries = 0;
 		} else {
 			/* Auto discovery found a link that is being processed
@@ -290,7 +289,6 @@ feed_parse (feedParserCtxtPtr ctxt)
 		ctxt->subscription->error = FETCH_ERROR_NONE;
 	}
 
-	debug_exit ("feed_parse");
 
 	return success;
 }

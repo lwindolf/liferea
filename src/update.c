@@ -338,7 +338,7 @@ update_job_free (updateJobPtr job)
 	update_result_free (job->result);
 
 	if (job->cmd.fd >= 0) {
-		debug1 (DEBUG_UPDATE, "Found an open cmd.fd %d when freeing!", job->cmd.fd);
+		debug (DEBUG_UPDATE, "Found an open cmd.fd %d when freeing!", job->cmd.fd);
 		close (job->cmd.fd);
 	}
 	if (job->cmd.timeout_id > 0) {
@@ -373,41 +373,43 @@ update_exec_filter_cmd (updateJobPtr job)
 	fd = g_mkstemp (tmpfilename);
 
 	if (fd == -1) {
-		debug1 (DEBUG_UPDATE, "Error opening temp file %s to use for filtering!", tmpfilename);
+		debug (DEBUG_UPDATE, "Error opening temp file %s to use for filtering!", tmpfilename);
 		job->result->filterErrors = g_strdup_printf (_("Error opening temp file %s to use for filtering!"), tmpfilename);
 		g_free (tmpfilename);
 		return NULL;
 	}
 
-	file = fdopen (fd, "w");
-	fwrite (job->result->data, strlen (job->result->data), 1, file);
-	fclose (file);
+	if((file = fdopen (fd, "w"))) {
+		fwrite (job->result->data, strlen (job->result->data), 1, file);
+		fclose (file);
 
-	command = g_strdup_printf("%s < %s", job->request->filtercmd, tmpfilename);
-	p = popen (command, "r");
-	if (NULL != p) {
-		while (!feof (p) && !ferror (p)) {
-			size_t len;
-			out = g_realloc (out, size + 1025);
-			len = fread (&out[size], 1, 1024, p);
-			if (len > 0)
-				size += len;
+		command = g_strdup_printf("%s < %s", job->request->filtercmd, tmpfilename);
+		p = popen (command, "r");
+		if (NULL != p) {
+			while (!feof (p) && !ferror (p)) {
+				size_t len;
+				out = g_realloc (out, size + 1025);
+				len = fread (&out[size], 1, 1024, p);
+				if (len > 0)
+					size += len;
+			}
+			status = pclose (p);
+			if (!(WIFEXITED (status) && WEXITSTATUS (status) == 0)) {
+				debug (DEBUG_UPDATE, "%s exited with status %d!", command, WEXITSTATUS(status));
+				job->result->filterErrors = g_strdup_printf (_("%s exited with status %d"), command, WEXITSTATUS(status));
+				size = 0;
+			}
+			if (out)
+				out[size] = '\0';
+		} else {
+			job->result->filterErrors = g_strdup_printf (_("Error: Could not open pipe \"%s\""), command);
 		}
-		status = pclose (p);
-		if (!(WIFEXITED (status) && WEXITSTATUS (status) == 0)) {
-			debug2 (DEBUG_UPDATE, "%s exited with status %d!", command, WEXITSTATUS(status));
-			job->result->filterErrors = g_strdup_printf (_("%s exited with status %d"), command, WEXITSTATUS(status));
-			size = 0;
-		}
-		if (out)
-			out[size] = '\0';
+		g_free (command);
 	} else {
-		g_warning (_("Error: Could not open pipe \"%s\""), command);
-		job->result->filterErrors = g_strdup_printf (_("Error: Could not open pipe \"%s\""), command);
+		job->result->filterErrors = g_strdup (_("Error: Could not write temporary file!"));
 	}
 
 	/* Clean up. */
-	g_free (command);
 	unlink (tmpfilename);
 	g_free (tmpfilename);
 	return out;
@@ -495,7 +497,7 @@ static void
 update_exec_cmd_cb_child_watch (GPid pid, gint status, gpointer user_data)
 {
 	updateJobPtr	job = (updateJobPtr) user_data;
-	debug1 (DEBUG_UPDATE, "Child process %d terminated", job->cmd.pid);
+	debug (DEBUG_UPDATE, "Child process %d terminated", job->cmd.pid);
 
 	job->cmd.pid = 0;
 	if (WIFEXITED (status) && WEXITSTATUS (status) == 0) {
@@ -528,7 +530,7 @@ update_exec_cmd_cb_out_watch (GIOChannel *source, GIOCondition condition, gpoint
 	gsize		nread;
 
 	if (condition == G_IO_HUP) {
-		debug1 (DEBUG_UPDATE, "Pipe closed, child process %d is terminating", job->cmd.pid);
+		debug (DEBUG_UPDATE, "Pipe closed, child process %d is terminating", job->cmd.pid);
 		ret = FALSE;
 
 	} else if (condition == G_IO_IN) {
@@ -543,7 +545,7 @@ update_exec_cmd_cb_out_watch (GIOChannel *source, GIOCondition condition, gpoint
 			job->result->data[job->result->size] = 0;
 
 			if (err) {
-				debug2 (DEBUG_UPDATE, "Error %d when reading from child %d", err->code, job->cmd.pid);
+				debug (DEBUG_UPDATE, "Error %d when reading from child %d", err->code, job->cmd.pid);
 				g_error_free (err);
 				err = NULL;
 				ret = FALSE;	/* remove event */
@@ -559,14 +561,14 @@ update_exec_cmd_cb_out_watch (GIOChannel *source, GIOCondition condition, gpoint
 				ret = FALSE;
 				break;
 			} else if (st == G_IO_STATUS_ERROR) {
-				debug1 (DEBUG_UPDATE, "Got a G_IO_STATUS_ERROR from child %d", job->cmd.pid);
+				debug (DEBUG_UPDATE, "Got a G_IO_STATUS_ERROR from child %d", job->cmd.pid);
 				ret = FALSE;
 				break;
 			}
 		}
 
 	} else {
-		debug2 (DEBUG_UPDATE, "Unexpected condition %d for child process %d", condition, job->cmd.pid);
+		debug (DEBUG_UPDATE, "Unexpected condition %d for child process %d", condition, job->cmd.pid);
 		ret = FALSE;
 	}
 
@@ -584,7 +586,7 @@ static gboolean
 update_exec_cmd_cb_timeout (gpointer user_data)
 {
 	updateJobPtr	job = (updateJobPtr) user_data;
-	debug1 (DEBUG_UPDATE, "Child process %d timed out, killing.", job->cmd.pid);
+	debug (DEBUG_UPDATE, "Child process %d timed out, killing.", job->cmd.pid);
 
 	/* Kill child. Result will still be processed by update_exec_cmd_cb_child_watch */
 	kill((pid_t) job->cmd.pid, SIGKILL);
@@ -617,20 +619,20 @@ update_exec_cmd (updateJobPtr job)
 	gchar		*cmd_args[] = { "/bin/sh", "-c", cmd, NULL };
 
 	job->result->httpstatus = 0;
-	debug1 (DEBUG_UPDATE, "executing command \"%s\"...", cmd);
+	debug (DEBUG_UPDATE, "executing command \"%s\"...", cmd);
 	ret = g_spawn_async_with_pipes (NULL, cmd_args, NULL,
 		G_SPAWN_DO_NOT_REAP_CHILD | G_SPAWN_STDERR_TO_DEV_NULL,
 		NULL, NULL, &job->cmd.pid, NULL,
 		&job->cmd.fd, NULL, NULL);
 
 	if (!ret) {
-		debug0 (DEBUG_UPDATE, "g_spawn_async_with_pipes failed");
+		debug (DEBUG_UPDATE, "g_spawn_async_with_pipes failed");
 		liferea_shell_set_status_bar (_("Error: Could not open pipe \"%s\""), cmd);
 		job->result->httpstatus = 404; /* Not found */
 		return;
 	}
 
-	debug1 (DEBUG_UPDATE, "New child process launched with pid %d", job->cmd.pid);
+	debug (DEBUG_UPDATE, "New child process launched with pid %d", job->cmd.pid);
 
 	job->cmd.child_watch_id = g_child_watch_add (job->cmd.pid, (GChildWatchFunc) update_exec_cmd_cb_child_watch, job);
 	job->cmd.stdout_ch = g_io_channel_unix_new (job->cmd.fd);
@@ -659,7 +661,7 @@ update_load_file (updateJobPtr job)
 			liferea_shell_set_status_bar (_("Error: Could not open file \"%s\""), filename);
 		} else {
 			job->result->httpstatus = 200;
-			debug2 (DEBUG_UPDATE, "Successfully read %d bytes from file %s.", job->result->size, filename);
+			debug (DEBUG_UPDATE, "Successfully read %d bytes from file %s.", job->result->size, filename);
 		}
 	} else {
 		liferea_shell_set_status_bar (_("Error: There is no file \"%s\""), filename);
@@ -680,10 +682,10 @@ update_job_run (updateJobPtr job)
 	/* everything starting with '|' is a local command */
 	if (*(job->request->source) == '|') {
 		if (job->request->allowCommands) {
-			debug1 (DEBUG_UPDATE, "Recognized local command: %s", job->request->source);
+			debug (DEBUG_UPDATE, "Recognized local command: %s", job->request->source);
 			update_exec_cmd (job);
 		} else {
-			debug1 (DEBUG_UPDATE, "Refusing to run local command from unexpected source: %s", job->request->source);
+			debug (DEBUG_UPDATE, "Refusing to run local command from unexpected source: %s", job->request->source);
 			job->result->httpstatus = 403;  /* Forbidden. */
 			update_process_finished_job (job);
 		}
@@ -698,7 +700,7 @@ update_job_run (updateJobPtr job)
 
 	/* otherwise it must be a local file... */
 	{
-		debug1 (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
+		debug (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
 		update_load_file (job);
 		return;
 	}
@@ -728,7 +730,7 @@ update_dequeue_job (gpointer user_data)
 
 	job->state = REQUEST_STATE_PROCESSING;
 
-	debug1 (DEBUG_UPDATE, "processing request (%s)", job->request->source);
+	debug (DEBUG_UPDATE, "processing request (%s)", job->request->source);
 	if (job->callback == NULL) {
 		update_process_finished_job (job);
 	} else {
@@ -816,7 +818,7 @@ update_process_finished_job (updateJobPtr job)
 
 	/* Handling abandoned requests (e.g. after feed deletion) */
 	if (job->callback == NULL) {
-		debug1 (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
+		debug (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
 		update_job_free (job);
 		return;
 	}

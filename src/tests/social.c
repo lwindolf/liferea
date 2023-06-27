@@ -41,14 +41,15 @@ struct tc tc_title2 = { "https://example.com/add?t={title}&u={url}&abc", "https:
 static void
 tc_build_uri (gconstpointer user_data)
 {
-	tcPtr	tc = (tcPtr)user_data;
-
+	tcPtr			tc = (tcPtr)user_data;
+	g_autofree gchar	*result;
 
 	social_free (); // to cleanup previous site
 
 	social_register_bookmark_site ("TEST", tc->url);
 	bookmarkSite = bookmarkSites->data;	// select our only added bookmark site
-	g_assert_cmpstr (social_get_bookmark_url ("https://coolsite.org", "TITLE"), ==, tc->result);
+	result = social_get_bookmark_url ("https://coolsite.org", "TITLE");
+	g_assert_cmpstr (result, ==, tc->result);
 }
 
 int
@@ -58,7 +59,7 @@ main (int argc, char *argv[])
 
 	g_test_init (&argc, &argv, NULL);
 
-	conf_init ();
+	//conf_init ();
 
 	g_test_add_data_func ("/social/url",	&tc_url,	&tc_build_uri);
 	g_test_add_data_func ("/social/url2",	&tc_url2,	&tc_build_uri);

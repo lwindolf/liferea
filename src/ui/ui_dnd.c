@@ -63,7 +63,7 @@ ui_dnd_feed_draggable (GtkTreeDragSource *drag_source, GtkTreePath *path)
 	GtkTreeIter	iter;
 	nodePtr		node;
 
-	debug1 (DEBUG_GUI, "DnD check if feed dragging is possible (%d)", path);
+	debug (DEBUG_GUI, "DnD check if feed dragging is possible (%d)", path);
 
 	if (gtk_tree_model_get_iter (GTK_TREE_MODEL (drag_source), &iter, path)) {
 		gtk_tree_model_get (GTK_TREE_MODEL (drag_source), &iter, FS_PTR, &node, -1);
@@ -87,7 +87,7 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 	GtkTreeIter	iter;
 	nodePtr		sourceNode, targetNode;
 
-	debug1 (DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
+	debug (DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
 
 	if (!(old_feed_drop_possible) (drag_dest, dest_path, selection_data))
 		return FALSE;
@@ -175,13 +175,13 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			}
 
 			/* drop old list... */
-			debug3 (DEBUG_GUI, "old parent is %s (%d, position=%d)", oldParent->title, g_slist_length (oldParent->children), oldPos);
-			debug2 (DEBUG_GUI, "new parent is %s (%d)", newParent->title, g_slist_length (newParent->children));
+			debug (DEBUG_GUI, "old parent is %s (%d, position=%d)", oldParent->title, g_slist_length (oldParent->children), oldPos);
+			debug (DEBUG_GUI, "new parent is %s (%d)", newParent->title, g_slist_length (newParent->children));
 			g_slist_free (newParent->children);
 			newParent->children = NULL;
 			node->parent = newParent;
 
-			debug0 (DEBUG_GUI, "new newParent child list:");
+			debug (DEBUG_GUI, "new newParent child list:");
 
 			/* and rebuild it from the tree model */
 			if (feedlist_get_root() != newParent)
@@ -206,20 +206,20 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 					if ((newParent == oldParent) && !strcmp(node->id, child->id)) {
 						if ((pos == oldPos) || added) {
 							/* it is the original */
-							debug2 (DEBUG_GUI, "   -> %d: skipping old insertion point %s", pos, child->title);
+							debug (DEBUG_GUI, "   -> %d: skipping old insertion point %s", pos, child->title);
 						} else {
 							/* it is a copy inserted before the original */
 							added = TRUE;
-							debug2 (DEBUG_GUI, "   -> %d: new insertion point of %s", pos, child->title);
+							debug (DEBUG_GUI, "   -> %d: new insertion point of %s", pos, child->title);
 							newParent->children = g_slist_append (newParent->children, child);
 						}
 					} else {
 						/* all other nodes */
-						debug2 (DEBUG_GUI, "   -> %d: adding %s", pos, child->title);
+						debug (DEBUG_GUI, "   -> %d: adding %s", pos, child->title);
 						newParent->children = g_slist_append (newParent->children, child);
 					}
 				} else {
-					debug0 (DEBUG_GUI, "   -> removing empty node");
+					debug (DEBUG_GUI, "   -> removing empty node");
 					/* remove possible existing "(empty)" node from newParent */
 					feed_list_view_remove_empty_node (&parentIter);
 				}

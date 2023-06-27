@@ -109,6 +109,7 @@ tc_parse_feed (gconstpointer user_data)
 		iter = g_list_next (iter);
 	}	
 
+	g_list_free_full (ctxt->items, g_object_unref);
 	feed_parser_ctxt_free (ctxt);
 	node_free (node);
 }
@@ -116,13 +117,21 @@ tc_parse_feed (gconstpointer user_data)
 int
 main (int argc, char *argv[])
 {
+	int result;
+
 	g_test_init (&argc, &argv, NULL);
 
 	if (argv[1] && g_str_equal (argv[1], "--debug"))
-		set_debug_level (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
+		debug_set_flags (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
+
+	xml_init ();
 
 	g_test_add_data_func ("/rss/feed1",	&tc_rss_feed1,		&tc_parse_feed);
 	g_test_add_data_func ("/rss/feed2_rce",	&tc_rss_feed2_rce,	&tc_parse_feed);
 
-	return g_test_run();
+	result = g_test_run();
+
+	xml_deinit ();
+
+	return result;
 }

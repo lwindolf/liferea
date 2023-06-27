@@ -266,7 +266,6 @@ rule_info_add (ruleCheckFunc checkFunc,
 static void
 rule_init (void)
 {
-	debug_enter ("rule_init");
 
 	/*            in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param */
 	/*            ========================================================================================================================================================================================*/
@@ -284,5 +283,4 @@ rule_init (void)
 	rule_info_add (rule_check_feed_source,		FEED_SOURCE_MATCH_RULE_ID,	_("Feed source"),		_("does contain"),	_("does not contain"),	TRUE);
 	rule_info_add (rule_check_parent_folder,	PARENT_FOLDER_MATCH_RULE_ID,	_("Parent folder title"),	_("does contain"),	_("does not contain"),	TRUE);
 
-	debug_exit ("rule_init");
 }

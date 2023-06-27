@@ -83,7 +83,7 @@ favicon_pixbuf_size_prepared_cb (GdkPixbufLoader *loader, gint width, gint heigh
 {
 	gint max_size = 256;
 
-	debug2 (DEBUG_UPDATE, "   - favicon size is %d:%d", width, height);
+	debug (DEBUG_UPDATE, "   - favicon size is %d:%d", width, height);
 	if (width > max_size || height > max_size) {
 		width = width < max_size ? width : max_size;
 		height = height < max_size ? height : max_size;
@@ -107,7 +107,7 @@ favicon_save_from_data (const struct updateResult * const result, const gchar *i
 			pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
 			if (pixbuf) {
 				gchar *tmp = common_create_cache_filename ("favicons", id, "png");
-				debug2 (DEBUG_UPDATE, "saving favicon %s to file %s", id, tmp);
+				debug (DEBUG_UPDATE, "saving favicon %s to file %s", id, tmp);
 				if (!gdk_pixbuf_save (pixbuf, tmp, "png", &err, NULL)) {
 					g_warning ("Could not save favicon (id=%s) to file %s!", id, tmp);
 				} else {
@@ -115,18 +115,18 @@ favicon_save_from_data (const struct updateResult * const result, const gchar *i
 				}
 				g_free (tmp);
 			} else {
-				debug0 (DEBUG_UPDATE, "gdk_pixbuf_loader_get_pixbuf() failed!");
+				debug (DEBUG_UPDATE, "gdk_pixbuf_loader_get_pixbuf() failed!");
 			}
 		} else {
-			debug0 (DEBUG_UPDATE, "gdk_pixbuf_loader_close() failed!");
+			debug (DEBUG_UPDATE, "gdk_pixbuf_loader_close() failed!");
 		}
 	} else {
-		debug0 (DEBUG_UPDATE, "gdk_pixbuf_loader_write() failed!");
+		debug (DEBUG_UPDATE, "gdk_pixbuf_loader_write() failed!");
 		gdk_pixbuf_loader_close (loader, NULL);
 	}
 
 	if (err) {
-		debug1 (DEBUG_UPDATE, "%s", err->message);
+		debug (DEBUG_UPDATE, "%s", err->message);
 		g_error_free (err);
 	}
 
@@ -170,14 +170,14 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 	if (metadata_list_get (subscription->metadata, "icon")) {
 		tmp = g_strstrip (g_strdup (metadata_list_get (subscription->metadata, "icon")));
 		urls = g_slist_append (urls, tmp);
-		debug1 (DEBUG_UPDATE, "(1) adding favicon search URL: %s", tmp);
+		debug (DEBUG_UPDATE, "(1) adding favicon search URL: %s", tmp);
 	}
 
 	/* case 2: */
 	if (html_url && g_strstr_len (html_url, -1, "://")) {
 		tmp = g_strstrip (g_strdup (html_url));
 		urls = g_slist_append (urls, tmp);
-		debug1 (DEBUG_UPDATE, "(2) adding favicon search URL: %s", tmp);
+		debug (DEBUG_UPDATE, "(2) adding favicon search URL: %s", tmp);
 	}
 
 	/* case 3: */
@@ -192,7 +192,7 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 		if (tmp) {
 			*tmp = 0;
 			urls = g_slist_append (urls, g_strdup (tmp2));
-			debug1 (DEBUG_UPDATE, "(3) adding favicon search URL: %s", tmp2);
+			debug (DEBUG_UPDATE, "(3) adding favicon search URL: %s", tmp2);
 		}
 		g_free (tmp2);
 	}
@@ -209,7 +209,7 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 					tmp = tmp2;
 					tmp2 = g_strdup_printf ("%s/favicon.ico", tmp);
 					urls = g_slist_append (urls, tmp2);
-					debug1 (DEBUG_UPDATE, "(4) adding favicon source URL: %s", tmp2);
+					debug (DEBUG_UPDATE, "(4) adding favicon source URL: %s", tmp2);
 				}
 			}
 			g_free (tmp);
@@ -225,7 +225,7 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 			tmp = tmp2;
 			tmp2 = g_strdup_printf ("%s/favicon.ico", tmp);
 			urls = g_slist_append (urls, tmp2);
-			debug1(DEBUG_UPDATE, "(5) adding favicon source URL: %s", tmp2);
+			debug (DEBUG_UPDATE, "(5) adding favicon source URL: %s", tmp2);
 		}
 		g_free (tmp);
 
@@ -239,7 +239,7 @@ favicon_get_urls (subscriptionPtr subscription, const gchar *html_url)
 				tmp = tmp2;
 				tmp2 = g_strdup_printf ("%s/favicon.ico", tmp);
 				urls = g_slist_append (urls, tmp2);
-				debug1 (DEBUG_UPDATE, "(6) adding favicon source URL: %s", tmp2);
+				debug (DEBUG_UPDATE, "(6) adding favicon source URL: %s", tmp2);
 			}
 		}
 		g_free (tmp);

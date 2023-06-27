@@ -170,9 +170,9 @@ network_process_request (const updateJobPtr job)
 	gint			port;
 
 	g_assert (NULL != job->request);
-	debug1 (DEBUG_NET, "downloading %s", job->request->source);
-	if (job->request->postdata && (debug_level & DEBUG_VERBOSE) && (debug_level & DEBUG_NET))
-		debug1 (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
+	debug (DEBUG_NET, "downloading %s", job->request->source);
+	if (job->request->postdata && (debug_get_flags () & DEBUG_NET))
+		debug (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
 
 	g_uri_split_with_user (job->request->source,
 	                       G_URI_FLAGS_ENCODED,
@@ -355,7 +355,7 @@ network_init (void)
 	cancellable = g_cancellable_new ();
 
 	useragent = network_get_user_agent ();
-	debug1 (DEBUG_NET, "user-agent set to \"%s\"", useragent);
+	debug (DEBUG_NET, "user-agent set to \"%s\"", useragent);
 
 	/* Session cookies */
 	filename = common_create_config_filename ("session_cookies.txt");

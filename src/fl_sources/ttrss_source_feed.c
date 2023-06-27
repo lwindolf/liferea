@@ -166,7 +166,7 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	gchar		*source_name;
 	gint		fetchCount;
 
-	debug0 (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
+	debug (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
 
 	g_assert(root->source);
 	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {

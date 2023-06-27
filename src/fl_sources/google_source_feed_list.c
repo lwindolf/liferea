@@ -100,7 +100,7 @@ google_source_check_node_for_removal (nodePtr node, gpointer user_data)
 			JsonNode *json_node = (JsonNode *)iter->data;
 			if (g_str_equal (node->subscription->source, json_get_string (json_node, "url")) &&
 			    g_str_equal (feedId, json_get_string(json_node, "id"))) {
-				debug2 (DEBUG_UPDATE, "check for removal node: %s (%s)", feedId, node->subscription->source);
+				debug (DEBUG_UPDATE, "check for removal node: %s (%s)", feedId, node->subscription->source);
 				found = TRUE;
 				break;
 			}
@@ -120,7 +120,7 @@ google_source_merge_feed (GoogleSourcePtr source, const gchar *url, const gchar 
 
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 	if (!node) {
-		debug3 (DEBUG_UPDATE, "adding %s (id=%s, url=%s)", title, id, url);
+		debug (DEBUG_UPDATE, "adding %s (id=%s, url=%s)", title, id, url);
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
@@ -147,7 +147,7 @@ google_source_feed_list_subscription_process_update_result (subscriptionPtr subs
 {
 	GoogleSourcePtr	source = (GoogleSourcePtr) subscription->node->data;
 
-	debug1 (DEBUG_UPDATE,"google_source_feed_list_subscription_process_update_result(): %s", result->data);
+	debug (DEBUG_UPDATE,"google_source_feed_list_subscription_process_update_result(): %s", result->data);
 
 	subscription->updateJob = NULL;
 
@@ -218,13 +218,13 @@ google_source_feed_list_subscription_process_update_result (subscriptionPtr subs
 			subscription->node->available = TRUE;
 		} else {
 			subscription->node->available = FALSE;
-			debug1 (DEBUG_UPDATE, "Invalid JSON returned on Google Reader API request! >>>%s<<<", result->data);
+			debug (DEBUG_UPDATE, "Invalid JSON returned on Google Reader API request! >>>%s<<<", result->data);
 		}
 
 		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "google_source_feed_list_subscription_process_update_result(): ERROR: failed to get subscription list!");
+		debug (DEBUG_UPDATE, "google_source_feed_list_subscription_process_update_result(): ERROR: failed to get subscription list!");
 	}
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
@@ -239,11 +239,11 @@ google_source_feed_list_subscription_prepare_update_request (subscriptionPtr sub
 	
 	g_assert(source);
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		debug0 (DEBUG_UPDATE, "GoogleSource: login");
+		debug (DEBUG_UPDATE, "GoogleSource: login");
 		google_source_login (source, 0);
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", node->id);
+	debug (DEBUG_UPDATE, "updating Google Reader subscription (node id %s)", node->id);
 	
 	update_request_set_source (request, source->root->source->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);

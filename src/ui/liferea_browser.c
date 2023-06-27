@@ -311,7 +311,7 @@ liferea_browser_new (gboolean forceInternalBrowsing)
 	                  G_CALLBACK (liferea_browser_proxy_changed),
 	                  browser);
 
-	debug0 (DEBUG_NET, "Setting initial HTML widget proxy...");
+	debug (DEBUG_NET, "Setting initial HTML widget proxy...");
 	liferea_browser_proxy_changed (network_monitor_get (), browser);
 
 	liferea_browser_update_stylesheet (browser);
@@ -412,7 +412,7 @@ liferea_browser_load_finished_cb (GObject *object, GAsyncResult *result, gpointe
 
 	js_result = webkit_web_view_run_javascript_finish (WEBKIT_WEB_VIEW (object), result, &error);
 	if (!js_result) {
-		debug1 (DEBUG_HTML, "Error running javascript: %s", error->message);
+		debug (DEBUG_HTML, "Error running javascript: %s", error->message);
 		g_error_free (error);
 		return;
 	}
@@ -423,7 +423,7 @@ liferea_browser_load_finished_cb (GObject *object, GAsyncResult *result, gpointe
 		gboolean result = jsc_value_to_boolean (value);
 
 		if (!result && browser->readerMode && browser->url) {
-			debug0 (DEBUG_HTML, "loadContent() reader mode fail -> reloading without reader");
+			debug (DEBUG_HTML, "loadContent() reader mode fail -> reloading without reader");
 			browser->readerMode = FALSE;
 			liferea_browser_launch_URL_internal (browser, browser->url);
 		}
@@ -453,7 +453,7 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 		g_assert(b2 != NULL);
 		g_assert(b3 != NULL);
 
-		debug1 (DEBUG_GUI, "Enabling reader mode for '%s'", location);
+		debug (DEBUG_GUI, "Enabling reader mode for '%s'", location);
 		liferea_webkit_run_js (
 			browser->renderWidget,
 			g_strdup_printf ("%s\n%s\n%s\nloadContent(%s, '%s');\n",
@@ -543,7 +543,7 @@ liferea_browser_handle_URL (LifereaBrowser *browser, const gchar *url)
 
 	conf_get_bool_value (BROWSE_INSIDE_APPLICATION, &browse_inside_application);
 
-	debug2 (DEBUG_GUI, "handle URL: %s %s",
+	debug (DEBUG_GUI, "handle URL: %s %s",
 	        browse_inside_application?"true":"false",
 	        browser->forceInternalBrowsing?"true":"false");
 
@@ -687,7 +687,7 @@ liferea_browser_refresh (LifereaBrowser *browser, guint mode)
 			break;
 	}
 
-	if (debug_level & DEBUG_HTML) {
+	if (debug_get_flags () & DEBUG_HTML) {
 		gchar *filename = common_create_cache_filename (NULL, "output", "html");
 		g_file_set_contents (filename, content, -1, NULL);
 		g_free (filename);

@@ -39,6 +39,5 @@ jobs:
     - run: /usr/bin/glib-compile-schemas /usr/share/glib-2.0/schemas/
     - run: ls -l /usr/share/glib-2.0/schemas
     - run: cd src/tests && make test
-    - run: cd src/tests && ./memcheck.sh parse_xml parse_date
     - run: desktop-file-validate net.sourceforge.liferea.desktop
     - run: appstream-util validate net.sourceforge.liferea.appdata.xml

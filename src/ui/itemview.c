@@ -352,12 +352,10 @@ itemview_move_cursor_to_first (void)
 static void
 itemview_init (ItemView *iv)
 {
-	debug_enter("itemview_init");
 
 	g_assert (NULL == itemview);
 	itemview = iv;
 
-	debug_exit("itemview_init");
 }
 
 static void
@@ -403,7 +401,7 @@ itemview_set_layout (nodeViewType newMode)
 	g_assert (itemview->htmlview);
 	liferea_browser_clear (itemview->htmlview);
 
-	debug2 (DEBUG_GUI, "Setting item list layout mode: %d (auto=%d)", effectiveMode, itemview->autoLayout);
+	debug (DEBUG_GUI, "Setting item list layout mode: %d (auto=%d)", effectiveMode, itemview->autoLayout);
 
 	switch (effectiveMode) {
 		case NODE_VIEW_MODE_NORMAL:
@@ -498,7 +496,7 @@ itemview_create (GtkWidget *window)
 	itemview->zoom = zoom;
 	itemview->currentLayoutMode = 1000;	// something invalid
 
-	debug0 (DEBUG_GUI, "Creating HTML widget");
+	debug (DEBUG_GUI, "Creating HTML widget");
 	itemview->htmlview = liferea_browser_new (FALSE);
 	g_signal_connect (itemview->htmlview, "statusbar-changed",
 	                  G_CALLBACK (on_important_status_message), NULL);

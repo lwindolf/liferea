@@ -99,15 +99,14 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 	itemPtr			item;
 	nodePtr			node;
 
-	debug_enter ("comments_process_update_result");
 
-	item = item_load (commentFeed->itemId);
-	g_return_if_fail (item != NULL);
+	if(!(item = item_load (commentFeed->itemId)))
+		return;		/* item was deleted since */
 
 	/* note this is to update the feed URL on permanent redirects */
 	if (result->source && !g_strcmp0 (result->source, metadata_list_get (item->metadata, "commentFeedUri"))) {
 
-		debug2 (DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"",
+		debug (DEBUG_UPDATE, "updating comment feed URL from \"%s\" to \"%s\"",
 		                      metadata_list_get (item->metadata, "commentFeedUri"),
 				      result->source);
 
@@ -119,9 +118,9 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 	} else if (410 == result->httpstatus) { /* gone */
 		metadata_list_set (&item->metadata, "commentFeedGone", "true");
 	} else if (304 == result->httpstatus) {
-		debug1(DEBUG_UPDATE, "comment feed \"%s\" did not change", result->source);
+		debug (DEBUG_UPDATE, "comment feed \"%s\" did not change", result->source);
 	} else if (result->data) {
-		debug1(DEBUG_UPDATE, "received update result for comment feed \"%s\"", result->source);
+		debug (DEBUG_UPDATE, "received update result for comment feed \"%s\"", result->source);
 
 		/* parse the new downloaded feed into fake node, subscription and feed */
 		node = node_new (feed_get_node_type ());
@@ -130,7 +129,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 		ctxt = feed_parser_ctxt_new (node->subscription, result->data, result->size);
 
 		if (!feed_parse (ctxt)) {
-			debug0 (DEBUG_UPDATE, "parsing comment feed failed!");
+			debug (DEBUG_UPDATE, "parsing comment feed failed!");
 		} else {
 			itemSetPtr	comments;
 			GList		*iter;
@@ -145,7 +144,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 				iter = g_list_next (iter);
 			}
 
-			debug1 (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
+			debug (DEBUG_UPDATE, "parsing comment feed successful (%d comments downloaded)", g_list_length(ctxt->items));
 			comments = db_itemset_load (commentFeed->id);
 			itemset_merge_items (comments, ctxt->items, ctxt->feed->valid, FALSE);
 			itemset_free (comments);
@@ -176,7 +175,6 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 
 	item_unload (item);
 
-	debug_exit ("comments_process_update_result");
 }
 
 void
@@ -190,13 +188,13 @@ comments_refresh (itemPtr item)
 		return;
 
 	if (metadata_list_get (item->metadata, "commentFeedGone")) {
-		debug0 (DEBUG_UPDATE, "Comment feed returned HTTP 410. Not updating anymore!");
+		debug (DEBUG_UPDATE, "Comment feed returned HTTP 410. Not updating anymore!");
 		return;
 	}
 
 	url = metadata_list_get (item->metadata, "commentFeedUri");
 	if (url) {
-		debug2 (DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
+		debug (DEBUG_UPDATE, "Updating comments for item \"%s\" (comment URL: %s)", item->title, url);
 
 		// FIXME: restore update state from DB?
 

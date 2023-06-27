@@ -198,9 +198,9 @@ metadata_list_append (GSList *metadata, const gchar *strid, const gchar *data)
 			if (xhtml_is_well_formed (data)) {
 				tmp = g_strdup (data);
 			} else {
-				debug1 (DEBUG_PARSING, "not well formed HTML: %s", data);
+				debug (DEBUG_PARSING, "not well formed HTML: %s", data);
 				tmp = g_markup_escape_text (data, -1);
-				debug1 (DEBUG_PARSING, "escaped as: %s", tmp);
+				debug (DEBUG_PARSING, "escaped as: %s", tmp);
 			}
 			/* And needs to remove DHTML */
 			checked_data = xhtml_strip_dhtml (tmp);

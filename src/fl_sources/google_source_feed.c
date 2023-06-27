@@ -47,7 +47,7 @@ google_source_migrate_node(nodePtr node)
 		itemPtr item = item_load (GPOINTER_TO_UINT (iter->data));
 		if (item && item->sourceId) {
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
+				debug (DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
 			} 
 		}
@@ -146,12 +146,12 @@ google_source_feed_subscription_process_update_result (const struct updateResult
 		/* merge against feed cache */
 		if (items) {
 			itemSetPtr itemSet = node_get_itemset (subscription->node);
-			debug3 (DEBUG_UPDATE, "merging %d items into node %s (%s)\n", g_list_length(itemSet->ids), subscription->node->id, subscription->node->title);
+			debug (DEBUG_UPDATE, "merging %d items into node %s (%s)", g_list_length(itemSet->ids), subscription->node->id, subscription->node->title);
 			subscription->node->newCount = itemset_merge_items (itemSet, items, TRUE /* feed valid */, FALSE /* markAsRead */);
 			itemlist_merge_itemset (itemSet);
 			itemset_free (itemSet);
 		} else {
-			debug3 (DEBUG_UPDATE, "result empty %s (%s): %s\n", subscription->node->id, subscription->node->title, result->data);
+			debug (DEBUG_UPDATE, "result empty %s (%s): %s", subscription->node->id, subscription->node->title, result->data);
 		}
 		subscription->node->available = TRUE;
 	} else {
@@ -164,6 +164,7 @@ static void
 google_source_feed_subscription_process_ids_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
 {
 	JsonParser	*parser;
+	nodePtr		root = node_source_root_from_node (subscription->node);
 	
 	if (!(result->data && result->httpstatus == 200)) {
 		subscription->node->available = FALSE;
@@ -197,10 +198,10 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 		JsonArray	*array = json_node_get_array (json_get_node (json_parser_get_root (parser), "itemRefs"));
 		GList		*elements = json_array_get_elements (array);
 		GList		*iter = elements;
-		GString		*query = g_string_new("");
+		GString		*query = g_string_new ("");
 		
 		g_string_append_printf (query, "output=json&mediaRss=true&T=%s", 
-		                        node_source_root_from_node (subscription->node)->source->authToken + strlen("GoogleLogin auth="));
+		                        root->source->authToken + strlen("GoogleLogin auth="));
 
 		while (iter) {
 			JsonNode *node = (JsonNode *)iter->data;
@@ -212,23 +213,26 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 			iter = g_list_next (iter);
 		}
 		
-		debug3 (DEBUG_UPDATE, "got %d ids for %s (%s)\n", g_list_length(elements), subscription->node->id, subscription->node->title);
+		debug (DEBUG_UPDATE, "got %d ids for %s (%s)", g_list_length(elements), subscription->node->id, subscription->node->title);
 		
 		/* Only if we got some ids */
 		if (elements) {
 			g_autofree gchar 	*url;
 			UpdateRequest		*request;
-					
-			url = g_strdup_printf ("%s/reader/api/0/stream/items/contents",
-			                       node_source_root_from_node (subscription->node)->subscription->source);                       
+
+			url = g_strdup_printf ("%s/reader/api/0/stream/items/contents", root->subscription->source);
 		
 			request = update_request_new (
 				url,
 				subscription->updateState,
 				subscription->updateOptions
 			);
-			request->postdata = query->str;			
-			(void) update_execute_request (node_source_root_from_node (subscription->node)->subscription,
+			request->postdata = g_strdup (query->str);
+
+			// Redundant to the token already passed in postdata, but FreshRSS fails without it
+			update_request_set_auth_value (request, root->source->authToken);
+
+			(void) update_execute_request (root->subscription,
 			                               request,
 			                               google_source_feed_subscription_process_update_result,
        			                               subscription,
@@ -236,7 +240,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 		}
 
 		g_list_free (elements);
-		g_string_free (query, FALSE);
+		g_string_free (query, TRUE);
 	} else {
 		subscription->node->available = FALSE;
 	}
@@ -247,17 +251,16 @@ static gboolean
 google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscription, 
                                                      UpdateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "preparing google reader feed subscription for update");
-	GoogleSourcePtr source = (GoogleSourcePtr) node_source_root_from_node (subscription->node)->data; 
-	
-	g_assert(source); 
-	if (source->root->source->loginState == NODE_SOURCE_STATE_NONE) {
-		subscription_update (node_source_root_from_node (subscription->node)->subscription, 0);
+	debug (DEBUG_UPDATE, "preparing google reader feed subscription for update");
+	nodePtr root = node_source_root_from_node (subscription->node);
+
+	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {
+		subscription_update (root->subscription, 0);
 		return FALSE;
 	}
 	
 	if (!metadata_list_get (subscription->metadata, "feed-id")) {
-		debug2 (DEBUG_UPDATE, "Skipping Google Reader API feed '%s' (%s) without id!", subscription->source, subscription->node->id);
+		debug (DEBUG_UPDATE, "Skipping Google Reader API feed '%s' (%s) without id!", subscription->source, subscription->node->id);
 		return FALSE;
 	}
 
@@ -275,11 +278,11 @@ google_source_feed_subscription_prepare_ids_request (subscriptionPtr subscriptio
 		// FIXME: do not use hard-coded 50
 		// FIXME: consider passing nt=<epoch> (latest fetch timestamp)
 		url = g_strdup_printf ("%s/reader/api/0/stream/items/ids?s=%s&client=liferea&n=50&output=json&merge=true",
-		                       node_source_root_from_node (subscription->node)->subscription->source,
+		                       root->subscription->source,
 		                       sourceEscaped);                       
 
 		update_request_set_source (request, url);
-		update_request_set_auth_value (request, source->root->source->authToken);
+		update_request_set_auth_value (request, root->source->authToken);
 	}
 	return TRUE;
 }

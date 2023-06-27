@@ -190,10 +190,12 @@ static void
 tc_auto_discover_link (gconstpointer user_data)
 {
 	gchar **tc = (gchar **)user_data;
-	GSList *result;
+	g_autofree gchar *tmp;
+	GSList *list, *result;
 	guint	i = 2;
 
-	result = html_auto_discover_feed (g_strdup (tc[0]), tc[1]);
+	tmp = g_strdup (tc[0]);
+	list = result = html_auto_discover_feed (tmp, tc[1]);
 	do {
 		if (!tc[i]) {
 			g_assert_null (result);
@@ -202,6 +204,8 @@ tc_auto_discover_link (gconstpointer user_data)
 			result = g_slist_next (result);
 		}
 	} while(tc[i++]);
+
+	g_slist_free_full (list, g_free);
 }
 
 static void
@@ -223,7 +227,7 @@ main (int argc, char *argv[])
 	g_test_init (&argc, &argv, NULL);
 
 	if (argv[1] && g_str_equal (argv[1], "--debug"))
-		set_debug_level (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
+		debug_set_flags (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
 
 	g_test_add_data_func ("/html/auto_discover_link_xml", &tc_xml, &tc_auto_discover_link);
 	g_test_add_data_func ("/html/auto_discover_link_xml_base_url", &tc_xml_base_url, &tc_auto_discover_link);
