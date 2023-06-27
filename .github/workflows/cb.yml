@@ -12,7 +12,8 @@ on:
 jobs:
   analyze:
     name: Analyze
-    container:
+    runs-on: ubuntu-23
+    container:    
       image: 'ubuntu:23.04'
 
     steps:
