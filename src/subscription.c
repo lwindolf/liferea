@@ -41,7 +41,7 @@
 #define FEED_PROTOCOL_PREFIX "feed://"
 #define FEED_PROTOCOL_PREFIX2 "feed:"
 
-#define ONE_MONTH_MICROSECONDS (guint64)(60*60*24*31) * (guint64)G_USEC_PER_SEC
+#define ONE_MONTH_MICROSECONDS (gint64)(60*60*24*31) * (gint64)G_USEC_PER_SEC
 
 subscriptionPtr
 subscription_new (const gchar *source,
