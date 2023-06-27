@@ -25,6 +25,7 @@ jobs:
         fetch-depth: 2
 
     - run: |
+       id -a
        sudo apt-get update -qq
        sudo apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.1-dev libjson-glib-dev libgirepository1.0-dev libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool valgrind libfribidi-dev gla11y appstream-util desktop-file-utils
        mkdir inst
