@@ -1141,7 +1141,7 @@ liferea_shell_restore_layout (gpointer user_data)
 		last_hpane_pos = allocation.height / 2;
 	
 	/* c) set wideViewPane to 50% container width if too large */
-	gtk_widget_get_allocation (GTK_WIDGET (liferea_shell_lookup ("normalViewPane")), &allocation);
+	gtk_widget_get_allocation (GTK_WIDGET (liferea_shell_lookup ("wideViewPane")), &allocation);
 	if ((allocation.width * 95 / 100 <= last_wpane_pos) || 0 == last_wpane_pos)
 		last_wpane_pos = allocation.width / 2;
 
