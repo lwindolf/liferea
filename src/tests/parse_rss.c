@@ -70,7 +70,7 @@ tc_parse_feed (gconstpointer user_data)
 	ctxt = feed_parser_ctxt_new (node->subscription, tc[0], strlen(tc[0]));
 
 	g_assert_cmpstr (feed_parse (ctxt)?"true":"false", ==, tc[1]);
-	g_assert (g_list_length (ctxt->items) == atoi(tc[2]));
+	g_assert (g_list_length (ctxt->items) == (guint)atoi(tc[2]));
 
 	i = 2;
 	iter = ctxt->items;
