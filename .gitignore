@@ -58,3 +58,4 @@ src/tests/social
 xslt/*.xml
 org.gnome.liferea.gschema.valid
 stamp-h1
+.flatpak-builder
