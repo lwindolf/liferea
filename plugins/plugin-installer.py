@@ -406,6 +406,6 @@ class PluginBrowser(Gtk.Window):
         # arbitrary names...
 
         if error:
-            self.show_message(_("Sorry! Plugin removal failed!."), True)
+            self.show_message(_("Sorry! Plugin removal failed!"), True)
         else:
-            self.show_message(_("Plugin was removed. Please restart Liferea once for it to take full effect!."), False)
+            self.show_message(_("Plugin was removed. Please restart Liferea once for it to take full effect!"), False)
