@@ -249,12 +249,12 @@ msgid "Failed to remove .plugin file!"
 msgstr "Не удалось удалить файл .plugin!"
 
 #: ../plugins/plugin-installer.py:409
-msgid "Sorry! Plugin removal failed!."
+msgid "Sorry! Plugin removal failed!"
 msgstr "Не удалось удалить подключаемый модуль!"
 
 #: ../plugins/plugin-installer.py:411
 msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr ""
 "Подключаемый модуль был удален. Для вступления изменений в силу "
 "требуется однократный перезапуск Liferea!"

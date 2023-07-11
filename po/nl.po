@@ -245,12 +245,12 @@ msgid "Failed to remove .plugin file!"
 msgstr "Verwijderen .plugin-bestand mislukt!"
 
 #: ../plugins/plugin-installer.py:409
-msgid "Sorry! Plugin removal failed!."
+msgid "Sorry! Plugin removal failed!"
 msgstr "Oeps, het verwijderen van de plug-in is mislukt!"
 
 #: ../plugins/plugin-installer.py:411
 msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr ""
 "Plug-in werd verwijderd. Gelieve Liferea te herstarten om deze wijziging "
 "volledig door te voeren."

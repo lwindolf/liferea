@@ -253,12 +253,12 @@ msgid "Failed to remove .plugin file!"
 msgstr "Impossible de supprimer le fichier .plugin."
 
 #: ../plugins/plugin-installer.py:409
-msgid "Sorry! Plugin removal failed!."
+msgid "Sorry! Plugin removal failed!"
 msgstr "La suppression du greffon a échoué."
 
 #: ../plugins/plugin-installer.py:411
 msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr ""
 "Le greffon a été supprimé. Redémarrez Liferea pour que les changements "
 "soient pris en compte."

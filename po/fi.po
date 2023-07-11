@@ -255,13 +255,13 @@ msgid "Failed to remove .plugin file!"
 msgstr ""
 
 #: ../plugins/plugin-installer.py:409
-msgid "Sorry! Plugin removal failed!."
+msgid "Sorry! Plugin removal failed!"
 msgstr ""
 
 #: ../plugins/plugin-installer.py:411
 #, fuzzy
 msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr "<i>Muutokset tulevat voimaan, kun Liferea käynnistetään uudelleen.</i>"
 
 #: ../plugins/trayicon.py:132
@@ -369,7 +369,7 @@ msgstr "Tiedoston ”%s” nimen vaihtaminen tiedostoksi ”%s” ei onnistunut.
 #: ../src/export.c:387 ../src/export.c:389
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
-msgstr "XML-virhe luetaessa OPML-tiedostoa!. Ei voitu tuoda kohdetta ”%s”!"
+msgstr "XML-virhe luetaessa OPML-tiedostoa! Ei voitu tuoda kohdetta ”%s”!"
 
 #: ../src/export.c:395 ../src/export.c:397
 #, c-format

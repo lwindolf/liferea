@@ -247,13 +247,13 @@ msgid "Failed to remove .plugin file!"
 msgstr ""
 
 #: ../plugins/plugin-installer.py:409
-msgid "Sorry! Plugin removal failed!."
+msgid "Sorry! Plugin removal failed!"
 msgstr ""
 
 #: ../plugins/plugin-installer.py:411
 #, fuzzy
 msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr "<i>Değişikliklerin uygulanması için Lifrerea'yı tekrar başlatın.</i>"
 
 #: ../plugins/trayicon.py:132

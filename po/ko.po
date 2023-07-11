@@ -245,13 +245,13 @@ msgid "Failed to remove .plugin file!"
 msgstr ""
 
 #: ../plugins/plugin-installer.py:409
-msgid "Sorry! Plugin removal failed!."
+msgid "Sorry! Plugin removal failed!"
 msgstr ""
 
 #: ../plugins/plugin-installer.py:411
 #, fuzzy
 msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr "<i>설정을 적용하려면 Liferea를 재시작 해야 합니다.</i>"
 
 #: ../plugins/trayicon.py:132
@@ -2627,7 +2627,7 @@ msgstr "폴더 만들기"
 #~ "really points to a resource provided in one of the supported syndication "
 #~ "formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 #~ msgstr ""
-#~ "<p>이 피드의 종류를 결정할 수 없습니다!. 소스가 지원되는 형식의 자원을 정"
+#~ "<p>이 피드의 종류를 결정할 수 없습니다! 소스가 지원되는 형식의 자원을 정"
 #~ "확히 가리키는지 확인해 주세요 </p>%s"
 
 #, fuzzy
@@ -2657,7 +2657,7 @@ msgstr "폴더 만들기"
 #, fuzzy
 #~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 #~ msgstr ""
-#~ "<p>피드를 읽는 도중 XML 에러가 발생!. \"%s\" 피드를 로드할 수 없습니다.</"
+#~ "<p>피드를 읽는 도중 XML 에러가 발생! \"%s\" 피드를 로드할 수 없습니다.</"
 #~ "p>"
 
 #, fuzzy
