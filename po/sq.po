@@ -242,12 +242,12 @@ msgid "Failed to remove .plugin file!"
 msgstr "S’u arrit të hiqej kartelë .plugin!"
 
 #: ../plugins/plugin-installer.py:405
-msgid "Sorry! Plugin removal failed!."
+msgid "Sorry! Plugin removal failed!"
 msgstr "Na ndjeni! Heqja e shtojcës dështoi!"
 
 #: ../plugins/plugin-installer.py:407
 msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr "Shtojca u hoq. Ju lutemi, riniseni Liferea-n, që të hyjë në fuqi!"
 
 #: ../plugins/trayicon.py:132

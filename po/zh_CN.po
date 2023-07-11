@@ -240,12 +240,12 @@ msgid "Failed to remove .plugin file!"
 msgstr "删除不了 .plugin 文件！"
 
 #: ../plugins/plugin-installer.py:405
-msgid "Sorry! Plugin removal failed!."
+msgid "Sorry! Plugin removal failed!"
 msgstr "抱歉， 插件删除失败了。"
 
 #: ../plugins/plugin-installer.py:407
 msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr "插件去掉了。请重启 Liferea。"
 
 #: ../plugins/trayicon.py:132

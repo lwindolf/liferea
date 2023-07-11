@@ -255,14 +255,14 @@ msgid "Failed to remove .plugin file!"
 msgstr "Не удалось удалить.plugin файл!"
 
 #: ../plugins/plugin-installer.py:405
-msgid "Sorry! Plugin removal failed!."
-msgstr "Извините! Не удалось удалить плагин!."
+msgid "Sorry! Plugin removal failed!"
+msgstr "Извините! Не удалось удалить плагин!"
 
 #: ../plugins/plugin-installer.py:407
 msgid ""
-"Plugin was removed. Please restart Liferea once for it to take full effect!."
+"Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr ""
-"Плагин был удален. Пожалуйста, перезапустите Liferea один раз, чтобы он вступил в полную силу!."
+"Плагин был удален. Пожалуйста, перезапустите Liferea один раз, чтобы он вступил в полную силу!"
 
 #: ../plugins/trayicon.py:132
 #, fuzzy
