@@ -43,6 +43,22 @@ html_doc_it =	about_it.html \
 		onlineservices_it.html \
 		faq_it.html
 
+html_doc_ru =	about_ru.html \
+		concepts_ru.html \
+		folders_ru.html \
+		headlines_ru.html \
+		preferences_ru.html \
+		reference_ru.html \
+		searching_ru.html \
+		subscriptions_ru.html \
+		topics_ru.html \
+		updating_ru.html \
+		enclosures_ru.html \
+		newsbin_ru.html \
+		onlineservices_ru.html \
+		faq_ru.html
+
+
 html_doc_pictures_en =	help_feed_default.png \
 			help_feed_error.png \
 			help_folder.png \
@@ -69,6 +85,7 @@ html_doc_pictures_en =	help_feed_default.png \
 EXTRA_DIST =	$(html_doc_en) \
 		$(html_doc_de) \
 		$(html_doc_it) \
+		$(html_doc_ru) \
 		$(html_doc_pictures_en) \
 		reference.css
 
@@ -76,6 +93,7 @@ EXTRA_DIST =	$(html_doc_en) \
 htmldoc_DATA =	$(html_doc_en) \
 		$(html_doc_de) \
 		$(html_doc_it) \
+		$(html_doc_ru) \
 		$(html_doc_pictures_en) \
 		reference.css
 
