@@ -5,14 +5,14 @@
 # Og Maciel <ogmaciel@gnome.org>, 2007, 2009.
 # Leon Nardella <leon.nardela@gmail.com>, 2009.
 # Rafael Ferreira <rafael.f.f1@gmail.com>, 2013.
-# Fúlvio Alves <fga.fulvio@gmail.com>, 2021.
+# Fúlvio Alves <fga.fulvio@gmail.com>, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-14 23:03+0200\n"
-"PO-Revision-Date: 2022-10-11 21:15-0300\n"
+"PO-Revision-Date: 2023-08-02 20:29-0300\n"
 "Last-Translator: Fúlvio Alves <fga.fulvio@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <ldpbr-translation@lists.sourceforge."
 "net>\n"
@@ -20,9 +20,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Bugs: Report translation errors to the Language-Team address.\n"
-"X-Generator: Poedit 3.0\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:341
 #: ../glade/mainwindow.ui.h:1
@@ -255,7 +255,7 @@ msgstr "Desculpe! A remoção do plugin falhou!"
 #: ../plugins/plugin-installer.py:411
 msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!"
-msgstr "O plugin foi removido. Reinicie o Liferea para que tenha efeito total."
+msgstr "O plugin foi removido. Reinicie o Liferea para que tenha efeito total!"
 
 #: ../plugins/trayicon.py:132
 msgid "Show / Hide"
@@ -754,7 +754,7 @@ msgstr "Arquivo de notícias exportado pelo Liferea"
 #: ../src/node.c:659
 #, c-format
 msgid "Error while saving feed file"
-msgstr "Erro ao salvar o arquivo do feed."
+msgstr "Erro ao salvar o arquivo do feed"
 
 #: ../src/parsers/atom10.c:240
 msgid "Website"
@@ -1277,7 +1277,7 @@ msgstr "Visualização Ampla"
 
 #: ../src/ui/preferences_dialog.c:112
 msgid "Automatic"
-msgstr ""
+msgstr "Automático"
 
 #: ../src/ui/preferences_dialog.c:491
 msgid "Default Browser"
@@ -1340,9 +1340,8 @@ msgid "Error: Could not open pipe \"%s\""
 msgstr "Erro: Não foi possível abrir a linha de processamento \"%s\""
 
 #: ../src/update.c:409
-#, fuzzy
 msgid "Error: Could not write temporary file!"
-msgstr "Erro: Não foi possível abrir o arquivo \"%s\""
+msgstr "Erro: Não foi possível gravar o arquivo temporário!"
 
 #. FIXME: maybe setting request->returncode would be better
 #: ../src/update.c:661
@@ -1488,8 +1487,7 @@ msgid ""
 "Please enter the details of the new Google Reader API compatible "
 "subscription."
 msgstr ""
-"Por favor, digite os detalhes da nova assinatura de fonte com API compatível "
-"com o Google Reader"
+"Insira os detalhes da nova assinatura compatível com a API do Google Reader."
 
 #: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
 #: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
