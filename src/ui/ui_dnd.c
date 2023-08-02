@@ -218,13 +218,14 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 						debug2 (DEBUG_GUI, "   -> %d: adding %s", pos, child->title);
 						newParent->children = g_slist_append (newParent->children, child);
 					}
+					valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (drag_dest), &iter2);
+					pos++;
 				} else {
 					debug0 (DEBUG_GUI, "   -> removing empty node");
 					/* remove possible existing "(empty)" node from newParent */
 					feed_list_view_remove_empty_node (&parentIter);
+					valid = FALSE;
 				}
-				valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (drag_dest), &iter2);
-				pos++;
 			}
 
 			db_node_update (node);
