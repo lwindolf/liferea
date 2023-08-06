@@ -70,7 +70,6 @@
   </screenshots>
   <url type="bugtracker">https://github.com/lwindolf/liferea/issues/new</url>
   <url type="homepage">https://lzone.de/liferea/</url>
-  <url type="donation">https://paypal.me/32799746569265</url>
   <translation type="gettext">liferea</translation>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
