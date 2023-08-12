@@ -5,6 +5,7 @@ IAge=2
 Name=Header Bar
 Version=0.2
 Description=Get a GNOME style header bar for Liferea
+Description[de]=Moderne header bar für Liferea aktivieren
 Description[pl]=Udostępnia Liferea pasek menu w stylu GNOME3.
 Authors=Lars Windolf <lars.windolf@gmx.de>
 Copyright=Copyright © 2018 Lars Windolf <lars.windolf@gmx.de>

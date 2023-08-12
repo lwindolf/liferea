@@ -1,7 +1,7 @@
 /**
  * @file item.c item handling
  *
- * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2023 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -34,18 +34,52 @@
 #include "render.h"
 #include "xml.h"
 
-itemPtr
-item_new (void)
+G_DEFINE_TYPE (LifereaItem, liferea_item, G_TYPE_OBJECT);
+
+static GObjectClass *parent_class = NULL;
+
+static void
+liferea_item_finalize (GObject *object)
 {
-	itemPtr		item;
+	LifereaItem *item = LIFEREA_ITEM (object);
 
-	item = g_new0 (struct item, 1);
-	item->popupStatus = TRUE;
+	g_free (item->title);
+	g_free (item->source);
+	g_free (item->sourceId);
+	g_free (item->description);
+	g_free (item->commentFeedId);
+	g_free (item->nodeId);
+	g_free (item->parentNodeId);
 
-	return item;
+	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
+	metadata_list_free (item->metadata);
+
+	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-itemPtr
+static void
+liferea_item_class_init (LifereaItemClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
+
+	object_class->finalize = liferea_item_finalize;
+}
+
+static void
+liferea_item_init (LifereaItem *item)
+{
+	item->popupStatus = TRUE;
+}
+
+LifereaItem *
+item_new (void)
+{
+	return LIFEREA_ITEM (g_object_new (LIFEREA_ITEM_TYPE, NULL));
+}
+
+LifereaItem *
 item_load (gulong id)
 {
         itemPtr item;
@@ -56,10 +90,10 @@ item_load (gulong id)
         return item;
 }
 
-itemPtr
-item_copy (itemPtr item)
+LifereaItem *
+item_copy (LifereaItem *item)
 {
-	itemPtr copy = item_new ();
+	LifereaItem *copy = item_new ();
 
 	item_set_title (copy, item->title);
 	item_set_source (copy, item->source);
@@ -72,6 +106,7 @@ item_copy (itemPtr item)
 	copy->flagStatus = item->flagStatus;
 	copy->time = item->time;
 	copy->timestr = g_strdup( item->timestr );
+	copy->validTime = item->validTime;
 	copy->validGuid = item->validGuid;
 	copy->hasEnclosure = item->hasEnclosure;
 
@@ -89,7 +124,7 @@ item_copy (itemPtr item)
 }
 
 void
-item_set_title (itemPtr item, const gchar * title)
+item_set_title (LifereaItem *item, const gchar * title)
 {
 	g_free (item->title);
 
@@ -100,7 +135,7 @@ item_set_title (itemPtr item, const gchar * title)
 }
 
 void
-item_set_description (itemPtr item, const gchar *description)
+item_set_description (LifereaItem *item, const gchar *description)
 {
 	if (!description)
 		return;
@@ -114,31 +149,41 @@ item_set_description (itemPtr item, const gchar *description)
 }
 
 void
-item_set_source (itemPtr item, const gchar * source)
+item_set_source (LifereaItem *item, const gchar * source)
 {
 	g_free (item->source);
-	if (source)
+
+	/* We expect only relative URIs starting with '/' or absolute URIs starting with 'http://' or 'https://' */
+	if (source && ('/' == source[0] || 'h' == source[0]))
 		item->source = g_strstrip (g_strdup (source));
 	else
 		item->source = NULL;
 }
 
 void
-item_set_id (itemPtr item, const gchar * id)
+item_set_id (LifereaItem *item, const gchar * id)
 {
 	g_free (item->sourceId);
 	item->sourceId = g_strdup (id);
 }
 
-const gchar *	item_get_id(itemPtr item) { return item->sourceId; }
-const gchar *	item_get_title(itemPtr item) {return item->title; }
-const gchar *	item_get_description(itemPtr item) { return item->description; }
-const gchar *	item_get_source(itemPtr item) { return item->source; }
+void
+item_set_time (LifereaItem *item, gint64 time)
+{
+	item->time = time;
+	if (item->time > 0)
+		item->validTime = TRUE;
+}
+
+const gchar *	item_get_id(LifereaItem *item) { return item->sourceId; }
+const gchar *	item_get_title(LifereaItem *item) {return item->title; }
+const gchar *	item_get_description(LifereaItem *item) { return item->description; }
+const gchar *	item_get_source(LifereaItem *item) { return item->source; }
 
 static GRegex *whitespace_strip_re = NULL;
 
 gchar *
-item_get_teaser (itemPtr item)
+item_get_teaser (LifereaItem *item)
 {
 	gchar		*input, *tmpDesc;
 	gchar		*teaser = NULL;
@@ -173,7 +218,7 @@ item_get_teaser (itemPtr item)
 }
 
 gchar *
-item_make_link (itemPtr item)
+item_make_link (LifereaItem *item)
 {
 	const gchar	*src;
 	gchar		*link;
@@ -190,7 +235,7 @@ item_make_link (itemPtr item)
 
 		link = (gchar *) common_build_url (src, base);
 		if (!link) {
-			debug0 (DEBUG_PARSING, "Feed contains relative link and invalid base URL");
+			debug (DEBUG_PARSING, "Feed contains relative link and invalid base URL");
 			return NULL;
 		}
 	}
@@ -199,7 +244,7 @@ item_make_link (itemPtr item)
 }
 
 const gchar *
-item_get_author(itemPtr item)
+item_get_author(LifereaItem *item)
 {
 	gchar *author;
 
@@ -226,7 +271,7 @@ item_unload (itemPtr item)
 }
 
 const gchar *
-item_get_base_url (itemPtr item)
+item_get_base_url (LifereaItem *item)
 {
 	/* item->node is always the source node for the item
 	   never a search folder or folder */
@@ -234,13 +279,12 @@ item_get_base_url (itemPtr item)
 }
 
 void
-item_to_xml (itemPtr item, gpointer xmlNode)
+item_to_xml (LifereaItem *item, gpointer xmlNode)
 {
 	xmlNodePtr	parentNode = (xmlNodePtr)xmlNode;
 	xmlNodePtr	duplicatesNode;
 	xmlNodePtr	itemNode;
 	gchar		*tmp;
-	gchar		*tmp2;
 
 	itemNode = xmlNewChild (parentNode, NULL, BAD_CAST "item", NULL);
 	g_return_if_fail (itemNode);
@@ -254,10 +298,8 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 			content = item_get_description (item);
 
 		tmp = xhtml_strip_dhtml (content);
-		tmp2 = xhtml_strip_unsupported_tags (tmp);
-		xmlNewTextChild (itemNode, NULL, BAD_CAST "description", BAD_CAST tmp2);
+		xmlNewTextChild (itemNode, NULL, BAD_CAST "description", BAD_CAST tmp);
 		g_free (tmp);
-		g_free (tmp2);
 	}
 
 	if (item_get_source (item))
@@ -294,7 +336,7 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 		duplicates = iter = db_item_get_duplicates(item->sourceId);
 		while (iter) {
 			gulong id = GPOINTER_TO_UINT (iter->data);
-			itemPtr duplicate = item_load (id);
+			LifereaItem * duplicate = item_load (id);
 			if (duplicate) {
 				nodePtr duplicateNode = node_from_id (duplicate->nodeId);
 				if (duplicateNode && (item->id != duplicate->id))
@@ -329,7 +371,7 @@ item_to_xml (itemPtr item, gpointer xmlNode)
 }
 
 static const gchar *
-item_get_text_direction (itemPtr item)
+item_get_text_direction (LifereaItem *item)
 {
 	if (item_get_title (item))
 		return (common_get_text_direction (item_get_title (item)));
@@ -341,7 +383,7 @@ item_get_text_direction (itemPtr item)
 }
 
 gchar *
-item_render (itemPtr item, guint viewMode)
+item_render (LifereaItem *item, guint viewMode)
 {
 	renderParamPtr	params;
 	gchar		*output = NULL, *baseUrl = NULL;
@@ -349,7 +391,6 @@ item_render (itemPtr item, guint viewMode)
 	xmlDocPtr 	doc;
 	xmlNodePtr 	xmlNode;
 
-	debug_enter ("item_render");
 
 	/* don't use node from htmlView_priv as this would be
 	wrong for folders and other merged item sets */
@@ -384,7 +425,6 @@ item_render (itemPtr item, guint viewMode)
 	xmlFreeDoc (doc);
 	g_free (baseUrl);
 
-	debug_exit ("item_render");
 
 	return output;
 }

@@ -1,34 +1,35 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="de">
 <head>
 	<title>Abonnements verwalten</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="reference.css" >
 </head>
 <body>
 
 
-	<!-- navigation header start -->
-	<table width="100%">
+	<header>
+  <nav>
+	<table class="fullwidth">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="about_de.html">Zurück</a></td>
-	      <!-- home --><td style="text-align:center;"><b>Abonnements verwalten</b></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a href="headlines_de.html">Vor</a></td>
+	      <td class="back left"><a rel="prev" href="about_de.html">Zurück</a></td>
+	      <td class="home center"><h1>Abonnements verwalten</h1></td>
+	      <td class="next right"><a rel="next" href="headlines_de.html">Vor</a></td>
 	   </tr>
 	</table>
-	<hr />
-	<!-- navigation header end -->
+	
+	</nav>
+  </header>
 
-	<!-- content start --> 	
+	<main>
 	<p>
 	Diese Sektion beschreibt die Möglichkeiten die Liferea bietet
 	um verschiedene Typen von Online-Abonnements anzulegen.
 	</p>
-	
+
 	<h3>Was kann abonniert werden?</h3>
 	<p>
-	Als News-Aggregator kann Liferea verschiedenste Quellen von 
+	Als News-Aggregator kann Liferea verschiedenste Quellen von
 	New, Blogs oder anderen Inhalten abonnieren. Liferea unterstützt
 	folgende Abonnementtypen:
 	<ul>
@@ -44,7 +45,7 @@
 	Mit dem Menüpunkt "Neues Abonnement" aus dem Hauptmenü oder
 	dem Kontextmenü der Liste der Abonnements kann ein Dialog
 	zum Anlegen eines neuen Abonnements geöffnet werden.
-	</p>	
+	</p>
 
 	<p align="center">
 	<img src="help_subscribe_1.6.0.png">
@@ -61,11 +62,11 @@
 	muß "URL" als Quelltyp ausgewählt werden und die Feed-URL
 	"<i><a href="http://slashdot.org/index.rss">http://slashdot.org/index.rss</a></i>"
 	als "Quelle" eingetragen werden.</p>
-	
-	<p>Im Falle von Kommandos und Dateien als Quelltyp können diese 
+
+	<p>Im Falle von Kommandos und Dateien als Quelltyp können diese
 	mit Hilfe eines Dateiauswähldialoges mit "Datei auswählen..."
 	gesucht werden.</p>
-	
+
 	<p>Es kann vorkommen, daß ein Feed-Format von Liferea nicht
 	unterstützt wird. In diesem Fall kann ein Konvertierungsfilter
 	verwendet werden um die Daten in ein für Liferea lesbares
@@ -81,18 +82,18 @@
 	die Quelldaten von stdin einliest und in einem von Liferea
 	unterstützten Format auf stdout wieder ausgibt. Solche Filter
 	können z.B. mit Perl leicht geschrieben werden. </p>
-	
+
 	<h3>Abonnement-Eigenschaften</h3>
 
 	<p>Der Eigenschaften-Dialog für ein Abonnement wird nach dem
-	Anlegen neuer Abonnements automatisch geöffnet. Zusätzlich 
+	Anlegen neuer Abonnements automatisch geöffnet. Zusätzlich
 	kann er mit dem Menüpunkt "Eigenschaften" aus dem Hauptmenü
 	oder dem Kontextmenü eines ausgewählten Abonnements aufgerufen
 	werden.	Beim Erzeugen neuer Abonnements ist es oft gar nicht
 	notwendig die Defaultwerte zu verändern und es reicht aus
 	den Dialog mit dem "Ok" Button zu bestätigen.
 	</p>
-	
+
 	<p>
 	Der Eigenschaften-Dialog ist in fünf Registerkarten unterteilt:
 	"Allgemein", "Quelle", "Cache", "Authentifizierung" und
@@ -103,11 +104,11 @@
 	<p align="center">
 	<img src="help_feed_prop_general_1.6.0.png"/>
 	</p>
-	
-	<p>Die Registerkarte "Allgemein" erlaubt das Ändern des 
+
+	<p>Die Registerkarte "Allgemein" erlaubt das Ändern des
 	Titels und des Aktualisierungsintervalls des Abonnements.
 	</p>
-	
+
 	<a name="updateInterval">
 	<div id="updateInterval"><p>Das Aktualisierungsintervall
 		kontrolliert nach welcher Zeit Liferea ein Abonnement
@@ -117,7 +118,7 @@
 		in den Programmeinstellungen festgelegt wird. Auf diese
 		Weise kann die Aktualisierung aller Abonnements zentral
 		gesteuert werden.</p>
-	  
+
 	  <p>Manchmal geben Feeds ein eigenes Aktualisierungsintervall
 		vor. In diesem Fall wird Liferea automatisch die
 		Option "Benutzerdefinierte Aktualisierung" auswählen
@@ -132,7 +133,7 @@
 		  <dd>Mit dieser Option wird das Aktualisierungsintervall
 			durch die globale Programmeinstellung festgelegt.
 			</dd>
-		  
+
 		  <dt>Benutzerdefinierte Aktualisierung</dt>
 		  <dd>Mit dieser Option kann ein beliebiges
 			Aktualisierungsintervall für das Abonnement
@@ -140,9 +141,9 @@
 			<em>Beim Angeben des Intervalls sollte man sich
 			immer bewußt sein, welchen Datenverkehr man mit
 			unpassenden Werten verursachen kann. Ein Abonnement
-			sollte nie öfter aktualisiert werden als sich 
+			sollte nie öfter aktualisiert werden als sich
 			seine angebotenen Inhalte ändern.</em></dd>
-	
+
 		  <dt>Feed nicht automatisch aktualisieren</dt>
 		  <dd>Mit dieser Option kann das Aktualisieren des
 			Abonnements deaktiviert werden. Das ist nützlich
@@ -156,7 +157,7 @@
 	<p align="center">
 	<img src="help_feed_prop_source_1.6.0.png"/>
 	</p>
-	
+
 	<p>Die Registerkarte "Quelle" enthält dieselben Dialogelemente
 	die auch beim Anlegen neuer Abonnements angeboten werden. Daher
 	kann hier die Quelle des Abonnements nachträglich verändert
@@ -167,13 +168,13 @@
 	<p align="center">
 	<img src="help_feed_prop_cache_1.6.0.png"/>
 	</p>
-	
+
 	<p>Die dritte Registerkarte, "Cache", erlaubt es die
 	Anzahl zu sichernder Schlagzeilen zu konfigurieren.
-	Diese Einstellungen sind analog zu den globalen 
+	Diese Einstellungen sind analog zu den globalen
 	Cache-Einstellungen. Normalerweise ist es ausreichend
 	die globale Einstellung zu verwenden.</p>
-	
+
 	<dl>
 	  <dt>Default-Cache-Einstellungen</dt>
 	  <dd>Für das Abonnement soll die globale Cache-Einstellung
@@ -181,7 +182,7 @@
 	  <dt>Cache Deaktivieren</dt>
 	  <dd>Verhindert das Sichern der Schlagzeilen.</dd>
 	  <dt>Unbeschränkter Cache</dt>
-	  <dd>Sichert alle Schlagzeilen. Verwirft niemals 
+	  <dd>Sichert alle Schlagzeilen. Verwirft niemals
 		eine Schlagzeile.</dd>
 	  <dt>Cache begrenzen auf # Schlagzeilen</dt>
 	  <dd>Sichert nur # Schlagzeilen. Verwirft alte Schlagzeilen
@@ -189,29 +190,29 @@
 	</dl>
 
 	<p>
-	<strong>Hinweis:</strong> Markierte Schlagzeilen werden 
+	<strong>Hinweis:</strong> Markierte Schlagzeilen werden
 	unabhängig von den Cache-Einstellungen niemals gelöscht.
 	Durch das Setzen der Flagge einer Schlagzeile die man gerade
 	gelesen hat verhindert man deren zukünftiges Löschen.
 	</p>
-	
+
 	<h4>Authentifizierung</h4>
-	
+
 	<p align="center">
 	<img src="help_feed_prop_auth_1.6.0.png"/>
 	</p>
-	
+
 	<p>
 	Mit dieser Registerkarte kann die HTTP Authentifikation für
 	den Download der Abonnement-Quelle aktiviert werden. Nach dem
 	aktivieren der Checkbox können Benutzername und Paßwort eingegeben
-	werden. Üblicherweise ist es nicht notwendig die 
+	werden. Üblicherweise ist es nicht notwendig die
 	Authentifikationsdaten im Voraus anzugeben, da Liferea automatisch
 	nachfragt sobald eine Abonnement-Quelle Authentifikation erfordert.
 	</p>
-	
+
 	<h4>Erweitert</h4>
-	
+
 	<p align="center">
 	<img src="help_feed_prop_enclosures_1.6.0.png"/>
 	</p>
@@ -220,31 +221,31 @@
 	In dieser Registerkarte können verschiedene Spezialeinstellungen
 	für dieses Abonnement aktiviert werden.
 	</p>
-	
+
 	<dl>
 		<dt>Alle Anänge dieses Abonnements automatisch herunterladen.</dt>
 		<dd>Diese Option ist nützlich fpr Podcasts oder Torrent-Feeds. Wenn
 		diese Option aktiviert ist lädt Liferea alle <a href="enclosures_en.html">Anhänge</a>
 		automatisch herunter.
 		</dd>
-	
+
 		<dt>Link beim Auswählen der Schlagzeile automatisch öffnen.</dt>
 		<dd>Per-default zeigt Liferea den Inhalt einer Schlagzeile. Ist diese
 		Option aktiv wird stattdessen die Schlagzeilen-URL geladen.
 		</dd>
-		
+
 		<dt>Ignoriere Kommentarfeeds dieses Abonnements.</dt>
 		<dd>Manchmal sind Kommentarfeeds fehlerhaft oder schlicht nutzlos.
 		Mit dieser Option können sie ausgeblendet werden.</dd>
-		
+
 		<dt>Erzwinge Popups für dieses Abonnement.</dt>
 		<dd>Wenn die globale Einstellung für Popups deaktiviert ist
 		können diese trotzdem für dieses Abonnement erzwungen werden.</dd>
-		
+
 		<dt>Keine Popups für dieses Abonnement.</dt>
 		<dd>Wenn die globale Einstellung für Popups aktiviert ist
 		können diese trotzdem für dieses Abonnement unterdrückt werden.</dd>
-		
+
 		<dt>Markiere heruntergeladene Schlagzeilen als gelesen.</dt>
 		<dd>Neue Schlagzeilen haben immer den Status "ungelesen". Diese
 		Option kann nützlich sein um für uninteressante Abonnements
@@ -258,28 +259,32 @@
 	dem "Abonnements"-Menü ausgewählt werden. Im dann geöffneten Dialog
 	kann die gewünschte Quelle ausgewählt werden.
 	</p>
-	
+
 	<h4>OPML-Quelle</h3>
 	<p>
 	Wurde "Planet/BlogRoll/OPML" als Quelle ausgewählt muß die
-	URL einer OPML-Quelle angegeben werden. Wenn nötig auch noch 
+	URL einer OPML-Quelle angegeben werden. Wenn nötig auch noch
 	zusätzlich Authentifikation für den Zugriff. Geht alles gut wird
 	ein neuer Eintrag in der Feedliste angelegt und nach dem initialen
-	Download der OPML-Quelle werden die enthaltenen Abonnements 
+	Download der OPML-Quelle werden die enthaltenen Abonnements
 	hierarchisch hinzugefüht. Ändert sich die OPML-Quelle werden
 	mit der Zeit alte Feeds automatisch entfernt und neue
 	hinzugefügt.
 	</p>
 
-	<!-- navigation footer start -->
-	<hr />
-	<table width="100%">
+	</main>
+
+	<footer>
+  <nav>
+	
+	<table class="fullwidth">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="about_de.html">Zurück</a></td>
-	      <!-- home --><td style="text-align:center;"><a href="topics_de.html">Inhalt</a></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a href="headlines_de.html">Vor</a></td>
+	      <td class="back left"><a rel="prev" href="about_de.html">Zurück</a></td>
+	      <td class="home center"><a href="topics_de.html">Inhalt</a></td>
+	      <td class="next right"><a rel="next" href="headlines_de.html">Vor</a></td>
 	   </tr>
 	</table>
-	<!-- navigation footer end -->
+	</nav>
+  </footer>
 </body>
 </html>

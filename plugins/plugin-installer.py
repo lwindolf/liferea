@@ -19,6 +19,7 @@
 
 import urllib.request, json
 import os, sys, glob, shutil, subprocess
+from pathlib import Path
 import gi
 
 gi.require_version('Gtk', '3.0')
@@ -64,13 +65,15 @@ class AppActivatable(GObject.Object, Liferea.ShellActivatable):
 
 class PluginBrowser(Gtk.Window):
     SCHEMA_ID = "net.sf.liferea.plugins"
+    SCHEMA_PATH = "glib-2.0/schemas/"
+    PLUGIN_PATH = "liferea/plugins"
 
     def __init__(self):
         Gtk.Window.__init__(self, title=_("Plugin Installer"))
 
-        # FIXME: using safe XDG paths would be better
-        self.target_dir = os.path.expanduser("~/.local/share/liferea/plugins/")
-        self.schema_dir = os.path.expanduser("~/.local/share/glib-2.0/schemas/")
+        self.data_home_path = os.getenv('XDG_DATA_HOME',Path.joinpath(Path.home(), ".local/share"))
+        self.target_dir = Path.joinpath(Path(self.data_home_path), self.PLUGIN_PATH)
+        self.schema_dir = Path.joinpath(Path(self.data_home_path), self.SCHEMA_PATH)
 
         self.set_border_width(10)
         self.set_default_size(600,300)
@@ -91,8 +94,8 @@ class PluginBrowser(Gtk.Window):
             try:
                 name = next(iter(ref))
                 installed = False
-                if(os.path.isfile('%s%s.plugin' % (self.target_dir, ref[name]['module'])) or
-                   os.path.isdir('%s%s' % (self.target_dir, ref[name]['module']))):
+                if(os.path.isfile('%s/%s.plugin' % (self.target_dir, ref[name]['module'])) or
+                   os.path.isdir('%s/%s' % (self.target_dir, ref[name]['module']))):
                    installed = True
                 if not 'icon' in ref[name]:
                    ref[name]['icon'] = 'libpeas-plugin'
@@ -157,11 +160,15 @@ class PluginBrowser(Gtk.Window):
 
     def fetch_list(self):
         """Fetch list from github project repo and parse JSON"""
-        list_url = "https://raw.githubusercontent.com/lwindolf/liferea/master/plugins/plugin-list.json"
-        data = None
-        req = urllib.request.Request(list_url)
-        resp = urllib.request.urlopen(req).read()
-        return json.loads(resp.decode('utf-8'))
+
+        if True == Liferea.NetworkMonitor.is_online():
+            list_url = "https://raw.githubusercontent.com/lwindolf/liferea/master/plugins/plugin-list.json"
+            data = None
+            req = urllib.request.Request(list_url)
+            resp = urllib.request.urlopen(req).read()
+            return json.loads(resp.decode('utf-8'))
+        else:
+            return {'plugins': []}
 
     def category_filter_func(self, model, iter, data):
         """Tests if the category in the row is the one in the filter"""
@@ -399,6 +406,6 @@ class PluginBrowser(Gtk.Window):
         # arbitrary names...
 
         if error:
-            self.show_message(_("Sorry! Plugin removal failed!."), True)
+            self.show_message(_("Sorry! Plugin removal failed!"), True)
         else:
-            self.show_message(_("Plugin was removed. Please restart Liferea once for it to take full effect!."), False)
+            self.show_message(_("Plugin was removed. Please restart Liferea once for it to take full effect!"), False)

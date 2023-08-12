@@ -9,7 +9,6 @@
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-    <signal name="delete-event" handler="gtk_widget_hide_on_delete" swapped="no"/>
     <child>
       <placeholder/>
     </child>
@@ -32,7 +31,7 @@
                 <property name="can_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="gtk_widget_hide" object="new_newsbin" swapped="yes"/>
+                <signal name="clicked" handler="gtk_widget_destroy" object="new_newsbin" swapped="yes"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -49,8 +48,6 @@
                 <property name="has_default">True</property>
                 <property name="receives_default">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="gtk_widget_hide" object="new_newsbin" after="yes" swapped="yes"/>
-                <signal name="clicked" handler="on_newnewsbinbtn_clicked" object="new_newsbin" swapped="yes"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -95,6 +92,21 @@
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkCheckButton" id="newsbinalwaysshowinreduced">
+                <property name="label" translatable="yes">_Always show in Reduced Feed List</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_underline">True</property>
+                <property name="draw_indicator">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+                <property name="width">2</property>
               </packing>
             </child>
           </object>

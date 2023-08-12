@@ -2,7 +2,7 @@
  * @file theoldreader_source_feed.c  TheOldReader feed subscription routines
  *
  * Copyright (C) 2008  Arnold Noronha <arnstein87@gmail.com>
- * Copyright (C) 2014  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2014-2022  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ theoldreader_source_migrate_node (nodePtr node)
 		if (item && item->sourceId) {
 			// FIXME: does this work?
 			if (!g_str_has_prefix(item->sourceId, "tag:google.com")) {
-				debug1(DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
+				debug (DEBUG_UPDATE, "Item with sourceId [%s] will be deleted.", item->sourceId);
 				db_item_remove(GPOINTER_TO_UINT(iter->data));
 			}
 		}
@@ -117,7 +117,7 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 			id = xmlNodeGetContent (xml);
 
 		if (g_str_equal (xml->name, "category")) {
-			xmlChar* label = xmlGetProp (xml, "label");
+			xmlChar* label = xmlGetProp (xml, BAD_CAST"label");
 			if (!label)
 				continue;
 
@@ -133,9 +133,9 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 		return;
 	}
 
-	itemPtr item = theoldreader_source_load_item_from_sourceid (node, id, cache);
+	itemPtr item = theoldreader_source_load_item_from_sourceid (node, (gchar *)id, cache);
 	if (item && item->sourceId) {
-		if (g_str_equal (item->sourceId, id) && !google_reader_api_edit_is_in_queue(node->source, id)) {
+		if (g_str_equal (item->sourceId, id) && !google_reader_api_edit_is_in_queue(node->source, (gchar *)id)) {
 
 			if (item->readStatus != read)
 				item_read_state_changed (item, read);
@@ -151,7 +151,6 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 {
 	gchar 	*id;
 
-	debug_start_measurement (DEBUG_UPDATE);
 
 	/* Save old subscription metadata which contains "theoldreader-feed-id"
 	   which is mission critical and the feed parser currently drops all
@@ -187,18 +186,17 @@ theoldreader_feed_subscription_process_update_result (subscriptionPtr subscripti
 		g_hash_table_unref (cache);
 		xmlFreeDoc (doc);
 	} else {
-		debug0 (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
-		g_print ("theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
+		debug (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result(): Couldn't parse XML!");
+		subscription->node->available = FALSE;
 	}
 
-	debug_end_measurement (DEBUG_UPDATE, "theoldreader_feed_subscription_process_update_result");
 }
 
 static gboolean
 theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscription,
                                                        UpdateRequest *request)
 {
-	debug0 (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");
+	debug (DEBUG_UPDATE, "preparing TheOldReader feed subscription for update");
 	TheOldReaderSourcePtr source = (TheOldReaderSourcePtr) node_source_root_from_node (subscription->node)->data;
 
 	g_assert (source);
@@ -212,12 +210,9 @@ theoldreader_feed_subscription_prepare_update_request (subscriptionPtr subscript
 		return FALSE;
 	}
 
-	debug1 (DEBUG_UPDATE, "Setting cookies for a TheOldReader subscription '%s'", subscription->source);
-	gchar* source_escaped = g_uri_escape_string(request->source, NULL, TRUE);
-	gchar* newUrl = g_strdup_printf ("http://theoldreader.com/reader/atom/%s", metadata_list_get (subscription->metadata, "theoldreader-feed-id"));
-	update_request_set_source (request, newUrl);
-	g_free (newUrl);
-	g_free (source_escaped);
+	gchar* url = g_strdup_printf ("http://theoldreader.com/reader/atom/%s", metadata_list_get (subscription->metadata, "theoldreader-feed-id"));
+	update_request_set_source (request, url);
+	g_free (url);
 
 	update_request_set_auth_value (request, subscription->node->source->authToken);
 	return TRUE;

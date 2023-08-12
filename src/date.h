@@ -57,4 +57,19 @@ gint64 date_parse_ISO8601 (const gchar *date);
 gint64 date_parse_RFC822 (const gchar *date);
 
 
+/**
+ * Formats an Unix timestamp to a RFC822 date/time with English locale,
+ * independently of the current system locale configuration, and timezone
+ * set for GMT/UTC, as defined for element "pubDate" in RSS 2.0 spec.
+ * Caller is responsible for g_free()'ing the returned string.
+ *
+ * @param datetime		the date string to format
+ *
+ * @returns (transfer full) (nullable): a newly allocated string or NULL for internal errors.
+ */
+gchar * date_format_rfc822_en_gmt (gint64 datetime);
+
+void date_init (void);
+void date_deinit (void);
+
 #endif

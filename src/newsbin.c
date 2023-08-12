@@ -33,7 +33,6 @@
 #include "ui/feed_list_view.h"
 #include "ui/liferea_dialog.h"
 
-static GtkWidget *newnewsbindialog = NULL;
 static GSList * newsbin_list = NULL;
 
 GSList *
@@ -45,16 +44,35 @@ newsbin_get_list (void)
 static void
 newsbin_import (nodePtr node, nodePtr parent, xmlNodePtr cur, gboolean trusted)
 {
+	xmlChar		*tmp;
 	feed_get_node_type ()->import (node, parent, cur, trusted);
 
 	/* but we don't need a subscription (created by feed_import()) */
 	g_free (node->subscription);
 	node->subscription = NULL;
 
+	tmp = xmlGetProp (cur, BAD_CAST"alwaysShowInReducedMode");
+	if (tmp && !xmlStrcmp (tmp, BAD_CAST"true"))
+		((feedPtr)node->data)->alwaysShowInReduced = TRUE;
+	xmlFree (tmp);
+
 	((feedPtr)node->data)->cacheLimit = CACHE_UNLIMITED;
 
 	newsbin_list = g_slist_append(newsbin_list, node);
 }
+
+
+static void
+newsbin_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
+{
+	feedPtr feed = (feedPtr) node->data;
+
+	if (trusted) {
+		if (feed->alwaysShowInReduced)
+			xmlNewProp (xml, BAD_CAST"alwaysShowInReducedMode", BAD_CAST"true");
+	}
+}
+
 
 static void
 newsbin_remove (nodePtr node)
@@ -76,35 +94,76 @@ newsbin_render (nodePtr node)
 	return output;
 }
 
-static gboolean
-ui_newsbin_add (void)
+
+static void
+on_newsbin_common_btn_clicked (GtkButton *button, gpointer user_data)
 {
-	GtkWidget	*nameentry;
+	GtkWidget	*dialog = gtk_widget_get_toplevel (GTK_WIDGET (button));
+	GtkWidget	*nameentry = liferea_dialog_lookup (dialog, "newsbinnameentry");
+	GtkWidget	*showinreduced = liferea_dialog_lookup (dialog, "newsbinalwaysshowinreduced");
+	nodePtr		newsbin = (nodePtr) user_data;
+	gboolean	newly_created = FALSE;
 
-	if (!newnewsbindialog || !G_IS_OBJECT (newnewsbindialog))
-		newnewsbindialog = liferea_dialog_new ("new_newsbin");
+	if (newsbin == NULL) {
+		newsbin = node_new (newsbin_get_node_type ());
+		node_set_data (newsbin, (gpointer)feed_new ());
+		newsbin_list = g_slist_append(newsbin_list, newsbin);
+		newly_created = TRUE;
+	}
 
-	nameentry = liferea_dialog_lookup (newnewsbindialog, "newsbinnameentry");
-	gtk_entry_set_text (GTK_ENTRY (nameentry), "");
+	node_set_title (newsbin, (gchar *)gtk_entry_get_text (GTK_ENTRY (nameentry)));
+	if (newsbin->data) {
+		((feedPtr)newsbin->data)->alwaysShowInReduced = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showinreduced));
+	}
+	if (newly_created) {
+		feedlist_node_added (newsbin);
+	}
 
-	gtk_window_present (GTK_WINDOW (newnewsbindialog));
+	feedlist_schedule_save ();
+	gtk_widget_destroy (dialog);
+}
+
+
+static gboolean
+ui_newsbin_common (nodePtr node)
+{
+	GtkWidget	*dialog = liferea_dialog_new ("new_newsbin");
+	GtkWidget	*nameentry = liferea_dialog_lookup (dialog, "newsbinnameentry");
+	GtkWidget	*showinreduced = liferea_dialog_lookup (dialog, "newsbinalwaysshowinreduced");
+	GtkWidget	*okbutton = liferea_dialog_lookup (dialog, "newnewsbinbtn");
+
+	if (node) {
+		gtk_window_set_title (GTK_WINDOW (dialog), _("News Bin Properties"));
+		gtk_entry_set_text (GTK_ENTRY (nameentry), node_get_title (node));
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), ((feedPtr)node->data)->alwaysShowInReduced);
+	} else {
+		gtk_window_set_title (GTK_WINDOW (dialog), _("Create News Bin"));
+		gtk_entry_set_text (GTK_ENTRY (nameentry), "");
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), FALSE);
+	}
+
+	g_signal_connect (G_OBJECT (okbutton), "clicked",
+	                  G_CALLBACK (on_newsbin_common_btn_clicked), node);
+
+	gtk_window_present (GTK_WINDOW (dialog));
 
 	return TRUE;
 }
 
-void
-on_newnewsbinbtn_clicked (GtkButton *button, gpointer user_data)
+
+static gboolean
+ui_newsbin_add (void)
 {
-	nodePtr		newsbin;
-
-	newsbin = node_new (newsbin_get_node_type ());
-	node_set_title (newsbin, (gchar *)gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (newnewsbindialog, "newsbinnameentry"))));
-	node_set_data (newsbin, (gpointer)feed_new ());
-
-	newsbin_list = g_slist_append(newsbin_list, newsbin);
-
-	feedlist_node_added (newsbin);
+	return ui_newsbin_common(NULL);
 }
+
+
+static void
+ui_newsbin_properties (nodePtr node)
+{
+	ui_newsbin_common(node);
+}
+
 
 void
 on_action_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer user_data)
@@ -155,18 +214,19 @@ newsbin_get_node_type (void)
 		nodeType = g_new0 (struct nodeType, 1);
 		nodeType->capabilities		= NODE_CAPABILITY_RECEIVE_ITEMS |
 		                                  NODE_CAPABILITY_SHOW_UNREAD_COUNT |
-		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT;
+		                                  NODE_CAPABILITY_SHOW_ITEM_COUNT |
+		                                  NODE_CAPABILITY_EXPORT_ITEMS;
 		nodeType->id			= "newsbin";
-		nodeType->icon			= icon_get (ICON_NEWSBIN);
+		nodeType->icon			= ICON_NEWSBIN;
 		nodeType->load			= feed_get_node_type()->load;
 		nodeType->import		= newsbin_import;
-		nodeType->export		= feed_get_node_type()->export;
+		nodeType->export		= newsbin_export;
 		nodeType->save			= feed_get_node_type()->save;
 		nodeType->update_counters	= feed_get_node_type()->update_counters;
 		nodeType->remove		= newsbin_remove;
 		nodeType->render		= newsbin_render;
 		nodeType->request_add		= ui_newsbin_add;
-		nodeType->request_properties	= feed_list_view_rename_node;
+		nodeType->request_properties	= ui_newsbin_properties;
 		nodeType->free			= feed_get_node_type()->free;
 	}
 

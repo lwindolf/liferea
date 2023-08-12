@@ -1,7 +1,7 @@
 /**
  * @file reedah_source.c  Reedah source support
  *
- * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Arnold Noronha <arnstein87@gmail.com>
  * Copyright (C) 2011 Peter Oliver
  * Copyright (C) 2011 Sergey Snitsaruk <narren96c@gmail.com>
@@ -47,6 +47,8 @@
 /** default Reedah subscription list update interval = once a day */
 #define NODE_SOURCE_UPDATE_INTERVAL (guint64)(60*60*24) * (guint64)G_USEC_PER_SEC
 
+#define BASE_URL "http://www.reedah.com/reader/api/0/"
+
 /** create a Reedah source with given node as root */
 static ReedahSourcePtr
 reedah_source_new (nodePtr node)
@@ -54,6 +56,21 @@ reedah_source_new (nodePtr node)
 	ReedahSourcePtr source = g_new0 (struct ReedahSource, 1) ;
 	source->root = node;
 	source->lastTimestampMap = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+	node->source->api.subscription_list		= g_strdup_printf ("%s/subscription/list", BASE_URL);
+	node->source->api.unread_count			= g_strdup_printf ("%s/unread-count?all=true&client=liferea", BASE_URL);
+	node->source->api.token				= g_strdup_printf ("%s/token", BASE_URL);
+	node->source->api.add_subscription		= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
+	node->source->api.add_subscription_post		= g_strdup ("s=feed%%2F%s&i=null&ac=subscribe&T=%s");
+	node->source->api.remove_subscription		= g_strdup_printf ("%s/subscription/edit?client=liferea", BASE_URL);
+	node->source->api.remove_subscription_post	= g_strdup ("s=%s&i=null&ac=unsubscribe&T=%s");
+	node->source->api.edit_tag			= g_strdup_printf ("%s/edit-tag?client=liferea", BASE_URL);
+	node->source->api.edit_tag_add_post		= g_strdup ("i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true");
+	node->source->api.edit_tag_remove_post		= g_strdup ("i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true");
+	node->source->api.edit_tag_ar_tag_post		= g_strdup ("i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true");
+	node->source->api.edit_label			= g_strdup_printf("%s/subscription/edit?client=liferea", BASE_URL);
+	node->source->api.edit_add_label_post		= g_strdup ("s=%s&a=%s&ac=edit&T=%s&async=true");
+	node->source->api.edit_remove_label_post	= g_strdup ("s=%s&r=%s&ac=edit&T=%s&async=true");
 
 	return source;
 }
@@ -77,7 +94,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 	gchar		*tmp = NULL;
 	subscriptionPtr subscription = node->subscription;
 
-	debug1 (DEBUG_UPDATE, "Reedah login processing... %s", result->data);
+	debug (DEBUG_UPDATE, "Reedah login processing... %s", result->data);
 
 	if (result->data && result->httpstatus == 200)
 		tmp = strstr (result->data, "Auth=");
@@ -97,7 +114,7 @@ reedah_source_login_cb (const struct updateResult * const result, gpointer userd
 		google_reader_api_edit_process (node->source);
 
 	} else {
-		debug0 (DEBUG_UPDATE, "Reedah login failed! no Auth token found in result!");
+		debug (DEBUG_UPDATE, "Reedah login failed! no Auth token found in result!");
 
 		g_free (subscription->updateError);
 		subscription->updateError = g_strdup (_("Login failed!"));
@@ -122,7 +139,7 @@ reedah_source_login (ReedahSourcePtr source, guint32 flags)
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session
 		 * doesn't expire. */
-		debug1 (DEBUG_UPDATE, "Logging in while login state is %d\n", source->root->source->loginState);
+		debug (DEBUG_UPDATE, "Logging in while login state is %d", source->root->source->loginState);
 	}
 
 	request = update_request_new (
@@ -161,7 +178,7 @@ reedah_source_auto_update (nodePtr node)
 	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
 		return; /* the update will start automatically anyway */
 
-	debug0 (DEBUG_UPDATE, "reedah_source_auto_update()");
+	debug (DEBUG_UPDATE, "reedah_source_auto_update()");
 
 	now = g_get_real_time();
 
@@ -200,19 +217,26 @@ static nodePtr
 reedah_source_add_subscription (nodePtr node, subscriptionPtr subscription)
 {
 	// FIXME: determine correct category from parent folder name
-	google_reader_api_edit_add_subscription (node_source_root_from_node (node)->data, subscription->source, NULL);
+	google_reader_api_edit_add_subscription (node->source, subscription->source, NULL);
 
-	// FIXME: leaking subscription?
-
-	// FIXME: somehow the async subscribing doesn't cause the feed list to update
+	subscription_free (subscription);
 
 	return NULL;
+}
+
+static gchar *
+reedah_source_get_stream_id_for_node (nodePtr node)
+{
+	if (!node->subscription)
+		return NULL;
+
+	return g_strdup_printf ("feed/%s", node->subscription->source);
 }
 
 static void
 reedah_source_remove_node (nodePtr node, nodePtr child)
 {
-	gchar           *url;
+	g_autofree gchar *url = NULL, *streamId = NULL;
 	ReedahSourcePtr source = node->data;
 
 	if (child == node) {
@@ -221,14 +245,13 @@ reedah_source_remove_node (nodePtr node, nodePtr child)
 	}
 
 	url = g_strdup (child->subscription->source);
+	streamId = reedah_source_get_stream_id_for_node (child);
 
 	feedlist_node_removed (child);
 
 	/* propagate the removal only if there aren't other copies */
 	if (!feedlist_find_node (source->root, NODE_BY_URL, url))
-		google_reader_api_edit_remove_subscription (node->source, url);
-
-	g_free (source);
+		google_reader_api_edit_remove_subscription (node->source, streamId, reedah_source_get_stream_id_for_node);
 }
 
 /* GUI callbacks */
@@ -243,7 +266,8 @@ on_reedah_source_selected (GtkDialog *dialog,
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new (node_source_get_node_type ());
 		node_source_new (node, reedah_source_get_type (), "http://www.reedah.com/reader");
-
+		node_set_title (node, node->source->type->name);
+		
 		subscription_set_auth_info (node->subscription,
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
 		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
@@ -306,8 +330,6 @@ reedah_source_convert_to_local (nodePtr node)
 extern struct subscriptionType reedahSourceFeedSubscriptionType;
 extern struct subscriptionType reedahSourceOpmlSubscriptionType;
 
-#define BASE_URL "http://www.reedah.com/reader/api/0/"
-
 static struct nodeSourceType nst = {
 	.id                  = "fl_reedah",
 	.name                = N_("Reedah"),
@@ -318,19 +340,6 @@ static struct nodeSourceType nst = {
 	                       NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC |
 	                       NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL |
 	                       NODE_SOURCE_CAPABILITY_GOOGLE_READER_API,
-	.api.subscription_list		= BASE_URL "subscription/list",
-	.api.unread_count		= BASE_URL "unread-count?all=true&client=liferea",
-	.api.token			= BASE_URL "token",
-	.api.add_subscription		= BASE_URL "subscription/edit?client=liferea",
-	.api.add_subscription_post	= "s=feed%%2F%s&i=null&ac=subscribe&T=%s",
-	.api.remove_subscription	= BASE_URL "subscription/edit?client=liferea",
-	.api.remove_subscription_post	= "s=feed%%2F%s&i=null&ac=unsubscribe&T=%s",
-	.api.edit_tag			= BASE_URL "edit-tag?client=liferea",
-	.api.edit_tag_add_post		= "i=%s&s=%s%%2F%s&a=%s&ac=edit-tags&T=%s&async=true",
-	.api.edit_tag_remove_post	= "i=%s&s=%s%%2F%s&r=%s&ac=edit-tags&T=%s&async=true",
-	.api.edit_tag_ar_tag_post	= "i=%s&s=%s%%2F%s&a=%s&r=%s&ac=edit-tags&T=%s&async=true",
-	.api.edit_add_label		= BASE_URL "edit?client=liferea",
-	.api.edit_add_label_post	= "s=%s%%2F%s&a=%s&ac=edit&T=%s&async=true",
 	.feedSubscriptionType = &reedahSourceFeedSubscriptionType,
 	.sourceSubscriptionType = &reedahSourceOpmlSubscriptionType,
 	.source_type_init    = reedah_source_init,

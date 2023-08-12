@@ -1,22 +1,27 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<title>Searching</title>
-	
+  <meta charset="utf-8">
+
 	<link rel="stylesheet" type="text/css" href="reference.css">
 </head>
 <body>
 
-	<!-- navigation header start -->
-	<table width="100%">
+	<header>
+  <nav>
+	<table class="fullwidth">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="preferences_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><b>Searching and Search Folders</b></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a href="enclosures_en.html">Next</a></td>
+	      <td class="back left"><a rel="prev" href="preferences_en.html">Prev</a></td>
+	      <td class="home center"><h1>Searching and Search Folders</h1></td>
+	      <td class="next right"><a rel="next" href="enclosures_en.html">Next</a></td>
 	   </tr>
 	</table>
-	<hr />
-	<!-- navigation header end -->
-	
+
+	</nav>
+  </header>
+
+	<main>
 	<h4>Searching for Feed Content</h4>
 
 	<p>
@@ -24,18 +29,18 @@
 	content and titles of all your subscriptions.
 	</p>
 	<p>
-	To open the search 
+	To open the search
 	dialog click the search button in the toolbar.
 	Enter the string you want to search for and click the "Search" button.
-	Any items containing the string either in their title or their content 
+	Any items containing the string either in their title or their content
 	should appear in the resulting item list. Also the item content view
 	will give you a message about the number of matches.
-	</p>	
+	</p>
 
 	<p align="center">
 	<img src="help_search_1.6.0.png">
 	</p>
-	
+
 	<h4>Permanent Searches with Search Folders</h4>
 
 	<p>
@@ -47,7 +52,7 @@
 	button to create a search folder from the search results. Now a search
 	folder should appear in your feed list. If you want you can edit the
 	search folders title or change its rules by opening the properties
-	dialog either from the "Subscriptions" menu or the contextual 
+	dialog either from the "Subscriptions" menu or the contextual
 	menu in the feed list.
 	<!-- FIXME add search folder icon -->
 	</p>
@@ -85,6 +90,18 @@
 	<b>Item title does not contain</b>
 	</td><td>
 	<b>Removes</b> each item whose item title matches the given case insensitive string from the search folder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb">
+	<b>Item author does contain</b>
+	</td><td>
+	<b>Adds</b> each item whose item author (or creator, acording to the feed) matches the given case insensitive string to the search folder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Item title does not contain</b>
+	</td><td>
+	<b>Removes</b> each item whose item author (or creator, acording to the feed) matches the given case insensitive string from the search folder.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#bfb">
@@ -138,11 +155,23 @@
 	<tr><td style="background:#bfb">
 	<b>Podcast included</b>
 	</td><td>
-	<b>Adds</b> all items that contain an enclosure to the search folder.
+	<b>Adds</b> all items that contain a podcast to the search folder. For this rule, podcast is assumed to be any enclosure for an audio file.
 	</td></tr>
 	<!-- ----------------------------------------- -->
 	<tr><td style="background:#fbb">
 	<b>Podcast not included</b>
+	</td><td>
+	<b>Removes</b> all items that do not contain a podcast (i.e. an enclosure for an audio file) from the search folder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb">
+	<b>Enclosure included</b>
+	</td><td>
+	<b>Adds</b> all items that contain an enclosure (for any file type) to the search folder.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Enclosure not included</b>
 	</td><td>
 	<b>Removes</b> all items that do not contain an enclosure from the search folder.
 	</td></tr>
@@ -154,15 +183,19 @@
 	because of to the removal rule will not add this item!
 	</p>
 
-	<!-- navigation footer start -->
-	<hr />
-	<table width="100%">
+	</main>
+
+	<footer>
+  <nav>
+
+	<table class="fullwidth">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="preferences_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><a href="topics_en.html">Contents</a></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a href="enclosures_en.html">Next</a></td>
+	      <td class="back left"><a rel="prev" href="preferences_en.html">Prev</a></td>
+	      <td class="home center"><a href="topics_en.html">Contents</a></td>
+	      <td class="next right"><a rel="next" href="enclosures_en.html">Next</a></td>
 	   </tr>
 	</table>
-	<!-- navigation footer end -->
+	</nav>
+  </footer>
 </body>
 </html>

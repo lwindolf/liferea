@@ -75,8 +75,7 @@ dd {
 
 section, div.content svg, div.content * img {
 	max-width: 100%;
-	box-sizing: border-box;
-	object-fit: scale-down;
+	height: auto !important;
 }
 
 figure, iframe {
@@ -271,4 +270,37 @@ div.photoheader {
 	padding-right:10px;
 	background-color:#GTK-COLOR-DARK;
 	color:#GTK-COLOR-TEXT;
+}
+
+.video-embed {
+	position: relative;
+	max-width: 700px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.video-embed .thumb {
+	max-width: 700px;
+	width: 100%;
+}
+
+.video-embed .play-btn {
+	position: absolute;
+	max-width: 700px;
+	width: 100px;
+	height: 100px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.video-embed .play-btn svg {
+	transition: all .3s ease;
+	fill: #fff;
+}
+
+.video-embed .play-btn:hover svg,
+.video-embed .play-btn:focus svg {
+	cursor: pointer;
+	fill: #ddd;
 }

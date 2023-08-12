@@ -1,0 +1,13 @@
+[Plugin]
+Module=add-bookmark-site
+Loader=python3
+IAge=2
+Name=Add Bookmark Site
+Icon=bookmark-new
+Version=0.1
+Description=Allows adding a new bookmark service to Liferea
+Authors=Lars Windolf <lars.windolf@gmx.de>
+Copyright=Lars Windolf <lars.windolf@gmx.de>
+Website=http://lzone.de/liferea/
+Help=http://lzone.de/liferea/
+

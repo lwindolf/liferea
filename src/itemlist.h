@@ -1,7 +1,7 @@
 /*
  * @file itemlist.h  itemlist handling
  *
- * Copyright (C) 2004-2011 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2023 Lars Windolf <lars.windolf@gmx.de>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,32 +111,10 @@ void itemlist_load (struct node *node);
 
 /**
  * itemlist_unload: (skip)
- * @markRead:	if TRUE all items are marked as read
- *
- * Clears the item list. Unsets the currently
- * displayed item set. Optionally marks every item read.
+  *
+ * Clears the item list.
  */
-void itemlist_unload (gboolean markRead);
-
-/**
- * itemlist_get_view_mode:
- *
- * Returns the viewing mode property of the currently displayed item set.
- *
- * Returns: viewing mode (0 = normal, 1 = wide, 2 = combined view)
- */
-guint itemlist_get_view_mode (void);
-
-/**
- * on_view_activate: (skip)
- * @action:	the action that emitted the signal
- * @value:	string in a GVariant, representing the requested mode.
- * @user_data:	unused
- *
- * Menu callback that toggles the different viewing modes
- * This is the 'change_state' callback for the "SetViewMode" action.
- */
-void on_view_activate (GSimpleAction *action, GVariant *value, gpointer user_data);
+void itemlist_unload (void);
 
 /**
  * on_prev_read_item_activate: (skip)

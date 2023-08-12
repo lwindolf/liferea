@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.c  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *
@@ -115,7 +115,7 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 	 	gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
 
-		debug1 (DEBUG_GUI, "feed list selection changed to \"%s\"", node?node_get_title (node):"Empty node");
+		debug (DEBUG_GUI, "feed list selection changed to \"%s\"", node?node_get_title (node):"Empty node");
 
 		if (!node) {
 			/* The selected iter is an "empty" node added to an empty folder. We get the parent's node
@@ -125,15 +125,9 @@ feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 			if (gtk_tree_model_iter_parent (model, &parent, &iter))
 				gtk_tree_model_get (model, &parent, FS_PTR, &node, -1);
 			else {
-				debug0 (DEBUG_GUI, "A selected null node has no parent. This should not happen.");
+				debug (DEBUG_GUI, "A selected null node has no parent. This should not happen.");
 				return;
 			}
-			liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
-		} else {
-			gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
-			liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
-			                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
-			liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
 		}
 
 		/* 1.) update feed list and item list states */
@@ -197,6 +191,9 @@ feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, 
 	gtk_tree_model_get (model, iter, FS_PTR, &node, FS_UNREAD, &count, -1);
 	if (!node)
 		return FALSE;
+
+	if (IS_NEWSBIN(node) && node->data && ((feedPtr)node->data)->alwaysShowInReduced)
+		return TRUE;
 
 	if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
 		return FALSE;
@@ -301,7 +298,6 @@ feed_list_view_create (GtkTreeView *treeview)
 	GtkTreeViewColumn 	*column, *column2;
 	GtkTreeSelection	*select;
 
-	debug_enter ("feed_list_view_create");
 
 	/* Set up store */
 	g_assert (NULL == flv);
@@ -368,10 +364,7 @@ feed_list_view_create (GtkTreeView *treeview)
 		feed_list_view_reduce_mode_changed ();	/* before menu setup for reduced mode check box to be correct */
 
 	ui_dnd_setup_feedlist (flv->feedstore);
-	liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
-	liferea_shell_update_allitems_actions (FALSE, FALSE);
 
-	debug_exit ("feed_list_view_create");
 
 	return flv;
 }
@@ -382,13 +375,14 @@ feed_list_view_select (nodePtr node)
 	GtkTreeModel *model = gtk_tree_view_get_model (flv->treeview);
 
 	if (model && node && node != feedlist_get_root ()) {
-		GtkTreePath *path;
+		GtkTreePath *path = NULL;
 
 		/* in filtered mode we need to convert the iterator */
 		if (flv->feedlist_reduced_unread) {
 			GtkTreeIter iter;
-			gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (flv->filter), &iter, feed_list_view_to_iter (node->id));
-			path = gtk_tree_model_get_path (model, &iter);
+			gboolean valid = gtk_tree_model_filter_convert_child_iter_to_iter (GTK_TREE_MODEL_FILTER (flv->filter), &iter, feed_list_view_to_iter (node->id));
+			if (valid)
+				path = gtk_tree_model_get_path (model, &iter);
 		} else {
 			path = gtk_tree_model_get_path (model, feed_list_view_to_iter (node->id));
 		}
@@ -655,7 +649,7 @@ feed_list_view_check_if_folder_is_empty (const gchar *nodeId)
 	GtkTreeIter	*iter;
 	int		count;
 
-	debug1 (DEBUG_GUI, "folder empty check for node id \"%s\"", nodeId);
+	debug (DEBUG_GUI, "folder empty check for node id \"%s\"", nodeId);
 
 	/* this function does two things:
 
@@ -688,7 +682,7 @@ feed_list_view_add_node (nodePtr node)
 	gint		position;
 	GtkTreeIter	*iter, *parentIter = NULL;
 
-	debug2 (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != node->parent)?node_get_title(node->parent):"feed list root");
+	debug (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != node->parent)?node_get_title(node->parent):"feed list root");
 
 	g_assert (NULL != node->parent);
 	g_assert (NULL == feed_list_view_to_iter (node->id));
@@ -799,7 +793,7 @@ feed_list_view_update_node (const gchar *nodeId)
 		fg = render_get_theme_color ("FEEDLIST_UNREAD_FG");
 		if (fg && bg) {
 			countColor = g_strdup_printf ("foreground='#%s' background='#%s'", fg, bg);
-			debug1 (DEBUG_HTML, "Feed list unread CSS: %s\n", countColor);
+			debug (DEBUG_HTML, "Feed list unread CSS: %s", countColor);
 		}
 	}
 

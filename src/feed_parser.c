@@ -119,7 +119,7 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 	gchar	*source = NULL;
 	GSList	*links;
 
-	debug2 (DEBUG_UPDATE, "Starting feed auto discovery (%s) redirects=%d", subscription_get_source (ctxt->subscription), ctxt->subscription->autoDiscoveryTries);
+	debug (DEBUG_UPDATE, "Starting feed auto discovery (%s) redirects=%d", subscription_get_source (ctxt->subscription), ctxt->subscription->autoDiscoveryTries);
 
 	links = html_auto_discover_feed (ctxt->data, subscription_get_source (ctxt->subscription));
 	if (links)
@@ -127,7 +127,7 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 
 	/* FIXME: we only need the !g_str_equal as a workaround after a 404 */
 	if (source && !g_str_equal (source, subscription_get_source (ctxt->subscription))) {
-		debug1 (DEBUG_UPDATE, "Discovered link: %s", source);
+		debug (DEBUG_UPDATE, "Discovered link: %s", source);
 		subscription_set_source (ctxt->subscription, source);
 
 		/* The feed that was processed wasn't the correct one, we need to redownload it.
@@ -139,7 +139,7 @@ feed_parser_auto_discover (feedParserCtxtPtr ctxt)
 		return TRUE;
 	}
 
-	debug0 (DEBUG_UPDATE, "No feed link found!");
+	debug (DEBUG_UPDATE, "No feed link found!");
 	return FALSE;
 }
 
@@ -174,9 +174,9 @@ feed_parse (feedParserCtxtPtr ctxt)
 {
 	xmlNodePtr	xmlNode = NULL, htmlNode = NULL;
 	xmlDocPtr	xmlDoc, htmlDoc;
+	GSList		*handlerIter;
 	gboolean	autoDiscovery = FALSE, success = FALSE;
 
-	debug_enter ("feed_parse");
 
 	g_assert (NULL == ctxt->items);
 
@@ -212,7 +212,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 		}
 	} while (0);
 
-	/* 2.) Prepare data as XHTML */
+	/* 2.) also prepare data as XHTML */
 	do {
 		if (NULL == (htmlDoc = xhtml_parse (ctxt->data, ctxt->dataLength)))
 			break;
@@ -223,31 +223,46 @@ feed_parse (feedParserCtxtPtr ctxt)
 		}
 	} while (0);
 
-	/* determine the syndication format and start parser with either XML or XHTML doc */
-	GSList *handlerIter = feed_parsers_get_list ();
+	/* 3.) try all XML parsers (this are all syndication format parsers) */
+	handlerIter = feed_parsers_get_list ();
 	while (handlerIter) {
 		feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
-		xmlNodePtr node = handler->html?htmlNode:xmlNode;
 
-		if (node && handler && handler->checkFormat && (*(handler->checkFormat))(node->doc, node)) {
+		if (xmlNode && handler && handler->checkFormat && !handler->html && (*(handler->checkFormat))(xmlDoc, xmlNode)) {
 			ctxt->feed->fhp = handler;
 			feed_parser_ctxt_cleanup (ctxt);
-			(*(handler->feedParser)) (ctxt, handler->html?htmlNode:xmlNode);
+			(*(handler->feedParser)) (ctxt, xmlNode);
 			success = TRUE;
 			break;
 		}
 		handlerIter = handlerIter->next;
 	}
 
-	/* 3.) None of the feed formats did work, chance is high that we are
-	       working on a HTML documents. Let's look for feed links inside it! */
+	/* 4.) None of the feed formats did work, chance is high that we are
+	       working on an HTML document. Let's look for feed links inside it! */
 	if (!success) {
 		ctxt->subscription->autoDiscoveryTries++;
 		if (ctxt->subscription->autoDiscoveryTries > AUTO_DISCOVERY_MAX_REDIRECTS) {
-			debug2 (DEBUG_UPDATE, "Stopping feed auto discovery (%s) after too many redirects (limit is %d)", subscription_get_source (ctxt->subscription), AUTO_DISCOVERY_MAX_REDIRECTS);
+			debug (DEBUG_UPDATE, "Stopping feed auto discovery (%s) after too many redirects (limit is %d)", subscription_get_source (ctxt->subscription), AUTO_DISCOVERY_MAX_REDIRECTS);
 		} else {
 			autoDiscovery = feed_parser_auto_discover (ctxt);
 		}
+	}
+
+	/* 5.) try all HTML parsers (these are all HTML based content extractors), note how those MUST
+	       be run after auto-discovery to not take precedence over not-yet discovered feed links */
+	handlerIter = feed_parsers_get_list ();
+	while (handlerIter) {
+		feedHandlerPtr handler = (feedHandlerPtr)(handlerIter->data);
+
+		if (htmlNode && handler && handler->checkFormat && handler->html && (*(handler->checkFormat))(htmlDoc, htmlNode)) {
+			ctxt->feed->fhp = handler;
+			feed_parser_ctxt_cleanup (ctxt);
+			(*(handler->feedParser)) (ctxt, htmlNode);
+			success = TRUE;
+			break;
+		}
+		handlerIter = handlerIter->next;
 	}
 
 	if (htmlDoc)
@@ -255,7 +270,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 	if (xmlDoc)
 		xmlFreeDoc (xmlDoc);
 
-	/* 4.) Update subscription error status */
+	/* 6.) Update subscription error status */
 	if (!success && !autoDiscovery) {
 		/* Fuzzy test for HTML document */
 		if ((strstr (ctxt->data, "<html>") || strstr (ctxt->data, "<HTML>") ||
@@ -263,7 +278,7 @@ feed_parse (feedParserCtxtPtr ctxt)
 			ctxt->subscription->error = FETCH_ERROR_DISCOVER;
 	} else {
 		if (ctxt->feed->fhp) {
-			debug1 (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
+			debug (DEBUG_UPDATE, "discovered feed format: %s", feed_type_fhp_to_str (ctxt->feed->fhp));
 			ctxt->subscription->autoDiscoveryTries = 0;
 		} else {
 			/* Auto discovery found a link that is being processed
@@ -274,7 +289,6 @@ feed_parse (feedParserCtxtPtr ctxt)
 		ctxt->subscription->error = FETCH_ERROR_NONE;
 	}
 
-	debug_exit ("feed_parse");
 
 	return success;
 }

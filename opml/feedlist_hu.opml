@@ -12,15 +12,15 @@
 			<outline text="HWSW" htmlUrl="https://www.hwsw.hu/" xmlUrl="https://www.hwsw.hu/xml/latest_news_rss.xml" />
 		</outline>
 		<outline text="Nyílt forrás">		<!-- translate this for localized feed list -->
-			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
-			<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />
+			<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://feeds.feedburner.com/LifereaBlog" />
+			<outline text="Planet GNOME" htmlUrl="https://planet.gnome.org/" xmlUrl="https://planet.gnome.org/atom.xml" />
 			<outline text="HUP" htmlUrl="https://hup.hu/" xmlUrl="http://feeds.feedburner.com/HUP" />
 			<outline text="FSF.hu alapítvány" htmlUrl="https://fsf.hu/blog/" xmlUrl="https://fsf.hu/blog/feed/atom/" />
 		</outline>
 		<outline text="Podcastok és zene">		<!-- translate this title for localized feed list -->
-			<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/feed/atom/"/>
+			<outline text="EscapePod" htmlUrl="https://escapepod.org" xmlUrl="https://escapepod.org/feed/atom/"/>
 			<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
-			<outline text="Gorilla vs. Bear" htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
+			<outline text="Gorilla vs. Bear" htmlUrl="https://www.gorillavsbear.net" xmlUrl="https://www.gorillavsbear.net/category/mp3/feed/"/>
 		</outline>
 		<outline text="Képregények">
 			<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>

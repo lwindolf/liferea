@@ -238,6 +238,78 @@ ui_popup_add_convert_to_local (GSimpleAction *action, GVariant *parameter, gpoin
 	node_source_convert_to_local ((nodePtr)user_data);
 }
 
+static void
+on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	nodePtr node;
+	GtkWindow *parent;
+	GtkWidget *dialog;
+	GtkFileChooser *chooser;
+	GtkFileFilter *feed_files_filter, *all_files_filter;
+	gint res;
+	gchar *curname;
+	const gchar *title;
+	GError *err = NULL;
+
+	node = (nodePtr) user_data;
+	parent = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
+
+	dialog = gtk_file_chooser_dialog_new (_("Save items to file"),
+	                                      parent,
+	                                      GTK_FILE_CHOOSER_ACTION_SAVE,
+	                                      _("_Cancel"),
+	                                      GTK_RESPONSE_CANCEL,
+	                                      _("_Save"),
+	                                      GTK_RESPONSE_ACCEPT,
+	                                      NULL);
+	chooser = GTK_FILE_CHOOSER (dialog);
+
+	/* Filters are only for improving usability for now, as the code
+	 * itself can only save feeds as RSS 2.0.
+	 */
+	feed_files_filter = gtk_file_filter_new ();
+	gtk_file_filter_set_name (feed_files_filter, _("RSS 2.0 files"));
+	gtk_file_filter_add_pattern (feed_files_filter, "*.rss");
+	gtk_file_filter_add_pattern (feed_files_filter, "*.xml");
+	gtk_file_chooser_add_filter(chooser, feed_files_filter);
+
+	all_files_filter = gtk_file_filter_new ();
+	gtk_file_filter_set_name (all_files_filter, _("All files"));
+	gtk_file_filter_add_pattern (all_files_filter, "*");
+	gtk_file_chooser_add_filter(chooser, all_files_filter);
+
+	title = node_get_title (node);
+	curname = g_strdup_printf("%s.rss", title != NULL ? title : _("Untitled"));
+	gtk_file_chooser_set_filename (chooser, curname);
+	gtk_file_chooser_set_current_name (chooser, curname);
+	gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
+	g_free(curname);
+
+	res = gtk_dialog_run (GTK_DIALOG (dialog));
+	if (res == GTK_RESPONSE_ACCEPT) {
+		gchar *filename = gtk_file_chooser_get_filename (chooser);
+		node_save_items_to_file (node, filename, &err);
+		g_free (filename);
+	}
+
+	if (err) {
+		GtkWidget *errdlg;
+		GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+		errdlg = gtk_message_dialog_new (GTK_WINDOW (dialog),
+		                                flags,
+		                                GTK_MESSAGE_ERROR,
+		                                GTK_BUTTONS_CLOSE,
+		                                "%s",
+		                                err->message);
+		gtk_dialog_run (GTK_DIALOG (errdlg));
+		gtk_widget_destroy (errdlg);
+		g_error_free(err);
+		err = NULL;
+	}
+
+	gtk_widget_destroy (dialog);
+}
+
 /* Those actions work on the node passed as user_data parameter. */
 static const GActionEntry ui_popup_node_gaction_entries[] = {
   {"node-mark-all-read", on_action_mark_all_read, NULL, NULL, NULL},
@@ -246,7 +318,8 @@ static const GActionEntry ui_popup_node_gaction_entries[] = {
   {"node-delete", ui_popup_delete, NULL, NULL, NULL},
   {"node-sort-feeds", ui_popup_sort_feeds, NULL, NULL, NULL},
   {"node-convert-to-local", ui_popup_add_convert_to_local, NULL, NULL, NULL},
-  {"node-update", on_menu_update, NULL, NULL, NULL}
+  {"node-update", on_menu_update, NULL, NULL, NULL},
+  {"node-export-items-to-file", on_menu_export_items_to_file, NULL, NULL, NULL},
 };
 
 /**
@@ -318,6 +391,9 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, const GdkEvent *event
 		g_object_unref (section);
 		section = g_menu_new ();
 		g_menu_append (section, _("_Mark All As Read"), "node.node-mark-all-read");
+		if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_EXPORT_ITEMS) {
+			g_menu_append (section, _("_Export Items To File"), "node.node-export-items-to-file");
+		}
 	}
 
 	if (IS_VFOLDER (node)) {

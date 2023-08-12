@@ -1,7 +1,7 @@
 /**
  * @file render.h  generic GTK theme and XSLT rendering handling
  *
- * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,9 +56,18 @@ renderParamPtr render_parameter_new (void);
 void render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...);
 
 /**
- * Returns CSS definitions for inclusion in XHTML output.
+ * Returns default CSS definitions for inclusion in XHTML output.
+ *
+ * @returns CSS string
  */
-const gchar * render_get_css (void);
+const gchar * render_get_default_css (void);
+
+/**
+ * Returns user CSS definitions for inclusion in XHTML output.
+ *
+ * @returns CSS string
+ */
+const gchar * render_get_user_css (void);
 
 /**
  * Returns the CSS value of a given GTK theme color name e.g. "GTK-COLOR-MID".
@@ -80,11 +89,5 @@ const gchar * render_get_theme_color (const gchar *name);
  */
 void render_init_theme_colors (GtkWidget *widget);
 
-/**
- * To be used to query if a dark GTK theme was detected
- *
- * @returns TRUE if dark theme detected
- */
-gboolean render_is_dark_theme (void);
 
 #endif

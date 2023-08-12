@@ -1,0 +1,43 @@
+name: "Build Check"
+on:
+  push:
+    branches: [master, ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [master]
+  schedule:
+    - cron: '0 21 * * 6'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    container:    
+      image: 'ubuntu:23.04'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        # We must fetch at least the immediate parents so that if this is
+        # a pull request then we can checkout the head.
+        fetch-depth: 2
+
+    - run: |
+       apt-get update -qq
+       apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.1-dev libjson-glib-dev libgirepository1.0-dev libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool valgrind libfribidi-dev gla11y appstream-util desktop-file-utils
+       mkdir inst
+
+    - run: |
+       sh autogen.sh
+       ./configure --prefix=$(pwd)/inst
+
+    - run: make -C po check
+    - run: make && make install
+    - run: cp net.sf.liferea.gschema.xml /usr/share/glib-2.0/schemas
+    - run: /usr/bin/glib-compile-schemas /usr/share/glib-2.0/schemas/
+    - run: ls -l /usr/share/glib-2.0/schemas
+    - run: cd src/tests && make test
+    - run: desktop-file-validate net.sourceforge.liferea.desktop
+    - run: appstream-util validate net.sourceforge.liferea.appdata.xml

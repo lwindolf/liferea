@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Gestire gli Abbonamenti</title>
+  <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="reference.css" >
+</head>
+<body>
+
+
+	<header>
+  <nav>
+	<table class="fullwidth">
+	   <tr>
+	      <td class="back left"><a rel="prev" href="concepts_it.html">Precedente</a></td>
+	      <td class="home center"><h1>Gestire gli Abbonamenti</h1></td>
+	      <td class="next right"><a rel="next" href="headlines_it.html">Successiva</a></td>
+	   </tr>
+	</table>
+	
+	</nav>
+  </header>
+
+	<main>
+	<p>
+	Questa sezione documenta tutte le interazioni dell'utente necessarie a creare e mantenere gli abbonamenti.
+	</p>
+
+	<h3>Cose Alle Quali Liferea Può Abbonarsi</h3>
+	<p>
+	In quanto aggregatore di notiziari Liferea ti permette di abbonarti a
+	differenti sorgenti di notizie. Il caso d'uso più comune è di abbonarsi
+	a notiziari singoli. Ma Liferea supporta anche abbonamenti a fonti che offrono
+	una collezione di notiziari. Quanti puoi abbonarti a:
+
+	<ul>
+		<li>un notiziario singolo</li>
+		<li>una fonte OPML (un elenco planet di notiziari, un blogroll...)</li>
+		<li>un account online su TheOldReader</li>
+		<li>un account online su TinyTinyRSS</a></li>
+	</ul>
+
+	<h3>Abbonarsi a un Notiziario</h3>
+	<p>
+	Per creare un nuovo abbonamento ad un notiziario seleziona "Nuovo Abbonamento"
+	dal menu contestuale dell'elenco notiziari o dal menu "Notiziario".
+  Apparirà una finestra per creare un nuovo abbonamento.
+	</p>
+
+	<p align="center">
+	<img src="help_subscribe_1.6.0.png">
+	</p>
+
+	<p>
+	Ad esempio, per abbonarti al notiziario di Slashdot inserisci
+	"<i><a href="http://slashdot.org/index.rss">http://slashdot.org/index.rss</a></i>"
+	nella casella di testo e clicca su "OK".
+	</p>
+
+	<h3>Creare Abbonamenti Speciali ai Notiziari</h3>
+
+	<p>
+	Liferea supporta l'ottenimento di notiziari da fonti differenti
+	inclusi URLs di Internet, l'output di un comando locale, e la
+	lettura diretta da un file. Spesso, si desidera abbonarsi a un notiziario
+	usando un URL come descritto nel paragrafo precedente. Per l'abbonamento
+	speciale devi selezionare "Avanzato&hellip;" per aprire la seguente finestra
+	per gli abbonamenti complessi:</p>
+
+	<p align="center">
+	<img src="help_subscribe_adv_1.6.0.png">
+	</p>
+
+	<p>
+	Dopo aver selezionato il tipo di fonte desiderata, inserisci l'URL sorgente,
+	il nome del comando, o il nome del file nella casella di testo "Fonte". </p>
+
+	<p>Quando viene selezionato un comando o un file locale, il comando o il file
+	possono essere scelti usando una finestra di navigazione cliccando "Seleziona
+	File&hellip;".</p>
+
+	<p>Talvolta, la data in un notiziario è in un formato che
+	Liferea non conosce. Se questo è il caso, può essere utilizzato un
+	filtro di conversione per convertirla in un formato adatto. Molti
+	filtri possono essere scaricati dall'<a
+	href="https://kiza.eu/software/snownews/snowscripts/">archivio di script di
+  Snownews e Liferea</a>.</p>
+
+	<p>Per usare i filtri di conversione, l'opzione "Usare filtro di conversione"
+	dev'essere attivata nella finestra degli abbonamenti. Lo script filtro viene
+	specificato scrivendone il percorso nella casella di testo
+	"Convertire usando" o selezionandolo dopo aver cliccato il pulsante
+	"Seleziona file&hellip;". I filtri sono semplici programmi che leggono
+	il formato di notiziario non supportato usando <i>stdin</i> e producono un
+  notiziario valido via <i>stdout</i>. I filtri di conversione vengono spesso
+  codificati in Perl.</p>
+
+	<h3>Cambiare le Proprietà di un Abbonamento</h3>
+
+	<p>
+	La finestra delle proprietà del notiziario viene utilizzata per configurare
+	le proprietà aggiuntive del notiziario e può essere attivata nel menu
+  "Notiziario" o dal menu contestuale del notiziario. Dopo aver creato con
+	successo un nuovo abbonamento non avrai in genere bisogno di alterarne le
+  proprietà.
+	</p>
+	<p>
+	Avrai bisogno di utilizzare questa finestra solo quando vorrai modificare
+  l'autenticazione HTTP, la gestione della memoria o altre opzioni specifiche
+  del notiziario.
+	</p>
+
+	<p>
+	La finestra raggruppa le proprietà del notiziario in cinque insiemi:
+  "Generale", "Fonte", "Archivio", "Scaricamento" e "Avanzato":</p>
+
+	<h4>Generale</h4>
+
+	<p align="center">
+	<img src="help_feed_prop_general_1.6.0.png"/>
+	</p>
+
+	<p>Il pannello "Generale" ti permette di scegliere il titolo del notiziario
+  e l'intervallo di aggiornamento. Il nome del notiziario è quello mostrato
+	nell'elenco. Più notiziari possono avere lo stesso nome.</p>
+
+	<a name="updateInterval">
+	<div id="updateInterval"><p>L'intervallo di aggiornamento del notiziario
+    determina quando spesso Liferea cercherà di aggiornare il notiziario.
+    Tipicamente, l'intervallo di aggiornamento del notiziario può essere
+    lasciato al suo valore predefinito. Raccomandiamo di utilizzare
+		la preferenza globale che puoi trovare nella finestra delle preferenze
+		perché ti consente di modificare l'intervallo di aggiornamento di tutti
+    i notiziari in contemporanea.</p>
+
+	  <p>Talvolta un notiziario fornisce un proprio intervallo di aggiornamento.
+		Se questo è il caso Liferea attiva automaticamente l'impostazione per
+    specificare un intervallo di aggiornamento personalizzato e la popola
+    con questo valore. Questo viene fatto solo durante la creazione iniziale
+    dell'abbonamento al notiziario. Non dovresti mai aver bisogno di cambiare
+    questa impostazione.</p>
+
+		<p>L'intervallo di aggiornamento può essere settato su:</p>
+		<dl>
+		  <dt>Usare l'intervallo di aggiornamento globale predefinito.</dt>
+		  <dd>Questa impostazione viene utilizzata da tutti i notiziari che
+			rispettano l'intervallo di aggiornamento globale.</dd>
+
+		  <dt>Intervallo specifico di aggiornamento del notiziario</dt>
+      <dd>Ci potrebbero essere situazioni in cui desideri
+			un intervallo aggiornamento più o meno frequente di quello predefinito.
+      In tal caso dovresti selezionare questa opzione e specificarlo.
+			<em>Quando specifichi un intervallo di aggiornamento, dovresti considerare
+			  il traffico web che causerai con un intervallo di aggiornamento non
+        appropriato. Non aggiornare più frequentemente di quanto i contenuti
+        siano in genere pubblicati.</em></dd>
+
+		  <dt>Non aggiornare automaticamente questo notiziario.</dt>
+      <dd>Questa opzione ti consente di prevenire l'aggiornamento del
+      notiziario. Puoi usare questa opzione per i notiziari che vuoi
+      aggiornare solo manualmente ogni volta.</dd>
+	  </dl>
+	</div>
+
+	<h4>Fonte</h4>
+
+	<p align="center">
+	<img src="help_feed_prop_source_1.6.0.png"/>
+	</p>
+
+	<p>Il pannello "Fonte" contiene gli stessi campi contenuti nella finestra
+  per l'abbonamento avanzato. Puoi utilizzare queste impostazioni per cambiare
+  la fonte del notiziario (es. dopo che l'URL di un notiziario è variato).</p>
+
+	<h4>Archivio</h4>
+
+	<p align="center">
+	<img src="help_feed_prop_cache_1.6.0.png"/>
+	</p>
+
+	<p>Il terzo pannello, "Archivio", controlla quanti oggetti di
+	un notiziario sono mantenuti quando Liferea lo salva su disco.
+	In modo simile all'intervallo di aggiornamento v'è una preferenza
+	globale corrispondente che imposta la dimensione della memoria per
+  tutti i notiziari. Dovresti utilizzare questo pannello solo per
+  implementare eccezioni alla politica di memorizzazione globale.</p>
+
+	<dl>
+	  <dt>Impostazioni di caching predefinite</dt>
+    <dd>Fa sì che il notiziario erediti le impostazioni predefinite, che sono
+    conservate nelle preferenze di Liferea.</dd>
+	  <dt>Disabilita la cache</dt>
+    <dd>Impedisce che gli oggetti del notiziario vengano salvati.</dd>
+	  <dt>Cache illimitata</dt>
+    <dd>Salva sempre tutti gli oggetti scaricati.</dd>
+	  <dt>Numero di articoli da salvare</dt>
+    <dd>Limita la grandezza della memoria a un numero fisso.</dd>
+	</dl>
+
+	<p>
+	<strong>Nota:</strong> Gli oggetti marchiati saranno sempre conservati,
+	a prescindere dalle impostazioni di memorizzazione.  Quindi se hai trovato un
+	titolo importante e vuoi evitare che venga scartato dalla memoria lo puoi
+  marchiare.
+	</p>
+
+	<h4>Scaricamento</h4>
+
+	<p align="center">
+	<img src="help_feed_prop_downl_1.6.0.png"/>
+	</p>
+
+	<p>
+	Questa scheda ti permette di disabilitare l'uso delle impostazioni globali
+  del proxy e di abilitare l'autenticazione HTTP durante lo scaricamento del
+  notiziario. Abilita la casella di controllo ed inserisci i valori appropriati
+  per nome utente e password per poter utilizzare i notiziari protetti da
+  password.
+	In genere non avrai bisogno di utilizzare queste impostazioni perché
+	il nome utente e la password ti verranno richiesti durante l'abbonamento
+  al notiziario che richiede l'autenticazione.
+	</p>
+
+	<h4>Avanzato</h4>
+
+	<p align="center">
+	<img src="help_feed_prop_adv_1.6.0.png"/>
+	</p>
+
+	<p>
+	Questo pannello fornisce certe opzioni speciali per controllare come Liferea
+  gestisce l'abbonamento. Queste opzioni sono:
+	</p>
+
+	<dl>
+		<dt>Scaricare automaticamente tutti gli allegati di questo notiziario.</dt>
+		<dd>Questo può essere utile per podcast o notiziari sui torrent. Se abiliti
+    l'opzione Liferea scarica gli <a href="enclosures_it.html">allegati</a>.
+		</dd>
+
+		<dt>Caricare automaticamente il collegamento dell'articolo nel browser
+    configurato quando sono selezionati gli articoli.</dt>
+		<dd>Di default Liferea mostra la descrizione dell'oggetto nel pannello di
+    visualizzazione HTML.
+		Quando questa casella di controllo è abilitata esso caricherà
+    il link dell'oggetto automaticamente quando l'oggetto selezionato cambia.
+		</dd>
+
+		<dt>Ignorare i commenti del notiziario per questo abbonamento.</dt>
+		<dd>Talvolta ci sono notiziari con commenti corrotti o inutili.
+    Questa opzione ti consente di ignorarli.</dd>
+
+		<dt>Forza la notifica popup per questo articolo.</dt>
+		<dd>Se la preferenza di notifica globale è disabilitata puoi
+		abilitare quest'opzione per generare notifiche solo per questo
+    notiziario.</dd>
+
+		<dt>Non mostrare mai notifiche popup per questo articolo.</dt>
+		<dd>Se la preferenza di notifica globale è abilitata puoi
+		usare quest'opzione per per prevenire notifiche da questo notiziario.
+		Ciò potrebbe essere utile per i notiziari aggiornati frequentemente.</dd>
+
+		<dt>Segnare articoli scaricati come letti.</dt>
+		<dd>Di norma i nuovi oggetti hanno lo stato "non letto". Certe volte
+		potresti voler utilizzare questo settaggio per far si che i nuovi oggetti
+    di un notiziario speciale non appaiano come "non letti" così non li dovrai
+		segnare manualmente come "letti".</dd>
+	</dl>
+
+	<h3>Abbonarsi a Fonti OPML e Servizi Online</h3>
+	<p>
+	Per abbonarti agli elenchi di notiziari OPML o ad account di servizi online
+	seleziona "Nuova Fonte" dal menu contestuale dell'elenco degli abbonamenti o
+	dal menu "Notiziari". Dalla finestra che appare seleziona il tipo di fonte
+  che desideri creare.
+	</p>
+
+	<h4>Fonti OPML</h3>
+	<p>
+	Se hai selezionato "Planet, BlogRoll, OPML" hai bisogno di fornire
+	l'URL del documento OPML. Se serve inserisci le informazioni di
+  autenticazione.
+	Dopo averlo fatto un nuovo nodo sorgente OPML sarà inserito nell'elenco dei
+	notiziari e, dopo aver scaricato il documento OPML per la prima volta, i nuovi
+	abbonamenti descritti dalla fonte OPML verranno creati. Se l'elenco di
+	notiziari OPML cambia nel tempo i vecchi abbonamenti vengono scartati
+	e ne vengono aggiunti di nuovi.
+	</p>
+
+  </main>
+
+	<footer>
+  <nav>
+	
+	<table class="fullwidth">
+	   <tr>
+	      <td class="back left"><a rel="prev" href="concepts_it.html">Precedente</a></td>
+	      <td class="home center"><a href="topics_it.html">Indice</a></td>
+	      <td class="next right"><a rel="next" href="headlines_it.html">Successiva</a></td>
+	   </tr>
+	</table>
+	</nav>
+  </footer>
+</body>
+</html>

@@ -24,12 +24,6 @@
                   "source"      : "ExpatPaul/liferea-plugins",
                   "description" : "Configurable feed notifier. Needs to be configured with regex filters in ~/.local/share/liferea/plugins/feedalerts/feedalerts.conf"
      }},
-     { "Webkit Inspector": 
-                { "module"      : "inspector",
-                  "category"    : "Advanced",
-                  "source"      : "lwindolf/liferea-webkit2-inspector",
-                  "description" : "Press F12 to launch the Webkit2 inspector (web developer tool)."
-     }},
      { "Webkit Settings": 
                 { "module"      : "webkit-setting",
                   "category"    : "Advanced",

@@ -1,8 +1,9 @@
 /**
  * @file net.c  HTTP network access using libsoup
  *
- * Copyright (C) 2007-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2023 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Emilio Pozuelo Monfort <pochu27@gmail.com>
+ * Copyright (C) 2021 Lorenzo L. Ancora <admin@lorenzoancora.info>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +26,7 @@
 #include <libsoup/soup.h>
 #include <math.h>
 #include <string.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -35,75 +37,77 @@
 
 #define HOMEPAGE	"https://lzone.de/liferea/"
 
+static GCancellable *cancellable = NULL;	/* GCancellable for all request handling */
 static SoupSession *session = NULL;	/* Session configured for preferences */
 static SoupSession *session2 = NULL;	/* Session for "Don't use proxy feature" */
 
 static ProxyDetectMode proxymode = PROXY_DETECT_MODE_AUTO;
-static gchar	*proxyname = NULL;
-static gchar	*proxyusername = NULL;
-static gchar	*proxypassword = NULL;
-static int	proxyport = 0;
-
 
 static void
 network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 {
 	updateJobPtr	job = (updateJobPtr)user_data;
 	const gchar	*location = NULL;
-	SoupURI		*newuri;
+	GUri		*newuri;
+	SoupStatus	status = soup_message_get_status (msg);
 
-	if (301 == msg->status_code || 308 == msg->status_code)
-	{
-		location = soup_message_headers_get_one (msg->response_headers, "Location");
-		newuri = soup_uri_new (location);
+	if (SOUP_STATUS_MOVED_PERMANENTLY == status || SOUP_STATUS_PERMANENT_REDIRECT == status) {
+		if (g_uri_is_valid (location, G_URI_FLAGS_PARSE_RELAXED, NULL)) {
+			location = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Location");
+			newuri = g_uri_parse (location, G_URI_FLAGS_PARSE_RELAXED, NULL);
 
-		if (SOUP_URI_IS_VALID (newuri) && ! soup_uri_equal (newuri, soup_message_get_uri (msg))) {
-			debug2 (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"", soup_uri_to_string (soup_message_get_uri (msg), FALSE),
-							            soup_uri_to_string (newuri, FALSE));
-			job->result->httpstatus = msg->status_code;
-			job->result->source = soup_uri_to_string (newuri, FALSE);
+			if (!soup_uri_equal (newuri, soup_message_get_uri (msg))) {
+				job->result->httpstatus = status;
+				job->result->source = g_uri_to_string_partial (newuri, 0);
+				debug (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"",
+				       job->request->source, job->result->source);
+			}
 		}
 	}
 }
 
 static void
-network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_data)
+network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 {
-	updateJobPtr	job = (updateJobPtr)user_data;
-	SoupDate	*last_modified;
-	const gchar	*tmp = NULL;
-	GHashTable	*params;
-	gboolean	revalidated = FALSE;
-	gint		maxage;
-	gint		age;
+	SoupSession		*session = SOUP_SESSION (obj);
+	SoupMessage		*msg;
+	updateJobPtr		job = (updateJobPtr)user_data;
+	GDateTime		*last_modified;
+	const gchar		*tmp = NULL;
+	GHashTable		*params;
+	gboolean		revalidated = FALSE;
+	gint			maxage;
+	gint			age;
+	g_autoptr(GBytes)	body;
 
-	job->result->source = soup_uri_to_string (soup_message_get_uri(msg), FALSE);
-	job->result->httpstatus = msg->status_code;
+	msg = soup_session_get_async_result_message (session, res);
+	body = soup_session_send_and_read_finish (session, res, NULL);	// FIXME: handle errors!
+
+	job->result->source = g_uri_to_string_partial (soup_message_get_uri (msg), 0);
+	job->result->httpstatus = soup_message_get_status (msg);
+	job->result->data = g_memdup2 (g_bytes_get_data (body, &job->result->size), g_bytes_get_size (body));
 
 	/* keep some request headers for revalidated responses */
 	revalidated = (304 == job->result->httpstatus);
 
-	debug1 (DEBUG_NET, "download status code: %d", msg->status_code);
-	debug1 (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
+	debug (DEBUG_NET, "download status code: %d", job->result->httpstatus);
+	debug (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
+	debug (DEBUG_NET, "%d bytes downloaded", job->result->size);
 
-	job->result->data = g_memdup (msg->response_body->data, msg->response_body->length+1);
-	job->result->size = (size_t)msg->response_body->length;
-	debug1 (DEBUG_NET, "%d bytes downloaded", job->result->size);
-
-	job->result->contentType = g_strdup (soup_message_headers_get_content_type (msg->response_headers, NULL));
+	job->result->contentType = g_strdup (soup_message_headers_get_content_type (soup_message_get_response_headers (msg), NULL));
 
 	/* Update last-modified date */
 	if (revalidated) {
 		 job->result->updateState->lastModified = update_state_get_lastmodified (job->request->updateState);
 	} else {
-		tmp = soup_message_headers_get_one (msg->response_headers, "Last-Modified");
+		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Last-Modified");
 		if (tmp) {
 			/* The string may be badly formatted, which will make
 			* soup_date_new_from_string() return NULL */
-			last_modified = soup_date_new_from_string (tmp);
+			last_modified = soup_date_time_new_from_http_string (tmp);
 			if (last_modified) {
-				job->result->updateState->lastModified = soup_date_to_time_t (last_modified);
-				soup_date_free (last_modified);
+				job->result->updateState->lastModified = g_date_time_to_unix (last_modified);
+				g_date_time_unref (last_modified);
 			}
 		}
 	}
@@ -112,14 +116,14 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	if (revalidated) {
 		job->result->updateState->etag = g_strdup (update_state_get_etag (job->request->updateState));
 	} else {
-		tmp = soup_message_headers_get_one (msg->response_headers, "ETag");
+		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "ETag");
 		if (tmp) {
 			job->result->updateState->etag = g_strdup (tmp);
 		}
 	}
 
 	/* Update cache max-age  */
-	tmp = soup_message_headers_get_list (msg->response_headers, "Cache-Control");
+	tmp = soup_message_headers_get_list (soup_message_get_response_headers (msg), "Cache-Control");
 	if (tmp) {
 		params = soup_header_parse_param_list (tmp);
 		if (params) {
@@ -128,7 +132,7 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 				maxage = atoi (tmp);
 				if (0 < maxage) {
 					/* subtract Age from max-age */
-					tmp = soup_message_headers_get_one (msg->response_headers, "Age");
+					tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Age");
 					if (tmp) {
 						age = atoi (tmp);
 						if (0 < age) {
@@ -145,61 +149,91 @@ network_process_callback (SoupSession *session, SoupMessage *msg, gpointer user_
 	}
 
 	update_process_finished_job (job);
+	g_bytes_unref (body);
 }
 
-/* Downloads a feed specified in the request structure, returns
+/* Downloads a URL specified in the request structure, returns
    the downloaded data or NULL in the request structure.
    If the webserver reports a permanent redirection, the
-   feed url will be modified and the old URL 'll be freed. The
+   URL will be modified and the old URL 'll be freed. The
    request structure will also contain the HTTP status and the
    last modified string.
  */
 void
 network_process_request (const updateJobPtr job)
 {
-	SoupMessage	*msg;
-	SoupDate	*date;
-	gboolean	do_not_track = FALSE;
+	g_autoptr(SoupMessage)	msg = NULL;
+	SoupMessageHeaders	*request_headers;
+	g_autoptr(GUri)		sourceUri;
+	gboolean		do_not_track = FALSE;
+	g_autofree gchar	*scheme = NULL, *user = NULL, *password = NULL, *auth_params = NULL, *host = NULL, *path = NULL, *query = NULL, *fragment = NULL;
+	gint			port;
 
 	g_assert (NULL != job->request);
-	debug1 (DEBUG_NET, "downloading %s", job->request->source);
-	if (job->request->postdata && (debug_level & DEBUG_VERBOSE) && (debug_level & DEBUG_NET))
-		debug1 (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
+	debug (DEBUG_NET, "downloading %s", job->request->source);
+	if (job->request->postdata && (debug_get_flags () & DEBUG_NET))
+		debug (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
+
+	g_uri_split_with_user (job->request->source,
+	                       G_URI_FLAGS_ENCODED,
+			       &scheme,
+			       &user,
+			       &password,
+			       &auth_params,
+			       &host,
+			       &port,
+			       &path,
+			       &query,
+			       &fragment,
+			       NULL);
 
 	/* Prepare the SoupMessage */
-	msg = soup_message_new (job->request->postdata ? SOUP_METHOD_POST : SOUP_METHOD_GET,
-				job->request->source);
+	sourceUri = g_uri_build_with_user (
+		SOUP_HTTP_URI_FLAGS | G_URI_FLAGS_PARSE_RELAXED,
+		scheme,
+		// FIXME: allow passing user/password from above?
+		(!job->request->authValue && job->request->options && job->request->options->username)?job->request->options->username:NULL,
+		(!job->request->authValue && job->request->options && job->request->options->password)?job->request->options->password:NULL,
+		auth_params,
+		host,
+		port,
+		path,
+		query,
+		fragment
+	);
 
+	if (sourceUri)
+		msg = soup_message_new_from_uri (job->request->postdata?"POST":"GET", sourceUri);
 	if (!msg) {
 		g_warning ("The request for %s could not be parsed!", job->request->source);
 		return;
 	}
 
+	request_headers = soup_message_get_request_headers (msg);
+
 	/* Set the postdata for the request */
 	if (job->request->postdata) {
-		soup_message_set_request (msg,
-					  "application/x-www-form-urlencoded",
-					  SOUP_MEMORY_STATIC, /* libsoup won't free the postdata */
-					  job->request->postdata,
-					  strlen (job->request->postdata));
+		g_autoptr(GBytes) postdata = g_bytes_new (job->request->postdata, strlen (job->request->postdata));
+		soup_message_set_request_body_from_bytes (msg,
+		                                          "application/x-www-form-urlencoded",
+		                                          postdata);
 	}
 
 	/* Set the If-Modified-Since: header */
 	if (job->request->updateState && update_state_get_lastmodified (job->request->updateState)) {
-		gchar *datestr;
+		g_autofree gchar *datestr;
+		g_autoptr(GDateTime) date;
 
-		date = soup_date_new_from_time_t (update_state_get_lastmodified (job->request->updateState));
-		datestr = soup_date_to_string (date, SOUP_DATE_HTTP);
-		soup_message_headers_append (msg->request_headers,
+		date = g_date_time_new_from_unix_utc (update_state_get_lastmodified (job->request->updateState));
+		datestr = soup_date_time_to_string (date, SOUP_DATE_HTTP);
+		soup_message_headers_append (request_headers,
 					     "If-Modified-Since",
 					     datestr);
-		g_free (datestr);
-		soup_date_free (date);
 	}
 
 	/* Set the If-None-Match header */
 	if (job->request->updateState && update_state_get_etag (job->request->updateState)) {
-		soup_message_headers_append(msg->request_headers,
+		soup_message_headers_append(request_headers,
 					    "If-None-Match",
 					    update_state_get_etag (job->request->updateState));
 	}
@@ -208,33 +242,23 @@ network_process_request (const updateJobPtr job)
 	if (job->request->updateState &&
 	    (update_state_get_lastmodified (job->request->updateState) ||
 	     update_state_get_etag (job->request->updateState))) {
-		soup_message_headers_append(msg->request_headers,
+		soup_message_headers_append(request_headers,
 					    "A-IM",
 					    "feed");
 	}
 
 	/* Support HTTP content negotiation */
-	soup_message_headers_append(msg->request_headers, "Accept", "application/atom+xml,application/xml;q=0.9,text/xml;q=0.8,*/*;q=0.7");
+	soup_message_headers_append (request_headers, "Accept", "application/atom+xml,application/xml;q=0.9,text/xml;q=0.8,*/*;q=0.7");
 
-	/* Set the authentication */
-	if (!job->request->authValue &&
-	    job->request->options &&
-	    job->request->options->username &&
-	    job->request->options->password) {
-		SoupURI *uri = soup_message_get_uri (msg);
-
-		soup_uri_set_user (uri, job->request->options->username);
-		soup_uri_set_password (uri, job->request->options->password);
-	}
-
+	/* Add Authorization header */
 	if (job->request->authValue) {
-		soup_message_headers_append (msg->request_headers, "Authorization",
+		soup_message_headers_append (request_headers, "Authorization",
 					     job->request->authValue);
 	}
 
 	/* Add requested cookies */
 	if (job->request->updateState && job->request->updateState->cookies) {
-		soup_message_headers_append (msg->request_headers, "Cookie",
+		soup_message_headers_append (request_headers, "Cookie",
 		                             job->request->updateState->cookies);
 		soup_message_disable_feature (msg, SOUP_TYPE_COOKIE_JAR);
 	}
@@ -250,7 +274,7 @@ network_process_request (const updateJobPtr job)
 	/* Add Do Not Track header according to settings */
 	conf_get_bool_value (DO_NOT_TRACK, &do_not_track);
 	if (do_not_track)
-		soup_message_headers_append (msg->request_headers, "DNT", "1");
+		soup_message_headers_append (request_headers, "DNT", "1");
 
 	/* Process permanent redirects (update feed location) */
 	soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, job);
@@ -258,62 +282,66 @@ network_process_request (const updateJobPtr job)
 
 	/* If the feed has "dont use a proxy" selected, use 'session2' which is non-proxy */
 	if (job->request->options && job->request->options->dontUseProxy)
-		soup_session_queue_message (session2, msg, network_process_callback, job);
+		soup_session_send_and_read_async (session2, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
 	else
-		soup_session_queue_message (session, msg, network_process_callback, job);
+		soup_session_send_and_read_async (session, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
 }
 
 static void
-network_authenticate (
-	SoupSession *session,
-	SoupMessage *msg,
-        SoupAuth *auth,
-	gboolean retrying,
-	gpointer data)
+network_set_soup_session_proxy (SoupSession *session, ProxyDetectMode mode)
 {
-	if (!retrying && msg->status_code == SOUP_STATUS_PROXY_UNAUTHORIZED) {
-		soup_auth_authenticate (auth, g_strdup (proxyusername), g_strdup (proxypassword));
-	}
-
-	// FIXME: Handle HTTP 401 too
-}
-
-static void
-network_set_soup_session_proxy (SoupSession *session, ProxyDetectMode mode, const gchar *host, guint port, const gchar *user, const gchar *password)
-{
-	SoupURI *uri = NULL;
-
 	switch (mode) {
+		case PROXY_DETECT_MODE_MANUAL:
+			/* Manual mode is not supported anymore, so we fall through to AUTO */
 		case PROXY_DETECT_MODE_AUTO:
-			/* Sets proxy-resolver to the default resolver, this unsets proxy-uri. */
-			g_object_set (G_OBJECT (session),
-				SOUP_SESSION_PROXY_RESOLVER, g_proxy_resolver_get_default (),
-				NULL);
+			debug (DEBUG_CONF, "proxy auto detect is configured");
+			soup_session_set_proxy_resolver (session, g_object_ref (g_proxy_resolver_get_default ()));
 			break;
 		case PROXY_DETECT_MODE_NONE:
-			/* Sets proxy-resolver to NULL, this unsets proxy-uri. */
-			g_object_set (G_OBJECT (session),
-				SOUP_SESSION_PROXY_RESOLVER, NULL,
-				NULL);
-			break;
-		case PROXY_DETECT_MODE_MANUAL:
-			uri = soup_uri_new (NULL);
-			soup_uri_set_scheme (uri, SOUP_URI_SCHEME_HTTP);
-			soup_uri_set_host (uri, host);
-			soup_uri_set_port (uri, port);
-			soup_uri_set_user (uri, user);
-			soup_uri_set_password (uri, password);
-			soup_uri_set_path (uri, "/");
-
-			if (SOUP_URI_IS_VALID (uri)) {
-				/* Sets proxy-uri, this unsets proxy-resolver. */
-				g_object_set (G_OBJECT (session),
-					SOUP_SESSION_PROXY_URI, uri,
-					NULL);
-			}
-			soup_uri_free (uri);
+			debug (DEBUG_CONF, "proxy is disabled by user");
+			soup_session_set_proxy_resolver (session, NULL);
 			break;
 	}
+}
+
+gchar *
+network_get_user_agent (void)
+{
+	gchar *useragent = NULL;
+	gchar const *sysua = g_getenv("LIFEREA_UA");
+	
+	if(sysua == NULL) {
+		bool anonua = g_getenv("LIFEREA_UA_ANONYMOUS") != NULL;
+		if(anonua) {
+			/* Set an anonymized, randomic user agent,
+			 * e.g. "Liferea/0.28.0 (Android; Mobile; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+			useragent = g_strdup_printf ("Liferea/%.2f.0 (Android; Mobile; %s) AppleWebKit (KHTML, like Gecko)", g_random_double(), HOMEPAGE);
+		} else {
+			/* Set an exact user agent,
+			 * e.g. "Liferea/1.10.0 (Android 12; Mobile; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+			useragent = g_strdup_printf ("Liferea/%s (Android 12; Mobile; %s) AppleWebKit (KHTML, like Gecko)", VERSION, HOMEPAGE);
+		}
+	} else {
+		/* Set an arbitrary user agent from the environment variable LIFEREA_UA */
+		useragent = g_strdup (sysua);
+	}
+
+	g_assert_nonnull (useragent);
+	
+	return useragent;
+}
+
+void
+network_deinit (void)
+{
+	g_cancellable_cancel (cancellable);
+	g_free (cancellable);
+
+	soup_session_abort (session);
+	soup_session_abort (session2);
+
+	g_free (session);
+	g_free (session2);
 }
 
 void
@@ -324,9 +352,10 @@ network_init (void)
 	gchar		*filename;
 	SoupLogger	*logger;
 
-	/* Set an appropriate user agent,
-	 * e.g. "Liferea/1.10.0 (Linux; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
-	useragent = g_strdup_printf ("Liferea/%s (%s; %s) AppleWebKit (KHTML, like Gecko)", VERSION, OSNAME, HOMEPAGE);
+	cancellable = g_cancellable_new ();
+
+	useragent = network_get_user_agent ();
+	debug (DEBUG_NET, "user-agent set to \"%s\"", useragent);
 
 	/* Session cookies */
 	filename = common_create_config_filename ("session_cookies.txt");
@@ -334,43 +363,29 @@ network_init (void)
 	g_free (filename);
 
 	/* Initialize libsoup */
-	session = soup_session_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
-						 SOUP_SESSION_TIMEOUT, 120,
-						 SOUP_SESSION_IDLE_TIMEOUT, 30,
-						 SOUP_SESSION_ADD_FEATURE, cookies,
+	session = soup_session_new_with_options ("user-agent", useragent,
+						 "timeout", 120,
+						 "idle-timeout", 30,
 						 NULL);
-	session2 = soup_session_new_with_options (SOUP_SESSION_USER_AGENT, useragent,
-						  SOUP_SESSION_TIMEOUT, 120,
-						  SOUP_SESSION_IDLE_TIMEOUT, 30,
-						  SOUP_SESSION_ADD_FEATURE, cookies,
-						  SOUP_SESSION_PROXY_URI, NULL,
-						  SOUP_SESSION_PROXY_RESOLVER, NULL,
+	session2 = soup_session_new_with_options ("user-agent", useragent,
+						  "timeout", 120,
+						  "idle-timeout", 30,
 						  NULL);
 
-	/* Only 'session' gets proxy, 'session2' is for non-proxy requests */
-	network_set_soup_session_proxy (session, network_get_proxy_detect_mode(),
-		network_get_proxy_host (),
-		network_get_proxy_port (),
-		network_get_proxy_username (),
-		network_get_proxy_password ());
+	soup_session_add_feature (session, SOUP_SESSION_FEATURE (cookies));
+	soup_session_add_feature (session2, SOUP_SESSION_FEATURE (cookies));
 
-	g_signal_connect (session, "authenticate", G_CALLBACK (network_authenticate), NULL);
+	/* Only 'session' gets proxy, 'session2' is for non-proxy requests */
+	soup_session_set_proxy_resolver (session2, NULL);
+	network_set_soup_session_proxy (session, network_get_proxy_detect_mode());
 
 	/* Soup debugging */
-	if (debug_level & DEBUG_NET) {
-		logger = soup_logger_new (SOUP_LOGGER_LOG_HEADERS, -1);
+	if (debug_get_flags() & DEBUG_NET) {
+		logger = soup_logger_new (SOUP_LOGGER_LOG_HEADERS);
 		soup_session_add_feature (session, SOUP_SESSION_FEATURE (logger));
 	}
 
 	g_free (useragent);
-}
-
-void
-network_deinit (void)
-{
-	g_free (proxyname);
-	g_free (proxyusername);
-	g_free (proxypassword);
 }
 
 ProxyDetectMode
@@ -379,50 +394,17 @@ network_get_proxy_detect_mode (void)
 	return proxymode;
 }
 
-const gchar *
-network_get_proxy_host (void)
-{
-	return proxyname;
-}
-
-guint
-network_get_proxy_port (void)
-{
-	return proxyport;
-}
-
-const gchar *
-network_get_proxy_username (void)
-{
-	return proxyusername;
-}
-
-const gchar *
-network_get_proxy_password (void)
-{
-	return proxypassword;
-}
-
 extern void network_monitor_proxy_changed (void);
 
 void
-network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, gchar *password)
+network_set_proxy (ProxyDetectMode mode)
 {
-	g_free (proxyname);
-	g_free (proxyusername);
-	g_free (proxypassword);
 	proxymode = mode;
-	proxyname = host;
-	proxyport = port;
-	proxyusername = user;
-	proxypassword = password;
 
 	/* session will be NULL if we were called from conf_init() as that's called
 	 * before net_init() */
 	if (session)
-		network_set_soup_session_proxy (session, mode, host, port, user, password);
-
-	debug4 (DEBUG_NET, "proxy set to http://%s:%s@%s:%d", user, password, host, port);
+		network_set_soup_session_proxy (session, mode);
 
 	network_monitor_proxy_changed ();
 }
@@ -435,11 +417,6 @@ network_strerror (gint status)
 	switch (status) {
 		/* Some libsoup transport errors */
 		case SOUP_STATUS_NONE:			tmp = _("The update request was cancelled"); break;
-		case SOUP_STATUS_CANT_RESOLVE:		tmp = _("Unable to resolve destination host name"); break;
-		case SOUP_STATUS_CANT_RESOLVE_PROXY:	tmp = _("Unable to resolve proxy host name"); break;
-		case SOUP_STATUS_CANT_CONNECT:		tmp = _("Unable to connect to remote host"); break;
-		case SOUP_STATUS_CANT_CONNECT_PROXY:	tmp = _("Unable to connect to proxy"); break;
-		case SOUP_STATUS_SSL_FAILED:		tmp = _("A network error occurred, or the other end closed the connection unexpectedly"); break;
 
 		/* http 3xx redirection */
 		case SOUP_STATUS_MOVED_PERMANENTLY:	tmp = _("The resource moved permanently to a new location"); break;
@@ -455,24 +432,20 @@ network_strerror (gint status)
 		case SOUP_STATUS_PROXY_UNAUTHORIZED:	tmp = _("Proxy authentication required"); break;
 		case SOUP_STATUS_REQUEST_TIMEOUT:	tmp = _("Request timed out"); break;
 		case SOUP_STATUS_GONE:			tmp = _("The webserver indicates this feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."); break;
+
+		/* http 5xx server errors */
+		case SOUP_STATUS_INTERNAL_SERVER_ERROR:	tmp = _("Internal Server Error"); break;
+		case SOUP_STATUS_NOT_IMPLEMENTED:	tmp = _("Not Implemented"); break;
+		case SOUP_STATUS_BAD_GATEWAY:		tmp = _("Bad Gateway"); break;
+		case SOUP_STATUS_SERVICE_UNAVAILABLE:	tmp = _("Service Unavailable"); break;
+		case SOUP_STATUS_GATEWAY_TIMEOUT:	tmp = _("Gateway Timeout"); break;
+		case SOUP_STATUS_HTTP_VERSION_NOT_SUPPORTED: tmp = _("HTTP Version Not Supported"); break;
 	}
 
-	if (!tmp) {
-		if (SOUP_STATUS_IS_TRANSPORT_ERROR (status)) {
-			tmp = _("There was an internal error in the update process");
-		} else if (SOUP_STATUS_IS_REDIRECTION (status)) {
-			tmp = _("Feed not available: Server requested unsupported redirection!");
-		} else if (SOUP_STATUS_IS_CLIENT_ERROR (status)) {
-			tmp = _("Client Error");
-		} else if (SOUP_STATUS_IS_SERVER_ERROR (status)) {
-			tmp = _("Server Error");
-		} else {
-			tmp = _("An unknown networking error happened!");
-		}
-	}
+	if (!tmp)
+		tmp = _("An unknown networking error happened!");
 
 	g_assert (tmp);
 
 	return tmp;
 }
-

@@ -41,16 +41,17 @@ typedef struct itemSet {
 
 /* item set iterating interface */
 
-typedef void 	(*itemActionFunc)	(itemPtr item);
+typedef void 	(*itemActionFunc)	(itemPtr item, gpointer userdata);
 
 /**
  * itemset_foreach: (skip)
  * @itemSet:	the item set
  * @callback:	the callback
+ * @userdata:	(nullable): an optional user-defined pointer to be passed to the callback
  *
  * Calls the given callback for each of the items in the item set.
  */
-void itemset_foreach (itemSetPtr itemSet, itemActionFunc callback);
+void itemset_foreach (itemSetPtr itemSet, itemActionFunc callback, gpointer userdata);
 
 /**
  * itemset_merge_items: (skip)

@@ -41,7 +41,7 @@
 #define FEED_PROTOCOL_PREFIX "feed://"
 #define FEED_PROTOCOL_PREFIX2 "feed:"
 
-#define ONE_MONTH_MICROSECONDS (guint64)(60*60*24*31) * (guint64)G_USEC_PER_SEC
+#define ONE_MONTH_MICROSECONDS (gint64)(60*60*24*31) * (gint64)G_USEC_PER_SEC
 
 subscriptionPtr
 subscription_new (const gchar *source,
@@ -128,7 +128,7 @@ subscription_reset_update_counter (subscriptionPtr subscription, guint64 *now)
 		return;
 
 	subscription->updateState->lastPoll = *now;
-	debug2 (DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
+	debug (DEBUG_UPDATE, "Resetting last poll counter of %s to %lld.", subscription->source, subscription->updateState->lastPoll);
 }
 
 /**
@@ -183,7 +183,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	g_assert (subscription->updateJob);
 	/* update the subscription URL on permanent redirects */
 	if ((301 == result->httpstatus || 308 == result->httpstatus) && result->source && !g_str_equal (result->source, subscription->updateJob->request->source)) {
-		debug2 (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
+		debug (DEBUG_UPDATE, "The URL of \"%s\" has changed permanently and was updated to \"%s\"", node_get_title(node), result->source);
 		subscription_set_source (subscription, result->source);
     statusbar = g_strdup_printf (_("The URL of \"%s\" has changed permanently and was updated"), node_get_title(node));
   }
@@ -200,7 +200,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 			auth_dialog_new (subscription, flags);
 		}
 		if (410 == result->httpstatus) { /* gone */
-			subscription->discontinued = TRUE;
+			subscription_set_discontinued (subscription, TRUE);
 			statusbar = g_strdup_printf (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
 		}
 	} else if (304 == result->httpstatus) {
@@ -271,7 +271,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 	if (subscription->updateJob)
 		return;
 
-	debug1 (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
+	debug (DEBUG_UPDATE, "Scheduling %s to be updated", node_get_title (subscription->node));
 
 	if (subscription_can_be_updated (subscription)) {
 		now = g_get_real_time();
@@ -282,6 +282,7 @@ subscription_update (subscriptionPtr subscription, guint flags)
 			subscription->updateState,
 			subscription->updateOptions
 		);
+		update_request_allow_commands (request, TRUE);
 
 		if (subscription_get_filter (subscription))
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
@@ -365,6 +366,12 @@ subscription_set_default_update_interval (subscriptionPtr subscription, guint in
 	subscription->defaultInterval = interval;
 }
 
+void
+subscription_set_discontinued (subscriptionPtr subscription, gboolean newState)
+{
+	subscription->discontinued = newState;
+}
+
 static const gchar *
 subscription_get_orig_source (subscriptionPtr subscription)
 {
@@ -428,7 +435,7 @@ subscription_set_homepage (subscriptionPtr subscription, const gchar *newHtmlUrl
 			if (tmp)
 				*(tmp+1) = '\0';
 
-			htmlUrl = common_build_url (newHtmlUrl, source);
+			htmlUrl = (gchar *)common_build_url (newHtmlUrl, source);
 			g_free (source);
 		}
 
@@ -477,34 +484,34 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		if (!trusted && source[0] == '|') {
 			/* FIXME: Display warning dialog asking if the command
 			   is safe? */
-			tmp = g_strdup_printf ("unsafe command: %s", source);
+			tmp = (xmlChar *)g_strdup_printf ("unsafe command: %s", source);
 			xmlFree (source);
 			source = tmp;
 		}
 
-		subscription_set_source (subscription, source);
+		subscription_set_source (subscription, (gchar *)source);
 		xmlFree (source);
 
 		homepage = xmlGetProp (xml, BAD_CAST "htmlUrl");
-		if (homepage && xmlStrcmp (homepage, ""))
-			subscription_set_homepage (subscription, homepage);
+		if (homepage && xmlStrcmp (homepage, BAD_CAST ""))
+			subscription_set_homepage (subscription, (gchar *)homepage);
 		xmlFree (homepage);
 
 		if ((filter = xmlGetProp (xml, BAD_CAST "filtercmd"))) {
 			if (!trusted) {
 				/* FIXME: Display warning dialog asking if the command
 				   is safe? */
-				tmp = g_strdup_printf ("unsafe command: %s", filter);
+				tmp = (xmlChar *)g_strdup_printf ("unsafe command: %s", filter);
 				xmlFree (filter);
 				filter = tmp;
 			}
 
-			subscription_set_filter (subscription, filter);
+			subscription_set_filter (subscription, (gchar *)filter);
 			xmlFree (filter);
 		}
 
 		intervalStr = xmlGetProp (xml, BAD_CAST "updateInterval");
-		subscription_set_update_interval (subscription, common_parse_long (intervalStr, -1));
+		subscription_set_update_interval (subscription, common_parse_long ((gchar *)intervalStr, -1));
 		xmlFree (intervalStr);
 
 		/* no proxy flag */
@@ -514,8 +521,8 @@ subscription_import (xmlNodePtr xml, gboolean trusted)
 		xmlFree (tmp);
 
 		/* authentication options */
-		subscription->updateOptions->username = xmlGetProp (xml, BAD_CAST "username");
-		subscription->updateOptions->password = xmlGetProp (xml, BAD_CAST "password");
+		subscription->updateOptions->username = (gchar *)xmlGetProp (xml, BAD_CAST "username");
+		subscription->updateOptions->password = (gchar *)xmlGetProp (xml, BAD_CAST "password");
 	}
 
 	return subscription;
@@ -544,9 +551,9 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 
 		if (!liferea_auth_has_active_store ()) {
 			if (subscription->updateOptions->username)
-				xmlNewProp (xml, BAD_CAST"username", subscription->updateOptions->username);
+				xmlNewProp (xml, BAD_CAST"username", (xmlChar *)subscription->updateOptions->username);
 			if (subscription->updateOptions->password)
-				xmlNewProp (xml, BAD_CAST"password", subscription->updateOptions->password);
+				xmlNewProp (xml, BAD_CAST"password", (xmlChar *)subscription->updateOptions->password);
 		}
 	}
 
@@ -558,28 +565,24 @@ subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml)
 {
 	gchar	*tmp;
 
-	xmlNewTextChild (xml, NULL, "feedSource", subscription_get_source (subscription));
-	xmlNewTextChild (xml, NULL, "feedOrigSource", subscription_get_orig_source (subscription));
+	xmlNewTextChild (xml, NULL, BAD_CAST "feedSource", (xmlChar *)subscription_get_source (subscription));
+	xmlNewTextChild (xml, NULL, BAD_CAST "feedOrigSource", (xmlChar *)subscription_get_orig_source (subscription));
 
 	tmp = g_strdup_printf ("%d", subscription_get_default_update_interval (subscription));
-	xmlNewTextChild (xml, NULL, "feedUpdateInterval", tmp);
-	g_free (tmp);
-
-	tmp = g_strdup_printf ("%d", subscription->discontinued?1:0);
-	xmlNewTextChild (xml, NULL, "feedDiscontinued", tmp);
+	xmlNewTextChild (xml, NULL, BAD_CAST "feedUpdateInterval", (xmlChar *)tmp);
 	g_free (tmp);
 
 	if (subscription->updateError)
-		xmlNewTextChild (xml, NULL, "updateError", subscription->updateError);
+		xmlNewTextChild (xml, NULL, BAD_CAST "updateError", (xmlChar *)subscription->updateError);
 	if (subscription->httpError) {
-		xmlNewTextChild (xml, NULL, "httpError", subscription->httpError);
+		xmlNewTextChild (xml, NULL, BAD_CAST "httpError", (xmlChar *)subscription->httpError);
 
 		tmp = g_strdup_printf ("%d", subscription->httpErrorCode);
-		xmlNewTextChild (xml, NULL, "httpErrorCode", tmp);
+		xmlNewTextChild (xml, NULL, BAD_CAST "httpErrorCode", (xmlChar *)tmp);
 		g_free (tmp);
 	}
 	if (subscription->filterError)
-		xmlNewTextChild (xml, NULL, "filterError", subscription->filterError);
+		xmlNewTextChild (xml, NULL, BAD_CAST "filterError", (xmlChar *)subscription->filterError);
 
 	metadata_add_xml_nodes (subscription->metadata, xml);
 }

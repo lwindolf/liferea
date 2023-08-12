@@ -1,7 +1,7 @@
 /**
  * @file ttrss_source.c  Tiny Tiny RSS feed list source support
  *
- * Copyright (C) 2010-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 	subscriptionPtr subscription = source->root->subscription;
 	JsonParser	*parser;
 
-	debug1 (DEBUG_UPDATE, "TinyTinyRSS login processing... >>>%s<<<", result->data);
+	debug (DEBUG_UPDATE, "TinyTinyRSS login processing... >>>%s<<<", result->data);
 
 	g_assert (!source->session_id);
 
@@ -119,7 +119,7 @@ ttrss_source_login_cb (const struct updateResult * const result, gpointer userda
 	source->apiLevel = json_get_int (json_get_node (node, "content"), "api_level");
 	source->session_id = g_strdup (json_get_string (json_get_node (node, "content"), "session_id"));
 	if (source->session_id) {
-		debug2 (DEBUG_UPDATE, "TinyTinyRSS Found session_id: >>>%s<<< (API level %d)!", source->session_id, source->apiLevel);
+		debug (DEBUG_UPDATE, "TinyTinyRSS Found session_id: >>>%s<<< (API level %d)!", source->session_id, source->apiLevel);
 
 		node_source_set_state (subscription->node, NODE_SOURCE_STATE_ACTIVE);
 
@@ -146,7 +146,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 
 	if (source->root->source->loginState != NODE_SOURCE_STATE_NONE) {
 		/* this should not happen, as of now, we assume the session doesn't expire. */
-		debug1 (DEBUG_UPDATE, "Logging in while login state is %d", source->root->source->loginState);
+		debug (DEBUG_UPDATE, "Logging in while login state is %d", source->root->source->loginState);
 	}
 
 	source->url = metadata_list_get (subscription->metadata, "ttrss-url");
@@ -192,7 +192,7 @@ ttrss_source_auto_update (nodePtr node)
 	if (node->source->loginState == NODE_SOURCE_STATE_IN_PROGRESS)
 		return; /* the update will start automatically anyway */
 
-	debug0 (DEBUG_UPDATE, "ttrss_source_auto_update()");
+	debug (DEBUG_UPDATE, "ttrss_source_auto_update()");
 	subscription_auto_update (node->subscription);
 }
 
@@ -221,7 +221,7 @@ ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer us
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
 
-	debug2 (DEBUG_UPDATE, "TinyTinyRSS subscribe result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+	debug (DEBUG_UPDATE, "TinyTinyRSS subscribe result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
 	if (200 != result->httpstatus) {
 		ui_show_error_box (_("TinyTinyRSS HTTP API not reachable!"));
@@ -287,7 +287,7 @@ ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer 
 {
 	nodePtr node = (nodePtr) userdata;
 
-	debug2 (DEBUG_UPDATE, "TinyTinyRSS remove node result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+	debug (DEBUG_UPDATE, "TinyTinyRSS remove node result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 
 	if (200 != result->httpstatus) {
 		ui_show_error_box (_("TinyTinyRSS HTTP API not reachable!"));
@@ -352,6 +352,7 @@ on_ttrss_source_selected (GtkDialog *dialog,
 
 		node = node_new (node_source_get_node_type ());
 		node_source_new (node, ttrss_source_get_type (), "");
+		node_set_title (node, node->source->type->name);
 
 		/* This is a bit ugly: we need to prevent the tt-rss base
 		   URL from being lost by unwanted permanent redirects on
@@ -396,7 +397,7 @@ ttrss_source_cleanup (nodePtr node)
 static void
 ttrss_source_remote_update_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
 {
-	debug2 (DEBUG_UPDATE, "TinyTinyRSS update result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
+	debug (DEBUG_UPDATE, "TinyTinyRSS update result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 }
 
 /* FIXME: Only simple synchronous item change requests... Get async! */

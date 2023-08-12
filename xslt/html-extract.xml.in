@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<!--
+/**
+ * HTML extraction stylesheet for Liferea
+ *
+ * Copyright (C) 2020-2021 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+-->
+
+<!-- Note: when testing this XSLT stylesheet with xsltproc please note
+     that you have to replace the XPath expressions with the proper
+     namespace prefix. E.g. "ancestor::html:body" instead of
+     "ancestor::body". -->
+
+<xsl:stylesheet
+	version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:output method="xml"
+            media-type="text/xml"
+            indent="yes"
+            encoding="utf-8"
+            omit-xml-declaration="yes" />
+
+<xsl:template name='copy'>
+	<xsl:choose>
+		<!-- extract HTML <body> contents as XHTML that can be used for HTML5 --> 
+		<xsl:when test="ancestor::body">
+			<xsl:copy>
+				<xsl:apply-templates select="node()|@*"/>
+				<!-- Fill empty tags with a space to ensure we can
+				     output to HTML5 and get no self-closing tags -->
+				<xsl:if test="not(*) and not(text())">
+					<xsl:text> </xsl:text>
+				</xsl:if>
+			</xsl:copy>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:apply-templates select="node()"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+<xsl:template match="node()|@*">
+	<xsl:call-template name='copy'/>
+</xsl:template>
+
+<xsl:template match="script"/>
+<xsl:template match="style"/>
+
+</xsl:stylesheet>

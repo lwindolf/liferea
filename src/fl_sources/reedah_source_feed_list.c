@@ -58,7 +58,7 @@ reedah_source_check_node_for_removal (nodePtr node, gpointer user_data)
 			JsonNode *json_node = (JsonNode *)iter->data;
 			// FIXME: Compare with unescaped string
 			if (g_str_equal (node->subscription->source, json_get_string (json_node, "id") + 5)) {
-				debug1 (DEBUG_UPDATE, "node: %s", node->subscription->source);
+				debug (DEBUG_UPDATE, "node: %s", node->subscription->source);
 				found = TRUE;
 				break;
 			}
@@ -80,7 +80,7 @@ reedah_source_merge_feed (ReedahSourcePtr source, const gchar *url, const gchar 
 
 	node = feedlist_find_node (source->root, NODE_BY_URL, url);
 	if (!node) {
-		debug2 (DEBUG_UPDATE, "adding %s (%s)", title, url);
+		debug (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		node = node_new (feed_get_node_type ());
 		node_set_title (node, title);
 		node_set_data (node, feed_new ());
@@ -182,7 +182,7 @@ reedah_subscription_opml_cb (subscriptionPtr subscription, const struct updateRe
 		g_object_unref (parser);
 	} else {
 		subscription->node->available = FALSE;
-		debug0 (DEBUG_UPDATE, "reedah_subscription_cb(): ERROR: failed to get subscription list!");
+		debug (DEBUG_UPDATE, "reedah_subscription_cb(): ERROR: failed to get subscription list!");
 	}
 
 	if (!(flags & NODE_SOURCE_UPDATE_ONLY_LIST))
@@ -203,8 +203,8 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	xmlNode = xpath_find (match, "./string[@name='id']");
 	id = xmlNodeGetContent (xmlNode);
 
-	if (g_str_has_prefix (id, "feed/"))
-		node = feedlist_find_node (gsource->root, NODE_BY_URL, id + strlen ("feed/"));
+	if (g_str_has_prefix ((gchar *)id, "feed/"))
+		node = feedlist_find_node (gsource->root, NODE_BY_URL, (gchar *)(id + strlen ("feed/")));
 	else {
 		xmlFree (id);
 		return;
@@ -223,12 +223,12 @@ reedah_source_opml_quick_update_helper (xmlNodePtr match, gpointer userdata)
 	if (!oldNewestItemTimestamp ||
 	    (newestItemTimestamp &&
 	     !g_str_equal (newestItemTimestamp, oldNewestItemTimestamp))) {
-		debug3(DEBUG_UPDATE, "ReedahSource: auto-updating %s "
+		debug (DEBUG_UPDATE, "ReedahSource: auto-updating %s "
 		       "[oldtimestamp%s, timestamp %s]",
 		       id, oldNewestItemTimestamp, newestItemTimestamp);
 		g_hash_table_insert (gsource->lastTimestampMap,
 				    g_strdup (node->subscription->source),
-				    g_strdup (newestItemTimestamp));
+				    g_strdup ((gchar *)newestItemTimestamp));
 
 		subscription_update (node->subscription, 0);
 	}
@@ -245,12 +245,12 @@ reedah_source_opml_quick_update_cb (const struct updateResult* const result, gpo
 
 	if (!result->data) {
 		/* what do I do? */
-		debug0 (DEBUG_UPDATE, "ReedahSource: Unable to get unread counts, this update is aborted.");
+		debug (DEBUG_UPDATE, "ReedahSource: Unable to get unread counts, this update is aborted.");
 		return;
 	}
 	doc = xml_parse (result->data, result->size, NULL);
 	if (!doc) {
-		debug0 (DEBUG_UPDATE, "ReedahSource: The XML failed to parse, maybe the session has expired. (FIXME)");
+		debug (DEBUG_UPDATE, "ReedahSource: The XML failed to parse, maybe the session has expired. (FIXME)");
 		return;
 	}
 
@@ -267,7 +267,7 @@ reedah_source_opml_quick_update(ReedahSourcePtr source)
 	subscriptionPtr subscription = source->root->subscription;
 
 	UpdateRequest *request = update_request_new (
-		source->root->source->type->api.unread_count,
+		source->root->source->api.unread_count,
 		subscription->updateState,
 		subscription->updateOptions
 	);
@@ -295,13 +295,13 @@ reedah_source_opml_subscription_prepare_update_request (subscriptionPtr subscrip
 
 	g_assert(node->source);
 	if (node->source->loginState == NODE_SOURCE_STATE_NONE) {
-		debug0(DEBUG_UPDATE, "ReedahSource: login");
-		reedah_source_login (source, 0) ;
+		debug (DEBUG_UPDATE, "ReedahSource: login");
+		reedah_source_login (source, 0);
 		return FALSE;
 	}
-	debug1 (DEBUG_UPDATE, "updating Reedah subscription (node id %s)", node->id);
+	debug (DEBUG_UPDATE, "updating Reedah subscription (node id %s)", node->id);
 
-	update_request_set_source (request, node->source->type->api.subscription_list);
+	update_request_set_source (request, node->source->api.subscription_list);
 	update_request_set_auth_value (request, node->source->authToken);
 
 	return TRUE;

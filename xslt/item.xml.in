@@ -5,7 +5,7 @@
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
  * Copyright (C) 2009-2019 Mikel Olasagasti Uranga <mikel@olasagasti.info>
- * Copyright (C) 2006-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,6 @@
 
 <!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
 <xsl:param name="pixmapsDir"/>
-<!-- the local Javascript lib directory (e.g. /usr/share/liferea/js/) -->
-<xsl:param name="jsDir"/>
 
 <xsl:param name="baseUrl"/> <!-- item specific content base URL -->
 <xsl:param name="showFeedName"/>
@@ -278,29 +276,58 @@
     <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
       <img align='left' class='gravatar' src="{attributes/attribute[ @name = 'gravatar' ]}"/>
     </xsl:if>
-    <!-- optional MediaRSS thumbnail -->
-    <xsl:if test="attributes/attribute[ @name = 'mediathumbnail' ]">
-      <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
-    </xsl:if>
-    <!-- optional MediaRSS YouTube links-->
-    <xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>
-    <xsl:if test="contains($url,'https://www.youtube.com/watch?v=')">
-      <xsl:variable name="youtubeid" select="substring-after($url,'https://www.youtube.com/watch?v=')"/>
-      <p><iframe width="640" height="480" src="https://www.youtube.com/embed/{$youtubeid}" frameborder="0" allowfullscreen="1"></iframe></p>
+    <!-- add optional MediaRSS thumbnail (only if no image is in content, as it is often duplicated, e.g. on HTML5 fetch) -->
+    <xsl:if test="not(contains(description,'&lt;img') or contains(description,'&lt;IMG'))">
+      <xsl:if test="attributes/attribute[ @name = 'mediathumbnail' ]">
+        <img align='left' class='thumbnail' src="{attributes/attribute[ @name = 'mediathumbnail' ]}"/>
+      </xsl:if>
     </xsl:if>
     <!-- optional MediaRSS description -->
     <xsl:if test="attributes/attribute[ @name = 'mediadescription' ]">
-      <xsl:call-template name="add-newline">
-        <xsl:with-param name="input"  select="attributes/attribute[ @name = 'mediadescription' ]"/>
-       </xsl:call-template>
+      <p>
+        <xsl:call-template name="add-newline">
+          <xsl:with-param name="input"  select="attributes/attribute[ @name = 'mediadescription' ]/text()"/>
+        </xsl:call-template>
+      </p>
     </xsl:if>
-
     <!-- the real text content -->
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
 </div> <!-- end of content -->
 
-  <!-- comment handling -->
+<!-- all content below is not subject to Readability.js, this is intentional and prevents
+     unintended stripping -->
+
+<!-- optional YouTube embed -->
+<xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>
+<xsl:if test="contains($url,'https://www.youtube.com/watch?v=')">
+  <xsl:variable name="youtubeid" select="substring-after($url,'https://www.youtube.com/watch?v=')"/>
+
+  <div class='content'>
+    <div class='video-embed' id="{$youtubeid}">
+      <xsl:element name='a'>
+        <xsl:attribute name='href'>javascript:youtube_embed('<xsl:value-of select="$youtubeid"/>');</xsl:attribute>
+        <!-- FIXME: translate  me -->
+        <xsl:attribute name='title'>Click to embed video</xsl:attribute>
+        <div class="play-btn">
+        <!-- button SVG from https://douglasgreen.com/demo/responsive-video-play-button/svg-play-button.html -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 311.69 311.69">
+            <path d="M155.84,0A155.85,155.85,0,1,0,311.69,155.84,155.84,155.84,0,0,0,155.84,0Zm0,296.42A140.58,140.58,0,1,1,296.42,155.84,140.58,140.58,0,0,1,155.84,296.42Z"/><polygon points="218.79 155.84 119.22 94.34 119.22 217.34 218.79 155.84"/>
+          </svg>
+        </div>
+      </xsl:element>
+      <xsl:element name='img'>
+        <xsl:attribute name='class'>thumb</xsl:attribute>
+        <xsl:attribute name='src'>https://i.ytimg.com/vi/<xsl:value-of select="$youtubeid"/>/hqdefault.jpg</xsl:attribute>
+        <!-- FIXME: translate  me -->
+        <xsl:attribute name='alt'>Youtube video image</xsl:attribute>
+      </xsl:element>
+      <!---->
+    </div>
+  </div>
+</xsl:if>
+
+<!-- comment feed display handling -->
 <div id='item_comments' class='item_comments'>
   <xsl:if test="attributes/attribute[ @name = 'commentFeedUri' ] and not(./commentsSuppressed)">
      <p>

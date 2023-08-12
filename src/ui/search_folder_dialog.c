@@ -75,7 +75,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		/* update search folder */
 		itemview_clear ();
 		vfolder_reset (sfd->vfolder);
-		itemlist_unload (FALSE);
+		itemlist_unload ();
 
 		/* If we are finished editing a new search folder add it to the feed list */
 		if (!sfd->node->parent)

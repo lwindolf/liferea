@@ -1,7 +1,7 @@
 /*
  * @file node_source.h  generic node source interface
  *
- * Copyright (C) 2005-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,7 +60,8 @@ typedef enum {
 	NODE_SOURCE_CAPABILITY_ITEM_STATE_SYNC		= (1<<6),	/*<< the item state can and should be sync'ed with remote */
 	NODE_SOURCE_CAPABILITY_CONVERT_TO_LOCAL		= (1<<7),	/*<< node sources of this type can be converted to internal subscription lists */
 	NODE_SOURCE_CAPABILITY_GOOGLE_READER_API	= (1<<8),	/*<< node sources of this type are Google Reader clones */
-	NODE_SOURCE_CAPABILITY_CAN_LOGIN		= (1<<9)	/*<< node source needs login (means loginState member is to be used) */
+	NODE_SOURCE_CAPABILITY_CAN_LOGIN		= (1<<9),	/*<< node source needs login (means loginState member is to be used) */
+	NODE_SOURCE_CAPABILITY_REPARENT_NODE		= (1<<10)	/*<< change of node parent can be synced with the source */
 } nodeSourceCapability;
 
 /* Node source state model */
@@ -96,7 +97,6 @@ typedef struct nodeSourceType {
 	const gchar	*id;		/*<< a unique feed list source type identifier */
 	const gchar	*name;		/*<< a descriptive source name (for preferences and menus) */
 	gulong		capabilities;	/*<< bitmask of feed list source capabilities */
-	googleReaderApi	api;		/*<< OPTIONAL endpoint definitions for Google Reader like JSON API */
 
 	/* The subscription type for all child nodes that are subscriptions */
 	subscriptionTypePtr	feedSubscriptionType;
@@ -213,6 +213,14 @@ typedef struct nodeSourceType {
 	 */
 	void		(*convert_to_local) (nodePtr node);
 
+	/*
+	 * Syncs local change of node parent with the node source.
+	 *
+	 * This is an OPTIONAL method, but must be implemented when
+	 * NODE_SOURCE_CAPABILITY_REPARENT_NODE is set.
+	 */
+	void		(*reparent_node) (nodePtr node, nodePtr oldParent, nodePtr newParent);
+
 } *nodeSourceTypePtr;
 
 /* feed list source instance */
@@ -224,6 +232,8 @@ typedef struct nodeSource {
 
 	gchar			*authToken;	/*<< The authorization token */
 	gint			authFailures;	/*<< Number of authentication failures */
+	
+	googleReaderApi		api;		/*<< OPTIONAL endpoint definitions for Google Reader like JSON API, to be set during source_new() */
 } *nodeSourcePtr;
 
 /* Use this to cast the node source type from a node structure. */

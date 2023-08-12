@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/lwindolf/liferea.svg?branch=master)](https://travis-ci.org/lwindolf/liferea) ![Coverity Scan Build Status](https://scan.coverity.com/projects/4287/badge.svg)
+[![Build Status](https://github.com/lwindolf/liferea/actions/workflows/cb.yml/badge.svg)](https://github.com/lwindolf/liferea/actions/workflows/cb.yml)
 
 [![Packages](https://repology.org/badge/latest-versions/liferea.svg)](https://repology.org/metapackage/liferea/versions)
 [![Packages](https://repology.org/badge/tiny-repos/liferea.svg)](https://repology.org/metapackage/liferea/versions)
@@ -31,7 +31,7 @@ help you asap.
 ###### _Mandatory Dependencies_
 
    libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.0-dev libjson-glib-dev libgirepository1.0-dev
-   libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool
+   libpeas-dev libfribidi-dev gsettings-desktop-schemas-dev python3 libtool intltool
 
    
 ###### _Compiling from Tarball_
@@ -79,19 +79,14 @@ are the best way to contribute to Liferea.
 
 Before starting to translate you need a translation editor. We suggest
 to use poedit or gtranslator. Please edit the translation using such a 
-translation editor and send us the resulting file. Once you have finished
-your work please send us the resulting file.
-
-Please do not send translation patches. Those are a lot of work to merge
-and the bandwidth saving is not that huge!
-
+translation editor and create a Github pull request for the new `.po` file.
 
 ###### _New Translations_
 
 To create a new translation you must load the translation template, which you
-can find in the release tarball as "po/liferea.pot", into the translation 
+can find in the release tarball as `po/liferea.pot`, into your translation 
 editor. After editing it save it under a new name (usually your locales name
-with the extension ".po").
+with the extension `.po`).
 
 
 ###### _Updating Translations_

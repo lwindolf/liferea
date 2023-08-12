@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <title>FAQ di Liferea</title>
+  <meta charset="utf-8">
+
+	<link rel="stylesheet" type="text/css" href="reference.css">
+	<style type="text/css">
+		ul {margin-left: 0; margin-right: 4px; padding: 5px}
+		li {margin-left: 15px;padding:2px;}
+		dl.faq dt { font-weight: bold; padding: 1em;}
+		dl.faq dd {padding-bottom: 2em;}
+		span.code {font-family: courier, monospaced; padding-left: 1ex; padding-right: 1ex;}
+	</style>
+</head>
+<body>
+
+<header>
+  <nav>
+<table class="fullwidth">
+   <tr>
+ 	      <td class="back left"></td>
+      	      <td class="home center"><h1>Liferea - Domande Frequenti</h1></td>
+      	      <td class="next right"></td>
+   </tr>
+</table>
+
+</nav>
+  </header>
+
+<main>
+<p>
+Nota: Questa FAQ è anche disponibile <a href="https://lzone.de/liferea/faq.htm">
+online</a>.
+</p>
+
+<dl class="faq">
+
+<dt><a class="faq-q" name="flash-broken">Q:</a>
+Perché Flash non funziona (più)?</dt>
+<dd>
+<a class="faq-a">A:</a> Il supporto ad Easy flash si rompe quando Liferea 1.10
+che dipende da GTK3 viene utilizzato con le versioni di WebkitGTK3 precedenti alla 2.0.
+Per una spiegazione dettagliata leggi <a href="https://lzone.de/How%20to%20Get%20Flash%20Working%20with%20WebkitGTK3">questo post</a>.
+<br/><br/>
+Sono conosciute le seguenti soluzioni:
+<br/><br/>
+<ol>
+	<li>Aggiorna WebkitGTK3 alla versione 2.0 o successiva</li>
+	<li>Installa nspluginwrapper ed il plugin flash a 32bit (<a href="https://lzone.de/How%20to%20Get%20Flash%20Working%20with%20WebkitGTK3">istruzioni</a>)</li>
+</ol>
+</dd>
+
+<dt>Q: Dove lo posso ottenere?</dt>
+<dd>
+A: La via più facile è scaricare il pacchetto sorgente dalla
+<a href="https://github.com/lwindolf/liferea/releases">pagina del progetto su GitHub</a>.
+Ma dovresti anche informarti se la tua distribuzione Linux
+fornisce un proprio pacchetto per Liferea. Una lista di tutti i pacchetti precompilati
+è fornita nella <a href="https://lzone.de/liferea/install.htm">sezione di installazione</a>.
+
+</dd>
+
+<dt>Q: Il download degli allegati tramite Gwget non funziona.</dt>
+<dd>A: Molto probabilmente hai Gwget 1.0.0 o 1.0.1 installato, ed
+a causa di un malfunzionamento temporaneo delle API dbus di Gwget queste versioni
+non funzionano con Liferea. Sia le versioni più vecchie che più recenti di Gwget
+funzionano.</dd>
+
+<dt>Q: Sto usando Firefox/Seamonkey, e quando apro i titoli nel browser il focus passa al browser.</dt>
+<dd>A: Questo è effettuato dal tuo browser. Per cambiarlo, apri <tt>about:config</tt> nel tuo browser ed imposta <tt>browser.tabs.loadDivertedInBackground</tt> su vero.
+</dd>
+
+<dt>Q: Liferea è buggato! Non si chiude quando clicco sul pulsante di chiusura
+del gestore delle finestre e l'icona nel vassoio di sistema viene attivata.</dt>
+<dd>A:
+Questo è un tema abbastanza controverso. Noi la vediamo come una caratteristica utile, altre
+persone no. Se non ti piace il comportamento lo puoi cambiare cliccando con il tasto destro del mouse
+sull'icona nel vassoio di sistema e attivando la casella di controllo etichettata "Nascondi nel vassoio di sistema alla chiusura."
+</dd>
+
+<dt>Q: Voglio i cookies!</dt>
+<dd>A:
+Liferea supporta solo i cookie di sessione mentre si scaricano i notiziari. Essi vengono
+conservati in ~/.config/liferea/session_cookies.txt
+</dd>
+
+<dt>Q: Non gradisco gli stili HTML/CSS che Liferea utilizza!
+</dt>
+<dd>A: Puoi avere i tuoi fogli di stile. Ti basta modificare ~/.config/liferea/liferea.css<br>
+Durante l'avvio sarà caricato in aggiunta ai fogli di stile predefiniti così che tu possa
+modificare alcune o tutte le definizioni di stile. Il file contiene commenti che descrivono i
+differenti stili, così dovrebbe essere facile cambiarli.
+</dd>
+
+<dt>Q: Come vedo gli elementi LiveJournal del mio amico che sono stati riservati solo agli amici?</dt>
+<dd>A: Usa il notiziario RSS LiveJournal autenticato. Ad esempio utilizza
+
+<a href="http://www.livejournal.com/users/pigrew/data/rss?auth=digest">
+http://www.livejournal.com/users/pigrew/data/rss?auth=digest</a>. Avrai bisogno
+di usare la finestra di dialogo delle proprietà del notiziario per impostare il nome utente
+e la password del tuo account LiveJournal.
+</dd>
+
+<dt>Q: Perché gli elementi di un notiziario continuano a essere mostrati come nuovi?</dt>
+<dd>A: Questo è generalmente causato da un notiziario malformato che ha associato
+un certo ID a elementi multipli. Se hai esperienza con i formati di pubblicazione
+controlla il codice sorgente del feed. Se trovi problemi contatta
+l'autore/webmaster del feed. Altrimenti per piacere invia una segnalazione di bug includendo l'URL
+del notiziario problematico presso il <a href="https://github.com/lwindolf/liferea/issues">bug tracker di Liferea</a>.<br>
+
+<br/>
+Nota: Se ti capita questo problema con un notiziario planet la ragione
+potrebbe essere che il notiziario planet non fornisce id unici degli oggetti
+per uno o per tutti i suoi notiziari sorgente. Se questo è il caso Liferea
+non potrà mai distinguere oggetti identici.</dd>
+
+<dt>Q: Liferea va in crash troppo spesso.</dt>
+
+<dd>A: Sentiamo molto spesso questa lamentela, ma di rado non otteniamo informazioni
+su come è andato in crash. Se trovi un modo per mandare in crash Liferea,
+saremmo molto felici di conoscerlo. Per piacere inviaci una copia dell'output dell'esecuzione di
+Liferea con il parametro "--debug-all", se possibile in aggiunta ad un backtrace.
+Per creare un backtrace, apri un terminale e scrivi due comandi: <span
+class="code">ulimit -c unlimited</span> e poi <span
+class="code">liferea</span>. Ciò spinge Liferea a creare un core dump
+quando va in crash. Poi, esegui <span class="code">gdb liferea
+core</span> e scrivi <span class="code">bt</span> nel prompt di gdb.
+Questo mostrerà il backtrace del crash, che dovrebbe essere
+inviato assieme alla segnalazione del bug.</dd>
+
+<dt>Q: Perché Liferea non include la caratteristica X?</dt>
+<dd>A: Se ti manca una caratteristica di Liferea per favore considera di contribuire
+al codice per implementare la funzionalità! Per piacere prendi anche in considerazione che il progetto Liferea
+vorrebbe fornire un semplice lettore di news che potrebbe mancare di
+funzionalità complesse.</dd>
+
+<dt>Q: Cosa significa "Ci sono stati errori durate l'analisi di questo notiziario!" e come lo posso risolvere?</dt>
+<dd>A: L'analizzatore di notiziari di Liferea si aspetta XML valido. Quindi, questo errore avviene quando un notiziario contiene XML non valido. Puoi controllare la validità di un notiziario con <a href="http://feedvalidator.org/">http://feedvalidator.org/</a> e <a href="http://validator.w3.org/feed/">http://validator.w3.org/feed/</a>.
+<p>
+Per correggere questo problema, puoi provare a sanificare l'XML con xmllint. Per far questo, apri le proprietà dell'abbonamento del notiziario interessato e aggiungi xmllint come filtro di conversione nella scheda fonti in questo modo: <span class="code">xmllint --recover -</pre>
+<p>
+Nota: Nelle distribuzioni basate su Debian, xmllint è parte del pacchetto libxml2-utils.
+</dd>
+</dl>
+</main>
+</body>
+</html>

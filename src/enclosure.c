@@ -83,7 +83,7 @@ enclosure_from_string (const gchar *str)
 	
 	fields = g_regex_split_simple ("^enc:([01]?):([^:]*):(\\d+):(.*)", str, 0, 0);
 	if (6 > g_strv_length (fields)) {
-		debug2 (DEBUG_PARSING, "Dropping incorrectly encoded enclosure: >>>%s<<< (nr of fields=%d)\n", str, g_strv_length (fields));
+		debug (DEBUG_PARSING, "Dropping incorrectly encoded enclosure: >>>%s<<< (nr of fields=%d)", str, g_strv_length (fields));
 		enclosure_free (enclosure);
 		return NULL;
 	}
@@ -175,7 +175,7 @@ enclosure_mime_types_load (void)
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		doc = xmlParseFile (filename);
 		if (!doc) {
-			debug0 (DEBUG_CONF, "could not load enclosure type config file!");
+			debug (DEBUG_CONF, "could not load enclosure type config file!");
 		} else {
 			cur = xmlDocGetRootElement (doc);
 			if (!cur) {
@@ -283,7 +283,7 @@ enclosure_download (encTypePtr type, const gchar *url, gboolean interactive)
 	urlQ = g_shell_quote (url);
 		
 	if (type) {
-		debug2 (DEBUG_UPDATE, "passing URL %s to command %s...", urlQ, type->cmd);
+		debug (DEBUG_UPDATE, "passing URL %s to command %s...", urlQ, type->cmd);
 		cmd = g_strdup_printf ("%s %s", type->cmd, urlQ);
 	} else {
 		gchar *toolCmd = prefs_get_download_command ();
@@ -293,7 +293,7 @@ enclosure_download (encTypePtr type, const gchar *url, gboolean interactive)
 			return;
 		}
 
-		debug2 (DEBUG_UPDATE, "downloading URL %s with %s...", urlQ, toolCmd);
+		debug (DEBUG_UPDATE, "downloading URL %s with %s...", urlQ, toolCmd);
 		cmd = g_strdup_printf (toolCmd, urlQ);
 		g_free (toolCmd);
 	}

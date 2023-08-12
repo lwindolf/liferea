@@ -51,7 +51,7 @@
 </tr>
 </table>
 
-<div class='content'>
+<div class='content' id='content'>
 <p>
 <_span>Add items to this news bin by selecting "Copy to News Bin" from the item list context menu.</_span>
 </p>

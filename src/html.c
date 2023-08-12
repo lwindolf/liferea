@@ -59,7 +59,7 @@ html_get_attrib (const gchar* str, gchar *attrib_name) {
 	size_t		len = 0;
 	gchar		quote;
 
-	/*debug1(DEBUG_PARSING, "fetching href %s", str); */
+	/*debug (DEBUG_PARSING, "fetching href %s", str); */
 	tmp = common_strcasestr (str, attrib_name);
 	if (!tmp)
 		return NULL;
@@ -221,7 +221,7 @@ html_auto_discover_collect_meta (xmlNodePtr match, gpointer user_data)
 GSList *
 html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
 {
-	GSList		*iter, *links = NULL;
+	GSList		*iter, *links = NULL, *valid_links = NULL;
 	gchar		*baseUri = NULL;
 	xmlDocPtr	doc;
 	xmlNodePtr	node, root;
@@ -242,7 +242,7 @@ html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
 	if (!baseUri)
 		baseUri = g_strdup (defaultBaseUri);
 
-	debug0 (DEBUG_UPDATE, "searching through link tags");
+	debug (DEBUG_UPDATE, "searching through link tags");
 	xpath_foreach_match (root, XPATH_LINK_RSS_ALTERNATE, html_auto_discover_collect_links, (gpointer)&links);
 	if (!links) {
 		gchar *tmp = search_links_dirty (data, LINK_RSS_ALTERNATE);
@@ -253,17 +253,25 @@ html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
 	/* Turn relative URIs into absolute URIs */
 	iter = links;
 	while (iter) {
-		gchar *tmp = iter->data;
-		iter->data = common_build_url (tmp, baseUri);
-		g_free (tmp);
-		debug1 (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
+		gchar *tmp = (gchar *)common_build_url (iter->data, baseUri);
+
+		/* We expect only relative URIs starting with '/' or absolute URIs starting with 'http://' or 'https://' */
+		if ('h' == tmp[0] || '/' == tmp[0]) {
+			debug (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
+			valid_links = g_slist_append (valid_links, tmp);
+		} else {
+			debug (DEBUG_UPDATE, "html_auto_discover_feed: discarding invalid URL %s", tmp ? tmp : "NULL");
+			g_free (tmp);
+		}
+
 		iter = g_slist_next (iter);
 	}
+	g_slist_free_full (links, g_free);
 
 	g_free (baseUri);
 	xmlFreeDoc (doc);
 
-	return links;
+	return valid_links;
 }
 
 GSList *
@@ -289,7 +297,7 @@ html_discover_favicon (const gchar * data, const gchar * defaultBaseUri)
 	if (!baseUri)
 		baseUri = g_strdup (defaultBaseUri);
 
-	debug0 (DEBUG_UPDATE, "searching through link tags");
+	debug (DEBUG_UPDATE, "searching through link tags");
 
 	/* First try icons with guaranteed sizes */
 	xpath_foreach_match (root, XPATH_LINK_LARGE_ICON,       html_auto_discover_collect_links, (gpointer)&results);
@@ -311,7 +319,7 @@ html_discover_favicon (const gchar * data, const gchar * defaultBaseUri)
 		gchar *tmp = iter->data;
 		iter->data = common_build_url (tmp, baseUri);
 		g_free (tmp);
-		debug1 (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
+		debug (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
 		iter = g_slist_next (iter);
 	}
 	g_free (baseUri);
@@ -328,7 +336,7 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 
 	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
 	if (!doc) {
-		debug1 (DEBUG_PARSING, "XHTML parsing error during HTML5 fetch of '%s'\n", baseUri);
+		debug (DEBUG_PARSING, "XHTML parsing error on '%s'", baseUri);
 		return NULL;
 	}
 
@@ -349,6 +357,30 @@ html_get_article (const gchar *data, const gchar *baseUri) {
 		xmlFreeDoc (doc);
 	}
 
+	return result;
+}
+
+gchar *
+html_get_body (const gchar *data, const gchar *baseUri) {
+	xmlDocPtr	doc;
+	xmlNodePtr	root;
+	gchar		*result = NULL;
+
+	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
+	if (!doc) {
+		debug (DEBUG_PARSING, "XHTML parsing error on '%s'", baseUri);
+		return NULL;
+	}
+
+	root = xmlDocGetRootElement (doc);
+	if (root) {
+		xmlDocPtr body = xhtml_extract_doc (root, 1, baseUri);
+		if (body) {
+			result = render_xml (body, "html-extract", NULL);
+			xmlFreeDoc (body);
+		}
+		xmlFreeDoc (doc);
+	}
 	return result;
 }
 

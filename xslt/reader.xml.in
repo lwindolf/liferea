@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**
+ * Rendering stylesheet for Liferea (item view: reader mode)
+ *
+ * Copyright (C) 2021 Lars Windolf <lars.windolf@gmx.de>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+-->
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+<xsl:output method="xml" version="1.0" indent="yes"/>
+
+<!-- the local pixmap directory (e.g. /usr/share/liferea/pixmaps/) -->
+<xsl:param name="pixmapsDir"/>
+
+<xsl:param name="baseUrl"/> <!-- website specific content base URL -->
+
+<xsl:template match="/website">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+  <base href="{$baseUrl}"/>
+</head>
+<xsl:element name="body">
+
+<xsl:for-each select="source">
+  <xsl:call-template name="source"/>
+</xsl:for-each>
+
+</xsl:element>
+</html>
+
+</xsl:template>
+
+<!-- ==================================================================== -->
+
+<xsl:template name="source">
+
+<div class='item'>
+
+<!-- header table -->
+<table class="itemhead" cellspacing="0" cellpadding="0">
+<tbody>
+<tr>
+  <td valign="middle" class="head_favicon">
+  </td>
+  <td class="head_title">
+    <!-- Item title as link -->
+    <a class="itemhead" href="{.}">
+      <xsl:value-of select="."/>
+    </a>
+  </td>
+</tr>
+</tbody>
+</table>
+
+
+<div class='content' id='content'>
+  <article>
+    <h2>Fetching content...</h2>
+  </article>
+</div>
+
+</div>
+
+</xsl:template>
+
+</xsl:stylesheet>

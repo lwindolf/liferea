@@ -1,7 +1,7 @@
 /*
  * @file itemview.h  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 #include "item.h"
 #include "itemset.h"
 #include "node.h"
-#include "ui/liferea_htmlview.h"
+#include "ui/liferea_browser.h"
 
 /* Liferea presents items in a dynamic view. The view layout
    changes according to the subscription preferences and if
@@ -155,15 +155,6 @@ void itemview_update_node_info (struct node *node);
 void itemview_update (void);
 
 /**
- * itemview_display_info:
- * @html:	HTML to present
- *
- * Sets an info display in the item view HTML widget.
- * Used for special functionality like search result info.
- */
-void itemview_display_info (const gchar *html);
-
-/**
  * itemview_find_unread_item: (skip)
  * @startId:	the item id to start at (or NULL for starting at the top)
  *
@@ -206,6 +197,15 @@ void itemview_move_cursor_to_first (void);
 void itemview_set_layout (nodeViewType newMode);
 
 /**
+ * itemview_get_layout:
+ *
+ * Returns the viewing mode property of the currently displayed item set.
+ *
+ * Returns: viewing mode (0 = normal, 1 = wide, 2 = auto)
+ */
+guint itemview_get_layout (void);
+
+/**
  * itemview_create: (skip)
  * @window:		parent window widget
  *
@@ -235,7 +235,7 @@ void itemview_do_zoom (gint zoom);
 
 /**
  * itemview_style_update:
- * 
+ *
  * Invokes a change of the href attribute in WebView's <link> tag
  */
 void itemview_style_update (void);

@@ -53,12 +53,12 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 	gchar		*expr;
 	nodePtr		node = NULL;
 
-	url = xmlGetProp (match, "xmlUrl");
-	title = xmlGetProp (match, "title");
+	url = xmlGetProp (match, BAD_CAST"xmlUrl");
+	title = xmlGetProp (match, BAD_CAST"title");
 	if (!title)
-		title = xmlGetProp (match, "description");
+		title = xmlGetProp (match, BAD_CAST"description");
 	if (!title)
-		title = xmlGetProp (match, "text");
+		title = xmlGetProp (match, BAD_CAST"text");
 	if (!title && !url)
 		return;
 
@@ -68,15 +68,15 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		expr = g_strdup_printf ("//outline[@title = '%s']", title);
 
 	if (!xpath_find (mergeCtxt->xmlNode, expr)) {
-		debug2(DEBUG_UPDATE, "adding %s (%s)", title, url);
+		debug (DEBUG_UPDATE, "adding %s (%s)", title, url);
 		if (url) {
 			node = node_new (feed_get_node_type ());
 			node_set_data (node, feed_new ());
-			node_set_subscription (node, subscription_new (url, NULL, NULL));
+			node_set_subscription (node, subscription_new ((gchar *)url, NULL, NULL));
 		} else {
 			node = node_new (folder_get_node_type ());
 		}
-		node_set_title (node, title);
+		node_set_title (node, (gchar *)title);
 		node_set_parent (node, mergeCtxt->parent, -1);
 		feedlist_node_imported (node);
 
@@ -130,10 +130,10 @@ opml_source_check_for_removal (nodePtr node, gpointer user_data)
 	}
 
 	if (!xpath_find ((xmlNodePtr)user_data, expr)) {
-		debug1 (DEBUG_UPDATE, "removing %s...", node_get_title (node));
+		debug (DEBUG_UPDATE, "removing %s...", node_get_title (node));
 		feedlist_node_removed (node);
 	} else {
-		debug1 (DEBUG_UPDATE, "keeping %s...", node_get_title (node));
+		debug (DEBUG_UPDATE, "keeping %s...", node_get_title (node));
 	}
 	g_free (expr);
 }
@@ -155,7 +155,7 @@ opml_subscription_process_update_result (subscriptionPtr subscription, const str
 	xmlDocPtr	doc, oldDoc;
 	xmlNodePtr	root, title;
 
-	debug1 (DEBUG_UPDATE, "OPML download finished data=%d", result->data);
+	debug (DEBUG_UPDATE, "OPML download finished data=%d", result->data);
 
 	node->available = FALSE;
 
@@ -190,7 +190,7 @@ opml_subscription_process_update_result (subscriptionPtr subscription, const str
 				if (title) {
 					xmlChar *titleStr = xmlNodeListGetString(title->doc, title->xmlChildrenNode, 1);
 					if (titleStr) {
-						node_set_title (node, titleStr);
+						node_set_title (node, (gchar *)titleStr);
 						xmlFree (titleStr);
 					}
 				}
@@ -236,13 +236,12 @@ opml_source_import (nodePtr node)
 {
 	gchar	*filename;
 
-	debug_enter ("opml_source_import");
 
 	/* We only ship an icon for opml, not for other sources */
 	if (g_str_equal (NODE_SOURCE_TYPE (node)->id, "fl_opml"))
 		node->icon = icon_create_from_file ("fl_opml.png");
 
-	debug1 (DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
+	debug (DEBUG_CACHE, "starting import of opml source instance (id=%s)", node->id);
 	filename = opml_source_get_feedlist (node);
 	if (g_file_test (filename, G_FILE_TEST_EXISTS)) {
 		import_OPML_feedlist (filename, node, FALSE, TRUE);
@@ -256,7 +255,6 @@ opml_source_import (nodePtr node)
 
 	node->subscription->type = &opmlSubscriptionType;
 
-	debug_exit ("opml_source_import");
 }
 
 void
@@ -264,7 +262,6 @@ opml_source_export (nodePtr node)
 {
 	gchar		*filename;
 
-	debug_enter ("opml_source_export");
 
 	/* Although the OPML structure won't change, it needs to
 	   be saved so that the feed ids are saved to disk after
@@ -276,9 +273,8 @@ opml_source_export (nodePtr node)
 	export_OPML_feedlist (filename, node, TRUE);
 	g_free (filename);
 
-	debug1 (DEBUG_CACHE, "adding OPML source: title=%s", node_get_title(node));
+	debug (DEBUG_CACHE, "adding OPML source: title=%s", node_get_title(node));
 
-	debug_exit  ("opml_source_export");
 }
 
 void

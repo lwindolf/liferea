@@ -44,6 +44,10 @@ typedef struct GoogleReaderAction {
 	/**
 	 * A MANDATORY feed url to containing the item, or the url of the
 	 * subscription to edit.
+	 *
+	 * Note: google_reader_api_edit_remove_subscription sets feedUrl to the
+	 * streamId of the item, e.g. feed/<url> in the case of Reedah or
+	 * feed/<objectId> in the case of TheOldReader.
 	 */
 	gchar* feedUrl;
 
@@ -65,6 +69,11 @@ typedef struct GoogleReaderAction {
 	 * A callback function on completion of the edit.
 	 */
 	void (*callback) (nodeSourcePtr source, struct GoogleReaderAction* edit, gboolean success);
+
+	/**
+	 * Get the streamId for the given node.
+	 */
+	gchar* (*get_stream_id_for_node) (nodePtr node);
 
 	/**
 	 * The type of this GoogleReaderAction.
@@ -90,7 +99,8 @@ enum {
 	EDIT_ACTION_MARK_UNSTARRED,
 	EDIT_ACTION_ADD_SUBSCRIPTION,
 	EDIT_ACTION_REMOVE_SUBSCRIPTION,
-	EDIT_ACTION_ADD_LABEL
+	EDIT_ACTION_ADD_LABEL,
+	EDIT_ACTION_REMOVE_LABEL
 };
 
 typedef struct GoogleReaderAction* editPtr;
@@ -150,21 +160,21 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 		return; /* probably got deleted before this callback */
 	}
 
-	// FIXME: suboptimal check as some results are text, some XML, some JSON...
-	if (!g_str_equal (result->data, "OK")) {
-		if (result->data == NULL) {
-			failed = TRUE;
-		} else {
-			if (node->source->type->api.json) {
+	if (result->data == NULL) {
+		failed = TRUE;
+	} else {
+		// FIXME: suboptimal check as some results are text, some XML, some JSON...
+		if (!g_str_equal (result->data, "OK")) {
+			if (node->source->api.json) {
 				JsonParser *parser = json_parser_new ();
 
 				if (!json_parser_load_from_data (parser, result->data, -1, NULL)) {
-					debug0 (DEBUG_UPDATE, "Failed to parse JSON update");
+					debug (DEBUG_UPDATE, "Failed to parse JSON update");
 					failed = TRUE;
 				} else {
 					const gchar *error = json_get_string (json_parser_get_root (parser), "error");
 					if (error) {
-						debug1 (DEBUG_UPDATE, "Request failed with error '%s'", error);
+						debug (DEBUG_UPDATE, "Request failed with error '%s'", error);
 						failed = TRUE;
 					}
 				}
@@ -185,7 +195,7 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 	google_reader_api_action_free (action);
 
 	if (failed) {
-		debug1 (DEBUG_UPDATE, "The edit action failed with result: %s\n", result->data);
+		debug (DEBUG_UPDATE, "The edit action failed with result: %s", result->data);
 		return; /** @todo start a timer for next processing */
 	}
 
@@ -199,29 +209,33 @@ google_reader_api_edit_action_complete (const struct updateResult* const result,
 static void
 google_reader_api_add_subscription (GoogleReaderActionPtr action, UpdateRequest *request, const gchar* token)
 {
-	update_request_set_source (request, action->source->type->api.add_subscription);
+	update_request_set_source (request, action->source->api.add_subscription);
 	gchar *s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
-	request->postdata = g_strdup_printf (action->source->type->api.add_subscription_post, s_escaped, token);
+	request->postdata = g_strdup_printf (action->source->api.add_subscription_post, s_escaped, token);
 	g_free (s_escaped);
 }
 
 static void
 google_reader_api_remove_subscription (GoogleReaderActionPtr action, UpdateRequest *request, const gchar* token)
 {
-	update_request_set_source (request, action->source->type->api.remove_subscription);
+	update_request_set_source (request, action->source->api.remove_subscription);
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	g_assert (!request->postdata);
-	request->postdata = g_strdup_printf (action->source->type->api.remove_subscription_post, s_escaped, token);
+	request->postdata = g_strdup_printf (action->source->api.remove_subscription_post, s_escaped, token);
 	g_free (s_escaped);
 }
 
 static void
-google_reader_api_add_label (GoogleReaderActionPtr action, UpdateRequest *request, const gchar* token)
+google_reader_api_edit_label (GoogleReaderActionPtr action, UpdateRequest *request, const gchar* token)
 {
-	update_request_set_source (request, action->source->type->api.edit_add_label);
+	update_request_set_source (request, action->source->api.edit_label);
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
 	gchar *a_escaped = g_uri_escape_string (action->label, NULL, TRUE);
-	request->postdata = g_strdup_printf (action->source->type->api.edit_add_label_post, s_escaped, a_escaped, token);
+	if (action->actionType == EDIT_ACTION_ADD_LABEL) {
+		request->postdata = g_strdup_printf (action->source->api.edit_add_label_post, s_escaped, a_escaped, token);
+	} else {
+		request->postdata = g_strdup_printf (action->source->api.edit_remove_label_post, s_escaped, a_escaped, token);
+	}
 	g_free (a_escaped);
 	g_free (s_escaped);
 }
@@ -229,7 +243,7 @@ google_reader_api_add_label (GoogleReaderActionPtr action, UpdateRequest *reques
 static void
 google_reader_api_edit_tag (GoogleReaderActionPtr action, UpdateRequest *request, const gchar *token)
 {
-	update_request_set_source (request, action->source->type->api.edit_tag);
+	update_request_set_source (request, action->source->api.edit_tag);
 
 	const gchar* prefix = "feed";
 	gchar* s_escaped = g_uri_escape_string (action->feedUrl, NULL, TRUE);
@@ -255,25 +269,25 @@ google_reader_api_edit_tag (GoogleReaderActionPtr action, UpdateRequest *request
 	if (action->actionType == EDIT_ACTION_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_KEPT_UNREAD, NULL, TRUE);
 		gchar *r_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_ar_tag_post, i_escaped, prefix, s_escaped, a_escaped, r_escaped, token);
+		postdata = g_strdup_printf (action->source->api.edit_tag_ar_tag_post, i_escaped, prefix, s_escaped, a_escaped, r_escaped, token);
 		g_free (r_escaped);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_READ) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_READ, NULL, TRUE);
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_add_post, i_escaped, prefix, s_escaped, a_escaped, token);
+		postdata = g_strdup_printf (action->source->api.edit_tag_add_post, i_escaped, prefix, s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_TRACKING_MARK_UNREAD) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_TRACKING_KEPT_UNREAD, NULL, TRUE);
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_add_post, i_escaped, prefix, s_escaped, a_escaped, token);
+		postdata = g_strdup_printf (action->source->api.edit_tag_add_post, i_escaped, prefix, s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_STARRED) {
 		a_escaped = g_uri_escape_string (GOOGLE_READER_TAG_STARRED, NULL, TRUE) ;
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_add_post, i_escaped, prefix,
+		postdata = g_strdup_printf (action->source->api.edit_tag_add_post, i_escaped, prefix,
 			s_escaped, a_escaped, token);
 	}
 	else if (action->actionType == EDIT_ACTION_MARK_UNSTARRED) {
 		gchar* r_escaped = g_uri_escape_string(GOOGLE_READER_TAG_STARRED, NULL, TRUE);
-		postdata = g_strdup_printf (action->source->type->api.edit_tag_remove_post, i_escaped, prefix,
+		postdata = g_strdup_printf (action->source->api.edit_tag_remove_post, i_escaped, prefix,
 			s_escaped, r_escaped, token);
 	}
 
@@ -329,10 +343,11 @@ google_reader_api_edit_token_cb (const struct updateResult * const result, gpoin
 		google_reader_api_add_subscription (action, request, token);
 	else if (action->actionType == EDIT_ACTION_REMOVE_SUBSCRIPTION)
 		google_reader_api_remove_subscription (action, request, token);
-	else if (action->actionType == EDIT_ACTION_ADD_LABEL)
-		google_reader_api_add_label (action, request, token);
+	else if (action->actionType == EDIT_ACTION_ADD_LABEL ||
+		 action->actionType == EDIT_ACTION_REMOVE_LABEL)
+		google_reader_api_edit_label (action, request, token);
 
-	debug1 (DEBUG_UPDATE, "google_reader_api: postdata [%s]", request->postdata);
+	debug (DEBUG_UPDATE, "google_reader_api: postdata [%s]", request->postdata);
 	update_execute_request (node->source, request, google_reader_api_edit_action_complete, google_reader_api_action_context_new(node->source, action), FEED_REQ_NO_FEED);
 
 	action = g_queue_pop_head (node->source->actionQueue);
@@ -354,7 +369,7 @@ google_reader_api_edit_process (nodeSourcePtr source)
  	* google_reader_api_edit_token_cb
 	 */
 	request = update_request_new (
-		source->type->api.token,
+		source->api.token,
 		source->root->subscription->updateState,
 		source->root->subscription->updateOptions
 	);
@@ -393,7 +408,7 @@ static void
 update_read_state_callback (nodeSourcePtr source, GoogleReaderActionPtr action, gboolean success)
 {
 	if (!success)
-		debug0 (DEBUG_UPDATE, "Failed to change item state!");
+		debug (DEBUG_UPDATE, "Failed to change item state!");
 }
 
 void
@@ -424,7 +439,7 @@ static void
 update_starred_state_callback(nodeSourcePtr source, GoogleReaderActionPtr action, gboolean success)
 {
 	if (!success)
-		debug0 (DEBUG_UPDATE, "Failed to change item state!");
+		debug (DEBUG_UPDATE, "Failed to change item state!");
 }
 
 void
@@ -479,11 +494,11 @@ google_reader_api_edit_add_subscription_cb (nodeSourcePtr source, GoogleReaderAc
 			JsonParser *parser = json_parser_new ();
 
 			if (!json_parser_load_from_data (parser, action->response, -1, NULL)) {
-				debug0 (DEBUG_UPDATE, "Failed to parse JSON response");
+				debug (DEBUG_UPDATE, "Failed to parse JSON response");
 			} else {
 				id = json_get_string (json_parser_get_root (parser), "streamId");
 				if (!id)
-					debug0 (DEBUG_UPDATE, "ERROR: Found no 'streamId' in response. Cannot set folder label!");
+					debug (DEBUG_UPDATE, "ERROR: Found no 'streamId' in response. Cannot set folder label!");
 			}
 
 			if (id) {
@@ -498,7 +513,7 @@ google_reader_api_edit_add_subscription_cb (nodeSourcePtr source, GoogleReaderAc
 			google_reader_api_edit_add_subscription_complete (source, action);
 		}
 	} else {
-		debug0 (DEBUG_UPDATE, "Failed to subscribe");
+		debug (DEBUG_UPDATE, "Failed to subscribe");
 		// FIXME: real error handling (dialog...)
 	}
 }
@@ -525,21 +540,41 @@ google_reader_api_edit_remove_callback (nodeSourcePtr source, GoogleReaderAction
 		GSList* cur = source->root->children ;
 		for(; cur; cur = g_slist_next (cur))  {
 			nodePtr node = (nodePtr) cur->data ;
-			if (g_str_equal (node->subscription->source, action->feedUrl)) {
+			g_autofree gchar *stream_id = action->get_stream_id_for_node (node);
+			if (g_strcmp0 (stream_id, action->feedUrl) == 0) {
 				feedlist_node_removed (node);
 				return;
 			}
 		}
 	} else
-		debug0 (DEBUG_UPDATE, "Failed to remove subscription");
+		debug (DEBUG_UPDATE, "Failed to remove subscription");
 }
 
 void
-google_reader_api_edit_remove_subscription (nodeSourcePtr source, const gchar* feedUrl)
+google_reader_api_edit_remove_subscription (nodeSourcePtr source, const gchar* feedUrl, gchar* (*get_stream_id_for_node) (nodePtr node))
 {
 	GoogleReaderActionPtr action = google_reader_api_action_new (EDIT_ACTION_REMOVE_SUBSCRIPTION);
 	action->feedUrl = g_strdup (feedUrl);
 	action->callback = google_reader_api_edit_remove_callback;
+	action->get_stream_id_for_node = get_stream_id_for_node;
+	google_reader_api_edit_push (source, action, TRUE);
+}
+
+void
+google_reader_api_edit_add_label (nodeSourcePtr source, const gchar* feedUrl, const gchar* label)
+{
+	GoogleReaderActionPtr action = google_reader_api_action_new (EDIT_ACTION_ADD_LABEL);
+	action->feedUrl = g_strdup (feedUrl);
+	action->label = g_strdup (label);
+	google_reader_api_edit_push (source, action, TRUE);
+}
+
+void
+google_reader_api_edit_remove_label (nodeSourcePtr source, const gchar* feedUrl, const gchar* label)
+{
+	GoogleReaderActionPtr action = google_reader_api_action_new (EDIT_ACTION_REMOVE_LABEL);
+	action->feedUrl = g_strdup (feedUrl);
+	action->label = g_strdup (label);
 	google_reader_api_edit_push (source, action, TRUE);
 }
 

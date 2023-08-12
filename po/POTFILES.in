@@ -2,6 +2,8 @@
 # List of source files containing translatable strings.
 net.sourceforge.liferea.appdata.xml.in
 net.sourceforge.liferea.desktop.in
+plugins/add-bookmark-site.ui
+plugins/add-bookmark-site.py
 plugins/getfocus.py
 plugins/headerbar.py
 plugins/libnotify.py
@@ -36,8 +38,13 @@ src/fl_sources/default_source.c
 src/fl_sources/default_source.h
 src/fl_sources/dummy_source.c
 src/fl_sources/dummy_source.h
+src/fl_sources/google_reader_api.c
+src/fl_sources/google_reader_api.h
 src/fl_sources/google_source.c
 src/fl_sources/google_source.h
+src/fl_sources/google_source_feed.c
+src/fl_sources/google_source_feed_list.c
+src/fl_sources/google_source_feed_list.h
 src/fl_sources/node_source.c
 src/fl_sources/node_source.h
 src/fl_sources/opml_source.c
@@ -78,6 +85,8 @@ src/metadata.h
 src/migrate.c
 src/net.c
 src/net.h
+src/newsbin.c
+src/newsbin.h
 src/node.c
 src/node.h
 src/node_type.c
@@ -131,10 +140,10 @@ src/ui/item_list_view.c
 src/ui/item_list_view.h
 src/ui/itemview.c
 src/ui/itemview.h
+src/ui/liferea_browser.c
+src/ui/liferea_browser.h
 src/ui/liferea_dialog.c
 src/ui/liferea_dialog.h
-src/ui/liferea_htmlview.c
-src/ui/liferea_htmlview.h
 src/ui/liferea_shell.c
 src/ui/liferea_shell.c
 src/ui/liferea_shell.h
@@ -165,14 +174,17 @@ src/vfolder.h
 src/vfolder_loader.c
 src/vfolder_loader.h
 src/webkit/liferea_web_view.c
+src/webkit/liferea_web_view.h
 src/webkit/web_extension/liferea_web_extension.c
 src/webkit/web_extension/web_extension_main.c
 src/webkit/webkit.c
+src/webkit/webkit.h
 src/xml.c
 src/xml.h
 [type: gettext/glade]glade/about.ui
 [type: gettext/glade]glade/auth.ui
 [type: gettext/glade]glade/enclosure_handler.ui
+[type: gettext/glade]glade/google_source.ui
 [type: gettext/glade]glade/liferea_menu.ui
 [type: gettext/glade]glade/liferea_toolbar.ui
 [type: gettext/glade]glade/mainwindow.ui

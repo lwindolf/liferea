@@ -2,16 +2,15 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS = parse_html favicon parse_date parse_xml
+TEST_PROGS     = parse_html favicon parse_date parse_rss parse_xml social
+MEMCHECK_PROGS = parse_html favicon parse_date social
 
 test: $(TEST_PROGS)
 	echo $(TEST_PROGS) |\
 	sed "s/^/.\//;s/ / \&\& .\//g" |\
 	xargs -I{} sh -c "{}"
 	./test_a11y.sh
-
-memcheck: $(TEST_PROGS)
-	./memcheck.sh $(TEST_PROGS)
+	./memcheck.sh $(MEMCHECK_PROGS)
 
 .PHONY: test
 
@@ -85,17 +84,19 @@ clean-local: clean-local-check
 clean-local-check:
 	-rm *.Po
 
-favicon_SOURCES = favicon.c
 favicon_CFLAGS = $(AM_CPPFLAGS)
 
-parse_html_SOURCES = parse_html.c
 parse_html_CFLAGS = $(AM_CPPFLAGS)
 parse_html_LDADD = $(favicon_LDADD)
 
-parse_date_SOURCES = parse_date.c
 parse_date_CFLAGS = $(AM_CPPFLAGS)
 parse_date_LDADD = $(favicon_LDADD)
 
-parse_xml_SOURCES = parse_xml.c
+parse_rss_CFLAGS = $(AM_CPPFLAGS)
+parse_rss_LDADD = $(favicon_LDADD)
+
 parse_xml_CFLAGS = $(AM_CPPFLAGS)
 parse_xml_LDADD = $(favicon_LDADD)
+
+social_CFLAGS = $(AM_CPPFLAGS)
+social_LDADD = $(favicon_LDADD)

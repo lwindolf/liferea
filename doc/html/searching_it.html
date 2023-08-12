@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Cercare le Notizie</title>
+  <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="reference.css">
+</head>
+<body>
+
+	<header>
+  <nav>
+	<table class="fullwidth">
+	   <tr>
+	      <td class="back left"><a rel="prev" href="preferences_it.html">Precedente</a></td>
+	      <td class="home center"><h1>Cercare le Notizie e Cartelle di Ricerca</h1></td>
+	      <td class="next right"><a rel="next" href="enclosures_it.html">Successiva</a></td>
+	   </tr>
+	</table>
+
+	</nav>
+  </header>
+
+	<main>
+	<h4>Cercare nei Notiziari</h4>
+
+	<p>
+	Liferea supporta la ricerca semplice insensibile alle maiuscole nei contenuti
+	dell'oggetto e nei titoli di tutti i tuoi abbonamenti.
+	</p>
+	<p>
+	Per aprire le finestra di ricerca clicca il pulsante di ricerca nella barra
+	degli strumenti.
+	Inserisci la stringa di testo che vuoi trovare e clicca il pulsante "Trova".
+	Qualsiasi oggetto contenente la stringa nel titolo o nel contenuto
+	dovrebbe apparire nella lista di oggetti risultante. Inoltre la
+	vista del contenuto dell'oggetto ti mostrerà il numero di corrispondenze.
+	</p>
+
+	<!-- Nota del traduttore: l'originale afferma che si tratta di "case sensitive
+	text searching", ma nella pratica è l'opposto. Le maiuscole non contano. -->
+
+	<p align="center">
+	<img src="help_search_1.6.0.png">
+	</p>
+
+	<h4>Ricerche Permanenti con le Cartelle di Ricerca</h4>
+
+	<p>
+	Se desideri avere ricerche permanenti (es. tutti gli oggetti che contengono
+	il termine "XML") puoi creare una cartella di ricerca che sarà aggiunta al
+	tuo elenco dei notiziari e contiene tutti gli oggetti che corrispondono a
+	una certa regola di ricerca.
+	Per farlo inserisci il tuo termine nella casella di ricerca e clicca
+	il pulsante trova. Dopo che i risultati sono apparsi, clicca il pulsante
+	"Cartella di Ricerca" per creare una cartella di ricerca a partire dai
+	risultati della ricerca. A questo punto una cartella di ricerca dovrebbe
+	apparire nel tuo elenco dei notiziari. Se lo desideri puoi cambiare il
+	titolo delle cartelle di ricerca o le loro regole di ricerca aprendo
+	la finestra delle proprietà dal menu "Notiziario" o dal menu contestuale nella
+	lista degli abbonamenti.
+	<!-- FIXME add search folder icon -->
+	</p>
+
+	<p align="center">
+	<img src="help_vfolder_1.6.0.png">
+	</p>
+
+	<p>
+	La tabella seguente è una lista di tutte le possibili regole di ricerca e
+	dei loro specifici significati.
+	</p>
+
+	<table border="1" cellpadding="3" style="border:1px solid black;border-collapse:collapse">
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb" width="50%">
+	<b>Articolo contiene</b>
+	</td><td>
+	<b>Aggiunge</b> alla cartella di ricerca ogni oggetto il cui titolo o contenuto corrisponde alla stringa insensibile alle maiuscole data.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Articolo non contiene</b>
+	</td><td>
+	<b>Rimuove</b> dalla cartella di ricerca ogni oggetto il cui titolo o contenuto corrisponde alla stringa insensibile alle maiuscole data.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb">
+	<b>Titolo dell'articolo contiene</b>
+	</td><td>
+	<b>Aggiunge</b> alla cartella di ricerca ogni oggetto il cui titolo corrisponde alla stringa insensibile alle maiuscole data.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Titolo dell'articolo non contiene</b>
+	</td><td>
+	<b>Rimuove</b> dalla cartella di ricerca ogni oggetto il cui titolo corrisponde alla stringa insensibile alle maiuscole data.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb">
+	<b>Corpo dell'articolo contiene</b>
+	</td><td>
+	<b>Aggiunge</b> alla cartella di ricerca ogni oggetto il cui contenuto corrisponde alla stringa insensibile alle maiuscole data.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Corpo dell'articolo non contiene</b>
+	</td><td>
+	<b>Rimuove</b> dalla cartella di ricerca ogni oggetto il cui contenuto corrisponde alla stringa insensibile alle maiuscole data.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb">
+	<b>Titolo del notiziario contiene</b>
+	</td><td>
+	<b>Aggiunge</b> alla cartella di ricerca ogni oggetto il cui titolo del notiziario padre corrisponde alla stringa insensibile alle maiuscole data.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Titolo del notiziario non contiene</b>
+	</td><td>
+	<b>Rimuove</b> dalla cartella di ricerca ogni oggetto il cui titolo del notiziario padre corrisponde alla stringa insensibile alle maiuscole data.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb">
+	<b>Stato di lettura è non letto</b>
+	</td><td>
+	<b>Aggiunge</b> ogni oggetto non letto alla cartella di ricerca.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Stato di lettura è letto</b>
+	</td><td>
+	<b>Rimuove</b> ogni oggetto non letto dalla cartella di ricerca.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb">
+	<b>Stato del contrassegno è contrassegnato</b>
+	</td><td>
+	<b>Aggiunge</b> ogni oggetto contrassegnato alla cartella di ricerca.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Stato del contrassegno è non contrassegnato</b>
+	</td><td>
+	<b>Aggiunge</b> ogni oggetto privo di contrassegno alla cartella di ricerca.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#bfb">
+	<b>Podcast incluso</b>
+	</td><td>
+	<b>Aggiunge</b> alla cartella di ricerca tutti gli oggetti che contengono un allegato.
+	</td></tr>
+	<!-- ----------------------------------------- -->
+	<tr><td style="background:#fbb">
+	<b>Podcast non incluso</b>
+	</td><td>
+	<b>Rimuove</b> dalla cartella di ricerca tutti gli oggetti che contengono un allegato.
+	</td></tr>
+	</table>
+
+	<!-- Nota del traduttore: la tabella originale è incompleta e tale
+	     incompletezza è stata mantenuta nella traduzione, perché le opzioni
+			 mancanti sono molto intuitive. -->
+
+	<p>
+	Nota che l'ordine delle regole è irrilevante. Una regola di aggiunta
+	posta dopo una regola di rimozione che non corrisponde ad un oggetto da
+	rimuovere a causa della regola di rimozione non aggiungerà tale oggetto!
+	</p>
+
+	</main>
+
+	<footer>
+  <nav>
+
+	<table class="fullwidth">
+	   <tr>
+	      <td class="back left"><a rel="prev" href="preferences_it.html">Precedente</a></td>
+	      <td class="home center"><a href="topics_it.html">Indice</a></td>
+	      <td class="next right"><a rel="next" href="enclosures_it.html">Successiva</a></td>
+	   </tr>
+	</table>
+	</nav>
+  </footer>
+</body>
+</html>

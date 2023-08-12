@@ -2,7 +2,7 @@
  * @file atom10.c  Atom 1.0 Parser
  *
  * Copyright (C) 2005-2006 Nathan Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "atom10.h"
 
 #include <string.h>
+#include <strings.h>
 
 #include "common.h"
 #include "date.h"
@@ -283,7 +284,7 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 
 		if (!xmlHasNsProp (cur, BAD_CAST"rel", NULL) || !relation || g_str_equal (relation, BAD_CAST"alternate")) {
 			alternate = g_strdup (url);
-		} else if (g_str_equal (relation, "self")) {
+		} else if (g_str_equal (relation, "self") && type && g_str_equal (type, "text/html")) {
 			alternate = g_strdup (url);
 		} else if (g_str_equal (relation, "replies")) {
 			if (!type || g_str_equal (type, BAD_CAST"application/atom+xml")) {
@@ -419,7 +420,7 @@ atom10_parse_entry_published (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct ato
 
 	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	if (datestr) {
-		ctxt->item->time = date_parse_ISO8601 (datestr);
+		item_set_time (ctxt->item, date_parse_ISO8601 (datestr));
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "pubDate", datestr);
 		g_free (datestr);
 	}
@@ -472,7 +473,7 @@ atom10_parse_entry_updated (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom1
 	datestr = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 	/* if pubDate is already set, don't overwrite it */
 	if (datestr && !metadata_list_get(ctxt->item->metadata, "pubDate")) {
-		ctxt->item->time = date_parse_ISO8601 (datestr);
+		item_set_time (ctxt->item, date_parse_ISO8601 (datestr));
 		ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, "contentUpdateDate", datestr);
 	}
 
@@ -529,14 +530,14 @@ atom10_parse_entry (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		/* check namespace of this tag */
 		if (!cur->ns->href) {
 			/* This is an invalid feed... no idea what to do with the current element */
-			debug1 (DEBUG_PARSING, "element with no namespace found in atom feed (%s)!", cur->name);
+			debug (DEBUG_PARSING, "element with no namespace found in atom feed (%s)!", cur->name);
 			cur = cur->next;
 			continue;
 		}
 
 
 		if (xmlStrcmp(cur->ns->href, ATOM10_NS)) {
-			debug1(DEBUG_PARSING, "unknown namespace %s found!", cur->ns->href);
+			debug (DEBUG_PARSING, "unknown namespace %s found!", cur->ns->href);
 			cur = cur->next;
 			continue;
 		}
@@ -545,7 +546,7 @@ atom10_parse_entry (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		if (func) {
 			(*func) (cur, ctxt, NULL);
 		} else {
-			debug1 (DEBUG_PARSING, "unknown entry element \"%s\" found", cur->name);
+			debug (DEBUG_PARSING, "unknown entry element \"%s\" found", cur->name);
 		}
 
 		cur = cur->next;
@@ -634,7 +635,7 @@ atom10_parse_feed_icon (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10Par
 	icon_uri = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 
 	if (icon_uri) {
-		debug1 (DEBUG_PARSING, "icon URI found in atom feed: %s", icon_uri);
+		debug (DEBUG_PARSING, "icon URI found in atom feed: %s", icon_uri);
 		ctxt->subscription->metadata = metadata_list_append (ctxt->subscription->metadata,
 								     "icon", icon_uri);
 	}
@@ -811,13 +812,13 @@ atom10_parse_feed (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 			/* check namespace of this tag */
 			if (!cur->ns->href) {
 				/* This is an invalid feed... no idea what to do with the current element */
-				debug1 (DEBUG_PARSING, "element with no namespace found in atom feed (%s)!", cur->name);
+				debug (DEBUG_PARSING, "element with no namespace found in atom feed (%s)!", cur->name);
 				cur = cur->next;
 				continue;
 			}
 
 			if (xmlStrcmp (cur->ns->href, ATOM10_NS)) {
-				debug1 (DEBUG_PARSING, "unknown namespace %s found in atom feed!", cur->ns->href);
+				debug (DEBUG_PARSING, "unknown namespace %s found in atom feed!", cur->ns->href);
 				cur = cur->next;
 				continue;
 			}

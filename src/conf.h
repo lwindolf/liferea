@@ -33,6 +33,7 @@
 #define BROWSER_COMMAND			"browser"
 
 #define DEFAULT_VIEW_MODE		"default-view-mode"
+#define DEFER_DELETE_MODE               "defer-delete-mode"
 
 #define FIXED_DATE_FORMAT               "fixed-date-format"
 
@@ -84,6 +85,7 @@
 #define PROXY_USER			"proxy-authentication-user"
 #define PROXY_PASSWD			"proxy-authentication-password"
 #define DO_NOT_TRACK			"do-not-track"
+#define INTRANET_CONNECTIVITY		"intranet-connectivity"
 
 /* initializing methods */
 void	conf_init (void);
@@ -95,6 +97,17 @@ void	conf_deinit (void);
 #define conf_get_str_value(key, value) conf_get_str_value_from_schema (NULL, key, value)
 #define conf_get_strv_value(key, value) conf_get_strv_value_from_schema (NULL, key, value)
 #define conf_get_int_value(key, value) conf_get_int_value_from_schema (NULL, key, value)
+
+
+/**
+ * Returns true if the key is defined in the schema for the given gsettings.
+ *
+ * @param gsettings	gsettings schema to use
+ * @param key	the configuration key
+ *
+ * @returns TRUE if the configuration key is defined
+ */
+gboolean conf_schema_has_key (GSettings *gsettings, const gchar *key);
 
 /**
  * Retrieves the value of the given boolean configuration key.
@@ -186,12 +199,18 @@ gchar * conf_get_toolbar_style (void);
 /**
  * Get the current system default font from desktop schema
  *
- * @param key	the configuration key
  * @param value the value, if the function returned FALSE it's always 0
  *
  * @returns TRUE if the configuration key was found
 */
-gboolean conf_get_default_font_from_schema (const gchar *key, gchar **value);
+gboolean conf_get_default_font (gchar **value);
+
+/**
+ * Find out wether a dark theme preference is active right now.
+ *
+ * @returns TRUE if a dark theme preference is active
+ */
+gboolean conf_get_dark_theme (void);
 
 /**
  * Connect to a signal in the default GSettings object

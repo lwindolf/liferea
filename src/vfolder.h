@@ -1,7 +1,7 @@
 /**
  * @file vfolder.h  search folder node type
  *
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,10 +39,11 @@
 typedef struct vfolder {
 	struct node	*node;		/**< the feed list node of this search folder */
 
-	itemSetPtr	itemset;    /**< the itemset with the rules and matching items */
+	itemSetPtr	itemset;	/**< the itemset with the rules and matching items */
+	gpointer	loader;		/**< vfolder loader (if currently rebuilding, otherwise NULL) */
 
-   gboolean    unreadOnly; /**< TRUE if only unread items are to be shown in the item list */
-	gboolean    reloading;	/**< TRUE if the search folder is in async reloading */
+	gboolean	unreadOnly;	/**< TRUE if only unread items are to be shown in the item list */
+	gboolean	reloading;	/**< TRUE if the search folder is in async reloading */
 	gulong		loadOffset;	/**< when in reloading: current offset */
 } *vfolderPtr;
 

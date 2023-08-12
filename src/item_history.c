@@ -28,7 +28,7 @@
 
 static struct itemHistory {
 	GList	*items;		/**< FIFO list of all items viewed */
-	GList	*current;	/**< the currently list element */
+	GList	*current;	/**< the current list element */
 	guint	lastId;		/**< Avoid duplicate add */
 } *itemHistory = NULL;
 
@@ -66,8 +66,8 @@ item_history_get_next (void)
 		return NULL;
 
 	while (!item && item_history_has_next ()) {
-		itemHistory->current = g_list_next (itemHistory->current);
-		item = item_load (GPOINTER_TO_UINT (itemHistory->current->data));
+		if ((itemHistory->current = g_list_next (itemHistory->current)))
+			item = item_load (GPOINTER_TO_UINT (itemHistory->current->data));
 	}
 
 	liferea_shell_update_history_actions ();
@@ -84,8 +84,8 @@ item_history_get_previous (void)
 		return NULL;
 
 	while (!item && item_history_has_previous ()) {
-		itemHistory->current = g_list_previous (itemHistory->current);
-		item = item_load (GPOINTER_TO_UINT (itemHistory->current->data));
+		if ((itemHistory->current = g_list_previous (itemHistory->current)))
+			item = item_load (GPOINTER_TO_UINT (itemHistory->current->data));
 	}
 
 	liferea_shell_update_history_actions ();

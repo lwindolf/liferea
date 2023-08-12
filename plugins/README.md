@@ -1,6 +1,6 @@
 ## Contribute to Plugins!
 
-Plugins are usually in Python and it is easier than ever to change
+Plugins are usually in Python3 and it is easier than ever to change
 core behaviours of Liferea using plugins!
 
 To get an idea how simple it is to modify or extend Liferea with 

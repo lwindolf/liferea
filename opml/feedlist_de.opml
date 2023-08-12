@@ -7,32 +7,32 @@
 	<outline text="Beispiel-Abonnements">
 		<outline text="Deutsch">
 			<outline text="News">
-				<outline text="Tagesschau" htmlUrl="http://www.tagesschau.de/" xmlUrl="http://www.tagesschau.de/newsticker.rdf" />
+				<outline text="Tagesschau" htmlUrl="https://www.tagesschau.de/" xmlUrl="https://www.tagesschau.de/newsticker.rdf" />
 				<outline text="Netzeitung" htmlUrl="http://www.netzzeitung.de" xmlUrl="http://www.netzeitung.de/export/news/rss/titelseite.xml" />
-				<outline text="Heise Online" htmlUrl="http://www.heise.de" xmlUrl="http://www.heise.de/newsticker/heise-atom.xml" />
-				<outline text="golem.de" htmlUrl="http://golem.de" xmlUrl="http://www.golem.de/rss.php?feed=ATOM1.0" />
+				<outline text="Heise Online" htmlUrl="https://www.heise.de" xmlUrl="https://www.heise.de/newsticker/heise-atom.xml" />
+				<outline text="golem.de" htmlUrl="https://golem.de" xmlUrl="https://www.golem.de/rss.php?feed=ATOM1.0" />
 			</outline>
 			<outline text="Podcasts">
-				<outline text="Chaos Radio" htmlUrl="http://blog.chaosradio.ccc.de/" xmlUrl="http://chaosradio.ccc.de/chaosradio-complete.rss" />
+				<outline text="Chaos Radio" htmlUrl="https://blog.chaosradio.ccc.de/" xmlUrl="https://chaosradio.ccc.de/chaosradio-complete.rss" />
 			</outline>
 		</outline>
  
 		<!-- lets keep this default English block in sync over all feed lists! -->
 		<outline text="International">		<!-- translate this title for localized feed list -->
 			<outline text="News">
-				<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="http://feeds.arstechnica.com/arstechnica/index"/>
-				<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="http://rss.slashdot.org/Slashdot/slashdot" />
-				<outline text="BBC" htmlUrl="http://www.bbc.com/news" xmlUrl="http://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
-				<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feeds/headlines.rss"/>
+				<outline text="Ars Technica" htmlUrl="https://arstechnica.com" xmlUrl="https://feeds.arstechnica.com/arstechnica/index"/>
+				<outline text="Slashdot" htmlUrl="https://slashdot.org"  xmlUrl="https://rss.slashdot.org/Slashdot/slashdotMain" />
+				<outline text="BBC" htmlUrl="https://www.bbc.com/news" xmlUrl="https://feeds.bbci.co.uk/news/rss.xml?edition=int"/>
+				<outline text="Science" htmlUrl="https://www.sciencenews.org" xmlUrl="https://www.sciencenews.org/feed"/>
 			</outline>
 			<outline text="Open Source">		<!-- translate this title for localized feed list -->
-				<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="http://feeds.feedburner.com/LifereaBlog" />
-				<outline text="Planet GNOME" htmlUrl="http://planet.gnome.org/" xmlUrl="http://planet.gnome.org/atom.xml" />	
+				<outline text="Liferea Blog" htmlUrl="https://lzone.de/liferea/blog/" xmlUrl="https://feeds.feedburner.com/LifereaBlog" />
+				<outline text="Planet GNOME" htmlUrl="https://planet.gnome.org/" xmlUrl="https://planet.gnome.org/atom.xml" />	
 			</outline>
 			<outline text="Podcasts &amp; Music">		<!-- translate this title for localized feed list -->
-				<outline text="EscapePod" htmlUrl="http://escapepod.org" xmlUrl="http://escapepod.org/feed/atom/"/>
+				<outline text="EscapePod" htmlUrl="https://escapepod.org" xmlUrl="https://escapepod.org/feed/atom/"/>
 				<outline text="Free Music Archive" htmlUrl="https://freemusicarchive.org" xmlUrl="https://freemusicarchive.org/recent.atom"/>
-				<outline text="Gorilla vs. Bear" htmlUrl="http://www.gorillavsbear.net" xmlUrl="http://www.gorillavsbear.net/category/mp3/feed/"/>
+				<outline text="Gorilla vs. Bear" htmlUrl="https://www.gorillavsbear.net" xmlUrl="https://www.gorillavsbear.net/category/mp3/feed/"/>
 			</outline>
 			<outline text="Comics">
 				<outline text="xkcd" htmlUrl="https://xkcd.com/" xmlUrl="https://xkcd.com/atom.xml"/>

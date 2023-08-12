@@ -77,8 +77,8 @@ typedef struct updateOptions {
 /** defines all state data an updatable object (e.g. a feed) needs */
 typedef struct updateState {
 	glong		lastModified;		/**< Last modified string as sent by the server */
-	guint64  	lastPoll;		/**< time at which the feed was last updated */
-	guint64 	lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
+	gint64  	lastPoll;		/**< time at which the feed was last updated */
+	gint64 		lastFaviconPoll;	/**< time at which the feeds favicon was last updated */
 	gchar		*cookies;		/**< cookies to be used */
 	gchar		*etag;			/**< ETag sent by the server */
 	gint		maxAgeMinutes;		/**< default update interval, greatest value sourced from HTTP and XML */
@@ -103,6 +103,7 @@ struct _UpdateRequest {
 	updateOptionsPtr options;	/**< Update options for the request */
 	gchar		*filtercmd;	/**< Command will filter output of URL */
 	updateStatePtr	updateState;	/**< Update state of the requested object (etags, last modified...) */
+	gboolean	allowCommands;	/**< Allow this requests to run commands */
 };
 
 /** structure to store results of the processing of an update request */
@@ -119,6 +120,17 @@ typedef struct updateResult {
 	updateStatePtr	updateState;	/**< New update state of the requested object (etags, last modified...) */
 } *updateResultPtr;
 
+/** structure to store state fo running command feeds */
+typedef struct updateCommandState {
+	GPid		pid;		/**< child PID */
+	guint		timeout_id;	/**< glib event source id for the timeout event */
+	guint		io_watch_id;	/**< glib event source id for stdout */
+	guint		child_watch_id;	/**< glib event source id for child termination */
+	gint		fd;		/**< fd for child stdout */
+	GIOChannel	*stdout_ch;	/**< child stdout as a channel */
+} updateCommandState;
+
+
 /** structure describing an HTTP update job */
 typedef struct updateJob {
 	UpdateRequest		*request;
@@ -128,6 +140,7 @@ typedef struct updateJob {
 	gpointer		user_data;	/**< result processing user data */
 	updateFlags		flags;		/**< request and result processing flags */
 	gint			state;		/**< State of the job (enum request_state) */
+	updateCommandState	cmd;		/**< values for command feeds */
 } *updateJobPtr;
 
 /**
@@ -215,6 +228,21 @@ void update_request_set_source (UpdateRequest *request, const gchar* source);
  * @param authValue      the authorization header value
  */
 void update_request_set_auth_value (UpdateRequest *request, const gchar* authValue);
+
+/**
+ * Allows *this* request to run local commands.
+ *
+ * At first it may look this flag should be in updateOptions, but we can
+ * take a safer path: feed commands are restricted to a few use cases while
+ * options are propagated to downstream requests (feed enrichment, comments,
+ * etc.), so it is a good idea to prevent these from running commands in the
+ * local system via tricky URLs without needing to validate these options
+ * everywhere (which is error-prone).
+ *
+ * @param request      the update request
+ * @param can_run      TRUE if the request can run commands, FALSE otherwise.
+ */
+void update_request_allow_commands (UpdateRequest *request, gboolean allowCommands);
 
 /**
  * Creates a new update result for the given update request.

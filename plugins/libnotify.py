@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import gettext
-import time
 import gi
 gi.require_version('Notify', '0.7')
 from gi.repository import GObject, Liferea, Notify
@@ -41,29 +40,27 @@ class LibnotifyPlugin(GObject.Object, Liferea.ShellActivatable):
     notification = None
     notification_title = _("Feed Updates")
     notification_body = ""
-    notification_icon = "liferea"
-    timestamp = None
+    notification_icon = "net.sourceforge.liferea"
     _handler_id = None
 
     def do_activate(self):
-        self.timestamp = 0
         Notify.init('Liferea')
         self._handler_id = self.shell.props.feed_list.connect("node-updated", self.on_node_updated)
         self.notification = Notify.Notification.new(self.notification_title, self.notification_body, self.notification_icon)
+        self.notification.connect("closed", self.on_closed)
 
     def do_deactivate(self):
         Notify.uninit()
         self.shell.props.feed_list.disconnect(self._handler_id)
 
     def on_node_updated(self, widget, node_title):
-        new_timestamp = time.time()
-
-        # Only make a new notification every 10 seconds
-        if new_timestamp > self.timestamp + 10:
-            self.notification_body = node_title
-            # Update the timestamp
-            self.timestamp = new_timestamp
-        else:
+        # Update the existing notification if it hasn't been closed yet
+        if self.notification_body:
             self.notification_body += "\n" + node_title
+        else:
+            self.notification_body = node_title
         self.notification.update(self.notification_title, self.notification_body, self.notification_icon)
         self.notification.show()
+
+    def on_closed(self, data):
+        self.notification_body = ""

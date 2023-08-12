@@ -77,7 +77,7 @@ Sebastian Keller <sebastian-keller@gmx.de>		Gedit-like tab close buttons
 Simon Kågedal Reimer <skagedal@gmail.com>		Seekable GStreamer media player
 Daneil Aleksandersen 					Partial RFC3229 support saving bandwidth
                                                         Security fixes, network improvements
-
+Lorenzo L. Ancora <admin@lorenzoancora.info>    Support for anonymous/random HTTP/S UA string
 
 Maintainer Credits
 ==================
@@ -99,6 +99,7 @@ Polish			Piotr Sokół <psokol@jabster.pl>
 Italian			Dario Conigliaro <djdas@djdas.net>
 Italian			Emanuele Grande <caccolangrifata@gmail.com>
 Italian			Gianvito Cavasoli <janvitus@ubuntu-it.org>
+Italian			Lorenzo L. Ancora <admin@lorenzoancora.info>
 Brazilian Portuguese	Fernando Ike de Oliveira <fike@midstorm.org>
 Brazilian Portuguese	Og Maciel <ogmaciel@gnome.org>
 Brazilian Portuguese	Leon Nardella <leon.nardella@gmail.com>

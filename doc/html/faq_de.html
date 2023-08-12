@@ -1,8 +1,8 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="de">
 <head>
    	<title>Liferea FAQ</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="reference.css">
 	<style type="text/css">
 		ul {margin-left: 0; margin-right: 4px; padding: 5px}
@@ -14,17 +14,20 @@
 </head>
 <body>
 
-<!-- navigation header start -->
-<table width="100%">
+<header>
+  <nav>
+<table class="fullwidth">
    <tr>
- 	      <!-- back --><td width="50px"></td>
-      	      <!-- home --><td style="text-align:center;"><b>Liferea - Frequently Asked Questions</b></td>
-      	      <!-- next --><td width="50px;" style="text-align:right;"></td>
+ 	      <td class="back left"></td>
+      	      <td class="home center"><h1>Liferea - Frequently Asked Questions</h1></td>
+      	      <td class="next right"></td>
    </tr>
 </table>
-<hr />
-<!-- navigation header end -->
 
+</nav>
+  </header>
+
+<main>
 <p>
 Hinweis: Diese FAQ ist auch <a href="https://lzone.de/liferea/faq.htm">
 online verfügbar</a>.
@@ -37,7 +40,7 @@ Warum funktioniert Flash nicht (mehr)?</dt>
 <dd>
 <a class="faq-a">A:</a> Automatische Flash-Unterstützung ging leider mit Liferea 1.10,
 welches erstmal GTK3 nutzt, kaputt wenn es mit einer WebkitGTK3-Version älter als 2.0
-verwendet wird. Eine detaillierte Erklärung 
+verwendet wird. Eine detaillierte Erklärung
 <a href="https://lzone.de/How%20to%20Get%20Flash%20Working%20with%20WebkitGTK3">findet sich hier</a> (Englisch).
 <br/><br/>
 Es gibt die folgenden Workarounds:
@@ -52,7 +55,7 @@ Es gibt die folgenden Workarounds:
 <dd>
 A: Der einfachste Weg ist es das neueste Binär- oder Quellpaket von der
 <a href="https://github.com/lwindolf/liferea/releases">GitHub Projekt Homepage</a> herunterzuladen.
-Noch besser ist es aber Liferea-Pakete der eigenen Linux-Distribution zu verwenden. Eine Liste der Distributionen mit eigene Liferea-Paketen 
+Noch besser ist es aber Liferea-Pakete der eigenen Linux-Distribution zu verwenden. Eine Liste der Distributionen mit eigene Liferea-Paketen
 gibt es <a href="https://lzone.de/liferea/install.htm">hier</a>.
 
 </dd>
@@ -67,14 +70,14 @@ In diesem Falle muß Gwget auf eine neuere Version aktualisiert werden.</dd>
 </dd>
 
 <dt>Q: Ich will Cookies!</dt>
-<dd>A: 
+<dd>A:
 Liferea unterstützt nur Session Cookies beim Abruf von Feeds. Diese werden
 in ~/.config/liferea/session_cookies.txt gespeichert.
 </dd>
 
 <dt>Q: Ich mag die HTML/CSS Styles von Liferea nicht!
 </dt>
-<dd>A: Jeder kann die Styles ändern. Dazu kann das Stylesheet ~/.config/liferea/liferea.css 
+<dd>A: Jeder kann die Styles ändern. Dazu kann das Stylesheet ~/.config/liferea/liferea.css
 editiert werden. Die Datei enthält Beschreibungen der verschiedenen verwendeten Klassen
 so daß es einfacher ist diese zu modifizieren.
 </dd>
@@ -115,6 +118,7 @@ Häufig lässt sich der fehlerhafte Feed mit Hilfe von xmllint retten. Dazu muss
 Hinweis: Unter Debian-basierten Distributionen gehört xmllint zum Paket libxml2-utils.
 </dd>
 </dl>
+</main>
 
 </body>
 </html>

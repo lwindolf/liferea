@@ -1,46 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.14"/>
   <object class="GtkAdjustment" id="adjustment6">
     <property name="upper">100</property>
     <property name="value">1</property>
-    <property name="step_increment">1</property>
+    <property name="step-increment">1</property>
   </object>
   <object class="GtkApplicationWindow" id="mainwindow">
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="title" translatable="yes">Liferea</property>
-    <property name="default_width">640</property>
-    <property name="default_height">480</property>
-    <property name="icon_name">liferea</property>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
+    <property name="default-width">640</property>
+    <property name="default-height">480</property>
+    <property name="icon-name">liferea</property>
     <child>
+      <!-- n-columns=3 n-rows=3 -->
       <object class="GtkGrid" id="vbox1">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkPaned" id="leftpane">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can-focus">True</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <property name="position">170</property>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow3">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">never</property>
-                <property name="shadow_type">in</property>
+                <property name="can-focus">True</property>
+                <property name="hscrollbar-policy">never</property>
+                <property name="shadow-type">in</property>
                 <child>
                   <object class="GtkTreeView" id="feedlist">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="headers_visible">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="headers-visible">False</property>
                     <property name="reorderable">True</property>
                     <signal name="button-press-event" handler="on_mainfeedlist_button_press_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_mainfeedlist_popup_menu" swapped="no"/>
@@ -58,27 +56,27 @@
             <child>
               <object class="GtkNotebook" id="browsertabs">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="show_border">False</property>
+                <property name="can-focus">True</property>
+                <property name="show-border">False</property>
                 <property name="scrollable">True</property>
                 <child>
                   <object class="GtkNotebook" id="itemtabs">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="show_tabs">False</property>
-                    <property name="show_border">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="show-tabs">False</property>
+                    <property name="show-border">False</property>
                     <child>
                       <object class="GtkPaned" id="normalViewPane">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can-focus">True</property>
                         <property name="orientation">vertical</property>
                         <property name="position">199</property>
-                        <property name="position_set">True</property>
+                        <property name="position-set">True</property>
                         <child>
                           <object class="GtkViewport" id="normalViewItems">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="shadow_type">none</property>
+                            <property name="can-focus">False</property>
+                            <property name="shadow-type">none</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -89,25 +87,50 @@
                           </packing>
                         </child>
                         <child>
+                          <!-- n-columns=3 n-rows=3 -->
                           <object class="GtkGrid" id="normalViewVBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkViewport" id="normalViewHtml">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
-                                <property name="shadow_type">none</property>
+                                <property name="shadow-type">none</property>
                                 <child>
                                   <placeholder/>
                                 </child>
                               </object>
                               <packing>
-                                <property name="left_attach">0</property>
-                                <property name="top_attach">0</property>
+                                <property name="left-attach">0</property>
+                                <property name="top-attach">0</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </object>
                           <packing>
@@ -120,24 +143,24 @@
                     <child type="tab">
                       <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">page 1</property>
                       </object>
                       <packing>
-                        <property name="tab_fill">False</property>
+                        <property name="tab-fill">False</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkPaned" id="wideViewPane">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can-focus">True</property>
                         <property name="position">100</property>
-                        <property name="position_set">True</property>
+                        <property name="position-set">True</property>
                         <child>
                           <object class="GtkViewport" id="wideViewItems">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="shadow_type">none</property>
+                            <property name="can-focus">False</property>
+                            <property name="shadow-type">none</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -148,24 +171,49 @@
                           </packing>
                         </child>
                         <child>
+                          <!-- n-columns=3 n-rows=3 -->
                           <object class="GtkGrid" id="wideViewVBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <child>
                               <object class="GtkViewport" id="wideViewHtml">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
-                                <property name="shadow_type">none</property>
+                                <property name="shadow-type">none</property>
                                 <child>
                                   <placeholder/>
                                 </child>
                               </object>
                               <packing>
-                                <property name="left_attach">0</property>
-                                <property name="top_attach">0</property>
+                                <property name="left-attach">0</property>
+                                <property name="top-attach">0</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </object>
                           <packing>
@@ -181,12 +229,12 @@
                     <child type="tab">
                       <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">page 2</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
-                        <property name="tab_fill">False</property>
+                        <property name="tab-fill">False</property>
                       </packing>
                     </child>
                     <child>
@@ -200,11 +248,11 @@
                 <child type="tab">
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="label" translatable="yes">Headlines</property>
                   </object>
                   <packing>
-                    <property name="tab_fill">False</property>
+                    <property name="tab-fill">False</property>
                   </packing>
                 </child>
                 <child>
@@ -227,19 +275,44 @@
             </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkStatusbar" id="statusbar">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <property name="margin-top">0</property>
+            <property name="margin-bottom">0</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">1</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

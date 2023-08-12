@@ -46,6 +46,7 @@ void preferences_dialog_open (void);
 void on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data);
 void on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data);
 void on_fixeddatefmt_toggled (GtkToggleButton *togglebutton, gpointer user_data);
+void on_deferdeletemode_toggled (GtkToggleButton *togglebutton, gpointer user_data);
 void on_popupwindowsoptionbtn_clicked (GtkButton *button, gpointer user_data);
 void on_startupactionbtn_toggled (GtkButton *button, gpointer user_data);
 void on_browsercmd_changed (GtkEditable *editable, gpointer user_data);

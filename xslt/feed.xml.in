@@ -176,7 +176,7 @@
   </div>
 </xsl:if>
 
-<div class='feed content' dir="{$txtDirection}">
+<div class='feed content' dir="{$txtDirection}" id='content'>
 
 <xsl:if test="attributes/attribute[ @name = 'imageUrl' ]">
 <p>

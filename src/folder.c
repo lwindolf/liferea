@@ -1,7 +1,7 @@
 /**
  * @file folder.c  sub folders for hierarchic node sources
  *
- * Copyright (C) 2006-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,9 +42,6 @@ folder_merge_child_items (nodePtr node, gpointer user_data)
 {
 	itemSetPtr	folderItemSet = (itemSetPtr)user_data;
 	itemSetPtr	nodeItemSet;
-
-	if (IS_VFOLDER (node))
-		return;
 
 	nodeItemSet = node_get_itemset (node);
 	folderItemSet->ids = g_list_concat (folderItemSet->ids, nodeItemSet->ids);
@@ -122,7 +119,7 @@ folder_get_node_type (void)
 		NODE_CAPABILITY_UPDATE_CHILDS |
 		NODE_CAPABILITY_EXPORT,
 		"folder",
-		NULL,
+		ICON_FOLDER,
 		folder_import,
 		folder_export,
 		folder_load,
@@ -134,7 +131,6 @@ folder_get_node_type (void)
 		feed_list_view_rename_node,
 		NULL
 	};
-	fnti.icon = icon_get (ICON_FOLDER);
 
 	return &fnti;
 }
@@ -153,7 +149,7 @@ root_get_node_type (void)
 		NODE_CAPABILITY_UPDATE_CHILDS |
 		NODE_CAPABILITY_EXPORT,
 		"root",
-		NULL,		/* and no need for an icon */
+		0,		/* and no need for an icon */
 		folder_import,
 		folder_export,
 		folder_load,

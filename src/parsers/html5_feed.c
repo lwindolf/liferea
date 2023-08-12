@@ -1,7 +1,7 @@
 /**
  * @file html5_feed.c  Parsing semantic annotated HTML5 webpages like feeds
  *
- * Copyright (C) 2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2020-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 	if ((cur = xpath_find (itemNode, ".//time/@datetime"))) {
 		tmp = xhtml_extract (cur, 0, NULL);
 		if (tmp) {
-			ctxt->item->time = date_parse_RFC822 (tmp);
+			item_set_time (ctxt->item, date_parse_RFC822 (tmp));
 			g_free(tmp);
 		}
 	}
@@ -73,12 +73,16 @@ html5_feed_parse_article (xmlNodePtr itemNode, gpointer userdata)
 		}
 	}
 
-	// extract title
+	// extract title from most relevant header tag
 	if ((cur = xpath_find (itemNode, ".//h1")))
 		html5_feed_parse_article_title (cur, ctxt);
 	else if ((cur = xpath_find (itemNode, ".//h2")))
 		html5_feed_parse_article_title (cur, ctxt);
 	else if ((cur = xpath_find (itemNode, ".//h3")))
+		html5_feed_parse_article_title (cur, ctxt);
+	else if ((cur = xpath_find (itemNode, ".//h4")))
+		html5_feed_parse_article_title (cur, ctxt);
+	else if ((cur = xpath_find (itemNode, ".//h5")))
 		html5_feed_parse_article_title (cur, ctxt);
 
 	// Extract the actual article
@@ -128,7 +132,7 @@ html5_feed_parse (feedParserCtxtPtr ctxt, xmlNodePtr root)
 		}
 	}
 
-	if(!xpath_foreach_match (root, "/html/body//article", html5_feed_parse_article, ctxt)) {
+	if (!xpath_foreach_match (root, "/html/body//article", html5_feed_parse_article, ctxt)) {
 		g_string_append(ctxt->feed->parseErrors, "<p>Could not find HTML5 tags!</p>");
 		return;
 	}
@@ -139,9 +143,9 @@ html5_feed_check_article (xmlNodePtr cur, gpointer userdata)
 {
 	gint *articleCount = (gint *)userdata;
 
-	if (xpath_find (cur, ".//h1") ||
-	    xpath_find (cur, ".//h2") ||
-	    xpath_find (cur, ".//h3"))
+	/* We consider <h1>...<h5> tags inside an article as indication
+	   for extract worthy content */
+	if (xpath_find (cur, ".//h1 | .//h2 | .//h3 | .//h4 | .//h5"))
 		(*articleCount)++;
 }
 

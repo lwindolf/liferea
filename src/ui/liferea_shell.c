@@ -2,7 +2,7 @@
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@
 #include "render.h"
 #include "social.h"
 #include "vfolder.h"
+#include "fl_sources/node_source.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
@@ -72,6 +73,7 @@ struct _LifereaShell {
 	GtkStatusbar	*statusbar;		/*<< main window status bar */
 	gboolean	statusbarLocked;	/*<< flag locking important message on status bar */
 	guint		statusbarLockTimer;	/*<< timer id for status bar lock reset timer */
+	guint		resizeTimer;		/*<< timer id for resize callback */
 
 	GtkWidget	*statusbar_feedsinfo;
 	GtkWidget	*statusbar_feedsinfo_evbox;
@@ -234,7 +236,7 @@ liferea_shell_restore_position (void)
 	conf_get_int_value (LAST_WINDOW_WIDTH, &w);
 	conf_get_int_value (LAST_WINDOW_HEIGHT, &h);
 
-	debug4 (DEBUG_GUI, "Retrieved saved setting: size %dx%d position %d:%d", w, h, x, y);
+	debug (DEBUG_GUI, "Retrieved saved setting: size %dx%d position %d:%d", w, h, x, y);
 
 	/* Restore position only if the width and height were saved */
 	if (w != 0 && h != 0) {
@@ -245,14 +247,14 @@ liferea_shell_restore_position (void)
 		if (x >= work_area.width)
 			x = work_area.width - 100;
 		else if (x + w < 0)
-			x  = 100;
+			x = 100;
 
 		if (y >= work_area.height)
 			y = work_area.height - 100;
 		else if (y + w < 0)
-			y  = 100;
+			y = 100;
 
-		debug4 (DEBUG_GUI, "Restoring to size %dx%d position %d:%d", w, h, x, y);
+		debug (DEBUG_GUI, "Restoring to size %dx%d position %d:%d", w, h, x, y);
 
 		gtk_window_move (GTK_WINDOW (shell->window), x, y);
 
@@ -277,7 +279,7 @@ liferea_shell_save_position (void)
 	gboolean		last_window_maximized;
 	GdkWindow 		*gdk_window;
 	GdkMonitor 		*monitor;
-	GdkRectangle	work_area;
+	GdkRectangle		work_area;
 
 	/* save pane proportions */
 	pane = liferea_shell_lookup ("leftpane");
@@ -319,7 +321,7 @@ liferea_shell_save_position (void)
 	    y > work_area.height)
 		return;
 
-	debug4 (DEBUG_GUI, "Saving window size and position: %dx%d %d:%d", w, h, x, y);
+	debug (DEBUG_GUI, "Saving window size and position: %dx%d %d:%d", w, h, x, y);
 
 	/* save window position */
 	conf_set_int_value (LAST_WINDOW_X, x);
@@ -358,13 +360,13 @@ liferea_shell_update_toolbar (void)
 		gtk_widget_show (shell->toolbar);
 }
 
-void
+static void
 liferea_shell_update_update_menu (gboolean enabled)
 {
 	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->feedActions), "update-selected")), enabled);
 }
 
-void
+static void
 liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean readWrite)
 {
 	ui_common_simple_action_group_set_enabled (shell->addActions, add);
@@ -378,7 +380,7 @@ liferea_shell_update_item_menu (gboolean enabled)
 	ui_common_simple_action_group_set_enabled (shell->itemActions, enabled);
 }
 
-void
+static void
 liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead)
 {
 	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (shell->generalActions), "remove-selected-feed-items")), isNotEmpty);
@@ -419,10 +421,37 @@ liferea_shell_update_unread_stats (gpointer user_data)
 	g_free (msg);
 }
 
+static void
+liferea_shell_update_node_actions (gpointer obj, gchar *unusedNodeId, gpointer data)
+{
+	/* We need to use the selected node here, as for search folders
+	   if we'd rely on the parent node of the changed item we would
+	   enable the wrong menu options */
+	nodePtr	node = feedlist_get_selected ();
+
+	if (!node) {
+		liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
+		liferea_shell_update_allitems_actions (FALSE, FALSE);
+		liferea_shell_update_update_menu (FALSE);
+		return;
+	}
+
+	gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
+	liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
+	liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
+	                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
+
+	// Needs to be last as liferea_shell_update_update_menu() default enables actions
+	if (IS_FEED (node))
+		liferea_shell_update_allitems_actions (0 != node->itemCount, 0 != node->unreadCount);
+	else
+		liferea_shell_update_allitems_actions (FALSE, 0 != node->unreadCount);
+}
+
 /*
-   Do to the unsuitable GtkStatusBar stack handling which doesn't
+   Due to the unsuitable GtkStatusBar stack handling, which doesn't
    allow to keep messages on top of the stack for some time without
-   overwriting them with newly arriving messages we need some extra
+   overwriting them with newly arriving messages, we need some extra
    handling here.
 
    Liferea knows two types of status messages:
@@ -576,6 +605,30 @@ on_close (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
 	liferea_application_shutdown ();
 	return TRUE;
+}
+
+static gboolean
+on_window_resize_cb (gpointer user_data)
+{
+	shell->resizeTimer = 0;
+
+	/* If we are in auto layout mode we ask the itemview to calculate it again */
+	if (NODE_VIEW_MODE_AUTO == itemview_get_layout ())
+		itemview_set_layout (NODE_VIEW_MODE_AUTO);
+
+	return FALSE;
+}
+
+static gboolean
+on_configure_event (GtkWidget *window, GdkEvent *event, gpointer user_data)
+{
+	LifereaShell *shell = LIFEREA_SHELL (user_data);
+
+	if (shell->resizeTimer)
+		g_source_remove (shell->resizeTimer);
+	shell->resizeTimer = g_timeout_add (250, on_window_resize_cb, shell);
+
+	return FALSE;
 }
 
 static gboolean
@@ -922,9 +975,6 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"show-help-faq", on_faq_activate, NULL, NULL, NULL},
 	{"show-about", on_about_activate, NULL, NULL, NULL},
 
-	/* For mysterious reasons, the radio menu magic seem to only works with a
-	 * parameter/state of type string. */
-	{"set-view-mode", NULL, "s", "@s 'normal'", on_view_activate},
 	/* Parameter type must be NULL for toggle. */
 	{"fullscreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
 	{"reduced-feed-list", NULL, NULL, "@b false", on_feedlist_reduced_activate},
@@ -1040,7 +1090,7 @@ email_the_author(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 		g_spawn_async (NULL, argv, NULL, G_SPAWN_SEARCH_PATH, NULL, NULL, NULL, &error);
 
 		if (error && (0 != error->code)) {
-			debug2 (DEBUG_GUI, "Email command failed: %s : %s", argv[0], error->message);
+			debug (DEBUG_GUI, "Email command failed: %s : %s", argv[0], error->message);
 			liferea_shell_set_important_status_bar (_("Email command failed: %s"), error->message);
 			g_error_free (error);
 		} else {
@@ -1065,27 +1115,64 @@ static const GActionEntry liferea_shell_link_gaction_entries[] = {
 	{"email-the-author", email_the_author, "t", NULL, NULL}
 };
 
+static gboolean
+liferea_shell_restore_layout (gpointer user_data)
+{
+	GdkWindow	*gdk_window;
+	GtkAllocation	allocation;
+	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
+
+	liferea_shell_restore_position ();
+
+	/* This only works after the window has been restored, so we do it last. */
+	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
+	conf_get_int_value (LAST_HPANE_POS, &last_hpane_pos);
+	conf_get_int_value (LAST_WPANE_POS, &last_wpane_pos);
+	
+	/* Sanity check pane sizes for too large values */
+	/* a) set leftpane to 1/3rd of window size if too large */
+	gdk_window = gtk_widget_get_window (GTK_WIDGET (shell->window));
+	if (gdk_window_get_width (gdk_window) * 95 / 100 <= last_vpane_pos || 0 == last_vpane_pos)
+		last_vpane_pos = gdk_window_get_width (gdk_window) / 3;
+	
+	/* b) set normalViewPane to 50% container height if too large */
+	gtk_widget_get_allocation (GTK_WIDGET (liferea_shell_lookup ("normalViewPane")), &allocation);
+	if ((allocation.height * 95 / 100 <= last_hpane_pos) || 0 == last_hpane_pos)
+		last_hpane_pos = allocation.height / 2;
+	
+	/* c) set wideViewPane to 50% container width if too large */
+	gtk_widget_get_allocation (GTK_WIDGET (liferea_shell_lookup ("wideViewPane")), &allocation);
+	if ((allocation.width * 95 / 100 <= last_wpane_pos) || 0 == last_wpane_pos)
+		last_wpane_pos = allocation.width / 2;
+
+	debug (DEBUG_GUI, "Restoring pane proportions (left:%d normal:%d wide:%d)", last_vpane_pos, last_hpane_pos, last_wpane_pos);
+
+	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
+	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
+	gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
+	
+	return FALSE;
+}
+
 static void
 liferea_shell_restore_state (const gchar *overrideWindowState)
 {
-	gchar		*toolbar_style;
-	gint		last_vpane_pos, last_hpane_pos, last_wpane_pos;
-	gint		resultState;
 	gboolean 	last_window_maximized;
+	gchar		*toolbar_style;
+	gint		resultState;
 
-	debug0 (DEBUG_GUI, "Setting toolbar style");
+	debug (DEBUG_GUI, "Setting toolbar style");
 
 	toolbar_style = conf_get_toolbar_style ();
 	liferea_shell_set_toolbar_style (toolbar_style);
 	g_free (toolbar_style);
 
-	debug0 (DEBUG_GUI, "Restoring window position");
+	debug (DEBUG_GUI, "Restoring window position");
 	/* Realize needed so that the window structure can be
 	   accessed... otherwise we get a GTK warning when window is
 	   shown by clicking on notification icon or when theme
 	   colors are fetched. */
 	gtk_widget_realize (GTK_WIDGET (shell->window));
-	liferea_shell_restore_position ();
 
 	/* Apply horrible window state parameter logic:
 	   -> overrideWindowState provides optional command line flags passed by
@@ -1096,7 +1183,7 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	/* Initialize with last saved state */
 	conf_get_int_value (LAST_WINDOW_STATE, &resultState);
 
-	debug2 (DEBUG_GUI, "Previous window state indicators: dconf=%d, CLI switch=%s", resultState, overrideWindowState);
+	debug (DEBUG_GUI, "Previous window state indicators: dconf=%d, CLI switch=%s", resultState, overrideWindowState);
 
 	/* Override with command line options */
 	if (!g_strcmp0 (overrideWindowState, "hidden"))
@@ -1107,29 +1194,16 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	/* And set the window to the resulting state */
 	switch (resultState) {
 		case MAINWINDOW_HIDDEN:
-			debug0 (DEBUG_GUI, "Restoring window state 'hidden (to tray)'");
+			debug (DEBUG_GUI, "Restoring window state 'hidden (to tray)'");
 			gtk_widget_hide (GTK_WIDGET (shell->window));
 			break;
 		case MAINWINDOW_SHOWN:
 		default:
 			/* Safe default is always to show window */
-			debug0 (DEBUG_GUI, "Restoring window state 'shown'");
+			debug (DEBUG_GUI, "Restoring window state 'shown'");
 			gtk_widget_show (GTK_WIDGET (shell->window));
 	}
-
-	/* This only works after the window has been restored, so we do it last. */
-	debug0 (DEBUG_GUI, "Loading pane proportions");
-
-	conf_get_int_value (LAST_VPANE_POS, &last_vpane_pos);
-	if (last_vpane_pos)
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("leftpane")), last_vpane_pos);
-	conf_get_int_value (LAST_HPANE_POS, &last_hpane_pos);
-	if (last_hpane_pos)
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("normalViewPane")), last_hpane_pos);
-	conf_get_int_value (LAST_WPANE_POS, &last_wpane_pos);
-	if (last_wpane_pos)
-		gtk_paned_set_position (GTK_PANED (liferea_shell_lookup ("wideViewPane")), last_wpane_pos);
-
+	
 	conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
 	if (!last_window_maximized) {
 		gtk_container_child_set (GTK_CONTAINER (liferea_shell_lookup ("normalViewPane")), liferea_shell_lookup ("normalViewItems"),
@@ -1137,6 +1211,11 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 		gtk_container_child_set (GTK_CONTAINER (liferea_shell_lookup ("wideViewPane")), liferea_shell_lookup ("wideViewItems"),
 			"resize", TRUE, NULL);
 	}
+	
+	/* Need to run asynchronous otherwise pane widget allocation is reported
+	   wrong, maybe it is running to early as we realize only above. Also
+	   only like this window position restore works properly. */
+	g_idle_add (liferea_shell_restore_layout, NULL);
 }
 
 static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};
@@ -1153,6 +1232,7 @@ static const gchar * liferea_accels_zoom_reset[] = {"<Control>0", NULL};
 static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
 static const gchar * liferea_accels_show_help_contents[] = {"F1", NULL};
 static const gchar * liferea_accels_open_selected_item_enclosure[] = {"<Control>o", NULL};
+static const gchar * liferea_accels_launch_item_in_external_browser[] = {"<Control>d", NULL};
 
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
@@ -1160,9 +1240,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	GMenuModel		*menubar_model;
 	gboolean		toggle;
 	gchar			*id;
+	gint			mode;
 	FeedListView	*feedListView;
 
-	debug_enter ("liferea_shell_create");
 
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
 
@@ -1195,7 +1275,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 1.) menu creation */
 
-	debug0 (DEBUG_GUI, "Setting up menus");
+	debug (DEBUG_GUI, "Setting up menus");
 
 	shell->itemlist = itemlist_create ();
 
@@ -1223,6 +1303,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
 	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help_contents);
 	gtk_application_set_accels_for_action (app, "app.open-selected-item-enclosure", liferea_accels_open_selected_item_enclosure);
+	gtk_application_set_accels_for_action (app, "app.launch-item-in-external-browser", liferea_accels_launch_item_in_external_browser);
 
 	/* Toolbar */
 	gtk_builder_add_from_file (shell->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_toolbar.ui", NULL);
@@ -1231,29 +1312,17 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 2.) setup containers */
 
-	debug0 (DEBUG_GUI, "Setting up widget containers");
+	debug (DEBUG_GUI, "Setting up widget containers");
 
 	gtk_grid_attach_next_to (GTK_GRID (liferea_shell_lookup ("vbox1")), shell->toolbar, NULL, GTK_POS_TOP, 1,1);
 
 	gtk_widget_show_all(GTK_WIDGET(shell->toolbar));
-
-	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_press_event",
-	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
-
-	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_release_event",
-	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
-
-	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "scroll_event",
-	                  G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
-
-	g_signal_connect (G_OBJECT (shell->window), "delete_event", G_CALLBACK(on_close), NULL);
-	g_signal_connect (G_OBJECT (shell->window), "window_state_event", G_CALLBACK(on_window_state_event), shell);
-	g_signal_connect (G_OBJECT (shell->window), "key_press_event", G_CALLBACK(on_key_press_event), shell);
+	render_init_theme_colors (GTK_WIDGET (shell->window));
 	g_signal_connect (G_OBJECT (shell->window), "style-updated", G_CALLBACK(liferea_shell_rebuild_css), NULL);
 
 	/* 3.) setup status bar */
 
-	debug0 (DEBUG_GUI, "Setting up status bar");
+	debug (DEBUG_GUI, "Setting up status bar");
 
 	shell->statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
 	shell->statusbarLocked = FALSE;
@@ -1267,20 +1336,20 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 4.) setup tabs */
 
-	debug0 (DEBUG_GUI, "Setting up tabbed browsing");
+	debug (DEBUG_GUI, "Setting up tabbed browsing");
 	shell->tabs = browser_tabs_create (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
 
 	/* 5.) setup feed list */
 
-	debug0 (DEBUG_GUI, "Setting up feed list");
+	debug (DEBUG_GUI, "Setting up feed list");
 	shell->feedlistViewWidget = GTK_TREE_VIEW (liferea_shell_lookup ("feedlist"));
 	feedListView = feed_list_view_create (shell->feedlistViewWidget);
 
 	/* 6.) setup menu sensivity */
 
-	debug0 (DEBUG_GUI, "Initialising menus");
+	debug (DEBUG_GUI, "Initialising menus");
 
-	/* On start, no item or feed is selected, so Item menu should be insensitive: */
+	/* On start, no item or feed is selected, so menus should be insensitive */
 	liferea_shell_update_item_menu (FALSE);
 
 	/* necessary to prevent selection signals when filling the feed list
@@ -1289,18 +1358,17 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 7.) setup item view */
 
-	debug0 (DEBUG_GUI, "Setting up item view");
+	debug (DEBUG_GUI, "Setting up item view");
 
 	shell->itemview = itemview_create (GTK_WIDGET (shell->window));
 
         /* 8.) load icons as required */
 
-        debug0 (DEBUG_GUI, "Loading icons");
+        debug (DEBUG_GUI, "Loading icons");
 
         icons_load ();
 
 	/* 9.) update and restore all menu elements */
-
 	liferea_shell_update_toolbar ();
 	liferea_shell_update_history_actions ();
 	liferea_shell_setup_URL_receiver ();
@@ -1308,15 +1376,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	gtk_widget_set_sensitive (GTK_WIDGET (shell->feedlistViewWidget), TRUE);
 
-	/* 10.) After main window is realized get theme colors and set up feed
- 	        list and tray icon */
-	render_init_theme_colors (GTK_WIDGET (shell->window));
-
+	/* 10.) Set up feed list */
 	shell->feedlist = feedlist_create (feedListView);
-	g_signal_connect (shell->feedlist, "new-items",
-	                  G_CALLBACK (liferea_shell_update_unread_stats), shell->feedlist);
 
-	/* 11.) Restore latest selection */
+	/* 11.) Restore latest layout and selection */
+	conf_get_int_value (DEFAULT_VIEW_MODE, &mode);
+	itemview_set_layout (mode);
 
 	// FIXME: Move to feed list code
 	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {
@@ -1324,7 +1389,31 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 		g_free (id);
 	}
 
-	/* 12. Setup shell plugins */
+	/* 12. Setup shell window signals, only after all widgets are ready */
+	g_signal_connect (shell->feedlist, "new-items",
+	                  G_CALLBACK (liferea_shell_update_unread_stats), shell->feedlist);
+	g_signal_connect (shell->feedlist, "items-updated",
+	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
+	g_signal_connect (shell->itemlist, "item-updated",
+	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
+	g_signal_connect (feedListView, "selection-changed",
+	                  G_CALLBACK (liferea_shell_update_node_actions), NULL);
+
+	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_press_event",
+	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
+
+	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "key_release_event",
+	                  G_CALLBACK (on_key_press_event_null_cb), NULL);
+
+	g_signal_connect ((gpointer) liferea_shell_lookup ("itemtabs"), "scroll_event",
+	                  G_CALLBACK (on_notebook_scroll_event_null_cb), NULL);
+
+	g_signal_connect (G_OBJECT (shell->window), "delete_event", G_CALLBACK(on_close), NULL);
+	g_signal_connect (G_OBJECT (shell->window), "window_state_event", G_CALLBACK(on_window_state_event), shell);
+	g_signal_connect (G_OBJECT (shell->window), "configure_event", G_CALLBACK(on_configure_event), shell);
+	g_signal_connect (G_OBJECT (shell->window), "key_press_event", G_CALLBACK(on_key_press_event), shell);
+
+	/* 13. Setup shell plugins */
 	if(0 == pluginsDisabled) {
 		shell->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
 				                     LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
@@ -1336,7 +1425,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	if (searchFolderRebuild)
 		vfolder_foreach (vfolder_rebuild);
 
-	debug_exit ("liferea_shell_create");
 }
 
 void
@@ -1352,17 +1440,6 @@ liferea_shell_destroy (void)
 	gtk_widget_destroy (GTK_WIDGET (shell->window));
 
 	g_object_unref (shell);
-}
-
-void
-liferea_shell_present (void)
-{
-	GtkWidget *mainwindow = GTK_WIDGET (shell->window);
-
-	if ((gdk_window_get_state (gtk_widget_get_window (mainwindow)) & GDK_WINDOW_STATE_ICONIFIED) || !gtk_widget_get_visible (mainwindow))
-		liferea_shell_restore_position ();
-
-	gtk_window_present (shell->window);
 }
 
 static gboolean
@@ -1423,27 +1500,6 @@ void
 liferea_shell_rebuild_css (void)
 {
 	render_init_theme_colors (GTK_WIDGET (shell->window));
-	render_get_css();
 	itemview_style_update ();
 }
 
-void
-liferea_shell_set_view_mode (nodeViewType newMode)
-{
-	GAction       *action;
-
-	action = g_action_map_lookup_action (G_ACTION_MAP(shell->generalActions), "set-view-mode");
-
-	switch (newMode)
-	{
-	  case NODE_VIEW_MODE_NORMAL:
-	  case NODE_VIEW_MODE_DEFAULT:
-	  case NODE_VIEW_MODE_COMBINED:
-	    /* Combined is removed, default to normal */
-		g_action_change_state (action, g_variant_new_string("normal"));
-		break;
-	  case NODE_VIEW_MODE_WIDE:
-		g_action_change_state (action, g_variant_new_string("wide"));
-		break;
-	}
-}

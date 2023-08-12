@@ -86,7 +86,7 @@ ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, con
 				item_set_description (item, xhtml);
 				xmlFree (xhtml);
 
-				item->time = json_get_int (node, "updated");
+				item_set_time(item, json_get_int (node, "updated"));
 
 				if (json_get_bool (node, "unread")) {
 					item->readStatus = FALSE;
@@ -166,7 +166,7 @@ ttrss_feed_subscription_prepare_update_request (subscriptionPtr subscription,
 	gchar		*source_name;
 	gint		fetchCount;
 
-	debug0 (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
+	debug (DEBUG_UPDATE, "TinyTinyRSS preparing feed subscription for update");
 
 	g_assert(root->source);
 	if (root->source->loginState == NODE_SOURCE_STATE_NONE) {

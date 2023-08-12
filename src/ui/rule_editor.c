@@ -22,6 +22,7 @@
 #include "ui/rule_editor.h"
 #include "ui/ui_common.h"
 
+#include "common.h"
 #include "rule.h"
 
 /*
@@ -138,18 +139,18 @@ static void
 do_ruletype_changed (struct changeRequest	*changeRequest)
 {
 	ruleInfoPtr		ruleInfo;
-	rulePtr			rule;
+	rulePtr			curRule, newRule;
 
-	rule = g_object_get_data (G_OBJECT (changeRequest->paramHBox), "rule");
-	if (rule) {
-		changeRequest->editor->newRules = g_slist_remove (changeRequest->editor->newRules, rule);
-		rule_free (rule);
-	}
+	curRule = g_object_get_data (G_OBJECT (changeRequest->paramHBox), "rule");
 	ruleInfo = g_slist_nth_data (rule_get_available_rules (), changeRequest->rule);
-	rule = rule_new (ruleInfo->ruleId, "", TRUE);
-	changeRequest->editor->newRules = g_slist_append (changeRequest->editor->newRules, rule);
+	newRule = rule_new (ruleInfo->ruleId, curRule && curRule->value ? curRule->value : "", TRUE);
+	if (curRule) {
+		changeRequest->editor->newRules = g_slist_remove (changeRequest->editor->newRules, curRule);
+		rule_free (curRule);
+	}
+	changeRequest->editor->newRules = g_slist_append (changeRequest->editor->newRules, newRule);
 
-	rule_editor_setup_widgets (changeRequest, rule);
+	rule_editor_setup_widgets (changeRequest, newRule);
 }
 
 /* callback for rule type option menu */
@@ -253,7 +254,7 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 	changeRequest->hbox = hbox;
 	changeRequest->paramHBox = hbox2;
 	changeRequest->editor = re;
-	widget = gtk_button_new_with_label ("Remove");
+	widget = gtk_button_new_with_label (_("Remove"));
 	gtk_box_pack_end (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
 	g_signal_connect (G_OBJECT (widget), "clicked", G_CALLBACK (on_ruleremove_clicked), changeRequest);
 

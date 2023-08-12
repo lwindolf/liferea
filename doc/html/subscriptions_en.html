@@ -1,82 +1,84 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<title>Managing Subscriptions</title>
+  <meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="reference.css" >
 </head>
 <body>
 
 
-	<!-- navigation header start -->
-	<table width="100%">
+	<header>
+  <nav>
+	<table class="fullwidth">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="concepts_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><b>Managing Subscriptions</b></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a href="headlines_en.html">Next</a></td>
+	      <td class="back left"><a rel="prev" href="concepts_en.html">Prev</a></td>
+	      <td class="home center"><h1>Managing Subscriptions</h1></td>
+	      <td class="next right"><a rel="next" href="headlines_en.html">Next</a></td>
 	   </tr>
 	</table>
-	<hr />
-	<!-- navigation header end -->
+	
+	</nav>
+  </header>
 
-	<!-- content start --> 
+	<main>
 	<p>
 	This section documents all user interactions necessary to create and maintain subscription.
 	</p>
-	
+
 	<h3>Things Liferea Can Subscribe To</h3>
 	<p>
 	As a news aggregator Liferea allows you to subscribe to different
 	syndication sources. The most common use case is to subscribe to
 	single feeds. But Liferea also supports subscribing a source that provides
 	a collection of feeds. So you can subscribe to:
-	
+
 	<ul>
 		<li>a single feed</li>
 		<li>any OPML source (a planet feed list, a blog roll...)</li>
 		<li>a TheOldReader online account</li>
 		<li>a TinyTinyRSS online account</a></li>
 	</ul>
-	
+
 	<h3>Subscribing to a Feed</h3>
 	<p>
-	To create a new feed subscription select "New Feed" from the feed 
-	list's contextual menu or the "Subscriptions" menu. A dialog to create a 
+	To create a new feed subscription select "New Feed" from the feed
+	list's contextual menu or the "Subscriptions" menu. A dialog to create a
 	new subscription will appear.
-	</p>	
+	</p>
 
 	<p align="center">
 	<img src="help_subscribe_1.6.0.png">
 	</p>
-	
+
 	<p>
 	For example, to subscribe to Slashdot's news feed enter
 	"<i><a href="http://slashdot.org/index.rss">http://slashdot.org/index.rss</a></i>"
 	into the text box and click "OK".
 	</p>
-	
+
 	<h3>Creating Special Feed Subscriptions</h3>
 
 	<p>
-	Liferea supports obtaining feeds from a variety of different sources 
-	including Internet URLs, the output of a locally run command, and by 
-	directly reading from a	file. Most often, it is desired to subscribe 
-	using an URL as described in the previous paragraph. For special 
+	Liferea supports obtaining feeds from a variety of different sources
+	including Internet URLs, the output of a locally run command, and by
+	directly reading from a	file. Most often, it is desired to subscribe
+	using an URL as described in the previous paragraph. For special
 	subscription you must select "Advanced" to open the following more
 	complex subscription dialog:</p>
-	
+
 	<p align="center">
 	<img src="help_subscribe_adv_1.6.0.png">
 	</p>
-	
+
 	<p>
 	After selecting the desired source type, enter the source URL, command
 	name, or filename into the "Source" textbox. </p>
-	
+
 	<p>When a command or local file is selected, the command or file
 	can be selected using a file navigation box by clicking "Select
 	File...".</p>
-	
+
 	<p>Sometimes, the data in a feed is in a format that is
 	unknown to Liferea. If this is the case, a conversion filter
 	can be used to convert the data into a useable format. Many
@@ -92,13 +94,13 @@
 	the non-supported feed format using stdin and output the valid
 	feed to stdout. Conversion filters are often written using
 	perl. </p>
-	
+
 	<h3>Changing Subscription Properties</h3>
 
 	<p>
 	The feed properties dialog is used to configure additional feed
-	properties and can be activated in the "Subscriptions" menu or from feed 
-	context menu. After successfully creating a new subscription you 
+	properties and can be activated in the "Subscriptions" menu or from feed
+	context menu. After successfully creating a new subscription you
 	usually don't need to change the feed properties.
 	</p>
 	<p>
@@ -106,7 +108,7 @@
 	or other feed specific options then you need to use the feed properties
 	dialog.
 	</p>
-	
+
 	<p>
 	The dialog groups the feed properties into five sets: "General",
 	"Source", "Archive", "Download" and "Advanced":</p>
@@ -116,11 +118,11 @@
 	<p align="center">
 	<img src="help_feed_prop_general_1.6.0.png"/>
 	</p>
-	
+
 	<p>The "General" pane allows you to set feed title and update
 	interval. The feed name is the feed's name shown in the feed
 	list. Multiple feeds can have the same name.</p>
-	
+
 	<a name="updateInterval">
 	<div id="updateInterval"><p>The feed update interval controls how often Liferea attempts to
 		update a feed. Typically, the feed update interval can be left at
@@ -128,7 +130,7 @@
 		preference which you can find in the preference dialog because it
 		allows one to change the update interval of all feed
 		simultaneously.</p>
-	  
+
 	  <p>Sometimes a feed provides a feed specific update interval.
 		If this is the case Liferea automatically activates the user
 		defined update interval setting and enters the feed specific
@@ -141,7 +143,7 @@
 		  <dd>This preference is used for all feeds that have
 			the update interval setting to follow the global default update
 			interval setting.</dd>
-		  
+
 		  <dt>Feed specific update interval</dt><dd>There might be situations where you want to specify
 			a update interval which might be more or less frequent than
 			the global update interval. Then you should select the user
@@ -150,7 +152,7 @@
 			  web traffic you will cause with an inappropriate update
 			  interval. Don't update more often than the feed's content is
 			  updated.</em></dd>
-	
+
 		  <dt>Don't update this feed automatically</dt><dd>This option
 			allows you to prevent updating the feed. You can use this option
 			for feeds you always want to have only updated manually.</dd>
@@ -161,9 +163,9 @@
 	<p align="center">
 	<img src="help_feed_prop_source_1.6.0.png"/>
 	</p>
-	
+
 	<p>The "Source" pane contains the same fields that the advanced
-	subscription dialog provides. You can use these	settings to change 
+	subscription dialog provides. You can use these	settings to change
 	the feed source (e.g. after a feed's URL has changed).</p>
 
 	<h4>Archive Properties</h4>
@@ -171,15 +173,15 @@
 	<p align="center">
 	<img src="help_feed_prop_cache_1.6.0.png"/>
 	</p>
-	
+
 	<p>The third pane, "Archive", controls how many items of
 	a feed are kept when Liferea saves a feed to disk.
-	Similar to the update interval settings there is a 
+	Similar to the update interval settings there is a
 	corresponding global preference which sets a default cache
 	size for all feeds. You should use the feed specific cache
 	settings only to implement exceptions from the global
 	default cache size.</p>
-	
+
 	<dl>
 	  <dt>Default Cache Settings</dt><dd>Makes the feed use the default cache settings, which are stored in the main Liferea
 		preferences.</dd>
@@ -194,23 +196,23 @@
 	and want to prevent it from being dropped from the cache just flag
 	this headline.
 	</p>
-	
+
 	<h4>Download Properties</h4>
-	
+
 	<p align="center">
 	<img src="help_feed_prop_downl_1.6.0.png"/>
 	</p>
-	
+
 	<p>
 	This tab allows you to disable the use of the global proxy setting and
-	to enable HTTP authentication when downloading the feed. Enable the checkbox 
-	and enter appropriate user and password values to use password-protected feeds. 
-	Usually you won't need to use these settings because you will be asked username 
+	to enable HTTP authentication when downloading the feed. Enable the checkbox
+	and enter appropriate user and password values to use password-protected feeds.
+	Usually you won't need to use these settings because you will be asked username
 	and password when subscribing to the feed that requires	authentication.
 	</p>
-	
+
 	<h4>Advanced Properties</h4>
-	
+
 	<p align="center">
 	<img src="help_feed_prop_adv_1.6.0.png"/>
 	</p>
@@ -219,40 +221,40 @@
 	This panel provides different special options to control how Liferea
 	handles the subscription. These options are:
 	</p>
-	
+
 	<dl>
 		<dt>Automatically download all enclosures of this feed.</dt>
 		<dd>This might be useful for podcasts or torrent feeds. If
 		you enable the option Liferea downloads attached <a href="enclosures_en.html">enclosures</a>.
 		</dd>
-	
+
 		<dt>Auto-load item link in configured browser when selecting articles.</dt>
 		<dd>Per-default Liferea shows the item description in the HTML view pane.
 		When this check box is enabled it will automatically load the item link
 		when the item selection changes.
 		</dd>
-		
+
 		<dt>Ignore comment feeds for this subscription.</dt>
 		<dd>Sometimes there are feeds with broken or useless
 		comment feeds. This option allows to ignore those.</dd>
-		
+
 		<dt>Enforce popup notification for this subscription.</dt>
 		<dd>If the global notification preference is disabled you
 		can enabled this option to generate notifications for only
 		this feed.</dd>
-		
+
 		<dt>Never do popup notification for this subscription.</dt>
 		<dd>If the global notification preference is enabled you
 		can use this option to prevent notifications for this feed.
 		This might be useful for high-traffic feeds.</dd>
-		
+
 		<dt>Mark downloaded items as read.</dt>
 		<dd>Normally new items have the status "unread". Sometimes
 		you might want to use this option for new items of a special
 		feed not to show up as "unread" so you don't have to mark
 		them "read" manually.</dd>
 	</dl>
-	
+
 	<h3>Subscribing to OPML Sources and Online Services</h3>
 	<p>
 	To subscribe to OPML feed lists or a online service account
@@ -260,27 +262,31 @@
 	"Subscriptions" menu. From the following dialog select the source type
 	you like to create.
 	</p>
-	
+
 	<h4>OPML Sources</h3>
 	<p>
 	If you have selected "Planet/BlogRoll/OPML" you need to supply the source
 	URL of the OPML document. If necessary provide authentication information.
-	After doing so a new OPML source node will be inserted in the feed list 
-	and after downloading the OPML document for the first time new 
+	After doing so a new OPML source node will be inserted in the feed list
+	and after downloading the OPML document for the first time new
 	subscriptions as described by the OPML source will be created. If the
 	OPML feed list changes over time old subscriptions are automatically
 	dropped and new ones are added.
 	</p>
+
+	</main>
+
+	<footer>
+  <nav>
 	
-	<!-- navigation footer start -->
-	<hr />
-	<table width="100%">
+	<table class="fullwidth">
 	   <tr>
-	      <!-- back --><td width="50px"><a href="concepts_en.html">Prev</a></td>
-	      <!-- home --><td style="text-align:center;"><a href="topics_en.html">Contents</a></td>
-	      <!-- next --><td width="50px;" style="text-align:right;"><a href="headlines_en.html">Next</a></td>
+	      <td class="back left"><a rel="prev" href="concepts_en.html">Prev</a></td>
+	      <td class="home center"><a href="topics_en.html">Contents</a></td>
+	      <td class="next right"><a rel="next" href="headlines_en.html">Next</a></td>
 	   </tr>
 	</table>
-	<!-- navigation footer end -->
+	</nav>
+  </footer>
 </body>
 </html>

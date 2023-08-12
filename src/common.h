@@ -27,7 +27,11 @@
 #include <libxml/xmlmemory.h>
 #include <libxml/parser.h>
 #include <glib.h>
+#ifndef _DEFAULT_SOURCE
+#define _DEFAULT_SOURCE
+#endif
 #include <string.h>
+#include <pango/pango-bidi-type.h>
 
 /*
  * Standard gettext macros
@@ -132,6 +136,22 @@ xmlChar * common_uri_sanitize(const xmlChar *uri);
  * @returns new string with resulting absolute URL
  */
 xmlChar * common_build_url(const gchar *url, const gchar *baseURL);
+
+/**
+ * Replacement for deprecated pango_find_base_dir
+ * Searches a string the first character that has a strong direction,
+ * according to the Unicode bidirectional algorithm.
+ *
+ * @param text		The text to process. Must be valid UTF-8
+ *
+ * @param length	Length of text in bytes 
+ * 					(may be -1 if text is nul-terminated)
+ *
+ * @returns 		The direction corresponding to the first strong character.
+ * 					If no such character is found, then 
+ * 					PANGO_DIRECTION_NEUTRAL is returned.
+ */
+PangoDirection common_find_base_dir (const gchar *text, gint length);
 
 /**
  * Analyzes the string, returns a direction setting immediately

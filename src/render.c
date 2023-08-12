@@ -1,7 +1,7 @@
 /**
  * @file render.c  generic GTK theme and XSLT rendering handling
  *
- * Copyright (C) 2006-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,11 +40,14 @@
 #include "itemset.h"
 #include "render.h"
 #include "xml.h"
-#include "ui/liferea_htmlview.h"
 
-/* Liferea provides special screens and the item and the feed displays
-   using self-generated HTML. To separate code and layout and to easily
-   localize the layout it is provided by automake XSL stylesheet templates.
+/* Liferea renders items and feed info using self-generated HTML in a WebkitGTK
+   widget. While this provides rendering flexibility it also requires us to do
+   CSS color theming to match the GTK theme and localization of HTML rendered
+   UI literals.
+   
+   To separate code and layout and to easily localize the layout it is 
+   provided in the form of automake XSL stylesheet templates.
 
    Using automake translations are merged into those XSL stylesheets. On
    startup Liferea loads those expanded XSL stylesheets. During startup
@@ -57,7 +60,6 @@
    and performs CSS adaptions to the current GTK theme. */
 
 static renderParamPtr	langParams = NULL;	/* the current locale settings (for localization stylesheet) */
-
 static GHashTable	*stylesheets = NULL;	/* XSLT stylesheet cache */
 
 static void
@@ -65,39 +67,6 @@ render_parameter_free (renderParamPtr paramSet)
 {
 	g_strfreev (paramSet->params);
 	g_free (paramSet);
-}
-
-static void
-render_init (void)
-{
-	gchar   	**shortlang = NULL;	/* e.g. "de" */
-	gchar		**lang = NULL;		/* e.g. "de_AT" */
-	gchar		*filename;
-
-	if (langParams)
-		render_parameter_free (langParams);
-
-	/* Install default stylesheet if it does not yet exist */
-	filename = common_create_config_filename ("liferea.css");
-	if (!g_file_test (filename, G_FILE_TEST_EXISTS))
-		common_copy_file (PACKAGE_DATA_DIR "/" PACKAGE "/css/user.css", filename);
-	g_free(filename);
-
-	/* Prepare localization parameters */
-	debug1 (DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
-	lang = g_strsplit (setlocale (LC_MESSAGES, NULL), "@", 0);
-	shortlang = g_strsplit (setlocale (LC_MESSAGES, NULL), "_", 0);
-
-	langParams = render_parameter_new ();
-	render_parameter_add (langParams, "lang='%s'", lang[0]);
-	render_parameter_add (langParams, "shortlang='%s'", shortlang[0]);
-	debug2 (DEBUG_HTML, "XSLT localisation: lang='%s' shortlang='%s'", lang[0], shortlang[0]);
-
-	g_strfreev (shortlang);
-	g_strfreev (lang);
-
-	if (!stylesheets)
-		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 }
 
 static xsltStylesheetPtr
@@ -108,8 +77,26 @@ render_load_stylesheet (const gchar *xsltName)
 	xmlDocPtr		xsltDoc, resDoc;
 	gchar			*filename;
 
+	if (!langParams) {
+		/* Prepare localization parameters */
+		gchar   **shortlang = NULL;	/* e.g. "de" */
+		gchar	**lang = NULL;		/* e.g. "de_AT" */
+
+		debug (DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
+		lang = g_strsplit (setlocale (LC_MESSAGES, NULL), "@", 0);
+		shortlang = g_strsplit (setlocale (LC_MESSAGES, NULL), "_", 0);
+
+		langParams = render_parameter_new ();
+		render_parameter_add (langParams, "lang='%s'", lang[0]);
+		render_parameter_add (langParams, "shortlang='%s'", shortlang[0]);
+		debug (DEBUG_HTML, "XSLT localisation: lang='%s' shortlang='%s'", lang[0], shortlang[0]);
+
+		g_strfreev (shortlang);
+		g_strfreev (lang);
+	}
+
 	if (!stylesheets)
-		render_init ();
+		stylesheets = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
 
 	/* try to serve the stylesheet from the cache */
 	xslt = (xsltStylesheetPtr)g_hash_table_lookup (stylesheets, xsltName);
@@ -155,6 +142,7 @@ render_load_stylesheet (const gchar *xsltName)
 
 /** cached CSS definitions */
 static GString	*css = NULL;
+static GString	*userCss = NULL;
 
 /** widget background theme colors as 8bit HTML RGB code */
 typedef struct themeColor {
@@ -163,8 +151,6 @@ typedef struct themeColor {
 } *themeColorPtr;
 
 static GSList *themeColors = NULL;
-static gboolean darkTheme = FALSE;
-static gboolean styleUpdated = FALSE;
 
 /* Determining of theme colors, to be inserted in CSS */
 static themeColorPtr
@@ -180,9 +166,16 @@ render_calculate_theme_color (const gchar *name, GdkColor themeColor)
 	tc = g_new0 (struct themeColor, 1);
 	tc->name = name;
 	tc->value = g_strdup_printf ("%.2X%.2X%.2X", r, g, b);
-	debug2 (DEBUG_HTML, "theme color \"%s\" is %s", tc->name, tc->value);
+	debug (DEBUG_HTML, "theme color \"%s\" is %s", tc->name, tc->value);
 
 	return tc;
+}
+
+static void
+render_theme_color_free (themeColorPtr tc)
+{
+	g_free (tc->value);
+	g_free (tc);
 }
 
 static gint
@@ -213,10 +206,20 @@ render_init_theme_colors (GtkWidget *widget)
 	GtkStyleContext	*sctxt;
 	GdkColor	color;
 	GdkRGBA		rgba;
-	gint		textAvg, bgAvg;
 
-	styleUpdated = TRUE;
-	themeColors = NULL;
+	/* Clear cached previous stylesheet */
+	if (css) {
+		g_string_free (css, TRUE);
+		css = NULL;
+	}
+	if (userCss) {
+		g_string_free (userCss, TRUE);
+		userCss = NULL;
+	}
+	if (themeColors) {
+		g_slist_free_full (themeColors, (GDestroyNotify)render_theme_color_free);
+		themeColors = NULL;
+	}
 
 	style = gtk_widget_get_style (widget);
 	sctxt = gtk_widget_get_style_context (widget);
@@ -247,24 +250,9 @@ render_init_theme_colors (GtkWidget *widget)
 	rgba_to_color (&color, &rgba);
 	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-VISITED-LINK", color));
 
-	/* As there doesn't seem to be a safe way to determine wether we have a
-	   dark GTK theme, let's guess it from the foreground vs. background
-	   color average */
+	if (conf_get_dark_theme()) {
+		debug (DEBUG_HTML, "Dark GTK theme detected.");
 
-	textAvg = style->text[GTK_STATE_NORMAL].red / 256 +
-	        style->text[GTK_STATE_NORMAL].green / 256 +
-	        style->text[GTK_STATE_NORMAL].blue / 256;
-
-	bgAvg = style->bg[GTK_STATE_NORMAL].red / 256 +
-	        style->bg[GTK_STATE_NORMAL].green / 256 +
-	        style->bg[GTK_STATE_NORMAL].blue / 256;
-
-	if (textAvg > bgAvg) {
-		debug0 (DEBUG_HTML, "Dark GTK theme detected.");
-		darkTheme = TRUE;
-	}
-
-	if (darkTheme) {
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->text[GTK_STATE_NORMAL]));
 		/* Try nice foreground with 'fg' color (note: distance 50 is enough because it should be non-intrusive) */
 		if (render_get_rgb_distance (&style->text[GTK_STATE_NORMAL], &style->fg[GTK_STATE_NORMAL]) > 50)
@@ -272,6 +260,8 @@ render_init_theme_colors (GtkWidget *widget)
 		else
 			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
 	} else {
+		debug (DEBUG_HTML, "Light GTK theme detected.");
+
 		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
 		/* Try nice foreground with 'dark' color (note: distance 50 is enough because it should be non-intrusive) */
 		if (render_get_rgb_distance (&style->dark[GTK_STATE_NORMAL], &style->bg[GTK_STATE_NORMAL]) > 50)
@@ -300,8 +290,7 @@ render_get_theme_color (const gchar *name)
 {
 	GSList	*iter;
 
-	if (!themeColors)
-		return NULL;
+	g_return_val_if_fail (themeColors != NULL, NULL);
 
 	iter = themeColors;
 	while (iter) {
@@ -314,27 +303,14 @@ render_get_theme_color (const gchar *name)
 	return NULL;
 }
 
-gboolean
-render_is_dark_theme (void)
-{
-	if (!themeColors)
-		return FALSE;
-
-	return darkTheme;
-}
-
 const gchar *
-render_get_css (void)
+render_get_default_css (void)
 {
-	if (!css || styleUpdated) {
+	if (!css) {
 		gchar	*defaultStyleSheetFile;
-		gchar	*userStyleSheetFile;
 		gchar	*tmp;
 
-		if (!themeColors)
-			return NULL;
-
-		styleUpdated = FALSE;
+		g_return_val_if_fail (themeColors != NULL, NULL);
 
 		css = g_string_new(NULL);
 
@@ -349,31 +325,34 @@ render_get_css (void)
 		}
 
 		g_free(defaultStyleSheetFile);
-
-		userStyleSheetFile = common_create_config_filename ("liferea.css");
-
-		if (g_file_get_contents(userStyleSheetFile, &tmp, NULL, NULL)) {
-			tmp = render_set_theme_colors(tmp);
-			g_string_append(css, tmp);
-			g_free(tmp);
-		}
-
-		g_free(userStyleSheetFile);
-
-		/* dump CSS to cache file and create a <style> tag to use it */
-		gchar *filename = common_create_cache_filename (NULL, "style", "css");
-		if (!g_file_set_contents(filename, css->str, -1, NULL))
-			g_warning("Cannot write temporary CSS file \"%s\"!", filename);
-
-		g_string_free(css, TRUE);
-
-		css = g_string_new ("<link id=\"styles\" rel=\"stylesheet\" href=\"file://");
-		g_string_append_printf (css, "%s?%d\" />", filename, (int)time(NULL));
-
-		g_free(filename);
 	}
 
 	return css->str;
+}
+
+const gchar *
+render_get_user_css (void)
+{
+	if (!userCss) {
+		gchar	*userStyleSheetFile;
+		gchar	*tmp;
+
+		g_return_val_if_fail (themeColors != NULL, NULL);
+
+		userCss = g_string_new (NULL);
+
+		userStyleSheetFile = common_create_config_filename ("liferea.css");
+
+		if (g_file_get_contents (userStyleSheetFile, &tmp, NULL, NULL)) {
+			tmp = render_set_theme_colors (tmp);
+			g_string_append (userCss, tmp);
+			g_free (tmp);
+		}
+
+		g_free (userStyleSheetFile);
+	}
+
+	return userCss->str;
 }
 
 gchar *

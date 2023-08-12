@@ -1,8 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
    	<title>Liferea FAQ</title>
-		
+  <meta charset="utf-8">
+
 	<link rel="stylesheet" type="text/css" href="reference.css">
 	<style type="text/css">
 		ul {margin-left: 0; margin-right: 4px; padding: 5px}
@@ -14,17 +15,20 @@
 </head>
 <body>
 
-<!-- navigation header start -->
-<table width="100%">
+<header>
+  <nav>
+<table class="fullwidth">
    <tr>
- 	      <!-- back --><td width="50px"></td>
-      	      <!-- home --><td style="text-align:center;"><b>Liferea - Frequently Asked Questions</b></td>
-      	      <!-- next --><td width="50px;" style="text-align:right;"></td>
+ 	      <td class="back left"></td>
+      	      <td class="home center"><h1>Liferea - Frequently Asked Questions</h1></td>
+      	      <td class="next right"></td>
    </tr>
 </table>
-<hr />
-<!-- navigation header end -->
 
+</nav>
+  </header>
+
+<main>
 <p>
 Note: This FAQ is also available <a href="https://lzone.de/liferea/faq.htm">
 online</a>.
@@ -36,7 +40,7 @@ online</a>.
 Why doesn't Flash work (anymore)?</dt>
 <dd>
 <a class="faq-a">A:</a> Easy flash support broke when Liferea 1.10 which uses
-GTK3 is used with WebkitGTK3 versions before 2.0. For a detailed explanation 
+GTK3 is used with WebkitGTK3 versions before 2.0. For a detailed explanation
 read <a href="https://lzone.de/How%20to%20Get%20Flash%20Working%20with%20WebkitGTK3">this post</a>.
 <br/><br/>
 There are the following known workarounds:
@@ -69,14 +73,14 @@ do work.</dd>
 
 <dt>Q: Liferea is buggy! It does not close when I click on the window
 manager's close button and the tray icon is activated.</dt>
-<dd>A: 
+<dd>A:
 This is a pretty disputed topic. We see this as a useful feature, other
-people don't. If you don't like the behaviour you can change it by right-clicking 
+people don't. If you don't like the behaviour you can change it by right-clicking
 the tray icon and toggling the checkbox labelled "Minimize to tray on close."
 </dd>
 
 <dt>Q: I want cookies!</dt>
-<dd>A: 
+<dd>A:
 Liferea supports only session cookies while downloading feeds. They are
 stored in ~/.config/liferea/session_cookies.txt
 </dd>
@@ -128,7 +132,7 @@ sent along with the bug report.</dd>
 
 <dt>Q: Why doesn't Liferea have feature X?</dt>
 <dd>A: If you miss a feature in Liferea please consider contributing
-code to implement the feature! Please also consider that the Liferea 
+code to implement the feature! Please also consider that the Liferea
 project aims to provide a simple feed reader that might lack more
 complex functionality.</dd>
 
@@ -140,6 +144,7 @@ To fix this problem, you can try to sanitize the XML with xmllint. For this, ope
 Note: On Debian-based distribution xmllint is part of the libxml2-utils package.
 </dd>
 </dl>
+</main>
 
 </body>
 </html>

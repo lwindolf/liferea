@@ -125,7 +125,7 @@ json_api_get_items (const gchar *json, const gchar *root, jsonApiMapping *mappin
 		GList		*elements = json_array_get_elements (array);
 		GList		*iter = elements;
 
-		debug1 (DEBUG_PARSING, "JSON API: found items root node \"%s\"", root);
+		debug (DEBUG_PARSING, "JSON API: found items root node \"%s\"", root);
                 
 		while (iter) {
 			JsonNode *node = (JsonNode *)iter->data;
@@ -173,7 +173,7 @@ json_api_get_items (const gchar *json, const gchar *root, jsonApiMapping *mappin
 		g_list_free (elements);
 		g_object_unref (parser);
 	} else {
-		debug1 (DEBUG_PARSING, "Could not parse JSON \"%s\"", json);
+		debug (DEBUG_PARSING, "Could not parse JSON \"%s\"", json);
 	}
 
 	return items;

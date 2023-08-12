@@ -38,6 +38,14 @@ void network_init (void);
  */
 void network_deinit (void);
 
+/**
+ * network_get_special_user_agent:
+ * Get effective user agent. Considers special user settings from environment.
+ *
+ * @returns: user agent string (to be free'd by caller)
+ */
+gchar * network_get_user_agent (void);
+
 typedef enum {
 	PROXY_DETECT_MODE_AUTO = 0, 	/* Use system settings */
 	PROXY_DETECT_MODE_NONE,		/* No Proxy */
@@ -46,16 +54,11 @@ typedef enum {
 
 /**
  * Configures the network client to use the given proxy
- * settings. If the host name is NULL then no proxy will
- * be used.
+ * settings.
  *
- * @param mode		indicate whether to use the system setting, no proxy or the following parameters.
- * @param host		the new proxy host
- * @param port		the new proxy port
- * @param user		the new proxy username or NULL
- * @param password	the new proxy password or NULL
+ * @param mode		indicate whether to use the system setting or no proxy
  */
-void network_set_proxy (ProxyDetectMode mode, gchar *host, guint port, gchar *user, gchar *password);
+void network_set_proxy (ProxyDetectMode mode);
 
 /**
  * Returns the proxy detect mode.

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Gestire i Titoli</title>
+  <meta charset="utf-8">
+
+	<link rel="stylesheet" type="text/css" href="reference.css">
+</head>
+<body>
+	<header>
+  <nav>
+	<table class="fullwidth">
+	   <tr>
+	      <td class="back left"><a rel="prev" href="subscriptions_it.html">Precedente</a></td>
+	      <td class="home center"><h1>Lavorare con i Titoli</h1></td>
+	      <td class="next right"><a rel="next" href="folders_it.html">Successiva</a></td>
+	   </tr>
+	</table>
+	
+	</nav>
+  </header>
+
+	<main>
+	<p>
+	Questa sezione documenta tutte le interazioni dell'utente con i titoli.
+	Nota: in Liferea i titoli sono anche soprannominati "oggetti".
+	</p>
+
+	<h3>Modalità di Visualizzazione Disponibili</h3>
+
+	<p>
+	Liferea conosce due modalità di visualizzazione:
+	</p>
+
+	<table><tr><td width="20px">&nbsp;</td><td>
+	<p>
+	    <table><tr><td width="60px">
+	    <table cellspacing=0 cellpadding=0 style="border:1px solid black;">
+	       <tr>
+	          <td style="border:1px solid black;" width="20px" height="20px" rowspan=2>&nbsp;</td>
+		  <td style="border:1px solid black;background:#ccc;" width="20px" height="20px">&nbsp;</td>
+	       </tr>
+	       <tr>
+	          <td style="border:1px solid black;background:#ccc;" width="20px" height="20px">&nbsp;</td>
+	       </tr>
+	    </table>
+	    </td><td>
+	    <b>Visualizzazione Normale</b> - Alla maniera dei client email: il pannello in alto a destra
+	    contiene una lista di tutti i titoli del notiziario selezionato ed il
+	    titolo selezionato viene mostrato nel pannello in basso a destra.</li>
+	    </td></tr></table>
+	</p>
+
+	<p>
+	    <table><tr><td width="60px">
+	    <table cellspacing=0 cellpadding=0 style="border:1px solid black;">
+	       <tr>
+	          <td style="border:1px solid black;" width="18px" height="40px">&nbsp;</td>
+		  <td style="border:1px solid black;background:#ccc;" width="10px" height="20px">&nbsp;</td>
+	          <td style="border:1px solid black;background:#ccc;" width="10px" height="20px">&nbsp;</td>
+	       </tr>
+	    </table>
+	    </td><td>
+	    <b>Visualizzazione Ampia</b> - 3 pannelli: il pannello di mezzo contiene
+			una lista di tutti i titoli del notiziario selezionato ed il titolo
+			selezionato viene mostrato nel pannello di destra.</li>
+	    </td></tr></table>
+	</p>
+
+	</td></tr></table>
+
+	<p>
+	Puoi scorrere attraverso queste modalità nel menu "Visualizza". Questa
+	impostazione è per ciascun notiziario affinché tu possa visionare ciascun
+	notiziario nella modalità più opportuna. La visualizzazione predefinita può
+	essere modificata nella finestra delle preferenze.
+	</p>
+
+	<h4>Lanciare un Titolo di un Oggetto</h4>
+	<p>
+	Per aprire il collegamento a cui l'oggetto fa riferimento fai doppio-click
+	sull'oggetto o se utilizzi solo la tastiera seleziona l'oggetto e premi ENTER
+	Nota che non tutti gli oggetti forniscono un collegamento! Se l'oggetto
+	fornisce un collegamento allora il testo del suo titolo nel pannello sarà
+	questo collegamento.
+	</p>
+	<p>
+	Per imparare come configurare il browser che viene utilizzato
+	per aprire i collegamenti fai riferimento alla sezione
+	<a href="preferences_it.html">Modificare le Preferenze</a>!
+	</p>
+
+	<h4>Cambiare lo Stato di Lettura</h4>
+	<p>
+	Un titolo ha uno stato di lettura. Gli oggetti non letto hanno titoli in grassetto.
+	Se selezioni un oggetto lo stato di lettura diventa letto e lo stile del titolo
+	dell'oggetto diventa regolare.
+	</p>
+	<p>
+	Talvolta puoi non voler leggere i titoli di un abbonamento.
+	Per segnare tutti i titoli non letti in una volta scegli "Segna Elementi come Letti"
+	dal menu "Notiziario" o dalla barra degli strumenti. In alternativa puoi premere la
+	combinazione rapida Ctrl-R.
+	</p>
+	<p>
+	Esiste anche la possibilità di commutare lo stato di lettura dell'oggetto.
+	Per far questo seleziona "Commuta Stato di Lettura" dal menu degli oggetti o
+	clicca con il terzo tasto del mouse sul titolo.
+	</p>
+	<table cellspacing="10">
+	<tr><td>
+	<img src="help_item_unread.png">
+	</td><td>
+	L'icona utilizzata per indicare gli oggetti non letti.
+	</td></tr>
+	</table>
+
+	<h4>Contrassegnare gli Oggetti</h4>
+	<p>
+	Liferea ti consente di contrassegnare gli oggetti con una bandierina. Questo è utile
+	per trovare questi oggetti più facilmente e per evitare che essi vengano
+	cancellati dalla memoria quando diventano vecchi. Per far questo scegli "Commuta Contrassegno Articolo"
+	dal menu contestuale dell'oggetto o clicca la colonna "icona" dell'elenco dei notiziari
+	con il primo tasto del mouse.
+	</p>
+	<!-- Il testo originale dice "terzo tasto del mouse", ma attualmente quello
+	     viene usato solo per lo stato di lettura. Corretto. - Lorenzo -->
+	<table cellspacing="10">
+	<tr><td>
+	<img src="help_item_flag.png">
+	</td><td>
+	L'icona utilizzata per indicare gli oggetti contrassegnati.
+	</td></tr>
+	</table>
+
+	<h4>Saltare all'Elemento non Letto Successivo</h4>
+	<p>
+	Quando si utilizza questa funzione, facendo clic sul pulsante nel
+	barra degli strumenti o utilizzando il tasto di scelta rapida (Ctrl-N)
+	si potrà accedere a tutti gli oggetti non letti molto velocemente.
+	Il programma salterà prima al prossimo oggetto non letto nell'elenco degli
+	oggetti attualmente visualizzato e quando
+	non ci sono oggetti non letti selezionerà il primo non letto
+	nel primo notiziario dell'elenco dei notiziari che contiene oggetti non letti.
+	</p>
+
+	<h4>Cercare gli Oggetti</h4>
+	<p>
+	Esiste la possibilità di cercare in tutti gli oggetti che contengono
+	uno specifico frammento di testo nel proprio titolo o contenuto
+	usando la casella di ricerca. Fai riferimento alla sezione
+	<a href="searching_it.html">Cercare le Notizie</a>!
+	</p>
+
+	<h4>Rimuovere gli Oggetti</h4>
+	<p>
+	Selezionando "Rimuovi Tutti gli Articoli" dal menu "Notiziario" potrai
+	ripulire la memoria degli oggetti del notiziario attualmente selezionato.
+	Puoi anche rimuoverne uno solo scegliendo l'opzione "Rimuovi".
+	</p>
+	</main>
+
+	<footer>
+  <nav>
+	
+	<table class="fullwidth">
+	   <tr>
+	      <td class="back left"><a rel="prev" href="subscriptions_it.html">Precedente</a></td>
+	      <td class="home center"><a href="topics_it.html">Indice</a></td>
+	      <td class="next right"><a rel="next" href="folders_it.html">Successiva</a></td>
+	   </tr>
+	</table>
+	</nav>
+  </footer>
+</body>
+</html>

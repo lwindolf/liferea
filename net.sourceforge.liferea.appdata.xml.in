@@ -1,42 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2022 Lars Windolf  -->
 <component type="desktop-application">
-  <id>net.sourceforge.liferea.desktop</id>
-  <metadata_license>CC0</metadata_license>
+  <id>net.sourceforge.liferea</id>
+  <provides>
+    <id>net.sourceforge.liferea.desktop</id>
+  </provides>
+  <launchable type="desktop-id">net.sourceforge.liferea.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0+</project_license>
   <name>Liferea</name>
-  <_summary>RSS feed reader</_summary>
+  <developer_name>Lars Windolf</developer_name>
+  <update_contact>lars.windolf_at_gmx.de</update_contact>
+  <summary>Keep up with your feeds</summary>
   <description>
-    <_p>Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator for
-	online news feeds. It supports a number of different feed formats including 
-	RSS/RDF, CDF and Atom. There are many other news readers available, but these 
-	others are not available for Linux or require many extra libraries to be 
-	installed. Liferea tries to fill this gap by creating a fast, easy to use, 
-	easy to install news aggregator for GTK/GNOME.
-    </_p>
-    <_p>Distinguishing features:</_p>
+    <p>Liferea is a feed reader/news aggregator that brings together all of the content from your favorite subscriptions
+    into a simple interface that makes it easy to organize and browse feeds. Its GUI is similar to a desktop mail/news
+    client, with an embedded web browser.
+    </p>
+    <p>Distinguishing features:</p>
     <ul>
-     <_li>Read articles when offline</_li>
-     <_li>Synchronizes with TheOldReader</_li>
-     <_li>Synchronizes with TinyTinyRSS</_li>
-     <_li>Synchronizes with InoReader</_li>
-     <_li>Synchronizes with Reedah</_li>
-     <_li>Permanently save headlines in news bins</_li>
-     <_li>Match items using search folders</_li>
-     <_li>Play Podcasts</_li>
+      <li>Read articles when offline</li>
+      <li>Force fetch full article text using HTML5 extraction</li>
+      <li>Subscribe to HTML5 websites that do not even have a feed!</li>
+      <li>Synchronizes with Google Reader API (TheOldReader, FreshRSS, FeedHQ, Miniflux, ...)</li>
+      <li>Synchronizes with Reedah</li>
+      <li>Synchronizes with TinyTinyRSS</li>
+      <li>Permanently save headlines in news bins</li>
+      <li>Match items using search folders</li>
+      <li>Play Podcasts</li>
     </ul>
   </description>
   <screenshots>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot2.png</image></screenshot>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot3.png</image></screenshot>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot4.png</image></screenshot>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot5.png</image></screenshot>
-    <screenshot type="default"><image width="1200" height="675">https://lzone.de/liferea/screenshots/screenshot6.png</image></screenshot>
-    <screenshot type="default"><image width="793" height="464">https://lzone.de/liferea/screenshots/screenshot7.png</image></screenshot>
-    <screenshot type="default"><image width="926" height="504">https://lzone.de/liferea/screenshots/screenshot8.png</image></screenshot>
-    <screenshot type="default"><image width="800" height="450">https://lzone.de/liferea/screenshots/screenshot9.png</image></screenshot>
+    <screenshot type="default">
+      <caption>Reading newsfeeds in an email client interface</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot1.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Hide read feeds from the subscription list</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot2.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Three pane view mode for wide screens</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot3.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Play SoundCloud music in Liferea</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot4.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Play music enclosures with the internal player</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot5.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Read your favourite comics!</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot6.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Customize Liferea in the preferences dialog</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot7.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Easily subscribe to new feeds</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot8.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Browse the web with tabs inside Liferea</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot9.png</image>
+    </screenshot>
   </screenshots>
+  <url type="bugtracker">https://github.com/lwindolf/liferea/issues/new</url>
   <url type="homepage">https://lzone.de/liferea/</url>
-  <update_contact>liferea-devel@lists.sf.net</update_contact>
+  <translation type="gettext">liferea</translation>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
     <content_attribute id="violence-fantasy">none</content_attribute>
@@ -67,10 +101,202 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
-    <release version="1.13.6"  date="2021-05-07" />
-    <release version="1.13.5"  date="2021-01-10" />
-    <release version="1.13.4"  date="2020-12-24" />
-    <release version="1.13.3"  date="2020-10-09" />
-    <release version="1.13.2"  date="2020-08-28" />
+    <release date="2023-03-24" version="1.14.3">
+      <description>
+        <p>This is another 1.14 bugfix release to address a crash affecting some users and a build issue when running tests</p>
+        <ul>Changes
+          <li>Fixes #1214: crash in conf_get_bool_value_from_schema (mozbugbox, reported by Mikel Olasagasti)</li>
+          <li>Fixes #1215: failed to build in launchpad PPA due to auto_test permission issue (reported by PandaJim)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2023-03-21" version="1.14.2">
+      <description>
+        <p>This is a stability fix for 1.14.1</p>
+        <ul>Changes
+          <li>Fixes #1212: 1.14.1 crash when refreshing feeds (mozbugbox)</li>
+          <li>Fixes a memory leak when reloading CSS (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2023-03-13" version="1.14.1">
+      <description>
+        <p>CVE-2023-1350 Remote code execution on feed enrichment</p>
+        <ul>Changes
+          <li>Fixes CVE-2023-1350: RCE vulnerability on feed enrichment (Alexander Erwin Ittner)</li>
+          <li>Fixes #1200: Crash on double free (mozbugbox)</li>
+          <li>Improve #1192 be reordering widget creation order (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2023-01-10" version="1.14.0">
+      <description>
+        <p>Features introduced with 1.14:</p>
+        <p>
+           Many thanks to all the contributors and package maintainers that made this possible!
+        </p>
+        <ul>
+          <li>Internal Browser
+            <ul>
+              <li>New 'Reader mode' preference that allows stripping all web content</li>
+              <li>Implement support for Webkits Intelligent Tracking Protection</li>
+              <li>New progress bar when loading websites</li>
+              <li>Youtube videos from media:video can be embedded now with a click on the video preview picture.</li>
+              <li>Changes to UserAgent handling: same UA is now used for both feed fetching
+              and internal browsing. User agent now indicates Android+Mobile per default
+              instead of suggesting a Linux desktop to better adapt to the smaller
+              (in comparison to browsers) rendering pane. Additionally special env
+              vars LIFEREA_UA and LIFEREA_UA_ANONYMOUS now also affect the internal
+              browsing.</li>
+            </ul>
+          </li>
+          <li>GUI
+            <ul>
+              <li>New view mode 'Automatic' which switches between 'Normal' and 'Wide' mode based
+              on the window proportions.</li>
+              <li>Liferea now supports the new GTK dark theme logic, where in the GTK/GNOME preferences
+              you define wether you "prefer" dark mode or light mode</li>
+              <li>Favicon discovery improvements: now detects all types of Apple Touch Icons, MS Tile
+              Images and Safari Mask Icons</li>
+              <li>Increase size of stored favicons to 128x128px to improve icon quality in 3-pane wide view.</li>
+              <li>Make several plugins support gettext</li>
+              <li>Allow mutiple feed in same libnotify notification</li>
+              <li>Redesign of the update message in the status bar. It now shows a
+              update counter of the feeds being in update.</li>
+              <li>You can now export a feed to XML file</li>
+              <li>Added an option to show news bins in reduced feed list</li>
+              <li>Added menu option to send item per mail</li>
+            </ul>
+          </li>
+          <li>Feed parsing
+            <ul>
+              <li>Default to https:// instead of http:// when user doesn't
+              provide protocol on subscribing feed</li>
+              <li>Implement support for subscribing to LD+Json metadata
+              listings e.g. concert or theater event listings</li>
+              <li>Implement support for subscribing to HTML5 websites</li>
+              <li>Support for media:description field of Youtube feeds</li>
+              <li>Improve HTML5 extraction: extract main tag if it exists and no article was found.</li>
+              <li>Execute feed pipe/filter commands asynchronously</li>
+              <li>Better explanation of feed update errors.</li>
+            </ul>
+          </li>
+          <li>Online services
+            <ul>
+              <li>Added generic Google Reader API support (allows using FeedHQ, FreshRSS, Miniflux...)</li>
+              <li>Now allow converting TinyTinyRSS subscriptions to local subscriptions</li>
+            </ul>
+          </li>
+          <li>Search folders
+            <ul>
+              <li>New search folder rule to match podcasts</li>
+              <li>New search folder rule to match headline authors</li>
+              <li>New search folder rule to match subscription source</li>
+              <li>New search folder rule to match parent folder name</li>
+              <li>New search folder property that allows hiding read items</li>
+              <li>Now search folders are automatically rebuild when rules are changed</li>
+            </ul>
+          </li>
+          <li>Plugins
+            <ul>
+              <li>Added new plugin 'add-bookmark-site' that allows to configure a custom bookmarking site.</li>
+              <li>Added new plugin 'getfocus' that adds transparency on the feed list when it is not focussed.</li>
+              <li>Trayicon plugin has now a configuration option to change the behaviour when closing Liferea.</li>
+              <li>Trayicon plugin has now an option to disable minimizing to tray</li>
+            </ul>
+          </li>
+          <li>Hotkeys
+            <ul>
+              <li>New hot key Ctrl-D for 'Open in External Browser'</li>
+              <li>New hot key F10 for headerbar plugin to allow triggering the hamburger menu</li>
+              <li>New hot key Ctrl-0 to reset zoom</li>
+              <li>New hot key Ctrl-O to open enclosures</li>
+            </ul>
+          </li>
+        </ul>
+
+        <p>Important bugfixes</p>
+        <ul>
+        <li>Fixing hidden panes:
+           Many Liferea users did suffer from invisible pane (e.g. a minimized feed list
+           or HTML view) upon startup. With certain desktop environments / themes making
+           the pane grips invisible it is hard to grip the correct pixel to restore a pane.
+
+           Now Liferea will never allow the panes to be smaller than 5% in height or width
+           regarding to there orientation. If a pane is smaller than 5% height/width it will be
+           set to 30% width or 50% height on startup.
+        </li>
+        <li>
+          Wait for network to be fully available before updating: sometimes when real internet
+          access takes longer to come up then your WLAN connection Liferea did update feeds to
+          early resulting in errors. Now Liferea waits for full internet connection.
+        </li>
+        </ul>
+
+        <p>Deprecations</p>
+        <ul>
+          <li>2-pane mode was removed</li>
+          <li>Dropped CDF channel support</li>
+          <li>Dropped Atom 0.2/0.3 (aka Pie) support</li>
+          <li>Dropped blogChannel namespace support</li>
+          <li>Dropped photo namespace support</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2022-07-26" version="1.13.9">
+      <description>
+        <p>This will be the last unstable release before the first 1.14 release candidate. It contains
+         bugfixes and a generalization of the Google Reader API implementation we already had
+         for TheOldReader. This implementation was improved, fixing some bugs and can now
+         be used with arbitrary Google Reader services.
+        </p>
+        <p>New features: Google Reader API support
+
+           If you are a FeedHQ, FreshRSS, Basquz user or a a user of any other Google Reader
+           compatible service, you can now subscribe to those services.
+
+           Note: it currently doesn't work with Miniflux due to this miniflux/v2#1498
+           which is probably a bug in Miniflux. Once it is solved Miniflux also can be used.
+
+           If you experience any issues please open a ticket for support!
+        </p>
+        <p>GUI simplification: less cluttered item list
+
+           The item list has seen some rework. The quite large left padding (cause by reserved space
+           for expansion header) is now gone. Also the enclosures icon column was dropped. When
+           using Liferea in wide mode this really gives back a lot of vertical space, so Liferea in wide mode
+           becomes more useful half-maximized or in split screen situations.
+
+           Please give feedback how you like the change, especially the rather small padding left of the
+           favicon column (when in wide mode)!
+        </p>
+        <p>Changes</p>
+        <ul>
+          <li>Update to Readability.js 0.41 (better image and table handling) (Lars Windolf)</li>
+          <li>Changes to UserAgent handling: same UA is now used for both feed fetching
+                and internal browsing. User agent now indicates Android+Mobile per default
+                instead of suggesting a Linux desktop to better adapt to the smaller
+                (in comparison to browsers) rendering pane. Additionally special env
+                vars LIFEREA_UA and LIFEREA_UA_ANONYMOUS now also affect the internal
+                browsing.</li>
+          <li>Improve HTML5 extraction: extract main if it exists and no article was found</li>
+          <li>#1117: Hide unused expander space in item list. This saves horizontal space. (Sefler Zhou)</li>
+          <li>Drop enclosure icon from item list. This saves horizontal space. (Lars Windolf)</li>
+          <li>#515, #962, #1113 adds generic Google Reader API support (this enables access to FeedHQ, FreshRSS, Miniflux...)</li>
+          <li>#1108, #113: Improve performance by different check order in itemset merging (suggested by mozbugbox)</li>
+          <li>Fixes #1033: Subscribing defaulted to HTML5 feeds even when real feeds do exist. (reported by Hanno Braun)</li>
+          <li>Fixes #1111: wrong base URI in reader mode (Lars Windolf)</li>
+          <li>Fixes #1112: Image duplication caused by feeds providing an image link which is also in the item description as additional metadata. (Lars Windolf)</li>
+          <li>Update of Dutch translation (Gert-dev)</li>
+        </ul>
+      </description>
+    </release>
+    <release date="2022-04-05" version="1.13.8"/>
+    <release date="2021-12-07" version="1.13.7"/>
+    <release date="2021-05-07" version="1.13.6"/>
+    <release date="2021-01-10" version="1.13.5"/>
+    <release date="2020-12-24" version="1.13.4"/>
+    <release date="2020-10-09" version="1.13.3"/>
+    <release date="2020-08-28" version="1.13.2"/>
   </releases>
 </component>

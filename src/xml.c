@@ -49,7 +49,7 @@ xhtml_parse (const gchar *html, gint len)
 	   because it doesn't know how to handle NONET. But, it might
 	   learn in the future. */
 	out = htmlReadMemory (html, len, NULL, "utf-8", HTML_PARSE_RECOVER | HTML_PARSE_NONET |
-	                      ((debug_level & DEBUG_HTML)?0:(HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING)));
+	                      ((debug_get_flags () & DEBUG_HTML)?0:(HTML_PARSE_NOERROR | HTML_PARSE_NOWARNING)));
 
 	return out;
 }
@@ -65,7 +65,7 @@ xhtml_find_body (xmlDocPtr doc)
 	if (!xpathCtxt)
 		goto error;
 
-	xpathObj = xmlXPathEvalExpression ("/html/body", xpathCtxt);
+	xpathObj = xmlXPathEvalExpression (BAD_CAST "/html/body", xpathCtxt);
 	if (!xpathObj)
 		goto error;
 	if (!xpathObj->nodesetval->nodeMax)
@@ -99,15 +99,15 @@ xhtml_extract_doc (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 		xmlFree (xml_base);
 	}
 	else if (defaultBase)
-		xmlNodeSetBase (divNode, defaultBase);
+		xmlNodeSetBase (divNode, BAD_CAST defaultBase);
 
 	if (xhtmlMode == 0) { /* Read escaped HTML and convert to XHTML, placing in a div tag */
 		xmlDocPtr oldDoc;
 		xmlNodePtr copiedNodes = NULL;
-		xmlChar *escapedhtml;
+		gchar *escapedhtml;
 
 		/* Parse the HTML into oldDoc*/
-		escapedhtml = xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
+		escapedhtml = (gchar *)xmlNodeListGetString (xml->doc, xml->xmlChildrenNode, 1);
 		if (escapedhtml) {
 			escapedhtml = g_strstrip (escapedhtml);	/* stripping whitespaces to make empty string detection easier */
 			if (*escapedhtml) {			/* never process empty content, xmlDocCopy() doesn't like it... */
@@ -148,7 +148,7 @@ xhtml_extract_doc (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 				}
 				xmlFreeDoc (oldDoc);
 			}
-			xmlFree (escapedhtml);
+			g_free (escapedhtml);
 		}
 	} else if (xhtmlMode == 1 || xhtmlMode == 2) { /* Read multiple XHTML tags and embed in div tag */
 		xmlNodePtr copiedNodes = xmlDocCopyNodeList (newDoc, xml->xmlChildrenNode);
@@ -173,7 +173,7 @@ xhtml_extract (xmlNodePtr xml, gint xhtmlMode, const gchar *defaultBase)
 	xmlNodeDump (buf, newDoc, xmlDocGetRootElement (newDoc), 0, 0 );
 
 	if (xmlBufferLength(buf) > 0)
-		result = xmlCharStrdup (xmlBufferContent (buf));
+		result = (gchar *)xmlCharStrdup ((gchar *)xmlBufferContent (buf));
 
 	xmlBufferFree (buf);
 	xmlFreeDoc (newDoc);
@@ -202,7 +202,7 @@ xhtml_extract_from_string (const gchar *html, const gchar *defaultBase)
 	if (body != NULL)
 		result = xhtml_extract (body, 1, defaultBase);
 	else
-		result = xmlCharStrdup ("<div></div>");
+		result = g_strdup ("<div></div>");
 
 	xmlFreeDoc (doc);
 	return result;
@@ -236,35 +236,40 @@ xhtml_is_well_formed (const gchar *data)
 	return result;
 }
 
+typedef struct regex {
+    GRegex *expr;
+    const gchar *replace;
+} *regexPtr;
+
 static GSList *dhtml_strippers = NULL;
-static GSList *unsupported_tag_strippers = NULL;
 
 static void
-xhtml_stripper_add (GSList **strippers, const gchar *pattern)
+xhtml_regex_add (GSList **regex, const gchar *pattern, const gchar *replace)
 {
 	GError *err = NULL;
-	GRegex *expr;
+        regexPtr expr = g_new0 (struct regex, 1);
 
-	expr = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
+	expr->expr = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
+        expr->replace = replace;
 	if (err) {
 		g_warning ("xhtml_strip_setup: %s\n", err->message);
 		g_error_free (err);
 		return;
 	}
-	*strippers = g_slist_append (*strippers, expr);
+	*regex = g_slist_append (*regex, expr);
 }
 
 static gchar *
-xhtml_strip (const gchar *html, GSList *strippers)
+xhtml_regex (const gchar *html, GSList *strippers)
 {
 	gchar *result = g_strdup (html);
 	GSList *iter = strippers;
 
 	while (iter) {
 		GError *err = NULL;
-		GRegex *expr = (GRegex *)iter->data;
+		regexPtr expr = (regexPtr) iter->data;
 		gchar *tmp = result;
-		result = g_regex_replace (expr, tmp, -1, 0, "", 0, &err);
+		result = g_regex_replace_literal (expr->expr, tmp, -1, 0, expr->replace, 0, &err);
 		if (err) {
 			g_warning ("xhtml_strip: %s\n", err->message);
 			g_error_free (err);
@@ -281,25 +286,22 @@ gchar *
 xhtml_strip_dhtml (const gchar *html)
 {
 	if (!dhtml_strippers) {
-		xhtml_stripper_add (&dhtml_strippers, "\\s+onload='[^']+'");
-		xhtml_stripper_add (&dhtml_strippers, "\\s+onload=\"[^\"]+\"");
-		xhtml_stripper_add (&dhtml_strippers, "<\\s*script\\s*>.*</\\s*script\\s*>");
-		xhtml_stripper_add (&dhtml_strippers, "<\\s*meta\\s*>.*</\\s*meta\\s*>");
-		xhtml_stripper_add (&dhtml_strippers, "<\\s*iframe[^>]*\\s*>.*</\\s*iframe\\s*>");
+		// Drop attribute
+		xhtml_regex_add (&dhtml_strippers, "\\s+onload='[^']+'", "");
+		xhtml_regex_add (&dhtml_strippers, "\\s+onload=\"[^\"]+\"", "");
+
+		// Drop tags including content
+		xhtml_regex_add (&dhtml_strippers, "<\\s*meta[^>]*>.*</\\s*meta\\s*>", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*script[^>]*>.*</\\s*script\\s*>", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*iframe[^>]*>.*</\\s*iframe\\s*>", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*(meta|script|iframe)[^>]*/>", "");
+
+		// Drops tags but not their content
+		xhtml_regex_add (&dhtml_strippers, "<\\s*/?wbr[^>]*/?\\s*>", "");
+		xhtml_regex_add (&dhtml_strippers, "<\\s*/?body[^>]*/?\\s*>", "");
 	}
 
-	return xhtml_strip (html, dhtml_strippers);
-}
-
-gchar *
-xhtml_strip_unsupported_tags (const gchar *html)
-{
-	if (!unsupported_tag_strippers) {
-		xhtml_stripper_add(&unsupported_tag_strippers, "<\\s*/?wbr[^>]*/?\\s*>");
-		xhtml_stripper_add(&unsupported_tag_strippers, "<\\s*/?body[^>]*/?\\s*>");
-	}
-
-	return xhtml_strip(html, unsupported_tag_strippers);
+	return xhtml_regex (html, dhtml_strippers);
 }
 
 typedef struct {
@@ -437,20 +439,20 @@ xml_process_entities (void *ctxt, const xmlChar *name)
 		if(!entities) {
 			/* loading HTML entities from external DTD file */
 			entities = xmlNewDoc (BAD_CAST "1.0");
-			xmlCreateIntSubset (entities, BAD_CAST "HTML entities", NULL, PACKAGE_DATA_DIR "/" PACKAGE "/dtd/html.ent");
+			xmlCreateIntSubset (entities, BAD_CAST "HTML entities", NULL, BAD_CAST PACKAGE_DATA_DIR "/" PACKAGE "/dtd/html.ent");
 			entities->extSubset = xmlParseDTD (entities->intSubset->ExternalID, entities->intSubset->SystemID);
 		}
 
 		if (NULL != (found = xmlGetDocEntity (entities, name))) {
 			/* returning as faked predefined entity... */
 			tmp = xmlStrdup (found->content);
-			tmp = unhtmlize (tmp);	/* arghh ... slow... */
+			tmp = BAD_CAST unhtmlize ((gchar *)tmp);	/* arghh ... slow... */
 			entity = g_new0 (xmlEntity, 1);
 			entity->type = XML_ENTITY_DECL;
 			entity->name = name;
 			entity->orig = NULL;
 			entity->content = tmp;
-			entity->length = g_utf8_strlen (tmp, -1);
+			entity->length = g_utf8_strlen ((gchar *)tmp, -1);
 			entity->etype = XML_INTERNAL_PREDEFINED_ENTITY;
 		}
 	}
@@ -471,7 +473,7 @@ xpath_find (xmlNodePtr node, const gchar *expr)
 
 		if (NULL != (xpathCtxt = xmlXPathNewContext (node->doc))) {
 			xpathCtxt->node = node;
-			xpathObj = xmlXPathEval (expr, xpathCtxt);
+			xpathObj = xmlXPathEval (BAD_CAST expr, xpathCtxt);
 		}
 
 		if (xpathObj && !xmlXPathNodeSetIsEmpty (xpathObj->nodesetval))
@@ -495,7 +497,7 @@ xpath_foreach_match (xmlNodePtr node, const gchar *expr, xpathMatchFunc func, gp
 
 		if (NULL != (xpathCtxt = xmlXPathNewContext (node->doc))) {
 			xpathCtxt->node = node;
-			xpathObj = xmlXPathEval (expr, xpathCtxt);
+			xpathObj = xmlXPathEval (BAD_CAST expr, xpathCtxt);
 		}
 
 		if (xpathObj && xpathObj->nodesetval && xpathObj->nodesetval->nodeMax) {
@@ -516,13 +518,13 @@ xpath_foreach_match (xmlNodePtr node, const gchar *expr, xpathMatchFunc func, gp
 gchar *
 xml_get_attribute (xmlNodePtr node, const gchar *name)
 {
-	return xmlGetProp (node, BAD_CAST name);
+	return (gchar *)xmlGetProp (node, BAD_CAST name);
 }
 
 gchar *
 xml_get_ns_attribute (xmlNodePtr node, const gchar *name, const gchar *namespace)
 {
-	return xmlGetNsProp (node, BAD_CAST name, BAD_CAST namespace);
+	return (gchar *)xmlGetNsProp (node, BAD_CAST name, BAD_CAST namespace);
 }
 
 static void
@@ -533,7 +535,7 @@ liferea_xml_errorSAXFunc (void * ctx, const char * msg,...)
 	va_start(valist,msg);
 	parser_error = g_strdup_vprintf (msg, valist);
 	va_end(valist);
-	debug1 (DEBUG_PARSING, "SAX parser error : %s", parser_error);
+	debug (DEBUG_PARSING, "SAX parser error : %s", parser_error);
 	g_free (parser_error);
 }
 
@@ -578,7 +580,7 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 
 	/* we don't like no data */
 	if (0 == fpc->dataLength) {
-		debug1 (DEBUG_PARSING, "xml_parse_feed(): empty input while parsing \"%s\"!", fpc->subscription->node->title);
+		debug (DEBUG_PARSING, "xml_parse_feed(): empty input while parsing \"%s\"!", fpc->subscription->node->title);
 		g_string_append (fpc->feed->parseErrors, "Empty input!\n");
 		return NULL;
 	}
@@ -588,7 +590,7 @@ xml_parse_feed (feedParserCtxtPtr fpc)
 
 	doc = xml_parse (fpc->data, (size_t)fpc->dataLength, errors);
 	if (!doc) {
-		debug1 (DEBUG_PARSING, "xml_parse_feed(): could not parse feed \"%s\"!", fpc->subscription->node->title);
+		debug (DEBUG_PARSING, "xml_parse_feed(): could not parse feed \"%s\"!", fpc->subscription->node->title);
 		g_string_prepend (fpc->feed->parseErrors, _("XML Parser: Could not parse document:\n"));
 		g_string_append (fpc->feed->parseErrors, "\n");
 	}
@@ -607,4 +609,17 @@ xml_init (void)
 	xmlMemSetup (g_free, g_malloc, g_realloc, g_strdup);
 	/* has to be called for multithreaded programs */
 	xmlInitParser ();
+}
+
+void
+xml_deinit (void)
+{
+	GSList *iter = dhtml_strippers;
+
+	while (iter) {
+		g_regex_unref ((((regexPtr)iter->data))->expr);
+		iter = g_slist_next (iter);
+	}
+	g_slist_free_full (dhtml_strippers, g_free);
+	dhtml_strippers = NULL;
 }

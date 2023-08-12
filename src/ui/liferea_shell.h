@@ -2,7 +2,7 @@
  * @file liferea_shell.h  UI layout handling
  *
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2022 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #ifndef _LIFEREA_SHELL_H
 #define _LIFEREA_SHELL_H
 
+#include <string.h>
 #include <glib-object.h>
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -78,13 +79,6 @@ void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState
 void liferea_shell_destroy (void);
 
 /**
- * liferea_shell_present:
- *
- * Presents the main window if it is hidden.
- */
-void liferea_shell_present (void);
-
-/**
  * liferea_shell_show_window:
  *
  * Show the main window.
@@ -125,18 +119,6 @@ void liferea_shell_update_toolbar (void);
 void liferea_shell_update_history_actions (void);
 
 /**
- * liferea_shell_update_feed_menu: (skip)
- * @add:                TRUE if subscribing is to be enabled
- * @enabled:    	TRUE if feed actions are to be enabled
- * @readWrite:  	TRUE if feed list modifying actions are enabled
- *
- * Update the sensitivity of options affecting single feeds.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean readWrite);
-
-/**
  * liferea_shell_update_item_menu: (skip)
  * @enabled:	TRUE if item actions are to be enabled
  *
@@ -145,27 +127,6 @@ void liferea_shell_update_feed_menu (gboolean add, gboolean enabled, gboolean re
  * TODO: use signal instead
  */
 void liferea_shell_update_item_menu (gboolean enabled);
-
-/**
- * liferea_shell_update_allitems_actions: (skip)
- * @isNotEmpty: 	TRUE if there is a non-empty item set active
- * @isRead:     	TRUE if there are no unread items in the item set
- *
- * Update the sensitivity of options affecting item sets.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_allitems_actions (gboolean isNotEmpty, gboolean isRead);
-
-/**
- * liferea_shell_update_update_menu: (skip)
- * @enabled:	TRUE if menu options are to be enabled
- *
- * Set the sensitivity of items in the update menu.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_update_menu (gboolean enabled);
 
 /**
  * liferea_shell_set_status_bar:
@@ -198,16 +159,6 @@ GtkWidget * liferea_shell_get_window (void);
  * Invokes a rebuild of the WebView CSS.
  */
 void liferea_shell_rebuild_css (void);
-
-/**
- * liferea_shell_set_view_mode:
- * @newMode:	the new mode
- *
- * Changes the view mode programmatically. Used to change the mode when
- * selecting another feed. Convenience function to trigger the stateful action
- * set-view-mode.
- */
-void liferea_shell_set_view_mode (nodeViewType newMode);
 
 G_END_DECLS
 

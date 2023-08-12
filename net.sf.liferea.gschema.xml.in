@@ -13,7 +13,7 @@
       <description>Selects which key to use to pagedown or go to the next unread item. Set to 0 to use space, 1 to use ctrl-space, or 2 to use alt-space.</description>
     </key>
     <key name="browser" type="s">
-      <default>'mozilla %s'</default>
+      <default>'firefox %s'</default>
       <summary>Selects the browser command to use when browser_module is set to manual</summary>
       <description>Selects the browser command to use when browser_module is set to manual.</description>
     </key>
@@ -28,9 +28,14 @@
       <description>If TRUE Liferea will display a confirmation dialog before marking all items of the selected feed as read.</description>
     </key>
     <key name="default-view-mode" type="i">
-      <default>0</default>
+      <default>2</default>
       <summary>The default view mode for feed list nodes.</summary>
-      <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane</description>
+      <description>The default view mode for displaying feed list nodes. Possible values: 0=email like 3-pane, 1=wide view 3-pane, 2=auto switching</description>
+    </key>
+    <key name="defer-delete-mode" type="b">
+      <default>false</default>
+      <summary>Defer hiding read items from search folders.</summary>
+      <description>If this option is enabled, defer hiding read items until the search folder is switched.</description>
     </key>
     <key name="fixed-date-format" type="b">
          <default>false</default>
@@ -217,12 +222,16 @@
       <summary>Item list view column order</summary>
       <description>The column order in the item list view.</description>
     </key>
-
+    <key name="intranet-connectivity" type="b">
+      <default>false</default>
+      <summary>Accept that there is not internet available.</summary>
+      <description>Enable this if you are in an intranet with no internet connectivity. Otherwise updates won't work.</description>
+    </key>
   </schema>
 
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="net.sf.liferea.plugins" path="/org/gnome/liferea/plugins/">
     <key name="active-plugins" type="as">
-      <default>['gnome-keyring','media-player','trayicon','plugin-installer','pane']</default>
+      <default>['gnome-keyring','media-player','plugin-installer']</default>
       <summary>Active plugins</summary>
       <description>List of active plugins. It contains the "Module" names of the active plugins. See the .plugin file for obtaining the"Module" name of a given plugin.</description>
     </key>

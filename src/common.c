@@ -1,9 +1,10 @@
 /**
  * @file common.c common routines for Liferea
- * 
- * Copyright (C) 2003-2013  Lars Windolf <lars.windolf@gmx.de>
+ *
+ * Copyright (C) 2003-2023  Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006  Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2004       Karl Soderstrom <ks@xanadunet.net>
+ * Copyright (C) 2022       Lorenzo L. Ancora <admin@lorenzoancora.info>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +29,7 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 #include <pango/pango-types.h>
+#include <fribidi.h>
 
 #include <sys/stat.h>
 #include <errno.h>
@@ -54,7 +56,7 @@ common_parse_long (const gchar *str, long def)
 		return def;
 	if (0 == (sscanf (str,"%ld", &num)))
 		num = def;
-	
+
 	return num;
 }
 
@@ -72,6 +74,7 @@ common_check_dir (gchar *path)
 static void
 common_init_paths (void)
 {
+	gchar *filename;
 	gchar *lifereaCachePath  = g_build_filename (g_get_user_cache_dir(), "liferea", NULL);
 
 	common_check_dir (g_strdup (lifereaCachePath));
@@ -82,16 +85,22 @@ common_init_paths (void)
 	common_check_dir (g_build_filename (g_get_user_config_dir(), "liferea", NULL));
 	common_check_dir (g_build_filename (g_get_user_data_dir(), "liferea", NULL));
 
+	pathsChecked = TRUE;
+
+	/* Install default stylesheet if it does not yet exist */
+	filename = common_create_config_filename ("liferea.css");
+	if (!g_file_test (filename, G_FILE_TEST_EXISTS))
+		common_copy_file (PACKAGE_DATA_DIR "/" PACKAGE "/css/user.css", filename);
+	g_free(filename);
+
 	/* ensure reasonable default umask */
 	umask (077);
 
 	g_free (lifereaCachePath);
-
-	pathsChecked = TRUE;
 }
 
 gchar *
-common_create_data_filename (const gchar *filename) 
+common_create_data_filename (const gchar *filename)
 {
 	if (!pathsChecked)
 		common_init_paths ();
@@ -100,7 +109,7 @@ common_create_data_filename (const gchar *filename)
 }
 
 gchar *
-common_create_config_filename (const gchar *filename) 
+common_create_config_filename (const gchar *filename)
 {
 	if (!pathsChecked)
 		common_init_paths ();
@@ -134,31 +143,33 @@ common_uri_escape (const xmlChar *url)
 	xmlChar	*result, *tmp;
 
 	g_assert (NULL != url);
-		
-	/* xmlURIEscape returns NULL if spaces are in the URL, 
-	   so we need to replace them first (see SF #2965158) */
-	tmp = common_strreplace (g_strdup (url), " ", "%20");
+
+	/* xmlURIEscape returns NULL if spaces are in the URL,
+	   so we need to replace them first (see SF #2965158).
+	   TODO: perhaps replace xmlURIEscape with g_uri_escape_string ?
+	 */
+	tmp = (xmlChar *)common_strreplace (g_strdup ((gchar *)url), " ", "%20");
 	result = xmlURIEscape (tmp);
 	g_free (tmp);
-	
+
 	/* workaround if escaping somehow fails... */
 	if (!result)
-		result = g_strdup (url);
+		result = (xmlChar *)g_strdup ((gchar *)url);
 
-	return result;	
+	return result;
 }
 
 xmlChar *
 common_uri_unescape (const xmlChar *url)
 {
-	return xmlURIUnescapeString (url, -1, NULL);
+	return (xmlChar *)xmlURIUnescapeString ((char *)url, -1, NULL);
 }
 
 xmlChar *
 common_uri_sanitize (const xmlChar *uri)
 {
 	xmlChar *tmp, *result;
-	
+
 	/* We must escape all dangerous characters (e.g. & and spaces)
 	   in the URL. As we do not know if the URL is already escaped we
 	   simply unescape and reescape it. */
@@ -175,22 +186,60 @@ common_build_url (const gchar *url, const gchar *baseURL)
 {
 	xmlChar	*escapedURL, *absURL, *escapedBaseURL;
 
-	escapedURL = common_uri_escape (url);
+	escapedURL = common_uri_escape ((xmlChar *)url);
 
 	if (baseURL) {
-		escapedBaseURL = common_uri_escape (baseURL);	
+		escapedBaseURL = common_uri_escape ((xmlChar *)baseURL);
 		absURL = xmlBuildURI (escapedURL, escapedBaseURL);
 		if (absURL)
 			xmlFree (escapedURL);
 		else
 			absURL = escapedURL;
-		
+
 		xmlFree (escapedBaseURL);
 	} else {
 		absURL = escapedURL;
 	}
 
 	return absURL;
+}
+
+/*
+ * Replacement for pango_find_base_dir
+ * Based on code from pango_unichar_direction and pango_find_base_dir
+ */
+PangoDirection
+common_find_base_dir (const gchar *text, gint length)
+{
+	FriBidiCharType fbd_ch_type;
+	PangoDirection dir = PANGO_DIRECTION_NEUTRAL;
+	const gchar *p;
+	gunichar ch;
+
+	G_STATIC_ASSERT (sizeof (FriBidiChar) == sizeof (gunichar));
+
+	g_return_val_if_fail (text != NULL || length == 0, PANGO_DIRECTION_NEUTRAL);
+
+	p = text;
+	while ((length < 0 || p < text + length) && *p)
+	{
+		ch = g_utf8_get_char (p);
+
+		fbd_ch_type = fribidi_get_bidi_type (ch);
+		if (!FRIBIDI_IS_STRONG (fbd_ch_type))
+			dir = PANGO_DIRECTION_NEUTRAL;
+		else
+			if (FRIBIDI_IS_RTL (fbd_ch_type))
+				dir = PANGO_DIRECTION_RTL;
+			else
+				dir = PANGO_DIRECTION_LTR;
+
+		if (dir != PANGO_DIRECTION_NEUTRAL)
+			break;
+
+		p = g_utf8_next_char (p);
+    }
+	return dir;
 }
 
 /*
@@ -201,9 +250,9 @@ const gchar *
 common_get_text_direction (const gchar *text)
 {
 	PangoDirection pango_direction = PANGO_DIRECTION_NEUTRAL;
-	
+
 	if (text)
-		pango_direction = pango_find_base_dir (text, -1);
+		pango_direction = common_find_base_dir (text, -1);
 
 	if (pango_direction == PANGO_DIRECTION_RTL)
 		return ("rtl");
@@ -312,17 +361,17 @@ common_strcasestr (const char *phaystack, const char *pneedle)
 			if (c == '\0')
 				goto ret0;
 		} while (tolower(c) != (int) b);
-		
+
 		c = tolower(*++needle);
 		if (c == '\0')
 			goto foundneedle;
 		++needle;
 		goto jin;
-		
+
 		for (;;) {
 			register chartype a;
 			register const unsigned char *rhaystack, *rneedle;
-			
+
 			do {
 				a = *++haystack;
 				if (a == '\0')
@@ -336,18 +385,18 @@ common_strcasestr (const char *phaystack, const char *pneedle)
 				;
 			}
 			while (tolower(a) != (int) b);
-			
+
 		jin:      a = *++haystack;
 			if (a == '\0')
 				goto ret0;
-			
+
 			if (tolower(a) != (int) c)
 				goto shloop;
-			
+
 			rhaystack = haystack-- + 1;
 			rneedle = needle;
 			a = tolower(*rneedle);
-			
+
 			if (tolower(*rhaystack) == (int) a)
 				do {
 					if (a == '\0')
@@ -361,9 +410,9 @@ common_strcasestr (const char *phaystack, const char *pneedle)
 					++rhaystack;
 					a = tolower(*++needle);
 				} while (tolower (*rhaystack) == (int) a);
-			
+
 			needle = rneedle;             /* took the register-poor approach */
-			
+
 			if (a == '\0')
 				break;
 		}
@@ -407,22 +456,36 @@ common_get_mod_time (const gchar *file)
 }
 
 gchar *
-common_get_localized_filename (const gchar *str)
+common_get_localized_filename (const gchar *format)
 {
-	const gchar *const *languages = g_get_language_names();
+	const gchar *const *locales = g_get_language_names();
 	int i = 0;
 
-	while (languages[i] != NULL) {
-		gchar *filename = g_strdup_printf (str, strcmp (languages[i], "C") ? languages[i] : "en");
+	while (locales[i] != NULL) {
+		GString *filename = NULL;
+		GString *locale = NULL;
+		gboolean default_locale = FALSE;
 
-		if (g_file_test (filename, G_FILE_TEST_IS_REGULAR))
-			return filename;
+		/* Enforce ISO 639-1 2-char ids as used in filename postfixes */
+		if (strlen(locales[i]) > 2) locale = g_string_new_len (locales[i], 2);
+		else locale = g_string_new (locales[i]);
+		locale = g_string_ascii_down(locale); // Support case-sensitive filesystems
 
-		g_free (filename);
-		i++;
+		filename = g_string_new(NULL);
+		default_locale = g_str_equal (locale->str, "c"); // C is the system fallback
+		g_string_printf (filename, format, default_locale ? "en" : locale->str);
+
+		if (g_file_test (filename->str, G_FILE_TEST_IS_REGULAR)) {
+			g_string_free (locale, TRUE);
+			return filename->str;
+		} else {
+			g_string_free (locale, TRUE);
+			g_string_free (filename, TRUE);
+			i++;
+		}
 	}
 
-	g_warning ("No file found for %s", str);
+	g_warning ("No file found for %s", format);
 
 	return NULL;
 }
