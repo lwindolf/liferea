@@ -189,7 +189,10 @@ subscription_process_update_result (const struct updateResult * const result, gp
   }
 
 	/* consider everything that prevents processing the data we got */
-	if (result->httpstatus >= 400 || !result->data) {
+	if (304 == result->httpstatus) {
+		node->available = TRUE;
+		statusbar = g_strdup_printf (_("\"%s\" has not changed since last update"), node_get_title(node));
+	} else if (result->httpstatus >= 400 || !result->data) {
 		/* Default */
 		subscription->error = FETCH_ERROR_NET;
 		node->available = FALSE;
@@ -203,9 +206,6 @@ subscription_process_update_result (const struct updateResult * const result, gp
 			subscription_set_discontinued (subscription, TRUE);
 			statusbar = g_strdup_printf (_("\"%s\" is discontinued. Liferea won't updated it anymore!"), node_get_title (node));
 		}
-	} else if (304 == result->httpstatus) {
-		node->available = TRUE;
-		statusbar = g_strdup_printf (_("\"%s\" has not changed since last update"), node_get_title(node));
 	} else if (result->filterErrors) {
 		node->available = FALSE;
 		subscription->error = FETCH_ERROR_NET;
