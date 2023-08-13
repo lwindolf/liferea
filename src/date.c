@@ -185,13 +185,15 @@ date_format (gint64 date, const gchar *date_format)
 {
 	gchar		*result;
 	GDateTime 	*date_tm;
-        gboolean        fixeddatefmt;
+	gboolean        fixeddatefmt = FALSE;
 
 	if (date == 0) {
 		return g_strdup ("");
 	}
 
-        conf_get_bool_value (FIXED_DATE_FORMAT, &fixeddatefmt);
+	if (conf_schema_has_key (NULL, FIXED_DATE_FORMAT)) {
+		conf_get_bool_value (FIXED_DATE_FORMAT, &fixeddatefmt);
+	}
 
 	if (date_format) {
 		date_tm = g_date_time_new_from_unix_local (date);

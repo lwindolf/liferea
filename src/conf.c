@@ -183,8 +183,10 @@ conf_get_toolbar_style(void)
 gboolean
 conf_schema_has_key (GSettings *gsettings, const gchar *key)
 {
-	g_assert (gsettings != NULL);
 	g_assert (key != NULL);
+
+	if (gsettings == NULL)
+		gsettings = settings;
 
 	GSettingsSchema *schema = NULL;
 	gboolean has_key = FALSE;
