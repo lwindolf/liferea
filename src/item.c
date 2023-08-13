@@ -82,12 +82,7 @@ item_new (void)
 LifereaItem *
 item_load (gulong id)
 {
-        itemPtr item;
-	item =  db_item_load (id);
-        if (NULL != item) {
-                item->timestr = date_format (item->time, NULL);
-        }
-        return item;
+	return db_item_load (id);
 }
 
 LifereaItem *
@@ -105,7 +100,6 @@ item_copy (LifereaItem *item)
 	copy->popupStatus = FALSE;
 	copy->flagStatus = item->flagStatus;
 	copy->time = item->time;
-	copy->timestr = g_strdup( item->timestr );
 	copy->validTime = item->validTime;
 	copy->validGuid = item->validGuid;
 	copy->hasEnclosure = item->hasEnclosure;
@@ -250,24 +244,6 @@ item_get_author(LifereaItem *item)
 
 	author = (gchar *)metadata_list_get (item->metadata, "author");
 	return author;
-}
-
-void
-item_unload (itemPtr item)
-{
-	g_free (item->title);
-	g_free (item->source);
-	g_free (item->sourceId);
-	g_free (item->description);
-	g_free (item->commentFeedId);
-	g_free (item->nodeId);
-	g_free (item->parentNodeId);
-	g_free (item->timestr);
-
-	g_assert (NULL == item->tmpdata);	/* should be free after rendering */
-	metadata_list_free (item->metadata);
-
-	g_free (item);
 }
 
 const gchar *
