@@ -20,6 +20,7 @@
 
 #include <glib.h>
 
+#include "conf.h"
 #include "date.h"
 
 typedef struct tc {
@@ -68,6 +69,7 @@ main (int argc, char *argv[])
 
 	g_test_init (&argc, &argv, NULL);
 
+	conf_init ();
 	date_init ();
 
 	g_test_add_data_func ("/parse_date/rfc822/empty",	&tc_empty,		&tc_parse_rfc822);
