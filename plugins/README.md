@@ -19,7 +19,7 @@ To help you getting started there is a tutorial on writing plugins:
 
 ## Adding 3rd Party Plugins
 
-Using the "plugin installer" Liferea allows insta  lling plugins
+Using the "plugin installer" Liferea allows installing plugins
 from a curated list of 3rd party (Github) sources. This list is
 the "plugin-list.json" file you find in this directory.
 
