@@ -1,5 +1,5 @@
 /*
- * Debugging output support. This was originally written for
+ * Debugging output support.
  *
  * Copyright (C) 2023  Lars Windolf <lars.windolf@gmx.de>
  *
