@@ -78,6 +78,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 	gboolean		revalidated = FALSE;
 	gint			maxage;
 	gint			age;
+	gint			body_size;
 	g_autoptr(GBytes)	body;
 
 	msg = soup_session_get_async_result_message (session, res);
@@ -85,7 +86,10 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 
 	job->result->source = g_uri_to_string_partial (soup_message_get_uri (msg), 0);
 	job->result->httpstatus = soup_message_get_status (msg);
-	job->result->data = g_memdup2 (g_bytes_get_data (body, &job->result->size), g_bytes_get_size (body));
+	body_size = g_bytes_get_size (body);
+	job->result->data = g_malloc(1 + body_size);
+	memmove(job->result->data, g_bytes_get_data (body, &job->result->size), body_size);
+	*(job->result->data + job->result->size) = 0;
 
 	/* keep some request headers for revalidated responses */
 	revalidated = (304 == job->result->httpstatus);
