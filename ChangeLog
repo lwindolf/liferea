@@ -1,3 +1,52 @@
+2023-08-14  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.15.1
+
+	* Update to libsoup3 and libwebkit2gtk-4.1
+	  (Lars Windolf)
+
+	* Fixes #1285: HTTP 304 incorrectly caused error state
+	  (Rich Coe)
+
+	* Fixes #1272: Crash on moving feed into new folder
+	  (Lars Windolf, reported by Jakub T. Jankiewicz)
+
+	* Fixes #1262: Plugin installer: duplicate punctuation
+	  (Christian Stadelmann)
+
+	* Fixes #1250: Incorrect item_id when downloading AMP URLs
+	  (Alexandre Erwin Ittner)
+
+	* Fixes #1248: Can't maximize for reading feeds
+	  (Lars Windolf)
+
+	* Fixes #1242: Dropping not-functioning Pocket bookmark URL
+	  (Lars Windolf)
+
+	* Fixes #1241: Dropping not-functioning identi.ca bookmark URL
+	  (Lars Windolf)
+
+	* Fixes #1240: TypeError on add-bookmark-site preferences
+	  (Lucidiot)
+
+	* Many fixes for static code analysis warnings
+	  (Lars Windolf)
+
+	* Simplified debug handling. Drop --debug-performance
+	  --debug-trace and --debug-verbose CLI parameters.
+	  (Lars Windolf)
+
+	* Removed stale Deutsche Welle Brasil feed from pt-BR default feed list
+	  (Alexandre Erwin Ittner)
+
+	* Updated appdata description and summary
+	  (bbhtt)
+
+	* Add Russian user documentation (slichtzzz)
+	* Updated Czech translation (Amerey)
+	* Updated Brazilian Portugese translation (Fúlvio Alves)
+
+
 2023-04-16  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.15.0
