@@ -466,8 +466,8 @@ itemlist_remove_item (itemPtr item)
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node_from_id (item->nodeId));
 
-	item_unload (item);
 	g_signal_emit_by_name (itemlist, "item-updated", item->nodeId);
+	item_unload (item);
 }
 
 /* soft possibly delayed item remove */
