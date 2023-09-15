@@ -1,3 +1,17 @@
+2023-09-15  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.15.3
+
+	* Fixes #1297: Enabling plugin 'webkit-settings' crashes Liferea
+	  (reported by Paul Gevers)
+
+	* Fixes #1294: Clicking 'remove item' caused a SIGSEGV
+	  (reported by Rich Coe)
+
+	* Fixes #1276: Old WebKitCache cache not cleaned
+	  (reported by hasezoey)
+
+
 2023-08-30  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.15.2
