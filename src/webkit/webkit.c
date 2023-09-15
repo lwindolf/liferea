@@ -547,6 +547,9 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 	liferea_webkit_default_settings (settings);
 	webkit_web_view_set_settings (view, settings);
 
+	/* Always drop cache on startup, so it does not grow over time */
+	webkit_web_context_clear_cache (webkit_web_context_get_default ());
+
 	g_signal_connect_object (
 		liferea_webkit,
 		"page-created",
