@@ -101,6 +101,16 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release date="2023-09-16" version="1.15.3">
+      <description>
+        <p>This is a new bugfix release for 1.15</p>
+        <ul>Changes
+          <li>Fixes #1297: Enabling plugin 'webkit-settings' crashes Liferea (reported by Paul Gevers)</li>
+          <li>Fixes #1294: Clicking 'remove item' caused a SIGSEGV (reported by Rich Coe)</li>
+          <li>Fixes #1276: Old WebKitCache cache not cleaned (reported by hasezoey)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-08-30" version="1.15.2">
       <description>
         <p>This is a bugfix release. It provides an important stability fix regarding feed parsing. Kudos to Rich Coe for debugging and fixing the issue!</p>
