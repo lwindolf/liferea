@@ -269,7 +269,7 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 	href = xml_get_ns_attribute (cur, "href", NULL);
 	if (href) {
 		xmlChar *baseURL = xmlNodeGetBase (cur->doc, cur);
-		gchar *url, *relation, *type, *escTitle = NULL, *title;
+		gchar *url, *relation, *type;
 		const gchar *feedURL = subscription_get_homepage (ctxt->subscription);
 
 		if (!baseURL && feedURL && feedURL[0] != '|' && strstr (feedURL, "://"))
@@ -278,9 +278,6 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 
 		type = xml_get_ns_attribute (cur, "type", NULL);
 		relation = xml_get_ns_attribute (cur, "rel", NULL);
-		title = xml_get_ns_attribute (cur, "title", NULL);
-		if (title)
-			escTitle = g_markup_escape_text (title, -1);
 
 		if (!xmlHasNsProp (cur, BAD_CAST"rel", NULL) || !relation || g_str_equal (relation, BAD_CAST"alternate")) {
 			alternate = g_strdup (url);
@@ -312,9 +309,7 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 		} else {
 			/* g_warning ("Unhandled Atom link with unexpected relation \"%s\"\n", relation); */
 		}
-		xmlFree (title);
 		xmlFree (baseURL);
-		g_free (escTitle);
 		g_free (url);
 		g_free(relation);
 		g_free(type);
