@@ -28,7 +28,7 @@
 
 static GIcon *icons[MAX_ICONS];	/*<< list of icon assignments */
 
-static gchar *
+gchar *
 icon_find_pixmap_file (const gchar *filename)
 {
 	gchar *pathname = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps", filename, NULL);

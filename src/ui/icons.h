@@ -63,6 +63,16 @@ void icons_load (void);
 const GIcon * icon_get (lifereaIcon icon);
 
 /**
+ * icon_find_pixmap_file:
+ * @filename:	the name of the file
+ *
+ * Takes a file name relative to "pixmaps" directory and returns it's path.
+ *
+ * Returns: (transfer full): file path or NULL
+ */
+gchar * icon_find_pixmap_file (const gchar *filename);
+
+/**
  * icon_create_from_file:
  * @filename:	the name of the file
  *
