@@ -55,9 +55,6 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
 	PeasPluginInfo *plugin_installer_plugin_info = NULL;
 
 	engine->priv = liferea_plugins_engine_get_instance_private (engine);
-
-	peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
-
 	engine->priv->plugin_settings = g_settings_new ("net.sf.liferea.plugins");
 
 	/* Disable incompatible webkit-settings plugin */
@@ -77,6 +74,8 @@ liferea_plugins_engine_init (LifereaPluginsEngine * engine)
 		g_settings_set_value (engine->priv->plugin_settings, "active-plugins", list);
 	}
 	g_free (names);
+
+	peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
 
 	/* Require Lifereas's typelib. */
 	typelib_dir = g_build_filename (PACKAGE_LIB_DIR,
