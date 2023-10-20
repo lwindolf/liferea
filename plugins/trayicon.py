@@ -203,6 +203,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
 
         if self.use_appindicator:
             self.indicator.set_menu(self.menu)
+            self.indicator.set_secondary_activate_target(menuitem_toggle)
 
         self.window = self.shell.get_window()
         self.delete_signal_id = GObject.signal_lookup("delete_event", Gtk.Window)
