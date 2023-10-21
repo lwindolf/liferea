@@ -23,7 +23,7 @@ from collections import namedtuple
 import cairo
 import gi
 gi.require_version('Liferea', '3.0')
-from gi.repository import GObject, Gtk, Liferea
+from gi.repository import Gio, GLib, GObject, Gtk, Liferea
 from gi.repository import Gdk, GdkPixbuf
 
 try:
@@ -112,6 +112,28 @@ def get_config_path():
     return config_path
 
 
+def status_notifier_available():
+    dbus = Gio.bus_get_sync(Gio.BusType.SESSION)
+    result = dbus.call_sync(
+        "org.freedesktop.DBus",  # bus name
+        "/",  # object path
+        "org.freedesktop.DBus",  # interface name
+        "NameHasOwner",  # method name
+        GLib.Variant.new_tuple(
+            GLib.Variant.new_string("org.kde.StatusNotifierWatcher"),
+        ),
+        None,  # reply_type
+        Gio.DBusCallFlags.NONE,
+        -1,
+    )
+
+    if not result:
+        return False
+
+    result = result.unpack()
+    return result and result[0]
+
+
 class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     __gtype_name__ = 'TrayiconPlugin'
 
@@ -127,9 +149,12 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
     delete_signal_id = None
     feedlist_new_items_cb_id = None
     feedlist = None
+    use_appindicator = None
 
     def do_activate(self):
-        if APPINDICATOR_AVAILABLE:
+        self.use_appindicator = APPINDICATOR_AVAILABLE and status_notifier_available()
+
+        if self.use_appindicator:
             self.indicator = AppIndicator.Indicator.new(
                 "Liferea",
                 Liferea.icon_find_pixmap_file("emblem-web.svg"),
@@ -176,8 +201,9 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.menu.append(menuitem_quit)
         self.menu.show_all()
 
-        if APPINDICATOR_AVAILABLE:
+        if self.use_appindicator:
             self.indicator.set_menu(self.menu)
+            self.indicator.set_secondary_activate_target(menuitem_toggle)
 
         self.window = self.shell.get_window()
         self.delete_signal_id = GObject.signal_lookup("delete_event", Gtk.Window)
@@ -283,11 +309,25 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
             new_count = feedlist.get_new_item_count()
 
         new_count = min(99, new_count) # show max 2 digit
-        if APPINDICATOR_AVAILABLE:
+        if self.use_appindicator:
             if new_count > 0:
+                # Workaround Mate bug
+                # See also: https://github.com/mate-desktop/mate-panel/issues/1412
+                self.indicator.set_icon_full(
+                    Liferea.icon_find_pixmap_file("unread.png"),
+                    _("Liferea unread icon")
+                )
+
                 self.indicator.set_label(str(new_count), "99")
                 self.indicator.set_status(AppIndicator.IndicatorStatus.ATTENTION)
             else:
+                # Workaround Mate bug
+                # See also: https://github.com/mate-desktop/mate-panel/issues/1412
+                self.indicator.set_icon_full(
+                    Liferea.icon_find_pixmap_file("emblem-web.svg"),
+                    _("Liferea")
+                )
+
                 self.indicator.set_label("", "99")
                 self.indicator.set_status(AppIndicator.IndicatorStatus.ACTIVE)
         else:
@@ -303,7 +343,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         return True
 
     def do_deactivate(self):
-        if APPINDICATOR_AVAILABLE:
+        if self.use_appindicator:
             self.indicator.set_status(AppIndicator.IndicatorStatus.PASSIVE)
         else:
             self.staticon.set_visible(False)
@@ -320,7 +360,7 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         self.window.deiconify()
         self.window.show()
 
-        if APPINDICATOR_AVAILABLE:
+        if self.use_appindicator:
             del self.indicator
         else:
             del self.staticon
