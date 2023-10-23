@@ -18,7 +18,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import gettext
+import os
 import pathlib
+from pathlib import Path
 from collections import namedtuple
 import cairo
 import gi
@@ -100,15 +102,15 @@ def pixbuf_text(width, height, text, font_size=16, bg_pix=None):
 
 
 def get_config_path():
-    """Return data file path"""
-    data_dir = pathlib.Path.joinpath(
-        pathlib.Path.home(),
-        ".config/liferea/plugins/trayicon"
-    )
-    if not data_dir.exists():
-        data_dir.mkdir(0o700, True, True)
+    """Return config file path"""
+    trayicon_path = "liferea/plugins/trayicon"
+    config_home = os.getenv('XDG_CONFIG_HOME',Path.joinpath(Path.home(), ".config"))
+    config_dir = Path.joinpath(Path(config_home), trayicon_path)
 
-    config_path = data_dir / "trayicon.conf"
+    if not config_dir.exists():
+        config_dir.mkdir(0o700, True, True)
+
+    config_path = config_dir / "trayicon.conf"
     return config_path
 
 
