@@ -101,6 +101,21 @@
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
   <releases>
+    <release date="2023-10-23" version="1.15.4">
+      <description>
+        <p>This release brings small fixes and a rework of the trayicon plugin</p>
+        <p>Thanks to the work of Yuri Konotopov the trayicon plugin now supports AppIndicator
+        and libayatana. The important difference here is that the new item counter can be shown
+        as a text label next to the icon which makes for much improved rendering.</p>
+        <p>There are some limitations though as AppIndicator might not work perfect in all implementations
+        (e.g. XFCE).</p>
+        <ul>Changes
+          <li>Improve on #1192 by doing pane sanity checks on each resize (Lars Windolf)</li>
+          <li>Fixes #1297: Reorder loading plugins and deactivating webkit-settings (Lars Windolf)</li>
+          <li>#1305 Refactoring of the trayicon plugin to support AppIndicator and libayatana (Yuri Konotopov)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-09-16" version="1.15.3">
       <description>
         <p>This is a new bugfix release for 1.15</p>
