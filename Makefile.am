@@ -68,6 +68,8 @@ data_convertdir = $(datadir)/GConf/gsettings
 dist_data_convert_DATA = liferea.convert
 
 EXTRA_DIST = \
+	.version \
+	version.sh \
 	net.sf.liferea.gschema.xml.in \
 	po/liferea.pot \
 	$(desktop_in_files) \
