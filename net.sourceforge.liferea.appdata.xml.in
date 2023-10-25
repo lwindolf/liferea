@@ -70,44 +70,50 @@
   </screenshots>
   <url type="bugtracker">https://github.com/lwindolf/liferea/issues/new</url>
   <url type="homepage">https://lzone.de/liferea/</url>
+  <url type="help">https://lzone.de/liferea/help1140/topics_en.html</url>
+  <url type="translate">https://github.com/lwindolf/liferea?tab=readme-ov-file#new-translations</url>
   <translation type="gettext">liferea</translation>
-  <content_rating type="oars-1.1" />
+  <content_rating type="oars-1.1"/>
   <releases>
     <release date="2023-08-02" version="1.14.6">
       <description>
         <p>This is a bugfix release for 1.14. Please upgrade!</p>
-        <ul>Changes
-         <li>Fixes #1272: crash when moving feed to empty folder (reported by Jakub T. Jankiewicz)</li>
-         <li>Fixes #1198: FreshRSS logging in correctly but can't get posts (reported by Roger Gonzalez)</li>
-         <li>Fixes #1248 Can’t maximize for reading feeds (reported by ksso83)</li>
+        <p>Changes:</p>
+        <ul>
+          <li>Fixes #1272: crash when moving feed to empty folder (reported by Jakub T. Jankiewicz)</li>
+          <li>Fixes #1198: FreshRSS logging in correctly but can't get posts (reported by Roger Gonzalez)</li>
+          <li>Fixes #1248 Can’t maximize for reading feeds (reported by ksso83)</li>
         </ul>
       </description>
     </release>
     <release date="2023-04-09" version="1.14.5">
       <description>
         <p>Stability release for 1.14 branch</p>
-        <ul>Changes
-         <li>Fixes #1127: corrupted double-linked list (reported by Paul Gevers)</li>
-         <li>Fixes #1229: assertion when deleting feeds too quickly (reported by Tasos Sahanidis)</li>
-         <li>Fixes #1223: format and cast errors (reported by Paul Gevers)</li>
+        <p>Changes:</p>
+        <ul>
+          <li>Fixes #1127: corrupted double-linked list (reported by Paul Gevers)</li>
+          <li>Fixes #1229: assertion when deleting feeds too quickly (reported by Tasos Sahanidis)</li>
+          <li>Fixes #1223: format and cast errors (reported by Paul Gevers)</li>
         </ul>
       </description>
     </release>
     <release date="2023-03-31" version="1.14.4">
       <description>
         <p>1.14 is not as stable yet as intended and is suffering from startup race conditions. This bugfix release tries to further eliminate those issues</p>
-        <ul>Changes
-         <li>Fixes #1217, #1224: Endless recursion in 1.14.3 (reported by uduecoder, mokraemer)</li>
-         <li>Additional fixes for #1214: crash in conf_get_bool_value_from_schema (reported by Mikel Olasagasti)</li>
-         <li>Fixes a g_object_unref warning on shutdown</li>
-         <li>Drops a debug output in the plugin installer</li>
+        <p>Changes:</p>
+        <ul>
+          <li>Fixes #1217, #1224: Endless recursion in 1.14.3 (reported by uduecoder, mokraemer)</li>
+          <li>Additional fixes for #1214: crash in conf_get_bool_value_from_schema (reported by Mikel Olasagasti)</li>
+          <li>Fixes a g_object_unref warning on shutdown</li>
+          <li>Drops a debug output in the plugin installer</li>
         </ul>
       </description>
     </release>
     <release date="2023-03-24" version="1.14.3">
       <description>
         <p>This is another 1.14 bugfix release to address a crash affecting some users and a build issue when running tests</p>
-        <ul>Changes
+        <p>Changes:</p>
+        <ul>
           <li>Fixes #1214: crash in conf_get_bool_value_from_schema (mozbugbox, reported by Mikel Olasagasti)</li>
           <li>Fixes #1215: failed to build in launchpad PPA due to auto_test permission issue (reported by PandaJim)</li>
         </ul>
@@ -116,7 +122,8 @@
     <release date="2023-03-21" version="1.14.2">
       <description>
         <p>This is a stability fix for 1.14.1</p>
-        <ul>Changes
+        <p>Changes:</p>
+        <ul>
           <li>Fixes #1212: 1.14.1 crash when refreshing feeds (mozbugbox)</li>
           <li>Fixes a memory leak when reloading CSS (Lars Windolf)</li>
         </ul>
@@ -125,7 +132,8 @@
     <release date="2023-03-13" version="1.14.1">
       <description>
         <p>CVE-2023-1350 Remote code execution on feed enrichment</p>
-        <ul>Changes
+        <p>Changes:</p>
+        <ul>
           <li>Fixes CVE-2023-1350: RCE vulnerability on feed enrichment (Alexander Erwin Ittner)</li>
           <li>Fixes #1200: Crash on double free (mozbugbox)</li>
           <li>Improve #1192 be reordering widget creation order (Lars Windolf)</li>
@@ -138,105 +146,60 @@
         <p>
            Many thanks to all the contributors and package maintainers that made this possible!
         </p>
+        <p>Changes:</p>
         <ul>
-          <li>Internal Browser
-            <ul>
-              <li>New 'Reader mode' preference that allows stripping all web content</li>
-              <li>Implement support for Webkits Intelligent Tracking Protection</li>
-              <li>New progress bar when loading websites</li>
-              <li>Youtube videos from media:video can be embedded now with a click on the video preview picture.</li>
-              <li>Changes to UserAgent handling: same UA is now used for both feed fetching
-              and internal browsing. User agent now indicates Android+Mobile per default
-              instead of suggesting a Linux desktop to better adapt to the smaller
-              (in comparison to browsers) rendering pane. Additionally special env
-              vars LIFEREA_UA and LIFEREA_UA_ANONYMOUS now also affect the internal
-              browsing.</li>
-            </ul>
-          </li>
-          <li>GUI
-            <ul>
-              <li>New view mode 'Automatic' which switches between 'Normal' and 'Wide' mode based
+          <li>New 'Reader mode' preference that allows stripping all web content</li>
+          <li>Implement support for Webkits Intelligent Tracking Protection</li>
+          <li>New progress bar when loading websites</li>
+          <li>Youtube videos from media:video can be embedded now with a click on the video preview picture.</li>
+          <li>Changes to UserAgent handling</li>
+          <li>New view mode 'Automatic' which switches between 'Normal' and 'Wide' mode based
               on the window proportions.</li>
-              <li>Liferea now supports the new GTK dark theme logic, where in the GTK/GNOME preferences
+          <li>Liferea now supports the new GTK dark theme logic, where in the GTK/GNOME preferences
               you define wether you "prefer" dark mode or light mode</li>
-              <li>Favicon discovery improvements: now detects all types of Apple Touch Icons, MS Tile
+          <li>Favicon discovery improvements: now detects all types of Apple Touch Icons, MS Tile
               Images and Safari Mask Icons</li>
-              <li>Increase size of stored favicons to 128x128px to improve icon quality in 3-pane wide view.</li>
-              <li>Make several plugins support gettext</li>
-              <li>Allow mutiple feed in same libnotify notification</li>
-              <li>Redesign of the update message in the status bar. It now shows a
+          <li>Increase size of stored favicons to 128x128px to improve icon quality in 3-pane wide view.</li>
+          <li>Make several plugins support gettext</li>
+          <li>Allow mutiple feed in same libnotify notification</li>
+          <li>Redesign of the update message in the status bar. It now shows a
               update counter of the feeds being in update.</li>
-              <li>You can now export a feed to XML file</li>
-              <li>Added an option to show news bins in reduced feed list</li>
-              <li>Added menu option to send item per mail</li>
-            </ul>
-          </li>
-          <li>Feed parsing
-            <ul>
-              <li>Default to https:// instead of http:// when user doesn't
+          <li>You can now export a feed to XML file</li>
+          <li>Added an option to show news bins in reduced feed list</li>
+          <li>Added menu option to send item per mail</li>
+          <li>Default to https instead of http when user doesn't
               provide protocol on subscribing feed</li>
-              <li>Implement support for subscribing to LD+Json metadata
+          <li>Implement support for subscribing to LD+Json metadata
               listings e.g. concert or theater event listings</li>
-              <li>Implement support for subscribing to HTML5 websites</li>
-              <li>Support for media:description field of Youtube feeds</li>
-              <li>Improve HTML5 extraction: extract main tag if it exists and no article was found.</li>
-              <li>Execute feed pipe/filter commands asynchronously</li>
-              <li>Better explanation of feed update errors.</li>
-            </ul>
-          </li>
-          <li>Online services
-            <ul>
-              <li>Added generic Google Reader API support (allows using FeedHQ, FreshRSS, Miniflux...)</li>
-              <li>Now allow converting TinyTinyRSS subscriptions to local subscriptions</li>
-            </ul>
-          </li>
-          <li>Search folders
-            <ul>
-              <li>New search folder rule to match podcasts</li>
-              <li>New search folder rule to match headline authors</li>
-              <li>New search folder rule to match subscription source</li>
-              <li>New search folder rule to match parent folder name</li>
-              <li>New search folder property that allows hiding read items</li>
-              <li>Now search folders are automatically rebuild when rules are changed</li>
-            </ul>
-          </li>
-          <li>Plugins
-            <ul>
-              <li>Added new plugin 'add-bookmark-site' that allows to configure a custom bookmarking site.</li>
-              <li>Added new plugin 'getfocus' that adds transparency on the feed list when it is not focussed.</li>
-              <li>Trayicon plugin has now a configuration option to change the behaviour when closing Liferea.</li>
-              <li>Trayicon plugin has now an option to disable minimizing to tray</li>
-            </ul>
-          </li>
-          <li>Hotkeys
-            <ul>
-              <li>New hot key Ctrl-D for 'Open in External Browser'</li>
-              <li>New hot key F10 for headerbar plugin to allow triggering the hamburger menu</li>
-              <li>New hot key Ctrl-0 to reset zoom</li>
-              <li>New hot key Ctrl-O to open enclosures</li>
-            </ul>
-          </li>
+          <li>Implement support for subscribing to HTML5 websites</li>
+          <li>Support for media:description field of Youtube feeds</li>
+          <li>Improve HTML5 extraction: extract main tag if it exists and no article was found.</li>
+          <li>Execute feed pipe/filter commands asynchronously</li>
+          <li>Better explanation of feed update errors.</li>
+          <li>Added generic Google Reader API support (allows using FeedHQ, FreshRSS, Miniflux...)</li>
+          <li>Now allow converting TinyTinyRSS subscriptions to local subscriptions</li>
+          <li>New search folder rule to match podcasts</li>
+          <li>New search folder rule to match headline authors</li>
+          <li>New search folder rule to match subscription source</li>
+          <li>New search folder rule to match parent folder name</li>
+          <li>New search folder property that allows hiding read items</li>
+          <li>Now search folders are automatically rebuild when rules are changed</li>
+          <li>Added new plugin 'add-bookmark-site' that allows to configure a custom bookmarking site.</li>
+          <li>Added new plugin 'getfocus' that adds transparency on the feed list when it is not focussed.</li>
+          <li>Trayicon plugin has now a configuration option to change the behaviour when closing Liferea.</li>
+          <li>Trayicon plugin has now an option to disable minimizing to tray</li>
+          <li>New hot key Ctrl-D for 'Open in External Browser'</li>
+          <li>New hot key F10 for headerbar plugin to allow triggering the hamburger menu</li>
+          <li>New hot key Ctrl-0 to reset zoom</li>
+          <li>New hot key Ctrl-O to open enclosures</li>
         </ul>
-
-        <p>Important bugfixes</p>
+        <p>Important bugfixes:</p>
         <ul>
-        <li>Fixing hidden panes:
-           Many Liferea users did suffer from invisible pane (e.g. a minimized feed list
-           or HTML view) upon startup. With certain desktop environments / themes making
-           the pane grips invisible it is hard to grip the correct pixel to restore a pane.
-
-           Now Liferea will never allow the panes to be smaller than 5% in height or width
-           regarding to there orientation. If a pane is smaller than 5% height/width it will be
-           set to 30% width or 50% height on startup.
-        </li>
-        <li>
-          Wait for network to be fully available before updating: sometimes when real internet
-          access takes longer to come up then your WLAN connection Liferea did update feeds to
-          early resulting in errors. Now Liferea waits for full internet connection.
-        </li>
+          <li>Fixing hidden panes: Now Liferea will never allow the panes to be smaller than 5% in height or width
+              regarding to there orientation.</li>
+          <li>Wait for network to be fully available before updating</li>
         </ul>
-
-        <p>Deprecations</p>
+        <p>Deprecations:</p>
         <ul>
           <li>2-pane mode was removed</li>
           <li>Dropped CDF channel support</li>
@@ -273,15 +236,10 @@
            Please give feedback how you like the change, especially the rather small padding left of the
            favicon column (when in wide mode)!
         </p>
-        <p>Changes</p>
+        <p>Changes:</p>
         <ul>
           <li>Update to Readability.js 0.41 (better image and table handling) (Lars Windolf)</li>
-          <li>Changes to UserAgent handling: same UA is now used for both feed fetching
-                and internal browsing. User agent now indicates Android+Mobile per default
-                instead of suggesting a Linux desktop to better adapt to the smaller
-                (in comparison to browsers) rendering pane. Additionally special env
-                vars LIFEREA_UA and LIFEREA_UA_ANONYMOUS now also affect the internal
-                browsing.</li>
+          <li>Changes to UserAgent handling</li>
           <li>Improve HTML5 extraction: extract main if it exists and no article was found</li>
           <li>#1117: Hide unused expander space in item list. This saves horizontal space. (Sefler Zhou)</li>
           <li>Drop enclosure icon from item list. This saves horizontal space. (Lars Windolf)</li>
@@ -303,3 +261,4 @@
     <release date="2020-08-28" version="1.13.2"/>
   </releases>
 </component>
+
