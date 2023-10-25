@@ -70,8 +70,10 @@
   </screenshots>
   <url type="bugtracker">https://github.com/lwindolf/liferea/issues/new</url>
   <url type="homepage">https://lzone.de/liferea/</url>
+  <url type="help">https://lzone.de/liferea/help1140/topics_en.html</url>
+  <url type="translate">https://github.com/lwindolf/liferea?tab=readme-ov-file#new-translations</url>
   <translation type="gettext">liferea</translation>
-  <content_rating type="oars-1.1" />
+  <content_rating type="oars-1.1"/>
   <releases>
     <release date="2023-10-23" version="1.15.4">
       <description>
@@ -81,7 +83,8 @@
         as a text label next to the icon which makes for much improved rendering.</p>
         <p>There are some limitations though as AppIndicator might not work perfect in all implementations
         (e.g. XFCE).</p>
-        <ul>Changes
+        <p>Changes:</p>
+        <ul>
           <li>Improve on #1192 by doing pane sanity checks on each resize (Lars Windolf)</li>
           <li>Fixes #1297: Reorder loading plugins and deactivating webkit-settings (Lars Windolf)</li>
           <li>#1305 Refactoring of the trayicon plugin to support AppIndicator and libayatana (Yuri Konotopov)</li>
@@ -91,7 +94,8 @@
     <release date="2023-09-16" version="1.15.3">
       <description>
         <p>This is a new bugfix release for 1.15</p>
-        <ul>Changes
+        <p>Changes:</p>
+        <ul>
           <li>Fixes #1297: Enabling plugin 'webkit-settings' crashes Liferea (reported by Paul Gevers)</li>
           <li>Fixes #1294: Clicking 'remove item' caused a SIGSEGV (reported by Rich Coe)</li>
           <li>Fixes #1276: Old WebKitCache cache not cleaned (reported by hasezoey)</li>
@@ -101,7 +105,8 @@
     <release date="2023-08-30" version="1.15.2">
       <description>
         <p>This is a bugfix release. It provides an important stability fix regarding feed parsing. Kudos to Rich Coe for debugging and fixing the issue!</p>
-        <ul>Changes
+        <p>Changes:</p>
+        <ul>
           <li>Fixes #1291: Feed parsing is broken (Rich Coe)</li>
         </ul>
       </description>
@@ -110,23 +115,24 @@
       <description>
         <p>This is a new feature release. It introduces the long awaited switch to libsoup3 and libwebkit2gtk-4.1.
         Thanks to many testers helping testing the latest code from git some errors were ironed out already. Still there is an issue remaining where feed updates are getting stuck when updating while DNS resolution/Wifi/network... fails. Please comment if you also experience this issue! Also noteworthy is a simplification of the debug handling which removes three CLI parameters --debug-performance, --debug-trace and --debug-verbose</p>
-        <ul>Changes
-         <li>Update to libsoup3 and libwebkit2gtk-4.1 (Lars Windolf)</li>
-         <li>Fixes #1285: HTTP 304 incorrectly caused error state (Rich Coe)</li>
-         <li>Fixes #1272: Crash on moving feed into new folder (Lars Windolf)</li>
-         <li>Fixes #1262: Plugin installer: duplicate punctuation (Christian Stadelmann)</li>
-         <li>Fixes #1250: Incorrect item_id when downloading AMP URLs (Alexandre Erwin Ittner)</li>
-         <li>Fixes #1248: Can't maximize for reading feeds (Lars Windolf)</li>
-         <li>Fixes #1242: Dropping not-functioning Pocket bookmark URL (Lars Windolf)</li>
-         <li>Fixes #1241: Dropping not-functioning identi.ca bookmark URL (Lars Windolf)</li>
-         <li>Fixes #1240: TypeError on add-bookmark-site preferences (Lucidiot)</li>
-         <li>Many fixes for static code analysis warnings (Lars Windolf)</li>
-         <li>Simplified debug handling. Drop --debug-performance --debug-trace and --debug-verbose CLI parameters</li>
-         <li>Removed stale Deutsche Welle Brasil feed from pt-BR default feed list (Alexandre Erwin Ittner)</li>
-         <li>Updated appdata description and summary (bbhtt)</li>
-         <li>Add Russian user documentation (slichtzzz)</li>
-         <li>Updated Czech translation (Amerey)</li>
-         <li>Updated Brazilian Portugese translation (Fúlvio Alves)</li>
+        <p>Changes:</p>
+        <ul>
+          <li>Update to libsoup3 and libwebkit2gtk-4.1 (Lars Windolf)</li>
+          <li>Fixes #1285: HTTP 304 incorrectly caused error state (Rich Coe)</li>
+          <li>Fixes #1272: Crash on moving feed into new folder (Lars Windolf)</li>
+          <li>Fixes #1262: Plugin installer: duplicate punctuation (Christian Stadelmann)</li>
+          <li>Fixes #1250: Incorrect item_id when downloading AMP URLs (Alexandre Erwin Ittner)</li>
+          <li>Fixes #1248: Can't maximize for reading feeds (Lars Windolf)</li>
+          <li>Fixes #1242: Dropping not-functioning Pocket bookmark URL (Lars Windolf)</li>
+          <li>Fixes #1241: Dropping not-functioning identi.ca bookmark URL (Lars Windolf)</li>
+          <li>Fixes #1240: TypeError on add-bookmark-site preferences (Lucidiot)</li>
+          <li>Many fixes for static code analysis warnings (Lars Windolf)</li>
+          <li>Simplified debug handling. Drop --debug-performance --debug-trace and --debug-verbose CLI parameters</li>
+          <li>Removed stale Deutsche Welle Brasil feed from pt-BR default feed list (Alexandre Erwin Ittner)</li>
+          <li>Updated appdata description and summary (bbhtt)</li>
+          <li>Add Russian user documentation (slichtzzz)</li>
+          <li>Updated Czech translation (Amerey)</li>
+          <li>Updated Brazilian Portugese translation (Fúlvio Alves)</li>
         </ul>
       </description>
     </release>
@@ -134,27 +140,29 @@
       <description>
         <p>This is the first release of the new unstable line 1.15. The current idea is to release a bit
         faster than every two years. So not so much features will be introduced before 1.16</p>
-        <ul>Changes
-         <li>Fixes #1214: crash in conf_get_bool_value_from_schema (mozbugbox, reported by Mikel Olasagasti)</li>
-         <li>Fixes #1215: failed to build in launchpad PPA due to auto_test permission issue (reported by PandaJim)</li>
-         <li>Fixes #1212: 1.14.1 crash when refreshing feeds. (mozbugbox, reported by Froggy232)</li>
-         <li>Fixes #1198: FreshRSS logging in correctly but can't get posts (reported by Roger Gonzalez)</li>
-         <li>Fixes a memory leak when reloading CSS (Lars Windolf)</li>
-         <li>Fixes CVE-2023-1350: RCE vulnerability on feed enrichment (patch by Alexander Erwin Ittner)</li>
-         <li>Fixes #1200: Crash on double free (mozbugbox)</li>
-         <li>Improve #1192 be reordering widget creation order (Lars Windolf)</li>
-         <li>Improvements to the libnotify plugin (Tasos Sahanidis)</li>
-         <li>Fixes a g_object_unref warning on shutdown</li>
-         <li>Drops a debug output in the plugin installer</li>
-         <li>Drop webkit inspector from installable plugins in favour of --debug-html</li>
-         <li>Drop pane plugin from default plugins</li>
+        <p>Changes:</p>
+        <ul>
+          <li>Fixes #1214: crash in conf_get_bool_value_from_schema (mozbugbox, reported by Mikel Olasagasti)</li>
+          <li>Fixes #1215: failed to build in launchpad PPA due to auto_test permission issue (reported by PandaJim)</li>
+          <li>Fixes #1212: 1.14.1 crash when refreshing feeds. (mozbugbox, reported by Froggy232)</li>
+          <li>Fixes #1198: FreshRSS logging in correctly but can't get posts (reported by Roger Gonzalez)</li>
+          <li>Fixes a memory leak when reloading CSS (Lars Windolf)</li>
+          <li>Fixes CVE-2023-1350: RCE vulnerability on feed enrichment (patch by Alexander Erwin Ittner)</li>
+          <li>Fixes #1200: Crash on double free (mozbugbox)</li>
+          <li>Improve #1192 be reordering widget creation order (Lars Windolf)</li>
+          <li>Improvements to the libnotify plugin (Tasos Sahanidis)</li>
+          <li>Fixes a g_object_unref warning on shutdown</li>
+          <li>Drops a debug output in the plugin installer</li>
+          <li>Drop webkit inspector from installable plugins in favour of --debug-html</li>
+          <li>Drop pane plugin from default plugins</li>
         </ul>
       </description>
     </release>
     <release date="2023-03-24" version="1.14.3">
       <description>
         <p>This is another 1.14 bugfix release to address a crash affecting some users and a build issue when running tests</p>
-        <ul>Changes
+        <p>Changes:</p>
+        <ul>
           <li>Fixes #1214: crash in conf_get_bool_value_from_schema (mozbugbox, reported by Mikel Olasagasti)</li>
           <li>Fixes #1215: failed to build in launchpad PPA due to auto_test permission issue (reported by PandaJim)</li>
         </ul>
@@ -163,7 +171,8 @@
     <release date="2023-03-21" version="1.14.2">
       <description>
         <p>This is a stability fix for 1.14.1</p>
-        <ul>Changes
+        <p>Changes:</p>
+        <ul>
           <li>Fixes #1212: 1.14.1 crash when refreshing feeds (mozbugbox)</li>
           <li>Fixes a memory leak when reloading CSS (Lars Windolf)</li>
         </ul>
@@ -172,7 +181,8 @@
     <release date="2023-03-13" version="1.14.1">
       <description>
         <p>CVE-2023-1350 Remote code execution on feed enrichment</p>
-        <ul>Changes
+        <p>Changes:</p>
+        <ul>
           <li>Fixes CVE-2023-1350: RCE vulnerability on feed enrichment (Alexander Erwin Ittner)</li>
           <li>Fixes #1200: Crash on double free (mozbugbox)</li>
           <li>Improve #1192 be reordering widget creation order (Lars Windolf)</li>
@@ -185,105 +195,60 @@
         <p>
            Many thanks to all the contributors and package maintainers that made this possible!
         </p>
+        <p>Changes:</p>
         <ul>
-          <li>Internal Browser
-            <ul>
-              <li>New 'Reader mode' preference that allows stripping all web content</li>
-              <li>Implement support for Webkits Intelligent Tracking Protection</li>
-              <li>New progress bar when loading websites</li>
-              <li>Youtube videos from media:video can be embedded now with a click on the video preview picture.</li>
-              <li>Changes to UserAgent handling: same UA is now used for both feed fetching
-              and internal browsing. User agent now indicates Android+Mobile per default
-              instead of suggesting a Linux desktop to better adapt to the smaller
-              (in comparison to browsers) rendering pane. Additionally special env
-              vars LIFEREA_UA and LIFEREA_UA_ANONYMOUS now also affect the internal
-              browsing.</li>
-            </ul>
-          </li>
-          <li>GUI
-            <ul>
-              <li>New view mode 'Automatic' which switches between 'Normal' and 'Wide' mode based
+          <li>New 'Reader mode' preference that allows stripping all web content</li>
+          <li>Implement support for Webkits Intelligent Tracking Protection</li>
+          <li>New progress bar when loading websites</li>
+          <li>Youtube videos from media:video can be embedded now with a click on the video preview picture.</li>
+          <li>Changes to UserAgent handling</li>
+          <li>New view mode 'Automatic' which switches between 'Normal' and 'Wide' mode based
               on the window proportions.</li>
-              <li>Liferea now supports the new GTK dark theme logic, where in the GTK/GNOME preferences
+          <li>Liferea now supports the new GTK dark theme logic, where in the GTK/GNOME preferences
               you define wether you "prefer" dark mode or light mode</li>
-              <li>Favicon discovery improvements: now detects all types of Apple Touch Icons, MS Tile
+          <li>Favicon discovery improvements: now detects all types of Apple Touch Icons, MS Tile
               Images and Safari Mask Icons</li>
-              <li>Increase size of stored favicons to 128x128px to improve icon quality in 3-pane wide view.</li>
-              <li>Make several plugins support gettext</li>
-              <li>Allow mutiple feed in same libnotify notification</li>
-              <li>Redesign of the update message in the status bar. It now shows a
+          <li>Increase size of stored favicons to 128x128px to improve icon quality in 3-pane wide view.</li>
+          <li>Make several plugins support gettext</li>
+          <li>Allow mutiple feed in same libnotify notification</li>
+          <li>Redesign of the update message in the status bar. It now shows a
               update counter of the feeds being in update.</li>
-              <li>You can now export a feed to XML file</li>
-              <li>Added an option to show news bins in reduced feed list</li>
-              <li>Added menu option to send item per mail</li>
-            </ul>
-          </li>
-          <li>Feed parsing
-            <ul>
-              <li>Default to https:// instead of http:// when user doesn't
+          <li>You can now export a feed to XML file</li>
+          <li>Added an option to show news bins in reduced feed list</li>
+          <li>Added menu option to send item per mail</li>
+          <li>Default to https instead of http when user doesn't
               provide protocol on subscribing feed</li>
-              <li>Implement support for subscribing to LD+Json metadata
+          <li>Implement support for subscribing to LD+Json metadata
               listings e.g. concert or theater event listings</li>
-              <li>Implement support for subscribing to HTML5 websites</li>
-              <li>Support for media:description field of Youtube feeds</li>
-              <li>Improve HTML5 extraction: extract main tag if it exists and no article was found.</li>
-              <li>Execute feed pipe/filter commands asynchronously</li>
-              <li>Better explanation of feed update errors.</li>
-            </ul>
-          </li>
-          <li>Online services
-            <ul>
-              <li>Added generic Google Reader API support (allows using FeedHQ, FreshRSS, Miniflux...)</li>
-              <li>Now allow converting TinyTinyRSS subscriptions to local subscriptions</li>
-            </ul>
-          </li>
-          <li>Search folders
-            <ul>
-              <li>New search folder rule to match podcasts</li>
-              <li>New search folder rule to match headline authors</li>
-              <li>New search folder rule to match subscription source</li>
-              <li>New search folder rule to match parent folder name</li>
-              <li>New search folder property that allows hiding read items</li>
-              <li>Now search folders are automatically rebuild when rules are changed</li>
-            </ul>
-          </li>
-          <li>Plugins
-            <ul>
-              <li>Added new plugin 'add-bookmark-site' that allows to configure a custom bookmarking site.</li>
-              <li>Added new plugin 'getfocus' that adds transparency on the feed list when it is not focussed.</li>
-              <li>Trayicon plugin has now a configuration option to change the behaviour when closing Liferea.</li>
-              <li>Trayicon plugin has now an option to disable minimizing to tray</li>
-            </ul>
-          </li>
-          <li>Hotkeys
-            <ul>
-              <li>New hot key Ctrl-D for 'Open in External Browser'</li>
-              <li>New hot key F10 for headerbar plugin to allow triggering the hamburger menu</li>
-              <li>New hot key Ctrl-0 to reset zoom</li>
-              <li>New hot key Ctrl-O to open enclosures</li>
-            </ul>
-          </li>
+          <li>Implement support for subscribing to HTML5 websites</li>
+          <li>Support for media:description field of Youtube feeds</li>
+          <li>Improve HTML5 extraction: extract main tag if it exists and no article was found.</li>
+          <li>Execute feed pipe/filter commands asynchronously</li>
+          <li>Better explanation of feed update errors.</li>
+          <li>Added generic Google Reader API support (allows using FeedHQ, FreshRSS, Miniflux...)</li>
+          <li>Now allow converting TinyTinyRSS subscriptions to local subscriptions</li>
+          <li>New search folder rule to match podcasts</li>
+          <li>New search folder rule to match headline authors</li>
+          <li>New search folder rule to match subscription source</li>
+          <li>New search folder rule to match parent folder name</li>
+          <li>New search folder property that allows hiding read items</li>
+          <li>Now search folders are automatically rebuild when rules are changed</li>
+          <li>Added new plugin 'add-bookmark-site' that allows to configure a custom bookmarking site.</li>
+          <li>Added new plugin 'getfocus' that adds transparency on the feed list when it is not focussed.</li>
+          <li>Trayicon plugin has now a configuration option to change the behaviour when closing Liferea.</li>
+          <li>Trayicon plugin has now an option to disable minimizing to tray</li>
+          <li>New hot key Ctrl-D for 'Open in External Browser'</li>
+          <li>New hot key F10 for headerbar plugin to allow triggering the hamburger menu</li>
+          <li>New hot key Ctrl-0 to reset zoom</li>
+          <li>New hot key Ctrl-O to open enclosures</li>
         </ul>
-
-        <p>Important bugfixes</p>
+        <p>Important bugfixes:</p>
         <ul>
-        <li>Fixing hidden panes:
-           Many Liferea users did suffer from invisible pane (e.g. a minimized feed list
-           or HTML view) upon startup. With certain desktop environments / themes making
-           the pane grips invisible it is hard to grip the correct pixel to restore a pane.
-
-           Now Liferea will never allow the panes to be smaller than 5% in height or width
-           regarding to there orientation. If a pane is smaller than 5% height/width it will be
-           set to 30% width or 50% height on startup.
-        </li>
-        <li>
-          Wait for network to be fully available before updating: sometimes when real internet
-          access takes longer to come up then your WLAN connection Liferea did update feeds to
-          early resulting in errors. Now Liferea waits for full internet connection.
-        </li>
+          <li>Fixing hidden panes: Now Liferea will never allow the panes to be smaller than 5% in height or width
+              regarding to there orientation.</li>
+          <li>Wait for network to be fully available before updating</li>
         </ul>
-
-        <p>Deprecations</p>
+        <p>Deprecations:</p>
         <ul>
           <li>2-pane mode was removed</li>
           <li>Dropped CDF channel support</li>
@@ -320,7 +285,7 @@
            Please give feedback how you like the change, especially the rather small padding left of the
            favicon column (when in wide mode)!
         </p>
-        <p>Changes</p>
+        <p>Changes:</p>
         <ul>
           <li>Update to Readability.js 0.41 (better image and table handling) (Lars Windolf)</li>
           <li>Changes to UserAgent handling: same UA is now used for both feed fetching
