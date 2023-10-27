@@ -313,23 +313,9 @@ class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
         new_count = min(99, new_count) # show max 2 digit
         if self.use_appindicator:
             if new_count > 0:
-                # Workaround Mate bug
-                # See also: https://github.com/mate-desktop/mate-panel/issues/1412
-                self.indicator.set_icon_full(
-                    Liferea.icon_find_pixmap_file("unread.png"),
-                    _("Liferea unread icon")
-                )
-
                 self.indicator.set_label(str(new_count), "99")
                 self.indicator.set_status(AppIndicator.IndicatorStatus.ATTENTION)
             else:
-                # Workaround Mate bug
-                # See also: https://github.com/mate-desktop/mate-panel/issues/1412
-                self.indicator.set_icon_full(
-                    Liferea.icon_find_pixmap_file("emblem-web.svg"),
-                    _("Liferea")
-                )
-
                 self.indicator.set_label("", "99")
                 self.indicator.set_status(AppIndicator.IndicatorStatus.ACTIVE)
         else:
