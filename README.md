@@ -16,7 +16,7 @@ Liferea is a desktop feed reader/news aggregator that brings together all of the
 Installation from Package
 -------------------------
 
-For distro specific package installation check out https://lzone.de/liferea/install.htm
+For distro-specific package installation check out https://lzone.de/liferea/install.htm
 
 
 
@@ -24,7 +24,7 @@ Building Liferea Yourself
 ------------------------
 
 This section describes how to compile Liferea yourself. If you have
-any problems compiling the source file an issue at Github and we will
+any problems compiling the source file an issue at GitHub and we will
 help you asap.
 
 
@@ -71,21 +71,21 @@ set $XDG_DATA_DIRS before starting Liferea. For example:
 Contributing
 ------------
 
-As the project is hosted at Github pull requests and tickets via Github
+As the project is hosted on GitHub pull requests and tickets via GitHub
 are the best way to contribute to Liferea.
 
 
 ###### _Translating_
 
 Before starting to translate you need a translation editor. We suggest
-to use poedit or gtranslator. Please edit the translation using such a 
+using poedit or Gtranslator. Please edit the translation using such a 
 translation editor and create a Github pull request for the new `.po` file.
 
 ###### _New Translations_
 
 To create a new translation you must load the translation template, which you
 can find in the release tarball as `po/liferea.pot`, into your translation 
-editor. After editing it save it under a new name (usually your locales name
+editor. After editing it save it under a new name (usually your locale name
 with the extension `.po`).
 
 
@@ -174,7 +174,7 @@ In case of crashes create gdb backtraces and post them in the bug tracker. To
 create a backtrace start Liferea using "gdb liferea". At the gdb prompt type
 "run" to start the execution and "bt" after the crash. Send us the "bt" output!
 
-Note: Often people confuses assertions with crashes. Assertions do halt the
+Note: Often people confuse assertions with crashes. Assertions do halt the
 program because of a totally unexpected situation. Creating a backtrace in this
 situation will only point to the assertion line, which doesn't help much. In case
 of an assertion simply post a bug report with the assertion message.
