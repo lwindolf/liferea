@@ -113,7 +113,7 @@ If you want to provide/update a localized feed list please follow these rules:
 
 ###### _Creating Plugins_
 
-Liferea supports GObject Introspection based plugins using libpeas. The
+Liferea supports GObject Introspection-based plugins using libpeas. The
 Liferea distribution comes with a set of Python plugin e.g. the media player,
 libsecret support, a tray icon plugin and maybe others.
 
@@ -205,6 +205,6 @@ Please do not ask for help for older releases!
 
 ### Issue Tracker
 
-Once you verified the latest stable release still has the problem
+Once you verify that the latest stable release still has the problem
 please raise an issue in the GitHub bug tracker
 (https://github.com/lwindolf/liferea/issues).
