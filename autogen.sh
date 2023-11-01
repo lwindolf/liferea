@@ -18,6 +18,9 @@ if [ "$tmp" = "" ]; then
 	exit 1
 fi
 
+rm -f configure aclocal.m4 autom4te.cache/*
+rmdir --ignore-fail-on-non-empty autom4te.cache
+find . -iname "Makefile" -o -iname "Makefile.in" -o -iname "Makefile.in.in" -type f  -exec rm -f '{}' +
 autoreconf -i
 intltoolize
 if test -z "$NOCONFIGURE"; then

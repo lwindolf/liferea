@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.15.4],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[m4_esyscmd([./version.sh|tr -d '\n'])],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
