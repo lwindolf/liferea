@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "dompurify": "^3.0.6",
+    "readability": "^0.1.0"
+  }
+}
