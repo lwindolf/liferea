@@ -89,10 +89,15 @@ function loadContent(readerEnabled, content) {
 					throw "notreaderable";
 
 				// Show the results
-				var article = new Readability(documentClone, {
-					charThreshold: 25
-				}).parse();
-
+			// Kill all foreign styles
+			var links = document.querySelectorAll('link');
+			for (var l of links) {
+				l.parentNode.removeChild(l);
+			}
+			var styles = document.querySelectorAll('style');
+			for (var s of styles) {
+				s.parentNode.removeChild(s);
+			}
 				if (!article)
 					throw "noarticle";
 
@@ -127,6 +132,10 @@ function loadContent(readerEnabled, content) {
 			}
 		}
 	}
+
+	console.log("Filtering with DOMPurify")
+	content = document.getElementById('content').innerHTML;
+	document.getElementById('content').innerHTML = DOMPurify.sanitize(content);
 
 	return true;
 }
