@@ -2,6 +2,15 @@
 
 	Version 1.15.5
 
+	* #1322 Remove Mate workaround from trayicon plugin
+	  (Yuri Konotopov)
+
+	* #1318 Set prgname to match application id (needed for KDE)
+	  (bbhtt)
+
+	* #1317 Support XDG_CONFIG_HOME for trayicon plugoin config
+	  (bbhtt)
+
 	* Update Readability.js to recent version
 	  (Lars Windolf)
 
