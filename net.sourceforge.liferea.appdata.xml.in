@@ -75,6 +75,21 @@
   <translation type="gettext">liferea</translation>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release date="2023-12-24" version="1.15.5">
+      <description>
+        <p>This release brings small improvements to the trayicon plugin and content filtering 
+        using DOMPurify which should increase security against XSS attacks via feeds providing 
+        rich HTML content.</p>
+        <p>Changes:</p>
+        <ul>
+          <li>Remove Mate workaround from trayicon plugin (Yuri Konotopov)</li>
+          <li>Set prgname to match application id (needed for KDE) (bbhtt)</li>
+          <li>Support XDG_CONFIG_HOME for trayicon plugoin config (bbhtt)</li>
+          <li>Update Readability.js to recent version (Lars Windolf)</li>
+          <li>Added DOMPurify.js for content filtering (Lars Windolf)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-10-23" version="1.15.4">
       <description>
         <p>This release brings small fixes and a rework of the trayicon plugin</p>
