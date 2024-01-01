@@ -23,6 +23,7 @@
 
 #include "node.h"
 
+#include <libxml/tree.h>
 #include <libxml/xmlmemory.h>
 #include <gtk/gtk.h>
 
