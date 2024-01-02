@@ -98,6 +98,11 @@ feed_import (nodePtr node, nodePtr parent, xmlNodePtr xml, gboolean trusted)
 		feed->html5Extract = TRUE;
 	xmlFree (tmp);
 
+	tmp = xmlGetProp (xml, BAD_CAST"loadItemLink");
+	if (tmp && !xmlStrcmp ((xmlChar *)tmp, BAD_CAST"true"))
+		feed->loadItemLink = TRUE;
+	xmlFree (tmp);
+
 	title = xmlGetProp (xml, BAD_CAST"title");
 	if (!title || !xmlStrcmp (title, BAD_CAST"")) {
 		if (title)
@@ -145,6 +150,9 @@ feed_export (nodePtr node, xmlNodePtr xml, gboolean trusted)
 
 		if (feed->html5Extract)
 			xmlNewProp (xml, BAD_CAST"html5Extract", BAD_CAST"true");
+
+		if (feed->loadItemLink)
+			xmlNewProp (xml, BAD_CAST"loadItemLink", BAD_CAST"true");
 	}
 
 	if (node->subscription)

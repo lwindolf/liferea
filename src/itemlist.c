@@ -545,8 +545,7 @@ itemlist_update_item (itemPtr item)
 void
 itemlist_selection_changed (itemPtr item)
 {
-
-	if (0 == itemlist->priv->loading)	{
+	if (0 == itemlist->priv->loading) {
 		/* folder&vfolder postprocessing to remove/filter unselected items no
 		   more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action ();
@@ -563,7 +562,7 @@ itemlist_selection_changed (itemPtr item)
 			item_set_read_state (item, TRUE);
 			itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
-			if (node->loadItemLink && (link = item_make_link (item))) {
+			if (IS_FEED(node) && ((feedPtr)node->data)->loadItemLink && (link = item_make_link (item))) {
 				itemview_launch_URL (link, TRUE /* force internal */);
 				g_free (link);
 			} else {

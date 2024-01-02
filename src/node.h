@@ -65,9 +65,6 @@ typedef struct node {
 	nodeViewSortType	sortColumn;	/*<< Node specific item view sort attribute. */
 	gboolean		sortReversed;	/*<< Sort in the reverse order? */
 	
-	/* rendering behaviour of this node */
-	gboolean	loadItemLink;	/*<< if TRUE do automatically load the item link into the HTML pane */
-	
 	/* current state of this node */	
 	gboolean	needsUpdate;	/*<< if TRUE: the item list has changed and the nodes feed list representation needs to be updated */
 	gboolean	needsRecount;	/*<< if TRUE: the number of unread/total items is currently unknown and needs recounting */

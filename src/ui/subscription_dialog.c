@@ -77,14 +77,12 @@ struct _SubscriptionPropDialog {
 struct _NewSubscriptionDialog {
 	GObject	parentInstance;
 
-	subscriptionPtr subscription;	/** used only for "properties" dialog */
 	dialogData		ui_data;
 };
 
 struct _SimpleSubscriptionDialog {
 	GObject	parentInstance;
 
-	subscriptionPtr subscription;	/** used only for "properties" dialog */
 	dialogData		ui_data;
 };
 
@@ -196,9 +194,6 @@ on_propdialog_response (GtkDialog *dialog,
 			/* "General" */
 			node_set_title(node, gtk_entry_get_text(GTK_ENTRY(spd->ui_data.feedNameEntry)));
 
-			/* Source */
-			newSource = ui_subscription_dialog_decode_source(&(spd->ui_data));
-
 			/* Filter handling */
 			newFilter = gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (spd->ui_data.dialog, "filterEntry")));
 			if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "filterCheckbox"))) &&
@@ -215,8 +210,9 @@ on_propdialog_response (GtkDialog *dialog,
 				}
 			}
 
-			/* if URL has changed... */
-			if (strcmp(newSource, subscription_get_source(subscription))) {
+			/* "Source" (if URL has changed...) */
+			newSource = ui_subscription_dialog_decode_source(&(spd->ui_data));
+			if (newSource && !g_str_equal (newSource, subscription_get_source (subscription))) {
 				subscription_set_source(subscription, newSource);
 				subscription_set_discontinued (subscription, FALSE);
 				needsUpdate = TRUE;
@@ -258,7 +254,7 @@ on_propdialog_response (GtkDialog *dialog,
 
 		/* "Advanced" options */
 		feed->encAutoDownload = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "enclosureDownloadCheck")));
-		node->loadItemLink    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "loadItemLinkCheck")));
+		feed->loadItemLink    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "loadItemLinkCheck")));
 		feed->ignoreComments  = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "ignoreCommentFeeds")));
 		feed->markAsRead      = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "markAsReadCheck")));
 		feed->html5Extract    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "html5ExtractCheck")));
@@ -502,7 +498,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 
 	/* Advanced */
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "enclosureDownloadCheck")), feed->encAutoDownload);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "loadItemLinkCheck")), node->loadItemLink);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "loadItemLinkCheck")), feed->loadItemLink);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "ignoreCommentFeeds")), feed->ignoreComments);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "markAsReadCheck")), feed->markAsRead);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (spd->ui_data.dialog, "html5ExtractCheck")), feed->html5Extract);
@@ -655,13 +651,11 @@ new_subscription_dialog_init (NewSubscriptionDialog *nsd)
 	gtk_widget_show_all (newdialog);
 }
 
-static NewSubscriptionDialog *
-ui_complex_subscription_dialog_new (void)
+int
+ui_complex_subscription_dialog_cb (gpointer userdata)
 {
-	NewSubscriptionDialog *nsd;
-
-	nsd = NEW_SUBSCRIPTION_DIALOG (g_object_new (NEW_SUBSCRIPTION_DIALOG_TYPE, NULL));
-	return nsd;
+	(void) NEW_SUBSCRIPTION_DIALOG (g_object_new (NEW_SUBSCRIPTION_DIALOG_TYPE, NULL));
+	return FALSE;
 }
 
 /* simple "New" dialog */
@@ -698,8 +692,9 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 		g_free (source);
 	}
 
-	if (response_id == GTK_RESPONSE_APPLY) /* misused for "Advanced" */
-		ui_complex_subscription_dialog_new ();
+	/* APPLY code misused for "Advanced" */
+	if (response_id == GTK_RESPONSE_APPLY)
+		g_idle_add (ui_complex_subscription_dialog_cb, NULL);
 
 	g_object_unref (ssd);
 }
