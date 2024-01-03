@@ -1134,7 +1134,7 @@ msgstr "_Переключить отметку о прочтении"
 
 #: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
-msgstr "_Перкключить метку новости"
+msgstr "_Переключить метку новости"
 
 #: ../src/ui/popup_menu.c:171
 msgid "R_emove Item"
