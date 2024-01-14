@@ -73,9 +73,16 @@ dd {
 	padding-left: 30px;
 }
 
-section, div.content svg, div.content * img {
+section,
+div.content svg,
+div.content img {
 	max-width: 100%;
 	height: auto !important;
+}
+
+/* HTML content extraction sometimes give us nav elements */
+div.content nav {
+	display: none;
 }
 
 figure, iframe {
