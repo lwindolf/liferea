@@ -1,3 +1,16 @@
+To be released
+
+	Version 1.15.6
+
+	* Automatically drop empty content elements (e.g. placeholders
+          for images/iframes/ads not loaded)
+
+	* Automatically set inline SVG sizes from viewBox attribute
+	  to prevent max-width SVGs
+
+	* Hide <nav> elements extracted by HTML5 content extraction
+
+
 2023-12-23  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.15.5
