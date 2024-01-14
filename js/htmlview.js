@@ -1,3 +1,4 @@
+// vim: set ts=4 sw=4:
 /*
  * @file htmlview.c  htmlview reader mode switching and CSS handling
  *
@@ -19,9 +20,9 @@
  */
 
 function setBase(uri) {
-	var base = document.createElement ("base");
-	base.setAttribute ("href", uri);
-	document.head.appendChild (base);
+	var base = document.createElement("base");
+	base.setAttribute("href", uri);
+	document.head.appendChild(base);
 }
 
 /**
@@ -54,14 +55,14 @@ function loadContent(readerEnabled, content) {
 
 			// When we are internally browsing than we need basic
 			// structure to insert Reader mode content
-			if(document.getElementById('content') !== null) {
+			if (document.getElementById('content') !== null) {
 				internalBrowsing = true;
 				console.log('[liferea] adding <div id="content"> for website content');
 				document.body.innerHTML += '<div id=\"content\"></div>';
 			}
 
 			// Decide where we get the content from
-			if(document.location.href === 'liferea://') {
+			if (document.location.href === 'liferea://') {
 				// Add all content in shadow DOM and split decoration from content
 				// only pass the content to Readability.js
 				console.log('[liferea] load content passed by variable');
@@ -77,7 +78,7 @@ function loadContent(readerEnabled, content) {
 			// When we run with internal URI schema we get layout AND content
 			// from variable and split it, apply layout to document
 			// and copy content to documentClone
-			if(document.location.href === 'liferea://' && documentClone.getElementById('content') != null) {
+			if (document.location.href === 'liferea://' && documentClone.getElementById('content') != null) {
 				documentClone.getElementById('content').innerHTML = '';
 				document.body.innerHTML = documentClone.body.innerHTML;
 				documentClone.body.innerHTML = content;
@@ -89,23 +90,23 @@ function loadContent(readerEnabled, content) {
 					throw "notreaderable";
 
 				// Show the results
-			// Kill all foreign styles
-			var links = document.querySelectorAll('link');
-			for (var l of links) {
-				l.parentNode.removeChild(l);
-			}
-			var styles = document.querySelectorAll('style');
-			for (var s of styles) {
-				s.parentNode.removeChild(s);
-			}
+				// Kill all foreign styles
+				var links = document.querySelectorAll('link');
+				for (var l of links) {
+					l.parentNode.removeChild(l);
+				}
+				var styles = document.querySelectorAll('style');
+				for (var s of styles) {
+					s.parentNode.removeChild(s);
+				}
 				if (!article)
 					throw "noarticle";
 
 				document.getElementById('content').innerHTML = article.content;
 
-			} catch(e) {
-				console.log('[liferea] reader mode not possible ('+e+')! fallback to unfiltered content');
-				if(internalBrowsing)
+			} catch (e) {
+				console.log('[liferea] reader mode not possible (' + e + ')! fallback to unfiltered content');
+				if (internalBrowsing)
 					document.getElementById('content').innerHTML = "Reader mode not possible. Loading URL unfiltered...";	// FIXME: provide good error info
 				else
 					document.body.innerHTML = content;
@@ -121,9 +122,9 @@ function loadContent(readerEnabled, content) {
 			for (var s of styles) {
 				s.parentNode.removeChild(s);
 			}
-		} catch(e) {
-			console.log('[liferea] reader mode failed: '+e);
-			if(!internalBrowsing) {
+		} catch (e) {
+			console.log('[liferea] reader mode failed: ' + e);
+			if (!internalBrowsing) {
 				// Force load original document at top level to get rid of all decoration
 				document.documentElement.innerHTML = content;
 			} else {
@@ -133,16 +134,57 @@ function loadContent(readerEnabled, content) {
 		}
 	}
 
-	console.log("Filtering with DOMPurify")
+	// Run DOMPurify
 	content = document.getElementById('content').innerHTML;
 	document.getElementById('content').innerHTML = DOMPurify.sanitize(content);
+
+	// Fix inline SVG sizes
+	const svgMinWidth = 50;
+	document.getElementById('content')
+		.querySelectorAll('svg')
+		.forEach((el) => {
+			const h = el.getAttribute('height');
+			const w = el.getAttribute('width');
+			if(h && w) {
+				if(w < svgMinWidth)
+					el.parentNode.removeChild(el);
+				return;
+			}
+
+			const viewbox = el.getAttribute('viewBox');
+			if(!viewbox)
+				return;
+
+			const size = viewbox.split(/\s+/);
+			if(size.length != 4)
+				return;
+
+			// Drop smaller SVGs that are usually just layout decorations
+			if((size[2] - size[0]) < svgMinWidth) {
+				el.parentNode.removeChild(el);
+				return;
+			}
+
+			// Properly size larger SVGs
+			el.width = size[2] - size[0];
+			el.heigth = size[3] - size[1];
+		});
+
+		// Drop empty elements (to get rid of empty picture/video/iframe divs)
+	const emptyRegex = new RegExp("^\s*$");
+	document.getElementById('content')
+		.querySelectorAll(":only-child")
+		.forEach((el) => {
+			if(el.innerHTML.length == 1)
+				el.parentNode.removeChild(el);
+		});
 
 	return true;
 }
 
 function youtube_embed(id) {
 	var container = document.getElementById(id);
-	container.innerHTML = '<iframe width="640" height="480" src="https://www.youtube.com/embed/'+id+'?autoplay=1" frameborder="0" allowfullscreen="1" allow="autoplay; allowfullscreen"></iframe>';
+	container.innerHTML = '<iframe width="640" height="480" src="https://www.youtube.com/embed/' + id + '?autoplay=1" frameborder="0" allowfullscreen="1" allow="autoplay; allowfullscreen"></iframe>';
 
 	return false;
 }
