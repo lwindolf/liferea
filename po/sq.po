@@ -1,22 +1,22 @@
 # Albanian Translation of liferea.pot
 # Copyright (C) 2009,2012
 # This file is distributed under the same license as the Liferea package.
-# Besnik Bleta <besnik@programeshqip.org>, 2009, 2012, 2015, 2021, 2022.
+# Besnik Bleta <besnik@programeshqip.org>, 2009, 2012, 2015, 2021, 2022, 2024
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-14 23:03+0200\n"
-"PO-Revision-Date: 2022-12-01 21:06+0200\n"
+"PO-Revision-Date: 2024-02-24 23:57+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:341
 #: ../glade/mainwindow.ui.h:1
@@ -810,7 +810,7 @@ msgstr "është pa shenjë"
 
 #: ../src/rule.c:279
 msgid "Enclosure"
-msgstr ""
+msgstr "Paketim"
 
 #: ../src/rule.c:279 ../src/rule.c:280
 msgid "included"
@@ -1268,7 +1268,7 @@ msgstr "Parje Së Gjeri"
 
 #: ../src/ui/preferences_dialog.c:112
 msgid "Automatic"
-msgstr ""
+msgstr "Automatike"
 
 #: ../src/ui/preferences_dialog.c:491
 msgid "Default Browser"
@@ -1331,9 +1331,8 @@ msgid "Error: Could not open pipe \"%s\""
 msgstr "Gabim: S’u hap dot kanali \"%s\""
 
 #: ../src/update.c:409
-#, fuzzy
 msgid "Error: Could not write temporary file!"
-msgstr "Gabim: S’u hap dot kartela \"%s\""
+msgstr "Gabim: S’u shkrua dot kartelë e përkohshme!"
 
 #. FIXME: maybe setting request->returncode would be better
 #: ../src/update.c:661
@@ -2435,77 +2434,3 @@ msgstr ""
 msgid "Search Folder:"
 msgstr "Dosje Kërkimesh:"
 
-#~ msgid "Print debugging messages when a function takes too long to process"
-#~ msgstr ""
-#~ "Shtyp mesazhe diagnostikimi, kur plotësimi i një funksioni zgjatet shumë"
-
-#~ msgid "Print debugging messages when entering/leaving functions"
-#~ msgstr "Shtyp mesazhe diagnostikimi, kur hyhet/dilet nga funksione"
-
-#~ msgid "Print verbose debugging messages"
-#~ msgstr "Shtyp mesazhe fjalamane diagnostikimi"
-
-#~ msgid "_Normal View"
-#~ msgstr "Parje _Normale"
-
-#~ msgid "_Wide View"
-#~ msgstr "Parje Së _Gjeri"
-
-#~ msgid "RSS feed reader"
-#~ msgstr "Lexues prurjesh RSS"
-
-#~ msgid ""
-#~ "Liferea is an abbreviation for Linux Feed Reader. It is a news aggregator "
-#~ "for online news feeds. It supports a number of different feed formats "
-#~ "including RSS/RDF, CDF and Atom. There are many other news readers "
-#~ "available, but these others are not available for Linux or require many "
-#~ "extra libraries to be installed. Liferea tries to fill this gap by "
-#~ "creating a fast, easy to use, easy to install news aggregator for GTK/"
-#~ "GNOME."
-#~ msgstr ""
-#~ "Liferea është një shkurtim për Linux Feed Reader. Është një grumbullues "
-#~ "lajmesh për prurje lajmesh në internet. Mbulon një numër formatesh "
-#~ "prurjeje, përfshi RSS/RDF, CDF dhe Atom. Ka mjaft lexues të tjerë "
-#~ "lajmesh, por këta nuk gjenden për Linux-in ose lypin shumë librari "
-#~ "ekstra, pa të instalohen. Liferea orvatet ta plotësojë këtë mungesë duke "
-#~ "krijuar një grumbullues lajmesh për GTK/GNOME, të shpejtë, të lehtë për "
-#~ "t’u instaluar dhe përdorur."
-
-#~ msgid "Distinguishing features:"
-#~ msgstr "Veçori dalluese:"
-
-#~ msgid "Read articles when offline"
-#~ msgstr "Lexoni artikuj kur jeni i palidhur"
-
-#~ msgid "Synchronizes with TheOldReader"
-#~ msgstr "Njëkohësohet me TheOldReader-in"
-
-#~ msgid "Synchronizes with TinyTinyRSS"
-#~ msgstr "Njëkohësohet me TinyTinyRSS-në"
-
-#~ msgid "Synchronizes with InoReader"
-#~ msgstr "Njëkohësohet me InoReader-in"
-
-#~ msgid "Synchronizes with Reedah"
-#~ msgstr "Njëkohësohet me with Reedah"
-
-#~ msgid "Permanently save headlines in news bins"
-#~ msgstr "Ruaji përgjithmonë titujt në kosha lajmesh"
-
-#~ msgid "Match items using search folders"
-#~ msgstr "Gjej përputhje për artikuj duke përdorur dosje kërkimi"
-
-#~ msgid "Play Podcasts"
-#~ msgstr "Luaj Podcast-e"
-
-#~ msgid "Other"
-#~ msgstr "Tjetër"
-
-#, c-format
-#~ msgid "\"%s\" updated..."
-#~ msgstr "\"%s\" u përditësua…"
-
-#~ msgid ""
-#~ "A network error occurred, or the other end closed the connection "
-#~ "unexpectedly"
-#~ msgstr "Ndodhi një gabim rrjeti, ose ana tjetër e mbylli lidhjen papritmas"
