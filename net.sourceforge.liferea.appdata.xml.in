@@ -76,6 +76,10 @@
   <url type="translate">https://github.com/lwindolf/liferea?tab=readme-ov-file#new-translations</url>
   <translation type="gettext">liferea</translation>
   <content_rating type="oars-1.1"/>
+  <branding>
+    <color type="primary" scheme_preference="light">#CBCFD3</color>
+    <color type="primary" scheme_preference="dark">#64647D</color>
+  </branding>
   <releases>
     <release date="2023-12-24" version="1.15.5">
       <description>
