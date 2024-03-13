@@ -459,6 +459,11 @@ ui_enclosure_type_setup (encTypePtr type, enclosurePtr enclosure, gchar *typestr
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "enc_always_btn")), TRUE);
 	}
 
+	if (!type || !typestr) {
+		g_warning ("Unexpected missing MIME / extension type. Cannot prepare dialog!");
+		return;
+	}
+
 	if (!strchr(typestr, '/'))
 		tmp = g_strdup_printf (_("File Extension .%s"), typestr);
 	else
