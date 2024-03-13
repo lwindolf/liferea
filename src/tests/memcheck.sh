@@ -36,14 +36,16 @@ EOT
 		if [ "$output" != "" ]; then
 			error=1
 			echo "ERROR: memcheck reports problems for '$tool'!"
+			echo "Relevant error lines are:"
+			echo
 			echo "$output"
-			
-			# When in github provide extra details
-			if [ "$GITHUB_ACTION" != "" ]; then
-				echo "::group:: $tool details"
-				echo "$details"
-				echo "::endgroup::"
-			fi
+			echo
+			echo "Full valgrind details:"
+			echo
+			[ "$GITHUB_ACTION" != "" ] && echo "::group:: $tool details"
+			echo "$details"
+			[ "$GITHUB_ACTION" != "" ] && echo "::endgroup::"
+			echo
 		else
 			echo "memcheck '$tool' OK"
 		fi
