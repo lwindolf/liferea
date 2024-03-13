@@ -107,6 +107,8 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 	GtkWidget	*widget;
 	ruleInfoPtr	ruleInfo;
 
+	g_assert (changeRequest);
+
 	ruleInfo = g_slist_nth_data (rule_get_available_rules (), changeRequest->rule);
 	g_object_set_data (G_OBJECT (changeRequest->paramHBox), "rule", rule);
 
@@ -136,10 +138,12 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 }
 
 static void
-do_ruletype_changed (struct changeRequest	*changeRequest)
+do_ruletype_changed (struct changeRequest *changeRequest)
 {
 	ruleInfoPtr		ruleInfo;
 	rulePtr			curRule, newRule;
+
+	g_assert (changeRequest);
 
 	curRule = g_object_get_data (G_OBJECT (changeRequest->paramHBox), "rule");
 	ruleInfo = g_slist_nth_data (rule_get_available_rules (), changeRequest->rule);
