@@ -256,7 +256,7 @@ html_auto_discover_feed (const gchar* data, const gchar *defaultBaseUri)
 		gchar *tmp = (gchar *)common_build_url (iter->data, baseUri);
 
 		/* We expect only relative URIs starting with '/' or absolute URIs starting with 'http://' or 'https://' */
-		if ('h' == tmp[0] || '/' == tmp[0]) {
+		if (tmp && ('h' == tmp[0] || '/' == tmp[0])) {
 			debug (DEBUG_UPDATE, "search result: %s", (gchar *)iter->data);
 			valid_links = g_slist_append (valid_links, tmp);
 		} else {
