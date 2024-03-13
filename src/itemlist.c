@@ -562,7 +562,7 @@ itemlist_selection_changed (itemPtr item)
 			item_set_read_state (item, TRUE);
 			itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
-			if (IS_FEED(node) && ((feedPtr)node->data)->loadItemLink && (link = item_make_link (item))) {
+			if (IS_FEED(node) && node->data && ((feedPtr)node->data)->loadItemLink && (link = item_make_link (item))) {
 				itemview_launch_URL (link, TRUE /* force internal */);
 				g_free (link);
 			} else {
