@@ -10,6 +10,9 @@ To be released
 
 	* Hide <nav> elements extracted by HTML5 content extraction
 
+	* Remove G_REGEX_OPTIMIZE flag from DHTML stripping regex handling
+	  as valgrind reports memory errors with this.
+
 
 2023-12-23  Lars Windolf <lars.windolf@gmx.de>
 
