@@ -270,12 +270,14 @@ item_to_xml (LifereaItem *item, gpointer xmlNode)
 	if (item_get_description (item)) {
 		/* Prefer full article over feed inline content */
 		const gchar *content = metadata_list_get (item->metadata, "richContent");
-		if (NULL == content)
+		if (!content)
 			content = item_get_description (item);
 
-		tmp = xhtml_strip_dhtml (content);
-		xmlNewTextChild (itemNode, NULL, BAD_CAST "description", BAD_CAST tmp);
-		g_free (tmp);
+		if (content) {
+			tmp = xhtml_strip_dhtml (content);
+			xmlNewTextChild (itemNode, NULL, BAD_CAST "description", BAD_CAST tmp);
+			g_free (tmp);
+		}
 	}
 
 	if (item_get_source (item))
