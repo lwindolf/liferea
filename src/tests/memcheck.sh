@@ -25,6 +25,21 @@ if command -v valgrind >/dev/null; then
 			     fun:_dl_init
 			     obj:/lib/x86_64-linux-gnu/ld-2.27.so
 			  }
+			  {
+   			     lzma_Debian_#1342_cond
+		 	     Memcheck:Cond
+			     obj:/usr/lib/x86_64-linux-gnu/liblzma.so.*
+			  }
+                          {
+ 	                     lzma_Debia_#1342_free
+			     Memcheck:Free
+			     obj:/usr/lib/x86_64-linux-gnu/liblzma.so.*
+			  }
+                          {
+ 	                     lzma_Debia_#1342_value
+			     Memcheck:Value8
+			     obj:/usr/lib/x86_64-linux-gnu/liblzma.so.*
+			  }
 EOT
 			) --error-markers=begin,end "./$tool" 2>&1
 		)
