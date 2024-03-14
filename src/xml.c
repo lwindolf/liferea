@@ -249,7 +249,8 @@ xhtml_regex_add (GSList **regex, const gchar *pattern, const gchar *replace)
 	GError *err = NULL;
         regexPtr expr = g_new0 (struct regex, 1);
 
-	expr->expr = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL | G_REGEX_OPTIMIZE, 0, &err);
+	// Do not use G_REGEX_OPTIMIZE as valgrind would report errors!
+	expr->expr = g_regex_new (pattern, G_REGEX_CASELESS | G_REGEX_UNGREEDY | G_REGEX_DOTALL, 0, &err);
         expr->replace = replace;
 	if (err) {
 		g_warning ("xhtml_strip_setup: %s\n", err->message);
