@@ -28,17 +28,22 @@ if command -v valgrind >/dev/null; then
 			  {
    			     lzma_Debian_#1342_cond
 		 	     Memcheck:Cond
-			     obj:/usr/lib/x86_64-linux-gnu/liblzma.so.*
+			     obj:/usr/lib/*/liblzma.so.*
 			  }
                           {
  	                     lzma_Debia_#1342_free
 			     Memcheck:Free
-			     obj:/usr/lib/x86_64-linux-gnu/liblzma.so.*
+			     obj:/usr/lib/*/liblzma.so.*
 			  }
                           {
  	                     lzma_Debia_#1342_value
 			     Memcheck:Value8
-			     obj:/usr/lib/x86_64-linux-gnu/liblzma.so.*
+			     obj:/usr/lib/*/liblzma.so.*
+			  }
+                          {
+			     lzma_Debian_#1342_addr
+			     Memcheck:Addr8
+			     obj:/usr/lib/*/liblzma.so.*
 			  }
 EOT
 			) --error-markers=begin,end "./$tool" 2>&1
