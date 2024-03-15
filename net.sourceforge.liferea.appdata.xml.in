@@ -81,6 +81,19 @@
     <color type="primary" scheme_preference="dark">#64647D</color>
   </branding>
   <releases>
+    <release date="2024-03-15" version="1.15.6">
+      <description>
+        <p>This is a small bugfix release with several translation updates and optimizations for better handling HTML content.</p>
+        <p>Changes:</p>
+        <ul>
+          <li>Automatically drop empty content elements (e.g. placeholders for images/iframes/ads not loaded)</li>
+          <li>Automatically set inline SVG sizes from viewBox attribute to prevent max-width SVGs</li>
+          <li>Hide <code> nav </code> elements extracted by HTML5 content extraction</li>
+          <li>Remove G_REGEX_OPTIMIZE flag from DHTML stripping regex handling as valgrind reports memory errors with this.</li>
+          <li>src/node_type.h: add #include <code>libxml/tree.h</code> for xmlNodePtr type (@trofi)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2023-12-24" version="1.15.5">
       <description>
         <p>This release brings small improvements to the trayicon plugin and content filtering 
