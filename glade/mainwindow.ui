@@ -29,23 +29,50 @@
             <property name="vexpand">True</property>
             <property name="position">170</property>
             <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow3">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="hscrollbar-policy">never</property>
-                <property name="shadow-type">in</property>
+                <property name="can-focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkTreeView" id="feedlist">
+                  <object class="GtkSearchEntry" id="titleFilter">
+                    <property name="visible">False</property>
+                    <property name="can-focus">True</property>
+                    <property name="primary-icon-name">edit-find-symbolic</property>
+                    <property name="primary-icon-activatable">False</property>
+                    <property name="primary-icon-sensitive">False</property>
+                    <property name="placeholder-text" translatable="yes">Filter (Alt+g)</property>
+                    <accelerator key="g" signal="grab-focus" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolledwindow3">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="headers-visible">False</property>
-                    <property name="reorderable">True</property>
-                    <signal name="button-press-event" handler="on_mainfeedlist_button_press_event" swapped="no"/>
-                    <signal name="popup-menu" handler="on_mainfeedlist_popup_menu" swapped="no"/>
-                    <child internal-child="selection">
-                      <object class="GtkTreeSelection"/>
+                    <property name="hscrollbar-policy">never</property>
+                    <property name="shadow-type">in</property>
+                    <child>
+                      <object class="GtkTreeView" id="feedlist">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="headers-visible">False</property>
+                        <property name="reorderable">True</property>
+                        <signal name="button-press-event" handler="on_mainfeedlist_button_press_event" swapped="no"/>
+                        <signal name="popup-menu" handler="on_mainfeedlist_popup_menu" swapped="no"/>
+                        <child internal-child="selection">
+                          <object class="GtkTreeSelection"/>
+                        </child>
+                      </object>
                     </child>
                   </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
               </object>
               <packing>
