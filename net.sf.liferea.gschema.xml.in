@@ -37,6 +37,11 @@
       <summary>Defer hiding read items from search folders.</summary>
       <description>If this option is enabled, defer hiding read items until the search folder is switched.</description>
     </key>
+    <key name="fixed-date-format" type="b">
+         <default>false</default>
+         <summary>Use fixed with date format.</summary>
+         <description>If this option is enabled, use fixed width date format.</description>
+    </key>
     <key name="default-update-interval" type="i">
       <default>0</default>
       <summary>Default interval for fetching feeds.</summary>

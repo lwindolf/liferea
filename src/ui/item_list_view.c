@@ -467,14 +467,14 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIte
 	gchar		*title, *time_str;
 	const GIcon	*state_icon;
 	gint		state = 0;
-        int fontWeight = PANGO_WEIGHT_BOLD;
+	int fontWeight = PANGO_WEIGHT_BOLD;
 
 	if (item->flagStatus)
 		state += 2;
 	if (!item->readStatus)
 		state += 1;
 
-	time_str = (0 != item->time) ? date_format ((time_t)item->time, NULL) : g_strdup ("");
+	time_str = date_format ((time_t)item->time, NULL);
 
 	title = item->title && strlen (item->title) ? item->title : _("*** No title ***");
 	title = g_strstrip (g_markup_escape_text (title, -1));

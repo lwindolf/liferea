@@ -35,6 +35,8 @@
 #define DEFAULT_VIEW_MODE		"default-view-mode"
 #define DEFER_DELETE_MODE               "defer-delete-mode"
 
+#define FIXED_DATE_FORMAT               "fixed-date-format"
+
 #define DEFAULT_FONT			"document-font-name"
 #define USER_FONT			"browser-font"
 #define DISABLE_JAVASCRIPT		"disable-javascript"

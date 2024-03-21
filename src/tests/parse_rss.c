@@ -22,6 +22,7 @@
 #include <string.h>
 
 #include "debug.h"
+#include "conf.h"
 #include "feed.h"
 #include "feed_parser.h"
 #include "item.h"
@@ -120,6 +121,8 @@ main (int argc, char *argv[])
 	int result;
 
 	g_test_init (&argc, &argv, NULL);
+
+	conf_init ();
 
 	if (argv[1] && g_str_equal (argv[1], "--debug"))
 		debug_set_flags (DEBUG_UPDATE | DEBUG_HTML | DEBUG_PARSING);
