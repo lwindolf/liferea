@@ -169,7 +169,7 @@ network_process_request (const updateJobPtr job)
 	g_autoptr(SoupMessage)	msg = NULL;
 	SoupMessageHeaders	*request_headers;
 	g_autoptr(GUri)		sourceUri;
-	gboolean		do_not_track = FALSE;
+	gboolean		do_not_track = FALSE, do_not_sell = false;
 	g_autofree gchar	*scheme = NULL, *user = NULL, *password = NULL, *auth_params = NULL, *host = NULL, *path = NULL, *query = NULL, *fragment = NULL;
 	gint			port;
 
@@ -275,10 +275,13 @@ network_process_request (const updateJobPtr job)
 	 * msg to a callback in case of 401 (see soup_message_add_status_code_handler())
 	 * displaying the dialog ourselves, and requeing the msg if we get credentials */
 
-	/* Add Do Not Track header according to settings */
+	/* Add DNT / GPC headers according to settings */
 	conf_get_bool_value (DO_NOT_TRACK, &do_not_track);
+	conf_get_bool_value (DO_NOT_SELL, &do_not_sell);
 	if (do_not_track)
 		soup_message_headers_append (request_headers, "DNT", "1");
+	if (do_not_track)
+		soup_message_headers_append (request_headers, "Sec-GPC", "1");
 
 	/* Process permanent redirects (update feed location) */
 	soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, job);

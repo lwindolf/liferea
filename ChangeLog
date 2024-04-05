@@ -1,3 +1,11 @@
+To be released
+
+	Version 1.15.7
+
+	* Add Sec-GPC header support via new preference to prevent user data selling.
+	  (Lars Windolf)
+
+
 2024-03-14  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.15.6

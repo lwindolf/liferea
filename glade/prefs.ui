@@ -1599,7 +1599,7 @@
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="donottrackbtn">
-                    <property name="label" translatable="yes">Tell sites that I do _not want to be tracked.</property>
+                    <property name="label" translatable="yes">Tell websites that I do _not want to be tracked.</property>
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="receives-default">False</property>
@@ -1608,6 +1608,23 @@
                     <property name="use-underline">True</property>
                     <property name="draw-indicator">True</property>
                     <signal name="toggled" handler="on_donottrackbtn_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkCheckButton" id="donotsellbtn">
+                    <property name="label" translatable="yes">Tell websites not to _sell or share my data.</property>
+                    <property name="visible">True</property>
+                    <property name="can-focus">True</property>
+                    <property name="receives-default">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin-start">12</property>
+                    <property name="use-underline">True</property>
+                    <property name="draw-indicator">True</property>
+                    <signal name="toggled" handler="on_donotsellbtn_toggled" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left-attach">0</property>

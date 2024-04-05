@@ -451,6 +451,12 @@ on_donottrackbtn_toggled (GtkToggleButton *button, gpointer user_data)
 }
 
 void
+on_donotselltn_toggled (GtkToggleButton *button, gpointer user_data)
+{
+	conf_set_bool_value (DO_NOT_SELL, gtk_toggle_button_get_active (button));
+}
+
+void
 on_itpbtn_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	conf_set_bool_value (ENABLE_ITP, gtk_toggle_button_get_active (button));
@@ -703,6 +709,10 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	widget = liferea_dialog_lookup (pd->dialog, "donottrackbtn");
 	conf_get_bool_value (DO_NOT_TRACK, &bSetting);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
+
+	widget = liferea_dialog_lookup (pd->dialog, "donotsellbtn");
+	conf_get_bool_value (DO_NOT_SELL, &bSetting);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 
 #if WEBKIT_CHECK_VERSION (2, 30, 0)
