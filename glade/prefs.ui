@@ -1574,7 +1574,7 @@
               </packing>
             </child>
             <child>
-              <!-- n-columns=3 n-rows=5 -->
+              <!-- n-columns=3 n-rows=6 -->
               <object class="GtkGrid" id="privacyPage">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -1628,7 +1628,7 @@
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
-                    <property name="top-attach">2</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
@@ -1676,7 +1676,7 @@
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
-                    <property name="top-attach">3</property>
+                    <property name="top-attach">4</property>
                   </packing>
                 </child>
                 <child>
@@ -1731,7 +1731,7 @@
                   </object>
                   <packing>
                     <property name="left-attach">0</property>
-                    <property name="top-attach">4</property>
+                    <property name="top-attach">5</property>
                   </packing>
                 </child>
                 <child>

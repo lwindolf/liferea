@@ -451,7 +451,7 @@ on_donottrackbtn_toggled (GtkToggleButton *button, gpointer user_data)
 }
 
 void
-on_donotselltn_toggled (GtkToggleButton *button, gpointer user_data)
+on_donotsellbtn_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	conf_set_bool_value (DO_NOT_SELL, gtk_toggle_button_get_active (button));
 }

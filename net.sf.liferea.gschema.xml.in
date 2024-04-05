@@ -210,7 +210,12 @@
     <key name="do-not-track" type="b">
       <default>false</default>
       <summary>Send "Do Not Track" header</summary>
-      <description>Configures wether the "DNT" header is to be sent. If enabled sends "DNT: 1", meaning Do Not Track.</description>
+      <description>Configures wether the "DNT" header is to be sent. If enabled sends "DNT: 1", meaning do not track user requests.</description>
+    </key>
+    <key name="do-not-sell" type="b">
+      <default>false</default>
+      <summary>Send "Do Not Sell" header</summary>
+      <description>Configures wether the "Sec-GPC" header is to be sent. If enabled sends "Sec-GPC: 1", meaning do not share or sell user information.</description>
     </key>
     <key name="list-view-column-order" type="as">
       <default>[ 'state', 'favicon', 'headline', 'enclosure', 'date' ]</default>
