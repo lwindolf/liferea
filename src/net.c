@@ -242,7 +242,7 @@ network_process_request (const updateJobPtr job)
 					    update_state_get_etag (job->request->updateState));
 	}
 
-	/* Set the I-AM header */
+	/* Set the A-IM header */
 	if (job->request->updateState &&
 	    (update_state_get_lastmodified (job->request->updateState) ||
 	     update_state_get_etag (job->request->updateState))) {
@@ -325,8 +325,8 @@ network_get_user_agent (void)
 			useragent = g_strdup_printf ("Liferea/%.2f.0 (Android; Mobile; %s) AppleWebKit (KHTML, like Gecko)", g_random_double(), HOMEPAGE);
 		} else {
 			/* Set an exact user agent,
-			 * e.g. "Liferea/1.10.0 (Android 12; Mobile; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
-			useragent = g_strdup_printf ("Liferea/%s (Android 12; Mobile; %s) AppleWebKit (KHTML, like Gecko)", VERSION, HOMEPAGE);
+			 * e.g. "Liferea/1.10.0 (Android 14; Mobile; https://lzone.de/liferea/) AppleWebKit (KHTML, like Gecko)" */
+			useragent = g_strdup_printf ("Liferea/%s (Android 14; Mobile; %s) AppleWebKit (KHTML, like Gecko)", VERSION, HOMEPAGE);
 		}
 	} else {
 		/* Set an arbitrary user agent from the environment variable LIFEREA_UA */
