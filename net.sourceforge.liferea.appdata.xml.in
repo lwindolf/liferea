@@ -34,40 +34,36 @@
   </description>
   <screenshots>
     <screenshot type="default">
-      <caption>Reading newsfeeds in an email client interface</caption>
+      <caption>Read feeds in an email like interface</caption>
       <image>https://lzone.de/liferea/screenshots/screenshot1.png</image>
     </screenshot>
     <screenshot>
-      <caption>Hide read feeds from the subscription list</caption>
+      <caption>Integrated browser support</caption>
       <image>https://lzone.de/liferea/screenshots/screenshot2.png</image>
     </screenshot>
     <screenshot>
-      <caption>Three pane view mode for wide screens</caption>
+      <caption>Read your favourite comics</caption>
       <image>https://lzone.de/liferea/screenshots/screenshot3.png</image>
     </screenshot>
     <screenshot>
-      <caption>Play SoundCloud music in Liferea</caption>
+      <caption>Play and download podcasts</caption>
       <image>https://lzone.de/liferea/screenshots/screenshot4.png</image>
     </screenshot>
     <screenshot>
-      <caption>Play music enclosures with the internal player</caption>
-      <image>https://lzone.de/liferea/screenshots/screenshot5.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>Read your favourite comics!</caption>
+      <caption>Install plugins from the community</caption>
       <image>https://lzone.de/liferea/screenshots/screenshot6.png</image>
     </screenshot>
     <screenshot>
-      <caption>Customize Liferea in the preferences dialog</caption>
+      <caption>Preferences window</caption>
+      <image>https://lzone.de/liferea/screenshots/screenshot9.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Privacy settings to prevent tracking</caption>
       <image>https://lzone.de/liferea/screenshots/screenshot7.png</image>
     </screenshot>
     <screenshot>
-      <caption>Easily subscribe to new feeds</caption>
+      <caption>Add various feed sources</caption>
       <image>https://lzone.de/liferea/screenshots/screenshot8.png</image>
-    </screenshot>
-    <screenshot>
-      <caption>Browse the web with tabs inside Liferea</caption>
-      <image>https://lzone.de/liferea/screenshots/screenshot9.png</image>
     </screenshot>
   </screenshots>
   <url type="bugtracker">https://github.com/lwindolf/liferea/issues/new</url>
