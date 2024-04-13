@@ -39,7 +39,7 @@ help you asap.
 Download a tarball from https://github.com/lwindolf/liferea/releases
 and extract and compile with
 
-    tar jxvf liferea-1.13.3.tar.bz2 
+    tar jxvf liferea-1.15.5.tar.bz2 
     ./configure
     make
     sudo make install
