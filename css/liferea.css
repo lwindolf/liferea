@@ -311,3 +311,10 @@ div.photoheader {
 	cursor: pointer;
 	fill: #ddd;
 }
+
+// dark mode image glaring #1303 
+@media (prefers-color-scheme: dark) {
+  img {
+    filter: brightness(.8) contrast(1.2);
+  }
+}
