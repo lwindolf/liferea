@@ -1,7 +1,7 @@
 /*
  * @file icons.c  Using icons from theme and package pixmaps
  *
- * Copyright (C) 2010-2014 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,18 +80,11 @@ icons_load (void)
 	static const gchar *iconNames[] = {
 		"unread",		/* ICON_UNREAD */
 		"emblem-important",	/* ICON_FLAG */
-		"available",	/* ICON_AVAILABLE */
-		"available_offline",	/* ICON_AVAILABLE_OFFLINE */
 		"dialog-error",		/* ICON_UNAVAILABLE */
 		"default",		/* ICON_DEFAULT */
 		"folder",		/* ICON_FOLDER */
 		"folder-saved-search",	/* ICON_VFOLDER */
 		"newsbin",		/* ICON_NEWSBIN */
-		"empty",		/* ICON_EMPTY */
-		"empty_offline",	/* ICON_EMPTY_OFFLINE */
-		"gtk-connect",		/* ICON_ONLINE */
-		"gtk-disconnect",	/* ICON_OFFLINE */
-		"mail-attachment",	/* ICON_ENCLOSURE */
 		NULL
 	};
 

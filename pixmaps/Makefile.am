@@ -1,9 +1,8 @@
 SUBDIRS = 16x16 22x22 24x24 32x32 48x48 scalable
 EXTRA_DIST = \
-	mail-attachment.png	\
 	default.svg	\
 	folder.png   \
-	emblem-important.png        \
+	emblem-important.svg        \
 	emblem-web.svg       \
 	unread.png      \
 	folder-saved-search.png     \
