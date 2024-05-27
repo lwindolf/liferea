@@ -1,0 +1,8 @@
+[Plugin]
+Module=messagingmenu
+Loader=python3
+Icon=indicator-messages
+Name=Unity MessagingMenu integration
+Description=Shows new feed entries in the Unity MessagingMenu
+Authors=Tasos Sahanidis <code@tasossah.com>
+Copyright=Copyright (C) 2023 Tasos Sahanidis
