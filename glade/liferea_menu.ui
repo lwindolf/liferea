@@ -153,8 +153,19 @@
        </section>
       <section>
         <item>
-          <attribute name="action">app.reduced-feed-list</attribute>
-          <attribute name="label" translatable="yes">_Reduced Feed List</attribute>
+          <attribute name="action">app.feedlist-view-mode</attribute>
+          <attribute name="label" translatable="yes">N_ormal feed list</attribute>
+          <attribute name="target">normal</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.feedlist-view-mode</attribute>
+          <attribute name="label" translatable="yes">_Reduced feed list</attribute>
+          <attribute name="target">reduced</attribute>
+        </item>
+        <item>
+          <attribute name="action">app.feedlist-view-mode</attribute>
+          <attribute name="label" translatable="yes">F_lat feed list</attribute>
+          <attribute name="target">flat</attribute>
         </item>
       </section>
     </submenu>

@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <schemalist gettext-domain="liferea">
+  <enum id="net.sf.liferea.FeedlistViewMode">
+    <value value="0" nick="normal"/>
+    <value value="1" nick="reduced"/>
+    <value value="2" nick="flat"/>
+  </enum>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="net.sf.liferea" path="/org/gnome/liferea/">
     <child name="plugins" schema="net.sf.liferea.plugins"/>
     <key name="browse-inside-application" type="b">
@@ -131,6 +136,11 @@
       <default>false</default>
       <summary>Filter feeds without unread items from feed list.</summary>
       <description>If this option is enabled the feed list will contain only feeds that have unread items.</description>
+    </key>
+    <key name="feedlist-view-mode" enum="net.sf.liferea.FeedlistViewMode">
+      <default>'normal'</default>
+      <summary>How the feed list is presented</summary>
+      <description>How the feed list is presented to the user. Possible values are "normal", "reduced", and "flat".</description>
     </key>
     <key name="download-custom-command" type="s">
       <default>''</default>

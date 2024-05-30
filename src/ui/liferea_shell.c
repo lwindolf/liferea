@@ -1029,7 +1029,7 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 
 	/* Parameter type must be NULL for toggle. */
 	{"fullscreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
-	{"reduced-feed-list", NULL, NULL, "@b false", on_feedlist_reduced_activate},
+	{"feedlist-view-mode", NULL, "s", "@s 'normal'", on_feedlist_view_mode_activate},
 
 	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
 	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
@@ -1333,8 +1333,11 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->itemlist = itemlist_create ();
 
 	/* Prepare some toggle button states */
-	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
-	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "reduced-feed-list")), g_variant_new_boolean (toggle));
+
+	conf_get_enum_value (FEEDLIST_VIEW_MODE, &mode);
+	g_simple_action_set_state (
+		G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "feedlist-view-mode")),
+		g_variant_new_string (feed_list_view_mode_value_to_string (mode)));
 
 	/* Menu creation */
 	gtk_builder_add_from_file (shell->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui", NULL);

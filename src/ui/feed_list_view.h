@@ -40,6 +40,14 @@ enum {
 	FS_LEN
 };
 
+
+enum feedlistViewMode {
+	FEEDLIST_VIEW_MODE_NORMAL	= 0,
+	FEEDLIST_VIEW_MODE_REDUCED	= 1,
+	FEEDLIST_VIEW_MODE_FLAT		= 2,
+};
+
+
 /**
  * feed_list_view_select:
  *
@@ -84,7 +92,9 @@ void on_new_plugin_activate (GSimpleAction *menuitem, GVariant *parameter, gpoin
 void on_new_newsbin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
 void on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data);
 
-void on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void on_feedlist_view_mode_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void on_titlefilter_entry_changed (GtkEditable *self, gpointer user_data);
+
 
 /**
  * Determines the tree iter of a given node.
@@ -183,5 +193,23 @@ void feed_list_view_remove (nodePtr node);
  * @param exNode			the existing node
  */
 void feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription, nodePtr exNode);
+
+/**
+ * Return the integer value associated to the string representing the view mode.
+ * If the view mode is invalid or unrecognized, returns FEEDLIST_VIEW_MODE_NORMAL.
+ *
+ * @param str_mode A string representing a view mode.
+ * @return A integer relative to this mode.
+ */
+enum feedlistViewMode feed_list_view_mode_string_to_value (const gchar *str_mode);
+
+/**
+ * Return a read-only string representing the given view mode.
+ * The returned string must not be changed in any way.
+ *
+ * @param mode a FEEDLIST_VIEW_MODE_* integer.
+ * @return an internally allocated const string.
+ */
+const gchar * feed_list_view_mode_value_to_string (enum feedlistViewMode mode);
 
 #endif
