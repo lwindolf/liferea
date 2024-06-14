@@ -82,7 +82,7 @@ parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 		}
 	
 		/* gravatars are often supplied as media:content with medium='image'
-		   so we treat do not treat such occurences as enclosures */
+		   so we do not treat such occurences as enclosures */
 		if (medium && !strcmp (medium, "image") && strstr (tmp, "www.gravatar.com")) {
 			metadata_list_set (&(ctxt->item->metadata), "gravatar", tmp);
 		} else {
