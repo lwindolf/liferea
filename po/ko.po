@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-14 23:03+0200\n"
+"POT-Creation-Date: 2024-06-19 20:26+0200\n"
 "PO-Revision-Date: 2005-12-11 13:52+0900\n"
 "Last-Translator: Park Ji-In <mithrandir at tisphie.net>\n"
 "Language-Team: GNOME Korea <gnome-kr-hackers@lists.kldp.net>\n"
@@ -254,16 +254,21 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr "<i>설정을 적용하려면 Liferea를 재시작 해야 합니다.</i>"
 
-#: ../plugins/trayicon.py:132
+#: ../plugins/trayicon.py:168
+#, fuzzy
+msgid "Liferea unread icon"
+msgstr "Liferea 알림"
+
+#: ../plugins/trayicon.py:186
 #, fuzzy
 msgid "Show / Hide"
 msgstr "자세히 보기"
 
-#: ../plugins/trayicon.py:133
+#: ../plugins/trayicon.py:187
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:188
 #, fuzzy
 msgid "Quit"
 msgstr "/끝내기(_Q)"
@@ -273,7 +278,7 @@ msgstr "/끝내기(_Q)"
 msgid "Browser command failed: %s"
 msgstr "브라우져 명령 실패: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1097
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1140
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "%s을(를) 시작함"
@@ -288,12 +293,6 @@ msgstr "인증"
 #, fuzzy, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "캐시 디렉토리 %s을(를) 생설할 수 없습니다!"
-
-#: ../src/conf.c:147
-msgid ""
-"Your version of WebKitGTK+ doesn't support changing the proxy settings from "
-"Liferea. The system's default proxy settings will be used."
-msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:135
@@ -320,18 +319,18 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/enclosure.c:201
+#: ../src/enclosure.c:200
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\"은(는) 적절한 첨부 종류 설정파일이 아닙니다!"
 
-#: ../src/enclosure.c:292
+#: ../src/enclosure.c:291
 msgid ""
 "You have not configured a download tool yet! Please do so in the "
 "'Enclosures' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/enclosure.c:311
+#: ../src/enclosure.c:310
 #, c-format
 msgid ""
 "Command failed: \n"
@@ -342,18 +341,18 @@ msgid ""
 "correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/export.c:175
+#: ../src/export.c:172
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "%s을(를) %s(으)로 변환하는 중 에러발생\n"
 
-#: ../src/export.c:387 ../src/export.c:389
+#: ../src/export.c:376 ../src/export.c:378
 #, fuzzy, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr ""
 "캐시파일 \"%s\"을(를) 읽던중 XML 에러가 발생. 캐시파일을 가져올 수 없습니다!"
 
-#: ../src/export.c:395 ../src/export.c:397
+#: ../src/export.c:384 ../src/export.c:386
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -361,43 +360,43 @@ msgstr ""
 "빈 도큐먼트 입니다! OPML 도큐먼트 \"%s\"은(는) 가져오기 할 때 비어있으면 안됩"
 "니다."
 
-#: ../src/export.c:418 ../src/export.c:420
+#: ../src/export.c:407 ../src/export.c:409
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\"은(는) 올바른 OPML 파일이 아닙니다. Liferea는 이 파일을 가져올 수 없습"
 "니다."
 
-#: ../src/export.c:439
+#: ../src/export.c:428
 msgid "Imported feed list"
 msgstr "가져온 피드 리스트"
 
-#: ../src/export.c:451
+#: ../src/export.c:440
 msgid "Import Feed List"
 msgstr "피드 목록 들여오기"
 
-#: ../src/export.c:451
+#: ../src/export.c:440
 msgid "Import"
 msgstr "가져오기"
 
-#: ../src/export.c:451 ../src/export.c:468 ../src/fl_sources/opml_source.c:375
+#: ../src/export.c:440 ../src/export.c:457 ../src/fl_sources/opml_source.c:375
 #, fuzzy
 msgid "OPML Files"
 msgstr "파일 고르기"
 
-#: ../src/export.c:459
+#: ../src/export.c:448
 msgid "Error while exporting feed list!"
 msgstr "피드 리스트를 내보내던 중 에러가 발생했습니다."
 
-#: ../src/export.c:461
+#: ../src/export.c:450
 msgid "Feed List exported!"
 msgstr "피드 목록이 내보내졌습니다"
 
-#: ../src/export.c:468
+#: ../src/export.c:457
 msgid "Export Feed List"
 msgstr "피드 목록 내보내기"
 
-#: ../src/export.c:468
+#: ../src/export.c:457
 msgid "Export"
 msgstr "내보내기"
 
@@ -464,7 +463,7 @@ msgstr ""
 msgid "Choose OPML File"
 msgstr "파일 고르기"
 
-#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:356
+#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr ""
 
@@ -609,40 +608,17 @@ msgid "Print debugging messages for the given topic"
 msgstr "  --debug-cache    캐시 다루기에 대한 디버깅 메시지를 보여줍니다."
 
 #. Some libsoup transport errors
-#: ../src/net.c:470
+#: ../src/net.c:426
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:471
-msgid "Unable to resolve destination host name"
-msgstr ""
-
-#: ../src/net.c:472
-msgid "Unable to resolve proxy host name"
-msgstr ""
-
-#: ../src/net.c:473
-#, fuzzy
-msgid "Unable to connect to remote host"
-msgstr "원격 호스트로 접속하던 중 에러"
-
-#: ../src/net.c:474
-msgid "Unable to connect to proxy"
-msgstr ""
-
-#: ../src/net.c:475
-msgid ""
-"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
-"algorithm. Check your operating system settings."
-msgstr ""
-
 #. http 3xx redirection
-#: ../src/net.c:478
+#: ../src/net.c:429
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:481
+#: ../src/net.c:432
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -651,38 +627,38 @@ msgstr ""
 "이 피드를 다운로드 할 수 있도록 인증되지 않았습니다. 사용자 이름과 열쇠글을 "
 "피드 등록정보 대화상자에서 확인해주세요."
 
-#: ../src/net.c:483
+#: ../src/net.c:434
 #, fuzzy
 msgid "Payment required"
 msgstr "(돈)지불이 필요합니다"
 
-#: ../src/net.c:484
+#: ../src/net.c:435
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:485
+#: ../src/net.c:436
 msgid "Resource Not Found"
 msgstr "자원을 찾을 수 없습니다"
 
-#: ../src/net.c:486
+#: ../src/net.c:437
 msgid "Method Not Allowed"
 msgstr "동작이 허용되지 않습니다"
 
-#: ../src/net.c:487
+#: ../src/net.c:438
 msgid "Not Acceptable"
 msgstr "받아들일 수 없습니다"
 
-#: ../src/net.c:488
+#: ../src/net.c:439
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "프록시 인증이 필요합니다"
 
-#: ../src/net.c:489
+#: ../src/net.c:440
 #, fuzzy
 msgid "Request timed out"
 msgstr "요청 시간이 초과되었습니다"
 
-#: ../src/net.c:490
+#: ../src/net.c:441
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -693,59 +669,43 @@ msgstr ""
 "그것을 새로 고치지 않지만, 캐시된 머릿글은 읽을 수 있습니다."
 
 #. http 5xx server errors
-#: ../src/net.c:493
+#: ../src/net.c:444
 #, fuzzy
 msgid "Internal Server Error"
 msgstr "서버 에러"
 
-#: ../src/net.c:494
+#: ../src/net.c:445
 msgid "Not Implemented"
 msgstr ""
 
-#: ../src/net.c:495
+#: ../src/net.c:446
 msgid "Bad Gateway"
 msgstr ""
 
-#: ../src/net.c:496
+#: ../src/net.c:447
 #, fuzzy
 msgid "Service Unavailable"
 msgstr "\"%s\"이(가) 사용 가능하지 않습니다."
 
-#: ../src/net.c:497
+#: ../src/net.c:448
 msgid "Gateway Timeout"
 msgstr ""
 
-#: ../src/net.c:498
+#: ../src/net.c:449
 msgid "HTTP Version Not Supported"
 msgstr ""
 
-#: ../src/net.c:503
-msgid "There was an internal error in the update process"
-msgstr ""
-
-#: ../src/net.c:505
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "피드 사용 불가: 서버가 지원되지 않는 리다이렉션을 요청받았습니다."
-
-#: ../src/net.c:507
-msgid "Client Error"
-msgstr "클라이언트 에러"
-
-#: ../src/net.c:509
-msgid "Server Error"
-msgstr "서버 에러"
-
-#: ../src/net.c:511
+#: ../src/net.c:453
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(알 수 없는 네트워크 에러가 일어남)"
 
-#: ../src/newsbin.c:136
+#: ../src/newsbin.c:133
 #, fuzzy
 msgid "News Bin Properties"
 msgstr "서명 항목"
 
-#: ../src/newsbin.c:140 ../glade/new_newsbin.ui.h:1
+#: ../src/newsbin.c:137 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr ""
 
@@ -889,17 +849,17 @@ msgstr ""
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "\"%s\"의 URL이 영원히 바뀌었고, 갱신되었습니다."
 
-#: ../src/subscription.c:204
+#: ../src/subscription.c:194
+#, c-format
+msgid "\"%s\" has not changed since last update"
+msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
+
+#: ../src/subscription.c:207
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
 msgstr ""
 "\"%s\"이(가) 연속적이지 않습니다. Liferea는 그것을 더이상 새로 고칠 수 없습니"
 "다!"
-
-#: ../src/subscription.c:208
-#, c-format
-msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\"은(는) 마지막으로 업데이트 된 후 바뀌지 않았습니다."
 
 #: ../src/subscription.c:221 ../src/subscription.c:297
 #, fuzzy, c-format
@@ -920,52 +880,9 @@ msgstr "\"%s\"에 대한 사용자 이름과 패스워드를 입력하세요 (%s
 msgid "Unknown source"
 msgstr "알 수 없는 소스"
 
-#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:282
+#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:267
 msgid "Untitled"
 msgstr "제목없음"
-
-#: ../src/ui/enclosure_list_view.c:168
-#, fuzzy
-msgid "Attachments"
-msgstr "덧말"
-
-#. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:260
-msgid " Bytes"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:263
-msgid "kB"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:267
-msgid "MB"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:271
-msgid "GB"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:275
-#, c-format
-msgid "%d%s"
-msgstr ""
-
-#. update list title
-#: ../src/ui/enclosure_list_view.c:313
-#, c-format
-msgid "%d attachment"
-msgid_plural "%d attachments"
-msgstr[0] ""
-
-#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:356
-msgid "Choose File"
-msgstr "파일 고르기"
-
-#: ../src/ui/enclosure_list_view.c:463
-#, fuzzy, c-format
-msgid "File Extension .%s"
-msgstr "<b>파일 확장자 .%s</b>"
 
 #: ../src/ui/feed_list_view.c:426
 msgid "Liferea is in offline mode. No update possible."
@@ -1012,12 +929,12 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "정말 %s을(를) 지우고 싶으세요?"
 
 #: ../src/ui/feed_list_view.c:905 ../src/ui/feed_list_view.c:959
-#: ../src/ui/popup_menu.c:260
+#: ../src/ui/popup_menu.c:245
 #, fuzzy
 msgid "_Cancel"
 msgstr "전부 갱신(_A)"
 
-#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:411
+#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:396
 #, fuzzy
 msgid "_Delete"
 msgstr "/지우기(_D)"
@@ -1077,268 +994,253 @@ msgstr "아이템을 지울 피드를 선택해야 합니다!"
 msgid "No item has been selected"
 msgstr "아이템이 선택되지 않았습니다"
 
-#: ../src/ui/liferea_browser.c:484
+#: ../src/ui/liferea_browser.c:481
 #, fuzzy
 msgid "Content download failed! Try disabling reader mode."
 msgstr "다운로드 할 디렉토리를 선택하세요"
 
-#: ../src/ui/liferea_browser.c:497
+#: ../src/ui/liferea_browser.c:494
 msgid "Content extraction failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:410
+#: ../src/ui/liferea_shell.c:412
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d개의 새로운 아이템"
 msgstr[1] "%d개의 새로운 아이템들"
 
-#: ../src/ui/liferea_shell.c:415
+#: ../src/ui/liferea_shell.c:417
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "안 읽었음"
 
-#: ../src/ui/liferea_shell.c:807
+#: ../src/ui/liferea_shell.c:859
 msgid "Help Topics"
 msgstr "도움말 항목"
 
-#: ../src/ui/liferea_shell.c:813
+#: ../src/ui/liferea_shell.c:865
 msgid "Quick Reference"
 msgstr "간단 도움말"
 
-#: ../src/ui/liferea_shell.c:819
+#: ../src/ui/liferea_shell.c:871
 msgid "FAQ"
 msgstr "자주 묻는 질문"
 
-#: ../src/ui/liferea_shell.c:1094
+#: ../src/ui/liferea_shell.c:1137
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "브라우져 명령 실패: %s"
 
-#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
+#: ../src/ui/popup_menu.c:101 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
+#: ../src/ui/popup_menu.c:105 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "브라우져로 띄우기(_L)"
 
-#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
+#: ../src/ui/popup_menu.c:109 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "외부 브라우져"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:114
 msgid "Email The Author"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:140
+#: ../src/ui/popup_menu.c:139
 msgid "Copy to News Bin"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:148
+#: ../src/ui/popup_menu.c:147
 #, c-format
 msgid "_Bookmark at %s"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:154
+#: ../src/ui/popup_menu.c:153
 #, fuzzy
 msgid "Copy Item _Location"
 msgstr "/링크 위치 복사하기(_C)"
 
-#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "읽은 상태를 토글(_R)"
 
-#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "아이템 플래그 토글(_F)"
 
-#: ../src/ui/popup_menu.c:171
+#: ../src/ui/popup_menu.c:170
 #, fuzzy
 msgid "R_emove Item"
 msgstr "/아이템을 지우기(_E)"
 
-#: ../src/ui/popup_menu.c:200
-#, fuzzy
-msgid "Open Enclosure..."
-msgstr "/첨부 열기..."
-
-#: ../src/ui/popup_menu.c:201
-#, fuzzy
-msgid "Save As..."
-msgstr "다른 이름으로 저장..."
-
-#: ../src/ui/popup_menu.c:202
-#, fuzzy
-msgid "Copy Link Location"
-msgstr "/링크 위치 복사하기(_C)"
-
-#: ../src/ui/popup_menu.c:257
+#: ../src/ui/popup_menu.c:242
 msgid "Save items to file"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:262
+#: ../src/ui/popup_menu.c:247
 msgid "_Save"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:271
+#: ../src/ui/popup_menu.c:256
 msgid "RSS 2.0 files"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:277
+#: ../src/ui/popup_menu.c:262
 #, fuzzy
 msgid "All files"
 msgstr "로컬 파일(_L)"
 
-#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:13
+#: ../src/ui/popup_menu.c:338 ../glade/liferea_menu.ui.h:13
 #, fuzzy
 msgid "_Update"
 msgstr "/갱신(_U)"
 
-#: ../src/ui/popup_menu.c:355
+#: ../src/ui/popup_menu.c:340
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/폴더 갱신(_U)"
 
-#: ../src/ui/popup_menu.c:365
+#: ../src/ui/popup_menu.c:350
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "새 구독(_N)..."
 
-#: ../src/ui/popup_menu.c:368 ../glade/liferea_menu.ui.h:5
+#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "새 폴더(_F)..."
 
-#: ../src/ui/popup_menu.c:371 ../glade/liferea_menu.ui.h:6
+#: ../src/ui/popup_menu.c:356 ../glade/liferea_menu.ui.h:6
 #, fuzzy
 msgid "New S_earch Folder..."
 msgstr "새 폴더(_F)..."
 
-#: ../src/ui/popup_menu.c:372
+#: ../src/ui/popup_menu.c:357
 #, fuzzy
 msgid "New S_ource..."
 msgstr "/새로 만들기(_N)/새 폴더(_N)..."
 
-#: ../src/ui/popup_menu.c:373 ../glade/liferea_menu.ui.h:8
+#: ../src/ui/popup_menu.c:358 ../glade/liferea_menu.ui.h:8
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "/새로 만들기(_N)/새 폴더(_N)..."
 
-#: ../src/ui/popup_menu.c:376
+#: ../src/ui/popup_menu.c:361
 #, fuzzy
 msgid "_New"
 msgstr "/새로 만들기(_N)"
 
-#: ../src/ui/popup_menu.c:385
+#: ../src/ui/popup_menu.c:370
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "피드 목록 들여오기"
 
-#: ../src/ui/popup_menu.c:393
+#: ../src/ui/popup_menu.c:378
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/전부 읽은 것으로 표시(_M)"
 
-#: ../src/ui/popup_menu.c:395
+#: ../src/ui/popup_menu.c:380
 msgid "_Export Items To File"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:403
+#: ../src/ui/popup_menu.c:388
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:412 ../glade/liferea_menu.ui.h:17
+#: ../src/ui/popup_menu.c:397 ../glade/liferea_menu.ui.h:17
 #, fuzzy
 msgid "_Properties"
 msgstr "등록 정보(_P)..."
 
-#: ../src/ui/popup_menu.c:419
+#: ../src/ui/popup_menu.c:404
 #, fuzzy
 msgid "Convert To Local Subscriptions..."
 msgstr "새 구독(_N)..."
 
-#: ../src/ui/preferences_dialog.c:84
+#: ../src/ui/preferences_dialog.c:82
 #, fuzzy
 msgid "GNOME default"
 msgstr "그놈 기본 브라우져를 사용합니다"
 
-#: ../src/ui/preferences_dialog.c:85
+#: ../src/ui/preferences_dialog.c:83
 msgid "Text below icons"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:86
+#: ../src/ui/preferences_dialog.c:84
 msgid "Text beside icons"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:87
+#: ../src/ui/preferences_dialog.c:85
 msgid "Icons only"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/preferences_dialog.c:86
 msgid "Text only"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:94 ../src/ui/subscription_dialog.c:43
 #, fuzzy
 msgid "minutes"
 msgstr "분."
 
-#: ../src/ui/preferences_dialog.c:97 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:95 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:103
+#: ../src/ui/preferences_dialog.c:101
 msgid "Space"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:104
+#: ../src/ui/preferences_dialog.c:102
 msgid "<Ctrl> Space"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:105
+#: ../src/ui/preferences_dialog.c:103
 msgid "<Alt> Space"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:110
+#: ../src/ui/preferences_dialog.c:108
 #, fuzzy
 msgid "Normal View"
 msgstr "로컬 파일(_L)"
 
-#: ../src/ui/preferences_dialog.c:111
+#: ../src/ui/preferences_dialog.c:109
 #, fuzzy
 msgid "Wide View"
 msgstr "보기(_V)"
 
-#: ../src/ui/preferences_dialog.c:112
+#: ../src/ui/preferences_dialog.c:110
 #, fuzzy
 msgid "Automatic"
 msgstr "알아서 찾기"
 
-#: ../src/ui/preferences_dialog.c:491
+#: ../src/ui/preferences_dialog.c:462
 #, fuzzy
 msgid "Default Browser"
 msgstr "그놈 기본 브라우져를 사용합니다"
 
-#: ../src/ui/preferences_dialog.c:493
+#: ../src/ui/preferences_dialog.c:464
 msgid "Manual"
 msgstr "수동"
 
-#: ../src/ui/preferences_dialog.c:756
+#: ../src/ui/preferences_dialog.c:714
 msgid "Type"
 msgstr "종류"
 
-#: ../src/ui/preferences_dialog.c:759
+#: ../src/ui/preferences_dialog.c:717
 msgid "Program"
 msgstr "프로그램"
 
-#: ../src/ui/rule_editor.c:257
+#: ../src/ui/rule_editor.c:261
 #, fuzzy
 msgid "Remove"
 msgstr "모두 지우기(_A)"
@@ -1348,14 +1250,18 @@ msgstr "모두 지우기(_A)"
 msgid "Saved Search"
 msgstr "피드스터에서 찾기"
 
-#: ../src/ui/subscription_dialog.c:428
+#: ../src/ui/subscription_dialog.c:352
+msgid "Choose File"
+msgstr "파일 고르기"
+
+#: ../src/ui/subscription_dialog.c:424
 #, fuzzy, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
 "The provider of this feed suggests an update interval of %d minutes."
 msgstr[0] "이 피드의 제공자는 갱신 주기를 %d분 으로 제안했습니다."
 
-#: ../src/ui/subscription_dialog.c:432
+#: ../src/ui/subscription_dialog.c:428
 msgid "This feed specifies no default update interval."
 msgstr "이 피드는 기본 갱신 주기를 정하지 않습니다."
 
@@ -1465,12 +1371,12 @@ msgstr "글자 크기 작게하기(_D)"
 msgid "_Reader Mode"
 msgstr ""
 
-#: ../src/xml.c:426
+#: ../src/xml.c:427
 #, fuzzy
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[해석기 에러 출력이 생략되었습니다!]"
 
-#: ../src/xml.c:594
+#: ../src/xml.c:595
 #, fuzzy
 msgid "XML Parser: Could not parse document:\n"
 msgstr ""
@@ -1506,35 +1412,6 @@ msgstr "사용자 이름:"
 #: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "_Password:"
 msgstr "열쇠글(_P):"
-
-#: ../glade/enclosure_handler.ui.h:1
-#, fuzzy
-msgid "Open Enclosure"
-msgstr "/첨부 열기..."
-
-#: ../glade/enclosure_handler.ui.h:2
-#, fuzzy
-msgid "Open an enclosure of type:"
-msgstr "첨부를 받고 있습니다. 종류:"
-
-#: ../glade/enclosure_handler.ui.h:3
-#, fuzzy
-msgid ""
-"_What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. The enclosures URL will be supplied as an "
-"argument for this command:"
-msgstr ""
-"이 첨부를 Liferea가 어떻게 하면 좋을까요? 원하는 명령을 써주세요. 다운로드한 "
-"파일이 이 명령의 인자로 넘겨질 것입니다. 명령:"
-
-#: ../glade/enclosure_handler.ui.h:4
-msgid "_Browse"
-msgstr "찾아보기(_B)"
-
-#: ../glade/enclosure_handler.ui.h:5
-#, fuzzy
-msgid "_Do this automatically for enclosures like this from now on."
-msgstr "지금부터 이런 파일은 자동으로 이렇게 합니다."
 
 #: ../glade/google_source.ui.h:1
 #, fuzzy
@@ -2059,61 +1936,61 @@ msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">폴더 표시 설정</span>"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked."
+msgid "Tell websites that I do _not want to be tracked."
 msgstr ""
 
 #: ../glade/prefs.ui.h:53
-msgid "_Intelligent Tracking Prevention. "
+msgid "Tell websites not to _sell or share my data."
 msgstr ""
 
 #: ../glade/prefs.ui.h:54
+msgid "_Intelligent Tracking Prevention. "
+msgstr ""
+
+#: ../glade/prefs.ui.h:55
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:56
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:57
 msgid "Use _Reader mode."
 msgstr ""
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:58
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:60
 #, fuzzy
-msgid "Downloading Enclosures"
+msgid "Downloading Content"
 msgstr "첨부파일 다운로드"
 
-#: ../glade/prefs.ui.h:60
+#: ../glade/prefs.ui.h:61
 msgid "_Download using"
 msgstr "다운로드 프로그램(_D)"
 
-#: ../glade/prefs.ui.h:62
+#: ../glade/prefs.ui.h:63
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:63
+#: ../glade/prefs.ui.h:64 ../glade/properties.ui.h:33
 #, fuzzy
-msgid "Opening Enclosures"
-msgstr "/첨부 열기..."
-
-#: ../glade/prefs.ui.h:64
-msgid "Enclosures"
-msgstr "첨부"
+msgid "Download"
+msgstr "다운로드 프로그램(_D)"
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
@@ -2196,11 +2073,6 @@ msgstr ""
 #: ../glade/properties.ui.h:29
 msgid "Use HTTP _authentication"
 msgstr "HTTP 인증을 사용합니다(_A)"
-
-#: ../glade/properties.ui.h:33
-#, fuzzy
-msgid "Download"
-msgstr "다운로드 프로그램(_D)"
 
 #: ../glade/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
@@ -2556,6 +2428,74 @@ msgid "Search Folder:"
 msgstr "폴더 만들기"
 
 #, fuzzy
+#~ msgid "Unable to connect to remote host"
+#~ msgstr "원격 호스트로 접속하던 중 에러"
+
+#~ msgid "Feed not available: Server requested unsupported redirection!"
+#~ msgstr "피드 사용 불가: 서버가 지원되지 않는 리다이렉션을 요청받았습니다."
+
+#~ msgid "Client Error"
+#~ msgstr "클라이언트 에러"
+
+#~ msgid "Server Error"
+#~ msgstr "서버 에러"
+
+#, fuzzy
+#~ msgid "Attachments"
+#~ msgstr "덧말"
+
+#, fuzzy, c-format
+#~ msgid "File Extension .%s"
+#~ msgstr "<b>파일 확장자 .%s</b>"
+
+#, fuzzy
+#~ msgid "Open Enclosure..."
+#~ msgstr "/첨부 열기..."
+
+#, fuzzy
+#~ msgid "Save As..."
+#~ msgstr "다른 이름으로 저장..."
+
+#, fuzzy
+#~ msgid "Copy Link Location"
+#~ msgstr "/링크 위치 복사하기(_C)"
+
+#, fuzzy
+#~ msgid "Open Enclosure"
+#~ msgstr "/첨부 열기..."
+
+#, fuzzy
+#~ msgid "Open an enclosure of type:"
+#~ msgstr "첨부를 받고 있습니다. 종류:"
+
+#, fuzzy
+#~ msgid ""
+#~ "_What should Liferea do with this enclosure? Please enter the command you "
+#~ "want to be executed below. The enclosures URL will be supplied as an "
+#~ "argument for this command:"
+#~ msgstr ""
+#~ "이 첨부를 Liferea가 어떻게 하면 좋을까요? 원하는 명령을 써주세요. 다운로드"
+#~ "한 파일이 이 명령의 인자로 넘겨질 것입니다. 명령:"
+
+#~ msgid "_Browse"
+#~ msgstr "찾아보기(_B)"
+
+#, fuzzy
+#~ msgid "_Do this automatically for enclosures like this from now on."
+#~ msgstr "지금부터 이런 파일은 자동으로 이렇게 합니다."
+
+#, fuzzy
+#~ msgid "Downloading Enclosures"
+#~ msgstr "첨부파일 다운로드"
+
+#, fuzzy
+#~ msgid "Opening Enclosures"
+#~ msgstr "/첨부 열기..."
+
+#~ msgid "Enclosures"
+#~ msgstr "첨부"
+
+#, fuzzy
 #~ msgid "Print debugging messages when entering/leaving functions"
 #~ msgstr ""
 #~ "  --debug-trace    함수를 들어가고 나오는것에 대한 디버깅 메시지를 보여줍"
@@ -2627,8 +2567,8 @@ msgstr "폴더 만들기"
 #~ "really points to a resource provided in one of the supported syndication "
 #~ "formats!</p>XML Parser Output:<br /><div class='xmlparseroutput'>"
 #~ msgstr ""
-#~ "<p>이 피드의 종류를 결정할 수 없습니다! 소스가 지원되는 형식의 자원을 정"
-#~ "확히 가리키는지 확인해 주세요 </p>%s"
+#~ "<p>이 피드의 종류를 결정할 수 없습니다! 소스가 지원되는 형식의 자원을 정확"
+#~ "히 가리키는지 확인해 주세요 </p>%s"
 
 #, fuzzy
 #~ msgid ""
@@ -2657,8 +2597,7 @@ msgstr "폴더 만들기"
 #, fuzzy
 #~ msgid "XML error while reading feed! Feed \"%s\" could not be loaded!"
 #~ msgstr ""
-#~ "<p>피드를 읽는 도중 XML 에러가 발생! \"%s\" 피드를 로드할 수 없습니다.</"
-#~ "p>"
+#~ "<p>피드를 읽는 도중 XML 에러가 발생! \"%s\" 피드를 로드할 수 없습니다.</p>"
 
 #, fuzzy
 #~ msgid "Combined View"
@@ -3510,9 +3449,6 @@ msgstr "폴더 만들기"
 
 #~ msgid "Cookie for %s has expired!"
 #~ msgstr "%s에 대한 쿠키가 만료되었습니다!"
-
-#~ msgid "Liferea notification"
-#~ msgstr "Liferea 알림"
 
 #, fuzzy
 #~ msgid ""

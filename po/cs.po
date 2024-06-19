@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-14 23:03+0200\n"
+"POT-Creation-Date: 2024-06-19 20:26+0200\n"
 "PO-Revision-Date: 2023-08-09 11:23+0200\n"
 "Last-Translator: Amerey.eu <info@amerey.eu>\n"
 "Language-Team: Martin Picek <picek.martin@gnome-cesko.cz>\n"
@@ -253,15 +253,20 @@ msgstr ""
 "Zásuvný modul byl odstraněn. Prosím, restartujte aplikaci Liferea, aby se "
 "změna plně projevila!"
 
-#: ../plugins/trayicon.py:132
+#: ../plugins/trayicon.py:168
+#, fuzzy
+msgid "Liferea unread icon"
+msgstr "Liferea je nyní připojena k síti"
+
+#: ../plugins/trayicon.py:186
 msgid "Show / Hide"
 msgstr "Zobrazit / Skrýt"
 
-#: ../plugins/trayicon.py:133
+#: ../plugins/trayicon.py:187
 msgid "Minimize to tray on close"
 msgstr "Při zavření minimalizovat do lišty"
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:188
 msgid "Quit"
 msgstr "Ukončit"
 
@@ -270,7 +275,7 @@ msgstr "Ukončit"
 msgid "Browser command failed: %s"
 msgstr "Příkaz pro prohlížeč selhal: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1097
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1140
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Spouští se: „%s“"
@@ -284,14 +289,6 @@ msgstr "Chyba autorizace"
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nepodařilo se vytvořit adresář „%s“ pro vyrovnávací paměť!"
-
-#: ../src/conf.c:147
-msgid ""
-"Your version of WebKitGTK+ doesn't support changing the proxy settings from "
-"Liferea. The system's default proxy settings will be used."
-msgstr ""
-"Vaše verze WebKitGTK+ nepodporuje změnu nastavení proxy z aplikace Liferea. "
-"Bude použito výchozí nastavení serveru proxy."
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:135
@@ -318,12 +315,12 @@ msgstr "%d. %b, %l.%M"
 msgid "%b %d %Y"
 msgstr "%d. %b %Y, %l.%M"
 
-#: ../src/enclosure.c:201
+#: ../src/enclosure.c:200
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" není platný konfigurační soubor přílohy!"
 
-#: ../src/enclosure.c:292
+#: ../src/enclosure.c:291
 msgid ""
 "You have not configured a download tool yet! Please do so in the "
 "'Enclosures' tab in Tools/Preferences."
@@ -331,7 +328,7 @@ msgstr ""
 "Ještě jste nenakonfigurovali nástroj pro stahování! Udělejte to prosím na "
 "kartě „Přílohy“ v nabídce Nástroje/Předvolby."
 
-#: ../src/enclosure.c:311
+#: ../src/enclosure.c:310
 #, c-format
 msgid ""
 "Command failed: \n"
@@ -349,58 +346,58 @@ msgstr ""
 "funguje správně! Můžete to změnit na kartě „Stahování“ v nabídce Nástroje/"
 "Předvolby."
 
-#: ../src/export.c:175
+#: ../src/export.c:172
 #, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "Chyba při přejmenovávání %s to %s: %s\n"
 
-#: ../src/export.c:387 ../src/export.c:389
+#: ../src/export.c:376 ../src/export.c:378
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "Chyba XML při čtení OPML souboru! Nelze importovat \"%s\"!"
 
-#: ../src/export.c:395 ../src/export.c:397
+#: ../src/export.c:384 ../src/export.c:386
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
 "Prázdný dokument! Dokument OPML „%s“ by neměl být při importování prázdný."
 
-#: ../src/export.c:418 ../src/export.c:420
+#: ../src/export.c:407 ../src/export.c:409
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "„%s“ není platným dokumentem OPML! Liferea nemohla tento soubor importovat!"
 
-#: ../src/export.c:439
+#: ../src/export.c:428
 msgid "Imported feed list"
 msgstr "Seznam importovaných kanálů"
 
-#: ../src/export.c:451
+#: ../src/export.c:440
 msgid "Import Feed List"
 msgstr "Importovat seznam kanálů"
 
-#: ../src/export.c:451
+#: ../src/export.c:440
 msgid "Import"
 msgstr "Importovat"
 
-#: ../src/export.c:451 ../src/export.c:468 ../src/fl_sources/opml_source.c:375
+#: ../src/export.c:440 ../src/export.c:457 ../src/fl_sources/opml_source.c:375
 msgid "OPML Files"
 msgstr "Soubory OPML"
 
-#: ../src/export.c:459
+#: ../src/export.c:448
 msgid "Error while exporting feed list!"
 msgstr "Chyba při exportování seznamu kanálů!"
 
-#: ../src/export.c:461
+#: ../src/export.c:450
 msgid "Feed List exported!"
 msgstr "Seznam kanálů exportován!"
 
-#: ../src/export.c:468
+#: ../src/export.c:457
 msgid "Export Feed List"
 msgstr "Exportovat seznam kanálů"
 
-#: ../src/export.c:468
+#: ../src/export.c:457
 msgid "Export"
 msgstr "Exportovat"
 
@@ -464,7 +461,7 @@ msgstr "Planet, BlogRoll, OPML"
 msgid "Choose OPML File"
 msgstr "Vybrat soubor OPML"
 
-#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:356
+#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr "_Otevřít"
 
@@ -598,41 +595,17 @@ msgid "Print debugging messages for the given topic"
 msgstr "Vypsat ladící zprávy pro zadané téma"
 
 #. Some libsoup transport errors
-#: ../src/net.c:470
+#: ../src/net.c:426
 msgid "The update request was cancelled"
 msgstr "Požadavek na aktualizaci byl zrušen"
 
-#: ../src/net.c:471
-msgid "Unable to resolve destination host name"
-msgstr "Nelze rozpoznat název cílového hostitele"
-
-#: ../src/net.c:472
-msgid "Unable to resolve proxy host name"
-msgstr "Nelze rozpoznat název hostitele proxy"
-
-#: ../src/net.c:473
-msgid "Unable to connect to remote host"
-msgstr "Nelze se připojit ke vzdálenému hostiteli"
-
-#: ../src/net.c:474
-msgid "Unable to connect to proxy"
-msgstr "Nelze se připojit k serveru proxy"
-
-#: ../src/net.c:475
-msgid ""
-"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
-"algorithm. Check your operating system settings."
-msgstr ""
-"Spojení SSL/TLS se nezdařilo. Možná je zastaralý nebo nepodporovaný "
-"šifrovací algoritmus. Zkontrolujte nastavení operačního systému."
-
 #. http 3xx redirection
-#: ../src/net.c:478
+#: ../src/net.c:429
 msgid "The resource moved permanently to a new location"
 msgstr "Zdroj se trvale přesunul na nové místo"
 
 #. http 4xx client error
-#: ../src/net.c:481
+#: ../src/net.c:432
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -640,35 +613,35 @@ msgstr ""
 "Nejste oprávněni odebírat tento kanál. Prosím, aktualizujte své uživatelské "
 "jméno a heslo v dialogu Vlastnosti"
 
-#: ../src/net.c:483
+#: ../src/net.c:434
 msgid "Payment required"
 msgstr "Vyžadována platba"
 
-#: ../src/net.c:484
+#: ../src/net.c:435
 msgid "You're not allowed to access this resource"
 msgstr "K tomuto prostředku nemáte přístup"
 
-#: ../src/net.c:485
+#: ../src/net.c:436
 msgid "Resource Not Found"
 msgstr "Zdroj nenalezen"
 
-#: ../src/net.c:486
+#: ../src/net.c:437
 msgid "Method Not Allowed"
 msgstr "Metoda není povolena"
 
-#: ../src/net.c:487
+#: ../src/net.c:438
 msgid "Not Acceptable"
 msgstr "Neakceptovatelné"
 
-#: ../src/net.c:488
+#: ../src/net.c:439
 msgid "Proxy authentication required"
 msgstr "Proxy vyžaduje ověření"
 
-#: ../src/net.c:489
+#: ../src/net.c:440
 msgid "Request timed out"
 msgstr "Vypršel časový limit žádosti"
 
-#: ../src/net.c:490
+#: ../src/net.c:441
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -678,55 +651,39 @@ msgstr ""
 "aktualizovat, ale jeho články jsou stále přístupné v paměti."
 
 #. http 5xx server errors
-#: ../src/net.c:493
+#: ../src/net.c:444
 msgid "Internal Server Error"
 msgstr "Chyba serveru"
 
-#: ../src/net.c:494
+#: ../src/net.c:445
 msgid "Not Implemented"
 msgstr "Není implementováno"
 
-#: ../src/net.c:495
+#: ../src/net.c:446
 msgid "Bad Gateway"
 msgstr "Špatná brána"
 
-#: ../src/net.c:496
+#: ../src/net.c:447
 msgid "Service Unavailable"
 msgstr "Služba není k dispozici"
 
-#: ../src/net.c:497
+#: ../src/net.c:448
 msgid "Gateway Timeout"
 msgstr "Vypršení časového limitu brány"
 
-#: ../src/net.c:498
+#: ../src/net.c:449
 msgid "HTTP Version Not Supported"
 msgstr "Verze HTTP není podporována"
 
-#: ../src/net.c:503
-msgid "There was an internal error in the update process"
-msgstr "V procesu aktualizace došlo k interní chybě"
-
-#: ../src/net.c:505
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "Kanál je nedostupný: server požadoval nepodporované přesměrování!"
-
-#: ../src/net.c:507
-msgid "Client Error"
-msgstr "Chyba klienta"
-
-#: ../src/net.c:509
-msgid "Server Error"
-msgstr "Chyba serveru"
-
-#: ../src/net.c:511
+#: ../src/net.c:453
 msgid "An unknown networking error happened!"
 msgstr "Došlo k neznámé chybě sítě!"
 
-#: ../src/newsbin.c:136
+#: ../src/newsbin.c:133
 msgid "News Bin Properties"
 msgstr "Vlastnosti odběru"
 
-#: ../src/newsbin.c:140 ../glade/new_newsbin.ui.h:1
+#: ../src/newsbin.c:137 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Vytvořit rubriku"
 
@@ -860,15 +817,15 @@ msgstr "Odběr „%s“ byl přerušen. Liferea jej již nebude aktualizovat!"
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL „%s“ bylo natrvalo změněno, a proto bylo aktualizováno"
 
-#: ../src/subscription.c:204
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "Kanál „%s“ je přerušen. Liferea jej již nebude aktualizovat!"
-
-#: ../src/subscription.c:208
+#: ../src/subscription.c:194
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "Kanál „%s“ se od poslední aktualizace nezměnil"
+
+#: ../src/subscription.c:207
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "Kanál „%s“ je přerušen. Liferea jej již nebude aktualizovat!"
 
 #: ../src/subscription.c:221 ../src/subscription.c:297
 #, c-format
@@ -889,53 +846,9 @@ msgstr "Vložte uživatelské jméno a heslo pro „%s“ (%s):"
 msgid "Unknown source"
 msgstr "Neznámý zdroj"
 
-#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:282
+#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:267
 msgid "Untitled"
 msgstr "Bez názvu"
-
-#: ../src/ui/enclosure_list_view.c:168
-msgid "Attachments"
-msgstr "Přílohy"
-
-#. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:260
-msgid " Bytes"
-msgstr " bajtů"
-
-#: ../src/ui/enclosure_list_view.c:263
-msgid "kB"
-msgstr "kB"
-
-#: ../src/ui/enclosure_list_view.c:267
-msgid "MB"
-msgstr "MB"
-
-#: ../src/ui/enclosure_list_view.c:271
-msgid "GB"
-msgstr "GB"
-
-#: ../src/ui/enclosure_list_view.c:275
-#, c-format
-msgid "%d%s"
-msgstr "%d%s"
-
-#. update list title
-#: ../src/ui/enclosure_list_view.c:313
-#, c-format
-msgid "%d attachment"
-msgid_plural "%d attachments"
-msgstr[0] "%d příloha"
-msgstr[1] "%d přílohy"
-msgstr[2] "%d příloh"
-
-#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:356
-msgid "Choose File"
-msgstr "Vybrat soubor"
-
-#: ../src/ui/enclosure_list_view.c:463
-#, c-format
-msgid "File Extension .%s"
-msgstr "Přípona souboru .%s"
 
 #: ../src/ui/feed_list_view.c:426
 msgid "Liferea is in offline mode. No update possible."
@@ -983,11 +896,11 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Jste si jisti, že chcete odstranit „%s“?"
 
 #: ../src/ui/feed_list_view.c:905 ../src/ui/feed_list_view.c:959
-#: ../src/ui/popup_menu.c:260
+#: ../src/ui/popup_menu.c:245
 msgid "_Cancel"
 msgstr "_Zrušit"
 
-#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:411
+#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:396
 msgid "_Delete"
 msgstr "_Odstranit"
 
@@ -1046,15 +959,15 @@ msgstr "Musíte vybrat kanál, aby šlo odstranit články!"
 msgid "No item has been selected"
 msgstr "Žádný článek nebyl vybrán"
 
-#: ../src/ui/liferea_browser.c:484
+#: ../src/ui/liferea_browser.c:481
 msgid "Content download failed! Try disabling reader mode."
 msgstr "Stažení obsahu se nezdařilo! Zkuste deaktivovat režim čtečky."
 
-#: ../src/ui/liferea_browser.c:497
+#: ../src/ui/liferea_browser.c:494
 msgid "Content extraction failed! Try disabling reader mode."
 msgstr "Extrahování obsahu se nezdařilo! Zkuste deaktivovat režim čtečky."
 
-#: ../src/ui/liferea_shell.c:410
+#: ../src/ui/liferea_shell.c:412
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1062,7 +975,7 @@ msgstr[0] " %d nový"
 msgstr[1] " %d nové"
 msgstr[2] " %d nových"
 
-#: ../src/ui/liferea_shell.c:415
+#: ../src/ui/liferea_shell.c:417
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1070,221 +983,209 @@ msgstr[0] "%d nepřečtený%s"
 msgstr[1] "%d nepřečtené%s"
 msgstr[2] "%d nepřečtených%s"
 
-#: ../src/ui/liferea_shell.c:807
+#: ../src/ui/liferea_shell.c:859
 msgid "Help Topics"
 msgstr "Témata nápovědy"
 
-#: ../src/ui/liferea_shell.c:813
+#: ../src/ui/liferea_shell.c:865
 msgid "Quick Reference"
 msgstr "Klávesové zkratky"
 
-#: ../src/ui/liferea_shell.c:819
+#: ../src/ui/liferea_shell.c:871
 msgid "FAQ"
 msgstr "Časté otázky"
 
-#: ../src/ui/liferea_shell.c:1094
+#: ../src/ui/liferea_shell.c:1137
 #, c-format
 msgid "Email command failed: %s"
 msgstr "Příkaz pro e-mail selhal: %s"
 
-#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
+#: ../src/ui/popup_menu.c:101 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr "Otevřít v _kartě"
 
-#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
+#: ../src/ui/popup_menu.c:105 ../glade/liferea_menu.ui.h:26
 msgid "_Open In Browser"
 msgstr "Otevřít v pro_hlížeči"
 
-#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
+#: ../src/ui/popup_menu.c:109 ../glade/liferea_menu.ui.h:27
 msgid "Open In _External Browser"
 msgstr "Otevřít v _externím prohlížeči"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:114
 msgid "Email The Author"
 msgstr "E-mail autorovi"
 
-#: ../src/ui/popup_menu.c:140
+#: ../src/ui/popup_menu.c:139
 msgid "Copy to News Bin"
 msgstr "Kopírovat do rubriky"
 
-#: ../src/ui/popup_menu.c:148
+#: ../src/ui/popup_menu.c:147
 #, c-format
 msgid "_Bookmark at %s"
 msgstr "_Zazáložkovat odkaz do %s"
 
-#: ../src/ui/popup_menu.c:154
+#: ../src/ui/popup_menu.c:153
 msgid "Copy Item _Location"
 msgstr "Kopírovat umístění odkazu"
 
-#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Přepnout stav _přečtení"
 
-#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Přepnout stav _označení"
 
-#: ../src/ui/popup_menu.c:171
+#: ../src/ui/popup_menu.c:170
 msgid "R_emove Item"
 msgstr "_Odstranit článek"
 
-#: ../src/ui/popup_menu.c:200
-msgid "Open Enclosure..."
-msgstr "Otevřít přílohu..."
-
-#: ../src/ui/popup_menu.c:201
-msgid "Save As..."
-msgstr "Uložit jako..."
-
-#: ../src/ui/popup_menu.c:202
-msgid "Copy Link Location"
-msgstr "Kopírovat umístění odkazu"
-
-#: ../src/ui/popup_menu.c:257
+#: ../src/ui/popup_menu.c:242
 msgid "Save items to file"
 msgstr "Uložit položky do souboru"
 
-#: ../src/ui/popup_menu.c:262
+#: ../src/ui/popup_menu.c:247
 msgid "_Save"
 msgstr "_Uložit"
 
-#: ../src/ui/popup_menu.c:271
+#: ../src/ui/popup_menu.c:256
 msgid "RSS 2.0 files"
 msgstr "soubory RSS 2.0"
 
-#: ../src/ui/popup_menu.c:277
+#: ../src/ui/popup_menu.c:262
 msgid "All files"
 msgstr "Všechny soubory"
 
-#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:13
+#: ../src/ui/popup_menu.c:338 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "_Aktualizovat"
 
-#: ../src/ui/popup_menu.c:355
+#: ../src/ui/popup_menu.c:340
 msgid "_Update Folder"
 msgstr "_Aktualizovat složku"
 
-#: ../src/ui/popup_menu.c:365
+#: ../src/ui/popup_menu.c:350
 msgid "New _Subscription..."
 msgstr "Nový _odběr..."
 
-#: ../src/ui/popup_menu.c:368 ../glade/liferea_menu.ui.h:5
+#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Nová _složka..."
 
-#: ../src/ui/popup_menu.c:371 ../glade/liferea_menu.ui.h:6
+#: ../src/ui/popup_menu.c:356 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Nová složka _hledání..."
 
-#: ../src/ui/popup_menu.c:372
+#: ../src/ui/popup_menu.c:357
 msgid "New S_ource..."
 msgstr "Nový _zdroj..."
 
-#: ../src/ui/popup_menu.c:373 ../glade/liferea_menu.ui.h:8
+#: ../src/ui/popup_menu.c:358 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "Nová _rubrika..."
 
-#: ../src/ui/popup_menu.c:376
+#: ../src/ui/popup_menu.c:361
 msgid "_New"
 msgstr "_Nové"
 
-#: ../src/ui/popup_menu.c:385
+#: ../src/ui/popup_menu.c:370
 msgid "Sort Feeds"
 msgstr "Setřídit kanály"
 
-#: ../src/ui/popup_menu.c:393
+#: ../src/ui/popup_menu.c:378
 msgid "_Mark All As Read"
 msgstr "Označit vše jako _přečtené"
 
-#: ../src/ui/popup_menu.c:395
+#: ../src/ui/popup_menu.c:380
 msgid "_Export Items To File"
 msgstr "_Exportovat položky do souboru"
 
-#: ../src/ui/popup_menu.c:403
+#: ../src/ui/popup_menu.c:388
 msgid "_Rebuild"
 msgstr "_Znovu sestavit"
 
-#: ../src/ui/popup_menu.c:412 ../glade/liferea_menu.ui.h:17
+#: ../src/ui/popup_menu.c:397 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "Vlastnos_ti"
 
-#: ../src/ui/popup_menu.c:419
+#: ../src/ui/popup_menu.c:404
 msgid "Convert To Local Subscriptions..."
 msgstr "Převést na místní odběry..."
 
-#: ../src/ui/preferences_dialog.c:84
+#: ../src/ui/preferences_dialog.c:82
 msgid "GNOME default"
 msgstr "Výchozí v GNOME"
 
-#: ../src/ui/preferences_dialog.c:85
+#: ../src/ui/preferences_dialog.c:83
 msgid "Text below icons"
 msgstr "Text pod ikonkami"
 
-#: ../src/ui/preferences_dialog.c:86
+#: ../src/ui/preferences_dialog.c:84
 msgid "Text beside icons"
 msgstr "Text vedle ikonek"
 
-#: ../src/ui/preferences_dialog.c:87
+#: ../src/ui/preferences_dialog.c:85
 msgid "Icons only"
 msgstr "Pouze ikonky"
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/preferences_dialog.c:86
 msgid "Text only"
 msgstr "Pouze text"
 
-#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:94 ../src/ui/subscription_dialog.c:43
 msgid "minutes"
 msgstr "minuty"
 
-#: ../src/ui/preferences_dialog.c:97 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:95 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr "hodiny"
 
-#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr "dny"
 
-#: ../src/ui/preferences_dialog.c:103
+#: ../src/ui/preferences_dialog.c:101
 msgid "Space"
 msgstr "Mezerník"
 
-#: ../src/ui/preferences_dialog.c:104
+#: ../src/ui/preferences_dialog.c:102
 msgid "<Ctrl> Space"
 msgstr "Ctrl+Mezerník"
 
-#: ../src/ui/preferences_dialog.c:105
+#: ../src/ui/preferences_dialog.c:103
 msgid "<Alt> Space"
 msgstr "Alt+Mezerník"
 
-#: ../src/ui/preferences_dialog.c:110
+#: ../src/ui/preferences_dialog.c:108
 msgid "Normal View"
 msgstr "Normální zobrazení"
 
-#: ../src/ui/preferences_dialog.c:111
+#: ../src/ui/preferences_dialog.c:109
 msgid "Wide View"
 msgstr "Široké zobrazení"
 
-#: ../src/ui/preferences_dialog.c:112
+#: ../src/ui/preferences_dialog.c:110
 msgid "Automatic"
 msgstr "Automaticky"
 
-#: ../src/ui/preferences_dialog.c:491
+#: ../src/ui/preferences_dialog.c:462
 msgid "Default Browser"
 msgstr "Výchozí prohlížeč"
 
-#: ../src/ui/preferences_dialog.c:493
+#: ../src/ui/preferences_dialog.c:464
 msgid "Manual"
 msgstr "Ručně"
 
-#: ../src/ui/preferences_dialog.c:756
+#: ../src/ui/preferences_dialog.c:714
 msgid "Type"
 msgstr "Typ"
 
-#: ../src/ui/preferences_dialog.c:759
+#: ../src/ui/preferences_dialog.c:717
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/rule_editor.c:257
+#: ../src/ui/rule_editor.c:261
 msgid "Remove"
 msgstr "_Odstranit"
 
@@ -1292,7 +1193,11 @@ msgstr "_Odstranit"
 msgid "Saved Search"
 msgstr "Uložené vyhledávání"
 
-#: ../src/ui/subscription_dialog.c:428
+#: ../src/ui/subscription_dialog.c:352
+msgid "Choose File"
+msgstr "Vybrat soubor"
+
+#: ../src/ui/subscription_dialog.c:424
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1301,7 +1206,7 @@ msgstr[0] "Poskytovatel kanálu navrhuje interval aktualizace %d minutu."
 msgstr[1] "Poskytovatel kanálu navrhuje interval aktualizace %d minuty."
 msgstr[2] "Poskytovatel kanálu navrhuje interval aktualizace %d minut."
 
-#: ../src/ui/subscription_dialog.c:432
+#: ../src/ui/subscription_dialog.c:428
 msgid "This feed specifies no default update interval."
 msgstr "Tento kanál nespecifikuje žádný výchozí interval aktualizace."
 
@@ -1401,11 +1306,11 @@ msgstr "Z_menšit text"
 msgid "_Reader Mode"
 msgstr "_Režim čtečky"
 
-#: ../src/xml.c:426
+#: ../src/xml.c:427
 msgid "[There were more errors. Output was truncated!]"
 msgstr "(Vyskytlo se více chyb. Výstup byl zkrácen!)"
 
-#: ../src/xml.c:594
+#: ../src/xml.c:595
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Zpracovatel XML: Nepodařilo se zpracovat dokument:\n"
 
@@ -1437,31 +1342,6 @@ msgstr "_Uživatelské jméno:"
 #: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "_Password:"
 msgstr "_Heslo:"
-
-#: ../glade/enclosure_handler.ui.h:1
-msgid "Open Enclosure"
-msgstr "Otevřít přílohu"
-
-#: ../glade/enclosure_handler.ui.h:2
-msgid "Open an enclosure of type:"
-msgstr "Otevřít přílohu typu:"
-
-#: ../glade/enclosure_handler.ui.h:3
-msgid ""
-"_What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. The enclosures URL will be supplied as an "
-"argument for this command:"
-msgstr ""
-"_Co má Liferea provést s touto přílohou? Níže zadejte příkaz, který chcete "
-"spustit. URL přílohy bude předáno jako argument tohoto příkazu:"
-
-#: ../glade/enclosure_handler.ui.h:4
-msgid "_Browse"
-msgstr "_Procházet"
-
-#: ../glade/enclosure_handler.ui.h:5
-msgid "_Do this automatically for enclosures like this from now on."
-msgstr "O_d teď toto provádět se všemi podobnými přílohami automaticky."
 
 #: ../glade/google_source.ui.h:1
 msgid "Add Google Reader API Account"
@@ -1948,14 +1828,19 @@ msgid "Privacy Settings"
 msgstr "Nastavení soukromí"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked."
+#, fuzzy
+msgid "Tell websites that I do _not want to be tracked."
 msgstr "Informovat stránky, že nechci být sledován(a)."
 
 #: ../glade/prefs.ui.h:53
+msgid "Tell websites not to _sell or share my data."
+msgstr ""
+
+#: ../glade/prefs.ui.h:54
 msgid "_Intelligent Tracking Prevention. "
 msgstr "_Inteligentní prevence sledování. "
 
-#: ../glade/prefs.ui.h:54
+#: ../glade/prefs.ui.h:55
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
@@ -1963,7 +1848,7 @@ msgstr ""
 "To povolí WebKit funkci popsanou <a href=\"https://webkit.org/tracking-"
 "prevention/\">zde</a>."
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:56
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
@@ -1971,11 +1856,11 @@ msgstr ""
 "Inteligentní prevence sledování je k dispozici pouze s WebKitGtk+ verze 2.30 "
 "nebo vyšší."
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:57
 msgid "Use _Reader mode."
 msgstr "Použít _režim čtečky."
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:58
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
@@ -1984,30 +1869,27 @@ msgstr ""
 "a> všechny prvky, které neobsahují obsah (jako jsou skripty, písma, "
 "sledování)"
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr "Soukromí"
 
-#: ../glade/prefs.ui.h:59
-msgid "Downloading Enclosures"
-msgstr "Stahování příloh"
-
 #: ../glade/prefs.ui.h:60
+#, fuzzy
+msgid "Downloading Content"
+msgstr "Právě _stahované"
+
+#: ../glade/prefs.ui.h:61
 msgid "_Download using"
 msgstr "Stahovat _pomocí"
 
-#: ../glade/prefs.ui.h:62
+#: ../glade/prefs.ui.h:63
 #, no-c-format
 msgid "custom-command %s"
 msgstr "vlastní příkaz %s"
 
-#: ../glade/prefs.ui.h:63
-msgid "Opening Enclosures"
-msgstr "Otevírání příloh"
-
-#: ../glade/prefs.ui.h:64
-msgid "Enclosures"
-msgstr "Přílohy"
+#: ../glade/prefs.ui.h:64 ../glade/properties.ui.h:33
+msgid "Download"
+msgstr "Stahování"
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
@@ -2085,10 +1967,6 @@ msgstr "Archiv"
 #: ../glade/properties.ui.h:29
 msgid "Use HTTP _authentication"
 msgstr "Použít _autentizaci HTTP"
-
-#: ../glade/properties.ui.h:33
-msgid "Download"
-msgstr "Stahování"
 
 #: ../glade/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
@@ -2420,6 +2298,112 @@ msgstr ""
 msgid "Search Folder:"
 msgstr "Složka hledání:"
 
+#~ msgid ""
+#~ "Your version of WebKitGTK+ doesn't support changing the proxy settings "
+#~ "from Liferea. The system's default proxy settings will be used."
+#~ msgstr ""
+#~ "Vaše verze WebKitGTK+ nepodporuje změnu nastavení proxy z aplikace "
+#~ "Liferea. Bude použito výchozí nastavení serveru proxy."
+
+#~ msgid "Unable to resolve destination host name"
+#~ msgstr "Nelze rozpoznat název cílového hostitele"
+
+#~ msgid "Unable to resolve proxy host name"
+#~ msgstr "Nelze rozpoznat název hostitele proxy"
+
+#~ msgid "Unable to connect to remote host"
+#~ msgstr "Nelze se připojit ke vzdálenému hostiteli"
+
+#~ msgid "Unable to connect to proxy"
+#~ msgstr "Nelze se připojit k serveru proxy"
+
+#~ msgid ""
+#~ "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
+#~ "algorithm. Check your operating system settings."
+#~ msgstr ""
+#~ "Spojení SSL/TLS se nezdařilo. Možná je zastaralý nebo nepodporovaný "
+#~ "šifrovací algoritmus. Zkontrolujte nastavení operačního systému."
+
+#~ msgid "There was an internal error in the update process"
+#~ msgstr "V procesu aktualizace došlo k interní chybě"
+
+#~ msgid "Feed not available: Server requested unsupported redirection!"
+#~ msgstr "Kanál je nedostupný: server požadoval nepodporované přesměrování!"
+
+#~ msgid "Client Error"
+#~ msgstr "Chyba klienta"
+
+#~ msgid "Server Error"
+#~ msgstr "Chyba serveru"
+
+#~ msgid "Attachments"
+#~ msgstr "Přílohy"
+
+#~ msgid " Bytes"
+#~ msgstr " bajtů"
+
+#~ msgid "kB"
+#~ msgstr "kB"
+
+#~ msgid "MB"
+#~ msgstr "MB"
+
+#~ msgid "GB"
+#~ msgstr "GB"
+
+#, c-format
+#~ msgid "%d%s"
+#~ msgstr "%d%s"
+
+#, c-format
+#~ msgid "%d attachment"
+#~ msgid_plural "%d attachments"
+#~ msgstr[0] "%d příloha"
+#~ msgstr[1] "%d přílohy"
+#~ msgstr[2] "%d příloh"
+
+#, c-format
+#~ msgid "File Extension .%s"
+#~ msgstr "Přípona souboru .%s"
+
+#~ msgid "Open Enclosure..."
+#~ msgstr "Otevřít přílohu..."
+
+#~ msgid "Save As..."
+#~ msgstr "Uložit jako..."
+
+#~ msgid "Copy Link Location"
+#~ msgstr "Kopírovat umístění odkazu"
+
+#~ msgid "Open Enclosure"
+#~ msgstr "Otevřít přílohu"
+
+#~ msgid "Open an enclosure of type:"
+#~ msgstr "Otevřít přílohu typu:"
+
+#~ msgid ""
+#~ "_What should Liferea do with this enclosure? Please enter the command you "
+#~ "want to be executed below. The enclosures URL will be supplied as an "
+#~ "argument for this command:"
+#~ msgstr ""
+#~ "_Co má Liferea provést s touto přílohou? Níže zadejte příkaz, který "
+#~ "chcete spustit. URL přílohy bude předáno jako argument tohoto příkazu:"
+
+#~ msgid "_Browse"
+#~ msgstr "_Procházet"
+
+#~ msgid "_Do this automatically for enclosures like this from now on."
+#~ msgstr "O_d teď toto provádět se všemi podobnými přílohami automaticky."
+
+#~ msgid "Downloading Enclosures"
+#~ msgstr "Stahování příloh"
+
+#~ msgid "Opening Enclosures"
+#~ msgstr "Otevírání příloh"
+
+#~ msgid "Enclosures"
+#~ msgstr "Přílohy"
+
 #~ msgid "Print verbose debugging messages"
 #~ msgstr "Vypsat podrobné ladicí zprávy"
 
@@ -2704,9 +2688,6 @@ msgstr "Složka hledání:"
 
 #~ msgid "Maximal _Number Of Result Items:"
 #~ msgstr "Maximál_ní počet článků ve výsledku:"
-
-#~ msgid "Liferea is now online"
-#~ msgstr "Liferea je nyní připojena k síti"
 
 #~ msgid "Work Offline"
 #~ msgstr "Odpojit od sítě"

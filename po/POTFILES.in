@@ -130,8 +130,6 @@ src/ui/auth_dialog.c
 src/ui/auth_dialog.h
 src/ui/browser_tabs.c
 src/ui/browser_tabs.h
-src/ui/enclosure_list_view.c
-src/ui/enclosure_list_view.h
 src/ui/feed_list_view.c
 src/ui/feed_list_view.h
 src/ui/icons.c
@@ -183,7 +181,6 @@ src/xml.c
 src/xml.h
 [type: gettext/glade]glade/about.ui
 [type: gettext/glade]glade/auth.ui
-[type: gettext/glade]glade/enclosure_handler.ui
 [type: gettext/glade]glade/google_source.ui
 [type: gettext/glade]glade/liferea_menu.ui
 [type: gettext/glade]glade/liferea_toolbar.ui

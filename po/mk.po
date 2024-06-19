@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: new\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-14 23:03+0200\n"
+"POT-Creation-Date: 2024-06-19 20:26+0200\n"
 "PO-Revision-Date: 2004-10-24 02:34+0200\n"
 "Last-Translator: Tomislav Markovski <herrera@users.sourceforge.net>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -256,15 +256,20 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr ""
 
-#: ../plugins/trayicon.py:132
+#: ../plugins/trayicon.py:168
+#, fuzzy
+msgid "Liferea unread icon"
+msgstr "Известување за Лајфри"
+
+#: ../plugins/trayicon.py:186
 msgid "Show / Hide"
 msgstr ""
 
-#: ../plugins/trayicon.py:133
+#: ../plugins/trayicon.py:187
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:188
 #, fuzzy
 msgid "Quit"
 msgstr "/_Излез"
@@ -274,7 +279,7 @@ msgstr "/_Излез"
 msgid "Browser command failed: %s"
 msgstr "команда за прелистувач е науспешна: \"%s\""
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1097
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1140
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Отворам: \"%s\""
@@ -289,12 +294,6 @@ msgstr "Автентикација"
 #, fuzzy, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Не може да се креира папката за кеш %s!"
-
-#: ../src/conf.c:147
-msgid ""
-"Your version of WebKitGTK+ doesn't support changing the proxy settings from "
-"Liferea. The system's default proxy settings will be used."
-msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:135
@@ -321,19 +320,19 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/enclosure.c:201
+#: ../src/enclosure.c:200
 #, fuzzy, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr ""
 "\"%s\" не е правилен ОПМЛ документ. Лајфри не може да ја увези оваа датотека!"
 
-#: ../src/enclosure.c:292
+#: ../src/enclosure.c:291
 msgid ""
 "You have not configured a download tool yet! Please do so in the "
 "'Enclosures' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/enclosure.c:311
+#: ../src/enclosure.c:310
 #, c-format
 msgid ""
 "Command failed: \n"
@@ -344,17 +343,17 @@ msgid ""
 "correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/export.c:175
+#: ../src/export.c:172
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "Не можам да преименувам %s во %s\n"
 
-#: ../src/export.c:387 ../src/export.c:389
+#: ../src/export.c:376 ../src/export.c:378
 #, fuzzy, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "XML грешка при читање на датотеката за кеш! Не можам да увезам \"%s\"!"
 
-#: ../src/export.c:395 ../src/export.c:397
+#: ../src/export.c:384 ../src/export.c:386
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -362,42 +361,42 @@ msgstr ""
 "Празен документ. ОПМЛ документот \"%s\" не смее да биде празен при "
 "увезување..."
 
-#: ../src/export.c:418 ../src/export.c:420
+#: ../src/export.c:407 ../src/export.c:409
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" не е правилен ОПМЛ документ. Лајфри не може да ја увези оваа датотека!"
 
-#: ../src/export.c:439
+#: ../src/export.c:428
 msgid "Imported feed list"
 msgstr "Листата на вести е увезена"
 
-#: ../src/export.c:451
+#: ../src/export.c:440
 msgid "Import Feed List"
 msgstr "Увези листа на вести"
 
-#: ../src/export.c:451
+#: ../src/export.c:440
 msgid "Import"
 msgstr "Увези"
 
-#: ../src/export.c:451 ../src/export.c:468 ../src/fl_sources/opml_source.c:375
+#: ../src/export.c:440 ../src/export.c:457 ../src/fl_sources/opml_source.c:375
 #, fuzzy
 msgid "OPML Files"
 msgstr "Одберете датотека"
 
-#: ../src/export.c:459
+#: ../src/export.c:448
 msgid "Error while exporting feed list!"
 msgstr "Грешка при извезување на листата со вести!"
 
-#: ../src/export.c:461
+#: ../src/export.c:450
 msgid "Feed List exported!"
 msgstr "Листата со вести е извезена!"
 
-#: ../src/export.c:468
+#: ../src/export.c:457
 msgid "Export Feed List"
 msgstr "Извези листа на вести"
 
-#: ../src/export.c:468
+#: ../src/export.c:457
 msgid "Export"
 msgstr "Извези"
 
@@ -463,7 +462,7 @@ msgstr ""
 msgid "Choose OPML File"
 msgstr "Одберете датотека"
 
-#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:356
+#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr ""
 
@@ -606,40 +605,17 @@ msgid "Print debugging messages for the given topic"
 msgstr "  --debug-cache    Print debugging messages for the cache handling"
 
 #. Some libsoup transport errors
-#: ../src/net.c:470
+#: ../src/net.c:426
 msgid "The update request was cancelled"
 msgstr ""
 
-#: ../src/net.c:471
-msgid "Unable to resolve destination host name"
-msgstr ""
-
-#: ../src/net.c:472
-msgid "Unable to resolve proxy host name"
-msgstr ""
-
-#: ../src/net.c:473
-#, fuzzy
-msgid "Unable to connect to remote host"
-msgstr "Грешка во поврзувањето со адресата"
-
-#: ../src/net.c:474
-msgid "Unable to connect to proxy"
-msgstr ""
-
-#: ../src/net.c:475
-msgid ""
-"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
-"algorithm. Check your operating system settings."
-msgstr ""
-
 #. http 3xx redirection
-#: ../src/net.c:478
+#: ../src/net.c:429
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:481
+#: ../src/net.c:432
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
@@ -648,38 +624,38 @@ msgstr ""
 "Немате дозвола за преземање на овие вести. Ве молам ажурирајте го Вашето "
 "корисничко име и лозинка во прозорецот за својства на веста."
 
-#: ../src/net.c:483
+#: ../src/net.c:434
 #, fuzzy
 msgid "Payment required"
 msgstr "Потребна е уплата"
 
-#: ../src/net.c:484
+#: ../src/net.c:435
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:485
+#: ../src/net.c:436
 msgid "Resource Not Found"
 msgstr "Нема ресурси"
 
-#: ../src/net.c:486
+#: ../src/net.c:437
 msgid "Method Not Allowed"
 msgstr "Методот не е дозволен"
 
-#: ../src/net.c:487
+#: ../src/net.c:438
 msgid "Not Acceptable"
 msgstr "Не е прифатливо"
 
-#: ../src/net.c:488
+#: ../src/net.c:439
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "Потребна е Proxy автентикација"
 
-#: ../src/net.c:489
+#: ../src/net.c:440
 #, fuzzy
 msgid "Request timed out"
 msgstr "Барањето истече"
 
-#: ../src/net.c:490
+#: ../src/net.c:441
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -690,60 +666,43 @@ msgstr ""
 "кешираните наслови."
 
 #. http 5xx server errors
-#: ../src/net.c:493
+#: ../src/net.c:444
 #, fuzzy
 msgid "Internal Server Error"
 msgstr "Грешка на опслужувачот"
 
-#: ../src/net.c:494
+#: ../src/net.c:445
 msgid "Not Implemented"
 msgstr ""
 
-#: ../src/net.c:495
+#: ../src/net.c:446
 msgid "Bad Gateway"
 msgstr ""
 
-#: ../src/net.c:496
+#: ../src/net.c:447
 #, fuzzy
 msgid "Service Unavailable"
 msgstr "\"%s\" е недостапно!"
 
-#: ../src/net.c:497
+#: ../src/net.c:448
 msgid "Gateway Timeout"
 msgstr ""
 
-#: ../src/net.c:498
+#: ../src/net.c:449
 msgid "HTTP Version Not Supported"
 msgstr ""
 
-#: ../src/net.c:503
-msgid "There was an internal error in the update process"
-msgstr ""
-
-#: ../src/net.c:505
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr ""
-"Вестите се недостапни: Серверот сигнализираше неподдржано пренасочување!"
-
-#: ../src/net.c:507
-msgid "Client Error"
-msgstr "Клиентска грешка"
-
-#: ../src/net.c:509
-msgid "Server Error"
-msgstr "Грешка на опслужувачот"
-
-#: ../src/net.c:511
+#: ../src/net.c:453
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(unknown error class)"
 
-#: ../src/newsbin.c:136
+#: ../src/newsbin.c:133
 #, fuzzy
 msgid "News Bin Properties"
 msgstr "Својства на претплати"
 
-#: ../src/newsbin.c:140 ../glade/new_newsbin.ui.h:1
+#: ../src/newsbin.c:137 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr ""
 
@@ -886,15 +845,15 @@ msgstr "Овие вести нема повеќе да се ажуриаат!"
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL адресата на \"%s\" е перманетно променета и ажурирана."
 
-#: ../src/subscription.c:204
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" нема повеќе да се ажурира!"
-
-#: ../src/subscription.c:208
+#: ../src/subscription.c:194
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" не е променет од последеното ажурирање."
+
+#: ../src/subscription.c:207
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" нема повеќе да се ажурира!"
 
 #: ../src/subscription.c:221 ../src/subscription.c:297
 #, fuzzy, c-format
@@ -915,54 +874,9 @@ msgstr "Внесете корисник и лозинка за \"%s\" (%s):"
 msgid "Unknown source"
 msgstr "Непознат извор"
 
-#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:282
+#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:267
 msgid "Untitled"
 msgstr "Без наслов"
-
-#: ../src/ui/enclosure_list_view.c:168
-#, fuzzy
-msgid "Attachments"
-msgstr "коментари"
-
-#. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:260
-msgid " Bytes"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:263
-msgid "kB"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:267
-msgid "MB"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:271
-msgid "GB"
-msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:275
-#, c-format
-msgid "%d%s"
-msgstr ""
-
-#. update list title
-#: ../src/ui/enclosure_list_view.c:313
-#, c-format
-msgid "%d attachment"
-msgid_plural "%d attachments"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:356
-msgid "Choose File"
-msgstr "Одберете датотека"
-
-#: ../src/ui/enclosure_list_view.c:463
-#, c-format
-msgid "File Extension .%s"
-msgstr ""
 
 #: ../src/ui/feed_list_view.c:426
 msgid "Liferea is in offline mode. No update possible."
@@ -1009,12 +923,12 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Дали сте сигурни дека саката да избришете \"%s\"?"
 
 #: ../src/ui/feed_list_view.c:905 ../src/ui/feed_list_view.c:959
-#: ../src/ui/popup_menu.c:260
+#: ../src/ui/popup_menu.c:245
 #, fuzzy
 msgid "_Cancel"
 msgstr "_Ажурирај ги сите"
 
-#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:411
+#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:396
 #, fuzzy
 msgid "_Delete"
 msgstr "/_Избриши вест"
@@ -1075,15 +989,15 @@ msgstr "Мора да одбереш вест за бришење на став�
 msgid "No item has been selected"
 msgstr "Нема означени ставки!"
 
-#: ../src/ui/liferea_browser.c:484
+#: ../src/ui/liferea_browser.c:481
 msgid "Content download failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_browser.c:497
+#: ../src/ui/liferea_browser.c:494
 msgid "Content extraction failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:410
+#: ../src/ui/liferea_shell.c:412
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1091,7 +1005,7 @@ msgstr[0] "%d нов предмет!"
 msgstr[1] "%d нови предмети!"
 msgstr[2] "%d нови предмети!"
 
-#: ../src/ui/liferea_shell.c:415
+#: ../src/ui/liferea_shell.c:417
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1099,244 +1013,231 @@ msgstr[0] "е непрочитано"
 msgstr[1] "е непрочитано"
 msgstr[2] "е непрочитано"
 
-#: ../src/ui/liferea_shell.c:807
+#: ../src/ui/liferea_shell.c:859
 msgid "Help Topics"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:813
+#: ../src/ui/liferea_shell.c:865
 #, fuzzy
 msgid "Quick Reference"
 msgstr "Уреди ги параметрите."
 
-#: ../src/ui/liferea_shell.c:819
+#: ../src/ui/liferea_shell.c:871
 msgid "FAQ"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:1094
+#: ../src/ui/liferea_shell.c:1137
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "команда за прелистувач е науспешна: \"%s\""
 
-#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
+#: ../src/ui/popup_menu.c:101 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
+#: ../src/ui/popup_menu.c:105 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "_Отвори во прелистувач"
 
-#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
+#: ../src/ui/popup_menu.c:109 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">Подесувања за надворешниот прелистувач</span>"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:114
 msgid "Email The Author"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:140
+#: ../src/ui/popup_menu.c:139
 msgid "Copy to News Bin"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:148
+#: ../src/ui/popup_menu.c:147
 #, c-format
 msgid "_Bookmark at %s"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:154
+#: ../src/ui/popup_menu.c:153
 #, fuzzy
 msgid "Copy Item _Location"
 msgstr "/_Копирај ја локацијата на врската"
 
-#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Промени статус во (не)прочитано"
 
-#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Промени го _знаменцето"
 
-#: ../src/ui/popup_menu.c:171
+#: ../src/ui/popup_menu.c:170
 #, fuzzy
 msgid "R_emove Item"
 msgstr "/Отстрани го предметот"
 
-#: ../src/ui/popup_menu.c:200
-msgid "Open Enclosure..."
-msgstr ""
-
-#: ../src/ui/popup_menu.c:201
-msgid "Save As..."
-msgstr ""
-
-#: ../src/ui/popup_menu.c:202
-#, fuzzy
-msgid "Copy Link Location"
-msgstr "/_Копирај ја локацијата на врската"
-
-#: ../src/ui/popup_menu.c:257
+#: ../src/ui/popup_menu.c:242
 msgid "Save items to file"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:262
+#: ../src/ui/popup_menu.c:247
 msgid "_Save"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:271
+#: ../src/ui/popup_menu.c:256
 msgid "RSS 2.0 files"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:277
+#: ../src/ui/popup_menu.c:262
 #, fuzzy
 msgid "All files"
 msgstr "_Датотека"
 
-#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:13
+#: ../src/ui/popup_menu.c:338 ../glade/liferea_menu.ui.h:13
 #, fuzzy
 msgid "_Update"
 msgstr "/_Ажурирај"
 
-#: ../src/ui/popup_menu.c:355
+#: ../src/ui/popup_menu.c:340
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/_Ажурирај"
 
-#: ../src/ui/popup_menu.c:365
+#: ../src/ui/popup_menu.c:350
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "_Нова претплата..."
 
-#: ../src/ui/popup_menu.c:368 ../glade/liferea_menu.ui.h:5
+#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/popup_menu.c:371 ../glade/liferea_menu.ui.h:6
+#: ../src/ui/popup_menu.c:356 ../glade/liferea_menu.ui.h:6
 #, fuzzy
 msgid "New S_earch Folder..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/popup_menu.c:372
+#: ../src/ui/popup_menu.c:357
 #, fuzzy
 msgid "New S_ource..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/popup_menu.c:373 ../glade/liferea_menu.ui.h:8
+#: ../src/ui/popup_menu.c:358 ../glade/liferea_menu.ui.h:8
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "_Нова папка..."
 
-#: ../src/ui/popup_menu.c:376
+#: ../src/ui/popup_menu.c:361
 #, fuzzy
 msgid "_New"
 msgstr "/_Нова"
 
-#: ../src/ui/popup_menu.c:385
+#: ../src/ui/popup_menu.c:370
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "Увези листа на вести"
 
-#: ../src/ui/popup_menu.c:393
+#: ../src/ui/popup_menu.c:378
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/_Обележи сè како прочитанo"
 
-#: ../src/ui/popup_menu.c:395
+#: ../src/ui/popup_menu.c:380
 msgid "_Export Items To File"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:403
+#: ../src/ui/popup_menu.c:388
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:412 ../glade/liferea_menu.ui.h:17
+#: ../src/ui/popup_menu.c:397 ../glade/liferea_menu.ui.h:17
 #, fuzzy
 msgid "_Properties"
 msgstr "_Својства..."
 
-#: ../src/ui/popup_menu.c:419
+#: ../src/ui/popup_menu.c:404
 #, fuzzy
 msgid "Convert To Local Subscriptions..."
 msgstr "_Нова претплата..."
 
-#: ../src/ui/preferences_dialog.c:84
+#: ../src/ui/preferences_dialog.c:82
 msgid "GNOME default"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:85
+#: ../src/ui/preferences_dialog.c:83
 msgid "Text below icons"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:86
+#: ../src/ui/preferences_dialog.c:84
 msgid "Text beside icons"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:87
+#: ../src/ui/preferences_dialog.c:85
 msgid "Icons only"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/preferences_dialog.c:86
 msgid "Text only"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:94 ../src/ui/subscription_dialog.c:43
 #, fuzzy
 msgid "minutes"
 msgstr "минути."
 
-#: ../src/ui/preferences_dialog.c:97 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:95 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:103
+#: ../src/ui/preferences_dialog.c:101
 msgid "Space"
 msgstr "Space"
 
-#: ../src/ui/preferences_dialog.c:104
+#: ../src/ui/preferences_dialog.c:102
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Space"
 
-#: ../src/ui/preferences_dialog.c:105
+#: ../src/ui/preferences_dialog.c:103
 msgid "<Alt> Space"
 msgstr "<Alt> Space"
 
-#: ../src/ui/preferences_dialog.c:110
+#: ../src/ui/preferences_dialog.c:108
 msgid "Normal View"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:111
+#: ../src/ui/preferences_dialog.c:109
 #, fuzzy
 msgid "Wide View"
 msgstr "_Поглед"
 
-#: ../src/ui/preferences_dialog.c:112
+#: ../src/ui/preferences_dialog.c:110
 msgid "Automatic"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:491
+#: ../src/ui/preferences_dialog.c:462
 #, fuzzy
 msgid "Default Browser"
 msgstr "Прелистувач"
 
-#: ../src/ui/preferences_dialog.c:493
+#: ../src/ui/preferences_dialog.c:464
 msgid "Manual"
 msgstr "Рачно"
 
-#: ../src/ui/preferences_dialog.c:756
+#: ../src/ui/preferences_dialog.c:714
 #, fuzzy
 msgid "Type"
 msgstr "вид"
 
-#: ../src/ui/preferences_dialog.c:759
+#: ../src/ui/preferences_dialog.c:717
 #, fuzzy
 msgid "Program"
 msgstr "_Апликација"
 
-#: ../src/ui/rule_editor.c:257
+#: ../src/ui/rule_editor.c:261
 #, fuzzy
 msgid "Remove"
 msgstr "Отстрани ги сите"
@@ -1346,7 +1247,11 @@ msgstr "Отстрани ги сите"
 msgid "Saved Search"
 msgstr "Пребарување со Feedster"
 
-#: ../src/ui/subscription_dialog.c:428
+#: ../src/ui/subscription_dialog.c:352
+msgid "Choose File"
+msgstr "Одберете датотека"
+
+#: ../src/ui/subscription_dialog.c:424
 #, fuzzy, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1355,7 +1260,7 @@ msgstr[0] "Опслужувачот на овие вести сугерира в
 msgstr[1] "Опслужувачот на овие вести сугерира време на ажурирање од %d минути"
 msgstr[2] "Опслужувачот на овие вести сугерира време на ажурирање од %d минути"
 
-#: ../src/ui/subscription_dialog.c:432
+#: ../src/ui/subscription_dialog.c:428
 msgid "This feed specifies no default update interval."
 msgstr "Овие вести немаат информација за време на ажурирање."
 
@@ -1464,12 +1369,12 @@ msgstr "_Намали го текстот"
 msgid "_Reader Mode"
 msgstr ""
 
-#: ../src/xml.c:426
+#: ../src/xml.c:427
 #, fuzzy
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Грешката од излезот на парсерот е скратена!]"
 
-#: ../src/xml.c:594
+#: ../src/xml.c:595
 #, fuzzy
 msgid "XML Parser: Could not parse document:\n"
 msgstr ""
@@ -1505,31 +1410,6 @@ msgstr "Корисничко _име:"
 #: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "_Password:"
 msgstr "_Лозинка:"
-
-#: ../glade/enclosure_handler.ui.h:1
-#, fuzzy
-msgid "Open Enclosure"
-msgstr "<span weight=\"bold\">Преглед на наслови</span>"
-
-#: ../glade/enclosure_handler.ui.h:2
-msgid "Open an enclosure of type:"
-msgstr ""
-
-#: ../glade/enclosure_handler.ui.h:3
-msgid ""
-"_What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. The enclosures URL will be supplied as an "
-"argument for this command:"
-msgstr ""
-
-#: ../glade/enclosure_handler.ui.h:4
-#, fuzzy
-msgid "_Browse"
-msgstr "_Прелистувач:"
-
-#: ../glade/enclosure_handler.ui.h:5
-msgid "_Do this automatically for enclosures like this from now on."
-msgstr ""
 
 #: ../glade/google_source.ui.h:1
 msgid "Add Google Reader API Account"
@@ -2066,62 +1946,60 @@ msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">Подесувања за ажурирање на вестите</span>"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked."
+msgid "Tell websites that I do _not want to be tracked."
 msgstr ""
 
 #: ../glade/prefs.ui.h:53
-msgid "_Intelligent Tracking Prevention. "
+msgid "Tell websites not to _sell or share my data."
 msgstr ""
 
 #: ../glade/prefs.ui.h:54
+msgid "_Intelligent Tracking Prevention. "
+msgstr ""
+
+#: ../glade/prefs.ui.h:55
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:56
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:57
 msgid "Use _Reader mode."
 msgstr ""
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:58
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:59
+#: ../glade/prefs.ui.h:60
 #, fuzzy
-msgid "Downloading Enclosures"
+msgid "Downloading Content"
 msgstr "<span weight=\"bold\">Преглед на наслови</span>"
 
-#: ../glade/prefs.ui.h:60
+#: ../glade/prefs.ui.h:61
 msgid "_Download using"
 msgstr ""
 
-#: ../glade/prefs.ui.h:62
+#: ../glade/prefs.ui.h:63
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:63
-#, fuzzy
-msgid "Opening Enclosures"
-msgstr "<span weight=\"bold\">Преглед на наслови</span>"
-
-#: ../glade/prefs.ui.h:64
-#, fuzzy
-msgid "Enclosures"
-msgstr "<span weight=\"bold\">Преглед на наслови</span>"
+#: ../glade/prefs.ui.h:64 ../glade/properties.ui.h:33
+msgid "Download"
+msgstr ""
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
@@ -2205,10 +2083,6 @@ msgstr ""
 #: ../glade/properties.ui.h:29
 msgid "Use HTTP _authentication"
 msgstr "Користи HTTP _автентикација"
-
-#: ../glade/properties.ui.h:33
-msgid "Download"
-msgstr ""
 
 #: ../glade/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
@@ -2561,6 +2435,48 @@ msgstr ""
 #, fuzzy
 msgid "Search Folder:"
 msgstr "Барај за"
+
+#, fuzzy
+#~ msgid "Unable to connect to remote host"
+#~ msgstr "Грешка во поврзувањето со адресата"
+
+#~ msgid "Feed not available: Server requested unsupported redirection!"
+#~ msgstr ""
+#~ "Вестите се недостапни: Серверот сигнализираше неподдржано пренасочување!"
+
+#~ msgid "Client Error"
+#~ msgstr "Клиентска грешка"
+
+#~ msgid "Server Error"
+#~ msgstr "Грешка на опслужувачот"
+
+#, fuzzy
+#~ msgid "Attachments"
+#~ msgstr "коментари"
+
+#, fuzzy
+#~ msgid "Copy Link Location"
+#~ msgstr "/_Копирај ја локацијата на врската"
+
+#, fuzzy
+#~ msgid "Open Enclosure"
+#~ msgstr "<span weight=\"bold\">Преглед на наслови</span>"
+
+#, fuzzy
+#~ msgid "_Browse"
+#~ msgstr "_Прелистувач:"
+
+#, fuzzy
+#~ msgid "Downloading Enclosures"
+#~ msgstr "<span weight=\"bold\">Преглед на наслови</span>"
+
+#, fuzzy
+#~ msgid "Opening Enclosures"
+#~ msgstr "<span weight=\"bold\">Преглед на наслови</span>"
+
+#, fuzzy
+#~ msgid "Enclosures"
+#~ msgstr "<span weight=\"bold\">Преглед на наслови</span>"
 
 #, fuzzy
 #~ msgid "Print debugging messages when entering/leaving functions"
@@ -3543,9 +3459,6 @@ msgstr "Барај за"
 #~ "страната за <a href=\"https://lzone.de/liferea/faq.php\">ЧПП</a>, кои се "
 #~ "достапни на веб страната на <a href=\"http://lzone.de/liferea\">овој "
 #~ "проект</a>.</p>"
-
-#~ msgid "Liferea notification"
-#~ msgstr "Известување за Лајфри"
 
 #~ msgid "/_New/New _Subscription..."
 #~ msgstr "/_Нова/_Нова претплата..."

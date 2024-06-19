@@ -50,27 +50,6 @@ ui_popup_menu (GtkWidget *menu, const GdkEvent *event)
 	gtk_menu_popup_at_pointer (GTK_MENU(menu), event);
 }
 
-static GtkWidget*
-ui_popup_add_menuitem (GtkWidget *menu, const gchar *label, gpointer callback, gpointer data, gint toggle)
-{
-	GtkWidget	*item;
-
-	g_assert (label);
-	if (toggle) {
-		item = gtk_check_menu_item_new_with_mnemonic (label);
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM(item), toggle - UI_POPUP_ITEM_IS_TOGGLE);
-	} else {
-		item = gtk_menu_item_new_with_mnemonic (label);
-	}
-
-	if (callback)
-		g_signal_connect_swapped (G_OBJECT(item), "activate", G_CALLBACK(callback), data);
-
-	gtk_menu_shell_append (GTK_MENU_SHELL(menu), item);
-
-	return item;
-}
-
 static const GActionEntry ui_popup_item_gaction_entries[] = {
 	{"copy-item-to-newsbin", on_action_copy_to_newsbin, "(umt)", NULL, NULL},
 	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},

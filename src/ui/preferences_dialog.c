@@ -441,7 +441,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	GtkListStore		*store;
 	GtkTreeIter		treeiter;
 	GtkAdjustment		*itemCount;
-	GtkTreeStore		*treestore;
 	GtkTreeViewColumn 	*column;
 	GSList			*list;
 	gchar			*proxyport;

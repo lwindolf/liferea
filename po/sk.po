@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-14 23:03+0200\n"
+"POT-Creation-Date: 2024-06-19 20:26+0200\n"
 "PO-Revision-Date: 2010-09-11 10:59+0200\n"
 "Last-Translator: Pavol Klačanský <pavol@klacansky.com>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -249,16 +249,21 @@ msgid ""
 "Plugin was removed. Please restart Liferea once for it to take full effect!"
 msgstr ""
 
-#: ../plugins/trayicon.py:132
+#: ../plugins/trayicon.py:168
+#, fuzzy
+msgid "Liferea unread icon"
+msgstr "Liferea je teraz pripojená"
+
+#: ../plugins/trayicon.py:186
 #, fuzzy
 msgid "Show / Hide"
 msgstr "Zobraziť podrobnosti"
 
-#: ../plugins/trayicon.py:133
+#: ../plugins/trayicon.py:187
 msgid "Minimize to tray on close"
 msgstr ""
 
-#: ../plugins/trayicon.py:134
+#: ../plugins/trayicon.py:188
 #, fuzzy
 msgid "Quit"
 msgstr "_Koniec"
@@ -268,7 +273,7 @@ msgstr "_Koniec"
 msgid "Browser command failed: %s"
 msgstr "Zlyhal príkaz prehliadača: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1097
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1140
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Spúšťa sa: \"%s"
@@ -282,12 +287,6 @@ msgstr "Chyba autorizácie"
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
 msgstr "Nemôže byť vytvorený priečinok cache \"%s\"!"
-
-#: ../src/conf.c:147
-msgid ""
-"Your version of WebKitGTK+ doesn't support changing the proxy settings from "
-"Liferea. The system's default proxy settings will be used."
-msgstr ""
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:135
@@ -314,18 +313,18 @@ msgstr "%d. %b, %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%d. %b. %Y"
 
-#: ../src/enclosure.c:201
+#: ../src/enclosure.c:200
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" nie je platný typ prílohy konfiguračného súboru!"
 
-#: ../src/enclosure.c:292
+#: ../src/enclosure.c:291
 msgid ""
 "You have not configured a download tool yet! Please do so in the "
 "'Enclosures' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/enclosure.c:311
+#: ../src/enclosure.c:310
 #, c-format
 msgid ""
 "Command failed: \n"
@@ -336,17 +335,17 @@ msgid ""
 "correctly! You can change it in the 'Download' tab in Tools/Preferences."
 msgstr ""
 
-#: ../src/export.c:175
+#: ../src/export.c:172
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "Chyba premenovania %s na %s\n"
 
-#: ../src/export.c:387 ../src/export.c:389
+#: ../src/export.c:376 ../src/export.c:378
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "XML chyba počas čítania OPML súboru! Nemohol byť importovaný \"%s\"!"
 
-#: ../src/export.c:395 ../src/export.c:397
+#: ../src/export.c:384 ../src/export.c:386
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
@@ -354,42 +353,42 @@ msgstr ""
 "Prázdny dokument! OPML dokument \"%s\" by nemal byť prázdny keď je "
 "importovaný."
 
-#: ../src/export.c:418 ../src/export.c:420
+#: ../src/export.c:407 ../src/export.c:409
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
 "\"%s\" nie je platný OPML dokument! Liferea nemôže importovať tento súbor!"
 
-#: ../src/export.c:439
+#: ../src/export.c:428
 msgid "Imported feed list"
 msgstr "Zoznam dôležitých článkov"
 
-#: ../src/export.c:451
+#: ../src/export.c:440
 msgid "Import Feed List"
 msgstr "Importovať zoznam kanálov"
 
-#: ../src/export.c:451
+#: ../src/export.c:440
 msgid "Import"
 msgstr "Importovať"
 
-#: ../src/export.c:451 ../src/export.c:468 ../src/fl_sources/opml_source.c:375
+#: ../src/export.c:440 ../src/export.c:457 ../src/fl_sources/opml_source.c:375
 #, fuzzy
 msgid "OPML Files"
 msgstr "Zvoľte OPML súbor"
 
-#: ../src/export.c:459
+#: ../src/export.c:448
 msgid "Error while exporting feed list!"
 msgstr "Chyba počas exportovania zoznamu kanálov!"
 
-#: ../src/export.c:461
+#: ../src/export.c:450
 msgid "Feed List exported!"
 msgstr "Zoznam kanálov bol exportovaný!"
 
-#: ../src/export.c:468
+#: ../src/export.c:457
 msgid "Export Feed List"
 msgstr "Exportovať zoznam kanálov"
 
-#: ../src/export.c:468
+#: ../src/export.c:457
 msgid "Export"
 msgstr "Exportovať"
 
@@ -453,7 +452,7 @@ msgstr "Planet, BlogRoll, OPML"
 msgid "Choose OPML File"
 msgstr "Zvoľte OPML súbor"
 
-#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:356
+#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr ""
 
@@ -589,39 +588,17 @@ msgid "Print debugging messages for the given topic"
 msgstr "Vypíše správy ladenia pre zadanú tému"
 
 #. Some libsoup transport errors
-#: ../src/net.c:470
+#: ../src/net.c:426
 msgid "The update request was cancelled"
 msgstr "Požiadavka na aktualizáciu bolas zrušená"
 
-#: ../src/net.c:471
-msgid "Unable to resolve destination host name"
-msgstr "Nepodarilo sa preložiť názov cieľového hostiteľa"
-
-#: ../src/net.c:472
-msgid "Unable to resolve proxy host name"
-msgstr "Nepodarilo sa preložiť názov proxy hostiteľa"
-
-#: ../src/net.c:473
-msgid "Unable to connect to remote host"
-msgstr "Nepodarilo sa pripojiť k vzdialenému hostiteľovi"
-
-#: ../src/net.c:474
-msgid "Unable to connect to proxy"
-msgstr "Nepodarilo sa pripojiť k proxy"
-
-#: ../src/net.c:475
-msgid ""
-"SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
-"algorithm. Check your operating system settings."
-msgstr ""
-
 #. http 3xx redirection
-#: ../src/net.c:478
+#: ../src/net.c:429
 msgid "The resource moved permanently to a new location"
 msgstr "Zdroj bol natrvalo presunutý na nové miesto"
 
 #. http 4xx client error
-#: ../src/net.c:481
+#: ../src/net.c:432
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -629,35 +606,35 @@ msgstr ""
 "Nemáte oprávnenie sťahovať tento kanál. Aktualizujte, prosím, vaše "
 "prihlasovacie meno a heslo v okne vlastností kanálu."
 
-#: ../src/net.c:483
+#: ../src/net.c:434
 msgid "Payment required"
 msgstr "Požadovaná platba"
 
-#: ../src/net.c:484
+#: ../src/net.c:435
 msgid "You're not allowed to access this resource"
 msgstr "Nemáte povolený prístup k tomuto zdroju"
 
-#: ../src/net.c:485
+#: ../src/net.c:436
 msgid "Resource Not Found"
 msgstr "Zdroj nebol nádjený"
 
-#: ../src/net.c:486
+#: ../src/net.c:437
 msgid "Method Not Allowed"
 msgstr "Metóda nie je povolená"
 
-#: ../src/net.c:487
+#: ../src/net.c:438
 msgid "Not Acceptable"
 msgstr "Neprijateľný"
 
-#: ../src/net.c:488
+#: ../src/net.c:439
 msgid "Proxy authentication required"
 msgstr "Požadované overenie proxy"
 
-#: ../src/net.c:489
+#: ../src/net.c:440
 msgid "Request timed out"
 msgstr "Čas požiadavky vypršal"
 
-#: ../src/net.c:490
+#: ../src/net.c:441
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -668,58 +645,42 @@ msgstr ""
 "aktualizovať ale môžete stále pristupovať k uloženým článkom."
 
 #. http 5xx server errors
-#: ../src/net.c:493
+#: ../src/net.c:444
 #, fuzzy
 msgid "Internal Server Error"
 msgstr "Chyba serveru"
 
-#: ../src/net.c:494
+#: ../src/net.c:445
 msgid "Not Implemented"
 msgstr ""
 
-#: ../src/net.c:495
+#: ../src/net.c:446
 msgid "Bad Gateway"
 msgstr ""
 
-#: ../src/net.c:496
+#: ../src/net.c:447
 #, fuzzy
 msgid "Service Unavailable"
 msgstr "Názov _služby"
 
-#: ../src/net.c:497
+#: ../src/net.c:448
 msgid "Gateway Timeout"
 msgstr ""
 
-#: ../src/net.c:498
+#: ../src/net.c:449
 msgid "HTTP Version Not Supported"
 msgstr ""
 
-#: ../src/net.c:503
-msgid "There was an internal error in the update process"
-msgstr "Bola tu vnútorná chyba v aktualizačnom procese"
-
-#: ../src/net.c:505
-msgid "Feed not available: Server requested unsupported redirection!"
-msgstr "Kanál nie je dostupný: Server požadoval nepodporované presmerovanie!"
-
-#: ../src/net.c:507
-msgid "Client Error"
-msgstr "Chyba klienta"
-
-#: ../src/net.c:509
-msgid "Server Error"
-msgstr "Chyba serveru"
-
-#: ../src/net.c:511
+#: ../src/net.c:453
 msgid "An unknown networking error happened!"
 msgstr "Nastala neznáma chyba sieťovania!"
 
-#: ../src/newsbin.c:136
+#: ../src/newsbin.c:133
 #, fuzzy
 msgid "News Bin Properties"
 msgstr "Vlastnosti prihlásenia"
 
-#: ../src/newsbin.c:140 ../glade/new_newsbin.ui.h:1
+#: ../src/newsbin.c:137 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Vytvoriť archív"
 
@@ -858,15 +819,15 @@ msgstr ""
 msgid "The URL of \"%s\" has changed permanently and was updated"
 msgstr "URL \"%s\" sa zmenilo natrvalo a bolo aktualizované"
 
-#: ../src/subscription.c:204
-#, c-format
-msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" je zrušený. Liferea ho nebude nabudúce aktualizovať!"
-
-#: ../src/subscription.c:208
+#: ../src/subscription.c:194
 #, c-format
 msgid "\"%s\" has not changed since last update"
 msgstr "\"%s\" sa nezmenil od poslednej aktualizácie"
+
+#: ../src/subscription.c:207
+#, c-format
+msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
+msgstr "\"%s\" je zrušený. Liferea ho nebude nabudúce aktualizovať!"
 
 #: ../src/subscription.c:221 ../src/subscription.c:297
 #, fuzzy, c-format
@@ -887,53 +848,9 @@ msgstr "Zadajte používateľské meno a heslo pre \"%s\" (%s):"
 msgid "Unknown source"
 msgstr "Neznámy zdroj"
 
-#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:282
+#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:267
 msgid "Untitled"
 msgstr ""
-
-#: ../src/ui/enclosure_list_view.c:168
-msgid "Attachments"
-msgstr "Prílohy"
-
-#. The following literals are the enclosure list size units
-#: ../src/ui/enclosure_list_view.c:260
-msgid " Bytes"
-msgstr " Bajtov"
-
-#: ../src/ui/enclosure_list_view.c:263
-msgid "kB"
-msgstr "kB"
-
-#: ../src/ui/enclosure_list_view.c:267
-msgid "MB"
-msgstr "MB"
-
-#: ../src/ui/enclosure_list_view.c:271
-msgid "GB"
-msgstr "GB"
-
-#: ../src/ui/enclosure_list_view.c:275
-#, c-format
-msgid "%d%s"
-msgstr "%d%s"
-
-#. update list title
-#: ../src/ui/enclosure_list_view.c:313
-#, c-format
-msgid "%d attachment"
-msgid_plural "%d attachments"
-msgstr[0] "%d príloh"
-msgstr[1] "%d príloha"
-msgstr[2] "%d prílohy"
-
-#: ../src/ui/enclosure_list_view.c:402 ../src/ui/subscription_dialog.c:356
-msgid "Choose File"
-msgstr "Zvolte súbor"
-
-#: ../src/ui/enclosure_list_view.c:463
-#, fuzzy, c-format
-msgid "File Extension .%s"
-msgstr "<b>Súbor rozšírenia .%s</b>"
 
 #: ../src/ui/feed_list_view.c:426
 msgid "Liferea is in offline mode. No update possible."
@@ -980,12 +897,12 @@ msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ste si istý, že chcete odstrániť \"%s\"?"
 
 #: ../src/ui/feed_list_view.c:905 ../src/ui/feed_list_view.c:959
-#: ../src/ui/popup_menu.c:260
+#: ../src/ui/popup_menu.c:245
 #, fuzzy
 msgid "_Cancel"
 msgstr "Z_rušiť všetko"
 
-#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:411
+#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:396
 msgid "_Delete"
 msgstr "O_dstrániť"
 
@@ -1043,16 +960,16 @@ msgstr "Musíte vybrať kanál ak chcete odstrániť jeho články!"
 msgid "No item has been selected"
 msgstr "Neboli vybrané články"
 
-#: ../src/ui/liferea_browser.c:484
+#: ../src/ui/liferea_browser.c:481
 #, fuzzy
 msgid "Content download failed! Try disabling reader mode."
 msgstr "Zvoliť priečinok na sťahovanie"
 
-#: ../src/ui/liferea_browser.c:497
+#: ../src/ui/liferea_browser.c:494
 msgid "Content extraction failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:410
+#: ../src/ui/liferea_shell.c:412
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1060,7 +977,7 @@ msgstr[0] " (%d nových)"
 msgstr[1] " (%d nový)"
 msgstr[2] " (%d nové)"
 
-#: ../src/ui/liferea_shell.c:415
+#: ../src/ui/liferea_shell.c:417
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1068,230 +985,218 @@ msgstr[0] "%d neprečítaných%s"
 msgstr[1] "%d neprečítaný%s"
 msgstr[2] "%d neprečítané%s"
 
-#: ../src/ui/liferea_shell.c:807
+#: ../src/ui/liferea_shell.c:859
 msgid "Help Topics"
 msgstr "Témy pomocníka"
 
-#: ../src/ui/liferea_shell.c:813
+#: ../src/ui/liferea_shell.c:865
 msgid "Quick Reference"
 msgstr "Rýchla príručka"
 
-#: ../src/ui/liferea_shell.c:819
+#: ../src/ui/liferea_shell.c:871
 msgid "FAQ"
 msgstr "Často kladené otázky"
 
-#: ../src/ui/liferea_shell.c:1094
+#: ../src/ui/liferea_shell.c:1137
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Zlyhal príkaz prehliadača: %s"
 
-#: ../src/ui/popup_menu.c:102 ../glade/liferea_menu.ui.h:25
+#: ../src/ui/popup_menu.c:101 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:106 ../glade/liferea_menu.ui.h:26
+#: ../src/ui/popup_menu.c:105 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "_Zobraziť v prehliadači"
 
-#: ../src/ui/popup_menu.c:110 ../glade/liferea_menu.ui.h:27
+#: ../src/ui/popup_menu.c:109 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">Nastavenia vonkajšieho prehliadača</span>"
 
-#: ../src/ui/popup_menu.c:115
+#: ../src/ui/popup_menu.c:114
 msgid "Email The Author"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:140
+#: ../src/ui/popup_menu.c:139
 msgid "Copy to News Bin"
 msgstr "Kopírovať do archívu"
 
-#: ../src/ui/popup_menu.c:148
+#: ../src/ui/popup_menu.c:147
 #, fuzzy, c-format
 msgid "_Bookmark at %s"
 msgstr "_Záložkovať odkaz na %s"
 
-#: ../src/ui/popup_menu.c:154
+#: ../src/ui/popup_menu.c:153
 #, fuzzy
 msgid "Copy Item _Location"
 msgstr "_Kopírovať umiestnenie odkazu"
 
-#: ../src/ui/popup_menu.c:163 ../glade/liferea_menu.ui.h:22
+#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "Prepnúť stav p_rečítaný"
 
-#: ../src/ui/popup_menu.c:167 ../glade/liferea_menu.ui.h:23
+#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "Prepnúť _emblém článku"
 
-#: ../src/ui/popup_menu.c:171
+#: ../src/ui/popup_menu.c:170
 msgid "R_emove Item"
 msgstr "O_dstrániť článok"
 
-#: ../src/ui/popup_menu.c:200
-msgid "Open Enclosure..."
-msgstr "Otvoriť prílohu..."
-
-#: ../src/ui/popup_menu.c:201
-msgid "Save As..."
-msgstr "Uložiť ako..."
-
-#: ../src/ui/popup_menu.c:202
-msgid "Copy Link Location"
-msgstr "Kopírovať umiestnenie odkazu"
-
-#: ../src/ui/popup_menu.c:257
+#: ../src/ui/popup_menu.c:242
 msgid "Save items to file"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:262
+#: ../src/ui/popup_menu.c:247
 msgid "_Save"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:271
+#: ../src/ui/popup_menu.c:256
 msgid "RSS 2.0 files"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:277
+#: ../src/ui/popup_menu.c:262
 #, fuzzy
 msgid "All files"
 msgstr "_Miestny súbor"
 
-#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:13
+#: ../src/ui/popup_menu.c:338 ../glade/liferea_menu.ui.h:13
 msgid "_Update"
 msgstr "Akt_ualizovať"
 
-#: ../src/ui/popup_menu.c:355
+#: ../src/ui/popup_menu.c:340
 msgid "_Update Folder"
 msgstr "Akt_ualizovať priečinok"
 
-#: ../src/ui/popup_menu.c:365
+#: ../src/ui/popup_menu.c:350
 msgid "New _Subscription..."
 msgstr "Nové prihlá_senie..."
 
-#: ../src/ui/popup_menu.c:368 ../glade/liferea_menu.ui.h:5
+#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "Nový _priečinok..."
 
-#: ../src/ui/popup_menu.c:371 ../glade/liferea_menu.ui.h:6
+#: ../src/ui/popup_menu.c:356 ../glade/liferea_menu.ui.h:6
 msgid "New S_earch Folder..."
 msgstr "Nový priečinok _hľadania..."
 
-#: ../src/ui/popup_menu.c:372
+#: ../src/ui/popup_menu.c:357
 msgid "New S_ource..."
 msgstr "Nový zdr_oj..."
 
-#: ../src/ui/popup_menu.c:373 ../glade/liferea_menu.ui.h:8
+#: ../src/ui/popup_menu.c:358 ../glade/liferea_menu.ui.h:8
 msgid "New _News Bin..."
 msgstr "_Nový archív..."
 
-#: ../src/ui/popup_menu.c:376
+#: ../src/ui/popup_menu.c:361
 msgid "_New"
 msgstr "_Nový"
 
-#: ../src/ui/popup_menu.c:385
+#: ../src/ui/popup_menu.c:370
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "Importovať zoznam kanálov"
 
-#: ../src/ui/popup_menu.c:393
+#: ../src/ui/popup_menu.c:378
 msgid "_Mark All As Read"
 msgstr "_Označiť všetko ako prečítané"
 
-#: ../src/ui/popup_menu.c:395
+#: ../src/ui/popup_menu.c:380
 msgid "_Export Items To File"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:403
+#: ../src/ui/popup_menu.c:388
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:412 ../glade/liferea_menu.ui.h:17
+#: ../src/ui/popup_menu.c:397 ../glade/liferea_menu.ui.h:17
 msgid "_Properties"
 msgstr "_Vlastnosti"
 
-#: ../src/ui/popup_menu.c:419
+#: ../src/ui/popup_menu.c:404
 #, fuzzy
 msgid "Convert To Local Subscriptions..."
 msgstr "_Nové prihlásenie..."
 
-#: ../src/ui/preferences_dialog.c:84
+#: ../src/ui/preferences_dialog.c:82
 msgid "GNOME default"
 msgstr "GNOME predvolené"
 
-#: ../src/ui/preferences_dialog.c:85
+#: ../src/ui/preferences_dialog.c:83
 msgid "Text below icons"
 msgstr "Text pod ikonami"
 
-#: ../src/ui/preferences_dialog.c:86
+#: ../src/ui/preferences_dialog.c:84
 msgid "Text beside icons"
 msgstr "Text vedľa ikon"
 
-#: ../src/ui/preferences_dialog.c:87
+#: ../src/ui/preferences_dialog.c:85
 msgid "Icons only"
 msgstr "Len ikony"
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/preferences_dialog.c:86
 msgid "Text only"
 msgstr "Len text"
 
-#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:94 ../src/ui/subscription_dialog.c:43
 msgid "minutes"
 msgstr "minút"
 
-#: ../src/ui/preferences_dialog.c:97 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:95 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr "hodín"
 
-#: ../src/ui/preferences_dialog.c:98 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr "dní"
 
-#: ../src/ui/preferences_dialog.c:103
+#: ../src/ui/preferences_dialog.c:101
 msgid "Space"
 msgstr "Medzera"
 
-#: ../src/ui/preferences_dialog.c:104
+#: ../src/ui/preferences_dialog.c:102
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Medzera"
 
-#: ../src/ui/preferences_dialog.c:105
+#: ../src/ui/preferences_dialog.c:103
 msgid "<Alt> Space"
 msgstr "<Alt> Medzera"
 
-#: ../src/ui/preferences_dialog.c:110
+#: ../src/ui/preferences_dialog.c:108
 #, fuzzy
 msgid "Normal View"
 msgstr "_Normálny pohľad"
 
-#: ../src/ui/preferences_dialog.c:111
+#: ../src/ui/preferences_dialog.c:109
 #, fuzzy
 msgid "Wide View"
 msgstr "P_ohľad na šírku"
 
-#: ../src/ui/preferences_dialog.c:112
+#: ../src/ui/preferences_dialog.c:110
 msgid "Automatic"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:491
+#: ../src/ui/preferences_dialog.c:462
 #, fuzzy
 msgid "Default Browser"
 msgstr "Predvolený prehliadač GNOME"
 
-#: ../src/ui/preferences_dialog.c:493
+#: ../src/ui/preferences_dialog.c:464
 msgid "Manual"
 msgstr "Vlastný"
 
-#: ../src/ui/preferences_dialog.c:756
+#: ../src/ui/preferences_dialog.c:714
 msgid "Type"
 msgstr "Typ"
 
-#: ../src/ui/preferences_dialog.c:759
+#: ../src/ui/preferences_dialog.c:717
 msgid "Program"
 msgstr "Program"
 
-#: ../src/ui/rule_editor.c:257
+#: ../src/ui/rule_editor.c:261
 #, fuzzy
 msgid "Remove"
 msgstr "O_dstrániť"
@@ -1301,7 +1206,11 @@ msgstr "O_dstrániť"
 msgid "Saved Search"
 msgstr "Pokročilé hľadanie"
 
-#: ../src/ui/subscription_dialog.c:428
+#: ../src/ui/subscription_dialog.c:352
+msgid "Choose File"
+msgstr "Zvolte súbor"
+
+#: ../src/ui/subscription_dialog.c:424
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1313,7 +1222,7 @@ msgstr[1] ""
 msgstr[2] ""
 "Poskytovateľ tohto kanálu odporúča interval aktualizácie každé %d minúty."
 
-#: ../src/ui/subscription_dialog.c:432
+#: ../src/ui/subscription_dialog.c:428
 msgid "This feed specifies no default update interval."
 msgstr "Tento kanál nemá určený interval aktualizácie."
 
@@ -1420,11 +1329,11 @@ msgstr "Z_menšiť veľkosť textu"
 msgid "_Reader Mode"
 msgstr ""
 
-#: ../src/xml.c:426
+#: ../src/xml.c:427
 msgid "[There were more errors. Output was truncated!]"
 msgstr "[Je tu viac chýb. Výstup bol skrátený!]"
 
-#: ../src/xml.c:594
+#: ../src/xml.c:595
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML parser: Nemohol byť parsovaný dokument:\n"
 
@@ -1456,34 +1365,6 @@ msgstr "Používateľské me_no:"
 #: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
 msgid "_Password:"
 msgstr "_Heslo:"
-
-#: ../glade/enclosure_handler.ui.h:1
-#, fuzzy
-msgid "Open Enclosure"
-msgstr "Otvoriť prílohu..."
-
-#: ../glade/enclosure_handler.ui.h:2
-#, fuzzy
-msgid "Open an enclosure of type:"
-msgstr "Sťaahuje sa príloha typu:"
-
-#: ../glade/enclosure_handler.ui.h:3
-#, fuzzy
-msgid ""
-"_What should Liferea do with this enclosure? Please enter the command you "
-"want to be executed below. The enclosures URL will be supplied as an "
-"argument for this command:"
-msgstr ""
-"Čo má robiť Liferea s prílohami? Prosím, zadajte dolu príkaz, ktorý chcete "
-"aby sa vykonal. Stiahnuté prílohy budú predané ako argument pre tento príkaz."
-
-#: ../glade/enclosure_handler.ui.h:4
-msgid "_Browse"
-msgstr "P_rehliadať"
-
-#: ../glade/enclosure_handler.ui.h:5
-msgid "_Do this automatically for enclosures like this from now on."
-msgstr "O_dteraz to robiť automaticky pre prílohy ako táto."
 
 #: ../glade/google_source.ui.h:1
 #, fuzzy
@@ -1986,61 +1867,60 @@ msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">Nastavenia zobrazenia priečinkov</span>"
 
 #: ../glade/prefs.ui.h:52
-msgid "Tell sites that I do _not want to be tracked."
+msgid "Tell websites that I do _not want to be tracked."
 msgstr ""
 
 #: ../glade/prefs.ui.h:53
-msgid "_Intelligent Tracking Prevention. "
+msgid "Tell websites not to _sell or share my data."
 msgstr ""
 
 #: ../glade/prefs.ui.h:54
+msgid "_Intelligent Tracking Prevention. "
+msgstr ""
+
+#: ../glade/prefs.ui.h:55
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
 
-#: ../glade/prefs.ui.h:55
+#: ../glade/prefs.ui.h:56
 msgid ""
 "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
 "higher."
 msgstr ""
 
-#: ../glade/prefs.ui.h:56
+#: ../glade/prefs.ui.h:57
 msgid "Use _Reader mode."
 msgstr ""
 
-#: ../glade/prefs.ui.h:57
+#: ../glade/prefs.ui.h:58
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/prefs.ui.h:59
-#, fuzzy
-msgid "Downloading Enclosures"
-msgstr "Sťahuje sa príloha"
-
 #: ../glade/prefs.ui.h:60
+#, fuzzy
+msgid "Downloading Content"
+msgstr "<b>Prebieha sťahovanie</b>"
+
+#: ../glade/prefs.ui.h:61
 msgid "_Download using"
 msgstr "_Stiahnuť použitím"
 
-#: ../glade/prefs.ui.h:62
+#: ../glade/prefs.ui.h:63
 #, no-c-format
 msgid "custom-command %s"
 msgstr ""
 
-#: ../glade/prefs.ui.h:63
-#, fuzzy
-msgid "Opening Enclosures"
-msgstr "Otvoriť prílohu..."
-
-#: ../glade/prefs.ui.h:64
-msgid "Enclosures"
-msgstr "Prílohy"
+#: ../glade/prefs.ui.h:64 ../glade/properties.ui.h:33
+msgid "Download"
+msgstr "Sťahovanie"
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
@@ -2121,10 +2001,6 @@ msgstr "Archivácia"
 #: ../glade/properties.ui.h:29
 msgid "Use HTTP _authentication"
 msgstr "Použiť HTTP ov_erenie"
-
-#: ../glade/properties.ui.h:33
-msgid "Download"
-msgstr "Sťahovanie"
 
 #: ../glade/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
@@ -2477,6 +2353,105 @@ msgstr ""
 msgid "Search Folder:"
 msgstr "Priečinok hľadania:"
 
+#~ msgid "Unable to resolve destination host name"
+#~ msgstr "Nepodarilo sa preložiť názov cieľového hostiteľa"
+
+#~ msgid "Unable to resolve proxy host name"
+#~ msgstr "Nepodarilo sa preložiť názov proxy hostiteľa"
+
+#~ msgid "Unable to connect to remote host"
+#~ msgstr "Nepodarilo sa pripojiť k vzdialenému hostiteľovi"
+
+#~ msgid "Unable to connect to proxy"
+#~ msgstr "Nepodarilo sa pripojiť k proxy"
+
+#~ msgid "There was an internal error in the update process"
+#~ msgstr "Bola tu vnútorná chyba v aktualizačnom procese"
+
+#~ msgid "Feed not available: Server requested unsupported redirection!"
+#~ msgstr ""
+#~ "Kanál nie je dostupný: Server požadoval nepodporované presmerovanie!"
+
+#~ msgid "Client Error"
+#~ msgstr "Chyba klienta"
+
+#~ msgid "Server Error"
+#~ msgstr "Chyba serveru"
+
+#~ msgid "Attachments"
+#~ msgstr "Prílohy"
+
+#~ msgid " Bytes"
+#~ msgstr " Bajtov"
+
+#~ msgid "kB"
+#~ msgstr "kB"
+
+#~ msgid "MB"
+#~ msgstr "MB"
+
+#~ msgid "GB"
+#~ msgstr "GB"
+
+#, c-format
+#~ msgid "%d%s"
+#~ msgstr "%d%s"
+
+#, c-format
+#~ msgid "%d attachment"
+#~ msgid_plural "%d attachments"
+#~ msgstr[0] "%d príloh"
+#~ msgstr[1] "%d príloha"
+#~ msgstr[2] "%d prílohy"
+
+#, fuzzy, c-format
+#~ msgid "File Extension .%s"
+#~ msgstr "<b>Súbor rozšírenia .%s</b>"
+
+#~ msgid "Open Enclosure..."
+#~ msgstr "Otvoriť prílohu..."
+
+#~ msgid "Save As..."
+#~ msgstr "Uložiť ako..."
+
+#~ msgid "Copy Link Location"
+#~ msgstr "Kopírovať umiestnenie odkazu"
+
+#, fuzzy
+#~ msgid "Open Enclosure"
+#~ msgstr "Otvoriť prílohu..."
+
+#, fuzzy
+#~ msgid "Open an enclosure of type:"
+#~ msgstr "Sťaahuje sa príloha typu:"
+
+#, fuzzy
+#~ msgid ""
+#~ "_What should Liferea do with this enclosure? Please enter the command you "
+#~ "want to be executed below. The enclosures URL will be supplied as an "
+#~ "argument for this command:"
+#~ msgstr ""
+#~ "Čo má robiť Liferea s prílohami? Prosím, zadajte dolu príkaz, ktorý "
+#~ "chcete aby sa vykonal. Stiahnuté prílohy budú predané ako argument pre "
+#~ "tento príkaz."
+
+#~ msgid "_Browse"
+#~ msgstr "P_rehliadať"
+
+#~ msgid "_Do this automatically for enclosures like this from now on."
+#~ msgstr "O_dteraz to robiť automaticky pre prílohy ako táto."
+
+#, fuzzy
+#~ msgid "Downloading Enclosures"
+#~ msgstr "Sťahuje sa príloha"
+
+#, fuzzy
+#~ msgid "Opening Enclosures"
+#~ msgstr "Otvoriť prílohu..."
+
+#~ msgid "Enclosures"
+#~ msgstr "Prílohy"
+
 #~ msgid "Print debugging messages when a function takes too long to process"
 #~ msgstr "Vypíše správy ladenia keď spracovanie funkcie trvá dlho"
 
@@ -2767,9 +2742,6 @@ msgstr "Priečinok hľadania:"
 
 #~ msgid "Maximal _Number Of Result Items:"
 #~ msgstr "Maximálny počet výsledných článkov:"
-
-#~ msgid "Liferea is now online"
-#~ msgstr "Liferea je teraz pripojená"
 
 #~ msgid "Work Offline"
 #~ msgstr "Pracovať ako odpojený"
