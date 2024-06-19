@@ -40,8 +40,8 @@ gchar *tc_rss_feed1[] = {
 	"<rss version=\"2.0\"><channel><title>T</title><link>http://localhost</link><item><title>i1</title><link>http://localhost/item1.html</link><description>D</description></item><item><title>i2</title><link>https://localhost/item2.html</link></item></channel></rss>",
 	"true",
 	"2",
-	"<item><title>i1</title><description>&lt;div xmlns=\"http://www.w3.org/1999/xhtml\"&gt;&lt;p&gt;D&lt;/p&gt;&lt;/div&gt;</description><source>http://localhost/item1.html</source><nr>0</nr><readStatus>0</readStatus><updateStatus>0</updateStatus><mark>0</mark><time>1678397817</time><sourceId/><sourceNr>0</sourceNr><attributes/></item>",
-	"<item><title>i2</title><source>https://localhost/item2.html</source><nr>0</nr><readStatus>0</readStatus><updateStatus>0</updateStatus><mark>0</mark><time>1678397817</time><sourceId/><sourceNr>0</sourceNr><attributes/></item>",
+	"<item><title>i1</title><description>&lt;div xmlns=\"http://www.w3.org/1999/xhtml\"&gt;&lt;p&gt;D&lt;/p&gt;&lt;/div&gt;</description><source>http://localhost/item1.html</source><nr>0</nr><readStatus>0</readStatus><updateStatus>0</updateStatus><mark>0</mark><time>1678397817</time><enclosures/><sourceId/><sourceNr>0</sourceNr><attributes/></item>",
+	"<item><title>i2</title><source>https://localhost/item2.html</source><nr>0</nr><readStatus>0</readStatus><updateStatus>0</updateStatus><mark>0</mark><time>1678397817</time><enclosures/><sourceId/><sourceNr>0</sourceNr><attributes/></item>",
 	NULL
 };
 
@@ -51,7 +51,7 @@ gchar *tc_rss_feed2_rce[] = {
 	"<rss version=\"2.0\"><channel><title>T</title><item><title>i1</title><link>|date >/tmp/bad-item-link.txt</link></item></channel></rss>",
 	"true",
 	"1",
-	"<item><title>i1</title><nr>0</nr><readStatus>0</readStatus><updateStatus>0</updateStatus><mark>0</mark><time>1678397817</time><sourceId/><sourceNr>0</sourceNr><attributes/></item>",
+	"<item><title>i1</title><nr>0</nr><readStatus>0</readStatus><updateStatus>0</updateStatus><mark>0</mark><time>1678397817</time><enclosures/><sourceId/><sourceNr>0</sourceNr><attributes/></item>",
 	NULL
 };
 
