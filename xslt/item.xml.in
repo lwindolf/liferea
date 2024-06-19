@@ -5,7 +5,7 @@
  * Rendering stylesheet for Liferea (item view: item rendering)
  *
  * Copyright (C) 2009-2019 Mikel Olasagasti Uranga <mikel@olasagasti.info>
- * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -297,6 +297,30 @@
 
 <!-- all content below is not subject to Readability.js, this is intentional and prevents
      unintended stripping -->
+
+<!-- embed suitable enclosures -->
+<xsl:for-each select="enclosures/enclosure[contains(@mime, 'audio/')]">
+  <div class='content enclosureAudio'>
+    <xsl:element name="audio">
+      <xsl:attribute name="class">enclosure</xsl:attribute>
+      <xsl:attribute name="controls">controls</xsl:attribute>
+      <xsl:attribute name="preload">none</xsl:attribute>
+      <xsl:attribute name="src"><xsl:value-of select="@url"/></xsl:attribute>
+    </xsl:element>
+  </div>
+</xsl:for-each>
+
+<xsl:for-each select="enclosures/enclosure[contains(@mime, 'video/')]">
+  <div class='content enclosureVideo'>
+    <xsl:element name="video">
+      <xsl:attribute name="class">enclosure</xsl:attribute>
+      <xsl:attribute name="controls">controls</xsl:attribute>
+      <xsl:attribute name="preload">none</xsl:attribute>
+      <xsl:attribute name="src"><xsl:value-of select="@url"/></xsl:attribute>
+    </xsl:element>
+  </div>
+</xsl:for-each>
+
 
 <!-- optional YouTube embed -->
 <xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>

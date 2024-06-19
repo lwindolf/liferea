@@ -312,6 +312,15 @@ div.photoheader {
 	fill: #ddd;
 }
 
+div.enclosureVideo video {
+	background: black;
+	min-width: 640px;
+	min-height: 480px;
+	max-width: 100%;
+        height: auto;
+        display: block;
+}
+
 // dark mode image glaring #1303 
 @media (prefers-color-scheme: dark) {
   img {

@@ -66,7 +66,6 @@ static gboolean typesLoaded = FALSE;
       "enc:1:x-application/pdf::https://secret.site.us/defense-plan.pdf"      
   */
       
-
 enclosurePtr
 enclosure_from_string (const gchar *str)
 {

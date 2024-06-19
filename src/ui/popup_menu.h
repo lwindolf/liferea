@@ -1,7 +1,7 @@
 /**
  * @file popup_menu.h popup menus
  *
- * Copyright (C) 2003-2011 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
  *
@@ -26,7 +26,6 @@
 #include <gtk/gtk.h>
 
 #include "item.h"
-#include "enclosure.h"
 
 /**
  * Shows a popup menu with options for the item list and the
@@ -37,15 +36,6 @@
  * @param event The event that triggered the popup
  */
 void ui_popup_item_menu (itemPtr item, const GdkEvent *event);
-
-/**
- * Shows a popup menu for the enclosure list view.
- * (Save As, Open With...)
- *
- * @param enclosure	the enclosure
- * @param event		the event that triggered the popup
- */
-void ui_popup_enclosure_menu (enclosurePtr enclosure, const GdkEvent *event);
 
 /* GUI callbacks */
 

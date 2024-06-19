@@ -2,7 +2,7 @@
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -999,13 +999,6 @@ liferea_shell_setup_URL_receiver (void)
 	                  G_CALLBACK (liferea_shell_URL_received), NULL);
 }
 
-static void
-on_action_open_enclosure (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	LifereaShell *shell = LIFEREA_SHELL (user_data);
-	itemview_open_next_enclosure (shell->itemview);
-}
-
 static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"update-all", on_menu_update_all, NULL, NULL, NULL},
 	{"mark-all-feeds-read", on_action_mark_all_read, NULL, NULL, NULL},
@@ -1036,8 +1029,7 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"remove-item", on_action_remove_item, "t", NULL, NULL},
 	{"launch-item-in-tab", on_action_launch_item_in_tab, "t", NULL, NULL},
 	{"launch-item-in-browser", on_action_launch_item_in_browser, "t", NULL, NULL},
-	{"launch-item-in-external-browser", on_action_launch_item_in_external_browser, "t", NULL, NULL},
-	{"open-item-enclosure", on_action_open_enclosure, "t", NULL, NULL},
+	{"launch-item-in-external-browser", on_action_launch_item_in_external_browser, "t", NULL, NULL}
 };
 
 static const GActionEntry liferea_shell_add_gaction_entries[] = {
@@ -1064,8 +1056,7 @@ static const GActionEntry liferea_shell_item_gaction_entries[] = {
 	{"remove-selected-item", on_action_remove_item, NULL, NULL, NULL},
 	{"launch-selected-item-in-tab", on_action_launch_item_in_tab, NULL, NULL, NULL},
 	{"launch-selected-item-in-browser", on_action_launch_item_in_browser, NULL, NULL, NULL},
-	{"launch-selected-item-in-external-browser", on_action_launch_item_in_external_browser, NULL, NULL, NULL},
-	{"open-selected-item-enclosure", on_action_open_enclosure, NULL, NULL, NULL}
+	{"launch-selected-item-in-external-browser", on_action_launch_item_in_external_browser, NULL, NULL, NULL}
 };
 
 static void
@@ -1283,7 +1274,6 @@ static const gchar * liferea_accels_zoom_out[] = {"<Control>minus", NULL};
 static const gchar * liferea_accels_zoom_reset[] = {"<Control>0", NULL};
 static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
 static const gchar * liferea_accels_show_help_contents[] = {"F1", NULL};
-static const gchar * liferea_accels_open_selected_item_enclosure[] = {"<Control>o", NULL};
 static const gchar * liferea_accels_launch_item_in_external_browser[] = {"<Control>d", NULL};
 
 void
@@ -1355,7 +1345,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_application_set_accels_for_action (app, "app.zoom-reset", liferea_accels_zoom_reset);
 	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
 	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help_contents);
-	gtk_application_set_accels_for_action (app, "app.open-selected-item-enclosure", liferea_accels_open_selected_item_enclosure);
 	gtk_application_set_accels_for_action (app, "app.launch-item-in-external-browser", liferea_accels_launch_item_in_external_browser);
 
 	/* Toolbar */

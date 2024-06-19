@@ -5,6 +5,9 @@ To be released
 	* Add Sec-GPC header support via new preference to prevent user data selling.
 	  (Lars Windolf)
 
+	* Drop enclosure list view in favour of embedded HTML5 <audio> and <video> elements
+	  (Lars Windolf)
+
 
 2024-03-14  Lars Windolf <lars.windolf@gmx.de>
 

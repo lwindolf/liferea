@@ -2,7 +2,7 @@
  * @file preferences_dialog.c Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,13 +30,11 @@
 
 #include "common.h"
 #include "conf.h"
-#include "enclosure.h"
 #include "favicon.h"
 #include "feedlist.h"
 #include "folder.h"
 #include "itemlist.h"
 #include "social.h"
-#include "ui/enclosure_list_view.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -399,39 +397,6 @@ on_enclosure_download_custom_command_changed (GtkEditable *entry, gpointer user_
 }
 
 void
-on_enc_action_change_btn_clicked (GtkButton *button, gpointer user_data)
-{
-	GtkTreeModel		*model;
-	GtkTreeSelection	*selection;
-	GtkTreeIter		iter;
-	gpointer		type;
-
-	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (liferea_dialog_lookup (prefdialog->dialog, "enc_action_view")));
-	if(gtk_tree_selection_get_selected (selection, &model, &iter)) {
-		gtk_tree_model_get (model, &iter, FTS_PTR, &type, -1);
-		ui_enclosure_change_type (type);
-		gtk_tree_store_set (GTK_TREE_STORE (model), &iter,
-		                    FTS_CMD, ((encTypePtr)type)->cmd, -1);
-	}
-}
-
-void
-on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data)
-{
-	GtkTreeModel		*model;
-	GtkTreeSelection	*selection;
-	GtkTreeIter		iter;
-	gpointer		type;
-
-	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (liferea_dialog_lookup (prefdialog->dialog, "enc_action_view")));
-	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-		gtk_tree_model_get (model, &iter, FTS_PTR, &type, -1);
-		gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
-		enclosure_mime_type_remove (type);
-	}
-}
-
-void
 on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	conf_set_bool_value (DISABLE_TOOLBAR, gtk_toggle_button_get_active (button));
@@ -745,23 +710,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	widget = liferea_dialog_lookup (pd->dialog, "customDownloadEntry");
 	gtk_entry_set_text (GTK_ENTRY (widget), custom_download_command);
 	g_free (custom_download_command);
-
-	/* set up list of configured enclosure types */
-	treestore = gtk_tree_store_new (FTS_LEN, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER);
-	list = (GSList *)enclosure_mime_types_get ();
-	while (list) {
-		GtkTreeIter *newIter = g_new0 (GtkTreeIter, 1);
-		gtk_tree_store_append (treestore, newIter, NULL);
-		gtk_tree_store_set (treestore, newIter,
-	                	    FTS_TYPE, (NULL != ((encTypePtr)(list->data))->mime)?((encTypePtr)(list->data))->mime:((encTypePtr)(list->data))->extension,
-	                	    FTS_CMD, ((encTypePtr)(list->data))->cmd,
-	                	    FTS_PTR, list->data,
-				    -1);
-		list = g_slist_next (list);
-	}
-
-	widget = liferea_dialog_lookup (pd->dialog, "enc_action_view");
-	gtk_tree_view_set_model (GTK_TREE_VIEW (widget), GTK_TREE_MODEL (treestore));
 
 	column = gtk_tree_view_column_new_with_attributes (_("Type"), gtk_cell_renderer_text_new (), "text", FTS_TYPE, NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (widget), column);

@@ -29,6 +29,7 @@
 #include "date.h"
 #include "db.h"
 #include "debug.h"
+#include "enclosure.h"
 #include "feedlist.h"
 #include "metadata.h"
 #include "render.h"
@@ -258,9 +259,10 @@ void
 item_to_xml (LifereaItem *item, gpointer xmlNode)
 {
 	xmlNodePtr	parentNode = (xmlNodePtr)xmlNode;
-	xmlNodePtr	duplicatesNode;
+	xmlNodePtr	groupNode;
 	xmlNodePtr	itemNode;
 	gchar		*tmp;
+	GSList		*list;
 
 	itemNode = xmlNewChild (parentNode, NULL, BAD_CAST "item", NULL);
 	g_return_if_fail (itemNode);
@@ -310,7 +312,7 @@ item_to_xml (LifereaItem *item, gpointer xmlNode)
 	if (item->validGuid) {
 		GSList	*iter, *duplicates;
 
-		duplicatesNode = xmlNewChild(itemNode, NULL, BAD_CAST "duplicates", NULL);
+		groupNode = xmlNewChild(itemNode, NULL, BAD_CAST "duplicates", NULL);
 		duplicates = iter = db_item_get_duplicates(item->sourceId);
 		while (iter) {
 			gulong id = GPOINTER_TO_UINT (iter->data);
@@ -318,12 +320,25 @@ item_to_xml (LifereaItem *item, gpointer xmlNode)
 			if (duplicate) {
 				nodePtr duplicateNode = node_from_id (duplicate->nodeId);
 				if (duplicateNode && (item->id != duplicate->id))
-					xmlNewTextChild (duplicatesNode, NULL, BAD_CAST "duplicateNode", BAD_CAST node_get_title (duplicateNode));
+					xmlNewTextChild (groupNode, NULL, BAD_CAST "duplicateNode", BAD_CAST node_get_title (duplicateNode));
 				item_unload (duplicate);
 			}
 			iter = g_slist_next (iter);
 		}
 		g_slist_free (duplicates);
+	}
+
+	groupNode = xmlNewChild(itemNode, NULL, BAD_CAST "enclosures", NULL);
+	list = metadata_list_get_values (item->metadata, "enclosure");
+	while (list) {
+		enclosurePtr enclosure = enclosure_from_string (list->data);
+		if (enclosure) {
+			xmlNodePtr enclosureNode = xmlNewChild (groupNode, NULL, BAD_CAST "enclosure", NULL);
+			xmlNewProp (enclosureNode, BAD_CAST "url", BAD_CAST enclosure->url);
+			xmlNewProp (enclosureNode, BAD_CAST "mime", BAD_CAST enclosure->mime);
+		}
+
+		list = g_slist_next (list);
 	}
 
 	xmlNewTextChild (itemNode, NULL, BAD_CAST "sourceId", BAD_CAST item->nodeId);
