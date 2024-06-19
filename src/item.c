@@ -199,12 +199,12 @@ item_get_teaser (LifereaItem *item)
 			*last_space = 0;
 			teaser = tmpDesc;
 		}
+	} else {
+		teaser = tmpDesc;
 	}
 
-	if (!teaser)
-		return NULL;
-
-	teaser = g_strstrip (g_markup_escape_text (teaser, -1));
+	if (teaser)
+		teaser = g_strstrip (g_markup_escape_text (teaser, -1));
 
 	g_free (input);
 	g_free (tmpDesc);

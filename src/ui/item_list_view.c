@@ -464,9 +464,10 @@ static void
 item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIter *iter, nodePtr node)
 {
 	GtkTreeStore	*itemstore;
-	gchar		*title, *time_str;
+	gchar		*title, *time_str, *tmp = NULL;
 	const GIcon	*state_icon;
 	gint		state = 0;
+	gboolean	noTitle = FALSE;
         int fontWeight = PANGO_WEIGHT_BOLD;
 
 	if (item->flagStatus)
@@ -476,14 +477,24 @@ item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIte
 
 	time_str = (0 != item->time) ? date_format ((time_t)item->time, NULL) : g_strdup ("");
 
-	title = item->title && strlen (item->title) ? item->title : _("*** No title ***");
-	title = g_strstrip (g_markup_escape_text (title, -1));
+	if(item->title && strlen (item->title)) {
+		title = item->title;
+		title = g_strstrip (g_markup_escape_text (title, -1));
+	} else {
+		// when there is no title use the teaser
+		tmp = item_get_teaser (item);
+		title = g_strdup_printf("%s…", tmp);
+		g_free (tmp);
+		noTitle = TRUE;
+	}
 
 	if (ilv->wideView) {
 		const gchar *important = _(" <span background='red' color='black'> important </span> ");
-		gchar *teaser = item_get_teaser (item);
-		gchar *tmp = title;
+		gchar *teaser = NULL;
+		if(!noTitle)
+			teaser = item_get_teaser (item);
 
+		tmp = title;
 		title = g_strdup_printf ("<span weight='%s' size='larger'>%s</span>%s\n<span weight='%s'>%s%s</span><span size='smaller' weight='ultralight'> — %s</span>",
 		                         item->readStatus?"normal":"ultrabold",
 		                         title,
