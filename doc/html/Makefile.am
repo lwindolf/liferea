@@ -8,7 +8,6 @@ html_doc_en =	about_en.html \
 		subscriptions_en.html \
 		topics_en.html \
 		updating_en.html \
-		enclosures_en.html \
 		newsbin_en.html \
 		onlineservices_en.html \
 		faq_en.html
@@ -23,7 +22,6 @@ html_doc_de =	about_de.html \
 		subscriptions_de.html \
 		topics_de.html \
 		updating_de.html \
-		enclosures_de.html \
 		newsbin_de.html \
 		onlineservices_de.html \
 		faq_de.html
@@ -38,7 +36,6 @@ html_doc_it =	about_it.html \
 		subscriptions_it.html \
 		topics_it.html \
 		updating_it.html \
-		enclosures_it.html \
 		newsbin_it.html \
 		onlineservices_it.html \
 		faq_it.html
@@ -53,7 +50,6 @@ html_doc_ru =	about_ru.html \
 		subscriptions_ru.html \
 		topics_ru.html \
 		updating_ru.html \
-		enclosures_ru.html \
 		newsbin_ru.html \
 		onlineservices_ru.html \
 		faq_ru.html
@@ -71,7 +67,7 @@ html_doc_pictures_en =	help_feed_default.png \
 			help_item_flag.png \
 			help_item_unread.png \
 			help_prefs_browser_1.14.0.png \
-			help_prefs_enclosures_1.14.0.png \
+			help_prefs_download_1.16.0.png \
 			help_prefs_feeds_1.14.0.png \
 			help_prefs_folders_1.14.0.png \
 			help_prefs_desktop_1.14.0.png \
