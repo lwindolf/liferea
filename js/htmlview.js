@@ -99,6 +99,11 @@ function loadContent(readerEnabled, content) {
 				for (var s of styles) {
 					s.parentNode.removeChild(s);
 				}
+
+				var article = new Readability(documentClone, {
+					charThreshold: 25
+				}).parse();
+
 				if (!article)
 					throw "noarticle";
 
