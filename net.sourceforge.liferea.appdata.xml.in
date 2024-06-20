@@ -77,6 +77,27 @@
     <color type="primary" scheme_preference="dark">#64647D</color>
   </branding>
   <releases>
+    <release date="2024-06-20" version="1.15.7">
+      <description>
+        <p>This is a release introducing some changes. First there is a new privacy setting you can
+        enable: additionally to Do-Not-Track Liferea now supports the Do-Not-Sell user data setting.</p>
+        <p>There is a major change to the enclosure (media attachments) handling. The build in media player
+        working on a "attachment" style list view under the item content was removed. Now enclosures
+        are added via HTML audio and video tags below the item content. The idea is to play those
+        purely with WebkitGTK support. Downloading is still supported by right clicking on those tags.</p>
+        <p>Finally a long standing issue was improved: when a feed does not provide item titles Liferea now
+        uses a teaser of the item content as the title. This for example fixes the usability of Mastodon feeds.</p>
+        <p>Changes:</p>
+        <ul>
+          <li>Add Sec-GPC header support via new preference to prevent user data selling (Lars Windolf)</li>
+          <li>Drop enclosure list view in favour of embedded HTML5 audio and video elements (Lars Windolf)</li>
+          <li>Fixes #1332: Improve "*** No title! ***" for items without title (Lars Windolf)</li>
+          <li>Update appdata for 1.15.6 by (bbhtt)</li>
+          <li>appdata: Update screenshot captions and remove dead link by (bbhtt)</li>
+          <li>Allow building with libsoup 3.0.7 by (ittner)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2024-03-15" version="1.15.6">
       <description>
         <p>This is a small bugfix release with several translation updates and optimizations for better handling HTML content.</p>
