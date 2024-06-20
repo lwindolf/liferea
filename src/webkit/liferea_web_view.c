@@ -604,7 +604,7 @@ liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event
 				isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
 							G_OBJECT(view), "fullscreen_on"));
 				if (isFullscreen == TRUE) {
-					webkit_web_view_run_javascript (view, "document.webkitExitFullscreen();", NULL, NULL, NULL);
+					webkit_web_view_evaluate_javascript (view, "document.webkitExitFullscreen();", -1, NULL, NULL, NULL, NULL, NULL);
 				}
 				break;
 			}
@@ -695,11 +695,11 @@ liferea_web_view_init(LifereaWebView *self)
 }
 
 static void
-scroll_pagedown_callback (GObject *source_object, GAsyncResult *res, gpointer user_data)
+liferea_web_view_scroll_pagedown_callback (GObject *source_object, GAsyncResult *res, gpointer user_data)
 {
 	GVariant 	*result = NULL;
 	GError 		*error = NULL;
-	gboolean 	scrolled;
+	gchar		*output = NULL;
 
 	result = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object), res, &error);
 
@@ -709,31 +709,45 @@ scroll_pagedown_callback (GObject *source_object, GAsyncResult *res, gpointer us
 		return;
         }
 
-	g_variant_get (result, "(b)", &scrolled);
+	g_variant_get (result, "(s)", &output);
 
-	if (!scrolled) {
+	if (g_str_equal(output, "false"))
 		on_next_unread_item_activate (NULL, NULL, NULL);
-	}
+
+	g_free (output);
 }
 
 void
 liferea_web_view_scroll_pagedown (LifereaWebView *self)
 {
-	if (!self->dbus_connection) return;
+	gchar *cmd = "\
+		window.scrollTo({top: window.pageYOffset + window.innerHeight, behavior: 'smooth'}); \
+		doc = document.documentElement; \
+		console.log(window.pageYOffset); \
+		console.log(doc.scrollHeight - (doc.scrollTop + doc.clientHeight) > 0); \
+		doc.scrollHeight - (doc.scrollTop + doc.clientHeight) > 0; \
+	";
 
+	if (!self->dbus_connection)
+		return;
 
 	g_dbus_connection_call (self->dbus_connection,
 		 LIFEREA_WEB_EXTENSION_BUS_NAME,
 		 LIFEREA_WEB_EXTENSION_OBJECT_PATH,
 		 LIFEREA_WEB_EXTENSION_INTERFACE_NAME,
-		"ScrollPageDown",
-		g_variant_new ("(t)", webkit_web_view_get_page_id (WEBKIT_WEB_VIEW (self))),
-		((const GVariantType *) "(b)"),
+		"EvalJs",
+		g_variant_new (
+			"(ts)",
+			webkit_web_view_get_page_id (WEBKIT_WEB_VIEW (self)),
+			cmd
+		),
+		((const GVariantType *) "(s)"),
 		G_DBUS_CALL_FLAGS_NONE,
 		-1, /* Default timeout */
 		NULL,
-		scroll_pagedown_callback,
-		NULL);
+		liferea_web_view_scroll_pagedown_callback,
+		NULL
+	);
 }
 
 void

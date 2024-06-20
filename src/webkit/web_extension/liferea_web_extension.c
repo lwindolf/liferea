@@ -1,7 +1,8 @@
 /**
  * @file liferea_web_extension.c  Control WebKit2 via DBUS from Liferea
  *
- * Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
+ *   Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
+ *   Copyright (C) 2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,8 +20,7 @@
  */
 
 #include <webkit2/webkit-web-extension.h>
-#define WEBKIT_DOM_USE_UNSTABLE_API
-#include <webkitdom/WebKitDOMDOMWindowUnstable.h>
+#include <JavaScriptCore/JavaScript.h>
 
 #include "liferea_web_extension.h"
 #include "liferea_web_extension_names.h"
@@ -45,9 +45,14 @@ G_DEFINE_TYPE (LifereaWebExtension, liferea_web_extension, G_TYPE_OBJECT)
 static const char introspection_xml[] =
   "<node>"
   " <interface name='net.sf.liferea.WebExtension'>"
-  "  <method name='ScrollPageDown'>"
+  "  <method name='EvalJs'>"
   "   <arg type='t' name='page_id' direction='in'/>"
-  "   <arg type='b' name='scrolled' direction='out'/>"
+  "   <arg type='s' name='js' direction='in'/>"
+  "   <arg type='s' name='result' direction='out'/>"
+  "  </method>"
+  "  <method name='EvalJsNoResult'>"
+  "   <arg type='t' name='page_id' direction='in'/>"
+  "   <arg type='s' name='js' direction='in'/>"
   "  </method>"
   "  <signal name='PageCreated'>"
   "   <arg type='t' name='page_id' direction='out'/>"
@@ -80,39 +85,6 @@ liferea_web_extension_init (LifereaWebExtension *self)
 	self->pending_pages_created = NULL;
 	self->initialized = FALSE;
 	self->liferea_settings = g_settings_new ("net.sf.liferea");
-}
-
-static WebKitDOMDOMWindow*
-liferea_web_extension_get_dom_window (LifereaWebExtension *self, guint64 page_id)
-{
-	WebKitWebPage *page;
-	WebKitDOMDocument *document;
-	WebKitDOMDOMWindow *window;
-
-	page = webkit_web_extension_get_page (self->webkit_extension, page_id);
-	document = webkit_web_page_get_dom_document (page);
-	window = webkit_dom_document_get_default_view (document);
-
-	return window;
-}
-
-/*
- * \returns TRUE if scrolling happened, FALSE if the end was reached
- */
-static gboolean
-liferea_web_extension_scroll_page_down (LifereaWebExtension *self, guint64 page_id)
-{
-	glong old_scroll_y, new_scroll_y, increment;
-	WebKitDOMDOMWindow *window;
-
-	window = liferea_web_extension_get_dom_window (self, page_id);
-
-	old_scroll_y = webkit_dom_dom_window_get_scroll_y (window);
-	increment = webkit_dom_dom_window_get_inner_height (window);
-	webkit_dom_dom_window_scroll_by (window, 0, increment);
-	new_scroll_y = webkit_dom_dom_window_get_scroll_y (window);
-
-	return (new_scroll_y > old_scroll_y);
 }
 
 static gboolean
@@ -153,13 +125,41 @@ handle_dbus_method_call (GDBusConnection 	*connection,
 			 GDBusMethodInvocation 	*invocation,
 			 gpointer 		user_data)
 {
-	if (g_strcmp0 (method_name, "ScrollPageDown") == 0) {
-		guint64 page_id;
-		gboolean scrolled;
+	guint64		page_id;
+	WebKitWebPage	*page;
 
-		g_variant_get (parameters, "(t)", &page_id);
-		scrolled = liferea_web_extension_scroll_page_down (LIFEREA_WEB_EXTENSION (user_data), page_id);
-		g_dbus_method_invocation_return_value (invocation, g_variant_new ("(b)", scrolled));
+	// We only implement a generic callbacks 'EvalJs' and 'EvalJsNoResult' which should 
+	// be used to run all everything we might need through Javascript...
+
+	// EvalJs handling inspired by https://github.com/fanglingsu/vimb
+	if (g_strcmp0 (method_name, "EvalJs") == 0) {
+		gchar *script;
+		JSCValue *result = NULL;
+		JSCContext *jsContext;
+
+		g_variant_get(parameters, "(ts)", &page_id, &script);
+
+		page = webkit_web_extension_get_page(LIFEREA_WEB_EXTENSION (user_data)->webkit_extension, page_id);
+		if (!page) {
+        		g_warning ("invalid page id %lu", page_id);
+        		g_dbus_method_invocation_return_error(invocation, G_DBUS_ERROR,
+                	        G_DBUS_ERROR_INVALID_ARGS, "Invalid page ID: %"G_GUINT64_FORMAT, page_id);
+			return;
+    		}
+
+		jsContext = webkit_frame_get_js_context_for_script_world (
+			webkit_web_page_get_main_frame (page),
+			webkit_script_world_get_default ()
+		);
+
+		result = jsc_context_evaluate (jsContext, script, -1);
+		if (!g_strcmp0 (method_name, "EvalJsNoResult")) {
+			g_dbus_method_invocation_return_value(invocation, NULL);
+		} else {
+			g_autofree gchar *str = jsc_value_to_string (result);
+			g_dbus_method_invocation_return_value(invocation, g_variant_new("(s)", str));
+		}
+		g_object_unref (result);
 	}
 }
 
@@ -215,15 +215,15 @@ on_send_request (WebKitWebPage 		*web_page,
 		 gpointer 		web_extension)
 {
 	SoupMessageHeaders *headers = webkit_uri_request_get_http_headers (request);
-	gboolean do_not_track;
 
-	do_not_track = g_settings_get_boolean (
-	    LIFEREA_WEB_EXTENSION (web_extension)->liferea_settings,
-	    "do-not-track");
+	if (!headers)
+		return FALSE;
 
-	if (do_not_track && headers) {
+	if (g_settings_get_boolean (LIFEREA_WEB_EXTENSION (web_extension)->liferea_settings, "do-not-track"))
 		soup_message_headers_append (headers, "DNT", "1");
-	}
+
+	if (g_settings_get_boolean (LIFEREA_WEB_EXTENSION (web_extension)->liferea_settings, "do-not-sell"))
+		soup_message_headers_append (headers, "Sec-GPC", "1");
 
 	return FALSE;
 }

@@ -460,11 +460,16 @@ liferea_webkit_run_js (GtkWidget *widget, gchar *js, GAsyncReadyCallback cb)
 	// No matter what was before we need JS now
 	g_object_set (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (widget)), "enable-javascript", TRUE, NULL);
 
-	webkit_web_view_run_javascript (WEBKIT_WEB_VIEW (widget),
-	                                js,
-	                                NULL,
-	                                cb,
-	                                g_object_get_data (G_OBJECT (widget), "htmlview"));
+	webkit_web_view_evaluate_javascript (
+		WEBKIT_WEB_VIEW (widget),
+		js,
+		-1,
+		NULL,
+		NULL,
+		NULL,
+		cb,
+		g_object_get_data (G_OBJECT (widget), "htmlview")
+	);
 	g_free (js);
 }
 

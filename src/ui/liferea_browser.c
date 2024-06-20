@@ -406,31 +406,33 @@ liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location
 static void
 liferea_browser_load_finished_cb (GObject *object, GAsyncResult *result, gpointer user_data)
 {
-	WebKitJavascriptResult *js_result;
-	JSCValue               *value;
-	GError                 *error = NULL;
+	JSCValue	*value;
+	GError		*error = NULL;
 
-	js_result = webkit_web_view_run_javascript_finish (WEBKIT_WEB_VIEW (object), result, &error);
-	if (!js_result) {
+	value = webkit_web_view_evaluate_javascript_finish (WEBKIT_WEB_VIEW (object), result, &error);
+	if (!value) {
 		debug (DEBUG_HTML, "Error running javascript: %s", error->message);
 		g_error_free (error);
 		return;
 	}
 
-	value = webkit_javascript_result_get_js_value (js_result);
 	if (jsc_value_is_boolean (value)) {
-		LifereaBrowser *browser = LIFEREA_BROWSER (user_data);
-		gboolean result = jsc_value_to_boolean (value);
-
-		if (!result && browser->readerMode && browser->url) {
-			debug (DEBUG_HTML, "loadContent() reader mode fail -> reloading without reader");
-			browser->readerMode = FALSE;
-			liferea_browser_launch_URL_internal (browser, browser->url);
+        	JSCException *exception = jsc_context_get_exception (jsc_value_get_context (value));
+        	if (exception) {
+			g_warning ("Error running javascript: %s", jsc_exception_get_message (exception));
+        	} else {
+			LifereaBrowser *browser = LIFEREA_BROWSER (user_data);
+			gboolean result = jsc_value_to_boolean (value);
+			if (result && browser->readerMode && browser->url) {
+				debug (DEBUG_HTML, "loadContent() reader mode fail -> reloading without reader");
+				browser->readerMode = FALSE;
+				liferea_browser_launch_URL_internal (browser, browser->url);
+			}
 		}
 	} else {
 		g_warning ("Error running javascript: unexpected return value");
 	}
-	webkit_javascript_result_unref (js_result);
+	g_object_unref (value);
 }
 
 void
