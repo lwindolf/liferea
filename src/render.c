@@ -1,7 +1,7 @@
 /**
  * @file render.c  generic GTK theme and XSLT rendering handling
  *
- * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,9 +42,10 @@
 #include "xml.h"
 
 /* Liferea renders items and feed info using self-generated HTML in a WebkitGTK
-   widget. While this provides rendering flexibility it also requires us to do
-   CSS color theming to match the GTK theme and localization of HTML rendered
-   UI literals.
+   widget. While this provides rendering flexibility. Starting with GTK 4 there
+   is no access to theme colors anymore. So Liferea has to rely one the color
+   defaults provided by WebkitGTK and to refrain from any background color 
+   effects.
    
    To separate code and layout and to easily localize the layout it is 
    provided in the form of automake XSL stylesheet templates.
@@ -141,218 +142,33 @@ render_load_stylesheet (const gchar *xsltName)
 }
 
 /** cached CSS definitions */
-static GString	*css = NULL;
-static GString	*userCss = NULL;
+static gchar *css = NULL;
+static gchar *userCss = NULL;
 
-/** widget background theme colors as 8bit HTML RGB code */
-typedef struct themeColor {
-	const gchar	*name;
-	gchar		*value;
-} *themeColorPtr;
-
-static GSList *themeColors = NULL;
-
-/* Determining of theme colors, to be inserted in CSS */
-static themeColorPtr
-render_calculate_theme_color (const gchar *name, GdkColor themeColor)
+const gchar *
+render_get_default_css (void)
 {
-	themeColorPtr	tc;
-	gushort		r, g, b;
+	if (!css) {
+		gchar *filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "css", "liferea.css", NULL);
 
-	r = themeColor.red / 256;
-	g = themeColor.green / 256;
-	b = themeColor.blue / 256;
-
-	tc = g_new0 (struct themeColor, 1);
-	tc->name = name;
-	tc->value = g_strdup_printf ("%.2X%.2X%.2X", r, g, b);
-	debug (DEBUG_HTML, "theme color \"%s\" is %s", tc->name, tc->value);
-
-	return tc;
-}
-
-static void
-render_theme_color_free (themeColorPtr tc)
-{
-	g_free (tc->value);
-	g_free (tc);
-}
-
-static gint
-render_get_rgb_distance (GdkColor *c1, GdkColor *c2)
-{
-	return abs(
-		(299 * c1->red/256 +
-		 587 * c1->green/256 +
-		 114 * c1->blue/256) -
-		(299 * c2->red/256 +
-		 587 * c2->green/256 +
-		 114 * c2->blue/256)
-	       ) / 1000;
-}
-
-static void
-rgba_to_color (GdkColor *color, GdkRGBA *rgba)
-{
-	color->red   = lrint (rgba->red   * 65535);
-	color->green = lrint (rgba->green * 65535);
-	color->blue  = lrint (rgba->blue  * 65535);
-}
-
-void
-render_init_theme_colors (GtkWidget *widget)
-{
-	GtkStyle	*style;
-	GtkStyleContext	*sctxt;
-	GdkColor	color;
-	GdkRGBA		rgba;
-
-	/* Clear cached previous stylesheet */
-	if (css) {
-		g_string_free (css, TRUE);
-		css = NULL;
-	}
-	if (userCss) {
-		g_string_free (userCss, TRUE);
-		userCss = NULL;
-	}
-	if (themeColors) {
-		g_slist_free_full (themeColors, (GDestroyNotify)render_theme_color_free);
-		themeColors = NULL;
-	}
-
-	style = gtk_widget_get_style (widget);
-	sctxt = gtk_widget_get_style_context (widget);
-
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-FG",    style->fg[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BG",    style->bg[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-LIGHT", style->light[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-DARK",  style->dark[GTK_STATE_NORMAL]));
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-MID",   style->mid[GTK_STATE_NORMAL]));
-
-	/* Sanity check text+base color as this causes many problems on dark
-	   themes. If brightness distance is not enough we set text to fg/bg
-	   which is always safe. */
-	if (render_get_rgb_distance (&style->base[GTK_STATE_NORMAL], &style->text[GTK_STATE_NORMAL]) > 150) {
-		// FIXME: Use theme labels instead of GTK-COLOR-<something> (e.g. CSS-BACKGROUND)
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BASE", style->base[GTK_STATE_NORMAL]));
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-TEXT", style->text[GTK_STATE_NORMAL]));
-	} else {
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-BASE", style->bg[GTK_STATE_NORMAL]));
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-TEXT", style->fg[GTK_STATE_NORMAL]));
-	}
-
-	gtk_style_context_get_color (sctxt, GTK_STATE_FLAG_LINK, &rgba);
-	rgba_to_color (&color, &rgba);
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-NORMAL-LINK", color));
-
-	gtk_style_context_get_color (sctxt, GTK_STATE_FLAG_VISITED, &rgba);
-	rgba_to_color (&color, &rgba);
-	themeColors = g_slist_append (themeColors, render_calculate_theme_color ("GTK-COLOR-VISITED-LINK", color));
-
-	if (conf_get_dark_theme()) {
-		debug (DEBUG_HTML, "Dark GTK theme detected.");
-
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->text[GTK_STATE_NORMAL]));
-		/* Try nice foreground with 'fg' color (note: distance 50 is enough because it should be non-intrusive) */
-		if (render_get_rgb_distance (&style->text[GTK_STATE_NORMAL], &style->fg[GTK_STATE_NORMAL]) > 50)
-			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->fg[GTK_STATE_NORMAL]));
-		else
-			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
-	} else {
-		debug (DEBUG_HTML, "Light GTK theme detected.");
-
-		themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_FG", style->bg[GTK_STATE_NORMAL]));
-		/* Try nice foreground with 'dark' color (note: distance 50 is enough because it should be non-intrusive) */
-		if (render_get_rgb_distance (&style->dark[GTK_STATE_NORMAL], &style->bg[GTK_STATE_NORMAL]) > 50)
-			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->dark[GTK_STATE_NORMAL]));
-		else
-			themeColors = g_slist_append (themeColors, render_calculate_theme_color ("FEEDLIST_UNREAD_BG", style->fg[GTK_STATE_NORMAL]));
-	}
-}
-
-static gchar *
-render_set_theme_colors (gchar *css)
-{
-	GSList	*iter = themeColors;
-
-	while (iter) {
-		themeColorPtr tc = (themeColorPtr)iter->data;
-		css = common_strreplace (css, tc->name, tc->value);
-		iter = g_slist_next (iter);
+		g_file_get_contents (filename, &css, NULL, NULL);
+		g_free (filename);
 	}
 
 	return css;
 }
 
 const gchar *
-render_get_theme_color (const gchar *name)
-{
-	GSList	*iter;
-
-	g_return_val_if_fail (themeColors != NULL, NULL);
-
-	iter = themeColors;
-	while (iter) {
-		themeColorPtr tc = (themeColorPtr)iter->data;
-		if (g_str_equal (name, tc->name))
-			return tc->value;
-		iter = g_slist_next (iter);
-	}
-
-	return NULL;
-}
-
-const gchar *
-render_get_default_css (void)
-{
-	if (!css) {
-		gchar	*defaultStyleSheetFile;
-		gchar	*tmp;
-
-		g_return_val_if_fail (themeColors != NULL, NULL);
-
-		css = g_string_new(NULL);
-
-		defaultStyleSheetFile = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "css", "liferea.css", NULL);
-
-		if (g_file_get_contents(defaultStyleSheetFile, &tmp, NULL, NULL)) {
-			tmp = render_set_theme_colors(tmp);
-			g_string_append(css, tmp);
-			g_free(tmp);
-		} else {
-			g_error ("Loading %s failed.", defaultStyleSheetFile);
-		}
-
-		g_free(defaultStyleSheetFile);
-	}
-
-	return css->str;
-}
-
-const gchar *
 render_get_user_css (void)
 {
 	if (!userCss) {
-		gchar	*userStyleSheetFile;
-		gchar	*tmp;
+		gchar *filename = common_create_config_filename ("liferea.css");
 
-		g_return_val_if_fail (themeColors != NULL, NULL);
-
-		userCss = g_string_new (NULL);
-
-		userStyleSheetFile = common_create_config_filename ("liferea.css");
-
-		if (g_file_get_contents (userStyleSheetFile, &tmp, NULL, NULL)) {
-			tmp = render_set_theme_colors (tmp);
-			g_string_append (userCss, tmp);
-			g_free (tmp);
-		}
-
-		g_free (userStyleSheetFile);
+		g_file_get_contents (filename, &userCss, NULL, NULL);
+		g_free (filename);
 	}
 
-	return userCss->str;
+	return userCss;
 }
 
 gchar *

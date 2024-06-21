@@ -43,7 +43,6 @@
 #include "net_monitor.h"
 #include "newsbin.h"
 #include "plugins_engine.h"
-#include "render.h"
 #include "social.h"
 #include "vfolder.h"
 #include "fl_sources/node_source.h"
@@ -1359,7 +1358,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_grid_attach_next_to (GTK_GRID (liferea_shell_lookup ("vbox1")), shell->toolbar, NULL, GTK_POS_TOP, 1,1);
 
 	gtk_widget_show_all(GTK_WIDGET(shell->toolbar));
-	render_init_theme_colors (GTK_WIDGET (shell->window));
 	g_signal_connect (G_OBJECT (shell->window), "style-updated", G_CALLBACK(liferea_shell_rebuild_css), NULL);
 
 	/* 3.) setup status bar */
@@ -1541,7 +1539,6 @@ liferea_shell_get_window (void)
 void
 liferea_shell_rebuild_css (void)
 {
-	render_init_theme_colors (GTK_WIDGET (shell->window));
 	itemview_style_update ();
 }
 

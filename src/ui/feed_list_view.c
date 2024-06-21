@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.c  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *
@@ -33,7 +33,6 @@
 #include "folder.h"
 #include "net_monitor.h"
 #include "newsbin.h"
-#include "render.h"
 #include "vfolder.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
@@ -777,25 +776,24 @@ feed_list_view_update_node (const gchar *nodeId)
 	gchar		*label, *count = NULL;
 	guint		labeltype;
 	nodePtr		node;
+	static		gchar *countColor = NULL;
 
-	static gchar	*countColor = NULL;
+	/* Until GTK3 we used real theme colors here. Nowadays GTK simply knows
+	   that we do not need to know about them and helpfully prevents us from
+	   accessing them. So we use hard-coded colors that hopefully fit all the 
+	   themes out there. 
+	
+	   And yes of course with to much time on my hand I could implement
+	   my own renderer widget... */
+	if (conf_get_dark_theme ())
+		countColor = "foreground='#ddd' background='#444'";
+	else
+		countColor = "foreground='#fff' background='#aaa'";
 
 	node = node_from_id (nodeId);
 	iter = feed_list_view_to_iter (nodeId);
 	if (!iter)
 		return;
-
-	/* Initialize unread item color Pango CSS */
-	if (!countColor) {
-		const gchar *bg = NULL, *fg = NULL;
-
-		bg = render_get_theme_color ("FEEDLIST_UNREAD_BG");
-		fg = render_get_theme_color ("FEEDLIST_UNREAD_FG");
-		if (fg && bg) {
-			countColor = g_strdup_printf ("foreground='#%s' background='#%s'", fg, bg);
-			debug (DEBUG_HTML, "Feed list unread CSS: %s", countColor);
-		}
-	}
 
 	labeltype = NODE_TYPE (node)->capabilities;
 	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
@@ -810,10 +808,10 @@ feed_list_view_update_node (const gchar *nodeId)
 		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
 	     		/* treat like show unread count */
 		case NODE_CAPABILITY_SHOW_UNREAD_COUNT:
-			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor?countColor:"", node->unreadCount);
+			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor, node->unreadCount);
 			break;
 		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
-			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor?countColor:"", node->itemCount);
+			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor, node->itemCount);
 		     	break;
 		default:
 			break;
