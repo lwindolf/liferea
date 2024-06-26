@@ -21,23 +21,6 @@
    instead (e.g. "1.2em" or "0.8em").
 
 
-   Color Definitions:
-   ==================
-
-   Try to reuse GTK theme colors. Liferea uses the following definitions
-   and will be replace them on the fly:
-
-       GTK-COLOR-FG
-       GTK-COLOR-BG
-       GTK-COLOR-LIGHT
-       GTK-COLOR-DARK
-       GTK-COLOR-MID
-       GTK-COLOR-BASE
-       GTK-COLOR-TEXT
-       GTK-COLOR-NORMAL-LINK
-       GTK-COLOR-VISITED-LINK
-
-
    Inspecting the HTML:
    ====================
 

@@ -175,7 +175,7 @@ function loadContent(readerEnabled, content) {
 			el.heigth = size[3] - size[1];
 		});
 
-		// Drop empty elements (to get rid of empty picture/video/iframe divs)
+	// Drop empty elements (to get rid of empty picture/video/iframe divs)
 	const emptyRegex = new RegExp("^\s*$");
 	document.getElementById('content')
 		.querySelectorAll(":only-child")
@@ -183,6 +183,16 @@ function loadContent(readerEnabled, content) {
 			if(el.innerHTML.length == 1)
 				el.parentNode.removeChild(el);
 		});
+
+    // Setup audio/video <select> handler
+    document.querySelector('#enclosureVideo select')?.addEventListener("change", (e) => {
+		document.querySelector('#enclosureVideo video').src = e.target.options[e.target.selectedIndex].value;
+		document.querySelector('#enclosureVideo video').play();
+    });
+    document.getElementById('#enclosureAudio select')?.addEventListener("change", (e) => {
+		document.querySelector('#enclosureAudio audio').src = e.target.options[e.target.selectedIndex].value;
+		document.querySelector('#enclosureVideo audio').play();
+    });
 
 	return true;
 }

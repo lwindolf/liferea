@@ -1,7 +1,7 @@
 /**
  * @file liferea.css  Liferea rendering stylesheet
  *
- * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004 delusional <delusional@dx13.co.uk>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -17,32 +17,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- */
-
-/*
-
-   Font Definitions:
-   =================
-
-   No style definition should set absolute font sizes,
-   font families or line heigth and spacing. This is to allow a GNOME
-   preference controlled default font size.
-
-   Color Definitions:
-   ==================
-
-   To allow using GTK theme colors the following key words
-   will be replaced with the corresponding GTK theme color values:
-
-   GTK-COLOR-FG
-   GTK-COLOR-BG
-   GTK-COLOR-LIGHT
-   GTK-COLOR-DARK
-   GTK-COLOR-MID
-   GTK-COLOR-BASE
-   GTK-COLOR-TEXT
-   GTK-COLOR-NORMAL-LINK
-   GTK-COLOR-VISITED-LINK
  */
 
 body {
@@ -312,7 +286,7 @@ div.photoheader {
 	fill: #ddd;
 }
 
-div.enclosureVideo video {
+#enclosureVideo video {
 	background: black;
 	min-width: 640px;
 	min-height: 480px;

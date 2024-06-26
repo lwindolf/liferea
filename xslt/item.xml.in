@@ -270,7 +270,7 @@
 <div dir="{$txtDirection}">
 <div class='content' id='content'>
 
-  <!-- the item's content -->
+  <!-- the item's text content -->
   <p>
     <!-- optional gravatar -->
     <xsl:if test="attributes/attribute[ @name = 'gravatar' ]">
@@ -293,34 +293,58 @@
     <!-- the real text content -->
     <xsl:value-of select="description" disable-output-escaping='yes'/>
   </p>
-</div> <!-- end of content -->
+</div> <!-- end of text content -->
 
 <!-- all content below is not subject to Readability.js, this is intentional and prevents
      unintended stripping -->
 
+<div class='content'>
+
 <!-- embed suitable enclosures -->
-<xsl:for-each select="enclosures/enclosure[contains(@mime, 'audio/')]">
-  <div class='content enclosureAudio'>
-    <xsl:element name="audio">
-      <xsl:attribute name="class">enclosure</xsl:attribute>
-      <xsl:attribute name="controls">controls</xsl:attribute>
-      <xsl:attribute name="preload">none</xsl:attribute>
-      <xsl:attribute name="src"><xsl:value-of select="@url"/></xsl:attribute>
-    </xsl:element>
-  </div>
-</xsl:for-each>
 
-<xsl:for-each select="enclosures/enclosure[contains(@mime, 'video/')]">
-  <div class='content enclosureVideo'>
-    <xsl:element name="video">
-      <xsl:attribute name="class">enclosure</xsl:attribute>
-      <xsl:attribute name="controls">controls</xsl:attribute>
-      <xsl:attribute name="preload">none</xsl:attribute>
-      <xsl:attribute name="src"><xsl:value-of select="@url"/></xsl:attribute>
-    </xsl:element>
-  </div>
-</xsl:for-each>
+<div id='enclosureAudio'>
+  <xsl:if test="count(enclosures/enclosure[contains(@mime, 'audio/')]) > 1">
+    <select>
+      <xsl:for-each select="enclosures/enclosure[contains(@mime, 'audio/')]">
+        <xsl:element name="option">
+          <xsl:value-of select="@url"/>
+        </xsl:element>
+      </xsl:for-each>
+    </select>
+  </xsl:if>
+  <xsl:for-each select="enclosures/enclosure[contains(@mime, 'audio/')]">
+    <xsl:if test="position() = 1">
+      <xsl:element name="audio">
+        <xsl:attribute name="class">enclosure</xsl:attribute>
+        <xsl:attribute name="controls">controls</xsl:attribute>
+        <xsl:attribute name="preload">none</xsl:attribute>
+        <xsl:attribute name="src"><xsl:value-of select="@url"/></xsl:attribute>
+      </xsl:element>
+    </xsl:if>
+  </xsl:for-each>
+</div>
 
+<div id='enclosureVideo'>
+  <xsl:if test="count(enclosures/enclosure[contains(@mime, 'video/')]) > 1">
+    <select>
+      <xsl:for-each select="enclosures/enclosure[contains(@mime, 'video/')]">
+        <xsl:element name="option">
+          <xsl:value-of select="@url"/>
+        </xsl:element>
+      </xsl:for-each>
+    </select>
+  </xsl:if>
+  <xsl:for-each select="enclosures/enclosure[contains(@mime, 'video/')]">
+    <xsl:if test="position() = 1">
+      <xsl:element name="video">
+        <xsl:attribute name="class">enclosure</xsl:attribute>
+        <xsl:attribute name="controls">controls</xsl:attribute>
+        <xsl:attribute name="preload">none</xsl:attribute>
+        <xsl:attribute name="src"><xsl:value-of select="@url"/></xsl:attribute>
+      </xsl:element>
+    </xsl:if>
+  </xsl:for-each>
+</div>
 
 <!-- optional YouTube embed -->
 <xsl:variable name="url"><xsl:value-of select="source"/></xsl:variable>
@@ -385,6 +409,7 @@
      </p>
   </xsl:if>
 </div> <!-- end of comments -->
+</div> <!-- end of content-->
 </div> <!-- end of txtdirection div -->
 </div> <!-- end of item -->
 
