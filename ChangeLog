@@ -1,3 +1,12 @@
+To be released
+
+	Version 1.15.8
+
+	* Fixes #1359: Prevent passing "" as CLI argument causing a useless subscription.
+	  Also checks for duplicates when subscribing from CLI/DBUS.
+	  (Lars Windolf)
+
+
 2024-06-19  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.15.7

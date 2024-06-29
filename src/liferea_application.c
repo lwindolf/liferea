@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea startup
  *
- * Copyright (C) 2003-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Some code like the command line handling was inspired by
@@ -89,15 +89,23 @@ on_app_open (GApplication *application,
 
 	for (i=0;(i<n_files) && uris[i];i++) {
 		gchar *uri = g_file_get_uri (uris[i]);
+		gchar *dir = g_get_current_dir ();
 
-		/* When passed to GFile feeds using the feed scheme "feed:https://" become "feed:///https:/" */
-		if (g_str_has_prefix (uri, "feed:///https:/")) {
-			gchar *tmp = uri;
-			uri = g_strdup_printf ("https://%s", uri + strlen ("feed:///https:/"));
-			g_free (tmp);
+		/* Prevent empty argument causing a subscription (Github #1359) */
+		if (!(g_str_has_prefix (uri, "file://") && g_str_equal (dir, uri + 7))) {
+
+			/* When passed to GFile feeds using the feed scheme "feed:https://" become "feed:///https:/" */
+			if (g_str_has_prefix (uri, "feed:///https:/")) {
+				gchar *tmp = uri;
+				uri = g_strdup_printf ("https://%s", uri + strlen ("feed:///https:/"));
+				g_free (tmp);
+			}
+
+			feedlist_add_subscription_check_duplicate (uri, NULL, NULL, 0);
+			g_free (uri);
 		}
-		feedlist_add_subscription (uri, NULL, NULL, 0);
-		g_free (uri);
+
+		g_free (dir);
 	}
 }
 
