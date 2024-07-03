@@ -128,6 +128,23 @@ subscription_icon_download_html_cb (const struct updateResult * const result, gp
 }
 
 static GRegex *image_extension_match = NULL;
+static GRegex *image_mime_type_match = NULL;
+
+static void
+subscription_icon_handle_response (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+{
+	if (!image_extension_match)
+		image_extension_match = g_regex_new ("\\.(ico|png|gif|jpg|svg)$", G_REGEX_CASELESS, 0, NULL);
+
+	if (!image_mime_type_match)
+		image_mime_type_match = g_regex_new ("^image/(png|gif|jpeg|svg+xml)$", G_REGEX_CASELESS, 0, NULL);
+
+	if ((result->contentType && g_regex_match (image_mime_type_match, result->contentType, 0, NULL)) || g_regex_match (image_extension_match, result->data, 0, NULL)) {
+		subscription_icon_download_data_cb(result, user_data, flags);
+	} else {
+		subscription_icon_download_html_cb(result, user_data, flags);
+	}
+}
 
 /* Performs a download of the first URL in ctxt->urls */
 static void
@@ -156,15 +173,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 			ctxt->options
 		);
 
-		if (!image_extension_match)
-			image_extension_match = g_regex_new ("\\.(ico|png|gif|jpg|svg)$", G_REGEX_CASELESS, 0, NULL);
-
-		if (g_regex_match (image_extension_match, url, 0, NULL))
-			callback = subscription_icon_download_data_cb;
-		else
-			callback = subscription_icon_download_html_cb;
-
-		update_execute_request (node_from_id (ctxt->id), request, callback, ctxt, FEED_REQ_PRIORITY_HIGH | FEED_REQ_NO_FEED);
+		update_execute_request (node_from_id (ctxt->id), request, subscription_icon_handle_response, ctxt, FEED_REQ_PRIORITY_HIGH | FEED_REQ_NO_FEED);
 	} else {
 		debug (DEBUG_UPDATE, "Icon '%s' discovery/download failed!", ctxt->id);
 		subscription_icon_download_ctxt_free (ctxt);
