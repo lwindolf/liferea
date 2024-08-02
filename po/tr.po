@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: liferea master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-19 20:26+0200\n"
-"PO-Revision-Date: 2024-02-03 08:00+0300\n"
+"PO-Revision-Date: 2024-08-01 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -39,8 +39,8 @@ msgstr "Haber beslemelerini ve blogları oku"
 #: ../net.sourceforge.liferea.desktop.in.h:5
 msgid "news;feed;aggregator;blog;podcast;syndication;rss;atom"
 msgstr ""
-"haber;besleme;toplayıcı;kaynak;blog;günlük;podcast;sendikasyon;rss;atom;"
-"ortam akışı;"
+"news;feed;aggregator;blog;podcast;syndication;rss;atom;haber;besleme;"
+"toplayıcı;kaynak;günlük;sendikasyon;ortam akışı;"
 
 #: ../plugins/getfocus.py:95
 msgid "Opacity:"
@@ -257,7 +257,7 @@ msgstr ""
 
 #: ../plugins/trayicon.py:168
 msgid "Liferea unread icon"
-msgstr ""
+msgstr "Liferea okunmadı simgesi"
 
 #: ../plugins/trayicon.py:186
 msgid "Show / Hide"
@@ -420,11 +420,11 @@ msgstr "Giriş başarısız!"
 
 #: ../src/fl_sources/google_source.c:404
 msgid "Google Reader API"
-msgstr "Google Okuyucu API'si"
+msgstr "Google Okuyucu API’sı"
 
 #: ../src/fl_sources/google_source_feed.c:159
 msgid "Could not parse JSON returned by Google Reader API!"
-msgstr "Google Okuyucu API'sinin döndürdüğü JSON ayrıştırılamadı!"
+msgstr "Google Okuyucu API’sının döndürdüğü JSON ayrıştırılamadı!"
 
 #: ../src/fl_sources/node_source.c:116
 msgid "Miniflux"
@@ -472,7 +472,7 @@ msgstr "Reedah"
 
 #: ../src/fl_sources/reedah_source_feed.c:154
 msgid "Could not parse JSON returned by Reedah API!"
-msgstr "Reedah API'ının döndürdüğü JSON ayrıştırılamadı!"
+msgstr "Reedah API’sının döndürdüğü JSON ayrıştırılamadı!"
 
 #: ../src/fl_sources/theoldreader_source.c:364
 msgid "TheOldReader"
@@ -480,7 +480,7 @@ msgstr "TheOldReader"
 
 #: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
 msgid "TinyTinyRSS HTTP API not reachable!"
-msgstr "TinyTinyRSS HTTP API'ı erişilebilir değil!"
+msgstr "TinyTinyRSS HTTP API’sı erişilebilir değil!"
 
 #: ../src/fl_sources/ttrss_source.c:234
 msgid ""
@@ -509,7 +509,7 @@ msgstr "Tiny Tiny RSS"
 
 #: ../src/fl_sources/ttrss_source_feed.c:150
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
-msgstr "TinyTinyRSS API'ının döndürdüğü JSON ayrıştırılamadı!"
+msgstr "TinyTinyRSS API’sının döndürdüğü JSON ayrıştırılamadı!"
 
 #. if we don't find a feed with unread items do nothing
 #: ../src/itemlist.c:399
@@ -520,7 +520,7 @@ msgstr "Okunmamış öge yok"
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
-"Liferea'nın penceresini DURUM olarak aç. DURUM  `shown' (gösterilen) ya da "
+"Liferea’nın penceresini DURUM olarak aç. DURUM  `shown' (gösterilen) ya da "
 "`hidden' (saklı) olabilir."
 
 #: ../src/liferea_application.c:274
@@ -569,7 +569,7 @@ msgid ""
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 "HTML canlandırmasının hata ayıklamasını etkinleştirir. Liferea HTML "
-"çıktısını her canlandırdığında oluşturulan HTML'i ayrıca /.cache/liferea/"
+"çıktısını her canlandırdığında oluşturulan HTML’yi ayrıca /.cache/liferea/"
 "output.html içine yığar"
 
 #: ../src/liferea_application.c:288
@@ -693,7 +693,7 @@ msgstr "Besleme dosyası yaratılamadı: %s"
 
 #: ../src/node.c:644
 msgid "Feed file exported from Liferea"
-msgstr "Besleme dosyası Liferea'dan dışa aktarıldı"
+msgstr "Besleme dosyası Liferea’dan dışa aktarıldı"
 
 #: ../src/node.c:659
 #, c-format
@@ -913,8 +913,8 @@ msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
-"\"%s\" URL'li yeni aboneliği eklemek istediğinizden emin misiniz? Aynı "
-"URL'li başka abonelik var (\"%s\")."
+"\"%s\" URL’li yeni aboneliği eklemek istediğinizden emin misiniz? Aynı "
+"URL’li başka abonelik var (\"%s\")."
 
 #: ../src/ui/feed_list_view.c:960
 msgid "_Add"
@@ -1018,7 +1018,7 @@ msgstr "Haber Sepetine Kopyala"
 #: ../src/ui/popup_menu.c:147
 #, c-format
 msgid "_Bookmark at %s"
-msgstr "%s'de _yer imi olarak ekle"
+msgstr "%s’de _Yer İmi Olarak Ekle"
 
 #: ../src/ui/popup_menu.c:153
 msgid "Copy Item _Location"
@@ -1256,7 +1256,7 @@ msgstr "Bağlantıyı Dış Tarayıcıda Aç"
 #: ../src/webkit/liferea_web_view.c:171
 #, c-format
 msgid "_Bookmark Link at %s"
-msgstr "Bağlantıyı %s'de yer imi olarak ekle"
+msgstr "Bağlantıyı %s’de Yer İmi Olarak Ekle"
 
 #: ../src/webkit/liferea_web_view.c:178
 msgid "_Copy Link Location"
@@ -1719,7 +1719,7 @@ msgstr "İç Tarayıcı Ayarları"
 
 #: ../glade/prefs.ui.h:27
 msgid "Open links in Liferea's _window."
-msgstr "Bağlantıları Liferea'nın _penceresinde aç."
+msgstr "Bağlantıları Liferea’nın _penceresinde aç."
 
 #: ../glade/prefs.ui.h:28
 msgid "_Never run external Javascript."
@@ -1807,7 +1807,7 @@ msgid ""
 "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
 "application proxy settings. The system's default proxy settings will be used."
 msgstr ""
-"WebKitGTK+ sürümünüz 2.15.3'ten eskidir. Her bir uygulama için başka vekil "
+"WebKitGTK+ sürümünüz 2.15.3’ten eskidir. Her bir uygulama için başka vekil "
 "ayarlarını desteklemez. Sistemin öntanımlı vekil ayarları kullanılacak."
 
 #: ../glade/prefs.ui.h:50
@@ -1819,13 +1819,12 @@ msgid "Privacy Settings"
 msgstr "Gizlilik Ayarları"
 
 #: ../glade/prefs.ui.h:52
-#, fuzzy
 msgid "Tell websites that I do _not want to be tracked."
 msgstr "Sitelere izlenmek iste_mediğimi söyle."
 
 #: ../glade/prefs.ui.h:53
 msgid "Tell websites not to _sell or share my data."
-msgstr ""
+msgstr "Sitelere verimin _satılmamasını ya da paylaşılmamasını söyle."
 
 #: ../glade/prefs.ui.h:54
 msgid "_Intelligent Tracking Prevention. "
@@ -1856,16 +1855,15 @@ msgid ""
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
 "Bu, içerik dışı ögelerin (betikler, yazı tipleri, izleme) <a href=\"https://"
-"github.com/mozilla/readability\">ayıklanmasını</a>etkinleştirir."
+"github.com/mozilla/readability\">ayıklanmasını</a> etkinleştirir."
 
 #: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr "Gizlilik"
 
 #: ../glade/prefs.ui.h:60
-#, fuzzy
 msgid "Downloading Content"
-msgstr "Ş_imdi İndiriliyor"
+msgstr "İçerik İndirme"
 
 #: ../glade/prefs.ui.h:61
 msgid "_Download using"
@@ -1976,7 +1974,7 @@ msgstr "İndirilen ögeleri okundu olarak _imle."
 
 #: ../glade/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
-msgstr "HTML5 ve Google AMP'den tam içeriği ayıkla"
+msgstr "HTML5 ve Google AMP’den tüm içeriği ayıkla"
 
 #: ../glade/reedah_source.ui.h:1
 msgid "Add Reedah Account"
@@ -2067,7 +2065,7 @@ msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
 msgstr ""
-"Liferea'nın, ögenin başlığında ya da içeriğinde bulmasını istediğiniz "
+"Liferea’nın ögenin başlığında ya da içeriğinde bulmasını istediğiniz "
 "dizgiyi belirtiniz."
 
 #: ../glade/simple_subscription.ui.h:2
@@ -2104,7 +2102,7 @@ msgstr "Lütfen TinyTinyRSS hesap ayarlarınızı giriniz."
 
 #: ../glade/ttrss_source.ui.h:3
 msgid "_Server URL"
-msgstr "_Sunucu URL'si"
+msgstr "_Sunucu URL’si"
 
 #: ../glade/ttrss_source.ui.h:5
 msgid "_Username"
@@ -2290,108 +2288,3 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Arama Klasörü:"
-
-#~ msgid ""
-#~ "Your version of WebKitGTK+ doesn't support changing the proxy settings "
-#~ "from Liferea. The system's default proxy settings will be used."
-#~ msgstr ""
-#~ "WebKitGTK+ sürümünüz vekil ayarlarını Liferea'dan değiştirmeyi "
-#~ "desteklemiyor. Sistemin öntanımlı vekil ayarları kullanılacak."
-
-#~ msgid "Unable to resolve destination host name"
-#~ msgstr "Hedef ana makine adı çözülemiyor"
-
-#~ msgid "Unable to resolve proxy host name"
-#~ msgstr "Vekil ana makine adı çözülemiyor"
-
-#~ msgid "Unable to connect to remote host"
-#~ msgstr "Uzak bilgisayara bağlanılamıyor"
-
-#~ msgid "Unable to connect to proxy"
-#~ msgstr "Vekile bağlanılamıyor"
-
-#~ msgid ""
-#~ "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
-#~ "algorithm. Check your operating system settings."
-#~ msgstr ""
-#~ "SSL/TLS uzlaşısı başarısız. Olası çağdışı ya da desteklenmeyen şifreleme "
-#~ "algoritması. Lütfen işletim sistemi ayarlarınızı gözden geçirin."
-
-#~ msgid "There was an internal error in the update process"
-#~ msgstr "Güncelleme işleminde içsel bir hata oluştu"
-
-#~ msgid "Feed not available: Server requested unsupported redirection!"
-#~ msgstr "Besleme uygun değil: Sunucu, desteklenmeyen yönlendirme istedi!"
-
-#~ msgid "Client Error"
-#~ msgstr "İstemci Hatası"
-
-#~ msgid "Server Error"
-#~ msgstr "Sunucu Hatası"
-
-#~ msgid "Attachments"
-#~ msgstr "Ekler"
-
-#~ msgid " Bytes"
-#~ msgstr " Bayt"
-
-#~ msgid "kB"
-#~ msgstr "kB"
-
-#~ msgid "MB"
-#~ msgstr "MB"
-
-#~ msgid "GB"
-#~ msgstr "GB"
-
-#, c-format
-#~ msgid "%d%s"
-#~ msgstr "%d%s"
-
-#, c-format
-#~ msgid "%d attachment"
-#~ msgid_plural "%d attachments"
-#~ msgstr[0] "%d ek"
-
-#, c-format
-#~ msgid "File Extension .%s"
-#~ msgstr "Dosya Uzantısı .%s"
-
-#~ msgid "Open Enclosure..."
-#~ msgstr "Eki Aç..."
-
-#~ msgid "Save As..."
-#~ msgstr "Farklı Kaydet..."
-
-#~ msgid "Copy Link Location"
-#~ msgstr "Bağlantı Konumunu Kopyala"
-
-#~ msgid "Open Enclosure"
-#~ msgstr "Eki Aç"
-
-#~ msgid "Open an enclosure of type:"
-#~ msgstr "Şu tür bir eki aç:"
-
-#~ msgid ""
-#~ "_What should Liferea do with this enclosure? Please enter the command you "
-#~ "want to be executed below. The enclosures URL will be supplied as an "
-#~ "argument for this command:"
-#~ msgstr ""
-#~ "Liferea bu ek ile ne _yapmalı? Lütfen çalıştırılacak komutu aşağıda "
-#~ "belirtiniz. İndirilen dosyanın adresi, bu komutun değişkeni olarak "
-#~ "kullanılacaktır:"
-
-#~ msgid "_Browse"
-#~ msgstr "_Göz at"
-
-#~ msgid "_Do this automatically for enclosures like this from now on."
-#~ msgstr "_Bu tür ekler için artık bunu kendiliğinden yap."
-
-#~ msgid "Downloading Enclosures"
-#~ msgstr "Ekleri İndirme"
-
-#~ msgid "Opening Enclosures"
-#~ msgstr "Ekleri Açma"
-
-#~ msgid "Enclosures"
-#~ msgstr "Ekler"
