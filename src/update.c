@@ -53,7 +53,7 @@ static GSList	*jobs = NULL;
 
 static GAsyncQueue *pendingHighPrioJobs = NULL;
 static GAsyncQueue *pendingJobs = NULL;
-static guint numberOfActiveJobs = 0;
+static gint numberOfActiveJobs = 0;
 #define MAX_ACTIVE_JOBS	5
 
 /* update state interface */
@@ -671,6 +671,22 @@ update_load_file (updateJobPtr job)
 	update_process_finished_job (job);
 }
 
+static void 
+update_network_request(GTask *task, gpointer src, gpointer tdata, GCancellable *ccan)
+{
+    updateJobPtr job = tdata;
+    network_process_request (job);
+    g_task_return_int(task, 0);
+}
+
+static void
+update_network_finish(GObject *src, GAsyncResult *result, gpointer user_data)
+{
+    updateJobPtr job = user_data;
+    update_process_finished_job (job);
+}
+
+
 static void
 update_job_run (updateJobPtr job)
 {
@@ -694,7 +710,11 @@ update_job_run (updateJobPtr job)
 
 	/* if it has a protocol "://" prefix, but not "file://" it is an URI */
 	if (strstr (job->request->source, "://") && strncmp (job->request->source, "file://", 7)) {
-		network_process_request (job);
+		// network_process_request (job);
+                GTask *task = g_task_new(NULL, NULL, update_network_finish, job);
+                g_task_set_task_data(task, job, NULL);
+                g_task_run_in_thread(task, update_network_request);
+                g_object_unref(task);
 		return;
 	}
 

@@ -67,10 +67,10 @@ network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 }
 
 static void
-network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
+network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data, SoupMessage *msg)
 {
 	SoupSession		*session = SOUP_SESSION (obj);
-	SoupMessage		*msg;
+	// SoupMessage		*msg;
 	updateJobPtr		job = (updateJobPtr)user_data;
 	GDateTime		*last_modified;
 	const gchar		*tmp = NULL;
@@ -81,8 +81,10 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 	gint			body_size;
 	g_autoptr(GBytes)	body;
 
-	msg = soup_session_get_async_result_message (session, res);
-	body = soup_session_send_and_read_finish (session, res, NULL);	// FIXME: handle errors!
+	// msg = soup_session_get_async_result_message (session, res);
+	// body = soup_session_send_and_read_finish (session, res, NULL);	// FIXME: handle errors!
+
+        body = soup_session_send_and_read(session, msg, cancellable, NULL);
 
 	job->result->source = g_uri_to_string_partial (soup_message_get_uri (msg), 0);
 	job->result->httpstatus = soup_message_get_status (msg);
@@ -152,7 +154,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 		soup_header_free_param_list (params);
 	}
 
-	update_process_finished_job (job);
+	// update_process_finished_job (job);
 	g_bytes_unref (body);
 }
 
@@ -287,11 +289,14 @@ network_process_request (const updateJobPtr job)
 	soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, job);
 	soup_message_add_status_code_handler (msg, "got_body", 308, (GCallback) network_process_redirect_callback, job);
 
+#ifdef notdef
 	/* If the feed has "dont use a proxy" selected, use 'session2' which is non-proxy */
 	if (job->request->options && job->request->options->dontUseProxy)
 		soup_session_send_and_read_async (session2, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
 	else
 		soup_session_send_and_read_async (session, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
+#endif 
+        network_process_callback((GObject *)session, NULL, job, msg);
 }
 
 static void
