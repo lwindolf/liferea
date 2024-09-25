@@ -1,10 +1,21 @@
-To be released
+2024-09-26  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.15.8
+
+	* #1289 Solve some Webkit deprecations
+	  (Lars Windolf)
 
 	* Fixes #1359: Prevent passing "" as CLI argument causing a useless subscription.
 	  Also checks for duplicates when subscribing from CLI/DBUS.
 	  (Lars Windolf)
+	
+	* Fixes #1372: Fix feed icon not parsing if the URL doesn't have a file extension bug 
+	  (Stomern)
+	
+	* Fixes #1382: Doesn't recognize atom:link element with no rel attribute bug 
+	  (Lars Windolf, reported by Ed Davies)
+	
+	* Update of Turkish translation (emintufan)
 
 
 2024-06-19  Lars Windolf <lars.windolf@gmx.de>

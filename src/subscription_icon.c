@@ -152,7 +152,6 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 {
 	gchar			*url;
 	UpdateRequest		*request;
-	update_result_cb	callback;
 
 	if (g_slist_length (ctxt->doneUrls) > ICON_DOWNLOAD_MAX_URLS) {
 		debug (DEBUG_UPDATE, "Stopping icon '%s' discovery after trying %d URLs.", ctxt->id, ICON_DOWNLOAD_MAX_URLS);
