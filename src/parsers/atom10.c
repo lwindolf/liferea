@@ -307,7 +307,8 @@ atom10_parse_link (xmlNodePtr cur, feedParserCtxtPtr ctxt, struct atom10ParserSt
 			if (ctxt->item)
 				ctxt->item->metadata = metadata_list_append (ctxt->item->metadata, relation, url);
 		} else {
-			/* g_warning ("Unhandled Atom link with unexpected relation \"%s\"\n", relation); */
+			// Atom RFC 4287 4.2.7.2 says no "rel" mean "alternate"
+			alternate = g_strdup (url);
 		}
 		xmlFree (baseURL);
 		g_free (url);
