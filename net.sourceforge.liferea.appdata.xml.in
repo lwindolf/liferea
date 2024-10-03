@@ -77,6 +77,18 @@
     <color type="primary" scheme_preference="dark">#64647D</color>
   </branding>
   <releases>
+    <release date="2024-09-26" version="1.15.8">
+      <description>
+        <p>Changes:</p>
+        <ul>
+          <li>Solve some Webkit deprecations (Lars Windolf)</li>
+          <li>Fixes #1359: Prevent passing "" as CLI argument causing a useless subscription. Also checks for duplicates when subscribing from CLI/DBUS. (Lars Windolf)</li>
+          <li>Fixes #1372: Fix feed icon not parsing if the URL doesn't have a file extension bug (Stomern)</li>
+          <li>Fixes #1382: Doesn't recognize atom:link element with no rel attribute bug (Lars Windolf, reported by Ed Davies)</li>
+          <li>Update of Turkish translation (emintufan)</li>
+        </ul>
+      </description>
+    </release>
     <release date="2024-06-20" version="1.15.7">
       <description>
         <p>This is a release introducing some changes. First there is a new privacy setting you can
