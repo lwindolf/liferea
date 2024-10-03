@@ -51,10 +51,15 @@
 /** global update job list, used for lookups when cancelling */
 static GSList	*jobs = NULL;
 
-static GAsyncQueue *pendingHighPrioJobs = NULL;
-static GAsyncQueue *pendingJobs = NULL;
+static GThreadPool *jobPool = NULL;
+static GThreadPool *hpJobPool = NULL;
+static GMutex barrier;
+
+// static GAsyncQueue *pendingHighPrioJobs = NULL;
+static GQueue *pendingJobs = NULL;
 static gint numberOfActiveJobs = 0;
 #define MAX_ACTIVE_JOBS	5
+#define JOB_CALLBACK_TIMEOUT 5000
 
 /* update state interface */
 
@@ -318,7 +323,9 @@ void
 update_jobs_get_count (guint *count, guint *max)
 {
 	*count = 0;
+        g_mutex_lock(&barrier);
 	g_slist_foreach (jobs, update_job_show_count_foreach_func, count);
+        g_mutex_unlock(&barrier);
 
 	if (*count > maxcount)
 		maxcount = *count;
@@ -332,7 +339,9 @@ update_job_free (updateJobPtr job)
 	if (!job)
 		return;
 
+        g_mutex_lock(&barrier);
 	jobs = g_slist_remove (jobs, job);
+        g_mutex_unlock(&barrier);
 
 	g_object_unref (job->request);
 	update_result_free (job->result);
@@ -516,7 +525,6 @@ update_exec_cmd_cb_child_watch (GPid pid, gint status, gpointer user_data)
 		g_source_remove (job->cmd.io_watch_id);
 		job->cmd.io_watch_id = 0;
 	}
-	update_process_finished_job (job);
 }
 
 
@@ -667,25 +675,7 @@ update_load_file (updateJobPtr job)
 		liferea_shell_set_status_bar (_("Error: There is no file \"%s\""), filename);
 		job->result->httpstatus = 404;	/* FIXME: maybe setting request->returncode would be better */
 	}
-
-	update_process_finished_job (job);
 }
-
-static void 
-update_network_request(GTask *task, gpointer src, gpointer tdata, GCancellable *ccan)
-{
-    updateJobPtr job = tdata;
-    network_process_request (job);
-    g_task_return_int(task, 0);
-}
-
-static void
-update_network_finish(GObject *src, GAsyncResult *result, gpointer user_data)
-{
-    updateJobPtr job = user_data;
-    update_process_finished_job (job);
-}
-
 
 static void
 update_job_run (updateJobPtr job)
@@ -703,48 +693,26 @@ update_job_run (updateJobPtr job)
 		} else {
 			debug (DEBUG_UPDATE, "Refusing to run local command from unexpected source: %s", job->request->source);
 			job->result->httpstatus = 403;  /* Forbidden. */
-			update_process_finished_job (job);
 		}
+                update_process_finished_job (job);
 		return;
 	}
 
 	/* if it has a protocol "://" prefix, but not "file://" it is an URI */
 	if (strstr (job->request->source, "://") && strncmp (job->request->source, "file://", 7)) {
-		// network_process_request (job);
-                GTask *task = g_task_new(NULL, NULL, update_network_finish, job);
-                g_task_set_task_data(task, job, NULL);
-                g_task_run_in_thread(task, update_network_request);
-                g_object_unref(task);
-		return;
-	}
-
-	/* otherwise it must be a local file... */
-	{
+                network_init();         // initialize network for this thread
+		network_process_request (job);
+	} else { /* otherwise it must be a local file... */
 		debug (DEBUG_UPDATE, "Recognized file URI: %s", job->request->source);
 		update_load_file (job);
-		return;
 	}
+        update_process_finished_job (job);
 }
 
-static gboolean
-update_dequeue_job (gpointer user_data)
+static void
+update_dequeue_job (gpointer data, gpointer user_data)
 {
-	updateJobPtr job;
-
-	if (!pendingJobs)
-		return FALSE;	/* we must be in shutdown */
-
-	if (numberOfActiveJobs >= MAX_ACTIVE_JOBS)
-		return FALSE;	/* we'll be called again when a job finishes */
-
-
-	job = (updateJobPtr)g_async_queue_try_pop(pendingHighPrioJobs);
-
-	if (!job)
-		job = (updateJobPtr)g_async_queue_try_pop(pendingJobs);
-
-	if(!job)
-		return FALSE;	/* no request at the moment */
+	updateJobPtr	job = (updateJobPtr) data;
 
 	numberOfActiveJobs++;
 
@@ -757,7 +725,7 @@ update_dequeue_job (gpointer user_data)
 		update_job_run (job);
 	}
 
-	return FALSE;
+	return;
 }
 
 updateJobPtr
@@ -768,27 +736,32 @@ update_execute_request (gpointer owner,
 			updateFlags flags)
 {
 	updateJobPtr job;
+        GThreadPool *pptr;
 
 	g_assert (request->options != NULL);
 	g_assert (request->source != NULL);
 
 	job = update_job_new (owner, request, callback, user_data, flags);
 	job->state = REQUEST_STATE_PENDING;
+        g_mutex_lock(&barrier);
 	jobs = g_slist_append (jobs, job);
+        g_mutex_unlock(&barrier);
 
 	if (flags & FEED_REQ_PRIORITY_HIGH) {
-		g_async_queue_push (pendingHighPrioJobs, (gpointer)job);
+                pptr = hpJobPool;
 	} else {
-		g_async_queue_push (pendingJobs, (gpointer)job);
+                pptr = jobPool;
 	}
 
-	g_idle_add (update_dequeue_job, NULL);
+        gboolean res = g_thread_pool_push(pptr, job, NULL);
+	// debug (DEBUG_UPDATE, "processing job request (%s) result %d", job->request->source, res);
 	return job;
 }
 
 void
 update_job_cancel_by_owner (gpointer owner)
 {
+        g_mutex_lock(&barrier);
 	GSList	*iter = jobs;
 
 	while (iter) {
@@ -797,19 +770,34 @@ update_job_cancel_by_owner (gpointer owner)
 			job->callback = NULL;
 		iter = g_slist_next (iter);
 	}
+        g_mutex_unlock(&barrier);
 }
 
 static gboolean
 update_process_result_idle_cb (gpointer user_data)
 {
-	updateJobPtr job = (updateJobPtr)user_data;
+        g_mutex_lock(&barrier);
+        updateJobPtr job = g_queue_pop_head(pendingJobs);
+        int len = g_queue_get_length(pendingJobs);
+        g_mutex_unlock(&barrier);
+
+        if (NULL == job)
+            return (0 != len);
+
+	debug (DEBUG_UPDATE, "callback job for [%d] %p (%s)", len, job, job->request->source);
 
 	if (job->callback)
 		(job->callback) (job->result, job->user_data, job->flags);
 
 	update_job_free (job);
 
-	return FALSE;
+        g_mutex_lock(&barrier);
+        len = g_queue_get_length(pendingJobs);
+        g_mutex_unlock(&barrier);
+
+	debug (DEBUG_UPDATE, "completed job for [%d] %p", len, job);
+
+        return (0 != len);
 }
 
 static void
@@ -820,13 +808,6 @@ update_apply_filter_async(GTask *task, gpointer src, gpointer tdata, GCancellabl
     g_task_return_int(task, 0);
 }
 
-static void
-update_apply_filter_finish(GObject *src, GAsyncResult *result, gpointer user_data)
-{
-    updateJobPtr job = user_data;
-    g_idle_add(update_process_result_idle_cb, job);
-}
-
 void
 update_process_finished_job (updateJobPtr job)
 {
@@ -834,8 +815,7 @@ update_process_finished_job (updateJobPtr job)
 
 	g_assert(numberOfActiveJobs > 0);
 	numberOfActiveJobs--;
-	g_idle_add (update_dequeue_job, NULL);
-
+	debug (DEBUG_UPDATE, "complete job request (%s) [%d] %p", job->request->source, numberOfActiveJobs, job);
 	/* Handling abandoned requests (e.g. after feed deletion) */
 	if (job->callback == NULL) {
 		debug (DEBUG_UPDATE, "freeing cancelled request (%s)", job->request->source);
@@ -845,27 +825,35 @@ update_process_finished_job (updateJobPtr job)
 
 	/* Finally execute the postfilter */
 	if (job->result->data && job->request->filtercmd) {
-                GTask *task = g_task_new(NULL, NULL, update_apply_filter_finish, job);
-                g_task_set_task_data(task, job, NULL);
-                g_task_run_in_thread(task, update_apply_filter_async);
-                g_object_unref(task);
-                return;
+                update_apply_filter(job);
         }
 
-	g_idle_add (update_process_result_idle_cb, job);
+        g_mutex_lock(&barrier);
+	if (job->flags & FEED_REQ_PRIORITY_HIGH) {
+            g_queue_push_head(pendingJobs, (gpointer)job);
+        } else {
+            g_queue_push_tail(pendingJobs, (gpointer)job);
+        }
+        int len = g_queue_get_length(pendingJobs);
+        if (1 == len)
+            g_timeout_add(JOB_CALLBACK_TIMEOUT, update_process_result_idle_cb, job);
+        g_mutex_unlock(&barrier);
+	debug (DEBUG_UPDATE, "queue len = %d for %p", len, job);
 }
 
 
 void
 update_init (void)
 {
-	pendingJobs = g_async_queue_new ();
-	pendingHighPrioJobs = g_async_queue_new ();
+	pendingJobs = g_queue_new ();
+        jobPool = g_thread_pool_new(update_dequeue_job, NULL, MAX_ACTIVE_JOBS, TRUE, NULL);
+        hpJobPool = g_thread_pool_new(update_dequeue_job, NULL, MAX_ACTIVE_JOBS, TRUE, NULL);
 }
 
 void
 update_deinit (void)
 {
+        g_mutex_lock(&barrier);
 	GSList	*iter = jobs;
 
 	/* Cancel all jobs, to avoid async callbacks accessing the GUI */
@@ -875,9 +863,7 @@ update_deinit (void)
 		iter = g_slist_next (iter);
 	}
 
-	g_async_queue_unref (pendingJobs);
-	g_async_queue_unref (pendingHighPrioJobs);
-
 	g_slist_free (jobs);
 	jobs = NULL;
+        g_mutex_unlock(&barrier);
 }

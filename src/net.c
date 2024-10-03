@@ -24,6 +24,8 @@
 
 #include <glib.h>
 #include <libsoup/soup.h>
+#include <curl/curl.h>
+
 #include <math.h>
 #include <string.h>
 #include <stdbool.h>
@@ -37,11 +39,23 @@
 
 #define HOMEPAGE	"https://lzone.de/liferea/"
 
-static GCancellable *cancellable = NULL;	/* GCancellable for all request handling */
-static SoupSession *session = NULL;	/* Session configured for preferences */
-static SoupSession *session2 = NULL;	/* Session for "Don't use proxy feature" */
-
 static ProxyDetectMode proxymode = PROXY_DETECT_MODE_AUTO;
+
+static GMutex init_lock;
+
+static GPrivate init_key;
+
+static gint
+get_init_count(void)
+{
+    return GPOINTER_TO_INT (g_private_get(&init_key));
+}
+
+static void
+set_init_count(gint count)
+{
+    g_private_set( &init_key, GINT_TO_POINTER(count));
+}
 
 static void
 network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
@@ -66,81 +80,98 @@ network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 	}
 }
 
-static void
-network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data, SoupMessage *msg)
+static size_t
+network_write_callback (void *ptr, size_t size, size_t nmemb, void *data)
 {
-	SoupSession		*session = SOUP_SESSION (obj);
-	// SoupMessage		*msg;
-	updateJobPtr		job = (updateJobPtr)user_data;
+        int realsize = size * nmemb;
+        updateResultPtr result = (updateResultPtr)data;
+
+        if (result->data == NULL)
+            result->data = g_malloc0 (realsize+2);
+        else
+            result->data = g_realloc (result->data, result->size + realsize + 2);
+
+        if (result->data) {
+            memcpy (result->data + result->size, ptr, realsize);
+            result->size += realsize;
+            result->data[result->size] = 0;
+        } else {
+            realsize = 0;
+        }
+
+        return realsize;
+}
+
+static void
+network_process_callback (CURL *curl_handle, updateJobPtr job)
+{
 	GDateTime		*last_modified;
 	const gchar		*tmp = NULL;
 	GHashTable		*params;
 	gboolean		revalidated = FALSE;
 	gint			maxage;
 	gint			age;
-	gint			body_size;
-	g_autoptr(GBytes)	body;
+        long   info;
+        gchar  *infoval;
 
-	// msg = soup_session_get_async_result_message (session, res);
-	// body = soup_session_send_and_read_finish (session, res, NULL);	// FIXME: handle errors!
-
-        body = soup_session_send_and_read(session, msg, cancellable, NULL);
-
-	job->result->source = g_uri_to_string_partial (soup_message_get_uri (msg), 0);
-	job->result->httpstatus = soup_message_get_status (msg);
-	body_size = g_bytes_get_size (body);
-	job->result->data = g_malloc(1 + body_size);
-	memmove(job->result->data, g_bytes_get_data (body, &job->result->size), body_size);
-	*(job->result->data + job->result->size) = 0;
-
-	/* keep some request headers for revalidated responses */
-	revalidated = (304 == job->result->httpstatus);
+        if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_CONTENT_TYPE, &infoval))
+                job->result->contentType = g_strdup (infoval);
+        if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_EFFECTIVE_URL, &infoval))
+                job->result->source = g_strdup (infoval);
+        if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_RESPONSE_CODE, &info))
+                job->result->httpstatus = (guint)info;
+        if (CURLE_OK == curl_easy_getinfo (curl_handle, CURLINFO_FILETIME, &info)) {
+                info - (-1 == info) ? 0 : info;
+                update_state_set_lastmodified (job->result->updateState, info);
+        }
 
 	debug (DEBUG_NET, "download status code: %d", job->result->httpstatus);
 	debug (DEBUG_NET, "source after download: >>>%s<<<", job->result->source);
 	debug (DEBUG_NET, "%d bytes downloaded", job->result->size);
 
-	job->result->contentType = g_strdup (soup_message_headers_get_content_type (soup_message_get_response_headers (msg), NULL));
+        if (400 < job->result->httpstatus) {
+            // is this correct ?
+            g_free(job->result->data);
+            job->result->data = NULL;
+            job->result->size = 0;
+            curl_easy_cleanup(curl_handle);
+            return;
+        }
+
+	/* keep some request headers for revalidated responses */
+	revalidated = (304 == job->result->httpstatus);
+
+        struct curl_header *header;
 
 	/* Update last-modified date */
 	if (revalidated) {
-		 job->result->updateState->lastModified = update_state_get_lastmodified (job->request->updateState);
-	} else {
-		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Last-Modified");
-		if (tmp) {
-			/* The string may be badly formatted, which will make
-			* soup_date_new_from_string() return NULL */
-			last_modified = soup_date_time_new_from_http_string (tmp);
-			if (last_modified) {
-				job->result->updateState->lastModified = g_date_time_to_unix (last_modified);
-				g_date_time_unref (last_modified);
-			}
-		}
+		job->result->updateState->lastModified = update_state_get_lastmodified (job->request->updateState);
+	} else if (CURLE_OK == curl_easy_header(curl_handle, "Last-Modified", 0, CURLH_HEADER, 0, &header)) {
+                last_modified = soup_date_time_new_from_http_string (header->value);
+                if (last_modified) {
+                        job->result->updateState->lastModified = g_date_time_to_unix (last_modified);
+                        g_date_time_unref (last_modified);
+                }
 	}
 
 	/* Update ETag value */
 	if (revalidated) {
 		job->result->updateState->etag = g_strdup (update_state_get_etag (job->request->updateState));
-	} else {
-		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "ETag");
-		if (tmp) {
-			job->result->updateState->etag = g_strdup (tmp);
-		}
+	} else if (CURLE_OK == curl_easy_header(curl_handle, "ETag", 0, CURLH_HEADER, 0, &header)) {
+                job->result->updateState->etag = g_strdup (header->value);
 	}
 
 	/* Update cache max-age  */
-	tmp = soup_message_headers_get_list (soup_message_get_response_headers (msg), "Cache-Control");
-	if (tmp) {
-		params = soup_header_parse_param_list (tmp);
+	if (CURLE_OK == curl_easy_header(curl_handle, "Cache-Control", 0, CURLH_HEADER, 0, &header)) {
+		params = soup_header_parse_param_list (header->value);
 		if (params) {
 			tmp = g_hash_table_lookup (params, "max-age");
 			if (tmp) {
 				maxage = atoi (tmp);
 				if (0 < maxage) {
 					/* subtract Age from max-age */
-					tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Age");
-					if (tmp) {
-						age = atoi (tmp);
+                                        if (CURLE_OK == curl_easy_header(curl_handle, "Age", 0, CURLH_HEADER, 0, &header)) {
+						age = atoi (header->value);
 						if (0 < age) {
 							maxage = maxage - age;
 						}
@@ -153,9 +184,16 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data, S
 		}
 		soup_header_free_param_list (params);
 	}
+        curl_easy_cleanup(curl_handle);
+}
 
-	// update_process_finished_job (job);
-	g_bytes_unref (body);
+struct curl_slist *
+slist_append(struct curl_slist *head, char *str, gchar *val)
+{
+    gchar *value = g_strdup_printf("%s: %s", str, val);
+    head = curl_slist_append(head, value);
+    g_free(value);
+    return head;
 }
 
 /* Downloads a URL specified in the request structure, returns
@@ -168,8 +206,6 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data, S
 void
 network_process_request (const updateJobPtr job)
 {
-	g_autoptr(SoupMessage)	msg = NULL;
-	SoupMessageHeaders	*request_headers;
 	g_autoptr(GUri)		sourceUri;
 	gboolean		do_not_track = FALSE, do_not_sell = false;
 	g_autofree gchar	*scheme = NULL, *user = NULL, *password = NULL, *auth_params = NULL, *host = NULL, *path = NULL, *query = NULL, *fragment = NULL;
@@ -193,13 +229,11 @@ network_process_request (const updateJobPtr job)
 			       &fragment,
 			       NULL);
 
-	/* Prepare the SoupMessage */
 	sourceUri = g_uri_build_with_user (
 		SOUP_HTTP_URI_FLAGS | G_URI_FLAGS_PARSE_RELAXED,
 		scheme,
-		// FIXME: allow passing user/password from above?
-		(!job->request->authValue && job->request->options && job->request->options->username)?job->request->options->username:NULL,
-		(!job->request->authValue && job->request->options && job->request->options->password)?job->request->options->password:NULL,
+                NULL,
+                NULL,
 		auth_params,
 		host,
 		port,
@@ -208,95 +242,110 @@ network_process_request (const updateJobPtr job)
 		fragment
 	);
 
-	if (sourceUri)
-		msg = soup_message_new_from_uri (job->request->postdata?"POST":"GET", sourceUri);
-	if (!msg) {
-		g_warning ("The request for %s could not be parsed!", job->request->source);
+	if (!sourceUri) {
+		g_warning ("The request for %s could not be parsed! (%s)", job->request->source, sourceUri);
 		return;
-	}
+        }
 
-	request_headers = soup_message_get_request_headers (msg);
+        struct curl_slist *header = NULL;
 
-	/* Set the postdata for the request */
-	if (job->request->postdata) {
-		g_autoptr(GBytes) postdata = g_bytes_new (job->request->postdata, strlen (job->request->postdata));
-		soup_message_set_request_body_from_bytes (msg,
-		                                          "application/x-www-form-urlencoded",
-		                                          postdata);
-	}
+        CURL *curl_handle = curl_easy_init ();
+        curl_easy_setopt (curl_handle, CURLOPT_URL, job->request->source);
+        curl_easy_setopt (curl_handle, CURLOPT_WRITEFUNCTION, network_write_callback);
+        curl_easy_setopt (curl_handle, CURLOPT_WRITEDATA, job->result);
+        curl_easy_setopt (curl_handle, CURLOPT_PRIVATE, job);
+        curl_easy_setopt (curl_handle, CURLOPT_AUTOREFERER, 1);
+        curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, network_get_user_agent());
+        curl_easy_setopt (curl_handle, CURLOPT_FOLLOWLOCATION,  TRUE);
+        curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
+        curl_easy_setopt (curl_handle, CURLOPT_TIMEOUT, 120);
 
-	/* Set the If-Modified-Since: header */
-	if (job->request->updateState && update_state_get_lastmodified (job->request->updateState)) {
-		g_autofree gchar *datestr;
-		g_autoptr(GDateTime) date;
+        if (job->request->authValue && job->request->options 
+            && job->request->options->username && job->request->options->password) {
+            gchar *authstr = g_strdup_printf ("%s:%s", job->request->options->username, job->request->options->password);
+            curl_easy_setopt (curl_handle, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+            curl_easy_setopt (curl_handle, CURLOPT_USERPWD, authstr);
+            g_free (authstr);
+        }
 
-		date = g_date_time_new_from_unix_utc (update_state_get_lastmodified (job->request->updateState));
-		datestr = soup_date_time_to_string (date, SOUP_DATE_HTTP);
-		soup_message_headers_append (request_headers,
-					     "If-Modified-Since",
-					     datestr);
-	}
+        /* Session cookies */
+        gchar *filename = common_create_config_filename ("session_cookies.txt");
+        curl_easy_setopt (curl_handle, CURLOPT_COOKIEJAR, filename);
+        g_free(filename);
 
-	/* Set the If-None-Match header */
-	if (job->request->updateState && update_state_get_etag (job->request->updateState)) {
-		soup_message_headers_append(request_headers,
-					    "If-None-Match",
-					    update_state_get_etag (job->request->updateState));
-	}
+        // user-agent
+        gchar *useragent = network_get_user_agent ();
+        curl_easy_setopt (curl_handle, CURLOPT_USERAGENT, useragent);
+        g_free(useragent);
 
-	/* Set the A-IM header */
-	if (job->request->updateState &&
-	    (update_state_get_lastmodified (job->request->updateState) ||
-	     update_state_get_etag (job->request->updateState))) {
-		soup_message_headers_append(request_headers,
-					    "A-IM",
-					    "feed");
-	}
+        /* Set the postdata for the request */
+        if (job->request->postdata)
+            curl_easy_setopt (curl_handle, CURLOPT_POSTFIELDS, job->request->postdata);     
 
-	/* Support HTTP content negotiation */
-	soup_message_headers_append (request_headers, "Accept", "application/atom+xml,application/xml;q=0.9,text/xml;q=0.8,*/*;q=0.7");
+        curl_easy_setopt (curl_handle, CURLOPT_FILETIME, 1L);
 
-	/* Add Authorization header */
-	if (job->request->authValue) {
-		soup_message_headers_append (request_headers, "Authorization",
-					     job->request->authValue);
-	}
+        /* Set the If-Modified-Since: header */
+        if (job->request->updateState && update_state_get_lastmodified (job->request->updateState)) {
+                curl_easy_setopt (curl_handle, CURLOPT_TIMECONDITION, CURL_TIMECOND_IFMODSINCE);
+                curl_easy_setopt (curl_handle, CURLOPT_TIMEVALUE, update_state_get_lastmodified (job->request->updateState));
+        }
 
-	/* Add requested cookies */
-	if (job->request->updateState && job->request->updateState->cookies) {
-		soup_message_headers_append (request_headers, "Cookie",
-		                             job->request->updateState->cookies);
-		soup_message_disable_feature (msg, SOUP_TYPE_COOKIE_JAR);
-	}
+        /* Set the If-None-Match header */
+        if (0 && job->request->updateState && update_state_get_etag (job->request->updateState)) {
+                header = slist_append(header, "If-None-Match", update_state_get_etag (job->request->updateState));
+        }
 
-	/* TODO: Right now we send the msg, and if it requires authentication and
-	 * we didn't provide one, the petition fails and when the job is processed
-	 * it sees it needs authentication and displays a dialog, and if credentials
-	 * are entered, it queues a new job with auth credentials. Instead of that,
-	 * we should probably handle authentication directly here, connecting the
-	 * msg to a callback in case of 401 (see soup_message_add_status_code_handler())
-	 * displaying the dialog ourselves, and requeing the msg if we get credentials */
+        /* Set the I-AM header */
+        if (job->request->updateState &&
+            (update_state_get_lastmodified (job->request->updateState) || update_state_get_etag (job->request->updateState))) {
+                header = curl_slist_append(header, "A-IM: feed");
+        }
 
-	/* Add DNT / GPC headers according to settings */
-	conf_get_bool_value (DO_NOT_TRACK, &do_not_track);
-	conf_get_bool_value (DO_NOT_SELL, &do_not_sell);
-	if (do_not_track)
-		soup_message_headers_append (request_headers, "DNT", "1");
-	if (do_not_track)
-		soup_message_headers_append (request_headers, "Sec-GPC", "1");
+        /* Support HTTP content negotiation */
+        header = curl_slist_append(header, "Accept: application/atom+xml,application/xml;q=0.9,text/xml;q=0.8,*/*;q=0.7");
 
-	/* Process permanent redirects (update feed location) */
-	soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, job);
-	soup_message_add_status_code_handler (msg, "got_body", 308, (GCallback) network_process_redirect_callback, job);
+        /* Add Authorization header */
+        if (job->request->authValue) {
+            header = slist_append(header, "Authorization", job->request->authValue);
+        }
 
-#ifdef notdef
-	/* If the feed has "dont use a proxy" selected, use 'session2' which is non-proxy */
-	if (job->request->options && job->request->options->dontUseProxy)
-		soup_session_send_and_read_async (session2, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
-	else
-		soup_session_send_and_read_async (session, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
-#endif 
-        network_process_callback((GObject *)session, NULL, job, msg);
+        /* Add requested cookies */
+        if (job->request->updateState && job->request->updateState->cookies) {
+                curl_easy_setopt (curl_handle, CURLOPT_COOKIE, update_state_get_cookies (job->request->updateState));
+        }
+
+        /* Add Do Not Track header according to settings */
+        do_not_track = conf_get_bool_value (DO_NOT_TRACK, &do_not_track);
+        if (do_not_track) {
+                header = curl_slist_append(header, "DNT: 1");
+                header = curl_slist_append(header, "Sec-GPC: 1");
+        }
+
+        /* Process permanent redirects (update feed location) */
+        // soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, job);
+        // soup_message_add_status_code_handler (msg, "got_body", 308, (GCallback) network_process_redirect_callback, job);
+
+        curl_easy_setopt(curl_handle, CURLOPT_HTTPHEADER, header);
+
+        gchar *dbgerr = g_malloc0 (CURL_ERROR_SIZE);
+        curl_easy_setopt(curl_handle, CURLOPT_ERRORBUFFER, dbgerr);
+
+        // FIX-ME  proxy://
+        // gsettings list-recursively org.gnome.system.proxy
+
+        CURLcode ccode;
+
+        if (CURLE_OK != (ccode = curl_easy_perform(curl_handle))) {
+		g_warning ("The request for %s could not performed (%d)", job->request->source, ccode);
+		debug (DEBUG_NET, "ERROR INFO: %s", dbgerr);
+                g_free(dbgerr);
+                curl_easy_cleanup(curl_handle);
+                return;
+        }
+        g_free(dbgerr);
+        curl_slist_free_all(header);
+
+        network_process_callback(curl_handle, job);
 }
 
 static void
@@ -346,14 +395,6 @@ network_get_user_agent (void)
 void
 network_deinit (void)
 {
-	g_cancellable_cancel (cancellable);
-	g_free (cancellable);
-
-	soup_session_abort (session);
-	soup_session_abort (session2);
-
-	g_free (session);
-	g_free (session2);
 }
 
 void
@@ -364,38 +405,17 @@ network_init (void)
 	gchar		*filename;
 	SoupLogger	*logger;
 
-	cancellable = g_cancellable_new ();
+        g_mutex_lock(&init_lock);
+        curl_global_init(CURL_GLOBAL_ALL);
+        g_mutex_unlock(&init_lock);
+
+        if (1 == get_init_count())
+            return;
+
+        set_init_count(1);
 
 	useragent = network_get_user_agent ();
 	debug (DEBUG_NET, "user-agent set to \"%s\"", useragent);
-
-	/* Session cookies */
-	filename = common_create_config_filename ("session_cookies.txt");
-	cookies = soup_cookie_jar_text_new (filename, TRUE);
-	g_free (filename);
-
-	/* Initialize libsoup */
-	session = soup_session_new_with_options ("user-agent", useragent,
-						 "timeout", 120,
-						 "idle-timeout", 30,
-						 NULL);
-	session2 = soup_session_new_with_options ("user-agent", useragent,
-						  "timeout", 120,
-						  "idle-timeout", 30,
-						  NULL);
-
-	soup_session_add_feature (session, SOUP_SESSION_FEATURE (cookies));
-	soup_session_add_feature (session2, SOUP_SESSION_FEATURE (cookies));
-
-	/* Only 'session' gets proxy, 'session2' is for non-proxy requests */
-	soup_session_set_proxy_resolver (session2, NULL);
-	network_set_soup_session_proxy (session, network_get_proxy_detect_mode());
-
-	/* Soup debugging */
-	if (debug_get_flags() & DEBUG_NET) {
-		logger = soup_logger_new (SOUP_LOGGER_LOG_HEADERS);
-		soup_session_add_feature (session, SOUP_SESSION_FEATURE (logger));
-	}
 
 	g_free (useragent);
 }
@@ -412,11 +432,6 @@ void
 network_set_proxy (ProxyDetectMode mode)
 {
 	proxymode = mode;
-
-	/* session will be NULL if we were called from conf_init() as that's called
-	 * before net_init() */
-	if (session)
-		network_set_soup_session_proxy (session, mode);
 
 	network_monitor_proxy_changed ();
 }
