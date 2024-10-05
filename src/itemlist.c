@@ -428,8 +428,15 @@ itemlist_hide_item (itemPtr item)
 	/* if the currently selected item should be removed we
 	   don't do it and set a flag to do it when unselecting */
 	if (itemlist->priv->selectedId != item->id) {
-		itemview_remove_item (item);
-		feed_list_view_update_node (item->nodeId);
+		gboolean keep_for_search_folder;
+		conf_get_bool_value (DEFER_DELETE_MODE, &keep_for_search_folder);
+		if (keep_for_search_folder) {
+			item->isHidden = TRUE;
+			itemview_update_item (item);
+		} else {
+			itemview_remove_item (item);
+			feed_list_view_update_node (item->nodeId);
+		}
 	} else {
 		/* update the item to show new state that forces
 		   later removal */
