@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-06-19 20:26+0200\n"
-"PO-Revision-Date: 2024-02-24 23:57+0200\n"
+"PO-Revision-Date: 2024-12-23 22:10+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
 "Language: sq\n"
@@ -143,13 +143,13 @@ msgid ""
 "Missing package manager '%s'. Cannot check nor install necessary "
 "dependencies!"
 msgstr ""
-"Mungon përgjegjës paketash '%s'. S’kontrollohen dot, as instalohen varësi të "
+"Mungon përgjegjës paketash “%s”. S’kontrollohen dot, as instalohen varësi të "
 "nevojshme!"
 
 #: ../plugins/plugin-installer.py:268
 #, python-format
 msgid "Missing package '%s'. Do you want to install it? (Will run '%s')"
-msgstr "Mungon paketa '%s'. Doni të instalohet? (Do të xhirohet '%s')"
+msgstr "Mungon paketa “%s”. Doni të instalohet? (Do të xhirohet “%s”)"
 
 #: ../plugins/plugin-installer.py:275
 #, python-format
@@ -182,7 +182,7 @@ msgstr "S’u arrit të kopjohej drejtori shtojcash (%s)!"
 #: ../plugins/plugin-installer.py:308
 #, python-format
 msgid "Failed to copy plugin .py file (%s)!"
-msgstr "S’u arrit të kopjohej kartelë .py  (%s)!"
+msgstr "S’u arrit të kopjohej kartelë .py (%s)!"
 
 #: ../plugins/plugin-installer.py:318
 #, python-format
@@ -216,7 +216,7 @@ msgstr "S’u arrit të aktivizohej shtojcë (%s)!"
 #: ../plugins/plugin-installer.py:356
 #, python-format
 msgid "Plugin '%s' is now installed. Ensure to restart Liferea!"
-msgstr "Shtojca '%s' tani është e instaluar. Mos harroni të rinisni Liferea-n!"
+msgstr "Shtojca “%s” tani është e instaluar. Mos harroni të rinisni Liferea-n!"
 
 #: ../plugins/plugin-installer.py:370
 #, python-format
@@ -226,12 +226,12 @@ msgstr "S’u arrit të çaktivizohej shtojcë (%s)!"
 #: ../plugins/plugin-installer.py:377 ../plugins/plugin-installer.py:397
 #, python-format
 msgid "Deleting '%s'"
-msgstr "Po fshihet '%s'"
+msgstr "Po fshihet “%s”"
 
 #: ../plugins/plugin-installer.py:380
 #, python-format
 msgid "Failed to remove directory '%s' (%s)!"
-msgstr "S’u arrit të hiqej drejtori '%s' (%s)!"
+msgstr "S’u arrit të hiqej drejtori “%s” (%s)!"
 
 #: ../plugins/plugin-installer.py:390
 msgid "Failed to remove .py file!"
@@ -252,7 +252,7 @@ msgstr "Shtojca u hoq. Ju lutemi, riniseni Liferea-n, që të hyjë në fuqi!"
 
 #: ../plugins/trayicon.py:168
 msgid "Liferea unread icon"
-msgstr ""
+msgstr "Ikonë të palexuarish Liferea"
 
 #: ../plugins/trayicon.py:186
 msgid "Show / Hide"
@@ -274,7 +274,7 @@ msgstr "Urdhri për shfletuesin dështoi: %s"
 #: ../src/browser.c:101 ../src/ui/liferea_shell.c:1140
 #, c-format
 msgid "Starting: \"%s\""
-msgstr "Po niset: \"%s\""
+msgstr "Po niset: “%s”"
 
 #. unauthorized
 #: ../src/comments.c:117
@@ -284,7 +284,7 @@ msgstr "Gabim Autorizimi"
 #: ../src/common.c:68
 #, c-format
 msgid "Cannot create cache directory \"%s\"!"
-msgstr "S’krijohet dot drejtoria fshehtinë \"%s\"!"
+msgstr "S’krijohet dot drejtoria fshehtinë “%s”!"
 
 #. translation hint: date format for today, reorder format codes as necessary
 #: ../src/date.c:135
@@ -314,7 +314,7 @@ msgstr "%b %d %Y"
 #: ../src/enclosure.c:200
 #, c-format
 msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "\"%s\" s’është kartelë e vlefshme formësimi lloji paketimesh!"
+msgstr "“%s” s’është kartelë e vlefshme formësimi lloji paketimesh!"
 
 #: ../src/enclosure.c:291
 msgid ""
@@ -350,22 +350,21 @@ msgstr "Gabim në riemërtimin e %s si %s: %s\n"
 #: ../src/export.c:376 ../src/export.c:378
 #, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
-msgstr "Gabim XML ndërsa lexohej kartelë OPML! S’u importua dot \"%s\"!"
+msgstr "Gabim XML ndërsa lexohej kartelë OPML! S’u importua dot “%s”!"
 
 #: ../src/export.c:384 ../src/export.c:386
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr ""
-"Dokument i zbrazët! Dokumenti OPML \"%s\" s’duhet të jetë i zbrazët, kur "
+"Dokument i zbrazët! Dokumenti OPML “%s” s’duhet të jetë i zbrazët, kur "
 "importohet."
 
 #: ../src/export.c:407 ../src/export.c:409
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr ""
-"\"%s\" s’është dokument OPML i vlefshëm! Liferea s’e importon dot këtë "
-"kartelë!"
+"“%s” s’është dokument OPML i vlefshëm! Liferea s’e importon dot këtë kartelë!"
 
 #: ../src/export.c:428
 msgid "Imported feed list"
@@ -427,7 +426,7 @@ msgstr "S’përtypi dot JSON-in e kthyer nga Google Reader API!"
 
 #: ../src/fl_sources/node_source.c:116
 msgid "Miniflux"
-msgstr ""
+msgstr "Miniflux"
 
 #: ../src/fl_sources/node_source.c:326
 msgid "No feed list source types found!"
@@ -441,7 +440,7 @@ msgstr "Lloj Burimi"
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
-"Hyrja për '%s' s’është plotësuar ende! Ju lutemi, prisni deri sa të bëhet "
+"Hyrja për “%s” s’është plotësuar ende! Ju lutemi, prisni deri sa të bëhet "
 "hyrja."
 
 #. FIXME: something is not perfect, because if you immediately
@@ -449,7 +448,7 @@ msgstr ""
 #: ../src/fl_sources/node_source.c:572
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
-msgstr "Pajtimi '%s' u shndërrua me sukses në prurje vendore!"
+msgstr "Pajtimi “%s” u shndërrua me sukses në prurje vendore!"
 
 #: ../src/fl_sources/opml_source.c:315
 msgid "Planet, BlogRoll, OPML"
@@ -501,7 +500,7 @@ msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr ""
-"Ky version i TinyTinyRSS-së nuk e mbulon heqjen e prurjeve. Përmirësojeni me "
+"Ky version i TinyTinyRSS-së s’e mbulon heqjen e prurjeve. Përmirësojeni me "
 "versionin %s ose të mëvonshëm!"
 
 #: ../src/fl_sources/ttrss_source.c:472
@@ -710,8 +709,6 @@ msgstr "Sajt"
 msgid "%b %d %H:%M"
 msgstr "%b %d %H:%M"
 
-#. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
-#. ========================================================================================================================================================================================
 #: ../src/rule.c:273
 msgid "Item"
 msgstr "Zë"
@@ -805,28 +802,28 @@ msgstr "Titull dosjeje mëmë"
 #: ../src/subscription.c:108
 #, c-format
 msgid "Subscription \"%s\" is already being updated!"
-msgstr "Pajtimi \"%s\" po përditësohet!"
+msgstr "Pajtimi “%s” po përditësohet!"
 
 #: ../src/subscription.c:113
 #, c-format
 msgid ""
 "The subscription \"%s\" was discontinued. Liferea won't update it anymore!"
-msgstr "Pajtimi \"%s\" është ndërprerë. Liferea s’do ta përditësojë më!"
+msgstr "Pajtimi “%s” është ndërprerë. Liferea s’do ta përditësojë më!"
 
 #: ../src/subscription.c:188
 #, c-format
 msgid "The URL of \"%s\" has changed permanently and was updated"
-msgstr "URL-ja e \"%s\" ndryshoi përfundimisht dhe është përditësuar"
+msgstr "URL-ja e “%s” ndryshoi përfundimisht dhe është përditësuar"
 
 #: ../src/subscription.c:194
 #, c-format
 msgid "\"%s\" has not changed since last update"
-msgstr "\"%s\" s’ka ndryshuar që prej përditësimit të fundit"
+msgstr "“%s” s’ka ndryshuar që prej përditësimit të fundit"
 
 #: ../src/subscription.c:207
 #, c-format
 msgid "\"%s\" is discontinued. Liferea won't updated it anymore!"
-msgstr "\"%s\" është ndërprerë. Liferea s’do ta përditësojë më!"
+msgstr "“%s” është ndërprerë. Liferea s’do ta përditësojë më!"
 
 #: ../src/subscription.c:221 ../src/subscription.c:297
 #, c-format
@@ -836,12 +833,12 @@ msgstr "Po përditësohet (%d / %d) …"
 #: ../src/subscription.c:299
 #, c-format
 msgid "Updating '%s'..."
-msgstr "Po përditësohet '%s'…"
+msgstr "Po përditësohet “%s”…"
 
 #: ../src/ui/auth_dialog.c:114
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
-msgstr "Jepni emër përdoruesi dhe fjalëkalim për \"%s\" (%s):"
+msgstr "Jepni emër përdoruesi dhe fjalëkalim për “%s” (%s):"
 
 #: ../src/ui/auth_dialog.c:116
 msgid "Unknown source"
@@ -890,12 +887,12 @@ msgstr "Po fshihet zëri"
 #: ../src/ui/feed_list_view.c:896
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
-msgstr "Jeni i sigurt se doni të fshihet \"%s\" dhe lënda e saj?"
+msgstr "Jeni i sigurt se doni të fshihet “%s” dhe lënda e saj?"
 
 #: ../src/ui/feed_list_view.c:896
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
-msgstr "Jeni i sigurt se doni të fshihet \"%s\"?"
+msgstr "Jeni i sigurt se doni të fshihet “%s”?"
 
 #: ../src/ui/feed_list_view.c:905 ../src/ui/feed_list_view.c:959
 #: ../src/ui/popup_menu.c:245
@@ -916,8 +913,8 @@ msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
-"Jeni i sigurt se doni të shtoni një pajtim të ri me URL \"%s\"? Ka tashmë "
-"një pajtim tjetër me të njëjtën URL (\"%s\")."
+"Jeni i sigurt se doni të shtoni një pajtim të ri me URL “%s”? Ka tashmë një "
+"pajtim tjetër me të njëjtën URL (“%s”)."
 
 #: ../src/ui/feed_list_view.c:960
 msgid "_Add"
@@ -993,7 +990,7 @@ msgstr "Referencë e Shpejtë"
 
 #: ../src/ui/liferea_shell.c:871
 msgid "FAQ"
-msgstr "FAQ"
+msgstr "PBR"
 
 #: ../src/ui/liferea_shell.c:1137
 #, c-format
@@ -1231,7 +1228,7 @@ msgstr "%s përfundoi me gjendje %d"
 #: ../src/update.c:405 ../src/update.c:630
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
-msgstr "Gabim: S’u hap dot kanali \"%s\""
+msgstr "Gabim: S’u hap dot kanali “%s”"
 
 #: ../src/update.c:409
 msgid "Error: Could not write temporary file!"
@@ -1241,12 +1238,12 @@ msgstr "Gabim: S’u shkrua dot kartelë e përkohshme!"
 #: ../src/update.c:661
 #, c-format
 msgid "Error: Could not open file \"%s\""
-msgstr "Gabim: S’u hap dot kartela \"%s\""
+msgstr "Gabim: S’u hap dot kartela “%s”"
 
 #: ../src/update.c:667
 #, c-format
 msgid "Error: There is no file \"%s\""
-msgstr "Gabim: S’ka kartelë \"%s\""
+msgstr "Gabim: S’ka kartelë “%s”"
 
 #: ../src/vfolder.c:53
 msgid "New Search Folder"
@@ -1336,7 +1333,7 @@ msgstr "Mirëfilltësim"
 #: ../glade/auth.ui.h:3
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s)"
-msgstr "Jepni emër përdoruesi dhe fjalëkalim për \"%s\" (%s):"
+msgstr "Jepni emër përdoruesi dhe fjalëkalim për “%s” (%s):"
 
 #: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
 msgid "User_name:"
@@ -1835,13 +1832,12 @@ msgid "Privacy Settings"
 msgstr "Rregullime Privatësie"
 
 #: ../glade/prefs.ui.h:52
-#, fuzzy
 msgid "Tell websites that I do _not want to be tracked."
 msgstr "Thuaju sajteve se _nuk dua të gjurmohem."
 
 #: ../glade/prefs.ui.h:53
 msgid "Tell websites not to _sell or share my data."
-msgstr ""
+msgstr "Thuaji sajteve të mos _shesin, ose ndajnë me të tjerë të dhënat e mia."
 
 #: ../glade/prefs.ui.h:54
 msgid "_Intelligent Tracking Prevention. "
@@ -1880,9 +1876,8 @@ msgid "Privacy"
 msgstr "Privatësi"
 
 #: ../glade/prefs.ui.h:60
-#, fuzzy
 msgid "Downloading Content"
-msgstr "Po shk_arkohet Tani"
+msgstr "Shkarkim Lënde"
 
 #: ../glade/prefs.ui.h:61
 msgid "_Download using"
@@ -2308,111 +2303,3 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Dosje Kërkimesh:"
-
-#~ msgid ""
-#~ "Your version of WebKitGTK+ doesn't support changing the proxy settings "
-#~ "from Liferea. The system's default proxy settings will be used."
-#~ msgstr ""
-#~ "Versioni juaj i WebKitGTK+ nuk mbulon ndryshim rregullimesh ndërmjetësi "
-#~ "që nga Liferea. Do të përdoren rregullimet parazgjedhje të sistemit për "
-#~ "ndërmjetës."
-
-#~ msgid "Unable to resolve destination host name"
-#~ msgstr "S’arrihet të ftillohet emër strehe vendmbërritje"
-
-#~ msgid "Unable to resolve proxy host name"
-#~ msgstr "S’arrihet të ftillohet emër strehe ndërmjetësi"
-
-#~ msgid "Unable to connect to remote host"
-#~ msgstr "S’arrihet të lidhet me strehë të largët"
-
-#~ msgid "Unable to connect to proxy"
-#~ msgstr "S’arrihet të lidhet me ndërmjetësin"
-
-#~ msgid ""
-#~ "SSL/TLS negotiation failed. Possible outdated or unsupported encryption "
-#~ "algorithm. Check your operating system settings."
-#~ msgstr ""
-#~ "Tratativa SSL/TLS dështoi. Ka gjasa të bëhet fjalë për algoritëm të "
-#~ "vjetruar, ose të pambuluar fshehtëzimi. Shihni rregullimet e sistemit "
-#~ "tuaj operativ."
-
-#~ msgid "There was an internal error in the update process"
-#~ msgstr "Pati një gabim të brendshëm te procesi i përditësimit"
-
-#~ msgid "Feed not available: Server requested unsupported redirection!"
-#~ msgstr "S’ka prurje: Shërbyesi kërkoi ridrejtim të pambuluar!"
-
-#~ msgid "Client Error"
-#~ msgstr "Gabim Klienti"
-
-#~ msgid "Server Error"
-#~ msgstr "Gabim Shërbyesi"
-
-#~ msgid "Attachments"
-#~ msgstr "Bashkëngjitje"
-
-#~ msgid " Bytes"
-#~ msgstr " Bajte"
-
-#~ msgid "kB"
-#~ msgstr "kB"
-
-#~ msgid "MB"
-#~ msgstr "MB"
-
-#~ msgid "GB"
-#~ msgstr "GB"
-
-#, c-format
-#~ msgid "%d%s"
-#~ msgstr "%d%s"
-
-#, c-format
-#~ msgid "%d attachment"
-#~ msgid_plural "%d attachments"
-#~ msgstr[0] "%d bashkëngjitje"
-#~ msgstr[1] "%d bashkëngjitje"
-
-#, c-format
-#~ msgid "File Extension .%s"
-#~ msgstr "Zgjatim Kartele .%s"
-
-#~ msgid "Open Enclosure..."
-#~ msgstr "Hapni Paketimin…"
-
-#~ msgid "Save As..."
-#~ msgstr "Ruajeni Si…"
-
-#~ msgid "Copy Link Location"
-#~ msgstr "_Kopjo Vendndodhje Lidhjeje"
-
-#~ msgid "Open Enclosure"
-#~ msgstr "Hap Paketimin"
-
-#~ msgid "Open an enclosure of type:"
-#~ msgstr "Hapni një paketim të llojit:"
-
-#~ msgid ""
-#~ "_What should Liferea do with this enclosure? Please enter the command you "
-#~ "want to be executed below. The enclosures URL will be supplied as an "
-#~ "argument for this command:"
-#~ msgstr ""
-#~ "_Ç’duhet të bëjë Liferea me këtë paketim? Ju lutemi, jepni më poshtë "
-#~ "urdhrin që doni të përmbushet. URL-ja e paketimeve do të përdoret si "
-#~ "argument për këtë urdhër:"
-
-#~ msgid "_Browse"
-#~ msgstr "_Shfletoni"
-
-#~ msgid "_Do this automatically for enclosures like this from now on."
-#~ msgstr "_Tani e tutje, bëje këtë vetvetiu për paketime si kjo."
-
-#~ msgid "Downloading Enclosures"
-#~ msgstr "Shkarkim Paketimesh"
-
-#~ msgid "Opening Enclosures"
-#~ msgstr "Hapje Paketimesh"
-
-#~ msgid "Enclosures"
-#~ msgstr "Paketime"
