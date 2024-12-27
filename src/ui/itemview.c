@@ -375,7 +375,6 @@ itemview_set_layout (nodeViewType newMode)
 
 	/* Prepare widgets for layout */
 	g_assert (itemview->htmlview);
-	liferea_browser_clear (itemview->htmlview);
 
 	debug (DEBUG_GUI, "Setting item list layout mode: %d (auto=%d)", effectiveMode, itemview->autoLayout);
 
