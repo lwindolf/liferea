@@ -75,7 +75,6 @@ node_finalize (GObject *obj)
 	g_free (node->iconFile);
 	g_free (node->title);
 	g_free (node->id);
-	g_free (node);
 
 	G_OBJECT_CLASS (node_parent_class)->finalize (obj);
 }
