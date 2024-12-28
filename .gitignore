@@ -55,6 +55,7 @@ src/tests/parse_html
 src/tests/parse_rss
 src/tests/parse_xml
 src/tests/social
+src/tests/update
 xslt/*.xml
 org.gnome.liferea.gschema.valid
 stamp-h1

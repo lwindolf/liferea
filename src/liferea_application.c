@@ -160,11 +160,10 @@ on_app_startup (GApplication *gapp, gpointer user_data)
 	debug_set_flags (app->debug_flags);
 
 	/* Configuration necessary for network options, so it
-	   has to be initialized before update_init() */
+	   has to be initialized before network_init() */
 	conf_init ();
 
-	/* We need to do the network initialization here to allow
-	   network-manager to be setup before gtk_init() */
+	/* Setup update queue handling */
 	update_init ();
 
 	/* order is important! */
@@ -181,7 +180,6 @@ static void
 on_app_shutdown (GApplication *app, gpointer user_data)
 {
 	GList *list;
-
 
 	/* order is important ! */
 	update_deinit ();

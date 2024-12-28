@@ -137,7 +137,7 @@ default_source_add_subscription (Node *node, subscriptionPtr subscription)
 	node_set_subscription (child, subscription);	/* feed subscription type is implicit */
 	feedlist_node_added (child);
 	
-	subscription_update (subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+	subscription_update (subscription, UPDATE_REQUEST_RESET_TITLE | UPDATE_REQUEST_PRIORITY_HIGH);
 	return child;
 }
 

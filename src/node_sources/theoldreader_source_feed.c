@@ -147,7 +147,7 @@ theoldreader_source_item_retrieve_status (const xmlNodePtr entry, subscriptionPt
 }
 
 static void
-theoldreader_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+theoldreader_feed_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult* const result, updateFlags flags)
 {
 	gchar 	*id;
 

@@ -55,7 +55,7 @@ void favicon_remove_from_cache (const gchar *id);
  * Returns: TRUE on success
  */
 gboolean
-favicon_save_from_data (const struct updateResult * const result, const gchar *id);
+favicon_save_from_data (const UpdateResult * const result, const gchar *id);
 
 /**
  * favicon_get_urls: (skip)

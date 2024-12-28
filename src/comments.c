@@ -41,12 +41,12 @@ static GHashTable	*commentFeeds = NULL;
 
 typedef struct commentFeed
 {
-	gulong		itemId;			/**< parent item id */
-	gchar		*id;			/**< id of the items comments feed (or NULL) */
-	gchar		*error;			/**< description of error if comments download failed (or NULL)*/
+	gulong		itemId;			/*<< parent item id */
+	gchar		*id;			/*<< id of the items comments feed (or NULL) */
+	gchar		*error;			/*<< description of error if comments download failed (or NULL)*/
 
-	struct updateJob *updateJob;		/**< update job structure used when downloading comments */
-	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
+	UpdateJob	*updateJob;		/*<< update job structure used when downloading comments */
+	updateStatePtr	updateState;		/*<< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
 } *commentFeedPtr;
 
 static void
@@ -92,7 +92,7 @@ comment_feed_from_id (const gchar *id)
 }
 
 static void
-comments_process_update_result (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+comments_process_update_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
 {
 	feedParserCtxtPtr	ctxt;
 	commentFeedPtr		commentFeed = (commentFeedPtr)user_data;
@@ -220,7 +220,7 @@ comments_refresh (itemPtr item)
 			NULL	// FIXME: use copy of parent subscription options
 		);
 
-		commentFeed->updateJob = update_execute_request (commentFeed, request, comments_process_update_result, commentFeed, FEED_REQ_PRIORITY_HIGH | FEED_REQ_NO_FEED);
+		commentFeed->updateJob = update_job_new (commentFeed, request, comments_process_update_result, commentFeed, UPDATE_REQUEST_PRIORITY_HIGH | UPDATE_REQUEST_NO_FEED);
 
 		/* Item view refresh to change link from "Update" to "Updating..." */
 		itemview_update_item (item);

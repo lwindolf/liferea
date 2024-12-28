@@ -2,7 +2,7 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS     = parse_html favicon parse_date parse_rss parse_xml social
+TEST_PROGS     = parse_html favicon parse_date parse_rss parse_xml social update
 MEMCHECK_PROGS = $(TEST_PROGS)
 
 test: $(TEST_PROGS)
@@ -69,6 +69,8 @@ favicon_LDADD = \
 	../subscription.o \
 	../subscription_icon.o \
 	../update.o \
+	../update_job.o \
+	../update_job_queue.o \
 	../vfolder_loader.o \
 	../xml.o \
 	$(PACKAGE_LIBS) \
@@ -98,3 +100,6 @@ parse_xml_LDADD = $(favicon_LDADD)
 
 social_CFLAGS = $(AM_CPPFLAGS)
 social_LDADD = $(favicon_LDADD)
+
+update_CFLAGS = $(AM_CPPFLAGS)
+update_LDADD = $(favicon_LDADD)

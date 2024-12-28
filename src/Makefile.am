@@ -57,6 +57,8 @@ liferea_SOURCES = \
 	subscription_icon.c subscription_icon.h \
 	subscription_type.h \
 	update.c update.h \
+	update_job.c update_job.h \
+	update_job_queue.c update_job_queue.h \
 	main.c \
 	vfolder_loader.c vfolder_loader.h \
 	xml.c xml.h
@@ -111,6 +113,8 @@ Liferea_3_0_gir_FILES = \
 	social.c social.h \
 	subscription_type.h \
 	update.h \
+	update_job.h \
+	update_job_queue.h \
 	ui/browser_tabs.c ui/browser_tabs.h \
 	ui/icons.c ui/icons.h \
 	ui/itemview.c ui/itemview.h \

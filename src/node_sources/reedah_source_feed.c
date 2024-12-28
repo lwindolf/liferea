@@ -98,7 +98,7 @@ reedah_item_callback (JsonNode *node, itemPtr item)
 }
 
 static void
-reedah_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+reedah_feed_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult* const result, updateFlags flags)
 {
 	if (result->data && result->httpstatus == 200) {
 		GList		*items = NULL;

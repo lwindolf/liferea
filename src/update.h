@@ -1,5 +1,5 @@
 /**
- * @file update.h  generic update request and state processing
+ * @file update_request.h  generic update request processing
  *
  * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -31,42 +31,19 @@
    In the latter case it can be cancelled at any time. If the processing
    of a update request is done the request callback will be triggered.
 
-   A request can have an update state assigned. This is to support
-   the different bandwidth saving methods. For caching along feeds
-   there are XML (de)serialization functions for the update state.
+   A request always has an update state. This is to support
+   the different bandwidth saving methods. Update states kept per
+   session in the Node objects and are persisted in the database.
 
-   For proxy support and authentication an update request can have
-   update options assigned.
-
-   Finally the request system has an on/offline state. When offline
-   no new network requests are accepted. Filesystem and internal
-   requests are still processed. Currently running downloads are
-   not terminated. */
+   For proxy support and authentication an update request can set
+   optional update options.
+*/
 
 typedef enum {
-	REQUEST_STATE_INITIALIZED = 0,	/*<< request struct newly created */
-	REQUEST_STATE_PENDING,		/*<< request added to download queue */
-	REQUEST_STATE_PROCESSING,	/*<< request currently in download */
-	REQUEST_STATE_DEQUEUE,		/*<< download finished, callback processing */
-	REQUEST_STATE_FINISHED		/*<< request processing finished */
-} request_state;
-
-struct updateJob;
-struct updateResult;
-
-typedef guint32 updateFlags;
-
-/**
- * update_result_cb: (skip)
- * @param result	the update result
- * @param user_data	update processing callback data
- * @param flags		update processing flags
- *
- * Generic update result processing callback type.
- * This callback must not free the result structure. It will be
- * free'd by the download system after the callback returns.
- */
-typedef void (*update_result_cb) (const struct updateResult * const result, gpointer user_data, updateFlags flags);
+	UPDATE_REQUEST_RESET_TITLE   = (1<<0),	/*<< Feed's title should be reset to default upon update */
+	UPDATE_REQUEST_PRIORITY_HIGH = (1<<1),	/*<< set to signal that this is an important user triggered request */
+	UPDATE_REQUEST_NO_FEED       = (1<<2)	/*<< Requesting something not a feed (just for statistics) */
+} updateFlags;
 
 /* defines update options to be passed to an update request */
 typedef struct updateOptions {
@@ -108,20 +85,6 @@ struct _UpdateRequest {
 	gboolean	allowCommands;	/*<< Allow this requests to run commands */
 };
 
-/* stores results of the processing of an update request */
-typedef struct updateResult {
-	gchar 		*source;	/*<< Location of the downloaded document, in case of redirects different from
-					     the one given along with the update request */
-
-	int		httpstatus;	/*<< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
-	gchar		*data;		/*<< Downloaded data */
-	size_t		size;		/*<< Size of downloaded data */
-	gchar		*contentType;	/*<< Content type of received data */
-	gchar		*filterErrors;	/*<< Error messages from filter execution */
-
-	updateStatePtr	updateState;	/*<< New update state of the requested object (etags, last modified...) */
-} *updateResultPtr;
-
 /* structure to store state fo running command feeds */
 typedef struct updateCommandState {
 	GPid		pid;		/*<< child PID */
@@ -131,19 +94,6 @@ typedef struct updateCommandState {
 	gint		fd;		/*<< fd for child stdout */
 	GIOChannel	*stdout_ch;	/*<< child stdout as a channel */
 } updateCommandState;
-
-
-/* structure describing an HTTP update job */
-typedef struct updateJob {
-	UpdateRequest		*request;
-	updateResultPtr		result;
-	gpointer		owner;		/*<< owner of this job (used for matching when cancelling) */
-	update_result_cb	callback;	/*<< result processing callback */
-	gpointer		user_data;	/*<< result processing user data */
-	updateFlags		flags;		/*<< request and result processing flags */
-	gint			state;		/*<< State of the job (enum request_state) */
-	updateCommandState	cmd;		/*<< values for command feeds */
-} *updateJobPtr;
 
 /**
  * update_state_new: (skip)
@@ -198,23 +148,6 @@ updateOptionsPtr update_options_copy (updateOptionsPtr options);
 void update_options_free (updateOptionsPtr options);
 
 /**
- * update_init: (skip)
- * 
- * Initialises the download subsystem.
- *
- * Must be called before gtk_init() and after thread initialization
- * as threads are used and for proper network-manager initialization.
- */
-void update_init (void);
-
-/**
- * update_deinit: (skip)
- * 
- * Stops all update processing and frees all used memory.
- */
-void update_deinit (void);
-
-/**
  * update_request_new:
  * @source:	URI to download
  * @state:	a previous update state of the requested URL (or NULL) will not be owned, but copied!
@@ -261,80 +194,41 @@ void update_request_set_auth_value (UpdateRequest *request, const gchar* authVal
  */
 void update_request_allow_commands (UpdateRequest *request, gboolean allowCommands);
 
+
+#define UPDATE_RESULT_TYPE (update_result_get_type ())
+G_DECLARE_FINAL_TYPE (UpdateResult, update_result, UPDATE, RESULT, GObject)
+
+struct _UpdateResult {
+	GObject parent_instance;
+
+	gchar 		*source;	/*<< Location of the downloaded document, in case of redirects different from
+						 the one given along with the update request */
+	int		httpstatus;	/*<< HTTP status. Set to 200 for any valid command, file access, etc.... Set to 0 for unknown */
+	gchar		*data;		/*<< Downloaded data */
+	size_t		size;		/*<< Size of downloaded data */
+	gchar		*contentType;	/*<< Content type of received data */
+	gchar		*filterErrors;	/*<< Error messages from filter execution */
+	updateStatePtr	updateState;	/*<< New update state of the requested object (etags, last modified...) */
+};
+
 /**
- * update_result_new: (skip)
- * 
- * Creates a new update result for the given update request.
+ * update_result_cb:
+ * @result:	the update result
+ * @user_data:	update processing callback data
+ * @flags:	update processing flags
  *
- * Returns: update result (to be free'd using update_result_free())
+ * Generic update result processing callback type.
+ * This callback must not free the result structure. It will be
+ * free'd by the download system after the callback returns.
  */
-updateResultPtr update_result_new (void);
+typedef void (*update_result_cb) (const UpdateResult * const result, gpointer user_data, updateFlags flags);
 
-/**
- * update_result_free:
- * @result:	the result
- * 
- * Free's the given update result.
- */
-void update_result_free (updateResultPtr result);
-
-/**
- * update_execute_request: (skip)
- * @owner:		request owner (allows cancelling, can be NULL)
- * @request:	the request to execute
- * @callback:	result processing callback
- * @user_data:	result processing callback parameters (or NULL)
- * @flags:		request/result processing flags
- * 
- * Executes the given request. The request might be
- * delayed if other requests are pending.
- *
- * Returns: the new update job
- */
-updateJobPtr update_execute_request (gpointer owner,
-                                     UpdateRequest *request,
-                                     update_result_cb callback,
-                                     gpointer user_data,
-                                     updateFlags flags);
-
-/* Update job handling */
-
-/**
- * update_process_finished_job: (skip)
- * @job:	the update job
- * 
- * To be called when an update job has been executed. Triggers
- * the job specific result processing callback.
- */
-void update_process_finished_job (updateJobPtr job);
-
-/**
- * update_job_cancel_by_owner: (skip)
- * @owner:	pointer passed in update_request_new()
- * 
- * Cancel all pending requests for the given owner.
- */
-void update_job_cancel_by_owner (gpointer owner);
-
-/**
- * update_job_get_state:
- * @returns update job state (see enum request_state)
- * 
- * Method to query the update state of currently processed jobs.
- * 
- * Returns: enum state
- */
-gint update_job_get_state (updateJobPtr job);
-
-/**
-* update_jobs_get_count:
-* @count:	gint ref to pass back nr of subscriptions in update
-* @maxcount:	gint ref to pass back max nr of subscriptions in update
-*
-* Query current count and max count of subscriptions in update queue
-*/
-void update_jobs_get_count (guint *count, guint *maxcount);
+#define update_result_new() UPDATE_RESULT (g_object_new (UPDATE_RESULT_TYPE, NULL))
 
 G_END_DECLS
+
+// for convenience (after splitting up the code)
+#include "update_job.h"
+#include "update_job_queue.h"
 
 #endif

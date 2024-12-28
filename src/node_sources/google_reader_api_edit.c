@@ -146,7 +146,7 @@ google_reader_api_action_context_free (GoogleReaderActionCtxtPtr ctxt)
 }
 
 static void
-google_reader_api_edit_action_complete (const struct updateResult* const result, gpointer userdata, updateFlags flags)
+google_reader_api_edit_action_complete (const UpdateResult* const result, gpointer userdata, updateFlags flags)
 {
 	GoogleReaderActionCtxtPtr	editCtxt = (GoogleReaderActionCtxtPtr) userdata;
 	GoogleReaderActionPtr		action = editCtxt->action;
@@ -301,7 +301,7 @@ google_reader_api_edit_tag (GoogleReaderActionPtr action, UpdateRequest *request
 }
 
 static void
-google_reader_api_edit_token_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+google_reader_api_edit_token_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	Node			*node;
 	const gchar		*token;
@@ -348,7 +348,7 @@ google_reader_api_edit_token_cb (const struct updateResult * const result, gpoin
 		google_reader_api_edit_label (action, request, token);
 
 	debug (DEBUG_UPDATE, "google_reader_api: postdata [%s]", request->postdata);
-	update_execute_request (node->source, request, google_reader_api_edit_action_complete, google_reader_api_action_context_new(node->source, action), FEED_REQ_NO_FEED);
+	update_job_new (node->source, request, google_reader_api_edit_action_complete, google_reader_api_action_context_new(node->source, action), UPDATE_REQUEST_NO_FEED);
 
 	action = g_queue_pop_head (node->source->actionQueue);
 }
@@ -375,8 +375,8 @@ google_reader_api_edit_process (nodeSourcePtr source)
 	);
 	update_request_set_auth_value(request, source->authToken);
 
-	update_execute_request (source, request, google_reader_api_edit_token_cb,
-	                        g_strdup(source->root->id), FEED_REQ_NO_FEED);
+	update_job_new (source, request, google_reader_api_edit_token_cb,
+	                        g_strdup(source->root->id), UPDATE_REQUEST_NO_FEED);
 }
 
 static void

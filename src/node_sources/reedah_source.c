@@ -88,7 +88,7 @@ reedah_source_free (ReedahSourcePtr source)
 }
 
 static void
-reedah_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+reedah_source_login_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	Node		*node = (Node *) userdata;
 	gchar		*tmp = NULL;
@@ -159,7 +159,7 @@ reedah_source_login (ReedahSourcePtr source, guint32 flags)
 
 	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
 
-	update_execute_request (source, request, reedah_source_login_cb, source->root, flags | FEED_REQ_NO_FEED);
+	update_job_new (source, request, reedah_source_login_cb, source->root, flags | UPDATE_REQUEST_NO_FEED);
 }
 
 /* node source type implementation */

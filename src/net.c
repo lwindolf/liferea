@@ -46,22 +46,23 @@ static ProxyDetectMode proxymode = PROXY_DETECT_MODE_AUTO;
 static void
 network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 {
-	updateJobPtr	job = (updateJobPtr)user_data;
-	const gchar	*location = NULL;
-	GUri		*newuri;
+	UpdateJob *	job = (UpdateJob *)user_data;
 	SoupStatus	status = soup_message_get_status (msg);
 
 	if (SOUP_STATUS_MOVED_PERMANENTLY == status || SOUP_STATUS_PERMANENT_REDIRECT == status) {
-		if (g_uri_is_valid (location, G_URI_FLAGS_PARSE_RELAXED, NULL)) {
-			location = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Location");
-			newuri = g_uri_parse (location, G_URI_FLAGS_PARSE_RELAXED, NULL);
+		const gchar *location = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Location");
+		if (location && g_uri_is_valid (location, G_URI_FLAGS_PARSE_RELAXED, NULL)) {
+			GUri *newuri = g_uri_parse (location, G_URI_FLAGS_PARSE_RELAXED, NULL);
 
 			if (!soup_uri_equal (newuri, soup_message_get_uri (msg))) {
-				job->result->httpstatus = status;
+				g_free (job->result->source);
 				job->result->source = g_uri_to_string_partial (newuri, 0);
+				job->result->httpstatus = status;
 				debug (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"",
 				       job->request->source, job->result->source);
 			}
+
+			g_uri_unref (newuri);
 		}
 	}
 }
@@ -71,7 +72,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 {
 	SoupSession		*session = SOUP_SESSION (obj);
 	SoupMessage		*msg;
-	updateJobPtr		job = (updateJobPtr)user_data;
+	UpdateJob *		job = (UpdateJob *)user_data;
 	GDateTime		*last_modified;
 	const gchar		*tmp = NULL;
 	GHashTable		*params;
@@ -86,10 +87,15 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 
 	job->result->source = g_uri_to_string_partial (soup_message_get_uri (msg), 0);
 	job->result->httpstatus = soup_message_get_status (msg);
-	body_size = g_bytes_get_size (body);
-	job->result->data = g_malloc(1 + body_size);
-	memmove(job->result->data, g_bytes_get_data (body, &job->result->size), body_size);
-	*(job->result->data + job->result->size) = 0;
+	if (body) {
+		body_size = g_bytes_get_size (body);
+		job->result->data = g_malloc(1 + body_size);
+		memmove(job->result->data, g_bytes_get_data (body, &job->result->size), body_size);
+		*(job->result->data + job->result->size) = 0;
+	} else {
+		job->result->data = NULL;
+		job->result->size = 0;
+	}
 
 	/* keep some request headers for revalidated responses */
 	revalidated = (304 == job->result->httpstatus);
@@ -152,8 +158,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 		soup_header_free_param_list (params);
 	}
 
-	update_process_finished_job (job);
-	g_bytes_unref (body);
+	update_job_finished (job);
 }
 
 /* Downloads a URL specified in the request structure, returns
@@ -164,7 +169,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
    last modified string.
  */
 void
-network_process_request (const updateJobPtr job)
+network_process_request (const UpdateJob *job)
 {
 	g_autoptr(SoupMessage)	msg = NULL;
 	SoupMessageHeaders	*request_headers;
@@ -342,11 +347,11 @@ void
 network_deinit (void)
 {
 	g_cancellable_cancel (cancellable);
-	g_free (cancellable);
 
 	soup_session_abort (session);
 	soup_session_abort (session2);
 
+	g_free (cancellable);
 	g_free (session);
 	g_free (session2);
 }
@@ -371,20 +376,20 @@ network_init (void)
 
 	/* Initialize libsoup */
 	session = soup_session_new_with_options ("user-agent", useragent,
-						 "timeout", 120,
-						 "idle-timeout", 30,
-						 NULL);
+                                                 "timeout", 120,
+                                                 "idle-timeout", 30,
+                                                 NULL);
 	session2 = soup_session_new_with_options ("user-agent", useragent,
-						  "timeout", 120,
-						  "idle-timeout", 30,
-						  NULL);
+                                                  "timeout", 120,
+                                                  "idle-timeout", 30,
+                                                  NULL);
 
 	soup_session_add_feature (session, SOUP_SESSION_FEATURE (cookies));
 	soup_session_add_feature (session2, SOUP_SESSION_FEATURE (cookies));
 
 	/* Only 'session' gets proxy, 'session2' is for non-proxy requests */
 	soup_session_set_proxy_resolver (session2, NULL);
-	network_set_soup_session_proxy (session, network_get_proxy_detect_mode());
+	network_set_soup_session_proxy (session, network_get_proxy_detect_mode ());
 
 	/* Soup debugging */
 	if (debug_get_flags() & DEBUG_NET) {

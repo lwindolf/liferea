@@ -1,6 +1,21 @@
 To be released
 
-	* GObject refactoring nodePtr -> Node to allow plugins modifying the feed list.
+	Version 1.15.9
+
+	* #1391: GObject refactoring nodePtr -> Node, updateJobPtr -> UpdateJob 
+	  to allow plugins modifying the feed list.
+	  (Lars Windolf)
+
+	* Fixes HTTP redirects not working
+	  (Lars Windolf)
+
+	* Fixes memory leaks in network callbacks
+	  (Lars Windolf)
+	
+	* Fixes unnecessary LifereaBrowser clearing on layout change
+	  (Lars Windolf)
+
+	* New unit tests for update handling code
 	  (Lars Windolf)
 
 

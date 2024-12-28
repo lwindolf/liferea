@@ -466,7 +466,7 @@ node_source_find_or_create_folder (Node *parent, const gchar *id, const gchar *n
 		node_set_title (folder, name);
 		node_set_parent (folder, parent, -1);
 		feedlist_node_imported (folder);
-		subscription_update (folder->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+		subscription_update (folder->subscription, UPDATE_REQUEST_RESET_TITLE | UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 
 	return folder;

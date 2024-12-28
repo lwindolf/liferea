@@ -98,7 +98,7 @@ google_source_feed_item_cb (JsonNode *node, itemPtr item)
 }
 
 static void
-google_source_feed_subscription_process_update_result (const struct updateResult* const result, gpointer user_data, updateFlags flags)
+google_source_feed_subscription_process_update_result (const UpdateResult* const result, gpointer user_data, updateFlags flags)
 {
 	subscriptionPtr	subscription = (subscriptionPtr)user_data;
 	
@@ -161,7 +161,7 @@ google_source_feed_subscription_process_update_result (const struct updateResult
 }
 
 static void
-google_source_feed_subscription_process_ids_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+google_source_feed_subscription_process_ids_result (subscriptionPtr subscription, const UpdateResult* const result, updateFlags flags)
 {
 	JsonParser	*parser;
 	Node		*root = node_source_root_from_node (subscription->node);
@@ -232,7 +232,7 @@ google_source_feed_subscription_process_ids_result (subscriptionPtr subscription
 			// Redundant to the token already passed in postdata, but FreshRSS fails without it
 			update_request_set_auth_value (request, root->source->authToken);
 
-			(void) update_execute_request (root->subscription,
+			(void) update_job_new (root->subscription,
 			                               request,
 			                               google_source_feed_subscription_process_update_result,
        			                               subscription,

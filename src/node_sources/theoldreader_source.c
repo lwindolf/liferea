@@ -89,7 +89,7 @@ theoldreader_source_free (TheOldReaderSourcePtr source)
 }
 
 static void
-theoldreader_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+theoldreader_source_login_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	Node			*node = (Node *) userdata;
 	gchar			*tmp = NULL;
@@ -161,7 +161,7 @@ theoldreader_source_login (TheOldReaderSourcePtr source, guint32 flags)
 
 	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
 
-	update_execute_request (source, request, theoldreader_source_login_cb, source->root, flags | FEED_REQ_NO_FEED);
+	update_job_new (source, request, theoldreader_source_login_cb, source->root, flags | UPDATE_REQUEST_NO_FEED);
 }
 
 /* node source type implementation */

@@ -474,7 +474,7 @@ liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location)
 
 /* Asynchronously download website for loading into Readability.js */
 static void
-liferea_browser_load_reader_content_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+liferea_browser_load_reader_content_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	LifereaBrowser *browser = LIFEREA_BROWSER (userdata);
 	gchar *html;
@@ -517,7 +517,7 @@ liferea_browser_load_reader_content (LifereaBrowser *browser, const gchar *url)
 		NULL, 	// No update state needed? How do we prevent an endless redirection loop?
 		NULL 	// no auth needed/supported here
 	);
-	update_execute_request (browser, request, liferea_browser_load_reader_content_cb, browser, FEED_REQ_NO_FEED);
+	update_job_new (browser, request, liferea_browser_load_reader_content_cb, browser, UPDATE_REQUEST_NO_FEED);
 }
 
 /* Render layout for presenting an external website in reader mode */

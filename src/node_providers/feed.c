@@ -231,7 +231,7 @@ feed_get_max_item_count (Node *node)
 // HTML5 Headline enrichment
 
 static void
-feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags) {
+feed_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags) {
 	itemPtr item;
 	gchar	*article;
 
@@ -271,7 +271,7 @@ feed_enrich_item_cb (const struct updateResult * const result, gpointer userdata
 				NULL 	// Explicitely do not the feed's proxy/auth options to 3rd parties like Google (AMP)!
 			);
 
-			update_execute_request (NULL, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), FEED_REQ_NO_FEED);
+			update_job_new (NULL, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), UPDATE_REQUEST_NO_FEED);
 
 			g_free (ampurl);
 		}
@@ -306,13 +306,13 @@ feed_enrich_item (subscriptionPtr subscription, itemPtr item)
 		subscription->updateOptions	// Pass options of parent feed (e.g. password, proxy...)
 	);
 
-	update_execute_request (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), FEED_REQ_NO_FEED);
+	update_job_new (subscription, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), UPDATE_REQUEST_NO_FEED);
 }
 
 /* implementation of subscription type interface */
 
 static void
-feed_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+feed_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
 {
 	feedParserCtxtPtr	ctxt;
 	Node			*node = subscription->node;
@@ -343,7 +343,7 @@ feed_process_update_result (subscriptionPtr subscription, const struct updateRes
 		itemset_free (itemSet);
 
 		/* restore user defined properties if necessary */
-		if ((flags & FEED_REQ_RESET_TITLE) && ctxt->title)
+		if ((flags & UPDATE_REQUEST_RESET_TITLE) && ctxt->title)
 			node_set_title (node, ctxt->title);
 	}
 

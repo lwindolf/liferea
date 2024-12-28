@@ -59,7 +59,7 @@ typedef struct subscriptionType {
 	 * @param result	the update result
 	 * @param flags		the update flags
 	 */
-	void (*process_update_result)(subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags);
+	void (*process_update_result)(subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags);
 
 } *subscriptionTypePtr;
 

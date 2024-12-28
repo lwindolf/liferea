@@ -100,7 +100,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 		 * the feed as retrieved by this has the read and unread
 		 * status inherently.
 		 */
-		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+		subscription_update (node->subscription, UPDATE_REQUEST_RESET_TITLE | UPDATE_REQUEST_PRIORITY_HIGH);
 		subscription_icon_update (node->subscription);
 
 		/* Important: we must not loose the feed id! */
@@ -113,7 +113,7 @@ ttrss_source_merge_feed (ttrssSourcePtr source, const gchar *url, const gchar *t
 /* source subscription type implementation */
 
 static void
-ttrss_source_subscription_list_cb (const struct updateResult * const result, gpointer user_data, guint32 flags)
+ttrss_source_subscription_list_cb (const UpdateResult * const result, gpointer user_data, guint32 flags)
 {
 	subscriptionPtr subscription = (subscriptionPtr) user_data;
 	ttrssSourcePtr source = (ttrssSourcePtr) subscription->node->data;
@@ -224,7 +224,7 @@ ttrss_source_update_subscription_list (ttrssSourcePtr source, subscriptionPtr su
 
 	request->postdata = g_strdup_printf (TTRSS_JSON_SUBSCRIPTION_LIST, source->session_id);
 
-	subscription->updateJob = update_execute_request (subscription, request, ttrss_source_subscription_list_cb, subscription, FEED_REQ_NO_FEED);
+	subscription->updateJob = update_job_new (subscription, request, ttrss_source_subscription_list_cb, subscription, UPDATE_REQUEST_NO_FEED);
 }
 
 static void
@@ -276,7 +276,7 @@ ttrss_source_merge_categories (ttrssSourcePtr source, Node *parent, gint parentI
 }
 
 static void
-ttrss_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+ttrss_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
 {
 	ttrssSourcePtr		source = (ttrssSourcePtr) subscription->node->data;
 

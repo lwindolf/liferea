@@ -965,7 +965,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 					gtk_tree_path_free (path);
 				}
 				feedlist_add_subscription (g_strdup (tmp2), NULL, NULL,
-				                           FEED_REQ_PRIORITY_HIGH);
+				                           UPDATE_REQUEST_PRIORITY_HIGH);
 			}
 		}
 		g_free (freeme);

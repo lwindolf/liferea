@@ -263,7 +263,7 @@ on_propdialog_response (GtkDialog *dialog,
 		feedlist_schedule_save ();
 		db_subscription_update (subscription);
 		if (needsUpdate)
-			subscription_update (subscription, FEED_REQ_PRIORITY_HIGH);
+			subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 
 	g_object_unref(spd);
@@ -608,7 +608,7 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		options = g_new0 (struct updateOptions, 1);
 		options->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (nsd->ui_data.dialog, "dontUseProxyCheck")));
 
-		feedlist_add_subscription_check_duplicate (source, filter, options, FEED_REQ_PRIORITY_HIGH);
+		feedlist_add_subscription_check_duplicate (source, filter, options, UPDATE_REQUEST_PRIORITY_HIGH);
 		g_free (source);
 	}
 
@@ -688,7 +688,7 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->ui_data.sourceEntry))),
 		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-		feedlist_add_subscription_check_duplicate (source, NULL, NULL, FEED_REQ_PRIORITY_HIGH);
+		feedlist_add_subscription_check_duplicate (source, NULL, NULL, UPDATE_REQUEST_PRIORITY_HIGH);
 		g_free (source);
 	}
 

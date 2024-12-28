@@ -80,7 +80,7 @@ opml_source_merge_feed (xmlNodePtr match, gpointer user_data)
 		node_set_parent (node, mergeCtxt->parent, -1);
 		feedlist_node_imported (node);
 
-		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+		subscription_update (node->subscription, UPDATE_REQUEST_RESET_TITLE | UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 
 	/* Recursion if this is a folder */
@@ -148,7 +148,7 @@ opml_subscription_prepare_update_request (subscriptionPtr subscription, UpdateRe
 }
 
 static void
-opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+opml_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
 {
 	Node		*node = subscription->node;
 	mergeCtxtPtr	mergeCtxt;

@@ -81,7 +81,7 @@ ttrss_source_set_login_error (ttrssSourcePtr source, gchar *msg)
 }
 
 static void
-ttrss_source_login_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+ttrss_source_login_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	ttrssSourcePtr	source = (ttrssSourcePtr) userdata;
 	subscriptionPtr subscription = source->root->subscription;
@@ -176,7 +176,7 @@ ttrss_source_login (ttrssSourcePtr source, guint32 flags)
 
 	node_source_set_state (source->root, NODE_SOURCE_STATE_IN_PROGRESS);
 
-	update_execute_request (source, request, ttrss_source_login_cb, source, flags | FEED_REQ_NO_FEED);
+	update_job_new (source, request, ttrss_source_login_cb, source, flags | UPDATE_REQUEST_NO_FEED);
 }
 
 /* node source type implementation */
@@ -217,7 +217,7 @@ ttrss_source_import (Node *node)
 }
 
 static void
-ttrss_source_subscribe_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+ttrss_source_subscribe_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	subscriptionPtr subscription = (subscriptionPtr) userdata;
 
@@ -277,13 +277,13 @@ ttrss_source_add_subscription (Node *root, subscriptionPtr subscription)
 	g_free (username);
 	g_free (password);
 
-	update_execute_request (source, request, ttrss_source_subscribe_cb, source, 0 /* flags */);
+	update_job_new (source, request, ttrss_source_subscribe_cb, source, 0 /* flags */);
 
 	return NULL;
 }
 
 static void
-ttrss_source_remove_node_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+ttrss_source_remove_node_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	Node *node = (Node *) userdata;
 
@@ -337,7 +337,7 @@ ttrss_source_remove_node (Node *root, Node *node)
 
 	request->postdata = g_strdup_printf (TTRSS_JSON_UNSUBSCRIBE, source->session_id, id);
 
-	update_execute_request (source, request, ttrss_source_remove_node_cb, node, 0 /* flags */);
+	update_job_new (source, request, ttrss_source_remove_node_cb, node, 0 /* flags */);
 }
 
 /* GUI callbacks */
@@ -393,7 +393,7 @@ ttrss_source_cleanup (Node *node)
 }
 
 static void
-ttrss_source_remote_update_cb (const struct updateResult * const result, gpointer userdata, updateFlags flags)
+ttrss_source_remote_update_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags)
 {
 	debug (DEBUG_UPDATE, "TinyTinyRSS update result processing... status:%d >>>%s<<<", result->httpstatus, result->data);
 }
@@ -420,7 +420,7 @@ ttrss_source_item_set_flag (Node *node, itemPtr item, gboolean newStatus)
 
 	request->postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_FLAG, source->session_id, item_get_id(item), newStatus?1:0 );
 
-	update_execute_request (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
+	update_job_new (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
 
 	item_flag_state_changed (item, newStatus);
 }
@@ -444,7 +444,7 @@ ttrss_source_item_mark_read (Node *node, itemPtr item, gboolean newStatus)
 
 	request->postdata = g_strdup_printf (TTRSS_JSON_UPDATE_ITEM_UNREAD, source->session_id, item_get_id(item), newStatus?0:1 );
 
-	update_execute_request (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
+	update_job_new (source, request, ttrss_source_remote_update_cb, source, 0 /* flags */);
 
 	item_read_state_changed (item, newStatus);
 }

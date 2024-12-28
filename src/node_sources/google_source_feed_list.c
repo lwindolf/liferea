@@ -126,7 +126,7 @@ google_source_merge_feed (GoogleSourcePtr source, const gchar *url, const gchar 
 
 		feedlist_node_imported (node);
 
-		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+		subscription_update (node->subscription, UPDATE_REQUEST_RESET_TITLE | UPDATE_REQUEST_PRIORITY_HIGH);
 		subscription_icon_update (node->subscription);
 
 	} else {
@@ -138,7 +138,7 @@ google_source_merge_feed (GoogleSourcePtr source, const gchar *url, const gchar 
 /* subscription type implementation */
 
 static void
-google_source_feed_list_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+google_source_feed_list_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
 {
 	GoogleSourcePtr	source = (GoogleSourcePtr) subscription->node->data;
 

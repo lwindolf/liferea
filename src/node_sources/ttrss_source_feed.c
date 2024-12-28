@@ -36,7 +36,7 @@
 #include "node_sources/ttrss_source.h"
 
 static void
-ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult* const result, updateFlags flags)
+ttrss_feed_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult* const result, updateFlags flags)
 {
 	if (result->data && result->httpstatus == 200) {
 		JsonParser	*parser = json_parser_new ();

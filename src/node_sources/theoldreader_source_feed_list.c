@@ -86,7 +86,7 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 
 		feedlist_node_imported (node);
 
-		subscription_update (node->subscription, FEED_REQ_RESET_TITLE | FEED_REQ_PRIORITY_HIGH);
+		subscription_update (node->subscription, UPDATE_REQUEST_RESET_TITLE | UPDATE_REQUEST_PRIORITY_HIGH);
 		subscription_icon_update (node->subscription);
 
 	} else {
@@ -98,7 +98,7 @@ theoldreader_source_merge_feed (TheOldReaderSourcePtr source, const gchar *url, 
 /* JSON subscription list processing implementation */
 
 static void
-theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+theoldreader_subscription_cb (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
 {
 	TheOldReaderSourcePtr	source = (TheOldReaderSourcePtr) subscription->node->data;
 
@@ -186,7 +186,7 @@ theoldreader_subscription_cb (subscriptionPtr subscription, const struct updateR
 }
 
 static void
-theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const struct updateResult * const result, updateFlags flags)
+theoldreader_source_opml_subscription_process_update_result (subscriptionPtr subscription, const UpdateResult * const result, updateFlags flags)
 {
 	theoldreader_subscription_cb (subscription, result, flags);
 }

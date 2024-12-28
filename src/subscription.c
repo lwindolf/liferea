@@ -169,7 +169,7 @@ subscription_update_error_status (subscriptionPtr subscription,
 }
 
 static void
-subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
+subscription_process_update_result (const UpdateResult * const result, gpointer user_data, guint32 flags)
 {
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 	Node		*node = subscription->node;
@@ -214,7 +214,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	}
 
 	/* Clear status bar if we are last update in progress */
-	update_jobs_get_count (&count, &maxcount);
+	update_job_queue_get_count (&count, &maxcount);
 	if (1 >= count)
 		liferea_shell_set_status_bar (statusbar);
 	else
@@ -288,11 +288,11 @@ subscription_update (subscriptionPtr subscription, guint flags)
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
 
 		if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request))
-			subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, subscription, flags);
+			subscription->updateJob = update_job_new (subscription, request, subscription_process_update_result, subscription, flags);
 		else
 			g_object_unref (request);
 
-		update_jobs_get_count (&count, &maxcount);
+		update_job_queue_get_count (&count, &maxcount);
 		if (count > 1)
 			liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
 		else

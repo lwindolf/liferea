@@ -59,8 +59,6 @@ main (int argc, char *argv[])
 
 	g_test_init (&argc, &argv, NULL);
 
-	//conf_init ();
-
 	g_test_add_data_func ("/social/url",	&tc_url,	&tc_build_uri);
 	g_test_add_data_func ("/social/url2",	&tc_url2,	&tc_build_uri);
 
