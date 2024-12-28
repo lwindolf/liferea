@@ -23,13 +23,13 @@
 #include <string.h>
 
 #include "common.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "feedlist.h"
 #include "itemlist.h"
 #include "node.h"
 #include "node_view.h"
 #include "rule.h"
-#include "vfolder.h"
+#include "node_providers/vfolder.h"
 #include "vfolder_loader.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
@@ -53,7 +53,7 @@ search_clean_results (vfolderPtr vfolder)
 	   as the search query might still be active. Instead
 	   g_object_unref() a search result object! For now
 	   we leak the node to avoid crashes. */
-	//node_free (vfolder->node);
+	//g_object_unref (vfolder->node);
 }
 
 static void
@@ -102,7 +102,7 @@ search_dialog_class_init (SearchDialogClass *klass)
 static void
 search_dialog_init (SearchDialog *sd)
 {
-	sd->vfolder = vfolder_new (node_new (vfolder_get_node_type ()));
+	sd->vfolder = vfolder_new (node_new ("vfolder"));
 	node_set_title (sd->vfolder->node, _("Saved Search"));
 }
 
@@ -115,7 +115,7 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 	if (1 == responseId) { /* Search */
 		search_clean_results (vfolder);
 
-		sd->vfolder = vfolder = vfolder_new (node_new (vfolder_get_node_type ()));
+		sd->vfolder = vfolder = vfolder_new (node_new ("vfolder"));
 		rule_editor_save (sd->re, vfolder->itemset);
 		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->dialog, "anyRuleRadioBtn2")));
 
@@ -126,7 +126,7 @@ on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_dat
 		rule_editor_save (sd->re, vfolder->itemset);
 		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->dialog, "anyRuleRadioBtn2")));
 
-		nodePtr node = vfolder->node;
+		Node *node = vfolder->node;
 		sd->vfolder = NULL;
 		feedlist_node_added (node);
 	}
@@ -230,7 +230,7 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 		search_clean_results (vfolder);
 
 		/* Create new search... */
-		ssd->vfolder = vfolder = vfolder_new (node_new (vfolder_get_node_type ()));
+		ssd->vfolder = vfolder = vfolder_new (node_new ("vfolder"));
 		node_set_title (vfolder->node, searchString);
 		itemset_add_rule (vfolder->itemset, "exact", searchString, TRUE);
 

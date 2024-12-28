@@ -71,7 +71,7 @@ struct _LifereaItem {
 	gboolean	isComment;		/*<< TRUE if item is from a comment feed */
 
 	/* item source properties */
-	gchar		*nodeId;		/*<< Node id the containing node. Might be a comment feed id. */
+	gchar		*nodeId;		/*<< Node *id the containing node. Might be a comment feed id. */
 	gchar		*parentNodeId;		/*<< Real parent node id. Always a feed list node id. */
 	gulong 		sourceNr;		/*<< Either equal to nr or the number of the item this one is a copy of */
 

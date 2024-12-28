@@ -90,7 +90,8 @@ src/Makefile
 src/webkit/Makefile
 src/webkit/web_extension/Makefile
 src/parsers/Makefile
-src/fl_sources/Makefile
+src/node_providers/Makefile
+src/node_sources/Makefile
 src/ui/Makefile
 src/tests/Makefile
 doc/Makefile

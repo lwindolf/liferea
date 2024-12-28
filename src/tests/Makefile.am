@@ -26,7 +26,8 @@ AM_CPPFLAGS = \
 
 favicon_LDADD = \
 	../parsers/libliparsers.a \
-	../fl_sources/libliflsources.a \
+	../node_sources/liblinode_sources.a \
+	../node_providers/liblinode_providers.a \
 	../ui/libliui.a \
 	../webkit/libwebkit.a \
 	../auth.o \
@@ -43,10 +44,8 @@ favicon_LDADD = \
 	../enclosure.o \
 	../export.o \
 	../favicon.o \
-	../feed.o \
 	../feed_parser.o \
 	../feedlist.o \
-	../folder.o \
 	../html.o \
 	../item.o \
 	../item_history.o \
@@ -60,9 +59,9 @@ favicon_LDADD = \
 	../migrate.o \
 	../net.o \
 	../net_monitor.o \
-	../newsbin.o \
 	../node.o \
-	../node_type.o \
+	../node_provider.o \
+	../node_source.o \
 	../plugins_engine.o \
 	../render.o \
 	../rule.o \
@@ -70,7 +69,6 @@ favicon_LDADD = \
 	../subscription.o \
 	../subscription_icon.o \
 	../update.o \
-	../vfolder.o \
 	../vfolder_loader.o \
 	../xml.o \
 	$(PACKAGE_LIBS) \

@@ -1,7 +1,7 @@
 /*
  * @file auth.c  authentication helpers
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ liferea_auth_info_store (gpointer user_data)
 void
 liferea_auth_info_from_store (const gchar *id, const gchar *username, const gchar *password)
 {
-	nodePtr	node = node_from_id (id);
+	Node	*node = node_from_id (id);
 
 	g_assert (NULL != node->subscription);
 

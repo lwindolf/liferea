@@ -1,7 +1,7 @@
 /**
  * @file subscription.h  common subscription handling interface
  *
- * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ typedef enum fetchError {
 
 /** Common structure to hold all information about a single subscription. */
 typedef struct subscription {
-	nodePtr		node;			/**< the feed list node the subscription is attached to */
+	Node		*node;			/**< the feed list node the subscription is attached to */
 	struct subscriptionType *type;		/**< the subscription type */
 
 	gchar		*source;		/**< current source, can be changed by redirects */

@@ -1,7 +1,7 @@
 /**
  * @file ui_dnd.c everything concerning Drag&Drop
  *
- * Copyright (C) 2003-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,15 @@
 #include <string.h>		/* For strcmp */
 #include "common.h"
 #include "db.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "feedlist.h"
-#include "folder.h"
+#include "node_providers/folder.h"
 #include "debug.h"
 #include "ui/item_list_view.h"
 #include "ui/feed_list_view.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_dnd.h"
-#include "fl_sources/node_source.h"
+#include "node_source.h"
 
 /*
     Why does Liferea need such a complex DnD handling (for the feed list)?
@@ -61,7 +61,7 @@ static gboolean
 ui_dnd_feed_draggable (GtkTreeDragSource *drag_source, GtkTreePath *path)
 {
 	GtkTreeIter	iter;
-	nodePtr		node;
+	Node		*node;
 
 	debug (DEBUG_GUI, "DnD check if feed dragging is possible (%d)", path);
 
@@ -85,7 +85,7 @@ ui_dnd_feed_drop_possible (GtkTreeDragDest *drag_dest, GtkTreePath *dest_path, G
 	GtkTreeModel	*model = NULL;
 	GtkTreePath	*src_path = NULL;
 	GtkTreeIter	iter;
-	nodePtr		sourceNode, targetNode;
+	Node		*sourceNode, *targetNode;
 
 	debug (DEBUG_GUI, "DnD check if feed dropping is possible (%d)", dest_path);
 
@@ -137,7 +137,7 @@ static gboolean
 ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, GtkSelectionData *selection_data)
 {
 	GtkTreeIter	iter, iter2, parentIter;
-	nodePtr		node, oldParent, newParent;
+	Node		*node, *oldParent, *newParent;
 	gboolean	result, valid, added;
 	gint		oldPos, pos;
 
@@ -192,7 +192,7 @@ ui_dnd_feed_drag_data_received (GtkTreeDragDest *drag_dest, GtkTreePath *dest, G
 			pos = 0;
 			added = FALSE;
 			while (valid) {
-				nodePtr	child;
+				Node	*child;
 				gtk_tree_model_get (GTK_TREE_MODEL (drag_dest), &iter2, FS_PTR, &child, -1);
 				if (child) {
 					/* Well this is a bit complicated... If we move a feed inside a folder

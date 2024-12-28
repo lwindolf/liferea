@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  *
- * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -172,7 +172,7 @@ static void
 subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
 {
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
-	nodePtr		node = subscription->node;
+	Node		*node = subscription->node;
 	gboolean	processing = FALSE;
 	guint		count, maxcount;
 	gchar		*statusbar;

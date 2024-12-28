@@ -41,11 +41,11 @@
 #include "itemlist.h"
 #include "liferea_application.h"
 #include "net_monitor.h"
-#include "newsbin.h"
 #include "plugins_engine.h"
 #include "social.h"
-#include "vfolder.h"
-#include "fl_sources/node_source.h"
+#include "node_source.h"
+#include "node_providers/newsbin.h"
+#include "node_providers/vfolder.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
@@ -428,7 +428,7 @@ liferea_shell_update_node_actions (gpointer obj, gchar *unusedNodeId, gpointer d
 	/* We need to use the selected node here, as for search folders
 	   if we'd rely on the parent node of the changed item we would
 	   enable the wrong menu options */
-	nodePtr	node = feedlist_get_selected ();
+	Node	*node = feedlist_get_selected ();
 
 	if (!node) {
 		liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
@@ -439,8 +439,8 @@ liferea_shell_update_node_actions (gpointer obj, gchar *unusedNodeId, gpointer d
 
 	gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
 	liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
-	liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
-	                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
+	liferea_shell_update_update_menu ((NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
+	                                  (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
 
 	// Needs to be last as liferea_shell_update_update_menu() default enables actions
 	if (IS_FEED (node))
@@ -926,7 +926,7 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 	GtkTreeModel	*model;
 	GtkTreePath	*path;
 	GtkTreeIter	iter;
-	nodePtr		node;
+	Node		*node;
 	gint		tx, ty;
 
 	g_return_if_fail (gtk_selection_data_get_data (data) != NULL);

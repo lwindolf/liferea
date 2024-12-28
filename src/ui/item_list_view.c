@@ -1,7 +1,7 @@
 /*
  * @file item_list_view.c  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -34,13 +34,13 @@
 #include "conf.h"
 #include "date.h"
 #include "debug.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "feedlist.h"
 #include "item.h"
 #include "itemlist.h"
 #include "item_state.h"
 #include "itemview.h"
-#include "newsbin.h"
+#include "node_providers/newsbin.h"
 #include "social.h"
 #include "xml.h"
 #include "ui/browser_tabs.h"
@@ -236,7 +236,7 @@ item_list_view_date_sort_func (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter 
 static gint
 item_list_view_favicon_sort_func (GtkTreeModel *model, GtkTreeIter *a, GtkTreeIter *b, gpointer user_data)
 {
-	nodePtr	node1, node2;
+	Node	*node1, *node2;
 
 	gtk_tree_model_get (model, a, IS_SOURCE, &node1, -1);
 	gtk_tree_model_get (model, b, IS_SOURCE, &node2, -1);
@@ -461,7 +461,7 @@ item_list_title_alignment (gchar *title)
 }
 
 static void
-item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIter *iter, nodePtr node)
+item_list_view_update_item_internal (ItemListView *ilv, itemPtr item, GtkTreeIter *iter, Node *node)
 {
 	GtkTreeStore	*itemstore;
 	gchar		*title, *time_str, *tmp = NULL;
@@ -906,7 +906,7 @@ item_list_view_create (gboolean wide)
 static void
 item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstore, itemPtr item)
 {
-	nodePtr		node;
+	Node		*node;
 	GtkTreeIter	iter;
 	gboolean	exists = FALSE;
 
@@ -1030,7 +1030,7 @@ on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer us
 void
 on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr		node;
+	Node		*node;
 
 	node = feedlist_get_selected ();
 	// FIXME: use node type capability check

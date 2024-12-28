@@ -1,7 +1,7 @@
 /*
  * @file itemlist.h  itemlist handling
  *
- * Copyright (C) 2004-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,13 +64,13 @@ GType itemlist_get_type (void);
 ItemList * itemlist_create (void);
 
 /**
- * itemlist_get_displayed_node: (skip)
+ * itemlist_get_displayed_node:
  *
  * Returns the currently displayed node.
  *
  * Returns: (transfer none) (nullable): displayed node (or NULL)
  */
-struct node * itemlist_get_displayed_node (void);
+Node * itemlist_get_displayed_node (void);
 
 /**
  * itemlist_get_selected: (skip)
@@ -102,15 +102,15 @@ gulong itemlist_get_selected_id (void);
 void itemlist_merge_itemset (itemSetPtr itemSet);
 
 /** 
- * itemlist_load: (skip)
+ * itemlist_load:
  * @node: 	the node
  *
  * Loads the passed nodes items into the item list.
  */
-void itemlist_load (struct node *node);
+void itemlist_load (Node *node);
 
 /**
- * itemlist_unload: (skip)
+ * itemlist_unload:
   *
  * Clears the item list.
  */
@@ -166,7 +166,7 @@ void itemlist_remove_items (itemSetPtr itemSet, GList *items);
  * all items of a node. Item list selection will be
  * resetted. All items are removed immediately.
  */
-void itemlist_remove_all_items (struct node *node);
+void itemlist_remove_all_items (Node *node);
 
 /**
  * itemlist_selection_changed: (skip)

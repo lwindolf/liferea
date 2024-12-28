@@ -1,7 +1,7 @@
 /*
  * @file feedlist.h  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,13 +42,13 @@ G_DECLARE_FINAL_TYPE (FeedList, feedlist, FEED, LIST, GObject)
 FeedList * feedlist_create (gpointer feedListView);
 
 /**
- * feedlist_get_selected: (skip)
+ * feedlist_get_selected:
  *
  * Get currently selected feed list node
  *
  * Returns: (transfer none) (nullable): selected node (or NULL)
  */
-nodePtr feedlist_get_selected (void);
+Node * feedlist_get_selected (void);
 
 /**
  * feedlist_get_unread_item_count:
@@ -81,7 +81,7 @@ guint feedlist_get_new_item_count (void);
 void feedlist_reset_new_item_count (void);
 
 /**
- * feedlist_node_was_updated: (skip)
+ * feedlist_node_was_updated:
  * @node:		the updated node
  *
  * To be called when a feed is updated and has
@@ -89,16 +89,16 @@ void feedlist_reset_new_item_count (void);
  * update for all affected nodes in the feed list.
  *
  */
-void feedlist_node_was_updated (nodePtr node);
+void feedlist_node_was_updated (Node *node);
 
 /**
- * feedlist_get_root: (skip)
+ * feedlist_get_root:
  *
  * Helper function to query the feed list root node.
  *
  * Returns: (transfer none): the feed list root node
  */
-nodePtr feedlist_get_root (void);
+Node * feedlist_get_root (void);
 
 typedef enum {
 	NODE_BY_URL,
@@ -107,7 +107,7 @@ typedef enum {
 } feedListFindType;
 
 /**
- * feedlist_find_node: (skip)
+ * feedlist_find_node:
  * @parent: (nullable): 	parent node to traverse from (or NULL)
  * @type:		        NODE_BY_(URL|FOLDER_TITLE|ID)
  * @str:		        string to compare to
@@ -117,12 +117,12 @@ typedef enum {
  * Searches recursively from a given parent node or the root node.
  * Always returns just the first occurence in traversal order.
  *
- * Returns: (nullable) (transfer none): a nodePtr or NULL
+ * Returns: (nullable) (transfer none): a Node *or NULL
  */
-nodePtr feedlist_find_node (nodePtr parent, feedListFindType type, const gchar *str);
+Node * feedlist_find_node (Node *parent, feedListFindType type, const gchar *str);
 
 /**
- * feedlist_add_subscription: (skip)
+ * feedlist_add_subscription:
  * @source:	        the subscriptions source URL
  * @filter: (nullable):	NULL or the filter for the subscription
  * @options: (nullable): NULL or the update options
@@ -133,7 +133,7 @@ nodePtr feedlist_find_node (nodePtr parent, feedListFindType type, const gchar *
 void feedlist_add_subscription (const gchar *source, const gchar *filter, updateOptionsPtr options, gint flags);
 
 /**
- * feedlist_add_subscription_check_duplicate: (skip)
+ * feedlist_add_subscription_check_duplicate:
  * @source:	        the subscriptions source URL
  * @filter: (nullable):	NULL or the filter for the subscription
  * @options: (nullable): NULL or the update options
@@ -153,7 +153,7 @@ void feedlist_add_subscription_check_duplicate (const gchar *source, const gchar
 void feedlist_add_folder (const gchar *title);
 
 /**
- * feedlist_node_added: (skip)
+ * feedlist_node_added:
  * @node:		the new node
  *
  * Notifies the feed list controller that a new node
@@ -167,10 +167,10 @@ void feedlist_add_folder (const gchar *title);
  * a parent node using node_set_parent().
  *
  */
-void feedlist_node_added (nodePtr node);
+void feedlist_node_added (Node *node);
 
 /**
- * feedlist_node_imported: (skip)
+ * feedlist_node_imported:
  * @node:		the new node
  *
  * Notifies the feed list controller that a new node
@@ -184,18 +184,18 @@ void feedlist_node_added (nodePtr node);
  * a parent node using node_set_parent().
  *
  */
-void feedlist_node_imported (nodePtr node);
+void feedlist_node_imported (Node *node);
 
 /**
- * feedlist_remove_node: (skip)
+ * feedlist_remove_node:
  * @node:		the node to remove
  *
  * Removes the given node from the feed list.
  */
-void feedlist_remove_node (nodePtr node);
+void feedlist_remove_node (Node *node);
 
 /**
- * feedlist_node_removed: (skip)
+ * feedlist_node_removed:
  * @node:		the removed node
  *
  * Notifies the feed list controller that an existing
@@ -204,7 +204,7 @@ void feedlist_remove_node (nodePtr node);
  * feed list view.
  *
  */
-void feedlist_node_removed (nodePtr node);
+void feedlist_node_removed (Node *node);
 
 /**
  * feedlist_schedule_save: (skip)
@@ -221,19 +221,19 @@ void feedlist_schedule_save (void);
  * Resets the update counter of all childs of the given node
  *
  */
-void feedlist_reset_update_counters (nodePtr node);
+void feedlist_reset_update_counters (Node *node);
 
 gboolean feedlist_is_writable (void);
 
 /**
- * feedlist_mark_all_read: (skip)
+ * feedlist_mark_all_read:
  * @node:		the node to start with
  *
  * Triggers a recursive mark-all-read on the given node
  * and updates the feed list afterwards.
  *
  */
-void feedlist_mark_all_read (nodePtr node);
+void feedlist_mark_all_read (Node *node);
 
 /* feed list iterating interface */
 
@@ -267,10 +267,10 @@ void feedlist_mark_all_read (nodePtr node);
  *
  * Returns: (nullable) (transfer none): a found node or NULL
  */
-nodePtr	feedlist_find_unread_feed (nodePtr folder);
+Node * feedlist_find_unread_feed (Node *folder);
 
 /**
- * feedlist_new_items: (skip)
+ * feedlist_new_items:
  * @newCount:	number of new and unread items
  *
  * To be called when node subscription update gained new items.

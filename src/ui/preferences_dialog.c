@@ -32,7 +32,7 @@
 #include "conf.h"
 #include "favicon.h"
 #include "feedlist.h"
-#include "folder.h"
+#include "node_providers/folder.h"
 #include "itemlist.h"
 #include "social.h"
 #include "ui/item_list_view.h"
@@ -165,7 +165,7 @@ on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 void
 on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 {
-	nodePtr		displayedNode;
+	Node		*displayedNode;
 	gboolean	enabled;
 
 	displayedNode = itemlist_get_displayed_node ();

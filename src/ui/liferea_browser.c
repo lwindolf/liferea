@@ -34,7 +34,7 @@
 #include "conf.h"
 #include "debug.h"
 #include "enclosure.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "feedlist.h"
 #include "html.h"
 #include "itemlist.h"
@@ -647,7 +647,7 @@ static void
 liferea_browser_refresh (LifereaBrowser *browser, guint mode)
 {
 	GString		*output;
-	nodePtr		node = NULL;
+	Node		*node = NULL;
 	itemPtr		item = NULL;
 	gchar		*baseURL = NULL;
 	gchar		*content = NULL;

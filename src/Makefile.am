@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = parsers ui fl_sources webkit tests .
+SUBDIRS = parsers ui node_sources node_providers webkit tests .
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -29,10 +29,8 @@ liferea_SOURCES = \
 	enclosure.c enclosure.h \
 	export.c export.h \
 	favicon.c favicon.h \
-	feed.c feed.h \
 	feed_parser.c feed_parser.h \
 	feedlist.c feedlist.h \
-	folder.c folder.h \
 	html.c html.h \
 	item.c item.h \
 	item_history.c item_history.h \
@@ -47,9 +45,9 @@ liferea_SOURCES = \
 	migrate.c migrate.h \
 	net.c net.h \
 	net_monitor.c net_monitor.h \
-	newsbin.c newsbin.h \
 	node.c node.h \
-	node_type.c node_type.h \
+	node_source.c node_source.h \
+	node_provider.c node_provider.h \
 	node_view.h \
 	plugins_engine.c plugins_engine.h \
 	render.c render.h \
@@ -60,12 +58,12 @@ liferea_SOURCES = \
 	subscription_type.h \
 	update.c update.h \
 	main.c \
-	vfolder.c vfolder.h \
 	vfolder_loader.c vfolder_loader.h \
 	xml.c xml.h
 
 liferea_LDADD =	parsers/libliparsers.a \
-		fl_sources/libliflsources.a \
+		node_providers/liblinode_providers.a \
+		node_sources/liblinode_sources.a \
 		ui/libliui.a \
 		webkit/libwebkit.a \
 		$(PACKAGE_LIBS) \
@@ -106,18 +104,21 @@ Liferea_3_0_gir_FILES = \
 	liferea_application.h \
 	net_monitor.h net_monitor.c \
 	node.h node.c \
+	node_provider.c node_provider.h \
+	node_source.c node_source.h \
+	node_sources/node_source_activatable.c node_sources/node_source_activatable.h \
 	node_view.h \
 	social.c social.h \
 	subscription_type.h \
+	update.h \
 	ui/browser_tabs.c ui/browser_tabs.h \
 	ui/icons.c ui/icons.h \
 	ui/itemview.c ui/itemview.h \
 	ui/item_list_view.c ui/item_list_view.h \
 	ui/liferea_browser.c ui/liferea_browser.h \
 	ui/liferea_shell.c ui/liferea_shell.h \
-	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h \
-	fl_sources/node_source.c fl_sources/node_source.h \
-	fl_sources/node_source_activatable.c fl_sources/node_source_activatable.h
+	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h
+
 Liferea_3_0_gir_INCLUDES = Gtk-3.0 libxml2-2.0
 if HAVE_INTROSPECTION
 girdir = $(datadir)/liferea/gir-1.0

@@ -1,7 +1,7 @@
 /**
  * @file search-folder-dialog.c  Search folder properties dialog
  *
- * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 
 #include "feedlist.h"
 #include "itemlist.h"
-#include "vfolder.h"
+#include "node_providers/vfolder.h"
 #include "ui/feed_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
@@ -33,7 +33,7 @@ struct _SearchFolderDialog {
 
 	RuleEditor	*re;		/**< dynamically created rule editing widget subset */
 	GtkWidget	*nameEntry;	/**< search folder title entry */
-	nodePtr		node;		/**< search folder feed list node */
+	Node		*node;		/**< search folder feed list node */
 	vfolderPtr	vfolder;	/**< the search folder */
 };
 
@@ -100,7 +100,7 @@ on_addrulebtn_clicked (GtkButton *button, gpointer user_data)
 
 /** Use to create new search folders and to edit existing ones */
 SearchFolderDialog *
-search_folder_dialog_new (nodePtr node)
+search_folder_dialog_new (Node *node)
 {
 	GtkWidget		*dialog;
 	SearchFolderDialog	*sfd;

@@ -1,7 +1,7 @@
 /**
  * @file item_loader.c   Asynchronously loading items
  *
- * Copyright (C) 2011-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2011-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ struct ItemLoaderPrivate {
 	fetchCallbackPtr	fetchCallback;		/**< the function to call after each item fetch */
 	gpointer		fetchCallbackData;	/**< user data for the fetch callback */
 
-	nodePtr		node;			/**< the node we are loading items for */
+	Node		*node;			/**< the node we are loading items for */
 
 	guint		idleId;			/**< fetch callback source id */
 };
@@ -95,7 +95,7 @@ item_loader_init (ItemLoader *il)
 	il->priv = ITEM_LOADER_GET_PRIVATE (il);
 }
 
-nodePtr
+Node *
 item_loader_get_node (ItemLoader *il)
 {
 	return il->priv->node;
@@ -126,7 +126,7 @@ item_loader_start (ItemLoader *il)
 }
 
 ItemLoader *
-item_loader_new (fetchCallbackPtr fetchCallback, nodePtr node, gpointer fetchCallbackData)
+item_loader_new (fetchCallbackPtr fetchCallback, Node *node, gpointer fetchCallbackData)
 {
 	ItemLoader *il;
 

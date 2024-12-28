@@ -1,7 +1,7 @@
 /**
  * @file item.c item handling
  *
- * Copyright (C) 2003-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -318,7 +318,7 @@ item_to_xml (LifereaItem *item, gpointer xmlNode)
 			gulong id = GPOINTER_TO_UINT (iter->data);
 			LifereaItem * duplicate = item_load (id);
 			if (duplicate) {
-				nodePtr duplicateNode = node_from_id (duplicate->nodeId);
+				Node *duplicateNode = node_from_id (duplicate->nodeId);
 				if (duplicateNode && (item->id != duplicate->id))
 					xmlNewTextChild (groupNode, NULL, BAD_CAST "duplicateNode", BAD_CAST node_get_title (duplicateNode));
 				item_unload (duplicate);
@@ -349,7 +349,7 @@ item_to_xml (LifereaItem *item, gpointer xmlNode)
 
 	metadata_add_xml_nodes (item->metadata, itemNode);
 
-	nodePtr feedNode = node_from_id (item->parentNodeId);
+	Node *feedNode = node_from_id (item->parentNodeId);
 	if (feedNode) {
 		feedPtr feed = (feedPtr)feedNode->data;
 		if (feed) {
@@ -380,13 +380,10 @@ item_render (LifereaItem *item, guint viewMode)
 {
 	renderParamPtr	params;
 	gchar		*output = NULL, *baseUrl = NULL;
-	nodePtr		node;
+	Node		*node;
 	xmlDocPtr 	doc;
 	xmlNodePtr 	xmlNode;
 
-
-	/* don't use node from htmlView_priv as this would be
-	wrong for folders and other merged item sets */
 	node = node_from_id (item->nodeId);
 
 	/* do the XML serialization */

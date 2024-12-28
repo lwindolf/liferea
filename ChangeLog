@@ -1,3 +1,9 @@
+To be released
+
+	* GObject refactoring nodePtr -> Node to allow plugins modifying the feed list.
+	  (Lars Windolf)
+
+
 2024-09-26  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.15.8

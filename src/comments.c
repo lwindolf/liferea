@@ -1,7 +1,7 @@
 /**
  * @file comments.c comment feed handling
  *
- * Copyright (C) 2007-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "metadata.h"
 #include "net.h"
 #include "net_monitor.h"
@@ -97,8 +97,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 	feedParserCtxtPtr	ctxt;
 	commentFeedPtr		commentFeed = (commentFeedPtr)user_data;
 	itemPtr			item;
-	nodePtr			node;
-
+	Node			*node;
 
 	if(!(item = item_load (commentFeed->itemId)))
 		return;		/* item was deleted since */
@@ -123,7 +122,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 		debug (DEBUG_UPDATE, "received update result for comment feed \"%s\"", result->source);
 
 		/* parse the new downloaded feed into fake node, subscription and feed */
-		node = node_new (feed_get_node_type ());
+		node = node_new ("feed");
 		node_set_data (node, feed_new ());
 		node_set_subscription (node, subscription_new (result->source, NULL, NULL));
 		ctxt = feed_parser_ctxt_new (node->subscription, result->data, result->size);
@@ -153,7 +152,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 			   dropped when the parent items are removed from cache. */
 		}
 
-		node_free (ctxt->subscription->node);
+		g_object_unref (ctxt->subscription->node);
 		feed_parser_ctxt_free (ctxt);
 	}
 

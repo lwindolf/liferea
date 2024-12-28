@@ -65,7 +65,7 @@ static void subscription_icon_download_next (iconDownloadCtxtPtr ctxt);
 static void
 subscription_icon_downloaded (const gchar *id)
 {
-	nodePtr node = node_from_id (id);
+	Node *node = node_from_id (id);
 
 	node_load_icon (node);
 	feed_list_view_update_node (id);

@@ -25,6 +25,7 @@
 
 #include "common.h"
 #include "conf.h"
+#include "date.h"
 #include "db.h"
 #include "debug.h"
 #include "favicon.h"
@@ -39,9 +40,9 @@
 #include "render.h"
 #include "subscription_icon.h"
 #include "update.h"
-#include "vfolder.h"
-#include "date.h"
-#include "fl_sources/node_source.h"
+#include "node_provider.h"
+#include "node_providers/vfolder.h"
+#include "node_source.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/liferea_shell.h"
@@ -50,13 +51,54 @@ static GHashTable *nodes = NULL;	/*<< node id -> node lookup table */
 
 #define NODE_ID_LEN	7
 
-nodePtr
+G_DEFINE_TYPE (Node, node, G_TYPE_OBJECT);
+
+static void
+node_finalize (GObject *obj)
+{
+	Node *node = LIFEREA_NODE (obj);
+
+	if (node->data && NODE_PROVIDER (node)->free)
+		NODE_PROVIDER (node)->free (node);
+
+	g_assert (NULL == node->children);
+
+	g_hash_table_remove (nodes, node->id);
+
+	update_job_cancel_by_owner (node);
+
+	if (node->subscription)
+		subscription_free (node->subscription);
+
+	if (node->icon)
+		g_object_unref (node->icon);
+	g_free (node->iconFile);
+	g_free (node->title);
+	g_free (node->id);
+	g_free (node);
+
+	G_OBJECT_CLASS (node_parent_class)->finalize (obj);
+}
+
+static void
+node_class_init (NodeClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	object_class->finalize = node_finalize;
+}
+
+static void
+node_init (Node *node)
+{
+}
+
+Node *
 node_is_used_id (const gchar *id)
 {
 	if (!id || !nodes)
 		return NULL;
 
-	return (nodePtr)g_hash_table_lookup (nodes, id);
+	return LIFEREA_NODE (g_hash_table_lookup (nodes, id));
 }
 
 gchar *
@@ -74,28 +116,25 @@ node_new_id (void)
 	return id;
 }
 
-nodePtr
+Node *
 node_from_id (const gchar *id)
 {
-	nodePtr node;
-
-	node = node_is_used_id (id);
+	Node *node = node_is_used_id (id);
 	if (!node)
 		debug (DEBUG_GUI, "Fatal: no node with id \"%s\" found!", id);
 
 	return node;
 }
 
-nodePtr
-node_new (nodeTypePtr type)
+Node *
+node_new (const gchar *name)
 {
-	nodePtr	node;
-	gchar	*id;
+	nodeProviderPtr	provider = node_provider_by_name (name);
+	Node		*node;
+	gchar		*id;
 
-	g_assert (NULL != type);
-
-	node = g_new0 (struct node, 1);
-	node->type = type;
+	node = LIFEREA_NODE (g_object_new (NODE_TYPE, NULL));
+	node->provider = provider;
 	node->sortColumn = NODE_VIEW_SORT_BY_TIME;
 	node->sortReversed = TRUE;	/* default sorting is newest date at top */
 	node->available = TRUE;
@@ -108,19 +147,19 @@ node_new (nodeTypePtr type)
 }
 
 void
-node_set_data (nodePtr node, gpointer data)
+node_set_data (Node *node, gpointer data)
 {
 	g_assert (NULL == node->data);
-	g_assert (NULL != node->type);
+	g_assert (NULL != node->provider);
 
 	node->data = data;
 }
 
 void
-node_set_subscription (nodePtr node, subscriptionPtr subscription)
+node_set_subscription (Node *node, subscriptionPtr subscription)
 {
 	g_assert (NULL == node->subscription);
-	g_assert (NULL != node->type);
+	g_assert (NULL != node->provider);
 
 	node->subscription = subscription;
 	subscription->node = node;
@@ -134,7 +173,7 @@ node_set_subscription (nodePtr node, subscriptionPtr subscription)
 }
 
 void
-node_update_subscription (nodePtr node, gpointer user_data)
+node_update_subscription (Node *node, gpointer user_data)
 {
 	if (node->source->root == node) {
 		node_source_update (node);
@@ -148,7 +187,7 @@ node_update_subscription (nodePtr node, gpointer user_data)
 }
 
 void
-node_auto_update_subscription (nodePtr node)
+node_auto_update_subscription (Node *node)
 {
 	if (node->source->root == node) {
 		node_source_auto_update (node);
@@ -162,7 +201,7 @@ node_auto_update_subscription (nodePtr node)
 }
 
 void
-node_reset_update_counter (nodePtr node, guint64 *now)
+node_reset_update_counter (Node *node, guint64 *now)
 {
 	subscription_reset_update_counter (node->subscription, now);
 
@@ -170,11 +209,11 @@ node_reset_update_counter (nodePtr node, guint64 *now)
 }
 
 gboolean
-node_is_ancestor (nodePtr node1, nodePtr node2)
+node_is_ancestor (Node *node1, Node *node2)
 {
-	nodePtr	tmp;
+	Node	*tmp;
 
-	tmp = node2->parent;
+	tmp = LIFEREA_NODE (node2->parent);
 	while (tmp) {
 		if (node1 == tmp)
 			return TRUE;
@@ -183,31 +222,8 @@ node_is_ancestor (nodePtr node1, nodePtr node2)
 	return FALSE;
 }
 
-void
-node_free (nodePtr node)
-{
-	if (node->data && NODE_TYPE (node)->free)
-		NODE_TYPE (node)->free (node);
-
-	g_assert (NULL == node->children);
-
-	g_hash_table_remove (nodes, node->id);
-
-	update_job_cancel_by_owner (node);
-
-	if (node->subscription)
-		subscription_free (node->subscription);
-
-	if (node->icon)
-		g_object_unref (node->icon);
-	g_free (node->iconFile);
-	g_free (node->title);
-	g_free (node->id);
-	g_free (node);
-}
-
 static void
-node_calc_counters (nodePtr node)
+node_calc_counters (Node *node)
 {
 	/* Order is important! First update all children
 	   so that hierarchical nodes (folders and feed
@@ -215,11 +231,11 @@ node_calc_counters (nodePtr node)
 	   count as the sum of all childs afterwards */
 	node_foreach_child (node, node_calc_counters);
 
-	NODE_TYPE (node)->update_counters (node);
+	NODE_PROVIDER (node)->update_counters (node);
 }
 
 static void
-node_update_parent_counters (nodePtr node)
+node_update_parent_counters (Node *node)
 {
 	guint old;
 
@@ -228,7 +244,7 @@ node_update_parent_counters (nodePtr node)
 
 	old = node->unreadCount;
 
-	NODE_TYPE (node)->update_counters (node);
+	NODE_PROVIDER (node)->update_counters (node);
 
 	if (old != node->unreadCount) {
 		feed_list_view_update_node (node->id);
@@ -240,7 +256,7 @@ node_update_parent_counters (nodePtr node)
 }
 
 void
-node_update_counters (nodePtr node)
+node_update_counters (Node *node)
 {
 	guint oldUnreadCount = node->unreadCount;
 	guint oldItemCount = node->itemCount;
@@ -259,9 +275,9 @@ node_update_counters (nodePtr node)
 }
 
 void
-node_update_favicon (nodePtr node)
+node_update_favicon (Node *node)
 {
-	if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_FAVICON) {
+	if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_FAVICON) {
 		debug (DEBUG_UPDATE, "favicon of node %s needs to be updated...", node->title);
 		subscription_icon_update (node->subscription);
 	}
@@ -272,13 +288,13 @@ node_update_favicon (nodePtr node)
 }
 
 itemSetPtr
-node_get_itemset (nodePtr node)
+node_get_itemset (Node *node)
 {
-	return NODE_TYPE (node)->load (node);
+	return NODE_PROVIDER (node)->load (node);
 }
 
 void
-node_mark_all_read (nodePtr node)
+node_mark_all_read (Node *node)
 {
 	if (!node)
 		return;
@@ -294,15 +310,15 @@ node_mark_all_read (nodePtr node)
 }
 
 gchar *
-node_render(nodePtr node)
+node_render(Node *node)
 {
-	return NODE_TYPE (node)->render (node);
+	return NODE_PROVIDER (node)->render (node);
 }
 
 /* import callbacks and helper functions */
 
 void
-node_set_parent (nodePtr node, nodePtr parent, gint position)
+node_set_parent (Node *node, Node *parent, gint position)
 {
 	g_assert (NULL != parent);
 
@@ -316,9 +332,9 @@ node_set_parent (nodePtr node, nodePtr parent, gint position)
 }
 
 void
-node_reparent (nodePtr node, nodePtr new_parent)
+node_reparent (Node *node, Node *new_parent)
 {
-	nodePtr old_parent;
+	Node *old_parent;
 
 	g_assert (NULL != new_parent);
 	g_assert (NULL != node);
@@ -337,18 +353,18 @@ node_reparent (nodePtr node, nodePtr new_parent)
 }
 
 void
-node_remove (nodePtr node)
+node_remove (Node *node)
 {
 	/* using itemlist_remove_all_items() ensures correct unread
 	   and item counters for all parent folders and matching
 	   search folders */
 	itemlist_remove_all_items (node);
 
-	NODE_TYPE (node)->remove (node);
+	NODE_PROVIDER (node)->remove (node);
 }
 
 static xmlDocPtr
-node_to_xml (nodePtr node)
+node_to_xml (Node *node)
 {
 	xmlDocPtr	doc;
 	xmlNodePtr	rootNode;
@@ -372,13 +388,13 @@ node_to_xml (nodePtr node)
 }
 
 gchar *
-node_default_render (nodePtr node)
+node_default_render (Node *node)
 {
 	gchar		*result;
 	xmlDocPtr	doc;
 
 	doc = node_to_xml (node);
-	result = render_xml (doc, NODE_TYPE(node)->id, NULL);
+	result = render_xml (doc, NODE_PROVIDER(node)->id, NULL);
 	xmlFreeDoc (doc);
 
 	return result;
@@ -387,28 +403,28 @@ node_default_render (nodePtr node)
 /* helper functions to be used with node_foreach* */
 
 void
-node_save(nodePtr node)
+node_save(Node *node)
 {
-	NODE_TYPE(node)->save(node);
+	NODE_PROVIDER(node)->save(node);
 }
 
 /* node attributes encapsulation */
 
 void
-node_set_title (nodePtr node, const gchar *title)
+node_set_title (Node *node, const gchar *title)
 {
 	g_free (node->title);
 	node->title = g_strstrip (g_strdelimit (g_strdup (title), "\r\n", ' '));
 }
 
 const gchar *
-node_get_title (nodePtr node)
+node_get_title (Node *node)
 {
 	return node->title;
 }
 
 void
-node_load_icon (nodePtr node)
+node_load_icon (Node *node)
 {
 	/* Load pixbuf for all widget based rendering */
 	if (node->icon)
@@ -429,22 +445,22 @@ node_load_icon (nodePtr node)
 
 /* determines the nodes favicon or default icon */
 gpointer
-node_get_icon (nodePtr node)
+node_get_icon (Node *node)
 {
 	if (!node->icon)
-		return (gpointer) icon_get (NODE_TYPE(node)->icon);
+		return (gpointer) icon_get (NODE_PROVIDER(node)->icon);
 
 	return node->icon;
 }
 
 const gchar *
-node_get_favicon_file (nodePtr node)
+node_get_favicon_file (Node *node)
 {
 	return node->iconFile;
 }
 
 void
-node_set_id (nodePtr node, const gchar *id)
+node_set_id (Node *node, const gchar *id)
 {
 	if (!nodes)
 		nodes = g_hash_table_new(g_str_hash, g_str_equal);
@@ -459,13 +475,13 @@ node_set_id (nodePtr node, const gchar *id)
 }
 
 const gchar *
-node_get_id (nodePtr node)
+node_get_id (Node *node)
 {
 	return node->id;
 }
 
 gboolean
-node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboolean reversed)
+node_set_sort_column (Node *node, nodeViewSortType sortColumn, gboolean reversed)
 {
 	if (node->sortColumn == sortColumn &&
 	    node->sortReversed == reversed)
@@ -478,7 +494,7 @@ node_set_sort_column (nodePtr node, nodeViewSortType sortColumn, gboolean revers
 }
 
 const gchar *
-node_get_base_url(nodePtr node)
+node_get_base_url(Node *node)
 {
 	const gchar 	*baseUrl = NULL;
 
@@ -499,22 +515,22 @@ node_get_base_url(nodePtr node)
 }
 
 gboolean
-node_can_add_child_feed (nodePtr node)
+node_can_add_child_feed (Node *node)
 {
 	g_assert (node->source->root);
 
-	if (!(NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+	if (!(NODE_PROVIDER (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return FALSE;
 
 	return (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ADD_FEED);
 }
 
 gboolean
-node_can_add_child_folder (nodePtr node)
+node_can_add_child_folder (Node *node)
 {
 	g_assert (node->source->root);
 
-	if (!(NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
+	if (!(NODE_PROVIDER (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS))
 		return FALSE;
 
 	return (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_ADD_FOLDER);
@@ -611,7 +627,7 @@ save_item_to_file_callback (itemPtr item, gpointer userdata)
 
 
 void
-node_save_items_to_file (nodePtr node, const gchar *filename, GError **error)
+node_save_items_to_file (Node *node, const gchar *filename, GError **error)
 {
 	itemSetPtr items;
 
@@ -668,7 +684,7 @@ node_save_items_to_file (nodePtr node, const gchar *filename, GError **error)
 /* node children iterating interface */
 
 void
-node_foreach_child_full (nodePtr node, gpointer func, gint params, gpointer user_data)
+node_foreach_child_full (Node *node, gpointer func, gint params, gpointer user_data)
 {
 	GSList		*children, *iter;
 
@@ -677,7 +693,7 @@ node_foreach_child_full (nodePtr node, gpointer func, gint params, gpointer user
 	/* We need to copy because func might modify the list */
 	iter = children = g_slist_copy (node->children);
 	while (iter) {
-		nodePtr childNode = (nodePtr)iter->data;
+		Node *childNode = (Node *)iter->data;
 
 		/* Apply the method to the child */
 		if (0 == params)

@@ -1,7 +1,7 @@
 /**
  * @file parse_rss.c  Test cases for RSS parsing
  *
- * Copyright (C) 2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2023-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include <string.h>
 
 #include "debug.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "feed_parser.h"
 #include "item.h"
 #include "subscription.h"
@@ -59,12 +59,12 @@ static void
 tc_parse_feed (gconstpointer user_data)
 {
 	gchar			**tc = (gchar **)user_data;
-	nodePtr			node;
+	Node			*node;
 	feedParserCtxtPtr 	ctxt;
 	int			i;
 	GList			*iter;
 
-	node = node_new (feed_get_node_type ());
+	node = node_new ("feed");
 	node_set_data (node, feed_new ());
  	node_set_subscription (node, subscription_new (NULL, NULL, NULL));
 	ctxt = feed_parser_ctxt_new (node->subscription, tc[0], strlen(tc[0]));
@@ -111,7 +111,7 @@ tc_parse_feed (gconstpointer user_data)
 
 	g_list_free_full (ctxt->items, g_object_unref);
 	feed_parser_ctxt_free (ctxt);
-	node_free (node);
+	g_object_unref (node);
 }
 
 int
