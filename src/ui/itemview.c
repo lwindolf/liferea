@@ -353,8 +353,9 @@ itemview_set_layout (nodeViewType newMode)
 	if (NODE_VIEW_MODE_AUTO == newMode) {
 		gint	w, h, f;
 
-		f = gtk_widget_get_allocated_width (liferea_shell_lookup ("feedlist"));
-		gtk_window_get_size (GTK_WINDOW (liferea_shell_get_window ()), &w, &h);
+		f = gtk_widget_get_width (liferea_shell_lookup ("feedlist"));
+		w = gtk_widget_get_width (GTK_WIDGET (liferea_shell_get_window ()));
+		h = gtk_widget_get_height (GTK_WIDGET (liferea_shell_get_window ()));
 
 		/* we switch layout if window width - feed list width > window heigt */
 		effectiveMode = (w - f > h)?NODE_VIEW_MODE_WIDE:NODE_VIEW_MODE_NORMAL;
@@ -395,23 +396,22 @@ itemview_set_layout (nodeViewType newMode)
 
 	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
 	g_assert (htmlWidgetName);
+	previous_parent = gtk_widget_get_parent (item_list_view_get_widget (itemview->itemListView));
+	gtk_viewport_set_child (GTK_VIEWPORT (previous_parent), NULL);
+
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), effectiveMode);
-	previous_parent = gtk_widget_get_parent (liferea_browser_get_widget (itemview->htmlview));
-	if (previous_parent)
-		gtk_container_remove (GTK_CONTAINER (previous_parent), liferea_browser_get_widget (itemview->htmlview));
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (htmlWidgetName)), liferea_browser_get_widget (itemview->htmlview));
+	gtk_viewport_set_child (GTK_VIEWPORT (liferea_shell_lookup (htmlWidgetName)), liferea_browser_get_widget (itemview->htmlview));
 
 	/* Recreate the item list view */
 	if (itemview->itemListView) {
-		previous_parent = gtk_widget_get_parent (item_list_view_get_widget (itemview->itemListView));
 		if (previous_parent)
-			gtk_container_remove (GTK_CONTAINER (previous_parent), item_list_view_get_widget (itemview->itemListView));
+			gtk_viewport_set_child (GTK_VIEWPORT (previous_parent), item_list_view_get_widget (itemview->itemListView));
 		g_clear_object (&itemview->itemListView);
 	}
 
 	if (ilWidgetName) {
 		itemview->itemListView = item_list_view_create (effectiveMode == NODE_VIEW_MODE_WIDE);
-		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (ilWidgetName)), item_list_view_get_widget (itemview->itemListView));
+		gtk_viewport_set_child (GTK_VIEWPORT (liferea_shell_lookup (ilWidgetName)), item_list_view_get_widget (itemview->itemListView));
 	}
 
 	/* Load previously selected node and/or item into new widgets */

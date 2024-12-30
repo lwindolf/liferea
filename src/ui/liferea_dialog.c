@@ -109,7 +109,6 @@ liferea_dialog_new (const gchar *name)
 
 	ld->priv->dialog = GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
 	gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window()));
-	gtk_builder_connect_signals (ld->priv->xml, NULL);
 	g_return_val_if_fail (ld->priv->dialog != NULL, NULL);
 
 	g_object_set_data (G_OBJECT (ld->priv->dialog), "LifereaDialog", ld);
@@ -119,14 +118,14 @@ liferea_dialog_new (const gchar *name)
 	return ld->priv->dialog;
 }
 
-gchar *
-liferea_dialog_entry_get (GtkWidget *widget, const gchar *name)
+const gchar *
+liferea_dialog_entry_get (GtkWidget *dialog, const gchar *name)
 {
-	return gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name)))));
+	return gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name))));
 }
 
 void
-lifera_dialog_entry_set (GtkWidget *widget, const gchar *name, const gchar *text)
+lifera_dialog_entry_set (GtkWidget *dialog, const gchar *name, const gchar *text)
 {
 	gtk_entry_buffer_set_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name))), text, -1);
 }
