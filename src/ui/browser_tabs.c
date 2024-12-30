@@ -292,7 +292,8 @@ browser_tabs_close_tab (tabInfo *tab)
 	g_autoptr(GListModel) list = gtk_notebook_get_pages (tabs->notebook);
 	for (guint n = 0; n < g_list_model_get_n_items (list); n++) {
 		/* Find the tab index that needs to be closed */
-		if (tab->widget == GTK_WIDGET (g_list_model_get_item (list, n))) {
+                g_autoptr(GtkWidget) widget = g_list_model_get_item (list, n);
+		if (tab->widget == widget) {
 			gtk_notebook_remove_page (tabs->notebook, n);
 			browser_tabs_remove_tab (tab);
 			break;
