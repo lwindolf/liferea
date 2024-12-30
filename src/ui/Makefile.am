@@ -8,7 +8,7 @@ AM_CPPFLAGS = \
 
 noinst_LIBRARIES = libliui.a
 
-libliui_a_CFLAGS = $(PACKAGE_CFLAGS) $(LIBINDICATE_CFLAGS)
+libliui_a_CFLAGS = $(PACKAGE_CFLAGS)
 libliui_a_SOURCES = \
 	auth_dialog.c auth_dialog.h \
 	browser_tabs.c browser_tabs.h \

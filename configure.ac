@@ -29,7 +29,6 @@ PKG_PROG_PKG_CONFIG()
 ################################################################################
 # Mandatory library dependencies
 
-#pkg_modules="	gtk+-3.0 >= 3.24.0
 pkg_modules="	gtk4 >= 4.14.0
 		glib-2.0 >= 2.68.0
 		gio-2.0 >= 2.50.0
@@ -40,12 +39,11 @@ pkg_modules="	gtk4 >= 4.14.0
 		gmodule-2.0 >= 2.0.0
 		gthread-2.0
 		libsoup-3.0 >= 3.0.7
-		webkit2gtk-4.1
+		webkitgtk-6.0
 		json-glib-1.0
 		gobject-introspection-1.0
 		gsettings-desktop-schemas
-		libpeas-1.0 >= 1.0.0
-		libpeas-gtk-1.0 >= 1.0.0
+		libpeas-2
 		fribidi >= 0.19.7"
 
 ################################################################################
