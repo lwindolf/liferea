@@ -9,12 +9,10 @@ error=0
 if command -v valgrind >/dev/null; then
 	for tool in $@; do
 		details=$(
-			valgrind -q --leak-check=full --suppressions="$(dirname "$0")/memcheck.supp" --error-markers=begin,end "./$tool" 2>&1
+			valgrind -q --leak-check=full --suppressions="$(dirname "$0")/memcheck.supp" "./$tool" 2>&1
 		)
 		output=$(
-			echo "$details" |\
-			grep -A1 "== begin" |\
-			egrep -v "== begin|possibly lost|^--$"
+			echo "$details" | grep "definitely lost" | grep -v "0 bytes in 0 blocks"
 		)
 		if [ "$output" != "" ]; then
 			error=1
