@@ -67,7 +67,6 @@ html_doc_pictures_en =	help_feed_default.png \
 			help_item_flag.png \
 			help_item_unread.png \
 			help_prefs_browser_1.14.0.png \
-			help_prefs_download_1.16.0.png \
 			help_prefs_feeds_1.14.0.png \
 			help_prefs_folders_1.14.0.png \
 			help_prefs_desktop_1.14.0.png \
