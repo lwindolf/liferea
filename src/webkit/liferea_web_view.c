@@ -2,7 +2,7 @@
  * @file liferea_web_view.c  Webkit2 widget for Liferea
  *
  * Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2021-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include "../debug.h"
 #include "browser.h"
 #include "common.h"
-#include "enclosure.h"
+#include "download.h"
 #include "feedlist.h"
 #include "social.h"
 #include "ui/browser_tabs.h"
@@ -242,7 +242,8 @@ on_popup_copy_activate (GSimpleAction *action, GVariant *parameter, gpointer use
 static void
 on_popup_save_link_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	enclosure_download (NULL, g_variant_get_string (parameter, NULL), TRUE);
+	download_url (g_variant_get_string (parameter, NULL));
+	download_show ();
 }
 
 static void

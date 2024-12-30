@@ -2,7 +2,7 @@
  * @file webkit.c  WebKit2 support for Liferea
  *
  * Copyright (C) 2016-2019 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2007-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
@@ -30,7 +30,7 @@
 #include "browser.h"
 #include "conf.h"
 #include "common.h"
-#include "enclosure.h" /* Only for enclosure_download */
+#include "download.h"
 #include "net.h"
 #include "render.h"
 #include "ui/browser_tabs.h"
@@ -365,7 +365,8 @@ liferea_webkit_download_started (WebKitWebContext	*context,
 {
 	WebKitURIRequest *request = webkit_download_get_request (download);
 	webkit_download_cancel (download);
-	enclosure_download (NULL, webkit_uri_request_get_uri (request), TRUE);
+	download_url (webkit_uri_request_get_uri (request));
+	download_show ();
 }
 
 static void

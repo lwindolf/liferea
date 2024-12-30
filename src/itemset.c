@@ -1,7 +1,7 @@
 /*
  * @file itemset.c handling sets of items
  *
- * Copyright (C) 2005-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,6 +25,7 @@
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
+#include "download.h"
 #include "enclosure.h"
 #include "node_providers/feed.h"
 #include "itemlist.h"
@@ -264,7 +265,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 				enclosurePtr enc = enclosure_from_string (iter->data);
 				if (enc) {
 					debug (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-					enclosure_download (NULL, enc->url, FALSE /* non interactive */);
+					download_url (enc->url);
 					enclosure_free (enc);
 				}
 				iter = g_slist_next (iter);
