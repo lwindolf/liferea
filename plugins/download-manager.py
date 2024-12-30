@@ -21,6 +21,7 @@ import threading
 import requests
 import gi
 import os
+import time
 
 gi.require_version('Peas', '1.0')
 gi.require_version('PeasGtk', '1.0')
@@ -55,6 +56,7 @@ class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
         super().__init__()
         self.window = None
         self.downloads = {}
+        self.max_concurrent_downloads = 3
 
     def do_activate(self):
         self.window = Gtk.Window(title="Liferea Download Manager")
@@ -74,9 +76,13 @@ class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
         self.vbox = Gtk.VBox()
         self.vbox.set_spacing(0)
         self.vbox.set_name("download-manager-vbox")
-        self.window.add(self.vbox)
+
+        self.scrollable_area = Gtk.ScrolledWindow()
+        self.scrollable_area.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        self.scrollable_area.add(self.vbox)
+
+        self.window.add(self.scrollable_area)
         self.window.set_default_size(640, 400)
-        self.window.show_all()
         self.window.connect("delete-event", self.on_window_close)
 
         # Create action and "Tools" menu bar item
@@ -104,10 +110,13 @@ class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
         return True
 
     def on_clear_list(self, button):
-        # FIXME clear only non-running
-        for child in self.vbox.get_children():
-            self.vbox.remove(child)
-        self.downloads.clear()
+        # Collect keys to delete
+        keys_to_delete = [key for key, download in self.downloads.items() if download.get('finished')]
+
+        # Delete the collected keys
+        for key in keys_to_delete:
+            self.vbox.remove(self.downloads[key].get('container').get_parent())
+            del self.downloads[key]
 
     def on_choose_directory(self, button):
         dialog = Gtk.FileChooserDialog(
@@ -126,41 +135,17 @@ class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
             self.download_dir = dialog.get_filename()
         dialog.destroy()
 
-    # Add right-click context menu
-    def on_popup_menu(self, widget, event, data=None):
-        print("Popup menu")
-        if event.button != 3:  # Right click
-            return
-        menu = Gtk.Menu()
+    def on_open_file(self, button, download):
+        os.system(f"xdg-open {download.get('filename')}")
 
-        open_item = Gtk.MenuItem(label="Open")
-        open_item.connect("activate", self.on_open_file, widget)
-        menu.append(open_item)
-
-        open_folder_item = Gtk.MenuItem(label="Open Folder")
-        open_folder_item.connect("activate", self.on_open_folder, widget)
-        menu.append(open_folder_item)
-
-        menu.show_all()
-        menu.popup_at_pointer(event)
-
-    def on_open_file(self, widget):
-        print("Open file")
-
-    def on_open_folder(self, widget):
-        print("Open folder")
-
-    # TODOs:
-    # - Allow canceling downloads
-    # - Allow opening downloaded files
-    # - Max concurrent downloads
-    # - Settings persistence (e.g. download dir)
-    #
     # Ideas:
     #
+    # - Allow changing max concurrent downloads
+    # - Allow canceling downloads
     # - Limit download speed
+    # - Settings persistence (e.g. download dir)
 
-    def do_download(self, url):
+    def do_download(self, url):       
         progress_bar = Gtk.ProgressBar()
         progress_bar.set_show_text(True)
 
@@ -168,21 +153,30 @@ class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
         label.set_xalign(0)
         label.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
         
-        vbox = Gtk.VBox()
-        hbox = Gtk.HBox()
-        separator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
-        
-        hbox.pack_start(vbox, True, True, 0)
-        
+        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         vbox.set_spacing(0)
         vbox.pack_start(label, False, False, 6)
         vbox.pack_start(progress_bar, False, False, 6)
+
+        hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        hbox.pack_end(vbox, True, True, 0)
+
+        separator = Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+        separator
+        outerVBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        outerVBox.set_spacing(0)
+        outerVBox.pack_start(hbox, False, False, 3)
+        outerVBox.pack_start(separator, False, False, 3)
+
+        self.vbox.pack_start(outerVBox, False, False, 0)
+        outerVBox.show_all()
         
-        self.downloads[url] = {
+        filename = self.safe_filename(url)
+        self.downloads[filename] = download = {
             'progress_bar' : progress_bar,
             'container'    : hbox,
             'url'          : url,
-            'filename'     : self.safe_filename(url),
+            'filename'     : filename,
             'finished'     : False,
             'success'      : False
         }
@@ -197,14 +191,10 @@ class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
         context = progress_bar.get_style_context()
         context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
        
-        self.vbox.pack_start(hbox, False, False, 0)
-        self.vbox.pack_start(separator, False, False, 3)
-        hbox.show_all()
-        separator.show()
-
-        threading.Thread(target=self.download_file, args=(self.downloads[url],)).start()       
+        threading.Thread(target=self.download_file, args=(download,)).start()       
 
     def do_show(self):
+        self.window.show_all()
         self.window.present()
 
     def show_menu_action(self, action, variant, shell):
@@ -228,40 +218,56 @@ class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
         return safe_filepath
 
     def download_file(self, download):
-        if not download.get('filename'):
-            print("Could not determine filename from URL")
-            GObject.idle_add(self.download_failed, download)
-            return      
+        try:
+            # Wait until a slot is free
+            GObject.idle_add(download.get('progress_bar').set_text, 'Pending')
+            while threading.active_count() > self.max_concurrent_downloads + 1:
+                time.sleep(5)
 
-        response = requests.get(download.get('url'), stream=True)
-        if response.status_code != 200:
-            GObject.idle_add(self.download_failed, download)
-            return
-        
-        total_length = response.headers.get('content-length')
-        if total_length is None:
-            GObject.idle_add(download.get('progress_bar').set_fraction, 1.0)
-        else:
-            total_length = int(total_length)
-            downloaded = 0
-            with open(download.get('filename'), 'ab') as f:
-                for data in response.iter_content(chunk_size=4096):
-                    f.write(data)
-                    downloaded += len(data)
-                    fraction = downloaded / total_length
-                    GObject.idle_add(download.get('progress_bar').set_fraction, fraction)
-                    GObject.idle_add(download.get('progress_bar').set_text, "{:.0%}".format(fraction))
+            if not download.get('filename'):
+                print("Could not determine filename from URL")
+                GObject.idle_add(self.download_failed, download)
+                return      
 
-        GObject.idle_add(self.download_complete, download)
+            response = requests.get(download.get('url'), stream=True)
+            if response.status_code != 200:
+                GObject.idle_add(self.download_failed, download)
+                return
+            
+            total_length = response.headers.get('content-length')
+            if total_length is None:
+                GObject.idle_add(download.get('progress_bar').set_fraction, 1.0)
+            else:
+                total_length = int(total_length)
+                downloaded = 0
+                with open(download.get('filename'), 'ab') as f:
+                    for data in response.iter_content(chunk_size=4096):
+                        f.write(data)
+                        downloaded += len(data)
+                        fraction = downloaded / total_length
+                        GObject.idle_add(download.get('progress_bar').set_fraction, fraction)
+                        GObject.idle_add(download.get('progress_bar').set_text, "{:.0%}".format(fraction))
+
+            GObject.idle_add(self.download_complete, download)
+        except Exception as e:
+            print(f"Download failed: {e}")
+            GObject.idle_add(self.download_failed, download)
 
     def download_failed(self, download):
         download.get('progress_bar').set_text("Failed")
+        download['finished'] = True
+
+        icon = Gtk.Image.new_from_icon_name("dialog-error", Gtk.IconSize.LARGE_TOOLBAR)
+        download.get('container').pack_start(icon, False, False, 5)
+        icon.show()
 
     def download_complete(self, download):
-        download.get('progress_bar').hide()
+        download.get('progress_bar').destroy()
+        download['finished'] = True
+        download['success'] = True
         
         open_button = Gtk.Button()
         open_button.set_image(Gtk.Image.new_from_icon_name("folder-symbolic", Gtk.IconSize.BUTTON))
-        open_button.connect("clicked", self.on_open_file, download.get('filename'))
+        open_button.connect("clicked", self.on_open_file, download)
         download.get('container').pack_start(open_button, False, False, 5)
         open_button.show()
