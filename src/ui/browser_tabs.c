@@ -1,7 +1,7 @@
 /*
  * @file browser_tabs.c  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -35,6 +35,7 @@ struct _tabInfo {
 	GtkWidget	*label;		/*<< the tab label */
 	GtkWidget	*widget;	/*<< the embedded child widget */
 	LifereaBrowser	*htmlview;	/*<< the tabs HTML view widget */
+	GtkEventController *controller;
 };
 
 /**
@@ -94,14 +95,18 @@ gi_marshalling_boxed_gslist_get_type (void)
 static void browser_tabs_close_tab (tabInfo *tab);
 
 static gboolean
-on_tab_key_press (GtkWidget *widget, GdkEventKey *event, gpointer data)
+on_tab_key_press (GtkEventControllerKey *controller,
+		guint keyval,
+		guint keycode,
+		GdkModifierType state,
+		gpointer user_data)
 {
 	guint modifiers;
 
 	modifiers = gtk_accelerator_get_default_mod_mask ();
-	if ((event->keyval == GDK_KEY_w)
-	    && ((event->state & modifiers) == GDK_CONTROL_MASK)) {
-		browser_tabs_close_tab ((tabInfo *)data);
+	if ((keyval == GDK_KEY_w) &&
+	    ((state & modifiers) == GDK_CONTROL_MASK)) {
+		browser_tabs_close_tab ((tabInfo *)user_data);
 		return TRUE;
 	}
 
@@ -121,11 +126,9 @@ enum {
 struct _BrowserTabs {
 	GObject		parentInstance;
 
-	GtkNotebook	*notebook;
-
-	GtkWidget	*headlines;	/*<< widget of the headlines tab */
-
-	GSList		*list;		/*<< tabInfo structures for all tabs */
+	GtkNotebook		*notebook;
+	GtkWidget		*headlines;	/*<< widget of the headlines tab */
+	GSList			*list;		/*<< tabInfo structures for all tabs */
 };
 
 static BrowserTabs *tabs = NULL;
@@ -137,6 +140,7 @@ static void
 browser_tabs_remove_tab (tabInfo *tab)
 {
 	tabs->list = g_slist_remove (tabs->list, tab);
+	g_object_unref (tab->controller);
 	g_object_unref (tab->htmlview);
 	g_free (tab);
 }
@@ -285,22 +289,14 @@ on_htmlview_close_tab (gpointer object, gpointer user_data)
 static void
 browser_tabs_close_tab (tabInfo *tab)
 {
-	int	n = 0;
-	GList	*iter, *list;
-
-	/* Find the tab index that needs to be closed */
-	iter = list = gtk_container_get_children (GTK_CONTAINER (tabs->notebook));
-	while (iter) {
-		if (tab->widget == GTK_WIDGET (iter->data))
+	g_autoptr(GListModel) list = gtk_notebook_get_pages (tabs->notebook);
+	for (guint n = 0; n < g_list_model_get_n_items (list); n++) {
+		/* Find the tab index that needs to be closed */
+		if (tab->widget == GTK_WIDGET (g_list_model_get_item (list, n))) {
+			gtk_notebook_remove_page (tabs->notebook, n);
+			browser_tabs_remove_tab (tab);
 			break;
-		n++;
-		iter = g_list_next (iter);
-	}
-	g_list_free (list);
-
-	if (iter) {
-		gtk_notebook_remove_page (tabs->notebook, n);
-		browser_tabs_remove_tab (tab);
+		}
 	}
 
 	/* check if all tabs are closed */
@@ -326,6 +322,7 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	tab = g_new0 (tabInfo, 1);
 	tab->htmlview = liferea_browser_new (TRUE /* internal browsing */);
 	tab->widget = liferea_browser_get_widget (tab->htmlview);
+	tab->controller = gtk_event_controller_key_new ();
 	tabs->list = g_slist_append (tabs->list, tab);
 
 	g_object_set_data (G_OBJECT (tab->widget), "tabInfo", tab);
@@ -340,17 +337,15 @@ browser_tabs_add_new (const gchar *url, const gchar *title, gboolean activate)
 	gtk_label_set_width_chars (GTK_LABEL (tab->label), 17);
 
 	labelBox = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 4);
-	gtk_box_pack_start (GTK_BOX (labelBox), tab->label, FALSE, FALSE, 0);
+	gtk_box_append (GTK_BOX (labelBox), tab->label);
 
 	close_button = gedit_close_button_new ();
-	gtk_box_pack_end (GTK_BOX (labelBox), close_button, FALSE, FALSE, 0);
+	gtk_box_append (GTK_BOX (labelBox), close_button);
 	g_signal_connect ((gpointer)close_button, "clicked", G_CALLBACK (on_htmlview_close_tab), (gpointer)tab);
 
-	gtk_widget_show_all (labelBox);
-
 	i = gtk_notebook_append_page (tabs->notebook, tab->widget, labelBox);
-	g_signal_connect (gtk_notebook_get_nth_page (tabs->notebook, i),
-	                  "key-press-event", G_CALLBACK (on_tab_key_press), (gpointer)tab);
+	g_signal_connect (tab->controller, "key-pressed", G_CALLBACK (on_tab_key_press), (gpointer)tab);
+	gtk_widget_add_controller (gtk_notebook_get_nth_page (tabs->notebook, i), tab->controller);
 	gtk_notebook_set_show_tabs (tabs->notebook, TRUE);
 	gtk_notebook_set_tab_reorderable (tabs->notebook, tab->widget, TRUE);
 
