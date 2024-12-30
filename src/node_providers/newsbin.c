@@ -93,13 +93,15 @@ newsbin_render (Node *node)
 }
 
 static void
-on_newsbin_common_btn_clicked (GtkButton *button, gpointer user_data)
+on_newsbin_common_btn_clicked (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	GtkWidget	*dialog = gtk_widget_get_toplevel (GTK_WIDGET (button));
-	GtkWidget	*nameentry = liferea_dialog_lookup (dialog, "newsbinnameentry");
-	GtkWidget	*showinreduced = liferea_dialog_lookup (dialog, "newsbinalwaysshowinreduced");
+	GtkWidget	*nameentry = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinnameentry");
+	GtkWidget	*showinreduced = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinalwaysshowinreduced");
 	Node		*newsbin = (Node *)user_data;
 	gboolean	newly_created = FALSE;
+
+	if (response_id != GTK_RESPONSE_OK)
+		return;
 
 	if (!newsbin) {
 		newsbin = node_new ("newsbin");
@@ -108,7 +110,7 @@ on_newsbin_common_btn_clicked (GtkButton *button, gpointer user_data)
 		newly_created = TRUE;
 	}
 
-	node_set_title (newsbin, (gchar *)gtk_entry_get_text (GTK_ENTRY (nameentry)));
+	node_set_title (newsbin, gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (nameentry))));
 	if (newsbin->data) {
 		((feedPtr)newsbin->data)->alwaysShowInReduced = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showinreduced));
 	}
@@ -117,29 +119,27 @@ on_newsbin_common_btn_clicked (GtkButton *button, gpointer user_data)
 	}
 
 	feedlist_schedule_save ();
-	gtk_widget_destroy (dialog);
 }
-
 
 static gboolean
 ui_newsbin_common (Node *node)
 {
 	GtkWidget	*dialog = liferea_dialog_new ("new_newsbin");
-	GtkWidget	*nameentry = liferea_dialog_lookup (dialog, "newsbinnameentry");
-	GtkWidget	*showinreduced = liferea_dialog_lookup (dialog, "newsbinalwaysshowinreduced");
-	GtkWidget	*okbutton = liferea_dialog_lookup (dialog, "newnewsbinbtn");
+	GtkWidget	*nameentry = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinnameentry");
+	GtkWidget	*showinreduced = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinalwaysshowinreduced");
+	g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (node?node_get_title (node):NULL, 0);
 
 	if (node) {
 		gtk_window_set_title (GTK_WINDOW (dialog), _("News Bin Properties"));
-		gtk_entry_set_text (GTK_ENTRY (nameentry), node_get_title (node));
+		gtk_entry_set_buffer (GTK_ENTRY (nameentry), buffer);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), ((feedPtr)node->data)->alwaysShowInReduced);
 	} else {
 		gtk_window_set_title (GTK_WINDOW (dialog), _("Create News Bin"));
-		gtk_entry_set_text (GTK_ENTRY (nameentry), "");
+		gtk_entry_set_buffer (GTK_ENTRY (nameentry), buffer);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), FALSE);
 	}
 
-	g_signal_connect (G_OBJECT (okbutton), "clicked",
+	g_signal_connect (dialog, "response",
 	                  G_CALLBACK (on_newsbin_common_btn_clicked), node);
 
 	gtk_window_present (GTK_WINDOW (dialog));
