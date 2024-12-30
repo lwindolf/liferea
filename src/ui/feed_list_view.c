@@ -921,7 +921,12 @@ feed_list_view_add_duplicate_url_cb (GtkDialog *dialog, gint response_id, gpoint
 {
 	subscriptionPtr tempSubscription = (subscriptionPtr) user_data;
 
-	// FIXME this looks wrong!
+	if (response_id == GTK_RESPONSE_ACCEPT)
+		feedlist_add_subscription (tempSubscription->source, NULL, NULL, 0);
+	else
+		subscription_free (tempSubscription);
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
