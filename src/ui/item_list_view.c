@@ -118,6 +118,8 @@ launch_item (itemPtr item, open_link_target_type open_link_target)
 struct _ItemListView {
 	GObject		parentInstance;
 
+	GtkEventController *keypress;
+	GtkGesture	*gesture;
 	GtkTreeView	*treeview;
 	GtkWidget 	*ilscrolledwindow;	/*<< The complete ItemListView widget */
 	GSList		*item_ids;		/*<< list of all currently known item ids */
@@ -595,11 +597,14 @@ item_list_view_update (ItemListView *ilv)
 }
 
 static gboolean
-on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
+on_item_list_view_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
 {
-	if ((event->type == GDK_KEY_PRESS) && (event->state == 0)
-	    && (event->keyval == GDK_KEY_Delete))
-		on_action_remove_item(NULL, NULL, NULL);
+	if (state & GDK_CONTROL_MASK) {
+		if (keyval == GDK_KEY_Delete) {
+			on_action_remove_item(NULL, NULL, NULL);
+			return TRUE;
+		}
+	}
 
 	return FALSE;
 }
@@ -663,60 +668,53 @@ on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean key
 }
 
 static gboolean
-on_item_list_view_button_press_event (GtkWidget *treeview, GdkEvent *event, gpointer user_data)
+on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdouble x, gdouble y, gpointer user_data)
 {
 	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
+	GtkTreeView		*treeview = GTK_TREE_VIEW (user_data);
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
 	GtkTreeViewColumn	*column;
-	GdkEventButton 		*eb;
 	itemPtr			item = NULL;
 	gboolean		result = FALSE;
 
-	if (event->type != GDK_BUTTON_PRESS)
-		return FALSE;
-
-	eb = (GdkEventButton*) event;
-
+	// FIXME: port this to GTK4!
 	/* avoid handling header clicks */
-	if (eb->window != gtk_tree_view_get_bin_window (ilv->treeview))
-		return FALSE;
+	/*if (eb->window != gtk_tree_view_get_bin_window (ilv->treeview))
+		return FALSE;*/
 
-	if (!gtk_tree_view_get_path_at_pos (ilv->treeview, (gint)eb->x, (gint)eb->y, &path, &column, NULL, NULL))
-		return FALSE;
-
-	if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->treeview), &iter, path))
-		item = item_load (item_list_view_iter_to_id (ilv, &iter));
-
-	gtk_tree_path_free (path);
+	if (gtk_tree_view_get_path_at_pos (treeview, (gint)x, (gint)y, &path, &column, NULL, NULL)) {
+		if (gtk_tree_model_get_iter (gtk_tree_view_get_model (treeview), &iter, path))
+			item = item_load (item_list_view_iter_to_id (ilv, &iter));
+		gtk_tree_path_free (path);
+	}
 
 	if (item) {
-		switch (eb->button) {
-			case 1:
-				if (column == g_hash_table_lookup(ilv->columns, "favicon") ||
-				    column == g_hash_table_lookup(ilv->columns, "state")) {
-					itemlist_toggle_flag (item);
+		if (n_press == 1) {
+			switch (gtk_gesture_single_get_current_button(GTK_GESTURE_SINGLE(gesture))) {
+				case GDK_BUTTON_PRIMARY:
+					if (column == g_hash_table_lookup(ilv->columns, "favicon") ||
+					    column == g_hash_table_lookup(ilv->columns, "state")) {
+						itemlist_toggle_flag (item);
+						result = TRUE;
+					}
+					break;
+				case GDK_BUTTON_MIDDLE:
+					/* Middle mouse click toggles read status... */
+					itemlist_toggle_read_status (item);
 					result = TRUE;
-				}
-				break;
-			case 2:
-				/* Middle mouse click toggles read status... */
-				itemlist_toggle_read_status (item);
-				result = TRUE;
-				break;
-			case 3:
-				ui_popup_item_menu (item, event);
-				result = TRUE;
-				break;
-			default:
-				/* Do nothing on buttons >= 4 */
-				break;
+					break;
+				case GDK_BUTTON_SECONDARY:
+					ui_popup_item_menu (item, NULL);
+					result = TRUE;
+					break;
+			}
 		}
 		item_unload (item);
 	}
 
 	return result;
-}
+} 
 
 static gboolean
 on_item_list_view_popup_menu (GtkWidget *widget, gpointer user_data)
@@ -818,12 +816,14 @@ item_list_view_create (gboolean wide)
 
 	ilv->columns = g_hash_table_new (g_str_hash, g_str_equal);
 
+	ilv->keypress = gtk_event_controller_key_new ();
+	ilv->gesture = gtk_gesture_click_new ();
+
 	ilv->ilscrolledwindow = gtk_scrolled_window_new ();
 	g_object_ref_sink (ilv->ilscrolledwindow);
 	gtk_widget_show (ilv->ilscrolledwindow);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_SHADOW_IN);
 
 	ilv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
 	gtk_tree_view_set_show_expanders (ilv->treeview, FALSE);
@@ -831,7 +831,7 @@ item_list_view_create (gboolean wide)
 		gtk_tree_view_set_fixed_height_mode (ilv->treeview, FALSE);
 		gtk_tree_view_set_grid_lines (ilv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
 	}
-	gtk_container_add (GTK_CONTAINER (ilv->ilscrolledwindow), GTK_WIDGET (ilv->treeview));
+	gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_WIDGET (ilv->treeview));
 	gtk_widget_show (GTK_WIDGET (ilv->treeview));
 	gtk_widget_set_name (GTK_WIDGET (ilv->treeview), "itemlist");
 
@@ -891,11 +891,13 @@ item_list_view_create (gboolean wide)
 	g_strfreev (conf_column_order);
 
 	/* And connect signals */
-	g_signal_connect (G_OBJECT (ilv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
 	g_signal_connect (G_OBJECT (ilv->treeview), "columns_changed", G_CALLBACK (on_item_list_view_columns_changed), ilv);
 	g_signal_connect (G_OBJECT (ilv->treeview), "row_activated", G_CALLBACK (on_item_list_row_activated), ilv);
-	g_signal_connect (G_OBJECT (ilv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), ilv);
 	g_signal_connect (G_OBJECT (ilv->treeview), "popup_menu", G_CALLBACK (on_item_list_view_popup_menu), ilv);
+	g_signal_connect (ilv->keypress, "key-pressed", G_CALLBACK (on_item_list_view_key_pressed_event), ilv);
+	g_signal_connect (ilv->gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
+	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), ilv->keypress);
+	gtk_widget_add_controller(GTK_WIDGET(ilv->treeview), GTK_EVENT_CONTROLLER(ilv->gesture));
 
 	if (!wide) {
 		gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->treeview), TRUE);
