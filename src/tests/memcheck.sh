@@ -9,7 +9,7 @@ error=0
 if command -v valgrind >/dev/null; then
 	for tool in $@; do
 		details=$(
-			valgrind -q --leak-check=full --suppressions="$(dirname "$0")/memcheck.supp" "./$tool" 2>&1
+			valgrind -q --leak-check=full --gen-suppressions=all --suppressions="$(dirname "$0")/memcheck.supp" "./$tool" 2>&1
 		)
 		output=$(
 			echo "$details" | grep "definitely lost" | grep -v "0 bytes in 0 blocks"
