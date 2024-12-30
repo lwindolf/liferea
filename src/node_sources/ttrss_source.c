@@ -356,11 +356,11 @@ on_ttrss_source_selected (GtkDialog *dialog,
 		   URL from being lost by unwanted permanent redirects on
 		   the getFeeds call, so we save it as the homepage meta
 		   data value... */
-		metadata_list_set (&node->subscription->metadata, "ttrss-url", gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "serverUrlEntry"))));
+		metadata_list_set (&node->subscription->metadata, "ttrss-url", liferea_dialog_entry_get (GTK_WIDGET (dialog), "serverUrlEntry"));
 
 		subscription_set_auth_info (node->subscription,
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
+		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "userEntry"),
+		                            liferea_dialog_entry_get (GTK_WIDGET (dialog), "passwordEntry"));
 
 		node->data = (gpointer)ttrss_source_new (node);
 		feedlist_node_added (node);
@@ -368,8 +368,6 @@ on_ttrss_source_selected (GtkDialog *dialog,
 
 		db_node_update (node);	/* because of metadate_list_set() above */
 	}
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static void

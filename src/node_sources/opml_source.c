@@ -348,21 +348,16 @@ on_opml_source_selected (GtkDialog *dialog,
 	if (response_id == GTK_RESPONSE_OK) {
 		Node *node = node_new ("node_source");
 		node_set_title (node, OPML_SOURCE_DEFAULT_TITLE);
-		node_source_new (node, opml_source_get_type (), gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "location_entry"))));
+		node_source_new (node, opml_source_get_type (), liferea_dialog_entry_get (GTK_WIDGET (dialog), "location_entry"));
 		feedlist_node_added (node);
 		node_source_update (node);
 	}
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static void
 on_opml_file_selected (const gchar *filename, gpointer user_data)
 {
-	GtkWidget	*dialog = GTK_WIDGET (user_data);
-
-	if (filename && dialog)
-		gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (dialog, "location_entry")), g_strdup(filename));
+	liferea_dialog_entry_set (GTK_WIDGET (user_data), "location_entry", filename);
 }
 
 static void

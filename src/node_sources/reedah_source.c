@@ -267,15 +267,13 @@ on_reedah_source_selected (GtkDialog *dialog,
 		node_set_title (node, node->source->type->name);
 		
 		subscription_set_auth_info (node->subscription,
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
+					    liferea_dialog_entry_get (GTK_WIDGET (dialog), "userEntry"),
+					    liferea_dialog_entry_get (GTK_WIDGET (dialog), "passwordEntry"));
 
 		node->data = reedah_source_new (node);
 		feedlist_node_added (node);
 		node_source_update (node);
 	}
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static void

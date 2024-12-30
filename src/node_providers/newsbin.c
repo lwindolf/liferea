@@ -95,7 +95,6 @@ newsbin_render (Node *node)
 static void
 on_newsbin_common_btn_clicked (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	GtkWidget	*nameentry = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinnameentry");
 	GtkWidget	*showinreduced = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinalwaysshowinreduced");
 	Node		*newsbin = (Node *)user_data;
 	gboolean	newly_created = FALSE;
@@ -110,7 +109,7 @@ on_newsbin_common_btn_clicked (GtkDialog *dialog, gint response_id, gpointer use
 		newly_created = TRUE;
 	}
 
-	node_set_title (newsbin, gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (nameentry))));
+	node_set_title (newsbin, liferea_dialog_entry_get (GTK_WIDGET (dialog), "newsbinnameentry"));
 	if (newsbin->data) {
 		((feedPtr)newsbin->data)->alwaysShowInReduced = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (showinreduced));
 	}
@@ -125,17 +124,14 @@ static gboolean
 ui_newsbin_common (Node *node)
 {
 	GtkWidget	*dialog = liferea_dialog_new ("new_newsbin");
-	GtkWidget	*nameentry = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinnameentry");
 	GtkWidget	*showinreduced = liferea_dialog_lookup (GTK_WIDGET (dialog), "newsbinalwaysshowinreduced");
-	g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (node?node_get_title (node):NULL, 0);
 
 	if (node) {
 		gtk_window_set_title (GTK_WINDOW (dialog), _("News Bin Properties"));
-		gtk_entry_set_buffer (GTK_ENTRY (nameentry), buffer);
+		liferea_dialog_entry_set (dialog, "newsbinnameentry", node_get_title (node));
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), ((feedPtr)node->data)->alwaysShowInReduced);
 	} else {
 		gtk_window_set_title (GTK_WINDOW (dialog), _("Create News Bin"));
-		gtk_entry_set_buffer (GTK_ENTRY (nameentry), buffer);
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (showinreduced), FALSE);
 	}
 

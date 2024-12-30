@@ -337,19 +337,17 @@ on_google_source_selected (GtkDialog *dialog,
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node = node_new ("node_source");
-		node_source_new (node, google_source_get_type (), gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "serverEntry"))));
-		node_set_title (node, gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "nameEntry"))));
+		node_source_new (node, google_source_get_type (), gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "serverEntry")))));
+		node_set_title (node, gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "nameEntry")))));
 		
 		subscription_set_auth_info (node->subscription,
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry"))),
-		                            gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry"))));
+		                            gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "userEntry")))),
+		                            gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET(dialog), "passwordEntry")))));
 		                            
 		node->data = google_source_new (node);
 		feedlist_node_added (node);
 		node_source_update (node);
 	}
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static void

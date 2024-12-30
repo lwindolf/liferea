@@ -23,11 +23,12 @@ import gi
 import os
 import time
 
+gi.require_version('Gtk', '3.0')
 gi.require_version('Peas', '1.0')
 gi.require_version('PeasGtk', '1.0')
 gi.require_version('Liferea', '3.0')
 
-from gi.repository import GObject, GLib, Gdk, Gtk, Gio, Liferea, Pango
+from gi.repository import GObject, GLib, Gtk, Gio, Liferea, Pango
 from urllib.parse import urlparse
 
 def remove_menuitem(action, menus, level=0):
@@ -76,7 +77,7 @@ class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
         self.clear_button.connect("clicked", self.on_clear_list)
         self.headerbar.pack_start(self.clear_button)
 
-        self.vbox = Gtk.VBox()
+        self.vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.vbox.set_spacing(0)
         self.vbox.set_name("download-manager-vbox")
 
