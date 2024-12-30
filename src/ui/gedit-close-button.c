@@ -46,22 +46,13 @@ gedit_close_button_class_init (GeditCloseButtonClass *klass)
 	klass->priv = G_TYPE_CLASS_GET_PRIVATE (klass, GEDIT_TYPE_CLOSE_BUTTON, GeditCloseButtonClassPrivate);
 
 	klass->priv->css = gtk_css_provider_new ();
-	gtk_css_provider_load_from_data (klass->priv->css, button_style, -1, NULL);
+	gtk_css_provider_load_from_data (klass->priv->css, button_style, -1);
 }
 
 static void
 gedit_close_button_init (GeditCloseButton *button)
 {
 	GtkStyleContext *context;
-	GtkWidget *image;
-	GIcon *icon;
-
-	icon = g_themed_icon_new_with_default_fallbacks ("window-close-symbolic");
-	image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_MENU);
-	gtk_widget_show (image);
-	g_object_unref (icon);
-
-	gtk_container_add (GTK_CONTAINER (button), image);
 
 	/* make it small */
 	context = gtk_widget_get_style_context (GTK_WIDGET (button));
@@ -73,10 +64,10 @@ gedit_close_button_init (GeditCloseButton *button)
 GtkWidget *
 gedit_close_button_new ()
 {
-	return GTK_WIDGET (g_object_new (GEDIT_TYPE_CLOSE_BUTTON,
-	                                 "relief", GTK_RELIEF_NONE,
-	                                 "focus-on-click", FALSE,
-	                                 NULL));
+	GtkWidget *button = gtk_button_new_from_icon_name ("window-close-symbolic");
+	g_object_set_data (G_OBJECT (button), "focus-on-click", FALSE);
+	g_object_set_data (G_OBJECT (button), "has-frame", FALSE);
+	return button;
 }
 
 /* ex:set ts=8 noet: */
