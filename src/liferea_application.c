@@ -92,7 +92,7 @@ on_app_open (GApplication *application,
 		gchar *dir = g_get_current_dir ();
 
 		/* Prevent empty argument causing a subscription (Github #1359) */
-		if (!(g_str_has_prefix (uri, "file://") && g_str_equal (dir, uri + 7))) {
+		if (!(g_str_has_prefix (uri, "file://") && strlen(uri) > 7 && g_str_equal (dir, uri + 7))) {
 
 			/* When passed to GFile feeds using the feed scheme "feed:https://" become "feed:///https:/" */
 			if (g_str_has_prefix (uri, "feed:///https:/")) {
