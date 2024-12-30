@@ -62,19 +62,6 @@ extern GSList *bookmarkSites;	/* from social.c */
 
 static PreferencesDialog *prefdialog = NULL;
 
-/** download tool commands need to take an URI as %s */
-static const gchar * enclosure_download_commands[] = {
-	"steadyflow add %s",
-	"dbus-send --session --print-reply --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0",
-	"kget %s",
-	"uget-gtk %s",
-	"transmission-gtk %s",
-	"aria2c %s"
-};
-
-/** order must match enclosure_download_commands[] */
-static const gchar *enclosure_download_tool_options[] = { "Steadyflow", "gwget", "KGet", "uGet", "Transmission (Gtk)", "aria2", NULL };
-
 /** GConf representation of toolbar styles */
 static const gchar * gui_toolbar_style_values[] = { "", "both", "both-horiz", "icons", "text", NULL };
 
@@ -110,24 +97,6 @@ static const gchar * default_view_mode_options[] = {
 	N_("Automatic"),
 	NULL
 };
-
-gchar *
-prefs_get_download_command (void)
-{
-	gboolean 	use_custom_command;
-	gchar 		*result = NULL;
-
-	conf_get_bool_value (DOWNLOAD_USE_CUSTOM_COMMAND, &use_custom_command);
-	if (use_custom_command)
-		conf_get_str_value (DOWNLOAD_CUSTOM_COMMAND, &result);
-	else {
-		gint	enclosure_download_tool;
-		conf_get_int_value (DOWNLOAD_TOOL, &enclosure_download_tool);
-		/* FIXME: array boundary check */
-		result = g_strdup (enclosure_download_commands[enclosure_download_tool]);
-	}
-	return result;
-}
 
 /* Preference dialog class */
 
@@ -375,28 +344,6 @@ on_deferdeletemode_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 }
 
 void
-on_enclosure_download_predefined_toggled (GtkToggleButton *button, gpointer user_data)
-{
-	gboolean is_active = gtk_toggle_button_get_active (button);
-
-	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->dialog, "customDownloadEntry"), !is_active);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->dialog, "downloadToolCombo"), is_active);
-	conf_set_bool_value (DOWNLOAD_USE_CUSTOM_COMMAND, !is_active);
-}
-
-static void
-on_enclosure_download_tool_changed (gpointer user_data)
-{
-	conf_set_int_value (DOWNLOAD_TOOL, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
-}
-
-void
-on_enclosure_download_custom_command_changed (GtkEditable *entry, gpointer user_data)
-{
-	conf_set_str_value (DOWNLOAD_CUSTOM_COMMAND, gtk_entry_get_text (GTK_ENTRY (entry)));
-}
-
-void
 on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	conf_set_bool_value (DISABLE_TOOLBAR, gtk_toggle_button_get_active (button));
@@ -441,7 +388,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	GtkListStore		*store;
 	GtkTreeIter		treeiter;
 	GtkAdjustment		*itemCount;
-	GtkTreeViewColumn 	*column;
 	GSList			*list;
 	gchar			*proxyport;
 	gchar			*configuredBrowser, *name;
@@ -450,7 +396,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gboolean		bSetting, manualBrowser;
 	gchar			*proxy_host, *proxy_user, *proxy_passwd;
 	gchar			*browser_command;
-	gchar 			*custom_download_command;
 
 	prefdialog = pd;
 	pd->dialog = liferea_dialog_new ("prefs");
@@ -688,36 +633,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpbtn")), FALSE);
 	gtk_widget_show (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpInfoBar")));
 #endif
-	/* ================= panel 7 "Enclosures" ======================== */
-
-	/* menu for download tool */
-	conf_get_int_value (DOWNLOAD_TOOL, &iSetting);
-	ui_common_setup_combo_menu (liferea_dialog_lookup (pd->dialog, "downloadToolCombo"),
-	                            enclosure_download_tool_options,
-	                            G_CALLBACK (on_enclosure_download_tool_changed),
-	                            iSetting);
-
-	/* restore toggle */
-	conf_get_bool_value (DOWNLOAD_USE_CUSTOM_COMMAND, &bSetting);
-	widget = liferea_dialog_lookup (pd->dialog, "customDownload");
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "customDownloadEntry"), bSetting);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "downloadToolCombo"), !bSetting);
-
-	/* restore custom command */
-	conf_get_str_value (DOWNLOAD_CUSTOM_COMMAND, &custom_download_command);
-	widget = liferea_dialog_lookup (pd->dialog, "customDownloadEntry");
-	gtk_entry_set_text (GTK_ENTRY (widget), custom_download_command);
-	g_free (custom_download_command);
-
-	column = gtk_tree_view_column_new_with_attributes (_("Type"), gtk_cell_renderer_text_new (), "text", FTS_TYPE, NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (widget), column);
-	gtk_tree_view_column_set_sort_column_id (column, FTS_TYPE);
-	column = gtk_tree_view_column_new_with_attributes (_("Program"), gtk_cell_renderer_text_new (), "text", FTS_CMD, NULL);
-	gtk_tree_view_column_set_sort_column_id (column, FTS_CMD);
-	gtk_tree_view_append_column (GTK_TREE_VIEW(widget), column);
-
-	gtk_tree_selection_set_mode (gtk_tree_view_get_selection (GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
 
 	g_signal_connect_object (pd->dialog, "destroy", G_CALLBACK (preferences_dialog_destroy_cb), pd, 0);
 

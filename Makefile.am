@@ -46,6 +46,9 @@ plugin_DATA = \
 	plugins/add-bookmark-site.ui \
 	plugins/bold-unread.py \
 	plugins/bold-unread.plugin \
+	plugins/download-manager.py \
+	plugins/download-manager.plugin \
+	plugins/download-manager.ui \
 	plugins/getfocus.py \
 	plugins/getfocus.plugin \
 	plugins/gnome-keyring.py \

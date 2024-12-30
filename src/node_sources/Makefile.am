@@ -8,7 +8,7 @@ AM_CPPFLAGS = \
 	$(PACKAGE_CFLAGS)
 	
 noinst_LIBRARIES = liblinode_sources.a
-liblinode_sources_a_SOURCES = node_source_activatable.c node_source_activatable.h \
+liblinode_sources_a_SOURCES = \
                            default_source.c default_source.h \
                            dummy_source.c dummy_source.h \
                            google_reader_api_edit.c google_reader_api_edit.h \

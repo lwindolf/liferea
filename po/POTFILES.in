@@ -4,6 +4,8 @@ net.sourceforge.liferea.appdata.xml.in
 net.sourceforge.liferea.desktop.in
 plugins/add-bookmark-site.ui
 plugins/add-bookmark-site.py
+plugins/download-manager.ui
+plugins/download-manager.py
 plugins/getfocus.py
 plugins/headerbar.py
 plugins/libnotify.py

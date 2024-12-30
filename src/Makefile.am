@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = parsers ui node_sources node_providers webkit tests .
+SUBDIRS = node_providers node_sources parsers plugins ui webkit tests .
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -16,7 +16,6 @@ bin_SCRIPTS = liferea-add-feed
 
 liferea_SOURCES = \
 	auth.c auth.h \
-	auth_activatable.c auth_activatable.h \
 	browser.c browser.h \
 	browser_history.c browser_history.h \
 	comments.c comments.h \
@@ -26,6 +25,7 @@ liferea_SOURCES = \
 	db.c db.h \
 	dbus.c dbus.h \
 	debug.c debug.h \
+	download.c download.h \
 	enclosure.c enclosure.h \
 	export.c export.h \
 	favicon.c favicon.h \
@@ -49,7 +49,6 @@ liferea_SOURCES = \
 	node_source.c node_source.h \
 	node_provider.c node_provider.h \
 	node_view.h \
-	plugins_engine.c plugins_engine.h \
 	render.c render.h \
 	rule.c rule.h \
 	social.c social.h \
@@ -66,6 +65,7 @@ liferea_SOURCES = \
 liferea_LDADD =	parsers/libliparsers.a \
 		node_providers/liblinode_providers.a \
 		node_sources/liblinode_sources.a \
+		plugins/libliplugins.a \
 		ui/libliui.a \
 		webkit/libwebkit.a \
 		$(PACKAGE_LIBS) \
@@ -95,9 +95,8 @@ INTROSPECTION_SCANNER_ARGS = -I$(top_srcdir)/src --warn-all --accept-unprefixed 
 Liferea_3_0_gir_NAMESPACE = Liferea
 Liferea_3_0_gir_VERSION = 3.0
 Liferea_3_0_gir_PROGRAM = $(builddir)/liferea$(EXEEXT)
-Liferea_3_0_gir_FILES = \
-	auth.c auth.h \
-	auth_activatable.c auth_activatable.h \
+Liferea_3_0_gir_FILES = auth.c auth.h \
+	download.c download.h \
 	enclosure.h \
 	feedlist.c feedlist.h \
 	item.h \
@@ -108,7 +107,6 @@ Liferea_3_0_gir_FILES = \
 	node.h node.c \
 	node_provider.c node_provider.h \
 	node_source.c node_source.h \
-	node_sources/node_source_activatable.c node_sources/node_source_activatable.h \
 	node_view.h \
 	social.c social.h \
 	subscription_type.h \
@@ -121,7 +119,10 @@ Liferea_3_0_gir_FILES = \
 	ui/item_list_view.c ui/item_list_view.h \
 	ui/liferea_browser.c ui/liferea_browser.h \
 	ui/liferea_shell.c ui/liferea_shell.h \
-	ui/liferea_shell_activatable.c ui/liferea_shell_activatable.h
+	plugins/auth_activatable.c plugins/auth_activatable.h \
+	plugins/download_activatable.c plugins/download_activatable.h \
+	plugins/liferea_shell_activatable.c plugins/liferea_shell_activatable.h \
+	plugins/node_source_activatable.c plugins/node_source_activatable.h
 
 Liferea_3_0_gir_INCLUDES = Gtk-3.0 libxml2-2.0
 if HAVE_INTROSPECTION

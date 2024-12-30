@@ -2,7 +2,7 @@
  * @file preferences_dialog.h Liferea preferences
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,13 +30,6 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (PreferencesDialog, preferences_dialog, PREFERENCES, DIALOG, GObject)
 
 /**
- * prefs_get_download_command:
- *
- * Returns: (transfer full): The download command.
- */
-gchar * prefs_get_download_command (void);
-
-/**
  * preferences_dialog_open:
  * Show the preferences dialog.
  */
@@ -55,8 +48,6 @@ void on_enableplugins_toggled (GtkToggleButton *togglebutton, gpointer user_data
 void on_itemCountBtn_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
 void on_default_update_interval_value_changed (GtkSpinButton *spinbutton, gpointer user_data);
 void on_useProxyAuth_toggled (GtkToggleButton *button, gpointer user_data);
-void on_enclosure_download_custom_command_changed (GtkEditable *entry, gpointer user_data);
-void on_enclosure_download_predefined_toggled (GtkToggleButton *button, gpointer user_data);
 void on_enc_action_change_btn_clicked (GtkButton *button, gpointer user_data);
 void on_enc_action_remove_btn_clicked (GtkButton *button, gpointer user_data);
 void on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data);

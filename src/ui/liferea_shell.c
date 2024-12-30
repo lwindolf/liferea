@@ -41,18 +41,17 @@
 #include "itemlist.h"
 #include "liferea_application.h"
 #include "net_monitor.h"
-#include "plugins_engine.h"
 #include "social.h"
 #include "node_source.h"
 #include "node_providers/newsbin.h"
 #include "node_providers/vfolder.h"
+#include "plugins/plugins_engine.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/itemview.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
-#include "ui/liferea_shell_activatable.h"
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
@@ -64,6 +63,8 @@ struct _LifereaShell {
 	GObject	parent_instance;
 
 	GtkBuilder	*xml;
+
+	LifereaPluginsEngine *plugins;
 
 	GtkWindow	*window;			/*<< Liferea main window */
 	GtkWidget	*toolbar;
@@ -86,8 +87,6 @@ struct _LifereaShell {
 	FeedList	*feedlist;
 	ItemView	*itemview;
 	BrowserTabs	*tabs;
-
-	PeasExtensionSet *extensions;		/*<< Plugin management */
 
 	gboolean	fullscreen;				/*<< track fullscreen */
 };
@@ -1315,6 +1314,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_link_gaction_entries, G_N_ELEMENTS (liferea_shell_link_gaction_entries), NULL);
 
+	/* 0.) setup plugin engine including mandatory base plugins that (for example the feed list or auth) might depend on */
+	shell->plugins = liferea_plugins_engine_get (shell);
+
 	/* 1.) menu creation */
 
 	debug (DEBUG_GUI, "Setting up menus");
@@ -1453,13 +1455,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect (G_OBJECT (shell->window), "configure_event", G_CALLBACK(on_configure_event), shell);
 	g_signal_connect (G_OBJECT (shell->window), "key_press_event", G_CALLBACK(on_key_press_event), shell);
 
-	/* 13. Setup shell plugins */
-	if(0 == pluginsDisabled) {
-		shell->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
-				                     LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
-
-		liferea_plugins_engine_set_default_signals (shell->extensions, shell);
-	}
+	/* 13. Setup plugins */
+	if(!pluginsDisabled)
+		liferea_plugins_engine_register_shell_plugins ();
 
 	/* 14. Rebuild search folders if needed */
 	if (searchFolderRebuild)
@@ -1470,8 +1468,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 void
 liferea_shell_destroy (void)
 {
+	g_object_unref (shell->plugins);
+
 	liferea_shell_save_position ();
-	g_object_unref (shell->extensions);
 	g_object_unref (shell->tabs);
 	g_object_unref (shell->feedlist);
 	g_object_unref (shell->itemview);
