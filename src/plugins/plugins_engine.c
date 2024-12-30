@@ -55,37 +55,39 @@ static LifereaPluginsEngine *engine = NULL;
 static void
 liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 {
-	gchar	*typelib_dir;
-	const gchar **names;
-	gsize	length;
-	GError *error = NULL;
-	GVariant *list;
-	PeasPluginInfo *plugin_installer_plugin_info = NULL;
-	GSettings *plugin_settings;
+	gchar		*typelib_dir;
+	const gchar	**names;
+	gsize		length;
+	GError		*error = NULL;
 
-	plugin_settings = g_settings_new ("net.sf.liferea.plugins");
-
-	/* Disable incompatible webkit-settings plugin */
-	list = g_settings_get_value (plugin_settings, "active-plugins");
-	names = g_variant_get_strv (list, &length);
-	if (g_strv_contains (names, "webkit-settings")) {
-		GVariantBuilder b;
-		guint i;
-
-		g_variant_builder_init (&b, G_VARIANT_TYPE_ARRAY);
-		for (i = 0; i < length; i++) {
-			if (!g_str_equal (names[i], "webkit-settings"))
-				g_variant_builder_add_parsed (&b, "%s", names[i]);
-		}
-		g_free (list);
-		list = g_variant_builder_end (&b);
-		g_settings_set_value (plugin_settings, "active-plugins", list);
-	}
-	g_free (names);
+	g_autoptr(GVariant)	vlist;
+	g_autoptr(GStrvBuilder)	b;
 
 	engine->priv = liferea_plugins_engine_get_instance_private (engine);
-	engine->priv->plugin_settings = plugin_settings;
+	engine->priv->plugin_settings = g_settings_new ("net.sf.liferea.plugins");
 	engine->priv->extension_sets = g_hash_table_new (g_direct_hash, g_direct_equal);
+
+	b = g_strv_builder_new ();
+	vlist = g_settings_get_value (engine->priv->plugin_settings, "active-plugins");
+	names = g_variant_get_strv (vlist, &length);
+
+	/* Disable incompatible plugins */
+	const gchar *incompatible[] = {
+		"webkit-settings",
+		NULL
+	};
+	for (guint i = 0; i < length; i++) {
+		if (!g_strv_contains (incompatible, names[i]))
+			g_strv_builder_add (b, names[i]);
+	}
+
+	/* Safe modified settings */
+	GStrv list = g_strv_builder_end (b);
+	g_settings_set_strv (engine->priv->plugin_settings, "active-plugins", (const gchar *const *)list);
+	g_strfreev (list);
+	g_free (names);
+
+	/* Only load libpeas after we cleaned the 'active-plugins' setting */
 	peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
 
 	/* Require Lifereas's typelib. */
@@ -128,11 +130,18 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 			"active-plugins",
 			engine, "loaded-plugins", G_SETTINGS_BIND_DEFAULT);
 
-	plugin_installer_plugin_info = peas_engine_get_plugin_info (PEAS_ENGINE (engine), "plugin-installer");
-	if (plugin_installer_plugin_info)
-		peas_engine_load_plugin (PEAS_ENGINE (engine), plugin_installer_plugin_info);
-	else
-		g_warning ("The plugin-installer plugin was not found.");
+	/* Load mandatory plugins */
+	const gchar *mandatory[] = {
+		"download-manager",
+		"plugin-installer"
+	};
+	for (guint i = 0; i < G_N_ELEMENTS (mandatory); i++) {
+		PeasPluginInfo *info = peas_engine_get_plugin_info (PEAS_ENGINE (engine), mandatory[i]);
+		if (info)
+			peas_engine_load_plugin (PEAS_ENGINE (engine), info);
+		else
+			g_warning ("The plugin-installer plugin was not found.");
+	}
 }
 
 /* Provide default signal handlers */
