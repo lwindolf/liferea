@@ -82,3 +82,22 @@
    obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0*
    fun:g_signal_emit_valist
 }
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:malloc
+   fun:_dl_close_worker.part.0
+   fun:_dl_close_worker
+   fun:_dl_close
+   fun:_dl_catch_exception
+   fun:_dl_catch_error
+   fun:_dlerror_run
+   fun:dlclose@@GLIBC_2.34
+   fun:g_module_close
+   obj:/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8000.0
+   fun:g_type_module_unuse
+   obj:/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8000.0
+   fun:g_io_extension_point_get_extensions
+}
