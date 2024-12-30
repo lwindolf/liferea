@@ -132,21 +132,6 @@
       <summary>Filter feeds without unread items from feed list.</summary>
       <description>If this option is enabled the feed list will contain only feeds that have unread items.</description>
     </key>
-    <key name="download-custom-command" type="s">
-      <default>''</default>
-      <summary>Custom download command.</summary>
-      <description>A command used to download enclosures if download-use-custom-command is true. %s in the command will be replaced by the URL.</description>
-    </key>
-    <key name="download-tool" type="i">
-      <default>0</default>
-      <summary>Which tool to download enclosures.</summary>
-      <description>This options determines which download tool Liferea uses to download enclosures (0 = steadyflow, 1 = gwget, 2=kget).</description>
-    </key>
-    <key name="download-use-custom-command" type="b">
-      <default>false</default>
-      <summary>Whether to use the custom command or one of the predefined command.</summary>
-      <description>Set to true to use the command defined in download-custom-command, false to use the predefined command set in download-tool.</description>
-    </key>
     <key name="proxy-detect-mode" type="i">
       <default>0</default>
       <summary>Proxy mode.</summary>
