@@ -1,7 +1,7 @@
 /*
  * @file liferea_shell_activatable.c  Shell Plugin Type
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ui/liferea_shell_activatable.h"
+#include "liferea_shell_activatable.h"
 
 #include "ui/liferea_shell.h"
 

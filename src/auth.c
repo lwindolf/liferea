@@ -19,58 +19,15 @@
  */
 
 #include "auth.h"
-#include "auth_activatable.h"
-#include "plugins_engine.h"
+#include "plugins/auth_activatable.h"
+#include "plugins/plugins_engine.h"
 #include "subscription.h"
 
 #include <libpeas/peas-activatable.h>
 #include <libpeas/peas-extension-set.h>
 
-// FIXME: This should be a member of some object!
-static PeasExtensionSet *extensions = NULL;	/*<< Plugin management */
-static gint		count = 0;		/*<< Number of active auth plugins */
-
 static void
-on_extension_added (PeasExtensionSet *extensions,
-                    PeasPluginInfo   *info,
-                    PeasExtension    *exten,
-                    gpointer         user_data)
-{
-	peas_extension_call (exten, "activate");
-	count++;
-}
-
-static void
-on_extension_removed (PeasExtensionSet *extensions,
-                      PeasPluginInfo   *info,
-                      PeasExtension    *exten,
-                      gpointer         user_data)
-{
-	peas_extension_call (exten, "deactivate");
-	count--;
-}
-
-static PeasExtensionSet *
-liferea_auth_get_extension_set (void)
-{
-	if (!extensions) {
-		extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
-		                             LIFEREA_AUTH_ACTIVATABLE_TYPE, NULL);
-
-		g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
-		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
-
-		peas_extension_set_foreach (extensions, on_extension_added, NULL);
-	}
-
-	return extensions;
-}
-
-static void
-liferea_auth_info_store_foreach (PeasExtensionSet *set,
-                                 PeasPluginInfo *info,
-                                 PeasExtension *exten,
-                                 gpointer user_data)
+liferea_auth_info_store_foreach (gpointer exten, gpointer user_data)
 {
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
 
@@ -87,8 +44,7 @@ liferea_auth_info_store_foreach (PeasExtensionSet *set,
 void
 liferea_auth_info_store (gpointer user_data)
 {
-	peas_extension_set_foreach (liferea_auth_get_extension_set (),
-	                            liferea_auth_info_store_foreach, user_data);
+	liferea_plugin_call (LIFEREA_AUTH_ACTIVATABLE_TYPE, &liferea_auth_info_store_foreach, user_data);
 }
 
 void
@@ -103,10 +59,7 @@ liferea_auth_info_from_store (const gchar *id, const gchar *username, const gcha
 }
 
 static void
-liferea_auth_info_query_foreach (PeasExtensionSet *set,
-                               PeasPluginInfo *info,
-                               PeasExtension *exten,
-                               gpointer data)
+liferea_auth_info_query_foreach (gpointer exten, gpointer data)
 {
 	liferea_auth_activatable_query (LIFEREA_AUTH_ACTIVATABLE (exten), data);
 }
@@ -114,12 +67,11 @@ liferea_auth_info_query_foreach (PeasExtensionSet *set,
 void
 liferea_auth_info_query (const gchar *authId)
 {
-	peas_extension_set_foreach (liferea_auth_get_extension_set (),
-	                            liferea_auth_info_query_foreach, (gpointer)authId);
+	liferea_plugin_call (LIFEREA_AUTH_ACTIVATABLE_TYPE, &liferea_auth_info_query_foreach, (gpointer)authId);
 }
 
 gboolean
 liferea_auth_has_active_store (void)
 {
-	return (count > 0);
+	return liferea_plugin_is_active (LIFEREA_AUTH_ACTIVATABLE_TYPE);
 }

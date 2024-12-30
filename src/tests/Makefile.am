@@ -26,18 +26,19 @@ AM_CPPFLAGS = \
 
 favicon_LDADD = \
 	../parsers/libliparsers.a \
+	../plugins/libliplugins.a \
 	../node_sources/liblinode_sources.a \
 	../node_providers/liblinode_providers.a \
 	../ui/libliui.a \
 	../webkit/libwebkit.a \
 	../auth.o \
-	../auth_activatable.o \
 	../browser.o \
 	../browser_history.o \
 	../comments.o \
 	../common.o \
 	../conf.o \
 	../date.o \
+	../download.o \
 	../db.o \
 	../dbus.o \
 	../debug.o \
@@ -62,7 +63,6 @@ favicon_LDADD = \
 	../node.o \
 	../node_provider.o \
 	../node_source.o \
-	../plugins_engine.o \
 	../render.o \
 	../rule.o \
 	../social.o \

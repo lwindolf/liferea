@@ -32,7 +32,7 @@
 #include "metadata.h"
 #include "node.h"
 #include "node_provider.h"
-#include "plugins_engine.h"
+#include "plugins/plugins_engine.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/ui_common.h"
@@ -47,10 +47,8 @@
 #include "node_sources/reedah_source.h"
 #include "node_sources/theoldreader_source.h"
 #include "node_sources/ttrss_source.h"
-#include "node_sources/node_source_activatable.h"
 
 static GSList		*nodeSourceTypes = NULL;
-static PeasExtensionSet	*extensions = NULL;
 
 Node *
 node_source_root_from_node (Node *node)
@@ -115,10 +113,6 @@ node_source_setup_root (void)
 	type->name = N_("Miniflux");
 	type->id = "fl_miniflux";
 	node_source_type_register (type);
-
-	extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
-		                             LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, NULL);
-	liferea_plugins_engine_set_default_signals (extensions, NULL);
 
 	type = node_source_type_find (NULL, NODE_SOURCE_CAPABILITY_IS_ROOT);
 	if (!type)

@@ -1,7 +1,7 @@
 """
 Libsecret Plugin
 
-Copyright (C) 2013 Lars Windolf <lars.lindner@gmail.com>
+Copyright (C) 2013 Lars Windolf <lars.lindner@gmx.de>
 Copyright (C) 2018 Bastian Germann <bastiangermann@fishpost.de>
 
 This program is free software: you can redistribute it and/or modify
@@ -19,11 +19,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import gi
-gi.require_version('Peas', '1.0')
-gi.require_version('PeasGtk', '1.0')
 gi.require_version('Liferea', '3.0')
 gi.require_version('Secret', '1')
-from gi.repository import GObject, Peas, PeasGtk, Gtk, Liferea, Secret
+from gi.repository import GObject, Liferea, Secret
 
 LABEL = 'liferea'
 SCHEMA = Secret.Schema.new(

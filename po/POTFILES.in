@@ -4,6 +4,7 @@ net.sourceforge.liferea.appdata.xml.in
 net.sourceforge.liferea.desktop.in
 plugins/add-bookmark-site.ui
 plugins/add-bookmark-site.py
+plugins/download-manager.py
 plugins/getfocus.py
 plugins/headerbar.py
 plugins/libnotify.py
@@ -23,6 +24,8 @@ src/db.c
 src/db.h
 src/debug.c
 src/debug.h
+src/download.c
+src/download.h
 src/enclosure.c
 src/export.c
 src/export.h
@@ -169,6 +172,10 @@ src/ui/ui_update.c
 src/ui/ui_update.h
 src/update.c
 src/update.h
+src/update_job.c
+src/update_job.h
+src/update_job_queue.c
+src/update_job_queue.h
 src/vfolder_loader.c
 src/vfolder_loader.h
 src/webkit/liferea_web_view.c

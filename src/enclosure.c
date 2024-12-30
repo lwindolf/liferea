@@ -1,7 +1,7 @@
 /*
  * @file enclosure.c enclosures/podcast support
  *
- * Copyright (C) 2007-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "download.h"
 #include "enclosure.h"
 #include "xml.h"
 #include "ui/preferences_dialog.h"	// FIXME: remove this!
@@ -277,42 +278,31 @@ void
 enclosure_download (encTypePtr type, const gchar *url, gboolean interactive)
 {
 	GError	*error = NULL;
-	gchar	*cmd, *urlQ;
-
-	urlQ = g_shell_quote (url);
-		
-	if (type) {
-		debug (DEBUG_UPDATE, "passing URL %s to command %s...", urlQ, type->cmd);
-		cmd = g_strdup_printf ("%s %s", type->cmd, urlQ);
-	} else {
-		gchar *toolCmd = prefs_get_download_command ();
-		if(!toolCmd) {
-			if (interactive)
-				ui_show_error_box (_("You have not configured a download tool yet! Please do so in the 'Enclosures' tab in Tools/Preferences."));
-			return;
-		}
-
-		debug (DEBUG_UPDATE, "downloading URL %s with %s...", urlQ, toolCmd);
-		cmd = g_strdup_printf (toolCmd, urlQ);
-		g_free (toolCmd);
-	}
-
-	g_free (urlQ);
-
-	/* free now unnecessary stuff */
-	if (type && !type->permanent)
-		enclosure_mime_type_remove (type);
-
-	/* execute command */		
-	g_spawn_command_line_async (cmd, &error);
-	if (error && (0 != error->code)) {
+	
+	if (!type) {
+		download_url (url);
 		if (interactive)
-			ui_show_error_box (_("Command failed: \n\n%s\n\n Please check whether the configured download tool is installed and working correctly! You can change it in the 'Download' tab in Tools/Preferences."), cmd);
-		else
-			g_warning ("Command \"%s\" failed!", cmd);
+			download_show ();
+		return;
 	}
 
-	if (error)
-		g_error_free (error);
-	g_free (cmd);
+	g_autofree gchar *urlQ = g_shell_quote (url);
+	g_autofree gchar *cmd = g_strdup_printf ("%s %s", type->cmd, urlQ);
+	debug (DEBUG_UPDATE, "passing URL %s to command %s...", urlQ, type->cmd);
+
+        /* free now unnecessary stuff */
+        if (type && !type->permanent)
+                enclosure_mime_type_remove (type);
+
+        /* execute command */           
+        g_spawn_command_line_async (cmd, &error);
+        if (error && (0 != error->code)) {
+                if (interactive)
+                        ui_show_error_box (_("Command failed: \n\n%s\n\n"), cmd);
+                else
+                        g_warning ("Command \"%s\" failed!", cmd);
+        }
+
+        if (error)
+                g_error_free (error);
 }
