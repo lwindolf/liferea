@@ -21,7 +21,7 @@
 #ifndef _LIFEREA_WEBKIT_H
 #define _LIFEREA_WEBKIT_H
 
-#include <webkit2/webkit2.h>
+#include <webkit/webkit.h>
 
 #include "ui/liferea_browser.h"
 

@@ -26,6 +26,8 @@
 #include <sys/wait.h>
 #endif
 #include <glib.h>
+#include <jsc/jsc.h>
+#include <webkit/webkit.h>
 
 #include "browser.h"
 #include "browser_history.h"
@@ -107,7 +109,7 @@ static gboolean
 on_liferea_browser_url_entry_activate (GtkWidget *widget, gpointer user_data)
 {
 	LifereaBrowser	*browser = LIFEREA_BROWSER (user_data);
-	const gchar	*url = gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (widget)));
+	const gchar		*url = gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (widget)));
 
 	liferea_browser_launch_URL_internal (browser, url);
 
@@ -405,7 +407,7 @@ liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location
 static void
 liferea_browser_load_finished_cb (GObject *object, GAsyncResult *result, gpointer user_data)
 {
-	JSCValue	*value;
+	JSCValue *value;
 	GError		*error = NULL;
 
 	value = webkit_web_view_evaluate_javascript_finish (WEBKIT_WEB_VIEW (object), result, &error);

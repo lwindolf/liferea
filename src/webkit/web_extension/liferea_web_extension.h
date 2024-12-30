@@ -22,7 +22,7 @@
 #define _LIFEREA_WEB_EXTENSION_H
 
 #include <glib-object.h>
-#include <webkit2/webkit-web-extension.h>
+#include <webkit/webkit-web-extension.h>
 
 #define LIFEREA_TYPE_WEB_EXTENSION liferea_web_extension_get_type ()
 

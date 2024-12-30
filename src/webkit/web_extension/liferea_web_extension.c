@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <webkit2/webkit-web-extension.h>
+#include <webkit/webkit-web-extension.h>
 #include <JavaScriptCore/JavaScript.h>
 
 #include "liferea_web_extension.h"

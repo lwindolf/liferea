@@ -26,8 +26,6 @@
 #  include <config.h>
 #endif
 
-#include <webkit2/webkit2.h>
-
 #include "common.h"
 #include "conf.h"
 #include "favicon.h"
