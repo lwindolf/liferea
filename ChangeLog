@@ -17,6 +17,15 @@ To be released
 
 	* New unit tests for update handling code
 	  (Lars Windolf)
+	
+	* #1388 Implemented download manager plugin, all preferences
+	  for external tools were dropped
+	  (Lars Windolf)
+	
+	* Refactoring of plugin management, code reorganized. Disabling plugins
+	  now does not disable base plugins (needed for auth and node sources)
+	  as this would prevent startup
+	  (Lars Windolf)
 
 
 2024-09-26  Lars Windolf <lars.windolf@gmx.de>
