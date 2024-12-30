@@ -437,7 +437,8 @@ item_list_view_clear (ItemListView *ilv)
 	/* enable batch mode for following item adds */
 	ilv->batch_mode = TRUE;
 	ilv->batch_itemstore = item_list_view_create_tree_store ();
-        gtk_widget_freeze_child_notify((GtkWidget *)ilv->treeview);
+	// FIXME: missing in GTK4
+        //gtk_widget_freeze_child_notify((GtkWidget *)ilv->treeview);
 	gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (ilv->batch_itemstore), NULL, NULL, NULL);
 }
 
@@ -583,7 +584,8 @@ void
 item_list_view_update (ItemListView *ilv)
 {
 	if (ilv->batch_mode) {
-                gtk_widget_thaw_child_notify((GtkWidget *)ilv->treeview);
+		// FIXME: Missing in GTK4
+                //gtk_widget_thaw_child_notify((GtkWidget *)ilv->treeview);
 		item_list_view_set_tree_store (ilv, ilv->batch_itemstore);
 		ilv->batch_mode = FALSE;
 	} else {
@@ -816,7 +818,7 @@ item_list_view_create (gboolean wide)
 
 	ilv->columns = g_hash_table_new (g_str_hash, g_str_equal);
 
-	ilv->ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
+	ilv->ilscrolledwindow = gtk_scrolled_window_new ();
 	g_object_ref_sink (ilv->ilscrolledwindow);
 	gtk_widget_show (ilv->ilscrolledwindow);
 
@@ -837,7 +839,7 @@ item_list_view_create (gboolean wide)
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_STATEICON, NULL);
-	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE_TOOLBAR:GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
 	g_hash_table_insert (ilv->columns, "state", column);
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
 	if (wide)
@@ -845,7 +847,7 @@ item_list_view_create (gboolean wide)
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_FAVICON, NULL);
-	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_DIALOG:GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	g_hash_table_insert (ilv->columns, "favicon", column);
 
@@ -1123,12 +1125,13 @@ on_popup_copy_URL_clipboard (GSimpleAction *action, GVariant *parameter, gpointe
 
 	item = itemlist_get_selected ();
 	if (item) {
-		gchar *link = item_make_link (item);
+		g_autofree gchar *link = item_make_link (item);
+		GdkClipboard *primary = gdk_display_get_primary_clipboard (gdk_display_get_default ());
+		GdkClipboard *copypaste = gdk_display_get_clipboard (gdk_display_get_default ());
 
-		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY), link, -1);
-		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), link, -1);
+		gdk_clipboard_set_text (primary, link);
+		gdk_clipboard_set_text (copypaste, link);
 
-		g_free (link);
 		item_unload (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
