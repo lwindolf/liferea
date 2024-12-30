@@ -50,13 +50,16 @@ class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
     __gtype_name__ = 'DownloadManagerPlugin'
 
     shell = GObject.property(type=Liferea.Shell)
-    download_dir = Gio.File.new_for_path(GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOWNLOAD)).get_path()
 
     def __init__(self):
         super().__init__()
         self.window = None
         self.downloads = {}
         self.max_concurrent_downloads = 3
+        self.download_dir = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOWNLOAD)
+        # Allow for XDG not resolving the download directory
+        if not self.download_dir:
+            self.download_dir = os.path.expanduser("~")
 
     def do_activate(self):
         self.window = Gtk.Window(title="Liferea Download Manager")
