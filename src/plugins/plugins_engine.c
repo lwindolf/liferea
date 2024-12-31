@@ -32,12 +32,12 @@
 #include <glib.h>
 #include <gio/gio.h>
 #include <girepository.h>
-#include <libpeas/peas-activatable.h>
-#include <libpeas/peas-extension-set.h>
+#include <libpeas.h>
 
 #include "auth_activatable.h"
 #include "download_activatable.h"
 #include "node_source_activatable.h"
+#include "liferea_activatable.h"
 #include "liferea_shell_activatable.h"
 #include "plugins_engine.h"
 
@@ -89,6 +89,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 
 	/* Only load libpeas after we cleaned the 'active-plugins' setting */
 	peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
+	peas_engine_enable_loader (PEAS_ENGINE (engine), "gjs");
 
 	/* Require Lifereas's typelib. */
 	typelib_dir = g_build_filename (PACKAGE_LIB_DIR,
@@ -105,7 +106,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 
 	/* This should be moved to libpeas */
 	if (!g_irepository_require (g_irepository_get_default (),
-				"Peas", "1.0", 0, &error)) {
+				"Peas", "2.0", 0, &error)) {
 		g_warning ("Could not load Peas repository: %s", error->message);
 		g_error_free (error);
 		error = NULL;
@@ -118,17 +119,11 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 		error = NULL;
 	}
 
-	peas_engine_add_search_path (PEAS_ENGINE (engine),
-		g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL),
-		g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL));
-
-	peas_engine_add_search_path (PEAS_ENGINE (engine),
-		g_build_filename (PACKAGE_LIB_DIR,  "plugins", NULL),
-		g_build_filename (PACKAGE_DATA_DIR, "plugins", NULL));
-
-	g_settings_bind (engine->priv->plugin_settings,
-			"active-plugins",
-			engine, "loaded-plugins", G_SETTINGS_BIND_DEFAULT);
+	g_autofree gchar *data = g_build_filename (PACKAGE_DATA_DIR, "plugins", NULL);
+	g_autofree gchar *lib = g_build_filename (PACKAGE_LIB_DIR, "plugins", NULL);
+	peas_engine_add_search_path (PEAS_ENGINE (engine), data, data);
+	peas_engine_add_search_path (PEAS_ENGINE (engine), lib, data);
+	peas_engine_rescan_plugins (PEAS_ENGINE (engine));
 
 	/* Load mandatory plugins */
 	const gchar *mandatory[] = {
@@ -147,31 +142,21 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 /* Provide default signal handlers */
 
 static void
-on_extension_added (PeasExtensionSet *extensions,
-                    PeasPluginInfo   *info,
-                    PeasExtension    *exten,
-                    gpointer         user_data)
+on_extension_added (PeasExtensionSet   *extensions,
+                    PeasPluginInfo     *info,
+		    LifereaActivatable *plugin,
+		    gpointer           user_data)
 {
-	peas_extension_call (exten, "activate");
+	liferea_activatable_activate (plugin);
 }
 
 static void
-on_extension_removed (PeasExtensionSet *extensions,
-                      PeasPluginInfo   *info,
-                      PeasExtension    *exten,
-                      gpointer         user_data)
+on_extension_removed (PeasExtensionSet   *extensions,
+                      PeasPluginInfo     *info,
+                      LifereaActivatable *plugin,
+		      gpointer           user_data)
 {
-	peas_extension_call (exten, "deactivate");
-}
-
-void
-liferea_plugins_engine_set_default_signals (PeasExtensionSet *extensions,
-                                            gpointer user_data)
-{
-	g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), user_data);
-	g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), user_data);
-
-	peas_extension_set_call (extensions, "activate");
+	liferea_activatable_deactivate (plugin);
 }
 
 typedef struct {
@@ -180,13 +165,13 @@ typedef struct {
 } callCtxt;
 
 static void
-liferea_plugin_call_foreach (PeasExtensionSet* set,
-                             PeasPluginInfo* info,
-                             GObject* extension,
-                             gpointer user_data)
+liferea_plugin_call_foreach (PeasExtensionSet	*set,
+                             PeasPluginInfo	*info,
+                             LifereaActivatable	*plugin,
+                             gpointer		user_data)
 {
 	callCtxt *ctxt = (callCtxt *)user_data;
-	((GFunc)ctxt->func)(extension, ctxt->user_data);
+	((GFunc)ctxt->func)(plugin, ctxt->user_data);
 }
 
 void
@@ -199,7 +184,7 @@ liferea_plugin_call (GType type, GFunc func, gpointer user_data)
 	callCtxt ctxt;
 	ctxt.func = func;
 	ctxt.user_data = user_data;
-	peas_extension_set_foreach (set, liferea_plugin_call_foreach, &ctxt);
+	peas_extension_set_foreach (set, (PeasExtensionSetForeachFunc)liferea_plugin_call_foreach, &ctxt);
 }
 
 gboolean
@@ -254,7 +239,11 @@ liferea_plugins_engine_get (LifereaShell *shell)
 		for (guint i = 0; i < G_N_ELEMENTS (types); i++) {
 			PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (engine), types[i], NULL);
 			g_hash_table_insert (engine->priv->extension_sets, GINT_TO_POINTER(types[i]), extensions);
-			liferea_plugins_engine_set_default_signals (extensions, NULL);
+
+			peas_extension_set_foreach (extensions, (PeasExtensionSetForeachFunc)on_extension_added, NULL);
+
+			g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
+			g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
 		}
 	}
 
@@ -273,6 +262,10 @@ liferea_plugins_engine_register_shell_plugins (void)
 		/* Note: we expect all plugins to get property 'shell' as the default entrypoint */
 		PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (engine), types[i], "shell", engine->priv->shell, NULL);
 		g_hash_table_insert (engine->priv->extension_sets, GINT_TO_POINTER(types[i]), extensions);
-		liferea_plugins_engine_set_default_signals (extensions, NULL);
+
+		peas_extension_set_foreach (extensions, (PeasExtensionSetForeachFunc)on_extension_added, NULL);
+
+		g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
+		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
 	}
 }

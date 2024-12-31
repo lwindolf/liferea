@@ -22,8 +22,7 @@
 #ifndef _PLUGINS_ENGINE
 #define _PLUGINS_ENGINE
 
-#include <libpeas/peas-engine.h>
-#include <libpeas/peas-extension-set.h>
+#include <libpeas.h>
 
 #include "ui/liferea_shell.h"
 
@@ -39,7 +38,7 @@ typedef struct _LifereaPluginsEngine LifereaPluginsEngine;
 typedef struct _LifereaPluginsEnginePrivate LifereaPluginsEnginePrivate;
 
 struct _LifereaPluginsEngine {
-	PeasEngine parent;
+	PeasEngine *parent;
 	LifereaPluginsEnginePrivate *priv;
 };
 
@@ -65,15 +64,6 @@ LifereaPluginsEngine *liferea_plugins_engine_get (LifereaShell *shell);
  * Register all plugins that require the shell.
  */
 void liferea_plugins_engine_register_shell_plugins (void);
-
-/**
- * liferea_plugins_engine_set_default_signals: (skip)
- * @extensions:		the extensions set
- * @user_data:		some user data (or NULL)
- * 
- * Set up default "activate" and "deactivate" signals.
- */
-void liferea_plugins_engine_set_default_signals (PeasExtensionSet *extensions, gpointer user_data);
 
 /**
  * liferea_plugin_call: (skip)
