@@ -54,6 +54,7 @@
 #include "ui/icons.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
+#include "ui/liferea_shell_actions.h"
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
@@ -143,6 +144,38 @@ liferea_shell_finalize (GObject *object)
 	g_object_unref (ls->itemlistActions);
 	g_object_unref (ls->htmlviewActions);
 
+	g_object_unref (ls->plugins);
+
+	liferea_shell_save_layout ();
+	g_object_unref (ls->tabs);
+	g_object_unref (ls->feedlist);
+	g_object_unref (ls->feedListView);
+	g_object_unref (ls->itemlist);
+	g_object_unref (ls->itemListView);
+	g_object_unref (ls->htmlview);
+
+	gtk_window_destroy (ls->window);
+
+	g_object_unref (ls->settings);
+	g_object_unref (ls->keypress);
+	g_object_unref (ls->xml);
+
+	g_object_unref (ls->shellActions);
+	g_object_unref (ls->feedlistActions);
+	g_object_unref (ls->itemlistActions);
+	g_object_unref (ls->htmlviewActions);
+
+	g_object_unref (shell->plugins);
+
+	liferea_shell_save_layout ();
+	g_object_unref (shell->tabs);
+	g_object_unref (shell->feedlist);
+	g_object_unref (shell->itemview);
+
+	gtk_window_destroy (shell->window);
+
+	g_object_unref (ls->settings);
+	g_object_unref (ls->keypress);
 	g_object_unref (ls->xml);
 }
 
