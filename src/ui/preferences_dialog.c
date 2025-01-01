@@ -60,18 +60,6 @@ extern GSList *bookmarkSites;	/* from social.c */
 
 static PreferencesDialog *prefdialog = NULL;
 
-/** GConf representation of toolbar styles */
-static const gchar * gui_toolbar_style_values[] = { "", "both", "both-horiz", "icons", "text", NULL };
-
-static const gchar * gui_toolbar_style_options[] = {
-	N_("GNOME default"),
-	N_("Text below icons"),
-	N_("Text beside icons"),
-	N_("Icons only"),
-	N_("Text only"),
-	NULL
-};
-
 /* Note: these update interval literal should be kept in sync with the
    ones in ui_subscription.c! */
 
@@ -103,7 +91,7 @@ preferences_dialog_finalize (GObject *object)
 {
 	PreferencesDialog *pd = PREFERENCES_DIALOG (object);
 
-	gtk_widget_destroy (pd->dialog);
+	g_object_unref (pd->dialog);
 	prefdialog = NULL;
 }
 
@@ -209,18 +197,6 @@ on_socialsite_changed (GtkComboBox *optionmenu, gpointer user_data)
 		gtk_tree_model_get (gtk_combo_box_get_model (optionmenu), &iter, 0, &site, -1);
 		social_set_bookmark_site (site);
 	}
-}
-
-static void
-on_gui_toolbar_style_changed (gpointer user_data)
-{
-	gchar *style;
-	gint value = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data));
-	conf_set_str_value (TOOLBAR_STYLE, gui_toolbar_style_values[value]);
-
-	style = conf_get_toolbar_style ();
-	liferea_shell_set_toolbar_style (style);
-	g_free (style);
 }
 
 void
@@ -375,6 +351,7 @@ on_itpbtn_toggled (GtkToggleButton *button, gpointer user_data)
 static void
 preferences_dialog_destroy_cb (GtkWidget *widget, PreferencesDialog *pd)
 {
+	prefdialog = NULL;
 	g_object_unref (pd);
 }
 
@@ -525,35 +502,10 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	/* ================== panel 4 "GUI" ================ */
 
-	/* tool bar settings */
-	widget = liferea_dialog_lookup (pd->dialog, "hidetoolbarbtn");
-	conf_get_bool_value(DISABLE_TOOLBAR, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
-
-	/* select currently active toolbar style option */
-	conf_get_str_value (TOOLBAR_STYLE, &name);
-	for (i = 0; gui_toolbar_style_values[i] != NULL; ++i) {
-		if (strcmp (name, gui_toolbar_style_values[i]) == 0)
-			break;
-	}
-	g_free (name);
-
-	/* On invalid key value: revert to default */
-	if (gui_toolbar_style_values[i] == NULL)
-		i = 0;
-
-	/* create toolbar style menu */
-	ui_common_setup_combo_menu (liferea_dialog_lookup (pd->dialog, "toolbarCombo"),
-	                            gui_toolbar_style_options,
-	                            G_CALLBACK (on_gui_toolbar_style_changed),
-	                            i);
-
 	conf_bind (CONFIRM_MARK_ALL_READ, liferea_dialog_lookup (pd->dialog, "confirmMarkAllReadButton"), "active", G_SETTINGS_BIND_DEFAULT);
 
 	/* ================= panel 5 "proxy" ======================== */
 
-#if WEBKIT_CHECK_VERSION (2, 15, 3)
-	gtk_widget_destroy (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxyDisabledInfobar")));
 	conf_get_str_value (PROXY_HOST, &proxy_host);
 	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->dialog, "proxyhostentry")), proxy_host);
 	g_free (proxy_host);
@@ -600,13 +552,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyportentry")), "changed", G_CALLBACK (on_proxyportentry_changed), pd);
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyusernameentry")), "changed", G_CALLBACK (on_proxyusernameentry_changed), pd);
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxypasswordentry")), "changed", G_CALLBACK (on_proxypasswordentry_changed), pd);
-#else
-	gtk_widget_show (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxyDisabledInfobar")));
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxybox")), FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), TRUE);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "manualProxyRadio")), FALSE);
-#endif
 
 	/* ================= panel 6 "Privacy" ======================== */
 
@@ -622,19 +567,11 @@ preferences_dialog_init (PreferencesDialog *pd)
 	conf_get_bool_value (DO_NOT_SELL, &bSetting);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 
-#if WEBKIT_CHECK_VERSION (2, 30, 0)
-	gtk_widget_destroy (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpInfoBar")));
 	widget = liferea_dialog_lookup (pd->dialog, "itpbtn");
 	conf_get_bool_value (ENABLE_ITP, &bSetting);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
-#else
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpbtn")), FALSE);
-	gtk_widget_show (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpInfoBar")));
-#endif
 
 	g_signal_connect_object (pd->dialog, "destroy", G_CALLBACK (preferences_dialog_destroy_cb), pd, 0);
-
-	gtk_widget_show_all (pd->dialog);
 
 	gtk_window_present (GTK_WINDOW (pd->dialog));
 }

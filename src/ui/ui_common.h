@@ -1,7 +1,7 @@
 /**
  * @file ui_common.h  UI helper functions
  *
- * Copyright (C) 2008-2011 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,23 +91,5 @@ typedef void (*fileChoosenCallback) (const gchar *title, gpointer user_data);
  * @param user_data	user data passed to the callback
  */
 void ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data);
-
-/** ui_common_simple_action_group_set_enabled:
- * @group: A GActionGroup containing only GSimpleActions. It must also implement
- * 	GActionMap in order to lookup the actions.
- * @enabled: TRUE to enable all actions in the group.
- *
- * Enable or disable all GSimpleActions in the group.
- */
-void ui_common_simple_action_group_set_enabled (GActionGroup *group, gboolean enabled);
-
-/** ui_common_add_action_group_to_map:
- * @group: A GActionGroup which must also implement
- * 	GActionMap in order to lookup the actions.
- * @map: The GActionMap to which the actions will be added.
- *
- * Adds all actions from group to map.
- */
-void ui_common_add_action_group_to_map (GActionGroup *group, GActionMap *map);
 
 #endif

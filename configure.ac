@@ -6,7 +6,7 @@ AC_CONFIG_SRCDIR([src/feedlist.c])
 
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 foreign std-options -Wall -Werror])
-AM_SILENT_RULES([yes])
+#AM_SILENT_RULES([yes])
 
 dnl Needed for automake 1.12
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
@@ -29,17 +29,12 @@ PKG_PROG_PKG_CONFIG()
 ################################################################################
 # Mandatory library dependencies
 
-pkg_modules="	gtk4 >= 4.14.0
-		glib-2.0 >= 2.74.0
-		gio-2.0 >= 2.50.0
-		pango >= 1.4.0 
+pkg_modules="	
+		webkitgtk-6.0 >= 2.43.4
+		gtk4 >= 4.14.0
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
 		sqlite3 >= 3.7.0
-		gmodule-2.0 >= 2.0.0
-		gthread-2.0
-		libsoup-3.0 >= 3.0.7
-		webkitgtk-6.0 >= 2.43.4
 		json-glib-1.0 >= 1.6
 		gobject-introspection-1.0
 		gsettings-desktop-schemas

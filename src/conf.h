@@ -68,6 +68,7 @@
 #define LAST_WINDOW_WIDTH		"last-window-width"
 #define LAST_WINDOW_HEIGHT		"last-window-height"
 #define LAST_WINDOW_MAXIMIZED		"last-window-maximized"
+#define LAST_WINDOW_FULLSCREEN		"last-window-fullscreen"
 #define LAST_VPANE_POS			"last-vpane-pos"
 #define LAST_HPANE_POS			"last-hpane-pos"
 #define LAST_WPANE_POS			"last-wpane-pos"

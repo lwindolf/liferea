@@ -38,7 +38,7 @@ liferea_SOURCES = \
 	item_state.c item_state.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
-	js.c js.h \
+	resources.c resources.h \
 	json.c json.h \
 	liferea_application.c liferea_application.h \
 	metadata.c metadata.h \
@@ -74,14 +74,22 @@ liferea_LDADD =	parsers/libliparsers.a \
 		$(INTROSPECTION_LIBS) \
 		-lm
 
-js.h: $(top_srcdir)/js/gresource.xml $(top_srcdir)/js/htmlview.js $(top_srcdir)/js/Readability-readerable.js $(top_srcdir)/js/Readability.js $(top_srcdir)/js/purify.min.js $(main_dep)
-	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+resources = \
+	resources/gresource.xml \
+	resources/htmlview.js \
+	resources/Readability-readerable.js \
+	resources/Readability.js \
+	resources/purify.min.js \
+	$(main_dep)
 
-js.c: $(top_srcdir)/js/gresource.xml $(top_srcdir)/js/htmlview.js $(top_srcdir)/js/Readability-readerable.js $(top_srcdir)/js/Readability.js $(top_srcdir)/js/purify.min.js $(main_dep)
-	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+resources.h: $(resources)
+	glib-compile-resources --generate --target=$@ --c-name resources --sourcedir=$(top_srcdir)/resources $<
 
-js.o: js.c js.h
-main.o: js.h
+resources.c: $(resources)
+	glib-compile-resources --generate --target=$@ --c-name resources --sourcedir=$(top_srcdir)/resources $<
+
+resources.o: resources.c resources.h
+main.o: resources.h
 
 EXTRA_DIST = $(srcdir)/liferea-add-feed.in
 DISTCLEANFILES = $(srcdir)/liferea-add-feed

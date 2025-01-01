@@ -1128,12 +1128,7 @@ on_popup_copy_URL_clipboard (GSimpleAction *action, GVariant *parameter, gpointe
 	item = itemlist_get_selected ();
 	if (item) {
 		g_autofree gchar *link = item_make_link (item);
-		GdkClipboard *primary = gdk_display_get_primary_clipboard (gdk_display_get_default ());
-		GdkClipboard *copypaste = gdk_display_get_clipboard (gdk_display_get_default ());
-
-		gdk_clipboard_set_text (primary, link);
-		gdk_clipboard_set_text (copypaste, link);
-
+		liferea_shell_copy_to_clipboard (link);
 		item_unload (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));

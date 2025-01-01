@@ -54,14 +54,6 @@ G_DECLARE_FINAL_TYPE (LifereaShell, liferea_shell, LIFEREA, SHELL, GObject)
 GtkWidget * liferea_shell_lookup (const gchar *name);
 
 /**
- * liferea_shell_save_position
- *
- * Save the position of the Liferea main window.
- */
-void
-liferea_shell_save_position (void);
-
-/**
  * liferea_shell_create: (skip)
  * @app:	                the GtkApplication to attach the main window to
  * @overrideWindowState:	optional parameter for window state (or NULL)
@@ -101,34 +93,6 @@ void liferea_shell_toggle_visibility (void);
 void liferea_shell_set_toolbar_style (const gchar *toolbar_style);
 
 /**
- * liferea_shell_update_toolbar: (skip)
- *
- * According to the preferences this function enables/disables the toolbar.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_toolbar (void);
-
-/**
- * liferea_shell_update_history_actions: (skip)
- *
- * Update item history menu actions and toolbar buttons.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_history_actions (void);
-
-/**
- * liferea_shell_update_item_menu: (skip)
- * @enabled:	TRUE if item actions are to be enabled
- *
- * Update the sensitivity of options affecting single items.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_item_menu (gboolean enabled);
-
-/**
  * liferea_shell_set_status_bar:
  *
  * Sets the status bar text. Takes printf() like parameters.
@@ -143,6 +107,14 @@ void liferea_shell_set_status_bar (const char *format, ...);
  * are overwritten by unimportant ones.
  */
 void liferea_shell_set_important_status_bar (const char *format, ...);
+
+/**
+ * liferea_shell_copy_to_clipboard:
+ * @str: the string to copy to the clipboard
+ *
+ * Copy a text to clipboard
+ */
+void liferea_shell_copy_to_clipboard (const gchar *str);
 
 /**
  * liferea_shell_get_window:

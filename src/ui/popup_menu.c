@@ -40,26 +40,6 @@
 #include "ui/preferences_dialog.h"
 #include "node_source.h"
 
-#define UI_POPUP_ITEM_IS_TOGGLE		1
-
-static void
-ui_popup_menu (GtkWidget *menu, const GdkEvent *event)
-{
-	g_signal_connect_after (G_OBJECT(menu), "unmap-event", G_CALLBACK(gtk_widget_destroy), NULL);
-	gtk_widget_show_all (menu);
-	gtk_menu_popup_at_pointer (GTK_MENU(menu), event);
-}
-
-static const GActionEntry ui_popup_item_gaction_entries[] = {
-	{"copy-item-to-newsbin", on_action_copy_to_newsbin, "(umt)", NULL, NULL},
-	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
-	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
-	{"remove-item", on_action_remove_item, "t", NULL, NULL},
-	{"open-item-in-tab", on_action_launch_item_in_tab, "t", NULL, NULL},
-	{"open-item-in-browser", on_action_launch_item_in_browser, "t", NULL, NULL},
-	{"open-item-in-external-browser", on_action_launch_item_in_external_browser, "t", NULL, NULL}
-};
-
 void
 ui_popup_item_menu (itemPtr item, const GdkEvent *event)
 {
@@ -156,135 +136,16 @@ ui_popup_item_menu (itemPtr item, const GdkEvent *event)
 	g_object_unref (menu_item);
 	g_free (item_link);
 	g_menu_freeze (menu_model);
-	menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
+	menu = gtk_popover_menu_new_from_model (G_MENU_MODEL (menu_model));
 
 	action_group = g_simple_action_group_new ();
 	g_action_map_add_action_entries (G_ACTION_MAP(action_group), ui_popup_item_gaction_entries, G_N_ELEMENTS (ui_popup_item_gaction_entries), NULL);
 	gtk_widget_insert_action_group (menu, "item", G_ACTION_GROUP (action_group));
 
-	/* The menu has to be attached to an application window or one of its children for access to app actions.*/
-	gtk_menu_attach_to_widget (GTK_MENU (menu), liferea_shell_lookup ("mainwindow"), NULL);
+	gtk_widget_set_parent (menu, liferea_shell_lookup ("itemlist"));
 	g_object_unref (menu_model);
 	ui_popup_menu (menu, event);
 }
-
-/* popup callback wrappers */
-
-static void
-ui_popup_rebuild_vfolder (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	vfolder_rebuild ((Node *)user_data);
-}
-
-static void
-ui_popup_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node *node = (Node *) user_data;
-
-	NODE_PROVIDER (node)->request_properties (node);
-}
-
-static void
-ui_popup_delete (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	feed_list_view_remove ((Node *)user_data);
-}
-
-static void
-ui_popup_sort_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	feed_list_view_sort_folder ((Node *)user_data);
-}
-
-static void
-ui_popup_add_convert_to_local (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	node_source_convert_to_local ((Node *)user_data);
-}
-
-static void
-on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node *node;
-	GtkWindow *parent;
-	GtkWidget *dialog;
-	GtkFileChooser *chooser;
-	GtkFileFilter *feed_files_filter, *all_files_filter;
-	gint res;
-	gchar *curname;
-	const gchar *title;
-	GError *err = NULL;
-
-	node = (Node *) user_data;
-	parent = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
-
-	dialog = gtk_file_chooser_dialog_new (_("Save items to file"),
-	                                      parent,
-	                                      GTK_FILE_CHOOSER_ACTION_SAVE,
-	                                      _("_Cancel"),
-	                                      GTK_RESPONSE_CANCEL,
-	                                      _("_Save"),
-	                                      GTK_RESPONSE_ACCEPT,
-	                                      NULL);
-	chooser = GTK_FILE_CHOOSER (dialog);
-
-	/* Filters are only for improving usability for now, as the code
-	 * itself can only save feeds as RSS 2.0.
-	 */
-	feed_files_filter = gtk_file_filter_new ();
-	gtk_file_filter_set_name (feed_files_filter, _("RSS 2.0 files"));
-	gtk_file_filter_add_pattern (feed_files_filter, "*.rss");
-	gtk_file_filter_add_pattern (feed_files_filter, "*.xml");
-	gtk_file_chooser_add_filter(chooser, feed_files_filter);
-
-	all_files_filter = gtk_file_filter_new ();
-	gtk_file_filter_set_name (all_files_filter, _("All files"));
-	gtk_file_filter_add_pattern (all_files_filter, "*");
-	gtk_file_chooser_add_filter(chooser, all_files_filter);
-
-	title = node_get_title (node);
-	curname = g_strdup_printf("%s.rss", title != NULL ? title : _("Untitled"));
-	gtk_file_chooser_set_filename (chooser, curname);
-	gtk_file_chooser_set_current_name (chooser, curname);
-	gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
-	g_free(curname);
-
-	res = gtk_dialog_run (GTK_DIALOG (dialog));
-	if (res == GTK_RESPONSE_ACCEPT) {
-		gchar *filename = gtk_file_chooser_get_filename (chooser);
-		node_save_items_to_file (node, filename, &err);
-		g_free (filename);
-	}
-
-	if (err) {
-		GtkWidget *errdlg;
-		GtkDialogFlags flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-		errdlg = gtk_message_dialog_new (GTK_WINDOW (dialog),
-		                                flags,
-		                                GTK_MESSAGE_ERROR,
-		                                GTK_BUTTONS_CLOSE,
-		                                "%s",
-		                                err->message);
-		gtk_dialog_run (GTK_DIALOG (errdlg));
-		gtk_widget_destroy (errdlg);
-		g_error_free(err);
-		err = NULL;
-	}
-
-	gtk_widget_destroy (dialog);
-}
-
-/* Those actions work on the node passed as user_data parameter. */
-static const GActionEntry ui_popup_node_gaction_entries[] = {
-  {"node-mark-all-read", on_action_mark_all_read, NULL, NULL, NULL},
-  {"node-rebuild-vfolder", ui_popup_rebuild_vfolder, NULL, NULL, NULL},
-  {"node-properties", ui_popup_properties, NULL, NULL, NULL},
-  {"node-delete", ui_popup_delete, NULL, NULL, NULL},
-  {"node-sort-feeds", ui_popup_sort_feeds, NULL, NULL, NULL},
-  {"node-convert-to-local", ui_popup_add_convert_to_local, NULL, NULL, NULL},
-  {"node-update", on_menu_update, NULL, NULL, NULL},
-  {"node-export-items-to-file", on_menu_export_items_to_file, NULL, NULL, NULL},
-};
 
 /**
  * Shows popup menus for the feed list depending on the
@@ -293,62 +154,34 @@ static const GActionEntry ui_popup_node_gaction_entries[] = {
 static void
 ui_popup_node_menu (Node *node, gboolean validSelection, const GdkEvent *event)
 {
-	GtkWidget		*menu;
 	GMenu 			*menu_model, *section;
 	GSimpleActionGroup 	*action_group;
-	gboolean		writeableFeedlist, isRoot, addChildren;
-
-	if (node->parent) {
-		writeableFeedlist = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
-		isRoot = NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
-		addChildren = NODE_PROVIDER (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS;
-	} else {
-		/* if we have no parent then we have the root node... */
-		writeableFeedlist = TRUE;
-		isRoot = TRUE;
-		addChildren = TRUE;
-	}
 
 	menu_model = g_menu_new ();
 	section = g_menu_new ();
 
-	if (validSelection) {
-		if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE)
-			g_menu_append (section, _("_Update"), "node.node-update");
-		else if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
-			g_menu_append (section, _("_Update Folder"), "node.node-update");
+	g_menu_append (section, _("_Update"), "node.node-update");
+	g_menu_append (section, _("_Update Folder"), "node.node-update");
+
+
+	GMenu		*submenu;
+
+	submenu = g_menu_new ();
+
+	if (node_can_add_child_feed (node))
+		g_menu_append (submenu, _("New _Subscription..."), "app.new-subscription");
+
+	if (node_can_add_child_folder (node))
+		g_menu_append (submenu, _("New _Folder..."), "app.new-folder");
+
+	if (isRoot) {
+		g_menu_append (submenu, _("New S_earch Folder..."), "app.new-vfolder");
+		g_menu_append (submenu, _("New S_ource..."), "app.new-source");
+		g_menu_append (submenu, _("New _News Bin..."), "app.new-newsbin");
 	}
 
-	if (writeableFeedlist) {
-		if (addChildren) {
-			GMenu		*submenu;
-
-			submenu = g_menu_new ();
-
-			if (node_can_add_child_feed (node))
-				g_menu_append (submenu, _("New _Subscription..."), "app.new-subscription");
-
-			if (node_can_add_child_folder (node))
-				g_menu_append (submenu, _("New _Folder..."), "app.new-folder");
-
-			if (isRoot) {
-				g_menu_append (submenu, _("New S_earch Folder..."), "app.new-vfolder");
-				g_menu_append (submenu, _("New S_ource..."), "app.new-source");
-				g_menu_append (submenu, _("New _News Bin..."), "app.new-newsbin");
-			}
-
-			g_menu_append_submenu (section, _("_New"), G_MENU_MODEL (submenu));
-			g_object_unref (submenu);
-		}
-
-		if (isRoot && node->children) {
-			/* Ending section and starting a new one to get a separator : */
-			g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
-			g_object_unref (section);
-			section = g_menu_new ();
-			g_menu_append (section, _("Sort Feeds"), "node.node-sort-feeds");
-		}
-	}
+	g_menu_append_submenu (section, _("_New"), G_MENU_MODEL (submenu));
+	g_object_unref (submenu);
 
 	if (validSelection) {
 		g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
@@ -388,14 +221,7 @@ ui_popup_node_menu (Node *node, gboolean validSelection, const GdkEvent *event)
 	g_object_unref (section);
 
 	g_menu_freeze (menu_model);
-	action_group = g_simple_action_group_new ();
-	g_action_map_add_action_entries (G_ACTION_MAP(action_group), ui_popup_node_gaction_entries, G_N_ELEMENTS (ui_popup_node_gaction_entries), node);
-	menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
-	gtk_widget_insert_action_group (menu, "node", G_ACTION_GROUP (action_group));
-	gtk_menu_attach_to_widget (GTK_MENU (menu), liferea_shell_lookup ("mainwindow"), NULL);
-	g_object_unref (menu_model);
-
-	ui_popup_menu (menu, event);
+	return menu_model;
 }
 
 /* mouse button handler */
@@ -483,3 +309,30 @@ on_mainfeedlist_popup_menu (GtkWidget *widget,
 	ui_popup_node_menu (node, selected, NULL);
 	return TRUE;
 }
+
+/*
+
+static void
+set_up_context_popover (GtkWidget *widget,
+                        GMenuModel *model)
+{
+  GtkWidget *popover = gtk_popover_menu_new_from_model (model);
+  GtkGesture *gesture;
+
+  gtk_widget_set_parent (popover, widget);
+  gtk_popover_set_has_arrow (GTK_POPOVER (popover), FALSE);
+  gesture = gtk_gesture_click_new ();
+  gtk_event_controller_set_name (GTK_EVENT_CONTROLLER (gesture), "widget-factory-context-click");
+  gtk_gesture_single_set_button (GTK_GESTURE_SINGLE (gesture), GDK_BUTTON_SECONDARY);
+  g_signal_connect (gesture, "pressed", G_CALLBACK (clicked_cb), popover);
+  gtk_widget_add_controller (widget, GTK_EVENT_CONTROLLER (gesture));
+}
+
+ui_popup_menu_setup (void) {
+	GtkBuilder *builder;
+
+	builder = gtk_builder_new ();
+	model = (GMenuModel *)gtk_builder_get_object (builder, "new_style_context_menu_model");
+	set_up_context_popover (widget, model);
+	g_object_unref (builder);
+}*/

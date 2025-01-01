@@ -148,11 +148,9 @@ src/ui/liferea_browser.h
 src/ui/liferea_dialog.c
 src/ui/liferea_dialog.h
 src/ui/liferea_shell.c
-src/ui/liferea_shell.c
 src/ui/liferea_shell.h
-src/ui/liferea_shell.h
-src/ui/popup_menu.c
-src/ui/popup_menu.h
+src/ui/liferea_shell_actions.c
+src/ui/liferea_shell_actions.h
 src/ui/preferences_dialog.c
 src/ui/preferences_dialog.h
 src/ui/rule_editor.c

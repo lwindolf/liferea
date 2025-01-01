@@ -10,5 +10,8 @@
   <gresource prefix="/org/gnome/liferea">
     <file compressed="true">htmlview.js</file>
   </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/popup_menus">
+    <file compressed="true">popup_menus.ui</file>
+  </gresource>
 </gresources>
 

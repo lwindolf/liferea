@@ -18,7 +18,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
+#include <jsc/jsc.h>
+#include <webkit/webkit.h>
 #include "ui/liferea_browser.h"
 
 #include <string.h>
@@ -26,12 +27,9 @@
 #include <sys/wait.h>
 #endif
 #include <glib.h>
-#include <jsc/jsc.h>
-#include <webkit/webkit.h>
 
 #include "browser.h"
 #include "browser_history.h"
-#include "comments.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
