@@ -134,11 +134,9 @@ liferea_webkit_enable_itp_cb (GSettings *gsettings,
 {
 	g_return_if_fail (key != NULL);
 
-#if WEBKIT_CHECK_VERSION (2, 30, 0)
 	webkit_website_data_manager_set_itp_enabled (
 	    webkit_web_context_get_website_data_manager (webkit_web_context_get_default()),
 	    g_settings_get_boolean (gsettings, key));
-#endif
 }
 
 /* Font size math from Epiphany embed/ephy-embed-prefs.c to get font size in
@@ -407,9 +405,8 @@ liferea_webkit_init (LifereaWebKit *self)
 
 	conf_get_bool_value (ENABLE_ITP, &enable_itp);
 
-#if WEBKIT_CHECK_VERSION (2, 30, 0)
 	webkit_website_data_manager_set_itp_enabled (website_data_manager, enable_itp);
-#endif
+
 	/* Webkit web extensions */
 	g_signal_connect (
 		webkit_web_context_get_default (),
@@ -628,7 +625,6 @@ liferea_webkit_scroll_pagedown (GtkWidget *webview)
 void
 liferea_webkit_set_proxy (ProxyDetectMode mode)
 {
-#if WEBKIT_CHECK_VERSION (2, 15, 3)
 	switch (mode) {
 		default:
 		case PROXY_DETECT_MODE_MANUAL:
@@ -645,7 +641,6 @@ liferea_webkit_set_proxy (ProxyDetectMode mode)
 			     NULL);
 			break;
 	}
-#endif
 }
 
 /**

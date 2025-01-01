@@ -18,14 +18,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <webkit/webkit-web-extension.h>
+#include <webkit/webkit-web-process-extension.h>
 
 #include "liferea_web_extension.h"
 
 static LifereaWebExtension *extension = NULL;
 
 G_MODULE_EXPORT void
-webkit_web_extension_initialize_with_user_data (WebKitWebExtension *webkit_extension,
+webkit_web_extension_initialize_with_user_data (WebKitWebProcessExtension *webkit_extension,
 						GVariant *userdata)
 {
 	extension = liferea_web_extension_get ();

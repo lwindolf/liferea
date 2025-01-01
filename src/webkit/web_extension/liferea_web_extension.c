@@ -2,7 +2,7 @@
  * @file liferea_web_extension.c  Control WebKit2 via DBUS from Liferea
  *
  *   Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
- *   Copyright (C) 2024 Lars Windolf <lars.windolf@gmx.de>
+ *   Copyright (C) 2024-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,21 +19,21 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include <webkit/webkit-web-extension.h>
-#include <JavaScriptCore/JavaScript.h>
-
 #include "liferea_web_extension.h"
+
+#include <jsc/jsc.h>
+
 #include "liferea_web_extension_names.h"
 
 struct _LifereaWebExtension {
 	GObject 		parent;
 
-	GDBusConnection 	*connection;
-	WebKitWebExtension 	*webkit_extension;
-	GArray 			*pending_pages_created;
-	gboolean 		initialized;
+	GDBusConnection 		*connection;
+	WebKitWebProcessExtension 	*webkit_extension;
+	GArray 				*pending_pages_created;
+	gboolean 			initialized;
 
-	GSettings 		*liferea_settings;
+	GSettings 			*liferea_settings;
 };
 
 struct _LifereaWebExtensionClass {
@@ -229,7 +229,7 @@ on_send_request (WebKitWebPage 		*web_page,
 }
 
 static void
-on_page_created (WebKitWebExtension *webkit_extension,
+on_page_created (WebKitWebProcessExtension *webkit_extension,
 		 WebKitWebPage      *web_page,
 		 gpointer            extension)
 {
@@ -308,7 +308,7 @@ liferea_web_extension_get (void)
 
 void
 liferea_web_extension_initialize (LifereaWebExtension 	*extension,
-				  WebKitWebExtension 	*webkit_extension,
+				  WebKitWebProcessExtension 	*webkit_extension,
 				  const gchar 		*server_address)
 {
 

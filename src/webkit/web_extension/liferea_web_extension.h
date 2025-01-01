@@ -22,7 +22,7 @@
 #define _LIFEREA_WEB_EXTENSION_H
 
 #include <glib-object.h>
-#include <webkit/webkit-web-extension.h>
+#include <webkit/webkit-web-process-extension.h>
 
 #define LIFEREA_TYPE_WEB_EXTENSION liferea_web_extension_get_type ()
 
@@ -39,6 +39,6 @@ typedef struct _LifereaWebExtensionClass LifereaWebExtensionClass;
 GType liferea_web_extension_get_type (void);
 
 LifereaWebExtension* liferea_web_extension_get (void);
-void liferea_web_extension_initialize (LifereaWebExtension *extension, WebKitWebExtension *webkit_extension,  const gchar *server_address);
+void liferea_web_extension_initialize (LifereaWebExtension *extension, WebKitWebProcessExtension *webkit_extension,  const gchar *server_address);
 
 #endif
