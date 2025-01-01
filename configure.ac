@@ -102,7 +102,6 @@ pixmaps/32x32/Makefile
 pixmaps/48x48/Makefile
 pixmaps/scalable/Makefile
 opml/Makefile
-glade/Makefile
 po/Makefile.in
 src/liferea-add-feed
 ])

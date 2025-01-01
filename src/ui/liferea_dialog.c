@@ -98,13 +98,12 @@ GtkWidget *
 liferea_dialog_new (const gchar *name)
 {
 	LifereaDialog	*ld;
-	gchar 		*path;
+	g_autofree gchar *path;
+
+	path = g_strdup_printf ("/org/gnome/liferea/ui/%s", name);
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
-	path = g_strdup_printf ("%s%s.ui", PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S, name);
-	ld->priv->xml = gtk_builder_new_from_file (path);
-	g_free (path);
-
+	ld->priv->xml = gtk_builder_new_from_resource (path);
 	g_return_val_if_fail (ld->priv->xml != NULL, NULL);
 
 	ld->priv->dialog = GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));

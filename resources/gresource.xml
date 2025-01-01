@@ -10,8 +10,80 @@
   <gresource prefix="/org/gnome/liferea">
     <file compressed="true">htmlview.js</file>
   </gresource>
-  <gresource prefix="/org/gnome/liferea/ui/popup_menus">
-    <file compressed="true">popup_menus.ui</file>
+  <gresource prefix="/org/gnome/liferea/ui/about">
+    <file compressed="true">about.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/auth">
+    <file compressed="true">auth.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/google_source">
+    <file compressed="true">google_source.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/liferea_headerbar">
+    <file compressed="true">liferea_headerbar.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/liferea_menu">
+    <file compressed="true">liferea_menu.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/liferea_toolbar">
+    <file compressed="true">liferea_toolbar.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/liferea_window">
+    <file compressed="true">liferea_window.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/mainwindow">
+    <file compressed="true">mainwindow.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/mark_read_dialog">
+    <file compressed="true">mark_read_dialog.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/new_folder">
+    <file compressed="true">new_folder.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/new_newsbin">
+    <file compressed="true">new_newsbin.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/new_subscription">
+    <file compressed="true">new_subscription.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/node_source">
+    <file compressed="true">node_source.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/opml_source">
+    <file compressed="true">opml_source.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/prefs">
+    <file compressed="true">prefs.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/properties">
+    <file compressed="true">properties.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/reedah_source">
+    <file compressed="true">reedah_source.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/rename_node">
+    <file compressed="true">rename_node.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/search_folder">
+    <file compressed="true">search_folder.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/search">
+    <file compressed="true">search.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/simple_search">
+    <file compressed="true">simple_search.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/simple_subscription">
+    <file compressed="true">simple_subscription.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/theoldreader_source">
+    <file compressed="true">theoldreader_source.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/ttrss_source">
+    <file compressed="true">ttrss_source.ui</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/ui/update_monitor">
+    <file compressed="true">update_monitor.ui</file>
   </gresource>
 </gresources>
 
