@@ -7,7 +7,13 @@ assignees: ''
 
 ---
 
-The issue tracker is **ONLY** used for reporting bugs. Please ask for new features under [Discussions](https://github.com/lwindolf/liferea/discussions).
+<!--
+
+ The issue tracker is **ONLY** used for reporting bugs!
+
+Please ask for new features under [Discussions](https://github.com/lwindolf/liferea/discussions). 
+
+-->
 
 ## Version
 <!-- Which release causes the issue? -->
