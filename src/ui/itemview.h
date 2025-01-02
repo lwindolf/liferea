@@ -225,6 +225,23 @@ ItemView * itemview_create (GtkWidget *window);
  */
 void itemview_launch_URL (const gchar *url, gboolean internal);
 
+
+typedef enum {
+	ITEMVIEW_LAUNCH_DEFAULT,
+	ITEMVIEW_LAUNCH_INTERNAL,
+	ITEMVIEW_LAUNCH_TAB,
+	ITEMVIEW_LAUNCH_EXTERNAL
+} open_link_target_type;
+
+/**
+ * itemview_launch_item:
+ * @item:		the item to launch
+ * @open_link_target:	the target to open the link in
+ *
+ * Launches the item in the given target.
+ */
+void itemview_launch_item (itemPtr item, open_link_target_type open_link_target);
+
 /**
  * itemview_do_zoom:
  * @zoom:	1 for zoom in, -1 for zoom out, 0 for reset

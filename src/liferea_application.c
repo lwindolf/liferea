@@ -58,6 +58,11 @@ G_DEFINE_TYPE (LifereaApplication, liferea_application, GTK_TYPE_APPLICATION)
 
 static LifereaApplication *liferea_app = NULL;
 
+LifereaApplication *liferea_application_get_instance (void)
+{
+	return liferea_app;
+}
+
 static void
 liferea_application_finalize (GObject *gobject)
 {

@@ -24,6 +24,23 @@
 #include <gtk/gtk.h>
 
 /**
+ * Enable or disable an action in the action map.
+ *
+ * @param group 	the action group
+ * @param name		the action name
+ * @param enabled	TRUE to enable, FALSE to disable
+ */
+void ui_common_action_enable (GActionGroup *group, const gchar *name, gboolean enabled);
+
+/**
+ * Helper function to enable/disable all actions in a group.
+ *
+ * @param group		the action group
+ * @param enabled	TRUE to enable, FALSE to disable
+ */
+void ui_common_action_group_enable (GActionGroup *group, gboolean enabled);
+
+/**
  * Helper function to set up a combo box option menu.
  * To be used to initialize dialogs.
  *

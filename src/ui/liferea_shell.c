@@ -64,6 +64,11 @@ struct _LifereaShell {
 	GtkBuilder	*xml;
 	GSettings	*settings;
 
+	GActionGroup	*generalActions;		/*<< shell actions */
+	GActionGroup	*feedlistActions;
+	GActionGroup	*itemlistActions;
+	GActionGroup	*htmlviewActions;
+
 	LifereaPluginsEngine *plugins;
 
 	GtkWindow	*window;			/*<< Liferea main window */
@@ -94,6 +99,127 @@ enum {
 static LifereaShell *shell = NULL;
 
 G_DEFINE_TYPE (LifereaShell, liferea_shell, G_TYPE_OBJECT);
+
+LifereaShell *
+liferea_shell_get_instance (void)
+{
+	return shell;
+}
+
+static void
+liferea_shell_finalize (GObject *object)
+{
+	LifereaShell *ls = LIFEREA_SHELL (object);
+
+	g_object_unref (shell->generalActions);
+	g_object_unref (shell->feedlistActions);
+	g_object_unref (shell->itemlistActions);
+	g_object_unref (shell->htmlviewActions);
+
+	g_object_unref (ls->xml);
+}
+
+static void
+liferea_shell_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
+{
+        LifereaShell *shell = LIFEREA_SHELL (object);
+
+        switch (prop_id) {
+	        case PROP_FEED_LIST:
+				g_value_set_object (value, shell->feedlist);
+				break;
+	        case PROP_ITEM_LIST:
+				g_value_set_object (value, shell->itemlist);
+				break;
+	        case PROP_ITEM_VIEW:
+				g_value_set_object (value, shell->itemview);
+				break;
+	        case PROP_BROWSER_TABS:
+				g_value_set_object (value, shell->tabs);
+				break;
+	        case PROP_BUILDER:
+				g_value_set_object (value, shell->xml);
+				break;
+			default:
+		        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+		        break;
+        }
+}
+
+static void
+liferea_shell_class_init (LifereaShellClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+	object_class->get_property = liferea_shell_get_property;
+	object_class->finalize = liferea_shell_finalize;
+
+	/* LifereaShell:feed-list: */
+	g_object_class_install_property (object_class,
+		                         PROP_FEED_LIST,
+		                         g_param_spec_object ("feed-list",
+		                                              "LifereaFeedList",
+		                                              "LifereaFeedList object",
+		                                              FEED_LIST_TYPE,
+		                                              G_PARAM_READABLE));
+
+	/* LifereaShell:item-list: */
+	g_object_class_install_property (object_class,
+		                         PROP_ITEM_LIST,
+		                         g_param_spec_object ("item-list",
+		                                              "LifereaItemList",
+		                                              "LifereaItemList object",
+		                                              ITEMLIST_TYPE,
+		                                              G_PARAM_READABLE));
+
+	/* LifereaShell:item-view: */
+	g_object_class_install_property (object_class,
+		                         PROP_ITEM_VIEW,
+		                         g_param_spec_object ("item-view",
+		                                              "LifereaItemView",
+		                                              "LifereaItemView object",
+		                                              ITEM_VIEW_TYPE,
+		                                              G_PARAM_READABLE));
+
+	/* LifereaShell:browser-tabs: */
+	g_object_class_install_property (object_class,
+		                         PROP_BROWSER_TABS,
+		                         g_param_spec_object ("browser-tabs",
+		                                              "LifereaBrowserTabs",
+		                                              "LifereaBrowserTabs object",
+		                                              BROWSER_TABS_TYPE,
+		                                              G_PARAM_READABLE));
+
+	/* LifereaShell:builder: */
+	g_object_class_install_property (object_class,
+		                         PROP_BUILDER,
+		                         g_param_spec_object ("builder",
+		                                              "GtkBuilder",
+		                                              "Liferea user interfaces definitions",
+		                                              GTK_TYPE_BUILDER,
+		                                              G_PARAM_READABLE));
+}
+
+GtkWidget *
+liferea_shell_lookup (const gchar *name)
+{
+	g_return_val_if_fail (shell != NULL, NULL);
+
+	return GTK_WIDGET (gtk_builder_get_object (shell->xml, name));
+}
+
+static void
+liferea_shell_init (LifereaShell *ls)
+{
+	/* globally accessible singleton */
+	g_assert (NULL == shell);
+	shell = ls;
+	shell->xml = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui");
+	if (!shell->xml)
+		g_error ("Loading " PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui failed");
+
+	gtk_builder_connect_signals (shell->xml, NULL);
+}
 
 static void
 liferea_shell_save_layout (void)
@@ -448,19 +574,6 @@ liferea_shell_set_important_status_bar (const char *format, ...)
 	g_idle_add ((GSourceFunc)liferea_shell_set_status_bar_important_cb, (gpointer)text);
 }
 
-/* For zoom in : zoom = 1, for zoom out : zoom= -1, for reset : zoom = 0 */
-static void
-liferea_shell_do_zoom (gint zoom)
-{
-	/* We must apply the zoom either to the item view
-	   or to an open tab, depending on the browser tabs
-	   GtkNotebook page that is active... */
-	if (!browser_tabs_get_active_htmlview ())
-		itemview_do_zoom (zoom);
-	else
-		browser_tabs_do_zoom (zoom);
-}
-
 static gboolean
 on_key_pressed_event_null_cb (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
 {
@@ -779,6 +892,33 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	g_idle_add (liferea_shell_restore_layout, NULL);
 }
 
+static GActionGroup *
+liferea_shell_add_actions (GActionMap *map, const GActionEntry *entries)
+{
+	GtkApplication	*app = gtk_window_get_application (GTK_WINDOW (shell->window));
+	GActionGroup	*group = G_ACTION_GROUP (g_simple_action_group_new ());
+
+	g_action_map_add_action_entries (map, entries, G_N_ELEMENTS (entries), NULL);
+	liferea_shell_add_action_group_to_map (group, G_ACTION_MAP (app));
+
+	return group;
+}
+
+static const gchar * liferea_accels_update_all[] = {"<Control>u", NULL};
+static const gchar * liferea_accels_quit[] = {"<Control>q", NULL};
+static const gchar * liferea_accels_mark_feed_as_read[] = {"<Control>r", NULL};
+static const gchar * liferea_accels_next_unread_item[] = {"<Control>n", NULL};
+static const gchar * liferea_accels_prev_read_item[] = {"<Control><Shift>n", NULL};
+static const gchar * liferea_accels_toggle_item_read_status[] = {"<Control>m", NULL};
+static const gchar * liferea_accels_toggle_item_flag[] = {"<Control>t", NULL};
+static const gchar * liferea_accels_fullscreen[] = {"F11", NULL};
+static const gchar * liferea_accels_zoom_in[] = {"<Control>plus", "<Control>equal",NULL};
+static const gchar * liferea_accels_zoom_out[] = {"<Control>minus", NULL};
+static const gchar * liferea_accels_zoom_reset[] = {"<Control>0", NULL};
+static const gchar * liferea_accels_search_feeds[] = {"<Control>f", NULL};
+static const gchar * liferea_accels_show_help_contents[] = {"F1", NULL};
+static const gchar * liferea_accels_launch_item_in_external_browser[] = {"<Control>d", NULL};
+
 void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
@@ -795,14 +935,19 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 
 	gtk_window_set_application (GTK_WINDOW (shell->window), app);
-	liferea_shell_actions_register ();
+
+	shell->generalActions = NULL;
+	shell->feedlistActions = node_actions_create ();
+	shell->itemActions = item_actions_create ();
+	shell->linkActions = link_actions_create ();
+	
 	g_signal_connect (G_OBJECT (shell->window), "style-updated", G_CALLBACK (liferea_shell_rebuild_css), NULL);
 
 	/* 1.) setup plugin engine including mandatory base plugins that (for example the feed list or auth) might depend on */
 	debug (DEBUG_GUI, "Register mandatory plugins");
 	shell->plugins = liferea_plugins_engine_get (shell);
 
-	/* 2.) setup menus */
+	/* 2.) Setup item list */
 	shell->itemlist = itemlist_create ();
 
 	/* 3.) Headerbar and menu creation */
@@ -813,6 +958,29 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_builder_add_from_file (shell->xml, PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "liferea_menu.ui", NULL);
 	menubar_model = G_MENU_MODEL (gtk_builder_get_object (shell->xml, "menubar"));
 	gtk_application_set_menubar (app, menubar_model);
+
+	/* Prepare some toggle button states */
+	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
+	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "reduced-feed-list")), g_variant_new_boolean (toggle));
+
+	liferea_shell_enable_item_actions (FALSE);
+        liferea_shell_update_history_actions ();
+
+	/* Add accelerators for shell */
+	gtk_application_set_accels_for_action (app, "app.update-all", liferea_accels_update_all);
+	gtk_application_set_accels_for_action (app, "app.quit", liferea_accels_quit);
+	gtk_application_set_accels_for_action (app, "app.mark-selected-feed-as-read", liferea_accels_mark_feed_as_read);
+	gtk_application_set_accels_for_action (app, "app.next-unread-item", liferea_accels_next_unread_item);
+	gtk_application_set_accels_for_action (app, "app.prev-read-item", liferea_accels_prev_read_item);
+	gtk_application_set_accels_for_action (app, "app.toggle-selected-item-read-status", liferea_accels_toggle_item_read_status);
+	gtk_application_set_accels_for_action (app, "app.toggle-selected-item-flag", liferea_accels_toggle_item_flag);
+	gtk_application_set_accels_for_action (app, "app.fullscreen", liferea_accels_fullscreen);
+	gtk_application_set_accels_for_action (app, "app.zoom-in", liferea_accels_zoom_in);
+	gtk_application_set_accels_for_action (app, "app.zoom-out", liferea_accels_zoom_out);
+	gtk_application_set_accels_for_action (app, "app.zoom-reset", liferea_accels_zoom_reset);
+	gtk_application_set_accels_for_action (app, "app.search-feeds", liferea_accels_search_feeds);
+	gtk_application_set_accels_for_action (app, "app.show-help-contents", liferea_accels_show_help_contents);
+	gtk_application_set_accels_for_action (app, "app.launch-item-in-external-browser", liferea_accels_launch_item_in_external_browser);
 
 	/* 4.) setup status bar */
 	debug (DEBUG_GUI, "Setting up status bar");
@@ -865,6 +1033,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	}
 
 	/* 12. Setup shell window signals, only after all widgets are ready */
+	g_signal_connect (shell->feedlist, "new-items",  G_CALLBACK (liferea_shell_update_unread_stats), shell->feedlist);
+
 	g_signal_connect (shell->keypress, "key_pressed", G_CALLBACK (on_key_pressed_event_null_cb), NULL);
 	g_signal_connect (shell->keypress, "key_released", G_CALLBACK (on_key_pressed_event_null_cb), NULL);
 	gtk_widget_add_controller (liferea_shell_lookup ("itemtabs"), shell->keypress);

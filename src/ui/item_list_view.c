@@ -77,44 +77,6 @@ enum is_columns {
 	ITEMSTORE_LEN		/*<< Number of columns in the itemstore */
 };
 
-typedef enum {
-	DEFAULT,
-	INTERNAL,
-	TAB,
-	EXTERNAL
-} open_link_target_type;
-
-static void
-launch_item (itemPtr item, open_link_target_type open_link_target)
-{
-	if (item) {
-		gchar *link = item_make_link (item);
-
-		if (link) {
-			switch (open_link_target)
-			{
-			case DEFAULT:
-				itemview_launch_URL (link, FALSE);
-				break;
-			case INTERNAL:
-				itemview_launch_URL (link, TRUE);
-				break;
-			case TAB:
-				browser_tabs_add_new (link, link, FALSE);
-				break;
-			case EXTERNAL:
-				browser_launch_URL_external (link);
-				break;
-			}
-
-			item_set_read_state (item, TRUE);
-			g_free (link);
-		} else
-			ui_show_error_box (_("This item has no link specified!"));
-
-	}
-}
-
 struct _ItemListView {
 	GObject		parentInstance;
 
@@ -744,7 +706,7 @@ on_item_list_row_activated (GtkTreeView *treeview,
 
 	if (gtk_tree_model_get_iter (model, &iter, path)) {
 		itemPtr item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
-		launch_item (item, DEFAULT);
+		itemview_launch_item (item, DEFAULT);
 		item_unload (item);
 	}
 }
@@ -952,113 +914,6 @@ item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 	// In wide view we want to save vertical space and hide the state column
 	if (ilv->wideView)
 		gtk_tree_view_column_set_visible (g_hash_table_lookup(ilv->columns, "state"), !enabled);
-}
-
-void
-on_action_launch_item_in_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-	      launch_item (item, INTERNAL);
-	      item_unload (item);
-	}
-}
-
-void
-on_action_launch_item_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-	      launch_item (item, TAB);
-	      item_unload (item);
-	}
-}
-
-void
-on_action_launch_item_in_external_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-	      launch_item (item, EXTERNAL);
-	      item_unload (item);
-	}
-}
-
-/* menu callbacks */
-
-void
-on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-		itemlist_toggle_flag (item);
-		item_unload (item);
-	}
-}
-
-void
-on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-		itemlist_toggle_read_status (item);
-		item_unload (item);
-	}
-}
-
-void
-on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node		*node;
-
-	node = feedlist_get_selected ();
-	// FIXME: use node type capability check
-	if (node && (IS_FEED (node) || IS_NEWSBIN (node)))
-		itemlist_remove_all_items (node);
-	else
-		ui_show_error_box (_("You must select a feed to delete its items!"));
-}
-
-void
-on_action_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-		itemview_select_item (NULL);
-		itemlist_remove_item (item);
-	} else {
-		liferea_shell_set_important_status_bar (_("No item has been selected"));
-	}
 }
 
 void

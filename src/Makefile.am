@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = node_providers node_sources parsers plugins ui webkit tests .
+SUBDIRS = node_providers node_sources parsers plugins actions ui webkit tests .
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \

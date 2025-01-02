@@ -479,6 +479,37 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 	itemview->browsing = TRUE;
 }
 
+static  void
+itemview_launch_item (itemPtr item, open_link_target_type open_link_target)
+{
+	if (item) {
+		gchar *link = item_make_link (item);
+
+		if (link) {
+			switch (open_link_target)
+			{
+			case ITEMVIEW_LAUNCH_DEFAULT:
+				itemview_launch_URL (link, FALSE);
+				break;
+			case ITEMVIEW_LAUNCH_INTERNAL:
+				itemview_launch_URL (link, TRUE);
+				break;
+			case ITEMVIEW_LAUNCH_TAB:
+				browser_tabs_add_new (link, link, FALSE);
+				break;
+			case ITEMVIEW_LAUNCH_EXTERNAL:
+				browser_launch_URL_external (link);
+				break;
+			}
+
+			item_set_read_state (item, TRUE);
+			g_free (link);
+		} else
+			ui_show_error_box (_("This item has no link specified!"));
+
+	}
+}
+
 void
 itemview_do_zoom (gint zoom)
 {

@@ -1,7 +1,7 @@
 /*
  * @file node_source.c  generic node source provider implementation
  *
- * Copyright (C) 2005-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -312,10 +312,7 @@ feed_list_node_source_type_dialog (void)
 	GtkTreeIter		treeiter;
 	nodeSourceTypePtr	type;
 
-	if (!nodeSourceTypes) {
-		ui_show_error_box (_("No feed list source types found!"));
-		return FALSE;
-	}
+	g_assert (!nodeSourceTypes);
 
 	/* set up the dialog */
 	dialog = liferea_dialog_new ("node_source");

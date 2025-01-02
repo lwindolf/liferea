@@ -161,22 +161,15 @@
                         <property name="visible">True</property>
                         <property name="can-focus">True</property>
                         <child>
-                          <object class="GtkViewport" id="viewport7">
+                          <object class="GtkViewport" id="ruleview_vfolder_dialog">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <child>
-                              <object class="GtkAlignment" id="ruleview_vfolder_dialog">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="border-width">6</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                                <accessibility>
-                                  <relation type="controlled-by" target="addrulebtn"/>
-                                </accessibility>
-                              </object>
+                              <placeholder/>
                             </child>
+                            <accessibility>
+                              <relation type="controlled-by" target="addrulebtn"/>
+                            </accessibility>
                           </object>
                         </child>
                       </object>

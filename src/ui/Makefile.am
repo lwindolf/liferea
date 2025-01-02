@@ -20,6 +20,7 @@ libliui_a_SOURCES = \
 	liferea_dialog.c liferea_dialog.h \
 	liferea_browser.c liferea_browser.h \
 	liferea_shell.c liferea_shell.h \
+	liferea_shell_actions.c liferea_shell_actions.h \
 	preferences_dialog.c preferences_dialog.h \
 	rule_editor.c rule_editor.h \
 	search_dialog.c search_dialog.h \

@@ -81,6 +81,7 @@ AC_CONFIG_FILES([
 Makefile
 net.sf.liferea.gschema.xml
 src/Makefile
+src/actions/Makefile
 src/node_providers/Makefile
 src/node_sources/Makefile
 src/parsers/Makefile

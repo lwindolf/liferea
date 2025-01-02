@@ -24,6 +24,8 @@
 
 #include "common.h"
 #include "db.h"
+#include "node.h"
+#include "node_provider.h"
 #include "node_providers/feed.h"
 #include "feedlist.h"
 #include "itemlist.h"
@@ -156,42 +158,31 @@ ui_newsbin_properties (Node *node)
 }
 
 void
-on_action_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node		*newsbin;
-	itemPtr		item = NULL, copy;
-	guint32 	newsbin_index;
-	guint64 	item_id;
-	gboolean 	maybe_item_id;
+newbin_add_item (guint32 newsbin_index, itemPtr item) {
+	Node *newsbin = NODE (g_slist_nth_data (newsbin_list, newsbin_index));
 
-	g_variant_get (parameter, "(umt)", &newsbin_index, &maybe_item_id, &item_id);
-	if (maybe_item_id)
-		item = item_load (item_id);
-	else
-		item = itemlist_get_selected ();
+	if (!item || !newsbin)
+		return;	
 
-	newsbin = g_slist_nth_data (newsbin_list, newsbin_index);
-	if(item) {
-		copy = item_copy(item);
-		copy->nodeId = newsbin->id;	/* necessary to become independent of original item */
-		copy->parentNodeId = g_strdup (item->nodeId);
+	itemPtr	copy = item_copy(item);
+	copy->nodeId = newsbin->id;	/* necessary to become independent of original item */
+	copy->parentNodeId = g_strdup (item->nodeId);
 
-		/* To avoid item doubling in vfolders we reset
-		   simple vfolder match attributes */
-		copy->readStatus = TRUE;
-		copy->flagStatus = FALSE;
+	/* To avoid item doubling in vfolders we reset
+		simple vfolder match attributes */
+	copy->readStatus = TRUE;
+	copy->flagStatus = FALSE;
 
-		/* To provide a hint in the rendered output what the orginial
-		   feed was the original website link/title are added */
-		if(!metadata_list_get (copy->metadata, "realSourceUrl"))
-			metadata_list_set (&(copy->metadata), "realSourceUrl", node_get_base_url(node_from_id(item->nodeId)));
-		if(!metadata_list_get (copy->metadata, "realSourceTitle"))
-			metadata_list_set (&(copy->metadata), "realSourceTitle", node_get_title(node_from_id(item->nodeId)));
+	/* To provide a hint in the rendered output what the orginial
+		feed was the original website link/title are added */
+	if(!metadata_list_get (copy->metadata, "realSourceUrl"))
+		metadata_list_set (&(copy->metadata), "realSourceUrl", node_get_base_url(node_from_id(item->nodeId)));
+	if(!metadata_list_get (copy->metadata, "realSourceTitle"))
+		metadata_list_set (&(copy->metadata), "realSourceTitle", node_get_title(node_from_id(item->nodeId)));
 
-		/* do the same as in node_merge_item(s) */
-		db_item_update(copy);
-		node_update_counters(newsbin);
-	}
+	/* do the same as in node_merge_item(s) */
+	db_item_update(copy);
+	node_update_counters(newsbin);
 }
 
 nodeProviderPtr

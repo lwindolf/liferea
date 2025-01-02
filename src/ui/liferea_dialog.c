@@ -124,7 +124,7 @@ liferea_dialog_entry_get (GtkWidget *dialog, const gchar *name)
 }
 
 void
-lifera_dialog_entry_set (GtkWidget *dialog, const gchar *name, const gchar *text)
+liferea_dialog_entry_set (GtkWidget *dialog, const gchar *name, const gchar *text)
 {
 	gtk_entry_buffer_set_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name))), text, -1);
 }
