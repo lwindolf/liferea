@@ -2,7 +2,7 @@
  * @file liferea_shell.c  UI layout handling
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,10 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
+#include "actions/item_actions.h"
+#include "actions/link_actions.h"
+#include "actions/node_actions.h"
+#include "actions/shell_actions.h"
 #include "browser.h"
 #include "common.h"
 #include "conf.h"
@@ -64,7 +68,7 @@ struct _LifereaShell {
 	GtkBuilder	*xml;
 	GSettings	*settings;
 
-	GActionGroup	*generalActions;		/*<< shell actions */
+	GActionGroup	*shellActions;
 	GActionGroup	*feedlistActions;
 	GActionGroup	*itemlistActions;
 	GActionGroup	*htmlviewActions;
@@ -111,7 +115,7 @@ liferea_shell_finalize (GObject *object)
 {
 	LifereaShell *ls = LIFEREA_SHELL (object);
 
-	g_object_unref (shell->generalActions);
+	g_object_unref (shell->shellActions);
 	g_object_unref (shell->feedlistActions);
 	g_object_unref (shell->itemlistActions);
 	g_object_unref (shell->htmlviewActions);
@@ -936,10 +940,10 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	gtk_window_set_application (GTK_WINDOW (shell->window), app);
 
-	shell->generalActions = NULL;
+	shell->shellActions = shell_actions_create ();
 	shell->feedlistActions = node_actions_create ();
-	shell->itemActions = item_actions_create ();
-	shell->linkActions = link_actions_create ();
+	shell->itemlistActions = item_actions_create ();
+	shell->htmlviewActions = link_actions_create ();
 	
 	g_signal_connect (G_OBJECT (shell->window), "style-updated", G_CALLBACK (liferea_shell_rebuild_css), NULL);
 
@@ -959,12 +963,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	menubar_model = G_MENU_MODEL (gtk_builder_get_object (shell->xml, "menubar"));
 	gtk_application_set_menubar (app, menubar_model);
 
-	/* Prepare some toggle button states */
-	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
-	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (app), "reduced-feed-list")), g_variant_new_boolean (toggle));
-
-	liferea_shell_enable_item_actions (FALSE);
-        liferea_shell_update_history_actions ();
+        // FIXME: GTK4 liferea_shell_update_history_actions ();
 
 	/* Add accelerators for shell */
 	gtk_application_set_accels_for_action (app, "app.update-all", liferea_accels_update_all);

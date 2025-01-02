@@ -252,7 +252,7 @@ feed_list_view_reduce_mode_changed (void)
 	}
 }
 
-static void
+static
 feed_list_view_set_reduce_mode (gboolean newReduceMode)
 {
 	flv->feedlist_reduced_unread = newReduceMode;

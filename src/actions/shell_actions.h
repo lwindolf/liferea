@@ -19,10 +19,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _LIFEREA_SHELL_ACTIONS_H
-#define _LIFEREA_SHELL_ACTIONS_H
+#ifndef _SHELL_ACTIONS_H
+#define _SHELL_ACTIONS_H
 
-#include <glib.h>
+#include <gtk/gtk.h>
 
 /**
  * liferea_shell_actions_update_history: (skip)
@@ -31,23 +31,15 @@
  *
  * TODO: use signal instead
  */
-void liferea_shell_actions_update_history (void);
+void shell_actions_update_history (void);
 
 /**
- * liferea_shell_actions_update_item_menu: (skip)
- * @enabled:	TRUE if item actions are to be enabled
- *
- * Update the sensitivity of options affecting single items.
- *
- * TODO: use signal instead
- */
-void liferea_shell_actions_update_item_menu (gboolean enabled);
-
-/**
- * liferea_shell_actions_register: (skip)
+ * shell_actions_create: (skip)
  * 
- * Registers all action maps with the LifereaShell window
+ * Setup all shell actions
+ * 
+ * Returns: the new action group to be freed by the caller
  */
-void liferea_shell_actions_register (void);
+GActionGroup * shell_actions_create (void);
 
-#endif /* _LIFEREA_SHELL_ACTIONS_H */
+#endif /* _SHELL_ACTIONS_H */

@@ -1,5 +1,5 @@
 /*
- * @file liferea_shell.c  UI action handling
+ * @file shell_actions.c  shell scope actions
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "ui/liferea_shell_actions.h"
+#include "shell_actions.h"
 
 #include <glib.h>
 #include <gtk/gtk.h>
@@ -51,18 +51,81 @@
 #include "ui/ui_common.h"
 #include "ui/ui_update.h"
 
-/* This file contains all
+static void
+do_menu_update (Node *node)
+{
+	if (network_monitor_is_online ())
+		node_update_subscription (node, GUINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
+	else
+		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
 
-        - accelerators
-        - actions
-        - and their callbacks
-        
-   Everything is registered against the LifereaShell window. */
+}
 
+static void
+on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	Node *node = NULL;
 
-/* all action callbacks */
+	if (user_data)
+		node = (Node *) user_data;
+	else
+		node = feedlist_get_selected ();
 
-void
+	if (node)
+		do_menu_update (node);
+	else
+		g_warning ("on_menu_update: no feedlist selected");
+}
+
+static void
+on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	do_menu_update (feedlist_get_root ());
+}
+
+static void
+on_mark_all_read_response (GtkDialog *dialog, gint response_id, gpointer user_data)
+{
+	if (response_id == GTK_RESPONSE_OK) {
+		feedlist_mark_all_read ((Node *) user_data);
+	}
+}
+
+static void
+on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	Node		*feedlist;
+	gboolean 	confirm_mark_read;
+
+	if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-all-feeds-read"))
+		feedlist = feedlist_get_root ();
+	else if (user_data)
+		feedlist = (Node *) user_data;
+	else
+		feedlist = feedlist_get_selected ();
+
+	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
+
+	if (confirm_mark_read) {
+		gint result;
+		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
+		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
+		const gchar *feed_title = (feedlist_get_root () == feedlist) ? _("all feeds"):node_get_title (feedlist);
+		gchar *primary_message = g_strdup_printf (_("Mark %s as read ?"), feed_title);
+
+		g_object_set (confirm_dialog, "text", primary_message, NULL);
+		g_free (primary_message);
+		gtk_message_dialog_format_secondary_text (confirm_dialog, _("Are you sure you want to mark all items in %s as read ?"), feed_title);
+
+		conf_bind (CONFIRM_MARK_ALL_READ, dont_ask_toggle, "active", G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
+
+		g_signal_connect (G_OBJECT (confirm_dialog), "response",
+	                  G_CALLBACK (on_mark_all_read_response), (gpointer)feedlist);
+	}
+}
+
+// FIXME replace this with a bind!
+static void
 on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	GVariant *state = g_action_get_state (G_ACTION (action));
@@ -193,21 +256,13 @@ ui_popup_sort_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_d
 	feed_list_view_sort_folder ((Node *)user_data);
 }
 
-/* sensitivity callbacks */
-
-void
-liferea_shell_update_history_actions (void)
-{
-	ui_common_action_enable (shell->generalActions, "prev-read-item", item_history_has_previous ());
-	ui_common_action_enable (shell->generalActions, "next-read-item", item_history_has_next ());
-}
-
 static const GActionEntry gaction_entries[] = {
 	{"update-all", on_menu_update_all, NULL, NULL, NULL},
 	{"mark-all-feeds-read", on_mark_all_read, NULL, NULL, NULL},
 	{"import-feed-list", on_menu_import, NULL, NULL, NULL},
 	{"export-feed-list", on_menu_export, NULL, NULL, NULL},
 	{"quit", on_menu_quit, NULL, NULL, NULL},
+	// FIXME: this looks wrong here
 	{"remove-selected-feed-items", on_remove_items_activate, NULL, NULL, NULL},
 	{"prev-read-item", on_prev_read_item_activate, NULL, NULL, NULL},
 	{"next-read-item", on_next_read_item_activate, NULL, NULL, NULL},
@@ -227,13 +282,24 @@ static const GActionEntry gaction_entries[] = {
 	{"fullscreen", NULL, NULL, "@b false", on_menu_fullscreen_activate},
 	{"reduced-feed-list", NULL, NULL, "@b false", on_feedlist_reduced_activate},
 
-	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
-	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
-	{"remove-item", on_remove_item, "t", NULL, NULL},
-	{"launch-item-in-tab", on_launch_item_in_tab, "t", NULL, NULL},
-	{"launch-item-in-browser", on_launch_item_in_browser, "t", NULL, NULL},
-	{"launch-item-in-external-browser", on_launch_item_in_external_browser, "t", NULL, NULL}
-
 	{"node-sort-feeds", ui_popup_sort_feeds, NULL, NULL, NULL}
 };
 
+void
+shell_actions_update_history (void)
+{
+	g_warning ("FIXME GTK4 update history actions");
+	//ui_common_action_enable (shell->generalActions, "prev-read-item", item_history_has_previous ());
+	//ui_common_action_enable (shell->generalActions, "next-read-item", item_history_has_next ());
+}
+
+GActionGroup *
+shell_actions_create (void)
+{
+	GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
+
+	// FIXME: action group update function?
+	// FIXME: action group state init
+
+	return ag;
+}

@@ -41,6 +41,12 @@
 /* action callbacks */
 
 static void
+on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	node_mark_all_read (feedlist_get_selected ());
+}
+
+static void
 do_menu_update (Node *node)
 {
 	if (network_monitor_is_online ())
@@ -50,7 +56,7 @@ do_menu_update (Node *node)
 
 }
 
-void
+static void
 on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	Node *node = NULL;
@@ -66,78 +72,31 @@ on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 		g_warning ("on_menu_update: no feedlist selected");
 }
 
-void
-on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	do_menu_update (feedlist_get_root ());
-}
-
 static void
-on_mark_all_read_response (GtkDialog *dialog, gint response_id, gpointer user_data)
-{
-	if (response_id == GTK_RESPONSE_OK) {
-		feedlist_mark_all_read ((Node *) user_data);
-	}
-}
-
-void
-on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node		*feedlist;
-	gboolean 	confirm_mark_read;
-
-	if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-all-feeds-read"))
-		feedlist = feedlist_get_root ();
-	else if (user_data)
-		feedlist = (Node *) user_data;
-	else
-		feedlist = feedlist_get_selected ();
-
-	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
-
-	if (confirm_mark_read) {
-		gint result;
-		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
-		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
-		const gchar *feed_title = (feedlist_get_root () == feedlist) ? _("all feeds"):node_get_title (feedlist);
-		gchar *primary_message = g_strdup_printf (_("Mark %s as read ?"), feed_title);
-
-		g_object_set (confirm_dialog, "text", primary_message, NULL);
-		g_free (primary_message);
-		gtk_message_dialog_format_secondary_text (confirm_dialog, _("Are you sure you want to mark all items in %s as read ?"), feed_title);
-
-		conf_bind (CONFIRM_MARK_ALL_READ, dont_ask_toggle, "active", G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
-
-		g_signal_connect (G_OBJECT (confirm_dialog), "response",
-	                  G_CALLBACK (on_mark_all_read_response), (gpointer)feedlist);
-	}
-}
-
-void
 on_menu_feed_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_provider_request_add (feed_get_provider ());
 }
 
-void
+static void
 on_new_plugin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_provider_request_add (node_source_get_provider ());
 }
 
-void
+static void
 on_new_newsbin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_provider_request_add (newsbin_get_provider ());
 }
 
-void
+static void
 on_menu_folder_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_provider_request_add (folder_get_provider ());
 }
 
-void
+static void
 on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
 	node_provider_request_add (vfolder_get_provider ());
@@ -158,7 +117,7 @@ on_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
                 NODE_PROVIDER (node)->request_properties (node);
 }
 
-void
+static void
 on_delete (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
         feed_list_view_remove (feedlist_get_selected ());
@@ -237,9 +196,7 @@ on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpoint
 }
 
 static const GActionEntry gaction_entries[] = {
-	{"mark-selected-feed-as-read", on_mark_all_read, NULL, NULL, NULL},
 	{"update-selected", on_menu_update, NULL, NULL, NULL},
-	// from ui_popup.clayout
 	{"node-mark-all-read", on_mark_all_read, NULL, NULL, NULL},
 	{"node-rebuild-vfolder", ui_popup_rebuild_vfolder, NULL, NULL, NULL},
 	{"node-properties", on_properties, NULL, NULL, NULL},
@@ -307,6 +264,7 @@ node_actions_update (gpointer obj, gchar *unused, gpointer user_data)
 GActionGroup *
 node_actions_create (void)
 {
+	gboolean toggle;
         GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 
         g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "feedlist"),
@@ -318,6 +276,12 @@ node_actions_create (void)
 	g_signal_connect (liferea_shell_lookup ("feedlist"),
                           "selection-changed",
                           G_CALLBACK (node_actions_update), ag);
+
+	// FIXME: initialization with disabled actions!
+
+	/* Prepare some toggle button states */
+	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
+	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
 
         return ag;
 }

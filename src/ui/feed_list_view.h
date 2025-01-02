@@ -168,4 +168,12 @@ void feed_list_view_remove (Node *node);
  */
 void feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription, Node *exNode);
 
+/**
+ * feed_list_view_clear_feedlist:
+ * @newReduceMode: TRUE to reduce the feed list view
+ * 
+ * Change reduced mode mode of the feed list view
+ */
+void feed_list_view_set_reduce_mode (gboolean newReduceMode);
+
 #endif

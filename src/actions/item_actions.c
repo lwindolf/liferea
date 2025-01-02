@@ -32,7 +32,7 @@
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 
-void
+static void
 on_launch_item_in_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item = NULL;
@@ -47,7 +47,7 @@ on_launch_item_in_browser (GSimpleAction *action, GVariant *parameter, gpointer 
 	}
 }
 
-void
+static void
 on_launch_item_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item = NULL;
@@ -62,7 +62,7 @@ on_launch_item_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user
 	}
 }
 
-void
+static void
 on_launch_item_in_external_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item = NULL;
@@ -77,7 +77,7 @@ on_launch_item_in_external_browser (GSimpleAction *action, GVariant *parameter, 
 	}
 }
 
-void
+static void
 on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item = NULL;
@@ -92,7 +92,7 @@ on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_d
 	}
 }
 
-void
+static void
 on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item = NULL;
@@ -107,7 +107,7 @@ on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer us
 	}
 }
 
-void
+static void
 on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	Node		*node;
@@ -120,7 +120,7 @@ on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer u
 		ui_show_error_box (_("You must select a feed to delete its items!"));
 }
 
-void
+static void
 on_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item = NULL;
@@ -137,7 +137,7 @@ on_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 	}
 }
 
-void
+static void
 on_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr		item = NULL;
@@ -208,6 +208,7 @@ static const GActionEntry gaction_entries[] = {
 	{"copy-item-to-newsbin", on_copy_to_newsbin, "(umt)", NULL, NULL},
 	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
 	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
+	// FIXME: duplicate?
 	{"remove-item", on_remove_item, "t", NULL, NULL},
 	{"open-item-in-tab", on_launch_item_in_tab, "t", NULL, NULL},
 	{"open-item-in-browser", on_launch_item_in_browser, "t", NULL, NULL},
@@ -237,6 +238,8 @@ item_actions_create (void)
 	g_signal_connect (liferea_shell_lookup ("feedlist"),
                           "selection-changed",
                           G_CALLBACK (item_actions_update), ag);
+
+	ui_common_action_group_enable (ag, FALSE);
 
 	return ag;
 }
