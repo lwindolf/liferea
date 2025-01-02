@@ -1,7 +1,7 @@
 /**
- * @file rule_editor.c  rule editing dialog functionality
+ * @file rule_editor.c  rule editing dialog
  *
- * Copyright (C) 2008-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2009 Hubert Figuiere <hub@figuiere.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -78,12 +78,6 @@ rule_editor_init (RuleEditor *re)
 }
 
 static void
-rule_editor_destroy_param_widget (GtkWidget *widget, gpointer data)
-{
-	gtk_widget_destroy(widget);
-}
-
-static void
 on_rulevalue_changed (GtkEditable *editable, gpointer user_data)
 {
 	rule_set_value ((rulePtr)user_data, gtk_editable_get_chars (editable, 0, -1));
@@ -113,7 +107,12 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 	g_object_set_data (G_OBJECT (changeRequest->paramHBox), "rule", rule);
 
 	/* remove of old widgets */
-	gtk_container_foreach (GTK_CONTAINER (changeRequest->paramHBox), rule_editor_destroy_param_widget, NULL);
+	for (GtkWidget *child = gtk_widget_get_first_child (changeRequest->paramHBox);
+	     child != NULL;
+	     child = gtk_widget_get_next_sibling (child))
+	{
+		g_object_unref (child);
+	}
 
 	/* add popup menu for selection of positive or negative logic */
 
@@ -122,16 +121,17 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 	gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (widget), ruleInfo->negative);
 	gtk_combo_box_set_active ((GtkComboBox*)widget, (rule->additive)?0:1);
 	g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK (on_rule_changed_additive), rule);
-	gtk_widget_show_all (widget);
-	gtk_box_pack_start (GTK_BOX (changeRequest->paramHBox), widget, FALSE, FALSE, 0);
+	gtk_box_append (GTK_BOX (changeRequest->paramHBox), widget);
 
 	/* add new value entry if needed */
 	if (ruleInfo->needsParameter) {
+		g_autoptr(GtkEntryBuffer) *buffer = gtk_entry_buffer_new (rule->value, -1);
+
 		widget = gtk_entry_new ();
-		gtk_entry_set_text (GTK_ENTRY (widget), rule->value);
+		gtk_entry_set_buffer (GTK_ENTRY (widget), buffer);
 		gtk_widget_show (widget);
 		g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK(on_rulevalue_changed), rule);
-		gtk_box_pack_start (GTK_BOX (changeRequest->paramHBox), widget, FALSE, FALSE, 0);
+		gtk_box_append (GTK_BOX (changeRequest->paramHBox), widget);
 	} else {
 		/* nothing needs to be added */
 	}
@@ -183,7 +183,7 @@ on_ruleremove_clicked (GtkButton *button, gpointer user_data)
 		changeRequest->editor->newRules = g_slist_remove (changeRequest->editor->newRules, rule);
 		rule_free(rule);
 	}
-	gtk_container_remove (GTK_CONTAINER (changeRequest->editor->root), changeRequest->hbox);
+	g_object_unref (changeRequest->hbox);
 	g_free (changeRequest);
 }
 
@@ -237,8 +237,8 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 	g_signal_connect (G_OBJECT (widget), "changed", G_CALLBACK (on_ruletype_changed), NULL);
 
 
-	gtk_box_pack_start (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (hbox), hbox2, FALSE, FALSE, 0);
+	gtk_box_append (GTK_BOX (hbox), widget);
+	gtk_box_append (GTK_BOX (hbox), hbox2);
 
 	if (!rule) {
 		/* fake a rule type change to initialize parameter widgets */
@@ -259,12 +259,11 @@ rule_editor_add_rule (RuleEditor *re, rulePtr rule)
 	changeRequest->paramHBox = hbox2;
 	changeRequest->editor = re;
 	widget = gtk_button_new_with_label (_("Remove"));
-	gtk_box_pack_end (GTK_BOX (hbox), widget, FALSE, FALSE, 0);
+	gtk_box_append (GTK_BOX (hbox), widget);
 	g_signal_connect (G_OBJECT (widget), "clicked", G_CALLBACK (on_ruleremove_clicked), changeRequest);
 
-	/* and insert everything in the dialog */
-	gtk_widget_show_all (hbox);
-	gtk_box_pack_start (GTK_BOX (re->root), hbox, FALSE, TRUE, 0);
+	gtk_box_append (GTK_BOX (re->root), hbox);
+	// FIXME: GTK4 hbox fill
 }
 
 RuleEditor *
@@ -284,8 +283,6 @@ rule_editor_new (itemSetPtr itemset)
 		rule_editor_add_rule (re, (rulePtr)(iter->data));
 		iter = g_slist_next (iter);
 	}
-
-	gtk_widget_show_all (re->root);
 
 	return re;
 }
