@@ -227,10 +227,11 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 		g_object_unref (section);
 	}
 
-	menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
-	gtk_menu_attach_to_widget (GTK_MENU (menu), GTK_WIDGET (view), NULL);
+	//menu = gtk_menu_new_from_model (G_MENU_MODEL (menu_model));
+	//gtk_menu_attach_to_widget (GTK_MENU (menu), GTK_WIDGET (view), NULL);
 
-	gtk_menu_popup_at_pointer (GTK_MENU (menu), event);
+	//gtk_menu_popup_at_pointer (GTK_MENU (menu), event);
+	g_warning ("FIXME: GTK4 webkit menu");
 
 	return FALSE; // FALSE, because we use Webkit's context menu
 }
@@ -555,22 +556,18 @@ static WebKitWebView*
 liferea_web_view_create_web_view (WebKitWebView *view, WebKitNavigationAction *action, gpointer user_data)
 {
 	LifereaBrowser 		*htmlview;
-	GtkWidget		*container;
 	GtkWidget		*htmlwidget;
-	GList 			*children;
 	WebKitURIRequest	*request;
 	const gchar 		*uri;
 
 	request = webkit_navigation_action_get_request (action);
 	uri = webkit_uri_request_get_uri (request);
 	htmlview = browser_tabs_add_new (g_strcmp0(uri, "") != 0 ? uri : NULL, NULL, TRUE);
-	container = liferea_browser_get_widget (htmlview);
 
 	/* Ugly lookup of the webview. LifereaBrowser uses a GtkBox
-	   with first a URL bar (sometimes invisble) and the HTML renderer
+	   with first a URL bar (sometimes invisible) and the HTML renderer
 	   as 2nd child */
-	children = gtk_container_get_children (GTK_CONTAINER (container));
-	htmlwidget = children->next->data;
+	htmlwidget = gtk_widget_get_next_sibling (gtk_widget_get_first_child (liferea_browser_get_widget (htmlview)));
 
 	return WEBKIT_WEB_VIEW (htmlwidget);
 }
