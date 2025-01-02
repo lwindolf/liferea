@@ -592,9 +592,14 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 	/* check for treeview navigation */
 	if (0 == (state & default_modifiers)) {
 		switch (keyval) {
-			case GDK_KEY_KP_Delete:
+			// FIXME: GTK4 migration
+			/*case GDK_KEY_KP_Delete:
 			case GDK_KEY_Delete:
+<<<<<<< HEAD
 				if (focusw == GTK_WIDGET (shell->feedListView))
+=======
+				if (focusw == GTK_WIDGET (shell->feedlistView))
+>>>>>>> d813f610 (Refactor subscription dialog)
 					return FALSE;	// to be handled in feed_list_view_key_press_cb() 
 
 				//on_action_remove_item (NULL, NULL, NULL);
@@ -605,7 +610,7 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 				//on_next_unread_item_activate (NULL, NULL, NULL);
 				g_warning("FIXME GTK4 migrate next unread");
 				return TRUE;
-				break;
+				break;*/
 			case GDK_KEY_f:
 				item_list_view_move_cursor (shell->itemListView, 1);
 				return TRUE;
