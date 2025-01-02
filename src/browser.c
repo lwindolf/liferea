@@ -1,7 +1,7 @@
 /**
  * @file browser.c  Launching different external browsers
  *
- * Copyright (C) 2003-2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,7 +122,8 @@ browser_launch_URL_external (const gchar *uri)
 		done = browser_execute (cmd, uri);
 		g_free (cmd);
 	} else {
-		done = gtk_show_uri_on_window (GTK_WINDOW (liferea_shell_get_window ()), uri, GDK_CURRENT_TIME, NULL);
+		done = TRUE;
+		gtk_show_uri (GTK_WINDOW (liferea_shell_get_window ()), uri, GDK_CURRENT_TIME);
 	}
 
 	return done;
