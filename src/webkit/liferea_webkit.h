@@ -1,7 +1,7 @@
 /**
  * @file liferea_webkit.h  Webkit2 support for Liferea
  *
- * Copyright (C) 2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

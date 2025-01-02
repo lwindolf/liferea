@@ -1,12 +1,12 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.15.8],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[2.0],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 foreign std-options -Wall -Werror])
-#AM_SILENT_RULES([yes])
+AM_SILENT_RULES([yes])
 
 dnl Needed for automake 1.12
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])

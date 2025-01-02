@@ -136,6 +136,8 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	gchar			*link_title = NULL;
 	gboolean 		link, image;
 
+	webkit_context_menu_remove_all (context_menu);
+
 	if (webkit_hit_test_result_context_is_link (hit_result))
 		g_object_get (hit_result, "link-uri", &link_uri, "link-title", &link_title, NULL);
 	if (webkit_hit_test_result_context_is_image (hit_result))
@@ -230,7 +232,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 
 	gtk_menu_popup_at_pointer (GTK_MENU (menu), event);
 
-	return TRUE; // TRUE to ignore WebKit's menu as we make our own menu.
+	return FALSE; // FALSE, because we use Webkit's context menu
 }
 
 static void
@@ -349,7 +351,7 @@ struct FullscreenData {
  * callback for fullscreen mode gtk_container_foreach()
  */
 static void
-fullscreen_toggle_widget_visible(GtkWidget *wid, gpointer user_data) {
+fullscreen_toggle_widget_visible (GtkWidget *wid, gpointer user_data) {
 	gchar* data_label;
 	struct FullscreenData *fdata;
 	gboolean old_v;
@@ -357,29 +359,7 @@ fullscreen_toggle_widget_visible(GtkWidget *wid, gpointer user_data) {
 
 	fdata = user_data;
 
-	// remove shadow of scrolled window
-	if (GTK_IS_SCROLLED_WINDOW(wid)) {
-		GtkShadowType shadow_type;
-
-		data_label = "fullscreen_shadow_type";
-		propName = "shadow-type";
-
-		if (fdata->visible == FALSE) {
-			g_object_get(G_OBJECT(wid),
-					propName, &shadow_type, NULL);
-			g_object_set(G_OBJECT(wid),
-					propName, GTK_SHADOW_NONE, NULL);
-			g_object_set_data(G_OBJECT(wid), data_label,
-					GINT_TO_POINTER(shadow_type));
-		} else {
-			shadow_type = GPOINTER_TO_INT(g_object_steal_data(
-						G_OBJECT(wid), data_label));
-			if (shadow_type && shadow_type != GTK_SHADOW_NONE) {
-				g_object_set(G_OBJECT(wid),
-						propName, shadow_type, NULL);
-			}
-		}
-	}
+	// FIXME: GTK4 check if we need some type of shadow handling as with in GTK3
 
 	if (wid == fdata->me && !GTK_IS_NOTEBOOK(wid)) {
 		return;
@@ -406,6 +386,20 @@ fullscreen_toggle_widget_visible(GtkWidget *wid, gpointer user_data) {
 	}
 }
 
+typedef void (*widgetForeachFunc)(GtkWidget *widget, gpointer callback, gpointer data);
+
+static void
+widget_foreach (GtkWidget *widget, gpointer callback, gpointer data) {
+	GtkWidget *child;
+
+	for (child = gtk_widget_get_first_child (widget);
+	     child != NULL;
+	     child = gtk_widget_get_next_sibling (child))
+	{
+		((widgetForeachFunc)callback) (child, callback, data);
+	}
+}
+
 /**
  * For fullscreen mode, hide everything except the current webview
  */
@@ -416,16 +410,13 @@ fullscreen_toggle_parent_visible(GtkWidget *me, gboolean visible) {
 	fdata = (struct FullscreenData *)g_new0(struct FullscreenData, 1);
 
 	// Flag fullscreen status
-	g_object_set_data(G_OBJECT(me), "fullscreen_on",
-			GINT_TO_POINTER(!visible));
+	g_object_set_data(G_OBJECT(me), "fullscreen_on", GINT_TO_POINTER(!visible));
 
 	parent = gtk_widget_get_parent(me);
 	fdata->visible = visible;
 	while (parent != NULL) {
 		fdata->me = me;
-		gtk_container_foreach(GTK_CONTAINER(parent),
-				(GtkCallback)fullscreen_toggle_widget_visible,
-				(gpointer)fdata);
+		widget_foreach (parent, (widgetForeachFunc)fullscreen_toggle_widget_visible, (gpointer)fdata);
 		me = parent;
 		parent = gtk_widget_get_parent(me);
 	}
