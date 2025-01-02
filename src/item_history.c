@@ -1,7 +1,7 @@
 /**
  * @file item_history.c tracking recently viewed items
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2025 Lars Windolf <lars.windolf@gmx.de>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 
 #include <glib.h>
 
-#include "ui/liferea_shell.h"
+#include "ui/liferea_shell_actions.h"
 
 #define MAX_HISTORY_SIZE	250
 
@@ -54,7 +54,7 @@ item_history_add (guint id)
 	if (g_list_length (itemHistory->items) > MAX_HISTORY_SIZE)
 		itemHistory->items = g_list_remove (itemHistory->items, itemHistory->items);
 
-	liferea_shell_update_history_actions ();
+	liferea_shell_actions_update_history_actions ();
 }
 
 itemPtr
@@ -70,7 +70,7 @@ item_history_get_next (void)
 			item = item_load (GPOINTER_TO_UINT (itemHistory->current->data));
 	}
 
-	liferea_shell_update_history_actions ();
+	liferea_shell_actions_update_history_actions ();
 
 	return item;
 }
@@ -88,7 +88,7 @@ item_history_get_previous (void)
 			item = item_load (GPOINTER_TO_UINT (itemHistory->current->data));
 	}
 
-	liferea_shell_update_history_actions ();
+	liferea_shell_actions_update_history_actions ();
 
 	return item;
 }
