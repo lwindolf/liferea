@@ -79,9 +79,9 @@ ui_common_treeview_move_cursor_to_first (GtkTreeView *treeview)
 void
 ui_show_error_box (const char *format, ...)
 {
-	GtkWidget	*dialog;
-	va_list		args;
-	gchar		*msg;
+	GtkWidget		*dialog;
+	va_list			args;
+	g_autofree gchar	*msg;
 
 	g_return_if_fail (format != NULL);
 
@@ -94,17 +94,16 @@ ui_show_error_box (const char *format, ...)
                   GTK_MESSAGE_ERROR,
                   GTK_BUTTONS_CLOSE,
                   "%s", msg);
-	(void)gtk_dialog_run (GTK_DIALOG (dialog));
-	gtk_widget_destroy (dialog);
-	g_free (msg);
+
+	g_signal_connect (dialog, "response", G_CALLBACK (gtk_window_destroy), NULL);
 }
 
 void
 ui_show_info_box (const char *format, ...)
 {
-	GtkWidget	*dialog;
-	va_list		args;
-	gchar		*msg;
+	GtkWidget		*dialog;
+	va_list			args;
+	g_autofree gchar	*msg;
 
 	g_return_if_fail (format != NULL);
 
@@ -117,9 +116,8 @@ ui_show_info_box (const char *format, ...)
                   GTK_MESSAGE_INFO,
                   GTK_BUTTONS_CLOSE,
                   "%s", msg);
-	(void)gtk_dialog_run (GTK_DIALOG (dialog));
-	gtk_widget_destroy (dialog);
-	g_free (msg);
+
+	g_signal_connect (dialog, "response", G_CALLBACK (gtk_window_destroy), NULL);
 }
 
 struct file_chooser_tuple {
@@ -134,19 +132,18 @@ ui_choose_file_save_cb (GtkNativeDialog *dialog, gint response_id, gpointer user
 	gchar *filename;
 
 	if (response_id == GTK_RESPONSE_ACCEPT) {
-		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+		g_autoptr(GFile) file = gtk_file_chooser_get_file (GTK_FILE_CHOOSER (dialog));
+		g_autofree gchar *filename = g_file_get_path (file);
 		tuple->func (filename, tuple->user_data);
-		g_free (filename);
 	} else {
 		tuple->func (NULL, tuple->user_data);
 	}
 
-	gtk_native_dialog_destroy (dialog);
 	g_free (tuple);
 }
 
 static void
-ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data)
+ui_choose_file_or_dir (gchar *title, const gchar *buttonName, gboolean saving, gboolean directory, fileChoosenCallback callback, const gchar *currentPath, const gchar *defaultFilename, const char *filterstring, const char *filtername, gpointer user_data)
 {
 	GtkFileChooserNative		*native;
 	GtkFileChooser 			*chooser;
@@ -167,8 +164,6 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 	                                      buttonName, NULL);
 	chooser = GTK_FILE_CHOOSER (native);
 
-	if (saving)
-		gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
 	gtk_native_dialog_set_modal (GTK_NATIVE_DIALOG (native), TRUE);
 	gtk_native_dialog_set_transient_for (GTK_NATIVE_DIALOG (native), GTK_WINDOW (liferea_shell_get_window ()));
 	
@@ -181,8 +176,10 @@ ui_choose_file_or_dir(gchar *title, const gchar *buttonName, gboolean saving, gb
 	if (path && g_file_test (path, G_FILE_TEST_EXISTS)) {
 		if (directory || defaultFilename)
 			gtk_file_chooser_set_current_folder (chooser, path, NULL);
-		else
-			gtk_file_chooser_set_filename (chooser, path);
+		else {
+			g_autoptr(GFile) file = g_file_new_for_path (path);
+			gtk_file_chooser_set_file (chooser, file, NULL);
+		}
 	}
 	if (defaultFilename)
 		gtk_file_chooser_set_current_name (chooser, defaultFilename);

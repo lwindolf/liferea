@@ -27,5 +27,4 @@ libliui_a_SOURCES = \
 	subscription_dialog.c subscription_dialog.h \
 	ui_common.c ui_common.h \
 	ui_dnd.c ui_dnd.h \
-	ui_folder.c ui_folder.h \
 	ui_update.c ui_update.h
