@@ -231,5 +231,5 @@ ui_common_simple_action_group_set_enabled (GActionGroup *group, gboolean enabled
 void
 ui_common_action_enable (GActionGroup *group, const gchar *name, gboolean enabled)
 {
-	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (group), name)), enabled)
+	g_simple_action_set_enabled (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (group), name)), enabled);
 }

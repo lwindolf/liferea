@@ -54,7 +54,6 @@
 #include "ui/itemview.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
-#include "ui/liferea_shell_actions.h"
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
@@ -115,10 +114,23 @@ liferea_shell_finalize (GObject *object)
 {
 	LifereaShell *ls = LIFEREA_SHELL (object);
 
-	g_object_unref (shell->shellActions);
-	g_object_unref (shell->feedlistActions);
-	g_object_unref (shell->itemlistActions);
-	g_object_unref (shell->htmlviewActions);
+	g_object_unref (ls->plugins);
+
+	liferea_shell_save_layout ();
+	g_object_unref (ls->tabs);
+	g_object_unref (ls->feedlist);
+	g_object_unref (ls->itemview);
+
+	gtk_window_destroy (ls->window);
+
+	g_object_unref (ls->settings);
+	g_object_unref (ls->keypress);
+	g_object_unref (ls->xml);
+
+	g_object_unref (ls->shellActions);
+	g_object_unref (ls->feedlistActions);
+	g_object_unref (ls->itemlistActions);
+	g_object_unref (ls->htmlviewActions);
 
 	g_object_unref (ls->xml);
 }
@@ -221,11 +233,9 @@ liferea_shell_init (LifereaShell *ls)
 	shell->xml = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui");
 	if (!shell->xml)
 		g_error ("Loading " PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui failed");
-
-	gtk_builder_connect_signals (shell->xml, NULL);
 }
 
-static void
+void
 liferea_shell_save_layout (void)
 {
 	gint		x, y, w, h;
@@ -266,144 +276,6 @@ liferea_shell_save_layout (void)
 
 	// FIXME: GTK4 https://developer.gnome.org/documentation/tutorials/save-state.html
 	/* save window size */
-}
-
-static void
-liferea_shell_finalize (GObject *object)
-{
-	LifereaShell *ls = LIFEREA_SHELL (object);
-
-	g_object_unref (shell->plugins);
-
-	liferea_shell_save_layout ();
-	g_object_unref (shell->tabs);
-	g_object_unref (shell->feedlist);
-	g_object_unref (shell->itemview);
-
-	gtk_window_destroy (shell->window);
-
-	g_object_unref (ls->settings);
-	g_object_unref (ls->keypress);
-	g_object_unref (ls->xml);
-}
-
-static void
-liferea_shell_get_property (GObject *object, guint prop_id, GValue *value, GParamSpec *pspec)
-{
-        LifereaShell *shell = LIFEREA_SHELL (object);
-
-        switch (prop_id) {
-	        case PROP_FEED_LIST:
-				g_value_set_object (value, shell->feedlist);
-				break;
-	        case PROP_ITEM_LIST:
-				g_value_set_object (value, shell->itemlist);
-				break;
-	        case PROP_ITEM_VIEW:
-				g_value_set_object (value, shell->itemview);
-				break;
-	        case PROP_BROWSER_TABS:
-				g_value_set_object (value, shell->tabs);
-				break;
-	        case PROP_BUILDER:
-				g_value_set_object (value, shell->xml);
-				break;
-			default:
-		        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-		        break;
-        }
-}
-
-static void
-liferea_shell_class_init (LifereaShellClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->get_property = liferea_shell_get_property;
-	object_class->finalize = liferea_shell_finalize;
-
-	/* LifereaShell:feed-list: */
-	g_object_class_install_property (object_class,
-		                         PROP_FEED_LIST,
-		                         g_param_spec_object ("feed-list",
-		                                              "LifereaFeedList",
-		                                              "LifereaFeedList object",
-		                                              FEED_LIST_TYPE,
-		                                              G_PARAM_READABLE));
-
-	/* LifereaShell:item-list: */
-	g_object_class_install_property (object_class,
-		                         PROP_ITEM_LIST,
-		                         g_param_spec_object ("item-list",
-		                                              "LifereaItemList",
-		                                              "LifereaItemList object",
-		                                              ITEMLIST_TYPE,
-		                                              G_PARAM_READABLE));
-
-	/* LifereaShell:item-view: */
-	g_object_class_install_property (object_class,
-		                         PROP_ITEM_VIEW,
-		                         g_param_spec_object ("item-view",
-		                                              "LifereaItemView",
-		                                              "LifereaItemView object",
-		                                              ITEM_VIEW_TYPE,
-		                                              G_PARAM_READABLE));
-
-	/* LifereaShell:browser-tabs: */
-	g_object_class_install_property (object_class,
-		                         PROP_BROWSER_TABS,
-		                         g_param_spec_object ("browser-tabs",
-		                                              "LifereaBrowserTabs",
-		                                              "LifereaBrowserTabs object",
-		                                              BROWSER_TABS_TYPE,
-		                                              G_PARAM_READABLE));
-
-	/* LifereaShell:builder: */
-	g_object_class_install_property (object_class,
-		                         PROP_BUILDER,
-		                         g_param_spec_object ("builder",
-		                                              "GtkBuilder",
-		                                              "Liferea user interfaces definitions",
-		                                              GTK_TYPE_BUILDER,
-		                                              G_PARAM_READABLE));
-}
-
-GtkWidget *
-liferea_shell_lookup (const gchar *name)
-{
-	g_return_val_if_fail (shell != NULL, NULL);
-
-	return GTK_WIDGET (gtk_builder_get_object (shell->xml, name));
-}
-
-static void
-liferea_shell_init (LifereaShell *ls)
-{
-	/* globally accessible singleton */
-	g_assert (NULL == shell);
-	shell = ls;
-	shell->xml = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui");
-	if (!shell->xml)
-		g_error ("Loading " PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui failed");
-
-	shell->settings = g_settings_new ("com.example.YourApp.State");
-
-	// update the settings when the properties change and vice versa
-	g_settings_bind (shell->settings, LAST_WINDOW_WIDTH,
-			 shell->window, "default-width",
-			 G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (shell->settings, LAST_WINDOW_HEIGHT,
-			 shell->window, "default-height",
-			 G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (shell->settings, LAST_WINDOW_MAXIMIZED,
-			 shell->window, "maximized",
-			 G_SETTINGS_BIND_DEFAULT);
-	g_settings_bind (shell->settings, LAST_WINDOW_FULLSCREEN,
-			 shell->window, "fullscreened",
-			 G_SETTINGS_BIND_DEFAULT);
-
-	g_warning ("FIXME GTK4 connect signals");
-	//gtk_builder_connect_signals (shell->xml, NULL);
 }
 
 /*
@@ -896,14 +768,25 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	g_idle_add (liferea_shell_restore_layout, NULL);
 }
 
-static GActionGroup *
-liferea_shell_add_actions (GActionMap *map, const GActionEntry *entries)
+static void
+liferea_shell_add_action_group_to_map (GActionGroup *group, GActionMap *map)
+{
+	gchar **actions_list = g_action_group_list_actions (group);
+	gint i;
+	for (i=0;actions_list[i] != NULL;i++) {
+		g_action_map_add_action (map, g_action_map_lookup_action (G_ACTION_MAP (group), actions_list [i]));
+	}
+	g_strfreev (actions_list);
+}
+
+GActionGroup *
+liferea_shell_add_actions (const GActionEntry *entries, int count)
 {
 	GtkApplication	*app = gtk_window_get_application (GTK_WINDOW (shell->window));
 	GActionGroup	*group = G_ACTION_GROUP (g_simple_action_group_new ());
 
-	g_action_map_add_action_entries (map, entries, G_N_ELEMENTS (entries), NULL);
-	liferea_shell_add_action_group_to_map (group, G_ACTION_MAP (app));
+	g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
+	liferea_shell_add_action_group_to_map (group, G_ACTION_MAP (app));	
 
 	return group;
 }

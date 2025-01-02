@@ -1,7 +1,7 @@
 /*
  * @file itemview.c  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,9 +20,12 @@
 
 #include <string.h>
 
+#include "browser.h"
+#include "common.h"
 #include "conf.h"
 #include "debug.h"
 #include "node_providers/folder.h"
+#include "item_state.h"
 #include "item_history.h"
 #include "itemlist.h"
 #include "itemview.h"

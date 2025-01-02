@@ -25,15 +25,6 @@
 #include <gtk/gtk.h>
 
 /**
- * liferea_shell_actions_update_history: (skip)
- *
- * Update item history menu actions and toolbar buttons.
- *
- * TODO: use signal instead
- */
-void shell_actions_update_history (void);
-
-/**
  * shell_actions_create: (skip)
  * 
  * Setup all shell actions

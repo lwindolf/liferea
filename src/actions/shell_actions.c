@@ -285,12 +285,13 @@ static const GActionEntry gaction_entries[] = {
 	{"node-sort-feeds", ui_popup_sort_feeds, NULL, NULL, NULL}
 };
 
-void
-shell_actions_update_history (void)
+static void
+shell_actions_update_history (gpointer obj, gchar *unused, gpointer user_data)
 {
-	g_warning ("FIXME GTK4 update history actions");
-	//ui_common_action_enable (shell->generalActions, "prev-read-item", item_history_has_previous ());
-	//ui_common_action_enable (shell->generalActions, "next-read-item", item_history_has_next ());
+	GActionGroup *ag = G_ACTION_GROUP (user_data);
+	
+	ui_common_action_enable (ag, "prev-read-item", item_history_has_previous ());
+	ui_common_action_enable (ag, "next-read-item", item_history_has_next ());
 }
 
 GActionGroup *
@@ -298,8 +299,9 @@ shell_actions_create (void)
 {
 	GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 
-	// FIXME: action group update function?
 	// FIXME: action group state init
+
+	g_signal_connect (G_OBJECT (item_history_get_instance ()), "changed", G_CALLBACK (shell_actions_update_history), ag);
 
 	return ag;
 }
