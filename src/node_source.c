@@ -300,8 +300,6 @@ on_node_source_type_response (GtkDialog *dialog, gint response_id, gpointer user
 				type->source_new ();
 		}
 	}
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static gboolean
