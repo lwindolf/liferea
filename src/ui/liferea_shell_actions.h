@@ -22,17 +22,19 @@
 #ifndef _LIFEREA_SHELL_ACTIONS_H
 #define _LIFEREA_SHELL_ACTIONS_H
 
+#include <glib.h>
+
 /**
- * liferea_shell_update_history_actions: (skip)
+ * liferea_shell_actions_update_history: (skip)
  *
  * Update item history menu actions and toolbar buttons.
  *
  * TODO: use signal instead
  */
-void liferea_shell_actions_update_history_actions (void);
+void liferea_shell_actions_update_history (void);
 
 /**
- * liferea_shell_update_item_menu: (skip)
+ * liferea_shell_actions_update_item_menu: (skip)
  * @enabled:	TRUE if item actions are to be enabled
  *
  * Update the sensitivity of options affecting single items.
