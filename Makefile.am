@@ -60,7 +60,9 @@ plugin_DATA = \
 	plugins/plugin-installer.py \
 	plugins/plugin-installer.plugin \
 	plugins/trayicon.py \
-	plugins/trayicon.plugin
+	plugins/trayicon.plugin \
+	plugins/messagingmenu.py \
+	plugins/messagingmenu.plugin
 
 gsettings_SCHEMAS = net.sf.liferea.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
