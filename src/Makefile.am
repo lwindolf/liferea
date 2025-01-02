@@ -62,7 +62,8 @@ liferea_SOURCES = \
 	vfolder_loader.c vfolder_loader.h \
 	xml.c xml.h
 
-liferea_LDADD =	parsers/libliparsers.a \
+liferea_LDADD =	actions/libliactions.a \
+		parsers/libliparsers.a \
 		node_providers/liblinode_providers.a \
 		node_sources/liblinode_sources.a \
 		plugins/libliplugins.a \

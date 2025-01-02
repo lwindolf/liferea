@@ -602,10 +602,11 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 	/* check for treeview navigation */
 	if (0 == (state & default_modifiers)) {
 		switch (keyval) {
-			case GDK_KEY_KP_Delete:
+			// FIXME: GTK4 migration
+			/*case GDK_KEY_KP_Delete:
 			case GDK_KEY_Delete:
 				if (focusw == GTK_WIDGET (shell->feedlistView))
-					return FALSE;	/* to be handled in feed_list_view_key_press_cb() */
+					return FALSE;	// to be handled in feed_list_view_key_press_cb() 
 
 				on_action_remove_item (NULL, NULL, NULL);
 				return TRUE;
@@ -613,7 +614,7 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 			case GDK_KEY_n:
 				on_next_unread_item_activate (NULL, NULL, NULL);
 				return TRUE;
-				break;
+				break;*/
 			case GDK_KEY_f:
 				itemview_move_cursor (1);
 				return TRUE;
