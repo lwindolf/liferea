@@ -479,7 +479,7 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 	itemview->browsing = TRUE;
 }
 
-static  void
+void
 itemview_launch_item (itemPtr item, open_link_target_type open_link_target)
 {
 	if (item) {
