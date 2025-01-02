@@ -275,12 +275,11 @@ on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer user_data)
 		gulong id = item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter);
 		if (id != itemlist_get_selected_id ()) {
 			item = item_load (id);
-			liferea_shell_update_item_menu (NULL != item);
 			if (item)
 				itemlist_selection_changed (item);
 		}
 	} else {
-		liferea_shell_update_item_menu (FALSE);
+		itemlist_selection_changed (NULL);
 	}
 }
 
@@ -563,7 +562,8 @@ on_item_list_view_key_pressed_event (GtkEventControllerKey *controller, guint ke
 {
 	if (state & GDK_CONTROL_MASK) {
 		if (keyval == GDK_KEY_Delete) {
-			on_action_remove_item(NULL, NULL, NULL);
+			g_warning("FIXME: GTK4 port: on_remove_item(NULL, NULL, NULL);");
+			//on_action_remove_item(NULL, NULL, NULL);
 			return TRUE;
 		}
 	}
@@ -667,7 +667,8 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 					result = TRUE;
 					break;
 				case GDK_BUTTON_SECONDARY:
-					ui_popup_item_menu (item, NULL);
+					//ui_popup_item_menu (item, NULL);
+					g_warning("FIXME: GTK4 port: ui_popup_item_menu (item, NULL);");
 					result = TRUE;
 					break;
 			}
@@ -687,7 +688,8 @@ on_item_list_view_popup_menu (GtkWidget *widget, gpointer user_data)
 
 	if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter)) {
 		itemPtr item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
-		ui_popup_item_menu (item, NULL);
+		g_warning("FIXME: GTK4 port: ui_popup_item_menu (item, NULL);");
+		//ui_popup_item_menu (item, NULL);
 		item_unload (item);
 		return TRUE;
 	}

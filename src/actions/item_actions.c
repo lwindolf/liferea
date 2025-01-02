@@ -229,14 +229,15 @@ item_actions_create (void)
 {
         GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 
+	g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "itemlist"),
+                          "item-selected",
+                          G_CALLBACK (item_actions_update), ag);
+
         g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "feedlist"),
                           "items-updated",
                           G_CALLBACK (item_actions_update), ag);
-	g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "itemlist"),
-                          "item-updated",
-                          G_CALLBACK (item_actions_update), ag);
-	g_signal_connect (liferea_shell_lookup ("feedlist"),
-                          "selection-changed",
+	g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "feedlist"),
+                          "node-selected",
                           G_CALLBACK (item_actions_update), ag);
 
 	ui_common_action_group_enable (ag, FALSE);
