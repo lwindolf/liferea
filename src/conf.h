@@ -60,8 +60,6 @@
 
 /* GUI settings and persistency values */
 #define CONFIRM_MARK_ALL_READ 		"confirm-mark-all-read"
-#define DISABLE_TOOLBAR			"disable-toolbar"
-#define TOOLBAR_STYLE			"toolbar-style"
 #define LAST_WINDOW_STATE		"last-window-state"
 #define LAST_WINDOW_X			"last-window-x"
 #define LAST_WINDOW_Y			"last-window-y"
@@ -188,13 +186,6 @@ void conf_set_strv_value (const gchar *key, const gchar **value);
  * @param value	the new integer value
  */
 void conf_set_int_value (const gchar *key, gint value);
-
-/**
- * Returns the current toolbar configuration.
- *
- * @returns a string (to be free'd using g_free)
- */
-gchar * conf_get_toolbar_style (void);
 
 /**
  * Get the current system default font from desktop schema

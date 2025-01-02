@@ -318,13 +318,6 @@ on_deferdeletemode_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 }
 
 void
-on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
-{
-	conf_set_bool_value (DISABLE_TOOLBAR, gtk_toggle_button_get_active (button));
-	liferea_shell_update_toolbar ();
-}
-
-void
 on_readermodebtn_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	conf_set_bool_value (ENABLE_READER_MODE, gtk_toggle_button_get_active (button));
