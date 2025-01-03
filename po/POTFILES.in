@@ -18,6 +18,14 @@ src/actions/node_actions.c
 src/actions/node_actions.h
 src/actions/shell_actions.c
 src/actions/shell_actions.h
+src/actions/item_actions.c
+src/actions/item_actions.h
+src/actions/link_actions.c
+src/actions/link_actions.h
+src/actions/node_actions.c
+src/actions/node_actions.h
+src/actions/shell_actions.c
+src/actions/shell_actions.h
 src/browser.c
 src/browser_history.c
 src/comments.c
