@@ -38,6 +38,9 @@
 /* a single static search folder representing the active search dialog result */
 static vfolderPtr vfolder = NULL;
 
+/* a single static search folder representing the active search dialog result */
+static vfolderPtr vfolder = NULL;
+
 /* shared functions */
 
 static void
