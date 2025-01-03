@@ -139,7 +139,7 @@ handle_dbus_method_call (GDBusConnection 	*connection,
 
 		g_variant_get(parameters, "(ts)", &page_id, &script);
 
-		page = webkit_web_extension_get_page(LIFEREA_WEB_EXTENSION (user_data)->webkit_extension, page_id);
+		page = webkit_web_process_extension_get_page(LIFEREA_WEB_EXTENSION (user_data)->webkit_extension, page_id);
 		if (!page) {
         		g_warning ("invalid page id %lu", page_id);
         		g_dbus_method_invocation_return_error(invocation, G_DBUS_ERROR,

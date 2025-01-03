@@ -134,8 +134,8 @@ liferea_webkit_enable_itp_cb (GSettings *gsettings,
 {
 	g_return_if_fail (key != NULL);
 
-	webkit_website_data_manager_set_itp_enabled (
-	    webkit_web_context_get_website_data_manager (webkit_web_context_get_default()),
+	webkit_network_session_set_itp_enabled (
+	    webkit_network_session_get_default (),
 	    g_settings_get_boolean (gsettings, key));
 }
 
@@ -311,9 +311,9 @@ liferea_webkit_initialize_web_extensions (WebKitWebContext 	*context,
 			  G_CALLBACK (liferea_webkit_on_new_dbus_connection),
 			  webkit_impl);
 
-	webkit_web_context_set_web_extensions_directory (context, WEB_EXTENSIONS_DIR);
+	webkit_web_context_set_web_process_extensions_directory (context, WEB_EXTENSIONS_DIR);
 	server_address = g_strdup (g_dbus_server_get_client_address (webkit_impl->dbus_server));
-	webkit_web_context_set_web_extensions_initialization_user_data (context, g_variant_new_take_string (server_address));
+	webkit_web_context_set_web_process_extensions_initialization_user_data (context, g_variant_new_take_string (server_address));
 }
 
 static void
@@ -347,25 +347,23 @@ liferea_webkit_init (LifereaWebKit *self)
 {
 	gboolean			enable_itp;
 	WebKitSecurityManager		*security_manager;
-	WebKitWebsiteDataManager	*website_data_manager;
 		
 	self->dbus_connections = NULL;
 	webkit_web_context_register_uri_scheme (webkit_web_context_get_default(), "liferea",
 		(WebKitURISchemeRequestCallback) liferea_webkit_handle_liferea_scheme,NULL,NULL);
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
-	website_data_manager = webkit_web_context_get_website_data_manager (webkit_web_context_get_default ());
 	webkit_security_manager_register_uri_scheme_as_local (security_manager, "liferea");
 
 	conf_signal_connect (
 		"changed::" ENABLE_ITP,
 		G_CALLBACK (liferea_webkit_enable_itp_cb),
-		website_data_manager
+		NULL
 	);
 
 	conf_get_bool_value (ENABLE_ITP, &enable_itp);
 
-	webkit_website_data_manager_set_itp_enabled (website_data_manager, enable_itp);
+	webkit_network_session_set_itp_enabled (webkit_network_session_get_default (), enable_itp);
 
 	/* Webkit web extensions */
 	g_signal_connect (
@@ -481,8 +479,10 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 	webkit_web_view_set_settings (view, settings);
 
 	/* Always drop cache on startup, so it does not grow over time */
-	webkit_web_context_clear_cache (webkit_web_context_get_default ());
-
+	webkit_website_data_manager_clear (
+		webkit_network_session_get_website_data_manager (webkit_network_session_get_default ()),
+		WEBKIT_WEBSITE_DATA_ALL, 0, NULL, NULL, NULL);
+  
 	g_signal_connect_object (
 		liferea_webkit,
 		"page-created",
@@ -497,7 +497,6 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 		htmlview
 	);
 
-	gtk_widget_show (GTK_WIDGET (view));
 	return GTK_WIDGET (view);
 }
 
@@ -556,14 +555,14 @@ liferea_webkit_set_proxy (ProxyDetectMode mode)
 		default:
 		case PROXY_DETECT_MODE_MANUAL:
 		case PROXY_DETECT_MODE_AUTO:
-			webkit_website_data_manager_set_network_proxy_settings
-			    (webkit_web_context_get_website_data_manager (webkit_web_context_get_default ()),
+			webkit_network_session_set_proxy_settings (
+			     webkit_network_session_get_default (),
 			     WEBKIT_NETWORK_PROXY_MODE_DEFAULT,
 			     NULL);
 			break;
 		case PROXY_DETECT_MODE_NONE:
-			webkit_website_data_manager_set_network_proxy_settings
-			    (webkit_web_context_get_website_data_manager (webkit_web_context_get_default ()),
+			webkit_network_session_set_proxy_settings (
+			     webkit_network_session_get_default (),
 			     WEBKIT_NETWORK_PROXY_MODE_NO_PROXY,
 			     NULL);
 			break;
