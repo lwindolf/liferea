@@ -46,7 +46,6 @@
 #include "ui/browser_tabs.h"
 #include "ui/icons.h"
 #include "ui/liferea_shell.h"
-#include "ui/popup_menu.h"
 #include "ui/ui_common.h"
 
 /*
@@ -77,47 +76,11 @@ enum is_columns {
 	ITEMSTORE_LEN		/*<< Number of columns in the itemstore */
 };
 
-typedef enum {
-	DEFAULT,
-	INTERNAL,
-	TAB,
-	EXTERNAL
-} open_link_target_type;
-
-static void
-launch_item (itemPtr item, open_link_target_type open_link_target)
-{
-	if (item) {
-		gchar *link = item_make_link (item);
-
-		if (link) {
-			switch (open_link_target)
-			{
-			case DEFAULT:
-				itemview_launch_URL (link, FALSE);
-				break;
-			case INTERNAL:
-				itemview_launch_URL (link, TRUE);
-				break;
-			case TAB:
-				browser_tabs_add_new (link, link, FALSE);
-				break;
-			case EXTERNAL:
-				browser_launch_URL_external (link);
-				break;
-			}
-
-			item_set_read_state (item, TRUE);
-			g_free (link);
-		} else
-			ui_show_error_box (_("This item has no link specified!"));
-
-	}
-}
-
 struct _ItemListView {
 	GObject		parentInstance;
 
+	GtkEventController *keypress;
+	GtkGesture	*gesture;
 	GtkTreeView	*treeview;
 	GtkWidget 	*ilscrolledwindow;	/*<< The complete ItemListView widget */
 	GSList		*item_ids;		/*<< list of all currently known item ids */
@@ -311,12 +274,11 @@ on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer user_data)
 		gulong id = item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter);
 		if (id != itemlist_get_selected_id ()) {
 			item = item_load (id);
-			liferea_shell_update_item_menu (NULL != item);
 			if (item)
 				itemlist_selection_changed (item);
 		}
 	} else {
-		liferea_shell_update_item_menu (FALSE);
+		itemlist_selection_changed (NULL);
 	}
 }
 
@@ -437,7 +399,8 @@ item_list_view_clear (ItemListView *ilv)
 	/* enable batch mode for following item adds */
 	ilv->batch_mode = TRUE;
 	ilv->batch_itemstore = item_list_view_create_tree_store ();
-        gtk_widget_freeze_child_notify((GtkWidget *)ilv->treeview);
+	// FIXME: missing in GTK4
+        //gtk_widget_freeze_child_notify((GtkWidget *)ilv->treeview);
 	gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (ilv->batch_itemstore), NULL, NULL, NULL);
 }
 
@@ -583,7 +546,8 @@ void
 item_list_view_update (ItemListView *ilv)
 {
 	if (ilv->batch_mode) {
-                gtk_widget_thaw_child_notify((GtkWidget *)ilv->treeview);
+		// FIXME: Missing in GTK4
+                //gtk_widget_thaw_child_notify((GtkWidget *)ilv->treeview);
 		item_list_view_set_tree_store (ilv, ilv->batch_itemstore);
 		ilv->batch_mode = FALSE;
 	} else {
@@ -593,11 +557,15 @@ item_list_view_update (ItemListView *ilv)
 }
 
 static gboolean
-on_item_list_view_key_press_event (GtkWidget *widget, GdkEventKey *event, gpointer data)
+on_item_list_view_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
 {
-	if ((event->type == GDK_KEY_PRESS) && (event->state == 0)
-	    && (event->keyval == GDK_KEY_Delete))
-		on_action_remove_item(NULL, NULL, NULL);
+	if (state & GDK_CONTROL_MASK) {
+		if (keyval == GDK_KEY_Delete) {
+			g_warning("FIXME: GTK4 port: on_remove_item(NULL, NULL, NULL);");
+			//on_action_remove_item(NULL, NULL, NULL);
+			return TRUE;
+		}
+	}
 
 	return FALSE;
 }
@@ -661,60 +629,54 @@ on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean key
 }
 
 static gboolean
-on_item_list_view_button_press_event (GtkWidget *treeview, GdkEvent *event, gpointer user_data)
+on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdouble x, gdouble y, gpointer user_data)
 {
 	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
+	GtkTreeView		*treeview = GTK_TREE_VIEW (user_data);
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
 	GtkTreeViewColumn	*column;
-	GdkEventButton 		*eb;
 	itemPtr			item = NULL;
 	gboolean		result = FALSE;
 
-	if (event->type != GDK_BUTTON_PRESS)
-		return FALSE;
-
-	eb = (GdkEventButton*) event;
-
+	// FIXME: port this to GTK4!
 	/* avoid handling header clicks */
-	if (eb->window != gtk_tree_view_get_bin_window (ilv->treeview))
-		return FALSE;
+	/*if (eb->window != gtk_tree_view_get_bin_window (ilv->treeview))
+		return FALSE;*/
 
-	if (!gtk_tree_view_get_path_at_pos (ilv->treeview, (gint)eb->x, (gint)eb->y, &path, &column, NULL, NULL))
-		return FALSE;
-
-	if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->treeview), &iter, path))
-		item = item_load (item_list_view_iter_to_id (ilv, &iter));
-
-	gtk_tree_path_free (path);
+	if (gtk_tree_view_get_path_at_pos (treeview, (gint)x, (gint)y, &path, &column, NULL, NULL)) {
+		if (gtk_tree_model_get_iter (gtk_tree_view_get_model (treeview), &iter, path))
+			item = item_load (item_list_view_iter_to_id (ilv, &iter));
+		gtk_tree_path_free (path);
+	}
 
 	if (item) {
-		switch (eb->button) {
-			case 1:
-				if (column == g_hash_table_lookup(ilv->columns, "favicon") ||
-				    column == g_hash_table_lookup(ilv->columns, "state")) {
-					itemlist_toggle_flag (item);
+		if (n_press == 1) {
+			switch (gtk_gesture_single_get_current_button(GTK_GESTURE_SINGLE(gesture))) {
+				case GDK_BUTTON_PRIMARY:
+					if (column == g_hash_table_lookup(ilv->columns, "favicon") ||
+					    column == g_hash_table_lookup(ilv->columns, "state")) {
+						itemlist_toggle_flag (item);
+						result = TRUE;
+					}
+					break;
+				case GDK_BUTTON_MIDDLE:
+					/* Middle mouse click toggles read status... */
+					itemlist_toggle_read_status (item);
 					result = TRUE;
-				}
-				break;
-			case 2:
-				/* Middle mouse click toggles read status... */
-				itemlist_toggle_read_status (item);
-				result = TRUE;
-				break;
-			case 3:
-				ui_popup_item_menu (item, event);
-				result = TRUE;
-				break;
-			default:
-				/* Do nothing on buttons >= 4 */
-				break;
+					break;
+				case GDK_BUTTON_SECONDARY:
+					//ui_popup_item_menu (item, NULL);
+					g_warning("FIXME: GTK4 port: ui_popup_item_menu (item, NULL);");
+					result = TRUE;
+					break;
+			}
 		}
 		item_unload (item);
 	}
 
 	return result;
-}
+} 
 
 static gboolean
 on_item_list_view_popup_menu (GtkWidget *widget, gpointer user_data)
@@ -725,7 +687,8 @@ on_item_list_view_popup_menu (GtkWidget *widget, gpointer user_data)
 
 	if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (treeview), &model, &iter)) {
 		itemPtr item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
-		ui_popup_item_menu (item, NULL);
+		g_warning("FIXME: GTK4 port: ui_popup_item_menu (item, NULL);");
+		//ui_popup_item_menu (item, NULL);
 		item_unload (item);
 		return TRUE;
 	}
@@ -744,7 +707,7 @@ on_item_list_row_activated (GtkTreeView *treeview,
 
 	if (gtk_tree_model_get_iter (model, &iter, path)) {
 		itemPtr item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
-		launch_item (item, DEFAULT);
+		itemview_launch_item (item, ITEMVIEW_LAUNCH_DEFAULT);
 		item_unload (item);
 	}
 }
@@ -816,12 +779,14 @@ item_list_view_create (gboolean wide)
 
 	ilv->columns = g_hash_table_new (g_str_hash, g_str_equal);
 
-	ilv->ilscrolledwindow = gtk_scrolled_window_new (NULL, NULL);
+	ilv->keypress = gtk_event_controller_key_new ();
+	ilv->gesture = gtk_gesture_click_new ();
+
+	ilv->ilscrolledwindow = gtk_scrolled_window_new ();
 	g_object_ref_sink (ilv->ilscrolledwindow);
 	gtk_widget_show (ilv->ilscrolledwindow);
 
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_SHADOW_IN);
 
 	ilv->treeview = GTK_TREE_VIEW (gtk_tree_view_new ());
 	gtk_tree_view_set_show_expanders (ilv->treeview, FALSE);
@@ -829,7 +794,7 @@ item_list_view_create (gboolean wide)
 		gtk_tree_view_set_fixed_height_mode (ilv->treeview, FALSE);
 		gtk_tree_view_set_grid_lines (ilv->treeview, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
 	}
-	gtk_container_add (GTK_CONTAINER (ilv->ilscrolledwindow), GTK_WIDGET (ilv->treeview));
+	gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (ilv->ilscrolledwindow), GTK_WIDGET (ilv->treeview));
 	gtk_widget_show (GTK_WIDGET (ilv->treeview));
 	gtk_widget_set_name (GTK_WIDGET (ilv->treeview), "itemlist");
 
@@ -837,7 +802,7 @@ item_list_view_create (gboolean wide)
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_STATEICON, NULL);
-	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE_TOOLBAR:GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
 	g_hash_table_insert (ilv->columns, "state", column);
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
 	if (wide)
@@ -845,7 +810,7 @@ item_list_view_create (gboolean wide)
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_FAVICON, NULL);
-	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_DIALOG:GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
+	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	g_hash_table_insert (ilv->columns, "favicon", column);
 
@@ -889,11 +854,13 @@ item_list_view_create (gboolean wide)
 	g_strfreev (conf_column_order);
 
 	/* And connect signals */
-	g_signal_connect (G_OBJECT (ilv->treeview), "button_press_event", G_CALLBACK (on_item_list_view_button_press_event), ilv);
 	g_signal_connect (G_OBJECT (ilv->treeview), "columns_changed", G_CALLBACK (on_item_list_view_columns_changed), ilv);
 	g_signal_connect (G_OBJECT (ilv->treeview), "row_activated", G_CALLBACK (on_item_list_row_activated), ilv);
-	g_signal_connect (G_OBJECT (ilv->treeview), "key-press-event", G_CALLBACK (on_item_list_view_key_press_event), ilv);
 	g_signal_connect (G_OBJECT (ilv->treeview), "popup_menu", G_CALLBACK (on_item_list_view_popup_menu), ilv);
+	g_signal_connect (ilv->keypress, "key-pressed", G_CALLBACK (on_item_list_view_key_pressed_event), ilv);
+	g_signal_connect (ilv->gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
+	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), ilv->keypress);
+	gtk_widget_add_controller(GTK_WIDGET(ilv->treeview), GTK_EVENT_CONTROLLER(ilv->gesture));
 
 	if (!wide) {
 		gtk_widget_set_has_tooltip (GTK_WIDGET (ilv->treeview), TRUE);
@@ -948,113 +915,6 @@ item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled)
 	// In wide view we want to save vertical space and hide the state column
 	if (ilv->wideView)
 		gtk_tree_view_column_set_visible (g_hash_table_lookup(ilv->columns, "state"), !enabled);
-}
-
-void
-on_action_launch_item_in_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-	      launch_item (item, INTERNAL);
-	      item_unload (item);
-	}
-}
-
-void
-on_action_launch_item_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-	      launch_item (item, TAB);
-	      item_unload (item);
-	}
-}
-
-void
-on_action_launch_item_in_external_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-	      launch_item (item, EXTERNAL);
-	      item_unload (item);
-	}
-}
-
-/* menu callbacks */
-
-void
-on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-		itemlist_toggle_flag (item);
-		item_unload (item);
-	}
-}
-
-void
-on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-		itemlist_toggle_read_status (item);
-		item_unload (item);
-	}
-}
-
-void
-on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node		*node;
-
-	node = feedlist_get_selected ();
-	// FIXME: use node type capability check
-	if (node && (IS_FEED (node) || IS_NEWSBIN (node)))
-		itemlist_remove_all_items (node);
-	else
-		ui_show_error_box (_("You must select a feed to delete its items!"));
-}
-
-void
-on_action_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	itemPtr item = NULL;
-	if (parameter)
-		item = item_load (g_variant_get_uint64 (parameter));
-	else
-		item = itemlist_get_selected ();
-
-	if (item) {
-		itemview_select_item (NULL);
-		itemlist_remove_item (item);
-	} else {
-		liferea_shell_set_important_status_bar (_("No item has been selected"));
-	}
 }
 
 void
@@ -1123,12 +983,8 @@ on_popup_copy_URL_clipboard (GSimpleAction *action, GVariant *parameter, gpointe
 
 	item = itemlist_get_selected ();
 	if (item) {
-		gchar *link = item_make_link (item);
-
-		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_PRIMARY), link, -1);
-		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD), link, -1);
-
-		g_free (link);
+		g_autofree gchar *link = item_make_link (item);
+		liferea_shell_copy_to_clipboard (link);
 		item_unload (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));

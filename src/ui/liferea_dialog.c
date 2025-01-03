@@ -1,7 +1,7 @@
 /**
  * @file ui_dialog.c UI dialog handling
  *
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,18 +98,16 @@ GtkWidget *
 liferea_dialog_new (const gchar *name)
 {
 	LifereaDialog	*ld;
-	gchar 		*path;
+	g_autofree gchar *path;
+
+	path = g_strdup_printf ("/org/gnome/liferea/ui/%s", name);
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
-	path = g_strdup_printf ("%s%s.ui", PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S, name);
-	ld->priv->xml = gtk_builder_new_from_file (path);
-	g_free (path);
-
+	ld->priv->xml = gtk_builder_new_from_resource (path);
 	g_return_val_if_fail (ld->priv->xml != NULL, NULL);
 
 	ld->priv->dialog = GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
 	gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window()));
-	gtk_builder_connect_signals (ld->priv->xml, NULL);
 	g_return_val_if_fail (ld->priv->dialog != NULL, NULL);
 
 	g_object_set_data (G_OBJECT (ld->priv->dialog), "LifereaDialog", ld);
@@ -119,14 +117,14 @@ liferea_dialog_new (const gchar *name)
 	return ld->priv->dialog;
 }
 
-gchar *
-liferea_dialog_entry_get (GtkWidget *widget, const gchar *name)
+const gchar *
+liferea_dialog_entry_get (GtkWidget *dialog, const gchar *name)
 {
-	return gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name)))));
+	return gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name))));
 }
 
 void
-lifera_dialog_entry_set (GtkWidget *widget, const gchar *name, const gchar *text)
+liferea_dialog_entry_set (GtkWidget *dialog, const gchar *name, const gchar *text)
 {
 	gtk_entry_buffer_set_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name))), text, -1);
 }

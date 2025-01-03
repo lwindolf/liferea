@@ -26,7 +26,7 @@ jobs:
 
     - run: |
        apt-get update -qq
-       apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkit2gtk-4.1-dev libjson-glib-dev libgirepository1.0-dev libpeas-dev gsettings-desktop-schemas-dev python3 libtool intltool valgrind libfribidi-dev gla11y appstream desktop-file-utils
+       apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkitgtk-6.0-dev libjson-glib-dev libgirepository1.0-dev libpeas-2-dev gsettings-desktop-schemas-dev python3 libtool intltool valgrind libfribidi-dev gla11y appstream desktop-file-utils
        mkdir inst
 
     - run: |

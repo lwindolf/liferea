@@ -2,7 +2,7 @@
  * @file webkit.c  WebKit2 support for Liferea
  *
  * Copyright (C) 2016-2019 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
@@ -22,7 +22,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
  
-#include "webkit/webkit.h"
+#include "webkit/liferea_webkit.h"
 
 #include <string.h>
 #include <math.h>
@@ -134,51 +134,9 @@ liferea_webkit_enable_itp_cb (GSettings *gsettings,
 {
 	g_return_if_fail (key != NULL);
 
-#if WEBKIT_CHECK_VERSION (2, 30, 0)
-	webkit_website_data_manager_set_itp_enabled (
-	    webkit_web_context_get_website_data_manager (webkit_web_context_get_default()),
+	webkit_network_session_set_itp_enabled (
+	    webkit_network_session_get_default (),
 	    g_settings_get_boolean (gsettings, key));
-#endif
-}
-
-/* Font size math from Epiphany embed/ephy-embed-prefs.c to get font size in
- * pixels according to actual screen dpi. */
-static gdouble
-get_screen_dpi (GdkMonitor *monitor)
-{
-	gdouble dp, di;
-	GdkRectangle rect;
-
-	gdk_monitor_get_workarea (monitor, &rect);
-	dp = hypot (rect.width, rect.height);
-	di = hypot (gdk_monitor_get_width_mm (monitor), gdk_monitor_get_height_mm (monitor)) / 25.4;
-
-	return dp / di;
-}
-
-static guint
-normalize_font_size (gdouble font_size, GtkWidget *widget)
-{
-	/* WebKit2 uses font sizes in pixels. */
-	GdkDisplay *display;
-	GdkMonitor *monitor;
-	GdkScreen *screen;
-	gdouble dpi;
-
-	display = gtk_widget_get_display (widget);
-	screen = gtk_widget_get_screen (widget);
-	monitor = gdk_display_get_monitor_at_window (display, gtk_widget_get_window (widget));
-
-	if (screen) {
-		dpi = gdk_screen_get_resolution (screen);
-		if (dpi == -1)
-			dpi = get_screen_dpi(monitor);
-
-	}
-	else
-		dpi = 96;
-
-	return font_size / 72.0 * dpi;
 }
 
 static gchar *
@@ -353,9 +311,9 @@ liferea_webkit_initialize_web_extensions (WebKitWebContext 	*context,
 			  G_CALLBACK (liferea_webkit_on_new_dbus_connection),
 			  webkit_impl);
 
-	webkit_web_context_set_web_extensions_directory (context, WEB_EXTENSIONS_DIR);
+	webkit_web_context_set_web_process_extensions_directory (context, WEB_EXTENSIONS_DIR);
 	server_address = g_strdup (g_dbus_server_get_client_address (webkit_impl->dbus_server));
-	webkit_web_context_set_web_extensions_initialization_user_data (context, g_variant_new_take_string (server_address));
+	webkit_web_context_set_web_process_extensions_initialization_user_data (context, g_variant_new_take_string (server_address));
 }
 
 static void
@@ -389,27 +347,24 @@ liferea_webkit_init (LifereaWebKit *self)
 {
 	gboolean			enable_itp;
 	WebKitSecurityManager		*security_manager;
-	WebKitWebsiteDataManager	*website_data_manager;
 		
 	self->dbus_connections = NULL;
 	webkit_web_context_register_uri_scheme (webkit_web_context_get_default(), "liferea",
 		(WebKitURISchemeRequestCallback) liferea_webkit_handle_liferea_scheme,NULL,NULL);
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
-	website_data_manager = webkit_web_context_get_website_data_manager (webkit_web_context_get_default ());
 	webkit_security_manager_register_uri_scheme_as_local (security_manager, "liferea");
 
 	conf_signal_connect (
 		"changed::" ENABLE_ITP,
 		G_CALLBACK (liferea_webkit_enable_itp_cb),
-		website_data_manager
+		NULL
 	);
 
 	conf_get_bool_value (ENABLE_ITP, &enable_itp);
 
-#if WEBKIT_CHECK_VERSION (2, 30, 0)
-	webkit_website_data_manager_set_itp_enabled (website_data_manager, enable_itp);
-#endif
+	webkit_network_session_set_itp_enabled (webkit_network_session_get_default (), enable_itp);
+
 	/* Webkit web extensions */
 	g_signal_connect (
 		webkit_web_context_get_default (),
@@ -474,36 +429,6 @@ liferea_webkit_run_js (GtkWidget *widget, gchar *js, GAsyncReadyCallback cb)
 	g_free (js);
 }
 
-static void
-liferea_webkit_set_font_size (GtkWidget *widget, gpointer user_data)
-{
-	WebKitSettings	*settings = WEBKIT_SETTINGS(user_data);
-	gchar		*font;
-	guint		fontSize;
-
-	if (!gtk_widget_get_realized (widget))
-		return;
-
-	font = webkit_get_font (&fontSize);
-	if (font) {
-		g_object_set (settings,        "default-font-family", font, NULL);
-
-		fontSize = normalize_font_size (fontSize, widget);
-		g_object_set (settings,        "default-font-size", fontSize, NULL);
-
-		g_free (font);
-	}
-
-	fontSize = normalize_font_size (7, widget);
-	g_object_set (settings,        "minimum-font-size", fontSize, NULL);
-}
-
-static void
-liferea_webkit_screen_changed (GtkWidget *widget, GdkScreen *previous_screen, gpointer user_data)
-{
-	liferea_webkit_set_font_size (widget, user_data);
-}
-
 /**
  * Reset settings to safe preferences
  */
@@ -554,8 +479,10 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 	webkit_web_view_set_settings (view, settings);
 
 	/* Always drop cache on startup, so it does not grow over time */
-	webkit_web_context_clear_cache (webkit_web_context_get_default ());
-
+	webkit_website_data_manager_clear (
+		webkit_network_session_get_website_data_manager (webkit_network_session_get_default ()),
+		WEBKIT_WEBSITE_DATA_ALL, 0, NULL, NULL, NULL);
+  
 	g_signal_connect_object (
 		liferea_webkit,
 		"page-created",
@@ -570,10 +497,6 @@ liferea_webkit_new (LifereaBrowser *htmlview)
 		htmlview
 	);
 
-	g_signal_connect (G_OBJECT (view), "screen_changed", G_CALLBACK (liferea_webkit_screen_changed), settings);
-	g_signal_connect (G_OBJECT (view), "realize", G_CALLBACK (liferea_webkit_set_font_size), settings);
-
-	gtk_widget_show (GTK_WIDGET (view));
 	return GTK_WIDGET (view);
 }
 
@@ -628,24 +551,22 @@ liferea_webkit_scroll_pagedown (GtkWidget *webview)
 void
 liferea_webkit_set_proxy (ProxyDetectMode mode)
 {
-#if WEBKIT_CHECK_VERSION (2, 15, 3)
 	switch (mode) {
 		default:
 		case PROXY_DETECT_MODE_MANUAL:
 		case PROXY_DETECT_MODE_AUTO:
-			webkit_website_data_manager_set_network_proxy_settings
-			    (webkit_web_context_get_website_data_manager (webkit_web_context_get_default ()),
+			webkit_network_session_set_proxy_settings (
+			     webkit_network_session_get_default (),
 			     WEBKIT_NETWORK_PROXY_MODE_DEFAULT,
 			     NULL);
 			break;
 		case PROXY_DETECT_MODE_NONE:
-			webkit_website_data_manager_set_network_proxy_settings
-			    (webkit_web_context_get_website_data_manager (webkit_web_context_get_default ()),
+			webkit_network_session_set_proxy_settings (
+			     webkit_network_session_get_default (),
 			     WEBKIT_NETWORK_PROXY_MODE_NO_PROXY,
 			     NULL);
 			break;
 	}
-#endif
 }
 
 /**

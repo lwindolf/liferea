@@ -29,17 +29,13 @@
 GSList * newsbin_get_list (void);
 
 /**
- * on_action_copy_to_newsbin: (skip)
- * @action:	the action that emitted the signal
- * @parameter:	a GVariant of type "(umt)", first value is the index of the
- * 		newsbin in the list, second is optionnal item id. If no item id is
- * 		given the selected item is used.
- * @user_data:	unused
+ * newsbin_add_item:
+ * @newsbin: The number of the newsbin to add to
+ * @item: The item to add
  *
- * Activate callback for the "copy-item-to-newsbin" action.
- * Copy the selected item to the specified newsbin.
+ * Copies existing item to newsbin
  */
-void on_action_copy_to_newsbin (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+void newsbin_add_item (guint32 index, itemPtr item);
 
 /**
  * newsbin_get_provider: (skip)

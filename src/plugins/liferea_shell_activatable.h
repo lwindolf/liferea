@@ -1,7 +1,7 @@
 /*
  * @file liferea_shell_activatable.h  Shell Plugin Type
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,33 +23,30 @@
 
 #include <glib-object.h>
 
+#include "liferea_activatable.h"
+
 G_BEGIN_DECLS
 
-#define LIFEREA_TYPE_SHELL_ACTIVATABLE		(liferea_shell_activatable_get_type ())
-#define LIFEREA_SHELL_ACTIVATABLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_TYPE_SHELL_ACTIVATABLE, LifereaShellActivatable))
-#define LIFEREA_SHELL_ACTIVATABLE_IFACE(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), LIFEREA_TYPE_SHELL_ACTIVATABLE, LifereaShellActivatableInterface))
-#define LIFEREA_IS_SHELL_ACTIVATABLE(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_TYPE_SHELL_ACTIVATABLE))
-#define LIFEREA_SHELL_ACTIVATABLE_GET_IFACE(obj)	(G_TYPE_INSTANCE_GET_INTERFACE ((obj), LIFEREA_TYPE_SHELL_ACTIVATABLE, LifereaShellActivatableInterface))
-
-typedef struct _LifereaShellActivatable LifereaShellActivatable;
-typedef struct _LifereaShellActivatableInterface LifereaShellActivatableInterface;
+#define LIFEREA_TYPE_SHELL_ACTIVATABLE (liferea_shell_activatable_get_type ())
+G_DECLARE_INTERFACE (LifereaShellActivatable, liferea_shell_activatable, LIFEREA, SHELL_ACTIVATABLE, LifereaActivatable)
 
 struct _LifereaShellActivatableInterface
 {
 	GTypeInterface g_iface;
 
-	void (*activate) (LifereaShellActivatable * activatable);
-	void (*deactivate) (LifereaShellActivatable * activatable);
 	void (*update_state) (LifereaShellActivatable * activatable);
 };
 
-GType liferea_shell_activatable_get_type (void) G_GNUC_CONST;
-
-void liferea_shell_activatable_activate (LifereaShellActivatable *activatable);
-
-void liferea_shell_activatable_deactivate (LifereaShellActivatable *activatable);
-
+/**
+ * liferea_shell_activatable_update_state:
+ * @activatable: A #LifereaShellActivatable.
+ *
+ * Triggers an update of the extension internal state to take into account
+ * state changes in the window, due to some event or user action.
+ */
 void liferea_shell_activatable_update_state (LifereaShellActivatable *activatable);
+
+GType liferea_shell_activatable_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 

@@ -21,34 +21,22 @@
 #ifndef _SEARCH_DIALOG_H
 #define _SEARCH_DIALOG_H
 
-#include <gtk/gtk.h>
-
-G_BEGIN_DECLS
-
-#define SEARCH_DIALOG_TYPE (search_dialog_get_type ())
-G_DECLARE_FINAL_TYPE (SearchDialog, search_dialog, SEARCH, DIALOG, GObject)
+#include <glib.h>
 
 /**
  * search_dialog_open:
+ * 
  * Open the complex singleton search dialog.
  *
  * @query:		optional query string to create a rule for
- *
- * Returns: (transfer none): the new dialog
  */
-SearchDialog * search_dialog_open (const gchar *query);
-
-#define SIMPLE_SEARCH_DIALOG_TYPE		(simple_search_dialog_get_type ())
-G_DECLARE_FINAL_TYPE (SimpleSearchDialog, simple_search_dialog, SIMPLE_SEARCH, DIALOG, GObject)
+void search_dialog_open (const gchar *query);
 
 /**
  * simple_search_dialog_open:
- * Open the simple (one keyword entry) singleton search dialog.
  *
- * Returns: (transfer none): the new dialog
+ * Open the simple (one keyword entry) singleton search dialog.
  */
-SimpleSearchDialog * simple_search_dialog_open (void);
-
-G_END_DECLS
+void simple_search_dialog_open (void);
 
 #endif

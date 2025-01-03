@@ -72,6 +72,11 @@
       <summary>Mainwindow is maximized when Liferea starts up</summary>
       <description>Determines if the Liferea main window will be maximized at startup.</description>
     </key>
+    <key name="last-window-fullscreen" type="b">
+      <default>false</default>
+      <summary>Mainwindow is fullscreened when Liferea starts up</summary>
+      <description>Determines if the Liferea main window will be fullscreened at startup.</description>
+    </key>
     <key name="last-window-width" type="i">
       <default>0</default>
       <summary>Width of the Liferea main window</summary>
@@ -86,11 +91,6 @@
       <default>0</default>
       <summary>Top position of the Liferea main window</summary>
       <description>Top position of the Liferea main window.</description>
-    </key>
-    <key name="last-window-state" type="i">
-      <default>0</default>
-      <summary>Last saved stat of the Liferea main window</summary>
-      <description>Last saved of the Liferea main window. Controls how Liferea shows the window on next startup. Possible values see src/ui/liferea_shell.h</description>
     </key>
     <key name="last-zoomlevel" type="i">
       <default>100</default>
@@ -111,11 +111,6 @@
       <default>0</default>
       <summary>Determines if subscriptions are to be updated at startup</summary>
       <description>Numeric value determines whether Liferea shall updates all subscriptions at startup (0=yes, otherwise=no). Inverse logic for compatibility reasons.</description>
-    </key>
-    <key name="toolbar-style" type="s">
-      <default>''</default>
-      <summary>Determines the style of the toolbar buttons</summary>
-      <description>Determines the style of the toolbar buttons locally, overriding the GNOME settings. Valid values are "both", "both-horiz", "icons", and "text". If empty or not specified, the GNOME settings are used.</description>
     </key>
     <key name="folder-display-mode" type="i">
       <default>1</default>

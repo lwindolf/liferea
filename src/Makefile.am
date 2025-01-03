@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = node_providers node_sources parsers plugins ui webkit tests .
+SUBDIRS = node_providers node_sources parsers plugins actions ui webkit tests .
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -38,7 +38,7 @@ liferea_SOURCES = \
 	item_state.c item_state.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
-	js.c js.h \
+	resources.c resources.h \
 	json.c json.h \
 	liferea_application.c liferea_application.h \
 	metadata.c metadata.h \
@@ -62,7 +62,8 @@ liferea_SOURCES = \
 	vfolder_loader.c vfolder_loader.h \
 	xml.c xml.h
 
-liferea_LDADD =	parsers/libliparsers.a \
+liferea_LDADD =	actions/libliactions.a \
+		parsers/libliparsers.a \
 		node_providers/liblinode_providers.a \
 		node_sources/liblinode_sources.a \
 		plugins/libliplugins.a \
@@ -74,14 +75,22 @@ liferea_LDADD =	parsers/libliparsers.a \
 		$(INTROSPECTION_LIBS) \
 		-lm
 
-js.h: $(top_srcdir)/js/gresource.xml $(top_srcdir)/js/htmlview.js $(top_srcdir)/js/Readability-readerable.js $(top_srcdir)/js/Readability.js $(top_srcdir)/js/purify.min.js $(main_dep)
-	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+resources = \
+	resources/gresource.xml \
+	resources/htmlview.js \
+	resources/Readability-readerable.js \
+	resources/Readability.js \
+	resources/purify.min.js \
+	$(main_dep)
 
-js.c: $(top_srcdir)/js/gresource.xml $(top_srcdir)/js/htmlview.js $(top_srcdir)/js/Readability-readerable.js $(top_srcdir)/js/Readability.js $(top_srcdir)/js/purify.min.js $(main_dep)
-	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+resources.h: $(resources)
+	glib-compile-resources --generate --target=$@ --c-name resources --sourcedir=$(top_srcdir)/resources $<
 
-js.o: js.c js.h
-main.o: js.h
+resources.c: $(resources)
+	glib-compile-resources --generate --target=$@ --c-name resources --sourcedir=$(top_srcdir)/resources $<
+
+resources.o: resources.c resources.h
+main.o: resources.h
 
 EXTRA_DIST = $(srcdir)/liferea-add-feed.in
 DISTCLEANFILES = $(srcdir)/liferea-add-feed
@@ -133,7 +142,7 @@ typelibdir = $(libdir)/liferea/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES = \
-	$(srcdir)/js.c $(srcdir)/js.h \
+	$(srcdir)/resources.c $(srcdir)/resources.h \
 	$(gir_DATA)	\
 	$(typelib_DATA)
 endif

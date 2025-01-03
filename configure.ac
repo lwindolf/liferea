@@ -1,12 +1,12 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.15.8],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[2.0],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 foreign std-options -Wall -Werror])
-AM_SILENT_RULES([yes])
+#AM_SILENT_RULES([yes])
 
 dnl Needed for automake 1.12
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])
@@ -29,22 +29,16 @@ PKG_PROG_PKG_CONFIG()
 ################################################################################
 # Mandatory library dependencies
 
-pkg_modules="	gtk+-3.0 >= 3.24.0
-		glib-2.0 >= 2.68.0
-		gio-2.0 >= 2.50.0
-		pango >= 1.4.0 
+pkg_modules="	
+		webkitgtk-6.0 >= 2.43.4
+		gtk4 >= 4.14.0
 		libxml-2.0 >= 2.6.27
 		libxslt >= 1.1.19
 		sqlite3 >= 3.7.0
-		gmodule-2.0 >= 2.0.0
-		gthread-2.0
-		libsoup-3.0 >= 3.0.7
-		webkit2gtk-4.1
-		json-glib-1.0
+		json-glib-1.0 >= 1.6
 		gobject-introspection-1.0
 		gsettings-desktop-schemas
-		libpeas-1.0 >= 1.0.0
-		libpeas-gtk-1.0 >= 1.0.0
+		libpeas-2
 		fribidi >= 0.19.7"
 
 ################################################################################
@@ -59,7 +53,7 @@ AC_SUBST(PACKAGE_LIBS)
 
 
 PKG_CHECK_MODULES([WEB_EXTENSION], [
-                  webkit2gtk-web-extension-4.1
+                  webkitgtk-web-process-extension-6.0 >= 2.43.4
                   ])
 AC_SUBST([WEB_EXTENSION_CFLAGS])
 AC_SUBST([WEB_EXTENSION_LIBS])
@@ -87,6 +81,7 @@ AC_CONFIG_FILES([
 Makefile
 net.sf.liferea.gschema.xml
 src/Makefile
+src/actions/Makefile
 src/node_providers/Makefile
 src/node_sources/Makefile
 src/parsers/Makefile
@@ -108,7 +103,6 @@ pixmaps/32x32/Makefile
 pixmaps/48x48/Makefile
 pixmaps/scalable/Makefile
 opml/Makefile
-glade/Makefile
 po/Makefile.in
 src/liferea-add-feed
 ])

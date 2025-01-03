@@ -73,9 +73,9 @@ icons_load (void)
 	gchar 		*path;
 
 	path = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps", NULL);
-	icon_theme = gtk_icon_theme_get_default ();
+	icon_theme = gtk_icon_theme_get_for_display (gdk_display_get_default ());
 
-	gtk_icon_theme_append_search_path (icon_theme, path);
+	gtk_icon_theme_add_search_path (icon_theme, path);
 
 	static const gchar *iconNames[] = {
 		"unread",		/* ICON_UNREAD */

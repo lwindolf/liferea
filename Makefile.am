@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = doc man opml pixmaps po src xslt glade
+SUBDIRS = doc man opml pixmaps po src xslt
 
 desktop_in_files = net.sourceforge.liferea.desktop.in
 desktopdir = $(datadir)/applications

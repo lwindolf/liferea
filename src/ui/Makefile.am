@@ -8,7 +8,7 @@ AM_CPPFLAGS = \
 
 noinst_LIBRARIES = libliui.a
 
-libliui_a_CFLAGS = $(PACKAGE_CFLAGS) $(LIBINDICATE_CFLAGS)
+libliui_a_CFLAGS = $(PACKAGE_CFLAGS)
 libliui_a_SOURCES = \
 	auth_dialog.c auth_dialog.h \
 	browser_tabs.c browser_tabs.h \
@@ -20,7 +20,6 @@ libliui_a_SOURCES = \
 	liferea_dialog.c liferea_dialog.h \
 	liferea_browser.c liferea_browser.h \
 	liferea_shell.c liferea_shell.h \
-	popup_menu.c popup_menu.h \
 	preferences_dialog.c preferences_dialog.h \
 	rule_editor.c rule_editor.h \
 	search_dialog.c search_dialog.h \
@@ -28,5 +27,4 @@ libliui_a_SOURCES = \
 	subscription_dialog.c subscription_dialog.h \
 	ui_common.c ui_common.h \
 	ui_dnd.c ui_dnd.h \
-	ui_folder.c ui_folder.h \
 	ui_update.c ui_update.h

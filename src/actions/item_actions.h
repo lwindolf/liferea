@@ -1,9 +1,9 @@
-/**
- * @file ui_folder.h  GUI folder handling
- * 
+/*
+ * @file item_actions.h  item actions
+ *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2009 Lars Windolf <lars.windolf@gmx.de>
- * 
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -16,24 +16,19 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA 
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
- 
-#ifndef _UI_FOLDER_H
-#define _UI_FOLDER_H
+
+#ifndef ITEM_ACTIONS_H
+#define ITEM_ACTIONS_H
 
 #include <gtk/gtk.h>
-#include "node.h"
 
 /**
- * Start interaction to create a new sub folder
- * attached to the given parent node.
- *
- * @returns TRUE on success
+ * Create a new action group for item actions.
+ * 
+ * Returns: a new action group, to be freed by caller
  */
-gboolean ui_folder_add (void);
+GActionGroup * item_actions_create (void);
 
-/* menu callback */
-void on_newfolderbtn_clicked(GtkButton *button, gpointer user_data);
-
-#endif
+#endif /* ITEM_ACTIONS_H */

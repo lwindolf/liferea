@@ -1,7 +1,7 @@
 /*
- * @file liferea_auth_activatable.h  Shell Plugin Type
+ * @file liferea_auth_activatable.h  password provider plugin type
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,44 +23,20 @@
 
 #include <glib-object.h>
 
+#include "liferea_activatable.h"
+
 G_BEGIN_DECLS
 
-#define LIFEREA_AUTH_ACTIVATABLE_TYPE		(liferea_auth_activatable_get_type ())
-#define LIFEREA_AUTH_ACTIVATABLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_AUTH_ACTIVATABLE_TYPE, LifereaAuthActivatable))
-#define LIFEREA_AUTH_ACTIVATABLE_IFACE(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), LIFEREA_AUTH_ACTIVATABLE_TYPE, LifereaAuthActivatableInterface))
-#define LIFEREA_IS_AUTH_ACTIVATABLE(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_AUTH_ACTIVATABLE_TYPE))
-#define LIFEREA_AUTH_ACTIVATABLE_GET_IFACE(obj)	(G_TYPE_INSTANCE_GET_INTERFACE ((obj), LIFEREA_AUTH_ACTIVATABLE_TYPE, LifereaAuthActivatableInterface))
-
-typedef struct _LifereaAuthActivatable LifereaAuthActivatable;
-typedef struct _LifereaAuthActivatableInterface LifereaAuthActivatableInterface;
+#define LIFEREA_AUTH_ACTIVATABLE_TYPE (liferea_auth_activatable_get_type ())
+G_DECLARE_INTERFACE (LifereaAuthActivatable, liferea_auth_activatable, LIFEREA, AUTH_ACTIVATABLE, LifereaActivatable)
 
 struct _LifereaAuthActivatableInterface
 {
 	GTypeInterface g_iface;
 
-	void (*activate) (LifereaAuthActivatable * activatable);
-	void (*deactivate) (LifereaAuthActivatable * activatable);
 	void (*query) (LifereaAuthActivatable * activatable, const gchar *authId);
 	void (*store) (LifereaAuthActivatable * activatable, const gchar *authId, const gchar *username, const gchar *password);
 };
-
-GType liferea_auth_activatable_get_type (void) G_GNUC_CONST;
-
-/**
- * liferea_auth_activatable_activate:
- * @activatable: A #LifereaAuthActivatable.
- *
- * Activates the extension.
- */
-void liferea_auth_activatable_activate (LifereaAuthActivatable *activatable);
-
-/**
- * liferea_auth_activatable_deactivate:
- * @activatable: A #LifereaAuthActivatable.
- *
- * Deactivates the extension.
- */
-void liferea_auth_activatable_deactivate (LifereaAuthActivatable *activatable);
 
 /**
  * liferea_auth_activatable_query:
@@ -89,6 +65,8 @@ void liferea_auth_activatable_store (LifereaAuthActivatable * activatable,
                                      const gchar *authId,
                                      const gchar *username,
                                      const gchar *password);
+
+GType liferea_auth_activatable_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
