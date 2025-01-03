@@ -159,7 +159,7 @@ ui_newsbin_properties (Node *node)
 
 void
 newbin_add_item (guint32 newsbin_index, itemPtr item) {
-	Node *newsbin = NODE (g_slist_nth_data (newsbin_list, newsbin_index));
+	Node *newsbin = (Node *) g_slist_nth_data (newsbin_list, newsbin_index);
 
 	if (!item || !newsbin)
 		return;	

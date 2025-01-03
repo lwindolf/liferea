@@ -142,7 +142,7 @@ typelibdir = $(libdir)/liferea/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES = \
-	$(srcdir)/js.c $(srcdir)/js.h \
+	$(srcdir)/resources.c $(srcdir)/resources.h \
 	$(gir_DATA)	\
 	$(typelib_DATA)
 endif
