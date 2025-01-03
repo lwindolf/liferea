@@ -37,6 +37,9 @@
 #include "ui/rule_editor.h"
 #include "ui/feed_list_view.h"
 
+/* a single static search folder representing the active search dialog result */
+static vfolderPtr vfolder = NULL;
+
 /* shared functions */
 
 static void
@@ -66,171 +69,88 @@ search_load_results (vfolderPtr searchResult)
 
 /* complex search dialog */
 
-static SearchDialog *search = NULL;
-
-struct _SearchDialog {
-	GObject		parentInstance;
-
-	GtkWidget	*dialog;	/**< the dialog widget */
-	RuleEditor	*re;		/**< search folder rule editor widget set */
-
-	vfolderPtr	vfolder;	/**< temporary search folder representing the search result */
-};
-
-G_DEFINE_TYPE (SearchDialog, search_dialog, G_TYPE_OBJECT);
-
-static void
-search_dialog_finalize (GObject *object)
-{
-	SearchDialog *sd = SEARCH_DIALOG (object);
-	search = NULL;
-
-	gtk_widget_destroy (sd->dialog);
-
-	search_clean_results (sd->vfolder);
-
-}
-
-static void
-search_dialog_class_init (SearchDialogClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->finalize = search_dialog_finalize;
-}
-
-static void
-search_dialog_init (SearchDialog *sd)
-{
-	sd->vfolder = vfolder_new (node_new ("vfolder"));
-	node_set_title (sd->vfolder->node, _("Saved Search"));
-}
+static GtkWidget *search_dialog = NULL;
 
 static void
 on_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_data)
 {
-	SearchDialog	*sd = (SearchDialog *)user_data;
-	vfolderPtr	vfolder = sd->vfolder;
-
 	if (1 == responseId) { /* Search */
 		search_clean_results (vfolder);
 
-		sd->vfolder = vfolder = vfolder_new (node_new ("vfolder"));
-		rule_editor_save (sd->re, vfolder->itemset);
-		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->dialog, "anyRuleRadioBtn2")));
+		vfolder = vfolder_new (node_new ("vfolder"));
+		rule_editor_save (RULE_EDITOR (user_data), vfolder->itemset);
+		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn2")));
 
 		search_load_results (vfolder);
 	}
 
-	if (2 == responseId) { /* + Search Folder */
-		rule_editor_save (sd->re, vfolder->itemset);
-		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->dialog, "anyRuleRadioBtn2")));
+	if (2 == responseId) { /* Create Search Folder */
+		rule_editor_save (RULE_EDITOR (user_data), vfolder->itemset);
+		vfolder->itemset->anyMatch = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "anyRuleRadioBtn2")));
 
 		Node *node = vfolder->node;
-		sd->vfolder = NULL;
+		vfolder = NULL;
 		feedlist_node_added (node);
 	}
 
-	if (1 != responseId)
-		g_object_unref (sd);
+	if (1 != responseId) {
+		search_clean_results (vfolder);
+		search_dialog = NULL;
+	}
 }
 
 /* callback copied from search_folder_dialog.c */
 static void
 on_addrulebtn_clicked (GtkButton *button, gpointer user_data)
 {
-	SearchDialog *sd = SEARCH_DIALOG (user_data);
-
-	rule_editor_add_rule (sd->re, NULL);
+	rule_editor_add_rule (RULE_EDITOR (user_data), NULL);
 }
 
-SearchDialog *
+void
 search_dialog_open (const gchar *query)
 {
-	SearchDialog	*sd;
+	static GtkWidget *dialog;
+	RuleEditor *re;
 
-	if (search)
-		return search;
+	if (search_dialog)
+		return;
 
-	sd = SEARCH_DIALOG (g_object_new (SEARCH_DIALOG_TYPE, NULL));
-	sd->dialog = liferea_dialog_new ("search");
+	search_dialog = dialog = liferea_dialog_new ("search");
+	vfolder = vfolder_new (node_new ("vfolder"));
+	node_set_title (vfolder->node, _("Saved Search"));
 
 	if (query)
-		itemset_add_rule (sd->vfolder->itemset, "exact", query, TRUE);
+		itemset_add_rule (vfolder->itemset, "exact", query, TRUE);
 
-	sd->re = rule_editor_new (sd->vfolder->itemset);
+	re = rule_editor_new (vfolder->itemset);
 
 	/* Note: the following code is somewhat duplicated from search_folder_dialog.c */
 
 	/* Setting default rule match type */
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sd->dialog, "anyRuleRadioBtn2")), TRUE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "anyRuleRadioBtn2")), TRUE);
 
 	/* Set up rule list vbox */
-	gtk_container_add (GTK_CONTAINER (liferea_dialog_lookup (sd->dialog, "ruleview_search_dialog")), rule_editor_get_widget (sd->re));
+	gtk_viewport_set_child (GTK_VIEWPORT (liferea_dialog_lookup (dialog, "ruleview_search_dialog")), rule_editor_get_widget (re));
 
 	/* bind buttons */
-	g_signal_connect (liferea_dialog_lookup (sd->dialog, "addrulebtn2"), "clicked", G_CALLBACK (on_addrulebtn_clicked), sd);
-	g_signal_connect (G_OBJECT (sd->dialog), "response", G_CALLBACK (on_search_dialog_response), sd);
-
-	gtk_widget_show_all (sd->dialog);
-
-	search = sd;
-	return sd;
+	g_signal_connect (liferea_dialog_lookup (dialog, "addrulebtn2"), "clicked", G_CALLBACK (on_addrulebtn_clicked), re);
+	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_search_dialog_response), re);
 }
 
 /* simple search dialog */
 
-static SimpleSearchDialog *simpleSearch = NULL;
-
-struct _SimpleSearchDialog {
-	GObject		parentInstance;
-
-	GtkWidget	*dialog;	/**< the dialog widget */
-	GtkWidget	*query;		/**< entry widget for the search query */
-
-	vfolderPtr	vfolder;	/**< temporary search folder representing the search result */
-};
-
-G_DEFINE_TYPE (SimpleSearchDialog, simple_search_dialog, G_TYPE_OBJECT);
-
-static void
-simple_search_dialog_finalize (GObject *object)
-{
-	SimpleSearchDialog *ssd = SIMPLE_SEARCH_DIALOG (object);
-	simpleSearch = NULL;
-
-	gtk_widget_destroy (ssd->dialog);
-
-	search_clean_results (ssd->vfolder);
-}
-
-static void
-simple_search_dialog_class_init (SimpleSearchDialogClass *klass)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
-
-	object_class->finalize = simple_search_dialog_finalize;
-}
-
-static void
-simple_search_dialog_init (SimpleSearchDialog *ssd)
-{
-}
+static GtkWidget *simple_dialog = NULL;
 
 static void
 on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer user_data)
 {
-	SimpleSearchDialog	*ssd = (SimpleSearchDialog *)user_data;
-	const gchar		*searchString;
-	vfolderPtr		vfolder = ssd->vfolder;
-
-	searchString = 	gtk_entry_get_text (GTK_ENTRY (ssd->query));
+	const gchar	*searchString = liferea_dialog_entry_get (GTK_WIDGET (dialog), "searchentry");
 
 	if (1 == responseId) {	/* Search */
 		search_clean_results (vfolder);
 
 		/* Create new search... */
-		ssd->vfolder = vfolder = vfolder_new (node_new ("vfolder"));
+		vfolder = vfolder_new (node_new ("vfolder"));
 		node_set_title (vfolder->node, searchString);
 		itemset_add_rule (vfolder->itemset, "exact", searchString, TRUE);
 
@@ -243,50 +163,42 @@ on_simple_search_dialog_response (GtkDialog *dialog, gint responseId, gpointer u
 	/* Do not close the dialog when "just" searching. The user
 	   should click "Close" to close the dialog to be able to
 	   do subsequent searches... */
-	if (1 != responseId)
-		g_object_unref (ssd);
+	if (1 != responseId) {
+		search_clean_results (vfolder);
+		simple_dialog = NULL;
+	}
 }
 
 static void
 on_searchentry_activated (GtkEntry *entry, gpointer user_data)
 {
-	SimpleSearchDialog	*ssd = SIMPLE_SEARCH_DIALOG (user_data);
-
 	/* simulate search response */
-	on_simple_search_dialog_response (GTK_DIALOG (ssd->dialog), 1, ssd);
+	on_simple_search_dialog_response (GTK_DIALOG (user_data), 1, NULL);
 }
 
 static void
 on_searchentry_changed (GtkEditable *editable, gpointer user_data)
 {
-	SimpleSearchDialog	*ssd = SIMPLE_SEARCH_DIALOG (user_data);
-	gchar 			*searchString;
+	gchar 		*searchString;
 
 	/* just to disable the start search button when search string is empty... */
 	searchString = gtk_editable_get_chars (editable, 0, -1);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (ssd->dialog, "searchstartbtn"), searchString && (0 < strlen (searchString)));
+	gtk_widget_set_sensitive (liferea_dialog_lookup (simple_dialog, "searchstartbtn"), searchString && (0 < strlen (searchString)));
 }
 
-SimpleSearchDialog *
+void 
 simple_search_dialog_open (void)
 {
-	SimpleSearchDialog	*ssd;
+	GtkWidget *dialog;
 
-	if (simpleSearch)
-		return simpleSearch;
+	if (simple_dialog)
+		return;
 
-	ssd = SIMPLE_SEARCH_DIALOG (g_object_new (SIMPLE_SEARCH_DIALOG_TYPE, NULL));
-	ssd->dialog = liferea_dialog_new ("simple_search");
-	ssd->query = liferea_dialog_lookup (ssd->dialog, "searchentry");
+	simple_dialog = dialog = liferea_dialog_new ("simple_search");
 
-	gtk_window_set_focus (GTK_WINDOW (ssd->dialog), ssd->query);
+	gtk_window_set_focus (GTK_WINDOW (dialog), liferea_dialog_lookup (dialog, "searchentry"));
 
-	g_signal_connect (G_OBJECT (ssd->dialog), "response", G_CALLBACK (on_simple_search_dialog_response), ssd);
-	g_signal_connect (G_OBJECT (ssd->query), "changed", G_CALLBACK (on_searchentry_changed), ssd);
-	g_signal_connect (G_OBJECT (ssd->query), "activate", G_CALLBACK (on_searchentry_activated), ssd);
-
-	gtk_widget_show_all (ssd->dialog);
-
-	simpleSearch = ssd;
-	return ssd;
+	g_signal_connect (dialog, "response", G_CALLBACK (on_simple_search_dialog_response), NULL);
+	g_signal_connect (liferea_dialog_lookup (dialog, "searchentry"), "changed", G_CALLBACK (on_searchentry_changed), dialog);
+	g_signal_connect (liferea_dialog_lookup (dialog, "searchentry"), "activate", G_CALLBACK (on_searchentry_activated), dialog);
 }

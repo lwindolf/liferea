@@ -125,7 +125,7 @@ rule_editor_setup_widgets (struct changeRequest *changeRequest, rulePtr rule)
 
 	/* add new value entry if needed */
 	if (ruleInfo->needsParameter) {
-		g_autoptr(GtkEntryBuffer) *buffer = gtk_entry_buffer_new (rule->value, -1);
+		g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (rule->value, -1);
 
 		widget = gtk_entry_new ();
 		gtk_entry_set_buffer (GTK_ENTRY (widget), buffer);

@@ -1,7 +1,7 @@
 /*
  * @file liferea_browser.c  Liferea embedded browser
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -45,7 +45,7 @@
 #include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
-#include "webkit/webkit.h"
+#include "webkit/liferea_webkit.h"
 
 /* The LifereaBrowser is a complex widget used to present both internally
    rendered content as well as serving as a browser widget. It automatically

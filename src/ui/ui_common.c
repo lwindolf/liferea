@@ -174,10 +174,11 @@ ui_choose_file_or_dir (gchar *title, const gchar *buttonName, gboolean saving, g
 	g_signal_connect (G_OBJECT (native), "response",
 	                  G_CALLBACK (ui_choose_file_save_cb), tuple);
 	if (path && g_file_test (path, G_FILE_TEST_EXISTS)) {
+		g_autoptr(GFile) file = g_file_new_for_path (path);
+
 		if (directory || defaultFilename)
-			gtk_file_chooser_set_current_folder (chooser, path, NULL);
+			gtk_file_chooser_set_current_folder (chooser, file, NULL);
 		else {
-			g_autoptr(GFile) file = g_file_new_for_path (path);
 			gtk_file_chooser_set_file (chooser, file, NULL);
 		}
 	}

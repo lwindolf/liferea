@@ -485,8 +485,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gtk_combo_box_set_active (GTK_COMBO_BOX (liferea_dialog_lookup (pd->dialog, "browserpopup")), manualBrowser);
 
 	conf_get_str_value (BROWSER_COMMAND, &browser_command);
-	entry = liferea_dialog_lookup (pd->dialog, "browsercmd");
-	gtk_entry_set_text (GTK_ENTRY(entry), browser_command);
+	liferea_dialog_entry_set (pd->dialog, "browsercmd", browser_command);
 	g_free (browser_command);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (entry), manualBrowser);
@@ -500,23 +499,23 @@ preferences_dialog_init (PreferencesDialog *pd)
 	/* ================= panel 5 "proxy" ======================== */
 
 	conf_get_str_value (PROXY_HOST, &proxy_host);
-	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->dialog, "proxyhostentry")), proxy_host);
+	liferea_dialog_entry_set (pd->dialog, "proxyhostentry", proxy_host);
 	g_free (proxy_host);
 
 	conf_get_int_value (PROXY_PORT, &proxy_port);
 	proxyport = g_strdup_printf ("%d", proxy_port);
-	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->dialog, "proxyportentry")), proxyport);
+	liferea_dialog_entry_set (pd->dialog, "proxyportentry", proxyport);
 	g_free (proxyport);
 
 	conf_get_bool_value (PROXY_USEAUTH, &enabled);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "useProxyAuth")), enabled);
 
 	conf_get_str_value (PROXY_USER, &proxy_user);
-	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->dialog, "proxyusernameentry")), proxy_user);
+	liferea_dialog_entry_set (pd->dialog, "proxyusernameentry", proxy_user);
 	g_free (proxy_user);
 
 	conf_get_str_value (PROXY_PASSWD, &proxy_passwd);
-	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->dialog, "proxypasswordentry")), proxy_passwd);
+	liferea_dialog_entry_set (pd->dialog, "proxypasswordentry", proxy_passwd);
 	g_free (proxy_passwd);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup(pd->dialog, "proxyauthtable")), enabled);

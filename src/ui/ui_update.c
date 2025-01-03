@@ -1,7 +1,7 @@
 /**
  * @file ui_update.c GUI update monitor
  * 
- * Copyright (C) 2006-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2025 Lars Windolf <lars.windolf@gmx.de>
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -132,9 +132,9 @@ on_update_monitor_destroyed_cb(GtkWidget *widget, void *data)
 }
 
 void
-on_close_update_monitor_clicked(GtkButton *button, gpointer user_data)
+on_close_update_monitor_clicked (GtkButton *button, gpointer user_data)
 {
-	gtk_widget_destroy(umdialog);
+	gtk_window_destroy (GTK_WINDOW (umdialog));
 }
  
 void

@@ -109,6 +109,8 @@ liferea_shell_get_instance (void)
 	return shell;
 }
 
+void liferea_shell_save_layout (void);
+
 static void
 liferea_shell_finalize (GObject *object)
 {
@@ -786,7 +788,7 @@ liferea_shell_add_actions (const GActionEntry *entries, int count)
 	GtkApplication	*app = gtk_window_get_application (GTK_WINDOW (shell->window));
 	GActionGroup	*group = G_ACTION_GROUP (g_simple_action_group_new ());
 
-	g_action_map_add_action_entries (G_ACTION_MAP (group), entries, G_N_ELEMENTS (entries), NULL);
+	g_action_map_add_action_entries (G_ACTION_MAP (group), entries, count, NULL);
 	liferea_shell_add_action_group_to_map (group, G_ACTION_MAP (app));	
 
 	return group;
@@ -811,7 +813,6 @@ void
 liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gint pluginsDisabled)
 {
 	GMenuModel	*menubar_model;
-	gboolean	toggle;
 	gchar		*id;
 	gint		mode;
 	FeedListView	*feedListView;
