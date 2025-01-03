@@ -46,7 +46,6 @@
 #include "ui/browser_tabs.h"
 #include "ui/icons.h"
 #include "ui/liferea_shell.h"
-#include "ui/popup_menu.h"
 #include "ui/ui_common.h"
 
 /*

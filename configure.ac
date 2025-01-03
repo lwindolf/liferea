@@ -6,7 +6,7 @@ AC_CONFIG_SRCDIR([src/feedlist.c])
 
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 foreign std-options -Wall -Werror])
-AM_SILENT_RULES([yes])
+#AM_SILENT_RULES([yes])
 
 dnl Needed for automake 1.12
 m4_ifdef([AM_PROG_AR], [AM_PROG_AR])

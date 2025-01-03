@@ -192,6 +192,7 @@ src/xml.h
 [type: gettext/glade]resources/auth.ui
 [type: gettext/glade]resources/google_source.ui
 [type: gettext/glade]resources/liferea_menu.ui
+[type: gettext/glade]resources/liferea_headerbar.ui
 [type: gettext/glade]resources/mainwindow.ui
 [type: gettext/glade]resources/mark_read_dialog.ui
 [type: gettext/glade]resources/new_folder.ui

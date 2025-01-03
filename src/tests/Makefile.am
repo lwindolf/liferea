@@ -25,11 +25,10 @@ AM_CPPFLAGS = \
 	$(INTROSPECTION_CFLAGS)
 
 favicon_LDADD = \
-	../actions/libliactions.a \
 	../parsers/libliparsers.a \
-	../plugins/libliplugins.a \
-	../node_sources/liblinode_sources.a \
 	../node_providers/liblinode_providers.a \
+	../node_sources/liblinode_sources.a \
+	../plugins/libliplugins.a \
 	../ui/libliui.a \
 	../webkit/libwebkit.a \
 	../auth.o \
