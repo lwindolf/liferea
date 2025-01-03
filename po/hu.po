@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.12.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 03:01+0100\n"
+"POT-Creation-Date: 2025-01-03 03:21+0100\n"
 "PO-Revision-Date: 2021-10-11 23:32+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -20,8 +20,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 19.12.3\n"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:347
-#: ../glade/mainwindow.ui.h:1
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:338
+#: ../resources/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -63,28 +63,23 @@ msgstr "Legnagyobb"
 msgid "Save"
 msgstr "Mentés"
 
-#: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
-#: ../glade/liferea_toolbar.ui.h:5
+#: ../plugins/headerbar.py:67 ../resources/liferea_menu.ui.h:20
 msgid "Previous Item"
 msgstr "Előző elem"
 
-#: ../plugins/headerbar.py:73 ../glade/liferea_menu.ui.h:21
-#: ../glade/liferea_toolbar.ui.h:6
+#: ../plugins/headerbar.py:73 ../resources/liferea_menu.ui.h:21
 msgid "Next Item"
 msgstr "Következő elem"
 
-#: ../plugins/headerbar.py:81 ../glade/liferea_menu.ui.h:19
-#: ../glade/liferea_toolbar.ui.h:7
+#: ../plugins/headerbar.py:81 ../resources/liferea_menu.ui.h:19
 msgid "_Next Unread Item"
 msgstr "_Következő olvasatlan elem"
 
-#: ../plugins/headerbar.py:89 ../glade/liferea_menu.ui.h:14
-#: ../glade/liferea_toolbar.ui.h:3
+#: ../plugins/headerbar.py:89 ../resources/liferea_menu.ui.h:14
 msgid "_Mark Items Read"
 msgstr "_Elemek olvasottnak jelölése"
 
-#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:38
-#: ../glade/liferea_toolbar.ui.h:10
+#: ../plugins/headerbar.py:113 ../resources/liferea_menu.ui.h:39
 msgid "Search All Feeds..."
 msgstr "Keresés az összes hírforrásban…"
 
@@ -117,7 +112,7 @@ msgstr "Hibás mezők a(z) %s bővítménybejegyzésnél"
 msgid "All"
 msgstr "Összes"
 
-#: ../plugins/plugin-installer.py:128 ../glade/properties.ui.h:39
+#: ../plugins/plugin-installer.py:128 ../resources/properties.ui.h:39
 msgid "Advanced"
 msgstr "Speciális"
 
@@ -275,15 +270,86 @@ msgstr "Kis méret a tálcára bezáráskor"
 msgid "Quit"
 msgstr "Kilépés"
 
+#: ../src/actions/item_actions.c:120
+msgid "You must select a feed to delete its items!"
+msgstr "Ki kell választania egy hírforrást az elemeinek törléséhez."
+
+#: ../src/actions/item_actions.c:136 ../src/ui/item_list_view.c:991
+#: ../src/ui/item_list_view.c:1006
+msgid "No item has been selected"
+msgstr "Nincs kiválasztott elem"
+
+#: ../src/actions/item_actions.c:187
+#, c-format
+msgid "Email command failed: %s"
+msgstr "Az e-mail-parancs sikertelen: %s"
+
+#: ../src/actions/item_actions.c:190 ../src/browser.c:101
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "Indítás: „%s”"
+
+#: ../src/actions/node_actions.c:55 ../src/actions/shell_actions.c:60
+msgid "Liferea is in offline mode. No update possible."
+msgstr "A Liferea kapcsolat nélküli módban van. Nem lehetséges frissíteni."
+
+#: ../src/actions/node_actions.c:165
+msgid "Save items to file"
+msgstr ""
+
+#: ../src/actions/node_actions.c:168 ../src/ui/feed_list_view.c:776
+#: ../src/ui/feed_list_view.c:820
+msgid "_Cancel"
+msgstr "_Mégse"
+
+#: ../src/actions/node_actions.c:170
+#, fuzzy
+msgid "_Save"
+msgstr "Mentés"
+
+#: ../src/actions/node_actions.c:179
+msgid "RSS 2.0 files"
+msgstr ""
+
+#: ../src/actions/node_actions.c:185
+#, fuzzy
+msgid "All files"
+msgstr "Összes fájl"
+
+#: ../src/actions/node_actions.c:190 ../src/ui/browser_tabs.c:266
+msgid "Untitled"
+msgstr "Névtelen"
+
+#: ../src/actions/shell_actions.c:113
+msgid "all feeds"
+msgstr "összes hírforrás"
+
+#: ../src/actions/shell_actions.c:114
+#, c-format
+msgid "Mark %s as read ?"
+msgstr "Megjelöli a(z) %s elemet olvasottként?"
+
+#: ../src/actions/shell_actions.c:118
+#, c-format
+msgid "Are you sure you want to mark all items in %s as read ?"
+msgstr "Biztosan meg szeretné jelölni a(z) %s összes elemét olvasottként?"
+
+#: ../src/actions/shell_actions.c:177
+msgid "Help Topics"
+msgstr "Súgótémák"
+
+#: ../src/actions/shell_actions.c:183
+msgid "Quick Reference"
+msgstr "Gyors hivatkozás"
+
+#: ../src/actions/shell_actions.c:189
+msgid "FAQ"
+msgstr "GYIK"
+
 #: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "A böngészőparancs sikertelen: %s"
-
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1138
-#, c-format
-msgid "Starting: \"%s\""
-msgstr "Indítás: „%s”"
 
 #. unauthorized
 #: ../src/comments.c:116
@@ -319,20 +385,6 @@ msgstr "%b. %e., %k.%M"
 #: ../src/date.c:167
 msgid "%b %d %Y"
 msgstr "%Y. %b. %e."
-
-#: ../src/enclosure.c:201
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "A(z) „%s” nem érvényes melléklettípus beállítófájl."
-
-#: ../src/enclosure.c:301
-#, fuzzy, c-format
-msgid ""
-"Command failed: \n"
-"\n"
-"%s\n"
-"\n"
-msgstr "Az e-mail-parancs sikertelen: %s"
 
 #: ../src/export.c:172
 #, c-format
@@ -373,7 +425,7 @@ msgid "Import"
 msgstr "Importálás"
 
 #: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "OPML Files"
 msgstr "OPML-fájlok"
 
@@ -405,15 +457,11 @@ msgstr "Érvénytelen XML."
 msgid "Miniflux"
 msgstr ""
 
-#: ../src/node_source.c:318
-msgid "No feed list source types found!"
-msgstr "Nem találhatók hírforráslista-forrástípusok."
-
-#: ../src/node_source.c:347
+#: ../src/node_source.c:342
 msgid "Source Type"
 msgstr "Forrás típusa"
 
-#: ../src/node_source.c:398
+#: ../src/node_source.c:393
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
@@ -422,13 +470,13 @@ msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:564
+#: ../src/node_source.c:559
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "A(z) „%s” feliratkozás sikeresen át lett alakítva helyi hírforrásokra."
 
-#: ../src/node_sources/default_source.c:135 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
+#: ../src/node_sources/default_source.c:135
+#: ../resources/new_subscription.ui.h:1 ../resources/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Új feliratkozás"
 
@@ -438,7 +486,7 @@ msgstr "Új feliratkozás"
 msgid "Login failed!"
 msgstr "Bejelentkezés sikertelen."
 
-#: ../src/node_sources/google_source.c:404
+#: ../src/node_sources/google_source.c:402
 #, fuzzy
 msgid "Google Reader API"
 msgstr "Google Olvasó"
@@ -452,11 +500,12 @@ msgstr "Nem sikerült feldolgozni a Reedah API által visszaadott JSON-t."
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "Choose OPML File"
 msgstr "OPML-fájl választása"
 
-#: ../src/node_sources/opml_source.c:371 ../src/ui/subscription_dialog.c:352
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:285
+#: ../src/ui/subscription_dialog.c:292
 msgid "_Open"
 msgstr "_Megnyitás"
 
@@ -464,7 +513,7 @@ msgstr "_Megnyitás"
 msgid "New OPML Subscription"
 msgstr "Új OPML-feliratkozás"
 
-#: ../src/node_sources/reedah_source.c:333
+#: ../src/node_sources/reedah_source.c:331
 msgid "Reedah"
 msgstr "Reedah"
 
@@ -472,7 +521,7 @@ msgstr "Reedah"
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr "Nem sikerült feldolgozni a Reedah API által visszaadott JSON-t."
 
-#: ../src/node_sources/theoldreader_source.c:362
+#: ../src/node_sources/theoldreader_source.c:360
 msgid "TheOldReader"
 msgstr "TheOldReader"
 
@@ -502,7 +551,7 @@ msgstr ""
 "Ez a TinyTinyRSS verzió nem támogatja a hírforrások eltávolítását. "
 "Frissítsen a(z) %s vagy újabb verzióra."
 
-#: ../src/node_sources/ttrss_source.c:470
+#: ../src/node_sources/ttrss_source.c:468
 msgid "Tiny Tiny RSS"
 msgstr "Tiny Tiny RSS"
 
@@ -510,12 +559,12 @@ msgstr "Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Nem sikerült feldolgozni a TinyTinyRSS API által visszaadott JSON-t."
 
-#: ../src/node_providers/newsbin.c:133
+#: ../src/node_providers/newsbin.c:132
 #, fuzzy
 msgid "News Bin Properties"
 msgstr "Feliratkozás tulajdonságai"
 
-#: ../src/node_providers/newsbin.c:137 ../glade/new_newsbin.ui.h:1
+#: ../src/node_providers/newsbin.c:136 ../resources/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Hírgyűjtő létrehozása"
 
@@ -524,58 +573,58 @@ msgid "New Search Folder"
 msgstr "Új keresési mappa"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:397
+#: ../src/itemlist.c:409
 msgid "There are no unread items"
 msgstr "Nincsenek olvasatlan elemek"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:271
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 "A Liferea indítása adott ÁLLAPOTÚ főablakkal. Az ÁLLAPOT „shown” (látható) "
 "vagy „hidden” (rejtett) lehet."
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:271
 msgid "STATE"
 msgstr "ÁLLAPOT"
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:272
 msgid "Show version information and exit"
 msgstr "Verzióinformációk megjelenítése és kilépés"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:273
 msgid "Add a new subscription"
 msgstr "Új feliratkozás hozzáadása"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:273
 msgid "uri"
 msgstr "URI"
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:274
 msgid "Start with all plugins disabled"
 msgstr "Indítás az összes bővítmény letiltásával"
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:279
 msgid "Print debugging messages of all types"
 msgstr "Minden típusú hibakeresési üzenet kiírása"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:280
 msgid "Print debugging messages for the cache handling"
 msgstr "A gyorsítótár-kezelési hibakeresési üzenetek kiírása"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:281
 msgid "Print debugging messages for the configuration handling"
 msgstr "A beállításkezelés hibakeresési üzeneteinek kiírása"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:282
 msgid "Print debugging messages of the database handling"
 msgstr "Az adatbázis-kezelés hibakeresési üzeneteinek kiírása"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:283
 msgid "Print debugging messages of all GUI functions"
 msgstr "Minden GUI függvény hibakeresési üzeneteinek kiírása"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:284
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
@@ -584,23 +633,23 @@ msgstr ""
 "kimenetet jelenít meg, az előállított HTML-t kiírja a ~/.cache/liferea/"
 "output.html fájlba."
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:285
 msgid "Print debugging messages of all network activity"
 msgstr "Minden hálózati tevékenység hibakeresési üzeneteinek kiírása"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:286
 msgid "Print debugging messages of all parsing functions"
 msgstr "Minden feldolgozási függvény hibakeresési üzeneteinek kiírása"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:287
 msgid "Print debugging messages of the feed update processing"
 msgstr "A hírforrásfrissítés-feldolgozás hibakeresési üzeneteinek kiírása"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:288
 msgid "Print debugging messages of the search folder matching"
 msgstr "A keresőmappa-illesztés hibakeresési üzeneteinek kiírása"
 
-#: ../src/liferea_application.c:302 ../src/liferea_application.c:303
+#: ../src/liferea_application.c:293 ../src/liferea_application.c:294
 msgid "Print debugging messages for the given topic"
 msgstr "A megadott téma hibakeresési üzeneteinek kiírása"
 
@@ -847,42 +896,20 @@ msgstr "Frissítés (%d / %d)…"
 msgid "Updating '%s'..."
 msgstr "„%s” frissítése…"
 
-#: ../src/ui/auth_dialog.c:114
+#: ../src/ui/auth_dialog.c:110
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Adja meg a felhasználónevet és a jelszót a következőhöz: „%s” (%s):"
 
-#: ../src/ui/auth_dialog.c:116
+#: ../src/ui/auth_dialog.c:112
 msgid "Unknown source"
 msgstr "Ismeretlen forrás"
 
-#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:246
-msgid "Untitled"
-msgstr "Névtelen"
-
-#: ../src/ui/feed_list_view.c:426
-msgid "Liferea is in offline mode. No update possible."
-msgstr "A Liferea kapcsolat nélküli módban van. Nem lehetséges frissíteni."
-
-#: ../src/ui/feed_list_view.c:472
-msgid "all feeds"
-msgstr "összes hírforrás"
-
-#: ../src/ui/feed_list_view.c:473
-#, c-format
-msgid "Mark %s as read ?"
-msgstr "Megjelöli a(z) %s elemet olvasottként?"
-
-#: ../src/ui/feed_list_view.c:477
-#, c-format
-msgid "Are you sure you want to mark all items in %s as read ?"
-msgstr "Biztosan meg szeretné jelölni a(z) %s összes elemét olvasottként?"
-
-#: ../src/ui/feed_list_view.c:615
+#: ../src/ui/feed_list_view.c:495
 msgid "(Empty)"
 msgstr "(Üres)"
 
-#: ../src/ui/feed_list_view.c:825
+#: ../src/ui/feed_list_view.c:704
 #, c-format
 msgid ""
 "%s\n"
@@ -891,34 +918,29 @@ msgstr ""
 "%s\n"
 "<i>Újraépítés</i>"
 
-#: ../src/ui/feed_list_view.c:894
+#: ../src/ui/feed_list_view.c:766
 msgid "Deleting entry"
 msgstr "Bejegyzés törlése"
 
-#: ../src/ui/feed_list_view.c:895
+#: ../src/ui/feed_list_view.c:767
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Biztosan törölni szeretné a(z) „%s” elemet és a tartalmát?"
 
-#: ../src/ui/feed_list_view.c:895
+#: ../src/ui/feed_list_view.c:767
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Biztosan törölni szeretné a(z) „%s” elemet?"
 
-#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:947
-#: ../src/ui/popup_menu.c:224
-msgid "_Cancel"
-msgstr "_Mégse"
-
-#: ../src/ui/feed_list_view.c:905 ../src/ui/popup_menu.c:375
+#: ../src/ui/feed_list_view.c:777
 msgid "_Delete"
 msgstr "_Törlés"
 
-#: ../src/ui/feed_list_view.c:907
+#: ../src/ui/feed_list_view.c:779
 msgid "Deletion Confirmation"
 msgstr "Törlés megerősítése"
 
-#: ../src/ui/feed_list_view.c:935
+#: ../src/ui/feed_list_view.c:808
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
@@ -927,11 +949,11 @@ msgstr ""
 "Biztosan hozzá szeretné adni a(z) „%s” URL-lel rendelkező új feliratkozást? "
 "Egy másik feliratkozás már létezik ezzel az URL-lel („%s”)."
 
-#: ../src/ui/feed_list_view.c:948
+#: ../src/ui/feed_list_view.c:821
 msgid "_Add"
 msgstr "_Hozzáadás"
 
-#: ../src/ui/feed_list_view.c:950
+#: ../src/ui/feed_list_view.c:823
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Kettőzött feliratkozás hozzáadásának megerősítése"
 
@@ -940,246 +962,85 @@ msgstr "Kettőzött feliratkozás hozzáadásának megerősítése"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Nem található a képfájl: %s"
 
-#: ../src/ui/item_list_view.c:113
-msgid "This item has no link specified!"
-msgstr "Nincs hivatkozás megadva ehhez az elemhez."
-
-#: ../src/ui/item_list_view.c:492
+#: ../src/ui/item_list_view.c:456
 msgid " <span background='red' color='black'> important </span> "
 msgstr " <span background='red' color='black'> fontos </span> "
 
-#: ../src/ui/item_list_view.c:853
+#: ../src/ui/item_list_view.c:819
 msgid "Headline"
 msgstr "Szalagcím"
 
-#: ../src/ui/item_list_view.c:871
+#: ../src/ui/item_list_view.c:837
 msgid "Date"
 msgstr "Dátum"
 
-#: ../src/ui/item_list_view.c:1040
-msgid "You must select a feed to delete its items!"
-msgstr "Ki kell választania egy hírforrást az elemeinek törléséhez."
+#: ../src/ui/itemview.c:511
+msgid "This item has no link specified!"
+msgstr "Nincs hivatkozás megadva ehhez az elemhez."
 
-#: ../src/ui/item_list_view.c:1056 ../src/ui/item_list_view.c:1134
-#: ../src/ui/item_list_view.c:1149
-msgid "No item has been selected"
-msgstr "Nincs kiválasztott elem"
-
-#: ../src/ui/liferea_browser.c:483
+#: ../src/ui/liferea_browser.c:482
 msgid "Content download failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_browser.c:496
+#: ../src/ui/liferea_browser.c:495
 msgid "Content extraction failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:410
+#: ../src/ui/liferea_shell.c:328
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] " (%d új)"
 msgstr[1] " (%d új)"
 
-#: ../src/ui/liferea_shell.c:415
+#: ../src/ui/liferea_shell.c:333
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "%d olvasatlan%s"
 msgstr[1] "%d olvasatlan%s"
 
-#: ../src/ui/liferea_shell.c:857
-msgid "Help Topics"
-msgstr "Súgótémák"
-
-#: ../src/ui/liferea_shell.c:863
-msgid "Quick Reference"
-msgstr "Gyors hivatkozás"
-
-#: ../src/ui/liferea_shell.c:869
-msgid "FAQ"
-msgstr "GYIK"
-
-#: ../src/ui/liferea_shell.c:1135
-#, c-format
-msgid "Email command failed: %s"
-msgstr "Az e-mail-parancs sikertelen: %s"
-
-#: ../src/ui/popup_menu.c:80 ../glade/liferea_menu.ui.h:25
-msgid "Open In _Tab"
-msgstr "Megnyitás l_apon"
-
-#: ../src/ui/popup_menu.c:84 ../glade/liferea_menu.ui.h:26
-msgid "_Open In Browser"
-msgstr "_Megnyitás böngészőben"
-
-#: ../src/ui/popup_menu.c:88 ../glade/liferea_menu.ui.h:27
-msgid "Open In _External Browser"
-msgstr "Megnyitás _külső böngészőben"
-
-#: ../src/ui/popup_menu.c:93
-msgid "Email The Author"
-msgstr "E-mail küldése a szerzőnek"
-
-#: ../src/ui/popup_menu.c:118
-msgid "Copy to News Bin"
-msgstr "Másolás hírgyűjtőbe"
-
-#: ../src/ui/popup_menu.c:126
-#, c-format
-msgid "_Bookmark at %s"
-msgstr "_Könyvjelzőzés itt: %s"
-
-#: ../src/ui/popup_menu.c:132
-msgid "Copy Item _Location"
-msgstr "_Elem helyének másolása"
-
-#: ../src/ui/popup_menu.c:141 ../glade/liferea_menu.ui.h:22
-msgid "Toggle _Read Status"
-msgstr "Olvasottság átka_pcsolása"
-
-#: ../src/ui/popup_menu.c:145 ../glade/liferea_menu.ui.h:23
-msgid "Toggle Item _Flag"
-msgstr "Elem _jelzésének átkapcsolása"
-
-#: ../src/ui/popup_menu.c:149
-msgid "R_emove Item"
-msgstr "Elem el_távolítása"
-
-#: ../src/ui/popup_menu.c:221
-msgid "Save items to file"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:226
-#, fuzzy
-msgid "_Save"
-msgstr "Mentés"
-
-#: ../src/ui/popup_menu.c:235
-msgid "RSS 2.0 files"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:241
-#, fuzzy
-msgid "All files"
-msgstr "Összes fájl"
-
-#: ../src/ui/popup_menu.c:317 ../glade/liferea_menu.ui.h:13
-msgid "_Update"
-msgstr "_Frissítés"
-
-#: ../src/ui/popup_menu.c:319
-msgid "_Update Folder"
-msgstr "Mappa f_rissítése"
-
-#: ../src/ui/popup_menu.c:329
-msgid "New _Subscription..."
-msgstr "Új _feliratkozás…"
-
-#: ../src/ui/popup_menu.c:332 ../glade/liferea_menu.ui.h:5
-msgid "New _Folder..."
-msgstr "Új _mappa…"
-
-#: ../src/ui/popup_menu.c:335 ../glade/liferea_menu.ui.h:6
-msgid "New S_earch Folder..."
-msgstr "Új ke_resési mappa…"
-
-#: ../src/ui/popup_menu.c:336
-msgid "New S_ource..."
-msgstr "Új _forrás…"
-
-#: ../src/ui/popup_menu.c:337 ../glade/liferea_menu.ui.h:8
-msgid "New _News Bin..."
-msgstr "Új _hírgyűjtő…"
-
-#: ../src/ui/popup_menu.c:340
-msgid "_New"
-msgstr "Ú_j"
-
-#: ../src/ui/popup_menu.c:349
-msgid "Sort Feeds"
-msgstr "Hírforrások rendezése"
-
-#: ../src/ui/popup_menu.c:357
-msgid "_Mark All As Read"
-msgstr "Összes megjelölése _olvasottként"
-
-#: ../src/ui/popup_menu.c:359
-msgid "_Export Items To File"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:367
-msgid "_Rebuild"
-msgstr "Új_raépítés"
-
-#: ../src/ui/popup_menu.c:376 ../glade/liferea_menu.ui.h:17
-msgid "_Properties"
-msgstr "_Tulajdonságok"
-
-#: ../src/ui/popup_menu.c:383
-msgid "Convert To Local Subscriptions..."
-msgstr "Átalakítás helyi feliratkozásokra…"
-
-#: ../src/ui/preferences_dialog.c:69
-msgid "GNOME default"
-msgstr "GNOME alapértelmezett"
-
-#: ../src/ui/preferences_dialog.c:70
-msgid "Text below icons"
-msgstr "Szöveg az ikonok alatt"
-
-#: ../src/ui/preferences_dialog.c:71
-msgid "Text beside icons"
-msgstr "Szöveg az ikonok mellett"
-
-#: ../src/ui/preferences_dialog.c:72
-msgid "Icons only"
-msgstr "Csak ikonok"
-
-#: ../src/ui/preferences_dialog.c:73
-msgid "Text only"
-msgstr "Csak szöveg"
-
-#: ../src/ui/preferences_dialog.c:81 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:67 ../src/ui/subscription_dialog.c:43
 msgid "minutes"
 msgstr "perc"
 
-#: ../src/ui/preferences_dialog.c:82 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:68 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr "óra"
 
-#: ../src/ui/preferences_dialog.c:83 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:69 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr "nap"
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/preferences_dialog.c:74
 msgid "Space"
 msgstr "Szóköz"
 
-#: ../src/ui/preferences_dialog.c:89
+#: ../src/ui/preferences_dialog.c:75
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> szóköz"
 
-#: ../src/ui/preferences_dialog.c:90
+#: ../src/ui/preferences_dialog.c:76
 msgid "<Alt> Space"
 msgstr "<Alt> szóköz"
 
-#: ../src/ui/preferences_dialog.c:95
+#: ../src/ui/preferences_dialog.c:81
 msgid "Normal View"
 msgstr "Normál nézet"
 
-#: ../src/ui/preferences_dialog.c:96
+#: ../src/ui/preferences_dialog.c:82
 msgid "Wide View"
 msgstr "Széles nézet"
 
-#: ../src/ui/preferences_dialog.c:97
+#: ../src/ui/preferences_dialog.c:83
 msgid "Automatic"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:406
+#: ../src/ui/preferences_dialog.c:374
 msgid "Default Browser"
 msgstr "Alapértelmezett böngésző"
 
-#: ../src/ui/preferences_dialog.c:408
+#: ../src/ui/preferences_dialog.c:376
 msgid "Manual"
 msgstr "Kézi"
 
@@ -1188,15 +1049,15 @@ msgstr "Kézi"
 msgid "Remove"
 msgstr "_Eltávolítás"
 
-#: ../src/ui/search_dialog.c:106
+#: ../src/ui/search_dialog.c:120
 msgid "Saved Search"
 msgstr "Mentett keresés"
 
-#: ../src/ui/subscription_dialog.c:352
+#: ../src/ui/subscription_dialog.c:285 ../src/ui/subscription_dialog.c:292
 msgid "Choose File"
 msgstr "Fájl választása"
 
-#: ../src/ui/subscription_dialog.c:424
+#: ../src/ui/subscription_dialog.c:357
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1204,11 +1065,11 @@ msgid_plural ""
 msgstr[0] "A hírforrás szolgáltatója %d perces frissítési időközt javasol."
 msgstr[1] "A hírforrás szolgáltatója %d perces frissítési időközt javasol."
 
-#: ../src/ui/subscription_dialog.c:428
+#: ../src/ui/subscription_dialog.c:361
 msgid "This feed specifies no default update interval."
 msgstr "Ez a hírforrás nem ad meg alapértelmezett frissítési időközt."
 
-#: ../src/ui/ui_common.c:206
+#: ../src/ui/ui_common.c:204
 msgid "All Files"
 msgstr "Összes fájl"
 
@@ -1243,60 +1104,60 @@ msgstr "Hiba: nem nyitható meg a(z) „%s” fájl"
 msgid "Error: There is no file \"%s\""
 msgstr "Hiba: nincs „%s” fájl"
 
-#: ../src/webkit/liferea_web_view.c:163
+#: ../src/webkit/liferea_web_view.c:165
 msgid "Open Link In _Tab"
 msgstr "Hivatkozás megnyitása l_apon"
 
-#: ../src/webkit/liferea_web_view.c:164
+#: ../src/webkit/liferea_web_view.c:166
 msgid "Open Link In Browser"
 msgstr "Hivatkozás megnyitása böngészőben"
 
-#: ../src/webkit/liferea_web_view.c:165
+#: ../src/webkit/liferea_web_view.c:167
 msgid "Open Link In External Browser"
 msgstr "Hivatkozás megnyitása külső böngészőben"
 
-#: ../src/webkit/liferea_web_view.c:171
+#: ../src/webkit/liferea_web_view.c:173
 #, c-format
 msgid "_Bookmark Link at %s"
 msgstr "Hivatkozást _könyvjelzőzése itt: %s"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:180
 msgid "_Copy Link Location"
 msgstr "Hivatkozás _címének másolása"
 
-#: ../src/webkit/liferea_web_view.c:181
+#: ../src/webkit/liferea_web_view.c:183
 msgid "_View Image"
 msgstr "_Kép megtekintése"
 
-#: ../src/webkit/liferea_web_view.c:182
+#: ../src/webkit/liferea_web_view.c:184
 msgid "_Copy Image Location"
 msgstr "Kép _helyének másolása"
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:187
 msgid "S_ave Link As"
 msgstr "_Hivatkozás mentése másként"
 
-#: ../src/webkit/liferea_web_view.c:188
+#: ../src/webkit/liferea_web_view.c:190
 msgid "S_ave Image As"
 msgstr "_Kép mentése másként"
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:197
 msgid "_Subscribe..."
 msgstr "_Feliratkozás…"
 
-#: ../src/webkit/liferea_web_view.c:199
+#: ../src/webkit/liferea_web_view.c:201
 msgid "_Copy"
 msgstr "_Másolás"
 
-#: ../src/webkit/liferea_web_view.c:205
+#: ../src/webkit/liferea_web_view.c:207
 msgid "_Increase Text Size"
 msgstr "Szövegméret _növelése"
 
-#: ../src/webkit/liferea_web_view.c:206
+#: ../src/webkit/liferea_web_view.c:208
 msgid "_Decrease Text Size"
 msgstr "Szövegméret _csökkentése"
 
-#: ../src/webkit/liferea_web_view.c:213
+#: ../src/webkit/liferea_web_view.c:215
 msgid "_Reader Mode"
 msgstr "_Olvasási mód"
 
@@ -1308,279 +1169,305 @@ msgstr "[Több hiba is történt. A kimenet csonkítva lett.]"
 msgid "XML Parser: Could not parse document:\n"
 msgstr "XML-feldolgozó: nem sikerült feldolgozni a dokumentumot:\n"
 
-#: ../glade/about.ui.h:1
+#: ../resources/about.ui.h:1
 msgid "About"
 msgstr "Névjegy"
 
-#: ../glade/about.ui.h:2
+#: ../resources/about.ui.h:2
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "A Liferea egy hírolvasó program GTK+ grafikus felülettel"
 
-#: ../glade/about.ui.h:3
+#: ../resources/about.ui.h:3
 msgid "Liferea Homepage"
 msgstr "A Liferea honlapja"
 
-#: ../glade/auth.ui.h:1
+#: ../resources/auth.ui.h:1
 msgid "Authentication"
 msgstr "Hitelesítés"
 
-#: ../glade/auth.ui.h:3
+#: ../resources/auth.ui.h:3
 #, no-c-format
 msgid "Enter the username and password for \"%s\" (%s)"
 msgstr "Adja meg a felhasználónevet és a jelszót a következőhöz: „%s” (%s)"
 
-#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
+#: ../resources/auth.ui.h:4 ../resources/properties.ui.h:31
 msgid "User_name:"
 msgstr "_Felhasználónév:"
 
-#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
+#: ../resources/auth.ui.h:5 ../resources/properties.ui.h:32
 msgid "_Password:"
 msgstr "_Jelszó:"
 
-#: ../glade/google_source.ui.h:1
+#: ../resources/google_source.ui.h:1
 #, fuzzy
 msgid "Add Google Reader API Account"
 msgstr "TheOldReader-fiók hozzáadása"
 
-#: ../glade/google_source.ui.h:2
+#: ../resources/google_source.ui.h:2
 msgid ""
 "Please enter the details of the new Google Reader API compatible "
 "subscription."
 msgstr ""
 
-#: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
-#: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
+#: ../resources/google_source.ui.h:3 ../resources/reedah_source.ui.h:3
+#: ../resources/theoldreader_source.ui.h:3 ../resources/ttrss_source.ui.h:4
 msgid "_Password"
 msgstr "_Jelszó"
 
-#: ../glade/google_source.ui.h:4 ../glade/reedah_source.ui.h:4
-#: ../glade/theoldreader_source.ui.h:4
+#: ../resources/google_source.ui.h:4 ../resources/reedah_source.ui.h:4
+#: ../resources/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Felhasználónév (e-mail)"
 
-#: ../glade/google_source.ui.h:5
+#: ../resources/google_source.ui.h:5
 #, fuzzy
 msgid "_Server"
 msgstr "_Kiszolgáló URL-e"
 
-#: ../glade/google_source.ui.h:6
+#: ../resources/google_source.ui.h:6
 #, fuzzy
 msgid "_Name"
 msgstr "Hírforrás _neve"
 
-#: ../glade/liferea_menu.ui.h:1
+#: ../resources/liferea_menu.ui.h:1
 msgid "_Subscriptions"
 msgstr "_Feliratkozások"
 
-#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+#: ../resources/liferea_menu.ui.h:2
 msgid "Update _All"
 msgstr "Öss_zes frissítése"
 
-#: ../glade/liferea_menu.ui.h:3
+#: ../resources/liferea_menu.ui.h:3
 msgid "Mark All As _Read"
 msgstr "Összes megjelölése _olvasottként"
 
-#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+#: ../resources/liferea_menu.ui.h:4
 msgid "_New Subscription..."
 msgstr "Új _feliratkozás…"
 
-#: ../glade/liferea_menu.ui.h:7
+#: ../resources/liferea_menu.ui.h:5
+msgid "New _Folder..."
+msgstr "Új _mappa…"
+
+#: ../resources/liferea_menu.ui.h:6
+msgid "New S_earch Folder..."
+msgstr "Új ke_resési mappa…"
+
+#: ../resources/liferea_menu.ui.h:7
 msgid "New _Source..."
 msgstr "Új f_orrás…"
 
-#: ../glade/liferea_menu.ui.h:9
+#: ../resources/liferea_menu.ui.h:8
+msgid "New _News Bin..."
+msgstr "Új _hírgyűjtő…"
+
+#: ../resources/liferea_menu.ui.h:9
 msgid "_Import Feed List..."
 msgstr "Hírforráslista _importálása…"
 
-#: ../glade/liferea_menu.ui.h:10
+#: ../resources/liferea_menu.ui.h:10
 msgid "_Export Feed List..."
 msgstr "Hírforráslista _exportálása…"
 
-#: ../glade/liferea_menu.ui.h:11
+#: ../resources/liferea_menu.ui.h:11
 msgid "_Quit"
 msgstr "_Kilépés"
 
-#: ../glade/liferea_menu.ui.h:12
+#: ../resources/liferea_menu.ui.h:12
 msgid "_Feed"
 msgstr "_Hírforrás"
 
-#: ../glade/liferea_menu.ui.h:15
+#: ../resources/liferea_menu.ui.h:13
+msgid "_Update"
+msgstr "_Frissítés"
+
+#: ../resources/liferea_menu.ui.h:15
 msgid "Remove _All Items"
 msgstr "Összes elem _eltávolítása"
 
-#: ../glade/liferea_menu.ui.h:16
+#: ../resources/liferea_menu.ui.h:16
 msgid "_Remove"
 msgstr "_Eltávolítás"
 
-#: ../glade/liferea_menu.ui.h:18
+#: ../resources/liferea_menu.ui.h:17
+msgid "_Properties"
+msgstr "_Tulajdonságok"
+
+#: ../resources/liferea_menu.ui.h:18
 msgid "_Item"
 msgstr "Ele_m"
 
-#: ../glade/liferea_menu.ui.h:24
+#: ../resources/liferea_menu.ui.h:22
+msgid "Toggle _Read Status"
+msgstr "Olvasottság átka_pcsolása"
+
+#: ../resources/liferea_menu.ui.h:23
+msgid "Toggle Item _Flag"
+msgstr "Elem _jelzésének átkapcsolása"
+
+#: ../resources/liferea_menu.ui.h:24
 msgid "R_emove"
 msgstr "_Eltávolítás"
 
-#: ../glade/liferea_menu.ui.h:28
+#: ../resources/liferea_menu.ui.h:25
+msgid "Open In _Tab"
+msgstr "Megnyitás l_apon"
+
+#: ../resources/liferea_menu.ui.h:26
+msgid "_Open In Browser"
+msgstr "_Megnyitás böngészőben"
+
+#: ../resources/liferea_menu.ui.h:27
+msgid "Open In _External Browser"
+msgstr "Megnyitás _külső böngészőben"
+
+#: ../resources/liferea_menu.ui.h:28
 msgid "_View"
 msgstr "_Nézet"
 
-#: ../glade/liferea_menu.ui.h:29
+#: ../resources/liferea_menu.ui.h:29
 msgid "_Fullscreen"
 msgstr "_Teljes képernyő"
 
-#: ../glade/liferea_menu.ui.h:30
+#: ../resources/liferea_menu.ui.h:30
 msgid "Zoom _In"
 msgstr "N_agyítás"
 
-#: ../glade/liferea_menu.ui.h:31
+#: ../resources/liferea_menu.ui.h:31
 msgid "Zoom _Out"
 msgstr "_Kicsinyítés"
 
-#: ../glade/liferea_menu.ui.h:32
+#: ../resources/liferea_menu.ui.h:32
 msgid "_Normal size"
 msgstr "N_ormál méret"
 
-#: ../glade/liferea_menu.ui.h:33
+#: ../resources/liferea_menu.ui.h:33
 msgid "_Reduced Feed List"
 msgstr "Csökkentett _hírforráslista"
 
-#: ../glade/liferea_menu.ui.h:34
+#: ../resources/liferea_menu.ui.h:34
 msgid "_Tools"
 msgstr "_Eszközök"
 
-#: ../glade/liferea_menu.ui.h:35
+#: ../resources/liferea_menu.ui.h:35
 msgid "_Update Monitor"
 msgstr "_Frissítésfigyelő"
 
-#: ../glade/liferea_menu.ui.h:36
+#: ../resources/liferea_menu.ui.h:36
 msgid "_Preferences"
 msgstr "_Beállítások"
 
-#: ../glade/liferea_menu.ui.h:37
+#: ../resources/liferea_menu.ui.h:37
+#, fuzzy
+msgid "_Sort Feeds"
+msgstr "Hírforrások rendezése"
+
+#: ../resources/liferea_menu.ui.h:38
 msgid "S_earch"
 msgstr "_Keresés"
 
-#: ../glade/liferea_menu.ui.h:39
+#: ../resources/liferea_menu.ui.h:40
 msgid "_Help"
 msgstr "_Súgó"
 
-#: ../glade/liferea_menu.ui.h:40
+#: ../resources/liferea_menu.ui.h:41
 msgid "_Contents"
 msgstr "_Tartalom"
 
-#: ../glade/liferea_menu.ui.h:41
+#: ../resources/liferea_menu.ui.h:42
 msgid "_Quick Reference"
 msgstr "Gyors _hivatkozás"
 
-#: ../glade/liferea_menu.ui.h:42
+#: ../resources/liferea_menu.ui.h:43
 msgid "_FAQ"
 msgstr "_GYIK"
 
-#: ../glade/liferea_menu.ui.h:43
+#: ../resources/liferea_menu.ui.h:44
 msgid "_About"
 msgstr "_Névjegy"
 
-#: ../glade/liferea_toolbar.ui.h:2
-msgid "Adds a subscription to the feed list."
-msgstr "Feliratkozást ad a hírforráslistához."
-
-#: ../glade/liferea_toolbar.ui.h:4
-msgid ""
-"Marks all items of the selected feed list node / in the item list as read."
-msgstr ""
-"Megjelöli a kiválasztott hírforráslista-csomópont vagy az elemlista összes "
-"elemét olvasottként."
-
-#: ../glade/liferea_toolbar.ui.h:9
-msgid "Updates all subscriptions."
-msgstr "Frissíti az összes feliratkozást."
-
-#: ../glade/liferea_toolbar.ui.h:11
-msgid "Show the search dialog."
-msgstr "A keresési párbeszédablak megjelenítése."
-
-#: ../glade/mainwindow.ui.h:2
+#: ../resources/mainwindow.ui.h:2
 msgid "page 1"
 msgstr "1. oldal"
 
-#: ../glade/mainwindow.ui.h:3
+#: ../resources/mainwindow.ui.h:3
 msgid "page 2"
 msgstr "2. oldal"
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:25
+#: ../resources/mainwindow.ui.h:4 ../resources/prefs.ui.h:25
 msgid "Headlines"
 msgstr "Szalagcímek"
 
-#: ../glade/mark_read_dialog.ui.h:1
+#: ../resources/mark_read_dialog.ui.h:1
 msgid "Mark all as read ?"
 msgstr "Megjelöli az összeset olvasottként?"
 
-#: ../glade/mark_read_dialog.ui.h:2
+#: ../resources/mark_read_dialog.ui.h:2
 msgid "Mark all as read"
 msgstr "Összes megjelölése olvasottként"
 
-#: ../glade/mark_read_dialog.ui.h:3
+#: ../resources/mark_read_dialog.ui.h:3
 msgid "Do not ask again"
 msgstr "Ne kérdezzen újra"
 
-#: ../glade/new_folder.ui.h:1
+#: ../resources/new_folder.ui.h:1
 msgid "New Folder"
 msgstr "Új mappa"
 
-#: ../glade/new_folder.ui.h:2
+#: ../resources/new_folder.ui.h:2
 msgid "_Folder name:"
 msgstr "_Mappa neve:"
 
-#: ../glade/new_newsbin.ui.h:2
+#: ../resources/new_newsbin.ui.h:2
 msgid "_News Bin Name:"
 msgstr "_Hírgyűjtő neve:"
 
-#: ../glade/new_newsbin.ui.h:3
+#: ../resources/new_newsbin.ui.h:3
 #, fuzzy
 msgid "_Always show in Reduced Feed List"
 msgstr "Csökkentett _hírforráslista"
 
-#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
+#: ../resources/new_subscription.ui.h:2 ../resources/properties.ui.h:11
 msgid "Feed Source"
 msgstr "Hírforrás forrása"
 
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:12
+#: ../resources/new_subscription.ui.h:3 ../resources/properties.ui.h:12
 msgid "Source Type:"
 msgstr "Forrás típusa:"
 
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:13
+#: ../resources/new_subscription.ui.h:4 ../resources/properties.ui.h:13
 msgid "_URL"
 msgstr "_URL"
 
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:14
+#: ../resources/new_subscription.ui.h:5 ../resources/properties.ui.h:14
 msgid "_Command"
 msgstr "_Parancs"
 
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:15
+#: ../resources/new_subscription.ui.h:6 ../resources/properties.ui.h:15
 msgid "_Local File"
 msgstr "_Helyi fájl"
 
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:16
+#: ../resources/new_subscription.ui.h:7 ../resources/properties.ui.h:16
 msgid "Select File..."
 msgstr "Fájl kiválasztása…"
 
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:17
+#: ../resources/new_subscription.ui.h:8 ../resources/properties.ui.h:17
 msgid "_Source:"
 msgstr "_Forrás:"
 
-#: ../glade/new_subscription.ui.h:9
+#: ../resources/new_subscription.ui.h:9
 msgid "Download / Postprocessing"
 msgstr "Letöltés vagy utófeldolgozás"
 
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:30
+#: ../resources/new_subscription.ui.h:10 ../resources/properties.ui.h:30
 msgid "_Don't use proxy for download"
 msgstr "_Ne használjon proxyt a letöltéshez"
 
-#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:18
+#: ../resources/new_subscription.ui.h:11 ../resources/properties.ui.h:18
 msgid "Use conversion _filter"
 msgstr "Átalakítási _szűrő használata"
 
-#: ../glade/new_subscription.ui.h:12
+#: ../resources/new_subscription.ui.h:12
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -1590,59 +1477,59 @@ msgstr ""
 "hírforrások és könyvtárak eléréséhez. További információkért nézze meg a "
 "dokumentációt."
 
-#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:20
+#: ../resources/new_subscription.ui.h:13 ../resources/properties.ui.h:20
 msgid "Convert _using:"
 msgstr "Átalakítás ennek _használatával:"
 
-#: ../glade/node_source.ui.h:1
+#: ../resources/node_source.ui.h:1
 msgid "Source Selection"
 msgstr "Forráskiválasztás"
 
-#: ../glade/node_source.ui.h:2
+#: ../resources/node_source.ui.h:2
 msgid "_Select the source type you want to add..."
 msgstr "A _hozzáadni kívánt forrástípus kiválasztása…"
 
-#: ../glade/opml_source.ui.h:1
+#: ../resources/opml_source.ui.h:1
 msgid "Add OPML/Planet"
 msgstr "OPML/Planet hozzáadása"
 
-#: ../glade/opml_source.ui.h:2
+#: ../resources/opml_source.ui.h:2
 msgid ""
 "Please specify a local file or an URL pointing to a valid OPML feed list."
 msgstr ""
 "Adjon meg egy helyi fájlt vagy egy érvényes OPML-hírforráslistára mutató URL-"
 "t."
 
-#: ../glade/opml_source.ui.h:3
+#: ../resources/opml_source.ui.h:3
 msgid "_Location"
 msgstr "_Hely"
 
-#: ../glade/opml_source.ui.h:4
+#: ../resources/opml_source.ui.h:4
 msgid "_Select File"
 msgstr "Fájl _kiválasztása"
 
-#: ../glade/prefs.ui.h:1
+#: ../resources/prefs.ui.h:1
 msgid "Liferea Preferences"
 msgstr "Liferea beállításai"
 
-#: ../glade/prefs.ui.h:2
+#: ../resources/prefs.ui.h:2
 msgid "Feed Cache Handling"
 msgstr "Hírforrás gyorsítótárának kezelése"
 
-#: ../glade/prefs.ui.h:3
+#: ../resources/prefs.ui.h:3
 msgid "Default _number of items per feed to save:"
 msgstr "Hírforrásonként elmentendő _elemek alapértelmezett száma:"
 
-#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:27
+#: ../resources/prefs.ui.h:4 ../resources/properties.ui.h:27
 msgid "0"
 msgstr "0"
 
-#: ../glade/prefs.ui.h:5
+#: ../resources/prefs.ui.h:5
 msgid "Feed Update Settings"
 msgstr "Hírforrás frissítésének beállításai"
 
 #. Feed update interval hint in preference dialog.
-#: ../glade/prefs.ui.h:7
+#: ../resources/prefs.ui.h:7
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
 "waste of bandwidth to poll feeds more often than each hour.</i>"
@@ -1651,196 +1538,187 @@ msgstr ""
 "csak a sávszélesség pazarlása a hírforrások óránkéntinél gyakoribb "
 "lekérdezése.</i>"
 
-#: ../glade/prefs.ui.h:8
+#: ../resources/prefs.ui.h:8
 msgid "_Update all subscriptions at startup."
 msgstr "_Minden feliratkozás frissítése induláskor."
 
-#: ../glade/prefs.ui.h:9
+#: ../resources/prefs.ui.h:9
 msgid "Default Feed Refresh _Interval:"
 msgstr "Alapértelmezett hírforrásfrissítési _időköz:"
 
-#: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:6
+#: ../resources/prefs.ui.h:10 ../resources/properties.ui.h:6
 msgid "1"
 msgstr "1"
 
-#: ../glade/prefs.ui.h:11
+#: ../resources/prefs.ui.h:11
 msgid "Feeds"
 msgstr "Hírforrások"
 
-#: ../glade/prefs.ui.h:12
+#: ../resources/prefs.ui.h:12
 msgid "Folder Display Settings"
 msgstr "Mappamegjelenítési beállítások"
 
-#: ../glade/prefs.ui.h:13
+#: ../resources/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr ""
 "_Az összes gyermekhírforrás elemeinek megjelenítése egy mappa kijelölésekor."
 
-#: ../glade/prefs.ui.h:14
+#: ../resources/prefs.ui.h:14
 msgid "_Hide read items."
 msgstr "Olvasott elemek _elrejtése."
 
-#: ../glade/prefs.ui.h:15
+#: ../resources/prefs.ui.h:15
 msgid "Feed Icons (Favicons)"
 msgstr "Hírforrásikonok (böngészőikonok)"
 
-#: ../glade/prefs.ui.h:16
+#: ../resources/prefs.ui.h:16
 msgid "_Update all favicons now"
 msgstr "Összes böngészőikon _frissítése most"
 
-#: ../glade/prefs.ui.h:17
+#: ../resources/prefs.ui.h:17
 msgid "Folders"
 msgstr "Mappák"
 
-#: ../glade/prefs.ui.h:18
+#: ../resources/prefs.ui.h:18
 msgid "Reading Headlines"
 msgstr "Szalagcímek olvasása"
 
-#: ../glade/prefs.ui.h:19
+#: ../resources/prefs.ui.h:19
 msgid "_Skim through articles with:"
 msgstr "_Cikkek átlapozása ezzel:"
 
-#: ../glade/prefs.ui.h:20
+#: ../resources/prefs.ui.h:20
 msgid "_Default View Mode:"
 msgstr "_Alapértelmezett nézetmód:"
 
-#: ../glade/prefs.ui.h:21
+#: ../resources/prefs.ui.h:21
 msgid "_Defer removing read items from folders and search folders."
 msgstr ""
 
-#: ../glade/prefs.ui.h:22
+#: ../resources/prefs.ui.h:22
 #, fuzzy
 msgid "Ask for confirmation when marking all items as read."
 msgstr "Kérjen megerősítést az összes elem olvasottként való megjelölésekor"
 
-#: ../glade/prefs.ui.h:23
+#: ../resources/prefs.ui.h:23
 msgid "Web Integration"
 msgstr "Webes integráció"
 
-#: ../glade/prefs.ui.h:24
+#: ../resources/prefs.ui.h:24
 msgid "_Post Bookmarks to"
 msgstr "_Könyvjelzők küldése ide:"
 
-#: ../glade/prefs.ui.h:26
+#: ../resources/prefs.ui.h:26
 msgid "Internal Browser Settings"
 msgstr "Belső böngésző beállításai"
 
-#: ../glade/prefs.ui.h:27
+#: ../resources/prefs.ui.h:27
 msgid "Open links in Liferea's _window."
 msgstr "Hivatkozások megnyitása a Liferea _ablakában."
 
-#: ../glade/prefs.ui.h:28
+#: ../resources/prefs.ui.h:28
 msgid "_Never run external Javascript."
 msgstr "_Sose futtasson külső JavaScriptet."
 
-#: ../glade/prefs.ui.h:29
+#: ../resources/prefs.ui.h:29
 msgid "_Enable browser plugins."
 msgstr "Böngészőbővítmények _engedélyezése."
 
-#: ../glade/prefs.ui.h:30
+#: ../resources/prefs.ui.h:30
 msgid "External Browser Settings"
 msgstr "Külső böngésző beállításai"
 
-#: ../glade/prefs.ui.h:31
+#: ../resources/prefs.ui.h:31
 msgid "_Browser:"
 msgstr "_Böngésző:"
 
-#: ../glade/prefs.ui.h:32
+#: ../resources/prefs.ui.h:32
 msgid "_Manual:"
 msgstr "_Kézi:"
 
-#: ../glade/prefs.ui.h:34
+#: ../resources/prefs.ui.h:34
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr "<small>(%s az URL-hez)</small>"
 
-#: ../glade/prefs.ui.h:35
+#: ../resources/prefs.ui.h:35
 msgid "Browser"
 msgstr "Böngésző"
 
-#: ../glade/prefs.ui.h:36
+#: ../resources/prefs.ui.h:36
 msgid "Toolbar Settings"
 msgstr "Eszköztár beállításai"
 
-#: ../glade/prefs.ui.h:37
+#: ../resources/prefs.ui.h:37
 msgid "_Hide toolbar."
 msgstr "_Eszköztár elrejtése."
 
-#: ../glade/prefs.ui.h:38
+#: ../resources/prefs.ui.h:38
 msgid "Toolbar _button labels:"
 msgstr "Esz_köztárgombok címkéi:"
 
-#: ../glade/prefs.ui.h:39
+#: ../resources/prefs.ui.h:39
 msgid "Desktop"
 msgstr "Asztal"
 
-#: ../glade/prefs.ui.h:40
+#: ../resources/prefs.ui.h:40
 msgid "HTTP Proxy Server"
 msgstr "HTTP proxykiszolgáló"
 
-#: ../glade/prefs.ui.h:41
+#: ../resources/prefs.ui.h:41
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Automatikus felismerés (GNOME vagy környezet)"
 
-#: ../glade/prefs.ui.h:42
+#: ../resources/prefs.ui.h:42
 msgid "_No Proxy"
 msgstr "_Nincs proxy"
 
-#: ../glade/prefs.ui.h:43
+#: ../resources/prefs.ui.h:43
 msgid "_Manual Setting:"
 msgstr "_Kézi beállítás:"
 
-#: ../glade/prefs.ui.h:44
+#: ../resources/prefs.ui.h:44
 msgid "Proxy _Host:"
 msgstr "Proxy _gépneve:"
 
-#: ../glade/prefs.ui.h:45
+#: ../resources/prefs.ui.h:45
 msgid "Proxy _Port:"
 msgstr "Proxy _portja:"
 
-#: ../glade/prefs.ui.h:46
+#: ../resources/prefs.ui.h:46
 msgid "Use Proxy Au_thentication"
 msgstr "Proxyhi_telesítés használata"
 
-#: ../glade/prefs.ui.h:47
+#: ../resources/prefs.ui.h:47
 msgid "Proxy _Username:"
 msgstr "Proxy _felhasználóneve:"
 
-#: ../glade/prefs.ui.h:48
+#: ../resources/prefs.ui.h:48
 msgid "Proxy Pass_word:"
 msgstr "Proxy jel_szava:"
 
-#: ../glade/prefs.ui.h:49
-msgid ""
-"Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
-"application proxy settings. The system's default proxy settings will be used."
-msgstr ""
-"Az Ön WebKitGTK+ verziója régebbi mint 2.15.3. Ez nem támogatja az "
-"alkalmazásonkénti proxybeállításokat. A rendszer alapértelmezett "
-"proxybeállításai lesznek használva."
-
-#: ../glade/prefs.ui.h:50
+#: ../resources/prefs.ui.h:49
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/prefs.ui.h:51
+#: ../resources/prefs.ui.h:50
 msgid "Privacy Settings"
 msgstr "Adatvédelmi beállítások"
 
-#: ../glade/prefs.ui.h:52
+#: ../resources/prefs.ui.h:51
 #, fuzzy
 msgid "Tell websites that I do _not want to be tracked."
 msgstr "Közölje az oldalakkal, hogy _nem szeretném, ha követnének."
 
-#: ../glade/prefs.ui.h:53
+#: ../resources/prefs.ui.h:52
 msgid "Tell websites not to _sell or share my data."
 msgstr ""
 
-#: ../glade/prefs.ui.h:54
+#: ../resources/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
 msgstr "_Intelligens követésmegelőzés. "
 
-#: ../glade/prefs.ui.h:55
+#: ../resources/prefs.ui.h:54
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
@@ -1848,19 +1726,11 @@ msgstr ""
 "Ez engedélyezi a WebKit <a href=\"https://webkit.org/tracking-prevention/"
 "\">itt leírt</a> funkcióját."
 
-#: ../glade/prefs.ui.h:56
-msgid ""
-"Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
-"higher."
-msgstr ""
-"Az intelligens követésmegelőzés csak a WebKitGtk+ 2.30 vagy újabb "
-"verziójával érhető el."
-
-#: ../glade/prefs.ui.h:57
+#: ../resources/prefs.ui.h:55
 msgid "Use _Reader mode."
 msgstr "_Olvasási mód használata."
 
-#: ../glade/prefs.ui.h:58
+#: ../resources/prefs.ui.h:56
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
@@ -1869,44 +1739,44 @@ msgstr ""
 "betűkészletek vagy követés) <a href=\"https://github.com/mozilla/"
 "readability\">eltávolítását</a>."
 
-#: ../glade/prefs.ui.h:59
+#: ../resources/prefs.ui.h:57
 msgid "Privacy"
 msgstr "Adatvédelem"
 
-#: ../glade/properties.ui.h:1
+#: ../resources/properties.ui.h:1
 msgid "Subscription Properties"
 msgstr "Feliratkozás tulajdonságai"
 
-#: ../glade/properties.ui.h:2
+#: ../resources/properties.ui.h:2
 msgid "Feed _Name"
 msgstr "Hírforrás _neve"
 
-#: ../glade/properties.ui.h:3
+#: ../resources/properties.ui.h:3
 msgid "Update _Interval"
 msgstr "Frissítési _időköz"
 
-#: ../glade/properties.ui.h:4
+#: ../resources/properties.ui.h:4
 msgid "_Use global default update interval."
 msgstr "Globálisan alapértelmezett frissítési időköz _használata."
 
-#: ../glade/properties.ui.h:5
+#: ../resources/properties.ui.h:5
 msgid "_Feed specific update interval of"
 msgstr "Hírforrás-specifikus _frissítési időköz:"
 
-#: ../glade/properties.ui.h:7
+#: ../resources/properties.ui.h:7
 msgid "_Don't update this feed automatically."
 msgstr "_Ne frissítse ezt a hírforrást automatikusan."
 
-#: ../glade/properties.ui.h:9
+#: ../resources/properties.ui.h:9
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Ez a hírforrás-szolgáltató %d percenkénti frissítési időközt javasol."
 
-#: ../glade/properties.ui.h:10
+#: ../resources/properties.ui.h:10
 msgid "General"
 msgstr "Általános"
 
-#: ../glade/properties.ui.h:19
+#: ../resources/properties.ui.h:19
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
 "directories in non-supported formats."
@@ -1914,11 +1784,11 @@ msgstr ""
 "A Liferea külső szűrőparancsfájlokat használhat a nem támogatott formátumú "
 "hírforrások és könyvtárak eléréséhez."
 
-#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+#: ../resources/properties.ui.h:21 ../xslt/item.xml.in.h:1
 msgid "Source"
 msgstr "Forrás"
 
-#: ../glade/properties.ui.h:22
+#: ../resources/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -1927,129 +1797,129 @@ msgstr ""
 "elmentésre kerüljön-e a Liferea programból való kilépéskor. A megjelölt "
 "elemek mindig el lesznek mentve a gyorsítótárba."
 
-#: ../glade/properties.ui.h:23
+#: ../resources/properties.ui.h:23
 msgid "_Default cache settings"
 msgstr "_Alapértelmezett gyorsítótár-beállítások"
 
-#: ../glade/properties.ui.h:24
+#: ../resources/properties.ui.h:24
 msgid "Di_sable cache"
 msgstr "_Gyorsítótár letiltása"
 
-#: ../glade/properties.ui.h:25
+#: ../resources/properties.ui.h:25
 msgid "_Unlimited cache"
 msgstr "_Korlátlan méretű gyorsítótár"
 
-#: ../glade/properties.ui.h:26
+#: ../resources/properties.ui.h:26
 msgid "_Number of items to save:"
 msgstr "_Elmentendő elemek száma:"
 
-#: ../glade/properties.ui.h:28
+#: ../resources/properties.ui.h:28
 msgid "Archive"
 msgstr "Archiválás"
 
-#: ../glade/properties.ui.h:29
+#: ../resources/properties.ui.h:29
 msgid "Use HTTP _authentication"
 msgstr "HTTP _hitelesítés használata"
 
-#: ../glade/properties.ui.h:33
+#: ../resources/properties.ui.h:33
 msgid "Download"
 msgstr "Letöltés"
 
-#: ../glade/properties.ui.h:34
+#: ../resources/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
 msgstr "A hírforrás összes mellékletének _automatikus letöltése."
 
-#: ../glade/properties.ui.h:35
+#: ../resources/properties.ui.h:35
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "A cikkek kiválasztásakor az elem hivatkozásának _automatikus letöltése a "
 "beállított böngészőben."
 
-#: ../glade/properties.ui.h:36
+#: ../resources/properties.ui.h:36
 msgid "Ignore _comment feeds for this subscription."
 msgstr "_Hozzászólás-hírforrások mellőzése ennél a feliratkozásnál."
 
-#: ../glade/properties.ui.h:37
+#: ../resources/properties.ui.h:37
 msgid "_Mark downloaded items as read."
 msgstr "_Letöltött elemek megjelölése olvasottként."
 
-#: ../glade/properties.ui.h:38
+#: ../resources/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr "Teljes tartalom kinyerése a HTML5-ből és a Google AMP-ből"
 
-#: ../glade/reedah_source.ui.h:1
+#: ../resources/reedah_source.ui.h:1
 msgid "Add Reedah Account"
 msgstr "Reedah-fiók hozzáadása"
 
-#: ../glade/reedah_source.ui.h:2
+#: ../resources/reedah_source.ui.h:2
 msgid "Please enter your Reedah account settings."
 msgstr "Adja meg a Reedah-fiókjának beállításait."
 
-#: ../glade/rename_node.ui.h:1
+#: ../resources/rename_node.ui.h:1
 msgid "Rename"
 msgstr "Átnevezés"
 
-#: ../glade/rename_node.ui.h:2
+#: ../resources/rename_node.ui.h:2
 msgid "_New Name:"
 msgstr "Ú_j név:"
 
-#: ../glade/search_folder.ui.h:1
+#: ../resources/search_folder.ui.h:1
 msgid "Search Folder Properties"
 msgstr "Keresési mappa tulajdonságai"
 
-#: ../glade/search_folder.ui.h:2
+#: ../resources/search_folder.ui.h:2
 msgid "Search _Name:"
 msgstr "_Keresés neve:"
 
-#: ../glade/search_folder.ui.h:3
+#: ../resources/search_folder.ui.h:3
 msgid "Search Rules"
 msgstr "Keresési szabályok"
 
-#: ../glade/search_folder.ui.h:4
+#: ../resources/search_folder.ui.h:4
 msgid "Rules"
 msgstr "Szabályok"
 
-#: ../glade/search_folder.ui.h:5
+#: ../resources/search_folder.ui.h:5
 msgid "All rules for this search folder"
 msgstr "Minden szabály ennél a keresési mappánál"
 
-#: ../glade/search_folder.ui.h:6
+#: ../resources/search_folder.ui.h:6
 msgid "Rule Matching"
 msgstr "Szabály illeszkedik"
 
-#: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
+#: ../resources/search_folder.ui.h:7 ../resources/search.ui.h:4
 msgid "A_ny Rule Matches"
 msgstr "_Bármely szabály illeszkedik"
 
-#: ../glade/search_folder.ui.h:8 ../glade/search.ui.h:5
+#: ../resources/search_folder.ui.h:8 ../resources/search.ui.h:5
 msgid "_All Rules Must Match"
 msgstr "_Minden szabálynak illeszkednie kell"
 
-#: ../glade/search_folder.ui.h:9
+#: ../resources/search_folder.ui.h:9
 msgid "Hide read items"
 msgstr "Olvasott elemek elrejtése"
 
-#: ../glade/search.ui.h:1
+#: ../resources/search.ui.h:1
 msgid "Advanced Search"
 msgstr "Speciális keresés"
 
-#: ../glade/search.ui.h:2
+#: ../resources/search.ui.h:2
 msgid "_Search Folder..."
 msgstr "_Keresési mappa…"
 
-#: ../glade/search.ui.h:3
+#: ../resources/search.ui.h:3
 msgid "Find Items that meet the following criteria"
 msgstr "A következő feltételeknek megfelelő elemek keresése"
 
-#: ../glade/simple_search.ui.h:1
+#: ../resources/simple_search.ui.h:1
 msgid "Search All Feeds"
 msgstr "Keresés az összes hírforrásban"
 
-#: ../glade/simple_search.ui.h:2
+#: ../resources/simple_search.ui.h:2
 msgid "_Advanced..."
 msgstr "_Speciális…"
 
-#: ../glade/simple_search.ui.h:3
+#: ../resources/simple_search.ui.h:3
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -2057,11 +1927,11 @@ msgstr ""
 "Megkezdi a megadott szöveg keresését az összes hírforrásban. A keresési "
 "eredmény az elemek listájában jelenik meg."
 
-#: ../glade/simple_search.ui.h:4
+#: ../resources/simple_search.ui.h:4
 msgid "_Search for:"
 msgstr "_Keresés erre:"
 
-#: ../glade/simple_search.ui.h:5
+#: ../resources/simple_search.ui.h:5
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -2069,15 +1939,15 @@ msgstr ""
 "Írjon be egy keresési karakterláncot, amelyet a Liferea programnak az elemek "
 "címében vagy tartalmában kell keresnie."
 
-#: ../glade/simple_subscription.ui.h:2
+#: ../resources/simple_subscription.ui.h:2
 msgid "Advanced..."
 msgstr "Speciális…"
 
-#: ../glade/simple_subscription.ui.h:3
+#: ../resources/simple_subscription.ui.h:3
 msgid "Feed _Source"
 msgstr "Hírforrás _forrása"
 
-#: ../glade/simple_subscription.ui.h:4
+#: ../resources/simple_subscription.ui.h:4
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
@@ -2085,43 +1955,43 @@ msgstr ""
 "Adjon meg egy webhelyet, ahol a program automatikusan megkeresi a "
 "hírforrást, vagy a hírforrás pontos címét, ha tudja."
 
-#: ../glade/theoldreader_source.ui.h:1
+#: ../resources/theoldreader_source.ui.h:1
 msgid "Add TheOldReader Account"
 msgstr "TheOldReader-fiók hozzáadása"
 
-#: ../glade/theoldreader_source.ui.h:2
+#: ../resources/theoldreader_source.ui.h:2
 msgid "Please enter your TheOldReader account settings."
 msgstr "Adja meg a TheOldReader-fiókjának beállításait."
 
-#: ../glade/ttrss_source.ui.h:1
+#: ../resources/ttrss_source.ui.h:1
 msgid "Add Tiny Tiny RSS Account"
 msgstr "Tiny Tiny RSS-fiók hozzáadása"
 
-#: ../glade/ttrss_source.ui.h:2
+#: ../resources/ttrss_source.ui.h:2
 msgid "Please enter your TinyTinyRSS account settings."
 msgstr "Adja meg a TinyTinyRSS-fiókjának beállításait."
 
-#: ../glade/ttrss_source.ui.h:3
+#: ../resources/ttrss_source.ui.h:3
 msgid "_Server URL"
 msgstr "_Kiszolgáló URL-e"
 
-#: ../glade/ttrss_source.ui.h:5
+#: ../resources/ttrss_source.ui.h:5
 msgid "_Username"
 msgstr "_Felhasználónév"
 
-#: ../glade/update_monitor.ui.h:1
+#: ../resources/update_monitor.ui.h:1
 msgid "Update Monitor"
 msgstr "Frissítésfigyelő"
 
-#: ../glade/update_monitor.ui.h:2
+#: ../resources/update_monitor.ui.h:2
 msgid "Stop All"
 msgstr "Összes leállítása"
 
-#: ../glade/update_monitor.ui.h:3
+#: ../resources/update_monitor.ui.h:3
 msgid "_Pending Requests"
 msgstr "_Függőben lévő kérések"
 
-#: ../glade/update_monitor.ui.h:4
+#: ../resources/update_monitor.ui.h:4
 msgid "_Downloading Now"
 msgstr "_Letöltés most"
 
@@ -2289,6 +2159,104 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Keresési mappa:"
+
+#, c-format
+#~ msgid "\"%s\" is not a valid enclosure type config file!"
+#~ msgstr "A(z) „%s” nem érvényes melléklettípus beállítófájl."
+
+#, fuzzy, c-format
+#~ msgid ""
+#~ "Command failed: \n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr "Az e-mail-parancs sikertelen: %s"
+
+#~ msgid "No feed list source types found!"
+#~ msgstr "Nem találhatók hírforráslista-forrástípusok."
+
+#~ msgid "Email The Author"
+#~ msgstr "E-mail küldése a szerzőnek"
+
+#~ msgid "Copy to News Bin"
+#~ msgstr "Másolás hírgyűjtőbe"
+
+#, c-format
+#~ msgid "_Bookmark at %s"
+#~ msgstr "_Könyvjelzőzés itt: %s"
+
+#~ msgid "Copy Item _Location"
+#~ msgstr "_Elem helyének másolása"
+
+#~ msgid "R_emove Item"
+#~ msgstr "Elem el_távolítása"
+
+#~ msgid "_Update Folder"
+#~ msgstr "Mappa f_rissítése"
+
+#~ msgid "New _Subscription..."
+#~ msgstr "Új _feliratkozás…"
+
+#~ msgid "New S_ource..."
+#~ msgstr "Új _forrás…"
+
+#~ msgid "_New"
+#~ msgstr "Ú_j"
+
+#~ msgid "_Mark All As Read"
+#~ msgstr "Összes megjelölése _olvasottként"
+
+#~ msgid "_Rebuild"
+#~ msgstr "Új_raépítés"
+
+#~ msgid "Convert To Local Subscriptions..."
+#~ msgstr "Átalakítás helyi feliratkozásokra…"
+
+#~ msgid "GNOME default"
+#~ msgstr "GNOME alapértelmezett"
+
+#~ msgid "Text below icons"
+#~ msgstr "Szöveg az ikonok alatt"
+
+#~ msgid "Text beside icons"
+#~ msgstr "Szöveg az ikonok mellett"
+
+#~ msgid "Icons only"
+#~ msgstr "Csak ikonok"
+
+#~ msgid "Text only"
+#~ msgstr "Csak szöveg"
+
+#~ msgid "Adds a subscription to the feed list."
+#~ msgstr "Feliratkozást ad a hírforráslistához."
+
+#~ msgid ""
+#~ "Marks all items of the selected feed list node / in the item list as read."
+#~ msgstr ""
+#~ "Megjelöli a kiválasztott hírforráslista-csomópont vagy az elemlista "
+#~ "összes elemét olvasottként."
+
+#~ msgid "Updates all subscriptions."
+#~ msgstr "Frissíti az összes feliratkozást."
+
+#~ msgid "Show the search dialog."
+#~ msgstr "A keresési párbeszédablak megjelenítése."
+
+#~ msgid ""
+#~ "Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
+#~ "application proxy settings. The system's default proxy settings will be "
+#~ "used."
+#~ msgstr ""
+#~ "Az Ön WebKitGTK+ verziója régebbi mint 2.15.3. Ez nem támogatja az "
+#~ "alkalmazásonkénti proxybeállításokat. A rendszer alapértelmezett "
+#~ "proxybeállításai lesznek használva."
+
+#~ msgid ""
+#~ "Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
+#~ "higher."
+#~ msgstr ""
+#~ "Az intelligens követésmegelőzés csak a WebKitGtk+ 2.30 vagy újabb "
+#~ "verziójával érhető el."
 
 #~ msgid ""
 #~ "You have not configured a download tool yet! Please do so in the "

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.2.20\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 03:01+0100\n"
+"POT-Creation-Date: 2025-01-03 03:21+0100\n"
 "PO-Revision-Date: 2007-08-19 13:26+0300\n"
 "Last-Translator:  <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian Latin\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:347
-#: ../glade/mainwindow.ui.h:1
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:338
+#: ../resources/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr "Liferea"
 
@@ -59,30 +59,25 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../plugins/headerbar.py:67 ../glade/liferea_menu.ui.h:20
-#: ../glade/liferea_toolbar.ui.h:5
+#: ../plugins/headerbar.py:67 ../resources/liferea_menu.ui.h:20
 msgid "Previous Item"
 msgstr ""
 
-#: ../plugins/headerbar.py:73 ../glade/liferea_menu.ui.h:21
-#: ../glade/liferea_toolbar.ui.h:6
+#: ../plugins/headerbar.py:73 ../resources/liferea_menu.ui.h:21
 #, fuzzy
 msgid "Next Item"
 msgstr "_Nastupny niečytany element"
 
-#: ../plugins/headerbar.py:81 ../glade/liferea_menu.ui.h:19
-#: ../glade/liferea_toolbar.ui.h:7
+#: ../plugins/headerbar.py:81 ../resources/liferea_menu.ui.h:19
 msgid "_Next Unread Item"
 msgstr "_Nastupny niečytany element"
 
-#: ../plugins/headerbar.py:89 ../glade/liferea_menu.ui.h:14
-#: ../glade/liferea_toolbar.ui.h:3
+#: ../plugins/headerbar.py:89 ../resources/liferea_menu.ui.h:14
 #, fuzzy
 msgid "_Mark Items Read"
 msgstr "/_Zaznač jak pračytanaje"
 
-#: ../plugins/headerbar.py:113 ../glade/liferea_menu.ui.h:38
-#: ../glade/liferea_toolbar.ui.h:10
+#: ../plugins/headerbar.py:113 ../resources/liferea_menu.ui.h:39
 msgid "Search All Feeds..."
 msgstr "Šukaj va ŭsich kanałach..."
 
@@ -117,7 +112,7 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: ../plugins/plugin-installer.py:128 ../glade/properties.ui.h:39
+#: ../plugins/plugin-installer.py:128 ../resources/properties.ui.h:39
 msgid "Advanced"
 msgstr "Admysłovaje"
 
@@ -271,15 +266,87 @@ msgstr ""
 msgid "Quit"
 msgstr "_Vyjdzi"
 
+#: ../src/actions/item_actions.c:120
+msgid "You must select a feed to delete its items!"
+msgstr "Ty pavinny abrać kanał, dla jakoha vydalić elementy!"
+
+#: ../src/actions/item_actions.c:136 ../src/ui/item_list_view.c:991
+#: ../src/ui/item_list_view.c:1006
+msgid "No item has been selected"
+msgstr "Elementy nie zaznačanyja"
+
+#: ../src/actions/item_actions.c:187
+#, fuzzy, c-format
+msgid "Email command failed: %s"
+msgstr "Pamyłka zahadu hartača: %s"
+
+#: ../src/actions/item_actions.c:190 ../src/browser.c:101
+#, c-format
+msgid "Starting: \"%s\""
+msgstr "Startujecca: \"%s\""
+
+#: ../src/actions/node_actions.c:55 ../src/actions/shell_actions.c:60
+msgid "Liferea is in offline mode. No update possible."
+msgstr "Liferea u adłučanym režymie. Aktualizacyja niemahčymaja."
+
+#: ../src/actions/node_actions.c:165
+msgid "Save items to file"
+msgstr ""
+
+#: ../src/actions/node_actions.c:168 ../src/ui/feed_list_view.c:776
+#: ../src/ui/feed_list_view.c:820
+#, fuzzy
+msgid "_Cancel"
+msgstr "Anuluj _usie"
+
+#: ../src/actions/node_actions.c:170
+msgid "_Save"
+msgstr ""
+
+#: ../src/actions/node_actions.c:179
+msgid "RSS 2.0 files"
+msgstr ""
+
+#: ../src/actions/node_actions.c:185
+#, fuzzy
+msgid "All files"
+msgstr "_Lakalny fajł"
+
+#: ../src/actions/node_actions.c:190 ../src/ui/browser_tabs.c:266
+msgid "Untitled"
+msgstr "Biaz nazvy"
+
+#: ../src/actions/shell_actions.c:113
+#, fuzzy
+msgid "all feeds"
+msgstr "Šukaj va ŭsich kanałach"
+
+#: ../src/actions/shell_actions.c:114
+#, fuzzy, c-format
+msgid "Mark %s as read ?"
+msgstr "Zaznač usie jak pračytanyja"
+
+#: ../src/actions/shell_actions.c:118
+#, fuzzy, c-format
+msgid "Are you sure you want to mark all items in %s as read ?"
+msgstr "Ty ŭpeŭnieny, što chočaš vydalić \"%s\"?"
+
+#: ../src/actions/shell_actions.c:177
+msgid "Help Topics"
+msgstr "Temy dapamohi"
+
+#: ../src/actions/shell_actions.c:183
+msgid "Quick Reference"
+msgstr "Chutki ahlad"
+
+#: ../src/actions/shell_actions.c:189
+msgid "FAQ"
+msgstr "Pytańni j adkazy"
+
 #: ../src/browser.c:81 ../src/browser.c:98
 #, c-format
 msgid "Browser command failed: %s"
 msgstr "Pamyłka zahadu hartača: %s"
-
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1138
-#, c-format
-msgid "Starting: \"%s\""
-msgstr "Startujecca: \"%s\""
 
 #. unauthorized
 #: ../src/comments.c:116
@@ -315,20 +382,6 @@ msgstr "%b %d %l:%M %p"
 #: ../src/date.c:167
 msgid "%b %d %Y"
 msgstr "%b %d %Y"
-
-#: ../src/enclosure.c:201
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "\"%s\" nie źjaŭlajecca pravilnym fajłam kanfihuracyi typu dałučeńnia!"
-
-#: ../src/enclosure.c:301
-#, fuzzy, c-format
-msgid ""
-"Command failed: \n"
-"\n"
-"%s\n"
-"\n"
-msgstr "Pamyłka zahadu hartača: %s"
 
 #: ../src/export.c:172
 #, fuzzy, c-format
@@ -368,7 +421,7 @@ msgid "Import"
 msgstr "Impartuj"
 
 #: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 #, fuzzy
 msgid "OPML Files"
 msgstr "Abiary fajł OPML"
@@ -401,28 +454,24 @@ msgstr "Niapravilny XML!"
 msgid "Miniflux"
 msgstr ""
 
-#: ../src/node_source.c:318
-msgid "No feed list source types found!"
-msgstr "Typy krynic dla śpisu kanałaŭ nia znojdzienyja!"
-
-#: ../src/node_source.c:347
+#: ../src/node_source.c:342
 msgid "Source Type"
 msgstr "Typ krynicy"
 
-#: ../src/node_source.c:398
+#: ../src/node_source.c:393
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:564
+#: ../src/node_source.c:559
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr ""
 
-#: ../src/node_sources/default_source.c:135 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
+#: ../src/node_sources/default_source.c:135
+#: ../resources/new_subscription.ui.h:1 ../resources/simple_subscription.ui.h:1
 msgid "New Subscription"
 msgstr "Novaja padpiska"
 
@@ -433,7 +482,7 @@ msgstr "Novaja padpiska"
 msgid "Login failed!"
 msgstr "Pamyłka ŭruchamleńnia kontu na Google Reader'y!"
 
-#: ../src/node_sources/google_source.c:404
+#: ../src/node_sources/google_source.c:402
 #, fuzzy
 msgid "Google Reader API"
 msgstr "Google Reader"
@@ -446,11 +495,12 @@ msgstr ""
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "Choose OPML File"
 msgstr "Abiary fajł OPML"
 
-#: ../src/node_sources/opml_source.c:371 ../src/ui/subscription_dialog.c:352
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:285
+#: ../src/ui/subscription_dialog.c:292
 msgid "_Open"
 msgstr ""
 
@@ -458,7 +508,7 @@ msgstr ""
 msgid "New OPML Subscription"
 msgstr "Novaja padpiska OPML"
 
-#: ../src/node_sources/reedah_source.c:333
+#: ../src/node_sources/reedah_source.c:331
 msgid "Reedah"
 msgstr ""
 
@@ -466,7 +516,7 @@ msgstr ""
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr ""
 
-#: ../src/node_sources/theoldreader_source.c:362
+#: ../src/node_sources/theoldreader_source.c:360
 #, fuzzy
 msgid "TheOldReader"
 msgstr "Hartač RSS"
@@ -493,7 +543,7 @@ msgid ""
 "%s or later!"
 msgstr ""
 
-#: ../src/node_sources/ttrss_source.c:470
+#: ../src/node_sources/ttrss_source.c:468
 msgid "Tiny Tiny RSS"
 msgstr ""
 
@@ -501,12 +551,12 @@ msgstr ""
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 
-#: ../src/node_providers/newsbin.c:133
+#: ../src/node_providers/newsbin.c:132
 #, fuzzy
 msgid "News Bin Properties"
 msgstr "Ułaścivaści padpiski"
 
-#: ../src/node_providers/newsbin.c:137 ../glade/new_newsbin.ui.h:1
+#: ../src/node_providers/newsbin.c:136 ../resources/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Stvary koš navinaŭ"
 
@@ -515,104 +565,104 @@ msgid "New Search Folder"
 msgstr "Novy kataloh pošuku"
 
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:397
+#: ../src/itemlist.c:409
 #, fuzzy
 msgid "There are no unread items"
 msgstr "Nia niečytanych elementaŭ "
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:271
 #, fuzzy
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr "                   STAN moža być `shown', `iconified' albo `hidden'"
 
-#: ../src/liferea_application.c:280
+#: ../src/liferea_application.c:271
 msgid "STATE"
 msgstr ""
 
-#: ../src/liferea_application.c:281
+#: ../src/liferea_application.c:272
 #, fuzzy
 msgid "Show version information and exit"
 msgstr "  --version        Pakažy źviestki ab versii i vyjdzi"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:273
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "Novaja padpiska"
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:273
 msgid "uri"
 msgstr ""
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:274
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:279
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr "  --debug-all      Pakazvaj debugavyja paviedamleńni ŭsich typaŭ"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:280
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr ""
 "  --debug-conf     Pakazvaj debugavyja paviedamleńni dla pracy z "
 "kanfihuracyjaj"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:281
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr ""
 "  --debug-conf     Pakazvaj debugavyja paviedamleńni dla pracy z "
 "kanfihuracyjaj"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr ""
 "  --debug-conf     Pakazvaj debugavyja paviedamleńni dla pracy z "
 "kanfihuracyjaj"
 
-#: ../src/liferea_application.c:292
+#: ../src/liferea_application.c:283
 #, fuzzy
 msgid "Print debugging messages of all GUI functions"
 msgstr ""
 "  --debug-gui      Pakazvaj debugavyja paviedamleńni dla ŭsich funkcyj GUI"
 
-#: ../src/liferea_application.c:293
+#: ../src/liferea_application.c:284
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 
-#: ../src/liferea_application.c:294
+#: ../src/liferea_application.c:285
 #, fuzzy
 msgid "Print debugging messages of all network activity"
 msgstr ""
 "  --debug-net      Pakazvaj debugavyja paviedamleńni dla dostupu da sietki"
 
-#: ../src/liferea_application.c:295
+#: ../src/liferea_application.c:286
 #, fuzzy
 msgid "Print debugging messages of all parsing functions"
 msgstr ""
 "  --debug-parsing  Pakazvaj debugavyja paviedamleńni dla ŭsich funkcyj "
 "razboru"
 
-#: ../src/liferea_application.c:296
+#: ../src/liferea_application.c:287
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr ""
 "  --debug-update   Pakazvaj debugavyja paviedamleńni dla aktualizacyj kanałaŭ"
 
-#: ../src/liferea_application.c:297
+#: ../src/liferea_application.c:288
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr ""
 "  --debug-conf     Pakazvaj debugavyja paviedamleńni dla pracy z "
 "kanfihuracyjaj"
 
-#: ../src/liferea_application.c:302 ../src/liferea_application.c:303
+#: ../src/liferea_application.c:293 ../src/liferea_application.c:294
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr ""
@@ -868,90 +918,61 @@ msgstr "Aktualizacyja..."
 msgid "Updating '%s'..."
 msgstr "Aktualizacyja..."
 
-#: ../src/ui/auth_dialog.c:114
+#: ../src/ui/auth_dialog.c:110
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Uviadzi nazvu karystalnika j parol dla \"%s\" (%s):"
 
-#: ../src/ui/auth_dialog.c:116
+#: ../src/ui/auth_dialog.c:112
 msgid "Unknown source"
 msgstr "Nieviadomaja krynica"
 
-#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:246
-msgid "Untitled"
-msgstr "Biaz nazvy"
-
-#: ../src/ui/feed_list_view.c:426
-msgid "Liferea is in offline mode. No update possible."
-msgstr "Liferea u adłučanym režymie. Aktualizacyja niemahčymaja."
-
-#: ../src/ui/feed_list_view.c:472
-#, fuzzy
-msgid "all feeds"
-msgstr "Šukaj va ŭsich kanałach"
-
-#: ../src/ui/feed_list_view.c:473
-#, fuzzy, c-format
-msgid "Mark %s as read ?"
-msgstr "Zaznač usie jak pračytanyja"
-
-#: ../src/ui/feed_list_view.c:477
-#, fuzzy, c-format
-msgid "Are you sure you want to mark all items in %s as read ?"
-msgstr "Ty ŭpeŭnieny, što chočaš vydalić \"%s\"?"
-
-#: ../src/ui/feed_list_view.c:615
+#: ../src/ui/feed_list_view.c:495
 msgid "(Empty)"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:825
+#: ../src/ui/feed_list_view.c:704
 #, c-format
 msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:894
+#: ../src/ui/feed_list_view.c:766
 msgid "Deleting entry"
 msgstr "Vydaleńnie elementu"
 
-#: ../src/ui/feed_list_view.c:895
+#: ../src/ui/feed_list_view.c:767
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "Ty ŭpeŭnieny, što chočaš vydalić \"%s\" i jaho źmieściva?"
 
-#: ../src/ui/feed_list_view.c:895
+#: ../src/ui/feed_list_view.c:767
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Ty ŭpeŭnieny, što chočaš vydalić \"%s\"?"
 
-#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:947
-#: ../src/ui/popup_menu.c:224
-#, fuzzy
-msgid "_Cancel"
-msgstr "Anuluj _usie"
-
-#: ../src/ui/feed_list_view.c:905 ../src/ui/popup_menu.c:375
+#: ../src/ui/feed_list_view.c:777
 #, fuzzy
 msgid "_Delete"
 msgstr "/_Vydal"
 
-#: ../src/ui/feed_list_view.c:907
+#: ../src/ui/feed_list_view.c:779
 msgid "Deletion Confirmation"
 msgstr "Paćvierdžańnie vydaleńnia"
 
-#: ../src/ui/feed_list_view.c:935
+#: ../src/ui/feed_list_view.c:808
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:948
+#: ../src/ui/feed_list_view.c:821
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:950
+#: ../src/ui/feed_list_view.c:823
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Paćvierdžańnie vydaleńnia"
@@ -961,41 +982,32 @@ msgstr "Paćvierdžańnie vydaleńnia"
 msgid "Couldn't find pixmap file: %s"
 msgstr "Niemahčyma znajści fajł pikselnaj mapy: %s"
 
-#: ../src/ui/item_list_view.c:113
-msgid "This item has no link specified!"
-msgstr "Hety element nia maje akreślenaje spasyłki!"
-
-#: ../src/ui/item_list_view.c:492
+#: ../src/ui/item_list_view.c:456
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:853
+#: ../src/ui/item_list_view.c:819
 msgid "Headline"
 msgstr "Zahałovak"
 
-#: ../src/ui/item_list_view.c:871
+#: ../src/ui/item_list_view.c:837
 msgid "Date"
 msgstr "Data"
 
-#: ../src/ui/item_list_view.c:1040
-msgid "You must select a feed to delete its items!"
-msgstr "Ty pavinny abrać kanał, dla jakoha vydalić elementy!"
+#: ../src/ui/itemview.c:511
+msgid "This item has no link specified!"
+msgstr "Hety element nia maje akreślenaje spasyłki!"
 
-#: ../src/ui/item_list_view.c:1056 ../src/ui/item_list_view.c:1134
-#: ../src/ui/item_list_view.c:1149
-msgid "No item has been selected"
-msgstr "Elementy nie zaznačanyja"
-
-#: ../src/ui/liferea_browser.c:483
+#: ../src/ui/liferea_browser.c:482
 #, fuzzy
 msgid "Content download failed! Try disabling reader mode."
 msgstr "Abiary kataloh dziela zahruzak"
 
-#: ../src/ui/liferea_browser.c:496
+#: ../src/ui/liferea_browser.c:495
 msgid "Content extraction failed! Try disabling reader mode."
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:410
+#: ../src/ui/liferea_shell.c:328
 #, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
@@ -1003,7 +1015,7 @@ msgstr[0] " (%d novy)"
 msgstr[1] " (%d novyja)"
 msgstr[2] " (%d novych)"
 
-#: ../src/ui/liferea_shell.c:415
+#: ../src/ui/liferea_shell.c:333
 #, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
@@ -1011,214 +1023,50 @@ msgstr[0] "%d niepračytany%s"
 msgstr[1] "%d niepračytanyja%s"
 msgstr[2] "%d niepračytanych%s"
 
-#: ../src/ui/liferea_shell.c:857
-msgid "Help Topics"
-msgstr "Temy dapamohi"
-
-#: ../src/ui/liferea_shell.c:863
-msgid "Quick Reference"
-msgstr "Chutki ahlad"
-
-#: ../src/ui/liferea_shell.c:869
-msgid "FAQ"
-msgstr "Pytańni j adkazy"
-
-#: ../src/ui/liferea_shell.c:1135
-#, fuzzy, c-format
-msgid "Email command failed: %s"
-msgstr "Pamyłka zahadu hartača: %s"
-
-#: ../src/ui/popup_menu.c:80 ../glade/liferea_menu.ui.h:25
-msgid "Open In _Tab"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:84 ../glade/liferea_menu.ui.h:26
-#, fuzzy
-msgid "_Open In Browser"
-msgstr "_Adčyni ŭ hartačy"
-
-#: ../src/ui/popup_menu.c:88 ../glade/liferea_menu.ui.h:27
-#, fuzzy
-msgid "Open In _External Browser"
-msgstr "<span weight=\"bold\">Nałady vonkavaha hartača</span>"
-
-#: ../src/ui/popup_menu.c:93
-msgid "Email The Author"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:118
-#, fuzzy
-msgid "Copy to News Bin"
-msgstr "/Skapijuj u koš navinaŭ/%s"
-
-#: ../src/ui/popup_menu.c:126
-#, fuzzy, c-format
-msgid "_Bookmark at %s"
-msgstr "/_Zrabi zakładku dla spasyłki na %s"
-
-#: ../src/ui/popup_menu.c:132
-#, fuzzy
-msgid "Copy Item _Location"
-msgstr "/_Skapijuj adras spasyłki"
-
-#: ../src/ui/popup_menu.c:141 ../glade/liferea_menu.ui.h:22
-msgid "Toggle _Read Status"
-msgstr "Źmiani _stan pračytanaści"
-
-#: ../src/ui/popup_menu.c:145 ../glade/liferea_menu.ui.h:23
-msgid "Toggle Item _Flag"
-msgstr "Źmiani ś_ciah elementu"
-
-#: ../src/ui/popup_menu.c:149
-#, fuzzy
-msgid "R_emove Item"
-msgstr "/_Vydal element"
-
-#: ../src/ui/popup_menu.c:221
-msgid "Save items to file"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:226
-msgid "_Save"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:235
-msgid "RSS 2.0 files"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:241
-#, fuzzy
-msgid "All files"
-msgstr "_Lakalny fajł"
-
-#: ../src/ui/popup_menu.c:317 ../glade/liferea_menu.ui.h:13
-msgid "_Update"
-msgstr "_Aktualizuj"
-
-#: ../src/ui/popup_menu.c:319
-#, fuzzy
-msgid "_Update Folder"
-msgstr "/_Aktualizuj kataloh"
-
-#: ../src/ui/popup_menu.c:329
-#, fuzzy
-msgid "New _Subscription..."
-msgstr "_Novaja padpiska..."
-
-#: ../src/ui/popup_menu.c:332 ../glade/liferea_menu.ui.h:5
-msgid "New _Folder..."
-msgstr "Novy _kataloh..."
-
-#: ../src/ui/popup_menu.c:335 ../glade/liferea_menu.ui.h:6
-msgid "New S_earch Folder..."
-msgstr "Novy kataloh _pošuku..."
-
-#: ../src/ui/popup_menu.c:336
-#, fuzzy
-msgid "New S_ource..."
-msgstr "Novaja _krynica..."
-
-#: ../src/ui/popup_menu.c:337 ../glade/liferea_menu.ui.h:8
-msgid "New _News Bin..."
-msgstr "Novy _koš navinaŭ..."
-
-#: ../src/ui/popup_menu.c:340
-#, fuzzy
-msgid "_New"
-msgstr "/_Novy"
-
-#: ../src/ui/popup_menu.c:349
-#, fuzzy
-msgid "Sort Feeds"
-msgstr "Impartuj śpis kanałaŭ"
-
-#: ../src/ui/popup_menu.c:357
-#, fuzzy
-msgid "_Mark All As Read"
-msgstr "/_Zaznač usie jak pračytanyja"
-
-#: ../src/ui/popup_menu.c:359
-msgid "_Export Items To File"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:367
-msgid "_Rebuild"
-msgstr ""
-
-#: ../src/ui/popup_menu.c:376 ../glade/liferea_menu.ui.h:17
-#, fuzzy
-msgid "_Properties"
-msgstr "_Ułaścivaści..."
-
-#: ../src/ui/popup_menu.c:383
-#, fuzzy
-msgid "Convert To Local Subscriptions..."
-msgstr "_Novaja padpiska..."
-
-#: ../src/ui/preferences_dialog.c:69
-msgid "GNOME default"
-msgstr "zmoŭčany dla GNOME'a"
-
-#: ../src/ui/preferences_dialog.c:70
-msgid "Text below icons"
-msgstr "Tekst pad ikonami"
-
-#: ../src/ui/preferences_dialog.c:71
-msgid "Text beside icons"
-msgstr "Tekst pa bakoch ikonaŭ"
-
-#: ../src/ui/preferences_dialog.c:72
-msgid "Icons only"
-msgstr "Tolki ikony"
-
-#: ../src/ui/preferences_dialog.c:73
-msgid "Text only"
-msgstr "Tolki tekst"
-
-#: ../src/ui/preferences_dialog.c:81 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:67 ../src/ui/subscription_dialog.c:43
 msgid "minutes"
 msgstr "chvilin"
 
-#: ../src/ui/preferences_dialog.c:82 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:68 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr "hadzin"
 
-#: ../src/ui/preferences_dialog.c:83 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:69 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr "dzion"
 
-#: ../src/ui/preferences_dialog.c:88
+#: ../src/ui/preferences_dialog.c:74
 msgid "Space"
 msgstr "Prabieł"
 
-#: ../src/ui/preferences_dialog.c:89
+#: ../src/ui/preferences_dialog.c:75
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> Prabieł"
 
-#: ../src/ui/preferences_dialog.c:90
+#: ../src/ui/preferences_dialog.c:76
 msgid "<Alt> Space"
 msgstr "<Alt> Prabieł"
 
-#: ../src/ui/preferences_dialog.c:95
+#: ../src/ui/preferences_dialog.c:81
 #, fuzzy
 msgid "Normal View"
 msgstr "_Zvyčajny vyhlad"
 
-#: ../src/ui/preferences_dialog.c:96
+#: ../src/ui/preferences_dialog.c:82
 #, fuzzy
 msgid "Wide View"
 msgstr "Š_yroki vyhlad"
 
-#: ../src/ui/preferences_dialog.c:97
+#: ../src/ui/preferences_dialog.c:83
 msgid "Automatic"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:406
+#: ../src/ui/preferences_dialog.c:374
 #, fuzzy
 msgid "Default Browser"
 msgstr "Zmoŭčany hartač GNOME'a"
 
-#: ../src/ui/preferences_dialog.c:408
+#: ../src/ui/preferences_dialog.c:376
 msgid "Manual"
 msgstr "Admysłovy"
 
@@ -1227,16 +1075,16 @@ msgstr "Admysłovy"
 msgid "Remove"
 msgstr "_Vydal"
 
-#: ../src/ui/search_dialog.c:106
+#: ../src/ui/search_dialog.c:120
 #, fuzzy
 msgid "Saved Search"
 msgstr "Admysłovaje"
 
-#: ../src/ui/subscription_dialog.c:352
+#: ../src/ui/subscription_dialog.c:285 ../src/ui/subscription_dialog.c:292
 msgid "Choose File"
 msgstr "Abiary fajł"
 
-#: ../src/ui/subscription_dialog.c:424
+#: ../src/ui/subscription_dialog.c:357
 #, c-format
 msgid "The provider of this feed suggests an update interval of %d minute."
 msgid_plural ""
@@ -1245,11 +1093,11 @@ msgstr[0] "Vydaviec hetaha kanału raić intervał aktualizacyi ŭ %d chvilinu."
 msgstr[1] "Vydaviec hetaha kanału raić intervał aktualizacyi ŭ %d chvilin."
 msgstr[2] "Vydaviec hetaha kanału raić intervał aktualizacyi ŭ %d chvilin."
 
-#: ../src/ui/subscription_dialog.c:428
+#: ../src/ui/subscription_dialog.c:361
 msgid "This feed specifies no default update interval."
 msgstr "Dla hetaha kanału nie akreśleny zmoŭčany intervał aktualizacyi."
 
-#: ../src/ui/ui_common.c:206
+#: ../src/ui/ui_common.c:204
 #, fuzzy
 msgid "All Files"
 msgstr "_Lakalny fajł"
@@ -1285,68 +1133,68 @@ msgstr "Pamyłka: Niemahčyma adčynić fajł \"%s\""
 msgid "Error: There is no file \"%s\""
 msgstr "Pamyłka: Fajł \"%s\" nie isnuje"
 
-#: ../src/webkit/liferea_web_view.c:163
+#: ../src/webkit/liferea_web_view.c:165
 #, fuzzy
 msgid "Open Link In _Tab"
 msgstr "/Adčyni spasyłku ŭ _kartcy"
 
-#: ../src/webkit/liferea_web_view.c:164
+#: ../src/webkit/liferea_web_view.c:166
 #, fuzzy
 msgid "Open Link In Browser"
 msgstr "/_Adčyni spasyłku ŭ hartačy"
 
-#: ../src/webkit/liferea_web_view.c:165
+#: ../src/webkit/liferea_web_view.c:167
 #, fuzzy
 msgid "Open Link In External Browser"
 msgstr "/_Adčyni spasyłku ŭ hartačy"
 
-#: ../src/webkit/liferea_web_view.c:171
+#: ../src/webkit/liferea_web_view.c:173
 #, fuzzy, c-format
 msgid "_Bookmark Link at %s"
 msgstr "/_Zrabi zakładku dla spasyłki na %s"
 
-#: ../src/webkit/liferea_web_view.c:178
+#: ../src/webkit/liferea_web_view.c:180
 #, fuzzy
 msgid "_Copy Link Location"
 msgstr "/_Skapijuj adras spasyłki"
 
-#: ../src/webkit/liferea_web_view.c:181
+#: ../src/webkit/liferea_web_view.c:183
 #, fuzzy
 msgid "_View Image"
 msgstr "_Vyhlad"
 
-#: ../src/webkit/liferea_web_view.c:182
+#: ../src/webkit/liferea_web_view.c:184
 #, fuzzy
 msgid "_Copy Image Location"
 msgstr "/_Skapijuj adras spasyłki"
 
-#: ../src/webkit/liferea_web_view.c:185
+#: ../src/webkit/liferea_web_view.c:187
 #, fuzzy
 msgid "S_ave Link As"
 msgstr "/Zapišy jak..."
 
-#: ../src/webkit/liferea_web_view.c:188
+#: ../src/webkit/liferea_web_view.c:190
 msgid "S_ave Image As"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:195
+#: ../src/webkit/liferea_web_view.c:197
 #, fuzzy
 msgid "_Subscribe..."
 msgstr "/_Padpišysia..."
 
-#: ../src/webkit/liferea_web_view.c:199
+#: ../src/webkit/liferea_web_view.c:201
 msgid "_Copy"
 msgstr ""
 
-#: ../src/webkit/liferea_web_view.c:205
+#: ../src/webkit/liferea_web_view.c:207
 msgid "_Increase Text Size"
 msgstr "Pa_vialič pamier tekstu"
 
-#: ../src/webkit/liferea_web_view.c:206
+#: ../src/webkit/liferea_web_view.c:208
 msgid "_Decrease Text Size"
 msgstr "Pa_mienš pamier tekstu"
 
-#: ../src/webkit/liferea_web_view.c:213
+#: ../src/webkit/liferea_web_view.c:215
 msgid "_Reader Mode"
 msgstr ""
 
@@ -1358,286 +1206,313 @@ msgstr "[Byli jašče pamyłki. Vyjście abatnutaje!]"
 msgid "XML Parser: Could not parse document:\n"
 msgstr "Raźbiralnik XML: Niemahčyma razabrać dakument:\n"
 
-#: ../glade/about.ui.h:1
+#: ../resources/about.ui.h:1
 msgid "About"
 msgstr "Ab prahramie"
 
-#: ../glade/about.ui.h:2
+#: ../resources/about.ui.h:2
 msgid "Liferea is a news aggregator for GTK+"
 msgstr "Liferea - heta ahrehatar navinaŭ dziela GTK+"
 
-#: ../glade/about.ui.h:3
+#: ../resources/about.ui.h:3
 #, fuzzy
 msgid "Liferea Homepage"
 msgstr "Hartač RSS Liferea"
 
-#: ../glade/auth.ui.h:1
+#: ../resources/auth.ui.h:1
 msgid "Authentication"
 msgstr "Aŭtaryzacyja"
 
-#: ../glade/auth.ui.h:3
+#: ../resources/auth.ui.h:3
 #, fuzzy, no-c-format
 msgid "Enter the username and password for \"%s\" (%s)"
 msgstr "Uviadzi nazvu karystalnika j parol dla \"%s\" (%s):"
 
-#: ../glade/auth.ui.h:4 ../glade/properties.ui.h:31
+#: ../resources/auth.ui.h:4 ../resources/properties.ui.h:31
 msgid "User_name:"
 msgstr "_Nazva karystalnika:"
 
-#: ../glade/auth.ui.h:5 ../glade/properties.ui.h:32
+#: ../resources/auth.ui.h:5 ../resources/properties.ui.h:32
 msgid "_Password:"
 msgstr "_Parol:"
 
-#: ../glade/google_source.ui.h:1
+#: ../resources/google_source.ui.h:1
 #, fuzzy
 msgid "Add Google Reader API Account"
 msgstr "Dadaj kont na Google Reader'y"
 
-#: ../glade/google_source.ui.h:2
+#: ../resources/google_source.ui.h:2
 msgid ""
 "Please enter the details of the new Google Reader API compatible "
 "subscription."
 msgstr ""
 
-#: ../glade/google_source.ui.h:3 ../glade/reedah_source.ui.h:3
-#: ../glade/theoldreader_source.ui.h:3 ../glade/ttrss_source.ui.h:4
+#: ../resources/google_source.ui.h:3 ../resources/reedah_source.ui.h:3
+#: ../resources/theoldreader_source.ui.h:3 ../resources/ttrss_source.ui.h:4
 msgid "_Password"
 msgstr "_Parol"
 
-#: ../glade/google_source.ui.h:4 ../glade/reedah_source.ui.h:4
-#: ../glade/theoldreader_source.ui.h:4
+#: ../resources/google_source.ui.h:4 ../resources/reedah_source.ui.h:4
+#: ../resources/theoldreader_source.ui.h:4
 msgid "_Username (Email)"
 msgstr "_Nazva karystalnika (Email)"
 
-#: ../glade/google_source.ui.h:5
+#: ../resources/google_source.ui.h:5
 #, fuzzy
 msgid "_Server"
 msgstr "Pamyłka servera"
 
-#: ../glade/google_source.ui.h:6
+#: ../resources/google_source.ui.h:6
 #, fuzzy
 msgid "_Name"
 msgstr "_Nazva:"
 
-#: ../glade/liferea_menu.ui.h:1
+#: ../resources/liferea_menu.ui.h:1
 msgid "_Subscriptions"
 msgstr "_Padpiski"
 
-#: ../glade/liferea_menu.ui.h:2 ../glade/liferea_toolbar.ui.h:8
+#: ../resources/liferea_menu.ui.h:2
 msgid "Update _All"
 msgstr "Aktualizuj _usie"
 
-#: ../glade/liferea_menu.ui.h:3
+#: ../resources/liferea_menu.ui.h:3
 msgid "Mark All As _Read"
 msgstr "Paznač usie jak _čytanyja"
 
-#: ../glade/liferea_menu.ui.h:4 ../glade/liferea_toolbar.ui.h:1
+#: ../resources/liferea_menu.ui.h:4
 msgid "_New Subscription..."
 msgstr "_Novaja padpiska..."
 
-#: ../glade/liferea_menu.ui.h:7
+#: ../resources/liferea_menu.ui.h:5
+msgid "New _Folder..."
+msgstr "Novy _kataloh..."
+
+#: ../resources/liferea_menu.ui.h:6
+msgid "New S_earch Folder..."
+msgstr "Novy kataloh _pošuku..."
+
+#: ../resources/liferea_menu.ui.h:7
 msgid "New _Source..."
 msgstr "Novaja _krynica..."
 
-#: ../glade/liferea_menu.ui.h:9
+#: ../resources/liferea_menu.ui.h:8
+msgid "New _News Bin..."
+msgstr "Novy _koš navinaŭ..."
+
+#: ../resources/liferea_menu.ui.h:9
 msgid "_Import Feed List..."
 msgstr "_Impartuj śpis kanałaŭ..."
 
-#: ../glade/liferea_menu.ui.h:10
+#: ../resources/liferea_menu.ui.h:10
 msgid "_Export Feed List..."
 msgstr "_Ekspartuj śpis kanałaŭ..."
 
-#: ../glade/liferea_menu.ui.h:11
+#: ../resources/liferea_menu.ui.h:11
 msgid "_Quit"
 msgstr "_Vyjdzi"
 
-#: ../glade/liferea_menu.ui.h:12
+#: ../resources/liferea_menu.ui.h:12
 msgid "_Feed"
 msgstr "Kanał"
 
-#: ../glade/liferea_menu.ui.h:15
+#: ../resources/liferea_menu.ui.h:13
+msgid "_Update"
+msgstr "_Aktualizuj"
+
+#: ../resources/liferea_menu.ui.h:15
 msgid "Remove _All Items"
 msgstr "Vydal _usie elementy"
 
-#: ../glade/liferea_menu.ui.h:16
+#: ../resources/liferea_menu.ui.h:16
 msgid "_Remove"
 msgstr "_Vydal"
 
-#: ../glade/liferea_menu.ui.h:18
+#: ../resources/liferea_menu.ui.h:17
+#, fuzzy
+msgid "_Properties"
+msgstr "_Ułaścivaści..."
+
+#: ../resources/liferea_menu.ui.h:18
 msgid "_Item"
 msgstr "_Element"
 
-#: ../glade/liferea_menu.ui.h:24
+#: ../resources/liferea_menu.ui.h:22
+msgid "Toggle _Read Status"
+msgstr "Źmiani _stan pračytanaści"
+
+#: ../resources/liferea_menu.ui.h:23
+msgid "Toggle Item _Flag"
+msgstr "Źmiani ś_ciah elementu"
+
+#: ../resources/liferea_menu.ui.h:24
 msgid "R_emove"
 msgstr "_Vydal"
 
-#: ../glade/liferea_menu.ui.h:28
+#: ../resources/liferea_menu.ui.h:25
+msgid "Open In _Tab"
+msgstr ""
+
+#: ../resources/liferea_menu.ui.h:26
+#, fuzzy
+msgid "_Open In Browser"
+msgstr "_Adčyni ŭ hartačy"
+
+#: ../resources/liferea_menu.ui.h:27
+#, fuzzy
+msgid "Open In _External Browser"
+msgstr "<span weight=\"bold\">Nałady vonkavaha hartača</span>"
+
+#: ../resources/liferea_menu.ui.h:28
 msgid "_View"
 msgstr "_Vyhlad"
 
-#: ../glade/liferea_menu.ui.h:29
+#: ../resources/liferea_menu.ui.h:29
 msgid "_Fullscreen"
 msgstr ""
 
-#: ../glade/liferea_menu.ui.h:30
+#: ../resources/liferea_menu.ui.h:30
 msgid "Zoom _In"
 msgstr ""
 
-#: ../glade/liferea_menu.ui.h:31
+#: ../resources/liferea_menu.ui.h:31
 msgid "Zoom _Out"
 msgstr ""
 
-#: ../glade/liferea_menu.ui.h:32
+#: ../resources/liferea_menu.ui.h:32
 #, fuzzy
 msgid "_Normal size"
 msgstr "_Zvyčajny vyhlad"
 
-#: ../glade/liferea_menu.ui.h:33
+#: ../resources/liferea_menu.ui.h:33
 msgid "_Reduced Feed List"
 msgstr ""
 
-#: ../glade/liferea_menu.ui.h:34
+#: ../resources/liferea_menu.ui.h:34
 msgid "_Tools"
 msgstr "_Pryładździe"
 
-#: ../glade/liferea_menu.ui.h:35
+#: ../resources/liferea_menu.ui.h:35
 msgid "_Update Monitor"
 msgstr "_Manitor aktualizacyj"
 
-#: ../glade/liferea_menu.ui.h:36
+#: ../resources/liferea_menu.ui.h:36
 msgid "_Preferences"
 msgstr "_Nałady"
 
-#: ../glade/liferea_menu.ui.h:37
+#: ../resources/liferea_menu.ui.h:37
+#, fuzzy
+msgid "_Sort Feeds"
+msgstr "Impartuj śpis kanałaŭ"
+
+#: ../resources/liferea_menu.ui.h:38
 #, fuzzy
 msgid "S_earch"
 msgstr "_Šukaj"
 
-#: ../glade/liferea_menu.ui.h:39
+#: ../resources/liferea_menu.ui.h:40
 msgid "_Help"
 msgstr "_Dapamoha"
 
-#: ../glade/liferea_menu.ui.h:40
+#: ../resources/liferea_menu.ui.h:41
 msgid "_Contents"
 msgstr "_Źmieściva"
 
-#: ../glade/liferea_menu.ui.h:41
+#: ../resources/liferea_menu.ui.h:42
 msgid "_Quick Reference"
 msgstr "_Chutki ahlad"
 
-#: ../glade/liferea_menu.ui.h:42
+#: ../resources/liferea_menu.ui.h:43
 msgid "_FAQ"
 msgstr "_Pytańni j adkazy"
 
-#: ../glade/liferea_menu.ui.h:43
+#: ../resources/liferea_menu.ui.h:44
 msgid "_About"
 msgstr "_Ab prahramie"
 
-#: ../glade/liferea_toolbar.ui.h:2
-msgid "Adds a subscription to the feed list."
-msgstr "Dadaje padpisku ŭ śpis kanałaŭ."
-
-#: ../glade/liferea_toolbar.ui.h:4
-#, fuzzy
-msgid ""
-"Marks all items of the selected feed list node / in the item list as read."
-msgstr ""
-"Zaznačaje ŭsie elementy abranaje padpiski albo ŭsich padpisak abranaha "
-"katalohu jak pračytanyja."
-
-#: ../glade/liferea_toolbar.ui.h:9
-#, fuzzy
-msgid "Updates all subscriptions."
-msgstr "Novaja padpiska"
-
-#: ../glade/liferea_toolbar.ui.h:11
-msgid "Show the search dialog."
-msgstr "Pakažy dyjalohavaje vakno pošuku."
-
-#: ../glade/mainwindow.ui.h:2
+#: ../resources/mainwindow.ui.h:2
 msgid "page 1"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:3
+#: ../resources/mainwindow.ui.h:3
 msgid "page 2"
 msgstr ""
 
-#: ../glade/mainwindow.ui.h:4 ../glade/prefs.ui.h:25
+#: ../resources/mainwindow.ui.h:4 ../resources/prefs.ui.h:25
 msgid "Headlines"
 msgstr "Zahałoŭki"
 
-#: ../glade/mark_read_dialog.ui.h:1
+#: ../resources/mark_read_dialog.ui.h:1
 #, fuzzy
 msgid "Mark all as read ?"
 msgstr "Zaznač usie jak pračytanyja"
 
-#: ../glade/mark_read_dialog.ui.h:2
+#: ../resources/mark_read_dialog.ui.h:2
 msgid "Mark all as read"
 msgstr "Zaznač usie jak pračytanyja"
 
-#: ../glade/mark_read_dialog.ui.h:3
+#: ../resources/mark_read_dialog.ui.h:3
 msgid "Do not ask again"
 msgstr ""
 
-#: ../glade/new_folder.ui.h:1
+#: ../resources/new_folder.ui.h:1
 msgid "New Folder"
 msgstr "Novy kataloh"
 
-#: ../glade/new_folder.ui.h:2
+#: ../resources/new_folder.ui.h:2
 msgid "_Folder name:"
 msgstr "Nazva _katalohu:"
 
-#: ../glade/new_newsbin.ui.h:2
+#: ../resources/new_newsbin.ui.h:2
 msgid "_News Bin Name:"
 msgstr "_Nazva dla koša navinaŭ:"
 
-#: ../glade/new_newsbin.ui.h:3
+#: ../resources/new_newsbin.ui.h:3
 msgid "_Always show in Reduced Feed List"
 msgstr ""
 
-#: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
+#: ../resources/new_subscription.ui.h:2 ../resources/properties.ui.h:11
 #, fuzzy
 msgid "Feed Source"
 msgstr "<b>Krynica kanału</b>"
 
-#: ../glade/new_subscription.ui.h:3 ../glade/properties.ui.h:12
+#: ../resources/new_subscription.ui.h:3 ../resources/properties.ui.h:12
 msgid "Source Type:"
 msgstr "Typ krynicy:"
 
-#: ../glade/new_subscription.ui.h:4 ../glade/properties.ui.h:13
+#: ../resources/new_subscription.ui.h:4 ../resources/properties.ui.h:13
 msgid "_URL"
 msgstr "_Spasyłka"
 
-#: ../glade/new_subscription.ui.h:5 ../glade/properties.ui.h:14
+#: ../resources/new_subscription.ui.h:5 ../resources/properties.ui.h:14
 msgid "_Command"
 msgstr "_Zahad"
 
-#: ../glade/new_subscription.ui.h:6 ../glade/properties.ui.h:15
+#: ../resources/new_subscription.ui.h:6 ../resources/properties.ui.h:15
 msgid "_Local File"
 msgstr "_Lakalny fajł"
 
-#: ../glade/new_subscription.ui.h:7 ../glade/properties.ui.h:16
+#: ../resources/new_subscription.ui.h:7 ../resources/properties.ui.h:16
 msgid "Select File..."
 msgstr "Abiary fajł..."
 
-#: ../glade/new_subscription.ui.h:8 ../glade/properties.ui.h:17
+#: ../resources/new_subscription.ui.h:8 ../resources/properties.ui.h:17
 msgid "_Source:"
 msgstr "_Krynica:"
 
-#: ../glade/new_subscription.ui.h:9
+#: ../resources/new_subscription.ui.h:9
 #, fuzzy
 msgid "Download / Postprocessing"
 msgstr "<b>Zahruzka / Kancavaja apracoŭka</b>"
 
-#: ../glade/new_subscription.ui.h:10 ../glade/properties.ui.h:30
+#: ../resources/new_subscription.ui.h:10 ../resources/properties.ui.h:30
 msgid "_Don't use proxy for download"
 msgstr "_Nie ŭžyvaj proxy dziela zahruzki"
 
-#: ../glade/new_subscription.ui.h:11 ../glade/properties.ui.h:18
+#: ../resources/new_subscription.ui.h:11 ../resources/properties.ui.h:18
 msgid "Use conversion _filter"
 msgstr "Užyj _filter kavertacyi"
 
-#: ../glade/new_subscription.ui.h:12
+#: ../resources/new_subscription.ui.h:12
 msgid ""
 "Liferea can use external filter plugins in order to access feeds and "
 "directories in non-supported formats.  See the documentation for more "
@@ -1647,60 +1522,60 @@ msgstr ""
 "kanały j katalohi ŭ niepadtrymanym farmacie. Hladzi padrabiaźniejšyja "
 "źviestki ŭ dakumentacyi."
 
-#: ../glade/new_subscription.ui.h:13 ../glade/properties.ui.h:20
+#: ../resources/new_subscription.ui.h:13 ../resources/properties.ui.h:20
 msgid "Convert _using:"
 msgstr "Kanvertuj _praz:"
 
-#: ../glade/node_source.ui.h:1
+#: ../resources/node_source.ui.h:1
 msgid "Source Selection"
 msgstr "Vybar krynicy"
 
-#: ../glade/node_source.ui.h:2
+#: ../resources/node_source.ui.h:2
 #, fuzzy
 msgid "_Select the source type you want to add..."
 msgstr "Abiary typ krynicy, jakuju chočaš dadać..."
 
-#: ../glade/opml_source.ui.h:1
+#: ../resources/opml_source.ui.h:1
 msgid "Add OPML/Planet"
 msgstr "Dadaj OPML/Planet"
 
-#: ../glade/opml_source.ui.h:2
+#: ../resources/opml_source.ui.h:2
 msgid ""
 "Please specify a local file or an URL pointing to a valid OPML feed list."
 msgstr ""
 "Akreśl lakalny fajł albo spasyłku na pravilny śpis kanałaŭ u farmacie OPML."
 
-#: ../glade/opml_source.ui.h:3
+#: ../resources/opml_source.ui.h:3
 msgid "_Location"
 msgstr "_Adras"
 
-#: ../glade/opml_source.ui.h:4
+#: ../resources/opml_source.ui.h:4
 msgid "_Select File"
 msgstr "_Abiary fajł"
 
-#: ../glade/prefs.ui.h:1
+#: ../resources/prefs.ui.h:1
 msgid "Liferea Preferences"
 msgstr "Pieravahi Liferea"
 
-#: ../glade/prefs.ui.h:2
+#: ../resources/prefs.ui.h:2
 msgid "Feed Cache Handling"
 msgstr ""
 
-#: ../glade/prefs.ui.h:3
+#: ../resources/prefs.ui.h:3
 msgid "Default _number of items per feed to save:"
 msgstr "Zmoŭčanaja _kolkaść elementaŭ na kanał dziela zapisu:"
 
-#: ../glade/prefs.ui.h:4 ../glade/properties.ui.h:27
+#: ../resources/prefs.ui.h:4 ../resources/properties.ui.h:27
 msgid "0"
 msgstr ""
 
-#: ../glade/prefs.ui.h:5
+#: ../resources/prefs.ui.h:5
 #, fuzzy
 msgid "Feed Update Settings"
 msgstr "Aktualizacyja kanału"
 
 #. Feed update interval hint in preference dialog.
-#: ../glade/prefs.ui.h:7
+#: ../resources/prefs.ui.h:7
 msgid ""
 "Note: <i>Please remember to set a reasonable refresh time. Usually it is a "
 "waste of bandwidth to poll feeds more often than each hour.</i>"
@@ -1709,262 +1584,250 @@ msgstr ""
 "aktualizacyjami. Zvyčajna apytvańnie kanałaŭ čaściej za raz na hadzinu "
 "źjaŭlajecca marnavańniem trafiku.</i>"
 
-#: ../glade/prefs.ui.h:8
+#: ../resources/prefs.ui.h:8
 #, fuzzy
 msgid "_Update all subscriptions at startup."
 msgstr "Novaja padpiska"
 
-#: ../glade/prefs.ui.h:9
+#: ../resources/prefs.ui.h:9
 msgid "Default Feed Refresh _Interval:"
 msgstr "Zmoŭčany _intervał aktualizacyi kanału:"
 
-#: ../glade/prefs.ui.h:10 ../glade/properties.ui.h:6
+#: ../resources/prefs.ui.h:10 ../resources/properties.ui.h:6
 msgid "1"
 msgstr ""
 
-#: ../glade/prefs.ui.h:11
+#: ../resources/prefs.ui.h:11
 msgid "Feeds"
 msgstr "Kanały"
 
-#: ../glade/prefs.ui.h:12
+#: ../resources/prefs.ui.h:12
 #, fuzzy
 msgid "Folder Display Settings"
 msgstr "<span weight=\"bold\">Nałady pakazu katalohaŭ</span>"
 
-#: ../glade/prefs.ui.h:13
+#: ../resources/prefs.ui.h:13
 msgid "_Show the items of all child feeds when a folder is selected."
 msgstr "_Pakazvaj elementy dla ŭsich padkanałaŭ pry zaznačeńni katalohu."
 
-#: ../glade/prefs.ui.h:14
+#: ../resources/prefs.ui.h:14
 msgid "_Hide read items."
 msgstr "_Schavaj pračytanyja elementy."
 
-#: ../glade/prefs.ui.h:15
+#: ../resources/prefs.ui.h:15
 #, fuzzy
 msgid "Feed Icons (Favicons)"
 msgstr "<span weight=\"bold\">Ikony kanałaŭ</span>"
 
-#: ../glade/prefs.ui.h:16
+#: ../resources/prefs.ui.h:16
 msgid "_Update all favicons now"
 msgstr "_Aktualizuj zaraz usie ikony kanałaŭ"
 
-#: ../glade/prefs.ui.h:17
+#: ../resources/prefs.ui.h:17
 msgid "Folders"
 msgstr "Katalohi"
 
-#: ../glade/prefs.ui.h:18
+#: ../resources/prefs.ui.h:18
 #, fuzzy
 msgid "Reading Headlines"
 msgstr "niečytanyja zahałoŭki"
 
-#: ../glade/prefs.ui.h:19
+#: ../resources/prefs.ui.h:19
 msgid "_Skim through articles with:"
 msgstr "_Pierachodź pa artykułach z:"
 
-#: ../glade/prefs.ui.h:20
+#: ../resources/prefs.ui.h:20
 msgid "_Default View Mode:"
 msgstr ""
 
-#: ../glade/prefs.ui.h:21
+#: ../resources/prefs.ui.h:21
 msgid "_Defer removing read items from folders and search folders."
 msgstr ""
 
-#: ../glade/prefs.ui.h:22
+#: ../resources/prefs.ui.h:22
 msgid "Ask for confirmation when marking all items as read."
 msgstr ""
 
-#: ../glade/prefs.ui.h:23
+#: ../resources/prefs.ui.h:23
 #, fuzzy
 msgid "Web Integration"
 msgstr "Aryjentacyja"
 
-#: ../glade/prefs.ui.h:24
+#: ../resources/prefs.ui.h:24
 msgid "_Post Bookmarks to"
 msgstr "Ź_miaści zakładki na"
 
-#: ../glade/prefs.ui.h:26
+#: ../resources/prefs.ui.h:26
 #, fuzzy
 msgid "Internal Browser Settings"
 msgstr "<span weight=\"bold\">Nałady ŭnutranaha hartača</span>"
 
-#: ../glade/prefs.ui.h:27
+#: ../resources/prefs.ui.h:27
 msgid "Open links in Liferea's _window."
 msgstr "Adčyniaj spasyłki ŭ _vaknie Liferea."
 
-#: ../glade/prefs.ui.h:28
+#: ../resources/prefs.ui.h:28
 msgid "_Never run external Javascript."
 msgstr ""
 
-#: ../glade/prefs.ui.h:29
+#: ../resources/prefs.ui.h:29
 #, fuzzy
 msgid "_Enable browser plugins."
 msgstr "<span weight=\"bold\">Nałady vonkavaha hartača</span>"
 
-#: ../glade/prefs.ui.h:30
+#: ../resources/prefs.ui.h:30
 #, fuzzy
 msgid "External Browser Settings"
 msgstr "<span weight=\"bold\">Nałady vonkavaha hartača</span>"
 
-#: ../glade/prefs.ui.h:31
+#: ../resources/prefs.ui.h:31
 msgid "_Browser:"
 msgstr "_Hartač:"
 
-#: ../glade/prefs.ui.h:32
+#: ../resources/prefs.ui.h:32
 #, fuzzy
 msgid "_Manual:"
 msgstr "Admysłovy"
 
-#: ../glade/prefs.ui.h:34
+#: ../resources/prefs.ui.h:34
 #, no-c-format
 msgid "<small>(%s for URL)</small>"
 msgstr ""
 
-#: ../glade/prefs.ui.h:35
+#: ../resources/prefs.ui.h:35
 msgid "Browser"
 msgstr "Hartač"
 
-#: ../glade/prefs.ui.h:36
+#: ../resources/prefs.ui.h:36
 #, fuzzy
 msgid "Toolbar Settings"
 msgstr "_Etykiety knopak z paneli pryładździa:"
 
-#: ../glade/prefs.ui.h:37
+#: ../resources/prefs.ui.h:37
 msgid "_Hide toolbar."
 msgstr ""
 
-#: ../glade/prefs.ui.h:38
+#: ../resources/prefs.ui.h:38
 msgid "Toolbar _button labels:"
 msgstr "_Etykiety knopak z paneli pryładździa:"
 
-#: ../glade/prefs.ui.h:39
+#: ../resources/prefs.ui.h:39
 msgid "Desktop"
 msgstr ""
 
-#: ../glade/prefs.ui.h:40
+#: ../resources/prefs.ui.h:40
 msgid "HTTP Proxy Server"
 msgstr ""
 
-#: ../glade/prefs.ui.h:41
+#: ../resources/prefs.ui.h:41
 msgid "_Auto Detect (GNOME or environment)"
 msgstr "_Aŭtamatyčna vyznač (GNOME albo asiarodździe)"
 
-#: ../glade/prefs.ui.h:42
+#: ../resources/prefs.ui.h:42
 msgid "_No Proxy"
 msgstr "_Biaz proxy"
 
-#: ../glade/prefs.ui.h:43
+#: ../resources/prefs.ui.h:43
 msgid "_Manual Setting:"
 msgstr "_Admysłovaje akreśleńnie:"
 
-#: ../glade/prefs.ui.h:44
+#: ../resources/prefs.ui.h:44
 msgid "Proxy _Host:"
 msgstr "_Host proxy:"
 
-#: ../glade/prefs.ui.h:45
+#: ../resources/prefs.ui.h:45
 msgid "Proxy _Port:"
 msgstr "_Port proxy:"
 
-#: ../glade/prefs.ui.h:46
+#: ../resources/prefs.ui.h:46
 msgid "Use Proxy Au_thentication"
 msgstr "Užyj _aŭtaryzacyju proxy"
 
-#: ../glade/prefs.ui.h:47
+#: ../resources/prefs.ui.h:47
 msgid "Proxy _Username:"
 msgstr "_Nazva karystalnika proxy:"
 
-#: ../glade/prefs.ui.h:48
+#: ../resources/prefs.ui.h:48
 msgid "Proxy Pass_word:"
 msgstr "Pa_rol proxy:"
 
-#: ../glade/prefs.ui.h:49
-msgid ""
-"Your version of WebKitGTK+ is older than 2.15.3. It doesn't support per "
-"application proxy settings. The system's default proxy settings will be used."
-msgstr ""
-
-#: ../glade/prefs.ui.h:50
+#: ../resources/prefs.ui.h:49
 msgid "Proxy"
 msgstr "Proxy"
 
-#: ../glade/prefs.ui.h:51
+#: ../resources/prefs.ui.h:50
 #, fuzzy
 msgid "Privacy Settings"
 msgstr "<span weight=\"bold\">Nałady pakazu katalohaŭ</span>"
 
-#: ../glade/prefs.ui.h:52
+#: ../resources/prefs.ui.h:51
 msgid "Tell websites that I do _not want to be tracked."
 msgstr ""
 
-#: ../glade/prefs.ui.h:53
+#: ../resources/prefs.ui.h:52
 msgid "Tell websites not to _sell or share my data."
 msgstr ""
 
-#: ../glade/prefs.ui.h:54
+#: ../resources/prefs.ui.h:53
 msgid "_Intelligent Tracking Prevention. "
 msgstr ""
 
-#: ../glade/prefs.ui.h:55
+#: ../resources/prefs.ui.h:54
 msgid ""
 "This enables the WebKit feature described <a href=\"https://webkit.org/"
 "tracking-prevention/\">here</a>."
 msgstr ""
 
-#: ../glade/prefs.ui.h:56
-msgid ""
-"Intelligent tracking prevention is only available with WebKitGtk+ 2.30 or "
-"higher."
-msgstr ""
-
-#: ../glade/prefs.ui.h:57
+#: ../resources/prefs.ui.h:55
 msgid "Use _Reader mode."
 msgstr ""
 
-#: ../glade/prefs.ui.h:58
+#: ../resources/prefs.ui.h:56
 msgid ""
 "This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
 "a> all non-content elements (like scripts, fonts, tracking)"
 msgstr ""
 
-#: ../glade/prefs.ui.h:59
+#: ../resources/prefs.ui.h:57
 msgid "Privacy"
 msgstr ""
 
-#: ../glade/properties.ui.h:1
+#: ../resources/properties.ui.h:1
 msgid "Subscription Properties"
 msgstr "Ułaścivaści padpiski"
 
-#: ../glade/properties.ui.h:2
+#: ../resources/properties.ui.h:2
 #, fuzzy
 msgid "Feed _Name"
 msgstr "_Nazva kanału:"
 
-#: ../glade/properties.ui.h:3
+#: ../resources/properties.ui.h:3
 #, fuzzy
 msgid "Update _Interval"
 msgstr "Manitor aktualizacyj"
 
-#: ../glade/properties.ui.h:4
+#: ../resources/properties.ui.h:4
 msgid "_Use global default update interval."
 msgstr "_Užyj hlabalny zmoŭčany intervał aktualizacyi."
 
-#: ../glade/properties.ui.h:5
+#: ../resources/properties.ui.h:5
 msgid "_Feed specific update interval of"
 msgstr "_Admysłovy intervał aktualizacyi kanału"
 
-#: ../glade/properties.ui.h:7
+#: ../resources/properties.ui.h:7
 msgid "_Don't update this feed automatically."
 msgstr "_Nie aktualizuj aŭtamatyčna hety kanał."
 
-#: ../glade/properties.ui.h:9
+#: ../resources/properties.ui.h:9
 #, no-c-format
 msgid "This feed provider suggests an update interval of %d minutes."
 msgstr "Vydaviec hetaha kanału raić intervał aktualizacyi ŭ %d chvilin."
 
-#: ../glade/properties.ui.h:10
+#: ../resources/properties.ui.h:10
 msgid "General"
 msgstr "Ahulnaje"
 
-#: ../glade/properties.ui.h:19
+#: ../resources/properties.ui.h:19
 #, fuzzy
 msgid ""
 "Liferea can use external filter scripts in order to access feeds and "
@@ -1974,11 +1837,11 @@ msgstr ""
 "kanały j katalohi ŭ niepadtrymanym farmacie. Hladzi padrabiaźniejšyja "
 "źviestki ŭ dakumentacyi."
 
-#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+#: ../resources/properties.ui.h:21 ../xslt/item.xml.in.h:1
 msgid "Source"
 msgstr "Krynica"
 
-#: ../glade/properties.ui.h:22
+#: ../resources/properties.ui.h:22
 msgid ""
 "The cache setting controls if the contents of feeds are saved when Liferea "
 "exits. Marked items are always saved to the cache."
@@ -1987,140 +1850,140 @@ msgstr ""
 "vychadzie Liferea. Zaznačanyja elementy zaŭsiody zapisvajucca ŭ padručnaj "
 "pamiaci."
 
-#: ../glade/properties.ui.h:23
+#: ../resources/properties.ui.h:23
 msgid "_Default cache settings"
 msgstr "_Zmoŭčanyja nałady padručnaj pamiaci"
 
-#: ../glade/properties.ui.h:24
+#: ../resources/properties.ui.h:24
 msgid "Di_sable cache"
 msgstr "_Adklučy padručnuju pamiać"
 
-#: ../glade/properties.ui.h:25
+#: ../resources/properties.ui.h:25
 msgid "_Unlimited cache"
 msgstr "_Nieabmiežavanaja padručnaja pamiać"
 
-#: ../glade/properties.ui.h:26
+#: ../resources/properties.ui.h:26
 #, fuzzy
 msgid "_Number of items to save:"
 msgstr "Zmoŭčanaja _kolkaść elementaŭ na kanał dziela zapisu:"
 
-#: ../glade/properties.ui.h:28
+#: ../resources/properties.ui.h:28
 msgid "Archive"
 msgstr "Archiŭ"
 
-#: ../glade/properties.ui.h:29
+#: ../resources/properties.ui.h:29
 msgid "Use HTTP _authentication"
 msgstr "Užyj _aŭtaryzacyju HTTP"
 
-#: ../glade/properties.ui.h:33
+#: ../resources/properties.ui.h:33
 msgid "Download"
 msgstr "Zahruzi"
 
-#: ../glade/properties.ui.h:34
+#: ../resources/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
 msgstr "_Aŭtamatyčna zahružaj usie dałučeńni dla hetaha kanału."
 
-#: ../glade/properties.ui.h:35
+#: ../resources/properties.ui.h:35
 msgid "Auto-_load item link in configured browser when selecting articles."
 msgstr ""
 "Aŭtamatyčna zahružaj spasyłku elementu ŭ skanfihuravanym hartačy pry vybary "
 "artykułaŭ."
 
-#: ../glade/properties.ui.h:36
+#: ../resources/properties.ui.h:36
 #, fuzzy
 msgid "Ignore _comment feeds for this subscription."
 msgstr "Adčyniaje dyjalohavaje vakno ŭłaścivaściaŭ dla abranaje padpiski."
 
-#: ../glade/properties.ui.h:37
+#: ../resources/properties.ui.h:37
 #, fuzzy
 msgid "_Mark downloaded items as read."
 msgstr "_Zaznač abranaje jak pračytanaje"
 
-#: ../glade/properties.ui.h:38
+#: ../resources/properties.ui.h:38
 msgid "Extract full content from HTML5 and Google AMP"
 msgstr ""
 
-#: ../glade/reedah_source.ui.h:1
+#: ../resources/reedah_source.ui.h:1
 #, fuzzy
 msgid "Add Reedah Account"
 msgstr "Dadaj kont na Google Reader'y"
 
-#: ../glade/reedah_source.ui.h:2
+#: ../resources/reedah_source.ui.h:2
 #, fuzzy
 msgid "Please enter your Reedah account settings."
 msgstr "Uviadzi nałady tvajho kontu na Google Reader'y."
 
-#: ../glade/rename_node.ui.h:1
+#: ../resources/rename_node.ui.h:1
 msgid "Rename"
 msgstr "Pieranazavi"
 
-#: ../glade/rename_node.ui.h:2
+#: ../resources/rename_node.ui.h:2
 msgid "_New Name:"
 msgstr "_Novaja nazva:"
 
-#: ../glade/search_folder.ui.h:1
+#: ../resources/search_folder.ui.h:1
 msgid "Search Folder Properties"
 msgstr "Ułaścivaści katalohu pošuku"
 
-#: ../glade/search_folder.ui.h:2
+#: ../resources/search_folder.ui.h:2
 #, fuzzy
 msgid "Search _Name:"
 msgstr "_Nazva kanału:"
 
-#: ../glade/search_folder.ui.h:3
+#: ../resources/search_folder.ui.h:3
 #, fuzzy
 msgid "Search Rules"
 msgstr "%d vynik pošuku dla \"%s\""
 
-#: ../glade/search_folder.ui.h:4
+#: ../resources/search_folder.ui.h:4
 msgid "Rules"
 msgstr ""
 
-#: ../glade/search_folder.ui.h:5
+#: ../resources/search_folder.ui.h:5
 msgid "All rules for this search folder"
 msgstr ""
 
-#: ../glade/search_folder.ui.h:6
+#: ../resources/search_folder.ui.h:6
 msgid "Rule Matching"
 msgstr ""
 
-#: ../glade/search_folder.ui.h:7 ../glade/search.ui.h:4
+#: ../resources/search_folder.ui.h:7 ../resources/search.ui.h:4
 msgid "A_ny Rule Matches"
 msgstr ""
 
-#: ../glade/search_folder.ui.h:8 ../glade/search.ui.h:5
+#: ../resources/search_folder.ui.h:8 ../resources/search.ui.h:5
 msgid "_All Rules Must Match"
 msgstr ""
 
-#: ../glade/search_folder.ui.h:9
+#: ../resources/search_folder.ui.h:9
 #, fuzzy
 msgid "Hide read items"
 msgstr "_Schavaj pračytanyja elementy."
 
-#: ../glade/search.ui.h:1
+#: ../resources/search.ui.h:1
 #, fuzzy
 msgid "Advanced Search"
 msgstr "Admysłovaje"
 
-#: ../glade/search.ui.h:2
+#: ../resources/search.ui.h:2
 #, fuzzy
 msgid "_Search Folder..."
 msgstr "Kataloh pošuku"
 
-#: ../glade/search.ui.h:3
+#: ../resources/search.ui.h:3
 msgid "Find Items that meet the following criteria"
 msgstr ""
 
-#: ../glade/simple_search.ui.h:1
+#: ../resources/simple_search.ui.h:1
 msgid "Search All Feeds"
 msgstr "Šukaj va ŭsich kanałach"
 
-#: ../glade/simple_search.ui.h:2
+#: ../resources/simple_search.ui.h:2
 #, fuzzy
 msgid "_Advanced..."
 msgstr "Admysłovaje..."
 
-#: ../glade/simple_search.ui.h:3
+#: ../resources/simple_search.ui.h:3
 msgid ""
 "Starts searching for the specified text in all feeds. The search result will "
 "appear in the item list."
@@ -2128,11 +1991,11 @@ msgstr ""
 "Pačynaje pošuk akreślenaha tekstu va ŭsich kanałach. Vynik pošuku źjavicca ŭ "
 "śpisie elementaŭ."
 
-#: ../glade/simple_search.ui.h:4
+#: ../resources/simple_search.ui.h:4
 msgid "_Search for:"
 msgstr "_Šukaj:"
 
-#: ../glade/simple_search.ui.h:5
+#: ../resources/simple_search.ui.h:5
 msgid ""
 "Enter a search string Liferea should find either in a items title or in its "
 "content."
@@ -2140,16 +2003,16 @@ msgstr ""
 "Uviadzi radok pošuku, jaki Liferea musić šukać albo ŭ zahaloŭkach elementaŭ, "
 "albo ŭ ichnym źmieścivie."
 
-#: ../glade/simple_subscription.ui.h:2
+#: ../resources/simple_subscription.ui.h:2
 msgid "Advanced..."
 msgstr "Admysłovaje..."
 
-#: ../glade/simple_subscription.ui.h:3
+#: ../resources/simple_subscription.ui.h:3
 #, fuzzy
 msgid "Feed _Source"
 msgstr "<b>Krynica kanału</b>"
 
-#: ../glade/simple_subscription.ui.h:4
+#: ../resources/simple_subscription.ui.h:4
 msgid ""
 "Enter a website location to use feed autodiscovery or in case you know it "
 "the exact feed location."
@@ -2157,49 +2020,49 @@ msgstr ""
 "Uviadzi adras web-placoŭki, kab užyć aŭtamatyčny pošuk kanałaŭ, albo, kali "
 "ty viedaješ, dakładny adras kanału."
 
-#: ../glade/theoldreader_source.ui.h:1
+#: ../resources/theoldreader_source.ui.h:1
 #, fuzzy
 msgid "Add TheOldReader Account"
 msgstr "Dadaj kont na Google Reader'y"
 
-#: ../glade/theoldreader_source.ui.h:2
+#: ../resources/theoldreader_source.ui.h:2
 #, fuzzy
 msgid "Please enter your TheOldReader account settings."
 msgstr "Uviadzi nałady tvajho kontu na Google Reader'y."
 
-#: ../glade/ttrss_source.ui.h:1
+#: ../resources/ttrss_source.ui.h:1
 #, fuzzy
 msgid "Add Tiny Tiny RSS Account"
 msgstr "Dadaj kont na Bloglines"
 
-#: ../glade/ttrss_source.ui.h:2
+#: ../resources/ttrss_source.ui.h:2
 #, fuzzy
 msgid "Please enter your TinyTinyRSS account settings."
 msgstr "Uviadzi nałady tvajho kontu na Bloglines."
 
-#: ../glade/ttrss_source.ui.h:3
+#: ../resources/ttrss_source.ui.h:3
 #, fuzzy
 msgid "_Server URL"
 msgstr "Pamyłka servera"
 
-#: ../glade/ttrss_source.ui.h:5
+#: ../resources/ttrss_source.ui.h:5
 msgid "_Username"
 msgstr "_Nazva karystalnika"
 
-#: ../glade/update_monitor.ui.h:1
+#: ../resources/update_monitor.ui.h:1
 msgid "Update Monitor"
 msgstr "Manitor aktualizacyj"
 
-#: ../glade/update_monitor.ui.h:2
+#: ../resources/update_monitor.ui.h:2
 msgid "Stop All"
 msgstr ""
 
-#: ../glade/update_monitor.ui.h:3
+#: ../resources/update_monitor.ui.h:3
 #, fuzzy
 msgid "_Pending Requests"
 msgstr "<b>Zapyty ŭ čakańni</b>"
 
-#: ../glade/update_monitor.ui.h:4
+#: ../resources/update_monitor.ui.h:4
 #, fuzzy
 msgid "_Downloading Now"
 msgstr "<b>Zahružajecca zaraz</b>"
@@ -2370,6 +2233,94 @@ msgstr ""
 #: ../xslt/vfolder.xml.in.h:1
 msgid "Search Folder:"
 msgstr "Kataloh pošuku:"
+
+#, c-format
+#~ msgid "\"%s\" is not a valid enclosure type config file!"
+#~ msgstr ""
+#~ "\"%s\" nie źjaŭlajecca pravilnym fajłam kanfihuracyi typu dałučeńnia!"
+
+#, fuzzy, c-format
+#~ msgid ""
+#~ "Command failed: \n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr "Pamyłka zahadu hartača: %s"
+
+#~ msgid "No feed list source types found!"
+#~ msgstr "Typy krynic dla śpisu kanałaŭ nia znojdzienyja!"
+
+#, fuzzy
+#~ msgid "Copy to News Bin"
+#~ msgstr "/Skapijuj u koš navinaŭ/%s"
+
+#, fuzzy, c-format
+#~ msgid "_Bookmark at %s"
+#~ msgstr "/_Zrabi zakładku dla spasyłki na %s"
+
+#, fuzzy
+#~ msgid "Copy Item _Location"
+#~ msgstr "/_Skapijuj adras spasyłki"
+
+#, fuzzy
+#~ msgid "R_emove Item"
+#~ msgstr "/_Vydal element"
+
+#, fuzzy
+#~ msgid "_Update Folder"
+#~ msgstr "/_Aktualizuj kataloh"
+
+#, fuzzy
+#~ msgid "New _Subscription..."
+#~ msgstr "_Novaja padpiska..."
+
+#, fuzzy
+#~ msgid "New S_ource..."
+#~ msgstr "Novaja _krynica..."
+
+#, fuzzy
+#~ msgid "_New"
+#~ msgstr "/_Novy"
+
+#, fuzzy
+#~ msgid "_Mark All As Read"
+#~ msgstr "/_Zaznač usie jak pračytanyja"
+
+#, fuzzy
+#~ msgid "Convert To Local Subscriptions..."
+#~ msgstr "_Novaja padpiska..."
+
+#~ msgid "GNOME default"
+#~ msgstr "zmoŭčany dla GNOME'a"
+
+#~ msgid "Text below icons"
+#~ msgstr "Tekst pad ikonami"
+
+#~ msgid "Text beside icons"
+#~ msgstr "Tekst pa bakoch ikonaŭ"
+
+#~ msgid "Icons only"
+#~ msgstr "Tolki ikony"
+
+#~ msgid "Text only"
+#~ msgstr "Tolki tekst"
+
+#~ msgid "Adds a subscription to the feed list."
+#~ msgstr "Dadaje padpisku ŭ śpis kanałaŭ."
+
+#, fuzzy
+#~ msgid ""
+#~ "Marks all items of the selected feed list node / in the item list as read."
+#~ msgstr ""
+#~ "Zaznačaje ŭsie elementy abranaje padpiski albo ŭsich padpisak abranaha "
+#~ "katalohu jak pračytanyja."
+
+#, fuzzy
+#~ msgid "Updates all subscriptions."
+#~ msgstr "Novaja padpiska"
+
+#~ msgid "Show the search dialog."
+#~ msgstr "Pakažy dyjalohavaje vakno pošuku."
 
 #~ msgid "*** No title ***"
 #~ msgstr "*** Biaz nazvy ***"

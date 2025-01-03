@@ -10,6 +10,14 @@ plugins/headerbar.py
 plugins/libnotify.py
 plugins/plugin-installer.py
 plugins/trayicon.py
+src/actions/item_actions.c
+src/actions/item_actions.h
+src/actions/link_actions.c
+src/actions/link_actions.h
+src/actions/node_actions.c
+src/actions/node_actions.h
+src/actions/shell_actions.c
+src/actions/shell_actions.h
 src/browser.c
 src/browser_history.c
 src/comments.c
@@ -149,8 +157,6 @@ src/ui/liferea_dialog.c
 src/ui/liferea_dialog.h
 src/ui/liferea_shell.c
 src/ui/liferea_shell.h
-src/ui/liferea_shell_actions.c
-src/ui/liferea_shell_actions.h
 src/ui/preferences_dialog.c
 src/ui/preferences_dialog.h
 src/ui/rule_editor.c
@@ -164,8 +170,6 @@ src/ui/subscription_dialog.h
 src/ui/ui_common.c
 src/ui/ui_dnd.c
 src/ui/ui_dnd.h
-src/ui/ui_folder.c
-src/ui/ui_folder.h
 src/ui/ui_update.c
 src/ui/ui_update.h
 src/update.c
@@ -180,33 +184,32 @@ src/webkit/liferea_web_view.c
 src/webkit/liferea_web_view.h
 src/webkit/web_extension/liferea_web_extension.c
 src/webkit/web_extension/web_extension_main.c
-src/webkit/webkit.c
-src/webkit/webkit.h
+src/webkit/liferea_webkit.c
+src/webkit/liferea_webkit.h
 src/xml.c
 src/xml.h
-[type: gettext/glade]glade/about.ui
-[type: gettext/glade]glade/auth.ui
-[type: gettext/glade]glade/google_source.ui
-[type: gettext/glade]glade/liferea_menu.ui
-[type: gettext/glade]glade/liferea_toolbar.ui
-[type: gettext/glade]glade/mainwindow.ui
-[type: gettext/glade]glade/mark_read_dialog.ui
-[type: gettext/glade]glade/new_folder.ui
-[type: gettext/glade]glade/new_newsbin.ui
-[type: gettext/glade]glade/new_subscription.ui
-[type: gettext/glade]glade/node_source.ui
-[type: gettext/glade]glade/opml_source.ui
-[type: gettext/glade]glade/prefs.ui
-[type: gettext/glade]glade/properties.ui
-[type: gettext/glade]glade/reedah_source.ui
-[type: gettext/glade]glade/rename_node.ui
-[type: gettext/glade]glade/search_folder.ui
-[type: gettext/glade]glade/search.ui
-[type: gettext/glade]glade/simple_search.ui
-[type: gettext/glade]glade/simple_subscription.ui
-[type: gettext/glade]glade/theoldreader_source.ui
-[type: gettext/glade]glade/ttrss_source.ui
-[type: gettext/glade]glade/update_monitor.ui
+[type: gettext/glade]resources/about.ui
+[type: gettext/glade]resources/auth.ui
+[type: gettext/glade]resources/google_source.ui
+[type: gettext/glade]resources/liferea_menu.ui
+[type: gettext/glade]resources/mainwindow.ui
+[type: gettext/glade]resources/mark_read_dialog.ui
+[type: gettext/glade]resources/new_folder.ui
+[type: gettext/glade]resources/new_newsbin.ui
+[type: gettext/glade]resources/new_subscription.ui
+[type: gettext/glade]resources/node_source.ui
+[type: gettext/glade]resources/opml_source.ui
+[type: gettext/glade]resources/prefs.ui
+[type: gettext/glade]resources/properties.ui
+[type: gettext/glade]resources/reedah_source.ui
+[type: gettext/glade]resources/rename_node.ui
+[type: gettext/glade]resources/search_folder.ui
+[type: gettext/glade]resources/search.ui
+[type: gettext/glade]resources/simple_search.ui
+[type: gettext/glade]resources/simple_subscription.ui
+[type: gettext/glade]resources/theoldreader_source.ui
+[type: gettext/glade]resources/ttrss_source.ui
+[type: gettext/glade]resources/update_monitor.ui
 xslt/feed.xml.in
 xslt/folder.xml.in
 xslt/item.xml.in
