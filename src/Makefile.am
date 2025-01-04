@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = node_providers node_sources parsers plugins actions ui webkit tests .
+SUBDIRS = node_providers node_sources parsers plugins actions ui webkit 
 
 AM_CPPFLAGS = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" \
@@ -75,18 +75,19 @@ liferea_LDADD =	actions/libliactions.a \
 		$(INTROSPECTION_LIBS) \
 		-lm
 
-resources = \
-	resources/gresource.xml \
-	resources/htmlview.js \
-	resources/Readability-readerable.js \
-	resources/Readability.js \
-	resources/purify.min.js \
+resourcesdir = resources
+resources_DATA = \
+	$(top_srcdir)/resources/gresource.xml \
+	$(top_srcdir)/resources/htmlview.js \
+	$(top_srcdir)/resources/Readability-readerable.js \
+	$(top_srcdir)/resources/Readability.js \
+	$(top_srcdir)/resources/purify.min.js \
 	$(main_dep)
 
-resources.h: $(resources)
+resources.h: $(resources_DATA)
 	glib-compile-resources --generate --target=$@ --c-name resources --sourcedir=$(top_srcdir)/resources $<
 
-resources.c: $(resources)
+resources.c: $(resources_DATA)
 	glib-compile-resources --generate --target=$@ --c-name resources --sourcedir=$(top_srcdir)/resources $<
 
 resources.o: resources.c resources.h

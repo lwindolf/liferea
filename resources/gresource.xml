@@ -19,17 +19,11 @@
   <gresource prefix="/org/gnome/liferea/ui/google_source">
     <file compressed="true">google_source.ui</file>
   </gresource>
-  <gresource prefix="/org/gnome/liferea/ui/liferea_headerbar">
-    <file compressed="true">liferea_headerbar.ui</file>
-  </gresource>
   <gresource prefix="/org/gnome/liferea/ui/liferea_menu">
     <file compressed="true">liferea_menu.ui</file>
   </gresource>
-  <gresource prefix="/org/gnome/liferea/ui/liferea_toolbar">
-    <file compressed="true">liferea_toolbar.ui</file>
-  </gresource>
-  <gresource prefix="/org/gnome/liferea/ui/liferea_window">
-    <file compressed="true">liferea_window.ui</file>
+  <gresource prefix="/org/gnome/liferea/ui/liferea_headerbar">
+    <file compressed="true">liferea_headerbar.ui</file>
   </gresource>
   <gresource prefix="/org/gnome/liferea/ui/mainwindow">
     <file compressed="true">mainwindow.ui</file>

@@ -28,14 +28,6 @@ css_DATA = \
 	css/liferea.css \
 	css/user.css
 
-jsdir = $(pkgdatadir)/js
-js_DATA = \
-	js/gresource.xml \
-	js/htmlview.js \
-	js/purify.min.js \
-	js/Readability-readerable.js \
-	js/Readability.js
-
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
