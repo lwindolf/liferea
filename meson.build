@@ -51,15 +51,15 @@ liferea_deps = [
   dependency('fribidi', version: '>= 0.19.7')
 ]
 
-resources = gnome.compile_resources(
+liferea_resources = gnome.compile_resources(
   'resources', 'resources/gresource.xml',
   source_dir : 'resources',
-  c_name : 'resources'
+  c_name : 'liferea_resources'
 )
 
 executable('liferea',
   liferea_sources,
-  resources,
+  liferea_resources,
   dependencies: liferea_deps,
   include_directories: include_directories('.', 'src')
 )
