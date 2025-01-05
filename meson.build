@@ -57,7 +57,7 @@ config_h = declare_dependency(
 executable('liferea',
   liferea_sources,
   dependencies: liferea_deps,
-  include_directories: include_directories('src')
+  include_directories: include_directories('.', 'src')
 )
 
 # Resources
