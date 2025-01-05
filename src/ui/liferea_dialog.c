@@ -122,7 +122,7 @@ liferea_dialog_new (const gchar *name)
 const gchar *
 liferea_dialog_entry_get (GtkWidget *dialog, const gchar *name)
 {
-	return gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name)))));
+	return gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name))));
 }
 
 void
