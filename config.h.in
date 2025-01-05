@@ -1,0 +1,29 @@
+/* always defined to indicate that i18n is enabled */
+#define ENABLE_NLS @ENABLE_NLS@
+
+/* gettext domain */
+#define GETTEXT_PACKAGE @GETTEXT_PACKAGE@
+
+/* Name of package */
+#define PACKAGE @PACKAGE@
+
+/* Define to the full name of this package. */
+#define PACKAGE_NAME @PACKAGE@
+
+/* Define to the full name and version of this package. */
+#define PACKAGE_STRING @PACKAGE@ @VERSION@
+
+/* Define to the home page for this package. */
+#define PACKAGE_URL @PACKAGE_URL@
+
+/* Define to the version of this package. */
+#define PACKAGE_VERSION @VERSION@
+
+/* Version number of package */
+#define VERSION @VERSION@
+
+#define PACKAGE_DATA_DIR @PACKAGE_DATA_DIR@
+#define PACKAGE_LIB_DIR @PACKAGE_LIB_DIR@
+#define PACKAGE_LOCALE_DIR @PACKAGE_LOCALE_DIR@
+
+#define WEB_EXTENSIONS_DIR @WEB_EXTENSIONS_DIR@

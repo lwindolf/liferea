@@ -20,12 +20,19 @@ conf.set_quoted('APPLICATION_ID', 'net.sf.liferea')
 conf.set_quoted('BUILD_ROOT', meson.project_build_root())
 conf.set_quoted('WEB_EXTENSIONS_DIR', webprocessextensionsdir)
 conf.set_quoted('PACKAGE', 'liferea')
+conf.set_quoted('PACKAGE_URL', 'https://github.com/liferea')
 conf.set_quoted('PACKAGE_DATA_DIR', datadir)
 conf.set_quoted('PACKAGE_LIB_DIR', libdir)
 conf.set_quoted('PACKAGE_LOCALE_DIR', localedir)
 conf.set_quoted('VERSION', meson.project_version())
 conf.set_quoted('GETTEXT_PACKAGE', 'liferea')
 conf.set('ENABLE_NLS', 1)
+
+configure_file(
+  input: 'config.h.in',
+  output: 'config.h',
+  configuration: conf
+)
 
 subdir('src')
 
@@ -44,36 +51,19 @@ liferea_deps = [
   dependency('fribidi', version: '>= 0.19.7')
 ]
 
-config_h = declare_dependency(
-  sources: vcs_tag(
-    input: configure_file(
-      output: 'config.h.in',
-      configuration: conf
-    ),
-    output: 'config.h'
-  )
+resources = gnome.compile_resources(
+  'resources', 'resources/gresource.xml',
+  source_dir : 'resources',
+  c_name : 'resources'
 )
 
 executable('liferea',
   liferea_sources,
+  resources,
   dependencies: liferea_deps,
   include_directories: include_directories('.', 'src')
 )
 
-# Resources
-resources = files(
-  'resources/gresource.xml',
-  'resources/htmlview.js',
-  'resources/Readability-readerable.js',
-  'resources/Readability.js',
-  'resources/purify.min.js'
-)
-
-#custom_target('resources',
-#  input: resources,
-#  output: ['resources.c', 'resources.h'],
-#  command: ['glib-compile-resources', '--generate', '--target=@OUTPUT@', '--c-name=resources', '--sourcedir=@INPUT@']
-#)
 
 # Introspection
 #if get_option('introspection')
