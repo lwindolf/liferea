@@ -216,7 +216,7 @@ ui_choose_file (gchar *title, const gchar *buttonName, gboolean saving, fileChoo
 }
 
 void
-ui_common_simple_action_group_set_enabled (GActionGroup *group, gboolean enabled)
+ui_common_action_group_enable (GActionGroup *group, gboolean enabled)
 {
 	gchar **actions_list = g_action_group_list_actions (group);
 	gint i;

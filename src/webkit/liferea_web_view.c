@@ -26,6 +26,7 @@
 #include "common.h"
 #include "download.h"
 #include "feedlist.h"
+#include "itemlist.h"
 #include "social.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
@@ -701,7 +702,7 @@ liferea_web_view_scroll_pagedown_callback (GObject *source_object, GAsyncResult 
 	g_variant_get (result, "(s)", &output);
 
 	if (g_str_equal(output, "false"))
-		on_next_unread_item_activate (NULL, NULL, NULL);
+		itemlist_select_next_unread ();
 
 	g_free (output);
 }

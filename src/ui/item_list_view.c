@@ -971,12 +971,6 @@ item_list_view_find_unread_item (ItemListView *ilv, gulong startId)
 }
 
 void
-on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpointer user_data)
-{
-	itemlist_select_next_unread ();
-}
-
-void
 on_popup_copy_URL_clipboard (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr         item;

@@ -124,6 +124,19 @@ on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data
 	}
 }
 
+static void
+on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	Node		*node;
+
+	node = feedlist_get_selected ();
+	// FIXME: use node type capability check
+	if (node && (IS_FEED (node) || IS_NEWSBIN (node)))
+		itemlist_remove_all_items (node);
+	else
+		ui_show_error_box (_("You must select a feed to delete its items!"));
+}
+
 // FIXME replace this with a bind!
 static void
 on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
@@ -254,6 +267,12 @@ static void
 ui_popup_sort_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	feed_list_view_sort_folder ((Node *)user_data);
+}
+
+static void
+on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpointer user_data)
+{
+	itemlist_select_next_unread ();
 }
 
 static const GActionEntry gaction_entries[] = {

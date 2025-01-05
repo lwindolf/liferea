@@ -108,19 +108,6 @@ on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer us
 }
 
 static void
-on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node		*node;
-
-	node = feedlist_get_selected ();
-	// FIXME: use node type capability check
-	if (node && (IS_FEED (node) || IS_NEWSBIN (node)))
-		itemlist_remove_all_items (node);
-	else
-		ui_show_error_box (_("You must select a feed to delete its items!"));
-}
-
-static void
 on_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	itemPtr item = NULL;

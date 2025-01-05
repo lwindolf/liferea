@@ -14,7 +14,7 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
     container:    
-      image: 'ubuntu:24.04'
+      image: 'ubuntu:24.10'
 
     steps:
     - name: Checkout repository
@@ -26,18 +26,16 @@ jobs:
 
     - run: |
        apt-get update -qq
-       apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkitgtk-6.0-dev libjson-glib-dev libgirepository1.0-dev libpeas-2-dev gsettings-desktop-schemas-dev python3 libtool intltool valgrind libfribidi-dev gla11y appstream desktop-file-utils
+       apt-get install -y -qq libxml2-dev libxslt1-dev libsqlite3-dev libwebkitgtk-6.0-dev libjson-glib-dev libgirepository1.0-dev libpeas-2-dev gsettings-desktop-schemas-dev python3 libtool intltool valgrind libfribidi-dev gla11y appstream desktop-file-utils meson
        mkdir inst
 
-    - run: |
-       sh autogen.sh
-       ./configure --prefix=$(pwd)/inst
-
-    - run: make -C po check
-    - run: make && make install
+    - run: meson setup builddir --prefix=$(pwd)/inst
+    - run: meson compile -C builddir
+    # FIXME - run: make -C po check
+    - run: ninja install
     - run: cp net.sf.liferea.gschema.xml /usr/share/glib-2.0/schemas
     - run: /usr/bin/glib-compile-schemas /usr/share/glib-2.0/schemas/
     - run: ls -l /usr/share/glib-2.0/schemas
-    - run: cd src/tests && make test
+    # FIXME - run: cd src/tests && make test
     - run: desktop-file-validate net.sourceforge.liferea.desktop
     - run: appstreamcli validate net.sourceforge.liferea.appdata.xml

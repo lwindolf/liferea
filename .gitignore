@@ -61,3 +61,4 @@ org.gnome.liferea.gschema.valid
 stamp-h1
 .flatpak-builder
 .vscode
+builddir/

@@ -49,6 +49,7 @@
 #else
 #  define textdomain(String) (String)
 #  define gettext(String) (String)
+#  define ngettext(Singular,Plural,Count) ((Count == 1) ? (Singular) : (Plural))
 #  define dgettext(Domain,Message) (Message)
 #  define dcgettext(Domain,Message,Type) (Message)
 #  define bindtextdomain(Domain,Directory) (Domain)
