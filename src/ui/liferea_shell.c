@@ -832,7 +832,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 1.) setup plugin engine including mandatory base plugins that (for example the feed list or auth) might depend on */
 	debug (DEBUG_GUI, "Register mandatory plugins");
-	shell->plugins = liferea_plugins_engine_get (shell);
+	shell->plugins = liferea_plugins_engine_get ();
 
 	/* 2.) Setup item list */
 	shell->itemlist = itemlist_create ();
@@ -930,9 +930,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gtk_widget_add_controller (GTK_WIDGET (shell->window), shell->keypress);
 
 	/* 13. Setup plugins */
-	if(!pluginsDisabled) {
+	if (!pluginsDisabled) {
 		debug (DEBUG_GUI, "Register shell plugins");
-		liferea_plugins_engine_register_shell_plugins ();
+		liferea_plugins_engine_register_shell_plugins (shell);
 	}
 
 	/* 14. Rebuild search folders if needed */

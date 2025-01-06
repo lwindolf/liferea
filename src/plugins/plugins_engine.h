@@ -1,7 +1,7 @@
 /*
  * plugins_engine.h: Liferea Plugins using libpeas
  *
- * Copyright (C) 2012-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,42 +28,25 @@
 
 G_BEGIN_DECLS
 
-#define LIFEREA_TYPE_PLUGINS_ENGINE              (liferea_plugins_engine_get_type ())
-#define LIFEREA_PLUGINS_ENGINE(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), LIFEREA_TYPE_PLUGINS_ENGINE, LifereaPluginsEngine))
-#define LIFEREA_PLUGINS_ENGINE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), LIFEREA_TYPE_PLUGINS_ENGINE, LifereaPluginsEngineClass))
-#define LIFEREA_IS_PLUGINS_ENGINE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), LIFEREA_TYPE_PLUGINS_ENGINE))
-#define LIFEREA_IS_PLUGINS_ENGINE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), LIFEREA_TYPE_PLUGINS_ENGINE))
-#define LIFEREA_PLUGINS_ENGINE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS((obj), LIFEREA_TYPE_PLUGINS_ENGINE, LifereaPluginsEngineClass))
-typedef struct _LifereaPluginsEngine LifereaPluginsEngine;
-typedef struct _LifereaPluginsEnginePrivate LifereaPluginsEnginePrivate;
-
-struct _LifereaPluginsEngine {
-	PeasEngine *parent;
-	LifereaPluginsEnginePrivate *priv;
-};
-
-typedef struct _LifereaPluginsEngineClass LifereaPluginsEngineClass;
-
-struct _LifereaPluginsEngineClass {
-	PeasEngineClass parent_class;
-};
+#define LIFEREA_TYPE_PLUGINS_ENGINE (liferea_plugins_engine_get_type ())
+G_DECLARE_FINAL_TYPE (LifereaPluginsEngine, liferea_plugins_engine, LIFEREA, PLUGINS_ENGINE, GObject)
 
 GType liferea_plugins_engine_get_type (void) G_GNUC_CONST;
 
 /**
  * liferea_plugins_engine_get: (skip)
- * @shell:		the shell
  * 
  * Get the Liferea plugins engine instance.
  */
-LifereaPluginsEngine *liferea_plugins_engine_get (LifereaShell *shell);
+LifereaPluginsEngine *liferea_plugins_engine_get (void);
 
 /**
  * liferea_plugins_engine_register_shell_plugins: (skip)
+ * @shell:		the shell
  * 
  * Register all plugins that require the shell.
  */
-void liferea_plugins_engine_register_shell_plugins (void);
+void liferea_plugins_engine_register_shell_plugins (LifereaShell *shell);
 
 /**
  * liferea_plugin_call: (skip)
