@@ -18,10 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
-
 #include <gtk/gtk.h>
 
 #include "ui/liferea_dialog.h"
@@ -98,16 +94,12 @@ GtkWidget *
 liferea_dialog_new (const gchar *name)
 {
 	LifereaDialog	*ld;
-	g_autofree gchar *path;
-
-	path = g_strdup_printf ("/org/gnome/liferea/ui/%s", name);
+	g_autofree gchar *path = g_strdup_printf ("/org/gnome/liferea/ui/%s.ui", name);
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
 	ld->priv->xml = gtk_builder_new_from_resource (path);
-	g_return_val_if_fail (ld->priv->xml != NULL, NULL);
-
 	ld->priv->dialog = GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
-	gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window()));
+	gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window ()));
 	g_return_val_if_fail (ld->priv->dialog != NULL, NULL);
 
 	g_object_set_data (G_OBJECT (ld->priv->dialog), "LifereaDialog", ld);

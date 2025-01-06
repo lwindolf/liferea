@@ -33,7 +33,6 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="hscrollbar-policy">never</property>
-                <property name="shadow-type">in</property>
                 <child>
                   <object class="GtkTreeView" id="feedlist">
                     <property name="visible">True</property>
@@ -76,7 +75,6 @@
                           <object class="GtkViewport" id="normalViewItems">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="shadow-type">none</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -98,7 +96,6 @@
                                 <property name="can-focus">False</property>
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
-                                <property name="shadow-type">none</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -160,7 +157,6 @@
                           <object class="GtkViewport" id="wideViewItems">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
-                            <property name="shadow-type">none</property>
                             <child>
                               <placeholder/>
                             </child>
@@ -181,7 +177,6 @@
                                 <property name="can-focus">False</property>
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
-                                <property name="shadow-type">none</property>
                                 <child>
                                   <placeholder/>
                                 </child>

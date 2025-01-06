@@ -232,9 +232,7 @@ liferea_shell_init (LifereaShell *ls)
 	/* globally accessible singleton */
 	g_assert (NULL == shell);
 	shell = ls;
-	shell->xml = gtk_builder_new_from_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui");
-	if (!shell->xml)
-		g_error ("Loading " PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "mainwindow.ui failed");
+	shell->xml = gtk_builder_new_from_resource ("/org/gnome/liferea/ui/mainwindow.ui");
 }
 
 void
