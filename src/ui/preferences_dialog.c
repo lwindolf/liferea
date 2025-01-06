@@ -351,7 +351,7 @@ preferences_dialog_destroy_cb (GtkWidget *widget, PreferencesDialog *pd)
 void
 preferences_dialog_init (PreferencesDialog *pd)
 {
-	GtkWidget		*widget, *entry;
+	GtkWidget		*widget;
 	GtkComboBox		*combo;
 	GtkListStore		*store;
 	GtkTreeIter		treeiter;
@@ -488,7 +488,7 @@ preferences_dialog_init (PreferencesDialog *pd)
 	liferea_dialog_entry_set (pd->dialog, "browsercmd", browser_command);
 	g_free (browser_command);
 
-	gtk_widget_set_sensitive (GTK_WIDGET (entry), manualBrowser);
+	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "browsercmd"), manualBrowser);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "manuallabel"), manualBrowser);
 	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "urlhintlabel"), manualBrowser);
 
