@@ -107,7 +107,7 @@ static gboolean
 on_liferea_browser_url_entry_activate (GtkWidget *widget, gpointer user_data)
 {
 	LifereaBrowser	*browser = LIFEREA_BROWSER (user_data);
-	const gchar		*url = gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (widget)));
+	const gchar	*url = gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (widget)));
 
 	liferea_browser_launch_URL_internal (browser, url);
 
