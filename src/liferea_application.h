@@ -41,6 +41,15 @@ G_DECLARE_FINAL_TYPE (LifereaApplication, liferea_application, LIFEREA, APPLICAT
 gint liferea_application_new (int argc, char *argv[]);
 
 /**
+ * liferea_application_get_instance:
+ *
+ * Get the LifereaApplication instance
+ *
+ * Returns: the LifereaApplication instance
+ */
+LifereaApplication *liferea_application_get_instance (void);
+
+/**
  * liferea_application_shutdown:
  *
  * Shutdown GApplication

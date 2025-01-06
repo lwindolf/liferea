@@ -1,7 +1,7 @@
 /*
  * @file item_list_view.h  presenting items in a GtkTreeView
  *
- * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -151,81 +151,6 @@ void item_list_view_clear (ItemListView *ilv);
  */
 void item_list_view_update (ItemListView *ilv);
 
-/* menu callbacks */
-
-/**
- * on_toggle_unread_status: (skip)
- * @action: The activated action.
- * @parameter: The item id as a GVariant of type "t", or NULL for the selected item.
- * @user_data: unused
- *
- * Toggles the unread status of the selected item. This is called from
- * a menu.
- */
-void on_toggle_unread_status (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-
-/**
- * on_toggle_item_flag: (skip)
- * @action: The activated action.
- * @parameter: The item id as a GVariant of type "t", or NULL for the selected item.
- * @user_data: unused
- *
- * Toggles the flag of the selected item. This is called from a menu.
- */
-void on_toggle_item_flag (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-
-/*
- * Opens the selected item in a browser.
- */
-void on_action_launch_item_in_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-
-/*
- * Opens the selected item in a browser.
- */
-void on_action_launch_item_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-
-/*
- * Opens the selected item in a browser.
- */
-void on_action_launch_item_in_external_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-
-/*
- * Removes all items from the selected feed.
- */
-void on_remove_items_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-
-/**
- * on_action_remove_item: (skip)
- * @action: The activated action.
- * @parameter: The item id as a GVariant of type "t", or NULL for the selected item.
- * @user_data: Unused.
- *
- * Removes the selected item from the selected feed.
- */
-void on_action_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-
-/**
- * item_list_view_find_unread_item: (skip)
- * @ilv:		the ItemListView
- * @startId:		0 or the item id to start from
- *
- * Finds and selects the next unread item starting at the given
- * item in a ItemListView according to the current GtkTreeView sorting order.
- *
- * Returns: (nullable): unread item (or NULL)
- */
-itemPtr item_list_view_find_unread_item (ItemListView *ilv, gulong startId);
-
-/**
- * on_next_unread_item_activate: (skip)
- * @action: The action that was activated.
- * @user_data: Unused.
- *
- * Searches the displayed feed and then all feeds for an unread
- * item. If one it found, it is displayed.
- */
-void on_next_unread_item_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-
 /**
  * item_list_view_update_item: (skip)
  * @ilv:	the ItemListView
@@ -245,17 +170,15 @@ void item_list_view_update_item (ItemListView *ilv, itemPtr item);
 void item_list_view_update_all_items (ItemListView *ilv);
 
 /**
- * on_popup_copy_URL_clipboard: (skip)
+ * item_list_view_find_unread_item: (skip)
+ * @ilv:               the ItemListView
+ * @startId:           0 or the item id to start from
  *
- * Copies the selected items URL to the clipboard.
- */
-void on_popup_copy_URL_clipboard (GSimpleAction *action, GVariant *parameter, gpointer user_data);
-
-/**
- * on_popup_social_bm_item_selected: (skip)
+ * Finds and selects the next unread item starting at the given
+ * item in a ItemListView according to the current GtkTreeView sorting order.
  *
- * Bookmarks the selected item to social bookmark service.
+ * Returns: (nullable): unread item (or NULL)
  */
-void on_popup_social_bm_item_selected (GSimpleAction *action, GVariant *parameter, gpointer user_data);
+itemPtr item_list_view_find_unread_item (ItemListView *ilv, gulong startId);
 
 #endif

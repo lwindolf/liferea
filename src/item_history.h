@@ -1,7 +1,7 @@
 /**
  * @file item_history.h tracking recently viewed items
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2025 Lars Windolf <lars.windolf@gmx.de>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,29 @@
 #ifndef _ITEM_HISTORY
 #define _ITEM_HISTORY
 
+#include <glib.h>
+
 #include "item.h"
+
+G_BEGIN_DECLS
+
+#define ITEM_HISTORY_TYPE (item_history_get_type ())
+G_DECLARE_FINAL_TYPE (ItemHistory, item_history, ITEM, HISTORY, GObject)
+
+struct _ItemHistory {
+        GObject parent;
+
+	GList	*items;		/*<< FIFO list of all items viewed */
+	GList	*current;	/*<< the current list element */
+	guint	lastId;		/*<< Avoid duplicate add */
+};
+
+/**
+ * Get the item history singleton instance.
+ *
+ * @returns the item history instance
+ */
+ItemHistory * item_history_get_instance (void);
 
 /**
  * Add a new item to the item history stack.
@@ -57,5 +79,7 @@ gboolean item_history_has_previous (void);
  * @returns TRUE if there is an item
  */
 gboolean item_history_has_next (void);
+
+G_END_DECLS
 
 #endif

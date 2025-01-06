@@ -28,7 +28,7 @@
 #include "node_providers/vfolder.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
-#include "ui/ui_folder.h"
+#include "ui/liferea_dialog.h"
 
 /* Note: The folder node type implements the behaviour of a folder like
    node in the feed list. The two most important features are viewing the
@@ -106,6 +106,22 @@ folder_remove (Node *node)
 	g_assert (!node->children);
 }
 
+static void
+on_newfolder_clicked (GtkButton *button, gpointer user_data)
+{	
+	feedlist_add_folder (liferea_dialog_entry_get (GTK_WIDGET (user_data), "foldertitleentry"));
+}
+
+static gboolean
+folder_add_dialog (void)
+{
+	GtkWidget *dialog = liferea_dialog_new ("new_folder");
+	liferea_dialog_entry_set (dialog, "foldertitleentry", "");
+	g_signal_connect (liferea_dialog_lookup (dialog, "newfolderbtn"), "clicked", G_CALLBACK (on_newfolder_clicked), dialog);
+	
+	return TRUE;
+}
+
 nodeProviderPtr
 folder_get_provider (void)
 {
@@ -127,7 +143,7 @@ folder_get_provider (void)
 		folder_update_counters,
 		folder_remove,
 		node_default_render,
-		ui_folder_add,
+		folder_add_dialog,
 		feed_list_view_rename_node,
 		NULL
 	};
@@ -157,7 +173,7 @@ root_get_provider (void)
 		folder_update_counters,
 		folder_remove,
 		node_default_render,
-		ui_folder_add,
+		folder_add_dialog,
 		feed_list_view_rename_node,
 		NULL
 	};

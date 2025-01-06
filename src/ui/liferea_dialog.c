@@ -1,7 +1,7 @@
 /**
  * @file ui_dialog.c UI dialog handling
  *
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
 
 #include <gtk/gtk.h>
 
@@ -98,18 +94,12 @@ GtkWidget *
 liferea_dialog_new (const gchar *name)
 {
 	LifereaDialog	*ld;
-	gchar 		*path;
+	g_autofree gchar *path = g_strdup_printf ("/org/gnome/liferea/ui/%s.ui", name);
 
 	ld = LIFEREA_DIALOG (g_object_new (LIFEREA_DIALOG_TYPE, NULL));
-	path = g_strdup_printf ("%s%s.ui", PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S, name);
-	ld->priv->xml = gtk_builder_new_from_file (path);
-	g_free (path);
-
-	g_return_val_if_fail (ld->priv->xml != NULL, NULL);
-
+	ld->priv->xml = gtk_builder_new_from_resource (path);
 	ld->priv->dialog = GTK_WIDGET (gtk_builder_get_object (ld->priv->xml, name));
-	gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window()));
-	gtk_builder_connect_signals (ld->priv->xml, NULL);
+	gtk_window_set_transient_for (GTK_WINDOW (ld->priv->dialog), GTK_WINDOW (liferea_shell_get_window ()));
 	g_return_val_if_fail (ld->priv->dialog != NULL, NULL);
 
 	g_object_set_data (G_OBJECT (ld->priv->dialog), "LifereaDialog", ld);

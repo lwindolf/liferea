@@ -72,6 +72,7 @@ struct ItemListPrivate
 
 enum {
 	ITEM_UPDATED,	/*<< state of a currently visible item has changed */
+	ITEM_SELECTED,	/*<< the currently selected item has changed */
 	LAST_SIGNAL
 };
 
@@ -158,6 +159,17 @@ itemlist_class_init (ItemListClass *klass)
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
+
+	itemlist_signals[ITEM_UPDATED] =
+		g_signal_new ("item-selected",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE,
+		0);
 }
 
 /* member wrappers */
@@ -575,6 +587,8 @@ itemlist_selection_changed (itemPtr item)
 
 		feedlist_reset_new_item_count ();
 	}
+
+	g_signal_emit_by_name (itemlist, "item-selected", NULL);
 
 	if (item)
 		g_object_unref (item);
