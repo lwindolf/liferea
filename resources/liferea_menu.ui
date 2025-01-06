@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
+  <requires lib="gtk" version="4.0"/>
   <menu id="menubar">
     <submenu id="subscription_menu">
       <attribute name="label" translatable="yes">_Subscriptions</attribute>
@@ -53,7 +53,7 @@
         </item>
       </section>
     </submenu>
-    <submenu id="feed_menu" >
+    <submenu id="feed_menu">
       <attribute name="label" translatable="yes">_Feed</attribute>
       <section>
         <item>
@@ -82,7 +82,7 @@
         </item>
       </section>
     </submenu>
-    <submenu id = "item_menu">
+    <submenu id="item_menu">
       <attribute name="label" translatable="yes">_Item</attribute>
       <section>
         <item>
@@ -150,7 +150,7 @@
           <attribute name="action">app.zoom-reset</attribute>
           <attribute name="label" translatable="yes">_Normal size</attribute>
         </item>
-       </section>
+      </section>
       <section>
         <item>
           <attribute name="action">app.reduced-feed-list</attribute>

@@ -1,292 +1,224 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
 <interface>
-  <requires lib="gtk+" version="3.14"/>
+  <requires lib="gtk" version="4.0"/>
   <object class="GtkAdjustment" id="adjustment6">
     <property name="upper">100</property>
     <property name="value">1</property>
     <property name="step-increment">1</property>
   </object>
   <object class="GtkApplicationWindow" id="mainwindow">
-    <property name="can-focus">False</property>
-    <property name="title" translatable="yes">Liferea</property>
+    <property name="title" translatable="1">Liferea</property>
     <property name="default-width">640</property>
     <property name="default-height">480</property>
     <property name="icon-name">liferea</property>
     <child>
-      <!-- n-columns=3 n-rows=3 -->
       <object class="GtkGrid" id="vbox1">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="hexpand">True</property>
-        <property name="vexpand">True</property>
+        <property name="hexpand">1</property>
+        <property name="vexpand">1</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkPaned" id="leftpane">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="hexpand">True</property>
-            <property name="vexpand">True</property>
+            <property name="resize-start-child">0</property>
+            <property name="focusable">1</property>
+            <property name="hexpand">1</property>
+            <property name="vexpand">1</property>
             <property name="position">170</property>
-            <child>
+            <property name="start-child">
               <object class="GtkScrolledWindow" id="scrolledwindow3">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
+                <property name="focusable">1</property>
                 <property name="hscrollbar-policy">never</property>
-                <child>
+                <property name="child">
                   <object class="GtkTreeView" id="feedlist">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="headers-visible">False</property>
-                    <property name="reorderable">True</property>
-                    <signal name="button-press-event" handler="on_mainfeedlist_button_press_event" swapped="no"/>
-                    <signal name="popup-menu" handler="on_mainfeedlist_popup_menu" swapped="no"/>
+                    <property name="focusable">1</property>
+                    <property name="headers-visible">0</property>
+                    <property name="reorderable">1</property>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection"/>
                     </child>
                   </object>
-                </child>
+                </property>
               </object>
-              <packing>
-                <property name="resize">False</property>
-                <property name="shrink">True</property>
-              </packing>
-            </child>
-            <child>
+            </property>
+            <property name="end-child">
               <object class="GtkNotebook" id="browsertabs">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="show-border">False</property>
-                <property name="scrollable">True</property>
+                <property name="focusable">1</property>
+                <property name="show-border">0</property>
+                <property name="scrollable">1</property>
                 <child>
-                  <object class="GtkNotebook" id="itemtabs">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="show-tabs">False</property>
-                    <property name="show-border">False</property>
-                    <child>
-                      <object class="GtkPaned" id="normalViewPane">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="orientation">vertical</property>
-                        <property name="position">199</property>
-                        <property name="position-set">True</property>
+                  <object class="GtkNotebookPage">
+                    <property name="child">
+                      <object class="GtkNotebook" id="itemtabs">
+                        <property name="focusable">1</property>
+                        <property name="show-tabs">0</property>
+                        <property name="show-border">0</property>
                         <child>
-                          <object class="GtkViewport" id="normalViewItems">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="resize">False</property>
-                            <property name="shrink">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <!-- n-columns=3 n-rows=3 -->
-                          <object class="GtkGrid" id="normalViewVBox">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <object class="GtkViewport" id="normalViewHtml">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="hexpand">True</property>
-                                <property name="vexpand">True</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
+                          <object class="GtkNotebookPage">
+                            <property name="child">
+                              <object class="GtkPaned" id="normalViewPane">
+                                <property name="resize-start-child">0</property>
+                                <property name="focusable">1</property>
+                                <property name="orientation">vertical</property>
+                                <property name="position">199</property>
+                                <property name="position-set">1</property>
+                                <property name="start-child">
+                                  <object class="GtkViewport" id="normalViewItems">
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                </property>
+                                <property name="end-child">
+                                  <object class="GtkGrid" id="normalViewVBox">
+                                    <property name="orientation">vertical</property>
+                                    <child>
+                                      <object class="GtkViewport" id="normalViewHtml">
+                                        <property name="hexpand">1</property>
+                                        <property name="vexpand">1</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                        <layout>
+                                          <property name="column">0</property>
+                                          <property name="row">0</property>
+                                        </layout>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                </property>
                               </object>
-                              <packing>
-                                <property name="left-attach">0</property>
-                                <property name="top-attach">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">True</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">page 1</property>
-                      </object>
-                      <packing>
-                        <property name="tab-fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkPaned" id="wideViewPane">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="position">100</property>
-                        <property name="position-set">True</property>
-                        <child>
-                          <object class="GtkViewport" id="wideViewItems">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="resize">False</property>
-                            <property name="shrink">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <!-- n-columns=3 n-rows=3 -->
-                          <object class="GtkGrid" id="wideViewVBox">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <child>
-                              <object class="GtkViewport" id="wideViewHtml">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="hexpand">True</property>
-                                <property name="vexpand">True</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
+                            </property>
+                            <property name="tab">
+                              <object class="GtkLabel">
+                                <property name="label" translatable="1">page 1</property>
                               </object>
-                              <packing>
-                                <property name="left-attach">0</property>
-                                <property name="top-attach">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
+                            </property>
                           </object>
-                          <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">True</property>
-                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkNotebookPage">
+                            <property name="position">1</property>
+                            <property name="child">
+                              <object class="GtkPaned" id="wideViewPane">
+                                <property name="resize-start-child">0</property>
+                                <property name="focusable">1</property>
+                                <property name="position">100</property>
+                                <property name="position-set">1</property>
+                                <property name="start-child">
+                                  <object class="GtkViewport" id="wideViewItems">
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                </property>
+                                <property name="end-child">
+                                  <object class="GtkGrid" id="wideViewVBox">
+                                    <child>
+                                      <object class="GtkViewport" id="wideViewHtml">
+                                        <property name="hexpand">1</property>
+                                        <property name="vexpand">1</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                        <layout>
+                                          <property name="column">0</property>
+                                          <property name="row">0</property>
+                                        </layout>
+                                      </object>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                    <child>
+                                      <placeholder/>
+                                    </child>
+                                  </object>
+                                </property>
+                              </object>
+                            </property>
+                            <property name="tab">
+                              <object class="GtkLabel">
+                                <property name="label" translatable="1">page 2</property>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
+                        <child>
+                          <placeholder/>
                         </child>
                       </object>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child type="tab">
+                    </property>
+                    <property name="tab">
                       <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">page 2</property>
+                        <property name="label" translatable="1">Headlines</property>
                       </object>
-                      <packing>
-                        <property name="position">1</property>
-                        <property name="tab-fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child type="tab">
-                      <placeholder/>
-                    </child>
+                    </property>
                   </object>
                 </child>
-                <child type="tab">
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes">Headlines</property>
-                  </object>
-                  <packing>
-                    <property name="tab-fill">False</property>
-                  </packing>
-                </child>
                 <child>
                   <placeholder/>
                 </child>
-                <child type="tab">
-                  <placeholder/>
-                </child>
                 <child>
-                  <placeholder/>
-                </child>
-                <child type="tab">
                   <placeholder/>
                 </child>
               </object>
-              <packing>
-                <property name="resize">True</property>
-                <property name="shrink">True</property>
-              </packing>
-            </child>
+            </property>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">0</property>
+            </layout>
           </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">0</property>
-          </packing>
         </child>
         <child>
           <object class="GtkStatusbar" id="statusbar">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
             <property name="margin-start">6</property>
             <property name="margin-end">6</property>
-            <property name="margin-top">0</property>
-            <property name="margin-bottom">0</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="row">1</property>
+            </layout>
           </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">1</property>
-          </packing>
         </child>
         <child>
           <placeholder/>

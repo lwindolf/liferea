@@ -1,82 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
 <interface>
-  <requires lib="gtk+" version="3.16"/>
+  <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="google_source">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="title" translatable="yes">Add Google Reader API Account</property>
+    <property name="visible">1</property>
+    <property name="title" translatable="1">Add Google Reader API Account</property>
     <property name="type-hint">dialog</property>
-    <child internal-child="vbox">
+    <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox1">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="dialog-action_area1">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="layout-style">end</property>
-            <child>
-              <object class="GtkButton" id="cancelbutton1">
-                <property name="label">gtk-cancel</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="can-default">True</property>
-                <property name="receives-default">False</property>
-                <property name="use-stock">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="okbutton1">
-                <property name="label">gtk-ok</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="can-default">True</property>
-                <property name="receives-default">False</property>
-                <property name="use-stock">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="pack-type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
         <child>
-          <object class="GtkVBox" id="vbox1">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
+          <object class="GtkBox" id="vbox1">
+            <property name="orientation">vertical</property>
+            <property name="can-focus">0</property>
             <property name="border-width">12</property>
             <property name="spacing">12</property>
             <child>
               <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">Please enter the details of the new Google Reader API compatible subscription.</property>
-                <property name="wrap">True</property>
+                <property name="valign">center</property>
+                <property name="label" translatable="1">Please enter the details of the new Google Reader API compatible subscription.</property>
+                <property name="wrap">1</property>
                 <property name="xalign">0</property>
                 <accessibility>
                   <relation type="label-for" target="google_source"/>
                 </accessibility>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkTable" id="table1">
@@ -88,8 +35,7 @@
                 <property name="row-spacing">6</property>
                 <child>
                   <object class="GtkEntry" id="nameEntry">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
+                    <property name="focusable">1</property>
                     <accessibility>
                       <relation type="labelled-by" target="nameLabel"/>
                     </accessibility>
@@ -97,15 +43,13 @@
                   <packing>
                     <property name="left-attach">1</property>
                     <property name="right-attach">2</property>
-                    <property name="y-options"/>
+                    <property name="y-options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="passwordLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes">_Password</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="1">_Password</property>
+                    <property name="use-underline">1</property>
                     <property name="xalign">0</property>
                     <accessibility>
                       <relation type="label-for" target="passwordEntry"/>
@@ -115,15 +59,13 @@
                     <property name="top-attach">3</property>
                     <property name="bottom-attach">4</property>
                     <property name="x-options">GTK_FILL</property>
-                    <property name="y-options"/>
+                    <property name="y-options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="userLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes">_Username (Email)</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="1">_Username (Email)</property>
+                    <property name="use-underline">1</property>
                     <property name="xalign">0</property>
                     <accessibility>
                       <relation type="label-for" target="userEntry"/>
@@ -133,15 +75,13 @@
                     <property name="top-attach">2</property>
                     <property name="bottom-attach">3</property>
                     <property name="x-options">GTK_FILL</property>
-                    <property name="y-options"/>
+                    <property name="y-options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="serverLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes">_Server</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="1">_Server</property>
+                    <property name="use-underline">1</property>
                     <property name="xalign">0</property>
                     <accessibility>
                       <relation type="label-for" target="serverEntry"/>
@@ -151,15 +91,13 @@
                     <property name="top-attach">1</property>
                     <property name="bottom-attach">2</property>
                     <property name="x-options">GTK_FILL</property>
-                    <property name="y-options"/>
+                    <property name="y-options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="nameLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes">_Name</property>
-                    <property name="use-underline">True</property>
+                    <property name="label" translatable="1">_Name</property>
+                    <property name="use-underline">1</property>
                     <property name="xalign">0</property>
                     <accessibility>
                       <relation type="label-for" target="nameEntry"/>
@@ -167,14 +105,13 @@
                   </object>
                   <packing>
                     <property name="x-options">GTK_FILL</property>
-                    <property name="y-options"/>
+                    <property name="y-options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="passwordEntry">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="visibility">False</property>
+                    <property name="focusable">1</property>
+                    <property name="visibility">0</property>
                     <accessibility>
                       <relation type="labelled-by" target="passwordLabel"/>
                     </accessibility>
@@ -184,13 +121,12 @@
                     <property name="right-attach">2</property>
                     <property name="top-attach">3</property>
                     <property name="bottom-attach">4</property>
-                    <property name="y-options"/>
+                    <property name="y-options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="userEntry">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
+                    <property name="focusable">1</property>
                     <accessibility>
                       <relation type="labelled-by" target="userLabel"/>
                     </accessibility>
@@ -200,13 +136,12 @@
                     <property name="right-attach">2</property>
                     <property name="top-attach">2</property>
                     <property name="bottom-attach">3</property>
-                    <property name="y-options"/>
+                    <property name="y-options"></property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="serverEntry">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
+                    <property name="focusable">1</property>
                     <accessibility>
                       <relation type="labelled-by" target="serverLabel"/>
                     </accessibility>
@@ -216,22 +151,12 @@
                     <property name="right-attach">2</property>
                     <property name="top-attach">1</property>
                     <property name="bottom-attach">2</property>
-                    <property name="y-options"/>
+                    <property name="y-options"></property>
                   </packing>
                 </child>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
         </child>
       </object>
     </child>
@@ -242,5 +167,39 @@
     <accessibility>
       <relation type="labelled-by" target="label1"/>
     </accessibility>
+    <child internal-child="action_area">
+      <object class="GtkButtonBox" id="dialog-action_area1">
+        <property name="valign">center</property>
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="layout-style">end</property>
+        <child>
+          <object class="GtkButton" id="cancelbutton1">
+            <property name="label">gtk-cancel</property>
+            <property name="focusable">1</property>
+            <property name="can-default">True</property>
+            <property name="use-stock">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="okbutton1">
+            <property name="label">gtk-ok</property>
+            <property name="focusable">1</property>
+            <property name="can-default">True</property>
+            <property name="use-stock">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>

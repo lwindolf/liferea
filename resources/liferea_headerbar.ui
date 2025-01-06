@@ -1,79 +1,72 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 3.4 -->
-  <object class="GtkToolbar" id="maintoolbar">
-    <property name="visible">True</property>
+  <requires lib="gtk" version="4.0"/>
+  <object class="GtkBox" id="maintoolbar">
+    <property name="css-classes">toolbar</property>
     <style>
       <class name="primary-toolbar"/>
     </style>
     <child>
-      <object class="GtkToolButton" id="newFeedButton">
-        <property name="visible">True</property>
+      <object class="GtkButton" id="newFeedButton">
         <property name="is_important">True</property>
         <property name="action_name">app.new-subscription</property>
-        <property name="use-underline">True</property>
-        <property name="label" translatable="yes">_New Subscription...</property>
-        <property name="tooltip-text" translatable="yes">Adds a subscription to the feed list.</property>
+        <property name="use-underline">1</property>
+        <property name="label" translatable="1">_New Subscription...</property>
+        <property name="tooltip-text" translatable="1">Adds a subscription to the feed list.</property>
         <property name="icon-name">list-add</property>
       </object>
     </child>
     <child>
-      <object class="GtkToolButton" id="MarkAsReadButton">
-        <property name="visible">True</property>
+      <object class="GtkButton" id="MarkAsReadButton">
         <property name="is_important">True</property>
         <property name="action_name">app.mark-selected-feed-as-read</property>
-        <property name="use-underline">True</property>
-        <property name="label" translatable="yes">_Mark Items Read</property>
-        <property name="tooltip-text" translatable="yes">Marks all items of the selected feed list node / in the item list as read.</property>
+        <property name="use-underline">1</property>
+        <property name="label" translatable="1">_Mark Items Read</property>
+        <property name="tooltip-text" translatable="1">Marks all items of the selected feed list node / in the item list as read.</property>
         <property name="icon-name">gtk-apply</property>
       </object>
     </child>
     <child>
-      <object class="GtkToolButton" id="prevReadButton">
-        <property name="visible">True</property>
+      <object class="GtkButton" id="prevReadButton">
         <property name="is_important">False</property>
         <property name="action_name">app.prev-read-item</property>
-        <property name="label" translatable="yes">Previous Item</property>
+        <property name="label" translatable="1">Previous Item</property>
         <property name="icon-name">go-previous</property>
       </object>
     </child>
     <child>
-      <object class="GtkToolButton" id="nextReadButton">
-        <property name="visible">True</property>
+      <object class="GtkButton" id="nextReadButton">
         <property name="is_important">False</property>
         <property name="action_name">app.next-read-item</property>
-        <property name="label" translatable="yes">Next Item</property>
+        <property name="label" translatable="1">Next Item</property>
         <property name="icon-name">go-next</property>
       </object>
     </child>
     <child>
-      <object class="GtkToolButton" id="nextUnreadButton">
-        <property name="visible">True</property>
+      <object class="GtkButton" id="nextUnreadButton">
         <property name="is_important">True</property>
         <property name="action_name">app.next-unread-item</property>
-        <property name="use-underline">True</property>
-        <property name="label" translatable="yes">_Next Unread Item</property>
+        <property name="use-underline">1</property>
+        <property name="label" translatable="1">_Next Unread Item</property>
         <property name="icon-name">go-jump</property>
       </object>
     </child>
     <child>
-      <object class="GtkToolButton" id="UpdateAllButton">
-        <property name="visible">True</property>
+      <object class="GtkButton" id="UpdateAllButton">
         <property name="is_important">True</property>
         <property name="action_name">app.update-all</property>
-        <property name="use-underline">True</property>
-        <property name="label" translatable="yes">Update _All</property>
-        <property name="tooltip-text" translatable="yes">Updates all subscriptions.</property>
+        <property name="use-underline">1</property>
+        <property name="label" translatable="1">Update _All</property>
+        <property name="tooltip-text" translatable="1">Updates all subscriptions.</property>
         <property name="icon-name">view-refresh</property>
       </object>
     </child>
     <child>
-      <object class="GtkToolButton" id="searchButton">
-        <property name="visible">True</property>
+      <object class="GtkButton" id="searchButton">
         <property name="is_important">True</property>
         <property name="action_name">app.search-feeds</property>
-        <property name="label" translatable="yes">Search All Feeds...</property>
-        <property name="tooltip-text" translatable="yes">Show the search dialog.</property>
+        <property name="label" translatable="1">Search All Feeds...</property>
+        <property name="tooltip-text" translatable="1">Show the search dialog.</property>
         <property name="icon-name">edit-find</property>
       </object>
     </child>
