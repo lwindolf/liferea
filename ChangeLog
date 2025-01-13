@@ -6,6 +6,9 @@ To be released
 	  to allow plugins modifying the feed list.
 	  (Lars Windolf)
 
+	* Fixes #1387: Dark theme lost in preview window
+	  (Lars Windolf)
+
 	* Fixes HTTP redirects not working
 	  (Lars Windolf)
 
