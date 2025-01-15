@@ -29,7 +29,6 @@
 #include "conf.h"
 #include "debug.h"
 #include "net.h"
-#include "render.h"
 #include "ui/liferea_shell.h"
 
 #define MAX_GCONF_PATHLEN	256

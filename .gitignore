@@ -41,6 +41,7 @@ po/Makefile.in.in
 po/POTFILES
 po/liferea.pot
 po/stamp-it
+js/*.xml
 src/js.c
 src/js.h
 src/dbus_wrap.c

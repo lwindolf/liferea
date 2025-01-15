@@ -33,7 +33,6 @@
 #include "feedlist.h"
 #include "json.h"
 #include "metadata.h"
-#include "render.h"
 #include "xml.h"
 
 G_DEFINE_TYPE (LifereaItem, liferea_item, G_TYPE_OBJECT);

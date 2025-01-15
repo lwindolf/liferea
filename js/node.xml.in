@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src='liferea:///readability/Readability.js'></script>
+	<script src='liferea:///js/purify.min.js'></script>
+	<script src='liferea:///js/handlebars.min.js'></script>
+	<script src='liferea:///js/htmlview.js'></script>
+
+	<!-- FIXME: consider adding CSP meta tag here as e.g. Firefox reader mode page does -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <script id="template" type="text/x-handlebars-template">
+
+	<div class="item" dir="{{direction}}">
+		<header class="content">
+			<h1>
+				<a href="{{homepage}}">{{node.title}}</a>
+			</h1>
+                        {{#if node.source}}
+			        <div><_span>Source</_span>: <a href="{{node.source}}">{{node.source}}</a></div>
+                        {{/if}}
+                        {{#if author}}
+			        <div><_span>Author</_span>: {{{author}}}</div>
+                        {{/if}}
+                        {{#if publisher}}
+			        <div><_span>Publisher</_span>: {{{publisher}}}</div>
+                        {{/if}}
+                        {{#if copyright}}
+			        <div><_span>Copyright</_span>: {{{copyright}}}</div>
+                        {{/if}}
+		</header>
+
+		{{#if node.error}}
+	        	<div id="errors">
+                                {{{ errorDetails }}}
+        		</div>
+		{{/if}}
+
+		<div id="content" class="content">
+                        {{#if description}}
+			        <div id="description">{{{description}}}</div>
+                        {{/if}}
+		</div>
+	</div>
+        </script>
+</head>
+<body>
+</body>
+<script>
+        REPLACE_MARKER
+</script>
+</html>

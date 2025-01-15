@@ -14,6 +14,27 @@ AM_CPPFLAGS = \
 bin_PROGRAMS = liferea
 bin_SCRIPTS = liferea-add-feed
 
+js_in_files = $(top_srcdir)/js/item.xml.in \
+                $(top_srcdir)/js/node.xml.in
+js_files = $(js_in_files:.xml.in=.xml)
+
+@INTLTOOL_XML_RULE@
+
+js_deps = $(top_srcdir)/js/gresource.xml \
+	$(top_srcdir)/js/htmlview.js \
+	$(top_srcdir)/js/Readability.js \
+	$(top_srcdir)/js/purify.min.js \
+	$(top_srcdir)/js/handlebars.min.js \
+	$(top_srcdir)/js/item.xml \
+	$(top_srcdir)/js/node.xml \
+	$(top_srcdir)/js/i18n-filter.xslt
+
+js.h: $(js_deps) $(main_dep)
+	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+
+js.c: $(js_deps) $(main_dep)
+	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+
 liferea_SOURCES = \
 	auth.c auth.h \
 	browser.c browser.h \
@@ -38,7 +59,6 @@ liferea_SOURCES = \
 	item_state.c item_state.h \
 	itemset.c itemset.h \
 	itemlist.c itemlist.h \
-	js.c js.h \
 	json.c json.h \
 	liferea_application.c liferea_application.h \
 	metadata.c metadata.h \
@@ -59,7 +79,8 @@ liferea_SOURCES = \
 	update_job_queue.c update_job_queue.h \
 	main.c \
 	vfolder_loader.c vfolder_loader.h \
-	xml.c xml.h
+	xml.c xml.h \
+	js.c js.h
 
 liferea_LDADD =	parsers/libliparsers.a \
 		node_providers/liblinode_providers.a \
@@ -73,26 +94,8 @@ liferea_LDADD =	parsers/libliparsers.a \
 		$(INTROSPECTION_LIBS) \
 		-lm
 
-js_deps = $(top_srcdir)/js/gresource.xml \
-		$(top_srcdir)/js/htmlview.js \
-		$(top_srcdir)/js/Readability-readerable.js \
-		$(top_srcdir)/js/Readability.js \
-		$(top_srcdir)/js/purify.min.js \
-		$(top_srcdir)/js/handlebars.min.js \
-		$(top_srcdir)/js/item.template \
-		$(top_srcdir)/js/node.template
-
-js.h: $(js_deps) $(main_dep)
-	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
-
-js.c: $(js_deps) $(main_dep)
-	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
-
-js.o: js.c js.h
-main.o: js.h
-
 EXTRA_DIST = $(srcdir)/liferea-add-feed.in
-DISTCLEANFILES = $(srcdir)/liferea-add-feed
+DISTCLEANFILES = $(srcdir)/liferea-add-feed js.c js.h
 AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = liferea-add-feed
 
 -include $(INTROSPECTION_MAKEFILE)
@@ -141,7 +144,7 @@ typelibdir = $(libdir)/liferea/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES = \
-	$(srcdir)/js.c $(srcdir)/js.h \
 	$(gir_DATA)	\
-	$(typelib_DATA)
+	$(typelib_DATA) \
+	js.c js.h
 endif

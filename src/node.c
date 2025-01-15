@@ -37,7 +37,6 @@
 #include "enclosure.h"
 #include "node.h"
 #include "node_view.h"
-#include "render.h"
 #include "subscription_icon.h"
 #include "update.h"
 #include "node_provider.h"

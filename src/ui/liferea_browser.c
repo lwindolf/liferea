@@ -27,6 +27,15 @@
 #endif
 #include <glib.h>
 
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <libxslt/xslt.h>
+#include <libxslt/xsltInternals.h>
+#include <libxslt/transform.h>
+#include <libxslt/xsltutils.h>
+
+#include <locale.h>
+
 #include "browser.h"
 #include "browser_history.h"
 #include "comments.h"
@@ -457,25 +466,138 @@ liferea_browser_do_zoom (LifereaBrowser *browser, gint zoom)
 
 }
 
+/** render parameter type */
+typedef struct renderParam {
+	gchar	**params;
+	guint	len;
+} *renderParamPtr;
+
+static void
+render_parameter_add (renderParamPtr paramSet, const gchar *fmt, ...)
+{
+	gchar	*new, *value, *name;
+	va_list args;
+
+	g_assert (NULL != fmt);
+	g_assert (NULL != paramSet);
+
+	va_start (args, fmt);
+	new = g_strdup_vprintf (fmt, args);
+	va_end (args);
+
+	name = new;
+	value = strchr (new, '=');
+	g_assert (NULL != value);
+	*value = 0;
+	value++;
+
+	paramSet->len += 2;
+	paramSet->params = (gchar **)g_realloc (paramSet->params, (paramSet->len + 1)*sizeof(gchar *));
+	paramSet->params[paramSet->len] = NULL;
+	paramSet->params[paramSet->len-2] = g_strdup (name);
+	paramSet->params[paramSet->len-1] = g_strdup (value);
+
+	g_free (new);
+}
+
+static gchar *
+liferea_browser_get_template (LifereaBrowser *browser, const gchar *name) {
+	static renderParamPtr	langParams = NULL;	/* the current locale settings (for localization stylesheet) */
+	static GHashTable	*templates = NULL;	/* template cache */
+
+	xsltStylesheetPtr	i18n_filter;
+	xmlDocPtr		xsltDoc, templateDoc, resultDoc;
+
+	g_autofree gchar	*tname = g_strdup_printf ("/org/gnome/liferea/templates/%s.xml", name);
+	g_autoptr(GBytes)	b1 = g_resources_lookup_data (tname, 0, NULL);
+	g_autoptr(GBytes)	b2 = g_resources_lookup_data ("/org/gnome/liferea/templates/i18n-filter.xslt", 0, NULL);
+
+	if (!langParams) {
+		/* Prepare localization parameters */
+		gchar   **shortlang = NULL;	/* e.g. "de" */
+		gchar	**lang = NULL;		/* e.g. "de_AT" */
+
+		debug (DEBUG_HTML, "XSLT localisation: setlocale(LC_MESSAGES, NULL) reports '%s'", setlocale(LC_MESSAGES, NULL));
+		lang = g_strsplit (setlocale (LC_MESSAGES, NULL), "@", 0);
+		shortlang = g_strsplit (setlocale (LC_MESSAGES, NULL), "_", 0);
+
+		langParams = g_new0 (struct renderParam, 1);
+		render_parameter_add (langParams, "lang='%s'", lang[0]);
+		render_parameter_add (langParams, "shortlang='%s'", shortlang[0]);
+		debug (DEBUG_HTML, "XSLT localisation: lang='%s' shortlang='%s'", lang[0], shortlang[0]);
+
+		g_strfreev (shortlang);
+		g_strfreev (lang);
+	}
+
+	if (!templates)
+		templates = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+
+	gchar *cached = g_hash_table_lookup (templates, name);
+	if (cached)
+		return cached;
+
+	/* 1. load localization stylesheet */
+	xsltDoc = xmlParseMemory (g_bytes_get_data (b2, NULL), g_bytes_get_size (b2));
+	if (!xsltDoc) {
+		g_warning ("fatal: could not parse localization stylesheet!");
+		return NULL;
+	}
+
+	i18n_filter = xsltParseStylesheetDoc (xsltDoc);
+	if (!i18n_filter) {
+		g_warning ("fatal: could not load localization stylesheet!");
+		return NULL;
+	}
+
+	/* 2. run localization on template */
+	templateDoc = xmlParseMemory (g_bytes_get_data (b1, NULL), g_bytes_get_size (b1));
+	if (!templateDoc) {
+		g_warning ("fatal: could not parse template XML!");
+		return NULL;
+	}
+
+	resultDoc = xsltApplyStylesheet (i18n_filter, templateDoc, (const gchar **)langParams->params);
+	if (!resultDoc) {
+		g_warning ("fatal: could not apply localization stylesheet!");
+		return NULL;
+	}
+
+	xmlChar *result = NULL;
+	int size = 0;
+
+	xsltSaveResultToString (&result, &size, resultDoc, i18n_filter);
+	if (result)
+		g_hash_table_insert (templates, g_strdup (name), (gchar *)result);
+
+	xmlFreeDoc (resultDoc);
+	xmlFreeDoc (templateDoc);
+	xsltFreeStylesheet (i18n_filter);
+
+	return (gchar *)result;
+}
+
 void
 liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gchar *json, const gchar *baseURL, const gchar *direction)
 {
 	g_autofree gchar	*script = NULL;
 	g_autofree gchar 	*encoded_json = NULL;
-	g_autofree gchar	*tname = g_strdup_printf ("/org/gnome/liferea/templates/%s.template", name);
-	g_autoptr(GBytes)	b = g_resources_lookup_data (tname, 0, NULL);
 	g_autoptr(GString)	tmp;
 	
 	g_free (browser->url);
 	browser->url = NULL;
 
+	/* escape JSON and create a JS command */
 	encoded_json = g_uri_escape_string (json, NULL, TRUE);
 	script = g_strdup_printf ("load_%s('%s', '%s', '%s');\n", name, encoded_json, baseURL, direction);
 
-	/* Each template has an script insertion marker which we need to replace */
-	tmp = g_string_new (g_bytes_get_data (b, NULL));
+	/* Each template has a script insertion marker which we need to replace */
+	tmp = g_string_new (liferea_browser_get_template (browser, name));
 	g_string_replace (tmp, "REPLACE_MARKER", script, 1);
-	liferea_browser_write (browser, tmp->str, baseURL);
+
+	// do not use liferea_browser_write() as we need to write XHTML here
+	// which is produced by intltool
+	liferea_webkit_write_html (browser->renderWidget, tmp->str, strlen (tmp->str), baseURL, "text/html");
 }
 
 void

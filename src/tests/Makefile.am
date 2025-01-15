@@ -63,7 +63,6 @@ favicon_LDADD = \
 	../node.o \
 	../node_provider.o \
 	../node_source.o \
-	../render.o \
 	../rule.o \
 	../social.o \
 	../subscription.o \

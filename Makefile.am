@@ -28,17 +28,6 @@ css_DATA = \
 	css/liferea.css \
 	css/user.css
 
-jsdir = $(pkgdatadir)/js
-js_DATA = \
-	js/gresource.xml \
-	js/htmlview.js \
-	js/purify.min.js \
-	js/Readability-readerable.js \
-	js/Readability.js \
-	js/handlebars.min.js \
-	js/item.template \
-	js/node.template
-
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
@@ -79,7 +68,6 @@ EXTRA_DIST = \
 	$(desktop_DATA) \
 	$(schema_DATA) \
 	$(css_DATA) \
-	$(js_DATA) \
 	$(dtd_DATA) \
 	$(plugin_DATA) \
 	$(gsettings_SCHEMAS) \
@@ -91,7 +79,8 @@ DISTCLEANFILES = \
 	net.sourceforge.liferea.service \
 	intltool-extract \
 	intltool-merge \
-	intltool-update
+	intltool-update \
+	$(appdata_in_files:.xml.in=.xml)
 
 CLEANFILES = \
 	$(gsettings_SCHEMAS) \
