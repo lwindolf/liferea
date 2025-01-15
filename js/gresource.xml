@@ -4,11 +4,10 @@
     <file compressed="true">Readability-readerable.js</file>
     <file compressed="true">Readability.js</file>
   </gresource>
-  <gresource prefix="/org/gnome/liferea/dompurify">
-    <file compressed="true">purify.min.js</file>
-  </gresource>
-  <gresource prefix="/org/gnome/liferea">
+  <gresource prefix="/org/gnome/liferea/js">
     <file compressed="true">htmlview.js</file>
+    <file compressed="true">purify.min.js</file>
+    <file compressed="true">handlebars.min.js</file>
   </gresource>
 </gresources>
 

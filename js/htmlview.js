@@ -150,12 +150,12 @@ function loadItem(data, baseURL = null, direction) {
 	let item = JSON.parse(decodeURIComponent(data));
 	let richContent = metadata_get(item, "richContent");
 	let description = item.description;
-	// FIXME: use this!
-	/*let author		= metadata_get(item, "author");
+	let author		= metadata_get(item, "author");
 	let creator		= metadata_get(item, "creator");
 	let sharedby	= metadata_get(item, "sharedby");
 	let via			= metadata_get(item, "via");
-	let related		= metadata_get(item, "related");
+	// FIXME: use this!
+	/*let related		= metadata_get(item, "related");
 	let point		= metadata_get(item, "point");
 	let mediaviews	= metadata_get(item, "mediaviews");
 	let ratingavg	= metadata_get(item, "mediastarRatingavg");
@@ -202,6 +202,10 @@ function loadItem(data, baseURL = null, direction) {
   				<span class="slashDepartment">Department</span><span class="slashValue">${slash.split(',')[1]}</span>
 			</div>
 			`:''}
+			${author?`<div>Author: ${author}</div>`:''}
+			${creator?`<div>Creator: ${creator}</div>`:''}
+			${sharedby?`<div>Shared By: ${sharedby}</div>`:''}
+			${via?`<div>Via: <a href="${via}">${via}</a></div>`:''}
 		</header>			
 
 		<!-- cleaned by DOMPurify -->
@@ -271,7 +275,7 @@ function loadItem(data, baseURL = null, direction) {
 function contentCleanup() {
 
 	// Run DOMPurify
-	content = document.getElementById('content').innerHTML;
+	let content = document.getElementById('content').innerHTML;
 	document.getElementById('content').innerHTML = DOMPurify.sanitize(content);
 
 	// Fix inline SVG sizes
@@ -307,7 +311,6 @@ function contentCleanup() {
 		});
 
 	// Drop empty elements (to get rid of empty picture/video/iframe divs)
-	const emptyRegex = new RegExp("^\s*$");
 	document.getElementById('content')
 		.querySelectorAll(":only-child")
 		.forEach((el) => {

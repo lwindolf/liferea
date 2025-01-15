@@ -476,28 +476,15 @@ liferea_browser_do_zoom (LifereaBrowser *browser, gint zoom)
 static void
 liferea_browser_write_body (LifereaBrowser *browser, const gchar *script, const gchar *baseURL)
 {
-	g_autoptr(GBytes) b1, b2, b3, b4;
 	g_autoptr(GString) buffer = g_string_new ("");
 
-	// Return Readability.js and Liferea specific loader code
-	b1 = g_resources_lookup_data ("/org/gnome/liferea/readability/Readability-readerable.js", 0, NULL);
-	b2 = g_resources_lookup_data ("/org/gnome/liferea/readability/Readability.js", 0, NULL);
-	b3 = g_resources_lookup_data ("/org/gnome/liferea/dompurify/purify.min.js", 0, NULL);
-	b4 = g_resources_lookup_data ("/org/gnome/liferea/htmlview.js", 0, NULL);
-
-	g_assert(b1 != NULL);
-	g_assert(b2 != NULL);
-	g_assert(b3 != NULL);
-	g_assert(b4 != NULL);
-
-	/* Prepare HTML boilderplate */
 	g_string_append (buffer, "<!DOCTYPE html>\n");
 	g_string_append (buffer, "<html>\n");
 	g_string_append (buffer, "<head>");
-	g_string_append_printf (buffer, "<script>%s</script>", (gchar *)g_bytes_get_data (b1, NULL));
-	g_string_append_printf (buffer, "<script>%s</script>", (gchar *)g_bytes_get_data (b2, NULL));
-	g_string_append_printf (buffer, "<script>%s</script>", (gchar *)g_bytes_get_data (b3, NULL));
-	g_string_append_printf (buffer, "<script>%s</script>", (gchar *)g_bytes_get_data (b4, NULL));
+	g_string_append (buffer, "<script src='liferea:///readability/Readability.js'></script>");
+	g_string_append (buffer, "<script src='liferea:///js/purify.min.js'></script>");
+	g_string_append (buffer, "<script src='liferea:///js/handlebar.min.js'></script>");
+	g_string_append (buffer, "<script src='liferea:///js/htmlview.js'></script>");
 
 	// FIXME: consider adding CSP meta tag here as e.g. Firefox reader mode page does
 	g_string_append (buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
