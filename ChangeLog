@@ -43,6 +43,9 @@ To be released
 	  There is now a max-width and less cluttered reading.
 	  (Lars Windolf)
 
+	* Getting rid of XSLT in favor of using Handlebars.js
+	  (Lars Windolf)
+
 
 2024-09-26  Lars Windolf <lars.windolf@gmx.de>
 

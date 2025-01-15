@@ -19,10 +19,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-function setBase(uri) {
-	var base = document.createElement("base");
-	base.setAttribute("href", uri);
-	document.head.appendChild(base);
+var template;
+
+function prepare(baseURL, title) {
+	if (title) {
+		/* Set title for it to appear in e.g. desktop MPRIS playback controls */
+		document.title = title;
+	}
+	if (baseURL && baseURL !== '(null)') {
+		var base = document.createElement("base");
+		base.setAttribute("href", baseURL);
+		document.head.appendChild(base);
+	}
+
+	template = Handlebars.compile(document.getElementById('template').innerHTML);
 }
 
 // returns first occurence of a given metadata type
@@ -49,7 +59,7 @@ function parseStatus(parsePhase, errorCode) {
 		return "⬜";
 }
 
-function loadNode(data, baseURL = null, direction) {
+async function load_node(data, baseURL, direction) {
 	let node = JSON.parse(decodeURIComponent(data));
 	let publisher	= metadata_get(node, "publisher");
 	let author		= metadata_get(node, "author");
@@ -60,182 +70,150 @@ function loadNode(data, baseURL = null, direction) {
 	// FIXME
 	console.log(node);
 
-	if (node.title) {
-		/* Set title for it to appear in e.g. desktop MPRIS playback controls */
-		document.title = node.title;
-	}
-	if (baseURL)
-			setBase(baseURL);
+	prepare(baseURL, node.title);
+	document.body.innerHTML = template({
+		node,
+		direction,
+		publisher  		: metadata_get(node, "publisher"),
+		author			: metadata_get(node, "author"),
+		copyright		: metadata_get(node, "copyright"),
+		description		: metadata_get(node, "description"),
+		homepage		: metadata_get(node, "homepage"),
+		errorDetails	: (() => {
+			if (!node.error)
+				return null;
 
-	document.body.innerHTML = `
-	<div class="item" dir="${direction}">
-		<header class="content">
-			<h1>
-				<a href="${homepage}">${node.title}</a>
-			</h1>
-			${node.source?`<div>Source: <a href="${node.source}">${node.source}</a></div>`:''}
-			${author?`<div>Author: ${author}</div>`:''}
-			${publisher?`<div>Publisher: ${publisher}</div>`:''}
-			${copyright?`<div>Copyright: ${copyright}</div>`:''}
-		</header>
+			return `<span>There was a problem when fetching this subscription!</span>
+				<ul>
+					<li>
+						${parseStatus(1, node.error)} <span>1. Authentication</span>
+					</li>
+					<li>
+						${parseStatus(2, node.error)} <span>2. Download</span>
+					</li>
+					<li>
+						${parseStatus(4, node.error)} <span>3. Feed Discovery</span>
+					</li>
+					<li>
+						${parseStatus(8, node.error)} <span>4. Parsing</span>
+					</li>
+				</ul>
 
-		${node.error?`
-		<div id="errors">
-			<span>There was a problem when fetching this subscription!</span>
-			<ul>	let item = JSON.parse(decodeURI(data));
+				<span class="details">
+				<b><span>Details:</span></b>
 
-				<li>
-					${parseStatus(1, node.error)} <span>1. Authentication</span>
-				</li>
-				<li>
-					${parseStatus(2, node.error)} <span>2. Download</span>
-				</li>
-				<li>
-					${parseStatus(4, node.error)} <span>3. Feed Discovery</span>
-				</li>
-				<li>
-					${parseStatus(8, node.error)} <span>4. Parsing</span>
-				</li>
-			</ul>
-
-    		<span class="details">
-      		<b><span>Details:</span></b>
-
-				${(1 == node.error)?`
-					<p><span>Authentication failed. Please check the credentials and try again!</span></p>
-				`:''}
-				${(2 == node.error)?`
-					${node.httpError?`
-						<p>
-						${node.httpErrorCode >= 100?`HTTP ${node.httpErrorCode}: `:''}<br/>
-						${node.httpError}
-						</p>
+					${(1 == node.error)?`
+						<p><span>Authentication failed. Please check the credentials and try again!</span></p>
 					`:''}
+					${(2 == node.error)?`
+						${node.httpError?`
+							<p>
+							${node.httpErrorCode >= 100?`HTTP ${node.httpErrorCode}: `:''}<br/>
+							${node.httpError}
+							</p>
+						`:''}
 
-					${node.updateError?`
-						<p>
-						<span>There was an error when downloading the feed source:</span>
-						<pre class="errorOutput">${node.updateError}</pre>
-						</p>
+						${node.updateError?`
+							<p>
+							<span>There was an error when downloading the feed source:</span>
+							<pre class="errorOutput">${node.updateError}</pre>
+							</p>
+						`:''}
+
+						${node.filterError?`
+							<p>
+							<span>There was an error when running the feed filter command:</span>
+							<pre class="errorOutput">${node.filterError}</pre>
+							</p>
+						`:''}
 					`:''}
-
-					${node.filterError?`
-						<p>
-						<span>There was an error when running the feed filter command:</span>
-						<pre class="errorOutput">${node.filterError}</pre>
-						</p>
+					${(4 == node.error)?`
+						<p><span>The source does not point directly to a feed or a webpage with a link to a feed!</span></p>
 					`:''}
-				`:''}
-				${(4 == node.error)?`
-					<p><span>The source does not point directly to a feed or a webpage with a link to a feed!</span></p>
-				`:''}
-				${(8 == node.error)?`
-					<p><span>Sorry, the feed could not be parsed!</span></p>
-					<pre class="errorOutput">${node.parseError}</pre>
-					<p><span>You may want to contact the author/webmaster of the feed about this!</span></p>
-				`:''}
-			</span>
-		</div>
-		`:''}
-
-		<div id="content" class="content">
-			<div id="description">${description || ''}</div>
-		</div>
-	</div>`;
+					${(8 == node.error)?`
+						<p><span>Sorry, the feed could not be parsed!</span></p>
+						<pre class="errorOutput">${node.parseError}</pre>
+						<p><span>You may want to contact the author/webmaster of the feed about this!</span></p>
+					`:''}
+				</span>`;
+		})()
+	});
 
     contentCleanup ();
 }
 
-function loadItem(data, baseURL = null, direction) {
+async function load_item(data, baseURL, direction) {
 	let item = JSON.parse(decodeURIComponent(data));
 	let richContent = metadata_get(item, "richContent");
-	let description = item.description;
-	let author		= metadata_get(item, "author");
-	let creator		= metadata_get(item, "creator");
-	let sharedby	= metadata_get(item, "sharedby");
-	let via			= metadata_get(item, "via");
-	// FIXME: use this!
-	/*let related		= metadata_get(item, "related");
-	let point		= metadata_get(item, "point");
-	let mediaviews	= metadata_get(item, "mediaviews");
-	let ratingavg	= metadata_get(item, "mediastarRatingavg");
-	let ratingmax	= metadata_get(item, "mediastarRatingMax");
-	let gravatar	= metadata_get(item, "gravatar");*/
-	let mediathumb	= metadata_get(item, "mediathumbnail");
-	let mediadesc	= metadata_get(item, "mediadescription");
-	let slash		= metadata_get(item, "slash");
-	let youtube_embed;
-
-	let videos = item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('video/'));
-	let audios = item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('audio/'));
+	let mediathumb = metadata_get(item, "mediathumbnail");
+	let mediadesc = metadata_get(item, "mediadescription");
+	let article;
 
 	if (richContent) {
 		let shadowDoc = document.implementation.createHTMLDocument();
 		shadowDoc.body.innerHTML = richContent;
 
-		let article = new Readability(shadowDoc, {charThreshold: 100}).parse();
+		article = new Readability(shadowDoc, {charThreshold: 100}).parse();
 		if (article) {
 			description = article.content;
+			title = article.title;
 		}
 	}
 
 	// FIXME
 	console.log(item);
 
-	if (item.title) {
-		/* Set title for it to appear in e.g. desktop MPRIS playback controls */
-		document.title = item.title;
+	prepare(baseURL, item.title);
+	document.body.innerHTML = template({
+		item,
+		direction,
+
+		// Using article.title is important, as often the item.title is just a summary
+		// or something slightly different. Using the article.title allow for better
+		// title duplicate elimination (further below)
+		title		: article?article.title:item.title,
+
+		// Use rich content from Readability if available
+		description : article?article.content:item.description,
+
+		author		: metadata_get(item, "author"),
+		creator		: metadata_get(item, "creator"),
+		sharedby	: metadata_get(item, "sharedby"),
+		via			: metadata_get(item, "via"),
+		mediathumb	: mediathumb,
+		mediadesc	: mediadesc,
+		slash       : (() => {
+						let slash = metadata_get(item, "slash");
+						if (slash) {
+							let parts = slash.split(',');
+							return {
+								section: parts[0] || '',
+								department: parts[1] || ''
+							};
+						}
+						return null;
+					})(),
+		videos		: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('video/')),
+		audios		: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('audio/'))
+		// FIXME: use this too
+		/*let related		= metadata_get(item, "related");
+		let point		= metadata_get(item, "point");
+		let mediaviews	= metadata_get(item, "mediaviews");
+		let ratingavg	= metadata_get(item, "mediastarRatingavg");
+		let ratingmax	= metadata_get(item, "mediastarRatingMax");
+		let gravatar	= metadata_get(item, "gravatar");*/
+	});
+
+	// Title duplicate elimination:
+	// Check if there is an element which contains exactly the text from item.title
+	let el = Array.from(document.getElementById('content').querySelectorAll('*')).find(el => el.textContent.trim() === item.title);
+	if (el) {
+		let innermost = el;
+		while (innermost.children.length > 0) {
+			innermost = Array.from(innermost.children).find(child => child.textContent.trim() === item.title) || innermost;
+		}
+		innermost.remove();
 	}
-	if (baseURL)
-			setBase(baseURL);
-
-	document.body.innerHTML = `
-	<div class="item" dir="${direction}">
-		<header class="content">
-			<div class="feedTitle">${item?.feedTitle}</div>
-			<h1>
-				<a href="${item.source}">${item.title}</a>
-			</h1>
-			${slash?`
-			<div class="slash">
-				<span class="slashSection">Section</span><span class="slashValue">${slash.split(',')[0]}</span>
-  				<span class="slashDepartment">Department</span><span class="slashValue">${slash.split(',')[1]}</span>
-			</div>
-			`:''}
-			${author?`<div>Author: ${author}</div>`:''}
-			${creator?`<div>Creator: ${creator}</div>`:''}
-			${sharedby?`<div>Shared By: ${sharedby}</div>`:''}
-			${via?`<div>Via: <a href="${via}">${via}</a></div>`:''}
-		</header>			
-
-		<!-- cleaned by DOMPurify -->
-		<div id="content" class="content">
-			<div id="description">${description}</div></div>		
-		</div>
-
-		<!-- not cleaned by DOMPurify -->
-		<div class="content">
-			<!-- embed suitable enclosures -->
-			${(audios.length > 0)?`
-				<div id='enclosureAudio'>
-					<audio class="enclosure" controls="controls" preload="none" src="${audios[0].url}"></audio>
-					${(audios.length > 1)?`
-					<select>
-						${audios.map((enclosure) => `<option value="${enclosure.url}">${enclosure.url}</option>`).join('')}
-					</select>
-					`:''}
-				</div>`:""}
-			${(videos.length > 0)?`
-				<div id='enclosureVideo'>
-					<video class="enclosure" controls="controls" preload="none" src="${videos[0].url}"></video>
-					${(videos.length > 1)?`
-					<select>
-						${videos.map((enclosure) => `<option value="${enclosure.url}">${enclosure.url}</option>`).join('')}
-					</select>
-					`:''}					
-				</div>`:""}
-		</div>
-	</div>`;
 
     // If there are no images and we have a thumbnail, add it
     if (document.querySelectorAll('img').length == 0 && mediathumb) {

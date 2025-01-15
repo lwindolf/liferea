@@ -34,7 +34,10 @@ js_DATA = \
 	js/htmlview.js \
 	js/purify.min.js \
 	js/Readability-readerable.js \
-	js/Readability.js
+	js/Readability.js \
+	js/handlebars.min.js \
+	js/item.template \
+	js/node.template
 
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent

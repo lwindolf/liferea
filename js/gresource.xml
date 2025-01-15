@@ -9,5 +9,9 @@
     <file compressed="true">purify.min.js</file>
     <file compressed="true">handlebars.min.js</file>
   </gresource>
+  <gresource prefix="/org/gnome/liferea/templates">
+    <file compressed="true">item.template</file>
+    <file compressed="true">node.template</file>
+  </gresource>
 </gresources>
 

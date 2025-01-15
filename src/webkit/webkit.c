@@ -369,24 +369,23 @@ liferea_webkit_download_started (WebKitWebContext	*context,
 	download_show ();
 }
 
-
 static void
 liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer user_data)
 {
 	const gchar *path = webkit_uri_scheme_request_get_path (request);
 	g_autofree gchar *rpath;
-	g_autoptr(GBytes) b;
+	GBytes *b;
 
 	rpath = g_strdup_printf ("/org/gnome/liferea%s", path);
-	debug (DEBUG_HTML, "Handling liferea:// request for path %s (%s)", path, rpath);
-
 	b = g_resources_lookup_data (rpath, 0, NULL);
 	if (b) {
-		const guchar *data = g_bytes_get_data (b, NULL);
-		GInputStream *stream = g_memory_input_stream_new_from_data (data, -1, NULL);
-		webkit_uri_scheme_request_finish (request, stream, -1, "text/plain");
-		g_object_unref (stream);
+		gsize length = 0;
+		const guchar *data = g_bytes_get_data (b, &length);
+		// FIXME: what about freeing b?
+		g_autoptr(GInputStream) stream = g_memory_input_stream_new_from_data (data, length, NULL);
+		webkit_uri_scheme_request_finish (request, stream, length, "text/plain");
 	} else {
+		debug (DEBUG_HTML, "Failed to load liferea:// request for path %s (%s)", path, rpath);
 		g_autoptr(GError) error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "Resource not found");
 		webkit_uri_scheme_request_finish_error (request, error);
 	}

@@ -33,14 +33,7 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "enclosure.h"
-#include "node_providers/feed.h"
-#include "feedlist.h"
-#include "html.h"
-#include "itemlist.h"
 #include "net_monitor.h"
-#include "social.h"
-#include "update.h"
 #include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
@@ -51,21 +44,14 @@
    switches on a toolbar for history and URL navigation when browsing
    external content.
 
-   The widget also manages "reader mode" be it on by default or ad-hoc 
-   requested by the user. To do so it ad-hoc injects Readability.js into the
-   rendering. For increased performance and security external content is pre-fetched
-   and passed directly to Readability.js (thus eliminating all 3rd party 
-   script execution).
-
    This causes quite some complexity outlined in below table
 
-   Use Case           Intern Rendering    Reader Mode    Pre-Download       URL bar
-   --------------------------------------------------------------------------------
-   item/node view     yes                 yes            yes (feed-cache)   off
-   item/node view     yes                 no             yes (feed-cache)   off
-   local help files   no                  no             no                 on
-   internet URL       no                  no             no                 on
-   internet URL       yes                 yes            yes                on
+   Use Case           Intern Rendering    Pre-Download       URL bar
+   ---------------------------------------------------------------------
+   item/node view     yes                 yes (feed-cache)   off
+   item/node view     yes                 yes (feed-cache)   off
+   local help files   no                  no                 on
+   internet URL       no                  no                 on
  */
 
 struct _LifereaBrowser {
@@ -81,7 +67,6 @@ struct _LifereaBrowser {
 	browserHistory	*history;		/*<< The browser history */
 
 	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
-	gint		viewMode;		/*<< current view mode for internal viewing */
 
 	gchar		*url;			/*<< the URL of the content rendered right now */
 	gchar 		*content;		/*<< current HTML content (excluding decorations, content passed to Readability.js) */
@@ -472,101 +457,25 @@ liferea_browser_do_zoom (LifereaBrowser *browser, gint zoom)
 
 }
 
-/* write basic body */
-static void
-liferea_browser_write_body (LifereaBrowser *browser, const gchar *script, const gchar *baseURL)
+void
+liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gchar *json, const gchar *baseURL, const gchar *direction)
 {
-	g_autoptr(GString) buffer = g_string_new ("");
-
-	g_string_append (buffer, "<!DOCTYPE html>\n");
-	g_string_append (buffer, "<html>\n");
-	g_string_append (buffer, "<head>");
-	g_string_append (buffer, "<script src='liferea:///readability/Readability.js'></script>");
-	g_string_append (buffer, "<script src='liferea:///js/purify.min.js'></script>");
-	g_string_append (buffer, "<script src='liferea:///js/handlebar.min.js'></script>");
-	g_string_append (buffer, "<script src='liferea:///js/htmlview.js'></script>");
-
-	// FIXME: consider adding CSP meta tag here as e.g. Firefox reader mode page does
-	g_string_append (buffer, "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
-
-	g_string_append_printf (buffer, "</head><body></body><script>%s</script></html>", script?script:"");
-
-	liferea_browser_write (browser, buffer->str, baseURL);
-}
-
-/* renders headlines & node info */
-static void
-liferea_browser_refresh (LifereaBrowser *browser, guint mode)
-{
-	Node			*node = NULL;
-	LifereaItem		*item = NULL;
 	g_autofree gchar	*script = NULL;
-	g_autofree gchar	*baseURL = NULL;
-	g_autofree gchar 	*body = NULL;
-	const gchar		*direction = NULL;
-
-	/* determine base URL */
-	switch (mode) {
-		case ITEMVIEW_SINGLE_ITEM:
-			item = itemlist_get_selected ();
-			if(item) {
-				node = node_from_id (item->nodeId);
-				baseURL = (gchar *)node_get_base_url (node);
-				item_unload (item);
-			}
-
-			break;
-		case ITEMVIEW_NODE_INFO:
-			node = feedlist_get_selected ();
-			if (!node)
-				return;
-			baseURL = (gchar *) node_get_base_url (node);
-			break;
-	}
-
-	/* determine some rendering criteria */
-	direction = item?item_get_text_direction (item):common_get_app_direction ();
-
-	if (baseURL)
-		baseURL = g_markup_escape_text (baseURL, -1);
-
-	switch (mode) {
-		case ITEMVIEW_SINGLE_ITEM:
-			item = itemlist_get_selected ();
-			if (item) {
-				g_autofree gchar *json = item_to_json (item);
-				g_autofree gchar *encoded_json = g_uri_escape_string (json, NULL, TRUE);
-				script = g_strdup_printf ("loadItem('%s', '%s', '%s');\n", encoded_json, baseURL, direction);
-				item_unload (item);
-			}
-			break;
-		case ITEMVIEW_NODE_INFO:
-			if (node) {
-				g_autofree gchar *json = node_to_json (node);
-				g_autofree gchar *encoded_json = g_uri_escape_string (json, NULL, TRUE);
-				script = g_strdup_printf ("loadNode('%s', '%s', '%s');\n", encoded_json, baseURL, direction);
-			}
-			break;
-		default:
-			g_warning ("HTML view: invalid viewing mode!!!");
-			break;
-	}
-
+	g_autofree gchar 	*encoded_json = NULL;
+	g_autofree gchar	*tname = g_strdup_printf ("/org/gnome/liferea/templates/%s.template", name);
+	g_autoptr(GBytes)	b = g_resources_lookup_data (tname, 0, NULL);
+	g_autoptr(GString)	tmp;
+	
 	g_free (browser->url);
 	browser->url = NULL;
-	browser->viewMode = mode;
 
-	liferea_browser_write_body (browser, script, baseURL);
-}
+	encoded_json = g_uri_escape_string (json, NULL, TRUE);
+	script = g_strdup_printf ("load_%s('%s', '%s', '%s');\n", name, encoded_json, baseURL, direction);
 
-/* reset reader state and load new item/node */
-void
-liferea_browser_update (LifereaBrowser *browser, guint mode)
-{
-	/* Reset any intermediate reader mode change via browser context menu */
-	//conf_get_bool_value (ENABLE_READER_MODE, &(browser->readerMode));
-
-	liferea_browser_refresh (browser, mode);
+	/* Each template has an script insertion marker which we need to replace */
+	tmp = g_string_new (g_bytes_get_data (b, NULL));
+	g_string_replace (tmp, "REPLACE_MARKER", script, 1);
+	liferea_browser_write (browser, tmp->str, baseURL);
 }
 
 void

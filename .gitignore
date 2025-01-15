@@ -61,3 +61,5 @@ org.gnome.liferea.gschema.valid
 stamp-h1
 .flatpak-builder
 .vscode
+node_modules
+package-lock.json

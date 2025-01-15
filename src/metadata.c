@@ -92,7 +92,9 @@ metadata_init (void)
 	metadata_type_register ("coverage",		METADATA_TYPE_HTML);
 
 	/* types for slash */
-	metadata_type_register ("slash",		METADATA_TYPE_HTML);
+	metadata_type_register ("slash",		METADATA_TYPE_HTML);	// deprecated
+	metadata_type_register ("slashSection",		METADATA_TYPE_HTML);
+	metadata_type_register ("slashDepartment",	METADATA_TYPE_HTML);
 
 	/* type for gravatars */
 	metadata_type_register ("gravatar",		METADATA_TYPE_URL);

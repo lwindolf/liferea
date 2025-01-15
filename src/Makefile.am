@@ -73,10 +73,19 @@ liferea_LDADD =	parsers/libliparsers.a \
 		$(INTROSPECTION_LIBS) \
 		-lm
 
-js.h: $(top_srcdir)/js/gresource.xml $(top_srcdir)/js/htmlview.js $(top_srcdir)/js/Readability-readerable.js $(top_srcdir)/js/Readability.js $(top_srcdir)/js/purify.min.js $(main_dep)
+js_deps = $(top_srcdir)/js/gresource.xml \
+		$(top_srcdir)/js/htmlview.js \
+		$(top_srcdir)/js/Readability-readerable.js \
+		$(top_srcdir)/js/Readability.js \
+		$(top_srcdir)/js/purify.min.js \
+		$(top_srcdir)/js/handlebars.min.js \
+		$(top_srcdir)/js/item.template \
+		$(top_srcdir)/js/node.template
+
+js.h: $(js_deps) $(main_dep)
 	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
 
-js.c: $(top_srcdir)/js/gresource.xml $(top_srcdir)/js/htmlview.js $(top_srcdir)/js/Readability-readerable.js $(top_srcdir)/js/Readability.js $(top_srcdir)/js/purify.min.js $(main_dep)
+js.c: $(js_deps) $(main_dep)
 	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
 
 js.o: js.c js.h
