@@ -87,3 +87,13 @@ json_get_bool (JsonNode *node, const gchar *keyName)
 	
 	return json_node_get_boolean (key);
 }
+
+gchar *
+json_dump (JsonBuilder *b)
+{
+	g_autoptr (JsonGenerator) g = json_generator_new ();
+	
+	json_generator_set_root (g, json_builder_get_root (b));
+
+	return json_generator_to_data (g, NULL);
+}

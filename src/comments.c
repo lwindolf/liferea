@@ -1,7 +1,7 @@
 /**
  * @file comments.c comment feed handling
  *
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -228,36 +228,14 @@ comments_refresh (itemPtr item)
 	}
 }
 
-void
-comments_to_xml (xmlNodePtr parentNode, const gchar *id)
+itemSetPtr
+comments_get_itemset (const gchar *id)
 {
-	xmlNodePtr	commentsNode;
-	commentFeedPtr	commentFeed;
-	itemSetPtr	itemSet;
-	GList		*iter;
+	commentFeedPtr	commentFeed = comment_feed_from_id (id);
 
-	commentFeed = comment_feed_from_id (id);
-	if (!commentFeed)
-		return;
+	if (!commentFeed || !commentFeed->error)
+		return NULL;
 
-	commentsNode = xmlNewChild (parentNode, NULL, BAD_CAST "comments", NULL);
-
-	itemSet = db_itemset_load (id);
-	g_return_if_fail (itemSet != NULL);
-
-	iter = itemSet->ids;
-	while (iter)
-	{
-		itemPtr comment = item_load (GPOINTER_TO_UINT (iter->data));
-		item_to_xml (comment, commentsNode);
-		item_unload (comment);
-		iter = g_list_next (iter);
-	}
-
-	xmlNewTextChild (commentsNode, NULL, BAD_CAST "updateState", BAD_CAST ((commentFeed->updateJob)?"updating":"ok"));
-
-	if (commentFeed->error)
-		xmlNewTextChild (commentsNode, NULL, BAD_CAST "updateError", BAD_CAST commentFeed->error);
-
-	itemset_free (itemSet);
+	return db_itemset_load (id);
 }
+

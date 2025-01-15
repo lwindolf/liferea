@@ -105,14 +105,6 @@ subscriptionPtr subscription_import (xmlNodePtr xml, gboolean trusted);
 void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trusted);
 
 /**
- * Serialization helper function for rendering purposes.
- *
- * @param node		the subscription to serialize
- * @param feedNode	XML node to add subscription attributes to
- */
-void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
-
-/**
  * Triggers updating a subscription. Will download the
  * the document indicated by the source URL of the subscription.
  * Will call the node type specific update callback to process

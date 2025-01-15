@@ -306,7 +306,6 @@ vfolder_get_provider (void)
 		vfolder_save,
 		vfolder_update_counters,
 		vfolder_remove,
-		node_default_render,
 		vfolder_add,
 		vfolder_properties,
 		vfolder_free

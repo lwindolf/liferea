@@ -210,7 +210,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	g_object_unref (section);
 	section = g_menu_new ();
 
-	g_menu_append (section, _("_Reader Mode"), "liferea_web_view.toggle-reader-mode");
+	//g_menu_append (section, _("_Reader Mode"), "liferea_web_view.toggle-reader-mode");
 
 	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 	g_object_unref (section);
@@ -282,7 +282,7 @@ on_popup_toggle_reader_mode_change_state (GSimpleAction *action, GVariant *param
 	WebKitWebView *webview = WEBKIT_WEB_VIEW (user_data);
 	gboolean reader = g_variant_get_boolean (parameter);
 
-	liferea_browser_set_reader_mode (g_object_get_data (G_OBJECT (webview), "htmlview"), reader);
+	//liferea_browser_set_reader_mode (g_object_get_data (G_OBJECT (webview), "htmlview"), reader);
 	g_simple_action_set_state (action, g_variant_new_boolean (reader));
 }
 
@@ -594,12 +594,12 @@ liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event
 		case WEBKIT_LOAD_STARTED:
 			{
 				// Once load starts we can update the reader toggle
-				GActionGroup *action_group;
+				/*GActionGroup *action_group;
 				action_group = LIFEREA_WEB_VIEW (view)->menu_action_group;
 				GSimpleAction *reader_action;
 				reader_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "toggle-reader-mode"));
 				gboolean reader = liferea_browser_get_reader_mode (htmlview);
-				g_simple_action_set_state (reader_action, g_variant_new_boolean (reader));
+				g_simple_action_set_state (reader_action, g_variant_new_boolean (reader));*/
 
 				// Hack to force webview exit from fullscreen mode on new page
 				isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
@@ -611,9 +611,6 @@ liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event
 			}
 		case WEBKIT_LOAD_COMMITTED:
 			liferea_browser_location_changed (htmlview, webkit_web_view_get_uri (view));
-			break;
-		case WEBKIT_LOAD_FINISHED:
-			liferea_browser_load_finished (htmlview, webkit_web_view_get_uri (view));
 			break;
 		default:
 			break;

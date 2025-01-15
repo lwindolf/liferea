@@ -1,7 +1,7 @@
 /**
  * @file comments.h comment feed handling
  * 
- * Copyright (C) 2007-2008 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,29 +21,29 @@
 #ifndef _COMMENTS_H
 #define _COMMENTS_H
 
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-#include "item.h"
+#include "itemset.h"
 
 /**
+ * comments_deinit: (skip)
+ * 
  * Frees everything related with comments 
  */
 void comments_deinit (void);
 
 /**
+ * comments_refresh: (skip)
+ * @item: the item
+ * 
  * Triggers immediate comments retrieval (or update) for the given item.
- *
- * @param item		the item
  */
 void comments_refresh (itemPtr item);
 
 /**
- * Adds the comments and state of the given comment feed id to the 
- * passed XML node.
+ * comments_get_itemset: (skip)
+ * @id: the comment feed item
  *
- * @param parentNode	XML parent node
- * @param id		the comment feed id
+ * Returns the item set of comments for the given item.
  */
-void comments_to_xml (xmlNodePtr parentNode, const gchar *id);
+itemSetPtr comments_get_itemset (const gchar *id);
 
 #endif

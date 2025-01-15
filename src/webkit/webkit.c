@@ -2,7 +2,7 @@
  * @file webkit.c  WebKit2 support for Liferea
  *
  * Copyright (C) 2016-2019 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
@@ -32,7 +32,6 @@
 #include "common.h"
 #include "download.h"
 #include "net.h"
-#include "render.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
 
@@ -652,7 +651,7 @@ liferea_webkit_set_proxy (ProxyDetectMode mode)
  * Load liferea.css via user style sheet
  */
 void
-liferea_webkit_reload_style (GtkWidget *webview)
+liferea_webkit_reload_style (GtkWidget *webview, const gchar *userCSS, const gchar *defaultCSS)
 {
 	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
 
@@ -661,11 +660,10 @@ liferea_webkit_reload_style (GtkWidget *webview)
 	if (default_stylesheet)
 		webkit_user_style_sheet_unref (default_stylesheet);
 
-	const gchar *css = render_get_default_css ();
 	// default stylesheet should only apply to HTML written to the view,
 	// not when browsing
 	const gchar *deny[] = { "http://*/*", "https://*/*",  NULL };
-	default_stylesheet = webkit_user_style_sheet_new (css,
+	default_stylesheet = webkit_user_style_sheet_new (defaultCSS,
 		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
 		WEBKIT_USER_STYLE_LEVEL_USER,
 		NULL,
@@ -675,8 +673,7 @@ liferea_webkit_reload_style (GtkWidget *webview)
 	if (user_stylesheet)
 		webkit_user_style_sheet_unref (user_stylesheet);
 
-	css = render_get_user_css ();
-	user_stylesheet = webkit_user_style_sheet_new (css,
+	user_stylesheet = webkit_user_style_sheet_new (userCSS,
 		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
 		WEBKIT_USER_STYLE_LEVEL_USER,
 		NULL,

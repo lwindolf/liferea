@@ -30,6 +30,19 @@ To be released
 	  as this would prevent startup
 	  (Lars Windolf)
 
+	* Refactoring of content scraping, processing now happens in Javascript
+	  on entire source documents. We now store a bit more data, but get better
+	  extraction results
+	  (Lars Windolf)
+	
+	* Support for lazy loading <img data-src=""> definitions. This unbreaks
+	  images when scraping some websites
+	  (Lars Windolf)
+
+	* Redesign of the HTML view. Look & feel is adapted from Newsflash.
+	  There is now a max-width and less cluttered reading.
+	  (Lars Windolf)
+
 
 2024-09-26  Lars Windolf <lars.windolf@gmx.de>
 

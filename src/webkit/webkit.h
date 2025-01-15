@@ -103,10 +103,12 @@ void liferea_webkit_set_proxy (ProxyDetectMode mode);
 /**
  * liferea_webkit_reload_style:
  * @webview:	the WebkitWebView
+ * @userCSS:	the user stylesheet
+ * @defaultCSS:	the default stylesheet
  *
  * Force WebView to reload the applied stylesheet
  */
-void liferea_webkit_reload_style (GtkWidget *webview);
+void liferea_webkit_reload_style (GtkWidget *webview, const gchar *userCSS, const gchar *defaultCSS);
 
 /**
  * liferea_webkit_reload:

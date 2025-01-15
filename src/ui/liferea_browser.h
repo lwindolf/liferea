@@ -94,8 +94,6 @@ void liferea_browser_progress_changed (LifereaBrowser *browser, gdouble progress
 
 void liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location);
 
-void liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location);
-
 /**
  * liferea_browser_handle_URL: (skip)
  * @browser:		the HTML view to use

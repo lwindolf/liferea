@@ -97,7 +97,6 @@ src/webkit/Makefile
 src/webkit/web_extension/Makefile
 doc/Makefile
 doc/html/Makefile
-xslt/Makefile
 man/Makefile
 man/it/Makefile
 pixmaps/Makefile

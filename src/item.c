@@ -31,6 +31,7 @@
 #include "debug.h"
 #include "enclosure.h"
 #include "feedlist.h"
+#include "json.h"
 #include "metadata.h"
 #include "render.h"
 #include "xml.h"
@@ -255,64 +256,122 @@ item_get_base_url (LifereaItem *item)
 	return node_get_base_url (node_from_id (item->nodeId));
 }
 
-void
-item_to_xml (LifereaItem *item, gpointer xmlNode)
+gchar *
+item_to_json (LifereaItem *item)
 {
-	xmlNodePtr	parentNode = (xmlNodePtr)xmlNode;
-	xmlNodePtr	groupNode;
-	xmlNodePtr	itemNode;
-	gchar		*tmp;
-	GSList		*list;
+	GSList *list = NULL;
 
-	itemNode = xmlNewChild (parentNode, NULL, BAD_CAST "item", NULL);
-	g_return_if_fail (itemNode);
+	g_autoptr(JsonBuilder) b = json_builder_new ();
 
-	xmlNewTextChild (itemNode, NULL, BAD_CAST "title", BAD_CAST (item_get_title (item)?item_get_title (item):""));
+	json_builder_begin_object (b);
+	json_builder_set_member_name (b, "id");
+	json_builder_add_int_value (b, item->id);
 
-	if (item_get_description (item)) {
-		/* Prefer full article over feed inline content */
-		const gchar *content = metadata_list_get (item->metadata, "richContent");
-		if (!content)
-			content = item_get_description (item);
+	json_builder_set_member_name (b, "title");
+	json_builder_add_string_value (b, item_get_title (item));
 
-		if (content) {
-			tmp = xhtml_strip_dhtml (content);
-			xmlNewTextChild (itemNode, NULL, BAD_CAST "description", BAD_CAST tmp);
-			g_free (tmp);
+	json_builder_set_member_name (b, "description");
+	json_builder_add_string_value (b, item_get_description (item));
+
+	json_builder_set_member_name (b, "source");
+	json_builder_add_string_value (b, item_get_source (item));
+
+	json_builder_set_member_name (b, "readStatus");
+	json_builder_add_boolean_value (b, item->readStatus);
+
+	json_builder_set_member_name (b, "updateStatus");
+	json_builder_add_boolean_value (b, item->updateStatus);
+
+	json_builder_set_member_name (b, "flagStatus");
+	json_builder_add_boolean_value (b, item->flagStatus);
+
+	json_builder_set_member_name (b, "time");
+	json_builder_add_int_value (b, item->time);
+
+	json_builder_set_member_name (b, "validTime");
+	json_builder_add_boolean_value (b, item->validTime);
+
+	json_builder_set_member_name (b, "validGuid");
+	json_builder_add_boolean_value (b, item->validGuid);
+
+	json_builder_set_member_name (b, "hasEnclosure");
+	json_builder_add_boolean_value (b, item->hasEnclosure);
+
+	json_builder_set_member_name (b, "sourceId");
+	json_builder_add_string_value (b, item->sourceId);
+
+	json_builder_set_member_name (b, "nodeId");
+	json_builder_add_string_value (b, item->nodeId);
+
+	json_builder_set_member_name (b, "parentNodeId");
+	json_builder_add_string_value (b, item->parentNodeId);
+
+	metadata_list_to_json (item->metadata, b);
+
+	Node *feedNode = node_from_id (item->parentNodeId);
+	if (feedNode) {
+		json_builder_set_member_name (b, "feedTitle");
+		json_builder_add_string_value (b, node_get_title (feedNode));
+
+		feedPtr feed = (feedPtr)feedNode->data;
+		if (feed) {
+			if (!feed->ignoreComments) {
+				if (item->commentFeedId) {
+					itemSetPtr itemSet = comments_get_itemset (item->commentFeedId);
+					if (itemSet) {
+						json_builder_set_member_name (b, "comments");
+						json_builder_begin_array (b);
+
+						GList		*iter = itemSet->ids;
+						while (iter) {
+							itemPtr comment = item_load (GPOINTER_TO_UINT (iter->data));
+
+							json_builder_set_member_name (b, "title");
+							json_builder_add_string_value (b, item_get_title (comment));
+							json_builder_set_member_name (b, "description");
+							json_builder_add_string_value (b, item_get_description (comment));
+							// FIXME: maybe support author too
+
+							item_unload (comment);
+							iter = g_list_next (iter);
+						}
+
+						json_builder_end_array (b);
+
+						itemset_free (itemSet);
+					}
+				}
+			} else {
+				json_builder_set_member_name (b, "commentsSuppressed");
+				json_builder_add_boolean_value (b, TRUE);
+			}
 		}
 	}
 
-	if (item_get_source (item))
-		xmlNewTextChild (itemNode, NULL, BAD_CAST "source", BAD_CAST item_get_source (item));
+	json_builder_set_member_name (b, "enclosures");
+	json_builder_begin_array (b);
+	list = metadata_list_get_values (item->metadata, "enclosure");
+	while (list) {
+		enclosurePtr enclosure = enclosure_from_string (list->data);
+		if (enclosure) {
+			json_builder_begin_object (b);
+			json_builder_set_member_name (b, "url");
+			json_builder_add_string_value (b, enclosure->url);
+			json_builder_set_member_name (b, "mime");
+			json_builder_add_string_value (b, enclosure->mime);
+			json_builder_end_object (b);
+		}
 
-	tmp = g_strdup_printf ("%ld", item->id);
-	xmlNewTextChild (itemNode, NULL, BAD_CAST "nr", BAD_CAST tmp);
-	g_free (tmp);
-
-	tmp = g_strdup_printf ("%d", item->readStatus?1:0);
-	xmlNewTextChild (itemNode, NULL, BAD_CAST "readStatus", BAD_CAST tmp);
-	g_free (tmp);
-
-	tmp = g_strdup_printf ("%d", item->updateStatus?1:0);
-	xmlNewTextChild (itemNode, NULL, BAD_CAST "updateStatus", BAD_CAST tmp);
-	g_free (tmp);
-
-	tmp = g_strdup_printf ("%d", item->flagStatus?1:0);
-	xmlNewTextChild (itemNode, NULL, BAD_CAST "mark", BAD_CAST tmp);
-	g_free (tmp);
-
-	tmp = g_strdup_printf ("%ld", item->time);
-	xmlNewTextChild (itemNode, NULL, BAD_CAST "time", BAD_CAST tmp);
-	g_free (tmp);
-
-	tmp = date_format (item->time, NULL);
-	xmlNewTextChild (itemNode, NULL, BAD_CAST "timestr", BAD_CAST tmp);
-	g_free (tmp);
+		list = g_slist_next (list);
+	}
+	json_builder_end_array (b);
 
 	if (item->validGuid) {
 		GSList	*iter, *duplicates;
 
-		groupNode = xmlNewChild(itemNode, NULL, BAD_CAST "duplicates", NULL);
+		json_builder_set_member_name (b, "duplicates");
+		json_builder_begin_array (b);
+
 		duplicates = iter = db_item_get_duplicates(item->sourceId);
 		while (iter) {
 			gulong id = GPOINTER_TO_UINT (iter->data);
@@ -320,50 +379,22 @@ item_to_xml (LifereaItem *item, gpointer xmlNode)
 			if (duplicate) {
 				Node *duplicateNode = node_from_id (duplicate->nodeId);
 				if (duplicateNode && (item->id != duplicate->id))
-					xmlNewTextChild (groupNode, NULL, BAD_CAST "duplicateNode", BAD_CAST node_get_title (duplicateNode));
+					json_builder_add_string_value (b, node_get_title (duplicateNode));
 				item_unload (duplicate);
 			}
 			iter = g_slist_next (iter);
 		}
 		g_slist_free (duplicates);
+
+		json_builder_end_array (b);
 	}
 
-	groupNode = xmlNewChild(itemNode, NULL, BAD_CAST "enclosures", NULL);
-	list = metadata_list_get_values (item->metadata, "enclosure");
-	while (list) {
-		enclosurePtr enclosure = enclosure_from_string (list->data);
-		if (enclosure) {
-			xmlNodePtr enclosureNode = xmlNewChild (groupNode, NULL, BAD_CAST "enclosure", NULL);
-			xmlNewProp (enclosureNode, BAD_CAST "url", BAD_CAST enclosure->url);
-			xmlNewProp (enclosureNode, BAD_CAST "mime", BAD_CAST enclosure->mime);
-		}
+	json_builder_end_object (b);
 
-		list = g_slist_next (list);
-	}
-
-	xmlNewTextChild (itemNode, NULL, BAD_CAST "sourceId", BAD_CAST item->nodeId);
-
-	tmp = g_strdup_printf ("%ld", item->id);
-	xmlNewTextChild (itemNode, NULL, BAD_CAST "sourceNr", BAD_CAST tmp);
-	g_free (tmp);
-
-	metadata_add_xml_nodes (item->metadata, itemNode);
-
-	Node *feedNode = node_from_id (item->parentNodeId);
-	if (feedNode) {
-		feedPtr feed = (feedPtr)feedNode->data;
-		if (feed) {
-			if (!feed->ignoreComments) {
-				if (item->commentFeedId)
-					comments_to_xml (itemNode, item->commentFeedId);
-			} else {
-				xmlNewTextChild (itemNode, NULL, BAD_CAST "commentsSuppressed", BAD_CAST "true");
-			}
-		}
-	}
+	return json_dump (b);
 }
 
-static const gchar *
+const gchar *
 item_get_text_direction (LifereaItem *item)
 {
 	if (item_get_title (item))
@@ -373,48 +404,4 @@ item_get_text_direction (LifereaItem *item)
 
 	/* what can we do? */
 	return ("ltr");
-}
-
-gchar *
-item_render (LifereaItem *item, guint viewMode)
-{
-	renderParamPtr	params;
-	gchar		*output = NULL, *baseUrl = NULL;
-	Node		*node;
-	xmlDocPtr 	doc;
-	xmlNodePtr 	xmlNode;
-
-	node = node_from_id (item->nodeId);
-
-	/* do the XML serialization */
-	doc = xmlNewDoc (BAD_CAST "1.0");
-	xmlNode = xmlNewDocNode (doc, NULL, BAD_CAST "itemset", NULL);
-	xmlDocSetRootElement (doc, xmlNode);
-
-	item_to_xml(item, xmlDocGetRootElement (doc));
-
-	if (IS_FEED (node)) {
-		xmlNodePtr feed;
-		feed = xmlNewChild (xmlDocGetRootElement (doc), NULL, BAD_CAST "feed", NULL);
-		feed_to_xml (node, feed);
-	}
-
-	/* do the XSLT rendering */
-	params = render_parameter_new ();
-
-	if (NULL != node_get_base_url (node)) {
-		baseUrl = (gchar *) common_uri_escape ( BAD_CAST node_get_base_url (node));
-		render_parameter_add (params, "baseUrl='%s'", baseUrl);
-	}
-	render_parameter_add (params, "showFeedName='%d'", (node != feedlist_get_selected ())?1:0);
-	render_parameter_add (params, "txtDirection='%s'", item_get_text_direction (item));
-	render_parameter_add (params, "appDirection='%s'", common_get_app_direction ());
-	output = render_xml (doc, "item", params);
-
-	/* For debugging use: xmlSaveFormatFile("/tmp/test.xml", doc, 1); */
-	xmlFreeDoc (doc);
-	g_free (baseUrl);
-
-
-	return output;
 }

@@ -234,7 +234,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 		/* step 2: add to itemset */
 		itemSet->ids = g_list_prepend (itemSet->ids, GUINT_TO_POINTER (item->id));
 
-		/* step 3: trigger async enrichment of item description */
+		/* step 3: trigger async enrichment */
 		if (node && IS_FEED (node) && ((feedPtr)node->data)->html5Extract)
 			feed_enrich_item (node->subscription, item);
 

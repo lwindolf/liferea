@@ -19,18 +19,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-// Note: color-wise we follow the Devhelp colors. Idea is to have
-// somewhat consistent GNOME "theme" color. Sadly GTK+4 themes do not
-// provide applications with sensible color information, so all apps
-// have to hard-code stuff
+/* Note: color-wise we follow the Devhelp colors. Idea is to have
+   somewhat consistent GNOME "theme" color. Sadly GTK+4 themes do not
+   provide applications with sensible color information, so all apps
+   have to hard-code stuff */
 
 :root {
   --text-color: rgb(51, 51, 51);
+  --text-color-light: rgb(120, 120, 120);
   --primary: rgb(28, 118, 228);
   --body-bg: #fff;
   --box-bg: rgba(135, 135, 135, 0.085);
   --box-radius: 0.35rem;
-  --box-padding: 0.75rem;
+  --box-padding: 0.75rem 1.5rem;
   --box-margin: 0.75rem 0;
   --box-text-color: #111;
 
@@ -47,6 +48,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --text-color: #f6f6f6;
+    --text-color-light: #bbb;
     --primary: rgb(144, 194, 255);
     --body-bg: #121212;
     --box-bg: rgba(135, 135, 135, 0.1);
@@ -70,13 +72,18 @@ body {
   font-weight: var(--body-font-weight);
   font-size: var(--body-font-size);
   padding:0;
-  margin:0;
+  padding-top: 1rem;
 
   -webkit-font-feature-settings: "kern", "liga";
   -moz-font-feature-settings: "kern", "liga";
   font-feature-settings: "kern", "liga";
   color: var(--text-color);
   background: var(--body-bg);
+
+  max-width: 800px;
+  margin: 0 auto;
+
+  line-height: 1.8;
 }
 
 blockquote {
@@ -122,6 +129,20 @@ strong, b {
 
 a {
   color: var(--primary);
+}
+
+div.item header h1 a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+div.item header {
+  color: var(--text-color-light);
+}
+
+div.item header > h1 {
+  margin-top: 12px;
+  line-height: 2.8rem;
 }
 
 dd {
@@ -267,7 +288,7 @@ table.headmeta td {
 	padding-right:5px;
 }
 
-div.content, div.item_comments {
+.content, div.item_comments {
 	padding:0px 6px 0px 12px;
 }
 
@@ -304,7 +325,7 @@ a.favicon img {
 #errors {
 	border:0;
 	border-bottom:1px solid black;
-	margin:12px 24px;
+	margin:24px 12px;
 	padding:12px;
 	background:var(--error-bg);
 	color:black;
@@ -340,19 +361,20 @@ ins {
 
 .slash {
 	background:#60A080;
-	padding-left:5px;
-	padding-right:5px;
+	padding-left:0.2rem;
+	padding-right:0.2rem;
 }
 
 .slashSection, .slashDepartment {
-	padding-right:2px;
+	padding-left:0.5rem;
+	padding-right:0.2rem;
 	color:black;
 }
 
 .slashValue {
-	padding-right:6px;
+	padding-left:0.2rem;
+	padding-right:0.2rem;
 	color:white;
-	font-weight:bold;
 }
 
 div.photoheader {
@@ -396,6 +418,17 @@ div.photoheader {
 	fill: #ddd;
 }
 
+#enclosureVideo select,
+#enclosureAudio select {
+	max-width: 100%;
+}
+
+#enclosureVideo select option,
+#enclosureAudio select option {
+	/* does not work, but might some day */
+	text-overflow: ellipsis
+}
+
 #enclosureVideo video {
 	background: black;
 	min-width: 640px;
@@ -405,7 +438,11 @@ div.photoheader {
         display: block;
 }
 
-// dark mode image glaring #1303 
+#enclosureAudio audio {
+	width: 100% !important;
+}
+
+/* dark mode image glaring #1303 */
 @media (prefers-color-scheme: dark) {
   img {
     filter: brightness(.8) contrast(1.2);

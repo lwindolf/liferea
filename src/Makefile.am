@@ -49,7 +49,6 @@ liferea_SOURCES = \
 	node_source.c node_source.h \
 	node_provider.c node_provider.h \
 	node_view.h \
-	render.c render.h \
 	rule.c rule.h \
 	social.c social.h \
 	subscription.c subscription.h \
