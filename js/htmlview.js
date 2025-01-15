@@ -156,7 +156,11 @@ async function load_item(data, baseURL, direction) {
 		article = new Readability(shadowDoc, {charThreshold: 100}).parse();
 		if (article) {
 			description = article.content;
-			title = article.title;
+
+			// Use rich content from Readability if available and better!
+			if (article.content.length > item.description.length) {
+				item.description = article.content;
+			}
 		}
 	}
 
@@ -173,28 +177,16 @@ async function load_item(data, baseURL, direction) {
 		// title duplicate elimination (further below)
 		title		: article?article.title:item.title,
 
-		// Use rich content from Readability if available
-		description : article?article.content:item.description,
-
-		author		: metadata_get(item, "author"),
-		creator		: metadata_get(item, "creator"),
-		sharedby	: metadata_get(item, "sharedby"),
-		via			: metadata_get(item, "via"),
-		mediathumb	: mediathumb,
-		mediadesc	: mediadesc,
-		slash       : (() => {
-						let slash = metadata_get(item, "slash");
-						if (slash) {
-							let parts = slash.split(',');
-							return {
-								section: parts[0] || '',
-								department: parts[1] || ''
-							};
-						}
-						return null;
-					})(),
-		videos		: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('video/')),
-		audios		: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('audio/'))
+		author			: metadata_get(item, "author"),
+		creator			: metadata_get(item, "creator"),
+		sharedby		: metadata_get(item, "sharedby"),
+		via				: metadata_get(item, "via"),
+		slashSection	: metadata_get(item, "slashSection"),
+		slashDepartment	: metadata_get(item, "slashDepartment"),
+		mediathumb		: mediathumb,
+		mediadesc		: mediadesc,
+		videos			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('video/')),
+		audios			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('audio/'))
 		// FIXME: use this too
 		/*let related		= metadata_get(item, "related");
 		let point		= metadata_get(item, "point");
