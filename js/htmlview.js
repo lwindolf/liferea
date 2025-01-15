@@ -1,6 +1,6 @@
 // vim: set ts=4 sw=4:
 /*
- * @file htmlview.js  html view fpr node + item display
+ * @file htmlview.js  html view for node + item display
  *
  * Copyright (C) 2021-2025 Lars Windolf <lars.windolf@gmx.de>
  *
@@ -54,7 +54,8 @@ function loadNode(data, baseURL = null, direction) {
 	let publisher	= metadata_get(node, "publisher");
 	let author		= metadata_get(node, "author");
 	let copyright	= metadata_get(node, "copyright");
-	let description	= metadata_get(node, "description")
+	let description	= metadata_get(node, "description");
+	let homepage	= metadata_get(node, "homepage");
 
 	// FIXME
 	console.log(node);
@@ -70,8 +71,9 @@ function loadNode(data, baseURL = null, direction) {
 	<div class="item" dir="${direction}">
 		<header class="content">
 			<h1>
-				<a href="${node.source}">${node.title}</a>
+				<a href="${homepage}">${node.title}</a>
 			</h1>
+			${node.source?`<div>Source: <a href="${node.source}">${node.source}</a></div>`:''}
 			${author?`<div>Author: ${author}</div>`:''}
 			${publisher?`<div>Publisher: ${publisher}</div>`:''}
 			${copyright?`<div>Copyright: ${copyright}</div>`:''}

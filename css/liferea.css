@@ -138,6 +138,7 @@ div.item header h1 a {
 
 div.item header {
   color: var(--text-color-light);
+  line-height: 1.5rem;
 }
 
 div.item header > h1 {
