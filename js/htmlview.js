@@ -19,7 +19,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-var template;
+import { render, template } from './helpers/render.js';
+import DOMPurify from './vendor/purify.min.js';
 
 function prepare(baseURL, title) {
 	if (title) {
@@ -31,8 +32,6 @@ function prepare(baseURL, title) {
 		base.setAttribute("href", baseURL);
 		document.head.appendChild(base);
 	}
-
-	template = Handlebars.compile(document.getElementById('template').innerHTML);
 }
 
 // returns first occurence of a given metadata type
@@ -61,17 +60,12 @@ function parseStatus(parsePhase, errorCode) {
 
 async function load_node(data, baseURL, direction) {
 	let node = JSON.parse(decodeURIComponent(data));
-	let publisher	= metadata_get(node, "publisher");
-	let author		= metadata_get(node, "author");
-	let copyright	= metadata_get(node, "copyright");
-	let description	= metadata_get(node, "description");
-	let homepage	= metadata_get(node, "homepage");
 
 	// FIXME
 	console.log(node);
 
 	prepare(baseURL, node.title);
-	document.body.innerHTML = template({
+	render("body", template(document.getElementById('template').innerHTML), {
 		node,
 		direction,
 		publisher  		: metadata_get(node, "publisher"),
@@ -155,8 +149,6 @@ async function load_item(data, baseURL, direction) {
 
 		article = new Readability(shadowDoc, {charThreshold: 100}).parse();
 		if (article) {
-			description = article.content;
-
 			// Use rich content from Readability if available and better!
 			if (article.content.length > item.description.length) {
 				item.description = article.content;
@@ -168,7 +160,7 @@ async function load_item(data, baseURL, direction) {
 	console.log(item);
 
 	prepare(baseURL, item.title);
-	document.body.innerHTML = template({
+	render("body", template (document.getElementById('template').innerHTML), {
 		item,
 		direction,
 
@@ -295,3 +287,5 @@ function youtube_embed(id) {
 
 	return false;
 }
+
+export { load_node, load_item };

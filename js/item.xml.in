@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src='liferea:///readability/Readability.js'></script>
-	<script src='liferea:///js/purify.min.js'></script>
-	<script src='liferea:///js/handlebars.min.js'></script>
-	<script src='liferea:///js/htmlview.js'></script>
-
+        <script src='/js/vendor/Readability.js'></script>
+        
 	<!-- FIXME: consider adding CSP meta tag here as e.g. Firefox reader mode page does -->
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -74,7 +71,9 @@
 </head>
 <body>
 </body>
-<script>
+<script type="module">
+        import { load_item } from '/js/htmlview.js';
+
         REPLACE_MARKER
 </script>
 </html>

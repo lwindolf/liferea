@@ -381,9 +381,18 @@ liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer 
 	if (b) {
 		gsize length = 0;
 		const guchar *data = g_bytes_get_data (b, &length);
+		const gchar *mime;
+		
 		// FIXME: what about freeing b?
 		g_autoptr(GInputStream) stream = g_memory_input_stream_new_from_data (data, length, NULL);
-		webkit_uri_scheme_request_finish (request, stream, length, "text/plain");
+		
+		// For now we assume all resources are javascript, so MIME is hardcoded
+		if (g_str_has_suffix (path, ".js"))
+			mime = "text/javascript";
+		else
+			mime = "text/plain";
+
+		webkit_uri_scheme_request_finish (request, stream, length, mime);
 	} else {
 		debug (DEBUG_HTML, "Failed to load liferea:// request for path %s (%s)", path, rpath);
 		g_autoptr(GError) error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "Resource not found");
@@ -404,7 +413,10 @@ liferea_webkit_init (LifereaWebKit *self)
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
 	website_data_manager = webkit_web_context_get_website_data_manager (webkit_web_context_get_default ());
-	webkit_security_manager_register_uri_scheme_as_local (security_manager, "liferea");
+	/* CORS is necessary to have ESM modules working. Security wise this should be ok as this scheme 
+	   is only used to fetch static resources. */
+	webkit_security_manager_register_uri_scheme_as_cors_enabled (security_manager, "liferea");
+
 
 	conf_signal_connect (
 		"changed::" ENABLE_ITP,

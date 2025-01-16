@@ -22,9 +22,10 @@ js_files = $(js_in_files:.xml.in=.xml)
 
 js_deps = $(top_srcdir)/js/gresource.xml \
 	$(top_srcdir)/js/htmlview.js \
-	$(top_srcdir)/js/Readability.js \
-	$(top_srcdir)/js/purify.min.js \
-	$(top_srcdir)/js/handlebars.min.js \
+	$(top_srcdir)/js/helpers/render.js \
+	$(top_srcdir)/js/vendor/Readability.js \
+	$(top_srcdir)/js/vendor/purify.min.js \
+	$(top_srcdir)/js/vendor/handlebars.min.js \
 	$(top_srcdir)/js/item.xml \
 	$(top_srcdir)/js/node.xml \
 	$(top_srcdir)/js/i18n-filter.xslt
