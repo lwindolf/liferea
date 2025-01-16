@@ -72,65 +72,7 @@ async function load_node(data, baseURL, direction) {
 		author			: metadata_get(node, "author"),
 		copyright		: metadata_get(node, "copyright"),
 		description		: metadata_get(node, "description"),
-		homepage		: metadata_get(node, "homepage"),
-		errorDetails	: (() => {
-			if (!node.error)
-				return null;
-
-			return `<span>There was a problem when fetching this subscription!</span>
-				<ul>
-					<li>
-						${parseStatus(1, node.error)} <span>1. Authentication</span>
-					</li>
-					<li>
-						${parseStatus(2, node.error)} <span>2. Download</span>
-					</li>
-					<li>
-						${parseStatus(4, node.error)} <span>3. Feed Discovery</span>
-					</li>
-					<li>
-						${parseStatus(8, node.error)} <span>4. Parsing</span>
-					</li>
-				</ul>
-
-				<span class="details">
-				<b><span>Details:</span></b>
-
-					${(1 == node.error)?`
-						<p><span>Authentication failed. Please check the credentials and try again!</span></p>
-					`:''}
-					${(2 == node.error)?`
-						${node.httpError?`
-							<p>
-							${node.httpErrorCode >= 100?`HTTP ${node.httpErrorCode}: `:''}<br/>
-							${node.httpError}
-							</p>
-						`:''}
-
-						${node.updateError?`
-							<p>
-							<span>There was an error when downloading the feed source:</span>
-							<pre class="errorOutput">${node.updateError}</pre>
-							</p>
-						`:''}
-
-						${node.filterError?`
-							<p>
-							<span>There was an error when running the feed filter command:</span>
-							<pre class="errorOutput">${node.filterError}</pre>
-							</p>
-						`:''}
-					`:''}
-					${(4 == node.error)?`
-						<p><span>The source does not point directly to a feed or a webpage with a link to a feed!</span></p>
-					`:''}
-					${(8 == node.error)?`
-						<p><span>Sorry, the feed could not be parsed!</span></p>
-						<pre class="errorOutput">${node.parseError}</pre>
-						<p><span>You may want to contact the author/webmaster of the feed about this!</span></p>
-					`:''}
-				</span>`;
-		})()
+		homepage		: metadata_get(node, "homepage")
 	});
 
     contentCleanup ();
