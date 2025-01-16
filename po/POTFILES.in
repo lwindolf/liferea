@@ -120,7 +120,6 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
-src/render.h
 src/rule.c
 src/rule.h
 src/social.c
