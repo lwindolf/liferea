@@ -326,29 +326,3 @@ html_discover_favicon (const gchar * data, const gchar * defaultBaseUri)
 
 	return results;
 }
-
-gchar *
-html_get_article (const gchar *data, const gchar *baseUri) {
-	xmlDocPtr	doc;
-	xmlNodePtr	root;
-	gchar		*result = NULL;
-
-	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
-	if (!doc) {
-		debug (DEBUG_PARSING, "XHTML parsing error on '%s'", baseUri);
-		return NULL;
-	}
-
-	/* In the past we did some special extraction, but to allow Readability.js
-	   to extract different things like LD+JSON we now just pass the whole doc */
-	root = xmlDocGetRootElement (doc);
-	result = xhtml_extract (root, 1, baseUri);
-	xmlFreeDoc (doc);
-
-	return result;
-}
-
-gchar *
-html_get_amp_url (const gchar *data) {
-	return search_links_dirty (data, LINK_AMPHTML);
-}

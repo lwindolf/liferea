@@ -49,27 +49,4 @@ GSList * html_auto_discover_feed(const gchar* data, const gchar *baseUri);
  */
 GSList * html_discover_favicon(const gchar* data, const gchar *baseUri);
 
-/**
- * html_get_article:
- *
- * Parse HTML as XHTML to extract containing HTML5 article.
- *
- * @data:	the HTML to check
- * @baseUri:	URI of the downloaded HTML used to resolve relative URIs
- *
- * Returns: XHTML fragment representing the <article> or NULL
- */
-gchar * html_get_article(const gchar *data, const gchar *baseUri);
-
-/**
- * html_get_amp_url:
- *
- * Parse HTML and returns AMP URL if found
- *
- * @data:	the HTML to check
- *
- * Returns: AMP URL or NULL. Must be free'd by caller
- */
-gchar * html_get_amp_url(const gchar *data);
-
 #endif

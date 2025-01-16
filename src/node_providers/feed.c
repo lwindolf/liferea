@@ -197,7 +197,7 @@ feed_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updat
 	if (!item)
 		return;
 
-	article = html_get_article (result->data, result->source);
+	article = xhtml_extract_from_string (result->data, result->source);
 	if (article) {
 		// Enable AMP images by replacing <amg-img> by <img>
 		gchar **tmp_split = g_strsplit(article, "<amp-img", 0);
