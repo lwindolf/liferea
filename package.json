@@ -1,6 +1,14 @@
 {
+  "scripts": {
+    "test": "eslint js/htmlview.js",
+    "installDeps": "ls node_modules"
+  },
   "dependencies": {
-    "dompurify": "^3.0.6",
-    "readability": "^0.1.0"
+    "dompurify": "^3.2.3",
+    "readability": "^0.1.0",
+    "handlebars": "^4.7.8"
+  },
+  "devDependencies": {
+    "eslint": "^8.49.0"
   }
 }

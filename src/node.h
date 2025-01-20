@@ -1,7 +1,7 @@
 /**
  * @file node.h  hierarchic feed list node interface
  * 
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -308,25 +308,20 @@ const gchar *node_get_id (Node *node);
 void node_set_id (Node *node, const gchar *id);
 
 /**
- * node_default_render:
- * @node:		the node to render
- *
- * Helper function for generic node rendering. Performs
- * a generic node serialization to XML and passes the
- * generated XML source document to the XSLT stylesheet
- * with the same name as the node type id.
- *
- * Returns: XHTML string
- */
-gchar * node_default_render (Node *node);
-
-/**
  * node_save:
  * @node:	the node
  *
  * Saves the given node to cache.
  */
 void node_save (Node *node);
+
+/**
+ * node_to_json:
+ * @node:	the node
+ * 
+ * Returns a JSON representation of the node to be free'd with g_free()
+ */
+gchar * node_to_json (Node *node);
 
 /**
  * node_get_itemset: (skip)
@@ -338,16 +333,6 @@ void node_save (Node *node);
  * Returns: the item set
  */
 itemSetPtr node_get_itemset (Node *node);
-
-/**
- * node_render:
- * @node:	the node
- *
- * Node *content rendering
- *
- * Returns: string with node rendered in HTML
- */
-gchar * node_render (Node *node);
 
 /**
  * node_update_favicon:

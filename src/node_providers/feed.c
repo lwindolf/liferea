@@ -33,7 +33,6 @@
 #include "itemlist.h"
 #include "metadata.h"
 #include "node.h"
-#include "render.h"
 #include "update.h"
 #include "xml.h"
 #include "ui/icons.h"
@@ -163,50 +162,6 @@ feed_export (Node *node, xmlNodePtr xml, gboolean trusted)
 	g_free (cacheLimit);
 }
 
-static void
-feed_add_xml_attributes (Node *node, xmlNodePtr feedNode)
-{
-	feedPtr	feed = (feedPtr)node->data;
-	gchar	*tmp;
-
-	xmlNewTextChild (feedNode, NULL, BAD_CAST"feedId", BAD_CAST node_get_id (node));
-	xmlNewTextChild (feedNode, NULL, BAD_CAST"feedTitle", BAD_CAST node_get_title (node));
-
-	if (node->subscription) {
-		subscription_to_xml (node->subscription, feedNode);
-
-		tmp = g_strdup_printf("%d", node->subscription->error);
-		xmlNewTextChild(feedNode, NULL, BAD_CAST"error", BAD_CAST tmp);
-		g_free(tmp);
-	}
-
-	tmp = g_strdup_printf("%d", node->available?1:0);
-	xmlNewTextChild(feedNode, NULL, BAD_CAST"feedStatus", BAD_CAST tmp);
-	g_free(tmp);
-
-	tmp = g_strdup_printf("file://%s", node_get_favicon_file (node));
-	xmlNewTextChild(feedNode, NULL, BAD_CAST"favicon", BAD_CAST tmp);
-	g_free(tmp);
-
-	if(feed->parseErrors && (strlen(feed->parseErrors->str) > 0))
-		xmlNewTextChild(feedNode, NULL, BAD_CAST"parseError", BAD_CAST feed->parseErrors->str);
-}
-
-xmlDocPtr
-feed_to_xml (Node *node, xmlNodePtr feedNode)
-{
-	xmlDocPtr	doc = NULL;
-
-	if (!feedNode) {
-		doc = xmlNewDoc (BAD_CAST"1.0");
-		feedNode = xmlNewDocNode (doc, NULL, BAD_CAST"feed", NULL);
-		xmlDocSetRootElement (doc, feedNode);
-	}
-	feed_add_xml_attributes (node, feedNode);
-
-	return doc;
-}
-
 guint
 feed_get_max_item_count (Node *node)
 {
@@ -228,7 +183,7 @@ feed_get_max_item_count (Node *node)
 	}
 }
 
-// HTML5 Headline enrichment
+// content scraping
 
 static void
 feed_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updateFlags flags) {
@@ -242,10 +197,7 @@ feed_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updat
 	if (!item)
 		return;
 
-	article = html_get_article (result->data, result->source);
-
-	if (article)
-		article = xhtml_strip_dhtml (article);
+	article = xhtml_extract_from_string (result->data, result->source);
 	if (article) {
 		// Enable AMP images by replacing <amg-img> by <img>
 		gchar **tmp_split = g_strsplit(article, "<amp-img", 0);
@@ -258,23 +210,6 @@ feed_enrich_item_cb (const UpdateResult * const result, gpointer userdata, updat
 		db_item_update (item);
 		itemlist_update_item (item);
 		g_free (article);
-	} else {
-		// If there is no HTML5 article try to fetch AMP source if there is one
-		gchar *ampurl = html_get_amp_url (result->data);
-		if (ampurl) {
-			UpdateRequest *request;
-
-			debug (DEBUG_PARSING, "Fetching AMP HTML %ld %s : %s", item->id, item->title, ampurl);
-			request = update_request_new (
-				ampurl,
-				NULL, 	// No update state needed? How do we prevent an endless redirection loop?
-				NULL 	// Explicitely do not the feed's proxy/auth options to 3rd parties like Google (AMP)!
-			);
-
-			update_job_new (NULL, request, feed_enrich_item_cb, GUINT_TO_POINTER (item->id), UPDATE_REQUEST_NO_FEED);
-
-			g_free (ampurl);
-		}
 	}
 	item_unload (item);
 }
@@ -393,35 +328,6 @@ feed_remove (Node *node)
 	db_subscription_remove (node->id);
 }
 
-static const gchar *
-feed_get_direction(Node *feed)
-{
-	if (node_get_title (feed))
-		return (common_get_text_direction (node_get_title (feed)));
-	else
-		return ("ltr");
-}
-
-static gchar *
-feed_render (Node *node)
-{
-	gchar		*output = NULL;
-	xmlDocPtr	doc;
-	renderParamPtr	params;
-	const gchar     *text_direction = NULL;
-
-	text_direction = feed_get_direction (node);
-	params = render_parameter_new ();
-	render_parameter_add (params, "appDirection='%s'", common_get_app_direction ());
-	render_parameter_add (params, "txtDirection='%s'", text_direction);
-
-	doc = feed_to_xml (node, NULL);
-	output = render_xml (doc, "feed", params);
-	xmlFreeDoc (doc);
-
-	return output;
-}
-
 static gboolean
 feed_add (void)
 {
@@ -473,7 +379,6 @@ feed_get_provider (void)
 		feed_save,
 		feed_update_counters,
 		feed_remove,
-		feed_render,
 		feed_add,
 		feed_properties,
 		feed_free

@@ -92,7 +92,9 @@ metadata_init (void)
 	metadata_type_register ("coverage",		METADATA_TYPE_HTML);
 
 	/* types for slash */
-	metadata_type_register ("slash",		METADATA_TYPE_HTML);
+	metadata_type_register ("slash",		METADATA_TYPE_HTML);	// deprecated
+	metadata_type_register ("slashSection",		METADATA_TYPE_HTML);
+	metadata_type_register ("slashDepartment",	METADATA_TYPE_HTML);
 
 	/* type for gravatars */
 	metadata_type_register ("gravatar",		METADATA_TYPE_URL);
@@ -330,20 +332,25 @@ metadata_list_free (GSList *metadata)
 }
 
 void
-metadata_add_xml_nodes (GSList *metadata, xmlNodePtr parentNode)
+metadata_list_to_json (GSList *metadata, JsonBuilder *b)
 {
 	GSList *list = metadata;
-	xmlNodePtr attribute;
-	xmlNodePtr metadataNode = xmlNewChild (parentNode, NULL, BAD_CAST"attributes", NULL);
+
+	json_builder_set_member_name (b, "metadata");
+	json_builder_begin_array (b);
 
 	while (list) {
 		struct pair *p = (struct pair*)list->data;
 		GSList *list2 = p->data;
 		while (list2) {
-			attribute = xmlNewTextChild (metadataNode, NULL, BAD_CAST"attribute", (xmlChar *)list2->data);
-			xmlNewProp (attribute, BAD_CAST"name", (xmlChar *)p->strid);
+			json_builder_begin_object (b);
+			json_builder_set_member_name (b, p->strid);
+			json_builder_add_string_value (b, list2->data);
+			json_builder_end_object (b);
 			list2 = list2->next;
 		}
 		list = list->next;
 	}
+
+	json_builder_end_array (b);
 }

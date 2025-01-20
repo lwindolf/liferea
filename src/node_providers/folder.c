@@ -1,7 +1,7 @@
 /**
  * @file folder.c  sub folders for hierarchic node sources
  *
- * Copyright (C) 2006-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -142,8 +142,7 @@ folder_get_provider (void)
 		folder_save,
 		folder_update_counters,
 		folder_remove,
-		node_default_render,
-		folder_add_dialog,
+		ui_folder_add,
 		feed_list_view_rename_node,
 		NULL
 	};
@@ -172,8 +171,7 @@ root_get_provider (void)
 		folder_save,
 		folder_update_counters,
 		folder_remove,
-		node_default_render,
-		folder_add_dialog,
+		ui_folder_add,
 		feed_list_view_rename_node,
 		NULL
 	};

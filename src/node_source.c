@@ -617,7 +617,6 @@ node_source_get_provider (void)
 		provider->save			= node_source_save;
 		provider->update_counters	= folder_get_provider ()->update_counters;
 		provider->remove		= node_source_remove;
-		provider->render		= node_default_render;
 		provider->request_add		= feed_list_node_source_type_dialog;
 		provider->request_properties	= feed_list_view_rename_node;
 		provider->free			= node_source_free;

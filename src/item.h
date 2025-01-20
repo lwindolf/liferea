@@ -1,7 +1,7 @@
 /*
  * @file item.h item handling
  *
- * Copyright (C) 2003-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -83,7 +83,7 @@ struct _LifereaItem {
 typedef struct _LifereaItem *itemPtr;
 
 /**
- * item_new: (skip)
+ * item_new:
  * Allocates a new item structure.
  *
  * Returns: (transfer full): the new structure
@@ -91,7 +91,7 @@ typedef struct _LifereaItem *itemPtr;
 LifereaItem *	item_new(void);
 
 /**
- * item_load: (skip)
+ * item_load:
  * @id:	item id to load
  *
  * Returns the item structure for the given item id or
@@ -100,13 +100,13 @@ LifereaItem *	item_new(void);
  *
  * Returns: (transfer full) (nullable): item structure
  */
-LifereaItem *	item_load(gulong id);
+LifereaItem *	item_load (gulong id);
 
 // For legacy code let's keep item_unload()
 #define item_unload(a) g_object_unref(a)
 
 /**
- * item_copy: (skip)
+ * item_copy:
  * @item: the item to copy
  *
  * Method to create a copy of an item. The copy will be
@@ -115,50 +115,72 @@ LifereaItem *	item_load(gulong id);
  *
  * Returns: (transfer full): copy of the item.
  */
-LifereaItem *	item_copy(LifereaItem * item);
+LifereaItem *	item_copy (LifereaItem * item);
 
 /**
- * item_get_base_url: (skip)
+ * item_get_base_url:
  * @item:	the item
  *
  * Returns the base URL for the given item.
  *
  * Returns: base URL
  */
-const gchar * item_get_base_url(LifereaItem *item);
-
-/* methods to access properties */
-/* Returns the id of item. */
-const gchar *	item_get_id(LifereaItem *item);
-/* Returns the title of item. */
-const gchar *	item_get_title(LifereaItem *item);
-/* Returns the description of item. */
-const gchar *	item_get_description(LifereaItem *item);
-/* Returns the source of item. */
-const gchar *	item_get_source(LifereaItem *item);
+const gchar * item_get_base_url (LifereaItem *item);
 
 /**
- * item_get_teaser: (skip)
+ * item_get_id:
+ * @item:	the item
+ * 
+ * Returns: the id of the item. 
+ */
+const gchar *	item_get_id (LifereaItem *item);
+
+/**
+ * item_get_title:
+ * @item:	the item
+ *
+ * Returns the title of the item.
+ */
+const gchar *	item_get_title (LifereaItem *item);
+
+/**
+ * item_get_description:
+ * @item:	the item
+ *
+ * Returns the description of the item.
+ */
+const gchar *	item_get_description (LifereaItem *item);
+
+/**
+ * item_get_source:
+ * @item:	the item
+ *
+ * Returns the source of the item.
+ */
+const gchar *	item_get_source (LifereaItem *item);
+
+/**
+ * item_get_teaser:
  * @item:	the item
  *
  * Create a plain text teaser from the item description
  *
  * Returns: (transfer full): newly allocated string to be free'd using g_free() (or NULL)
  */
-gchar * item_get_teaser(LifereaItem *item);
+gchar * item_get_teaser (LifereaItem *item);
 
 /**
- * item_make_link: (skip)
+ * item_make_link:
  * @item:	the item
  *
  * Returns the resolved link for the item.
  *
  * Returns: (transfer full): newly allocated URI to be free'd using g_free()
  */
-gchar *	item_make_link(LifereaItem *item);
+gchar *	item_make_link (LifereaItem *item);
 
 /**
- * item_get_author: (skip)
+ * item_get_author:
  * @item:	the item
  *
  * Returns the resolved author for the item
@@ -168,16 +190,16 @@ gchar *	item_make_link(LifereaItem *item);
 const gchar * item_get_author(LifereaItem *item);
 
 /**
- * item_set_title: (skip)
- * @item:		the item
- * @title:		the title
+ * item_set_title:
+ * @item:	the item
+ * @title:	the title
  *
  * Sets the item title
  */
-void item_set_title(LifereaItem *item, const gchar * title);
+void item_set_title (LifereaItem *item, const gchar * title);
 
 /**
- * item_set_description: (skip)
+ * item_set_description:
  * @item:		the item
  * @description:	the content
  *
@@ -188,27 +210,27 @@ void item_set_title(LifereaItem *item, const gchar * title);
 void item_set_description (LifereaItem *item, const gchar *description);
 
 /**
- * item_set_source: (skip)
- * @item:		the item
- * @source:		the source
+ * item_set_source:
+ * @item:	the item
+ * @source:	the source
  *
  * Sets the item source 
  */
-void item_set_source(LifereaItem *item, const gchar * source);
+void item_set_source (LifereaItem *item, const gchar * source);
 
 /**
- * item_set_id: (skip)
- * @item:		the item
- * @id:			the id
+ * item_set_id:
+ * @item:	the item
+ * @id:		the id
  *
  * Sets the item id 
  */
 void item_set_id (LifereaItem *item, const gchar * id);
 
 /**
- * item_set_time: (skip)
- * @item:		the item
- * @time:		the time
+ * item_set_time:
+ * @item:	the item
+ * @time:	the time
  *
  * Sets the item time. Always use this when a valid date was 
  * supplied for the item!
@@ -216,25 +238,20 @@ void item_set_id (LifereaItem *item, const gchar * id);
 void item_set_time (LifereaItem *item, gint64 time);
 
 /**
- * item_to_xml: (skip)
- * @item:		the item to serialize
- * @parentNode:	the xmlNodePtr to add to
- *
- * Adds an XML node to the given item.
- *
+ * item_to_json: (skip)
+ * @item:	the item to serialize
+ * 
+ * Returns: (transfer full): JSON string (to be free'd using g_free())
  */
-void item_to_xml (LifereaItem *item, gpointer parentNode);
+gchar * item_to_json (LifereaItem *item);
 
 /**
- * item_render: (skip)
- * @item:		the item to serialize
- * @viewMode:		the item view mode
+ * item_get_text_direction:
+ * @item:	the item
  *
- * Uses item_xml() and adds additional feed info to the item info for rendering
- *
- * Returns XML string (to be free'd using g_free())
+ * Returns the text direction of the item based on title or description.
  */
-gchar * item_render (LifereaItem *item, guint viewMode);
+const gchar * item_get_text_direction (LifereaItem *item);
 
 G_END_DECLS
 

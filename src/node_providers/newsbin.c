@@ -1,7 +1,7 @@
 /**
  * @file newsbin.c  news bin node type implementation
  *
- * Copyright (C) 2006-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@
 #include "feedlist.h"
 #include "itemlist.h"
 #include "metadata.h"
-#include "render.h"
 #include "ui/icons.h"
 #include "ui/feed_list_view.h"
 #include "ui/liferea_dialog.h"
@@ -79,19 +78,6 @@ newsbin_remove (Node *node)
 {
 	newsbin_list = g_slist_remove(newsbin_list, node);
 	feed_get_provider()->remove(node);
-}
-
-static gchar *
-newsbin_render (Node *node)
-{
-	gchar		*output = NULL;
-	xmlDocPtr	doc;
-
-	doc = feed_to_xml(node, NULL);
-	output = render_xml(doc, "newsbin", NULL);
-	xmlFreeDoc(doc);
-
-	return output;
 }
 
 static void
@@ -205,7 +191,6 @@ newsbin_get_provider (void)
 		nodeType->save			= feed_get_provider()->save;
 		nodeType->update_counters	= feed_get_provider()->update_counters;
 		nodeType->remove		= newsbin_remove;
-		nodeType->render		= newsbin_render;
 		nodeType->request_add		= ui_newsbin_add;
 		nodeType->request_properties	= ui_newsbin_properties;
 		nodeType->free			= feed_get_provider()->free;

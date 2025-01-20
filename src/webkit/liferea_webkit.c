@@ -30,9 +30,9 @@
 #include "browser.h"
 #include "conf.h"
 #include "common.h"
+#include "debug.h"
 #include "download.h"
 #include "net.h"
-#include "render.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
 
@@ -330,16 +330,32 @@ liferea_webkit_download_started (WebKitWebContext	*context,
 static void
 liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer user_data)
 {
-	const gchar *uri = webkit_uri_scheme_request_get_uri (request);
-	GInputStream *stream;
-	gssize length;
-	gchar *contents;
+	const gchar *path = webkit_uri_scheme_request_get_path (request);
+	g_autofree gchar *rpath;
+	GBytes *b;
 
-	contents = g_strdup_printf ("Placeholder handler for liferea scheme. URI requested : %s", uri);
-	length = (gssize) strlen (contents);
-	stream = g_memory_input_stream_new_from_data (contents, length, g_free);
-	webkit_uri_scheme_request_finish (request, stream, length, "text/plain");
-	g_object_unref (stream);
+	rpath = g_strdup_printf ("/org/gnome/liferea%s", path);
+	b = g_resources_lookup_data (rpath, 0, NULL);
+	if (b) {
+		gsize length = 0;
+		const guchar *data = g_bytes_get_data (b, &length);
+		const gchar *mime;
+		
+		// FIXME: what about freeing b?
+		g_autoptr(GInputStream) stream = g_memory_input_stream_new_from_data (data, length, NULL);
+		
+		// For now we assume all resources are javascript, so MIME is hardcoded
+		if (g_str_has_suffix (path, ".js"))
+			mime = "text/javascript";
+		else
+			mime = "text/plain";
+
+		webkit_uri_scheme_request_finish (request, stream, length, mime);
+	} else {
+		debug (DEBUG_HTML, "Failed to load liferea:// request for path %s (%s)", path, rpath);
+		g_autoptr(GError) error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "Resource not found");
+		webkit_uri_scheme_request_finish_error (request, error);
+	}
 }
 
 static void
@@ -353,7 +369,11 @@ liferea_webkit_init (LifereaWebKit *self)
 		(WebKitURISchemeRequestCallback) liferea_webkit_handle_liferea_scheme,NULL,NULL);
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
-	webkit_security_manager_register_uri_scheme_as_local (security_manager, "liferea");
+	
+	/* CORS is necessary to have ESM modules working. Security wise this should be ok as this scheme 
+	   is only used to fetch static resources. */
+	webkit_security_manager_register_uri_scheme_as_cors_enabled (security_manager, "liferea");
+
 
 	conf_signal_connect (
 		"changed::" ENABLE_ITP,
@@ -573,7 +593,7 @@ liferea_webkit_set_proxy (ProxyDetectMode mode)
  * Load liferea.css via user style sheet
  */
 void
-liferea_webkit_reload_style (GtkWidget *webview)
+liferea_webkit_reload_style (GtkWidget *webview, const gchar *userCSS, const gchar *defaultCSS)
 {
 	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
 
@@ -582,11 +602,10 @@ liferea_webkit_reload_style (GtkWidget *webview)
 	if (default_stylesheet)
 		webkit_user_style_sheet_unref (default_stylesheet);
 
-	const gchar *css = render_get_default_css ();
 	// default stylesheet should only apply to HTML written to the view,
 	// not when browsing
 	const gchar *deny[] = { "http://*/*", "https://*/*",  NULL };
-	default_stylesheet = webkit_user_style_sheet_new (css,
+	default_stylesheet = webkit_user_style_sheet_new (defaultCSS,
 		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
 		WEBKIT_USER_STYLE_LEVEL_USER,
 		NULL,
@@ -596,8 +615,7 @@ liferea_webkit_reload_style (GtkWidget *webview)
 	if (user_stylesheet)
 		webkit_user_style_sheet_unref (user_stylesheet);
 
-	css = render_get_user_css ();
-	user_stylesheet = webkit_user_style_sheet_new (css,
+	user_stylesheet = webkit_user_style_sheet_new (userCSS,
 		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
 		WEBKIT_USER_STYLE_LEVEL_USER,
 		NULL,

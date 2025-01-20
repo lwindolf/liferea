@@ -37,7 +37,6 @@
 #include "enclosure.h"
 #include "node.h"
 #include "node_view.h"
-#include "render.h"
 #include "subscription_icon.h"
 #include "update.h"
 #include "node_provider.h"
@@ -308,12 +307,6 @@ node_mark_all_read (Node *node)
 		node_foreach_child (node, node_mark_all_read);
 }
 
-gchar *
-node_render(Node *node)
-{
-	return NODE_PROVIDER (node)->render (node);
-}
-
 /* import callbacks and helper functions */
 
 void
@@ -362,41 +355,54 @@ node_remove (Node *node)
 	NODE_PROVIDER (node)->remove (node);
 }
 
-static xmlDocPtr
-node_to_xml (Node *node)
-{
-	xmlDocPtr	doc;
-	xmlNodePtr	rootNode;
-	gchar		*tmp;
-
-	doc = xmlNewDoc (BAD_CAST"1.0");
-	rootNode = xmlNewDocNode (doc, NULL, BAD_CAST"node", NULL);
-	xmlDocSetRootElement (doc, rootNode);
-
-	xmlNewTextChild (rootNode, NULL, BAD_CAST"title", BAD_CAST node_get_title (node));
-
-	tmp = g_strdup_printf ("%u", node->unreadCount);
-	xmlNewTextChild (rootNode, NULL, BAD_CAST"unreadCount", BAD_CAST tmp);
-	g_free (tmp);
-
-	tmp = g_strdup_printf ("%u", g_slist_length (node->children));
-	xmlNewTextChild (rootNode, NULL, BAD_CAST"children", BAD_CAST tmp);
-	g_free (tmp);
-
-	return doc;
-}
-
 gchar *
-node_default_render (Node *node)
+node_to_json (Node *node)
 {
-	gchar		*result;
-	xmlDocPtr	doc;
+	g_autoptr(JsonBuilder) b = json_builder_new ();
 
-	doc = node_to_xml (node);
-	result = render_xml (doc, NODE_PROVIDER(node)->id, NULL);
-	xmlFreeDoc (doc);
+	json_builder_begin_object (b);
+	json_builder_set_member_name (b, "type");
+	json_builder_add_string_value (b, NODE_PROVIDER (node)->id);
+	json_builder_set_member_name (b, "id");
+	json_builder_add_string_value (b, node->id);
+	json_builder_set_member_name (b, "title");
+	json_builder_add_string_value (b, node_get_title (node));
+	json_builder_set_member_name (b, "unreadCount");
+	json_builder_add_int_value (b, node->unreadCount);
+	json_builder_set_member_name (b, "children");
+	json_builder_add_int_value (b, g_slist_length (node->children));
 
-	return result;
+	if (node->subscription) {
+		json_builder_set_member_name (b, "source");
+		json_builder_add_string_value (b, subscription_get_source (node->subscription));
+		json_builder_set_member_name (b, "origSource");
+		json_builder_add_string_value (b, node->subscription->origSource);
+
+		json_builder_set_member_name (b, "error");
+		json_builder_add_int_value (b, node->subscription->error);
+		json_builder_set_member_name (b, "updateError");
+		json_builder_add_string_value (b, node->subscription->updateError);
+		json_builder_set_member_name (b, "httpError");
+		json_builder_add_string_value (b, node->subscription->httpError);
+		json_builder_set_member_name (b, "httpErrorCode");
+		json_builder_add_int_value (b, node->subscription->httpErrorCode);
+		json_builder_set_member_name (b, "filterError");
+		json_builder_add_string_value (b, node->subscription->filterError);
+
+		metadata_list_to_json (node->subscription->metadata, b);
+	}
+
+	if (g_str_equal (NODE_PROVIDER (node)->id, "feed")) {
+		feedPtr feed = (feedPtr) node->data;
+		if(feed && feed->parseErrors && (strlen(feed->parseErrors->str) > 0)) {
+			json_builder_set_member_name (b, "parseErrror");
+			json_builder_add_string_value (b, feed->parseErrors->str);
+		}
+	}
+
+	json_builder_end_object (b);
+
+	return json_dump (b);
 }
 
 /* helper functions to be used with node_foreach* */

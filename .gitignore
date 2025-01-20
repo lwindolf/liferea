@@ -21,6 +21,7 @@ po/Makefile.in.in
 po/POTFILES
 po/liferea.pot
 po/stamp-it
+js/*.xml
 src/js.c
 src/js.h
 src/dbus_wrap.c
@@ -40,4 +41,6 @@ xslt/*.xml
 org.gnome.liferea.gschema.valid
 .flatpak-builder
 .vscode
+node_modules
+package-lock.json
 builddir/

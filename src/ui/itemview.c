@@ -23,14 +23,14 @@
 #include "browser.h"
 #include "common.h"
 #include "conf.h"
+#include "common.h"
 #include "debug.h"
-#include "node_providers/folder.h"
-#include "item_state.h"
+#include "feedlist.h"
 #include "item_history.h"
 #include "itemlist.h"
 #include "itemview.h"
 #include "node.h"
-#include "node_providers/vfolder.h"
+#include "node_provider.h"
 #include "ui/ui_common.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_shell.h"
@@ -263,6 +263,13 @@ itemview_update_node_info (Node *node)
 void
 itemview_update (void)
 {
+	g_autoptr(LifereaItem) 	item = NULL;
+	Node			*node = NULL;
+	g_autofree gchar	*baseURL = NULL;
+	g_autofree gchar 	*json = NULL;
+	const gchar		*direction = NULL;
+	const gchar		*name = NULL;
+
 	if (itemview->itemListView)
 		item_list_view_update (itemview->itemListView);
 
@@ -273,7 +280,34 @@ itemview_update (void)
 
 	if (itemview->needsHTMLViewUpdate) {
 		itemview->needsHTMLViewUpdate = FALSE;
-		liferea_browser_update (itemview->htmlview, itemview->mode);
+
+		switch (itemview->mode) {
+			case ITEMVIEW_SINGLE_ITEM:
+				item = itemlist_get_selected ();
+				if(!item)
+					return;
+
+				node = node_from_id (item->nodeId);
+
+				direction = item_get_text_direction (item);
+				name = "item";
+				json = item_to_json (item);
+				break;
+			case ITEMVIEW_NODE_INFO:
+				node = feedlist_get_selected ();
+				if (!node)
+					return;
+
+				direction = common_get_app_direction ();
+				name = "node";
+				json = node_to_json (node);
+				break;
+		}
+
+		if (node_get_base_url (node))
+			baseURL = g_markup_escape_text ((gchar *)node_get_base_url (node), -1);
+
+		liferea_browser_set_view (itemview->htmlview, name, json, baseURL, direction);
 	}
 }
 

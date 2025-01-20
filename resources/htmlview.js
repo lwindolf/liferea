@@ -1,8 +1,8 @@
 // vim: set ts=4 sw=4:
 /*
- * @file htmlview.c  htmlview reader mode switching and CSS handling
+ * @file htmlview.js  html view for node + item display
  *
- * Copyright (C) 2021-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,128 +19,167 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-function setBase(uri) {
-	var base = document.createElement("base");
-	base.setAttribute("href", uri);
-	document.head.appendChild(base);
+import { render, template } from './helpers/render.js';
+import DOMPurify from './vendor/purify.min.js';
+
+function prepare(baseURL, title) {
+	if (title) {
+		/* Set title for it to appear in e.g. desktop MPRIS playback controls */
+		document.title = title;
+	}
+	if (baseURL && baseURL !== '(null)') {
+		var base = document.createElement("base");
+		base.setAttribute("href", baseURL);
+		document.head.appendChild(base);
+	}
+}
+
+// returns first occurence of a given metadata type
+function metadata_get(obj, key) {
+	var metadata = obj.metadata;
+
+	if (!metadata)
+		return null;
+
+	var results = metadata.filter((e) => key in e);
+	if (results.length == 0)
+		return null;
+
+	return results[0][key];
+}
+
+function parseStatus(parsePhase, errorCode) {
+
+	if (errorCode == 0 || errorCode > parsePhase)
+		return "✅";
+	if (errorCode == parsePhase)
+		return "⛔";
+	if (parsePhase > errorCode)
+		return "⬜";
+}
+
+async function load_node(data, baseURL, direction) {
+	let node = JSON.parse(decodeURIComponent(data));
+
+	// FIXME
+	console.log(node);
+
+	prepare(baseURL, node.title);
+	render("body", template(document.getElementById('template').innerHTML), {
+		node,
+		direction,
+		publisher  		: metadata_get(node, "publisher"),
+		author			: metadata_get(node, "author"),
+		copyright		: metadata_get(node, "copyright"),
+		description		: metadata_get(node, "description"),
+		homepage		: metadata_get(node, "homepage")
+	});
+
+    contentCleanup ();
+}
+
+async function load_item(data, baseURL, direction) {
+	let item = JSON.parse(decodeURIComponent(data));
+	let richContent = metadata_get(item, "richContent");
+	let mediathumb = metadata_get(item, "mediathumbnail");
+	let mediadesc = metadata_get(item, "mediadescription");
+	let article;
+
+	if (richContent) {
+		let shadowDoc = document.implementation.createHTMLDocument();
+		shadowDoc.body.innerHTML = richContent;
+
+		article = new Readability(shadowDoc, {charThreshold: 100}).parse();
+		if (article) {
+			// Use rich content from Readability if available and better!
+			if (article.content.length > item.description.length) {
+				item.description = article.content;
+			}
+		}
+	}
+
+	// FIXME
+	console.log(item);
+
+	prepare(baseURL, item.title);
+	render("body", template (document.getElementById('template').innerHTML), {
+		item,
+		direction,
+
+		// Using article.title is important, as often the item.title is just a summary
+		// or something slightly different. Using the article.title allow for better
+		// title duplicate elimination (further below)
+		title		: article?article.title:item.title,
+
+		author			: metadata_get(item, "author"),
+		creator			: metadata_get(item, "creator"),
+		sharedby		: metadata_get(item, "sharedby"),
+		via				: metadata_get(item, "via"),
+		slashSection	: metadata_get(item, "slashSection"),
+		slashDepartment	: metadata_get(item, "slashDepartment"),
+		mediathumb		: mediathumb,
+		mediadesc		: mediadesc,
+		videos			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('video/')),
+		audios			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('audio/'))
+		// FIXME: use this too
+		/*let related		= metadata_get(item, "related");
+		let point		= metadata_get(item, "point");
+		let mediaviews	= metadata_get(item, "mediaviews");
+		let ratingavg	= metadata_get(item, "mediastarRatingavg");
+		let ratingmax	= metadata_get(item, "mediastarRatingMax");
+		let gravatar	= metadata_get(item, "gravatar");*/
+	});
+
+	// Title duplicate elimination:
+	// Check if there is an element which contains exactly the text from item.title
+	let el = Array.from(document.getElementById('content').querySelectorAll('*')).find(el => el.textContent.trim() === item.title);
+	if (el) {
+		let innermost = el;
+		while (innermost.children.length > 0) {
+			innermost = Array.from(innermost.children).find(child => child.textContent.trim() === item.title) || innermost;
+		}
+		innermost.remove();
+	}
+
+    // If there are no images and we have a thumbnail, add it
+    if (document.querySelectorAll('img').length == 0 && mediathumb) {
+		let img = document.createElement('img');
+		img.src = mediathumb;
+		img.alt = mediadesc;
+		document.getElementById('description').prepend(img);
+    }
+
+	// Convert all lazy-loaded images
+	document.querySelectorAll('img[data-src]').forEach((img) => {
+		img.src = img.getAttribute('data-src');
+	});
+
+    // Setup audio/video <select> handler
+    document.querySelector('#enclosureVideo select')?.addEventListener("change", (e) => {
+		document.querySelector('#enclosureVideo video').src = e.target.options[e.target.selectedIndex].value;
+		document.querySelector('#enclosureVideo video').play();
+    });
+    document.getElementById('#enclosureAudio select')?.addEventListener("change", (e) => {
+		document.querySelector('#enclosureAudio audio').src = e.target.options[e.target.selectedIndex].value;
+		document.querySelector('#enclosureVideo audio').play();
+    });
+
+	let youtubeMatch = item.source.match(/https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/);
+	if (youtubeMatch)
+		youtube_embed (youtubeMatch[1]);
+
+    contentCleanup ();
+
+    return true;
 }
 
 /**
- * loadContent() will be run on each internal / Readability.js rendering
- *
- * This method can be called multiple times for a single rendering, so it
- * needs to be idempotent on what is done. Primary use case for this is
- * when in internal browser + reader mode we first render layout with parameter
- * content being empty, while asynchronously downloading content. Once the
- * download finishes loadContent() is called again with the actual content
- * which is then inserted in the layout.
- *
- * @returns: false if loading with reader failed (true otherwise)
+ * Different content cleanup tasks
  */
-function loadContent(readerEnabled, content) {
-	var internalBrowsing = false;
-
-	if (false == readerEnabled) {
-		if (document.location.href === 'liferea://') {
-			console.log('[liferea] reader mode is off');
-			document.body.innerHTML = decodeURIComponent(content);
-		} else {
-			console.log('[liferea] reader mode off for website');
-		}
-	}
-	if (true == readerEnabled) {
-		try {
-			console.log('[liferea] reader mode is on');
-			var documentClone = document.cloneNode(true);
-
-			// When we are internally browsing than we need basic
-			// structure to insert Reader mode content
-			if (document.getElementById('content') !== null) {
-				internalBrowsing = true;
-				console.log('[liferea] adding <div id="content"> for website content');
-				document.body.innerHTML += '<div id=\"content\"></div>';
-			}
-
-			// Decide where we get the content from
-			if (document.location.href === 'liferea://') {
-				// Add all content in shadow DOM and split decoration from content
-				// only pass the content to Readability.js
-				console.log('[liferea] load content passed by variable');
-				content = decodeURIComponent(content);
-			} else {
-				console.log('[liferea] using content from original document');
-				content = document.documentElement.innerHTML;
-			}
-
-			// Add content to clone doc as input for Readability.js
-			documentClone.body.innerHTML = content;
-
-			// When we run with internal URI schema we get layout AND content
-			// from variable and split it, apply layout to document
-			// and copy content to documentClone
-			if (document.location.href === 'liferea://' && documentClone.getElementById('content') != null) {
-				documentClone.getElementById('content').innerHTML = '';
-				document.body.innerHTML = documentClone.body.innerHTML;
-				documentClone.body.innerHTML = content;
-				documentClone.body.innerHTML = documentClone.getElementById('content').innerHTML;
-			}
-
-			try {
-				if (!isProbablyReaderable(documentClone))
-					throw "notreaderable";
-
-				// Show the results
-				// Kill all foreign styles
-				var links = document.querySelectorAll('link');
-				for (var l of links) {
-					l.parentNode.removeChild(l);
-				}
-				var styles = document.querySelectorAll('style');
-				for (var s of styles) {
-					s.parentNode.removeChild(s);
-				}
-
-				var article = new Readability(documentClone, {
-					charThreshold: 25
-				}).parse();
-
-				if (!article)
-					throw "noarticle";
-
-				document.getElementById('content').innerHTML = article.content;
-
-			} catch (e) {
-				console.log('[liferea] reader mode not possible (' + e + ')! fallback to unfiltered content');
-				if (internalBrowsing)
-					document.getElementById('content').innerHTML = "Reader mode not possible. Loading URL unfiltered...";	// FIXME: provide good error info
-				else
-					document.body.innerHTML = content;
-				return false;
-			}
-
-			// Kill all foreign styles
-			var links = document.querySelectorAll('link');
-			for (var l of links) {
-				l.parentNode.removeChild(l);
-			}
-			var styles = document.querySelectorAll('style');
-			for (var s of styles) {
-				s.parentNode.removeChild(s);
-			}
-		} catch (e) {
-			console.log('[liferea] reader mode failed: ' + e);
-			if (!internalBrowsing) {
-				// Force load original document at top level to get rid of all decoration
-				document.documentElement.innerHTML = content;
-			} else {
-				document.getElementById('content').innerHTML = "Reader mode failed. Loading URL unfiltered...";
-				return false;
-			}
-		}
-	}
+function contentCleanup() {
 
 	// Run DOMPurify
-	content = document.getElementById('content').innerHTML;
+	let content = document.getElementById('content').innerHTML;
 	document.getElementById('content').innerHTML = DOMPurify.sanitize(content);
 
 	// Fix inline SVG sizes
@@ -176,25 +215,12 @@ function loadContent(readerEnabled, content) {
 		});
 
 	// Drop empty elements (to get rid of empty picture/video/iframe divs)
-	const emptyRegex = new RegExp("^\s*$");
 	document.getElementById('content')
 		.querySelectorAll(":only-child")
 		.forEach((el) => {
 			if(el.innerHTML.length == 1)
 				el.parentNode.removeChild(el);
 		});
-
-    // Setup audio/video <select> handler
-    document.querySelector('#enclosureVideo select')?.addEventListener("change", (e) => {
-		document.querySelector('#enclosureVideo video').src = e.target.options[e.target.selectedIndex].value;
-		document.querySelector('#enclosureVideo video').play();
-    });
-    document.getElementById('#enclosureAudio select')?.addEventListener("change", (e) => {
-		document.querySelector('#enclosureAudio audio').src = e.target.options[e.target.selectedIndex].value;
-		document.querySelector('#enclosureVideo audio').play();
-    });
-
-	return true;
 }
 
 function youtube_embed(id) {
@@ -203,3 +229,5 @@ function youtube_embed(id) {
 
 	return false;
 }
+
+export { load_node, load_item };

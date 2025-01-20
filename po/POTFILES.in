@@ -128,8 +128,6 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
-src/render.c
-src/render.h
 src/rule.c
 src/rule.h
 src/social.c
@@ -211,9 +209,5 @@ src/xml.h
 [type: gettext/glade]resources/theoldreader_source.ui
 [type: gettext/glade]resources/ttrss_source.ui
 [type: gettext/glade]resources/update_monitor.ui
-xslt/feed.xml.in
-xslt/folder.xml.in
-xslt/item.xml.in
-xslt/newsbin.xml.in
-xslt/source.xml.in
-xslt/vfolder.xml.in
+js/item.xml.in
+js/node.xml.in

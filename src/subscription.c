@@ -561,33 +561,6 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 }
 
 void
-subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml)
-{
-	gchar	*tmp;
-
-	xmlNewTextChild (xml, NULL, BAD_CAST "feedSource", (xmlChar *)subscription_get_source (subscription));
-	xmlNewTextChild (xml, NULL, BAD_CAST "feedOrigSource", (xmlChar *)subscription_get_orig_source (subscription));
-
-	tmp = g_strdup_printf ("%d", subscription_get_default_update_interval (subscription));
-	xmlNewTextChild (xml, NULL, BAD_CAST "feedUpdateInterval", (xmlChar *)tmp);
-	g_free (tmp);
-
-	if (subscription->updateError)
-		xmlNewTextChild (xml, NULL, BAD_CAST "updateError", (xmlChar *)subscription->updateError);
-	if (subscription->httpError) {
-		xmlNewTextChild (xml, NULL, BAD_CAST "httpError", (xmlChar *)subscription->httpError);
-
-		tmp = g_strdup_printf ("%d", subscription->httpErrorCode);
-		xmlNewTextChild (xml, NULL, BAD_CAST "httpErrorCode", (xmlChar *)tmp);
-		g_free (tmp);
-	}
-	if (subscription->filterError)
-		xmlNewTextChild (xml, NULL, BAD_CAST "filterError", (xmlChar *)subscription->filterError);
-
-	metadata_add_xml_nodes (subscription->metadata, xml);
-}
-
-void
 subscription_free (subscriptionPtr subscription)
 {
 	if (!subscription)

@@ -1,7 +1,7 @@
 /**
  * @file liferea.css  Liferea rendering stylesheet
  *
- * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004 delusional <delusional@dx13.co.uk>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -19,32 +19,147 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
+/* Note: color-wise we follow the Devhelp colors. Idea is to have
+   somewhat consistent GNOME "theme" color. Sadly GTK+4 themes do not
+   provide applications with sensible color information, so all apps
+   have to hard-code stuff */
+
+:root {
+  --text-color: rgb(51, 51, 51);
+  --text-color-light: rgb(120, 120, 120);
+  --primary: rgb(28, 118, 228);
+  --body-bg: #fff;
+  --box-bg: rgba(135, 135, 135, 0.085);
+  --box-radius: 0.35rem;
+  --box-padding: 0.75rem 1.5rem;
+  --box-margin: 0.75rem 0;
+  --box-text-color: #111;
+
+  --error-bg: #ffa;
+
+  --body-font-family: "Red Hat Text",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  --body-font-scale: 0.95;
+  --body-font-size: calc(var(--body-font-scale) * clamp(16px, 1vw, 18px));
+  --body-font-weight: normal;
+
+  --preferred-content-width: 90ch; /* The preferred width for the readable content */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: #f6f6f6;
+    --text-color-light: #bbb;
+    --primary: rgb(144, 194, 255);
+    --body-bg: #121212;
+    --box-bg: rgba(135, 135, 135, 0.1);
+    --box-text-color: #fff;
+    color-scheme: dark;
+  }
+}
+
+::-moz-selection {
+  color: white;
+  background: var(--primary);
+}
+
+::selection {
+  color: white;
+  background: var(--primary);
+}
+
 body {
-	background: #GTK-COLOR-BASE;
-	color: #GTK-COLOR-TEXT;
-	padding:0;
-	margin:0;
+  font: 16px/1.5 var(--body-font-family);
+  font-weight: var(--body-font-weight);
+  font-size: var(--body-font-size);
+  padding:0;
+  padding-top: 1rem;
+
+  -webkit-font-feature-settings: "kern", "liga";
+  -moz-font-feature-settings: "kern", "liga";
+  font-feature-settings: "kern", "liga";
+  color: var(--text-color);
+  background: var(--body-bg);
+
+  max-width: 800px;
+  margin: 0 auto;
+
+  line-height: 1.8;
 }
 
 blockquote {
-        border-left: 3px solid #GTK-COLOR-DARK;
-        background: #GTK-COLOR-BG;
-        padding: 6px;
-        font-style: italic;
-        margin: 5px 20px;
-	clear:both;
+  border-left: 3px solid var(--primary);
+  background: var(--box-bg);
+  padding: var(--box-padding);
+  margin: var(--box-margin);
+  border-radius: var(--box-radius);
+  font-style: italic;
+  clear:both;
+}
+
+pre {
+  background: var(--box-bg);
+  padding: var(--box-padding);
+  border-radius: var(--box-radius);
+  overflow: auto;
+}
+
+code {
+  background: var(--box-bg);
+  padding: 0 0.35em;
+  border-radius: 0.35rem;
+  word-break: break-word;
+}
+
+a > code {
+  color: var(--primary);
+}
+
+pre pre,
+pre code {
+  padding: 0;
+  margin: 0;
+  font-size: 1em;
+  background: none;
+  color: inherit;
+}
+
+strong, b {
+  font-weight: 600;
 }
 
 a {
-	color: #GTK-COLOR-NORMAL-LINK;
+  color: var(--primary);
 }
 
-a:visited {
-	color: #GTK-COLOR-VISITED-LINK;
+div.item header h1 a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+div.item header {
+  color: var(--text-color-light);
+  line-height: 1.5rem;
+}
+
+div.item header > h1 {
+  margin-top: 12px;
+}
+
+h1 {
+  line-height: 2.8rem;
+}
+h2 {
+  line-height: 2.2rem;
+}
+h3 {
+  line-height: 1.8rem;
+}
+h4 {
+  line-height: 1.6rem;
 }
 
 dd {
-	padding-left: 30px;
+  padding-left: 30px;
 }
 
 section,
@@ -52,6 +167,35 @@ div.content svg,
 div.content img {
 	max-width: 100%;
 	height: auto !important;
+}
+
+svg .node polygon, svg .node path {
+  transition: fill 150ms ease;
+  fill: var(--box-bg);
+  stroke: none;
+}
+
+svg .node a {
+  text-decoration: none !important;
+}
+
+svg .node a text {
+  fill: var(--text-color);
+  font-family: var(--body-font-family);
+}
+
+svg .node.link text {
+  fill: var(--primary);
+}
+
+svg .node.link:hover polygon, svg .node.link:hover path {
+  fill: var(--sidebar-hover-bg);
+}
+svg .node.link:hover text {
+  fill: var(--box-text-color);
+}
+svg .edge path {
+  stroke: var(--text-color);
 }
 
 /* HTML content extraction sometimes give us nav elements */
@@ -96,18 +240,18 @@ table.itemhead, table.feedhead {
 	margin:0;
 	width:100%;
 	border:0;
-	border-bottom: 2px solid #GTK-COLOR-DARK;
+	border-bottom: 2px solid var(--box-bg);
 	clear:both;
-	color:#GTK-COLOR-TEXT;
+	color: var(--text-color);
 }
 
 .itemhead, .feedhead {
-	background-color: #GTK-COLOR-MID;
+	// FIXME background-color: #GTK-COLOR-MID;
 }
 
 table.itemhead * a.itemhead {
 	text-decoration:none;
-	color:#GTK-COLOR-TEXT;
+	color: var(--text-color);
 	font-weight:bold;
 }
 
@@ -128,10 +272,10 @@ td.head_title {
 }
 
 table.headmeta {
-	background:#GTK-COLOR-BG;
+	// FIXME: background:#GTK-COLOR-BG;
 	width:100%;
 	border:0;
-	border-bottom:#GTK-COLOR-MID solid 1px;
+	border-bottom: 1px solid var(--box-bg);
 	margin:0;
 }
 
@@ -157,12 +301,12 @@ table.headmeta td {
 	padding-right:5px;
 }
 
-div.content, div.item_comments {
+.content, div.item_comments {
 	padding:0px 6px 0px 12px;
 }
 
 div.comment {
-	border:1px solid #GTK-COLOR-DARK;
+	border:1px solid var(--box-bg);
 	margin-bottom:5px;
 }
 
@@ -175,7 +319,7 @@ div.comment_title {
 	padding-left:6px;
 	padding-right:6px;
 	font-weight:bold;
-	background:#GTK-COLOR-BG;
+	// FIXME: background: var(--box-bg);
 }
 
 a.favicon {
@@ -194,11 +338,11 @@ a.favicon img {
 #errors {
 	border:0;
 	border-bottom:1px solid black;
-	margin:12px 24px;
+	margin:24px 12px;
 	padding:12px;
-	background:#ffa;
+	background:var(--error-bg);
 	color:black;
-	border:1px solid #GTK-COLOR-DARK;
+	border:1px solid var(--box-bg);
 }
 
 #errors ul {
@@ -213,8 +357,8 @@ a.favicon img {
 pre.errorOutput {
 	margin:10px 15px;
 	padding:5px;
-	border:2px solid #GTK-COLOR-DARK;
-	background:#GTK-COLOR-LIGHT;
+	border:2px solid var(--box-bg); // FIXME
+	background: var(--box-bg);
 	overflow:auto;
 }
 
@@ -230,27 +374,29 @@ ins {
 
 .slash {
 	background:#60A080;
-	padding-left:5px;
-	padding-right:5px;
+	padding-left:0.2rem;
+	padding-right:0.2rem;
+	margin-bottom: 0.5rem;
 }
 
 .slashSection, .slashDepartment {
-	padding-right:2px;
+	padding-left:0.5rem;
+	padding-right:0.2rem;
 	color:black;
 }
 
 .slashValue {
-	padding-right:6px;
+	padding-left:0.2rem;
+	padding-right:0.2rem;
 	color:white;
-	font-weight:bold;
 }
 
 div.photoheader {
 	margin:10px 0;
 	padding-left:10px;
 	padding-right:10px;
-	background-color:#GTK-COLOR-DARK;
-	color:#GTK-COLOR-TEXT;
+	//background-color:#GTK-COLOR-DARK;
+	//color:#GTK-COLOR-TEXT;
 }
 
 .video-embed {
@@ -286,6 +432,17 @@ div.photoheader {
 	fill: #ddd;
 }
 
+#enclosureVideo select,
+#enclosureAudio select {
+	max-width: 100%;
+}
+
+#enclosureVideo select option,
+#enclosureAudio select option {
+	/* does not work, but might some day */
+	text-overflow: ellipsis
+}
+
 #enclosureVideo video {
 	background: black;
 	min-width: 640px;
@@ -295,7 +452,11 @@ div.photoheader {
         display: block;
 }
 
-// dark mode image glaring #1303 
+#enclosureAudio audio {
+	width: 100% !important;
+}
+
+/* dark mode image glaring #1303 */
 @media (prefers-color-scheme: dark) {
   img {
     filter: brightness(.8) contrast(1.2);

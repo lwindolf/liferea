@@ -1,7 +1,7 @@
 /**
  * @file json.h	 simplification wrappers for libjson-glib
  * 
- * Copyright (C) 2010  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2025  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,5 +63,13 @@ gint64 json_get_int (JsonNode *node, const gchar *key);
  * @returns value of the key (no error handling!)
  */
 gboolean json_get_bool (JsonNode *node, const gchar *key);
+
+/**
+ * json_dump:
+ * @builder: the JsonBuilder to dump
+ * 
+ * Returns a new string (to be free'd with g_free) containing the JSON of the builder.
+ */
+gchar * json_dump (JsonBuilder *builder);
 
 #endif

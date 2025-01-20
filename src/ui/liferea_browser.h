@@ -1,7 +1,7 @@
 /*
  * @file liferea_browser.h  Liferea embedded browser
  *
- * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,8 +94,6 @@ void liferea_browser_progress_changed (LifereaBrowser *browser, gdouble progress
 
 void liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location);
 
-void liferea_browser_load_finished (LifereaBrowser *browser, const gchar *location);
-
 /**
  * liferea_browser_handle_URL: (skip)
  * @browser:		the HTML view to use
@@ -175,7 +173,6 @@ gboolean liferea_browser_get_reader_mode (LifereaBrowser *browser);
  * @browser:	browser to scroll
  *
  * Function scrolls down the given HTML view if possible.
- *
  */
 void liferea_browser_scroll (LifereaBrowser *browser);
 
@@ -190,17 +187,21 @@ void liferea_browser_scroll (LifereaBrowser *browser);
 void liferea_browser_do_zoom (LifereaBrowser *browser, gint zoom);
 
 /**
- * liferea_browser_update:
+ * liferea_browser_set_view: (skip)
+ * @browser	HTML view to render to
+ * @name:	template to use (e.g. "item" or "node")
+ * @json:	JSON data to pass to the function
+ * @baseURL:	base URL for relative links
+ * @direction:	text direction
  *
- * Renders item or node info into the given HTML view.
- *
- * @param browser	HTML view to render to
- * @param mode		item view mode (see type itemViewMode)
+ * Renders an internal view by template name passing JSON data to the template.
+ * For it to work the template and a corresponding JavaScript function "load_<name>()"
+ * must exist.
  */
-void liferea_browser_update (LifereaBrowser *browser, guint mode);
+void liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gchar *json, const gchar *baseURL, const gchar *direction);
 
 /**
- * liferea_browser_update_stylesheet:
+ * liferea_browser_update_stylesheet: (skip)
  * @browser:	the html view
  *
  * Update the user stylesheet of the WebView

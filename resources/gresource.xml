@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-  <gresource prefix="/org/gnome/liferea/readability">
-    <file compressed="true">Readability-readerable.js</file>
-    <file compressed="true">Readability.js</file>
-  </gresource>
-  <gresource prefix="/org/gnome/liferea/dompurify">
-    <file compressed="true">purify.min.js</file>
-  </gresource>
-  <gresource prefix="/org/gnome/liferea">
+  <gresource prefix="/org/gnome/liferea/js">
     <file compressed="true">htmlview.js</file>
+    <file compressed="true">helpers/render.js</file>
+    <file compressed="true">vendor/Readability.js</file>
+    <file compressed="true">vendor/purify.min.js</file>
+    <file compressed="true">vendor/handlebars.min.js</file>
+  </gresource>
+  <gresource prefix="/org/gnome/liferea/templates">
+    <file compressed="true">item.xml</file>
+    <file compressed="true">node.xml</file>
+    <file compressed="true">i18n-filter.xslt</file>
   </gresource>
   <gresource prefix="/org/gnome/liferea/ui">
     <file compressed="true">about.ui</file>
