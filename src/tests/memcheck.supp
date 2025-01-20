@@ -101,3 +101,26 @@
    obj:/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8000.0
    fun:g_io_extension_point_get_extensions
 }
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:__libc_alloc_buffer_allocate
+   fun:alloc_buffer_allocate
+   fun:__resolv_conf_allocate
+   fun:__resolv_conf_load
+   fun:__resolv_conf_get_current
+   fun:__res_vinit
+   fun:maybe_init
+   fun:context_get
+   fun:context_get
+   fun:__resolv_context_get
+   fun:gethostbyname2_r@@GLIBC_2.2.5
+   fun:try_simple_gethostbyname
+   fun:gaih_inet
+   fun:getaddrinfo
+   obj:/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8000.0
+   obj:/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8000.0
+   obj:/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8000.0
+}
