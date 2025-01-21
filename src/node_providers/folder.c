@@ -142,7 +142,7 @@ folder_get_provider (void)
 		folder_save,
 		folder_update_counters,
 		folder_remove,
-		ui_folder_add,
+		folder_add_dialog,
 		feed_list_view_rename_node,
 		NULL
 	};
@@ -171,7 +171,7 @@ root_get_provider (void)
 		folder_save,
 		folder_update_counters,
 		folder_remove,
-		ui_folder_add,
+		folder_add_dialog,
 		feed_list_view_rename_node,
 		NULL
 	};

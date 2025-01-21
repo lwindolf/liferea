@@ -33,7 +33,6 @@ liferea_sources = files(
   'node.c',
   'node_source.c',
   'node_provider.c',
-  'render.c',
   'rule.c',
   'social.c',
   'subscription.c',

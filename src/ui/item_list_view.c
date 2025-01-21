@@ -597,7 +597,7 @@ on_item_list_view_query_tooltip (GtkWidget *widget, gint x, gint y, gboolean key
 	GtkTreeModel *model; GtkTreePath *path; GtkTreeIter iter;
 	gboolean ret = FALSE;
 
-	if (gtk_tree_view_get_tooltip_context (view, &x, &y, keyboard_mode, &model, &path, &iter)) {
+	if (gtk_tree_view_get_tooltip_context (view, x, y, keyboard_mode, &model, &path, &iter)) {
 		GtkTreeViewColumn *column;
 		gint bx, by;
 		gtk_tree_view_convert_widget_to_bin_window_coords (view, x, y, &bx, &by);

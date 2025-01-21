@@ -27,6 +27,7 @@
 #include "debug.h"
 #include "feedlist.h"
 #include "item_history.h"
+#include "item_state.h"
 #include "itemlist.h"
 #include "itemview.h"
 #include "node.h"
