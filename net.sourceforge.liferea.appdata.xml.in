@@ -77,6 +77,59 @@
     <color type="primary" scheme_preference="dark">#64647D</color>
   </branding>
   <releases>
+    <release date="2025-01-25" version="1.15.9">
+      <description>
+        <p>Today sees a new release of Liferea with fixes, translation updates and some major changes.</p>
+        <p><em>Integrated Download Manager</em></p>
+        <p>Starting with Liferea 1.15.9 there is a simple integrated download manager. The idea is to
+        be roughly on-par with the features modern browsers support. While the download manager
+        is basic it should improve user experience a lot.Up until now we had a hard-coded list of
+        typical download managers. This had several disadvantages. Now Liferea has a very simple
+        download manager implemented using simple single thread Python network fetching. Hopefully
+        this will increase usability and download workflows.</p>
+        <p><em>Rendering Changes</em></p>
+        <p>This release fixes the dark theme switching regression in the item view. The dark mode item view
+        feature was lost some releases ago because of GTK4 deprecations. Since GTK4 there is no more
+        GTK supported way to determine theme colors.
+
+        To still do dark mode switching Liferea follows (Devhelp and other tools using WebkitGTK) which
+        switch light/dark mode purely with CSS and static theme-independant colors.
+
+        Sadly this will mean a visible color mismatch to the GTK theme. This is mostly appearant in
+        dark mode. Also the link color is set to blueish and can't follow the GTK theme color for links anymore.
+
+        Many other applications are also suffering from this. Sorry there is just no way to do it anymore.
+        If you really hate the default CSS style please consider changing them using custom CSS.</p>
+        <p><em>Item View Layout Redesign</em></p>
+        <p>Along with the theme adaptions come a redesign of the item view. To be honest the look and feel
+        is heavily inspired by Jan Lukas Gernert's NewsFlashGTK which I consider very well done. It is a very
+        calm theme reducing distraction and a good balance for reading longer and shorter texts.</p>
+        <p><em>Reader Mode Removed</em></p>
+        <p>The user facing options to enable/disable "Reader Mode" in the preferences and the item view pane
+        content menu are now gone. The code paths were too complicated and the results and fallback in case
+        of errors was very unsatisfactory.
+
+        Still the use of "Readability.js" the library behind "Reader Mode" is still active. It is now automatically
+        applied when the HTML scraping is used. No user interaction needed.</p>
+        <p><em>Changes:</em></p>
+        <ul>
+          <li>#1391: GObject refactoring nodePtr -> Node, updateJobPtr -> UpdateJob to allow plugins modifying the feed list. (Lars Windolf)</li>
+          <li>Fixes #1387: Dark theme lost in preview window (Lars Windolf)</li>
+          <li>Fixes HTTP redirects not working (Lars Windolf)</li>
+          <li>Fixes memory leaks in network callbacks (Lars Windolf)</li>
+          <li>Fixes unnecessary LifereaBrowser clearing on layout change (Lars Windolf)</li>
+          <li>New unit tests for update handling code (Lars Windolf)</li>
+          <li>#1388 Implemented download manager plugin, all preferences for external tools were dropped (Lars Windolf)</li>
+          <li>Refactoring of plugin management, code reorganized. Disabling plugins now does not disable base plugins (needed for auth and node sources) as this would prevent startup (Lars Windolf)</li>
+          <li>Refactoring of content scraping, processing now happens in Javascript on entire source documents. We now store a bit more data, but get better extraction results (Lars Windolf)</li>
+          <li>Support for lazy loading &lt;img data-src=""&gt; definitions. This unbreaks images when scraping some websites (Lars Windolf)</li>
+          <li>Redesign of the HTML view. Look and feel is adapted from Newsflash. There is now a max-width and less cluttered reading. (Lars Windolf)</li>
+          <li>Getting rid of XSLT in favor of using Handlebars.js (Lars Windolf)</li>
+          <li>Updated Czech translation (Amereyeu)</li>
+          <li>Updated Albanian translation (Besnik Bleta)</li>
+      </ul>
+      </description>
+    </release>
     <release date="2024-09-26" version="1.15.8">
       <description>
         <p>Changes:</p>
@@ -125,8 +178,8 @@
     </release>
     <release date="2023-12-24" version="1.15.5">
       <description>
-        <p>This release brings small improvements to the trayicon plugin and content filtering 
-        using DOMPurify which should increase security against XSS attacks via feeds providing 
+        <p>This release brings small improvements to the trayicon plugin and content filtering
+        using DOMPurify which should increase security against XSS attacks via feeds providing
         rich HTML content.</p>
         <p>Changes:</p>
         <ul>
