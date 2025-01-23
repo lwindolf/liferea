@@ -1,7 +1,7 @@
 /**
  * @file item_history.c tracking recently viewed items
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2025 Lars Windolf <lars.windolf@gmx.de>
  *	      
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,22 +22,69 @@
 
 #include <glib.h>
 
-#include "ui/liferea_shell.h"
-
 #define MAX_HISTORY_SIZE	250
 
-static struct itemHistory {
-	GList	*items;		/**< FIFO list of all items viewed */
-	GList	*current;	/**< the current list element */
-	guint	lastId;		/**< Avoid duplicate add */
-} *itemHistory = NULL;
+static ItemHistory *itemHistory = NULL;
+
+G_DEFINE_TYPE (ItemHistory, item_history, G_TYPE_OBJECT)
+
+enum {
+	SIGNAL_CHANGED,
+	LAST_SIGNAL
+};
+
+static guint signals[LAST_SIGNAL] = { 0 };
+
+ItemHistory *
+item_history_get_instance (void)
+{
+	return itemHistory;
+}
+
+static void
+item_history_finalize (GObject *object)
+{
+	ItemHistory *self = ITEM_HISTORY (object);
+
+	if (self->items)
+		g_list_free (self->items);
+
+	G_OBJECT_CLASS (item_history_parent_class)->finalize (object);
+}
+
+static void
+item_history_class_init (ItemHistoryClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+
+        object_class->finalize = item_history_finalize;
+
+	signals[SIGNAL_CHANGED] =
+		g_signal_new ("changed",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE,
+		0);
+}
+
+static void
+item_history_init (ItemHistory *self)
+{
+	g_assert (!itemHistory);
+	itemHistory = self;
+
+	self->items = NULL;
+	self->current = NULL;
+	self->lastId = 0;
+}
 
 void
 item_history_add (guint id)
 {
-	if (!itemHistory)
-		itemHistory = g_new0 (struct itemHistory, 1);
-
 	/* Duplicate add by some selection effect */
 	if (itemHistory->lastId == id)
 		return;
@@ -54,7 +101,7 @@ item_history_add (guint id)
 	if (g_list_length (itemHistory->items) > MAX_HISTORY_SIZE)
 		itemHistory->items = g_list_remove (itemHistory->items, itemHistory->items);
 
-	liferea_shell_update_history_actions ();
+	g_signal_emit_by_name (itemHistory, "changed");
 }
 
 itemPtr
@@ -70,7 +117,7 @@ item_history_get_next (void)
 			item = item_load (GPOINTER_TO_UINT (itemHistory->current->data));
 	}
 
-	liferea_shell_update_history_actions ();
+	g_signal_emit_by_name (itemHistory, "changed");
 
 	return item;
 }
@@ -88,7 +135,7 @@ item_history_get_previous (void)
 			item = item_load (GPOINTER_TO_UINT (itemHistory->current->data));
 	}
 
-	liferea_shell_update_history_actions ();
+	g_signal_emit_by_name (itemHistory, "changed");
 
 	return item;
 }

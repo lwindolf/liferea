@@ -18,7 +18,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-
+#include <jsc/jsc.h>
+#include <webkit/webkit.h>
 #include "ui/liferea_browser.h"
 
 #include <string.h>
@@ -38,7 +39,6 @@
 
 #include "browser.h"
 #include "browser_history.h"
-#include "comments.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
@@ -46,7 +46,7 @@
 #include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
-#include "webkit/webkit.h"
+#include "webkit/liferea_webkit.h"
 
 /* The LifereaBrowser is a complex widget used to present both internally
    rendered content as well as serving as a browser widget. It automatically
@@ -99,9 +99,8 @@ static gboolean
 on_liferea_browser_url_entry_activate (GtkWidget *widget, gpointer user_data)
 {
 	LifereaBrowser	*browser = LIFEREA_BROWSER (user_data);
-	gchar	*url;
+	const gchar	*url = gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (widget)));
 
-	url = (gchar *)gtk_entry_get_text (GTK_ENTRY (widget));
 	liferea_browser_launch_URL_internal (browser, url);
 
 	return TRUE;
@@ -119,7 +118,9 @@ on_liferea_browser_history_back (GtkWidget *widget, gpointer user_data)
 	gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
 
 	liferea_browser_launch_URL_internal (browser, url);
-	gtk_entry_set_text (GTK_ENTRY (browser->urlentry), url);
+
+	g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (url, -1);
+	gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
 }
 
 static void
@@ -134,7 +135,9 @@ on_liferea_browser_history_forward (GtkWidget *widget, gpointer user_data)
 	gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
 
 	liferea_browser_launch_URL_internal (browser, url);
-	gtk_entry_set_text (GTK_ENTRY (browser->urlentry), url);
+
+	g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (url, -1);
+	gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
 }
 
 
@@ -230,7 +233,7 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 static void
 liferea_browser_init (LifereaBrowser *browser)
 {
-	GtkWidget *widget, *image;
+	GtkWidget *widget;
 
 	browser->content = NULL;
 	browser->url = NULL;
@@ -240,35 +243,30 @@ liferea_browser_init (LifereaBrowser *browser)
 	browser->history = browser_history_new ();
 	browser->toolbar = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
 
-	widget = gtk_button_new ();
-	gtk_button_set_relief (GTK_BUTTON (widget), GTK_RELIEF_NONE);
-	image = gtk_image_new_from_icon_name ("go-previous", GTK_ICON_SIZE_BUTTON);
-	gtk_widget_show (image);
-	gtk_container_add (GTK_CONTAINER (widget), image);
-	gtk_box_pack_start (GTK_BOX (browser->toolbar), widget, FALSE, FALSE, 0);
+	widget = gtk_button_new_from_icon_name ("go-previous");
+	gtk_box_append (GTK_BOX (browser->toolbar), widget);
 	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_liferea_browser_history_back), (gpointer)browser);
 	gtk_widget_set_sensitive (widget, FALSE);
 	browser->back = widget;
 
-	widget = gtk_button_new ();
-	gtk_button_set_relief (GTK_BUTTON(widget), GTK_RELIEF_NONE);
-	image = gtk_image_new_from_icon_name ("go-next", GTK_ICON_SIZE_BUTTON);
-	gtk_widget_show (image);
-	gtk_container_add (GTK_CONTAINER (widget), image);
-	gtk_box_pack_start (GTK_BOX (browser->toolbar), widget, FALSE, FALSE, 0);
+	widget = gtk_button_new_from_icon_name ("go-next");
+	gtk_box_append (GTK_BOX (browser->toolbar), widget);
 	g_signal_connect ((gpointer)widget, "clicked", G_CALLBACK (on_liferea_browser_history_forward), (gpointer)browser);
 	gtk_widget_set_sensitive (widget, FALSE);
 	browser->forward = widget;
 
 	widget = gtk_entry_new ();
-	gtk_box_pack_start (GTK_BOX (browser->toolbar), widget, TRUE, TRUE, 0);
+	gtk_widget_set_vexpand (widget, TRUE);
+	gtk_widget_set_hexpand (widget, TRUE);
+	gtk_box_append (GTK_BOX (browser->toolbar), widget);
 	g_signal_connect ((gpointer)widget, "activate", G_CALLBACK (on_liferea_browser_url_entry_activate), (gpointer)browser);
 	browser->urlentry = widget;
 
-	gtk_box_pack_start (GTK_BOX (browser->container), browser->toolbar, FALSE, FALSE, 0);
-	gtk_box_pack_end (GTK_BOX (browser->container), browser->renderWidget, TRUE, TRUE, 0);
+	gtk_widget_set_vexpand (browser->renderWidget, TRUE);
+	gtk_widget_set_hexpand (browser->renderWidget, TRUE);
 
-	gtk_widget_show_all (browser->container);
+	gtk_box_append (GTK_BOX (browser->container), browser->toolbar);
+	gtk_box_append (GTK_BOX (browser->container), browser->renderWidget);
 }
 
 static void
@@ -337,7 +335,7 @@ liferea_browser_write (LifereaBrowser *browser, const gchar *string, const gchar
 	}
 
 	/* We hide the toolbar as it should only be shown when loading external content */
-	gtk_widget_hide (browser->toolbar);
+	gtk_widget_set_visible (browser->toolbar, FALSE);
 }
 
 void
@@ -374,17 +372,18 @@ void
 liferea_browser_location_changed (LifereaBrowser *browser, const gchar *location)
 {
 	if (browser->url && !g_str_has_prefix (browser->url, "liferea://")) {
+		g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (browser->url, -1);
+		gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
+
 		browser_history_add_location (browser->history, browser->url);
 
 		gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
-		gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
-
-		gtk_entry_set_text (GTK_ENTRY (browser->urlentry), browser->url);
+		gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));	
 
 		/* We show the toolbar as it should be visible when loading external content */
-		gtk_widget_show_all (browser->toolbar);
+		gtk_widget_set_visible (browser->toolbar, TRUE);
 	} else {
-		gtk_widget_hide (browser->toolbar);
+		gtk_widget_set_visible (browser->toolbar, FALSE);
 	}
 
 	g_signal_emit_by_name (browser, "location-changed", location);
@@ -431,7 +430,8 @@ liferea_browser_launch_URL_internal (LifereaBrowser *browser, const gchar *url)
 	gtk_widget_set_sensitive (browser->forward, browser_history_can_go_forward (browser->history));
 	gtk_widget_set_sensitive (browser->back,    browser_history_can_go_back (browser->history));
 
-	gtk_entry_set_text (GTK_ENTRY (browser->urlentry), url);
+		g_autoptr(GtkEntryBuffer) buffer = gtk_entry_buffer_new (url, -1);
+		gtk_entry_set_buffer (GTK_ENTRY (browser->urlentry), buffer);
 
 	liferea_webkit_launch_url (browser->renderWidget, url);
 }

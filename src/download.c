@@ -20,8 +20,6 @@
 
 #include "download.h"
 
-#include <libpeas/peas-extension-set.h>
-
 #include "plugins/download_activatable.h"
 #include "plugins/plugins_engine.h"
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <object class="GtkMessageDialog" id="mark_read_dialog">
+    <property name="visible">1</property>
+    <property name="can_default">True</property>
+    <property name="title" translatable="1">Mark all as read ?</property>
+    <property name="modal">1</property>
+    <property name="type_hint">dialog</property>
+    <property name="message_type">question</property>
+    <property name="text">Mark items as read ?</property>
+    <property name="secondary_text">Are you sure you want to mark all items in the selected feed as read ?</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="visible">0</property>
+        <property name="margin-start">5</property>
+        <property name="margin-end">5</property>
+        <property name="margin_top">5</property>
+        <property name="margin_bottom">5</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="valign">center</property>
+            <property name="can_focus">False</property>
+            <property name="homogeneous">True</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="okButton">
+                <property name="label" translatable="1">Mark all as read</property>
+                <property name="focusable">1</property>
+                <property name="receives_default">1</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="cancelButton">
+                <property name="label">gtk-cancel</property>
+                <property name="focusable">1</property>
+                <property name="receives_default">1</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkCheckButton" id="dontAskAgainToggle">
+            <property name="vexpand">1</property>
+            <property name="label" translatable="1">Do not ask again</property>
+            <property name="focusable">1</property>
+            <property name="halign">start</property>
+            <property name="valign">center</property>
+            <property name="margin-start">12</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="-5">okButton</action-widget>
+      <action-widget response="-6">cancelButton</action-widget>
+    </action-widgets>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
+</interface>

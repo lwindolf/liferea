@@ -45,9 +45,10 @@
 struct _FeedListView {
 	GObject			parentInstance;
 
+	GtkEventController	*controller;
 	GtkTreeView		*treeview;
-	GtkTreeModel	*filter;
-	GtkTreeStore	*feedstore;
+	GtkTreeModel		*filter;
+	GtkTreeStore		*feedstore;
 
 	GHashTable		*flIterHash;				/**< hash table used for fast node id <-> tree iter lookup */
 
@@ -68,6 +69,9 @@ G_DEFINE_TYPE (FeedListView, feed_list_view, G_TYPE_OBJECT);
 static void
 feed_list_view_finalize (GObject *object)
 {
+	FeedListView *flv = FEED_LIST_VIEW (object);
+
+	g_object_unref (flv->controller);
 }
 
 static void
@@ -161,21 +165,22 @@ feed_list_view_row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeView
 }
 
 static gboolean
-feed_list_view_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer data)
+feed_list_view_key_pressed_cb (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
 {
-	if ((event->type == GDK_KEY_PRESS) &&
-	    (event->state == 0) &&
-	    (event->keyval == GDK_KEY_Delete)) {
-		Node *node = feedlist_get_selected ();
+	if (state & GDK_CONTROL_MASK) {
+		if (keyval == GDK_KEY_Delete) {
+			Node *node = feedlist_get_selected ();
 
-		if(node) {
-			if (event->state & GDK_SHIFT_MASK)
-				feedlist_remove_node (node);
-			else
-				feed_list_view_remove (node);
-			return TRUE;
+			if (node) {
+				if (state & GDK_SHIFT_MASK)
+					feedlist_remove_node (node);
+				else
+					feed_list_view_remove (node);
+				return TRUE;
+			}
 		}
 	}
+
 	return FALSE;
 }
 
@@ -247,7 +252,7 @@ feed_list_view_reduce_mode_changed (void)
 	}
 }
 
-static void
+void
 feed_list_view_set_reduce_mode (gboolean newReduceMode)
 {
 	flv->feedlist_reduced_unread = newReduceMode;
@@ -303,6 +308,7 @@ feed_list_view_create (GtkTreeView *treeview)
 	g_assert (NULL == flv);
 	flv = FEED_LIST_VIEW (g_object_new (FEED_LIST_VIEW_TYPE, NULL));
 
+	flv->controller = gtk_event_controller_key_new ();
 	flv->treeview = treeview;
 	flv->feedstore = gtk_tree_store_new (FS_LEN,
 	                                     G_TYPE_STRING,
@@ -350,7 +356,8 @@ feed_list_view_create (GtkTreeView *treeview)
 	g_object_set (titleRenderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
 	g_signal_connect (G_OBJECT (flv->treeview), "row-activated",   G_CALLBACK (feed_list_view_row_activated_cb), flv);
-	g_signal_connect (G_OBJECT (flv->treeview), "key-press-event", G_CALLBACK (feed_list_view_key_press_cb), flv);
+	g_signal_connect (flv->controller, "key-pressed", G_CALLBACK (feed_list_view_key_pressed_cb), flv);
+	gtk_widget_add_controller (GTK_WIDGET (flv->treeview), flv->controller);
 
 	select = gtk_tree_view_get_selection (flv->treeview);
 	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
@@ -399,133 +406,6 @@ feed_list_view_select (Node *node)
 		GtkTreeSelection *selection = gtk_tree_view_get_selection (flv->treeview);
 		gtk_tree_selection_unselect_all (selection);
 	}
-}
-
-// Callbacks
-
-void
-on_menu_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node *node = feedlist_get_selected ();
-
-	NODE_PROVIDER (node)->request_properties (node);
-}
-
-void
-on_menu_delete(GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	feed_list_view_remove (feedlist_get_selected ());
-}
-
-static void
-do_menu_update (Node *node)
-{
-	if (network_monitor_is_online ())
-		node_update_subscription (node, GUINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
-	else
-		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
-
-}
-
-void
-on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node *node = NULL;
-
-	if (user_data)
-		node = (Node *) user_data;
-	else
-		node = feedlist_get_selected ();
-
-	if (node)
-		do_menu_update (node);
-	else
-		g_warning ("on_menu_update: no feedlist selected");
-}
-
-void
-on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	do_menu_update (feedlist_get_root ());
-}
-
-void
-on_action_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	Node		*feedlist;
-	gboolean 	confirm_mark_read;
-	gboolean 	do_mark_read = TRUE;
-
-	if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-all-feeds-read"))
-		feedlist = feedlist_get_root ();
-	else if (user_data)
-		feedlist = (Node *) user_data;
-	else
-		feedlist = feedlist_get_selected ();
-
-	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
-
-	if (confirm_mark_read) {
-		gint result;
-		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
-		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
-		const gchar *feed_title = (feedlist_get_root () == feedlist) ? _("all feeds"):node_get_title (feedlist);
-		gchar *primary_message = g_strdup_printf (_("Mark %s as read ?"), feed_title);
-
-		g_object_set (confirm_dialog, "text", primary_message, NULL);
-		g_free (primary_message);
-		gtk_message_dialog_format_secondary_text (confirm_dialog, _("Are you sure you want to mark all items in %s as read ?"), feed_title);
-
-		conf_bind (CONFIRM_MARK_ALL_READ, dont_ask_toggle, "active", G_SETTINGS_BIND_DEFAULT | G_SETTINGS_BIND_INVERT_BOOLEAN);
-
-		result = gtk_dialog_run (GTK_DIALOG (confirm_dialog));
-		if (result != GTK_RESPONSE_OK)
-			do_mark_read = FALSE;
-		gtk_widget_destroy (GTK_WIDGET (confirm_dialog));
-	}
-
-	if (do_mark_read)
-		feedlist_mark_all_read (feedlist);
-}
-
-void
-on_menu_feed_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
-{
-	node_provider_request_add (feed_get_provider ());
-}
-
-void
-on_new_plugin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
-{
-	node_provider_request_add (node_source_get_provider ());
-}
-
-void
-on_new_newsbin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
-{
-	node_provider_request_add (newsbin_get_provider ());
-}
-
-void
-on_menu_folder_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
-{
-	node_provider_request_add (folder_get_provider ());
-}
-
-void
-on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
-{
-	node_provider_request_add (vfolder_get_provider ());
-}
-
-void
-on_feedlist_reduced_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	GVariant *state = g_action_get_state (G_ACTION (action));
-	gboolean val = !g_variant_get_boolean (state);
-	feed_list_view_set_reduce_mode (val);
-	g_simple_action_set_state (action, g_variant_new_boolean (val));
-	g_object_unref (state);
 }
 
 // Handling feed list nodes
@@ -765,7 +645,6 @@ feed_list_view_remove_node (Node *node)
 		feed_list_view_check_if_folder_is_empty (node->parent->id);
 		if (parentExpanded)
 			feed_list_view_set_expansion (node->parent, TRUE);
-
 		feed_list_view_update_node (node->parent->id);
 	}
 }
@@ -848,24 +727,19 @@ on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 	Node	*node = (Node *)user_data;
 
 	if (response_id == GTK_RESPONSE_OK) {
-		node_set_title (node, (gchar *) gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "nameentry"))));
+		node_set_title (node, liferea_dialog_entry_get(GTK_WIDGET (dialog), "nameentry"));
 
 		feed_list_view_update_node (node->id);
 		feedlist_schedule_save ();
 	}
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
 feed_list_view_rename_node (Node *node)
 {
-	GtkWidget	*nameentry, *dialog;
+	GtkWidget *dialog = liferea_dialog_new ("rename_node");
 
-	dialog = liferea_dialog_new ("rename_node");
-
-	nameentry = liferea_dialog_lookup (dialog, "nameentry");
-	gtk_entry_set_text (GTK_ENTRY (nameentry), node_get_title (node));
+	liferea_dialog_entry_set (dialog, "nameentry", node_get_title (node));
 	g_signal_connect (G_OBJECT (dialog), "response",
 	                  G_CALLBACK (on_nodenamedialog_response), node);
 	gtk_widget_show (dialog);
@@ -878,8 +752,6 @@ feed_list_view_remove_cb (GtkDialog *dialog, gint response_id, gpointer user_dat
 {
 	if (GTK_RESPONSE_ACCEPT == response_id)
 		feedlist_remove_node ((Node *)user_data);
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
@@ -910,8 +782,6 @@ feed_list_view_remove (Node *node)
 
 	g_free (text);
 
-	gtk_widget_show_all (dialog);
-
 	g_signal_connect (G_OBJECT (dialog), "response",
 	                  G_CALLBACK (feed_list_view_remove_cb), node);
 }
@@ -925,8 +795,6 @@ feed_list_view_add_duplicate_url_cb (GtkDialog *dialog, gint response_id, gpoint
 		feedlist_add_subscription (tempSubscription->source, NULL, NULL, 0);
 	else
 		subscription_free (tempSubscription);
-
-	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
@@ -956,8 +824,6 @@ feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription,
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
 
 	g_free (text);
-
-	gtk_widget_show_all (dialog);
 
 	g_signal_connect (G_OBJECT (dialog), "response",
 					  G_CALLBACK (feed_list_view_add_duplicate_url_cb), tempSubscription);

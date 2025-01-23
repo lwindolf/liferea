@@ -21,7 +21,7 @@
 #ifndef _LIFEREA_WEB_VIEW_H
 #define _LIFEREA_WEB_VIEW_H
 
-#include <webkit2/webkit2.h>
+#include <webkit/webkit.h>
 
 #define LIFEREA_TYPE_WEB_VIEW liferea_web_view_get_type ()
 

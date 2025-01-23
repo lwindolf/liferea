@@ -1,7 +1,7 @@
 /**
  * @file main.c Liferea startup
  *
- * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * Some code like the command line handling was inspired by
@@ -58,6 +58,11 @@ G_DEFINE_TYPE (LifereaApplication, liferea_application, GTK_TYPE_APPLICATION)
 
 static LifereaApplication *liferea_app = NULL;
 
+LifereaApplication *liferea_application_get_instance (void)
+{
+	return liferea_app;
+}
+
 static void
 liferea_application_finalize (GObject *gobject)
 {
@@ -113,15 +118,13 @@ on_app_open (GApplication *application,
 static void
 on_app_activate (GtkApplication *gtk_app, gpointer user_data)
 {
-	gchar		*css_filename;
-	GFile		*css_file;
-	GtkCssProvider	*provider;
-	GError		*error = NULL;
-	GList		*list;
-	LifereaApplication *app = LIFEREA_APPLICATION (gtk_app);
+	g_autofree gchar		*css_filename;
+	g_autoptr(GFile)		css_file;
+	g_autoptr(GtkCssProvider)	provider;
+	GList				*list;
+	LifereaApplication 		*app = LIFEREA_APPLICATION (gtk_app);
 
 	list = gtk_application_get_windows (gtk_app);
-
 	if (list) {
 		liferea_shell_show_window ();
 	} else {
@@ -132,23 +135,11 @@ on_app_activate (GtkApplication *gtk_app, gpointer user_data)
 	css_file = g_file_new_for_path (css_filename);
 	provider = gtk_css_provider_new ();
 
-	gtk_css_provider_load_from_file(provider, css_file, &error);
-
-	if (G_UNLIKELY (!gtk_css_provider_load_from_file(provider,
-							css_file,
-							&error)))
-	{
-		g_critical ("Could not load CSS data: %s", error->message);
-		g_clear_error (&error);
-	} else {
-		gtk_style_context_add_provider_for_screen (
-				gdk_screen_get_default(),
+	gtk_css_provider_load_from_file(provider, css_file);
+	gtk_style_context_add_provider_for_display (
+				gdk_display_get_default (),
 				GTK_STYLE_PROVIDER (provider),
 				GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-	}
-	g_object_unref (provider);
-	g_object_unref (css_file);
-	g_free (css_filename);
 }
 
 /* Callback to the startup signal emitted only by the primary instance upon registration. */
@@ -303,7 +294,7 @@ liferea_application_init (LifereaApplication *self)
 				    _("Print debugging messages for the given topic"),
 				    &self->debug_flags,
 				    NULL);
-	g_option_group_set_translation_domain(debug, GETTEXT_PACKAGE);
+	g_option_group_set_translation_domain(debug, PACKAGE);
 	g_option_group_add_entries (debug, debug_entries);
 
 	g_application_add_main_option_entries (G_APPLICATION (self), entries);

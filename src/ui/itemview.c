@@ -1,7 +1,7 @@
 /*
  * @file itemview.c  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +20,14 @@
 
 #include <string.h>
 
+#include "browser.h"
+#include "common.h"
 #include "conf.h"
 #include "common.h"
 #include "debug.h"
 #include "feedlist.h"
 #include "item_history.h"
+#include "item_state.h"
 #include "itemlist.h"
 #include "itemview.h"
 #include "node.h"
@@ -388,8 +391,9 @@ itemview_set_layout (nodeViewType newMode)
 	if (NODE_VIEW_MODE_AUTO == newMode) {
 		gint	w, h, f;
 
-		f = gtk_widget_get_allocated_width (liferea_shell_lookup ("feedlist"));
-		gtk_window_get_size (GTK_WINDOW (liferea_shell_get_window ()), &w, &h);
+		f = gtk_widget_get_width (liferea_shell_lookup ("feedlist"));
+		w = gtk_widget_get_width (GTK_WIDGET (liferea_shell_get_window ()));
+		h = gtk_widget_get_height (GTK_WIDGET (liferea_shell_get_window ()));
 
 		/* we switch layout if window width - feed list width > window heigt */
 		effectiveMode = (w - f > h)?NODE_VIEW_MODE_WIDE:NODE_VIEW_MODE_NORMAL;
@@ -430,23 +434,22 @@ itemview_set_layout (nodeViewType newMode)
 
 	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
 	g_assert (htmlWidgetName);
+	previous_parent = gtk_widget_get_parent (item_list_view_get_widget (itemview->itemListView));
+	gtk_viewport_set_child (GTK_VIEWPORT (previous_parent), NULL);
+
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), effectiveMode);
-	previous_parent = gtk_widget_get_parent (liferea_browser_get_widget (itemview->htmlview));
-	if (previous_parent)
-		gtk_container_remove (GTK_CONTAINER (previous_parent), liferea_browser_get_widget (itemview->htmlview));
-	gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (htmlWidgetName)), liferea_browser_get_widget (itemview->htmlview));
+	gtk_viewport_set_child (GTK_VIEWPORT (liferea_shell_lookup (htmlWidgetName)), liferea_browser_get_widget (itemview->htmlview));
 
 	/* Recreate the item list view */
 	if (itemview->itemListView) {
-		previous_parent = gtk_widget_get_parent (item_list_view_get_widget (itemview->itemListView));
 		if (previous_parent)
-			gtk_container_remove (GTK_CONTAINER (previous_parent), item_list_view_get_widget (itemview->itemListView));
+			gtk_viewport_set_child (GTK_VIEWPORT (previous_parent), item_list_view_get_widget (itemview->itemListView));
 		g_clear_object (&itemview->itemListView);
 	}
 
 	if (ilWidgetName) {
 		itemview->itemListView = item_list_view_create (effectiveMode == NODE_VIEW_MODE_WIDE);
-		gtk_container_add (GTK_CONTAINER (liferea_shell_lookup (ilWidgetName)), item_list_view_get_widget (itemview->itemListView));
+		gtk_viewport_set_child (GTK_VIEWPORT (liferea_shell_lookup (ilWidgetName)), item_list_view_get_widget (itemview->itemListView));
 	}
 
 	/* Load previously selected node and/or item into new widgets */
@@ -512,6 +515,37 @@ itemview_launch_URL (const gchar *url, gboolean forceInternal)
 
 	itemview->needsHTMLViewUpdate = FALSE;
 	itemview->browsing = TRUE;
+}
+
+void
+itemview_launch_item (itemPtr item, open_link_target_type open_link_target)
+{
+	if (item) {
+		gchar *link = item_make_link (item);
+
+		if (link) {
+			switch (open_link_target)
+			{
+			case ITEMVIEW_LAUNCH_DEFAULT:
+				itemview_launch_URL (link, FALSE);
+				break;
+			case ITEMVIEW_LAUNCH_INTERNAL:
+				itemview_launch_URL (link, TRUE);
+				break;
+			case ITEMVIEW_LAUNCH_TAB:
+				browser_tabs_add_new (link, link, FALSE);
+				break;
+			case ITEMVIEW_LAUNCH_EXTERNAL:
+				browser_launch_URL_external (link);
+				break;
+			}
+
+			item_set_read_state (item, TRUE);
+			g_free (link);
+		} else
+			ui_show_error_box (_("This item has no link specified!"));
+
+	}
 }
 
 void

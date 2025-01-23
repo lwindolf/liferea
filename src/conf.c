@@ -23,7 +23,6 @@
 #include <libxml/uri.h>
 #include <string.h>
 #include <time.h>
-#include <webkit2/webkit2.h>
 
 #include "common.h"
 #include "conf.h"
@@ -106,20 +105,6 @@ conf_get_dark_theme (void)
 }
 
 static void
-conf_toolbar_style_settings_cb (GSettings *settings,
-                                guint cnxn_id,
-                                gchar *key,
-                                gpointer user_data)
-{
-	gchar *style = conf_get_toolbar_style ();
-
-	if (style) {
-		liferea_shell_set_toolbar_style (style);
-		g_free (style);
-	}
-}
-
-static void
 conf_proxy_reset_settings_cb (GSettings *settings,
                               guint cnxn_id,
                               gchar *key,
@@ -162,21 +147,6 @@ conf_set_int_value (const gchar *key, gint value)
 	g_assert (key != NULL);
 	debug (DEBUG_CONF, "Setting %s to %d", key, value);
 	g_settings_set_int (settings, key, value);
-}
-
-gchar *
-conf_get_toolbar_style(void)
-{
-	gchar *style;
-
-	conf_get_str_value (TOOLBAR_STYLE, &style);
-
-	/* check if we don't override the toolbar style */
-	if (strcmp (style, "") == 0) {
-		g_free (style);
-		conf_get_str_value_from_schema (desktop_settings, "toolbar-style", &style);
-	}
-	return style;
 }
 
 gboolean
@@ -285,12 +255,6 @@ conf_init (void)
 	if (g_settings_schema_source_lookup (source, FDO_SCHEMA_NAME, TRUE))
 		fdo_settings = g_settings_new (FDO_SCHEMA_NAME);
 
-	g_signal_connect (
-		desktop_settings,
-		"changed::" TOOLBAR_STYLE,
-		G_CALLBACK (conf_toolbar_style_settings_cb),
-		NULL
-	);
 	g_signal_connect (
 		settings,
 		"changed::" PROXY_DETECT_MODE,

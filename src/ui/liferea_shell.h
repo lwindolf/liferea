@@ -43,6 +43,15 @@ G_BEGIN_DECLS
 G_DECLARE_FINAL_TYPE (LifereaShell, liferea_shell, LIFEREA, SHELL, GObject)
 
 /**
+ * liferea_shell_get_instance:
+ *
+ * Get the LifereaShell instance
+ *
+ * Returns: the LifereaShell instance
+ */
+LifereaShell * liferea_shell_get_instance (void);
+
+/**
  * liferea_shell_lookup:
  * @name: the widget name
  *
@@ -52,14 +61,6 @@ G_DECLARE_FINAL_TYPE (LifereaShell, liferea_shell, LIFEREA, SHELL, GObject)
  * Returns: (transfer none) (nullable): the widget found or NULL
  */
 GtkWidget * liferea_shell_lookup (const gchar *name);
-
-/**
- * liferea_shell_save_position
- *
- * Save the position of the Liferea main window.
- */
-void
-liferea_shell_save_position (void);
 
 /**
  * liferea_shell_create: (skip)
@@ -79,6 +80,17 @@ void liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState
 void liferea_shell_destroy (void);
 
 /**
+ * liferea_shell_add_actions: (skip)
+ * @entries:	array of actions to add
+ * @count:	the number of actions
+ *
+ * Adds the given actions to the given action map.
+ * 
+ * Returns: newly create GActionGroup (owned by LifereaShell)
+ */
+GActionGroup * liferea_shell_add_actions (const GActionEntry *entries, int count);
+
+/**
  * liferea_shell_show_window:
  *
  * Show the main window.
@@ -91,42 +103,6 @@ void liferea_shell_show_window (void);
  * Toggles main window visibility.
  */
 void liferea_shell_toggle_visibility (void);
-
-/**
- * liferea_shell_set_toolbar_style:
- * @toolbar_style: text string containing the type of style to use
- *
- * Sets the toolbar to a particular style
- */
-void liferea_shell_set_toolbar_style (const gchar *toolbar_style);
-
-/**
- * liferea_shell_update_toolbar: (skip)
- *
- * According to the preferences this function enables/disables the toolbar.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_toolbar (void);
-
-/**
- * liferea_shell_update_history_actions: (skip)
- *
- * Update item history menu actions and toolbar buttons.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_history_actions (void);
-
-/**
- * liferea_shell_update_item_menu: (skip)
- * @enabled:	TRUE if item actions are to be enabled
- *
- * Update the sensitivity of options affecting single items.
- *
- * TODO: use signal instead
- */
-void liferea_shell_update_item_menu (gboolean enabled);
 
 /**
  * liferea_shell_set_status_bar:
@@ -143,6 +119,14 @@ void liferea_shell_set_status_bar (const char *format, ...);
  * are overwritten by unimportant ones.
  */
 void liferea_shell_set_important_status_bar (const char *format, ...);
+
+/**
+ * liferea_shell_copy_to_clipboard:
+ * @str: the string to copy to the clipboard
+ *
+ * Copy a text to clipboard
+ */
+void liferea_shell_copy_to_clipboard (const gchar *str);
 
 /**
  * liferea_shell_get_window:
