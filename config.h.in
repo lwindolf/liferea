@@ -1,9 +1,6 @@
 /* always defined to indicate that i18n is enabled */
 #define ENABLE_NLS @ENABLE_NLS@
 
-/* gettext domain */
-#define GETTEXT_PACKAGE @GETTEXT_PACKAGE@
-
 /* Name of package */
 #define PACKAGE @PACKAGE@
 

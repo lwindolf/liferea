@@ -1,11 +1,13 @@
 project('liferea', 'c',
   version: '2.0',
-  meson_version: '>= 0.59.0'
+  meson_version: '>= 0.62.0'
 )
 
 gnome = import('gnome')
 i18n = import('i18n')
 
+gettext_package = 'liferea'
+add_project_arguments('-DGETTEXT_PACKAGE=' + gettext_package, language: 'c')
 subdir('po')
 
 prefix = get_option('prefix')
@@ -25,7 +27,6 @@ conf.set_quoted('PACKAGE_DATA_DIR', datadir)
 conf.set_quoted('PACKAGE_LIB_DIR', libdir)
 conf.set_quoted('PACKAGE_LOCALE_DIR', localedir)
 conf.set_quoted('VERSION', meson.project_version())
-conf.set_quoted('GETTEXT_PACKAGE', 'liferea')
 conf.set('ENABLE_NLS', 1)
 
 configure_file(
@@ -34,6 +35,7 @@ configure_file(
   configuration: conf
 )
 
+subdir('resources')
 subdir('src')
 
 liferea_deps = [
@@ -51,19 +53,12 @@ liferea_deps = [
   dependency('fribidi', version: '>= 0.19.7')
 ]
 
-liferea_resources = gnome.compile_resources(
-  'resources', 'resources/gresource.xml',
-  source_dir : 'resources',
-  c_name : 'liferea_resources'
-)
-
 executable('liferea',
   liferea_sources,
   liferea_resources,
   dependencies: liferea_deps,
   include_directories: include_directories('.', 'src')
 )
-
 
 # Introspection
 #if get_option('introspection')

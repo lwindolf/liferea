@@ -294,7 +294,7 @@ liferea_application_init (LifereaApplication *self)
 				    _("Print debugging messages for the given topic"),
 				    &self->debug_flags,
 				    NULL);
-	g_option_group_set_translation_domain(debug, GETTEXT_PACKAGE);
+	g_option_group_set_translation_domain(debug, PACKAGE);
 	g_option_group_add_entries (debug, debug_entries);
 
 	g_application_add_main_option_entries (G_APPLICATION (self), entries);
