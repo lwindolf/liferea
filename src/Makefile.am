@@ -15,7 +15,7 @@ bin_PROGRAMS = liferea
 bin_SCRIPTS = liferea-add-feed
 
 js_in_files = $(top_srcdir)/js/item.xml.in \
-                $(top_srcdir)/js/node.xml.in
+		$(top_srcdir)/js/node.xml.in
 js_files = $(js_in_files:.xml.in=.xml)
 
 @INTLTOOL_XML_RULE@
@@ -26,14 +26,14 @@ js_deps = $(top_srcdir)/js/gresource.xml \
 	$(top_srcdir)/js/vendor/Readability.js \
 	$(top_srcdir)/js/vendor/purify.min.js \
 	$(top_srcdir)/js/vendor/handlebars.min.js \
+	$(top_srcdir)/js/i18n-filter.xslt \
 	$(top_srcdir)/js/item.xml \
-	$(top_srcdir)/js/node.xml \
-	$(top_srcdir)/js/i18n-filter.xslt
+	$(top_srcdir)/js/node.xml
 
-js.h: $(js_deps) $(main_dep)
+js.h: $(js_files) $(js_deps) $(main_dep)
 	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
 
-js.c: $(js_deps) $(main_dep)
+js.c: $(js_files) $(js_deps) $(main_dep)
 	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
 
 liferea_SOURCES = \
@@ -95,7 +95,7 @@ liferea_LDADD =	parsers/libliparsers.a \
 		$(INTROSPECTION_LIBS) \
 		-lm
 
-EXTRA_DIST = $(srcdir)/liferea-add-feed.in
+EXTRA_DIST = $(srcdir)/liferea-add-feed.in $(js_deps) $(js_in_files)
 DISTCLEANFILES = $(srcdir)/liferea-add-feed js.c js.h
 AM_INSTALLCHECK_STD_OPTIONS_EXEMPT = liferea-add-feed
 
