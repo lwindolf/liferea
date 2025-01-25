@@ -751,20 +751,6 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkCheckButton" id="enableplugins">
-                            <property name="label" translatable="1">_Enable browser plugins.</property>
-                            <property name="focusable">1</property>
-                            <property name="halign">start</property>
-                            <property name="margin-start">12</property>
-                            <property name="use-underline">1</property>
-                            <signal name="toggled" handler="on_enableplugins_toggled" swapped="no"/>
-                            <layout>
-                              <property name="column">0</property>
-                              <property name="row">3</property>
-                            </layout>
-                          </object>
-                        </child>
-                        <child>
                           <placeholder/>
                         </child>
                         <child>

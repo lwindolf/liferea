@@ -554,10 +554,3 @@ itemview_do_zoom (gint zoom)
 	if (itemview->htmlview)
 		liferea_browser_do_zoom (itemview->htmlview, zoom);
 }
-
-void
-itemview_style_update (void)
-{
-	if (itemview->htmlview)
-		liferea_browser_update_stylesheet (itemview->htmlview);
-}

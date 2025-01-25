@@ -38,6 +38,9 @@ static guint signals[LAST_SIGNAL] = { 0 };
 ItemHistory *
 item_history_get_instance (void)
 {
+	if (!itemHistory)
+		itemHistory = g_object_new (ITEM_HISTORY_TYPE, NULL);
+		
 	return itemHistory;
 }
 

@@ -39,7 +39,6 @@
 #define USER_FONT			"browser-font"
 #define DISABLE_JAVASCRIPT		"disable-javascript"
 #define SOCIAL_BM_SITE			"social-bm-site"
-#define ENABLE_PLUGINS			"enable-plugins"
 #define ENABLE_ITP			"enable-itp"
 #define ENABLE_READER_MODE		"enable-reader-mode"
 

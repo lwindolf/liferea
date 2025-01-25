@@ -342,9 +342,3 @@ liferea_application_new (int argc, char *argv[])
 
 	return status;
 }
-
-void
-liferea_application_rebuild_css(void)
-{
-	liferea_shell_rebuild_css ();
-}

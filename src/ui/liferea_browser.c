@@ -281,6 +281,24 @@ liferea_browser_proxy_changed (NetworkMonitor *nm, gpointer userdata)
 	liferea_webkit_set_proxy (network_get_proxy_detect_mode ());
 }
 
+static void
+liferea_browser_update_stylesheet (LifereaBrowser *browser)
+{
+	g_autofree gchar *defaultCSS = NULL;
+	g_autofree gchar *userCSS = NULL;
+	gchar *filename;
+	
+	filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "css", "liferea.css", NULL);
+	g_file_get_contents (filename, &defaultCSS, NULL, NULL);
+	g_free (filename);
+
+	filename = common_create_config_filename ("liferea.css");
+	g_file_get_contents (filename, &userCSS, NULL, NULL);
+	g_free (filename);
+
+	liferea_webkit_reload_style (browser->renderWidget, userCSS, defaultCSS);
+}
+
 LifereaBrowser *
 liferea_browser_new (gboolean forceInternalBrowsing)
 {
@@ -598,22 +616,4 @@ liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gcha
 	// do not use liferea_browser_write() as we need to write XHTML here
 	// which is produced by intltool
 	liferea_webkit_write_html (browser->renderWidget, tmp->str, strlen (tmp->str), baseURL, "text/html");
-}
-
-void
-liferea_browser_update_stylesheet (LifereaBrowser *browser)
-{
-	g_autofree gchar *defaultCSS = NULL;
-	g_autofree gchar *userCSS = NULL;
-	gchar *filename;
-	
-	filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "css", "liferea.css", NULL);
-	g_file_get_contents (filename, &defaultCSS, NULL, NULL);
-	g_free (filename);
-
-	filename = common_create_config_filename ("liferea.css");
-	g_file_get_contents (filename, &userCSS, NULL, NULL);
-	g_free (filename);
-
-	liferea_webkit_reload_style (browser->renderWidget, userCSS, defaultCSS);
 }

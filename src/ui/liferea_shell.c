@@ -759,8 +759,8 @@ liferea_shell_restore_state (const gchar *overrideWindowState)
 	
 	conf_get_bool_value (LAST_WINDOW_MAXIMIZED, &last_window_maximized);
 	if (!last_window_maximized) {
-		gtk_viewport_set_child (GTK_VIEWPORT (liferea_shell_lookup ("normalViewPane")), liferea_shell_lookup ("normalViewItems"));
-		gtk_viewport_set_child (GTK_VIEWPORT (liferea_shell_lookup ("wideViewPane")), liferea_shell_lookup ("wideViewItems"));
+		gtk_paned_set_end_child (GTK_PANED (liferea_shell_lookup ("normalViewPane")), liferea_shell_lookup ("normalViewItems"));
+		gtk_paned_set_end_child (GTK_PANED (liferea_shell_lookup ("wideViewPane")), liferea_shell_lookup ("wideViewItems"));
 	}
 	
 	/* Need to run asynchronous otherwise pane widget allocation is reported
@@ -815,20 +815,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	gint		mode;
 	FeedListView	*feedListView;
 
-
 	g_object_new (LIFEREA_SHELL_TYPE, NULL);
-	g_assert(shell);
+	g_assert (shell);
 
 	shell->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 
 	gtk_window_set_application (GTK_WINDOW (shell->window), app);
-
-	shell->shellActions = shell_actions_create ();
-	shell->feedlistActions = node_actions_create ();
-	shell->itemlistActions = item_actions_create ();
-	shell->htmlviewActions = link_actions_create ();
-	
-	g_signal_connect (G_OBJECT (shell->window), "style-updated", G_CALLBACK (liferea_shell_rebuild_css), NULL);
 
 	/* 1.) setup plugin engine including mandatory base plugins that (for example the feed list or auth) might depend on */
 	debug (DEBUG_GUI, "Register mandatory plugins");
@@ -938,6 +930,13 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	/* 14. Rebuild search folders if needed */
 	if (searchFolderRebuild)
 		vfolder_foreach (vfolder_rebuild);
+
+	/* 15. setup actions */
+	shell->shellActions = shell_actions_create ();
+	shell->feedlistActions = node_actions_create ();
+	shell->itemlistActions = item_actions_create ();
+	shell->htmlviewActions = link_actions_create ();
+
 }
 
 void
@@ -975,10 +974,3 @@ liferea_shell_get_window (void)
 {
 	return GTK_WIDGET (shell->window);
 }
-
-void
-liferea_shell_rebuild_css (void)
-{
-	itemview_style_update ();
-}
-

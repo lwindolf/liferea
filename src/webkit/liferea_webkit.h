@@ -1,5 +1,5 @@
 /**
- * @file liferea_webkit.h  Webkit2 support for Liferea
+ * @file liferea_webkit.h  Webkit2GTK 6.0 support for Liferea
  *
  * Copyright (C) 2021-2025 Lars Windolf <lars.windolf@gmx.de>
  *

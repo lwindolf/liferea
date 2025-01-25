@@ -182,12 +182,6 @@ on_disablejavascript_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 	conf_set_bool_value (DISABLE_JAVASCRIPT, gtk_toggle_button_get_active (togglebutton));
 }
 
-void
-on_enableplugins_toggled (GtkToggleButton *togglebutton, gpointer user_data)
-{
-	conf_set_bool_value (ENABLE_PLUGINS, gtk_toggle_button_get_active (togglebutton));
-}
-
 static void
 on_socialsite_changed (GtkComboBox *optionmenu, gpointer user_data)
 {
@@ -471,11 +465,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	/* set the javascript-disabled flag */
 	widget = liferea_dialog_lookup(pd->dialog, "disablejavascript");
 	conf_get_bool_value(DISABLE_JAVASCRIPT, &bSetting);
-	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), bSetting);
-
-	/* set the enable Plugins flag */
-	widget = liferea_dialog_lookup(pd->dialog, "enableplugins");
-	conf_get_bool_value(ENABLE_PLUGINS, &bSetting);
 	gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(widget), bSetting);
 
 	conf_get_str_value (BROWSER_ID, &configuredBrowser);

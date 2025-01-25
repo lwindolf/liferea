@@ -1,5 +1,5 @@
 /**
- * @file webkit.c  WebKit2 support for Liferea
+ * @file webkit.c  WebKit2GTK 6.0 support for Liferea
  *
  * Copyright (C) 2016-2019 Leiaz <leiaz@mailbox.org>
  * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
@@ -103,26 +103,6 @@ liferea_webkit_disable_javascript_cb (GSettings *gsettings,
 		webkit_settings,
 		"enable-javascript",
 		!g_settings_get_boolean (gsettings, key),
-		NULL
-	);
-}
-
-/**
- * Update the settings object if the preferences change.
- * This will affect all the webviews as they all use the same
- * settings object.
- */
-static void
-liferea_webkit_enable_plugins_cb (GSettings *gsettings,
-				  gchar *key,
-				  gpointer webkit_settings)
-{
-	g_return_if_fail (key != NULL);
-
-	g_object_set (
-		webkit_settings,
-		"enable-plugins",
-		g_settings_get_boolean (gsettings, key),
 		NULL
 	);
 }
@@ -386,17 +366,19 @@ liferea_webkit_init (LifereaWebKit *self)
 	webkit_network_session_set_itp_enabled (webkit_network_session_get_default (), enable_itp);
 
 	/* Webkit web extensions */
-	g_signal_connect (
+	g_warning("FIXME: Webkit initialize-web-extensions");
+	/*g_signal_connect (
 		webkit_web_context_get_default (),
 		"initialize-web-extensions",
 		G_CALLBACK (liferea_webkit_initialize_web_extensions),
-		self);
+		self);*/
 
-	g_signal_connect (
+	g_warning("FIXME: Webkit download-started");
+	/*g_signal_connect (
 		webkit_web_context_get_default (),
 		"download-started",
 		G_CALLBACK (liferea_webkit_download_started),
-		self);
+		self);*/
 }
 
 /**
@@ -461,9 +443,6 @@ liferea_webkit_default_settings (WebKitSettings *settings)
 	conf_get_bool_value (DISABLE_JAVASCRIPT, &disable_javascript);
 	g_object_set (settings, "enable-javascript", !disable_javascript, NULL);
 
-	conf_get_bool_value (ENABLE_PLUGINS, &enable_plugins);
-	g_object_set (settings, "enable-plugins", enable_plugins, NULL);
-
 	user_agent = network_get_user_agent ();
 	webkit_settings_set_user_agent (settings, user_agent);
 	g_free (user_agent);
@@ -471,11 +450,6 @@ liferea_webkit_default_settings (WebKitSettings *settings)
 	conf_signal_connect (
 		"changed::" DISABLE_JAVASCRIPT,
 		G_CALLBACK (liferea_webkit_disable_javascript_cb),
-		settings
-	);
-	conf_signal_connect (
-		"changed::" ENABLE_PLUGINS,
-		G_CALLBACK (liferea_webkit_enable_plugins_cb),
 		settings
 	);
 }

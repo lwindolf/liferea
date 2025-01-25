@@ -1,6 +1,5 @@
 /*
- * plugins_engine.c: Liferea Plugins using libpeas
- * (derived from gtranslator code)
+ * plugins_engine.c: Liferea Plugins using libpeas2
  *
  * Copyright (C) 2002-2005 Paolo Maggi
  * Copyright (C) 2010 Steve Frécinaux
@@ -33,6 +32,7 @@
 #include <libpeas.h>
 
 #include "auth_activatable.h"
+#include "debug.h"
 #include "download_activatable.h"
 #include "node_source_activatable.h"
 #include "liferea_activatable.h"
@@ -49,10 +49,10 @@ struct _LifereaPluginsEngine
 
 G_DEFINE_TYPE (LifereaPluginsEngine, liferea_plugins_engine, G_TYPE_OBJECT)
 
-static LifereaPluginsEngine *engine = NULL;
+static LifereaPluginsEngine *plugins = NULL;
 
 static void
-liferea_plugins_engine_init (LifereaPluginsEngine *engine)
+liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 {
 	gchar		*typelib_dir;
 	const gchar	**names;
@@ -63,7 +63,11 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 	g_autoptr(GVariant)	vlist;
 	g_autoptr(GStrvBuilder)	b;
 
-	engine->extension_sets = g_hash_table_new (g_direct_hash, g_direct_equal);
+	debug (DEBUG_GUI, "Initializing plugins engine");
+
+	plugins->extension_sets = g_hash_table_new (g_direct_hash, g_direct_equal);
+	plugins->engine = peas_engine_get_default ();
+	g_object_add_weak_pointer (G_OBJECT (plugins), (gpointer) &plugins->engine);
 
 	b = g_strv_builder_new ();
 	vlist = g_settings_get_value (plugin_settings, "active-plugins");
@@ -86,8 +90,8 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 	g_free (names);
 
 	/* Only load libpeas after we cleaned the 'active-plugins' setting */
-	peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
-	peas_engine_enable_loader (PEAS_ENGINE (engine), "gjs");
+	peas_engine_enable_loader (PEAS_ENGINE (plugins->engine), "python3");
+	peas_engine_enable_loader (PEAS_ENGINE (plugins->engine), "gjs");
 
 	/* Require Lifereas's typelib. */
 	typelib_dir = g_build_filename (PACKAGE_LIB_DIR,
@@ -119,9 +123,9 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 
 	g_autofree gchar *data = g_build_filename (PACKAGE_DATA_DIR, "plugins", NULL);
 	g_autofree gchar *lib = g_build_filename (PACKAGE_LIB_DIR, "plugins", NULL);
-	peas_engine_add_search_path (PEAS_ENGINE (engine), data, data);
-	peas_engine_add_search_path (PEAS_ENGINE (engine), lib, data);
-	peas_engine_rescan_plugins (PEAS_ENGINE (engine));
+	peas_engine_add_search_path (PEAS_ENGINE (plugins->engine), data, data);
+	peas_engine_add_search_path (PEAS_ENGINE (plugins->engine), lib, data);
+	peas_engine_rescan_plugins (PEAS_ENGINE (plugins->engine));
 
 	/* Load mandatory plugins */
 	const gchar *mandatory[] = {
@@ -129,9 +133,9 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 		"plugin-installer"
 	};
 	for (guint i = 0; i < G_N_ELEMENTS (mandatory); i++) {
-		PeasPluginInfo *info = peas_engine_get_plugin_info (PEAS_ENGINE (engine), mandatory[i]);
+		PeasPluginInfo *info = peas_engine_get_plugin_info (PEAS_ENGINE (plugins->engine), mandatory[i]);
 		if (info)
-			peas_engine_load_plugin (PEAS_ENGINE (engine), info);
+			peas_engine_load_plugin (PEAS_ENGINE (plugins->engine), info);
 		else
 			g_warning ("The plugin-installer plugin was not found.");
 	}
@@ -175,7 +179,7 @@ liferea_plugin_call_foreach (PeasExtensionSet	*set,
 void
 liferea_plugin_call (GType type, GFunc func, gpointer user_data)
 {
-	PeasExtensionSet *set = g_hash_table_lookup (engine->extension_sets, (gpointer)type);
+	PeasExtensionSet *set = g_hash_table_lookup (plugins->extension_sets, (gpointer)type);
 
 	g_assert (set);
 
@@ -188,7 +192,7 @@ liferea_plugin_call (GType type, GFunc func, gpointer user_data)
 gboolean
 liferea_plugin_is_active (GType type)
 {
-	PeasExtensionSet *set = g_hash_table_lookup (engine->extension_sets, GINT_TO_POINTER(type));
+	PeasExtensionSet *set = g_hash_table_lookup (plugins->extension_sets, GINT_TO_POINTER(type));
 
 	return g_list_model_get_n_items (G_LIST_MODEL (set)) > 0;
 }
@@ -196,11 +200,11 @@ liferea_plugin_is_active (GType type)
 static void
 liferea_plugins_engine_dispose (GObject * object)
 {
-	LifereaPluginsEngine *engine = LIFEREA_PLUGINS_ENGINE (object);
+	LifereaPluginsEngine *plugins = LIFEREA_PLUGINS_ENGINE (object);
 
-	if (engine->extension_sets) {
-		g_hash_table_destroy (engine->extension_sets);
-		engine->extension_sets = NULL;
+	if (plugins->extension_sets) {
+		g_hash_table_destroy (plugins->extension_sets);
+		plugins->extension_sets = NULL;
 	}
 
 	G_OBJECT_CLASS (liferea_plugins_engine_parent_class)->dispose (object);
@@ -217,9 +221,8 @@ liferea_plugins_engine_class_init (LifereaPluginsEngineClass * klass)
 LifereaPluginsEngine *
 liferea_plugins_engine_get (void)
 {
-	if (!engine) {
-		engine = LIFEREA_PLUGINS_ENGINE (g_object_new (LIFEREA_TYPE_PLUGINS_ENGINE, NULL));
-		g_object_add_weak_pointer (G_OBJECT (engine), (gpointer) &engine);
+	if (!plugins) {
+		plugins = LIFEREA_PLUGINS_ENGINE (g_object_new (LIFEREA_TYPE_PLUGINS_ENGINE, NULL));
 
 		/* Immediately register basic non-GUI plugin intefaces that might be requirement
 		   for everything to come up. All other plugins are registered later on
@@ -229,9 +232,11 @@ liferea_plugins_engine_get (void)
 			LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE
 		};
 
+		debug (DEBUG_GUI, "Registering basic plugins");
+
 		for (guint i = 0; i < G_N_ELEMENTS (types); i++) {
-			PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (engine), types[i], NULL);
-			g_hash_table_insert (engine->extension_sets, GINT_TO_POINTER(types[i]), extensions);
+			PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (plugins->engine), types[i], NULL);
+			g_hash_table_insert (plugins->extension_sets, GINT_TO_POINTER(types[i]), extensions);
 
 			peas_extension_set_foreach (extensions, (PeasExtensionSetForeachFunc)on_extension_added, NULL);
 
@@ -240,7 +245,7 @@ liferea_plugins_engine_get (void)
 		}
 	}
 
-	return engine;
+	return plugins;
 }
 
 void
@@ -251,10 +256,14 @@ liferea_plugins_engine_register_shell_plugins (LifereaShell *shell)
 		LIFEREA_TYPE_DOWNLOAD_ACTIVATABLE
 	};
 
+	g_assert (plugins);
+
+	debug (DEBUG_GUI, "Registering shell plugins");
+
 	for (guint i = 0; i < G_N_ELEMENTS (types); i++) {
 		/* Note: we expect all plugins to get property 'shell' as the default entrypoint */
-		PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (engine), types[i], "shell", shell, NULL);
-		g_hash_table_insert (engine->extension_sets, GINT_TO_POINTER(types[i]), extensions);
+		PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (plugins->engine), types[i], "shell", shell, NULL);
+		g_hash_table_insert (plugins->extension_sets, GINT_TO_POINTER(types[i]), extensions);
 
 		peas_extension_set_foreach (extensions, (PeasExtensionSetForeachFunc)on_extension_added, NULL);
 

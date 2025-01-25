@@ -167,11 +167,6 @@
       <summary>Width of the itemlist pane in the mainwindow</summary>
       <description>Width of the itemlist pane in the mainwindow. Use 0 to let GTK+ decide the Width.</description>
     </key>
-    <key name="enable-plugins" type="b">
-      <default>false</default>
-      <summary>Enable plugins</summary>
-      <description>This options determines if liferea should enable Webkit plugins.</description>
-    </key>
     <key name="enable-itp" type="b">
       <default>true</default>
       <summary>Enable intelligent tracking protection</summary>
