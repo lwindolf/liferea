@@ -31,10 +31,10 @@ js_deps = $(top_srcdir)/js/gresource.xml \
 	$(top_srcdir)/js/node.xml
 
 js.h: $(js_files) $(js_deps) $(main_dep)
-	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+	glib-compile-resources $(top_srcdir)/js/gresource.xml --generate --internal --target=$@ --c-name js --sourcedir=$(top_srcdir)/js 
 
 js.c: $(js_files) $(js_deps) $(main_dep)
-	glib-compile-resources --generate --target=$@ --c-name js --sourcedir=$(top_srcdir)/js $<
+	glib-compile-resources $(top_srcdir)/js/gresource.xml --generate --internal --target=$@ --c-name js --sourcedir=$(top_srcdir)/js 
 
 liferea_SOURCES = \
 	auth.c auth.h \
