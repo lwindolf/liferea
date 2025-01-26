@@ -1,7 +1,7 @@
 liferea_resources = gnome.compile_resources(
   'resources', 'gresource.xml',
   source_dir : '.',
-  c_name : 'liferea_resources',
+  c_name : 'liferea',
   dependencies : [
         custom_target(
                 input: 'item.xml.in',

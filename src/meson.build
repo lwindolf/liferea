@@ -23,7 +23,6 @@ liferea_sources = files(
   'item_state.c',
   'itemset.c',
   'itemlist.c',
-  'resources.c',
   'json.c',
   'liferea_application.c',
   'metadata.c',

@@ -60,16 +60,12 @@ executable('liferea',
   include_directories: include_directories('.', 'src')
 )
 
-# Introspection
-#if get_option('introspection')
 #  gir = gnome.generate_gir('Liferea-3.0',
 #    sources: liferea_sources,
 #    nsversion: '3.0',
 #    includes: ['Gtk-3.0', 'libxml2-2.0'],
 #    install: true
 #  )
-#  gnome.compile_resources('Liferea-3.0', 'resources/gresource.xml')
-#endif
 
 # Install scripts
 #install_data('liferea-add-feed', install_dir: get_option('bindir'))
