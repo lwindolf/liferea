@@ -36,6 +36,83 @@
     <file compressed="true">ui/theoldreader_source.ui</file>
     <file compressed="true">ui/ttrss_source.ui</file>
     <file compressed="true">ui/update_monitor.ui</file>
+
+    <file compressed="true">help/about_en.html</file>
+    <file compressed="true">help/concepts_en.html</file>
+    <file compressed="true">help/folders_en.html</file>
+    <file compressed="true">help/headlines_en.html</file>
+    <file compressed="true">help/preferences_en.html</file>
+    <file compressed="true">help/reference_en.html</file>
+    <file compressed="true">help/searching_en.html</file>
+    <file compressed="true">help/subscriptions_en.html</file>
+    <file compressed="true">help/topics_en.html</file>
+    <file compressed="true">help/updating_en.html</file>
+    <file compressed="true">help/newsbin_en.html</file>
+    <file compressed="true">help/onlineservices_en.html</file>
+    <file compressed="true">help/faq_en.html</file>
+
+    <file compressed="true">help/about_de.html</file>
+    <file compressed="true">help/concepts_de.html</file>
+    <file compressed="true">help/folders_de.html</file>
+    <file compressed="true">help/headlines_de.html</file>
+    <file compressed="true">help/preferences_de.html</file>
+    <file compressed="true">help/reference_de.html</file>
+    <file compressed="true">help/searching_de.html</file>
+    <file compressed="true">help/subscriptions_de.html</file>
+    <file compressed="true">help/topics_de.html</file>
+    <file compressed="true">help/updating_de.html</file>
+    <file compressed="true">help/newsbin_de.html</file>
+    <file compressed="true">help/onlineservices_de.html</file>
+    <file compressed="true">help/faq_de.html</file>
+
+    <file compressed="true">help/about_it.html</file>
+    <file compressed="true">help/concepts_it.html</file>
+    <file compressed="true">help/folders_it.html</file>
+    <file compressed="true">help/headlines_it.html</file>
+    <file compressed="true">help/preferences_it.html</file>
+    <file compressed="true">help/reference_it.html</file>
+    <file compressed="true">help/searching_it.html</file>
+    <file compressed="true">help/subscriptions_it.html</file>
+    <file compressed="true">help/topics_it.html</file>
+    <file compressed="true">help/updating_it.html</file>
+    <file compressed="true">help/newsbin_it.html</file>
+    <file compressed="true">help/onlineservices_it.html</file>
+    <file compressed="true">help/faq_it.html</file>
+
+    <file compressed="true">help/about_ru.html</file>
+    <file compressed="true">help/concepts_ru.html</file>
+    <file compressed="true">help/folders_ru.html</file>
+    <file compressed="true">help/headlines_ru.html</file>
+    <file compressed="true">help/preferences_ru.html</file>
+    <file compressed="true">help/reference_ru.html</file>
+    <file compressed="true">help/searching_ru.html</file>
+    <file compressed="true">help/subscriptions_ru.html</file>
+    <file compressed="true">help/topics_ru.html</file>
+    <file compressed="true">help/updating_ru.html</file>
+    <file compressed="true">help/newsbin_ru.html</file>
+    <file compressed="true">help/onlineservices_ru.html</file>
+    <file compressed="true">help/faq_ru.html</file>
+
+    <file compressed="true">help/help_feed_default.png</file>
+    <file compressed="true">help/help_feed_error.png</file>
+    <file compressed="true">help/help_folder.png</file>
+    <file compressed="true">help/help_opml.png</file>
+    <file compressed="true">help/help_feed_prop_downl_1.6.0.png</file>
+    <file compressed="true">help/help_feed_prop_cache_1.6.0.png</file>
+    <file compressed="true">help/help_feed_prop_adv_1.6.0.png</file>
+    <file compressed="true">help/help_feed_prop_general_1.6.0.png</file>
+    <file compressed="true">help/help_feed_prop_source_1.6.0.png</file>
+    <file compressed="true">help/help_item_flag.png</file>
+    <file compressed="true">help/help_item_unread.png</file>
+    <file compressed="true">help/help_prefs_browser_1.14.0.png</file>
+    <file compressed="true">help/help_prefs_feeds_1.14.0.png</file>
+    <file compressed="true">help/help_prefs_folders_1.14.0.png</file>
+    <file compressed="true">help/help_prefs_desktop_1.14.0.png</file>
+    <file compressed="true">help/help_prefs_headlines_1.14.0.png</file>
+    <file compressed="true">help/help_prefs_proxy_1.14.0.png</file>
+    <file compressed="true">help/help_search_1.6.0.png</file>
+    <file compressed="true">help/help_subscribe_1.6.0.png</file>
+    <file compressed="true">help/help_subscribe_adv_1.6.0.png</file>
+    <file compressed="true">help/help_vfolder_1.6.0.png</file>
   </gresource>
 </gresources>
-

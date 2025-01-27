@@ -327,6 +327,12 @@ liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer 
 		// For now we assume all resources are javascript, so MIME is hardcoded
 		if (g_str_has_suffix (path, ".js"))
 			mime = "text/javascript";
+		else if (g_str_has_suffix (path, ".html"))
+			mime = "text/html";
+		else if (g_str_has_suffix (path, ".png"))
+			mime = "image/png";
+		else if (g_str_has_suffix (path, ".css"))
+			mime = "text/css";
 		else
 			mime = "text/plain";
 
