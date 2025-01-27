@@ -37,6 +37,7 @@ configure_file(
 
 subdir('resources')
 subdir('src')
+subdir('doc/man')
 
 liferea_deps = [
   dependency('glib-2.0', version: '>= 2.74.0'),

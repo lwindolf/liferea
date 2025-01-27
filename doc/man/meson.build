@@ -1,0 +1,1 @@
+install_man('liferea.1')

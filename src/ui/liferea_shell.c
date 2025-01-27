@@ -52,7 +52,6 @@
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/item_list_view.h"
-#include "ui/layout.h"
 #include "ui/liferea_dialog.h"
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
