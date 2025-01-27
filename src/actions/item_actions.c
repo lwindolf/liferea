@@ -21,6 +21,7 @@
 
 #include "item_actions.h"
 
+#include "browser.h"
 #include "common.h"
 #include "debug.h"
 #include "feedlist.h"
@@ -28,8 +29,6 @@
 #include "node.h"
 #include "node_providers/feed.h"
 #include "node_providers/newsbin.h"
-#include "ui/itemview.h"
-#include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 
 static void
@@ -42,7 +41,7 @@ on_launch_item_in_browser (GSimpleAction *action, GVariant *parameter, gpointer 
 		item = itemlist_get_selected ();
 
 	if (item) {
-	      itemview_launch_item (item, ITEMVIEW_LAUNCH_INTERNAL);
+	      browser_launch_item (item, BROWSER_LAUNCH_INTERNAL);
 	      item_unload (item);
 	}
 }
@@ -57,7 +56,7 @@ on_launch_item_in_tab (GSimpleAction *action, GVariant *parameter, gpointer user
 		item = itemlist_get_selected ();
 
 	if (item) {
-	      itemview_launch_item (item, ITEMVIEW_LAUNCH_TAB);
+	      browser_launch_item (item, BROWSER_LAUNCH_TAB);
 	      item_unload (item);
 	}
 }
@@ -72,7 +71,7 @@ on_launch_item_in_external_browser (GSimpleAction *action, GVariant *parameter, 
 		item = itemlist_get_selected ();
 
 	if (item) {
-	      itemview_launch_item (item, ITEMVIEW_LAUNCH_EXTERNAL);
+	      browser_launch_item (item, BROWSER_LAUNCH_EXTERNAL);
 	      item_unload (item);
 	}
 }
@@ -117,7 +116,6 @@ on_remove_item (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 		item = itemlist_get_selected ();
 
 	if (item) {
-		itemview_select_item (NULL);
 		itemlist_remove_item (item);
 	} else {
 		liferea_shell_set_important_status_bar (_("No item has been selected"));
@@ -212,18 +210,19 @@ item_actions_update (gpointer obj, gchar *unused, gpointer user_data)
 }
 
 GActionGroup *
-item_actions_create (void)
+item_actions_create (LifereaShell *shell)
 {
         GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 
-	g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "itemlist"),
+	g_signal_connect (g_object_get_data (G_OBJECT (shell), "itemlist"),
                           "item-selected",
                           G_CALLBACK (item_actions_update), ag);
 
-        g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "feedlist"),
+        g_signal_connect (g_object_get_data (G_OBJECT (shell), "feedlist"),
                           "items-updated",
                           G_CALLBACK (item_actions_update), ag);
-	g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "feedlist"),
+			  
+	g_signal_connect (g_object_get_data (G_OBJECT (shell), "feedlist"),
                           "node-selected",
                           G_CALLBACK (item_actions_update), ag);
 

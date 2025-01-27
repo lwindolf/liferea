@@ -24,13 +24,17 @@
 
 #include <gtk/gtk.h>
 
+#include "ui/liferea_shell.h"
+
 /**
  * shell_actions_create: (skip)
+ * 
+ * @shell: the Liferea shell
  * 
  * Setup all shell actions
  * 
  * Returns: the new action group to be freed by the caller
  */
-GActionGroup * shell_actions_create (void);
+GActionGroup * shell_actions_create (LifereaShell *shell);
 
 #endif /* _SHELL_ACTIONS_H */

@@ -1,7 +1,7 @@
 /*
  * @file browser_tabs.c  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -377,10 +377,4 @@ browser_tabs_get_active_htmlview (void)
 
 	tab = g_object_get_data (G_OBJECT (gtk_notebook_get_nth_page (tabs->notebook, current)), "tabInfo");
 	return tab->htmlview;
-}
-
-void
-browser_tabs_do_zoom (gint zoom)
-{
-	liferea_browser_do_zoom (browser_tabs_get_active_htmlview (), zoom);
 }

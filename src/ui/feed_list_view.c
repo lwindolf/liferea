@@ -99,6 +99,97 @@ feed_list_view_init (FeedListView *f)
 {
 }
 
+// Handling feed list nodes
+
+GtkTreeIter *
+feed_list_view_to_iter (const gchar *nodeId)
+{
+	if (!flv->flIterHash)
+		return NULL;
+
+	return (GtkTreeIter *)g_hash_table_lookup (flv->flIterHash, (gpointer)nodeId);
+}
+
+void
+feed_list_view_update_iter (const gchar *nodeId, GtkTreeIter *iter)
+{
+	GtkTreeIter *old;
+
+	if (!flv->flIterHash)
+		return;
+
+	old = (GtkTreeIter *)g_hash_table_lookup (flv->flIterHash, (gpointer)nodeId);
+	if (old)
+		*old = *iter;
+}
+
+static void
+feed_list_view_add_iter (const gchar *nodeId, GtkTreeIter *iter)
+{
+	if (!flv->flIterHash)
+		flv->flIterHash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
+
+	g_hash_table_insert (flv->flIterHash, (gpointer)nodeId, (gpointer)iter);
+}
+
+/* Folder expansion workaround using "empty" nodes */
+
+static void
+feed_list_view_add_empty_node (GtkTreeIter *parent)
+{
+	GtkTreeIter	iter;
+
+	gtk_tree_store_append (flv->feedstore, &iter, parent);
+	gtk_tree_store_set (flv->feedstore, &iter,
+	                    FS_LABEL, _("(Empty)"),
+	                    FS_PTR, NULL,
+	                    FS_UNREAD, 0,
+			    FS_COUNT, "",
+	                    -1);
+}
+
+static void
+feed_list_view_remove_empty_node (GtkTreeIter *parent)
+{
+	GtkTreeIter	iter;
+	Node		*node;
+	gboolean	valid;
+
+	gtk_tree_model_iter_children (GTK_TREE_MODEL (flv->feedstore), &iter, parent);
+	do {
+		gtk_tree_model_get (GTK_TREE_MODEL (flv->feedstore), &iter, FS_PTR, &node, -1);
+
+		if (!node) {
+			gtk_tree_store_remove (flv->feedstore, &iter);
+			return;
+		}
+
+		valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (flv->feedstore), &iter);
+	} while (valid);
+}
+
+static void
+feed_list_view_set_expansion (Node *folder, gboolean expanded)
+{
+	GtkTreeIter		*iter;
+	GtkTreePath		*path;
+
+	if (flv->feedlist_reduced_unread)
+		return;
+
+	iter = feed_list_view_to_iter (folder->id);
+	if (!iter)
+		return;
+
+	path = gtk_tree_model_get_path (gtk_tree_view_get_model (flv->treeview), iter);
+	if (expanded)
+		gtk_tree_view_expand_row (flv->treeview, path, FALSE);
+	else
+		gtk_tree_view_collapse_row (flv->treeview, path);
+	gtk_tree_path_free (path);
+}
+
+
 static void
 feed_list_view_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
 {
@@ -295,14 +386,190 @@ feed_list_view_sort_folder (Node *folder)
 	feedlist_schedule_save ();
 }
 
+/* this function is a workaround to the cant-drop-rows-into-emtpy-
+   folders-problem, so we simply pack an "(empty)" entry into each
+   empty folder like Nautilus does... */
+
+static void
+feed_list_view_check_if_folder_is_empty (const gchar *nodeId)
+{
+	GtkTreeIter	*iter;
+	int		count;
+
+	debug (DEBUG_GUI, "folder empty check for node id \"%s\"", nodeId);
+
+	/* this function does two things:
+
+	1. add "(empty)" entry to an empty folder
+	2. remove an "(empty)" entry from a non empty folder
+	(this state is possible after a drag&drop action) */
+
+	iter = feed_list_view_to_iter (nodeId);
+	if (!iter)
+		return;
+
+	count = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (flv->feedstore), iter);
+
+	/* case 1 */
+	if (0 == count) {
+		feed_list_view_add_empty_node (iter);
+		return;
+	}
+
+	if (1 == count)
+		return;
+
+	/* else we could have case 2 */
+	feed_list_view_remove_empty_node (iter);
+}
+
+static void
+feed_list_view_node_updated (FeedListView *flv, const gchar *nodeId)
+{
+	GtkTreeIter	*iter;
+	gchar		*label, *count = NULL;
+	guint		labeltype;
+	Node		*node;
+	static		gchar *countColor = NULL;
+
+	/* Until GTK3 we used real theme colors here. Nowadays GTK simply knows
+	   that we do not need to know about them and helpfully prevents us from
+	   accessing them. So we use hard-coded colors that hopefully fit all the 
+	   themes out there. 
+	
+	   And yes of course with to much time on my hand I could implement
+	   my own renderer widget... */
+	if (conf_get_dark_theme ())
+		countColor = "foreground='#ddd' background='#444'";
+	else
+		countColor = "foreground='#fff' background='#aaa'";
+
+	node = node_from_id (nodeId);
+	iter = feed_list_view_to_iter (nodeId);
+	if (!iter)
+		return;
+
+	labeltype = NODE_PROVIDER (node)->capabilities;
+	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+        	      NODE_CAPABILITY_SHOW_ITEM_COUNT);
+
+	if (node->unreadCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
+		labeltype &= ~NODE_CAPABILITY_SHOW_UNREAD_COUNT;
+
+	label = g_markup_escape_text (node_get_title (node), -1);
+	switch (labeltype) {
+		case NODE_CAPABILITY_SHOW_UNREAD_COUNT |
+		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
+	     		/* treat like show unread count */
+		case NODE_CAPABILITY_SHOW_UNREAD_COUNT:
+			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor, node->unreadCount);
+			break;
+		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
+			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor, node->itemCount);
+		     	break;
+		default:
+			break;
+	}
+
+	if (IS_VFOLDER (node) && node->data) {
+		/* Extra message for search folder rebuilds */
+		if (((vfolderPtr)node->data)->reloading) {
+			gchar *tmp = label;
+			label = g_strdup_printf (_("%s\n<i>Rebuilding</i>"), label);
+			g_free (tmp);
+		}
+	}
+
+	gtk_tree_store_set (flv->feedstore, iter,
+	                    FS_LABEL, label,
+	                    FS_UNREAD, node->unreadCount,
+	                    FS_ICON, node->available?node_get_icon (node):icon_get (ICON_UNAVAILABLE),
+	                    FS_COUNT, count,
+	                    -1);
+	g_free (label);
+	g_free (count);
+
+	if (node->parent)
+		feed_list_view_node_updated (flv, node->parent->id);
+}
+
+static void
+feed_list_view_node_removed (FeedListView *flv, gpointer userdata)
+{
+	Node		*node = (Node *)userdata;
+	GtkTreeIter	*iter;
+	gboolean 	parentExpanded = FALSE;
+
+	iter = feed_list_view_to_iter (node->id);
+	if (!iter)
+		return;	/* must be tolerant because of DnD handling */
+
+	if (node->parent)
+		parentExpanded = feed_list_view_is_expanded (node->parent->id); /* If the folder becomes empty, the folder would collapse */
+
+	gtk_tree_store_remove (flv->feedstore, iter);
+	g_hash_table_remove (flv->flIterHash, node->id);
+
+	if (node->parent) {
+		feed_list_view_check_if_folder_is_empty (node->parent->id);
+		if (parentExpanded)
+			feed_list_view_set_expansion (node->parent, TRUE);
+		feed_list_view_node_updated (flv, userdata);
+	}
+}
+
+static void
+feed_list_view_node_added (FeedListView *flv, gpointer userdata)
+{
+	Node		*node = node_from_id ((gchar *)userdata);
+	gint		position;
+	GtkTreeIter	*iter, *parentIter = NULL;
+
+	debug (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != node->parent)?node_get_title(node->parent):"feed list root");
+
+	g_assert (NULL != node->parent);
+	g_assert (NULL == feed_list_view_to_iter (node->id));
+
+	/* if parent is NULL we have the root folder and don't create a new row! */
+	iter = g_new0 (GtkTreeIter, 1);
+
+	/* if reduced feedlist, show flat treeview */
+	if (flv->feedlist_reduced_unread)
+		parentIter = NULL;
+	else if (node->parent != feedlist_get_root ())
+		parentIter = feed_list_view_to_iter (node->parent->id);
+
+	position = g_slist_index (node->parent->children, node);
+
+	if (flv->feedlist_reduced_unread || position < 0)
+		gtk_tree_store_append (flv->feedstore, iter, parentIter);
+	else
+		gtk_tree_store_insert (flv->feedstore, iter, parentIter, position);
+
+	gtk_tree_store_set (flv->feedstore, iter, FS_PTR, node, -1);
+	feed_list_view_add_iter (node->id, iter);
+	feed_list_view_node_updated (flv, node->id);
+
+	if (node->parent != feedlist_get_root ())
+		feed_list_view_check_if_folder_is_empty (node->parent->id);
+
+	if (IS_FOLDER (node))
+		feed_list_view_check_if_folder_is_empty (node->id);
+}
+
+static void
+feed_list_view_node_selected (FeedListView *flv, gpointer userdata)
+{
+	g_warning ("feed_list_view_node_selected not implemented");
+}
+
 FeedListView *
-feed_list_view_create (GtkTreeView *treeview)
+feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
 {
 	GtkCellRenderer		*titleRenderer, *countRenderer;
 	GtkCellRenderer		*iconRenderer;
 	GtkTreeViewColumn 	*column, *column2;
 	GtkTreeSelection	*select;
-
 
 	/* Set up store */
 	g_assert (NULL == flv);
@@ -372,6 +639,14 @@ feed_list_view_create (GtkTreeView *treeview)
 
 	ui_dnd_setup_feedlist (flv->feedstore);
 
+	/* For performance prevent selection signals when filling the feed list
+	   will be enabled when LifereaShell setup is finished */
+	gtk_widget_set_sensitive (GTK_WIDGET (flv->treeview), FALSE);
+
+	g_signal_connect (feedlist, "node-added", G_CALLBACK (feed_list_view_node_added), flv);
+	g_signal_connect (feedlist, "node-removed", G_CALLBACK (feed_list_view_node_removed), flv);
+	g_signal_connect (feedlist, "node-selected", G_CALLBACK (feed_list_view_node_selected), flv);
+	g_signal_connect (feedlist, "node-updated", G_CALLBACK (feed_list_view_node_updated), flv);
 
 	return flv;
 }
@@ -391,7 +666,9 @@ feed_list_view_select (Node *node)
 			if (valid)
 				path = gtk_tree_model_get_path (model, &iter);
 		} else {
-			path = gtk_tree_model_get_path (model, feed_list_view_to_iter (node->id));
+			GtkTreeIter *iter = feed_list_view_to_iter (node->id);
+			if (iter)
+				path = gtk_tree_model_get_path (model, iter);
 		}
 
 		if (node->parent)
@@ -406,39 +683,6 @@ feed_list_view_select (Node *node)
 		GtkTreeSelection *selection = gtk_tree_view_get_selection (flv->treeview);
 		gtk_tree_selection_unselect_all (selection);
 	}
-}
-
-// Handling feed list nodes
-
-GtkTreeIter *
-feed_list_view_to_iter (const gchar *nodeId)
-{
-	if (!flv->flIterHash)
-		return NULL;
-
-	return (GtkTreeIter *)g_hash_table_lookup (flv->flIterHash, (gpointer)nodeId);
-}
-
-void
-feed_list_view_update_iter (const gchar *nodeId, GtkTreeIter *iter)
-{
-	GtkTreeIter *old;
-
-	if (!flv->flIterHash)
-		return;
-
-	old = (GtkTreeIter *)g_hash_table_lookup (flv->flIterHash, (gpointer)nodeId);
-	if (old)
-		*old = *iter;
-}
-
-static void
-feed_list_view_add_iter (const gchar *nodeId, GtkTreeIter *iter)
-{
-	if (!flv->flIterHash)
-		flv->flIterHash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
-
-	g_hash_table_insert (flv->flIterHash, (gpointer)nodeId, (gpointer)iter);
 }
 
 /* Expansion & Collapsing */
@@ -462,138 +706,6 @@ feed_list_view_is_expanded (const gchar *nodeId)
 	return expanded;
 }
 
-void
-feed_list_view_set_expansion (Node *folder, gboolean expanded)
-{
-	GtkTreeIter		*iter;
-	GtkTreePath		*path;
-
-	if (flv->feedlist_reduced_unread)
-		return;
-
-	iter = feed_list_view_to_iter (folder->id);
-	if (!iter)
-		return;
-
-	path = gtk_tree_model_get_path (gtk_tree_view_get_model (flv->treeview), iter);
-	if (expanded)
-		gtk_tree_view_expand_row (flv->treeview, path, FALSE);
-	else
-		gtk_tree_view_collapse_row (flv->treeview, path);
-	gtk_tree_path_free (path);
-}
-
-/* Folder expansion workaround using "empty" nodes */
-
-void
-feed_list_view_add_empty_node (GtkTreeIter *parent)
-{
-	GtkTreeIter	iter;
-
-	gtk_tree_store_append (flv->feedstore, &iter, parent);
-	gtk_tree_store_set (flv->feedstore, &iter,
-	                    FS_LABEL, _("(Empty)"),
-	                    FS_PTR, NULL,
-	                    FS_UNREAD, 0,
-			    FS_COUNT, "",
-	                    -1);
-}
-
-void
-feed_list_view_remove_empty_node (GtkTreeIter *parent)
-{
-	GtkTreeIter	iter;
-	Node		*node;
-	gboolean	valid;
-
-	gtk_tree_model_iter_children (GTK_TREE_MODEL (flv->feedstore), &iter, parent);
-	do {
-		gtk_tree_model_get (GTK_TREE_MODEL (flv->feedstore), &iter, FS_PTR, &node, -1);
-
-		if (!node) {
-			gtk_tree_store_remove (flv->feedstore, &iter);
-			return;
-		}
-
-		valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (flv->feedstore), &iter);
-	} while (valid);
-}
-
-/* this function is a workaround to the cant-drop-rows-into-emtpy-
-   folders-problem, so we simply pack an "(empty)" entry into each
-   empty folder like Nautilus does... */
-
-static void
-feed_list_view_check_if_folder_is_empty (const gchar *nodeId)
-{
-	GtkTreeIter	*iter;
-	int		count;
-
-	debug (DEBUG_GUI, "folder empty check for node id \"%s\"", nodeId);
-
-	/* this function does two things:
-
-	1. add "(empty)" entry to an empty folder
-	2. remove an "(empty)" entry from a non empty folder
-	(this state is possible after a drag&drop action) */
-
-	iter = feed_list_view_to_iter (nodeId);
-	if (!iter)
-		return;
-
-	count = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (flv->feedstore), iter);
-
-	/* case 1 */
-	if (0 == count) {
-		feed_list_view_add_empty_node (iter);
-		return;
-	}
-
-	if (1 == count)
-		return;
-
-	/* else we could have case 2 */
-	feed_list_view_remove_empty_node (iter);
-}
-
-void
-feed_list_view_add_node (Node *node)
-{
-	gint		position;
-	GtkTreeIter	*iter, *parentIter = NULL;
-
-	debug (DEBUG_GUI, "adding node \"%s\" as child of parent=\"%s\"", node_get_title(node), (NULL != node->parent)?node_get_title(node->parent):"feed list root");
-
-	g_assert (NULL != node->parent);
-	g_assert (NULL == feed_list_view_to_iter (node->id));
-
-	/* if parent is NULL we have the root folder and don't create a new row! */
-	iter = g_new0 (GtkTreeIter, 1);
-
-	/* if reduced feedlist, show flat treeview */
-	if (flv->feedlist_reduced_unread)
-		parentIter = NULL;
-	else if (node->parent != feedlist_get_root ())
-		parentIter = feed_list_view_to_iter (node->parent->id);
-
-	position = g_slist_index (node->parent->children, node);
-
-	if (flv->feedlist_reduced_unread || position < 0)
-		gtk_tree_store_append (flv->feedstore, iter, parentIter);
-	else
-		gtk_tree_store_insert (flv->feedstore, iter, parentIter, position);
-
-	gtk_tree_store_set (flv->feedstore, iter, FS_PTR, node, -1);
-	feed_list_view_add_iter (node->id, iter);
-	feed_list_view_update_node (node->id);
-
-	if (node->parent != feedlist_get_root ())
-		feed_list_view_check_if_folder_is_empty (node->parent->id);
-
-	if (IS_FOLDER (node))
-		feed_list_view_check_if_folder_is_empty (node->id);
-}
-
 static void
 feed_list_view_load_feedlist (Node *node)
 {
@@ -602,7 +714,7 @@ feed_list_view_load_feedlist (Node *node)
 	iter = node->children;
 	while (iter) {
 		node = (Node *)iter->data;
-		feed_list_view_add_node (node);
+		feed_list_view_node_added (flv, node);
 
 		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
 			feed_list_view_load_feedlist (node);
@@ -625,100 +737,6 @@ feed_list_view_reload_feedlist ()
 	feed_list_view_load_feedlist (feedlist_get_root ());
 }
 
-void
-feed_list_view_remove_node (Node *node)
-{
-	GtkTreeIter	*iter;
-	gboolean 	parentExpanded = FALSE;
-
-	iter = feed_list_view_to_iter (node->id);
-	if (!iter)
-		return;	/* must be tolerant because of DnD handling */
-
-	if (node->parent)
-		parentExpanded = feed_list_view_is_expanded (node->parent->id); /* If the folder becomes empty, the folder would collapse */
-
-	gtk_tree_store_remove (flv->feedstore, iter);
-	g_hash_table_remove (flv->flIterHash, node->id);
-
-	if (node->parent) {
-		feed_list_view_check_if_folder_is_empty (node->parent->id);
-		if (parentExpanded)
-			feed_list_view_set_expansion (node->parent, TRUE);
-		feed_list_view_update_node (node->parent->id);
-	}
-}
-
-void
-feed_list_view_update_node (const gchar *nodeId)
-{
-	GtkTreeIter	*iter;
-	gchar		*label, *count = NULL;
-	guint		labeltype;
-	Node		*node;
-	static		gchar *countColor = NULL;
-
-	/* Until GTK3 we used real theme colors here. Nowadays GTK simply knows
-	   that we do not need to know about them and helpfully prevents us from
-	   accessing them. So we use hard-coded colors that hopefully fit all the 
-	   themes out there. 
-	
-	   And yes of course with to much time on my hand I could implement
-	   my own renderer widget... */
-	if (conf_get_dark_theme ())
-		countColor = "foreground='#ddd' background='#444'";
-	else
-		countColor = "foreground='#fff' background='#aaa'";
-
-	node = node_from_id (nodeId);
-	iter = feed_list_view_to_iter (nodeId);
-	if (!iter)
-		return;
-
-	labeltype = NODE_PROVIDER (node)->capabilities;
-	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
-        	      NODE_CAPABILITY_SHOW_ITEM_COUNT);
-
-	if (node->unreadCount == 0 && (labeltype & NODE_CAPABILITY_SHOW_UNREAD_COUNT))
-		labeltype &= ~NODE_CAPABILITY_SHOW_UNREAD_COUNT;
-
-	label = g_markup_escape_text (node_get_title (node), -1);
-	switch (labeltype) {
-		case NODE_CAPABILITY_SHOW_UNREAD_COUNT |
-		     NODE_CAPABILITY_SHOW_ITEM_COUNT:
-	     		/* treat like show unread count */
-		case NODE_CAPABILITY_SHOW_UNREAD_COUNT:
-			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor, node->unreadCount);
-			break;
-		case NODE_CAPABILITY_SHOW_ITEM_COUNT:
-			count = g_strdup_printf ("<span weight='bold' %s> %u </span>", countColor, node->itemCount);
-		     	break;
-		default:
-			break;
-	}
-
-	if (IS_VFOLDER (node) && node->data) {
-		/* Extra message for search folder rebuilds */
-		if (((vfolderPtr)node->data)->reloading) {
-			gchar *tmp = label;
-			label = g_strdup_printf (_("%s\n<i>Rebuilding</i>"), label);
-			g_free (tmp);
-		}
-	}
-
-	gtk_tree_store_set (flv->feedstore, iter,
-	                    FS_LABEL, label,
-	                    FS_UNREAD, node->unreadCount,
-	                    FS_ICON, node->available?node_get_icon (node):icon_get (ICON_UNAVAILABLE),
-	                    FS_COUNT, count,
-	                    -1);
-	g_free (label);
-	g_free (count);
-
-	if (node->parent)
-		feed_list_view_update_node (node->parent->id);
-}
-
 /* node renaming dialog */
 
 static void
@@ -729,7 +747,7 @@ on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 	if (response_id == GTK_RESPONSE_OK) {
 		node_set_title (node, liferea_dialog_entry_get(GTK_WIDGET (dialog), "nameentry"));
 
-		feed_list_view_update_node (node->id);
+		feed_list_view_node_updated (flv, node->id);
 		feedlist_schedule_save ();
 	}
 }
@@ -827,4 +845,10 @@ feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription,
 
 	g_signal_connect (G_OBJECT (dialog), "response",
 					  G_CALLBACK (feed_list_view_add_duplicate_url_cb), tempSubscription);
+}
+
+void
+feed_list_view_reparent (Node *node) {
+	feed_list_view_node_removed (flv, node);
+	feed_list_view_node_added (flv, node);
 }

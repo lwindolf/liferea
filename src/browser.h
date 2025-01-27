@@ -23,6 +23,8 @@
 
 #include <glib.h>
 
+#include "item.h"
+
 /**
  * Function to execute the commands needed to open up a URL with the
  * browser specified in the preferences.
@@ -33,5 +35,32 @@
  */
 
 gboolean browser_launch_URL_external (const gchar *uri);
+
+/**
+ * browser_launch_URL:
+ * @url:	        the link to load
+ * @internal:	TRUE if internal browsing is to be enforced
+ *
+ * Launch the given URL in the currently active HTML view.
+ *
+ */
+void browser_launch_URL (const gchar *url, gboolean internal);
+
+
+typedef enum {
+	BROWSER_LAUNCH_DEFAULT,
+	BROWSER_LAUNCH_INTERNAL,
+	BROWSER_LAUNCH_TAB,
+	BROWSER_LAUNCH_EXTERNAL
+} open_link_target_type;
+
+/**
+ * browser_launch_item:
+ * @item:		the item to launch
+ * @open_link_target:	the target to open the link in
+ *
+ * Launches the item in the given target.
+ */
+void browser_launch_item (itemPtr item, open_link_target_type open_link_target);
 
 #endif

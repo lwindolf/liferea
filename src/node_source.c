@@ -571,8 +571,6 @@ node_source_remove (Node *node)
 
 	if (NULL != NODE_SOURCE_TYPE (node)->source_delete)
 		NODE_SOURCE_TYPE (node)->source_delete (node);
-
-	feed_list_view_remove_node (node);
 }
 
 static void

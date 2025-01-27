@@ -34,7 +34,6 @@
 #include "subscription_icon.h"
 #include "ui/auth_dialog.h"
 #include "ui/feed_list_view.h"
-#include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 
 /* The allowed feed protocol prefixes (see http://25hoursaday.com/draft-obasanjo-feed-URI-scheme-02.html) */
@@ -242,14 +241,8 @@ subscription_process_update_result (const UpdateResult * const result, gpointer 
 	update_state_set_etag (subscription->updateState, update_state_get_etag (result->updateState));
 	subscription->updateState->lastPoll = g_get_real_time();
 
-	// FIXME: use signal here
-	itemview_update_node_info (subscription->node);
-	itemview_update ();
-
 	db_subscription_update (subscription);
 	db_node_update (subscription->node);
-
-	feed_list_view_update_node (node->id);	// FIXME: This should be dropped once the "node-updated" signal is consumed
 
 	if (processing && subscription->node->newCount > 0) {
 		// FIXME: use new-items signal in itemview class

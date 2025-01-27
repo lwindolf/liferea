@@ -12,30 +12,30 @@
     <file compressed="true">node.xml</file>
     <file compressed="true">i18n-filter.xslt</file>
   </gresource>
-  <gresource prefix="/org/gnome/liferea/ui">
-    <file compressed="true">about.ui</file>
-    <file compressed="true">auth.ui</file>
-    <file compressed="true">google_source.ui</file>
-    <file compressed="true">liferea_menu.ui</file>
-    <file compressed="true">liferea_headerbar.ui</file>
-    <file compressed="true">mainwindow.ui</file>
-    <file compressed="true">mark_read_dialog.ui</file>
-    <file compressed="true">new_folder.ui</file>
-    <file compressed="true">new_newsbin.ui</file>
-    <file compressed="true">new_subscription.ui</file>
-    <file compressed="true">node_source.ui</file>
-    <file compressed="true">opml_source.ui</file>
-    <file compressed="true">prefs.ui</file>
-    <file compressed="true">properties.ui</file>
-    <file compressed="true">reedah_source.ui</file>
-    <file compressed="true">rename_node.ui</file>
-    <file compressed="true">search_folder.ui</file>
-    <file compressed="true">search.ui</file>
-    <file compressed="true">simple_search.ui</file>
-    <file compressed="true">simple_subscription.ui</file>
-    <file compressed="true">theoldreader_source.ui</file>
-    <file compressed="true">ttrss_source.ui</file>
-    <file compressed="true">update_monitor.ui</file>
+  <gresource prefix="/org/gnome/liferea">
+    <file compressed="true">ui/about.ui</file>
+    <file compressed="true">ui/auth.ui</file>
+    <file compressed="true">ui/google_source.ui</file>
+    <file compressed="true">ui/liferea_menu.ui</file>
+    <file compressed="true">ui/liferea_headerbar.ui</file>
+    <file compressed="true">ui/mainwindow.ui</file>
+    <file compressed="true">ui/mark_read_dialog.ui</file>
+    <file compressed="true">ui/new_folder.ui</file>
+    <file compressed="true">ui/new_newsbin.ui</file>
+    <file compressed="true">ui/new_subscription.ui</file>
+    <file compressed="true">ui/node_source.ui</file>
+    <file compressed="true">ui/opml_source.ui</file>
+    <file compressed="true">ui/prefs.ui</file>
+    <file compressed="true">ui/properties.ui</file>
+    <file compressed="true">ui/reedah_source.ui</file>
+    <file compressed="true">ui/rename_node.ui</file>
+    <file compressed="true">ui/search_folder.ui</file>
+    <file compressed="true">ui/search.ui</file>
+    <file compressed="true">ui/simple_search.ui</file>
+    <file compressed="true">ui/simple_subscription.ui</file>
+    <file compressed="true">ui/theoldreader_source.ui</file>
+    <file compressed="true">ui/ttrss_source.ui</file>
+    <file compressed="true">ui/update_monitor.ui</file>
   </gresource>
 </gresources>
 

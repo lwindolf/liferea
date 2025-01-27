@@ -138,11 +138,22 @@ void liferea_shell_copy_to_clipboard (const gchar *str);
 GtkWidget * liferea_shell_get_window (void);
 
 /**
- * liferea_shell_rebuild_css:
+ * liferea_shell_find_next_unread:
+ * @startId:	the item id to start at (or NULL for starting at the top)
  *
- * Invokes a rebuild of the WebView CSS.
+ * Finds the next unread item.
+ *
+ * Returns: (transfer none): the item found (or NULL)
  */
-void liferea_shell_rebuild_css (void);
+itemPtr liferea_shell_find_next_unread (gulong startId);
+
+/**
+ * liferea_shell_set_layout:
+ * @newMode:	new view mode (NODE_VIEW_MODE_*)
+ *
+ * Switches the layout for the given viewing mode.
+ */
+void liferea_shell_set_layout (nodeViewType newMode);
 
 G_END_DECLS
 

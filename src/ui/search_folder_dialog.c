@@ -24,7 +24,6 @@
 #include "itemlist.h"
 #include "node_providers/vfolder.h"
 #include "ui/feed_list_view.h"
-#include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
 #include "ui/rule_editor.h"
 
@@ -72,7 +71,6 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		sfd->vfolder->unreadOnly = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET (dialog), "hideReadItemsBtn")));
 
 		/* update search folder */
-		itemview_clear ();
 		vfolder_reset (sfd->vfolder);
 		itemlist_unload ();
 
@@ -80,7 +78,7 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		if (!sfd->node->parent)
 			feedlist_node_added (sfd->node);
 
-		feed_list_view_update_node (sfd->node->id);
+		feedlist_node_was_updated (sfd->node);
 
 		/* rebuild the search folder */
 		vfolder_rebuild (sfd->node);

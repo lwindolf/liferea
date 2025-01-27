@@ -27,7 +27,6 @@
 #include "net.h"
 #include "net_monitor.h"
 #include "update.h"
-#include "ui/itemview.h"
 
 /* Comment feeds in Liferea are simple flat lists of items attached
    to a single item. Each item that has a comment feed URL in its
@@ -168,10 +167,6 @@ comments_process_update_result (const UpdateResult * const result, gpointer user
 	update_state_free (commentFeed->updateState);
 	commentFeed->updateState = update_state_copy (result->updateState);
 
-	/* rerender item with new comments */
-	itemview_update_item (item);
-	itemview_update ();
-
 	item_unload (item);
 
 }
@@ -221,10 +216,6 @@ comments_refresh (itemPtr item)
 		);
 
 		commentFeed->updateJob = update_job_new (commentFeed, request, comments_process_update_result, commentFeed, UPDATE_REQUEST_PRIORITY_HIGH | UPDATE_REQUEST_NO_FEED);
-
-		/* Item view refresh to change link from "Update" to "Updating..." */
-		itemview_update_item (item);
-		itemview_update ();
 	}
 }
 

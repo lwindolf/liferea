@@ -192,11 +192,11 @@ on_dialog_response (GtkDialog *d, gint response_id, gpointer user_data)
 		else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "feedCacheUnlimited"))))
 			feed->cacheLimit = CACHE_UNLIMITED;
 		else if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "feedCacheLimited"))))
-			feed->cacheLimit = gtk_spin_button_get_value(GTK_SPIN_BUTTON (liferea_dialog_lookup (dialog, "cacheItemLimit")));
+			feed->cacheLimit = gtk_spin_button_get_value (GTK_SPIN_BUTTON (liferea_dialog_lookup (dialog, "cacheItemLimit")));
 
 		if (SUBSCRIPTION_TYPE (subscription) == feed_get_subscription_type ()) {
 			/* "Download" Options */
-			subscription->updateOptions->dontUseProxy = gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "dontUseProxyCheck")));
+			subscription->updateOptions->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (GTK_WIDGET(dialog), "dontUseProxyCheck")));
 		}
 
 		/* "Advanced" options */
@@ -207,8 +207,7 @@ on_dialog_response (GtkDialog *d, gint response_id, gpointer user_data)
 		feed->html5Extract    = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "html5ExtractCheck")));
 	}
 
-	feed_list_view_update_node (node->id);
-	feedlist_schedule_save ();
+	feedlist_node_was_updated (node);
 	db_subscription_update (subscription);
 	if (needsUpdate)
 		subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);

@@ -35,7 +35,6 @@
 #include "node_source.h"
 #include "ui/feed_list_view.h"
 #include "ui/liferea_dialog.h"
-#include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 
 /* action callbacks */
@@ -262,15 +261,15 @@ node_actions_update (gpointer obj, gchar *unused, gpointer user_data)
 }
 
 GActionGroup *
-node_actions_create (void)
+node_actions_create (LifereaShell *shell)
 {
 	gboolean toggle;
         GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 
-        g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "feedlist"),
+        g_signal_connect (g_object_get_data (G_OBJECT (shell), "feedlist"),
                           "items-updated",
                           G_CALLBACK (node_actions_update), ag);
-	g_signal_connect (g_object_get_data (G_OBJECT (liferea_shell_get_instance ()), "itemlist"),
+	g_signal_connect (g_object_get_data (G_OBJECT (shell), "itemlist"),
                           "item-updated",
                           G_CALLBACK (node_actions_update), ag);
 	g_signal_connect (liferea_shell_lookup ("feedlist"),

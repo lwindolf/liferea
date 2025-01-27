@@ -39,7 +39,6 @@
 #include "item.h"
 #include "itemlist.h"
 #include "item_state.h"
-#include "itemview.h"
 #include "node_providers/newsbin.h"
 #include "social.h"
 #include "xml.h"
@@ -707,7 +706,7 @@ on_item_list_row_activated (GtkTreeView *treeview,
 
 	if (gtk_tree_model_get_iter (model, &iter, path)) {
 		itemPtr item = item_load (item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter));
-		itemview_launch_item (item, ITEMVIEW_LAUNCH_DEFAULT);
+		browser_launch_item (item, BROWSER_LAUNCH_DEFAULT);
 		item_unload (item);
 	}
 }

@@ -32,7 +32,6 @@
 #include "node_providers/vfolder.h"
 #include "vfolder_loader.h"
 #include "ui/item_list_view.h"
-#include "ui/itemview.h"
 #include "ui/liferea_dialog.h"
 #include "ui/rule_editor.h"
 #include "ui/feed_list_view.h"

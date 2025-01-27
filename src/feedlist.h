@@ -1,7 +1,7 @@
 /*
  * @file feedlist.h  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,14 @@ G_DECLARE_FINAL_TYPE (FeedList, feedlist, FEED, LIST, GObject)
  *
  * Returns: (transfer full): the feed list instance
  */
-FeedList * feedlist_create (gpointer feedListView);
+FeedList * feedlist_create (void);
+
+/**
+ * feedlist_set_selected:
+ *
+ * @param node: the node to select
+ */
+void feedlist_set_selected (Node *node);
 
 /**
  * feedlist_get_selected:
@@ -49,6 +56,15 @@ FeedList * feedlist_create (gpointer feedListView);
  * Returns: (transfer none) (nullable): selected node (or NULL)
  */
 Node * feedlist_get_selected (void);
+
+/**
+ * feedlist_selection_changed:
+ *
+ * @param nodeId: the node id
+ * 
+ * To be used by LifereaShell as a signal handler for the feed list view.
+ */
+void feedlist_selection_changed (gchar * nodeId);
 
 /**
  * feedlist_get_unread_item_count:

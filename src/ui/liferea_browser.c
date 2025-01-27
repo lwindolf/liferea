@@ -45,7 +45,7 @@
 #include "net_monitor.h"
 #include "ui/browser_tabs.h"
 #include "ui/item_list_view.h"
-#include "ui/itemview.h"
+#include "ui/liferea_shell.h"
 #include "webkit/liferea_webkit.h"
 
 /* The LifereaBrowser is a complex widget used to present both internally
@@ -90,7 +90,8 @@ enum {
 
 enum {
 	PROP_NONE,
-	PROP_RENDER_WIDGET
+	PROP_RENDER_WIDGET,
+	PROP_ZOOM
 };
 
 /* LifereaBrowser toolbar callbacks */
@@ -178,9 +179,17 @@ static void
 liferea_browser_class_init (LifereaBrowserClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	gint zoom;
 
 	object_class->get_property = liferea_browser_get_property;
 	object_class->finalize = liferea_browser_finalize;
+
+	/* Load preferences */
+	conf_get_int_value (LAST_ZOOMLEVEL, &zoom);
+	if (zoom == 0) {
+		zoom = 100;
+		conf_set_int_value (LAST_ZOOMLEVEL, zoom);
+	}
 
 	/* LifereaBrowser:renderWidget: */
 	g_object_class_install_property (
@@ -192,6 +201,17 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 				"GtkWidget object",
 				GTK_TYPE_WIDGET,
 				G_PARAM_READABLE));
+
+	g_object_class_install_property (
+			object_class,
+			PROP_ZOOM,
+			g_param_spec_int (
+				"zoom",
+				"Zoom",
+				"Zoom level",
+				0, 10000, zoom,
+				G_PARAM_READWRITE));
+	g_warning ("FIXME: LifereaBrowser:zoom property is not implemented");
 
 	liferea_browser_signals[STATUSBAR_CHANGED] =
 		g_signal_new ("statusbar-changed",
@@ -299,6 +319,13 @@ liferea_browser_update_stylesheet (LifereaBrowser *browser)
 	liferea_webkit_reload_style (browser->renderWidget, userCSS, defaultCSS);
 }
 
+static void
+liferea_browser_statusbar_changed (gpointer obj, gchar *url)
+{
+	if (strstr (url, "liferea://") != url)
+		liferea_shell_set_important_status_bar ("%s", url);
+}
+
 LifereaBrowser *
 liferea_browser_new (gboolean forceInternalBrowsing)
 {
@@ -317,6 +344,9 @@ liferea_browser_new (gboolean forceInternalBrowsing)
 	g_signal_connect (network_monitor_get (), "proxy-changed",
 	                  G_CALLBACK (liferea_browser_proxy_changed),
 	                  browser);
+
+	g_signal_connect (browser, "statusbar-changed",
+	                  G_CALLBACK (liferea_browser_statusbar_changed), NULL);
 
 	debug (DEBUG_NET, "Setting initial HTML widget proxy...");
 	liferea_browser_proxy_changed (network_monitor_get (), browser);

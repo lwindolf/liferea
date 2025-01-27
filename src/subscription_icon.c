@@ -29,7 +29,6 @@
 #include "html.h"
 #include "metadata.h"
 #include "update.h"
-#include "ui/feed_list_view.h"
 
 #define ICON_DOWNLOAD_MAX_URLS	10
 
@@ -68,7 +67,7 @@ subscription_icon_downloaded (const gchar *id)
 	Node *node = node_from_id (id);
 
 	node_load_icon (node);
-	feed_list_view_update_node (id);
+	feedlist_node_was_updated (node);
 }
 
 static void

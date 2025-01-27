@@ -1,7 +1,7 @@
 /**
  * @file feed_list_view.h  the feed list in a GtkTreeView
  *
- * Copyright (C) 2004-2019 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
  * Copyright (C) 2005 Raphael Slinckx <raphael@slinckx.net>
  *
@@ -25,6 +25,7 @@
 
 #include <gtk/gtk.h>
 
+#include "feedlist.h"
 #include "node.h"
 #include "subscription.h"
 
@@ -56,10 +57,11 @@ void feed_list_view_select (Node *node);
  * Initializes the feed list. To be called only once.
  *
  * @treeview:	A treeview widget to use
+ * @feedlist:	The feed list to display
  *
  * Returns: new FeedListView
  */
-FeedListView * feed_list_view_create (GtkTreeView *treeview);
+FeedListView * feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist);
 
 /**
  * feed_list_view_sort_folder:
@@ -86,37 +88,9 @@ GtkTreeIter * feed_list_view_to_iter (const gchar *nodeId);
 void feed_list_view_update_iter (const gchar *nodeId, GtkTreeIter *iter);
 
 /**
- * Add a node to the feedlist tree view
- *
-s * @param node		the node to add
- */
-void feed_list_view_add_node (Node *node);
-
-/**
  * Reload the UI feedlist by removing and readding each node
  */
 void feed_list_view_reload_feedlist (void);
-
-/**
- * Remove a node from the feedlist and free its ui_data.
- *
- * @param node	the node to free
- */
-void feed_list_view_remove_node (Node *node);
-
-/**
- * Adds an "empty" node to the given tree iter.
- *
- * @param parent	a tree iter
- */
-void feed_list_view_add_empty_node (GtkTreeIter *parent);
-
-/**
- * Removes an "empty" node from the given tree iter.
- *
- * @param parent	a tree iter
- */
-void feed_list_view_remove_empty_node (GtkTreeIter *parent);
 
 /**
  * Determines the expansion state of a feed list tree node.
@@ -126,21 +100,6 @@ void feed_list_view_remove_empty_node (GtkTreeIter *parent);
  * @returns TRUE if the node is expanded
  */
 gboolean feed_list_view_is_expanded (const gchar *nodeId);
-
-/**
- * Change the expansion/collapsing of the given folder node.
- *
- * @param folder	the folder node
- * @param expanded	new expansion state
- */
-void feed_list_view_set_expansion (Node *folder, gboolean expanded);
-
-/**
- * Updates the tree view entry of the given node.
- *
- * @param nodeId	the node id
- */
-void feed_list_view_update_node (const gchar *nodeId);
 
 /**
  * Open dialog to rename a given node.
@@ -175,5 +134,13 @@ void feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscrip
  * Change reduced mode mode of the feed list view
  */
 void feed_list_view_set_reduce_mode (gboolean newReduceMode);
+
+/**
+ * feed_list_view_reparent:
+ * @node: the node to reparent
+ * 
+ * Reparent the given node in the feed list view.
+ */
+void feed_list_view_reparent (Node *node);
 
 #endif

@@ -322,8 +322,6 @@ feed_update_counters (Node *node)
 static void
 feed_remove (Node *node)
 {
-	feed_list_view_remove_node (node);
-
 	favicon_remove_from_cache (node->id);
 	db_subscription_remove (node->id);
 }

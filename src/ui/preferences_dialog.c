@@ -37,7 +37,6 @@
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
-#include "ui/itemview.h"
 
 /** common private structure for all subscription dialogs */
 struct _PreferencesDialog {
@@ -299,7 +298,7 @@ on_default_view_mode_changed (gpointer user_data)
 	gint 	mode = gtk_combo_box_get_active (GTK_COMBO_BOX (user_data));
 	
 	conf_set_int_value (DEFAULT_VIEW_MODE, mode);
-	itemview_set_layout (mode);
+	liferea_shell_set_layout (mode);
 }
 
 void

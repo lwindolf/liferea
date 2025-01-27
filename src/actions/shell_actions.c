@@ -30,6 +30,7 @@
 #include "debug.h"
 #include "export.h"
 #include "feedlist.h"
+#include "item.h"
 #include "item_history.h"
 #include "itemlist.h"
 #include "liferea_application.h"
@@ -42,7 +43,6 @@
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
-#include "ui/itemview.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
@@ -224,13 +224,8 @@ on_menu_fullscreen_activate (GSimpleAction *action, GVariant *parameter, gpointe
 static void
 liferea_shell_actions_do_zoom (gint zoom)
 {
-	/* We must apply the zoom either to the item view
-	   or to an open tab, depending on the browser tabs
-	   GtkNotebook page that is active... */
-	if (!browser_tabs_get_active_htmlview ())
-		itemview_do_zoom (zoom);
-	else
-		browser_tabs_do_zoom (zoom);
+	LifereaBrowser *htmlview = browser_tabs_get_active_htmlview ();
+	liferea_browser_do_zoom (htmlview, zoom);
 }
 
 static void
@@ -272,7 +267,7 @@ ui_popup_sort_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_d
 static void
 on_next_unread_item_activate (GSimpleAction *menuitem, GVariant*parameter, gpointer user_data)
 {
-	itemlist_select_next_unread ();
+	itemlist_set_selected (liferea_shell_find_next_unread (0));
 }
 
 static const GActionEntry gaction_entries[] = {
@@ -314,7 +309,7 @@ shell_actions_update_history (gpointer obj, gchar *unused, gpointer user_data)
 }
 
 GActionGroup *
-shell_actions_create (void)
+shell_actions_create (LifereaShell *shell)
 {
 	GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 

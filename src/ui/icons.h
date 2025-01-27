@@ -1,7 +1,7 @@
 /*
  * @file icons.h  Using icons from theme and package pixmaps
  *
- * Copyright (C) 2010-2013 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2010-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,16 +34,6 @@ typedef enum {
 	ICON_NEWSBIN,
 	MAX_ICONS
 } lifereaIcon;
-
-/**
- * icons_load: (skip)
- *
- * Load all icons from theme and Liferea pixmaps.
- *
- * Must be called once before icon_get() may be used!
- * Must be called only after GTK theme was initialized!
- */
-void icons_load (void);
 
 /**
  * icon_get:

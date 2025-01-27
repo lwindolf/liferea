@@ -97,7 +97,6 @@ liferea_sources = files(
   'ui/gedit-close-button.c',
   'ui/icons.c',
   'ui/item_list_view.c',
-  'ui/itemview.c',
   'ui/liferea_browser.c',
   'ui/liferea_dialog.c',
   'ui/liferea_shell.c',

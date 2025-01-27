@@ -24,11 +24,17 @@
 
 #include <gtk/gtk.h>
 
+#include "ui/liferea_shell.h"
+
 /**
+ * node_actions_create:
+ * 
+ * @shell: the Liferea shell
+ * 
  * Create a new action group for node actions.
  * 
  * Returns: a new action group, to be freed by caller
  */
-GActionGroup * node_actions_create (void);
+GActionGroup * node_actions_create (LifereaShell *shell);
 
 #endif /* NODE_ACTIONS_H */

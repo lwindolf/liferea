@@ -24,11 +24,17 @@
 
 #include <gtk/gtk.h>
 
+#include "ui/liferea_shell.h"
+
 /**
+ * item_actions_create: (skip)
+ * 
+ * @param shell the Liferea shell
+ *
  * Create a new action group for item actions.
  * 
  * Returns: a new action group, to be freed by caller
  */
-GActionGroup * item_actions_create (void);
+GActionGroup * item_actions_create (LifereaShell *shell);
 
 #endif /* ITEM_ACTIONS_H */

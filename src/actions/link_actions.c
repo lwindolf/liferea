@@ -25,14 +25,12 @@
 #include "common.h"
 #include "social.h"
 #include "ui/browser_tabs.h"
-#include "ui/itemview.h"
-#include "ui/liferea_shell.h"
 #include "ui/ui_common.h"
 
 static void
 on_open_link_in_browser (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	itemview_launch_URL (g_variant_get_string (parameter, NULL), TRUE /* use internal browser */);
+	browser_launch_URL (g_variant_get_string (parameter, NULL), TRUE /* use internal browser */);
 }
 
 static void
@@ -76,7 +74,7 @@ static const GActionEntry gaction_entries[] = {
 };
 
 GActionGroup *
-link_actions_create (void)
+link_actions_create (LifereaShell *shell)
 {
         GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 

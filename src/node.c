@@ -245,8 +245,8 @@ node_update_parent_counters (Node *node)
 	NODE_PROVIDER (node)->update_counters (node);
 
 	if (old != node->unreadCount) {
-		feed_list_view_update_node (node->id);
 		feedlist_new_items (0);	/* add 0 new items, as 'new-items' signal updates unread items also */
+		feedlist_node_was_updated (node);
 	}
 
 	if (node->parent)
@@ -264,7 +264,7 @@ node_update_counters (Node *node)
 
 	if ((oldUnreadCount != node->unreadCount) ||
 	    (oldItemCount != node->itemCount))
-		feed_list_view_update_node (node->id);
+		feedlist_node_was_updated (node);
 
 	/* Update the unread count of the parent nodes,
 	   usually they just add all child unread counters */
@@ -340,8 +340,7 @@ node_reparent (Node *node, Node *new_parent)
 	new_parent->children = g_slist_insert (new_parent->children, node, -1);
 	node->parent = new_parent;
 
-	feed_list_view_remove_node (node);
-	feed_list_view_add_node (node);
+	feed_list_view_reparent (node);
 }
 
 void

@@ -25,6 +25,9 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
+#include "item_state.h"
+#include "ui/browser_tabs.h"
+#include "ui/liferea_browser.h"
 #include "ui/liferea_shell.h"
 
 /**
@@ -127,4 +130,46 @@ browser_launch_URL_external (const gchar *uri)
 	}
 
 	return done;
+}
+
+void
+browser_launch_URL (const gchar *url, gboolean forceInternal)
+{
+	LifereaBrowser *htmlview = browser_tabs_get_active_htmlview ();
+
+	if (forceInternal)
+		liferea_browser_launch_URL_internal (htmlview, url);
+	else
+		/* URL was launched externally. */
+		liferea_browser_handle_URL (htmlview, url);
+}
+
+void
+browser_launch_item (itemPtr item, open_link_target_type open_link_target)
+{
+	if (item) {
+		gchar *link = item_make_link (item);
+
+		if (link) {
+			switch (open_link_target) {
+				case BROWSER_LAUNCH_DEFAULT:
+					browser_launch_URL (link, FALSE);
+					break;
+				case BROWSER_LAUNCH_INTERNAL:
+					browser_launch_URL (link, TRUE);
+					break;
+				case BROWSER_LAUNCH_TAB:
+					browser_tabs_add_new (link, link, FALSE);
+					break;
+				case BROWSER_LAUNCH_EXTERNAL:
+					browser_launch_URL_external (link);
+					break;
+			}
+
+			item_set_read_state (item, TRUE);
+			g_free (link);
+		} else
+			liferea_shell_set_important_status_bar (_("This item has no link specified!"));
+
+	}
 }

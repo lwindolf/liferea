@@ -1,7 +1,7 @@
 /*
  * @file browser_tabs.h  internal browsing using multiple tabs
  *
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2006 Nathan Conrad <conrad@bungled.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -68,14 +68,6 @@ void browser_tabs_show_headlines (void);
  * Returns: (transfer none) (nullable): HTML view widget
  */
 LifereaBrowser * browser_tabs_get_active_htmlview (void);
-
-/**
- * browser_tabs_do_zoom:
- * @zoom:	1 for zoom in, -1 for zoom out, 0 for reset
- *
- * Requests the tab to change zoom level.
- */
-void browser_tabs_do_zoom (gint zoom);
 
 G_END_DECLS
 

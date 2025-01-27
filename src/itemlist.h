@@ -73,6 +73,13 @@ ItemList * itemlist_create (void);
 Node * itemlist_get_displayed_node (void);
 
 /**
+ * itemlist_set_selected: (skip)
+ *
+ * @param item: the item
+ */
+void itemlist_set_selected (itemPtr item);
+
+/**
  * itemlist_get_selected: (skip)
  *
  * Returns the currently selected and displayed item.
@@ -172,7 +179,7 @@ void itemlist_remove_all_items (Node *node);
  * itemlist_selection_changed: (skip)
  * @item:	new selected item 
  *
- * Called from GUI when item list selection changes.
+ * To be used by LifereaShell as a signal handler for the item list view.
  */
 void itemlist_selection_changed (itemPtr item);
 

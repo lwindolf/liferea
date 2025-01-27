@@ -31,7 +31,6 @@
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
 #include "ui/item_list_view.h"
-#include "ui/itemview.h"
 #include "web_extension/liferea_web_extension_names.h"
 
 struct _LifereaWebView {

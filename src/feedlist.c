@@ -1,7 +1,7 @@
 /*
  * @file feedlist.c  subscriptions as an hierarchic tree
  *
- * Copyright (C) 2005-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -33,11 +33,8 @@
 #include "node_providers/feed.h"
 #include "node_providers/folder.h"
 #include "node_providers/vfolder.h"
-#include "node_source.h"
+#include "node_source.h" 
 #include "update.h"
-#include "ui/feed_list_view.h"
-#include "ui/itemview.h"
-#include "ui/liferea_shell.h"
 #include "ui/feed_list_view.h"
 
 static void feedlist_save	(void);
@@ -59,9 +56,12 @@ struct _FeedList {
 };
 
 enum {
-	NEW_ITEMS,	/*<< node has new items after update */
-	NODE_UPDATED,	/*<< node display info (title, unread count) has changed */
-	ITEMS_UPDATED,	/*<< all items were updated (i.e. marked all read) */
+	NEW_ITEMS,		/*<< node has new items after update */
+	ITEMS_UPDATED,		/*<< all items were updated (i.e. marked all read) */
+	NODE_UPDATED,		/*<< node display info (title, unread count) has changed */
+	NODE_SELECTED,		/*<< the selected node has changed */
+	NODE_ADDED,		/*<< a new node was added */
+	NODE_REMOVED,		/*<< a node was removed */
 	LAST_SIGNAL
 };
 
@@ -155,6 +155,42 @@ feedlist_class_init (FeedListClass *klass)
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
+	
+	feedlist_signals[NODE_SELECTED] =
+		g_signal_new ("node-selected",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__POINTER,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
+
+	feedlist_signals[NODE_ADDED] =
+		g_signal_new ("node-added",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__POINTER,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
+
+	feedlist_signals[NODE_REMOVED] =
+		g_signal_new ("node-removed",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__POINTER,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_STRING);
 }
 
 static gboolean
@@ -173,21 +209,19 @@ feedlist_auto_update (void *data)
 static void
 on_network_status_changed (gpointer instance, gboolean online, gpointer data)
 {
-	if (online) feedlist_auto_update (NULL);
+	if (online)
+		feedlist_auto_update (NULL);
 }
 
 /* This method is used to initialize the node states in the feed list */
 static void
 feedlist_init_node (Node *node)
 {
-	if (node->expanded)
-		feed_list_view_set_expansion (node, TRUE);
-
 	if (node->subscription)
 		db_subscription_load (node->subscription);
 
 	node_update_counters (node);
-	feed_list_view_update_node (node->id);	/* Necessary to initially set folder unread counters */
+	g_signal_emit_by_name (feedlist, "node-updated", node->id); /* Necessary to initially set folder unread counters */
 
 	node_foreach_child (node, feedlist_init_node);
 }
@@ -252,6 +286,30 @@ Node *
 feedlist_get_selected (void)
 {
 	return SELECTED;
+}
+
+void
+feedlist_set_selected (Node *node)
+{
+	if (node != SELECTED) {
+		debug (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
+
+		/* When the user selects a feed in the feed list we
+		   assume that he got notified of the new items or
+		   isn't interested in the event anymore... */
+		if (0 != feedlist->newCount)
+			feedlist_reset_new_item_count ();
+
+		/* Unload visible items. */
+		itemlist_unload ();
+		if (SELECTED)
+			itemlist_load (SELECTED);
+
+		g_signal_emit_by_name (feedlist, "node-selected", SELECTED->id);
+
+	} else {
+		debug (DEBUG_GUI, "selected node stayed: %s", node?node_get_title (node):"none");
+	}
 }
 
 static Node *
@@ -331,7 +389,7 @@ feedlist_update_node_counters (Node *node)
 	node_update_counters (node);	/* update with parent propagation */
 
 	if (node->needsUpdate)
-		feed_list_view_update_node (node->id);
+		g_signal_emit_by_name (feedlist, "node-updated", node->id);
 	if (node->children)
 		node_foreach_child (node, feedlist_update_node_counters);
 }
@@ -344,17 +402,12 @@ feedlist_mark_all_read (Node *node)
 
 	feedlist_reset_new_item_count ();
 
-	if (!IS_FEED (node))
-		itemview_select_item (NULL);
-
 	if (node != ROOTNODE)
 		node_mark_all_read (node);
 	else
 		node_foreach_child (ROOTNODE, node_mark_all_read);
 
 	feedlist_foreach (feedlist_update_node_counters);
-	itemview_update_all_items ();
-	itemview_update ();
 
 	g_signal_emit_by_name (feedlist, "items-updated", node->id);
 }
@@ -432,7 +485,7 @@ feedlist_add_subscription_check_duplicate(const gchar *source, const gchar *filt
 void
 feedlist_node_imported (Node *node)
 {
-	feed_list_view_add_node (node);
+	g_signal_emit_by_name (feedlist, "node-added", node->id);
 
 	feedlist_schedule_save ();
 }
@@ -458,8 +511,6 @@ feedlist_node_added (Node *node)
 	db_node_update (node);
 
 	feedlist_node_imported (node);
-
-	feed_list_view_select (node);
 }
 
 void
@@ -480,9 +531,8 @@ feedlist_node_removed (Node *node)
 	/* First remove all children */
 	node_foreach_child (node, feedlist_node_removed);
 
+	g_signal_emit_by_name (feedlist, "node-removed", node->id);
 	node_remove (node);
-
-	feed_list_view_remove_node (node);
 
 	node->parent->children = g_slist_remove (node->parent->children, node);
 
@@ -544,45 +594,17 @@ static void
 feedlist_unselect (void)
 {
 	SELECTED = NULL;
-
-	itemview_set_displayed_node (NULL);
-	itemview_update ();
-
-	itemlist_unload ();
-	feed_list_view_select (NULL);
 }
 
-static void
-feedlist_selection_changed (gpointer obj, gchar * nodeId, gpointer data)
+void
+feedlist_selection_changed (gchar * nodeId)
 {
-
 	Node *node = node_from_id (nodeId);
 	if (node) {
-		if (node != SELECTED) {
-			debug (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
-
-			/* When the user selects a feed in the feed list we
-			   assume that he got notified of the new items or
-			   isn't interested in the event anymore... */
-			if (0 != feedlist->newCount)
-				feedlist_reset_new_item_count ();
-
-			/* Unload visible items. */
-			itemlist_unload ();
-
-			/* Load items of new selected node. */
-			SELECTED = node;
-			if (SELECTED)
-				itemlist_load (SELECTED);
-			else
-				itemview_clear ();
-		} else {
-			debug (DEBUG_GUI, "selected node stayed: %s", node?node_get_title (node):"none");
-		}
+		feedlist_set_selected (node);
 	} else {
 		debug (DEBUG_GUI, "failed to resolve node id: %s", nodeId);
 	}
-
 }
 
 static gboolean
@@ -641,7 +663,7 @@ feedlist_node_was_updated (Node *node)
 	node_update_counters (node);
 	feedlist_schedule_save ();
 
-	g_signal_emit_by_name (feedlist, "node-updated", node->title);
+	g_signal_emit_by_name (feedlist, "node-updated", node->id);
 }
 
 /* This method is only to be used when exiting the program! */
@@ -661,11 +683,7 @@ feedlist_reset_update_counters (Node *node)
 }
 
 FeedList *
-feedlist_create (gpointer flv)
+feedlist_create (void)
 {
-	FeedList *fl = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
-
-	g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), fl);
-
-	return fl;
+	return FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
 }

@@ -21,6 +21,7 @@
 #include <string.h>
 #include <glib.h>
 
+#include "browser.h"
 #include "comments.h"
 #include "common.h"
 #include "conf.h"
@@ -37,8 +38,6 @@
 #include "node.h"
 #include "node_providers/vfolder.h"
 #include "rule.h"
-#include "ui/item_list_view.h"
-#include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/feed_list_view.h"
 
@@ -72,6 +71,7 @@ struct ItemListPrivate
 
 enum {
 	ITEM_UPDATED,	/*<< state of a currently visible item has changed */
+	ITEM_REMOVED,	/*<< an item has been removed from the list */
 	ITEM_SELECTED,	/*<< the currently selected item has changed */
 	LAST_SIGNAL
 };
@@ -158,9 +158,21 @@ itemlist_class_init (ItemListClass *klass)
 		g_cclosure_marshal_VOID__STRING,
 		G_TYPE_NONE,
 		1,
-		G_TYPE_STRING);
+		G_TYPE_INT);
 
-	itemlist_signals[ITEM_UPDATED] =
+	itemlist_signals[ITEM_REMOVED] =
+		g_signal_new ("item-removed",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__STRING,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_INT);
+
+	itemlist_signals[ITEM_SELECTED] =
 		g_signal_new ("item-selected",
 		G_OBJECT_CLASS_TYPE (object_class),
 		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
@@ -168,7 +180,7 @@ itemlist_class_init (ItemListClass *klass)
 		NULL,
 		NULL,
 		g_cclosure_marshal_VOID__VOID,
-		G_TYPE_NONE,
+		G_TYPE_INT,
 		0);
 }
 
@@ -186,10 +198,11 @@ itemlist_get_selected_id (void)
 	return itemlist->priv->selectedId;
 }
 
-static void
+void
 itemlist_set_selected (itemPtr item)
 {
 	itemlist->priv->selectedId = item?item->id:0;
+	g_signal_emit (itemlist, itemlist_signals[ITEM_SELECTED], 0, item->sourceId);
 }
 
 Node *
@@ -238,11 +251,10 @@ itemlist_check_for_deferred_action (void)
 		conf_get_bool_value (DEFER_DELETE_MODE, &keep_for_search_folder);
 		if (keep_for_search_folder) {
 			item->isHidden = TRUE;
-			itemview_update_item (item);
+			g_signal_emit (itemlist, itemlist_signals[ITEM_UPDATED], 0, item->sourceId);
 		} else {
-			itemview_remove_item (item);
+			g_signal_emit (itemlist, itemlist_signals[ITEM_REMOVED], 0, item->sourceId);
 		}
-		feed_list_view_update_node (item->nodeId);
 	}
 
 	/* check for item unloading caused by search folder rules (i.e. unread items only) */
@@ -264,7 +276,7 @@ itemlist_merge_item (itemPtr item)
 		return;
 
 	itemlist_duplicate_list_add_item (item);
-	itemview_add_item (item);
+	g_warning("FIXME GTK4 itemlist_merge_item add to GtkTreeView");
 }
 
 static void
@@ -303,12 +315,8 @@ itemlist_itemset_is_valid (itemSetPtr itemSet)
 void
 itemlist_merge_itemset (itemSetPtr itemSet)
 {
-
-	if (itemlist_itemset_is_valid (itemSet)) {
+	if (itemlist_itemset_is_valid (itemSet))
 		itemset_foreach (itemSet, itemlist_merge_item_callback, NULL);
-		itemview_update ();
-	}
-
 }
 
 void
@@ -353,9 +361,8 @@ itemlist_load (Node *node)
 
 	/* Set the new displayed node... */
 	itemlist->priv->currentNode = node;
-	itemview_set_displayed_node (itemlist->priv->currentNode);
-
-	itemview_set_mode (ITEMVIEW_NODE_INFO);
+	g_warning("FIXME  itemview_set_displayed_node");
+	//itemview_set_displayed_node (itemlist->priv->currentNode);
 
 	itemSet = node_get_itemset (itemlist->priv->currentNode);
 	itemlist_merge_itemset (itemSet);
@@ -369,13 +376,8 @@ itemlist_load (Node *node)
 void
 itemlist_unload (void)
 {
-	/* Always clear to ensure clearing on search */
-	itemview_clear ();
-
-	if (itemlist->priv->currentNode) {
-		itemview_set_displayed_node (NULL);
+	if (itemlist->priv->currentNode)
 		itemlist_check_for_deferred_action ();
-	}
 
 	itemlist_set_selected (NULL);
 	itemlist_duplicate_list_free ();
@@ -391,29 +393,29 @@ itemlist_select_next_unread (void)
 	itemPtr	result = NULL;
 
 	itemlist->priv->loading++;	/* prevent unwanted selections */
-
+g_warning("FIXME itemlist_select_next_unread");
 	/* before scanning the feed list, we test if there is a unread
 	   item in the currently selected feed! */
-	result = itemview_find_unread_item (itemlist->priv->selectedId);
+	//result = itemview_find_unread_item (itemlist->priv->selectedId);
 
 	/* If none is found we continue searching in the feed list */
-	if (!result) {
+	//if (!result) {
 		/* scan feed list and find first feed with unread items */
-		Node *node = feedlist_find_unread_feed (feedlist_get_root ());
-		if (node) {
-			/* load found feed */
-			feed_list_view_select (node);
-			result = itemview_find_unread_item (0);	/* find first unread item */
-		} else {
-			/* if we don't find a feed with unread items do nothing */
-			liferea_shell_set_status_bar (_("There are no unread items"));
-		}
-	}
+	//	Node *node = feedlist_find_unread_feed (feedlist_get_root ());
+	//	if (node) {
+	//		/* load found feed */
+	//		feed_list_view_select (node);
+	//		result = itemview_find_unread_item (0);	/* find first unread item */
+	//	} else {
+	//		/* if we don't find a feed with unread items do nothing */
+	//		liferea_shell_set_status_bar (_("There are no unread items"));
+	//	}
+	//}
 
 	itemlist->priv->loading--;
 
 	if (result)
-		itemview_select_item (result);
+		itemlist_set_selected (result);
 }
 
 /* menu commands */
@@ -422,13 +424,14 @@ void
 itemlist_toggle_flag (itemPtr item)
 {
 	item_set_flag_state (item, !(item->flagStatus));
+	g_signal_emit_by_name (itemlist, "item-updated", item->id);
 }
 
 void
 itemlist_toggle_read_status (itemPtr item)
 {
 	item_set_read_state (item, !(item->readStatus));
-	g_signal_emit_by_name (itemlist, "item-updated", item->nodeId);
+	g_signal_emit_by_name (itemlist, "item-updated", item->id);
 }
 
 /* function to remove items due to item list filtering */
@@ -438,12 +441,11 @@ itemlist_hide_item (itemPtr item)
 	/* if the currently selected item should be removed we
 	   don't do it and set a flag to do it when unselecting */
 	if (itemlist->priv->selectedId != item->id) {
-		itemview_remove_item (item);
-		feed_list_view_update_node (item->nodeId);
+		g_signal_emit_by_name (itemlist, "item-removed", item->id);
 	} else {
 		/* update the item to show new state that forces
 		   later removal */
-		itemview_update_item (item);
+		g_signal_emit_by_name (itemlist, "item-updated", item->id);
 	}
 }
 
@@ -467,16 +469,13 @@ itemlist_remove_item (itemPtr item)
 
 	itemlist_duplicate_list_remove_item (item);
 
-	itemview_remove_item (item);
-	itemview_update ();
-
 	db_item_remove (item->id);
 
 	/* update feed list counters*/
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node_from_id (item->nodeId));
 
-	g_signal_emit_by_name (itemlist, "item-updated", item->nodeId);
+	g_signal_emit_by_name (itemlist, "item-removed", item->id);
 	item_unload (item);
 }
 
@@ -487,12 +486,12 @@ itemlist_request_remove_item (itemPtr item)
 	/* if the currently selected item should be removed we
 	   don't do it and set a flag to do it when unselecting */
 	if (itemlist->priv->selectedId != item->id) {
-		itemlist_remove_item (item);
+		g_signal_emit_by_name (itemlist, "item-removed", item->id);
 	} else {
 		itemlist->priv->deferredRemove = TRUE;
 		/* update the item to show new state that forces
 		   later removal */
-		itemview_update_item (item);
+		g_signal_emit_by_name (itemlist, "item-updated", item->id);
 	}
 }
 
@@ -504,7 +503,7 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 	while (iter) {
 		itemPtr item = (itemPtr) iter->data;
 		if (itemlist->priv->selectedId != item->id) {
-			itemview_remove_item(item);
+			g_signal_emit_by_name (itemlist, "item-removed", item->id);
 			db_item_remove(item->id);
 		} else {
 			itemlist_request_remove_item(item);
@@ -514,28 +513,26 @@ itemlist_remove_items (itemSetPtr itemSet, GList *items)
 		iter = g_list_next (iter);
 	}
 
-	itemview_update ();
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node_from_id (itemSet->nodeId));
-	g_signal_emit_by_name (itemlist, "item-updated", itemSet->nodeId);
+	g_warning ("FIXME: emit items-updated signal in feedlist");
 }
 
 void
 itemlist_remove_all_items (Node *node)
 {
 	if (node == itemlist->priv->currentNode)
-		itemview_clear ();
+		itemlist_set_selected (NULL);
 
 	db_itemset_remove_all (node->id);
 
 	if (node == itemlist->priv->currentNode) {
-		itemview_update ();
 		itemlist_duplicate_list_free ();
 	}
 
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node);
-	g_signal_emit_by_name (itemlist, "item-updated", node->id);
+	g_warning("FIXME: emit items-updated signal in feedlist");
 }
 
 void
@@ -548,47 +545,42 @@ itemlist_update_item (itemPtr item)
 		itemlist_unhide_item (item);
 	}
 
-	itemview_update_item (item);
+	g_signal_emit_by_name (itemlist, "item-updated", item->id);
 }
 
 /* mouse/keyboard interaction callbacks */
+
 void
 itemlist_selection_changed (itemPtr item)
 {
-	if (0 == itemlist->priv->loading) {
-		/* folder&vfolder postprocessing to remove/filter unselected items no
-		   more matching the display rules because they have changed state */
-		itemlist_check_for_deferred_action ();
+	if (itemlist->priv->selectedId != item->id) {
+		if (0 == itemlist->priv->loading) {
+			/* folder&vfolder postprocessing to remove/filter unselected items no
+			more matching the display rules because they have changed state */
+			itemlist_check_for_deferred_action ();
 
-		debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
+			debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
 
-		itemlist_set_selected (item);
+			itemlist_set_selected (item);
 
-		/* set read and unset update status when selecting */
-		if (item) {
-			gchar	*link = NULL;
-			Node	*node = node_from_id (item->nodeId);
+			/* set read and unset update status when selecting */
+			if (item) {
+				gchar	*link = NULL;
+				Node	*node = node_from_id (item->nodeId);
 
-			item_set_read_state (item, TRUE);
-			itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
+				item_set_read_state (item, TRUE);
 
-			if (IS_FEED (node) && node->data && ((feedPtr)node->data)->loadItemLink && (link = item_make_link (item))) {
-				itemview_launch_URL (link, TRUE /* force internal */);
-				g_free (link);
-			} else {
-				if (IS_FEED (node) && !((feedPtr)node->data)->ignoreComments)
-					comments_refresh (item);
-
-				itemview_select_item (item);
-				itemview_update ();
+				if (IS_FEED (node) && node->data && ((feedPtr)node->data)->loadItemLink && (link = item_make_link (item))) {
+					browser_launch_URL (link, TRUE /* force internal */);
+					g_free (link);
+				}
 			}
-			feed_list_view_update_node (item->nodeId);
+
+			feedlist_reset_new_item_count ();
 		}
 
-		feedlist_reset_new_item_count ();
+		g_signal_emit_by_name (itemlist, "item-selected", NULL);
 	}
-
-	g_signal_emit_by_name (itemlist, "item-selected", NULL);
 
 	if (item)
 		g_object_unref (item);
@@ -616,7 +608,7 @@ itemlist_select_from_history (gboolean back)
 	if (node != feedlist_get_selected ())
 		feed_list_view_select (node);
 
-	itemview_select_item (item);
+	itemlist_set_selected (item);
 	item_unload (item);
 }
 
@@ -654,7 +646,6 @@ itemlist_item_batch_fetched_cb (ItemLoader *il, GSList *items, gpointer user_dat
 		iter= g_slist_next (iter);
 	}
 
-	itemview_update();
 	g_slist_free (items);
 }
 
@@ -670,7 +661,6 @@ void
 itemlist_add_search_result (ItemLoader *loader)
 {
 	itemlist_unload ();
-	itemview_set_mode (ITEMVIEW_SINGLE_ITEM);
 
 	/* Set current node to search result dummy node so that
 	   we except only items from the respective loader for

@@ -65,37 +65,34 @@ icon_create_from_file (const gchar *filename)
 	return pixbuf;
 }
 
-void
-icons_load (void)
-{
-	GtkIconTheme	*icon_theme;
-	gint		i;
-	gchar 		*path;
-
-	path = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps", NULL);
-	icon_theme = gtk_icon_theme_get_for_display (gdk_display_get_default ());
-
-	gtk_icon_theme_add_search_path (icon_theme, path);
-
-	static const gchar *iconNames[] = {
-		"unread",		/* ICON_UNREAD */
-		"emblem-important",	/* ICON_FLAG */
-		"dialog-error",		/* ICON_UNAVAILABLE */
-		"default",		/* ICON_DEFAULT */
-		"folder",		/* ICON_FOLDER */
-		"folder-saved-search",	/* ICON_VFOLDER */
-		"newsbin",		/* ICON_NEWSBIN */
-		NULL
-	};
-
-	for (i = 0; i < MAX_ICONS; i++)
-		icons[i] = g_themed_icon_new (iconNames[i]);
-}
-
 const GIcon *
 icon_get (lifereaIcon icon)
 {
-	g_assert (NULL != *icons);		
+	if (!icons) {
+
+		GtkIconTheme	*icon_theme;
+		gint		i;
+		gchar 		*path;
+
+		path = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps", NULL);
+		icon_theme = gtk_icon_theme_get_for_display (gdk_display_get_default ());
+	g_print("path=%s\n", path);
+		gtk_icon_theme_add_search_path (icon_theme, path);
+
+		static const gchar *iconNames[] = {
+			"unread",		/* ICON_UNREAD */
+			"emblem-important",	/* ICON_FLAG */
+			"dialog-error",		/* ICON_UNAVAILABLE */
+			"default",		/* ICON_DEFAULT */
+			"folder",		/* ICON_FOLDER */
+			"folder-saved-search",	/* ICON_VFOLDER */
+			"newsbin",		/* ICON_NEWSBIN */
+			NULL
+		};
+
+		for (i = 0; i < MAX_ICONS; i++)
+			icons[i] = g_themed_icon_new (iconNames[i]);
+	}	
 
 	return icons[icon];
 }
