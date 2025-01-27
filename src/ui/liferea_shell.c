@@ -53,6 +53,7 @@
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/item_list_view.h"
+#include "ui/layout.h"
 #include "ui/liferea_dialog.h"
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
@@ -347,6 +348,11 @@ liferea_shell_update_unread_stats (gpointer user_data)
 	g_free (msg);
 }
 
+static void
+liferea_shell_update_all_items (gpointer user_data) {
+	item_list_view_update_all_items (shell->itemListView);
+}
+
 /*
    Due to the unsuitable GtkStatusBar stack handling, which doesn't
    allow to keep messages on top of the stack for some time without
@@ -595,11 +601,7 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 			// FIXME: GTK4 migration
 			/*case GDK_KEY_KP_Delete:
 			case GDK_KEY_Delete:
-<<<<<<< HEAD
 				if (focusw == GTK_WIDGET (shell->feedListView))
-=======
-				if (focusw == GTK_WIDGET (shell->feedlistView))
->>>>>>> d813f610 (Refactor subscription dialog)
 					return FALSE;	// to be handled in feed_list_view_key_press_cb() 
 
 				//on_action_remove_item (NULL, NULL, NULL);

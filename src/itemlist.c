@@ -207,7 +207,7 @@ itemlist_class_init (ItemListClass *klass)
 		NULL,
 		NULL,
 		g_cclosure_marshal_VOID__VOID,
-		G_TYPE_NONE,
+		G_TYPE_INT,
 		0);
 }
 
@@ -601,14 +601,14 @@ itemlist_selection_changed (ItemList *ilv, gint itemId, gpointer unused)
 		more matching the display rules because they have changed state */
 		itemlist_check_for_deferred_action ();
 
-		debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
+			debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
 
-		itemlist_set_selected (item);
+			itemlist_set_selected (item);
 
-		/* set read and unset update status when selecting */
-		if (item) {
-			gchar	*link = NULL;
-			Node	*node = node_from_id (item->nodeId);
+			/* set read and unset update status when selecting */
+			if (item) {
+				gchar	*link = NULL;
+				Node	*node = node_from_id (item->nodeId);
 
 			item_set_read_state (item, TRUE);
 
