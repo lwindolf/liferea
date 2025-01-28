@@ -263,24 +263,25 @@ node_actions_update (gpointer obj, gchar *unused, gpointer user_data)
 GActionGroup *
 node_actions_create (LifereaShell *shell)
 {
+	GObject *feedlist, *itemlist;
 	gboolean toggle;
+
         GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 
-        g_signal_connect (g_object_get_data (G_OBJECT (shell), "feedlist"),
-                          "items-updated",
-                          G_CALLBACK (node_actions_update), ag);
-	g_signal_connect (g_object_get_data (G_OBJECT (shell), "itemlist"),
-                          "item-updated",
-                          G_CALLBACK (node_actions_update), ag);
-	g_signal_connect (liferea_shell_lookup ("feedlist"),
-                          "selection-changed",
-                          G_CALLBACK (node_actions_update), ag);
+		
+	g_object_get (G_OBJECT (shell),
+	              "feedlist", &feedlist,
+	              "itemlist", &itemlist, NULL);
+
+	g_signal_connect (feedlist, "items-updated", G_CALLBACK (node_actions_update), ag);
+	g_signal_connect (itemlist, "item-updated", G_CALLBACK (node_actions_update), ag);
+	g_signal_connect (feedlist, "node-selected", G_CALLBACK (node_actions_update), ag);
 
 	// FIXME: initialization with disabled actions!
 
 	/* Prepare some toggle button states */
 	conf_get_bool_value (REDUCED_FEEDLIST, &toggle);
-	g_simple_action_set_state ( G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
+	// FIXME: g_simple_action_set_state (G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (ag), "reduced-feed-list")), g_variant_new_boolean (toggle));
 
         return ag;
 }

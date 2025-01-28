@@ -190,7 +190,7 @@ static const GActionEntry gaction_entries[] = {
 	{"launch-selected-item-in-tab", on_launch_item_in_tab, NULL, NULL, NULL},
 	{"launch-selected-item-in-browser", on_launch_item_in_browser, NULL, NULL, NULL},
 	{"launch-selected-item-in-external-browser", on_launch_item_in_external_browser, NULL, NULL, NULL},
-	{"copy-item-to-newsbin", on_copy_to_newsbin, "(umt)", NULL, NULL},
+	// FIXME: Maybe type causes exception in GApplication {"copy-item-to-newsbin", on_copy_to_newsbin, "(umt)", NULL, NULL},
 	{"toggle-item-read-status", on_toggle_unread_status, "t", NULL, NULL},
 	{"toggle-item-flag", on_toggle_item_flag, "t", NULL, NULL},
 	// FIXME: duplicate?
@@ -212,19 +212,17 @@ item_actions_update (gpointer obj, gchar *unused, gpointer user_data)
 GActionGroup *
 item_actions_create (LifereaShell *shell)
 {
+	GObject *feedlist, *itemlist;
+
         GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
 
-	g_signal_connect (g_object_get_data (G_OBJECT (shell), "itemlist"),
-                          "item-selected",
-                          G_CALLBACK (item_actions_update), ag);
+	g_object_get (G_OBJECT (shell),
+	              "feedlist", &feedlist,
+	              "itemlist", &itemlist, NULL);
 
-        g_signal_connect (g_object_get_data (G_OBJECT (shell), "feedlist"),
-                          "items-updated",
-                          G_CALLBACK (item_actions_update), ag);
-			  
-	g_signal_connect (g_object_get_data (G_OBJECT (shell), "feedlist"),
-                          "node-selected",
-                          G_CALLBACK (item_actions_update), ag);
+	g_signal_connect (itemlist, "item-selected", G_CALLBACK (item_actions_update), ag);
+        g_signal_connect (feedlist, "items-updated", G_CALLBACK (item_actions_update), ag);
+	g_signal_connect (feedlist, "node-selected", G_CALLBACK (item_actions_update), ag);
 
 	ui_common_action_group_enable (ag, FALSE);
 

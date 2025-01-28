@@ -150,7 +150,6 @@ liferea_shell_get_property (GObject *object, guint prop_id, GValue *value, GPara
 
         switch (prop_id) {
 	        case PROP_FEED_LIST:
-		g_print ("get feedlist\n");
 			g_value_set_object (value, shell->feedlist);
 			break;
 	        case PROP_ITEM_LIST:
@@ -1022,7 +1021,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 		vfolder_foreach (vfolder_rebuild);
 
 	/* 11. Enable signals for feedListView */
-	gtk_widget_set_sensitive (GTK_WIDGET (shell->feedListView), TRUE);
+	gtk_widget_set_sensitive (liferea_shell_lookup ("feedlist"), TRUE);
 }
 
 void
