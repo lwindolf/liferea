@@ -88,11 +88,6 @@ GtkTreeIter * feed_list_view_to_iter (const gchar *nodeId);
 void feed_list_view_update_iter (const gchar *nodeId, GtkTreeIter *iter);
 
 /**
- * Reload the UI feedlist by removing and readding each node
- */
-void feed_list_view_reload_feedlist (void);
-
-/**
  * Determines the expansion state of a feed list tree node.
  *
  * @param nodeId	the node id

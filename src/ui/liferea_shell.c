@@ -1020,7 +1020,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	if (searchFolderRebuild)
 		vfolder_foreach (vfolder_rebuild);
 
-	/* 11. Enable signals for feedListView */
+	/* 11. Load feedlist and enable signals for feedListView */
+	feed_list_view_set_reduce_mode (FALSE);	// FIXME: this would be better triggered by a GAction init somewhere
 	gtk_widget_set_sensitive (liferea_shell_lookup ("feedlist"), TRUE);
 }
 

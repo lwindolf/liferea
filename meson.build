@@ -61,15 +61,34 @@ executable('liferea',
   include_directories: include_directories('.', 'src')
 )
 
+icondir = join_paths(datadir, 'icons', 'hicolor')
+foreach size: ['scalable']
+  install_subdir(join_paths('pixmaps', size), install_dir: icondir)
+endforeach
+
+pixmapsdir = join_paths(datadir, 'liferea', 'pixmaps')
+foreach size: ['16x16', '32x32', '22x22', '24x24', '32x32', '48x48']
+  install_subdir(join_paths('pixmaps', size), install_dir: pixmapsdir)
+endforeach
+foreach file: [
+  'default.svg',
+  'emblem-important.svg',
+  'emblem-web.svg',
+  'fl_opml.png',
+  'folder-saved-search.png',
+  'folder.png',
+  'newsbin.png',
+  'unread.png'
+]
+  install_data(join_paths('pixmaps', file), install_dir: pixmapsdir)
+endforeach
+
 #  gir = gnome.generate_gir('Liferea-3.0',
 #    sources: liferea_sources,
 #    nsversion: '3.0',
 #    includes: ['Gtk-3.0', 'libxml2-2.0'],
 #    install: true
 #  )
-
-# Install scripts
-#install_data('liferea-add-feed', install_dir: get_option('bindir'))
 
 gnome.post_install(
   gtk_update_icon_cache: true,

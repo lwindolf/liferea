@@ -267,8 +267,7 @@ node_actions_create (LifereaShell *shell)
 	gboolean toggle;
 
         GActionGroup *ag = liferea_shell_add_actions (gaction_entries, G_N_ELEMENTS (gaction_entries));
-
-		
+	
 	g_object_get (G_OBJECT (shell),
 	              "feedlist", &feedlist,
 	              "itemlist", &itemlist, NULL);

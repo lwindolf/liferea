@@ -68,7 +68,7 @@ icon_create_from_file (const gchar *filename)
 const GIcon *
 icon_get (lifereaIcon icon)
 {
-	if (!icons) {
+	if (!icons[0]) {
 
 		GtkIconTheme	*icon_theme;
 		gint		i;
@@ -76,7 +76,6 @@ icon_get (lifereaIcon icon)
 
 		path = g_build_filename (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S PACKAGE G_DIR_SEPARATOR_S "pixmaps", NULL);
 		icon_theme = gtk_icon_theme_get_for_display (gdk_display_get_default ());
-	g_print("path=%s\n", path);
 		gtk_icon_theme_add_search_path (icon_theme, path);
 
 		static const gchar *iconNames[] = {
@@ -88,7 +87,7 @@ icon_get (lifereaIcon icon)
 			"folder-saved-search",	/* ICON_VFOLDER */
 			"newsbin",		/* ICON_NEWSBIN */
 			NULL
-		};
+		};		
 
 		for (i = 0; i < MAX_ICONS; i++)
 			icons[i] = g_themed_icon_new (iconNames[i]);

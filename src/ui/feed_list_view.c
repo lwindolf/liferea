@@ -66,6 +66,8 @@ static guint feed_list_view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (FeedListView, feed_list_view, G_TYPE_OBJECT);
 
+static void feed_list_view_reload_feedlist ();
+
 static void
 feed_list_view_finalize (GObject *object)
 {
@@ -97,6 +99,7 @@ feed_list_view_class_init (FeedListViewClass *klass)
 static void
 feed_list_view_init (FeedListView *f)
 {
+	f->flIterHash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
 }
 
 // Handling feed list nodes
@@ -104,21 +107,13 @@ feed_list_view_init (FeedListView *f)
 GtkTreeIter *
 feed_list_view_to_iter (const gchar *nodeId)
 {
-	if (!flv->flIterHash)
-		return NULL;
-
 	return (GtkTreeIter *)g_hash_table_lookup (flv->flIterHash, (gpointer)nodeId);
 }
 
 void
 feed_list_view_update_iter (const gchar *nodeId, GtkTreeIter *iter)
 {
-	GtkTreeIter *old;
-
-	if (!flv->flIterHash)
-		return;
-
-	old = (GtkTreeIter *)g_hash_table_lookup (flv->flIterHash, (gpointer)nodeId);
+	GtkTreeIter *old = (GtkTreeIter *)g_hash_table_lookup (flv->flIterHash, (gpointer)nodeId);
 	if (old)
 		*old = *iter;
 }
@@ -126,9 +121,6 @@ feed_list_view_update_iter (const gchar *nodeId, GtkTreeIter *iter)
 static void
 feed_list_view_add_iter (const gchar *nodeId, GtkTreeIter *iter)
 {
-	if (!flv->flIterHash)
-		flv->flIterHash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
-
 	g_hash_table_insert (flv->flIterHash, (gpointer)nodeId, (gpointer)iter);
 }
 
@@ -496,7 +488,7 @@ feed_list_view_node_updated (FeedListView *flv, const gchar *nodeId)
 static void
 feed_list_view_node_removed (FeedListView *flv, gpointer userdata)
 {
-	Node		*node = (Node *)userdata;
+	Node		*node = node_from_id ((gchar *)userdata);
 	GtkTreeIter	*iter;
 	gboolean 	parentExpanded = FALSE;
 
@@ -709,12 +701,11 @@ feed_list_view_is_expanded (const gchar *nodeId)
 static void
 feed_list_view_load_feedlist (Node *node)
 {
-	GSList		*iter;
-
-	iter = node->children;
+	GSList *iter = node->children;
 	while (iter) {
 		node = (Node *)iter->data;
-		feed_list_view_node_added (flv, node);
+
+		feed_list_view_node_added (flv, node->id);
 
 		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
 			feed_list_view_load_feedlist (node);
@@ -730,7 +721,7 @@ feed_list_view_clear_feedlist ()
 	g_hash_table_remove_all (flv->flIterHash);
 }
 
-void
+static void
 feed_list_view_reload_feedlist ()
 {
 	feed_list_view_clear_feedlist ();
@@ -849,6 +840,6 @@ feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription,
 
 void
 feed_list_view_reparent (Node *node) {
-	feed_list_view_node_removed (flv, node);
-	feed_list_view_node_added (flv, node);
+	feed_list_view_node_removed (flv, node->id);
+	feed_list_view_node_added (flv, node->id);
 }
