@@ -950,9 +950,15 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 
 	if ((gtk_selection_data_get_length (data) >= 0) && (gtk_selection_data_get_format (data) == 8)) {
 		/* extra handling to accept multiple drops */
-		freeme = tmp1 = g_strdup ((gchar *) gtk_selection_data_get_data (data));
+		g_autofree gchar *freeme = tmp1 = g_strdup ((gchar *) gtk_selection_data_get_data (data));
 		while ((tmp2 = strsep (&tmp1, "\n\r"))) {
 			if (strlen (tmp2)) {
+				/* Check for valid URI */
+				if (!g_uri_parse_scheme (tmp2)) {
+					gtk_drag_finish (context, FALSE, FALSE, time_received);
+					return;
+				}
+
 				/* if the drop is over a node, select it so that feedlist_add_subscription()
 				 * adds it in the correct folder */
 				if (gtk_tree_view_get_dest_row_at_pos (treeview, tx, ty, &path, NULL)) {
@@ -967,7 +973,6 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 				                           UPDATE_REQUEST_PRIORITY_HIGH);
 			}
 		}
-		g_free (freeme);
 		gtk_drag_finish (context, TRUE, FALSE, time_received);
 	} else {
 		gtk_drag_finish (context, FALSE, FALSE, time_received);
