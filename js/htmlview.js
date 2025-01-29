@@ -58,6 +58,18 @@ function parseStatus(parsePhase, errorCode) {
 		return "⬜";
 }
 
+function templateFix(str, data) {
+	// sadly libxslt translating the handlebar templates causes
+	// attribute escaping and thereby destroying template expressions
+	// in attributes, which we need to restore
+	return template(str
+					.replace(/"%7B%7B/g, "\"{{")
+					.replace(/%7D%7D"/g, "}}\"")
+					.replace(/%5B/g, "[")
+					.replace(/%5D/g, "]"),
+					data);
+}
+
 async function load_node(data, baseURL, direction) {
 	let node = JSON.parse(decodeURIComponent(data));
 
@@ -65,7 +77,7 @@ async function load_node(data, baseURL, direction) {
 	console.log(node);
 
 	prepare(baseURL, node.title);
-	render("body", template(document.getElementById('template').innerHTML), {
+	render("body", templateFix(document.getElementById('template').innerHTML), {
 		node,
 		direction,
 		publisher  		: metadata_get(node, "publisher"),
@@ -102,7 +114,7 @@ async function load_item(data, baseURL, direction) {
 	console.log(item);
 
 	prepare(baseURL, item.title);
-	render("body", template (document.getElementById('template').innerHTML), {
+	render("body", templateFix (document.getElementById('template').innerHTML), {
 		item,
 		direction,
 
