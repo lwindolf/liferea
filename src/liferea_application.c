@@ -178,22 +178,20 @@ on_app_shutdown (GApplication *app, gpointer user_data)
 	/* When application is started as a service, it waits 10 seconds for a message.
 	 * If no message arrives, it will shutdown without having created a window. */
 	list = gtk_application_get_windows (GTK_APPLICATION (app));
-	if (list) {
-		liferea_shell_destroy ();
-	}
+	if (list)
+		g_object_unref (liferea_shell_get_instance ());
 
 	db_deinit ();
 	social_free ();
 	conf_deinit ();
 	xml_deinit ();
 	date_deinit ();
-
 }
 
 static void
-show_version ()
+show_version (void)
 {
-	printf ("Liferea %s\n", VERSION);
+	g_print ("Liferea %s\n", VERSION);
 }
 
 static gboolean

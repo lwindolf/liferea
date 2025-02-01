@@ -592,19 +592,20 @@ on_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint key
 	/* check for treeview navigation */
 	if (0 == (state & default_modifiers)) {
 		switch (keyval) {
-			// FIXME: GTK4 migration
-			/*case GDK_KEY_KP_Delete:
+			case GDK_KEY_KP_Delete:
 			case GDK_KEY_Delete:
 				if (focusw == GTK_WIDGET (shell->feedListView))
 					return FALSE;	// to be handled in feed_list_view_key_press_cb() 
 
-				on_action_remove_item (NULL, NULL, NULL);
+				//on_action_remove_item (NULL, NULL, NULL);
+				g_warning("FIXME GTK4 migrate on_action_remove_item(NULL, NULL, NULL);");
 				return TRUE;
 				break;
 			case GDK_KEY_n:
-				on_next_unread_item_activate (NULL, NULL, NULL);
+				//on_next_unread_item_activate (NULL, NULL, NULL);
+				g_warning("FIXME GTK4 migrate next unread");
 				return TRUE;
-				break;*/
+				break;
 			case GDK_KEY_f:
 				item_list_view_move_cursor (shell->itemListView, 1);
 				return TRUE;
@@ -1019,12 +1020,6 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	/* 11. Load feedlist and enable signals for feedListView */
 	feed_list_view_set_reduce_mode (FALSE);	// FIXME: this would be better triggered by a GAction init somewhere
 	gtk_widget_set_sensitive (liferea_shell_lookup ("feedlist"), TRUE);
-}
-
-void
-liferea_shell_destroy (void)
-{
-	g_object_unref (shell);
 }
 
 void liferea_shell_show_window (void)

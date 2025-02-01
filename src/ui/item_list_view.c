@@ -365,18 +365,31 @@ item_list_view_item_removed (GObject *obj, gint itemId, gpointer user_data)
 	itemPtr		item = item_load (itemId);
 
 	g_assert (NULL != item);
-	if (item_list_view_id_to_iter (ilv, item->id, &iter)) {
+	//if (item_list_view_id_to_iter (ilv, item->id, &iter)) {
 		/* Using the GtkTreeIter check if it is currently selected. If yes,
 		   scroll down by one in the sorted GtkTreeView to ensure something
 		   is selected after removing the GtkTreeIter */
-		if (gtk_tree_selection_iter_is_selected (gtk_tree_view_get_selection (ilv->treeview), &iter))
-			ui_common_treeview_move_cursor (ilv->treeview, 1);
-
+/*		GtkTreePath	*path = gtk_tree_model_get_path (gtk_tree_view_get_model (ilv->treeview), &iter);
+		GtkTreeSelection *select = gtk_tree_view_get_selection (ilv->treeview);
+		GtkTreePath	*next = gtk_tree_path_copy (path);
+		GtkTreeIter	nextIter;
+g_print("1\n");
+		g_assert (select);
+		g_assert (path);
+		g_assert (next);
+		gtk_tree_path_next (next);
+		g_print("2\n");
+		gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->treeview), &nextIter, next);
+		g_print("3\n");
+		gtk_tree_selection_select_iter (select, &nextIter);
+		g_print("4\n");
+		
 		gtk_tree_store_remove (GTK_TREE_STORE (gtk_tree_view_get_model (ilv->treeview)), &iter);
+		g_print("5\n");
 	} else {
 		g_warning ("Fatal: item to be removed not found in item id list!");
 	}
-
+*/
 	ilv->item_ids = g_slist_remove (ilv->item_ids, GUINT_TO_POINTER (item->id));
 }
 
@@ -413,8 +426,7 @@ item_list_view_item_batch_started (GObject *obj, gpointer user_data)
 	/* enable batch mode for following item adds */
 	ilv->batch_mode = TRUE;
 	ilv->batch_itemstore = item_list_view_create_tree_store ();
-	// FIXME: missing in GTK4
-        //gtk_widget_freeze_child_notify((GtkWidget *)ilv->treeview);
+
 	gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (ilv->batch_itemstore), NULL, NULL, NULL);
 }
 
@@ -548,6 +560,14 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
 }
 
 static void
+item_list_view_item_updated (GObject *obj, gint itemId, gpointer user_data)
+{
+	itemPtr item = item_load (itemId);
+	item_list_view_update_item (ITEM_LIST_VIEW (user_data), item);
+	item_unload (item);
+}
+
+static void
 item_list_view_update_all_items (GObject *obj, gpointer user_data)
 {
 	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
@@ -568,17 +588,24 @@ item_list_view_update_all_items (GObject *obj, gpointer user_data)
 }
 
 static gboolean
-on_item_list_view_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
+on_item_list_view_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer user_data)
 {
-	if (state & GDK_CONTROL_MASK) {
-		if (keyval == GDK_KEY_Delete) {
-			g_warning("FIXME: GTK4 port: on_remove_item(NULL, NULL, NULL);");
-			//on_action_remove_item(NULL, NULL, NULL);
-			return TRUE;
-		}
-	}
+	ItemListView *ilv = ITEM_LIST_VIEW (user_data);
 
-	return FALSE;
+	switch (keyval) {
+		case GDK_KEY_Delete:
+			g_warning("FIXME: GTK4 port: itemlist_remove_selected ();");
+			return TRUE;
+		case GDK_KEY_space:
+			itemlist_toggle_read_status (itemlist_get_selected ());
+			return TRUE;
+		case GDK_KEY_Return:
+		case GDK_KEY_KP_Enter:
+			browser_launch_item (itemlist_get_selected (), BROWSER_LAUNCH_DEFAULT);
+			return TRUE;
+		default:
+			return FALSE;
+	}
 }
 
 /* Show tooltip when headline's column text (IS_LABEL) is truncated. */
@@ -799,7 +826,7 @@ item_list_view_item_added (GObject *obj, gint itemId, gpointer userdata)
 	ItemListView	*ilv = ITEM_LIST_VIEW (userdata);
 	GtkTreeStore	*itemstore;
 	itemPtr item = item_load (itemId);
-g_print("item_list_view_item_added %p %s\n", item, item->title);
+
 	if (ilv->batch_mode) {
 		/* either merge to new unattached GtkTreeStore */
 		item_list_view_add_item_to_tree_store (ilv, ilv->batch_itemstore, item);
@@ -921,6 +948,7 @@ item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 	g_signal_connect (itemlist, "item-batch-end", G_CALLBACK (item_list_view_item_batch_ended), ilv);
 	g_signal_connect (itemlist, "item-added", G_CALLBACK (item_list_view_item_added), ilv);
 	g_signal_connect (itemlist, "item-removed", G_CALLBACK (item_list_view_item_removed), ilv);
+	g_signal_connect (itemlist, "item-updated", G_CALLBACK (item_list_view_item_updated), ilv);
 	
 	g_signal_connect (ilv, "selection-changed", G_CALLBACK (itemlist_selection_changed), itemlist);
 
