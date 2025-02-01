@@ -176,12 +176,32 @@ liferea_browser_get_property (GObject *gobject, guint prop_id, GValue *value, GP
 }
 
 static void
+liferea_browser_set_property (GObject *gobject, guint prop_id, const GValue *value, GParamSpec *pspec)
+{
+	LifereaBrowser *self = LIFEREA_BROWSER (gobject);
+
+	switch (prop_id) {
+		case PROP_ZOOM:
+			{
+				gint zoom = g_value_get_int (value);
+				conf_set_int_value (LAST_ZOOMLEVEL, zoom);
+				g_warning("FIXME: setting zoom level not implemented");
+			}
+			break;
+		default:
+			G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+			break;
+	}
+}
+
+static void
 liferea_browser_class_init (LifereaBrowserClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 	gint zoom;
 
 	object_class->get_property = liferea_browser_get_property;
+	object_class->set_property = liferea_browser_set_property;
 	object_class->finalize = liferea_browser_finalize;
 
 	/* Load preferences */
@@ -211,6 +231,7 @@ liferea_browser_class_init (LifereaBrowserClass *klass)
 				"Zoom level",
 				0, 10000, zoom,
 				G_PARAM_READWRITE));
+
 	g_warning ("FIXME: LifereaBrowser:zoom property is not implemented");
 
 	liferea_browser_signals[STATUSBAR_CHANGED] =

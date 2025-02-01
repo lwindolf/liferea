@@ -43,15 +43,6 @@ enum {
 };
 
 /**
- * feed_list_view_select:
- *
- * Selects the given node in the feed list.
- *
- * @node:	the node to select
- */
-void feed_list_view_select (Node *node);
-
-/**
  * feed_list_view_create: (skip)
  *
  * Initializes the feed list. To be called only once.

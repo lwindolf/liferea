@@ -24,7 +24,9 @@
 
 #include <gtk/gtk.h>
 
+#include "feedlist.h"
 #include "item.h"
+#include "itemlist.h"
 #include "node_view.h"
 
 /* This class realizes an GtkTreeView based item view. Instances
@@ -38,13 +40,16 @@ G_DECLARE_FINAL_TYPE (ItemListView, item_list_view, ITEM_LIST, VIEW, GObject)
 
 /**
  * item_list_view_create: (skip)
- * @wide:	TRUE if ItemListView should be optimized for wide view(itemview->priv->currentLayoutMode == NODE_VIEW_MODE_WIDE)
+ * 
+ * @feedlist:	the FeedList
+ * @itemlist:	the ItemList
+ * @wide:	TRUE if ItemListView should be optimized for wide view
  *
  * Create a new ItemListView instance.
  *
  * Returns: (transfer none):	the ItemListView instance
  */
-ItemListView * item_list_view_create (gboolean wide);
+ItemListView * item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide);
 
 /**
  * item_list_view_get_widget:
@@ -104,17 +109,6 @@ void item_list_view_set_sort_column (ItemListView *ilv, nodeViewSortType sortTyp
 void item_list_view_select (ItemListView *ilv, itemPtr item);
 
 /**
- * item_list_view_add_item: (skip)
- * @ilv:	the ItemListView
- * @item:	the item to add
- *
- * Add an item to an ItemListView. This method is expensive and
- * is to be used only for new items that need to be inserted
- * by background updates.
- */
-void item_list_view_add_item (ItemListView *ilv, itemPtr item);
-
-/**
  * item_list_view_remove_item: (skip)
  * @ilv:	the ItemListView
  * @item:	the item to remove
@@ -135,23 +129,6 @@ void item_list_view_remove_item (ItemListView *ilv, itemPtr item);
 void item_list_view_enable_favicon_column (ItemListView *ilv, gboolean enabled);
 
 /**
- * item_list_view_clear: (skip)
- * @ilv:	the ItemListView
- *
- * Remove all items and resets a ItemListView.
- */
-void item_list_view_clear (ItemListView *ilv);
-
-/**
- * item_list_view_update: (skip)
- * @ilv:	        the ItemListView
- *
- * Update the ItemListView with the newly added items. To be called
- * after doing a batch of item_list_view_add_item() calls.
- */
-void item_list_view_update (ItemListView *ilv);
-
-/**
  * item_list_view_update_item: (skip)
  * @ilv:	the ItemListView
  * @item:	the item
@@ -159,15 +136,6 @@ void item_list_view_update (ItemListView *ilv);
  * Update a single item of a ItemListView
  */
 void item_list_view_update_item (ItemListView *ilv, itemPtr item);
-
-/**
- * item_list_view_update_all_items: (skip)
- * @ilv:	the ItemListView
- *
- * Update all items of the ItemListView. To be used after
- * initial batch loading.
- */
-void item_list_view_update_all_items (ItemListView *ilv);
 
 /**
  * item_list_view_find_unread_item: (skip)

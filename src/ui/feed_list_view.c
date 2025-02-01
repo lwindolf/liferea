@@ -67,6 +67,7 @@ static guint feed_list_view_signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE (FeedListView, feed_list_view, G_TYPE_OBJECT);
 
 static void feed_list_view_reload_feedlist ();
+static void feed_list_view_select (Node *node);
 
 static void
 feed_list_view_finalize (GObject *object)
@@ -550,9 +551,9 @@ feed_list_view_node_added (FeedListView *flv, gpointer userdata)
 }
 
 static void
-feed_list_view_node_selected (FeedListView *flv, gpointer userdata)
+feed_list_view_node_selected (GObject *obj, gchar *nodeId, gpointer userdata)
 {
-	g_warning ("feed_list_view_node_selected not implemented");
+	feed_list_view_select (node_from_id ((gchar *)nodeId));
 }
 
 FeedListView *
@@ -640,10 +641,12 @@ feed_list_view_create (GtkTreeView *treeview, FeedList *feedlist)
 	g_signal_connect (feedlist, "node-selected", G_CALLBACK (feed_list_view_node_selected), flv);
 	g_signal_connect (feedlist, "node-updated", G_CALLBACK (feed_list_view_node_updated), flv);
 
+	g_signal_connect (flv, "selection-changed", G_CALLBACK (feedlist_selection_changed), feedlist);
+
 	return flv;
 }
 
-void
+static void
 feed_list_view_select (Node *node)
 {
 	GtkTreeModel *model = gtk_tree_view_get_model (flv->treeview);
@@ -768,7 +771,7 @@ feed_list_view_remove (Node *node)
 {
 	GtkWidget	*dialog;
 	GtkWindow	*mainwindow;
-	gchar		*text;
+	g_autofree gchar	*text;
 
 	g_assert (node == feedlist_get_selected ());
 
@@ -788,8 +791,6 @@ feed_list_view_remove (Node *node)
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Deletion Confirmation"));
 	gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), mainwindow);
-
-	g_free (text);
 
 	g_signal_connect (G_OBJECT (dialog), "response",
 	                  G_CALLBACK (feed_list_view_remove_cb), node);

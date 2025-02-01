@@ -92,6 +92,13 @@ struct _ItemListView {
 	gboolean	wideView;		/*<< TRUE if date has to be rendered into headline column (because date column is invisible) */
 };
 
+enum {
+	SELECTION_CHANGED,
+	LAST_SIGNAL
+};
+
+static guint item_list_view_signals[LAST_SIGNAL] = { 0 };
+
 G_DEFINE_TYPE (ItemListView, item_list_view, G_TYPE_OBJECT);
 
 static void
@@ -117,6 +124,18 @@ item_list_view_class_init (ItemListViewClass *klass)
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
 	object_class->finalize = item_list_view_finalize;
+
+	item_list_view_signals[SELECTION_CHANGED] =
+		g_signal_new ("selection-changed",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__INT,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_INT);
 }
 
 /* helper functions for item <-> iter conversion */
@@ -267,18 +286,12 @@ on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer user_data)
 {
 	GtkTreeIter 	iter;
 	GtkTreeModel	*model;
-	itemPtr		item = NULL;
+	gulong		id = 0;
 
-	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-		gulong id = item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter);
-		if (id != itemlist_get_selected_id ()) {
-			item = item_load (id);
-			if (item)
-				itemlist_selection_changed (item);
-		}
-	} else {
-		itemlist_selection_changed (NULL);
-	}
+	if (gtk_tree_selection_get_selected (selection, &model, &iter))
+		id = item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter);
+
+	g_signal_emit_by_name (user_data, "item-selected", id);
 }
 
 static void
@@ -341,14 +354,15 @@ item_list_view_set_tree_store (ItemListView *ilv, GtkTreeStore *itemstore)
 	/* Setup the selection handler */
 	select = gtk_tree_view_get_selection (ilv->treeview);
 	gtk_tree_selection_set_mode (select, GTK_SELECTION_SINGLE);
-	g_signal_connect (G_OBJECT (select), "changed",
-	                  G_CALLBACK (on_itemlist_selection_changed), ilv);
+	g_signal_connect (G_OBJECT (select), "changed", G_CALLBACK (on_itemlist_selection_changed), ilv);
 }
 
-void
-item_list_view_remove_item (ItemListView *ilv, itemPtr item)
+static void
+item_list_view_item_removed (GObject *obj, gint itemId, gpointer user_data)
 {
+	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
 	GtkTreeIter	iter;
+	itemPtr		item = item_load (itemId);
 
 	g_assert (NULL != item);
 	if (item_list_view_id_to_iter (ilv, item->id, &iter)) {
@@ -367,9 +381,10 @@ item_list_view_remove_item (ItemListView *ilv, itemPtr item)
 }
 
 /* cleans up the item list, sets up the iter hash when called for the first time */
-void
-item_list_view_clear (ItemListView *ilv)
+static void
+item_list_view_item_batch_started (GObject *obj, gpointer user_data)
 {
+	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
 	GtkAdjustment		*adj;
 	GtkTreeStore		*itemstore;
 	GtkTreeSelection	*select;
@@ -522,9 +537,10 @@ item_list_view_update_item (ItemListView *ilv, itemPtr item)
         item_list_view_update_item_internal (ilv, item, &iter, NULL);
 }
 
-void
-item_list_view_update_all_items (ItemListView *ilv)
+static void
+item_list_view_update_all_items (GObject *obj, gpointer user_data)
 {
+	ItemListView	*ilv = ITEM_LIST_VIEW (user_data);
         gboolean        valid;
         GtkTreeIter     iter;
         gulong          id;
@@ -541,18 +557,16 @@ item_list_view_update_all_items (ItemListView *ilv)
 	}
 }
 
-void
-item_list_view_update (ItemListView *ilv)
+static void
+item_list_view_item_batch_ended (GObject *obj, gpointer user_data)
 {
-	if (ilv->batch_mode) {
-		// FIXME: Missing in GTK4
-                //gtk_widget_thaw_child_notify((GtkWidget *)ilv->treeview);
-		item_list_view_set_tree_store (ilv, ilv->batch_itemstore);
-		ilv->batch_mode = FALSE;
-	} else {
-		/* Nothing to do in non-batch mode as items were added
-		   and updated one-by-one in ui_itemlist_add_item() */
-	}
+	ItemListView *ilv = ITEM_LIST_VIEW (user_data);
+
+	g_assert (ilv->batch_mode);
+	// FIXME: Missing in GTK4
+        //gtk_widget_thaw_child_notify((GtkWidget *)ilv->treeview);
+	item_list_view_set_tree_store (ilv, ilv->batch_itemstore);
+	ilv->batch_mode = FALSE;
 }
 
 static gboolean
@@ -761,12 +775,51 @@ item_list_view_move_cursor_to_first (ItemListView *ilv)
 }
 
 static void
+item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstore, itemPtr item)
+{
+	Node		*node;
+	GtkTreeIter	iter;
+	gboolean	exists = FALSE;
+
+	node = node_from_id (item->nodeId);
+	if(!node)
+		return;	/* comment items do cause this... maybe filtering them earlier would be a good idea... */
+
+        if (!ilv->batch_mode)
+            exists = item_list_view_id_to_iter (ilv, item->id, &iter);
+
+	if (!exists) {
+		gtk_tree_store_prepend (itemstore, &iter, NULL);
+		ilv->item_ids = g_slist_prepend (ilv->item_ids, GUINT_TO_POINTER (item->id));
+	}
+
+	item_list_view_update_item_internal (ilv, item, &iter, node);
+}
+
+static void
+item_list_view_item_added (GObject *obj, gint itemId, gpointer userdata)
+{
+	ItemListView	*ilv = ITEM_LIST_VIEW (userdata);
+	GtkTreeStore	*itemstore;
+	itemPtr item = item_load (itemId);
+g_print("item_list_view_item_added %p %s\n", item, item->title);
+	if (ilv->batch_mode) {
+		/* either merge to new unattached GtkTreeStore */
+		item_list_view_add_item_to_tree_store (ilv, ilv->batch_itemstore, item);
+	} else {
+		/* or merge to visible item store */
+		itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (ilv->treeview));
+		item_list_view_add_item_to_tree_store (ilv, itemstore, item);
+	}
+}
+
+static void
 item_list_view_init (ItemListView *ilv)
 {
 }
 
 ItemListView *
-item_list_view_create (gboolean wide)
+item_list_view_create (FeedList *feedlist, ItemList *itemlist, gboolean wide)
 {
 	ItemListView		*ilv;
 	GtkCellRenderer		*renderer;
@@ -801,7 +854,7 @@ item_list_view_create (gboolean wide)
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_STATEICON, NULL);
-	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
+	//g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
 	g_hash_table_insert (ilv->columns, "state", column);
 	gtk_tree_view_column_set_sort_column_id (column, IS_STATE);
 	if (wide)
@@ -809,7 +862,7 @@ item_list_view_create (gboolean wide)
 
 	renderer = gtk_cell_renderer_pixbuf_new ();
 	column = gtk_tree_view_column_new_with_attributes ("", renderer, "gicon", IS_FAVICON, NULL);
-	g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
+	//g_object_set (renderer, "stock-size", wide?GTK_ICON_SIZE_LARGE:GTK_ICON_SIZE_NORMAL, NULL);
 	gtk_tree_view_column_set_sort_column_id (column, IS_SOURCE);
 	g_hash_table_insert (ilv->columns, "favicon", column);
 
@@ -855,7 +908,7 @@ item_list_view_create (gboolean wide)
 	/* And connect signals */
 	g_signal_connect (G_OBJECT (ilv->treeview), "columns_changed", G_CALLBACK (on_item_list_view_columns_changed), ilv);
 	g_signal_connect (G_OBJECT (ilv->treeview), "row_activated", G_CALLBACK (on_item_list_row_activated), ilv);
-	g_signal_connect (G_OBJECT (ilv->treeview), "popup_menu", G_CALLBACK (on_item_list_view_popup_menu), ilv);
+	//g_signal_connect (G_OBJECT (ilv->treeview), "popup_menu", G_CALLBACK (on_item_list_view_popup_menu), ilv);
 	g_signal_connect (ilv->keypress, "key-pressed", G_CALLBACK (on_item_list_view_key_pressed_event), ilv);
 	g_signal_connect (ilv->gesture, "pressed", G_CALLBACK (on_item_list_view_pressed_event), ilv);
 	gtk_widget_add_controller (GTK_WIDGET (ilv->treeview), ilv->keypress);
@@ -866,44 +919,15 @@ item_list_view_create (gboolean wide)
 		g_signal_connect (G_OBJECT (ilv->treeview), "query-tooltip", G_CALLBACK (on_item_list_view_query_tooltip), headline_column);
 	}
 
+	g_signal_connect (feedlist, "items-updated", G_CALLBACK (item_list_view_update_all_items), ilv);
+	g_signal_connect (itemlist, "item-batch-start", G_CALLBACK (item_list_view_item_batch_started), ilv);
+	g_signal_connect (itemlist, "item-batch-end", G_CALLBACK (item_list_view_item_batch_ended), ilv);
+	g_signal_connect (itemlist, "item-added", G_CALLBACK (item_list_view_item_added), ilv);
+	g_signal_connect (itemlist, "item-removed", G_CALLBACK (item_list_view_item_removed), ilv);
+	
+	g_signal_connect (ilv, "selection-changed", G_CALLBACK (itemlist_selection_changed), itemlist);
+
 	return ilv;
-}
-
-static void
-item_list_view_add_item_to_tree_store (ItemListView *ilv, GtkTreeStore *itemstore, itemPtr item)
-{
-	Node		*node;
-	GtkTreeIter	iter;
-	gboolean	exists = FALSE;
-
-	node = node_from_id (item->nodeId);
-	if(!node)
-		return;	/* comment items do cause this... maybe filtering them earlier would be a good idea... */
-
-        if (!ilv->batch_mode)
-            exists = item_list_view_id_to_iter (ilv, item->id, &iter);
-
-	if (!exists) {
-		gtk_tree_store_prepend (itemstore, &iter, NULL);
-		ilv->item_ids = g_slist_prepend (ilv->item_ids, GUINT_TO_POINTER (item->id));
-	}
-
-	item_list_view_update_item_internal (ilv, item, &iter, node);
-}
-
-void
-item_list_view_add_item (ItemListView *ilv, itemPtr item)
-{
-	GtkTreeStore	*itemstore;
-
-	if (ilv->batch_mode) {
-		/* either merge to new unattached GtkTreeStore */
-		item_list_view_add_item_to_tree_store (ilv, ilv->batch_itemstore, item);
-	} else {
-		/* or merge to visible item store */
-		itemstore = GTK_TREE_STORE (gtk_tree_view_get_model (ilv->treeview));
-		item_list_view_add_item_to_tree_store (ilv, itemstore, item);
-	}
 }
 
 void

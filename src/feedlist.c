@@ -151,7 +151,7 @@ feedlist_class_init (FeedListClass *klass)
 		0,
 		NULL,
 		NULL,
-		g_cclosure_marshal_VOID__POINTER,
+		g_cclosure_marshal_VOID__STRING,
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
@@ -163,7 +163,7 @@ feedlist_class_init (FeedListClass *klass)
 		0,
 		NULL,
 		NULL,
-		g_cclosure_marshal_VOID__POINTER,
+		g_cclosure_marshal_VOID__STRING,
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
@@ -175,7 +175,7 @@ feedlist_class_init (FeedListClass *klass)
 		0,
 		NULL,
 		NULL,
-		g_cclosure_marshal_VOID__POINTER,
+		g_cclosure_marshal_VOID__STRING,
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
@@ -187,7 +187,7 @@ feedlist_class_init (FeedListClass *klass)
 		0,
 		NULL,
 		NULL,
-		g_cclosure_marshal_VOID__POINTER,
+		g_cclosure_marshal_VOID__STRING,
 		G_TYPE_NONE,
 		1,
 		G_TYPE_STRING);
@@ -230,7 +230,6 @@ static void
 feedlist_init (FeedList *fl)
 {
 	gint	startup_feed_action;
-
 
 	/* 1. Prepare globally accessible singleton */
 	g_assert (NULL == feedlist);
@@ -293,6 +292,7 @@ feedlist_set_selected (Node *node)
 {
 	if (node != SELECTED) {
 		debug (DEBUG_GUI, "new selected node: %s", node?node_get_title (node):"none");
+		SELECTED = node;
 
 		/* When the user selects a feed in the feed list we
 		   assume that he got notified of the new items or
@@ -305,7 +305,7 @@ feedlist_set_selected (Node *node)
 		if (SELECTED)
 			itemlist_load (SELECTED);
 
-		g_signal_emit_by_name (feedlist, "node-selected", SELECTED->id);
+		g_signal_emit_by_name (feedlist, "node-selected", SELECTED?SELECTED->id:NULL);
 
 	} else {
 		debug (DEBUG_GUI, "selected node stayed: %s", node?node_get_title (node):"none");
@@ -597,9 +597,9 @@ feedlist_unselect (void)
 }
 
 void
-feedlist_selection_changed (gchar * nodeId)
+feedlist_selection_changed (FeedList *feedlist, gpointer nodeId)
 {
-	Node *node = node_from_id (nodeId);
+	Node *node = node_from_id ((gchar *)nodeId);
 	if (node) {
 		feedlist_set_selected (node);
 	} else {
@@ -680,10 +680,4 @@ feedlist_reset_update_counters (Node *node)
 	guint64 now = g_get_real_time ();
 
 	node_foreach_child_data (node?node:feedlist_get_root (), node_reset_update_counter, &now);
-}
-
-FeedList *
-feedlist_create (void)
-{
-	return FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
 }

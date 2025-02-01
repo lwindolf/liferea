@@ -1,7 +1,7 @@
 /*
- * @file itemlist.c  item list handling
+ * @file itemlist.c  item list controller
  *
- * Copyright (C) 2004-2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,6 @@
 #include "node_providers/vfolder.h"
 #include "rule.h"
 #include "ui/liferea_shell.h"
-#include "ui/feed_list_view.h"
 
 /* The 'item list' is a controller for 'item view' and database backend.
    It manages the currently displayed 'node', realizes filtering
@@ -70,9 +69,12 @@ struct ItemListPrivate
 };
 
 enum {
+	ITEM_ADDED,	/*<< a new item has been added to the list */
 	ITEM_UPDATED,	/*<< state of a currently visible item has changed */
 	ITEM_REMOVED,	/*<< an item has been removed from the list */
 	ITEM_SELECTED,	/*<< the currently selected item has changed */
+	ITEM_BATCH_START,	/*<< item list has been reset and new batch load starts */
+	ITEM_BATCH_END,		/*<< batch load finised */
 	LAST_SIGNAL
 };
 
@@ -90,51 +92,41 @@ itemlist_init (ItemList *il)
 	g_assert (NULL == itemlist);
 	itemlist = il;
 	itemlist->priv = ITEMLIST_GET_PRIVATE (il);
+	itemlist->priv->guids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 }
 
 static void
 itemlist_duplicate_list_remove_item (itemPtr item)
 {
-	if (!item->validGuid)
+	if (!itemlist || !item->validGuid)
 		return;
-	if (!itemlist->priv->guids)
-		return;
+
 	g_hash_table_remove (itemlist->priv->guids, item->sourceId);
 }
 
 static void
 itemlist_duplicate_list_add_item (itemPtr item)
 {
-	if (!item->validGuid)
+	if (!itemlist || !item->validGuid)
 		return;
-	if (!itemlist->priv->guids)
-		itemlist->priv->guids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+	
 	g_hash_table_insert (itemlist->priv->guids, g_strdup (item->sourceId), GUINT_TO_POINTER (item->id));
 }
 
 static gboolean
 itemlist_duplicate_list_check_item (itemPtr item)
 {
-	if (!itemlist->priv->guids || !item->validGuid)
+	if (!itemlist || !item->validGuid)
 		return TRUE;
 
 	return (NULL == g_hash_table_lookup (itemlist->priv->guids, item->sourceId));
 }
 
 static void
-itemlist_duplicate_list_free (void)
-{
-	if (itemlist->priv->guids) {
-		g_hash_table_destroy (itemlist->priv->guids);
-		itemlist->priv->guids = NULL;
-	}
-}
-
-static void
 itemlist_finalize (GObject *object)
 {
 	itemset_free (itemlist->priv->filter);
-	itemlist_duplicate_list_free ();
+	g_hash_table_destroy (itemlist->priv->guids);
 
 	G_OBJECT_CLASS (parent_class)->finalize (object);
 }
@@ -155,7 +147,19 @@ itemlist_class_init (ItemListClass *klass)
 		0,
 		NULL,
 		NULL,
-		g_cclosure_marshal_VOID__STRING,
+		g_cclosure_marshal_VOID__INT,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_INT);
+
+	itemlist_signals[ITEM_ADDED] =
+		g_signal_new ("item-added",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__INT,
 		G_TYPE_NONE,
 		1,
 		G_TYPE_INT);
@@ -167,7 +171,7 @@ itemlist_class_init (ItemListClass *klass)
 		0,
 		NULL,
 		NULL,
-		g_cclosure_marshal_VOID__STRING,
+		g_cclosure_marshal_VOID__INT,
 		G_TYPE_NONE,
 		1,
 		G_TYPE_INT);
@@ -179,8 +183,31 @@ itemlist_class_init (ItemListClass *klass)
 		0,
 		NULL,
 		NULL,
+		g_cclosure_marshal_VOID__INT,
+		G_TYPE_NONE,
+		1,
+		G_TYPE_INT);
+
+	itemlist_signals[ITEM_BATCH_START] =
+		g_signal_new ("item-batch-start",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
 		g_cclosure_marshal_VOID__VOID,
-		G_TYPE_INT,
+		G_TYPE_NONE,
+		0);
+
+	itemlist_signals[ITEM_BATCH_END] =
+		g_signal_new ("item-batch-end",
+		G_OBJECT_CLASS_TYPE (object_class),
+		(GSignalFlags)(G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION),
+		0,
+		NULL,
+		NULL,
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE,
 		0);
 }
 
@@ -189,7 +216,7 @@ itemlist_class_init (ItemListClass *klass)
 itemPtr
 itemlist_get_selected (void)
 {
-	return item_load(itemlist->priv->selectedId);
+	return item_load (itemlist->priv->selectedId);
 }
 
 gulong
@@ -202,7 +229,7 @@ void
 itemlist_set_selected (itemPtr item)
 {
 	itemlist->priv->selectedId = item?item->id:0;
-	g_signal_emit (itemlist, itemlist_signals[ITEM_SELECTED], 0, item->sourceId);
+	g_signal_emit_by_name (itemlist, "item-selected", item?item->id:0);
 }
 
 Node *
@@ -251,9 +278,9 @@ itemlist_check_for_deferred_action (void)
 		conf_get_bool_value (DEFER_DELETE_MODE, &keep_for_search_folder);
 		if (keep_for_search_folder) {
 			item->isHidden = TRUE;
-			g_signal_emit (itemlist, itemlist_signals[ITEM_UPDATED], 0, item->sourceId);
+			g_signal_emit_by_name (itemlist, "item-updated", item->id);
 		} else {
-			g_signal_emit (itemlist, itemlist_signals[ITEM_REMOVED], 0, item->sourceId);
+			g_signal_emit_by_name (itemlist, "item-removed", item->id);
 		}
 	}
 
@@ -276,7 +303,7 @@ itemlist_merge_item (itemPtr item)
 		return;
 
 	itemlist_duplicate_list_add_item (item);
-	g_warning("FIXME GTK4 itemlist_merge_item add to GtkTreeView");
+	g_signal_emit_by_name (itemlist, "item-added", item->id);
 }
 
 static void
@@ -326,13 +353,13 @@ itemlist_load (Node *node)
 	gint		folder_display_mode;
 	gboolean	display_hide_read = FALSE;
 
-
 	g_return_if_fail (NULL != node);
 
 	debug (DEBUG_GUI, "loading item list with node \"%s\"", node_get_title (node));
 
-	g_assert (!itemlist->priv->guids);
 	g_assert (!itemlist->priv->filter);
+
+	g_signal_emit_by_name (itemlist, "item-batch-start", 0);
 
 	/* 1. Filter check. Don't continue if folder is selected and
 	   no folder viewing is configured. If folder viewing is enabled
@@ -358,11 +385,7 @@ itemlist_load (Node *node)
 	}
 
 	itemlist->priv->loading++;
-
-	/* Set the new displayed node... */
 	itemlist->priv->currentNode = node;
-	g_warning("FIXME  itemview_set_displayed_node");
-	//itemview_set_displayed_node (itemlist->priv->currentNode);
 
 	itemSet = node_get_itemset (itemlist->priv->currentNode);
 	itemlist_merge_itemset (itemSet);
@@ -371,6 +394,7 @@ itemlist_load (Node *node)
 
 	itemlist->priv->loading--;
 
+	g_signal_emit_by_name (itemlist, "item-batch-end", 0);
 }
 
 void
@@ -380,7 +404,7 @@ itemlist_unload (void)
 		itemlist_check_for_deferred_action ();
 
 	itemlist_set_selected (NULL);
-	itemlist_duplicate_list_free ();
+	g_hash_table_steal_all (itemlist->priv->guids);
 	itemlist->priv->currentNode = NULL;
 
 	itemset_free (itemlist->priv->filter);
@@ -526,9 +550,8 @@ itemlist_remove_all_items (Node *node)
 
 	db_itemset_remove_all (node->id);
 
-	if (node == itemlist->priv->currentNode) {
-		itemlist_duplicate_list_free ();
-	}
+	if (node == itemlist->priv->currentNode)
+		g_hash_table_steal_all (itemlist->priv->guids);
 
 	vfolder_foreach (node_update_counters);
 	node_update_counters (node);
@@ -551,8 +574,24 @@ itemlist_update_item (itemPtr item)
 /* mouse/keyboard interaction callbacks */
 
 void
-itemlist_selection_changed (itemPtr item)
+itemlist_node_changed (ItemList *ilv, gchar *nodeId, gpointer unused)
 {
+	Node *node = node_from_id (nodeId);
+
+	if (!node || (node == itemlist->priv->currentNode))
+		return;
+
+	itemlist_unload ();
+	itemlist_load (node);
+}
+
+void
+itemlist_selection_changed (ItemList *ilv, gint itemId, gpointer unused)
+{
+	g_warning("FIXME: itemlist_selection_changed");
+	return;
+	itemPtr item; // = (itemPtr)xxx;	//FIXME
+
 	if (itemlist->priv->selectedId != item->id) {
 		if (0 == itemlist->priv->loading) {
 			/* folder&vfolder postprocessing to remove/filter unselected items no
@@ -605,9 +644,7 @@ itemlist_select_from_history (gboolean back)
 	if (!node)
 		return;
 
-	if (node != feedlist_get_selected ())
-		feed_list_view_select (node);
-
+	feedlist_set_selected (node);
 	itemlist_set_selected (item);
 	item_unload (item);
 }
@@ -668,10 +705,4 @@ itemlist_add_search_result (ItemLoader *loader)
 	itemlist->priv->currentNode = item_loader_get_node (loader);
 
 	itemlist_add_loader (loader);
-}
-
-ItemList *
-itemlist_create (void)
-{
-	return ITEMLIST (g_object_new (ITEMLIST_TYPE, NULL));
 }

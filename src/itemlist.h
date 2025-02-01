@@ -55,15 +55,6 @@ struct ItemListClass
 GType itemlist_get_type (void);
 
 /**
- * itemlist_create: (skip)
- *
- * Set up the item list.
- *
- * Returns: (transfer full): the item list instance
- */
-ItemList * itemlist_create (void);
-
-/**
  * itemlist_get_displayed_node:
  *
  * Returns the currently displayed node.
@@ -177,11 +168,21 @@ void itemlist_remove_all_items (Node *node);
 
 /**
  * itemlist_selection_changed: (skip)
- * @item:	new selected item 
+ * @itemlist:	the item list
+ * @userdata:	new selected item id nr
  *
- * To be used by LifereaShell as a signal handler for the item list view.
+ * Only to be used as a signal handler for the item list view.
  */
-void itemlist_selection_changed (itemPtr item);
+void itemlist_selection_changed (ItemList *itemlist, gint itemId, gpointer unused);
+
+/**
+ * itemlist_node_changed: (skip)
+ * @itemlist:	the item list
+ * @userdata:	the node id string
+ *
+* Only to be used as a signal handler for the feed list view.
+ */
+void itemlist_node_changed (ItemList *itemlist, gchar *nodeId, gpointer unused);
 
 /**
  * itemlist_select_next_unread:

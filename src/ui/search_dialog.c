@@ -1,7 +1,7 @@
 /**
  * @file search_dialog.c  Search engine subscription dialog
  *
- * Copyright (C) 2007-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
 #include "ui/rule_editor.h"
-#include "ui/feed_list_view.h"
 
 /* a single static search folder representing the active search dialog result */
 static vfolderPtr vfolder = NULL;
@@ -61,7 +60,7 @@ search_clean_results (vfolderPtr vfolder)
 static void
 search_load_results (vfolderPtr searchResult)
 {
-	feed_list_view_select (NULL);
+	feedlist_set_selected (NULL);
 
 	itemlist_add_search_result (vfolder_loader_new (searchResult->node));
 }

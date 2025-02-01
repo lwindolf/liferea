@@ -213,14 +213,20 @@ static const GActionEntry gaction_entries[] = {
 };
 
 static void
-node_actions_update (gpointer obj, gchar *unused, gpointer user_data)
+node_actions_item_updated (gpointer obj, gint itemId, gpointer user_data)
+{
+	// FIXME
+}
+
+static void
+node_actions_node_updated (gpointer obj, gchar *nodeId, gpointer user_data)
 {
         GActionGroup *ag = G_ACTION_GROUP (user_data);
 
 	/* We need to use the selected node here, as for search folders
 	   if we'd rely on the parent node of the changed item we would
 	   enable the wrong menu options */
-	Node	*node = feedlist_get_selected ();
+	Node *node = node_from_id (nodeId);
 
 	if (!node) {
 		ui_common_action_group_enable (ag, FALSE);
@@ -272,9 +278,9 @@ node_actions_create (LifereaShell *shell)
 	              "feedlist", &feedlist,
 	              "itemlist", &itemlist, NULL);
 
-	g_signal_connect (feedlist, "items-updated", G_CALLBACK (node_actions_update), ag);
-	g_signal_connect (itemlist, "item-updated", G_CALLBACK (node_actions_update), ag);
-	g_signal_connect (feedlist, "node-selected", G_CALLBACK (node_actions_update), ag);
+	g_signal_connect (itemlist, "item-updated", G_CALLBACK (node_actions_item_updated), ag);
+	g_signal_connect (feedlist, "items-updated", G_CALLBACK (node_actions_node_updated), ag);
+	g_signal_connect (feedlist, "node-selected", G_CALLBACK (node_actions_node_updated), ag);
 
 	// FIXME: initialization with disabled actions!
 

@@ -76,8 +76,6 @@ struct _LifereaShell {
 	GtkWindow	*window;		/*<< Liferea main window */
 	GtkEventController *keypress;
 	GtkWidget	*headerbar;
-	FeedListView	*feedListView;
-	ItemListView	*itemListView;
 
 	gboolean	autoLayout;		/*<< TRUE if automatic layout switching is active */
 	guint		currentLayoutMode;	/*<< effective layout mode (email or wide) */
@@ -89,6 +87,10 @@ struct _LifereaShell {
 
 	ItemList	*itemlist;
 	FeedList	*feedlist;
+
+	FeedListView	*feedListView;
+	ItemListView	*itemListView;
+
 	LifereaBrowser	*htmlview;		/*<< the primary browser instance to render node/item info to */
 	BrowserTabs	*tabs;
 };
@@ -342,11 +344,6 @@ liferea_shell_update_unread_stats (gpointer user_data)
 	//gtk_label_set_text (GTK_LABEL (shell->statusbar_feedsinfo), tmp);
 	g_free (tmp);
 	g_free (msg);
-}
-
-static void
-liferea_shell_update_all_items (gpointer user_data) {
-	item_list_view_update_all_items (shell->itemListView);
 }
 
 /*
@@ -881,8 +878,10 @@ liferea_shell_set_layout (nodeViewType newMode)
 
 	/* Reparenting HTML view. This avoids the overhead of new browser instances. */
 	g_assert (htmlWidgetName);
-	previous_parent = gtk_widget_get_parent (item_list_view_get_widget (shell->itemListView));
-	gtk_viewport_set_child (GTK_VIEWPORT (previous_parent), NULL);
+	if (shell->itemListView) {
+		previous_parent = gtk_widget_get_parent (item_list_view_get_widget (shell->itemListView));
+		gtk_viewport_set_child (GTK_VIEWPORT (previous_parent), NULL);
+	}
 
 	gtk_notebook_set_current_page (GTK_NOTEBOOK (liferea_shell_lookup ("itemtabs")), effectiveMode);
 	gtk_viewport_set_child (GTK_VIEWPORT (liferea_shell_lookup (htmlWidgetName)), liferea_browser_get_widget (shell->htmlview));
@@ -895,7 +894,7 @@ liferea_shell_set_layout (nodeViewType newMode)
 	}
 
 	if (ilWidgetName) {
-		shell->itemListView = item_list_view_create (effectiveMode == NODE_VIEW_MODE_WIDE);
+		shell->itemListView = item_list_view_create (shell->feedlist, shell->itemlist, effectiveMode == NODE_VIEW_MODE_WIDE);
 		gtk_viewport_set_child (GTK_VIEWPORT (liferea_shell_lookup (ilWidgetName)), item_list_view_get_widget (shell->itemListView));
 	}
 
@@ -925,13 +924,16 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_assert (shell);
 
 	/* 1.) stuff where order does not matter */
+	shell->currentLayoutMode = 10000;	// something invalid
 	shell->window = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 	shell->keypress = gtk_event_controller_key_new ();
 	shell->plugins = liferea_plugins_engine_get ();
-	shell->itemlist = itemlist_create ();
+	shell->itemlist = ITEMLIST (g_object_new (ITEMLIST_TYPE, NULL));
+	shell->feedlist = FEED_LIST (g_object_new (FEED_LIST_TYPE, NULL));
 	shell->statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
 	shell->statusbarLocked = FALSE;
 	shell->statusbarLockTimer = 0;
+	shell->htmlview = liferea_browser_new (FALSE);
 	shell->tabs = browser_tabs_create (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
 
 	gtk_window_set_application (GTK_WINDOW (shell->window), app);
@@ -971,10 +973,8 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 4.) setup feed and item list widgets */
 	debug (DEBUG_GUI, "Setting up feed list");
-	shell->feedlist = feedlist_create ();
 	shell->feedListView = feed_list_view_create (GTK_TREE_VIEW (liferea_shell_lookup ("feedlist")), shell->feedlist);
 
-	debug (DEBUG_GUI, "Setting layout");
 	conf_get_int_value (DEFAULT_VIEW_MODE, &mode);
 	liferea_shell_set_layout (mode);
 
@@ -984,17 +984,12 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	// 6.) Restore selection (FIXME: Move to feed list code?)
 	if (conf_get_str_value (LAST_NODE_SELECTED, &id)) {
-		feed_list_view_select (node_from_id (id));
+		feedlist_set_selected (node_from_id (id));
 		g_free (id);
 	}
 
 	/* 7. Setup shell window signals, only after all widgets are ready */
-	g_signal_connect (shell->feedlist, "node-selected", G_CALLBACK (feedlist_selection_changed), NULL);
-	g_signal_connect (shell->itemlist, "item-selected", G_CALLBACK (itemlist_selection_changed), NULL);
-
 	g_signal_connect (shell->feedlist, "new-items", G_CALLBACK (liferea_shell_update_unread_stats), NULL);
-	g_signal_connect (shell->feedlist, "items-updated", G_CALLBACK (liferea_shell_update_all_items), NULL);
-
 	g_signal_connect (shell->keypress, "key_pressed", G_CALLBACK (on_key_pressed_event_null_cb), NULL);
 	g_signal_connect (shell->keypress, "key_released", G_CALLBACK (on_key_pressed_event_null_cb), NULL);
 
