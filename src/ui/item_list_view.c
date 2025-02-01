@@ -291,7 +291,7 @@ on_itemlist_selection_changed (GtkTreeSelection *selection, gpointer user_data)
 	if (gtk_tree_selection_get_selected (selection, &model, &iter))
 		id = item_list_view_iter_to_id (ITEM_LIST_VIEW (user_data), &iter);
 
-	g_signal_emit_by_name (user_data, "item-selected", id);
+	g_signal_emit_by_name (user_data, "selection-changed", id);
 }
 
 static void
@@ -416,6 +416,16 @@ item_list_view_item_batch_started (GObject *obj, gpointer user_data)
 	// FIXME: missing in GTK4
         //gtk_widget_freeze_child_notify((GtkWidget *)ilv->treeview);
 	gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (ilv->batch_itemstore), NULL, NULL, NULL);
+}
+
+static void
+item_list_view_item_batch_ended (GObject *obj, gpointer user_data)
+{
+	ItemListView *ilv = ITEM_LIST_VIEW (user_data);
+
+	g_assert (ilv->batch_mode);
+	item_list_view_set_tree_store (ilv, ilv->batch_itemstore);
+	ilv->batch_mode = FALSE;
 }
 
 static gfloat
@@ -557,18 +567,6 @@ item_list_view_update_all_items (GObject *obj, gpointer user_data)
 	}
 }
 
-static void
-item_list_view_item_batch_ended (GObject *obj, gpointer user_data)
-{
-	ItemListView *ilv = ITEM_LIST_VIEW (user_data);
-
-	g_assert (ilv->batch_mode);
-	// FIXME: Missing in GTK4
-        //gtk_widget_thaw_child_notify((GtkWidget *)ilv->treeview);
-	item_list_view_set_tree_store (ilv, ilv->batch_itemstore);
-	ilv->batch_mode = FALSE;
-}
-
 static gboolean
 on_item_list_view_key_pressed_event (GtkEventControllerKey *controller, guint keyval, guint keycode, GdkModifierType state, gpointer data)
 {
@@ -645,7 +643,6 @@ static gboolean
 on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdouble x, gdouble y, gpointer user_data)
 {
 	ItemListView		*ilv = ITEM_LIST_VIEW (user_data);
-	GtkTreeView		*treeview = GTK_TREE_VIEW (user_data);
 	GtkTreePath		*path;
 	GtkTreeIter		iter;
 	GtkTreeViewColumn	*column;
@@ -657,18 +654,18 @@ on_item_list_view_pressed_event (GtkGestureClick *gesture, guint n_press, gdoubl
 	/*if (eb->window != gtk_tree_view_get_bin_window (ilv->treeview))
 		return FALSE;*/
 
-	if (gtk_tree_view_get_path_at_pos (treeview, (gint)x, (gint)y, &path, &column, NULL, NULL)) {
-		if (gtk_tree_model_get_iter (gtk_tree_view_get_model (treeview), &iter, path))
+	if (gtk_tree_view_get_path_at_pos (ilv->treeview, (gint)x, (gint)y, &path, &column, NULL, NULL)) {
+		if (gtk_tree_model_get_iter (gtk_tree_view_get_model (ilv->treeview), &iter, path))
 			item = item_load (item_list_view_iter_to_id (ilv, &iter));
 		gtk_tree_path_free (path);
 	}
 
 	if (item) {
 		if (n_press == 1) {
-			switch (gtk_gesture_single_get_current_button(GTK_GESTURE_SINGLE(gesture))) {
+			switch (gtk_gesture_single_get_current_button (GTK_GESTURE_SINGLE (gesture))) {
 				case GDK_BUTTON_PRIMARY:
-					if (column == g_hash_table_lookup(ilv->columns, "favicon") ||
-					    column == g_hash_table_lookup(ilv->columns, "state")) {
+					if (column == g_hash_table_lookup (ilv->columns, "favicon") ||
+					    column == g_hash_table_lookup (ilv->columns, "state")) {
 						itemlist_toggle_flag (item);
 						result = TRUE;
 					}

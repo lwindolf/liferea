@@ -141,6 +141,8 @@ src/ui/auth_dialog.c
 src/ui/auth_dialog.h
 src/ui/browser_tabs.c
 src/ui/browser_tabs.h
+src/ui/content_view.c
+src/ui/content_view.h
 src/ui/feed_list_view.c
 src/ui/feed_list_view.h
 src/ui/icons.c

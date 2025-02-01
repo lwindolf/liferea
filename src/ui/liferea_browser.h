@@ -23,12 +23,31 @@
 
 #include <gtk/gtk.h>
 
+#include "browser_history.h"
 #include "net.h"
 
 G_BEGIN_DECLS
 
 #define LIFEREA_BROWSER_TYPE		(liferea_browser_get_type ())
 G_DECLARE_FINAL_TYPE (LifereaBrowser, liferea_browser, LIFEREA, BROWSER, GObject)
+
+struct _LifereaBrowser {
+	GObject	parent_instance;
+
+	GtkWidget	*renderWidget;		/*<< The HTML widget (e.g. Webkit widget) */
+	GtkWidget	*container;		/*<< Outer container including render widget and toolbar */
+	GtkWidget	*toolbar;		/*<< The navigation toolbar */
+
+	GtkWidget	*forward;		/*<< The forward button */
+	GtkWidget	*back;			/*<< The back button */
+	GtkWidget	*urlentry;		/*<< The URL entry widget */
+	browserHistory	*history;		/*<< The browser history */
+
+	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
+
+	gchar		*url;			/*<< the URL of the content rendered right now */
+	gchar 		*content;		/*<< current HTML content (excluding decorations, content passed to Readability.js) */
+};
 
 /**
  * liferea_browser_new: (skip)

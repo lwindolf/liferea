@@ -417,12 +417,11 @@ feed_list_view_check_if_folder_is_empty (const gchar *nodeId)
 }
 
 static void
-feed_list_view_node_updated (FeedListView *flv, const gchar *nodeId)
+feed_list_view_node_update (FeedListView *flv, Node *node)
 {
 	GtkTreeIter	*iter;
 	gchar		*label, *count = NULL;
 	guint		labeltype;
-	Node		*node;
 	static		gchar *countColor = NULL;
 
 	/* Until GTK3 we used real theme colors here. Nowadays GTK simply knows
@@ -437,8 +436,7 @@ feed_list_view_node_updated (FeedListView *flv, const gchar *nodeId)
 	else
 		countColor = "foreground='#fff' background='#aaa'";
 
-	node = node_from_id (nodeId);
-	iter = feed_list_view_to_iter (nodeId);
+	iter = feed_list_view_to_iter (node->id);
 	if (!iter)
 		return;
 
@@ -483,13 +481,18 @@ feed_list_view_node_updated (FeedListView *flv, const gchar *nodeId)
 	g_free (count);
 
 	if (node->parent)
-		feed_list_view_node_updated (flv, node->parent->id);
+		feed_list_view_node_update (flv, node->parent);
 }
 
 static void
-feed_list_view_node_removed (FeedListView *flv, gpointer userdata)
+feed_list_view_node_updated (GObject *obj, const gchar *nodeId, gpointer user_data)
 {
-	Node		*node = node_from_id ((gchar *)userdata);
+	feed_list_view_node_update (FEED_LIST_VIEW (user_data), node_from_id (nodeId));
+}
+
+static void
+feed_list_view_node_remove (FeedListView *flv, Node *node)
+{
 	GtkTreeIter	*iter;
 	gboolean 	parentExpanded = FALSE;
 
@@ -507,14 +510,19 @@ feed_list_view_node_removed (FeedListView *flv, gpointer userdata)
 		feed_list_view_check_if_folder_is_empty (node->parent->id);
 		if (parentExpanded)
 			feed_list_view_set_expansion (node->parent, TRUE);
-		feed_list_view_node_updated (flv, userdata);
+		feed_list_view_node_update (flv, node);
 	}
 }
 
 static void
-feed_list_view_node_added (FeedListView *flv, gpointer userdata)
+feed_list_view_node_removed (GObject *obj, gchar *nodeId, gpointer user_data)
 {
-	Node		*node = node_from_id ((gchar *)userdata);
+	feed_list_view_node_remove (FEED_LIST_VIEW (user_data), node_from_id (nodeId));
+}
+
+static void
+feed_list_view_node_add (FeedListView *flv, Node *node)
+{
 	gint		position;
 	GtkTreeIter	*iter, *parentIter = NULL;
 
@@ -541,7 +549,7 @@ feed_list_view_node_added (FeedListView *flv, gpointer userdata)
 
 	gtk_tree_store_set (flv->feedstore, iter, FS_PTR, node, -1);
 	feed_list_view_add_iter (node->id, iter);
-	feed_list_view_node_updated (flv, node->id);
+	feed_list_view_node_update (flv, node);
 
 	if (node->parent != feedlist_get_root ())
 		feed_list_view_check_if_folder_is_empty (node->parent->id);
@@ -551,9 +559,15 @@ feed_list_view_node_added (FeedListView *flv, gpointer userdata)
 }
 
 static void
-feed_list_view_node_selected (GObject *obj, gchar *nodeId, gpointer userdata)
+feed_list_view_node_added (GObject *obj, gchar *nodeId, gpointer user_data)
 {
-	feed_list_view_select (node_from_id ((gchar *)nodeId));
+	feed_list_view_node_add (FEED_LIST_VIEW (user_data), node_from_id (nodeId));
+}
+
+static void
+feed_list_view_node_selected (GObject *obj, gchar *nodeId, gpointer user_data)
+{
+	feed_list_view_select (node_from_id (nodeId));
 }
 
 FeedListView *
@@ -708,7 +722,7 @@ feed_list_view_load_feedlist (Node *node)
 	while (iter) {
 		node = (Node *)iter->data;
 
-		feed_list_view_node_added (flv, node->id);
+		feed_list_view_node_added (NULL, node->id, flv);
 
 		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
 			feed_list_view_load_feedlist (node);
@@ -741,7 +755,7 @@ on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 	if (response_id == GTK_RESPONSE_OK) {
 		node_set_title (node, liferea_dialog_entry_get(GTK_WIDGET (dialog), "nameentry"));
 
-		feed_list_view_node_updated (flv, node->id);
+		feed_list_view_node_update (flv, node);
 		feedlist_schedule_save ();
 	}
 }
@@ -841,6 +855,6 @@ feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription,
 
 void
 feed_list_view_reparent (Node *node) {
-	feed_list_view_node_removed (flv, node->id);
-	feed_list_view_node_added (flv, node->id);
+	feed_list_view_node_remove (flv, node);
+	feed_list_view_node_add (flv, node);
 }

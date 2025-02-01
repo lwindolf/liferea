@@ -588,42 +588,41 @@ itemlist_node_changed (ItemList *ilv, gchar *nodeId, gpointer unused)
 void
 itemlist_selection_changed (ItemList *ilv, gint itemId, gpointer unused)
 {
-	g_warning("FIXME: itemlist_selection_changed");
-	return;
-	itemPtr item; // = (itemPtr)xxx;	//FIXME
+	itemPtr item = item_load (itemId);
 
-	if (itemlist->priv->selectedId != item->id) {
-		if (0 == itemlist->priv->loading) {
-			/* folder&vfolder postprocessing to remove/filter unselected items no
-			more matching the display rules because they have changed state */
-			itemlist_check_for_deferred_action ();
+	if (!item)
+		return;
 
-			debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
+	if (itemlist->priv->selectedId == itemId)
+		return;
 
-			itemlist_set_selected (item);
+	if (0 == itemlist->priv->loading) {
+		/* folder&vfolder postprocessing to remove/filter unselected items no
+		more matching the display rules because they have changed state */
+		itemlist_check_for_deferred_action ();
 
-			/* set read and unset update status when selecting */
-			if (item) {
-				gchar	*link = NULL;
-				Node	*node = node_from_id (item->nodeId);
+		debug (DEBUG_GUI, "item list selection changed to \"%s\"", item?item_get_title (item):"(null)");
 
-				item_set_read_state (item, TRUE);
+		itemlist_set_selected (item);
 
-				if (IS_FEED (node) && node->data && ((feedPtr)node->data)->loadItemLink && (link = item_make_link (item))) {
-					browser_launch_URL (link, TRUE /* force internal */);
-					g_free (link);
-				}
+		/* set read and unset update status when selecting */
+		if (item) {
+			gchar	*link = NULL;
+			Node	*node = node_from_id (item->nodeId);
+
+			item_set_read_state (item, TRUE);
+
+			if (IS_FEED (node) && node->data && ((feedPtr)node->data)->loadItemLink && (link = item_make_link (item))) {
+				browser_launch_URL (link, TRUE /* force internal */);
+				g_free (link);
 			}
-
-			feedlist_reset_new_item_count ();
 		}
+
+		feedlist_reset_new_item_count ();
 
 		g_signal_emit_by_name (itemlist, "item-selected", NULL);
 	}
-
-	if (item)
-		g_object_unref (item);
-
+	g_object_unref (item);
 }
 
 static void

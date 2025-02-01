@@ -93,6 +93,7 @@ liferea_sources = files(
   'plugins/plugins_engine.c',
   'ui/auth_dialog.c',
   'ui/browser_tabs.c',
+  'ui/content_view.c',
   'ui/feed_list_view.c',
   'ui/gedit-close-button.c',
   'ui/icons.c',

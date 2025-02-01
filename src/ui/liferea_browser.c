@@ -38,7 +38,6 @@
 #include <locale.h>
 
 #include "browser.h"
-#include "browser_history.h"
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
@@ -62,24 +61,6 @@
    local help files   no                  no                 on
    internet URL       no                  no                 on
  */
-
-struct _LifereaBrowser {
-	GObject	parent_instance;
-
-	GtkWidget	*renderWidget;		/*<< The HTML widget (e.g. Webkit widget) */
-	GtkWidget	*container;		/*<< Outer container including render widget and toolbar */
-	GtkWidget	*toolbar;		/*<< The navigation toolbar */
-
-	GtkWidget	*forward;		/*<< The forward button */
-	GtkWidget	*back;			/*<< The back button */
-	GtkWidget	*urlentry;		/*<< The URL entry widget */
-	browserHistory	*history;		/*<< The browser history */
-
-	gboolean	forceInternalBrowsing;	/*<< TRUE if clicked links should be force loaded in a new tab (regardless of global preference) */
-
-	gchar		*url;			/*<< the URL of the content rendered right now */
-	gchar 		*content;		/*<< current HTML content (excluding decorations, content passed to Readability.js) */
-};
 
 enum {
 	STATUSBAR_CHANGED,

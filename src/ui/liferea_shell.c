@@ -49,6 +49,7 @@
 #include "node_providers/vfolder.h"
 #include "plugins/plugins_engine.h"
 #include "ui/browser_tabs.h"
+#include "ui/content_view.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/item_list_view.h"
@@ -933,7 +934,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	shell->statusbar = GTK_STATUSBAR (liferea_shell_lookup ("statusbar"));
 	shell->statusbarLocked = FALSE;
 	shell->statusbarLockTimer = 0;
-	shell->htmlview = liferea_browser_new (FALSE);
+	shell->htmlview = LIFEREA_BROWSER (content_view_create (shell->feedlist, shell->itemlist));
 	shell->tabs = browser_tabs_create (GTK_NOTEBOOK (liferea_shell_lookup ("browsertabs")));
 
 	gtk_window_set_application (GTK_WINDOW (shell->window), app);
