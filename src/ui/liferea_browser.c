@@ -589,7 +589,7 @@ liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gcha
 
 	/* escape JSON and create a JS command */
 	encoded_json = g_uri_escape_string (json, NULL, TRUE);
-	script = g_strdup_printf ("load_%s('%s', '%s', '%s');\n", name, encoded_json, baseURL, direction);
+	script = g_strdup_printf ("window.debugflags=%ld; load_%s('%s', '%s', '%s');\n", debug_get_flags(), name, encoded_json, baseURL, direction);
 
 	/* Each template has a script insertion marker which we need to replace */
 	tmp = g_string_new (liferea_browser_get_template (browser, name));

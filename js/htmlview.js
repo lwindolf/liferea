@@ -22,6 +22,8 @@
 import { render, template } from './helpers/render.js';
 import DOMPurify from './vendor/purify.min.js';
 
+window.debugflags = 0;
+
 function prepare(baseURL, title) {
 	if (title) {
 		/* Set title for it to appear in e.g. desktop MPRIS playback controls */
@@ -70,11 +72,19 @@ function templateFix(str, data) {
 					data);
 }
 
+function debug(text, obj) {
+	if(window.debugflags > 0)
+		if (obj)
+			console.log(text, obj);
+		else
+			console.log(text);
+}
+
 async function load_node(data, baseURL, direction) {
 	let node = JSON.parse(decodeURIComponent(data));
 
 	// FIXME
-	console.log(node);
+	debug("node", node);
 
 	prepare(baseURL, node.title);
 	render("body", templateFix(document.getElementById('template').innerHTML), {
@@ -96,6 +106,7 @@ async function load_item(data, baseURL, direction) {
 	let mediathumb = metadata_get(item, "mediathumbnail");
 	let mediadesc = metadata_get(item, "mediadescription");
 	let article;
+	let debugfooter = "<hr/>DEBUG:";
 
 	if (richContent) {
 		let shadowDoc = document.implementation.createHTMLDocument();
@@ -105,13 +116,15 @@ async function load_item(data, baseURL, direction) {
 		if (article) {
 			// Use rich content from Readability if available and better!
 			if (article.content.length > item.description.length) {
+				debug("Using Readability content");
+				debugfooter += " Readability";
 				item.description = article.content;
 			}
 		}
 	}
-
-	// FIXME
-	console.log(item);
+	
+	debug("item", item);
+	debug("article", article);
 
 	prepare(baseURL, item.title);
 	render("body", templateFix (document.getElementById('template').innerHTML), {
@@ -121,7 +134,7 @@ async function load_item(data, baseURL, direction) {
 		// Using article.title is important, as often the item.title is just a summary
 		// or something slightly different. Using the article.title allow for better
 		// title duplicate elimination (further below)
-		title		: article?article.title:item.title,
+		title			: article?.title?.length > 5?article.title:item.title,
 
 		author			: metadata_get(item, "author"),
 		creator			: metadata_get(item, "creator"),
@@ -151,6 +164,7 @@ async function load_item(data, baseURL, direction) {
 			innermost = Array.from(innermost.children).find(child => child.textContent.trim() === item.title) || innermost;
 		}
 		innermost.remove();
+		debugfooter += " titleDuplicateRemove";
 	}
 
     // If there are no images and we have a thumbnail, add it
@@ -159,6 +173,7 @@ async function load_item(data, baseURL, direction) {
 		img.src = mediathumb;
 		img.alt = mediadesc;
 		document.getElementById('description').prepend(img);
+		debugfooter += " thumbnailAdd";
     }
 
 	// Convert all lazy-loaded images
@@ -177,10 +192,15 @@ async function load_item(data, baseURL, direction) {
     });
 
 	let youtubeMatch = item.source.match(/https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/);
-	if (youtubeMatch)
+	if (youtubeMatch) {
 		youtube_embed (youtubeMatch[1]);
+		debugfooter += " youtube";
+	}
 
     contentCleanup ();
+
+	if(window.debugflags > 0)
+    	document.body.innerHTML += debugfooter;
 
     return true;
 }
