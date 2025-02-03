@@ -224,6 +224,7 @@ node_source_new (Node *node, nodeSourceTypePtr type, const gchar *url)
 
 	g_assert (NULL == node->source);
 
+	node->provider = node_source_get_provider ();
 	node->source = g_new0 (struct nodeSource, 1);
 	node->source->root = node;
 	node->source->type = type;
