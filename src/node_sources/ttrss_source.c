@@ -368,6 +368,8 @@ on_ttrss_source_selected (GtkDialog *dialog,
 
 		db_node_update (node);	/* because of metadate_list_set() above */
 	}
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static void

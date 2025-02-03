@@ -315,11 +315,6 @@ feed_list_node_source_type_dialog (void)
 	GtkTreeIter		treeiter;
 	nodeSourceTypePtr	type;
 
-	if (!nodeSourceTypes) {
-		ui_show_error_box (_("No feed list source types found!"));
-		return FALSE;
-	}
-
 	/* set up the dialog */
 	dialog = liferea_dialog_new ("node_source");
 

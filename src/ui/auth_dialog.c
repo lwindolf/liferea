@@ -45,6 +45,8 @@ auth_dialog_finalize (GObject *object)
 
 	if (ad->subscription != NULL)
 		ad->subscription->activeAuth = FALSE;
+
+	gtk_widget_destroy (ad->dialog);
 }
 
 static void
@@ -124,7 +126,6 @@ auth_dialog_init (AuthDialog *ad)
 	g_signal_connect (G_OBJECT (ad->dialog), "response", G_CALLBACK (on_authdialog_response), ad);
 }
 
-
 AuthDialog *
 auth_dialog_new (subscriptionPtr subscription, gint flags)
 {
@@ -136,6 +137,6 @@ auth_dialog_new (subscriptionPtr subscription, gint flags)
 	}
 
 	ad = AUTH_DIALOG (g_object_new (AUTH_DIALOG_TYPE, NULL));
-	auth_dialog_load(ad, subscription, flags);
+	auth_dialog_load (ad, subscription, flags);
 	return ad;
 }

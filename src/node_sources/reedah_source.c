@@ -274,6 +274,8 @@ on_reedah_source_selected (GtkDialog *dialog,
 		feedlist_node_added (node);
 		node_source_update (node);
 	}
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 static void
