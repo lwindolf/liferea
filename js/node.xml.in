@@ -27,6 +27,27 @@
                         {{/if}}
 		</header>
 
+		{{#if node.nodeSource}}
+			{{#with node.nodeSource}}
+				{{#compare loginState "==" 8}}
+					<div id="errors">
+						<p><_span>⛔ Account login for '{{ title }}' failed ({{ authFailures }}/{{ maxFailures }} retries)!</_span></p>
+						<p><_span>Please check your credentials!</_span></p>
+					</div>
+				{{/compare}}
+				{{#compare loginState "==" 2}}
+					<div id="errors">
+						<_span>⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/{{ maxFailures }} retries)...</_span>
+					</div>
+				{{/compare}}
+				{{#compare loginState "==" 1}}
+					<div id="errors">
+						<_span>⚠️ Account login for '{{ title }}' has not yet started.</_span>
+					</div>
+				{{/compare}}
+			{{/with}}
+		{{/if}}
+
 		{{#if node.error}}
 	        	<div id="errors">
 				<_span>There was a problem when fetching this subscription!</_span>

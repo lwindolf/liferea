@@ -1,7 +1,7 @@
 /*
  * @file node_source.h  generic node source interface
  *
- * Copyright (C) 2005-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include <glib.h>
 #include <gmodule.h>
 
+#include "json.h"
 #include "node.h"
 #include "node_provider.h"
 #include "subscription_type.h"
@@ -67,11 +68,11 @@ typedef enum {
 
 /* node source state model */
 typedef enum {
-	NODE_SOURCE_STATE_NONE = 0,		/*<< no authentication tried so far */
-	NODE_SOURCE_STATE_IN_PROGRESS,		/*<< authentication in progress */
-	NODE_SOURCE_STATE_ACTIVE,		/*<< authentication succeeded */
-	NODE_SOURCE_STATE_NO_AUTH,		/*<< authentication has failed */
-	NODE_SOURCE_STATE_MIGRATE,		/*<< source will be migrated, do not do anything anymore! */
+	NODE_SOURCE_STATE_NONE		= (1<<0),	/*<< no authentication tried so far */
+	NODE_SOURCE_STATE_IN_PROGRESS	= (1<<1),	/*<< authentication in progress */
+	NODE_SOURCE_STATE_ACTIVE	= (1<<2),	/*<< authentication succeeded */
+	NODE_SOURCE_STATE_NO_AUTH	= (1<<3),	/*<< authentication has failed */
+	NODE_SOURCE_STATE_MIGRATE	= (1<<4),	/*<< source will be migrated, do not do anything anymore! */
 } nodeSourceState;
 
 /* node source subscription update flags */
@@ -400,6 +401,15 @@ void node_source_item_set_flag (Node *node, itemPtr item, gboolean newState);
  * Converts all subscriptions to default source subscriptions.
  */
 void node_source_convert_to_local (Node *node);
+
+/**
+ * node_source_to_json: (skip)
+ * @node:	the source node
+ * @b:		the json builder
+ *
+ * Add source specific data to the json builder.
+ */
+void node_source_to_json (Node *node, JsonBuilder *b);
 
 /**
  * node_source_type_register: (skip)

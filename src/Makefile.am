@@ -136,7 +136,7 @@ Liferea_3_0_gir_FILES = auth.c auth.h \
 	plugins/liferea_shell_activatable.c plugins/liferea_shell_activatable.h \
 	plugins/node_source_activatable.c plugins/node_source_activatable.h
 
-Liferea_3_0_gir_INCLUDES = Gtk-3.0 libxml2-2.0
+Liferea_3_0_gir_INCLUDES = Gtk-3.0 libxml2-2.0 Json-1.0
 if HAVE_INTROSPECTION
 girdir = $(datadir)/liferea/gir-1.0
 gir_DATA = $(INTROSPECTION_GIRS)

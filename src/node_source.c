@@ -1,7 +1,7 @@
 /*
  * @file node_source.c  generic node source provider implementation
  *
- * Copyright (C) 2005-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -558,6 +558,26 @@ node_source_convert_to_local (Node *node)
 	   remove the subscription tree afterwards there is a double free */
 
 	ui_show_info_box (_("The '%s' subscription was successfully converted to local feeds!"), node->title);
+}
+
+void
+node_source_to_json (Node *node, JsonBuilder *b)
+{
+	g_return_if_fail (NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN);
+
+	json_builder_set_member_name (b, "nodeSource");
+	json_builder_begin_object (b);
+	json_builder_set_member_name (b, "title");
+	json_builder_add_string_value (b, node->source->root->title);
+	json_builder_set_member_name (b, "loginState");
+	json_builder_add_int_value (b, node->source->loginState);
+	json_builder_set_member_name (b, "authFailures");
+	json_builder_add_int_value (b, node->source->authFailures);
+	json_builder_set_member_name (b, "maxFailures");
+	json_builder_add_int_value (b, NODE_SOURCE_MAX_AUTH_FAILURES);
+	json_builder_set_member_name (b, "actionQueueLength");
+	json_builder_add_int_value (b, g_queue_get_length (node->source->actionQueue));
+	json_builder_end_object (b);
 }
 
 /* implementation of the node type interface */

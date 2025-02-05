@@ -392,6 +392,8 @@ node_to_json (Node *node)
 		metadata_list_to_json (node->subscription->metadata, b);
 	}
 
+	node_source_to_json (node, b);
+
 	if (g_str_equal (NODE_PROVIDER (node)->id, "feed")) {
 		feedPtr feed = (feedPtr) node->data;
 		if(feed && feed->parseErrors && (strlen(feed->parseErrors->str) > 0)) {

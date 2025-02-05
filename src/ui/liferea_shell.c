@@ -918,7 +918,7 @@ on_menu_export (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 static void
 liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time_received)
 {
-	gchar		*tmp1, *tmp2, *freeme;
+	gchar		*tmp1, *tmp2;
 	GtkWidget	*mainwindow;
 	GtkAllocation	alloc;
 	GtkTreeView	*treeview;
