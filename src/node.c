@@ -178,6 +178,12 @@ node_update_subscription (Node *node, gpointer user_data)
 		return;
 	}
 
+	if ((NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN) &&
+	    node->source->loginState != NODE_SOURCE_STATE_ACTIVE) {
+		debug(DEBUG_UPDATE, "Skipping update %s as node source is not logged in yet", node->id);
+		return;
+	}
+
 	if (node->subscription)
 		subscription_update (node->subscription, GPOINTER_TO_UINT (user_data));
 
