@@ -1,6 +1,6 @@
 [Plugin]
 Module=bold-unread
-Loader=python3
+Loader=python
 Icon=format-text-bold
 IAge=2
 Name=Bold Unread

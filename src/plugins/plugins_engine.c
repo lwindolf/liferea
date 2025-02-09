@@ -54,10 +54,10 @@ static LifereaPluginsEngine *plugins = NULL;
 static void
 liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 {
-	gchar		*typelib_dir;
-	const gchar	**names;
-	gsize		length;
-	GError		*error = NULL;
+	g_autofree gchar	*typelib_dir;
+	const gchar		**names;
+	gsize			length;
+	GError			*error = NULL;
 
 	g_autoptr(GSettings)	plugin_settings = g_settings_new ("net.sf.liferea.plugins");
 	g_autoptr(GVariant)	vlist;
@@ -90,13 +90,11 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 	g_free (names);
 
 	/* Only load libpeas after we cleaned the 'active-plugins' setting */
-	peas_engine_enable_loader (PEAS_ENGINE (plugins->engine), "python3");
+	peas_engine_enable_loader (PEAS_ENGINE (plugins->engine), "python");
 	peas_engine_enable_loader (PEAS_ENGINE (plugins->engine), "gjs");
 
 	/* Require Lifereas's typelib. */
-	typelib_dir = g_build_filename (PACKAGE_LIB_DIR,
-					"girepository-1.0", NULL);
-
+	typelib_dir = g_build_filename (PACKAGE_LIB_DIR, "girepository-1.0", NULL);
 	if (!g_irepository_require_private (g_irepository_get_default (),
 		typelib_dir, "Liferea", "3.0", 0, &error)) {
 		g_warning ("Could not load Liferea repository: %s", error->message);
@@ -104,26 +102,11 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 		error = NULL;
 	}
 
-	g_free (typelib_dir);
-
-	/* This should be moved to libpeas */
-	if (!g_irepository_require (g_irepository_get_default (),
-				"Peas", "2.0", 0, &error)) {
-		g_warning ("Could not load Peas repository: %s", error->message);
-		g_error_free (error);
-		error = NULL;
-	}
-
-	if (!g_irepository_require (g_irepository_get_default (),
-				"PeasGtk", "1.0", 0, &error)) {
-		g_warning ("Could not load PeasGtk repository: %s", error->message);
-		g_error_free (error);
-		error = NULL;
-	}
-
+	g_autofree gchar *userdata = g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL);
 	g_autofree gchar *data = g_build_filename (PACKAGE_DATA_DIR, "plugins", NULL);
 	g_autofree gchar *lib = g_build_filename (PACKAGE_LIB_DIR, "plugins", NULL);
-	peas_engine_add_search_path (PEAS_ENGINE (plugins->engine), data, data);
+
+        peas_engine_add_search_path (PEAS_ENGINE (plugins->engine), userdata, userdata);
 	peas_engine_add_search_path (PEAS_ENGINE (plugins->engine), lib, data);
 	peas_engine_rescan_plugins (PEAS_ENGINE (plugins->engine));
 

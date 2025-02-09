@@ -1,5 +1,5 @@
 [Plugin]
-Loader=python3
+Loader=python
 Module=plugin-installer
 IAge=3
 Name=Plugin Installer

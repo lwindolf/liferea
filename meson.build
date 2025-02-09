@@ -11,11 +11,12 @@ add_project_arguments('-DGETTEXT_PACKAGE=' + gettext_package, language: 'c')
 subdir('po')
 
 prefix = get_option('prefix')
-datadir = join_paths(prefix, get_option('datadir'))
-libdir = join_paths(prefix, get_option('libdir'))
+datadir = join_paths(prefix, get_option('datadir'), 'liferea')
+libdir = join_paths(prefix, get_option('libdir'), 'liferea')
+girdir = join_paths(prefix, get_option('datadir'), 'liferea', 'gir-1.0')
+typelibdir = join_paths(prefix, get_option('libdir'), 'liferea', 'girepository-1.0')
 localedir = join_paths(prefix, get_option('localedir'))
-pkglibdir = join_paths(libdir, 'liferea')
-webprocessextensionsdir = join_paths(pkglibdir, 'web-process-extensions')
+webprocessextensionsdir = join_paths(prefix, get_option('libdir'), 'liferea', 'web-process-extensions')
 
 conf = configuration_data()
 conf.set_quoted('APPLICATION_ID', 'net.sf.liferea')
@@ -66,7 +67,7 @@ foreach size: ['scalable']
   install_subdir(join_paths('pixmaps', size), install_dir: icondir)
 endforeach
 
-pixmapsdir = join_paths(datadir, 'liferea', 'pixmaps')
+pixmapsdir = join_paths(datadir, 'pixmaps')
 foreach size: ['16x16', '32x32', '22x22', '24x24', '32x32', '48x48']
   install_subdir(join_paths('pixmaps', size), install_dir: pixmapsdir)
 endforeach
@@ -80,8 +81,11 @@ foreach file: [
   'newsbin.png',
   'unread.png'
 ]
+  # FIXME: does this duplicate pixmaps?
   install_data(join_paths('pixmaps', file), install_dir: pixmapsdir)
 endforeach
+
+install_subdir('plugins', install_dir: libdir)
 
 gir = gnome.generate_gir(liferea,
   namespace: 'Liferea',
@@ -89,7 +93,9 @@ gir = gnome.generate_gir(liferea,
   nsversion: '3.0',
   includes: ['Gtk-4.0', 'libxml2-2.0', 'Json-1.0'],
   install: true,
-  extra_args: '--accept-unprefixed'
+  install_dir_gir: girdir,
+  install_dir_typelib: typelibdir,
+  extra_args: '--accept-unprefixed',
 )
 
 gnome.post_install(
