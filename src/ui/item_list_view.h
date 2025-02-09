@@ -1,5 +1,5 @@
 /*
- * @file item_list_view.h  presenting items in a GtkTreeView
+ * item_list_view.h  presenting items in a GtkTreeView
  *
  * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2005 Nathan J. Conrad <t98502@users.sourceforge.net>
@@ -40,7 +40,6 @@ G_DECLARE_FINAL_TYPE (ItemListView, item_list_view, ITEM_LIST, VIEW, GObject)
 
 /**
  * item_list_view_create: (skip)
- * 
  * @feedlist:	the FeedList
  * @itemlist:	the ItemList
  * @wide:	TRUE if ItemListView should be optimized for wide view

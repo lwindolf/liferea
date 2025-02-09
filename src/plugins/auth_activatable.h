@@ -66,8 +66,6 @@ void liferea_auth_activatable_store (LifereaAuthActivatable * activatable,
                                      const gchar *username,
                                      const gchar *password);
 
-GType liferea_auth_activatable_get_type (void) G_GNUC_CONST;
-
 G_END_DECLS
 
 #endif /* __LIFEREA_AUTH_ACTIVATABLE_H__ */

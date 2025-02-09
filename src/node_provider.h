@@ -1,4 +1,4 @@
-/**
+/*
  * node_provider.h:  node provider handling
  * 
  * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>

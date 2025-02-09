@@ -52,8 +52,6 @@ void liferea_activatable_activate (LifereaActivatable *activatable);
  */
 void liferea_activatable_deactivate (LifereaActivatable *activatable);
 
-GType liferea_activatable_get_type (void) G_GNUC_CONST;
-
 G_END_DECLS
 
 #endif

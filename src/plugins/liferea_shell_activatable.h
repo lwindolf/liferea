@@ -46,8 +46,6 @@ struct _LifereaShellActivatableInterface
  */
 void liferea_shell_activatable_update_state (LifereaShellActivatable *activatable);
 
-GType liferea_shell_activatable_get_type (void) G_GNUC_CONST;
-
 G_END_DECLS
 
 #endif /* __LIFEREA_SHELL_ACTIVATABLE_H__ */

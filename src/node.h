@@ -1,5 +1,5 @@
-/**
- * @file node.h  hierarchic feed list node interface
+/*
+ * node.h  hierarchic feed list node interface
  * 
  * Copyright (C) 2003-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>

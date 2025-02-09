@@ -37,8 +37,6 @@ struct _LifereaNodeSourceActivatableInterface
 	// FIXME: Add methods here
 };
 
-GType liferea_node_source_activatable_get_type (void) G_GNUC_CONST;
-
 G_END_DECLS
 
 #endif /* __LIFEREA_NODE_SOURCE_ACTIVATABLE_H__ */

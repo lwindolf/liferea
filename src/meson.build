@@ -112,3 +112,34 @@ liferea_sources = files(
   'webkit/liferea_webkit.c',
   'webkit/liferea_web_view.c'
 )
+
+liferea_gir_sources = files(
+  'auth.h',
+  'enclosure.h',
+  'feedlist.h',
+  'item.h',
+  'itemlist.h',
+  'itemset.h',
+  'liferea_application.h',
+  'net_monitor.h',
+  'node.h',
+  'node_provider.h',
+  'node_source.h',
+  'node_view.h',
+  'update.h',
+  'update_job.h',
+  'update_job_queue.h',
+  'social.h',
+  'subscription_type.h',
+  'ui/content_view.h',
+  'ui/browser_tabs.h',
+  'ui/icons.h',
+  'ui/item_list_view.h',
+  'ui/liferea_browser.h',
+  'ui/liferea_shell.h',
+  'plugins/auth_activatable.h',
+  'plugins/download_activatable.h',
+  'plugins/liferea_activatable.h',
+  'plugins/liferea_shell_activatable.h',
+  'plugins/node_source_activatable.h'
+)

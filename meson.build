@@ -54,7 +54,7 @@ liferea_deps = [
   dependency('fribidi', version: '>= 0.19.7')
 ]
 
-executable('liferea',
+liferea = executable('liferea',
   liferea_sources,
   liferea_resources,
   dependencies: liferea_deps,
@@ -83,12 +83,14 @@ foreach file: [
   install_data(join_paths('pixmaps', file), install_dir: pixmapsdir)
 endforeach
 
-#  gir = gnome.generate_gir('Liferea-3.0',
-#    sources: liferea_sources,
-#    nsversion: '3.0',
-#    includes: ['Gtk-3.0', 'libxml2-2.0'],
-#    install: true
-#  )
+gir = gnome.generate_gir(liferea,
+  namespace: 'Liferea',
+  sources: liferea_gir_sources,
+  nsversion: '3.0',
+  includes: ['Gtk-4.0', 'libxml2-2.0', 'Json-1.0'],
+  install: true,
+  extra_args: '--accept-unprefixed'
+)
 
 gnome.post_install(
   gtk_update_icon_cache: true,
