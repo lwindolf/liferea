@@ -1,5 +1,5 @@
 # Spanish translation of Liferea.
-# Copyright (C) 2004, 2005, 2006, 2007, 2015, 2022
+# Copyright (C) 2004, 2005, 2006, 2007, 2015, 2022, 2023, 2024, 2025
 # This file is distributed under the same license as the liferea package.
 # Traducción por Carlos Fenollosa <topopardo@topopardo.com>
 #                José María Mateos <chema@sl-form.com>  2004-2005
@@ -7,7 +7,7 @@
 #                Rodrigo Gallardo <rodrigo@nul-unu.com> 2007
 #                Juan Campos <juan.camposzambrana@gmail.com> 2015
 #                Adolfo Jayme Barrientos <fitojb@ubuntu.com> 2015
-#                Cristian Othón Martínez Vera <cfuga@cfuga.mx> 2022
+#                Cristian Othón Martínez Vera <cfuga@cfuga.mx> 2022-2025
 #
 # Algunos comentarios de estilo:
 #
@@ -31,7 +31,7 @@ msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-30 03:01+0100\n"
-"PO-Revision-Date: 2022-12-16 11:25-0600\n"
+"PO-Revision-Date: 2025-02-10 08:39-0600\n"
 "Last-Translator: Cristian Othón Martínez Vera <cfuga@cfuga.mx>\n"
 "Language-Team: Spanish <es@tp.es.org>\n"
 "Language: es\n"
@@ -275,9 +275,8 @@ msgstr ""
 "tome efecto!"
 
 #: ../plugins/trayicon.py:168
-#, fuzzy
 msgid "Liferea unread icon"
-msgstr "Liferea está conectado"
+msgstr "Icono sin leer de Liferea"
 
 #: ../plugins/trayicon.py:186
 msgid "Show / Hide"
@@ -342,13 +341,16 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "¡«%s» no es un archivo válido de configuración de adjuntos!"
 
 #: ../src/enclosure.c:301
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Command failed: \n"
 "\n"
 "%s\n"
 "\n"
-msgstr "Falló la orden de email: %s"
+msgstr "Falló la orden: \n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../src/export.c:172
 #, c-format
@@ -1181,7 +1183,7 @@ msgstr "Vista amplia"
 
 #: ../src/ui/preferences_dialog.c:97
 msgid "Automatic"
-msgstr ""
+msgstr "Automático"
 
 #: ../src/ui/preferences_dialog.c:406
 msgid "Default Browser"
@@ -1235,9 +1237,8 @@ msgid "Error: Could not open pipe \"%s\""
 msgstr "No se pudo abrir la tubería «%s»"
 
 #: ../src/update_job.c:99
-#, fuzzy
 msgid "Error: Could not write temporary file!"
-msgstr "Error: No se pudo abrir el archivo «%s»"
+msgstr "Error: ¡No se pudo escribir en el archivo temporal!"
 
 #. FIXME: maybe setting request->returncode would be better
 #: ../src/update_job.c:349
@@ -1534,9 +1535,8 @@ msgid "New Folder"
 msgstr "Carpeta nueva"
 
 #: ../glade/new_folder.ui.h:2
-#, fuzzy
 msgid "_Folder name:"
-msgstr "Nombre de la carpeta:"
+msgstr "Nombre de la _carpeta:"
 
 #: ../glade/new_newsbin.ui.h:2
 msgid "_News Bin Name:"
@@ -1832,13 +1832,12 @@ msgid "Privacy Settings"
 msgstr "Opciones de privacidad"
 
 #: ../glade/prefs.ui.h:52
-#, fuzzy
 msgid "Tell websites that I do _not want to be tracked."
 msgstr "Indicar a los sitios que _no quiere ser rastreado."
 
 #: ../glade/prefs.ui.h:53
 msgid "Tell websites not to _sell or share my data."
-msgstr ""
+msgstr "Indicar a los sitios que no quiere _vender o compartir sus datos."
 
 #: ../glade/prefs.ui.h:54
 msgid "_Intelligent Tracking Prevention. "
