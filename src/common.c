@@ -88,7 +88,7 @@ common_init_paths (void)
 	/* Install default stylesheet if it does not yet exist */
 	filename = common_create_config_filename ("liferea.css");
 	if (!g_file_test (filename, G_FILE_TEST_EXISTS))
-		common_copy_file (PACKAGE_DATA_DIR "/" PACKAGE "/css/user.css", filename);
+		common_copy_file (PACKAGE_DATA_DIR G_DIR_SEPARATOR_S "css" G_DIR_SEPARATOR_S "user.css", filename);
 	g_free(filename);
 
 	/* ensure reasonable default umask */

@@ -118,9 +118,6 @@ on_app_open (GApplication *application,
 static void
 on_app_activate (GtkApplication *gtk_app, gpointer user_data)
 {
-	g_autofree gchar		*css_filename;
-	g_autoptr(GFile)		css_file;
-	g_autoptr(GtkCssProvider)	provider;
 	GList				*list;
 	LifereaApplication 		*app = LIFEREA_APPLICATION (gtk_app);
 
@@ -130,16 +127,6 @@ on_app_activate (GtkApplication *gtk_app, gpointer user_data)
 	} else {
 		liferea_shell_create (gtk_app, app->initialStateOption, app->pluginsDisabled);
 	}
-
-	css_filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "liferea.css", NULL);
-	css_file = g_file_new_for_path (css_filename);
-	provider = gtk_css_provider_new ();
-
-	gtk_css_provider_load_from_file(provider, css_file);
-	gtk_style_context_add_provider_for_display (
-				gdk_display_get_default (),
-				GTK_STYLE_PROVIDER (provider),
-				GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
 /* Callback to the startup signal emitted only by the primary instance upon registration. */

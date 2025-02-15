@@ -159,8 +159,6 @@ liferea_browser_get_property (GObject *gobject, guint prop_id, GValue *value, GP
 static void
 liferea_browser_set_property (GObject *gobject, guint prop_id, const GValue *value, GParamSpec *pspec)
 {
-	LifereaBrowser *self = LIFEREA_BROWSER (gobject);
-
 	switch (prop_id) {
 		case PROP_ZOOM:
 			{
@@ -310,7 +308,7 @@ liferea_browser_update_stylesheet (LifereaBrowser *browser)
 	g_autofree gchar *userCSS = NULL;
 	gchar *filename;
 	
-	filename = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "css", "liferea.css", NULL);
+	filename = g_build_filename (PACKAGE_DATA_DIR, "css", "liferea.css", NULL);
 	g_file_get_contents (filename, &defaultCSS, NULL, NULL);
 	g_free (filename);
 

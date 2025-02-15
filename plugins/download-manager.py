@@ -1,7 +1,7 @@
 """
 Download Manager Plugin
 
-Copyright (C) 2024 Lars Windolf <lars.lindner@gmx.de>
+Copyright (C) 2024-2025 Lars Windolf <lars.lindner@gmx.de>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -23,9 +23,8 @@ import gi
 import os
 import time
 
-gi.require_version('Gtk', '3.0')
 gi.require_version('Peas', '1.0')
-gi.require_version('PeasGtk', '1.0')
+gi.require_version('Gtk', '4.0')
 gi.require_version('Liferea', '3.0')
 
 from gi.repository import GObject, GLib, Gtk, Gio, Liferea, Pango

@@ -86,6 +86,7 @@ foreach file: [
 endforeach
 
 install_subdir('plugins', install_dir: libdir)
+install_subdir('css', install_dir: datadir)
 
 gir = gnome.generate_gir(liferea,
   namespace: 'Liferea',
