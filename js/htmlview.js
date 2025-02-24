@@ -30,7 +30,7 @@ function prepare(baseURL, title) {
 		document.title = title;
 	}
 	if (baseURL && baseURL !== '(null)') {
-		var base = document.createElement("base");
+		let base = document.createElement("base");
 		base.setAttribute("href", baseURL);
 		document.head.appendChild(base);
 	}
@@ -38,12 +38,12 @@ function prepare(baseURL, title) {
 
 // returns first occurence of a given metadata type
 function metadata_get(obj, key) {
-	var metadata = obj.metadata;
+	let metadata = obj.metadata;
 
 	if (!metadata)
 		return null;
 
-	var results = metadata.filter((e) => key in e);
+	let results = metadata.filter((e) => key in e);
 	if (results.length == 0)
 		return null;
 
@@ -111,6 +111,7 @@ async function load_item(data, baseURL, direction) {
 	if (richContent) {
 		let shadowDoc = document.implementation.createHTMLDocument();
 		shadowDoc.body.innerHTML = richContent;
+		debugfooter += " Scrape";
 
 		article = new Readability(shadowDoc, {charThreshold: 100}).parse();
 		if (article) {
