@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Liferea 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-30 03:01+0100\n"
-"PO-Revision-Date: 2022-12-17 21:57+0100\n"
+"PO-Revision-Date: 2025-02-25 18:54+0100\n"
 "Last-Translator: Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Language-Team: German\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:347
 #: ../glade/mainwindow.ui.h:1
@@ -256,9 +256,8 @@ msgid ""
 msgstr "Plugin wurde entfernt! Bitte Liferea neustarten!"
 
 #: ../plugins/trayicon.py:168
-#, fuzzy
 msgid "Liferea unread icon"
-msgstr "Liferea ist jetzt online"
+msgstr "Liferea ungelesen"
 
 #: ../plugins/trayicon.py:186
 msgid "Show / Hide"
@@ -323,13 +322,17 @@ msgid "\"%s\" is not a valid enclosure type config file!"
 msgstr "\"%s\" ist keine gültige Datei mit Anhangstypen!"
 
 #: ../src/enclosure.c:301
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Command failed: \n"
 "\n"
 "%s\n"
 "\n"
-msgstr "Email Kommando fehlgeschlagen: %s"
+msgstr ""
+"Email Kommando fehlgeschlagen: \n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../src/export.c:172
 #, c-format
@@ -664,7 +667,7 @@ msgstr "Nicht implementier"
 
 #: ../src/net.c:451
 msgid "Bad Gateway"
-msgstr ""
+msgstr "Bad Gateway"
 
 #: ../src/net.c:452
 msgid "Service Unavailable"
@@ -1165,7 +1168,7 @@ msgstr "Breite Ansicht"
 
 #: ../src/ui/preferences_dialog.c:97
 msgid "Automatic"
-msgstr ""
+msgstr "Automatisch"
 
 #: ../src/ui/preferences_dialog.c:406
 msgid "Default Browser"
@@ -1223,9 +1226,8 @@ msgid "Error: Could not open pipe \"%s\""
 msgstr "Konnte Pipe \"%s\" nicht öffnen."
 
 #: ../src/update_job.c:99
-#, fuzzy
 msgid "Error: Could not write temporary file!"
-msgstr "Konnte Datei \"%s\" nicht öffnen."
+msgstr "Fehler: Konnte temporäre Datei nicht schreiben!"
 
 #. FIXME: maybe setting request->returncode would be better
 #: ../src/update_job.c:349
@@ -1819,13 +1821,12 @@ msgid "Privacy Settings"
 msgstr "Privatsphäre"
 
 #: ../glade/prefs.ui.h:52
-#, fuzzy
 msgid "Tell websites that I do _not want to be tracked."
 msgstr "Webseiten eine \"Do Not Track\" Information _senden."
 
 #: ../glade/prefs.ui.h:53
 msgid "Tell websites not to _sell or share my data."
-msgstr ""
+msgstr "Webseiten eine \"Do Not Sell\" Information  s_enden."
 
 #: ../glade/prefs.ui.h:54
 msgid "_Intelligent Tracking Prevention. "
