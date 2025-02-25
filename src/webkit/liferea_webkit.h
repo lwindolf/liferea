@@ -132,13 +132,11 @@ void liferea_webkit_reload (GtkWidget *webview);
 void liferea_webkit_write_html (GtkWidget *webview, const gchar *string, const guint length, const gchar *base, const gchar *content_type);
 
 /**
- * liferea_webkit_run_js:
- * @webview:		the WebkitWebView
- * @js:			the Javascript string
- * @cb:                 the JS callback
+ * liferea_webkit_clear:
+ * @webview:	the WebkitWebView
  *
- * Run an Javascript against the webview
+ * Clear the webview
  */
-void liferea_webkit_run_js (GtkWidget *widget, gchar *js, GAsyncReadyCallback cb);
+void liferea_webkit_clear (GtkWidget *webview);
 
 #endif

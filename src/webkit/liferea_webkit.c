@@ -185,9 +185,8 @@ liferea_webkit_on_dbus_connection_close (GDBusConnection *connection,
 	LifereaWebKit *webkit_impl = LIFEREA_WEBKIT (user_data);
 
 	if (!remote_peer_vanished && error)
-	{
 		g_warning ("DBus connection closed with error : %s", error->message);
-	}
+
 	webkit_impl->dbus_connections = g_list_remove (webkit_impl->dbus_connections, connection);
 	g_object_unref (connection);
 }
@@ -218,9 +217,8 @@ on_page_created (LifereaWebKit *instance,
 		 guint64 page_id,
 		 gpointer web_view)
 {
-	if (webkit_web_view_get_page_id (WEBKIT_WEB_VIEW (web_view)) == page_id) {
+	if (webkit_web_view_get_page_id (WEBKIT_WEB_VIEW (web_view)) == page_id)
 		liferea_web_view_set_dbus_connection (LIFEREA_WEB_VIEW (web_view), connection);
-	}
 }
 
 
@@ -404,6 +402,9 @@ liferea_webkit_write_html (
 {
 	// FIXME Avoid doing a copy ?
 	GBytes *string_bytes = g_bytes_new (string, length);
+
+	g_object_set (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)), "enable-javascript", TRUE, NULL);
+
 	/* Note: we explicitely ignore the passed base URL
 	   because we don't need it as Webkit supports <div href="">
 	   and throws a security exception when accessing file://
@@ -419,22 +420,9 @@ liferea_webkit_write_html (
 }
 
 void
-liferea_webkit_run_js (GtkWidget *widget, gchar *js, GAsyncReadyCallback cb)
+liferea_webkit_clear (GtkWidget *webview)
 {
-	// No matter what was before we need JS now
-	g_object_set (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (widget)), "enable-javascript", TRUE, NULL);
-
-	webkit_web_view_evaluate_javascript (
-		WEBKIT_WEB_VIEW (widget),
-		js,
-		-1,
-		NULL,
-		NULL,
-		NULL,
-		cb,
-		g_object_get_data (G_OBJECT (widget), "htmlview")
-	);
-	g_free (js);
+	webkit_web_view_load_html (WEBKIT_WEB_VIEW (webview), "", NULL);
 }
 
 /**
