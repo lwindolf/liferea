@@ -318,32 +318,9 @@ liferea_browser_get_widget (LifereaBrowser *browser)
 }
 
 void
-liferea_browser_write (LifereaBrowser *browser, const gchar *string, const gchar *base)
-{
-	const gchar	*baseURL = base;
-	const gchar	*errMsg = "ERROR: Invalid encoded UTF8 buffer passed to HTML widget! This shouldn't happen.";
-
-	if (!browser)
-		return;
-
-	if (baseURL == NULL)
-		baseURL = "file:///";
-
-	if (!g_utf8_validate (string, -1, NULL)) {
-		/* It is really a bug if we get invalid encoded UTF-8 here!!! */
-		liferea_webkit_write_html (browser->renderWidget, errMsg, strlen (errMsg), baseURL, "text/plain");
-	} else {
-		liferea_webkit_write_html (browser->renderWidget, string, strlen (string), baseURL, "text/html");
-	}
-
-	/* We hide the toolbar as it should only be shown when loading external content */
-	gtk_widget_hide (browser->toolbar);
-}
-
-void
 liferea_browser_clear (LifereaBrowser *browser)
 {
-	liferea_browser_write (browser, "<html><body></body></html>", NULL);
+	liferea_webkit_clear (browser->renderWidget);
 }
 
 struct internalUriType {
@@ -595,8 +572,6 @@ liferea_browser_set_view (LifereaBrowser *browser, const gchar *name, const gcha
 	tmp = g_string_new (liferea_browser_get_template (browser, name));
 	g_string_replace (tmp, "REPLACE_MARKER", script, 1);
 
-	// do not use liferea_browser_write() as we need to write XHTML here
-	// which is produced by intltool
 	liferea_webkit_write_html (browser->renderWidget, tmp->str, strlen (tmp->str), baseURL, "text/html");
 }
 

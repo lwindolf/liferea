@@ -1,3 +1,17 @@
+2025-02-25  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.16-RC2
+
+	* Fixes #1414 Blank preview pane (when Javascript preference is disabled)
+	  (Lars Windolf, reported by Filip Danilović)
+
+	* Updated Spanish translation
+	  (Cristian Othón Martínez Vera)
+
+	* Updated German translation
+	  (Lars Windolf)
+
+
 2025-02-09  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16-RC1

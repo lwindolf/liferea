@@ -69,16 +69,6 @@ GtkWidget *liferea_browser_get_widget (LifereaBrowser *browser);
 void	liferea_browser_clear (LifereaBrowser *browser);
 
 /**
- * liferea_browser_write: (skip)
- * @browser:		the browser widget to be set
- * @string:		HTML source
- * @base:		base url for resolving relative links
- *
- * Method to display the passed HTML source to the HTML widget.
- */
-void	liferea_browser_write (LifereaBrowser *browser, const gchar *string, const gchar *base);
-
-/**
  * liferea_html_view_on_url: (skip)
  * @browser:		the browser causing the event
  * @url:		new URL (or empty string)
