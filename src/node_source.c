@@ -563,7 +563,7 @@ node_source_convert_to_local (Node *node)
 void
 node_source_to_json (Node *node, JsonBuilder *b)
 {
-	if (!NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN)
+	if (!(NODE_SOURCE_TYPE (node)->capabilities & NODE_SOURCE_CAPABILITY_CAN_LOGIN))
 		return;
 
 	json_builder_set_member_name (b, "nodeSource");
