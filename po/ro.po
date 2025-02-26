@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.6.0-rc6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 03:01+0100\n"
+"POT-Creation-Date: 2025-02-26 09:18+0100\n"
 "PO-Revision-Date: 2009-10-06 19:11+0200\n"
 "Last-Translator: Adi Roiban <adi@roiban.ro>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -274,7 +274,7 @@ msgstr "_Ieșire"
 msgid "Browser command failed: %s"
 msgstr "Comanda de navigare a eșuat: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1138
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1143
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Se pornește: \"%s\""
@@ -314,20 +314,6 @@ msgstr "%b %d %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%b %d %Y"
 
-#: ../src/enclosure.c:201
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "„%s” nu este un fișier valid de configurare pentru atașamente!"
-
-#: ../src/enclosure.c:301
-#, fuzzy, c-format
-msgid ""
-"Command failed: \n"
-"\n"
-"%s\n"
-"\n"
-msgstr "Comanda de navigare a eșuat: %s"
-
 #: ../src/export.c:172
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
@@ -364,7 +350,7 @@ msgid "Import"
 msgstr "Importă"
 
 #: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 #, fuzzy
 msgid "OPML Files"
 msgstr "Alege fișier OPML"
@@ -397,22 +383,18 @@ msgstr "XML nevalid!"
 msgid "Miniflux"
 msgstr ""
 
-#: ../src/node_source.c:318
-msgid "No feed list source types found!"
-msgstr "Nu s-a găsit tipul listei de fluxuri!"
-
-#: ../src/node_source.c:347
+#: ../src/node_source.c:343
 msgid "Source Type"
 msgstr "Tip sursă"
 
-#: ../src/node_source.c:398
+#: ../src/node_source.c:394
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:564
+#: ../src/node_source.c:560
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr ""
@@ -430,9 +412,8 @@ msgid "Login failed!"
 msgstr "Autentificare Google Reader eșuată!"
 
 #: ../src/node_sources/google_source.c:404
-#, fuzzy
-msgid "Google Reader API"
-msgstr "Google Reader"
+msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
+msgstr ""
 
 #: ../src/node_sources/google_source_feed.c:159
 msgid "Could not parse JSON returned by Google Reader API!"
@@ -442,11 +423,11 @@ msgstr ""
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "Choose OPML File"
 msgstr "Alege fișier OPML"
 
-#: ../src/node_sources/opml_source.c:371 ../src/ui/subscription_dialog.c:352
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr ""
 
@@ -497,12 +478,12 @@ msgstr ""
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 
-#: ../src/node_providers/newsbin.c:133
+#: ../src/node_providers/newsbin.c:116
 #, fuzzy
 msgid "News Bin Properties"
 msgstr "Proprietăți abonamente"
 
-#: ../src/node_providers/newsbin.c:137 ../glade/new_newsbin.ui.h:1
+#: ../src/node_providers/newsbin.c:120 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Crează colecție știri"
 
@@ -598,17 +579,17 @@ msgid "Print debugging messages for the given topic"
 msgstr "Afișează mesaje de depanare pentru subiectul specificat"
 
 #. Some libsoup transport errors
-#: ../src/net.c:431
+#: ../src/net.c:475
 msgid "The update request was cancelled"
 msgstr "Cererea de actualizare a fost anulată"
 
 #. http 3xx redirection
-#: ../src/net.c:434
+#: ../src/net.c:478
 msgid "The resource moved permanently to a new location"
 msgstr "Resursa a fost mutată permanent la o nouă locație"
 
 #. http 4xx client error
-#: ../src/net.c:437
+#: ../src/net.c:481
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -616,35 +597,35 @@ msgstr ""
 "Nu aveți permisiunea de a descărca acest flux. Actualizați numele de "
 "utilizator și parola din dialogul de proprietăți a fluxului."
 
-#: ../src/net.c:439
+#: ../src/net.c:483
 msgid "Payment required"
 msgstr "Necesită plată"
 
-#: ../src/net.c:440
+#: ../src/net.c:484
 msgid "You're not allowed to access this resource"
 msgstr "Nu aveți permisiunea de a accesa această resursă"
 
-#: ../src/net.c:441
+#: ../src/net.c:485
 msgid "Resource Not Found"
 msgstr "Nu au fost găsite resursele"
 
-#: ../src/net.c:442
+#: ../src/net.c:486
 msgid "Method Not Allowed"
 msgstr "Metoda nu este acceptată"
 
-#: ../src/net.c:443
+#: ../src/net.c:487
 msgid "Not Acceptable"
 msgstr "Nu este acceptabil"
 
-#: ../src/net.c:444
+#: ../src/net.c:488
 msgid "Proxy authentication required"
 msgstr "Autentificare proxy necesară"
 
-#: ../src/net.c:445
+#: ../src/net.c:489
 msgid "Request timed out"
 msgstr "Cererea a expirat"
 
-#: ../src/net.c:446
+#: ../src/net.c:490
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -654,48 +635,52 @@ msgstr ""
 "Fluxul a fost întrerupt. Nu mai este disponibil. Liferea nu îl va mai "
 "actualiza dar puteți accesa titlurile din cache."
 
+#: ../src/net.c:491
+msgid "Too many requests. Liferea has to wait a while before trying again."
+msgstr ""
+
 #. http 5xx server errors
-#: ../src/net.c:449
+#: ../src/net.c:494
 #, fuzzy
 msgid "Internal Server Error"
 msgstr "Eroare la server"
 
-#: ../src/net.c:450
+#: ../src/net.c:495
 msgid "Not Implemented"
 msgstr ""
 
-#: ../src/net.c:451
+#: ../src/net.c:496
 msgid "Bad Gateway"
 msgstr ""
 
-#: ../src/net.c:452
+#: ../src/net.c:497
 #, fuzzy
 msgid "Service Unavailable"
 msgstr "Nume _serviciu"
 
-#: ../src/net.c:453
+#: ../src/net.c:498
 msgid "Gateway Timeout"
 msgstr ""
 
-#: ../src/net.c:454
+#: ../src/net.c:499
 msgid "HTTP Version Not Supported"
 msgstr ""
 
-#: ../src/net.c:458
+#: ../src/net.c:503
 msgid "An unknown networking error happened!"
 msgstr "S-a produs o eroare necunoscută de rețea!"
 
-#: ../src/node.c:640
+#: ../src/node.c:654
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr ""
 
-#: ../src/node.c:659
+#: ../src/node.c:673
 #, fuzzy
 msgid "Feed file exported from Liferea"
 msgstr "Lista de flux a fost exportată!"
 
-#: ../src/node.c:674
+#: ../src/node.c:688
 #, fuzzy, c-format
 msgid "Error while saving feed file"
 msgstr "Eroare la exportarea listei de fluxuri!"
@@ -839,12 +824,12 @@ msgstr "În curs de actualizare..."
 msgid "Updating '%s'..."
 msgstr "În curs de actualizare..."
 
-#: ../src/ui/auth_dialog.c:114
+#: ../src/ui/auth_dialog.c:112
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Introduceți numele de utilizator și parola pentru „%s” (%s):"
 
-#: ../src/ui/auth_dialog.c:116
+#: ../src/ui/auth_dialog.c:114
 msgid "Unknown source"
 msgstr "Sursă necunoscută"
 
@@ -896,7 +881,7 @@ msgstr "Doriți să ștergeți %s și conținutul lui?"
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Doriți să ștergeți %s?"
 
-#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:947
+#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:952
 #: ../src/ui/popup_menu.c:224
 #, fuzzy
 msgid "_Cancel"
@@ -910,18 +895,18 @@ msgstr "Șt_erge"
 msgid "Deletion Confirmation"
 msgstr "Confirmare ștergere"
 
-#: ../src/ui/feed_list_view.c:935
+#: ../src/ui/feed_list_view.c:940
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:948
+#: ../src/ui/feed_list_view.c:953
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:950
+#: ../src/ui/feed_list_view.c:955
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Confirmare ștergere"
@@ -956,15 +941,6 @@ msgstr "Trebuie să alegeți un flux pentru ai șterge elementele!"
 msgid "No item has been selected"
 msgstr "Nu a fost selectat nici un element"
 
-#: ../src/ui/liferea_browser.c:483
-#, fuzzy
-msgid "Content download failed! Try disabling reader mode."
-msgstr "Alegeți dosarul pentru descărcare"
-
-#: ../src/ui/liferea_browser.c:496
-msgid "Content extraction failed! Try disabling reader mode."
-msgstr ""
-
 #: ../src/ui/liferea_shell.c:410
 #, c-format
 msgid " (%d new)"
@@ -993,7 +969,7 @@ msgstr "Referință rapidă"
 msgid "FAQ"
 msgstr "Întrebări frecvente"
 
-#: ../src/ui/liferea_shell.c:1135
+#: ../src/ui/liferea_shell.c:1140
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Comanda de navigare a eșuat: %s"
@@ -1309,10 +1285,6 @@ msgstr "Crește măr_imea textului"
 #: ../src/webkit/liferea_web_view.c:206
 msgid "_Decrease Text Size"
 msgstr "Sca_de mărimea textului"
-
-#: ../src/webkit/liferea_web_view.c:213
-msgid "_Reader Mode"
-msgstr ""
 
 #: ../src/xml.c:427
 msgid "[There were more errors. Output was truncated!]"
@@ -1876,16 +1848,6 @@ msgid ""
 msgstr ""
 
 #: ../glade/prefs.ui.h:57
-msgid "Use _Reader mode."
-msgstr ""
-
-#: ../glade/prefs.ui.h:58
-msgid ""
-"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
-"a> all non-content elements (like scripts, fonts, tracking)"
-msgstr ""
-
-#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr ""
 
@@ -1934,7 +1896,7 @@ msgstr ""
 "pentru formate nesuportate. Pentru mai multe informații consulați "
 "documentația."
 
-#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+#: ../glade/properties.ui.h:21 ../js/node.xml.in.h:1
 msgid "Source"
 msgstr "Sursă"
 
@@ -2159,172 +2121,183 @@ msgstr "<b>Cereri în așteptare</b>"
 msgid "_Downloading Now"
 msgstr "<b>Se descarcă acum</b>"
 
-#: ../xslt/feed.xml.in.h:1
-msgid "Feed:"
-msgstr "Flux:"
+#: ../js/item.xml.in.h:1 ../js/node.xml.in.h:2
+msgid "Author"
+msgstr "Autor"
 
-#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Sursă:"
+#: ../js/item.xml.in.h:2
+msgid "Creator"
+msgstr "Realizat de"
 
-#: ../xslt/feed.xml.in.h:3
+#: ../js/item.xml.in.h:3
+#, fuzzy
+msgid "Shared By"
+msgstr "Partajat de"
+
+#: ../js/item.xml.in.h:4
+msgid "Via"
+msgstr "Via"
+
+#: ../js/node.xml.in.h:3
 msgid "Publisher"
 msgstr "Publicat de"
 
-#: ../xslt/feed.xml.in.h:4
+#: ../js/node.xml.in.h:4
 msgid "Copyright"
 msgstr "Drepturi de autor"
 
-#: ../xslt/feed.xml.in.h:5
+#: ../js/node.xml.in.h:5
+msgid ""
+"⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
+"{{ maxFailures }} retries)!"
+msgstr ""
+
+#: ../js/node.xml.in.h:6
+msgid "Please check your credentials!"
+msgstr ""
+
+#: ../js/node.xml.in.h:7
+msgid ""
+"⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
+"{{ maxFailures }} retries)..."
+msgstr ""
+
+#: ../js/node.xml.in.h:8
+msgid "⚠️ Account login for '{{ title }}' has not yet started."
+msgstr ""
+
+#: ../js/node.xml.in.h:9
 #, fuzzy
 msgid "There was a problem when fetching this subscription!"
 msgstr ""
 "A apărut o problemă la citirea abonamentului. Verificați URL-ul și ieșirea "
 "consolei."
 
-#: ../xslt/feed.xml.in.h:6
+#: ../js/node.xml.in.h:10
 #, fuzzy
 msgid "1. Authentication"
 msgstr "Autentificare"
 
-#: ../xslt/feed.xml.in.h:7
+#: ../js/node.xml.in.h:11
 #, fuzzy
 msgid "2. Download"
 msgstr "Descarcă"
 
-#: ../xslt/feed.xml.in.h:8
+#: ../js/node.xml.in.h:12
 msgid "3. Feed Discovery"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:9
+#: ../js/node.xml.in.h:13
 msgid "4. Parsing"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:10
+#: ../js/node.xml.in.h:14
 #, fuzzy
 msgid "Details:"
 msgstr "Detalii"
 
-#: ../xslt/feed.xml.in.h:11
+#: ../js/node.xml.in.h:15
 msgid "Authentication failed. Please check the credentials and try again!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:12
+#: ../js/node.xml.in.h:16
 #, fuzzy
 msgid "There was an error when downloading the feed source:"
 msgstr "Au fost erori în timp ce se analiza acest flux!"
 
-#: ../xslt/feed.xml.in.h:13
+#: ../js/node.xml.in.h:17
 #, fuzzy
 msgid "There was an error when running the feed filter command:"
 msgstr "Au fost erori în timp ce se analiza acest flux!"
 
-#: ../xslt/feed.xml.in.h:14
+#: ../js/node.xml.in.h:18
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:15
+#: ../js/node.xml.in.h:19
 msgid "Sorry, the feed could not be parsed!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:16
+#: ../js/node.xml.in.h:20
 msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Dosar:"
+#, c-format
+#~ msgid "\"%s\" is not a valid enclosure type config file!"
+#~ msgstr "„%s” nu este un fișier valid de configurare pentru atașamente!"
 
-#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
-msgid "children with"
-msgstr "copil cu"
+#, fuzzy, c-format
+#~ msgid ""
+#~ "Command failed: \n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr "Comanda de navigare a eșuat: %s"
 
-#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "titluri necitite"
+#~ msgid "No feed list source types found!"
+#~ msgstr "Nu s-a găsit tipul listei de fluxuri!"
 
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Flux"
+#, fuzzy
+#~ msgid "Google Reader API"
+#~ msgstr "Google Reader"
 
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Clasat sub"
+#, fuzzy
+#~ msgid "Content download failed! Try disabling reader mode."
+#~ msgstr "Alegeți dosarul pentru descărcare"
 
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Autor"
+#~ msgid "Feed:"
+#~ msgstr "Flux:"
 
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Partajat de"
+#~ msgid "Source:"
+#~ msgstr "Sursă:"
 
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "Via"
+#~ msgid "Folder:"
+#~ msgstr "Dosar:"
 
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Asociat"
+#~ msgid "children with"
+#~ msgstr "copil cu"
 
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Postat și în"
+#~ msgid "unread headlines"
+#~ msgstr "titluri necitite"
 
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Realizat de"
+#~ msgid "Feed"
+#~ msgstr "Flux"
 
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
-msgstr ""
+#~ msgid "Filed under"
+#~ msgstr "Clasat sub"
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
-msgstr ""
+#~ msgid "Related"
+#~ msgstr "Asociat"
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
-msgstr ""
+#~ msgid "Also posted in"
+#~ msgstr "Postat și în"
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
-msgstr ""
+#~ msgid "Comments"
+#~ msgstr "Comentarii"
 
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Comentarii"
+#~ msgid "Updating..."
+#~ msgstr "În curs de actualizare..."
 
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "În curs de actualizare..."
+#~ msgid "Section"
+#~ msgstr "Secțiune"
 
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Secțiune"
+#~ msgid "Department"
+#~ msgstr "Departament"
 
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Departament"
+#~ msgid "News Bin:"
+#~ msgstr "Colecție știri:"
 
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "Colecție știri:"
+#~ msgid ""
+#~ "Add items to this news bin by selecting \"Copy to News Bin\" from the "
+#~ "item list context menu."
+#~ msgstr ""
+#~ "Adăugați elemente la această colecție de știri prin alegerea opțiunii "
+#~ "„Copiază în colecție de știri” din meniul contextual."
 
-#: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Adăugați elemente la această colecție de știri prin alegerea opțiunii "
-"„Copiază în colecție de știri” din meniul contextual."
-
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Dosare căutare:"
+#~ msgid "Search Folder:"
+#~ msgstr "Dosare căutare:"
 
 #~ msgid "*** No title ***"
 #~ msgstr "*** Fără titlu ***"

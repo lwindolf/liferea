@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 03:01+0100\n"
+"POT-Creation-Date: 2025-02-26 09:18+0100\n"
 "PO-Revision-Date: 2024-12-23 22:10+0200\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
@@ -271,7 +271,7 @@ msgstr "Dil"
 msgid "Browser command failed: %s"
 msgstr "Urdhri për shfletuesin dështoi: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1138
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1143
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Po niset: “%s”"
@@ -311,20 +311,6 @@ msgstr "%b %d %l:%M %p"
 msgid "%b %d %Y"
 msgstr "%b %d %Y"
 
-#: ../src/enclosure.c:201
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "“%s” s’është kartelë e vlefshme formësimi lloji paketimesh!"
-
-#: ../src/enclosure.c:301
-#, fuzzy, c-format
-msgid ""
-"Command failed: \n"
-"\n"
-"%s\n"
-"\n"
-msgstr "Urdhri për email dështoi: %s"
-
 #: ../src/export.c:172
 #, c-format
 msgid "Error renaming %s to %s: %s\n"
@@ -362,7 +348,7 @@ msgid "Import"
 msgstr "Importo"
 
 #: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "OPML Files"
 msgstr "Kartela OPML"
 
@@ -394,15 +380,11 @@ msgstr "XML e Pavlefshme!"
 msgid "Miniflux"
 msgstr "Miniflux"
 
-#: ../src/node_source.c:318
-msgid "No feed list source types found!"
-msgstr "S’u gjetën lloje burimi listash prurjesh!"
-
-#: ../src/node_source.c:347
+#: ../src/node_source.c:343
 msgid "Source Type"
 msgstr "Lloj Burimi"
 
-#: ../src/node_source.c:398
+#: ../src/node_source.c:394
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
@@ -411,7 +393,7 @@ msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:564
+#: ../src/node_source.c:560
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "Pajtimi “%s” u shndërrua me sukses në prurje vendore!"
@@ -428,8 +410,8 @@ msgid "Login failed!"
 msgstr "Hyrja dështoi!"
 
 #: ../src/node_sources/google_source.c:404
-msgid "Google Reader API"
-msgstr "Google Reader API"
+msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
+msgstr ""
 
 #: ../src/node_sources/google_source_feed.c:159
 msgid "Could not parse JSON returned by Google Reader API!"
@@ -439,11 +421,11 @@ msgstr "S’përtypi dot JSON-in e kthyer nga Google Reader API!"
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "Choose OPML File"
 msgstr "Zgjidhni Kartelë OPML"
 
-#: ../src/node_sources/opml_source.c:371 ../src/ui/subscription_dialog.c:352
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr "_Hape"
 
@@ -497,11 +479,11 @@ msgstr "Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "S’u përtyp dot JSON-i i kthyer nga API i TinyTinyRSS-së!"
 
-#: ../src/node_providers/newsbin.c:133
+#: ../src/node_providers/newsbin.c:116
 msgid "News Bin Properties"
 msgstr "Veti Koshi Lajmesh"
 
-#: ../src/node_providers/newsbin.c:137 ../glade/new_newsbin.ui.h:1
+#: ../src/node_providers/newsbin.c:120 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Krijoni Kosh Lajmesh"
 
@@ -591,17 +573,17 @@ msgid "Print debugging messages for the given topic"
 msgstr "Shtyp mesazhe diagnostikimi për temën e treguar"
 
 #. Some libsoup transport errors
-#: ../src/net.c:431
+#: ../src/net.c:475
 msgid "The update request was cancelled"
 msgstr "Kërkesa për përditësim u anulua"
 
 #. http 3xx redirection
-#: ../src/net.c:434
+#: ../src/net.c:478
 msgid "The resource moved permanently to a new location"
 msgstr "Burimi kaloi përgjithmonë në një vend të ri"
 
 #. http 4xx client error
-#: ../src/net.c:437
+#: ../src/net.c:481
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -610,35 +592,35 @@ msgstr ""
 "tuaj të përdoruesit dhe fjalëkalimin që nga kuadrati i dialogut të vetive të "
 "prurjes"
 
-#: ../src/net.c:439
+#: ../src/net.c:483
 msgid "Payment required"
 msgstr "Lypset pagesë"
 
-#: ../src/net.c:440
+#: ../src/net.c:484
 msgid "You're not allowed to access this resource"
 msgstr "S’keni leje të hyni në këtë burim"
 
-#: ../src/net.c:441
+#: ../src/net.c:485
 msgid "Resource Not Found"
 msgstr "S’u Gjet Burim"
 
-#: ../src/net.c:442
+#: ../src/net.c:486
 msgid "Method Not Allowed"
 msgstr "Metodë e Palejuar"
 
-#: ../src/net.c:443
+#: ../src/net.c:487
 msgid "Not Acceptable"
 msgstr "I papranueshëm"
 
-#: ../src/net.c:444
+#: ../src/net.c:488
 msgid "Proxy authentication required"
 msgstr "Lypset mirëfilltësim ndërmjetësi"
 
-#: ../src/net.c:445
+#: ../src/net.c:489
 msgid "Request timed out"
 msgstr "Kërkesës i mbaroi koha"
 
-#: ../src/net.c:446
+#: ../src/net.c:490
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -648,45 +630,49 @@ msgstr ""
 "s’do ta përditësojë më, por mundeni ende të hapni titujt e ruajtur në "
 "fshehtinë."
 
+#: ../src/net.c:491
+msgid "Too many requests. Liferea has to wait a while before trying again."
+msgstr ""
+
 #. http 5xx server errors
-#: ../src/net.c:449
+#: ../src/net.c:494
 msgid "Internal Server Error"
 msgstr "Gabim i Brendshëm Shërbyesi"
 
-#: ../src/net.c:450
+#: ../src/net.c:495
 msgid "Not Implemented"
 msgstr "E pasendërtuar"
 
-#: ../src/net.c:451
+#: ../src/net.c:496
 msgid "Bad Gateway"
 msgstr "Kanal i Gabuar"
 
-#: ../src/net.c:452
+#: ../src/net.c:497
 msgid "Service Unavailable"
 msgstr "Shërbim Jo i Passhëm"
 
-#: ../src/net.c:453
+#: ../src/net.c:498
 msgid "Gateway Timeout"
 msgstr "Mbarim Kohe Kanali"
 
-#: ../src/net.c:454
+#: ../src/net.c:499
 msgid "HTTP Version Not Supported"
 msgstr "Nuk Mbulohet Version HTTP"
 
-#: ../src/net.c:458
+#: ../src/net.c:503
 msgid "An unknown networking error happened!"
 msgstr "Ndodhi një gabim i panjohur rrjeti!"
 
-#: ../src/node.c:640
+#: ../src/node.c:654
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr "S’u arrit të krijohej kartelë prurjeje: %s"
 
-#: ../src/node.c:659
+#: ../src/node.c:673
 msgid "Feed file exported from Liferea"
 msgstr "Kartelë prurjesh eksportuar nga Liferea"
 
-#: ../src/node.c:674
+#: ../src/node.c:688
 #, c-format
 msgid "Error while saving feed file"
 msgstr "Gabim teksa ruhej kartelë prurjesh"
@@ -827,12 +813,12 @@ msgstr "Po përditësohet (%d / %d) …"
 msgid "Updating '%s'..."
 msgstr "Po përditësohet “%s”…"
 
-#: ../src/ui/auth_dialog.c:114
+#: ../src/ui/auth_dialog.c:112
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Jepni emër përdoruesi dhe fjalëkalim për “%s” (%s):"
 
-#: ../src/ui/auth_dialog.c:116
+#: ../src/ui/auth_dialog.c:114
 msgid "Unknown source"
 msgstr "Burim i panjohur"
 
@@ -886,7 +872,7 @@ msgstr "Jeni i sigurt se doni të fshihet “%s” dhe lënda e saj?"
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Jeni i sigurt se doni të fshihet “%s”?"
 
-#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:947
+#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:952
 #: ../src/ui/popup_menu.c:224
 msgid "_Cancel"
 msgstr "_Anuloje"
@@ -899,7 +885,7 @@ msgstr "_Fshije"
 msgid "Deletion Confirmation"
 msgstr "Ripohim Fshirjeje"
 
-#: ../src/ui/feed_list_view.c:935
+#: ../src/ui/feed_list_view.c:940
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
@@ -908,11 +894,11 @@ msgstr ""
 "Jeni i sigurt se doni të shtoni një pajtim të ri me URL “%s”? Ka tashmë një "
 "pajtim tjetër me të njëjtën URL (“%s”)."
 
-#: ../src/ui/feed_list_view.c:948
+#: ../src/ui/feed_list_view.c:953
 msgid "_Add"
 msgstr "_Shtoni"
 
-#: ../src/ui/feed_list_view.c:950
+#: ../src/ui/feed_list_view.c:955
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Ripohim Shtimi Pajtimi të Përsëdytur"
 
@@ -946,14 +932,6 @@ msgstr "Duhet përzgjedhur një prurje, që të mund të fshihen zërat e saj!"
 msgid "No item has been selected"
 msgstr "S’është përzgjedhur zë"
 
-#: ../src/ui/liferea_browser.c:483
-msgid "Content download failed! Try disabling reader mode."
-msgstr "Shkarkimi i lëndës dështoi! Provoni të çaktivizoni mënyrën Lexues."
-
-#: ../src/ui/liferea_browser.c:496
-msgid "Content extraction failed! Try disabling reader mode."
-msgstr "Përftimi i lëndës dështoi! Provoni të çaktivizoni mënyrën Lexues."
-
 #: ../src/ui/liferea_shell.c:410
 #, c-format
 msgid " (%d new)"
@@ -980,7 +958,7 @@ msgstr "Referencë e Shpejtë"
 msgid "FAQ"
 msgstr "PBR"
 
-#: ../src/ui/liferea_shell.c:1135
+#: ../src/ui/liferea_shell.c:1140
 #, c-format
 msgid "Email command failed: %s"
 msgstr "Urdhri për email dështoi: %s"
@@ -1277,10 +1255,6 @@ msgstr "_Rrit Madhësi Teksti"
 #: ../src/webkit/liferea_web_view.c:206
 msgid "_Decrease Text Size"
 msgstr "_Zvogëlo Madhësi Teksti"
-
-#: ../src/webkit/liferea_web_view.c:213
-msgid "_Reader Mode"
-msgstr "Mënyra _Lexues"
 
 #: ../src/xml.c:427
 msgid "[There were more errors. Output was truncated!]"
@@ -1836,18 +1810,6 @@ msgstr ""
 "më sipër."
 
 #: ../glade/prefs.ui.h:57
-msgid "Use _Reader mode."
-msgstr "Përdor mënyrën _Lexues."
-
-#: ../glade/prefs.ui.h:58
-msgid ""
-"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
-"a> all non-content elements (like scripts, fonts, tracking)"
-msgstr ""
-"Kjo aktivizon <a href=\"https://github.com/mozilla/readability\">heqjen</a> "
-"e krejt elementeve që s’janë lëndë (bie fjala, programthe, shkronja, gjurmim)"
-
-#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr "Privatësi"
 
@@ -1893,7 +1855,7 @@ msgstr ""
 "Liferea mund të përdorë shtojca filtrimi të jashtme për të mundur të hyjë në "
 "prurje dhe drejtori me formate jo të mbuluar."
 
-#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+#: ../glade/properties.ui.h:21 ../js/node.xml.in.h:1
 msgid "Source"
 msgstr "Burim"
 
@@ -2103,60 +2065,89 @@ msgstr "Kërkesa Në _Pritje të Shqyrtimit"
 msgid "_Downloading Now"
 msgstr "Po shk_arkohet Tani"
 
-#: ../xslt/feed.xml.in.h:1
-msgid "Feed:"
-msgstr "Prurje:"
+#: ../js/item.xml.in.h:1 ../js/node.xml.in.h:2
+msgid "Author"
+msgstr "Autor"
 
-#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Burim:"
+#: ../js/item.xml.in.h:2
+msgid "Creator"
+msgstr "Krijues"
 
-#: ../xslt/feed.xml.in.h:3
+#: ../js/item.xml.in.h:3
+#, fuzzy
+msgid "Shared By"
+msgstr "Ndarë me të tjerët nga"
+
+#: ../js/item.xml.in.h:4
+msgid "Via"
+msgstr "Përmes"
+
+#: ../js/node.xml.in.h:3
 msgid "Publisher"
 msgstr "Botues"
 
-#: ../xslt/feed.xml.in.h:4
+#: ../js/node.xml.in.h:4
 msgid "Copyright"
 msgstr "Të drejta kopjimi"
 
-#: ../xslt/feed.xml.in.h:5
+#: ../js/node.xml.in.h:5
+msgid ""
+"⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
+"{{ maxFailures }} retries)!"
+msgstr ""
+
+#: ../js/node.xml.in.h:6
+msgid "Please check your credentials!"
+msgstr ""
+
+#: ../js/node.xml.in.h:7
+msgid ""
+"⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
+"{{ maxFailures }} retries)..."
+msgstr ""
+
+#: ../js/node.xml.in.h:8
+msgid "⚠️ Account login for '{{ title }}' has not yet started."
+msgstr ""
+
+#: ../js/node.xml.in.h:9
 msgid "There was a problem when fetching this subscription!"
 msgstr "Pati një problem gjatë sjelljes së këtij pajtimi!"
 
-#: ../xslt/feed.xml.in.h:6
+#: ../js/node.xml.in.h:10
 msgid "1. Authentication"
 msgstr "1. Mirëfilltësim"
 
-#: ../xslt/feed.xml.in.h:7
+#: ../js/node.xml.in.h:11
 msgid "2. Download"
 msgstr "2. Shkarkim"
 
-#: ../xslt/feed.xml.in.h:8
+#: ../js/node.xml.in.h:12
 msgid "3. Feed Discovery"
 msgstr "3. Zbulim Prurjesh"
 
-#: ../xslt/feed.xml.in.h:9
+#: ../js/node.xml.in.h:13
 msgid "4. Parsing"
 msgstr "4. Përtypje"
 
-#: ../xslt/feed.xml.in.h:10
+#: ../js/node.xml.in.h:14
 msgid "Details:"
 msgstr "Hollësi:"
 
-#: ../xslt/feed.xml.in.h:11
+#: ../js/node.xml.in.h:15
 msgid "Authentication failed. Please check the credentials and try again!"
 msgstr ""
 "Mirëfilltësimi dështoi. Ju lutemi, kontrolloni kredencialet dhe riprovoni!"
 
-#: ../xslt/feed.xml.in.h:12
+#: ../js/node.xml.in.h:16
 msgid "There was an error when downloading the feed source:"
 msgstr "Pati një gabim teksa shkarkohej burimi i prurjes:"
 
-#: ../xslt/feed.xml.in.h:13
+#: ../js/node.xml.in.h:17
 msgid "There was an error when running the feed filter command:"
 msgstr "Pati një gabim teksa xhirohej urdhri për filtrim prurjeje:"
 
-#: ../xslt/feed.xml.in.h:14
+#: ../js/node.xml.in.h:18
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
@@ -2164,108 +2155,118 @@ msgstr ""
 "Burimi nuk shpie drejt e te një prurje ose faqe web me një lidhje për te një "
 "prurje!"
 
-#: ../xslt/feed.xml.in.h:15
+#: ../js/node.xml.in.h:19
 msgid "Sorry, the feed could not be parsed!"
 msgstr "Na ndjeni, prurja s’u përtyp dot!"
 
-#: ../xslt/feed.xml.in.h:16
+#: ../js/node.xml.in.h:20
 msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 "Lidhur me këtë, mund të kontaktoni autorin ose kujdestarin e sajtit të "
 "prurjes!"
 
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Dosje:"
+#, c-format
+#~ msgid "\"%s\" is not a valid enclosure type config file!"
+#~ msgstr "“%s” s’është kartelë e vlefshme formësimi lloji paketimesh!"
 
-#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
-msgid "children with"
-msgstr "pjella me"
+#, fuzzy, c-format
+#~ msgid ""
+#~ "Command failed: \n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr "Urdhri për email dështoi: %s"
 
-#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "tituj të palexuar"
+#~ msgid "No feed list source types found!"
+#~ msgstr "S’u gjetën lloje burimi listash prurjesh!"
 
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Prurje"
+#~ msgid "Google Reader API"
+#~ msgstr "Google Reader API"
 
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Skeduar te"
+#~ msgid "Content download failed! Try disabling reader mode."
+#~ msgstr "Shkarkimi i lëndës dështoi! Provoni të çaktivizoni mënyrën Lexues."
 
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Autor"
+#~ msgid "Content extraction failed! Try disabling reader mode."
+#~ msgstr "Përftimi i lëndës dështoi! Provoni të çaktivizoni mënyrën Lexues."
 
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Ndarë me të tjerët nga"
+#~ msgid "_Reader Mode"
+#~ msgstr "Mënyra _Lexues"
 
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "Përmes"
+#~ msgid "Use _Reader mode."
+#~ msgstr "Përdor mënyrën _Lexues."
 
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Të afërta"
+#~ msgid ""
+#~ "This enables <a href=\"https://github.com/mozilla/"
+#~ "readability\">stripping</a> all non-content elements (like scripts, "
+#~ "fonts, tracking)"
+#~ msgstr ""
+#~ "Kjo aktivizon <a href=\"https://github.com/mozilla/readability\">heqjen</"
+#~ "a> e krejt elementeve që s’janë lëndë (bie fjala, programthe, shkronja, "
+#~ "gjurmim)"
 
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Postuar edhe te"
+#~ msgid "Feed:"
+#~ msgstr "Prurje:"
 
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Krijues"
+#~ msgid "Source:"
+#~ msgstr "Burim:"
 
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
-msgstr "Koordinata"
+#~ msgid "Folder:"
+#~ msgstr "Dosje:"
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
-msgstr "Hartë"
+#~ msgid "children with"
+#~ msgstr "pjella me"
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
-msgstr "Numër parjesh"
+#~ msgid "unread headlines"
+#~ msgstr "tituj të palexuar"
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
-msgstr "Vlerësim"
+#~ msgid "Feed"
+#~ msgstr "Prurje"
 
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Komente"
+#~ msgid "Filed under"
+#~ msgstr "Skeduar te"
 
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "Po përditësohet…"
+#~ msgid "Related"
+#~ msgstr "Të afërta"
 
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Ndarje"
+#~ msgid "Also posted in"
+#~ msgstr "Postuar edhe te"
 
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Degë"
+#~ msgid "Coordinates"
+#~ msgstr "Koordinata"
 
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "Kosh Lajmesh:"
+#~ msgid "Map"
+#~ msgstr "Hartë"
 
-#: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Shtoni te ky kosh lajmesh zëra duke përzgjedhur “Kopjoje te Kosh Lajmesh” "
-"prej menuje konteksti liste zërash."
+#~ msgid "View count"
+#~ msgstr "Numër parjesh"
 
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Dosje Kërkimesh:"
+#~ msgid "Rating"
+#~ msgstr "Vlerësim"
+
+#~ msgid "Comments"
+#~ msgstr "Komente"
+
+#~ msgid "Updating..."
+#~ msgstr "Po përditësohet…"
+
+#~ msgid "Section"
+#~ msgstr "Ndarje"
+
+#~ msgid "Department"
+#~ msgstr "Degë"
+
+#~ msgid "News Bin:"
+#~ msgstr "Kosh Lajmesh:"
+
+#~ msgid ""
+#~ "Add items to this news bin by selecting \"Copy to News Bin\" from the "
+#~ "item list context menu."
+#~ msgstr ""
+#~ "Shtoni te ky kosh lajmesh zëra duke përzgjedhur “Kopjoje te Kosh Lajmesh” "
+#~ "prej menuje konteksti liste zërash."
+
+#~ msgid "Search Folder:"
+#~ msgstr "Dosje Kërkimesh:"
 
 #~ msgid ""
 #~ "You have not configured a download tool yet! Please do so in the "

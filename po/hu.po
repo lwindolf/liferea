@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.12.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 03:01+0100\n"
+"POT-Creation-Date: 2025-02-26 09:18+0100\n"
 "PO-Revision-Date: 2021-10-11 23:32+0200\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -280,7 +280,7 @@ msgstr "Kilépés"
 msgid "Browser command failed: %s"
 msgstr "A böngészőparancs sikertelen: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1138
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1143
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Indítás: „%s”"
@@ -319,20 +319,6 @@ msgstr "%b. %e., %k.%M"
 #: ../src/date.c:167
 msgid "%b %d %Y"
 msgstr "%Y. %b. %e."
-
-#: ../src/enclosure.c:201
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "A(z) „%s” nem érvényes melléklettípus beállítófájl."
-
-#: ../src/enclosure.c:301
-#, fuzzy, c-format
-msgid ""
-"Command failed: \n"
-"\n"
-"%s\n"
-"\n"
-msgstr "Az e-mail-parancs sikertelen: %s"
 
 #: ../src/export.c:172
 #, c-format
@@ -373,7 +359,7 @@ msgid "Import"
 msgstr "Importálás"
 
 #: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "OPML Files"
 msgstr "OPML-fájlok"
 
@@ -405,15 +391,11 @@ msgstr "Érvénytelen XML."
 msgid "Miniflux"
 msgstr ""
 
-#: ../src/node_source.c:318
-msgid "No feed list source types found!"
-msgstr "Nem találhatók hírforráslista-forrástípusok."
-
-#: ../src/node_source.c:347
+#: ../src/node_source.c:343
 msgid "Source Type"
 msgstr "Forrás típusa"
 
-#: ../src/node_source.c:398
+#: ../src/node_source.c:394
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
@@ -422,7 +404,7 @@ msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:564
+#: ../src/node_source.c:560
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "A(z) „%s” feliratkozás sikeresen át lett alakítva helyi hírforrásokra."
@@ -439,9 +421,8 @@ msgid "Login failed!"
 msgstr "Bejelentkezés sikertelen."
 
 #: ../src/node_sources/google_source.c:404
-#, fuzzy
-msgid "Google Reader API"
-msgstr "Google Olvasó"
+msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
+msgstr ""
 
 #: ../src/node_sources/google_source_feed.c:159
 #, fuzzy
@@ -452,11 +433,11 @@ msgstr "Nem sikerült feldolgozni a Reedah API által visszaadott JSON-t."
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "Choose OPML File"
 msgstr "OPML-fájl választása"
 
-#: ../src/node_sources/opml_source.c:371 ../src/ui/subscription_dialog.c:352
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr "_Megnyitás"
 
@@ -510,12 +491,12 @@ msgstr "Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Nem sikerült feldolgozni a TinyTinyRSS API által visszaadott JSON-t."
 
-#: ../src/node_providers/newsbin.c:133
+#: ../src/node_providers/newsbin.c:116
 #, fuzzy
 msgid "News Bin Properties"
 msgstr "Feliratkozás tulajdonságai"
 
-#: ../src/node_providers/newsbin.c:137 ../glade/new_newsbin.ui.h:1
+#: ../src/node_providers/newsbin.c:120 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Hírgyűjtő létrehozása"
 
@@ -605,17 +586,17 @@ msgid "Print debugging messages for the given topic"
 msgstr "A megadott téma hibakeresési üzeneteinek kiírása"
 
 #. Some libsoup transport errors
-#: ../src/net.c:431
+#: ../src/net.c:475
 msgid "The update request was cancelled"
 msgstr "A frissítési kérés meg lett szakítva"
 
 #. http 3xx redirection
-#: ../src/net.c:434
+#: ../src/net.c:478
 msgid "The resource moved permanently to a new location"
 msgstr "Az erőforrás véglegesen új helyre került"
 
 #. http 4xx client error
-#: ../src/net.c:437
+#: ../src/net.c:481
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -623,35 +604,35 @@ msgstr ""
 "Ön nem jogosult a hírforrás letöltésére. Frissítse a felhasználónevét és "
 "jelszavát a hírforrás tulajdonságai párbeszédablakban."
 
-#: ../src/net.c:439
+#: ../src/net.c:483
 msgid "Payment required"
 msgstr "Fizetés szükséges"
 
-#: ../src/net.c:440
+#: ../src/net.c:484
 msgid "You're not allowed to access this resource"
 msgstr "Nem jogosult az erőforrás elérésére"
 
-#: ../src/net.c:441
+#: ../src/net.c:485
 msgid "Resource Not Found"
 msgstr "Az erőforrás nem található"
 
-#: ../src/net.c:442
+#: ../src/net.c:486
 msgid "Method Not Allowed"
 msgstr "Az eljárás nem megengedett"
 
-#: ../src/net.c:443
+#: ../src/net.c:487
 msgid "Not Acceptable"
 msgstr "Nem fogadható el"
 
-#: ../src/net.c:444
+#: ../src/net.c:488
 msgid "Proxy authentication required"
 msgstr "Proxyhitelesítés szükséges"
 
-#: ../src/net.c:445
+#: ../src/net.c:489
 msgid "Request timed out"
 msgstr "A kérés túllépte az időkorlátot"
 
-#: ../src/net.c:446
+#: ../src/net.c:490
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -661,47 +642,51 @@ msgstr ""
 "el. A Liferea nem frissíti a továbbiakban, de továbbra is elérhetőek lesznek "
 "a gyorsítótárazott szalagcímek."
 
+#: ../src/net.c:491
+msgid "Too many requests. Liferea has to wait a while before trying again."
+msgstr ""
+
 #. http 5xx server errors
-#: ../src/net.c:449
+#: ../src/net.c:494
 #, fuzzy
 msgid "Internal Server Error"
 msgstr "Kiszolgálóhiba"
 
-#: ../src/net.c:450
+#: ../src/net.c:495
 msgid "Not Implemented"
 msgstr ""
 
-#: ../src/net.c:451
+#: ../src/net.c:496
 msgid "Bad Gateway"
 msgstr ""
 
-#: ../src/net.c:452
+#: ../src/net.c:497
 msgid "Service Unavailable"
 msgstr ""
 
-#: ../src/net.c:453
+#: ../src/net.c:498
 msgid "Gateway Timeout"
 msgstr ""
 
-#: ../src/net.c:454
+#: ../src/net.c:499
 msgid "HTTP Version Not Supported"
 msgstr ""
 
-#: ../src/net.c:458
+#: ../src/net.c:503
 msgid "An unknown networking error happened!"
 msgstr "Ismeretlen hálózati hiba történt."
 
-#: ../src/node.c:640
+#: ../src/node.c:654
 #, fuzzy, c-format
 msgid "Failed to create feed file: %s"
 msgstr "Nem sikerült eltávolítani a .py fájlt."
 
-#: ../src/node.c:659
+#: ../src/node.c:673
 #, fuzzy
 msgid "Feed file exported from Liferea"
 msgstr "Hírforráslista exportálva."
 
-#: ../src/node.c:674
+#: ../src/node.c:688
 #, fuzzy, c-format
 msgid "Error while saving feed file"
 msgstr "Hiba történt a hírforráslista exportálása közben."
@@ -847,12 +832,12 @@ msgstr "Frissítés (%d / %d)…"
 msgid "Updating '%s'..."
 msgstr "„%s” frissítése…"
 
-#: ../src/ui/auth_dialog.c:114
+#: ../src/ui/auth_dialog.c:112
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Adja meg a felhasználónevet és a jelszót a következőhöz: „%s” (%s):"
 
-#: ../src/ui/auth_dialog.c:116
+#: ../src/ui/auth_dialog.c:114
 msgid "Unknown source"
 msgstr "Ismeretlen forrás"
 
@@ -905,7 +890,7 @@ msgstr "Biztosan törölni szeretné a(z) „%s” elemet és a tartalmát?"
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Biztosan törölni szeretné a(z) „%s” elemet?"
 
-#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:947
+#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:952
 #: ../src/ui/popup_menu.c:224
 msgid "_Cancel"
 msgstr "_Mégse"
@@ -918,7 +903,7 @@ msgstr "_Törlés"
 msgid "Deletion Confirmation"
 msgstr "Törlés megerősítése"
 
-#: ../src/ui/feed_list_view.c:935
+#: ../src/ui/feed_list_view.c:940
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
@@ -927,11 +912,11 @@ msgstr ""
 "Biztosan hozzá szeretné adni a(z) „%s” URL-lel rendelkező új feliratkozást? "
 "Egy másik feliratkozás már létezik ezzel az URL-lel („%s”)."
 
-#: ../src/ui/feed_list_view.c:948
+#: ../src/ui/feed_list_view.c:953
 msgid "_Add"
 msgstr "_Hozzáadás"
 
-#: ../src/ui/feed_list_view.c:950
+#: ../src/ui/feed_list_view.c:955
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Kettőzött feliratkozás hozzáadásának megerősítése"
 
@@ -965,14 +950,6 @@ msgstr "Ki kell választania egy hírforrást az elemeinek törléséhez."
 msgid "No item has been selected"
 msgstr "Nincs kiválasztott elem"
 
-#: ../src/ui/liferea_browser.c:483
-msgid "Content download failed! Try disabling reader mode."
-msgstr ""
-
-#: ../src/ui/liferea_browser.c:496
-msgid "Content extraction failed! Try disabling reader mode."
-msgstr ""
-
 #: ../src/ui/liferea_shell.c:410
 #, c-format
 msgid " (%d new)"
@@ -999,7 +976,7 @@ msgstr "Gyors hivatkozás"
 msgid "FAQ"
 msgstr "GYIK"
 
-#: ../src/ui/liferea_shell.c:1135
+#: ../src/ui/liferea_shell.c:1140
 #, c-format
 msgid "Email command failed: %s"
 msgstr "Az e-mail-parancs sikertelen: %s"
@@ -1295,10 +1272,6 @@ msgstr "Szövegméret _növelése"
 #: ../src/webkit/liferea_web_view.c:206
 msgid "_Decrease Text Size"
 msgstr "Szövegméret _csökkentése"
-
-#: ../src/webkit/liferea_web_view.c:213
-msgid "_Reader Mode"
-msgstr "_Olvasási mód"
 
 #: ../src/xml.c:427
 msgid "[There were more errors. Output was truncated!]"
@@ -1857,19 +1830,6 @@ msgstr ""
 "verziójával érhető el."
 
 #: ../glade/prefs.ui.h:57
-msgid "Use _Reader mode."
-msgstr "_Olvasási mód használata."
-
-#: ../glade/prefs.ui.h:58
-msgid ""
-"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
-"a> all non-content elements (like scripts, fonts, tracking)"
-msgstr ""
-"Ez engedélyezi az összes nem tartalmi elem (mint például parancsfájlok, "
-"betűkészletek vagy követés) <a href=\"https://github.com/mozilla/"
-"readability\">eltávolítását</a>."
-
-#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr "Adatvédelem"
 
@@ -1914,7 +1874,7 @@ msgstr ""
 "A Liferea külső szűrőparancsfájlokat használhat a nem támogatott formátumú "
 "hírforrások és könyvtárak eléréséhez."
 
-#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+#: ../glade/properties.ui.h:21 ../js/node.xml.in.h:1
 msgid "Source"
 msgstr "Forrás"
 
@@ -2125,61 +2085,90 @@ msgstr "_Függőben lévő kérések"
 msgid "_Downloading Now"
 msgstr "_Letöltés most"
 
-#: ../xslt/feed.xml.in.h:1
-msgid "Feed:"
-msgstr "Hírforrás:"
+#: ../js/item.xml.in.h:1 ../js/node.xml.in.h:2
+msgid "Author"
+msgstr "Szerző"
 
-#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Forrás:"
+#: ../js/item.xml.in.h:2
+msgid "Creator"
+msgstr "Létrehozó"
 
-#: ../xslt/feed.xml.in.h:3
+#: ../js/item.xml.in.h:3
+#, fuzzy
+msgid "Shared By"
+msgstr "Megosztotta"
+
+#: ../js/item.xml.in.h:4
+msgid "Via"
+msgstr "Ezen keresztül"
+
+#: ../js/node.xml.in.h:3
 msgid "Publisher"
 msgstr "Kiadó"
 
-#: ../xslt/feed.xml.in.h:4
+#: ../js/node.xml.in.h:4
 msgid "Copyright"
 msgstr "Copyright"
 
-#: ../xslt/feed.xml.in.h:5
+#: ../js/node.xml.in.h:5
+msgid ""
+"⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
+"{{ maxFailures }} retries)!"
+msgstr ""
+
+#: ../js/node.xml.in.h:6
+msgid "Please check your credentials!"
+msgstr ""
+
+#: ../js/node.xml.in.h:7
+msgid ""
+"⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
+"{{ maxFailures }} retries)..."
+msgstr ""
+
+#: ../js/node.xml.in.h:8
+msgid "⚠️ Account login for '{{ title }}' has not yet started."
+msgstr ""
+
+#: ../js/node.xml.in.h:9
 msgid "There was a problem when fetching this subscription!"
 msgstr "Hiba történt a feliratkozás lekérésekor."
 
-#: ../xslt/feed.xml.in.h:6
+#: ../js/node.xml.in.h:10
 msgid "1. Authentication"
 msgstr "1. Hitelesítés"
 
-#: ../xslt/feed.xml.in.h:7
+#: ../js/node.xml.in.h:11
 msgid "2. Download"
 msgstr "2. Letöltés"
 
-#: ../xslt/feed.xml.in.h:8
+#: ../js/node.xml.in.h:12
 msgid "3. Feed Discovery"
 msgstr "3. Hírforráskeresés"
 
-#: ../xslt/feed.xml.in.h:9
+#: ../js/node.xml.in.h:13
 msgid "4. Parsing"
 msgstr "4. Feldolgozás"
 
-#: ../xslt/feed.xml.in.h:10
+#: ../js/node.xml.in.h:14
 msgid "Details:"
 msgstr "Részletek:"
 
-#: ../xslt/feed.xml.in.h:11
+#: ../js/node.xml.in.h:15
 msgid "Authentication failed. Please check the credentials and try again!"
 msgstr ""
 "A hitelesítés sikertelen. Ellenőrizze a hitelesítési adatokat, és próbálja "
 "újra."
 
-#: ../xslt/feed.xml.in.h:12
+#: ../js/node.xml.in.h:16
 msgid "There was an error when downloading the feed source:"
 msgstr "Hiba történt a hírforrás forrásának letöltésekor:"
 
-#: ../xslt/feed.xml.in.h:13
+#: ../js/node.xml.in.h:17
 msgid "There was an error when running the feed filter command:"
 msgstr "Hiba történt a hírforrásszűrési parancs futtatásakor:"
 
-#: ../xslt/feed.xml.in.h:14
+#: ../js/node.xml.in.h:18
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
@@ -2187,108 +2176,113 @@ msgstr ""
 "A forrás nem mutat közvetlenül egy hírforrásra vagy egy hírforrásra mutató "
 "hivatkozással rendelkező weboldalra."
 
-#: ../xslt/feed.xml.in.h:15
+#: ../js/node.xml.in.h:19
 msgid "Sorry, the feed could not be parsed!"
 msgstr "Elnézést, a hírforrást nem sikerült feldolgozni."
 
-#: ../xslt/feed.xml.in.h:16
+#: ../js/node.xml.in.h:20
 msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 "Ezzel kapcsolatban érdemes lenne felkeresni a hírforrás szerzőjét vagy "
 "webmesterét."
 
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Mappa:"
+#, c-format
+#~ msgid "\"%s\" is not a valid enclosure type config file!"
+#~ msgstr "A(z) „%s” nem érvényes melléklettípus beállítófájl."
 
-#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
-msgid "children with"
-msgstr "gyermekek ezzel"
+#, fuzzy, c-format
+#~ msgid ""
+#~ "Command failed: \n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr "Az e-mail-parancs sikertelen: %s"
 
-#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "olvasatlan szalagcímek"
+#~ msgid "No feed list source types found!"
+#~ msgstr "Nem találhatók hírforráslista-forrástípusok."
 
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Hírforrás"
+#, fuzzy
+#~ msgid "Google Reader API"
+#~ msgstr "Google Olvasó"
 
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Beküldve ez alatt"
+#~ msgid "_Reader Mode"
+#~ msgstr "_Olvasási mód"
 
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Szerző"
+#~ msgid "Use _Reader mode."
+#~ msgstr "_Olvasási mód használata."
 
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Megosztotta"
+#~ msgid ""
+#~ "This enables <a href=\"https://github.com/mozilla/"
+#~ "readability\">stripping</a> all non-content elements (like scripts, "
+#~ "fonts, tracking)"
+#~ msgstr ""
+#~ "Ez engedélyezi az összes nem tartalmi elem (mint például parancsfájlok, "
+#~ "betűkészletek vagy követés) <a href=\"https://github.com/mozilla/"
+#~ "readability\">eltávolítását</a>."
 
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "Ezen keresztül"
+#~ msgid "Feed:"
+#~ msgstr "Hírforrás:"
 
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Kapcsolódó"
+#~ msgid "Source:"
+#~ msgstr "Forrás:"
 
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Beküldve továbbá"
+#~ msgid "Folder:"
+#~ msgstr "Mappa:"
 
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Létrehozó"
+#~ msgid "children with"
+#~ msgstr "gyermekek ezzel"
 
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
-msgstr "Koordináták"
+#~ msgid "unread headlines"
+#~ msgstr "olvasatlan szalagcímek"
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
-msgstr "Térkép"
+#~ msgid "Feed"
+#~ msgstr "Hírforrás"
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
-msgstr "Megtekintések száma"
+#~ msgid "Filed under"
+#~ msgstr "Beküldve ez alatt"
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
-msgstr "Értékelés"
+#~ msgid "Related"
+#~ msgstr "Kapcsolódó"
 
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Hozzászólások"
+#~ msgid "Also posted in"
+#~ msgstr "Beküldve továbbá"
 
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "Frissítés…"
+#~ msgid "Coordinates"
+#~ msgstr "Koordináták"
 
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Szakasz"
+#~ msgid "Map"
+#~ msgstr "Térkép"
 
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Részleg"
+#~ msgid "View count"
+#~ msgstr "Megtekintések száma"
 
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "Hírgyűjtő:"
+#~ msgid "Rating"
+#~ msgstr "Értékelés"
 
-#: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Adjon elemeket ehhez a hírgyűjtőhöz az elemlista helyi menüjének „Másolás "
-"hírgyűjtőbe” menüpontjának kiválasztásával."
+#~ msgid "Comments"
+#~ msgstr "Hozzászólások"
 
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Keresési mappa:"
+#~ msgid "Updating..."
+#~ msgstr "Frissítés…"
+
+#~ msgid "Section"
+#~ msgstr "Szakasz"
+
+#~ msgid "Department"
+#~ msgstr "Részleg"
+
+#~ msgid "News Bin:"
+#~ msgstr "Hírgyűjtő:"
+
+#~ msgid ""
+#~ "Add items to this news bin by selecting \"Copy to News Bin\" from the "
+#~ "item list context menu."
+#~ msgstr ""
+#~ "Adjon elemeket ehhez a hírgyűjtőhöz az elemlista helyi menüjének „Másolás "
+#~ "hírgyűjtőbe” menüpontjának kiválasztásával."
+
+#~ msgid "Search Folder:"
+#~ msgstr "Keresési mappa:"
 
 #~ msgid ""
 #~ "You have not configured a download tool yet! Please do so in the "

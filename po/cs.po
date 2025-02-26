@@ -4,13 +4,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Liferea 1.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 03:01+0100\n"
+"POT-Creation-Date: 2025-02-26 09:18+0100\n"
 "PO-Revision-Date: 2024-09-29 20:34+0200\n"
 "Last-Translator: Amerey <info@amerey.eu>\n"
 "Language-Team: Martin Picek <picek.martin@gnome-cesko.cz>\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -274,7 +274,7 @@ msgstr "Ukončit"
 msgid "Browser command failed: %s"
 msgstr "Příkaz pro prohlížeč selhal: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1138
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1143
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Spouští se: „%s“"
@@ -314,20 +314,6 @@ msgstr "%d. %b, %l.%M"
 msgid "%b %d %Y"
 msgstr "%d. %b %Y, %l.%M"
 
-#: ../src/enclosure.c:201
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "\"%s\" není platný konfigurační soubor přílohy!"
-
-#: ../src/enclosure.c:301
-#, fuzzy, c-format
-msgid ""
-"Command failed: \n"
-"\n"
-"%s\n"
-"\n"
-msgstr "Příkaz pro e-mail selhal: %s"
-
 #: ../src/export.c:172
 #, c-format
 msgid "Error renaming %s to %s: %s\n"
@@ -364,7 +350,7 @@ msgid "Import"
 msgstr "Importovat"
 
 #: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "OPML Files"
 msgstr "Soubory OPML"
 
@@ -396,15 +382,11 @@ msgstr "Neplatné XML!"
 msgid "Miniflux"
 msgstr "Miniflux"
 
-#: ../src/node_source.c:318
-msgid "No feed list source types found!"
-msgstr "Žádný seznam kanálů s typy zdroje nenalezen!"
-
-#: ../src/node_source.c:347
+#: ../src/node_source.c:343
 msgid "Source Type"
 msgstr "Typ zdroje"
 
-#: ../src/node_source.c:398
+#: ../src/node_source.c:394
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
@@ -413,7 +395,7 @@ msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:564
+#: ../src/node_source.c:560
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "Odběr '%s' byl úspěšně převeden na místní zdroje!"
@@ -430,8 +412,8 @@ msgid "Login failed!"
 msgstr "Přihlášení se nezdařilo!"
 
 #: ../src/node_sources/google_source.c:404
-msgid "Google Reader API"
-msgstr "Google Reader API"
+msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
+msgstr ""
 
 #: ../src/node_sources/google_source_feed.c:159
 msgid "Could not parse JSON returned by Google Reader API!"
@@ -441,11 +423,11 @@ msgstr "Nelze analyzovat JSON vrácený rozhraním Google Reader API!"
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "Choose OPML File"
 msgstr "Vybrat soubor OPML"
 
-#: ../src/node_sources/opml_source.c:371 ../src/ui/subscription_dialog.c:352
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr "_Otevřít"
 
@@ -499,11 +481,11 @@ msgstr "Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Nelze analyzovat JSON vrácený TinyTinyRSS API!"
 
-#: ../src/node_providers/newsbin.c:133
+#: ../src/node_providers/newsbin.c:116
 msgid "News Bin Properties"
 msgstr "Vlastnosti odběru"
 
-#: ../src/node_providers/newsbin.c:137 ../glade/new_newsbin.ui.h:1
+#: ../src/node_providers/newsbin.c:120 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Vytvořit rubriku"
 
@@ -592,17 +574,17 @@ msgid "Print debugging messages for the given topic"
 msgstr "Vypsat ladící zprávy pro zadané téma"
 
 #. Some libsoup transport errors
-#: ../src/net.c:431
+#: ../src/net.c:475
 msgid "The update request was cancelled"
 msgstr "Požadavek na aktualizaci byl zrušen"
 
 #. http 3xx redirection
-#: ../src/net.c:434
+#: ../src/net.c:478
 msgid "The resource moved permanently to a new location"
 msgstr "Zdroj se trvale přesunul na nové místo"
 
 #. http 4xx client error
-#: ../src/net.c:437
+#: ../src/net.c:481
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -610,35 +592,35 @@ msgstr ""
 "Nejste oprávněni odebírat tento kanál. Prosím, aktualizujte své uživatelské "
 "jméno a heslo v dialogu Vlastnosti"
 
-#: ../src/net.c:439
+#: ../src/net.c:483
 msgid "Payment required"
 msgstr "Vyžadována platba"
 
-#: ../src/net.c:440
+#: ../src/net.c:484
 msgid "You're not allowed to access this resource"
 msgstr "K tomuto prostředku nemáte přístup"
 
-#: ../src/net.c:441
+#: ../src/net.c:485
 msgid "Resource Not Found"
 msgstr "Zdroj nenalezen"
 
-#: ../src/net.c:442
+#: ../src/net.c:486
 msgid "Method Not Allowed"
 msgstr "Metoda není povolena"
 
-#: ../src/net.c:443
+#: ../src/net.c:487
 msgid "Not Acceptable"
 msgstr "Neakceptovatelné"
 
-#: ../src/net.c:444
+#: ../src/net.c:488
 msgid "Proxy authentication required"
 msgstr "Proxy vyžaduje ověření"
 
-#: ../src/net.c:445
+#: ../src/net.c:489
 msgid "Request timed out"
 msgstr "Vypršel časový limit žádosti"
 
-#: ../src/net.c:446
+#: ../src/net.c:490
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
 "Liferea won't update it anymore but you can still access the cached "
@@ -647,45 +629,49 @@ msgstr ""
 "Tento kanál je přerušen a již není dostupný. Liferea ho již nebude "
 "aktualizovat, ale jeho články jsou stále přístupné v paměti."
 
+#: ../src/net.c:491
+msgid "Too many requests. Liferea has to wait a while before trying again."
+msgstr ""
+
 #. http 5xx server errors
-#: ../src/net.c:449
+#: ../src/net.c:494
 msgid "Internal Server Error"
 msgstr "Chyba serveru"
 
-#: ../src/net.c:450
+#: ../src/net.c:495
 msgid "Not Implemented"
 msgstr "Není implementováno"
 
-#: ../src/net.c:451
+#: ../src/net.c:496
 msgid "Bad Gateway"
 msgstr "Špatná brána"
 
-#: ../src/net.c:452
+#: ../src/net.c:497
 msgid "Service Unavailable"
 msgstr "Služba není k dispozici"
 
-#: ../src/net.c:453
+#: ../src/net.c:498
 msgid "Gateway Timeout"
 msgstr "Vypršení časového limitu brány"
 
-#: ../src/net.c:454
+#: ../src/net.c:499
 msgid "HTTP Version Not Supported"
 msgstr "Verze HTTP není podporována"
 
-#: ../src/net.c:458
+#: ../src/net.c:503
 msgid "An unknown networking error happened!"
 msgstr "Došlo k neznámé chybě sítě!"
 
-#: ../src/node.c:640
+#: ../src/node.c:654
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr "Nepodařilo se vytvořit soubor zdroje: %s"
 
-#: ../src/node.c:659
+#: ../src/node.c:673
 msgid "Feed file exported from Liferea"
 msgstr "Soubor zdroje exportovaný z Liferea"
 
-#: ../src/node.c:674
+#: ../src/node.c:688
 #, c-format
 msgid "Error while saving feed file"
 msgstr "Chyba při ukládání souboru zdroje"
@@ -826,12 +812,12 @@ msgstr "Aktualizuje se (%d / %d) ..."
 msgid "Updating '%s'..."
 msgstr "Aktualizuje se '%s'..."
 
-#: ../src/ui/auth_dialog.c:114
+#: ../src/ui/auth_dialog.c:112
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Vložte uživatelské jméno a heslo pro „%s“ (%s):"
 
-#: ../src/ui/auth_dialog.c:116
+#: ../src/ui/auth_dialog.c:114
 msgid "Unknown source"
 msgstr "Neznámý zdroj"
 
@@ -884,7 +870,7 @@ msgstr "Jste si jisti, že chcete odstranit „%s“ i s obsahem?"
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Jste si jisti, že chcete odstranit „%s“?"
 
-#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:947
+#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:952
 #: ../src/ui/popup_menu.c:224
 msgid "_Cancel"
 msgstr "_Zrušit"
@@ -897,7 +883,7 @@ msgstr "_Odstranit"
 msgid "Deletion Confirmation"
 msgstr "Potvrzení odstranění"
 
-#: ../src/ui/feed_list_view.c:935
+#: ../src/ui/feed_list_view.c:940
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
@@ -906,11 +892,11 @@ msgstr ""
 "Jste si jisti, že chcete přidat nový odběr s URL \"%s\"? Jiný odběr se "
 "stejnou adresou URL již existuje (\"%s\")."
 
-#: ../src/ui/feed_list_view.c:948
+#: ../src/ui/feed_list_view.c:953
 msgid "_Add"
 msgstr "Přid_at"
 
-#: ../src/ui/feed_list_view.c:950
+#: ../src/ui/feed_list_view.c:955
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Přidání duplicitního potvrzení předplatného"
 
@@ -944,14 +930,6 @@ msgstr "Musíte vybrat kanál, aby šlo odstranit články!"
 msgid "No item has been selected"
 msgstr "Žádný článek nebyl vybrán"
 
-#: ../src/ui/liferea_browser.c:483
-msgid "Content download failed! Try disabling reader mode."
-msgstr "Stažení obsahu se nezdařilo! Zkuste deaktivovat režim čtečky."
-
-#: ../src/ui/liferea_browser.c:496
-msgid "Content extraction failed! Try disabling reader mode."
-msgstr "Extrahování obsahu se nezdařilo! Zkuste deaktivovat režim čtečky."
-
 #: ../src/ui/liferea_shell.c:410
 #, c-format
 msgid " (%d new)"
@@ -980,7 +958,7 @@ msgstr "Klávesové zkratky"
 msgid "FAQ"
 msgstr "Časté otázky"
 
-#: ../src/ui/liferea_shell.c:1135
+#: ../src/ui/liferea_shell.c:1140
 #, c-format
 msgid "Email command failed: %s"
 msgstr "Příkaz pro e-mail selhal: %s"
@@ -1274,10 +1252,6 @@ msgstr "Z_většit text"
 #: ../src/webkit/liferea_web_view.c:206
 msgid "_Decrease Text Size"
 msgstr "Z_menšit text"
-
-#: ../src/webkit/liferea_web_view.c:213
-msgid "_Reader Mode"
-msgstr "_Režim čtečky"
 
 #: ../src/xml.c:427
 msgid "[There were more errors. Output was truncated!]"
@@ -1829,19 +1803,6 @@ msgstr ""
 "nebo vyšší."
 
 #: ../glade/prefs.ui.h:57
-msgid "Use _Reader mode."
-msgstr "Použít _režim čtečky."
-
-#: ../glade/prefs.ui.h:58
-msgid ""
-"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
-"a> all non-content elements (like scripts, fonts, tracking)"
-msgstr ""
-"To umožňuje <a href=\"https://github.com/mozilla/readability\">odizolovat</"
-"a> všechny prvky, které neobsahují obsah (jako jsou skripty, písma, "
-"sledování)"
-
-#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr "Soukromí"
 
@@ -1886,7 +1847,7 @@ msgstr ""
 "Liferea může využívat externí filtrovací moduly pro přístup ke kanálům a "
 "složkám v nepodporovaných formátech."
 
-#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+#: ../glade/properties.ui.h:21 ../js/node.xml.in.h:1
 msgid "Source"
 msgstr "Zdroj"
 
@@ -2094,167 +2055,206 @@ msgstr "Nevyřešené _požadavky"
 msgid "_Downloading Now"
 msgstr "Právě _stahované"
 
-#: ../xslt/feed.xml.in.h:1
-msgid "Feed:"
-msgstr "Kanál:"
+#: ../js/item.xml.in.h:1 ../js/node.xml.in.h:2
+msgid "Author"
+msgstr "Autor"
 
-#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Zdroj:"
+#: ../js/item.xml.in.h:2
+msgid "Creator"
+msgstr "Tvůrce"
 
-#: ../xslt/feed.xml.in.h:3
+#: ../js/item.xml.in.h:3
+#, fuzzy
+msgid "Shared By"
+msgstr "Sdíleno"
+
+#: ../js/item.xml.in.h:4
+msgid "Via"
+msgstr "Skrz"
+
+#: ../js/node.xml.in.h:3
 msgid "Publisher"
 msgstr "Vydavatel"
 
-#: ../xslt/feed.xml.in.h:4
+#: ../js/node.xml.in.h:4
 msgid "Copyright"
 msgstr "Autorská práva"
 
-#: ../xslt/feed.xml.in.h:5
+#: ../js/node.xml.in.h:5
+msgid ""
+"⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
+"{{ maxFailures }} retries)!"
+msgstr ""
+
+#: ../js/node.xml.in.h:6
+msgid "Please check your credentials!"
+msgstr ""
+
+#: ../js/node.xml.in.h:7
+msgid ""
+"⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
+"{{ maxFailures }} retries)..."
+msgstr ""
+
+#: ../js/node.xml.in.h:8
+msgid "⚠️ Account login for '{{ title }}' has not yet started."
+msgstr ""
+
+#: ../js/node.xml.in.h:9
 msgid "There was a problem when fetching this subscription!"
 msgstr "Při čtení tohoto odběru se vyskytl problém!"
 
-#: ../xslt/feed.xml.in.h:6
+#: ../js/node.xml.in.h:10
 msgid "1. Authentication"
 msgstr "1. Autentizace"
 
-#: ../xslt/feed.xml.in.h:7
+#: ../js/node.xml.in.h:11
 msgid "2. Download"
 msgstr "2. Stahování"
 
-#: ../xslt/feed.xml.in.h:8
+#: ../js/node.xml.in.h:12
 msgid "3. Feed Discovery"
 msgstr "3. Zjišťování zdroje"
 
-#: ../xslt/feed.xml.in.h:9
+#: ../js/node.xml.in.h:13
 msgid "4. Parsing"
 msgstr "4. Analýza"
 
-#: ../xslt/feed.xml.in.h:10
+#: ../js/node.xml.in.h:14
 msgid "Details:"
 msgstr "Podrobnosti:"
 
-#: ../xslt/feed.xml.in.h:11
+#: ../js/node.xml.in.h:15
 msgid "Authentication failed. Please check the credentials and try again!"
 msgstr ""
 "Ověření se nezdařilo. Zkontrolujte přihlašovací údaje a zkuste to znovu!"
 
-#: ../xslt/feed.xml.in.h:12
+#: ../js/node.xml.in.h:16
 msgid "There was an error when downloading the feed source:"
 msgstr "Při stahování zdroje tohoto kanálu se vyskytla chyba:"
 
-#: ../xslt/feed.xml.in.h:13
+#: ../js/node.xml.in.h:17
 msgid "There was an error when running the feed filter command:"
 msgstr "Při spuštění příkazu filtru kanálu došlo k chybě:"
 
-#: ../xslt/feed.xml.in.h:14
+#: ../js/node.xml.in.h:18
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
 msgstr ""
 "Zdroj neukazuje přímo na odběr nebo webovou stránku s odkazem na odběr!"
 
-#: ../xslt/feed.xml.in.h:15
+#: ../js/node.xml.in.h:19
 msgid "Sorry, the feed could not be parsed!"
 msgstr "Litujeme, zdroj nelze analyzovat!"
 
-#: ../xslt/feed.xml.in.h:16
+#: ../js/node.xml.in.h:20
 msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 "Možná budete chtít ohledně toho kontaktovat autora/webmastera tohoto zdroje!"
 
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Složka:"
+#, c-format
+#~ msgid "\"%s\" is not a valid enclosure type config file!"
+#~ msgstr "\"%s\" není platný konfigurační soubor přílohy!"
 
-#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
-msgid "children with"
-msgstr "potomků"
+#, fuzzy, c-format
+#~ msgid ""
+#~ "Command failed: \n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr "Příkaz pro e-mail selhal: %s"
 
-#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "nepřečtenými články"
+#~ msgid "No feed list source types found!"
+#~ msgstr "Žádný seznam kanálů s typy zdroje nenalezen!"
 
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Kanál"
+#~ msgid "Google Reader API"
+#~ msgstr "Google Reader API"
 
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Zařazeno do"
+#~ msgid "Content download failed! Try disabling reader mode."
+#~ msgstr "Stažení obsahu se nezdařilo! Zkuste deaktivovat režim čtečky."
 
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Autor"
+#~ msgid "Content extraction failed! Try disabling reader mode."
+#~ msgstr "Extrahování obsahu se nezdařilo! Zkuste deaktivovat režim čtečky."
 
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Sdíleno"
+#~ msgid "_Reader Mode"
+#~ msgstr "_Režim čtečky"
 
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "Skrz"
+#~ msgid "Use _Reader mode."
+#~ msgstr "Použít _režim čtečky."
 
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Související"
+#~ msgid ""
+#~ "This enables <a href=\"https://github.com/mozilla/"
+#~ "readability\">stripping</a> all non-content elements (like scripts, "
+#~ "fonts, tracking)"
+#~ msgstr ""
+#~ "To umožňuje <a href=\"https://github.com/mozilla/"
+#~ "readability\">odizolovat</a> všechny prvky, které neobsahují obsah (jako "
+#~ "jsou skripty, písma, sledování)"
 
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Také zasláno do"
+#~ msgid "Feed:"
+#~ msgstr "Kanál:"
 
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Tvůrce"
+#~ msgid "Source:"
+#~ msgstr "Zdroj:"
 
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
-msgstr "Souřadnice"
+#~ msgid "Folder:"
+#~ msgstr "Složka:"
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
-msgstr "Mapa"
+#~ msgid "children with"
+#~ msgstr "potomků"
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
-msgstr "Počet zhlédnutí"
+#~ msgid "unread headlines"
+#~ msgstr "nepřečtenými články"
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
-msgstr "Hodnocení"
+#~ msgid "Feed"
+#~ msgstr "Kanál"
 
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Komentáře"
+#~ msgid "Filed under"
+#~ msgstr "Zařazeno do"
 
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "Aktualizuje se..."
+#~ msgid "Related"
+#~ msgstr "Související"
 
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Sekce"
+#~ msgid "Also posted in"
+#~ msgstr "Také zasláno do"
 
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Oddělení"
+#~ msgid "Coordinates"
+#~ msgstr "Souřadnice"
 
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "Rubrika:"
+#~ msgid "Map"
+#~ msgstr "Mapa"
 
-#: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Přidejte články do této rubriky výběrem „Kopírovat do rubriky“ z kontextové "
-"nabídky seznamu kanálů."
+#~ msgid "View count"
+#~ msgstr "Počet zhlédnutí"
 
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Složka hledání:"
+#~ msgid "Rating"
+#~ msgstr "Hodnocení"
+
+#~ msgid "Comments"
+#~ msgstr "Komentáře"
+
+#~ msgid "Updating..."
+#~ msgstr "Aktualizuje se..."
+
+#~ msgid "Section"
+#~ msgstr "Sekce"
+
+#~ msgid "Department"
+#~ msgstr "Oddělení"
+
+#~ msgid "News Bin:"
+#~ msgstr "Rubrika:"
+
+#~ msgid ""
+#~ "Add items to this news bin by selecting \"Copy to News Bin\" from the "
+#~ "item list context menu."
+#~ msgstr ""
+#~ "Přidejte články do této rubriky výběrem „Kopírovat do rubriky“ z "
+#~ "kontextové nabídky seznamu kanálů."
+
+#~ msgid "Search Folder:"
+#~ msgstr "Složka hledání:"
 
 #~ msgid ""
 #~ "You have not configured a download tool yet! Please do so in the "

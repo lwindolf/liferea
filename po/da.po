@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-30 03:01+0100\n"
+"POT-Creation-Date: 2025-02-26 09:18+0100\n"
 "PO-Revision-Date: 2013-06-15 20:36+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -296,7 +296,7 @@ msgstr "_Afslut"
 msgid "Browser command failed: %s"
 msgstr "Browserkommando mislykkedes: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1138
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1143
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "Starter: »%s«"
@@ -341,20 +341,6 @@ msgstr "%d. %b %H:%M"
 msgid "%b %d %Y"
 msgstr "%d. %b %Y"
 
-#: ../src/enclosure.c:201
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "»%s« er ikke en gyldig konfigurationsfil for pakketype!"
-
-#: ../src/enclosure.c:301
-#, fuzzy, c-format
-msgid ""
-"Command failed: \n"
-"\n"
-"%s\n"
-"\n"
-msgstr "Browserkommando mislykkedes: %s"
-
 #: ../src/export.c:172
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
@@ -391,7 +377,7 @@ msgid "Import"
 msgstr "Importer"
 
 #: ../src/export.c:435 ../src/export.c:452
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "OPML Files"
 msgstr "OPML-filer"
 
@@ -423,22 +409,18 @@ msgstr "Ugyldig XML!"
 msgid "Miniflux"
 msgstr ""
 
-#: ../src/node_source.c:318
-msgid "No feed list source types found!"
-msgstr "Ingen kildetyper fundet for nyhedskildeliste!"
-
-#: ../src/node_source.c:347
+#: ../src/node_source.c:343
 msgid "Source Type"
 msgstr "Kildetype"
 
-#: ../src/node_source.c:398
+#: ../src/node_source.c:394
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/node_source.c:564
+#: ../src/node_source.c:560
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr "Abonnementet »%s« blev med succes konverteret til lokale nyhedskilder!"
@@ -456,9 +438,8 @@ msgid "Login failed!"
 msgstr "Kunne ikke logge ind på Google Reader!"
 
 #: ../src/node_sources/google_source.c:404
-#, fuzzy
-msgid "Google Reader API"
-msgstr "Google Reader"
+msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
+msgstr ""
 
 #: ../src/node_sources/google_source_feed.c:159
 #, fuzzy
@@ -469,11 +450,11 @@ msgstr "Kunne ikke fortolke JSON returneret af tt-rss API!"
 msgid "Planet, BlogRoll, OPML"
 msgstr "Planet, BlogRoll, OPML"
 
-#: ../src/node_sources/opml_source.c:371
+#: ../src/node_sources/opml_source.c:366
 msgid "Choose OPML File"
 msgstr "Vælg OPML-fil"
 
-#: ../src/node_sources/opml_source.c:371 ../src/ui/subscription_dialog.c:352
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr ""
 
@@ -526,12 +507,12 @@ msgstr "Tiny Tiny RSS"
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr "Kunne ikke fortolke JSON returneret af tt-rss API!"
 
-#: ../src/node_providers/newsbin.c:133
+#: ../src/node_providers/newsbin.c:116
 #, fuzzy
 msgid "News Bin Properties"
 msgstr "Abonnementegenskaber"
 
-#: ../src/node_providers/newsbin.c:137 ../glade/new_newsbin.ui.h:1
+#: ../src/node_providers/newsbin.c:120 ../glade/new_newsbin.ui.h:1
 msgid "Create News Bin"
 msgstr "Opret nyhedsbakke"
 
@@ -621,17 +602,17 @@ msgid "Print debugging messages for the given topic"
 msgstr "Vis fejlsøgningsbeskeder for det angivne emne"
 
 #. Some libsoup transport errors
-#: ../src/net.c:431
+#: ../src/net.c:475
 msgid "The update request was cancelled"
 msgstr "Opdateringsforespørgslen blev afbrudt"
 
 #. http 3xx redirection
-#: ../src/net.c:434
+#: ../src/net.c:478
 msgid "The resource moved permanently to a new location"
 msgstr "Ressourcen flyttede permanent til en ny placering"
 
 #. http 4xx client error
-#: ../src/net.c:437
+#: ../src/net.c:481
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
@@ -639,36 +620,36 @@ msgstr ""
 "Du har ikke tilladelse til at hente denne nyhedskilde. Opdater venligst dit "
 "brugernavn og adgangskode i dialogboksen for nyhedskildeegenskaber"
 
-#: ../src/net.c:439
+#: ../src/net.c:483
 msgid "Payment required"
 msgstr "Betaling krævet"
 
-#: ../src/net.c:440
+#: ../src/net.c:484
 msgid "You're not allowed to access this resource"
 msgstr "Du har ikke adgang til denne ressource"
 
-#: ../src/net.c:441
+#: ../src/net.c:485
 msgid "Resource Not Found"
 msgstr "Ressource blev ikke fundet"
 
-#: ../src/net.c:442
+#: ../src/net.c:486
 msgid "Method Not Allowed"
 msgstr "Metode ikke tilladt"
 
-#: ../src/net.c:443
+#: ../src/net.c:487
 msgid "Not Acceptable"
 msgstr "Ikke acceptabel"
 
-#: ../src/net.c:444
+#: ../src/net.c:488
 msgid "Proxy authentication required"
 msgstr "Proxygodkendelse krævet"
 
 # Forespørgsel fik tidsudløb
-#: ../src/net.c:445
+#: ../src/net.c:489
 msgid "Request timed out"
 msgstr "Forespørgselstiden udløb"
 
-#: ../src/net.c:446
+#: ../src/net.c:490
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -678,48 +659,52 @@ msgstr ""
 "Denne nyhedskilde er afbrudt. Den er ikke længere tilgængelig. Liferea vil "
 "ikke længere opdatere den, men du kan stadig tilgå de gemte overskrifter."
 
+#: ../src/net.c:491
+msgid "Too many requests. Liferea has to wait a while before trying again."
+msgstr ""
+
 #. http 5xx server errors
-#: ../src/net.c:449
+#: ../src/net.c:494
 #, fuzzy
 msgid "Internal Server Error"
 msgstr "Serverfejl"
 
-#: ../src/net.c:450
+#: ../src/net.c:495
 msgid "Not Implemented"
 msgstr ""
 
-#: ../src/net.c:451
+#: ../src/net.c:496
 msgid "Bad Gateway"
 msgstr ""
 
-#: ../src/net.c:452
+#: ../src/net.c:497
 #, fuzzy
 msgid "Service Unavailable"
 msgstr "»%s« er ikke tilgængelig"
 
-#: ../src/net.c:453
+#: ../src/net.c:498
 msgid "Gateway Timeout"
 msgstr ""
 
-#: ../src/net.c:454
+#: ../src/net.c:499
 msgid "HTTP Version Not Supported"
 msgstr ""
 
-#: ../src/net.c:458
+#: ../src/net.c:503
 msgid "An unknown networking error happened!"
 msgstr "Der opstod en ukendt netværksfejl!"
 
-#: ../src/node.c:640
+#: ../src/node.c:654
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr ""
 
-#: ../src/node.c:659
+#: ../src/node.c:673
 #, fuzzy
 msgid "Feed file exported from Liferea"
 msgstr "Nyhedskildeliste eksporteret!"
 
-#: ../src/node.c:674
+#: ../src/node.c:688
 #, fuzzy, c-format
 msgid "Error while saving feed file"
 msgstr "Fejl under eksport af nyhedskildeliste!"
@@ -871,12 +856,12 @@ msgstr "Opdaterer ..."
 msgid "Updating '%s'..."
 msgstr "Opdaterer ..."
 
-#: ../src/ui/auth_dialog.c:114
+#: ../src/ui/auth_dialog.c:112
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "Indtast brugernavnet og adgangskoden for »%s« (%s):"
 
-#: ../src/ui/auth_dialog.c:116
+#: ../src/ui/auth_dialog.c:114
 msgid "Unknown source"
 msgstr "Ukendt kilde"
 
@@ -930,7 +915,7 @@ msgstr "Er du sikker på, at du ønsker at slette »%s« og dens indhold?"
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "Er du sikker på, at du ønsker at slette »%s«?"
 
-#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:947
+#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:952
 #: ../src/ui/popup_menu.c:224
 #, fuzzy
 msgid "_Cancel"
@@ -944,18 +929,18 @@ msgstr ""
 msgid "Deletion Confirmation"
 msgstr "Sletningsbekræftelse"
 
-#: ../src/ui/feed_list_view.c:935
+#: ../src/ui/feed_list_view.c:940
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:948
+#: ../src/ui/feed_list_view.c:953
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:950
+#: ../src/ui/feed_list_view.c:955
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "Sletningsbekræftelse"
@@ -990,14 +975,6 @@ msgstr "Du skal vælge en nyhedskilde for at slette dens punkter!"
 msgid "No item has been selected"
 msgstr "Intet punkt er blevet valgt"
 
-#: ../src/ui/liferea_browser.c:483
-msgid "Content download failed! Try disabling reader mode."
-msgstr ""
-
-#: ../src/ui/liferea_browser.c:496
-msgid "Content extraction failed! Try disabling reader mode."
-msgstr ""
-
 #: ../src/ui/liferea_shell.c:410
 #, c-format
 msgid " (%d new)"
@@ -1024,7 +1001,7 @@ msgstr "Hurtig hjælp"
 msgid "FAQ"
 msgstr "OSS"
 
-#: ../src/ui/liferea_shell.c:1135
+#: ../src/ui/liferea_shell.c:1140
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "Browserkommando mislykkedes: %s"
@@ -1328,10 +1305,6 @@ msgstr "_Øg tekststørrelse"
 #: ../src/webkit/liferea_web_view.c:206
 msgid "_Decrease Text Size"
 msgstr "_Formindsk tekststørrelse"
-
-#: ../src/webkit/liferea_web_view.c:213
-msgid "_Reader Mode"
-msgstr ""
 
 # evt. Udskriften blev
 #: ../src/xml.c:427
@@ -1889,16 +1862,6 @@ msgid ""
 msgstr ""
 
 #: ../glade/prefs.ui.h:57
-msgid "Use _Reader mode."
-msgstr ""
-
-#: ../glade/prefs.ui.h:58
-msgid ""
-"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
-"a> all non-content elements (like scripts, fonts, tracking)"
-msgstr ""
-
-#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr ""
 
@@ -1952,7 +1915,7 @@ msgstr ""
 "og mappe i ikkeunderstøttede formater. Se dokumentationen for yderligere "
 "information."
 
-#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+#: ../glade/properties.ui.h:21 ../js/node.xml.in.h:1
 msgid "Source"
 msgstr "Kilde"
 
@@ -2196,176 +2159,183 @@ msgstr "Afventende anmodninger"
 msgid "_Downloading Now"
 msgstr "Henter nu"
 
-#: ../xslt/feed.xml.in.h:1
-msgid "Feed:"
-msgstr "Nyhedskilde:"
+#: ../js/item.xml.in.h:1 ../js/node.xml.in.h:2
+msgid "Author"
+msgstr "Forfatter"
 
-#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "Kilde:"
+#: ../js/item.xml.in.h:2
+msgid "Creator"
+msgstr "Forfatter"
 
-#: ../xslt/feed.xml.in.h:3
+#: ../js/item.xml.in.h:3
+#, fuzzy
+msgid "Shared By"
+msgstr "Delt af"
+
+#: ../js/item.xml.in.h:4
+msgid "Via"
+msgstr "Via"
+
+#: ../js/node.xml.in.h:3
 msgid "Publisher"
 msgstr "Udgiver"
 
-#: ../xslt/feed.xml.in.h:4
+#: ../js/node.xml.in.h:4
 msgid "Copyright"
 msgstr "Ophavsret"
 
-#: ../xslt/feed.xml.in.h:5
+#: ../js/node.xml.in.h:5
+msgid ""
+"⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
+"{{ maxFailures }} retries)!"
+msgstr ""
+
+#: ../js/node.xml.in.h:6
+msgid "Please check your credentials!"
+msgstr ""
+
+#: ../js/node.xml.in.h:7
+msgid ""
+"⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
+"{{ maxFailures }} retries)..."
+msgstr ""
+
+#: ../js/node.xml.in.h:8
+msgid "⚠️ Account login for '{{ title }}' has not yet started."
+msgstr ""
+
+#: ../js/node.xml.in.h:9
 #, fuzzy
 msgid "There was a problem when fetching this subscription!"
 msgstr ""
 "Der opstod et problem under læsning af dette abonnement. Tjek venligst "
 "URL'en og konsoluddata."
 
-#: ../xslt/feed.xml.in.h:6
+#: ../js/node.xml.in.h:10
 #, fuzzy
 msgid "1. Authentication"
 msgstr "Godkendelse"
 
-#: ../xslt/feed.xml.in.h:7
+#: ../js/node.xml.in.h:11
 #, fuzzy
 msgid "2. Download"
 msgstr "Hent"
 
-#: ../xslt/feed.xml.in.h:8
+#: ../js/node.xml.in.h:12
 msgid "3. Feed Discovery"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:9
+#: ../js/node.xml.in.h:13
 msgid "4. Parsing"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:10
+#: ../js/node.xml.in.h:14
 #, fuzzy
 msgid "Details:"
 msgstr "Detaljer"
 
-#: ../xslt/feed.xml.in.h:11
+#: ../js/node.xml.in.h:15
 msgid "Authentication failed. Please check the credentials and try again!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:12
+#: ../js/node.xml.in.h:16
 #, fuzzy
 msgid "There was an error when downloading the feed source:"
 msgstr "Der opstod en fejl under fortolkning af denne nyhedskilde!"
 
-#: ../xslt/feed.xml.in.h:13
+#: ../js/node.xml.in.h:17
 #, fuzzy
 msgid "There was an error when running the feed filter command:"
 msgstr "Der opstod en fejl under fortolkning af denne nyhedskilde!"
 
-#: ../xslt/feed.xml.in.h:14
+#: ../js/node.xml.in.h:18
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:15
+#: ../js/node.xml.in.h:19
 msgid "Sorry, the feed could not be parsed!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:16
+#: ../js/node.xml.in.h:20
 msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 "Du bør måske kontakte forfatteren/webmasteren for nyhedskilden om dette!"
 
-#: ../xslt/folder.xml.in.h:1
-msgid "Folder:"
-msgstr "Mappe:"
+#, c-format
+#~ msgid "\"%s\" is not a valid enclosure type config file!"
+#~ msgstr "»%s« er ikke en gyldig konfigurationsfil for pakketype!"
+
+#, fuzzy, c-format
+#~ msgid ""
+#~ "Command failed: \n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr "Browserkommando mislykkedes: %s"
+
+#~ msgid "No feed list source types found!"
+#~ msgstr "Ingen kildetyper fundet for nyhedskildeliste!"
+
+#, fuzzy
+#~ msgid "Google Reader API"
+#~ msgstr "Google Reader"
+
+#~ msgid "Feed:"
+#~ msgstr "Nyhedskilde:"
+
+#~ msgid "Source:"
+#~ msgstr "Kilde:"
+
+#~ msgid "Folder:"
+#~ msgstr "Mappe:"
 
 # er det ikke 'underkilder'?
 # underbeskeder
-#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
-msgid "children with"
-msgstr "underkilder med"
+#~ msgid "children with"
+#~ msgstr "underkilder med"
 
-#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
-msgid "unread headlines"
-msgstr "ulæste overskrifter"
+#~ msgid "unread headlines"
+#~ msgstr "ulæste overskrifter"
 
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "Nyhedskilde"
+#~ msgid "Feed"
+#~ msgstr "Nyhedskilde"
 
-#: ../xslt/item.xml.in.h:3
-msgid "Filed under"
-msgstr "Arkiveret under"
+#~ msgid "Filed under"
+#~ msgstr "Arkiveret under"
 
-#: ../xslt/item.xml.in.h:4
-msgid "Author"
-msgstr "Forfatter"
-
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr "Delt af"
-
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr "Via"
-
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr "Forbundne"
+#~ msgid "Related"
+#~ msgstr "Forbundne"
 
 # tror 'sendt til' eller 'poste(re)t i'
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr "Også sendt til"
+#~ msgid "Also posted in"
+#~ msgstr "Også sendt til"
 
-#: ../xslt/item.xml.in.h:9
-msgid "Creator"
-msgstr "Forfatter"
+#~ msgid "Comments"
+#~ msgstr "Bemærkninger"
 
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
-msgstr ""
+#~ msgid "Updating..."
+#~ msgstr "Opdaterer ..."
 
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
-msgstr ""
+#~ msgid "Section"
+#~ msgstr "Afsnit"
 
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
-msgstr ""
+#~ msgid "Department"
+#~ msgstr "Afdeling"
 
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
-msgstr ""
+#~ msgid "News Bin:"
+#~ msgstr "Nyhedsbakke:"
 
-#: ../xslt/item.xml.in.h:14
-msgid "Comments"
-msgstr "Bemærkninger"
+#~ msgid ""
+#~ "Add items to this news bin by selecting \"Copy to News Bin\" from the "
+#~ "item list context menu."
+#~ msgstr ""
+#~ "Tilføj punkter til denne nyhedsbakke ved at vælge »Kopier til "
+#~ "nyhedsbakke« fra kontekstmenuen til punktlisten."
 
-#: ../xslt/item.xml.in.h:15
-msgid "Updating..."
-msgstr "Opdaterer ..."
-
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr "Afsnit"
-
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr "Afdeling"
-
-#: ../xslt/newsbin.xml.in.h:1
-msgid "News Bin:"
-msgstr "Nyhedsbakke:"
-
-#: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-"Tilføj punkter til denne nyhedsbakke ved at vælge »Kopier til nyhedsbakke« "
-"fra kontekstmenuen til punktlisten."
-
-#: ../xslt/vfolder.xml.in.h:1
-msgid "Search Folder:"
-msgstr "Søgemappe:"
+#~ msgid "Search Folder:"
+#~ msgstr "Søgemappe:"
 
 # evt. det under fanebladet
 #, fuzzy
