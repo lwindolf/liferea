@@ -1,3 +1,12 @@
+To be released
+
+	Version 1.16-RC3
+
+
+	* Removes long deprecated manual proxy setting
+          (Lars Windolf)
+
+
 2025-02-25  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16-RC2
