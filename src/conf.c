@@ -297,36 +297,6 @@ conf_init (void)
 		G_CALLBACK (conf_proxy_reset_settings_cb),
 		NULL
 	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_HOST,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_PORT,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_USEAUTH,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_USER,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_PASSWD,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
 
 	/* Load settings into static buffers */
 	conf_proxy_reset_settings_cb (NULL, 0, NULL, NULL);
