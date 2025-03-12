@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Liferea package.
 # Mehmet Atif Ergun <mehmetaergun@gmail.com>, 2007.
 # Eren Türkay <turkay.eren@gmail.com>, 2007.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018, 2024.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2017, 2018, 2024, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 09:18+0100\n"
-"PO-Revision-Date: 2024-08-01 08:00+0300\n"
+"PO-Revision-Date: 2025-03-12 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -412,7 +412,7 @@ msgstr "Giriş başarısız!"
 
 #: ../src/node_sources/google_source.c:404
 msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
-msgstr ""
+msgstr "Google Okuyucu API (FreshRSS, FeedHQ, Miniflux...)"
 
 #: ../src/node_sources/google_source_feed.c:159
 msgid "Could not parse JSON returned by Google Reader API!"
@@ -632,7 +632,7 @@ msgstr ""
 
 #: ../src/net.c:491
 msgid "Too many requests. Liferea has to wait a while before trying again."
-msgstr ""
+msgstr "Çok istek var. Yeniden denemeden önce beklenmesi gerekiyor."
 
 #. http 5xx server errors
 #: ../src/net.c:494
@@ -2057,7 +2057,6 @@ msgid "Creator"
 msgstr "Oluşturan"
 
 #: ../js/item.xml.in.h:3
-#, fuzzy
 msgid "Shared By"
 msgstr "Paylaşan"
 
@@ -2078,20 +2077,24 @@ msgid ""
 "⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
 "{{ maxFailures }} retries)!"
 msgstr ""
+"⛔ '{{ title }}' oturumu açılamadı ({{ authFailures }}/"
+"{{ maxFailures }} deneme)!"
 
 #: ../js/node.xml.in.h:6
 msgid "Please check your credentials!"
-msgstr ""
+msgstr "Lütfen kimlik bilgilerinizi gözden geçirin!"
 
 #: ../js/node.xml.in.h:7
 msgid ""
 "⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
 "{{ maxFailures }} retries)..."
 msgstr ""
+"⚠️ '{{ title }}' için oturum açılması sürüyor ({{ authFailures }}/"
+"{{ maxFailures }} deneme)..."
 
 #: ../js/node.xml.in.h:8
 msgid "⚠️ Account login for '{{ title }}' has not yet started."
-msgstr ""
+msgstr "⚠️ '{{ title }}' için oturum açılması henüz başlamadı."
 
 #: ../js/node.xml.in.h:9
 msgid "There was a problem when fetching this subscription!"
@@ -2148,150 +2151,3 @@ msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 "Bununla ilgili olarak beslemenin yazarı ya da yöneticisiyle iletişime geçmek "
 "isteyebilirsiniz!"
-
-#, c-format
-#~ msgid "\"%s\" is not a valid enclosure type config file!"
-#~ msgstr "\"%s\" geçerli bir ek türü ayar dosyası değil!"
-
-#, fuzzy, c-format
-#~ msgid ""
-#~ "Command failed: \n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ msgstr "E-posta komutu başarısız: %s"
-
-#~ msgid "No feed list source types found!"
-#~ msgstr "Hiçbir besleme listesi türü bulunamadı!"
-
-#~ msgid "Google Reader API"
-#~ msgstr "Google Okuyucu API’sı"
-
-#~ msgid "Content download failed! Try disabling reader mode."
-#~ msgstr "İçerik indirilemedi! Okuyucu kipi devre dışı bırakmayı deneyin."
-
-#~ msgid "Content extraction failed! Try disabling reader mode."
-#~ msgstr "İçerik ayıklanamadı! Okuyucu kipi devre dışı bırakmayı deneyin."
-
-#~ msgid "_Reader Mode"
-#~ msgstr "_Okuyucu Kip"
-
-#~ msgid "Use _Reader mode."
-#~ msgstr "_Okuyucu kipi kullan."
-
-#~ msgid ""
-#~ "This enables <a href=\"https://github.com/mozilla/"
-#~ "readability\">stripping</a> all non-content elements (like scripts, "
-#~ "fonts, tracking)"
-#~ msgstr ""
-#~ "Bu, içerik dışı ögelerin (betikler, yazı tipleri, izleme) <a "
-#~ "href=\"https://github.com/mozilla/readability\">ayıklanmasını</a> "
-#~ "etkinleştirir."
-
-#~ msgid "Feed:"
-#~ msgstr "Besleme:"
-
-#~ msgid "Source:"
-#~ msgstr "Kaynak:"
-
-#~ msgid "Folder:"
-#~ msgstr "Klasör:"
-
-#~ msgid "children with"
-#~ msgstr "alt ile birlikte"
-
-#~ msgid "unread headlines"
-#~ msgstr "okunmamış haber başlığı"
-
-#~ msgid "Feed"
-#~ msgstr "Besleme"
-
-#~ msgid "Filed under"
-#~ msgstr "Dosyalandığı yer"
-
-#~ msgid "Related"
-#~ msgstr "İlişkili"
-
-#~ msgid "Also posted in"
-#~ msgstr "Yinelenen yer"
-
-#~ msgid "Coordinates"
-#~ msgstr "Koordinatlar"
-
-#~ msgid "Map"
-#~ msgstr "Harita"
-
-#~ msgid "View count"
-#~ msgstr "Görüntüleme sayısı"
-
-#~ msgid "Rating"
-#~ msgstr "Oy"
-
-#~ msgid "Comments"
-#~ msgstr "Yorumlar"
-
-#~ msgid "Updating..."
-#~ msgstr "Güncelleniyor..."
-
-#~ msgid "Section"
-#~ msgstr "Bölüm"
-
-#~ msgid "Department"
-#~ msgstr "Şube"
-
-#~ msgid "News Bin:"
-#~ msgstr "Haber Sepeti:"
-
-#~ msgid ""
-#~ "Add items to this news bin by selecting \"Copy to News Bin\" from the "
-#~ "item list context menu."
-#~ msgstr ""
-#~ "Öge listesi bağlam menüsünden \"Haber Sepetine Kopyala\" seçeneğini "
-#~ "seçerek ögeleri bu haber sepetine ekle."
-
-#~ msgid "Search Folder:"
-#~ msgstr "Arama Klasörü:"
-
-#~ msgid ""
-#~ "You have not configured a download tool yet! Please do so in the "
-#~ "'Enclosures' tab in Tools/Preferences."
-#~ msgstr ""
-#~ "Henüz bir indirme aracı yapılandırmadınız! Lütfen bunu Araçlar/Seçenekler "
-#~ "içindeki Ekler sekmesinden yapınız."
-
-#, c-format
-#~ msgid ""
-#~ "Command failed: \n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ " Please check whether the configured download tool is installed and "
-#~ "working correctly! You can change it in the 'Download' tab in Tools/"
-#~ "Preferences."
-#~ msgstr ""
-#~ "Komut başarısız: \n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ " Lütfen indirme aracınızın kurulduğunu ya da doğru çalıştığını "
-#~ "denetleyin! Bunu, Araçlar/Seçenekler içindeki 'Ekler' sekemesinden "
-#~ "değiştirebilirsiniz."
-
-#~ msgid "*** No title ***"
-#~ msgstr "*** Başlık yok ***"
-
-#~ msgid "Type"
-#~ msgstr "Tür"
-
-#~ msgid "Program"
-#~ msgstr "Program"
-
-#~ msgid "Downloading Content"
-#~ msgstr "İçerik İndirme"
-
-#~ msgid "_Download using"
-#~ msgstr "Şunu kullanarak _indir"
-
-#, no-c-format
-#~ msgid "custom-command %s"
-#~ msgstr "özel-komut %s"
