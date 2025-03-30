@@ -13,6 +13,7 @@ glade_DATA = about.ui \
 	new_subscription.ui \
 	node_source.ui \
 	opml_source.ui \
+	plugins.ui \
 	prefs.ui \
 	properties.ui \
 	reedah_source.ui \

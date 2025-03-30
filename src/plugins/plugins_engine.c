@@ -38,6 +38,7 @@
 #include "liferea_activatable.h"
 #include "liferea_shell_activatable.h"
 #include "plugins_engine.h"
+#include "ui/liferea_dialog.h"
 
 struct _LifereaPluginsEngine
 {
@@ -275,16 +276,8 @@ void
 liferea_plugins_manage_dialog (GtkWindow *parent)
 {
 	GListModel *plugin_infos = G_LIST_MODEL(plugins->engine);
-	GtkWidget *dialog = gtk_dialog_new_with_buttons(_("Plugins"),
-		parent,
-		GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-		_("_Close"),
-		GTK_RESPONSE_CLOSE,
-		NULL);
-
-	GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
-	GtkWidget *list_box = gtk_list_box_new();
-	gtk_container_add(GTK_CONTAINER(content_area), list_box);
+	GtkWidget *dialog = liferea_dialog_new ("plugins");
+	GtkWidget *list_box = liferea_dialog_lookup (dialog, "plugins_listbox");
 
 	for (guint i = 0; i < g_list_model_get_n_items(plugin_infos); i++) {
 		PeasPluginInfo *info = PEAS_PLUGIN_INFO(g_list_model_get_item(plugin_infos, i));
@@ -293,15 +286,20 @@ liferea_plugins_manage_dialog (GtkWindow *parent)
 		gboolean is_active = peas_plugin_info_is_loaded(info);
 
 		GtkWidget *row = gtk_list_box_row_new();
-		GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
-		GtkWidget *label_name = gtk_label_new(plugin_name);
-		GtkWidget *label_desc = gtk_label_new(plugin_desc);
+		GtkWidget *box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
 		GtkWidget *active_checkbox = gtk_check_button_new();
 		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(active_checkbox), is_active);
+		GtkWidget *text_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+		GtkWidget *label_name = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label_name), g_markup_printf_escaped("<b>%s</b>", plugin_name));
+		gtk_label_set_xalign(GTK_LABEL(label_name), 0.0);
+		GtkWidget *label_desc = gtk_label_new(plugin_desc);
+		gtk_label_set_xalign(GTK_LABEL(label_desc), 0.0);
 
-		gtk_box_pack_start(GTK_BOX(box), label_name, FALSE, FALSE, 0);
-		gtk_box_pack_start(GTK_BOX(box), label_desc, FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(text_box), label_name, FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(text_box), label_desc, FALSE, FALSE, 0);
 		gtk_box_pack_start(GTK_BOX(box), active_checkbox, FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(box), text_box, TRUE, TRUE, 0);
 		gtk_container_add(GTK_CONTAINER(row), box);
 		g_signal_connect(active_checkbox, "toggled", G_CALLBACK(on_plugin_checkbox_toggled), info);
 		gtk_list_box_insert(GTK_LIST_BOX(list_box), row, -1);

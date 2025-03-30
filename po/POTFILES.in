@@ -197,6 +197,7 @@ src/xml.h
 [type: gettext/glade]glade/new_subscription.ui
 [type: gettext/glade]glade/node_source.ui
 [type: gettext/glade]glade/opml_source.ui
+[type: gettext/glade]glade/plugins.ui
 [type: gettext/glade]glade/prefs.ui
 [type: gettext/glade]glade/properties.ui
 [type: gettext/glade]glade/reedah_source.ui
