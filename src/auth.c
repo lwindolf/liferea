@@ -23,9 +23,6 @@
 #include "plugins/plugins_engine.h"
 #include "subscription.h"
 
-#include <libpeas/peas-activatable.h>
-#include <libpeas/peas-extension-set.h>
-
 static void
 liferea_auth_info_store_foreach (gpointer exten, gpointer user_data)
 {

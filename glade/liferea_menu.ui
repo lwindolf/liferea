@@ -162,6 +162,10 @@
       <attribute name="label" translatable="yes">_Tools</attribute>
       <section>
         <item>
+          <attribute name="action">app.discover-feeds</attribute>
+          <attribute name="label" translatable="yes">_Discover Feeds</attribute>
+        </item>
+        <item>
           <attribute name="action">app.show-update-monitor</attribute>
           <attribute name="label" translatable="yes">_Update Monitor</attribute>
         </item>

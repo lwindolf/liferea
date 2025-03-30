@@ -24,8 +24,6 @@ import os
 import time
 
 gi.require_version('Gtk', '3.0')
-gi.require_version('Peas', '1.0')
-gi.require_version('PeasGtk', '1.0')
 gi.require_version('Liferea', '3.0')
 
 from gi.repository import GObject, GLib, Gtk, Gio, Liferea, Pango
@@ -47,7 +45,7 @@ def remove_menuitem(action, menus, level=0):
                     if value == action:
                         menus.remove(i)
 
-class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
+class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.DownloadActivatable):
     __gtype_name__ = 'DownloadManagerPlugin'
 
     shell = GObject.property(type=Liferea.Shell)

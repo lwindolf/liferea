@@ -43,8 +43,7 @@ pkg_modules="	gtk+-3.0 >= 3.24.0
 		json-glib-1.0
 		gobject-introspection-1.0
 		gsettings-desktop-schemas
-		libpeas-1.0 >= 1.0.0
-		libpeas-gtk-1.0 >= 1.0.0
+		libpeas-2
 		fribidi >= 0.19.7"
 
 ################################################################################

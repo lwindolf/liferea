@@ -1,7 +1,7 @@
 /*
- * @file node_source_activatable.h  Node *Source Plugin Type
+ * @file node_source_activatable.h  Node Source Plugin Type
  *
- * Copyright (C) 2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2015-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,32 +22,20 @@
 #define _LIFEREA_NODE_SOURCE_ACTIVATABLE_H__
 
 #include <glib-object.h>
-#include <gtk/gtk.h>
+
+#include "liferea_activatable.h"
 
 G_BEGIN_DECLS
 
-#define LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE		(liferea_node_source_activatable_get_type ())
-#define LIFEREA_NODE_SOURCE_ACTIVATABLE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, LifereaNodeSourceActivatable))
-#define LIFEREA_NODE_SOURCE_ACTIVATABLE_IFACE(obj)	(G_TYPE_CHECK_CLASS_CAST ((obj), LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, LifereaNodeSourceActivatableInterface))
-#define IS_LIFEREA_NODE_SOURCE_ACTIVATABLE(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj), LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE))
-#define LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE(obj)	(G_TYPE_INSTANCE_GET_INTERFACE ((obj), LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE, LifereaNodeSourceActivatableInterface))
-
-typedef struct _LifereaNodeSourceActivatable LifereaNodeSourceActivatable;
-typedef struct _LifereaNodeSourceActivatableInterface LifereaNodeSourceActivatableInterface;
+#define LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE (liferea_node_source_activatable_get_type ())
+G_DECLARE_INTERFACE (LifereaNodeSourceActivatable, liferea_node_source_activatable, LIFEREA, NODE_SOURCE_ACTIVATABLE, LifereaActivatable)
 
 struct _LifereaNodeSourceActivatableInterface
 {
 	GTypeInterface g_iface;
 
-	void (*activate) (LifereaNodeSourceActivatable * activatable);
-	void (*deactivate) (LifereaNodeSourceActivatable * activatable);
+	// FIXME: Add methods here
 };
-
-GType liferea_node_source_activatable_get_type (void) G_GNUC_CONST;
-
-void liferea_node_source_activatable_activate (LifereaNodeSourceActivatable *activatable);
-
-void liferea_node_source_activatable_deactivate (LifereaNodeSourceActivatable *activatable);
 
 G_END_DECLS
 

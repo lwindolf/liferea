@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 from pathlib import Path
 import gettext
-from gi.repository import GObject, Gtk, Liferea, PeasGtk
+from gi.repository import GObject, Gtk, Liferea
 
 # Initialize translations for tooltips
 _ = lambda x: x
@@ -39,7 +39,7 @@ def get_path():
     return Path.joinpath(Path(config_home), config_path)
 
 
-class GetFocusPlugin(GObject.Object, Liferea.ShellActivatable):
+class GetFocusPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivatable):
     __gtype_name__ = 'GetFocusPlugin'
 
     shell = GObject.property(type=Liferea.Shell)
@@ -76,7 +76,7 @@ class GetFocusPlugin(GObject.Object, Liferea.ShellActivatable):
             self.opacity = float(file_path.read_text())
 
 
-class GetFocusConfigure(GObject.Object, PeasGtk.Configurable):
+class GetFocusConfigure(GObject.Object):
     __gtype_name__ = 'GetFocusConfigure'
 
     opacity = None

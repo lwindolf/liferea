@@ -1,6 +1,6 @@
 [Plugin]
 Module=getfocus
-Loader=python3
+Loader=python
 IAge=2
 Name=Get focus!
 Description=An automatic visual "focus mode" for Liferea, that makes the feedlist less prominent by change its opacity.

@@ -1,7 +1,7 @@
 /*
- * @file auth_activatable.c  Auth Plugin Type
+ * @file auth_activatable.c  password provider plugin type
  *
- * Copyright (C) 2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,44 +20,12 @@
 
 #include "auth_activatable.h"
 
-/**
- * SECTION:liferea_auth_activatable
- * @short_description: Interface for activatable extensions providing auth infos
- * @see_also: #PeasExtensionSet
- *
- * #LifereaAuthActivatable is an interface which should be implemented by
- * extensions that want to provide a password store
- **/
-G_DEFINE_INTERFACE (LifereaAuthActivatable, liferea_auth_activatable, G_TYPE_OBJECT)
+G_DEFINE_INTERFACE (LifereaAuthActivatable, liferea_auth_activatable, LIFEREA_TYPE_ACTIVATABLE)
 
 void
 liferea_auth_activatable_default_init (LifereaAuthActivatableInterface *iface)
 {
 	/* No properties yet */
-}
-
-void
-liferea_auth_activatable_activate (LifereaAuthActivatable * activatable)
-{
-	LifereaAuthActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_AUTH_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_AUTH_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->activate)
-		iface->activate (activatable);
-}
-
-void
-liferea_auth_activatable_deactivate (LifereaAuthActivatable * activatable)
-{
-	LifereaAuthActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_AUTH_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_AUTH_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->deactivate)
-		iface->deactivate (activatable);
 }
 
 void

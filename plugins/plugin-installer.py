@@ -2,7 +2,7 @@
 # vim: set ts=4 et sw=4 sts=4:
 
 # Plugin browser plugin for Liferea
-# Copyright (C) 2018 Lars Windolf <lars.windolf@gmx.de>
+# Copyright (C) 2018-2025 Lars Windolf <lars.windolf@gmx.de>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ import gi
 
 gi.require_version('Gtk', '3.0')
 
-from gi.repository import GObject, Liferea, Gtk, Gio, PeasGtk
+from gi.repository import GObject, Liferea, Gtk, Gio
 
 import gettext
 
@@ -36,7 +36,7 @@ except FileNotFoundError:
 else:
     _ = t.gettext
 
-class AppActivatable(GObject.Object, Liferea.ShellActivatable):
+class AppActivatable(GObject.Object, Liferea.Activatable, Liferea.ShellActivatable):
     __gtype_name__ = "PluginBrowserAppActivatable"
 
     shell = GObject.property(type=Liferea.Shell)

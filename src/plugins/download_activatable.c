@@ -22,12 +22,12 @@
 
 #include "ui/liferea_shell.h"
 
-G_DEFINE_INTERFACE (LifereaDownloadActivatable, liferea_download_activatable, G_TYPE_OBJECT)
+G_DEFINE_INTERFACE (LifereaDownloadActivatable, liferea_download_activatable, LIFEREA_TYPE_ACTIVATABLE)
 
 void
 liferea_download_activatable_default_init (LifereaDownloadActivatableInterface *iface)
 {
-	static gboolean initialized = FALSE;
+        static gboolean initialized = FALSE;
 
 	if (!initialized) {
 		/**
@@ -45,30 +45,7 @@ liferea_download_activatable_default_init (LifereaDownloadActivatableInterface *
                                                 G_PARAM_CONSTRUCT_ONLY |
                                                 G_PARAM_STATIC_STRINGS));
 		initialized = TRUE;
-	}}
-
-void
-liferea_download_activatable_activate (LifereaDownloadActivatable *activatable)
-{
-        LifereaDownloadActivatableInterface *iface;
-
-        g_return_if_fail (LIFEREA_IS_DOWNLOAD_ACTIVATABLE (activatable));
-
-        iface = LIFEREA_DOWNLOAD_ACTIVATABLE_GET_IFACE (activatable);
-        if (iface->activate)
-                iface->activate (activatable);
-}
-
-void
-liferea_download_activatable_deactivate (LifereaDownloadActivatable *activatable)
-{
-        LifereaDownloadActivatableInterface *iface;
-
-        g_return_if_fail (LIFEREA_IS_DOWNLOAD_ACTIVATABLE (activatable));
-
-        iface = LIFEREA_DOWNLOAD_ACTIVATABLE_GET_IFACE (activatable);
-        if (iface->deactivate)
-                iface->deactivate (activatable);
+	}
 }
 
 void

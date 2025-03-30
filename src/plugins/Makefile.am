@@ -11,6 +11,7 @@ noinst_LIBRARIES = libliplugins.a
 libliplugins_a_SOURCES = \
 	auth_activatable.c auth_activatable.h \
 	download_activatable.c download_activatable.h \
+	liferea_activatable.c liferea_activatable.h \
 	liferea_shell_activatable.c liferea_shell_activatable.h \
         node_source_activatable.c node_source_activatable.h \
         plugins_engine.c plugins_engine.h
