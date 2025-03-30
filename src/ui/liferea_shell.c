@@ -821,6 +821,12 @@ on_prefbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_da
 }
 
 static void
+on_manage_plugins_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	liferea_plugins_manage_dialog (GTK_WINDOW (liferea_shell_get_window ()));
+}
+
+static void
 on_searchbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	simple_search_dialog_open ();
@@ -1024,6 +1030,7 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"discover-feeds", on_action_discover_feeds, NULL, NULL, NULL, NULL},
 	{"show-update-monitor", on_menu_show_update_monitor, NULL, NULL, NULL},
 	{"show-preferences", on_prefbtn_clicked, NULL, NULL, NULL},
+	{"manage-plugins", on_manage_plugins_clicked, NULL, NULL, NULL},
 	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
 	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},
 	{"show-help-quick-reference", on_quick_reference_activate, NULL, NULL, NULL},

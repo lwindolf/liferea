@@ -31,10 +31,10 @@ liferea_shell_activatable_default_init (LifereaShellActivatableInterface *iface)
 
 	if (!initialized) {
 		/**
-		 * LifereaDownloadActivatable:window:
+		 * LifereaShellActivatable:window:
 		 *
 		 * The window property contains the gtr window for this
-		 * #LifereaDownloadActivatable instance.
+		 * #LifereaShellActivatable instance.
 		 */
 		g_object_interface_install_property (iface,
                            g_param_spec_object ("shell",

@@ -49,8 +49,6 @@ plugin_DATA = \
 	plugins/headerbar.plugin \
 	plugins/libnotify.py \
 	plugins/libnotify.plugin \
-	plugins/plugin-installer.py \
-	plugins/plugin-installer.plugin \
 	plugins/trayicon.py \
 	plugins/trayicon.plugin
 

@@ -259,3 +259,56 @@ liferea_plugins_engine_register_shell_plugins (LifereaShell *shell)
 		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
 	}
 }
+
+static void
+on_plugin_checkbox_toggled(GtkToggleButton *button, PeasPluginInfo *info)
+{
+	gboolean is_active = gtk_toggle_button_get_active(button);
+	if (is_active) {
+		peas_engine_load_plugin(plugins->engine, info);
+	} else {
+		peas_engine_unload_plugin(plugins->engine, info);
+	}
+}
+
+void
+liferea_plugins_manage_dialog (GtkWindow *parent)
+{
+	GListModel *plugin_infos = G_LIST_MODEL(plugins->engine);
+	GtkWidget *dialog = gtk_dialog_new_with_buttons(_("Plugins"),
+		parent,
+		GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+		_("_Close"),
+		GTK_RESPONSE_CLOSE,
+		NULL);
+
+	GtkWidget *content_area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+	GtkWidget *list_box = gtk_list_box_new();
+	gtk_container_add(GTK_CONTAINER(content_area), list_box);
+
+	for (guint i = 0; i < g_list_model_get_n_items(plugin_infos); i++) {
+		PeasPluginInfo *info = PEAS_PLUGIN_INFO(g_list_model_get_item(plugin_infos, i));
+		const gchar *plugin_name = peas_plugin_info_get_name(info);
+		const gchar *plugin_desc = peas_plugin_info_get_description(info);
+		gboolean is_active = peas_plugin_info_is_loaded(info);
+
+		GtkWidget *row = gtk_list_box_row_new();
+		GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+		GtkWidget *label_name = gtk_label_new(plugin_name);
+		GtkWidget *label_desc = gtk_label_new(plugin_desc);
+		GtkWidget *active_checkbox = gtk_check_button_new();
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(active_checkbox), is_active);
+
+		gtk_box_pack_start(GTK_BOX(box), label_name, FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(box), label_desc, FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(box), active_checkbox, FALSE, FALSE, 0);
+		gtk_container_add(GTK_CONTAINER(row), box);
+		g_signal_connect(active_checkbox, "toggled", G_CALLBACK(on_plugin_checkbox_toggled), info);
+		gtk_list_box_insert(GTK_LIST_BOX(list_box), row, -1);
+	}
+
+	gtk_widget_show_all(dialog);
+	g_signal_connect(dialog, "response", G_CALLBACK(gtk_widget_destroy), NULL);
+	gtk_dialog_run(GTK_DIALOG(dialog));
+}
+

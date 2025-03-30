@@ -8,7 +8,6 @@ plugins/download-manager.py
 plugins/getfocus.py
 plugins/headerbar.py
 plugins/libnotify.py
-plugins/plugin-installer.py
 plugins/trayicon.py
 src/browser.c
 src/browser_history.c
