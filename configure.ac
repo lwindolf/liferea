@@ -73,6 +73,13 @@ AC_MSG_RESULT(user agent OS = $uname)
 
 GOBJECT_INTROSPECTION_CHECK([0.9.3])
 
+# Due to the mess in pygobject we need to know with which girepository we
+# are run. Please change to 2.0 if building again pygobject > 3.52.3
+# (See also https://github.com/lwindolf/liferea/issues/1425)
+#
+# At a later point the default here will switch to 2.0
+AC_DEFINE_UNQUOTED(GI_REPOSITORY, "girepository-1.0", [defines the girepository version to use])
+
 ################################################################################
 
 AM_GLIB_GNU_GETTEXT

@@ -76,6 +76,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 	/* Disable incompatible plugins */
 	const gchar *incompatible[] = {
 		"webkit-settings",
+		"plugin-installer",
 		NULL
 	};
 	for (guint i = 0; i < length; i++) {
@@ -94,7 +95,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 	peas_engine_enable_loader (PEAS_ENGINE (plugins->engine), "gjs");
 
 	/* Require Lifereas's typelib. */
-	typelib_dir = g_build_filename (PACKAGE_LIB_DIR, "girepository-1.0", NULL);
+	typelib_dir = g_build_filename (PACKAGE_LIB_DIR, GI_REPOSITORY, NULL);
 	if (!g_irepository_require_private (g_irepository_get_default (),
 		typelib_dir, "Liferea", "3.0", 0, &error)) {
 		g_warning ("Could not load Liferea repository: %s", error->message);
@@ -116,8 +117,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 
 	/* Load mandatory plugins */
 	const gchar *mandatory[] = {
-		"download-manager",
-		"plugin-installer"
+		"download-manager"
 	};
 	for (guint i = 0; i < G_N_ELEMENTS (mandatory); i++) {
 		PeasPluginInfo *info = peas_engine_get_plugin_info (PEAS_ENGINE (plugins->engine), mandatory[i]);
