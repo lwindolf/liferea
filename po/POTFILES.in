@@ -119,6 +119,8 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
+src/plugins/plugins_engine.c
+src/plugins/plugins_engine.h
 src/rule.c
 src/rule.h
 src/social.c
