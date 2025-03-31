@@ -29,6 +29,18 @@ liferea_activatable_default_init (LifereaActivatableInterface *iface)
 }
 
 void
+liferea_activatable_create_configure_widget (LifereaActivatable * activatable)
+{
+	LifereaActivatableInterface *iface;
+
+	g_return_if_fail (LIFEREA_IS_ACTIVATABLE (activatable));
+
+	iface = LIFEREA_ACTIVATABLE_GET_IFACE (activatable);
+	if (iface->create_configure_widget)
+		iface->create_configure_widget (activatable);
+}
+
+void
 liferea_activatable_activate (LifereaActivatable * activatable)
 {
 	LifereaActivatableInterface *iface;

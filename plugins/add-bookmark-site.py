@@ -104,11 +104,14 @@ class AddBookmarkSitePlugin (GObject.Object, Liferea.Activatable,
         applyBtn = builder.get_object("applyBtn")
         applyBtn.connect('clicked', self.on_save_cb)
         
-        widget = builder.get_object("box1")
-        parent = widget.get_parent()
-        parent.remove(widget)
-        return widget
+        self.dialog = builder.get_object("configDialog")
+        self.dialog.show_all()
+        self.dialog.run()
 
     def on_save_cb(self, user_data):
         save_config(self._nameEntry.get_text(), self._urlEntry.get_text())
+        self.dialog.destroy()
+        self.dialog = None
+        self._urlEntry = None
+        self._nameEntry = None
         return

@@ -43,6 +43,7 @@ plugin_DATA = \
 	plugins/download-manager.ui \
 	plugins/getfocus.py \
 	plugins/getfocus.plugin \
+	plugins/getfocus.ui \
 	plugins/gnome-keyring.py \
 	plugins/gnome-keyring.plugin \
 	plugins/headerbar.py \

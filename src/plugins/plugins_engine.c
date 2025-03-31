@@ -46,6 +46,7 @@ struct _LifereaPluginsEngine
 
 	PeasEngine	*engine;
 	GHashTable	*extension_sets;	/*<< hash table of extension sets we might want to call */
+	PeasExtensionSet	*all;		/*<< all plugins (extension set of type LifereaActivatable) */
 };
 
 G_DEFINE_TYPE (LifereaPluginsEngine, liferea_plugins_engine, G_TYPE_OBJECT)
@@ -127,6 +128,8 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 		else
 			g_warning ("The plugin-installer plugin was not found.");
 	}
+
+	plugins->all = peas_extension_set_new (plugins->engine, LIFEREA_TYPE_ACTIVATABLE, NULL);
 }
 
 /* Provide default signal handlers */
@@ -272,12 +275,39 @@ on_plugin_checkbox_toggled(GtkToggleButton *button, PeasPluginInfo *info)
 	}
 }
 
+static void
+on_row_selected (GtkListBox *list_box, GtkListBoxRow *selected_row, gpointer user_data)
+{
+	GtkWidget *configure_button = liferea_dialog_lookup (GTK_WIDGET (user_data), "configure");
+	PeasPluginInfo *info = g_object_get_data (G_OBJECT (selected_row), "plugin-info");
+	GObject *plugin = peas_extension_set_get_extension (plugins->all, info);
+
+	gtk_widget_set_sensitive(configure_button, 
+		plugin
+		&& info
+		&& LIFEREA_IS_ACTIVATABLE (plugin)
+		&& (LIFEREA_ACTIVATABLE_GET_IFACE (plugin)->create_configure_widget != NULL)
+		&& peas_plugin_info_is_loaded (info));
+}
+
+static void
+on_configure_clicked (GtkButton *button, gpointer user_data)
+{
+	GtkListBox *list_box = GTK_LIST_BOX (liferea_dialog_lookup (GTK_WIDGET (user_data), "plugins_listbox"));
+	GtkListBoxRow *selected_row = gtk_list_box_get_selected_row (list_box);
+	PeasPluginInfo *info = g_object_get_data (G_OBJECT (selected_row), "plugin-info");
+	GObject *plugin = peas_extension_set_get_extension (plugins->all, info);
+
+	liferea_activatable_create_configure_widget (LIFEREA_ACTIVATABLE (plugin));
+}
+
 void
 liferea_plugins_manage_dialog (GtkWindow *parent)
 {
-	GListModel *plugin_infos = G_LIST_MODEL(plugins->engine);
+	GListModel *plugin_infos = G_LIST_MODEL(peas_engine_get_default ());
 	GtkWidget *dialog = liferea_dialog_new ("plugins");
 	GtkWidget *list_box = liferea_dialog_lookup (dialog, "plugins_listbox");
+	GtkWidget *configure_button = liferea_dialog_lookup (dialog, "configure");
 
 	for (guint i = 0; i < g_list_model_get_n_items(plugin_infos); i++) {
 		PeasPluginInfo *info = PEAS_PLUGIN_INFO(g_list_model_get_item(plugin_infos, i));
@@ -303,10 +333,14 @@ liferea_plugins_manage_dialog (GtkWindow *parent)
 		gtk_container_add(GTK_CONTAINER(row), box);
 		g_signal_connect(active_checkbox, "toggled", G_CALLBACK(on_plugin_checkbox_toggled), info);
 		gtk_list_box_insert(GTK_LIST_BOX(list_box), row, -1);
+
+		g_object_set_data_full(G_OBJECT(row), "plugin-info", g_object_ref(info), g_object_unref);
 	}
 
-	gtk_widget_show_all(dialog);
-	g_signal_connect(dialog, "response", G_CALLBACK(gtk_widget_destroy), NULL);
+	g_signal_connect(list_box, "row-selected", G_CALLBACK(on_row_selected), dialog);
+	g_signal_connect(configure_button, "clicked", G_CALLBACK(on_configure_clicked), dialog);
+
+	gtk_widget_show_all(list_box);
 	gtk_dialog_run(GTK_DIALOG(dialog));
 }
 
