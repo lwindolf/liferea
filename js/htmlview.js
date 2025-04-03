@@ -72,6 +72,10 @@ function templateFix(str, data) {
 					data);
 }
 
+function escapeHTML(str){
+	return new Option(str).innerHTML;
+}
+
 function debug(text, obj) {
 	if(window.debugflags > 0)
 		if (obj)
@@ -100,7 +104,7 @@ async function load_node(data, baseURL, direction) {
 
 		contentCleanup ();
 	} catch (e) {
-		document.body.innerHTML = `<div id="errors">Error: Failed to load item! Exception: ${e}</div>` + document.body.innerHTML;
+		document.body.innerHTML = `<div id="errors">Error: Failed to load node! Exception: ${escapeHTML(e)}</div>` + document.body.innerHTML;
 		return false;
 	}
 }
@@ -199,19 +203,19 @@ async function load_item(data, baseURL, direction) {
 		});
 
 		let youtubeMatch = item.source.match(/https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/);
+		contentCleanup ();
+
 		if (youtubeMatch) {
 			youtube_embed (youtubeMatch[1]);
 			debugfooter += " youtube";
 		}
-
-		contentCleanup ();
 
 		if(window.debugflags > 0)
 			document.body.innerHTML += debugfooter;
 
 	    return true;
 	} catch (e) {
-		document.body.innerHTML = `<div id="errors">Error: Failed to load item! Exception: ${e}</div>` + document.body.innerHTML;
+		document.body.innerHTML = `<div id="errors">Error: Failed to load item! Exception: ${escapeHTML(e)}</div>` + document.body.innerHTML;
 		return false;
 	}
 }
@@ -267,8 +271,7 @@ function contentCleanup() {
 }
 
 function youtube_embed(id) {
-	var container = document.getElementById(id);
-	container.innerHTML = '<iframe width="640" height="480" src="https://www.youtube.com/embed/' + id + '?autoplay=1" frameborder="0" allowfullscreen="1" allow="autoplay; allowfullscreen"></iframe>';
+	document.getElementById('youtube_embed').innerHTML = '<iframe width="640" height="480" src="https://www.youtube.com/embed/' + id + '?autoplay=1" frameborder="0" allowfullscreen="1" allow="autoplay; allowfullscreen"></iframe>';
 
 	return false;
 }

@@ -6,6 +6,12 @@ To be released
 	* Removes long deprecated manual proxy setting
           (Lars Windolf)
 
+	* Fixes escaping of JS exception texts
+	  (Lars Windolf)
+
+	* Fixes Youtube video embedding regression
+	  (Lars Windolf)
+
 
 2025-02-25  Lars Windolf <lars.windolf@gmx.de>
 
