@@ -4,7 +4,7 @@
 """
 Liferea Header Bar Plugin
 
-Copyright (C) 2018 Lars Windolf <lars.windolf@gmx.de>
+Copyright (C) 2018-2025 Lars Windolf <lars.windolf@gmx.de>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -43,7 +43,7 @@ def bind_accelerator(accelerators, widget, accelerator, signal='clicked'):
     widget.add_accelerator(signal, accelerators, key, mod, Gtk.AccelFlags.VISIBLE)
 
 
-class HeaderBarPlugin(GObject.Object, Liferea.ShellActivatable):
+class HeaderBarPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivatable):
     __gtype_name__ = "HeaderBarPlugin"
     hb = None
     object = GObject.property(type=GObject.Object)

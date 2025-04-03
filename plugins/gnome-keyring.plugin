@@ -1,6 +1,6 @@
 [Plugin]
 Module=gnome-keyring
-Loader=python3
+Loader=python
 Icon=security-medium
 IAge=2
 Name=Libsecret Support

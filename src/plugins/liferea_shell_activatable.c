@@ -22,16 +22,7 @@
 
 #include "ui/liferea_shell.h"
 
-/**
- * SECTION:liferea_shell_activatable
- * @short_description: Interface for activatable extensions on the shell
- * @see_also: #PeasExtensionSet
- *
- * #LifereaShellActivatable is an interface which should be implemented by
- * extensions that should be activated on the Liferea main window.
- **/
-
-G_DEFINE_INTERFACE (LifereaShellActivatable, liferea_shell_activatable, G_TYPE_OBJECT)
+G_DEFINE_INTERFACE (LifereaShellActivatable, liferea_shell_activatable, LIFEREA_TYPE_ACTIVATABLE)
 
 void
 liferea_shell_activatable_default_init (LifereaShellActivatableInterface *iface)
@@ -57,49 +48,6 @@ liferea_shell_activatable_default_init (LifereaShellActivatableInterface *iface)
 	}
 }
 
-/**
- * liferea_shell_activatable_activate:
- * @activatable: A #LifereaShellActivatable.
- *
- * Activates the extension on the shell property.
- */
-void
-liferea_shell_activatable_activate (LifereaShellActivatable * activatable)
-{
-	LifereaShellActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_SHELL_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_SHELL_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->activate)
-		iface->activate (activatable);
-}
-
-/**
- * liferea_shell_activatable_deactivate:
- * @activatable: A #LifereaShellActivatable.
- *
- * Deactivates the extension on the shell property.
- */
-void
-liferea_shell_activatable_deactivate (LifereaShellActivatable * activatable)
-{
-	LifereaShellActivatableInterface *iface;
-
-	g_return_if_fail (LIFEREA_IS_SHELL_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_SHELL_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->deactivate)
-		iface->deactivate (activatable);
-}
-
-/**
- * liferea_shell_activatable_update_state:
- * @activatable: A #LifereaShellActivatable.
- *
- * Triggers an update of the extension internal state to take into account
- * state changes in the window, due to some event or user action.
- */
 void
 liferea_shell_activatable_update_state (LifereaShellActivatable * activatable)
 {

@@ -4,7 +4,7 @@
 """
 Add social bookmark site
 
-Copyright (C) 2022 Lars Windolf <lars.windolf@gmx.de>
+Copyright (C) 2022-2025 Lars Windolf <lars.windolf@gmx.de>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -25,9 +25,8 @@ from pathlib import Path
 import gi
 
 gi.require_version('Gtk', '3.0')
-gi.require_version('PeasGtk', '1.0')
 
-from gi.repository import GObject, Gtk, PeasGtk, Liferea
+from gi.repository import GObject, Gtk, Liferea
 
 UI_FILE_PATH = os.path.join(os.path.dirname(__file__), "add-bookmark-site.ui")
 
@@ -70,8 +69,8 @@ def register(name, url):
     Liferea.social_set_bookmark_site(name)
     return
 
-class AddBookmarkSitePlugin (GObject.Object,
-        Liferea.ShellActivatable, PeasGtk.Configurable):
+class AddBookmarkSitePlugin (GObject.Object, Liferea.Activatable, 
+        Liferea.ShellActivatable):
     __gtype_name__ = "AddBookmarkSitePlugin"
 
     shell = GObject.property (type=Liferea.Shell)
@@ -105,11 +104,14 @@ class AddBookmarkSitePlugin (GObject.Object,
         applyBtn = builder.get_object("applyBtn")
         applyBtn.connect('clicked', self.on_save_cb)
         
-        widget = builder.get_object("box1")
-        parent = widget.get_parent()
-        parent.remove(widget)
-        return widget
+        self.dialog = builder.get_object("configDialog")
+        self.dialog.show_all()
+        self.dialog.run()
 
     def on_save_cb(self, user_data):
         save_config(self._nameEntry.get_text(), self._urlEntry.get_text())
+        self.dialog.destroy()
+        self.dialog = None
+        self._urlEntry = None
+        self._nameEntry = None
         return
