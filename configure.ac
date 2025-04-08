@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([liferea],[1.15.8],[liferea-devel@lists.sourceforge.net])
+AC_INIT([liferea],[1.16-RC2],[liferea-devel@lists.sourceforge.net])
 AC_CANONICAL_HOST
 AC_CONFIG_SRCDIR([src/feedlist.c])
 
@@ -87,15 +87,16 @@ AC_CONFIG_FILES([
 Makefile
 net.sf.liferea.gschema.xml
 src/Makefile
+src/node_providers/Makefile
+src/node_sources/Makefile
+src/parsers/Makefile
+src/plugins/Makefile
+src/tests/Makefile
+src/ui/Makefile
 src/webkit/Makefile
 src/webkit/web_extension/Makefile
-src/parsers/Makefile
-src/fl_sources/Makefile
-src/ui/Makefile
-src/tests/Makefile
 doc/Makefile
 doc/html/Makefile
-xslt/Makefile
 man/Makefile
 man/it/Makefile
 pixmaps/Makefile

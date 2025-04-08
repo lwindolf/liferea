@@ -65,14 +65,14 @@ static void subscription_icon_download_next (iconDownloadCtxtPtr ctxt);
 static void
 subscription_icon_downloaded (const gchar *id)
 {
-	nodePtr node = node_from_id (id);
+	Node *node = node_from_id (id);
 
 	node_load_icon (node);
 	feed_list_view_update_node (id);
 }
 
 static void
-subscription_icon_download_data_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+subscription_icon_download_data_cb (const UpdateResult * const result, gpointer user_data, updateFlags flags)
 {
 	iconDownloadCtxtPtr ctxt = (iconDownloadCtxtPtr)user_data;
 	gboolean	success = FALSE;
@@ -99,7 +99,7 @@ subscription_icon_download_data_cb (const struct updateResult * const result, gp
 }
 
 static void
-subscription_icon_download_html_cb (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+subscription_icon_download_html_cb (const UpdateResult * const result, gpointer user_data, updateFlags flags)
 {
 	iconDownloadCtxtPtr ctxt = (iconDownloadCtxtPtr)user_data;
 	gboolean success = FALSE;
@@ -131,7 +131,7 @@ static GRegex *image_extension_match = NULL;
 static GRegex *image_mime_type_match = NULL;
 
 static void
-subscription_icon_handle_response (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+subscription_icon_handle_response (const UpdateResult * const result, gpointer user_data, updateFlags flags)
 {
 	if (!image_extension_match)
 		image_extension_match = g_regex_new ("\\.(ico|png|gif|jpg|svg)$", G_REGEX_CASELESS, 0, NULL);
@@ -172,7 +172,7 @@ subscription_icon_download_next (iconDownloadCtxtPtr ctxt)
 			ctxt->options
 		);
 
-		update_execute_request (node_from_id (ctxt->id), request, subscription_icon_handle_response, ctxt, FEED_REQ_PRIORITY_HIGH | FEED_REQ_NO_FEED);
+		update_job_new (node_from_id (ctxt->id), request, subscription_icon_handle_response, ctxt, UPDATE_REQUEST_PRIORITY_HIGH | UPDATE_REQUEST_NO_FEED);
 	} else {
 		debug (DEBUG_UPDATE, "Icon '%s' discovery/download failed!", ctxt->id);
 		subscription_icon_download_ctxt_free (ctxt);

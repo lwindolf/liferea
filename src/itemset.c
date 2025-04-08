@@ -1,7 +1,7 @@
 /*
  * @file itemset.c handling sets of items
  *
- * Copyright (C) 2005-2017 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2005-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2005-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -25,15 +25,16 @@
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
+#include "download.h"
 #include "enclosure.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "itemlist.h"
 #include "itemset.h"
 #include "metadata.h"
 #include "node.h"
 #include "rule.h"
-#include "vfolder.h"
-#include "fl_sources/node_source.h"
+#include "node_providers/vfolder.h"
+#include "node_source.h"
 
 void
 itemset_foreach (itemSetPtr itemSet, itemActionFunc callback, gpointer userdata)
@@ -54,7 +55,7 @@ itemset_foreach (itemSetPtr itemSet, itemActionFunc callback, gpointer userdata)
 static guint
 itemset_get_max_item_count (itemSetPtr itemSet)
 {
-	nodePtr node = node_from_id (itemSet->nodeId);
+	Node *node = node_from_id (itemSet->nodeId);
 
 	if (node && IS_FEED (node))
 		return feed_get_max_item_count (node);
@@ -207,7 +208,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 {
 	gboolean	allowStateChanges = FALSE;
 	gboolean	merge;
-	nodePtr		node;
+	Node		*node;
 
 	debug (DEBUG_UPDATE, "trying to merge \"%s\" to node id \"%s\"", item_get_title (item), itemSet->nodeId);
 
@@ -233,7 +234,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 		/* step 2: add to itemset */
 		itemSet->ids = g_list_prepend (itemSet->ids, GUINT_TO_POINTER (item->id));
 
-		/* step 3: trigger async enrichment of item description */
+		/* step 3: trigger async enrichment */
 		if (node && IS_FEED (node) && ((feedPtr)node->data)->html5Extract)
 			feed_enrich_item (node->subscription, item);
 
@@ -264,7 +265,7 @@ itemset_merge_item (itemSetPtr itemSet, GList *items, itemPtr item, gint maxChec
 				enclosurePtr enc = enclosure_from_string (iter->data);
 				if (enc) {
 					debug (DEBUG_UPDATE, "download enclosure (%s)", (gchar *)iter->data);
-					enclosure_download (NULL, enc->url, FALSE /* non interactive */);
+					download_url (enc->url);
 					enclosure_free (enc);
 				}
 				iter = g_slist_next (iter);
@@ -313,8 +314,7 @@ itemset_merge_items (itemSetPtr itemSet, GList *list, gboolean allowUpdates, gbo
 {
 	GList	*iter, *droppedItems = NULL, *items = NULL;
 	guint	i, max, length, toBeDropped, newCount = 0, flagCount = 0;
-	nodePtr	node;
-
+	Node	*node;
 
 	debug (DEBUG_UPDATE, "old item set %p of (node id=%s):", itemSet, itemSet->nodeId);
 

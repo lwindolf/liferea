@@ -63,7 +63,7 @@ void item_read_state_changed (itemPtr item, gboolean newState);
  *
  * @param nodeId	the node whose item list is to be modified
  */
-void itemset_mark_read (nodePtr node);
+void itemset_mark_read (Node *node);
 
 /**
  * Resets the popup flag for all items of the given item set.

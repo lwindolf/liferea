@@ -1,7 +1,7 @@
 /**
  * @file vfolder_loader.c   Loader for search folder items
  *
- * Copyright (C) 2011-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2011-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include "debug.h"
 #include "itemset.h"
 #include "node.h"
-#include "vfolder.h"
+#include "node_providers/vfolder.h"
 #include "ui/feed_list_view.h"
 
 #define VFOLDER_LOADER_BATCH_SIZE 	100
@@ -73,7 +73,7 @@ vfolder_loader_fetch_cb (gpointer user_data, GSList **resultItems)
 }
 
 ItemLoader *
-vfolder_loader_new (nodePtr node)
+vfolder_loader_new (Node *node)
 {
 	vfolderPtr vfolder = (vfolderPtr)node->data;
 

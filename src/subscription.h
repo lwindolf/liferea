@@ -1,7 +1,7 @@
 /**
  * @file subscription.h  common subscription handling interface
  *
- * Copyright (C) 2003-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,13 +33,6 @@ enum cache_limit {
 	CACHE_UNLIMITED = -2,
 };
 
-/** Flags used in the request structure */
-enum feed_request_flags {
-	FEED_REQ_RESET_TITLE		= (1<<0),	/**< Feed's title should be reset to default upon update */
-	FEED_REQ_PRIORITY_HIGH		= (1<<3),	/**< set to signal that this is an important user triggered request */
-	FEED_REQ_NO_FEED                = (1<<4)	/**< Requesting something not a feed (just for statistics) */
-};
-
 /** Subscription fetching error types */
 typedef enum fetchError {
 	FETCH_ERROR_NONE     = 0,
@@ -52,33 +45,33 @@ typedef enum fetchError {
 
 /** Common structure to hold all information about a single subscription. */
 typedef struct subscription {
-	nodePtr		node;			/**< the feed list node the subscription is attached to */
-	struct subscriptionType *type;		/**< the subscription type */
+	Node		*node;			/*<< the feed list node the subscription is attached to */
+	struct subscriptionType *type;		/*<< the subscription type */
 
-	gchar		*source;		/**< current source, can be changed by redirects */
-	gchar		*origSource;		/**< the source given when creating the subscription */
-	updateOptionsPtr updateOptions;		/**< update options for the feed source */
-	struct updateJob *updateJob;		/**< update request structure used when downloading the subscribed source */
+	gchar		*source;		/*<< current source, can be changed by redirects */
+	gchar		*origSource;		/*<< the source given when creating the subscription */
+	updateOptionsPtr updateOptions;		/*<< update options for the feed source */
+	UpdateJob 	*updateJob;		/*<< update request structure used when downloading the subscribed source */
 
-	gint		updateInterval;		/**< user defined update interval in minutes */
-	guint		defaultInterval;	/**< optional update interval as specified by the feed in minutes */
+	gint		updateInterval;		/*<< user defined update interval in minutes */
+	guint		defaultInterval;	/*<< optional update interval as specified by the feed in minutes */
 
-	GSList		*metadata;		/**< metadata list assigned to this subscription */
+	GSList		*metadata;		/*<< metadata list assigned to this subscription */
 
-	fetchError	error;			/**< Fetch error code (used for user-facing UI to differentiate subscription update processing phases) */
-	gchar		*updateError;		/**< textual description of processing errors */
-	gchar		*httpError;		/**< textual description of HTTP protocol errors */
-	gint		httpErrorCode;		/**< last HTTP error code */
-	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) */
+	fetchError	error;			/*<< Fetch error code (used for user-facing UI to differentiate subscription update processing phases) */
+	gchar		*updateError;		/*<< textual description of processing errors */
+	gchar		*httpError;		/*<< textual description of HTTP protocol errors */
+	gint		httpErrorCode;		/*<< last HTTP error code */
+	updateStatePtr	updateState;		/*<< update states (etag, last modified, cookies, last polling times...) */
 
-	guint		autoDiscoveryTries;	/**< counter to break auto discovery redirect circles */
+	guint		autoDiscoveryTries;	/*<< counter to break auto discovery redirect circles */
 
-	gboolean	activeAuth;		/**< TRUE if authentication in progress */
+	gboolean	activeAuth;		/*<< TRUE if authentication in progress */
 
-	gboolean	discontinued;		/**< flag to avoid updating after HTTP 410 */
+	gboolean	discontinued;		/*<< flag to avoid updating after HTTP 410 */
 
-	gchar		*filtercmd;		/**< feed filter command */
-	gchar		*filterError;		/**< textual description of filter errors */
+	gchar		*filtercmd;		/*<< feed filter command */
+	gchar		*filterError;		/*<< textual description of filter errors */
 } *subscriptionPtr;
 
 /**
@@ -110,14 +103,6 @@ subscriptionPtr subscription_import (xmlNodePtr xml, gboolean trusted);
  * @param trusted	TRUE when exporting to internal XML document
  */
 void subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trusted);
-
-/**
- * Serialization helper function for rendering purposes.
- *
- * @param node		the subscription to serialize
- * @param feedNode	XML node to add subscription attributes to
- */
-void subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml);
 
 /**
  * Triggers updating a subscription. Will download the

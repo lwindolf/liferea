@@ -1,7 +1,7 @@
 /**
  * @file auth_dialog.c  authentication dialog
  *
- * Copyright (C) 2007-2018  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2024  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,8 +32,6 @@ struct _AuthDialog {
 	subscriptionPtr subscription;
 
 	GtkWidget *dialog;
-	GtkWidget *username;
-	GtkWidget *password;
 
 	gint flags;
 };
@@ -68,8 +66,8 @@ on_authdialog_response (GtkDialog *dialog,
 
 	if (response_id == GTK_RESPONSE_OK) {
 		subscription_set_auth_info (ad->subscription,
-		                            gtk_entry_get_text (GTK_ENTRY (ad->username)),
-		                            gtk_entry_get_text (GTK_ENTRY (ad->password)));
+		                            liferea_dialog_entry_get (ad->dialog, "usernameEntry"),
+		                            liferea_dialog_entry_get (ad->dialog, "passwordEntry"));
 		subscription_update (ad->subscription, ad->flags);
 	}
 
@@ -99,9 +97,9 @@ auth_dialog_load (AuthDialog *ad,
 			if(pass) {
 				pass[0] = '\0';
 				pass++;
-				gtk_entry_set_text (GTK_ENTRY (ad->password), pass);
+				liferea_dialog_entry_set (ad->dialog, "passwordEntry", pass);
 			}
-			gtk_entry_set_text (GTK_ENTRY (ad->username), user);
+			liferea_dialog_entry_set (ad->dialog, "usernameEntry", user);
 			xmlFree (uri->user);
 			uri->user = NULL;
 		}
@@ -124,14 +122,9 @@ static void
 auth_dialog_init (AuthDialog *ad)
 {
 	ad->dialog = liferea_dialog_new ("auth");
-	ad->username = liferea_dialog_lookup (ad->dialog, "usernameEntry");
-	ad->password = liferea_dialog_lookup (ad->dialog, "passwordEntry");
 
 	g_signal_connect (G_OBJECT (ad->dialog), "response", G_CALLBACK (on_authdialog_response), ad);
-
-	gtk_widget_show_all (ad->dialog);
 }
-
 
 AuthDialog *
 auth_dialog_new (subscriptionPtr subscription, gint flags)
@@ -144,6 +137,6 @@ auth_dialog_new (subscriptionPtr subscription, gint flags)
 	}
 
 	ad = AUTH_DIALOG (g_object_new (AUTH_DIALOG_TYPE, NULL));
-	auth_dialog_load(ad, subscription, flags);
+	auth_dialog_load (ad, subscription, flags);
 	return ad;
 }

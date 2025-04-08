@@ -1,7 +1,7 @@
 /**
  * @file subscription_dialog.c  property dialog for feed subscriptions
  *
- * Copyright (C) 2004-2018 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@
 #include "conf.h"
 #include "db.h"
 #include "debug.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "feedlist.h"
 #include "node.h"
 #include "update.h"
@@ -187,7 +187,7 @@ on_propdialog_response (GtkDialog *dialog,
 		const gchar	*newFilter;
 		gboolean	needsUpdate = FALSE;
 		subscriptionPtr	subscription = spd->subscription;
-		nodePtr		node = spd->subscription->node;
+		Node		*node = spd->subscription->node;
 		feedPtr		feed = (feedPtr)node->data;
 
 		if (SUBSCRIPTION_TYPE(subscription) == feed_get_subscription_type ()) {
@@ -263,7 +263,7 @@ on_propdialog_response (GtkDialog *dialog,
 		feedlist_schedule_save ();
 		db_subscription_update (subscription);
 		if (needsUpdate)
-			subscription_update (subscription, FEED_REQ_PRIORITY_HIGH);
+			subscription_update (subscription, UPDATE_REQUEST_PRIORITY_HIGH);
 	}
 
 	g_object_unref(spd);
@@ -380,7 +380,7 @@ subscription_prop_dialog_load (SubscriptionPropDialog *spd,
 	gint		default_update_interval;
 	gint		defaultInterval, spinSetInterval;
 	gchar 		*defaultIntervalStr;
-	nodePtr		node = subscription->node;
+	Node		*node = subscription->node;
 	feedPtr		feed = (feedPtr)node->data;
 
 	spd->subscription = subscription;
@@ -608,7 +608,7 @@ on_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 		options = g_new0 (struct updateOptions, 1);
 		options->dontUseProxy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (nsd->ui_data.dialog, "dontUseProxyCheck")));
 
-		feedlist_add_subscription_check_duplicate (source, filter, options, FEED_REQ_PRIORITY_HIGH);
+		feedlist_add_subscription_check_duplicate (source, filter, options, UPDATE_REQUEST_PRIORITY_HIGH);
 		g_free (source);
 	}
 
@@ -688,7 +688,7 @@ on_simple_newdialog_response (GtkDialog *dialog, gint response_id, gpointer user
 		source = ui_subscription_create_url (g_strdup (gtk_entry_get_text (GTK_ENTRY(ssd->ui_data.sourceEntry))),
 		                                      FALSE /* auth */, NULL /* user */, NULL /* passwd */);
 
-		feedlist_add_subscription_check_duplicate (source, NULL, NULL, FEED_REQ_PRIORITY_HIGH);
+		feedlist_add_subscription_check_duplicate (source, NULL, NULL, UPDATE_REQUEST_PRIORITY_HIGH);
 		g_free (source);
 	}
 

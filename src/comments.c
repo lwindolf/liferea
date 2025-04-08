@@ -1,7 +1,7 @@
 /**
  * @file comments.c comment feed handling
  *
- * Copyright (C) 2007-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include "common.h"
 #include "db.h"
 #include "debug.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "metadata.h"
 #include "net.h"
 #include "net_monitor.h"
@@ -41,12 +41,12 @@ static GHashTable	*commentFeeds = NULL;
 
 typedef struct commentFeed
 {
-	gulong		itemId;			/**< parent item id */
-	gchar		*id;			/**< id of the items comments feed (or NULL) */
-	gchar		*error;			/**< description of error if comments download failed (or NULL)*/
+	gulong		itemId;			/*<< parent item id */
+	gchar		*id;			/*<< id of the items comments feed (or NULL) */
+	gchar		*error;			/*<< description of error if comments download failed (or NULL)*/
 
-	struct updateJob *updateJob;		/**< update job structure used when downloading comments */
-	updateStatePtr	updateState;		/**< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
+	UpdateJob	*updateJob;		/*<< update job structure used when downloading comments */
+	updateStatePtr	updateState;		/*<< update states (etag, last modified, cookies, last polling times...) used when downloading comments */
 } *commentFeedPtr;
 
 static void
@@ -92,13 +92,12 @@ comment_feed_from_id (const gchar *id)
 }
 
 static void
-comments_process_update_result (const struct updateResult * const result, gpointer user_data, updateFlags flags)
+comments_process_update_result (const UpdateResult * const result, gpointer user_data, updateFlags flags)
 {
 	feedParserCtxtPtr	ctxt;
 	commentFeedPtr		commentFeed = (commentFeedPtr)user_data;
 	itemPtr			item;
-	nodePtr			node;
-
+	Node			*node;
 
 	if(!(item = item_load (commentFeed->itemId)))
 		return;		/* item was deleted since */
@@ -123,7 +122,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 		debug (DEBUG_UPDATE, "received update result for comment feed \"%s\"", result->source);
 
 		/* parse the new downloaded feed into fake node, subscription and feed */
-		node = node_new (feed_get_node_type ());
+		node = node_new ("feed");
 		node_set_data (node, feed_new ());
 		node_set_subscription (node, subscription_new (result->source, NULL, NULL));
 		ctxt = feed_parser_ctxt_new (node->subscription, result->data, result->size);
@@ -153,7 +152,7 @@ comments_process_update_result (const struct updateResult * const result, gpoint
 			   dropped when the parent items are removed from cache. */
 		}
 
-		node_free (ctxt->subscription->node);
+		g_object_unref (ctxt->subscription->node);
 		feed_parser_ctxt_free (ctxt);
 	}
 
@@ -221,7 +220,7 @@ comments_refresh (itemPtr item)
 			NULL	// FIXME: use copy of parent subscription options
 		);
 
-		commentFeed->updateJob = update_execute_request (commentFeed, request, comments_process_update_result, commentFeed, FEED_REQ_PRIORITY_HIGH | FEED_REQ_NO_FEED);
+		commentFeed->updateJob = update_job_new (commentFeed, request, comments_process_update_result, commentFeed, UPDATE_REQUEST_PRIORITY_HIGH | UPDATE_REQUEST_NO_FEED);
 
 		/* Item view refresh to change link from "Update" to "Updating..." */
 		itemview_update_item (item);
@@ -229,36 +228,14 @@ comments_refresh (itemPtr item)
 	}
 }
 
-void
-comments_to_xml (xmlNodePtr parentNode, const gchar *id)
+itemSetPtr
+comments_get_itemset (const gchar *id)
 {
-	xmlNodePtr	commentsNode;
-	commentFeedPtr	commentFeed;
-	itemSetPtr	itemSet;
-	GList		*iter;
+	commentFeedPtr	commentFeed = comment_feed_from_id (id);
 
-	commentFeed = comment_feed_from_id (id);
-	if (!commentFeed)
-		return;
+	if (!commentFeed || !commentFeed->error)
+		return NULL;
 
-	commentsNode = xmlNewChild (parentNode, NULL, BAD_CAST "comments", NULL);
-
-	itemSet = db_itemset_load (id);
-	g_return_if_fail (itemSet != NULL);
-
-	iter = itemSet->ids;
-	while (iter)
-	{
-		itemPtr comment = item_load (GPOINTER_TO_UINT (iter->data));
-		item_to_xml (comment, commentsNode);
-		item_unload (comment);
-		iter = g_list_next (iter);
-	}
-
-	xmlNewTextChild (commentsNode, NULL, BAD_CAST "updateState", BAD_CAST ((commentFeed->updateJob)?"updating":"ok"));
-
-	if (commentFeed->error)
-		xmlNewTextChild (commentsNode, NULL, BAD_CAST "updateError", BAD_CAST commentFeed->error);
-
-	itemset_free (itemSet);
+	return db_itemset_load (id);
 }
+

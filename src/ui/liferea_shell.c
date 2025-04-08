@@ -41,18 +41,17 @@
 #include "itemlist.h"
 #include "liferea_application.h"
 #include "net_monitor.h"
-#include "newsbin.h"
-#include "plugins_engine.h"
 #include "social.h"
-#include "vfolder.h"
-#include "fl_sources/node_source.h"
+#include "node_source.h"
+#include "node_providers/newsbin.h"
+#include "node_providers/vfolder.h"
+#include "plugins/plugins_engine.h"
 #include "ui/browser_tabs.h"
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/itemview.h"
 #include "ui/item_list_view.h"
 #include "ui/liferea_dialog.h"
-#include "ui/liferea_shell_activatable.h"
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
 #include "ui/ui_common.h"
@@ -64,6 +63,8 @@ struct _LifereaShell {
 	GObject	parent_instance;
 
 	GtkBuilder	*xml;
+
+	LifereaPluginsEngine *plugins;
 
 	GtkWindow	*window;			/*<< Liferea main window */
 	GtkWidget	*toolbar;
@@ -86,8 +87,6 @@ struct _LifereaShell {
 	FeedList	*feedlist;
 	ItemView	*itemview;
 	BrowserTabs	*tabs;
-
-	PeasExtensionSet *extensions;		/*<< Plugin management */
 
 	gboolean	fullscreen;				/*<< track fullscreen */
 };
@@ -428,7 +427,7 @@ liferea_shell_update_node_actions (gpointer obj, gchar *unusedNodeId, gpointer d
 	/* We need to use the selected node here, as for search folders
 	   if we'd rely on the parent node of the changed item we would
 	   enable the wrong menu options */
-	nodePtr	node = feedlist_get_selected ();
+	Node	*node = feedlist_get_selected ();
 
 	if (!node) {
 		liferea_shell_update_feed_menu (TRUE, FALSE, FALSE);
@@ -439,8 +438,8 @@ liferea_shell_update_node_actions (gpointer obj, gchar *unusedNodeId, gpointer d
 
 	gboolean allowModify = (NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST);
 	liferea_shell_update_feed_menu (allowModify, TRUE, allowModify);
-	liferea_shell_update_update_menu ((NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
-	                                  (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
+	liferea_shell_update_update_menu ((NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE) ||
+	                                  (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS));
 
 	// Needs to be last as liferea_shell_update_update_menu() default enables actions
 	if (IS_FEED (node))
@@ -919,14 +918,14 @@ on_menu_export (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 static void
 liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, gint y, GtkSelectionData *data, guint info, guint time_received)
 {
-	gchar		*tmp1, *tmp2, *freeme;
+	gchar		*tmp1, *tmp2;
 	GtkWidget	*mainwindow;
 	GtkAllocation	alloc;
 	GtkTreeView	*treeview;
 	GtkTreeModel	*model;
 	GtkTreePath	*path;
 	GtkTreeIter	iter;
-	nodePtr		node;
+	Node		*node;
 	gint		tx, ty;
 
 	g_return_if_fail (gtk_selection_data_get_data (data) != NULL);
@@ -951,9 +950,15 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 
 	if ((gtk_selection_data_get_length (data) >= 0) && (gtk_selection_data_get_format (data) == 8)) {
 		/* extra handling to accept multiple drops */
-		freeme = tmp1 = g_strdup ((gchar *) gtk_selection_data_get_data (data));
+		g_autofree gchar *freeme = tmp1 = g_strdup ((gchar *) gtk_selection_data_get_data (data));
 		while ((tmp2 = strsep (&tmp1, "\n\r"))) {
 			if (strlen (tmp2)) {
+				/* Check for valid URI */
+				if (!g_uri_parse_scheme (tmp2)) {
+					gtk_drag_finish (context, FALSE, FALSE, time_received);
+					return;
+				}
+
 				/* if the drop is over a node, select it so that feedlist_add_subscription()
 				 * adds it in the correct folder */
 				if (gtk_tree_view_get_dest_row_at_pos (treeview, tx, ty, &path, NULL)) {
@@ -965,10 +970,9 @@ liferea_shell_URL_received (GtkWidget *widget, GdkDragContext *context, gint x, 
 					gtk_tree_path_free (path);
 				}
 				feedlist_add_subscription (g_strdup (tmp2), NULL, NULL,
-				                           FEED_REQ_PRIORITY_HIGH);
+				                           UPDATE_REQUEST_PRIORITY_HIGH);
 			}
 		}
-		g_free (freeme);
 		gtk_drag_finish (context, TRUE, FALSE, time_received);
 	} else {
 		gtk_drag_finish (context, FALSE, FALSE, time_received);
@@ -1315,6 +1319,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_link_gaction_entries, G_N_ELEMENTS (liferea_shell_link_gaction_entries), NULL);
 
+	/* 0.) setup plugin engine including mandatory base plugins that (for example the feed list or auth) might depend on */
+	shell->plugins = liferea_plugins_engine_get (shell);
+
 	/* 1.) menu creation */
 
 	debug (DEBUG_GUI, "Setting up menus");
@@ -1453,13 +1460,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_signal_connect (G_OBJECT (shell->window), "configure_event", G_CALLBACK(on_configure_event), shell);
 	g_signal_connect (G_OBJECT (shell->window), "key_press_event", G_CALLBACK(on_key_press_event), shell);
 
-	/* 13. Setup shell plugins */
-	if(0 == pluginsDisabled) {
-		shell->extensions = peas_extension_set_new (PEAS_ENGINE (liferea_plugins_engine_get_default ()),
-				                     LIFEREA_TYPE_SHELL_ACTIVATABLE, "shell", shell, NULL);
-
-		liferea_plugins_engine_set_default_signals (shell->extensions, shell);
-	}
+	/* 13. Setup plugins */
+	if(!pluginsDisabled)
+		liferea_plugins_engine_register_shell_plugins ();
 
 	/* 14. Rebuild search folders if needed */
 	if (searchFolderRebuild)
@@ -1470,8 +1473,9 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 void
 liferea_shell_destroy (void)
 {
+	g_object_unref (shell->plugins);
+
 	liferea_shell_save_position ();
-	g_object_unref (shell->extensions);
 	g_object_unref (shell->tabs);
 	g_object_unref (shell->feedlist);
 	g_object_unref (shell->itemview);

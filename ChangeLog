@@ -1,3 +1,114 @@
+To be released
+
+	Version 1.16-RC3
+
+
+	* Removes long deprecated manual proxy setting
+          (Lars Windolf)
+
+	* Fixes escaping of JS exception texts
+	  (Lars Windolf)
+
+	* Fixes Youtube video embedding regression
+	  (Lars Windolf)
+
+
+2025-02-25  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.16-RC2
+
+	* Fixes #1414 Blank preview pane (when Javascript preference is disabled)
+	  (Lars Windolf, reported by Filip Danilović)
+
+	* Updated Spanish translation
+	  (Cristian Othón Martínez Vera)
+
+	* Updated German translation
+	  (Lars Windolf)
+
+
+2025-02-09  Lars Windolf <lars.windolf@gmx.de>
+
+	Version 1.16-RC1
+
+	* Add error banner for node source login failures
+	  (Lars Windolf)
+
+	* Add a hint for GoogleReader API that it can be used with FreshRSS, FeedHQ, Miniflux
+	  (Lars Windolf)
+
+	* #763, #940 New domain based HTTP 429 handling. Support for Retry-After seconds (but not date),
+	  defaulting to 5min cooldown
+	  (Lars Windolf)
+
+	* #712 Send Accept-Language HTTP header 
+	  (Lars Windolf)
+
+	* Fixes #1337, #1273: FreshRSS login/update problems
+	  (Lars Windolf)
+
+	* Fixes #499 invalid URIs allowed when dropping text
+	  (Lars Windolf)
+
+	* Fixes broken handlebars templates due to XLST attribute escaping.
+	  (Lars Windolf)
+
+	* Fixes node source creation regression
+	  (Lars Windolf)
+
+
+2025-01-20  Lars Windolf <lar.windolf@gmx.de>
+
+	Version 1.15.9
+
+	* #1391: GObject refactoring nodePtr -> Node, updateJobPtr -> UpdateJob 
+	  to allow plugins modifying the feed list.
+	  (Lars Windolf)
+
+	* Fixes #1387: Dark theme lost in preview window
+	  (Lars Windolf)
+
+	* Fixes HTTP redirects not working
+	  (Lars Windolf)
+
+	* Fixes memory leaks in network callbacks
+	  (Lars Windolf)
+	
+	* Fixes unnecessary LifereaBrowser clearing on layout change
+	  (Lars Windolf)
+
+	* New unit tests for update handling code
+	  (Lars Windolf)
+	
+	* #1388 Implemented download manager plugin, all preferences
+	  for external tools were dropped
+	  (Lars Windolf)
+	
+	* Refactoring of plugin management, code reorganized. Disabling plugins
+	  now does not disable base plugins (needed for auth and node sources)
+	  as this would prevent startup
+	  (Lars Windolf)
+
+	* Refactoring of content scraping, processing now happens in Javascript
+	  on entire source documents. We now store a bit more data, but get better
+	  extraction results
+	  (Lars Windolf)
+	
+	* Support for lazy loading <img data-src=""> definitions. This unbreaks
+	  images when scraping some websites
+	  (Lars Windolf)
+
+	* Redesign of the HTML view. Look & feel is adapted from Newsflash.
+	  There is now a max-width and less cluttered reading.
+	  (Lars Windolf)
+
+	* Getting rid of XSLT in favor of using Handlebars.js
+	  (Lars Windolf)
+
+	* Updated Czech translation (Amereyeu)
+	* Updated Albanian translation (Besnik Bleta)
+
+
 2024-09-26  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.15.8

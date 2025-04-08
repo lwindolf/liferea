@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src='/js/vendor/Readability.js'></script>
+
+	<!-- FIXME: consider adding CSP meta tag here as e.g. Firefox reader mode page does -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <script id="template" type="text/x-handlebars-template">
+
+	<div class="item" dir="{{direction}}">
+		<header class="content">
+			<h1>
+				<a href="{{homepage}}">{{node.title}}</a>
+			</h1>
+                        {{#if node.source}}
+			        <div><_span>Source</_span>: <a href="{{node.source}}">{{node.source}}</a></div>
+                        {{/if}}
+                        {{#if author}}
+			        <div><_span>Author</_span>: {{{author}}}</div>
+                        {{/if}}
+                        {{#if publisher}}
+			        <div><_span>Publisher</_span>: {{{publisher}}}</div>
+                        {{/if}}
+                        {{#if copyright}}
+			        <div><_span>Copyright</_span>: {{{copyright}}}</div>
+                        {{/if}}
+		</header>
+
+		{{#if node.nodeSource}}
+			{{#with node.nodeSource}}
+				{{#compare loginState "==" 8}}
+					<div id="errors">
+						<p><_span>⛔ Account login for '{{ title }}' failed ({{ authFailures }}/{{ maxFailures }} retries)!</_span></p>
+						<p><_span>Please check your credentials!</_span></p>
+					</div>
+				{{/compare}}
+				{{#compare loginState "==" 2}}
+					<div id="errors">
+						<_span>⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/{{ maxFailures }} retries)...</_span>
+					</div>
+				{{/compare}}
+				{{#compare loginState "==" 1}}
+					<div id="errors">
+						<_span>⚠️ Account login for '{{ title }}' has not yet started.</_span>
+					</div>
+				{{/compare}}
+			{{/with}}
+		{{/if}}
+
+		{{#if node.error}}
+	        	<div id="errors">
+				<_span>There was a problem when fetching this subscription!</_span>
+				<ul>
+				<li>
+					{{#compare node.error '==' 1}}⛔{{/compare}}
+					{{#compare node.error 'gt' 1}}✅{{/compare}}
+					<_span>1. Authentication</_span>
+				</li>
+				<li>
+					{{#compare node.error '==' 2}}⛔{{/compare}}
+					{{#compare node.error 'gt' 2}}✅{{/compare}}
+					{{#compare node.error 'lt' 2}}⬜{{/compare}}
+					<_span>2. Download</_span>
+				</li>
+				<li>
+					{{#compare node.error '==' 4}}⛔{{/compare}}
+					{{#compare node.error 'gt' 4}}✅{{/compare}}
+					{{#compare node.error 'lt' 4}}⬜{{/compare}}
+					<_span>3. Feed Discovery</_span>
+				</li>
+				<li>
+					{{#compare node.error '==' 8}}⛔{{/compare}}
+					{{#compare node.error 'lt' 8}}⬜{{/compare}}
+					<_span>4. Parsing</_span>
+				</li>
+				</ul>
+
+				<span class="details">
+				<b><_span>Details:</_span></b>
+
+					{{#compare node.error '==' 1}}
+						<p><_span>Authentication failed. Please check the credentials and try again!</_span></p>
+					{{/compare}}
+					{{#compare node.error '==' 2}}
+						{{#if node.httpError}}
+							<p>
+							{{#compare node.httpErrorCode "gt" 99}}HTTP {{node.httpErrorCode}}{{/compare}}
+							{{node.httpError}}
+							</p>
+						{{/if}}
+						{{#if node.updateError}}
+							<p>
+							<_span>There was an error when downloading the feed source:</_span>
+							<pre class="errorOutput">{{node.updateError}}</pre>
+							</p>
+						{{/if}}
+						{{#if node.filterError}}
+							<p>
+							<_span>There was an error when running the feed filter command:</_span>
+							<pre class="errorOutput">{{node.filterError}}</pre>
+							</p>
+						{{/if}}
+					{{/compare}}
+					{{#compare node.error '==' 4}}
+						<p><_span>The source does not point directly to a feed or a webpage with a link to a feed!</_span></p>
+					{{/compare}}
+					{{#compare node.error '==' 8}}
+						<p><_span>Sorry, the feed could not be parsed!</_span></p>
+						<pre class="errorOutput">{{node.parseError}}</pre>
+						<p><_span>You may want to contact the author/webmaster of the feed about this!</_span></p>
+					{{/compare}}
+				</span>
+        		</div>
+		{{/if}}
+
+		<div id="content" class="content">
+                        {{#if description}}
+			        <div id="description">{{{description}}}</div>
+                        {{/if}}
+		</div>
+	</div>
+        </script>
+</head>
+<body>
+</body>
+<script type="module">
+	import { load_node } from '/js/htmlview.js';
+
+        REPLACE_MARKER
+</script>
+</html>

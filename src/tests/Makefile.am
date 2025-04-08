@@ -2,7 +2,7 @@
 
 noinst_PROGRAMS = $(TEST_PROGS)
 
-TEST_PROGS     = parse_html favicon parse_date parse_rss parse_xml social
+TEST_PROGS     = parse_html favicon parse_date parse_rss parse_xml social update
 MEMCHECK_PROGS = $(TEST_PROGS)
 
 test: $(TEST_PROGS)
@@ -26,27 +26,27 @@ AM_CPPFLAGS = \
 
 favicon_LDADD = \
 	../parsers/libliparsers.a \
-	../fl_sources/libliflsources.a \
+	../plugins/libliplugins.a \
+	../node_sources/liblinode_sources.a \
+	../node_providers/liblinode_providers.a \
 	../ui/libliui.a \
 	../webkit/libwebkit.a \
 	../auth.o \
-	../auth_activatable.o \
 	../browser.o \
 	../browser_history.o \
 	../comments.o \
 	../common.o \
 	../conf.o \
 	../date.o \
+	../download.o \
 	../db.o \
 	../dbus.o \
 	../debug.o \
 	../enclosure.o \
 	../export.o \
 	../favicon.o \
-	../feed.o \
 	../feed_parser.o \
 	../feedlist.o \
-	../folder.o \
 	../html.o \
 	../item.o \
 	../item_history.o \
@@ -60,17 +60,16 @@ favicon_LDADD = \
 	../migrate.o \
 	../net.o \
 	../net_monitor.o \
-	../newsbin.o \
 	../node.o \
-	../node_type.o \
-	../plugins_engine.o \
-	../render.o \
+	../node_provider.o \
+	../node_source.o \
 	../rule.o \
 	../social.o \
 	../subscription.o \
 	../subscription_icon.o \
 	../update.o \
-	../vfolder.o \
+	../update_job.o \
+	../update_job_queue.o \
 	../vfolder_loader.o \
 	../xml.o \
 	$(PACKAGE_LIBS) \
@@ -100,3 +99,6 @@ parse_xml_LDADD = $(favicon_LDADD)
 
 social_CFLAGS = $(AM_CPPFLAGS)
 social_LDADD = $(favicon_LDADD)
+
+update_CFLAGS = $(AM_CPPFLAGS)
+update_LDADD = $(favicon_LDADD)

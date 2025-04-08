@@ -1,7 +1,7 @@
 /**
  * @file parse_rss.c  Test cases for RSS parsing
  *
- * Copyright (C) 2023 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2023-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,10 @@
 #include <string.h>
 
 #include "debug.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "feed_parser.h"
 #include "item.h"
+#include "json.h"
 #include "subscription.h"
 #include "xml.h"
 
@@ -33,15 +34,15 @@
    1.     feed XML string
    2.     "true" for successfully parsed feed, "false" for unparseable
    3.     number of items
-   4..n   string of XML serialized items
+   4..n   string of JSON serialized items
  */
 
 gchar *tc_rss_feed1[] = {
 	"<rss version=\"2.0\"><channel><title>T</title><link>http://localhost</link><item><title>i1</title><link>http://localhost/item1.html</link><description>D</description></item><item><title>i2</title><link>https://localhost/item2.html</link></item></channel></rss>",
 	"true",
 	"2",
-	"<item><title>i1</title><description>&lt;div xmlns=\"http://www.w3.org/1999/xhtml\"&gt;&lt;p&gt;D&lt;/p&gt;&lt;/div&gt;</description><source>http://localhost/item1.html</source><nr>0</nr><readStatus>0</readStatus><updateStatus>0</updateStatus><mark>0</mark><time>1678397817</time><enclosures/><sourceId/><sourceNr>0</sourceNr><attributes/></item>",
-	"<item><title>i2</title><source>https://localhost/item2.html</source><nr>0</nr><readStatus>0</readStatus><updateStatus>0</updateStatus><mark>0</mark><time>1678397817</time><enclosures/><sourceId/><sourceNr>0</sourceNr><attributes/></item>",
+	"{\"id\":0,\"title\":\"i1\",\"description\":\"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><p>D</p></div>\",\"source\":\"http://localhost/item1.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[],\"enclosures\":[]}",
+	"{\"id\":0,\"title\":\"i2\",\"description\":null,\"source\":\"https://localhost/item2.html\",\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[],\"enclosures\":[]}",
 	NULL
 };
 
@@ -51,7 +52,7 @@ gchar *tc_rss_feed2_rce[] = {
 	"<rss version=\"2.0\"><channel><title>T</title><item><title>i1</title><link>|date >/tmp/bad-item-link.txt</link></item></channel></rss>",
 	"true",
 	"1",
-	"<item><title>i1</title><nr>0</nr><readStatus>0</readStatus><updateStatus>0</updateStatus><mark>0</mark><time>1678397817</time><enclosures/><sourceId/><sourceNr>0</sourceNr><attributes/></item>",
+	"{\"id\":0,\"title\":\"i1\",\"description\":null,\"source\":null,\"readStatus\":false,\"updateStatus\":false,\"flagStatus\":false,\"time\":1678397817,\"validTime\":false,\"validGuid\":false,\"hasEnclosure\":false,\"sourceId\":null,\"nodeId\":null,\"parentNodeId\":null,\"metadata\":[],\"enclosures\":[]}",
 	NULL
 };
 
@@ -59,12 +60,12 @@ static void
 tc_parse_feed (gconstpointer user_data)
 {
 	gchar			**tc = (gchar **)user_data;
-	nodePtr			node;
+	Node			*node;
 	feedParserCtxtPtr 	ctxt;
 	int			i;
 	GList			*iter;
 
-	node = node_new (feed_get_node_type ());
+	node = node_new ("feed");
 	node_set_data (node, feed_new ());
  	node_set_subscription (node, subscription_new (NULL, NULL, NULL));
 	ctxt = feed_parser_ctxt_new (node->subscription, tc[0], strlen(tc[0]));
@@ -74,44 +75,22 @@ tc_parse_feed (gconstpointer user_data)
 
 	i = 2;
 	iter = ctxt->items;
-	while (tc[++i]) {
-		gchar		*buffer, *tmp, *tmp2;
-		gint		buffersize;
-		xmlDocPtr	doc = xmlNewDoc (BAD_CAST"1.0");
-		xmlNodePtr	rootNode = xmlNewDocNode (doc, NULL, BAD_CAST"result", NULL);
+	while (iter && tc[++i]) {
+		gchar	*json = NULL;
 
-		xmlDocSetRootElement (doc, rootNode);
-
-		// Force time and delete <timestr> to make result compareable
 		itemPtr item = (itemPtr)iter->data;
 		item->time = 1678397817;
-		item_to_xml (item, rootNode);
+		json = item_to_json (item);
 
-		xmlNode *timestr = xpath_find (rootNode, "//timestr");
-		if (timestr) {
-			xmlUnlinkNode (timestr);
-			xmlFreeNode (timestr);
-		}
-		xmlDocDumpMemory(doc, (xmlChar **)&buffer, &buffersize);
-
-		/* strip boilerplate */
-		tmp = buffer;
-		if ((tmp = strstr (tmp, "<result>")))
-			tmp += 8;		
-		if ((tmp2 = strstr (tmp, "</result>")))
-			*tmp2 = 0;
-
-		g_assert_cmpstr (tc[i], ==, tmp);
-
-		xmlFreeDoc (doc);
-		xmlFree (buffer);
+		g_assert_cmpstr (tc[i], ==, json);
+		g_free (json);
 
 		iter = g_list_next (iter);
 	}	
 
 	g_list_free_full (ctxt->items, g_object_unref);
 	feed_parser_ctxt_free (ctxt);
-	node_free (node);
+	g_object_unref (node);
 }
 
 int

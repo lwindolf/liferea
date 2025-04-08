@@ -21,13 +21,14 @@
 #include <string.h>
 
 #include "conf.h"
+#include "common.h"
 #include "debug.h"
-#include "folder.h"
+#include "feedlist.h"
 #include "item_history.h"
 #include "itemlist.h"
 #include "itemview.h"
 #include "node.h"
-#include "vfolder.h"
+#include "node_provider.h"
 #include "ui/ui_common.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_shell.h"
@@ -46,7 +47,7 @@ struct _ItemView {
 	GObject	parent_instance;
 
 	guint		mode;			/*<< current item view mode */
-	nodePtr		node;			/*<< the node whose items are displayed */
+	Node		*node;			/*<< the node whose items are displayed */
 	gboolean	browsing;		/*<< TRUE if itemview is used as internal browser right now */
 	gboolean	needsHTMLViewUpdate;	/*<< flag to be set when HTML rendering is to be
 						     updated, used to delay HTML updates */
@@ -156,7 +157,7 @@ itemview_set_mode (itemViewMode mode)
 }
 
 void
-itemview_set_displayed_node (nodePtr node)
+itemview_set_displayed_node (Node *node)
 {
 	if (node == itemview->node)
 		return;
@@ -238,7 +239,7 @@ itemview_update_all_items (void)
 }
 
 void
-itemview_update_node_info (nodePtr node)
+itemview_update_node_info (Node *node)
 {
 	/* Bail if we do internal browsing, and no item is shown */
 	if (itemview->browsing)
@@ -260,17 +261,51 @@ itemview_update_node_info (nodePtr node)
 void
 itemview_update (void)
 {
+	g_autoptr(LifereaItem) 	item = NULL;
+	Node			*node = NULL;
+	g_autofree gchar	*baseURL = NULL;
+	g_autofree gchar 	*json = NULL;
+	const gchar		*direction = NULL;
+	const gchar		*name = NULL;
+
 	if (itemview->itemListView)
 		item_list_view_update (itemview->itemListView);
 
 	if (itemview->itemListView && itemview->node) {
-		item_list_view_enable_favicon_column (itemview->itemListView, NODE_TYPE (itemview->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
+		item_list_view_enable_favicon_column (itemview->itemListView, NODE_PROVIDER (itemview->node)->capabilities & NODE_CAPABILITY_SHOW_ITEM_FAVICONS);
 		item_list_view_set_sort_column (itemview->itemListView, itemview->node->sortColumn, itemview->node->sortReversed);
 	}
 
 	if (itemview->needsHTMLViewUpdate) {
 		itemview->needsHTMLViewUpdate = FALSE;
-		liferea_browser_update (itemview->htmlview, itemview->mode);
+
+		switch (itemview->mode) {
+			case ITEMVIEW_SINGLE_ITEM:
+				item = itemlist_get_selected ();
+				if(!item)
+					return;
+
+				node = node_from_id (item->nodeId);
+
+				direction = item_get_text_direction (item);
+				name = "item";
+				json = item_to_json (item);
+				break;
+			case ITEMVIEW_NODE_INFO:
+				node = feedlist_get_selected ();
+				if (!node)
+					return;
+
+				direction = common_get_app_direction ();
+				name = "node";
+				json = node_to_json (node);
+				break;
+		}
+
+		if (node_get_base_url (node))
+			baseURL = g_markup_escape_text ((gchar *)node_get_base_url (node), -1);
+
+		liferea_browser_set_view (itemview->htmlview, name, json, baseURL, direction);
 	}
 }
 
@@ -346,7 +381,7 @@ itemview_set_layout (nodeViewType newMode)
 {
 	GtkWidget 	*previous_parent = NULL;
 	const gchar	*htmlWidgetName, *ilWidgetName;
-	nodePtr		node;
+	Node		*node;
 	itemPtr		item;
 	nodeViewType	effectiveMode = newMode;
 
@@ -375,7 +410,6 @@ itemview_set_layout (nodeViewType newMode)
 
 	/* Prepare widgets for layout */
 	g_assert (itemview->htmlview);
-	liferea_browser_clear (itemview->htmlview);
 
 	debug (DEBUG_GUI, "Setting item list layout mode: %d (auto=%d)", effectiveMode, itemview->autoLayout);
 

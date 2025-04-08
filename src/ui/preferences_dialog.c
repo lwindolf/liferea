@@ -32,7 +32,7 @@
 #include "conf.h"
 #include "favicon.h"
 #include "feedlist.h"
-#include "folder.h"
+#include "node_providers/folder.h"
 #include "itemlist.h"
 #include "social.h"
 #include "ui/item_list_view.h"
@@ -61,19 +61,6 @@ enum fts_columns {
 extern GSList *bookmarkSites;	/* from social.c */
 
 static PreferencesDialog *prefdialog = NULL;
-
-/** download tool commands need to take an URI as %s */
-static const gchar * enclosure_download_commands[] = {
-	"steadyflow add %s",
-	"dbus-send --session --print-reply --dest=org.gnome.gwget.ApplicationService /org/gnome/gwget/Gwget org.gnome.gwget.Application.OpenURI string:%s uint32:0",
-	"kget %s",
-	"uget-gtk %s",
-	"transmission-gtk %s",
-	"aria2c %s"
-};
-
-/** order must match enclosure_download_commands[] */
-static const gchar *enclosure_download_tool_options[] = { "Steadyflow", "gwget", "KGet", "uGet", "Transmission (Gtk)", "aria2", NULL };
 
 /** GConf representation of toolbar styles */
 static const gchar * gui_toolbar_style_values[] = { "", "both", "both-horiz", "icons", "text", NULL };
@@ -111,24 +98,6 @@ static const gchar * default_view_mode_options[] = {
 	NULL
 };
 
-gchar *
-prefs_get_download_command (void)
-{
-	gboolean 	use_custom_command;
-	gchar 		*result = NULL;
-
-	conf_get_bool_value (DOWNLOAD_USE_CUSTOM_COMMAND, &use_custom_command);
-	if (use_custom_command)
-		conf_get_str_value (DOWNLOAD_CUSTOM_COMMAND, &result);
-	else {
-		gint	enclosure_download_tool;
-		conf_get_int_value (DOWNLOAD_TOOL, &enclosure_download_tool);
-		/* FIXME: array boundary check */
-		result = g_strdup (enclosure_download_commands[enclosure_download_tool]);
-	}
-	return result;
-}
-
 /* Preference dialog class */
 
 static void
@@ -165,7 +134,7 @@ on_folderdisplaybtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 void
 on_folderhidereadbtn_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 {
-	nodePtr		displayedNode;
+	Node		*displayedNode;
 	gboolean	enabled;
 
 	displayedNode = itemlist_get_displayed_node ();
@@ -311,46 +280,6 @@ on_noProxy_clicked (GtkButton *button, gpointer user_data)
 }
 
 static void
-on_manualProxy_clicked (GtkButton *button, gpointer user_data)
-{
-	conf_set_int_value (PROXY_DETECT_MODE, 2);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog->dialog, "proxybox")), TRUE);
-}
-
-void
-on_useProxyAuth_toggled (GtkToggleButton *button, gpointer user_data)
-{
-	gboolean enabled = gtk_toggle_button_get_active (button);
-
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog->dialog, "proxyauthtable")), enabled);
-	conf_set_bool_value (PROXY_USEAUTH, enabled);
-}
-
-static void
-on_proxyhostentry_changed (GtkEditable *editable, gpointer user_data)
-{
-	conf_set_str_value (PROXY_HOST, gtk_editable_get_chars (editable,0,-1));
-}
-
-static void
-on_proxyportentry_changed (GtkEditable *editable, gpointer user_data)
-{
-	conf_set_int_value (PROXY_PORT, atoi (gtk_editable_get_chars (editable,0,-1)));
-}
-
-static void
-on_proxyusernameentry_changed (GtkEditable *editable, gpointer user_data)
-{
-	conf_set_str_value (PROXY_USER, gtk_editable_get_chars (editable,0,-1));
-}
-
-static void
-on_proxypasswordentry_changed (GtkEditable *editable, gpointer user_data)
-{
-	conf_set_str_value (PROXY_PASSWD, gtk_editable_get_chars (editable,0,-1));
-}
-
-static void
 on_skim_key_changed (gpointer user_data)
 {
 	conf_set_int_value (BROWSE_KEY_SETTING, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
@@ -375,38 +304,10 @@ on_deferdeletemode_toggled (GtkToggleButton *togglebutton, gpointer user_data)
 }
 
 void
-on_enclosure_download_predefined_toggled (GtkToggleButton *button, gpointer user_data)
-{
-	gboolean is_active = gtk_toggle_button_get_active (button);
-
-	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->dialog, "customDownloadEntry"), !is_active);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (prefdialog->dialog, "downloadToolCombo"), is_active);
-	conf_set_bool_value (DOWNLOAD_USE_CUSTOM_COMMAND, !is_active);
-}
-
-static void
-on_enclosure_download_tool_changed (gpointer user_data)
-{
-	conf_set_int_value (DOWNLOAD_TOOL, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
-}
-
-void
-on_enclosure_download_custom_command_changed (GtkEditable *entry, gpointer user_data)
-{
-	conf_set_str_value (DOWNLOAD_CUSTOM_COMMAND, gtk_entry_get_text (GTK_ENTRY (entry)));
-}
-
-void
 on_hidetoolbar_toggled (GtkToggleButton *button, gpointer user_data)
 {
 	conf_set_bool_value (DISABLE_TOOLBAR, gtk_toggle_button_get_active (button));
 	liferea_shell_update_toolbar ();
-}
-
-void
-on_readermodebtn_toggled (GtkToggleButton *button, gpointer user_data)
-{
-	conf_set_bool_value (ENABLE_READER_MODE, gtk_toggle_button_get_active (button));
 }
 
 void
@@ -441,16 +342,11 @@ preferences_dialog_init (PreferencesDialog *pd)
 	GtkListStore		*store;
 	GtkTreeIter		treeiter;
 	GtkAdjustment		*itemCount;
-	GtkTreeViewColumn 	*column;
 	GSList			*list;
-	gchar			*proxyport;
 	gchar			*configuredBrowser, *name;
-	gboolean		enabled;
-	gint			tmp, i, iSetting, proxy_port;
+	gint			tmp, i, iSetting;
 	gboolean		bSetting, manualBrowser;
-	gchar			*proxy_host, *proxy_user, *proxy_passwd;
 	gchar			*browser_command;
-	gchar 			*custom_download_command;
 
 	prefdialog = pd;
 	pd->dialog = liferea_dialog_new ("prefs");
@@ -609,67 +505,21 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	/* ================= panel 5 "proxy" ======================== */
 
-#if WEBKIT_CHECK_VERSION (2, 15, 3)
-	gtk_widget_destroy (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxyDisabledInfobar")));
-	conf_get_str_value (PROXY_HOST, &proxy_host);
-	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->dialog, "proxyhostentry")), proxy_host);
-	g_free (proxy_host);
-
-	conf_get_int_value (PROXY_PORT, &proxy_port);
-	proxyport = g_strdup_printf ("%d", proxy_port);
-	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->dialog, "proxyportentry")), proxyport);
-	g_free (proxyport);
-
-	conf_get_bool_value (PROXY_USEAUTH, &enabled);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "useProxyAuth")), enabled);
-
-	conf_get_str_value (PROXY_USER, &proxy_user);
-	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->dialog, "proxyusernameentry")), proxy_user);
-	g_free (proxy_user);
-
-	conf_get_str_value (PROXY_PASSWD, &proxy_passwd);
-	gtk_entry_set_text (GTK_ENTRY (liferea_dialog_lookup (pd->dialog, "proxypasswordentry")), proxy_passwd);
-	g_free (proxy_passwd);
-
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup(pd->dialog, "proxyauthtable")), enabled);
-
 	conf_get_int_value (PROXY_DETECT_MODE, &i);
 	switch (i) {
 		default:
+		case 2: /* manual proxy -> deprecated so fall through to auto detect */
 		case 0: /* proxy auto detect */
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), TRUE);
-			enabled = FALSE;
 			break;
 		case 1: /* no proxy */
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), TRUE);
-			enabled = FALSE;
-			break;
-		case 2: /* manual proxy */
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "manualProxyRadio")), TRUE);
-			enabled = TRUE;
 			break;
 	}
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxybox")), enabled);
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), "clicked", G_CALLBACK (on_proxyAutoDetect_clicked), pd);
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), "clicked", G_CALLBACK (on_noProxy_clicked), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "manualProxyRadio")), "clicked", G_CALLBACK (on_manualProxy_clicked), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyhostentry")), "changed", G_CALLBACK (on_proxyhostentry_changed), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyportentry")), "changed", G_CALLBACK (on_proxyportentry_changed), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyusernameentry")), "changed", G_CALLBACK (on_proxyusernameentry_changed), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxypasswordentry")), "changed", G_CALLBACK (on_proxypasswordentry_changed), pd);
-#else
-	gtk_widget_show (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxyDisabledInfobar")));
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxybox")), FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), TRUE);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), FALSE);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "manualProxyRadio")), FALSE);
-#endif
 
 	/* ================= panel 6 "Privacy" ======================== */
-
-	widget = liferea_dialog_lookup (pd->dialog, "readermodebtn");
-	conf_get_bool_value (ENABLE_READER_MODE, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 
 	widget = liferea_dialog_lookup (pd->dialog, "donottrackbtn");
 	conf_get_bool_value (DO_NOT_TRACK, &bSetting);
@@ -688,36 +538,6 @@ preferences_dialog_init (PreferencesDialog *pd)
 	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpbtn")), FALSE);
 	gtk_widget_show (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "itpInfoBar")));
 #endif
-	/* ================= panel 7 "Enclosures" ======================== */
-
-	/* menu for download tool */
-	conf_get_int_value (DOWNLOAD_TOOL, &iSetting);
-	ui_common_setup_combo_menu (liferea_dialog_lookup (pd->dialog, "downloadToolCombo"),
-	                            enclosure_download_tool_options,
-	                            G_CALLBACK (on_enclosure_download_tool_changed),
-	                            iSetting);
-
-	/* restore toggle */
-	conf_get_bool_value (DOWNLOAD_USE_CUSTOM_COMMAND, &bSetting);
-	widget = liferea_dialog_lookup (pd->dialog, "customDownload");
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "customDownloadEntry"), bSetting);
-	gtk_widget_set_sensitive (liferea_dialog_lookup (pd->dialog, "downloadToolCombo"), !bSetting);
-
-	/* restore custom command */
-	conf_get_str_value (DOWNLOAD_CUSTOM_COMMAND, &custom_download_command);
-	widget = liferea_dialog_lookup (pd->dialog, "customDownloadEntry");
-	gtk_entry_set_text (GTK_ENTRY (widget), custom_download_command);
-	g_free (custom_download_command);
-
-	column = gtk_tree_view_column_new_with_attributes (_("Type"), gtk_cell_renderer_text_new (), "text", FTS_TYPE, NULL);
-	gtk_tree_view_append_column (GTK_TREE_VIEW (widget), column);
-	gtk_tree_view_column_set_sort_column_id (column, FTS_TYPE);
-	column = gtk_tree_view_column_new_with_attributes (_("Program"), gtk_cell_renderer_text_new (), "text", FTS_CMD, NULL);
-	gtk_tree_view_column_set_sort_column_id (column, FTS_CMD);
-	gtk_tree_view_append_column (GTK_TREE_VIEW(widget), column);
-
-	gtk_tree_selection_set_mode (gtk_tree_view_get_selection (GTK_TREE_VIEW(widget)), GTK_SELECTION_SINGLE);
 
 	g_signal_connect_object (pd->dialog, "destroy", G_CALLBACK (preferences_dialog_destroy_cb), pd, 0);
 

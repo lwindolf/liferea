@@ -9,49 +9,10 @@ error=0
 if command -v valgrind >/dev/null; then
 	for tool in $@; do
 		details=$(
-			valgrind -q --leak-check=full --suppressions=<(cat <<-EOT
-			  {
-			     selinuxfs_exists
-			     Memcheck:Leak
-			     match-leak-kinds: definite
-			     fun:malloc
-			     fun:initialise_tags
-			     fun:_Z25semmle_read_configurationv
-			     fun:semmle_init
-			     fun:fopen
-			     fun:selinuxfs_exists
-			     obj:/lib/x86_64-linux-gnu/libselinux.so.1
-			     fun:call_init
-			     fun:_dl_init
-			     obj:/lib/x86_64-linux-gnu/ld-2.27.so
-			  }
-			  {
-   			     lzma_Debian_#1342_cond
-		 	     Memcheck:Cond
-			     obj:/usr/lib/*/liblzma.so.*
-			  }
-                          {
- 	                     lzma_Debia_#1342_free
-			     Memcheck:Free
-			     obj:/usr/lib/*/liblzma.so.*
-			  }
-                          {
- 	                     lzma_Debia_#1342_value
-			     Memcheck:Value8
-			     obj:/usr/lib/*/liblzma.so.*
-			  }
-                          {
-			     lzma_Debian_#1342_addr
-			     Memcheck:Addr8
-			     obj:/usr/lib/*/liblzma.so.*
-			  }
-EOT
-			) --error-markers=begin,end "./$tool" 2>&1
+			valgrind -q --leak-check=full --gen-suppressions=all --suppressions="$(dirname "$0")/memcheck.supp" "./$tool" 2>&1
 		)
 		output=$(
-			echo "$details" |\
-			grep -A1 "== begin" |\
-			egrep -v "== begin|possibly lost|^--$"
+			echo "$details" | grep "definitely lost" | grep -v "0 bytes in 0 blocks"
 		)
 		if [ "$output" != "" ]; then
 			error=1

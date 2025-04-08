@@ -1,7 +1,7 @@
 /**
  * @file ui_dialog.c UI dialog handling
  *
- * Copyright (C) 2007-2016 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -117,4 +117,16 @@ liferea_dialog_new (const gchar *name)
 	g_signal_connect_object (ld->priv->dialog, "destroy", G_CALLBACK (liferea_dialog_destroy_cb), ld, 0);
 
 	return ld->priv->dialog;
+}
+
+const gchar *
+liferea_dialog_entry_get (GtkWidget *dialog, const gchar *name)
+{
+	return gtk_entry_buffer_get_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name))));
+}
+
+void
+liferea_dialog_entry_set (GtkWidget *dialog, const gchar *name, const gchar *text)
+{
+	gtk_entry_buffer_set_text (gtk_entry_get_buffer (GTK_ENTRY (liferea_dialog_lookup (dialog, name))), text, -1);
 }

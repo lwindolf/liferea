@@ -28,18 +28,19 @@
 #include "common.h"
 #include "conf.h"
 #include "debug.h"
-#include "feed.h"
 #include "feedlist.h"
-#include "folder.h"
 #include "net_monitor.h"
-#include "newsbin.h"
-#include "vfolder.h"
+#include "node_provider.h"
+#include "node_providers/feed.h"
+#include "node_providers/folder.h"
+#include "node_providers/newsbin.h"
+#include "node_providers/vfolder.h"
+#include "node_source.h"
 #include "ui/icons.h"
 #include "ui/liferea_dialog.h"
 #include "ui/liferea_shell.h"
 #include "ui/subscription_dialog.h"
 #include "ui/ui_dnd.h"
-#include "fl_sources/node_source.h"
 
 struct _FeedListView {
 	GObject			parentInstance;
@@ -97,7 +98,7 @@ feed_list_view_init (FeedListView *f)
 static void
 feed_list_view_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *iter)
 {
-	nodePtr node;
+	Node *node;
 
 	gtk_tree_model_get (model, iter, FS_PTR, &node, -1);
 	if (node)
@@ -107,9 +108,9 @@ feed_list_view_row_changed_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIt
 static void
 feed_list_view_selection_changed_cb (GtkTreeSelection *selection, gpointer data)
 {
-	GtkTreeIter		iter;
+	GtkTreeIter	iter;
 	GtkTreeModel	*model;
-	nodePtr			node;
+	Node		*node;
 
 	if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
 	 	gtk_tree_model_get (model, &iter, FS_PTR, &node, -1);
@@ -146,7 +147,7 @@ static void
 feed_list_view_row_activated_cb (GtkTreeView *tv, GtkTreePath *path, GtkTreeViewColumn *col, gpointer data)
 {
 	GtkTreeIter	iter;
-	nodePtr		node;
+	Node		*node;
 
 	gtk_tree_model_get_iter (gtk_tree_view_get_model (tv), &iter, path);
 	gtk_tree_model_get (gtk_tree_view_get_model (tv), &iter, FS_PTR, &node, -1);
@@ -165,7 +166,7 @@ feed_list_view_key_press_cb (GtkWidget *widget, GdkEventKey *event, gpointer dat
 	if ((event->type == GDK_KEY_PRESS) &&
 	    (event->state == 0) &&
 	    (event->keyval == GDK_KEY_Delete)) {
-		nodePtr node = feedlist_get_selected ();
+		Node *node = feedlist_get_selected ();
 
 		if(node) {
 			if (event->state & GDK_SHIFT_MASK)
@@ -182,7 +183,7 @@ static gboolean
 feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
 {
 	gint			count;
-	nodePtr			node;
+	Node			*node;
 
 	if (!flv->feedlist_reduced_unread)
 		return TRUE;
@@ -213,16 +214,16 @@ feed_list_view_filter_visible_function (GtkTreeModel *model, GtkTreeIter *iter, 
 }
 
 static void
-feed_list_view_expand (nodePtr node)
+feed_list_view_expand (Node *node)
 {
 	if (node->parent)
-		feed_list_view_expand (node->parent);
+		feed_list_view_expand (LIFEREA_NODE (node->parent));
 
 	feed_list_view_set_expansion (node, TRUE);
 }
 
 static void
-feed_list_view_restore_folder_expansion (nodePtr node)
+feed_list_view_restore_folder_expansion (Node *node)
 {
 	if (node->expanded)
 		feed_list_view_expand (node);
@@ -258,8 +259,8 @@ feed_list_view_set_reduce_mode (gboolean newReduceMode)
 static gint
 feed_list_view_sort_folder_compare (gconstpointer a, gconstpointer b)
 {
-	nodePtr n1 = (nodePtr)a;
-	nodePtr n2 = (nodePtr)b;
+	Node *n1 = (Node *)a;
+	Node *n2 = (Node *)b;
 
 	gchar *s1 = g_utf8_casefold (n1->title, -1);
 	gchar *s2 = g_utf8_casefold (n2->title, -1);
@@ -273,7 +274,7 @@ feed_list_view_sort_folder_compare (gconstpointer a, gconstpointer b)
 }
 
 void
-feed_list_view_sort_folder (nodePtr folder)
+feed_list_view_sort_folder (Node *folder)
 {
 	GtkTreeView             *treeview;
 
@@ -369,7 +370,7 @@ feed_list_view_create (GtkTreeView *treeview)
 }
 
 void
-feed_list_view_select (nodePtr node)
+feed_list_view_select (Node *node)
 {
 	GtkTreeModel *model = gtk_tree_view_get_model (flv->treeview);
 
@@ -387,7 +388,7 @@ feed_list_view_select (nodePtr node)
 		}
 
 		if (node->parent)
-			feed_list_view_expand (node->parent);
+			feed_list_view_expand (LIFEREA_NODE (node->parent));
 
 		if (path) {
 			gtk_tree_view_scroll_to_cell (flv->treeview, path, NULL, FALSE, 0.0, 0.0);
@@ -405,9 +406,9 @@ feed_list_view_select (nodePtr node)
 void
 on_menu_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr node = feedlist_get_selected ();
+	Node *node = feedlist_get_selected ();
 
-	NODE_TYPE (node)->request_properties (node);
+	NODE_PROVIDER (node)->request_properties (node);
 }
 
 void
@@ -417,10 +418,10 @@ on_menu_delete(GSimpleAction *action, GVariant *parameter, gpointer user_data)
 }
 
 static void
-do_menu_update (nodePtr node)
+do_menu_update (Node *node)
 {
 	if (network_monitor_is_online ())
-		node_update_subscription (node, GUINT_TO_POINTER (FEED_REQ_PRIORITY_HIGH));
+		node_update_subscription (node, GUINT_TO_POINTER (UPDATE_REQUEST_PRIORITY_HIGH));
 	else
 		liferea_shell_set_status_bar (_("Liferea is in offline mode. No update possible."));
 
@@ -429,10 +430,10 @@ do_menu_update (nodePtr node)
 void
 on_menu_update (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr node = NULL;
+	Node *node = NULL;
 
 	if (user_data)
-		node = (nodePtr) user_data;
+		node = (Node *) user_data;
 	else
 		node = feedlist_get_selected ();
 
@@ -451,14 +452,14 @@ on_menu_update_all(GSimpleAction *action, GVariant *parameter, gpointer user_dat
 void
 on_action_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr 	feedlist;
+	Node		*feedlist;
 	gboolean 	confirm_mark_read;
 	gboolean 	do_mark_read = TRUE;
 
 	if (!g_strcmp0 (g_action_get_name (G_ACTION (action)), "mark-all-feeds-read"))
 		feedlist = feedlist_get_root ();
 	else if (user_data)
-		feedlist = (nodePtr) user_data;
+		feedlist = (Node *) user_data;
 	else
 		feedlist = feedlist_get_selected ();
 
@@ -490,31 +491,31 @@ on_action_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer us
 void
 on_menu_feed_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
-	node_type_request_interactive_add (feed_get_node_type ());
+	node_provider_request_add (feed_get_provider ());
 }
 
 void
 on_new_plugin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
-	node_type_request_interactive_add (node_source_get_node_type ());
+	node_provider_request_add (node_source_get_provider ());
 }
 
 void
 on_new_newsbin_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
-	node_type_request_interactive_add (newsbin_get_node_type ());
+	node_provider_request_add (newsbin_get_provider ());
 }
 
 void
 on_menu_folder_new (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
-	node_type_request_interactive_add (folder_get_node_type ());
+	node_provider_request_add (folder_get_provider ());
 }
 
 void
 on_new_vfolder_activate (GSimpleAction *menuitem, GVariant *parameter, gpointer user_data)
 {
-	node_type_request_interactive_add (vfolder_get_node_type ());
+	node_provider_request_add (vfolder_get_provider ());
 }
 
 void
@@ -582,7 +583,7 @@ feed_list_view_is_expanded (const gchar *nodeId)
 }
 
 void
-feed_list_view_set_expansion (nodePtr folder, gboolean expanded)
+feed_list_view_set_expansion (Node *folder, gboolean expanded)
 {
 	GtkTreeIter		*iter;
 	GtkTreePath		*path;
@@ -622,7 +623,7 @@ void
 feed_list_view_remove_empty_node (GtkTreeIter *parent)
 {
 	GtkTreeIter	iter;
-	nodePtr		node;
+	Node		*node;
 	gboolean	valid;
 
 	gtk_tree_model_iter_children (GTK_TREE_MODEL (flv->feedstore), &iter, parent);
@@ -676,7 +677,7 @@ feed_list_view_check_if_folder_is_empty (const gchar *nodeId)
 }
 
 void
-feed_list_view_add_node (nodePtr node)
+feed_list_view_add_node (Node *node)
 {
 	gint		position;
 	GtkTreeIter	*iter, *parentIter = NULL;
@@ -714,13 +715,13 @@ feed_list_view_add_node (nodePtr node)
 }
 
 static void
-feed_list_view_load_feedlist (nodePtr node)
+feed_list_view_load_feedlist (Node *node)
 {
 	GSList		*iter;
 
 	iter = node->children;
 	while (iter) {
-		node = (nodePtr)iter->data;
+		node = (Node *)iter->data;
 		feed_list_view_add_node (node);
 
 		if (IS_FOLDER (node) || IS_NODE_SOURCE (node))
@@ -745,7 +746,7 @@ feed_list_view_reload_feedlist ()
 }
 
 void
-feed_list_view_remove_node (nodePtr node)
+feed_list_view_remove_node (Node *node)
 {
 	GtkTreeIter	*iter;
 	gboolean 	parentExpanded = FALSE;
@@ -775,7 +776,7 @@ feed_list_view_update_node (const gchar *nodeId)
 	GtkTreeIter	*iter;
 	gchar		*label, *count = NULL;
 	guint		labeltype;
-	nodePtr		node;
+	Node		*node;
 	static		gchar *countColor = NULL;
 
 	/* Until GTK3 we used real theme colors here. Nowadays GTK simply knows
@@ -795,7 +796,7 @@ feed_list_view_update_node (const gchar *nodeId)
 	if (!iter)
 		return;
 
-	labeltype = NODE_TYPE (node)->capabilities;
+	labeltype = NODE_PROVIDER (node)->capabilities;
 	labeltype &= (NODE_CAPABILITY_SHOW_UNREAD_COUNT |
         	      NODE_CAPABILITY_SHOW_ITEM_COUNT);
 
@@ -844,7 +845,7 @@ feed_list_view_update_node (const gchar *nodeId)
 static void
 on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
-	nodePtr	node = (nodePtr)user_data;
+	Node	*node = (Node *)user_data;
 
 	if (response_id == GTK_RESPONSE_OK) {
 		node_set_title (node, (gchar *) gtk_entry_get_text (GTK_ENTRY (liferea_dialog_lookup (GTK_WIDGET (dialog), "nameentry"))));
@@ -857,7 +858,7 @@ on_nodenamedialog_response (GtkDialog *dialog, gint response_id, gpointer user_d
 }
 
 void
-feed_list_view_rename_node (nodePtr node)
+feed_list_view_rename_node (Node *node)
 {
 	GtkWidget	*nameentry, *dialog;
 
@@ -876,13 +877,13 @@ static void
 feed_list_view_remove_cb (GtkDialog *dialog, gint response_id, gpointer user_data)
 {
 	if (GTK_RESPONSE_ACCEPT == response_id)
-		feedlist_remove_node ((nodePtr)user_data);
+		feedlist_remove_node ((Node *)user_data);
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
-feed_list_view_remove (nodePtr node)
+feed_list_view_remove (Node *node)
 {
 	GtkWidget	*dialog;
 	GtkWindow	*mainwindow;
@@ -920,22 +921,16 @@ feed_list_view_add_duplicate_url_cb (GtkDialog *dialog, gint response_id, gpoint
 {
 	subscriptionPtr tempSubscription = (subscriptionPtr) user_data;
 
-	if (GTK_RESPONSE_ACCEPT == response_id) {
-		feedlist_add_subscription (
-				subscription_get_source (tempSubscription),
-				subscription_get_filter (tempSubscription),
-				update_options_copy (tempSubscription->updateOptions),
-				FEED_REQ_PRIORITY_HIGH
-		);
-	}
-
-	subscription_free (tempSubscription);
+	if (response_id == GTK_RESPONSE_ACCEPT)
+		feedlist_add_subscription (tempSubscription->source, NULL, NULL, 0);
+	else
+		subscription_free (tempSubscription);
 
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
-feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription, nodePtr exNode)
+feed_list_view_add_duplicate_url_subscription (subscriptionPtr tempSubscription, Node *exNode)
 {
 	GtkWidget	*dialog;
 	GtkWindow	*mainwindow;

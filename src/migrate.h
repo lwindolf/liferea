@@ -36,6 +36,6 @@ typedef enum {
  * @param mode	migration mode
  * @param node	feed list root node
  */
-void migration_execute (migrationMode mode, nodePtr node);
+void migration_execute (migrationMode mode, Node *node);
 
 #endif

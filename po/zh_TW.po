@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liferea\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-19 20:26+0200\n"
+"POT-Creation-Date: 2025-02-26 09:18+0100\n"
 "PO-Revision-Date: 2005-12-11 13:22+0800\n"
 "Last-Translator: Jim Huang <jserv@kaffe.org>\n"
 "Language-Team: Chinese/Traditional <zh-l10n@linux.org.tw>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=0;\n"
 
-#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:341
+#: ../net.sourceforge.liferea.desktop.in.h:1 ../src/liferea_application.c:347
 #: ../glade/mainwindow.ui.h:1
 msgid "Liferea"
 msgstr ""
@@ -279,13 +279,13 @@ msgstr "/離開(_Q)"
 msgid "Browser command failed: %s"
 msgstr "瀏覽器指令失敗: %s"
 
-#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1140
+#: ../src/browser.c:101 ../src/ui/liferea_shell.c:1143
 #, c-format
 msgid "Starting: \"%s\""
 msgstr "啟動: \"%s\""
 
 #. unauthorized
-#: ../src/comments.c:117
+#: ../src/comments.c:116
 #, fuzzy
 msgid "Authorization Error"
 msgstr "認證"
@@ -320,79 +320,58 @@ msgstr ""
 msgid "%b %d %Y"
 msgstr ""
 
-#: ../src/enclosure.c:200
-#, c-format
-msgid "\"%s\" is not a valid enclosure type config file!"
-msgstr "\"%s\" 不是有效的設定檔!"
-
-#: ../src/enclosure.c:291
-msgid ""
-"You have not configured a download tool yet! Please do so in the "
-"'Enclosures' tab in Tools/Preferences."
-msgstr ""
-
-#: ../src/enclosure.c:310
-#, c-format
-msgid ""
-"Command failed: \n"
-"\n"
-"%s\n"
-"\n"
-" Please check whether the configured download tool is installed and working "
-"correctly! You can change it in the 'Download' tab in Tools/Preferences."
-msgstr ""
-
 #: ../src/export.c:172
 #, fuzzy, c-format
 msgid "Error renaming %s to %s: %s\n"
 msgstr "無法將 %s 更名為 %s\n"
 
-#: ../src/export.c:376 ../src/export.c:378
+#: ../src/export.c:371 ../src/export.c:373
 #, fuzzy, c-format
 msgid "XML error while reading OPML file! Could not import \"%s\"!"
 msgstr "讀入快取檔案 \"%s\" 時發生 XML 錯誤 ! 無法讀入快取檔案!"
 
-#: ../src/export.c:384 ../src/export.c:386
+#: ../src/export.c:379 ../src/export.c:381
 #, c-format
 msgid ""
 "Empty document! OPML document \"%s\" should not be empty when importing."
 msgstr "空白文件! OPML \"%s\" 檔案不應是空白檔案。"
 
-#: ../src/export.c:407 ../src/export.c:409
+#: ../src/export.c:402 ../src/export.c:404
 #, c-format
 msgid "\"%s\" is not a valid OPML document! Liferea cannot import this file!"
 msgstr "\"%s\" 不是有效的 OPML 檔案! 無法匯入!"
 
-#: ../src/export.c:428
+#: ../src/export.c:423
 msgid "Imported feed list"
 msgstr "匯入饋流列表"
 
-#: ../src/export.c:440
+#: ../src/export.c:435
 msgid "Import Feed List"
 msgstr "匯入饋流列表"
 
-#: ../src/export.c:440
+#: ../src/export.c:435
 msgid "Import"
 msgstr "匯入"
 
-#: ../src/export.c:440 ../src/export.c:457 ../src/fl_sources/opml_source.c:375
+#: ../src/export.c:435 ../src/export.c:452
+#: ../src/node_sources/opml_source.c:366
 #, fuzzy
 msgid "OPML Files"
 msgstr "選擇檔案"
 
-#: ../src/export.c:448
+#: ../src/export.c:443
 msgid "Error while exporting feed list!"
 msgstr "在匯出饋流列表時錯誤!"
 
-#: ../src/export.c:450
+#: ../src/export.c:445
 msgid "Feed List exported!"
 msgstr "饋流列表已匯出!"
 
-#: ../src/export.c:457
+#: ../src/export.c:452
 msgid "Export Feed List"
 msgstr "匯出饋流列表"
 
-#: ../src/export.c:457
+#: ../src/export.c:452
 msgid "Export"
 msgstr "匯出"
 
@@ -406,249 +385,260 @@ msgstr "<p>空文件!</p>"
 msgid "Invalid XML!"
 msgstr "<p>無效 XML!</p>"
 
-#: ../src/fl_sources/default_source.c:135 ../glade/new_subscription.ui.h:1
-#: ../glade/simple_subscription.ui.h:1
-msgid "New Subscription"
-msgstr "新增訂閱"
-
-#: ../src/fl_sources/google_source.c:192 ../src/fl_sources/reedah_source.c:120
-#: ../src/fl_sources/theoldreader_source.c:122
-msgid "Login failed!"
-msgstr ""
-
-#: ../src/fl_sources/google_source.c:404
-#, fuzzy
-msgid "Google Reader API"
-msgstr "饋流快取"
-
-#: ../src/fl_sources/google_source_feed.c:159
-msgid "Could not parse JSON returned by Google Reader API!"
-msgstr ""
-
-#: ../src/fl_sources/node_source.c:116
+#: ../src/node_source.c:113
 msgid "Miniflux"
 msgstr ""
 
-#: ../src/fl_sources/node_source.c:326
-msgid "No feed list source types found!"
-msgstr ""
-
-#: ../src/fl_sources/node_source.c:355
+#: ../src/node_source.c:343
 #, fuzzy
 msgid "Source Type"
 msgstr "來源類型:"
 
-#: ../src/fl_sources/node_source.c:406
+#: ../src/node_source.c:394
 #, c-format
 msgid "Login for '%s' has not yet completed! Please wait until login is done."
 msgstr ""
 
 #. FIXME: something is not perfect, because if you immediately
 #. remove the subscription tree afterwards there is a double free
-#: ../src/fl_sources/node_source.c:572
+#: ../src/node_source.c:560
 #, c-format
 msgid "The '%s' subscription was successfully converted to local feeds!"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:315
+#: ../src/node_sources/default_source.c:135 ../glade/new_subscription.ui.h:1
+#: ../glade/simple_subscription.ui.h:1
+msgid "New Subscription"
+msgstr "新增訂閱"
+
+#: ../src/node_sources/google_source.c:192
+#: ../src/node_sources/reedah_source.c:120
+#: ../src/node_sources/theoldreader_source.c:122
+msgid "Login failed!"
+msgstr ""
+
+#: ../src/node_sources/google_source.c:404
+msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
+msgstr ""
+
+#: ../src/node_sources/google_source_feed.c:159
+msgid "Could not parse JSON returned by Google Reader API!"
+msgstr ""
+
+#: ../src/node_sources/opml_source.c:313
 msgid "Planet, BlogRoll, OPML"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.c:375
+#: ../src/node_sources/opml_source.c:366
 #, fuzzy
 msgid "Choose OPML File"
 msgstr "選擇檔案"
 
-#: ../src/fl_sources/opml_source.c:375 ../src/ui/subscription_dialog.c:352
+#: ../src/node_sources/opml_source.c:366 ../src/ui/subscription_dialog.c:352
 msgid "_Open"
 msgstr ""
 
-#: ../src/fl_sources/opml_source.h:28
+#: ../src/node_sources/opml_source.h:28
 #, fuzzy
 msgid "New OPML Subscription"
 msgstr "新增訂閱"
 
-#: ../src/fl_sources/reedah_source.c:335
+#: ../src/node_sources/reedah_source.c:333
 msgid "Reedah"
 msgstr ""
 
-#: ../src/fl_sources/reedah_source_feed.c:154
+#: ../src/node_sources/reedah_source_feed.c:154
 msgid "Could not parse JSON returned by Reedah API!"
 msgstr ""
 
-#: ../src/fl_sources/theoldreader_source.c:364
+#: ../src/node_sources/theoldreader_source.c:362
 #, fuzzy
 msgid "TheOldReader"
 msgstr "饋流快取"
 
-#: ../src/fl_sources/ttrss_source.c:227 ../src/fl_sources/ttrss_source.c:293
+#: ../src/node_sources/ttrss_source.c:227
+#: ../src/node_sources/ttrss_source.c:293
 msgid "TinyTinyRSS HTTP API not reachable!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:234
+#: ../src/node_sources/ttrss_source.c:234
 msgid ""
 "TinyTinyRSS subscribing to feed failed! Check if you really passed a feed "
 "URL!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:300
+#: ../src/node_sources/ttrss_source.c:300
 msgid "TinyTinyRSS unsubscribing feed failed!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:318
+#: ../src/node_sources/ttrss_source.c:318
 #, c-format
 msgid ""
 "This TinyTinyRSS version does not support removing feeds. Upgrade to version "
 "%s or later!"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source.c:472
+#: ../src/node_sources/ttrss_source.c:470
 msgid "Tiny Tiny RSS"
 msgstr ""
 
-#: ../src/fl_sources/ttrss_source_feed.c:150
+#: ../src/node_sources/ttrss_source_feed.c:150
 msgid "Could not parse JSON returned by TinyTinyRSS API!"
 msgstr ""
 
+#: ../src/node_providers/newsbin.c:116
+#, fuzzy
+msgid "News Bin Properties"
+msgstr "訂閱屬性"
+
+#: ../src/node_providers/newsbin.c:120 ../glade/new_newsbin.ui.h:1
+msgid "Create News Bin"
+msgstr ""
+
+#: ../src/node_providers/vfolder.c:52
+#, fuzzy
+msgid "New Search Folder"
+msgstr "新目錄"
+
 #. if we don't find a feed with unread items do nothing
-#: ../src/itemlist.c:399
+#: ../src/itemlist.c:397
 #, fuzzy
 msgid "There are no unread items"
 msgstr "沒有未讀項目 "
 
-#: ../src/liferea_application.c:274
+#: ../src/liferea_application.c:280
 msgid ""
 "Start Liferea with its main window in STATE. STATE may be `shown' or `hidden'"
 msgstr ""
 
-#: ../src/liferea_application.c:274
+#: ../src/liferea_application.c:280
 msgid "STATE"
 msgstr ""
 
-#: ../src/liferea_application.c:275
+#: ../src/liferea_application.c:281
 #, fuzzy
 msgid "Show version information and exit"
 msgstr " --version        印出 Liferea 版本編號"
 
-#: ../src/liferea_application.c:276
+#: ../src/liferea_application.c:282
 #, fuzzy
 msgid "Add a new subscription"
 msgstr "新增訂閱"
 
-#: ../src/liferea_application.c:276
+#: ../src/liferea_application.c:282
 msgid "uri"
 msgstr ""
 
-#: ../src/liferea_application.c:277
+#: ../src/liferea_application.c:283
 msgid "Start with all plugins disabled"
 msgstr ""
 
-#: ../src/liferea_application.c:282
+#: ../src/liferea_application.c:288
 #, fuzzy
 msgid "Print debugging messages of all types"
 msgstr "  --debug-all      印出所有類別的除錯訊息"
 
-#: ../src/liferea_application.c:283
+#: ../src/liferea_application.c:289
 #, fuzzy
 msgid "Print debugging messages for the cache handling"
 msgstr "  --debug-cache    印出處理快取時的除錯訊息"
 
-#: ../src/liferea_application.c:284
+#: ../src/liferea_application.c:290
 #, fuzzy
 msgid "Print debugging messages for the configuration handling"
 msgstr "  --debug-conf     印出設定的除錯訊息"
 
-#: ../src/liferea_application.c:285
+#: ../src/liferea_application.c:291
 #, fuzzy
 msgid "Print debugging messages of the database handling"
 msgstr "  --debug-cache    印出處理快取時的除錯訊息"
 
-#: ../src/liferea_application.c:286
+#: ../src/liferea_application.c:292
 #, fuzzy
 msgid "Print debugging messages of all GUI functions"
 msgstr "  --debug-gui      印出所有圖形使用者介面的除錯訊息"
 
-#: ../src/liferea_application.c:287
+#: ../src/liferea_application.c:293
 msgid ""
 "Enables HTML rendering debugging. Each time Liferea renders HTML output it "
 "will also dump the generated HTML into ~/.cache/liferea/output.html"
 msgstr ""
 
-#: ../src/liferea_application.c:288
+#: ../src/liferea_application.c:294
 #, fuzzy
 msgid "Print debugging messages of all network activity"
 msgstr "  --debug-all      印出所有類別的除錯訊息"
 
-#: ../src/liferea_application.c:289
+#: ../src/liferea_application.c:295
 #, fuzzy
 msgid "Print debugging messages of all parsing functions"
 msgstr "  --debug-parsing  印出所有分析功能的除錯訊息"
 
-#: ../src/liferea_application.c:290
+#: ../src/liferea_application.c:296
 #, fuzzy
 msgid "Print debugging messages of the feed update processing"
 msgstr "  --debug-update   印出饋流升級的錯誤訊息"
 
-#: ../src/liferea_application.c:291
+#: ../src/liferea_application.c:297
 #, fuzzy
 msgid "Print debugging messages of the search folder matching"
 msgstr "  --debug-cache    印出處理快取時的除錯訊息"
 
-#: ../src/liferea_application.c:296 ../src/liferea_application.c:297
+#: ../src/liferea_application.c:302 ../src/liferea_application.c:303
 #, fuzzy
 msgid "Print debugging messages for the given topic"
 msgstr "  --debug-cache    印出處理快取時的除錯訊息"
 
 #. Some libsoup transport errors
-#: ../src/net.c:426
+#: ../src/net.c:475
 msgid "The update request was cancelled"
 msgstr ""
 
 #. http 3xx redirection
-#: ../src/net.c:429
+#: ../src/net.c:478
 msgid "The resource moved permanently to a new location"
 msgstr ""
 
 #. http 4xx client error
-#: ../src/net.c:432
+#: ../src/net.c:481
 #, fuzzy
 msgid ""
 "You are unauthorized to download this feed. Please update your username and "
 "password in the feed properties dialog box"
 msgstr "您未獲下載此饋流權限。請在饋流屬性視窗中更新輸入您的帳號與密碼。"
 
-#: ../src/net.c:434
+#: ../src/net.c:483
 #, fuzzy
 msgid "Payment required"
 msgstr "Payment Required"
 
-#: ../src/net.c:435
+#: ../src/net.c:484
 msgid "You're not allowed to access this resource"
 msgstr ""
 
-#: ../src/net.c:436
+#: ../src/net.c:485
 msgid "Resource Not Found"
 msgstr "未找到資源"
 
-#: ../src/net.c:437
+#: ../src/net.c:486
 msgid "Method Not Allowed"
 msgstr "方法不允許"
 
-#: ../src/net.c:438
+#: ../src/net.c:487
 msgid "Not Acceptable"
 msgstr "無法接受"
 
-#: ../src/net.c:439
+#: ../src/net.c:488
 #, fuzzy
 msgid "Proxy authentication required"
 msgstr "代理伺服器需要認證"
 
-#: ../src/net.c:440
+#: ../src/net.c:489
 #, fuzzy
 msgid "Request timed out"
 msgstr "存取逾時"
 
-#: ../src/net.c:441
+#: ../src/net.c:490
 #, fuzzy
 msgid ""
 "The webserver indicates this feed is discontinued. It's no longer available. "
@@ -657,58 +647,53 @@ msgid ""
 msgstr ""
 "此饋流已失效，將不再更新。Liferea 將不會更新它，但是您可以繼續讀取暫存標題。"
 
+#: ../src/net.c:491
+msgid "Too many requests. Liferea has to wait a while before trying again."
+msgstr ""
+
 #. http 5xx server errors
-#: ../src/net.c:444
+#: ../src/net.c:494
 #, fuzzy
 msgid "Internal Server Error"
 msgstr "伺服器端的錯誤"
 
-#: ../src/net.c:445
+#: ../src/net.c:495
 msgid "Not Implemented"
 msgstr ""
 
-#: ../src/net.c:446
+#: ../src/net.c:496
 msgid "Bad Gateway"
 msgstr ""
 
-#: ../src/net.c:447
+#: ../src/net.c:497
 #, fuzzy
 msgid "Service Unavailable"
 msgstr "\"%s\" 不可用!"
 
-#: ../src/net.c:448
+#: ../src/net.c:498
 msgid "Gateway Timeout"
 msgstr ""
 
-#: ../src/net.c:449
+#: ../src/net.c:499
 msgid "HTTP Version Not Supported"
 msgstr ""
 
-#: ../src/net.c:453
+#: ../src/net.c:503
 #, fuzzy
 msgid "An unknown networking error happened!"
 msgstr "(未知的網路錯誤)"
 
-#: ../src/newsbin.c:133
-#, fuzzy
-msgid "News Bin Properties"
-msgstr "訂閱屬性"
-
-#: ../src/newsbin.c:137 ../glade/new_newsbin.ui.h:1
-msgid "Create News Bin"
-msgstr ""
-
-#: ../src/node.c:625
+#: ../src/node.c:654
 #, c-format
 msgid "Failed to create feed file: %s"
 msgstr ""
 
-#: ../src/node.c:644
+#: ../src/node.c:673
 #, fuzzy
 msgid "Feed file exported from Liferea"
 msgstr "饋流列表已匯出!"
 
-#: ../src/node.c:659
+#: ../src/node.c:688
 #, fuzzy, c-format
 msgid "Error while saving feed file"
 msgstr "在匯出饋流列表時錯誤!"
@@ -723,100 +708,100 @@ msgstr ""
 
 #. in-memory check function	feedlist.opml rule id         		  rule menu label       	positive menu option    negative menu option    has param
 #. ========================================================================================================================================================================================
-#: ../src/rule.c:273
+#: ../src/rule.c:272
 msgid "Item"
 msgstr "項目"
 
-#: ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276
-#: ../src/rule.c:282 ../src/rule.c:283 ../src/rule.c:284
+#: ../src/rule.c:272 ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275
+#: ../src/rule.c:281 ../src/rule.c:282 ../src/rule.c:283
 msgid "does contain"
 msgstr "包含"
 
-#: ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275 ../src/rule.c:276
-#: ../src/rule.c:282 ../src/rule.c:283 ../src/rule.c:284
+#: ../src/rule.c:272 ../src/rule.c:273 ../src/rule.c:274 ../src/rule.c:275
+#: ../src/rule.c:281 ../src/rule.c:282 ../src/rule.c:283
 msgid "does not contain"
 msgstr "不包含"
 
-#: ../src/rule.c:274
+#: ../src/rule.c:273
 msgid "Item title"
 msgstr "項目標題"
 
-#: ../src/rule.c:275
+#: ../src/rule.c:274
 msgid "Item body"
 msgstr "項目內容"
 
-#: ../src/rule.c:276
+#: ../src/rule.c:275
 #, fuzzy
 msgid "Item author"
 msgstr "項目內容"
 
-#: ../src/rule.c:277
+#: ../src/rule.c:276
 msgid "Read status"
 msgstr "閱讀狀態"
 
-#: ../src/rule.c:277
+#: ../src/rule.c:276
 msgid "is unread"
 msgstr "未讀"
 
-#: ../src/rule.c:277
+#: ../src/rule.c:276
 msgid "is read"
 msgstr "已讀"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 msgid "Flag status"
 msgstr "標籤狀態"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 msgid "is flagged"
 msgstr "以標籤"
 
-#: ../src/rule.c:278
+#: ../src/rule.c:277
 msgid "is unflagged"
 msgstr "未標籤"
 
-#: ../src/rule.c:279
+#: ../src/rule.c:278
 #, fuzzy
 msgid "Enclosure"
 msgstr "附件"
 
-#: ../src/rule.c:279 ../src/rule.c:280
+#: ../src/rule.c:278 ../src/rule.c:279
 #, fuzzy
 msgid "included"
 msgstr "包含圖片"
 
-#: ../src/rule.c:279 ../src/rule.c:280
+#: ../src/rule.c:278 ../src/rule.c:279
 #, fuzzy
 msgid "not included"
 msgstr "包含圖片"
 
-#: ../src/rule.c:280
+#: ../src/rule.c:279
 msgid "Podcast"
 msgstr ""
 
-#: ../src/rule.c:281
+#: ../src/rule.c:280
 #, fuzzy
 msgid "Category"
 msgstr "分類"
 
-#: ../src/rule.c:281
+#: ../src/rule.c:280
 #, fuzzy
 msgid "is set"
 msgstr "已讀"
 
-#: ../src/rule.c:281
+#: ../src/rule.c:280
 msgid "is not set"
 msgstr ""
 
-#: ../src/rule.c:282
+#: ../src/rule.c:281
 msgid "Feed title"
 msgstr "饋流標題"
 
-#: ../src/rule.c:283
+#: ../src/rule.c:282
 #, fuzzy
 msgid "Feed source"
 msgstr "饋流來源"
 
-#: ../src/rule.c:284
+#: ../src/rule.c:283
 msgid "Parent folder title"
 msgstr ""
 
@@ -856,16 +841,16 @@ msgstr "更新: \"%s\""
 msgid "Updating '%s'..."
 msgstr "更新: \"%s\""
 
-#: ../src/ui/auth_dialog.c:114
+#: ../src/ui/auth_dialog.c:112
 #, c-format
 msgid "Enter the username and password for \"%s\" (%s):"
 msgstr "輸入使用者名稱與密碼 \"%s\" (%s):"
 
-#: ../src/ui/auth_dialog.c:116
+#: ../src/ui/auth_dialog.c:114
 msgid "Unknown source"
 msgstr "未知來源"
 
-#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:267
+#: ../src/ui/browser_tabs.c:262 ../src/ui/popup_menu.c:246
 msgid "Untitled"
 msgstr "未命名"
 
@@ -892,54 +877,54 @@ msgstr "您確定要刪除 %s 嗎 ？"
 msgid "(Empty)"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:826
+#: ../src/ui/feed_list_view.c:825
 #, c-format
 msgid ""
 "%s\n"
 "<i>Rebuilding</i>"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:895
+#: ../src/ui/feed_list_view.c:894
 msgid "Deleting entry"
 msgstr "刪除項目中"
 
-#: ../src/ui/feed_list_view.c:896
+#: ../src/ui/feed_list_view.c:895
 #, c-format
 msgid "Are you sure that you want to delete \"%s\" and its contents?"
 msgstr "您確定要刪除 %s 及其內容嗎？"
 
-#: ../src/ui/feed_list_view.c:896
+#: ../src/ui/feed_list_view.c:895
 #, c-format
 msgid "Are you sure that you want to delete \"%s\"?"
 msgstr "您確定要刪除 %s 嗎 ？"
 
-#: ../src/ui/feed_list_view.c:905 ../src/ui/feed_list_view.c:959
-#: ../src/ui/popup_menu.c:245
+#: ../src/ui/feed_list_view.c:904 ../src/ui/feed_list_view.c:952
+#: ../src/ui/popup_menu.c:224
 #, fuzzy
 msgid "_Cancel"
 msgstr "更新全部(_A)"
 
-#: ../src/ui/feed_list_view.c:906 ../src/ui/popup_menu.c:396
+#: ../src/ui/feed_list_view.c:905 ../src/ui/popup_menu.c:375
 #, fuzzy
 msgid "_Delete"
 msgstr "/刪除饋流(_D)"
 
-#: ../src/ui/feed_list_view.c:908
+#: ../src/ui/feed_list_view.c:907
 msgid "Deletion Confirmation"
 msgstr "刪除確認"
 
-#: ../src/ui/feed_list_view.c:947
+#: ../src/ui/feed_list_view.c:940
 #, c-format
 msgid ""
 "Are you sure that you want to add a new subscription with URL \"%s\"? "
 "Another subscription with the same URL already exists (\"%s\")."
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:960
+#: ../src/ui/feed_list_view.c:953
 msgid "_Add"
 msgstr ""
 
-#: ../src/ui/feed_list_view.c:962
+#: ../src/ui/feed_list_view.c:955
 #, fuzzy
 msgid "Adding Duplicate Subscription Confirmation"
 msgstr "刪除確認"
@@ -953,41 +938,27 @@ msgstr "無法找到圖檔: %s"
 msgid "This item has no link specified!"
 msgstr "此項目沒有指定連結!"
 
-#: ../src/ui/item_list_view.c:479
-#, fuzzy
-msgid "*** No title ***"
-msgstr "[無標題]"
-
-#: ../src/ui/item_list_view.c:483
+#: ../src/ui/item_list_view.c:492
 msgid " <span background='red' color='black'> important </span> "
 msgstr ""
 
-#: ../src/ui/item_list_view.c:842
+#: ../src/ui/item_list_view.c:853
 msgid "Headline"
 msgstr "標題"
 
-#: ../src/ui/item_list_view.c:860
+#: ../src/ui/item_list_view.c:871
 msgid "Date"
 msgstr "日期"
 
-#: ../src/ui/item_list_view.c:1029
+#: ../src/ui/item_list_view.c:1040
 msgid "You must select a feed to delete its items!"
 msgstr "您必須先選擇一個饋流才能刪除!"
 
-#: ../src/ui/item_list_view.c:1045 ../src/ui/item_list_view.c:1123
-#: ../src/ui/item_list_view.c:1138
+#: ../src/ui/item_list_view.c:1056 ../src/ui/item_list_view.c:1134
+#: ../src/ui/item_list_view.c:1149
 msgid "No item has been selected"
 msgstr "未選擇項目!"
 
-#: ../src/ui/liferea_browser.c:481
-#, fuzzy
-msgid "Content download failed! Try disabling reader mode."
-msgstr "選擇下載目錄"
-
-#: ../src/ui/liferea_browser.c:494
-msgid "Content extraction failed! Try disabling reader mode."
-msgstr ""
-
 # what's this ?
 # #: src/ui_tray.c:90
 # #, c-format
@@ -1002,241 +973,233 @@ msgstr ""
 # msgid_plural "%d new items!"
 # msgstr[0] "%d 個新項目"
 # msgstr[1] "%d 個新項目"
-#: ../src/ui/liferea_shell.c:412
+#: ../src/ui/liferea_shell.c:410
 #, fuzzy, c-format
 msgid " (%d new)"
 msgid_plural " (%d new)"
 msgstr[0] "%d 個新項目"
 msgstr[1] "%d 個新項目"
 
-#: ../src/ui/liferea_shell.c:417
+#: ../src/ui/liferea_shell.c:415
 #, fuzzy, c-format
 msgid "%d unread%s"
 msgid_plural "%d unread%s"
 msgstr[0] "未讀"
 msgstr[1] "未讀"
 
-#: ../src/ui/liferea_shell.c:859
+#: ../src/ui/liferea_shell.c:857
 msgid "Help Topics"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:865
+#: ../src/ui/liferea_shell.c:863
 msgid "Quick Reference"
 msgstr "快速參考"
 
-#: ../src/ui/liferea_shell.c:871
+#: ../src/ui/liferea_shell.c:869
 msgid "FAQ"
 msgstr ""
 
-#: ../src/ui/liferea_shell.c:1137
+#: ../src/ui/liferea_shell.c:1140
 #, fuzzy, c-format
 msgid "Email command failed: %s"
 msgstr "瀏覽器指令失敗: %s"
 
-#: ../src/ui/popup_menu.c:101 ../glade/liferea_menu.ui.h:25
+#: ../src/ui/popup_menu.c:80 ../glade/liferea_menu.ui.h:25
 msgid "Open In _Tab"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:105 ../glade/liferea_menu.ui.h:26
+#: ../src/ui/popup_menu.c:84 ../glade/liferea_menu.ui.h:26
 #, fuzzy
 msgid "_Open In Browser"
 msgstr "載入瀏覽器(_L)"
 
-#: ../src/ui/popup_menu.c:109 ../glade/liferea_menu.ui.h:27
+#: ../src/ui/popup_menu.c:88 ../glade/liferea_menu.ui.h:27
 #, fuzzy
 msgid "Open In _External Browser"
 msgstr "<span weight=\"bold\">外部瀏覽器設定</span>"
 
-#: ../src/ui/popup_menu.c:114
+#: ../src/ui/popup_menu.c:93
 msgid "Email The Author"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:139
+#: ../src/ui/popup_menu.c:118
 msgid "Copy to News Bin"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:147
+#: ../src/ui/popup_menu.c:126
 #, c-format
 msgid "_Bookmark at %s"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:153
+#: ../src/ui/popup_menu.c:132
 #, fuzzy
 msgid "Copy Item _Location"
 msgstr "/複製連結位址(_C)"
 
-#: ../src/ui/popup_menu.c:162 ../glade/liferea_menu.ui.h:22
+#: ../src/ui/popup_menu.c:141 ../glade/liferea_menu.ui.h:22
 msgid "Toggle _Read Status"
 msgstr "切換閱讀狀態(_R)"
 
-#: ../src/ui/popup_menu.c:166 ../glade/liferea_menu.ui.h:23
+#: ../src/ui/popup_menu.c:145 ../glade/liferea_menu.ui.h:23
 msgid "Toggle Item _Flag"
 msgstr "切換項目旗標(_F)"
 
-#: ../src/ui/popup_menu.c:170
+#: ../src/ui/popup_menu.c:149
 #, fuzzy
 msgid "R_emove Item"
 msgstr "/移除項目(_E)"
 
-#: ../src/ui/popup_menu.c:242
+#: ../src/ui/popup_menu.c:221
 msgid "Save items to file"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:247
+#: ../src/ui/popup_menu.c:226
 msgid "_Save"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:256
+#: ../src/ui/popup_menu.c:235
 msgid "RSS 2.0 files"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:262
+#: ../src/ui/popup_menu.c:241
 #, fuzzy
 msgid "All files"
 msgstr "本地檔案(_L)"
 
-#: ../src/ui/popup_menu.c:338 ../glade/liferea_menu.ui.h:13
+#: ../src/ui/popup_menu.c:317 ../glade/liferea_menu.ui.h:13
 #, fuzzy
 msgid "_Update"
 msgstr "/更新(U)"
 
-#: ../src/ui/popup_menu.c:340
+#: ../src/ui/popup_menu.c:319
 #, fuzzy
 msgid "_Update Folder"
 msgstr "/更新目錄(_U)"
 
-#: ../src/ui/popup_menu.c:350
+#: ../src/ui/popup_menu.c:329
 #, fuzzy
 msgid "New _Subscription..."
 msgstr "新增訂閱(_N)..."
 
-#: ../src/ui/popup_menu.c:353 ../glade/liferea_menu.ui.h:5
+#: ../src/ui/popup_menu.c:332 ../glade/liferea_menu.ui.h:5
 msgid "New _Folder..."
 msgstr "新目錄(_F)..."
 
-#: ../src/ui/popup_menu.c:356 ../glade/liferea_menu.ui.h:6
+#: ../src/ui/popup_menu.c:335 ../glade/liferea_menu.ui.h:6
 #, fuzzy
 msgid "New S_earch Folder..."
 msgstr "新目錄(_F)..."
 
-#: ../src/ui/popup_menu.c:357
+#: ../src/ui/popup_menu.c:336
 #, fuzzy
 msgid "New S_ource..."
 msgstr "/新增(_N)/新增目錄(_O)"
 
-#: ../src/ui/popup_menu.c:358 ../glade/liferea_menu.ui.h:8
+#: ../src/ui/popup_menu.c:337 ../glade/liferea_menu.ui.h:8
 #, fuzzy
 msgid "New _News Bin..."
 msgstr "/新增(_N)/新增目錄(_O)"
 
-#: ../src/ui/popup_menu.c:361
+#: ../src/ui/popup_menu.c:340
 #, fuzzy
 msgid "_New"
 msgstr "/新增(_N)"
 
-#: ../src/ui/popup_menu.c:370
+#: ../src/ui/popup_menu.c:349
 #, fuzzy
 msgid "Sort Feeds"
 msgstr "匯入饋流列表"
 
-#: ../src/ui/popup_menu.c:378
+#: ../src/ui/popup_menu.c:357
 #, fuzzy
 msgid "_Mark All As Read"
 msgstr "/全部標示為已讀(_M)"
 
-#: ../src/ui/popup_menu.c:380
+#: ../src/ui/popup_menu.c:359
 msgid "_Export Items To File"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:388
+#: ../src/ui/popup_menu.c:367
 msgid "_Rebuild"
 msgstr ""
 
-#: ../src/ui/popup_menu.c:397 ../glade/liferea_menu.ui.h:17
+#: ../src/ui/popup_menu.c:376 ../glade/liferea_menu.ui.h:17
 #, fuzzy
 msgid "_Properties"
 msgstr "屬性(_P)..."
 
-#: ../src/ui/popup_menu.c:404
+#: ../src/ui/popup_menu.c:383
 #, fuzzy
 msgid "Convert To Local Subscriptions..."
 msgstr "新增訂閱(_N)..."
 
-#: ../src/ui/preferences_dialog.c:82
+#: ../src/ui/preferences_dialog.c:69
 msgid "GNOME default"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:83
+#: ../src/ui/preferences_dialog.c:70
 msgid "Text below icons"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:84
+#: ../src/ui/preferences_dialog.c:71
 msgid "Text beside icons"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:85
+#: ../src/ui/preferences_dialog.c:72
 msgid "Icons only"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:86
+#: ../src/ui/preferences_dialog.c:73
 msgid "Text only"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:94 ../src/ui/subscription_dialog.c:43
+#: ../src/ui/preferences_dialog.c:81 ../src/ui/subscription_dialog.c:43
 #, fuzzy
 msgid "minutes"
 msgstr "分鐘。"
 
-#: ../src/ui/preferences_dialog.c:95 ../src/ui/subscription_dialog.c:44
+#: ../src/ui/preferences_dialog.c:82 ../src/ui/subscription_dialog.c:44
 msgid "hours"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:96 ../src/ui/subscription_dialog.c:45
+#: ../src/ui/preferences_dialog.c:83 ../src/ui/subscription_dialog.c:45
 msgid "days"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:101
+#: ../src/ui/preferences_dialog.c:88
 msgid "Space"
 msgstr "空白"
 
-#: ../src/ui/preferences_dialog.c:102
+#: ../src/ui/preferences_dialog.c:89
 msgid "<Ctrl> Space"
 msgstr "<Ctrl> 空白鍵"
 
-#: ../src/ui/preferences_dialog.c:103
+#: ../src/ui/preferences_dialog.c:90
 msgid "<Alt> Space"
 msgstr "<Alt> 空白鍵"
 
-#: ../src/ui/preferences_dialog.c:108
+#: ../src/ui/preferences_dialog.c:95
 #, fuzzy
 msgid "Normal View"
 msgstr "本地檔案(_L)"
 
-#: ../src/ui/preferences_dialog.c:109
+#: ../src/ui/preferences_dialog.c:96
 #, fuzzy
 msgid "Wide View"
 msgstr "檢視項目(_V)"
 
-#: ../src/ui/preferences_dialog.c:110
+#: ../src/ui/preferences_dialog.c:97
 msgid "Automatic"
 msgstr ""
 
-#: ../src/ui/preferences_dialog.c:462
+#: ../src/ui/preferences_dialog.c:406
 #, fuzzy
 msgid "Default Browser"
 msgstr "瀏覽器"
 
-#: ../src/ui/preferences_dialog.c:464
+#: ../src/ui/preferences_dialog.c:408
 msgid "Manual"
 msgstr "手動"
-
-#: ../src/ui/preferences_dialog.c:714
-msgid "Type"
-msgstr "型態"
-
-#: ../src/ui/preferences_dialog.c:717
-msgid "Program"
-msgstr "程式"
 
 #: ../src/ui/rule_editor.c:261
 #, fuzzy
@@ -1269,41 +1232,36 @@ msgstr "此饋流未指定預設更新頻率"
 msgid "All Files"
 msgstr "本地檔案(_L)"
 
-#: ../src/update.c:377
+#: ../src/update_job.c:67
 #, c-format
 msgid "Error opening temp file %s to use for filtering!"
 msgstr "當開始暫存檔 %s 以處理過濾時，發生錯誤!"
 
-#: ../src/update.c:399
+#: ../src/update_job.c:89
 #, c-format
 msgid "%s exited with status %d"
 msgstr "%s 終止，錯誤代碼： %d"
 
-#: ../src/update.c:405 ../src/update.c:630
+#: ../src/update_job.c:95 ../src/update_job.c:318
 #, c-format
 msgid "Error: Could not open pipe \"%s\""
 msgstr "錯誤: 無法開啟管道 \"%s\"!"
 
-#: ../src/update.c:409
+#: ../src/update_job.c:99
 #, fuzzy
 msgid "Error: Could not write temporary file!"
 msgstr "錯誤: 無法開啟檔案 \"%s\"!"
 
 #. FIXME: maybe setting request->returncode would be better
-#: ../src/update.c:661
+#: ../src/update_job.c:349
 #, c-format
 msgid "Error: Could not open file \"%s\""
 msgstr "錯誤: 無法開啟檔案 \"%s\"!"
 
-#: ../src/update.c:667
+#: ../src/update_job.c:355
 #, c-format
 msgid "Error: There is no file \"%s\""
 msgstr "錯誤: 無此檔案 \"%s\"!"
-
-#: ../src/vfolder.c:53
-#, fuzzy
-msgid "New Search Folder"
-msgstr "新目錄"
 
 #: ../src/webkit/liferea_web_view.c:163
 #, fuzzy
@@ -1365,10 +1323,6 @@ msgstr "放大字型(_I)"
 #: ../src/webkit/liferea_web_view.c:206
 msgid "_Decrease Text Size"
 msgstr "縮小字型(D)"
-
-#: ../src/webkit/liferea_web_view.c:213
-msgid "_Reader Mode"
-msgstr ""
 
 #: ../src/xml.c:427
 #, fuzzy
@@ -1950,37 +1904,8 @@ msgid ""
 msgstr ""
 
 #: ../glade/prefs.ui.h:57
-msgid "Use _Reader mode."
-msgstr ""
-
-#: ../glade/prefs.ui.h:58
-msgid ""
-"This enables <a href=\"https://github.com/mozilla/readability\">stripping</"
-"a> all non-content elements (like scripts, fonts, tracking)"
-msgstr ""
-
-#: ../glade/prefs.ui.h:59
 msgid "Privacy"
 msgstr ""
-
-#: ../glade/prefs.ui.h:60
-#, fuzzy
-msgid "Downloading Content"
-msgstr "附件下載中"
-
-#: ../glade/prefs.ui.h:61
-msgid "_Download using"
-msgstr "下載方式：(_D)"
-
-#: ../glade/prefs.ui.h:63
-#, no-c-format
-msgid "custom-command %s"
-msgstr ""
-
-#: ../glade/prefs.ui.h:64 ../glade/properties.ui.h:33
-#, fuzzy
-msgid "Download"
-msgstr "下載方式：(_D)"
 
 #: ../glade/properties.ui.h:1
 msgid "Subscription Properties"
@@ -2024,7 +1949,7 @@ msgid ""
 "directories in non-supported formats."
 msgstr "Liferea 可以使用額外的過濾外掛模組來存取不支援的格式。細節請查閱文件。"
 
-#: ../glade/properties.ui.h:21 ../xslt/item.xml.in.h:1
+#: ../glade/properties.ui.h:21 ../js/node.xml.in.h:1
 #, fuzzy
 msgid "Source"
 msgstr "來源:"
@@ -2061,6 +1986,11 @@ msgstr ""
 #: ../glade/properties.ui.h:29
 msgid "Use HTTP _authentication"
 msgstr "使用 HTTP 認證(_A)"
+
+#: ../glade/properties.ui.h:33
+#, fuzzy
+msgid "Download"
+msgstr "下載方式：(_D)"
 
 #: ../glade/properties.ui.h:34
 msgid "_Automatically download all enclosures of this feed."
@@ -2239,179 +2169,183 @@ msgstr ""
 msgid "_Downloading Now"
 msgstr "附件下載中"
 
-#: ../xslt/feed.xml.in.h:1
-msgid "Feed:"
-msgstr "饋流:"
+#: ../js/item.xml.in.h:1 ../js/node.xml.in.h:2
+#, fuzzy
+msgid "Author"
+msgstr "作者"
 
-#: ../xslt/feed.xml.in.h:2 ../xslt/source.xml.in.h:1
-msgid "Source:"
-msgstr "來源:"
+#: ../js/item.xml.in.h:2
+#, fuzzy
+msgid "Creator"
+msgstr "創作者"
 
-#: ../xslt/feed.xml.in.h:3
+#: ../js/item.xml.in.h:3
+msgid "Shared By"
+msgstr ""
+
+#: ../js/item.xml.in.h:4
+msgid "Via"
+msgstr ""
+
+#: ../js/node.xml.in.h:3
 #, fuzzy
 msgid "Publisher"
 msgstr "發佈者"
 
-#: ../xslt/feed.xml.in.h:4
+#: ../js/node.xml.in.h:4
 #, fuzzy
 msgid "Copyright"
 msgstr "版權"
 
-#: ../xslt/feed.xml.in.h:5
+#: ../js/node.xml.in.h:5
+msgid ""
+"⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
+"{{ maxFailures }} retries)!"
+msgstr ""
+
+#: ../js/node.xml.in.h:6
+msgid "Please check your credentials!"
+msgstr ""
+
+#: ../js/node.xml.in.h:7
+msgid ""
+"⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
+"{{ maxFailures }} retries)..."
+msgstr ""
+
+#: ../js/node.xml.in.h:8
+msgid "⚠️ Account login for '{{ title }}' has not yet started."
+msgstr ""
+
+#: ../js/node.xml.in.h:9
 #, fuzzy
 msgid "There was a problem when fetching this subscription!"
 msgstr "讀取此訂閱時出現問題。請確認網址與終端機輸出！"
 
-#: ../xslt/feed.xml.in.h:6
+#: ../js/node.xml.in.h:10
 #, fuzzy
 msgid "1. Authentication"
 msgstr "認證"
 
-#: ../xslt/feed.xml.in.h:7
+#: ../js/node.xml.in.h:11
 #, fuzzy
 msgid "2. Download"
 msgstr "下載方式：(_D)"
 
-#: ../xslt/feed.xml.in.h:8
+#: ../js/node.xml.in.h:12
 msgid "3. Feed Discovery"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:9
+#: ../js/node.xml.in.h:13
 msgid "4. Parsing"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:10
+#: ../js/node.xml.in.h:14
 #, fuzzy
 msgid "Details:"
 msgstr "顯示細節"
 
-#: ../xslt/feed.xml.in.h:11
+#: ../js/node.xml.in.h:15
 msgid "Authentication failed. Please check the credentials and try again!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:12
+#: ../js/node.xml.in.h:16
 #, fuzzy
 msgid "There was an error when downloading the feed source:"
 msgstr "分析饋流時出現錯誤"
 
-#: ../xslt/feed.xml.in.h:13
+#: ../js/node.xml.in.h:17
 #, fuzzy
 msgid "There was an error when running the feed filter command:"
 msgstr "分析饋流時出現錯誤"
 
-#: ../xslt/feed.xml.in.h:14
+#: ../js/node.xml.in.h:18
 msgid ""
 "The source does not point directly to a feed or a webpage with a link to a "
 "feed!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:15
+#: ../js/node.xml.in.h:19
 msgid "Sorry, the feed could not be parsed!"
 msgstr ""
 
-#: ../xslt/feed.xml.in.h:16
+#: ../js/node.xml.in.h:20
 msgid "You may want to contact the author/webmaster of the feed about this!"
 msgstr ""
 
-#: ../xslt/folder.xml.in.h:1
+#, c-format
+#~ msgid "\"%s\" is not a valid enclosure type config file!"
+#~ msgstr "\"%s\" 不是有效的設定檔!"
+
+#, fuzzy, c-format
+#~ msgid ""
+#~ "Command failed: \n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr "瀏覽器指令失敗: %s"
+
 #, fuzzy
-msgid "Folder:"
-msgstr "虛擬目錄"
+#~ msgid "Google Reader API"
+#~ msgstr "饋流快取"
 
-#: ../xslt/folder.xml.in.h:2 ../xslt/source.xml.in.h:2
-msgid "children with"
-msgstr ""
-
-#: ../xslt/folder.xml.in.h:3 ../xslt/source.xml.in.h:3
-#: ../xslt/vfolder.xml.in.h:2
 #, fuzzy
-msgid "unread headlines"
-msgstr "標題"
+#~ msgid "Content download failed! Try disabling reader mode."
+#~ msgstr "選擇下載目錄"
 
-#: ../xslt/item.xml.in.h:2
-msgid "Feed"
-msgstr "饋流"
+#~ msgid "Feed:"
+#~ msgstr "饋流:"
 
-#: ../xslt/item.xml.in.h:3
+#~ msgid "Source:"
+#~ msgstr "來源:"
+
 #, fuzzy
-msgid "Filed under"
-msgstr "饋流快取"
+#~ msgid "Folder:"
+#~ msgstr "虛擬目錄"
 
-#: ../xslt/item.xml.in.h:4
 #, fuzzy
-msgid "Author"
-msgstr "作者"
+#~ msgid "unread headlines"
+#~ msgstr "標題"
 
-#: ../xslt/item.xml.in.h:5
-msgid "Shared by"
-msgstr ""
+#~ msgid "Feed"
+#~ msgstr "饋流"
 
-#: ../xslt/item.xml.in.h:6
-msgid "Via"
-msgstr ""
-
-#: ../xslt/item.xml.in.h:7
-msgid "Related"
-msgstr ""
-
-#: ../xslt/item.xml.in.h:8
-msgid "Also posted in"
-msgstr ""
-
-#: ../xslt/item.xml.in.h:9
 #, fuzzy
-msgid "Creator"
-msgstr "創作者"
+#~ msgid "Filed under"
+#~ msgstr "饋流快取"
 
-#: ../xslt/item.xml.in.h:10
-msgid "Coordinates"
-msgstr ""
-
-#: ../xslt/item.xml.in.h:11
-msgid "Map"
-msgstr ""
-
-#: ../xslt/item.xml.in.h:12
-msgid "View count"
-msgstr ""
-
-#: ../xslt/item.xml.in.h:13
-msgid "Rating"
-msgstr ""
-
-#: ../xslt/item.xml.in.h:14
 #, fuzzy
-msgid "Comments"
-msgstr "說明"
+#~ msgid "Comments"
+#~ msgstr "說明"
 
-#: ../xslt/item.xml.in.h:15
 #, fuzzy
-msgid "Updating..."
-msgstr "更新: \"%s\""
+#~ msgid "Updating..."
+#~ msgstr "更新: \"%s\""
 
-#: ../xslt/item.xml.in.h:16
-msgid "Section"
-msgstr ""
-
-#: ../xslt/item.xml.in.h:17
-msgid "Department"
-msgstr ""
-
-#: ../xslt/newsbin.xml.in.h:1
 #, fuzzy
-msgid "News Bin:"
-msgstr "新視窗"
+#~ msgid "News Bin:"
+#~ msgstr "新視窗"
 
-#: ../xslt/newsbin.xml.in.h:2
-msgid ""
-"Add items to this news bin by selecting \"Copy to News Bin\" from the item "
-"list context menu."
-msgstr ""
-
-#: ../xslt/vfolder.xml.in.h:1
 #, fuzzy
-msgid "Search Folder:"
-msgstr "新目錄"
+#~ msgid "Search Folder:"
+#~ msgstr "新目錄"
+
+#, fuzzy
+#~ msgid "*** No title ***"
+#~ msgstr "[無標題]"
+
+#~ msgid "Type"
+#~ msgstr "型態"
+
+#~ msgid "Program"
+#~ msgstr "程式"
+
+#, fuzzy
+#~ msgid "Downloading Content"
+#~ msgstr "附件下載中"
+
+#~ msgid "_Download using"
+#~ msgstr "下載方式：(_D)"
 
 #, fuzzy
 #~ msgid "Unable to connect to remote host"

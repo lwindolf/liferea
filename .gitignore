@@ -41,6 +41,8 @@ po/Makefile.in.in
 po/POTFILES
 po/liferea.pot
 po/stamp-it
+js/item.xml
+js/node.xml
 src/js.c
 src/js.h
 src/dbus_wrap.c
@@ -55,7 +57,11 @@ src/tests/parse_html
 src/tests/parse_rss
 src/tests/parse_xml
 src/tests/social
+src/tests/update
 xslt/*.xml
 org.gnome.liferea.gschema.valid
 stamp-h1
 .flatpak-builder
+.vscode
+node_modules
+package-lock.json

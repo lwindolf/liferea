@@ -1,7 +1,7 @@
 /**
  * @file db.c sqlite backend
  *
- * Copyright (C) 2007-2020  Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2024  Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 #include "item.h"
 #include "itemset.h"
 #include "metadata.h"
-#include "vfolder.h"
+#include "node_providers/vfolder.h"
 
 static sqlite3	*db = NULL;
 gboolean searchFolderRebuild = FALSE;
@@ -1440,7 +1440,7 @@ db_subscription_metadata_update_cb (const gchar *key,
                                     gpointer user_data)
 {
 	sqlite3_stmt	*stmt;
-	nodePtr		node = (nodePtr)user_data;
+	Node		*node = (Node *)user_data;
 	gint		res;
 
 	stmt = db_get_statement ("subscriptionMetadataUpdateStmt");
@@ -1517,7 +1517,7 @@ db_subscription_remove (const gchar *id)
 }
 
 void
-db_node_update (nodePtr node)
+db_node_update (Node *node)
 {
 	sqlite3_stmt	*stmt;
 	gint		res;
@@ -1528,7 +1528,7 @@ db_node_update (nodePtr node)
 	sqlite3_bind_text (stmt, 1, node->id, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 2, node->parent->id, -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text (stmt, 3, node->title, -1, SQLITE_TRANSIENT);
-	sqlite3_bind_text (stmt, 4, node_type_to_str (node), -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text (stmt, 4, node_provider_get_name (node), -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int  (stmt, 5, node->expanded?1:0);
 	sqlite3_bind_int  (stmt, 6, node->sortColumn);
 	sqlite3_bind_int  (stmt, 7, node->sortReversed?1:0);
@@ -1542,7 +1542,7 @@ db_node_update (nodePtr node)
 }
 
 static gboolean
-db_node_find (nodePtr node, gpointer id)
+db_node_find (Node *node, gpointer id)
 {
 	GSList *iter;
 
@@ -1551,7 +1551,7 @@ db_node_find (nodePtr node, gpointer id)
 
 	iter = node->children;
 	while (iter) {
-		if (db_node_find ((nodePtr)iter->data, id))
+		if (db_node_find ((Node *)iter->data, id))
 			return TRUE;
 		iter = g_slist_next (iter);
 	}
@@ -1576,7 +1576,7 @@ db_node_remove (const gchar *id)
 }
 
 void
-db_node_cleanup (nodePtr root)
+db_node_cleanup (Node *root)
 {
 	sqlite3_stmt	*stmt;
 

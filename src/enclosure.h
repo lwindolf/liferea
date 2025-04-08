@@ -1,7 +1,7 @@
 /*
  * @file enclosure.h enclosure/podcast support
  *
- * Copyright (C) 2007-2012 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,15 +22,6 @@
 #define _ENCLOSURE_H
 
 #include <glib.h>
-
-/* structure describing the preferences for a MIME type or file extension */
-typedef struct encType {
-	gchar		*mime;		/*<< either mime or extension is set */
-	gchar		*extension;
-	gchar		*cmd;		/*<< the command to launch the enclosure type */
-	gboolean	permanent;	/*<< if TRUE definition is deleted after opening and
-					     not added to the permanent list of type configs */
-} *encTypePtr;
 
 /* structure describing an enclosure and its states */
 typedef struct enclosure {
@@ -84,64 +75,11 @@ gchar * enclosure_to_string (const enclosurePtr enclosure);
 gchar * enclosure_get_url (const gchar *str);
 
 /**
- * enclosure_get_mime:
- * @str:	enclosure string to parse
- *
- * Get MIME type from enclosure string
- *
- * Returns: (transfer full): MIME type string, free after use
- */
-gchar * enclosure_get_mime (const gchar *str);
-
-/**
  * enclosure_free: (skip)
  * @enclosure:	the enclosure
  *
  * Free all memory associated with the enclosure.
  */
 void enclosure_free (enclosurePtr enclosure);
-
-/**
- * enclosure_mime_types_get: (skip)
- *
- * Returns all configured enclosure types.
- *
- * Returns: (transfer none): list of encType structures
- */
-const GSList * enclosure_mime_types_get (void);
-
-/**
- * enclosure_mime_type_add: (skip)
- * @type:	the new definition
- *
- * Adds a new MIME type handling definition.
- */
-void enclosure_mime_type_add (encTypePtr type);
-
-/**
- * enclosure_mime_type_remove: (skip)
- * @type:	the definition to remove
- *
- * Removes an existing MIME type handling definition.
- * The definition will be free'd by this function.
- */
-void enclosure_mime_type_remove (encTypePtr type);
-
-/**
- * enclosure_mime_types_save: (skip)
- *
- * Save all MIME type definitions.
- */
-void enclosure_mime_types_save (void);
-
-/**
- * enclosure_download: (skip)
- * @type:		ULL or pointer to type structure
- * @url:		valid HTTP URL
- * @interactive:	TRUE if triggered by user interaction
- *
- * Downloads a given enclosure URL into a file
- */
-void enclosure_download (encTypePtr type, const gchar *url, gboolean interactive);
 
 #endif

@@ -1,7 +1,7 @@
 /**
  * @file rule.c  item matching rules used by search folders
  *
- * Copyright (C) 2003-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -211,28 +211,27 @@ rule_check_item_author (rulePtr rule, itemPtr item)
 static gboolean
 rule_check_feed_title (rulePtr rule, itemPtr item)
 {
-	nodePtr feedNode = node_from_id (item->parentNodeId);
-
-	if (!feedNode)
+	Node *node = node_from_id (item->parentNodeId);
+	if (!node)
 		return FALSE;
 
-	return (feedNode->title && rule_strcasecmp (feedNode->title, rule->valueCaseFolded));
+	return (node->title && rule_strcasecmp (node->title, rule->valueCaseFolded));
 }
 
 static gboolean
 rule_check_feed_source (rulePtr rule, itemPtr item)
 {
-	nodePtr feedNode = node_from_id (item->parentNodeId);
-	if (!feedNode)
+	Node *node = node_from_id (item->parentNodeId);
+	if (!node)
 		return FALSE;
 
-	return (feedNode->subscription && rule_strcasecmp (feedNode->subscription->source, rule->valueCaseFolded));
+	return (node->subscription && rule_strcasecmp (node->subscription->source, rule->valueCaseFolded));
 }
 
 static gboolean
 rule_check_parent_folder (rulePtr rule, itemPtr item)
 {
-	nodePtr node = node_from_id (item->parentNodeId);
+	Node *node = node_from_id (item->parentNodeId);
 	if (!node)
 		return FALSE;
 

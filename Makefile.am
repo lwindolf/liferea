@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = doc man opml pixmaps po src xslt glade
+SUBDIRS = doc man opml pixmaps po src glade
 
 desktop_in_files = net.sourceforge.liferea.desktop.in
 desktopdir = $(datadir)/applications
@@ -28,14 +28,6 @@ css_DATA = \
 	css/liferea.css \
 	css/user.css
 
-jsdir = $(pkgdatadir)/js
-js_DATA = \
-	js/gresource.xml \
-	js/htmlview.js \
-	js/purify.min.js \
-	js/Readability-readerable.js \
-	js/Readability.js
-
 dtddir = $(pkgdatadir)/dtd
 dtd_DATA = dtd/html.ent
 
@@ -46,6 +38,9 @@ plugin_DATA = \
 	plugins/add-bookmark-site.ui \
 	plugins/bold-unread.py \
 	plugins/bold-unread.plugin \
+	plugins/download-manager.py \
+	plugins/download-manager.plugin \
+	plugins/download-manager.ui \
 	plugins/getfocus.py \
 	plugins/getfocus.plugin \
 	plugins/gnome-keyring.py \
@@ -73,7 +68,6 @@ EXTRA_DIST = \
 	$(desktop_DATA) \
 	$(schema_DATA) \
 	$(css_DATA) \
-	$(js_DATA) \
 	$(dtd_DATA) \
 	$(plugin_DATA) \
 	$(gsettings_SCHEMAS) \
@@ -85,7 +79,8 @@ DISTCLEANFILES = \
 	net.sourceforge.liferea.service \
 	intltool-extract \
 	intltool-merge \
-	intltool-update
+	intltool-update \
+	$(appdata_in_files:.xml.in=.xml)
 
 CLEANFILES = \
 	$(gsettings_SCHEMAS) \

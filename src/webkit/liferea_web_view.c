@@ -2,7 +2,7 @@
  * @file liferea_web_view.c  Webkit2 widget for Liferea
  *
  * Copyright (C) 2016 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2021-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2021-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include "../debug.h"
 #include "browser.h"
 #include "common.h"
-#include "enclosure.h"
+#include "download.h"
 #include "feedlist.h"
 #include "social.h"
 #include "ui/browser_tabs.h"
@@ -210,7 +210,7 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 	g_object_unref (section);
 	section = g_menu_new ();
 
-	g_menu_append (section, _("_Reader Mode"), "liferea_web_view.toggle-reader-mode");
+	//g_menu_append (section, _("_Reader Mode"), "liferea_web_view.toggle-reader-mode");
 
 	g_menu_append_section (menu_model, NULL, G_MENU_MODEL (section));
 	g_object_unref (section);
@@ -242,7 +242,8 @@ on_popup_copy_activate (GSimpleAction *action, GVariant *parameter, gpointer use
 static void
 on_popup_save_link_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	enclosure_download (NULL, g_variant_get_string (parameter, NULL), TRUE);
+	download_url (g_variant_get_string (parameter, NULL));
+	download_show ();
 }
 
 static void
@@ -275,24 +276,13 @@ on_popup_webinspector_activate (GSimpleAction *action, GVariant *parameter, gpoi
 	webkit_web_inspector_show (WEBKIT_WEB_INSPECTOR(inspector));
 }
 
-static void
-on_popup_toggle_reader_mode_change_state (GSimpleAction *action, GVariant *parameter, gpointer user_data)
-{
-	WebKitWebView *webview = WEBKIT_WEB_VIEW (user_data);
-	gboolean reader = g_variant_get_boolean (parameter);
-
-	liferea_browser_set_reader_mode (g_object_get_data (G_OBJECT (webview), "htmlview"), reader);
-	g_simple_action_set_state (action, g_variant_new_boolean (reader));
-}
-
 static const GActionEntry liferea_web_view_gaction_entries[] = {
 	{"save-link", on_popup_save_link_activate, "s", NULL, NULL},
 	{"subscribe-link", on_popup_subscribe_link_activate, "s", NULL, NULL},
 	{"copy-selection", on_popup_copy_activate, NULL, NULL, NULL},
 	{"zoom-in", on_popup_zoomin_activate, NULL, NULL, NULL},
 	{"zoom-out", on_popup_zoomout_activate, NULL, NULL, NULL},
-	{"web-inspector", on_popup_webinspector_activate, NULL, NULL, NULL},
-	{"toggle-reader-mode", NULL, NULL, "true", on_popup_toggle_reader_mode_change_state}
+	{"web-inspector", on_popup_webinspector_activate, NULL, NULL, NULL}
 };
 
 static void
@@ -592,14 +582,6 @@ liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event
 	switch (event) {
 		case WEBKIT_LOAD_STARTED:
 			{
-				// Once load starts we can update the reader toggle
-				GActionGroup *action_group;
-				action_group = LIFEREA_WEB_VIEW (view)->menu_action_group;
-				GSimpleAction *reader_action;
-				reader_action = G_SIMPLE_ACTION (g_action_map_lookup_action (G_ACTION_MAP (action_group), "toggle-reader-mode"));
-				gboolean reader = liferea_browser_get_reader_mode (htmlview);
-				g_simple_action_set_state (reader_action, g_variant_new_boolean (reader));
-
 				// Hack to force webview exit from fullscreen mode on new page
 				isFullscreen = GPOINTER_TO_INT(g_object_steal_data(
 							G_OBJECT(view), "fullscreen_on"));
@@ -610,9 +592,6 @@ liferea_web_view_load_status_changed (WebKitWebView *view, WebKitLoadEvent event
 			}
 		case WEBKIT_LOAD_COMMITTED:
 			liferea_browser_location_changed (htmlview, webkit_web_view_get_uri (view));
-			break;
-		case WEBKIT_LOAD_FINISHED:
-			liferea_browser_load_finished (htmlview, webkit_web_view_get_uri (view));
 			break;
 		default:
 			break;

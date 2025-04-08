@@ -2,7 +2,7 @@
  * @file html.c  HTML parsing
  *
  * Copyright (C) 2004 ahmed el-helw <ahmedre@cc.gatech.edu>
- * Copyright (C) 2004-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@
 #include "common.h"
 #include "debug.h"
 #include "html.h"
-#include "render.h"
 #include "xml.h"
 
 enum {
@@ -326,65 +325,4 @@ html_discover_favicon (const gchar * data, const gchar * defaultBaseUri)
 	xmlFreeDoc (doc);
 
 	return results;
-}
-
-gchar *
-html_get_article (const gchar *data, const gchar *baseUri) {
-	xmlDocPtr	doc;
-	xmlNodePtr	root;
-	gchar		*result = NULL;
-
-	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
-	if (!doc) {
-		debug (DEBUG_PARSING, "XHTML parsing error on '%s'", baseUri);
-		return NULL;
-	}
-
-	root = xmlDocGetRootElement (doc);
-	if (root) {
-		xmlDocPtr article = xhtml_extract_doc (root, 1, baseUri);
-		if (article) {
-			/* For debug output
-			xmlSaveCtxt *s;
-			s = xmlSaveToFd(0, NULL, 0);
-			xmlSaveDoc(s, article);
-			xmlSaveClose(s);
-			*/
-
-			result = render_xml (article, "html5-extract", NULL);
-			xmlFreeDoc (article);
-		}
-		xmlFreeDoc (doc);
-	}
-
-	return result;
-}
-
-gchar *
-html_get_body (const gchar *data, const gchar *baseUri) {
-	xmlDocPtr	doc;
-	xmlNodePtr	root;
-	gchar		*result = NULL;
-
-	doc = xhtml_parse ((gchar *)data, (size_t)strlen (data));
-	if (!doc) {
-		debug (DEBUG_PARSING, "XHTML parsing error on '%s'", baseUri);
-		return NULL;
-	}
-
-	root = xmlDocGetRootElement (doc);
-	if (root) {
-		xmlDocPtr body = xhtml_extract_doc (root, 1, baseUri);
-		if (body) {
-			result = render_xml (body, "html-extract", NULL);
-			xmlFreeDoc (body);
-		}
-		xmlFreeDoc (doc);
-	}
-	return result;
-}
-
-gchar *
-html_get_amp_url (const gchar *data) {
-	return search_links_dirty (data, LINK_AMPHTML);
 }

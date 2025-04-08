@@ -24,6 +24,7 @@
 
 #include <glib.h>
 #include <libsoup/soup.h>
+#include <locale.h>
 #include <math.h>
 #include <string.h>
 #include <stdbool.h>
@@ -40,28 +41,30 @@
 static GCancellable *cancellable = NULL;	/* GCancellable for all request handling */
 static SoupSession *session = NULL;	/* Session configured for preferences */
 static SoupSession *session2 = NULL;	/* Session for "Don't use proxy feature" */
+static GHashTable *http429 = NULL;	/* Map of domains reporting HTTP 429 and cooldown timestamp as value */
 
 static ProxyDetectMode proxymode = PROXY_DETECT_MODE_AUTO;
 
 static void
 network_process_redirect_callback (SoupMessage *msg, gpointer user_data)
 {
-	updateJobPtr	job = (updateJobPtr)user_data;
-	const gchar	*location = NULL;
-	GUri		*newuri;
+	UpdateJob *	job = (UpdateJob *)user_data;
 	SoupStatus	status = soup_message_get_status (msg);
 
 	if (SOUP_STATUS_MOVED_PERMANENTLY == status || SOUP_STATUS_PERMANENT_REDIRECT == status) {
-		if (g_uri_is_valid (location, G_URI_FLAGS_PARSE_RELAXED, NULL)) {
-			location = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Location");
-			newuri = g_uri_parse (location, G_URI_FLAGS_PARSE_RELAXED, NULL);
+		const gchar *location = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Location");
+		if (location && g_uri_is_valid (location, G_URI_FLAGS_PARSE_RELAXED, NULL)) {
+			GUri *newuri = g_uri_parse (location, G_URI_FLAGS_PARSE_RELAXED, NULL);
 
 			if (!soup_uri_equal (newuri, soup_message_get_uri (msg))) {
-				job->result->httpstatus = status;
+				g_free (job->result->source);
 				job->result->source = g_uri_to_string_partial (newuri, 0);
+				job->result->httpstatus = status;
 				debug (DEBUG_NET, "\"%s\" permanently redirects to new location \"%s\"",
 				       job->request->source, job->result->source);
 			}
+
+			g_uri_unref (newuri);
 		}
 	}
 }
@@ -71,7 +74,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 {
 	SoupSession		*session = SOUP_SESSION (obj);
 	SoupMessage		*msg;
-	updateJobPtr		job = (updateJobPtr)user_data;
+	UpdateJob *		job = (UpdateJob *)user_data;
 	GDateTime		*last_modified;
 	const gchar		*tmp = NULL;
 	GHashTable		*params;
@@ -86,10 +89,34 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 
 	job->result->source = g_uri_to_string_partial (soup_message_get_uri (msg), 0);
 	job->result->httpstatus = soup_message_get_status (msg);
-	body_size = g_bytes_get_size (body);
-	job->result->data = g_malloc(1 + body_size);
-	memmove(job->result->data, g_bytes_get_data (body, &job->result->size), body_size);
-	*(job->result->data + job->result->size) = 0;
+	if (body) {
+		body_size = g_bytes_get_size (body);
+		job->result->data = g_malloc(1 + body_size);
+		memmove(job->result->data, g_bytes_get_data (body, &job->result->size), body_size);
+		*(job->result->data + job->result->size) = 0;
+	} else {
+		job->result->data = NULL;
+		job->result->size = 0;
+	}
+
+	/* handle HTTP 429 response */
+	if (429 == job->result->httpstatus) {
+		gint retry_after = -1;
+		tmp = soup_message_headers_get_one (soup_message_get_response_headers (msg), "Retry-After");
+		if (tmp)
+			retry_after = atoi (tmp);	// for now we only support seconds but no date
+		if (0 < retry_after)
+			retry_after = 60*5;		// default to 5min
+
+		g_autoptr(GUri) uri = g_uri_parse (job->request->source, G_URI_FLAGS_NONE, NULL);
+		if (uri) {
+			const gchar *host = g_uri_get_host (uri);
+			if (host) {
+				debug (DEBUG_NET, "HTTP 429 received for %s, cooldown for %d seconds", host, retry_after);
+				g_hash_table_replace (http429, g_strdup (host), GINT_TO_POINTER (time (NULL) + retry_after));
+			}
+		}
+	}
 
 	/* keep some request headers for revalidated responses */
 	revalidated = (304 == job->result->httpstatus);
@@ -152,8 +179,7 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
 		soup_header_free_param_list (params);
 	}
 
-	update_process_finished_job (job);
-	g_bytes_unref (body);
+	update_job_finished (job);
 }
 
 /* Downloads a URL specified in the request structure, returns
@@ -164,11 +190,11 @@ network_process_callback (GObject *obj, GAsyncResult *res, gpointer user_data)
    last modified string.
  */
 void
-network_process_request (const updateJobPtr job)
+network_process_request (const UpdateJob *job)
 {
 	g_autoptr(SoupMessage)	msg = NULL;
 	SoupMessageHeaders	*request_headers;
-	g_autoptr(GUri)		sourceUri;
+	g_autoptr(GUri)		sourceUri = NULL;
 	gboolean		do_not_track = FALSE, do_not_sell = false;
 	g_autofree gchar	*scheme = NULL, *user = NULL, *password = NULL, *auth_params = NULL, *host = NULL, *path = NULL, *query = NULL, *fragment = NULL;
 	gint			port;
@@ -177,6 +203,22 @@ network_process_request (const updateJobPtr job)
 	debug (DEBUG_NET, "downloading %s", job->request->source);
 	if (job->request->postdata && (debug_get_flags () & DEBUG_NET))
 		debug (DEBUG_NET, "   postdata=>>>%s<<<", job->request->postdata);
+
+	/* Do not process request on HTTP 429 */
+	g_autoptr(GUri) uri = g_uri_parse (job->request->source, G_URI_FLAGS_NONE, NULL);
+	if (uri) {
+		const gchar *host = g_uri_get_host (uri);
+		if (host) {
+			gint cooldown = GPOINTER_TO_INT (g_hash_table_lookup (http429, host));
+			if (0 < cooldown && cooldown > time (NULL)) {
+				debug (DEBUG_NET, "HTTP 429 cooldown for %s, skipping request (cooldown %d seconds)", host, cooldown - time (NULL));
+				job->result->source = g_strdup (job->request->source);
+				job->result->httpstatus = 429;
+				update_job_finished ((UpdateJob *)job);
+				return;
+			}
+		}
+	}
 
 	g_uri_split_with_user (job->request->source,
 	                       G_URI_FLAGS_ENCODED,
@@ -283,15 +325,20 @@ network_process_request (const updateJobPtr job)
 	if (do_not_track)
 		soup_message_headers_append (request_headers, "Sec-GPC", "1");
 
+	/* Add Accept-Language */
+	gchar **shortlang = g_strsplit (setlocale (LC_MESSAGES, NULL), "_", 0);
+	soup_message_headers_append (request_headers, "Accept-Language", shortlang[0]);
+	g_strfreev (shortlang);
+
 	/* Process permanent redirects (update feed location) */
-	soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, job);
-	soup_message_add_status_code_handler (msg, "got_body", 308, (GCallback) network_process_redirect_callback, job);
+	soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, (gpointer)job);
+	soup_message_add_status_code_handler (msg, "got_body", 308, (GCallback) network_process_redirect_callback, (gpointer)job);
 
 	/* If the feed has "dont use a proxy" selected, use 'session2' which is non-proxy */
 	if (job->request->options && job->request->options->dontUseProxy)
-		soup_session_send_and_read_async (session2, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
+		soup_session_send_and_read_async (session2, msg, 0 /* IO priority */, cancellable, network_process_callback, (gpointer)job);
 	else
-		soup_session_send_and_read_async (session, msg, 0 /* IO priority */, cancellable, network_process_callback, job);
+		soup_session_send_and_read_async (session, msg, 0 /* IO priority */, cancellable, network_process_callback, (gpointer)job);
 }
 
 static void
@@ -342,11 +389,12 @@ void
 network_deinit (void)
 {
 	g_cancellable_cancel (cancellable);
-	g_free (cancellable);
 
 	soup_session_abort (session);
 	soup_session_abort (session2);
 
+	g_hash_table_destroy (http429);
+	g_free (cancellable);
 	g_free (session);
 	g_free (session2);
 }
@@ -360,6 +408,7 @@ network_init (void)
 	SoupLogger	*logger;
 
 	cancellable = g_cancellable_new ();
+	http429 = g_hash_table_new_full (g_str_hash, g_int_equal, g_free, NULL);
 
 	useragent = network_get_user_agent ();
 	debug (DEBUG_NET, "user-agent set to \"%s\"", useragent);
@@ -371,20 +420,20 @@ network_init (void)
 
 	/* Initialize libsoup */
 	session = soup_session_new_with_options ("user-agent", useragent,
-						 "timeout", 120,
-						 "idle-timeout", 30,
-						 NULL);
+                                                 "timeout", 120,
+                                                 "idle-timeout", 30,
+                                                 NULL);
 	session2 = soup_session_new_with_options ("user-agent", useragent,
-						  "timeout", 120,
-						  "idle-timeout", 30,
-						  NULL);
+                                                  "timeout", 120,
+                                                  "idle-timeout", 30,
+                                                  NULL);
 
 	soup_session_add_feature (session, SOUP_SESSION_FEATURE (cookies));
 	soup_session_add_feature (session2, SOUP_SESSION_FEATURE (cookies));
 
 	/* Only 'session' gets proxy, 'session2' is for non-proxy requests */
 	soup_session_set_proxy_resolver (session2, NULL);
-	network_set_soup_session_proxy (session, network_get_proxy_detect_mode());
+	network_set_soup_session_proxy (session, network_get_proxy_detect_mode ());
 
 	/* Soup debugging */
 	if (debug_get_flags() & DEBUG_NET) {
@@ -439,6 +488,7 @@ network_strerror (gint status)
 		case SOUP_STATUS_PROXY_UNAUTHORIZED:	tmp = _("Proxy authentication required"); break;
 		case SOUP_STATUS_REQUEST_TIMEOUT:	tmp = _("Request timed out"); break;
 		case SOUP_STATUS_GONE:			tmp = _("The webserver indicates this feed is discontinued. It's no longer available. Liferea won't update it anymore but you can still access the cached headlines."); break;
+		case 429:				tmp = _("Too many requests. Liferea has to wait a while before trying again."); break;
 
 		/* http 5xx server errors */
 		case SOUP_STATUS_INTERNAL_SERVER_ERROR:	tmp = _("Internal Server Error"); break;

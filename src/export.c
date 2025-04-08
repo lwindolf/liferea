@@ -2,7 +2,7 @@
  * @file export.c  OPML feed list import & export
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2004-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2004-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #include "debug.h"
 #include "favicon.h"
 #include "feedlist.h"
-#include "folder.h"
+#include "node_providers/folder.h"
 #include "node.h"
 #include "xml.h"
 #include "ui/ui_common.h"
@@ -43,18 +43,18 @@ struct exportData {
 	xmlNodePtr	cur;
 };
 
-static void export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted);
+static void export_node_children (Node *node, xmlNodePtr cur, gboolean trusted);
 
 /* Used for exporting, this adds a folder or feed's node to the XML tree */
 static void
-export_append_node_tag (nodePtr node, gpointer userdata)
+export_append_node_tag (Node *node, gpointer userdata)
 {
 	xmlNodePtr 	cur = ((struct exportData*)userdata)->cur;
 	gboolean	internal = ((struct exportData*)userdata)->trusted;
 	xmlNodePtr	childNode;
 
 	/* When exporting external OPML do not export every node type... */
-	if (!(internal || (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_EXPORT)))
+	if (!(internal || (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_EXPORT)))
 		return;
 
 	childNode = xmlNewChild (cur, NULL, BAD_CAST"outline", NULL);
@@ -64,8 +64,8 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 	xmlNewProp (childNode, BAD_CAST"text", BAD_CAST node_get_title(node)); /* The OPML spec requires "text" */
 	xmlNewProp (childNode, BAD_CAST"description", BAD_CAST node_get_title(node));
 
-	if (node_type_to_str (node))
-		xmlNewProp (childNode, BAD_CAST"type", BAD_CAST node_type_to_str (node));
+	if (node_provider_get_name (node))
+		xmlNewProp (childNode, BAD_CAST"type", BAD_CAST node_provider_get_name (node));
 
 	/* Don't add the following tags if we are exporting to other applications */
 	if (internal) {
@@ -94,7 +94,7 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 	}
 
 	/* 2. add node type specific stuff */
-	NODE_TYPE (node)->export (node, childNode, internal);
+	NODE_PROVIDER (node)->export (node, childNode, internal);
 
 	/* 3. add children */
 	if (internal) {
@@ -109,7 +109,7 @@ export_append_node_tag (nodePtr node, gpointer userdata)
 }
 
 static void
-export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted)
+export_node_children (Node *node, xmlNodePtr cur, gboolean trusted)
 {
 	struct exportData	params;
 
@@ -119,7 +119,7 @@ export_node_children (nodePtr node, xmlNodePtr cur, gboolean trusted)
 }
 
 gboolean
-export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
+export_OPML_feedlist (const gchar *filename, Node *node, gboolean trusted)
 {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur, opmlNode;
@@ -184,21 +184,15 @@ export_OPML_feedlist (const gchar *filename, nodePtr node, gboolean trusted)
 }
 
 static void
-import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
+import_parse_outline (xmlNodePtr cur, Node *parentNode, gboolean trusted)
 {
-	gchar		*title, *typeStr, *tmp, *sortStr;
+	gchar		*title, *type, *tmp, *sortStr;
 	xmlNodePtr	child;
-	nodePtr		node;
-	nodeTypePtr	type = NULL;
+	Node		*node;
 	gboolean	needsUpdate = FALSE;
 
-
 	/* 1. determine node type */
-	typeStr = (gchar *)xmlGetProp (cur, BAD_CAST"type");
-	if (typeStr) {
-		type = node_str_to_type (typeStr);
-		xmlFree (typeStr);
-	}
+	type = (gchar *)xmlGetProp (cur, BAD_CAST"type");
 
 	/* if we didn't find a type attribute we use heuristics */
 	if (!type) {
@@ -211,11 +205,11 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 
 		if (tmp) {
 			debug (DEBUG_CACHE, "-> URL found assuming type feed");
-			type = feed_get_node_type();
+			type = g_strdup ("feed");
 			xmlFree (tmp);
 		} else {
 			/* if the outline has no type and URL it just has to be a folder */
-			type = folder_get_node_type();
+			type = g_strdup ("folder");
 			debug (DEBUG_CACHE, "-> must be a folder");
 		}
 	}
@@ -229,6 +223,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	/* 2. do general node parsing */
 	node = node_new (type);
 	node_set_parent (node, parentNode, -1);
+	xmlFree (type);
 
 	/* The id should only be used from feedlist.opml. Otherwise,
 	   it could cause corruption if the same id was imported
@@ -313,7 +308,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 	}
 
 	/* 6. do node type specific parsing */
-	NODE_TYPE (node)->import (node, parentNode, cur, trusted);
+	NODE_PROVIDER (node)->import (node, parentNode, cur, trusted);
 
 	if (node->subscription)
 		liferea_auth_info_query (node->id);
@@ -333,7 +328,7 @@ import_parse_outline (xmlNodePtr cur, nodePtr parentNode, gboolean trusted)
 }
 
 static void
-import_parse_body (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
+import_parse_body (xmlNodePtr n, Node *parentNode, gboolean trusted)
 {
 	xmlNodePtr cur;
 
@@ -346,7 +341,7 @@ import_parse_body (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
 }
 
 static void
-import_parse_OPML (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
+import_parse_OPML (xmlNodePtr n, Node *parentNode, gboolean trusted)
 {
 	xmlNodePtr cur;
 
@@ -361,7 +356,7 @@ import_parse_OPML (xmlNodePtr n, nodePtr parentNode, gboolean trusted)
 }
 
 gboolean
-import_OPML_feedlist (const gchar *filename, nodePtr parentNode, gboolean showErrors, gboolean trusted)
+import_OPML_feedlist (const gchar *filename, Node *parentNode, gboolean showErrors, gboolean trusted)
 {
 	xmlDocPtr 	doc;
 	xmlNodePtr 	cur;
@@ -424,7 +419,7 @@ static void
 on_import_activate_cb (const gchar *filename, gpointer user_data)
 {
 	if (filename) {
-		nodePtr node = node_new (folder_get_node_type ());
+		Node *node = node_new ("folder");
 		node_set_title (node, _("Imported feed list"));
 		feedlist_node_added (node);
 

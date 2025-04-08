@@ -53,23 +53,42 @@ struct LifereaDialogClass
 GType liferea_dialog_get_type	(void);
 
 /**
+ * liferea_dialog_new:
+ * @name:		the dialog name
+ *
  * Convenience wrapper to create a new dialog and set up its GUI
- *
- * @param name		the dialog name
- *
- * @returns the dialog widget
+ * 
+ * Returns: the dialog widget
  */
 GtkWidget * liferea_dialog_new (const gchar *name);
 
 /**
+ * liferea_dialog_lookup:
+ * @widget:	the dialog widget
+ * @name:	widget name
+ *
  * Helper function to look up child widgets of a dialog window.
- *
- * @param widget	the dialog widget
- * @param name		widget name
- *
- * @returns found widget (or NULL)
+ * 
+ * Returns: found widget (or NULL)
  */
 GtkWidget * liferea_dialog_lookup (GtkWidget *widget, const gchar *name);
+
+/**
+ * liferea_dialog_entry_get:
+ * @widget:	the dialog widget
+ * @name:	the GtkEntry name
+ * 
+ * Returns: the text of the GtkEntry widget with the given name
+ */
+const gchar * liferea_dialog_entry_get (GtkWidget *widget, const gchar *name);
+
+/**
+ * liferea_dialog_entry_set:
+ * @widget:	the dialog widget
+ * @name:	the GtkEntry name
+ * @text:	the text to set
+ */
+void liferea_dialog_entry_set (GtkWidget *widget, const gchar *name, const gchar *text);
 
 G_END_DECLS
 

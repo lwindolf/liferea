@@ -25,20 +25,20 @@
 #include <string.h>
 
 #include "common.h"
-#include "feed.h"
+#include "node_providers/feed.h"
 #include "feedlist.h"
-#include "folder.h"
+#include "node_providers/folder.h"
 #include "net_monitor.h"
-#include "newsbin.h"
+#include "node_providers/newsbin.h"
 #include "node.h"
 #include "social.h"
-#include "vfolder.h"
+#include "node_providers/vfolder.h"
 #include "ui/feed_list_view.h"
 #include "ui/item_list_view.h"
 #include "ui/itemview.h"
 #include "ui/liferea_shell.h"
 #include "ui/preferences_dialog.h"
-#include "fl_sources/node_source.h"
+#include "node_source.h"
 
 #define UI_POPUP_ITEM_IS_TOGGLE		1
 
@@ -107,7 +107,7 @@ ui_popup_item_menu (itemPtr item, const GdkEvent *event)
 		submenu = g_menu_new ();
 
 		while (iter) {
-			nodePtr	node = (nodePtr)iter->data;
+			Node *node = (Node *)iter->data;
 			g_menu_item_set_label (menu_item, node_get_title (node));
 			g_menu_item_set_action_and_target (menu_item, "item.copy-item-to-newsbin", "(umt)", i, TRUE, (guint64) item->id);
 			g_menu_append_item (submenu, menu_item);
@@ -173,39 +173,39 @@ ui_popup_item_menu (itemPtr item, const GdkEvent *event)
 static void
 ui_popup_rebuild_vfolder (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	vfolder_rebuild ((nodePtr)user_data);
+	vfolder_rebuild ((Node *)user_data);
 }
 
 static void
 ui_popup_properties (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr node = (nodePtr) user_data;
+	Node *node = (Node *) user_data;
 
-	NODE_TYPE (node)->request_properties (node);
+	NODE_PROVIDER (node)->request_properties (node);
 }
 
 static void
 ui_popup_delete (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feed_list_view_remove ((nodePtr)user_data);
+	feed_list_view_remove ((Node *)user_data);
 }
 
 static void
 ui_popup_sort_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	feed_list_view_sort_folder ((nodePtr)user_data);
+	feed_list_view_sort_folder ((Node *)user_data);
 }
 
 static void
 ui_popup_add_convert_to_local (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	node_source_convert_to_local ((nodePtr)user_data);
+	node_source_convert_to_local ((Node *)user_data);
 }
 
 static void
 on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
-	nodePtr node;
+	Node *node;
 	GtkWindow *parent;
 	GtkWidget *dialog;
 	GtkFileChooser *chooser;
@@ -215,7 +215,7 @@ on_menu_export_items_to_file (GSimpleAction *action, GVariant *parameter, gpoint
 	const gchar *title;
 	GError *err = NULL;
 
-	node = (nodePtr) user_data;
+	node = (Node *) user_data;
 	parent = GTK_WINDOW (liferea_shell_lookup ("mainwindow"));
 
 	dialog = gtk_file_chooser_dialog_new (_("Save items to file"),
@@ -291,7 +291,7 @@ static const GActionEntry ui_popup_node_gaction_entries[] = {
  * node type.
  */
 static void
-ui_popup_node_menu (nodePtr node, gboolean validSelection, const GdkEvent *event)
+ui_popup_node_menu (Node *node, gboolean validSelection, const GdkEvent *event)
 {
 	GtkWidget		*menu;
 	GMenu 			*menu_model, *section;
@@ -301,7 +301,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, const GdkEvent *event
 	if (node->parent) {
 		writeableFeedlist = NODE_SOURCE_TYPE (node->parent->source->root)->capabilities & NODE_SOURCE_CAPABILITY_WRITABLE_FEEDLIST;
 		isRoot = NODE_SOURCE_TYPE (node->source->root)->capabilities & NODE_SOURCE_CAPABILITY_IS_ROOT;
-		addChildren = NODE_TYPE (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS;
+		addChildren = NODE_PROVIDER (node->source->root)->capabilities & NODE_CAPABILITY_ADD_CHILDS;
 	} else {
 		/* if we have no parent then we have the root node... */
 		writeableFeedlist = TRUE;
@@ -313,9 +313,9 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, const GdkEvent *event
 	section = g_menu_new ();
 
 	if (validSelection) {
-		if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE)
+		if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE)
 			g_menu_append (section, _("_Update"), "node.node-update");
-		else if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
+		else if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_UPDATE_CHILDS)
 			g_menu_append (section, _("_Update Folder"), "node.node-update");
 	}
 
@@ -355,7 +355,7 @@ ui_popup_node_menu (nodePtr node, gboolean validSelection, const GdkEvent *event
 		g_object_unref (section);
 		section = g_menu_new ();
 		g_menu_append (section, _("_Mark All As Read"), "node.node-mark-all-read");
-		if (NODE_TYPE (node)->capabilities & NODE_CAPABILITY_EXPORT_ITEMS) {
+		if (NODE_PROVIDER (node)->capabilities & NODE_CAPABILITY_EXPORT_ITEMS) {
 			g_menu_append (section, _("_Export Items To File"), "node.node-export-items-to-file");
 		}
 	}
@@ -410,7 +410,7 @@ on_mainfeedlist_button_press_event (GtkWidget *widget,
 	GtkTreePath	*path;
 	GtkTreeIter	iter;
 	gboolean	selected = TRUE;
-	nodePtr		node = NULL;
+	Node		*node = NULL;
 
 	treeview = liferea_shell_lookup ("feedlist");
 
@@ -469,7 +469,7 @@ on_mainfeedlist_popup_menu (GtkWidget *widget,
 	GtkTreeModel	*model;
 	GtkTreeIter	iter;
 	gboolean	selected = TRUE;
-	nodePtr		node = NULL;
+	Node		*node = NULL;
 
 	treeview = liferea_shell_lookup ("feedlist");
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));

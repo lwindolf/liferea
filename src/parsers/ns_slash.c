@@ -47,27 +47,19 @@
 static void
 parse_item_tag (feedParserCtxtPtr ctxt, xmlNodePtr cur)
 {
-	gchar	*tmp = NULL, *section, *department;
+	gchar	*tmp = NULL;
 	
 	if (!xmlStrcmp (BAD_CAST"section", cur->name)) {
 		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp)
- 			g_hash_table_insert (ctxt->item->tmpdata, "slash:section", tmp);
+			metadata_list_set (&(ctxt->item->metadata), "slashSection", tmp);
 			
 	} else if (!xmlStrcmp (BAD_CAST"department", cur->name)) {
 		tmp = (gchar *)xmlNodeListGetString (cur->doc, cur->xmlChildrenNode, 1);
 		if (tmp)
- 			g_hash_table_insert(ctxt->item->tmpdata, "slash:department", tmp);
+			metadata_list_set (&(ctxt->item->metadata), "slashDepartment", tmp);
 	}
 	
-	if (tmp) {
-		section = g_hash_table_lookup (ctxt->item->tmpdata, "slash:section");
-		department = g_hash_table_lookup (ctxt->item->tmpdata, "slash:department");
-		tmp = g_strdup_printf ("%s,%s", section ? section : "",
-		                                department ? department : "" );
-		metadata_list_set (&(ctxt->item->metadata), "slash", tmp);
-		g_free (tmp);
-	}
 }
 
 static void

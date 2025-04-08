@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script src='/js/vendor/Readability.js'></script>
+        
+	<!-- FIXME: consider adding CSP meta tag here as e.g. Firefox reader mode page does -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <script id="template" type="text/x-handlebars-template">
+                <div class="item" dir="{{direction}}">
+                        <header class="content">
+                                {{#if item.feedTitle}}
+                                        <div class="feedTitle">{{ item.feedTitle }}</div>
+                                {{/if}}
+                                <h1>
+                                        <a href="{{item.source}}">{{title}}</a>
+                                </h1>
+                                {{#if slashSection}}
+                                        <div class="slash">
+                                                <span class="slashSection">Section</span><span class="slashValue">{{ slashSection }}</span>
+                                                {{#if slashDepartment}}
+                                                <span class="slashDepartment">Department</span><span class="slashValue">{{ slashDepartment }}</span>
+                                                {{/if}}
+                                        </div>
+                                {{/if}}
+                                {{#if author }}
+                                        <div><_span>Author</_span>: {{{author}}}</div>
+                                {{/if}}
+                                {{#if creator }}
+                                        <div><_span>Creator</_span>: {{{creator}}}</div>
+                                {{/if}}
+                                {{#if sharedby }}
+                                        <div><_span>Shared By</_span>: {{{sharedby}}}</div>
+                                {{/if}}
+                                {{#if via }}
+                                        <div><_span>Via</_span>: <a href="{{via}}">{{via}}</a></div>
+                                {{/if}}
+                        </header>			
+
+                        <div id="content" class="content">
+                                <div id="description">{{{ item.description }}}</div>
+
+                                <!-- embed suitable enclosures -->
+                                {{#if audios.length}}
+                                        <div id='enclosureAudio'>
+                                                <audio class="enclosure" controls="controls" preload="none" src="{{audios.[0].url}}"></audio>
+                                                {{#if audios.[1]}}
+                                                <select>
+                                                        {{#each audios}}
+                                                        <option value="{{this.url}}">{{this.url}}</option>
+                                                        {{/each}}
+                                                </select>
+                                                {{/if}}
+                                        </div>
+                                {{/if}}
+                                {{#if videos.length}}
+                                        <div id='enclosureVideo'>
+                                                <video class="enclosure" controls="controls" preload="none" src="{{videos.[0].url}}"></video>
+                                                {{#if videos.[1]}}
+                                                <select>
+                                                        {{#each videos}}
+                                                        <option value="{{this.url}}">{{this.url}}</option>
+                                                        {{/each}}
+                                                </select>
+                                                {{/if}}
+                                        </div>
+                                {{/if}}
+
+				<!-- container for youtube_embed() -->
+				<div id='youtube_embed'>
+				</div>
+                        </div>
+                </div>
+        </script>
+</head>
+<body>
+</body>
+<script type="module">
+        import { load_item } from '/js/htmlview.js';
+
+        window.load_item = load_item;
+        window.onload = (e) => {
+                REPLACE_MARKER
+        };
+</script>
+</html>

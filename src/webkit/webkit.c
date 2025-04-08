@@ -2,7 +2,7 @@
  * @file webkit.c  WebKit2 support for Liferea
  *
  * Copyright (C) 2016-2019 Leiaz <leiaz@mailbox.org>
- * Copyright (C) 2007-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2007-2025 Lars Windolf <lars.windolf@gmx.de>
  * Copyright (C) 2008 Lars Strojny <lars@strojny.net>
  * Copyright (C) 2009-2012 Emilio Pozuelo Monfort <pochu27@gmail.com>
  * Copyright (C) 2009 Adrian Bunk <bunk@users.sourceforge.net>
@@ -30,9 +30,9 @@
 #include "browser.h"
 #include "conf.h"
 #include "common.h"
-#include "enclosure.h" /* Only for enclosure_download */
+#include "debug.h"
+#include "download.h"
 #include "net.h"
-#include "render.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
 
@@ -134,11 +134,9 @@ liferea_webkit_enable_itp_cb (GSettings *gsettings,
 {
 	g_return_if_fail (key != NULL);
 
-#if WEBKIT_CHECK_VERSION (2, 30, 0)
 	webkit_website_data_manager_set_itp_enabled (
 	    webkit_web_context_get_website_data_manager (webkit_web_context_get_default()),
 	    g_settings_get_boolean (gsettings, key));
-#endif
 }
 
 /* Font size math from Epiphany embed/ephy-embed-prefs.c to get font size in
@@ -247,9 +245,8 @@ liferea_webkit_on_dbus_connection_close (GDBusConnection *connection,
 	LifereaWebKit *webkit_impl = LIFEREA_WEBKIT (user_data);
 
 	if (!remote_peer_vanished && error)
-	{
 		g_warning ("DBus connection closed with error : %s", error->message);
-	}
+
 	webkit_impl->dbus_connections = g_list_remove (webkit_impl->dbus_connections, connection);
 	g_object_unref (connection);
 }
@@ -280,9 +277,8 @@ on_page_created (LifereaWebKit *instance,
 		 guint64 page_id,
 		 gpointer web_view)
 {
-	if (webkit_web_view_get_page_id (WEBKIT_WEB_VIEW (web_view)) == page_id) {
+	if (webkit_web_view_get_page_id (WEBKIT_WEB_VIEW (web_view)) == page_id)
 		liferea_web_view_set_dbus_connection (LIFEREA_WEB_VIEW (web_view), connection);
-	}
 }
 
 
@@ -365,22 +361,39 @@ liferea_webkit_download_started (WebKitWebContext	*context,
 {
 	WebKitURIRequest *request = webkit_download_get_request (download);
 	webkit_download_cancel (download);
-	enclosure_download (NULL, webkit_uri_request_get_uri (request), TRUE);
+	download_url (webkit_uri_request_get_uri (request));
+	download_show ();
 }
 
 static void
 liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer user_data)
 {
-	const gchar *uri = webkit_uri_scheme_request_get_uri (request);
-	GInputStream *stream;
-	gssize length;
-	gchar *contents;
+	const gchar *path = webkit_uri_scheme_request_get_path (request);
+	g_autofree gchar *rpath;
+	GBytes *b;
 
-	contents = g_strdup_printf ("Placeholder handler for liferea scheme. URI requested : %s", uri);
-	length = (gssize) strlen (contents);
-	stream = g_memory_input_stream_new_from_data (contents, length, g_free);
-	webkit_uri_scheme_request_finish (request, stream, length, "text/plain");
-	g_object_unref (stream);
+	rpath = g_strdup_printf ("/org/gnome/liferea%s", path);
+	b = g_resources_lookup_data (rpath, 0, NULL);
+	if (b) {
+		gsize length = 0;
+		const guchar *data = g_bytes_get_data (b, &length);
+		const gchar *mime;
+		
+		// FIXME: what about freeing b?
+		g_autoptr(GInputStream) stream = g_memory_input_stream_new_from_data (data, length, NULL);
+		
+		// For now we assume all resources are javascript, so MIME is hardcoded
+		if (g_str_has_suffix (path, ".js"))
+			mime = "text/javascript";
+		else
+			mime = "text/plain";
+
+		webkit_uri_scheme_request_finish (request, stream, length, mime);
+	} else {
+		debug (DEBUG_HTML, "Failed to load liferea:// request for path %s (%s)", path, rpath);
+		g_autoptr(GError) error = g_error_new (G_IO_ERROR, G_IO_ERROR_NOT_FOUND, "Resource not found");
+		webkit_uri_scheme_request_finish_error (request, error);
+	}
 }
 
 static void
@@ -391,12 +404,15 @@ liferea_webkit_init (LifereaWebKit *self)
 	WebKitWebsiteDataManager	*website_data_manager;
 		
 	self->dbus_connections = NULL;
-	webkit_web_context_register_uri_scheme (webkit_web_context_get_default(), "liferea",
+	webkit_web_context_register_uri_scheme (webkit_web_context_get_default (), "liferea",
 		(WebKitURISchemeRequestCallback) liferea_webkit_handle_liferea_scheme,NULL,NULL);
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
 	website_data_manager = webkit_web_context_get_website_data_manager (webkit_web_context_get_default ());
-	webkit_security_manager_register_uri_scheme_as_local (security_manager, "liferea");
+	/* CORS is necessary to have ESM modules working. Security wise this should be ok as this scheme 
+	   is only used to fetch static resources. */
+	webkit_security_manager_register_uri_scheme_as_cors_enabled (security_manager, "liferea");
+
 
 	conf_signal_connect (
 		"changed::" ENABLE_ITP,
@@ -440,6 +456,9 @@ liferea_webkit_write_html (
 {
 	// FIXME Avoid doing a copy ?
 	GBytes *string_bytes = g_bytes_new (string, length);
+
+	g_object_set (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (webview)), "enable-javascript", TRUE, NULL);
+
 	/* Note: we explicitely ignore the passed base URL
 	   because we don't need it as Webkit supports <div href="">
 	   and throws a security exception when accessing file://
@@ -455,28 +474,15 @@ liferea_webkit_write_html (
 }
 
 void
-liferea_webkit_run_js (GtkWidget *widget, gchar *js, GAsyncReadyCallback cb)
+liferea_webkit_clear (GtkWidget *webview)
 {
-	// No matter what was before we need JS now
-	g_object_set (webkit_web_view_get_settings (WEBKIT_WEB_VIEW (widget)), "enable-javascript", TRUE, NULL);
-
-	webkit_web_view_evaluate_javascript (
-		WEBKIT_WEB_VIEW (widget),
-		js,
-		-1,
-		NULL,
-		NULL,
-		NULL,
-		cb,
-		g_object_get_data (G_OBJECT (widget), "htmlview")
-	);
-	g_free (js);
+	webkit_web_view_load_html (WEBKIT_WEB_VIEW (webview), "", NULL);
 }
 
 static void
 liferea_webkit_set_font_size (GtkWidget *widget, gpointer user_data)
 {
-	WebKitSettings	*settings = WEBKIT_SETTINGS(user_data);
+	WebKitSettings	*settings = WEBKIT_SETTINGS (user_data);
 	gchar		*font;
 	guint		fontSize;
 
@@ -627,7 +633,6 @@ liferea_webkit_scroll_pagedown (GtkWidget *webview)
 void
 liferea_webkit_set_proxy (ProxyDetectMode mode)
 {
-#if WEBKIT_CHECK_VERSION (2, 15, 3)
 	switch (mode) {
 		default:
 		case PROXY_DETECT_MODE_MANUAL:
@@ -644,14 +649,13 @@ liferea_webkit_set_proxy (ProxyDetectMode mode)
 			     NULL);
 			break;
 	}
-#endif
 }
 
 /**
  * Load liferea.css via user style sheet
  */
 void
-liferea_webkit_reload_style (GtkWidget *webview)
+liferea_webkit_reload_style (GtkWidget *webview, const gchar *userCSS, const gchar *defaultCSS)
 {
 	WebKitUserContentManager *manager = webkit_web_view_get_user_content_manager (WEBKIT_WEB_VIEW (webview));
 
@@ -660,11 +664,10 @@ liferea_webkit_reload_style (GtkWidget *webview)
 	if (default_stylesheet)
 		webkit_user_style_sheet_unref (default_stylesheet);
 
-	const gchar *css = render_get_default_css ();
 	// default stylesheet should only apply to HTML written to the view,
 	// not when browsing
 	const gchar *deny[] = { "http://*/*", "https://*/*",  NULL };
-	default_stylesheet = webkit_user_style_sheet_new (css,
+	default_stylesheet = webkit_user_style_sheet_new (defaultCSS,
 		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
 		WEBKIT_USER_STYLE_LEVEL_USER,
 		NULL,
@@ -674,8 +677,7 @@ liferea_webkit_reload_style (GtkWidget *webview)
 	if (user_stylesheet)
 		webkit_user_style_sheet_unref (user_stylesheet);
 
-	css = render_get_user_css ();
-	user_stylesheet = webkit_user_style_sheet_new (css,
+	user_stylesheet = webkit_user_style_sheet_new (userCSS,
 		WEBKIT_USER_CONTENT_INJECT_ALL_FRAMES,
 		WEBKIT_USER_STYLE_LEVEL_USER,
 		NULL,

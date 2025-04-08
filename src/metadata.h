@@ -2,7 +2,7 @@
  * @file metadata.h  handling of typed item and feed metadata
  *
  * Copyright (C) 2004-2006 Nathan J. Conrad <t98502@users.sourceforge.net>
- * Copyright (C) 2008-2020 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2008-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include <libxml/tree.h>
 
 #include "feed_parser.h"
+#include "json.h"
 
 /* -------------------------------------------------------- */
 /* interface definitions for namespace parsing handler      */
@@ -141,7 +142,7 @@ GSList * metadata_list_get_values(GSList *metadata, const gchar *strid);
  *
  * @returns the new list
  */
-GSList * metadata_list_copy(GSList *list);
+GSList * metadata_list_copy (GSList *list);
 
 /**
  * Frees all memory allocated by the given metadata list.
@@ -151,12 +152,12 @@ GSList * metadata_list_copy(GSList *list);
 void metadata_list_free(GSList *metadata);
 
 /**
- * Adds the given metadata list to a given XML document node.
- * To be used for saving feed metadata to cache.
- *
- * @param metadata	the metadata list
- * @param parentNode	the XML node
+ * metadata_list_to_json:
+ * @metadata:	the metadata list
+ * @b:		the JSON builder
+ * 
+ * Serializes the metadata list to JSON using a JsonBuilder.
  */
-void metadata_add_xml_nodes(GSList *metadata, xmlNodePtr parentNode);
+void metadata_list_to_json (GSList *metadata, JsonBuilder *b);
 
 #endif

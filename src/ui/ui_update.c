@@ -39,7 +39,7 @@ static GtkTreeStore *um2store = NULL;
 static GHashTable *um1hash = NULL;
 static GHashTable *um2hash = NULL;
 
-static void ui_update_remove_request(nodePtr node, GtkTreeStore *store, GHashTable *hash) {
+static void ui_update_remove_request(Node *node, GtkTreeStore *store, GHashTable *hash) {
 	GtkTreeIter	*iter;
 
 	iter = (GtkTreeIter *)g_hash_table_lookup(hash, node->id);
@@ -50,7 +50,7 @@ static void ui_update_remove_request(nodePtr node, GtkTreeStore *store, GHashTab
 	}
 }
 
-static void ui_update_merge_request(nodePtr node, GtkTreeStore *store, GHashTable *hash) {
+static void ui_update_merge_request(Node *node, GtkTreeStore *store, GHashTable *hash) {
 	GtkTreeIter	*iter;
         gchar           *title;
 
@@ -69,7 +69,7 @@ static void ui_update_merge_request(nodePtr node, GtkTreeStore *store, GHashTabl
 }
 
 static void
-ui_update_find_requests (nodePtr node) {
+ui_update_find_requests (Node *node) {
 
 	if (node->children)
 		node_foreach_child (node, ui_update_find_requests);
@@ -78,13 +78,13 @@ ui_update_find_requests (nodePtr node) {
 		return;
 		
 	if (node->subscription->updateJob) {
-		if (REQUEST_STATE_PROCESSING == update_job_get_state (node->subscription->updateJob)) {
+		if (JOB_STATE_PROCESSING == update_job_get_state (node->subscription->updateJob)) {
 			ui_update_merge_request (node, um1store, um1hash);
 			ui_update_remove_request (node, um2store, um2hash);
 			return;
 		}
 
-		if (REQUEST_STATE_PENDING == update_job_get_state (node->subscription->updateJob)) {
+		if (JOB_STATE_PENDING == update_job_get_state (node->subscription->updateJob)) {
 			ui_update_merge_request (node, um2store, um2hash);
 			return;
 		}
@@ -105,7 +105,7 @@ static gboolean ui_update_monitor_update(void *data) {
 }
 
 static void
-ui_update_cancel (nodePtr node)
+ui_update_cancel (Node *node)
 {
 	if (node->children)
 		node_foreach_child (node, ui_update_cancel);

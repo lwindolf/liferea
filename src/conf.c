@@ -29,7 +29,6 @@
 #include "conf.h"
 #include "debug.h"
 #include "net.h"
-#include "render.h"
 #include "ui/liferea_shell.h"
 
 #define MAX_GCONF_PATHLEN	256
@@ -295,36 +294,6 @@ conf_init (void)
 	g_signal_connect (
 		settings,
 		"changed::" PROXY_DETECT_MODE,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_HOST,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_PORT,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_USEAUTH,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_USER,
-		G_CALLBACK (conf_proxy_reset_settings_cb),
-		NULL
-	);
-	g_signal_connect (
-		settings,
-		"changed::" PROXY_PASSWD,
 		G_CALLBACK (conf_proxy_reset_settings_cb),
 		NULL
 	);

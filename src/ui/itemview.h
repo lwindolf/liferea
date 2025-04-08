@@ -1,7 +1,7 @@
 /*
  * @file itemview.h  viewing feed content in different presentation modes
  *
- * Copyright (C) 2006-2022 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2006-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ void itemview_clear (void);
  *
  * Prepares the view for displaying items of the given node.
  */
-void itemview_set_displayed_node (nodePtr node);
+void itemview_set_displayed_node (Node *node);
 
 /* item view display mode type */
 typedef enum {
@@ -142,7 +142,7 @@ void itemview_update_all_items (void);
  *
  * TODO: register for signal at feed merger instead
  */
-void itemview_update_node_info (struct node *node);
+void itemview_update_node_info (Node *node);
 
 /**
  * itemview_update: (skip)

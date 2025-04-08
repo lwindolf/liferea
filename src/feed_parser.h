@@ -23,7 +23,7 @@
 
 #include <libxml/parser.h>
 
-#include "feed.h"
+#include "node_providers/feed.h"
 
 /** Holds all information used on feed parsing time */
 typedef struct feedParserCtxt {

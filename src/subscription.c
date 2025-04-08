@@ -1,7 +1,7 @@
 /**
  * @file subscription.c  common subscription handling
  *
- * Copyright (C) 2003-2021 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2003-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -169,10 +169,10 @@ subscription_update_error_status (subscriptionPtr subscription,
 }
 
 static void
-subscription_process_update_result (const struct updateResult * const result, gpointer user_data, guint32 flags)
+subscription_process_update_result (const UpdateResult * const result, gpointer user_data, guint32 flags)
 {
 	subscriptionPtr subscription = (subscriptionPtr)user_data;
-	nodePtr		node = subscription->node;
+	Node		*node = subscription->node;
 	gboolean	processing = FALSE;
 	guint		count, maxcount;
 	gchar		*statusbar;
@@ -214,7 +214,7 @@ subscription_process_update_result (const struct updateResult * const result, gp
 	}
 
 	/* Clear status bar if we are last update in progress */
-	update_jobs_get_count (&count, &maxcount);
+	update_job_queue_get_count (&count, &maxcount);
 	if (1 >= count)
 		liferea_shell_set_status_bar (statusbar);
 	else
@@ -288,11 +288,11 @@ subscription_update (subscriptionPtr subscription, guint flags)
 			request->filtercmd = g_strdup (subscription_get_filter (subscription));
 
 		if (SUBSCRIPTION_TYPE (subscription)->prepare_update_request (subscription, request))
-			subscription->updateJob = update_execute_request (subscription, request, subscription_process_update_result, subscription, flags);
+			subscription->updateJob = update_job_new (subscription, request, subscription_process_update_result, subscription, flags);
 		else
 			g_object_unref (request);
 
-		update_jobs_get_count (&count, &maxcount);
+		update_job_queue_get_count (&count, &maxcount);
 		if (count > 1)
 			liferea_shell_set_status_bar (_("Updating (%d / %d) ..."), maxcount - count, maxcount);
 		else
@@ -558,33 +558,6 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 	}
 
 	g_free (interval);
-}
-
-void
-subscription_to_xml (subscriptionPtr subscription, xmlNodePtr xml)
-{
-	gchar	*tmp;
-
-	xmlNewTextChild (xml, NULL, BAD_CAST "feedSource", (xmlChar *)subscription_get_source (subscription));
-	xmlNewTextChild (xml, NULL, BAD_CAST "feedOrigSource", (xmlChar *)subscription_get_orig_source (subscription));
-
-	tmp = g_strdup_printf ("%d", subscription_get_default_update_interval (subscription));
-	xmlNewTextChild (xml, NULL, BAD_CAST "feedUpdateInterval", (xmlChar *)tmp);
-	g_free (tmp);
-
-	if (subscription->updateError)
-		xmlNewTextChild (xml, NULL, BAD_CAST "updateError", (xmlChar *)subscription->updateError);
-	if (subscription->httpError) {
-		xmlNewTextChild (xml, NULL, BAD_CAST "httpError", (xmlChar *)subscription->httpError);
-
-		tmp = g_strdup_printf ("%d", subscription->httpErrorCode);
-		xmlNewTextChild (xml, NULL, BAD_CAST "httpErrorCode", (xmlChar *)tmp);
-		g_free (tmp);
-	}
-	if (subscription->filterError)
-		xmlNewTextChild (xml, NULL, BAD_CAST "filterError", (xmlChar *)subscription->filterError);
-
-	metadata_add_xml_nodes (subscription->metadata, xml);
 }
 
 void

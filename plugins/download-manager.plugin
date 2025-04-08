@@ -1,0 +1,14 @@
+[Plugin]
+Loader=python3
+Module=download-manager
+IAge=3
+Name=Download Manager
+Name[de]=Download Manager
+Description=Allows downloading multiple files concurrently
+Description[de]=Einfaches Downloaden mehrerer Dateien
+Builtin=true
+Icon=emblem-default
+Authors=Lars Windolf <lars.windolf@gmx.de>
+Copyright=Copyright © 2024 Lars Windolf
+Website=https://github.com/lwindolf/liferea
+Version=0.1.0
