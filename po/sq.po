@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 09:18+0100\n"
-"PO-Revision-Date: 2024-12-23 22:10+0200\n"
+"PO-Revision-Date: 2025-04-08 13:39+0300\n"
 "Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
 "Language: sq\n"
@@ -411,7 +411,7 @@ msgstr "Hyrja dështoi!"
 
 #: ../src/node_sources/google_source.c:404
 msgid "Google Reader API (FreshRSS, FeedHQ, Miniflux...)"
-msgstr ""
+msgstr "API Google Reader (FreshRSS, FeedHQ, Miniflux…)"
 
 #: ../src/node_sources/google_source_feed.c:159
 msgid "Could not parse JSON returned by Google Reader API!"
@@ -632,7 +632,7 @@ msgstr ""
 
 #: ../src/net.c:491
 msgid "Too many requests. Liferea has to wait a while before trying again."
-msgstr ""
+msgstr "Shumë kërkesa. Liferea-s i duhet të presë ca, para se të riprovojë."
 
 #. http 5xx server errors
 #: ../src/net.c:494
@@ -2074,9 +2074,8 @@ msgid "Creator"
 msgstr "Krijues"
 
 #: ../js/item.xml.in.h:3
-#, fuzzy
 msgid "Shared By"
-msgstr "Ndarë me të tjerët nga"
+msgstr "Ndarë me të tjerët Nga"
 
 #: ../js/item.xml.in.h:4
 msgid "Via"
@@ -2095,20 +2094,24 @@ msgid ""
 "⛔ Account login for '{{ title }}' failed ({{ authFailures }}/"
 "{{ maxFailures }} retries)!"
 msgstr ""
+"⛔ Hyrja në llogari për '{{ title }}' dështoi ({{ authFailures }}/"
+"{{ maxFailures }} prova)!"
 
 #: ../js/node.xml.in.h:6
 msgid "Please check your credentials!"
-msgstr ""
+msgstr "Ju lutemi, kontrolloni kredencialet tuaja!"
 
 #: ../js/node.xml.in.h:7
 msgid ""
 "⚠️ Account login for '{{ title }}' is in progress ({{ authFailures }}/"
 "{{ maxFailures }} retries)..."
 msgstr ""
+"⚠️ Hyrja në llogari për '{{ title }}' është në kryerje e sipër "
+"({{ authFailures }}/{{ maxFailures }} prova)…"
 
 #: ../js/node.xml.in.h:8
 msgid "⚠️ Account login for '{{ title }}' has not yet started."
-msgstr ""
+msgstr "⚠️ Hyrja në llogari për '{{ title }}' s’është nisur ende."
 
 #: ../js/node.xml.in.h:9
 msgid "There was a problem when fetching this subscription!"
@@ -2165,149 +2168,3 @@ msgstr ""
 "Lidhur me këtë, mund të kontaktoni autorin ose kujdestarin e sajtit të "
 "prurjes!"
 
-#, c-format
-#~ msgid "\"%s\" is not a valid enclosure type config file!"
-#~ msgstr "“%s” s’është kartelë e vlefshme formësimi lloji paketimesh!"
-
-#, fuzzy, c-format
-#~ msgid ""
-#~ "Command failed: \n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ msgstr "Urdhri për email dështoi: %s"
-
-#~ msgid "No feed list source types found!"
-#~ msgstr "S’u gjetën lloje burimi listash prurjesh!"
-
-#~ msgid "Google Reader API"
-#~ msgstr "Google Reader API"
-
-#~ msgid "Content download failed! Try disabling reader mode."
-#~ msgstr "Shkarkimi i lëndës dështoi! Provoni të çaktivizoni mënyrën Lexues."
-
-#~ msgid "Content extraction failed! Try disabling reader mode."
-#~ msgstr "Përftimi i lëndës dështoi! Provoni të çaktivizoni mënyrën Lexues."
-
-#~ msgid "_Reader Mode"
-#~ msgstr "Mënyra _Lexues"
-
-#~ msgid "Use _Reader mode."
-#~ msgstr "Përdor mënyrën _Lexues."
-
-#~ msgid ""
-#~ "This enables <a href=\"https://github.com/mozilla/"
-#~ "readability\">stripping</a> all non-content elements (like scripts, "
-#~ "fonts, tracking)"
-#~ msgstr ""
-#~ "Kjo aktivizon <a href=\"https://github.com/mozilla/readability\">heqjen</"
-#~ "a> e krejt elementeve që s’janë lëndë (bie fjala, programthe, shkronja, "
-#~ "gjurmim)"
-
-#~ msgid "Feed:"
-#~ msgstr "Prurje:"
-
-#~ msgid "Source:"
-#~ msgstr "Burim:"
-
-#~ msgid "Folder:"
-#~ msgstr "Dosje:"
-
-#~ msgid "children with"
-#~ msgstr "pjella me"
-
-#~ msgid "unread headlines"
-#~ msgstr "tituj të palexuar"
-
-#~ msgid "Feed"
-#~ msgstr "Prurje"
-
-#~ msgid "Filed under"
-#~ msgstr "Skeduar te"
-
-#~ msgid "Related"
-#~ msgstr "Të afërta"
-
-#~ msgid "Also posted in"
-#~ msgstr "Postuar edhe te"
-
-#~ msgid "Coordinates"
-#~ msgstr "Koordinata"
-
-#~ msgid "Map"
-#~ msgstr "Hartë"
-
-#~ msgid "View count"
-#~ msgstr "Numër parjesh"
-
-#~ msgid "Rating"
-#~ msgstr "Vlerësim"
-
-#~ msgid "Comments"
-#~ msgstr "Komente"
-
-#~ msgid "Updating..."
-#~ msgstr "Po përditësohet…"
-
-#~ msgid "Section"
-#~ msgstr "Ndarje"
-
-#~ msgid "Department"
-#~ msgstr "Degë"
-
-#~ msgid "News Bin:"
-#~ msgstr "Kosh Lajmesh:"
-
-#~ msgid ""
-#~ "Add items to this news bin by selecting \"Copy to News Bin\" from the "
-#~ "item list context menu."
-#~ msgstr ""
-#~ "Shtoni te ky kosh lajmesh zëra duke përzgjedhur “Kopjoje te Kosh Lajmesh” "
-#~ "prej menuje konteksti liste zërash."
-
-#~ msgid "Search Folder:"
-#~ msgstr "Dosje Kërkimesh:"
-
-#~ msgid ""
-#~ "You have not configured a download tool yet! Please do so in the "
-#~ "'Enclosures' tab in Tools/Preferences."
-#~ msgstr ""
-#~ "Ende s’keni të formësuar mjet shkarkimesh! Ju lutemi, bëjeni këtë te "
-#~ "skeda “Paketime”, te Mjete/Parapëlqime."
-
-#, c-format
-#~ msgid ""
-#~ "Command failed: \n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ " Please check whether the configured download tool is installed and "
-#~ "working correctly! You can change it in the 'Download' tab in Tools/"
-#~ "Preferences."
-#~ msgstr ""
-#~ "Urdhri dështoi: \n"
-#~ "\n"
-#~ "%s\n"
-#~ "\n"
-#~ " Ju lutemi, shihni nëse ka të instaluar dhe funksionon në rregull ndonjë "
-#~ "mjet të formësuar shkarkimesh! Mund ta ndryshoni te skeda “Shkarkime” te "
-#~ "Mjete/Parapëlqime."
-
-#~ msgid "*** No title ***"
-#~ msgstr "*** Pa titull ***"
-
-#~ msgid "Type"
-#~ msgstr "Lloj"
-
-#~ msgid "Program"
-#~ msgstr "Program"
-
-#~ msgid "Downloading Content"
-#~ msgstr "Shkarkim Lënde"
-
-#~ msgid "_Download using"
-#~ msgstr "_Shkarkoje duke përdorur"
-
-#, no-c-format
-#~ msgid "custom-command %s"
-#~ msgstr "urdhër-vetjak"
