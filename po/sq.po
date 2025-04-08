@@ -1,7 +1,7 @@
 # Albanian Translation of liferea.pot
 # Copyright (C) 2009,2012
 # This file is distributed under the same license as the Liferea package.
-# Besnik Bleta <besnik@programeshqip.org>, 2009, 2012, 2015, 2021, 2022, 2024
+# Besnik Bleta <besnik@programeshqip.org>, 2009, 2012, 2015, 2021, 2022, 2024, 2025
 msgid ""
 msgstr ""
 "Project-Id-Version: liferea 1.10-rc4\n"
@@ -1542,7 +1542,7 @@ msgstr "_Emër Koshi Lajmesh:"
 
 #: ../glade/new_newsbin.ui.h:3
 msgid "_Always show in Reduced Feed List"
-msgstr "Shfaqe _përherë bë Listë Prurjesh të Mpakur"
+msgstr "Shfaqe _përherë në Listë Prurjesh të Mpakur"
 
 #: ../glade/new_subscription.ui.h:2 ../glade/properties.ui.h:11
 msgid "Feed Source"
