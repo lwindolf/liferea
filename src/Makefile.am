@@ -133,6 +133,7 @@ Liferea_3_0_gir_FILES = auth.c auth.h \
 	ui/liferea_shell.c ui/liferea_shell.h \
 	plugins/auth_activatable.c plugins/auth_activatable.h \
 	plugins/download_activatable.c plugins/download_activatable.h \
+	plugins/liferea_activatable.c plugins/liferea_activatable.h \
 	plugins/liferea_shell_activatable.c plugins/liferea_shell_activatable.h \
 	plugins/node_source_activatable.c plugins/node_source_activatable.h
 

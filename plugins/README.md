@@ -19,8 +19,5 @@ To help you getting started there is a tutorial on writing plugins:
 
 ## Adding 3rd Party Plugins
 
-Using the "plugin installer" Liferea allows installing plugins
-from a curated list of 3rd party (Github) sources. This list is
-the "plugin-list.json" file you find in this directory.
-
-Open a PR to add useful 3rd party plugins you know about!
+3rd party plugins can only be manually installed by placing them into
+a subdirectory in ~/.local/share/liferea/plugins

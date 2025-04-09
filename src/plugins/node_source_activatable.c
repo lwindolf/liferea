@@ -1,7 +1,7 @@
 /*
- * @file node_type_activatable.c  Node *Source Plugin Type
+ * @file node_type_activatable.c  Node Source Plugin Type
  *
- * Copyright (C) 2015 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2015-2024 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,42 +20,10 @@
 
 #include "node_source_activatable.h"
 
-/**
- * SECTION:node_source_activatable
- * @short_description: Interface for activatable extensions providing a new node source type
- * @see_also: #PeasExtensionSet
- *
- * #LifereaNodeSourceActivatable is an interface which should be implemented by
- * extensions that want to a new node source type (usually online news aggregators)
- **/
-G_DEFINE_INTERFACE (LifereaNodeSourceActivatable, liferea_node_source_activatable, G_TYPE_OBJECT)
+G_DEFINE_INTERFACE (LifereaNodeSourceActivatable, liferea_node_source_activatable, LIFEREA_TYPE_ACTIVATABLE)
 
 void
 liferea_node_source_activatable_default_init (LifereaNodeSourceActivatableInterface *iface)
 {
 	/* No properties yet */
-}
-
-void
-liferea_node_source_activatable_activate (LifereaNodeSourceActivatable * activatable)
-{
-	LifereaNodeSourceActivatableInterface *iface;
-
-	g_return_if_fail (IS_LIFEREA_NODE_SOURCE_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->activate)
-		iface->activate (activatable);
-}
-
-void
-liferea_node_source_activatable_deactivate (LifereaNodeSourceActivatable * activatable)
-{
-	LifereaNodeSourceActivatableInterface *iface;
-
-	g_return_if_fail (IS_LIFEREA_NODE_SOURCE_ACTIVATABLE (activatable));
-
-	iface = LIFEREA_NODE_SOURCE_ACTIVATABLE_GET_IFACE (activatable);
-	if (iface->deactivate)
-		iface->deactivate (activatable);
 }

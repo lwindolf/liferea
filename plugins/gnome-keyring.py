@@ -1,7 +1,7 @@
 """
 Libsecret Plugin
 
-Copyright (C) 2013 Lars Windolf <lars.lindner@gmx.de>
+Copyright (C) 2013-2025 Lars Windolf <lars.lindner@gmx.de>
 Copyright (C) 2018 Bastian Germann <bastiangermann@fishpost.de>
 
 This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@ SCHEMA = Secret.Schema.new(
     {'id': Secret.SchemaAttributeType.STRING}
 )
 
-class LibsecretPlugin(GObject.Object, Liferea.AuthActivatable):
+class LibsecretPlugin(GObject.Object, Liferea.Activatable, Liferea.AuthActivatable):
     __gtype_name__ = 'LibsecretPlugin'
 
     object = GObject.property(type=GObject.Object)
