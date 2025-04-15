@@ -19,6 +19,9 @@
 /* Version number of package */
 #define VERSION @VERSION@
 
+/* Define gi-repository version to use */
+#define GI_REPOSITORY @GI_REPOSITORY@
+
 #define PACKAGE_DATA_DIR @PACKAGE_DATA_DIR@
 #define PACKAGE_LIB_DIR @PACKAGE_LIB_DIR@
 #define PACKAGE_LOCALE_DIR @PACKAGE_LOCALE_DIR@

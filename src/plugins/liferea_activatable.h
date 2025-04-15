@@ -34,6 +34,7 @@ struct _LifereaActivatableInterface
 
         void (*activate) (LifereaActivatable * activatable);
         void (*deactivate) (LifereaActivatable * activatable);
+        void (*create_configure_widget) (LifereaActivatable * activatable);
 };
 
 /**
@@ -52,7 +53,14 @@ void liferea_activatable_activate (LifereaActivatable *activatable);
  */
 void liferea_activatable_deactivate (LifereaActivatable *activatable);
 
-GType liferea_activatable_get_type (void) G_GNUC_CONST;
+/**
+ * liferea_activatable_create_configure_widget:
+ * @activatable: A #LifereaActivatable.
+ *
+ * Creates the configure widget for the extension.
+ * This interface method is optional.
+ */
+void liferea_activatable_create_configure_widget (LifereaActivatable *activatable);
 
 G_END_DECLS
 

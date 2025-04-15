@@ -1,7 +1,7 @@
 """
 Download Manager Plugin
 
-Copyright (C) 2024-2025 Lars Windolf <lars.lindner@gmx.de>
+Copyright (C) 2024 Lars Windolf <lars.lindner@gmx.de>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,6 @@ import gi
 import os
 import time
 
-gi.require_version('Peas', '1.0')
 gi.require_version('Gtk', '4.0')
 gi.require_version('Liferea', '3.0')
 
@@ -46,7 +45,7 @@ def remove_menuitem(action, menus, level=0):
                     if value == action:
                         menus.remove(i)
 
-class DownloadManagerPlugin(GObject.Object, Liferea.DownloadActivatable):
+class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.DownloadActivatable):
     __gtype_name__ = 'DownloadManagerPlugin'
 
     shell = GObject.property(type=Liferea.Shell)

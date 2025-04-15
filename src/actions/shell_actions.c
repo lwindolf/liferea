@@ -160,6 +160,12 @@ on_searchbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_
 }
 
 static void
+on_manage_plugins_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	liferea_plugins_manage_dialog (GTK_WINDOW (liferea_shell_get_window ()));
+}
+
+static void
 on_about_activate (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	GtkWidget *dialog;
@@ -284,6 +290,7 @@ static const GActionEntry gaction_entries[] = {
 	{"zoom-out", on_zoomout_activate, NULL, NULL, NULL},
 	{"zoom-reset", on_zoomreset_activate, NULL, NULL, NULL},
 	{"show-update-monitor", on_menu_show_update_monitor, NULL, NULL, NULL},
+	{"manage-plugins", on_manage_plugins_clicked, NULL, NULL, NULL},
 	{"show-preferences", on_prefbtn_clicked, NULL, NULL, NULL},
 	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
 	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},

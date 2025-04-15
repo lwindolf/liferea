@@ -64,6 +64,12 @@ void liferea_plugin_call (GType type, GFunc func, gpointer user_data);
  */
 gboolean liferea_plugin_is_active (GType type);
 
+/**
+ * liferea_plugins_manage_dialog: (skip)
+ * @parent:		the parent window
+ */
+void liferea_plugins_manage_dialog (GtkWindow *parent);
+
 G_END_DECLS
 
 #endif

@@ -1,7 +1,7 @@
 """
 System Tray Icon Plugin
 
-Copyright (C) 2013-2020 Lars Windolf <lars.windolf@gmx.de>
+Copyright (C) 2013-2025 Lars Windolf <lars.windolf@gmx.de>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -136,7 +136,7 @@ def status_notifier_available():
     return result and result[0]
 
 
-class TrayiconPlugin (GObject.Object, Liferea.ShellActivatable):
+class TrayiconPlugin (GObject.Object, Liferea.Activatable, Liferea.ShellActivatable):
     __gtype_name__ = 'TrayiconPlugin'
 
     object = GObject.property(type=GObject.Object)

@@ -169,6 +169,10 @@
           <attribute name="action">app.show-preferences</attribute>
           <attribute name="label" translatable="yes">_Preferences</attribute>
         </item>
+       	<item>
+          <attribute name="action">app.manage-plugins</attribute>
+          <attribute name="label" translatable="yes">_Manage Plugins</attribute>
+        </item>
         <item>
           <attribute name="action">node-sort-feeds</attribute>
           <attribute name="label" translatable="yes">_Sort Feeds</attribute>

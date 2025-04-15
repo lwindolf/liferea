@@ -5,6 +5,7 @@ net.sourceforge.liferea.desktop.in
 plugins/add-bookmark-site.ui
 plugins/add-bookmark-site.py
 plugins/download-manager.py
+plugins/getfocus.ui
 plugins/getfocus.py
 plugins/headerbar.py
 plugins/libnotify.py
@@ -208,6 +209,7 @@ src/xml.h
 [type: gettext/glade]resources/new_subscription.ui
 [type: gettext/glade]resources/node_source.ui
 [type: gettext/glade]resources/opml_source.ui
+[type: gettext/glade]resources/plugins.ui
 [type: gettext/glade]resources/prefs.ui
 [type: gettext/glade]resources/properties.ui
 [type: gettext/glade]resources/reedah_source.ui

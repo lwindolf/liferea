@@ -23,7 +23,7 @@ def cell_func_bold_unread(column, cell, model, iterator, data):
     unread_count = model.get(iterator, 3)
     cell.set_property("weight", Pango.Weight.BOLD if (unread_count[0] > 0) else Pango.Weight.NORMAL)
 
-class NrBoldUnreadPlugin(GObject.Object, Liferea.ShellActivatable):
+class NrBoldUnreadPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivatable):
     __gtype_name__ = 'NrBoldUnreadPlugin'
     treeview = None
     ticol = None

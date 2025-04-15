@@ -1,7 +1,7 @@
 """
 libnotify Popup Notifications Plugin
 
-Copyright (C) 2013-2015 Lars Windolf <lars.windolf@gmx.de>
+Copyright (C) 2013-2025 Lars Windolf <lars.windolf@gmx.de>
 Copyright (C) 2020 Tasos Sahanidis <tasos@tasossah.com>
 
 This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ else:
     _ = t.gettext
 
 
-class LibnotifyPlugin(GObject.Object, Liferea.ShellActivatable):
+class LibnotifyPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivatable):
     __gtype_name__ = 'LibnotifyPlugin'
 
     object = GObject.property (type=GObject.Object)
