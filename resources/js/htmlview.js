@@ -22,13 +22,15 @@
 import { render, template } from './helpers/render.js';
 import DOMPurify from './vendor/purify.min.js';
 
+window.debugflags = 0;
+
 function prepare(baseURL, title) {
 	if (title) {
 		/* Set title for it to appear in e.g. desktop MPRIS playback controls */
 		document.title = title;
 	}
 	if (baseURL && baseURL !== '(null)') {
-		var base = document.createElement("base");
+		let base = document.createElement("base");
 		base.setAttribute("href", baseURL);
 		document.head.appendChild(base);
 	}
@@ -36,12 +38,12 @@ function prepare(baseURL, title) {
 
 // returns first occurence of a given metadata type
 function metadata_get(obj, key) {
-	var metadata = obj.metadata;
+	let metadata = obj.metadata;
 
 	if (!metadata)
 		return null;
 
-	var results = metadata.filter((e) => key in e);
+	let results = metadata.filter((e) => key in e);
 	if (results.length == 0)
 		return null;
 
@@ -70,119 +72,152 @@ function templateFix(str, data) {
 					data);
 }
 
+function escapeHTML(str){
+	return new Option(str).innerHTML;
+}
+
+function debug(text, obj) {
+	if(window.debugflags > 0)
+		if (obj)
+			console.log(text, obj);
+		else
+			console.log(text);
+}
+
 async function load_node(data, baseURL, direction) {
-	let node = JSON.parse(decodeURIComponent(data));
+	try {
+		let node = JSON.parse(decodeURIComponent(data));
 
-	// FIXME
-	console.log(node);
+		// FIXME
+		debug("node", node);
 
-	prepare(baseURL, node.title);
-	render("body", templateFix(document.getElementById('template').innerHTML), {
-		node,
-		direction,
-		publisher  		: metadata_get(node, "publisher"),
-		author			: metadata_get(node, "author"),
-		copyright		: metadata_get(node, "copyright"),
-		description		: metadata_get(node, "description"),
-		homepage		: metadata_get(node, "homepage")
-	});
+		prepare(baseURL, node.title);
+		render("body", templateFix(document.getElementById('template').innerHTML), {
+			node,
+			direction,
+			publisher  		: metadata_get(node, "publisher"),
+			author			: metadata_get(node, "author"),
+			copyright		: metadata_get(node, "copyright"),
+			description		: metadata_get(node, "description"),
+			homepage		: metadata_get(node, "homepage")
+		});
 
-    contentCleanup ();
+		contentCleanup ();
+	} catch (e) {
+		document.body.innerHTML = `<div id="errors">Error: Failed to load node! Exception: ${escapeHTML(e)}</div>` + document.body.innerHTML;
+		return false;
+	}
 }
 
 async function load_item(data, baseURL, direction) {
-	let item = JSON.parse(decodeURIComponent(data));
-	let richContent = metadata_get(item, "richContent");
-	let mediathumb = metadata_get(item, "mediathumbnail");
-	let mediadesc = metadata_get(item, "mediadescription");
-	let article;
+	try {
+		let item = JSON.parse(decodeURIComponent(data));
+		let richContent = metadata_get(item, "richContent");
+		let mediathumb = metadata_get(item, "mediathumbnail");
+		let mediadesc = metadata_get(item, "mediadescription");
+		let article;
+		let debugfooter = "<hr/>DEBUG:";
 
-	if (richContent) {
-		let shadowDoc = document.implementation.createHTMLDocument();
-		shadowDoc.body.innerHTML = richContent;
+		if (richContent) {
+			let shadowDoc = document.implementation.createHTMLDocument();
+			shadowDoc.body.innerHTML = richContent;
+			debugfooter += " Scrape";
 
-		article = new Readability(shadowDoc, {charThreshold: 100}).parse();
-		if (article) {
-			// Use rich content from Readability if available and better!
-			if (article.content.length > item.description.length) {
-				item.description = article.content;
+			article = new Readability(shadowDoc, {charThreshold: 100}).parse();
+			if (article) {
+				// Use rich content from Readability if available and better!
+				if (article.content.length > item.description.length) {
+					debug("Using Readability content");
+					debugfooter += " Readability";
+					item.description = article.content;
+				}
 			}
 		}
-	}
+		
+		debug("item", item);
+		debug("article", article);
 
-	// FIXME
-	console.log(item);
+		prepare(baseURL, item.title);
+		render("body", templateFix (document.getElementById('template').innerHTML), {
+			item,
+			direction,
 
-	prepare(baseURL, item.title);
-	render("body", templateFix (document.getElementById('template').innerHTML), {
-		item,
-		direction,
+			// Using article.title is important, as often the item.title is just a summary
+			// or something slightly different. Using the article.title allow for better
+			// title duplicate elimination (further below)
+			title			: article?.title?.length > 5?article.title:item.title,
 
-		// Using article.title is important, as often the item.title is just a summary
-		// or something slightly different. Using the article.title allow for better
-		// title duplicate elimination (further below)
-		title		: article?article.title:item.title,
+			author			: metadata_get(item, "author"),
+			creator			: metadata_get(item, "creator"),
+			sharedby		: metadata_get(item, "sharedby"),
+			via				: metadata_get(item, "via"),
+			slashSection	: metadata_get(item, "slashSection"),
+			slashDepartment	: metadata_get(item, "slashDepartment"),
+			mediathumb		: mediathumb,
+			mediadesc		: mediadesc,
+			videos			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('video/')),
+			audios			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('audio/'))
+			// FIXME: use this too
+			/*let related		= metadata_get(item, "related");
+			let point		= metadata_get(item, "point");
+			let mediaviews	= metadata_get(item, "mediaviews");
+			let ratingavg	= metadata_get(item, "mediastarRatingavg");
+			let ratingmax	= metadata_get(item, "mediastarRatingMax");
+			let gravatar	= metadata_get(item, "gravatar");*/
+		});
 
-		author			: metadata_get(item, "author"),
-		creator			: metadata_get(item, "creator"),
-		sharedby		: metadata_get(item, "sharedby"),
-		via				: metadata_get(item, "via"),
-		slashSection	: metadata_get(item, "slashSection"),
-		slashDepartment	: metadata_get(item, "slashDepartment"),
-		mediathumb		: mediathumb,
-		mediadesc		: mediadesc,
-		videos			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('video/')),
-		audios			: item.enclosures.filter((enclosure) => enclosure.mime?.startsWith('audio/'))
-		// FIXME: use this too
-		/*let related		= metadata_get(item, "related");
-		let point		= metadata_get(item, "point");
-		let mediaviews	= metadata_get(item, "mediaviews");
-		let ratingavg	= metadata_get(item, "mediastarRatingavg");
-		let ratingmax	= metadata_get(item, "mediastarRatingMax");
-		let gravatar	= metadata_get(item, "gravatar");*/
-	});
-
-	// Title duplicate elimination:
-	// Check if there is an element which contains exactly the text from item.title
-	let el = Array.from(document.getElementById('content').querySelectorAll('*')).find(el => el.textContent.trim() === item.title);
-	if (el) {
-		let innermost = el;
-		while (innermost.children.length > 0) {
-			innermost = Array.from(innermost.children).find(child => child.textContent.trim() === item.title) || innermost;
+		// Title duplicate elimination:
+		// Check if there is an element which contains exactly the text from item.title
+		let el = Array.from(document.getElementById('content').querySelectorAll('*')).find(el => el.textContent.trim() === item.title);
+		if (el) {
+			let innermost = el;
+			while (innermost.children.length > 0) {
+				innermost = Array.from(innermost.children).find(child => child.textContent.trim() === item.title) || innermost;
+			}
+			innermost.remove();
+			debugfooter += " titleDuplicateRemove";
 		}
-		innermost.remove();
+
+		// If there are no images and we have a thumbnail, add it
+		if (document.querySelectorAll('img').length == 0 && mediathumb) {
+			let img = document.createElement('img');
+			img.src = mediathumb;
+			img.alt = mediadesc;
+			document.getElementById('description').prepend(img);
+			debugfooter += " thumbnailAdd";
+		}
+
+		// Convert all lazy-loaded images
+		document.querySelectorAll('img[data-src]').forEach((img) => {
+			img.src = img.getAttribute('data-src');
+		});
+
+		// Setup audio/video <select> handler
+		document.querySelector('#enclosureVideo select')?.addEventListener("change", (e) => {
+			document.querySelector('#enclosureVideo video').src = e.target.options[e.target.selectedIndex].value;
+			document.querySelector('#enclosureVideo video').play();
+		});
+		document.getElementById('#enclosureAudio select')?.addEventListener("change", (e) => {
+			document.querySelector('#enclosureAudio audio').src = e.target.options[e.target.selectedIndex].value;
+			document.querySelector('#enclosureVideo audio').play();
+		});
+
+		let youtubeMatch = item.source.match(/https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/);
+		contentCleanup ();
+
+		if (youtubeMatch) {
+			youtube_embed (youtubeMatch[1]);
+			debugfooter += " youtube";
+		}
+
+		if(window.debugflags > 0)
+			document.body.innerHTML += debugfooter;
+
+	    return true;
+	} catch (e) {
+		document.body.innerHTML = `<div id="errors">Error: Failed to load item! Exception: ${escapeHTML(e)}</div>` + document.body.innerHTML;
+		return false;
 	}
-
-    // If there are no images and we have a thumbnail, add it
-    if (document.querySelectorAll('img').length == 0 && mediathumb) {
-		let img = document.createElement('img');
-		img.src = mediathumb;
-		img.alt = mediadesc;
-		document.getElementById('description').prepend(img);
-    }
-
-	// Convert all lazy-loaded images
-	document.querySelectorAll('img[data-src]').forEach((img) => {
-		img.src = img.getAttribute('data-src');
-	});
-
-    // Setup audio/video <select> handler
-    document.querySelector('#enclosureVideo select')?.addEventListener("change", (e) => {
-		document.querySelector('#enclosureVideo video').src = e.target.options[e.target.selectedIndex].value;
-		document.querySelector('#enclosureVideo video').play();
-    });
-    document.getElementById('#enclosureAudio select')?.addEventListener("change", (e) => {
-		document.querySelector('#enclosureAudio audio').src = e.target.options[e.target.selectedIndex].value;
-		document.querySelector('#enclosureVideo audio').play();
-    });
-
-	let youtubeMatch = item.source.match(/https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)/);
-	if (youtubeMatch)
-		youtube_embed (youtubeMatch[1]);
-
-    contentCleanup ();
-
-    return true;
 }
 
 /**
@@ -236,8 +271,7 @@ function contentCleanup() {
 }
 
 function youtube_embed(id) {
-	var container = document.getElementById(id);
-	container.innerHTML = '<iframe width="640" height="480" src="https://www.youtube.com/embed/' + id + '?autoplay=1" frameborder="0" allowfullscreen="1" allow="autoplay; allowfullscreen"></iframe>';
+	document.getElementById('youtube_embed').innerHTML = '<iframe width="640" height="480" src="https://www.youtube.com/embed/' + id + '?autoplay=1" frameborder="0" allowfullscreen="1" allow="autoplay; allowfullscreen"></iframe>';
 
 	return false;
 }

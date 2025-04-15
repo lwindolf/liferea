@@ -536,19 +536,10 @@ subscription_export (subscriptionPtr subscription, xmlNodePtr xml, gboolean trus
 	if (subscription_get_filter (subscription))
 		xmlNewProp (xml, BAD_CAST"filtercmd", BAD_CAST subscription_get_filter (subscription));
 
-	if(trusted) {
-		xmlNewProp (xml, BAD_CAST"updateInterval", BAD_CAST interval);
+	xmlNewProp (xml, BAD_CAST"updateInterval", BAD_CAST interval);
 
-		if (subscription->updateOptions->dontUseProxy)
-			xmlNewProp (xml, BAD_CAST"dontUseProxy", BAD_CAST"true");
-
-		if (!liferea_auth_has_active_store ()) {
-			if (subscription->updateOptions->username)
-				xmlNewProp (xml, BAD_CAST"username", (xmlChar *)subscription->updateOptions->username);
-			if (subscription->updateOptions->password)
-				xmlNewProp (xml, BAD_CAST"password", (xmlChar *)subscription->updateOptions->password);
-		}
-	}
+	if (subscription->updateOptions->dontUseProxy)
+		xmlNewProp (xml, BAD_CAST"dontUseProxy", BAD_CAST"true");
 
 	g_free (interval);
 }
