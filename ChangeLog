@@ -10,7 +10,10 @@ To be released
 	  no keyring is available. This is too insecure.
 	  (Lars Windolf)
 
-	* #1426 Migration to libpeas2
+	* #1426 Migration to libpeas2, this means
+	  - simplified plugin manager
+	  - no more plugin installation supported
+	  - get_focus plugin looses configuration dialog
 
 	* #1426 New configure option to set girepository dependency version
 
