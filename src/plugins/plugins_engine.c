@@ -341,6 +341,6 @@ liferea_plugins_manage_dialog (GtkWindow *parent)
 	g_signal_connect(configure_button, "clicked", G_CALLBACK(on_configure_clicked), dialog);
 
 	gtk_widget_show_all(list_box);
-	gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_show(dialog);
 }
 
