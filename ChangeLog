@@ -6,6 +6,14 @@ To be released
 	* Removes long deprecated manual proxy setting
           (Lars Windolf)
 
+	* #1462 Drop the possibility to save passwords to OPML feed list when
+	  no keyring is available. This is too insecure.
+	  (Lars Windolf)
+
+	* #1426 Migration to libpeas2
+
+	* #1426 New configure option to set girepository dependency version
+
 
 2025-02-25  Lars Windolf <lars.windolf@gmx.de>
 
