@@ -23,36 +23,20 @@
 
 #include <glib-object.h>
 
+#include "liferea_activatable.h"
+
 G_BEGIN_DECLS
 
 #define LIFEREA_TYPE_DOWNLOAD_ACTIVATABLE (liferea_download_activatable_get_type ())
-G_DECLARE_INTERFACE (LifereaDownloadActivatable, liferea_download_activatable, LIFEREA, DOWNLOAD_ACTIVATABLE, GObject)
+G_DECLARE_INTERFACE (LifereaDownloadActivatable, liferea_download_activatable, LIFEREA, DOWNLOAD_ACTIVATABLE, LifereaActivatable)
 
 struct _LifereaDownloadActivatableInterface
 {
 	GTypeInterface g_iface;
 
-	void (*activate) (LifereaDownloadActivatable * activatable);
-	void (*deactivate) (LifereaDownloadActivatable * activatable);
 	void (*download) (LifereaDownloadActivatable * activatable, const gchar *url);
 	void (*show) (LifereaDownloadActivatable * activatable);
 };
-
-/**
- * liferea_download_activatable_activate:
- * @activatable: A #LifereaDownloadActivatable.
- *
- * Activates the extension.
- */
-void liferea_download_activatable_activate (LifereaDownloadActivatable *activatable);
-
-/**
- * liferea_download_activatable_deactivate:
- * @activatable: A #LifereaDownloadActivatable.
- *
- * Deactivates the extension.
- */
-void liferea_download_activatable_deactivate (LifereaDownloadActivatable *activatable);
 
 /**
  * liferea_download_activatable_download:

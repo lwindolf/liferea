@@ -43,14 +43,13 @@ plugin_DATA = \
 	plugins/download-manager.ui \
 	plugins/getfocus.py \
 	plugins/getfocus.plugin \
+	plugins/getfocus.ui \
 	plugins/gnome-keyring.py \
 	plugins/gnome-keyring.plugin \
 	plugins/headerbar.py \
 	plugins/headerbar.plugin \
 	plugins/libnotify.py \
 	plugins/libnotify.plugin \
-	plugins/plugin-installer.py \
-	plugins/plugin-installer.plugin \
 	plugins/trayicon.py \
 	plugins/trayicon.plugin
 

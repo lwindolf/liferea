@@ -5,10 +5,10 @@ net.sourceforge.liferea.desktop.in
 plugins/add-bookmark-site.ui
 plugins/add-bookmark-site.py
 plugins/download-manager.py
+plugins/getfocus.ui
 plugins/getfocus.py
 plugins/headerbar.py
 plugins/libnotify.py
-plugins/plugin-installer.py
 plugins/trayicon.py
 src/browser.c
 src/browser_history.c
@@ -120,6 +120,8 @@ src/parsers/rss_channel.c
 src/parsers/rss_channel.h
 src/parsers/rss_item.c
 src/parsers/rss_item.h
+src/plugins/plugins_engine.c
+src/plugins/plugins_engine.h
 src/rule.c
 src/rule.h
 src/social.c
@@ -196,6 +198,7 @@ src/xml.h
 [type: gettext/glade]glade/new_subscription.ui
 [type: gettext/glade]glade/node_source.ui
 [type: gettext/glade]glade/opml_source.ui
+[type: gettext/glade]glade/plugins.ui
 [type: gettext/glade]glade/prefs.ui
 [type: gettext/glade]glade/properties.ui
 [type: gettext/glade]glade/reedah_source.ui

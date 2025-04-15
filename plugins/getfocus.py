@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 from pathlib import Path
 import gettext
-from gi.repository import GObject, Gtk, Liferea, PeasGtk
+from gi.repository import GObject, Gtk, Liferea
 
 # Initialize translations for tooltips
 _ = lambda x: x
@@ -31,15 +31,14 @@ else:
     _ = t.gettext
 
 FILE_CONFIG = 'opacity.conf'
-
+UI_FILE_PATH = os.path.join(os.path.dirname(__file__), "getfocus.ui")
 
 def get_path():
     config_path = "liferea/plugins/getfocus"
     config_home = os.getenv('XDG_CONFIG_HOME',Path.joinpath(Path.home(), ".config"))
     return Path.joinpath(Path(config_home), config_path)
 
-
-class GetFocusPlugin(GObject.Object, Liferea.ShellActivatable):
+class GetFocusPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivatable):
     __gtype_name__ = 'GetFocusPlugin'
 
     shell = GObject.property(type=Liferea.Shell)
@@ -47,6 +46,7 @@ class GetFocusPlugin(GObject.Object, Liferea.ShellActivatable):
     opacity = 0.3
     enter_event = None
     leave_event = None
+    opacity_scale = None
 
     def do_activate(self):
         self.feedlist = self.shell.lookup('feedlist')
@@ -75,54 +75,30 @@ class GetFocusPlugin(GObject.Object, Liferea.ShellActivatable):
         if file_path.exists():
             self.opacity = float(file_path.read_text())
 
+    # This code is disabled as I could not get it to work in #1426
+    # The unsolved issue is that the plugin is not called with the same
+    # instance when create_configure_widget is called. So persistence
+    # of the setting is impossible.
 
-class GetFocusConfigure(GObject.Object, PeasGtk.Configurable):
-    __gtype_name__ = 'GetFocusConfigure'
+    #def do_create_configure_widget(self):
+    #    """ Setup configuration widget """
+    #    builder = Gtk.Builder()
+    #    builder.add_from_file(UI_FILE_PATH)
 
-    opacity = None
-    feedlist = None
-    opacity_scale = None
+    #    self.dialog = builder.get_object("dialog")
+    #    self.opacity_scale = builder.get_object("opacity_scale")
+    #    save_button = builder.get_object("save_button")
 
-    def do_create_configure_widget(self):
-        """ Setup configuration widget """
-        margin = 6
+        # Connect signals if needed
+    #    save_button.connect("clicked", self.save_opacity_to_file)
+    #    self.opacity_scale.connect("value-changed", self.scale_moved, self.feedlist)
 
-        shell = Liferea.Shell
-        self.feedlist = shell.lookup('feedlist')
-        self.opacity = self.feedlist.get_property('opacity')
+    #    self.dialog.show_all()
+    #    self.dialog.run()
 
-        grid = Gtk.Grid(column_spacing=10)
-        label = Gtk.Label(_("Opacity:"))
-        label.props.tooltip_text = _("Opacity")
-        label.props.xalign = 0
-        label.props.margin = margin
-        label.props.expand = False
-        grid.attach(label, 0, 0, 1, 1)
-
-        adj = Gtk.Adjustment(self.opacity, 0, 1.0, 0.1, 0.2, 0)
-        self.opacity_scale = Gtk.Scale(orientation=Gtk.Orientation.HORIZONTAL,
-                                       adjustment=adj)
-        self.opacity_scale.props.margin = 10
-        self.opacity_scale.add_mark(0, Gtk.PositionType.BOTTOM, _('Min'))
-        self.opacity_scale.add_mark(0.2, Gtk.PositionType.BOTTOM, None)
-        self.opacity_scale.add_mark(0.4, Gtk.PositionType.BOTTOM, None)
-        self.opacity_scale.add_mark(0.6, Gtk.PositionType.BOTTOM, None)
-        self.opacity_scale.add_mark(0.8, Gtk.PositionType.BOTTOM, None)
-        self.opacity_scale.add_mark(1.0, Gtk.PositionType.BOTTOM, _('Max'))
-        self.opacity_scale.set_hexpand(True)
-        self.opacity_scale.set_size_request(300, 10)  #width, height
-        self.opacity_scale.connect("value-changed", self.scale_moved)
-        grid.attach(self.opacity_scale, 1, 0, 1, 1)
-
-        save_button = Gtk.Button(_('Save'))
-        save_button.set_valign(Gtk.Align.CENTER)
-        save_button.connect("clicked", self.save_opacity_to_file)
-        grid.attach(save_button, 2, 0, 1, 1)
-        return grid
-
-    def scale_moved(self, event):
+    def scale_moved(self, event, user_data):
         self.opacity = self.opacity_scale.get_value()
-        self.feedlist.set_property('opacity', self.opacity)
+        user_data.set_property('opacity', self.opacity)
 
     def save_opacity_to_file(self, widget):
         path = get_path()

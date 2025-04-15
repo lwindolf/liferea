@@ -32,6 +32,7 @@
 #include "common.h"
 #include "debug.h"
 #include "download.h"
+#include "feedlist.h"
 #include "net.h"
 #include "ui/browser_tabs.h"
 #include "ui/liferea_browser.h"
@@ -397,6 +398,14 @@ liferea_webkit_handle_liferea_scheme (WebKitURISchemeRequest *request, gpointer 
 }
 
 static void
+liferea_webkit_handle_feed_scheme (WebKitURISchemeRequest *request, gpointer user_data)
+{
+	const gchar *path = webkit_uri_scheme_request_get_path (request);
+
+	feedlist_add_subscription (g_strdup (path), NULL, NULL, UPDATE_REQUEST_PRIORITY_HIGH);
+}
+
+static void
 liferea_webkit_init (LifereaWebKit *self)
 {
 	gboolean			enable_itp;
@@ -406,6 +415,9 @@ liferea_webkit_init (LifereaWebKit *self)
 	self->dbus_connections = NULL;
 	webkit_web_context_register_uri_scheme (webkit_web_context_get_default (), "liferea",
 		(WebKitURISchemeRequestCallback) liferea_webkit_handle_liferea_scheme,NULL,NULL);
+
+	webkit_web_context_register_uri_scheme (webkit_web_context_get_default (), "feed",
+		(WebKitURISchemeRequestCallback) liferea_webkit_handle_feed_scheme,NULL,NULL);
 
 	security_manager = webkit_web_context_get_security_manager (webkit_web_context_get_default ());
 	website_data_manager = webkit_web_context_get_website_data_manager (webkit_web_context_get_default ());

@@ -28,7 +28,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdkkeysyms.h>
-#include <libpeas/peas-extension-set.h>
 
 #include "browser.h"
 #include "common.h"
@@ -109,6 +108,7 @@ liferea_shell_finalize (GObject *object)
 {
 	LifereaShell *ls = LIFEREA_SHELL (object);
 
+	g_object_unref (ls->plugins);
 	g_object_unref (ls->xml);
 }
 
@@ -821,6 +821,12 @@ on_prefbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_da
 }
 
 static void
+on_manage_plugins_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	liferea_plugins_manage_dialog (GTK_WINDOW (liferea_shell_get_window ()));
+}
+
+static void
 on_searchbtn_clicked (GSimpleAction *action, GVariant *parameter, gpointer user_data)
 {
 	simple_search_dialog_open ();
@@ -849,6 +855,12 @@ liferea_shell_add_html_tab (const gchar *file, const gchar *name)
 	g_free (filepattern);
 	g_free (filename);
 	g_free (fileuri);
+}
+
+static void
+on_action_discover_feeds (GSimpleAction *action, GVariant *parameter, gpointer user_data)
+{
+	browser_tabs_add_new ("https://lwindolf.github.io/rss-finder/", _("Discover Feeds"), TRUE);
 }
 
 static void
@@ -1015,8 +1027,10 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"zoom-in", on_action_zoomin_activate, NULL, NULL, NULL},
 	{"zoom-out", on_action_zoomout_activate, NULL, NULL, NULL},
 	{"zoom-reset", on_action_zoomreset_activate, NULL, NULL, NULL},
+	{"discover-feeds", on_action_discover_feeds, NULL, NULL, NULL, NULL},
 	{"show-update-monitor", on_menu_show_update_monitor, NULL, NULL, NULL},
 	{"show-preferences", on_prefbtn_clicked, NULL, NULL, NULL},
+	{"manage-plugins", on_manage_plugins_clicked, NULL, NULL, NULL},
 	{"search-feeds", on_searchbtn_clicked, NULL, NULL, NULL},
 	{"show-help-contents", on_topics_activate, NULL, NULL, NULL},
 	{"show-help-quick-reference", on_quick_reference_activate, NULL, NULL, NULL},
@@ -1320,7 +1334,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 	g_action_map_add_action_entries (G_ACTION_MAP(app), liferea_shell_link_gaction_entries, G_N_ELEMENTS (liferea_shell_link_gaction_entries), NULL);
 
 	/* 0.) setup plugin engine including mandatory base plugins that (for example the feed list or auth) might depend on */
-	shell->plugins = liferea_plugins_engine_get (shell);
+	shell->plugins = liferea_plugins_engine_get ();
 
 	/* 1.) menu creation */
 
@@ -1462,7 +1476,7 @@ liferea_shell_create (GtkApplication *app, const gchar *overrideWindowState, gin
 
 	/* 13. Setup plugins */
 	if(!pluginsDisabled)
-		liferea_plugins_engine_register_shell_plugins ();
+		liferea_plugins_engine_register_shell_plugins (shell);
 
 	/* 14. Rebuild search folders if needed */
 	if (searchFolderRebuild)

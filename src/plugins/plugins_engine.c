@@ -1,10 +1,9 @@
 /*
- * plugins_engine.c: Liferea Plugins using libpeas
- * (derived from gtranslator code)
+ * plugins_engine.c: Liferea Plugins using libpeas2
  *
  * Copyright (C) 2002-2005 Paolo Maggi
  * Copyright (C) 2010 Steve Frécinaux
- * Copyright (C) 2012-2024 Lars Windolf <lars.windolf@gmx.de>
+ * Copyright (C) 2012-2025 Lars Windolf <lars.windolf@gmx.de>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 #include <string.h>
 
@@ -32,48 +29,56 @@
 #include <glib.h>
 #include <gio/gio.h>
 #include <girepository.h>
-#include <libpeas/peas-activatable.h>
-#include <libpeas/peas-extension-set.h>
+#include <libpeas.h>
 
 #include "auth_activatable.h"
+#include "debug.h"
 #include "download_activatable.h"
 #include "node_source_activatable.h"
+#include "liferea_activatable.h"
 #include "liferea_shell_activatable.h"
 #include "plugins_engine.h"
+#include "ui/liferea_dialog.h"
 
-struct _LifereaPluginsEnginePrivate
+struct _LifereaPluginsEngine
 {
-  GSettings	*plugin_settings;
-  LifereaShell	*shell;			/*<< shell needs to be passed to all plugins */
-  GHashTable	*extension_sets;	/*<< hash table of extension sets we might want to call */
+	GObject parent_instance;
+
+	PeasEngine	*engine;
+	GHashTable	*extension_sets;	/*<< hash table of extension sets we might want to call */
+	PeasExtensionSet	*all;		/*<< all plugins (extension set of type LifereaActivatable) */
 };
 
-G_DEFINE_TYPE_WITH_CODE (LifereaPluginsEngine, liferea_plugins_engine, PEAS_TYPE_ENGINE, G_ADD_PRIVATE (LifereaPluginsEngine))
+G_DEFINE_TYPE (LifereaPluginsEngine, liferea_plugins_engine, G_TYPE_OBJECT)
 
-static LifereaPluginsEngine *engine = NULL;
+static LifereaPluginsEngine *plugins = NULL;
 
 static void
-liferea_plugins_engine_init (LifereaPluginsEngine *engine)
+liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 {
-	gchar		*typelib_dir;
-	const gchar	**names;
-	gsize		length;
-	GError		*error = NULL;
+	g_autofree gchar	*typelib_dir;
+	const gchar		**names;
+	gsize			length;
+	GError			*error = NULL;
 
+	g_autoptr(GSettings)	plugin_settings = g_settings_new ("net.sf.liferea.plugins");
 	g_autoptr(GVariant)	vlist;
 	g_autoptr(GStrvBuilder)	b;
 
-	engine->priv = liferea_plugins_engine_get_instance_private (engine);
-	engine->priv->plugin_settings = g_settings_new ("net.sf.liferea.plugins");
-	engine->priv->extension_sets = g_hash_table_new (g_direct_hash, g_direct_equal);
+	debug (DEBUG_GUI, "Initializing plugins engine");
+
+	plugins->extension_sets = g_hash_table_new (g_direct_hash, g_direct_equal);
+	plugins->engine = peas_engine_get_default ();
+	g_object_add_weak_pointer (G_OBJECT (plugins), (gpointer) &plugins->engine);
 
 	b = g_strv_builder_new ();
-	vlist = g_settings_get_value (engine->priv->plugin_settings, "active-plugins");
+	vlist = g_settings_get_value (plugin_settings, "active-plugins");
 	names = g_variant_get_strv (vlist, &length);
 
 	/* Disable incompatible plugins */
 	const gchar *incompatible[] = {
 		"webkit-settings",
+		"plugin-installer",
 		NULL
 	};
 	for (guint i = 0; i < length; i++) {
@@ -83,17 +88,16 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 
 	/* Safe modified settings */
 	GStrv list = g_strv_builder_end (b);
-	g_settings_set_strv (engine->priv->plugin_settings, "active-plugins", (const gchar *const *)list);
+	g_settings_set_strv (plugin_settings, "active-plugins", (const gchar *const *)list);
 	g_strfreev (list);
 	g_free (names);
 
 	/* Only load libpeas after we cleaned the 'active-plugins' setting */
-	peas_engine_enable_loader (PEAS_ENGINE (engine), "python3");
+	peas_engine_enable_loader (PEAS_ENGINE (plugins->engine), "python");
+	peas_engine_enable_loader (PEAS_ENGINE (plugins->engine), "gjs");
 
 	/* Require Lifereas's typelib. */
-	typelib_dir = g_build_filename (PACKAGE_LIB_DIR,
-					"girepository-1.0", NULL);
-
+	typelib_dir = g_build_filename (PACKAGE_LIB_DIR, GI_REPOSITORY, NULL);
 	if (!g_irepository_require_private (g_irepository_get_default (),
 		typelib_dir, "Liferea", "3.0", 0, &error)) {
 		g_warning ("Could not load Liferea repository: %s", error->message);
@@ -101,77 +105,52 @@ liferea_plugins_engine_init (LifereaPluginsEngine *engine)
 		error = NULL;
 	}
 
-	g_free (typelib_dir);
+	g_autofree gchar *userdata = g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL);
+	g_autofree gchar *data = g_build_filename (PACKAGE_DATA_DIR, "plugins", NULL);
+	g_autofree gchar *lib = g_build_filename (PACKAGE_LIB_DIR, "plugins", NULL);
 
-	/* This should be moved to libpeas */
-	if (!g_irepository_require (g_irepository_get_default (),
-				"Peas", "1.0", 0, &error)) {
-		g_warning ("Could not load Peas repository: %s", error->message);
-		g_error_free (error);
-		error = NULL;
-	}
+        peas_engine_add_search_path (PEAS_ENGINE (plugins->engine), userdata, userdata);
+	peas_engine_add_search_path (PEAS_ENGINE (plugins->engine), lib, data);
+	peas_engine_rescan_plugins (PEAS_ENGINE (plugins->engine));
 
-	if (!g_irepository_require (g_irepository_get_default (),
-				"PeasGtk", "1.0", 0, &error)) {
-		g_warning ("Could not load PeasGtk repository: %s", error->message);
-		g_error_free (error);
-		error = NULL;
-	}
-
-	peas_engine_add_search_path (PEAS_ENGINE (engine),
-		g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL),
-		g_build_filename (g_get_user_data_dir (), "liferea", "plugins", NULL));
-
-	peas_engine_add_search_path (PEAS_ENGINE (engine),
-		g_build_filename (PACKAGE_LIB_DIR,  "plugins", NULL),
-		g_build_filename (PACKAGE_DATA_DIR, "plugins", NULL));
-
-	g_settings_bind (engine->priv->plugin_settings,
+	g_settings_bind (plugin_settings,
 			"active-plugins",
-			engine, "loaded-plugins", G_SETTINGS_BIND_DEFAULT);
+			plugins->engine, "loaded-plugins", G_SETTINGS_BIND_DEFAULT);
 
 	/* Load mandatory plugins */
 	const gchar *mandatory[] = {
-		"download-manager",
-		"plugin-installer"
+		"download-manager"
 	};
 	for (guint i = 0; i < G_N_ELEMENTS (mandatory); i++) {
-		PeasPluginInfo *info = peas_engine_get_plugin_info (PEAS_ENGINE (engine), mandatory[i]);
+		PeasPluginInfo *info = peas_engine_get_plugin_info (PEAS_ENGINE (plugins->engine), mandatory[i]);
 		if (info)
-			peas_engine_load_plugin (PEAS_ENGINE (engine), info);
+			peas_engine_load_plugin (PEAS_ENGINE (plugins->engine), info);
 		else
 			g_warning ("The plugin-installer plugin was not found.");
 	}
+
+	plugins->all = peas_extension_set_new (plugins->engine, LIFEREA_TYPE_ACTIVATABLE, NULL);
 }
 
 /* Provide default signal handlers */
 
 static void
-on_extension_added (PeasExtensionSet *extensions,
-                    PeasPluginInfo   *info,
-                    PeasExtension    *exten,
-                    gpointer         user_data)
+on_extension_added (PeasExtensionSet   *extensions,
+                    PeasPluginInfo     *info,
+		    LifereaActivatable *plugin,
+		    gpointer           user_data)
 {
-	peas_extension_call (exten, "activate");
+	debug (DEBUG_GUI, "Plugin added %s", peas_plugin_info_get_name (info));
+	liferea_activatable_activate (plugin);
 }
 
 static void
-on_extension_removed (PeasExtensionSet *extensions,
-                      PeasPluginInfo   *info,
-                      PeasExtension    *exten,
-                      gpointer         user_data)
+on_extension_removed (PeasExtensionSet   *extensions,
+                      PeasPluginInfo     *info,
+                      LifereaActivatable *plugin,
+                      gpointer           user_data)
 {
-	peas_extension_call (exten, "deactivate");
-}
-
-void
-liferea_plugins_engine_set_default_signals (PeasExtensionSet *extensions,
-                                            gpointer user_data)
-{
-	g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), user_data);
-	g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), user_data);
-
-	peas_extension_set_call (extensions, "activate");
+	liferea_activatable_deactivate (plugin);
 }
 
 typedef struct {
@@ -180,32 +159,32 @@ typedef struct {
 } callCtxt;
 
 static void
-liferea_plugin_call_foreach (PeasExtensionSet* set,
-                             PeasPluginInfo* info,
-                             GObject* extension,
-                             gpointer user_data)
+liferea_plugin_call_foreach (PeasExtensionSet	*set,
+                             PeasPluginInfo	*info,
+                             LifereaActivatable	*plugin,
+                             gpointer		user_data)
 {
 	callCtxt *ctxt = (callCtxt *)user_data;
-	((GFunc)ctxt->func)(extension, ctxt->user_data);
+	((GFunc)ctxt->func)(plugin, ctxt->user_data);
 }
 
 void
 liferea_plugin_call (GType type, GFunc func, gpointer user_data)
 {
-	PeasExtensionSet *set =g_hash_table_lookup (engine->priv->extension_sets, (gpointer)type);
+	PeasExtensionSet *set = g_hash_table_lookup (plugins->extension_sets, (gpointer)type);
 
 	g_assert (set);
 
 	callCtxt ctxt;
 	ctxt.func = func;
 	ctxt.user_data = user_data;
-	peas_extension_set_foreach (set, liferea_plugin_call_foreach, &ctxt);
+	peas_extension_set_foreach (set, (PeasExtensionSetForeachFunc)liferea_plugin_call_foreach, &ctxt);
 }
 
 gboolean
 liferea_plugin_is_active (GType type)
 {
-	PeasExtensionSet *set = g_hash_table_lookup (engine->priv->extension_sets, GINT_TO_POINTER(type));
+	PeasExtensionSet *set = g_hash_table_lookup (plugins->extension_sets, GINT_TO_POINTER(type));
 
 	return g_list_model_get_n_items (G_LIST_MODEL (set)) > 0;
 }
@@ -213,15 +192,11 @@ liferea_plugin_is_active (GType type)
 static void
 liferea_plugins_engine_dispose (GObject * object)
 {
-	LifereaPluginsEngine *engine = LIFEREA_PLUGINS_ENGINE (object);
+	LifereaPluginsEngine *plugins = LIFEREA_PLUGINS_ENGINE (object);
 
-	if (engine->priv->plugin_settings) {
-		g_object_unref (engine->priv->plugin_settings);
-		engine->priv->plugin_settings = NULL;
-	}
-	if (engine->priv->extension_sets) {
-		g_hash_table_destroy (engine->priv->extension_sets);
-		engine->priv->extension_sets = NULL;
+	if (plugins->extension_sets) {
+		g_hash_table_destroy (plugins->extension_sets);
+		plugins->extension_sets = NULL;
 	}
 
 	G_OBJECT_CLASS (liferea_plugins_engine_parent_class)->dispose (object);
@@ -236,12 +211,10 @@ liferea_plugins_engine_class_init (LifereaPluginsEngineClass * klass)
 }
 
 LifereaPluginsEngine *
-liferea_plugins_engine_get (LifereaShell *shell)
+liferea_plugins_engine_get (void)
 {
-	if (!engine) {
-		engine = LIFEREA_PLUGINS_ENGINE (g_object_new (LIFEREA_TYPE_PLUGINS_ENGINE, NULL));
-		engine->priv->shell = shell;
-		g_object_add_weak_pointer (G_OBJECT (engine), (gpointer) &engine);
+	if (!plugins) {
+		plugins = LIFEREA_PLUGINS_ENGINE (g_object_new (LIFEREA_TYPE_PLUGINS_ENGINE, NULL));
 
 		/* Immediately register basic non-GUI plugin intefaces that might be requirement
 		   for everything to come up. All other plugins are registered later on
@@ -251,28 +224,123 @@ liferea_plugins_engine_get (LifereaShell *shell)
 			LIFEREA_NODE_SOURCE_ACTIVATABLE_TYPE
 		};
 
+		debug (DEBUG_GUI, "Registering basic plugins");
+
 		for (guint i = 0; i < G_N_ELEMENTS (types); i++) {
-			PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (engine), types[i], NULL);
-			g_hash_table_insert (engine->priv->extension_sets, GINT_TO_POINTER(types[i]), extensions);
-			liferea_plugins_engine_set_default_signals (extensions, NULL);
+			PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (plugins->engine), types[i], NULL);
+			g_hash_table_insert (plugins->extension_sets, GINT_TO_POINTER(types[i]), extensions);
+
+			peas_extension_set_foreach (extensions, (PeasExtensionSetForeachFunc)on_extension_added, NULL);
+
+			g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
+			g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
 		}
 	}
 
-	return engine;
+	return plugins;
 }
 
 void
-liferea_plugins_engine_register_shell_plugins (void) 
+liferea_plugins_engine_register_shell_plugins (LifereaShell *shell) 
 {
 	GType types[] = {
 		LIFEREA_TYPE_SHELL_ACTIVATABLE,
 		LIFEREA_TYPE_DOWNLOAD_ACTIVATABLE
 	};
 
+	g_assert (plugins);
+
+	debug (DEBUG_GUI, "Registering shell plugins");
+
 	for (guint i = 0; i < G_N_ELEMENTS (types); i++) {
 		/* Note: we expect all plugins to get property 'shell' as the default entrypoint */
-		PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (engine), types[i], "shell", engine->priv->shell, NULL);
-		g_hash_table_insert (engine->priv->extension_sets, GINT_TO_POINTER(types[i]), extensions);
-		liferea_plugins_engine_set_default_signals (extensions, NULL);
+		PeasExtensionSet *extensions = peas_extension_set_new (PEAS_ENGINE (plugins->engine), types[i], "shell", shell, NULL);
+		g_hash_table_insert (plugins->extension_sets, GINT_TO_POINTER(types[i]), extensions);
+
+		peas_extension_set_foreach (extensions, (PeasExtensionSetForeachFunc)on_extension_added, NULL);
+
+		g_signal_connect (extensions, "extension-added", G_CALLBACK (on_extension_added), NULL);
+		g_signal_connect (extensions, "extension-removed", G_CALLBACK (on_extension_removed), NULL);
 	}
 }
+
+static void
+on_plugin_checkbox_toggled(GtkToggleButton *button, PeasPluginInfo *info)
+{
+	gboolean is_active = gtk_toggle_button_get_active(button);
+	if (is_active) {
+		peas_engine_load_plugin(plugins->engine, info);
+	} else {
+		peas_engine_unload_plugin(plugins->engine, info);
+	}
+}
+
+static void
+on_row_selected (GtkListBox *list_box, GtkListBoxRow *selected_row, gpointer user_data)
+{
+	GtkWidget *configure_button = liferea_dialog_lookup (GTK_WIDGET (user_data), "configure");
+	PeasPluginInfo *info = g_object_get_data (G_OBJECT (selected_row), "plugin-info");
+	GObject *plugin = peas_extension_set_get_extension (plugins->all, info);
+
+	gtk_widget_set_sensitive(configure_button, 
+		plugin
+		&& info
+		&& LIFEREA_IS_ACTIVATABLE (plugin)
+		&& (LIFEREA_ACTIVATABLE_GET_IFACE (plugin)->create_configure_widget != NULL)
+		&& peas_plugin_info_is_loaded (info));
+}
+
+static void
+on_configure_clicked (GtkButton *button, gpointer user_data)
+{
+	GtkListBox *list_box = GTK_LIST_BOX (liferea_dialog_lookup (GTK_WIDGET (user_data), "plugins_listbox"));
+	GtkListBoxRow *selected_row = gtk_list_box_get_selected_row (list_box);
+	PeasPluginInfo *info = g_object_get_data (G_OBJECT (selected_row), "plugin-info");
+	GObject *plugin = peas_extension_set_get_extension (plugins->all, info);
+
+	liferea_activatable_create_configure_widget (LIFEREA_ACTIVATABLE (plugin));
+}
+
+void
+liferea_plugins_manage_dialog (GtkWindow *parent)
+{
+	GListModel *plugin_infos = G_LIST_MODEL(peas_engine_get_default ());
+	GtkWidget *dialog = liferea_dialog_new ("plugins");
+	GtkWidget *list_box = liferea_dialog_lookup (dialog, "plugins_listbox");
+	GtkWidget *configure_button = liferea_dialog_lookup (dialog, "configure");
+
+	for (guint i = 0; i < g_list_model_get_n_items(plugin_infos); i++) {
+		PeasPluginInfo *info = PEAS_PLUGIN_INFO(g_list_model_get_item(plugin_infos, i));
+		const gchar *plugin_name = peas_plugin_info_get_name(info);
+		const gchar *plugin_desc = peas_plugin_info_get_description(info);
+		gboolean is_active = peas_plugin_info_is_loaded(info);
+
+		GtkWidget *row = gtk_list_box_row_new();
+		GtkWidget *box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+		GtkWidget *active_checkbox = gtk_check_button_new();
+		gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(active_checkbox), is_active);
+		GtkWidget *text_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 5);
+		GtkWidget *label_name = gtk_label_new(NULL);
+		gtk_label_set_markup(GTK_LABEL(label_name), g_markup_printf_escaped("<b>%s</b>", plugin_name));
+		gtk_label_set_xalign(GTK_LABEL(label_name), 0.0);
+		GtkWidget *label_desc = gtk_label_new(plugin_desc);
+		gtk_label_set_xalign(GTK_LABEL(label_desc), 0.0);
+
+		gtk_box_pack_start(GTK_BOX(text_box), label_name, FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(text_box), label_desc, FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(box), active_checkbox, FALSE, FALSE, 0);
+		gtk_box_pack_start(GTK_BOX(box), text_box, TRUE, TRUE, 0);
+		gtk_container_add(GTK_CONTAINER(row), box);
+		g_signal_connect(active_checkbox, "toggled", G_CALLBACK(on_plugin_checkbox_toggled), info);
+		gtk_list_box_insert(GTK_LIST_BOX(list_box), row, -1);
+
+		g_object_set_data_full(G_OBJECT(row), "plugin-info", g_object_ref(info), g_object_unref);
+	}
+
+	g_signal_connect(list_box, "row-selected", G_CALLBACK(on_row_selected), dialog);
+	g_signal_connect(configure_button, "clicked", G_CALLBACK(on_configure_clicked), dialog);
+
+	gtk_widget_show_all(list_box);
+	gtk_widget_show(dialog);
+}
+

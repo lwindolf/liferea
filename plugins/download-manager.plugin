@@ -1,5 +1,5 @@
 [Plugin]
-Loader=python3
+Loader=python
 Module=download-manager
 IAge=3
 Name=Download Manager

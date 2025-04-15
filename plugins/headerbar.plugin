@@ -1,6 +1,6 @@
 [Plugin]
 Module=headerbar
-Loader=python3
+Loader=python
 IAge=2
 Name=Header Bar
 Version=0.2

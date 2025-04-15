@@ -1,6 +1,6 @@
 [Plugin]
 Module=add-bookmark-site
-Loader=python3
+Loader=python
 IAge=2
 Name=Add Bookmark Site
 Icon=bookmark-new
