@@ -49,8 +49,6 @@ class GetFocusPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivatab
     opacity_scale = None
 
     def do_activate(self):
-        print("GetFocusPlugin activated")
-        print(self)
         self.feedlist = self.shell.lookup('feedlist')
         self.read_opacity_from_file()
         self.set_opacity_leave(self.feedlist, None)
@@ -77,29 +75,29 @@ class GetFocusPlugin(GObject.Object, Liferea.Activatable, Liferea.ShellActivatab
         if file_path.exists():
             self.opacity = float(file_path.read_text())
 
-    def do_create_configure_widget(self):
-        """ Setup configuration widget """
-        builder = Gtk.Builder()
-        builder.add_from_file(UI_FILE_PATH)
+    # This code is disabled as I could not get it to work in #1426
+    # The unsolved issue is that the plugin is not called with the same
+    # instance when create_configure_widget is called. So persistence
+    # of the setting is impossible.
 
-        self.dialog = builder.get_object("dialog")
-        self.opacity_scale = builder.get_object("opacity_scale")
-        save_button = builder.get_object("save_button")
+    #def do_create_configure_widget(self):
+    #    """ Setup configuration widget """
+    #    builder = Gtk.Builder()
+    #    builder.add_from_file(UI_FILE_PATH)
+
+    #    self.dialog = builder.get_object("dialog")
+    #    self.opacity_scale = builder.get_object("opacity_scale")
+    #    save_button = builder.get_object("save_button")
 
         # Connect signals if needed
-        save_button.connect("clicked", self.save_opacity_to_file)
-        print(self)
-        print("self.feedlist=")
-        print(self.feedlist)
-        self.opacity_scale.connect("value-changed", self.scale_moved, self.feedlist)
+    #    save_button.connect("clicked", self.save_opacity_to_file)
+    #    self.opacity_scale.connect("value-changed", self.scale_moved, self.feedlist)
 
-        self.dialog.show_all()
-        self.dialog.run()
+    #    self.dialog.show_all()
+    #    self.dialog.run()
 
     def scale_moved(self, event, user_data):
         self.opacity = self.opacity_scale.get_value()
-        print("user_data=")
-        print(user_data)
         user_data.set_property('opacity', self.opacity)
 
     def save_opacity_to_file(self, widget):
