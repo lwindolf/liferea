@@ -1,11 +1,5 @@
 [![Build Status](https://github.com/lwindolf/liferea/actions/workflows/cb.yml/badge.svg)](https://github.com/lwindolf/liferea/actions/workflows/cb.yml)
 
-[![Packages](https://repology.org/badge/latest-versions/liferea.svg)](https://repology.org/metapackage/liferea/versions)
-[![Packages](https://repology.org/badge/tiny-repos/liferea.svg)](https://repology.org/metapackage/liferea/versions)
-[![Dependency](https://img.shields.io/librariesio/github/lwindolf/liferea)](https://libraries.io/github/lwindolf/liferea)
-
-## Introduction
-
 Liferea is a desktop feed reader/news aggregator that brings together all of the content from your favorite subscriptions into a simple interface that makes it easy to organize and browse feeds. Its GUI is similar to a desktop mail/news client, with an embedded web browser.
 
 ![screenshot](https://lzone.de/liferea/screenshots/screenshot2.png)
@@ -13,7 +7,10 @@ Liferea is a desktop feed reader/news aggregator that brings together all of the
 
 ## Installation from Package
 
-For distro-specific package installation check out https://lzone.de/liferea/install.htm
+Many distributions have packaged Liferea:
+
+[![Packages](https://repology.org/badge/latest-versions/liferea.svg)](https://repology.org/metapackage/liferea/versions)
+[![Packages](https://repology.org/badge/tiny-repos/liferea.svg)](https://repology.org/metapackage/liferea/versions)
 
 
 ## Building
