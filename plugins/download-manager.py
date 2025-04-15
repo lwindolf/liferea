@@ -63,8 +63,9 @@ class DownloadManagerPlugin(GObject.Object, Liferea.Activatable, Liferea.Downloa
     def do_activate(self):
         self.window = Gtk.Window(title="Liferea Download Manager")
 
-        self.headerbar = Gtk.HeaderBar(title="Liferea Download Manager")
-        self.headerbar.set_show_close_button(True)
+        self.headerbar = Gtk.HeaderBar()
+        self.headerbar.set_title_widget(Gtk.Label(label="Liferea Download Manager"))
+        self.headerbar.set_show_title_buttons(True)
         self.window.set_titlebar(self.headerbar)
 
         self.choose_dir_button = Gtk.Button(label="Download Location")

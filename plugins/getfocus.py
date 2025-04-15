@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 from pathlib import Path
 import gettext
-from gi.repository import GObject, Gtk, Liferea
+from gi.repository import GObject, Liferea
 
 # Initialize translations for tooltips
 _ = lambda x: x
