@@ -53,7 +53,6 @@
 #include "ui/feed_list_view.h"
 #include "ui/icons.h"
 #include "ui/item_list_view.h"
-#include "ui/layout.h"
 #include "ui/liferea_dialog.h"
 #include "ui/preferences_dialog.h"
 #include "ui/search_dialog.h"
@@ -248,7 +247,7 @@ liferea_shell_init (LifereaShell *ls)
 void
 liferea_shell_save_layout (void)
 {
-	gint		x, y, w, h;
+	gint		x, y;
 	GtkWidget	*pane;
 
 	g_assert (shell);
@@ -346,11 +345,6 @@ liferea_shell_update_unread_stats (gpointer user_data)
 	//gtk_label_set_text (GTK_LABEL (shell->statusbar_feedsinfo), tmp);
 	g_free (tmp);
 	g_free (msg);
-}
-
-static void
-liferea_shell_update_all_items (gpointer user_data) {
-	item_list_view_update_all_items (shell->itemListView);
 }
 
 /*

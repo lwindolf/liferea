@@ -30,6 +30,7 @@
 struct _SearchFolderDialog {
 	GObject		parentInstance;
 
+	GtkWidget	*dialog;	/**< dialog widget */
 	RuleEditor	*re;		/**< dynamically created rule editing widget subset */
 	Node		*node;		/**< search folder feed list node */
 	vfolderPtr	vfolder;	/**< the search folder */
@@ -85,41 +86,49 @@ on_propdialog_response (GtkDialog *dialog, gint response_id, gpointer user_data)
 	}
 }
 
+static int
+scroll_down (GtkScrolledWindow *scrolled_window)
+{
+	GtkAdjustment *adjustment = gtk_scrolled_window_get_vadjustment (scrolled_window);
+	gtk_adjustment_set_value (adjustment, gtk_adjustment_get_upper (adjustment));
+
+	return FALSE;
+}
+
 static void
 on_addrulebtn_clicked (GtkButton *button, gpointer user_data)
 {
 	SearchFolderDialog *sfd = SEARCH_FOLDER_DIALOG (user_data);
 
 	rule_editor_add_rule (sfd->re, NULL);
+
+	g_idle_add ((GSourceFunc)scroll_down, liferea_dialog_lookup (sfd->dialog, "ruleview_scrolled_window"));
 }
 
 /** Use to create new search folders and to edit existing ones */
 SearchFolderDialog *
 search_folder_dialog_new (Node *node)
 {
-	GtkWidget		*dialog;
 	SearchFolderDialog	*sfd;
 
 	sfd = SEARCH_FOLDER_DIALOG (g_object_new (SEARCH_FOLDER_DIALOG_TYPE, NULL));
 	sfd->node = node;
 	sfd->vfolder = (vfolderPtr)node->data;
 	sfd->re = rule_editor_new (sfd->vfolder->itemset);
+	sfd->dialog = liferea_dialog_new ("search_folder");
 
-	/* Create the dialog */
-	dialog = liferea_dialog_new ("search_folder");
-
-	liferea_dialog_entry_set (dialog, "searchNameEntry", node_get_title (node));
+	liferea_dialog_entry_set (sfd->dialog, "searchNameEntry", node_get_title (node));
 
 	/* Set up rule match type */
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, sfd->vfolder->itemset->anyMatch?"anyRuleRadioBtn":"allRuleRadioBtn")), TRUE);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (dialog, "hideReadItemsBtn")), sfd->vfolder->unreadOnly);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sfd->dialog, sfd->vfolder->itemset->anyMatch?"anyRuleRadioBtn":"allRuleRadioBtn")), TRUE);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (sfd->dialog, "hideReadItemsBtn")), sfd->vfolder->unreadOnly);
 
 	/* Set up rule list vbox */
-	gtk_viewport_set_child (GTK_VIEWPORT (liferea_dialog_lookup (dialog, "ruleview_vfolder_dialog")), rule_editor_get_widget (sfd->re));
+	gtk_viewport_set_child (GTK_VIEWPORT (liferea_dialog_lookup (sfd->dialog, "ruleview_vfolder_dialog")), rule_editor_get_widget (sfd->re));
 
 	/* bind buttons */
-	g_signal_connect (liferea_dialog_lookup (dialog, "addrulebtn"), "clicked", G_CALLBACK (on_addrulebtn_clicked), sfd);
-	g_signal_connect (G_OBJECT (dialog), "response", G_CALLBACK (on_propdialog_response), sfd);
+	g_signal_connect (liferea_dialog_lookup (sfd->dialog, "addrulebtn"), "clicked", G_CALLBACK (on_addrulebtn_clicked), sfd);
+	g_signal_connect (G_OBJECT (sfd->dialog), "response", G_CALLBACK (on_propdialog_response), sfd);
 
 	return sfd;
 }

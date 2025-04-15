@@ -247,46 +247,6 @@ on_noProxy_clicked (GtkButton *button, gpointer user_data)
 }
 
 static void
-on_manualProxy_clicked (GtkButton *button, gpointer user_data)
-{
-	conf_set_int_value (PROXY_DETECT_MODE, 2);
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog->dialog, "proxybox")), TRUE);
-}
-
-void
-on_useProxyAuth_toggled (GtkToggleButton *button, gpointer user_data)
-{
-	gboolean enabled = gtk_toggle_button_get_active (button);
-
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (prefdialog->dialog, "proxyauthtable")), enabled);
-	conf_set_bool_value (PROXY_USEAUTH, enabled);
-}
-
-static void
-on_proxyhostentry_changed (GtkEditable *editable, gpointer user_data)
-{
-	conf_set_str_value (PROXY_HOST, gtk_editable_get_chars (editable,0,-1));
-}
-
-static void
-on_proxyportentry_changed (GtkEditable *editable, gpointer user_data)
-{
-	conf_set_int_value (PROXY_PORT, atoi (gtk_editable_get_chars (editable,0,-1)));
-}
-
-static void
-on_proxyusernameentry_changed (GtkEditable *editable, gpointer user_data)
-{
-	conf_set_str_value (PROXY_USER, gtk_editable_get_chars (editable,0,-1));
-}
-
-static void
-on_proxypasswordentry_changed (GtkEditable *editable, gpointer user_data)
-{
-	conf_set_str_value (PROXY_PASSWD, gtk_editable_get_chars (editable,0,-1));
-}
-
-static void
 on_skim_key_changed (gpointer user_data)
 {
 	conf_set_int_value (BROWSE_KEY_SETTING, gtk_combo_box_get_active (GTK_COMBO_BOX (user_data)));
@@ -350,12 +310,9 @@ preferences_dialog_init (PreferencesDialog *pd)
 	GtkTreeIter		treeiter;
 	GtkAdjustment		*itemCount;
 	GSList			*list;
-	gchar			*proxyport;
 	gchar			*configuredBrowser, *name;
-	gboolean		enabled;
-	gint			tmp, i, iSetting, proxy_port;
+	gint			tmp, i, iSetting;
 	gboolean		bSetting, manualBrowser;
-	gchar			*proxy_host, *proxy_user, *proxy_passwd;
 	gchar			*browser_command;
 
 	prefdialog = pd;
@@ -486,58 +443,21 @@ preferences_dialog_init (PreferencesDialog *pd)
 
 	/* ================= panel 5 "proxy" ======================== */
 
-	conf_get_str_value (PROXY_HOST, &proxy_host);
-	liferea_dialog_entry_set (pd->dialog, "proxyhostentry", proxy_host);
-	g_free (proxy_host);
-
-	conf_get_int_value (PROXY_PORT, &proxy_port);
-	proxyport = g_strdup_printf ("%d", proxy_port);
-	liferea_dialog_entry_set (pd->dialog, "proxyportentry", proxyport);
-	g_free (proxyport);
-
-	conf_get_bool_value (PROXY_USEAUTH, &enabled);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "useProxyAuth")), enabled);
-
-	conf_get_str_value (PROXY_USER, &proxy_user);
-	liferea_dialog_entry_set (pd->dialog, "proxyusernameentry", proxy_user);
-	g_free (proxy_user);
-
-	conf_get_str_value (PROXY_PASSWD, &proxy_passwd);
-	liferea_dialog_entry_set (pd->dialog, "proxypasswordentry", proxy_passwd);
-	g_free (proxy_passwd);
-
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup(pd->dialog, "proxyauthtable")), enabled);
-
 	conf_get_int_value (PROXY_DETECT_MODE, &i);
 	switch (i) {
 		default:
+		case 2: /* manual proxy -> deprecated so fall through to auto detect */
 		case 0: /* proxy auto detect */
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), TRUE);
-			enabled = FALSE;
 			break;
 		case 1: /* no proxy */
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), TRUE);
-			enabled = FALSE;
-			break;
-		case 2: /* manual proxy */
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (liferea_dialog_lookup (pd->dialog, "manualProxyRadio")), TRUE);
-			enabled = TRUE;
 			break;
 	}
-	gtk_widget_set_sensitive (GTK_WIDGET (liferea_dialog_lookup (pd->dialog, "proxybox")), enabled);
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyAutoDetectRadio")), "clicked", G_CALLBACK (on_proxyAutoDetect_clicked), pd);
 	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "noProxyRadio")), "clicked", G_CALLBACK (on_noProxy_clicked), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "manualProxyRadio")), "clicked", G_CALLBACK (on_manualProxy_clicked), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyhostentry")), "changed", G_CALLBACK (on_proxyhostentry_changed), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyportentry")), "changed", G_CALLBACK (on_proxyportentry_changed), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxyusernameentry")), "changed", G_CALLBACK (on_proxyusernameentry_changed), pd);
-	g_signal_connect (G_OBJECT (liferea_dialog_lookup (pd->dialog, "proxypasswordentry")), "changed", G_CALLBACK (on_proxypasswordentry_changed), pd);
 
 	/* ================= panel 6 "Privacy" ======================== */
-
-	widget = liferea_dialog_lookup (pd->dialog, "readermodebtn");
-	conf_get_bool_value (ENABLE_READER_MODE, &bSetting);
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (widget), bSetting);
 
 	widget = liferea_dialog_lookup (pd->dialog, "donottrackbtn");
 	conf_get_bool_value (DO_NOT_TRACK, &bSetting);

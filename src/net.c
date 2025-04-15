@@ -24,6 +24,7 @@
 
 #include <glib.h>
 #include <libsoup/soup.h>
+#include <locale.h>
 #include <math.h>
 #include <string.h>
 #include <stdbool.h>
@@ -323,6 +324,11 @@ network_process_request (const UpdateJob *job)
 		soup_message_headers_append (request_headers, "DNT", "1");
 	if (do_not_track)
 		soup_message_headers_append (request_headers, "Sec-GPC", "1");
+
+	/* Add Accept-Language */
+	gchar **shortlang = g_strsplit (setlocale (LC_MESSAGES, NULL), "_", 0);
+	soup_message_headers_append (request_headers, "Accept-Language", shortlang[0]);
+	g_strfreev (shortlang);
 
 	/* Process permanent redirects (update feed location) */
 	soup_message_add_status_code_handler (msg, "got_body", 301, (GCallback) network_process_redirect_callback, (gpointer)job);

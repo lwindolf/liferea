@@ -128,7 +128,6 @@ liferea_web_view_on_menu (WebKitWebView 	*view,
 			WebKitHitTestResult 	*hit_result,
 			gpointer             	user_data)
 {
-	GtkWidget 		*menu;
 	GMenu 			*menu_model,*section;
 	GMenuItem		*menu_item = NULL;
 	gchar			*image_uri = NULL;

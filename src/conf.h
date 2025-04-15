@@ -75,11 +75,6 @@
 
 /* networking settings */
 #define PROXY_DETECT_MODE		"proxy-detect-mode"
-#define PROXY_HOST			"proxy-host"
-#define PROXY_PORT			"proxy-port"
-#define PROXY_USEAUTH			"proxy-use-authentication"
-#define PROXY_USER			"proxy-authentication-user"
-#define PROXY_PASSWD			"proxy-authentication-password"
 #define DO_NOT_TRACK			"do-not-track"
 #define DO_NOT_SELL                     "do-not-sell"
 #define INTRANET_CONNECTIVITY		"intranet-connectivity"

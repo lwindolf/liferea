@@ -107,7 +107,6 @@ on_mark_all_read (GSimpleAction *action, GVariant *parameter, gpointer user_data
 	conf_get_bool_value (CONFIRM_MARK_ALL_READ, &confirm_mark_read);
 
 	if (confirm_mark_read) {
-		gint result;
 		GtkMessageDialog *confirm_dialog = GTK_MESSAGE_DIALOG (liferea_dialog_new ("mark_read_dialog"));
 		GtkWidget *dont_ask_toggle = liferea_dialog_lookup (GTK_WIDGET (confirm_dialog), "dontAskAgainToggle");
 		const gchar *feed_title = (feedlist_get_root () == feedlist) ? _("all feeds"):node_get_title (feedlist);
