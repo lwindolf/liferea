@@ -1,9 +1,9 @@
-To be released
+2025-04-15  Lars Windolf <lars.windolf@gmx.de>
 
 	Version 1.16-RC3
 
 	* Removes long deprecated manual proxy setting
-    (Lars Windolf)
+	  (Lars Windolf)
 
 	* #1462 Drop the possibility to save passwords to OPML feed list when
 	  no keyring is available. This is too insecure.
@@ -11,17 +11,20 @@ To be released
 
 	* #1426 Migration to libpeas2, this means
 	  - simplified plugin manager
-	  - no more plugin installation supported
 	  - get_focus plugin looses configuration dialog
+	  - all 3rd party plugins are automatically broken, as libpeas
+	    requires different interface activation
+	  - no more 3rd party plugin installation supported
+	  (Lars Windolf)
 
 	* #1426 New configure option to set girepository dependency version
-
+	  (Lars Windolf)
+	  
 	* Fixes escaping of JS exception texts
 	  (Lars Windolf)
 
 	* Fixes Youtube video embedding regression
 	  (Lars Windolf)
-
 
 
 2025-02-25  Lars Windolf <lars.windolf@gmx.de>
