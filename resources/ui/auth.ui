@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
+  <requires lib="gtk" version="4.0"/>
   <object class="GtkDialog" id="auth">
     <property name="visible">1</property>
-    <property name="border_width">5</property>
     <property name="title" translatable="1">Authentication</property>
     <property name="resizable">0</property>
     <property name="type_hint">dialog</property>
@@ -12,10 +12,12 @@
     </child>
     <child internal-child="content_area">
       <object class="GtkBox" id="dialog-vbox14">
+        <property name="visible">0</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <object class="GtkGrid">
+            <property name="visible">0</property>
             <property name="halign">start</property>
             <property name="hexpand">0</property>
             <property name="border_width">5</property>
@@ -23,6 +25,7 @@
             <property name="row_spacing">12</property>
             <child>
               <object class="GtkLabel" id="prompt">
+                <property name="visible">0</property>
                 <property name="label" translatable="1">Enter the username and password for &quot;%s&quot; (%s)</property>
                 <property name="wrap">1</property>
                 <property name="xalign">0</property>
@@ -34,10 +37,12 @@
             </child>
             <child>
               <object class="GtkGrid">
+                <property name="visible">0</property>
                 <property name="row_spacing">6</property>
                 <property name="column_spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label107">
+                    <property name="visible">0</property>
                     <property name="label" translatable="1">User_name:</property>
                     <property name="use_underline">1</property>
                     <property name="mnemonic_widget">usernameEntry</property>
@@ -50,6 +55,7 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="usernameEntry">
+                    <property name="visible">0</property>
                     <property name="focusable">1</property>
                     <property name="activates_default">1</property>
                     <layout>
@@ -60,6 +66,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel" id="label108">
+                    <property name="visible">0</property>
                     <property name="label" translatable="1">_Password:</property>
                     <property name="use_underline">1</property>
                     <property name="mnemonic_widget">passwordEntry</property>
@@ -72,6 +79,7 @@
                 </child>
                 <child>
                   <object class="GtkEntry" id="passwordEntry">
+                    <property name="visible">0</property>
                     <property name="focusable">1</property>
                     <property name="visibility">0</property>
                     <property name="activates_default">1</property>
@@ -103,6 +111,7 @@
         <property name="layout_style">end</property>
         <child>
           <object class="GtkButton" id="cancelbutton2">
+            <property name="visible">0</property>
             <property name="label">gtk-cancel</property>
             <property name="focusable">1</property>
             <property name="can_default">True</property>
@@ -116,6 +125,7 @@
         </child>
         <child>
           <object class="GtkButton" id="okbutton1">
+            <property name="visible">0</property>
             <property name="label">gtk-ok</property>
             <property name="focusable">1</property>
             <property name="can_default">True</property>
