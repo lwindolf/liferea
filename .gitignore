@@ -44,3 +44,4 @@ org.gnome.liferea.gschema.valid
 node_modules
 package-lock.json
 builddir/
+po/.intltool-merge-cache.lock
