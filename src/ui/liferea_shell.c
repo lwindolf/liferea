@@ -1027,7 +1027,7 @@ static const GActionEntry liferea_shell_gaction_entries[] = {
 	{"zoom-in", on_action_zoomin_activate, NULL, NULL, NULL},
 	{"zoom-out", on_action_zoomout_activate, NULL, NULL, NULL},
 	{"zoom-reset", on_action_zoomreset_activate, NULL, NULL, NULL},
-	{"discover-feeds", on_action_discover_feeds, NULL, NULL, NULL, NULL},
+	{"discover-feeds", on_action_discover_feeds, NULL, NULL, NULL},
 	{"show-update-monitor", on_menu_show_update_monitor, NULL, NULL, NULL},
 	{"show-preferences", on_prefbtn_clicked, NULL, NULL, NULL},
 	{"manage-plugins", on_manage_plugins_clicked, NULL, NULL, NULL},
