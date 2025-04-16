@@ -28,7 +28,7 @@
 #include <glib/gi18n.h>
 #include <glib.h>
 #include <gio/gio.h>
-#include <girepository.h>
+#include <girepository/girepository.h>
 #include <libpeas.h>
 
 #include "auth_activatable.h"
@@ -64,6 +64,7 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 	g_autoptr(GSettings)	plugin_settings = g_settings_new ("net.sf.liferea.plugins");
 	g_autoptr(GVariant)	vlist;
 	g_autoptr(GStrvBuilder)	b;
+	g_autoptr(GIRepository) repo;
 
 	debug (DEBUG_GUI, "Initializing plugins engine");
 
@@ -98,7 +99,8 @@ liferea_plugins_engine_init (LifereaPluginsEngine *plugins)
 
 	/* Require Lifereas's typelib. */
 	typelib_dir = g_build_filename (PACKAGE_LIB_DIR, GI_REPOSITORY, NULL);
-	if (!g_irepository_require_private (g_irepository_get_default (),
+	repo = gi_repository_new ();
+	if (!gi_repository_require_private (repo,
 		typelib_dir, "Liferea", "3.0", 0, &error)) {
 		g_warning ("Could not load Liferea repository: %s", error->message);
 		g_error_free (error);
